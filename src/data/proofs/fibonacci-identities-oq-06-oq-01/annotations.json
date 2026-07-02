@@ -63,29 +63,57 @@
     "proofId": "fibonacci-identities-oq-06-oq-01",
     "range": {
       "startLine": 77,
-      "endLine": 102
+      "endLine": 90
     },
     "type": "theorem",
-    "title": "The Transform: Index-Doubling via Recurrence",
-    "content": "**Main induction.** `fib_binom_transform` proves $\\sum_{k=0}^{n}\\binom{n}{k}F_{m+k}=F_{2n+m}$ by induction on $n$ with $m$ **universally quantified**. In the step, instantiate `pascal_conv` at $f=(k\\mapsto F_{m+k})$ to split the $\\binom{p+1}{\\cdot}$ sum into the two $\\binom{p}{\\cdot}$ sums at offsets $m$ and $m+1$ (reindexing $F_{m+(k+1)}=F_{(m+1)+k}$ with `Finset.sum_congr` and `omega`). The induction hypothesis, applied at both $m$ and $m+1$, yields $F_{2p+m}+F_{2p+m+1}$, which the Fibonacci recurrence `Nat.fib_add_two` contracts to $F_{2p+m+2}=F_{2(p+1)+m}$. **Each inductive step advances the target index by 2** — this is exactly why $n$ steps land on $F_{2n+m}$.",
-    "mathContext": "Step: $\\sum_{k}\\binom{p+1}{k}F_{m+k} \\overset{\\text{pascal\\_conv}}{=} \\big(\\sum_k\\binom{p}{k}F_{m+k}\\big)+\\big(\\sum_k\\binom{p}{k}F_{(m+1)+k}\\big) \\overset{\\text{IH}}{=} F_{2p+m}+F_{2p+m+1} \\overset{\\text{fib\\_add\\_two}}{=} F_{2(p+1)+m}$.",
+    "title": "The Transform: Statement and Induction Setup",
+    "content": "**Main induction, set up.** `fib_binom_transform` proves $\\sum_{k=0}^{n}\\binom{n}{k}F_{m+k}=F_{2n+m}$ by induction on $n$ with $m$ **universally quantified** — the offset $m$ must be generalized so the successor case can invoke the identity at both $m$ and $m+1$. The base case $n=0$ is $\\sum_{k<1}\\binom{0}{k}F_{m+k}=F_m=F_{2\\cdot0+m}$, closed by `simp`. For the step the proof instantiates `pascal_conv` at $f=(k\\mapsto F_{m+k})$ (as `hconv`) to expose the split into two $\\binom{p}{\\cdot}$ sums, and prepares the offset-1 reindexing $F_{m+(k+1)}=F_{(m+1)+k}$ (as `hshift`) via `Finset.sum_congr` and `omega`.",
+    "mathContext": "$\\sum_{k=0}^{n}\\binom{n}{k}F_{m+k}=F_{2n+m}$; induction on $n$ generalizing $m$, with `hconv` = pascal_conv and `hshift` the offset-1 reindex.",
     "significance": "critical",
     "relatedConcepts": [
       "Induction with a generalized parameter",
-      "Fibonacci recurrence Nat.fib_add_two",
-      "Index-doubling",
-      "Load-bearing offset m"
+      "Load-bearing offset m",
+      "pascal_conv instantiation",
+      "sum reindexing (Finset.sum_congr + omega)"
     ],
     "prerequisites": [
       "The pascal_conv splitting lemma",
-      "Nat.fib_add_two",
       "Generalizing the induction over m"
+    ],
+    "tags": [
+      "induction",
+      "setup",
+      "binomial-transform",
+      "generalized-parameter"
+    ]
+  },
+  {
+    "id": "ann-fiboq06oq01-3b",
+    "proofId": "fibonacci-identities-oq-06-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 101
+    },
+    "type": "theorem",
+    "title": "The Inductive Contraction via the Recurrence",
+    "content": "**Where the index doubles.** The `calc` chain closes the successor case: `pascal_conv` rewrites the $\\binom{p+1}{\\cdot}$ sum into the two $\\binom{p}{\\cdot}$ sums at offsets $m$ and $m+1$; the induction hypotheses `ih m` and `ih (m+1)` replace them with $F_{2p+m}+F_{2p+m+1}$; and after `omega`-normalizing the indices ($2p+(m+1)=(2p+m)+1$ and $2(p+1)+m=(2p+m)+2$) the Fibonacci recurrence `Nat.fib_add_two` fuses the two consecutive values into $F_{2p+m+2}=F_{2(p+1)+m}$. **Each inductive step advances the target index by exactly 2** — this is precisely why $n$ steps land on $F_{2n+m}$, and the single use of the recurrence is the only Fibonacci-specific ingredient in the whole file.",
+    "mathContext": "$F_{2p+m}+F_{2p+m+1} \\overset{\\text{fib\\_add\\_two}}{=} F_{2p+m+2} = F_{2(p+1)+m}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Fibonacci recurrence Nat.fib_add_two",
+      "Index-doubling",
+      "calc chains",
+      "omega index normalization"
+    ],
+    "prerequisites": [
+      "Nat.fib_add_two",
+      "the induction hypothesis at m and m+1"
     ],
     "tags": [
       "induction",
       "index-doubling",
       "fibonacci-recurrence",
-      "binomial-transform"
+      "contraction"
     ]
   },
   {

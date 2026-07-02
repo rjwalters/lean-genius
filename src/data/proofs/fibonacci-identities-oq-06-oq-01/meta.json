@@ -75,7 +75,8 @@
       "**Index-doubling, not just telescoping.** The parent's linear sums collapse to Fibonacci numbers at a *shifted* index (n+2). The binomial weights instead *double* the index: ∑ C(n,k) Fₖ = F₂ₙ. The mechanism is that Pascal's rule turns one C(n+1,·) sum into two C(n,·) sums at adjacent offsets, and each application of the Fibonacci recurrence advances the target index by 1 — so n steps of induction advance it by 2n.",
       "**The offset m is load-bearing.** The clean-looking m=0 statement ∑ C(n,k) Fₖ = F₂ₙ does not prove itself by induction: the step needs the identity for the *shifted* window starting at m+1. Generalizing over m (proving the stronger ∑ C(n,k) Fₘ₊ₖ = F₂ₙ₊ₘ) is exactly what supplies both halves F₂ₙ₊ₘ and F₂ₙ₊ₘ₊₁ that the recurrence then fuses.",
       "**pascal_conv is a reusable, Fibonacci-free splitting lemma.** The combinatorial core — splitting a length-(n+2) binomial sum for n+1 into two length-(n+1) binomial sums for n at consecutive offsets — is proved for an arbitrary ℕ-valued summand, using only Pascal's rule, the two range peels, and C(n,n+1)=0. It is the binomial-transform analogue of Finset.sum_range_succ and applies to the binomial transform of any sequence, not just Fibonacci.",
-      "**Discrete shadow of 1 + φ = φ².** The identity is the ℕ-level image of the golden-ratio computation ∑ C(n,k) φᵏ = (1+φ)ⁿ = φ²ⁿ (and likewise for ψ), which the Binet formula would turn into F₂ₙ. The inductive Pascal/recurrence proof formalizes this without ever leaving ℕ or invoking irrationals."
+      "**Discrete shadow of 1 + φ = φ².** The identity is the ℕ-level image of the golden-ratio computation ∑ C(n,k) φᵏ = (1+φ)ⁿ = φ²ⁿ (and likewise for ψ), which the Binet formula would turn into F₂ₙ. The inductive Pascal/recurrence proof formalizes this without ever leaving ℕ or invoking irrationals.",
+      "**The proof is a recurrence-agnostic template.** The only Fibonacci-specific step is the single contraction Fₐ + Fₐ₊₁ = Fₐ₊₂ (Nat.fib_add_two); pascal_conv and the whole induction are sequence-independent. So the identical argument proves the binomial transform of any sequence obeying a two-term linear recurrence — e.g. the Lucas transform ∑ C(n,k) Lₖ = L₂ₙ, and general Horadam sequences — with only the contraction lemma swapped. The doubled-index target is precisely the fingerprint of that two-term recurrence, which is why the same machinery would need genuinely new input for a longer recurrence."
     ],
     "prerequisites": [
       "The binomial coefficients Nat.choose and Pascal's rule Nat.choose_succ_succ'",
@@ -103,11 +104,19 @@
     },
     {
       "id": "fib_binom_transform",
-      "title": "The Fibonacci Binomial Transform",
+      "title": "The Fibonacci Binomial Transform: Statement and Induction Setup",
       "startLine": 77,
-      "endLine": 102,
-      "summary": "fib_binom_transform: ∑_{k≤n} C(n,k)·Fₘ₊ₖ = F₂ₙ₊ₘ by induction on n with m generalized. The step rewrites the C(p+1,·) sum via pascal_conv into the two C(p,·) sums at offsets m and m+1, reindexes Fₘ₊₍ₖ₊₁₎ = F₍ₘ₊₁₎₊ₖ (Finset.sum_congr + omega), applies the induction hypothesis at both offsets, and contracts F₍₂ₚ₊ₘ₎ + F₍₂ₚ₊ₘ₊₁₎ = F₍₂₍ₚ₊₁₎₊ₘ₎ via Nat.fib_add_two.",
-      "mathContext": "$\\sum_{k=0}^{n}\\binom{n}{k}F_{m+k} = F_{2n+m}$; the window offset $m$ is generalized so the inductive step can invoke the identity at both $m$ and $m+1$."
+      "endLine": 90,
+      "summary": "fib_binom_transform states ∑_{k≤n} C(n,k)·Fₘ₊ₖ = F₂ₙ₊ₘ and sets up the induction on n with m generalized (the base case n=0 is Fₘ = F₂·₀₊ₘ, closed by simp). For the successor case it instantiates pascal_conv at f = (k ↦ Fₘ₊ₖ) (hconv) to expose the split into two C(p,·) sums, and prepares the offset-1 reindexing Fₘ₊₍ₖ₊₁₎ = F₍ₘ₊₁₎₊ₖ as hshift via Finset.sum_congr + omega.",
+      "mathContext": "$\\sum_{k=0}^{n}\\binom{n}{k}F_{m+k} = F_{2n+m}$; the offset $m$ is generalized so the step can invoke the identity at both $m$ and $m+1$."
+    },
+    {
+      "id": "inductive-contraction",
+      "title": "The Inductive Contraction via the Recurrence",
+      "startLine": 91,
+      "endLine": 101,
+      "summary": "The calc chain that closes the successor case: pascal_conv rewrites the C(p+1,·) sum into the C(p,·) sums at offsets m and m+1; the induction hypothesis (ih m and ih (m+1)) replaces them with F₍₂ₚ₊ₘ₎ + F₍₂ₚ₊ₘ₊₁₎; and after omega-normalizing the indices (2p+(m+1) = (2p+m)+1 and 2(p+1)+m = (2p+m)+2), Nat.fib_add_two contracts the two consecutive Fibonacci values into F₍₂₍ₚ₊₁₎₊ₘ₎ — advancing the target index by exactly 2 per step.",
+      "mathContext": "$F_{2p+m} + F_{2p+m+1} \\overset{\\mathrm{fib\\_add\\_two}}{=} F_{2p+m+2} = F_{2(p+1)+m}$."
     },
     {
       "id": "fib_binom_transform_zero",
