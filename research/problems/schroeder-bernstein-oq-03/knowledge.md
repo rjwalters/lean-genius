@@ -251,3 +251,62 @@ the finite matching* (a bounded search, hence computable — the Π₁ obstructi
 the naive full-ℕ orbit, not the finite one). No verified plan is recorded here on purpose:
 the resolution/termination details are subtle and unverified this session — do not treat
 a hand sketch as sound until it compiles.
+
+## Session 2026-07-02 (researcher-13): collision structure — Section 4g (VERIFIED 0-axiom)
+
+Added **Section 4g** to `SchroederBernsteinOQ03.lean` (6 new decls: 1 def + 5 theorems,
+all VERIFIED, 0-axiom — `#print axioms` = {propext, Quot.sound} only; no Classical.choice,
+no sorryAx, no ofReduceBool). File 891→1013 lines. Main `myhill_isomorphism` → sorry
+UNCHANGED (still open). This attacks the exact crux where 4+ prior sessions stalled: the
+collision case of the back-and-forth, previously "opaque" and entangled with the Π₁
+`isGFree` obstruction.
+
+**Key new idea — name the blocker.** Prior sessions had the collision-*free* atomic steps
+(`matching_step_f/g`) but nothing for when the target `f a` is already used (`f a ∈ mRan L`).
+The new organizing principle is a construction invariant `BuiltFrom f g L` := every recorded
+pair is an `f`-edge `(x, f x)` or a `g`-edge `(g y, y)`. Under it, a domain-side collision
+is *determined*:
+
+- `BuiltFrom` + preservation (`builtFrom_nil/_cons_f/_cons_g`) + self-duality under swap
+  (`builtFrom_map_swap`, swaps roles of f,g — composes with Section 4e).
+- `collision_f_source` (main): `Injective f → BuiltFrom f g L → a ∉ mDom L → f a ∈ mRan L
+  → (g (f a), f a) ∈ L`. I.e. a collision cannot be an f-edge (would force a = u ∈ mDom by
+  injectivity of f), so it is *exactly* the g-edge whose domain point is `g (f a)`. The
+  blocker is named: `g (f a)` — the next orbit point to chase.
+- `collision_g_source` (dual): range-side collision when placing `c` is blocked precisely
+  by the f-edge `(g c, f (g c))`.
+- `step_f_available_or_collision`: for fresh `a`, either `f a ∉ mRan L` (so `matching_step_f`
+  applies directly) or the specific g-edge `(g (f a), f a)` is already present. This is the
+  even-stage case split — a *decidable* dichotomy (list membership), NO `isGFree`, NO
+  unbounded search.
+
+**Why this is progress (not theater).** The residual obstruction across sessions was that a
+collision looked like it required deciding `range g` (Π₁). Section 4g shows the collision is
+instead a decidable membership test with an explicitly-computed blocker `g (f a)`, reducing
+the remaining `myhill_isomorphism` work to: (a) define the stage recursion that, on a
+collision, chases `a → g (f a) → g (f (g (f a))) → …` (= `fwdOrbit` domain points, already
+computable via `fwdOrbit_computable`) to the first orbit point whose f-image is fresh; and
+(b) bound that chase (each step lands on an already-placed g-edge, and the finite matching
+has finite length, so the chase is a bounded search — computable). The Π₁ `isGFree` never
+enters. What remains OPEN: the recursion (a) + its termination/coverage/computability (b).
+
+**Build note (infra):** host disk 100% full (143Mi free); one shared mathlib artifact
+`RingTheory/TensorProduct/Maps.ir` was truncated to 0 bytes by a concurrent disk-full build,
+so `import Mathlib.Tactic` (which drags it in) can't load here. Verified instead against a
+reduced-import copy (drop the `Mathlib.Tactic` umbrella — the `Mathlib.Computability.*`
+imports transitively supply every tactic the file uses): compiles with 0 errors, the 4 new
+non-trivial lemmas each `#print axioms` = {propext, Quot.sound}. Committed file keeps the
+original `import Mathlib.Tactic` (identical to main + Section 4g; elaboration of the new
+lemmas is unaffected by the umbrella import). Do NOT retry the full-umbrella build until the
+disk frees and `Maps.ir` regenerates.
+
+### Next Steps (updated)
+1. Define `buildStage : ℕ → List (ℕ × ℕ)` (or well-founded recursion on remaining fresh
+   target) using `step_f_available_or_collision`: on collision at `a`, recurse to `g (f a)`
+   (an already-matched domain point) — chase along `fwdOrbit f g a` to the least `k` with
+   `f ((g∘f)^[k] a) ∉ mRan L`, then extend by that f-edge; prove the chase terminates by
+   the finite matching length (each chased point is a distinct already-present g-edge).
+2. Dually handle odd stages via `collision_g_source` + `builtFrom_map_swap` + Section 4e.
+3. Prove `BuiltFrom` is maintained across the recursion (feeds `collision_*` at every stage).
+4. Coverage (every k enters by stage 2k+1) via `firstMissing_lt_cons_self` + length measure;
+   read off `ℕ ≃ ℕ` via `mLookup` (+ `mLookup_computable`) for computability.
