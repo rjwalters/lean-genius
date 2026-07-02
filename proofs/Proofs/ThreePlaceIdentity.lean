@@ -1,6 +1,7 @@
 import Mathlib.Tactic.Tauto
 import Mathlib.Tactic.Push
 import Mathlib.Logic.Basic
+import Mathlib.Order.Defs.Unbundled
 
 /-!
 # Universality of Three-Place Identity
