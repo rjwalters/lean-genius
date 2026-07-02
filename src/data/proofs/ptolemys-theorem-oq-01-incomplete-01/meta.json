@@ -66,6 +66,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Completing the Ptolemy Concyclicity Characterization",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Module docstring and imports for the converse direction of Ptolemy's concyclicity characterization: for four distinct unit-circle points, Ptolemy's equality forces CCW (or CW) cyclic order. These head lines explain how this completes the full biconditional Ptolemy equality ↔ CCW/CW order (with the forward chain proved in PtolemysTheoremOQ01), how the earlier ptolemy_ratio_pos_of_ccw sorry was resolved via the exponential difference factorization exp(iα)−exp(iβ)=2i·sin((α−β)/2)·exp(i(α+β)/2), and the sign-analysis strategy for the converse, before the namespace opens.",
+      "mathContext": "Ptolemy's equality PA·PC + PB·PD = AC·BD holds with equality exactly for concyclic points in cyclic order. On the unit circle, writing zₖ=exp(iθₖ) and factoring differences as 2i·sin(half-angle)·exp(...), the proportionality constant t = ∏sin(...)/∏sin(...) is positive iff the half-angle sines share sign, which pins the order to all-CCW or all-CW (mixed patterns reduce to cyclic rotations). This closes the equivalence Ptolemy equality ↔ SameRay ↔ ratio R>0 ↔ CCW/CW. 0 sorries, 0 axioms."
+    },
+    {
       "id": "angle-extraction",
       "title": "Angle Extraction for Unit-Circle Points",
       "startLine": 66,
