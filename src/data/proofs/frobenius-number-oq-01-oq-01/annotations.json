@@ -2,7 +2,10 @@
   {
     "id": "ann-frob-oq0101-context",
     "proofId": "frobenius-number-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 62 },
+    "range": {
+      "startLine": 1,
+      "endLine": 62
+    },
     "type": "concept",
     "title": "The Frobenius Number for n ≥ 3 Generators: a Bound, not a Formula",
     "content": "**Open question OQ-01** to the parent asks to generalize the two-generator theory to **three or more generators**. The crucial fact: for $n \\ge 3$ generators the Frobenius number $g(a_1, \\ldots, a_n)$ has **no closed-form solution** — the general problem is NP-hard (Ramírez Alfonsín 1996). So the honest, provable target is an **upper bound**. This file supplies the one structural ingredient Mathlib is missing: the Frobenius number is **monotone (antitone) in the generating set**. Enlarging the set of generators can only make *more* numbers representable, hence can only *lower* the largest non-representable number. Applied to a coprime pair $\\{m, n\\}$ sitting inside a larger set, Sylvester's formula $g(m, n) = mn - m - n$ becomes a verified upper bound for the whole set.",
@@ -24,7 +27,10 @@
   {
     "id": "ann-frob-oq0101-antitone",
     "proofId": "frobenius-number-oq-01-oq-01",
-    "range": { "startLine": 76, "endLine": 88 },
+    "range": {
+      "startLine": 70,
+      "endLine": 81
+    },
     "type": "theorem",
     "title": "Monotonicity: Adding Generators Never Increases the Frobenius Number",
     "content": "`frobeniusNumber_antitone`: if $s \\subseteq t$, $\\mathrm{FrobeniusNumber}\\,f\\,s$ and $\\mathrm{FrobeniusNumber}\\,g\\,t$, then $g \\le f$. The proof is three lines and purely order-theoretic: (1) `AddSubmonoid.closure_mono` gives $\\langle s\\rangle \\le \\langle t\\rangle$; (2) since $g$ is the Frobenius number of $t$ it is *not* in $\\langle t\\rangle$, hence not in the smaller $\\langle s\\rangle$; (3) $f$ is the **greatest** element not in $\\langle s\\rangle$ — the `IsGreatest` half of Mathlib's definition, `hf.2` — so it dominates $g$. No arithmetic is involved: monotonicity is a consequence of the extremal characterization plus closure monotonicity.",
@@ -44,7 +50,10 @@
   {
     "id": "ann-frob-oq0101-strict",
     "proofId": "frobenius-number-oq-01-oq-01",
-    "range": { "startLine": 90, "endLine": 105 },
+    "range": {
+      "startLine": 82,
+      "endLine": 99
+    },
     "type": "theorem",
     "title": "Strict Decrease When the Old Boundary Value Becomes Representable",
     "content": "`frobeniusNumber_lt_of_mem_closure`: under the same hypotheses, if additionally the old Frobenius value $f$ of $s$ becomes representable in the larger set (i.e. $f \\in \\langle t\\rangle$), then $g < f$ strictly. Proof: monotonicity gives $g \\le f$; equality $g = f$ would make $f$ the Frobenius number of $t$ and therefore **non**-representable in $t$, contradicting $f \\in \\langle t\\rangle$. This theorem quantifies the slack in the bound — it explains *why* the two-generator value is rarely tight once a third generator is present: any added generator that fills the old maximal gap forces a strict drop.",
@@ -63,7 +72,10 @@
   {
     "id": "ann-frob-oq0101-gcd",
     "proofId": "frobenius-number-oq-01-oq-01",
-    "range": { "startLine": 111, "endLine": 124 },
+    "range": {
+      "startLine": 100,
+      "endLine": 109
+    },
     "type": "lemma",
     "title": "A Coprime Pair Forces the Set-GCD to be 1",
     "content": "`setGcd_eq_one_of_coprime`: if $m, n \\in s$ are coprime then $\\mathrm{setGcd}\\,s = 1$. Because $\\mathrm{setGcd}\\,s$ divides every member (`Nat.setGcd_dvd_of_mem`), it divides both $m$ and $n$, hence divides $\\gcd(m, n) = 1$ (`Nat.dvd_gcd`), so it is $1$. This is the existence hook: combined with $1 \\notin s$, Mathlib's `exists_frobeniusNumber_iff` then guarantees the Frobenius number of the whole set exists, so the bound proved downstream is not vacuous.",
@@ -82,7 +94,10 @@
   {
     "id": "ann-frob-oq0101-bound",
     "proofId": "frobenius-number-oq-01-oq-01",
-    "range": { "startLine": 126, "endLine": 152 },
+    "range": {
+      "startLine": 110,
+      "endLine": 138
+    },
     "type": "theorem",
     "title": "Main Bound: Any Set Containing a Coprime Pair Has Frobenius Number ≤ m·n − m − n",
     "content": "`frobeniusNumber_le_pair`: if $m, n \\in s$ are coprime with $m, n > 1$ and $1 \\notin s$, then $s$ has a Frobenius number $g$ with $g \\le mn - m - n$. The proof assembles the pieces: `setGcd_eq_one_of_coprime` + `exists_frobeniusNumber_iff` produce the Frobenius number $g$; `frobeniusNumber_pair` gives Sylvester's value on $\\{m, n\\}$; and `frobeniusNumber_antitone` applied to $\\{m, n\\} \\subseteq s$ delivers the bound. This is the elementary upper bound for the general (n ≥ 3) Frobenius problem: the two-generator formula on any coprime pair inside the set.",
@@ -103,7 +118,10 @@
   {
     "id": "ann-frob-oq0101-triple",
     "proofId": "frobenius-number-oq-01-oq-01",
-    "range": { "startLine": 154, "endLine": 178 },
+    "range": {
+      "startLine": 139,
+      "endLine": 178
+    },
     "type": "theorem",
     "title": "Explicit Three-Generator Bound and its Strict Case",
     "content": "`frobeniusNumber_triple_le`: for coprime $m, n > 1$ and any $k > 1$, the set $\\{m, n, k\\}$ has Frobenius number $g \\le mn - m - n$ — directly answering the 'three or more generators' open question with a computable bound. `frobeniusNumber_triple_strict`: when $k = mn - m - n$ (which exceeds 1 for coprime $m, n \\ge 3$, e.g. $\\{3, 5\\} \\to 7$), the added generator equals the old maximal gap, so the strictness theorem gives $g < mn - m - n$. Together these show the two-generator formula is a genuine but non-tight *upper* bound for three generators, exactly matching the known mathematical status: no closed form exists for $n \\ge 3$, only bounds.",
