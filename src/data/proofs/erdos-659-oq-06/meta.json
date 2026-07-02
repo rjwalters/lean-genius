@@ -1,0 +1,112 @@
+{
+  "id": "erdos-659-oq-06",
+  "title": "Erdős #659 OQ: Euclidean Realizations of Two-Distance 4-Point Configurations",
+  "slug": "erdos-659-oq-06",
+  "description": "Erdős #659 concerns planar point sets with few distinct distances; its classification skeleton is the family of four-point two-distance sets (configurations realizing exactly two distinct pairwise distances). The parent formalization Erdos659Problem.lean enumerates the six such configurations abstractly as the inductive type TwoDistanceConfig but leaves three of them as `True` placeholders, and — because it measures distance with Mathlib's default Chebyshev (ℓ∞) metric on ℝ×ℝ — even the unit square degenerates there to a single distance. This entry supplies the missing concrete, machine-checked (0-axiom, 0-sorry) Euclidean side: an honest ℓ² squared-distance sqDist, the predicate IsTwoDistance4, and explicit realizations proving the unit square (spectrum {1,2}) and the 60° rhombus (spectrum {1,3}) ARE two-distance sets while a non-square 1×2 rectangle (spectrum {1,4,5}) is NOT.",
+  "meta": {
+    "author": "Classical (two-distance sets); formalization by researcher-7",
+    "sourceUrl": "https://erdosproblems.com/659",
+    "date": "2026",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/Erdos659OQ06.lean",
+    "tags": [
+      "erdos",
+      "distance-problems",
+      "two-distance-sets",
+      "four-point-property",
+      "euclidean-geometry",
+      "discrete-geometry",
+      "open-question"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Every result is machine-checked with 0 axioms and 0 sorries (depends only on the foundational propext/Classical.choice/Quot.sound). NOTE: this entry does NOT close Erdős #659; it verifies the concrete Euclidean two-distance realizations underlying the classification and fixes a metric mismatch in the parent formalization. The full six-configuration classification theorem and the Moree–Osburn density statement remain open.",
+    "erdosNumber": 659,
+    "erdosUrl": "https://erdosproblems.com/659",
+    "originalContributions": [
+      "sqDist p q = (p.1-q.1)²+(p.2-q.2)²: the honest Euclidean (ℓ²) squared distance on ℝ×ℝ, distinct from Mathlib's default Chebyshev dist",
+      "sqDist metric lemmas: nonneg, symm, self=0, and eq_zero_iff (positive-definiteness) — a genuine (squared) metric",
+      "IsTwoDistance4: predicate that four points realize exactly two distinct pairwise squared distances (card of the spectrum = 2)",
+      "unitSquare_spectrum / unitSquare_isTwoDistance: the unit square has squared-distance spectrum exactly {1,2} and is a two-distance set (realizes TwoDistanceConfig.square)",
+      "rhombus60_spectrum / rhombus60_isTwoDistance: the 60° rhombus (two equilateral triangles) has spectrum {1,3}; the √3 coordinates cancel to a rational spectrum (realizes TwoDistanceConfig.rhombus)",
+      "rectangle_spectrum / rectangle_not_isTwoDistance: a non-square 1×2 rectangle has spectrum {1,4,5} (three distances), so the predicate genuinely discriminates",
+      "two_distance_examples: packaged summary — square and rhombus are two-distance sets, rectangle is not"
+    ],
+    "lineCount": 199,
+    "theoremCount": 10,
+    "definitionCount": 15
+  },
+  "overview": {
+    "historicalContext": "A two-distance set is a set of points realizing only two distinct pairwise distances; the study of such sets goes back to work of Kelly, and Einhorn–Schoenberg (1966) classified all planar two-distance sets, finding that the maximum size in the plane is 5 (the regular pentagon) and enumerating the four-point cases. Erdős problem #659 (Moree–Osburn, 2006) is a refinement of Erdős's distinct-distances problem in which every four-point subset is forced to determine at least three distances — i.e. no four points may form a two-distance set — while the whole configuration still realizes only O(n/√log n) distinct distances. Understanding which four-point configurations ARE two-distance sets is therefore exactly the local obstruction the construction must avoid. Up to similarity there are six four-point two-distance sets: the square, the 60° rhombus (two glued equilateral triangles), two isosceles trapezoids, a kite, and four vertices of a regular pentagon.",
+    "problemStatement": "The parent gallery formalization Erdos659Problem.lean introduces the inductive type TwoDistanceConfig naming the six four-point two-distance configurations, but (a) leaves three of them (isoTrap1, isoTrap2, kite) as `True` placeholders rather than genuine geometric predicates, and (b) measures pairwise distance with Mathlib's default `dist` on ℝ×ℝ, which is the Chebyshev (ℓ∞) product metric — under which the unit square {(0,0),(1,0),(0,1),(1,1)} has all six pairwise distances equal to 1, a single distance rather than two. This entry asks: give a concrete, axiom-free Euclidean treatment that correctly certifies specific configurations as two-distance sets (or not).",
+    "proofStrategy": "Work with the honest Euclidean squared distance sqDist(p,q) = (p₁−q₁)² + (p₂−q₂)² on ℝ×ℝ, and reason about SQUARED distances so every spectrum stays rational (even for the √3 rhombus). (1) Establish sqDist's metric properties, including positive-definiteness sqDist p q = 0 ↔ p = q, via sq_nonneg + pow_eq_zero_iff. (2) Define the spectrum sqDistSet4 a b c d as the finite set of the six unordered pairwise squared distances, and IsTwoDistance4 := card of the spectrum is 2. (3) For each named configuration, compute the six pairwise squared distances by norm_num (rational coordinates) or by linear_combination against (√3)²=3 (the rhombus), then prove the spectrum equals an explicit 2- or 3-element set by Finset.ext. (4) Read off cardinality with Finset.card_insert_of_notMem. The square gives {1,2}, the 60° rhombus {1,3}, and the 1×2 rectangle {1,4,5} — the last showing IsTwoDistance4 fails, so the predicate is discriminating.",
+    "keyInsights": [
+      "The metric matters: the parent file's use of Mathlib's default ℓ∞ product metric on ℝ×ℝ makes the unit square a ONE-distance set (all pairwise dist = 1), as that file's own docstring admits; the genuine two-distance structure only appears under the Euclidean ℓ² metric that this entry uses.",
+      "Reasoning about squared distances instead of distances keeps every spectrum rational: the 60° rhombus needs √3 coordinates, yet all six squared distances are integers (1 or 3), so the classification is decided by norm_num / linear_combination rather than by manipulating surds.",
+      "IsTwoDistance4 is genuinely discriminating: the 1×2 rectangle, which looks superficially like a square, has three distinct squared distances {1,4,5}, so the predicate rejects it — the verification is not vacuous.",
+      "These configurations are exactly the local patterns Erdős #659 forbids: a construction with the four-point property must avoid every four-point two-distance set, so concretely certifying which quadruples are two-distance sets pins down the obstruction the O(n/√log n) construction is engineered around."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Scope and the metric subtlety",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Docstring framing: the four-point two-distance classification underlying Erdős #659, and the fix for the parent file's Chebyshev-vs-Euclidean metric mismatch (why the unit square degenerates under Mathlib's default dist)."
+    },
+    {
+      "id": "sqdist",
+      "title": "Euclidean squared distance and its metric properties",
+      "startLine": 54,
+      "endLine": 80,
+      "summary": "Defines sqDist = (Δx)²+(Δy)² and proves nonnegativity, symmetry, self-distance 0, and positive-definiteness sqDist p q = 0 ↔ p = q."
+    },
+    {
+      "id": "predicate",
+      "title": "Spectrum and the two-distance predicate",
+      "startLine": 82,
+      "endLine": 89,
+      "summary": "sqDistSet4 collects the six unordered pairwise squared distances of four points; IsTwoDistance4 asserts the spectrum has exactly two elements."
+    },
+    {
+      "id": "square",
+      "title": "The unit square (spectrum {1,2})",
+      "startLine": 91,
+      "endLine": 118,
+      "summary": "Computes the square's six pairwise squared distances (four sides 1, two diagonals 2) and proves it is a two-distance set — realizing TwoDistanceConfig.square."
+    },
+    {
+      "id": "rhombus",
+      "title": "The 60° rhombus (spectrum {1,3})",
+      "startLine": 120,
+      "endLine": 156,
+      "summary": "Two equilateral triangles glued on an edge; the √3 coordinates cancel so all six squared distances are 1 or 3, giving a two-distance set — realizing TwoDistanceConfig.rhombus."
+    },
+    {
+      "id": "rectangle",
+      "title": "A non-square rectangle (spectrum {1,4,5})",
+      "startLine": 158,
+      "endLine": 189,
+      "summary": "The 1×2 rectangle has three distinct squared distances, so IsTwoDistance4 fails — demonstrating the predicate genuinely discriminates."
+    },
+    {
+      "id": "summary",
+      "title": "Packaged examples",
+      "startLine": 191,
+      "endLine": 199,
+      "summary": "two_distance_examples bundles the three results: square and rhombus are two-distance sets, the rectangle is not."
+    }
+  ],
+  "relatedProblems": [
+    {
+      "slug": "erdos-659",
+      "relationship": "Parent problem: this entry supplies concrete Euclidean realizations for the abstract TwoDistanceConfig classification in Erdos659Problem.lean."
+    },
+    {
+      "slug": "erdos-659-oq-05",
+      "relationship": "Sibling: oq-05 studies the arithmetic (x²+2y² norm form) of the Moree–Osburn distance spectrum; this entry studies the geometry of individual two-distance configurations."
+    }
+  ]
+}
