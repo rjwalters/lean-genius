@@ -1,8 +1,8 @@
 {
   "slug": "van-aubel-theorem-oq-01",
   "title": "van Aubel's theorem: equal perpendicular diagonals of square centers",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-06-16T12:40:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Build-verified: proof compiles clean in Docker (Mathlib 4.x), 0 sorry / 0 axiom, 3 theorems. van Aubel's key identity R-P = i*(S-Q) yields equal + perpendicular diagonals.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Done — entry is verified/original, no open work.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,9 +31,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "COMPLETED & BUILD-VERIFIED. The complex-number formalization (shipped build-pending in #24989) compiles clean in Docker: 0 sorry, 0 axiom, 3 theorems. squareCenter u v = (u+v)/2 + I*(v-u)/2; the single ring identity vanAubel_key : R-P = I*(S-Q) gives both equal-length (norm_mul + norm_I) and perpendicular (mul_conj, real part 0) diagonals.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The entire theorem collapses to one linear_combination over C using Complex.I_sq (I^2=-1); erecting squares via the +90 rotation i*(v-u) makes R-P = i*(S-Q) an exact algebraic identity, so equal length and perpendicularity are both free.",
+      "Perpendicularity is cleanly encoded as ((R-P) * conj(S-Q)).re = 0 (vanishing Euclidean inner product), discharged by Complex.mul_conj + the real part of a purely-imaginary number.",
+      "Confirmed the build-pending entry (#24989) is genuinely verified in Docker under current Mathlib; also removed an unused simp argument (Complex.I_mul_re) flagged by the unusedSimpArgs linter."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: van-aubel-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -54,7 +58,7 @@
     "mathlib": []
   },
   "started": "2026-06-16T18:50:58.853Z",
-  "lastUpdate": "2026-06-16T18:50:58.935Z",
+  "lastUpdate": "2026-07-02T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -65,7 +69,7 @@
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanAubelTheoremOQ01.lean"
     }

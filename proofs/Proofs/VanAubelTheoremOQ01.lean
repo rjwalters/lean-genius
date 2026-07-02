@@ -60,6 +60,6 @@ theorem vanAubel_perp_diagonals (a b c d : ℂ) :
     ((squareCenter c d - squareCenter a b) *
         conj (squareCenter d a - squareCenter b c)).re = 0 := by
   rw [vanAubel_key, mul_assoc, Complex.mul_conj]
-  simp [Complex.I_mul_re, Complex.ofReal_im]
+  simp [Complex.ofReal_im]
 
 end VanAubelTheoremOQ01
