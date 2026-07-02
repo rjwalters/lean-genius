@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-scope",
+    "proofId": "newton-inductive-step-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 57 },
+    "type": "info",
+    "title": "What This Entry Proves and How It Answers OQ1",
+    "content": "The parent (newton-inductive-step-oq-02) formalized log-concavity of the elementary symmetric means, ēₖ² ≥ ēₖ₋₁·ēₖ₊₁ (Newton's inequality), but proved only the first Maclaurin step ē₁² ≥ ē₂. Its OQ1 asked for the full chain ē₁ ≥ ē₂^{1/2} ≥ ⋯ ≥ ēₙ^{1/n}. This file supplies the missing implication in maximal generality: for ANY strictly positive sequence a₀,…,a_N with a₀ = 1 that is log-concave, it derives aₖ^{k+1} ≥ a_{k+1}^k and hence a_{k+1}^{1/(k+1)} ≤ aₖ^{1/k}. Setting aₖ = ēₖ recovers Maclaurin's inequality: the hypothesis a₀ = 1 is e₀/C(n,0) = 1, positivity holds for xᵢ > 0, and the log-concavity hypothesis is exactly Newton's inequality. The result imports only Mathlib, so it is verified independently (0 axioms: only propext, Classical.choice, Quot.sound)."
+  },
+  {
+    "id": "ann-ratio-def",
+    "proofId": "newton-inductive-step-oq-02-oq-02",
+    "range": { "startLine": 58, "endLine": 89 },
+    "type": "insight",
+    "title": "Ratios and the Product Representation aₖ = ∏ rⱼ",
+    "content": "The whole proof pivots on the consecutive ratios rⱼ = aⱼ₊₁/aⱼ. `prod_eq` shows by induction that aₘ = ∏_{j<m} rⱼ: `Finset.prod_range_succ` peels the last factor, the inductive hypothesis rewrites the shorter product back to aₚ, and `mul_div_cancel₀ (a (p+1)) hap` collapses aₚ·(aₚ₊₁/aₚ) = aₚ₊₁. The base case is exactly the normalization a₀ = 1 — this is the one place the hypothesis a₀ = 1 is used, and it is what makes the telescoping product equal the sequence value."
+  },
+  {
+    "id": "ann-monotone-ratios",
+    "proofId": "newton-inductive-step-oq-02-oq-02",
+    "range": { "startLine": 90, "endLine": 112 },
+    "type": "insight",
+    "title": "Log-Concavity ⟺ Non-Increasing Ratios",
+    "content": "This is the conceptual core. `hstep` takes the log-concavity hypothesis aⱼ₊₁² ≥ aⱼ·aⱼ₊₂ and, after `div_le_div_iff₀` cross-multiplies the target rⱼ₊₁ = aⱼ₊₂/aⱼ₊₁ ≤ aⱼ₊₁/aⱼ = rⱼ, closes it with `nlinarith`. So log-concavity is EXACTLY the statement that consecutive ratios do not increase. `hmono` then chains single steps by induction on the gap d to give rⱼ₊d ≤ rⱼ throughout the range — the monotonicity that powers the key bound."
+  },
+  {
+    "id": "ann-cleared",
+    "proofId": "newton-inductive-step-oq-02-oq-02",
+    "range": { "startLine": 113, "endLine": 143 },
+    "type": "highlight",
+    "title": "The Denominator-Free Heart: aₖ ≥ rₖ^k ⟹ aₖ^{k+1} ≥ a_{k+1}^k",
+    "content": "`key` combines the two previous parts: in the product aₖ = ∏_{j<k} rⱼ every factor rⱼ (with j < k) is ≥ rₖ by monotonicity, so `Finset.prod_le_prod` gives aₖ ≥ rₖ^k. The finish is pure algebra: multiply by aₖ^k > 0 and substitute aₖ₊₁ = aₖ·rₖ to obtain aₖ^{k+1} ≥ aₖ^k·rₖ^k = a_{k+1}^k. Note that `maclaurin_of_logConcave` uses ONLY integer exponents and ordered-field arithmetic — no real powers anywhere. That is the payoff of the cleared-denominator formulation: the substantive inequality is entirely elementary."
+  },
+  {
+    "id": "ann-rpow",
+    "proofId": "newton-inductive-step-oq-02-oq-02",
+    "range": { "startLine": 144, "endLine": 172 },
+    "type": "info",
+    "title": "Upgrading to the Radical Form aₖ^{1/k}",
+    "content": "`maclaurin_of_logConcave_rpow` converts the integer-power inequality a_{k+1}^k ≤ aₖ^{k+1} into the classical root form. Raising both sides to z = 1/(k(k+1)) ≥ 0 by `Real.rpow_le_rpow` is monotone; then `Real.rpow_natCast` reinterprets the natural-number powers as real powers and `Real.rpow_mul` collapses the nested exponents: (a_{k+1}^k)^z = a_{k+1}^{k·z} = a_{k+1}^{1/(k+1)} and (aₖ^{k+1})^z = aₖ^{1/k}. The two exponent identities k·z = 1/(k+1) and (k+1)·z = 1/k are discharged by `field_simp`. This is the only step that touches Mathlib's `Real.rpow`, and it is purely cosmetic — the mathematics was already settled by the cleared form."
+  }
+]
