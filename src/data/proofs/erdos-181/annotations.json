@@ -1,10 +1,30 @@
 [
   {
+    "id": "erdos181-overview",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Erdős Problem #181: The Ramsey Number of the Hypercube",
+    "content": "Erdős Problem #181 (OPEN) asks whether the 2-colour Ramsey number of the $n$-dimensional hypercube grows only linearly in its vertex count: $R(Q_n)\\ll 2^n$. Here $Q_n$ has $2^n$ vertices (binary strings of length $n$) with edges between strings differing in one bit. The trivial lower bound is $R(Q_n)\\ge 2^n$; the Burr–Erdős conjecture predicts a matching $R(Q_n)\\le C\\cdot 2^n$; the best known upper bound is Tikhomirov's (2022) $R(Q_n)\\le C\\cdot 2^{(2-c)n}$ with $c\\approx 0.0366$. This file formalizes the hypercube graph, the Ramsey number, the conjecture and known bounds (as axioms), and — importantly — proves a large body of *unconditional* structural results (pigeonhole embedding obstruction, monotonicity, $R(Q_0)=1$, and the conditional lower bound) directly from the definition. The Erdős–Sós question of whether $R(Q_n)/2^n\\to\\infty$ remains open.",
+    "mathContext": "$2^n \\le R(Q_n) \\le C\\cdot 2^{(2-c)n}$; \\quad conjecture: $R(Q_n)\\le C\\cdot 2^n$",
+    "significance": "central",
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "hypercube graph $Q_n$",
+      "Burr–Erdős conjecture",
+      "Tikhomirov 2022 bound",
+      "Erdős–Sós question"
+    ]
+  },
+  {
     "id": "ann-e181-hypercube-adj",
     "proofId": "erdos-181",
     "range": {
       "startLine": 43,
-      "endLine": 44
+      "endLine": 45
     },
     "type": "definition",
     "title": "Hypercube Adjacency",
@@ -30,7 +50,7 @@
     "proofId": "erdos-181",
     "range": {
       "startLine": 47,
-      "endLine": 56
+      "endLine": 57
     },
     "type": "concept",
     "title": "Symmetry and Irreflexivity of Q_n",
@@ -54,7 +74,7 @@
     "proofId": "erdos-181",
     "range": {
       "startLine": 59,
-      "endLine": 71
+      "endLine": 72
     },
     "type": "concept",
     "title": "Vertex and Edge Counts",
@@ -76,8 +96,8 @@
     "id": "ann-e181-ramsey-def",
     "proofId": "erdos-181",
     "range": {
-      "startLine": 79,
-      "endLine": 83
+      "startLine": 78,
+      "endLine": 84
     },
     "type": "definition",
     "title": "Ramsey Number R(Q_n)",
@@ -102,8 +122,8 @@
     "id": "ann-e181-base-case",
     "proofId": "erdos-181",
     "range": {
-      "startLine": 88,
-      "endLine": 97
+      "startLine": 86,
+      "endLine": 98
     },
     "type": "concept",
     "title": "Base Case: R(Q_0) ≤ 1",
@@ -126,8 +146,8 @@
     "id": "ann-e181-conjecture",
     "proofId": "erdos-181",
     "range": {
-      "startLine": 111,
-      "endLine": 112
+      "startLine": 104,
+      "endLine": 113
     },
     "type": "concept",
     "title": "Burr-Erdős Conjecture for Hypercubes",
@@ -149,12 +169,12 @@
     "id": "ann-e181-tikhomirov",
     "proofId": "erdos-181",
     "range": {
-      "startLine": 132,
-      "endLine": 134
+      "startLine": 115,
+      "endLine": 136
     },
     "type": "concept",
     "title": "Tikhomirov's Best Upper Bound (2022)",
-    "content": "**tikhomirov_2022**: The current best upper bound $R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for constants $C > 0$ and $c > 0$ (with $c \\approx 0.0366$ permissible). This is subquadratic in the vertex count $2^n$ (since the exponent $2-c < 2$) but still superlinear, leaving an exponent gap of $\\approx 0.964$ with the conjectured linear bound. The proof uses the regularity method and probabilistic embedding techniques.",
+    "content": "**tikhomirov_2022** (axiom): the current best upper bound $R(Q_n)\\le C\\cdot 2^{(2-c)n}$ for constants $C,c>0$ (with $c\\approx 0.0366$ permissible, arXiv:2208.14568). This is subquadratic in the vertex count $2^n$ — the exponent $2-c<2$ — but still exponential in $n$, and far from the conjectured exponent $1$. This block also introduces the helper lemma **nat_lt_two_pow** ($n<2^n$, by induction), used later to convert exponent bounds of the form $D^{n+1}$ into $D^{2^n}$.",
     "mathContext": "$R(Q_n) \\leq C \\cdot 2^{(2-c)n}$ for $c \\approx 0.0366$, so $R(Q_n) = O((2^n)^{2-c})$",
     "significance": "key",
     "relatedConcepts": [
@@ -169,11 +189,30 @@
     ]
   },
   {
+    "id": "erdos181-trivial-upper",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 138,
+      "endLine": 184
+    },
+    "type": "theorem",
+    "title": "Trivial Upper Bound R(Q_n) ≤ C^{2^n}, Proved from Tikhomirov",
+    "content": "`trivial_upper_bound` proves $R(Q_n)\\le C^{2^n}$ for some $C>1$ — the exponential-in-vertex-count ceiling from viewing $Q_n\\subseteq K_{2^n}$. Rather than assume it, the file *derives* it from `tikhomirov_2022` via the explicit chain, with $D=\\max(C_0+1,4)$: $R(Q_n)\\le C_0\\,2^{(2-c)n}\\le C_0\\,2^{2n}=C_0\\,4^n\\le D\\cdot D^n = D^{n+1}\\le D^{2^n}$. Each step is a named Lean move: `rpow_le_rpow_of_exponent_le` for $(2-c)n\\le 2n$, `rpow_natCast`/`pow_mul` to turn $2^{2n}$ into $4^n$, `gcongr` for $4^n\\le D^n$, and `nat_lt_two_pow` for the final $n+1\\le 2^n$. A clean example of pinning a qualitative 'exponential' statement to a fully quantitative rpow computation.",
+    "mathContext": "$R(Q_n)\\le C_0\\,2^{(2-c)n}\\le C_0\\,4^n\\le D^{n+1}\\le D^{2^n}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rpow monotonicity (rpow_le_rpow_of_exponent_le)",
+      "gcongr",
+      "nat_lt_two_pow helper",
+      "exponential Ramsey ceiling"
+    ]
+  },
+  {
     "id": "ann-e181-lower-bound",
     "proofId": "erdos-181",
     "range": {
-      "startLine": 143,
-      "endLine": 144
+      "startLine": 186,
+      "endLine": 194
     },
     "type": "concept",
     "title": "Trivial Lower Bound",
@@ -194,8 +233,8 @@
     "id": "ann-e181-lee-context",
     "proofId": "erdos-181",
     "range": {
-      "startLine": 158,
-      "endLine": 160
+      "startLine": 200,
+      "endLine": 211
     },
     "type": "concept",
     "title": "Lee's Bounded-Degree Result (2017)",
@@ -214,15 +253,32 @@
     ]
   },
   {
+    "id": "erdos181-erdos-sos",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 213,
+      "endLine": 238
+    },
+    "type": "theorem",
+    "title": "The Erdős–Sós Question and Conjecture ⇒ Bounded Ratio",
+    "content": "The Erdős–Sós question asks whether $R(Q_n)/2^n\\to\\infty$. `conjecture_implies_bounded_ratio` proves the logical link: if the Burr–Erdős conjecture holds ($R(Q_n)\\le C\\,2^n$), then $R(Q_n)/2^n\\le C$ is bounded — so a positive answer to Erdős–Sós would refute the conjecture. The proof is a one-line `div_le_iff` rearrangement of the conjecture's bound. Current Tikhomirov bounds only give $R(Q_n)/2^n\\le C\\,2^{(1-c)n}$, which still diverges, leaving the question genuinely open.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős–Sós question",
+      "div_le_iff rearrangement",
+      "boundedness vs. divergence of $R(Q_n)/2^n$"
+    ]
+  },
+  {
     "id": "ann-e181-bound-gap",
     "proofId": "erdos-181",
     "range": {
-      "startLine": 190,
-      "endLine": 194
+      "startLine": 240,
+      "endLine": 257
     },
-    "type": "concept",
+    "type": "theorem",
     "title": "Bound Gap Illustration",
-    "content": "**bound_gap_description**: Proves $2^n \\leq 2^{2n}$ for all $n$, illustrating the exponent gap between the lower bound (exponent 1) and the trivial quadratic upper bound (exponent 2). The actual gap is between exponent 1 (conjectured) and exponent $2-c \\approx 1.964$ (Tikhomirov). Proved via `Nat.pow_le_pow_right` and `omega`.",
+    "content": "**bound_gap_description** proves the elementary fact $2^n\\le 2^{2n}$ for all $n$ (via `Nat.pow_le_pow_right`), illustrating the exponent gap the problem is about: the lower bound sits at exponent $1$ ($2^n$), the conjecture at exponent $1$, while the best proven upper bound sits at exponent $2-c\\approx 1.964$. Closing the gap down to exponent $1$ is exactly what would resolve Erdős #181.",
     "mathContext": "$2^n \\leq 2^{2n}$, illustrating gap between exponents 1 and 2",
     "significance": "supporting",
     "relatedConcepts": [
@@ -232,6 +288,61 @@
     ],
     "prerequisites": [
       "Nat.pow_le_pow_right"
+    ]
+  },
+  {
+    "id": "erdos181-structural",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 259,
+      "endLine": 310
+    },
+    "type": "technique",
+    "title": "Unconditional Structural Lemmas: Pigeonhole, Monotonicity, Conditional Lower Bound",
+    "content": "Part VI proves — with no axioms — the combinatorial backbone of $R(Q_n)$. `no_embedding_small`: if $N<2^n$ there is no injection $\\mathrm{Fin}(2^n)\\hookrightarrow\\mathrm{Fin}(N)$ (`Fintype.card_le_of_injective` + `omega`), the pigeonhole obstruction forcing $R(Q_n)\\ge 2^n$. `ramsey_property_mono`: the Ramsey property is upward monotone in the host size — restrict a colouring of $K_M$ to the first $N$ vertices via `Fin.castLE` and lift the embedding back (`Fin.castLE_injective`). `lower_bound_conditional`: whenever the Ramsey set is non-empty, $R(Q_n)\\ge 2^n$, obtained by `le_csInf` and applying the pigeonhole lemma to the all-zero colouring. Together these turn the axiomatic `lower_bound` into a genuinely proved fact under a mild non-emptiness hypothesis.",
+    "mathContext": "$N<2^n \\Rightarrow \\nexists\\, \\mathrm{Fin}(2^n)\\hookrightarrow \\mathrm{Fin}(N)$",
+    "significance": "central",
+    "relatedConcepts": [
+      "pigeonhole (Fintype.card_le_of_injective)",
+      "monotonicity via Fin.castLE",
+      "le_csInf and sInf lower bounds",
+      "conditional lower bound"
+    ]
+  },
+  {
+    "id": "erdos181-zero-eq",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 312,
+      "endLine": 331
+    },
+    "type": "theorem",
+    "title": "Exact Base Value R(Q_0) = 1",
+    "content": "`ramseyNumber_zero_eq` upgrades the earlier one-sided bound to the exact value $R(Q_0)=1$. The upper bound is `ramseyNumber_zero_bound`; the matching lower bound uses `le_csInf` with an explicit non-emptiness witness ($N=1$ satisfies the Ramsey property for the edgeless single-vertex $Q_0$) and the pigeonhole lemma `no_embedding_small` to rule out $N=0$. This is the one hypercube dimension where the Ramsey number is pinned down completely.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "le_antisymm",
+      "le_csInf with witness",
+      "no_embedding_small",
+      "edgeless base case"
+    ]
+  },
+  {
+    "id": "erdos181-corollaries",
+    "proofId": "erdos-181",
+    "range": {
+      "startLine": 333,
+      "endLine": 383
+    },
+    "type": "theorem",
+    "title": "Corollaries of the Conjecture and Tikhomirov Bound",
+    "content": "The closing block records the logical consequences. `conjecture_implies_ratio_bounded`: the conjecture bounds $R(Q_n)/2^n$ for $n\\ge 1$. `tikhomirov_subquadratic`: Tikhomirov's bound rewrites as $R(Q_n)\\le C(2^n)^{2-c}$, i.e. subquadratic in the vertex count, via `Real.rpow_mul` to move the exponent inside. `conjecture_contradicts_divergence`: the conjecture is logically incompatible with $R(Q_n)/2^n\\to\\infty$ (instantiate the divergence at $M=C+1$ and derive a contradiction with `div_gt_iff`). Finally `erdos_181` restates the main conjecture as the file's headline result, discharged by the `erdos_181_conjecture` axiom. These make explicit how the single open conjecture controls every asymptotic question in the file.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.rpow_mul",
+      "div_gt_iff / div_le_iff",
+      "subquadratic growth",
+      "logical dependence on the conjecture"
     ]
   }
 ]
