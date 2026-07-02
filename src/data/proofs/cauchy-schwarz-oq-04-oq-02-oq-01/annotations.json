@@ -90,25 +90,69 @@
     ]
   },
   {
-    "id": "csoq040201-reconcile",
+    "id": "csoq040201-mathlib-agreement",
     "proofId": "cauchy-schwarz-oq-04-oq-02-oq-01",
     "range": {
       "startLine": 192,
-      "endLine": 236
+      "endLine": 205
     },
     "type": "concept",
-    "title": "Agreement with Mathlib's Bessel, the Parent Case, and Monotonicity",
-    "content": "The closing section situates the result. `bessel_sum_eq_mathlib_sum` and `bessel_inequality_eq_mathlib` show our coefficient sum `∑ ⟪e i, u⟫²` equals Mathlib's `∑ ‖⟪e i, u⟫‖²` (since `|r|² = r²` over ℝ), certifying that `bessel_inequality` and Mathlib's `Orthonormal.sum_inner_products_le` bound the identical quantity.\n\n`bessel_singleton` and `besselSum_singleton` collapse `s = {j}` to the parent's one-term rank-one projection `⟪e j, u⟫ • e j` and bound `⟪e j, u⟫² ≤ ‖u‖²`. `besselSum_empty` records the empty-family base case (projection `0`, Bessel `0 ≤ ‖u‖²`), and `bessel_sum_mono` gives finite monotonicity `∑_{s} ≤ ∑_{t}` for `s ⊆ t` — the step that drives the passage to the infinite Bessel sum `∑' i, ⟪e i, u⟫² ≤ ‖u‖²`.",
-    "mathContext": "The finite Bessel sums form a monotone net indexed by finite $s$, bounded above by $\\|u\\|^2$; their supremum is $\\sum_i \\langle e_i,u\\rangle^2$, giving the countable Bessel inequality and, for a complete orthonormal basis, Parseval's identity.",
+    "title": "Agreement with Mathlib's Bessel Inequality",
+    "content": "The first reconciliation step certifies that this entry's hand-built projection route bounds exactly the quantity Mathlib's library lemma does. `bessel_sum_eq_mathlib_sum` proves `∑ i ∈ s, ⟪e i, u⟫² = ∑ i ∈ s, ‖⟪e i, u⟫‖²`: over ℝ the inner product is a real number, so `Real.norm_eq_abs` and `sq_abs` turn each `‖r‖²` into `r²` termwise (`Finset.sum_congr`).\n\n`bessel_inequality_eq_mathlib` then rewrites through that identity and applies `bessel_inequality` to state the bound in Mathlib's own shape `∑ i ∈ s, ‖⟪e i, u⟫‖² ≤ ‖u‖²` — the exact left-hand side of `Orthonormal.sum_inner_products_le`. The two Bessel statements therefore coincide, one proved by orthogonal projection here, the other by Mathlib's direct expansion.",
+    "mathContext": "Over $\\mathbb{R}$, $\\|r\\|^2 = |r|^2 = r^2$, so $\\sum_{i\\in s}\\langle e_i,u\\rangle^2 = \\sum_{i\\in s}\\|\\langle e_i,u\\rangle\\|^2$. Hence the projection-derived bound equals Mathlib's `Orthonormal.sum_inner_products_le`.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Parseval identity",
+      "Bessel inequality",
+      "real inner product",
+      "library interoperability"
+    ],
+    "prerequisites": [
+      "real norm equals absolute value"
+    ]
+  },
+  {
+    "id": "csoq040201-singleton",
+    "proofId": "cauchy-schwarz-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 207,
+      "endLine": 220
+    },
+    "type": "concept",
+    "title": "The Parent Singleton Case: One-Term Rank-One Projection",
+    "content": "These two lemmas recover the parent and grandparent entries as the `s = {j}` specialisation. `bessel_singleton` collapses Bessel over a one-element index set to `⟪e j, u⟫² ≤ ‖u‖²` — precisely the parent entry's one-line Cauchy–Schwarz bound for the unit vector `e j` — obtained as a `simpa` on `bessel_inequality hv {j} u`.\n\n`besselSum_singleton` shows the summed projection over `{j}` reduces to the single rank-one projection `⟪e j, u⟫ • e j`, matching the grandparent's `proj u (e j)` (with unit generator, so the coefficient is simply `⟪e j, u⟫`). So the family projection of this entry genuinely restricts to the line projection of its ancestors.",
+    "mathContext": "For $s=\\{j\\}$: $P_{\\{j\\}}u = \\langle e_j,u\\rangle\\, e_j$ and Bessel becomes $\\langle e_j,u\\rangle^2 \\le \\|u\\|^2$, the single-vector Cauchy–Schwarz bound of the parent entry.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rank-one projection",
+      "Cauchy–Schwarz inequality",
+      "specialization"
+    ],
+    "prerequisites": [
+      "orthonormality",
+      "inner product bound"
+    ]
+  },
+  {
+    "id": "csoq040201-mono",
+    "proofId": "cauchy-schwarz-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 225,
+      "endLine": 234
+    },
+    "type": "key-insight",
+    "title": "Empty Family and Monotonicity toward the Infinite Bessel Sum",
+    "content": "Part VI supplies the base case and the monotonicity step that lift the finite result to the countable one. `besselSum_empty` records that projecting over `∅` gives `0`, so Bessel degenerates to the trivial `0 ≤ ‖u‖²`.\n\n`bessel_sum_mono` proves that enlarging the finite index set never decreases the coefficient sum: for `s ⊆ t`, `∑_{s} ⟪e i, u⟫² ≤ ∑_{t} ⟪e i, u⟫²`, since each newly included term `⟪e i, u⟫²` is nonnegative (`Finset.sum_le_sum_of_subset_of_nonneg` with `sq_nonneg`). The finite Bessel sums thus form a monotone net bounded above by `‖u‖²`; passing to the supremum over finite `s` yields the countable Bessel inequality `∑' i, ⟪e i, u⟫² ≤ ‖u‖²`, which becomes Parseval's identity when the orthonormal family is a complete basis.",
+    "mathContext": "The finite Bessel sums $s \\mapsto \\sum_{i\\in s}\\langle e_i,u\\rangle^2$ form a monotone net bounded by $\\|u\\|^2$; its supremum $\\sum_i' \\langle e_i,u\\rangle^2 \\le \\|u\\|^2$ is the countable Bessel inequality, with equality (Parseval) for a complete basis.",
+    "significance": "key-insight",
+    "relatedConcepts": [
       "monotone convergence",
-      "orthonormal basis"
+      "Parseval identity",
+      "orthonormal basis",
+      "infinite Bessel sum"
     ],
     "prerequisites": [
       "finite sums",
-      "real norm equals absolute value"
+      "supremum of a monotone net"
     ]
   }
 ]
