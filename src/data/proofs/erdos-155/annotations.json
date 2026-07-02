@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-155-ann-overview",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Overview: Slow growth of maximum Sidon subsets",
+    "content": "Erdős Problem #155 concerns $F(N)$, the size of the largest Sidon ($B_2$) subset of $\\{1,\\ldots,N\\}$ — a set whose pairwise sums are all distinct. Erdős–Turán (1941) showed $F(N)\\sim\\sqrt N$, but the fine growth is poorly understood. The problem asks: for every fixed $k\\ge 1$, is $F(N+k)\\le F(N)+1$ for all large $N$? A stronger form allows $k \\approx \\varepsilon\\sqrt N$, i.e. $F$ increases by at most $1$ over intervals of length $\\propto\\sqrt N$. This entry formalizes $F$'s basic monotonicity/step behaviour and a sparsity bound on its increase points.",
+    "mathContext": "$F(N) = \\max\\{|S| : S\\subseteq\\{1,\\ldots,N\\},\\ S$ Sidon$\\}$; $F(N)\\sim\\sqrt N$. Question: $\\forall k\\ge1,\\ F(N+k)\\le F(N)+1$ eventually?",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon set",
+      "B₂ set",
+      "Erdős–Turán theorem",
+      "additive combinatorics"
+    ],
+    "prerequisites": [
+      "combinatorics",
+      "additive number theory"
+    ]
+  },
+  {
     "id": "ann-155-imports",
     "proofId": "erdos-155",
     "range": {
@@ -242,6 +265,49 @@
     ],
     "prerequisites": [
       "maxSidonSize"
+    ]
+  },
+  {
+    "id": "erdos-155-ann-bounds",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 110,
+      "endLine": 158
+    },
+    "type": "technique",
+    "title": "Growth bounds and the step property",
+    "content": "The core structural facts: $F$ is monotone nondecreasing and increases by at most $1$ per step, $F(N+1)\\le F(N)+1$ (removing the top element of an optimal set for $N+1$ leaves a Sidon set for $N$). The Erdős–Turán asymptotics $F(N)\\le\\sqrt N + O(N^{1/4})$ and $F(N)\\ge(1-o(1))\\sqrt N$ are recorded as axioms. A key consequence, `increase_count_le`: the number of `increase points` $N<M$ where $F(N+1)>F(N)$ is at most $F(M)$, since each such step raises $F$ by exactly one from $F(1)$ toward $F(M)$.",
+    "mathContext": "$F(N)\\le F(N+1)\\le F(N)+1$; $\\#\\{N<M: F(N+1)>F(N)\\}\\le F(M)\\sim\\sqrt M$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "step function",
+      "increase points",
+      "telescoping"
+    ],
+    "prerequisites": [
+      "combinatorics"
+    ]
+  },
+  {
+    "id": "erdos-155-ann-smallvals",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 159,
+      "endLine": 199
+    },
+    "type": "insight",
+    "title": "Sparsity of increases and small values",
+    "content": "Because there are at most $F(M)\\sim\\sqrt M$ increase points below $M$, $F(N+1)=F(N)$ for `most` $N$ — the increases are sparse (density $\\to 0$), consistent with the conjectured $\\sqrt N$-spacing. The small values are computed directly: $F(1)=1$ ($\\{1\\}$), $F(2)=2$ ($\\{1,2\\}$), $F(3)=3$ ($\\{1,2,3\\}$ is Sidon), matching OEIS A003022.",
+    "mathContext": "$\\#\\{N<M: F$ increases$\\}\\le\\sqrt M$ so increases have density $0$; $F(1)=1, F(2)=2, F(3)=3$ (OEIS A003022).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "density",
+      "OEIS A003022",
+      "small cases"
+    ],
+    "prerequisites": [
+      "combinatorics"
     ]
   }
 ]
