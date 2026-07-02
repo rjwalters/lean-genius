@@ -133,16 +133,39 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Overview and setup",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Header docstring stating the target: the parent `Proofs.AmgmInequalityOQ02` proves the Maclaurin chain Mₖ(x) ≥ Mₖ₊₁(x) and poses OQ-02 (equality case Mₖ = Mₖ₊₁ ⟺ inputs equal); this file settles the sufficiency (⟸) direction. Imports the parent (reusing its exact `elemSymm` and `maclaurinMean` definitions), opens `Finset Real`, and enters namespace `MaclaurinEquality`."
+    },
+    {
+      "id": "elemsymm-const",
       "title": "Elementary symmetric polynomials on a constant input",
-      "description": "`elemSymm_const` computes eₖ(c,…,c) = C(n,k)·cᵏ. Each product over a k-subset is c^k (prod_const together with the |s| = k membership fact), and Finset.card_powersetCard counts the C(n,k) subsets."
+      "startLine": 44,
+      "endLine": 64,
+      "summary": "`elemSymm_const` computes eₖ(c,…,c) = C(n,k)·cᵏ. Each product over a k-subset is cᵏ (`Finset.prod_const` with the `|s| = k` membership fact from `mem_powersetCard`), and `Finset.card_powersetCard` counts the C(n,k) subsets; `nsmul_eq_mul` converts the constant sum to the product."
     },
     {
+      "id": "maclaurinmean-const",
       "title": "Maclaurin means on a constant input",
-      "description": "`maclaurinMean_const` shows Mₖ(c,…,c) = c. After substituting elemSymm_const, the factor C(n,k) cancels (div_self, using Nat.choose_pos for k ≤ n), and (cᵏ)^(1/k) = c is obtained via Real.rpow_natCast and Real.rpow_mul with k ≠ 0."
+      "startLine": 66,
+      "endLine": 88,
+      "summary": "`maclaurinMean_const` shows Mₖ(c,…,c) = c for c ≥ 0 and 1 ≤ k ≤ n. After substituting `elemSymm_const`, the factor C(n,k) cancels (`div_self`, positive by `Nat.choose_pos` for k ≤ n), leaving cᵏ; then (cᵏ)^(1/k) = c via `Real.rpow_natCast`, `Real.rpow_mul` (needs c ≥ 0), and `div_self` on k ≠ 0."
     },
     {
+      "id": "chain-equality",
       "title": "Equality of the Maclaurin chain",
-      "description": "`maclaurin_eq_of_const` and `maclaurin_all_eq_of_const` rewrite every mean to c, collapsing the chain M₁ = ⋯ = Mₙ. `not_const_of_maclaurin_ne` is the contrapositive."
+      "startLine": 90,
+      "endLine": 104,
+      "summary": "`maclaurin_eq_of_const` (consecutive step Mₖ = Mₖ₊₁) and `maclaurin_all_eq_of_const` (every pair of means Mⱼ = Mₖ) both rewrite each mean to c via `maclaurinMean_const`, collapsing the whole chain M₁ = ⋯ = Mₙ = c to a single value with no induction along the chain."
+    },
+    {
+      "id": "contrapositive",
+      "title": "Contrapositive: differing means detect non-constant data",
+      "startLine": 106,
+      "endLine": 124,
+      "summary": "`not_const_of_maclaurin_ne` restates sufficiency logically: if two consecutive Maclaurin means of x differ, x cannot be a non-negative constant vector. Assuming x = (c,…,c) with c ≥ 0 derives Mₖ = Mₖ₊₁ from `maclaurin_eq_of_const`, contradicting the hypothesis — the shape used to certify non-constant data from a strict mean gap."
     }
   ],
   "conclusion": {
