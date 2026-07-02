@@ -5,7 +5,7 @@
   "description": "Sigma-finite Lp Riesz representation theorem formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction. NOTE (2026-06-24, #28788): this file transitively fails to compile against the pinned v4.26.0 toolchain because its imported foundation has 53 Mathlib-drift errors; status downgraded to formalized until the chain builds green.",
   "leanFile": {
     "namespace": "RieszSigmaFiniteComplete",
-    "lineCount": 952,
+    "lineCount": 1012,
     "axiomCount": 0,
     "theoremCount": 12,
     "definitionCount": 2,
