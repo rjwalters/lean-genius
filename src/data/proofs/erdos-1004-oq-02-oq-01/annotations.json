@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-erdos-1004-oq-02-oq-01-01",
+    "proofId": "erdos-1004-oq-02-oq-01",
+    "range": { "startLine": 33, "endLine": 43 },
+    "type": "definition",
+    "title": "Achievable exponents and prefix stability",
+    "content": "`AchievableExponent c` is deliberately the *exact body* of the parent's `Erdos1004Conjecture` at a fixed `c`: for all large `x`, some `n ≤ x` starts a distinct totient run of length `⌊(log x)^c⌋`. Matching it definitionally means `Erdos1004Conjecture` unfolds to `∀ c > 0, AchievableExponent c` for free, so the equivalence proofs never re-prove the unfolding. `run_prefix` records the single combinatorial fact the whole entry rests on: a distinct run of length `K` is still distinct on any shorter prefix `K' ≤ K`, since the pairwise-distinctness quantifier just restricts to the sub-block."
+  },
+  {
+    "id": "ann-erdos-1004-oq-02-oq-01-02",
+    "proofId": "erdos-1004-oq-02-oq-01",
+    "range": { "startLine": 44, "endLine": 64 },
+    "type": "theorem",
+    "title": "Downward closure: the achievable set is an interval",
+    "content": "The mathematical core. Filtering to `x` large enough that `log x ≥ 1` (from `Real.tendsto_log_atTop`) AND a `c`-run exists, the base `log x ≥ 1` makes `x ↦ (log x)^·` monotone in the exponent, so `(log x)^c' ≤ (log x)^c` (`Real.rpow_le_rpow_of_exponent_le`) and hence `⌊(log x)^c'⌋₊ ≤ ⌊(log x)^c⌋₊` (`Nat.floor_le_floor`). The witness `n` of the `c`-run then yields a distinct run of the shorter length at the SAME `n` by `run_prefix`. Note the `0 ≤ c'` hypothesis is kept for the intended reading even though the proof does not need it. `zero_achievable` gives the left endpoint: `⌊(log x)^0⌋ = ⌊1⌋ = 1` and every `n` starts a length-1 run."
+  },
+  {
+    "id": "ann-erdos-1004-oq-02-oq-01-03",
+    "proofId": "erdos-1004-oq-02-oq-01",
+    "range": { "startLine": 65, "endLine": 94 },
+    "type": "insight",
+    "title": "Why EReal: a total supremum in the unbounded case",
+    "content": "`c₀` is defined as `sSup` of the achievable exponents coerced into `EReal`. The point of a *complete lattice* codomain is that the supremum is total even when the set is unbounded above — which is precisely the conjectured case `c₀ = ⊤`. A real-valued `sSup` on an unbounded set returns a junk value (`0`), which would silently collapse the most interesting case. `zero_le_c₀` (0 is achievable ⇒ `c₀ ≥ 0`) and `c₀_ne_bot` pin `c₀` into `[0, ∞]`."
+  },
+  {
+    "id": "ann-erdos-1004-oq-02-oq-01-04",
+    "proofId": "erdos-1004-oq-02-oq-01",
+    "range": { "startLine": 96, "endLine": 121 },
+    "type": "theorem",
+    "title": "The full conjecture is exactly c₀ = ⊤",
+    "content": "`conjecture_iff_c₀_top`. Forward (contrapositive): if `c₀ ≠ ⊤` then, being `≥ 0`, it is a genuine real `c₀ = ↑c₀.toReal` (`EReal.coe_toReal`); but the conjecture makes `c₀.toReal + 1` achievable, so `le_sSup` forces `c₀.toReal + 1 ≤ c₀.toReal`, absurd. Backward: `c₀ = ⊤` puts every `↑c` strictly below `c₀`, so `lt_sSup_iff` extracts an achievable `r > c`, and downward closure makes `c` itself achievable. This is an exact reformulation, not an approximation — the full Erdős #1004 conjecture *is* the single statement 'c₀ is infinite'."
+  },
+  {
+    "id": "ann-erdos-1004-oq-02-oq-01-05",
+    "proofId": "erdos-1004-oq-02-oq-01",
+    "range": { "startLine": 122, "endLine": 145 },
+    "type": "theorem",
+    "title": "The weak band conjecture is exactly 0 < c₀",
+    "content": "`smallCase_iff_c₀_pos`. Forward: a witnessing band `0 < c < c₀'` gives an achievable `c₀'/2 > 0`, so `0 < ↑(c₀'/2) ≤ c₀` by `le_sSup`. Backward: `0 < c₀` yields, via `lt_sSup_iff`, an achievable `r > 0`, and downward closure fills the entire band `(0, r)` — exactly `SmallCaseConjecture`. Together with `conjecture_iff_c₀_top` this turns the parent's two qualitative Props into two order facts about one invariant: the conjecture is `c₀ = ∞`, the weak form is `c₀ > 0`."
+  }
+]
