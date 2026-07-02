@@ -55,7 +55,7 @@
         "relationship": "Related Erdős problem on factorial divisibility and prime power structure"
       }
     ],
-    "axiomCount": 0,
+    "axiomCount": 1,
     "prerequisites": [
       "Least common multiple (LCM) of natural numbers",
       "Finite sets and fold operations (Finset.fold)",
@@ -65,7 +65,7 @@
       "Native decision procedures in Lean 4"
     ],
     "lineCount": 275,
-    "assumptions": "0 axiom(s) and 4 sorry(s). See the Lean source for details.",
+    "assumptions": "0 explicit `axiom` declarations and 3 sorries. The concrete Selfridge examples (`selfridge_example_1`, `selfridge_example_2`, `lcm_comparison_96_104`) are discharged by `native_decide`, which depends on the `Lean.ofReduceBool` axiom (kernel/compiler reduction). See the Lean source for details.",
     "mathlib_version": "4.26.0",
     "theoremCount": 18,
     "definitionCount": 4,
