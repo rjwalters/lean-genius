@@ -1,9 +1,36 @@
 [
   {
+    "id": "ann-header-cauchyinterlacing-oq0102oq02",
+    "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Positivity and spectral range of orthogonal compressions",
+    "content": "Imports and the header docstring frame the two textbook corollaries of the Poincaré separation / Cauchy interlacing machinery. (1) POSITIVITY: every orthogonal compression of a PSD operator is again PSD, stated in clean operator form via `LinearMap.IsPositive` (`T.IsPositive → (compress T H).IsPositive`). The proof needs no eigenvalues and no spectral theorem — the compression's Rayleigh quotient agrees with T's on H (`Submodule.inner_orthogonalProjection_eq_of_mem_right`), so nonnegativity of re⟪T x, x⟫ transfers verbatim. (2) The SCHUR–HORN (majorization) eigenvalue corollaries: from the termwise Poincaré bounds lam⟨k+m⟩ ≤ mu k ≤ lam⟨k⟩ for the descending compression spectrum mu, it reads off compress_eigenvalues_nonneg (PSD ⟹ all compression eigenvalues ≥ 0), compress_eigenvalue_mem_Icc (each lies in the spectral range [lam_min, lam_max]), and trace_compress_nonneg. The weak Ky Fan majorization ∑ mu ≤ ∑ lam is the sibling `CauchyInterlacingKyFan.lean`; full equality-majorization for the zero-padded spectrum is a dimension mismatch and NOT claimed. Everything is a verified consequence of the already-proven Poincaré/compression-Rayleigh lemmas — no new spectral theory, no axioms, no sorries.",
+    "mathContext": "(1) $T \\succeq 0 \\Rightarrow \\mathrm{compress}\\,T\\,H \\succeq 0$, since $\\langle (\\mathrm{compress}\\,T\\,H) x, x\\rangle = \\langle T x, x\\rangle \\ge 0$ for $x \\in H$. (2) Poincaré: $\\lambda_{k+m} \\le \\mu_k \\le \\lambda_k$, so $\\mu_k \\ge 0$ when $\\lambda \\ge 0$, and $\\mu_k \\in [\\lambda_{\\min}, \\lambda_{\\max}]$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Poincaré separation theorem",
+      "Cauchy interlacing",
+      "positive semidefinite operator",
+      "LinearMap.IsPositive",
+      "Schur–Horn majorization",
+      "Rayleigh quotient"
+    ],
+    "prerequisites": [
+      "positive operators",
+      "eigenvalue interlacing",
+      "Rayleigh quotients",
+      "majorization"
+    ]
+  },
+  {
     "id": "ann-poincare-hypothesis-bundle",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-02",
     "range": {
-      "startLine": 80,
+      "startLine": 78,
       "endLine": 92
     },
     "type": "tactic",
@@ -28,12 +55,12 @@
     "id": "ann-compress-isPositive",
     "proofId": "cauchy-interlacing-theorem-oq-01-oq-02-oq-02",
     "range": {
-      "startLine": 68,
+      "startLine": 60,
       "endLine": 75
     },
     "type": "theorem",
     "title": "Positivity of Compressions (Operator Form)",
-    "content": "`compress_isPositive` proves that the orthogonal compression `compress T H` of a positive operator `T` to ANY subspace `H` is again positive, stated with Mathlib's `LinearMap.IsPositive` (symmetric and `∀ x, 0 ≤ re ⟪T x, x⟫`). Symmetry is `isSymmetric_compress hT.isSymmetric H`. For Rayleigh nonnegativity, `⟪compress T H y, y⟫_H` rewrites to `⟪T ↑y, ↑y⟫_V` via `compress_apply` and `Submodule.inner_orthogonalProjection_eq_of_mem_right`, after which `hT.2 ↑y` closes the goal. No eigenvalues and no spectral theorem are used.",
+    "content": "`compress_isPositive` proves that the orthogonal compression `compress T H` of a positive operator `T` to ANY subspace `H` is again positive, stated with Mathlib's `LinearMap.IsPositive` (symmetric and `∀ x, 0 ≤ re ⟪T x, x⟫`). Symmetry is `isSymmetric_compress hT.isSymmetric H`. For Rayleigh nonnegativity, `⟪compress T H y, y⟫_H` rewrites to `⟪T ↑y, ↑y⟫_V` via `compress_apply` and `Submodule.inner_orthogonalProjection_eq_of_mem_right`, after which `hT.2 ↑y` closes the goal. No eigenvalues and no spectral theorem are used. The covered lines also include the theorem's docstring.",
     "mathContext": "If T ⪰ 0 then P_H T P_H ⪰ 0 for every subspace H — the orthogonal compression of a positive semidefinite operator is positive semidefinite.",
     "significance": "key",
     "relatedConcepts": [
