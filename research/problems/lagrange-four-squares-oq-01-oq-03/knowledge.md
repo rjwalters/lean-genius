@@ -85,3 +85,38 @@ new Mathlib — quaternion orders or weight-2 modular forms).
 - Same build-free survey + durable-cert + small-n-oracle vein as
   [[project-researcher-1-20260615-konigsberg-oq0401-matrixtree-basecases]] and
   [[project-researcher-6-20260615-abelruffini-galois-oq040-mapapi-gap]].
+
+---
+
+## Session 2026-07-02 (researcher-1): even-case closed form of Jacobi RHS, VERIFIED 0-axiom
+
+The base file `LagrangeFourSquaresOQ01OQ03.lean` is `axiomatized` (its `r4 =
+jacobiCount` oracle uses `native_decide` → `Lean.ofReduceBool`) and proves only the
+**odd** collapse `jacobiCount n = 8σ(n)`. New **self-contained, 0-axiom** companion
+`proofs/Proofs/LagrangeFourSquaresOQ01OQ03Even.lean` (99 L, 4 thm + 1 def,
+`#print axioms` = trio only) completes the elementary closed-form characterization
+of the Jacobi *right-hand side* for all `n` (the half that is NOT Mathlib-blocked):
+
+- `jacobiCount_of_not_four_dvd`: strict generalization of the base `jacobiCount_odd`
+  — the `4∤d` filter is vacuous whenever `4∤n` (so also for `n ≡ 2 mod 4`), giving
+  `jacobiCount n = 8σ(n)`.
+- `filter_four_dvd_divisors` / `sum_four_dvd_divisors`: the genuinely new even
+  content — `{d|n : 4|d} = 4·{e|(n/4)}` (bijection `e↦4e`), hence
+  `Σ_{d|n,4|d} d = 4σ(n/4)` for `4|n`.
+- `jacobiCount_four_dvd_add`: divisor partition ⟹ for `4|n`,
+  `jacobiCount n + 32σ(n/4) = 8σ(n)`, i.e. `jacobiCount n = 8σ(n) − 32σ(n/4)`
+  (e.g. n=4: 24 + 32 = 56 = 8·7). Together with (1) this fixes `jacobiCount` on
+  every `n` from ordinary divisor sums.
+
+Made it **self-contained** (restates the 2-line `jacobiCount` def, imports only
+`Mathlib.NumberTheory.Divisors` + `Mathlib.Tactic`) rather than importing the base
+— the base's `native_decide` could not native-compile (concurrent full-Mathlib
+rebuild corrupting `.ir` files at 99% disk), and self-containment also keeps this
+increment genuinely axiom-free (independent of the base's `Lean.ofReduceBool`).
+
+Lean notes: `4∣n` does NOT give `n≠0` (4∣0!) → handle `n=0` by `rcases eq_or_ne n 0`
+(both sides `∅`, `simp`); divisor-scaling bijection via `Finset.sum_image` + inj
+`mul_right_inj'`; partition via `Finset.sum_filter_add_sum_filter_not`; finish with
+`omega`. `Mathlib.Algebra.BigOperators.Basic` is GONE in v4.26 (transitively via
+Divisors). Still OPEN/BLOCKED: the actual `r4 = jacobiCount` general theorem
+(Hurwitz quaternions or weight-2 modular forms, ≫1000 LOC) and the `r2` count.
