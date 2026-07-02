@@ -44,9 +44,20 @@
   axiom `chebyshevPsi_asymptotic`; Stirling's `O(log N)` form is real-analytic),
   so this entry is `axiomatized` with 2 structure-encoded assumptions.
 
-  The prime-power strip (Λ-sum → prime sum, M1) and the Abel-summation passage
-  M1 → M2 remain the open targets; Steps A–C are exactly the verified machinery
-  those steps build on.
+  ## Prime-power strip (this session, verified, no new axioms)
+
+  The Λ-sum is split exactly into the honest prime sum and a prime-power tail,
+  `Σ_{d≤N} Λ(d)/d = Σ_{p≤N} (log p)/p + R(N)` (`lambdaRecip_prime_split`), where
+  `R(N) := Σ_{d≤N, d not prime} Λ(d)/d ≥ 0` (`primePowerTail_nonneg`). Because the
+  tail is nonnegative, the conditional Λ-weighted estimate transfers directly to
+  the honest prime sum as an *upper* bound (`primeLogRecip_le`):
+
+    `Σ_{p≤N} (log p)/p ≤ log N + (1 + c_S + c_ψ)`   (N ≥ 2).
+
+  This is the upper half of Mertens' first theorem for the actual prime sum,
+  proved from the same 2 inputs (no new assumptions). The matching lower bound
+  needs a uniform tail bound `R(N) = Σ_{p^k≤N, k≥2} (log p)/p^k = O(1)`; that
+  geometric-series step and the Abel-summation passage M1 → M2 remain open.
 -/
 import Mathlib
 
@@ -246,5 +257,67 @@ theorem lambdaRecip_sub_log_le (h : MertensInputs) :
   constructor <;>
     linarith [habs.1, habs.2, hE_div_nonneg, hE_div_le,
       h.cChebyshev_nonneg, h.cStirling_nonneg]
+
+/-!
+## Prime-power strip (Step 2 toward M1 for the honest prime sum)
+
+The Λ-weighted sum `Σ_{d≤N} Λ(d)/d` counts *all* prime powers. Mertens' first
+theorem is a statement about the prime sum `Σ_{p≤N} (log p)/p`. We split the
+Λ-sum exactly into its prime block and a prime-power tail, and use the tail's
+nonnegativity to transfer the *upper* half of the conditional estimate directly
+to the honest prime sum — with **no new assumptions** (still the 2 inputs of
+`MertensInputs`). The lower half needs a uniform upper bound on the tail
+`Σ_{p^k≤N, k≥2} (log p)/p^k = O(1)`, which remains the open analytic step.
+-/
+
+/-- The honest first-Mertens partial sum `Σ_{p ≤ N, p prime} (log p)/p`. -/
+noncomputable def primeLogRecip (N : ℕ) : ℝ :=
+  ∑ d ∈ (Finset.Icc 1 N).filter (fun d => Nat.Prime d), Real.log d / (d : ℝ)
+
+/-- The prime-power tail `R(N) := Σ_{d ≤ N, d not prime} Λ(d)/d`.
+    Its only nonzero terms are the higher prime powers `d = p^k` with `k ≥ 2`
+    (where `Λ(d) = log p ≠ 0` but `d` is not prime). -/
+noncomputable def primePowerTail (N : ℕ) : ℝ :=
+  ∑ d ∈ (Finset.Icc 1 N).filter (fun d => ¬ Nat.Prime d),
+    ArithmeticFunction.vonMangoldt d / (d : ℝ)
+
+/-- **Exact prime/prime-power split** of the Λ-weighted sum:
+    `Σ_{d≤N} Λ(d)/d = Σ_{p≤N} (log p)/p + R(N)`.
+    On the prime block `Λ(p) = log p` (`vonMangoldt_apply_prime`); the rest is
+    the tail `R(N)` by definition. -/
+theorem lambdaRecip_prime_split (N : ℕ) :
+    lambdaRecip N = primeLogRecip N + primePowerTail N := by
+  unfold lambdaRecip primeLogRecip primePowerTail
+  rw [← Finset.sum_filter_add_sum_filter_not (Finset.Icc 1 N)
+        (fun d => Nat.Prime d)
+        (fun d => ArithmeticFunction.vonMangoldt d / (d : ℝ))]
+  congr 1
+  refine Finset.sum_congr rfl (fun d hd => ?_)
+  simp only [Finset.mem_filter] at hd
+  rw [ArithmeticFunction.vonMangoldt_apply_prime hd.2]
+
+/-- **Tail nonnegativity**: `0 ≤ R(N)`. Each term `Λ(d)/d ≥ 0`. -/
+theorem primePowerTail_nonneg (N : ℕ) : 0 ≤ primePowerTail N := by
+  unfold primePowerTail
+  refine Finset.sum_nonneg (fun d _ => ?_)
+  exact div_nonneg ArithmeticFunction.vonMangoldt_nonneg (by positivity)
+
+/-- **Upper half of Mertens' first theorem for the honest prime sum**
+    (conditional, no new assumptions):
+    `Σ_{p ≤ N} (log p)/p ≤ log N + (1 + c_S + c_ψ)` for `N ≥ 2`.
+
+    Since `primeLogRecip N = lambdaRecip N − R(N)` and `R(N) ≥ 0`, the prime sum
+    is dominated by the Λ-sum, and the conditional Λ-weighted estimate
+    `lambdaRecip N ≤ log N + (1+c_S+c_ψ)` transfers directly. The matching lower
+    bound requires `R(N) = O(1)` (the prime-power tail bound), still open. -/
+theorem primeLogRecip_le (h : MertensInputs) :
+    ∀ N : ℕ, 2 ≤ N →
+      primeLogRecip N ≤ Real.log N + (1 + h.cStirling + h.cChebyshev) := by
+  intro N hN
+  have hsplit := lambdaRecip_prime_split N
+  have htail := primePowerTail_nonneg N
+  have hM1 := lambdaRecip_sub_log_le h N hN
+  have hupper := (abs_le.mp hM1).2
+  linarith [hsplit, htail, hupper]
 
 end ChebyshevPNTBridgeOQ04
