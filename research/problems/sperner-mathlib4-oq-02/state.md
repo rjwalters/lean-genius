@@ -4,7 +4,46 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 13
+**Iteration**: 14
+
+## Iteration 14 addition (researcher-5, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
+Added `proofs/Proofs/SpernerTuckerFixedPointParity.lean` (253 LOC, 7 thm, 0 def,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — no
+sorryAx, no `Lean.ofReduceBool`, no `decide`). New gallery child `sperner-mathlib4-oq-02-oq-03`.
+
+**The POSITIVE counterpart to iterations 9–13's free-involution no-go theorems.** Every
+prior obstruction (`even_card_antipodal_boundary`, `card_eq_two_mul_hemisphere`,
+`even_card_interiorEndpoints` / `symmetric_graph_not_tucker_level`) *assumed* the antipodal
+map is fixed-point **free** and concluded the relevant count is **even** — so a symmetric
+door graph is never a Tucker level. All of them then said, in prose only, that the odd count
+"appears once the symmetry is broken." This session removes the freeness assumption and
+supplies the quantitative reason those theorems were the negative half of:
+
+- `odd_card_iff_odd_fixed` — **the general fixed-point parity of an involution**:
+  `Odd (Fintype.card α) ↔ Odd #{a | σ a = a}`, for ANY involution (free or not). The
+  non-fixed points split into free antipodal 2-orbits (`even_card_not_fixed`), so the whole
+  parity is carried by the fixed points. The involution analogue of the handshaking lemma,
+  dual to `even_card_of_free_involution`. Reusable Mathlib-gap infrastructure.
+- `odd_card_of_unique_fixed` — a unique fixed point forces odd cardinality (the cleanest
+  odd seed).
+- `even_card_not_fixed_of_invariant` / `odd_card_filter_iff_odd_fixed` — the same relativised
+  to a σ-invariant decidable predicate `P`: `Odd #{a | P a} ↔ Odd #{a | P a ∧ σ a = a}`.
+- `odd_interiorEndpoints_iff_odd_selfAntipodal` — the Tucker payoff: under a
+  **boundary-preserving antipodal automorphism** (NOT assumed free), the interior-endpoint
+  count is odd **iff** the number of **self-antipodal** (`σ v = v`) interior endpoints is
+  odd. Uses `degree_eq_of_aut` (iter 13) to see the predicate is σ-invariant.
+- `exists_selfAntipodal_of_tucker_level` — hence a Tucker level (odd interior count)
+  **forces a self-antipodal complementary simplex** — the exact cell σ cannot pair away.
+- `even_interiorEndpoints_of_free` — re-derives iteration 13's
+  `even_card_interiorEndpoints` as the `#fixed = 0` special case, so this file **strictly
+  generalises** the no-go theorem.
+
+Net effect: the still-open odd input of the `bridge` is no longer "some symmetry breaking"
+but is **localised onto a concrete geometric set** — the fixed (self-antipodal) simplices of
+the antipodal cell map, intuitively the central simplices of `Bⁿ` near the origin. This is
+the missing positive half of the free-involution parity dichotomy the whole program rests
+on. Verified via `lake env lean` over the main-repo Mathlib `.olean` cache (0 errors;
+`#print axioms` = propext/Classical.choice/Quot.sound only).
 
 ## Iteration 13 addition (researcher-7, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
 Added `proofs/Proofs/SpernerTuckerAntipodalSymmetry.lean` (212 LOC, 7 thm, 0 def,
