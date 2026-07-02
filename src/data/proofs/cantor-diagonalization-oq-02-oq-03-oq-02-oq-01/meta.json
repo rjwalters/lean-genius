@@ -72,56 +72,56 @@
       "title": "File Header and Overview",
       "startLine": 1,
       "endLine": 56,
-      "summary": "Module documentation stating the open question being answered, the five results (club top, binary intersection, finite intersection, the nonstationary ideal, duality), and references (Jech §8 Theorem 8.3, Kunen Ch. II §6). Imports Mathlib and the parent file Proofs.CantorDiagonalizationOQ02OQ03OQ02, reusing its IsClub / IsStationary / IsUnboundedBelow / IsClosedBelow definitions and not_isStationary_iff; opens namespace FodorLemma with Cardinal Order Ordinal Set."
+      "content": "Module documentation stating the open question being answered, the five results (club top, binary intersection, finite intersection, the nonstationary ideal, duality), and references (Jech §8 Theorem 8.3, Kunen Ch. II §6). Imports Mathlib and the parent file Proofs.CantorDiagonalizationOQ02OQ03OQ02, reusing its IsClub / IsStationary / IsUnboundedBelow / IsClosedBelow definitions and not_isStationary_iff; opens namespace FodorLemma with Cardinal Order Ordinal Set."
     },
     {
       "id": "club-univ",
       "title": "§1. The Whole Space is a Club",
       "startLine": 57,
       "endLine": 72,
-      "summary": "isClub_univ: Set.univ is a club. Closed trivially; unbounded because κ.ord is a successor-limit (isSuccLimit_ord from κ ≥ ℵ₀), so α ↦ α+1 stays below κ.ord. This is the top element of the club filter."
+      "content": "isClub_univ: Set.univ is a club. Closed trivially; unbounded because κ.ord is a successor-limit (isSuccLimit_ord from κ ≥ ℵ₀), so α ↦ α+1 stays below κ.ord. This is the top element of the club filter."
     },
     {
       "id": "inter-closed",
       "title": "§2. Intersection of Two Clubs is Closed",
       "startLine": 73,
       "endLine": 90,
-      "summary": "inter_isClosedBelow: the easy half. A point cofinal in C ∩ D is cofinal in C and in D separately, so closedness of each factor places it in both."
+      "content": "inter_isClosedBelow: the easy half. A point cofinal in C ∩ D is cofinal in C and in D separately, so closedness of each factor places it in both."
     },
     {
       "id": "inter-unbounded",
       "title": "§3. Intersection of Two Clubs is Unbounded",
       "startLine": 91,
       "endLine": 160,
-      "summary": "inter_isUnbounded: the genuine content. From α₀ the proof builds a single increasing ω-chain via Choice: cElt steps into C above the current point, dElt steps into D above that c; the recursion seq carries the proof that each term is < κ.ord. The supremum γ = ⨆ s is < κ.ord by iSup_lt_ord_lift_of_isRegular. The cElt-values are cofinal in γ giving γ ∈ C (closedness of C), and the s(n+1) = dElt-values are cofinal in γ giving γ ∈ D, so γ ∈ C ∩ D lies above α₀."
+      "content": "inter_isUnbounded: the genuine content. From α₀ the proof builds a single increasing ω-chain via Choice: cElt steps into C above the current point, dElt steps into D above that c; the recursion seq carries the proof that each term is < κ.ord. The supremum γ = ⨆ s is < κ.ord by iSup_lt_ord_lift_of_isRegular. The cElt-values are cofinal in γ giving γ ∈ C (closedness of C), and the s(n+1) = dElt-values are cofinal in γ giving γ ∈ D, so γ ∈ C ∩ D lies above α₀."
     },
     {
       "id": "inter-club",
       "title": "§3 (cont). Binary Intersection is a Club",
       "startLine": 161,
       "endLine": 166,
-      "summary": "inter_isClub: combines the closed and unbounded halves — the club filter is closed under binary intersection."
+      "content": "inter_isClub: combines the closed and unbounded halves — the club filter is closed under binary intersection."
     },
     {
       "id": "finite-inter",
       "title": "§4. Finite Intersection of Clubs is a Club",
       "startLine": 167,
       "endLine": 186,
-      "summary": "isClub_biInter: by Finset induction, ⋂ i ∈ t, C i is a club. Empty case is isClub_univ; the insert case rewrites via Finset.set_biInter_insert and applies inter_isClub. This is the defining filter-closure property."
+      "content": "isClub_biInter: by Finset induction, ⋂ i ∈ t, C i is a club. Empty case is isClub_univ; the insert case rewrites via Finset.set_biInter_insert and applies inter_isClub. This is the defining filter-closure property."
     },
     {
       "id": "ns-ideal",
       "title": "§5. The Nonstationary Ideal and Duality",
       "startLine": 187,
       "endLine": 247,
-      "summary": "IsNonStationary κ S := ∃ club C disjoint from S (the dual ideal NS(κ)). isStationary_iff_not_isNonStationary: stationary ⟺ not nonstationary (via not_isStationary_iff). isNonStationary_subset (downward closed), isNonStationary_union (closed under ∪, using inter_isClub on the two avoiding clubs), isNonStationary_empty (∅ ∈ NS), and isStationary_univ (the whole space is stationary, so Club(κ) is proper)."
+      "content": "IsNonStationary κ S := ∃ club C disjoint from S (the dual ideal NS(κ)). isStationary_iff_not_isNonStationary: stationary ⟺ not nonstationary (via not_isStationary_iff). isNonStationary_subset (downward closed), isNonStationary_union (closed under ∪, using inter_isClub on the two avoiding clubs), isNonStationary_empty (∅ ∈ NS), and isStationary_univ (the whole space is stationary, so Club(κ) is proper)."
     },
     {
       "id": "implications",
       "title": "§6. Implications and Mathematical Notes",
       "startLine": 1,
       "endLine": 247,
-      "summary": "The finite filter/ideal theory underpins the σ-complete (indeed κ-complete) club filter. The binary intersection theorem is the base case of the κ-indexed diagonal-intersection theorem the parent used for Fodor's lemma; closure of NS(κ) under finite unions is the dual statement. Natural next steps: κ-completeness of the club filter (countable / <κ intersections), the normality of NS(κ) via the diagonal intersection, and Solovay's stationary-set splitting."
+      "content": "The finite filter/ideal theory underpins the σ-complete (indeed κ-complete) club filter. The binary intersection theorem is the base case of the κ-indexed diagonal-intersection theorem the parent used for Fodor's lemma; closure of NS(κ) under finite unions is the dual statement. Natural next steps: κ-completeness of the club filter (countable / <κ intersections), the normality of NS(κ) via the diagonal intersection, and Solovay's stationary-set splitting."
     }
   ],
   "references": [

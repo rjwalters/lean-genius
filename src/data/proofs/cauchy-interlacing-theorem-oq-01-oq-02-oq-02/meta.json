@@ -105,25 +105,16 @@
   },
   "sections": [
     {
-      "id": "positivity-of-compressions-operator-form",
       "title": "Positivity of Compressions (Operator Form)",
-      "startLine": 1,
-      "endLine": 93,
-      "summary": "compress_isPositive proves that for a positive operator T (Mathlib's LinearMap.IsPositive: symmetric with re ⟪T x, x⟫ ≥ 0 for all x) and any subspace H, the orthogonal compression compress T H is again positive. Symmetry comes from isSymmetric_compress applied to hT.isSymmetric. For the Rayleigh nonnegativity, the inner product ⟪compress T H y, y⟫_H rewrites to ⟪T ↑y, ↑y⟫_V via compress_apply and the orthogonal-projection adjoint identity Submodule.inner_orthogonalProjection_eq_of_mem_right, so 0 ≤ re ⟪T ↑y, ↑y⟫ (from hT) finishes. No eigenvalues, no spectral theorem, and the subspace H is arbitrary."
+      "content": "compress_isPositive proves that for a positive operator T (Mathlib's LinearMap.IsPositive: symmetric with re ⟪T x, x⟫ ≥ 0 for all x) and any subspace H, the orthogonal compression compress T H is again positive. Symmetry comes from isSymmetric_compress applied to hT.isSymmetric. For the Rayleigh nonnegativity, the inner product ⟪compress T H y, y⟫_H rewrites to ⟪T ↑y, ↑y⟫_V via compress_apply and the orthogonal-projection adjoint identity Submodule.inner_orthogonalProjection_eq_of_mem_right, so 0 ≤ re ⟪T ↑y, ↑y⟫ (from hT) finishes. No eigenvalues, no spectral theorem, and the subspace H is arbitrary."
     },
     {
-      "id": "nonnegative-eigenvalues-and-trace",
       "title": "Nonnegative Eigenvalues and Trace",
-      "startLine": 94,
-      "endLine": 102,
-      "summary": "compress_eigenvalues_nonneg reads the eigenvalue form of positivity off the Poincaré lower bound: if every eigenvalue λ i of T is nonnegative, then for each k the chain 0 ≤ λ_{k+m} ≤ μ_k gives 0 ≤ μ_k. trace_compress_nonneg then lifts this through Finset.sum_nonneg to conclude the trace ∑_k μ_k of a PSD compression is nonnegative — the eigenvalue-side companion of trace nonnegativity for positive operators."
+      "content": "compress_eigenvalues_nonneg reads the eigenvalue form of positivity off the Poincaré lower bound: if every eigenvalue λ i of T is nonnegative, then for each k the chain 0 ≤ λ_{k+m} ≤ μ_k gives 0 ≤ μ_k. trace_compress_nonneg then lifts this through Finset.sum_nonneg to conclude the trace ∑_k μ_k of a PSD compression is nonnegative — the eigenvalue-side companion of trace nonnegativity for positive operators."
     },
     {
-      "id": "spectral-range-containment",
       "title": "Spectral-Range Containment",
-      "startLine": 103,
-      "endLine": 130,
-      "summary": "compress_eigenvalue_mem_Icc sandwiches every compression eigenvalue inside the spectral range of T: μ_k ∈ [λ_{n+m-1}, λ_0] = [λ_min, λ_max]. The lower endpoint comes from λ_{n+m-1} ≤ λ_{k+m} ≤ μ_k and the upper from μ_k ≤ λ_k ≤ λ_0, each endpoint comparison supplied by antitonicity of λ on the Fin indices and the matching Poincaré bound. This is the uniform two-sided statement that the compression spectrum never escapes the full spectrum's range."
+      "content": "compress_eigenvalue_mem_Icc sandwiches every compression eigenvalue inside the spectral range of T: μ_k ∈ [λ_{n+m-1}, λ_0] = [λ_min, λ_max]. The lower endpoint comes from λ_{n+m-1} ≤ λ_{k+m} ≤ μ_k and the upper from μ_k ≤ λ_k ≤ λ_0, each endpoint comparison supplied by antitonicity of λ on the Fin indices and the matching Poincaré bound. This is the uniform two-sided statement that the compression spectrum never escapes the full spectrum's range."
     }
   ],
   "references": [

@@ -140,42 +140,42 @@
       "title": "Module Header and Overview",
       "startLine": 1,
       "endLine": 29,
-      "summary": "Module docstring for the Kakutani fixed-point theorem (infinite-dimensional): Kakutani (1941) generalizes Brouwer/Schauder from single-valued to upper-hemicontinuous set-valued maps; Fan-Glicksberg extends it to locally convex TVS. Lists applications (Nash equilibrium, Arrow-Debreu, optimal control) and references. Imports Mathlib; opens namespace BrouwerOQ04OQ03 with Set, Filter, Topology."
+      "content": "Module docstring for the Kakutani fixed-point theorem (infinite-dimensional): Kakutani (1941) generalizes Brouwer/Schauder from single-valued to upper-hemicontinuous set-valued maps; Fan-Glicksberg extends it to locally convex TVS. Lists applications (Nash equilibrium, Arrow-Debreu, optimal control) and references. Imports Mathlib; opens namespace BrouwerOQ04OQ03 with Set, Filter, Topology."
     },
     {
       "id": "set-valued-maps",
       "title": "Part I: Set-Valued Maps and Upper Hemicontinuity",
       "startLine": 30,
       "endLine": 61,
-      "summary": "A `SetValuedMap X Y` is simply a function X → Set Y. Upper hemicontinuity (UHC) is defined via the open set condition: F is UHC if for every open U, the set {x | F(x) ⊆ U} is open. This is equivalent to: for every x and every open set U ⊇ F(x), there is a neighborhood V of x such that F(y) ⊆ U for all y ∈ V. For a singleton map F(x) = {f(x)}, UHC reduces to: {x | f(x) ∈ U} = f⁻¹(U) is open, i.e., f is continuous. Also defines HasNonemptyValues, HasConvexValues, HasClosedValues, and IsFixedPoint."
+      "content": "A `SetValuedMap X Y` is simply a function X → Set Y. Upper hemicontinuity (UHC) is defined via the open set condition: F is UHC if for every open U, the set {x | F(x) ⊆ U} is open. This is equivalent to: for every x and every open set U ⊇ F(x), there is a neighborhood V of x such that F(y) ⊆ U for all y ∈ V. For a singleton map F(x) = {f(x)}, UHC reduces to: {x | f(x) ∈ U} = f⁻¹(U) is open, i.e., f is continuous. Also defines HasNonemptyValues, HasConvexValues, HasClosedValues, and IsFixedPoint."
     },
     {
       "id": "kakutani-axiom",
       "title": "Part II: Kakutani's Theorem, Finite-Dimensional (Axiomatized)",
       "startLine": 62,
       "endLine": 78,
-      "summary": "The axiom `kakutani_finite_dim` states the finite-dimensional Kakutani theorem for `EuclideanSpace ℝ (Fin n)`. The four conditions — UHC, nonempty values, closed values, convex values — are each captured by the auxiliary definitions. The proof of Kakutani requires either simplicial approximation (Kakutani's original argument) or degree-theoretic methods. Neither is available as packaged Mathlib results for this setting."
+      "content": "The axiom `kakutani_finite_dim` states the finite-dimensional Kakutani theorem for `EuclideanSpace ℝ (Fin n)`. The four conditions — UHC, nonempty values, closed values, convex values — are each captured by the auxiliary definitions. The proof of Kakutani requires either simplicial approximation (Kakutani's original argument) or degree-theoretic methods. Neither is available as packaged Mathlib results for this setting."
     },
     {
       "id": "fan-glicksberg-axiom",
       "title": "Part III: Fan-Glicksberg Theorem, Infinite-Dimensional (Axiomatized)",
       "startLine": 79,
       "endLine": 96,
-      "summary": "The axiom `fan_glicksberg` generalizes to locally convex topological vector spaces (LCTVS), capturing the most general fixed-point theorem for set-valued maps with convex structure. The Lean type signature uses `[LocallyConvexSpace ℝ E]` — a Mathlib typeclass for spaces where every point has a neighborhood basis of convex sets. This covers all Banach spaces, Hilbert spaces, and Fréchet spaces."
+      "content": "The axiom `fan_glicksberg` generalizes to locally convex topological vector spaces (LCTVS), capturing the most general fixed-point theorem for set-valued maps with convex structure. The Lean type signature uses `[LocallyConvexSpace ℝ E]` — a Mathlib typeclass for spaces where every point has a neighborhood basis of convex sets. This covers all Banach spaces, Hilbert spaces, and Fréchet spaces."
     },
     {
       "id": "nash-stub",
       "title": "Part IV: Application to Nash Equilibrium (Stub)",
       "startLine": 97,
       "endLine": 121,
-      "summary": "The `FiniteGame` structure and `MixedStrategy` type are well-defined. However, `IsNashEquilibrium` is defined as `True` — a placeholder for the full definition which requires computing expected payoffs under mixed strategy profiles. The theorem `nash_equilibrium_existence` is proved trivially via ⟨fun _ _ => 0, trivial⟩. The genuine proof would apply Kakutani to the *best-response correspondence* BR_i(σ) = {σ_i' : player i prefers σ_i' to σ_i given others play σ_{-i}}, which is UHC with nonempty convex values under the mixed extension of payoffs."
+      "content": "The `FiniteGame` structure and `MixedStrategy` type are well-defined. However, `IsNashEquilibrium` is defined as `True` — a placeholder for the full definition which requires computing expected payoffs under mixed strategy profiles. The theorem `nash_equilibrium_existence` is proved trivially via ⟨fun _ _ => 0, trivial⟩. The genuine proof would apply Kakutani to the *best-response correspondence* BR_i(σ) = {σ_i' : player i prefers σ_i' to σ_i given others play σ_{-i}}, which is UHC with nonempty convex values under the mixed extension of payoffs."
     },
     {
       "id": "brouwer-from-kakutani",
       "title": "Part V: Hierarchy and Derivation of Brouwer from Kakutani (Proved)",
       "startLine": 122,
       "endLine": 156,
-      "summary": "A reference table of the fixed-point hierarchy (Brouwer 1911, Schauder 1930, Kakutani 1941, Fan-Glicksberg 1952, Eilenberg-Montgomery 1946), then the genuinely-proved theorem `brouwer_from_kakutani_finite`. Given continuous f : K → K, define F(x) = {f(x)}. The proof verifies:\n- Image condition: {f(x)} ⊆ K since f(x) ∈ K\n- UHC: preimage of open U under x ↦ {f(x)} is {x | f(x) ∈ U} = f⁻¹(U), open by continuity\n- Nonempty: {f(x)} always has f(x)\n- Closed: `isClosed_singleton`\n- Convex: `convex_singleton`\n\nKakutani gives x ∈ K with x ∈ {f(x)}, i.e., f(x) = x."
+      "content": "A reference table of the fixed-point hierarchy (Brouwer 1911, Schauder 1930, Kakutani 1941, Fan-Glicksberg 1952, Eilenberg-Montgomery 1946), then the genuinely-proved theorem `brouwer_from_kakutani_finite`. Given continuous f : K → K, define F(x) = {f(x)}. The proof verifies:\n- Image condition: {f(x)} ⊆ K since f(x) ∈ K\n- UHC: preimage of open U under x ↦ {f(x)} is {x | f(x) ∈ U} = f⁻¹(U), open by continuity\n- Nonempty: {f(x)} always has f(x)\n- Closed: `isClosed_singleton`\n- Convex: `convex_singleton`\n\nKakutani gives x ∈ K with x ∈ {f(x)}, i.e., f(x) = x."
     }
   ],
   "conclusion": {

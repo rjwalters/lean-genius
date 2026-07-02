@@ -64,7 +64,7 @@
       "startLine": 5,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Even Square Implies Even Root",
     "content": "**The key lemma**: If $n^2$ is even, then $n$ is even. The proof uses the contrapositive: assume $n$ is odd, show $n^2$ is odd, contradicting that $n^2$ is even.",
     "mathContext": "Why does odd$^2$ = odd? Write $n = 2k+1$. Then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which is odd. The tactic `Odd.pow` handles this in Lean.",
@@ -83,7 +83,7 @@
       "startLine": 5,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Square of Odd is Odd",
     "content": "A direct proof that odd$^2$ = odd. If $n = 2k + 1$ (odd), then $n^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$, which has the form $2m + 1$ (odd).",
     "mathContext": "The `ring` tactic handles the algebraic manipulation automatically. The `obtain` tactic destructs the existential in the definition of `Odd`.",
@@ -103,7 +103,7 @@
       "startLine": 5,
       "endLine": 49
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Divisibility by 2 Preserved by Squaring",
     "content": "A bidirectional lemma: $2 \\mid n^2 \\iff 2 \\mid n$. The forward direction uses `even_of_even_sq`; the reverse is direct calculation: if $n = 2k$, then $n^2 = 4k^2 = 2(2k^2)$.",
     "mathContext": "The `↔` (iff) in Lean requires proving both directions. The `constructor` tactic splits this into two goals.",
@@ -168,7 +168,7 @@
       "startLine": 55,
       "endLine": 65
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Squaring Both Sides",
     "content": "From $\\sqrt{2} = p/q$, we square both sides to get $2 = p^2/q^2$, hence $p^2 = 2q^2$. This eliminates the square root and gives us an equation in integers.",
     "mathContext": "This is the key algebraic step. In Lean, `congrArg (·^2)` applies squaring to both sides of an equation.",
@@ -353,7 +353,7 @@
       "startLine": 212,
       "endLine": 218
     },
-    "type": "context",
+    "type": "concept",
     "title": "Perfect Squares vs Non-Squares",
     "content": "The `decide` tactic can verify whether a number is a perfect square. Non-squares: 2, 3, 5, 6, 7, 8, 10, ... Perfect squares: 1 = 1², 4 = 2², 9 = 3², 16 = 4², ...",
     "mathContext": "For perfect squares, we provide explicit witnesses: `IsSquare 4` is proven by `⟨2, by ring⟩` showing $4 = 2 \\cdot 2$. The `decide` tactic handles non-squares by computation.",

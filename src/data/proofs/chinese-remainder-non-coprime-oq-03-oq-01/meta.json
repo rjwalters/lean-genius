@@ -110,29 +110,25 @@
       "title": "Part 0: Binary CRT core and binary GCD–LCM distributive law",
       "startLine": 46,
       "endLine": 219,
-      "summary": "ed_crt_sufficient: binary CRT sufficiency via Bézout (from parent). gcd_lcm_dvd_lcm_gcd: the hard binary GCD–LCM distributive law gcd(lcm(a,b),c)∣lcm(gcd(a,c),gcd(b,c)), reproduced verbatim from ChineseRemainderNonCoprimeOQ03 — a Bézout decomposition with nested coprime factoring through gcd(a,b) and gcd(gcd(a,b),c).",
-      "id": "part-0-binary-crt-core-and-binary-gcd-lcm-distributive-law"
+      "summary": "ed_crt_sufficient: binary CRT sufficiency via Bézout (from parent). gcd_lcm_dvd_lcm_gcd: the hard binary GCD–LCM distributive law gcd(lcm(a,b),c)∣lcm(gcd(a,c),gcd(b,c)), reproduced verbatim from ChineseRemainderNonCoprimeOQ03 — a Bézout decomposition with nested coprime factoring through gcd(a,b) and gcd(gcd(a,b),c)."
     },
     {
       "title": "Part I: lcm over a list of moduli",
       "startLine": 220,
       "endLine": 247,
-      "summary": "lcmList (foldr EuclideanDomain.lcm 1) with simp lemmas lcmList_nil/lcmList_cons; dvd_lcmList (each element divides the list lcm) and lcmList_dvd (the list lcm divides any common multiple).",
-      "id": "part-i-lcm-over-a-list-of-moduli"
+      "summary": "lcmList (foldr EuclideanDomain.lcm 1) with simp lemmas lcmList_nil/lcmList_cons; dvd_lcmList (each element divides the list lcm) and lcmList_dvd (the list lcm divides any common multiple)."
     },
     {
       "title": "Part II: Generalized GCD–LCM distributive law",
       "startLine": 248,
       "endLine": 268,
-      "summary": "gcd_lcmList_dvd: gcd(lcmList l, c) ∣ lcmList (l.map (gcd · c)), proved by induction on l. The cons step applies the binary distributive law gcd_lcm_dvd_lcm_gcd to the head and the lcm of the tail, then monotonicity of lcm with the inductive hypothesis.",
-      "id": "part-ii-generalized-gcd-lcm-distributive-law"
+      "summary": "gcd_lcmList_dvd: gcd(lcmList l, c) ∣ lcmList (l.map (gcd · c)), proved by induction on l. The cons step applies the binary distributive law gcd_lcm_dvd_lcm_gcd to the head and the lcm of the tail, then monotonicity of lcm with the inductive hypothesis."
     },
     {
       "title": "Part III: n-Moduli list-indexed CRT",
       "startLine": 269,
       "endLine": 380,
-      "summary": "Solves and Compat predicates over List (R × R). crt_list_necessary (solvable ⟹ pairwise compatible). crt_list_sufficient (induction on the list; merge head with lcm of tail via gcd_lcmList_dvd and the binary solver). crt_list_iff (full characterization). crt_list_unique (lcm of all moduli divides the difference of any two solutions). Summary of the nine results.",
-      "id": "part-iii-n-moduli-list-indexed-crt"
+      "summary": "Solves and Compat predicates over List (R × R). crt_list_necessary (solvable ⟹ pairwise compatible). crt_list_sufficient (induction on the list; merge head with lcm of tail via gcd_lcmList_dvd and the binary solver). crt_list_iff (full characterization). crt_list_unique (lcm of all moduli divides the difference of any two solutions). Summary of the nine results."
     }
   ],
   "sorries": 0

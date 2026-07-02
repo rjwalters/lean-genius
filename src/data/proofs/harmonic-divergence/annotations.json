@@ -86,7 +86,7 @@
       "startLine": 75,
       "endLine": 87
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Terms are Positive",
     "content": "A simple but necessary fact: $1/n > 0$ for all $n > 0$. This ensures all our terms contribute positively to the sum, enabling downward comparison: each term in a group is bounded below by the reciprocal of the group's largest element.",
     "mathContext": "The Lean proof uses `simp [Nat.pos_iff_ne_zero.mpr hn]`: since $n \\neq 0$ we have $n \\geq 1$, so $(n : \\mathbb{R}) > 0$, and $1 / (n : \\mathbb{R}) > 0$ by `div_pos`. This positivity fact is a prerequisite for applying comparison inequalities in the grouping argument: we need each term $1/i \\geq 1/2^{k+1} > 0$ when establishing the lower bound on the group sum.",

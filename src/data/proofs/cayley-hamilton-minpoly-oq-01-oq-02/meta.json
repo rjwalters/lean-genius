@@ -124,29 +124,25 @@
       "title": "Polynomials in f commute",
       "startLine": 51,
       "endLine": 64,
-      "summary": "Any two elements of the subalgebra K[f] = adjoin K {f} are polynomials in f and therefore commute; in particular each commutes with f. This supplies the commutation clause [s, n] = 0 for free.",
-      "id": "polynomials-in-f-commute"
+      "summary": "Any two elements of the subalgebra K[f] = adjoin K {f} are polynomials in f and therefore commute; in particular each commutes with f. This supplies the commutation clause [s, n] = 0 for free."
     },
     {
       "title": "Existence of the decomposition",
       "startLine": 68,
       "endLine": 81,
-      "summary": "jordan_chevalley_decomposition: wrapping Mathlib's Newton-iteration result, f = s + n with s semisimple, n nilpotent, s and n commuting, and explicit polynomial witnesses s = aeval f p, n = aeval f q.",
-      "id": "existence-of-the-decomposition"
+      "summary": "jordan_chevalley_decomposition: wrapping Mathlib's Newton-iteration result, f = s + n with s semisimple, n nilpotent, s and n commuting, and explicit polynomial witnesses s = aeval f p, n = aeval f q."
     },
     {
       "title": "Uniqueness of the decomposition",
       "startLine": 83,
       "endLine": 110,
-      "summary": "jordan_chevalley_unique: from s₁ - s₂ = n₂ - n₁ the common value is both semisimple (difference of commuting semisimples over a perfect field) and nilpotent, hence zero; so the two polynomial-in-f decompositions agree.",
-      "id": "uniqueness-of-the-decomposition"
+      "summary": "jordan_chevalley_unique: from s₁ - s₂ = n₂ - n₁ the common value is both semisimple (difference of commuting semisimples over a perfect field) and nilpotent, hence zero; so the two polynomial-in-f decompositions agree."
     },
     {
       "title": "Existence and uniqueness, packaged",
       "startLine": 112,
       "endLine": 129,
-      "summary": "jordan_chevalley_existsUnique: the unique commuting pair (s, n) in K[f] with s semisimple, n nilpotent, f = s + n, stated as an ExistsUnique.",
-      "id": "existence-and-uniqueness-packaged"
+      "summary": "jordan_chevalley_existsUnique: the unique commuting pair (s, n) in K[f] with s semisimple, n nilpotent, f = s + n, stated as an ExistsUnique."
     }
   ],
   "sorries": []

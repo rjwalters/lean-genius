@@ -70,29 +70,21 @@
     {
       "id": "module-header",
       "title": "Module: Boundary Exact Count via IVT",
-      "startLine": 1,
-      "endLine": 64,
       "summary": "Module docstring framing the boundary cases of Descartes' Rule, why the parity refinement is unavailable (hard FTA content, only ever assumed in the gallery), and how root existence — not parity — settles signVariations ∈ {0,1}. Notes the ℝ-only scope (X²−2 counterexample over ℚ)."
     },
     {
       "id": "zero-case",
       "title": "Part 1: Zero Sign Variations ⟹ No Positive Roots",
-      "startLine": 65,
-      "endLine": 74,
       "summary": "no_pos_roots_of_signVariations_zero: from Mathlib's Descartes bound, signVariations = 0 forces the positive-root count to 0. No parity, no analysis."
     },
     {
       "id": "ivt-existence",
       "title": "Part 2: Opposite Leading/Trailing Signs Force a Positive Root (IVT)",
-      "startLine": 75,
-      "endLine": 165,
       "summary": "exists_pos_root_of_sign_opposition: the analytic heart. Deflate P = Xᵐ·Q (largest power of X), establish Q.eval 0 = trailingCoeff ≠ 0, Q.leadingCoeff = P.leadingCoeff, and positive degree of Q. Use the ±∞ asymptotics to find a far point carrying the leading sign, then the Intermediate Value Theorem to cross zero in (0, ∞)."
     },
     {
       "id": "boundary-count",
       "title": "Part 3: One Sign Variation ⟹ Exactly One Positive Root",
-      "startLine": 166,
-      "endLine": 192,
       "summary": "exactly_one_pos_root_of_sign_opposition: combine Descartes' upper bound (≤ 1) with the IVT existence (≥ 1) to pin the count at exactly 1, conditional on the combinatorial sign opposition. No parity refinement used."
     }
   ],
@@ -113,6 +105,35 @@
       "description": "The classical Descartes Rule of Signs at the root of the OQ chain"
     }
   ],
+  "references": [
+    {
+      "authors": [
+        "Descartes, R."
+      ],
+      "title": "La Géométrie",
+      "year": "1637",
+      "venue": "Appendix to Discours de la méthode, Leiden",
+      "note": "Original statement of the rule of signs."
+    },
+    {
+      "authors": [
+        "Prasolov, V.V."
+      ],
+      "title": "Polynomials",
+      "year": "2004",
+      "venue": "Algorithms and Computation in Mathematics 11, Springer",
+      "note": "Modern reference covering Descartes' rule, the Budan–Fourier theorem, Sturm's theorem and root-localization bounds."
+    }
+  ],
+  "conclusion": {
+    "summary": "In the boundary cases the exact positive-root count is recovered without the parity refinement: signVariations = 0 gives 0 roots from Descartes' bound, and signVariations = 1 gives exactly one root from the bound (≤ 1) together with the Intermediate Value Theorem (≥ 1). The IVT existence argument — deflate by Xᵐ, then cross zero between the trailing sign at 0 and the leading sign at +∞ — is fully machine-checked with 0 sorries and 0 axioms. The only non-analytic input, that one sign variation forces opposite leading/trailing signs, is taken as an explicit combinatorial hypothesis.",
+    "implications": "Shows the boundary cases of Descartes' Rule are strictly easier than the general parity refinement: they require only existence of a sign-change root, a completeness/IVT phenomenon, not the odd-multiplicity FTA argument the gallery has consistently left open. The deflate-then-IVT pattern (P = Xᵐ·Q with nonzero constant term, sign at 0 vs sign at +∞) is reusable for other sign-change root-existence facts. Reduces the open unconditional boundary count to a single, analysis-free combinatorial lemma about List.destutter.",
+    "openQuestions": [
+      "Prove the combinatorial bridge signVariations P = 1 ⟹ sign(leadingCoeff) ≠ sign(trailingCoeff) (the destuttered nonzero-sign list has length 2, so its endpoints differ), making exactly_one_pos_root unconditional.",
+      "Generalize the existence argument from sign-change endpoints to an arbitrary real-closed field, replacing the IVT with the order-completeness available there.",
+      "Combine with a Sturm-style oddness count to extend the exact count beyond the boundary cases signVariations ∈ {0,1}."
+    ]
+  },
   "references": [
     {
       "authors": "Descartes, René",
@@ -142,15 +163,6 @@
       "venue": "Mathlib4"
     }
   ],
-  "conclusion": {
-    "summary": "In the boundary cases the exact positive-root count is recovered without the parity refinement: signVariations = 0 gives 0 roots from Descartes' bound, and signVariations = 1 gives exactly one root from the bound (≤ 1) together with the Intermediate Value Theorem (≥ 1). The IVT existence argument — deflate by Xᵐ, then cross zero between the trailing sign at 0 and the leading sign at +∞ — is fully machine-checked with 0 sorries and 0 axioms. The only non-analytic input, that one sign variation forces opposite leading/trailing signs, is taken as an explicit combinatorial hypothesis.",
-    "implications": "Shows the boundary cases of Descartes' Rule are strictly easier than the general parity refinement: they require only existence of a sign-change root, a completeness/IVT phenomenon, not the odd-multiplicity FTA argument the gallery has consistently left open. The deflate-then-IVT pattern (P = Xᵐ·Q with nonzero constant term, sign at 0 vs sign at +∞) is reusable for other sign-change root-existence facts. Reduces the open unconditional boundary count to a single, analysis-free combinatorial lemma about List.destutter.",
-    "openQuestions": [
-      "Prove the combinatorial bridge signVariations P = 1 ⟹ sign(leadingCoeff) ≠ sign(trailingCoeff) (the destuttered nonzero-sign list has length 2, so its endpoints differ), making exactly_one_pos_root unconditional.",
-      "Generalize the existence argument from sign-change endpoints to an arbitrary real-closed field, replacing the IVT with the order-completeness available there.",
-      "Combine with a Sturm-style oddness count to extend the exact count beyond the boundary cases signVariations ∈ {0,1}."
-    ]
-  },
   "leanFile": {
     "imports": [
       "Mathlib"

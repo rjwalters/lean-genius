@@ -12,9 +12,12 @@ the number of idempotents of `ZMod n` — equivalently the number of automorphic
 `e ^ 2 ≡ e (mod n)` — is `2 ^ ω(n)`, where `ω(n)` is the number of distinct primes
 dividing `n`.
 
-This file gives that count a **divisor-theoretic** meaning.  The number `2 ^ ω(n)` is
-also the number of **squarefree divisors** of `n`, and both are the number of subsets of
-the prime-factor set of `n`:
+This file gives that count two further meanings, one arithmetic and one algebraic.
+
+### Arithmetic shadow — squarefree divisors
+
+The number `2 ^ ω(n)` is also the number of **squarefree divisors** of `n`, and both are
+the number of subsets of the prime-factor set of `n`:
 
 ```
 squarefreeDivisors_card :
@@ -31,21 +34,43 @@ for every prime power `p ^ k ‖ n`, whether the `p`-component is `0` or `1`; th
 primes assemble into a squarefree divisor `∏ p`, and this is a bijection with the powerset
 of `n.primeFactors`.
 
+### Algebraic mechanism — products of local rings
+
+The open question that motivates this entry asks how the count `2 ^ ω(n)` generalizes
+beyond `ℤ`, e.g. to the ring of integers `𝒪_K` of a number field modulo an ideal `𝔞`.
+The Chinese Remainder Theorem writes such a quotient as a **finite product of local
+rings** `∏ 𝒪_K / 𝔭ᵢ ^ eᵢ`, one factor per distinct prime ideal dividing `𝔞`.  The
+essential fact, isolated here and proved for arbitrary commutative rings, is:
+
+```
+idempotent_count_pi_local :
+  (each Rᵢ a nontrivial local ring) →
+  Nat.card {e : (∀ i, R i) // IsIdempotentElem e} = 2 ^ (card of the index)
+
+idempotent_count_of_ringEquiv :
+  (S ≃+* ∏ Rᵢ, each Rᵢ nontrivial local) →
+  Nat.card {e : S // IsIdempotentElem e} = 2 ^ (card of the index)
+```
+
+A local ring has **no idempotents besides `0` and `1`** (`isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing`),
+and idempotents of a product ring are exactly the tuples of idempotents of the factors,
+so the count is `2` per factor: `2 ^ (number of local factors)`.  For `ZMod n` the local
+factors are the `ZMod (pᵢ ^ eᵢ)`, recovering `2 ^ ω(n)`; for `𝒪_K / 𝔞` they are the
+`𝒪_K / 𝔭ᵢ ^ eᵢ`, giving `2 ^ (number of distinct prime ideals dividing 𝔞)`.
+
 ## Strategy
 
-The heart is a clean bijection realized by `Finset.card_image_of_injOn`:
+The squarefree-divisor bijection is realized by `Finset.card_image_of_injOn`: the map
+`s ↦ ∏ p ∈ s, p` sends `n.primeFactors.powerset` onto the squarefree divisors of `n`
+(`Nat.prod_primeFactors_dvd`, `Finset.squarefree_prod_of_pairwise_isCoprime`), and is
+injective there because `primeFactors` is a left inverse on sets of primes
+(`Nat.primeFactors_prod`).  Then `Finset.card_powerset` gives `2 ^ ω(n)`.
 
-* The map `s ↦ ∏ p ∈ s, p` sends `n.primeFactors.powerset` **onto** the squarefree
-  divisors of `n`.  A product of a subset of the distinct primes dividing `n` divides
-  `∏ p ∈ n.primeFactors, p ∣ n` (`Nat.prod_primeFactors_dvd`) and is squarefree
-  (`Finset.squarefree_prod_of_pairwise_isCoprime`, distinct primes being coprime); every
-  squarefree divisor `d` is recovered as `∏ p ∈ d.primeFactors, p`
-  (`Nat.prod_primeFactors_of_squarefree`) with `d.primeFactors ⊆ n.primeFactors`.
-* The map is injective on the powerset because `s ↦ ∏ p ∈ s, p` has the left inverse
-  `primeFactors` on sets of primes (`Nat.primeFactors_prod`).
-
-Then `Finset.card_powerset` gives `2 ^ ω(n)`, and the parent's `idempotent_count` closes
-the loop back to automorphic residues.
+The local-ring count uses `IsLocalRing.isUnit_or_isUnit_one_sub_self`: for an idempotent
+`e` we have `e * (1 - e) = 0`, and whichever of `e`, `1 - e` is a unit forces its partner
+to `0`, so `e ∈ {0, 1}` and (in a nontrivial ring) the idempotents number exactly `2`.
+Idempotents of `∀ i, R i` are characterised coordinatewise, so `Nat.card_pi` turns the
+count into a product of `2` over the factors, i.e. `2 ^ (number of factors)`.
 
 ## Status
 
@@ -145,5 +170,82 @@ theorem squarefreeDivisors_ten_pow_card (k : ℕ) (hk : 0 < k) :
   rw [squarefreeDivisors_card _ (pow_ne_zero k (by norm_num)),
     AutomorphicNumberOQ01OQ01.primeFactors_ten_pow hk]
   norm_num
+
+/-!
+## The algebraic mechanism: idempotents of a finite product of local rings
+
+The results below isolate the ring-theoretic reason the count is a power of two, in a form
+that applies verbatim to `𝒪_K / 𝔞` (via the Chinese Remainder Theorem) and not just to
+`ZMod n`.  They do not depend on any of the `ℕ`-specific material above.
+-/
+
+section LocalProduct
+
+/-- **A local ring has no idempotents besides `0` and `1`.**  If `e` is idempotent then
+`e * (1 - e) = 0`; in a local ring one of `e`, `1 - e` is a unit, and a unit annihilating
+its partner forces that partner to be `0`.  (Note a local ring may have zero divisors — e.g.
+`ZMod (p ^ k)` — so this genuinely uses the unit, not a domain argument.) -/
+theorem isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing
+    {R : Type*} [CommRing R] [IsLocalRing R] {e : R} :
+    IsIdempotentElem e ↔ e = 0 ∨ e = 1 := by
+  constructor
+  · intro he
+    rcases IsLocalRing.isUnit_or_isUnit_one_sub_self e with hu | hu
+    · -- `e` is a unit and `e * (1 - e) = 0`, so `1 - e = 0`, i.e. `e = 1`.
+      have h0 : e * (1 - e) = 0 := he.mul_one_sub_self
+      exact Or.inr (eq_of_sub_eq_zero (hu.mul_right_eq_zero.mp h0)).symm
+    · -- `1 - e` is a unit and `(1 - e) * e = 0`, so `e = 0`.
+      have h0 : (1 - e) * e = 0 := he.one_sub_mul_self
+      exact Or.inl (hu.mul_right_eq_zero.mp h0)
+  · rintro (rfl | rfl)
+    · exact IsIdempotentElem.zero
+    · exact IsIdempotentElem.one
+
+/-- The idempotents of a nontrivial local ring number exactly `2` — they are the two
+distinct elements `0` and `1`. -/
+theorem idempotent_count_local (R : Type*) [CommRing R] [IsLocalRing R] [Nontrivial R] :
+    Nat.card {e : R // IsIdempotentElem e} = 2 := by
+  have e : {e : R // IsIdempotentElem e} ≃ ({0, 1} : Set R) :=
+    Equiv.subtypeEquivRight (fun e => by
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
+      exact isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing)
+  rw [Nat.card_congr e, Nat.card_coe_set_eq, Set.ncard_pair (zero_ne_one)]
+
+/-- **Idempotents of a product ring are the coordinatewise idempotents.**  In `∀ i, R i`
+the equation `f * f = f` holds iff it holds in every coordinate. -/
+lemma isIdempotentElem_pi_iff {ι : Type*} {R : ι → Type*} [∀ i, Mul (R i)]
+    {f : ∀ i, R i} : IsIdempotentElem f ↔ ∀ i, IsIdempotentElem (f i) := by
+  simp only [IsIdempotentElem, funext_iff, Pi.mul_apply]
+
+/-- **The idempotent count of a finite product of nontrivial local rings is `2 ^ n`**, where
+`n` is the number of factors.  This is the ring-theoretic heart of the automorphic count:
+each local factor contributes the two idempotents `0` and `1`, independently, so the count
+is the product of `2` over the factors. -/
+theorem idempotent_count_pi_local {ι : Type*} [Finite ι] (R : ι → Type*)
+    [∀ i, CommRing (R i)] [∀ i, IsLocalRing (R i)] [∀ i, Nontrivial (R i)] :
+    Nat.card {e : (∀ i, R i) // IsIdempotentElem e} = 2 ^ Nat.card ι := by
+  haveI : Fintype ι := Fintype.ofFinite ι
+  have e : {e : (∀ i, R i) // IsIdempotentElem e} ≃ (∀ i, {e : R i // IsIdempotentElem e}) :=
+    (Equiv.subtypeEquivRight (fun _ => isIdempotentElem_pi_iff)).trans Equiv.subtypePiEquivPi
+  rw [Nat.card_congr e, Nat.card_pi]
+  simp only [idempotent_count_local]
+  rw [Finset.prod_const, Finset.card_univ, Nat.card_eq_fintype_card]
+
+/-- **Transport across a ring isomorphism.**  If a commutative ring `S` is isomorphic to a
+finite product of nontrivial local rings — as the Chinese Remainder Theorem provides for
+`ZMod n` and, more generally, for the quotient `𝒪_K / 𝔞` of a number ring by an ideal —
+then `S` has exactly `2 ^ n` idempotents, where `n` is the number of local factors. -/
+theorem idempotent_count_of_ringEquiv {S : Type*} [CommRing S] {ι : Type*} [Finite ι]
+    (R : ι → Type*) [∀ i, CommRing (R i)] [∀ i, IsLocalRing (R i)] [∀ i, Nontrivial (R i)]
+    (φ : S ≃+* ∀ i, R i) :
+    Nat.card {e : S // IsIdempotentElem e} = 2 ^ Nat.card ι := by
+  have e : {e : S // IsIdempotentElem e} ≃ {e : (∀ i, R i) // IsIdempotentElem e} :=
+    Equiv.subtypeEquiv φ.toEquiv (fun a => by
+      have hφ : φ.toEquiv a = φ a := rfl
+      rw [hφ]
+      simp only [IsIdempotentElem, ← map_mul, φ.injective.eq_iff])
+  rw [Nat.card_congr e, idempotent_count_pi_local]
+
+end LocalProduct
 
 end AutomorphicNumberOQ01OQ01OQ01
