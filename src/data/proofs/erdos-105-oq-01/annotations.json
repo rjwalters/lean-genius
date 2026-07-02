@@ -95,11 +95,30 @@
     ]
   },
   {
+    "id": "ann-erdos105oq01-reduction",
+    "proofId": "erdos-105-oq-01",
+    "range": {
+      "startLine": 203,
+      "endLine": 311
+    },
+    "type": "concept",
+    "title": "Line-Through-Two-Points Reduction: Toward Discharging the Axiom",
+    "content": "The parent's xichuan_counterexample axiom quantifies over ALL lines L. But a line's containment relation is rigid: contains_iff_of_contains_two shows that if L passes through distinct p ≠ q, then r ∈ L iff r = p + μ·(q − p) — exactly the affine line through p and q. So two lines through the same pair coincide as point sets (contains_congr_of_two), and one canonical representative lineThrough p q suffices. blocksAll_iff_connecting then replaces 'every rich line of A meets B' by 'every one of the C(|A|,2) connecting lines meets B'. This finite reformulation is the first concrete step a future axiom discharge needs, and it is entirely axiom-free.",
+    "mathContext": "$r \\in L \\iff \\exists \\mu,\\ r = p + \\mu(q-p)$ for any distinct $p,q \\in L$; hence blocking all rich lines $\\iff$ blocking the $\\binom{|A|}{2}$ chords $\\overline{pq}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "incidence geometry",
+      "affine lines",
+      "quantifier reduction",
+      "axiom elimination"
+    ]
+  },
+  {
     "id": "ann-erdos105oq01-summary",
     "proofId": "erdos-105-oq-01",
     "range": {
-      "startLine": 213,
-      "endLine": 228
+      "startLine": 313,
+      "endLine": 338
     },
     "type": "concept",
     "title": "Monotonicity Localizes All Remaining Uncertainty to m = n-4",

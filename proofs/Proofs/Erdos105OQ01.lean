@@ -200,7 +200,117 @@ theorem n_minus_4_threshold_lower (h : openProblem_n_minus_4) (n : ℕ) (hn : n 
   exact le_csSup hbdd (n_minus_4_avoidable_set h n hn)
 
 -- ════════════════════════════════════════════════════════════════
--- SECTION V: Summary
+-- SECTION V: Line-through-two-points reduction (axiom-free)
+--   The first concrete step toward *discharging* the parent's
+--   `xichuan_counterexample` axiom: the blocking clause quantifies over
+--   ALL lines `L`, but a rich line is determined (as a point set) by any
+--   two distinct `A`-points it passes through. This reduces "∀ rich lines"
+--   to the finite family of C(|A|,2) connecting lines — the reduction the
+--   parent currently lacks. All of Section V is axiom-free.
+-- ════════════════════════════════════════════════════════════════
+
+/-- **A line is determined, as a point set, by any two distinct points on it.**
+    If a line `L` passes through distinct points `p ≠ q`, then a third point `r`
+    lies on `L` iff it lies on the affine line through `p` and `q`, i.e.
+    `r = p + μ·(q - p)` for some scalar `μ`. This is the key uniqueness fact for
+    lines over `ℝ²` (the `Line` structure is redundant — base point and a nonzero
+    direction up to scaling — but its *containment relation* is rigid). -/
+theorem contains_iff_of_contains_two {L : Line} {p q : Point}
+    (hp : L.contains p) (hq : L.contains q) (hpq : p ≠ q) :
+    ∀ r : Point, L.contains r ↔ ∃ μ : ℝ, r = p + μ • (q - p) := by
+  obtain ⟨s, hs⟩ := hp
+  obtain ⟨u, hu⟩ := hq
+  -- The two parameters differ, else `p = q`.
+  have hus : u ≠ s := by
+    intro h; apply hpq; rw [hs, hu, h]
+  have hc : u - s ≠ 0 := sub_ne_zero.mpr hus
+  -- The chord `q - p` is a nonzero multiple of the direction.
+  have hqp : q - p = (u - s) • L.direction := by
+    rw [hs, hu, sub_smul]; abel
+  intro r
+  constructor
+  · rintro ⟨t, ht⟩
+    refine ⟨(t - s) * (u - s)⁻¹, ?_⟩
+    rw [hqp, ht, hs, smul_smul, mul_assoc, inv_mul_cancel₀ hc, mul_one]
+    module
+  · rintro ⟨μ, hμ⟩
+    refine ⟨s + μ * (u - s), ?_⟩
+    rw [hμ, hqp, hs, smul_smul]
+    module
+
+/-- **Two lines through the same pair of distinct points agree everywhere.**
+    Immediate from `contains_iff_of_contains_two`: both containment relations
+    reduce to the same affine parametrization by `p` and `q`. -/
+theorem contains_congr_of_two {L₁ L₂ : Line} {p q : Point} (hpq : p ≠ q)
+    (h1p : L₁.contains p) (h1q : L₁.contains q)
+    (h2p : L₂.contains p) (h2q : L₂.contains q) :
+    ∀ r : Point, L₁.contains r ↔ L₂.contains r := by
+  intro r
+  rw [contains_iff_of_contains_two h1p h1q hpq r,
+      contains_iff_of_contains_two h2p h2q hpq r]
+
+/-- The canonical `Line` through two distinct points `p ≠ q`, with base point `p`
+    and direction `q - p` (nonzero because `p ≠ q`). -/
+noncomputable def lineThrough (p q : Point) (h : p ≠ q) : Line where
+  basePoint := p
+  direction := q - p
+  direction_nonzero := sub_ne_zero.mpr (Ne.symm h)
+
+theorem lineThrough_contains_left (p q : Point) (h : p ≠ q) :
+    (lineThrough p q h).contains p := by
+  refine ⟨0, ?_⟩
+  show p = p + (0 : ℝ) • (q - p)
+  module
+
+theorem lineThrough_contains_right (p q : Point) (h : p ≠ q) :
+    (lineThrough p q h).contains q := by
+  refine ⟨1, ?_⟩
+  show q = p + (1 : ℝ) • (q - p)
+  module
+
+/-- Any line through distinct `p ≠ q` has exactly the same points as the canonical
+    `lineThrough p q`. So the whole redundant `Line`-structure quotient collapses to
+    one representative per pair of points. -/
+theorem contains_eq_lineThrough {L : Line} {p q : Point} (hpq : p ≠ q)
+    (hp : L.contains p) (hq : L.contains q) :
+    ∀ r : Point, L.contains r ↔ (lineThrough p q hpq).contains r :=
+  contains_congr_of_two hpq hp hq (lineThrough_contains_left p q hpq)
+    (lineThrough_contains_right p q hpq)
+
+/-- Being unblocked by `B` depends only on a line's point set: two lines through the
+    same distinct pair `p ≠ q` are unblocked by exactly the same obstacle sets. -/
+theorem unblocked_congr_of_two {L₁ L₂ : Line} {p q : Point} (hpq : p ≠ q)
+    (h1p : L₁.contains p) (h1q : L₁.contains q)
+    (h2p : L₂.contains p) (h2q : L₂.contains q) (B : Set Point) :
+    L₁.unblocked B ↔ L₂.unblocked B := by
+  constructor
+  · intro h b hb hc
+    exact h b hb ((contains_congr_of_two hpq h1p h1q h2p h2q b).mpr hc)
+  · intro h b hb hc
+    exact h b hb ((contains_congr_of_two hpq h1p h1q h2p h2q b).mp hc)
+
+/-- **Blocking reduces to the connecting lines.**
+    Every rich line of `A` meets `B` *iff* every line through two distinct points of
+    `A` meets `B`. This replaces the quantifier over ALL lines (as in the parent's
+    `xichuan_counterexample`) by a quantifier over the C(|A|,2) connecting lines —
+    the concrete reduction a future discharge of the axiom needs. Axiom-free. -/
+theorem blocksAll_iff_connecting (A B : Set Point) :
+    (∀ L : Line, L.isRich A → ¬ L.unblocked B) ↔
+      (∀ (p q : Point) (hpq : p ≠ q), p ∈ A → q ∈ A →
+        ¬ (lineThrough p q hpq).unblocked B) := by
+  constructor
+  · intro h p q hpq hp hq
+    exact h (lineThrough p q hpq)
+      ⟨p, q, hp, hq, hpq, lineThrough_contains_left p q hpq,
+        lineThrough_contains_right p q hpq⟩
+  · intro h L hrich hub
+    obtain ⟨p, q, hp, hq, hpq, hLp, hLq⟩ := hrich
+    exact h p q hpq hp hq
+      ((unblocked_congr_of_two hpq hLp hLq (lineThrough_contains_left p q hpq)
+        (lineThrough_contains_right p q hpq) B).mp hub)
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VI: Summary
 -- ════════════════════════════════════════════════════════════════
 
 /--
