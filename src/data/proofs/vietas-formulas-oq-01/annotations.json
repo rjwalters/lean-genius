@@ -57,13 +57,25 @@
     "prerequisites": ["Polynomial expansion"]
   },
   {
+    "id": "ann-vieta-oq01-depress-cubic",
+    "proofId": "vietas-formulas-oq-01",
+    "range": { "startLine": 159, "endLine": 167 },
+    "type": "example",
+    "title": "Depressing a Cubic: the Concrete Tschirnhaus Shift",
+    "content": "`depress_cubic` is the explicit degree-3 instance of the abstract `depressed_translate` law above. For roots $r, s, t$, shifting each by $-(r+s+t)/3$ (the negative mean) forces the three shifted roots to sum to zero — exactly the substitution $x = y - b/3$ that removes the $x^2$ term of a monic cubic $x^3 + bx^2 + \\dots$. The hypothesis $3 \\ne 0$ in the field is the only requirement (automatic in characteristic 0), and the goal closes with `field_simp; ring`. Eliminating the sub-leading term is the classical first move of Cardano's method, reducing the general cubic to the depressed form $y^3 + py + q = 0$.",
+    "mathContext": "The shift $x = y - (r+s+t)/3$ makes $\\sum_i (r_i - \\bar r) = 0$; over a field this needs only $3 \\ne 0$. The resulting depressed cubic $y^3 + py + q$ is then solved by Cardano's formula.",
+    "significance": "supporting",
+    "relatedConcepts": ["Tschirnhaus transformation", "depressed cubic", "Cardano's method"],
+    "prerequisites": ["Field arithmetic", "The abstract depressed_translate law above"]
+  },
+  {
     "id": "ann-vieta-oq01-reciprocal",
     "proofId": "vietas-formulas-oq-01",
-    "range": { "startLine": 159, "endLine": 212 },
+    "range": { "startLine": 168, "endLine": 208 },
     "type": "insight",
     "title": "Reciprocation Reverses Vieta; Palindromic ⟺ Root Product 1",
     "content": "Over a field, inverting the (nonzero) roots reverses the elementary symmetric dictionary: $e_k(1/r) = e_{n-k}(r)/e_n(r)$. Stated in cleared-denominator form (multiplying by the old top function $e_n = \\prod r_i$), `esymm_reciprocal_two` and `esymm_reciprocal_three` show the new $e_1, \\dots$ recover the old ones read in reverse, closed by `field_simp; ring` and $r^{-1}r = 1$ cancellation. `reciprocal_quadratic_sum` records the sum $1/r + 1/s = (r+s)/(rs) = e_1/e_2$. The palindromic criterion `reciprocal_swap_of_prod_one`: when $\\prod r_i = 1$, inversion merely swaps the roots, so the monic quadratic $x^2 - (r+s)x + 1$ equals its own reciprocal transform — its coefficient list is palindromic. This is the entry point to self-reciprocal polynomials, Salem numbers, and Lehmer's problem.",
-    "mathContext": "Reciprocal dictionary $e_k(1/r) = e_{n-k}(r)/e_n(r)$; self-reciprocal $\\iff e_n = \\prod r_i = 1$. Concrete `depress_cubic` also lives here: $x = y - (r+s+t)/3$ needs $3 \\ne 0$.",
+    "mathContext": "Reciprocal dictionary $e_k(1/r) = e_{n-k}(r)/e_n(r)$; self-reciprocal $\\iff e_n = \\prod r_i = 1$, at which point inversion permutes the roots and the coefficient list is palindromic.",
     "significance": "key",
     "relatedConcepts": ["reciprocal polynomial", "palindromic polynomial", "Salem number", "Lehmer's problem", "inv_mul_cancel₀"],
     "prerequisites": ["Field axioms and inverses", "Vieta's formulas"]
