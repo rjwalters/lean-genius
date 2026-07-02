@@ -1,15 +1,42 @@
 [
   {
+    "id": "ann-cheb-oq01-overview",
+    "proofId": "chebyshev-pnt-bridge-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 20
+    },
+    "type": "concept",
+    "title": "Overview: p^{v_p(C(2n,n))} ≤ 2n via Kummer's theorem",
+    "content": "The file proves that for any prime p and n ≥ 1, the prime-power factor p^{v_p(C(2n,n))} of the central binomial coefficient never exceeds 2n. The engine is Kummer's theorem: v_p(C(2n,n)) equals the number of carries when adding n to itself in base p, and since 2n has at most ⌊log_p(2n)⌋+1 base-p digits, there are at most that many carries — giving v_p(C(2n,n)) ≤ log_p(2n), i.e. p^{v_p(C(2n,n))} ≤ 2n. This single-prime-power bound is the key lemma behind Chebyshev's proof of Bertrand's postulate and his elementary bounds on the prime-counting function π. The file assembles it (via Legendre's formula and the 0/1 carry indicator), multiplies over primes to get C(2n,n) ≤ (2n)^{π(2n)}, and pairs it with the lower bound C(2n,n) ≥ 4^n/(2n+1) to reach the Chebyshev-type inequality 4^n ≤ (2n+1)·(2n)^{π(2n)}.",
+    "mathContext": "$v_p\\binom{2n}{n} \\le \\log_p(2n) \\Rightarrow p^{v_p\\binom{2n}{n}} \\le 2n$; multiplying, $\\binom{2n}{n}\\le(2n)^{\\pi(2n)}$, and with $\\binom{2n}{n}\\ge \\tfrac{4^n}{2n+1}$ one gets $4^n \\le (2n+1)(2n)^{\\pi(2n)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kummer's theorem",
+      "Legendre's formula",
+      "central binomial coefficient",
+      "Bertrand's postulate",
+      "prime counting function",
+      "Chebyshev bounds"
+    ],
+    "prerequisites": [
+      "p-adic valuation",
+      "base-p digit expansions",
+      "binomial coefficients",
+      "prime factorization"
+    ]
+  },
+  {
     "id": "ann-legendre-formula",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 32,
-      "endLine": 34
+      "startLine": 30,
+      "endLine": 61
     },
     "type": "insight",
     "title": "Legendre's Formula for v_p(n!)",
     "content": "States Legendre's formula: the $p$-adic valuation of $n!$ is $v_p(n!) = \\sum_{i=1}^{n} \\lfloor n/p^i \\rfloor$. This is currently a `sorry` -- the connection between Mathlib's `Nat.factorization` API and the summation formula needs to be established.",
-    "mathContext": "$v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor = \\sum_{i=1}^{\\lfloor \\log_p n \\rfloor} \\lfloor n/p^i \\rfloor$. In Lean: `(n !).factorization p = \u2211 i \u2208 Finset.Ico 1 (n + 1), n / p ^ i`. The sum is finite since $\\lfloor n/p^i \\rfloor = 0$ for $p^i > n$.",
+    "mathContext": "$v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor = \\sum_{i=1}^{\\lfloor \\log_p n \\rfloor} \\lfloor n/p^i \\rfloor$. In Lean: `(n !).factorization p = ∑ i ∈ Finset.Ico 1 (n + 1), n / p ^ i`. The sum is finite since $\\lfloor n/p^i \\rfloor = 0$ for $p^i > n$.",
     "significance": "key",
     "prerequisites": [
       "p-adic valuation",
@@ -27,8 +54,8 @@
     "id": "ann-carry-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 41,
-      "endLine": 45
+      "startLine": 63,
+      "endLine": 72
     },
     "type": "insight",
     "title": "Carry Term Bound: Each Digit Contributes 0 or 1",
@@ -51,8 +78,8 @@
     "id": "ann-carry-vanishing",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 49,
-      "endLine": 52
+      "startLine": 74,
+      "endLine": 79
     },
     "type": "insight",
     "title": "Carry Terms Vanish for Large Powers",
@@ -73,8 +100,8 @@
     "id": "ann-digits-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 55,
-      "endLine": 68
+      "startLine": 81,
+      "endLine": 95
     },
     "type": "insight",
     "title": "Existence of a Large Power of p",
@@ -97,13 +124,13 @@
     "id": "ann-main-theorem",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 78,
-      "endLine": 80
+      "startLine": 101,
+      "endLine": 107
     },
     "type": "insight",
-    "title": "Main Bound: p^{v_p(C(2n,n))} \u2264 2n",
+    "title": "Main Bound: p^{v_p(C(2n,n))} ≤ 2n",
     "content": "The **main theorem**: for any prime $p$ and $n \\geq 1$, $p^{v_p\\binom{2n}{n}} \\leq 2n$. Currently `sorry` -- requires connecting the carry infrastructure (proved) to Mathlib's `Nat.factorization` API. The proof sketch: $v_p\\binom{2n}{n} = \\sum_i \\text{carry}_i \\leq \\lfloor \\log_p(2n) \\rfloor$, so $p^{v_p} \\leq p^{\\log_p(2n)} = 2n$.",
-    "mathContext": "$p^{v_p\\binom{2n}{n}} \\leq 2n$. Equivalently: $v_p\\binom{2n}{n} \\leq \\log_p(2n)$. In Lean: `p ^ ((2 * n).choose n).factorization p \u2264 2 * n`.",
+    "mathContext": "$p^{v_p\\binom{2n}{n}} \\leq 2n$. Equivalently: $v_p\\binom{2n}{n} \\leq \\log_p(2n)$. In Lean: `p ^ ((2 * n).choose n).factorization p ≤ 2 * n`.",
     "significance": "key",
     "prerequisites": [
       "carry bound theorem",
@@ -122,13 +149,13 @@
     "id": "ann-product-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 84,
-      "endLine": 86
+      "startLine": 109,
+      "endLine": 158
     },
     "type": "insight",
     "title": "Product Bound via Prime Counting",
     "content": "Corollary: $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$. Since $\\binom{2n}{n} = \\prod_{p \\text{ prime}} p^{v_p\\binom{2n}{n}}$ and each factor is $\\leq 2n$, and there are $\\pi(2n)$ primes $\\leq 2n$, the product is bounded by $(2n)^{\\pi(2n)}$. Currently `sorry`.",
-    "mathContext": "$\\binom{2n}{n} = \\prod_{p \\leq 2n} p^{v_p\\binom{2n}{n}} \\leq \\prod_{p \\leq 2n} 2n = (2n)^{\\pi(2n)}$. In Lean: `(2 * n).choose n \u2264 (2 * n) ^ (2 * n).primeCounting'`.",
+    "mathContext": "$\\binom{2n}{n} = \\prod_{p \\leq 2n} p^{v_p\\binom{2n}{n}} \\leq \\prod_{p \\leq 2n} 2n = (2n)^{\\pi(2n)}$. In Lean: `(2 * n).choose n ≤ (2 * n) ^ (2 * n).primeCounting'`.",
     "significance": "key",
     "prerequisites": [
       "prime_pow_val_central_binom_le theorem",
@@ -139,15 +166,15 @@
       "prime counting function",
       "fundamental theorem of arithmetic",
       "multiplicative function bound",
-      "Erd\u0151s's argument"
+      "Erdős's argument"
     ]
   },
   {
     "id": "ann-binomial-lower",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 94,
-      "endLine": 96
+      "startLine": 164,
+      "endLine": 184
     },
     "type": "insight",
     "title": "Central Binomial Lower Bound",
@@ -170,8 +197,8 @@
     "id": "ann-chebyshev-bound",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 101,
-      "endLine": 103
+      "startLine": 186,
+      "endLine": 194
     },
     "type": "insight",
     "title": "Chebyshev's Combined Inequality",
@@ -194,8 +221,8 @@
     "id": "ann-concrete-examples",
     "proofId": "chebyshev-pnt-bridge-oq-01",
     "range": {
-      "startLine": 111,
-      "endLine": 117
+      "startLine": 200,
+      "endLine": 208
     },
     "type": "concept",
     "title": "Concrete Computations via native_decide",
