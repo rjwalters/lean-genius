@@ -2,49 +2,133 @@
   {
     "id": "ann-pt0402-overview",
     "proofId": "picks-theorem-oq-04-oq-02",
-    "range": { "startLine": 3, "endLine": 61 },
+    "range": {
+      "startLine": 3,
+      "endLine": 61
+    },
     "type": "concept",
     "title": "The Two Symmetries of the Shoelace Sum",
     "content": "The signed shoelace sum S(v0, ..., v_{m-1}) = Sum_k (x_k y_{k+1} - x_{k+1} y_k) computes twice the oriented area of a lattice polygon. Two structural facts make it 'oriented area' rather than an encoding artefact: reversing the traversal direction negates it (S(reverse vs) = -S(vs)), and relabelling which vertex is first — a cyclic rotation — leaves it unchanged (S(rotate vs) = S(vs)). This file proves both, axiom-free, answering open question (2) of PicksTheoremOQ04. The method factors every result through an open-polyline edge sum edgeSum, which is agnostic to the loop's distinguished basepoint.",
     "mathContext": "Reversal encodes orientation; rotation encodes basepoint-independence. Together with the parent file's translation invariance, they exhibit the full symmetry action on the coordinate area.",
     "significance": "Confirms |S|/2 is a well-defined oriented area, not an artefact of the chosen vertex list.",
-    "relatedConcepts": ["shoelace formula", "signed area", "orientation", "cyclic symmetry"],
-    "prerequisites": ["wedge product", "signed polygon area"]
+    "relatedConcepts": [
+      "shoelace formula",
+      "signed area",
+      "orientation",
+      "cyclic symmetry"
+    ],
+    "prerequisites": [
+      "wedge product",
+      "signed polygon area"
+    ]
+  },
+  {
+    "id": "ann-picks-oq0402-05",
+    "proofId": "picks-theorem-oq-04-oq-02",
+    "range": {
+      "startLine": 73,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "The Wedge Product and the Shoelace Sum",
+    "content": "These definitions are the primitives everything else rests on. cross a b = x_a·y_b − y_a·x_b is the 2D wedge (cross) product — the per-edge term of the shoelace sum — and it is twice the signed area of the triangle (0, a, b). Two facts are recorded immediately: cross_self a = 0 and the antisymmetry cross a b = −cross b a; this single algebraic identity is exactly what forces the sign flip under orientation reversal. shoelaceAux first sums cross over consecutive vertices and then closes the loop with the edge back to first; shoelace (v0 :: rest) := shoelaceAux v0 (v0 :: rest) is the signed shoelace sum of the closed polygon, Σ_k cross(v_k, v_{k+1 mod m}).",
+    "mathContext": "cross(a, b) = x_a·y_b − y_a·x_b = 2·[signed area of triangle (0, a, b)]. shoelace(v_0, …, v_{m-1}) = Σ_k cross(v_k, v_{k+1 mod m}) = 2·[signed area of the polygon]; its sign encodes orientation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "wedge / cross product",
+      "signed area",
+      "antisymmetry"
+    ],
+    "prerequisites": [
+      "2D determinant / cross product",
+      "recursive list definitions"
+    ]
   },
   {
     "id": "ann-pt0402-edgesum-bridge",
     "proofId": "picks-theorem-oq-04-oq-02",
-    "range": { "startLine": 100, "endLine": 128 },
+    "range": {
+      "startLine": 100,
+      "endLine": 128
+    },
     "type": "technique",
     "title": "The edgeSum Bridge: Decoupling Symmetry from Basepoint",
     "content": "edgeSum sums cross over consecutive pairs of a list with NO closing edge — the open polyline sum. The bridge shoelaceAux_eq_edgeSum proves shoelaceAux first l = edgeSum (l ++ [first]): the closed shoelace loop is exactly the open edge sum of the list with its start appended as the closing vertex. This is the pivotal move. On the closed loop the head vertex plays a double role (start and loop-close), which entangles reversal and rotation; on the open polyline there is no distinguished basepoint, so each symmetry becomes a clean structural induction. Every later theorem transports its result back to shoelace through this one lemma.",
     "mathContext": "Proved by two-step list induction: the a :: b :: t recursion of shoelaceAux matches that of edgeSum after cons_append normalization.",
     "significance": "A reusable pattern: to prove symmetries of a based cyclic structure, factor through a basepoint-free open version.",
-    "relatedConcepts": ["open vs closed polyline", "structural recursion", "basepoint independence"],
-    "prerequisites": ["list induction"]
+    "relatedConcepts": [
+      "open vs closed polyline",
+      "structural recursion",
+      "basepoint independence"
+    ],
+    "prerequisites": [
+      "list induction"
+    ]
   },
   {
     "id": "ann-pt0402-reversal",
     "proofId": "picks-theorem-oq-04-oq-02",
-    "range": { "startLine": 148, "endLine": 244 },
+    "range": {
+      "startLine": 148,
+      "endLine": 244
+    },
     "type": "theorem",
     "title": "Orientation Reversal: S(reverse vs) = -S(vs)",
     "content": "edgeSum_reverse proves edgeSum (reverse l) = -edgeSum l: reversing a polyline reverses every edge, and since cross a b = -cross b a (cross_antisymm), the whole sum negates. The induction uses edgeSum_snoc to peel the edge newly exposed at the end of the reversed list. Transporting to the full polygon is subtle: reversing vs changes which vertex is first, so the naive bridge mismatches basepoints. shoelace_reverse_tail first handles reversal with the base vertex held fixed (via edgeSum_reverse on the closed loop), and shoelace_reverse then uses rotation invariance to slide the base vertex back into place — so the reversal law genuinely depends on the rotation law.",
     "mathContext": "Orientation reversal is the single algebraic fact cross_antisymm lifted along the reverse induction; the basepoint realignment is where rotation invariance enters.",
     "significance": "Formalizes that clockwise vs counter-clockwise traversal is exactly the sign of the shoelace area.",
-    "relatedConcepts": ["antisymmetry", "orientation", "list reversal"],
-    "prerequisites": ["cross antisymmetry", "edgeSum bridge"]
+    "relatedConcepts": [
+      "antisymmetry",
+      "orientation",
+      "list reversal"
+    ],
+    "prerequisites": [
+      "cross antisymmetry",
+      "edgeSum bridge"
+    ]
   },
   {
     "id": "ann-pt0402-rotation",
     "proofId": "picks-theorem-oq-04-oq-02",
-    "range": { "startLine": 180, "endLine": 227 },
+    "range": {
+      "startLine": 180,
+      "endLine": 227
+    },
     "type": "theorem",
     "title": "Cyclic Rotation Invariance: S(rotate vs) = S(vs)",
     "content": "shoelace_rotate_one proves that moving the first vertex to the back of the list (rest ++ [v0] vs v0 :: rest) leaves the shoelace sum unchanged: both loops are expanded through the edgeSum bridge and matched via edgeSum_snoc, exhibiting them as the same edge multiset re-associated. The explicit one-step rotation rotl packages this, and shoelace_rotl_iterate lifts it to any number of one-step rotations by induction on the iterate count, so the shoelace sum is a genuine invariant of the cyclic vertex order. A closed polygon has no distinguished starting vertex.",
     "mathContext": "Rotation invariance is combinatorial, not analytic: it is a re-association of the closed edge sum, formalized entirely by the bridge plus the snoc law.",
     "significance": "Justifies treating a polygon as a cyclic (not linear) list of vertices when computing area.",
-    "relatedConcepts": ["cyclic order", "rotation", "invariance"],
-    "prerequisites": ["edgeSum bridge", "snoc law"]
+    "relatedConcepts": [
+      "cyclic order",
+      "rotation",
+      "invariance"
+    ],
+    "prerequisites": [
+      "edgeSum bridge",
+      "snoc law"
+    ]
+  },
+  {
+    "id": "ann-picks-oq0402-06",
+    "proofId": "picks-theorem-oq-04-oq-02",
+    "range": {
+      "startLine": 250,
+      "endLine": 269
+    },
+    "type": "context",
+    "title": "Concrete Verification by `decide`",
+    "content": "The abstract symmetry laws are grounded in explicit numeric witnesses, all discharged by decide (arithmetic on finite integer lists is decidable). The unit CCW right triangle gives S = 1; the same triangle listed clockwise gives S = −1, instantiating shoelace_reverse; a cyclic relisting keeps S = 1, instantiating shoelace_rotl; and the 3×4 rectangle gives S = 24 with its reverse −24. Together they confirm that |S|/2 recovers the ordinary area (1/2 for the triangle, 12 for the rectangle) while the sign tracks orientation exactly as the general theorems predict.",
+    "mathContext": "S = 2·(signed area), so area = |S|/2. Triangle area 1/2 ⟹ S = ±1; 3×4 rectangle area 12 ⟹ S = ±24. Reversal negates S; cyclic rotation fixes S.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide tactic",
+      "orientation",
+      "worked examples"
+    ],
+    "prerequisites": [
+      "decidable equality on ℤ",
+      "shoelace formula for area"
+    ]
   }
 ]
