@@ -44,8 +44,8 @@
       "Waring's problem and additive number theory"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 15,
-    "definitionCount": 9,
+    "theoremCount": 14,
+    "definitionCount": 8,
     "additionalFiles": [
       "Proofs/FourSquareRepresentations.lean"
     ]
@@ -131,7 +131,7 @@
       "title": "Part III: Representation Counts and r₄(n)",
       "startLine": 188,
       "endLine": 234,
-      "summary": "Jacobi’s four-square count: r4 and sumDivisorsNot4 definitions, the prime formula r4(p)=8(p+1), and jacobi_implies_lagrange."
+      "summary": "Jacobi’s four-square count: the sumDivisorsNot4 definition and the prime formula r₄(p)=8(p+1), proved as sumDivisorsNot4 p = 1 + p."
     },
     {
       "id": "part4-waring",
@@ -214,10 +214,10 @@
     ],
     "opens": [],
     "namespace": "LagrangeFourSquares",
-    "lineCount": 424,
+    "lineCount": 409,
     "axiomCount": 5,
-    "theoremCount": 15,
-    "definitionCount": 9,
+    "theoremCount": 14,
+    "definitionCount": 8,
     "path": "Proofs/LagrangeFourSquares.lean",
     "sorries": 0,
     "additionalFiles": [
