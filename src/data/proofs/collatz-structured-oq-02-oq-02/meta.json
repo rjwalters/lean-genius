@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the algebraic engine of Eliahou's cycle-length bound",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Header docstring and imports: the open question, Eliahou's two ingredients (algebraic core vs finite verification), the four axiom-free results, and the conclusion that the residual obstacle is finite computation not analysis.",
+      "mathContext": "This file (open question collatz-structured-oq-02-oq-02) asks whether Eliahou's full Collatz cycle-length bound (length > 1.7×10^10) can be formalized, or whether it needs analytic estimates that resist formalization. Eliahou (1993) has two ingredients: (A) an elementary, purely algebraic core — the Syracuse cycle equation, the Diophantine constraint 2^L > 3^j, and the continued-fraction convergents of log₂3 controlling the minimal L; and (B) a finite computational verification (n < 2^40 in 1993, pushed to 2^68 by Barina 2020) combined with circuit/level counting to amplify to 17 billion. The sibling CollatzStructuredOQ02OQ01 axiomatized the whole bound; this file instead removes the algebraic core (A) from the axiom budget by proving it from scratch, and isolates precisely the part (B) that resists a decide-style formalization. With no axioms and no sorry it proves: (1) the Syracuse cycle equation ⇒ 2^L > 3^j — for any cyclic sequence of positive odd Syracuse elements with halving exponents lᵢ ≥ 1 satisfying 2^{lᵢ}·x_{i+1} = 3xᵢ+1, the total L = Σlᵢ satisfies 3^j < 2^L, derived by telescoping ∏(3xᵢ+1) = 2^L∏xᵢ > 3^j∏xᵢ (the parent merely stated this); (2) L ≥ j+1 and Collatz period N = j+L ≥ 2j+1; (3) the continued-fraction near-misses of log₂3 (convergent denominators j = 1,2,5,12,17,41,53,…; the near-equalities 2^19<3^12<2^20, 2^26<3^17<2^27, 2^64<3^41<2^65 that make 2^L−3^j small, Eliahou's amplification engine); (4) the obstacle is (B) not (A) — pinning the length below 1.7×10^10 additionally needs the finite range check on 2^68 numbers plus the convergent circuit-count, neither finitely decide-able at Lean's kernel budget. Conclusion: the algebraic core formalizes cleanly (axiom-free); the residual obstacle is a large finite verification, not an essentially analytic estimate. References: Eliahou (1993), Lagarias (1985), Barina (2021)."
+    },
+    {
       "id": "cycle-product",
       "title": "The Syracuse Cycle Equation Forces 2^L > 3^j",
       "startLine": 70,
