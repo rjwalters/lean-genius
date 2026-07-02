@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-vf-oq0401-esymm",
+    "proofId": "vietas-formulas-oq-04-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "The Master Identity in Elementary Symmetric Functions",
+    "content": "The engine of the file. Expanding the squared root-gap product `((r₁−r₂)(r₁−r₃)(r₂−r₃))²` and rewriting in the elementary symmetric functions e₁ = r₁+r₂+r₃, e₂ = r₁r₂+r₁r₃+r₂r₃, e₃ = r₁r₂r₃ yields `e₁²e₂² − 4e₂³ − 4e₁³e₃ + 18e₁e₂e₃ − 27e₃²`. The proof is a single `ring` call with no hypotheses. Stated over an arbitrary `CommRing R`, so it holds over ℤ, finite fields, and matrix rings — no field, order, or characteristic assumptions.",
+    "mathContext": "Δ = ∏_{i<j}(rᵢ−rⱼ)² is a symmetric polynomial in the roots, hence expressible in e₁,e₂,e₃. The explicit expansion is the degree-3 discriminant-in-symmetric-functions formula.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "discriminant",
+      "elementary symmetric polynomials",
+      "Vieta's formulas",
+      "ring identity",
+      "CommRing"
+    ],
+    "prerequisites": [
+      "Commutative ring axioms",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-vf-oq0401-coeffs",
+    "proofId": "vietas-formulas-oq-04-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "The Classical Coefficient Discriminant",
+    "content": "Specialises the master identity to the coefficients of a monic cubic `x³ + b·x² + c·x + d`. Vieta's formulas give `b = −(r₁+r₂+r₃)`, `c = r₁r₂+r₁r₃+r₂r₃`, `d = −(r₁r₂r₃)`; substituting these (`subst hb hc hd`) and running `ring` produces the textbook `b²c² − 4c³ − 4b³d + 18bcd − 27d²`. This is the discriminant of the general monic cubic in its coefficient form.",
+    "mathContext": "With a = 1 the classical cubic discriminant Δ = 18bcd − 4b³d + b²c² − 4c³ − 27d² is exactly the e₁=−b, e₂=c, e₃=−d substitution into the master identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discriminant",
+      "Vieta's formulas",
+      "monic cubic",
+      "polynomial coefficients"
+    ],
+    "prerequisites": [
+      "Vieta's formulas for the cubic",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-vf-oq0401-depressed",
+    "proofId": "vietas-formulas-oq-04-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 92
+    },
+    "type": "theorem",
+    "title": "The Depressed-Cubic Discriminant Δ = −4p³ − 27q²",
+    "content": "The headline result. A depressed cubic `x³ + p·x + q` has vanishing quadratic coefficient, so the roots satisfy `r₁ + r₂ + r₃ = 0`, with `p = r₁r₂+r₁r₃+r₂r₃` and `q = −(r₁r₂r₃)`. The proof eliminates the third root via `r₃ = −(r₁ + r₂)` (obtained by `linear_combination hsum`), then `subst hr3 hp hq; ring` collapses the whole expression to `−4p³ − 27q²`. This is the classical discriminant that governs the casus irreducibilis of the cubic.",
+    "mathContext": "When e₁ = 0 the four e₁-bearing terms of the master identity vanish, leaving −4e₂³ − 27e₃² = −4p³ − 27q² (since p = e₂, q = −e₃, so q² = e₃²).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "discriminant",
+      "depressed cubic",
+      "casus irreducibilis",
+      "Vieta's formulas"
+    ],
+    "prerequisites": [
+      "Vieta's formulas for the cubic",
+      "linear_combination tactic",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-vf-oq0401-repeated-root",
+    "proofId": "vietas-formulas-oq-04-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "The Repeated-Root Criterion over an Integral Domain",
+    "content": "The cubic analogue of the quadratic repeated-root test. Because the discriminant is literally the square of the product `(r₁−r₂)(r₁−r₃)(r₂−r₃)`, over an integral domain it vanishes exactly when a factor does: `pow_eq_zero_iff` strips the square, `mul_eq_zero` splits the product, and `sub_eq_zero` turns each vanishing gap into a coincidence of roots, giving `Δ = 0 ↔ r₁=r₂ ∨ r₁=r₃ ∨ r₂=r₃`. The companions `discriminant_ne_zero_of_distinct` and `depressed_discriminant_zero_iff` deduce that distinct roots force Δ≠0 and rephrase the criterion in p,q form.",
+    "mathContext": "Δ = 0 ⇔ some pair of roots coincides. This is an exact equivalence over any domain, not an estimate — the structural reason √Δ detects a repeated root.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discriminant",
+      "repeated roots",
+      "integral domain",
+      "no zero divisors"
+    ],
+    "prerequisites": [
+      "Integral domain (no zero divisors)",
+      "pow_eq_zero_iff",
+      "mul_eq_zero",
+      "sub_eq_zero"
+    ]
+  }
+]
