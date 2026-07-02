@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-913-ann-overview",
+    "proofId": "erdos-913",
+    "range": {
+      "startLine": 1,
+      "endLine": 14
+    },
+    "type": "concept",
+    "title": "Overview: Distinct Exponents in n(n+1)",
+    "content": "Erdős Problem #913 asks whether there are infinitely many $n$ such that, writing $n(n+1) = \\prod p_i^{k_i}$ in distinct primes, all exponents $k_i$ are *distinct*. The problem is open, but Erdős noted a conditional route: if infinitely many primes $p$ have $8p^2-1$ also prime, then $n = 8p^2-1$ yields the exponent multiset $\\{1,2,3\\}$ — all distinct. This entry formalizes that conditional implication (under a Bunyakovsky-type hypothesis stated as an axiom), a parallel Mersenne-prime route, and several unconditional small examples.",
+    "mathContext": "Seek infinitely many $n$ with all exponents of $n(n+1)=\\prod p_i^{k_i}$ distinct. Conditional sufficient condition: infinitely many primes $p$ with $8p^2-1$ prime give $n=8p^2-1$ with exponents $\\{1,2,3\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime factorization",
+      "Bunyakovsky conjecture",
+      "distinct exponents",
+      "consecutive integers"
+    ],
+    "prerequisites": [
+      "number theory",
+      "prime factorization"
+    ]
+  },
+  {
     "id": "erdos-913-imports",
     "proofId": "erdos-913",
     "type": "concept",
@@ -184,6 +207,72 @@
       "Nat.Prime",
       "Nat.primeFactors",
       "Finset literal"
+    ]
+  },
+  {
+    "id": "erdos-913-ann-conditional",
+    "proofId": "erdos-913",
+    "range": {
+      "startLine": 133,
+      "endLine": 211
+    },
+    "type": "technique",
+    "title": "Conditional result via 8p²−1",
+    "content": "The core conditional theorem. The hypothesis `infinite_8p_sq_minus_1_primes` (a Bunyakovsky-type assumption, stated as an `axiom`) posits infinitely many primes $p$ with $8p^2-1$ prime. For such $p \\neq 2$, taking $n = 8p^2-1$ gives $n(n+1) = (8p^2-1)\\cdot 8p^2 = 2^3 \\cdot p^2 \\cdot (8p^2-1)^1$, an exponent structure $\\{3,2,1\\}$ of distinct values. Since $p \\mapsto 8p^2-1$ is injective, infinitely many primes yield infinitely many distinct $n$, so `erdos_913_conditional` derives `ErdosProblem913` from the hypothesis.",
+    "mathContext": "For prime $p\\neq 2$ with $8p^2-1$ prime: $n(n+1) = 2^3\\cdot p^2\\cdot(8p^2-1)$, exponents $\\{3,2,1\\}$ distinct. Injectivity of $p\\mapsto 8p^2-1$ lifts infinitude of primes to infinitude of witnesses.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom hypothesis",
+      "injective map",
+      "conditional theorem",
+      "exponent multiset"
+    ],
+    "prerequisites": [
+      "number theory",
+      "prime factorization"
+    ]
+  },
+  {
+    "id": "erdos-913-ann-examples",
+    "proofId": "erdos-913",
+    "range": {
+      "startLine": 212,
+      "endLine": 267
+    },
+    "type": "insight",
+    "title": "Unconditional small examples",
+    "content": "Independent of any conjecture, several concrete $n$ are verified to have the distinct-exponent property: $n=3$ ($3\\cdot4 = 2^2\\cdot3$), $n=7$ ($7\\cdot8 = 2^3\\cdot7$), $n=8$ ($8\\cdot9 = 2^3\\cdot3^2$), $n=31$ ($31\\cdot32 = 2^5\\cdot31$), $n=71$ ($71\\cdot72 = 2^3\\cdot3^2\\cdot71$, a genuine three-factor case), and $n=127$ ($127\\cdot128 = 2^7\\cdot127$). These show the set is nonempty and exhibit both two- and three-factor patterns.",
+    "mathContext": "$3\\cdot4=2^2\\cdot3$; $7\\cdot8=2^3\\cdot7$; $8\\cdot9=2^3\\cdot3^2$; $31\\cdot32=2^5\\cdot31$; $71\\cdot72=2^3\\cdot3^2\\cdot71$; $127\\cdot128=2^7\\cdot127$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mersenne numbers",
+      "concrete computation",
+      "decide"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-913-ann-mersenne",
+    "proofId": "erdos-913",
+    "range": {
+      "startLine": 269,
+      "endLine": 344
+    },
+    "type": "technique",
+    "title": "Mersenne-prime route",
+    "content": "A second conditional path uses Mersenne primes. For a Mersenne prime $2^k-1$ with $k\\ge 2$, taking $n = 2^k-1$ gives $n(n+1) = (2^k-1)\\cdot 2^k = 2^k\\cdot(2^k-1)^1$, exponents $\\{k,1\\}$ which are distinct for $k\\ge 2$. Since $k\\mapsto 2^k-1$ is injective, infinitely many Mersenne primes would imply Erdős #913 (`erdos_913_conditional_mersenne`). Both the Mersenne infinitude and the $8p^2-1$ infinitude remain open, so the main problem stays conditional; the distinct-exponent set is unconditionally nonempty (witnessed by $n=3$).",
+    "mathContext": "For a Mersenne prime $2^k-1$, $k\\ge 2$: $n(n+1) = 2^k\\cdot(2^k-1)$, exponents $\\{k,1\\}$ distinct. Injectivity of $k\\mapsto 2^k-1$ gives the conditional implication.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mersenne prime",
+      "injective map",
+      "open conjecture",
+      "nonempty set"
+    ],
+    "prerequisites": [
+      "number theory"
     ]
   }
 ]
