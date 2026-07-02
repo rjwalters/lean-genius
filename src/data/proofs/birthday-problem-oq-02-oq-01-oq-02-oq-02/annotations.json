@@ -1,5 +1,31 @@
 [
   {
+    "id": "ann-bp02010202-overview",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 4,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Overview: Bias Raises Collisions at Least Quadratically in Total Variation",
+    "content": "The parent shows that among all distributions p on d outcomes, the uniform law MINIMIZES the two-draw collision probability C(p) = ∑ᵢ pᵢ², with C(p) ≥ 1/d and equality iff p is uniform — a QUALITATIVE extremality statement. This file supplies the QUANTITATIVE answer the parent flagged: bound the excess ∑ pᵢ² − 1/d below in terms of the total-variation distance of p from uniform. Writing dTV(p,u) = ½∑ᵢ|pᵢ − 1/d|, it proves the sharp-in-order lower bound C(p) − 1/d ≥ (4/d)·dTV(p,u)². So the collision excess grows at least QUADRATICALLY in total-variation distance: a distribution ε away from uniform has collision probability ≥ 1/d + 4ε²/d. The proof combines two ingredients: the variance identity C(p) − 1/d = ∑ᵢ(pᵢ − 1/d)² (squared ℓ² distance, from the parent) and Cauchy–Schwarz/power-mean (∑gᵢ)² ≤ d·∑gᵢ² applied to gᵢ = |pᵢ − 1/d|, giving 4·dTV² ≤ d·(C(p) − 1/d). The bound is order-sharp (equality up to constant for a two-spike perturbation). This is a Pinsker-flavored refinement replacing 'bias ⇒ more collisions' with an effective, computable lower bound.",
+    "mathContext": "For a probability vector $p$ on $d$ outcomes, the collision probability $C(p)=\\sum_i p_i^2$ satisfies $C(p)-1/d=\\|p-u\\|_2^2$, and Cauchy–Schwarz relates the $\\ell^1$ deviation $2\\,d_{TV}(p,u)=\\sum_i|p_i-1/d|$ to the $\\ell^2$ deviation: $(\\sum_i|p_i-1/d|)^2\\le d\\sum_i(p_i-1/d)^2$, yielding $C(p)-1/d\\ge (4/d)\\,d_{TV}(p,u)^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "birthday problem",
+      "collision probability",
+      "total variation distance",
+      "Cauchy–Schwarz inequality",
+      "Pinsker inequality",
+      "extremality of the uniform distribution"
+    ],
+    "prerequisites": [
+      "probability distributions",
+      "total variation distance",
+      "Cauchy–Schwarz inequality"
+    ]
+  },
+  {
     "id": "ann-birthday-quant-tv-def",
     "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-02",
     "range": {
