@@ -66,6 +66,28 @@
     ]
   },
   {
+    "id": "ann-bez-oq040201-06",
+    "proofId": "bezout-identity-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 108
+    },
+    "type": "proof-step",
+    "title": "The gcd Is Its Own Canonical Witness",
+    "content": "gcd_characterizes_ideal specializes the two-sided characterization to the case c = gcd(a, b) itself. Feeding dvd_refl into both directions of gcd_complete_characterization_Bezout yields the two defining properties of a greatest common divisor at once: achievability (∃ x y, a·x + b·y = gcd — the gcd is a linear combination via gcd_eq_sum) and universality (gcd divides every c that is itself a linear combination of a and b). It is the concrete corollary that turns the abstract 'd ∼ gcd' equivalence into a statement about gcd directly.",
+    "mathContext": "The pair (achievability, universality) is exactly the universal property of the generator of span{a, b}. Choosing d = gcd collapses both conditions of the characterization to the reflexive gcd ∣ gcd.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "universal property of gcd",
+      "achievability vs universality",
+      "dvd_refl"
+    ],
+    "prerequisites": [
+      "gcd_complete_characterization_Bezout",
+      "greatest common divisor"
+    ]
+  },
+  {
     "id": "ann-bez-oq040201-04",
     "proofId": "bezout-identity-oq-04-oq-02-oq-01",
     "range": {
@@ -107,6 +129,28 @@
     "prerequisites": [
       "valuation rings",
       "Noetherian vs non-Noetherian"
+    ]
+  },
+  {
+    "id": "ann-bez-oq040201-07",
+    "proofId": "bezout-identity-oq-04-oq-02-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 161
+    },
+    "type": "context",
+    "title": "Concrete Bézout Coefficients in ℤ",
+    "content": "Because ℤ is a Euclidean domain it is a Bézout ring, so every theorem above specializes to it. These existential witnesses make the abstract characterization tangible without ever invoking the noncomputable IsBezout.gcd: gcd(6, 15) ∼ 3 with 3 = 6·(−2) + 15·1 (achievable); 6 is achievable because 3 ∣ 6; 4 is NOT achievable because 3 ∤ 4 (dispatched by omega); and 7, 5 are coprime (gcd ∼ 1), so every c ∈ ℤ is a combination — 7·(3c) + 5·(−4c) = c. The negative example is the crux: it shows the characterization genuinely constrains which targets c are reachable, exactly the divisibility obstruction gcd ∣ c.",
+    "mathContext": "gcd(6, 15) = 3 so {6x + 15y : x, y ∈ ℤ} = 3ℤ, and 4 ∉ 3ℤ. gcd(7, 5) = 1 so {7x + 5y} = ℤ. omega decides ¬∃ via the obstruction 3 ∤ 4.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bézout coefficients",
+      "linear Diophantine equations",
+      "coprimality"
+    ],
+    "prerequisites": [
+      "gcd in ℤ",
+      "omega tactic"
     ]
   }
 ]
