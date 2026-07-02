@@ -143,7 +143,7 @@ theorem hInnerInt_of_continuous (γ : ℝ → ℝ × ℝ) (a b : ℝ)
       (fun t => ∫ θ in (0 : ℝ)..π, |(deriv (Prod.fst ∘ γ) t) * sin θ +
                                       (deriv (Prod.snd ∘ γ) t) * cos θ|)
       volume a b :=
-  (innerIntegral_continuous γ hx hy).intervalIntegrable
+  (innerIntegral_continuous γ hx hy).intervalIntegrable a b
 
 /-!
 ## Part IV: Buffon–Barbier without the integrability side-condition
