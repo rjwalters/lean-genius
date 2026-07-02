@@ -16,7 +16,11 @@
       "asymptotics",
       "filters"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic functions in number theory",
+      "Mathlib's ArithmeticFunction library",
+      "the sum-of-divisors function σ_k"
+    ]
   },
   {
     "id": "ann-e946-tau-def",
@@ -35,7 +39,11 @@
       "multiplicative functions",
       "prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer",
+      "prime factorization",
+      "multiplicative functions"
+    ]
   },
   {
     "id": "ann-e946-consec-set",
@@ -53,7 +61,11 @@
       "consecutive integers",
       "set membership"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "consecutive integers",
+      "set-builder notation and membership"
+    ]
   },
   {
     "id": "ann-e946-examples",
@@ -71,7 +83,11 @@
       "computation",
       "decidability"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "computing τ(n) by listing divisors",
+      "the native_decide tactic",
+      "decidable propositions in Lean"
+    ]
   },
   {
     "id": "ann-e946-counting",
@@ -89,7 +105,11 @@
       "counting",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting functions N(x)",
+      "asymptotic notation",
+      "iterated logarithm (log log x)"
+    ]
   },
   {
     "id": "ann-e946-heath-brown",
@@ -108,7 +128,11 @@
       "sieve methods",
       "infinitude"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "sieve methods in analytic number theory",
+      "highly composite numbers"
+    ]
   },
   {
     "id": "ann-e946-main",
@@ -126,7 +150,11 @@
       "Erdős problems",
       "divisor function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinitude of a set of integers",
+      "the divisor function τ(n)",
+      "invoking an axiom to close a theorem"
+    ]
   },
   {
     "id": "ann-e946-spiro",
@@ -145,7 +173,11 @@
       "factorial",
       "gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "factorials and their divisor counts",
+      "highly composite numbers"
+    ]
   },
   {
     "id": "ann-e946-lower-bound",
@@ -163,7 +195,11 @@
       "asymptotic bounds",
       "big-O notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bounds (≫)",
+      "logarithm and iterated logarithm",
+      "counting function N(x)"
+    ]
   },
   {
     "id": "ann-e946-upper-bound",
@@ -181,6 +217,10 @@
       "upper bounds",
       "asymptotic tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic upper bounds (≪)",
+      "big-O notation",
+      "matching upper and lower bounds"
+    ]
   }
 ]
