@@ -67,7 +67,8 @@
       "**Faithfulness is the whole content.** Once the left-regular representation is recognised as a group action, Cayley's theorem reduces to a single fact: the regular self-action is faithful, i.e. g·1 = h·1 forces g = h. Mathlib packages this as RightCancelMonoid.faithfulSMul, found automatically by typeclass resolution.",
       "**Reuse the bundled action.** Rather than hand-build the homomorphism and check map_one/map_mul, the proof instantiates MulAction.toPermHom G G at the self-action, inheriting the homomorphism structure for free.",
       "**Three faces of one theorem.** Injectivity of a hom, existence of an embedding, and isomorphism onto a subgroup are equivalent packagings; MonoidHom.ofInjective converts the first into the last (G ≃* range), which is the form 'isomorphic to a subgroup of a permutation group'.",
-      "**Not Cayley–Hamilton.** The gallery has many Cayley–Hamilton (matrix) entries; the group-theoretic Cayley theorem — every group is a permutation group — is a distinct result and was absent."
+      "**Not Cayley–Hamilton.** The gallery has many Cayley–Hamilton (matrix) entries; the group-theoretic Cayley theorem — every group is a permutation group — is a distinct result and was absent.",
+      "**The embedding is faithful but far from minimal.** Cayley realises G inside Sym(G) = Equiv.Perm G, a symmetric group of order |G|! — enormous compared to G. The theorem guarantees a faithful permutation representation but not the smallest one; the minimal faithful degree μ(G) (e.g. μ(Cₙ)=n, μ(S₄)=4) is a subtler invariant that Cayley's construction only upper-bounds by |G|."
     ],
     "prerequisites": [
       "Group actions and the bundled permutation representation MulAction.toPermHom",
@@ -101,11 +102,19 @@
       "mathContext": "$\\lambda(g) = \\lambda(h) \\Rightarrow g = h$ (evaluate at the identity)."
     },
     {
+      "id": "existence",
+      "title": "Cayley's Theorem (Existence Form)",
+      "startLine": 71,
+      "endLine": 76,
+      "summary": "cayley: there exists an injective homomorphism f : G →* Equiv.Perm G — the bare existence statement that G is (isomorphic to) a permutation group, packaged from leftRegular and leftRegular_injective.",
+      "mathContext": "$\\exists\\, f : G \\to^* \\operatorname{Sym}(G),\\ f \\text{ injective}.$"
+    },
+    {
       "id": "embedding",
-      "title": "Existence and Subgroup-Embedding Forms",
-      "startLine": 80,
+      "title": "Subgroup-Embedding Form",
+      "startLine": 77,
       "endLine": 89,
-      "summary": "cayley: ∃ injective f : G →* Equiv.Perm G; cayleyEquivRange: G ≃* (leftRegular G).range via MonoidHom.ofInjective; cayleyEquivRange_apply records that the iso is still g ↦ leftRegular g.",
+      "summary": "cayleyEquivRange: G ≃* (leftRegular G).range via MonoidHom.ofInjective, exhibiting G as isomorphic to a subgroup of Sym(G); cayleyEquivRange_apply records that the iso still acts by g ↦ leftRegular g (left multiplication).",
       "mathContext": "$G \\cong \\operatorname{im}(\\lambda) \\le \\operatorname{Sym}(G)$."
     }
   ],

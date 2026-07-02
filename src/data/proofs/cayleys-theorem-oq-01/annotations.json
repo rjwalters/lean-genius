@@ -66,11 +66,31 @@
   {
     "id": "ann-cayley-embedding",
     "proofId": "cayleys-theorem-oq-01",
-    "range": { "startLine": 71, "endLine": 87 },
+    "range": { "startLine": 71, "endLine": 76 },
     "type": "insight",
-    "title": "Three Faces: Existence and the Subgroup-Embedding Isomorphism",
-    "content": "The final block records the theorem in its standard packagings. `cayley : ∃ f : G →* Equiv.Perm G, Function.Injective f` is the textbook existence form, assembled trivially as ⟨leftRegular G, leftRegular_injective G⟩. `cayleyEquivRange : G ≃* (leftRegular G).range` is the subgroup-embedding form — 'G is isomorphic to a subgroup of Sym(G)' — obtained by feeding the injective hom to `MonoidHom.ofInjective` (the multiplicative analogue of the first isomorphism theorem packaging: an injective hom yields an isomorphism onto its range). `cayleyEquivRange_apply` confirms the isomorphism still acts as g ↦ leftRegular g on elements. Injectivity, existence of an embedding, and isomorphism-onto-a-subgroup are three equivalent ways to state one theorem; the file makes the conversions explicit.",
-    "mathContext": "$\\exists\\, f : G \\to^* \\operatorname{Sym}(G)$ injective; equivalently $G \\cong \\operatorname{im}(\\lambda) \\le \\operatorname{Sym}(G)$ via $\\texttt{MonoidHom.ofInjective}$.",
+    "title": "Existence form: every group is a permutation group",
+    "content": "`cayley : ∃ f : G →* Equiv.Perm G, Function.Injective f` is the textbook existence form, assembled trivially as ⟨leftRegular G, leftRegular_injective G⟩. Stated this way it is the bare assertion that some faithful permutation representation of G exists — 'every group is (isomorphic to) a group of permutations' — the statement Cayley made in 1854 and the reason abstract group theory and concrete permutation-group theory coincide. The existential packaging deliberately forgets which representation is used, isolating the qualitative content from the specific left-regular construction.",
+    "mathContext": "$\\exists\\, f : G \\to^* \\operatorname{Sym}(G),\\ f \\text{ injective}$ — a faithful permutation representation of $G$ exists.",
+    "significance": "key",
+    "relatedConcepts": [
+      "permutation representation",
+      "faithful representation",
+      "abstract vs concrete groups",
+      "existential packaging in Lean"
+    ],
+    "prerequisites": [
+      "the left-regular representation and its injectivity",
+      "existential statements in Lean"
+    ]
+  },
+  {
+    "id": "ann-cayley-subgroup",
+    "proofId": "cayleys-theorem-oq-01",
+    "range": { "startLine": 77, "endLine": 89 },
+    "type": "insight",
+    "title": "Subgroup-embedding form: G ≅ a subgroup of Sym(G)",
+    "content": "`cayleyEquivRange : G ≃* (leftRegular G).range` is the sharpest packaging — 'G is isomorphic to a subgroup of Sym(G)' — obtained by feeding the injective hom to `MonoidHom.ofInjective`, the multiplicative analogue of the first-isomorphism-theorem fact that an injective hom is an isomorphism onto its range. `cayleyEquivRange_apply` confirms the isomorphism still acts as g ↦ leftRegular g, so the abstract iso is realised concretely by the permutations x ↦ g·x. Injectivity, existence, and isomorphism-onto-a-subgroup are three equivalent faces of one theorem; this form is the one that makes G literally a permutation group rather than merely mapping into one.",
+    "mathContext": "$G \\cong \\operatorname{im}(\\lambda) \\le \\operatorname{Sym}(G)$ via $\\texttt{MonoidHom.ofInjective}$, the iso acting by $g \\mapsto (x \\mapsto gx)$.",
     "significance": "key",
     "relatedConcepts": [
       "MonoidHom.ofInjective",
@@ -80,8 +100,7 @@
     ],
     "prerequisites": [
       "injective hom ↦ isomorphism onto range",
-      "subgroups and ranges of homomorphisms",
-      "existential packaging in Lean"
+      "subgroups and ranges of homomorphisms"
     ]
   }
 ]
