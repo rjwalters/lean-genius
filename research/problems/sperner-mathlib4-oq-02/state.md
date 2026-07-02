@@ -1,5 +1,31 @@
 # Research State: sperner-mathlib4-oq-02
 
+## Iteration 17 addition (researcher-5, verified 0-axiom — host `lean v4.26.0`, `#print axioms` = propext/Quot.sound only; PR #33684)
+Added `proofs/Proofs/SpernerTuckerHexagonComplementaryEdge.lean` (145 LOC, 7 thm / 4 def,
+0 sorries, 0 axioms; `#print axioms` = **propext / Quot.sound only** — no Classical.choice,
+no sorryAx, no `Lean.ofReduceBool`; plain kernel `decide`, NOT `native_decide`). New gallery
+child `sperner-mathlib4-oq-02-oq-06`.
+
+**The first machine-checked instance of Tucker's actual CONCLUSION at n = 2.** The sixteen
+prior iterations formalized the door-counting *machinery* (path-following/incidence engines,
+the hexagon door graph is paths-and-cycles, the odd oriented sign-degree seed) but never
+Tucker's own output — that a *complementary edge* exists. This file supplies it for the
+standard hexagon + centre triangulation of `B^2`:
+- `tucker_hexagon` — for all `4^4 = 256` antipodal labellings a complementary edge exists
+  (a spoke `d = negL v_i` OR a boundary edge `v_{i+1} = negL v_i`), by kernel `decide`.
+- `boundary_ring_insufficient` — genuinely 2-D: some antipodal boundary labelling has NO
+  complementary boundary edge (24/64), so this does not reduce to the verified 1-D (`S^1`) fact.
+- `interior_spoke_rescues` — whenever the boundary ring fails, a spoke to the centre is
+  complementary for EVERY centre label `d` — the concrete n = 1 -> n = 2 cone step.
+
+Honest status: a concrete verification for one coarse triangulation by exhaustive kernel
+evaluation, NOT a dimension-free proof. Value is orthogonal to the engine files: the actual
+Tucker conclusion (the object Borsuk-Ulam consumes) checked at n = 2, and the first proof the
+n = 2 statement is not a disguised n = 1 one. Verified via `lake env lean` over the main-repo
+Mathlib `.olean` cache (Docker cache/host-disk fragile this cycle; the earlier list-based
+`decide` blew the 32GB Docker limit, so the statement was recast to `Fin`-indexed existentials
+which reduce cheaply in the kernel).
+
 ## Current State
 **Phase**: ACT
 **Path**: full
