@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ann-des-oq0301-header",
+    "proofId": "desargues-theorem-oq-03-oq-01",
+    "range": { "startLine": 6, "endLine": 73 },
+    "type": "concept",
+    "title": "From PGL to PΓL: Semilinear Maps and Frame Rigidity",
+    "content": "The Fundamental Theorem of Projective Geometry (FTPG) identifies the collineations of PG(2, K) with the projective semilinear group PΓL(3, K) = PGL(3, K) ⋊ Aut(K). The parent (OQ-03) proved only the linear (PGL) half, and only over ℝ — where Aut(ℝ) is trivial, so the semilinear factor is invisible. This entry works over an arbitrary field K and supplies the two directions the parent left open: the semilinear action of Aut(K), and frame rigidity (a projective map is determined by its action on a frame).",
+    "mathContext": "Collineations of PG(2,K) = PΓL(3,K) = PGL(3,K) ⋊ Aut(K); over ℝ the Aut factor is trivial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental theorem of projective geometry",
+      "projective semilinear group PΓL",
+      "collineation",
+      "field automorphism",
+      "projective frame"
+    ],
+    "prerequisites": [
+      "homogeneous coordinates over a field",
+      "determinant incidence conditions (parent entry)"
+    ]
+  },
+  {
+    "id": "ann-des-oq0301-incidence",
+    "proofId": "desargues-theorem-oq-03-oq-01",
+    "range": { "startLine": 83, "endLine": 107 },
+    "type": "definition",
+    "title": "The Incidence Predicate over a General Field",
+    "content": "rowMat u v w stacks three vectors as the rows of a 3×3 matrix over K, and Collinear p q r := det(rowMat p q r) = 0. This is the same determinant incidence condition as the parent, but now over an arbitrary field K rather than ℝ — the natural setting once a Desarguesian plane is coordinatized by its division ring.",
+    "mathContext": "Collinear p q r := det(rowMat p q r) = 0 over a field K.",
+    "significance": "standard",
+    "relatedConcepts": ["homogeneous coordinates", "determinant", "collinearity"],
+    "prerequisites": ["3×3 determinant"]
+  },
+  {
+    "id": "ann-des-oq0301-pgl",
+    "proofId": "desargues-theorem-oq-03-oq-01",
+    "range": { "startLine": 109, "endLine": 146 },
+    "type": "technique",
+    "title": "PGL(3, K) Acts by Collineations",
+    "content": "The row-image matrix factors as rowMat(M·p, M·q, M·r) = rowMat p q r · Mᵀ, so det scales by det M (via det_mul and det_transpose): rowMat_mulVec_det. Any M preserves collinearity (det M · 0 = 0, collinear_mulVec); an invertible M also reflects it (mul_eq_zero with det M ≠ 0, collinear_mulVec_iff), so PGL acts by collineations over any field.",
+    "mathContext": "det[M·p, M·q, M·r] = det M · det[p,q,r]; det M ≠ 0 ⟹ M is a collineation.",
+    "significance": "important",
+    "relatedConcepts": ["projective linear group", "determinant multiplicativity", "collineation"],
+    "prerequisites": ["Matrix.det_mul", "Matrix.det_transpose"]
+  },
+  {
+    "id": "ann-des-oq0301-semilinear",
+    "proofId": "desargues-theorem-oq-03-oq-01",
+    "range": { "startLine": 148, "endLine": 182 },
+    "type": "insight",
+    "title": "The Semilinear Part: Aut(K) and PΓL ⊆ Collineations",
+    "content": "Applying a field endomorphism σ coordinatewise equals mapping the stacked matrix through σ (rowMat_map), and σ(det A) = det(A.map σ) (RingHom.map_det), so σ sends det = 0 to det = 0: collinear_semilinear. Composing an invertible linear map with such a σ gives a projective semilinear map that is again a collineation (collinear_projSemilinear) — the constructive inclusion PΓL(3, K) ⊆ Aut(PG(2, K)) named by the FTPG. This Aut(K) factor is exactly what is invisible over ℝ.",
+    "mathContext": "σ(det A) = det(A.map σ) ⟹ field endomorphisms preserve collinearity; PΓL ⊆ Collineations.",
+    "significance": "key",
+    "relatedConcepts": ["semilinear map", "field automorphism", "PΓL", "RingHom.map_det"],
+    "prerequisites": ["ring homomorphism", "determinant"]
+  },
+  {
+    "id": "ann-des-oq0301-frame",
+    "proofId": "desargues-theorem-oq-03-oq-01",
+    "range": { "startLine": 184, "endLine": 200 },
+    "type": "concept",
+    "title": "The Standard Projective Frame in General Position",
+    "content": "The three coordinate points [1:0:0], [0:1:0], [0:0:1] together with the unit point [1:1:1] are in general position: all four 3-point subsets have nonzero determinant (evaluating to 1, 1, −1, 1), so no three are collinear. This makes them a genuine projective frame — the reference configuration the FTPG's rigidity is stated against.",
+    "mathContext": "The four frame determinants are 1, 1, −1, 1 — all nonzero, so the frame is in general position.",
+    "significance": "important",
+    "relatedConcepts": ["projective frame", "general position"],
+    "prerequisites": ["explicit 3×3 determinant"]
+  },
+  {
+    "id": "ann-des-oq0301-rigidity",
+    "proofId": "desargues-theorem-oq-03-oq-01",
+    "range": { "startLine": 202, "endLine": 283 },
+    "type": "insight",
+    "title": "Frame Rigidity — the Computational Kernel of the FTPG",
+    "content": "frame_stabilizer_scalar: if a linear map fixes each frame point projectively (each to a scalar multiple of itself), the nine matrix entries are read off the three coordinate-point hypotheses, the unit-point hypothesis forces the three diagonal scalars a, b, c to equal the common d (by linarith), and M is assembled as d • 1. Hence the projective stabilizer of a frame in PGL(3, K) is trivial: a projective transformation is uniquely determined by its action on a frame. This is the exact rigidity statement the FTPG upgrades to 'semilinear'.",
+    "mathContext": "M fixes the frame projectively ⟹ a = b = c = d and M = d • 1; PGL acts freely on frames.",
+    "significance": "key",
+    "relatedConcepts": ["frame rigidity", "projective stabilizer", "scalar matrix", "uniqueness up to scalar"],
+    "prerequisites": ["mulVec component extraction", "linear system in the matrix entries"]
+  },
+  {
+    "id": "ann-des-oq0301-invariance",
+    "proofId": "desargues-theorem-oq-03-oq-01",
+    "range": { "startLine": 285, "endLine": 307 },
+    "type": "concept",
+    "title": "Projective Invariance of the Desargues Configuration over K",
+    "content": "desargues_relation_mulVec and desargues_relation_preserved: the perspectivity relations of Desargues's theorem — concurrency of the joining lines and collinearity of the intersection points, both det = 0 conditions — transport along collineations, invertibly when det M ≠ 0. This generalizes the parent's ℝ-only invariance to an arbitrary field, the precise sense in which the Desarguesian property is intrinsic to PG(2, K).",
+    "mathContext": "For det M ≠ 0: Collinear(M·p, M·q, M·r) ↔ Collinear(p, q, r) over any K.",
+    "significance": "important",
+    "relatedConcepts": ["Desargues configuration", "perspectivity", "projective invariance"],
+    "prerequisites": ["collineation preserves and reflects incidence"]
+  }
+]

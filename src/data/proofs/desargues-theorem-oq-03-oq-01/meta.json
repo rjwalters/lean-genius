@@ -1,0 +1,212 @@
+{
+  "id": "desargues-theorem-oq-03-oq-01",
+  "title": "From PGL to PΓL: the Semilinear Group and Frame Rigidity over an Arbitrary Field",
+  "slug": "desargues-theorem-oq-03-oq-01",
+  "description": "The parent (OQ-03) proves the linear half of the algebraic engine behind the Fundamental Theorem of Projective Geometry (FTPG) over ℝ: an invertible matrix M acts on PG(2, ℝ) by a collineation because det[M·p, M·q, M·r] = det M · det[p, q, r]. It leaves two things open — the semilinear part (the FTPG identifies the full collineation group with PΓL(3, K) = PGL(3, K) ⋊ Aut(K), not merely PGL) and the rigidity that gives the FTPG its force (a projective map is determined by its action on a frame). This follow-up supplies both over an arbitrary field K: a field endomorphism applied coordinatewise preserves collinearity (collinear_semilinear), so a projective semilinear map is a collineation (collinear_projSemilinear, the constructive inclusion PΓL ⊆ Collineations); the standard frame [1:0:0],[0:1:0],[0:0:1],[1:1:1] is in general position (frame_general_position); and any linear map fixing each frame point projectively is a scalar matrix (frame_stabilizer_scalar) — the projective stabilizer of a frame is trivial. Over ℝ the automorphism group is trivial so the semilinear phenomenon is invisible; working over general K is the natural home of the Desargues ⇒ coordinates ⇒ FTPG chain. Fully verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fundamental_theorem_of_projective_geometry",
+    "date": null,
+    "status": "verified",
+    "proofRepoPath": "Proofs/DesarguesTheoremOQ03OQ01.lean",
+    "tags": [
+      "projective-geometry",
+      "desargues",
+      "fundamental-theorem-projective-geometry",
+      "collineation",
+      "semilinear",
+      "pgl",
+      "frame-rigidity",
+      "linear-algebra",
+      "determinant",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_mul",
+        "description": "det(A·B) = det A · det B — turns the row-image factorization into a det-scaling for the linear (PGL) action",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Matrix.det_transpose",
+        "description": "det Aᵀ = det A — used because the row-image matrix equals (rowMat p q r)·Mᵀ",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "RingHom.map_det",
+        "description": "σ(det A) = det(A.map σ) — the bridge that makes a field endomorphism act on the incidence determinant, giving the semilinear (Aut K) part",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Matrix.det_fin_three",
+        "description": "explicit 3×3 determinant expansion — evaluates the frame determinants (1, 1, −1, 1) and closes rowMat_det by ring",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "mul_eq_zero",
+        "description": "a·b = 0 ↔ a = 0 ∨ b = 0 — reflects incidence back through det M ≠ 0 in the invertible direction",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      }
+    ],
+    "originalContributions": [
+      "rowMat_mulVec_det: the determinant transformation law det[M·p, M·q, M·r] = det M · det[p, q, r] over an arbitrary field K, via rowMat(M·p, M·q, M·r) = rowMat p q r · Mᵀ and det_mul / det_transpose.",
+      "collinear_mulVec, collinear_mulVec_iff: PGL(3, K) acts by collineations over any field — a linear map preserves collinearity, and an invertible one (det M ≠ 0) also reflects it.",
+      "collinear_semilinear: the new semilinear ingredient — a field endomorphism σ applied coordinatewise preserves collinearity, via rowMat_map and RingHom.map_det. This is the Aut(K) factor that is invisible over ℝ.",
+      "collinear_projSemilinear: the constructive half of the FTPG — a projective semilinear map (linear M followed by field automorphism σ) is a collineation, i.e. PΓL(3, K) ⊆ Aut(PG(2, K)).",
+      "frame_general_position: the standard frame [1:0:0], [0:1:0], [0:0:1], [1:1:1] is in general position — all four 3-point determinants are nonzero (1, 1, −1, 1), so it is a genuine projective frame.",
+      "frame_stabilizer_scalar: frame rigidity — a linear map fixing each frame point projectively (each to a scalar multiple of itself) is forced to be a single scalar times the identity, so the projective stabilizer of a frame in PGL(3, K) is trivial: a projective transformation is uniquely determined by its action on a frame.",
+      "desargues_relation_mulVec, desargues_relation_preserved: the perspectivity relations of Desargues's theorem (both det = 0 conditions) transport along collineations over arbitrary K, generalizing the parent's ℝ-only invariance."
+    ],
+    "dateAdded": "2026-07-02",
+    "axiomCount": 0,
+    "lineCount": 302,
+    "assumptions": "None. Fully machine-checked with 0 sorries and 0 axiom declarations; the source contains no axiom, sorry, or native_decide, so the only foundational axioms are Mathlib's standard propext, Classical.choice, and Quot.sound (no Lean.ofReduceBool). Verified via a clean Docker lake build (3058/3058 jobs, exit 0). The hard converse of the FTPG (every collineation is semilinear) is stated as the contextual open direction, not axiomatized.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Desargues's theorem holds in a projective plane exactly when the plane is coordinatizable by a division ring — Hilbert's coordinatization of Desarguesian planes. The Fundamental Theorem of Projective Geometry (von Staudt; Veblen–Young; Artin) then describes the collineations of the coordinatized plane PG(2, K): they are exactly the projective semilinear maps, the group PΓL(3, K) = PGL(3, K) ⋊ Aut(K). The parent gallery entry (OQ-03) proved the linear half of this picture over ℝ, where Aut(ℝ) is trivial and the semilinear factor is invisible. This entry moves to an arbitrary field K — the natural home of the Desargues ⇒ coordinates ⇒ FTPG chain — and adds the two missing algebraic ingredients: the semilinear action and frame rigidity.",
+    "problemStatement": "The parent leaves two directions explicitly open: (1) the semilinear part — the full collineation group is PΓL(3, K), not merely PGL(3, K), and the field-automorphism twist Aut(K) is absent over ℝ; and (2) the rigidity that gives the FTPG its force — a projective transformation is determined by its action on a projective frame. Can both be formalized over an arbitrary field K, tightening the tie between Desargues and the FTPG?",
+    "text": "Yes. Over any field K, three projective points are collinear iff the matrix with those rows is singular (det = 0). Applying a field endomorphism σ coordinatewise commutes with the incidence determinant through σ(det A) = det(A.map σ), so σ preserves collinearity — this is the semilinear action Aut(K), the exact ingredient that vanishes over ℝ. Composing an invertible linear map with such a σ gives a projective semilinear map, and it too is a collineation: this is the constructive inclusion PΓL(3, K) ⊆ Collineations named by the FTPG. For rigidity, the standard frame [1:0:0], [0:1:0], [0:0:1], [1:1:1] is in general position (all four 3-point subsets have nonzero determinant), and a linear map fixing each frame point projectively must be a single scalar times the identity — so the projective stabilizer of a frame is trivial and a projective map is uniquely determined by its action on a frame. The hard converse (every collineation is semilinear) reconstructs the field from incidence via Desargues and remains the deep open direction.",
+    "proofStrategy": "Incidence is the determinant predicate Collinear p q r := det(rowMat p q r) = 0. The linear action reuses the parent's engine over general K: rowMat(M·p, M·q, M·r) = rowMat p q r · Mᵀ, so det scales by det M (det_mul, det_transpose); preservation is det M · 0 = 0 and reflection uses mul_eq_zero with det M ≠ 0. The semilinear action is new: rowMat_map shows applying σ coordinatewise equals mapping the stacked matrix through σ, and RingHom.map_det turns σ(det) into det(map σ), so σ sends det = 0 to det = 0. PΓL is the composite collinear_semilinear ∘ collinear_mulVec. frame_general_position evaluates four explicit 3×3 determinants to 1, 1, −1, 1 by rowMat_det + ring. frame_stabilizer_scalar extracts the nine entries of M from the three coordinate-point hypotheses (each Mᵢⱼ read off a mulVec component), then the unit-point hypothesis forces the three diagonal scalars a, b, c all to equal d by linarith, and M is assembled entrywise as d • 1.",
+    "keyInsights": [
+      "Incidence over any field K is a single determinant condition (det = 0), so the same predicate drives both the linear and the semilinear actions — only the way the determinant transforms changes.",
+      "The semilinear factor Aut(K) is invisible over ℝ because Aut(ℝ) is trivial; one must leave ℝ (e.g. to Aut(ℂ) or Aut(𝔽_{p^n})) to see the PΓL / PGL distinction at all. This is why the right setting is a general field.",
+      "A field endomorphism acts on incidence through σ(det A) = det(A.map σ): the algebraic reason a semilinear map is automatically a collineation, with no geometry beyond the determinant.",
+      "Frame rigidity is a purely computational statement: fixing the four frame points projectively pins down all nine matrix entries and forces the four scalars to coincide, so PGL acts freely on frames — a projective map is determined by a frame.",
+      "This is the constructive inclusion PΓL(3, K) ⊆ Collineations, the elementary half of the FTPG; the deep converse (every collineation is semilinear) rebuilds the field operations from incidence via Desargues and is left as the open direction, not axiomatized."
+    ],
+    "prerequisites": [
+      "homogeneous coordinates: projective points of PG(2, K) as nonzero vectors of K³",
+      "the determinant incidence predicate for collinearity (parent entry OQ-03)",
+      "Matrix.det_mul, Matrix.det_transpose, and RingHom.map_det (σ commutes with det)",
+      "the projective linear group PGL, the semilinear group PΓL = PGL ⋊ Aut(K), and the notion of a projective frame"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-defs",
+      "title": "The Coordinatized Plane PG(2, K)",
+      "startLine": 83,
+      "endLine": 107,
+      "summary": "rowMat u v w stacks three vectors as the rows of a 3×3 matrix over K; rowMat_det gives its explicit expansion; Collinear p q r := det(rowMat p q r) = 0 is the incidence predicate — the same as the parent, now over an arbitrary field.",
+      "mathContext": "Collinear p q r := det(rowMat p q r) = 0 over a general field K."
+    },
+    {
+      "id": "sec-pgl",
+      "title": "PGL(3, K) Acts by Collineations",
+      "startLine": 109,
+      "endLine": 146,
+      "summary": "rowMat_mulVec factors the row-image matrix as rowMat p q r · Mᵀ; rowMat_mulVec_det gives det[M·p, M·q, M·r] = det M · det[p,q,r]; collinear_mulVec (any M preserves collinearity) and collinear_mulVec_iff (invertible M reflects it via mul_eq_zero) establish that PGL acts by collineations over any field.",
+      "mathContext": "det[Mp, Mq, Mr] = det M · det[p,q,r]; det M ≠ 0 ⟹ M is a collineation."
+    },
+    {
+      "id": "sec-semilinear",
+      "title": "Aut(K) Acts by Collineations — the Semilinear Part",
+      "startLine": 148,
+      "endLine": 166,
+      "summary": "rowMat_map: applying a ring endomorphism σ coordinatewise equals mapping the stacked matrix through σ. collinear_semilinear: hence σ preserves collinearity, via RingHom.map_det (σ(det A) = det(A.map σ)) — the semilinear ingredient of PΓL that is invisible over ℝ.",
+      "mathContext": "σ(det A) = det(A.map σ), so a field endomorphism sends det = 0 to det = 0."
+    },
+    {
+      "id": "sec-pgammal",
+      "title": "PΓL(3, K) ⊆ Collineations — the Constructive Half of the FTPG",
+      "startLine": 168,
+      "endLine": 182,
+      "summary": "collinear_projSemilinear: a projective semilinear map — invertible linear M followed by field automorphism σ — preserves collinearity, obtained by composing collinear_semilinear with collinear_mulVec. This is exactly the class of maps the FTPG names; its deep converse needs Desargues.",
+      "mathContext": "Collinear p q r ⟹ Collinear (σ ∘ M·) applied to p, q, r; PΓL ⊆ Aut(PG(2,K))."
+    },
+    {
+      "id": "sec-frame",
+      "title": "The Standard Projective Frame",
+      "startLine": 184,
+      "endLine": 200,
+      "summary": "frame_general_position: the coordinate points [1:0:0], [0:1:0], [0:0:1] and the unit point [1:1:1] are in general position — all four 3-point determinants are nonzero (1, 1, −1, 1) — so no three are collinear and they form a genuine projective frame.",
+      "mathContext": "The four frame determinants evaluate to 1, 1, −1, 1 (all nonzero)."
+    },
+    {
+      "id": "sec-rigidity",
+      "title": "Frame Rigidity — the Computational Kernel of the FTPG",
+      "startLine": 202,
+      "endLine": 283,
+      "summary": "frame_stabilizer_scalar: if a linear map fixes each of the four frame points projectively (each to a scalar multiple of itself), the nine matrix entries are read off the coordinate-point hypotheses, the unit-point hypothesis forces the three diagonal scalars to equal the common d, and M = d • 1. Hence the projective stabilizer of a frame in PGL(3, K) is trivial: a projective transformation is uniquely determined by its action on a frame.",
+      "mathContext": "M fixes the frame projectively ⟹ a = b = c = d and M = d • 1 (scalar)."
+    },
+    {
+      "id": "sec-invariance",
+      "title": "Projective Invariance of the Desargues Configuration over K",
+      "startLine": 285,
+      "endLine": 307,
+      "summary": "desargues_relation_mulVec and desargues_relation_preserved: the perspectivity relations of Desargues's theorem — concurrency of the joining lines and collinearity of the intersection points, both det = 0 conditions — transport along collineations, invertibly when det M ≠ 0, generalizing the parent's ℝ-only invariance to arbitrary fields.",
+      "mathContext": "For det M ≠ 0: Collinear(M·p, M·q, M·r) ↔ Collinear(p, q, r) over any K."
+    }
+  ],
+  "conclusion": {
+    "summary": "Over an arbitrary field K, the incidence determinant drives three actions: PGL by det-scaling (det[M·p,M·q,M·r] = det M · det[p,q,r]), Aut(K) by σ(det A) = det(A.map σ), and their composite PΓL — all collineations. The standard frame is in general position, and a linear map fixing it projectively is forced to be scalar, so PGL acts freely on frames. Together these are the constructive inclusion PΓL(3, K) ⊆ Collineations plus the rigidity that a projective map is determined by a frame — the two pieces the parent left open, now proved axiom-free over general K.",
+    "implications": "Moving from ℝ to a general field K is what makes the semilinear factor Aut(K) visible: the parent's ℝ picture is the special case where Aut(K) is trivial. The two additions — semilinear collineations and frame rigidity — are exactly the elementary, formalizable core of the Fundamental Theorem of Projective Geometry. What remains is the deep converse: that every collineation is semilinear, which reconstructs the field operations from incidence via Desargues and is a large development left as the open direction (not axiomatized). The determinant-through-σ identity and the frame-rigidity computation are reusable for any incidence result in the homogeneous K³ model.",
+    "openQuestions": [
+      "Formalize the hard converse of the FTPG: every collinearity-preserving bijection of PG(2, K) is a projective semilinear map (an element of PΓL(3, K)), reconstructing the field operations from the incidence structure via Desargues.",
+      "Combine frame rigidity with the semilinear action to prove the FTPG's uniqueness statement: two semilinear maps agreeing on a frame differ by the identity, so PΓL acts freely and transitively on projective frames.",
+      "Build the abstract projective-plane structure over a division ring in Mathlib and show PG(2, K) satisfies its incidence axioms, connecting Desargues (coordinatization) to the collineation group PΓL(3, K)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "Mathlib.LinearAlgebra.Matrix.NonsingularInverse",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "DesarguesTheoremOQ03OQ01",
+    "lineCount": 302,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/DesarguesTheoremOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "desargues-theorem-oq-03",
+      "relationship": "parent",
+      "description": "Proves the linear half of the algebraic engine behind the FTPG over ℝ (invertible M is a collineation via det[M·p,M·q,M·r] = det M·det[p,q,r]). This entry supplies the two directions it left open — the semilinear part and frame rigidity — over an arbitrary field K."
+    },
+    {
+      "targetId": "desargues-theorem",
+      "relationship": "ancestor",
+      "description": "The root Desargues entry in homogeneous ℝ³ coordinates with the determinant incidence conditions; this follow-up generalizes projective invariance of the configuration to arbitrary fields."
+    },
+    {
+      "targetId": "desargues-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "Another follow-up in the Desargues family; this entry treats the PΓL / semilinear and frame-rigidity angle of the Fundamental Theorem of Projective Geometry."
+    }
+  ],
+  "references": [
+    {
+      "author": "Emil Artin",
+      "title": "Geometric Algebra",
+      "year": "1957",
+      "note": "The correspondence between the projective semilinear group PΓL, collineations, and coordinatization by a division ring; the semilinear (Aut K) factor."
+    },
+    {
+      "author": "Oswald Veblen and John Wesley Young",
+      "title": "Projective Geometry, Vol. 1",
+      "year": "1910",
+      "note": "Classical development of projective geometry, projective frames, and the fundamental theorem on collineations."
+    },
+    {
+      "author": "Robin Hartshorne",
+      "title": "Foundations of Projective Geometry",
+      "year": "1967",
+      "note": "Desargues's theorem, coordinatization, and the Fundamental Theorem of Projective Geometry over a field."
+    }
+  ],
+  "sorries": []
+}
