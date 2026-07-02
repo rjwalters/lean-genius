@@ -56,6 +56,14 @@
   ],
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Gerretsen's Inequality via the Ravi Sum-of-Squares Engine",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "The docstring states Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r² for a nondegenerate triangle and explains the strategy: the Ravi substitution x=s-a, y=s-b, z=s-c (all positive) with Area²=s·xyz, R=abc/(4·Area), r=Area/s reduces the whole inequality to the area-free polynomial statement 0 ≤ gerretsenPoly x y z. The algebraic heart gerretsenPoly ≥ 0 is settled by an explicit sum-of-squares certificate with a Schur-type bracket handled by a WLOG ordering, tight at the equilateral x=y=z. Builds on the verified parent HeronsFormulaOQ06 (Euler inequality R ≥ 2r), reusing its triangle data. Imports the parent and Mathlib.Tactic; namespace GerretsenHeronOQ06OQ02; opens Real EulerInequalityHeronOQ06.",
+      "mathContext": "$s^2 \\le 4R^2 + 4Rr + 3r^2$ reduces via Ravi substitution to $0 \\le \\mathrm{gerretsenPoly}(s-a,s-b,s-c)$, proved by an explicit SOS certificate, sharp at the equilateral triangle."
+    },
+    {
       "id": "algebraic-core",
       "title": "The Algebraic Core — gerretsenPoly x y z ≥ 0",
       "startLine": 55,
