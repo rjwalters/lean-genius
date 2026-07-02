@@ -1,0 +1,50 @@
+[
+  {
+    "id": "csoq0801-header",
+    "proofId": "cauchy-schwarz-oq-08-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "Module Header: why the complex case needs rotated diagonals",
+    "content": "The parent cauchy-schwarz-oq-08 shows that over a *real* inner-product space the norm determines the inner product (polarization $\\langle x,y\\rangle=(\\|x+y\\|^2-\\|x-y\\|^2)/4$), so norm-preservation forces inner-product-preservation. Over $\\mathbb{C}$ this fails for the norm alone: the real diagonals $\\|x\\pm y\\|$ recover only $\\mathrm{Re}\\langle x,y\\rangle$, and complex conjugation on $\\mathbb{C}$ preserves the norm while conjugating $\\langle\\cdot,\\cdot\\rangle$. The imaginary part is pinned by the *rotated* diagonals $\\|x\\pm i\\,y\\|$, which the four-term complex polarization identity consumes. The file works over an arbitrary RCLike field $\\mathbb{K}$ (so $\\mathbb{R}$ and $\\mathbb{C}$ at once), with $i=$ `RCLike.I`.",
+    "mathContext": "Complex polarization: $\\langle x,y\\rangle=\\big(\\|x+y\\|^2-\\|x-y\\|^2+(\\|x-i y\\|^2-\\|x+i y\\|^2)\\,i\\big)/4$ over any RCLike field."
+  },
+  {
+    "id": "csoq0801-rigidity",
+    "proofId": "cauchy-schwarz-oq-08-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "Norm-Rigidity of the Complex Inner Product",
+    "content": "`inner_map_eq` is the core result: an $\\mathbb{R}$-additive map $f$ preserving the norm ($\\|f x\\|=\\|x\\|$) and the rotated diagonal ($\\|f x + i\\,f y\\|=\\|x+i\\,y\\|$) satisfies $\\langle f x, f y\\rangle=\\langle x,y\\rangle$. A single rotated-diagonal hypothesis suffices: applying it at $-y$ and using additivity ($i\\cdot f(-y)=-(i\\cdot f y)$) yields the minus-diagonal $\\|f x - i\\,f y\\|=\\|x-i\\,y\\|$. The proof is then a rewrite chain — apply complex polarization, turn $f x\\pm f y$ into $f(x\\pm y)$ via `← map_add`/`← map_sub`, collapse the four norms by the two hypotheses, and fold back. `inner_map_eq_zero_iff` and `injective_of_norm_preserving` follow (the latter from the norm hypothesis alone).",
+    "mathContext": "For $\\mathbb{R}$-additive $f$ with $\\|f x\\|=\\|x\\|$ and $\\|f x+i f y\\|=\\|x+i y\\|$: $\\langle f x,f y\\rangle=\\langle x,y\\rangle$, hence $f x\\perp f y\\iff x\\perp y$ and $f$ is injective."
+  },
+  {
+    "id": "csoq0801-specializations",
+    "proofId": "cauchy-schwarz-oq-08-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "Real Collapse and Complex Specialization",
+    "content": "Because the result is stated over RCLike $\\mathbb{K}$, it specializes both ways. `inner_map_eq_real`: when $\\mathbb{K}=\\mathbb{R}$, `RCLike.I` $=0$, so the rotated-diagonal hypothesis becomes $\\|f x\\|=\\|x\\|$ — automatic — and the theorem reduces to the parent's real rigidity result. `inner_map_eq_complex`: when $\\mathbb{K}=\\mathbb{C}$, the RCLike instance sets $I:=$ `Complex.I` definitionally, so the concrete complex statement (with `Complex.I`) is a zero-cost specialization of `inner_map_eq`. The single theorem thus subsumes the real parent and answers the complex open question simultaneously.",
+    "mathContext": "$\\mathbb{K}=\\mathbb{R}$: rotated hypothesis vacuous, real parent recovered. $\\mathbb{K}=\\mathbb{C}$: $\\mathrm{RCLike.}I=\\mathrm{Complex.}I$, concrete complex rigidity."
+  },
+  {
+    "id": "csoq0801-isometry",
+    "proofId": "cauchy-schwarz-oq-08-oq-01",
+    "range": {
+      "startLine": 120,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "Linear-Isometry Corollary",
+    "content": "`inner_linearIsometry_eq`: a bundled $\\mathbb{K}$-linear isometry $f:E\\to_{\\ell i}E'$ preserves the inner product. Both hypotheses of `inner_map_eq` are automatic here — the norm hypothesis is the isometry's `norm_map`, and the rotated-diagonal hypothesis holds because $\\mathbb{K}$-linearity commutes with $i\\cdot(\\cdot)$: $f x + i\\,f y = f(x+i\\,y)$, whose norm is $\\|x+i\\,y\\|$ by the isometry property. This is the elementary, polarization-only reason complex Hilbert-space isometries are unitary, obtained without Mathlib's bundled `inner_map_map` machinery.",
+    "mathContext": "A bundled $\\mathbb{K}$-linear isometry satisfies $\\langle f x,f y\\rangle=\\langle x,y\\rangle$; complex isometries are unitary."
+  }
+]
