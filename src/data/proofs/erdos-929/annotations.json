@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-929-ann-overview",
+    "proofId": "erdos-929",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Overview: Small Prime Factors in Consecutive Blocks",
+    "content": "Erdős Problem #929 studies $S(k)$, the least $x$ for which a positive-density set of $n$ makes each of $n+1,\\ldots,n+k$ have *some* prime factor $\\le x$. A crucial semantic point (recorded in the file) is that the numbers need *at least one* small prime factor, not that they be $x$-smooth — the density of $x$-smooth numbers tends to $0$, which would make the claim vacuous. The problem is open; known results bracket $S(k)$ between $k^{1/2-o(1)}$ (Rosser's sieve) and the Ford–Green–Konyagin–Maynard–Tao (2018) upper bound, with the trivial bound $S(k) \\le k+1$.",
+    "mathContext": "$S(k) = \\min\\{x : \\{n : \\forall\\, 1\\le i\\le k,\\ \\exists p\\le x,\\ p \\mid n+i\\}$ has positive upper density$\\}$. Bounds: $k^{1/2-o(1)} < S(k) \\le k+1$; FGKMT: $S(k) \\ll k\\,\\frac{\\log\\log\\log k}{\\log\\log k\\,\\log\\log\\log\\log k}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "smooth numbers",
+      "upper density",
+      "sieve methods",
+      "consecutive integers"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "density"
+    ]
+  },
+  {
     "id": "erdos-929-ann-imports",
     "proofId": "erdos-929",
     "range": {
@@ -267,6 +290,118 @@
     "prerequisites": [
       "smooth number basics",
       "density of exponential sequences"
+    ]
+  },
+  {
+    "id": "erdos-929-ann-density",
+    "proofId": "erdos-929",
+    "range": {
+      "startLine": 100,
+      "endLine": 127
+    },
+    "type": "technique",
+    "title": "Upper-density machinery",
+    "content": "The threshold is defined via *upper density*, so the file first establishes the order-theoretic plumbing: the density ratio $|S\\cap[0,N)|/(N+1)$ is bounded and cobounded (needed for `limsup` to be well-behaved), and upper density is monotone under inclusion ($A\\subseteq B \\Rightarrow \\overline{d}(A)\\le\\overline{d}(B)$). Monotonicity is the workhorse: positive density of a subset forces positive density of the whole block set.",
+    "mathContext": "$\\overline{d}(A) = \\limsup_{N\\to\\infty} \\frac{|A\\cap[0,N)|}{N+1}$; $A\\subseteq B \\Rightarrow \\overline{d}(A) \\le \\overline{d}(B)$; $0 \\le \\frac{|S\\cap[0,N)|}{N+1} \\le 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "upper density",
+      "limsup",
+      "monotonicity",
+      "isBoundedUnder"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "order theory"
+    ]
+  },
+  {
+    "id": "erdos-929-ann-construction",
+    "proofId": "erdos-929",
+    "range": {
+      "startLine": 128,
+      "endLine": 226
+    },
+    "type": "technique",
+    "title": "Factorial arithmetic-progression construction",
+    "content": "The trivial upper bound $S(k)\\le k+1$ is realized constructively. For $n \\equiv 1 \\pmod{(k+1)!}$ each $n+i$ ($1\\le i\\le k$) is divisible by $i+1 \\le k+1$, so the whole arithmetic progression $\\{(k+1)!\\,t + 1\\}$ lies in `smoothBlockSet k (k+1)`. An AP with common difference $M$ contributes $\\ge t+1$ elements in every window, giving it positive upper density; hence `smoothBlockSet k (k+1)` has positive upper density.",
+    "mathContext": "If $n \\equiv 1 \\pmod{(k+1)!}$ then $(i+1)\\mid(n+i)$ for $1\\le i\\le k$. The AP $\\{Mt+1\\}$ has upper density $1/M > 0$, so $\\overline{d}(\\mathrm{smoothBlockSet}\\ k\\ (k+1)) > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "factorial",
+      "Chinese remainder theorem",
+      "positive density"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "density"
+    ]
+  },
+  {
+    "id": "erdos-929-ann-threshold",
+    "proofId": "erdos-929",
+    "range": {
+      "startLine": 227,
+      "endLine": 281
+    },
+    "type": "concept",
+    "title": "The threshold S(k) and its trivial bounds",
+    "content": "With existence secured, `smoothThreshold k` is defined as the least $x$ making the block set positively dense, and `Erdos929Conjecture` states the open lower bound $S(k) \\ge k^{1-o(1)}$. Two elementary facts frame it: the trivial upper bound $S(k)\\le k+1$ (from the factorial AP), and monotonicity — since larger $k$ imposes more constraints, `smoothBlockSet` is antitone in $k$ and $S(k)$ is non-decreasing.",
+    "mathContext": "$S(k) = \\min\\{x : \\overline{d}(\\mathrm{smoothBlockSet}\\ k\\ x) > 0\\}$; $S(k) \\le k+1$; $k_1\\le k_2 \\Rightarrow S(k_1) \\le S(k_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold",
+      "monotonicity",
+      "antitone",
+      "open conjecture"
+    ],
+    "prerequisites": [
+      "number theory"
+    ]
+  },
+  {
+    "id": "erdos-929-ann-k2",
+    "proofId": "erdos-929",
+    "range": {
+      "startLine": 282,
+      "endLine": 361
+    },
+    "type": "insight",
+    "title": "Exact analysis of the k = 2 case",
+    "content": "For $k=2$ the threshold is pinned down exactly. For $x\\le 1$ the block set is empty, and `smoothBlockSet 2 2 ⊆ {0}`: for $n\\ge 1$, consecutive $n+1, n+2$ cannot both have smallest prime factor $\\le 2$ (one of two consecutive integers is odd with an odd smallest factor). Since $\\{0\\}$ has density $\\frac{1}{N+1}\\to 0$, no $x\\le 2$ works — establishing the lower half of $S(2)=3$.",
+    "mathContext": "$\\mathrm{smoothBlockSet}\\ 2\\ x = \\varnothing$ for $x\\le 1$; $\\mathrm{smoothBlockSet}\\ 2\\ 2 \\subseteq \\{0\\}$; $\\overline{d}(\\{0\\}) = \\lim \\frac{1}{N+1} = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "consecutive integers",
+      "parity",
+      "minFac",
+      "density zero"
+    ],
+    "prerequisites": [
+      "elementary number theory"
+    ]
+  },
+  {
+    "id": "erdos-929-ann-lower",
+    "proofId": "erdos-929",
+    "range": {
+      "startLine": 362,
+      "endLine": 429
+    },
+    "type": "insight",
+    "title": "S(2) = 3 and the general lower bound",
+    "content": "Combining the pieces: the AP $n\\equiv 2\\pmod 6$ gives $3\\mid(n+1)$ and $2\\mid(n+2)$, so $x=3$ works for $k=2$; with the $k=2$ obstruction this proves $S(2)=3$ exactly. More generally, for every $k\\ge 2$ the same $x\\le 2$ obstruction yields the unconditional lower bound $S(k)\\ge 3$ — a rigorous foothold well below the conjectured $k^{1-o(1)}$.",
+    "mathContext": "$S(2)=3$ (witnessed by $n\\equiv 2\\pmod 6$); for all $k\\ge 2$, $S(k)\\ge 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "exact threshold",
+      "lower bound"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "density"
     ]
   }
 ]
