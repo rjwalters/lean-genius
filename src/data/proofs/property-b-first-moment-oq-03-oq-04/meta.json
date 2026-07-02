@@ -101,6 +101,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The RS Conditional-Recoloring Engine",
+      "startLine": 1,
+      "endLine": 93,
+      "summary": "Import, module docstring, and the model setup (namespace ProbMethod.PropertyB.ConditionalOpt, open Real; definitions survivesOrig, monoOneStage, tradeoff). Open question property-b-first-moment-oq-03 asks to sharpen Erdős's 1963 bound m(k) ≥ 2^(k−1) to the Radhakrishnan–Srinivasan m(k) = Ω(2^k·√(k/log k)). Three sibling entries settled the negative half (biasing and independent/product recoloring are both worthless, staying at 2^(1−k)); the RS gain lives entirely in the conditional, order-dependent recoloring step. This file formalises the two facts the negatives could not reach: the gain — a dangerous edge survives with probability (1−p)^k, strictly < 1 for p ∈ (0,1] — and the convex tradeoff G(p) = e^{−kp} + c·k·p whose minimum c·(1 − log c) is attained at the small flip rate p* = −(log c)/k, the log(1/c)/k scaling behind RS's √(k/log k) improvement. 0 sorries, 0 axioms.",
+      "mathContext": "Honest scope: this supplies the analytic engine (gain bound + convex optimisation), not a full derivation of the RS asymptotic, which still needs the two-stage single-edge expectation, the union bound over m edges, and substitution of p* — all in a conditional (non-product) probability model."
+    },
+    {
       "id": "gain",
       "title": "The Gain: Conditional Recoloring Strictly Lowers Dangerous-Edge Survival",
       "startLine": 94,
