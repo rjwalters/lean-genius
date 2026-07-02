@@ -1,8 +1,8 @@
 {
   "slug": "minkowski-fundamental-theorem-oq-03",
   "title": "Blichfeldt's Generalization of Minkowski's Fundamental Theorem",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-22T12:51:58.295Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proved general-k Blichfeldt theorem, 0-axiom verified.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "COMPLETE: general-k Blichfeldt (measure-multiplicity pigeonhole) formalized 0-axiom over Mathlib IsAddFundamentalDomain; k=1 recovers exists_pair_mem_lattice_not_disjoint_vadd.",
+    "builtItems": [
+      "exists_finset_lattice_common_vadd (MinkowskiFundamentalTheoremOQ03.lean): general-k Blichfeldt over IsAddFundamentalDomain",
+      "exists_finset_card_lt_of_lt_tsum: finite extraction from ℝ≥0∞ tsum of [0,1] terms > k"
+    ],
+    "insights": [
+      "Averaging g(z)=∑ 𝟙_{l+ᵥs}(z) over F integrates to μs (Tonelli + measure_eq_tsum); g(z)≤k everywhere ⇒ μs≤k·μF contradiction",
+      "Parent blichfeldt_statement is van der Corput (convex+symmetric+2ⁿ), not Blichfeldt — this entry states the honest Blichfeldt"
+    ],
+    "mathlibGaps": [
+      "Mathlib has only k=1 Blichfeldt (exists_pair_mem_lattice_not_disjoint_vadd); no general-multiplicity or van der Corput version"
+    ],
+    "nextSteps": [
+      "Derive general-k Minkowski / van der Corput by applying to (1/2)•s with convex counting (Route B)",
+      "Add k=1 sanity corollary explicitly recovering exists_pair_mem_lattice_not_disjoint_vadd"
+    ]
   },
   "tags": [
     "number-theory",

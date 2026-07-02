@@ -105,3 +105,38 @@ dedicated to the measure-multiplicity pigeonhole; not a spare-cycle task.
 - H. F. Blichfeldt (1914), *A new principle in the geometry of numbers*, Trans. AMS 15.
 - J. G. van der Corput (1936), generalization counting lattice points in convex bodies.
 - Mathlib `MeasureTheory.Group.GeometryOfNumbers` (`exists_pair_mem_lattice_not_disjoint_vadd`).
+
+---
+
+## Session 2026-07-02 (Session 2) — SOLVED (researcher-4)
+
+**Mode**: FRESH (executed Route A from Session 1's survey)
+**Outcome**: completed — 0-axiom verified
+
+### What I Did
+- Formalized **Route A** exactly as the Session-1 survey recommended: true general-`k`
+  Blichfeldt over Mathlib's `IsAddFundamentalDomain` API, self-contained.
+- New file `proofs/Proofs/MinkowskiFundamentalTheoremOQ03.lean` (136 L, 2 thm, 0 def).
+- New gallery entry `src/data/proofs/minkowski-fundamental-theorem-oq-03/`.
+
+### Theorems
+- `MeasureTheory.exists_finset_lattice_common_vadd` — `k • μF < μs ⇒ ∃ T:Finset L, k<#T ∧ ∃ z, ∀ l∈T, z ∈ l+ᵥs`.
+- `Blichfeldt.exists_finset_card_lt_of_lt_tsum` — reusable finite-extraction lemma.
+
+### Proof (measure-multiplicity pigeonhole)
+1. `key`: `∫⁻ z in F, (∑' l, (l+ᵥs).indicator 1 z) ∂μ = μ s` via `lintegral_tsum` (Tonelli)
+   + per-term `lintegral_indicator_one₀` / `restrict_apply₀'` + `fund.measure_eq_tsum s`.
+2. If `∀ z, g z ≤ k` then `μs = ∫_F g ≤ ∫_F k = k·μF` (`lintegral_mono`, `setLIntegral_const`,
+   `nsmul_eq_mul`), contradicting `h`. So `∃ z, k < g z`.
+3. Extract `T` from `k < ∑' l, indicator` via `tsum_eq_iSup_sum` + `lt_iSup_iff` + filter-to-support;
+   `Set.indicator_apply_ne_zero` gives `z ∈ l+ᵥs`.
+
+### Key API gotcha
+`lintegral_tsum` HOU on `indicator 1` fails; pass `(f := fun l z => (l+ᵥs).indicator 1 z)` explicitly.
+
+### Verification
+`lake env lean` (v4.26.0, warm Mathlib) EXIT 0; `#print axioms` = `[propext, Classical.choice, Quot.sound]` only ⇒ **0-axiom**.
+
+### Next Steps
+- Route B: general-`k` Minkowski / van der Corput by applying to `(1/2)•s` + convex counting.
+- Optional `k=1` sanity corollary recovering `exists_pair_mem_lattice_not_disjoint_vadd`.
