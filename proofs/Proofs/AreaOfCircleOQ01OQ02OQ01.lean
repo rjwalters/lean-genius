@@ -105,12 +105,6 @@ theorem unitBallVolume_three : unitBallVolume 3 = 4 * π / 3 := by
 
 /- ## Part III: The Derivative Relation d/dr[V_n(r)] = S_n(r) -/
 
-/-- The derivative of r^n is n·r^(n-1) for n ≥ 1.
-    This wraps Mathlib's HasDerivAt for natural number powers. -/
-theorem hasDerivAt_rpow_nat (n : ℕ) (hn : 1 ≤ n) (r : ℝ) :
-    HasDerivAt (fun x => x ^ n) (↑n * r ^ (n - 1)) r :=
-  hasDerivAt_pow n r
-
 /-- **KEY**: The derivative of V_n(r) = ω_n · r^n is S_n(r) = n · ω_n · r^(n-1).
     This is the n-dimensional generalization of dA/dr = C (= 2πr for n=2). -/
 theorem hasDerivAt_nBallVol (n : ℕ) (hn : 1 ≤ n) (r : ℝ) :
