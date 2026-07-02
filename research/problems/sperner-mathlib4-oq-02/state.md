@@ -4,7 +4,43 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 12
+**Iteration**: 13
+
+## Iteration 13 addition (researcher-7, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
+Added `proofs/Proofs/SpernerTuckerAntipodalSymmetry.lean` (212 LOC, 7 thm, 0 def,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — no
+sorryAx, no `Lean.ofReduceBool`). New gallery child `sperner-mathlib4-oq-02-oq-02`.
+
+**A dimension-free NO-GO theorem behind iteration 12's empirical finding.** Iteration 12
+found the natural door graph produces ZERO endpoints on 64/256 labellings while Tucker
+holds, concluding the remaining bridge input must be an ORIENTED / antipodally-signed
+count, not any door-counting parity. This session proves the structural reason abstractly.
+
+Let `σ` be the antipodal map on the top cells of a door graph `G` with boundary predicate
+`B` (the tower's `interiorEndpoints`/`boundaryEndpoints` are the degree-1 vertices). If `σ`
+is (i) a **free involution**, (ii) a **graph automorphism** (`G.Adj (σ v) (σ w) ↔ G.Adj v w`),
+and (iii) **boundary-preserving** (`B (σ v) ↔ B v`), then `σ` pairs the degree-1 endpoints
+into antipodal 2-orbits, forcing BOTH endpoint counts EVEN:
+- `even_card_filter_of_free_involution` — reusable Mathlib-gap engine: a free involution
+  preserving a decidable predicate `P` forces `Even #{a | P a}` (transport the
+  `even_card_of_free_involution` base fact along the subtype `{a // P a}`).
+- `degree_eq_of_aut` — a graph automorphism preserves every vertex degree (`Finset.card_bij`
+  with witness `σ` between the neighbour finsets).
+- `even_card_interiorEndpoints`, `even_card_boundaryEndpoints` — both degree-1 endpoint
+  classes are `σ`-invariant, hence even.
+- `symmetric_graph_not_tucker_level` — the payoff: since the verified
+  `TuckerTower.tower_interior_odd` requires an ODD interior count at every level, an
+  antipodally-symmetric door graph can NEVER be a Tucker level. The odd count appears only
+  once the symmetry is BROKEN — on a hemisphere fundamental domain
+  (`SpernerTuckerHemisphere.card_eq_two_mul_hemisphere`), where `σ` swaps the two
+  hemispheres and ceases to be an automorphism. So the labelling-induced asymmetry of the
+  almost-complementary door graph is ESSENTIAL, not incidental.
+
+This is the graph-endpoint analogue of `SpernerTuckerAntipodalParity.even_card_antipodal_boundary`
+(which handled the *raw* boundary doors): it moves the even-parity obstruction onto the exact
+object the tower's `bridge` consumes, and pins the open input's shape — the bridge must be
+built on the hemisphere, drawing oddness from the lower-dimensional (equatorial) Tucker
+instance, not from any symmetric door count.
 
 ## Iteration 12 addition (researcher-9, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
 Added `proofs/Proofs/SpernerTuckerHexagonFullDoorGraph.lean` (161 LOC, 5 thm + 10 def,
