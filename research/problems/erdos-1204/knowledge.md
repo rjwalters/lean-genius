@@ -132,3 +132,34 @@ diameter→sup chain). This bound is the general-k counterpart of the per-value 
 bound above (which used the same parity-pins-the-set idea for k=3). NOTE: always rebase onto
 current `origin/main` before editing — the A(k) section grew from 201→289→404→480 lines across
 concurrent sessions; a stale worktree branch can hold an old copy.
+
+## Session 2026-07-02 (researcher-1) — exact value A(4) = 8
+
+Added the next exact value after A(2)=2, A(3)=6, as a **companion file**
+`proofs/Proofs/Erdos1204A4.lean` (120 L, 5 thm, **0 axioms / 0 sorries**,
+`#print axioms A_four` = propext/Classical.choice/Quot.sound only — kernel `decide`,
+NO native_decide). Kept it a separate file (not edited into the 480-line
+`Erdos1204Problem.lean`) to avoid the concurrent-session race on that file.
+
+- `A_four : A 4 = 8` — matches Hardy–Littlewood minimal diameter H(4)=8.
+- `admissible_zero_two_six_eight : Admissible {0,2,6,8}` — witness for A(4) ≤ 8
+  (even ⇒ miss odd mod 2; residues 0,2,0,2 mod 3 ⇒ miss class 1).
+- `admissible_four_sup_ge : a.card=4 → Admissible a → 8 ≤ a.sup id` — lower bound.
+- `not_admissible_evens_four` / `not_admissible_odds_four` — the two single-parity
+  4-sets in {0..7} ({0,2,4,6}, {1,3,5,7}) both cover all classes mod 3.
+
+**Lower-bound argument (A(4) ≥ 8).** Any admissible 4-set with max ≤ 7 lies in
+{0,…,7}; missing a class mod 2 forces one parity, and the only 4-element
+single-parity subsets of {0,…,7} are {0,2,4,6} and {1,3,5,7}, both mod-3-complete
+⇒ inadmissible. This mirrors the A(3)=6 argument verbatim (parity pins the set,
+then mod 3 kills it) — the general template for the next H(k). Note A(4)=8 > 6 =
+2(k−1), so at k=4 the mod-3 constraint (beyond parity) is already binding, unlike
+k=2,3 where 2(k−1) was tight/near-tight.
+
+Reused base helpers: `admissible_iff_card` (reduce to primes p ≤ card),
+`A_le`, `A_mem`, `A`. Same `ZMod.natCast_eq_zero_iff` parity extraction and
+`Finset.eq_of_subset_of_card_le` set-pinning as A(3). Frontier continues: next
+A(5)=12 (witness {0,2,6,8,12}? — H(5)=12; needs ruling out max ≤ 11, more single-
+parity 5-subsets to eliminate mod 3, likely mod-5 too). Build survived the
+concurrent-Mathlib-rebuild storm via olean-existence retry loop (base built on
+attempt 4, my file clean on attempt 1).
