@@ -19,9 +19,9 @@
     "erdosNumber": 913,
     "erdosUrl": "https://erdosproblems.com/913",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 344,
-    "assumptions": "1 axiom: infinite_8p_sq_minus_1_primes (Bunyakovsky-type conjecture: infinitely many primes p with 8p²-1 also prime). Both conditional results (8p²-1 path and Mersenne path) and all exponent structure lemmas are fully proved.",
+    "assumptions": "2 assumptions: (1) axiom infinite_8p_sq_minus_1_primes (Bunyakovsky-type conjecture: infinitely many primes p with 8p²-1 also prime); (2) Lean.ofReduceBool, introduced by native_decide, which discharges primeFactors/factorization equalities inside exponent_structure (on the main 8p²-1 conditional path) and every concrete example (n = 3, 7, 8, 31, 71, 127). Both conditional results (8p²-1 path and Mersenne path) and all exponent structure lemmas are otherwise fully proved; the Mersenne path itself uses no native_decide.",
     "mathlib_version": "4.26.0",
     "theoremCount": 16,
     "definitionCount": 6
