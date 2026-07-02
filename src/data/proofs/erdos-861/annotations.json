@@ -17,7 +17,10 @@
       "counting",
       "hypergraph-containers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets (B2-sequences)",
+      "counting problems in combinatorics"
+    ]
   },
   {
     "id": "ann-e861-sidon-def",
@@ -36,7 +39,10 @@
       "distinct-sums",
       "B2-sequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pairwise sums",
+      "distinct-sum sets"
+    ]
   },
   {
     "id": "ann-e861-max-size",
@@ -54,7 +60,10 @@
       "maximum-set-size",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e861-count",
@@ -72,7 +81,10 @@
       "counting",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting subsets",
+      "combinatorics"
+    ]
   },
   {
     "id": "ann-e861-erdos-turan",
@@ -91,7 +103,10 @@
       "asymptotic",
       "square-root"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets",
+      "square-root growth"
+    ]
   },
   {
     "id": "ann-e861-q1",
@@ -109,7 +124,10 @@
       "counting",
       "growth-rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting Sidon sets",
+      "exponential growth rates"
+    ]
   },
   {
     "id": "ann-e861-q2",
@@ -127,7 +145,10 @@
       "precise-asymptotics",
       "exponent"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic notation",
+      "exponential growth rates"
+    ]
   },
   {
     "id": "ann-e861-lower",
@@ -146,7 +167,10 @@
       "lower-bound",
       "Saxton-Thomason"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the hypergraph container method",
+      "asymptotic lower bounds"
+    ]
   },
   {
     "id": "ann-e861-upper",
@@ -165,7 +189,10 @@
       "KLRS",
       "random-structures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "random structures",
+      "asymptotic upper bounds"
+    ]
   },
   {
     "id": "ann-e861-combined",
@@ -184,7 +211,10 @@
       "gap",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bounds",
+      "asymptotic upper bounds"
+    ]
   },
   {
     "id": "ann-e861-summary",
@@ -203,6 +233,9 @@
       "open-problem",
       "exact-constant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets",
+      "open problems"
+    ]
   }
 ]
