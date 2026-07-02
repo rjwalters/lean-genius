@@ -60,11 +60,38 @@
     "proofId": "fibonacci-divisibility-oq-07",
     "range": {
       "startLine": 61,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "The Divisibility Biconditional (m ≥ 3)",
+    "content": "**$\\mathtt{fib\\_dvd\\_iff}$** is assembled in a single line as the anonymous constructor $\\langle \\mathtt{dvd\\_of\\_fib\\_dvd\\_fib}\\ hm,\\ \\mathtt{Nat.fib\\_dvd}\\ m\\ n\\rangle$: the new converse (this file) supplies the forward-to-index direction and Mathlib's $\\mathtt{Nat.fib\\_dvd}$ supplies the reverse, together giving $F_m \\mid F_n \\Leftrightarrow m \\mid n$ for every $m \\ge 3$ — the full biconditional on the non-degenerate range of indices.",
+    "mathContext": "$m \\ge 3 \\Rightarrow (F_m \\mid F_n \\leftrightarrow m \\mid n)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "the converse dvd_of_fib_dvd_fib",
+      "Mathlib's forward Nat.fib_dvd",
+      "anonymous-constructor iff assembly"
+    ],
+    "prerequisites": [
+      "The converse dvd_of_fib_dvd_fib",
+      "Mathlib's forward Nat.fib_dvd"
+    ],
+    "tags": [
+      "biconditional",
+      "characterization",
+      "critical"
+    ]
+  },
+  {
+    "id": "ann-fibdivoq07-3b",
+    "proofId": "fibonacci-divisibility-oq-07",
+    "range": {
+      "startLine": 68,
       "endLine": 90
     },
     "type": "theorem",
-    "title": "The Biconditional and its Sharp Global Form",
-    "content": "**$\\mathtt{fib\\_dvd\\_iff}$** packages the converse with Mathlib's forward $\\mathtt{Nat.fib\\_dvd}$ to give $F_m \\mid F_n \\Leftrightarrow m \\mid n$ for $m \\ge 3$. **$\\mathtt{fib\\_dvd\\_iff\\_forall}$** is the sharp statement: for a fixed $m$, the per-$n$ biconditional holds for *every* $n$ iff $m \\ne 2$. The exceptional direction instantiates $n = 1$ at $m = 2$ to derive $2 \\mid 1$; the converse direction splits $m \\ne 2$ into $m = 0$ (both sides $\\Leftrightarrow n = 0$), $m = 1$ (both sides vacuously true), and $m = k+3$.",
+    "title": "The Sharp Global Form: m = 2 is the Unique Exception",
+    "content": "**$\\mathtt{fib\\_dvd\\_iff\\_forall}$** is the sharp statement: for a fixed $m$, the per-$n$ biconditional $F_m \\mid F_n \\leftrightarrow m \\mid n$ holds for *every* $n$ iff $m \\ne 2$. The exceptional direction instantiates $n = 1$ at $m = 2$ to derive the false $2 \\mid 1$ (from $F_2 \\mid F_1$, by decide). The converse direction rcases $m \\ne 2$ into $m = 0$ (both sides $\\Leftrightarrow n = 0$, via $\\mathtt{Nat.fib\\_eq\\_zero}$ and $\\mathtt{zero\\_dvd\\_iff}$), $m = 1$ (both sides vacuously true), $m = 2$ (excluded by $\\mathtt{absurd\\ rfl}$), and $m = k+3$ (delegated to $\\mathtt{fib\\_dvd\\_iff}$). This is the strongest correct form — no weaker hypothesis than $m \\ne 2$ would be sound.",
     "mathContext": "$(\\forall n,\\ F_m \\mid F_n \\leftrightarrow m \\mid n) \\leftrightarrow m \\ne 2$.",
     "significance": "critical",
     "relatedConcepts": [
@@ -73,12 +100,12 @@
       "Nat.fib_eq_zero and zero_dvd_iff for the m = 0 branch"
     ],
     "prerequisites": [
-      "The converse dvd_of_fib_dvd_fib",
-      "Mathlib's forward Nat.fib_dvd"
+      "The biconditional fib_dvd_iff",
+      "the F₁ = F₂ = 1 coincidence"
     ],
     "tags": [
-      "biconditional",
       "sharp",
+      "exceptional-index",
       "characterization",
       "critical"
     ]
