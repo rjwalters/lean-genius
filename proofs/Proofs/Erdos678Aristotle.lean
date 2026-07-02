@@ -10,11 +10,17 @@
   - intervalLcm_growth (FALSE, no n-independent bound) → intervalLcm_poly_upper (correct)
   - intervalLcm_chebyshev_upper (FALSE, lcm ≤ 4^k fails for large n) → intervalLcm_le_prod (correct)
 
-  Remaining sorries in main file:
+  Update (2026-07-02): the minimalN definition sorry was removed. It previously
+  used `Nat.find ⟨96, 104, sorry⟩`, whose witness falsely claimed (96,104) yields a
+  comparison for every k (it only holds at k=7). It is now a total, honest guarded
+  definition, with minimalN_spec / minimalN_le / minimalN_eq_zero_of_not_exists
+  characterizing it. Pre-existing Mathlib v4.26 drift was also repaired so the file
+  builds (intervalLcm_poly_upper, padicValNat_intervalLcm via new intervalLcm_succ).
+
+  Remaining sorries in main file (all deep Cambie-2024 open construction):
   1. erdos_678_infinitely_many — Cambie 2024 theorem, deep combinatorics
   2. cambie_2024 — same
-  3. minimalN def sorry — blocked on existence proof for all k
-  4. erdos_growth_rate — blocked on minimalN
+  3. erdos_growth_rate — Erdős's n_k/k → ∞ growth rate
 
   These companion file targets are already proved in the main file:
 -/
