@@ -297,3 +297,68 @@ reaped worktree + 100%-full disk risks introducing false theorems (cf. the
 `erdos-601` / `three_dvd` history) for no verified gain. Value here is the
 corrected map: **Mathlib now HAS the theorems; the gap is instantiation + the
 7-conductor check.**
+## Session 2026-07-02 (researcher-1, iter 7) — Authentic deterministic half via Mathlib's real decomposition-group API
+
+**Mode**: REVISIT · **Outcome**: progress (new 0-axiom brick + material framing correction)
+
+**Relation to the researcher-9 re-survey above**: that session recorded the same
+"Frobenius/inertia API is now in Mathlib" discovery as a *prose roadmap* (no Lean).
+This session **realizes the divisibility step of that roadmap as verified Lean** —
+`inertiaDeg_dvd_card` is exactly the "residue Frobenius order = inertiaDeg ⟹
+`3 ∣ orderOf σ ∣ |Gal|`" leg, extracted as a cycle-type-free, reusable theorem.
+
+### The stale-gap discovery
+All six prior iterations rested on the claim that the Frobenius / inertia-degree
+machinery for number-field extensions is "not in Mathlib 4.26", forcing the
+deterministic half to be modelled *abstractly* through `galActionHom` and a
+**hypothesised** cycle type. That claim is now **out of date**. Mathlib 4.26
+ships:
+
+- `Mathlib/RingTheory/Frobenius.lean` — `AlgHom.IsArithFrobAt`, `IsArithFrobAt`,
+  `arithFrobAt`, and existence `IsArithFrobAt.exists_of_isInvariant`.
+- `Mathlib/RingTheory/Ideal/Over.lean` + `Mathlib/RingTheory/Invariant/Basic.lean`
+  — `Ideal.Quotient.stabilizerHom : stabilizer G P →* (B⧸P ≃ₐ[A⧸p] B⧸P)`, proved
+  **surjective** (`Ideal.Quotient.stabilizerHom_surjective`): the decomposition
+  group surjects onto the residue-field Galois group.
+- `Mathlib/NumberTheory/RamificationInertia/Galois.lean` — the Galois form of the
+  **fundamental identity**
+  `Ideal.ncard_primesOver_mul_card_inertia_mul_finrank :`
+  `(p.primesOver S).ncard * Nat.card (P.toAddSubgroup.inertia G) *`
+  `Module.finrank (R⧸p) (S⧸P) = Nat.card G`, plus
+  `card_inertia_eq_ramificationIdxIn`.
+
+### What I built
+`Proofs/InverseGaloisOQ06OQ02InertiaDvd.lean` (3 thm, 0 sorry, 0 axiom decls,
+no `native_decide`; build-verified docker 2386 jobs):
+
+- `inertiaDeg_dvd_card` : `[IsGaloisGroup G R S] [Finite G]`,
+  `p.IsMaximal`, `P.LiesOver p`, `P.IsMaximal`,
+  `Algebra.IsSeparable (R⧸p) (S⧸P)` ⟹ `p.inertiaDeg P ∣ Nat.card G`.
+  Proof: `refine ⟨(p.primesOver S).ncard * Nat.card (P.toAddSubgroup.inertia G), ?_⟩`
+  then `rw [Ideal.inertiaDeg_algebraMap p P, ← H]; ring` where `H` is the
+  fundamental identity above. No cycle-type hypothesis at all — the divisibility
+  is read straight off `g·e·f = |G|`.
+- `dvd_card_of_inertiaDeg_eq` (`inertiaDeg = n ⟹ n ∣ |G|`) and
+  `three_dvd_card_of_inertiaDeg_three` (`inertiaDeg = 3 ⟹ 3 ∣ |G|`) — the latter
+  is exactly the shape of the open axiom `three_dvd_gal_card`.
+
+This **supersedes** the `galActionHom`-cycle-type route (GalAction / GenCycle /
+GalBridge): those assume "some σ acts on the roots as an n-cycle"; this reads the
+divisibility off the real number-field object with no such assumption.
+
+### Honesty
+Does **not** discharge `three_dvd_gal_card`. The residual is now sharper and no
+longer a missing API: (1) present `𝓞_{q.SplittingField}` as an `IsGaloisGroup
+q.Gal ℤ 𝓞_L`; (2) via Kummer–Dedekind get a prime `P` over `7` with
+`inertiaDeg = 3` (in the splitting field the inertia degree of an unramified prime
+over `7` is the order of the Frobenius conjugacy class `= lcm(1,1,3) = 3`); (3)
+apply `three_dvd_card_of_inertiaDeg_three`. Steps (1)–(2) are the genuine
+remaining work — still shared with sibling `inverse-galois-a5-oq-01`.
+
+### Key lemma names (for the next session)
+- `Ideal.ncard_primesOver_mul_card_inertia_mul_finrank` (Galois fundamental identity)
+- `Ideal.inertiaDeg_algebraMap : inertiaDeg p P = finrank (R⧸p) (S⧸P)`
+- `Ideal.Quotient.stabilizerHom` / `_surjective`
+- `arithFrobAt`, `IsArithFrobAt.exists_of_isInvariant` (RingTheory/Frobenius.lean)
+- `FiniteField.orderOf_frobeniusAlgHom : orderOf (frobeniusAlgHom K L) = finrank K L`
+  (order of residue-field Frobenius = inertia degree)
