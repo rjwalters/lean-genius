@@ -1,0 +1,206 @@
+{
+  "id": "automorphic-number-oq-01-oq-01-oq-01",
+  "slug": "automorphic-number-oq-01-oq-01-oq-01",
+  "title": "Automorphic Residues Count Squarefree Divisors",
+  "description": "The parent entry proves the number of idempotents of ZMod n — equivalently the automorphic residues e²≡e (mod n) — is exactly 2^ω(n), where ω(n) is the number of distinct prime factors of n. This follow-up gives that count a divisor-theoretic meaning: 2^ω(n) is also the number of SQUAREFREE DIVISORS of n, and both are the number of subsets of the prime-factor set of n. The heart is a clean bijection realized by Finset.card_image_of_injOn: the map s ↦ ∏ p ∈ s, p sends the powerset of n.primeFactors onto the squarefree divisors of n. A product of a subset of the distinct primes dividing n divides ∏ p ∈ n.primeFactors, p ∣ n (Nat.prod_primeFactors_dvd) and is squarefree (Finset.squarefree_prod_of_pairwise_isCoprime, distinct primes being coprime); conversely every squarefree divisor d is recovered as ∏ p ∈ d.primeFactors, p (Nat.prod_primeFactors_of_squarefree) with d.primeFactors ⊆ n.primeFactors (Nat.primeFactors_mono). The map is injective on the powerset because s ↦ ∏ p ∈ s, p has the left inverse primeFactors on sets of primes (Nat.primeFactors_prod). Finset.card_powerset then yields 2^ω(n), and the parent's idempotent_count closes the loop: the automorphic residues of a modulus are equinumerous with its squarefree divisors — the arithmetic shadow of the parent's remark that 2^ω(n) counts the ways to split n into complementary coprime factors. The decimal case 10^k has 4 squarefree divisors 1, 2, 5, 10.",
+  "meta": {
+    "author": "Lean Genius Researcher-5",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AutomorphicNumberOQ01OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "automorphic-numbers",
+      "idempotents",
+      "squarefree-divisors",
+      "divisor-function",
+      "prime-factorization",
+      "bijective-counting",
+      "arithmetic-functions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 149,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "assumptions": "None. 0 axioms, 0 sorries, no native_decide, no decide. All results depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). Builds on the verified parent entry AutomorphicNumberOQ01OQ01.lean, reusing its idempotent_count and primeFactors_ten_pow for the bridge and decimal-recovery theorems.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.squarefree_prod_of_pairwise_isCoprime",
+        "description": "A product ∏ i ∈ s, f i is squarefree when the factors are pairwise relatively prime and each is squarefree — applied to a finset of distinct primes to show ∏ p ∈ s, p is squarefree",
+        "module": "Mathlib.Algebra.Squarefree.Basic"
+      },
+      {
+        "theorem": "Nat.prod_primeFactors_dvd",
+        "description": "∏ p ∈ n.primeFactors, p ∣ n — the radical of n divides n, giving divisibility of any sub-product of distinct prime factors",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.prod_primeFactors_of_squarefree",
+        "description": "For squarefree n, ∏ p ∈ n.primeFactors, p = n — recovers a squarefree divisor as the product over its own prime factors, giving surjectivity of the counting bijection",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "Nat.primeFactors_prod",
+        "description": "For a finset s of primes, primeFactors (∏ p ∈ s, p) = s — the left inverse of s ↦ ∏ p ∈ s, p on sets of primes, giving injectivity",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "Nat.primeFactors_mono",
+        "description": "m ∣ n and n ≠ 0 imply m.primeFactors ⊆ n.primeFactors — places each squarefree divisor's prime-factor set inside the powerset of n.primeFactors",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "#(s.image f) = #s when f is injective on s — turns the image description of the squarefree divisors into a cardinality equal to that of the powerset",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.card_powerset",
+        "description": "#(s.powerset) = 2 ^ #s — supplies the 2^ω(n) count once the squarefree divisors are identified with the powerset of the prime factors",
+        "module": "Mathlib.Data.Finset.Powerset"
+      }
+    ],
+    "dateAdded": "2026-07-01",
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AutomorphicNumberOQ01OQ01"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "AutomorphicNumberOQ01OQ01OQ01",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/AutomorphicNumberOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "squarefreeDivisors_card",
+      "type": "headline",
+      "statement": "n ≠ 0 → (squarefreeDivisors n).card = 2 ^ n.primeFactors.card",
+      "description": "The number of squarefree divisors of n ≥ 1 is 2^ω(n). Proved by identifying the squarefree divisors with the image of the powerset of n.primeFactors under s ↦ ∏ p ∈ s, p, an injection, then applying Finset.card_powerset.",
+      "significance": "The divisor-theoretic incarnation of the parent's idempotent count: the same 2^ω(n) that counts automorphic residues counts squarefree divisors, both being 2^(number of distinct primes)."
+    },
+    {
+      "name": "idempotents_eq_squarefreeDivisors",
+      "type": "headline",
+      "statement": "0 < n → Nat.card {e : ZMod n // e * e = e} = (squarefreeDivisors n).card",
+      "description": "The number of idempotents of ZMod n — the automorphic residues e²≡e (mod n) — equals the number of squarefree divisors of n. Combines the parent's idempotent_count = 2^ω(n) with squarefreeDivisors_card = 2^ω(n).",
+      "significance": "Makes precise the parent's remark that 2^ω(n) counts the ways to split n into complementary coprime factors: automorphic residues and squarefree divisors of n are equinumerous."
+    },
+    {
+      "name": "squarefreeDivisors_eq_image",
+      "type": "core",
+      "statement": "n ≠ 0 → squarefreeDivisors n = (n.primeFactors.powerset).image (fun s => ∏ p ∈ s, p)",
+      "description": "The squarefree divisors of n are exactly the products ∏ p ∈ s, p over subsets s of the distinct prime factors of n. Forward: a squarefree divisor d equals the product over its own prime factors, a subset of n's. Backward: any such product divides the radical (hence n) and is a product of distinct primes, hence squarefree.",
+      "significance": "The structural bijection with the powerset of the prime factors — the concrete content behind the 2^ω(n) count and the correspondence with CRT idempotent supports."
+    },
+    {
+      "name": "injOn_prod_powerset",
+      "type": "core",
+      "statement": "Set.InjOn (fun s => ∏ p ∈ s, p) ↑n.primeFactors.powerset",
+      "description": "The map s ↦ ∏ p ∈ s, p is injective on the powerset of n.primeFactors: on sets of primes it has the left inverse primeFactors (Nat.primeFactors_prod), so equal products force equal index sets.",
+      "significance": "Injectivity is what upgrades 'squarefree divisors are the image of the powerset' to an exact cardinality equality 2^ω(n)."
+    },
+    {
+      "name": "prod_mem_squarefreeDivisors",
+      "type": "supporting",
+      "statement": "n ≠ 0 → s ⊆ n.primeFactors → (∏ p ∈ s, p) ∈ squarefreeDivisors n",
+      "description": "A product of a subset of the distinct primes dividing n is a squarefree divisor of n: it divides ∏ p ∈ n.primeFactors, p ∣ n (Nat.prod_primeFactors_dvd), and being a product of distinct — hence pairwise coprime — primes it is squarefree.",
+      "significance": "The well-definedness half of the bijection: every point of the powerset lands in the squarefree divisors."
+    },
+    {
+      "name": "squarefreeDivisors_card_prime_pow",
+      "type": "supporting",
+      "statement": "p.Prime → 0 < k → (squarefreeDivisors (p ^ k)).card = 2",
+      "description": "A prime power p^k has exactly two squarefree divisors, 1 and p, matching 2^ω(p^k) = 2^1 = 2 and the parent's two idempotents of ZMod (p^k).",
+      "significance": "The ω = 1 case, consistent with the general formula and the parent's prime-power idempotent count."
+    }
+  ],
+  "sections": [
+    {
+      "id": "squarefree-divisors-def",
+      "title": "Part I: The squarefree divisors and the powerset map",
+      "startLine": 55,
+      "endLine": 84,
+      "summary": "squarefreeDivisors n is the finset {d ∈ n.divisors | Squarefree d}; mem_squarefreeDivisors unfolds membership to (d ∣ n ∧ n ≠ 0) ∧ Squarefree d. prod_mem_squarefreeDivisors shows the product ∏ p ∈ s, p over a subset s ⊆ n.primeFactors is a squarefree divisor: it divides the radical ∏ p ∈ n.primeFactors, p (Nat.prod_primeFactors_dvd), which divides n, and it is squarefree because distinct primes are pairwise coprime (Finset.squarefree_prod_of_pairwise_isCoprime with Nat.coprime_primes / coprime_iff_isRelPrime).",
+      "mathContext": "Each subset of the prime factors of n yields a squarefree divisor; the radical of n bounds divisibility and coprimality of distinct primes gives squarefreeness."
+    },
+    {
+      "id": "bijection-image",
+      "title": "Part II: Squarefree divisors as the image of the powerset",
+      "startLine": 85,
+      "endLine": 114,
+      "summary": "squarefreeDivisors_eq_image proves squarefreeDivisors n = (n.primeFactors.powerset).image (fun s => ∏ p ∈ s, p) by mutual membership: a squarefree divisor d is the image of d.primeFactors (⊆ n.primeFactors by Nat.primeFactors_mono) since ∏ p ∈ d.primeFactors, p = d (Nat.prod_primeFactors_of_squarefree); conversely any image point is a squarefree divisor by Part I. injOn_prod_powerset shows the map is injective on the powerset via the left inverse primeFactors (Nat.primeFactors_prod on sets of primes).",
+      "mathContext": "The map s ↦ ∏ p ∈ s, p is a bijection between subsets of n's distinct primes and squarefree divisors of n, with inverse d ↦ d.primeFactors."
+    },
+    {
+      "id": "counting-and-bridge",
+      "title": "Part III: The count 2^ω(n) and the bridge to idempotents",
+      "startLine": 115,
+      "endLine": 141,
+      "summary": "squarefreeDivisors_card: rewriting by the image description, Finset.card_image_of_injOn, and Finset.card_powerset gives 2 ^ n.primeFactors.card. idempotents_eq_squarefreeDivisors chains the parent's idempotent_count = 2^ω(n) with this to equate automorphic residues and squarefree divisors. squarefreeDivisors_card_eq_one_iff (Nat.pow_eq_one, primeFactors_eq_empty) characterizes count 1 ⟺ n = 1, and squarefreeDivisors_card_prime_pow gives count 2 for prime powers.",
+      "mathContext": "Card of the image = card of the powerset = 2^ω(n); combined with the parent this counts automorphic residues as squarefree divisors."
+    },
+    {
+      "id": "decimal-recovery",
+      "title": "Part IV: The decimal case",
+      "startLine": 142,
+      "endLine": 149,
+      "summary": "squarefreeDivisors_ten_pow_card: substituting the parent's ω(10^k) = 2 (primeFactors_ten_pow) into squarefreeDivisors_card gives 2^2 = 4 — the four squarefree divisors 1, 2, 5, 10 of 10^k, mirroring the four automorphic residues mod 10^k.",
+      "mathContext": "The classical decimal '4' reappears as the count of squarefree divisors of 10^k, one for each subset of {2, 5}."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The number of squarefree divisors of an integer $n$ — equivalently the number of unitary 'complementary' factorizations $n = a \\cdot b$ with $\\gcd(a,b) = 1$ — is one of the oldest multiplicative counting functions in number theory, equal to $2^{\\omega(n)}$ where $\\omega(n)$ counts the distinct prime divisors of $n$. It is the value $|\\mu|\\!*\\!1$ at $n$ (the Dirichlet convolution of $|\\mu|$ with the constant $1$), and its Dirichlet series $\\sum_n 2^{\\omega(n)} n^{-s} = \\zeta(s)^2/\\zeta(2s)$ is a staple of analytic number theory. The parent entry showed that this same $2^{\\omega(n)}$ counts the idempotents of $\\mathbb{Z}/n\\mathbb{Z}$ — the automorphic residues $e^2 \\equiv e \\pmod n$ — through the Chinese Remainder decomposition into local rings. This follow-up makes the coincidence explicit and elementary: it exhibits an honest bijection, not merely an equality of counts, between the squarefree divisors of $n$ and the subsets of its prime-factor set, and hence between squarefree divisors and automorphic residues. The bijection is the arithmetic residue of the fact — noted in the parent's implications — that each idempotent of $\\mathbb{Z}/n\\mathbb{Z}$ selects a 'support' set of primes, assembling a unitary complementary factor of $n$.",
+    "problemStatement": "Give a divisor-theoretic meaning to the automorphic-residue count $2^{\\omega(n)}$. Concretely: prove that for every $n \\geq 1$ the number of squarefree divisors of $n$ is $2^{\\omega(n)}$, exhibit the underlying bijection with the powerset of the prime factors of $n$, and conclude that the automorphic residues of $\\mathbb{Z}/n\\mathbb{Z}$ (idempotents $e^2 \\equiv e$) are equinumerous with the squarefree divisors of $n$. Recover the decimal case: $10^k$ has $4$ squarefree divisors, $1, 2, 5, 10$.",
+    "proofStrategy": "Work with the finite set $\\operatorname{squarefreeDivisors}(n) = \\{d \\in \\operatorname{divisors}(n) : \\operatorname{Squarefree} d\\}$. The key is a bijection realized by the map $\\varphi : s \\mapsto \\prod_{p \\in s} p$ from the powerset of $n.\\!\\operatorname{primeFactors}$. First show $\\varphi$ lands in the squarefree divisors: a product of a subset of the distinct primes of $n$ divides the radical $\\prod_{p \\mid n} p$, which divides $n$ (Nat.prod_primeFactors_dvd), and a product of distinct — pairwise coprime — primes is squarefree (Finset.squarefree_prod_of_pairwise_isCoprime). Then show every squarefree divisor is hit: a squarefree $d \\mid n$ equals $\\prod_{p \\in d.\\!\\operatorname{primeFactors}} p$ (Nat.prod_primeFactors_of_squarefree), and $d.\\!\\operatorname{primeFactors} \\subseteq n.\\!\\operatorname{primeFactors}$ (Nat.primeFactors_mono). This gives $\\operatorname{squarefreeDivisors}(n)$ as the image of the powerset. Injectivity of $\\varphi$ on the powerset follows from the left inverse $\\operatorname{primeFactors}$ on sets of primes (Nat.primeFactors_prod). Finset.card_image_of_injOn and Finset.card_powerset then deliver $2^{\\omega(n)}$. Finally, chaining the parent's $\\operatorname{idempotent\\_count} = 2^{\\omega(n)}$ equates automorphic residues with squarefree divisors, and the parent's $\\omega(10^k) = 2$ recovers the count $4$.",
+    "keyInsights": [
+      "The automorphic-residue count $2^{\\omega(n)}$ is not just numerically equal to the number of squarefree divisors of $n$ — the two are joined by an explicit bijection, both being the number of subsets of the prime-factor set of $n$.",
+      "A squarefree divisor of $n$ is completely determined by which of $n$'s primes it contains: the map $d \\mapsto d.\\!\\operatorname{primeFactors}$ and its inverse $s \\mapsto \\prod_{p \\in s} p$ set up the correspondence with the powerset.",
+      "Divisibility of the sub-products is controlled by the radical: $\\prod_{p \\in s} p$ divides $\\prod_{p \\mid n} p$, which divides $n$ — so no divisor test beyond 'subset of the prime factors' is needed.",
+      "Squarefreeness of $\\prod_{p \\in s} p$ is exactly the pairwise coprimality of distinct primes, packaged by Finset.squarefree_prod_of_pairwise_isCoprime — the same coprimality that drives the CRT splitting behind the idempotent count.",
+      "The equinumerosity of idempotents and squarefree divisors is the arithmetic shadow of a ring fact: an idempotent of $\\mathbb{Z}/n\\mathbb{Z}$ picks out a unitary complementary factorization $n = a \\cdot b$ with $\\gcd(a,b)=1$, whose squarefree part is a squarefree divisor.",
+      "Phrasing the count through a Finset image and Finset.card_powerset avoids any induction on $\\omega(n)$: the powerset carries the $2^{\\omega(n)}$ for free once the bijection is in place."
+    ]
+  },
+  "conclusion": {
+    "summary": "For every $n \\geq 1$ the number of squarefree divisors of $n$ is exactly $2^{\\omega(n)}$, established by an explicit bijection $s \\mapsto \\prod_{p \\in s} p$ between the powerset of $n$'s distinct prime factors and its squarefree divisors (injective by the left inverse $\\operatorname{primeFactors}$, surjective by $\\prod_{p \\in d.\\operatorname{primeFactors}} p = d$ for squarefree $d$). Chaining this with the parent entry's idempotent count $2^{\\omega(n)}$ shows the automorphic residues $e^2 \\equiv e \\pmod n$ of $\\mathbb{Z}/n\\mathbb{Z}$ are equinumerous with the squarefree divisors of $n$. The decimal case reappears: $10^k$ has the four squarefree divisors $1, 2, 5, 10$, mirroring its four automorphic residues. Fully machine-checked: $0$ sorries, $0$ axioms, no `native_decide`, no `decide`.",
+    "implications": "The result upgrades the parent's numerical coincidence to a structural one: automorphic residues, squarefree divisors, and subsets of the prime-factor set are three faces of the same $2^{\\omega(n)}$. The bijection makes the parent's remark about 'splitting $n$ into complementary coprime factors' literal — each squarefree divisor $d$ pairs with the unitary complement supported on the remaining primes. Methodologically it is a template for turning a multiplicative count into a combinatorial one: identify the objects with subsets of the primes, exhibit the product/prime-factor inverse pair, and read off $2^{\\omega(n)}$ from the powerset.",
+    "openQuestions": [
+      "The squarefree divisors of $n$ carry a Boolean-lattice structure (isomorphic to the powerset of $n.\\!\\operatorname{primeFactors}$ under divisibility); can this order isomorphism be formalized and matched to the lattice of idempotents of $\\mathbb{Z}/n\\mathbb{Z}$ under $e \\leq f \\iff ef = e$?",
+      "Beyond counting, can the CRT idempotent-to-squarefree-divisor correspondence be made an explicit map in Lean — sending an idempotent $e$ to the product of the primes $p \\mid n$ at which the local component of $e$ is $1$ — and proven to be the bijection whose existence is here established only through cardinalities?",
+      "Does the same powerset bijection give the count of UNITARY divisors of $n$ (divisors $d$ with $\\gcd(d, n/d)=1$), which is likewise $2^{\\omega(n)}$, and can the two divisor families be related by $d \\mapsto \\operatorname{rad}(d)$?",
+      "Can the partial sums $\\sum_{n \\leq x} (\\text{number of squarefree divisors of } n) = \\sum_{n \\leq x} 2^{\\omega(n)}$ and their $\\zeta(s)^2/\\zeta(2s)$ Dirichlet series be formalized, connecting this exact count to its average order?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "automorphic-number-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Why Exactly Four? Counting Automorphic Residues mod n as 2^ω(n) — proves the idempotent/automorphic-residue count is 2^ω(n); this entry supplies its idempotent_count and primeFactors_ten_pow, and reinterprets the same 2^ω(n) as a squarefree-divisor count."
+    },
+    {
+      "proofId": "automorphic-number-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "The Complementary Pairing of Automorphic Idempotents mod 10^k — the complementary pairing e ↦ 1-e of idempotents mirrors the complementary pairing d ↦ n/d of unitary/squarefree divisors that this entry's bijection makes explicit."
+    },
+    {
+      "proofId": "fundamental-arithmetic",
+      "relationship": "foundation",
+      "description": "Fundamental Theorem of Arithmetic — unique prime factorization underlies ω(n), the radical ∏ p ∈ n.primeFactors, p, and the powerset over which the squarefree-divisor bijection is built."
+    },
+    {
+      "proofId": "euler-totient",
+      "relationship": "related-technique",
+      "description": "Euler's Generalization of Fermat's Little Theorem — another multiplicative arithmetic function evaluated across the prime factorization; the squarefree-divisor count 2^ω(n) is the |μ|*1 convolution, a companion to φ in the same multiplicative-function toolkit."
+    }
+  ]
+}
