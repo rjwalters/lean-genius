@@ -64,7 +64,8 @@
       "The 'at least n lines' bound is de Bruijn–Erdős (1948), not Sylvester–Gallai; Mathlib already proves it abstractly as Configuration.HasLines.card_le",
       "The abstract HasLines hypothesis ('any two points determine a unique line') is exactly the incidence axiom satisfied by a finite, not-all-collinear planar point set, so the abstract theorem specialises directly to Erdős 606",
       "The upper bound C(n,2) follows from a single observation: distinct lines carry distinct point-pairs, because two points determine at most one line — the same uniqueness axiom that powers the lower bound",
-      "Replacing prose claims with verified theorems is itself the contribution here: the parent entry only asserted these bounds in comments"
+      "Replacing prose claims with verified theorems is itself the contribution here: the parent entry only asserted these bounds in comments",
+      "The formalization is fully abstract: P and L are arbitrary types with a Membership relation, so the sandwich holds for *any* nondegenerate HasLines incidence structure — finite projective planes, generalized quadrangles, or block designs — not just points and lines in ℝ². The planar Erdős-606 statement is one specialization of a strictly more general theorem."
     ],
     "prerequisites": [
       "Incidence geometry (points, lines, and their incidence relation)",
