@@ -102,6 +102,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the Ballot Problem and the reflection principle",
+      "startLine": 1,
+      "endLine": 92,
+      "summary": "Wiedijk #30. In an election where A gets p votes and B gets q < p, the probability A strictly leads throughout the count is (p−q)/(p+q) — Bertrand's 1887 formula. This file is a pedagogical wrapper over Mathlib's `Archive.Wiedijk100Theorems.BallotProblem` (which supplies `countedSequence`, `staysPositive`, and `ballot_problem` via conditional counting on finite sets), adding the lattice-path interpretation, the reflection-principle derivation, and historical/applications context. The head docstring also documents the local `MeasurableSpace (List ℤ)` / `MeasurableSingletonClass` instances that must be recreated to use `condCount`. Complete, no sorries.",
+      "mathContext": "The reflection principle: model the count as a lattice path from (0,0) to (p+q, p−q), each +1 vote stepping up-right and each −1 stepping down-right; 'A leads throughout' means the path never returns to the x-axis. Bad paths (touching y=0) biject with paths to the reflected endpoint (p+q, q−p) by flipping every step before the first return, giving C(p+q, q) bad paths against C(p+q, p) total, hence (p−q)/(p+q) good. This counting bijection ties the theorem to random walks, Catalan numbers, and first-passage problems."
+    },
+    {
       "id": "setting",
       "title": "The Setting",
       "startLine": 93,
