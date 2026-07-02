@@ -1,5 +1,31 @@
 [
   {
+    "id": "erdos-1059-oq-02-overview",
+    "proofId": "erdos-1059-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Overview: A Selberg-Sieve Framework for Primes Minus Factorials",
+    "content": "Erdős Problem #1059 asks whether there are infinitely many primes p such that p − k! is composite for every k with 1 ≤ k! < p. This file lays down a Selberg-sieve framework for attacking it and reduces the conjecture to a single analytic density estimate. The organizing idea is the primorial interval I(l) = (l!, (l+1)!]: every integer n in I(l) has exactly the factorials 0!, 1!, …, l! below it, so the compositeness condition AllFactorialSubtractionsComposite(n) amounts to all l+1 differences n − j! being composite. The file defines the compositeness predicate and the conjecture, proves the structural interval lemmas (size l·l!, nonemptiness, the level bound k! < p ⇒ k ≤ l, disjointness, and the ≤ l+1 bad-index count), and packages the missing number theory — the Prime Number Theorem, Brun–Titchmarsh, and the Selberg sieve upper bound, none yet in Mathlib — as the single hypothesis selberg_density_axiom, from which selberg_implies_erdos derives the conjecture. The entry is therefore axiomatized (1 axiom, 0 sorries): all combinatorial scaffolding is fully verified and the one analytic input is stated honestly as an assumption.",
+    "mathContext": "Target set: $\\{p\\ \\text{prime}\\mid \\forall k,\\ k!<p\\Rightarrow p-k!\\ \\text{composite}\\}$, conjectured infinite. Interval $I(l)=(l!,(l+1)!]$ has $|I(l)|=l\\cdot l!$ and, for $p\\in I(l)$, at most $l+1$ factorial differences to sieve. The unproved input $\\texttt{selberg\\_density\\_axiom}$ asserts a positive lower density of surviving primes per level; summing over levels gives infinitude.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Selberg sieve",
+      "Brun–Titchmarsh inequality",
+      "Prime Number Theorem",
+      "primorial intervals",
+      "sieve density estimates",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "primes and factorials in ℕ",
+      "sieve methods (upper-bound sieves)",
+      "asymptotic density of primes"
+    ]
+  },
+  {
     "id": "ann-primorial-interval",
     "proofId": "erdos-1059-oq-02",
     "range": {
