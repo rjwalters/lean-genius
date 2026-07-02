@@ -101,6 +101,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Lucas/Kummer digit structure of vanishing Hasse derivatives of Xᵐ",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "The imports (Polynomial.HasseDeriv, Nat.Choose.Lucas, Nat.Prime.Factorial, ZMod, Tactic), the module docstring, and the namespace/variable setup. In the unbounded regime m ≥ p — where the parent's ordinary iterated-derivative test goes blind — this file stratifies which Hasse derivatives of the pure power Xᵐ survive in characteristic p by the base-p digits of m.",
+      "mathContext": "For Xᵐ the k-th Hasse derivative is the single monomial hasseDeriv k (Xᵐ) = C(m,k)·X^{m-k} (hasseDeriv_X_pow), so over a characteristic-p field it is nonzero exactly when ¬ p ∣ C(m,k) (hasseDeriv_X_pow_ne_zero_iff). Feeding this into Lucas's theorem gives the digit-domination (Kummer no-carry) criterion: it survives iff every base-p digit of k is ≤ the corresponding digit of m (hasseDeriv_X_pow_ne_zero_iff_digits). The number of surviving orders is ∏(dᵢ+1) over the base-p digits of m, realized over 𝔽₂ (nonzero_orders_X3_F2: X³ keeps all four orders; nonzero_orders_X4_F2: X⁴ keeps only k∈{0,4}). All results are 0-axiom, 0-sorry over any characteristic-p field."
+    },
+    {
       "id": "closed-form",
       "title": "Closed Form and the Vanishing Criterion",
       "startLine": 70,
