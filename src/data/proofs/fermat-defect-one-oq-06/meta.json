@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Sign-Flip Involution Ψ Negating the Fermat Defect",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Module docstring, imports (Mathlib, FermatDefectOne, FermatDefectOneFamilies), and setup (namespace FermatDefectOneOQ06; open scoped Polynomial). Parent FermatDefectOne asks whether the Fermat defect |aⁿ+bⁿ−cⁿ| ever equals 1 for a primitive triple; at n=3 both signs are witnessed by explicit Mahler families. OQ-06 asks for a structural sign-flip map between negative- and positive-defect witnesses. Answer: over ℤ, Ψ(a,b,c) = (c,−b,a) is an involution (signFlip_involutive) that negates the cubic defect (signFlip_negates_defect), carrying negative-defect solutions to positive and back. On the Mahler families Ψ is exactly parameter-negation t↦−t (signFlip_negTriple/posTriple); the taxicab witness (9,10,12) is Ψ of negTriple(−1). More generally the negation holds at every odd exponent (since (−b)ⁿ=−bⁿ for odd n): signFlip_negates_defect_odd, sign_symmetry_odd — tying OQ-06 to the all-n≥3 conjecture. Everything is a polynomial identity over ℤ closed by ring/linear_combination/norm_num; 0-axiom, 0-sorry, no native_decide.",
+      "mathContext": "At any odd n the two defect signs are never independent — one witness yields the other under the single fixed involution Ψ. Oddness is essential: at even n, Ψ sends the defect to an a↔c swap rather than a sign flip."
+    },
+    {
       "id": "signflip-map",
       "title": "Section I: The Structural Sign-Flip Map",
       "startLine": 76,
