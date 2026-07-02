@@ -17,7 +17,11 @@
       "squarefull numbers",
       "OEIS A001694"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful (squarefull) numbers",
+      "arithmetic progressions and equal gaps",
+      "sequences of integers in increasing order"
+    ]
   },
   {
     "id": "ann-e938-imports",
@@ -36,7 +40,11 @@
       "Lean 4",
       "namespace"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib library structure and imports",
+      "Nat.Prime and Filter.Tendsto",
+      "Lean 4 namespaces"
+    ]
   },
   {
     "id": "ann-e938-powerful-def",
@@ -55,7 +63,11 @@
       "prime factorization",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of an integer",
+      "divisibility (p | n) and squared primes p²|n",
+      "prime exponents in a factorization"
+    ]
   },
   {
     "id": "ann-e938-powerful-alt",
@@ -73,7 +85,11 @@
       "number representation",
       "squarefull characterization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the definition of powerful numbers",
+      "expressing exponents as 2q + 3r",
+      "existential quantifiers in a number representation"
+    ]
   },
   {
     "id": "ann-e938-examples",
@@ -92,7 +108,11 @@
       "interval_cases",
       "concrete verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the definition of powerful numbers",
+      "the interval_cases tactic",
+      "decidability of divisibility for concrete numbers"
+    ]
   },
   {
     "id": "ann-e938-enumeration",
@@ -111,7 +131,11 @@
       "strict monotonicity",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strictly monotone sequences (StrictMono)",
+      "0-indexed enumeration of an ordered set",
+      "noncomputable definitions and axioms in Lean"
+    ]
   },
   {
     "id": "ann-e938-ap-def",
@@ -130,7 +154,11 @@
       "consecutive terms",
       "gap equality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the enumeration nthPowerful of powerful numbers",
+      "arithmetic progression via equal consecutive gaps",
+      "truncated subtraction on natural numbers"
+    ]
   },
   {
     "id": "ann-e938-gap",
@@ -148,7 +176,11 @@
       "gap distribution",
       "consecutive differences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive differences of a sequence",
+      "the ConsecutivePowerfulAP predicate",
+      "definitional equality proved by rfl"
+    ]
   },
   {
     "id": "ann-e938-main",
@@ -167,7 +199,11 @@
       "finiteness",
       "Erdős conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Finite (finiteness of a set)",
+      "the set of AP indices apIndices",
+      "axiomatizing an open problem rather than using sorry"
+    ]
   },
   {
     "id": "ann-e938-problem364",
@@ -186,7 +222,11 @@
       "Problem 364",
       "implication"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful numbers",
+      "three consecutive integers",
+      "logical implication between conjectures"
+    ]
   },
   {
     "id": "ann-e938-counting",
@@ -205,7 +245,11 @@
       "Riemann zeta function",
       "counting function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting functions and asymptotic density",
+      "the Riemann zeta function ζ(s)",
+      "convergence of a ratio to a constant"
+    ]
   },
   {
     "id": "ann-e938-differences",
@@ -224,6 +268,10 @@
       "image finiteness",
       "common difference"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finiteness of the AP index set",
+      "the image of a set under a function (Set.image)",
+      "Set.Finite.subset for subsets of finite sets"
+    ]
   }
 ]
