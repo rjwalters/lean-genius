@@ -89,8 +89,8 @@ theorem fpIndex_eq_boundaryIndex : fpIndex c K = boundaryIndex c K := by
 
 /-- In `ZMod 2`, the cast of a natural number vanishes iff the number is even. -/
 private theorem natCast_zmod2_eq_zero_iff (n : ℕ) :
-    (n : ZMod 2) = 0 ↔ Even n := by
-  rw [ZMod.natCast_zmod_eq_zero_iff_dvd, Nat.even_iff_two_dvd]
+    (n : ZMod 2) = 0 ↔ Even n :=
+  ZMod.natCast_eq_zero_iff_even
 
 /-- **Existence engine**: if the boundary index is nonzero, a panchromatic cell
 (a combinatorial "fixed point") exists. This is the index-theoretic form of
@@ -99,7 +99,7 @@ theorem exists_panchromatic_of_boundaryIndex_ne_zero
     (h : boundaryIndex c K ≠ 0) :
     ∃ s : K.Cell, IsPanchromatic c K s := by
   apply sperner c K
-  rw [Nat.odd_iff_not_even]
+  rw [← not_even_iff_odd]
   intro heven
   exact h (by
     unfold boundaryIndex
@@ -123,8 +123,9 @@ theorem boundaryIndex_eq_zero_of_no_panchromatic
 count is even. Both directions follow from the parity theorem. -/
 theorem even_panchromaticCount_iff_even_boundaryDoorCount :
     Even (panchromaticCount c K) ↔ Even (boundaryDoorCount c K) := by
-  rw [Nat.even_iff, Nat.even_iff]
-  exact panchromaticCount_modEq_boundaryDoorCount c K
+  have h : panchromaticCount c K % 2 = boundaryDoorCount c K % 2 :=
+    panchromaticCount_modEq_boundaryDoorCount c K
+  rw [Nat.even_iff, Nat.even_iff, h]
 
 /-- A **boundaryless** cell complex (no boundary doors) has an even number of
 panchromatic cells, i.e. fixed-point index `0`. This is the discrete shadow of
