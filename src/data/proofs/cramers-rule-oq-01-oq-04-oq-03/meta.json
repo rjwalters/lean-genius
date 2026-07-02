@@ -57,25 +57,60 @@
       "id": "charpoly-coefficients",
       "title": "Characteristic-Polynomial Coefficients",
       "startLine": 63,
-      "endLine": 89
+      "endLine": 89,
+      "summary": "Defines charCoeff M k = (charpoly M).coeff (card n − k), the coefficient of t^{n−k} in χ_M(t). Proves the three boundary values: c₀ = 1 (charCoeff_zero, from monicity via charpoly_monic.coeff_natDegree and charpoly_natDegree_eq_dim), c₁ = −tr(M) (charCoeff_one, from trace_eq_neg_charpoly_coeff), and cₙ = (−1)ⁿ·det(M) (charCoeff_top, from det_eq_sign_charpoly_coeff with a pow-parity cleanup).",
+      "mathContext": "For $\\chi_A(t) = \\det(tI - A) = \\sum_{k=0}^{n} c_k t^{n-k}$ one has $c_0 = 1$, $c_1 = -\\operatorname{tr}(A)$, and $c_n = (-1)^n \\det A$. The index shift $\\text{card } n - k$ aligns the Faddeev-LeVerrier step number $k$ (counting from the leading term) with Mathlib's `coeff`, which indexes from the constant term."
     },
     {
       "id": "auxiliary-matrices",
       "title": "The Faddeev-LeVerrier Auxiliary Matrices",
       "startLine": 90,
-      "endLine": 128
+      "endLine": 128,
+      "summary": "Defines flAux M by structural recursion (M₀ = I, Mⱼ₊₁ = A·Mⱼ + cⱼ₊₁·I) with simp lemmas flAux_zero and flAux_succ. Records the classical first step flAux_one: M₁ = A − tr(A)·I. The centerpiece flAux_eq_sum proves the Horner closed form Mⱼ = ∑_{k≤j} cₖ·A^{j−k} by induction, using pow_succ' and Algebra.mul_smul_comm in the inductive step.",
+      "mathContext": "Unrolling $M_j = A M_{j-1} + c_j I$ from $M_0 = I$ yields $M_j = \\sum_{k=0}^{j} c_k A^{j-k}$ — Horner's scheme for the truncated polynomial $\\sum_{k \\le j} c_k t^{j-k}$. Every later result is a corollary of this single identity."
     },
     {
       "id": "cayley-hamilton-terminus",
       "title": "Termination via Cayley-Hamilton",
       "startLine": 129,
-      "endLine": 158
+      "endLine": 158,
+      "summary": "flAux_card_eq_aeval identifies the n-th auxiliary matrix with (aeval M) M.charpoly via aeval_eq_sum_range, charpoly_natDegree_eq_dim, and a Finset.sum_range_reflect that maps the Horner sum onto aeval's expansion. flAux_card_eq_zero then closes termination with Matrix.aeval_self_charpoly (Cayley-Hamilton), and flAux_terminal peels one recursion layer to read off A·M_{n−1} + cₙ·I = 0.",
+      "mathContext": "Cayley-Hamilton states $\\chi_A(A) = 0$. Since $M_n = \\sum_{k=0}^n c_k A^{n-k} = \\chi_A(A)$, the recursion self-terminates: the step that would compute $M_n$ instead certifies $A M_{n-1} + c_n I = 0$, which is why the algorithm needs exactly $n$ iterations."
     },
     {
       "id": "adjugate-bridge",
       "title": "The Adjugate / Cramer's-Rule Bridge",
       "startLine": 159,
-      "endLine": 178
+      "endLine": 177,
+      "summary": "flAux_penultimate_mul proves A·((−1)^{n+1}·M_{n−1}) = det(A)·I. Starting from the terminal step A·M_{n−1} = −cₙ·I and cₙ = (−1)ⁿ·det(A), the sign product (−1)^{n+1}·(−1)ⁿ = −1 (via Odd.neg_one_pow) collapses to the defining adjugate identity, identifying (−1)^{n+1}·M_{n−1} with adj(A) and giving the Faddeev-LeVerrier inverse A⁻¹ = ((−1)^{n+1}/det A)·M_{n−1}.",
+      "mathContext": "The adjugate satisfies $A \\cdot \\operatorname{adj}(A) = \\det(A) I$ (compare `Matrix.mul_adjugate`). Faddeev-LeVerrier produces $\\operatorname{adj}(A) = (-1)^{n+1} M_{n-1}$ as a byproduct of the same recursion that computes the characteristic polynomial — one $O(n^4)$ sweep yields det, charpoly, adjugate, and inverse at once."
+    }
+  ],
+  "conclusion": {
+    "summary": "The matrix half of the Faddeev-LeVerrier algorithm is formalized with zero axioms over an arbitrary commutative ring. The auxiliary matrices flAux, defined by the algorithm's own recursion M₀ = I, Mⱼ₊₁ = A·Mⱼ + cⱼ₊₁·I, are shown to unroll to the Horner partial sum Mⱼ = ∑_{k≤j} cₖ·A^{j−k} of the characteristic polynomial. From this single identity follow all of the algorithm's structural properties: the n-th auxiliary matrix equals χ_A(A) and vanishes by Cayley-Hamilton (termination), the final step A·M_{n−1} + cₙ·I = 0, and the adjugate bridge A·((−1)^{n+1}·M_{n−1}) = det(A)·I that closes the loop with Cramer's rule.",
+    "implications": "This discharges — for the matrix recursion, with no axioms — what the parent entry (cramers-rule-oq-01-oq-04) left as the axiomatized faddeev_leverrier_inversion. It exhibits the Faddeev-LeVerrier algorithm as a constructive shadow of Cayley-Hamilton: the reason the recursion terminates after exactly n steps is precisely that χ_A(A) = 0. The adjugate identity recovered at the penultimate step means a single O(n⁴) sweep of matrix multiplications and traces simultaneously yields the determinant, the characteristic polynomial, the adjugate, and (over a field, when det A ≠ 0) the inverse — division-free, which is what makes the method valuable over commutative rings where Gaussian elimination is unavailable.",
+    "openQuestions": [
+      "Formalize the *scalar* Newton recurrence k·cₖ = −∑_{j<k} cⱼ·p_{k−j} that recovers the coefficients cₖ from the traces pₖ = tr(Mᵏ), completing the algorithm's other half (this is what the parent still axiomatizes as faddeev_leverrier_inversion).",
+      "Package flAux together with the trace-based coefficient recurrence into an executable Lean function computing charpoly, det, and adjugate, and benchmark it against Mathlib's determinant/charpoly implementations.",
+      "State and prove the field-level corollary A⁻¹ = ((−1)^{n+1}/det A)·M_{n−1} explicitly under the hypothesis IsUnit A.det, making the inverse formula a first-class theorem rather than a consequence read off the adjugate bridge.",
+      "Establish the numerical-stability caveats of Faddeev-LeVerrier (it is exact over ℤ/ℚ but ill-conditioned in floating point) as a formal statement about coefficient growth, connecting the algebraic identity to its numerical-analysis reputation."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule-oq-01-oq-04",
+      "relationship": "child-of",
+      "description": "The parent entry develops Newton's identities for the characteristic-polynomial coefficients and axiomatizes the Faddeev-LeVerrier inversion; this entry answers its open question by formalizing the matrix recursion with zero axioms."
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "Root of the chain: the adjugate identity A·adj(A) = det(A)·I recovered here at the penultimate Faddeev-LeVerrier step is exactly the identity underlying Cramer's rule."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "Termination of the recursion is the Cayley-Hamilton theorem: the n-th auxiliary matrix equals χ_A(A) = 0, so the algorithm is a constructive shadow of Cayley-Hamilton."
     }
   ]
 }
