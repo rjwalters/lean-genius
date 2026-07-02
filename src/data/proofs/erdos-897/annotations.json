@@ -17,7 +17,10 @@
       "consecutive differences",
       "Wirsing's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive arithmetic functions",
+      "prime powers"
+    ]
   },
   {
     "id": "ann-e897-imports",
@@ -36,7 +39,10 @@
       "asymptotics"
     ],
     "mathContext": "See annotation content for formal details of imports and setup",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib filters",
+      "asymptotic notation"
+    ]
   },
   {
     "id": "ann-e897-isadditive",
@@ -55,7 +61,10 @@
       "arithmetic functions",
       "multiplicative functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coprimality",
+      "arithmetic functions"
+    ]
   },
   {
     "id": "ann-e897-unbounded",
@@ -74,7 +83,10 @@
       "prime powers",
       "growth rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limit superior (limsup)",
+      "prime powers"
+    ]
   },
   {
     "id": "ann-e897-part-i",
@@ -93,7 +105,10 @@
       "consecutive integers",
       "limsup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive integers",
+      "limit superior (limsup)"
+    ]
   },
   {
     "id": "ann-e897-part-ii",
@@ -112,7 +127,10 @@
       "ratios",
       "multiplicative behavior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions",
+      "multiplicative behavior"
+    ]
   },
   {
     "id": "ann-e897-wirsing",
@@ -131,7 +149,10 @@
       "logarithm characterization",
       "big-O notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the logarithm",
+      "big-O notation"
+    ]
   },
   {
     "id": "ann-e897-strongly",
@@ -150,7 +171,10 @@
       "distinct primes",
       "prime counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime omega function ω(n)",
+      "distinct prime divisors"
+    ]
   },
   {
     "id": "ann-e897-completely",
@@ -169,7 +193,10 @@
       "logarithm",
       "prime multiplicities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime omega function Ω(n)",
+      "prime multiplicities"
+    ]
   },
   {
     "id": "ann-e897-restricted",
@@ -187,7 +214,10 @@
       "special cases"
     ],
     "mathContext": "See annotation content for formal details of restricted variants (open)",
-    "prerequisites": []
+    "prerequisites": [
+      "additive functions",
+      "special cases"
+    ]
   },
   {
     "id": "ann-e897-examples",
@@ -206,6 +236,9 @@
       "prime factorization",
       "logarithm"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "the logarithm"
+    ]
   }
 ]
