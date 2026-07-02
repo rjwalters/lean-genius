@@ -61,13 +61,13 @@
     "id": "ann-main-theorem",
     "proofId": "puiseux-theorem",
     "range": {
-      "startLine": 164,
-      "endLine": 203
+      "startLine": 193,
+      "endLine": 252
     },
     "type": "concept",
-    "title": "Algebraic Closure Theorem",
-    "content": "**Main Theorem** (axiomatized):\n\nFor K algebraically closed of characteristic 0:\n$$K\\{\\{x\\}\\} = \\overline{K((x))}$$\n\nPuiseux series form the algebraic closure of Laurent series.\n\n**Two axiomatized statements**:\n1. `puiseux_theorem`: every polynomial over K of positive degree has Puiseux series coefficients forming a root\n2. `puiseux_is_algebraic_closure`: every polynomial specified by degree and coefficients has a root with explicit ramification index\n\n**Why axiomatized**: A complete proof requires rigorous treatment of Puiseux series arithmetic, Newton polygon construction, convergence of the Newton-Puiseux iteration, and the delicate characteristic 0 argument. This is ~2000+ lines of infrastructure.",
-    "mathContext": "axiom: ∀K alg. closed, char 0, ∀P ∈ K[Y] with deg(P) > 0, ∃ Puiseux series y s.t. P(y) = 0. Equivalently: K{{x}} is algebraically closed.",
+    "title": "Binomial Base Case of Algebraic Closure",
+    "content": "**Binomial base case** (verified, 0-axiom):\n\nFor K algebraically closed, the target is the algebraic closure statement\n$$K\\{\\{x\\}\\} = \\overline{K((x))}.$$\nThe full theorem is not formalized here (its Newton–Puiseux convergence machinery is absent from Mathlib), but the two headline theorems in this region rigorously establish its binomial base case, replacing former vacuous `True` placeholders:\n\n1. `puiseux_binomial_root`: over any algebraically closed K, every binomial `Yⁿ = c·xᵐ` has an honest Puiseux root `y = c^(1/n)·x^(m/n)` — the Hahn series `single (m/n) a` with `aⁿ = c`, verified by `HahnSeries.single_pow`.\n2. `puiseux_binomial_ramification`: the root of `Yⁿ = c·x` (c ≠ 0) has `orderTop` exactly `1/n`, so for n ≥ 2 it lies strictly outside the integer-exponent Laurent field — the concrete reason K((x)) is not algebraically closed while K{{x}} is.\n\nThese are exactly the leading terms the Newton–Puiseux algorithm reads off each edge of the Newton polygon; the full theorem assembles them term by term (future work). Note char 0 is NOT needed for the binomial fragment — only for the general assembly.",
+    "mathContext": "For K alg. closed, ∀ n:ℕ+, m:ℚ, c:K, ∃ Puiseux series y = single (m/n) a (aⁿ = c) with yⁿ = single m c. The binomial base case of: K{{x}} is algebraically closed.",
     "significance": "key",
     "relatedConcepts": [
       "IsAlgClosed",

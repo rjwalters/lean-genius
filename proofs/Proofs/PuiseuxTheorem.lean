@@ -73,10 +73,16 @@ the Puiseux series solutions to polynomial equations. It works by:
       honest `n`-th root `x^(1/n)` as a Puiseux series (genuine `HahnSeries` computation)
 - [x] **Worked examples proved, not asserted**: `square_root_puiseux` (`Y² = x`) and
       `cusp_parameterization` (`Y² = x³`) now construct the actual Hahn-series root and
-      verify the defining equation, replacing the previous vacuous `True` placeholders
-- [ ] Full algebraic closure (`puiseux_theorem`, `puiseux_is_algebraic_closure`):
-      still open. These require the Newton–Puiseux convergence machinery, which is not
-      yet in Mathlib; they remain stated as placeholders pending that infrastructure.
+      verify the defining equation, replacing former vacuous `True` placeholders
+- [x] **Binomial base case proved** `puiseux_binomial_root`: over any algebraically
+      closed `K`, every binomial `Yⁿ = c·xᵐ` has an honest Puiseux root `c^(1/n)·x^(m/n)`.
+      With `puiseux_binomial_ramification` this replaces the last two vacuous `True`
+      placeholders (`puiseux_theorem`, `puiseux_is_algebraic_closure`) with genuine
+      `HahnSeries` computations — the file now contains **no vacuous stubs**.
+- [ ] Full algebraic closure (arbitrary polynomials over the Puiseux field): still open.
+      The Newton–Puiseux convergence machinery that assembles binomial roots term by term
+      is not yet in Mathlib. This file establishes the binomial base case rigorously; the
+      general assembly remains future work.
 
 ## Mathlib Dependencies
 
@@ -132,6 +138,21 @@ lies in (1/n)ℤ for some positive integer n.
 def IsPuiseuxSeries {K : Type*} [Zero K] (f : HahnSeries ℚ K) : Prop :=
   ∃ n : ℕ+, ∀ q ∈ f.support, ∃ k : ℤ, q = k / n
 
+/-- Every single-term Hahn series `single m a` is a Puiseux series.
+
+The only possible exponent is `m`, and `m = m.num / m.den` already exhibits a common
+denominator (namely `m.den`), so the Puiseux condition holds with ramification `m.den`.
+This is the workhorse behind all the concrete Puiseux roots constructed below. -/
+theorem isPuiseux_single {K : Type*} [Zero K] (m : ℚ) (a : K) :
+    IsPuiseuxSeries (HahnSeries.single m a) := by
+  by_cases ha : a = 0
+  · subst ha
+    exact ⟨1, fun q hq => by simp [HahnSeries.single_eq_zero] at hq⟩
+  · refine ⟨⟨m.den, m.pos⟩, fun q hq => ?_⟩
+    rw [HahnSeries.support_single_of_ne ha, Set.mem_singleton_iff] at hq
+    rw [hq]
+    exact ⟨m.num, (Rat.num_div_den m).symm⟩
+
 /-! ### Illustration of Puiseux Series
 
 The prototypical Puiseux series is √x = x^(1/2), which arises as a solution to Y² = x.
@@ -169,46 +190,66 @@ section MainTheorem
 
 variable (K : Type*) [Field K]
 
-/-- **Puiseux's Theorem** (Classical Statement)
+/-- **Binomial root existence** — the algebraic base case of Puiseux's theorem.
 
-The field of Puiseux series over an algebraically closed field of characteristic 0
-is algebraically closed.
+Over an algebraically closed field `K`, every *binomial* equation
+`Yⁿ = c · xᵐ` (with `n : ℕ+`, `m : ℚ`, `c : K`) has an honest Puiseux-series
+solution, namely `y = c^(1/n) · x^(m/n)`, realized as the Hahn series
+`single (m/n) a` where `aⁿ = c`.
 
-**Historical Note**: This was proven by Victor Puiseux in 1850, though the
-underlying algorithm was discovered by Newton in 1676.
+This is the exact step the Newton–Puiseux algorithm performs at each edge of the
+Newton polygon: an edge of slope `-m/n` contributes a leading term that is a root
+of a binomial characteristic equation. The full theorem (arbitrary polynomials over
+the Puiseux field) assembles these binomial roots term by term; that assembly and its
+convergence proof are **not** formalized here — this file rigorously establishes the
+base case that makes the Puiseux field "more closed" than the Laurent field.
 
-**Proof Idea**:
-Given a polynomial P(Y) ∈ K⦃⦃x⦄⦄[Y], the Newton-Puiseux algorithm constructs
-roots by:
-1. Build the Newton polygon from the exponents of P
-2. Each edge determines a candidate leading term y₀ = c·x^(p/q)
-3. Substitute Y = y₀ + Y' and recurse
-4. The process converges to a Puiseux series root
+Unlike the previous vacuous `True` placeholder, the conclusion here is the *literal*
+equation `yⁿ = single m c`, discharged by computation with `HahnSeries.single_pow`.
+Note characteristic 0 is **not** needed for this binomial fragment (`n`-th roots exist
+in any algebraically closed field); char 0 only becomes essential for the full
+Newton–Puiseux iteration. -/
+theorem puiseux_binomial_root (hK : IsAlgClosed K) (n : ℕ+) (m : ℚ) (c : K) :
+    ∃ y : HahnSeries ℚ K, IsPuiseuxSeries y ∧
+      y ^ (n : ℕ) = HahnSeries.single m c := by
+  haveI := hK
+  obtain ⟨a, ha⟩ := IsAlgClosed.exists_pow_nat_eq c n.pos
+  refine ⟨HahnSeries.single (m / (n : ℚ)) a, isPuiseux_single _ _, ?_⟩
+  rw [HahnSeries.single_pow]
+  have hn : (n : ℚ) ≠ 0 := by exact_mod_cast n.ne_zero
+  have hexp : (n : ℕ) • (m / (n : ℚ)) = m := by
+    rw [nsmul_eq_mul, mul_comm, div_mul_cancel₀ _ hn]
+  rw [hexp, ha]
 
-**Implementation Note**: Stated as an axiom pending full formalization.
-The complete proof requires:
-- Rigorous treatment of Puiseux series as a field
-- Newton polygon construction and analysis
-- Convergence proof of the Newton-Puiseux iteration
-- Characteristic 0 is essential (fails in positive characteristic)
--/
-theorem puiseux_theorem (hK : IsAlgClosed K) (hchar : CharZero K) :
-    ∀ (n : ℕ) (p : Polynomial K), 0 < degree p →
-      ∃ y : ℕ → K, -- Coefficients of the Puiseux series solution
-        True -- Placeholder for: the series defined by y satisfies the polynomial
-  := fun _ _ _ => ⟨fun _ => 0, trivial⟩
+/-- **Genuine ramification** — why the Puiseux field strictly extends the Laurent field.
 
-/-- Alternative statement: Every polynomial over Laurent series has a Puiseux series root.
+For `n : ℕ+` and `c ≠ 0` over an algebraically closed field, the binomial `Yⁿ = c·x`
+has a Puiseux root `y` whose leading exponent (`orderTop`) is exactly `1/n`. When
+`n ≥ 2` this exponent is a genuinely fractional rational, so `y` is **not** a Laurent
+series (which admit only integer exponents). This is the concrete witness to the fact
+that `K((x))` is not algebraically closed while `K⦃⦃x⦄⦄` is: the root of `Yⁿ - c·x`
+literally lives outside the Laurent field.
 
-The field of Laurent series K((x)) consists of formal series Σ_{n ≥ n₀} aₙ xⁿ with
-integer exponents. Its algebraic closure is the field of Puiseux series K⦃⦃x⦄⦄.
--/
-theorem puiseux_is_algebraic_closure (hK : IsAlgClosed K) (hchar : CharZero K) :
-    ∀ (deg : ℕ) (coeffs : Fin (deg + 1) → K), 1 ≤ deg →
-      -- Any polynomial of positive degree has roots expressible as Puiseux series
-      ∃ (ramification : ℕ+) (series : ℕ → K),
-        True -- The series with x^(1/ramification) exponents is a root
-  := fun _ _ _ => ⟨1, fun _ => 0, trivial⟩
+Like `puiseux_binomial_root`, this replaces a former vacuous `True` placeholder with a
+computed, non-vacuous statement. -/
+theorem puiseux_binomial_ramification (hK : IsAlgClosed K) (n : ℕ+) (c : K) (hc : c ≠ 0) :
+    ∃ y : HahnSeries ℚ K,
+      IsPuiseuxSeries y ∧
+      y ^ (n : ℕ) = HahnSeries.single (1 : ℚ) c ∧
+      y.orderTop = ((1 : ℚ) / (n : ℚ) : ℚ) := by
+  haveI := hK
+  obtain ⟨a, ha⟩ := IsAlgClosed.exists_pow_nat_eq c n.pos
+  have ha0 : a ≠ 0 := by
+    rintro rfl
+    rw [zero_pow n.ne_zero] at ha
+    exact hc ha.symm
+  refine ⟨HahnSeries.single ((1 : ℚ) / (n : ℚ)) a, isPuiseux_single _ _, ?_, ?_⟩
+  · rw [HahnSeries.single_pow]
+    have hn : (n : ℚ) ≠ 0 := by exact_mod_cast n.ne_zero
+    have hexp : (n : ℕ) • ((1 : ℚ) / (n : ℚ)) = 1 := by
+      rw [nsmul_eq_mul, mul_comm, div_mul_cancel₀ _ hn]
+    rw [hexp, ha]
+  · rw [HahnSeries.orderTop_single ha0]
 
 end MainTheorem
 
