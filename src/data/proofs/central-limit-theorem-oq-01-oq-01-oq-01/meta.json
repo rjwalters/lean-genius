@@ -114,7 +114,11 @@
   "conclusion": {
     "summary": "The regular-variation index that drives the Gnedenko-Kolmogorov domain-of-attraction theory is a genuine asymptotic invariant: it is uniquely determined by the function, additive under products (a homomorphism into (ℝ,+)), and rigid under asymptotic equivalence. Slowly varying functions are exactly the index-0 layer, and the powers x^α realize every index with the sharp boundary that only α = 0 is slowly varying. All twelve theorems are proved directly from the limit definitions with zero axioms.",
     "implications": "Rigidity under asymptotic equivalence is what licenses the standard moves in stable-limit theory: one may replace a distributional tail by any asymptotically equivalent expression (smoothing it, dropping lower-order terms, passing between P(|X|>x) and its continuous majorant) without changing the stability index α of the limit law. Additivity explains why products and quotients of domain-of-attraction tails have predictable indices, and the slowly-varying = index-0 identification isolates the 'correction factor' part of a tail that does not affect α. Together these give the index the status of a well-behaved logarithm of tail growth.",
-    "openQuestions": []
+    "openQuestions": [
+      "Formalize the Karamata representation theorem — every slowly varying $L$ has the form $L(x) = c(x)\\exp\\int_1^x \\varepsilon(t)/t\\,dt$ with $c(x)\\to c$, $\\varepsilon(t)\\to 0$ — giving the integral structure underlying the index-0 layer isolated here.",
+      "Use the index homomorphism into $(\\mathbb{R},+)$ to formalize the full Gnedenko–Kolmogorov characterization: a distribution lies in the domain of attraction of an $\\alpha$-stable law iff its tail is regularly varying with index $-\\alpha$.",
+      "Prove Karamata's uniform-convergence theorem (regular variation holds uniformly on compact $\\lambda$-intervals), the strengthening needed to justify the tail substitutions in the stable-limit CLT application."
+    ]
   },
   "leanFile": {
     "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ01.lean",
