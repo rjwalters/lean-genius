@@ -124,5 +124,15 @@
       "summary": "`companionMatrix_isCyclicVector`: e₀ is a cyclic vector for every companion matrix C(p) (its Krylov orbit is the standard basis, via `companionMatrix_pow_basis`). `companionMatrix_isNonDerogatory` combines with the forward direction to re-derive non-derogacy.",
       "mathContext": "By $C(p)^k e_0 = e_k$ (oq-02-oq-01), the Krylov orbit of $e_0$ is exactly $\\{e_0, e_1, \\ldots, e_{d-1}\\}$, the standard basis of $F^d$, which is linearly independent. So $e_0$ is cyclic, and the forward implication gives $\\mathrm{minpoly}(C(p)) = \\mathrm{charpoly}(C(p))$ — consistent with the direct computation $\\mathrm{minpoly} = \\mathrm{charpoly} = p$."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "Establishes the cyclic-vector / non-derogatory correspondence in the direction that admits a fully general proof: over an arbitrary field F, any cyclic vector for M forces minpoly F M = charpoly M (0 axioms, 0 sorries). The converse is realized concretely on the companion — i.e. rational-canonical-form — representatives, where the standard basis vector e₀ is an explicit cyclic vector, so every companion matrix is non-derogatory.",
+    "implications": "Completes the cyclic-vector layer of the Cayley–Hamilton reduction family, joining the parent oq-02 (the non-derogatory criterion deg minpoly = n) and the sibling oq-02-oq-01 (companion matrices as the archetypal non-derogatory matrices). The engine lemma — reading linear independence of a Krylov orbit as 'no nonzero polynomial of degree < n annihilates v under p(M)' — is the reusable bridge between the linear-algebraic and polynomial pictures, and is exactly the mechanism behind the module isomorphism Fⁿ ≅ F[X]/(minpoly M) in the non-derogatory case. Because the reverse direction is fully settled on the normal forms, the sole remaining ingredient for the general equivalence is the rational canonical form.",
+    "mainResult": "Over any field F: a cyclic vector for M ∈ Mₙ(F) forces minpoly F M = charpoly M (isNonDerogatory_of_hasCyclicVector), and e₀ is an explicit cyclic vector for every companion matrix C(p) (companionMatrix_isCyclicVector), whence companion matrices are non-derogatory (companionMatrix_isNonDerogatory). Machine-checked with 0 axioms and 0 sorries over an arbitrary field.",
+    "openQuestions": [
+      "Upgrade the reverse implication (non-derogatory ⇒ has a cyclic vector) from the companion representatives to an arbitrary non-derogatory matrix. This needs the rational canonical form — that every non-derogatory matrix is similar to a single companion block — which Mathlib does not yet provide.",
+      "Formalize the correspondence in its native module-theoretic form: M has a cyclic vector iff the F[X]-module Fⁿ (with X acting as M) is cyclic, i.e. Fⁿ ≅ F[X]/(minpoly M) as F[X]-modules, making the linear-algebraic cyclicity literally module cyclicity.",
+      "Extend the framework beyond fields to a PID base, where the structure theorem for finitely generated modules (invariant factors / Smith normal form) governs the analogue of the companion decomposition and the notion of a cyclic generator."
+    ]
+  }
 }
