@@ -32,6 +32,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: q-Fold Geometric Splitting as Reindexing",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports and module docstring for realizing the q-fold geometric splitting as a genuine reindexing of ∑ r^m. These head lines explain that every m factors uniquely as q·n+a (n:ℕ, a:Fin q) via Nat.divModEquiv, so transporting HasSum (r^·) (1−r)⁻¹ along ℕ ≃ ℕ × Fin q gives the two-dimensional residue-indexed series; grouping by block index n or by residue a recovers the partial-fraction blocks and the parent's algebraic recombination — now as a Fubini/unconditional-regrouping theorem about the sum rather than a consequence of closed forms.",
+      "mathContext": "For ‖r‖<1 in a complete normed field, the plain geometric series and the arithmetic bijection Nat.divModEquiv exist in Mathlib but not their combination. Identifying (r^·)∘(divModEquiv q).symm with p ↦ r^(q·p.1+p.2) (via q·(m/q)+m%q=m), Equiv.hasSum_iff reindexes and HasSum.prod_fiberwise regroups over the finite Fin q fibers (block sums) or the ℕ fibers (residue subseries), reproducing the parent's 1−r^q=(1−r)(1+…+r^{q-1}) recombination as unconditional summation. 0 sorries, 0 axioms."
+    },
+    {
       "id": "residue-subseries",
       "title": "Residue Subseries (Self-Contained)",
       "startLine": 66,
