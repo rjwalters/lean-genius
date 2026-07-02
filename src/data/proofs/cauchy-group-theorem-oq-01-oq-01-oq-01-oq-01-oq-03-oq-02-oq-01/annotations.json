@@ -24,6 +24,28 @@
     ]
   },
   {
+    "id": "ann-zpow-exponent",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "The ℤ-Power Form of x^(exp G) = 1",
+    "content": "zpow_exponent_eq_one is the small but essential bridge that lets the Bézout computation live over ℤ. Mathlib's Monoid.pow_exponent_eq_one states x^e = 1 with a NATURAL-number exponent, but the Bézout coefficients gcdA, gcdB are integers and can be negative, so the identity gcd(n,e) = n·A + e·B forces powers with integer exponents (zpow). This lemma casts the exponent to ℤ and discharges x^(e : ℤ) = 1 by rewriting with zpow_natCast and appealing to the natural-number version. It is invoked as hx inside the image proof to kill the x^(e·B) factor.",
+    "mathContext": "$$x^{(e:\\mathbb Z)} = x^{(e:\\mathbb N)} = 1,\\qquad e=\\exp G.$$",
+    "significance": "technical",
+    "relatedConcepts": [
+      "monoid exponent",
+      "integer powers (zpow)",
+      "natural-to-integer cast of exponents"
+    ],
+    "prerequisites": [
+      "Monoid.pow_exponent_eq_one",
+      "zpow_natCast"
+    ]
+  },
+  {
     "id": "ann-kernel",
     "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
     "range": {
@@ -66,6 +88,53 @@
       "Nat.gcd_eq_gcd_ab",
       "zpow_mul",
       "zpow_add"
+    ]
+  },
+  {
+    "id": "ann-ker-subgroup",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 112
+    },
+    "type": "theorem",
+    "title": "Kernel as a Subgroup (Abelian Packaging)",
+    "content": "ker_powMonoidHom_eq_gcd_exponent promotes the element-level kernel equivalence to an equality of honest subgroups. In a commutative group x ↦ xⁿ is the monoid homomorphism powMonoidHom n, so its kernel is a subgroup rather than a mere set. The proof is a one-line ext: membership in the kernel unfolds (MonoidHom.mem_ker, powMonoidHom_apply) to xⁿ = 1, and the pointwise equivalence pow_eq_one_iff_pow_gcd_exponent identifies it with the gcd(n, exp G)-torsion subgroup. Commutativity is what makes powMonoidHom a homomorphism at all; the divisibility content is unchanged.",
+    "mathContext": "$$\\ker\\!\\left(x\\mapsto x^n\\right)=\\ker\\!\\left(x\\mapsto x^{\\gcd(n,\\exp G)}\\right)\\ \\text{as subgroups of }G.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "powMonoidHom",
+      "kernel of a homomorphism",
+      "torsion subgroup"
+    ],
+    "prerequisites": [
+      "MonoidHom.mem_ker",
+      "powMonoidHom_apply",
+      "pow_eq_one_iff_pow_gcd_exponent"
+    ]
+  },
+  {
+    "id": "ann-range-subgroup",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "The Open Question Resolved: Image as a Subgroup",
+    "content": "range_powMonoidHom_eq_gcd_exponent is the exact statement the parent's first open question asked for — the image equality for a general abelian group — now delivered as an equality of subgroups (powMonoidHom n).range = (powMonoidHom (gcd n (exp G))).range. It transports the set-level result range_pow_eq_range_pow_gcd_exponent (which already holds in EVERY group) across the two inclusions, unfolding each subgroup membership to a Set.range membership and rewriting by the set equality. Because the underlying set statement needs neither commutativity nor finiteness, the only role of CommGroup here is to make the n-th powers form a subgroup; exp G, not |G|, is the correct invariant.",
+    "mathContext": "$$\\operatorname{im}\\!\\left(x\\mapsto x^n\\right)=\\operatorname{im}\\!\\left(x\\mapsto x^{\\gcd(n,\\exp G)}\\right)\\ \\text{as subgroups, every abelian }G.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "powMonoidHom",
+      "image (range) of a homomorphism",
+      "subgroup of n-th powers",
+      "group exponent"
+    ],
+    "prerequisites": [
+      "range_pow_eq_range_pow_gcd_exponent",
+      "MonoidHom.mem_range",
+      "Set.range"
     ]
   },
   {
