@@ -17,21 +17,31 @@
       "counterexample"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 227,
     "erdosUrl": "https://erdosproblems.com/227",
     "erdosProblemStatus": "solved",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
-        "theorem": "Complex.abs",
-        "description": "Absolute value (modulus) of complex numbers",
+        "theorem": "norm (‖·‖ on ℂ)",
+        "description": "Norm/modulus of complex numbers, ‖z‖ (replaces the now-removed Complex.abs)",
         "module": "Mathlib.Analysis.Complex.Basic"
       },
       {
         "theorem": "Complex.exp",
         "description": "Complex exponential function",
         "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "Real.iSup_nonneg",
+        "description": "0 ≤ ⨆ i, f i when every f i ≥ 0; used to show maxTerm and maxModulus (suprema of non-negative reals) are non-negative",
+        "module": "Mathlib.Data.Real.Archimedean"
+      },
+      {
+        "theorem": "ge_of_tendsto",
+        "description": "A limit inherits an eventual lower bound; lifts the eventual non-negativity of the ratio to L ≥ 0",
+        "module": "Mathlib.Topology.Order.OrderClosed"
       },
       {
         "theorem": "Filter.Tendsto",
@@ -49,12 +59,14 @@
       "Defined maxTerm μ(r) and maxModulus M(r) functions",
       "Stated Clunie's partial result for positive coefficients",
       "Captured Clunie-Hayman (1964) counterexample: limits fill [0, 1/2]",
-      "Proved original conjecture is false using λ = 1/4"
+      "Proved original conjecture is false using λ = 1/4",
+      "Restored compilation under Mathlib v4.26.0: Complex.abs → ‖·‖, renamed the reserved token 'λ' bound variable in clunie_hayman_1964 to 'lam', imported Real.rpow for r^ρ, and demoted several orphaned '/--' docstrings to '/-'",
+      "Proved termModulusRatio_nonneg (the ratio is ≥ 0 for r ≥ 0, as a quotient of non-negative suprema) and used it to eliminate the L ≥ 0 sorry in achievable_limits_characterization (2 → 1 sorries)"
     ],
     "axiomCount": 3,
-    "lineCount": 220,
-    "assumptions": "3 axioms: clunie_positive_coeffs (Clunie — M(r,f)/A(r,f) → 0 for non-negative coefficients), clunie_hayman_1964 (Clunie-Hayman 1964 — entire functions can achieve any limit in [0,1/2]), ratio_upper_bound (upper bound of 1/2 on M/A ratio). 2 sorries: the L ≥ 0 (non-negativity) branch of achievable_limits_characterization (L119) and positive_coeffs_normal (L154). The core disproof original_conjecture_false is discharged cleanly from clunie_hayman_1964, but the bundled summary theorems erdos_227_statement and erdos_227_summary invoke achievable_limits_characterization and therefore still depend on a sorry — hence status formalized / badge wip rather than axiomatized.",
-    "theoremCount": 5,
+    "lineCount": 240,
+    "assumptions": "3 axioms (all deep Clunie–Hayman analytic results, not provable from Mathlib): clunie_positive_coeffs (Clunie — if μ/M converges for non-negative coefficients then the limit is 0), clunie_hayman_1964 (Clunie-Hayman 1964 — entire functions realizing any limit in [0,1/2]), ratio_upper_bound (the sharp upper bound L ≤ 1/2). 1 sorry: positive_coeffs_normal, which asserts μ/M → 0 for positive coefficients — this needs the EXISTENCE of the limit (Clunie's full result), strictly more than the conditional clunie_positive_coeffs axiom provides, and is documented inline. The L ≥ 0 branch of achievable_limits_characterization is now proved (termModulusRatio_nonneg). The main disproof original_conjecture_false is fully discharged from clunie_hayman_1964; the bundled summaries erdos_227_statement/erdos_227_summary are fully proved (they invoke only the axioms + the now-complete characterization). Status remains formalized / badge wip solely because of the single positive_coeffs_normal sorry.",
+    "theoremCount": 6,
     "definitionCount": 10
   },
   "overview": {
@@ -81,93 +93,93 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 33,
-      "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Complex Filter Topology); namespace `Erdos227`",
+      "endLine": 36,
+      "summary": "Module docstring documenting the problem statement, background, and references; 8 Mathlib imports (including Real.rpow and Real.Archimedean); `open` declarations (Complex Filter Topology); namespace `Erdos227`",
       "mathContext": "Let f = Σ aₙzⁿ be an entire function which is not a polynomial. Is it true that if lim(r→∞) max_n|aₙrⁿ| / max_{|z|=r}|f(z)| exists, then it must be 0?"
     },
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Defines EntireFunction as a structure with power series coefficients and infinitely-many-nonzero guarantee. Defines maxTerm μ(r) = ⨆ₙ |aₙ|rⁿ, maxModulus M(r) = ⨆θ |f(re^{iθ})|, and their ratio termModulusRatio.",
-      "startLine": 34,
-      "endLine": 56,
+      "summary": "Defines EntireFunction as a structure with power series coefficients and infinitely-many-nonzero guarantee. Defines maxTerm μ(r) = ⨆ₙ ‖aₙ‖rⁿ, maxModulus M(r) = ⨆θ ‖f(re^{iθ})‖, and their ratio termModulusRatio.",
+      "startLine": 37,
+      "endLine": 59,
       "mathContext": "Entire function $f(z) = \\sum a_n z^n$. Maximum term: $\\mu(r) = \\max_n |a_n| r^n$. Maximum modulus: $M(r) = \\max_{|z|=r} |f(z)|$."
     },
     {
       "id": "original-conjecture",
       "title": "The Original Conjecture",
       "summary": "Formalizes Erdős's conjecture as OriginalConjecture: if the limit of μ(r)/M(r) exists, it must be 0. Axiomatizes Clunie's partial result: the conjecture holds for functions with non-negative real coefficients (aₙ ≥ 0).",
-      "startLine": 57,
-      "endLine": 72,
+      "startLine": 60,
+      "endLine": 75,
       "mathContext": "Erdős conjecture: $\\lim_{r \\to \\infty} \\mu(r)/M(r) = 0$ for all entire $f$ — i.e., the max term is negligible compared to the max modulus."
     },
     {
       "id": "counterexample",
       "title": "Clunie-Hayman Counterexample",
       "summary": "Axiomatizes the Clunie-Hayman 1964 result: for any λ ∈ [0, 1/2], there exists an entire function with μ(r)/M(r) → λ. Axiomatizes the sharp upper bound L ≤ 1/2. Proves original_conjecture_false by taking λ = 1/4 and deriving contradiction via norm_num.",
-      "startLine": 73,
-      "endLine": 99,
+      "startLine": 76,
+      "endLine": 102,
       "mathContext": "Clunie-Hayman (1964): counterexample. $\\forall \\lambda \\in [0, 1/2], \\exists f$ entire with $\\lim \\mu(r)/M(r) = \\lambda$. Disproves the conjecture."
     },
     {
       "id": "characterization",
       "title": "Complete Characterization",
-      "summary": "Defines AchievableLimits as the set of all realizable limit values. Proves AchievableLimits = Set.Icc 0 (1/2) via set extensionality: forward direction uses upper bound (with a sorry for non-negativity), reverse uses Clunie-Hayman existence.",
-      "startLine": 100,
-      "endLine": 125,
+      "summary": "Defines AchievableLimits. Proves termModulusRatio_nonneg (the ratio is ≥ 0 for r ≥ 0). Proves AchievableLimits = Set.Icc 0 (1/2) via set extensionality: L ≥ 0 from termModulusRatio_nonneg lifted through ge_of_tendsto, L ≤ 1/2 from ratio_upper_bound, and the reverse inclusion from Clunie-Hayman existence. No sorry in this section.",
+      "startLine": 103,
+      "endLine": 140,
       "mathContext": "Achievable limits: $\\{\\lambda : \\exists f \\text{ entire}, \\lim \\mu/M = \\lambda\\} = [0, 1/2]$. Complete characterization of the limit range."
     },
     {
       "id": "central-index",
       "title": "Central Index",
-      "summary": "Defines centralIndex ν(r) as the index achieving the maximum term, via Classical.choose. Axiomatizes central_index_unbounded: ν(r) → ∞ as r → ∞, a consequence of transcendence.",
-      "startLine": 126,
-      "endLine": 139,
-      "mathContext": "Central index: $\\nu(r) = \\arg\\max_n |a_n| r^n$ (the index achieving the max term). $\\nu(r)$ is non-decreasing and integer-valued."
+      "summary": "Defines centralIndex via Classical.choose. Because maxTerm is an iSup that may be a junk value when the terms are unbounded, the genuine argmax need not be attained; the definition is a well-typed stand-in choosing some index n with ‖a₀‖ ≤ ‖aₙ‖rⁿ (witnessed by n = 0). No axiom here.",
+      "startLine": 141,
+      "endLine": 157,
+      "mathContext": "Central index (stand-in): a choice of $n$ with $\\|a_0\\| \\le \\|a_n\\| r^n$; the true $\\nu(r) = \\arg\\max_n \\|a_n\\| r^n$ requires the maximum term to be attained."
     },
     {
       "id": "asymptotics",
       "title": "Asymptotic Relations",
-      "summary": "Axiomatizes max_term_le_max_modulus: μ(r) ≤ M(r) for r > 0. Defines IsNormal as μ(r)/M(r) → 0. Proves positive_coeffs_normal (with sorry) connecting Clunie's result to the normality definition.",
-      "startLine": 140,
-      "endLine": 161,
+      "summary": "Defines IsNormal as μ(r)/M(r) → 0. States positive_coeffs_normal (positive-coefficient functions are normal), which remains a sorry: it needs the EXISTENCE of the limit, strictly more than the conditional clunie_positive_coeffs axiom — documented inline. No axiom in this section.",
+      "startLine": 158,
+      "endLine": 182,
       "mathContext": "$\\mu(r) \\leq M(r)$ always (max term $\\leq$ sum of all terms). $f$ is normal if $\\mu(r)/M(r) \\to 0$ as $r \\to \\infty$."
     },
     {
       "id": "order-type",
       "title": "Order and Type",
-      "summary": "Defines order ρ = inf{ρ' : M(r) ≤ C exp(r^{ρ'})} and typeOfOrder σ for finer growth classification. Axiomatizes order_zero_normal: functions of order 0 are normal, restricting counterexamples to infinite-order functions.",
-      "startLine": 162,
-      "endLine": 179,
+      "summary": "Defines order ρ = inf{ρ' : M(r) ≤ C exp(r^{ρ'})} and typeOfOrder σ for finer growth classification (both via sInf, using Real.rpow for the real exponent r^ρ). No axiom in this section.",
+      "startLine": 183,
+      "endLine": 197,
       "mathContext": "Order: $\\rho = \\inf\\{\\rho' : M(r) \\leq C e^{r^{\\rho'}}\\}$. Type: $\\sigma = \\limsup M(r) e^{-r^\\rho}$. Classification of growth rates."
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "Axiomatizes exp_is_normal: the exponential function (coefficients 1/n!) is normal. Axiomatizes pathological_examples_exist: for any λ ∈ (0, 1/2), there exist infinite-order functions achieving μ/M → λ.",
-      "startLine": 180,
-      "endLine": 198,
-      "mathContext": "Example: $e^z$ (coefficients $1/n!$) is normal: $\\mu(r)/M(r) = r^{\\nu(r)}/\\nu(r)!/e^r \\to 0$. Order 1, type 1."
+      "summary": "Placeholder section (comments only): notes the exponential function as a normal example and the existence of pathological examples. No declarations are made here.",
+      "startLine": 198,
+      "endLine": 205,
+      "mathContext": "Example: $e^z$ (coefficients $1/n!$) is normal: $\\mu(r)/M(r) \\to 0$. Order 1, type 1."
     },
     {
       "id": "main-statement",
       "title": "Main Problem Statement",
-      "summary": "Assembles erdos_227_statement: a three-part conjunction — conjecture is false, positive-coefficient case holds, achievable limits = [0, 1/2]. Proof chains the three component results.",
-      "startLine": 199,
-      "endLine": 218,
+      "summary": "Assembles erdos_227_statement: a three-part conjunction — conjecture is false, positive-coefficient case holds, achievable limits = [0, 1/2]. Fully proved (no sorry): chains original_conjecture_false, clunie_positive_coeffs, and achievable_limits_characterization.",
+      "startLine": 206,
+      "endLine": 222,
       "mathContext": "Main statement: (1) conjecture is FALSE, (2) achievable limits = $[0, 1/2]$, (3) key examples are classified."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Repackages results as erdos_227_summary (reordered conjunction for canonical reference). The erdos_227_answer marker records the final status: SOLVED (DISPROVED).",
-      "startLine": 219,
-      "endLine": 220,
+      "summary": "Repackages results as erdos_227_summary (reordered conjunction for canonical reference), fully proved. A closing comment records the final status: SOLVED (DISPROVED).",
+      "startLine": 223,
+      "endLine": 240,
       "mathContext": "Summary: Problem #227 is RESOLVED (Clunie-Hayman 1964). The achievable limit set $[0, 1/2]$ completely characterizes the ratio $\\mu/M$."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #227 asked whether the limit of μ(r)/M(r) (maximum term over maximum modulus) must be 0 when it exists. Clunie and Hayman (1964) definitively disproved this by constructing entire functions where the limit can be any prescribed value λ ∈ [0, 1/2]. The upper bound 1/2 is sharp. The formalization captures this complete characterization in 220 lines of Lean 4, with the key theorem original_conjecture_false proved from the Clunie-Hayman axiom using λ = 1/4. The full achievable-limits characterization and the positive-coefficient normality lemma each retain one `sorry`, so the bundled summary theorems are formalized scaffolds rather than fully discharged results.",
+    "summary": "Erdős Problem #227 asked whether the limit of μ(r)/M(r) (maximum term over maximum modulus) must be 0 when it exists. Clunie and Hayman (1964) definitively disproved this by constructing entire functions where the limit can be any prescribed value λ ∈ [0, 1/2]. The upper bound 1/2 is sharp. The formalization captures this complete characterization in 240 lines of Lean 4, with the key theorem original_conjecture_false proved from the Clunie-Hayman axiom using λ = 1/4. Following a Mathlib v4.26.0 repair (Complex.abs → ‖·‖, reserved-token 'λ' renamed, Real.rpow imported, orphaned docstrings demoted) the file compiles again, and the L ≥ 0 half of the achievable-limits characterization is now proved (termModulusRatio_nonneg), so both bundled summary theorems are fully discharged. A single `sorry` remains — positive_coeffs_normal — which needs the existence (not just the value) of Clunie's limit; hence status formalized / badge wip.",
     "implications": "**Theoretical Significance**: **Connections to Entire Function Theory**\n\n1. **Wiman-Valiron Theory:** The result refined understanding of when entire functions can be approximated by their dominant term. Wiman's theorem says μ(r)/M(r) → 0 outside an exceptional set; the Clunie-Hayman result shows the exceptional set can dominate when the limit exists\n\n2. **Coefficient Sign Effects:** The dichotomy between positive and oscillating coefficients has parallels throughout analysis: random series with random signs behave differently from deterministic ones, and lacunary (gap) series have special properties\n\n**3. Value Distribution Theory:** The result connects to Nevanlinna theory and the distribution of zeros. Functions with μ/M → λ > 0 have unusual zero distributions that enable the controlled cancellation\n\n4. **Growth Classification:** The infinite-order requirement for counterexamples sharpened the classification of entire functions by growth. It showed that within finite-order classes, Erdős's intuition was correct\n\n5. **Modern Developments:** Recent work has extended these ideas to meromorphic functions, functions in several complex variables, and connections with random matrix theory where similar maximum-term phenomena arise.",
     "openQuestions": [
       "What is the precise structure of entire functions achieving the extremal limit λ = 1/2? Do they form a natural class with shared analytic properties?",
@@ -193,9 +205,11 @@
     "imports": [
       "Mathlib.Analysis.Complex.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Complex",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
       "Mathlib.Analysis.Normed.Field.Basic",
       "Mathlib.Topology.MetricSpace.Basic",
       "Mathlib.Data.Real.Basic",
+      "Mathlib.Data.Real.Archimedean",
       "Mathlib.Order.Filter.Basic"
     ],
     "opens": [
@@ -204,12 +218,12 @@
       "Topology"
     ],
     "namespace": "Erdos227",
-    "lineCount": 220,
+    "lineCount": 240,
     "axiomCount": 3,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 10,
     "path": "Proofs/Erdos227Problem.lean",
-    "sorries": 2
+    "sorries": 1
   },
   "references": [
     {
@@ -224,5 +238,5 @@
       "note": "Comprehensive reference for entire function theory relevant to Erdős's questions"
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }
