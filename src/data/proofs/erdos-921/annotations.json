@@ -16,7 +16,11 @@
       "Graph coloring",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number of a graph",
+      "cycles and odd cycles in graphs",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "ann-921-graph-def",
@@ -35,7 +39,11 @@
       "Adjacency",
       "Simple graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "undirected graphs",
+      "adjacency relations",
+      "symmetric relations"
+    ]
   },
   {
     "id": "ann-921-chromatic",
@@ -54,7 +62,11 @@
       "Four Color Theorem",
       "Bipartite graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proper graph colorings",
+      "bipartite graphs",
+      "the definition of chromatic number"
+    ]
   },
   {
     "id": "ann-921-odd-girth",
@@ -73,7 +85,11 @@
       "Bipartite graphs",
       "Cycle structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cycles in a graph",
+      "girth (shortest cycle)",
+      "bipartite graphs having no odd cycles"
+    ]
   },
   {
     "id": "ann-921-f-function",
@@ -92,7 +108,11 @@
       "Chromatic number",
       "Odd girth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number",
+      "odd girth",
+      "maximization over a family of graphs"
+    ]
   },
   {
     "id": "ann-921-conjecture",
@@ -111,7 +131,11 @@
       "Extremal graph theory",
       "Szemerédi regularity lemma"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic equivalence notation (≍)",
+      "the Szemerédi regularity lemma",
+      "the extremal function f_k(n)"
+    ]
   },
   {
     "id": "ann-921-k4-case",
@@ -130,7 +154,11 @@
       "Square root bounds",
       "Gallai's constructions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "constructive existence proofs",
+      "square-root growth (n^{1/2})",
+      "matching upper and lower bounds"
+    ]
   },
   {
     "id": "ann-921-general-bounds",
@@ -149,7 +177,11 @@
       "Szemerédi regularity lemma",
       "Power law exponents"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the probabilistic method / random graphs",
+      "the Szemerédi regularity lemma",
+      "power-law growth rates n^{1/(k-2)}"
+    ]
   },
   {
     "id": "ann-921-status",
@@ -168,6 +200,10 @@
       "Main theorem",
       "Extremal graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős–Gallai conjecture statement",
+      "universal quantification over k",
+      "deriving a theorem from an axiom"
+    ]
   }
 ]
