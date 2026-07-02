@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-brahmagupta-multiplicativity",
+    "proofId": "pell-equation-oq-01-oq-04-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 83
+    },
+    "type": "definition",
+    "title": "The Multiplicative Foundation: Brahmagupta's Identity",
+    "content": "Everything downstream rests on the two definitions here — pellNorm d x y = x + y√d and pellRegulator = log(pellNorm) — plus one algebraic fact: the norm is multiplicative. `pellNorm_mul` is Brahmagupta's identity, proved for d ≥ 0 by expanding (x₁+y₁√d)(x₂+y₂√d) and using (√d)² = d via a single `linear_combination` against `hsq`. Its companion `pellNorm_mul_inv` (the conjugate identity, using the Pell relation x²−dy²=1) gives pellNorm a · pellNorm a⁻¹ = 1, which immediately yields `pellNorm_ne_zero`. Multiplicativity of the norm is exactly what turns the regulator (its log) into an additive homomorphism — the reason pellRegulator scales linearly along powers.",
+    "mathContext": "$N(x+y\\sqrt d) = x + y\\sqrt d$, $N(ab)=N(a)N(b)$ (Brahmagupta), and on solutions $x^2-dy^2=1$ so $N(a)N(\\bar a)=1$. Taking $\\log$ converts the multiplicative norm into the additive regulator $R = \\log N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brahmagupta identity",
+      "norm multiplicativity",
+      "Pell's equation",
+      "logarithm as group homomorphism"
+    ],
+    "prerequisites": [
+      "Real.sq_sqrt",
+      "Solution₁.x_mul",
+      "linear_combination"
+    ]
+  },
+  {
     "id": "ann-overview",
     "proofId": "pell-equation-oq-01-oq-04-oq-01",
     "range": { "startLine": 3, "endLine": 42 },
