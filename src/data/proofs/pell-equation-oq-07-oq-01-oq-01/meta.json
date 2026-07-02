@@ -1,0 +1,144 @@
+{
+  "id": "pell-equation-oq-07-oq-01-oq-01",
+  "title": "The Cassini / Catalan Identity for Pell Coordinate Sequences from det(Mⁿ) = (det M)ⁿ",
+  "slug": "pell-equation-oq-07-oq-01-oq-01",
+  "description": "The parent entry (pell-equation-oq-07-oq-01) realises the coordinate sequences re(aⁿ), im(aⁿ) of the power sequence of a generator a = ⟨x₁,y₁⟩ ∈ ℤ[√d] as the powers of the companion matrix M = !![x₁, d·y₁; y₁, x₁], with Mⁿ = !![re(aⁿ), d·im(aⁿ); im(aⁿ), re(aⁿ)] and det M = N(a). This entry answers the parent's open question by supplying the Cassini/Catalan-type identity the companion determinant produces, recording two determinant phenomena. (1) The direct consequence of multiplicativity det(Mⁿ) = (det M)ⁿ = N(a)ⁿ: reading det(Mⁿ) off the explicit power form gives the norm identity re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ, i.e. N(aⁿ) = N(a)ⁿ made visible as a 2×2 determinant (norm_pow_eq, via Matrix.det_pow and the parent's companion_det). (2) The genuinely Cassini-flavoured off-by-one determinant uₖ₋₁·uₖ₊₁ − uₖ², which is the determinant of the state matrix W k = !![u(k+2),u(k+1);u(k+1),u k] whose columns are consecutive state vectors of the recurrence uₙ₊₂ = p·uₙ₊₁ − q·uₙ. The recurrence companion C = !![p,−q;1,0] (det C = q) advances the state, so W k = Cᵏ·W₀ and hence det(W k) = qᵏ·det(W₀), i.e. u(k+2)·u(k) − u(k+1)² = qᵏ·(u₀u₂ − u₁²). This general Cassini/Catalan identity is proved over any commutative ring (cassini_general) via the one-step scaling D(k+1) = q·D(k) of the Cassini defect, packaged as the determinant statement (cassini_det_general), then specialised to the Pell coordinate sequences using the grandparent's coordinate recurrences. The Pell punchline: when N(a) = 1 the factor qᵏ = 1 disappears, so both Cassini defects are constant in k — re(aₖ₊₁)·re(aₖ₋₁) − re(aₖ)² = d·y₁² and im(aₖ₊₁)·im(aₖ₋₁) − im(aₖ)² = −y₁² — exactly as Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ is constant up to sign for Fibonacci; for the D = 2 chain 1,3,17,99 this reads xₖ₊₁xₖ₋₁ − xₖ² = 8.",
+  "leanFile": {
+    "path": "Proofs/PellEquationOQ07OQ01OQ01.lean",
+    "lineCount": 236,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "sorryCount": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius (Cassini/Catalan identity via companion-matrix determinant; general D(k+1)=q·D(k) recurrence for the Cassini defect); Cassini/Catalan (classical second-order recurrence determinant identity)",
+    "date": "2026-07-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PellEquationOQ07OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "pell-equation",
+      "quadratic-integers",
+      "zsqrtd",
+      "cassini-identity",
+      "catalan-identity",
+      "companion-matrix",
+      "determinant",
+      "linear-recurrence",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-07-01",
+    "lineCount": 236,
+    "originalContributions": [
+      "cassini_general: the general Cassini/Catalan identity over any commutative ring — for a sequence u with u(n+2) = p·u(n+1) − q·u(n), u(k+2)·u(k) − u(k+1)² = qᵏ·(u₂·u₀ − u₁²) — proved by the one-step scaling D(k+1) = q·D(k) of the Cassini defect D(k), where substituting the recurrence for the two highest terms collapses D(k+1) − q·D(k) to u(k+2)·(p·u(k+1) − q·u(k) − u(k+2)) = 0; specialises to Fₙ₊₁Fₙ₋₁ − Fₙ² = (−1)ⁿ at p = 1, q = −1",
+      "cassini_det_general: the same identity as the determinant of the state matrix, det !![u(k+2),u(k+1);u(k+1),u k] = qᵏ·det !![u 2,u 1;u 1,u 0] — the determinant form of W k = Cᵏ·W₀ for the recurrence companion C = !![p,−q;1,0] with det C = q, so det(W k) = (det C)ᵏ·det(W₀)",
+      "re_cassini / im_cassini + re_cassini_const / im_cassini_const: the Pell coordinate specialisations obtained by feeding the grandparent's re_recurrence / im_recurrence (p = 2·re a, q = N(a)) into cassini_general, with the base Cassini defect evaluated to d·y₁² (real part, using re(a²) = x₁² + d·y₁²) and −y₁² (√d part, using im(a²) = 2x₁y₁)",
+      "re_cassini_pell / im_cassini_pell: the constant Cassini invariants for a Pell generator (N(a) = 1) — the scaling factor N(a)ᵏ = 1 vanishes so re(aₖ₊₁)·re(aₖ₋₁) − re(aₖ)² = d·y₁² and im(aₖ₊₁)·im(aₖ₋₁) − im(aₖ)² = −y₁² are independent of k, the Pell analogue of the constant-up-to-sign Fibonacci Cassini identity",
+      "norm_pow_eq: the norm identity re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ straight from det(Mⁿ) = (det M)ⁿ — the left side is det(Mⁿ) via the parent's companion_pow, the right is (det M)ⁿ = N(a)ⁿ via Matrix.det_pow and companion_det — i.e. N(aⁿ) = N(a)ⁿ made visible as a 2×2 determinant",
+      "D = 2 numeric checks against the fundamental unit 3 + 2√2 = ⟨3,2⟩ ∈ ℤ[√2]: the real Cassini invariant is the constant 8 = d·y₁² = 2·2² for every k, the √2 invariant is −4, and the norm identity gives 1 at every power"
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide (the three `decide` uses are kernel `decide`, not `native_decide`, so no Lean.ofReduceBool). #print axioms reports only the standard triple [propext, Classical.choice, Quot.sound] (cassini_general needs only [propext, Quot.sound]); Classical.choice enters solely through the Mathlib Matrix.det / Zsqrtd API. Uses cassini_general (the pure recurrence proof of the Cassini defect scaling), the grandparent's Zsqrtd.re_recurrence / im_recurrence, the parent's companion / companion_pow / companion_det, the 2×2 Matrix API (det_fin_two_of, det_pow), Zsqrtd.re_mul / im_mul / re_one / im_one, and standard tactics (induction, simp, linear_combination, ring, norm_num, decide).",
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pell-equation-oq-07-oq-01",
+      "relationship": "extends",
+      "description": "The parent supplies the companion matrix M = !![x₁,d·y₁;y₁,x₁] with Mⁿ = !![re(aⁿ),d·im(aⁿ);im(aⁿ),re(aⁿ)] and det M = N(a). This entry reads the Cassini/Catalan identity out of that determinant: the norm identity re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ directly from det(Mⁿ) = (det M)ⁿ (companion_pow + Matrix.det_pow + companion_det), and the off-by-one Cassini defect as the determinant of the state matrix, constant for Pell generators."
+    },
+    {
+      "targetId": "pell-equation-oq-07",
+      "relationship": "related",
+      "description": "The grandparent derives the coordinate recurrences re_recurrence / im_recurrence (uₙ₊₂ = 2·re a·uₙ₊₁ − N(a)·uₙ) that this entry feeds into the general Cassini identity to obtain re_cassini / im_cassini for the Pell coordinate sequences."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-04-oq-01-oq-01",
+      "relationship": "related",
+      "description": "That entry proves the Fibonacci Cassini identity Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ via det(Qⁿ) = (−1)ⁿ for the Fibonacci Q-matrix. This entry gives the same phenomenon for Pell coordinate sequences: cassini_general is the common generalisation (p = 1, q = −1 recovers Fibonacci), and for a Pell generator (q = N(a) = 1) the Cassini defect is a constant rather than an alternating sign."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Cassini's identity Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ (Cassini 1680; Catalan's and Vajda's generalisations) is the prototypical 'off-by-one determinant' invariant of a Lucas sequence. For any sequence Uₙ satisfying a second-order recurrence Uₙ₊₂ = p·Uₙ₊₁ − q·Uₙ the quantity Uₙ₋₁Uₙ₊₁ − Uₙ² equals qⁿ⁻¹ times its base value, because it is the determinant of the state matrix and the recurrence companion has determinant q. Pell coordinate sequences xₙ = re(aⁿ), yₙ = im(aⁿ) are Lucas sequences with p = 2x₁, q = N(a), so for a Pell unit (N = 1) the invariant is genuinely constant — the exact analogue of Cassini's alternating-sign identity, but with a fixed value.",
+    "problemStatement": "The parent entry left as its first open question: prove the Cassini/Catalan-type identity xₙ₋₁xₙ₊₁ − xₙ² = (constant)·N(a)ⁿ for the Pell coordinate sequences, deriving it from the determinant law det(Mⁿ) = (det M)ⁿ = N(a)ⁿ of the companion-matrix closed form.",
+    "proofStrategy": "(1) Prove the general Cassini identity over any CommRing: for u(n+2) = p·u(n+1) − q·u(n), the Cassini defect D(k) = u(k+2)u(k) − u(k+1)² satisfies D(k+1) = q·D(k) (substitute the recurrence for the two top terms; the difference collapses to u(k+2)·(recurrence) = 0, closed by one linear_combination), then induct to get D(k) = qᵏ·D(0) (cassini_general). (2) Repackage as the state-matrix determinant det !![u(k+2),u(k+1);u(k+1),u k] = qᵏ·det !![u 2,u 1;u 1,u 0] via det_fin_two_of (cassini_det_general). (3) Specialise to u = re(aⁿ) and u = im(aⁿ) with p = 2·re a, q = N(a), using the grandparent's Zsqrtd.re_recurrence / im_recurrence (re_cassini / im_cassini). (4) Evaluate the base defects to d·y₁² and −y₁² (re_cassini_const / im_cassini_const), giving the constant invariants under N(a) = 1 (re_cassini_pell / im_cassini_pell). (5) Independently, read the norm law re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ off det(Mⁿ) = (det M)ⁿ via companion_pow, Matrix.det_pow and companion_det (norm_pow_eq). Numeric D = 2 checks by kernel decide.",
+    "keyInsights": [
+      "The Cassini defect D(k) = u(k+2)u(k) − u(k+1)² of a second-order recurrence obeys the one-step scaling D(k+1) = q·D(k): substituting u(k+3) = p·u(k+2) − q·u(k+1) and u(k+2) = p·u(k+1) − q·u k, the difference D(k+1) − q·D(k) is a single polynomial identity that ring closes. Induction then gives D(k) = qᵏ·D(0) — the entire Cassini/Catalan family in three lines, over any commutative ring.",
+      "The Cassini quantity is literally a determinant: D(k) = det !![u(k+2),u(k+1);u(k+1),u k], the determinant of the state matrix whose columns are consecutive state vectors. The recurrence companion C = !![p,−q;1,0] advances the state (W k = Cᵏ·W₀) and has det C = q, so det(W k) = qᵏ·det(W₀) is the determinant reading of the identity — this is the sense in which it comes from det(Mⁿ) = (det M)ⁿ.",
+      "Both Pell coordinate sequences re(aⁿ) and im(aⁿ) are Lucas sequences for the SAME (p,q) = (2·re a, N(a)), so a single general lemma covers both — only the base defects differ (d·y₁² versus −y₁²).",
+      "For a Pell generator N(a) = 1 the growth factor qᵏ = 1ᵏ = 1 vanishes, so the Cassini defect is a CONSTANT independent of k: re(aₖ₊₁)re(aₖ₋₁) − re(aₖ)² = d·y₁² for all k. This is the exact structural analogue of Cassini's Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ (there q = −1, so the invariant alternates instead of staying fixed).",
+      "The norm law N(aⁿ) = N(a)ⁿ and the Cassini identity are two readings of the same determinant machinery: the former is det(Mⁿ) = (det M)ⁿ for the coordinate matrix M (anti-diagonal read as re² − d·im²), the latter is det(Wₖ) = (det C)ᵏ·det(W₀) for the state matrix W of the recurrence."
+    ]
+  },
+  "sections": [
+    {
+      "id": "general-cassini",
+      "title": "The General Cassini/Catalan Identity over a Commutative Ring",
+      "startLine": 83,
+      "endLine": 124,
+      "summary": "cassini_general: for u(n+2) = p·u(n+1) − q·u(n) over any CommRing, u(k+2)u(k) − u(k+1)² = qᵏ·(u₂u₀ − u₁²), via the one-step scaling D(k+1) = q·D(k) of the Cassini defect and induction. cassini_det_general repackages it as the state-matrix determinant det !![u(k+2),u(k+1);u(k+1),u k] = qᵏ·det !![u 2,u 1;u 1,u 0].",
+      "mathContext": "$u_{k+2}u_k - u_{k+1}^2 = q^k(u_2u_0 - u_1^2)$; the determinant of the state matrix scales by $q^k = (\\det C)^k$."
+    },
+    {
+      "id": "pell-specialisation",
+      "title": "Specialisation to the Pell Coordinate Sequences",
+      "startLine": 126,
+      "endLine": 178,
+      "summary": "re_cassini / im_cassini feed the grandparent's coordinate recurrences (p = 2·re a, q = N(a)) into cassini_general. re_cassini_const / im_cassini_const evaluate the base defects to d·y₁² and −y₁². For N(a) = 1 the factor N(a)ᵏ vanishes, so re_cassini_pell / im_cassini_pell give the constant invariants d·y₁² and −y₁².",
+      "mathContext": "$\\mathrm{re}(a^{k+1})\\mathrm{re}(a^{k-1}) - \\mathrm{re}(a^k)^2 = d\\,y_1^2$ and $\\mathrm{im}\\cdots = -y_1^2$ for $N(a)=1$."
+    },
+    {
+      "id": "norm-identity",
+      "title": "The Norm Law from det(Mⁿ) = (det M)ⁿ",
+      "startLine": 180,
+      "endLine": 199,
+      "summary": "norm_pow_eq: re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ, read directly off det(Mⁿ) = (det M)ⁿ using the parent's companion_pow (left side = det Mⁿ) and Matrix.det_pow + companion_det (right side = N(a)ⁿ) — norm multiplicativity as a 2×2 determinant.",
+      "mathContext": "$\\mathrm{re}(a^n)^2 - d\\,\\mathrm{im}(a^n)^2 = N(a)^n$, i.e. $N(a^n) = N(a)^n$."
+    },
+    {
+      "id": "d2-checks",
+      "title": "Concrete D = 2 Checks",
+      "startLine": 201,
+      "endLine": 226,
+      "summary": "For 3 + 2√2 = ⟨3,2⟩ (norm 1): real Cassini invariant 8 = d·y₁² = 2·2², √2 invariant −4 = −y₁², norm identity 17² − 2·12² = 1 at n = 2, and the constant-8 invariant for all k via re_cassini_pell — verifying against the chain 1,3,17,99 / 0,2,12,70.",
+      "mathContext": "$x_{k+1}x_{k-1} - x_k^2 = 8$ constant; $y$-invariant $-4$; norm $1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This fully verified 236-line file (0 sorries, 0 axioms, no native_decide) answers the parent entry's first open question by deriving the Cassini/Catalan identity of the Pell coordinate sequences from the companion determinant. A general lemma over any commutative ring (cassini_general) shows the Cassini defect u(k+2)u(k) − u(k+1)² of a recurrence u(n+2) = p·u(n+1) − q·u(n) scales as qᵏ times its base value, via the one-step relation D(k+1) = q·D(k); this is the determinant det(Wₖ) = qᵏ·det(W₀) of the recurrence state matrix (cassini_det_general). Specialising to both Pell coordinate sequences (p = 2x₁, q = N(a)) with the grandparent's recurrences gives the coordinate Cassini identities, whose base defects are d·y₁² and −y₁²; for a Pell generator (N(a) = 1) the qᵏ factor vanishes and the defects are constant. Separately, the norm law N(aⁿ) = N(a)ⁿ is read straight off det(Mⁿ) = (det M)ⁿ (norm_pow_eq).",
+    "implications": "The two Cassini invariants are conservation laws of the Pell chain: the off-by-one determinant of the coordinate sequence is fixed for every solution, the exact analogue of Cassini's (−1)ⁿ for Fibonacci with a genuinely constant value. The CommRing-level cassini_general and cassini_det_general are reusable for any Lucas-type sequence (Fibonacci/Lucas, Chebyshev, continued-fraction convergents), and the state-matrix determinant packaging connects the recurrence, the companion matrix, and the eigenvalue picture uniformly. Together with the parent's Binet and companion-matrix closed forms and the grandparent's recurrence, this completes the determinant-theoretic account of Pell coordinate sequences.",
+    "openQuestions": [
+      "Derive the addition/index-doubling formulas (Vajda / d'Ocagne identities) uₘ₊ₙ = … for the Pell coordinate sequences from the matrix product Mᵐ·Mⁿ = Mᵐ⁺ⁿ, generalising the Cassini identity (the m = n − 1, shift-by-one case) to arbitrary index offsets.",
+      "Show the constant Cassini invariant d·y₁² is the discriminant obstruction to a Pell unit being a perfect square in ℤ[√d]: relate re(aₖ₊₁)re(aₖ₋₁) − re(aₖ)² = d·y₁² to the fact that aᵏ is never a square unless y₁ = 0."
+    ]
+  },
+  "references": [
+    {
+      "authors": "G. D. Cassini",
+      "title": "Une nouvelle progression de nombres (the identity Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ)",
+      "year": 1680,
+      "venue": "Histoire de l'Académie Royale des Sciences",
+      "note": "The prototypical off-by-one determinant invariant of a Lucas sequence, generalised here to Pell coordinate sequences."
+    },
+    {
+      "authors": "S. Vajda",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": 1989,
+      "venue": "Ellis Horwood",
+      "note": "Systematic treatment of Cassini/Catalan/d'Ocagne identities for second-order recurrences via determinants."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Zsqrtd (ℤ[√d]) API and the 2×2 Matrix determinant API (det_fin_two_of, det_pow) underlying this formalization."
+    }
+  ]
+}
