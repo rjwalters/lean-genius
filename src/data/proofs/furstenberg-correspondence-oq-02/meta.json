@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: ergodic decomposition — feasibility survey against Mathlib",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Header docstring and imports: a feasibility survey of formalizing the ergodic decomposition theorem, an inventory of the Mathlib building blocks that exist, the precise remaining gap, an effort estimate, and the FEASIBLE conclusion.",
+      "mathContext": "This file (open question furstenberg-correspondence-oq-02) is a feasibility survey — NOT a completed formalization — of the ergodic decomposition theorem using Mathlib's existing infrastructure. The theorem: every T-invariant probability measure μ on a standard Borel probability space decomposes uniquely as μ = ∫ μ_x dμ(x) with μ_x ergodic for μ-a.e. x (the measure-theoretic analogue of spectral decomposition). The header docstring (lines 1–69) inventories the Mathlib building blocks that already exist (ergodic measures, ergodic = extreme point of invariant measures, Krein–Milman, measure disintegration, Radon–Nikodym derivatives and their T-invariance, invariant functions a.e. constant, conditional expectation) and identifies the precise gap: Choquet representation (integral representation via extreme points), the ergodic σ-algebra of T-invariant sets, conditional measures w.r.t. it (the decomposition kernel), and the Birkhoff ergodic theorem (pointwise Cesàro convergence, needed for the conditional-measure construction). It gives an effort estimate (~2000–2500 lines) and concludes FEASIBLE: the characterization of ergodic measures as extreme points (already in Mathlib) is the backbone; the main technical challenge is Birkhoff and the conditional-measure construction. This entry is a survey/roadmap: it demonstrates the available components and states the theorem rather than proving it. References: Einsiedler & Ward (2011), Furstenberg (1981), Glasner (2003)."
+    },
+    {
       "title": "Mathlib's Ergodic Theory — What Exists",
       "startLine": 70,
       "endLine": 145,
