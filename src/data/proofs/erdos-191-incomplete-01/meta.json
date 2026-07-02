@@ -56,28 +56,44 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Imports, motivation, and namespace",
+      "id": "motivation",
+      "title": "Motivation: Retiring a Non-Deep Axiom",
       "startLine": 1,
+      "endLine": 31,
+      "summary": "Import Mathlib and the docstring stating the surgical goal: the parent erdos-191 entry carries four axioms for a solved Ramsey-type problem, but one — tripleLog_unbounded, that log(log(log n)) → ∞ — is elementary, not research-level. This file proves it axiom-free so the assumption count drops from 4 to 3. It is built standalone because Erdos191Problem.lean does not currently compile under the present Mathlib (missing rpow / Real.log_two_gt_d9 imports).",
+      "mathContext": "Goal: eliminate the parent's axiom $\\texttt{tripleLog\\_unbounded}: \\forall M,\\exists N,\\forall n\\ge N,\\ \\log\\log\\log n > M$ by proving it."
+    },
+    {
+      "id": "namespace-vocabulary",
+      "title": "Namespace and the Filter/Real Vocabulary",
+      "startLine": 33,
       "endLine": 35,
-      "summary": "Import Mathlib; docstring explaining that the parent erdos-191 entry carries tripleLog_unbounded as one of four axioms, that this fact is elementary (not deep), and that this file retires it by proving log(log(log n)) → ∞ axiom-free. Open Filter/Real, declare the namespace.",
-      "mathContext": "Goal: eliminate the parents axiom $\\texttt{tripleLog\\_unbounded}: \\forall M,\\exists N,\\forall n\\ge N,\\ \\log\\log\\log n > M$ by proving it."
+      "summary": "Declares namespace Erdos191Incomplete01 (mirroring the parent so the discharged axiom plugs back in) and opens Filter and Real, making atTop and Real.log available unqualified — the vocabulary in which the whole divergence argument is phrased. The entire proof reduces to wiring three Mathlib limit lemmas, so establishing these opens is what turns 'axiom elimination' into 'find the right library lemmas'.",
+      "mathContext": "$\\texttt{open Filter Real}$ exposes the $\\mathrm{atTop}$ filter and $\\mathrm{Real.log}$ used throughout."
     },
     {
       "id": "definition",
-      "title": "The tripleLog scale",
+      "title": "The tripleLog Scale",
       "startLine": 37,
       "endLine": 39,
-      "summary": "tripleLog n := log(log(log n)), the natural scale of Erdős #191, restated to match the parent definition.",
+      "summary": "tripleLog n := Real.log (Real.log (Real.log n)) on the ℕ→ℝ cast — the natural growth scale of Erdős #191, noncomputable because Real.log is, and kept identical to the parent definition so the discharged axiom plugs in verbatim.",
       "mathContext": "$\\mathrm{tripleLog}(n) = \\log(\\log(\\log n))$."
     },
     {
-      "id": "divergence",
-      "title": "Triple-log divergence and the ε–N form",
+      "id": "divergence-filter",
+      "title": "Triple-Log Divergence (Filter Form)",
       "startLine": 41,
+      "endLine": 49,
+      "summary": "tripleLog_tendsto_atTop is the mathematical core in one line: the cast ℕ→ℝ tends to atTop (tendsto_natCast_atTop_atTop) and Real.log preserves atTop (Real.tendsto_log_atTop), so composing the log limit threefold over the cast gives Tendsto (log∘log∘log∘cast) atTop atTop; `simpa [Function.comp_def, tripleLog]` rewrites the composition back to tripleLog.",
+      "mathContext": "$\\mathrm{Tendsto}\\ \\mathrm{Real.log}\\ \\mathrm{atTop}\\ \\mathrm{atTop}$ composed $3\\times$ over the cast gives $\\mathrm{Tendsto}\\ \\mathrm{tripleLog}\\ \\mathrm{atTop}\\ \\mathrm{atTop}$."
+    },
+    {
+      "id": "eps-n-form",
+      "title": "The ε–N Form Matching the Parent Axiom",
+      "startLine": 51,
       "endLine": 62,
-      "summary": "tripleLog_tendsto_atTop: the cast ℕ→ℝ tends to atTop and Real.log preserves atTop, so the threefold composition tends to atTop. tripleLog_unbounded then re-expresses Tendsto … atTop as the ∀M ∃N ∀n≥N, tripleLog n > M form matching the parents axiom.",
-      "mathContext": "$\\log\\log\\log n \\to \\infty$, hence $\\forall M,\\exists N,\\forall n\\ge N,\\ \\mathrm{tripleLog}(n) > M$."
+      "summary": "tripleLog_unbounded reproduces the parent's axiom verbatim (∀ M, ∃ N, ∀ n ≥ N, tripleLog n > M) from the filter statement: `tripleLog_tendsto_atTop.eventually (eventually_gt_atTop M)` gives eventual dominance, and `eventually_atTop` unpacks 'eventually' into the explicit ∃ N ∀ n ≥ N form. The Tendsto … atTop formulation is strictly stronger than the quantifier form and discharges the axiom completely.",
+      "mathContext": "$\\mathrm{Tendsto}\\,f\\,\\mathrm{atTop}\\,\\mathrm{atTop} \\Rightarrow \\forall M,\\exists N,\\forall n\\ge N,\\ f(n)>M$."
     }
   ],
   "conclusion": {
