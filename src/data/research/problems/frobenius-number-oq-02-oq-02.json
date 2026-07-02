@@ -1,0 +1,96 @@
+{
+  "slug": "frobenius-number-oq-02-oq-02",
+  "title": "Gorenstein Duality of the Two-Generator Semigroup Ring (Hypersurface Presentation)",
+  "phase": "ORIENT",
+  "status": "surveyed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "S = \\langle a,b\\rangle \\text{ symmetric} \\implies k[t^a, t^b] \\text{ is Gorenstein}",
+    "plain": "The parent open question asks to bridge the combinatorial symmetry of the two-generator numerical semigroup $\\langle a,b\\rangle$ (already formalized in frobenius-number-oq-01-oq-03: $PF(\\langle a,b\\rangle)=\\{g\\}$, type one — the Gorenstein/symmetric condition) to commutative algebra: that the semigroup ring $k[t^a,t^b]$ is Gorenstein. The honest tractable realization is the hypersurface presentation $k[X_0,X_1]/(X_0^b - X_1^a) \\cong k[t^a,t^b]$ exhibiting the ring as a complete intersection (hence Gorenstein).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "frobenius-number-oq-01-oq-03: PF(⟨a,b⟩) = {g}, type one (the combinatorial symmetric/Gorenstein condition) — fully verified, 0 axioms.",
+      "frobenius-number-oq-01-oq-04: Apéry set reflection symmetry of ⟨a,b⟩.",
+      "frobenius-number-oq-02-oq-01: Apéry sets + Kunz symmetry criterion (forward direction), abstract numerical semigroups."
+    ],
+    "open": [
+      "The literal statement 'k[t^a,t^b] is Gorenstein' cannot yet be phrased in Mathlib (no Gorenstein-ring / Cohen–Macaulay / canonical-module theory exists).",
+      "The complete-intersection kernel equality ker φ = (X_0^b − X_1^a), i.e. that the presentation surjection is an isomorphism."
+    ],
+    "goal": "Realize the semigroup ring as the hypersurface k[X_0,X_1]/(X_0^b − X_1^a), the commutative-algebra shadow of Gorenstein-ness that Mathlib CAN express."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-07-01",
+    "iteration": 1,
+    "focus": "Feasibility assessment: located the combinatorial core (already done), pinned the Mathlib gap (no Gorenstein theory), identified the hypersurface presentation as the tractable bridge, and drafted a Lean scaffold of the surjective half.",
+    "blockers": [
+      "Mathlib has no Gorenstein-ring / Cohen–Macaulay / canonical-module infrastructure (verified by grep over the pinned Mathlib source): the direct Gorenstein statement is BLOCKED (>1000 lines foundational commutative algebra).",
+      "Local build environment degraded this session (host disk 100% full, ~2Gi free): typecheck of the scaffold hit torn-olean / segfault (invalid header, RC=139) — infra, not the code. Scaffold left UNVERIFIED pending a calm-disk session or Aristotle (which returned 'Resource not found' this session)."
+    ],
+    "nextAction": "In a calm-disk session, typecheck proofs/Proofs/FrobeniusNumberOQ02OQ02.lean (Mathlib-only; expected clean) and ship as a verified gallery entry; then attack the kernel-equality (monomial-curve complete-intersection) either manually or via Aristotle.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEY/ORIENT: combinatorial Gorenstein condition already proven (oq-01-oq-03); Mathlib lacks all Gorenstein/CM/canonical-module theory so the literal ring statement is blocked; the tractable bridge is the hypersurface presentation k[X,Y]/(X^b−Y^a)≅k[t^a,t^b]. Drafted a Lean scaffold of the surjective half (range=semigroup ring, relation∈ker, presentation surjection). Build-blocked (full disk); scaffold unverified.",
+    "builtItems": [
+      "Draft scaffold proofs/Proofs/FrobeniusNumberOQ02OQ02.lean (UNVERIFIED — build-blocked by full disk): phi (presentation map k[X0,X1]→k[t], X0↦t^a, X1↦t^b); range_phi (image = Algebra.adjoin K {t^a,t^b}, i.e. the semigroup ring); relation_mem_ker (φ(X0^b−X1^a)=0); span_le_ker (presentation surjection k[X0,X1]/(X0^b−X1^a)↠k[t^a,t^b])."
+    ],
+    "insights": [
+      "The combinatorial Gorenstein/symmetric condition for ⟨a,b⟩ is ALREADY fully formalized (frobenius-number-oq-01-oq-03: type one, PF={g}); its docstring explicitly frames type-1 as 'the Gorenstein/symmetric condition'. So oq-02-oq-02's remaining content is purely the commutative-algebra side.",
+      "Mathlib (pinned revision in proofs/.lake) has ZERO Gorenstein / Cohen–Macaulay / canonical(dualizing)-module theory — verified by grep. The literal 'k[t^a,t^b] is Gorenstein' is therefore not expressible without building thousands of lines of foundational commutative algebra.",
+      "The honest, expressible bridge is the hypersurface / complete-intersection presentation: k[X0,X1]/(X0^b−X1^a) ≅ k[t^a,t^b]. A hypersurface (one relation) is automatically Gorenstein, so this presentation IS the concrete reason for Gorenstein-ness even though 'Gorenstein' itself is unstatable in current Mathlib.",
+      "Key Mathlib API for the bridge: Algebra.adjoin_range_eq_range_aeval (image of aeval = adjoin of the value set) pins range φ = k[t^a,t^b]; the degree identity (t^a)^b=(t^b)^a=t^{ab} gives relation_mem_ker."
+    ],
+    "mathlibGaps": [
+      "No IsGorenstein / Gorenstein local ring predicate.",
+      "No CohenMacaulay ring/module theory.",
+      "No canonical (dualizing) module / injective-dimension theory for commutative rings.",
+      "No monomial-curve / numerical-semigroup-ring machinery; the kernel of k[X,Y]→k[t] for a monomial curve is not available."
+    ],
+    "nextSteps": [
+      "Typecheck the scaffold FrobeniusNumberOQ02OQ02.lean when disk is healthy (Mathlib-only, expected to compile) and promote to a verified gallery entry (status verified, 0-axiom) presenting the surjective half of the presentation.",
+      "Prove the kernel equality ker φ = Ideal.span {X0^b − X1^a} (monomial-curve complete intersection) — the deep step; suitable for Aristotle or a dedicated manual session (normal-form/reduction argument reducing mod the binomial to Y-degree < a).",
+      "Once the isomorphism k[X,Y]/(X^b−Y^a) ≅ k[t^a,t^b] is verified, that is the complete-intersection statement — the strongest Gorenstein surrogate available pre-Gorenstein-theory."
+    ],
+    "markdown": "# Knowledge Base: frobenius-number-oq-02-oq-02\n\n## Problem\n\nBridge the combinatorial symmetry of ⟨a,b⟩ to the commutative-algebra statement that k[t^a,t^b] is Gorenstein.\n\n## Session 2026-07-01 (Session 1, FRESH → SURVEY/ORIENT)\n\n### Findings\n\n- **Combinatorial core already done.** `frobenius-number-oq-01-oq-03` proves ⟨a,b⟩ has type one / PF(⟨a,b⟩)={g}; its own docstring names this 'the Gorenstein/symmetric condition'. Nothing left to do combinatorially.\n- **Mathlib gap (verified by grep).** No Gorenstein, Cohen–Macaulay, or canonical/dualizing-module theory exists in the pinned Mathlib. The literal ring-theoretic Gorenstein statement is BLOCKED (>1000 lines of foundational commutative algebra to build).\n- **Tractable bridge = hypersurface presentation.** k[X0,X1]/(X0^b−X1^a) ≅ k[t^a,t^b]. A one-relation quotient (hypersurface) is automatically Gorenstein, so this is the concrete, expressible content.\n\n### Scaffold (UNVERIFIED — build-blocked by full disk)\n\n`proofs/Proofs/FrobeniusNumberOQ02OQ02.lean`:\n- `phi` : presentation map k[X0,X1] → k[t], X0↦t^a, X1↦t^b.\n- `range_phi` : range φ = Algebra.adjoin K {t^a, t^b} (image = semigroup ring).\n- `relation_mem_ker` : φ(X0^b − X1^a) = 0.\n- `span_le_ker` : (X0^b − X1^a) ⊆ ker φ (presentation surjection).\n\nThe hard reverse inclusion ker φ ⊆ (X0^b − X1^a) (the complete-intersection isomorphism) is the follow-up.\n\n### Build/tooling blockers this session\n\n- Host disk 100% full (~2Gi free, falling); `lake env lean` on the scaffold hit torn-olean `invalid header` then segfault (RC=139) — infra, not the code.\n- Aristotle MCP returned `Resource not found` (service unavailable).\n\n### Next\n\n1. Verify scaffold on a healthy disk (expected clean) → ship as verified 0-axiom gallery entry.\n2. Prove the kernel equality (monomial-curve complete intersection) via reduction argument or Aristotle.\n"
+  },
+  "tags": [
+    "number-theory",
+    "numerical-semigroups",
+    "frobenius",
+    "commutative-algebra",
+    "gorenstein",
+    "complete-intersection"
+  ],
+  "relatedProofs": [
+    "frobenius-number",
+    "frobenius-number-oq-01",
+    "frobenius-number-oq-01-oq-03",
+    "frobenius-number-oq-01-oq-04",
+    "frobenius-number-oq-02",
+    "frobenius-number-oq-02-oq-01",
+    "frobenius-number-oq-03",
+    "frobenius-number-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Kunz, E. (1970). The value-semigroup of a one-dimensional Gorenstein ring. Proc. AMS 25, 748–751.",
+      "Herzog, J. (1970). Generators and relations of abelian semigroups and semigroup rings. Manuscripta Math. 3, 175–193."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Algebra.adjoin_range_eq_range_aeval (Mathlib.Algebra.MvPolynomial.Eval)"
+    ]
+  },
+  "started": "2026-07-01",
+  "lastUpdate": "2026-07-01",
+  "leanFiles": []
+}
