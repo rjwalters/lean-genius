@@ -64,7 +64,8 @@
       "**Duality without a separate min–max machine.** König is packaged in certificate form — exhibit a matching and a cover of equal size — so the 'maximum' and 'minimum' are certified by weak duality alone, sidestepping any explicit construction of the optimisation values.",
       "**The optimal cover sits at the deficiency minimiser.** Minimising the cover size #(ι \\ s) + #N(s) over subsets s simultaneously (i) produces the smallest cover and (ii) hands the defect-Hall theorem the exact deficiency parameter d = #s − #N(s) needed to match it.",
       "**Minimality kills the ℕ-subtraction trap.** A priori #N(s) − #s could truncate in ℕ; but the minimiser satisfies #N(s) ≤ #s (else s = ∅ would be a strictly smaller cover), so cover size = #ι − d is an exact identity rather than an inequality.",
-      "**Weak duality is a one-line injection.** Each matched index is covered on exactly one endpoint; sending it to that endpoint (left into A, or right through the injective f into B) is injective into A ⊕ B, giving #matching ≤ #cover with no case explosion."
+      "**Weak duality is a one-line injection.** Each matched index is covered on exactly one endpoint; sending it to that endpoint (left into A, or right through the injective f into B) is injective into A ⊕ B, giving #matching ≤ #cover with no case explosion.",
+      "**Optimality is certified, never optimised.** Both extremality clauses — the matching is maximum, the cover is minimum — are proved by invoking the single weak-duality lemma `matching_card_le_cover` twice: any matching J' obeys #J' ≤ #cover = #J, and any cover (A',B') obeys #J = #cover ≤ #A' + #B'. This is the universal primal–dual pattern: a feasible primal and feasible dual of equal value are automatically both optimal, so no strong-duality theorem is required."
     ],
     "exampleSections": [
       {
