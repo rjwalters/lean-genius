@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1119,
+    "lineCount": 1177,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -53,12 +53,13 @@
       "range_firstMissing_subset: the firstMissing-covered prefix {0,…,firstMissing L−1} ⊆ L (initial-segment coverage form of minimality)",
       "firstMissing_le_length: exhaustion bound firstMissing L ≤ L.length — the quantitative termination measure guaranteeing every k enters by a bounded stage (VERIFIED, 0-axiom)",
       "Domain/range duality (Section 4e): mDom_map_swap, mRan_map_swap, isMatching_map_swap, matchingCorr_map_swap — coordinate-swap L ↦ L.map Prod.swap makes the odd (range) stage the even (domain) stage of the swapped problem (q,p), so the scheduler need define only one stage move (VERIFIED, 0-axiom)",
-      "Collision chase is a bounded forward-orbit walk (Section 4·chase): fwdOrbit_succ, fwdOrbit_prefix_distinct (acyclicity of a fresh-anchored colliding prefix via injectivity of g∘f), fwdOrbit_chase_length_le (chase length ≤ current matching size) — discharges the bounded-search obligation of the collision-resolving stage move (VERIFIED, 0-axiom)"
+      "Collision chase is a bounded forward-orbit walk (Section 4·chase): fwdOrbit_succ, fwdOrbit_prefix_distinct (acyclicity of a fresh-anchored colliding prefix via injectivity of g∘f), fwdOrbit_chase_length_le (chase length ≤ current matching size) — discharges the bounded-search obligation of the collision-resolving stage move (VERIFIED, 0-axiom)",
+      "Read-off coherence layer (Section 4f-bis): mLookup_mem_of_mem_dom (the lookup lands on a genuine recorded edge), mLookup_injOn (the read-off is injective across the domain, via range-side Nodup), and mLookup_stable (read-off values are stable as the matching grows) — the well-definedness/injectivity/coherence obligations the eventual assembly of the limit permutation consumes, collision-independent (VERIFIED, 0-axiom)"
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
     ],
-    "theoremCount": 62,
+    "theoremCount": 65,
     "definitionCount": 14,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
@@ -248,9 +249,9 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 1119,
+    "lineCount": 1177,
     "axiomCount": 0,
-    "theoremCount": 62,
+    "theoremCount": 65,
     "definitionCount": 14,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",
