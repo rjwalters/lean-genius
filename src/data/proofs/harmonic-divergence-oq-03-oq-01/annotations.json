@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-harmonic-divergence-oq-03-oq-01-01",
+    "proofId": "harmonic-divergence-oq-03-oq-01",
+    "range": { "startLine": 38, "endLine": 56 },
+    "type": "definition",
+    "title": "Pairing collapses two conditional terms into one positive term",
+    "content": "The single algebraic fact behind the whole entry: the consecutive alternating pair `(-1)^{2k}/(2k+1) + (-1)^{2k+1}/(2k+2)` equals `1/(2k+1) - 1/(2k+2) = 1/((2k+1)(2k+2))`, a POSITIVE number. `altTerm_pair` proves it (the `(-1)^{2k}=1`, `(-1)^{2k+1}=-1` reductions plus `field_simp; ring`). Positivity of `pairTerm` is what later makes the partial sums monotone and unlocks a comparison-free summability argument."
+  },
+  {
+    "id": "ann-harmonic-divergence-oq-03-oq-01-02",
+    "proofId": "harmonic-divergence-oq-03-oq-01",
+    "range": { "startLine": 57, "endLine": 83 },
+    "type": "insight",
+    "title": "Pairing is a subsequence, not a rearrangement",
+    "content": "`sum_pairTerm_eq` proves by induction (peeling two terms at a time with `Finset.sum_range_succ`) that the N-th paired partial sum is EXACTLY the 2N-th alternating partial sum `altPartial (2N)`. This is the crux that makes regrouping safe for a conditionally convergent series: we are reading off a SUBSEQUENCE of the alternating partial sums, not permuting terms. Convergence and value therefore transfer for free — `tendsto_sum_pairTerm` just composes the parent's `altHarmonic_tendsto_log_two` with `N ↦ 2N → ∞`. No boundary-value/Abel argument is redone here."
+  },
+  {
+    "id": "ann-harmonic-divergence-oq-03-oq-01-03",
+    "proofId": "harmonic-divergence-oq-03-oq-01",
+    "range": { "startLine": 84, "endLine": 103 },
+    "type": "theorem",
+    "title": "Absolute convergence with no comparison series",
+    "content": "Because the terms are nonnegative the paired partial sums are monotone, so `Monotone.ge_of_tendsto` bounds each one by its own limit `log 2`; `summable_of_sum_range_le` then yields `Summable pairTerm` directly — no `1/k²` comparison or index shift needed. Finally `HasSum.tendsto_sum_nat` plus `tendsto_nhds_unique` identify `∑' pairTerm = log 2`. The upshot: unlike its `¬ Summable` alternating parent, `∑ 1/((2k+1)(2k+2))` is absolutely convergent and gives `log 2` an honest `HasSum`/`tsum` value."
+  }
+]
