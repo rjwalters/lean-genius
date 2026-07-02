@@ -142,4 +142,43 @@ theorem boundary_simplex_hdoor {n : ℕ}
     #{i | d ⊆ Finset.univ.erase i} ≤ 2 :=
   (boundary_simplex_closed_incidence d hd).le
 
+/-! ## The pair bound `hpair` for `∂Δ^{n+1}`, all `n`
+
+The concrete `hpair` above (two distinct tetrahedra share `≤ 1` triangle) is proved for
+`∂Δ⁴` by `decide`.  It too is dimension-free: a door `d` incident to *both* top cells
+`Sᵢ = univ.erase i` and `Sⱼ = univ.erase j` with `i ≠ j` is pinned to the single face
+`{i, j}ᶜ`.  Indeed `d ⊆ univ.erase i` forces `i ∉ d` and likewise `j ∉ d`, so
+`d ⊆ {i, j}ᶜ`; the complement has card `(n+2) - 2 = n = d.card`, so the containment is an
+equality.  Two doors each incident to the same pair `{i, j}` are therefore both `{i, j}ᶜ`,
+hence equal — the `hpair` bound in every dimension, with no per-dimension `decide`. -/
+
+/-- **The shared door of two distinct top cells is forced.**  A door `d` (an `n`-vertex
+face) contained in both `univ.erase i` and `univ.erase j` (with `i ≠ j`) is exactly the
+complement `{i, j}ᶜ`.  Dimension-free. -/
+theorem boundary_simplex_door_eq {n : ℕ} (d : Finset (Fin (n + 2)))
+    (hd : d.card = n) {i j : Fin (n + 2)} (hij : i ≠ j)
+    (hi : d ⊆ Finset.univ.erase i) (hj : d ⊆ Finset.univ.erase j) :
+    d = ({i, j} : Finset (Fin (n + 2)))ᶜ := by
+  have hi' : i ∉ d := fun h => (Finset.mem_erase.mp (hi h)).1 rfl
+  have hj' : j ∉ d := fun h => (Finset.mem_erase.mp (hj h)).1 rfl
+  have hsub : d ⊆ ({i, j} : Finset (Fin (n + 2)))ᶜ := by
+    intro x hx
+    simp only [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨fun h => hi' (h ▸ hx), fun h => hj' (h ▸ hx)⟩
+  have hcard : ({i, j} : Finset (Fin (n + 2)))ᶜ.card = n := by
+    rw [Finset.card_compl, Fintype.card_fin, Finset.card_pair hij]
+  exact Finset.eq_of_subset_of_card_le hsub (hcard.trans hd.symm).le
+
+/-- **General `hpair` (the pair bound) for `∂Δ^{n+1}`, all `n`.**  Two doors `d`, `d'`
+each incident to the *same* two distinct top cells `Sᵢ`, `Sⱼ` are equal: both are pinned
+to `{i, j}ᶜ` by `boundary_simplex_door_eq`.  This discharges the engine's `hpair` input in
+every dimension, removing the per-dimension `decide`. -/
+theorem boundary_simplex_hpair {n : ℕ} (d d' : Finset (Fin (n + 2)))
+    (hd : d.card = n) (hd' : d'.card = n) {i j : Fin (n + 2)} (hij : i ≠ j)
+    (hi : d ⊆ Finset.univ.erase i) (hj : d ⊆ Finset.univ.erase j)
+    (hi' : d' ⊆ Finset.univ.erase i) (hj' : d' ⊆ Finset.univ.erase j) :
+    d = d' := by
+  rw [boundary_simplex_door_eq d hd hij hi hj,
+      boundary_simplex_door_eq d' hd' hij hi' hj']
+
 end SpernerTuckerSimplexBoundaryPseudomanifold
