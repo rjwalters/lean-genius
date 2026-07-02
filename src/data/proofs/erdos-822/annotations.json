@@ -16,7 +16,11 @@
       "natural density",
       "arithmetic functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler's totient function φ(n)",
+      "natural (lower) density of a set of integers",
+      "arithmetic functions"
+    ]
   },
   {
     "id": "ann-e822-totient-def",
@@ -35,7 +39,11 @@
       "coprimality",
       "arithmetic functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "coprimality of integers",
+      "the definition of Euler's totient function",
+      "prime numbers"
+    ]
   },
   {
     "id": "ann-e822-values-set",
@@ -54,7 +62,11 @@
       "set theory",
       "density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the image (range) of a function",
+      "set-builder notation",
+      "Euler's totient function"
+    ]
   },
   {
     "id": "ann-e822-examples",
@@ -73,7 +85,11 @@
       "computation",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "evaluating the totient function on small inputs",
+      "membership witnesses in a set image",
+      "computational decidability in Lean"
+    ]
   },
   {
     "id": "ann-e822-lower-bound",
@@ -91,7 +107,11 @@
       "bounds",
       "totient positivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nonnegativity of the totient function",
+      "basic linear inequalities",
+      "unfolding a definition"
+    ]
   },
   {
     "id": "ann-e822-parity",
@@ -110,7 +130,11 @@
       "even totient",
       "density bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "even and odd integers",
+      "the value φ(p) = p-1 for primes",
+      "divisibility by 2"
+    ]
   },
   {
     "id": "ann-e822-density-axiom",
@@ -129,7 +153,11 @@
       "analytic number theory",
       "sieve methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural (lower) density",
+      "asymptotic counting of integers up to N",
+      "the role of axioms for unformalized deep results"
+    ]
   },
   {
     "id": "ann-e822-generalization",
@@ -148,7 +176,11 @@
       "divisor function",
       "multiplicative functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sum-of-divisors function σ",
+      "the divisor-counting function τ",
+      "multiplicative arithmetic functions"
+    ]
   },
   {
     "id": "ann-e822-summary",
@@ -167,6 +199,10 @@
       "totient function"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "the positive density result for n + φ(n)",
+      "the trivial lower bound n + φ(n) ≥ n",
+      "conjunction of two proven statements"
+    ]
   }
 ]
