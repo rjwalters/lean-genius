@@ -11,7 +11,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 165,
-    "theoremCount": 8,
+    "theoremCount": 7,
     "definitionCount": 0,
     "assumptions": "None. The main theorem requires the ambient field L to be algebraically closed (IsAlgClosed L) — the formalization of 'L contains the algebraic closure of K', which is exactly the hypothesis the open question states and is genuinely necessary for the formula. The result is fully machine-checked. Verified via #print axioms to depend only on the foundational axioms propext, Classical.choice, Quot.sound; no native_decide and no Lean.ofReduceBool dependency.",
     "tags": [
@@ -40,7 +40,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 165,
-    "theoremCount": 8,
+    "theoremCount": 7,
     "definitionCount": 0
   },
   "overview": {
