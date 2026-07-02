@@ -16,7 +16,11 @@
       "smooth numbers",
       "natural density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive prime numbers and prime gaps",
+      "the notion of prime factors of an integer",
+      "natural density of a set of integers"
+    ]
   },
   {
     "id": "erdos-932-nth-prime",
@@ -35,7 +39,11 @@
       "Nat.nth",
       "strict monotonicity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the infinitude of primes",
+      "indexing a sequence by its position (the n-th term)",
+      "strictly increasing sequences (StrictMono)"
+    ]
   },
   {
     "id": "erdos-932-prime-gap",
@@ -54,7 +62,11 @@
       "twin primes",
       "prime gap distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the n-th prime function",
+      "truncated subtraction on natural numbers (Nat.sub)",
+      "strict monotonicity implying positive differences"
+    ]
   },
   {
     "id": "erdos-932-max-prime-factor",
@@ -73,7 +85,11 @@
       "greatest prime factor",
       "P⁺(n)"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of an integer",
+      "the list of prime factors (Nat.primeFactorsList)",
+      "coprimality and multiplicativity over coprime factors"
+    ]
   },
   {
     "id": "erdos-932-smooth-def",
@@ -92,7 +108,11 @@
       "friable numbers",
       "factoring algorithms"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the maximum prime factor of an integer",
+      "prime powers p^k",
+      "inequalities between natural numbers"
+    ]
   },
   {
     "id": "erdos-932-gap-interval",
@@ -111,7 +131,11 @@
       "interval filtering",
       "smooth counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset (finite sets in Lean) and Finset.Ioo open intervals",
+      "filtering a finite set by a decidable predicate",
+      "Finset cardinality"
+    ]
   },
   {
     "id": "erdos-932-main-conjecture",
@@ -130,7 +154,11 @@
       "infinitude results",
       "Erdős conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Set.Infinite (infinitude of a set)",
+      "the smooth-count function on prime gaps",
+      "unfolding a definition into explicit Finset operations"
+    ]
   },
   {
     "id": "erdos-932-density-zero",
@@ -149,7 +177,11 @@
       "Filter.Tendsto",
       "nhds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density of a subset of the naturals",
+      "Filter.Tendsto and convergence of counting ratios",
+      "neighborhood filters (nhds)"
+    ]
   },
   {
     "id": "erdos-932-example",
@@ -168,7 +200,11 @@
       "perfect powers",
       "small examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime powers as smooth numbers",
+      "computing the maximum prime factor of a small integer",
+      "the omega decision procedure for linear arithmetic"
+    ]
   },
   {
     "id": "erdos-932-difficulty",
@@ -187,7 +223,11 @@
       "sieve methods",
       "short intervals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "short intervals between consecutive primes",
+      "the greatest prime factor P⁺(n)",
+      "sieve methods in analytic number theory"
+    ]
   },
   {
     "id": "erdos-932-dickman",
@@ -206,7 +246,11 @@
       "Ψ(x,y)",
       "de Bruijn"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting functions asymptotics (∼ notation)",
+      "the Dickman rho function",
+      "y-smooth numbers"
+    ]
   },
   {
     "id": "erdos-932-summary",
@@ -225,6 +269,10 @@
       "analytic number theory",
       "Erdős problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the density-zero result for smoothCount ≥ 1",
+      "conjunction of formal statements in Lean",
+      "the concrete example smoothCount(3) = 2"
+    ]
   }
 ]
