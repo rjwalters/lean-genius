@@ -87,6 +87,30 @@ function normalizeAnnotations(annotations: Annotation[]): Annotation[] {
 }
 
 /**
+ * Normalize cross-references. Two data shapes exist across meta.json files:
+ *   - object form: { proofId | targetId, relationship, description? }
+ *   - legacy string form: a bare slug string (~29 files)
+ * The string form never rendered because ProofOverview/ProofConclusion read
+ * `ref.proofId ?? ref.targetId`, both undefined on a string. Coerce strings to
+ * the object form so those links display. Additionally, drop any reference
+ * whose target slug is not a real proof (absent from the data manifest) — this
+ * prunes dead links to proofs that do not exist (e.g. skipped OQ numbers).
+ */
+function normalizeCrossReferences(
+  refs: (CrossReference | string)[] | undefined
+): CrossReference[] | undefined {
+  if (!refs) return refs
+  return refs
+    .map((ref): CrossReference =>
+      typeof ref === 'string' ? { proofId: ref, relationship: 'related' } : ref
+    )
+    .filter((ref) => {
+      const slug = ref.proofId ?? ref.targetId
+      return slug != null && DATA_MANIFEST[slug] != null
+    })
+}
+
+/**
  * Asynchronously load proof data for a given slug.
  *
  * Public signature preserved from phase 1: `(slug) => Promise<ProofData | undefined>`.
@@ -130,7 +154,7 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
         sections: meta.sections ?? [],
         overview: meta.overview,
         conclusion: meta.conclusion,
-        crossReferences: meta.crossReferences,
+        crossReferences: normalizeCrossReferences(meta.crossReferences),
         references: meta.references,
         source: '',
       },
