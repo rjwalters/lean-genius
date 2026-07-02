@@ -16,7 +16,11 @@
       "Graph coloring",
       "Asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-colorings of graph edges",
+      "complete graphs K_n",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e986-ramsey-def",
@@ -35,7 +39,11 @@
       "Complete graphs",
       "Graph coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complete graphs K_k",
+      "edge 2-colorings avoiding monochromatic cliques",
+      "Nat.find and the least witness"
+    ]
   },
   {
     "id": "ann-e986-asymptotic-notation",
@@ -54,7 +62,11 @@
       "Asymptotic analysis"
     ],
     "mathContext": "See annotation content for formal details of asymptotic notation",
-    "prerequisites": []
+    "prerequisites": [
+      "big-O notation",
+      "behavior for sufficiently large n",
+      "positive constants in bounds"
+    ]
   },
   {
     "id": "ann-e986-conjecture",
@@ -73,7 +85,11 @@
       "Logarithmic correction",
       "Upper bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey numbers R(k,n)",
+      "polynomial and logarithmic growth rates",
+      "asymptotic lower bound (≫)"
+    ]
   },
   {
     "id": "ann-e986-spencer",
@@ -92,7 +108,11 @@
       "R(3,n)",
       "Spencer 1977"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the probabilistic method",
+      "Ramsey number R(3,n)",
+      "asymptotic lower bounds"
+    ]
   },
   {
     "id": "ann-e986-mattheus-verstraete",
@@ -111,7 +131,11 @@
       "Algebraic geometry",
       "2023 breakthrough"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey number R(4,n)",
+      "algebraic geometry constructions",
+      "off-diagonal Ramsey bounds"
+    ]
   },
   {
     "id": "ann-e986-bohman-keevash",
@@ -130,7 +154,11 @@
       "Random graphs",
       "General lower bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "random graph processes",
+      "the H-free process",
+      "polynomial exponents in lower bounds"
+    ]
   },
   {
     "id": "ann-e986-aks-upper",
@@ -149,7 +177,11 @@
       "Probabilistic combinatorics",
       "AKS 1980"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic upper bounds (≪)",
+      "probabilistic combinatorics",
+      "the polynomial exponent k-1"
+    ]
   },
   {
     "id": "ann-e986-gap-analysis",
@@ -168,7 +200,11 @@
       "Open problems",
       "Exponent analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial exponents (k+1)/2 versus k-1",
+      "lower versus upper bounds",
+      "open cases k ≥ 5"
+    ]
   },
   {
     "id": "ann-e986-summary",
@@ -187,6 +223,10 @@
       "Partial solutions"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory overview",
+      "the partial results for k = 3 and k = 4",
+      "status of open problems"
+    ]
   }
 ]
