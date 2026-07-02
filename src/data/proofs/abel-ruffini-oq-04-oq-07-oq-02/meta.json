@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: De-Axiomatizing the Bring Radical Non-Solvability",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring and imports replacing a degenerate placeholder axiom with the genuine Abel–Ruffini statement for the Bring radical. These head lines explain that the parent's bringRadical_not_in_radicals axiom used a literal-True 'expressible in radicals' predicate (making it actually false), and that this file instead connects the analytically-defined real Bring radical BR(t) (the real root of x⁵+x+t=0) to the algebraic Bring–Jerrard polynomial X⁵+X+C t ∈ ℚ[X] via bringRadical_aeval, then proves non-solvability by radicals conditional on the quintic's irreducibility and non-solvable Galois group — before the proof.",
+      "mathContext": "The parent defined the Bring radical analytically via the IVT and asserted its radical-inexpressibility through a degenerate axiom (predicate ≡ True). This entry gives the honest formalization against Mathlib's IsSolvableByRad and Polynomial.Gal: BR(↑t) is a root of X⁵+X+C t over ℚ, and if that quintic is irreducible with non-solvable Galois group (or Gal ≃* S₅) then BR(↑t) is not solvable by radicals — the contrapositive of Mathlib's solvableByRad.isSolvable'. Everything downstream of the open Gal≃S₅ input is now formal. 0 sorries, 0 axioms."
+    },
+    {
       "id": "bjpoly",
       "title": "The Bring-Jerrard Quintic over ℚ",
       "startLine": 65,
