@@ -118,5 +118,15 @@
       "summary": "On the packaged structure, from any source door the walk terminates within Fintype.card V pivots at a fully-coloured simplex.",
       "mathContext": "reaches_terminal and exists_terminal instantiate the abstract engine with the derived hypotheses."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "The entry isolates and machine-checks, with 0 axioms, the purely combinatorial engine that makes Kuhn's constructive proof of Sperner's lemma terminate. The door-pivot rule is abstracted as a partial successor f : V → Option V on a finite door set (none = an FC simplex has been entered). From just two hypotheses — reversibility of pivoting away from terminal rooms (injectivity wherever f x ≠ none) and a source start door (v₀ has no predecessor) — the main theorem reaches_none proves the walk hits none within Fintype.card V steps, and exists_terminal_door extracts the last door before termination as a genuine fully-coloured door. The KuhnPivot structure then derives both hypotheses from a single symmetric-adjacency field, so a geometric user supplies only reversibility.",
+    "implications": "This supplies exactly the acyclicity/termination step that the geometric entry sperner-ndim-oq-04 leaves axiomatized (bdry_all_even_of_no_fc_walks): the abstract 'the walk actually reaches an FC simplex' fact is now a theorem rather than an assumption, and the step bound Fintype.card V is O(N^d) on the N-fold Kuhn subdivision of a d-simplex, matching the algorithm's known polynomial running time. The same engine underlies every complementary-pivot method — Scarf's fixed-point pivoting, Lemke–Howson for Nash equilibria — whose correctness rests on the degree-≤-2 structure of the pivot graph, the combinatorial signature of the complexity class PPAD for which Sperner's lemma is complete. It is the constructive counterpart of the parity engine (SpernerTuckerPathFollowing.lean): parity proves an FC simplex EXISTS; this engine proves the walk REACHES one, deterministically and in bounded time.",
+    "openQuestions": [
+      "Can the abstract engine be linked to the concrete geometric door graph of sperner-ndim-oq-04 to fully de-axiomatize that entry, by exhibiting the geometric succ/pred as a KuhnPivot instance?",
+      "Does the same Option-valued successor framework capture Scarf's algorithm and Lemke–Howson path-following, giving a single reusable PPAD termination lemma?",
+      "Can the O(N^d) door-count bound be sharpened to the actual path length, or shown tight by exhibiting a subdivision whose walk visits a constant fraction of all doors (the exponential-path phenomenon known for some complementary-pivot instances)?",
+      "Is there a formal reduction certifying that this constructive walk and the mod-2 parity count locate the same FC simplex, connecting the algorithmic and enumerative proofs of Sperner's lemma?"
+    ]
+  }
 }
