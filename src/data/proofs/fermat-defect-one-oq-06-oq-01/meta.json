@@ -92,6 +92,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the even-exponent obstruction to the sign-flip map",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "The module docstring, the imports of Mathlib and the two parent Fermat defect files, and the namespace/open setup. Resolves OQ-06-OQ-01: at even exponent n, is there any structural map exchanging the two defect signs, or is the absence of the parent's sign-flip involution Ψ a genuine even/odd asymmetry?",
+      "mathContext": "Working with the defect form defect n v = v0^n + v1^n − v2^n over the class of signed coordinate permutations (signedPerm σ s) v = fun i => s i * v(σ i) — the maps Ψ is drawn from — the answer is a genuine asymmetry. For odd n a sign-flip map exists: signedPerm (Equiv.swap 0 2) ![1,-1,1] negates the defect (signFlipFin_negates_odd), recovering the parent Ψ. For even n no signed permutation negates it (no_signFlip_even): even powers are sign-blind ((s i)^n = 1), so the action factors through the pure permutation σ, which only shuffles the summands and fixes the value at the symmetric point (1,1,1) where defect = 1; a sign flip would need it to become −1, and 1 ≠ −1 is a one-line contradiction. Packaged as even_odd_asymmetry. Honest scope: resolves the question for signed coordinate permutations, not exotic non-linear maps. Everything is a polynomial identity / finite sign computation over ℤ closed by ring, simp, Even.neg_one_pow, Odd.neg_pow. 0 axioms, no sorry, no native_decide."
+    },
+    {
       "id": "framework",
       "title": "Section I: The Defect Form and Signed Coordinate Permutations",
       "startLine": 69,
