@@ -105,48 +105,42 @@
       "title": "Overview and Imports",
       "startLine": 4,
       "endLine": 55,
-      "description": "Module docstring stating Desargues's theorem, the homogeneous-coordinate strategy, and how it reuses the parent's incidence-as-vanishing-determinant idea. Imports only Mathlib.",
-      "mathContext": "Perspective from a point $\\iff$ perspective from a line, encoded by vanishing $3\\times3$ determinants in $\\mathbb{R}^3$."
+      "summary": "Module docstring and imports for the projective-duality extension: Desargues's two-triangle perspectivity theorem and its self-duality, developed in homogeneous coordinates."
     },
     {
       "id": "calculus",
       "title": "Cross Product and 3×3 Determinant",
       "startLine": 63,
       "endLine": 79,
-      "description": "Defines the homogeneous-coordinate vector type Vec, the cross product (join of points / meet of lines by duality), and the scalar-triple-product determinant det3 whose vanishing detects collinearity and concurrence.",
-      "mathContext": "$\\det_3(P,Q,R)=P\\cdot(Q\\times R)$; vanishes $\\iff$ the three points are collinear / three lines concurrent."
+      "summary": "Vec := ℝ × ℝ × ℝ gives homogeneous coordinates on the real projective plane. cross is the vector cross product — simultaneously the join of two points and the meet of two lines in the projective dictionary — and det3 P Q R = P · (Q × R) is the scalar triple product, vanishing exactly when the three are collinear (or concurrent)."
     },
     {
       "id": "configuration",
       "title": "Configuration and Perspectivity Conditions",
       "startLine": 81,
       "endLine": 119,
-      "description": "DesarguesConfig packages two triangles with non-degeneracy hypotheses. Defines the side-intersections pointP, pointQ, pointR as double cross products, the determinants concurDet and collDet, and the predicates PerspectiveFromPoint and PerspectiveFromLine.",
-      "mathContext": "$P=(B\\times C)\\times(B'\\times C')$; concurrence $\\det_3(A\\times A',B\\times B',C\\times C')=0$; collinearity $\\det_3(P,Q,R)=0$."
+      "summary": "DesarguesConfig fixes two non-degenerate triangles A B C and A′ B′ C′. pointP, pointQ, pointR are the intersections of corresponding sides (meets of crosses); concurDet and collDet measure concurrence of the connectors and collinearity of the side-intersections; PerspectiveFromPoint and PerspectiveFromLine name the two perspectivity conditions."
     },
     {
       "id": "bracket-identity",
       "title": "The Desargues Bracket Identity",
       "startLine": 127,
       "endLine": 135,
-      "description": "desargues_bracket_identity: the geometric heart. The collinearity determinant factors as the product of the two triangle determinants and the concurrence determinant — a degree-12 polynomial identity in the 18 coordinates, discharged by ring.",
-      "mathContext": "$\\det_3(P,Q,R)=\\det_3(A,B,C)\\,\\det_3(A',B',C')\\,\\det_3(A\\times A',B\\times B',C\\times C')$."
+      "summary": "desargues_bracket_identity is the algebraic content — a bracket (determinant) identity relating the concurrence and collinearity determinants — closed by ring."
     },
     {
       "id": "desargues",
       "title": "Desargues's Theorem and Self-Duality",
       "startLine": 137,
       "endLine": 172,
-      "description": "desargues: perspective from a point ↔ perspective from a line, read off the bracket identity by dividing out the two nonzero triangle determinants (mul_eq_zero). Directional corollaries and desargues_self_dual record the point↔line symmetry.",
-      "mathContext": "With $\\det_3(A,B,C)\\neq0$ and $\\det_3(A',B',C')\\neq0$: $\\det_3(P,Q,R)=0 \\iff \\det_3(A\\times A',B\\times B',C\\times C')=0$."
+      "summary": "desargues proves perspective-from-a-point ↔ perspective-from-a-line, with the two directional lemmas, and desargues_self_dual records the theorem's invariance under swapping the roles of points and lines."
     },
     {
       "id": "example",
       "title": "Concrete Perspective Configuration",
       "startLine": 174,
       "endLine": 186,
-      "description": "desargues_example: centre (0,0,1) with connectors along the x-axis, y-axis, and the line y=x gives two perspective triangles; Desargues forces the three side-intersections to be collinear. Checked by norm_num.",
-      "mathContext": "$A=(1,0,1),B=(0,1,1),C=(1,1,1)$, $A'=(3,0,1),B'=(0,2,1),C'=(2,2,1)$: concurrent connectors $\\Rightarrow$ collinear $P,Q,R$."
+      "summary": "desargues_example gives a concrete perspective configuration with centre (0,0,1), verifying the biconditional on explicit coordinates."
     }
   ]
 }
