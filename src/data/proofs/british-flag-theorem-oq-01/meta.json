@@ -73,6 +73,14 @@
   ],
   "sections": [
     {
+      "id": "header-and-statement",
+      "title": "Module Header and Statement",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Imports Mathlib.Tactic and opens the module docstring, which states the theorem PA² + PC² = PB² + PD² and fixes the algebraic encoding of a rectangle: the parallelogram closure hpar (C = B + D − A) and the right angle hperp (edge vectors B − A and D − A orthogonal). The docstring also previews the proof idea — (PA² + PC²) − (PB² + PD²) = 2(u ⬝ v) vanishes by hperp — before the BritishFlagTheorem namespace opens.",
+      "mathContext": "Rectangle encoded by $C = B + D - A$ and $(B-A)\\cdot(D-A) = 0$; the target identity is $PA^2 + PC^2 = PB^2 + PD^2$."
+    },
+    {
       "id": "setup",
       "title": "Coordinate Setup and Squared Distance",
       "startLine": 28,
