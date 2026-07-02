@@ -16,7 +16,10 @@
       "asymptotic analysis",
       "Erdős problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function",
+      "asymptotic analysis"
+    ]
   },
   {
     "id": "ann-e975-imports",
@@ -35,7 +38,10 @@
       "asymptotics",
       "filters"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib asymptotics",
+      "filters"
+    ]
   },
   {
     "id": "ann-e975-divisorcount",
@@ -54,7 +60,10 @@
       "arithmetic functions",
       "multiplicative functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors",
+      "multiplicative functions"
+    ]
   },
   {
     "id": "ann-e975-divisorsumpoly",
@@ -72,7 +81,10 @@
       "divisor sums",
       "polynomial evaluation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function",
+      "polynomial evaluation"
+    ]
   },
   {
     "id": "ann-e975-vandercorput",
@@ -90,7 +102,10 @@
       "asymptotic bounds",
       "van der Corput"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bounds",
+      "the divisor function"
+    ]
   },
   {
     "id": "ann-e975-erdosbound",
@@ -109,7 +124,10 @@
       "Erdős",
       "elementary methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic upper bounds",
+      "elementary number theory"
+    ]
   },
   {
     "id": "ann-e975-mainconjecture",
@@ -128,7 +146,10 @@
       "asymptotic formula",
       "limiting constant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open conjectures",
+      "asymptotic formulas"
+    ]
   },
   {
     "id": "ann-e975-hooley",
@@ -147,7 +168,10 @@
       "quadratic polynomials",
       "class numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quadratic polynomials",
+      "class numbers"
+    ]
   },
   {
     "id": "ann-e975-n2plus1-def",
@@ -165,7 +189,10 @@
       "irreducible polynomials",
       "Gaussian integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "irreducible polynomials",
+      "the Gaussian integers"
+    ]
   },
   {
     "id": "ann-e975-n2plus1-asymp",
@@ -183,7 +210,10 @@
       "3/π constant",
       "Fermat's theorem on sums of squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fermat's theorem on sums of two squares",
+      "the constant 3/π"
+    ]
   },
   {
     "id": "ann-e975-verified",
@@ -202,6 +232,9 @@
       "multiplicativity",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function",
+      "multiplicativity"
+    ]
   }
 ]
