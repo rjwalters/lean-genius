@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-e396-catsharp-consequences",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 189
+    },
+    "type": "insight",
+    "title": "Consequences: The Catalan Constant Is the Wallis Constant 1/√π",
+    "content": "Two corollaries close the file. `catalan_mul_sqrt_pi_div_tendsto_one` restates the asymptotic in normalised form Cₙ·√π·n^{3/2}/4ⁿ → 1 — the standard \"→ 1\" phrasing — obtained by multiplying the main limit by the constant √π and simplifying √π·(1/√π)=1. `catalan_constant_eq_centralBinom_constant` is the conceptual punchline: the limit constant 1/√π for the Catalan numbers is *identical* to the central-binomial constant of the parent entry. The Catalan numbers inherit the Wallis constant 1/√π unchanged; only the polynomial exponent shifts from n^{1/2} (central binomial) to n^{3/2} (Catalan), reflecting the extra n/(n+1)→1 weight and the C(2n,n)/(n+1) definition.",
+    "mathContext": "$C_n \\sim \\dfrac{4^n}{\\sqrt\\pi\\, n^{3/2}}$ versus $\\binom{2n}{n} \\sim \\dfrac{4^n}{\\sqrt\\pi\\, n^{1/2}}$: same constant $1/\\sqrt\\pi$, exponent $1/2 \\mapsto 3/2$ from the $\\tfrac1{n+1}$ factor.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Catalan numbers",
+      "central binomial coefficient",
+      "Wallis product",
+      "asymptotic constant",
+      "Erdős #396"
+    ],
+    "prerequisites": [
+      "catalan_mul_pow_sqrt_div_tendsto",
+      "centralBinom_mul_sqrt_div_tendsto",
+      "Filter.Tendsto"
+    ]
+  },
+  {
     "id": "ann-e396-catsharp-bridge",
     "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02-oq-01-oq-01",
     "range": {
