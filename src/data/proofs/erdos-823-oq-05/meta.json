@@ -94,11 +94,26 @@
       "targetId": "erdos-823",
       "relationship": "extends",
       "description": "The parent formalizes Pollack's theorem and illustrates it with σ-values computed by native_decide (hence depending on Lean.ofReduceBool). This entry reproves those values symbolically and axiom-free, and documents that the parent's sigma_206_210 (σ206=σ210) is false."
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "Perfect numbers are exactly the fixed points σ(n)=2n; the same multiplicativity-and-prime-values evaluation of σ used here underlies that theorem."
+    },
+    {
+      "targetId": "sum-of-divisors-oq-03",
+      "relationship": "related",
+      "description": "Robin's inequality is a deep growth statement about the same σ function whose concrete values this entry certifies axiom-free."
     }
   ],
   "conclusion": {
     "summary": "The concrete sum-of-divisors values behind Erdős #823 — σ(14)=σ(15)=24, σ(957)=σ(958)=1440, σ(6)=12, σ(28)=56 — are reproved symbolically from σ's multiplicativity and its value on primes, replacing the parent's native_decide computations with kernel-checked, genuinely axiom-free proofs (#print axioms shows only propext/Classical.choice/Quot.sound).",
-    "implications": "Beyond removing an axiom dependency, the entry gives a reusable recipe for evaluating any multiplicative arithmetic function at an explicit integer from its factorization, and it underscores a methodological point: native_decide can silently certify even false statements (the parent's σ206=σ210), whereas symbolic proof cannot. The verified σ-pairs are the elementary base of the value-collision phenomenon Pollack's theorem generalizes."
+    "implications": "Beyond removing an axiom dependency, the entry gives a reusable recipe for evaluating any multiplicative arithmetic function at an explicit integer from its factorization, and it underscores a methodological point: native_decide can silently certify even false statements (the parent's σ206=σ210), whereas symbolic proof cannot. The verified σ-pairs are the elementary base of the value-collision phenomenon Pollack's theorem generalizes.",
+    "openQuestions": [
+      "Can the symbolic multiplicative-evaluation recipe be packaged as a general Lean tactic/procedure that evaluates any multiplicative arithmetic function (σ, τ, φ, …) at an explicit integer from its factorization, replacing native_decide throughout the gallery?",
+      "How many other gallery entries certify concrete arithmetic-function values via native_decide (and thus depend on Lean.ofReduceBool), and could they be systematically de-axiomatized the same way?",
+      "Can the σ(m)=σ(m+1) value-collision phenomenon underlying Pollack's theorem be pushed from these verified base cases toward a formalized infinitude statement, or is that genuinely beyond current Mathlib?"
+    ]
   },
   "leanFile": {
     "imports": [
