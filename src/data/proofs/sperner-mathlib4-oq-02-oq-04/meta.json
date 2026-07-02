@@ -47,6 +47,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Oriented Sign-Degree Boundary Seed",
+      "startLine": 1,
+      "endLine": 81,
+      "summary": "The docstring situates this file in the door-counting program for Tucker (parent sperner-mathlib4-oq-02). The n ≥ 2 program needs an odd boundary seed for the path-following engine, and two prior negative results showed no unsigned complementary-edge count on the hexagon triangulation of B² supplies it (the boundary count is even, and the half-ring parity is not invariant). This file constructs the correct oriented object: pushing the Fin 4 labelling through the sign map sgn : Fin 4 → ZMod 2 (which is antipodal, sgn(negL x) = sgn x + 1), the hemisphere sign-degree is odd for every antipodal labelling — the first positive odd boundary seed — while the full-ring count is even. All results are by kernel decide (0 axioms; explicitly no native_decide / Lean.ofReduceBool). Imports ZMod/Fin/Even; sets up namespace SpernerTuckerHexagonSignDegree with open Finset.",
+      "mathContext": "$\\mathrm{sgn}(\\mathrm{negL}\\,x) = \\mathrm{sgn}\\,x + 1$ in $\\mathbb{Z}/2$; the hemisphere-arc sign-change count is odd, the full-ring count even — a discrete Borsuk–Ulam degree read off half the loop."
+    },
+    {
       "id": "labelling-and-sign-map",
       "title": "The Antipodal Labelling and the Sign Map",
       "startLine": 82,
