@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the Hasse-derivative multiplicity oracle (characteristic-free exactness)",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "Imports and header docstring: the parent's defective ordinary-derivative test, the question, the Hasse test as a universal exact oracle, the main theorems including the IsLeast capstone, and why this is not a restatement of the parent.",
+      "mathContext": "This file (open question factor-remainder-hasse-derivative-fq-oq-02) resolves positively the question left open by the parent and its first child: the ordinary iterated-derivative multiplicity test is exact in characteristic p only for m < p and overcounts without bound for m ≥ p (overcounting_dichotomy); is there a derivative-style test reporting the exact multiplicity in every characteristic? Answer: YES — replace the ordinary derivative derivative^[j] by the Hasse derivative hasseDeriv j (the divided-power operator whose value omits the j! factor that collapses past the characteristic), giving a test exact in every characteristic with no hypothesis on p. Defining HasseCertifies to certify multiplicity ≥ n when every Hasse derivative of order < n vanishes at a (the divided-power analogue of OQ-01's OrdinaryCertifies), the header docstring (lines 1–71) states the results: hasseCertifies_iff_le_rootMultiplicity (exactness: for f ≠ 0, HasseCertifies f a n ↔ n ≤ rootMultiplicity a f, contrast OQ-01's certify-everything once m ≥ p); the two halves of first-nonvanishing-order (hasseDeriv_eval_eq_zero_of_lt_rootMultiplicity and hasseDeriv_rootMultiplicity_eval_ne_zero); the capstone rootMultiplicity_isLeast_hasseDeriv_ne_zero (rootMultiplicity a f is the LEAST order at which a Hasse derivative fails to vanish, no CharP hypothesis); and hasse_exact_where_ordinary_diverges / hasse_oracle_X_pow placing the tests side by side on f = Xᵖ. Why not a restatement: the parent's sub_pow_dvd_iff_hasseDeriv_eval_eq_zero (Mathlib) is a divisibility criterion with an order bound; the contribution here turns it into a pointwise multiplicity oracle (the IsLeast identification, the exact certified-value equivalence, the head-to-head against the unbounded-overcount regime), with the capstone's absence of any characteristic hypothesis the whole point. Research file, intentionally not registered in Proofs.lean."
+    },
+    {
       "id": "certifies",
       "title": "The Hasse Test and Its Divisibility Reading",
       "startLine": 72,
