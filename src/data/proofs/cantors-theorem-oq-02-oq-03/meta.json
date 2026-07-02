@@ -91,6 +91,15 @@
     "keyDefinitions": [
       "WeaklyPointSurjective f: ∀ g : α → β, ∃ a, ∀ x, f a x = g x (Lawvere's point-surjectivity)",
       "HasFPP β: ∀ h : β → β, ∃ b, h b = b (the fixed-point property of the target)"
+    ],
+    "keyInsights": [
+      "Lawvere's diagonal argument is the single engine behind Cantor, Russell, Gödel and Tarski: a point-surjective f : α → (α → β) forces every endomorphism g : β → β to have a fixed point, via the diagonal element a ↦ g (f a a). Contrapositively, any fixed-point-free g (like negation) makes such an f impossible — and that impossibility is exactly Cantor's theorem.",
+      "The sharpening from full surjectivity to weak point-surjectivity is the crux: point-surjectivity only asks that each g : α → β be hit pointwise (∃ a, ∀ x, f a x = g x), not as a single equal function. Without function extensionality this is strictly weaker than Surjective f, yet the diagonal argument only inspects values along a = a, so it still goes through — recovering Lawvere's original 1969 generality that the parent entry had specialized away.",
+      "HasFPP β — every endomorphism h : β → β has a fixed point — is the target-side invariant that makes the framework composable. It is a property of β alone, independent of the domain α, so Lawvere's theorem cleanly factors as 'weakly point-surjective f : α → (α → β) ⟹ HasFPP β'.",
+      "Retract-stability is the categorical closure property doing the real work: HasFPP transfers along any retract r ∘ s = id. So a single fixed-point-free object propagates impossibility to everything that retracts onto it, letting one deduce non-existence for a whole family of targets at once rather than case by case.",
+      "Prop and Bool are the canonical fixed-point-free objects: ¬ : Prop → Prop and not : Bool → Bool have no fixed points (p ↔ ¬p and b = !b are both false). They are the universal 'diagonalization engines' — Cantor's theorem is precisely the statement that no weakly point-surjective map α → (α → Prop) exists.",
+      "Sharp Cantor is strictly stronger than the classical statement: it forbids not merely surjections but even weakly point-surjective (pointwise-covering) maps α → (α → Prop) and α → (α → Bool). The characteristic-function space is thus unreachable even in the weakest covering sense, not just as an onto image.",
+      "This is the abstract substrate every Gödel-style extension rests on. The arithmetic Rosser / ω-consistency questions of OQ-03 require Gödel coding of syntax and are not attempted here, but each such argument ultimately factors through a Lawvere fixed point; sharpening the substrate to weak point-surjectivity plus retract-stability is exactly the reusable machinery a future arithmetic formalization would build on."
     ]
   },
   "sections": [
