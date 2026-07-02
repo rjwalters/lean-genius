@@ -16,7 +16,10 @@
       "divisors",
       "arithmetic structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "integer factorization",
+      "divisors"
+    ]
   },
   {
     "id": "ann-e885-definition",
@@ -35,7 +38,10 @@
       "factorization",
       "divisors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer",
+      "absolute value"
+    ]
   },
   {
     "id": "ann-e885-square-zero",
@@ -53,7 +59,10 @@
       "perfect squares"
     ],
     "mathContext": "See annotation content for formal details of perfect squares have 0 in d(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "perfect squares",
+      "factorization"
+    ]
   },
   {
     "id": "ann-e885-pred",
@@ -70,7 +79,10 @@
       "trivial factorization"
     ],
     "mathContext": "See annotation content for formal details of d(n) always contains n-1",
-    "prerequisites": []
+    "prerequisites": [
+      "the trivial factorization (1 times n)",
+      "divisors"
+    ]
   },
   {
     "id": "ann-e885-k-common",
@@ -88,7 +100,10 @@
       "set intersection",
       "cardinality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set intersection",
+      "cardinality"
+    ]
   },
   {
     "id": "ann-e885-conjecture",
@@ -106,7 +121,10 @@
       "existence conjecture"
     ],
     "mathContext": "See annotation content for formal details of main conjecture (partially open)",
-    "prerequisites": []
+    "prerequisites": [
+      "open problems",
+      "existential quantifiers"
+    ]
   },
   {
     "id": "ann-e885-k2",
@@ -124,7 +142,10 @@
       "k = 2 case",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "factor difference sets",
+      "base cases"
+    ]
   },
   {
     "id": "ann-e885-k3",
@@ -141,7 +162,10 @@
       "highly composite numbers"
     ],
     "mathContext": "See annotation content for formal details of jiménez-urroz (1999): k = 3",
-    "prerequisites": []
+    "prerequisites": [
+      "highly composite numbers",
+      "divisor counting"
+    ]
   },
   {
     "id": "ann-e885-k4",
@@ -159,7 +183,10 @@
       "number theory"
     ],
     "mathContext": "See annotation content for formal details of bremner (2019): k = 4",
-    "prerequisites": []
+    "prerequisites": [
+      "computational search",
+      "factor difference sets"
+    ]
   },
   {
     "id": "ann-e885-open",
@@ -177,7 +204,10 @@
       "open problem",
       "computational complexity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems",
+      "computational complexity"
+    ]
   },
   {
     "id": "ann-e885-cardinality",
@@ -195,7 +225,10 @@
       "highly composite numbers"
     ],
     "mathContext": "See annotation content for formal details of size of d(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function",
+      "highly composite numbers"
+    ]
   },
   {
     "id": "ann-e885-divisor-char",
@@ -213,7 +246,10 @@
       "divisor pairs"
     ],
     "mathContext": "See annotation content for formal details of divisor characterization",
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer",
+      "divisor pairs"
+    ]
   },
   {
     "id": "ann-e885-examples",
@@ -231,6 +267,9 @@
       "explicit witnesses",
       "type-checked computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit witnesses",
+      "decidable computation"
+    ]
   }
 ]
