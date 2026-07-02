@@ -166,7 +166,8 @@
     "summary": "The hitting event {ω | ∃ s ∈ [0,T], a ≤ W s ω} of a continuous-path process is rewritten as the countable expression ⋂ₖ ⋃_{q ∈ ℚ∩[0,T]} {ω | a − 1/(k+1) < W q ω} (maxEvent_eq_iInter_approxEvent), using path continuity and density of the rational grid (forward) and sequential compactness of [0,T] with a limit inequality (backward). Under adaptedness of the time-slices to a filtration ℱ, each set in this expression is ℱ T-measurable, so the hitting event is ℱ T-measurable (measurableSet_maxEvent); transporting through the sibling's characterization gives the stopping-time property of the first passage time (firstPassage_measurableSet). 204 lines, 5 theorems, 1 definition, 0 axioms, 0 sorries.",
     "implications": "This is the continuous-time measurability content that Mathlib's discrete hitting-time API omits: it certifies that the first passage time of a continuous adapted process is a stopping time, the hypothesis underlying optional stopping and the reflection principle for the ballot/arcsine line of entries. The badge is original — the continuity-to-countability reduction and its filtration-measurability consequence are not in Mathlib.",
     "openQuestions": [
-      "Upgrade to a right-continuous filtration and handle the degenerate sInf ∅ = 0 branch to obtain the stopping-time property without the nonemptiness hypothesis."
+      "Upgrade to a right-continuous filtration and handle the degenerate sInf ∅ = 0 branch to obtain the stopping-time property without the nonemptiness hypothesis.",
+      "Use the stopping-time property to derive the first-passage-time law of Brownian motion via the reflection principle, P(τ_a ≤ T) = 2·P(B_T ≥ a), closing the loop to the ballot/first-passage probability computed in the parent entry."
     ]
   }
 }
