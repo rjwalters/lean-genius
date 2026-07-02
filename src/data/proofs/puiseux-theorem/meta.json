@@ -45,16 +45,18 @@
     "originalContributions": [
       "IsPuiseuxSeries predicate: common denominator condition on Hahn series exponents",
       "Newton polygon method for finding branches formalized as leadingExponentFromSlope",
-      "Algebraic closure of Laurent series field axiomatized with explicit ramification index",
+      "Binomial base case of algebraic closure proved (puiseux_binomial_root): over any algebraically closed K, every binomial Yⁿ = c·xᵐ has an honest Puiseux root c^(1/n)·x^(m/n)",
+      "Genuine ramification witnessed (puiseux_binomial_ramification): the root of Yⁿ = c·x has orderTop exactly 1/n, so for n≥2 it lies strictly outside the Laurent field",
+      "isPuiseux_single helper: every single-term Hahn series is a Puiseux series",
       "Galois group Gal(Puiseux/Laurent) ≅ Ẑ described structurally",
       "Characteristic zero requirement demonstrated via Artin-Schreier counterexample"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
-    "lineCount": 540,
-    "assumptions": "No axiom declarations. 2 True-stub theorems remain that prove trivial True placeholders instead of actual mathematical content: puiseux_theorem, puiseux_is_algebraic_closure. Previously-stubbed square_root_puiseux and cusp_parameterization now carry genuine Hahn-series proofs (x^(1/2) and x^(3/2) roots), and newton_puiseux_terminates was reduced to a prose comment.",
+    "lineCount": 581,
+    "assumptions": "No axiom declarations, no sorries, no native_decide (all theorems depend only on propext/Classical.choice/Quot.sound). The file no longer contains any vacuous True-stub theorems: the last two placeholders (puiseux_theorem, puiseux_is_algebraic_closure) were replaced by genuine, fully computed Hahn-series theorems puiseux_binomial_root and puiseux_binomial_ramification, which establish the binomial base case of Puiseux's theorem (every binomial Yⁿ = c·xᵐ has a Puiseux root of ramification n over an algebraically closed field). This is a rigorously verified FRAGMENT: the full Newton–Puiseux theorem for arbitrary polynomials over the Puiseux field (assembling binomial roots term by term, with its char-0 convergence argument) is not formalized here — the required infrastructure is absent from Mathlib. Badge remains 'wip' to reflect that the headline algebraic-closure theorem is not fully proven.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 2
   },
   "overview": {
