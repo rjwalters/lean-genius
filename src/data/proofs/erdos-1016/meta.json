@@ -22,16 +22,16 @@
     "erdosUrl": "https://erdosproblems.com/1016",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 265,
-    "assumptions": "0 axioms. All 5 former axioms were removed because the abstract IsPancyclic model is flawed (edgeCount disconnected from hasCycle makes axioms FALSE). The mathematical results (Bondy, Griffin, GKW) are correct but require a proper SimpleGraph-based model to formalize.",
+    "lineCount": 306,
+    "assumptions": "0 axioms. All 5 former axioms were removed because the abstract IsPancyclic model is flawed (edgeCount disconnected from hasCycle makes axioms FALSE). A grounded SimpleGraph (Fin n) model now sits alongside the abstract scaffold: it defines HasCycleOfLength/IsPancyclicGraph on the concrete graph and proves a genuine (non-vacuous) edge lower bound n <= #E(G), the excess h_G = #E(G) - n, and the crude sandwich 0 <= h_G <= C(n,2) - n. The deep Bondy/Griffin/GKW bounds remain open targets on top of this corrected model.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12,
-    "definitionCount": 5
+    "theoremCount": 18,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The study of pancyclic graphs began with J.A. Bondy's 1971 paper 'Pancyclic graphs I', where he proved that any graph with $n$ vertices and at least $n^2/4$ edges is either pancyclic or bipartite. Bondy also conjectured the precise edge threshold for pancyclicity, including the bounds $\\lfloor\\log_2(n-1)\\rfloor - 1 \\leq h(n)$ (lower) and $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ (upper), but did not publish proofs. The lower bound was first rigorously proved by Griffin in 2013 using a doubling argument: each extra edge beyond a Hamiltonian cycle can at most double the range of achievable cycle lengths. George, Khodkar, and Wallis (2016) proved the upper bound via hierarchical constructions, confirming Bondy's prediction. The gap between bounds is only $\\log^* n + O(1)$ — one of the tightest gaps in extremal graph theory. Erdos believed the upper bound gives the truth but could not prove even the weaker statement $h(n) - \\log_2 n \\to \\infty$, calling this 'embarrassing'. The iterated logarithm $\\log^* n$, which for all practical purposes is at most 5, appears naturally in the recursive construction.",
     "problemStatement": "Estimate $h(n)$, the minimum number of excess edges (beyond $n$) for a pancyclic graph on $n$ vertices. Is $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$?",
-    "text": "A formalization of Erdős Problem #1016 in 158 lines with 0 axiom declarations and 7 proved theorems. The file defines pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n) = \\min\\{|E(G)| - n\\}$, and the iterated logarithm $\\log^*$. The main conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$ are stated as open conjectures alongside the known bounds: Griffin's lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument and George-Khodkar-Wallis's upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ from hierarchical constructions. The substantive mathematical content is encoded as Lean theorems and propositions; there are no formal `axiom` declarations in this file.",
+    "text": "A formalization of Erdős Problem #1016 in 306 lines with 0 axiom declarations and 18 proved theorems. The file defines pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n) = \\min\\{|E(G)| - n\\}$, and the iterated logarithm $\\log^*$. The main conjecture $h(n) \\geq \\lfloor\\log_2 n\\rfloor + \\log^* n - O(1)$ and the weaker question $h(n) - \\lfloor\\log_2 n\\rfloor \\to \\infty$ are stated as open conjectures alongside the known bounds: Griffin's lower bound $h(n) \\geq \\lfloor\\log_2(n-1)\\rfloor - 1$ from a doubling argument and George-Khodkar-Wallis's upper bound $h(n) \\leq \\lfloor\\log_2 n\\rfloor + \\log^* n + O(1)$ from hierarchical constructions. The abstract `IsPancyclic` model is honestly documented as a diagnostic scaffold (its cycle predicate is disconnected from the edge set, so `pancyclicExcess` collapses to $0$); a grounded `SimpleGraph (Fin n)` model built on Mathlib's `Walk.IsCycle`/`edgeFinset` API repairs this, proving a genuine non-vacuous edge lower bound $n \\leq |E(G)|$ for pancyclic graphs, defining the grounded excess $h_G = |E(G)| - n$, and sandwiching it as $0 \\leq h_G \\leq \\binom{n}{2} - n$. The substantive mathematical content is encoded as Lean theorems and propositions; there are no formal `axiom` declarations in this file.",
     "proofStrategy": "We formalize pancyclic graphs (containing cycles of all lengths $3$ through $n$), the excess function $h(n)$, and the iterated logarithm $\\log^*$ in Lean 4. The main conjecture, the weaker divergence question, known bounds (Bondy/Griffin lower, George-Khodkar-Wallis upper), structural properties (monotonicity, Bondy's quadratic threshold), and small cases are stated as open conjectures — there are no formal `axiom` declarations in the file.",
     "keyInsights": [
       "**The doubling argument gives the lower bound**: each edge beyond a Hamiltonian cycle at most doubles the range of achievable cycle lengths, so $2^{h(n)} \\geq n - 2$, giving $h(n) \\geq \\lfloor\\log_2(n-2)\\rfloor$",
@@ -87,6 +87,14 @@
       "startLine": 157,
       "endLine": 209,
       "mathContext": "$n^2/4\\ge n+\\log_2 n$ for $n\\ge 7$ (Bondy's quadratic threshold is far from the $\\log$-scale truth); $h(3)=0$."
+    },
+    {
+      "id": "grounded-model",
+      "title": "Grounded SimpleGraph Pancyclic Model",
+      "summary": "Replaces the degenerate abstract scaffold with a grounded model on `SimpleGraph (Fin n)`: `HasCycleOfLength G k` (an actual cycle walk of length $k$ in $G$) and `IsPancyclicGraph G`. Because a length-$k$ cycle is a trail using $k$ distinct edges of $G$, `card_edgeFinset_ge_of_hasCycleOfLength` gives $k\\le |E(G)|$, and hence `pancyclicGraph_card_edgeFinset_ge` yields the genuine non-vacuous baseline $n\\le|E(G)|$ from the Hamiltonian cycle. Corollaries `pancyclicGraph_hasHamiltonianCycle` and `pancyclicGraph_hasTriangle` extract the extreme cycle lengths. The grounded excess `pancyclicGraphExcess G` $=|E(G)|-n$ satisfies `pancyclicGraphExcess_add` ($h_G+n=|E(G)|$, no truncation) and the upper bound `pancyclicGraphExcess_le` ($h_G\\le\\binom{n}{2}-n$ via `card_edgeFinset_le_card_choose_two`), sandwiching $h(n)$ into a well-defined finite interval.",
+      "startLine": 213,
+      "endLine": 306,
+      "mathContext": "Grounded model: $n\\le|E(G)|$ for pancyclic $G$ (non-vacuous, from the genuine Hamiltonian cycle); excess $h_G=|E(G)|-n$ with $0\\le h_G\\le\\binom{n}{2}-n$. The deep Griffin/GKW $\\log$-scale bounds remain open on top of this definition."
     }
   ],
   "conclusion": {
@@ -196,16 +204,18 @@
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Combinatorics.SimpleGraph.Paths",
+      "Mathlib.Combinatorics.SimpleGraph.Finite",
       "Mathlib.Data.Nat.Log",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 265,
+    "lineCount": 306,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 5,
+    "theoremCount": 18,
+    "definitionCount": 6,
     "path": "Proofs/Erdos1016Problem.lean",
     "sorries": 0
   },
