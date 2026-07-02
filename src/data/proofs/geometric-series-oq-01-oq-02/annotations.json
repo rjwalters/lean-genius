@@ -90,5 +90,52 @@
       "tendsto_nhds_unique and subsequence limits",
       "The parent's grandi_even (= 0) and grandi_odd (= 1)"
     ]
+  },
+  {
+    "id": "ann-geom0102-overview",
+    "proofId": "geometric-series-oq-01-oq-02",
+    "range": {
+      "startLine": 4,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Cesàro (C,1) regularity and its strict extension of convergence",
+    "content": "This entry answers OQ-02 of the parent geometric-series-oq-01, which computed the concrete Grandi instance (the Cesàro mean of 1−1+1−1+⋯ tends to 1/2). It supplies the general theory: (1) M1, regularity/consistency — if a series' partial sums converge to s in the ordinary sense, its Cesàro mean also converges to s (a one-line consequence of Mathlib's Filter.Tendsto.cesaro); and (2) M2, strict extension — Grandi's series shows the converse fails: its partial sums Sₙ = ∑_{i<n}(−1)ⁱ are (C,1) summable to 1/2 yet oscillate 0,1,0,1,… and do not converge. Crucially the object averaged is the PARTIAL SUMS S, not the terms aₙ (averaging the terms gives 0 whenever the series converges). The Grandi mean is computed via the closed form ∑_{k<n} Sₖ = (n − Sₙ)/2, giving |σₙ − 1/2| = |Sₙ|/(2n) ≤ 1/(2n) → 0. This file's averaging convention (S₀,…,S_{n-1}) matches Mathlib's Filter.Tendsto.cesaro, differing by an index shift from the parent's grandiCesaro_tendsto.",
+    "mathContext": "$\\sigma_n = \\frac1n\\sum_{k<n} S_k$; regularity: $S_n\\to s \\Rightarrow \\sigma_n\\to s$; strictness: Grandi is (C,1)-summable to $\\tfrac12$ but $S_n$ diverges.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cesàro summation",
+      "regularity of summation methods",
+      "Grandi's series",
+      "divergent series"
+    ],
+    "prerequisites": [
+      "convergence of sequences and series",
+      "the parent entry geometric-series-oq-01",
+      "Filter.Tendsto and atTop"
+    ]
+  },
+  {
+    "id": "ann-geom0102-tendsto",
+    "proofId": "geometric-series-oq-01-oq-02",
+    "range": {
+      "startLine": 126,
+      "endLine": 152
+    },
+    "type": "technique",
+    "title": "The ε–N proof that Grandi's Cesàro mean tends to 1/2",
+    "content": "grandiCesaroMean_tendsto proves convergence of the Grandi Cesàro mean to 1/2 by an explicit ε–N argument rather than by appealing to regularity (which does not apply, since the partial sums diverge). Using the closed form σₙ = (1/n)·(n − Sₙ)/2, the key algebraic step field_simp/ring reduces σₙ − 1/2 to −Sₙ/(2n); then |σₙ − 1/2| = |Sₙ|/(2n) ≤ 1/(2n) by the bound |Sₙ| ≤ 1, and 1/(2n) < ε once n exceeds 1/(2ε) (via exists_nat_gt and div_lt_iff₀). This is the quantitative heart of the strict-extension result.",
+    "mathContext": "$\\big|\\sigma_n - \\tfrac12\\big| = \\dfrac{|S_n|}{2n} \\le \\dfrac{1}{2n} < \\varepsilon \\text{ for } n > \\dfrac{1}{2\\varepsilon}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "epsilon-N convergence",
+      "Metric.tendsto_atTop",
+      "Archimedean property"
+    ],
+    "prerequisites": [
+      "metric-space limits",
+      "the |Sₙ| ≤ 1 bound",
+      "the closed form for the Cesàro mean"
+    ]
   }
 ]
