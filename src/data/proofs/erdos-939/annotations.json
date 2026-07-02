@@ -16,7 +16,11 @@
       "powerful-numbers",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Powerful (r-full) numbers",
+      "Additive number theory"
+    ]
   },
   {
     "id": "ann-e939-imports",
@@ -34,7 +38,11 @@
       "mathlib",
       "classical-logic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib number-theory API",
+      "Classical logic",
+      "Decidability of set operations"
+    ]
   },
   {
     "id": "ann-e939-rpowerful",
@@ -53,7 +61,11 @@
       "divisibility",
       "coprime"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Divisibility and exponents",
+      "Coprimality"
+    ]
   },
   {
     "id": "ann-e939-eight",
@@ -72,7 +84,11 @@
       "omega",
       "prime-divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime divisors of $2^3$",
+      "The `omega` tactic",
+      "Prime divisibility"
+    ]
   },
   {
     "id": "ann-e939-twentyseven",
@@ -90,7 +106,11 @@
       "verification",
       "omega"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime divisors of $3^3$",
+      "The `omega` tactic",
+      "Bounding prime factors"
+    ]
   },
   {
     "id": "ann-e939-thirtytwo",
@@ -108,7 +128,11 @@
       "verification",
       "prime-powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime powers",
+      "Divisors of $2^5$",
+      "r-powerful definition"
+    ]
   },
   {
     "id": "ann-e939-sums",
@@ -127,7 +151,11 @@
       "coprime",
       "summation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finsets",
+      "Mutual coprimality (pairwise gcd)",
+      "Finite sums"
+    ]
   },
   {
     "id": "ann-e939-existence",
@@ -146,7 +174,11 @@
       "axiom",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existential conjectures",
+      "Axiomatizing open problems",
+      "r-powerful numbers"
+    ]
   },
   {
     "id": "ann-e939-infinite",
@@ -164,7 +196,11 @@
       "infinity",
       "conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Infinitude statements",
+      "Conjecture vs. theorem",
+      "Existence vs. infinitude"
+    ]
   },
   {
     "id": "ann-e939-nitaj",
@@ -183,7 +219,11 @@
       "3-powerful",
       "elliptic-curves"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-powerful numbers",
+      "Elliptic curves",
+      "Infinite families of solutions"
+    ]
   },
   {
     "id": "ann-e939-cambie",
@@ -202,7 +242,11 @@
       "explicit-construction",
       "verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Explicit constructions",
+      "Coprime prime factorizations",
+      "Verification of numeric identities"
+    ]
   },
   {
     "id": "ann-e939-euler",
@@ -221,7 +265,11 @@
       "fermat",
       "powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euler's sum-of-powers conjecture",
+      "Fermat's Last Theorem",
+      "k-th powers"
+    ]
   },
   {
     "id": "ann-e939-landerparkin",
@@ -240,7 +288,11 @@
       "counterexample",
       "native-decide"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Counterexamples by computer search",
+      "`native_decide`",
+      "Sums of fifth powers"
+    ]
   },
   {
     "id": "ann-e939-perfect",
@@ -259,6 +311,10 @@
       "prime-factorization",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Perfect powers $n^r$",
+      "Prime factorization",
+      "Divisibility by primes"
+    ]
   }
 ]
