@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: quantitative Cauchy–Schwarz via the Lagrange/Gram defect identity",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "Header docstring and imports: the open question, the scaled Gram vector construction, the abstract Lagrange identity (★), the seven formalized results, contrast with the sibling projection-coefficient proof, and references.",
+      "mathContext": "This file (open question cauchy-schwarz-oq-01-oq-05) answers whether complex (RCLike) inner product spaces admit an exact, division-free algebraic identity for the Cauchy–Schwarz *defect* ‖x‖²‖y‖² − ‖⟪x,y⟫‖², yielding both the inequality and its equality case without invoking Mathlib's inner_mul_le_norm_mul_norm or an orthogonal-projection coefficient. Answer: YES, via the scaled Gram vector w := ⟪x,x⟫•y − ⟪x,y⟫•x (division-free, since ⟪x,x⟫ is a scalar), which is orthogonal to x and satisfies the abstract Lagrange identity ‖w‖² = ‖x‖²·(‖x‖²‖y‖² − ‖⟪x,y⟫‖²) (★). Since the left side and ‖x‖² are ≥ 0 the bracket is ≥ 0 (Cauchy–Schwarz), and equality forces w = 0, i.e. ⟪x,x⟫•y = ⟪x,y⟫•x (linear dependence for x ≠ 0). The header docstring (lines 1–71) lists the seven formalized results: the 𝕜-valued Gram identity, the real Lagrange defect identity (★), squared and norm forms of Cauchy–Schwarz recovered from (★), defect nonnegativity, the equality characterization, the linear-dependence corollary, and ℝ/ℂ specializations. Distinct from sibling oq-01-oq-01 (projection coefficient + Pythagoras): here the identity is purely algebraic, division-free, and valid for all x including x = 0, over an arbitrary RCLike field with explicit sesquilinear (conjugate-linear first slot) bookkeeping — the inner-product analogue of the classical Lagrange identity. Fully verified (0 sorry, 0 axiom)."
+    },
+    {
       "id": "gram-identity",
       "title": "The 𝕜-Valued Gram Identity",
       "summary": "⟪w,w⟫ = ⟪x,x⟫·(⟪x,x⟫⟪y,y⟫ − ⟪x,y⟫⟪y,x⟫) for w = ⟪x,x⟫•y − ⟪x,y⟫•x, by one sesquilinear expansion plus ring.",
