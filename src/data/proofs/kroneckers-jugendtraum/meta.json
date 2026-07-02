@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Hilbert's 12th Problem (Kronecker's Jugendtraum)",
+      "startLine": 1,
+      "endLine": 81,
+      "summary": "Hilbert's 12th problem asks, for an arbitrary number field K, for explicit analytic functions whose special values generate all abelian extensions of K — extending Kronecker–Weber beyond ℚ. The problem is only PARTIALLY SOLVED: solved for K=ℚ (Kronecker–Weber: abelian extensions are cyclotomic) and for imaginary quadratic K (complex multiplication, j-invariants of CM elliptic curves), but OPEN for real quadratic (Stark conjectures give conjectural answers) and general K. This file honestly separates proven from conjectured: it PROVES that cyclotomic extensions of ℚ are abelian and that the cyclotomic degree is φ(n), states Kronecker–Weber, partially develops CM theory, and marks general explicit class field theory as an OPEN CONJECTURE — so the entry is honestly conditional/axiomatized on the unresolved cases, not a full solution. The docstring supplies status tables, historical timeline (Kronecker 1853 → Weber 1886 → Hilbert 1896 → class field theory → Stark/Langlands), and references.",
+      "mathContext": "The organizing dichotomy is class field theory: abelian extensions of a number field K correspond to generalized ideal class groups, but Hilbert's 12th demands them explicitly via special values of transcendental functions. For ℚ the functions are exponentials e^{2πi/n} (roots of unity ⇒ cyclotomic fields), realized here through Mathlib's cyclotomic API with Galois group (ℤ/nℤ)^× and degree φ(n). For imaginary quadratic fields they are the modular j-function and elliptic/Weber functions at CM points. The real-quadratic and general cases remain open, which is why this formalization proves the ℚ core rigorously while stating the broader Jugendtraum as a conjecture."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
       "startLine": 82,
