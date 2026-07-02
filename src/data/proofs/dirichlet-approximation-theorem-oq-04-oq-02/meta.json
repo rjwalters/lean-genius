@@ -162,5 +162,42 @@
       "relationship": "extends",
       "description": "Grandparent entry: the pigeonhole existence of good rational approximations |qα − p| < 1/N. This entry supplies the topological-dynamics route to the strongest qualitative statement — every orbit of the irrational rotation is dense, so every target is approximable modulo 1."
     }
+  ],
+  "references": [
+    {
+      "authors": "L. Kronecker",
+      "title": "Näherungsweise ganzzahlige Auflösung linearer Gleichungen",
+      "year": 1884,
+      "venue": "Sitzungsber. Königl. Preuss. Akad. Wiss. Berlin, 1179–1193 & 1271–1299",
+      "note": "Original source of the inhomogeneous approximation theorem formalized here: for 1, a₁,…,a_k rationally independent, the multiples {n·a} come arbitrarily close to any target modulo 1. The one-dimensional case with target β is exactly exists_int_zsmul_sub_round_lt."
+    },
+    {
+      "authors": "P. G. L. Dirichlet",
+      "title": "Verallgemeinerung eines Satzes aus der Lehre von den Kettenbrüchen nebst einigen Anwendungen auf die Theorie der Zahlen",
+      "year": 1842,
+      "venue": "Bericht über die Verhandlungen der Königl. Preuss. Akad. Wiss., 93–95",
+      "note": "The pigeonhole approximation theorem (grandparent entry) whose qualitative density this dynamical route strengthens; the homogeneous β = 0 seed of Kronecker's inhomogeneous form."
+    },
+    {
+      "authors": "H. Weyl",
+      "title": "Über die Gleichverteilung von Zahlen mod. Eins",
+      "year": 1916,
+      "venue": "Mathematische Annalen 77, 313–352",
+      "note": "Refines mere density (this entry's minimality) to equidistribution of {n·a} — the quantitative sequel pointed to in the open questions on unique ergodicity and the multidimensional torus."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "venue": "6th ed., Oxford University Press; Kronecker's theorem in Chapter XXIII",
+      "note": "Standard textbook treatment of Kronecker's theorem in one and several dimensions, including the equivalence with density of the irrational rotation's orbits."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Supplies AddCircle.denseRange_zsmul_coe_iff, the DenseRange API (comp, exists_mem_open), and the AddCircle normed-group API (norm_eq, coe_sub) on which this formalization is built."
+    }
   ]
 }
