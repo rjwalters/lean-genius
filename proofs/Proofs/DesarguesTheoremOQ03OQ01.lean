@@ -269,7 +269,7 @@ theorem frame_stabilizer_scalar (M : Matrix (Fin 3) (Fin 3) K) (a b c d : K)
   -- Assemble `M = d • 1` entrywise.
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] <;>
+    simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_one, mul_zero] <;>
     first
       | (rw [e00, hda])
       | (rw [e11, hdb])
