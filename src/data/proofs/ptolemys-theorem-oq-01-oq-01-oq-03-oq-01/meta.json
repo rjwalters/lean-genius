@@ -40,6 +40,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: inversion carries a circle through its centre to a line",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "The import of Mathlib, the module docstring, the namespace/variable setup, and the first scalar helper lemma. Makes precise and axiom-free the classical fact that inversion centred at a point a maps every circle (sphere) through a to a line (hyperplane) not through a, and conversely — the source-side complement to the parent's image-side collinearity.",
+      "mathContext": "The computational heart is inversion_inner_eq_half_iff: for x ≠ a, dist x o = dist a o ↔ ⟪inversion a 1 x −ᵥ a, o −ᵥ a⟫ = 1/2 — the left side says x lies on the sphere through a centred at o, the right side says the inversion image lies on the fixed affine hyperplane H_o = {p | ⟪p −ᵥ a, o −ᵥ a⟫ = 1/2} (normal o −ᵥ a, not containing a). From this both directions of the bijection follow: cospherical_imp_inversion_image_inner_eq_half (circle → line) and inner_eq_half_imp_inversion_image_cospherical (line → circle, centre n +ᵥ a). The four-point form cospherical_four_imp_inversion_images_collinear_witness records the Ptolemy shape. This ties the parent's image-side Collinear conclusion back to genuine concyclicity, without the trigonometric ordering axiom the unit-circle leaf relied on. Research file, intentionally not registered in Proofs.lean; 0-axiom / 0-sorry."
+    },
+    {
       "id": "core-equivalence",
       "title": "The Core Equivalence: Sphere-Through-Centre ⇔ Image-on-Hyperplane",
       "startLine": 69,
