@@ -64,5 +64,62 @@
       "Injectivity of the transversal is what bounds the deficiency: at most d indices can land on d dummies because g is injective, so at most d indices are unmatched — the pigeonhole step is card_image_of_injOn into D.",
       "The result is a strict generalisation of Mathlib's Hall theorem, recovered verbatim at d = 0; the two live in one statement parameterised by the allowed defect."
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: the defect version and its proof idea",
+      "startLine": 3,
+      "endLine": 45,
+      "summary": "Docstring stating the deficiency form (Hall condition failing by at most d ⇒ at most d unmatched indices) and the dummy-augmentation strategy, followed by the namespace and the ambient variables [DecidableEq ι] [DecidableEq α] [Fintype ι] [Nonempty α]."
+    },
+    {
+      "id": "statement-and-dummies",
+      "title": "hall_defect: statement and the d dummy targets",
+      "startLine": 47,
+      "endLine": 66,
+      "summary": "The defect theorem's signature and the construction of D := univ.image Sum.inr, the d universal dummies in α ⊕ Fin d, together with the count #D = d (hcardD)."
+    },
+    {
+      "id": "exact-hall",
+      "title": "The augmented family satisfies the exact Hall condition",
+      "startLine": 67,
+      "endLine": 108,
+      "summary": "The core reduction: for every subfamily S the augmented biUnion has cardinality ≥ #(S.biUnion t) + d ≥ #S, via the disjoint union of the inl-image with D. A single call to Mathlib's all_card_le_biUnion_card_iff_exists_injective then yields an injective g : ι → α ⊕ Fin d."
+    },
+    {
+      "id": "extract-matching",
+      "title": "Extracting the matching and bounding the deficiency",
+      "startLine": 109,
+      "endLine": 160,
+      "summary": "The matched set s = {x | g x ∉ D} and the choice function f = Sum.elim id arbitrary ∘ g. Three goals: the size bound Fintype.card ι ≤ #s + d (complement injects into the d dummies), membership f x ∈ t x on s, and injectivity of f on s inherited from g."
+    },
+    {
+      "id": "recover-hall",
+      "title": "hall_of_hall_defect: recovering classical Hall at d = 0",
+      "startLine": 162,
+      "endLine": 179,
+      "summary": "Specialising to d = 0 empties D, forces s = univ, and turns the partial injective transversal into a total system of distinct representatives — Mathlib's exact Hall theorem, confirming the defect theorem is a strict generalisation."
+    }
+  ],
+  "conclusion": {
+    "summary": "The defect (deficiency / König–Ore) form of Hall's marriage theorem is formalised in Lean 4: whenever the Hall condition fails by a uniform slack d — ∀ S, #S ≤ #(S.biUnion t) + d — a matching still saturates all but at most d of the indices, i.e. there is s : Finset ι with Fintype.card ι ≤ #s + d and an injective f satisfying f x ∈ t x for x ∈ s. The proof is a black-box reduction: adjoin d universal dummy targets in α ⊕ Fin d so the +d slack becomes an exact Hall condition for the augmented family, apply Mathlib's Finset.all_card_le_biUnion_card_iff_exists_injective, and read the real matching off the indices that avoid the dummies (at most d of them, since the transversal is injective). Specialising d = 0 recovers Mathlib's Hall theorem verbatim.",
+    "implications": [
+      "Supplies to the Lean ecosystem the deficiency refinement of Hall's theorem that Mathlib lacks — the exact theorem is only the d = 0 corner of a one-parameter family, and this entry fills the rest one-sidedly.",
+      "Demonstrates the augmentation pattern in Lean: a quantitative slack in a combinatorial inequality (here +d) can be discharged by enlarging the ambient structure (d dummy targets) so an existing exact theorem applies unchanged, avoiding a bespoke augmenting-path or max-flow development.",
+      "Isolates injectivity as the mechanism that converts the enlarged Hall matching back into a deficiency bound: exactly d dummies can be occupied by an injective map, so at most d indices can be left unmatched."
+    ],
+    "openQuestions": [
+      "Prove the sharp two-sided deficiency theorem: the maximum matching misses exactly max_S (#S − #(S.biUnion t)) indices (the König–Ore equality), not merely at most the uniform slack d. This requires exhibiting a subfamily attaining the deficiency, the hard direction the present one-sided bound does not address.",
+      "Generalise from a uniform slack d to a per-subfamily deficiency function, and connect the statement to Mathlib's SimpleGraph matching API (Tutte / Tutte–Berge) so that the marriage and graph-matching formulations share a common deficiency theorem.",
+      "Characterise the extremal matched sets: for a given family and slack d, which index subsets of size Fintype.card ι − d can be simultaneously saturated, and does a canonical maximum matched set exist?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "halls-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Directly answers the parent's open question. The parent establishes the exact Hall marriage theorem (full system of distinct representatives under the exact Hall condition); this entry proves the defect/deficiency refinement, allowing the condition to fail by a slack d at the cost of at most d unmatched indices, and recovers the parent verbatim at d = 0."
+    }
+  ]
 }
