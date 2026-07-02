@@ -16,7 +16,10 @@
       "ordinals",
       "infinite-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number",
+      "ordinals"
+    ]
   },
   {
     "id": "ann-919-ordinals",
@@ -35,7 +38,10 @@
       "omega2",
       "lexicographic-order"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "ordinal arithmetic",
+      "lexicographic order"
+    ]
   },
   {
     "id": "ann-919-graph",
@@ -54,7 +60,10 @@
       "simple-graph",
       "symmetry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "simple graphs",
+      "adjacency relations"
+    ]
   },
   {
     "id": "ann-919-chromatic",
@@ -73,7 +82,10 @@
       "cardinal",
       "minimum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph coloring",
+      "cardinal numbers"
+    ]
   },
   {
     "id": "ann-919-ordertype",
@@ -92,7 +104,10 @@
       "induced-subgraph",
       "well-order"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "order types",
+      "induced subgraphs"
+    ]
   },
   {
     "id": "ann-919-erdos-hajnal",
@@ -111,7 +126,10 @@
       "construction",
       "aleph1"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph constructions",
+      "aleph numbers"
+    ]
   },
   {
     "id": "ann-919-questions",
@@ -130,7 +148,10 @@
       "question2",
       "aleph2"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal arithmetic",
+      "chromatic number"
+    ]
   },
   {
     "id": "ann-919-partial",
@@ -149,7 +170,10 @@
       "gap",
       "bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic bounds",
+      "partial progress"
+    ]
   },
   {
     "id": "ann-919-general",
@@ -168,7 +192,10 @@
       "parameters",
       "cardinal-arithmetic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal arithmetic",
+      "parameterized constructions"
+    ]
   },
   {
     "id": "ann-919-babai",
@@ -187,7 +214,10 @@
       "propagation",
       "counterexample"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number",
+      "counterexamples"
+    ]
   },
   {
     "id": "ann-919-status",
@@ -206,7 +236,10 @@
       "independence",
       "zfc"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems",
+      "independence from ZFC"
+    ]
   },
   {
     "id": "ann-919-summary",
@@ -225,7 +258,10 @@
       "known-results",
       "partial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number",
+      "known results"
+    ]
   },
   {
     "id": "ann-919-main",
@@ -244,6 +280,9 @@
       "well-posed",
       "formal-statement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "formal problem statements",
+      "well-posed problems"
+    ]
   }
 ]
