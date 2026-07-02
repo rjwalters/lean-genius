@@ -1,0 +1,80 @@
+{
+  "slug": "sylow-theorem-oq-04-oq-03",
+  "title": "Simplicity of PSL(2,p) for primes p ≥ 5 by a Sylow counting argument",
+  "status": "blocked",
+  "phase": "OBSERVE",
+  "path": "full",
+  "tier": "EMPTY",
+  "started": "2026-04-05T03:59:25.465Z",
+  "lastUpdate": "2026-07-02T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 2,
+  "tags": [
+    "group-theory",
+    "sylow-theorems",
+    "simple-groups",
+    "PSL",
+    "projective-special-linear-group",
+    "iwasawa-criterion",
+    "finite-simple-groups",
+    "seeker-selected",
+    "gallery-extracted",
+    "research"
+  ],
+  "problemStatement": {
+    "formal": "\\forall p \\text{ prime}, p \\ge 5 \\Rightarrow \\mathrm{IsSimpleGroup}\\big(\\mathrm{PSL}(2, \\mathbb{F}_p)\\big), \\text{ where } |\\mathrm{PSL}(2,p)| = \\tfrac{p(p-1)(p+1)}{2}.",
+    "plain": "Open question #3 of the parent entry sylow-theorem-oq-04 (\"Simplicity of A₅ via Sylow's Theorems\"): can the simplicity of PSL(2,p) for primes p ≥ 5 be proved by a Sylow-style counting argument, using |PSL(2,p)| = p(p-1)(p+1)/2? (For p = 5, PSL(2,5) ≅ A₅, recovering the parent result.)",
+    "whyMatters": [
+      "PSL(2,p) for p ≥ 5 is the first infinite family of finite simple groups after the alternating groups; formalizing it as a parametrized family (not a single order) is a genuine step toward CFSG-style formalization.",
+      "It generalizes the parent's single A₅ = PSL(2,5) result to an infinite family, which is exactly the kind of structural advance the research standards reward over one-off case work."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib: alternatingGroup.isSimpleGroup_five — A₅ is simple (the parent's p = 5 case, since PSL(2,5) ≅ A₅).",
+      "Mathlib: IwasawaStructure.isSimpleGroup (GroupTheory/GroupAction/Iwasawa.lean) — the Iwasawa criterion: a perfect group with a faithful primitive action carrying an Iwasawa structure (an abelian normal subgroup of a point stabilizer whose conjugates generate) is simple. This is the standard modern route to PSL(2,p) simplicity via the action on the projective line P¹(𝔽_p)."
+    ],
+    "open": [
+      "Simplicity of PSL(2,p) for general prime p ≥ 5 as a parametrized family — NOT in Mathlib."
+    ],
+    "goal": "IsSimpleGroup (ProjectiveSpecialLinearGroup (Fin 2) (ZMod p)) for prime p ≥ 5."
+  },
+  "references": {
+    "papers": [
+      "Rotman, An Introduction to the Theory of Groups (4th ed.), §9: simplicity of PSL(2,q) via the action on the projective line.",
+      "Dixon & Mortimer, Permutation Groups, §3.3 (Iwasawa's lemma) and §2.8 (PSL(2,q) as a 2-transitive group)."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Projective_special_linear_group",
+      "https://en.wikipedia.org/wiki/Iwasawa%27s_criterion"
+    ],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.ProjectiveSpecialLinearGroup — provides only the abbreviation ProjectiveSpecialLinearGroup R n := SL n R ⧸ center (39-line file); no order, no action, no simplicity.",
+      "Mathlib.GroupTheory.GroupAction.Iwasawa — the Iwasawa simplicity criterion (the key available tool).",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating — isSimpleGroup_five (p = 5 base case).",
+      "Mathlib.LinearAlgebra.Matrix.SpecialLinearGroup — SL n R as a group (Matrix.SpecialLinearGroup)."
+    ]
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE (S1, researcher-7): survey only, classified BLOCKED. The Sylow 'counting' framing in the parent's open question is a slight red herring: the parent's A₅ argument counts Sylow-5 subgroups, but the standard proof of PSL(2,p) simplicity for the whole family p ≥ 5 is NOT a direct Sylow count — it is the Iwasawa criterion applied to the 2-transitive action of PSL(2,p) on the projective line P¹(𝔽_p) (p+1 points). Mathlib supplies the Iwasawa criterion (IwasawaStructure.isSimpleGroup) and the bare PSL abbreviation, but essentially none of the connective infrastructure. Required and MISSING in Mathlib: (1) the order |SL(2,𝔽_p)| = p(p²−1) and |PSL(2,p)| = p(p²−1)/2 for odd p; (2) the action of PSL(2,p) on P¹(𝔽_p) with 2-transitivity and Borel point-stabilizers; (3) an Iwasawa structure — the unipotent subgroup {[[1,t],[0,1]]} (abelian, normal in the Borel stabilizer) whose conjugates generate PSL(2,p); (4) perfectness of PSL(2,p) for p ≥ 5 (fails for p = 2,3). Each is nontrivial; together this is a >1000-line formalization. Recommend keeping BLOCKED until the SL(2)/P¹ action infrastructure is built (a natural standalone BUILD target), then discharge simplicity via the Iwasawa criterion.",
+    "insights": [
+      "The right tool is Iwasawa's criterion, not raw Sylow counting: PSL(2,p) acts 2-transitively (hence primitively and faithfully) on the p+1 points of P¹(𝔽_p); the unipotent upper-triangular subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} is abelian, normal in the stabilizer of ∞, and its PSL-conjugates generate PSL(2,p); with perfectness for p ≥ 5, IwasawaStructure.isSimpleGroup concludes.",
+      "Mathlib's PSL support is a single 39-line abbreviation with no order, no group action, and no simplicity lemmas — so the bottleneck is entirely the missing connective infrastructure, not the final criterion.",
+      "The p = 5 case is already in Mathlib as isSimpleGroup_five (PSL(2,5) ≅ A₅); a parametrized proof must recover it uniformly, so a family-level Iwasawa argument is genuinely more than re-deriving the parent.",
+      "Perfectness (commutator PSL = ⊤) is the p ≥ 5 hinge: for p = 2 (PSL(2,2) ≅ S₃) and p = 3 (PSL(2,3) ≅ A₄) the group is NOT simple, precisely because perfectness fails — the p ≥ 5 hypothesis enters through this Iwasawa side condition."
+    ],
+    "mathlibGaps": [
+      "No cardinality of SL(2,𝔽_p) or PSL(2,p) in Mathlib (need |SL(2,𝔽_p)| = p(p²−1)).",
+      "No formalized action of PSL(2,p) / SL(2,𝔽_p) on the projective line P¹(𝔽_p), and no 2-transitivity/primitivity of it.",
+      "No Iwasawa structure instance for any classical group in Mathlib (the criterion exists but has no PSL/classical-group application).",
+      "No perfectness result commutator (PSL(2,p)) = ⊤ for p ≥ 5."
+    ],
+    "nextSteps": [
+      "BUILD (standalone, ~300–500 lines): formalize the action of SL(2,𝔽_p) on P¹(𝔽_p) = points/lines of 𝔽_p², prove it is 2-transitive, and identify the stabilizer of ∞ as the Borel subgroup of upper-triangular matrices. This is reusable infrastructure independent of the simplicity goal.",
+      "BUILD: prove |SL(2,𝔽_p)| = p(p²−1) and derive |PSL(2,p)| = p(p²−1)/2 for odd p (Sylow-p subgroup is exactly the order-p unipotent U).",
+      "Assemble the Iwasawa structure (U abelian-normal-in-stabilizer, conjugates generate) and prove perfectness for p ≥ 5, then apply IwasawaStructure.isSimpleGroup.",
+      "Until the P¹ action infrastructure exists, keep this entry BLOCKED rather than attempting the simplicity theorem directly on top of missing foundations."
+    ],
+    "builtItems": []
+  }
+}
