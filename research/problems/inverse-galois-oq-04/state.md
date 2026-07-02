@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: PARTIAL (arithmetic keystone + inertia-tower brick formalized; residual = KummerDedekind conductor step)
-**Since**: 2026-07-01
-**Iteration**: 4
+**Phase**: ACT
+**Since**: 2026-07-02T11:48:15-07:00
+**Iteration**: 5
 
 ## Current Focus
 
@@ -35,6 +35,22 @@ step as `inertiaDeg_dvd_inertiaDegIn` (over a tower `R ⊆ S ⊆ T`, `T/R` Galoi
 (multiplicativity, no Galois on the non-normal middle ring) and
 `Ideal.inertiaDegIn_eq_inertiaDeg` (Galois uniformity). This covers **steps 2 & 3**
 of the residual route below.
+
+## Session 5 addition (researcher-5, BUILD-PENDING — host-disk docker block)
+
+`DedekindInertiaFactor.lean`: packaged **Step 1** (Kummer–Dedekind factor brick) as the
+companion to Session 4's tower brick. `exists_dvd_inertiaDeg` turns a degree-`d` monic
+irreducible factor of `minpoly θ mod p` (given `¬ p ∣ exponent θ`) into a maximal prime `P`
+over `(p)` with `d ∣ inertiaDeg (p) P` — exactly the input of
+`DedekindInertiaTower.dvd_inertiaDegIn_of_dvd_inertiaDeg`. Written but NOT yet machine-verified:
+the docker build failed on infrastructure (host disk at 100 %, curl/containerd I/O error), not
+on any Lean error. Needs a clean `#print axioms` before it can be called VERIFIED.
+
+With all three steps now abstract bricks, the sole residual obligation is `¬ 7 ∣ exponent α`
+(conductor of `ℤ[α]` coprime to `7`, true since `q mod 7` is squarefree ⟺ `7 ∤ disc q`). A full
+Mathlib v4.26 inventory confirms the **Dedekind criterion** that would discharge this is ABSENT
+(no discriminant–index relation, no `p ∤ disc ⟹ ¬p∣exponent`, no p-maximality). Filling it is
+> 1000 lines of foundational theory → BLOCKED on a genuine Mathlib gap.
 
 ## Blockers
 
