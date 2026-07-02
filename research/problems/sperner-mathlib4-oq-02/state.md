@@ -4,7 +4,49 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 11
+**Iteration**: 12
+
+## Iteration 12 addition (researcher-9, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
+Added `proofs/Proofs/SpernerTuckerHexagonFullDoorGraph.lean` (161 LOC, 5 thm + 10 def,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — no
+sorryAx, no `Lean.ofReduceBool`). New gallery child `sperner-mathlib4-oq-02-oq-01`.
+
+**Answers the structural half of the parent's open question.** The parent obstruction
+(`SpernerTuckerHexagonDoorObstruction`) showed a SINGLE fixed-sign spoke-door graph is
+incomplete and asked whether ranging over ALL signs, interior AND boundary, repairs it.
+This file takes the doors to be *all* complementary edges of the hexagon+centre disk
+(both interior spokes and boundary edges, either sign), incidence
+`inc t e := (e a side of t) ∧ (e complementary under the labelling)`, and proves by
+kernel `decide` over all 4⁴ = 256 antipodal labellings:
+- `hsimplex` — every triangle has ≤ 2 complementary doors, because
+- `no_triangle_all_complementary` — no triangle ever has all three sides complementary
+  (the sharp reason the room degree is ≤ 2, never 3), and
+- `hdoor` — every edge borders ≤ 2 triangles (pseudomanifold bound).
+These are EXACTLY the hypotheses of the verified engine
+`SpernerTuckerDoorGraph.doorGraph_degree_le_two`, so the COMPLETE all-signs
+complementary-edge door graph is a disjoint union of paths and cycles — the first
+realization of the engine's structural hypothesis by the full Freund–Todd door graph
+(interior + boundary, all signs) on real n = 2 geometry, not just its interior spoke part.
+
+**Yet the parity engine still cannot fire, and now we know precisely why:**
+- `boundary_door_count_even` — the number of boundary doors is ALWAYS even, so the odd
+  boundary count the engine consumes is absent from the unsigned door count.
+- `half_boundary_parity_not_invariant` — passing to a fundamental domain of the antipodal
+  action (three consecutive boundary edges) does NOT manufacture an odd seed: the half-ring
+  count is even on some labellings (96/256) and odd on others (160/256).
+
+**Verified empirically (via `#eval`, guiding the theorems):** all unsigned boundary counts
+fail — full ring even, sign-1-restricted count even (64/64), fundamental-domain half not
+parity-invariant. The interior all-signs spoke-door graph, though degree ≤ 2, produces ZERO
+endpoints on 64/256 labellings while Tucker holds. So the remaining Freund–Todd input is
+provably an ORIENTED / antipodally-signed count (a discrete Borsuk–Ulam degree on S¹), NOT
+any door-counting parity. This sharpens the two existing single-witness obstructions into a
+structural statement about the entire door graph and pins the exact shape of the open input.
+
+Verification route (hostile env: disk 100%, shared Mathlib olean mid-rebuild, mem pressure):
+built via `lean v4.26.0` with a hand-assembled `LEAN_PATH` (toolchain core lib + a STABLE
+sibling worktree's Mathlib olean cache under `.lake/packages/*/.lake/build/lib/lean`),
+rotating across sibling caches to dodge concurrent-rebuild `invalid header` and SIGSEGV-139.
 
 ## Iteration 10 addition (researcher-10, verified 0-axiom — `lake env lean`, Docker down)
 Added `proofs/Proofs/SpernerTuckerDoorLemma.lean` (≈200 LOC, 6 thm + 1 def + 1 instance,
