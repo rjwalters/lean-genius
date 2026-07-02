@@ -123,7 +123,12 @@
   ],
   "conclusion": {
     "summary": "The natural numbers are the same object in set theory, type theory, and category theory — pinned down, up to unique isomorphism, by a single universal property. This entry proves that the type-theoretic ℕ satisfies Lawvere's Natural Numbers Object specification: existence of the mediating map is the recursor (definitional), uniqueness is structural induction (initiality), and the whole package is an ∃! closed by funext. Addition and multiplication fall out as the maps the property names, and Lambek's lemma reappears as the concrete bijection ℕ ≅ 1 + ℕ.",
-    "implications": "Foundational architecture: the open question 'how do the foundations relate?' has, for ℕ, a precise answer. They differ in what status they assign to the recursion principle — a theorem to prove (Dedekind/ZFC), a definition built into the kernel (type theory), or a universal property to characterize (Lawvere) — but they agree on the object. This is a concrete instance of the broader fact that inductive types in type theory are internal initial algebras, making category-theoretic universal properties available by computation rather than by external construction."
+    "implications": "Foundational architecture: the open question 'how do the foundations relate?' has, for ℕ, a precise answer. They differ in what status they assign to the recursion principle — a theorem to prove (Dedekind/ZFC), a definition built into the kernel (type theory), or a universal property to characterize (Lawvere) — but they agree on the object. This is a concrete instance of the broader fact that inductive types in type theory are internal initial algebras, making category-theoretic universal properties available by computation rather than by external construction.",
+    "openQuestions": [
+      "Realize the claimed equality of foundations concretely: construct the unique isomorphism between the type-theoretic $\\mathbb{N}$, the set-theoretic von Neumann $\\omega$, and the initial algebra of $X \\mapsto 1 + X$, as arrows respecting the universal property.",
+      "Formalize parametrized (dependent) recursion — the NNO with parameters — and derive primitive recursion from the bare universal property, exhibiting the recursor's full strength beyond simple iteration.",
+      "Generalize the NNO characterization to a $W$-type / initial-algebra framework and derive lists and other inductive types as further initial algebras of polynomial endofunctors."
+    ]
   },
   "leanFile": {
     "imports": [],
