@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-1016-ann-overview",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 1,
+      "endLine": 22
+    },
+    "type": "concept",
+    "title": "Overview: Pancyclic Excess h(n)",
+    "content": "Erdős Problem #1016 asks to estimate $h(n)$, the minimum number of edges *beyond* $n$ that an $n$-vertex graph needs to be pancyclic (to contain a cycle of every length $3, 4, \\ldots, n$). A pancyclic graph is Hamiltonian, so it already has at least $n$ edges; $h(n)$ measures the surplus. Bondy (1971) conjectured the growth rate, Griffin (2013) gave the first published lower bound $\\log_2(n-1) - 1 \\le h(n)$, and George–Khodkar–Wallis (2016) proved the matching upper bound $h(n) \\le \\log_2 n + \\log^* n + O(1)$. Whether $h(n) - \\log_2 n \\to \\infty$ remains open.",
+    "mathContext": "$h(n) = \\min\\{\\,|E(G)| - n : G$ is a pancyclic graph on $n$ vertices$\\}$. Known bounds: $\\log_2(n-1) - 1 \\le h(n) \\le \\log_2 n + \\log^* n + O(1)$. Values (OEIS A105206): $h(3)=0, h(4)=1, h(5)=h(6)=h(7)=2, \\ldots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "pancyclic graph",
+      "Hamiltonian cycle",
+      "iterated logarithm",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "asymptotic analysis"
+    ]
+  },
+  {
     "id": "erdos-1016-ann-pancyclic",
     "proofId": "erdos-1016",
     "range": {
@@ -240,6 +263,98 @@
     ],
     "prerequisites": [
       "graph theory"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-modelflaw",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 106,
+      "endLine": 158
+    },
+    "type": "insight",
+    "title": "Diagnostic: the abstract model is vacuous",
+    "content": "This file is candid about a formalization pitfall. The abstract `IsPancyclic n edgeCount hasCycleOfLength` predicate leaves `edgeCount` and `hasCycleOfLength` as *free, unconstrained* parameters, so one may always take $\\text{edgeCount}=0$ with $\\text{hasCycle} = (\\lambda \\_,\\ \\top)$. This satisfies pancyclicity while carrying zero edges, collapsing the defining set of the excess to $\\varnothing$. Hence `pancyclicExcess n = 0` for all $n \\ge 1$ ($\\sup \\varnothing = 0$ in $\\mathbb{N}$), the intended lower-bound axioms become *false*, and the upper bound holds trivially. The disabled axioms (Erdős's conjecture, Bondy's lower bound, the small case $h(4)=1$) are preserved as comments and are mathematically correct — only this abstract encoding is inadequate.",
+    "mathContext": "Under the abstract model, $\\{h : \\forall\\, e, c,\\ \\mathrm{IsPancyclic}(n,e,c) \\Rightarrow e \\ge n+h\\} = \\varnothing$ because $(e,c)=(0,\\top)$ is a witness violating every $e \\ge n+h$. Therefore $\\text{pancyclicExcess}(n) = \\sup\\varnothing = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "vacuous truth",
+      "supremum of the empty set",
+      "faithful formalization",
+      "csSup_empty"
+    ],
+    "prerequisites": [
+      "order theory",
+      "formalization methodology"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-bondy-threshold",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 159,
+      "endLine": 211
+    },
+    "type": "technique",
+    "title": "Bondy's quadratic threshold",
+    "content": "A genuinely proved structural fact: for $n \\ge 7$, the Bondy density threshold $n^2/4$ dwarfs the pancyclic edge budget $n + \\log_2 n$, so a graph dense enough to trigger Bondy's `pancyclic-or-bipartite` dichotomy has far more edges than a minimal pancyclic graph needs. The proof splits at $n=15$: the small cases $7 \\le n \\le 15$ are settled by `native_decide` (kernel computation), while for $n \\ge 16$ one shows $2n \\le n^2/4$ (via $4\\cdot 2n \\le n^2$) and $\\log_2 n \\le n$, then closes with `omega`. Note the `native_decide` step makes this theorem depend on `Lean.ofReduceBool`.",
+    "mathContext": "For $n \\ge 7$: $\\lfloor n^2/4\\rfloor \\ge n + \\lfloor\\log_2 n\\rfloor$. For $n \\ge 16$, $n^2/4 \\ge 2n \\ge n + \\log_2 n$ since $\\log_2 n \\le n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bondy's theorem",
+      "edge density",
+      "native_decide",
+      "interval_cases"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Nat.log arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-grounded-model",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 213,
+      "endLine": 278
+    },
+    "type": "concept",
+    "title": "Grounded SimpleGraph model",
+    "content": "To repair the vacuous abstract predicate, this section rebuilds pancyclicity on Mathlib's `SimpleGraph`. `HasCycleOfLength k` asks for a genuine closed walk that is a cycle of length exactly $k$, and `IsPancyclicGraph` requires one for every $k \\in [3,n]$. On this honest model the edge counts are no longer free: a cycle of length $k$ is a trail of length $k$, giving the grounded lower bound `card_edgeFinset_ge_of_hasCycleOfLength`, and hence a pancyclic graph on $n \\ge 3$ vertices has at least $n$ edges (from its Hamiltonian cycle $C_n$). The same graph necessarily contains a Hamiltonian cycle and a triangle ($C_3$).",
+    "mathContext": "`HasCycleOfLength k` $:= \\exists v\\ (w : G.\\mathrm{Walk}\\ v\\ v),\\ w.\\mathrm{IsCycle} \\wedge w.\\mathrm{length} = k$. A pancyclic $G$ on $n \\ge 3$ vertices satisfies $|E(G)| \\ge n$ because its $C_n$ is a length-$n$ trail.",
+    "significance": "key",
+    "relatedConcepts": [
+      "SimpleGraph",
+      "Walk.IsCycle",
+      "edgeFinset",
+      "Hamiltonian cycle"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Mathlib SimpleGraph API"
+    ]
+  },
+  {
+    "id": "erdos-1016-ann-grounded-excess",
+    "proofId": "erdos-1016",
+    "range": {
+      "startLine": 280,
+      "endLine": 306
+    },
+    "type": "insight",
+    "title": "Grounded excess recovers the edge count",
+    "content": "The grounded excess $h_G := |E(G)| - n$ is the faithful analogue of $h(n)$. Because a pancyclic graph has at least $n$ edges, the subtraction does not truncate: `pancyclicGraphExcess_add` recovers $|E(G)| = n + h_G$. An unconditional ceiling `pancyclicGraphExcess_le` follows from the fact that any simple graph on $n$ vertices has at most $\\binom{n}{2}$ edges, so $h_G \\le \\binom{n}{2} - n$. These bounds bracket the true excess between $0$ and $\\binom{n}{2}-n$ — a first honest step toward the logarithmic estimates the problem targets.",
+    "mathContext": "$h_G = |E(G)| - n$; for pancyclic $G$ on $n \\ge 3$ vertices, $|E(G)| = n + h_G$ and $0 \\le h_G \\le \\binom{n}{2} - n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complete graph edge count",
+      "Nat.choose",
+      "truncated subtraction",
+      "excess"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "combinatorics"
     ]
   }
 ]
