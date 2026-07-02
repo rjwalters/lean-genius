@@ -1063,4 +1063,52 @@ theorem one_le_maxCountAtSize_four : 1 ≤ maxCountAtSize 4 := by
   rw [hcard4] at hle
   exact le_trans hcount hle
 
+/-! ## S20 ACT: the extremal function vanishes below size four
+
+Section S19 proved the file's first unconditional positive lower bound,
+`one_le_maxCountAtSize_four : 1 ≤ maxCountAtSize 4`.  This section pins the
+*other* side of that threshold.  Below size `4` no point set can host a
+four-point line at all (`fourPointLineCount_lt_four`), so every candidate in
+the supremum defining `maxCountAtSize n` contributes `0`, and hence
+`maxCountAtSize n = 0` for every `n < 4`.
+
+Together with S19 this identifies the exact size at which the extremal function
+first becomes positive: `maxCountAtSize` is `0` at sizes `0,1,2,3` and at least
+`1` at size `4`.  The jump happens precisely at `4`, the smallest cardinality a
+four-point line can occupy — an unconditional, `sorry`-free statement that owes
+nothing to the deferred Solymosi–Stojaković construction.
+
+Sorry count unchanged. Axiom count unchanged (still 0). Theorem count: +2. -/
+
+/-- **The extremal function vanishes below size four.** For every `n < 4` the
+extremal four-point-line count `maxCountAtSize n` is `0`.  No set of fewer than
+four points contains a four-point line (`fourPointLineCount_lt_four`), so every
+element of the set whose supremum defines `maxCountAtSize n` equals `0`; the
+supremum of a subset of `{0}` (or of the empty set) is therefore `0`.  This is
+unconditional and `sorry`-free — the lower companion to
+`one_le_maxCountAtSize_four`. -/
+theorem maxCountAtSize_eq_zero_of_lt_four {n : ℕ} (hn : n < 4) :
+    maxCountAtSize n = 0 := by
+  unfold maxCountAtSize
+  rcases Set.eq_empty_or_nonempty {k : ℕ | ∃ Q : PlanarPointSet,
+      Q.points.card = n ∧ NoFiveCollinear Q ∧ fourPointLineCount Q = k}
+      with he | hne
+  · rw [he]; exact csSup_empty
+  · have hle : sSup {k : ℕ | ∃ Q : PlanarPointSet,
+        Q.points.card = n ∧ NoFiveCollinear Q ∧ fourPointLineCount Q = k} ≤ 0 := by
+      apply csSup_le hne
+      rintro k ⟨Q, hQcard, _, rfl⟩
+      have hlt : Q.points.card < 4 := by rw [hQcard]; exact hn
+      rw [fourPointLineCount_lt_four Q hlt]
+    exact Nat.le_zero.mp hle
+
+/-- **Sharp vanishing threshold of the extremal function.** `maxCountAtSize` is
+`0` at size `3` but at least `1` at size `4`: the extremal four-point-line count
+first becomes positive exactly at the smallest cardinality that can host a
+four-point line.  Combines `maxCountAtSize_eq_zero_of_lt_four` (below) with
+`one_le_maxCountAtSize_four` (at), both unconditional and `sorry`-free. -/
+theorem maxCountAtSize_three_eq_zero_and_four_pos :
+    maxCountAtSize 3 = 0 ∧ 1 ≤ maxCountAtSize 4 :=
+  ⟨maxCountAtSize_eq_zero_of_lt_four (by norm_num), one_le_maxCountAtSize_four⟩
+
 end Erdos101OQ01
