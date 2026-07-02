@@ -111,6 +111,7 @@
   "overview": {
     "historicalContext": "**Φ_n(1) and the von Mangoldt function**\n\nThe value of a cyclotomic polynomial at $1$ encodes a clean arithmetic dichotomy. Writing $X^n - 1 = \\prod_{d\\mid n}\\Phi_d(X)$ and differentiating the divisor structure, one finds $\\Phi_n(1) = e^{\\Lambda(n)}$, where $\\Lambda$ is the von Mangoldt function: $\\Phi_n(1) = p$ exactly when $n = p^k$ is a prime power ($k \\ge 1$), and $\\Phi_n(1) = 1$ otherwise. The prime-power cyclotomics themselves have a particularly transparent shape — $\\Phi_{p^{k+1}}$ is just the $p$-term geometric sum $1 + Y + \\dots + Y^{p-1}$ in the variable $Y = X^{p^k}$ — so their degree is $\\varphi(p^{k+1}) = p^k(p-1)$ and their value at $1$ is $p$. This entry, a companion to the basic-structure entry OQ-01, formalizes both ends of the dichotomy.",
     "problemStatement": "**Prime-power cyclotomics and Φ_n(1)**\n\nMachine-check the prime-power form $\\Phi_{p^{k+1}} = \\sum_{i<p}(X^{p^k})^i$, its degree $p^k(p-1)$, and the eval-at-one dichotomy:\n$$\\Phi_{p^{k+1}}(1) = p, \\qquad \\Phi_n(1) = 1 \\text{ when } n \\text{ has} \\ge 2 \\text{ distinct prime factors},$$\nwith 0 axioms and 0 sorries.",
+    "proofStrategy": "Everything specialises Mathlib's cyclotomic API at prime powers. The geometric form $\\Phi_{p^{k+1}}=\\sum_{i<p}(X^{p^k})^i$ is `cyclotomic_prime_pow_geom_sum` (from Mathlib's `cyclotomic_prime_pow_eq_geom_sum`), a $p$-term geometric sum in the variable $Y=X^{p^k}$. Its degree $p^k(p-1)$ is `cyclotomic_prime_pow_natDegree`, obtained by rewriting `natDegree_cyclotomic` with `Nat.totient_prime_pow_succ`. Evaluating at $1$ on the prime-power side gives $\\Phi_{p^{k+1}}(1)=p$ (`cyclotomic_prime_pow_eval_one`, wrapping Mathlib's `eval_one_cyclotomic_prime_pow`). The composite end — $\\Phi_n(1)=1$ whenever $n$ has $\\ge 2$ distinct prime factors (`cyclotomic_eval_one_eq_one_of_two_le_primeFactors`) — is a cardinality argument: it invokes `eval_one_cyclotomic_not_prime_pow`, and assuming $n=p^k$ would force $|\\mathrm{primeFactors}(n)|=1$ (`primeFactors_prime_pow`), contradicting the hypothesis $2\\le|\\mathrm{primeFactors}(n)|$ built by the helper `two_le_primeFactors_card` from two distinct prime members.",
     "keyInsights": [
       "A prime-power cyclotomic is a disguised geometric sum: $\\Phi_{p^{k+1}} = \\sum_{i<p}(X^{p^k})^i$, so its degree is $\\varphi(p^{k+1}) = p^{k}(p-1)$.",
       "Evaluating at $1$ produces a two-valued invariant: $\\Phi_n(1) = p$ on prime powers and $1$ otherwise — the polynomial shadow of the von Mangoldt function, $\\Phi_n(1) = e^{\\Lambda(n)}$.",
@@ -122,6 +123,11 @@
     "implications": [
       "Completes the cyclotomic-polynomials topic with the prime-power case and the von-Mangoldt-shadow value $\\Phi_n(1) = e^{\\Lambda(n)}$, complementing the basic-structure entry OQ-01.",
       "Provides reusable named lemmas for the prime-power geometric form, its degree, and the eval-at-one dichotomy that other number-theory entries can invoke directly."
+    ],
+    "openQuestions": [
+      "Package the eval-at-one dichotomy as the exponential of the von Mangoldt function, $\\Phi_n(1) = e^{\\Lambda(n)}$, formalising the single bridge to analytic number theory rather than proving the prime-power and composite cases separately.",
+      "Extend from $\\Phi_n(1)$ to the companion special values $\\Phi_n(-1)$ and $\\Phi_n(0)$, which encode further arithmetic dichotomies of $n$.",
+      "Combine the prime-power degree $\\varphi(p^{k+1}) = p^k(p-1)$ with irreducibility to compute the ramification of $p$ in the cyclotomic field $\\mathbb{Q}(\\zeta_{p^k})$, connecting this entry to the inverse-Galois-by-inertia developments."
     ]
   },
   "references": [
