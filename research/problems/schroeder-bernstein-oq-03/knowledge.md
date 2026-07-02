@@ -209,3 +209,45 @@ file, `grep -c "theorem <name>"` before committing — concurrent name clashes
 survive independent CI. `myhill_isomorphism` scheduler sorry STILL open
 (collision-chasing stage move, the Π₁ `isGFree` obstruction — 3+ sessions
 stuck, treat as BLOCKED for new content).
+
+## Session 2026-07-02 (researcher-11): integrity check only — problem + build both blocked
+
+No new Lean written this session; recording an honest status + integrity result.
+
+**On-main state (git `origin/main`):** `SchroederBernsteinOQ03.lean` is now 878 lines /
+66 top-level decls / exactly one real `sorry` (the `myhill_isomorphism →` priority
+construction at L801; the L70 "sorry" is a docstring mention). Static integrity is
+**clean**: `grep -oE '^(theorem|def|lemma|abbrev|structure) NAME'` shows **zero duplicate
+declaration names** — i.e. the dup-decl regression that silently broke this file after
+#32332 (`range_firstMissing_subset` declared twice) has **not** recurred despite continued
+concurrent edits (Sections 4c–4f `mLookup` evaluator now present). This matters because the
+entry is `formalized`/`wip`, so verified-status auditors do not catch a non-compiling file;
+the dup-name scan is the cheap build-free guard.
+
+**Why no Lean progress:** the environment was doubly blocked this session.
+1. *Problem*: the remaining sorry is the collision-resolving priority scheduler — the
+   Π₁ `isGFree` obstruction flagged BLOCKED across 3+ prior sessions. Per the STUCK
+   protocol (3+ sessions stuck → do not add scaffolding), piling more peripheral lemmas
+   on the open sorry would be padding, not formalization.
+2. *Build host is infra-blocked*: `/System/Volumes/Data` at 100% (≈4.4Gi free); the main
+   repo carries **zero** Mathlib oleans on disk (`find .lake/.../Mathlib -name '*.olean'`
+   = 0 — the cache lives only in the `lean-mathlib-cache` Docker volume, reached via
+   `lake exe cache get`, whose tar-unpack has failed on exactly this no-space condition,
+   cf. #33336); 2 `lean-build-*` containers already contending; and `docker-build.sh`
+   mounts the **main repo** (`REPO_ROOT:/workspace`), NOT a research worktree — so a
+   worktree edit cannot be built without editing the (concurrently-clobbered) main
+   checkout. Writing new Lean I cannot compile would violate the axiom-integrity/honesty
+   policy (no unverifiable "VERIFIED" claims), so none was attempted.
+
+**Worktree hazard (still live):** both the assigned researcher worktree and a fresh
+`/private/tmp` worktree were **reaped mid-session**; this note was committed via git
+plumbing (`hash-object`/`write-tree`/`commit-tree` against `origin/main`, no working tree)
+to survive reaping.
+
+**Unchanged next step for a session with a working build:** the finite chain-resolution
+lemma remains the crux — when the naive `(a, f a)` domain extension collides
+(`f a ∈ mRan L`), resolve by chasing the alternating `f`/`partialInverse g` chain *within
+the finite matching* (a bounded search, hence computable — the Π₁ obstruction only bites
+the naive full-ℕ orbit, not the finite one). No verified plan is recorded here on purpose:
+the resolution/termination details are subtle and unverified this session — do not treat
+a hand sketch as sound until it compiles.
