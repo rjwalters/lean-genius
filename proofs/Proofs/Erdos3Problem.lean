@@ -93,13 +93,69 @@ def RequiredBound (k : ℕ) : Prop :=
   ∀ c : ℝ, c > 0 → ∀ᶠ N in atTop,
     (rothNumber k N : ℝ) ≤ c * N / Real.log N
 
-/-- If r_k(N) = o(N / log N) for all k, then the conjecture holds -/
+/-- **Bridge lemma (density from AP-freeness).**
+    If `A` avoids `k`-term arithmetic progressions, then its counting function up to
+    `N` is bounded by the Roth number `r_k(N)`. This turns the *structural* hypothesis
+    "`A` is `k`-AP-free" into a *quantitative* density bound, and is the first honest
+    step of any proof of `required_bound_implies_conjecture`.
+
+    Proof: the finite slice `A ∩ {0,…,N}` is itself `k`-AP-free (a `k`-AP inside the
+    slice would be a `k`-AP inside `A`), hence it is one of the sets over which
+    `rothNumber` takes its supremum, so its cardinality is `≤ r_k(N)`.
+
+    This lemma is fully proved (no `sorry`, no new axiom). -/
+theorem countingFunction_le_rothNumber (A : Set ℕ) (k N : ℕ)
+    (hA : IsAPFree A k) : countingFunction A N ≤ rothNumber k N := by
+  -- The slice coerces into `A`, so any AP it contains is an AP of `A`.
+  have hSA : (↑((Finset.range (N + 1)).filter (· ∈ A)) : Set ℕ) ⊆ A := by
+    intro x hx
+    rw [Finset.mem_coe, Finset.mem_filter] at hx
+    exact hx.2
+  -- The slice is a member of the family `rothNumber` sups over.
+  have hmem : ((Finset.range (N + 1)).filter (· ∈ A)) ∈
+      ((Finset.range (N + 1)).powerset.filter
+        (fun S => IsAPFree (↑S : Set ℕ) k)) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨Finset.filter_subset _ _, ?_⟩
+    intro hAP
+    apply hA
+    obtain ⟨a, d, hd, hsub⟩ := hAP
+    exact ⟨a, d, hd, hsub.trans hSA⟩
+  -- Its cardinality is therefore `≤` the supremum, which is `r_k(N)`.
+  unfold countingFunction rothNumber
+  exact Finset.le_sup hmem
+
+/-- **The analytic gap, made precise.**
+    The bound `RequiredBound k` (i.e. `r_k(N) = o(N / log N)`) is *not strong enough*
+    to prove `required_bound_implies_conjecture`. Combining the bridge lemma above
+    with dyadic (Abel) summation, a `k`-AP-free set `A` satisfies
+    `∑_{a ∈ A, a ≤ 2^J} 1/a ≤ ∑_{j} r_k(2^j)·2^{1-j}`. Under `r_k(N) = o(N/log N)`
+    the `j`-th term is `o(1/j)`, and `∑ o(1/j)` may still diverge (e.g. the counting
+    function `N / (log N · log log N)` is `o(N/log N)` yet has divergent reciprocal
+    sum). The genuinely sufficient hypothesis is the stronger
+    `r_k(N) = O(N / (log N)^{1+δ})` for some `δ > 0`, which is recorded here as the
+    correct threshold for a future proof of the reduction. -/
+def StrongRequiredBound (k : ℕ) : Prop :=
+  ∃ δ : ℝ, δ > 0 ∧ ∃ C : ℝ, C > 0 ∧ ∀ᶠ N in atTop,
+    (rothNumber k N : ℝ) ≤ C * N / (Real.log N) ^ (1 + δ)
+
+/-- If r_k(N) = o(N / log N) for all k, then the conjecture holds.
+
+    OPEN CRUX. See `countingFunction_le_rothNumber` (proved) for the first step and
+    `StrongRequiredBound` for why `RequiredBound` alone is insufficient: closing the
+    remaining gap requires an analytic (Abel-summation) argument that only goes
+    through under a bound of the form `r_k(N) = O(N / (log N)^{1+δ})`. With the
+    `RequiredBound` hypothesis exactly as stated the implication is not known to be
+    provable. -/
 theorem required_bound_implies_conjecture :
     (∀ k : ℕ, k ≥ 3 → RequiredBound k) → Erdos3Conjecture := by
   intro hbound A hdiv
   intro k
   -- If r_k(N) = o(N / log N), then any set with divergent reciprocal sum
-  -- cannot avoid k-APs because its counting function grows too fast
+  -- cannot avoid k-APs because its counting function grows too fast.
+  -- The structural first step (AP-free ⟹ density ≤ r_k(N)) is now the proved lemma
+  -- `countingFunction_le_rothNumber`; the remaining step is the analytic summation
+  -- gap documented at `StrongRequiredBound`.
   sorry
 
 /- ## Equivalent Formulations -/
