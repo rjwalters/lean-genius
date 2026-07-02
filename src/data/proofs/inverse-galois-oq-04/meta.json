@@ -55,7 +55,8 @@
       "**Non-normality of the middle ring is a feature, not a bug**: inertia-degree tower-multiplicativity holds with no Galois hypothesis on $S$, which is precisely what lets the argument route through the non-Galois field $\\mathbb{Q}(\\alpha)$ in the $A_5$ application.",
       "**Galois uniformity is the only place the group acts**: the finite Galois group $G$ enters solely through `inertiaDegIn_eq_inertiaDeg`, collapsing the choice of top prime $Q$ so that a divisibility at one prime propagates to the Galois-invariant $\\mathrm{inertiaDegIn}$.",
       "**Divisibility, not equality, is the right currency**: phrasing the brick as $\\mathrm{inertiaDeg}\\,p\\,P \\mid \\mathrm{inertiaDegIn}\\,p\\,T$ (rather than tracking exact degrees) is exactly what the $A_5$ argument consumes — it only needs $3 \\mid \\mathrm{inertiaDegIn}$, supplied by a single Kummer–Dedekind cubic factor.",
-      "**Honest partial progress**: this entry does not on its own remove `three_dvd_gal_card`; it verifies the abstract steps (2)–(3) with 0 axioms and cleanly isolates the one remaining Kummer–Dedekind input, so the residual gap is now a single concrete divisibility fact."
+      "**Honest partial progress**: this entry does not on its own remove `three_dvd_gal_card`; it verifies the abstract steps (2)–(3) with 0 axioms and cleanly isolates the one remaining Kummer–Dedekind input, so the residual gap is now a single concrete divisibility fact.",
+      "**Formalization subtlety — `include G Q`**: the Galois group $G$ and top prime $Q$ never appear in the theorem *statements* (whose conclusions mention only $p$, $P$, $T$), so Lean would otherwise drop them from the signatures; the explicit `include G Q` directive keeps them as quantified arguments, which is what lets a caller feed in the specific intermediate prime and Galois action that make the divisibility go through."
     ],
     "prerequisites": [
       "Algebraic number theory (Dedekind domains, prime factorization in extensions, inertia degree)",
@@ -64,6 +65,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "roadmap",
+      "title": "Docstring: the three-step Kummer–Dedekind route",
+      "startLine": 3,
+      "endLine": 38,
+      "summary": "Frames OQ-04 and the companion reduction of three_dvd_gal_card to 3 ∣ inertiaDegIn (7); spells out the three-step route (Kummer–Dedekind cubic factor → tower multiplicativity → Galois uniformity) and states that this file machine-checks steps (2)–(3) with only foundational axioms"
+    },
     {
       "id": "setup",
       "title": "The Tower Setup",
