@@ -17,7 +17,10 @@
       "K₄ subdivisions",
       "cycles"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph theory",
+      "extremal graph theory"
+    ]
   },
   {
     "id": "ann-e916-simple-graph",
@@ -36,7 +39,10 @@
       "Fintype.card",
       "edgeFinset"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "simple graphs",
+      "edge and vertex counts"
+    ]
   },
   {
     "id": "ann-e916-k4-subdivision",
@@ -56,7 +62,10 @@
       "Dirac's theorem",
       "topological minors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the complete graph K₄",
+      "graph subdivisions"
+    ]
   },
   {
     "id": "ann-e916-cycle-def",
@@ -76,7 +85,10 @@
       "paths",
       "Nodup"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "walks and paths in graphs",
+      "cycles"
+    ]
   },
   {
     "id": "ann-e916-triply-adjacent",
@@ -95,7 +107,10 @@
       "adjacency",
       "graph structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cycles",
+      "adjacency"
+    ]
   },
   {
     "id": "ann-e916-thomassen",
@@ -114,7 +129,10 @@
       "edge density",
       "forced substructures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "edge density"
+    ]
   },
   {
     "id": "ann-e916-main-theorem",
@@ -133,7 +151,10 @@
       "graph theory",
       "solved conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "K₄ subdivisions"
+    ]
   },
   {
     "id": "ann-e916-implies-dirac",
@@ -152,7 +173,10 @@
       "Dirac's theorem",
       "structural hierarchy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "K₄ subdivisions",
+      "Dirac's theorem"
+    ]
   },
   {
     "id": "ann-e916-edge-threshold",
@@ -172,7 +196,10 @@
       "planar graphs",
       "average degree"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "edge density",
+      "average degree"
+    ]
   },
   {
     "id": "ann-e916-small-cases",
@@ -191,7 +218,10 @@
       "K₄",
       "small cases"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the complete graph K₄",
+      "small graphs"
+    ]
   },
   {
     "id": "ann-e916-summary",
@@ -210,6 +240,9 @@
       "extremal graph theory",
       "structural graph theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extremal graph theory",
+      "structural graph theory"
+    ]
   }
 ]
