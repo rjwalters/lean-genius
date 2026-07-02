@@ -38,13 +38,25 @@
   {
     "id": "ann-erdos11wipoq02-range",
     "proofId": "erdos-11-wip-01-oq-02",
-    "range": { "startLine": 95, "endLine": 117 },
+    "range": { "startLine": 95, "endLine": 104 },
     "type": "insight",
-    "title": "The 0-axiom verified range by a single kernel decide",
-    "content": "repr_range proves ∀ n ∈ range 100, Odd n → 1 < n → ReprCheck n by one kernel `decide`; maxRecDepth is raised to 8000 only so the kernel can walk the nested Finset.range recursions — this does NOT enlarge the trusted axiom set. isSquarefreePlusPow2_range transports it through the iff to conclude every odd 1 < n < 100 is squarefree + a power of two. Critically this uses kernel `decide`, not `native_decide`, so #print axioms (run at the end of the file) shows only the standard propext / Classical.choice / Quot.sound triple — no Lean.ofReduceBool — keeping the verified range genuinely 0-axiom, replacing the parent's per-number hand-written witnesses.",
-    "mathContext": "$\\forall$ odd $n,\\ 1<n<100:\\ \\text{IsSquarefreePlusPow2}\\,n$, by one kernel decide; axioms = $\\{$propext, Classical.choice, Quot.sound$\\}$ only.",
+    "title": "The verified range by a single kernel decide",
+    "content": "repr_range proves ∀ n ∈ range 100, Odd n → 1 < n → ReprCheck n by one kernel `decide`. Because ReprCheck (and through it SquarefreeCheck) is a finite conjunction/disjunction of Nat divisibility and comparison tests, the kernel can fully evaluate it for each of the 100 values. set_option maxRecDepth 8000 is raised only so the kernel can walk the nested Finset.range recursions during that evaluation — it is a proof-search recursion budget, NOT an axiom or a trust assumption, so it does not enlarge the trusted axiom set. This single decide replaces the parent's per-number hand-written squarefree witnesses for 3, …, 17.",
+    "mathContext": "$\\forall$ odd $n,\\ 1<n<100:\\ \\mathrm{ReprCheck}\\,n$, by one kernel `decide` over `Finset.range 100`.",
     "significance": "key",
-    "relatedConcepts": ["kernel decide vs native_decide", "Lean.ofReduceBool", "maxRecDepth", "#print axioms", "0-axiom verified range"],
-    "prerequisites": ["the kernel-reducible ReprCheck", "decide on bounded ranges", "the foundational axiom triple"]
+    "relatedConcepts": ["kernel decide", "maxRecDepth as a resource knob", "decide on bounded ranges", "reflection of Prop to computable Bool"],
+    "prerequisites": ["the kernel-reducible ReprCheck", "decidability of bounded quantifiers", "decide over Finset.range"]
+  },
+  {
+    "id": "ann-erdos11wipoq02-axioms",
+    "proofId": "erdos-11-wip-01-oq-02",
+    "range": { "startLine": 105, "endLine": 117 },
+    "type": "insight",
+    "title": "Transport through the iff and the 0-axiom certificate",
+    "content": "isSquarefreePlusPow2_range transports repr_range through isSquarefreePlusPow2_iff_check (its .mpr direction) to conclude every odd 1 < n < 100 is genuinely squarefree + a power of two — not merely that it passes the computational test. The three trailing #print axioms commands (on squarefree_iff_check, isSquarefreePlusPow2_iff_check and isSquarefreePlusPow2_range) are the file's own audit: they report only the standard foundational triple propext / Classical.choice / Quot.sound, with NO Lean.ofReduceBool. That absence is the whole point of using kernel `decide` rather than `native_decide` — the latter would compile the check to native code and add Lean.ofReduceBool to the trusted base, so this file's verified range is honestly 0-axiom in a way a native_decide version would not be.",
+    "mathContext": "$\\forall$ odd $n,\\ 1<n<100:\\ \\mathrm{IsSquarefreePlusPow2}\\,n$; $\\#\\mathrm{print\\ axioms} = \\{$propext, Classical.choice, Quot.sound$\\}$, no Lean.ofReduceBool.",
+    "significance": "key",
+    "relatedConcepts": ["kernel decide vs native_decide", "Lean.ofReduceBool", "#print axioms audit", "0-axiom verified range", "transport through an iff"],
+    "prerequisites": ["isSquarefreePlusPow2_iff_check", "the foundational axiom triple", "native_decide's Lean.ofReduceBool dependency"]
   }
 ]

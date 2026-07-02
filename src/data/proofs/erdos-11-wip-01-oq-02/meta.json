@@ -54,7 +54,8 @@
       "The kernel does not reduce Nat.minSqFac, so Squarefree's own Decidable instance is unusable for kernel decide; but Nat divisibility d*d ∣ n IS kernel-reducible (special-cased Nat arithmetic), so a bounded conjunction of divisibility tests gives a practical kernel-reducible squarefree decision.",
       "Folding the 1 ≤ n positivity into SquarefreeCheck makes the equivalence with Squarefree hold unconditionally (both are False at n = 0), which removes a side-condition from every downstream use and keeps ReprCheck honest (it cannot accept n = 2^k via a spurious squarefree-0 summand).",
       "The bound d ≤ n in the test is sound because d*d ∣ n with n ≥ 1 forces d ∣ n hence d ≤ n; no tighter √n bound is needed for correctness, only for speed.",
-      "Staying with kernel decide (not native_decide) keeps the verified range genuinely 0-axiom: #print axioms shows only propext/Classical.choice/Quot.sound, with no Lean.ofReduceBool."
+      "Staying with kernel decide (not native_decide) keeps the verified range genuinely 0-axiom: #print axioms shows only propext/Classical.choice/Quot.sound, with no Lean.ofReduceBool.",
+      "Kernel-reducibility propagates up a two-layer lifting: a single primitive that the kernel can compute (bounded d*d ∣ n divisibility) makes SquarefreeCheck reducible, squarefree_iff_check transfers that to the Squarefree predicate, and simp_rw through the parent's isSquarefreePlusPow2_iff lifts it once more to ReprCheck ↔ IsSquarefreePlusPow2 — so the decidability needed for the range decide is assembled mechanically from the bottom up, never re-proving anything about minSqFac. This 'reflect a Prop as a kernel-computable Bool, then discharge a finite range by decide' pattern is reusable for any bounded verification against a Mathlib predicate whose native instance does not kernel-reduce."
     ],
     "prerequisites": [
       "Parent: erdos-11-wip-01 (IsSquarefreePlusPow2, isSquarefreePlusPow2_iff, squarefreePlusPow2_of_witness)",
@@ -89,11 +90,19 @@
     },
     {
       "id": "range",
-      "title": "The 0-Axiom Verified Range",
-      "startLine": 100,
-      "endLine": 111,
-      "summary": "repr_range and isSquarefreePlusPow2_range: every odd 1 < n < 100 is squarefree + a power of two, by a single kernel decide at 0 axioms.",
-      "mathContext": "Replaces the parent's per-number explicit witnesses with one decide over the whole odd range."
+      "title": "The Range Check by One Kernel decide",
+      "startLine": 95,
+      "endLine": 104,
+      "summary": "repr_range: ∀ n ∈ range 100, Odd n → 1 < n → ReprCheck n, discharged by a single kernel `decide`. set_option maxRecDepth 8000 lets the kernel walk the nested Finset.range recursions — a proof-search resource knob, not a trust knob, so it does not enlarge the axiom set.",
+      "mathContext": "One `decide` over the whole odd range replaces the parent's per-number explicit witnesses; maxRecDepth 8000 is a recursion-budget option, not an axiom."
+    },
+    {
+      "id": "axioms",
+      "title": "Transport to the Representation Predicate and the 0-Axiom Check",
+      "startLine": 105,
+      "endLine": 117,
+      "summary": "isSquarefreePlusPow2_range transports repr_range through isSquarefreePlusPow2_iff_check to conclude every odd 1 < n < 100 is squarefree + a power of two. The trailing #print axioms on squarefree_iff_check, isSquarefreePlusPow2_iff_check and isSquarefreePlusPow2_range confirms the genuinely 0-axiom status: only propext / Classical.choice / Quot.sound, no Lean.ofReduceBool (which native_decide would have introduced).",
+      "mathContext": "$\\forall$ odd $n,\\ 1<n<100:\\ \\mathrm{IsSquarefreePlusPow2}\\,n$, with $\\#\\mathrm{print\\ axioms} = \\{\\mathrm{propext}, \\mathrm{Classical.choice}, \\mathrm{Quot.sound}\\}$ only."
     }
   ],
   "conclusion": {
