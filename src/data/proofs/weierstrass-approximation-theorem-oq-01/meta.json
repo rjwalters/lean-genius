@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the Weierstrass approximation theorem in four forms",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The imports (ContinuousMap.Weierstrass, SpecialFunctions.Bernstein, Tactic), the module docstring, and the namespace/open setup. Assembles Weierstrass's 1885 theorem — every continuous function on [a,b] is a uniform limit of polynomials — in four complementary forms plus the |x| witness.",
+      "mathContext": "The forms: weierstrass_epsilon (for every ε > 0 a polynomial p with |p(x)−f(x)| < ε on [a,b]); exists_polynomial_seq_tendstoUniformlyOn (the mathematical heart — a single sequence pₙ converging uniformly to f, built from the epsilon form by choosing pₙ within 1/(n+1) of f and proving TendstoUniformlyOn); weierstrass_density (the polynomial-function subalgebra is dense in C([a,b],ℝ), its closure the whole space); and bernstein_tendstoUniformly (the explicit Bernstein polynomials ∑ₖ f(k/n)C(n,k)xᵏ(1−x)^{n−k} converge uniformly on [0,1] — an effective sequence). Finished with the concrete |x| instance (exists_polynomial_near_abs, exists_polynomial_seq_abs) on [−1,1], Weierstrass's own continuous-but-non-smooth example. Mathlib proves the epsilon/density forms (exists_polynomial_near_of_continuousOn, polynomialFunctions_closure_eq_top) and Bernstein convergence (bernsteinApproximation_uniform); the contribution is packaging these into the single uniformly-convergent sequence (TendstoUniformlyOn) that is the textbook statement, plus the worked |x| instance. 0-axiom (propext/Classical.choice/Quot.sound only, no native_decide)."
+    },
+    {
       "id": "epsilon-and-density",
       "title": "Epsilon and Density Forms",
       "startLine": 67,
