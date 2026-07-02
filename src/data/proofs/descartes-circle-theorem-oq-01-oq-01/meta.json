@@ -2,7 +2,9 @@
   "id": "descartes-circle-theorem-oq-01-oq-01",
   "slug": "descartes-circle-theorem-oq-01-oq-01",
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "opens": [],
     "namespace": "DescartesCircleTheoremOQ01OQ01",
     "lineCount": 113,
@@ -50,7 +52,9 @@
     "keyInsights": [
       "The Descartes relation (a+b+c+d)² = 2(a²+b²+c²+d²) is a ring identity equivalent to the quadratic-in-d perfect square (d − (a+b+c))² = 4(ab+bc+ca), valid over any commutative ring, in particular ℂ.",
       "For any complex square root s of ab+bc+ca, the relation factors as (d − (a+b+c) − 2s)(d − (a+b+c) + 2s) = 0, giving exactly the two Soddy solutions d = (a+b+c) ± 2s.",
-      "ℂ is algebraically closed, so ab+bc+ca always has a square root (IsAlgClosed.exists_pow_nat_eq): the fourth Soddy curvature exists unconditionally, unlike the real case."
+      "ℂ is algebraically closed, so ab+bc+ca always has a square root (IsAlgClosed.exists_pow_nat_eq): the fourth Soddy curvature exists unconditionally, unlike the real case.",
+      "The two Soddy curvatures are the roots of a single monic quadratic determined symmetrically by a, b, c: by Vieta they satisfy d₊ + d₋ = 2(a+b+c) (soddy_sumC) and d₊·d₋ = (a+b+c)² − 4(ab+bc+ca) (soddy_prodC), so the unordered pair {d₊, d₋} is intrinsic to the triple.",
+      "The complex relation is a faithful generalization of the real one: for real curvatures cast into ℂ, descartesRelC is exactly the parent’s real Descartes relation (descartesRelC_ofReal, by norm_cast). The symmetric instance a = b = c = 1 recovers three mutually tangent unit circles with fourth curvature d = 3 ± 2√3."
     ]
   },
   "sections": [
