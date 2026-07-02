@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-sgm-overview",
+    "proofId": "euler-criterion-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 3, "endLine": 41 },
+    "type": "context",
+    "title": "Sophie Germain primes and Mersenne divisors",
+    "content": "The header states the goal: if p is prime with p ≡ 3 (mod 4) and q = 2p+1 is also prime (a Sophie Germain prime of this residue class), then q divides the Mersenne number M_p = 2^p − 1. This is a leaf of the entry euler-criterion-squares-oq-01-oq-03, which formalized the second supplement to quadratic reciprocity, IsSquare (2 : ZMod q) ↔ q % 8 = 1 ∨ q % 8 = 7. The mechanism previewed here is the entire proof in miniature: p ≡ 3 (mod 4) forces q ≡ 7 (mod 8), so 2 is a quadratic residue mod q; writing 2 = x² in ZMod q and using 2p = q−1, Fermat's little theorem gives 2^p = x^(q−1) = 1, hence q ∣ 2^p − 1. Classical instances (23 ∣ 2^11 − 1, 47 ∣ 2^23 − 1, 167 ∣ 2^83 − 1) are exactly Euler's eighteenth-century Mersenne factorizations.",
+    "mathContext": "$p \\equiv 3 \\pmod 4,\\ q = 2p+1\\ \\text{prime} \\;\\Rightarrow\\; q \\mid 2^p - 1.$",
+    "significance": "context",
+    "relatedConcepts": ["Sophie Germain prime", "Mersenne number", "quadratic reciprocity", "second supplement", "quadratic residue"],
+    "prerequisites": ["elementary number theory", "modular arithmetic", "quadratic residues"]
+  },
+  {
+    "id": "ann-sgm-qmod8",
+    "proofId": "euler-criterion-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 47, "endLine": 49 },
+    "type": "technique",
+    "title": "Residue bookkeeping: p ≡ 3 (mod 4) ⟹ 2p+1 ≡ 7 (mod 8)",
+    "content": "q_mod_eight is the arithmetic hinge that routes the problem into the residue case of the second supplement. From p ≡ 3 (mod 4), writing p = 4k+3 gives q = 2p+1 = 8k+7 ≡ 7 (mod 8). The single tactic omega discharges this linear congruence reasoning automatically — it decides the Presburger-arithmetic statement over ℕ without any manual case split. The complementary class p ≡ 1 (mod 4) would instead send q to 3 (mod 8), the non-residue case, which is why exactly p ≡ 3 (mod 4) selects the 2^p − 1 side rather than 2^p + 1.",
+    "mathContext": "$p = 4k+3 \\Rightarrow q = 2p+1 = 8k+7 \\equiv 7 \\pmod 8.$",
+    "significance": "supporting",
+    "relatedConcepts": ["linear congruences", "Presburger arithmetic", "omega tactic", "residue classes"],
+    "prerequisites": ["modular arithmetic"]
+  },
+  {
+    "id": "ann-sgm-second-supplement",
+    "proofId": "euler-criterion-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 51, "endLine": 55 },
+    "type": "concept",
+    "title": "Specializing the second supplement: 2 is a square mod q ≡ 7 (mod 8)",
+    "content": "two_isSquare_of_mod turns the residue fact q ≡ 7 (mod 8) into the algebraic conclusion IsSquare (2 : ZMod q). It invokes the parent entry's formalization of the second supplementary law, ZMod.exists_sq_eq_two_iff, whose right-hand side q % 8 = 1 ∨ q % 8 = 7 is satisfied here by the Or.inr branch. The side condition q ≠ 2 (needed because the supplement is stated for odd primes) is dispatched by omega from q ≡ 7 (mod 8). This is the only place the whole argument uses reciprocity — everything downstream is Fermat plus exponent arithmetic.",
+    "mathContext": "$q \\equiv 7 \\pmod 8 \\;\\Rightarrow\\; \\left(\\tfrac{2}{q}\\right) = 1,\\ \\text{i.e. } 2 = x^2 \\text{ in } \\mathbb{Z}/q.$",
+    "significance": "key",
+    "relatedConcepts": ["second supplement", "Legendre symbol", "quadratic residue", "ZMod", "quadratic reciprocity"],
+    "prerequisites": ["quadratic reciprocity", "finite fields", "quadratic residues"]
+  },
+  {
+    "id": "ann-sgm-main-setup",
+    "proofId": "euler-criterion-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 57, "endLine": 75 },
+    "type": "insight",
+    "title": "The Mersenne divisor theorem: extracting a square root of 2",
+    "content": "dvd_mersenne is the main result. After registering Fact q.Prime for q = 2p+1 (so that ZMod q is a field), it applies two_isSquare_of_mod to obtain a witness x with 2 = x·x in ZMod q. The delicate step is ruling out x = 0: if x = 0 then 2 = 0 in ZMod q, and ZMod.natCast_eq_zero_iff turns this into q ∣ 2 over ℕ, whence q ≤ 2 by Nat.le_of_dvd — impossible since q = 2p+1 ≥ 5 (as p ≥ 2). Establishing x ≠ 0 is exactly what licenses Fermat's little theorem in the next step, which requires a nonzero base.",
+    "mathContext": "$2 = x^2 \\text{ in } \\mathbb{Z}/q,\\quad x \\neq 0 \\ (\\text{else } q \\mid 2,\\ \\text{contra } q \\ge 5).$",
+    "significance": "key",
+    "relatedConcepts": ["ZMod", "field of prime order", "IsSquare", "divisibility", "Fact typeclass"],
+    "prerequisites": ["finite fields", "modular arithmetic", "Lean typeclasses"]
+  },
+  {
+    "id": "ann-sgm-fermat",
+    "proofId": "euler-criterion-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "key-step",
+    "title": "Fermat collapse 2^p = x^(q−1) = 1 and the honest Nat-subtraction cast",
+    "content": "The core computation. Rewriting 2 = x² and using the exponent identity 2p = q − 1, the power collapses: (2 : ZMod q)^p = (x²)^p = x^(2p) = x^(q−1) = 1, where the last equality is Fermat's little theorem ZMod.pow_card_sub_one_eq_one applied to the nonzero x. The result 2^p ≡ 1 (mod q) must then be transported back to a divisibility over ℕ. This is done carefully: Nat.one_le_two_pow supplies 1 ≤ 2^p so that the truncated ℕ-subtraction 2^p − 1 casts faithfully via Nat.cast_sub to (2:ZMod q)^p − 1 = 1 − 1 = 0, and ZMod.natCast_eq_zero_iff converts the vanishing cast into q ∣ 2^p − 1. The 1 ≤ 2^p guard is what avoids the classic off-by-one trap of ℕ subtraction.",
+    "mathContext": "$2^p = (x^2)^p = x^{2p} = x^{q-1} = 1 \\text{ in } \\mathbb{Z}/q;\\ \\ (2^p - 1 : \\mathbb{N}) \\mapsto 0 \\iff q \\mid 2^p - 1.$",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's little theorem", "order of an element", "natural-number subtraction", "cast", "divisibility"],
+    "prerequisites": ["group theory", "finite fields", "Lean coercions"]
+  },
+  {
+    "id": "ann-sgm-growth",
+    "proofId": "euler-criterion-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 88, "endLine": 97 },
+    "type": "technique",
+    "title": "Growth lemma: 2p + 2 < 2^p for p ≥ 5",
+    "content": "lin_lt_two_pow is the elementary linear-vs-exponential gap needed to make the Mersenne divisor a proper one. It is proved by induction on p: the base cases p < 5 in the successor branch are cleared by interval_cases with omega/norm_num, and the inductive step uses the doubling identity 2^(n+1) = 2^n + 2^n, after which omega closes the arithmetic (2^n ≥ 2n+2 doubles to 2^(n+1) ≥ 4n+4 > 2n+4 = 2(n+1)+2). This exponential-beats-linear bound guarantees 2p+1 < 2^p − 1, so the divisor 2p+1 is strictly smaller than the Mersenne number itself.",
+    "mathContext": "$2p + 2 < 2^p \\ (p \\ge 5),\\ \\text{by induction with } 2^{n+1} = 2^n + 2^n.$",
+    "significance": "supporting",
+    "relatedConcepts": ["mathematical induction", "exponential growth", "interval_cases", "omega tactic"],
+    "prerequisites": ["induction", "inequalities"]
+  },
+  {
+    "id": "ann-sgm-composite",
+    "proofId": "euler-criterion-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 99, "endLine": 109 },
+    "type": "corollary",
+    "title": "Compositeness: 2^p − 1 is not prime for p ≥ 5 in this class",
+    "content": "mersenne_not_prime packages the theorem into a compositeness statement. Assuming for contradiction that 2^p − 1 is prime, its only divisors are 1 and itself; applying this dichotomy (Nat.Prime.eq_one_or_self_of_dvd) to the divisor q = 2p+1 from dvd_mersenne leaves two cases. The case 2p+1 = 1 is absurd, and the case 2p+1 = 2^p − 1 contradicts the growth bound lin_lt_two_pow (2p+2 < 2^p forces 2p+1 < 2^p − 1). Both are closed by omega. Thus every Sophie Germain prime p ≡ 3 (mod 4) with p ≥ 5 manufactures a composite Mersenne number on demand — a structural source of compositeness, in contrast to case-by-case trial division.",
+    "mathContext": "$q = 2p+1 \\text{ is a proper divisor of } 2^p - 1 \\;\\Rightarrow\\; 2^p - 1 \\text{ composite } (p \\ge 5).$",
+    "significance": "key",
+    "relatedConcepts": ["Mersenne prime", "compositeness", "proper divisor", "proof by contradiction"],
+    "prerequisites": ["prime numbers", "divisibility"]
+  },
+  {
+    "id": "ann-sgm-examples",
+    "proofId": "euler-criterion-squares-oq-01-oq-03-oq-01",
+    "range": { "startLine": 111, "endLine": 129 },
+    "type": "application",
+    "title": "Concrete instances via norm_num (no native_decide)",
+    "content": "The closing examples exhibit the theorem on the smallest Sophie Germain Mersenne divisors: 23 ∣ 2^11 − 1 (where 2^11 − 1 = 2047 = 23·89), 47 ∣ 2^23 − 1, and 167 ∣ 2^83 − 1 — precisely Euler's classical factorizations. Each is dvd_mersenne applied to hypotheses discharged by norm_num, which verifies the primality of p and 2p+1 and the congruence p ≡ 3 (mod 4) by ordinary kernel-checked computation. A final example uses mersenne_not_prime to certify 2^11 − 1 = 2047 composite. Deliberately avoiding native_decide keeps the file free of the Lean.ofReduceBool axiom, so the entry remains genuinely 0-axiom.",
+    "mathContext": "$23 \\mid 2^{11}-1,\\ \\ 47 \\mid 2^{23}-1,\\ \\ 167 \\mid 2^{83}-1;\\ \\ 2^{11}-1 = 2047 = 23\\cdot 89.$",
+    "significance": "supporting",
+    "relatedConcepts": ["norm_num", "native_decide", "axiom hygiene", "Mersenne factorization"],
+    "prerequisites": ["Lean tactics", "primality"]
+  }
+]
