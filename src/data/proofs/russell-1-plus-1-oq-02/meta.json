@@ -123,7 +123,12 @@
   ],
   "conclusion": {
     "summary": "Extending the parent's additive development, this entry defines multiplication on the from-scratch Peano naturals and proves every commutative-semiring axiom — zero_mul, mul_one, one_mul, mul_comm, both distributive laws, and mul_assoc — bundling them into a single IsCommSemiring witness for ℕ. The proofs are pure structural induction, correctly ordered (succ_mul before mul_comm, left distributivity before associativity, right distributivity from commutativity), and the file imports nothing.",
-    "implications": "The algebraic skeleton of elementary number theory — a commutative semiring — is reconstructed from Peano's axioms alone, with no reliance on Mathlib and, remarkably, no dependence on any Lean axiom whatsoever (not even Quot.sound). This shows how much of arithmetic is genuinely constructive and definitional, and it turns the parent's scattered arithmetic facts into a single structural theorem: ℕ is a commutative semiring."
+    "implications": "The algebraic skeleton of elementary number theory — a commutative semiring — is reconstructed from Peano's axioms alone, with no reliance on Mathlib and, remarkably, no dependence on any Lean axiom whatsoever (not even Quot.sound). This shows how much of arithmetic is genuinely constructive and definitional, and it turns the parent's scattered arithmetic facts into a single structural theorem: ℕ is a commutative semiring.",
+    "openQuestions": [
+      "Extend the from-scratch development to the ordered-semiring structure: define $\\leq$ on the Peano naturals, prove it is a linear order compatible with $+$ and $\\cdot$, and derive well-ordering / strong induction.",
+      "Build $\\mathbb{Z}$ and $\\mathbb{Q}$ from these Peano naturals by the standard Grothendieck-group and field-of-fractions constructions, proving the `CommRing`/`Field` axioms with the same import-free discipline.",
+      "Prove the from-scratch $\\mathbb{N}$ is isomorphic as a commutative semiring to Mathlib's $\\mathbb{N}$, certifying that the two developments agree and that no axiom was silently smuggled in."
+    ]
   },
   "leanFile": {
     "imports": [],
