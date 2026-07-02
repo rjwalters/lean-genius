@@ -86,13 +86,17 @@
       "summary": "A fair-coin numerical sanity check (3 flips sum to 1) plus multinomial_mean, a genuine moment formula E[Xi] = n·pi derived by differentiating the MGF at t=0 (replacing the former rfl placeholder)."
     },
     {
-      "title": "Second Moment and Variance via the Second MGF Derivative"
+      "id": "second-moment-variance",
+      "title": "Second Moment and Variance via the Second MGF Derivative",
+      "startLine": 261,
+      "endLine": 447,
+      "summary": "Part 6b derives the variance Var(Xᵢ) = n·pᵢ(1 − pᵢ) and the closed-form second moment E[Xᵢ²] = n²·pᵢ² + n·pᵢ(1 − pᵢ) by the moment-generating-function route. multinomial_mgf_exp packages the single-coordinate MGF identity (pᵢ·eᵗ + (1 − pᵢ))ⁿ = ∑ₖ P(k)·exp(t·kᵢ); differentiating once at t = 0 gives the mean and twice gives the second moment (multinomial_second_moment), and multinomial_variance subtracts the squared mean. This is the canonical textbook MGF method, complementing the fiber-grouping argument for the variance in the OQ04 sibling entry."
     },
     {
       "id": "counting",
       "title": "Counting Identity (Multinomial Analog of ∑C(n,k)=2ⁿ)",
-      "startLine": 259,
-      "endLine": 294,
+      "startLine": 448,
+      "endLine": 484,
       "summary": "Specializes the multinomial theorem at f(i)=1 to prove |s|ⁿ = ∑ multinomial(s,k), generalizing the sum of binomial coefficients."
     }
   ],
