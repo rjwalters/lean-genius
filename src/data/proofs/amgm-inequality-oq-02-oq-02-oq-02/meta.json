@@ -41,7 +41,8 @@
     "keyInsights": [
       "The equality case splits into an easy sufficiency direction (constant ⟹ equality) and a hard necessity direction (equality ⟹ constant). This entry closes the sufficiency direction cleanly and generally.",
       "The whole sufficiency argument reduces to two facts: the closed form eₖ(c,…,c) = C(n,k)·cᵏ and the rpow identity (cᵏ)^(1/k) = c for c ≥ 0.",
-      "Working with the parent's exact definitions of elemSymm and maclaurinMean (rather than a restatement) makes the result a drop-in companion to the Maclaurin chain, usable wherever the parent's inequality is applied."
+      "Working with the parent's exact definitions of elemSymm and maclaurinMean (rather than a restatement) makes the result a drop-in companion to the Maclaurin chain, usable wherever the parent's inequality is applied.",
+      "Maclaurin's means interpolate between the arithmetic mean M₁ = (∑xᵢ)/n and the geometric mean Mₙ = (∏xᵢ)^{1/n}, so the sufficiency direction proved here simultaneously realizes the 'equality holds when all inputs coincide' half of AM–GM and of every intermediate Newton inequality — one constant-input computation covers the whole chain."
     ],
     "historicalContext": "Colin Maclaurin stated his mean inequalities in *A Treatise of Algebra* (1748, posthumous), sharpening Newton's inequalities on the elementary symmetric functions of the roots of a polynomial. The equality analysis — that the chain of Maclaurin means is constant exactly when the inputs are equal — is the natural companion to the inequality and mirrors the AM ≥ GM equality case (AM = GM iff all terms equal), which is itself the extreme M₁ = Mₙ instance of this chain."
   },
