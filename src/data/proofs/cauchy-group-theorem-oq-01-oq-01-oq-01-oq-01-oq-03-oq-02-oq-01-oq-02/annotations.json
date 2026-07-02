@@ -118,5 +118,53 @@
       "Finset.image",
       "decide"
     ]
+  },
+  {
+    "id": "ann-zpow-helper",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "theorem",
+    "title": "Helper: the integer-cast exponent power is the identity",
+    "content": "A small private lemma `zpow_exponent_eq_one'`: in any group, x raised to the integer cast of the exponent equals 1. It rewrites the ℤ-power to a ℕ-power via `zpow_natCast` and applies `Monoid.pow_exponent_eq_one`. This lets the Bézout argument in the group image theorem work over ℤ (where gcdA/gcdB live) rather than ℕ, so the negative Bézout coefficient is handled as an integer power.",
+    "mathContext": "$x^{(\\exp G : \\mathbb{Z})} = x^{\\exp G} = 1$ in any group, bridging $\\mathbb{N}$-powers and $\\mathbb{Z}$-powers for the Bézout step.",
+    "significance": "technical",
+    "relatedConcepts": ["zpow_natCast", "Monoid.pow_exponent_eq_one", "integer powers"],
+    "prerequisites": ["group exponent", "zpow (integer powers)"]
+  },
+  {
+    "id": "ann-contrapositive",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 111, "endLine": 119 },
+    "type": "theorem",
+    "title": "A single non-unit collapses the exponent to 0",
+    "content": "`exponent_eq_zero_of_exists_not_isUnit` is the contrapositive of the crux: if some element of M fails to be a unit, then Monoid.exponent M = 0. Proved by `by_contra` — a nonzero exponent would, via `isUnit_of_exponent_ne_zero`, make that element a unit, contradicting the hypothesis. This is the pivot separating the two regimes: it is exactly why no exp-based (or |M|-based) image statement can carry content on a monoid that is not a group.",
+    "mathContext": "$(\\exists x,\\ \\neg\\,\\mathrm{IsUnit}\\,x) \\Rightarrow \\exp M = 0$; the contrapositive of $\\exp M \\ne 0 \\Rightarrow \\forall x,\\ \\mathrm{IsUnit}\\,x$.",
+    "significance": "key",
+    "relatedConcepts": ["contrapositive", "monoid exponent", "non-unit elements"],
+    "prerequisites": ["isUnit_of_exponent_ne_zero", "proof by contradiction"]
+  },
+  {
+    "id": "ann-degeneracy",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 151, "endLine": 160 },
+    "type": "theorem",
+    "title": "Against the exponent, the 'otherwise' reading degenerates",
+    "content": "`range_pow_eq_range_pow_gcd_exponent_of_not_group` shows that on a non-group finite monoid the exponent–gcd image equality still holds — but vacuously. Since a non-unit forces exp M = 0, we get gcd(n, exp M) = gcd(n, 0) = n (Nat.gcd_zero_right), so both sides are literally range(x ↦ xⁿ) with itself. This settles the 'otherwise' half of parent OQ #2 in the negative: outside the units there is no nontrivial exponent–gcd content.",
+    "mathContext": "Non-group $M$: $\\exp M = 0 \\Rightarrow \\gcd(n, \\exp M) = n$, so $\\operatorname{range}(x\\mapsto x^n) = \\operatorname{range}(x\\mapsto x^{\\gcd(n,\\exp M)})$ trivially (same map).",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.gcd_zero_right", "degenerate equality", "power map endomorphism"],
+    "prerequisites": ["exponent_eq_zero_of_exists_not_isUnit", "gcd with zero"]
+  },
+  {
+    "id": "ann-zmod4-setup",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 162, "endLine": 175 },
+    "type": "theorem",
+    "title": "The ℤ/4 witness: non-unit, zero exponent, trivial exp-statement",
+    "content": "Three theorems set up the concrete separating example before the surrogate is refuted. `not_isUnit_two_zmod4` (by decide) certifies that 2 is a non-unit in the multiplicative monoid ℤ/4, so ℤ/4 is not a group. `exponent_zmod4_eq_zero` derives exp(ℤ/4) = 0 as an instance of the crux' contrapositive. `exp_statement_trivial_zmod4` then shows the exponent-form equality holds on ℤ/4 only because exp = 0 makes gcd(n, exp) = n — i.e. it holds trivially. These three feed the punchline `order_surrogate_fails_zmod4`.",
+    "mathContext": "$2 \\notin (\\mathbb{Z}/4)^\\times \\Rightarrow \\exp(\\mathbb{Z}/4) = 0 \\Rightarrow \\gcd(n,\\exp) = n$; the exp-statement is a tautology on $\\mathbb{Z}/4$ while the $|M|$-surrogate is not.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod 4", "non-unit witness", "decide", "concrete counterexample setup"],
+    "prerequisites": ["exponent_eq_zero_of_exists_not_isUnit", "ZMod multiplicative monoid"]
   }
 ]
