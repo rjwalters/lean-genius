@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: n-dimensional Borsuk–Ulam and the equivalence chain to Brouwer",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "Imports and header docstring: the open question, the n-dimensional Borsuk–Ulam statement, the BU↔Brouwer equivalence chain, the key results, and the axiom accounting.",
+      "mathContext": "This file (open question oq-01-oq-03) generalizes the parent's 1D Borsuk–Ulam theorem (proved via the Intermediate Value Theorem) to n dimensions and relates it to the Brouwer Fixed Point theorem. The header docstring (lines 1–72) states: (1) the n-dimensional Borsuk–Ulam theorem — every continuous f: Sⁿ → ℝⁿ has an antipodal pair f(x)=f(-x) — whose proof (in the imported BorsukUlam.lean) rests on the single axiom no_continuous_odd_nonzero_on_sphere (degree theory / covering spaces); (2) the equivalence chain BU(n) ↔ No-Odd-Map(Sⁿ→Sⁿ⁻¹) ↔ No-Retraction(Bⁿ⁺¹→Sⁿ) ↔ BFP(n+1); (3) the proved key results borsuk_ulam_antipodal_collapse (an odd f: Sⁿ→ℝⁿ must vanish), no_odd_map_to_unit_sphere, borsuk_ulam_implies_no_retraction, and equivalence_chain; and (4) the Ham Sandwich theorem as an axiomatized BU corollary (ham_sandwich_theorem). NOTE ON STATUS: this is an honestly axiomatized entry — the parent BorsukUlam.lean carries the axiom no_continuous_odd_nonzero_on_sphere and this file introduces the additional ham_sandwich axiom; the derived corollaries and the equivalence chain are proved, but the topological core and Ham Sandwich are stated assumptions."
+    },
+    {
       "id": "antipodal-collapse",
       "title": "Borsuk-Ulam Antipodal Collapse",
       "summary": "Odd f: Sⁿ → ℝⁿ must vanish somewhere — the core force of BU.",
