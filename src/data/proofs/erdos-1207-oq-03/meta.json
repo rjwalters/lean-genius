@@ -53,12 +53,14 @@
       "midpointFree_range_embR (verified, 0-axiom): S_k is midpoint-free — it contains no nontrivial 3-term arithmetic progression",
       "isoscelesFree_range_embR (verified, 0-axiom): through the parent bridge isoscelesFree_iff_midpointFree, S_k is isosceles-free",
       "ncard_range_embR (verified, 0-axiom): |S_k| = 2ᵏ, via injectivity and Nat.card of the function space Fin k → Fin 2",
-      "exists_isoscelesFree_pow (verified, 0-axiom): THE HEADLINE — for every k there is an isosceles-free S ⊆ [0, 3ᵏ) with |S| = 2ᵏ, i.e. the explicit lower bound P₁(3ᵏ) ≥ 2ᵏ"
+      "exists_isoscelesFree_pow (verified, 0-axiom): THE HEADLINE — for every k there is an isosceles-free S ⊆ [0, 3ᵏ) with |S| = 2ᵏ, i.e. the explicit lower bound P₁(3ᵏ) ≥ 2ᵏ",
+      "exists_isoscelesFree_Ico (verified, 0-axiom): ALL-N STRENGTHENING — for every N ≥ 1 there is an isosceles-free S ⊆ [0, N) with |S| = 2^{⌊log₃N⌋}, monotonizing the powers-of-3 bound to every N via 3^{⌊log₃N⌋} ≤ N (Nat.pow_log_le_self); still grows like N^{log₃2} up to a bounded factor",
+      "exists_isoscelesFree_Ico_pos (verified, 0-axiom): the all-N bound is never vacuous — 2^{⌊log₃N⌋} ≥ 1 for every N"
     ],
     "axiomCount": 0,
-    "lineCount": 188,
-    "assumptions": "None. All declarations are fully machine-checked: 0 axiom declarations, 0 structure-encoded assumptions, 0 sorries. The construction gives a constructive n^{log₃2} lower bound for the one-dimensional case; it does not resolve the open growth question for P_d(n), and it is deliberately weaker than the Behrend bound (which this elementary digit construction cannot reach).",
-    "theoremCount": 12,
+    "lineCount": 217,
+    "assumptions": "None. All declarations are fully machine-checked: 0 axiom declarations, 0 structure-encoded assumptions, 0 sorries. The construction gives a constructive n^{log₃2} lower bound for the one-dimensional case, now stated for every N (not only powers of 3); it does not resolve the open growth question for P_d(n), and it is deliberately weaker than the Behrend bound (which this elementary digit construction cannot reach).",
+    "theoremCount": 14,
     "definitionCount": 2
   },
   "overview": {
