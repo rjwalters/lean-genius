@@ -1,0 +1,119 @@
+{
+  "id": "beta-integral-recurrence-oq-01-oq-01-oq-01-oq-01",
+  "title": "An Explicit 1 + O(1/n) Rate for the Diagonal Beta Value",
+  "slug": "beta-integral-recurrence-oq-01-oq-01-oq-01-oq-01",
+  "description": "Upgrades the bare asymptotic equivalence B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) of the parent entry to an explicit two-sided rate with effective constants. Writing T n = √(πn)/((2n+1)·4ⁿ) for the leading term and q n = B(n+1,n+1)/T n for the multiplicative correction, the correction factor equals stirlingSeq(n)²/(√π·stirlingSeq(2n)) exactly, and is bracketed for n ≥ 2 by exp(-1/(4(2n-1))) ≤ q n ≤ exp(1/(2(n-1))), both exponents O(1/n). This gives the honest, effective form q n = 1 + O(1/n), and hence B(n+1,n+1)/T n − 1 = O(1/n). The engine is a new quantitative Stirling tail bound log stirlingSeq(m+1) − log√π ≤ 1/(4m) not packaged in Mathlib.",
+  "references": [
+    {
+      "authors": "James Stirling",
+      "title": "Methodus Differentialis (Stirling's approximation for n!)",
+      "year": 1730,
+      "note": "The Stirling sequence stirlingSeq k = k!/(√(2k)·(k/e)^k) → √π drives the entire rate."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Analysis.SpecialFunctions.Stirling (stirlingSeq, per-step bound, √π ≤ stirlingSeq)",
+      "year": 2024,
+      "note": "Supplies log_stirlingSeq_sub_log_stirlingSeq_succ, sqrt_pi_le_stirlingSeq, and tendsto_stirlingSeq_sqrt_pi; the tail bound and central-binomial/Beta rate are assembled here."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BetaCentralBinomialExplicitRate.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "beta-function",
+      "asymptotics",
+      "stirling",
+      "central-binomial"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified; depends only on the foundational axioms propext, Classical.choice, and Quot.sound (confirmed via #print axioms).",
+    "lineCount": 373,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "originalContributions": [
+      "log_stirlingSeq_sub_sqrt_pi_le: a new quantitative Stirling tail bound log stirlingSeq(m+1) − log√π ≤ 1/(4m) (m ≥ 1), telescoped from Mathlib's per-step bound and closed by the √π limit — not packaged in Mathlib",
+      "centralBinom_stirling: the exact identity C(2n,n) = stirlingSeq(2n)/stirlingSeq(n)²·(4ⁿ/√n)",
+      "betaDiag_eq_target_mul: the exact factorisation B(n+1,n+1) = T n · q n with q n = stirlingSeq(n)²/(√π·stirlingSeq(2n))",
+      "betaDiag_correction_bracket: the effective two-sided rate exp(-1/(4(2n-1))) ≤ q n ≤ exp(1/(2(n-1))) for n ≥ 2",
+      "betaDiag_correction_isBigO and betaDiag_rate: the clean Landau form q n − 1 = O(1/n) and B(n+1,n+1)/T n − 1 = O(1/n)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The diagonal Beta value B(n+1,n+1) = (n!)²/(2n+1)! is a central quantity in probability (the symmetric Beta distribution), combinatorics (via the central binomial coefficient), and analysis. The parent entry chain proved its closed form and then its bare leading-order asymptotics B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) as an Asymptotics.IsEquivalent statement — the ratio of the two sides tends to 1, but with no control on how fast.",
+    "problemStatement": "Upgrade the bare equivalence B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) to an explicit two-sided rate B(n+1,n+1) = √(πn)/((2n+1)·4ⁿ)·(1 + O(1/n)) with effective constants, using the quantitative behaviour of Mathlib's Stirling sequence (in particular √π ≤ stirlingSeq n).",
+    "proofStrategy": "The correction factor q n = B(n+1,n+1)/T n collapses, via an exact central-binomial/Stirling identity, to q n = stirlingSeq(n)²/(√π·stirlingSeq(2n)). Taking logarithms, log q n = 2(log stirlingSeq n − log√π) − (log stirlingSeq(2n) − log√π), so the rate is controlled entirely by the deviation log stirlingSeq k − log√π. The key new lemma bounds this deviation: telescoping Mathlib's per-step bound log stirlingSeq(m+j+1) − log stirlingSeq(m+j+2) ≤ 1/(4(m+j)) − 1/(4(m+j+1)) over a range and sending the endpoint to ∞ (where stirlingSeq → √π) gives log stirlingSeq(m+1) − log√π ≤ 1/(4m). Combined with the Mathlib lower bound √π ≤ stirlingSeq k (nonnegative deviation), this yields the explicit bracket exp(-1/(4(2n-1))) ≤ q n ≤ exp(1/(2(n-1))). The Landau corollary follows from exp(±x) − 1 = O(x) via Real.add_one_le_exp. Fully verified, 0 axioms."
+  },
+  "conclusion": {
+    "summary": "The diagonal Beta value's leading-order asymptotic is upgraded from a bare equivalence to an explicit, effective two-sided rate: the multiplicative correction q n = B(n+1,n+1)/T n is squeezed between exp(-1/(4(2n-1))) and exp(1/(2(n-1))) for n ≥ 2, giving the honest q n = 1 + O(1/n).",
+    "implications": "Effective rates (as opposed to bare equivalences) are what downstream quantitative arguments need — error bars for numerical approximation, tail estimates, and concentration bounds. The new Stirling tail bound log stirlingSeq(m+1) − log√π ≤ 1/(4m) is reusable for any quantity governed by the Stirling sequence, filling a gap in Mathlib's Stirling API.",
+    "openQuestions": [
+      "Sharpen the two-sided bracket to a single symmetric exp(±c/n) with matched constant c (the current lower and upper exponents differ by a factor)",
+      "Extend the effective rate to off-diagonal Beta values B(m+1,n+1) with m ≠ n",
+      "Formalize the full asymptotic expansion B(n+1,n+1) = T n·(1 + c₁/n + c₂/n² + …) with explicit coefficients"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-beta-rate-stirling-tail",
+      "title": "Part 1 — A Quantitative Stirling Tail Bound",
+      "startLine": 61,
+      "endLine": 139,
+      "description": "The engine: `log_gap_le_telescope` recasts Mathlib's per-step bound as a genuine telescoping difference of 1/(4·), and `log_stirlingSeq_sub_sqrt_pi_le` sums it over range N and sends N → ∞ (using stirlingSeq → √π) to obtain the new tail bound log stirlingSeq(m+1) − log√π ≤ 1/(4m) for m ≥ 1. `zero_le_log_stirlingSeq_sub_sqrt_pi` records the matching nonnegativity from √π ≤ stirlingSeq k."
+    },
+    {
+      "id": "sec-beta-rate-central-binom",
+      "title": "Part 2 — The Exact Central-Binomial / Stirling Identity",
+      "startLine": 140,
+      "endLine": 173,
+      "description": "`centralBinom_stirling`: the exact identity C(2n,n) = stirlingSeq(2n)/stirlingSeq(n)²·(4ⁿ/√n), pure algebra from the definition of stirlingSeq and the factorial form of the central binomial coefficient, handled by field_simp/ring_nf/nlinarith with the √n·√n = n identity."
+    },
+    {
+      "id": "sec-beta-rate-correction",
+      "title": "Part 3 — The Correction Factor and Its Bracket",
+      "startLine": 174,
+      "endLine": 281,
+      "description": "Defines the leading term T n = √(πn)/((2n+1)·4ⁿ) and the correction q n = stirlingSeq(n)²/(√π·stirlingSeq(2n)). `betaDiag_eq_target_mul` proves the exact factorisation B(n+1,n+1) = T n · q n. `log_correction_eq` splits log q n into Stirling deviations, and `log_correction_upper`/`log_correction_lower` bound it by 1/(2(n-1)) above and −1/(4(2n-1)) below using the Part 1 tail bound and nonnegativity."
+    },
+    {
+      "id": "sec-beta-rate-explicit",
+      "title": "Part 4 — The Explicit Two-Sided Rate and O(1/n) Corollary",
+      "startLine": 282,
+      "endLine": 373,
+      "description": "`betaDiag_correction_bracket` (main): for n ≥ 2, exp(-1/(4(2n-1))) ≤ q n ≤ exp(1/(2(n-1))), the effective form of q n = 1 + O(1/n). `betaDiag_correction_isBigO` derives the clean Landau statement q n − 1 = O(1/n) via exp(±x) − 1 = O(x) (Real.add_one_le_exp). `betaDiag_rate` (capstone): B(n+1,n+1)/T n − 1 = O(1/n)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry proves the bare asymptotic equivalence B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) (Asymptotics.IsEquivalent); this entry upgrades it to an explicit two-sided rate with effective constants, answering the parent's open question."
+    },
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The grandparent entry identifies the diagonal Beta value with the central binomial reciprocal, B(n+1,n+1) = 1/((2n+1)·C(2n,n)); the exact identity centralBinom_stirling here converts that into the Stirling-sequence form driving the rate."
+    },
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "A sibling entry establishing the Stirling asymptotic of the half-integer Beta diagonal; both quantify Beta diagonals via the Stirling sequence."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 373,
+    "path": "Proofs/BetaCentralBinomialExplicitRate.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 13
+  },
+  "sorries": 0
+}

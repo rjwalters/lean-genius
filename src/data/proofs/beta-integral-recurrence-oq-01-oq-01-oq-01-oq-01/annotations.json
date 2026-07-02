@@ -1,0 +1,61 @@
+[
+  {
+    "id": "ann-beta-rate-overview",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01-oq-01",
+    "type": "insight",
+    "range": { "startLine": 4, "endLine": 52 },
+    "title": "From Bare Equivalence to an Effective 1 + O(1/n) Rate",
+    "content": "The parent entry proved only that B(n+1,n+1)/(√(πn)/((2n+1)·4ⁿ)) → 1 (an Asymptotics.IsEquivalent, no rate). This entry makes the convergence effective: the multiplicative correction q n = B(n+1,n+1)/T n equals stirlingSeq(n)²/(√π·stirlingSeq(2n)) exactly, and is squeezed between two explicit exponentials exp(-1/(4(2n-1))) ≤ q n ≤ exp(1/(2(n-1))) whose exponents are O(1/n). This is the honest, quantitative form of q n = 1 + O(1/n).",
+    "mathContext": "An IsEquivalent statement f ~ g says f/g → 1 but gives no error bound; downstream quantitative work (error bars, tail estimates) needs an effective rate |f/g − 1| ≤ C/n. Converting the former to the latter is the point of this entry.",
+    "significance": "key",
+    "relatedConcepts": ["Beta-function", "asymptotic-rate", "Stirling-sequence", "central-binomial-coefficient"],
+    "prerequisites": [
+      "Mathlib.Analysis.SpecialFunctions.Stirling (stirlingSeq and its convergence to √π)",
+      "The parent entry's betaDiag and central-binomial identity"
+    ]
+  },
+  {
+    "id": "ann-beta-rate-stirling-tail",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01-oq-01",
+    "type": "proof-technique",
+    "range": { "startLine": 61, "endLine": 139 },
+    "title": "A New Quantitative Stirling Tail Bound via Telescoping",
+    "content": "Mathlib packages the per-step bound log stirlingSeq(k+1) − log stirlingSeq(k+2) ≤ 1/(4(k+1)²) but no tail bound. `log_gap_le_telescope` recasts each step as a genuine telescoping difference 1/(4(m+j)) − 1/(4(m+j+1)) (the 1/(4·²) step is dominated by consecutive reciprocal-gaps). Summing over range N telescopes to 1/(4m) − 1/(4(m+N)) ≤ 1/(4m); sending N → ∞, where stirlingSeq → √π, yields `log_stirlingSeq_sub_sqrt_pi_le`: log stirlingSeq(m+1) − log√π ≤ 1/(4m).",
+    "mathContext": "This is the standard 'sum the tail of a convergent telescoping series and pass to the limit' argument, made effective. The bound is uniform in the number of terms N, so le_of_tendsto' transfers it to the limit.",
+    "significance": "key",
+    "relatedConcepts": ["Stirling-sequence", "telescoping-sum", "tail-bound"]
+  },
+  {
+    "id": "ann-beta-rate-central-binom",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01-oq-01",
+    "type": "concept",
+    "range": { "startLine": 140, "endLine": 173 },
+    "title": "The Exact Central-Binomial / Stirling Identity",
+    "content": "`centralBinom_stirling`: C(2n,n) = stirlingSeq(2n)/stirlingSeq(n)²·(4ⁿ/√n), exact for n ≥ 1. Pure algebra from stirlingSeq k = k!/(√(2k)·(k/e)^k) and C(2n,n) = (2n)!/(n!)², using √(2·2n) = 2√n, (√(2n))² = 2n, and ((2n)/e)^(2n) = 4ⁿ·((n/e)^n)². The bookkeeping is discharged by field_simp, ring_nf, and nlinarith with √n·√n = n.",
+    "mathContext": "This exact identity is what lets the messy central binomial coefficient be replaced entirely by ratios of Stirling-sequence terms, whose deviation from √π is quantitatively controlled.",
+    "significance": "supporting",
+    "relatedConcepts": ["central-binomial-coefficient", "Stirling-sequence", "factorial"]
+  },
+  {
+    "id": "ann-beta-rate-correction",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01-oq-01",
+    "type": "proof-technique",
+    "range": { "startLine": 174, "endLine": 281 },
+    "title": "The Correction Factor and Its Logarithmic Bracket",
+    "content": "With T n = √(πn)/((2n+1)·4ⁿ) and q n = stirlingSeq(n)²/(√π·stirlingSeq(2n)), `betaDiag_eq_target_mul` proves the exact factorisation B(n+1,n+1) = T n · q n. Taking logs, log q n = 2·(dev n) − dev(2n) where dev k = log stirlingSeq k − log√π. The Part 1 tail bound and its nonnegativity then give log_correction_upper (≤ 1/(2(n-1))) and log_correction_lower (≥ −1/(4(2n-1))).",
+    "mathContext": "Reducing a multiplicative rate to an additive one via logarithms is the standard move; here it turns the product of Stirling terms into a difference of controlled deviations.",
+    "significance": "key",
+    "relatedConcepts": ["Beta-function", "correction-factor", "logarithm"]
+  },
+  {
+    "id": "ann-beta-rate-explicit",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01-oq-01",
+    "type": "insight",
+    "range": { "startLine": 282, "endLine": 373 },
+    "title": "The Effective Two-Sided Rate and the Clean O(1/n) Form",
+    "content": "`betaDiag_correction_bracket` (main): for n ≥ 2, exp(-1/(4(2n-1))) ≤ q n ≤ exp(1/(2(n-1))), obtained by exponentiating the logarithmic bracket (Real.le_log_iff_exp_le / log_le_iff_le_exp). `betaDiag_correction_isBigO` converts this to the Landau statement q n − 1 = O(1/n), using exp(±x) − 1 = O(x) (Real.add_one_le_exp with exp b ≤ 3). `betaDiag_rate` (capstone): B(n+1,n+1)/T n − 1 = O(1/n).",
+    "mathContext": "The two exponents differ by a constant factor, so the bracket is not symmetric; sharpening to a single exp(±c/n) is left open. The Landau form is the 'honest 1 + O(1/n)' that a reader expects.",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic-rate", "big-O-notation", "Beta-function"]
+  }
+]
