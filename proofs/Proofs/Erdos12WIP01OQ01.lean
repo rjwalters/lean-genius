@@ -100,8 +100,7 @@ theorem residue_card_le (h : IsDivisibilityFree A) {a : ℕ} (ha : a ∈ A)
   apply Finset.card_le_card_of_injOn (fold a)
   · -- The folded residues land in `range (a/2+1)`.
     intro r hr
-    simp only [Finset.mem_image] at hr
-    obtain ⟨b, _, rfl⟩ := hr
+    obtain ⟨b, _, rfl⟩ := Finset.mem_image.mp hr
     exact fold_mem_range (Nat.mod_lt b ha0)
   · -- `fold a` is injective on the residue set.
     intro r hr s hs hfold
