@@ -137,6 +137,11 @@
       "targetId": "area-of-circle-oq-07-oq-05",
       "relationship": "related",
       "description": "Grandparent. The second moment ∫ x² e^{-x²} = √π/2 is the first nontrivial even moment; together with the vanishing first odd moment ∫ x e^{-x²} = 0 proved here it illustrates the even/odd dichotomy."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-05-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling (same parent). Lifts the even moments to an arbitrary Gaussian scale, ∫ x^{2n} e^{-a x²} = (2n-1)‼·√(π/a)/(2a)ⁿ, by the dilation x ↦ √a·x. It generalizes the even branch of this entry's full moment sequence in the scale parameter a; the odd moments proved here vanish at every scale by the same symmetry, so the two together give the complete scaled moment table."
     }
   ],
   "references": [
