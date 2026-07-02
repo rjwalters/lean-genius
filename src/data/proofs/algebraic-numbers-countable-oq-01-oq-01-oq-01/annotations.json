@@ -76,7 +76,7 @@
     "id": "algnum-perfect-ann-emb",
     "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
     "range": {
-      "startLine": 114,
+      "startLine": 115,
       "endLine": 133
     },
     "type": "theorem",
@@ -95,6 +95,54 @@
       "finite field extensions",
       "separable degree",
       "algebraic closure"
+    ]
+  },
+  {
+    "id": "algnum-perfect-ann-setup",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 41,
+      "endLine": 48
+    },
+    "type": "context",
+    "title": "Ambient setting: building on the algebraic closure ℚ̄ ⊆ ℂ",
+    "content": "The file imports its parent AlgebraicNumbersCountableOQ01OQ01, which realizes the algebraic numbers concretely as algebraicNumbersField : IntermediateField ℚ ℂ and proves that intermediate field is algebraically closed — an algebraic closure of ℚ living inside ℂ. Mathlib.FieldTheory.Perfect supplies the perfectness machinery (PerfectField, PerfectField.ofCharZero, IsAlgClosed.perfectField, Algebra.IsAlgebraic.perfectField, and the separability instances), while Mathlib.FieldTheory.SeparableDegree supplies Field.finSepDegree and Field.Emb. open AlgebraicNumbersCountableOQ01OQ01 brings algebraicNumbersField together with its parent instances (algebraic closedness, algebraicity over ℚ) into scope, and everything below lives in the namespace AlgebraicNumbersCountableOQ01OQ01OQ01. Every result in the file is then either inferInstance or a single Mathlib lemma application, so no new axioms are introduced.",
+    "mathContext": "The base field is $\\mathbb{Q}$ (characteristic zero) and the object of study is its algebraic closure $\\overline{\\mathbb{Q}}$, presented concretely as an intermediate field of $\\mathbb{C}$. All separability phenomena here are consequences of characteristic zero, packaged through Mathlib's PerfectField typeclass.",
+    "significance": "context",
+    "relatedConcepts": [
+      "algebraic closure",
+      "intermediate field",
+      "perfect field",
+      "typeclass inference"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "Lean typeclass resolution",
+      "algebraic numbers"
+    ]
+  },
+  {
+    "id": "algnum-perfect-ann-examples",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 138,
+      "endLine": 144
+    },
+    "type": "example",
+    "title": "Worked examples: squarefree minimal polynomials and separability of ℚ̄",
+    "content": "Two sanity checks tie the abstract API back to honest complex numbers. The first applies minpoly_squarefree_rat to an arbitrary algebraic z : ℂ — feeding hz.isIntegral (an algebraic element over a field is integral) — to conclude Squarefree (minpoly ℚ z): the minimal polynomial over ℚ of any concrete algebraic number has no repeated factors. The second re-exports isSeparable_rat_algebraicNumbers as Algebra.IsSeparable ℚ algebraicNumbersField, confirming that the concrete field of algebraic numbers is a separable (indeed perfect) extension of ℚ. Neither example proves anything new; they document how to invoke the file's theorems on genuine ℂ-valued inputs.",
+    "mathContext": "For $z \\in \\mathbb{C}$ algebraic over $\\mathbb{Q}$, $\\operatorname{minpoly}_{\\mathbb{Q}}(z)$ is irreducible and, in characteristic zero, separable — hence squarefree with $\\deg$ distinct complex roots. The second example instantiates $\\operatorname{Sep}(\\overline{\\mathbb{Q}}/\\mathbb{Q})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "squarefree polynomial",
+      "separable extension",
+      "algebraic elements"
+    ],
+    "prerequisites": [
+      "minimal polynomials",
+      "integral elements",
+      "separable extensions"
     ]
   }
 ]
