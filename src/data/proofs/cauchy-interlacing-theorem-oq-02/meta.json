@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Poincaré Separation — Interlacing for Arbitrary-Codimension Compression",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "Imports (Mathlib, parent CauchyInterlacingKeystone), module docstring, and setup (open scoped InnerProductSpace, CauchyInterlacing.Keystone; namespace CauchyInterlacing.Poincare). The codimension-one Cauchy interlacing inequality lam(k.succ) ≤ mu k ≤ lam(k.castSucc) (from CauchyInterlacingAssembly, #27236, 0-sorry/0-axiom) relates the descending eigenvalues of a symmetric T on V (dim n+1) to those of its compression TH to a codimension-one subspace H. This file answers the parent's second open question — the general delete-m-rows/columns Poincaré separation theorem: for a codimension-m compression (dim V=n+m, dim H=n), lam⟨k+m⟩ ≤ mu k and mu k ≤ lam⟨k⟩ (ascending: λ_k ≤ μ_k ≤ λ_{k+m}), with m=1 the codimension-one case. No new spectral theory is needed: the bound-form Courant–Fischer max–min characterization lives in the keystone, already parametrized by arbitrary subspace dimension; only the dimension arithmetic changes (dim(S⊓H) ≥ dim S − m). Research file, intentionally NOT registered in Proofs.lean.",
+      "mathContext": "The variational content is entirely in the keystone, stated for arbitrary subspace dimension; Poincaré separation is free — the upper bound is identical to codimension-one and the lower bound just takes a (k+m+1)-dimensional optimal subspace."
+    },
+    {
       "id": "statement",
       "title": "Poincaré Separation: the Statement",
       "startLine": 74,
