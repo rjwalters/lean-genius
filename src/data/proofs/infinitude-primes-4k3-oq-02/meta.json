@@ -46,7 +46,7 @@
       "count_class_card_eq: Finset.card form of count_class_eq, bridging Nat.count to filtered-range cardinalities"
     ],
     "dateAdded": "2026-06-20",
-    "lineCount": 264,
+    "lineCount": 273,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The theorems are axiom-free; the worked examples discharge by applying the proved theorems, with `decide` used only on small closed coprimality side-goals like `(4).Coprime 3` (kernel `decide`, NOT `native_decide`, so no Lean.ofReduceBool — the entry remains axiom-free). Builds on Mathlib counting/partition lemmas (Nat.count_modEq_card, Nat.filter_coprime_Ico_eq_totient, Finset.card_eq_sum_card_fiberwise, Nat.gcd_rec); the synthesis into exact equidistribution, the sharp coprime equipartition (each reduced class carries exactly N coprimes), and the relative density 1/φ(d) is the original content. The DEEP statement of OQ-02 — that the PRIMES (not all coprime integers) ≡ a mod d have density 1/φ(d), i.e. the Prime Number Theorem for arithmetic progressions — is NOT proved here and is not available in Mathlib; this entry formalizes the elementary combinatorial skeleton it refines and states the gap explicitly.",
     "definitionCount": 0
   },
@@ -248,7 +248,7 @@
   ],
   "leanFile": {
     "namespace": "InfinitudePrimes4k3OQ02",
-    "lineCount": 264,
+    "lineCount": 273,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 0,

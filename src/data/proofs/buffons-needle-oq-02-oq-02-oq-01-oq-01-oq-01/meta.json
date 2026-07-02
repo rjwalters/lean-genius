@@ -22,7 +22,7 @@
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
     "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.BuffonsNeedleOQ02OQ02OQ01OQ01OQ01` builds green (Lean v4.26.0, Mathlib pin). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms via Mathlib. Self-contained: the crossingFactor recurrence and the even/odd telescoping products are re-declared verbatim from the parent entry (the companion BuffonsNeedleOQ02OQ01.lean does not build on the pinned Mathlib). The link to pi is Mathlib's Wallis product Real.Wallis.W (tendsto_W_nhds_pi_div_two, W_le, le_W); the asymptotic and all bounds are derived here from the Wallis bridge W m = (2m+1) E_m^2 with no Stirling input.",
-    "lineCount": 347,
+    "lineCount": 350,
     "theoremCount": 20,
     "definitionCount": 3,
     "originalContributions": [
@@ -133,7 +133,7 @@
       "Filter"
     ],
     "namespace": "BuffonCrossingAsymptotic",
-    "lineCount": 347,
+    "lineCount": 350,
     "axiomCount": 0,
     "theoremCount": 20,
     "definitionCount": 3,

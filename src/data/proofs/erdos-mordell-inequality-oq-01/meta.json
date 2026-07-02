@@ -42,7 +42,7 @@
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 399,
+    "lineCount": 405,
     "assumptions": "None. The Erdős–Mordell inequality is fully proved with no sorries and no axioms beyond Lean/Mathlib's standard foundations (propext, Classical.choice, Quot.sound). The last remaining geometric obligation — the chord identity at vertex A, (dist P A · sin ∠BAC)² = lineDist P C A² + lineDist P A B² + 2·lineDist P C A·lineDist P A B·cos ∠BAC (chord_identity) — is discharged by delegation to ErdosMordellChord.chord_identity in the companion file ErdosMordellChordIdentity.lean, whose cosine-side core chord_cos_eq is a pure inner-product/coordinate identity in EuclideanSpace ℝ (Fin 2): the cosine of the angle subtended at P by the two pedal feet equals minus the cosine of the triangle's angle at the vertex. That identity is proved via a small 2D signed-area (cross-product) toolkit — Lagrange's identity, the recentred pedal-foot displacement, the squared-length and cleared-denominator inner-product identities, and the barycentric sign witness [u,w]·[v,w] = −s·t·[u,v]² < 0 from interior_barycentric. Everything else was already proved: the law of sines (Mathlib's dist_div_sin_angle_eq_two_mul_circumradius), the reduction of the three cyclic key inequalities to the single vertex-A case, side-length positivity, pedal-distance nonnegativity, and the AM–GM algebraic reduction.",
     "originalContributions": [
       "erdos_mordell_reduction: the geometry-free AM–GM core, proving 2(da+db+dc) ≤ PA+PB+PC from the three weighted key inequalities via an explicit nonnegative certificate (a·da·(b−c)² + ... ≥ 0). Carries no geometric hypotheses; reusable for any proof of the key inequalities.",
@@ -166,7 +166,7 @@
       "EuclideanGeometry"
     ],
     "namespace": "ErdosMordellOQ01",
-    "lineCount": 399,
+    "lineCount": 405,
     "axiomCount": 0,
     "theoremCount": 12,
     "substantiveTheoremCount": 6,
