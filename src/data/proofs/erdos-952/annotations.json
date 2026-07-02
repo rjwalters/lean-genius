@@ -16,7 +16,11 @@
       "bounded-gaps",
       "moat"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ring of Gaussian integers ℤ[i]",
+      "prime numbers and primality",
+      "the notion of an open problem in mathematics"
+    ]
   },
   {
     "id": "ann-952-gaussian-prime",
@@ -35,7 +39,11 @@
       "ufd",
       "prime"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ring of Gaussian integers ℤ[i]",
+      "irreducible and prime elements in a commutative ring",
+      "unique factorization domains (UFDs)"
+    ]
   },
   {
     "id": "ann-952-classification",
@@ -54,7 +62,11 @@
       "splitting",
       "inert"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the norm N(a+bi)=a²+b² on ℤ[i]",
+      "Fermat's two-square theorem (sums of two squares)",
+      "quadratic residues modulo 4"
+    ]
   },
   {
     "id": "ann-952-walk",
@@ -72,7 +84,11 @@
       "sequence",
       "bounded-steps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the complex plane as a lattice",
+      "injective functions and sequences ℕ→ℂ",
+      "the Euclidean norm / distance"
+    ]
   },
   {
     "id": "ann-952-conjecture",
@@ -90,7 +106,11 @@
       "moat-problem",
       "connectivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the definition of an infinite Gaussian-prime walk",
+      "existential quantification over sequences",
+      "graph connectivity intuition"
+    ]
   },
   {
     "id": "ann-952-jordan-rabung",
@@ -108,7 +128,11 @@
       "negative-result",
       "step-bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the norm on Gaussian integers",
+      "exhaustive computational search arguments",
+      "the moat / bounded-step walk setup"
+    ]
   },
   {
     "id": "ann-952-tsuchimura",
@@ -126,7 +150,11 @@
       "best-known",
       "computational"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the norm on Gaussian integers",
+      "the Jordan-Rabung bound (step norm < 5)",
+      "computational verification of moats"
+    ]
   },
   {
     "id": "ann-952-moat-width",
@@ -144,7 +172,11 @@
       "critical-value",
       "escape"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the bounded-gaps walk definition",
+      "infimum / least element of a set of naturals",
+      "the moat conjecture statement"
+    ]
   },
   {
     "id": "ann-952-density",
@@ -162,7 +194,11 @@
       "prime-counting",
       "asymptotic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the classical prime counting function π(x)",
+      "asymptotic (~) notation",
+      "counting Gaussian primes in a disk of radius R"
+    ]
   },
   {
     "id": "ann-952-mod4",
@@ -180,7 +216,11 @@
       "splitting-primes",
       "gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "primes congruent to 1 mod 4 and their splitting in ℤ[i]",
+      "gaps between consecutive primes",
+      "the moat / escape formulation"
+    ]
   },
   {
     "id": "ann-952-tao",
@@ -198,7 +238,11 @@
       "difficulty",
       "expert-opinion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the global vs local structure distinction",
+      "the difficulty of the moat problem",
+      "prime density heuristics"
+    ]
   },
   {
     "id": "ann-952-variants",
@@ -216,7 +260,11 @@
       "eisenstein",
       "twin-primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ring of Eisenstein integers ℤ[ω]",
+      "the twin prime conjecture",
+      "the Gaussian moat setup"
+    ]
   },
   {
     "id": "ann-952-status",
@@ -234,6 +282,10 @@
       "open-problem",
       "misattribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the current best step bound (Tsuchimura √26)",
+      "the meaning of open vs solved problems",
+      "the attribution history of the moat problem"
+    ]
   }
 ]
