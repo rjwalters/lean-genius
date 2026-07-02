@@ -14,6 +14,19 @@ the Ibragimov (1962) covariance summability condition
 is satisfied, and the long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1})
 exists and is finite. If additionally σ² > 0, then S_n/√n →_d N(0, σ²).
 
+**S27 (this session): signed bounded-variable Davydov estimate.** Added
+`signed_bounded_covariance_le_alpha_mul_rectangle` (PROVEN, 0-axiom): lifts the
+S26 non-negative bounded estimate `|Cov(f,g)| ≤ α·M·N` to *signed* bounded
+variables `m ≤ f ≤ M`, `n ≤ g ≤ N`, giving `|Cov(f,g)| ≤ α·(M−m)·(N−n)`. The
+proof shifts `f ↦ f − m`, `g ↦ g − n` to the non-negative range via the S19
+translation-invariance lemmas (`covariance_add_const_left/right`) — the exact
+constant-shift reduction those lemmas were introduced to serve — and applies S26
+to the shifts. Product integrabilities for the linearity identities come from
+`Integrable.bdd_mul` (each shift is bounded measurable on a probability space).
+For a symmetric truncation `[−T, T]` (`m = −T`, `M = T`) the window width is
+`2T`, so the truncated base estimate reads `|Cov| ≤ 4 α T²` — the form the L^p
+density step (Hölder over truncation level) consumes. Sorries unchanged (2).
+
 **Status of this file (S5b — `davydov_indicator_bound` — indicator base case of
 Davydov's covariance inequality, third order-theory ingredient now proven).**
 
@@ -1459,6 +1472,111 @@ theorem bounded_covariance_le_alpha_mul_rectangle
       hfinM (fun t _ => hInner t)
   rw [hvolM, Real.norm_eq_abs] at hOuter
   exact le_of_le_of_eq hOuter (by ring)
+
+/-- **Signed bounded-variable Davydov estimate** (S27, this session).
+
+Lifts the non-negative bounded estimate `bounded_covariance_le_alpha_mul_rectangle`
+(S26) to *signed* bounded variables. For `f` with `m ≤ f ≤ M` (a.e.) measurable
+w.r.t. `σPair 0`, and `g` with `n ≤ g ≤ N` (a.e.) measurable w.r.t. `σPair 1`,
+$$
+  \bigl|\mathrm{Cov}(f, g)\bigr|
+    \;=\; \Bigl|\!\int f g \,-\, \bigl(\!\int f\bigr)\bigl(\!\int g\bigr)\Bigr|
+    \;\le\; \alpha(\mathcal F, \mathcal G)\cdot (M - m)\cdot (N - n).
+$$
+
+**Proof.** Covariance is invariant under adding a constant to either argument
+(`covariance_add_const_left`, `covariance_add_const_right`, S19), so
+`Cov(f, g) = Cov(f - m, g - n)`. The shifted variables satisfy
+`0 ≤ f - m ≤ M - m` and `0 ≤ g - n ≤ N - n`, hence S26 applies with window
+widths `M - m`, `N - n`. Product integrabilities feeding the S19 linearity
+identities are supplied by `Integrable.bdd_mul`, since each shift is a bounded
+measurable function on a probability space.
+
+**Role.** This is precisely the constant-shift reduction the S19 translation
+lemmas were introduced to serve, and the form a symmetric truncation
+`f ↦ clamp f [-T, T]` reduces to: with `m = -T`, `M = T` the window width is
+`2T`, so the truncated Davydov base estimate reads `|Cov| ≤ 4 α T²`. The
+remaining `davydov_covariance_inequality` lifts this bounded estimate to general
+`L^p` variables via truncation + Hölder in the mixing rate `α^{(p-2)/p}`. -/
+theorem signed_bounded_covariance_le_alpha_mul_rectangle
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {f g : Ω → ℝ} {m M n N : ℝ}
+    (hmM : m ≤ M) (hnN : n ≤ N)
+    (hf_meas : Measurable f) (hg_meas : Measurable g)
+    (hf_sig : Measurable[σPair 0] f) (hg_sig : Measurable[σPair 1] g)
+    (hf_int : Integrable f μ) (hf_lb : (fun _ => m) ≤ᵐ[μ] f)
+    (hf_ub : f ≤ᵐ[μ] (fun _ => M))
+    (hg_int : Integrable g μ) (hg_lb : (fun _ => n) ≤ᵐ[μ] g)
+    (hg_ub : g ≤ᵐ[μ] (fun _ => N))
+    (h_joint_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 (N - n), μ.real {ω | t < f ω - m ∧ s < g ω - n})
+      (Set.Ioc 0 (M - m)))
+    (h_prod_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 (N - n),
+        μ.real {ω | t < f ω - m} * μ.real {ω | s < g ω - n})
+      (Set.Ioc 0 (M - m))) :
+    |∫ ω, f ω * g ω ∂μ - (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ)|
+      ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1)
+          * (M - m) * (N - n) := by
+  -- Window widths are non-negative.
+  have hMm : 0 ≤ M - m := sub_nonneg.mpr hmM
+  have hNn : 0 ≤ N - n := sub_nonneg.mpr hnN
+  -- Regularity of the shifted (non-negative) variables `f - m`, `g - n`.
+  have hF_meas : Measurable (fun ω => f ω - m) := hf_meas.sub measurable_const
+  have hG_meas : Measurable (fun ω => g ω - n) := hg_meas.sub measurable_const
+  have hF_sig : Measurable[σPair 0] (fun ω => f ω - m) := hf_sig.sub measurable_const
+  have hG_sig : Measurable[σPair 1] (fun ω => g ω - n) := hg_sig.sub measurable_const
+  have hF_int : Integrable (fun ω => f ω - m) μ := hf_int.sub (integrable_const m)
+  have hG_int : Integrable (fun ω => g ω - n) μ := hg_int.sub (integrable_const n)
+  -- Non-negativity of the shifts.
+  have hF_nn : (0 : Ω → ℝ) ≤ᵐ[μ] (fun ω => f ω - m) := by
+    filter_upwards [hf_lb] with ω hω
+    have : m ≤ f ω := hω
+    simp only [Pi.zero_apply]; linarith
+  have hG_nn : (0 : Ω → ℝ) ≤ᵐ[μ] (fun ω => g ω - n) := by
+    filter_upwards [hg_lb] with ω hω
+    have : n ≤ g ω := hω
+    simp only [Pi.zero_apply]; linarith
+  -- Upper bounds of the shifts.
+  have hF_ub : (fun ω => f ω - m) ≤ᵐ[μ] (fun _ => M - m) := by
+    filter_upwards [hf_ub] with ω hω
+    have : f ω ≤ M := hω
+    linarith
+  have hG_ub : (fun ω => g ω - n) ≤ᵐ[μ] (fun _ => N - n) := by
+    filter_upwards [hg_ub] with ω hω
+    have : g ω ≤ N := hω
+    linarith
+  -- Uniform norm bound on `f - m`, feeding `Integrable.bdd_mul`.
+  have hFbound : ∀ᵐ ω ∂μ, ‖f ω - m‖ ≤ M - m := by
+    filter_upwards [hf_lb, hf_ub] with ω hlb hub
+    have hlb' : m ≤ f ω := hlb
+    have hub' : f ω ≤ M := hub
+    rw [Real.norm_eq_abs, abs_of_nonneg (by linarith : (0:ℝ) ≤ f ω - m)]
+    linarith
+  -- Product integrabilities needed by the S19 translation identities.
+  have hFg_int : Integrable (fun ω => (f ω - m) * g ω) μ :=
+    hg_int.bdd_mul hF_meas.aestronglyMeasurable hFbound
+  have hFG_int : Integrable (fun ω => (f ω - m) * (g ω - n)) μ :=
+    hG_int.bdd_mul hF_meas.aestronglyMeasurable hFbound
+  -- Covariance is translation-invariant:  Cov(f, g) = Cov(f - m, g - n).
+  have eLm : ∀ ω, f ω - m + m = f ω := fun ω => by ring
+  have eRn : ∀ ω, g ω - n + n = g ω := fun ω => by ring
+  have hcov_eq :
+      (∫ ω, f ω * g ω ∂μ) - (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ)
+        = (∫ ω, (f ω - m) * (g ω - n) ∂μ)
+            - (∫ ω, (f ω - m) ∂μ) * (∫ ω, (g ω - n) ∂μ) := by
+    have hL := covariance_add_const_left (μ := μ) (f := fun ω => f ω - m) (g := g) m
+      hF_int hg_int hFg_int
+    have hR := covariance_add_const_right (μ := μ) (f := fun ω => f ω - m)
+      (g := fun ω => g ω - n) n hF_int hG_int hFG_int
+    simp only [eLm, eRn] at hL hR
+    rw [hL, hR]
+  rw [hcov_eq]
+  exact bounded_covariance_le_alpha_mul_rectangle
+    (f := fun ω => f ω - m) (g := fun ω => g ω - n) (M := M - m) (N := N - n)
+    σPair hMm hNn hF_meas hG_meas hF_sig hG_sig hF_int hF_nn hF_ub hG_int hG_nn hG_ub
+    h_joint_outer h_prod_outer
 
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
