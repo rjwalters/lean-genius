@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/100",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 482,
+    "lineCount": 485,
     "assumptions": "2 axioms: guthKatz_distinct_distances (Guth-Katz 2015: at least cn/log n distinct distances), piepmeyer_construction (9-point integer-distance set with diameter < 5). All other named results are theorems proved from these axioms plus the bridge lemma distinctDistances_le_diam. Kanold's n^(3/4) bound is referenced in commentary only (not formally declared); the Erdős-Anning theorem is motivated via the IsCollinear definition but its proof is outside scope. 0 sorries.",
     "mathlibDependencies": [
       {
@@ -287,7 +287,7 @@
       "Topology"
     ],
     "namespace": "Erdos100",
-    "lineCount": 482,
+    "lineCount": 485,
     "axiomCount": 2,
     "theoremCount": 14,
     "definitionCount": 9,
