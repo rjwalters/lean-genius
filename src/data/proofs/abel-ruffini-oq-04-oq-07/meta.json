@@ -62,6 +62,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Bring–Jerrard Reduction, Tschirnhaus Transform and the Bring Radical",
+      "startLine": 1,
+      "endLine": 84,
+      "summary": "Imports (Polynomial, ordered ring, IntermediateValue, Tactic) and module docstring. OQ-04-OQ-07 formalizes the Bring–Jerrard reduction of the quintic. Fully proved: the linear Tschirnhaus substitution y = x + a₄/5 eliminating the x⁴ term (forward and backward); Bring-radical uniqueness (x ↦ x⁵+x strictly monotone ⟹ at most one real root of x⁵+x+t=0); Bring-radical existence (continuity + coercivity + IVT ⟹ at least one root); and well-definedness of the Bring radical BR(t) as that unique real root. Axiomatized: the full reduction eliminating the x³ and x² terms (quadratic and cubic Tschirnhaus substitutions requiring auxiliary equations up to degree 6). The Bring radical gives a closed form for the Bring–Jerrard normal form y⁵+py+q=0 — expressible via hypergeometric/elliptic functions but, by Abel–Ruffini, not in radicals.",
+      "mathContext": "Status axiomatized (2 axioms): the linear depression step and Bring-radical analysis are machine-checked, but the higher Tschirnhaus eliminations are assumed pending algebraic infrastructure not yet in Mathlib. Part of the Abel–Ruffini family (OQ-04 A₅ simplicity, OQ-04-OQ-03 Galois solvability criterion)."
+    },
+    {
       "id": "poly-defs",
       "title": "Polynomial Type Definitions",
       "startLine": 85,
