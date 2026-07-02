@@ -2,12 +2,12 @@
   "id": "pac-learning-bounds-wip-01",
   "title": "Foundations of VC Dimension: Shattering, Traces, and the |H| Bound",
   "slug": "pac-learning-bounds-wip-01",
-  "description": "The parent entry pac-learning-bounds is axiomatized and its combinatorial core is a placeholder (growthFunction H n := 0). This entry supplies proper, non-placeholder definitions of the trace (restriction) of a hypothesis class and of shattering, and proves genuine foundational lemmas: the growth quantity is ≤ 2^|S|, shattering ⟺ maximal trace, shattering S needs 2^|S| ≤ |H|, hence |S| ≤ log₂|H| (the VC-dimension–vs–size bound), and monotonicity of shattering in the class. 0 sorries and 0 axioms by construction; build confirmation is pending (a fleet-wide Mathlib cache rebuild blocked local verification at submission time).",
+  "description": "The parent entry pac-learning-bounds is axiomatized and its combinatorial core is a placeholder (growthFunction H n := 0). This entry supplies proper, non-placeholder definitions of the trace (restriction) of a hypothesis class and of shattering, and proves genuine foundational lemmas: the growth quantity is ≤ 2^|S|, shattering ⟺ maximal trace, shattering S needs 2^|S| ≤ |H|, hence |S| ≤ log₂|H| (the VC-dimension–vs–size bound), and monotonicity of shattering in the class. Fully verified: 0 sorries, 0 axioms (confirmed via a clean lake env lean build and #print axioms).",
   "meta": {
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Vapnik%E2%80%93Chervonenkis_dimension",
     "date": null,
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/PACLearningBoundsWIP01.lean",
     "tags": [
       "pac-learning",
@@ -58,7 +58,7 @@
     "dateAdded": "2026-07-01",
     "axiomCount": 0,
     "lineCount": 110,
-    "assumptions": "0 sorries and 0 axioms by construction (uses only standard Finset/Nat lemmas and elementary tactics; no sorry, no native_decide). BUILD-PENDING: local verification was blocked at submission by a fleet-wide Mathlib cache rebuild (shared .lake oleans transiently absent); this PR is a draft until a clean `lake env lean` build and `#print axioms` confirm the 0-axiom status.",
+    "assumptions": "None. Fully machine-checked with 0 sorries and 0 axioms beyond Mathlib's foundational axioms (propext, Classical.choice, Quot.sound); verified via a clean `lake env lean` build and #print axioms on all theorems. No native_decide.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
@@ -85,7 +85,7 @@
       "the definition of shattering and VC dimension",
       "the integer logarithm Nat.log"
     ],
-    "text": "A 110-line formalization (0 sorries, 0 axioms by construction; build confirmation pending a fleet cache rebuild) supplying the combinatorial foundation the parent entry left as a placeholder. It defines the trace of a hypothesis class and shattering properly, then proves the growth bound (≤ 2^|S|), the shattering-iff-maximal-trace criterion, the 2^|S| ≤ |H| lower bound, the |S| ≤ log₂|H| VC-vs-size bound, and monotonicity of shattering."
+    "text": "A 110-line, fully verified (0 sorries, 0 axioms, no native_decide) formalization supplying the combinatorial foundation the parent entry left as a placeholder. It defines the trace of a hypothesis class and shattering properly, then proves the growth bound (≤ 2^|S|), the shattering-iff-maximal-trace criterion, the 2^|S| ≤ |H| lower bound, the |S| ≤ log₂|H| VC-vs-size bound, and monotonicity of shattering."
   },
   "sections": [
     {
@@ -114,10 +114,9 @@
     }
   ],
   "conclusion": {
-    "summary": "A formalization (0 sorries, 0 axioms by construction; build confirmation pending) that replaces the parent entry's placeholder combinatorial core with proper definitions of the trace of a hypothesis class and of shattering, and proves the foundational VC-dimension lemmas: the 2^|S| growth bound, the shattering-iff-maximal-trace criterion, the 2^|S| ≤ |H| lower bound, the |S| ≤ log₂|H| VC-vs-size bound, and monotonicity.",
+    "summary": "A fully verified formalization (0 sorries, 0 axioms, no native_decide) that replaces the parent entry's placeholder combinatorial core with proper definitions of the trace of a hypothesis class and of shattering, and proves the foundational VC-dimension lemmas: the 2^|S| growth bound, the shattering-iff-maximal-trace criterion, the 2^|S| ≤ |H| lower bound, the |S| ≤ log₂|H| VC-vs-size bound, and monotonicity.",
     "implications": "**Theoretical significance**: This is the genuine combinatorial substrate needed to state and eventually prove the Sauer–Shelah lemma and PAC sample-complexity bounds, which the parent entry can only axiomatize. The definitions (trace as a Finset image, shattering as trace = powerset) are exactly the interfaces later results build on, and the |S| ≤ log₂|H| bound is the elementary anchor of finite VC theory.",
     "openQuestions": [
-      "Confirm the build and #print axioms (blocked at submission by a fleet cache rebuild), then flip the entry status to verified.",
       "Define the VC dimension as sSup {|S| : H shatters S} and prove it is ≤ log₂|H| and monotone, packaging the bounds above.",
       "Prove the Sauer–Shelah lemma: |Π_H(S)| ≤ Σ_{i≤d} C(|S|,i) where d is the VC dimension — the polynomial growth bound the parent axiomatizes."
     ]
