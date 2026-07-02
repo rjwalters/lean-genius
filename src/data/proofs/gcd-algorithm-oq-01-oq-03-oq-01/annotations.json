@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-lame-sharp-capstone",
+    "proofId": "gcd-algorithm-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 179,
+      "endLine": 186
+    },
+    "type": "insight",
+    "title": "The Capstone: Lamé Sharpness as a Two-Sided Statement",
+    "content": "`lame_sharp` is the theorem the whole file is named for, and it packages the two preceding halves into one clean bidirectional claim. First conjunct: euclidSteps (F_{n+2}, F_{n+1}) = n — consecutive Fibonacci numbers force *exactly* n division steps (from `euclidSteps_fib`). Second conjunct: any pair (a,b) with 0 < b < a taking n steps satisfies F_{n+2} ≤ a and F_{n+1} ≤ b (from `fib_le_of_euclidSteps`) — so no smaller input can be that slow. Together they say the Fibonacci pair is simultaneously an *achiever* and a *minimizer* of the n-step worst case, which is exactly the sharp form of Lamé's theorem: the Euclidean algorithm on inputs below F_{n+2} always finishes in fewer than n steps.",
+    "mathContext": "$\\text{euclidSteps}(F_{n+2}, F_{n+1}) = n$ and $\\text{euclidSteps}(a,b)=n \\wedge 0<b<a \\implies F_{n+2}\\le a,\\ F_{n+1}\\le b$. Equivalently: the number of steps is $O(\\log_\\varphi \\min(a,b))$ with the Fibonacci pair meeting the bound.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lamé's theorem",
+      "Euclidean algorithm complexity",
+      "Fibonacci numbers",
+      "golden ratio",
+      "extremal / worst-case analysis"
+    ],
+    "prerequisites": [
+      "euclidSteps_fib",
+      "fib_le_of_euclidSteps"
+    ]
+  },
+  {
     "id": "ann-euclidsteps-step",
     "proofId": "gcd-algorithm-oq-01-oq-03-oq-01",
     "range": {
