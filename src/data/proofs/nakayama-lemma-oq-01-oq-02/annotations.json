@@ -1,1 +1,143 @@
-{"annotations":[]}
+[
+  {
+    "id": "ann-nakoq0102-header",
+    "proofId": "nakayama-lemma-oq-01-oq-02",
+    "range": {
+      "startLine": 6,
+      "endLine": 52
+    },
+    "type": "concept",
+    "title": "Graded Nakayama: free — and stronger — than the local form",
+    "content": "The docstring states the goal. The parent entry nakayama-lemma-oq-01 formalises the local forms (for a finitely generated module M over a local ring (R, 𝔪), 𝔪M = M ⟹ M = 0). This entry answers its second open question: the GRADED analogue, where the irrelevant ideal R₊ = ⨁_{i>0} Rᵢ of an ℕ-graded ring plays the role of the maximal ideal — if R₊M = M then M = 0. The striking point is that the graded statement needs NO finite-generation hypothesis: whereas the local form's engine is the determinant/Cayley–Hamilton trick over the Jacobson radical, the graded form falls out of a one-line degree argument. If M ≠ 0, pick the least degree d carrying a nonzero homogeneous element x ∈ M_d; writing x ∈ M = R₊M as Σ rⱼ•mⱼ with rⱼ ∈ R₊ (zero degree-0 part), every contribution to the degree-d component would need a piece of mⱼ in degree e = d − i < d, which vanishes by minimality — contradiction. The grading, via its bottom nonzero degree, replaces all the Jacobson-radical machinery.",
+    "mathContext": "For $R=\\bigoplus_{i\\ge 0}R_i$ and graded $R$-module $M=\\bigoplus_n M_n$, $R_+M = M \\Rightarrow M = 0$, with $R_+ = \\bigoplus_{i>0}R_i$ — no finite generation required.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nakayama's lemma (local vs graded)",
+      "irrelevant ideal R₊ of a graded ring",
+      "least nonzero degree argument",
+      "Jacobson radical / determinant trick (avoided here)"
+    ],
+    "prerequisites": [
+      "ℕ-graded rings and modules",
+      "the classical (local) Nakayama lemma",
+      "homogeneous decomposition M = ⨁ Mₙ"
+    ]
+  },
+  {
+    "id": "ann-nakoq0102-setup",
+    "proofId": "nakayama-lemma-oq-01-oq-02",
+    "range": {
+      "startLine": 54,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "The faithful internal-grading model",
+    "content": "The variable block fixes the algebraic setting in its faithful (non-degenerate) form. 𝒜 : ℕ → σA is an internally graded ring (GradedRing 𝒜) and 𝓜 : ℕ → σM an internal graded module over it, where the graded pieces 𝓜 n are additive submonoids of M (AddSubmonoidClass σM M) — NOT R-submodules. This is deliberate: modelling the pieces as mere additive submonoids is the honest model in which degree-shifting Rᵢ • Mₑ ⊆ M_{i+e} is a genuine, nontrivial fact rather than a definitional triviality. The two structural inputs are DirectSum.Decomposition 𝓜 (every m has a unique homogeneous decomposition) and SetLike.GradedSMul 𝒜 𝓜 (the scalar action shifts degrees additively).",
+    "mathContext": "$R_i \\cdot M_e \\subseteq M_{i+e}$ (SetLike.GradedSMul) and $M = \\bigoplus_n M_n$ (DirectSum.Decomposition), with each $M_n$ an additive submonoid of $M$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "GradedRing / internal grading",
+      "SetLike.GradedSMul (degree-shifting action)",
+      "DirectSum.Decomposition",
+      "AddSubmonoidClass vs Submodule"
+    ],
+    "prerequisites": [
+      "SetLike and typeclass-based gradings in Mathlib",
+      "direct-sum decompositions"
+    ]
+  },
+  {
+    "id": "ann-nakoq0102-projm",
+    "proofId": "nakayama-lemma-oq-01-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 73
+    },
+    "type": "definition",
+    "title": "projM: the additive degree-i projection M →+ M",
+    "content": "projM 𝓜 i is the projection of M onto its degree-i piece, built as an ADDITIVE monoid homomorphism M →+ M (the composite of the direct-sum decomposition equivalence, DFinsupp.evalAddMonoidHom i, and the submonoid inclusion). Crucially it is only additive, not R-linear: because R shifts degrees, projecting onto a fixed degree does not commute with the R-action, so an R-linear projection would be wrong here. This mirrors Mathlib's GradedRing.proj on the ring side. The simp lemma projM_apply rewrites projM 𝓜 i m to the coerced decomposition component decompose 𝓜 m i, the computational handle used throughout the proof.",
+    "mathContext": "$\\mathrm{projM}\\,\\mathcal M\\,i : M \\to^+ M,\\quad m \\mapsto (\\mathrm{decompose}\\,\\mathcal M\\,m\\,i : M)$; additive but not $R$-linear.",
+    "significance": "key",
+    "relatedConcepts": [
+      "GradedRing.proj (ring analogue)",
+      "DirectSum.decomposeAddEquiv",
+      "AddMonoidHom (additive, not linear)",
+      "decompose component extraction"
+    ],
+    "prerequisites": [
+      "AddMonoidHom composition",
+      "DFinsupp / DirectSum evaluation homs",
+      "why the projection is not R-linear"
+    ]
+  },
+  {
+    "id": "ann-nakoq0102-vanishing",
+    "proofId": "nakayama-lemma-oq-01-oq-02",
+    "range": {
+      "startLine": 75,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "projM_smul_deg: the key vanishing lemma",
+    "content": "The load-bearing lemma. Assuming every graded piece below degree d is trivial (hmin), it shows that for a homogeneous ring element a ∈ 𝒜 i of POSITIVE degree i ≠ 0 and any n : M, the degree-d component of a • n vanishes: projM 𝓜 d (a • n) = 0. Proof: decompose n = Σ nₑ into homogeneous pieces (DirectSum.sum_support_decompose); by SetLike.GradedSMul.smul_mem each a • nₑ lies in 𝓜 (i+e), so its degree-d component (decompose_of_mem_ne) is zero unless i + e = d; in that single case e = d − i < d, so nₑ = 0 by hmin and the term vanishes anyway. The `omit [AddSubmonoidClass σA R] [GradedRing 𝒜] in` line drops the ring-grading instances not needed for this purely module-side computation, keeping the lemma's hypotheses minimal.",
+    "mathContext": "If $M_e = 0$ for all $e < d$, $a \\in \\mathcal A_i$, $i \\ne 0$, then $\\mathrm{projM}\\,\\mathcal M\\,d\\,(a \\bullet n) = 0$, since $a\\bullet n_e \\in M_{i+e}$ contributes to degree $d$ only when $e = d - i < d$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "SetLike.GradedSMul.smul_mem (degree shift)",
+      "DirectSum.sum_support_decompose",
+      "decompose_of_mem_ne (off-degree component is 0)",
+      "omit to minimise instance hypotheses"
+    ],
+    "prerequisites": [
+      "homogeneous decomposition and support sums",
+      "graded scalar multiplication",
+      "Finset.sum_eq_zero"
+    ]
+  },
+  {
+    "id": "ann-nakoq0102-main",
+    "proofId": "nakayama-lemma-oq-01-oq-02",
+    "range": {
+      "startLine": 105,
+      "endLine": 161
+    },
+    "type": "theorem",
+    "title": "graded_nakayama: R₊ M = M ⟹ M = 0",
+    "content": "The main theorem, assembled from the vanishing lemma by a least-degree contradiction. Assume M is nontrivial. First, the set of degrees carrying a nonzero homogeneous element is nonempty (else every homogeneous component of any m is 0, forcing m = 0 by sum_support_decompose). Let d = Nat.find of that predicate be the least such degree, with witness 0 ≠ x ∈ 𝓜 d, and hmin : every piece below d vanishes. Since x ∈ M = 𝒜₊ • M (from the hypothesis h), apply Submodule.smul_induction_on: on a generator r • n with r ∈ 𝒜₊, the irrelevant-ideal membership gives (decompose 𝒜 r 0) = 0, so splitting r = Σ rᵢ over its support (all i ≠ 0) and invoking projM_smul_deg makes projM 𝓜 d (r • n) = 0; additivity closes the induction. Hence projM 𝓜 d x = 0. But projM 𝓜 d fixes the homogeneous x (decompose_of_mem_same), so x = 0 — contradicting 0 ≠ x. The `include 𝓜 in` makes 𝓜 explicit in the statement even though it appears only in the hypothesis's typeclass arguments.",
+    "mathContext": "Least degree $d$ with $M_d \\ne 0$, witness $x$: $x \\in \\mathcal A_+ M$ gives $\\mathrm{projM}\\,d\\,x = 0$ by the vanishing lemma, yet $\\mathrm{projM}\\,d\\,x = x$ since $x$ is homogeneous of degree $d$; so $x = 0$, contradiction.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Nat.find / Nat.find_min (least degree)",
+      "Submodule.smul_induction_on",
+      "HomogeneousIdeal.mem_irrelevant_iff",
+      "decompose_of_mem_same (projection fixes homogeneous elements)"
+    ],
+    "prerequisites": [
+      "well-ordering of ℕ via Nat.find",
+      "induction over ideal-times-submodule generators",
+      "the irrelevant ideal and its degree-0 vanishing"
+    ]
+  },
+  {
+    "id": "ann-nakoq0102-submodule",
+    "proofId": "nakayama-lemma-oq-01-oq-02",
+    "range": {
+      "startLine": 163,
+      "endLine": 172
+    },
+    "type": "theorem",
+    "title": "graded_nakayama_top_eq_bot: the submodule restatement",
+    "content": "A restatement of the conclusion in submodule language: under the same hypothesis 𝒜₊ • ⊤ = ⊤, the whole module is the zero submodule, (⊤ : Submodule R M) = ⊥. It simply installs the Subsingleton M instance from graded_nakayama and applies Subsingleton.elim. This gives downstream users the conclusion in whichever of the two equivalent forms (M = 0 as Subsingleton, or ⊤ = ⊥ as submodules) they need.",
+    "mathContext": "$\\mathcal A_+ \\cdot \\top = \\top \\ \\Rightarrow\\ (\\top : \\mathrm{Submodule}\\,R\\,M) = \\bot.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Subsingleton vs ⊤ = ⊥",
+      "Subsingleton.elim",
+      "submodule lattice (⊤, ⊥)"
+    ],
+    "prerequisites": [
+      "Subsingleton and the zero module",
+      "the submodule lattice"
+    ]
+  }
+]
