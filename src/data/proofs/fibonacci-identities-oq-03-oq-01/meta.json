@@ -56,7 +56,8 @@
       "**Doubling twice stays a sum of two squares.** The odd fast-doubling identity is the only ingredient: applied at index 2n+1 it turns fib(4n+3) into fib(2n+2)² + fib(2n+1)², and the inner odd term fib(2n+1) is itself a sum of two squares. The even term fib(2n+2) enters only as the base of one of the two outer squares, so no difference-of-squares step is needed and the result stays a clean two-square sum.",
       "**Closed form in two base values.** After substitution everything is a polynomial in a = fib(n) and b = fib(n+1): fib(4n+3) = (b(2a+b))² + (b²+a²)². The decomposition is fully explicit, not merely existential.",
       "**No truncated subtraction.** Unlike the even difference-of-squares identity of the parent (which needs ℤ to be literal), the 4n+3 form is an honest sum, so it lives in ℕ and the existential ∃ a b, fib(4n+3) = a²+b² holds over ℕ directly.",
-      "**Answers the parent's open question.** The parent (fibonacci-identities-oq-03) explicitly asks to iterate the doubling to write fib(4n+3) as a sum of squares; this entry supplies exactly that, in named, iterated, existential, and integer forms."
+      "**Answers the parent's open question.** The parent (fibonacci-identities-oq-03) explicitly asks to iterate the doubling to write fib(4n+3) as a sum of squares; this entry supplies exactly that, in named, iterated, existential, and integer forms.",
+      "**Being a sum of two squares is an arithmetic constraint.** By the sum-of-two-squares theorem, fib(4n+3) = a² + b² forces every prime ≡ 3 (mod 4) to divide fib(4n+3) to an even power — equivalently fib(4n+3) is a norm from the Gaussian integers ℤ[i]. So the identity is not just algebraic bookkeeping: it pins down a genuine divisibility restriction on the Fibonacci numbers at indices 4n+3, and the explicit witnesses (b(2a+b), b²+a²) give the Gaussian factorization directly."
     ],
     "prerequisites": [
       "The fast-doubling Fibonacci identities Nat.fib_two_mul_add_one and Nat.fib_two_mul_add_two",
@@ -93,9 +94,17 @@
       "id": "existential-int",
       "title": "Existential and Integer Forms",
       "startLine": 59,
+      "endLine": 74,
+      "summary": "fib_four_mul_add_three_isSumSq packages the existential reading ∃ a b : ℕ, fib(4n+3) = a²+b² with the explicit witnesses a = fib(n+1)·(2·fib n + fib(n+1)), b = fib(n+1)²+fib n². fib_four_mul_add_three_iterated_int casts the iterated decomposition to ℤ by exact_mod_cast (the ℕ statement already has no subtraction, but the ℤ form is convenient downstream).",
+      "mathContext": "$\\exists a\\,b : \\mathbb{N},\\ F_{4n+3} = a^2 + b^2$; the same over $\\mathbb{Z}$ via exact_mod_cast."
+    },
+    {
+      "id": "numeric-checks",
+      "title": "Numeric Sanity Checks",
+      "startLine": 76,
       "endLine": 79,
-      "summary": "fib_four_mul_add_three_isSumSq (every fib(4n+3) is a sum of two squares, explicit witnesses) and fib_four_mul_add_three_iterated_int (the same decomposition over ℤ), plus decide sanity checks for n = 0, 1, 2.",
-      "mathContext": "$\\exists a\\,b,\\ F_{4n+3} = a^2 + b^2$."
+      "summary": "Three `decide` examples confirm the n = 0, 1, 2 instances by kernel reduction: fib 3 = 2, fib 7 = 13, fib 11 = 89 (indices 4·0+3, 4·1+3, 4·2+3). Using kernel `decide` rather than `native_decide` keeps the entry free of Lean.ofReduceBool.",
+      "mathContext": "$F_3 = 2,\\ F_7 = 13,\\ F_{11} = 89$ for $n = 0, 1, 2$."
     }
   ],
   "crossReferences": [
