@@ -16,7 +16,11 @@
       "ip-sets",
       "colorings"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite colorings",
+      "Subset sums",
+      "IP sets and Hindman's theorem"
+    ]
   },
   {
     "id": "ann-948-subsums",
@@ -34,7 +38,11 @@
       "ip-set",
       "subset-sum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite subsets of $\\mathbb{N}$",
+      "Subset sums",
+      "IP sets"
+    ]
   },
   {
     "id": "ann-948-basic",
@@ -52,7 +60,11 @@
       "empty-sum",
       "singleton"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "The empty sum ($=0$)",
+      "Singleton subsets",
+      "Subset sums"
+    ]
   },
   {
     "id": "ann-948-coloring",
@@ -70,7 +82,11 @@
       "ramsey",
       "finite-coloring"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Functions $\\mathbb{N}\\to\\mathrm{Fin}\\,k$",
+      "Finite colorings",
+      "Ramsey theory"
+    ]
   },
   {
     "id": "ann-948-monochromatic",
@@ -88,7 +104,11 @@
       "monochromaticity",
       "rainbow"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Monochromatic sets",
+      "Rainbow (all-colors) sets",
+      "Color classes"
+    ]
   },
   {
     "id": "ann-948-growth",
@@ -106,7 +126,11 @@
       "bounded-growth",
       "strict-mono"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Growth-rate bounds",
+      "\"Infinitely often\" quantifiers",
+      "Strictly increasing sequences"
+    ]
   },
   {
     "id": "ann-948-monoconj",
@@ -124,7 +148,11 @@
       "disproved",
       "galvin"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Monochromatic subsums",
+      "Existential conjectures",
+      "Bounded sequences"
+    ]
   },
   {
     "id": "ann-948-galvin-axiom",
@@ -142,7 +170,11 @@
       "counterexample",
       "disproof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Galvin's counterexample",
+      "Disproving a conjecture",
+      "Negation of existence"
+    ]
   },
   {
     "id": "ann-948-modified",
@@ -160,7 +192,11 @@
       "open-problem",
       "avoid-color"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open problems",
+      "\"Avoids some color\" property",
+      "Bounded sequences"
+    ]
   },
   {
     "id": "ann-948-dyadic",
@@ -178,7 +214,11 @@
       "2-adic",
       "odd-part"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "2-adic valuation",
+      "Odd part of an integer",
+      "Coloring by parity"
+    ]
   },
   {
     "id": "ann-948-hindman",
@@ -196,7 +236,11 @@
       "hindman",
       "ip-set-existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Hindman's finite-sums theorem",
+      "Monochromatic IP sets",
+      "Finite colorings"
+    ]
   },
   {
     "id": "ann-948-ipset",
@@ -214,7 +258,11 @@
       "ip-set",
       "fs-set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IP sets",
+      "FS sets",
+      "Infinite sequences and their subsums"
+    ]
   },
   {
     "id": "ann-948-ipstar",
@@ -232,7 +280,11 @@
       "ip-star",
       "dual"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "IP* sets",
+      "Duality of set families",
+      "Hindman's theorem"
+    ]
   },
   {
     "id": "ann-948-status",
@@ -250,6 +302,10 @@
       "open-problem",
       "countable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Open problems",
+      "Countable colorings",
+      "Modified vs. original conjecture"
+    ]
   }
 ]
