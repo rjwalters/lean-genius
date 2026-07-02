@@ -86,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: verified reduction scaffolding toward Burnside's pᵃqᵇ theorem",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "The group-theory imports (Nilpotent, Solvable, PGroup, Index, QuotientGroup), the module docstring, and the namespace/variable setup. Frames the 1904 target — every finite group of order pᵃ·qᵇ is solvable — and explains that its only known proofs pass through the character theory of finite groups, the core Mathlib still lacks.",
+      "mathContext": "Mathlib has the outer layers of the argument but not its character-theoretic heart. This file assembles the outer layers into two reusable ingredients: the base case isSolvable_of_isPGroup / isSolvable_of_card_prime_pow (prime-power order ⟹ nilpotent ⟹ solvable — the leaves of the induction), and the inductive engine solvable_of_normal_extension (an extension of a solvable group by a solvable group is solvable). With these, Burnside reduces to the single group-theoretic statement 'a finite nonabelian group of order pᵃqᵇ is not simple', recorded as the conditional theorem burnside_reduces_to_nonsimplicity which takes non-simplicity as an explicit hypothesis and is itself fully verified. Status verified: every declaration is machine-checked with no sorry and no axiom; the full theorem is documented as the open frontier, not claimed."
+    },
+    {
       "id": "base-case",
       "title": "Base case: prime-power order ⟹ solvable",
       "startLine": 70,
