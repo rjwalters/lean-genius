@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "assumptions": "No assumptions. Fully machine-checked with only Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). The error identity |D(n) - n!·e⁻¹| = n!·A(n+1) is derived from the parent file's exact tail decomposition; the two-sided bounds on the alternating tail A(m) follow from the parent's alt_partial_sum_nonneg / alt_partial_sum_le_first together with the newly proved alt_partial_sum_ge_first_sub_second.",
     "dateAdded": "2026-06-24",
-    "lineCount": 177,
+    "lineCount": 175,
     "theoremCount": 7,
     "definitionCount": 0,
     "originalContributions": [
