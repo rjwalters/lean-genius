@@ -1,272 +1,256 @@
 [
   {
-    "id": "erdos-929-ann-imports",
+    "id": "erdos-929-problem",
     "proofId": "erdos-929",
-    "range": {
-      "startLine": 24,
-      "endLine": 28
-    },
     "type": "concept",
-    "title": "Imports and Setup",
-    "content": "Imports Mathlib tactics, the natural number primality API, and logarithmic functions from real analysis. The `open Filter` command brings the filter namespace into scope, needed for expressing asymptotic statements via `atTop` and `∀ᶠ`.",
-    "mathContext": "The filter $\\text{atTop}$ on $\\mathbb{N}$ captures the notion of \"for all sufficiently large $k$\", essential for asymptotic bounds like $S(k) \\geq k^{1-\\varepsilon}$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Lean 4 filters",
-      "asymptotic notation",
-      "Mathlib tactics"
-    ],
-    "prerequisites": [
-      "filter theory",
-      "basic Lean 4 syntax"
-    ]
-  },
-  {
-    "id": "erdos-929-ann-smooth",
-    "proofId": "erdos-929",
-    "range": {
-      "startLine": 32,
-      "endLine": 34
-    },
-    "type": "definition",
-    "title": "IsSmooth — Smooth Number Definition",
-    "content": "A natural number $n$ is $x$-smooth if all its prime factors are at most $x$. Smooth numbers are fundamental objects in analytic and computational number theory, appearing in integer factorization algorithms (the number field sieve), Dickman's function estimates, and the distribution of integers with restricted prime factors.",
-    "mathContext": "An integer $n$ is $x$-smooth if $p \\mid n \\Rightarrow p \\leq x$ for every prime $p$. The count of $x$-smooth numbers up to $N$ is $\\Psi(N, x) \\sim N \\cdot \\rho(\\log N / \\log x)$ where $\\rho$ is the Dickman function.",
+    "range": { "startLine": 1, "endLine": 28 },
+    "title": "Problem Statement and the Small-Factor / Smoothness Distinction",
+    "content": "Erdős #929: let $S(k)$ be the least $x$ for which a positive-density set of $n$ has *each* of $n+1,\\dots,n+k$ carrying a prime factor $\\le x$; estimate $S(k)$, and in particular is $S(k)\\ge k^{1-o(1)}$? The header records a crucial semantic point: Erdős means each block member has *at least one* prime factor $\\le x$, **not** that it is $x$-smooth (all factors $\\le x$). The distinction matters because the density of $x$-smooth numbers $\\to 0$ for fixed $x$, which would make the existence claim false. Three known bounds frame the open conjecture: the trivial $S(k)\\le k+1$, Rosser's sieve $S(k)>k^{1/2-o(1)}$, and the Ford–Green–Konyagin–Maynard–Tao (2018) upper bound.",
+    "mathContext": "$S(k)=\\min\\{x : \\overline{d}\\{n : \\forall\\, 1\\le i\\le k,\\ \\exists p\\le x,\\ p\\mid n+i\\}>0\\}$; conjecture $S(k)\\ge k^{1-o(1)}$",
     "significance": "key",
     "relatedConcepts": [
-      "Dickman function",
-      "integer factorization",
-      "friable numbers",
-      "Psi function"
-    ],
-    "prerequisites": [
-      "prime factorization",
-      "analytic number theory basics"
-    ]
-  },
-  {
-    "id": "erdos-929-ann-block",
-    "proofId": "erdos-929",
-    "range": {
-      "startLine": 36,
-      "endLine": 39
-    },
-    "type": "definition",
-    "title": "SmoothBlock — Consecutive Smooth Integers",
-    "content": "A block of $k$ consecutive integers $n+1, n+2, \\ldots, n+k$ is $x$-smooth if every element in the block is $x$-smooth. Finding long runs of smooth consecutive integers is much harder than finding individual smooth numbers, because each integer in the block independently constrains the smoothness bound.",
-    "mathContext": "$\\text{SmoothBlock}(n, k, x) \\iff \\forall\\, i \\in \\{1, \\ldots, k\\},\\; \\text{IsSmooth}(n+i, x)$. The probability that $k$ random integers near $N$ are all $x$-smooth is roughly $\\rho(u)^k$ where $u = \\log N / \\log x$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "consecutive integers",
-      "smooth number distribution",
-      "sieve methods"
-    ],
-    "prerequisites": [
-      "IsSmooth definition",
-      "combinatorial probability"
-    ]
-  },
-  {
-    "id": "erdos-929-ann-blockset",
-    "proofId": "erdos-929",
-    "range": {
-      "startLine": 41,
-      "endLine": 43
-    },
-    "type": "definition",
-    "title": "smoothBlockSet — The Density Set",
-    "content": "The set of all starting points $n$ for which the block $n+1, \\ldots, n+k$ is $x$-smooth. The key question is whether this set has positive upper density, i.e., whether smooth blocks occur with positive frequency among all integers.",
-    "mathContext": "$\\text{smoothBlockSet}(k, x) = \\{n \\in \\mathbb{N} \\mid \\text{SmoothBlock}(n, k, x)\\}$. This set has positive upper density precisely when the smoothness bound $x$ is large enough relative to $k$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "natural density",
       "upper density",
-      "Schnirelmann density"
+      "small prime factors",
+      "smooth numbers (contrast)",
+      "Rosser's sieve",
+      "Ford–Green–Konyagin–Maynard–Tao"
     ],
     "prerequisites": [
-      "set theory",
-      "density of integer sequences"
+      "asymptotic density",
+      "prime factorization"
     ]
   },
   {
-    "id": "erdos-929-ann-density",
+    "id": "erdos-929-imports",
     "proofId": "erdos-929",
-    "range": {
-      "startLine": 45,
-      "endLine": 49
-    },
+    "type": "context",
+    "range": { "startLine": 30, "endLine": 36 },
+    "title": "Imports and Density Machinery",
+    "content": "Imports Mathlib's `Nat.Prime`/`Nat.Factorial` for the minimal-factor and factorial arithmetic, and `Topology.Algebra.Order.LiminfLimsup` for `Filter.limsup`, which is how upper density is defined here. `open Filter Finset` brings `limsup`, `atTop`, `Finset.filter`, and `Finset.range` into scope.",
+    "mathContext": "Upper density is a `limsup` over `atTop` of the finite counting ratio, so the order-theoretic liminf/limsup API is the key dependency.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Filter.limsup",
+      "atTop filter",
+      "Nat.minFac"
+    ],
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib filters"
+    ]
+  },
+  {
+    "id": "erdos-929-core-defs",
+    "proofId": "erdos-929",
     "type": "definition",
+    "range": { "startLine": 38, "endLine": 53 },
+    "title": "Core Definitions: Small Factor, Block, Block Set",
+    "content": "`HasSmallFactor n x := n.minFac ≤ x` encodes 'has a prime factor $\\le x$' via the least prime factor (Mathlib's `Nat.minFac`, with the edge conventions $\\text{minFac}\\,0=2$, $\\text{minFac}\\,1=1$). `SmoothBlock n k x` demands this for every member $n+1,\\dots,n+k$ of a length-$k$ consecutive block, and `smoothBlockSet k x` is the set of block-starts $n$ satisfying it. These three definitions turn the informal problem into a set whose density can be measured.",
+    "mathContext": "$\\text{HasSmallFactor}(n,x)\\iff \\text{minFac}(n)\\le x;\\quad \\text{SmoothBlock}(n,k,x)\\iff \\forall\\,1\\le i\\le k,\\ \\text{minFac}(n+i)\\le x$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.minFac",
+      "consecutive integer blocks",
+      "set-builder predicate"
+    ],
+    "prerequisites": [
+      "Nat.minFac",
+      "least prime factor"
+    ]
+  },
+  {
+    "id": "erdos-929-upper-density",
+    "proofId": "erdos-929",
+    "type": "definition",
+    "range": { "startLine": 55, "endLine": 60 },
     "title": "Upper Density via Limsup",
-    "content": "The upper density of a set $S \\subseteq \\mathbb{N}$ is defined as the limsup of the proportion of elements of $S$ in $\\{0, \\ldots, N\\}$ as $N \\to \\infty$. This is the correct density notion here since the smoothBlockSet may not have a natural density.",
-    "mathContext": "$\\overline{d}(S) = \\limsup_{N \\to \\infty} \\frac{|S \\cap \\{0, \\ldots, N\\}|}{N+1}$. Upper density always exists in $[0, 1]$ and satisfies $\\overline{d}(S) \\geq \\underline{d}(S)$ (the lower density).",
-    "significance": "supporting",
+    "content": "`Set.upperDensity S` is the $\\limsup_{N}$ of $|S\\cap\\{0,\\dots,N\\}|/(N+1)$ — the standard asymptotic upper density. Decidability of membership is supplied classically (`Classical.decPred`) so the counting `Finset.filter` is well-defined for an arbitrary set. This is the quantity the whole problem is phrased around: 'positive density' means `upperDensity > 0`.",
+    "mathContext": "$\\overline{d}(S)=\\limsup_{N\\to\\infty}\\dfrac{|S\\cap[0,N]|}{N+1}$",
+    "significance": "key",
     "relatedConcepts": [
+      "asymptotic upper density",
+      "Filter.limsup",
+      "Classical.decPred"
+    ],
+    "prerequisites": [
       "limsup",
-      "natural density",
-      "Banach density",
-      "asymptotic density"
-    ],
-    "prerequisites": [
-      "real analysis",
-      "filter convergence in Lean"
+      "counting measure"
     ]
   },
   {
-    "id": "erdos-929-ann-threshold",
+    "id": "erdos-929-factorial-helper",
     "proofId": "erdos-929",
-    "range": {
-      "startLine": 51,
-      "endLine": 56
-    },
-    "type": "definition",
-    "title": "smoothThreshold — S(k)",
-    "content": "The threshold function $S(k)$ is defined as the minimal $x$ such that the set of starting points for $x$-smooth blocks of length $k$ has positive upper density. This is the central quantity Erdős asks us to estimate. The definition uses Lean's `Nat.find` which requires an existence witness — here provided by the trivial bound $S(k) \\leq k+1$.",
-    "mathContext": "$S(k) = \\min\\{x \\in \\mathbb{N} \\mid \\overline{d}(\\text{smoothBlockSet}(k, x)) > 0\\}$. The well-definedness requires showing that at least one such $x$ exists, which follows from the trivial upper bound.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Nat.find",
-      "well-ordering principle",
-      "threshold functions in combinatorics"
-    ],
-    "prerequisites": [
-      "smooth number definitions above",
-      "well-ordering of naturals"
-    ]
-  },
-  {
-    "id": "erdos-929-ann-conjecture",
-    "proofId": "erdos-929",
-    "range": {
-      "startLine": 60,
-      "endLine": 65
-    },
-    "type": "insight",
-    "title": "Erdős Conjecture: S(k) Is Nearly Linear",
-    "content": "The main conjecture asserts that $S(k) \\geq k^{1-\\varepsilon}$ for every $\\varepsilon > 0$ and all sufficiently large $k$. This is expressed using Lean's `∀ᶠ ... in atTop` notation for \"eventually\" statements. If true, this would mean that the smoothness threshold grows nearly as fast as $k$ itself — finding long smooth blocks requires a smoothness bound nearly as large as the block length.",
-    "mathContext": "$\\forall \\varepsilon > 0,\\; S(k) \\geq k^{1-\\varepsilon}$ for all sufficiently large $k$. Equivalently, $\\log S(k) / \\log k \\to 1$ as $k \\to \\infty$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "subpolynomial growth",
-      "o(1) notation",
-      "eventually quantifier"
-    ],
-    "prerequisites": [
-      "asymptotic analysis",
-      "filter eventually in Lean"
-    ]
-  },
-  {
-    "id": "erdos-929-ann-trivial",
-    "proofId": "erdos-929",
-    "range": {
-      "startLine": 69,
-      "endLine": 72
-    },
-    "type": "concept",
-    "title": "Trivial Upper Bound: S(k) ≤ k+1",
-    "content": "The trivial upper bound uses a modular arithmetic construction: if $n \\equiv -1 \\pmod{(k+1)!}$, then $n+i$ is divisible by $i$ for $i = 1, \\ldots, k$, making each $n+i$ at most $(k+1)$-smooth. Such $n$ form an arithmetic progression of positive density, establishing $S(k) \\leq k+1$.",
-    "mathContext": "If $n \\equiv -1 \\pmod{(k+1)!}$ then $i \\mid (n+i)$ for $1 \\leq i \\leq k$, so each $n+i$ is $(k+1)$-smooth. The density of this AP is $1/(k+1)! > 0$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "arithmetic progressions",
-      "factorial",
-      "Chinese Remainder Theorem"
-    ],
-    "prerequisites": [
-      "modular arithmetic",
-      "divisibility"
-    ]
-  },
-  {
-    "id": "erdos-929-ann-rosser",
-    "proofId": "erdos-929",
-    "range": {
-      "startLine": 74,
-      "endLine": 78
-    },
-    "type": "concept",
-    "title": "Rosser's Sieve Lower Bound",
-    "content": "Rosser's sieve (a refinement of Brun's combinatorial sieve) shows $S(k) \\geq k^{1/2 - \\varepsilon}$ for any $\\varepsilon > 0$ and large $k$. The idea is that among any $k$ consecutive integers, at least one must have a large prime factor, and sieve bounds quantify how large. This is the best unconditional lower bound known.",
-    "mathContext": "$S(k) \\geq k^{1/2 - \\varepsilon}$ for all $\\varepsilon > 0$ and $k \\geq k_0(\\varepsilon)$. The sieve of Rosser–Iwaniec gives upper bounds on $\\Psi(x+y, z) - \\Psi(x, z)$ (smooth numbers in short intervals) that imply this.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Brun's sieve",
-      "Rosser–Iwaniec sieve",
-      "sieve dimension",
-      "Selberg sieve"
-    ],
-    "prerequisites": [
-      "sieve theory fundamentals",
-      "smooth number counting"
-    ]
-  },
-  {
-    "id": "erdos-929-ann-fgkmt",
-    "proofId": "erdos-929",
-    "range": {
-      "startLine": 80,
-      "endLine": 88
-    },
-    "type": "concept",
-    "title": "Ford–Green–Konyagin–Maynard–Tao Upper Bound",
-    "content": "The FGKMT breakthrough (2018) on large gaps between primes yields the best known upper bound on $S(k)$. Their result shows that there exist unusually long intervals free of primes, and these intervals contain smooth numbers in abundance. The iterated logarithm factors reflect the delicate balance between prime distribution and smooth number density.",
-    "mathContext": "$S(k) \\ll k \\cdot \\frac{\\log\\log\\log k}{\\log\\log k \\cdot \\log\\log\\log\\log k}$. This follows from the FGKMT result that $\\limsup_{n \\to \\infty} \\frac{p_{n+1} - p_n}{\\log p_n \\cdot \\log\\log p_n \\cdot \\log\\log\\log\\log p_n / (\\log\\log\\log p_n)^2} > 0$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Maynard–Tao sieve",
-      "large prime gaps",
-      "Cramér conjecture",
-      "GPY sieve"
-    ],
-    "prerequisites": [
-      "sieve methods",
-      "prime gap theory",
-      "iterated logarithms"
-    ]
-  },
-  {
-    "id": "erdos-929-ann-mono",
-    "proofId": "erdos-929",
-    "range": {
-      "startLine": 92,
-      "endLine": 95
-    },
-    "type": "concept",
-    "title": "Monotonicity of S(k)",
-    "content": "If $k_1 \\leq k_2$, then $S(k_1) \\leq S(k_2)$: requiring more consecutive integers to be smooth can only increase (or maintain) the smoothness threshold. This follows because any smooth block of length $k_2$ is also a smooth block of length $k_1$, so $\\text{smoothBlockSet}(k_2, x) \\subseteq \\text{smoothBlockSet}(k_1, x)$.",
-    "mathContext": "$k_1 \\leq k_2 \\implies S(k_1) \\leq S(k_2)$. If $\\overline{d}(\\text{smoothBlockSet}(k_2, x)) > 0$ then $\\overline{d}(\\text{smoothBlockSet}(k_1, x)) > 0$ since the former is a subset of the latter.",
+    "type": "technique",
+    "range": { "startLine": 62, "endLine": 73 },
+    "title": "Helper: Every m ≤ n Divides n!",
+    "content": "`dvd_factorial_of_pos_le`: for $0<m\\le n$, $m\\mid n!$, proved by induction on $n$ (either $m=n$ hits the leading factor, or $m\\le n-1$ divides $(n-1)!$ which divides $n!$). This is the arithmetic engine behind the arithmetic-progression construction: it guarantees $i+1\\mid (k+1)!$ for the block offsets $i$.",
+    "mathContext": "$0<m\\le n\\Rightarrow m\\mid n!$",
     "significance": "supporting",
     "relatedConcepts": [
-      "monotone functions",
-      "set inclusion and density",
-      "threshold phenomena"
+      "Nat.factorial",
+      "divisibility",
+      "induction"
     ],
     "prerequisites": [
-      "basic set theory",
-      "density monotonicity"
+      "Nat.factorial_succ",
+      "dvd_mul"
     ]
   },
   {
-    "id": "erdos-929-ann-s2",
+    "id": "erdos-929-density-mono",
     "proofId": "erdos-929",
-    "range": {
-      "startLine": 97,
-      "endLine": 99
-    },
-    "type": "insight",
-    "title": "Exact Value: S(2) = 3",
-    "content": "The smallest nontrivial case: $S(2) = 3$. A positive density of integers $n$ have both $n+1$ and $n+2$ being 3-smooth (of the form $2^a \\cdot 3^b$). These are the Størmer pairs — consecutive 3-smooth numbers. That $S(2) \\neq 2$ follows from the fact that pairs of consecutive 2-smooth numbers (powers of 2) have density zero.",
-    "mathContext": "$S(2) = 3$: the 3-smooth numbers $\\{2^a 3^b : a, b \\geq 0\\}$ include infinitely many consecutive pairs (e.g., $2, 3$ and $3, 4$ and $8, 9$), and these occur with positive density. But 2-smooth numbers (powers of 2) have gaps growing exponentially.",
+    "type": "technique",
+    "range": { "startLine": 75, "endLine": 124 },
+    "title": "Density Monotonicity Infrastructure",
+    "content": "A block of order-theoretic lemmas making `upperDensity` well-behaved: `densityRatio` names the finite ratio; `densityRatio_nonneg`/`_le_one` bound it in $[0,1]$; `densityRatio_mono` shows $A\\subseteq B$ implies pointwise ratio monotonicity; and `_isBoundedUnder`/`_isCoboundedUnder` supply the boundedness side-conditions that Mathlib's `limsup` lemmas require. These assemble into `upperDensity_mono`: $A\\subseteq B\\Rightarrow \\overline d(A)\\le \\overline d(B)$, the monotonicity used repeatedly to transfer density facts along set inclusions.",
+    "mathContext": "$A\\subseteq B\\Rightarrow \\overline d(A)\\le\\overline d(B)$, via `Filter.limsup_le_limsup` with bounded/cobounded hypotheses",
     "significance": "supporting",
     "relatedConcepts": [
-      "3-smooth numbers",
-      "Størmer's theorem",
-      "regular numbers",
-      "Pillai's conjecture"
+      "Filter.limsup_le_limsup",
+      "IsBoundedUnder / IsCoboundedUnder",
+      "monotonicity of density"
     ],
     "prerequisites": [
-      "smooth number basics",
-      "density of exponential sequences"
+      "Filter.limsup",
+      "Finset.card_le_card"
+    ]
+  },
+  {
+    "id": "erdos-929-ap-construction",
+    "proofId": "erdos-929",
+    "type": "technique",
+    "range": { "startLine": 126, "endLine": 147 },
+    "title": "The Arithmetic-Progression Construction",
+    "content": "The heart of the upper bound. `smoothBlock_of_factorial_cong`: if $n\\equiv 1 \\pmod{(k+1)!}$, i.e. $n=(k+1)!\\,t+1$, then for each offset $i$ the member $n+i=(k+1)!\\,t+(i+1)$ is divisible by $i+1$ (since $2\\le i+1\\le k+1$ gives $i+1\\mid (k+1)!$), so $\\text{minFac}(n+i)\\le i+1\\le k+1$. Hence the entire arithmetic progression $\\{(k+1)!\\,t+1\\}$ lies in $\\text{smoothBlockSet}\\,k\\,(k+1)$ — the witness that $x=k+1$ already works.",
+    "mathContext": "$n=(k+1)!\\,t+1\\Rightarrow n+i=(k+1)!\\,t+(i+1),\\ (i+1)\\mid n+i\\Rightarrow \\text{minFac}(n+i)\\le k+1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic progression",
+      "factorial divisibility",
+      "explicit construction"
+    ],
+    "prerequisites": [
+      "dvd_factorial_of_pos_le",
+      "Nat.minFac_le_of_dvd"
+    ]
+  },
+  {
+    "id": "erdos-929-positive-density",
+    "proofId": "erdos-929",
+    "type": "insight",
+    "range": { "startLine": 149, "endLine": 235 },
+    "title": "Positive Density of the Block Set",
+    "content": "`ap_count_bound` counts the AP: among $\\{0,\\dots,(k+1)!(t+1)\\}$ at least $t+1$ starts lie in the block set (the map $j\\mapsto (k+1)!\\,j+1$ is injective). `smoothBlockSet_pos_density` upgrades this to $\\overline d\\big(\\text{smoothBlockSet}\\,k\\,(k+1)\\big)\\ge \\tfrac{1}{2(k+1)!}>0$: unfolding `limsup` as an infimum of eventual upper bounds, any candidate bound $a$ is shown $\\ge \\tfrac{1}{2M}$ by evaluating the density ratio at $N=M(t+1)$ (where $M=(k+1)!$), since $\\tfrac{t+1}{M(t+1)+1}\\ge \\tfrac{1}{2M}$. `smooth_block_exists` then packages 'some $x$ works' and `smoothThreshold k := Nat.find` extracts the minimal such $x$ — the formal $S(k)$.",
+    "mathContext": "$\\overline d(\\text{smoothBlockSet}\\,k\\,(k+1))\\ge \\dfrac{1}{2(k+1)!}>0$; $S(k):=\\operatorname{Nat.find}(\\exists x,\\ \\overline d>0)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup as infimum of eventual bounds",
+      "Nat.find (minimality)",
+      "injective counting",
+      "density lower bound"
+    ],
+    "prerequisites": [
+      "Filter.limSup / le_csInf",
+      "Finset.card_image_of_injective",
+      "smoothBlock_of_factorial_cong"
+    ]
+  },
+  {
+    "id": "erdos-929-conjecture",
+    "proofId": "erdos-929",
+    "type": "insight",
+    "range": { "startLine": 237, "endLine": 244 },
+    "title": "The Main Conjecture: S(k) ≥ k^{1−o(1)}",
+    "content": "`Erdos929Conjecture` formalizes the open question: for every $\\varepsilon>0$, eventually in $k$, $S(k)\\ge k^{1-\\varepsilon}$. This is the near-linear lower bound Erdős asked about — far above the proved $S(k)>k^{1/2-o(1)}$ Rosser bound and, as of the FGKMT work, still not matched from below. It is stated but not proved (the entry proves the surrounding structure and the small bounds $3\\le S(k)\\le k+1$).",
+    "mathContext": "$\\forall\\varepsilon>0,\\ \\forall^\\infty k,\\ S(k)\\ge k^{1-\\varepsilon}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "eventually (atTop)",
+      "near-linear lower bound",
+      "open conjecture"
+    ],
+    "prerequisites": [
+      "Filter.Eventually",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "erdos-929-trivial-upper",
+    "proofId": "erdos-929",
+    "type": "concept",
+    "range": { "startLine": 246, "endLine": 261 },
+    "title": "Trivial Upper Bound and Sieve Commentary",
+    "content": "`trivial_upper`: $S(k)\\le k+1$, immediate from `Nat.find_le` applied to the AP witness of positive density at $x=k+1$. The following comment block records the two deep bounds that are *not* formalized here: Rosser's sieve $S(k)>k^{1/2-o(1)}$, and the Ford–Green–Konyagin–Maynard–Tao (2018) upper bound $S(k)\\ll k\\,\\log\\log\\log k/(\\log\\log k\\,\\log\\log\\log\\log k)$. These delimit what is known around the open conjecture.",
+    "mathContext": "$S(k)\\le k+1$ (proved); $k^{1/2-o(1)}<S(k)\\ll k\\cdot\\tfrac{\\log\\log\\log k}{\\log\\log k\\,\\log\\log\\log\\log k}$ (cited)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.find_le",
+      "Rosser's sieve",
+      "Ford–Green–Konyagin–Maynard–Tao"
+    ],
+    "prerequisites": [
+      "smoothThreshold",
+      "smoothBlockSet_pos_density"
+    ]
+  },
+  {
+    "id": "erdos-929-antitone-mono",
+    "proofId": "erdos-929",
+    "type": "technique",
+    "range": { "startLine": 263, "endLine": 280 },
+    "title": "Antitonicity in k and Monotonicity of S(k)",
+    "content": "`smoothBlockSet_antitone`: enlarging $k$ (more block conditions) shrinks the block set, $\\text{smoothBlockSet}\\,k_2\\,x\\subseteq\\text{smoothBlockSet}\\,k_1\\,x$ for $k_1\\le k_2$. Combined with density monotonicity and `Nat.find_le`, this yields `smoothThreshold_mono`: $S$ is non-decreasing, $k_1\\le k_2\\Rightarrow S(k_1)\\le S(k_2)$ — longer blocks can only need a larger threshold.",
+    "mathContext": "$k_1\\le k_2\\Rightarrow \\text{smoothBlockSet}\\,k_2\\,x\\subseteq\\text{smoothBlockSet}\\,k_1\\,x\\Rightarrow S(k_1)\\le S(k_2)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "antitone / monotone",
+      "Nat.find monotonicity",
+      "upperDensity_mono"
+    ],
+    "prerequisites": [
+      "smoothBlockSet_antitone",
+      "Nat.find_spec"
+    ]
+  },
+  {
+    "id": "erdos-929-s2-equals-3",
+    "proofId": "erdos-929",
+    "type": "insight",
+    "range": { "startLine": 282, "endLine": 381 },
+    "title": "The Exact Value S(2) = 3",
+    "content": "The one fully computed value. The lower side: `smoothBlockSet_two_empty_of_le_one` shows $x\\le 1$ gives the empty set, and `smoothBlockSet_two_two_sub_zero` shows $x=2$ forces $n=0$ (two consecutive integers can't both be even, so one is an odd $\\ge 3$ with $\\text{minFac}\\ge 3$); `upperDensity_singleton_zero` proves $\\overline d(\\{0\\})\\le 0$ via $1/(N+1)\\to 0$. Together `smooth_threshold_2` concludes $S(2)=3$ using `Nat.find_eq_iff`: $x=3$ works (the AP $n\\equiv 2\\bmod 6$ gives density $1/6$) while every $x<3$ has density $0$.",
+    "mathContext": "$S(2)=3$: $x=3$ realizes density $\\tfrac16$; $x\\in\\{0,1\\}\\Rightarrow\\varnothing$, $x=2\\Rightarrow\\subseteq\\{0\\}$ so $\\overline d=0$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find_eq_iff",
+      "parity of consecutive integers",
+      "density of a singleton",
+      "exact threshold value"
+    ],
+    "prerequisites": [
+      "Nat.minFac_prime",
+      "upperDensity_mono",
+      "interval_cases"
+    ]
+  },
+  {
+    "id": "erdos-929-lower-bound-three",
+    "proofId": "erdos-929",
+    "type": "insight",
+    "range": { "startLine": 383, "endLine": 429 },
+    "title": "General Lower Bound: S(k) ≥ 3 for k ≥ 2",
+    "content": "Generalizing the $S(2)$ computation via antitonicity in $k$: `smoothBlockSet_empty_of_ge_two_le_one` ($x\\le 1$ empty) and `smoothBlockSet_two_sub_zero_of_ge_two` ($x=2$ contained in $\\{0\\}$) both reduce to the $k=2$ lemmas, and `upperDensity_empty` gives $\\overline d(\\varnothing)=0$. `smoothThreshold_ge_three` then rules out $x\\le 2$ as a positive-density witness, so $S(k)\\ge 3$ for all $k\\ge 2$. Combined with `trivial_upper` this pins the proved range $3\\le S(k)\\le k+1$ — the unconditional bracket around the still-open $k^{1-o(1)}$ conjecture.",
+    "mathContext": "$k\\ge 2\\Rightarrow 3\\le S(k)\\le k+1$ (proved unconditionally)",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.le_find_iff",
+      "reduction via antitonicity",
+      "unconditional bracket"
+    ],
+    "prerequisites": [
+      "smoothBlockSet_antitone",
+      "upperDensity_empty",
+      "trivial_upper"
     ]
   }
 ]
