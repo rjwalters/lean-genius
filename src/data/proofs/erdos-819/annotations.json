@@ -16,7 +16,11 @@
       "Extremal problems"
     ],
     "mathContext": "See annotation content for formal details of problem overview",
-    "prerequisites": []
+    "prerequisites": [
+      "sumsets A+A in additive combinatorics",
+      "the integer interval [1,N] and the √N scaling",
+      "asymptotic o(1) / little-o notation"
+    ]
   },
   {
     "id": "ann-819-sumset",
@@ -35,7 +39,11 @@
       "Finset.image",
       "Sumsets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset and the Cartesian product A ×ˢ A",
+      "the image of a function on a Finset",
+      "Sidon sets and arithmetic progressions as sumset extremes"
+    ]
   },
   {
     "id": "ann-819-admissible",
@@ -54,7 +62,11 @@
       "Supremum",
       "Extremal functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the integer square root ⌊√N⌋ (Nat.sqrt)",
+      "supremum (sSup) of a set of naturals",
+      "the restricted sumset (A+A)∩[1,N]"
+    ]
   },
   {
     "id": "ann-819-trivial-bounds",
@@ -72,7 +84,11 @@
       "Cardinality bounds",
       "Subset bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subset cardinality bounds",
+      "the extremal function f(N)",
+      "axiomatizing a statement in Lean"
+    ]
   },
   {
     "id": "ann-819-ef-lower",
@@ -91,7 +107,11 @@
       "Additive structure",
       "Erdős-Freud 1991"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit set constructions in additive combinatorics",
+      "arithmetic progressions and their additive structure",
+      "the o(1) asymptotic term"
+    ]
   },
   {
     "id": "ann-819-ef-upper",
@@ -110,7 +130,11 @@
       "Geometric constraints",
       "Sumset distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the range [2,2N] of pairwise sums",
+      "counting/pigeonhole arguments",
+      "the restricted sumset landing in [1,N]"
+    ]
   },
   {
     "id": "ann-819-combined",
@@ -128,7 +152,11 @@
       "Asymptotic bounds",
       "Combined estimates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős-Freud lower and upper bound axioms",
+      "taking max(N₁,N₂) to combine thresholds",
+      "ε-N asymptotic statements"
+    ]
   },
   {
     "id": "ann-819-construction",
@@ -146,7 +174,11 @@
       "Constructive lower bounds",
       "Counting upper bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progressions with chosen common difference",
+      "the sum distribution over [2,2N]",
+      "counting-based upper bounds"
+    ]
   },
   {
     "id": "ann-819-quasi-sidon",
@@ -165,7 +197,11 @@
       "Problem #840",
       "Representation functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sidon sets (all pairwise sums distinct)",
+      "representation functions counting a+b=n",
+      "the lower bound |A+A| ≥ |A|²/(2k)"
+    ]
   },
   {
     "id": "ann-819-ap",
@@ -184,7 +220,11 @@
       "Minimal sumsets",
       "Freiman-Ruzsa"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progressions and their sumsets",
+      "the sumset size of an AP being 2k-1",
+      "Freiman-Ruzsa structure theory"
+    ]
   },
   {
     "id": "ann-819-gap",
@@ -202,7 +242,11 @@
       "Open problems",
       "Asymptotic constants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős-Freud coefficients 3/8 and 1/2",
+      "rational arithmetic (norm_num)",
+      "the open asymptotic-constant question"
+    ]
   },
   {
     "id": "ann-819-summary",
@@ -221,6 +265,10 @@
       "Open problem",
       "Erdős-Freud bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős-Freud lower and upper bounds",
+      "conjunction of ε-N asymptotic statements",
+      "the status of an open problem"
+    ]
   }
 ]
