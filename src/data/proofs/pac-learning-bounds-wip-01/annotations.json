@@ -1,0 +1,90 @@
+[
+  {
+    "id": "ann-pac-wip01-01-header",
+    "proofId": "pac-learning-bounds-wip-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Replacing the Placeholder with Real VC Combinatorics",
+    "content": "The header explains that the parent entry's growthFunction is a placeholder (:= 0), so no genuine statement about shattering is expressible, and that this file supplies proper definitions of the trace of a hypothesis class and of shattering, together with the foundational VC-dimension lemmas. A hypothesis class is modelled as a Finset (Finset α).",
+    "mathContext": "VC dimension is the size of the largest set a class can shatter; its growth function and the |S| ≤ log₂|H| bound are the elementary foundations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "VC dimension",
+      "shattering",
+      "growth function",
+      "PAC learning"
+    ],
+    "prerequisites": [
+      "Finset combinatorics",
+      "learning theory basics",
+      "Lean 4 Mathlib"
+    ]
+  },
+  {
+    "id": "ann-pac-wip01-02-defs",
+    "proofId": "pac-learning-bounds-wip-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "trace and Shatters",
+    "content": "trace H S := H.image (· ∩ S) is the family of restrictions of H to S — the genuine growth quantity Π_H(S). Shatters H S := (trace H S = S.powerset): H shatters S when its trace realises every subset of S. trace_subset_powerset proves each restriction h ∩ S is a subset of S, so the trace lies in the powerset.",
+    "mathContext": "Π_H(S) = {h ∩ S : h ∈ H} ⊆ 2^S; shattering means Π_H(S) = 2^S.",
+    "significance": "central",
+    "relatedConcepts": [
+      "trace / restriction",
+      "shattering",
+      "powerset"
+    ],
+    "prerequisites": [
+      "Finset image and powerset"
+    ]
+  },
+  {
+    "id": "ann-pac-wip01-03-bounds",
+    "proofId": "pac-learning-bounds-wip-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Growth Bound, Shattering Criterion, and the |H| Lower Bound",
+    "content": "trace_card_le_pow: the trace has at most 2^|S| members (containment in the powerset + card_powerset) — the correct growth bound the placeholder could not express. shatters_iff_card: H shatters S iff the trace has exactly 2^|S| members (eq_of_subset_of_card_le upgrades maximal size to equality). shatters_card_le: shattering S forces 2^|S| ≤ |H|, since the trace is an image of H (card_image_le).",
+    "mathContext": "|Π_H(S)| ≤ 2^|S|, equality iff H shatters S; shattering a d-set needs at least 2^d hypotheses.",
+    "significance": "central",
+    "relatedConcepts": [
+      "growth function",
+      "cardinality bound",
+      "image cardinality"
+    ],
+    "prerequisites": [
+      "Finset cardinality lemmas"
+    ]
+  },
+  {
+    "id": "ann-pac-wip01-04-log-mono",
+    "proofId": "pac-learning-bounds-wip-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "The VC-vs-Size Bound and Monotonicity",
+    "content": "shatters_card_le_log: any shattered set has size |S| ≤ log₂|H|, via Nat.le_log_iff_pow_le applied to 2^|S| ≤ |H| — the elementary VC-dimension–vs–size bound (the finite half of Sauer–Shelah). shatters_mono: shattering is preserved when the hypothesis class grows (image_subset_image).",
+    "mathContext": "VC dimension ≤ log₂|H| for a finite class; a larger class shatters at least as many sets.",
+    "significance": "central",
+    "relatedConcepts": [
+      "VC dimension bound",
+      "integer logarithm",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "Nat.log",
+      "monotonicity of Finset image"
+    ]
+  }
+]
