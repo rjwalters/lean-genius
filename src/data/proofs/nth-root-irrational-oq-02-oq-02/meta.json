@@ -1,0 +1,195 @@
+{
+  "id": "nth-root-irrational-oq-02-oq-02",
+  "title": "Nth Root Irrationality: The General Prime-Exponent Criterion",
+  "slug": "nth-root-irrational-oq-02-oq-02",
+  "description": "Answers an open question of the parent entry: exposes the general prime-exponent criterion for irrationality of the nth root of m, reaching radicands all of whose prime factors have multiplicity at least 2 (e.g. 36 = 2²·3², 72 = 2³·3², 216 = 6³). These lie strictly beyond the parent's 'a prime divides m exactly once' corollary, since no prime divides them exactly once, yet their nth roots are irrational because some prime exponent is not divisible by n.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "irrationality",
+      "generalization",
+      "prime-factorization",
+      "research"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/NthRootIrrationalOQ02OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.pow_dvd_iff_le_factorization",
+        "description": "p^k ∣ m ↔ k ≤ m.factorization p, for prime p and m ≠ 0 — reads the exact prime multiplicity off two divisibility bounds",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "irrational_nthRoot",
+        "description": "Base-file general theorem: not a perfect nth power over ℤ implies the nth root is irrational",
+        "module": "Proofs.NthRootIrrational"
+      },
+      {
+        "theorem": "not_perfect_pow_of_factorization",
+        "description": "Parent criterion: a prime exponent not divisible by n certifies m is not a perfect nth power",
+        "module": "Proofs.NthRootIrrationalOQ02"
+      },
+      {
+        "theorem": "not_perfect_pow_int",
+        "description": "Parent ℕ⟹ℤ bridge: ruling out natural nth roots rules out integer nth roots via Int.natAbs",
+        "module": "Proofs.NthRootIrrationalOQ02"
+      }
+    ],
+    "originalContributions": [
+      "not_perfect_pow_of_pow_dvd_not_dvd: the general pinned-multiplicity criterion — a prime of exponent exactly a with n ∤ a certifies m is not a perfect nth power, strictly generalizing the parent's exactly-once (a = 1) lemma",
+      "irrational_nthRoot_of_pow_dvd_not_dvd and irrational_nthRoot_of_factorization_not_dvd: the general irrationality corollaries, phrased both via pinned multiplicity and directly against m.factorization p",
+      "Concrete irrationalities of radicands with no multiplicity-one prime, unreachable by the parent's sq_not_dvd corollary: cbrt(36), fourthRoot(36), cbrt(100), sixthRoot(216), sqrt(72)",
+      "sixthRoot(216): 216 = 6³ is a perfect cube (∛216 = 6 is rational) yet not a perfect sixth power — a striking separation certified by the exponent-3 witness with 6 ∤ 3",
+      "thirtySix_has_no_multiplicity_one_prime: a machine-checked certificate that 36 lies outside the reach of the parent's exactly-once corollary, so the generalization is necessary"
+    ],
+    "dateAdded": "2026-07-02",
+    "axiomCount": 0,
+    "lineCount": 166,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Builds on the parent entry's verified criterion (not_perfect_pow_of_factorization, not_perfect_pow_int) and the base file's verified general theorem irrational_nthRoot.",
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/NthRootIrrational.lean",
+      "Proofs/NthRootIrrationalOQ02.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The parent entry nth-root-irrational-oq-02 introduced the uniform prime-factorization criterion for 'not a perfect nth power' (a prime p with n ∤ v_p(m) certifies it), but its irrationality corollaries only exposed the special case where a prime divides the radicand exactly once (p ∣ m, p² ∤ m). Its own open-questions list asked whether the general criterion 'can be exposed ergonomically for radicands all of whose prime exponents are ≥ 2 but not all divisible by n (e.g. 72 = 2³·3²)'. This entry answers that question, exposing the full pinned-multiplicity criterion and certifying exactly such radicands.",
+    "problemStatement": "The parent's ergonomic irrationality corollary requires a prime dividing the radicand exactly once. But radicands like $36 = 2^2\\cdot 3^2$ have no such prime — every prime factor is squared — so the corollary does not apply, even though $\\sqrt[3]{36}$ is irrational ($3 \\nmid v_3(36) = 2$). Expose the general criterion:\n\n$$\\exists p \\text{ prime},\\; p^a \\parallel m \\text{ and } n \\nmid a \\;\\Longrightarrow\\; \\sqrt[n]{m}\\notin\\mathbb{Q},$$\n\nfor an arbitrary multiplicity $a$, and certify radicands with no multiplicity-one prime.",
+    "text": "The general prime-exponent criterion for irrationality of nth roots, reaching radicands whose every prime factor has multiplicity at least two — strictly beyond the parent's exactly-once corollary.",
+    "proofStrategy": "1. **General criterion** (`not_perfect_pow_of_pow_dvd_not_dvd`): from `p^a ∣ m` and `p^(a+1) ∤ m`, `Nat.Prime.pow_dvd_iff_le_factorization` pins `m.factorization p = a`; if `n ∤ a` the parent's `not_perfect_pow_of_factorization` applies. This specializes to the parent's `not_perfect_pow_of_sq_not_dvd` at `a = 1`.\n\n2. **Irrationality** (`irrational_nthRoot_of_pow_dvd_not_dvd`, `irrational_nthRoot_of_factorization_not_dvd`): compose with the parent's `not_perfect_pow_int` bridge and the base `irrational_nthRoot`.\n\n3. **Concrete radicands**: for `36, 72, 100, 216`, the witnessing divisibilities (`8 ∣ 216`, `16 ∤ 216`, etc.) are size-independent `norm_num` checks; the multiplicity is `2` or `3`, never `1`.\n\n4. **Gap certificate** (`thirtySix_has_no_multiplicity_one_prime`): every prime dividing `36` has its square dividing `36`, so the parent's exactly-once route has no applicable witness.",
+    "keyInsights": [
+      "The parent's exactly-once corollary is a proper special case: pinning the witnessing prime's multiplicity at 1 is a convenience, not a necessity. Allowing an arbitrary exponent a (with n ∤ a) recovers the full strength of the factorization criterion.",
+      "Radicands like 36 = 2²·3² have no prime of multiplicity one, so they are provably outside the parent corollary's reach, yet their nth roots are irrational — a concrete separation between the two criteria.",
+      "216 = 6³ is a perfect cube but not a perfect sixth power: ∛216 = 6 is rational while ⁶√216 is irrational. The general criterion detects this via the exponent-3 witness (6 ∤ 3), whereas 'exactly once' can say nothing.",
+      "The exact multiplicity a is read off two cheap divisibility facts (p^a ∣ m, p^(a+1) ∤ m) via pow_dvd_iff_le_factorization, so certifying any concrete radicand remains a size-independent computation."
+    ],
+    "prerequisites": [
+      "The parent entry nth-root-irrational-oq-02 (uniform prime-factorization criterion, not_perfect_pow_of_factorization, not_perfect_pow_int)",
+      "The base entry nth-root-irrational (general theorem irrational_nthRoot)",
+      "Number theory (p-adic valuation / Nat.factorization, perfect powers)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup and Motivation",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module documentation isolating the gap in the parent's irrationality corollaries (exactly-once vs. general multiplicity), imports, and namespace opening the base and parent files.",
+      "mathContext": "Reuses nthRoot, irrational_nthRoot (base) and not_perfect_pow_of_factorization, not_perfect_pow_int (parent). The target is the criterion $n \\nmid v_p(m)$ for arbitrary $v_p(m)$, not only $v_p(m) = 1$."
+    },
+    {
+      "id": "criterion",
+      "title": "The General Exponent Criterion",
+      "startLine": 56,
+      "endLine": 79,
+      "summary": "not_perfect_pow_of_pow_dvd_not_dvd: a prime of exponent exactly a with n ∤ a certifies m is not a perfect nth power.",
+      "mathContext": "From $p^a \\mid m$ and $p^{a+1} \\nmid m$, `Nat.Prime.pow_dvd_iff_le_factorization` gives $v_p(m) = a$; with $n \\nmid a$ the parent criterion applies. At $a = 1$ this is `not_perfect_pow_of_sq_not_dvd`."
+    },
+    {
+      "id": "irrationality",
+      "title": "General Irrationality Corollaries",
+      "startLine": 80,
+      "endLine": 103,
+      "summary": "irrational_nthRoot_of_pow_dvd_not_dvd and irrational_nthRoot_of_factorization_not_dvd, composing the criterion with the parent bridge and base theorem.",
+      "mathContext": "Feeding the general criterion through `not_perfect_pow_int` and `irrational_nthRoot` yields $\\sqrt[n]{m}\\notin\\mathbb{Q}$ from any pinned prime multiplicity $a$ with $n \\nmid a$, or directly from $n \\nmid v_p(m)$."
+    },
+    {
+      "id": "concrete",
+      "title": "Radicands With No Multiplicity-One Prime",
+      "startLine": 104,
+      "endLine": 146,
+      "summary": "Irrationality of cbrt(36), fourthRoot(36), cbrt(100), sixthRoot(216), sqrt(72) — radicands whose prime factors are all squared or cubed, unreachable by the parent's exactly-once corollary.",
+      "mathContext": "$36 = 2^2\\cdot3^2$, $100 = 2^2\\cdot5^2$, $72 = 2^3\\cdot3^2$, $216 = 6^3 = 2^3\\cdot3^3$. None has a prime of multiplicity 1; each is certified by a squared or cubed prime whose exponent is not divisible by $n$."
+    },
+    {
+      "id": "gap",
+      "title": "Certifying the Gap",
+      "startLine": 147,
+      "endLine": 166,
+      "summary": "thirtySix_has_no_multiplicity_one_prime: every prime dividing 36 has its square dividing 36, so the parent's exactly-once route is unavailable — the generalization is necessary.",
+      "mathContext": "For all primes $p \\mid 36$, in fact $p^2 \\mid 36$. Hence the parent's hypothesis $p^2 \\nmid m$ fails for every prime, while the general criterion still certifies $\\sqrt[3]{36}$ irrational."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry answers open question 2 of the parent nth-root-irrational-oq-02: the ergonomic irrationality corollary is generalized from the exactly-once case (a prime dividing m precisely once) to an arbitrary pinned multiplicity a with n ∤ a. This exposes the full strength of the prime-factorization criterion and certifies the irrationality of nth roots of radicands all of whose prime factors have multiplicity ≥ 2 — 36, 72, 100, 216 — which the parent's corollary cannot reach.",
+    "implications": "**Completeness**: The general criterion closes the ergonomic gap between the abstract not-a-perfect-power theorem and its applicable irrationality corollaries. Any radicand with a mismatched prime exponent is now handled by one lemma, regardless of whether some prime happens to appear exactly once.\n\n**Separation**: 216 = 6³ shows the criterion is genuinely finer than the exactly-once test — ∛216 is rational while ⁶√216 is irrational, a distinction the exactly-once corollary cannot express.",
+    "openQuestions": [
+      "Can the criterion be lifted to rational radicands a/b, certifying irrationality of the nth root of a reduced fraction from the prime exponents of numerator and denominator?",
+      "Is there an ergonomic decision procedure that, given m and n, either exhibits the witnessing prime and exponent or produces the exact nth root — packaging the criterion as a complete perfect-power test?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "nth-root-irrational-oq-02",
+      "relationship": "extends",
+      "description": "Directly answers the parent's open question 2 (exposing the general criterion for radicands like 72 = 2³·3² whose prime exponents are all ≥ 2). Reuses not_perfect_pow_of_factorization and not_perfect_pow_int, and generalizes not_perfect_pow_of_sq_not_dvd."
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "foundational",
+      "description": "Ultimately rests on the base entry's general theorem irrational_nthRoot: not a perfect nth power over ℤ implies the nth root is irrational."
+    },
+    {
+      "targetId": "fundamental-arithmetic",
+      "relationship": "foundational",
+      "description": "A direct application of unique factorization: m is a perfect nth power iff every prime exponent is divisible by n. The general criterion witnesses failure at a single prime of arbitrary multiplicity."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.NthRootIrrational",
+      "Proofs.NthRootIrrationalOQ02"
+    ],
+    "opens": [
+      "NthRootIrrational",
+      "NthRootIrrationalOQ02"
+    ],
+    "namespace": "NthRootIrrationalOQ02OQ02",
+    "lineCount": 166,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/NthRootIrrationalOQ02OQ02.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/NthRootIrrational.lean",
+      "Proofs/NthRootIrrationalOQ02.lean"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Hardy, G.H.; Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "The unique-factorization characterization of perfect powers: m is a perfect nth power iff every prime exponent is divisible by n."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "not_perfect_pow_of_pow_dvd_not_dvd",
+      "type": "core",
+      "description": "A prime of exponent exactly a in m with n ∤ a certifies m is not a perfect nth power — the general pinned-multiplicity criterion",
+      "leanType": "{m n p a : Nat} -> p.Prime -> m ≠ 0 -> p^a ∣ m -> not (p^(a+1) ∣ m) -> not (n ∣ a) -> not (exists k : Nat, k^n = m)"
+    },
+    {
+      "name": "irrational_nthRoot_of_factorization_not_dvd",
+      "type": "core",
+      "description": "If a prime exponent m.factorization p is not divisible by n, then the nth root of m is irrational — the cleanest general form",
+      "leanType": "{m n p : Nat} -> 1 < n -> not (n ∣ m.factorization p) -> Irrational (nthRoot n m)"
+    },
+    {
+      "name": "irrational_sixthRoot_216",
+      "type": "application",
+      "description": "The sixth root of 216 = 6³ is irrational, even though 216 is a perfect cube — a separation the exactly-once corollary cannot express",
+      "leanType": "Irrational (nthRoot 6 216)"
+    }
+  ],
+  "sorries": 0
+}

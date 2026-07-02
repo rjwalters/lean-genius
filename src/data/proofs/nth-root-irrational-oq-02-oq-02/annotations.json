@@ -1,0 +1,90 @@
+[
+  {
+    "id": "ann-general-criterion",
+    "proofId": "nth-root-irrational-oq-02-oq-02",
+    "range": {
+      "startLine": 56,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "The General Exponent Criterion",
+    "content": "Proves `not_perfect_pow_of_pow_dvd_not_dvd`: if a prime `p` divides `m` to exponent exactly `a` and `n ∤ a`, then `m` is not a perfect `n`-th power.\n\n**Proof.** The two hypotheses `p^a ∣ m` and `p^(a+1) ∤ m` pin the p-adic valuation exactly: `Nat.Prime.pow_dvd_iff_le_factorization` turns `p^a ∣ m` into `a ≤ m.factorization p`, and the failure of `p^(a+1) ∣ m` into `¬ (a+1) ≤ m.factorization p`; `omega` concludes `m.factorization p = a`. Rewriting, the hypothesis `n ∤ a` becomes `n ∤ m.factorization p`, and the parent's `not_perfect_pow_of_factorization` finishes.\n\nAt `a = 1` this is exactly the parent's `not_perfect_pow_of_sq_not_dvd`; allowing arbitrary `a` is the whole point — it removes the artificial restriction to primes of multiplicity one.",
+    "mathContext": "From $p^a \\parallel m$ (i.e. $v_p(m) = a$) and $n \\nmid a$, the prime $p$ witnesses that $m$ is not a perfect $n$-th power. The parent's exactly-once lemma is the special case $a = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-adic valuation",
+      "Nat.Prime.pow_dvd_iff_le_factorization",
+      "perfect power",
+      "pinned multiplicity"
+    ],
+    "prerequisites": [
+      "prime factorization",
+      "the parent criterion not_perfect_pow_of_factorization"
+    ]
+  },
+  {
+    "id": "ann-general-irrationality",
+    "proofId": "nth-root-irrational-oq-02-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 103
+    },
+    "type": "concept",
+    "title": "General Irrationality Corollaries",
+    "content": "Two packagings of the criterion as irrationality statements, each a single term-mode line composing the general criterion with the parent's `not_perfect_pow_int` bridge and the base `irrational_nthRoot`.\n\n`irrational_nthRoot_of_pow_dvd_not_dvd`: from a pinned multiplicity `a` with `n ∤ a`, concludes `Irrational (nthRoot n m)`. Generalizes the parent's `irrational_nthRoot_of_sq_not_dvd`.\n\n`irrational_nthRoot_of_factorization_not_dvd`: the cleanest form — states the hypothesis directly as `¬ n ∣ m.factorization p`. This is the general theorem of which the parent's prime and exactly-once corollaries are instances.",
+    "mathContext": "$n \\nmid v_p(m) \\Rightarrow \\sqrt[n]{m} \\notin \\mathbb{Q}$, for any prime $p$ and any multiplicity, obtained by feeding the criterion through the base general theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "irrational_nthRoot",
+      "Irrational",
+      "term-mode proof"
+    ],
+    "prerequisites": [
+      "the general exponent criterion",
+      "base nth-root general theorem"
+    ]
+  },
+  {
+    "id": "ann-no-mult-one",
+    "proofId": "nth-root-irrational-oq-02-oq-02",
+    "range": {
+      "startLine": 104,
+      "endLine": 146
+    },
+    "type": "concept",
+    "title": "Radicands With No Multiplicity-One Prime",
+    "content": "Concrete irrationalities that the parent's exactly-once corollary cannot certify, because their radicands have no prime factor of multiplicity `1`.\n\n`irrational_cbrt_36`, `irrational_fourthRoot_36`: `36 = 2² · 3²` — witnessed by a squared prime (`9 ∣ 36`, `27 ∤ 36`) with `3 ∤ 2` (resp. `2` with `4 ∤ 2`).\n`irrational_cbrt_100`: `100 = 2² · 5²`, witnessed by `5` at multiplicity `2`.\n`irrational_sqrt_72`: `72 = 2³ · 3²` — the exact radicand named in the parent's open-questions list — witnessed by `2` at multiplicity `3`.\n`irrational_sixthRoot_216`: `216 = 6³ = 2³ · 3³` is a perfect cube (`∛216 = 6` is rational) yet not a perfect sixth power; witnessed by `2` at multiplicity `3` with `6 ∤ 3`. This is the sharpest separation: the exactly-once test cannot even be stated for `216`, let alone distinguish `∛216` from `⁶√216`.\n\nAll witnessing divisibilities are size-independent `norm_num` checks.",
+    "mathContext": "$36 = 2^2 3^2$, $100 = 2^2 5^2$, $72 = 2^3 3^2$, $216 = 6^3$. None has a prime of multiplicity 1, so each requires the general criterion; each is certified by a squared or cubed prime whose exponent is not divisible by $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect power separation",
+      "composite radicands",
+      "216 = 6³"
+    ],
+    "prerequisites": [
+      "the general irrationality corollaries"
+    ]
+  },
+  {
+    "id": "ann-gap-certificate",
+    "proofId": "nth-root-irrational-oq-02-oq-02",
+    "range": {
+      "startLine": 147,
+      "endLine": 166
+    },
+    "type": "concept",
+    "title": "Certifying the Gap",
+    "content": "Proves `thirtySix_has_no_multiplicity_one_prime`: every prime `p` dividing `36` in fact has `p² ∣ 36`. The proof bounds `p` by `Nat.le_of_dvd` (so `2 ≤ p ≤ 36`), runs `interval_cases p`, and discharges each concrete case by `decide` after reverting the primality and divisibility hypotheses — the non-prime and non-divisor values close vacuously, and the genuine witnesses `2, 3` satisfy `p² ∣ 36`.\n\nThis certifies that the parent's `not_perfect_pow_of_sq_not_dvd` (which needs a prime with `p² ∤ m`) has no applicable witness for `36`, so the general criterion of this entry is necessary — not a cosmetic restatement.",
+    "mathContext": "$\\forall p$ prime, $p \\mid 36 \\Rightarrow p^2 \\mid 36$. The exactly-once hypothesis $p^2 \\nmid m$ fails for every prime, while the general criterion still certifies $\\sqrt[3]{36}$ irrational.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval_cases",
+      "necessity of the generalization",
+      "squarefree"
+    ],
+    "prerequisites": [
+      "divisibility",
+      "the parent exactly-once corollary"
+    ]
+  }
+]
