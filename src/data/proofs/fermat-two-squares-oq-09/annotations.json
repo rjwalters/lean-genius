@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-f2s9-overview",
+    "proofId": "fermat-two-squares-oq-09",
+    "range": { "startLine": 5, "endLine": 47 },
+    "type": "context",
+    "title": "The multiplicative engine behind the composite two-squares theory",
+    "content": "The header frames the entry as the structural bridge from Fermat's prime-only two-squares theorem to composites. Fermat classifies which primes are sums of two squares (p = 2 or p ≡ 1 mod 4); extending this to arbitrary integers rests on a single fact flagged by the parent open question: the Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)² and the multiplicativity of the Gaussian-integer norm N(a+bi) = a²+b². The file formalizes both branches of the identity over an arbitrary commutative ring, the resulting closure of 'sum of two squares' under multiplication over ℤ and ℕ, and the conceptual origin — writing a²+b² = N(a+bi), the identity is exactly N(z)·N(w) = N(zw) with zw = (ac−bd) + (ad+bc)i, so closure is norm multiplicativity in ℤ[i].",
+    "mathContext": "$(a^2+b^2)(c^2+d^2) = (ac-bd)^2 + (ad+bc)^2 = N(z)N(w) = N(zw),\\ z=a+bi,\\ w=c+di.$",
+    "significance": "context",
+    "relatedConcepts": ["sum of two squares", "Gaussian integers", "norm multiplicativity", "Fermat's two-squares theorem", "composite characterization"],
+    "prerequisites": ["elementary number theory", "Gaussian integers", "commutative rings"]
+  },
+  {
+    "id": "ann-f2s9-identity",
+    "proofId": "fermat-two-squares-oq-09",
+    "range": { "startLine": 51, "endLine": 66 },
+    "type": "technique",
+    "title": "The Brahmagupta–Fibonacci identity — both branches by `ring`",
+    "content": "brahmagupta_fibonacci and its sister brahmagupta_fibonacci' state the two-square multiplication identity over an ARBITRARY commutative ring, so they apply to ℤ, ℕ-casts, polynomial rings, and beyond. Each is a pure polynomial identity discharged by the single tactic `ring`. The primed form is the conjugate branch, obtained by sending d ↦ −d: (a²+b²)(c²+d²) = (ac+bd)² + (ad−bc)². Generically the two branches yield distinct representations of the product, which is precisely why a composite can have several two-square representations (the concrete example 65 = 1²+8² = 4²+7² realizes both). Stating the identity ring-generically emphasizes that closure under multiplication needs no number theory to prove — the content is what the identity is for.",
+    "mathContext": "$(a^2{+}b^2)(c^2{+}d^2) = (ac{-}bd)^2 {+} (ad{+}bc)^2 \\ \\text{and}\\ = (ac{+}bd)^2 {+} (ad{-}bc)^2.$",
+    "significance": "key",
+    "relatedConcepts": ["polynomial identity", "ring tactic", "conjugate branch", "commutative ring"],
+    "prerequisites": ["polynomial algebra", "commutative rings"]
+  },
+  {
+    "id": "ann-f2s9-closure-int",
+    "proofId": "fermat-two-squares-oq-09",
+    "range": { "startLine": 67, "endLine": 82 },
+    "type": "concept",
+    "title": "Closure over ℤ: sums of two squares form a submonoid",
+    "content": "IsSumSq n := ∃ a b : ℤ, n = a²+b² packages the predicate, and IsSumSq.mul is the direct payoff of the identity: destructuring m = a²+b² and n = c²+d² by rfl, the witnesses (ac−bd, ad+bc) from brahmagupta_fibonacci prove IsSumSq (m·n) in one line. IsSumSq.one records 1 = 1²+0². Together closure and the unit make the sums of two integer squares a multiplicative submonoid of ℤ — the algebraic shape that lets Fermat's prime classification assemble representations for every product.",
+    "mathContext": "$m = a^2+b^2,\\ n = c^2+d^2 \\Rightarrow mn = (ac-bd)^2 + (ad+bc)^2;\\ \\ 1 = 1^2+0^2.$",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative submonoid", "closure property", "existential witness", "sum of two squares"],
+    "prerequisites": ["monoids", "existential proofs"]
+  },
+  {
+    "id": "ann-f2s9-closure-nat",
+    "proofId": "fermat-two-squares-oq-09",
+    "range": { "startLine": 83, "endLine": 107 },
+    "type": "technique",
+    "title": "Descent to ℕ through natAbs — signs are immaterial",
+    "content": "The classical number-theoretic statement is over ℕ, but tracking the signs of ac−bd and ad+bc to stay within ℕ is painful. isSumSqNat_iff sidesteps this: a natural n is a sum of two natural squares iff (n : ℤ) is a sum of two integer squares. The forward direction casts and rings; the reverse takes absolute values via a.natAbs, using Int.natCast_natAbs and sq_abs (|a|² = a²) so signs vanish, then exact_mod_cast descends back to ℕ. IsSumSqNat.mul is then a two-line corollary: rewrite through the bridge, push_cast, and apply the ℤ closure. This isolates the sign bookkeeping in one lemma so the ℕ theory inherits closure for free.",
+    "mathContext": "$n \\text{ sum of two nat squares} \\iff (n:\\mathbb{Z}) \\text{ sum of two int squares};\\ \\ a^2 = |a|^2.$",
+    "significance": "supporting",
+    "relatedConcepts": ["natAbs", "integer/natural casting", "absolute value", "sq_abs", "closure descent"],
+    "prerequisites": ["integer casting", "absolute values"]
+  },
+  {
+    "id": "ann-f2s9-gaussian-norm",
+    "proofId": "fermat-two-squares-oq-09",
+    "range": { "startLine": 108, "endLine": 124 },
+    "type": "concept",
+    "title": "Sums of two squares are exactly Gaussian norms",
+    "content": "This block installs the Gaussian-integer viewpoint. gaussianInt_norm_eq computes the norm N(z) = z.re² + z.im² from Zsqrtd.norm_def specialized to GaussianInt = Zsqrtd (−1) (where the −d·im·im term becomes +im²), finished by `ring`. isSumSq_iff_gaussianNorm then identifies the two predicates: IsSumSq n ↔ ∃ z : ℤ[i], N z = n. The forward map sends a representation a²+b² to the Gaussian integer ⟨a, b⟩; the reverse reads off the real and imaginary parts. This dictionary turns a purely arithmetic statement about integers into a statement about the ring ℤ[i], where multiplicativity of the norm is a structural fact.",
+    "mathContext": "$N(a+bi) = a^2 + b^2;\\quad \\mathrm{IsSumSq}\\,n \\iff \\exists z \\in \\mathbb{Z}[i],\\ N(z) = n.$",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian norm", "Zsqrtd", "ℤ[i]", "predicate equivalence", "norm form"],
+    "prerequisites": ["Gaussian integers", "quadratic integer rings"]
+  },
+  {
+    "id": "ann-f2s9-norm-mul",
+    "proofId": "fermat-two-squares-oq-09",
+    "range": { "startLine": 125, "endLine": 133 },
+    "type": "insight",
+    "title": "Brahmagupta = norm multiplicativity in ℤ[i]",
+    "content": "IsSumSq.mul' re-derives the very same closure of the previous IsSumSq.mul, but conceptually rather than computationally. Through the dictionary isSumSq_iff_gaussianNorm it replaces m and n by norms N(z) and N(w), and then m·n = N(z)·N(w) = N(z·w) is exactly Zsqrtd.norm_mul — the norm is a multiplicative map. The witness is simply the product z·w in ℤ[i]. This exhibits Brahmagupta's coordinate identity as the shadow of a ring-homomorphism property, making explicit the origin the parent open question named: the two-branch identity is not an algebraic coincidence but the componentwise expression of N(zw) = N(z)N(w).",
+    "mathContext": "$N(z)\\,N(w) = N(zw)$ (Zsqrtd.norm_mul); witness $zw$, whose coordinates are $(ac-bd,\\,ad+bc)$.",
+    "significance": "key",
+    "relatedConcepts": ["norm multiplicativity", "ring homomorphism", "Zsqrtd.norm_mul", "Gaussian integers", "conceptual re-derivation"],
+    "prerequisites": ["ring homomorphisms", "Gaussian integers", "norm forms"]
+  },
+  {
+    "id": "ann-f2s9-witnesses",
+    "proofId": "fermat-two-squares-oq-09",
+    "range": { "startLine": 134, "endLine": 144 },
+    "type": "application",
+    "title": "Concrete witnesses: 65 = 1²+8² = 4²+7²",
+    "content": "The closing examples exhibit both branches of the identity on 5·13 = 65: with a+bi = 1+2i (5 = 1²+2²) and c+di = 2+3i (13 = 2²+3²), the principal branch (ac−bd, ad+bc) = (−4, 7) gives 65 = 4²+7², while the conjugate branch (ac+bd, ad−bc) = (8, −1) gives 65 = 1²+8². Thus a single composite acquires two genuinely distinct two-square representations from the two branches — the arithmetic seed of representation-counting (r₂(n)). Each identity is checked by `decide`, a finite kernel computation on concrete integers; note that unlike native_decide this does not introduce the Lean.ofReduceBool axiom, keeping the entry 0-axiom.",
+    "mathContext": "$5\\cdot 13 = 65 = 1^2 + 8^2 = 4^2 + 7^2$ — the two branches produce the two representations.",
+    "significance": "supporting",
+    "relatedConcepts": ["representation counting", "r₂(n)", "decide tactic", "distinct representations"],
+    "prerequisites": ["arithmetic verification"]
+  }
+]
