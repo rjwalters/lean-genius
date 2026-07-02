@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: collision case reduced from Pi_1 isGFree obstruction to a decidable membership test with explicit blocker g(f a) (Section 4g, 6 verified 0-axiom decls). Main myhill_isomorphism → sorry still OPEN (stage recursion remains).",
+    "progressSummary": "PROGRESS (researcher-7, BUILD-PENDING/UNVERIFIED — Docker VM disk full): filled the missing CORRESPONDENCE-along-the-chase invariant. Added fwdOrbit_pred_iff (p-value constant on forward orbit), chaseTarget (computable k-th green candidate) + recurrence, chaseTarget_corr (p a ↔ q(chaseTarget a k)), and matching_step_chase (general domain step at any chase depth, generalizing matching_step_f). Prior sessions had the collision SOURCE (collision_f_source) and chase TERMINATION (fwdOrbit_chase_length_le); this adds the correspondence PRESERVATION. Open caveat: matching_step_chase pairs may break the strong BuiltFrom invariant for k≥1 — must reconcile before scheduler assembly. myhill_isomorphism hard direction still has 1 sorry.",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
@@ -49,7 +49,11 @@
       "totalInverse_computable — Computable (totalInverse g hg) for computable surjective g, via Partrec.of_eq + Part.some_get (VERIFIED, 0-axiom)",
       "computable_bijection_isComputablePerm — a computable bijection of ℕ is a computable permutation (Equiv.ofBijective g hg).Computable (VERIFIED, 0-axiom)",
       "oneOneEquiv_of_computable_bijection — fully computable easy-case Myhill: computable bijection g with p n↔q(g n) ⟹ OneOneEquiv p q (VERIFIED, 0-axiom)",
-      "SchroederBernsteinOQ03.lean Section 4g: def BuiltFrom + builtFrom_nil/_cons_f/_cons_g/_map_swap, collision_f_source, collision_g_source, step_f_available_or_collision (6 decls, VERIFIED 0-axiom {propext,Quot.sound})"
+      "SchroederBernsteinOQ03.lean Section 4g: def BuiltFrom + builtFrom_nil/_cons_f/_cons_g/_map_swap, collision_f_source, collision_g_source, step_f_available_or_collision (6 decls, VERIFIED 0-axiom {propext,Quot.sound})",
+      "fwdOrbit_pred_iff in Proofs/SchroederBernsteinOQ03.lean:1089 — p(fwdOrbit f g a k) ↔ p a (membership constant along forward orbit) [build-pending, Docker VM disk full 2026-07-02]",
+      "chaseTarget def + chaseTarget_zero/chaseTarget_succ (recurrence f∘g) + chaseTarget_computable (Computable₂) in SchroederBernsteinOQ03.lean:1104-1129 — the k-th green collision-chase candidate as a first-class computable object [build-pending]",
+      "chaseTarget_corr in SchroederBernsteinOQ03.lean:1121 — p a ↔ q(chaseTarget f g a k): correspondence preserved at EVERY chase target (KEY missing invariant) [build-pending]",
+      "matching_step_chase in SchroederBernsteinOQ03.lean:1141 — the GENERAL domain step: prepending (a, chaseTarget f g a k) preserves IsMatching AND MatchingCorr for ANY chase depth k, generalizing matching_step_f past the collision-free k=0 case [build-pending]"
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -59,19 +63,19 @@
       "partialInverse is single-valued under injective g (partialInverse_unique) — collision-freeness for extending the partial map by a g-edge.",
       "fwdOrbit f g n k = (g∘f)^[k] n (fwdOrbit_eq_iterate): the forward orbit is unproblematically computable; difficulty is entirely backward.",
       "Collision determinacy (Section 4g): under the BuiltFrom invariant (each pair is an f-edge (x,f x) or g-edge (g y,y)), a domain-side collision f a in mRan L is NECESSARILY the g-edge (g(f a), f a) — cannot be an f-edge by injectivity of f. Replaces the Pi_1 isGFree decision with a decidable membership test + explicit blocker g(f a).",
-      "2026-07-02 (r11): green Docker build of SchroederBernsteinOQ03 (3065 jobs, v4.26.0) confirms Sections 4a-4f (59 thm/14 def) compile with only the known myhill_isomorphism sorry; concurrent growth did not reintroduce the post-#32332 dup-decl breakage."
+      "2026-07-02 (r11): green Docker build of SchroederBernsteinOQ03 (3065 jobs, v4.26.0) confirms Sections 4a-4f (59 thm/14 def) compile with only the known myhill_isomorphism sorry; concurrent growth did not reintroduce the post-#32332 dup-decl breakage.",
+      "CHASE CORRESPONDENCE (the missing invariant): the p-value is CONSTANT along the forward orbit — p(fwdOrbit f g a k) ↔ p a for all k — because one orbit step x↦g(f x) crosses p x→q(f x) (f-reduction) then q(f x)→p(g(f x)) (g-reduction). Hence EVERY green chase candidate chaseTarget f g a k = f(fwdOrbit f g a k) corresponds to the anchor: p a ↔ q(chaseTarget f g a k). This is exactly what lets the scheduler pair (a, chaseTarget a k) while preserving MatchingCorr — the correspondence half of the domain step that was NOT yet established (only single-step matching_step_f had it).",
+      "ALGORITHM PINNED (Wikipedia/Rogers §7.4): to place fresh domain a, try f a; if taken, apply g then f REPEATEDLY (chaseTarget recurrence: chaseTarget a (k+1) = f(g(chaseTarget a k))) until a fresh green appears, then pair a with it. Membership preserved by chaseTarget_corr; termination bounded by fwdOrbit_chase_length_le (chase length ≤ mDom L length, already in file); no isGFree decision. NOTE the caveat below on BuiltFrom."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
     ],
     "nextSteps": [
-      "DONE (researcher-6): the 'tractable partial win' (classical/computable SB is computable when ranges decidable / when g is a bijection) is now formalized as computable_bijection_isComputablePerm + decidableIsGFree. Remaining frontier is unchanged: the stage-wise back-and-forth for arbitrary computable injections.",
-      "Formalize the stage-wise partial-bijection builder (List (ℕ×ℕ) by recursion on stage) using f for domain-side and partialInverse g for range-side extensions.",
-      "Prove the stage invariants: injectivity (via partialInverse_unique + f injective), correspondence p↔q preserved, and domain/range exhaustion (n covered by stage 2n+1).",
-      "Derive computability of the resulting permutation from computability of the stage builder + bounded search for the entering stage.",
-      "Consider a tractable partial win first: classical SB bijection IS computable when range g and range f are decidable (isolates the Π₁ obstruction).",
-      "Define stage recursion using step_f_available_or_collision: on collision at a, chase along fwdOrbit f g a to first k with f((g∘f)^[k] a) fresh; prove termination via finite matching length (bounded search, computable).",
-      "Scheduler crux (BLOCKED 3+ sessions): stage recursion producing IsMatching+MatchingCorr matchings, coverage via firstMissing_le_length, read off computable ℕ≃ℕ. Attempt only with a durable build environment; do not add peripheral scaffolding."
+      "CAVEAT to resolve: the naive pair (a, chaseTarget a k) added by matching_step_chase is NOT an f-edge/g-edge for k≥1, so it may VIOLATE the file's BuiltFrom invariant (every pair is (x,f x) or (g y,y)). Either (a) generalize BuiltFrom to admit these long-range orbit edges while keeping collision_f_source-style source analysis, or (b) confirm the real scheduler only ever adds edges keeping BuiltFrom and re-derive collisions. Reconcile matching_step_chase with BuiltFrom before assembling the scheduler.",
+      "Define the domain-step SEARCH: least k with chaseTarget f g a k ∉ mRan L (bounded by fwdOrbit_chase_length_le, so total+computable). Package as a Part/def with Dom proof via the chase-length bound + step_f_available_or_collision iterated.",
+      "Assemble the stage function StageMatching : ℕ → List(ℕ×ℕ) by recursion using the general domain step (even) and its swap-dual range step (odd, via builtFrom_map_swap/matchingCorr_map_swap), maintaining IsMatching+MatchingCorr+BuiltFrom(or its generalization).",
+      "Derive the total computable permutation from mLookup on the stage limit + firstMissing exhaustion (firstMissing_lt_cons_self) and close myhill_isomorphism.",
+      "BUILD BLOCKER: Docker VM cache volume full → Docker Desktop cannot start (host disk fine at 66%). This session unverified; needs a clean Docker build to confirm 0-axiom."
     ],
     "markdown": "# Knowledge Base: schroeder-bernstein-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

@@ -1097,6 +1097,92 @@ theorem step_f_available_or_collision {f g : ℕ → ℕ} (hf : Injective f)
   · exact Or.inl h
 
 /-!
+## Section 4h: Correspondence is preserved along the chase — the general domain step
+
+Sections 4·chase and 4g reduced the domain step to a *bounded* forward-orbit walk
+(`fwdOrbit_chase_length_le`) whose collisions have a named source (`collision_f_source`).
+What is still missing to actually *place* the fresh anchor `a` is the **correspondence**
+half: whatever green point the chase lands on, the scheduler pairs `a` with it, and that
+pairing must preserve `MatchingCorr p q` (Section 4c). This section supplies exactly that,
+with no reference to the non-computable `isGFree`.
+
+The key observation is that the reductions make the `p`-value **constant along the forward
+orbit**: one orbit step `x ↦ g (f x)` crosses `p x → q (f x)` (the `f`-reduction) and back
+`q (f x) → p (g (f x))` (the `g`-reduction), so `p (fwdOrbit f g a k) ↔ p a` for every `k`
+(`fwdOrbit_pred_iff`). Hence the `k`-th green candidate `chaseTarget f g a k = f (fwdOrbit
+f g a k)` always corresponds to the anchor: `p a ↔ q (chaseTarget f g a k)`
+(`chaseTarget_corr`). Combining this with the freshness bookkeeping of Section 4c gives
+`matching_step_chase`: prepending `(a, chaseTarget f g a k)` keeps the list a matching and
+preserves the correspondence — the domain step valid at **any** chase depth `k`, not only
+the collision-free `k = 0` case handled by `matching_step_f`.
+-/
+
+/-- **Membership is constant along the forward orbit.** Given the two reductions
+    `p n ↔ q (f n)` and `q n ↔ p (g n)`, every forward-orbit point has the same
+    `p`-value as the anchor: `p (fwdOrbit f g a k) ↔ p a`. One orbit step `x ↦ g (f x)`
+    crosses to `q (f x)` (via the `f`-reduction) and back to `p (g (f x))` (via the
+    `g`-reduction), leaving the `p`-value unchanged. -/
+theorem fwdOrbit_pred_iff {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (a : ℕ) : ∀ k, p (fwdOrbit f g a k) ↔ p a := by
+  intro k
+  induction k with
+  | zero => exact Iff.rfl
+  | succ k ih =>
+      rw [fwdOrbit_succ, ← hgpq (f (fwdOrbit f g a k)), ← hfpq (fwdOrbit f g a k)]
+      exact ih
+
+/-- **Collision-chase target.** The `k`-th green point the domain step inspects while
+    chasing a collision from a fresh anchor `a`: `chaseTarget f g a k = f (fwdOrbit f g a
+    k)`. Stage `0` is the naive image `f a`; each further stage advances one forward-orbit
+    step ("apply `g` then `f`"), matching the informal chase rule "apply `f`; if the green
+    point is taken, apply `g` then `f` repeatedly until a fresh green point is found". -/
+def chaseTarget (f g : ℕ → ℕ) (a k : ℕ) : ℕ := f (fwdOrbit f g a k)
+
+@[simp] theorem chaseTarget_zero (f g : ℕ → ℕ) (a : ℕ) :
+    chaseTarget f g a 0 = f a := rfl
+
+/-- **Chase-target recurrence** ("apply `g` then `f`"): each successive green candidate is
+    obtained from the previous one by `x ↦ f (g x)`. Confirms `chaseTarget` realises the
+    informal alternation and links it to the forward-orbit recurrence `fwdOrbit_succ`. -/
+theorem chaseTarget_succ (f g : ℕ → ℕ) (a k : ℕ) :
+    chaseTarget f g a (k + 1) = f (g (chaseTarget f g a k)) := by
+  simp only [chaseTarget, fwdOrbit_succ]
+
+/-- **Correspondence at every chase target.** Whatever fresh green point the bounded chase
+    lands on, it corresponds to the anchor: `p a ↔ q (chaseTarget f g a k)`. This is the
+    correspondence invariant the scheduler needs to pair `a` with the discovered fresh
+    target while preserving `MatchingCorr`, complementing the termination bound
+    `fwdOrbit_chase_length_le`. -/
+theorem chaseTarget_corr {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (a k : ℕ) : p a ↔ q (chaseTarget f g a k) :=
+  (fwdOrbit_pred_iff hfpq hgpq a k).symm.trans (hfpq (fwdOrbit f g a k))
+
+/-- **The chase target is computable** as a two-argument function of anchor and stage,
+    since `fwdOrbit` is (`fwdOrbit_computable`) and `f` is. This keeps the domain step's
+    bounded search computable. -/
+theorem chaseTarget_computable {f g : ℕ → ℕ} (hf : Computable f) (hg : Computable g) :
+    Computable₂ (chaseTarget f g) := by
+  have h : Computable (fun p : ℕ × ℕ => f (fwdOrbit f g p.1 p.2)) :=
+    hf.comp (fwdOrbit_computable hf hg)
+  exact h.of_eq (fun p => rfl)
+
+/-- **The general domain step (any chase depth).** If the anchor `a` is fresh in the
+    domain and the chase target `chaseTarget f g a k` is fresh in the range, then
+    prepending `(a, chaseTarget f g a k)` keeps the list a matching *and* preserves the
+    correspondence `p ↔ q`. This is `matching_step_f` extended past the collision-free
+    `k = 0` case: it is exactly the extension the scheduler performs once the bounded
+    collision chase (Section 4·chase) has located a fresh green target. -/
+theorem matching_step_chase {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    {L : List (ℕ × ℕ)} (hL : IsMatching L) (hC : MatchingCorr p q L)
+    {a k : ℕ} (ha : a ∉ mDom L) (ht : chaseTarget f g a k ∉ mRan L) :
+    IsMatching ((a, chaseTarget f g a k) :: L) ∧
+      MatchingCorr p q ((a, chaseTarget f g a k) :: L) :=
+  ⟨isMatching_cons hL ha ht, matchingCorr_cons hC (chaseTarget_corr hfpq hgpq a k)⟩
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
