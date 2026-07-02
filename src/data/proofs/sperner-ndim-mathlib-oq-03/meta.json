@@ -68,6 +68,13 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Combinatorial Borsuk–Ulam in Dimension One (1-D Tucker's Lemma)",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "License header, import Mathlib, and module docstring. Answers OQ-03 of sperner-ndim-mathlib: does the abstract cell-complex framework extend to antipodal colorings (the Borsuk–Ulam direction)? The discrete shadow of Borsuk–Ulam is Tucker's lemma — antipodally-symmetric labels {±1,…,±n} on a triangulated ball, antisymmetric on the boundary, force a complementary edge with opposite labels +k/−k. This file settles the base case n=1 and isolates the antipodal parity engine playing the role sperner_parity plays for Sperner. In 1-D the interior involution degenerates (a path has no interior faces to pair), so the complementary-edge parity is governed entirely by the two endpoints — the discrete fundamental theorem of calculus mod 2 (signChanges_odd_iff: #sign-changes is odd iff endpoints disagree). Main statements: signChanges_odd_iff, complementary_edges_odd, tucker_one_dim, tucker_one_dim_antipodal, tucker_one_dim_int. 0 sorries, 0 axioms. Honest scope: 1-D only — full n-dimensional Tucker needs an AntipodalCellComplex refinement (free ℤ/2-action) plus Freund–Todd labelling; the parity engine even_card_fpf_invol is reusable, the boundary bookkeeping is the genuine higher-dimensional obstruction."
+    },
+    {
       "id": "section-signchanges",
       "title": "Complementary-Edge Count and Its Recurrence",
       "startLine": 81,
