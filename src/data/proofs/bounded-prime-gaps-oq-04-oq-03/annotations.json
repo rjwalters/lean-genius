@@ -58,5 +58,20 @@
     "mathContext": "$z\\overline{z} = \\mathrm{normSq}(z)$ as a real number, and $\\|z\\| = \\sqrt{\\mathrm{normSq}(z)}$; with $\\mathrm{normSq}(\\tau(\\chi)) = p$ this yields $\\|\\tau(\\chi)\\| = \\sqrt{p}$.",
     "relatedConcepts": ["axiom auditing (#print axioms)", "Complex.normSq", "verified vs axiomatized status", "gaussSum_ne_zero"],
     "prerequisites": ["Complex.normSq and Complex.norm_def", "z·conj z = normSq z", "#print axioms discipline", "√p > 0"]
+  },
+  {
+    "id": "ann-bpg-oq0403-nonvanishing",
+    "proofId": "bounded-prime-gaps-oq-04-oq-03",
+    "range": {
+      "startLine": 122,
+      "endLine": 131
+    },
+    "type": "context",
+    "title": "Nonvanishing corollary: τ(χ) ≠ 0",
+    "significance": "supporting",
+    "content": "gaussSum_ne_zero records the immediate but useful consequence that the Gauss sum of a nontrivial character mod a prime never vanishes. The proof is purely order-theoretic: from norm_gaussSum_eq_sqrt the norm is √p, and √p > 0 because p > 0 (Real.sqrt_pos on the primality-derived positivity Fact p.Prime → p.pos); a zero Gauss sum would force √p = ‖0‖ = 0, contradicting √p > 0. Nonvanishing of Gauss sums is what makes them invertible normalizing factors in the functional equation of Dirichlet L-functions and in the reduction of character sums, so the corollary is the natural downstream hook for the √p bound rather than a mere afterthought.",
+    "mathContext": "$\\|\\tau(\\chi)\\| = \\sqrt{p} > 0$, and $\\tau(\\chi) = 0$ would give $\\sqrt{p} = \\|0\\| = 0$, a contradiction; hence $\\tau(\\chi) \\neq 0$.",
+    "relatedConcepts": ["nonvanishing of Gauss sums", "Real.sqrt_pos", "functional equation of L-functions", "normalizing factor"],
+    "prerequisites": ["norm_gaussSum_eq_sqrt", "√p > 0 for p prime", "‖z‖ = 0 ⟺ z = 0"]
   }
 ]

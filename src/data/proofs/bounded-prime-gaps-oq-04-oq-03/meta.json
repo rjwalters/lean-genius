@@ -64,20 +64,44 @@
       "mathContext": "For a nontrivial Dirichlet character $\\chi \\bmod p$ with $p$ prime, $|\\tau(\\chi)| = \\sqrt{p}$ where $\\tau(\\chi) = \\sum_{a} \\chi(a) e(a/p)$. The proof rests on $\\tau(\\chi)\\overline{\\tau(\\chi)} = \\#(\\mathbb{Z}/p) = p$."
     },
     {
-      "id": "conjugation",
-      "title": "Conjugation identities",
+      "id": "conj-addchar",
+      "title": "Conjugating the standard additive character",
       "startLine": 69,
-      "endLine": 95,
-      "summary": "conj_stdAddChar: conj(stdAddChar a) = stdAddChar⁻¹ a, since the standard additive character takes values on the unit circle (Circle.coe_inv_eq_conj, AddChar.map_neg_eq_inv). conj_gaussSum: conj(gaussSum χ stdAddChar) = gaussSum χ⁻¹ stdAddChar⁻¹, obtained termwise from map_sum, map_mul, MulChar.star_apply', and conj_stdAddChar.",
-      "mathContext": "$\\overline{e(a/N)} = e(-a/N)$ and $\\overline{\\chi(a)} = \\chi^{-1}(a)$ give $\\overline{\\tau(\\chi)} = \\sum_a \\chi^{-1}(a) e(-a/N) = \\mathrm{gaussSum}\\ \\chi^{-1}\\ \\psi^{-1}$. This holds for every modulus."
+      "endLine": 77,
+      "summary": "conj_stdAddChar: conj(stdAddChar a) = stdAddChar⁻¹ a, since the standard additive character takes values on the unit circle (Circle.coe_inv_eq_conj, AddChar.map_neg_eq_inv). Holds for every modulus.",
+      "mathContext": "$\\overline{e(a/N)} = e(-a/N) = e(a/N)^{-1}$, conjugation equals inversion on the unit circle."
     },
     {
-      "id": "product-and-norm",
-      "title": "Product formula and the √p bound",
-      "startLine": 96,
+      "id": "conj-gausssum",
+      "title": "Conjugating the Gauss sum",
+      "startLine": 78,
+      "endLine": 88,
+      "summary": "conj_gaussSum: conj(gaussSum χ stdAddChar) = gaussSum χ⁻¹ stdAddChar⁻¹, obtained termwise from map_sum, map_mul, MulChar.star_apply', and conj_stdAddChar. Also modulus-agnostic.",
+      "mathContext": "$\\overline{\\chi(a)} = \\chi^{-1}(a)$ gives $\\overline{\\tau(\\chi)} = \\sum_a \\chi^{-1}(a) e(-a/N) = \\mathrm{gaussSum}\\ \\chi^{-1}\\ \\psi^{-1}$."
+    },
+    {
+      "id": "product-formula",
+      "title": "Product formula τ(χ)·conj τ(χ) = p (the field step)",
+      "startLine": 89,
+      "endLine": 101,
+      "summary": "gaussSum_mul_conj: for a nontrivial χ mod prime p, τ(χ)·conj τ(χ) = p, via gaussSum_mul_gaussSum_eq_card (which needs ZMod p to be a field — the single place the prime hypothesis enters) rewritten by conj_gaussSum, then ZMod.card.",
+      "mathContext": "$\\tau(\\chi)\\,\\overline{\\tau(\\chi)} = \\mathrm{gaussSum}\\,\\chi\\,\\psi \\cdot \\mathrm{gaussSum}\\,\\chi^{-1}\\,\\psi^{-1} = \\#(\\mathbb{Z}/p) = p$."
+    },
+    {
+      "id": "norm-bound",
+      "title": "Squared norm and the √p bound",
+      "startLine": 102,
+      "endLine": 120,
+      "summary": "normSq_gaussSum: normSq τ(χ) = p (cast from the complex product via normSq_eq_conj_mul_self). norm_gaussSum_eq_sqrt: |τ(χ)| = √p via Complex.norm_def — the headline result, axiom-free.",
+      "mathContext": "$z\\bar z = \\mathrm{normSq}(z) = p$ so $\\|z\\| = \\sqrt{\\mathrm{normSq}(z)} = \\sqrt{p}$."
+    },
+    {
+      "id": "nonvanishing",
+      "title": "Nonvanishing corollary",
+      "startLine": 121,
       "endLine": 135,
-      "summary": "gaussSum_mul_conj: τ(χ)·conj τ(χ) = p via gaussSum_mul_gaussSum_eq_card and ZMod.card. normSq_gaussSum: normSq τ(χ) = p (cast from the complex product). norm_gaussSum_eq_sqrt: |τ(χ)| = √p via Complex.norm_def. gaussSum_ne_zero: τ(χ) ≠ 0 since √p > 0.",
-      "mathContext": "$z\\bar z = \\mathrm{normSq}(z) = p$ so $|z| = \\sqrt{\\mathrm{normSq}(z)} = \\sqrt{p}$. The field hypothesis of gaussSum_mul_gaussSum_eq_card is met because $\\mathbb{Z}/p$ is a field for prime $p$."
+      "summary": "gaussSum_ne_zero: the Gauss sum of a nontrivial character mod a prime is nonzero, since its norm √p is strictly positive (Real.sqrt_pos on p > 0).",
+      "mathContext": "$\\|\\tau(\\chi)\\| = \\sqrt{p} > 0 \\implies \\tau(\\chi) \\neq 0$."
     }
   ],
   "references": [
