@@ -86,6 +86,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: how far the even-zeta product-reduction extends (weights 10, 12 and the prime 691)",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Imports and header docstring: the open question, the Euler-formula reduction mechanism, the tidy weight-10 coefficients, the breakdown at weight 12 through the irregular prime 691, and the list of results.",
+      "mathContext": "This file (open question basel-problem-oq-03-oq-02, child of OQ-03 on multiple zeta values) asks how far the parent's phenomenon — every product of even zeta values collapses to a single even zeta times a tidy rational — extends past weight 8, and whether the reduction coefficient stays nice. It pushes to ζ(10) and ζ(12). The reduction always holds, forced by Euler's formula ζ(2k) = q_k·π^{2k} (hasSum_zeta_nat): matching π-powers turns any product of even zetas into a rational multiple of the single zeta of the summed weight. At weight 10 the coefficients stay tidy (33/20, 11/10, 11/4, 77/40, 385/32); at weight 12 they stop being tidy (715/691, 2275/1382, 3003/2764) because the irregular prime 691 enters via B₁₂ = −691/2730, putting 691 in the numerator of ζ(12) = 691·π¹²/638512875 (denominator 3⁶·5³·7²·11·13 coprime to 691) and hence 691 in every reduction coefficient's denominator. 691 — the first irregular prime, numerator of B₁₂, modulus of Ramanujan's τ congruence — is the arithmetic fingerprint that breaks tidiness. The header docstring (lines 1–70) lists the proved results: Bernoulli numbers bernoulli_ten (B₁₀ = 5/66) and bernoulli_twelve (B₁₂ = −691/2730) computed from the recursion; closed forms hasSum_zeta_ten (ζ(10)=π¹⁰/93555) and hasSum_zeta_twelve; the five tidy weight-10 product reductions; and the three weight-12 reductions spoiled by 691. Verified: 0 axioms (no native_decide), 0 sorries."
+    },
+    {
       "id": "bernoulli",
       "title": "Bernoulli Numbers B₁₀ = 5/66 and B₁₂ = -691/2730",
       "startLine": 71,
