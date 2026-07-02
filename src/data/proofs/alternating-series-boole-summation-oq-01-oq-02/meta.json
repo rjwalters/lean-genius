@@ -41,7 +41,19 @@
       "leibniz-criterion",
       "limits"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
+    "mathlibDependencies": [
+      {
+        "theorem": "Antitone.alternating_series_le_tendsto",
+        "description": "For an antitone sequence, every even partial sum of the alternating series is ≤ the limit. Supplies the one-sided (below) bracketing that is the analytic core of the remainder bound.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Antitone.tendsto_le_alternating_series",
+        "description": "For an antitone sequence, every odd partial sum of the alternating series is ≥ the limit. Supplies the one-sided (above) bracketing that is the analytic core of the remainder bound.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      }
+    ],
     "sorries": 0,
     "dateAdded": "2026-07-01",
     "relatedProblems": [
