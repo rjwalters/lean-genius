@@ -104,6 +104,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Can the Schröder–Bernstein Property Be Characterized Categorically?",
+      "startLine": 1,
+      "endLine": 85,
+      "summary": "Imports (CategoryTheory EpiMono/Types/Discrete/Groupoid/ConcreteCategory, Cardinal.SchroederBernstein, TopCat, Compactness) and module docstring. Open question: SBP — mutual monomorphisms imply isomorphism — was shown by Banaschewski–Brümmer (1986) to hold in categories with a retraction condition, but a complete categorical characterization remains open. The file defines HasSBP C and proves: hasSBP_Type (via mono_iff_injective + Embedding.antisymm); hasSBP_Discrete (every Discrete-category morphism is iso via asIso); not_hasSBP_TopCat, a genuine counterexample via [0,1] vs (0,1) — mutual continuous injections exist but [0,1] is compact and (0,1) is not, blocking any homeomorphism; and hasSBP_of_isDiscrete, the vacuous sufficient condition abstracting the discrete pattern to all IsDiscrete categories. No sorries, no axioms.",
+      "mathContext": "The TopCat counterexample shows SBP genuinely fails outside special settings, sharpening why a categorical characterization is subtle; the IsDiscrete result isolates one clean sufficient condition (every morphism already iso)."
+    },
+    {
       "id": "definition",
       "title": "The Categorical Schroeder-Bernstein Property",
       "startLine": 86,
