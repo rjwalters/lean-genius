@@ -868,6 +868,64 @@ theorem mLookup_computable : Computable₂ mLookup := by
   exact hget.of_eq (fun _ => rfl)
 
 /-!
+## Section 4f-bis: Read-off coherence — the limit function is well-defined and injective
+
+`mLookup_eq_of_mem` reads the recorded partner off a matching. To assemble the
+stage-wise matchings into a single permutation `σ : ℕ ≃ ℕ` the assembly step needs three
+further facts about that read-off, all consequences of the matching `Nodup` conditions:
+
+* the read-off **lands on a genuine edge** (`mLookup_mem_of_mem_dom`): whenever `n` is in
+  the domain, `(n, mLookup L n) ∈ L`. This is the converse companion to
+  `mLookup_eq_of_mem` and is what lets the range/inverse be read back off the same list.
+* the read-off is **injective across the domain** (`mLookup_injOn`): distinct domain
+  points get distinct partners, from range-side `Nodup` (`matching_cofunctional`). This is
+  the finite-stage witness of injectivity of the limit `σ`.
+* the read-off is **stable along a growing chain** (`mLookup_stable`): enlarging the
+  matching does not change the value on the already-covered domain. This is exactly the
+  coherence that makes the stage-wise read-offs converge to a single well-defined limit
+  (`σ n` may be computed at *any* stage past the one where `n` enters the domain).
+
+These are the well-definedness, injectivity, and coherence obligations the assembly of
+`myhill_isomorphism` consumes; they are collision-independent, so they hold for every
+matching regardless of how the scheduler resolves collisions (Section 4g).
+-/
+
+/-- **The read-off lands on a recorded edge.** If `n` is in the domain of a matching,
+    then `(n, mLookup L n) ∈ L`: the looked-up partner is genuinely paired with `n`.
+    Converse companion to `mLookup_eq_of_mem`. -/
+theorem mLookup_mem_of_mem_dom {L : List (ℕ × ℕ)} (hL : IsMatching L)
+    {n : ℕ} (hn : n ∈ mDom L) : (n, mLookup L n) ∈ L := by
+  simp only [mDom, List.mem_map] at hn
+  obtain ⟨⟨a, b⟩, hmem, ha⟩ := hn
+  have ha' : a = n := ha
+  subst ha'
+  rw [mLookup_eq_of_mem hL hmem]
+  exact hmem
+
+/-- **The read-off is injective across the domain.** On a matching, distinct domain
+    points have distinct partners: if `m, n ∈ dom L` and `mLookup L m = mLookup L n`
+    then `m = n`. Follows from range-side `Nodup` via `matching_cofunctional`; this is the
+    finite-stage witness of injectivity of the limit permutation. -/
+theorem mLookup_injOn {L : List (ℕ × ℕ)} (hL : IsMatching L)
+    {m n : ℕ} (hm : m ∈ mDom L) (hn : n ∈ mDom L)
+    (h : mLookup L m = mLookup L n) : m = n := by
+  have hm' := mLookup_mem_of_mem_dom hL hm
+  have hn' := mLookup_mem_of_mem_dom hL hn
+  rw [h] at hm'
+  exact matching_cofunctional hL hm' hn'
+
+/-- **Read-off coherence along a growing chain.** If every pair of the matching `L₁` is
+    also a pair of the larger matching `L₂`, the two agree on `L₁`'s domain:
+    `mLookup L₁ n = mLookup L₂ n` for `n ∈ dom L₁`. This is what makes the stage-wise
+    read-offs converge to a single well-defined limit — `σ n` may be computed at any stage
+    at or beyond the one where `n` first enters the domain. -/
+theorem mLookup_stable {L₁ L₂ : List (ℕ × ℕ)} (h₁ : IsMatching L₁) (h₂ : IsMatching L₂)
+    (hsub : ∀ x ∈ L₁, x ∈ L₂) {n : ℕ} (hn : n ∈ mDom L₁) :
+    mLookup L₁ n = mLookup L₂ n := by
+  have hmem := mLookup_mem_of_mem_dom h₁ hn
+  exact (mLookup_eq_of_mem h₂ (hsub _ hmem)).symm
+
+/-!
 ## Section 4g: Collision structure — what blocks a fresh domain/range extension
 
 Sections 4c–4f supply the *collision-free* atomic steps (`matching_step_f`,
