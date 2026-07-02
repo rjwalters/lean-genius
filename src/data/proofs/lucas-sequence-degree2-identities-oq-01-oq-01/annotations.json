@@ -73,20 +73,42 @@
     "proofId": "lucas-sequence-degree2-identities-oq-01-oq-01",
     "range": {
       "startLine": 84,
-      "endLine": 107
+      "endLine": 99
     },
     "type": "concept",
     "title": "Fibonacci/Lucas and Pell Tripling as Instances",
-    "content": "The parameter-general theorems specialize with no extra work: fib_tripling gives F₃ₙ = Fₙ·(Lₙ² − (−1)ⁿ) and lucas_tripling gives L₃ₙ = Lₙ·(Lₙ² − 3·(−1)ⁿ) at (P,Q) = (1,−1); pell_tripling gives U₃ₙ = Uₙ·(Vₙ² − (−1)ⁿ) at (2,−1). A kernel-`decide` numeric check confirms the formulas concretely at n = 2: F₆ = 8 = F₂·(L₂² − 1) = 1·(9 − 1) and L₆ = 18 = L₂·(L₂² − 3) = 3·(9 − 3), without native_decide, keeping the file axiom-free.",
-    "mathContext": "$(P,Q)=(1,-1)$: $F_{3n}=F_n(L_n^2-(-1)^n)$, $L_{3n}=L_n(L_n^2-3(-1)^n)$; $(2,-1)$: Pell tripling.",
+    "content": "The parameter-general theorems specialize with no extra work — each named corollary is a one-line application of U_three_mul / V_three_mul at a fixed (P,Q). fib_tripling gives F₃ₙ = Fₙ·(Lₙ² − (−1)ⁿ) and lucas_tripling gives L₃ₙ = Lₙ·(Lₙ² − 3·(−1)ⁿ) at (P,Q) = (1,−1); pell_tripling gives U₃ₙ = Uₙ·(Vₙ² − (−1)ⁿ) at (2,−1). Because Qⁿ = (−1)ⁿ in the Fibonacci/Lucas and Pell settings, the sign-alternating (−1)ⁿ terms are exactly the classical Fibonacci tripling identities recovered as a corollary of the uniform Lucas-sequence development.",
+    "mathContext": "$(P,Q)=(1,-1)$: $F_{3n}=F_n(L_n^2-(-1)^n)$, $L_{3n}=L_n(L_n^2-3(-1)^n)$; $(2,-1)$: Pell tripling $P_{3n}=P_n(Q_n^2-(-1)^n)$ where $Q_n$ is the Pell-Lucas companion.",
     "significance": "supporting",
     "relatedConcepts": [
       "Fibonacci/Lucas special case",
       "Pell/Pell-Lucas special case",
-      "kernel decide numeric verification"
+      "parameter specialization"
     ],
     "prerequisites": [
       "the general tripling theorems"
+    ]
+  },
+  {
+    "id": "ann-numeric-check",
+    "proofId": "lucas-sequence-degree2-identities-oq-01-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 107
+    },
+    "type": "technique",
+    "title": "Kernel-decide Numeric Check Keeps the File Axiom-Free",
+    "content": "A concrete sanity check at (P,Q) = (1,−1), n = 2 confirms all four claims by kernel reduction: F₆ = 8 and L₆ = 18, together with F₆ = F₂·(L₂² − 1) = 1·(9 − 1) = 8 and L₆ = L₂·(L₂² − 3) = 3·(9 − 3) = 18. Crucially each conjunct is discharged by `decide`, not `native_decide`: `decide` runs inside Lean's trusted kernel and adds no axioms, whereas `native_decide` would pull in Lean.ofReduceBool. Choosing `decide` is what lets the entry claim status verified / axiomCount 0 even though it verifies a numeric computation.",
+    "mathContext": "At $n=2$: $F_2 = 1$, $L_2 = 3$, so $F_2(L_2^2 - (-1)^2) = 1\\cdot(9-1) = 8 = F_6$ and $L_2(L_2^2 - 3(-1)^2) = 3\\cdot(9-3) = 18 = L_6$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "kernel decide vs native_decide",
+      "axiom-free verification",
+      "concrete instance check"
+    ],
+    "prerequisites": [
+      "Lean decide tactic",
+      "the named specializations"
     ]
   }
 ]
