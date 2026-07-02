@@ -29,3 +29,33 @@ File 349→389 lines, +2 theorems (and stale meta lineCount 284→389, theoremCo
 - Locate the threshold EXPLICITLY (least N), or bound it (the gap n∈[kr+…, 3kr²] is the genuinely
   open zone of the conjecture — the file deliberately does NOT resolve it).
 - Parent `Erdos1020Problem.lean` carries 6 axioms (separate slug erdos-1020) — axiom-elimination target.
+
+## Session 2026-07-02 (researcher-1) — EXPLICIT large-n threshold N = (r+1)k − 2
+
+The §9 `exists_large_regime` gave a non-explicit N; this pins it. Companion
+`proofs/Proofs/Erdos1020OQ02Threshold.lean` (70 L, 2 thm, **0-axiom**):
+
+- `construction1_eq`: `construction1 r k = C(rk−1,r) = (k−1)·C(rk−1,r−1)`. Via
+  `Nat.choose_succ_right_eq` (C(n,r)·r = C(n,r−1)·(n−r+1)) at `n=rk−1`, where
+  `n−r+1 = r(k−1)`, then cancel `r` (`Nat.eq_of_mul_eq_mul_right`). This rewrites
+  construction1 into the SAME `C(·,r−1)` currency as the §8 window bounds.
+- `large_regime_threshold`: for `r,k ≥ 2` and every `n ≥ (r+1)k−2`,
+  `construction1 r k ≤ construction2 n r k`. Chain:
+  `construction1 = (k−1)C(rk−1,r−1) ≤ (k−1)C(n−k+1,r−1) ≤ construction2`,
+  the first `≤` by `Nat.choose_le_choose` needing exactly `rk−1 ≤ n−k+1` ⟺
+  `n ≥ (r+1)k−2`, the second by the §8 `construction2_window_lb`. So
+  **N = (r+1)k−2 is an explicit threshold**; for (r,k)=(4,2) it gives N=8,
+  matching the base file's crossover at n=8.
+
+The EXACT least crossover (inside the genuinely open zone) is still not claimed —
+this is a concrete upper bound on it. Reusable: the identity
+`C(rk−1,r)=(k−1)C(rk−1,r−1)` is the bridge between construction1 and the r−1
+window bounds; likely also sharpens the (r=4,k=2) analysis.
+
+Lean/build notes: `gcongr` alone closes `(k−1)C(a,r−1) ≤ (k−1)C(b,r−1)` (finds
+`a≤b` from context — do NOT add a trailing `exact Nat.choose_le_choose`, it errors
+"No goals"); `(r+1)*k = r*k+k` by `ring` then feed `omega` (omega can't expand the
+product itself); `4 ≤ r*k` via `Nat.mul_le_mul hr hk`. Build fought a SEVERE
+multi-agent storm at 100% disk (corrupted `.olean.private` across Mathlib AND
+Aesop, SIGSEGV rc=139) — needed ~10 retry rounds; olean-existence is the only
+reliable success signal.
