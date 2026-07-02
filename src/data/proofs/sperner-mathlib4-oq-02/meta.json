@@ -44,6 +44,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Two Machine-Checked Obstructions to Naive Tucker Doors (n=2)",
+      "startLine": 1,
+      "endLine": 79,
+      "summary": "Module docstring and import (Mathlib) for sperner-mathlib4-oq-02. The door-counting program for Tucker's lemma is abstractly complete up to one geometric input: the single-level path-following engine and the dimension recursion are verified, leaving only the Freund–Todd/Prescott–Su construction of the door graph. This file is a negative/scoping result on the standard antipodally-symmetric hexagon+centre triangulation of B²: it kills the second naive simplification (after the companion SpernerTuckerHexagon killed the first, the non-parity-invariance of the complementary-edge count) by showing that a door graph built from ONE fixed complementary sign is not a complete certificate — for a suitable antipodal labelling the spoke door graph is empty while Tucker's conclusion still holds. Proves (0 sorries, 0 axioms, kernel decide): degSpoke_le_two (the engine's max-degree-≤2 hypothesis is realized on real geometry), spoke_graph_empty_yet_complementary (the obstruction), hexagon_tucker (Tucker's conclusion holds for every antipodal labelling).",
+      "mathContext": "The result sharpens what the remaining open geometric construction must accomplish: the correct Freund–Todd door structure must range over all signs and account for boundary edges, not read off a single interior door type. Fully concrete (n=2, kernel decide, no native_decide)."
+    },
+    {
       "id": "encoding",
       "title": "Label Encoding and the Hexagon Model",
       "startLine": 80,
