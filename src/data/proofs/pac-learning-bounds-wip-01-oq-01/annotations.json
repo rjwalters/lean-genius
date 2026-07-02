@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ann-pac-wip01-oq01-01-header",
+    "proofId": "pac-learning-bounds-wip-01-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Class-Level Monotonicity of the VC Dimension",
+    "content": "The header recalls the parent entry's 0-axiom foundations — trace, shattering, and VCDim H = sSup{|S| : H shatters S} — and its set-level monotonicity lemma shatters_mono (enlarging the class preserves shattering). This file supplies the class-level counterpart: monotonicity of the VC dimension itself as a function of the hypothesis class, the parent entry's own first open question.",
+    "mathContext": "A richer hypothesis class can shatter at least as many configurations, so its capacity (VC dimension) is at least as large.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "VC dimension",
+      "shattering",
+      "monotonicity",
+      "PAC learning"
+    ],
+    "prerequisites": [
+      "the parent entry's definitions of shattering and VCDim",
+      "conditional suprema (sSup)"
+    ]
+  },
+  {
+    "id": "ann-pac-wip01-oq01-02-mono",
+    "proofId": "pac-learning-bounds-wip-01-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "vcDim_mono: H ⊆ H' ⟹ VCDim H ≤ VCDim H'",
+    "content": "The main result. VCDim H is the supremum sSup{n | ∃ S, |S| = n ∧ H shatters S}. If that set is empty, VCDim H = sSup ∅ = 0 ≤ VCDim H'. Otherwise csSup_le reduces the goal to bounding each achievable cardinality n = |S|: the parent's shatters_mono upgrades 'H shatters S' to 'H' shatters S', and card_le_vcDim then gives |S| ≤ VCDim H'. The supremum inherits the bound. vcDim_le_of_subset restates the same fact in implication form.",
+    "mathContext": "$\\dim_{VC}(H) \\le \\dim_{VC}(H')$ whenever $H \\subseteq H'$; proved by transporting the set-level $\\texttt{shatters\\_mono}$ across the supremum via $\\texttt{csSup\\_le}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "VC dimension",
+      "monotonicity",
+      "conditional supremum",
+      "shatters_mono"
+    ],
+    "prerequisites": [
+      "csSup_le and csSup_empty",
+      "the parent's shatters_mono and card_le_vcDim"
+    ]
+  },
+  {
+    "id": "ann-pac-wip01-oq01-03-corollaries",
+    "proofId": "pac-learning-bounds-wip-01-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Union Bounds and the Powerset Capacity Ceiling",
+    "content": "Immediate consequences of monotonicity. vcDim_union_left / vcDim_union_right give VCDim H, VCDim H' ≤ VCDim (H ∪ H') via subset_union. vcDim_powerset_le shows any class contained in a powerset, H ⊆ S.powerset, has VCDim H ≤ |S|, obtained by chaining vcDim_mono with the parent's exact value vcDim_powerset (VCDim(2^S) = |S|) — turning a class containment into a capacity ceiling.",
+    "mathContext": "$\\dim_{VC}(H), \\dim_{VC}(H') \\le \\dim_{VC}(H \\cup H')$; and $H \\subseteq 2^S \\Rightarrow \\dim_{VC}(H) \\le |S|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "VC dimension",
+      "union bound",
+      "powerset class",
+      "capacity ceiling"
+    ],
+    "prerequisites": [
+      "vcDim_mono",
+      "Finset.subset_union_left/right",
+      "the parent's vcDim_powerset"
+    ]
+  }
+]
