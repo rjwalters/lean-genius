@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Cayley–Menger Polynomials Are Literally Determinants",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "The docstring frames this file against parent CayleyMengerHeronOQ05, which introduces the Cayley–Menger polynomials cmDet3 (triangle) and cmDet4 (tetrahedron) in squared edge lengths and proves they reproduce −16·Area² and 288·V², but only asserts — never certifies — that they are the determinants of the bordered squared-distance matrices. This entry (parent OQ-03) closes that gap: it builds the bordered matrices as honest Matrix (Fin 4/Fin 5) ℝ objects and proves by Laplace cofactor expansion that Matrix.det of each equals the parent polynomial, yielding det(4×4) = −16·Area² and det(5×5) = 288·V². Since Mathlib has det_fin_three but no det_fin_four/five, the higher determinants are reduced via det_succ_row_zero to the 3×3 base case. The polynomial and scalar definitions are reproduced verbatim from the parent for standalone machine-checking. Imports Mathlib; namespace CayleyMengerHeronOQ0503; opens Matrix.",
+      "mathContext": "$\\det(\\text{bordered }4\\times4) = -16\\,\\mathrm{Area}^2$ and $\\det(\\text{bordered }5\\times5) = 288\\,V^2$, certified by Laplace expansion."
+    },
+    {
       "id": "det-fin-four",
       "title": "A 4×4 Determinant Expansion (det_fin_four)",
       "startLine": 45,
