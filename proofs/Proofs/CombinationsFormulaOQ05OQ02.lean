@@ -1,172 +1,196 @@
 import Mathlib
 
 /-
-# Trisecting Pascal's triangle by residue class via cube roots of unity
+# Three-Way Residue-Mod-3 Split of Binomial Sums via Roots of Unity (combinations-formula-oq-05-oq-02)
 
 ## Open Question OQ-05-OQ-02
 
-The parent file `CombinationsFormulaOQ05.lean` splits the `n`-th row of Pascal's
-triangle by the **parity** of the index, proving that the even- and odd-indexed
-binomial coefficients each sum to `2^{n-1}`.  That is the mod-`2` case of a general
-phenomenon: for any modulus `m`, the sums
+The parent entry `combinations-formula-oq-05` develops the **two-way** even/odd
+split of a row of Pascal's triangle: pairing the total row sum
+`∑_k C(n,k) = 2ⁿ` with the alternating sum `∑_k (-1)ᵏ C(n,k) = 0` shows that the
+even- and odd-indexed binomial coefficients each sum to `2ⁿ⁻¹`.  The alternating
+sign `(-1)ᵏ` is exactly evaluation at the primitive **square** root of unity `-1`.
 
-    S_r = ∑_{k ≡ r (mod m)} C(n, k)
+The natural generalisation asks for the **three-way** split by residue class
+modulo `3`:
 
-can be extracted from the full generating polynomial `(1 + x)^n` by averaging its
-values at the `m`-th roots of unity (the finite Fourier / "roots-of-unity filter").
+    Sᵣ(n) = ∑_{k ≡ r (mod 3)} C(n, k),      r = 0, 1, 2 .
 
-This file formalizes the first genuinely non-real instance, `m = 3`.  Using a
-primitive cube root of unity `ζ ∈ ℂ` we prove the **trisection identity**
+The elementary `±1` trick no longer suffices; the correct tool is the *roots of
+unity filter* with a primitive **cube** root of unity `ω = e^{2πi/3}`.  This file
+formalises that filter and the resulting extraction identity.
 
-    3 · ∑_{k ≡ r (mod 3)} C(n, k) = ∑_{j=0}^{2} ζ^{j(3−r)} · (1 + ζ^j)^n .
+## Results
 
-The mod-`2` split of the parent is the analogue with `ζ = −1`; here the imaginary
-cube roots are unavoidable, which is what makes the statement genuinely new.
+* `cube_root_sum` — every cube root of unity `t ≠ 1` satisfies `1 + t + t² = 0`.
+* `filter3` — the roots-of-unity filter:
+    `∑_{j<3} ωʲᵐ = 3` if `3 ∣ m`, and `0` otherwise.
+* `three_way_split` — the extraction identity (the heart of the answer):
+    `3 · Sᵣ(n) = ∑_{j<3} ω^{2jr} (1 + ωʲ)ⁿ`   for `r < 3`.
+* `dual_identity` — the "generating" companion in which `ω` weights the classes:
+    `S₀(n) + ω·S₁(n) + ω²·S₂(n) = (1 + ω)ⁿ`.
+* `sum_three_residues` — sanity/partition check: `S₀(n) + S₁(n) + S₂(n) = 2ⁿ`.
 
-## Main results
-- `cube_root_geom_sum`        — orthogonality: `1 + w + w² = 3` if `w = 1`, else `0`, for `w³ = 1`.
-- `trisection`                — `3·∑_{k≡r} C(n,k) = ∑_{j<3} ζ^{j(3−r)}(1+ζ^j)^n`.
-- `trisection_three_terms`    — the three summands written out (`j = 0,1,2`).
-- `zeta_sq_add`               — `1 + ζ + ζ² = 0`, and the corollaries `1+ζ = −ζ²`, `1+ζ² = −ζ`.
-- `sum_trisection_eq_two_pow` — the three residue classes partition the row: `∑_r S_r = 2^n`.
-
-## Mathematical content
-
-The proof is the classical roots-of-unity filter, made fully formal:
-
-* the binomial theorem expands each `(1 + ζ^j)^n` into `∑_k C(n,k) (ζ^j)^k`;
-* swapping the order of summation isolates, for each `k`, the geometric sum
-  `∑_{j<3} (ζ^{3−r+k})^j`;
-* by orthogonality that inner sum is `3` exactly when `k ≡ r (mod 3)` and `0` otherwise,
-  which collects the surviving `C(n,k)` into `3 · S_r`.
-
-Mathlib contains the binomial theorem, `IsPrimitiveRoot`, and the mod-`2` alternating
-row sum, but not this residue-class decomposition, so it is a genuine addition.
+Together, `three_way_split` and `sum_three_residues` recover each `Sᵣ(n)`
+individually from the three complex evaluations `(1+ωʲ)ⁿ`, exactly as the
+parent's two identities recover the even/odd halves.
 
 ## Axioms: 0 | Sorries: 0
 -/
 
-open Finset
-
 namespace CombinationsFormulaOQ05OQ02
 
-variable {ζ : ℂ}
+open Finset Complex
 
-/-- **Orthogonality of cube roots of unity.**  If `w³ = 1` then the geometric sum
-`1 + w + w²` equals `3` when `w = 1` and `0` otherwise.  (When `w ≠ 1`, `w` satisfies
-the minimal polynomial `w² + w + 1 = 0` of the primitive cube roots.) -/
-lemma cube_root_geom_sum {w : ℂ} (hw : w ^ 3 = 1) :
-    1 + w + w ^ 2 = if w = 1 then (3 : ℂ) else 0 := by
-  split_ifs with h
-  · subst h; norm_num
-  · have hfac : (w - 1) * (w ^ 2 + w + 1) = 0 := by linear_combination hw
-    have hne : w - 1 ≠ 0 := sub_ne_zero.mpr h
-    have hquad : w ^ 2 + w + 1 = 0 := by
-      rcases mul_eq_zero.mp hfac with h1 | h2
-      · exact absurd h1 hne
-      · exact h2
-    linear_combination hquad
+noncomputable section
 
-/-- **Trisection identity.**  For a primitive cube root of unity `ζ` and a residue
-`r < 3`, three times the sum of the binomial coefficients `C(n,k)` over the indices
-`k ≡ r (mod 3)` is recovered from the values of `(1 + x)^n` at the three cube roots
-of unity:
-`3 · ∑_{k ≡ r (3)} C(n,k) = ∑_{j=0}^{2} ζ^{j(3−r)} (1 + ζ^j)^n`. -/
-theorem trisection (hζ : IsPrimitiveRoot ζ 3) (n r : ℕ) (hr : r < 3) :
-    (3 : ℂ) * ∑ k ∈ (range (n + 1)).filter (fun k => k % 3 = r), (n.choose k : ℂ)
-      = ∑ j ∈ range 3, ζ ^ (j * (3 - r)) * (1 + ζ ^ j) ^ n := by
-  have hz3 : ζ ^ 3 = 1 := hζ.pow_eq_one
-  -- Step 1: expand each RHS term with the binomial theorem.
-  have e1 : ∀ j ∈ range 3,
-      ζ ^ (j * (3 - r)) * (1 + ζ ^ j) ^ n
-        = ∑ k ∈ range (n + 1), (n.choose k : ℂ) * (ζ ^ (3 - r + k)) ^ j := by
-    intro j _
-    rw [add_comm (1 : ℂ) (ζ ^ j), add_pow, Finset.mul_sum]
+/-- A fixed primitive cube root of unity `ω = e^{2πi/3}`. -/
+noncomputable def ω : ℂ := Complex.exp (2 * ↑Real.pi * Complex.I / 3)
+
+theorem isPrimitiveRoot_ω : IsPrimitiveRoot ω 3 :=
+  Complex.isPrimitiveRoot_exp 3 (by norm_num)
+
+theorem ω_pow_three : ω ^ 3 = 1 := isPrimitiveRoot_ω.pow_eq_one
+
+theorem ω_ne_one : ω ≠ 1 := isPrimitiveRoot_ω.ne_one (by norm_num)
+
+theorem ω_pow_eq_one_iff (m : ℕ) : ω ^ m = 1 ↔ 3 ∣ m :=
+  isPrimitiveRoot_ω.pow_eq_one_iff_dvd m
+
+/-- **Cube roots of unity annihilate `1 + t + t²`.**  If `t³ = 1` and `t ≠ 1`,
+then `1 + t + t² = 0`.  This is the algebraic identity behind the vanishing of
+the roots-of-unity filter off the divisibility locus. -/
+theorem cube_root_sum {t : ℂ} (h3 : t ^ 3 = 1) (hne : t ≠ 1) :
+    1 + t + t ^ 2 = 0 := by
+  have hfac : (t - 1) * (1 + t + t ^ 2) = 0 := by
+    have hexp : (t - 1) * (1 + t + t ^ 2) = t ^ 3 - 1 := by ring
+    rw [hexp, h3]; ring
+  rcases mul_eq_zero.mp hfac with h | h
+  · exact absurd (sub_eq_zero.mp h) hne
+  · exact h
+
+/-- **Roots-of-unity filter (mod 3).**  Summing `ωʲᵐ` over the three cube roots
+of unity detects divisibility by `3`:
+
+    ∑_{j<3} ωʲᵐ = if 3 ∣ m then 3 else 0. -/
+theorem filter3 (m : ℕ) :
+    ∑ j ∈ Finset.range 3, ω ^ (j * m) = if 3 ∣ m then 3 else 0 := by
+  rw [Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_succ,
+    Finset.sum_range_zero]
+  simp only [zero_add, zero_mul, pow_zero, one_mul]
+  by_cases h : 3 ∣ m
+  · obtain ⟨c, rfl⟩ := h
+    rw [if_pos ⟨c, rfl⟩]
+    have e1 : ω ^ (3 * c) = 1 := by rw [pow_mul, ω_pow_three, one_pow]
+    have e2 : ω ^ (2 * (3 * c)) = 1 := by
+      rw [show 2 * (3 * c) = 3 * (2 * c) from by ring, pow_mul, ω_pow_three, one_pow]
+    rw [e1, e2]; norm_num
+  · rw [if_neg h]
+    have ht3 : (ω ^ m) ^ 3 = 1 := by
+      rw [← pow_mul, mul_comm, pow_mul, ω_pow_three, one_pow]
+    have htne : ω ^ m ≠ 1 := fun hc => h ((ω_pow_eq_one_iff m).mp hc)
+    have hsum := cube_root_sum ht3 htne
+    have e2 : ω ^ (2 * m) = (ω ^ m) ^ 2 := by rw [← pow_mul, mul_comm]
+    rw [e2]; linear_combination hsum
+
+/-- The residue-`r` binomial sum of row `n`:
+`Sᵣ(n) = ∑_{k ≤ n, k ≡ r (mod 3)} C(n, k)`, taken in `ℂ`. -/
+noncomputable def S (n r : ℕ) : ℂ :=
+  ∑ k ∈ (Finset.range (n + 1)).filter (fun k => k % 3 = r), (n.choose k : ℂ)
+
+/-- **Three-way roots-of-unity extraction.**  For `r < 3`,
+
+    3 · Sᵣ(n) = ∑_{j<3} ω^{2jr} (1 + ωʲ)ⁿ .
+
+This is the exact analogue of the parent's even/odd extraction, now using a
+primitive cube (rather than square) root of unity. -/
+theorem three_way_split (n r : ℕ) (hr : r < 3) :
+    3 * S n r = ∑ j ∈ Finset.range 3, ω ^ (2 * j * r) * (1 + ω ^ j) ^ n := by
+  -- Binomial expansion of each `(1 + ωʲ)ⁿ`.
+  have expand : ∀ j : ℕ, (1 + ω ^ j) ^ n
+      = ∑ k ∈ Finset.range (n + 1), (ω ^ j) ^ k * (n.choose k : ℂ) := by
+    intro j
+    rw [add_comm, add_pow]
     apply Finset.sum_congr rfl
-    intro k _
-    have hexp : ζ ^ (j * (3 - r)) * (ζ ^ j) ^ k = (ζ ^ (3 - r + k)) ^ j := by
-      rw [← pow_mul ζ j k, ← pow_mul ζ (3 - r + k) j, ← pow_add]
-      congr 1
-      ring
-    rw [one_pow, mul_one, ← mul_assoc, hexp]
-    ring
-  -- Step 2: rewrite the RHS and swap the order of summation.
-  have hRHS : (∑ j ∈ range 3, ζ ^ (j * (3 - r)) * (1 + ζ ^ j) ^ n)
-      = ∑ k ∈ range (n + 1),
-          (n.choose k : ℂ) * ∑ j ∈ range 3, (ζ ^ (3 - r + k)) ^ j := by
-    rw [Finset.sum_congr rfl e1, Finset.sum_comm]
-    apply Finset.sum_congr rfl
-    intro k _
-    rw [Finset.mul_sum]
-  -- Step 3: evaluate the inner geometric sum via orthogonality.
-  have hinner : ∀ k, (∑ j ∈ range 3, (ζ ^ (3 - r + k)) ^ j)
-      = if k % 3 = r then (3 : ℂ) else 0 := by
+    intro k hk
+    rw [one_pow, mul_one]
+  symm
+  calc ∑ j ∈ Finset.range 3, ω ^ (2 * j * r) * (1 + ω ^ j) ^ n
+      = ∑ j ∈ Finset.range 3, ∑ k ∈ Finset.range (n + 1),
+          ω ^ (2 * j * r) * ((ω ^ j) ^ k * (n.choose k : ℂ)) := by
+        apply Finset.sum_congr rfl; intro j hj
+        rw [expand j, Finset.mul_sum]
+    _ = ∑ k ∈ Finset.range (n + 1), ∑ j ∈ Finset.range 3,
+          ω ^ (2 * j * r) * ((ω ^ j) ^ k * (n.choose k : ℂ)) := Finset.sum_comm
+    _ = ∑ k ∈ Finset.range (n + 1),
+          (n.choose k : ℂ) * ∑ j ∈ Finset.range 3, ω ^ (j * (k + 2 * r)) := by
+        apply Finset.sum_congr rfl; intro k hk
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl; intro j hj
+        rw [← pow_mul, show j * (k + 2 * r) = 2 * j * r + j * k from by ring, pow_add]
+        ring
+    _ = ∑ k ∈ Finset.range (n + 1),
+          (n.choose k : ℂ) * (if 3 ∣ (k + 2 * r) then 3 else 0) := by
+        apply Finset.sum_congr rfl; intro k hk; rw [filter3]
+    _ = ∑ k ∈ Finset.range (n + 1),
+          (if k % 3 = r then (3 : ℂ) * (n.choose k : ℂ) else 0) := by
+        apply Finset.sum_congr rfl; intro k hk
+        have hpred : (3 ∣ (k + 2 * r)) ↔ (k % 3 = r) := by omega
+        by_cases h : k % 3 = r
+        · rw [if_pos h, if_pos (hpred.mpr h)]; ring
+        · rw [if_neg h, if_neg (fun hd => h (hpred.mp hd))]; ring
+    _ = 3 * S n r := by
+        rw [S, Finset.mul_sum]
+        exact (Finset.sum_filter _ _).symm
+
+/-- **Generating (dual) identity.**  Weighting the three residue classes by
+successive powers of `ω` recombines them into a single complex evaluation:
+
+    S₀(n) + ω · S₁(n) + ω² · S₂(n) = (1 + ω)ⁿ .
+
+The key point is that `ω^k` depends only on `k mod 3` (as `ω³ = 1`), so the
+binomial sum `∑_k C(n,k) ωᵏ = (1+ω)ⁿ` collapses onto the residue classes. -/
+theorem dual_identity (n : ℕ) :
+    S n 0 + ω * S n 1 + ω ^ 2 * S n 2 = (1 + ω) ^ n := by
+  have key : (1 + ω) ^ n = ∑ k ∈ Finset.range (n + 1), (n.choose k : ℂ) * ω ^ k := by
+    rw [add_comm, add_pow]
+    apply Finset.sum_congr rfl; intro k hk
+    rw [one_pow, mul_one]; ring
+  have hωk : ∀ k : ℕ, ω ^ k = ω ^ (k % 3) := by
     intro k
-    have hw3 : (ζ ^ (3 - r + k)) ^ 3 = 1 := by
-      rw [← pow_mul, mul_comm, pow_mul, hz3, one_pow]
-    have hsum : (∑ j ∈ range 3, (ζ ^ (3 - r + k)) ^ j)
-        = 1 + ζ ^ (3 - r + k) + (ζ ^ (3 - r + k)) ^ 2 := by
-      rw [Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_one]
-      ring
-    rw [hsum, cube_root_geom_sum hw3]
-    have hiff : ζ ^ (3 - r + k) = 1 ↔ k % 3 = r := by
-      rw [hζ.pow_eq_one_iff_dvd]
-      omega
-    simp only [hiff]
-  -- Step 4: collect the surviving terms into `3 · S_r`.
-  rw [hRHS]
-  have hcollect : ∀ k, (n.choose k : ℂ) * (∑ j ∈ range 3, (ζ ^ (3 - r + k)) ^ j)
-      = if k % 3 = r then 3 * (n.choose k : ℂ) else 0 := by
-    intro k
-    rw [hinner k]
-    split_ifs <;> ring
-  rw [Finset.sum_congr rfl (fun k _ => hcollect k), Finset.mul_sum, Finset.sum_filter]
-
-/-- The three summands of the trisection identity written out explicitly. -/
-theorem trisection_three_terms (hζ : IsPrimitiveRoot ζ 3) (n r : ℕ) (hr : r < 3) :
-    (3 : ℂ) * ∑ k ∈ (range (n + 1)).filter (fun k => k % 3 = r), (n.choose k : ℂ)
-      = 2 ^ n + ζ ^ (3 - r) * (1 + ζ) ^ n + ζ ^ (2 * (3 - r)) * (1 + ζ ^ 2) ^ n := by
-  rw [trisection hζ n r hr, Finset.sum_range_succ, Finset.sum_range_succ,
-    Finset.sum_range_one]
-  simp only [Nat.zero_mul, pow_zero, pow_one, one_mul]
-  ring
-
-/-- The defining relation of a primitive cube root of unity: `1 + ζ + ζ² = 0`. -/
-lemma zeta_sq_add (hζ : IsPrimitiveRoot ζ 3) : 1 + ζ + ζ ^ 2 = 0 := by
-  have h := cube_root_geom_sum (w := ζ) hζ.pow_eq_one
-  rw [if_neg (hζ.ne_one (by norm_num))] at h
-  exact h
-
-/-- `1 + ζ = −ζ²`, so `(1 + ζ)^n = (−1)^n ζ^{2n}`. -/
-lemma one_add_zeta (hζ : IsPrimitiveRoot ζ 3) : 1 + ζ = -ζ ^ 2 := by
-  linear_combination zeta_sq_add hζ
-
-/-- `1 + ζ² = −ζ`, so `(1 + ζ²)^n = (−1)^n ζ^n`. -/
-lemma one_add_zeta_sq (hζ : IsPrimitiveRoot ζ 3) : 1 + ζ ^ 2 = -ζ := by
-  linear_combination zeta_sq_add hζ
-
-/-- **Completeness / sanity check.**  The three residue classes mod `3` partition the
-`n`-th row of Pascal's triangle, so their sums recover the full row sum `2^n`. -/
-theorem sum_trisection_eq_two_pow (n : ℕ) :
-    ∑ r ∈ range 3, ∑ k ∈ (range (n + 1)).filter (fun k => k % 3 = r), n.choose k
-      = 2 ^ n := by
-  have hpart : ∀ r ∈ range 3,
-      (∑ k ∈ (range (n + 1)).filter (fun k => k % 3 = r), n.choose k)
-        = ∑ k ∈ range (n + 1), if k % 3 = r then n.choose k else 0 := by
-    intro r _
-    rw [Finset.sum_filter]
-  rw [Finset.sum_congr rfl hpart, Finset.sum_comm, ← Nat.sum_range_choose n]
+    conv_lhs => rw [← Nat.div_add_mod k 3, pow_add, pow_mul, ω_pow_three, one_pow, one_mul]
+  have hS : ∀ r : ℕ, S n r
+      = ∑ k ∈ Finset.range (n + 1), if k % 3 = r then (n.choose k : ℂ) else 0 := by
+    intro r; rw [S, Finset.sum_filter]
+  rw [key, hS 0, hS 1, hS 2, Finset.mul_sum, Finset.mul_sum,
+    ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]
   apply Finset.sum_congr rfl
-  intro k _
-  rw [Finset.sum_ite_eq (range 3) (k % 3) (fun _ => n.choose k),
-    if_pos (Finset.mem_range.mpr (Nat.mod_lt k (by norm_num)))]
+  intro k hk
+  rw [hωk k]
+  have h3 : k % 3 = 0 ∨ k % 3 = 1 ∨ k % 3 = 2 := by omega
+  rcases h3 with h | h | h <;> simp [h] <;> ring
 
-/-- Concrete instance: for `n = 4`, the residue-`0` class `{k : k ≡ 0 (3)}` gives
-`C(4,0) + C(4,3) = 1 + 4 = 5`. -/
-example : (∑ k ∈ (range 5).filter (fun k => k % 3 = 0), (4).choose k) = 5 := by decide
+/-- **Partition check.**  The three residue-class sums recover the full row sum:
 
-/-- Concrete instance: the three classes for `n = 4` sum to `2^4 = 16`. -/
-example : ∑ r ∈ range 3, ∑ k ∈ (range 5).filter (fun k => k % 3 = r), (4).choose k = 16 := by
-  decide
+    S₀(n) + S₁(n) + S₂(n) = 2ⁿ . -/
+theorem sum_three_residues (n : ℕ) : S n 0 + S n 1 + S n 2 = 2 ^ n := by
+  have htot : ∑ k ∈ Finset.range (n + 1), (n.choose k : ℂ) = 2 ^ n := by
+    rw [← Nat.cast_sum, Nat.sum_range_choose]; push_cast; ring
+  have hS : ∀ r : ℕ, S n r
+      = ∑ k ∈ Finset.range (n + 1), if k % 3 = r then (n.choose k : ℂ) else 0 := by
+    intro r; rw [S, Finset.sum_filter]
+  rw [hS 0, hS 1, hS 2, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib, ← htot]
+  apply Finset.sum_congr rfl
+  intro k hk
+  have h3 : k % 3 = 0 ∨ k % 3 = 1 ∨ k % 3 = 2 := by omega
+  rcases h3 with h | h | h <;> simp [h]
+
+end
 
 end CombinationsFormulaOQ05OQ02
+
+#check @CombinationsFormulaOQ05OQ02.cube_root_sum
+#check @CombinationsFormulaOQ05OQ02.filter3
+#check @CombinationsFormulaOQ05OQ02.three_way_split
+#check @CombinationsFormulaOQ05OQ02.dual_identity
+#check @CombinationsFormulaOQ05OQ02.sum_three_residues
