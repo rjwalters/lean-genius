@@ -1,5 +1,48 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-07-02 (researcher-4): the spherical circumcircle — existence primitive for the nine-point circle [VERIFIED]
+
+**Mode**: ACT (CONTINUE). The four tritangent circles (incircle + 3 excircles) and their
+full pairwise-distinctness matrix are on `main`; the tangent-point and common-perpendicular
+machinery merged; side-midpoints (`sMidpoint`) are in-flight on
+`research/feuerbach-oq04-midpoint`. The nine-point circle of a spherical triangle is the
+**circumcircle of its medial triangle**, so the missing existence primitive was: *any three
+model points lie on a common spherical circle*. This session supplies exactly that, in a
+collision-free companion file. **Outcome**: PROGRESS — new file
+`FeuerbachsTheoremOQ04Circumcircle.lean` (3 theorems, ~90 L). **Docker build VERIFIED**
+(`docker-build.sh Proofs.FeuerbachsTheoremOQ04Circumcircle`, `✔ [7744/7744] Built`, exit 0);
+**0-sorry, 0-axiom**, no native_decide (only `rw`, `unfold`, `real_inner_comm`, `cos_sdist`,
+`greatCircles_inter`).
+
+### What was delivered (`proofs/Proofs/FeuerbachsTheoremOQ04Circumcircle.lean`)
+- **`inner_sub_eq_zero_iff_scos_eq`** (perpendicular-bisector characterisation): `⟪O, A−B⟫ = 0
+  ↔ scos A O = scos B O`. The model points equidistant from `A` and `B` form the great circle
+  with pole `A − B` — the spherical perpendicular bisector of `AB`. Dual to the *side-pole*
+  bisector `equidistant_two_sides_iff` already on main (vertices here, not sides).
+- **`sphericalCircumcircle_exists`** (headline): for any three model points `A,B,C` on a
+  sphere of dim `> 2`, `∃ O ρ, OnSphere O ∧ A,B,C ∈ sCircle O ρ`. Construction mirrors
+  `sphericalIncircle_exists`: intersect the two perpendicular-bisector great circles (poles
+  `A−B`, `B−C`) via `greatCircles_inter` → `scos A O = scos B O = scos C O`; take `ρ = sdist
+  A O` and use `cos_sdist` to match `cos ρ`.
+- **`sphericalCircumcircle_equidistant`**: the circumcentre is spherically equidistant,
+  `sdist A O = sdist B O = sdist C O` — immediate from equal `scos` since `sdist · O = arccos
+  (scos · O)`.
+
+### Why this matters
+This is the dual of the incenter existence lemma (side-poles → vertices) and the direct
+existence primitive under the spherical nine-point circle: applying it to the three
+side-midpoints (`sMidpoint`, in-flight) yields the nine-point *circle* as their circumcircle.
+It is unconditional (no non-degeneracy hypothesis): even collinear points get a common
+`sCircle` (possibly a great circle). Collision-free — new file, auto-discovered by lake globs
+(no `Proofs.lean` edit), builds only on merged main API.
+
+### Frontier UNCHANGED (genuinely hard)
+1. **Side-midpoints** (`sMidpoint`) — in-flight `research/feuerbach-oq04-midpoint`; combine
+   with `sphericalCircumcircle_exists` to *define* the spherical nine-point circle.
+2. **The Feuerbach tangency** (nine-point circle tangent to all four tritangent circles).
+   Genuinely hard; not attempted.
+
+
 ## Session 2026-07-01 (researcher-7): completed the pairwise-distinctness matrix [VERIFIED]
 
 **Mode**: ACT (CONTINUE). The prior session (researcher-1) proved only `incircle_excircleAB_distinct`
