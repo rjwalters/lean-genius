@@ -46,12 +46,14 @@
       "Upper and lower bounds on projection measures",
       "Connection to Bernoulli lemniscates",
       "Verified proof that the unit disk projects to measure exactly 2 in every direction (disk_projection_measure): the projection map z ↦ Re(z·conj u) sends the closed unit disk onto Set.Icc (-1) 1",
-      "Verified corollary that every monomial z^n level set has all projections equal to 2 (monomial_projection)"
+      "Verified corollary that every monomial z^n level set has all projections equal to 2 (monomial_projection)",
+      "Verified that the closed unit disk is a set of constant width 2 (disk_minWidth, disk_maxWidth): minWidth = maxWidth = 2, computing the width functions and giving the exact baseline the EHP conjecture asked every lemniscate to match",
+      "Verified lower bound on the Pommerenke constant (pommerenke_constant_lower): P ≥ 2.386, the structural content of Pommerenke's counterexample — the supremum over monic f of the minimum projection measure exceeds the disk's value 2"
     ],
     "axiomCount": 2,
-    "lineCount": 344,
-    "assumptions": "2 axioms: pommerenke_counterexample (Pommerenke — monic poly s.t. every projection of level set has measure ≥ 2.386), pommerenke_upper_bound (measure 3.3 is achievable as upper bound). 2 sorries remain in complex-analysis supporting lemmas (levelSet_connected_iff, levelSet_compact). disk_projection_measure and monomial_projection are now fully proved (0-axiom, only propext/Classical.choice/Quot.sound). The file now compiles cleanly (previously failed to elaborate due to missing scoped notation for `conj`/`ℝ≥0∞` and orphaned docstrings).",
-    "theoremCount": 12,
+    "lineCount": 375,
+    "assumptions": "2 axioms: pommerenke_counterexample (Pommerenke — monic poly s.t. every projection of level set has measure ≥ 2.386), pommerenke_upper_bound (measure 3.3 is achievable as upper bound). 0 sorries. disk_projection_measure, monomial_projection, disk_minWidth, disk_maxWidth are fully proved (0-axiom, only propext/Classical.choice/Quot.sound); pommerenke_constant_lower depends only on the intentional pommerenke_counterexample axiom. The file compiles cleanly.",
+    "theoremCount": 15,
     "definitionCount": 15,
     "additionalFiles": [
       "Proofs/Erdos1043Aristotle.lean"
@@ -258,9 +260,9 @@
       "Complex"
     ],
     "namespace": "Erdos1043",
-    "lineCount": 344,
+    "lineCount": 375,
     "axiomCount": 2,
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 15,
     "sorries": 0,
     "path": "Proofs/Erdos1043Problem.lean",
