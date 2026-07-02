@@ -1,0 +1,93 @@
+[
+  {
+    "id": "ann-pgb-oq02-header",
+    "proofId": "prime-gap-bounds-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Which Half of Rosser–Schoenfeld Is Reachable Axiom-Free",
+    "content": "Rosser–Schoenfeld (1962) give x/log x < π(x) < 1.25506·x/log x, with sharp constants needing a numerical zero-free region and an explicit PNT. The header explains that only the UPPER bound is derivable from today's Mathlib — from the Chebyshev estimate θ(x) ≤ log4·x — yielding the non-sharp but honest π(⌊x⌋) ≤ √x + 1 + (log16)·x/log x. The lower bound and sharp constants are blocked on a Chebyshev lower bound and explicit PNT that Mathlib lacks.",
+    "mathContext": "θ(x) = Σ_{p ≤ x} log p; Mathlib has θ(x) ≤ log4·x but no θ(x) ≥ c·x and no θ↔π bridge.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rosser–Schoenfeld",
+      "Chebyshev function",
+      "prime number theorem",
+      "explicit bounds"
+    ],
+    "prerequisites": [
+      "prime counting function",
+      "Chebyshev θ"
+    ]
+  },
+  {
+    "id": "ann-pgb-oq02-bridge",
+    "proofId": "prime-gap-bounds-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 94
+    },
+    "type": "theorem",
+    "title": "count_primes_Ioc: the θ↔π Bridge (a Mathlib TODO)",
+    "content": "Mathlib's Chebyshev.lean explicitly flags 'relate theta and psi to the prime counting function' as a TODO. count_primes_Ioc supplies exactly this: #{p ∈ (a,b] : prime} = π(b) − π(a). The proof first shows #{p ≤ m : prime} = π(m) via Nat.primesBelow (primes < m+1 = primes ≤ m), then splits Iic b = Iic a ⊔ Ioc a b and uses Finset.card_union_of_disjoint on the prime filters. This is pure finite combinatorics and is reusable for any θ/ψ-to-π transfer.",
+    "mathContext": "#{p ∈ Ioc a b : Prime} = π(b) − π(a), from Iic b = Iic a ⊔ Ioc a b.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Nat.primesBelow",
+      "primeCounting",
+      "disjoint filter cardinality",
+      "Iic/Ioc split"
+    ],
+    "prerequisites": [
+      "Nat.primesBelow_card_eq_primeCounting'",
+      "Finset.card_union_of_disjoint"
+    ]
+  },
+  {
+    "id": "ann-pgb-oq02-trivial",
+    "proofId": "prime-gap-bounds-oq-02",
+    "range": {
+      "startLine": 95,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "π(n) ≤ n+1 for the Small Primes",
+    "content": "primeCounting_le_succ bounds π(n) ≤ n+1, since the primes ≤ n are among {0,…,n}: card_filter_le on range(n+1). This handles the primes below √x, whose contribution π(⌊√x⌋) ≤ √x + 1 is the lower-order term of the final bound.",
+    "mathContext": "π(n) ≤ n+1 via #(filter Prime (range (n+1))) ≤ #range(n+1).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primeCounting",
+      "Finset.card_filter_le",
+      "trivial bound"
+    ],
+    "prerequisites": [
+      "Nat.primesBelow_card_eq_primeCounting'"
+    ]
+  },
+  {
+    "id": "ann-pgb-oq02-main",
+    "proofId": "prime-gap-bounds-oq-02",
+    "range": {
+      "startLine": 106,
+      "endLine": 194
+    },
+    "type": "theorem",
+    "title": "The Explicit Chebyshev Upper Bound on π(x)",
+    "content": "primeCounting_floor_le proves π(⌊x⌋) ≤ √x + 1 + (log16)·x/log x for x > 1. Key step: every prime p with √x < p ≤ x satisfies log p ≥ log √x = ½ log x (Real.log_sqrt), so keeping only the tail of θ(x) = Σ_{p ≤ x} log p gives θ(x) ≥ (½ log x)·#{√x < p ≤ x : prime} = (½ log x)(π(⌊x⌋) − π(⌊√x⌋)) via sum_le_sum and sum_le_sum_of_subset_of_nonneg. Combined with θ(x) ≤ log4·x and divided by ½ log x > 0, then adding π(⌊√x⌋) ≤ √x + 1, this yields the bound. The constant 2log4 = log16 ≈ 2.77 is non-sharp but the result is unconditional and axiom-free.",
+    "mathContext": "π(⌊x⌋) − π(⌊√x⌋) ≤ (2log4)x/log x, and π(⌊√x⌋) ≤ √x + 1 ⟹ π(⌊x⌋) ≤ √x + 1 + (log16)·x/log x.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Chebyshev tail argument",
+      "theta_le_log4_mul_x",
+      "Real.log_sqrt",
+      "single-scale √x"
+    ],
+    "prerequisites": [
+      "Chebyshev.theta_le_log4_mul_x",
+      "count_primes_Ioc",
+      "Finset.sum_le_sum_of_subset_of_nonneg"
+    ]
+  }
+]
