@@ -8923,8 +8923,9 @@
     "erdos-1018-oq-04-incomplete-01-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-06-28T18:46:29Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "clean",
+      "issues": [],
+      "note": "Mechanic re-verification 2026-07-01: prior 'issues-found' flag carried an empty issues array (no defect recorded). meta.json matches source exactly (lineCount 102, theoremCount 7, 0 sorries, 0 axioms, no native_decide/structures, no True-stubs); status verified/badge verified justified. Reconciled to clean."
     },
     "erdos-1019": {
       "agentId": "auditor-cycle-20-batch",
@@ -23584,8 +23585,9 @@
     "picks-theorem-oq-04": {
       "auditCount": 1,
       "lastAudited": "2026-06-28T18:46:29Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "clean",
+      "issues": [],
+      "note": "Mechanic re-verification 2026-07-01: prior 'issues-found' flag carried an empty issues array (no defect recorded). meta.json matches source exactly (lineCount 308, theoremCount 14 counting the @[simp] lemma cross_self, 0 sorries, 0 axioms, no native_decide/structures, no True-stubs); status verified/badge original justified for the shoelace/fan-triangulation development. Reconciled to clean."
     },
     "platonic-solids": {
       "agentId": "auditor-cycle-20-batch",
