@@ -78,7 +78,8 @@
       "**Localization preserves denumerability.** The construction that builds ℚ from ℤ — inverting a multiplicative set — only ever forms a surjective image of R × M. Countability is therefore automatic; no fraction is ever 'new' from a cardinality standpoint.",
       "**The denumerable analogue of a Fintype result Mathlib left open.** Mathlib has `IsLocalization.fintype'` with the note that it 'cannot be an instance'. The countable version `countable_of_isLocalization` is not in Mathlib; here it is supplied and, for the canonical `Localization M` and `FractionRing R`, packaged as honest instances.",
       "**The loop closes on the root problem.** #ℚ = ℵ₀ is re-derived not by an explicit enumeration but as `IsFractionRing ℤ ℚ` plugged into the general principle — exhibiting Cantor's denumerability of the rationals as one instance of 'localizations of countable rings stay countable'.",
-      "**Only countability and injectivity are used.** The multiplicative structure of M and the ring axioms of S play no role in the count; the argument is purely the surjection R × M ↠ S plus, for infinitude, one injective coefficient map R ↪ FractionRing R."
+      "**Only countability and injectivity are used.** The multiplicative structure of M and the ring axioms of S play no role in the count; the argument is purely the surjection R × M ↠ S plus, for infinitude, one injective coefficient map R ↪ FractionRing R.",
+      "**The same one-line proof handles ℚ and ℚ≥0 over different base rings.** #ℚ = ℵ₀ comes from IsFractionRing ℤ ℚ and #ℚ≥0 = ℵ₀ from IsFractionRing ℕ ℚ≥0; that a non-field fraction object over a semiring base falls out of the identical argument shows the count depends only on countability of the base, not on any field or characteristic-zero structure."
     ],
     "prerequisites": [
       "Cardinal arithmetic in Mathlib (ℵ₀, mk_eq_aleph0 for countable infinite types, mk_le_aleph0)",
@@ -115,9 +116,17 @@
       "id": "rationals",
       "title": "Closing the Loop: the Rationals",
       "startLine": 85,
+      "endLine": 92,
+      "summary": "mk_rat_eq_aleph0 re-derives #ℚ = ℵ₀ by feeding Rat.isFractionRing (IsFractionRing ℤ ℚ) into countable_of_isLocalization, then mk_eq_aleph0 — the abstract localization principle reproving Cantor's classical fact.",
+      "mathContext": "$\\#\\mathbb{Q} = \\aleph_0$ via $IsFractionRing\\,\\mathbb{Z}\\,\\mathbb{Q}$."
+    },
+    {
+      "id": "nnrat",
+      "title": "The Non-Negative Rationals ℚ≥0",
+      "startLine": 94,
       "endLine": 100,
-      "summary": "mk_rat_eq_aleph0 (#ℚ = ℵ₀ via IsFractionRing ℤ ℚ) and mk_nnrat_eq_aleph0 (#ℚ≥0 = ℵ₀ via IsFractionRing ℕ ℚ≥0).",
-      "mathContext": "$\\mathbb{Q} = \\mathrm{Frac}(\\mathbb{Z})$, so $\\#\\mathbb{Q} = \\aleph_0$ is the general principle specialized."
+      "summary": "mk_nnrat_eq_aleph0 runs the identical one-line proof for ℚ≥0 = Frac(ℕ) (NNRat.isFractionRing), showing the principle is not special to ℤ→ℚ: a different base ring and a non-field fraction object fall out unchanged.",
+      "mathContext": "$\\#\\mathbb{Q}_{\\ge 0} = \\aleph_0$ via $IsFractionRing\\,\\mathbb{N}\\,\\mathbb{Q}_{\\ge 0}$."
     }
   ],
   "crossReferences": [
