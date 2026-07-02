@@ -138,7 +138,13 @@
   ],
   "conclusion": {
     "summary": "On equal inputs the Euclidean algorithm always takes one step while Binary GCD takes ν₂(a) + 1, so binaryGcdSteps a a = euclidSteps a a + ν₂(a). The gap is unbounded (a = 2^N forces an N-step overhead). Proved with a single valuation induction; 0 sorries, 0 axioms.",
-    "implications": "Together with the parent's matching O(log) upper bounds, this shows the division-step counts of Binary GCD and the Euclidean algorithm are genuinely incomparable: Binary GCD can be a Θ(log a) factor slower on highly-even inputs. The separation is a feature of the step-count model — in a bit-operation model the halving steps are cheap — which clarifies why Binary GCD remains competitive in practice despite this worst case."
+    "implications": "Together with the parent's matching O(log) upper bounds, this shows the division-step counts of Binary GCD and the Euclidean algorithm are genuinely incomparable: Binary GCD can be a Θ(log a) factor slower on highly-even inputs. The separation is a feature of the step-count model — in a bit-operation model the halving steps are cheap — which clarifies why Binary GCD remains competitive in practice despite this worst case.",
+    "openQuestions": [
+      "Prove the reverse separation to establish genuine two-sided incomparability: exhibit a family on which the Euclidean algorithm is Θ(log) slower than Binary GCD. Consecutive Fibonacci numbers are the natural candidate — euclidSteps F_{n+1} F_n = n (Euclid's worst case, Lamé's theorem) while binaryGcdSteps stays small — formalizing euclidSteps F_{n+1} F_n − binaryGcdSteps F_{n+1} F_n → ∞ and closing the incomparability from the other side.",
+      "Reconcile the step-count separation with a bit-operation cost model: assign each Euclidean division its true Θ(log) bit cost and each Binary GCD halving/subtraction its Θ(1)–Θ(log) cost, and prove Binary GCD runs in O(log² a) bit operations, matching or beating Euclid despite the ν₂(a) step overhead. This would make precise the informal claim that the extra halving steps are individually cheap.",
+      "Quantify the average-case gap: over inputs drawn uniformly from [1, N]², determine the expected difference E[binaryGcdSteps − euclidSteps]. Since E[ν₂(a)] = ∑_{k≥1} 2^{−k} = 1 for a uniformly random a, the diagonal overhead is O(1) on average; characterize the full expected step counts of both algorithms and whether the Θ(log) worst-case gap collapses to a constant in expectation.",
+      "Show the diagonal (a, a) is extremal (or find a worse family): prove that among all input pairs of a given bit-size the equal-input case maximizes binaryGcdSteps − euclidSteps, or exhibit off-diagonal inputs forcing a strictly larger overhead, pinning down the exact worst-case separation between the two step-count models."
+    ]
   },
   "leanFile": {
     "imports": [
