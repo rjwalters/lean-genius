@@ -177,6 +177,19 @@ noncomputable def pommerenkeConstant : ℝ≥0∞ :=
   ⨆ (f : Polynomial ℂ) (_ : f.Monic) (_ : f.natDegree ≥ 1),
     minProjectionMeasure f
 
+/-- **Pommerenke's lower bound on the constant.** Pommerenke's polynomial has every
+    projection `≥ 2.386`, so its minimum projection measure is `≥ 2.386`; since the
+    Pommerenke constant is the supremum of these minima over all monic polynomials,
+    it is itself `≥ 2.386`. This is the structural content of the `> 2` phenomenon. -/
+theorem pommerenke_constant_lower : pommerenkeConstant ≥ 2.386 := by
+  obtain ⟨f, hMonic, hDeg, hProj⟩ := pommerenke_counterexample
+  -- every direction gives ≥ 2.386, so the infimum over directions is ≥ 2.386
+  have hmin : (2.386 : ℝ≥0∞) ≤ minProjectionMeasure f :=
+    le_iInf (fun u => hProj u)
+  refine le_trans hmin ?_
+  unfold pommerenkeConstant
+  exact le_iSup_of_le f (le_iSup_of_le hMonic (le_iSup_of_le hDeg (le_refl _)))
+
 /- Pommerenke showed this constant is at least 2.386. -/
 /- ## Part VI: Pommerenke's Upper Bound -/
 
@@ -259,6 +272,25 @@ theorem convex_width_bounds (S : Set ℂ) (hConvex : Convex ℝ S) (hCompact : I
     minWidth S ≤ maxWidth S := by
   have hne : Nonempty Direction := ⟨⟨1, norm_one⟩⟩
   exact (iInf_le (width S) hne.some).trans (le_iSup (width S) hne.some)
+
+/-- The closed unit disk has minimum width 2: since every direction's projection has
+    measure exactly 2 (`disk_projection_measure`), the infimum over directions is 2. -/
+theorem disk_minWidth : minWidth (Metric.closedBall (0 : ℂ) 1) = 2 := by
+  haveI : Nonempty Direction := ⟨⟨1, norm_one⟩⟩
+  have h : ∀ u : Direction, width (Metric.closedBall (0 : ℂ) 1) u = 2 :=
+    fun u => disk_projection_measure u
+  simp only [minWidth, h]
+  exact iInf_const
+
+/-- The closed unit disk has maximum width 2 as well: it is a set of **constant width**,
+    the same shadow length 2 in every direction. Together with `disk_minWidth` this
+    shows `minWidth = maxWidth = 2`, the baseline the EHP conjecture asked to match. -/
+theorem disk_maxWidth : maxWidth (Metric.closedBall (0 : ℂ) 1) = 2 := by
+  haveI : Nonempty Direction := ⟨⟨1, norm_one⟩⟩
+  have h : ∀ u : Direction, width (Metric.closedBall (0 : ℂ) 1) u = 2 :=
+    fun u => disk_projection_measure u
+  simp only [maxWidth, h]
+  exact iSup_const
 
 /- ## Part IX: Lemniscates -/
 
