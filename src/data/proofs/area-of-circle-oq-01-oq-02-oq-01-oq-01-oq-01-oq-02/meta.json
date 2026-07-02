@@ -128,6 +128,16 @@
       "description": "The complementary finite-dimensional result: ω_n attains its global maximum at n = 5 (turning point n+2 = 2π). Together the two entries bracket the growth-then-decay profile of ω_n — this entry pins the large-n tail addressed by open question 3."
     },
     {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The direct-parent qualitative result 'Unit n-Ball Volumes Tend to Zero: ω_n → 0', proved from the two-step recurrence with a geometric decay bound. This entry sharpens that mere convergence-to-zero into the exact even-subsequence rate ω_{2k} ~ (πe/k)^k/√(2πk) via Stirling."
+    },
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "'n=5 Maximizes Unit Ball Volume' — resolves this entry's third open question (which dimension maximizes ω_{2k}): the sequence increases to ω_5 = 8π²/15 then strictly decreases, with the turning point at n+2 = 2π. Complements the asymptotic tail here with the exact location of the peak."
+    },
+    {
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "Part of the area-of-circle / ball-volume lineage: the n-dimensional generalization of the circle-area computation, here analyzed asymptotically in high dimension."
