@@ -53,11 +53,7 @@ Sorries: 0
 Reference: https://erdosproblems.com (Borsuk-Ulam family)
 -/
 
-import Mathlib.Algebra.Group.Hom.Defs
-import Mathlib.Algebra.Group.TypeTags
-import Mathlib.Data.ZMod.Basic
-import Mathlib.GroupTheory.Perm.Basic
-import Mathlib.Tactic
+import Mathlib
 
 set_option linter.unusedVariables false
 
