@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-qbinom-gauss-statement",
+    "proofId": "combinations-formula-oq-03-oq-02",
+    "range": { "startLine": 54, "endLine": 63 },
+    "type": "concept",
+    "title": "Gauss's q-Binomial Theorem",
+    "content": "The main theorem states that the product of the linear factors (1 + q^i·x) over i = 0,…,n−1 expands as a q-weighted sum of Gaussian binomial coefficients. Each term carries the weight q^{C(k,2)}, where C(k,2) = k(k−1)/2 is the k-th triangular number, encoding the number of inversions in the underlying subspace-counting model. The statement is universally quantified over q, x in an arbitrary commutative ring, with no invertibility hypothesis on q.",
+    "mathContext": "$\\prod_{i=0}^{n-1}(1 + q^i x) = \\sum_{k=0}^{n} \\binom{n}{k}_q\\, q^{\\binom{k}{2}}\\, x^k$",
+    "significance": "key",
+    "relatedConcepts": ["Gaussian binomial coefficient", "q-analog", "triangular number", "generating function"],
+    "prerequisites": ["Finset products and sums", "q-binomial coefficients (parent entry)"]
+  },
+  {
+    "id": "ann-induction-basecase",
+    "proofId": "combinations-formula-oq-03-oq-02",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "technique",
+    "title": "Induction on n; trivial base case",
+    "content": "The proof proceeds by induction on the number of factors n. The base case n = 0 is closed by simp: the empty product ∏_{i∈∅} equals 1, and the right-hand side sum over range(1) has only the k = 0 term, which is [0,0]_q·q^0·x^0 = 1. The inductive step assumes the level-n expansion (ih) and multiplies through by the new factor (1 + q^n·x).",
+    "mathContext": "$\\prod_{i \\in \\varnothing}(1 + q^i x) = 1 = \\binom{0}{0}_q q^{0} x^{0}$",
+    "significance": "supporting",
+    "relatedConcepts": ["mathematical induction", "empty product"],
+    "prerequisites": ["Lean induction tactic", "Finset.prod over the empty set"]
+  },
+  {
+    "id": "ann-hkey-recurrence",
+    "proofId": "combinations-formula-oq-03-oq-02",
+    "range": { "startLine": 70, "endLine": 81 },
+    "type": "insight",
+    "title": "The coefficient recurrence hkey drives the induction",
+    "content": "The heart of the inductive step: for k ≤ n, the (k+1)-st level-(n+1) coefficient splits into a q^n·x-shifted level-n term of index k plus the level-n term of index k+1. This is exactly the second q-Pascal recurrence qBinom_pascal', [n+1,k+1]_q = q^{n−k}[n,k]_q + [n,k+1]_q, packaged with the exponent identity below and closed by linear_combination. It is what makes the product-times-(1+q^n x) collapse into the next-level sum.",
+    "mathContext": "$\\binom{n+1}{k+1}_q q^{\\binom{k+1}{2}} x^{k+1} = q^n x\\left(\\binom{n}{k}_q q^{\\binom{k}{2}} x^k\\right) + \\binom{n}{k+1}_q q^{\\binom{k+1}{2}} x^{k+1}$",
+    "significance": "key",
+    "relatedConcepts": ["q-Pascal recurrence", "linear_combination tactic", "recurrence relation"],
+    "prerequisites": ["second q-Pascal recurrence (parent entry)"]
+  },
+  {
+    "id": "ann-triangular-exponent",
+    "proofId": "combinations-formula-oq-03-oq-02",
+    "range": { "startLine": 75, "endLine": 79 },
+    "type": "technique",
+    "title": "Triangular-number exponent bookkeeping",
+    "content": "The exponent identity C(k+1,2) = k + C(k,2) (proved via Nat.choose_succ_succ and Nat.choose_one_right) is the crux of the exponent algebra. It lets the shift factor q^{n−k} coming out of q-Pascal combine with q^{C(k+1,2)} to produce the clean q^n·q^{C(k,2)} required to match the shifted term. No other exponent identity is needed; omega closes the arithmetic once the powers are collected via pow_add.",
+    "mathContext": "$\\binom{k+1}{2} = k + \\binom{k}{2}, \\qquad q^{n-k}\\, q^{\\binom{k+1}{2}} = q^{n}\\, q^{\\binom{k}{2}}$",
+    "significance": "supporting",
+    "relatedConcepts": ["triangular number", "Nat.choose", "pow_add"],
+    "prerequisites": ["properties of binomial coefficients", "omega tactic"]
+  },
+  {
+    "id": "ann-vanishing-term",
+    "proofId": "combinations-formula-oq-03-oq-02",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "technique",
+    "title": "Vanishing of the out-of-range term",
+    "content": "Two small facts realign the sums. hlast: the level-n coefficient of index n+1 vanishes because the index exceeds n — [n,n+1]_q = 0 via qBinom_eq_zero_of_lt. hg0: the k = 0 level-n term equals 1 ([n,0]_q·q^0·x^0 = 1). Together they let the shifted family be re-folded back into a full level-n sum.",
+    "mathContext": "$\\binom{n}{n+1}_q = 0, \\qquad \\binom{n}{0}_q q^{0} x^{0} = 1$",
+    "significance": "technical",
+    "relatedConcepts": ["support of a sequence", "boundary conditions"],
+    "prerequisites": ["vanishing lemma qBinom_eq_zero_of_lt (parent entry)"]
+  },
+  {
+    "id": "ann-shift-identity",
+    "proofId": "combinations-formula-oq-03-oq-02",
+    "range": { "startLine": 87, "endLine": 105 },
+    "type": "technique",
+    "title": "Shift identity and final assembly",
+    "content": "The shift identity hshift re-indexes ∑ g(k+1) + 1 back into ∑ g(k) using Finset.sum_range_succ' (peel the k = 0 term) and Finset.sum_range_succ (drop the vanishing top term). The final computation expands the product with Finset.prod_range_succ, applies the inductive hypothesis, rewrites each summand via hkey, splits with Finset.sum_add_distrib, factors with Finset.mul_sum, and closes the polynomial identity with ring.",
+    "mathContext": "$\\left(\\sum_{k=0}^{n} g(k+1)\\right) + 1 = \\sum_{k=0}^{n} g(k)$ where $g(k) = \\binom{n}{k}_q q^{\\binom{k}{2}} x^k$",
+    "significance": "supporting",
+    "relatedConcepts": ["reindexing sums", "Finset.sum_range_succ'", "ring tactic"],
+    "prerequisites": ["Finset sum manipulation lemmas"]
+  },
+  {
+    "id": "ann-signed-variant",
+    "proofId": "combinations-formula-oq-03-oq-02",
+    "range": { "startLine": 111, "endLine": 124 },
+    "type": "insight",
+    "title": "Signed variant via x ↦ −x",
+    "content": "The alternating product ∏(1 − q^i·x) is obtained for free by substituting x ↦ −x in the main theorem. Each factor 1 + q^i·(−x) rewrites to 1 − q^i·x, and each term x^k picks up (−1)^k via mul_pow. This signed form supplies the alternating signs used in finite Jacobi-triple-product manipulations and q-series identities.",
+    "mathContext": "$\\prod_{i=0}^{n-1}(1 - q^i x) = \\sum_{k=0}^{n} (-1)^k \\binom{n}{k}_q q^{\\binom{k}{2}} x^k$",
+    "significance": "key",
+    "relatedConcepts": ["Jacobi triple product", "alternating sum", "substitution"],
+    "prerequisites": ["main theorem qBinom_gauss"]
+  },
+  {
+    "id": "ann-classical-binomial",
+    "proofId": "combinations-formula-oq-03-oq-02",
+    "range": { "startLine": 126, "endLine": 134 },
+    "type": "insight",
+    "title": "Recovering the classical binomial theorem at q = 1",
+    "content": "Setting q = 1 certifies the q-analog: every q^{C(k,2)} collapses to 1 (one_pow) and each Gaussian binomial [n,k]_1 becomes the ordinary C(n,k) (qBinom_at_one). The product ∏(1 + x) over n factors becomes (1 + x)^n via Finset.prod_const and Finset.card_range, delivering the classical binomial theorem (1 + x)^n = ∑ C(n,k) x^k as a one-line corollary.",
+    "mathContext": "$q = 1:\\quad (1 + x)^n = \\sum_{k=0}^{n} \\binom{n}{k} x^k$",
+    "significance": "key",
+    "relatedConcepts": ["binomial theorem", "specialization", "q → 1 limit"],
+    "prerequisites": ["q = 1 specialization qBinom_at_one (parent entry)"]
+  }
+]
