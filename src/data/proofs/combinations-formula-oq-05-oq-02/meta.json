@@ -1,0 +1,149 @@
+{
+  "id": "combinations-formula-oq-05-oq-02",
+  "title": "Trisecting Pascal's Triangle by Residue Class via Cube Roots of Unity",
+  "slug": "combinations-formula-oq-05-oq-02",
+  "description": "Generalizes the parent's mod-2 even/odd split of a Pascal's-triangle row to the mod-3 case using the roots-of-unity filter. For a primitive cube root of unity ζ and residue r < 3, proves the trisection identity 3·∑_{k≡r (mod 3)} C(n,k) = ∑_{j=0}^{2} ζ^{j(3−r)}(1+ζ^j)^n, evaluated via orthogonality of cube roots of unity, and verifies the three residue classes partition the row (∑_r S_r = 2^n). Directly answers the parent's open question on the m-way split by residue via roots of unity.",
+  "meta": {
+    "author": "Lean Genius researcher-16",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ05OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 172,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "assumptions": "None. All identities are fully machine-checked for every n and every residue r < 3. Uses `decide` (not `native_decide`) for the two concrete n=4 examples, so no Lean.ofReduceBool dependency. Depends only on the foundational axioms propext, Classical.choice, Quot.sound.",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "roots-of-unity",
+      "pascals-triangle",
+      "finset-sums",
+      "residue-classes"
+    ],
+    "dateAdded": "2026-07-01",
+    "originalContributions": [
+      "cube_root_geom_sum: orthogonality of cube roots of unity — for w³ = 1, the geometric sum 1 + w + w² equals 3 if w = 1 and 0 otherwise, proved by factoring w³−1 = (w−1)(w²+w+1)",
+      "trisection: the roots-of-unity filter identity 3·∑_{k≡r (mod 3)} C(n,k) = ∑_{j<3} ζ^{j(3−r)}(1+ζ^j)^n, proved by expanding each (1+ζ^j)^n via the binomial theorem, swapping summation order, and collapsing the inner geometric sum via cube_root_geom_sum",
+      "trisection_three_terms: the same identity with the j = 0,1,2 summands written out as 2^n + ζ^{3−r}(1+ζ)^n + ζ^{2(3−r)}(1+ζ²)^n",
+      "zeta_sq_add / one_add_zeta / one_add_zeta_sq: the primitive-cube-root relations 1+ζ+ζ² = 0, 1+ζ = −ζ², 1+ζ² = −ζ, obtained as corollaries of the orthogonality lemma",
+      "sum_trisection_eq_two_pow: completeness — the three residue classes partition the n-th row, so ∑_{r<3} S_r = 2^n (via Finset.sum_ite_eq and Nat.sum_range_choose)",
+      "Worked verifications (n = 4): residue-0 class sums to C(4,0)+C(4,3) = 5, and the three classes sum to 2^4 = 16"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ05OQ02.lean",
+    "namespace": "CombinationsFormulaOQ05OQ02",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 172,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Extracting the sum of binomial coefficients over a fixed residue class of the index — ∑_{k ≡ r (mod m)} C(n,k) — is a classical application of the finite Fourier transform, better known in combinatorics as the 'roots-of-unity filter'. Averaging the generating polynomial (1+x)^n over the m-th roots of unity annihilates every term except those in the desired residue class. The mod-2 case (x = ±1) is elementary and gives the even/odd subset-count identity of the parent entry; the mod-3 case is the first instance where genuinely complex (imaginary) roots of unity are unavoidable, making it the natural next step.",
+    "problemStatement": "Open Question OQ-05-OQ-02 (from the parent's open questions): does the analogous three-way split of a Pascal's-triangle row by the residue of the index modulo 3, evaluated via roots of unity, admit a clean formalization building on the parity (mod-2) case? Concretely: for a primitive cube root of unity ζ ∈ ℂ and residue r < 3, express 3·∑_{k≡r (mod 3)} C(n,k) in terms of the values (1+ζ^j)^n.",
+    "proofStrategy": "Prove the orthogonality lemma first: any w with w³ = 1 satisfies 1 + w + w² = 3 (if w = 1) or 0 (otherwise), by factoring w³ − 1 = (w − 1)(w² + w + 1). For the main identity, expand each (1 + ζ^j)^n via the binomial theorem into ∑_k C(n,k)(ζ^j)^k, exchange the order of summation (Finset.sum_comm), and note that the resulting inner sum ∑_{j<3} (ζ^{3−r+k})^j is a geometric sum whose base is a cube root of unity (since ζ³ = 1). By orthogonality this inner sum is 3 exactly when ζ^{3−r+k} = 1, i.e. when 3 ∣ (3−r+k), i.e. when k ≡ r (mod 3) — collapsing the double sum onto the residue class and yielding 3·S_r. The completeness statement uses that k mod 3 lands in exactly one of {0,1,2} (Finset.sum_ite_eq) together with the total row sum Nat.sum_range_choose = 2^n.",
+    "keyInsights": [
+      "The orthogonality of cube roots of unity needs only w³ = 1, not primitivity of w: the factorization w³ − 1 = (w − 1)(w² + w + 1) forces w² + w + 1 = 0 whenever w ≠ 1, so the geometric sum vanishes off the target class.",
+      "The negative exponent ζ^{−jr} of the textbook filter is encoded without ℤ-powers as ζ^{j(3−r)}, exploiting ζ^{3j} = 1; this keeps all exponents natural numbers and lets omega discharge the residue bookkeeping 3 ∣ (3−r+k) ↔ k % 3 = r.",
+      "Swapping the two finite sums (binomial index k, root index j) is the entire content of the filter: it turns three polynomial evaluations into a single residue-class projection.",
+      "The primitive-cube-root relation 1+ζ+ζ² = 0 (and hence 1+ζ = −ζ², 1+ζ² = −ζ) is itself just the r-independent orthogonality lemma at w = ζ, so the closed form 2^n + ζ^{3−r}(1+ζ)^n + ζ^{2(3−r)}(1+ζ²)^n further simplifies with (−1)^n powers of ζ.",
+      "Summing the trisection over r recovers the full row sum 2^n, confirming the three residue classes partition the row exactly as the two parity classes do in the parent."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 3,
+      "endLine": 47,
+      "summary": "Header stating OQ-05-OQ-02: the mod-3 residue-class trisection of a Pascal's-triangle row via the roots-of-unity filter, generalizing the parent's mod-2 even/odd split. Lists the main results and outlines the filter argument."
+    },
+    {
+      "id": "orthogonality",
+      "title": "Orthogonality of Cube Roots of Unity",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "cube_root_geom_sum: for any w with w³ = 1, the geometric sum 1 + w + w² is 3 when w = 1 and 0 otherwise. Proved by factoring w³ − 1 = (w − 1)(w² + w + 1) and using w ≠ 1 to force w² + w + 1 = 0."
+    },
+    {
+      "id": "trisection",
+      "title": "The Trisection Identity",
+      "startLine": 70,
+      "endLine": 124,
+      "summary": "trisection: 3·∑_{k≡r (mod 3)} C(n,k) = ∑_{j<3} ζ^{j(3−r)}(1+ζ^j)^n. Expands each binomial power, swaps summation order (Finset.sum_comm), and collapses the inner geometric sum via orthogonality, with omega discharging 3 ∣ (3−r+k) ↔ k % 3 = r."
+    },
+    {
+      "id": "three-terms",
+      "title": "Explicit Three-Term Form",
+      "startLine": 125,
+      "endLine": 133,
+      "summary": "trisection_three_terms: the j = 0,1,2 summands written out as 2^n + ζ^{3−r}(1+ζ)^n + ζ^{2(3−r)}(1+ζ²)^n."
+    },
+    {
+      "id": "root-relations",
+      "title": "Primitive Cube Root Relations",
+      "startLine": 134,
+      "endLine": 147,
+      "summary": "zeta_sq_add (1+ζ+ζ² = 0), one_add_zeta (1+ζ = −ζ²), one_add_zeta_sq (1+ζ² = −ζ): the defining relations of a primitive cube root, obtained from the orthogonality lemma at w = ζ."
+    },
+    {
+      "id": "completeness",
+      "title": "Completeness: Classes Partition the Row",
+      "startLine": 148,
+      "endLine": 162,
+      "summary": "sum_trisection_eq_two_pow: the three residue classes partition the n-th row, so ∑_{r<3} S_r = 2^n. Uses Finset.sum_ite_eq (each k lands in one class) and Nat.sum_range_choose."
+    },
+    {
+      "id": "verification",
+      "title": "Worked Verifications",
+      "startLine": 164,
+      "endLine": 172,
+      "summary": "examples: for n = 4 the residue-0 class sums to C(4,0)+C(4,3) = 5, and the three classes together sum to 2^4 = 16 (both by decide)."
+    }
+  ],
+  "conclusion": {
+    "summary": "7 theorems/lemmas, 0 sorries, 0 axioms. Formalizes the mod-3 roots-of-unity filter for Pascal's triangle: 3·∑_{k≡r (mod 3)} C(n,k) = ∑_{j<3} ζ^{j(3−r)}(1+ζ^j)^n, with the orthogonality lemma, the explicit three-term form, the primitive-cube-root relations, and a completeness check that the three classes partition the row (∑_r S_r = 2^n).",
+    "implications": "This directly answers the parent entry's open question on the m-way residue split via roots of unity, upgrading the elementary mod-2 (x = ±1) parity split to the first genuinely complex case. The orthogonality lemma and the natural-number encoding ζ^{j(3−r)} of the negative filter exponent are reusable for any prime modulus m, giving a template for extracting ∑_{k ≡ r (mod m)} C(n,k) from evaluations of (1+x)^n at the m-th roots of unity.",
+    "openQuestions": [
+      "Does the same filter extend uniformly to a general modulus m, proving m·∑_{k≡r (mod m)} C(n,k) = ∑_{j<m} ζ^{j(m−r)}(1+ζ^j)^n for a primitive m-th root ζ, with the orthogonality step handled by Finset.geom_sum_eq?",
+      "Can the three-term form be converted into a closed real expression S_r = (2^n + 2(−1)^n cos((n−2r)π/3))/3 by evaluating the ζ-powers through Complex.exp, giving the classical trigonometric trisection formula?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-05",
+      "relationship": "parent — the mod-2 even/odd split of a Pascal's-triangle row, whose open question this entry answers for modulus 3"
+    },
+    {
+      "targetId": "combinations-formula-oq-02",
+      "relationship": "ancestor — the core combinations formula entry providing binomial coefficient context"
+    }
+  ],
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "venue": "Addison-Wesley",
+      "note": "Discusses the roots-of-unity filter (multisection of series) for extracting residue-class sums of binomial coefficients."
+    },
+    {
+      "authors": "J. Riordan",
+      "title": "Combinatorial Identities",
+      "year": 1968,
+      "venue": "Wiley",
+      "note": "Systematic treatment of binomial-sum identities, including multisection by residue class."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.choose, add_pow (binomial theorem), IsPrimitiveRoot, and the Finset summation API underlying this formalization."
+    }
+  ]
+}
