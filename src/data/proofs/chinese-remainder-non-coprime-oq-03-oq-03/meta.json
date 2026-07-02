@@ -68,7 +68,12 @@
   },
   "conclusion": {
     "summary": "The Chinese Remainder Theorem is established at the module level: for comaximal ideals I, J in a commutative ring and any module M, M/(I⊓J)M ≅ (M/IM) × (M/JM) as R-modules, with a PID/coprime-elements specialisation. The proof is the first isomorphism theorem applied to the product of the two quotient projections, with comaximality entering only through surjectivity. 4 theorems, 4 definitions, 160 lines, 0 axioms — verified over Mathlib.",
-    "implications": "This is the structural form of the CRT that underlies the classification of modules over a PID: it splits M along coprime annihilator factors, the step that decomposes a finitely generated torsion module into its primary components. It strictly generalises Mathlib's ring-level Ideal.quotientInfRingEquivPiQuotient (recovered at M = R) and the element-level non-coprime CRT of the parent chain (recovered by reading the isomorphism on representatives). The two-ideal result extends to n comaximal ideals by induction, matching the ring-level statement."
+    "implications": "This is the structural form of the CRT that underlies the classification of modules over a PID: it splits M along coprime annihilator factors, the step that decomposes a finitely generated torsion module into its primary components. It strictly generalises Mathlib's ring-level Ideal.quotientInfRingEquivPiQuotient (recovered at M = R) and the element-level non-coprime CRT of the parent chain (recovered by reading the isomorphism on representatives). The two-ideal result extends to n comaximal ideals by induction, matching the ring-level statement.",
+    "openQuestions": [
+      "Formalize the $n$-comaximal-ideals induction from this two-ideal case to the full isomorphism $M/(\\bigcap_i I_i)M \\cong \\prod_i M/I_iM$, matching the ring-level $\\text{Ideal.quotientInfRingEquivPiQuotient}$ Pi-statement at the module level.",
+      "Use this module-level splitting to formalize the primary decomposition of a finitely generated torsion module over a PID (the structure theorem), for which decomposition along coprime annihilator factors is the key step.",
+      "Describe the failure in the non-comaximal case: give the kernel/cokernel of the canonical map $M/(I\\cap J)M \\to M/IM \\times M/JM$ as a $\\mathrm{Tor}$/derived-functor obstruction, quantifying exactly how much comaximality buys."
+    ]
   },
   "sections": [
     {
