@@ -46,27 +46,49 @@
     ]
   },
   {
-    "id": "ann-pac-wip01-oq01-03-corollaries",
+    "id": "ann-pac-wip01-oq01-03-union",
     "proofId": "pac-learning-bounds-wip-01-oq-01",
     "range": {
       "startLine": 68,
-      "endLine": 86
+      "endLine": 76
     },
     "type": "theorem",
-    "title": "Union Bounds and the Powerset Capacity Ceiling",
-    "content": "Immediate consequences of monotonicity. vcDim_union_left / vcDim_union_right give VCDim H, VCDim H' ≤ VCDim (H ∪ H') via subset_union. vcDim_powerset_le shows any class contained in a powerset, H ⊆ S.powerset, has VCDim H ≤ |S|, obtained by chaining vcDim_mono with the parent's exact value vcDim_powerset (VCDim(2^S) = |S|) — turning a class containment into a capacity ceiling.",
-    "mathContext": "$\\dim_{VC}(H), \\dim_{VC}(H') \\le \\dim_{VC}(H \\cup H')$; and $H \\subseteq 2^S \\Rightarrow \\dim_{VC}(H) \\le |S|$.",
+    "title": "Union Corollaries: Capacity of a Union Dominates its Parts",
+    "content": "vcDim_union_left and vcDim_union_right are the most immediate consequences of monotonicity: since $H \\subseteq H \\cup H'$ and $H' \\subseteq H \\cup H'$ (Finset.subset_union_left/right), each part's VC dimension is bounded by that of the union. Both proofs are a single application of vcDim_mono to the relevant subset witness. Operationally this is the capacity side of the classic union bound in learning theory — combining two hypothesis classes never lowers capacity below either component.",
+    "mathContext": "$\\dim_{VC}(H) \\le \\dim_{VC}(H \\cup H')$ and $\\dim_{VC}(H') \\le \\dim_{VC}(H \\cup H')$, from $H, H' \\subseteq H \\cup H'$.",
     "significance": "supporting",
     "relatedConcepts": [
       "VC dimension",
       "union bound",
-      "powerset class",
-      "capacity ceiling"
+      "monotonicity",
+      "hypothesis class"
     ],
     "prerequisites": [
       "vcDim_mono",
-      "Finset.subset_union_left/right",
-      "the parent's vcDim_powerset"
+      "Finset.subset_union_left/right"
+    ]
+  },
+  {
+    "id": "ann-pac-wip01-oq01-04-powerset",
+    "proofId": "pac-learning-bounds-wip-01-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "Powerset Capacity Ceiling: H ⊆ 2^S ⟹ VCDim H ≤ |S|",
+    "content": "vcDim_powerset_le turns a class containment into a hard capacity ceiling. Any family whose members are all subsets of a fixed finite set $S$ satisfies $H \\subseteq S.\\mathrm{powerset}$, so by monotonicity $\\dim_{VC}(H) \\le \\dim_{VC}(2^S)$; chaining with the parent's exact evaluation vcDim_powerset ($\\dim_{VC}(2^S) = |S|$) yields $\\dim_{VC}(H) \\le |S|$. This is the finite ground-set ceiling: no class over an $|S|$-element universe can shatter more than $|S|$ points, recovering the trivial-but-essential upper bound on capacity used throughout PAC sample-complexity arguments.",
+    "mathContext": "$H \\subseteq S.\\mathrm{powerset} \\Rightarrow \\dim_{VC}(H) \\le \\dim_{VC}(2^S) = |S|$, via (vcDim_mono hH).trans_eq (vcDim_powerset S).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "VC dimension",
+      "powerset class",
+      "capacity ceiling",
+      "ground set"
+    ],
+    "prerequisites": [
+      "vcDim_mono",
+      "the parent's vcDim_powerset (VCDim 2^S = |S|)"
     ]
   }
 ]

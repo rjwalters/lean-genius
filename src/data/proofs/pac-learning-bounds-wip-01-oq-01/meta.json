@@ -65,7 +65,8 @@
       "The class-level monotonicity is a pure transport of the set-level shatters_mono across the supremum defining VCDim — no new combinatorics is needed.",
       "csSup_le reduces the class-level bound to a per-witness bound, and the only work per witness is invoking shatters_mono and card_le_vcDim.",
       "The empty-witness branch (H shatters nothing, so VCDim H = 0) must be handled separately because sSup ∅ = ⊥ is not covered by csSup_le, which requires a nonempty index set.",
-      "Monotonicity immediately yields the union bounds and, composed with the parent's exact value VCDim(2^S) = |S|, a capacity ceiling for any subfamily of a powerset."
+      "Monotonicity immediately yields the union bounds and, composed with the parent's exact value VCDim(2^S) = |S|, a capacity ceiling for any subfamily of a powerset.",
+      "The empty-witness branch is not a degenerate technicality: csSup_le demands a nonempty index set, so 'H shatters nothing ⟹ VCDim H = sSup ∅ = ⊥ = 0' is discharged by a separate bot_le, and this is the only place the conditional-supremum's ⊥ convention surfaces."
     ],
     "prerequisites": [
       "Finsets, shattering, and the VC dimension as defined in the parent entry",
@@ -75,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: From Set-Level to Class-Level Monotonicity",
+      "startLine": 3,
+      "endLine": 47,
+      "summary": "Module docstring and setup. Recalls the parent's 0-axiom VC foundations (trace, Shatters, VCDim H = sSup{|S| : H shatters S}) and its set-level lemma shatters_mono, then states the goal: the class-level counterpart vcDim_mono, packaged into union and powerset-ceiling corollaries. Opens Finset and fixes a DecidableEq α ground type.",
+      "mathContext": "Setting: hypothesis classes H : Finset (Finset α); VCDim H = sSup{n | ∃ S, |S| = n ∧ Shatters H S}."
+    },
+    {
       "id": "sec-mono",
       "title": "Monotonicity of the VC Dimension",
       "startLine": 49,
@@ -83,12 +92,20 @@
       "mathContext": "The core statement: enlarging the hypothesis class cannot decrease its VC dimension."
     },
     {
-      "id": "sec-corollaries",
-      "title": "Union Bounds and the Powerset Ceiling",
+      "id": "sec-union",
+      "title": "Union Corollaries",
       "startLine": 68,
-      "endLine": 86,
-      "summary": "vcDim_union_left / vcDim_union_right: VCDim H, VCDim H' ≤ VCDim (H ∪ H') via subset_union. vcDim_powerset_le: any H ⊆ S.powerset has VCDim H ≤ |S|, obtained by chaining vcDim_mono with the parent's exact value vcDim_powerset (VCDim(2^S) = |S|).",
-      "mathContext": "Consequences: capacity of a union dominates its parts; any subfamily of 2^S has VC dimension at most |S|."
+      "endLine": 76,
+      "summary": "vcDim_union_left / vcDim_union_right: VCDim H, VCDim H' ≤ VCDim (H ∪ H'), each a one-line application of vcDim_mono to Finset.subset_union_left/right.",
+      "mathContext": "Capacity of a union dominates that of either part: VCDim H, VCDim H' ≤ VCDim (H ∪ H')."
+    },
+    {
+      "id": "sec-powerset",
+      "title": "Powerset Capacity Ceiling",
+      "startLine": 78,
+      "endLine": 84,
+      "summary": "vcDim_powerset_le: any H ⊆ S.powerset has VCDim H ≤ |S|, chaining vcDim_mono with the parent's exact value vcDim_powerset (VCDim(2^S) = |S|). The finite ground-set ceiling on capacity.",
+      "mathContext": "H ⊆ 2^S ⟹ VCDim H ≤ VCDim(2^S) = |S|."
     }
   ],
   "conclusion": {
@@ -104,6 +121,21 @@
       "targetId": "pac-learning-bounds-wip-01",
       "relationship": "extends",
       "description": "Answers the parent's first open question by lifting its set-level shatters_mono to class-level monotonicity of the VC dimension, and reuses the parent's vcDim_powerset for the capacity ceiling."
+    },
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "related",
+      "description": "Root of the thread — PAC learning and the VC dimension. This entry supplies the structural monotonicity property that its capacity/sample-complexity results implicitly rely on."
+    },
+    {
+      "targetId": "pac-learning-bounds-oq-04",
+      "relationship": "related",
+      "description": "The ε-net theorem and PAC sample-complexity bounds. Monotonicity of VCDim is exactly what lets one bound a hard class's sample complexity by that of a larger, more tractable class."
+    },
+    {
+      "targetId": "pac-learning-bounds-oq-01",
+      "relationship": "related",
+      "description": "A concrete VC-dimension computation (threshold classifiers on ℕ). Where this entry gives the abstract monotonicity law, that entry pins an exact value it must respect."
     }
   ],
   "references": [
