@@ -1,14 +1,14 @@
 {
-  "id": "combinations-formula-oq-02-oq-02",
+  "id": "combinations-formula-oq-02-oq-03",
   "title": "Segner's Multiplicative Recurrence for Catalan Numbers",
-  "slug": "combinations-formula-oq-02-oq-02",
+  "slug": "combinations-formula-oq-02-oq-03",
   "description": "A follow-up to combinations-formula-oq-02 (Catalan numbers and central binomial coefficients). The parent proves the additive identity Cₙ·(n+1) = C(2n,n), the 4ⁿ bounds, monotonicity, and the convolution recurrence, and its header advertises the multiplicative (Segner) ratio recurrence C_{n+1} = (2(2n+1)/(n+2))·Cₙ — but never proves it. This entry supplies that proof in integer form, C_{n+1}·(n+2) = 2(2n+1)·Cₙ, derived from Mathlib's central-binomial recurrence and the bridge Cₙ·(n+1) = C(2n,n). It then establishes the sharp two-sided growth bounds 2Cₙ ≤ C_{n+1} < 4Cₙ (n ≥ 1) and a divisibility corollary. Verified, axiom-free, sorry-free.",
   "meta": {
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Catalan_number",
     "date": "2026-07-01",
     "status": "verified",
-    "proofRepoPath": "Proofs/CombinationsFormulaOQ02OQ02.lean",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ02OQ03.lean",
     "tags": [
       "combinatorics",
       "catalan-numbers",
@@ -172,7 +172,7 @@
         "description": "Lower ratio bound 2Cₙ ≤ C_{n+1} (n ≥ 1)"
       }
     ],
-    "path": "Proofs/CombinationsFormulaOQ02OQ02.lean",
+    "path": "Proofs/CombinationsFormulaOQ02OQ03.lean",
     "sorries": 0
   },
   "sorries": 0
