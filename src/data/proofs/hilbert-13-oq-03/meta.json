@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Point Separation Is a Necessary Condition on the Inner Functions",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "The docstring frames Hilbert #13 / OQ-03 — the minimal requirements on the inner functions φ_p in the Kolmogorov–Arnold superposition. It does not resolve sufficiency (Sternfeld's basic-embedding theory) but isolates and fully verifies (0 axioms, 0 sorries) the necessary core: bundling the inner data into a feature map Ψ(x)_q = Σ_p coeff_{p,q}·φ_p(x_p), the outer functions see x only through Ψ, so if Ψ collapses two distinct points every representable f must agree on them; since continuous functions separate points, a universal inner family must make Ψ injective, forcing each φ_p injective. Lists the exported results (OuterRepresentable, eq_of_feature_eq, feature_injective_of_universal, kaFeature, inner_injective_of_feature_injective, inner_functions_must_be_injective) and references Kolmogorov, Arnold, Sternfeld, Ostrand. Imports Mathlib; namespace Hilbert13OQ03.",
+      "mathContext": "Necessary condition: a universal Kolmogorov–Arnold inner family must make the feature map $\\Psi$ injective, hence each inner $\\varphi_p$ injective (point separation is mandatory, though not sufficient)."
+    },
+    {
       "id": "feature-map",
       "title": "The Feature Map Abstraction",
       "startLine": 56,
@@ -92,6 +100,14 @@
       "endLine": 174,
       "summary": "separates_of_pi: continuous functions separate points of Fin n → ℝ via coordinate projections. inner_functions_must_be_injective: a fixed inner family representing every continuous function on ℝⁿ forces each φ_p injective. feature_must_separate_points: the bundled form — the inner family must separate the cube's points. The closing remark records that injectivity is necessary but not sufficient (Sternfeld 1985).",
       "mathContext": "On $\\mathbb{R}^n$ coordinate projections are continuous and separate points, so the universality hypothesis applies and the necessary condition — injectivity of every inner $\\varphi_p$ — follows unconditionally."
+    },
+    {
+      "id": "sec-final-verification",
+      "title": "Final Verification",
+      "startLine": 175,
+      "endLine": 182,
+      "summary": "A closing remark (recalling that Sternfeld's strictly-stronger uniform separation condition is the exact admissibility threshold, not formalised here) followed by a #check block re-exhibiting the five exported results — eq_of_feature_eq, feature_injective_of_universal, inner_injective_of_feature_injective, inner_functions_must_be_injective, feature_must_separate_points — and end Hilbert13OQ03.",
+      "mathContext": "Type-level confirmation of the necessary-condition results; the exact Sternfeld admissibility threshold is explicitly out of scope."
     }
   ],
   "conclusion": {
