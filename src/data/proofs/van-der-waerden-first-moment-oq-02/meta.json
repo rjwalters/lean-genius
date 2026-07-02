@@ -78,29 +78,39 @@
   },
   "sections": [
     {
+      "id": "scope",
+      "title": "Scope and the remaining open gap",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "This entry deliberately proves only the combinatorial ingredient (2) of open question oq-02. The remaining ingredient (1), a verified symmetric Lovász Local Lemma — a positive-probability guarantee for finitely many events of probability ≤ p with dependency degree ≤ d satisfying e·p·(d+1) ≤ 1 — is not in Mathlib and is a genuine build (conditional-probability induction). Only once it is available can k²·n be fed in to conclude W(k) ≳ 2^k/(ek). Reporting honestly: the exponent-doubling target of oq-02 is not reached here; the linear dependency-degree bound is the verified step toward it."
+    },
+    {
       "id": "index-recovery",
       "title": "Recovering the AP index from membership",
-      "content": "exists_index_of_mem turns geometric membership into an arithmetic parameter. If the length-k AP with first term a and step d fits in [n] (a + (k-1)d < n) and the point x lies on it, then unfolding vdwAP = (range k).image (i ↦ cast(a + i·d)) yields an index i < k with cast(a + i·d) = x; since a + i·d ≤ a + (k-1)d < n, Fin.val_cast_of_lt gives x = a + i·d as underlying naturals. This is the bridge from 'x is on this AP' to 'x = a + i·d', enabling the parameter injection."
+      "startLine": 57,
+      "endLine": 69,
+      "summary": "exists_index_of_mem turns geometric membership into an arithmetic parameter. If the length-k AP with first term a and step d fits in [n] (a + (k-1)d < n) and the point x lies on it, then unfolding vdwAP = (range k).image (i ↦ cast(a + i·d)) yields an index i < k with cast(a + i·d) = x; since a + i·d ≤ a + (k-1)d < n, Fin.val_cast_of_lt gives x = a + i·d as underlying naturals. This is the bridge from 'x is on this AP' to 'x = a + i·d', enabling the parameter injection."
     },
     {
       "id": "parameter-count",
       "title": "At most k·n parameter pairs put an AP through a fixed point",
-      "content": "card_params_through_le is the crux. Among fitting pairs (a,d) whose length-k AP passes through a fixed point x, map (a,d) ↦ ((x-a)/d, d). By exists_index_of_mem, x = a + i·d, so x - a = i·d and (x-a)/d = i < k (Nat.mul_div_cancel) — the map lands in (range k) ×ˢ (Icc 1 n). It is injective: if two pairs share image (i, d), then a = x - i·d is the same for both, so the pairs coincide. Hence the count is at most |(range k) ×ˢ (Icc 1 n)| = k·n. This is the sole place linearity in n enters: the step d ranges over ≤ n values and the index over k."
+      "startLine": 71,
+      "endLine": 123,
+      "summary": "card_params_through_le is the crux. Among fitting pairs (a,d) whose length-k AP passes through a fixed point x, map (a,d) ↦ ((x-a)/d, d). By exists_index_of_mem, x = a + i·d, so x - a = i·d and (x-a)/d = i < k (Nat.mul_div_cancel) — the map lands in (range k) ×ˢ (Icc 1 n). It is injective: if two pairs share image (i, d), then a = x - i·d is the same for both, so the pairs coincide. Hence the count is at most |(range k) ×ˢ (Icc 1 n)| = k·n. This is the sole place linearity in n enters: the step d ranges over ≤ n values and the index over k."
     },
     {
       "id": "family-transfer",
       "title": "Transferring the count to the AP family",
-      "content": "card_family_through_le lifts the parameter count to the family of AP-sets. Since vdwFamily n k is the image of the fitting-parameter set under (a,d) ↦ vdwAP n a d k, every family member containing x is the image of a parameter pair whose AP contains x. So the family-through-x set is contained in the image of the parameter-through-x set, and Finset.card_image_le bounds its cardinality by the parameter count k·n."
+      "startLine": 125,
+      "endLine": 154,
+      "summary": "card_family_through_le lifts the parameter count to the family of AP-sets. Since vdwFamily n k is the image of the fitting-parameter set under (a,d) ↦ vdwAP n a d k, every family member containing x is the image of a parameter pair whose AP contains x. So the family-through-x set is contained in the image of the parameter-through-x set, and Finset.card_image_le bounds its cardinality by the parameter count k·n."
     },
     {
       "id": "degree-bound",
       "title": "The dependency-degree bound k²·n",
-      "content": "card_vdwFamily_meeting_le / vdwHypergraph_degree_le assemble the answer. A length-k AP e has exactly k points (vdwFamily_uniform from the base entry). Any family AP f overlapping e shares a point x ∈ e, so the overlapping-f set injects into the biUnion over x ∈ e of the family-through-x sets; Finset.card_biUnion_le then bounds its size by ∑_{x∈e} k·n = e.card·(k·n) = k·(k·n) = k²·n. This linear-in-n maximum degree is exactly the quantitative dependency input the symmetric Lovász Local Lemma consumes."
-    },
-    {
-      "id": "scope",
-      "title": "Scope and the remaining open gap",
-      "content": "This entry deliberately proves only the combinatorial ingredient (2) of open question oq-02. The remaining ingredient (1), a verified symmetric Lovász Local Lemma — a positive-probability guarantee for finitely many events of probability ≤ p with dependency degree ≤ d satisfying e·p·(d+1) ≤ 1 — is not in Mathlib and is a genuine build (conditional-probability induction). Only once it is available can k²·n be fed in to conclude W(k) ≳ 2^k/(ek). Reporting honestly: the exponent-doubling target of oq-02 is not reached here; the linear dependency-degree bound is the verified step toward it."
+      "startLine": 156,
+      "endLine": 195,
+      "summary": "card_vdwFamily_meeting_le / vdwHypergraph_degree_le assemble the answer. A length-k AP e has exactly k points (vdwFamily_uniform from the base entry). Any family AP f overlapping e shares a point x ∈ e, so the overlapping-f set injects into the biUnion over x ∈ e of the family-through-x sets; Finset.card_biUnion_le then bounds its size by ∑_{x∈e} k·n = e.card·(k·n) = k·(k·n) = k²·n. This linear-in-n maximum degree is exactly the quantitative dependency input the symmetric Lovász Local Lemma consumes."
     }
   ],
   "conclusion": {
