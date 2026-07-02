@@ -293,12 +293,14 @@ theorem diam_ge_one (S : Finset (EuclideanSpace ℝ (Fin 2)))
   rw [dif_pos hne]
   exact le_trans hdist_ge1 (Finset.le_max' _ _ hmem)
 
-/--
+/-
 **Kanold's Bound**
 
 For any n-point integer distance set, diameter ≥ n^(3/4).
 
 Proved by pigeonhole counting on distance multiplicities.
+(Narrative only — no Lean declaration attaches here; see
+`conjecture_implies_kanold` below for the formalized Kanold-direction result.)
 -/
 /--
 **Guth-Katz Distinct Distances Theorem (2015)**
@@ -398,11 +400,12 @@ def IsCollinear (S : Set (EuclideanSpace ℝ (Fin 2))) : Prop :=
   ∃ (a b : EuclideanSpace ℝ (Fin 2)), a ≠ b ∧
     ∀ p ∈ S, ∃ t : ℝ, p = a + t • (b - a)
 
-/--
+/-
 **Erdős-Anning Theorem (1945)**
 
 If an infinite set of points in ℝ² has all pairwise distances
 being integers, then all points are collinear.
+(Narrative only — no Lean declaration attaches here.)
 -/
 /-
 ## The Conjecture Implies Kanold

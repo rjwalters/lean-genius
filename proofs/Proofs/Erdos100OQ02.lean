@@ -52,9 +52,25 @@ theorem gk_bound_strictly_sublinear (c : ℝ) (hc : c > 0) :
     ∀ᶠ n : ℕ in atTop,
       c * ↑n / Real.log ↑n < c * ↑n := by
   filter_upwards [n_over_log_sublinear 1 (by norm_num)] with n hn
-  rw [mul_one] at hn
+  rw [one_mul] at hn
   rw [mul_div_assoc]
   exact mul_lt_mul_of_pos_left hn hc
+
+/--
+**The Guth–Katz shortfall factor vanishes.**
+
+The Guth–Katz bound `c·n/log n` is a `1/log n` fraction of the conjectured linear
+bound `c·n`, and this fraction tends to `0`.  Hence the two conjectured growth
+rates are not merely *eventually* distinct (`gk_bound_strictly_sublinear`) but
+asymptotically **separated**: the Guth–Katz route captures a vanishing proportion
+of the conjectured linear diameter.  This is the precise sense in which "the gap
+is a factor of `log n`" — an *unbounded* factor, which is exactly why closing the
+`Θ(n/log n)` vs `Θ(n)` gap in Erdős #100 is hard. -/
+theorem gk_shortfall_factor_tendsto_zero :
+    Tendsto (fun n : ℕ => 1 / Real.log n) atTop (nhds 0) := by
+  have hlog : Tendsto (fun n : ℕ => Real.log n) atTop atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  simpa only [one_div] using hlog.inv_tendsto_atTop
 
 
 end Erdos100OQ02
