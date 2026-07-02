@@ -1,5 +1,53 @@
 [
   {
+    "id": "cr3-oq0301-delian",
+    "proofId": "cube-root-3-irrational-oq-03-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 13
+    },
+    "type": "context",
+    "title": "Doubling the cube: the Delian problem",
+    "content": "The classical problem of doubling the cube (the Delian problem) asks for a cube of twice the volume of a given one — i.e. a segment of length ∛2 relative to the unit, and more generally the constructibility of cube roots. This entry treats ∛3, the second open question of the parent cube-root-3-irrational-oq-03 (which established [ℚ(∛3):ℚ] = 3). The claim is that ∛3 is not constructible by ruler and compass, resolving the impossibility half of a Greek geometric problem by purely algebraic means.",
+    "mathContext": "Doubling the cube requires constructing $\\sqrt[3]{2}$; here the sibling $\\sqrt[3]{3}$ has $[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}]=3$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Delian problem",
+      "doubling the cube",
+      "ruler-and-compass construction",
+      "classical Greek geometry"
+    ],
+    "prerequisites": [
+      "field extensions",
+      "classical geometry"
+    ]
+  },
+  {
+    "id": "cr3-oq0301-wantzel",
+    "proofId": "cube-root-3-irrational-oq-03-oq-01",
+    "range": {
+      "startLine": 14,
+      "endLine": 30
+    },
+    "type": "insight",
+    "title": "The algebraic reduction: constructible ⟹ 2-power degree, and 3 ∤ 2^k",
+    "content": "Wantzel's criterion (1837) is the algebraic engine: any ruler-and-compass constructible real lies in a tower of quadratic extensions of ℚ, hence in some subfield E ⊆ ℝ with [E:ℚ] a power of 2. If ∛3 were constructible it would lie in such an E; then ℚ(∛3) ⊆ E, so by the tower law 3 = [ℚ(∛3):ℚ] divides [E:ℚ] = 2^k. But 3 is prime and does not divide any power of 2 — contradiction. This reduces a geometric impossibility to the single arithmetic fact 3 ∤ 2^k.",
+    "mathContext": "Constructible $\\Rightarrow x\\in E$, $[E:\\mathbb{Q}]=2^k$; tower law $[\\mathbb{Q}(\\sqrt[3]3):\\mathbb{Q}]\\mid[E:\\mathbb{Q}]$ gives $3\\mid 2^k$, impossible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wantzel's theorem",
+      "tower law",
+      "degree of field extensions",
+      "constructible numbers",
+      "quadratic tower"
+    ],
+    "prerequisites": [
+      "field theory",
+      "tower law for field extensions",
+      "divisibility"
+    ]
+  },
+  {
     "id": "ann-cbrt3-oq03oq01-arith",
     "proofId": "cube-root-3-irrational-oq-03-oq-01",
     "range": {
