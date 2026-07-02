@@ -1,9 +1,34 @@
 [
   {
+    "id": "ann-overview",
+    "proofId": "composition-parts-choose-oq-01-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Overview: The Total and Mean Number of Parts of a Composition",
+    "content": "A composition of n is an ordered tuple of positive integers summing to n (Mathlib's Composition n), with c.length parts. The grandparent counts compositions (card = 2^(n−1)); the parent grades that count by part-count (C(n−1,k−1) compositions with exactly k parts). This entry computes the FIRST MOMENT: the total number of parts summed over all 2^(n−1) compositions of n ≥ 2 is (n+1)·2^(n−2), so the MEAN number of parts is exactly (n+1)/2 — the midpoint of the 1..n range, reflecting the symmetry C(n−1,k−1) = C(n−1,n−k). The clean route avoids re-summing ∑ₖ k·C(n−1,k−1) directly: it uses the bijection Composition n ≃ Finset (Fin (n−1)) with the bridge length c = (gaps of c).card + 1, turning the total into ∑_{s ⊆ Fin(n−1)} (|s|+1) = (n−1)·2^(n−2) + 2^(n−1) = (n+1)·2^(n−2).",
+    "mathContext": "$\\sum_{c} \\mathrm{length}(c) = (n+1)2^{n-2}$, so the mean part-count is $\\tfrac{n+1}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "compositions of an integer",
+      "first moment",
+      "binomial identities",
+      "gap bijection",
+      "expected value"
+    ],
+    "prerequisites": [
+      "compositions",
+      "binomial coefficients",
+      "summation over subsets"
+    ]
+  },
+  {
     "id": "ann-gap-bridge",
     "proofId": "composition-parts-choose-oq-01-oq-01",
     "range": {
-      "startLine": 75,
+      "startLine": 61,
       "endLine": 138
     },
     "type": "theorem",
