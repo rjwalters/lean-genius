@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: θ(n) = log(n#) and the Central-Binomial Route",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "The docstring introduces Chebyshev's first function θ(n) = ∑_{p ≤ n} log p, notes that exp θ(n) is exactly the primorial n# so θ(n) = log(n#), and lays out the strategy: Mathlib's primorial_le_4_pow (n# ≤ 4ⁿ, itself the Erdős central-binomial sandwich) becomes the sharp upper bound θ(n) ≤ n·log 4 = 2n·log 2 by taking logarithms and using monotonicity of log on the positive reals. Imports Primorial and Log.Basic, opens Finset, and sets up namespace ChebyshevThetaBound.",
+      "mathContext": "$\\theta(n) = \\sum_{p \\le n} \\log p = \\log(n\\#)$, and $n\\# \\le 4^n \\Rightarrow \\theta(n) \\le n\\log 4$."
+    },
+    {
       "id": "definition-and-primorial-identity",
       "title": "θ(n) as the logarithm of the primorial",
       "startLine": 28,
