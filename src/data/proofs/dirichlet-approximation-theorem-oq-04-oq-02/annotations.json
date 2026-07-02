@@ -59,18 +59,37 @@
   {
     "id": "ann-dirichlet-oq04oq02-approximation",
     "proofId": "dirichlet-approximation-theorem-oq-04-oq-02",
-    "range": { "startLine": 75, "endLine": 100 },
+    "range": { "startLine": 75, "endLine": 94 },
     "type": "key-insight",
-    "title": "Inhomogeneous Approximation: the Circle Norm is Distance to ℤ",
-    "content": "exists_int_zsmul_sub_round_lt turns density into a concrete inhomogeneous bound. The ε-ball ball (↑β) ε around the target point is open (isOpen_ball) and nonempty (mem_ball_self hε), so DenseRange.exists_mem_open meets it at some ↑(k • a). Unfolding mem_ball / dist_eq_norm and rewriting zsmul_eq_mul and ← AddCircle.coe_sub turns membership into ‖(↑(k·a − β) : AddCircle 1)‖ < ε. The final step reads this circle norm back as distance to the nearest integer: AddCircle.norm_eq at period 1 (with inv_one, one_mul, mul_one) gives ‖(x : AddCircle 1)‖ = |x − round x|, so the goal |k·a − β − round(k·a − β)| < ε follows with witness n = k. Setting β = 0 recovers the parent OQ-04's homogeneous one-sided bound; general β is the genuine inhomogeneous Kronecker approximation.",
-    "mathContext": "For irrational $a$, any $\\beta$, $\\varepsilon > 0$: $\\exists n,\\ |na - \\beta - \\operatorname{round}(na - \\beta)| < \\varepsilon$; the circle norm $\\|(x:\\mathbb{R}/\\mathbb{Z})\\| = |x - \\operatorname{round} x|$.",
+    "title": "Inhomogeneous Approximation, Step 1: Density Meets the ε-Ball",
+    "content": "exists_int_zsmul_sub_round_lt turns density into a concrete inhomogeneous bound in two steps; this is the extraction step. The ε-ball ball (↑β) ε around the target point ↑β is open (isOpen_ball) and nonempty (mem_ball_self hε), so DenseRange.exists_mem_open — a dense range meets every nonempty open set — produces an integer k with ↑(k • a) inside the ball. Unfolding mem_ball / dist_eq_norm and rewriting zsmul_eq_mul and ← AddCircle.coe_sub converts that ball-membership into a single circle-norm inequality ‖(↑(k·a − β) : AddCircle 1)‖ < ε. The genuinely inhomogeneous ingredient is that the ball is centred at an ARBITRARY target ↑β, not at 0 as in the parent OQ-04.",
+    "mathContext": "The ball $B(\\uparrow\\!\\beta, \\varepsilon) \\subseteq \\mathbb{R}/\\mathbb{Z}$ is open and nonempty, so density gives $k$ with $\\uparrow(k\\cdot a) \\in B$, i.e. $\\|(\\uparrow(k a - \\beta):\\mathbb{R}/\\mathbb{Z})\\| < \\varepsilon$.",
     "prerequisites": [
       "DenseRange.exists_mem_open",
-      "AddCircle.norm_eq and AddCircle.coe_sub"
+      "mem_ball / dist_eq_norm and AddCircle.coe_sub"
     ],
     "relatedConcepts": [
-      "inhomogeneous Diophantine approximation",
+      "density meets every open set",
+      "ε-ball around an arbitrary target",
+      "inhomogeneous Diophantine approximation"
+    ],
+    "significance": "central"
+  },
+  {
+    "id": "ann-dirichlet-oq04oq02-normreading",
+    "proofId": "dirichlet-approximation-theorem-oq-04-oq-02",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "key-insight",
+    "title": "Inhomogeneous Approximation, Step 2: the Circle Norm is Distance to ℤ",
+    "content": "The extraction step leaves a bound on the abstract circle norm ‖(↑(k·a − β) : AddCircle 1)‖; this step reads it back as a concrete real inequality. AddCircle.norm_eq expresses the circle norm as distance to the nearest lattice point, and after the period-1 normalisation (inv_one, one_mul, mul_one) it becomes ‖(x : AddCircle 1)‖ = |x − round x|: the circle norm of a point is literally its distance to the nearest integer. Rewriting the Step-1 bound with this identity turns it into |k·a − β − round(k·a − β)| < ε, discharged with the witness n = k. This is the hinge that makes the topological statement (a point lies in a small ball) mean the Diophantine statement (a multiple approximates β mod 1); setting β = 0 recovers the parent OQ-04's homogeneous bound.",
+    "mathContext": "$\\|(x : \\mathbb{R}/\\mathbb{Z})\\| = |x - \\operatorname{round} x|$, so $\\|(\\uparrow(k a - \\beta))\\| < \\varepsilon$ becomes $|k a - \\beta - \\operatorname{round}(k a - \\beta)| < \\varepsilon$.",
+    "prerequisites": [
+      "AddCircle.norm_eq at period 1",
+      "round as the nearest integer and |x − round x| as distance to ℤ"
+    ],
+    "relatedConcepts": [
       "circle norm as distance to nearest integer",
+      "topological–Diophantine dictionary",
       "Kronecker's theorem"
     ],
     "significance": "central"
