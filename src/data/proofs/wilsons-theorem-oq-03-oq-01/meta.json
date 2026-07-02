@@ -1,0 +1,161 @@
+{
+  "id": "wilsons-theorem-oq-03-oq-01",
+  "title": "Multinomial Legendre / Kummer Formula: p-adic Valuation of Multinomial Coefficients",
+  "slug": "wilsons-theorem-oq-03-oq-01",
+  "description": "Generalizes Legendre's digit-sum formula from a single factorial to arbitrary multinomial coefficients (n; k₁,…,k_m) = n!/(k₁!⋯k_m!). For a prime p and any finite family with total n = ∑ kᵢ, (p−1)·ν_p(multinomial) + S_p(n) = ∑ᵢ S_p(kᵢ), where S_p is the base-p digit sum. For a two-part family this recovers Kummer's theorem. Yields multinomial digit-sum subadditivity and a Kummer-style divisibility criterion. Fully machine-checked, 0 axioms.",
+  "meta": {
+    "author": "Generalization of Legendre (1808) & Kummer (1852), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kummer%27s_theorem",
+    "date": "2026-07-01",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "p-adic",
+      "factorial",
+      "multinomial",
+      "wilsons-theorem",
+      "legendre",
+      "kummer",
+      "digit-sum",
+      "generalization"
+    ],
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ03OQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All six theorems are fully machine-checked and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (confirmed by #print axioms). There are no literal `axiom` declarations, no structure-encoded assumptions, and no use of native_decide.",
+    "dateAdded": "2026-07-01",
+    "lineCount": 157,
+    "mathlibDependencies": [
+      {
+        "theorem": "sub_one_mul_padicValNat_factorial",
+        "description": "Legendre's digit-sum form: (p-1)·ν_p(n!) = n − S_p(n)",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      },
+      {
+        "theorem": "Nat.digit_sum_le",
+        "description": "(Nat.digits p n).sum ≤ n — the base-p digit sum never exceeds the number",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
+      },
+      {
+        "theorem": "Nat.multinomial_spec",
+        "description": "(∏ i ∈ s, (f i)!) · multinomial s f = (∑ i ∈ s, f i)!",
+        "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      },
+      {
+        "theorem": "Nat.multinomial_pos",
+        "description": "0 < multinomial s f — multinomial coefficients are positive",
+        "module": "Mathlib.Data.Nat.Choose.Multinomial"
+      },
+      {
+        "theorem": "padicValNat.mul",
+        "description": "ν_p(a·b) = ν_p(a) + ν_p(b) for a,b ≠ 0",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      },
+      {
+        "theorem": "dvd_iff_padicValNat_ne_zero",
+        "description": "For prime p and n ≠ 0: p ∣ n ↔ ν_p(n) ≠ 0",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Arbitrary-arity multinomial generalization of Legendre's digit-sum formula (Mathlib has only the single-factorial and binomial/Kummer cases)",
+      "All-addition proof architecture avoiding truncated ℕ subtraction in the core identity",
+      "padicValNat_prod_factorial: distributivity of the p-adic valuation over a finite product of factorials",
+      "Structural corollary: subadditivity of the base-p digit sum along a Finset, S_p(∑ kᵢ) ≤ ∑ S_p(kᵢ)",
+      "Multinomial Kummer divisibility criterion: p ∣ multinomial ↔ S_p(∑ kᵢ) < ∑ S_p(kᵢ) (a base-p carry occurs)"
+    ],
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Adrien-Marie Legendre (1808) gave the formula ν_p(n!) = ∑_{i≥1} ⌊n/pⁱ⌋ = (n − S_p(n))/(p−1) for the exact power of a prime p dividing n!, where S_p(n) is the sum of the base-p digits of n. Ernst Kummer (1852) specialized this to binomial coefficients: ν_p(C(m+n, m)) equals the number of carries when adding m and n in base p, equivalently (p−1)·ν_p(C(m+n,m)) = S_p(m) + S_p(n) − S_p(m+n). Mathlib formalizes both the single-factorial Legendre formula and the binomial Kummer theorem (`sub_one_mul_padicValNat_choose_eq_sub_sum_digits`). The natural common generalization — to full multinomial coefficients (n; k₁,…,k_m) = n!/(k₁!⋯k_m!) with n = ∑ kᵢ — is not present in Mathlib and is supplied here.",
+    "problemStatement": "The parent entry (wilsons-theorem-oq-03) asks whether Legendre's formula extends to multinomial coefficients. **Answer (proved here):** For a prime p, a finite index set s, and any f : α → ℕ, writing S_p for the base-p digit sum and multinomial s f = (∑ᵢ f i)! / ∏ᵢ (f i)!,\n\n$$(p-1)\\cdot \\nu_p(\\text{multinomial}\\ s\\ f) + S_p\\!\\left(\\sum_i f_i\\right) = \\sum_i S_p(f_i).$$\n\nEquivalently $(p-1)\\cdot \\nu_p(\\text{multinomial}\\ s\\ f) = \\sum_i S_p(f_i) - S_p(\\sum_i f_i)$. For a two-element index set this is exactly Kummer's theorem.",
+    "text": "The p-adic valuation of a multinomial coefficient measures how the base-p digits of the parts kᵢ recombine into the digits of their total. Legendre's formula handles one factorial; Kummer's the two-part (binomial) case. Here the identity is proved for arbitrarily many parts.\n\nThe proof is deliberately arranged to avoid truncated ℕ subtraction in its core. First, Legendre's Mathlib lemma is recast in additive form as `legendre_add`: (p−1)·ν_p(x!) + S_p(x) = x, using that S_p(x) ≤ x. Second, `multinomial_spec` — the identity (∏ (f i)!)·multinomial = (∑ f i)! — together with multiplicativity of ν_p and its distributivity over the product of factorials (`padicValNat_prod_factorial`, proved by induction on the Finset) splits ν_p((∑ f i)!) into ∑ ν_p((f i)!) + ν_p(multinomial). Scaling by (p−1) and combining the per-part Legendre identities cancels the ∑ f i terms, leaving the digit-sum identity.\n\nBecause the multinomial valuation term is a natural number, the identity immediately gives the subadditivity of the base-p digit sum, S_p(∑ kᵢ) ≤ ∑ S_p(kᵢ), and a Kummer-style divisibility test: p divides the multinomial coefficient exactly when a base-p carry occurs, i.e. when the inequality is strict.",
+    "proofStrategy": "1. **legendre_add** — rearrange Mathlib's `sub_one_mul_padicValNat_factorial` into (p−1)·ν_p(x!) + S_p(x) = x, discharging the ℕ-subtraction with `Nat.digit_sum_le` and `omega`.\n2. **padicValNat_prod_factorial** — ν_p(∏ (f i)!) = ∑ ν_p((f i)!) by `Finset.induction_on`, using `padicValNat.mul` (factorials are positive, so no side conditions).\n3. **multinomial_digit_sum** (main) — from `Nat.multinomial_spec` derive ν_p((∑ f i)!) = ∑ ν_p((f i)!) + ν_p(multinomial); scale by (p−1) and combine with the per-part additive Legendre identities. The final linear combination is closed by `omega`, which treats each (p−1)·(valuation) product as an opaque atom.\n4. **Corollaries** — the subtraction form, digit-sum subadditivity, and the divisibility criterion follow from the main identity by `omega` (plus `dvd_iff_padicValNat_ne_zero` for the last).",
+    "keyInsights": [
+      "**Additive reformulation dodges ℕ subtraction**: recasting Legendre as (p−1)·ν_p(x!) + S_p(x) = x keeps every intermediate quantity a genuine natural number, so the whole argument closes with `omega` rather than fragile `Nat.sub` manipulation.",
+      "**multinomial_spec is the right splitting tool**: the identity (∏ (f i)!)·multinomial = (∑ f i)! turns the valuation of the multinomial into a difference of factorial valuations without ever forming the quotient, sidestepping div-valuation lemmas.",
+      "**Valuation is nonnegative ⇒ digit-sum subadditivity for free**: dropping the (p−1)·ν_p(multinomial) ≥ 0 term from the identity yields S_p(∑ kᵢ) ≤ ∑ S_p(kᵢ), the multinomial generalization of the classical fact that carries only decrease digit sums.",
+      "**Kummer's carry criterion generalizes verbatim**: p divides the multinomial coefficient iff the digit-sum inequality is strict, i.e. iff adding the parts in base p produces at least one carry — recovering Kummer's binomial statement when there are two parts.",
+      "**omega with opaque nonlinear atoms**: although (p−1)·ν_p(·) is nonlinear in the variable prime p, the final identities are linear once each such product is treated as a single atom, which is exactly how `omega` abstracts them — letting one tactic close the arithmetic."
+    ],
+    "prerequisites": [
+      "p-adic valuations ν_p and their multiplicativity",
+      "base-p digit representations and digit sums",
+      "multinomial coefficients and the identity n! = (∏ kᵢ!)·(multinomial)",
+      "Legendre's formula (single factorial) and Kummer's theorem (binomial case)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Documentation",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "File header stating the multinomial Legendre/Kummer identity, the open question answered, the all-addition proof strategy, and the Mathlib dependencies."
+    },
+    {
+      "id": "infrastructure",
+      "title": "Infrastructure: valuation over products, additive Legendre",
+      "startLine": 61,
+      "endLine": 82,
+      "summary": "padicValNat_prod_factorial (ν_p distributes over ∏ factorials, by Finset induction) and legendre_add (additive form of Legendre's digit-sum formula)."
+    },
+    {
+      "id": "main",
+      "title": "Main theorem and corollaries",
+      "startLine": 84,
+      "endLine": 157,
+      "summary": "multinomial_digit_sum (the digit-sum identity), its subtraction form, digit-sum subadditivity, and the multinomial Kummer divisibility criterion."
+    }
+  ],
+  "conclusion": {
+    "summary": "Legendre's digit-sum formula extends cleanly to arbitrary multinomial coefficients: (p−1)·ν_p(multinomial) + S_p(∑ kᵢ) = ∑ S_p(kᵢ). The result is fully machine-checked with no axioms beyond Lean's foundational three.",
+    "implications": "The identity unifies Legendre's single-factorial formula and Kummer's binomial theorem under one arbitrary-arity statement, and delivers two structural consequences for free: subadditivity of the base-p digit sum along a finite family, and a carry-based divisibility criterion for multinomial coefficients."
+  },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem-oq-03",
+      "relationship": "parent",
+      "description": "Legendre's formula for a single factorial; this entry answers its open question of generalizing to multinomial coefficients."
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "ancestor",
+      "description": "Wilson's theorem; Legendre's formula gives its non-divisibility direction algebraically."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Nat", "Finset"],
+    "namespace": "WilsonsTheoremMultinomialLegendre",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/WilsonsTheoremOQ03OQ01.lean"
+  },
+  "references": [
+    {
+      "authors": "A.-M. Legendre",
+      "title": "Essai sur la théorie des nombres",
+      "year": 1808,
+      "note": "Legendre's formula ν_p(n!) = (n − S_p(n))/(p−1)."
+    },
+    {
+      "authors": "E. E. Kummer",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": 1852,
+      "note": "Kummer's theorem: ν_p of a binomial coefficient counts base-p carries — the two-part case of the identity proved here."
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": 2008,
+      "note": "Standard reference for Legendre's formula and base-p digit sums."
+    }
+  ]
+}
