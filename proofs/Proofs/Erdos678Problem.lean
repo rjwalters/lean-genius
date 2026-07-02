@@ -72,6 +72,14 @@ theorem intervalLcm_one (n : ℕ) : intervalLcm n 1 = n + 1 := by
   simp [intervalLcm, Finset.range_succ,
     Finset.fold_insert Finset.not_mem_range_self]
 
+/-- Peeling the top element: `M(n, k+1) = lcm(n+1+k, M(n,k))`.
+    Keeps the tail `intervalLcm n k` folded (unlike unfolding via `rw [intervalLcm]`),
+    so downstream lemmas stated about `intervalLcm n k` still match syntactically. -/
+theorem intervalLcm_succ (n k : ℕ) :
+    intervalLcm n (k + 1) = Nat.lcm (n + 1 + k) (intervalLcm n k) := by
+  rw [intervalLcm, Finset.range_succ, Finset.fold_insert Finset.not_mem_range_self]
+  rfl
+
 /-- LCM increases when interval extends -/
 theorem intervalLcm_mono_right (n k : ℕ) :
     intervalLcm n k ∣ intervalLcm n (k + 1) := by
@@ -166,13 +174,12 @@ theorem padicValNat_intervalLcm (p : ℕ) (hp : p.Prime) (n k : ℕ) :
   induction k with
   | zero => simp [intervalLcm, padicValNat.one]
   | succ k ih =>
-    rw [intervalLcm, Finset.range_succ, Finset.fold_insert Finset.not_mem_range_self,
-        Finset.sup_insert]
+    rw [intervalLcm_succ, Finset.range_succ, Finset.sup_insert]
     have ha : (n + 1 + k) ≠ 0 := by omega
     have hb : intervalLcm n k ≠ 0 := (intervalLcm_pos n k).ne'
     rw [← factorization_def _ hp, Nat.factorization_lcm ha hb,
-        Finsupp.sup_apply, sup_eq_max,
-        factorization_def _ hp, factorization_def _ hp, ih, sup_eq_max]
+        Finsupp.sup_apply,
+        factorization_def _ hp, factorization_def _ hp, ih]
 
 /-! ## Correct Bounds on Interval LCM -/
 
@@ -207,17 +214,49 @@ theorem intervalLcm_poly_upper (n k : ℕ) : intervalLcm n k ≤ (n + k) ^ k := 
   calc intervalLcm n k
       ≤ ∏ i ∈ Finset.range k, (n + 1 + i) := intervalLcm_le_prod n k
     _ ≤ (n + k) ^ k := by
-        apply Finset.prod_le_pow_card
-        intro i hi
-        have := Finset.mem_range.mp hi
-        omega
+        have h : ∀ i ∈ Finset.range k, (n + 1 + i) ≤ (n + k) := by
+          intro i hi
+          have := Finset.mem_range.mp hi
+          omega
+        calc ∏ i ∈ Finset.range k, (n + 1 + i)
+            ≤ (n + k) ^ (Finset.range k).card := Finset.prod_le_pow_card _ _ _ h
+          _ = (n + k) ^ k := by rw [Finset.card_range]
 
 /-! ## Erdős's Observations -/
 
-/-- The minimal n for which comparison holds grows faster than linearly -/
+open Classical in
+/-- The minimal `n` for which a comparison `M(n,k) > M(m,k+1)` holds for some `m`,
+    or `0` when no such comparison exists for this `k`.
+
+    Note: an earlier version defined this via `Nat.find ⟨96, 104, sorry⟩`, whose
+    witness falsely asserted that `(n,m) = (96,104)` yields a comparison for *every* `k`
+    (it only holds at `k = 7`). Guarding on the existence hypothesis makes `minimalN`
+    total and honest: for the `k` where Cambie's theorem guarantees a comparison, it
+    returns the genuine least admissible `n`; otherwise it returns `0`. -/
 noncomputable def minimalN (k : ℕ) : ℕ :=
-  haveI := Classical.decPred (fun n => ∃ m : ℕ, erdosLcmComparison n m k)
-  Nat.find (⟨96, 104, by sorry⟩ : ∃ n, ∃ m : ℕ, erdosLcmComparison n m k)
+  if h : ∃ n, ∃ m : ℕ, erdosLcmComparison n m k then Nat.find h else 0
+
+/-- When a comparison exists for `k`, `minimalN k` is realized by an actual comparison. -/
+theorem minimalN_spec (k : ℕ) (h : ∃ n, ∃ m : ℕ, erdosLcmComparison n m k) :
+    ∃ m : ℕ, erdosLcmComparison (minimalN k) m k := by
+  classical
+  rw [minimalN, dif_pos h]
+  exact Nat.find_spec h
+
+/-- `minimalN k` is a lower bound: any `n` admitting a comparison satisfies `minimalN k ≤ n`. -/
+theorem minimalN_le (k n : ℕ) (h : ∃ m : ℕ, erdosLcmComparison n m k) :
+    minimalN k ≤ n := by
+  classical
+  have hex : ∃ n, ∃ m : ℕ, erdosLcmComparison n m k := ⟨n, h⟩
+  rw [minimalN, dif_pos hex]
+  exact Nat.find_min' hex h
+
+/-- If no comparison exists for `k`, `minimalN k = 0`. -/
+theorem minimalN_eq_zero_of_not_exists (k : ℕ)
+    (h : ¬ ∃ n, ∃ m : ℕ, erdosLcmComparison n m k) :
+    minimalN k = 0 := by
+  classical
+  rw [minimalN, dif_neg h]
 
 /-- Erdős proved n_k/k → ∞ -/
 theorem erdos_growth_rate : ∀ C : ℕ, ∃ K : ℕ, ∀ k ≥ K, minimalN k > C * k := by
