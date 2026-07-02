@@ -121,7 +121,12 @@
   ],
   "conclusion": {
     "summary": "Machine-verified general bounds on the Erdős #1 function: (2ⁿ−1)/n ≤ f(n) ≤ 2^(n−1) for every n ≥ 1, via the pigeonhole counting bound and a working re-derivation of the powers-of-two distinct-subset-sums construction. Zero sorries, zero axioms beyond the foundational ones.",
-    "implications": "Replaces five hardcoded small-case evaluations with theorems valid for all n, and supplies a decidability-free definition of f(n). The gap between the lower bound (2ⁿ−1)/n and the upper bound 2^(n−1) localizes the open Erdős $500 conjecture: Conway-Guy improves the upper side to ≈ 0.22·2ⁿ, while a matching lower bound f(n) ≥ c·2ⁿ remains unproven."
+    "implications": "Replaces five hardcoded small-case evaluations with theorems valid for all n, and supplies a decidability-free definition of f(n). The gap between the lower bound (2ⁿ−1)/n and the upper bound 2^(n−1) localizes the open Erdős $500 conjecture: Conway-Guy improves the upper side to ≈ 0.22·2ⁿ, while a matching lower bound f(n) ≥ c·2ⁿ remains unproven.",
+    "openQuestions": [
+      "Erdős's $500 conjecture: is f(n) ≥ c·2ⁿ for some constant c > 0? Only the pigeonhole bound (2ⁿ−1)/n is proved here; a matching exponential lower bound remains open.",
+      "Can the Conway–Guy construction, which improves the upper bound to ≈ 0.22·2ⁿ, be formalized in Lean to tighten the verified sandwich beyond the elementary 2^(n−1)?",
+      "What is the true growth constant lim f(n)/2ⁿ (if it exists), and can the gap between the lower and upper bounds be narrowed by a machine-checkable argument?"
+    ]
   },
   "mainTheorems": [
     {
