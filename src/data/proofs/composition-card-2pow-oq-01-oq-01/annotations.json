@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-overview-header",
+    "proofId": "composition-card-2pow-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Overview: the by-length count C(n−1, k−1) of compositions",
+    "content": "A *composition* of $n$ into exactly $k$ parts is an ordered $k$-tuple of positive integers summing to $n$ (`Composition n` with `length = k`). The parent counts them in total, $\\#(\\text{Composition } n) = 2^{n-1}$; this leaf proves the finer **by-length** refinement $\\#\\{c : \\text{Composition } n \\mid c.\\text{length} = k\\} = \\binom{n-1}{k-1}$, from which the parent's total is recovered by $\\sum_k \\binom{n-1}{k-1} = 2^{n-1}$. The proof uses Mathlib's \"bar or no bar in each of the $n-1$ internal gaps\" bijection, `compositionEquiv n : Composition n ≃ CompositionAsSet n` composed with `compositionAsSetEquiv n : CompositionAsSet n ≃ Finset (Fin (n-1))`. Under it the number of parts equals `(gap subset).card + 1` (a $k$-part composition has exactly $k-1$ cuts); the file proves this length/cardinality dictionary (`equiv_card_add_one`) by writing the boundaries as $\\{0,\\text{last}\\}\\uplus(\\text{shifted gap subset})$, transports \"exactly $k$ parts\" to \"gap subsets of size $k-1$\" via `Equiv.subtypeEquiv`, and reads the count off `Fintype.card_finset_len`. The sum over $k$ then follows from `Nat.sum_range_choose`. The header opens `Finset`.",
+    "mathContext": "$\\#\\{c:\\text{Composition } n \\mid c.\\text{length}=k\\}=\\binom{n-1}{k-1}$, and $\\sum_k\\binom{n-1}{k-1}=2^{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "composition of an integer",
+      "stars and bars",
+      "binomial coefficient",
+      "Fintype cardinality",
+      "subsets of fixed size"
+    ],
+    "prerequisites": [
+      "compositions of an integer",
+      "binomial coefficients",
+      "Finset cardinality"
+    ]
+  },
+  {
     "id": "ann-length-cardinality-dictionary",
     "proofId": "composition-card-2pow-oq-01-oq-01",
     "range": {
