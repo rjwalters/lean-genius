@@ -1,5 +1,33 @@
 [
   {
+    "id": "ann-buoq0301-overview",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Overview: Tucker's 1D Lemma via Discrete IVT, with Bounds (borsuk-ulam-oq-03-oq-01)",
+    "content": "This file pursues OQ-01 of the constructive Borsuk-Ulam question (OQ-03): can Tucker's lemma be proved in Lean via a discrete Intermediate Value Theorem, and what quantitative bounds emerge from the constructive 1D Borsuk-Ulam proof? A key caveat frames the work: on the interval [\u22121,1] many Borsuk-Ulam-style statements are degenerate because x = 0 is self-antipodal (0 = \u22120), so claims like 'there exist x, y with f(x) = f(y) and x + y = 0' are trivially met by x = y = 0. The genuinely nontrivial Borsuk-Ulam topology begins on the circle S\u00b9, where the antipodal map is fixed-point-free. Ordered by strength, the file's results are: (strongest) Tucker's 1D lemma via discrete IVT, the circle Borsuk-Ulam via IVT on g(\u03b8) \u2014 genuinely nontrivial \u2014 and a sign-change parity framework toward Tucker's 2D lemma; (supporting, correct but elementary on intervals) the 2L-Lipschitz bound on the antisymmetric difference, bisection-width formulas 2\u00b7(1/2)\u207f \u2192 0, oscillation bounds on antipodal deviation, trivial coincidence-set nonemptiness, and 2\u03b5 perturbation-stability bounds.",
+    "mathContext": "For an $L$-Lipschitz $f:\\mathbb{R}\\to\\mathbb{R}$, the antisymmetric difference $g(x)=f(x)-f(-x)$ is $2L$-Lipschitz, giving quantitative control on its zero set; bisection to width $2\\cdot(1/2)^n$ locates a sign change constructively (discrete IVT). Tucker's lemma is the combinatorial analogue of Borsuk-Ulam: any antipodally-consistent labeling of a triangulated $S^n$ has a complementary edge. On $[-1,1]$ the self-antipodal point $0$ trivializes the $n=1$ coincidence statements, so nontrivial content requires $S^1$, where $g(\\theta)=f(\\theta)-f(\\theta+\\pi)$ is odd under $\\theta\\mapsto\\theta+\\pi$ and the IVT forces an antipodal coincidence.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tucker-lemma",
+      "Borsuk-Ulam-theorem",
+      "discrete-intermediate-value-theorem",
+      "Lipschitz-bounds",
+      "bisection",
+      "antipodal-map",
+      "constructive-analysis"
+    ],
+    "prerequisites": [
+      "Intermediate Value Theorem",
+      "Lipschitz continuity",
+      "antipodal / antisymmetric functions",
+      "triangulations and Tucker's lemma"
+    ]
+  },
+  {
     "id": "ann-bu-oq03oq01-01-lipschitz",
     "proofId": "borsuk-ulam-oq-03-oq-01",
     "range": {
@@ -131,6 +159,28 @@
     ]
   },
   {
+    "id": "ann-bu-oq03oq01-11-circle-noninjectivity",
+    "proofId": "borsuk-ulam-oq-03-oq-01",
+    "range": {
+      "startLine": 349,
+      "endLine": 368
+    },
+    "type": "concept",
+    "title": "Circle Non-Injectivity via IVT",
+    "content": "circle_noninjectivity proves: for continuous f: R^2 -> R, there exists theta in [0,pi] with f(cos theta, sin theta) = f(-cos theta, -sin theta). This is the circle BU proved directly via IVT on g(theta) = f(cos theta,...) - f(-cos theta,...), using g(pi) = -g(0) from trig identities cos(pi)=-1, sin(pi)=0.",
+    "mathContext": "For continuous $f: \\mathbb{R}^2 \\to \\mathbb{R}$, $\\exists \\theta \\in [0,\\pi]: f(\\cos\\theta, \\sin\\theta) = f(-\\cos\\theta, -\\sin\\theta)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "intermediate_value_Icc",
+      "Real.cos_pi",
+      "Real.sin_pi"
+    ],
+    "prerequisites": [
+      "ContinuousOn",
+      "intermediate_value_Icc"
+    ]
+  },
+  {
     "id": "ann-bu-oq03oq01-07-perturbation",
     "proofId": "borsuk-ulam-oq-03-oq-01",
     "range": {
@@ -211,28 +261,6 @@
     ],
     "prerequisites": [
       "tucker_1d"
-    ]
-  },
-  {
-    "id": "ann-bu-oq03oq01-11-circle-noninjectivity",
-    "proofId": "borsuk-ulam-oq-03-oq-01",
-    "range": {
-      "startLine": 349,
-      "endLine": 368
-    },
-    "type": "concept",
-    "title": "Circle Non-Injectivity via IVT",
-    "content": "circle_noninjectivity proves: for continuous f: R^2 -> R, there exists theta in [0,pi] with f(cos theta, sin theta) = f(-cos theta, -sin theta). This is the circle BU proved directly via IVT on g(theta) = f(cos theta,...) - f(-cos theta,...), using g(pi) = -g(0) from trig identities cos(pi)=-1, sin(pi)=0.",
-    "mathContext": "For continuous $f: \\mathbb{R}^2 \\to \\mathbb{R}$, $\\exists \\theta \\in [0,\\pi]: f(\\cos\\theta, \\sin\\theta) = f(-\\cos\\theta, -\\sin\\theta)$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "intermediate_value_Icc",
-      "Real.cos_pi",
-      "Real.sin_pi"
-    ],
-    "prerequisites": [
-      "ContinuousOn",
-      "intermediate_value_Icc"
     ]
   }
 ]
