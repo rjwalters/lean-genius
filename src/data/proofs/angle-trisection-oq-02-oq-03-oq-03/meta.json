@@ -173,7 +173,11 @@
   "conclusion": {
     "summary": "This file supplies the concrete number-theoretic content of Gauss's heptadecagon construction that the abstract Gauss-Wantzel theorem leaves implicit: a primitive root (3) modulo 17, its explicit vertex ordering, the Gaussian-period partition into quadratic residues and non-residues, and a descending chain of index-2 subgroups of (ℤ/17ℤ)ˣ of orders 16 ⊃ 8 ⊃ 4 ⊃ 2 ⊃ 1. Everything is finite and decidable — 285 lines, 32 theorems, 0 axioms, 0 sorries, no native_decide.",
     "implications": "**Mathematical Significance**\n\n1. **Concrete backbone**: Where the parent proves the 17-gon constructible in the abstract, this file exhibits the actual arithmetic Gauss used — the primitive-root ordering and Gaussian periods.\n2. **Group ↔ field tower**: The four index-2 subgroups are the group-theoretic shadow of a tower of four quadratic field extensions inside ℚ(ζ₁₇), via (ℤ/17ℤ)ˣ ≅ Gal(ℚ(ζ₁₇)/ℚ).\n3. **Fully decidable**: All statements are finite computations in a group of order 16, so the formalization is machine-checked with only the standard foundational axioms.",
-    "openQuestions": []
+    "openQuestions": [
+      "Formalize the explicit nested-radical expression for $\\cos(2\\pi/17)$ obtained by descending the Gaussian-period chain, turning the abstract constructibility into concrete compass-and-straightedge coordinates.",
+      "Connect the descending index-2 subgroup chain $16 \\supset 8 \\supset 4 \\supset 2 \\supset 1$ to an explicit tower of quadratic field extensions $\\mathbb{Q} \\subset \\cdots \\subset \\mathbb{Q}(\\cos\\tfrac{2\\pi}{17})$, matching the abstract Gauss–Wantzel correspondence step by step.",
+      "Generalize the primitive-root / Gaussian-period backbone to the other Fermat-prime polygons (the $257$-gon and $65537$-gon), producing the analogous decidable subgroup chains and period partitions."
+    ]
   },
   "crossReferences": [
     {
