@@ -82,6 +82,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: unit-group cardinality under the k-fold CRT",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "The module docstring, the imports of Mathlib and the parent's k-fold CRT file, and the namespace/open setup. Carries the parent's element-count CRT transport one functor up to the unit groups: |(ℤ/(∏nᵢ)ℤ)ˣ| = ∏ᵢ|(ℤ/nᵢℤ)ˣ|, expressed via Euler's totient.",
+      "mathContext": "The new content card_units_preservation applies the units functor to the parent ring isomorphism crtKFold : ℤ/(∏nᵢ)ℤ ≃+* CRTProd ns: a ring iso is a multiplicative iso, so Units.mapEquiv lifts it to a group iso on units, and MulEquiv.prodUnits + Nat.card_prod peel off one factor at a time (card_units_CRTProd). Unlike the element count, the unit count does not read off Nat.card alone — the order of (ℤ/nℤ)ˣ is φ(n), genuinely sensitive to the factorization — so the CRT route is the substance. The totient bridge natCard_units_zmod (Nat.card (ℤ/nℤ)ˣ = φ n for n > 0) gives the headline card_units_eq_totient_prod: |(ℤ/(∏nᵢ)ℤ)ˣ| = ∏ᵢφ(nᵢ). Multiplicativity of φ itself is not re-derived (it is Mathlib's Nat.totient_mul, already in the parent); this exhibits the same product as the unit-count shadow of the explicit CRT isomorphism. 0 sorries, 0 axioms."
+    },
+    {
       "id": "card-units-crtprod",
       "title": "Unit-Group Cardinality of the Nested Product Type",
       "startLine": 69,
