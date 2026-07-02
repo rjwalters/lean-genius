@@ -175,7 +175,11 @@
       "Demonstrates the parity-on-factorization technique for isolating a single class from a residue-pair {±1} that a quadratic-residue condition selects — reusable for other ± classes.",
       "Provides a self-contained, L-function-free instance of Dirichlet's theorem for (q, a) = (8, 7), one of the harder classes to reach elementarily."
     ],
-    "openQuestions": []
+    "openQuestions": [
+      "Map exactly which residue classes admit a Dirichlet-free Euclid/quadratic-residue proof of prime infinitude: extend the $M = a^2 - 2$ construction to the classes $\\equiv 3, 5 \\pmod 8$ and to moduli $12, 16$.",
+      "Formalize the Murty characterization — a class $a \\pmod m$ has a 'Euclidean' (single-polynomial) infinitude proof iff $a^2 \\equiv 1 \\pmod m$ — delimiting precisely the reach of this elementary method versus full Dirichlet.",
+      "Extract an explicit (if weak) lower bound on the counting function $\\pi(x; 8, 7)$ by iterating the construction, turning the qualitative infinitude into an effective density statement."
+    ]
   },
   "references": [
     {
