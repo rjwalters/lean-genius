@@ -66,6 +66,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Gaussian (q-)Binomial Coefficients — q-Pascal, Boundaries, Classical Limit",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Imports (parent GeometricSeriesOQ04, Nat.Choose.Basic, Tactic), module docstring, and setup (open Finset, QuantumInteger; namespace GaussianBinomial; CommRing R). Building on the quantum integer [n]_q = ∑_{i<n} qⁱ, the file develops the Gaussian q-binomial coefficient qBinom q n k = [n choose k]_q over any commutative ring, defined BY the q-Pascal recurrence [n+1 choose k+1]_q = [n choose k]_q + q^{k+1}·[n choose k+1]_q (so definitional, rfl). Proves boundary conditions (qBinom_zero_right, qBinom_self, qBinom_eq_zero_of_lt), the quantum-integer bridge qBinom_one_right ([n choose 1]_q = [n]_q), and the classical limit qBinom_at_one ([n choose k]_1 = C(n,k), the counting interpretation). An expansion qBinom q 4 2 = 1+q+2q²+q³+q⁴ is checked (value C(4,2)=6 at q=1). The q-binomial theorem and box-partition generating function are documented as follow-up. Mathlib has no named Gaussian binomial or q-Pascal; all proofs 0-axiom.",
+      "mathContext": "The q=1 value is the shadow of subspace-counting over 𝔽_q: the Gaussian binomial is a genuine polynomial in q degenerating to the ordinary binomial coefficient. Honest note: a faithful formalization of standard textbook q-analog identities (Andrews; Kac–Cheung), not a new result."
+    },
+    {
       "id": "def",
       "title": "The Gaussian binomial coefficient",
       "startLine": 76,
