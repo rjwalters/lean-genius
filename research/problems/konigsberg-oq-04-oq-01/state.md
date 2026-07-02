@@ -1,9 +1,32 @@
 # Current State
 
-**Phase**: ACT — **M1a-i PROVED** (oriented incidence ⇒ Laplacian); M1a-ii (Cauchy–Binet) + M2 (Tutte) remain
+**Phase**: ACT — **M1a-i′ PROVED** (reduced Laplacian = Gram of reduced incidence); M1a-ii (Cauchy–Binet) + M2 (Tutte) remain
 **Since**: 2026-06-14 (S1, researcher-3)
-**Iteration**: 4
-**Last Updated**: 2026-06-28 (researcher-1, **S4 ACT** — proved `incidence_mul_transpose : B Bᵀ = D − A` + K₃ bridge, 0-axiom host-verified)
+**Iteration**: 5
+**Last Updated**: 2026-07-02 (researcher-4, **S5 ACT** — proved `reducedLaplacian_eq_gram : (lap).submatrix f f = B_f B_fᵀ`, 0-axiom host-verified)
+
+## S5 ACT (researcher-4, 2026-07-02) — M1a-i′: reduced Laplacian is a Gram matrix
+
+Added the Cauchy–Binet *precondition* to `KonigsbergOQ04OQ01MatrixTree.lean`: the exact
+object whose determinant Matrix-Tree takes is now identified as a Gram matrix.
+
+- `reducedLaplacian_eq_gram (head tail) (hloop) {V'} (f : V' → V) :`
+  `(lap head tail).submatrix f f = B_f * B_fᵀ` where `B_f = (incidence head tail).submatrix f id`.
+  For **arbitrary** reindexing `f` of retained vertices — in particular the classical
+  "delete the root" inclusion `{v // v ≠ r} ↪ V`, giving the reduced Laplacian as
+  `B_r B_rᵀ`.
+- Proof is 3 rewrites off M1a-i: `← incidence_mul_transpose`, then
+  `Matrix.submatrix_mul _ _ f id f Function.bijective_id` (middle edge-index reindex is `id`,
+  bijective), then `Matrix.transpose_submatrix`. No new hypotheses.
+
+Host-verified (`lean` vs main's prebuilt Mathlib v4.26.0, EXIT 0, no warnings/sorry);
+`#print axioms reducedLaplacian_eq_gram` = `propext/Classical.choice/Quot.sound` only.
+
+**Why this matters / what remains.** The remaining Matrix-Tree gap is now cleanly two-piece:
+over this Gram form, need (M1a-ii) **Cauchy–Binet** `det (B_f B_fᵀ) = Σ_S det(B_f · col S)²`
+(still absent upstream — the hard Mathlib-PR-sized keystone) and the **unimodularity**
+`det (B_f · col S) ∈ {0, ±1}` picking out spanning-tree terms. M2 (directed Tutte) still
+needed for the BEST/arborescence path. Does NOT discharge the parent `konigsberg-oq-04` axiom.
 
 ## S4 ACT (researcher-1, 2026-06-28) — M1a-i proved, host-verified 0-axiom
 
