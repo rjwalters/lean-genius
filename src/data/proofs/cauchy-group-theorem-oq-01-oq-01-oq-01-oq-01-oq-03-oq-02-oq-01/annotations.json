@@ -24,6 +24,28 @@
     ]
   },
   {
+    "id": "ann-zpow-exponent",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "technique",
+    "title": "The ℤ-Power Bridge Lemma: x^(exp G) = 1 as an Integer Power",
+    "content": "zpow_exponent_eq_one restates the defining exponent property x^(exp G) = 1 (Monoid.pow_exponent_eq_one, a ℕ-power fact) as the integer-power equality x^(↑exp G : ℤ) = 1, proved by rw [zpow_natCast] and the ℕ-power lemma. This tiny repackaging is exactly what the image proof needs: Bézout writes gcd(n,e) = n·A + e·B over ℤ with A, B integers, so the exponent enters as the ℤ-coefficient of the product e·B. Having x raised to an integer multiple of e collapse to 1 is what lets the e·B term drop out; without the zpow form the integer arithmetic would not typecheck against the ℕ-power lemma.",
+    "mathContext": "$$x^{(\\uparrow\\!\\exp G\\,:\\,\\mathbb{Z})} = 1,\\qquad\\text{the }\\mathbb{Z}\\text{-power companion of } x^{\\exp G}=1.$$",
+    "significance": "technical",
+    "relatedConcepts": [
+      "monoid exponent",
+      "integer powers (zpow)",
+      "natural-to-integer cast of exponents"
+    ],
+    "prerequisites": [
+      "Monoid.pow_exponent_eq_one",
+      "zpow_natCast"
+    ]
+  },
+  {
     "id": "ann-kernel",
     "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
     "range": {
@@ -66,6 +88,30 @@
       "Nat.gcd_eq_gcd_ab",
       "zpow_mul",
       "zpow_add"
+    ]
+  },
+  {
+    "id": "ann-abelian-subgroups",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "From Set Equalities to Subgroup Equalities (Abelian)",
+    "content": "In a commutative group the power map x ↦ xⁿ is a monoid homomorphism (powMonoidHom n), so its kernel and image are genuine subgroups rather than mere sets — this is the ONLY place commutativity is used. ker_powMonoidHom_eq_gcd_exponent unfolds MonoidHom.mem_ker via ext and powMonoidHom_apply and closes on the element-level pow_eq_one_iff_pow_gcd_exponent. range_powMonoidHom_eq_gcd_exponent transports the set-level range equality through MonoidHom.mem_range in both directions with ext y. Neither theorem assumes finiteness: the subgroup equalities of ker and range hold for every abelian group, finite or infinite.",
+    "mathContext": "$$\\ker(\\text{pow}_n)=\\ker(\\text{pow}_{\\gcd(n,\\exp G)}),\\qquad \\operatorname{range}(\\text{pow}_n)=\\operatorname{range}(\\text{pow}_{\\gcd(n,\\exp G)})\\ \\text{as subgroups.}$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "powMonoidHom",
+      "kernel and image subgroups",
+      "monoid homomorphism",
+      "commutativity as the sole hypothesis"
+    ],
+    "prerequisites": [
+      "MonoidHom.mem_ker",
+      "MonoidHom.mem_range",
+      "powMonoidHom"
     ]
   },
   {
