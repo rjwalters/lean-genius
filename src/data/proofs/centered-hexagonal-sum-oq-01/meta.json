@@ -53,28 +53,32 @@
       "title": "The Centered Hexagonal Number",
       "startLine": 46,
       "endLine": 54,
-      "summary": "Defines Hₖ = 3k(k−1)+1 (the sequence 1, 7, 19, 37, 61, …, OEIS A003215) and the reindexing lemma H_{k+1} = 3(k+1)k + 1, which turns the truncated ℕ subtraction (k+1)−1 into the honest k so the summand becomes a plain polynomial."
+      "summary": "Defines Hₖ = 3k(k−1)+1 (the sequence 1, 7, 19, 37, 61, …, OEIS A003215) and the reindexing lemma H_{k+1} = 3(k+1)k + 1, which turns the truncated ℕ subtraction (k+1)−1 into the honest k so the summand becomes a plain polynomial.",
+      "mathContext": "$H_k = 3k(k-1)+1$ (giving $1, 7, 19, 37, 61, \\dots$); reindexed, $H_{k+1} = 3(k+1)k + 1$ is a plain ℕ-polynomial."
     },
     {
       "id": "cube-shell",
       "title": "The Cube-Shell Identity",
       "startLine": 56,
       "endLine": 68,
-      "summary": "Hₖ = k³ − (k−1)³, stated over ℤ because the subtraction is genuine (H₀ = 0³ − (−1)³ = 1). A case split removes the zero case and `push_cast`/`ring` close the successor case. This exhibits each hexagonal shell as a cubic shell, the geometric reason the partial sums telescope to n³."
+      "summary": "Hₖ = k³ − (k−1)³, stated over ℤ because the subtraction is genuine (H₀ = 0³ − (−1)³ = 1). A case split removes the zero case and `push_cast`/`ring` close the successor case. This exhibits each hexagonal shell as a cubic shell, the geometric reason the partial sums telescope to n³.",
+      "mathContext": "$H_k = k^3 - (k-1)^3$ over $\\mathbb{Z}$; each hexagonal shell is the gap between consecutive cubes, so $\\sum_{k=1}^n H_k$ telescopes to $n^3$."
     },
     {
       "id": "main-range",
       "title": "Main Identity (reindexed range form)",
       "startLine": 70,
       "endLine": 84,
-      "summary": "∑_{k<n} H_{k+1} = n³ by induction. The step peels the top term with Finset.sum_range_succ, applies the inductive hypothesis, and substitutes H_{m+1} = 3(m+1)m+1, leaving m³ + (3(m+1)m+1) = (m+1)³ — closed by a single `ring`."
+      "summary": "∑_{k<n} H_{k+1} = n³ by induction. The step peels the top term with Finset.sum_range_succ, applies the inductive hypothesis, and substitutes H_{m+1} = 3(m+1)m+1, leaving m³ + (3(m+1)m+1) = (m+1)³ — closed by a single `ring`.",
+      "mathContext": "$\\sum_{k<n} H_{k+1} = n^3$; the inductive step reduces to $m^3 + \\bigl(3(m+1)m+1\\bigr) = (m+1)^3$, closed by `ring`."
     },
     {
       "id": "main-icc",
       "title": "Main Identity (classical 1-indexed form)",
       "startLine": 86,
       "endLine": 99,
-      "summary": "∑_{k ∈ Icc 1 n} Hₖ = n³, the statement exactly as figurate identities are usually phrased. Same one-step induction, peeling the top term H_{m+1} with Finset.sum_Icc_succ_top (using 1 ≤ m+1 from `omega`) and closing with `ring`."
+      "summary": "∑_{k ∈ Icc 1 n} Hₖ = n³, the statement exactly as figurate identities are usually phrased. Same one-step induction, peeling the top term H_{m+1} with Finset.sum_Icc_succ_top (using 1 ≤ m+1 from `omega`) and closing with `ring`.",
+      "mathContext": "$\\sum_{k=1}^{n} H_k = n^3$ (classical 1-indexed form), by the same peel-then-`ring` induction via Finset.sum_Icc_succ_top."
     }
   ],
   "overview": {
