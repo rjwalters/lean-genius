@@ -1,0 +1,98 @@
+[
+  {
+    "id": "russcs-ann-01",
+    "proofId": "russell-1-plus-1-oq-02",
+    "range": { "startLine": 99, "endLine": 108 },
+    "type": "concept",
+    "title": "Peano's Recursive Multiplication — the Two Definitional Equations",
+    "content": "Multiplication is defined by recursion on the second argument, exactly as Peano wrote it in 1889: `n * 0 = 0` and `n * (m+1) = n*m + n`. Because Lean's equation compiler elaborates this to the recursor of ℕ, both defining lemmas `mul_zero` and `mul_succ` hold by `rfl` — they are computation rules, not theorems. Everything algebraic that follows is the work of reconciling this single right-recursion with the symmetric facts (left-recursion, commutativity) that the definition does not give for free.",
+    "mathContext": "$n \\cdot 0 = 0, \\qquad n \\cdot S(m) = n \\cdot m + n.$ Both equations are definitional (`rfl`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive recursion",
+      "the recursor ℕ.rec",
+      "iota-reduction",
+      "Peano arithmetic"
+    ],
+    "prerequisites": [
+      "inductive types and recursion on the second argument",
+      "definitional equality (rfl)"
+    ]
+  },
+  {
+    "id": "russcs-ann-02",
+    "proofId": "russell-1-plus-1-oq-02",
+    "range": { "startLine": 121, "endLine": 129 },
+    "type": "proof-technique",
+    "title": "succ_mul: the Crux Lemma that Unlocks Commutativity",
+    "content": "The definition gives `mul_succ` (recursion on the right); its left-recursive mirror `(n+1)*m = n*m + m` is not definitional and must be proved by induction on `m`. The successor step is the one genuinely fiddly computation in the file: expanding both sides via `mul_succ` and the induction hypothesis leaves `succ (n*m + (m + n)) = succ (n*m + (n + m))`, closed by `add_comm m n` after two uses of `add_assoc` to line up the parenthesisation. Once `succ_mul` is available, `mul_comm` is a two-line induction — this lemma is precisely what the commutativity proof needs.",
+    "mathContext": "$(n+1)\\cdot m = n\\cdot m + m$, proved by induction on $m$; the step reduces to $n m + (m+n) = n m + (n+m)$, i.e. $m+n = n+m$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "structural induction",
+      "associativity/commutativity rearrangement",
+      "left- vs right-recursion"
+    ],
+    "prerequisites": [
+      "add_assoc and add_comm from the additive recap",
+      "the definitional mul_succ"
+    ]
+  },
+  {
+    "id": "russcs-ann-03",
+    "proofId": "russell-1-plus-1-oq-02",
+    "range": { "startLine": 146, "endLine": 155 },
+    "type": "proof-technique",
+    "title": "Right Distributivity for Free from Left Distributivity",
+    "content": "Left distributivity `a*(b+c) = a*b + a*c` is proved by a short induction on `c`. Right distributivity is then obtained without any new induction: `(a+b)*c = c*(a+b) = c*a + c*b = a*c + b*c`, three rewrites using `mul_comm` and the left version. This is a small but characteristic economy — once commutativity is in hand, one distributive law implies the other, so only one of the two needs an inductive proof.",
+    "mathContext": "$(a+b)c \\overset{\\text{comm}}{=} c(a+b) \\overset{\\text{L-distrib}}{=} ca + cb \\overset{\\text{comm}}{=} ac + bc.$",
+    "significance": "important",
+    "relatedConcepts": [
+      "distributive laws",
+      "commutativity",
+      "proof economy"
+    ],
+    "prerequisites": [
+      "left_distrib",
+      "mul_comm"
+    ]
+  },
+  {
+    "id": "russcs-ann-04",
+    "proofId": "russell-1-plus-1-oq-02",
+    "range": { "startLine": 157, "endLine": 160 },
+    "type": "proof-technique",
+    "title": "Associativity Spends Distributivity",
+    "content": "`mul_assoc` is proved by induction on the last factor `c`. Its successor step is where distributivity is used: `(a*b)*(c+1) = (a*b)*c + a*b = a*(b*c) + a*b = a*(b*c + b) = a*(b*(c+1))`, folding the two summands back together with `left_distrib` (read right-to-left). This dependency — associativity resting on distributivity resting on commutativity resting on succ_mul — is the whole reason the lemmas appear in this order.",
+    "mathContext": "$(ab)(c+1) = (ab)c + ab = a(bc) + ab = a(bc+b) = a\\,(b(c+1)).$",
+    "significance": "important",
+    "relatedConcepts": [
+      "associativity",
+      "left distributivity",
+      "lemma dependency order"
+    ],
+    "prerequisites": [
+      "left_distrib",
+      "mul_succ"
+    ]
+  },
+  {
+    "id": "russcs-ann-05",
+    "proofId": "russell-1-plus-1-oq-02",
+    "range": { "startLine": 187, "endLine": 200 },
+    "type": "concept",
+    "title": "Bundling the Axioms: ℕ is a Commutative Semiring, as One Proposition",
+    "content": "`IsCommSemiring` is a Prop-valued structure listing all twelve commutative-semiring axioms over an abstract carrier with its zero, one, add, and mul. `peano_isCommSemiring` fills every field with the lemma proved above, so the informal claim 'the from-scratch Peano naturals form a commutative semiring' becomes a single inhabited proposition with a closed proof term. This is the structural-theorem payoff over the parent's scattered arithmetic facts — and `#print axioms` confirms it depends on no axioms at all, not even Quot.sound.",
+    "mathContext": "$(\\mathbb{N}, 0, 1, +, \\cdot)$ is a commutative semiring: additive commutative monoid, multiplicative commutative monoid, and both distributive laws.",
+    "significance": "key",
+    "relatedConcepts": [
+      "commutative semiring",
+      "bundled algebraic structure",
+      "axiom-free verification"
+    ],
+    "prerequisites": [
+      "all preceding additive and multiplicative lemmas",
+      "structures / records in Lean"
+    ]
+  }
+]
