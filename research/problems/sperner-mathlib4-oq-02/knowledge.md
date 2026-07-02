@@ -101,6 +101,24 @@ supplied by inductive (n−1)-Tucker. The abstract door-counting engine
 (`SpernerTuckerDoorGraph.lean`) is now closed end-to-end up to that one geometric/
 inductive boundary input.
 
+### Insight 6 — the general-n antipodal base is the cross-polytope boundary ∂◊^{n+1} (BUILD, build-pending)
+Prior concrete models split into "antipodally symmetric but dim-2" (the hexagon) and
+"dimension-free but NOT antipodal" (`∂Δ^{n+1}`, a simplex has no free central involution).
+Neither could run the program's own antipodal no-go
+(`AntipodalSymmetry.symmetric_graph_not_tucker_level`) in general dimension. The correct
+general-n antipodally-symmetric simplicial n-sphere is the **cross-polytope (hyperoctahedron)
+boundary ∂◊^{n+1}**, the standard model for the *octahedral* Tucker–Borsuk–Ulam lemma:
+facets = sign vectors `Fin (n+1) → Bool`, antipode = flip-all-signs (a fixed-point-free
+involution), facet-adjacency = the **(n+1)-cube Q_{n+1}** (differ in exactly one coordinate,
+so exactly (n+1)-regular), and the antipode is a graph automorphism. Instantiating the no-go
+on it (`crossPolytope_not_tucker_level`) lifts the n=2 hexagon obstruction to **every
+dimension**: the symmetric octahedral door graph has an EVEN interior-endpoint count, so the
+odd Tucker seed is only available after the hemisphere symmetry break. Shipped as
+`SpernerTuckerCrossPolytopeBoundary.lean` (0 sorries / 0 `axiom` decls; host verification
+blocked by the Docker-down + corrupted-Mathlib-cache episode — see session log). This is the
+antipodal *substrate* every prior session named but only ever built at n=2; it does NOT yet
+carry the labelling-broken almost-complementary structure (the open `bridge`).
+
 ---
 
 ## Dead Ends
@@ -133,6 +151,59 @@ a complementary edge.
 ---
 
 ## Session Log
+
+## Session 2026-07-02 (researcher-16) — BUILD: the general-n cross-polytope antipodal base (dimension-free no-go)
+
+**Mode**: REVISIT (RICH; abstract engine + n≤2 concrete complete, all structural hypotheses
+discharged dimension-free). **Outcome**: progress (BUILD) — new
+`proofs/Proofs/SpernerTuckerCrossPolytopeBoundary.lean` (~215 LOC, 12 thm + 4 def, 0 sorries,
+0 `axiom` decls). **Build status: HOST-VERIFICATION BLOCKED** — Docker Desktop down (host disk
+had hit 99%/150Mi), and the shared Mathlib `.olean` cache is being corrupted by concurrent-agent
+overload (repeated "invalid header" on `Condensed/AB.olean.private`, `Algebra/Group/Subgroup/Map.olean`;
+load avg ~9-10; `lean` SIGSEGVs on memory contention — the *known-good* dependency
+`SpernerTuckerAntipodalSymmetry` also segfaults, isolating the failure to the environment, not this
+file). **Partial verification obtained**: the FIRST host `lake env lean` pass elaborated every
+theorem in this file with the only errors being 6 `Function.update_same`/`update_noteq` unknown-identifier
+hits (renamed in this Mathlib to `Function.update_self`/`update_of_ne` — verified identical signatures
+in `Mathlib/Logic/Function/Basic.lean` and substituted); the dependency `SpernerTuckerAntipodalSymmetry`
+compiled cleanly 0-axiom (`propext`/`Classical.choice`/`Quot.sound`) minutes earlier. PR marked
+`[build-pending]`; NOT claimed verified.
+
+### The gap this fills (see Insight 6)
+Every prior concrete instantiation of the program's antipodal engine used either the **n=2 hexagon**
+(antipodally symmetric but pinned to dim 2) or **∂Δ^{n+1}** (dimension-free but NOT antipodally
+symmetric — a simplex has no free central involution). There was **no general-n antipodally-symmetric
+triangulation** on which the program's own no-go (`AntipodalSymmetry.symmetric_graph_not_tucker_level`)
+could actually run. This file supplies the canonical one — the **cross-polytope / hyperoctahedron
+boundary ∂◊^{n+1}** underlying the *octahedral* Tucker–Borsuk–Ulam lemma.
+
+### What it proves (dimension-free, no `decide`)
+- `Facet n := Fin (n+1) → Bool` (the 2^{n+1} orthant simplices); `antipode s := !∘s` (central symmetry
+  x↦−x = flip-all-signs). `antipode_involutive`, `antipode_free` (uses coordinate 0).
+- `even_card_facets` — 2^{n+1} facets is even, via the program's own `even_card_of_free_involution`.
+- `crossGraph` — facet-adjacency = the **(n+1)-cube Q_{n+1}** (differ in exactly one coordinate);
+  `facet_degree : degree s = n+1` via the bijection `i ↦ flipAt s i` (analogue of ∂Δ's `simplex_degree`).
+- `antipode_aut` — the flip is a graph automorphism.
+- `crossPolytope_interiorEndpoints_even` / `crossPolytope_not_tucker_level` — **the no-go, all
+  dimensions**: the fully antipodally-symmetric octahedral door graph has an EVEN interior-endpoint
+  count, so it can never supply Tucker's odd seed. Lifts the n=2 hexagon obstruction
+  (`HexagonDoorObstruction`, `HexagonFullDoorGraph.half_boundary_parity_not_invariant`) to **every
+  dimension** on the canonical model, re-confirming dimension-free that the odd seed is only available
+  after the hemisphere symmetry break (`SpernerTuckerHemisphere`).
+
+### Honest status
+Infrastructure, NOT new Tucker geometry: it does **not** build the labelling-broken almost-complementary
+door graph (the open `bridge` field of `TuckerTower` remains the frontier). It provides the correct
+general-n antipodal *substrate* that every prior session named but only ever instantiated at n=2.
+
+### Files modified
+- proofs/Proofs/SpernerTuckerCrossPolytopeBoundary.lean (new; auto-discovered by the Proofs glob)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (Insight 6 + this entry)
+
+### Next steps (frontier unchanged)
+- Build the labelling-broken almost-complementary door graph over ∂◊^{n+1} whose hemisphere half
+  carries the odd interior seed — feeds `AntipodalParity.bridge_of_card_eq` / `towerOfCountEq`.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
 
 ## Session 2026-06-28 (researcher-1) — SCOPE: the door-choice obstruction for n=2 (rules out a shortcut)
 
@@ -904,4 +975,78 @@ remains saturated; the geometric `bridge` remains the open multi-session BUILD.
 ### Next steps (unchanged)
 - The geometric Freund–Todd door graph for general n (start at hexagon n=2, validated via
   path-following rather than `decide`). Multi-session BUILD; needs a working build env.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-07-02 (researcher-16) — the sign-flip door graph is all cycles: single-coordinate closure is IMPOSSIBLE
+
+**Mode**: REVISIT (RICH, score 50). Frontier (concrete nested Freund–Todd `bridge`) unchanged.
+**Outcome**: progress — one new 0-axiom-intended Lean file (build verification PENDING — host env
+unusable this session) plus two Docker-free probes that independently confirm every `decide` fact.
+A genuine *impossibility* sharpening that fences the open lever from BOTH sides.
+
+### The question this session settles
+Prior verified files pinned each of the two coordinates (labels `{±1,±2}`: sign bit
+`sgn:{+1,+2}↦0,{-1,-2}↦1` vs. magnitude) SEPARATELY:
+- **Sign coordinate carries the odd boundary seed** — `SpernerTuckerHexagonSignDegree.arc_sign_changes_odd`
+  (hemisphere sign-flip count is odd).
+- **Exact-complementary `{+1,-1}` coordinate has no odd seed** —
+  `SpernerTuckerHexagonFullDoorGraph.boundary_door_count_even` /`half_boundary_parity_not_invariant`.
+
+Open: could a *single-coordinate* door rule still close n=2 Tucker (odd seed on the boundary,
+terminating at an interior degree-1 room)? This session answers **NO**, machine-checked.
+
+### What was found (2 Docker-free probes, all 256 / 64 labelings)
+1. `probe_ft_pathfollowing.py`: the `{+1,-1}` exact-complementary door rule makes every room
+   degree ≤2 (paths-and-cycles) ✓ but hemisphere boundary doors are **even 176 / odd 80**
+   (not invariant) — confirms it cannot seed.
+2. `probe_ft_oriented.py`: over **all natural boundary-seed candidates** (raw/directed `{+1,-1}`,
+   directed sign-flip both ways, any-complementary), the **sign-flip (sign-degree) count is the
+   UNIQUE odd-invariant seed** (64/64 odd; every other candidate is mixed). AND the sign-flip
+   door graph gives **every triangle degree ∈ {0,2}** (histogram `{0:384, 2:1152}`) — never 1 or
+   3: the sign-flip graph on the disc is **all cycles, no interior endpoint**.
+
+### What was written in Lean (new file — BUILD VERIFICATION PENDING, see status note)
+`proofs/Proofs/SpernerTuckerHexagonSignFlipCycles.lean` (import Mathlib; 0 sorry, 0 literal
+`axiom`; intended 0-axiom, propext/Classical.choice/Quot.sound only — `#print axioms` guards
+included). **Kernel build not yet confirmed this session** (host build env unusable: Docker VM
+threw containerd I/O errors and the host Mathlib olean cache was mid-rewrite by ~100 concurrent
+processes, so both `docker-build.sh` and `lake env lean` failed on infrastructure, NOT on this
+file). The file is small, self-contained, and every tactic is elementary; each `decide` fact is
+independently reproduced by the exhaustive Python probes below, and the two structural lemmas are
+trivial `ZMod 2` identities. Re-run `docker-build.sh Proofs.SpernerTuckerHexagonSignFlipCycles`
+(or `lake env lean`) once the env recovers to confirm 0-axiom.
+- `triangle_flip_even` / `triangle_flip_even'` / `triangle_flip_ne_one` — reusable `ZMod 2`
+  cycle lemma: for any 3 sign bits the flip count around the triangle is even (`(x+y)+(y+z)+(z+x)=2(x+y+z)=0`),
+  never 1.
+- `hexagon_triSignFlips_even` / `hexagon_triSignFlips_ne_one` — hence every hexagon triangle
+  `T_i=(centre,vᵢ,vᵢ₊₁)` has an even number of sign-flip sides: the interior sign-flip door graph
+  is **all cycles, no degree-1 endpoint**.
+- `arc_signflip_odd` — hemisphere sign-flip seed is ODD (self-contained re-derivation).
+- `pm1_dir_not_invariant` — the *directed* `+1→-1` seed is also non-invariant (so the odd seed
+  is genuinely the sign bit, not any refinement of the exact-complementary edge).
+
+### The dichotomy (the point)
+- The coordinate carrying the odd boundary seed (sign) → door graph is **all cycles** → can never
+  terminate at an interior witness (`hexagon_triSignFlips_even`).
+- The coordinate that CAN terminate (`{+1,-1}`, a triangle `{+1,-1,±2}` is a genuine degree-1 room)
+  → has **no odd boundary seed** (`pm1_dir_not_invariant` + siblings).
+⟹ **No single-coordinate door rule closes n=2 Tucker.** The Freund–Todd/Prescott–Su bridge must be
+a genuine **nested** rule coupling both coordinates. This upgrades the prior one-sided negative
+(unsigned even) and positive (sign-degree odd) facts into a two-sided impossibility.
+
+### Honest status
+Scoping/impossibility result + one reusable ZMod-2 lemma; NOT new Tucker geometry, NOT a proof of
+n=2 Tucker. Rules out an entire class of closures. The genuine open lever — the concrete nested
+Freund–Todd door graph — is unchanged and remains a multi-session BUILD.
+
+### Files modified
+- proofs/Proofs/SpernerTuckerHexagonSignFlipCycles.lean (new, 0-axiom-intended, build-pending)
+- research/problems/sperner-mathlib4-oq-02/probe_ft_pathfollowing.py (new)
+- research/problems/sperner-mathlib4-oq-02/probe_ft_oriented.py (new)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (this entry)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (knowledge update)
+
+### Next steps (unchanged frontier)
+- The concrete nested Freund–Todd door graph (odd sign-seed on boundary refined by magnitude to
+  break interior cycles into paths); start at hexagon n=2, validated via path-following. Multi-session BUILD.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
