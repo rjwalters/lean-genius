@@ -16,7 +16,10 @@
       "roots of unity",
       "Newton's identities"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "power sums",
+      "roots of unity"
+    ]
   },
   {
     "id": "ann-974-configuration",
@@ -35,7 +38,10 @@
       "function type",
       "indexed family"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Fin n indexing",
+      "functions as indexed families"
+    ]
   },
   {
     "id": "ann-974-powersum",
@@ -54,7 +60,10 @@
       "Newton's identities",
       "BigOperators"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "symmetric functions",
+      "finite sums (big operators)"
+    ]
   },
   {
     "id": "ann-974-rootofunity",
@@ -73,7 +82,10 @@
       "unit circle",
       "cyclic group"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the complex exponential",
+      "the unit circle"
+    ]
   },
   {
     "id": "ann-974-powersumproperty",
@@ -92,7 +104,10 @@
       "divisibility",
       "cyclotomic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "geometric series",
+      "roots of unity"
+    ]
   },
   {
     "id": "ann-974-zerotuple",
@@ -110,7 +125,10 @@
       "power sum vanishing",
       "polynomial constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "power sums",
+      "polynomial constraints"
+    ]
   },
   {
     "id": "ann-974-infinitelymany",
@@ -128,7 +146,10 @@
       "asymptotic condition",
       "infinite family"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infinite families",
+      "asymptotic conditions"
+    ]
   },
   {
     "id": "ann-974-essentially",
@@ -147,7 +168,10 @@
       "bijection",
       "symmetric function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "permutations",
+      "bijections"
+    ]
   },
   {
     "id": "ann-974-twopolygons",
@@ -166,7 +190,10 @@
       "regular polygon",
       "rotation symmetry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "regular polygons",
+      "rotational symmetry"
+    ]
   },
   {
     "id": "ann-974-turan",
@@ -185,7 +212,10 @@
       "conjecture",
       "main statement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "power sums",
+      "mathematical conjectures"
+    ]
   },
   {
     "id": "ann-974-tijdeman-odd",
@@ -204,7 +234,10 @@
       "odd case",
       "strong form"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "roots of unity",
+      "parity (odd and even)"
+    ]
   },
   {
     "id": "ann-974-tijdeman-even",
@@ -223,7 +256,10 @@
       "even case",
       "two polygons"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "regular polygons",
+      "parity (odd and even)"
+    ]
   },
   {
     "id": "ann-974-mainresult",
@@ -242,7 +278,10 @@
       "resolution",
       "Erdős"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence theorems",
+      "roots of unity"
+    ]
   },
   {
     "id": "ann-974-newton",
@@ -261,6 +300,9 @@
       "elementary symmetric",
       "characteristic polynomial"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Newton's identities",
+      "elementary symmetric polynomials"
+    ]
   }
 ]
