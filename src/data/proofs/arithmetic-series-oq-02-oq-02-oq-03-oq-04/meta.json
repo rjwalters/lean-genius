@@ -129,6 +129,11 @@
       "targetId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
       "relationship": "related",
       "description": "Sibling generating-function generalization (multivariate Vandermonde); both descend from the same parent and treat the Vandermonde convolution by different machinery."
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-01",
+      "relationship": "related",
+      "description": "A different Vandermonde convolution — the falling-factorial (x+y)^{underline r} = Σⱼ C(r,j) x^{underline j} y^{underline (r−j)} over an arbitrary commutative ring, proved by the sign reflection x^{underline k} = (−1)ᵏ(−x)^{(k)} rather than by creative telescoping. Contrasts the certificate-check pipeline used here with an algebraic-identity route; the two-variable Vandermonde certificate this entry's open question 1 seeks would give a WZ proof of a companion binomial-coefficient Vandermonde."
     }
   ],
   "references": [
