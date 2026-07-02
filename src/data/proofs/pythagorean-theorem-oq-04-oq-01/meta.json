@@ -1,0 +1,148 @@
+{
+  "id": "pythagorean-theorem-oq-04-oq-01",
+  "title": "Primitive triples ≅ the {±1}-quotient of Gaussian generators",
+  "slug": "pythagorean-theorem-oq-04-oq-01",
+  "description": "Promotes the up-to-sign uniqueness of the Gaussian-integer parameterization of Pythagorean triples (parent pythagorean-theorem-oq-04) to a genuine injection and bijection. The two-to-one ambiguity g² = (−g)² is packaged as an honest quotient: the sign relation (m,n) ~ (−m,−n) is proven to be an equivalence (signSetoid), the triple map (m,n) ↦ (m²−n², 2mn, m²+n²) descends to the quotient GenClass, and the descended map classTriple is injective — distinct sign-classes give distinct triples with no chosen representative. Mathlib's coprime_classification' supplies surjectivity onto every primitive triple with x odd and z > 0, yielding the bijection the open question requested.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTheoremOQ04OQ01.lean",
+    "tags": [
+      "number-theory",
+      "pythagorean-triples",
+      "gaussian-integers",
+      "quotient",
+      "setoid",
+      "equivalence-relation",
+      "bijection",
+      "group-action",
+      "algebraic-number-theory",
+      "open-question-extension"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "assumptions": "None. The sign relation is proven to be an equivalence from scratch; descent to the quotient uses the constructed genTriple_neg; injectivity reuses the domain-of-integrity fact sq_eq_sq_iff_eq_or_eq_neg for ℤ[i]; surjectivity transports Mathlib's PythagoreanTriple.coprime_classification'. Only the foundational axioms propext, Classical.choice, Quot.sound are used (as reported by #print axioms) — none of which count as assumptions.",
+    "lineCount": 219,
+    "theoremCount": 11,
+    "definitionCount": 5,
+    "originalContributions": [
+      "SignRel / signSetoid: the {±1} sign relation (m,n) ~ (−m,−n) on generator pairs, proven reflexive/symmetric/transitive — the orbit relation of the sign subgroup {±1} ⊆ ℤ[i]ˣ.",
+      "genTriple_neg: the triple map is invariant under the sign flip, the fact that makes squaring in ℤ[i] two-to-one and enables descent to the quotient.",
+      "classTriple: the parameterization map descended to the quotient GenClass = (ℤ×ℤ)/SignRel via Quotient.lift.",
+      "classTriple_injective: the MAIN result — once the {±1} ambiguity is quotiented away the parameterization is injective; the m = 0 degenerate case needs no special handling because (0,1) and (0,−1) are already the same class.",
+      "classTriple_surj_onto_primitive: every primitive triple with x odd, z > 0 is hit, from coprime_classification'; together with injectivity this is the requested bijection."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The parent entry pythagorean-theorem-oq-04 realizes the classical (m,n)-parameterization of Pythagorean triples as the squaring map in the Gaussian integers ℤ[i]: (m + ni)² = (m²−n²) + (2mn)i, with hypotenuse the Gaussian norm m²+n². Squaring is two-to-one — g² = (−g)² — so a triple determines its generator only up to the sign subgroup {±1} of the unit group {±1, ±i} (multiplying by i instead negates the square). The parent proved this as generator_unique_up_to_sign but left the {±1} redundancy as a loose 'up to sign' clause. Quotienting a set by the orbit relation of a group action is the standard way to turn an 'up-to' statement into a genuine bijection.",
+    "problemStatement": "Open question (pythagorean-theorem-oq-04, first): *Promote the up-to-sign uniqueness (generator_unique_up_to_sign) to a genuine bijection between primitive triples and a chosen fundamental domain of generators, packaging the {±1} ambiguity as a quotient.* Concretely: form the quotient of generator pairs by the sign relation (m,n) ~ (−m,−n), show the triple map descends, and prove the descended map is injective — and, with Mathlib's completeness classification, a bijection onto the primitive triples.",
+    "text": "Rather than pick a fundamental domain (e.g. m > 0) and juggle the boundary case m = 0, this entry quotients the sign action directly. The relation SignRel (m,n) (m',n') := (m,n) = (m',n') ∨ (m,n) = (−m',−n') is exactly the orbit relation of {±1} acting by scalar multiplication on ℤ[i], and it is proven to be an equivalence relation (signSetoid). The coordinate triple map genTriple (m,n) = (m²−n², 2mn, m²+n²) is invariant under the flip (m,n) ↦ (−m,−n) (genTriple_neg, by ring), so it descends through Quotient.lift to classTriple on GenClass = (ℤ×ℤ)/SignRel. The heart is classTriple_injective: equal triples force equal Gaussian squares (⟨m,n⟩² = ⟨m',n'⟩² read off the coordinates), and in the integral domain ℤ[i] equal squares differ by at most a sign (sq_eq_sq_iff_eq_or_eq_neg), i.e. the pairs are SignRel-related, i.e. the classes are equal. The quotient absorbs the degenerate case: (0,1) and (0,−1) map to the same triple (−1,0,1) and are the same class, so no fundamental-domain surgery is needed. Surjectivity onto primitive triples (x odd, z > 0) is Mathlib's coprime_classification'. Injective + surjective is the bijection the question asked for.",
+    "proofStrategy": "Four layers. (1) Reuse three self-contained Gaussian facts from the parent: gaussianInt_sq (the squaring formula), gaussianInt_norm, and gen_coords_unique_up_to_sign (equal squares ⇒ equal or negated coordinates, from sq_eq_sq_iff_eq_or_eq_neg). (2) Define genTriple on raw pairs and prove genTriple_neg by ring — sign invariance. (3) Prove SignRel is an equivalence (refl trivial; symm and trans by coordinate case analysis with neg_neg) and bundle it as signSetoid; descend genTriple to classTriple via Quotient.lift, the lift obligation discharged by genTriple_neg. (4) classTriple_injective via Quotient.ind on both classes: equal images unfold definitionally to genTriple p = genTriple q, feed genTriple_inj to get SignRel, then Quotient.sound. Surjectivity is a direct application of coprime_classification' with the coordinate identities matched by ring.",
+    "keyInsights": [
+      "**Quotient beats fundamental domain.** Choosing representatives with m > 0 forces a special case at m = 0 (where (0,1) and (0,−1) both satisfy m ≥ 0 yet give the same triple). Quotienting by the sign orbit relation makes (0,1) and (0,−1) literally equal, so injectivity holds uniformly with no boundary surgery.",
+      "**'Up to sign' is an orbit relation.** The parent's 'unique up to ±1' is precisely the statement that generators lie in a single orbit of the sign subgroup {±1} ⊆ ℤ[i]ˣ. Encoding that orbit relation as a Setoid is what converts the loose clause into a bijection.",
+      "**Injectivity is domain-of-integrity, not counting.** classTriple is injective because ℤ[i] has no zero divisors: g² = h² ⇒ (g−h)(g+h) = 0 ⇒ g = ±h. The three coordinate equalities of genTriple are exactly the real/imaginary parts of ⟨m,n⟩² = ⟨m',n'⟩².",
+      "**Descent is one ring identity.** The entire well-definedness of classTriple reduces to genTriple_neg: squares and the doubled product 2mn are even functions of (m,n), unchanged under the simultaneous sign flip.",
+      "**Surjectivity is imported, not re-proved.** Completeness of the parameterization is Mathlib's coprime_classification', so the bijection follows by combining a self-contained injectivity proof with a one-line application of existing infrastructure."
+    ],
+    "prerequisites": [
+      "Gaussian integers ℤ[i] and their norm N(m + ni) = m² + n²",
+      "quotients by an equivalence relation (Setoid, Quotient.lift, Quotient.sound, Quotient.ind)",
+      "group actions and orbit relations (here the sign subgroup {±1})",
+      "Pythagorean triples and their (m,n)-parameterization",
+      "integral domains: equal squares differ by a sign"
+    ]
+  },
+  "conclusion": {
+    "summary": "The {±1} ambiguity in the Gaussian-integer parameterization of Pythagorean triples is packaged as an honest quotient GenClass = (ℤ×ℤ)/SignRel. The triple map descends to classTriple, which is proven injective (classTriple_injective) and surjective onto every primitive triple with x odd and z > 0 (classTriple_surj_onto_primitive, via Mathlib's coprime_classification') — a genuine bijection, answering the parent's first open question. Verified, 0 axioms, 0 sorries.",
+    "implications": "Converting an 'up to sign' uniqueness into a quotient bijection is the reusable pattern here: whenever a parameterization is k-to-one under a finite group action, quotient by the orbit relation rather than choosing a fundamental domain, and the annoying boundary cases dissolve. The same recipe applies to other Gaussian-square parameterizations (e.g. sums of two squares) and, more generally, to any Setoid packaging of a symmetry in the gallery.",
+    "openQuestions": [
+      "Upgrade the injective+surjective pair to a packaged Equiv (or Set.BijOn onto the coprime opposite-parity classes), making the bijection a single first-class object.",
+      "Track the full unit group {±1, ±i} instead of just {±1}: quotient by the ±i action as well and recover the correspondence with unordered/​signless triples, connecting to the four-unit picture in the parent's second open question."
+    ]
+  },
+  "leanFile": {
+    "namespace": "PythagoreanTheoremOQ04OQ01",
+    "lineCount": 219,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 5,
+    "path": "Proofs/PythagoreanTheoremOQ04OQ01.lean",
+    "imports": [
+      "Mathlib.NumberTheory.PythagoreanTriples",
+      "Mathlib.NumberTheory.Zsqrtd.GaussianInt",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Zsqrtd"
+    ],
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-theorem-oq-04",
+      "relationship": "extends",
+      "description": "The parent realizes the (m,n)-parameterization as squaring in ℤ[i] and proves generator uniqueness up to the sign subgroup {±1} (generator_unique_up_to_sign). This entry packages that ±1 ambiguity as a quotient and promotes the up-to-sign uniqueness to an injective — and, with Mathlib's coprime_classification', bijective — correspondence with primitive triples."
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "related",
+      "description": "The base gallery entry parameterizing primitive Pythagorean triples; classTriple_surj_onto_primitive draws its completeness from the same coprime_classification' used there."
+    }
+  ],
+  "sections": [
+    {
+      "id": "reused-gaussian",
+      "title": "Part I: Reused Gaussian-integer facts",
+      "startLine": 58,
+      "endLine": 82,
+      "summary": "Self-contained copies from the parent: gaussianInt_sq (⟨m,n⟩² = ⟨m·m−n·n, 2mn⟩), gaussianInt_norm, and gen_coords_unique_up_to_sign (equal Gaussian squares ⇒ equal or negated coordinates, via sq_eq_sq_iff_eq_or_eq_neg for the integral domain ℤ[i])."
+    },
+    {
+      "id": "triple-map",
+      "title": "Part II: The triple map and its {±1} invariance",
+      "startLine": 84,
+      "endLine": 98,
+      "summary": "genTriple (m,n) = (m²−n², 2mn, m²+n²) on raw pairs, plus genTriple_neg: invariance under the sign flip (m,n) ↦ (−m,−n) — the even-ness of squares and the doubled product that makes squaring two-to-one."
+    },
+    {
+      "id": "sign-setoid",
+      "title": "Part III: The sign relation as an equivalence",
+      "startLine": 100,
+      "endLine": 137,
+      "summary": "SignRel (m,n)(m',n') := equal or exact negatives, the orbit relation of {±1} ⊆ ℤ[i]ˣ; proven reflexive/symmetric/transitive (coordinate case analysis with neg_neg) and bundled as signSetoid, giving the quotient type GenClass = (ℤ×ℤ)/SignRel."
+    },
+    {
+      "id": "injectivity-raw",
+      "title": "Part IV: Injectivity of the raw map up to sign",
+      "startLine": 139,
+      "endLine": 156,
+      "summary": "genTriple_inj: equal triples force ⟨m,n⟩² = ⟨m',n'⟩² (reading off real and imaginary parts), hence SignRel by gen_coords_unique_up_to_sign."
+    },
+    {
+      "id": "descent",
+      "title": "Part V: Descent to the quotient and the main injectivity",
+      "startLine": 158,
+      "endLine": 183,
+      "summary": "classTriple := Quotient.lift genTriple (well-defined by genTriple_neg); classTriple_injective — the MAIN result — via Quotient.ind on both arguments, reducing to genTriple_inj + Quotient.sound. Distinct sign-classes give distinct triples, with no chosen representative."
+    },
+    {
+      "id": "surjectivity",
+      "title": "Part VI: Surjectivity onto primitive triples",
+      "startLine": 185,
+      "endLine": 200,
+      "summary": "classTriple_surj_onto_primitive: every primitive triple with x odd, z > 0 is classTriple of some generator class, from Mathlib's coprime_classification'. Injective + surjective = the requested bijection."
+    },
+    {
+      "id": "examples",
+      "title": "Part VII: Worked examples",
+      "startLine": 202,
+      "endLine": 218,
+      "summary": "(3,4,5) from the class of (2,1) and (5,12,13) from (3,2), plus a proof that the classes of (2,1) and (−2,−1) are equal — the {±1} ambiguity visibly collapsed by the quotient."
+    }
+  ],
+  "sorries": 0
+}
