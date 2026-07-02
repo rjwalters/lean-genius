@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-is-fermat-prime",
+    "proofId": "angle-trisection-oq-01-oq-02",
+    "range": { "startLine": 47, "endLine": 48 },
+    "type": "definition",
+    "title": "The Fermat-prime predicate",
+    "content": "Defines `IsFermatPrime p` as: `p` is prime and equals `Nat.fermatNumber m = 2^(2^m)+1` for some `m`. Rather than reproving Fermat-number facts, the definition is pinned to Mathlib's `Nat.fermatNumber`, so the existing lemmas about that constant (its size, primality tests) become available for free. Fermat primes are exactly the odd primes whose predecessor is a power of two, which is why they govern totient-power-of-two questions.",
+    "mathContext": "$p \\text{ is a Fermat prime} \\iff p \\text{ prime and } p = F_m = 2^{2^m}+1 \\text{ for some } m \\ge 0$. The first five (and only known) are $F_0=3,\\,F_1=5,\\,F_2=17,\\,F_3=257,\\,F_4=65537$.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat number", "Fermat prime", "power of two", "primality"],
+    "prerequisites": ["natural number arithmetic", "prime numbers"]
+  },
+  {
+    "id": "ann-is-two-pow-iff",
+    "proofId": "angle-trisection-oq-01-oq-02",
+    "range": { "startLine": 50, "endLine": 57 },
+    "type": "technique",
+    "title": "Power of two ⟺ only prime factor is 2",
+    "content": "The workhorse reduction: a positive natural `m` is a power of two exactly when 2 is its unique prime divisor. The forward direction is immediate — a prime dividing `2^k` must be 2 by Euclid's lemma (`hq.dvd_of_dvd_pow`). The reverse direction is Mathlib's `Nat.eq_prime_pow_of_unique_prime_dvd`, which reconstructs the exponent from the uniqueness of the prime factor. This lemma is applied twice downstream: once to `φ(n)` globally and once to `p-1` locally, turning multiplicative 'power-of-two' claims into checkable divisibility conditions.",
+    "mathContext": "For $m \\ne 0$: $(\\exists k,\\ m = 2^k) \\iff (\\forall q\\ \\text{prime},\\ q \\mid m \\Rightarrow q = 2)$.",
+    "significance": "key",
+    "relatedConcepts": ["prime factorization", "Euclid's lemma", "unique factorization", "power of two"],
+    "prerequisites": ["prime divisibility", "fundamental theorem of arithmetic"]
+  },
+  {
+    "id": "ann-fermat-ne-two",
+    "proofId": "angle-trisection-oq-01-oq-02",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "technique",
+    "title": "Fermat primes are odd",
+    "content": "A small but essential structural fact: every Fermat prime is at least 3, hence `≠ 2`. It follows from `Nat.two_lt_fermatNumber` (each Fermat number exceeds 2) discharged by `omega`. This lets later arguments split cleanly into the `p = 2` case and the odd-prime case, where the local Fermat criterion applies.",
+    "mathContext": "$F_m = 2^{2^m}+1 \\ge 3 > 2$ for all $m \\ge 0$, so a Fermat prime is never $2$.",
+    "significance": "technical",
+    "relatedConcepts": ["Fermat number", "parity", "odd prime"],
+    "prerequisites": ["natural number inequalities"]
+  },
+  {
+    "id": "ann-fermat-totient-two-pow",
+    "proofId": "angle-trisection-oq-01-oq-02",
+    "range": { "startLine": 65, "endLine": 72 },
+    "type": "insight",
+    "title": "The totient of a Fermat prime is a power of two",
+    "content": "The easy half of the local criterion: for a Fermat prime `p = 2^(2^m)+1`, Euler's formula gives `φ(p) = p - 1 = 2^(2^m)`, manifestly a power of two with explicit exponent `2^m`. The proof rewrites with `Nat.totient_prime` and unfolds `Nat.fermatNumber`, then `simp` cancels the `+1`. This direction feeds the constructibility statement: it is why every Fermat-prime-gon is constructible.",
+    "mathContext": "$\\varphi(F_m) = F_m - 1 = 2^{2^m}$, so the field degree $[\\mathbb{Q}(\\zeta_{F_m}):\\mathbb{Q}] = 2^{2^m}$ is a power of two.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's totient", "totient of a prime", "cyclotomic degree", "constructibility"],
+    "prerequisites": ["Euler's totient function", "Fermat numbers"]
+  },
+  {
+    "id": "ann-local-criterion",
+    "proofId": "angle-trisection-oq-01-oq-02",
+    "range": { "startLine": 74, "endLine": 92 },
+    "type": "insight",
+    "title": "Local criterion: φ(p) a power of two ⟺ p a Fermat prime",
+    "content": "The mathematical crux for a single odd prime. If `φ(p) = p - 1 = 2^k` then `p = 2^k + 1` is prime, and Mathlib's `Nat.pow_of_pow_add_prime` (a prime of the form `a^s + 1` with `a > 1` forces `s` to be a power of `a`) pins `k = 2^m`, so `p = 2^(2^m)+1` is a Fermat prime. The converse is the previous lemma. This is exactly the classical fact that the only primes with `p - 1` a power of two are the Fermat primes.",
+    "mathContext": "For odd prime $p$: $(\\exists k,\\ \\varphi(p) = 2^k) \\iff p = 2^{2^m}+1$. The step $2^k+1 \\text{ prime} \\Rightarrow k = 2^m$ is Mathlib's `Nat.pow_of_pow_add_prime`; without primality, e.g. $2^3+1 = 9$ is not prime.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat prime", "pow_of_pow_add_prime", "Euler's totient", "Gauss–Wantzel theorem"],
+    "prerequisites": ["Euler's totient function", "prime numbers", "Fermat numbers"]
+  },
+  {
+    "id": "ann-euler-product",
+    "proofId": "angle-trisection-oq-01-oq-02",
+    "range": { "startLine": 94, "endLine": 97 },
+    "type": "concept",
+    "title": "Euler's totient product over prime factors",
+    "content": "Repackages Mathlib's `Nat.totient_eq_prod_factorization` as a product indexed by `n.primeFactors` (rewriting `Finsupp.prod` via `Nat.support_factorization`). This is the multiplicative bridge from the local prime criterion to arbitrary `n`: since `φ(n)` factors as a product of per-prime contributions `p^(eₚ-1)(p-1)`, a prime divides `φ(n)` iff it divides one of these factors.",
+    "mathContext": "$\\varphi(n) = \\prod_{p \\mid n} p^{\\,e_p - 1}(p-1)$, where $e_p = v_p(n)$ is the multiplicity of $p$ in $n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler's totient", "multiplicative function", "prime factorization", "finite products"],
+    "prerequisites": ["Euler's totient function", "prime-power factorization"]
+  },
+  {
+    "id": "ann-main-criterion",
+    "proofId": "angle-trisection-oq-01-oq-02",
+    "range": { "startLine": 99, "endLine": 152 },
+    "type": "insight",
+    "title": "The arithmetic Gauss–Wantzel criterion",
+    "content": "The main theorem: `φ(n)` is a power of two iff every prime factor of `n` is 2, or a Fermat prime occurring to the first power. The forward direction runs two arguments per odd prime factor `p`. Multiplicity control: if `p` divided `n` with exponent ≥ 2, then `p ∣ p^(eₚ-1)(p-1) ∣ φ(n)`, forcing `p = 2` — a contradiction — so `eₚ = 1`. Fermat-ness: every prime factor of `p - 1` also divides `φ(n)`, hence equals 2, so `p - 1` is a power of two and the local criterion makes `p` a Fermat prime. The reverse direction shows each factor `p^(eₚ-1)(p-1)` is a power of two, so their product `φ(n)` is too. This is precisely the `n = 2ᵃ · (product of distinct Fermat primes)` clause of Gauss–Wantzel, read off the factorization.",
+    "mathContext": "For $n \\ge 1$: $(\\exists k,\\ \\varphi(n) = 2^k) \\iff \\forall p \\mid n,\\ p = 2 \\ \\lor\\ (p \\text{ a Fermat prime} \\land v_p(n) = 1)$. Equivalently $n = 2^a \\prod_i F_{m_i}$ with the $F_{m_i}$ distinct Fermat primes.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss–Wantzel theorem", "constructible polygon", "Euler's totient", "Fermat prime", "prime multiplicity"],
+    "prerequisites": ["Euler's totient function", "prime factorization", "divisibility of finite products"]
+  },
+  {
+    "id": "ann-prime-specialization",
+    "proofId": "angle-trisection-oq-01-oq-02",
+    "range": { "startLine": 154, "endLine": 171 },
+    "type": "insight",
+    "title": "Prime specialization: which regular p-gons are constructible",
+    "content": "Specializes the criterion to a prime side-count `n = p`: `φ(p)` is a power of two iff `p = 2` or `p` is a Fermat prime. This is the cleanest statement of classical constructibility for prime-sided polygons — the regular triangle (3), pentagon (5), 17-gon, 257-gon, and 65537-gon are constructible, and no other prime-sided regular polygon is. The `p = 2` branch is handled directly (`φ(2) = 1 = 2^0`); the odd branch defers to the local criterion.",
+    "mathContext": "For prime $p$: $(\\exists k,\\ \\varphi(p) = 2^k) \\iff (p = 2 \\ \\lor\\ p \\text{ a Fermat prime})$. The constructible prime-sided regular polygons are exactly those with $p \\in \\{2, 3, 5, 17, 257, 65537\\}$ among known primes.",
+    "significance": "key",
+    "relatedConcepts": ["constructible polygon", "Fermat prime", "Gauss 17-gon", "Euler's totient"],
+    "prerequisites": ["Euler's totient function", "prime numbers"]
+  }
+]
