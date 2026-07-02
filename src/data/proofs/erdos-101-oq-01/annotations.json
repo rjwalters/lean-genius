@@ -245,5 +245,103 @@
       "solymosi_stojakovic_lower_bound",
       "Real.rpow strict monotonicity"
     ]
+  },
+  {
+    "id": "ann-strong-refutation",
+    "proofId": "erdos-101-oq-01",
+    "range": {
+      "startLine": 773,
+      "endLine": 885
+    },
+    "type": "theorem",
+    "title": "Strong Refutation: Not $O(n^\\beta)$ for Any $\\beta < 2$",
+    "content": "Where `erdos_three_halves_conjecture_refuted` kills only the single exponent $\\beta = 3/2$, `four_point_line_count_not_O_rpow` kills *every* $\\beta < 2$ at once: there is no global bound `fourPointLineCount P ≤ |P|^β` holding for all large no-five-collinear `P`. The engine is the same Solymosi–Stojaković lower bound (specialised at $C = 1$), whose witness exponent $2 - 1/\\sqrt{\\log n}$ eventually exceeds any fixed $\\beta$ — precisely once $n > \\exp(1/(2-\\beta)^2)$ — after which `Real.rpow` monotonicity in the exponent contradicts the hypothesised upper bound. `maxCountAtSize_not_O_rpow` then *transfers* this from the witness-level count to the extremal function: any $n^\\beta$ bound on `maxCountAtSize` would, via `le_maxCountAtSize`, force one on `fourPointLineCount`, which the previous theorem forbids. Combined with `maxCountAtSize_isBigO_n_squared` this pins the two-sided $n^{2-o(1)} \\le \\text{maxCountAtSize}\\,n \\le n^2$ framing of the OQ-01 gap.",
+    "mathContext": "For all $\\beta < 2$: $\\neg\\,\\exists N,\\ \\forall P\\ (\\text{NoFiveCollinear}\\ P \\wedge N \\le |P|) \\Rightarrow \\text{fourPointLineCount}(P) \\le |P|^\\beta$, and likewise for $\\text{maxCountAtSize}$. The witness exponent $2 - 1/\\sqrt{\\log n} > \\beta \\iff n > \\exp(1/(2-\\beta)^2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "big-O refutation",
+      "Real.rpow strict monotonicity in the exponent",
+      "Solymosi–Stojaković lower bound",
+      "le_maxCountAtSize transfer",
+      "two-sided asymptotic gap"
+    ],
+    "prerequisites": [
+      "solymosi_stojakovic_lower_bound",
+      "Real.rpow monotonicity",
+      "extremal function maxCountAtSize"
+    ]
+  },
+  {
+    "id": "ann-unconditional-infra",
+    "proofId": "erdos-101-oq-01",
+    "range": {
+      "startLine": 916,
+      "endLine": 985
+    },
+    "type": "theorem",
+    "title": "Unconditional (Sorry-Free) Lower-Bound Infrastructure",
+    "content": "Every lower bound above is carried by the deferred `solymosi_stojakovic_lower_bound` sorry. This section adds the file's first lower-bound content owing *nothing* to that construction. `fourPointLineCount_ge_of_family` is the elementary converse of `improved_upper_bound`: given any finite family `𝒮` of collinear four-element subsets of `P.points`, each such subset literally satisfies the predicate defining `fourPointLineCount`, so `𝒮 ⊆` the filtered powerset and a one-line `Finset.card_le_card` gives `𝒮.card ≤ fourPointLineCount P`. `exists_noFiveCollinear_fourPointLineCount_pos` then instantiates it with the collinear quadruple $\\{(0,0),(1,0),(2,0),(3,0)\\}$ on the $x$-axis — trivially no-five-collinear (only four points, via `noFiveCollinear_small`) and a single four-point line — yielding an unconditional, axiom-free positivity witness.",
+    "mathContext": "If $\\mathcal{S}$ is a finite family of collinear 4-subsets of $P$, then $|\\mathcal{S}| \\le \\text{fourPointLineCount}(P)$. The $x$-axis quadruple $\\{(0,0),(1,0),(2,0),(3,0)\\}$ realises $0 < \\text{fourPointLineCount}(P)$ with no appeal to Solymosi–Stojaković.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_le_card",
+      "filtered powerset",
+      "explicit collinear witness",
+      "noFiveCollinear_small",
+      "unconditional lower bound"
+    ],
+    "prerequisites": [
+      "fourPointLineCount definition",
+      "Finset filtering and powersets",
+      "collinearity of a point family"
+    ]
+  },
+  {
+    "id": "ann-first-unconditional-lb",
+    "proofId": "erdos-101-oq-01",
+    "range": {
+      "startLine": 1010,
+      "endLine": 1065
+    },
+    "type": "theorem",
+    "title": "First Unconditional Lower Bound on the Extremal Function",
+    "content": "`one_le_maxCountAtSize_four : 1 ≤ maxCountAtSize 4` lifts the positivity witness of the previous section from a *fixed* point set to the extremal function itself. The same $x$-axis quadruple `P` is shown no-five-collinear (`noFiveCollinear_small`) and to carry a single four-point line via `fourPointLineCount_ge_of_family` applied to the singleton family `{pts}`; then `le_maxCountAtSize P` lifts `1 ≤ fourPointLineCount P` to the supremum `maxCountAtSize 4` (using that `|P| = 4`). Unlike `maxCountAtSize_not_O_rpow`, whose bounds all route through the deferred sorry, this is the file's first positive lower bound on `maxCountAtSize` proved with no sorry and no axiom.",
+    "mathContext": "$1 \\le \\text{maxCountAtSize}\\,4$, witnessed by the four collinear $x$-axis points; obtained by `le_maxCountAtSize` from $1 \\le \\text{fourPointLineCount}(P)$ for that specific $P$ of cardinality $4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "le_maxCountAtSize",
+      "supremum lower bound",
+      "explicit extremal witness",
+      "unconditional (sorry-free) result"
+    ],
+    "prerequisites": [
+      "maxCountAtSize as a supremum",
+      "fourPointLineCount_ge_of_family",
+      "noFiveCollinear_small"
+    ]
+  },
+  {
+    "id": "ann-vanishing-threshold",
+    "proofId": "erdos-101-oq-01",
+    "range": {
+      "startLine": 1083,
+      "endLine": 1112
+    },
+    "type": "theorem",
+    "title": "Sharp Vanishing Threshold: Zero Below Size Four",
+    "content": "This closes the other side of the size-4 threshold. `maxCountAtSize_eq_zero_of_lt_four` shows that for every `n < 4` the extremal count is `0`: no set of fewer than four points can host a four-point line (`fourPointLineCount_lt_four`), so every element of the set whose supremum defines `maxCountAtSize n` is `0`, and the supremum of a subset of `{0}` (or of `∅`, via `csSup_empty`) is `0`. Paired with `one_le_maxCountAtSize_four`, the capstone `maxCountAtSize_three_eq_zero_and_four_pos` records the sharp jump: `maxCountAtSize` is `0` at sizes `0,1,2,3` and `≥ 1` at size `4` — the extremal function first becomes positive at exactly the smallest cardinality a four-point line can occupy. Both statements are unconditional and sorry-free.",
+    "mathContext": "$\\text{maxCountAtSize}\\,n = 0$ for all $n < 4$, and $\\text{maxCountAtSize}\\,3 = 0 \\wedge 1 \\le \\text{maxCountAtSize}\\,4$: the extremal function's support begins exactly at $n = 4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "csSup_le / csSup_empty",
+      "fourPointLineCount_lt_four",
+      "sharp threshold",
+      "support of an extremal function"
+    ],
+    "prerequisites": [
+      "supremum of a bounded set of naturals",
+      "maxCountAtSize definition",
+      "one_le_maxCountAtSize_four"
+    ]
   }
 ]
