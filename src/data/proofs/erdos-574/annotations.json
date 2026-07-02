@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-574-ann-overview",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Overview: Turán number for consecutive cycle pairs",
+    "content": "Erdős Problem #574 asks, for $k\\ge 2$, whether the Turán number for simultaneously forbidding a consecutive odd/even cycle pair satisfies $\\mathrm{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = (1+o(1))(n/2)^{1+1/k}$ — the *same* asymptotic as forbidding the even cycle $C_{2k}$ alone. The matching upper bound is open (at least as hard as the even-cycle constant, itself open for general $k$). This entry proves the *lower-bound half unconditionally* (0 axioms, 0 sorries): the dense $C_{2k}$-free graphs from incidence geometry (Wenger 1991; Lazebnik–Ustimenko–Woldar 1995) are bipartite, hence have no odd cycle, hence are automatically $C_{2k-1}$-free — so forbidding the odd cycle costs nothing on the lower-bound side, as a theorem.",
+    "mathContext": "$\\mathrm{ex}(n;\\{C_{2k-1},C_{2k}\\}) = (1+o(1))(n/2)^{1+1/k}$? Conjectured equal to $\\mathrm{ex}(n;C_{2k})$. Lower bound is unconditional; the matching upper bound is the open content.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Turán number",
+      "extremal graph theory",
+      "even cycles",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "extremal combinatorics"
+    ]
+  },
+  {
     "id": "simple-graph-def",
     "proofId": "erdos-574",
     "range": {
@@ -93,30 +116,6 @@
     ]
   },
   {
-    "id": "extremal-number",
-    "proofId": "erdos-574",
-    "range": {
-      "startLine": 68,
-      "endLine": 74
-    },
-    "type": "definition",
-    "title": "Extremal Number for Consecutive Cycle Pairs",
-    "content": "The extremal number $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$ is the maximum number of edges in a graph on $n$ vertices that is $\\{C_{2k-1}, C_{2k}\\}$-free. The formalization defines it as a genuine (non-axiomatized) supremum over the achievable edge counts; this set is bounded above by $n^2$ (`edgeCount'_le`) and nonempty, so the supremum is attained. Computing its exact *value* requires solving the open problem, but the definition itself is well-posed, and `edgeCount_le_exConsecutive` shows every admissible graph's edge count lies below it.",
-    "mathContext": "$\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = \\max\\{|E(G)| : G \\text{ on } n \\text{ vertices, } G \\not\\supseteq C_{2k-1}, C_{2k}\\}$",
-    "significance": "key",
-    "relatedConcepts": [
-      "extremal number",
-      "Turán number",
-      "Zarankiewicz number",
-      "forbidden subgraph extremal function"
-    ],
-    "prerequisites": [
-      "edge count",
-      "consecutive cycle-free predicate",
-      "supremum over finite sets"
-    ]
-  },
-  {
     "id": "main-conjecture",
     "proofId": "erdos-574",
     "range": {
@@ -166,6 +165,30 @@
     ]
   },
   {
+    "id": "extremal-number",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 68,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Extremal Number for Consecutive Cycle Pairs",
+    "content": "The extremal number $\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\})$ is the maximum number of edges in a graph on $n$ vertices that is $\\{C_{2k-1}, C_{2k}\\}$-free. The formalization defines it as a genuine (non-axiomatized) supremum over the achievable edge counts; this set is bounded above by $n^2$ (`edgeCount'_le`) and nonempty, so the supremum is attained. Computing its exact *value* requires solving the open problem, but the definition itself is well-posed, and `edgeCount_le_exConsecutive` shows every admissible graph's edge count lies below it.",
+    "mathContext": "$\\text{ex}(n; \\{C_{2k-1}, C_{2k}\\}) = \\max\\{|E(G)| : G \\text{ on } n \\text{ vertices, } G \\not\\supseteq C_{2k-1}, C_{2k}\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal number",
+      "Turán number",
+      "Zarankiewicz number",
+      "forbidden subgraph extremal function"
+    ],
+    "prerequisites": [
+      "edge count",
+      "consecutive cycle-free predicate",
+      "supremum over finite sets"
+    ]
+  },
+  {
     "id": "bondy-simonovits",
     "proofId": "erdos-574",
     "range": {
@@ -187,6 +210,52 @@
       "probabilistic method",
       "graph density",
       "cycle detection"
+    ]
+  },
+  {
+    "id": "erdos-574-ann-bipartite-noodd",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 78,
+      "endLine": 144
+    },
+    "type": "technique",
+    "title": "Bipartite graphs have no odd cycle",
+    "content": "The engine is a clean parity argument. `IsBipartite` gives a 2-colouring with no monochromatic edge; walking along a cycle flips the colour bit at each step, so after $\\ell$ steps the bit has flipped $\\ell$ times. A cycle returns to its start, forcing the bit to be unchanged, which happens iff $\\ell$ is even (iterating Boolean negation $m$ times flips the bit exactly when $m$ is odd). Hence `bipartite_not_hasCycle_odd`: a bipartite graph contains no cycle of odd length.",
+    "mathContext": "A closed walk of length $\\ell$ in a bipartite graph flips its endpoint colour $\\ell$ times; returning to start requires $\\ell$ even. So bipartite $\\Rightarrow$ no $C_{2k-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bipartite graph",
+      "two-colouring",
+      "parity",
+      "odd cycle"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "parity arguments"
+    ]
+  },
+  {
+    "id": "erdos-574-ann-transfer",
+    "proofId": "erdos-574",
+    "range": {
+      "startLine": 145,
+      "endLine": 220
+    },
+    "type": "insight",
+    "title": "The lower-bound transfer",
+    "content": "Combining the parity lemma: a bipartite, $C_{2k}$-free graph is $\\{C_{2k-1},C_{2k}\\}$-free (`bipartite_evenFree_consecutiveFree`), since it lacks the odd cycle for free. To make the Turán number well-defined, the file bounds the edge count of any $n$-vertex graph by $n^2$ and shows the achievable edge counts form a bounded-above set, so the extremal function `exConsecutiveCycles` is a genuine supremum dominating every admissible graph. The numeric transfer `bipartite_evenFree_le_ex` then plants each bipartite even-cycle-free construction below the consecutive-pair extremal number — delivering the lower bound.",
+    "mathContext": "Bipartite + $C_{2k}$-free $\\Rightarrow$ $\\{C_{2k-1},C_{2k}\\}$-free; $\\mathrm{edgeCount}(G)\\le n^2$; so $\\mathrm{ex}(n;\\{C_{2k-1},C_{2k}\\}) \\ge$ any such construction's edge count.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal function",
+      "bounded above",
+      "supremum",
+      "lower bound transfer"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "order theory"
     ]
   }
 ]
