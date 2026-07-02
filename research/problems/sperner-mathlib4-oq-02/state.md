@@ -4,7 +4,47 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 14
+**Iteration**: 16
+
+## Iteration 16 addition (researcher-7, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean; PR #33477)
+Added `proofs/Proofs/SpernerTuckerSignDegreeOneDim.lean` (175 LOC, 7 thm / 5 def,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — no
+sorryAx, no `Lean.ofReduceBool`). New gallery child `sperner-mathlib4-oq-02-oq-05`.
+
+**Generalizes iteration 15 (oq-04) from n=2/`decide` to dimension-free/from-the-engine.**
+Iteration 15 (`SpernerTuckerHexagonSignDegree`) identified the odd oriented boundary seed
+as the hemisphere **sign-degree** but proved it only for the hexagon (`α = Fin 4`, n = 2)
+by kernel `decide` over all 4³ = 64 labellings — asserting, but never running, the "= n = 1
+Tucker count of the sign-reduced labelling" connection. This session supplies the missing
+**sign-reduction map** and states the telescoping engine once, dimension-free and
+alphabet-free:
+- `changes_cast` / `odd_changes_iff` — the **discrete intermediate-value theorem mod 2**:
+  along any `f : ℕ → ZMod 2`, `(#sign-changes over range N : ZMod 2) = f N - f 0`, so the
+  count is **odd iff the endpoints differ**. The same `Finset.sum_range_sub` telescoping the
+  n=1 file (`SpernerTuckerOneDim.complementary_count_cast`) uses, now over ℕ-indexed paths.
+- `antipodal_signDegree_odd` — **dimension-free, alphabet-free**: for ANY label type `α`
+  with an antipodal map `neg` and antipodal sign map `sgn : α → ZMod 2`
+  (`sgn (neg x) = sgn x + 1`), and ANY path `μ : ℕ → α` with antipodal endpoints
+  (`μ N = neg (μ 0)`), the sign-degree is **odd** — `sgn ∘ μ` inherits distinct endpoints
+  (`sgn(μ 0)+1 ≠ sgn(μ 0)`), firing `odd_changes_iff`. No dimension bound, no `decide` on
+  the alphabet or the count.
+- `loop_signDegree_even` — closed antipodal loop ⟹ **even** sign-degree, every dimension
+  (the abstract form of oq-04's `full_sign_changes_even`; seed lives on the fundamental
+  domain).
+- `HexagonInstance.hexagon_arc_signDegree_odd` — oq-04's `arc_sign_changes_odd` **recovered
+  as a one-line corollary** of `antipodal_signDegree_odd`, deciding only the finite Fin-4
+  facts `sgn_negL` and `arc_bdry` (not the count). Realizes in Lean the n=2 → n=1 connection
+  oq-04 asserted only in prose.
+
+Net effect: the odd oriented boundary seed is now available in **every dimension and for
+every Tucker label alphabet** `{±1,…,±n}`, factored through the verified n = 1 telescoping
+engine rather than a triangulation-specific `decide`. Honest status: a unification / scoping
+result, NOT a proof of n ≥ 2 Tucker — the open lever remains the 2-D almost-complementary
+path-following that turns this odd boundary sign-degree into an interior complementary
+simplex. Self-contained narrow imports (`Mathlib.Data.ZMod.Basic`,
+`Mathlib.Data.Fin.VecNotation`, `Mathlib.Algebra.BigOperators.Ring.Finset`,
+`…Group.Finset.Basic`, `Mathlib.Algebra.Ring.Parity`); verified via host `lake env lean`
+(docker cache download corrupts under sub-15Gi disk).
 
 ## Iteration 14 addition (researcher-5, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
 Added `proofs/Proofs/SpernerTuckerFixedPointParity.lean` (253 LOC, 7 thm, 0 def,
