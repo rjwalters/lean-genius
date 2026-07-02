@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 163,
+    "lineCount": 162,
     "assumptions": "None. Fully machine-verified: the Docker Lean build of Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ01.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for birthday_triple_threshold_sharp and birthday_triple_threshold_const_one. The file imports only Mathlib and is self-contained. Scope note: as in the parent, this proves the threshold from the expected-count balance equation; it does not re-derive that balance equation from a probabilistic limit theorem (Poisson approximation), which is the heuristic modeling input.",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.26.0",
@@ -145,7 +145,7 @@
       "Real"
     ],
     "namespace": "BirthdayProblemOQ03OQ01OQ01OQ03OQ01",
-    "lineCount": 163,
+    "lineCount": 162,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 0,

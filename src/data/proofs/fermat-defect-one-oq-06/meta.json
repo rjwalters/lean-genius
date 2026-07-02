@@ -40,7 +40,7 @@
       "sign_symmetry / sign_symmetry_odd: packaged statements bundling involutivity, both defect equations, and the family compatibility into one theorem each (cubic and general-odd-n forms)"
     ],
     "axiomCount": 0,
-    "lineCount": 277,
+    "lineCount": 276,
     "assumptions": "None. All 21 theorems are fully proved with 0 axioms and 0 sorries (no native_decide, no decide on the substantive results — only `decide` to discharge `Odd 3` in one sanity-check corollary). #print axioms reports only [propext, Classical.choice, Quot.sound]. Every result is a polynomial identity over ℤ closed by ring / linear_combination / norm_num / simp, plus Mathlib's Odd.neg_pow for the odd-exponent generalization. Scope: this entry establishes the sign symmetry structurally (the map and its properties); it does NOT resolve the parent existence conjecture for n ≥ 4 — it shows only that whatever the truth at a given odd n, the two signs are never independent.",
     "theoremCount": 21,
     "definitionCount": 3,
@@ -137,7 +137,7 @@
       "scoped Polynomial"
     ],
     "namespace": "FermatDefectOneOQ06",
-    "lineCount": 277,
+    "lineCount": 276,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 3,
