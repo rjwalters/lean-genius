@@ -91,7 +91,8 @@
       "**Minimality is the inhomogeneous face of Kronecker density**: OQ-04 shows the orbit of the single point 0 is dense; this entry shows the orbit of EVERY point b is dense, which is the dynamical statement that the irrational rotation x ↦ x + a has no proper closed invariant subset — strictly stronger than the homogeneous case it specialises to at b = 0.",
       "**Translation transports density for free**: the group structure of the circle means every point is a translate of 0, so post-composing the homogeneous dense orbit with the continuous surjective translation x ↦ x + b (via DenseRange.comp) upgrades density-of-one-orbit to density-of-all-orbits without any new analysis.",
       "**The circle norm IS distance to the nearest integer**: on AddCircle 1, AddCircle.norm_eq gives ‖(x : AddCircle 1)‖ = |x − round x|, so the metric statement 'some k·a lands in the ε-ball around ↑β' is literally the Diophantine statement |k·a − β − round(k·a − β)| < ε — an inhomogeneous approximation.",
-      "**Inhomogeneous ⊋ homogeneous**: setting β = 0 recovers the parent's one-sided bound and setting b = 0 recovers the parent's density, so OQ-04 sits inside this entry as the two special cases at the origin."
+      "**Inhomogeneous ⊋ homogeneous**: setting β = 0 recovers the parent's one-sided bound and setting b = 0 recovers the parent's density, so OQ-04 sits inside this entry as the two special cases at the origin.",
+      "**Minimality is exactly an irrationality test**: the irrationality hypothesis is not incidental — a rational rotation a = p/q is periodic, its every orbit being a finite set of q evenly spaced points that is closed and invariant but not dense, so the rotation is emphatically NOT minimal. Minimality of x ↦ x + a therefore holds if and only if a is irrational, and this entry's DenseRange conclusion is the crisp dynamical face of that dichotomy."
     ],
     "prerequisites": [
       "Mathlib's AddCircle API: AddCircle.denseRange_zsmul_coe_iff (multiples dense on the length-p circle ⟺ a/p irrational), the normed-group structure on AddCircle, AddCircle.norm_eq (‖(x:AddCircle p)‖ as distance to the nearest lattice point), and AddCircle.coe_sub",
@@ -126,11 +127,19 @@
     },
     {
       "id": "inhomogeneous-approximation",
-      "title": "Inhomogeneous Dirichlet Approximation from Orbit Density",
+      "title": "Inhomogeneous Approximation, Step 1: Density Meets the ε-Ball",
       "startLine": 75,
+      "endLine": 94,
+      "mathContext": "For irrational $a$, any $\\beta$, $\\varepsilon > 0$: the ball $B(\\uparrow\\!\\beta, \\varepsilon)$ on $\\mathbb{R}/\\mathbb{Z}$ is met by some $\\uparrow(k\\cdot a)$, giving $\\|(\\uparrow(k a - \\beta) : \\mathbb{R}/\\mathbb{Z})\\| < \\varepsilon$.",
+      "summary": "exists_int_zsmul_sub_round_lt begins by extracting an approximant from density. The ε-ball ball (↑β) ε around the target point is open (isOpen_ball) and nonempty (mem_ball_self hε), so DenseRange.exists_mem_open meets it at some ↑(k • a). Unfolding mem_ball / dist_eq_norm and rewriting zsmul_eq_mul and ← AddCircle.coe_sub turns the ball-membership into a circle-norm bound ‖(↑(k·a − β) : AddCircle 1)‖ < ε — an inequality about the single circle point ↑(k·a − β)."
+    },
+    {
+      "id": "norm-as-distance",
+      "title": "Inhomogeneous Approximation, Step 2: the Circle Norm is Distance to ℤ",
+      "startLine": 95,
       "endLine": 100,
-      "mathContext": "For irrational $a$, any $\\beta$, and $\\varepsilon > 0$: $\\exists\\, n,\\ |n a - \\beta - \\operatorname{round}(n a - \\beta)| < \\varepsilon$.",
-      "summary": "exists_int_zsmul_sub_round_lt turns density into a concrete inhomogeneous bound. The ε-ball ball (↑β) ε is open (isOpen_ball) and nonempty (mem_ball_self); DenseRange.exists_mem_open meets it at some ↑(k • a). Unfolding mem_ball / dist_eq_norm and rewriting zsmul_eq_mul and ← AddCircle.coe_sub gives ‖(↑(k·a − β) : AddCircle 1)‖ < ε. Reading the circle norm back as distance to the nearest integer (AddCircle.norm_eq at period 1: inv_one, one_mul, mul_one) yields |k·a − β − round(k·a − β)| < ε with witness n = k. The homogeneous OQ-04 bound is the special case β = 0."
+      "mathContext": "$\\|(x : \\mathbb{R}/\\mathbb{Z})\\| = |x - \\operatorname{round} x|$ at period 1, so $\\exists n,\\ |n a - \\beta - \\operatorname{round}(n a - \\beta)| < \\varepsilon$.",
+      "summary": "The final step reads the circle norm back as the concrete Diophantine quantity. AddCircle.norm_eq at period 1 — after normalising with inv_one, one_mul, mul_one — gives ‖(x : AddCircle 1)‖ = |x − round x|, the distance from x to the nearest integer. Rewriting with this identity turns the norm bound from Step 1 into |k·a − β − round(k·a − β)| < ε, discharged with witness n = k. The homogeneous OQ-04 bound is the special case β = 0."
     }
   ],
   "conclusion": {
