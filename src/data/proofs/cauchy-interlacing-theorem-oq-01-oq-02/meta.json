@@ -98,18 +98,35 @@
   },
   "sections": [
     {
+      "id": "header-and-setup",
+      "title": "Module Header, the Two-File Seam, and Setup",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "Imports the two parent research files and explains the deliberate seam between them: CauchyInterlacingPoincare proves the abstract Poincaré separation theorem but takes the compression operator, its spectral data, and the Rayleigh-agreement hypothesis as inputs, while CauchyInterlacingCompression builds the explicit orthogonal compression compress T H = P_H ∘ T ∘ ι_H and discharges that Rayleigh hypothesis for an arbitrary submodule — but only assembles the codimension-one corollary. Since compress, isSymmetric_compress, and rayleigh_compress_eq never use codim H = 1, the two fit together for any codimension. Opens the InnerProductSpace scope and the parent namespaces, and fixes the ambient RCLike finite-dimensional inner product space V.",
+      "mathContext": "Ambient setting: $T$ symmetric on a finite-dimensional inner product space $V$ over $\\mathbb{K}$ (RCLike), with $\\operatorname{compress} T H = P_H \\circ T \\circ \\iota_H$ the explicit orthogonal compression onto $H \\le V$."
+    },
+    {
+      "id": "poincare-separation-compression",
       "title": "The Self-Contained Poincaré Separation Theorem",
-      "content": "poincare_separation_compression takes only a symmetric T on V (finrank V = n+m) and a subspace H (finrank H = n). It sets the spectral data of T (eigenbasis b, antitone eigenvalues lam) and of the explicit compression compress T H (symmetry from isSymmetric_compress, eigenbasis bH, antitone eigenvalues mu), supplies the Rayleigh-agreement hypothesis from rayleigh_compress_eq, and applies the gallery's abstract poincare_separation. The result is λ_{k+m} ≤ μ_k ≤ λ_k for every k : Fin n, with no Rayleigh side condition and no abstract compression operator.",
+      "startLine": 73,
+      "endLine": 104,
+      "summary": "poincare_separation_compression takes only a symmetric T on V (finrank V = n+m) and a subspace H (finrank H = n). It sets the spectral data of T (eigenbasis b, antitone eigenvalues lam) and of the explicit compression compress T H (symmetry from isSymmetric_compress, eigenbasis bH, antitone eigenvalues mu), supplies the Rayleigh-agreement hypothesis from rayleigh_compress_eq, and applies the gallery's abstract poincare_separation. The result is λ_{k+m} ≤ μ_k ≤ λ_k for every k : Fin n, with no Rayleigh side condition and no abstract compression operator.",
       "mathContext": "For $T$ symmetric on $V$ with $\\dim V = n+m$ and $H \\le V$ with $\\dim H = n$: $\\lambda_{k+m} \\le \\mu_k \\le \\lambda_k$ for all $k$, where $\\mu$ are the descending eigenvalues of $\\operatorname{compress} T H = P_H \\circ T \\circ \\iota_H$."
     },
     {
+      "id": "recover-codim-one",
       "title": "Recovering Codimension One",
-      "content": "cauchy_interlacing_compression_of_poincare specialises to m=1 and re-expresses the index bounds ⟨k+1⟩ and ⟨k⟩ as k.succ and k.castSucc through Fin.ext, reproducing the codimension-one compression corollary λ_{k+1} ≤ μ_k ≤ λ_k. This confirms the arbitrary-codimension theorem is a faithful generalisation of the merged codimension-one entry.",
+      "startLine": 106,
+      "endLine": 132,
+      "summary": "cauchy_interlacing_compression_of_poincare specialises to m=1 and re-expresses the index bounds ⟨k+1⟩ and ⟨k⟩ as k.succ and k.castSucc through Fin.ext, reproducing the codimension-one compression corollary λ_{k+1} ≤ μ_k ≤ λ_k. This confirms the arbitrary-codimension theorem is a faithful generalisation of the merged codimension-one entry.",
       "mathContext": "Setting $m=1$: $\\lambda_{k+1} \\le \\mu_k \\le \\lambda_k$ (with indices $k.\\mathrm{succ}$, $k.\\mathrm{castSucc}$) — the codimension-one Cauchy interlacing corollary."
     },
     {
+      "id": "compression-span-frame",
       "title": "Compression onto an Orthonormal Frame",
-      "content": "poincare_separation_compression_span replaces the explicit dimension hypothesis with an arbitrary orthonormal family f : Fin n → V, compressing onto H = span (range f). The dimension finrank H = n is discharged inline by finrank_span_eq_card hf.linearIndependent composed with Fintype.card_fin, giving the 'compression onto a k-dimensional subspace' form directly from an orthonormal frame.",
+      "startLine": 134,
+      "endLine": 147,
+      "summary": "poincare_separation_compression_span replaces the explicit dimension hypothesis with an arbitrary orthonormal family f : Fin n → V, compressing onto H = span (range f). The dimension finrank H = n is discharged inline by finrank_span_eq_card hf.linearIndependent composed with Fintype.card_fin, giving the 'compression onto a k-dimensional subspace' form directly from an orthonormal frame.",
       "mathContext": "For an orthonormal frame $f : \\mathrm{Fin}\\,n \\to V$, take $H = \\operatorname{span}(\\operatorname{range} f)$; then $\\dim H = n$ (finrank\\_span\\_eq\\_card) and $\\lambda_{k+m} \\le \\mu_k \\le \\lambda_k$ holds for the compression onto $H$."
     }
   ],
