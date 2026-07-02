@@ -16,7 +16,10 @@
       "vertex-critical graphs",
       "edge-critical graphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number",
+      "critical graphs"
+    ]
   },
   {
     "id": "ann-e944-vertex-critical",
@@ -35,7 +38,10 @@
       "chromatic number",
       "vertex deletion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number",
+      "vertex deletion"
+    ]
   },
   {
     "id": "ann-e944-erdos944-property",
@@ -54,7 +60,10 @@
       "critical edge sets",
       "decoupling"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "edge deletion",
+      "critical edge sets"
+    ]
   },
   {
     "id": "ann-e944-main-conjecture",
@@ -72,7 +81,10 @@
       "existence conjecture"
     ],
     "mathContext": "See annotation content for formal details of main conjecture (partially open)",
-    "prerequisites": []
+    "prerequisites": [
+      "open problems",
+      "existential quantifiers"
+    ]
   },
   {
     "id": "ann-e944-dirac",
@@ -90,7 +102,10 @@
       "Dirac conjecture",
       "no critical edges"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "critical graphs",
+      "chromatic number"
+    ]
   },
   {
     "id": "ann-e944-brown",
@@ -108,7 +123,10 @@
       "explicit construction",
       "11-vertex graph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "explicit graph constructions",
+      "vertex-critical graphs"
+    ]
   },
   {
     "id": "ann-e944-lattanzio",
@@ -126,7 +144,10 @@
       "primality",
       "Nat.Prime"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "chromatic number"
+    ]
   },
   {
     "id": "ann-e944-jensen",
@@ -144,7 +165,10 @@
       "general construction",
       "k ≥ 5 solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "graph constructions",
+      "chromatic number"
+    ]
   },
   {
     "id": "ann-e944-martinsson-steiner",
@@ -162,7 +186,10 @@
       "arbitrary r",
       "quantitative bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "quantitative bounds",
+      "critical graphs"
+    ]
   },
   {
     "id": "ann-e944-open-case",
@@ -180,7 +207,10 @@
       "open problem",
       "minimum degree constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems",
+      "minimum degree of a graph"
+    ]
   },
   {
     "id": "ann-e944-min-degree",
@@ -198,6 +228,9 @@
       "greedy coloring"
     ],
     "mathContext": "See annotation content for formal details of minimum degree property",
-    "prerequisites": []
+    "prerequisites": [
+      "minimum degree of a graph",
+      "greedy coloring"
+    ]
   }
 ]
