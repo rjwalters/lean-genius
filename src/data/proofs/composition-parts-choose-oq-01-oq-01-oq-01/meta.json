@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: second moment and variance of the number of parts of a composition",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Imports and header docstring: the family lineage, the second-moment closed form and the variance (n−1)/4, the gaps-bijection mechanism, the binomial identity, and the originality note.",
+      "mathContext": "This file (open question composition-parts-choose-oq-01-oq-01-oq-01) computes the second moment and variance of the part-count X(c) = c.length of a composition of n (an ordered tuple of positive integers summing to n). Lineage: the grandparent gives 2^(n−1) compositions of n, the parents give C(n−1,k−1) with k parts and the first moment (total parts (n+1)·2^(n−2), mean (n+1)/2). This leaf proves second_moment: 4·Σ_c X(c)² = n(n+3)·2^(n−1) (stated ×4 to stay in ℕ) and hence variance: Var(X) = (n−1)/4 under the uniform distribution. The header docstring (lines 1–70) explains the mechanism: the bijection gapsEquiv n : Composition n ≃ Finset (Fin (n−1)) with length_eq_card_gaps reduces the sum to Σ_{s ⊆ Fin m}(|s|+1)² = Σ|s|² + 2Σ|s| + Σ1; the new piece Σ_s|s|² comes from the binomial identity 4 Σ_k C(m,k)k² = m(m+1)2^m (proved by the same absorption trick as the parent's Σ_k C(m,k)k = m 2^(m−1), peeling k=0 and using (k+1)C(m,k+1)=m·C(m−1,k)), the parent supplies Σ|s| = m·2^(m−1), and Σ1 = 2^m; the variance follows by expanding (X−μ)². Originality: Mathlib has Σ C(m,k)=2^m but neither the weighted sums nor any statement on the part-count distribution of a composition. Fully machine-checked."
+    },
+    {
       "id": "second-moment-binomial",
       "title": "The Second-Moment Binomial Sum",
       "startLine": 71,
