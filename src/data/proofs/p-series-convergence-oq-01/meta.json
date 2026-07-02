@@ -1,0 +1,124 @@
+{
+  "id": "p-series-convergence-oq-01",
+  "title": "The p-Series Convergence Test",
+  "slug": "p-series-convergence-oq-01",
+  "description": "The p-series ∑ 1/nᵖ converges if and only if p > 1. This packages the sharp real-exponent threshold, its natural- and integer-index specializations, the harmonic boundary case, and the Basel exponent from Mathlib's p-series engine.",
+  "meta": {
+    "author": "Formalized via Mathlib",
+    "sourceUrl": "https://github.com/leanprover-community/mathlib4/blob/master/Mathlib/Analysis/PSeries.lean",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PSeriesConvergenceOQ01.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "p-series",
+      "harmonic-series"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.summable_one_div_nat_rpow",
+        "description": "The p-series ∑ 1/n^p (real exponent, rpow) is summable iff 1 < p",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "Real.summable_one_div_nat_pow",
+        "description": "The p-series ∑ 1/n^p (natural exponent) is summable iff 1 < p",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "Real.summable_one_div_int_pow",
+        "description": "The two-sided ℤ-indexed p-series is summable iff 1 < p",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "Real.not_summable_one_div_natCast",
+        "description": "The harmonic series ∑ 1/n is not summable (boundary case p = 1)",
+        "module": "Mathlib.Analysis.PSeries"
+      }
+    ],
+    "originalContributions": [
+      "Packages the p-series convergence dichotomy as a single coherent gallery entry",
+      "Presents the sharp real-exponent threshold alongside its ℕ- and ℤ-indexed specializations",
+      "Records the harmonic series as the exact boundary instance and the Basel exponent p = 2 as a convergent corollary"
+    ],
+    "dateAdded": "2026-07-02",
+    "prerequisites": [
+      "Real analysis and infinite series",
+      "Summable and tsum from Mathlib",
+      "Real.rpow (real exponentiation)",
+      "The integral / comparison test for series"
+    ],
+    "axiomCount": 0,
+    "lineCount": 82,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The p-series is the archetypal family for testing convergence: for which exponents p does ∑ 1/nᵖ have a finite sum? The two endpoints were understood centuries apart. Nicole Oresme (c. 1350) showed the harmonic series (p = 1) diverges by a grouping argument, and Jacob Bernoulli popularized the problem in the 17th century. Leonhard Euler resolved the exponent p = 2 in 1735 — the Basel problem — evaluating ∑ 1/n² = π²/6. The general threshold is a direct consequence of the integral test (Maclaurin–Cauchy), which compares ∑ 1/nᵖ with ∫ dx/xᵖ: the integral is finite exactly when p > 1. The p-series test is a staple of every first course in analysis, precisely because it exhibits a sharp phase transition at p = 1 with the harmonic series sitting exactly on the divergent side of the boundary.",
+    "problemStatement": "**Theorem (p-series test).** For a real exponent p, the series\n\n$$\\sum_{n=1}^{\\infty} \\frac{1}{n^p}$$\n\nis summable **if and only if** $p > 1$.\n\nIn particular the harmonic series ($p = 1$) diverges, while every exponent strictly above $1$ — such as the Basel exponent $p = 2$ — yields a convergent series. The exponent $p = 1$ marks the sharp boundary of convergence.",
+    "text": "This entry packages the classical p-series convergence dichotomy as a single coherent topic, drawing on Mathlib's p-series engine. The headline statement `pSeries_summable_iff_one_lt` uses the real power `Real.rpow` to give the sharp threshold: $\\sum 1/n^p$ is summable iff $1 < p$, delegating to `Real.summable_one_div_nat_rpow`. Two specializations follow — `pSeries_nat_summable_iff_one_lt` for a natural-number exponent (ordinary monoid power) and `pSeries_int_summable_iff_one_lt` for the two-sided $\\mathbb{Z}$-indexed series — each a thin wrapper over the corresponding Mathlib lemma. The convergence half is extracted as `pSeries_summable_of_one_lt`, and the boundary case is recorded twice: `harmonic_not_summable` shows the harmonic series $\\sum 1/n$ is *not* summable (so $1 < p$ cannot be relaxed to $1 \\le p$), and `harmonic_eq_pSeries_one` identifies it as the $p = 1$ instance. Finally `pSeries_basel_summable` specializes to the Basel exponent $p = 2$, confirming $\\sum 1/n^2$ converges. All seven results are fully machine-checked against Mathlib v4.26.0 with no additional axioms and no sorries.",
+    "proofStrategy": "Every statement reduces to Mathlib's p-series library. The real-exponent threshold is `Real.summable_one_div_nat_rpow`; the natural- and integer-index forms are `Real.summable_one_div_nat_pow` and `Real.summable_one_div_int_pow`. These are themselves proved in Mathlib via the Cauchy condensation / integral test, which compares the dyadic blocks $[2^k, 2^{k+1})$ of the series against a geometric series with ratio $2^{1-p}$: the geometric series converges iff $2^{1-p} < 1$, i.e. iff $p > 1$. The harmonic divergence corollary rewrites `Real.not_summable_one_div_natCast` up to the definitional shape of $1/n$, and the Basel corollary applies the natural-exponent iff at $p = 2$ with a `norm_num` discharge of $1 < 2$.",
+    "openQuestions": [
+      "The convergent values ∑ 1/n^{2k} are rational multiples of π^{2k} (Euler); the odd zeta values ∑ 1/n^{2k+1} are far more mysterious — is ζ(5) irrational? (ζ(3) irrational is Apéry, 1979.)",
+      "How slowly does the p-series diverge as p → 1⁺? The sum behaves like 1/(p−1), linking the boundary to the simple pole of the Riemann zeta function at s = 1.",
+      "Can the sharp threshold be refined along the boundary itself, e.g. ∑ 1/(n (ln n)^q) converging iff q > 1 (the logarithmic p-series)?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Euler, Leonhard",
+      "title": "De summis serierum reciprocarum",
+      "year": "1735",
+      "venue": "Commentarii academiae scientiarum Petropolitanae",
+      "note": "Solved the Basel problem ∑ 1/n² = π²/6, the p = 2 instance of the p-series"
+    },
+    {
+      "authors": "Oresme, Nicole",
+      "title": "Quaestiones super geometriam Euclidis",
+      "year": "c. 1360",
+      "venue": "Medieval mathematics",
+      "note": "First proof that the harmonic series (p = 1) diverges, the boundary case of the p-series test"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "contrasts",
+      "description": "The harmonic series is the boundary case p = 1 of the p-series: it diverges, sitting exactly on the divergent side of the p > 1 convergence threshold established here."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The Basel problem evaluates the p = 2 instance ∑ 1/n² = π²/6; this entry records that same series' convergence as pSeries_basel_summable, the exponent-2 corollary of the general test."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "scoped Real"
+    ],
+    "namespace": "PSeriesConvergenceOQ01",
+    "lineCount": 82,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/PSeriesConvergenceOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "pSeries_summable_iff_one_lt",
+      "type": "core",
+      "description": "The p-series ∑ 1/nᵖ (real exponent) is summable if and only if 1 < p — the sharp convergence threshold.",
+      "leanType": "Summable (fun n : ℕ => 1 / (n : ℝ) ^ p) ↔ 1 < p"
+    }
+  ],
+  "sorries": 0
+}
