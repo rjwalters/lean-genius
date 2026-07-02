@@ -71,6 +71,50 @@
     ]
   },
   {
+    "id": "ann-vf-oq0401-sum-zero",
+    "proofId": "vietas-formulas-oq-04-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Sum-of-Roots-Zero Form (No p, q Symbols)",
+    "content": "The cleanest statement of the depressed identity, purely in the roots: when r₁ + r₂ + r₃ = 0, the squared root-gap product equals −4·e₂³ − 27·e₃² with e₂, e₃ written out as r₁r₂+r₁r₃+r₂r₃ and r₁r₂r₃. It is discriminant_depressed with the p, q abbreviations inlined; the proof substitutes r₃ = −(r₁+r₂) (via linear_combination hsum) and closes with ring.",
+    "mathContext": "For $r_1+r_2+r_3 = 0$: $((r_1-r_2)(r_1-r_3)(r_2-r_3))^2 = -4(r_1r_2+r_1r_3+r_2r_3)^3 - 27(r_1r_2r_3)^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "depressed cubic",
+      "elementary symmetric functions",
+      "root-gap product"
+    ],
+    "prerequisites": [
+      "linear_combination tactic",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-vf-oq0401-sanity",
+    "proofId": "vietas-formulas-oq-04-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Numerical Sanity Check: Roots −1, 0, 1",
+    "content": "A concrete instance validating the depressed identity. The roots −1, 0, 1 of x³ − x (so p = −1, q = 0) give discriminant −4·(−1)³ − 27·0² = 4, matching the direct product ((−1−0)(−1−1)(0−1))² = ((−1)(−2)(−1))² = 4. Discharged over ℤ by kernel decide — a computational cross-check that the symbolic identity produces the right numbers.",
+    "mathContext": "$p=-1,\\ q=0$: $-4(-1)^3 - 27\\cdot 0^2 = 4 = ((-1)(-2)(-1))^2$; verified by `decide` over ℤ.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "worked example",
+      "kernel decide",
+      "x³ − x"
+    ],
+    "prerequisites": [
+      "decide tactic",
+      "integer arithmetic"
+    ]
+  },
+  {
     "id": "ann-vf-oq0401-repeated-root",
     "proofId": "vietas-formulas-oq-04-oq-01",
     "range": {
@@ -93,6 +137,30 @@
       "pow_eq_zero_iff",
       "mul_eq_zero",
       "sub_eq_zero"
+    ]
+  },
+  {
+    "id": "ann-vf-oq0401-distinct-depressed",
+    "proofId": "vietas-formulas-oq-04-oq-01",
+    "range": {
+      "startLine": 121,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Distinct Roots ⇒ Δ ≠ 0, and the p, q Repeated-Root Criterion",
+    "content": "Two corollaries of the repeated-root equivalence. discriminant_ne_zero_of_distinct: three pairwise-distinct roots force Δ ≠ 0 (rewrite through discriminant_eq_zero_iff and push_neg). depressed_discriminant_zero_iff: for a depressed cubic, the classical quantity −4p³ − 27q² vanishes exactly when two roots coincide — obtained by rewriting back through discriminant_depressed and then discriminant_eq_zero_iff. Together they package the discriminant as a faithful detector of root multiplicity in coefficient form.",
+    "mathContext": "$r_i$ pairwise distinct $\\Rightarrow \\Delta \\neq 0$; and $-4p^3 - 27q^2 = 0 \\Leftrightarrow r_1=r_2 \\vee r_1=r_3 \\vee r_2=r_3$ for a depressed cubic (roots summing to 0).",
+    "significance": "key",
+    "relatedConcepts": [
+      "repeated roots",
+      "discriminant nonvanishing",
+      "depressed cubic",
+      "integral domain"
+    ],
+    "prerequisites": [
+      "discriminant_eq_zero_iff",
+      "push_neg",
+      "discriminant_depressed"
     ]
   }
 ]
