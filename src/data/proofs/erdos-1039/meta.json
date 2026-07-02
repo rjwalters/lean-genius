@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "relatedProblems": [],
     "axiomCount": 10,
-    "lineCount": 303,
+    "lineCount": 305,
     "assumptions": "10 axioms total: 5 distinct (benchmark_upper, pommerenke_lower, klr_lower, klr_area_bound, random_polynomial_expected) declared identically in main file Proofs/Erdos1039Problem.lean and stub file Proofs/Stubs/Erdos1039Problem.lean (byte-identical, md5 bf950441c17b5b0f2ed93175e7181730). 3 sorries remain (area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc). Fixed sublevelArea type (ENNReal→ℝ via toReal).",
     "mathlib_version": "4.29.0",
     "mathlibDependencies": [
@@ -244,7 +244,7 @@
     ],
     "opens": [],
     "namespace": "Erdos1039",
-    "lineCount": 303,
+    "lineCount": 305,
     "axiomCount": 5,
     "theoremCount": 9,
     "definitionCount": 17,
