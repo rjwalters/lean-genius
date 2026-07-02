@@ -103,23 +103,6 @@
   ],
   "conclusion": {
     "summary": "Establishes the operator absolute value |A| = √(AᴴA) as a first-class matrix construction on top of Mathlib's continuous-functional-calculus square root (CFC.sqrt), and proves its defining structural properties — positive semidefinite, Hermitian, |A|² = AᴴA, and uniqueness as the PSD square root via CFC.sqrt_unique — together with the load-bearing norm-preservation identity ⟨Ax, Ax⟩ = ⟨|A|x, |A|x⟩, which descends to the Euclidean statement ‖Ax‖ = ‖|A|x‖ for every vector x. The proof reduces everything to a single quadratic-form collapse ⟨Mx, Mx⟩ = ⟨x, (MᴴM)x⟩, applied to both A and |A| and combined with the fact that (|A|)ᴴ·|A| = AᴴA; the abstract 𝕜-valued form identity then becomes a genuine real squared-norm identity through RCLike.conj_mul and injectivity of the coercion ℝ ↪ 𝕜. All results hold uniformly over ℝ and ℂ (RCLike 𝕜) and are 0-axiom, machine-checked.",
-    "significance": "The modulus is the intrinsic, choice-free half of the polar decomposition A = U·|A|: the phase factor U is only determined up to the kernel, but |A| is unique. Norm preservation ‖Ax‖ = ‖|A|x‖ is exactly the property that forces U to be an isometry, and it is the entry point to the singular value decomposition (the singular values of A are the eigenvalues of |A|) and to the operator- and Schatten-norm theory built on |A|. Mathlib carries the C⋆-algebraic CFC.sqrt but packages neither the matrix operator absolute value nor its isometry property; this entry supplies both, and positions the kernel identity ker A = ker |A| and the partial-isometry construction for the singular case (the listed open questions) as the natural next steps.",
-    "implications": "Packaging |A| = √(AᴴA) as a first-class matrix object — with |A|² = AᴴA, Hermitian-ness, PSD-ness, uniqueness, and ‖Ax‖ = ‖|A|x‖ — gives the reusable substrate for everything downstream of the polar decomposition: the singular values of A are the eigenvalues of |A|, so the SVD, the operator norm, and the Schatten norms are all computed through |A|. The norm-preservation identity is the precise lever that upgrades the polar factor U from 'partial isometry' to genuine isometry, and it makes the kernel identity ker A = ker |A| an immediate corollary rather than a separate theorem.",
-    "openQuestions": [
-      "Does the kernel identity ker A = ker |A| hold — i.e. A *ᵥ x = 0 ↔ |A| *ᵥ x = 0 — as a direct corollary of ‖Ax‖ = ‖|A|x‖?",
-      "Can the norm-preservation identity be lifted to the EuclideanSpace statement ‖A.toEuclideanCLM x‖ = ‖|A|.toEuclideanCLM x‖ and used to construct the partial isometry realising A = U·|A| in the singular (non-invertible) case, where U is no longer unitary?"
-    ]
-  },
-  "crossReferences": [
-    {
-      "targetId": "matrix-posdef-sqrt-oq-01-oq-01",
-      "relationship": "parent",
-      "description": "Polar Decomposition A = U·√(AᴴA) from the PSD square root. This entry isolates the factor √(AᴴA) as the operator absolute value |A| and proves the norm-preservation identity ‖Ax‖ = ‖|A|x‖ that is exactly what forces the polar phase U there to be a genuine isometry."
-    },
-    {
-      "targetId": "matrix-posdef-sqrt-oq-01",
-      "relationship": "grandparent",
-      "description": "The Positive Semidefinite Square Root of a Matrix: existence, structure, and uniqueness. Supplies CFC.sqrt and the PSD/Hermitian/uniqueness scaffolding on which |A| = √(AᴴA) and |A|² = AᴴA are built here."
-    }
-  ]
+    "significance": "The modulus is the intrinsic, choice-free half of the polar decomposition A = U·|A|: the phase factor U is only determined up to the kernel, but |A| is unique. Norm preservation ‖Ax‖ = ‖|A|x‖ is exactly the property that forces U to be an isometry, and it is the entry point to the singular value decomposition (the singular values of A are the eigenvalues of |A|) and to the operator- and Schatten-norm theory built on |A|. Mathlib carries the C⋆-algebraic CFC.sqrt but packages neither the matrix operator absolute value nor its isometry property; this entry supplies both, and positions the kernel identity ker A = ker |A| and the partial-isometry construction for the singular case (the listed open questions) as the natural next steps."
+  }
 }
