@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-sfk0201-overview",
+    "proofId": "stirling-first-kind-oq-02-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Overview: Stirling Numbers of the First and Second Kind Are Inverse Matrices",
+    "content": "The signed Stirling numbers of the first kind s(n,k) = (−1)^{n−k} c(n,k) are the connection coefficients writing the falling factorial in the monomial basis: x(x−1)⋯(x−n+1) = descPochhammer ℤ n = ∑ₖ s(n,k) xᵏ (♭). The second-kind numbers S(n,k) run the substitution the other way, writing each monomial in the falling-factorial basis: xⁿ = ∑ₖ S(n,k)·x(x−1)⋯(x−k+1) (♯). Composing (♭) and (♯) shows the two triangular arrays are MUTUALLY INVERSE: ∑ₖ S(n,k)·s(k,m) = δₙₘ (Stirling orthogonality, ★) — the relation making the first- and second-kind Stirling transforms invert one another (Graham–Knuth–Patashnik §6.1). A sibling recorded (♭) and the gallery's combinations-formula chain recorded the numeric second-kind bridge, but neither places both kinds in one file, and the orthogonality (★) — that they are inverse matrices — is new to the gallery. Proved here: the per-coefficient form of (♭), the POLYNOMIAL second-kind expansion (♯) over ℤ[X] (Mathlib carries only the evaluated numeric form), and the orthogonality (★) by extracting the Xᵐ-coefficient of (♯) and substituting (♭). Everything over ℤ/ℤ[X], no axioms, no sorry.",
+    "mathContext": "Writing the falling factorial in monomials (first kind) and monomials in falling factorials (second kind) are inverse changes of basis on $\\mathbb{Z}[X]$, so the lower-triangular Stirling matrices satisfy $\\sum_k S(n,k)\\,s(k,m)=\\delta_{nm}$. Here $s(n,k)=(-1)^{n-k}c(n,k)$ is the signed first kind and $S(n,k)$ the second kind.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Stirling numbers",
+      "falling factorial",
+      "descPochhammer",
+      "change of basis",
+      "orthogonality relation"
+    ],
+    "prerequisites": [
+      "Stirling numbers of both kinds",
+      "polynomial coefficients",
+      "falling factorials"
+    ]
+  },
+  {
     "id": "ann-first-kind-coeff",
     "proofId": "stirling-first-kind-oq-02-oq-01",
     "range": {
