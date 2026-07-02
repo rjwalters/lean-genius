@@ -1,24 +1,29 @@
 # Research State: nakayama-lemma-oq-01-oq-02
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-07-02T04:46:56-07:00
+**Since**: 2026-07-02
 **Iteration**: 1
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context from the parent gallery entry.
+Solved. The graded Nakayama lemma is verified in
+`proofs/Proofs/NakayamaLemmaOQ01OQ02.lean` (0 axioms, 0 sorries, 4 theorems /
+1 def / 172 lines) and integrated into the gallery as
+`nakayama-lemma-oq-01-oq-02`.
 
 ## Active Approach
-None yet.
+Bottom-degree argument (Approach A from problem.md), which needed **no
+finite-generation hypothesis** — stronger than the stated goal.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly, then move to ORIENT: survey the parent proof and relevant Mathlib modules.
+Optional follow-ups: the graded lifting-of-generators corollary, and the
+bounded-below ℤ-graded generalisation.
