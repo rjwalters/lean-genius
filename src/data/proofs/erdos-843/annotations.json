@@ -16,7 +16,11 @@
       "Subset sums",
       "k-th powers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory basics",
+      "Additive number theory",
+      "Colorings of integer sets"
+    ]
   },
   {
     "id": "ann-e843-coloring",
@@ -34,7 +38,11 @@
       "Colorings"
     ],
     "mathContext": "See annotation content for formal details of coloring and monochromatic subsets",
-    "prerequisites": []
+    "prerequisites": [
+      "Functions as colorings",
+      "Finite color palettes",
+      "Pigeonhole principle"
+    ]
   },
   {
     "id": "ann-e843-distinct-sum",
@@ -52,7 +60,11 @@
       "Integer representation"
     ],
     "mathContext": "See annotation content for formal details of distinct sum representation",
-    "prerequisites": []
+    "prerequisites": [
+      "Subset sums",
+      "Finite subsets of the naturals",
+      "Integer representations"
+    ]
   },
   {
     "id": "ann-e843-ramsey-complete",
@@ -70,7 +82,11 @@
       "Ramsey theory",
       "Completeness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory",
+      "Subset-sum representations",
+      "Asymptotic (\"sufficiently large\") quantifiers"
+    ]
   },
   {
     "id": "ann-e843-squares",
@@ -88,7 +104,11 @@
       "Powers"
     ],
     "mathContext": "See annotation content for formal details of squares and k-th powers",
-    "prerequisites": []
+    "prerequisites": [
+      "Perfect squares",
+      "k-th powers",
+      "Set-builder notation"
+    ]
   },
   {
     "id": "ann-e843-original",
@@ -106,7 +126,11 @@
       "Generalization"
     ],
     "mathContext": "See annotation content for formal details of the original question",
-    "prerequisites": []
+    "prerequisites": [
+      "Perfect squares",
+      "2-colorings",
+      "Monochromatic subset sums"
+    ]
   },
   {
     "id": "ann-e843-burr",
@@ -124,7 +148,11 @@
       "Historical",
       "Unpublished results"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey completeness",
+      "k-th powers",
+      "History of Erdős problems"
+    ]
   },
   {
     "id": "ann-e843-cfp",
@@ -142,7 +170,11 @@
       "CFP 2021",
       "Sparse sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey completeness",
+      "Density of integer sequences",
+      "Logarithmic asymptotics ($\\ll$, $\\log^2 N$)"
+    ]
   },
   {
     "id": "ann-e843-subset",
@@ -160,7 +192,11 @@
       "Subset property"
     ],
     "mathContext": "See annotation content for formal details of subset ramsey complete",
-    "prerequisites": []
+    "prerequisites": [
+      "Monotonicity under set inclusion",
+      "Ramsey completeness",
+      "Subset relation $A\\subseteq B$"
+    ]
   },
   {
     "id": "ann-e843-kth-powers",
@@ -178,7 +214,11 @@
       "Generalization"
     ],
     "mathContext": "See annotation content for formal details of k-th powers ramsey complete",
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey completeness",
+      "k-th powers",
+      "Sparse subsequences"
+    ]
   },
   {
     "id": "ann-e843-resolved",
@@ -196,7 +236,11 @@
       "Main theorem"
     ],
     "mathContext": "See annotation content for formal details of problem resolved",
-    "prerequisites": []
+    "prerequisites": [
+      "Perfect squares as $k$-th powers ($k=2$)",
+      "Ramsey completeness",
+      "Specialization of a general theorem"
+    ]
   },
   {
     "id": "ann-e843-density",
@@ -214,7 +258,11 @@
       "Optimal bounds"
     ],
     "mathContext": "See annotation content for formal details of density bounds",
-    "prerequisites": []
+    "prerequisites": [
+      "Counting-function density $|A\\cap[1,N]|$",
+      "Logarithmic asymptotics",
+      "Upper and lower bounds"
+    ]
   },
   {
     "id": "ann-e843-related",
@@ -232,7 +280,11 @@
       "Related problems"
     ],
     "mathContext": "See annotation content for formal details of related results, context, and lagrange",
-    "prerequisites": []
+    "prerequisites": [
+      "Lagrange four-square theorem",
+      "Burr–Erdős complete sequences",
+      "Growth rates of the squares"
+    ]
   },
   {
     "id": "ann-e843-summary",
@@ -250,6 +302,10 @@
       "Final answer"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey completeness",
+      "Perfect squares",
+      "Density bounds"
+    ]
   }
 ]
