@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Verified VAS Real-Root Isolation from Budan Certificates",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Imports (Mathlib.Data.Real.Basic, Mathlib.Data.List.Basic, Mathlib.Tactic), module docstring, and the start of the IsolationResult structure (isolated / unresolved interval lists). Answers open question #4 of Budan's Theorem (descartes-rule-of-signs-oq-02): formalize the Vincent–Akritas–Strzeboński (VAS) real-root isolation algorithm as a verified program using proved root-isolation certificates. Key observation: correctness depends only on the certificate properties of the count function, not on the analytic proof of Budan's theorem — so the algorithm is developed abstractly over an arbitrary count V:ℝ→ℕ and root count N with hypotheses hEq (root-free), hOne (unique-root), hSplit (additivity), making the development fully axiom-free and machine-checked as a reduction. Run with a fuel budget, vasIsolate returns isolated (each certified one root) and unresolved intervals; proves vasIsolate_isolated_subset, _one_root, _disjoint, vasIsolate_complete (count of isolated = N a b once resolved), and vasIsolate_correct.",
+      "mathContext": "By abstracting over the certificate interface, the entry establishes VAS correctness unconditionally: every axiom of Budan's theorem becomes an explicit hypothesis, so certificates ⟹ verified isolation is proved with no assumptions of its own."
+    },
+    {
       "id": "algorithm",
       "title": "The VAS Isolation Procedure",
       "startLine": 76,
