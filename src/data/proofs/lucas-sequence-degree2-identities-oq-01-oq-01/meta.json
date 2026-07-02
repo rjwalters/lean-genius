@@ -27,22 +27,22 @@
     {
       "id": "tripling-formulas",
       "title": "Section I: The General Tripling Formulas",
-      "startLine": 47,
-      "endLine": 80,
+      "startLine": 49,
+      "endLine": 82,
       "summary": "U_three_mul: U₃ₙ = Uₙ·(Vₙ² − Qⁿ) from addition law (A) at (2n, n) plus the doubling formulas, closed by ring after cancelling 2. V_three_mul: V₃ₙ = Vₙ·(Vₙ² − 3·Qⁿ) from addition law (B) at (2n, n) plus doubling, eliminating the residual D·Uₙ² by the master identity via linear_combination (−Vₙ), then cancelling 2.",
       "mathContext": "$U_{3n}=U_n(V_n^2-Q^n)$, $V_{3n}=V_n(V_n^2-3Q^n)$; Fibonacci $F_6=8=F_2(L_2^2-1)=1\\cdot 8$."
     },
     {
       "id": "specializations",
       "title": "Section II: Named Specializations and Numeric Checks",
-      "startLine": 82,
-      "endLine": 106,
+      "startLine": 84,
+      "endLine": 108,
       "summary": "fib_tripling F₃ₙ = Fₙ·(Lₙ² − (−1)ⁿ) and lucas_tripling L₃ₙ = Lₙ·(Lₙ² − 3·(−1)ⁿ) at (1,−1), pell_tripling U₃ₙ = Uₙ·(Vₙ² − (−1)ⁿ) at (2,−1), plus a kernel-decide numeric sanity check (F₆=8, L₆=18 against the tripling formulas at n=2).",
       "mathContext": "The $(P,Q)=(1,-1)$ and $(2,-1)$ instances of the general tripling laws."
     }
   ],
   "conclusion": {
-    "summary": "A fully verified (0 sorries, 0 axioms, kernel decide only — no native_decide) 106-line file with 5 theorems establishing the general Lucas-sequence tripling formulas U₃ₙ = Uₙ·(Vₙ² − Qⁿ), V₃ₙ = Vₙ·(Vₙ² − 3·Qⁿ) for the two-parameter Lucas sequences over ℤ. Neither needs a new induction: tripling is the bilinear addition law at 3n = 2n + n composed with the doubling formulas — U is closed by ring, V by a single linear_combination over the master invariant Vₙ² − (P²−4Q)·Uₙ² = 4·Qⁿ. Fibonacci/Lucas (F₃ₙ = Fₙ·(Lₙ²−(−1)ⁿ), L₃ₙ = Lₙ·(Lₙ²−3(−1)ⁿ)) and Pell tripling are corollaries. #print axioms reports only [propext, Classical.choice, Quot.sound].",
+    "summary": "A fully verified (0 sorries, 0 axioms, kernel decide only — no native_decide) 108-line file with 5 theorems establishing the general Lucas-sequence tripling formulas U₃ₙ = Uₙ·(Vₙ² − Qⁿ), V₃ₙ = Vₙ·(Vₙ² − 3·Qⁿ) for the two-parameter Lucas sequences over ℤ. Neither needs a new induction: tripling is the bilinear addition law at 3n = 2n + n composed with the doubling formulas — U is closed by ring, V by a single linear_combination over the master invariant Vₙ² − (P²−4Q)·Uₙ² = 4·Qⁿ. Fibonacci/Lucas (F₃ₙ = Fₙ·(Lₙ²−(−1)ⁿ), L₃ₙ = Lₙ·(Lₙ²−3(−1)ⁿ)) and Pell tripling are corollaries. #print axioms reports only [propext, Classical.choice, Quot.sound].",
     "implications": "Answers the doubling entry's first open question (the tripling formulas). Combined with doubling, tripling extends the index-multiplication toolkit: U and V at 2n and 3n are now polynomials in Uₙ, Vₙ, Qⁿ, giving the ternary fast-exponentiation step and, via U₃ₙ = Uₙ·(Vₙ² − Qⁿ), the divisibility Uₙ ∣ U₃ₙ — the next case toward the strong divisibility property Uₙ ∣ U_{kn} and gcd(Uₘ,Uₙ) = U_{gcd(m,n)}.",
     "openQuestions": [
       "Prove the general index-multiplication statement Uₙ ∣ U_{kn} for all k (equivalently, that U_{kn}/Uₙ is a polynomial in Uₙ, Vₙ, Qⁿ), unifying doubling and tripling as the k = 2, 3 cases and giving the first step of strong divisibility.",
@@ -87,9 +87,11 @@
       "Proofs.LucasSequenceDegree2IdentitiesOQ01",
       "Proofs.LucasSequenceDegree2IdentitiesOQ02"
     ],
-    "opens": [],
+    "opens": [
+      "LucasSequenceDegree2IdentitiesOQ02"
+    ],
     "namespace": "LucasSequenceDegree2Identities",
-    "lineCount": 106,
+    "lineCount": 108,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
@@ -142,7 +144,7 @@
       "pell_tripling: the (2,−1) Pell tripling specialization"
     ],
     "axiomCount": 0,
-    "lineCount": 106,
+    "lineCount": 108,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The numeric check uses kernel `decide` (not `native_decide`), so #print axioms reports only [propext, Classical.choice, Quot.sound]. Compiled against Mathlib v4.26.0. The tripling formulas are classical (Lucas, 1878); the contribution is the parameter-general, axiom-free formalization answering the doubling entry's open question, reusing the parent addition laws and doubling formulas with no new induction.",
     "theoremCount": 5,
     "definitionCount": 0,
