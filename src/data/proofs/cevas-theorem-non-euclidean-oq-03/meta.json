@@ -96,7 +96,13 @@
   ],
   "conclusion": {
     "summary": "Inside the abstract GeneralizedCevianConfig, the Pappus hexagon's geometry-independent invariant is a telescoping reciprocity P·P' = 1 between the Ceva product and its cyclic dual, equivalent to the abstract Ceva–Brianchon duality and multiplicative under composition. The relation specializes verbatim to spherical (sin) and hyperbolic (sinh) measures, giving the non-Euclidean hexagon closure relation, all axiom-free.",
-    "implications": "The entry pins down how much of non-Euclidean Pappus–Brianchon is pure ratio algebra: the hexagon closure relation and the multiplicative chaining law, both geometry-independent. It does not derive the full projective incidence theorem (which needs the combinatorics of lines and intersection points), but provides the verified algebraic engine — reciprocity, duality, and composition closure — on which such a derivation rests, available uniformly in all three constant-curvature geometries."
+    "implications": "The entry pins down how much of non-Euclidean Pappus–Brianchon is pure ratio algebra: the hexagon closure relation and the multiplicative chaining law, both geometry-independent. It does not derive the full projective incidence theorem (which needs the combinatorics of lines and intersection points), but provides the verified algebraic engine — reciprocity, duality, and composition closure — on which such a derivation rests, available uniformly in all three constant-curvature geometries.",
+    "openQuestions": [
+      "Derive the full projective Pappus–Brianchon incidence theorem from this algebraic engine — the entry explicitly defers this, as it requires the combinatorics of lines and intersection points on top of the ratio reciprocity P·P' = 1 proved here.",
+      "Assemble the classical Pappus proof by formally multiplying several Menelaus/transversal relations, showing that ceva_comp_of_ceva and the multiplicativity laws (cevaProduct_comp, dualProduct_comp) are exactly the chaining step that route depends on.",
+      "Generalize the hexagon from the degenerate conic (two geodesics carrying the alternating vertices) to a genuine non-degenerate conic, recovering the full Brianchon theorem for an inscribed/circumscribed hexagon rather than the Pappus special case.",
+      "Formalize the projective duality principle that interchanges Pappus and Brianchon, exhibiting ceva_iff_dual as its ratio-algebra shadow and making the Ceva–Brianchon equivalence a consequence of point–line duality rather than a computed identity."
+    ]
   },
   "leanFile": {
     "imports": [
