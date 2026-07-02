@@ -16,7 +16,11 @@
       "chromatic number",
       "aleph cardinals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "chromatic number of a graph",
+      "infinite graphs",
+      "the aleph cardinal hierarchy"
+    ]
   },
   {
     "id": "ann-e918-imports",
@@ -36,7 +40,11 @@
       "Ordinal",
       "aleph"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal numbers",
+      "ordinal numbers",
+      "cardinality of a type (Cardinal.mk)"
+    ]
   },
   {
     "id": "ann-e918-infinite-chromatic",
@@ -55,7 +63,11 @@
       "graph coloring",
       "cardinals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "proper graph coloring",
+      "cardinal numbers versus natural numbers",
+      "Mathlib's SimpleGraph.chromaticNumber"
+    ]
   },
   {
     "id": "ann-e918-question1",
@@ -74,7 +86,11 @@
       "induced subgraph",
       "countable chromatic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the cardinals ℵ₀, ℵ₁, ℵ₂",
+      "induced subgraphs",
+      "chromatic number as a cardinal"
+    ]
   },
   {
     "id": "ann-e918-question2",
@@ -93,7 +109,11 @@
       "limit cardinal",
       "successor cardinal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limit ordinals and the first infinite ordinal ω",
+      "successor versus limit cardinals",
+      "the aleph function on ordinals"
+    ]
   },
   {
     "id": "ann-e918-erdos-hajnal",
@@ -112,7 +132,11 @@
       "diagonal argument",
       "finite case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "transfinite induction",
+      "chromatic number of infinite graphs",
+      "the aleph hierarchy indexed by finite k"
+    ]
   },
   {
     "id": "ann-e918-negative",
@@ -131,7 +155,11 @@
       "chromatic number lower bound",
       "correction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite subgraphs (edges, triangles)",
+      "chromatic number of finite graphs",
+      "'exactly ℵ₀' versus 'at most ℵ₀'"
+    ]
   },
   {
     "id": "ann-e918-aleph-hierarchy",
@@ -151,7 +179,11 @@
       "limit cardinal",
       "successor cardinal"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "countable versus uncountable cardinals",
+      "supremum of a set of cardinals",
+      "strict ordering of cardinals"
+    ]
   },
   {
     "id": "ann-e918-difficulty",
@@ -170,7 +202,11 @@
       "ZFC independence",
       "combinatorial methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "compactness arguments in combinatorics",
+      "the ZFC axioms of set theory",
+      "independence from ZFC"
+    ]
   },
   {
     "id": "ann-e918-summary",
@@ -189,6 +225,10 @@
       "proved theorem",
       "summary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "strict order on cardinals",
+      "distinction between axiom and proved theorem",
+      "the aleph cardinals ℵ₀, ℵ₁, ℵ₂"
+    ]
   }
 ]
