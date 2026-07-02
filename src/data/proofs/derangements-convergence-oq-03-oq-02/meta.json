@@ -56,7 +56,8 @@
       "The two sign conventions are the *same* recurrence: (-1)^(n+1) = -(-1)^n, so D(n+1) = (n+1)·D(n) + (-1)^(n+1) is `pow_succ` + `ring` away from Mathlib's numDerangements_succ. The mathematical content of the restatement is zero; its value is matching the open question's stated form.",
       "The genuinely new content is the modular congruence D(m) ≡ (-1)^m (mod m). Because the one-term recurrence has a single correction term of size 1, reducing mod (n+1) annihilates the (n+1)·D(n) term and leaves only the ±1. This is a clean arithmetic fact about derangement numbers that does not appear in Mathlib.",
       "The error bound |D(n+1) - (n+1)·D(n)| = 1 is exact, not asymptotic: the one-term recurrence is the tightest possible 'multiply by n+1' approximation, with a remainder that never exceeds 1 in absolute value. This is the discrete analogue of the |D(n) - n!/e| < 1/2 rounding bound proved in the sibling entry derangements-convergence-oq-03.",
-      "Working over ℤ (rather than ℕ) is essential: the corrections (-1)^(n+1) are signed, and subtraction D(n+1) - (n+1)·D(n) underflows in ℕ. The cast to ℤ is what makes the alternating structure visible."
+      "Working over ℤ (rather than ℕ) is essential: the corrections (-1)^(n+1) are signed, and subtraction D(n+1) - (n+1)·D(n) underflows in ℕ. The cast to ℤ is what makes the alternating structure visible.",
+      "The congruence D(m) ≡ (-1)^m (mod m) forces m ∤ D(m) for every m ≥ 2: since (-1)^m = ±1 and ±1 ≢ 0 (mod m) once m ≥ 2, the number of derangements is never divisible by its own order — a clean divisibility corollary of the one-term recurrence."
     ],
     "prerequisites": [
       "numDerangements_succ from Mathlib (the one-term derangement recurrence)",
@@ -93,9 +94,17 @@
       "id": "sec-modular",
       "title": "Modular Consequence: D(m) ≡ (-1)^m (mod m)",
       "startLine": 64,
-      "endLine": 82,
-      "summary": "numDerangements_modEq: D(n+1) ≡ (-1)^(n+1) [ZMOD (n+1)]. Reduces the recurrence mod (n+1): the term (n+1)·D(n) is divisible by n+1 hence ≡ 0, and adding (-1)^(n+1) via Int.ModEq.add_right gives the result. Closes with a sanity check D(4) = 9 = 4·2 + 1.",
+      "endLine": 77,
+      "summary": "numDerangements_modEq: D(n+1) ≡ (-1)^(n+1) [ZMOD (n+1)]. Reduces the recurrence mod (n+1): the term (n+1)·D(n) is divisible by n+1 hence ≡ 0, and adding (-1)^(n+1) via Int.ModEq.add_right gives the result — equivalently D(m) ≡ (-1)^m (mod m) for every m ≥ 1.",
       "mathContext": "Modulo $n+1$, the multiple $(n+1)D(n)$ vanishes, leaving $D(n+1) \\equiv (-1)^{n+1} \\pmod{n+1}$; equivalently $D(m) \\equiv (-1)^m \\pmod m$ for every $m \\geq 1$."
+    },
+    {
+      "id": "sec-sanity",
+      "title": "Sanity Check D(4) = 9",
+      "startLine": 78,
+      "endLine": 82,
+      "summary": "A kernel-decide example verifies numDerangements 4 = 9, matching 9 = 4·2 + (-1)^4 and witnessing both the ±1 remainder and the mod-4 congruence.",
+      "mathContext": "$D(4) = 9 = 4\\cdot 2 + 1$, with $9 \\equiv 1 \\pmod 4$."
     }
   ],
   "crossReferences": [
