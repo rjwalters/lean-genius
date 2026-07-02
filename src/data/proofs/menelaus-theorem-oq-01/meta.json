@@ -99,48 +99,42 @@
       "title": "Overview and Imports",
       "startLine": 1,
       "endLine": 49,
-      "description": "Module docstring framing Menelaus as the transversal companion of Ceva: instead of concurrency (product +1), collinearity of three transversal points is characterised by the signed-ratio product equalling -1, proved through a signed-area determinant factorisation.",
-      "mathContext": "Menelaus: for triangle $ABC$ with transversal points $X,Y,Z$ on lines $BC,CA,AB$, collinearity holds iff $\\frac{t}{1-t}\\cdot\\frac{u}{1-u}\\cdot\\frac{v}{1-v} = -1$."
+      "summary": "Module docstring framing Menelaus's theorem — three transversal points are collinear iff the product of signed side ratios equals −1, the transversal companion of Ceva's concurrency criterion (+1) — plus imports, the MenelausTheorem namespace, and the affine-point abbreviation Pt := ℝ × ℝ."
     },
     {
       "id": "determinant-and-collinearity",
       "title": "Signed-Area Determinant and Collinearity",
       "startLine": 50,
       "endLine": 58,
-      "description": "Primitives: `Pt := ℝ×ℝ`, `collinearDet P Q R = (Q.1-P.1)(R.2-P.2) - (Q.2-P.2)(R.1-P.1)` (twice the signed area of triangle PQR), and `Collinear3 P Q R := collinearDet P Q R = 0`.",
-      "mathContext": "Three points are collinear iff $\\det\\begin{pmatrix} Q-P & R-P\\end{pmatrix}=0$, i.e. the signed area of $\\triangle PQR$ vanishes."
+      "summary": "collinearDet P Q R is the 2×2 signed-area determinant of the edge vectors Q−P and R−P; the predicate Collinear3 holds exactly when this determinant vanishes."
     },
     {
       "id": "configuration",
       "title": "Menelaus Configuration and Division Points",
       "startLine": 59,
       "endLine": 93,
-      "description": "`MenelausConfig` bundles a triangle A,B,C with transversal parameters t,u,v (each ≠ 1 so signed ratios are defined) and a non-degeneracy hypothesis `collinearDet A B C ≠ 0`. Division points `ptX=(1-t)B+tC`, `ptY=(1-u)C+uA`, `ptZ=(1-v)A+vB`, and `menelausProduct = (t/(1-t))·(u/(1-u))·(v/(1-v))`.",
-      "mathContext": "$X=(1-t)B+tC$, $Y=(1-u)C+uA$, $Z=(1-v)A+vB$; signed ratios $\\tfrac{BX}{XC}=\\tfrac{t}{1-t}$ etc."
+      "summary": "MenelausConfig bundles a triangle A B C with division parameters t, u, v (each ≠ 1, so each signed ratio t/(1−t) is defined) and a non-degeneracy hypothesis. ptX, ptY, ptZ place the transversal points on BC, CA, AB by affine interpolation, and menelausProduct is the signed-ratio product (t/(1−t))·(u/(1−u))·(v/(1−v))."
     },
     {
       "id": "determinant-factorisation",
       "title": "Determinant Factorisation (Geometric Content)",
       "startLine": 95,
       "endLine": 102,
-      "description": "`collinearDet_factor`: the collinearity determinant of the three division points factors as the Menelaus scalar times the triangle's signed area — `collinearDet X Y Z = (t·u·v + (1-t)(1-u)(1-v)) · collinearDet A B C` — a pure polynomial identity discharged by `ring`.",
-      "mathContext": "$\\det(XYZ) = \\big(tuv + (1-t)(1-u)(1-v)\\big)\\,\\det(ABC)$."
+      "summary": "collinearDet_factor is the geometric heart: the collinearity determinant of X, Y, Z factors as (t·u·v + (1−t)(1−u)(1−v)) · collinearDet A B C, a pure polynomial identity discharged by ring."
     },
     {
       "id": "main-theorem",
       "title": "Menelaus's Theorem (Main Biconditional)",
       "startLine": 104,
       "endLine": 128,
-      "description": "`menelaus`: for a non-degenerate triangle, `Collinear3 X Y Z ↔ menelausProduct = -1`. Proof factors the determinant, cancels the non-zero base area via `mul_eq_zero`/`or_iff_left`, then matches `tuv + (1-t)(1-u)(1-v) = 0` to the product form via `div_eq_iff` and `linear_combination`. Corollaries `product_of_collinear` and `collinear_of_product` give the two directions.",
-      "mathContext": "$X,Y,Z$ collinear $\\iff tuv = -(1-t)(1-u)(1-v) \\iff \\tfrac{t}{1-t}\\tfrac{u}{1-u}\\tfrac{v}{1-v} = -1$."
+      "summary": "menelaus: for a non-degenerate triangle, X, Y, Z are collinear ↔ menelausProduct = −1. The proof rewrites through the factorisation, kills the nonzero triangle area with mul_eq_zero, clears denominators, and closes both directions by linear_combination. product_of_collinear and collinear_of_product package the two implications."
     },
     {
       "id": "example",
       "title": "Concrete Numerical Instance",
       "startLine": 130,
       "endLine": 139,
-      "description": "`menelaus_example`: the triangle (0,0),(1,0),(0,1) with t=u=2, v=-1/3 yields menelausProduct = -1 and hence, by the main theorem, collinear division points — a concrete witness that the characterisation is non-vacuous.",
-      "mathContext": "$t=u=2,\\ v=-\\tfrac13:\\ (-2)(-2)(-\\tfrac14) = -1$, so $X,Y,Z$ are collinear."
+      "summary": "menelaus_example exhibits a concrete witness — triangle (0,0),(1,0),(0,1) with t = u = 2, v = −1/3 — whose signed-ratio product is −1 and whose three division points are therefore collinear, all discharged by norm_num."
     }
   ]
 }
