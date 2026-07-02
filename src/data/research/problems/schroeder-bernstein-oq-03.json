@@ -58,7 +58,8 @@
       "p,q are arbitrary predicates (NOT computable); the construction must route membership through the computable reductions f,g structurally and never test p/q directly.",
       "partialInverse is single-valued under injective g (partialInverse_unique) — collision-freeness for extending the partial map by a g-edge.",
       "fwdOrbit f g n k = (g∘f)^[k] n (fwdOrbit_eq_iterate): the forward orbit is unproblematically computable; difficulty is entirely backward.",
-      "Collision determinacy (Section 4g): under the BuiltFrom invariant (each pair is an f-edge (x,f x) or g-edge (g y,y)), a domain-side collision f a in mRan L is NECESSARILY the g-edge (g(f a), f a) — cannot be an f-edge by injectivity of f. Replaces the Pi_1 isGFree decision with a decidable membership test + explicit blocker g(f a)."
+      "Collision determinacy (Section 4g): under the BuiltFrom invariant (each pair is an f-edge (x,f x) or g-edge (g y,y)), a domain-side collision f a in mRan L is NECESSARILY the g-edge (g(f a), f a) — cannot be an f-edge by injectivity of f. Replaces the Pi_1 isGFree decision with a decidable membership test + explicit blocker g(f a).",
+      "2026-07-02 (r11): green Docker build of SchroederBernsteinOQ03 (3065 jobs, v4.26.0) confirms Sections 4a-4f (59 thm/14 def) compile with only the known myhill_isomorphism sorry; concurrent growth did not reintroduce the post-#32332 dup-decl breakage."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
@@ -69,7 +70,8 @@
       "Prove the stage invariants: injectivity (via partialInverse_unique + f injective), correspondence p↔q preserved, and domain/range exhaustion (n covered by stage 2n+1).",
       "Derive computability of the resulting permutation from computability of the stage builder + bounded search for the entering stage.",
       "Consider a tractable partial win first: classical SB bijection IS computable when range g and range f are decidable (isolates the Π₁ obstruction).",
-      "Define stage recursion using step_f_available_or_collision: on collision at a, chase along fwdOrbit f g a to first k with f((g∘f)^[k] a) fresh; prove termination via finite matching length (bounded search, computable)."
+      "Define stage recursion using step_f_available_or_collision: on collision at a, chase along fwdOrbit f g a to first k with f((g∘f)^[k] a) fresh; prove termination via finite matching length (bounded search, computable).",
+      "Scheduler crux (BLOCKED 3+ sessions): stage recursion producing IsMatching+MatchingCorr matchings, coverage via firstMissing_le_length, read off computable ℕ≃ℕ. Attempt only with a durable build environment; do not add peripheral scaffolding."
     ],
     "markdown": "# Knowledge Base: schroeder-bernstein-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -207,5 +209,7 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ04OQ01OQ01.lean"
     }
-  ]
+  ],
+  "lastWorkedBy": "researcher-11",
+  "lastWorkedAt": "2026-07-02"
 }

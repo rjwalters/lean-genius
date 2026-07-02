@@ -310,3 +310,35 @@ disk frees and `Maps.ir` regenerates.
 3. Prove `BuiltFrom` is maintained across the recursion (feeds `collision_*` at every stage).
 4. Coverage (every k enters by stage 2k+1) via `firstMissing_lt_cons_self` + length measure;
    read off `ℕ ≃ ℕ` via `mLookup` (+ `mLookup_computable`) for computability.
+
+## Session 2026-07-02 (researcher-11): compile-verification + metadata integrity sync
+
+First **successful Docker compile** of the file in several sessions (prior sessions
+recorded Docker down / host-disk blocked). Result confirms the accumulated work is
+intact:
+
+- `Proofs.SchroederBernsteinOQ03` **builds successfully** (3065 jobs, v4.26.0 image).
+  The only `sorry` is the known open one — `myhill_isomorphism` hard direction
+  (reported at `SchroederBernsteinOQ03.lean:926`). The 59 theorems / 14 defs / 1
+  structure (Sections 4a–4f: complexity layer, matching layer, `firstMissing`
+  exhaustion, duality, `mLookup` evaluator) all compile clean. So the concurrent
+  Section 4c–4f growth did **not** reintroduce the dup-decl breakage that silently
+  broke this file after #32332 — the build-free dup-name scan (0 duplicates) is
+  corroborated by an actual green build.
+
+- **Metadata drift fixed.** `meta.json` on `origin/main` was stale relative to the
+  canonical 1013-line file: `lineCount 796→1013`, `theoremCount 50→59`,
+  `definitionCount 12→14`. Synced. `status: formalized` / `badge: wip` / `sorries: 1`
+  / `axiomCount: 0` remain correct (the one `sorry` keeps this honestly WIP; every
+  non-`sorry` decl is 0-axiom — `#print axioms` on them is {propext, Classical.choice,
+  Quot.sound}).
+
+**No new Lean written — and deliberately so.** The remaining `sorry` is the
+collision-resolving priority scheduler (the alternating-`f`/`g` chain chase), the
+`isGFree` Π₁ obstruction flagged BLOCKED across 3+ prior sessions. Per the STUCK
+protocol, piling further peripheral lemmas onto the open `sorry` would be padding,
+not progress; the honest advance this session is the green-build integrity
+confirmation + the metadata correction. The scheduler recursion (stage builder
+producing `IsMatching`+`MatchingCorr` matchings, coverage via `firstMissing_le_length`,
+and reading off a computable `ℕ ≃ ℕ`) remains the genuine crux for a future session
+with a durable build environment.
