@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-ringchoose-neg-eq",
+    "proofId": "stars-and-bars-weak-compositions-oq-01-oq-02",
+    "range": { "startLine": 73, "endLine": 82 },
+    "type": "concept",
+    "title": "Upper negation in (−1)ⁿ form",
+    "content": "Newton's generalized binomial coefficient Ring.choose r n extends Nat.choose to an arbitrary binomial ring by dividing a descending Pochhammer product by n!. Mathlib's Ring.choose_neg carries the upper-negation sign as the unit Int.negOnePow n ∈ ℤˣ. This theorem rewrites that unit as the plain ring element (−1)ⁿ (via Units.smul_def, Int.coe_negOnePow_natCast, zsmul_eq_mul, then ring), giving the cleaner form Ring.choose (−r) n = (−1)ⁿ · Ring.choose (r + n − 1) n over any commutative binomial ring.",
+    "mathContext": "$\\binom{-r}{n} = (-1)^n \\binom{r + n - 1}{n}$",
+    "significance": "key",
+    "relatedConcepts": ["generalized binomial coefficient", "upper negation", "binomial ring", "Pochhammer symbol"],
+    "prerequisites": ["Ring.choose", "Int.negOnePow as a unit"]
+  },
+  {
+    "id": "ann-cast-add-sub-one",
+    "proofId": "stars-and-bars-weak-compositions-oq-01-oq-02",
+    "range": { "startLine": 84, "endLine": 91 },
+    "type": "technique",
+    "title": "The upper index is a genuine natural number",
+    "content": "A small casting bridge: when k ≥ 1, the integer (k : ℤ) + n − 1 equals the natural number n + k − 1 coerced to ℤ. Proving 1 ≤ n + k by omega justifies Nat.cast_sub, after which push_cast and ring finish. This lets the generalized coefficient with integer upper index be re-expressed through the ordinary Nat.choose.",
+    "mathContext": "$k \\ge 1 \\ \\Rightarrow\\ (k : \\mathbb{Z}) + n - 1 = (n + k - 1 : \\mathbb{N})$",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.cast_sub", "integer/natural coercion", "omega"],
+    "prerequisites": ["ℕ→ℤ casting", "truncated subtraction"]
+  },
+  {
+    "id": "ann-ringchoose-neg-natcast",
+    "proofId": "stars-and-bars-weak-compositions-oq-01-oq-02",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "technique",
+    "title": "Negative binomial identity, Ring.choose form over ℤ",
+    "content": "Specializing the upper-negation identity to r = k ∈ ℤ with k ≥ 1: since k + n − 1 is a natural number (previous lemma) and Ring.choose on a natural upper index reduces to Nat.choose (Ring.choose_natCast), one gets Ring.choose (−k) n = (−1)ⁿ · C(n + k − 1, n) with an ordinary binomial coefficient on the right.",
+    "mathContext": "$\\binom{-k}{n} = (-1)^n \\binom{n + k - 1}{n}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Ring.choose_natCast", "Nat.choose", "negative binomial coefficient"],
+    "prerequisites": ["ringChoose_neg_eq", "cast_add_sub_one"]
+  },
+  {
+    "id": "ann-newton-identity",
+    "proofId": "stars-and-bars-weak-compositions-oq-01-oq-02",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "insight",
+    "title": "Newton's generalized binomial coefficient identity",
+    "content": "The main answer to the parent's open question: (−1)ⁿ · C(−k, n) = C(n + k − 1, n) over ℤ for k ≥ 1. Multiplying the previous identity by (−1)ⁿ and folding the sign via (−1)ⁿ·(−1)ⁿ = 1 leaves the ordinary stars-and-bars binomial coefficient. This says the coefficients C(n+k−1, n) of 1/(1−X)ᵏ are, up to the sign (−1)ⁿ, exactly the generalized binomial coefficients C(−k, n).",
+    "mathContext": "$(-1)^n \\binom{-k}{n} = \\binom{n + k - 1}{n}$",
+    "significance": "key",
+    "relatedConcepts": ["negative binomial theorem", "stars and bars", "generating function"],
+    "prerequisites": ["ringChoose_neg_natCast"]
+  },
+  {
+    "id": "ann-coeff-invonesubpow",
+    "proofId": "stars-and-bars-weak-compositions-oq-01-oq-02",
+    "range": { "startLine": 109, "endLine": 117 },
+    "type": "insight",
+    "title": "Negative binomial reading of the coefficients of 1/(1−X)ᵏ",
+    "content": "Combining Newton's identity with the parent's coeff_invOneSubPow_eq_choose gives that the n-th coefficient of Mathlib's invOneSubPow ℤ k (the series 1/(1−X)ᵏ) equals (−1)ⁿ · C(−k, n). Read coefficientwise this is the classical expansion 1/(1−X)ᵏ = ∑ₙ C(−k, n) (−X)ⁿ, i.e. (1−X)⁻ᵏ as a negative-binomial series.",
+    "mathContext": "$[X^n]\\,\\frac{1}{(1-X)^k} = (-1)^n \\binom{-k}{n}, \\qquad \\frac{1}{(1-X)^k} = \\sum_n \\binom{-k}{n}(-X)^n$",
+    "significance": "key",
+    "relatedConcepts": ["power series", "invOneSubPow", "generating function", "negative binomial series"],
+    "prerequisites": ["parent's coeff_invOneSubPow_eq_choose", "negOnePow_mul_ringChoose_neg"]
+  },
+  {
+    "id": "ann-coeff-rescale",
+    "proofId": "stars-and-bars-weak-compositions-oq-01-oq-02",
+    "range": { "startLine": 119, "endLine": 124 },
+    "type": "technique",
+    "title": "Negative binomial theorem, coefficient form",
+    "content": "Rescaling X ↦ −X sends 1/(1−X)ᵏ to the binomial series (1+X)⁻ᵏ (Mathlib's rescale_neg_one_invOneSubPow), whose n-th coefficient is by definition the generalized binomial coefficient Ring.choose (−k) n (binomialSeries_coeff). So the coefficient of (1+X)⁻ᵏ is exactly C(−k, n) — the negative binomial theorem in Newton's original form.",
+    "mathContext": "$[X^n]\\,(1+X)^{-k} = \\binom{-k}{n}$",
+    "significance": "supporting",
+    "relatedConcepts": ["binomialSeries", "rescale", "Newton's binomial theorem"],
+    "prerequisites": ["rescale_neg_one_invOneSubPow", "binomialSeries_coeff"]
+  },
+  {
+    "id": "ann-weak-composition-count",
+    "proofId": "stars-and-bars-weak-compositions-oq-01-oq-02",
+    "range": { "startLine": 126, "endLine": 133 },
+    "type": "insight",
+    "title": "The generalized coefficient counts weak compositions up to sign",
+    "content": "The enumerative payoff: (−1)ⁿ · C(−k, n) equals the number of weak compositions of n into k parts (the cardinality of {f : Fin k → ℕ // ∑ f = n}), via Newton's identity and the parent's card_weakComposition. So Newton's generalized binomial coefficient, an algebraic object over ℤ, literally counts stars-and-bars configurations once the sign (−1)ⁿ is stripped.",
+    "mathContext": "$(-1)^n \\binom{-k}{n} = \\#\\{f : \\mathrm{Fin}\\,k \\to \\mathbb{N} \\mid \\textstyle\\sum_i f_i = n\\}$",
+    "significance": "key",
+    "relatedConcepts": ["weak composition", "stars and bars", "enumerative combinatorics"],
+    "prerequisites": ["parent's card_weakComposition", "negOnePow_mul_ringChoose_neg"]
+  },
+  {
+    "id": "ann-sanity-checks",
+    "proofId": "stars-and-bars-weak-compositions-oq-01-oq-02",
+    "range": { "startLine": 135, "endLine": 144 },
+    "type": "context",
+    "title": "Numeric sanity checks",
+    "content": "Two concrete instances confirm the identity: C(−2, 3) = −4 while C(4, 3) = 4, so (−1)³·(−4) = 4; and C(−3, 2) = (−1)²·C(4, 2) = 6. These pin the abstract identity to small values a reader can verify by hand.",
+    "mathContext": "$\\binom{-2}{3} = -4,\\quad \\binom{-3}{2} = 6$",
+    "significance": "context",
+    "relatedConcepts": ["worked example", "generalized binomial coefficient"],
+    "prerequisites": ["ringChoose_neg_natCast"]
+  }
+]
