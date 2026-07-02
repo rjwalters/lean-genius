@@ -88,20 +88,44 @@
       "mathContext": "Work over 𝕜 ∈ {ℝ, ℂ} with `[RCLike 𝕜] [NormedAddCommGroup E] [NormedSpace 𝕜 E]`; the parallelogram law is the hypothesis, an inner product the conclusion."
     },
     {
-      "id": "characterization",
-      "title": "The Jordan–von Neumann Biconditional",
+      "id": "biconditional-self",
+      "title": "The Jordan–von Neumann Biconditional (∗self form)",
       "startLine": 37,
+      "endLine": 58,
+      "summary": "nonempty_innerProductSpace_iff_parallelogram packages the forward direction (parallelogram_law_with_norm) and the hard converse (InnerProductSpace.ofNorm, the Fréchet–von Neumann–Jordan polarization construction) into one biconditional, stated with the ∗self product ‖·‖·‖·‖ that Mathlib uses.",
+      "mathContext": "$\\mathrm{Nonempty}\\,(\\mathrm{InnerProductSpace}\\ \\Bbbk\\ E) \\iff \\forall x,y,\\ \\|x{+}y\\|\\|x{+}y\\| + \\|x{-}y\\|\\|x{-}y\\| = 2(\\|x\\|\\|x\\| + \\|y\\|\\|y\\|)$."
+    },
+    {
+      "id": "biconditional-sq",
+      "title": "The Biconditional in Squared Form",
+      "startLine": 59,
+      "endLine": 68,
+      "summary": "nonempty_innerProductSpace_iff_parallelogram_sq restates the biconditional in the squared ^2 form used by the parent entry, bridging the two via pow_two and linarith so downstream users can pick either shape.",
+      "mathContext": "$\\exists$ compatible inner product $\\iff \\forall x,y,\\ \\|x+y\\|^2 + \\|x-y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2$."
+    },
+    {
+      "id": "recovers-norm",
+      "title": "The Recovered Inner Product Reproduces the Norm",
+      "startLine": 69,
       "endLine": 80,
-      "summary": "nonempty_innerProductSpace_iff_parallelogram packages forward (parallelogram_law_with_norm) and converse (InnerProductSpace.ofNorm) into one biconditional; nonempty_innerProductSpace_iff_parallelogram_sq restates it in squared form; ofNorm_norm_sq_eq_re_inner confirms the recovered inner product reproduces the norm.",
-      "mathContext": "$\\exists$ compatible inner product $\\iff \\forall x,y,\\ \\|x+y\\|^2 + \\|x-y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2$, with $\\|x\\|^2 = \\operatorname{re}\\langle x,x\\rangle$ for the recovered product."
+      "summary": "ofNorm_norm_sq_eq_re_inner confirms the polarization-defined inner product from InnerProductSpace.ofNorm is genuinely compatible with the original norm: ‖x‖² = re⟪x,x⟫, closing the loop that the recovered structure induces the norm one started with.",
+      "mathContext": "$\\|x\\|^2 = \\operatorname{re}\\langle x, x\\rangle$ for the inner product recovered by polarization."
     },
     {
       "id": "counterexample",
-      "title": "Sharpness: the Sup-Normed Plane",
+      "title": "Sharpness: the Sup Norm Fails the Parallelogram Law",
       "startLine": 82,
+      "endLine": 94,
+      "summary": "supNorm_not_parallelogram proves the supremum norm on ℝ×ℝ violates the parallelogram law at x=(1,0), y=(0,1): both diagonals have sup-norm 1, so LHS = 2 ≠ 4 = RHS, discharged by norm_num on Prod.norm_def.",
+      "mathContext": "For $x=(1,0),\\,y=(0,1)$: $\\|x\\pm y\\|_\\infty = 1$, so LHS $= 1+1 = 2 \\ne 4 = 2(1+1) =$ RHS."
+    },
+    {
+      "id": "not-hilbert",
+      "title": "The Sup-Normed Plane Is Not a Hilbert Space",
+      "startLine": 96,
       "endLine": 105,
-      "summary": "supNorm_not_parallelogram proves the supremum norm on ℝ×ℝ violates the parallelogram law at (1,0),(0,1); no_innerProductSpace_sup_norm concludes via the biconditional that ℝ×ℝ with the ℓ^∞ norm admits no compatible inner product.",
-      "mathContext": "For $x=(1,0),\\,y=(0,1)$ with the sup norm: $\\|x\\pm y\\| = 1$, so LHS $= 2 \\ne 4 =$ RHS; hence no inner product induces the $\\ell^\\infty$ norm on $\\mathbb{R}^2$."
+      "summary": "no_innerProductSpace_sup_norm combines the biconditional with the counterexample: since the ℓ^∞ norm fails the parallelogram law, no compatible inner product exists, exhibiting a concrete finite-dimensional Banach space that is not a Hilbert space.",
+      "mathContext": "$\\neg\\,\\mathrm{Nonempty}\\,(\\mathrm{InnerProductSpace}\\ \\mathbb{R}\\ (\\mathbb{R}\\times\\mathbb{R}))$ for the sup norm — a non-Hilbert Banach space."
     }
   ],
   "crossReferences": [
