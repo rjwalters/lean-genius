@@ -16,8 +16,8 @@
   an abundance margin of only 16486750 (the ratio σ(n)/n ≈ 2.00306 barely
   clears 2 — odd numbers coprime to 3 are "only just" abundant).
 
-  What this file proves (the **witness / membership** half of the open
-  question).  We establish, axiom-free, that 5391411025 genuinely is
+  What this file proves (the **witness / membership** half of the full
+  resolution).  We establish, axiom-free, that 5391411025 genuinely is
 
     * odd,
     * not divisible by 3, and
@@ -35,14 +35,26 @@
   σ(29)`, each of which *is* a trivial divisor-sum computation.  No
   `native_decide` is used, so the result carries no `Lean.ofReduceBool`.
 
-  What is NOT proved (the genuine blocker).  The *minimality* half — that no odd
-  `m < 5391411025` coprime to 3 is abundant — is a bounded statement over a range
-  of ~5.4 billion.  This is far beyond any kernel or compiled enumeration
-  (the `sigmaFast` O(n)-per-number kernel reduction used for the 945 bound would
-  require ~10¹⁹ kernel operations here).  A genuine proof needs the structural
-  number theory of abundancy (density / Erdős-style sieve arguments on the
-  abundancy index of 3-free odd integers), not brute force.  It is recorded as
-  an open follow-up rather than attempted by enumeration.
+  The *minimality* half (the lower bound).  That no odd `m < 5391411025`
+  coprime to 3 is abundant is a bounded statement over a range of ~5.4 billion,
+  far beyond any kernel or compiled enumeration (the `sigmaFast` O(n)-per-number
+  kernel reduction used for the 945 bound would require ~10¹⁹ kernel operations
+  here).  It is therefore proved *structurally* rather than by brute force, and
+  now lives in the companion files accompanying this one:
+
+    * `…SevenPrimeExponents.lean` assembles the capstone
+      `odd_abundant_coprime_three_ge_witness : Odd n → ¬ 3 ∣ n → Abundant n →
+      5391411025 ≤ n` from three exhaustive shapes for an odd abundant `n`
+      coprime to 3 lying below the witness;
+    * `…GeneralBound.lean`, `…Squarefree.lean`, `…OmegaSevenPrimes.lean` and the
+      other companions dispatch the squarefree, `ω(n) ≥ 8`, and residual
+      `ω(n) = 7` cases via the abundancy-index / prime-exponent structural
+      argument (no enumeration).
+
+  Combined with the membership certificate below, this establishes that
+  5391411025 is *exactly* the least odd abundant number coprime to 3.  All nine
+  files are axiom-free (foundational axioms only; no `native_decide`, no
+  `sorryAx`).  This file itself contributes only the witness / membership half.
 -/
 import Mathlib
 
@@ -101,7 +113,8 @@ theorem not_three_dvd_N : ¬ (3 ∣ N) := by decide
 
 /-- **Membership / upper-bound certificate.**  5391411025 is an odd abundant
 number coprime to 3, hence belongs to the set whose least element the open
-question identifies.  (Minimality is the open half; see the file header.) -/
+question identifies.  (Minimality — the matching lower bound — is proved in the
+companion files; see the file header.) -/
 theorem mem_odd_three_free_abundant :
     N ∈ {n : ℕ | Odd n ∧ ¬ (3 ∣ n) ∧ Nat.Abundant n} :=
   ⟨odd_N, not_three_dvd_N, abundant_N⟩
