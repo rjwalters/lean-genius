@@ -138,6 +138,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: ℝ is uncountable — Cantor's diagonal argument (1874)",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The cardinality/real imports (Cardinal.Basic, Cardinal.Continuum, Real.Basic, AlgebraicCard, Set.Countable, Tactic) and the parent files (CantorDiagonalization, AlgebraicNumbersCountable), the module docstring, and the namespace/open setup. Proves ℝ is uncountable, completing Cantor's 1874 paper alongside the countability of the algebraic numbers.",
+      "mathContext": "Cantor's diagonal argument gives ℵ₀ < 2^ℵ₀ (no surjection from a set to its power set, Cardinal.cantor ℵ₀). Since #ℝ = 𝔠 = 2^ℵ₀ (Cardinal.mk_real) and 𝔠 > ℵ₀ (Cardinal.aleph0_lt_continuum), no injection ℝ → ℕ exists. Results: reals_not_countable (¬ Countable ℝ), no_surjection_nat_to_real, exists_not_in_range (for any f : ℕ → ℝ some x ∉ range f), transcendentals_uncountable, and reals_uncountable_summary (the 1874 theorem: algebraic = countable, ℝ = uncountable). The abstract gap ℵ₀ < 2^ℵ₀ is the same theorem as no surjection ℕ → BinarySeq from CantorDiagonalization (BinarySeq = ℕ → Bool also has cardinality 𝔠). Corollary: since the algebraic reals are countable and ℝ is uncountable, the transcendental reals are uncountable — 'almost all' reals are transcendental, established before any transcendental was explicitly named (Liouville 1844 gave the first construction)."
+    },
+    {
       "id": "cardinal-facts",
       "title": "§1: Cardinality of ℝ",
       "startLine": 67,
