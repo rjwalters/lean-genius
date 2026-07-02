@@ -16,7 +16,10 @@
       "Ramsey theory",
       "Van der Waerden theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "arithmetic progressions",
+      "finite sequences"
+    ]
   },
   {
     "id": "ann-e966-ap-def",
@@ -34,7 +37,11 @@
       "Finset",
       "Arithmetic sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset (finite sets in Lean)",
+      "function image",
+      "arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e966-contains-ap",
@@ -52,7 +59,10 @@
       "Szemerédi's theorem"
     ],
     "mathContext": "See annotation content for formal details of ap containment and ap-free sets",
-    "prerequisites": []
+    "prerequisites": [
+      "subset relation",
+      "arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e966-coloring",
@@ -70,7 +80,10 @@
       "Partition",
       "Pigeonhole principle"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set partitions",
+      "functions and fibers"
+    ]
   },
   {
     "id": "ann-e966-monochromatic",
@@ -88,7 +101,10 @@
       "Unavoidable patterns"
     ],
     "mathContext": "See annotation content for formal details of monochromatic aps and ramsey property",
-    "prerequisites": []
+    "prerequisites": [
+      "r-colorings",
+      "arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e966-spencer-set",
@@ -106,7 +122,10 @@
       "Probabilistic method",
       "Constructive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the probabilistic method",
+      "AP-free sets"
+    ]
   },
   {
     "id": "ann-e966-main-theorem",
@@ -124,7 +143,10 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of erdős problem #966: solved",
-    "prerequisites": []
+    "prerequisites": [
+      "existential quantifiers",
+      "monochromatic structures"
+    ]
   },
   {
     "id": "ann-e966-vdw",
@@ -142,7 +164,10 @@
       "Van der Waerden theorem",
       "Ramsey numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "van der Waerden's theorem",
+      "Ramsey numbers"
+    ]
   },
   {
     "id": "ann-e966-folkman",
@@ -161,7 +186,10 @@
       "Erdős #924"
     ],
     "mathContext": "See annotation content for formal details of connection to erdős problem #924",
-    "prerequisites": []
+    "prerequisites": [
+      "graph coloring",
+      "Folkman numbers"
+    ]
   },
   {
     "id": "ann-e966-cases",
@@ -179,7 +207,10 @@
       "Concrete examples"
     ],
     "mathContext": "See annotation content for formal details of specific instantiations",
-    "prerequisites": []
+    "prerequisites": [
+      "universal instantiation",
+      "parameter substitution"
+    ]
   },
   {
     "id": "ann-e966-roth",
@@ -198,7 +229,10 @@
       "Szemerédi's theorem",
       "Upper density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "upper density of a set",
+      "arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e966-singleton",
@@ -216,7 +250,10 @@
       "Trivial instances"
     ],
     "mathContext": "See annotation content for formal details of singleton sets are ap-free",
-    "prerequisites": []
+    "prerequisites": [
+      "singleton sets",
+      "arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e966-ap-card",
@@ -234,7 +271,10 @@
       "Injective functions"
     ],
     "mathContext": "See annotation content for formal details of ap cardinality",
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality of finite sets",
+      "injective functions"
+    ]
   },
   {
     "id": "ann-e966-summary",
@@ -252,6 +292,9 @@
       "Main results"
     ],
     "mathContext": "See annotation content for formal details of summary theorem",
-    "prerequisites": []
+    "prerequisites": [
+      "logical conjunction",
+      "existential quantifiers"
+    ]
   }
 ]
