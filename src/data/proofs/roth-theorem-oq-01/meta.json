@@ -1,0 +1,171 @@
+{
+  "id": "roth-theorem-oq-01",
+  "title": "Bourgain's 1999 Quantitative Bound for Roth's Theorem (OQ-01)",
+  "slug": "roth-theorem-oq-01",
+  "description": "A typed Lean target for Bourgain's 1999 quantitative refinement of Roth's theorem: rothNumberNat N ≤ C·N·(log log N / log N)^(1/2) for N ≥ 3. Rather than assume the Bourgain bound, this file derives it as a theorem from the imported Bloom–Sisask 2020 bound (OQ-02), because N/(log N)^(1+c) decays strictly faster than the Bourgain bound and so implies it. The analytic reduction 'Bloom–Sisask ⟹ Bourgain' is discharged explicitly via Real.rpow monotonicity, eliminating the formerly-separate Bourgain axiom.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Roth%27s_theorem_on_arithmetic_progressions",
+    "date": "Bourgain 1999; formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "combinatorics",
+      "additive-combinatorics",
+      "arithmetic-progressions",
+      "fourier-analysis",
+      "quantitative-bounds",
+      "roth"
+    ],
+    "proofRepoPath": "Proofs/RothTheoremOQ01.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "Main file Proofs/RothTheoremOQ01.lean declares 0 axioms of its own and 0 sorries; every one of its 7 theorems is machine-checked. The presented result `rothNumberNat_bourgain` rests on exactly one assumption: `RothTheoremOQ02.rothNumberNat_bloom_sisask` (Bloom–Sisask 2020 logarithmic-barrier bound rothNumberNat N ≤ N/(log N)^(1+c), arXiv:2007.03528), imported from the companion file Proofs/RothTheoremOQ02.lean and used to derive the weaker Bourgain bound by rpow monotonicity. The companion file additionally declares `rothNumberNat_kelley_meka` (Kelley–Meka 2023), which is NOT used by any theorem in this entry. These bounds axiomatize state-of-the-art quantitative refinements requiring Bohr-set / density-increment infrastructure not yet in Mathlib v4.26.0. The former standalone `axiom rothNumberNat_bourgain` has been eliminated: Bourgain is now a derived theorem.",
+    "originalContributions": [
+      "rothNumberNat_bourgain: Bourgain's 1999 bound ∃ C > 0, ∀ N ≥ 3, rothNumberNat N ≤ C·N·(log log N/log N)^(1/2), derived (not axiomatized) from the imported Bloom–Sisask bound",
+      "Explicit analytic reduction Bloom–Sisask ⟹ Bourgain: cancel N, split L^(1+c) = L^(1/2)·L^(1/2+c) via Real.rpow_add and (LL/L)^(1/2) = LL^(1/2)/L^(1/2) via Real.div_rpow, then close by base-monotonicity (Real.rpow_le_rpow) reading the constant C = 1/(B·E) off the N = 3 endpoint",
+      "bourgainConst / bourgainConst_pos / rothNumberNat_le_bourgain: a stable downstream API hiding the Exists.choose extraction of the constant",
+      "bourgain_consistent_with_isLittleO: consistency with Mathlib's unconditional qualitative rothNumberNat_isLittleO_id",
+      "bourgain_consistent_with_Behrend: the Bourgain upper bound dominates Behrend's unconditional lower bound N·exp(-4√(log N)), verified transitively",
+      "rothNumberNat_le_min_bourgain_blasi: the formal record that OQ-02 ⟹ OQ-01 — rothNumberNat N is bounded by the min of the Bourgain and Bloom–Sisask right-hand sides"
+    ],
+    "dateAdded": "2026-07-02",
+    "lineCount": 264,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "additionalFiles": [
+      "Proofs/RothTheoremOQ02.lean"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Roth's 1953 theorem showed that any subset of {1,…,N} with no 3-term arithmetic progression has size o(N); his Fourier-analytic density-increment argument gives r₃(N) ≪ N/log log N. Bourgain (1999) improved the saving from a single log log to a power of log: r₃(N) ≪ N·(log log N/log N)^(1/2). A long chain of refinements followed — Bourgain (2008), Sanders (2011), Bloom (2016), and finally Bloom–Sisask (2020), who broke the logarithmic barrier with r₃(N) ≪ N/(log N)^(1+c), and Kelley–Meka (2023) with the quasi-polynomial r₃(N) ≪ N·exp(-c(log N)^β). This entry records Bourgain's landmark bound as a typed Lean target and, crucially, does not assume it: because the later Bloom–Sisask bound decays strictly faster, it implies Bourgain, and the implication is discharged formally.",
+    "problemStatement": "**Bourgain's bound (OQ-01)**: There exists C > 0 such that for all N ≥ 3, the Roth number satisfies rothNumberNat N ≤ C · N · (log log N / log N)^(1/2). Equivalently r₃(N) = O(N·(log log N/log N)^(1/2)).",
+    "text": "A 264-line Lean 4 formalization built over Mathlib's `rothNumberNat`. The distinguishing content is the explicit analytic proof that the Bloom–Sisask 2020 bound implies the Bourgain 1999 bound, turning what was previously a standalone axiom into a derived theorem. Supporting exports record consistency with Mathlib's qualitative Roth result, with Behrend's lower bound, and the minimum-of-both-bounds statement that formalizes OQ-02 ⟹ OQ-01.",
+    "proofStrategy": "**Main theorem (rothNumberNat_bourgain)**: Obtain the Bloom–Sisask witness ⟨c, hc, hbs⟩ with rothNumberNat N ≤ N/(log N)^(1+c). Fix the endpoint constants B = (log log 3)^(1/2) and E = (log 3)^(1/2+c), both positive because N ≥ 3 forces log N ≥ log 3 > 1 (via exp 1 < 3) and hence log log N > 0. Choose C = 1/(B·E).\n\n**Analytic core (Bloom–Sisask ⟹ Bourgain)**: After clearing the common factor N > 0, write L = log N, LL = log log N. Split L^(1+c) = L^(1/2)·L^(1/2+c) (Real.rpow_add) and (LL/L)^(1/2) = LL^(1/2)/L^(1/2) (Real.div_rpow), reducing the goal to 1 ≤ (LL^(1/2)·L^(1/2+c))/(B·E). Both LL^(1/2) ≥ B and L^(1/2+c) ≥ E hold by base-monotonicity of Real.rpow (log 3 ≤ log N, log log 3 ≤ log log N), and mul_le_mul closes it. Compose with the Bloom–Sisask bound by le_trans.\n\n**API and consistency exports**: bourgainConst extracts C via Exists.choose; rothNumberNat_le_bourgain instantiates the bound. bourgain_consistent_with_isLittleO re-exports Mathlib's qualitative rothNumberNat_isLittleO_id. bourgain_consistent_with_Behrend chains Behrend.roth_lower_bound through rothNumberNat N to the Bourgain upper bound. rothNumberNat_le_min_bourgain_blasi is le_min of the Bourgain and Bloom–Sisask bounds.",
+    "keyInsights": [
+      "**A weaker bound need not be assumed if a stronger one is available.** The previous version of this file carried a standalone `axiom rothNumberNat_bourgain`. But Bloom–Sisask (N/(log N)^(1+c)) decays strictly faster than Bourgain (N·(log log N/log N)^(1/2)), so it implies Bourgain — the axiom was redundant and is now a derived theorem resting on the single OQ-02 assumption.",
+      "**The comparison is pure rpow bookkeeping.** The only analytic content is monotonicity of x ↦ x^t in the base: splitting the log-powers with Real.rpow_add / Real.div_rpow and reading the constant off the N = 3 endpoint reduces everything to Real.rpow_le_rpow, with no additive-combinatorics machinery on this file's side.",
+      "**Non-vacuity hinges on N ≥ 3.** The bound N ≥ 3 guarantees log N ≥ log 3 > 1 (proved from exp 1 < 3 via Real.exp_one_lt_d9), hence log log N > 0, so the base log log N/log N is positive and the inequality is non-trivial.",
+      "**Formalizing the quantitative landscape as a lattice of bounds.** rothNumberNat_le_min_bourgain_blasi records that rothNumberNat N is below the minimum of the two right-hand sides — the machine-checked statement that OQ-02 ⟹ OQ-01 — without needing to compare the unknown constants of the two bounds directly."
+    ],
+    "prerequisites": [
+      "Roth's theorem on 3-term arithmetic progressions",
+      "The Roth number rothNumberNat and its quantitative bounds",
+      "Real logarithm and rpow (Real.rpow) monotonicity",
+      "Asymptotic o-notation (IsLittleO)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "roth-theorem",
+      "relationship": "extends",
+      "description": "The parent entry formalizes the qualitative Roth theorem (AP-free sets have density o(1)) via the Fourier density-increment method; this OQ-01 entry supplies the explicit Bourgain 1999 quantitative decay rate for the same rothNumberNat"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "Mathlib.Combinatorics.Additive.AP.Three.Behrend",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.Complex.ExponentialBounds",
+      "Proofs.RothTheoremOQ02"
+    ],
+    "namespace": "RothTheoremOQ01",
+    "lineCount": 264,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/RothTheoremOQ01.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/RothTheoremOQ02.lean"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header, Quantitative Landscape, and Imports",
+      "startLine": 1,
+      "endLine": 93,
+      "summary": "Module docstring stating Bourgain's 1999 bound rothNumberNat N ≤ C·N·(log log N/log N)^(1/2), explaining that it is derived from (not assumed alongside) the imported Bloom–Sisask bound, and tabulating the quantitative landscape from Roth (1953) through Kelley–Meka (2023). Imports Mathlib's rothNumberNat / Behrend / log / rpow API and the sibling Proofs.RothTheoremOQ02.",
+      "mathContext": "$r_3(N) \\ll N\\,(\\log\\log N/\\log N)^{1/2}$ (Bourgain 1999), implied by $r_3(N) \\ll N/(\\log N)^{1+c}$ (Bloom–Sisask 2020)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Bourgain's Bound Derived from Bloom–Sisask",
+      "startLine": 95,
+      "endLine": 175,
+      "summary": "Proves rothNumberNat_bourgain: ∃ C > 0, ∀ N ≥ 3, rothNumberNat N ≤ C·N·(log log N/log N)^(1/2). Obtains the Bloom–Sisask witness, fixes endpoint constants B = (log log 3)^(1/2) and E = (log 3)^(1/2+c) with C = 1/(B·E), and closes the analytic comparison Bloom–Sisask RHS ≤ Bourgain RHS by splitting the log-powers (Real.rpow_add, Real.div_rpow) and applying base-monotonicity (Real.rpow_le_rpow, mul_le_mul).",
+      "mathContext": "$L^{1+c} = L^{1/2} L^{1/2+c}$, $(LL/L)^{1/2} = LL^{1/2}/L^{1/2}$; $LL^{1/2} \\ge B$ and $L^{1/2+c} \\ge E$ give $1 \\le (LL^{1/2} L^{1/2+c})/(B E)$."
+    },
+    {
+      "id": "constant-api",
+      "title": "Canonical Constant API",
+      "startLine": 177,
+      "endLine": 193,
+      "summary": "bourgainConst extracts a canonical C via Exists.choose (noncomputable); bourgainConst_pos records its positivity; rothNumberNat_le_bourgain states the bound at the canonical constant, giving downstream consumers a stable API that hides the Exists.choose.",
+      "mathContext": "$\\text{rothNumberNat}\\,N \\le \\text{bourgainConst}\\cdot N\\cdot(\\log\\log N/\\log N)^{1/2}$."
+    },
+    {
+      "id": "consistency-exports",
+      "title": "Consistency Exports and OQ-02 ⟹ OQ-01",
+      "startLine": 195,
+      "endLine": 249,
+      "summary": "bourgain_consistent_with_isLittleO re-exports Mathlib's unconditional qualitative rothNumberNat_isLittleO_id. bourgain_consistent_with_Behrend chains Behrend's lower bound N·exp(-4√(log N)) transitively through rothNumberNat N to the Bourgain upper bound. rothNumberNat_le_min_bourgain_blasi bounds rothNumberNat N by the minimum of the Bourgain and Bloom–Sisask right-hand sides — the formal record that OQ-02 ⟹ OQ-01.",
+      "mathContext": "$N\\,e^{-4\\sqrt{\\log N}} \\le \\text{rothNumberNat}\\,N \\le \\min(\\text{Bourgain RHS}, \\text{Bloom–Sisask RHS})$."
+    },
+    {
+      "id": "audit",
+      "title": "Axiom Audit",
+      "startLine": 251,
+      "endLine": 264,
+      "summary": "#check exports for all seven named results and a #print axioms of rothNumberNat_bourgain, confirming its only non-foundational dependency is the imported RothTheoremOQ02.rothNumberNat_bloom_sisask — there is no separate Bourgain axiom and no sorryAx / Lean.ofReduceBool.",
+      "mathContext": "Axiom audit: Bourgain is a theorem resting solely on the Bloom–Sisask assumption."
+    }
+  ],
+  "conclusion": {
+    "summary": "A 264-line Lean formalization of Bourgain's 1999 quantitative Roth bound rothNumberNat N ≤ C·N·(log log N/log N)^(1/2) for N ≥ 3. All 7 theorems are machine-checked; the file declares 0 axioms of its own. The single assumption is the imported Bloom–Sisask 2020 bound (OQ-02), from which Bourgain is derived by rpow monotonicity — the former standalone Bourgain axiom has been eliminated.",
+    "implications": "Records the Bourgain 1999 landmark in the quantitative-Roth chain as a typed target and demonstrates that a weaker bound need not be axiomatized when a strictly stronger one is available: the entire content reduces to the explicit inequality N/(log N)^(1+c) ≤ C·N·(log log N/log N)^(1/2). The min-of-both-bounds statement formalizes OQ-02 ⟹ OQ-01 without comparing the unknown constants.",
+    "openQuestions": [
+      "Formalize Bourgain's proof itself (discrete Fourier analysis with Bohr-set density increment) to discharge the Bloom–Sisask assumption",
+      "Formalize the Kelley–Meka 2023 quasi-polynomial bound r₃(N) ≪ N·exp(-c(log N)^β)",
+      "Give an unconditional comparison of the Bourgain and Bloom–Sisask right-hand sides tracking the explicit constants"
+    ]
+  },
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/RothTheoremOQ02.lean"
+  ],
+  "references": [
+    {
+      "authors": "J. Bourgain",
+      "title": "On triples in arithmetic progression",
+      "year": 1999,
+      "venue": "Geom. Funct. Anal. 9, 968–984",
+      "note": "The quantitative bound r₃(N) ≪ N·(log log N/log N)^(1/2) formalized here."
+    },
+    {
+      "authors": "T. F. Bloom and O. Sisask",
+      "title": "Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions",
+      "year": 2020,
+      "venue": "arXiv:2007.03528",
+      "note": "The bound r₃(N) ≪ N/(log N)^(1+c) (OQ-02) from which Bourgain is derived here."
+    },
+    {
+      "authors": "K. F. Roth",
+      "title": "On certain sets of integers",
+      "year": 1953,
+      "venue": "J. London Math. Soc. 28, 104–109",
+      "note": "The original qualitative theorem and the N/log log N bound."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Combinatorics.Additive.Corner.Roth and AP.Three.Behrend",
+      "year": 2024,
+      "venue": "leanprover-community/mathlib4",
+      "note": "Source of rothNumberNat, rothNumberNat_isLittleO_id, and Behrend.roth_lower_bound."
+    }
+  ]
+}
