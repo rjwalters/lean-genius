@@ -122,11 +122,10 @@ This returns the highest-priority unclaimed entry (lowest passes, lowest quality
 For a target with id `<id>`, read:
 - `src/data/proofs/<id>/meta.json` - The metadata and overview
 - `src/data/proofs/<id>/annotations.json` - The inline annotations
-- `src/data/proofs/<id>/index.ts` - The Vite entry point (**REQUIRED** — see below)
 - `src/data/proofs/<id>/review.json` - Peer review findings (if exists)
 - `proofs/Proofs/*.lean` - The Lean proof file (path from `meta.proofRepoPath`)
 
-**If `index.ts` is missing, create it before doing anything else.** Without it, the proof page shows "proof not found" on the live site even though it appears in the gallery listing. See the template below.
+**Do NOT create a per-proof `index.ts`.** These per-proof Vite shim modules are **obsolete since #20993** and are read by nothing. The gallery no longer discovers proofs via `import.meta.glob` over per-proof modules — that O(N) shim graph (~2435 modules) was deliberately removed because it pushed the build past the 20-minute deploy cap. Proofs now load through `src/data/proofs/index.ts` (`getProofAsync`) via the build-generated `data-manifest.json` (slug → hashes, derived from each entry's `meta.json`) plus a runtime `fetch` of `meta.json` / `annotations.json` from `public/data/proofs/<slug>/`. A proof loads iff its `meta.json` is present on `main` — adding `index.ts` fixes nothing and re-introduces the anti-pattern #20993 removed. Enrich the JSON, not the shim.
 
 #### 3. Assess Quality Gaps
 
@@ -225,53 +224,15 @@ git checkout main && git pull && git checkout -B feature/enricher-N main
 
 ## Gallery Entry Structure
 
-### index.ts (REQUIRED)
+### index.ts — DO NOT CREATE (obsolete since #20993)
 
-Every proof directory **must** have an `index.ts` file for the proof to load on the site. Without it, Vite's `import.meta.glob` cannot discover the proof and the page shows "proof not found".
+Per-proof `index.ts` shim modules are **obsolete and read by nothing.** Do not create them and do not treat a missing one as a defect.
 
-**Template** (replace `LEAN_FILENAME` and `camelCaseName`):
+Before #20993 the loader used `import.meta.glob` to discover ~2435 per-proof `index.ts` shims (each statically importing a `meta.json` + `annotations.json`), producing ~7300 data modules in the Vite/Rollup graph — an O(N) blowup that pushed the build past the 20-minute deploy cap. #20993 removed the shims. The loader is now `src/data/proofs/index.ts` (`getProofAsync`), which:
+- reads the in-graph `data-manifest.json` (single small module mapping `slug` → sha8 hashes, **build-generated from the `meta.json` files present on `main`**) to know which slugs exist, and
+- `fetch`es `meta.json` / `annotations.json` at runtime from `public/data/proofs/<slug>/` (gitignored, build-generated).
 
-```typescript
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
-import metaJson from './meta.json'
-import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/LEAN_FILENAME.lean?raw'
-
-const meta = metaJson as unknown as {
-  id: string
-  title: string
-  slug: string
-  description: string
-  meta: ProofMeta
-  sections: ProofSection[]
-  overview?: ProofOverview
-  conclusion?: ProofConclusion
-  crossReferences?: CrossReference[]
-}
-
-export const camelCaseNameProof: Proof = {
-  id: meta.id,
-  title: meta.title,
-  slug: meta.slug,
-  description: meta.description,
-  meta: meta.meta,
-  sections: meta.sections,
-  source: sourceRaw,
-  overview: meta.overview,
-  conclusion: meta.conclusion,
-  crossReferences: meta.crossReferences,
-}
-
-export const camelCaseNameAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
-
-export const camelCaseNameData: ProofData = {
-  proof: camelCaseNameProof,
-  annotations: camelCaseNameAnnotations,
-}
-```
-
-- `LEAN_FILENAME`: from `meta.proofRepoPath` (e.g., `"Proofs/AbelRuffini.lean"` → `AbelRuffini`)
-- `camelCaseName`: slug converted to camelCase (e.g., `abel-ruffini` → `abelRuffini`)
+**Consequence:** a proof loads on the live site iff its `meta.json` is present on `main`. Adding a per-proof `index.ts` fixes nothing, is never imported, and re-introduces the exact anti-pattern #20993 removed. If a proof genuinely does not appear, check `listings.json` / the manifest generation in `scripts/annotations/build.ts`, not index.ts.
 
 ### meta.json Schema
 
