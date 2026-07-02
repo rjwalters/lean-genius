@@ -95,6 +95,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Cantor–Bernstein–Schroeder for arbitrary types via union-of-iterates",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "The imports (Tactic, Logic.Equiv.Defs, Set.Basic, Set.Function), the module docstring, and the namespace/open/variable setup. Answers OQ-04 sub-question 1: extending the parent's constructive finite-type CBS to arbitrary types, with no countability or decidability assumption.",
+      "mathContext": "The parent's orbit-classification argument (closure under g∘f, decomposition, injectivity, surjectivity) never used finiteness — only the stabilization step did, to turn iterated expansion into a fixed point. Replacing the card-bounded iteration with a countable union of iterates reachableSet = ⋃ₙ (step f g)^[n] baseSet makes closure hold by construction (an element added at stage n has its g∘f-image at stage n+1), so the fixed-point/pigeonhole machinery disappears; everything else carries over verbatim, reproving classical CBS (Function.Embedding.schroeder_bernstein) by the parent's own technique. Gained: a bijection from any pair of mutual injections for all types. Lost: decidability of the orbit classification — for infinite types membership a ∈ reachableSet is only semi-decidable (Σ⁰₁), so the bijection is genuinely noncomputable (the if branch needs Classical, preimage extraction needs Classical.choose). Decidable equality is not required either. Complete proof: 0 sorries, 0 axiom declarations, no finiteness/countability/decidable-equality hypotheses."
+    },
+    {
       "id": "definitions",
       "title": "Definitions: Base Set, Step, and the Union Reachable Set",
       "startLine": 68,
