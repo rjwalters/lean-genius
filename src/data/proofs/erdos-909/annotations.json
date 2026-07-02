@@ -35,7 +35,11 @@
       "descriptive set theory",
       "Anderson-Keisler"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "topological spaces and continuity",
+      "the notion of topological dimension",
+      "Cartesian product of two spaces"
+    ]
   },
   {
     "id": "ann-909-covering-dim",
@@ -55,7 +59,11 @@
       "open cover",
       "Katětov-Morita"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open covers of a topological space",
+      "refinement of a cover",
+      "separable metrizable spaces"
+    ]
   },
   {
     "id": "ann-909-dim-exactly",
@@ -73,7 +81,11 @@
       "exact dimension",
       "upper bound vs equality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "upper bounds versus exact equality",
+      "covering dimension as a partial order (dimLeq)",
+      "case guards on natural numbers (n > 0)"
+    ]
   },
   {
     "id": "ann-909-product-ineq",
@@ -92,7 +104,11 @@
       "Hurewicz-Wallman",
       "extreme violation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "covering dimension of a space",
+      "product topology on X × Y",
+      "compact metric spaces"
+    ]
   },
   {
     "id": "ann-909-statement",
@@ -110,7 +126,11 @@
       "existential quantification",
       "witness construction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existential quantification over types",
+      "TopologicalSpace as a Lean typeclass",
+      "witness construction in existence proofs"
+    ]
   },
   {
     "id": "ann-909-n1-example",
@@ -130,7 +150,11 @@
       "totally disconnected",
       "Sierpiński"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Hilbert space ℓ²",
+      "countable and dense subsets",
+      "totally disconnected spaces"
+    ]
   },
   {
     "id": "ann-909-anderson-keisler",
@@ -150,7 +174,11 @@
       "descriptive set theory",
       "separable metric"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "separable metric (metrizable) spaces",
+      "descriptive set theory and Borel sets",
+      "covering dimension of product spaces"
+    ]
   },
   {
     "id": "ann-909-main-theorem",
@@ -169,7 +197,11 @@
       "instance dropping",
       "existential packaging"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "obtaining witnesses from an existential (obtain/⟨...⟩)",
+      "discarding typeclass instances in a proof term",
+      "the Anderson-Keisler existence theorem"
+    ]
   },
   {
     "id": "ann-909-supporting",
@@ -188,7 +220,11 @@
       "monotonicity",
       "subspace dimension"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean space Rⁿ as Fin n → ℝ",
+      "subspaces and set inclusion",
+      "monotonicity of dimension under inclusion"
+    ]
   },
   {
     "id": "ann-909-summary",
@@ -207,6 +243,10 @@
       "concrete vs abstract",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "conjunction (∧) in proof terms",
+      "the general Anderson-Keisler theorem",
+      "the ℓ²(ℚ) base-case example"
+    ]
   }
 ]
