@@ -119,6 +119,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Carleson's theorem — a.e. convergence of L² Fourier series",
+      "startLine": 1,
+      "endLine": 83,
+      "summary": "Carleson (1966): for f ∈ L²(𝕋) the Fourier partial sums S_N f converge to f almost everywhere — one of the deepest results in 20th-century harmonic analysis. The file splits the proof into two parts. Part A, the Carleson–Hunt maximal inequality ‖S*f‖_{L²} ≤ C·‖f‖_{L²} for the maximal operator S*f = sup_N |S_N f|, is the ~50-page time-frequency core and is AXIOMATIZED here (this entry is honestly axiomatized, not fully verified). Part B — the reduction from the maximal inequality to a.e. convergence via a density argument — is a genuine theorem proved from Mathlib primitives. The docstring lays out both parts, the status checklist, and references (Carleson 1966, Hunt 1968, Grafakos).",
+      "mathContext": "The density-argument reduction (Part B): trigonometric polynomials are dense in L² and satisfy S_N g = g eventually, so S_N g → g everywhere; for general f, approximate by a trig poly g with ‖f−g‖ < ε, control S*(f−g) by the maximal inequality, and apply Chebyshev to bound the measure of the divergence set — arbitrary ε forces it to have measure zero. This is the standard 'maximal inequality ⟹ a.e. convergence' template (cf. Banach's principle). The genuinely hard content lives entirely in the axiomatized Part A; the assumption is the Carleson–Hunt bound, disclosed as an axiom, so the entry's status is honestly axiomatized."
+    },
+    {
       "id": "partial-sums",
       "title": "Fourier Partial Sums",
       "startLine": 84,
