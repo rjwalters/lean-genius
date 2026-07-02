@@ -2,10 +2,10 @@
   {
     "id": "ann-combo10-header",
     "proofId": "combinations-formula-oq-10",
-    "range": { "startLine": 1, "endLine": 52 },
+    "range": { "startLine": 1, "endLine": 36 },
     "type": "concept",
     "title": "The Diagonal of Vandermonde's Convolution",
-    "content": "The header frames OQ-10. The gallery already holds the general Vandermonde convolution C(m+n,r) = ∑_{k=0}^{r} C(m,k)·C(n,r-k) (OQ-01) and its Chu–Vandermonde polynomial generalizations (OQ-01-OQ-02). This file proves the convolution's most celebrated *specialization* — the diagonal m=n, where the second factor C(n,r-k) folds back onto C(n,k) by the symmetry of Pascal's triangle.\n\nThe headline consequence is the sum-of-squares identity ∑_{k=0}^{n} C(n,k)² = C(2n,n): the sum of the squares of a row of Pascal's triangle is the central binomial coefficient. The gallery previously recorded only the bound C(2n,n) ≤ 4ⁿ and the log-concavity of a row (OQ-04), not this exact value. The shifted generalization ∑_{k=0}^{n-d} C(n,k)·C(n,k+d) = C(2n,n+d) is the off-diagonal version, equivalently the coefficient [x^{n+d}] of (1+x)ⁿ·(1+x)ⁿ. `import Mathlib` supplies Nat.add_choose_eq (Vandermonde), the antidiagonal-to-range converter, and Nat.choose_symm_of_eq_add.",
+    "content": "The header frames OQ-10. The gallery already holds the general Vandermonde convolution C(m+n,r) = ∑_{k=0}^{r} C(m,k)·C(n,r-k) (OQ-01) and its Chu–Vandermonde polynomial generalizations (OQ-01-OQ-02). This file proves the convolution's most celebrated *specialization* — the diagonal m=n, where the second factor C(n,r-k) folds back onto C(n,k) by the symmetry of Pascal's triangle.\n\nThe headline consequence is the sum-of-squares identity ∑_{k=0}^{n} C(n,k)² = C(2n,n): the sum of the squares of a row of Pascal's triangle is the central binomial coefficient. The gallery previously recorded only the bound C(2n,n) ≤ 4ⁿ and the log-concavity of a row (OQ-04), not this exact value. The shifted generalization ∑_{k=0}^{n-d} C(n,k)·C(n,k+d) = C(2n,n+d) is the off-diagonal version, equivalently the coefficient [x^{n+d}] of (1+x)ⁿ·(1+x)ⁿ.",
     "mathContext": "Vandermonde: $\\binom{m+n}{r} = \\sum_{k=0}^{r}\\binom{m}{k}\\binom{n}{r-k}$. Diagonal at $m=n$, $r=n$: $\\sum_{k=0}^{n}\\binom{n}{k}\\binom{n}{n-k} = \\binom{2n}{n}$, and since $\\binom{n}{n-k}=\\binom{n}{k}$ this is $\\sum_{k=0}^{n}\\binom{n}{k}^2 = \\binom{2n}{n}$. Shifted: $\\sum_{k=0}^{n-d}\\binom{n}{k}\\binom{n}{k+d} = \\binom{2n}{n+d}$ for $d \\le n$.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -20,6 +20,27 @@
       "the general Vandermonde convolution",
       "the symmetry C(n,k) = C(n,n-k)",
       "finite sums over Finset.range"
+    ]
+  },
+  {
+    "id": "ann-combo10-method",
+    "proofId": "combinations-formula-oq-10",
+    "range": { "startLine": 38, "endLine": 52 },
+    "type": "technique",
+    "title": "Proof method: a subtraction-free ℕ specialization",
+    "content": "The `## Method` block records the single strategy behind both theorems. Rather than proving the sum-of-squares identity directly, the file specializes Mathlib's Vandermonde `Nat.add_choose_eq` at m=n, r=n-d, then routes every rewrite through one lemma, `Nat.choose_symm_of_eq_add` (n = a+b ⟹ C(n,a) = C(n,b)): once to fold the inner coefficient C(n,(n-d)-k) into C(n,k+d), and once to flip the closed form C(2n,n-d) into C(2n,n+d). The design deliberately avoids reasoning about truncated ℕ-subtraction — the two index splits n = ((n-d)-k)+(k+d) and 2n = (n-d)+(n+d) are each a one-line `omega` fact under the hypothesis d ≤ n, so the subtraction never underflows. `import Mathlib` and `open Nat Finset` bring the Vandermonde, antidiagonal-to-range, and `choose`-symmetry API into scope.",
+    "mathContext": "Every subtraction is an additive split validated by omega: $n = ((n-d)-k) + (k+d)$ and $2n = (n-d) + (n+d)$, both under $d \\le n$. The lone tool is $n = a+b \\Rightarrow \\binom{n}{a} = \\binom{n}{b}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specialization of a general identity",
+      "Nat.choose_symm_of_eq_add",
+      "subtraction-free ℕ arithmetic via omega",
+      "proof-engineering with a single symmetry lemma"
+    ],
+    "prerequisites": [
+      "Nat.add_choose_eq (Vandermonde in ℕ)",
+      "truncated subtraction on ℕ",
+      "the omega decision procedure"
     ]
   },
   {
