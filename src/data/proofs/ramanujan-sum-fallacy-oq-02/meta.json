@@ -131,13 +131,24 @@
   ],
   "conclusion": {
     "summary": "This entry answers the parent open question OQ-02 by defining Cesàro summation in Lean — partial sums, their running averages `cesaroMean`, and the predicate `CesaroSum` — and proving `grandi_cesaroSum_half : CesaroSum grandi (1/2)`. The argument is fully explicit: two inductions give the closed form $\\sigma_n = \\tfrac12 - (1-(-1)^n)/(4n)$ for $n \\geq 1$, and a squeeze $0 \\leq (1-(-1)^n)/(4n) \\leq 1/n$ drives the means to $\\tfrac12$. All results are machine-checked with 0 axioms and 0 sorries.",
-    "implications": "Where the parent entry warns that $1 - 1 + 1 - 1 + \\cdots = \\tfrac12$ is a fallacy under ordinary summation, this entry shows the value $\\tfrac12$ is nonetheless canonical under Cesàro summation, a strictly weaker notion (`grandi_cesaroSummable` holds while ordinary summability fails). This is the first rung of the ladder of summation methods — Cesàro, Abel, and beyond — that assign consistent values to divergent series, and it makes precise exactly which notion of 'sum' the classical manipulations tacitly invoke."
+    "implications": "Where the parent entry warns that $1 - 1 + 1 - 1 + \\cdots = \\tfrac12$ is a fallacy under ordinary summation, this entry shows the value $\\tfrac12$ is nonetheless canonical under Cesàro summation, a strictly weaker notion (`grandi_cesaroSummable` holds while ordinary summability fails). This is the first rung of the ladder of summation methods — Cesàro, Abel, and beyond — that assign consistent values to divergent series, and it makes precise exactly which notion of 'sum' the classical manipulations tacitly invoke.",
+    "openQuestions": [
+      "Verify that Cesàro summation is *regular* (a Silverman–Toeplitz method): if ∑ aₖ converges to L in the ordinary sense, then CesaroSum a L — so Cesàro genuinely extends ordinary summation rather than conflicting with it.",
+      "Show Grandi's series is also Abel-summable to ½ (lim_{x→1⁻} ∑ (−1)ⁿ xⁿ = 1/(1+x) → ½) and formalize Frobenius' theorem that Abel summation extends Cesàro, placing ½ on a second independent rung of the summation ladder.",
+      "Characterize which geometric series ∑ rⁿ with |r| = 1, r ≠ 1 are Cesàro-summable to 1/(1−r); Grandi (r = −1) is the case handled here.",
+      "Handle series that are not (C,1)-summable but are (C,2)-summable, e.g. 1 − 2 + 3 − 4 + ⋯ = ¼, by iterating the averaging (higher-order Cesàro means) — connecting to the Dirichlet eta / zeta functional-equation values."
+    ]
   },
   "crossReferences": [
     {
       "relationship": "extends",
       "description": "Answers ramanujan-sum-fallacy OQ-02: defines Cesàro summation and proves Grandi's series Cesàro-sums to 1/2, complementing the parent's proof that it is not ordinarily summable.",
       "targetId": "ramanujan-sum-fallacy"
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "related",
+      "description": "Grandi's series is the geometric series ∑ rⁿ at r = −1, on the |r| = 1 boundary where ordinary convergence fails; the formula 1/(1−r) evaluated at r = −1 gives the Cesàro/Abel value ½."
     }
   ],
   "references": [
