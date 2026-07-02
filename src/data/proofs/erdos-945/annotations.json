@@ -16,7 +16,11 @@
       "divisors",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor-counting function τ(n)",
+      "consecutive integers",
+      "big-O asymptotic notation"
+    ]
   },
   {
     "id": "ann-e945-imports",
@@ -35,7 +39,11 @@
       "filter",
       "asymptotics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "order filters (Filter.atTop)",
+      "big-O asymptotics",
+      "classical logic and decidability"
+    ]
   },
   {
     "id": "ann-e945-tau",
@@ -54,7 +62,11 @@
       "multiplicative-function",
       "highly-composite"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer",
+      "prime factorization",
+      "multiplicative arithmetic functions"
+    ]
   },
   {
     "id": "ann-e945-examples",
@@ -73,7 +85,11 @@
       "verification",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "counting divisors of small integers",
+      "computational decidability in Lean",
+      "prime and composite numbers"
+    ]
   },
   {
     "id": "ann-e945-functionF",
@@ -92,7 +108,11 @@
       "injective",
       "consecutive-integers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "injective functions",
+      "supremum of a set of naturals",
+      "runs of consecutive integers"
+    ]
   },
   {
     "id": "ann-e945-conjecture",
@@ -111,7 +131,11 @@
       "axiom",
       "polylogarithmic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polylogarithmic growth ((log x)^C)",
+      "the function F(x)",
+      "axioms for open (unproven) conjectures"
+    ]
   },
   {
     "id": "ann-e945-collision",
@@ -130,7 +154,11 @@
       "equivalent",
       "interval"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "equal divisor counts (τ collisions)",
+      "intervals of integers",
+      "logical equivalence of statements"
+    ]
   },
   {
     "id": "ann-e945-lower",
@@ -149,7 +177,11 @@
       "erdos-mirsky",
       "1952"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bounds (≫ notation)",
+      "the log and log-log functions",
+      "the divisor function τ"
+    ]
   },
   {
     "id": "ann-e945-upper",
@@ -168,6 +200,10 @@
       "exponential",
       "gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic upper bounds (≪ notation)",
+      "the exponential function",
+      "taking logarithms of a bound"
+    ]
   }
 ]
