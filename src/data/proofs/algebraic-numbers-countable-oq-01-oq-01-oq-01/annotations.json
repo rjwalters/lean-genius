@@ -1,0 +1,120 @@
+[
+  {
+    "id": "algsep-ann-dictionary",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "Separable = algebraic in characteristic zero",
+    "content": "isSeparable_iff_isAlgebraic is the engine of the whole file: over a characteristic-zero base field F, an element x of an extension is separable over F iff it is algebraic over F. Backward direction (the substantive one): x algebraic ⇒ integral (h.isIntegral), so minpoly F x is irreducible (minpoly.irreducible); in characteristic zero an irreducible polynomial is separable (Irreducible.separable), and IsSeparable F x is by definition (minpoly F x).Separable. Forward direction: a separable element is integral, hence algebraic (h.isIntegral.isAlgebraic). So separability adds nothing beyond algebraicity in characteristic zero.",
+    "mathContext": "In characteristic $0$ the derivative of a nonconstant polynomial is nonzero, so an irreducible $p$ is coprime to $p'$ — separable. Thus $\\mathrm{IsSeparable}\\,F\\,x \\iff \\mathrm{IsAlgebraic}\\,F\\,x$ whenever $\\mathrm{char}\\,F = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "separable element",
+      "algebraic element",
+      "minimal polynomial",
+      "Irreducible.separable",
+      "characteristic zero"
+    ],
+    "prerequisites": [
+      "separability",
+      "minimal polynomials",
+      "characteristic zero"
+    ]
+  },
+  {
+    "id": "algsep-ann-perfect-charzero",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 82,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Char-0 ⇒ perfect ⇒ separable/perfect algebraic extensions",
+    "content": "isSeparable_of_charZero and perfectField_of_charZero package Mathlib's perfect-field machinery. PerfectField.ofCharZero makes any characteristic-zero field perfect; Algebra.IsAlgebraic.isSeparable_of_perfectField and Algebra.IsAlgebraic.perfectField then say every algebraic extension of a perfect field is separable and itself perfect. Composed, every algebraic extension of a char-0 field is separable (an instance) and perfect. These are the general statements later specialized to ℚ and to ℚ̄.",
+    "mathContext": "A field is perfect if every irreducible polynomial over it is separable. Perfectness is inherited by algebraic extensions, and every characteristic-zero field is perfect.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "perfect field",
+      "PerfectField.ofCharZero",
+      "separable extension",
+      "algebraic extension"
+    ],
+    "prerequisites": [
+      "perfect fields",
+      "algebraic extensions"
+    ]
+  },
+  {
+    "id": "algsep-ann-rationals",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 111
+    },
+    "type": "concept",
+    "title": "Every algebraic extension of ℚ is separable",
+    "content": "The char-0 phenomenon made concrete for the rationals. isSeparable_of_isAlgebraic_rat: every algebraic extension of ℚ is separable. isSeparable_of_isAlgebraic_complex: a complex number algebraic over ℚ is separable over ℚ (a direct application of the dictionary at F = ℚ, L = ℂ). minpoly_squarefree_of_isAlgebraic: the minimal polynomial over ℚ of any algebraic number is squarefree — separability read off as absence of repeated roots.",
+    "mathContext": "No algebraic number has a repeated Galois conjugate; equivalently, every minimal polynomial over $\\mathbb{Q}$ is squarefree.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "algebraic number",
+      "squarefree",
+      "minimal polynomial",
+      "separable"
+    ],
+    "prerequisites": [
+      "algebraic numbers",
+      "minimal polynomials"
+    ]
+  },
+  {
+    "id": "algsep-ann-perfect-qbar",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 119,
+      "endLine": 137
+    },
+    "type": "insight",
+    "title": "ℚ̄ is perfect and has no inseparable extensions",
+    "content": "The heart of the answer to the parent's open question. The instance PerfectField algebraicNumbersField is obtained via Algebra.IsAlgebraic.perfectField (K := ℚ): ℚ̄ is algebraic over the perfect field ℚ, so it is perfect. From perfectness, isSeparable_of_isAlgebraic_algebraicNumbersField gives that every algebraic extension of ℚ̄ is separable — precisely 'ℚ̄ has no inseparable extensions'. separable_of_irreducible_over_algebraicNumbersField records the defining property (every irreducible over ℚ̄ is separable), and the instance Algebra.IsSeparable ℚ algebraicNumbersField says ℚ̄/ℚ itself is separable.",
+    "mathContext": "Perfectness transfers along algebraic extensions: $\\overline{\\mathbb{Q}}/\\mathbb{Q}$ is algebraic and $\\mathbb{Q}$ is perfect, so $\\overline{\\mathbb{Q}}$ is perfect and admits no inseparable algebraic extension.",
+    "significance": "key",
+    "relatedConcepts": [
+      "perfect field",
+      "algebraic numbers",
+      "inseparable extension",
+      "Algebra.IsAlgebraic.perfectField"
+    ],
+    "prerequisites": [
+      "perfect fields",
+      "separable extensions",
+      "algebraic numbers"
+    ]
+  },
+  {
+    "id": "algsep-ann-closures",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 146,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Separable closure of ℚ in ℂ equals its algebraic closure",
+    "content": "The vanishing of purely-inseparable content, concretely. separableClosure_rat_eq_algebraicClosure: an ext reduces membership to mem_separableClosure_iff / mem_algebraicClosure_iff, i.e. to IsSeparable ℚ x ↔ IsAlgebraic ℚ x — the char-0 dictionary — proving separableClosure ℚ ℂ = algebraicClosure ℚ ℂ. Rewriting with the parent's algebraicNumbersField_eq gives separableClosure_rat_eq_algebraicNumbersField. Finally the instance IsSepClosed algebraicNumbersField follows from IsSepClosed.of_isAlgClosed applied to the parent's IsAlgClosed instance: ℚ̄ is separably closed.",
+    "mathContext": "The separable closure always lies inside the algebraic closure; in characteristic zero they coincide. So there is no field strictly between $\\mathrm{separableClosure}\\,\\mathbb{Q}\\,\\mathbb{C}$ and $\\mathrm{algebraicClosure}\\,\\mathbb{Q}\\,\\mathbb{C}$ — the inseparable layer is trivial.",
+    "significance": "key",
+    "relatedConcepts": [
+      "separable closure",
+      "algebraic closure",
+      "separably closed field",
+      "IsSepClosed.of_isAlgClosed"
+    ],
+    "prerequisites": [
+      "separable closure",
+      "algebraic closure"
+    ]
+  }
+]
