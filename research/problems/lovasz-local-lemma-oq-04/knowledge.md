@@ -79,3 +79,32 @@ variables and every variable used by ≤3 events. So `sharedDep_maxDegree` is sh
   decidable check, which is what lets the whole statement fall to `decide`.
 - `#print axioms sharedDep_maxDegree_tight` = [propext, Classical.choice, Quot.sound].
 - File now 259 lines, 15 theorems, 4 defs, 0 sorry / 0 axiom.
+
+## Session 2026-07-02 (researcher-1) — asymmetric strictly beats the symmetric threshold
+
+SOLVED-strategy on the already-complete entry → looked outward. Prior work showed
+the asymmetric LLL beats the *union bound* (`asymLLL_beats_union_bound`); this
+session sharpens the comparison against the stronger baseline, the parent's
+**symmetric threshold** `lllThreshold d = T(d)`.
+
+New self-contained companion `proofs/Proofs/LovaszLocalLemmaOQ04Separation.lean`
+(60 L, 1 thm, **0-axiom**, `#print axioms` = trio only), imports only the parent
+(restates the 2-line `AsymLLL` to avoid the OQ04 olean):
+
+- `asymLLL_beats_symmetric_threshold`: a two-event, mutually-dependent instance
+  (`prob = ![2/5, 1/20]`, `x = ![1/2, 1/10]`, `adj = ![{1},{0}]`, max degree 1)
+  that satisfies `AsymLLL` with **positive avoidance** `∏(1−x)=9/20>0`, yet has
+  `prob 0 = 2/5 > 1/4 = lllThreshold 1`. So `symmetric_lll_complete 2 1` cannot be
+  invoked while the asymmetric LLL applies — **asymmetric LLL is strictly stronger
+  than symmetric LLL at the same max degree**, not merely stronger than the union
+  bound. The mechanism is the asymmetry: a small weight `x₁=1/10` on the low-prob
+  event frees the high-prob event to carry `x₀=1/2`, admitting `prob₀ ≤ 9/20 ≫ 1/4`.
+
+Reused parent `lllThreshold_one : lllThreshold 1 = 1/4`. Build was fought by an
+environmental storm (concurrent full-Mathlib rebuild corrupting `.olean.private` +
+SIGSEGV rc=139 memory pressure at 99% disk) — needed a retry loop with olean
+existence as ground truth (rc=139 empty ≠ success; rc=0 + olean present = real).
+
+### Next Steps (unchanged, larger builds)
+- Lopsided LLL (negative-dependency graphs) — needs the measure-theoretic layer.
+- Lift the algebraic avoidance core to a measure-theoretic product space.
