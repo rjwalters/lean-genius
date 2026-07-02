@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-ccp01-overview",
+    "proofId": "composition-card-2pow-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 51
+    },
+    "type": "concept",
+    "title": "Overview: There Are 2^(n−1) Compositions of n",
+    "content": "A composition of n is an ordered tuple of positive integers summing to n (Mathlib's Composition n). The classical enumerative fact is Fintype.card (Composition n) = 2^(n−1): the bijective proof inserts a 'bar or no bar' into each of the n−1 gaps between n unit boxes, so a composition is the same data as a subset of the n−1 internal gaps. Mathlib supplies the headline count as composition_card via Composition n ≃ CompositionAsSet n; this file re-exports it as card_composition_eq to give the result a named gallery home, and adds the structural consequences Mathlib omits: the DOUBLING RECURRENCE card (Composition (n+2)) = 2·card (Composition (n+1)) — each additional unit doubles the count for n ≥ 1; POSITIVITY 0 < card (Composition n); the count as a genuine bijective statement exposing the 'subset of gaps' model; and concrete values for n = 1,…,5 (1,2,4,8,16). The doubling recurrence is the combinatorial heart of 2^(n−1) — 'splitting the last box off either starts a new part or extends the current one' — and genuinely requires n ≥ 1 (the 0→1 step does not double, since ℕ subtraction is truncated); the n+2 phrasing sidesteps the edge case.",
+    "mathContext": "The number of compositions of $n$ (ordered positive-part sums) is $2^{n-1}$, in bijection with subsets of the $n-1$ internal gaps of $n$ unit boxes. The doubling recurrence $c(n+2)=2\\,c(n+1)$ reflects that appending a box either extends the last part or opens a new one.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "composition of an integer",
+      "binomial/subset counting",
+      "bijective proof",
+      "recurrence relation",
+      "enumerative combinatorics"
+    ],
+    "prerequisites": [
+      "compositions of integers",
+      "counting subsets",
+      "finite cardinality"
+    ]
+  },
+  {
     "id": "ann-headline-count",
     "proofId": "composition-card-2pow-oq-01",
     "range": {
