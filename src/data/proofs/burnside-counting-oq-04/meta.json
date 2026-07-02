@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: extending Burnside counting to the dihedral group via index-2 folding",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "The group-theory imports (GroupAction.Quotient, SpecificGroups.Dihedral, Fintype.Card, Tactic), the module docstring, and the namespace/open setup. Answers the parent's 'extend to the dihedral group' open question by isolating the exact mechanism relating bracelet counting (dihedral orbits) to necklace counting (cyclic orbits).",
+      "mathContext": "The dihedral group D_n contains the cyclic rotation group as an index-2 subgroup (|D_n| = 2n = 2·|ℤ/nℤ|). The headline index_two_orbit_folding proves, for any finite group G acting on a finite X and any subgroup H ≤ G, that |X/G|·|G| = |X/H|·|H| + Σ_{g∉H}|Fix(g)| — with G = D_n, H = ℤ/nℤ this reads (bracelets)·2n = (necklaces)·n + Σ_{reflections}|Fix|, the classical bracelets = (necklaces + reflection fixed points)/2. Specialising to |G| = 2|H| gives the doubling form, and plugging in the classical length-4 binary data (|necklaces| = 6, |H| = 4, reflection fixed points = 24) recovers |bracelets| = 6 as the corollary binary_four_bracelet_count. Honest scope: the folding theorem is the axiom-free general contribution; the numeric corollary takes the two finite counts as hypotheses rather than recomputing them (the parent closes those only with native_decide), so this is an exact algebraic reduction, not a from-scratch enumeration. Built on Mathlib's Burnside lemma and Dihedral API."
+    },
+    {
       "id": "folding",
       "title": "The Index-2 Orbit-Folding Theorem",
       "startLine": 68,
