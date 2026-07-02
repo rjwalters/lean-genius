@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Erdős–Mordell Inequality",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Module docstring for the Erdős–Mordell inequality PA+PB+PC ≥ 2(da+db+dc) for an interior point P of triangle ABC, with equality iff ABC is equilateral and P is its center. These head lines lay out the two-part architecture — the three geometric key inequalities (a·PA ≥ b·dc + c·db and cyclic, from the concyclic-feet / chord argument) and the algebraic AM–GM reduction that sums them — and enumerate the proved lemmas (reduction, trig core, chord identity delegated to a companion), noting the result is machine-checked with no sorries or extra axioms.",
+      "mathContext": "Conjectured by Erdős (1935) and first proved by Mordell–Barrow (1937), the inequality is not in Mathlib. The proof divides the three key inequalities by the side lengths and sums; each distance's coefficient is t+1/t ≥ 2 by AM–GM. The certificate is the identity abc(PA+PB+PC) − 2abc(da+db+dc) = a·da(b−c)² + b·db(a−c)² + c·dc(a−b)² + slack, a sum of nonnegative terms. The key inequalities reduce to a chord identity (a pure coordinate identity in EuclideanSpace ℝ (Fin 2)) and the law of sines. 0 sorries, 0 axioms."
+    },
+    {
       "id": "reduction",
       "title": "Algebraic AM–GM Reduction (Proved)",
       "startLine": 66,
