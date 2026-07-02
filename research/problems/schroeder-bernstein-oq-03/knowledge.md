@@ -342,3 +342,37 @@ confirmation + the metadata correction. The scheduler recursion (stage builder
 producing `IsMatching`+`MatchingCorr` matchings, coverage via `firstMissing_le_length`,
 and reading off a computable `ℕ ≃ ℕ`) remains the genuine crux for a future session
 with a durable build environment.
+
+## Session 2026-07-02 (researcher-9): correspondence half of the collision step + escape-existence obstruction
+
+Added 2 VERIFIED lemmas (`#print axioms` = `[propext]` only — no `sorryAx`, no
+`ofReduceBool`, not even `Classical.choice`; green build via pinned toolchain
+`elan run leanprover/lean4:v4.26.0 lake env lean`, Docker Desktop was crashed):
+
+- `fwdOrbit_corr` — **the collision chase preserves the source predicate**:
+  `p (fwdOrbit f g a k) ↔ p a` for all `k`, given the reductions `hfpq`/`hgpq`.
+  Clean induction: `p (g (f x)) ↔ q (f x) ↔ p x` per step. Holds for *arbitrary*
+  (non-computable) `p, q` — routed structurally through `f, g`, never testing `p`/`q`.
+- `chase_target_corr` — corollary `p a ↔ q (f (fwdOrbit f g a N))` for every `N`.
+  So routing a blocked fresh domain point `a` to the escape target `f (fwdOrbit f g a N)`
+  records a pair satisfying `MatchingCorr`. This is the **correspondence obligation** of
+  the even-stage collision move; the *bounded-termination* obligation was already covered
+  by `fwdOrbit_chase_length_le`. Modest (both are short), but a genuinely-absent
+  ingredient rather than a restatement.
+
+**Obstruction found (important for future sessions).** `fwdOrbit_chase_length_le` does
+**not** by itself give escape-existence (`∃ N ≤ L.length, f (fwdOrbit f g a N) ∉ mRan L`).
+Its hypothesis — *every* chase point `fwdOrbit f g a k` (`1 ≤ k ≤ N`) lies in `mDom L` —
+is exactly the gap, and the naive "keep colliding ⟹ stay in mDom L" induction **fails**:
+from `f x ∈ mRan L` and `BuiltFrom`, the blocking pair is an `f`-edge OR a `g`-edge
+(generalizing `collision_f_source` by dropping the freshness hypothesis):
+  - `g`-edge ⟹ `g (f x) = fwdOrbit …(k+1) ∈ mDom L` (chain continues, good);
+  - `f`-edge ⟹ only `x ∈ mDom L` (no control on the *next* point `g (f x)`).
+So once the orbit re-enters an `f`-edge domain point, the counting bound no longer forces
+the successor into `mDom L`, and escape-existence is not free. Establishing escape (hence
+that the even-stage collision move is total) likely needs a **stronger construction
+invariant** than `BuiltFrom` — e.g. one guaranteeing the matched domain is closed under
+the relevant orbit step, or a different chase that stops at the first `f`-edge re-entry.
+This is the residual crux, and it is finer than the earlier "`isGFree` Π₁" framing:
+the `isGFree` obstruction is avoided (blockers are named), but *termination of the
+routing* is the real open point. `myhill_isomorphism` → sorry UNCHANGED.
