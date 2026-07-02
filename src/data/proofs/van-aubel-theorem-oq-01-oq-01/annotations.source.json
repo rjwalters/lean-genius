@@ -36,6 +36,18 @@
     "prerequisites": ["polynomial identities over ℂ", "linear_combination tactic"]
   },
   {
+    "id": "ann-varignon-mids",
+    "proofId": "van-aubel-theorem-oq-01-oq-01",
+    "anchor": { "type": "declaration", "name": "mid", "kind": "def" },
+    "type": "definition",
+    "title": "The Varignon Midpoints of PQRS",
+    "content": "With $\\mathrm{mid}(x,y) = \\tfrac{x+y}{2}$ the ordinary segment midpoint, the four Varignon vertices are $M_1 = \\mathrm{mid}(P,Q)$, $M_2 = \\mathrm{mid}(Q,R)$, $M_3 = \\mathrm{mid}(R,S)$, $M_4 = \\mathrm{mid}(S,P)$ — the midpoints of the four sides of the square-center quadrilateral $PQRS$, taken in cyclic order. Varignon's construction is deliberately blind to the shape of $PQRS$: for *any* quadrilateral these midpoints form a parallelogram. All of the square-ness proved downstream is therefore imported entirely from van Aubel's special diagonal relation $R - P = i(S-Q)$, not from the midpoint construction itself. Each $M_k$ is `noncomputable` only because the parent square-centers $P,Q,R,S$ are.",
+    "mathContext": "$M_1=\\tfrac{P+Q}{2},\\ M_2=\\tfrac{Q+R}{2},\\ M_3=\\tfrac{R+S}{2},\\ M_4=\\tfrac{S+P}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Varignon's theorem", "midpoint quadrilateral", "cyclic side order"],
+    "prerequisites": ["midpoint of a segment", "the square centers P, Q, R, S"]
+  },
+  {
     "id": "ann-varignon-edge",
     "proofId": "van-aubel-theorem-oq-01-oq-01",
     "anchor": { "type": "declaration", "name": "varignon_edge12", "kind": "theorem" },
@@ -70,6 +82,18 @@
     "significance": "supporting",
     "relatedConcepts": ["directional rewriting", "van Aubel key identity", "ring tactic"],
     "prerequisites": ["rewriting equalities in Lean"]
+  },
+  {
+    "id": "ann-varignon-closes",
+    "proofId": "van-aubel-theorem-oq-01-oq-01",
+    "anchor": { "type": "declaration", "name": "varignon_closes", "kind": "theorem" },
+    "type": "insight",
+    "title": "The Polygon Closes — It Really Is a Parallelogram",
+    "content": "The four directed edges sum to zero: $(M_2-M_1)+(M_3-M_2)+(M_4-M_3)+(M_1-M_4) = 0$. This is a telescoping triviality (`ring` alone, no geometry), but it carries the essential bookkeeping that $M_1M_2M_3M_4$ is a genuine *closed* quadrilateral rather than an open chain — and, combined with the rotation identities, that opposite edges are negatives of each other, i.e. a parallelogram. Varignon's classical statement is exactly 'the midpoint figure is a parallelogram'; this lemma is that statement's algebraic residue. Everything sharper (equilateral, right-angled) then upgrades the parallelogram to a square.",
+    "mathContext": "$\\sum_{k}(M_{k+1}-M_k) = 0$; opposite edges $M_2-M_1 = -(M_4-M_3)$, $M_3-M_2 = -(M_1-M_4)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["parallelogram", "telescoping sum", "closed polygon", "Varignon's theorem"],
+    "prerequisites": ["directed edges of a polygon"]
   },
   {
     "id": "ann-equal-sides",
