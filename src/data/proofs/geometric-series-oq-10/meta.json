@@ -35,6 +35,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: third moment of the geometric series ∑ n³ rⁿ = r(1+4r+r²)/(1−r)⁴",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "Imports and header docstring: the closed-form result, its place in the low-order moment family, why it is absent from Mathlib, the rising-binomial assembly strategy, and the probabilistic interpretation.",
+      "mathContext": "This file (open question geometric-series-oq-10) proves the third moment of the geometric series: for real r with ‖r‖ < 1, ∑_{n≥0} n³ rⁿ = r(1+4r+r²)/(1−r)⁴, extending the moment family (∑rⁿ = 1/(1−r), ∑n·rⁿ = r/(1−r)², ∑n²·rⁿ = r(1+r)/(1−r)³ from GeometricSeriesOQ07). Mathlib supplies the zeroth and first moments and the rising-binomial family ∑ (n+k choose k) rⁿ = 1/(1−r)^{k+1} (hasSum_choose_mul_geometric_of_norm_lt_one) but no closed form for ∑n³rⁿ. The contribution is to assemble the third moment from the k=0,1,2,3 members of that family via the polynomial identity in the rising-binomial basis n³ = 6·(n+3 choose 3) − 12·(n+2 choose 2) + 7·(n+1 choose 1) − 1 (coefficients (6,−12,7,−1) from Newton's forward-difference / binomial transform of n³, the degree-3 analogue of the degree-2 identity used for the second moment). Proof strategy: take four HasSum facts at k=3,2,1,0, form the linear combination 6h₃ − 12h₂ + 7h₁ − h₀ whose summand is n³rⁿ, and simplify 6/(1−r)⁴ − 12/(1−r)³ + 7/(1−r)² − 1/(1−r) to r(1+4r+r²)/(1−r)⁴ by field_simp; ring. The header also gives the probabilistic reading (moments/skewness of a geometric distribution P(X=n)=(1−r)rⁿ). Status: 0 sorries, 0 axioms."
+    },
+    {
       "id": "casts-and-identity",
       "title": "Rising-Binomial Casts and the Cube Identity",
       "startLine": 72,
