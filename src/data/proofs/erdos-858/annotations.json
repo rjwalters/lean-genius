@@ -17,7 +17,11 @@
       "Reciprocal sums",
       "Multiplicative structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Primitive sets",
+      "Smallest prime factor $\\mathrm{spf}(n)$",
+      "Reciprocal sums $\\sum 1/n$"
+    ]
   },
   {
     "id": "ann-e858-spf",
@@ -35,7 +39,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Prime factorization",
+      "Minimal factor $\\mathrm{minFac}$",
+      "Definition by cases in Lean"
+    ]
   },
   {
     "id": "ann-e858-condition",
@@ -53,7 +61,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility and multiplication $at=b$",
+      "Smallest prime factor",
+      "Universally quantified propositions"
+    ]
   },
   {
     "id": "ann-e858-primitive",
@@ -71,7 +83,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Divisibility relation $a\\mid b$",
+      "Finset membership",
+      "Primitive (divisor-free) sets"
+    ]
   },
   {
     "id": "ann-e858-primitive-implies",
@@ -89,7 +105,11 @@
       "proof technique",
       "proof by contradiction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Proof by contradiction",
+      "Divisibility",
+      "Primitive sets and the spf condition"
+    ]
   },
   {
     "id": "ann-e858-reciprocal-sum",
@@ -107,7 +127,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finite sums over finsets",
+      "Real reciprocals $1/n$",
+      "Filtering to avoid division by zero"
+    ]
   },
   {
     "id": "ann-e858-weighted-sum",
@@ -125,7 +149,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Natural logarithm",
+      "Normalization by $\\log N$",
+      "Reciprocal sums"
+    ]
   },
   {
     "id": "ann-e858-alexander",
@@ -145,7 +173,11 @@
       "weighted sums",
       "primitive sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic limits ($\\to 0$)",
+      "Epsilon–$N_0$ formulation",
+      "Multiplicative number theory"
+    ]
   },
   {
     "id": "ann-e858-ess",
@@ -165,7 +197,11 @@
       "sieve methods",
       "additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Sieve methods",
+      "Additive combinatorics",
+      "Asymptotic vanishing bounds"
+    ]
   },
   {
     "id": "ann-e858-behrend",
@@ -183,7 +219,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Big-O notation",
+      "Iterated logarithm $\\log\\log N$",
+      "Behrend-type density bounds for primitive sets"
+    ]
   },
   {
     "id": "ann-e858-example",
@@ -201,7 +241,11 @@
       "formal definition",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Integer intervals $[\\sqrt N,N]$",
+      "Large prime factors",
+      "Finset filtering constructions"
+    ]
   },
   {
     "id": "ann-e858-solution",
@@ -219,7 +263,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Asymptotic vanishing ($o(1)$)",
+      "Epsilon–$N_0$ limits",
+      "The multiplicative condition"
+    ]
   },
   {
     "id": "ann-e858-connection",
@@ -236,7 +284,11 @@
     "relatedConcepts": [
       "Erdős Problem #143"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Primitive sets",
+      "Erdős Problem #143",
+      "Implication between set conditions"
+    ]
   },
   {
     "id": "ann-e858-summary",
@@ -254,6 +306,10 @@
       "proof technique",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Primitive sets",
+      "Asymptotic bounds",
+      "Logical conjunction of results"
+    ]
   }
 ]
