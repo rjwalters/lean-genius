@@ -124,7 +124,11 @@
   "conclusion": {
     "summary": "On a circle of radius r, the distance between two points at central angles θz, θw is 2r·|sin((θz−θw)/2)| (Ptolemy's chord) and, more generally for radii r₁,r₂, the squared distance is r₁²+r₂²−2r₁r₂cos(θ₁−θ₂) (law of cosines). The two coincide on a single circle via the half-angle identity, and the unit-circle case recovers the parent's distance lemma. All verified with 0 axioms, 0 sorries.",
     "implications": "These are the two closed-form chord identities Ptolemy needed to build his trigonometric tables, now machine-checked with explicit radius. The law of cosines generalizes the Pythagorean theorem (the right-angle case) and, with the law of sines, solves arbitrary triangles; the chord formula is the bridge between central angle and chord length used throughout circle geometry.",
-    "openQuestions": []
+    "openQuestions": [
+      "Use the two-radii squared-distance formula $r_1^2 + r_2^2 - 2r_1 r_2\\cos(\\theta_1-\\theta_2)$ to formalize the full Ptolemy inequality and its equality case (cyclic quadrilaterals) directly in the complex-number setting.",
+      "Extend the chord-length identity $2r\\,|\\sin\\tfrac{\\theta_z-\\theta_w}{2}|$ to spherical and hyperbolic geometry (the non-Euclidean laws of cosines), testing how much of the half-angle machinery survives.",
+      "Derive the generalized Ptolemy / Casey theorem (for circles tangent to a common circle, replacing points by tangent circles) from the same half-angle chord identity."
+    ]
   },
   "references": [
     {
