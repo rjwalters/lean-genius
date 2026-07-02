@@ -108,5 +108,50 @@
       "slug": "erdos-659-oq-05",
       "relationship": "Sibling: oq-05 studies the arithmetic (x²+2y² norm form) of the Moree–Osburn distance spectrum; this entry studies the geometry of individual two-distance configurations."
     }
+  ],
+  "conclusion": {
+    "summary": "A concrete, fully machine-checked (0-axiom, 0-sorry) Euclidean companion to the abstract four-point two-distance classification behind Erdős #659. It defines the honest ℓ² squared distance sqDist on ℝ×ℝ, proves its metric properties (including positive-definiteness), and certifies explicit configurations: the unit square (squared-distance spectrum {1,2}) and the 60° rhombus (spectrum {1,3}) ARE two-distance sets, while a 1×2 rectangle (spectrum {1,4,5}) is NOT — so the IsTwoDistance4 predicate genuinely discriminates.",
+    "implications": "**Fixes a metric mismatch.** The parent Erdos659Problem.lean measures distance with Mathlib's default Chebyshev (ℓ∞) product metric on ℝ×ℝ, under which the unit square collapses to a single distance. Reasoning about the Euclidean *squared* distance recovers the intended two-distance structure and, because squared distances of these rational/√3 configurations are integers, keeps every spectrum rational — decided by norm_num / linear_combination rather than surd manipulation.\n\n**Anchors the abstract classification.** The named realizations give the TwoDistanceConfig constructors concrete geometric witnesses, and the discriminating rectangle shows the verification is not vacuous. The squared-distance technique (handling the rhombus's √3 coordinates via (√3)²=3) is a reusable pattern for formalizing Euclidean distance combinatorics without leaving the rationals.",
+    "openQuestions": [
+      "Replace the parent file's three `True` placeholders (the two isosceles trapezoids and the kite) with genuine geometric predicates and concrete Euclidean realizations, completing all six four-point two-distance configurations.",
+      "Formalize the Einhorn–Schoenberg planar bound: every planar two-distance set has at most 5 points, with the regular pentagon as the unique extremal configuration.",
+      "Prove that the six configurations exhaust the four-point two-distance sets up to similarity — the classification theorem itself, of which this entry verifies only individual instances.",
+      "Can any part of the O(n/√log n) distinct-distances construction with the four-point property (the actual content of Erdős #659) be formalized, e.g. that the four-point property is preserved under the relevant lattice operations?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-659",
+      "relationship": "foundational",
+      "description": "Parent problem: this entry supplies concrete, axiom-free Euclidean realizations for the abstract TwoDistanceConfig classification enumerated in Erdos659Problem.lean, and fixes its Chebyshev-vs-Euclidean metric mismatch."
+    },
+    {
+      "targetId": "erdos-659-oq-05",
+      "relationship": "related",
+      "description": "Sibling: oq-05 studies the arithmetic of the Moree–Osburn distance spectrum (the x²+2y² norm form); this entry studies the geometry of the individual four-point two-distance configurations."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Paul Erdős",
+      "title": "On sets of distances of n points",
+      "year": "1946",
+      "venue": "American Mathematical Monthly 53",
+      "note": "Origin of the distinct-distances problem that Erdős #659 refines."
+    },
+    {
+      "authors": "S. J. Einhorn and I. J. Schoenberg",
+      "title": "On Euclidean sets having only two distances between points, I & II",
+      "year": "1966",
+      "venue": "Indagationes Mathematicae 28",
+      "note": "Classification of planar two-distance sets: maximum size 5 (regular pentagon), with enumeration of the four-point cases realized here."
+    },
+    {
+      "authors": "Pieter Moree and Robert Osburn",
+      "title": "Two-dimensional lattices with few distances",
+      "year": "2006",
+      "venue": "L'Enseignement Mathématique 52",
+      "note": "Source of the refinement recorded as Erdős problem #659, in which every four-point subset must determine at least three distances."
+    }
   ]
 }
