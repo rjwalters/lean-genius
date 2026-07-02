@@ -72,7 +72,8 @@
       "**The converse is the content; Mathlib supplies only the forward half.** Nat.fib_dvd (m ∣ n → fib m ∣ fib n) is standard, but the reverse implication — recovering the index divisibility from divisibility of the values — is exactly what a *strong* divisibility sequence buys you, and it is not in Mathlib.",
       "**fib_gcd converts a divisibility hypothesis into an equation of fib-values.** The whole converse hinges on reading fib m ∣ fib n as gcd(fib m, fib n) = fib m and then as fib (gcd m n) = fib m; injectivity of fib on [2, ∞) does the rest.",
       "**m = 2 is a genuine, unique exception — the sharpest possible statement.** Because F₁ = F₂ = 1, the value 1 is divisibility-blind to its index. The theorem fib_dvd_iff_forall makes this precise: the biconditional holds for all n iff m ≠ 2, and no weaker hypothesis (e.g. m ≥ 1) would be correct.",
-      "**Even Fibonacci numbers sit on an arithmetic progression.** The corollary 2 ∣ fib n ⟺ 3 ∣ n (from fib 3 = 2) recovers the familiar 'every third Fibonacci number is even', now as an exact iff rather than a one-directional divisibility."
+      "**Even Fibonacci numbers sit on an arithmetic progression.** The corollary 2 ∣ fib n ⟺ 3 ∣ n (from fib 3 = 2) recovers the familiar 'every third Fibonacci number is even', now as an exact iff rather than a one-directional divisibility.",
+      "**The proof mechanism and the exception have a common root.** fib fails to be injective on all of ℕ for exactly one reason — fib 1 = fib 2 = 1 — and that is the very coincidence that makes m = 2 exceptional. The converse only works after restricting to [2, ∞), where fib_strictMonoOn restores injectivity, and the gcd ≥ 2 lower bound is precisely the device that keeps the argument inside that injective range. So the m ≠ 2 hypothesis in fib_dvd_iff_forall and the [2, ∞) restriction in the proof are two faces of the same F₁ = F₂ = 1 collision."
     ],
     "prerequisites": [
       "The 0-indexed Fibonacci sequence Nat.fib and its recurrence",
@@ -97,12 +98,20 @@
       "content": "For m ≥ 3, fib m ∣ fib n ⟹ m ∣ n. The proof turns the divisibility hypothesis into fib (gcd m n) = fib m via fib_gcd + gcd_eq_left, bounds the gcd below by 2 by ruling out the values 0 (fib 0 = 0) and 1 (fib 1 = 1) using fib m ≥ fib 3 = 2, and applies injectivity of fib on [2, ∞) (fib_strictMonoOn.injOn) to conclude gcd m n = m, whence m ∣ n."
     },
     {
-      "id": "characterization",
-      "title": "Biconditional and Sharp Global Form",
+      "id": "biconditional",
+      "title": "The Divisibility Biconditional (m ≥ 3)",
       "startLine": 61,
+      "endLine": 66,
+      "summary": "fib_dvd_iff : for m ≥ 3, fib m ∣ fib n ↔ m ∣ n, assembled in one line as the anonymous constructor ⟨dvd_of_fib_dvd_fib hm, Nat.fib_dvd m n⟩ — the new converse paired with Mathlib's forward direction.",
+      "content": "fib_dvd_iff packages the converse dvd_of_fib_dvd_fib with Mathlib's forward Nat.fib_dvd to give the biconditional fib m ∣ fib n ↔ m ∣ n for every m ≥ 3, the non-degenerate range of indices."
+    },
+    {
+      "id": "sharp-global",
+      "title": "The Sharp Global Form: m = 2 is the Unique Exception",
+      "startLine": 68,
       "endLine": 90,
-      "summary": "fib_dvd_iff for m ≥ 3 and the sharp fib_dvd_iff_forall isolating m = 2.",
-      "content": "fib_dvd_iff packages the converse with Mathlib's forward direction for m ≥ 3. fib_dvd_iff_forall proves the sharp statement (∀ n, fib m ∣ fib n ↔ m ∣ n) ↔ m ≠ 2, isolating m = 2 as the unique exceptional index; the reverse direction splits by rcases into m = 0, m = 1, m = 2 (excluded), and m = k + 3."
+      "summary": "fib_dvd_iff_forall : (∀ n, fib m ∣ fib n ↔ m ∣ n) ↔ m ≠ 2. The forward direction instantiates n = 1 at m = 2 to derive the false 2 ∣ 1; the reverse splits m ≠ 2 by rcases into m = 0 (both sides ⇔ n = 0), m = 1 (both sides vacuously true), m = 2 (excluded), and m = k + 3 (fib_dvd_iff).",
+      "content": "fib_dvd_iff_forall proves the sharp statement (∀ n, fib m ∣ fib n ↔ m ∣ n) ↔ m ≠ 2, isolating m = 2 as the unique exceptional index. The exceptional direction derives 2 ∣ 1 from instantiating n = 1; the converse rcases m into 0, 1, 2 (excluded via absurd rfl), and k + 3."
     },
     {
       "id": "corollaries",
