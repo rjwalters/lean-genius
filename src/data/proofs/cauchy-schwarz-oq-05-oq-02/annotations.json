@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-cauchyschwarzoq05oq02-overview",
+    "proofId": "cauchy-schwarz-oq-05-oq-02",
+    "range": { "startLine": 7, "endLine": 54 },
+    "type": "concept",
+    "title": "The Binet–Cauchy identity: Lagrange polarized to four sequences",
+    "content": "Lagrange's identity (the parent entry) measures the exact Cauchy-Schwarz gap for two sequences a, b as a sum of squared 2×2 minors. This file polarizes it to four sequences a, b, c, d: (∑aᵢcᵢ)(∑bᵢdᵢ) − (∑aᵢdᵢ)(∑bᵢcᵢ) = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)(cᵢdⱼ − cⱼdᵢ). Each summand is a product of two 2×2 minors, det !![aᵢ, aⱼ; bᵢ, bⱼ]·det !![cᵢ, cⱼ; dᵢ, dⱼ], so the identity is literally the n=2 Cauchy–Binet formula for the product of a 2×n and an n×2 matrix. Setting c := a, d := b collapses each product of minors into a square and recovers the parent's Lagrange identity and the Cauchy-Schwarz inequality. This answers the parent's open question — that its strict-upper-triangle form is the n=2 case of a Binet–Cauchy identity — affirmatively.",
+    "mathContext": "$(\\sum_i a_ic_i)(\\sum_i b_id_i) - (\\sum_i a_id_i)(\\sum_i b_ic_i) = \\sum_{i<j}(a_ib_j - a_jb_i)(c_id_j - c_jd_i)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Binet–Cauchy identity", "Cauchy–Binet formula", "Lagrange identity", "2×2 minors", "product of determinants"],
+    "prerequisites": ["finite sums over a Finset", "2×2 determinants", "the parent's Lagrange identity"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq05oq02-binet",
+    "proofId": "cauchy-schwarz-oq-05-oq-02",
+    "range": { "startLine": 62, "endLine": 113 },
+    "type": "insight",
+    "title": "The identity: symmetric kernel, doubled form, reuse the parent's engine",
+    "content": "binet_cauchy assembles the result from two views of the same symmetric double sum of F i j = (aᵢbⱼ − aⱼbᵢ)(cᵢdⱼ − cⱼdᵢ). F is symmetric because the swap (i,j) ↦ (j,i) negates each minor factor and (−x)(−y) = xy, and it vanishes on the diagonal. First view (hdouble): expand F into four rank-one products (aᵢcᵢ)(bⱼdⱼ) − (aᵢdᵢ)(bⱼcⱼ) − (bᵢcᵢ)(aⱼdⱼ) + (bᵢdᵢ)(aⱼcⱼ) — a single `ring` fact — and collapse each double sum with Finset.mul_sum / Finset.sum_mul into 2·[(∑aᵢcᵢ)(∑bᵢdᵢ) − (∑aᵢdᵢ)(∑bᵢcᵢ)], twice the cross defect. Second view (hsplit): rewrite the double sum over s ×ˢ s = diag ⊎ offDiag, drop the vanishing diagonal, and apply the parent's imported triangle-doubling lemma LagrangeIdentityCS.sum_offDiag_eq_two_mul_sum_filter_lt to get 2·∑_{i<j} F. Equating the two views and cancelling the 2 (mul_left_cancel₀ two_ne_zero) gives the identity — the combinatorial engine is inherited from the parent unchanged.",
+    "mathContext": "$\\sum_i\\sum_j F\\,i\\,j = 2\\,\\text{(cross defect)} = 2\\sum_{i<j} F\\,i\\,j$, with $F\\,i\\,j = (a_ib_j - a_jb_i)(c_id_j - c_jd_i)$ symmetric.",
+    "significance": "key",
+    "relatedConcepts": ["symmetric kernel", "triangle-doubling lemma", "diag_union_offDiag", "mul_left_cancel₀", "rank-one factorisation"],
+    "prerequisites": ["the parent's triangle-doubling lemma", "diagonal/off-diagonal split of a finite product", "collapsing a double sum with mul_sum / sum_mul"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq05oq02-det",
+    "proofId": "cauchy-schwarz-oq-05-oq-02",
+    "range": { "startLine": 115, "endLine": 126 },
+    "type": "insight",
+    "title": "The n=2 Cauchy–Binet formula in determinant form",
+    "content": "binet_cauchy_det rewrites the whole identity with Mathlib's Matrix.det: det !![∑aᵢcᵢ, ∑aᵢdᵢ; ∑bᵢcᵢ, ∑bᵢdᵢ] = ∑_{i<j} det !![aᵢ, aⱼ; bᵢ, bⱼ]·det !![cᵢ, cⱼ; dᵢ, dⱼ]. The proof is `simp only [Matrix.det_fin_two_of]` — which unfolds every 2×2 determinant to its ad − bc form — followed by the previous theorem. This makes the entry's status explicit: the left side is the Gram-type 2×2 determinant of the row-pair [a; b] against [c; d], and the right side is the Cauchy–Binet sum of products of the 2×2 minors of those two 2×n matrices. Lagrange's identity is the special case where the two row-pairs coincide.",
+    "mathContext": "$\\det\\begin{pmatrix}\\sum a_ic_i & \\sum a_id_i\\\\ \\sum b_ic_i & \\sum b_id_i\\end{pmatrix} = \\sum_{i<j}\\det\\begin{pmatrix}a_i & a_j\\\\ b_i & b_j\\end{pmatrix}\\det\\begin{pmatrix}c_i & c_j\\\\ d_i & d_j\\end{pmatrix}$.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy–Binet formula", "Matrix.det_fin_two_of", "2×2 minors", "compound matrix", "Gram determinant"],
+    "prerequisites": ["2×2 determinants in Mathlib", "the scalar Binet–Cauchy identity above"]
+  },
+  {
+    "id": "ann-cauchyschwarzoq05oq02-corollaries",
+    "proofId": "cauchy-schwarz-oq-05-oq-02",
+    "range": { "startLine": 128, "endLine": 151 },
+    "type": "tactic",
+    "title": "Lagrange's identity and Cauchy–Schwarz on the diagonal c := a, d := b",
+    "content": "lagrange_identity specializes binet_cauchy at c := a, d := b. After that substitution each factor (cᵢdⱼ − cⱼdᵢ) becomes the same minor (aᵢbⱼ − aⱼbᵢ), so each product of minors is a square; `∑ bᵢaᵢ = ∑ aᵢbᵢ` (Finset.sum_congr with mul_comm) fixes the one commuted dot product and `pow_two` folds x*x into x². The result is exactly the parent's statement (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)² = ∑_{i<j}(aᵢbⱼ − aⱼbᵢ)². cauchy_schwarz then reads the inequality straight off: the recovered defect is ∑_{i<j}(minor)² ≥ 0 by Finset.sum_nonneg and sq_nonneg, so (∑aᵢbᵢ)² ≤ (∑aᵢ²)(∑bᵢ²) in one linarith step.",
+    "mathContext": "$c:=a,\\ d:=b \\implies (a_ib_j - a_jb_i)(c_id_j - c_jd_i) = (a_ib_j - a_jb_i)^2 \\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["diagonal specialization", "pow_two", "Finset.sum_nonneg", "sq_nonneg", "Cauchy–Schwarz inequality"],
+    "prerequisites": ["the Binet–Cauchy identity above", "sum of nonnegatives is nonnegative"]
+  }
+]
