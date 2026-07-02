@@ -48,15 +48,30 @@
     "id": "csoq0701-counterexample",
     "proofId": "cauchy-schwarz-oq-07-oq-01",
     "range": {
-      "startLine": 82,
+      "startLine": 84,
+      "endLine": 94
+    },
+    "type": "technique",
+    "title": "Sharpness: the sup norm fails the parallelogram law",
+    "content": "A characterization is only meaningful if its hypothesis can fail. `supNorm_not_parallelogram` proves the supremum ($\\ell^\\infty$) norm on $\\mathbb{R}\\times\\mathbb{R}$ violates the parallelogram law, witnessed at $x=(1,0)$, $y=(0,1)$: the diagonals $x+y=(1,1)$ and $x-y=(1,-1)$ both have sup-norm $1$, so the left side is $1+1=2$ while the right side is $2(1+1)=4$. The proof feeds the witness into the assumed law and closes with `norm_num` unfolding `Prod.norm_def` and `Real.norm_eq_abs`.",
+    "mathContext": "$x=(1,0),\\ y=(0,1)$: $\\|x\\pm y\\|_\\infty = 1$, so $\\|x+y\\|^2+\\|x-y\\|^2 = 2 \\ne 4 = 2\\|x\\|^2+2\\|y\\|^2$.",
+    "significance": "key",
+    "relatedConcepts": ["supremum norm", "Prod.norm_def", "counterexample", "sharpness", "parallelogram law"],
+    "prerequisites": ["the product (sup) norm", "norm_num on ℝ×ℝ"]
+  },
+  {
+    "id": "csoq0701-not-hilbert",
+    "proofId": "cauchy-schwarz-oq-07-oq-01",
+    "range": {
+      "startLine": 96,
       "endLine": 105
     },
-    "type": "theorem",
-    "title": "Sharpness: the Sup-Normed Plane Is Not a Hilbert Space",
-    "content": "A characterization is only meaningful if its hypothesis can fail. `supNorm_not_parallelogram` proves the supremum ($\\ell^\\infty$) norm on $\\mathbb{R}\\times\\mathbb{R}$ violates the parallelogram law, witnessed at $x=(1,0)$, $y=(0,1)$: the diagonals $x+y=(1,1)$ and $x-y=(1,-1)$ both have sup-norm $1$, so the left side is $1+1=2$ while the right side is $2(1+1)=4$. `no_innerProductSpace_sup_norm` then applies the biconditional to conclude $\\neg\\,\\mathrm{Nonempty}\\,(\\mathrm{InnerProductSpace}\\ \\mathbb{R}\\ (\\mathbb{R}\\times\\mathbb{R}))$ — the sup-normed plane admits no compatible inner product, a concrete finite-dimensional Banach space that is not a Hilbert space.",
-    "mathContext": "$x=(1,0),\\ y=(0,1)$: $\\|x\\pm y\\|_\\infty = 1$, so $\\|x+y\\|^2+\\|x-y\\|^2 = 2 \\ne 4 = 2\\|x\\|^2+2\\|y\\|^2$; hence no inner product induces $\\|\\cdot\\|_\\infty$ on $\\mathbb{R}^2$.",
-    "significance": "critical",
-    "relatedConcepts": ["supremum norm", "Prod.norm_def", "counterexample", "Banach vs Hilbert space", "sharpness"],
-    "prerequisites": ["the product (sup) norm", "the biconditional above"]
+    "type": "insight",
+    "title": "The sup-normed plane is a non-Hilbert Banach space",
+    "content": "`no_innerProductSpace_sup_norm` is the punchline: applying the biconditional `nonempty_innerProductSpace_iff_parallelogram` to the counterexample, the failure of the parallelogram law for the $\\ell^\\infty$ norm on $\\mathbb{R}\\times\\mathbb{R}$ upgrades to $\\neg\\,\\mathrm{Nonempty}\\,(\\mathrm{InnerProductSpace}\\ \\mathbb{R}\\ (\\mathbb{R}\\times\\mathbb{R}))$ — no inner product is compatible with the sup norm. This exhibits a concrete, finite-dimensional Banach space that is not a Hilbert space, showing the Jordan–von Neumann criterion genuinely separates the two categories rather than being vacuously satisfiable. The contrast with the Euclidean norm on the same $\\mathbb{R}^2$ (which does come from an inner product) makes precise that being a Hilbert space is a property of the norm, not merely of the underlying vector space.",
+    "mathContext": "$\\neg\\,\\mathrm{Nonempty}\\,(\\mathrm{InnerProductSpace}\\ \\mathbb{R}\\ (\\mathbb{R}\\times\\mathbb{R}))$ for $\\|\\cdot\\|_\\infty$: a finite-dimensional Banach space with no compatible inner product.",
+    "significance": "key",
+    "relatedConcepts": ["Banach vs Hilbert space", "Jordan–von Neumann theorem", "finite-dimensional non-Hilbert space", "norm determines geometry"],
+    "prerequisites": ["the biconditional", "supNorm_not_parallelogram"]
   }
 ]
