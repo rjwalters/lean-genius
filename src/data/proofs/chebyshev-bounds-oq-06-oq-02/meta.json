@@ -1,0 +1,103 @@
+{
+  "id": "chebyshev-bounds-oq-06-oq-02",
+  "title": "Chebyshev's θ function bounded: θ(n) ≤ n·log 4 via the primorial / central-binomial sandwich",
+  "slug": "chebyshev-bounds-oq-06-oq-02",
+  "description": "A fully machine-checked, axiom-free derivation of the upper Chebyshev bound on the first Chebyshev function θ(n) = ∑_{p ≤ n, p prime} log p. The key observation is that the exponential of θ(n) is exactly the primorial n# = ∏_{p ≤ n} p, so θ(n) = log(n#). Mathlib packages the Erdős central-binomial sandwich as Nat.primorial_le_4_pow : n# ≤ 4ⁿ; taking logarithms and using monotonicity of log on the positive reals turns this into θ(n) ≤ n·log 4 = 2n·log 2, the upper half of the classical Chebyshev estimates on θ. This is the θ-level companion to the parent's central-binomial coefficient sandwich (chebyshev-bounds-oq-06): where the parent bounds C(2n,n), this entry bounds the prime-log sum θ that C(2n,n) controls.",
+  "meta": {
+    "author": "Classical (bound due to Chebyshev/Erdős); assembled in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_function",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "prime-counting",
+      "chebyshev-bounds",
+      "chebyshev-function",
+      "primorial",
+      "central-binomial-coefficient",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/ChebyshevThetaFourPow.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "primorial_le_4_pow",
+        "description": "n# ≤ 4ⁿ, the Erdős central-binomial sandwich bound on the primorial (proved in Mathlib from n# ∣ m#·C(m+n,m)). This IS the arithmetic core; the entry only takes its logarithm.",
+        "module": "Mathlib.NumberTheory.Primorial"
+      },
+      {
+        "theorem": "primorial_pos",
+        "description": "0 < n#, positivity of the primorial, needed to take logarithms.",
+        "module": "Mathlib.NumberTheory.Primorial"
+      },
+      {
+        "theorem": "Real.log_prod",
+        "description": "log(∏ f) = ∑ log f for nonzero factors, used to identify θ(n) = ∑ log p with log(n#).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_le_log",
+        "description": "Monotonicity of log on the positive reals, turning n# ≤ 4ⁿ into log(n#) ≤ log(4ⁿ).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_pow",
+        "description": "log(xⁿ) = n·log x, giving log(4ⁿ) = n·log 4.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "chebyshevTheta: a definition of the first Chebyshev function θ(n) = ∑_{p ≤ n, p prime} log p as a real number, matching the primorial's index set range(n+1) with p.Prime",
+      "chebyshevTheta_eq_log_primorial: the identity θ(n) = log(n#) obtained by casting the ℕ-product to ℝ and applying Real.log_prod, the bridge that lets the primorial bound act on the log-sum",
+      "chebyshevTheta_le: the upper Chebyshev bound θ(n) ≤ n·log 4, the main result, derived by taking logarithms in Nat.primorial_le_4_pow",
+      "chebyshevTheta_le_two_mul: the equivalent form θ(n) ≤ 2n·log 2 using log 4 = 2·log 2",
+      "chebyshevTheta_nonneg and chebyshevTheta_mono: θ is nonnegative and monotone (each summand log p ≥ 0 since p ≥ 2), the elementary structural facts about θ"
+    ],
+    "dateAdded": "2026-07-02",
+    "axiomCount": 0,
+    "lineCount": 76,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide (hence no Lean.ofReduceBool), no structure-encoded hypotheses. Honest framing: the arithmetic content is entirely Mathlib's primorial_le_4_pow (the central-binomial sandwich); the contribution is the log-side packaging identifying θ(n) with log(n#) and reading off the Chebyshev bound.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "sections": [
+    {
+      "id": "definition-and-primorial-identity",
+      "title": "θ(n) as the logarithm of the primorial",
+      "startLine": 28,
+      "endLine": 39,
+      "summary": "chebyshevTheta n = ∑_{p ≤ n, p prime} log p. chebyshevTheta_eq_log_primorial proves θ(n) = log(n#): cast the ℕ-product primorial n = ∏ p to ℝ with Nat.cast_prod, then Real.log_prod turns log of the product into the sum of logs (each factor p ≥ 2 is nonzero)."
+    },
+    {
+      "id": "positivity-and-monotonicity",
+      "title": "θ is nonnegative and monotone",
+      "startLine": 41,
+      "endLine": 56,
+      "summary": "chebyshevTheta_nonneg: every summand log p ≥ 0 since a prime p ≥ 2 > 1, so the sum is nonnegative. chebyshevTheta_mono: m ≤ n adjoins only nonnegative terms (Finset.sum_le_sum_of_subset_of_nonneg over the nested prime filters range(m+1) ⊆ range(n+1))."
+    },
+    {
+      "id": "chebyshev-upper-bound",
+      "title": "The upper Chebyshev bound θ(n) ≤ n·log 4",
+      "startLine": 58,
+      "endLine": 74,
+      "summary": "chebyshevTheta_le rewrites θ(n) = log(n#), applies Real.log_le_log to the primorial bound n# ≤ 4ⁿ (Nat.primorial_le_4_pow), and finishes with Real.log_pow: log(4ⁿ) = n·log 4. chebyshevTheta_le_two_mul restates this as θ(n) ≤ 2n·log 2 via log 4 = 2·log 2."
+    }
+  ],
+  "overview": "Chebyshev's first function θ(x) = ∑_{p ≤ x} log p is the additive prime-counting weight underlying the prime number theorem; the classical Chebyshev bounds sandwich θ(x) between two constant multiples of x. This entry formalizes the upper half, θ(n) ≤ n·log 4, in its cleanest form. The engine is a single identity: exponentiating θ(n) gives the primorial n# = ∏_{p ≤ n} p, so θ(n) = log(n#). Mathlib already contains the arithmetic heart — primorial_le_4_pow : n# ≤ 4ⁿ, whose own proof is the Erdős argument bounding the primorial by a central binomial coefficient. Taking logarithms of that bound and using that log is increasing on the positive reals yields θ(n) ≤ log(4ⁿ) = n·log 4 immediately. The entry is an honest assembly: no new arithmetic, but the log-side packaging (defining θ, proving θ = log(n#), and reading off the Chebyshev estimate) is what connects Mathlib's primorial bound to the standard analytic-number-theory statement about θ.",
+  "conclusion": "The upper Chebyshev bound θ(n) ≤ n·log 4 = 2n·log 2 is verified with 0 axioms and 0 sorries. It sits directly above the parent central-binomial sandwich (chebyshev-bounds-oq-06): the primorial bound n# ≤ 4ⁿ that this entry logarithmizes is proved in Mathlib from exactly the central binomial coefficient estimate the parent packages. A natural next step is the matching lower bound θ(n) ≥ c·n for a constant c (harder — it requires a positive-density input such as a lower bound on the number of primes up to n, e.g. via the central binomial coefficient's prime factorization), which together would give the full two-sided Chebyshev estimate θ(n) = Θ(n).",
+  "crossReferences": [
+    "chebyshev-bounds-oq-06"
+  ],
+  "references": [
+    {
+      "title": "Chebyshev function (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Chebyshev_function"
+    },
+    {
+      "title": "Primorial (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Primorial"
+    }
+  ]
+}
