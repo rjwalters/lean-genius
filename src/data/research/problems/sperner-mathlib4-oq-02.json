@@ -15,10 +15,11 @@
     "open": [],
     "goal": ""
   },
-  "currentState": "ACT: formalized the DIMENSION RECURSION of the Tucker door-counting proof (SpernerTuckerInductiveTower.lean, 0 sorries/0 axioms — propext/Classical.choice/Quot.sound only, no sorryAx/ofReduceBool). (1) odd_boundary_iff_odd_interior STRENGTHENS the path-following engine from mere existence of an interior endpoint to the parity EQUIVALENCE Odd #boundary <-> Odd #interior (the two endpoint classes partition the even-cardinality degree-1 set), the quantitative form the induction needs. (2) TuckerTower bundles per-level interior/boundary counts with step (the engine, discharged by (1)), bridge (the geometric boundary bijection: level-(n+1) boundary doors = level-n interior simplices — the SOLE remaining open input), and base (verified 1-D Tucker); tower_interior_odd : forall n, Odd (interior n) closes the induction in one line, and tower_exists_interior gives a complementary simplex in EVERY dimension. An inhabited trivialTower witnesses non-vacuity. This makes precise that, once the geometric bridge is supplied, full-dimensional Tucker is a two-hypothesis induction. Infrastructure/organizing-skeleton, not new Tucker mathematics; the geometric bridge remains the genuine frontier.",
+  "currentState": "Dimension-free door graph of boundary-Delta^{n+1} = K_{n+2} proven (0-axiom). Next: the geometric bridge (hemisphere doors <-> level-n interior simplices).",
   "knowledge": {
-    "progressSummary": "PROGRESS: hdoor machine-checked on a concrete n=2 geometry. The abstract door-counting engine had 3 black-box incidence hypotheses (hdoor, hsimplex, hpair). hsimplex (SpernerTuckerDoorLemma) and hpair (SpernerTuckerSimplexFacetPair) were discharged in prior sessions; THIS session discharges hdoor — the genuinely-geometric PSEUDOMANIFOLD property — on the standard hexagon disc B^2 by kernel `decide` (SpernerTuckerHexagonPseudomanifold), and runs the engine's degree formula on it (the hexagon almost-complementary graph = 6-cycle, every triangle degree 2). All three engine incidence hypotheses now have concrete/abstract discharges; the remaining open work is the geometric BRIDGE (hemisphere doors <-> level-n interior simplices) + the analytic mesh->0 phase. VERIFIED 0-axiom (lake env lean exit 0; #print axioms = [propext, Classical.choice, Quot.sound], no sorryAx/native_decide).",
+    "progressSummary": "PROGRESS: the raw door graph of boundary-Delta^{n+1} is proven to be the complete graph K_{n+2} in EVERY dimension (SpernerTuckerSimplexBoundaryDoorGraph.lean, VERIFIED 0-axiom, 6thm/3def/168L), removing the last per-dimension decide in the boundary-of-simplex pseudomanifold model. Remaining open work unchanged: geometric BRIDGE + analytic mesh->0.",
     "builtItems": [
+      "proofs/Proofs/SpernerTuckerSimplexBoundaryDoorGraph.lean (168 LOC, 6 thm, 3 def, 0 sorry, 0 axiom -- propext/Classical.choice/Quot.sound only, NO decide/native_decide): DIMENSION-FREE lift of the sibling n=3 file. Models the boundary of the (n+1)-simplex for ALL n (Tet n=Fin(n+2) top cells Si=facet opposite i; Door n={s:Finset(Fin(n+2))//s.card=2} encoding an n-face by its 2 OMITTED vertices; inc i d := i in d.val). Proves hdoor/card_incidence_eq (each door borders EXACTLY 2 top cells) and hpair (distinct top cells share <=1 door) WITHOUT decide, then doorGraph_eq_top: the raw door graph of boundary-Delta^{n+1} is the COMPLETE graph K_{n+2}; hence simplex_degree: every top cell has degree n+1 (the sibling's K5 is n=3). card_shared_doors: n+1 shared doors per cell, FOR FREE from the engine's doorGraph_degree_eq_shared through simplex_degree.",
       "proofs/Proofs/SpernerTuckerDoorGraph.lean (sharp degree formula, VERIFIED 0-axiom: lake env lean exit 0, #print axioms = [propext, Classical.choice, Quot.sound] only): doorGraph_degree_eq_shared — under hdoor (each door joins <=2 simplices) and hpair (two distinct simplices share <=1 door, the door-graph analogue of adj_unique_facet), (doorGraph inc).degree v = #{d | inc v d and exists w != v, inc w d} (the # of vs SHARED doors). Finset.card_bij with the neighbour->shared-door witness map: lands in shared doors, injective by hdoor (a door joining v to two neighbours touches 3 simplices), surjective by hpair (a shared doors other endpoint is a neighbour whose shared door is forced to be that door). Sharpens doorGraph_degree_le_two from a bound to an equality: a path endpoint (degree 1) is exactly a simplex with ONE shared door.",
       "proofs/Proofs/SpernerTuckerOneDim.lean — 1-D Tucker / combinatorial 1-D Borsuk–Ulam (verified, 0-axiom)",
       "TuckerOneDim.complementary_count_cast — telescoping ZMod-2 identity: #complementary-edges ≡ lam 0 + lam (last) (mod 2)",
@@ -55,7 +56,8 @@
       "hpair (two distinct simplices share <=1 facet) is provable as dimension-free finset combinatorics for SUBSET incidence: both shared facets equal v ∩ w (facet_eq_inter), hence are equal. Distinct equicardinal (n+1)-sets meet in <=n vertices (card_inter_le_of_ne). Discharges the 2nd of 3 abstract door hypotheses; with hsimplex (SpernerTuckerDoorLemma) only hdoor (pseudomanifold, genuinely geometric) + the bridge remain.",
       "hdoor (each door/facet borders <=2 simplices — the PSEUDOMANIFOLD property, genuinely geometric and FALSE for arbitrary complexes) is now machine-checked on a concrete n=2 triangulation: the standard hexagon disc B^2 (centre + 6 boundary vertices, 6 triangles T_i=(centre,v_i,v_{i+1})). Encoding triangles as Fin 6 and edges as Fin 12 (6 spokes + 6 boundary edges), hdoor and hpair both fall to kernel `decide`. Sharp counts: each spoke borders exactly 2 triangles (interior edge), each boundary edge exactly 1. Feeding hdoor+hpair to the engine's degree formula (doorGraph_degree_eq_shared) computes the hexagon's almost-complementary graph as the 6-cycle (every triangle degree 2) THROUGH the abstract engine, not by hand. This is the first concrete geometry discharging the engine's sole-remaining geometric input.",
       "hdoor (pseudomanifold) and hsimplex (complementary-door bound) are INDEPENDENT engine inputs, not conflatable: concrete witness ∂Δ⁴ (boundary of the 4-simplex = simplicial 3-sphere, 5 tetrahedra S_i={0..4}\\{i}, 10 triangle doors encoded by the omitted vertex PAIR). hdoor holds there with EXACT incidence 2 (closed manifold, no boundary) — yet the engine's raw door graph is K_5 (every tetrahedron degree 4, via doorGraph_degree_eq_shared). So the max-degree-≤2 (paths+cycles) structure the path-following engine needs does NOT follow from hdoor alone; it comes from restricting to COMPLEMENTARY doors under the labelling (hsimplex). hdoor = geometric (triangulation), hsimplex = combinatorial (colouring). In the hexagon disc the raw door graph was a 6-cycle only coincidentally.",
-      "The pseudomanifold property hdoor for the boundary of the (n+1)-simplex is dimension-free: d ⊆ univ.erase i ⟺ i ∉ d, so the cells containing an n-face d are dᶜ, of card (n+2)-n=2 — no case enumeration."
+      "The pseudomanifold property hdoor for the boundary of the (n+1)-simplex is dimension-free: d ⊆ univ.erase i ⟺ i ∉ d, so the cells containing an n-face d are dᶜ, of card (n+2)-n=2 — no case enumeration.",
+      "DIMENSION-FREE door graph = K_{n+2}: the sibling SpernerTuckerSimplexBoundaryPseudomanifold pinned hpair + degree to a single n=3 decide; the raw-door-graph-is-complete fact is uniform in n. Encode a door by its 2 OMITTED vertices (Door n = 2-subsets of Fin(n+2)); inc i d := i in d.val. hdoor/closed = d.val.card=2, hpair = two vertices pin a 2-set (Finset.eq_of_subset_of_card_le + Finset.card_pair), doorGraph inc = top since distinct Si,Sj share exactly the door omitting {i,j}. degree n+1 from (top).neighborFinset i = univ.erase i, rewriting at the Adj level to dodge the Fintype-instance-in-motive error under degree."
     ],
     "mathlibGaps": [
       "Mathlib lacks a direct free-involution => even-cardinality lemma (only the p-group card_modEq_card_fixedPoints). Proved here from Finset.sum_ninvolution + ZMod.natCast_eq_zero_iff_even.",
@@ -85,7 +87,7 @@
     "mathlib": []
   },
   "started": "2026-06-15T02:22:23.646Z",
-  "lastUpdate": "2026-06-28",
+  "lastUpdate": "2026-07-02T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/SpernerTuckerBorsukUlamOneDim.lean",
@@ -209,6 +211,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerHexagonDoorObstruction.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerSimplexBoundaryDoorGraph.lean",
+      "filename": "SpernerTuckerSimplexBoundaryDoorGraph.lean",
+      "lineCount": 168,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerSimplexBoundaryDoorGraph.lean"
     }
   ],
   "lastVerified": "2026-06-28"
