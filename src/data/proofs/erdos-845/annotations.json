@@ -16,7 +16,11 @@
       "density",
       "additive-representations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "natural density of a set",
+      "sums of distinct integers"
+    ]
   },
   {
     "id": "ann-e845-imports",
@@ -35,7 +39,11 @@
       "finset",
       "imports"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets (Finset) in Mathlib",
+      "namespaces and imports in Lean",
+      "sums over finite sets"
+    ]
   },
   {
     "id": "ann-e845-smooth-def",
@@ -54,7 +62,11 @@
       "prime-factorization",
       "exponentiation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "powers of 2 and 3",
+      "the notion of a smooth number"
+    ]
   },
   {
     "id": "ann-e845-bounded-rep",
@@ -73,7 +85,11 @@
       "finset-sum",
       "max-min-ratio"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "finite sets and their images",
+      "max and min of a finite set",
+      "sums over finite sets"
+    ]
   },
   {
     "id": "ann-e845-conjecture",
@@ -92,7 +108,11 @@
       "epsilon-delta",
       "asymptotic-behavior"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density equal to 0",
+      "epsilon-based limit definitions",
+      "cardinality of finite sets"
+    ]
   },
   {
     "id": "ann-e845-disproof",
@@ -111,7 +131,11 @@
       "universal-statement",
       "van-doorn-everts"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "3-smooth numbers",
+      "universally quantified existence statements",
+      "axioms standing in for unformalized proofs"
+    ]
   },
   {
     "id": "ann-e845-lower-bounds",
@@ -130,7 +154,11 @@
       "optimal-constant",
       "erdos-lewin"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "optimal (extremal) constants",
+      "the 'frequently in a filter' / infinitely-many notion",
+      "3-smooth number representations"
+    ]
   },
   {
     "id": "ann-e845-silly",
@@ -149,7 +177,11 @@
       "divisibility",
       "erdos-conjecture"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "mathematical induction",
+      "divisibility relations between integers",
+      "powers of 3 near a given integer"
+    ]
   },
   {
     "id": "ann-e845-examples",
@@ -168,6 +200,10 @@
       "computational-verification",
       "examples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "evaluating 2^k · 3^l",
+      "sums of distinct summands",
+      "arithmetic verification with norm_num"
+    ]
   }
 ]
