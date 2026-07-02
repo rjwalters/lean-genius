@@ -70,7 +70,8 @@
       "Monotonicity of the whole tower reduces to a single subspace inclusion U₍k₊₁₎ ⊆ Uₖ, proved by exhibiting N x as the preimage witness — this avoids constructing the usual quotient-space injection ker Nᵏ⁺¹/ker Nᵏ ↪ ker Nᵏ/ker Nᵏ⁻¹.",
       "No Jordan normal form, algebraic closure, or perfect-field hypothesis is needed: the concavity is a rank inequality valid over any field, machine-checked with 0 axioms.",
       "The result is the abstract engine behind the Weyr = conjugate-of-Segre partition identity: it is exactly the statement that the counts of Jordan blocks of size ≥ k form a non-increasing (partition) sequence.",
-      "By rank–nullity for the whole space, dim ker Nᵏ + rank Nᵏ = dim V, so concavity of the kernel dimensions is equivalent to convexity of the ranks: the successive rank drops rank Nᵏ − rank Nᵏ⁺¹ are themselves non-increasing. This is the form in which the result is often used to bound how fast a nilpotent part can collapse."
+      "By rank–nullity for the whole space, dim ker Nᵏ + rank Nᵏ = dim V, so concavity of the kernel dimensions is equivalent to convexity of the ranks: the successive rank drops rank Nᵏ − rank Nᵏ⁺¹ are themselves non-increasing. This is the form in which the result is often used to bound how fast a nilpotent part can collapse.",
+      "The endpoints and support of the Weyr characteristic recover the coarse Jordan invariants of μ: w₀ = a₁ − a₀ is the geometric multiplicity (the number of Jordan blocks), the count of nonzero wₖ equals the largest block size e_μ = maxGenEigenspaceIndex f μ (the index at which the filtration stabilizes, aₖ = a₍k₊₁₎), and ∑ₖ wₖ = dim(maxGenEigenspace μ) is the algebraic multiplicity. Non-increasingness is precisely what lets this data be read off as a genuine partition."
     ],
     "prerequisites": [
       "Generalized eigenspaces and kernels of operator powers",
@@ -112,6 +113,16 @@
       "targetId": "cayley-hamilton-minpoly",
       "relationship": "related",
       "description": "Minimal polynomial of an endomorphism; the Weyr characteristic at μ is governed by the multiplicity of (x − μ) in the minimal and characteristic polynomials."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling entry proving the JCF minimal-polynomial product formula minpoly K f = ∏_μ (X − μ)^{e_μ}. Its exponent e_μ = maxGenEigenspaceIndex f μ is exactly the index at which this entry's generalized-eigenspace filtration stabilizes (aₖ = a₍k₊₁₎) — equivalently the number of nonzero Weyr numbers and the largest Jordan block size for μ."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-04",
+      "relationship": "related",
+      "description": "Nonderogatory matrices (minimal polynomial = characteristic polynomial) are exactly those with a single Jordan block per eigenvalue, i.e. every Weyr number wₖ is 0 or 1; that degenerate 'staircase' is the extreme case of this entry's non-increasing Weyr characteristic."
     }
   ],
   "sections": [
