@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-igp0602-factors",
+    "proofId": "inverse-galois-oq-06-oq-02",
+    "range": {
+      "startLine": 79,
+      "endLine": 101
+    },
+    "type": "definition",
+    "title": "The Three mod-7 Factors and Their Degrees",
+    "content": "The reduction of q modulo 7 is presented through three named factors over 𝔽₇: the linear factors linFactor5 = X − 5 and linFactor6 = X − 6, and the cubic cubicMod7 = X³ + 6X² + 4X + 1 (imported from the sibling OQ-01 file). Their degrees (1, 1, 3) are pinned down by compute_degree!, and each factor is shown nonzero. These degree facts are the raw data of the '(1,1,3) factor type' that Dedekind's theorem reads as a 3-cycle Frobenius.",
+    "mathContext": "Over the field $\\mathbb{F}_7 = \\mathbb{Z}/7\\mathbb{Z}$, the polynomial $q = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ reduces to $(X-5)(X-6)(X^3+6X^2+4X+1)$. The degree multiset $\\{1,1,3\\}$ is precisely the cycle type that the Frobenius at $p=7$ would carry."
+  },
+  {
+    "id": "ann-igp0602-irreducible",
+    "proofId": "inverse-galois-oq-06-oq-02",
+    "range": {
+      "startLine": 107,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "Irreducibility via the No-Root Criterion",
+    "content": "The cubic is irreducible over 𝔽₇ because a degree-≤3 polynomial over a field is irreducible exactly when it has no root — the tactic applies Polynomial.irreducible_of_degree_le_three_of_not_isRoot, discharging the degree bound by decide and the no-root hypothesis from the sibling's exhaustive root check. The linear factors are irreducible by the standard irreducible_X_sub_C. This makes the arithmetic Dedekind input fully decidable and axiom-free.",
+    "mathContext": "For a cubic $f$ over a field, reducibility would force a linear factor, i.e. a root; contrapositively, no root over $\\mathbb{F}_7$ (checked over all 7 residues) implies irreducibility. Linear polynomials $X - c$ are always irreducible."
+  },
+  {
+    "id": "ann-igp0602-distinct",
+    "proofId": "inverse-galois-oq-06-oq-02",
+    "range": {
+      "startLine": 122,
+      "endLine": 146
+    },
+    "type": "insight",
+    "title": "The Factors Are Pairwise Non-Associated (Distinct Primes)",
+    "content": "Dedekind's theorem requires the factorization be into DISTINCT irreducibles. The two linear factors are non-associated because associated monic linears would be equal, forcing 5 = 6 in 𝔽₇ (false, by decide after evaluating at 0). A linear factor cannot be associated to the cubic because association preserves degree, and 1 ≠ 3 (closed by omega on natDegree_le_of_dvd bounds). Distinctness is what guarantees the Frobenius is a single 3-cycle rather than a repeated pattern.",
+    "mathContext": "Two polynomials are associated iff each divides the other, which for nonzero polynomials over a field forces equal degrees and a unit scalar. Distinct irreducible factors correspond to distinct prime ideals, i.e. distinct cycles in the Frobenius permutation."
+  },
+  {
+    "id": "ann-igp0602-squarefree",
+    "proofId": "inverse-galois-oq-06-oq-02",
+    "range": {
+      "startLine": 152,
+      "endLine": 184
+    },
+    "type": "insight",
+    "title": "Coprimality and Squarefreeness: 7 Is Unramified",
+    "content": "The three factors are pairwise coprime: the two linears via isCoprime_X_sub_C_of_isUnit_sub (their difference −1 is a unit), and each linear against the cubic via the irreducible's isRelPrime_iff_not_dvd together with dvd_iff_isRoot and the no-root fact. Squarefreeness of the product then follows from squarefree_mul_iff applied twice. A squarefree reduction means 7 ∤ disc(q), i.e. 7 is unramified — exactly the hypothesis Dedekind's theorem demands.",
+    "mathContext": "A prime $\\ell$ is unramified in the splitting field of $q$ iff $q \\bmod \\ell$ is squarefree iff $\\ell \\nmid \\operatorname{disc}(q)$. Pairwise coprime irreducible factors give a squarefree product, licensing the Frobenius-at-$\\ell$ interpretation."
+  },
+  {
+    "id": "ann-igp0602-factortype",
+    "proofId": "inverse-galois-oq-06-oq-02",
+    "range": {
+      "startLine": 190,
+      "endLine": 223
+    },
+    "type": "conclusion",
+    "title": "The Packaged Dedekind Input: q mod 7 Has Factor Type (1,1,3)",
+    "content": "q_mod7_factor_type bundles everything Dedekind's theorem consumes at p = 7: three irreducible factors, of degrees 1, 1, 3, pairwise non-associated, with squarefree product, whose product genuinely equals q mod 7 (q_mod7_factorization). This is the complete, 0-axiom arithmetic input. Combined with Dedekind's theorem — the one remaining Mathlib gap, owned by the sibling Frobenius track — it forces Gal(q) to contain a 3-cycle, hence 3 ∣ |Gal(q)|, which is exactly the parent A₅ entry's lone open axiom three_dvd_gal_card.",
+    "mathContext": "Dedekind's theorem: for $\\ell \\nmid \\operatorname{disc}(q)$, the cycle type of the Frobenius $\\operatorname{Frob}_\\ell \\in \\operatorname{Gal}(q)$ acting on the roots equals the degree multiset of $q \\bmod \\ell$. Here $\\{1,1,3\\}$ yields a 3-cycle, so $3 \\mid |\\operatorname{Gal}(q)|$ by Lagrange."
+  }
+]
