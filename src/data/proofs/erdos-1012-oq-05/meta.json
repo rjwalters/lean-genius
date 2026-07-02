@@ -106,7 +106,12 @@
   "conclusion": {
     "summary": "For a fixed finite graph, the (n−k)-cycle detection problem underlying Erdős #1012's fifth open question is decidable, solvable by a finite brute-force search of explicit size |V|^ℓ, and its decision procedure executes on concrete instances. The entry deliberately stops there: a polynomial-time algorithm and any NP-hardness result — the true content of OQ-05 — remain open.",
     "implications": "**1. A verified decidable skeleton.** Any future complexity analysis of the Erdős #1012 decision problem can build on a machine-checked decidability instance and an exact search-space count, rather than re-establishing them informally.\n\n**2. Honest scoping of the open question.** The formalization separates what is elementary (decidability, an exponential search) from what is genuinely hard (a fast algorithm or a hardness proof), clarifying precisely where OQ-05's difficulty lies.\n\n**3. Executable graph predicates.** The computable `Decidable` instances turn `hasCycleOfLength`, `isHamiltonian`, and `isPancyclicUpTo` into runnable predicates, usable for concrete verification of small graphs elsewhere in the gallery.",
-    "openQuestions": []
+    "openQuestions": [
+      "Is the (n−k)-cycle detection problem underlying OQ-05 solvable in polynomial time for the relevant edge-count regime T(n,k)−1, or does the exponential |V|^ℓ search-space bound proved here reflect an intrinsic barrier? This is the affirmative half of OQ-05 and is left entirely open.",
+      "Is the decision problem NP-hard (or NP-complete) in general? Detecting a cycle of prescribed length is NP-complete for arbitrary target lengths (it generalizes the Hamiltonian-cycle problem at ℓ = |V|), but the Turán-type edge constraint T(n,k)−1 may change the picture — settling this is the negative half of OQ-05.",
+      "Can the brute-force `Decidable` instance be refined into a genuinely efficient formalized algorithm (e.g. via colour-coding or dynamic programming over subsets) whose running time is proved in Lean, upgrading the verified decidability skeleton to a verified complexity bound?",
+      "Does the extremal edge count T(n,k)−1 force enough structure (near-Turán-extremal graphs) that (n−k)-cycle existence becomes decidable by a structural criterion rather than exhaustive search?"
+    ]
   },
   "crossReferences": [
     {
