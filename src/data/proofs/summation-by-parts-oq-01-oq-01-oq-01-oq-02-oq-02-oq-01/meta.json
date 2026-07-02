@@ -15,6 +15,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the iterated biadditive Abel transform (finite Taylor–Abel expansion)",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Header, imports, and orientation for the file: motivation, the difference/antidifference tower hypothesis, the four consequence theorems, and the proof method.",
+      "mathContext": "This file answers the first open question of the parent SummationByPartsOQ01OQ01OQ01OQ02OQ02 (single-step biadditive Abel transform): iterating summation by parts D times against a tower of antidifferences yields a finite Taylor–Abel expansion in the module-valued setting — a discrete analogue of the Taylor formula from iterated integration by parts, with the alternating boundary sum playing the role of the Taylor polynomial and the last sum the integral remainder. The header docstring (lines 1–75) records: (1) the parent single-step identity (A′) for a biadditive pairing p : A →+ B →+ M; (2) the main iterated identity (T) with one boundary term per order 0 ≤ j < D plus a remainder pairing ΔᴰF against the D-th antidifference; (3) the symmetric difference tower F (F(j+1)k = Fj(k+1)−Fjk, i.e. Fj = Δʲ(F0)) and antidifference tower H with the crucial *shift* (H(j+1)(k+1)−H(j+1)k = Hj(k+1)) that makes the recursion self-similar and the induction on D immediate; (4) the consequences taylor_abel_iterate, taylor_abel_smul (module-valued), taylor_abel_ring (arbitrary non-commutative ring), and taylor_abel_order_two (explicit second-order form); and (5) the method — induction on D applying the parent's abel_summation_biadditive once per step, using only biadditivity of p and abelian-group structure of M (no commutativity or ring structure on the value group). Fully machine-checked: 0 sorry, 0 axiom, no native_decide."
+    },
+    {
       "id": "forward-difference",
       "title": "The Forward Difference Operator and its Iterate",
       "startLine": 76,
