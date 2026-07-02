@@ -1,0 +1,172 @@
+{
+  "id": "bell-numbers-oq-01-oq-01",
+  "slug": "bell-numbers-oq-01-oq-01",
+  "title": "The Exponential Generating Function of the Bell Numbers via its Defining ODE",
+  "status": "verified",
+  "badge": "original",
+  "description": "A machine-checked formalization of the exponential generating function (EGF) of the Bell numbers, Σ Bₙ Xⁿ/n! = exp(eˣ − 1), realized as a first-order linear ODE over the ring of formal power series ℚ⟦X⟧. The analytic function exp(eˣ − 1) is the unique solution of E'(x) = eˣ·E(x) with E(0) = 1; this file establishes exactly that characterization for the formal power series bellEGF := Σ (Bₙ/n!) Xⁿ. The ODE d⁄dX bellEGF = exp · bellEGF is proved to be *precisely* Mathlib's Bell binomial recurrence B_{n+1} = Σ_i C(n,i)·B_{n-i} (Nat.bell_succ') after clearing factorials, and a from-scratch uniqueness lemma for the ODE shows bellEGF is the only such series — i.e. it is the formal series exp(eˣ − 1). Pinned Mathlib carries Nat.bell, PowerSeries.exp, and the formal derivative PowerSeries.derivative, but never connects the Bell numbers to their generating function. Fully verified: 6 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide. Directly answers the first open question of the parent entry bell-numbers-oq-01.",
+  "overview": {
+    "historicalContext": "The Bell numbers 1, 1, 2, 5, 15, 52, … (OEIS A000110) count the partitions of a finite set. Their exponential generating function Σ Bₙ xⁿ/n! = exp(eˣ − 1) is one of the most celebrated closed forms in enumerative combinatorics: it is the prototypical instance of the exponential formula, expressing that a structure (a set partition) is an unordered collection of connected pieces (nonempty blocks, whose EGF is eˣ − 1). Analytically the identity is read off from the ODE E' = eˣ·E, E(0) = 1, which exp(eˣ − 1) satisfies by the chain rule. Pinned Mathlib defines Nat.bell by the binomial recurrence and provides the formal exponential PowerSeries.exp and the formal derivative PowerSeries.derivative, but leaves the Bell numbers and their generating function disconnected.",
+    "problemStatement": "Formalize the EGF identity Σ Bₙ Xⁿ/n! = exp(eˣ − 1) at the level of formal power series over ℚ. Since pinned Mathlib lacks a chain rule for formal substitution (needed to write exp(eˣ − 1) literally as PowerSeries.subst (exp X − 1) exp and differentiate it), the identity is captured through its defining ODE: prove that bellEGF := Σ (Bₙ/n!) Xⁿ satisfies d⁄dX bellEGF = exp · bellEGF with constant term 1, and that this ODE has a unique power-series solution — so bellEGF is exactly the series exp(eˣ − 1).",
+    "proofStrategy": "The series is defined by bellEGF := PowerSeries.mk (fun n => Bₙ/n!). The core theorem derivative_bellEGF equates its formal derivative with exp · bellEGF coefficient-by-coefficient: the n-th coefficient of the left side is (n+1)·B_{n+1}/(n+1)! = B_{n+1}/n! (via PowerSeries.coeff_derivative), and the n-th coefficient of the right side is Σ_{i+j=n} (1/i!)·(B_j/j!) (via PowerSeries.coeff_mul over the antidiagonal); multiplying through by n! and using the factorial identity C(n,i)·i!·(n−i)! = n! (Nat.choose_mul_factorial_mul_factorial) turns the equality into Mathlib's Bell binomial recurrence Nat.bell_succ', B_{n+1} = Σ_{i+j=n} C(n,i)·B_j. The uniqueness lemma ode_unique shows any two power series over ℚ with the same constant term both solving y' = exp·y coincide: the ODE at coefficient k reads coeff (k+1) y · (k+1) = coeff k (exp·y), and the right side depends only on coefficients 0..k, so a strong induction pins down every coefficient (cancelling the nonzero factor (k+1)). Combining, bellEGF_unique characterizes bellEGF as the unique constant-term-1 solution, i.e. the formal series exp(eˣ − 1).",
+    "keyInsights": [
+      "The EGF identity Σ Bₙ Xⁿ/n! = exp(eˣ − 1) is, at the level of formal power series, exactly the statement that bellEGF solves the linear ODE y' = eˣ·y with y(0) = 1 — the same ODE that exp(eˣ − 1) solves by the chain rule.",
+      "The formal ODE d⁄dX bellEGF = exp · bellEGF is not an extra input but a re-encoding of Mathlib's own Bell binomial recurrence Nat.bell_succ': after clearing factorials, C(n,i)/n! = 1/(i!·(n−i)!) converts the recurrence into the coefficient identity B_{n+1}/n! = Σ_{i+j=n} (1/i!)·(B_j/j!).",
+      "Uniqueness of the power-series solution is elementary and needs no analysis: the ODE expresses coeff (k+1) y in terms of coeff 0..k, so a strong induction on coefficients suffices — no convergence, no substitution machinery.",
+      "The literal substitution form exp(eˣ − 1) = PowerSeries.subst (exp X − 1) exp is deliberately avoided: it would require a chain rule d⁄dX (subst g f) = subst g (d⁄dX f)·(d⁄dX g) for formal power series, which pinned Mathlib does not provide. The ODE characterization captures the full mathematical content without it."
+    ],
+    "prerequisites": [
+      "Bell numbers and set partitions; the binomial recurrence B_{n+1} = Σ_i C(n,i)·B_{n-i} (Mathlib's Nat.bell, Nat.bell_succ')",
+      "Formal power series over a field: coefficients, PowerSeries.mk, the Cauchy product PowerSeries.coeff_mul over the antidiagonal",
+      "The formal exponential PowerSeries.exp (coeff n = 1/n!) and the formal derivative PowerSeries.derivative (coeff n of d⁄dX f = (n+1)·coeff (n+1) f)",
+      "Exponential generating functions and the ODE viewpoint on EGFs; strong induction and the factorial identity C(n,i)·i!·(n−i)! = n!"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bell-egf-definition",
+      "title": "Section I: The Bell EGF and its Constant Term",
+      "startLine": 50,
+      "endLine": 68,
+      "summary": "Defines bellEGF := Σ (Bₙ/n!) Xⁿ over ℚ, records its coefficient formula (coeff_bellEGF), the constant term E(0) = 1 (constantCoeff_bellEGF), and the coefficient of the formal exponential coeff n (exp ℚ) = 1/n! (coeff_exp_rat).",
+      "mathContext": "The generating function is packaged as a formal power series so that 'Σ Bₙ Xⁿ/n!' has a precise meaning without any convergence hypothesis. The constant term B₀ = 1 supplies the initial condition E(0) = 1."
+    },
+    {
+      "id": "defining-ode",
+      "title": "Section II: The Defining ODE d⁄dX E = exp · E",
+      "startLine": 70,
+      "endLine": 115,
+      "summary": "derivative_bellEGF: the formal derivative of bellEGF equals exp · bellEGF. Proved coefficient-wise: the derivative contributes B_{n+1}/n!, the product contributes Σ_{i+j=n}(1/i!)(B_j/j!), and the two agree by Nat.bell_succ' after the factorial identity C(n,i)·i!·(n−i)! = n! clears denominators.",
+      "mathContext": "This single identity is the analytic heart of the EGF closed form: exp(eˣ − 1) is characterized by E' = eˣ·E. The proof shows the formal ODE is a literal re-encoding of the Bell binomial recurrence, so no new combinatorics is assumed — only Mathlib's Nat.bell_succ' and factorial arithmetic."
+    },
+    {
+      "id": "ode-uniqueness",
+      "title": "Section III: Uniqueness of the Solution",
+      "startLine": 117,
+      "endLine": 163,
+      "summary": "ode_unique: two series over ℚ with equal constant term both solving y' = exp·y are equal, by strong induction on coefficients (the ODE at index k fixes coeff (k+1) from coeff 0..k, cancelling the nonzero (k+1)). bellEGF_unique packages this: bellEGF is the unique constant-term-1 solution, hence the formal series exp(eˣ − 1).",
+      "mathContext": "Uniqueness upgrades the ODE from a property bellEGF happens to satisfy into a characterization: since exp(eˣ − 1) is by definition the solution of E' = eˣ·E, E(0)=1, and solutions are unique, bellEGF must be that series. The argument is purely algebraic — a first-order recurrence on coefficients — needing neither analysis nor the formal-substitution API."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 164 lines with 1 definition and 6 theorems establishing the exponential generating function of the Bell numbers through its defining ODE: bellEGF := Σ (Bₙ/n!) Xⁿ satisfies d⁄dX bellEGF = exp · bellEGF with constant term 1 (derivative_bellEGF, constantCoeff_bellEGF), and the ODE y' = exp·y, y(0)=1 has a unique power-series solution (ode_unique), so bellEGF is the formal series exp(eˣ − 1) (bellEGF_unique). #print axioms reports only [propext, Classical.choice, Quot.sound] for the headline theorems. Directly answers the first open question of bell-numbers-oq-01.",
+    "implications": "Connects Mathlib's Nat.bell to the formal exponential and formal derivative — a link the library lacks — by showing the Bell EGF's defining ODE is exactly the Bell binomial recurrence. The coefficient-level ODE-uniqueness lemma is a reusable template for identifying EGFs of sequences given by binomial-convolution recurrences. The mathematics (the EGF closed form) is classical; the contribution is the clean formal-power-series encoding via the ODE and its from-scratch uniqueness proof, sidestepping the missing chain rule for formal substitution.",
+    "openQuestions": [
+      "Prove a chain rule for formal power series substitution, d⁄dX (subst g f) = subst g (d⁄dX f) · d⁄dX g for g with zero constant term, and use it to derive the literal identity bellEGF = PowerSeries.subst (exp X − 1) (exp X) — closing the gap this entry leaves open by design.",
+      "Derive the row-sum identity Bₙ = Σ_k S(n,k) (parent bell-numbers-oq-01) from the EGF by expanding exp(eˣ − 1) = Σ_k (eˣ − 1)ᵏ/k! and reading off Stirling numbers of the second kind.",
+      "Establish Dobinski's formula Bₙ = e⁻¹ Σ_{k≥0} kⁿ/k! as the analytic evaluation of the EGF at a point."
+    ]
+  },
+  "references": [
+    {
+      "key": "OEIS_A000110",
+      "citation": "OEIS Foundation, The On-Line Encyclopedia of Integer Sequences, sequence A000110 (Bell numbers).",
+      "type": "web"
+    },
+    {
+      "key": "Stanley_EC1",
+      "citation": "Stanley, R. P., Enumerative Combinatorics, Volume 1, 2nd ed., Cambridge University Press (2011), Chapter 1 and the Exponential Formula (Chapter 5).",
+      "type": "book"
+    },
+    {
+      "key": "Wilf_generatingfunctionology",
+      "citation": "Wilf, H. S., generatingfunctionology, 3rd ed., A K Peters (2006), Chapter 1 (the EGF of the Bell numbers and the ODE B'(x) = eˣ B(x)).",
+      "type": "book"
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "bell-numbers-oq-01",
+      "relationship": "Parent entry / answers open question",
+      "description": "The parent proves the row-sum identity Bₙ = Σ_k S(n,k) and lists as its first open question the formalization of the EGF identity Σ Bₙ xⁿ/n! = exp(eˣ − 1); this entry answers it via the defining ODE."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Enumerative.Bell",
+      "Mathlib.RingTheory.PowerSeries.WellKnown",
+      "Mathlib.RingTheory.PowerSeries.Derivative",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "PowerSeries",
+      "Finset"
+    ],
+    "namespace": "BellNumbersOQ01OQ01",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/BellNumbersOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://oeis.org/A000110",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BellNumbersOQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "bell-numbers",
+      "generating-functions",
+      "exponential-generating-function",
+      "formal-power-series",
+      "ordinary-differential-equation",
+      "recurrence",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-02",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.bell_succ'",
+        "description": "The Bell binomial recurrence B_{n+1} = Σ_{(i,j)∈antidiagonal n} C(n,i)·B_j — the sole combinatorial input; the formal ODE d⁄dX bellEGF = exp·bellEGF is exactly this after clearing factorials.",
+        "module": "Mathlib.Combinatorics.Enumerative.Bell"
+      },
+      {
+        "theorem": "PowerSeries.coeff_derivative",
+        "description": "coeff n (d⁄dX f) = coeff (n+1) f · (n+1) — turns the formal derivative into a coefficient shift, giving B_{n+1}/n! as the n-th coefficient of d⁄dX bellEGF.",
+        "module": "Mathlib.RingTheory.PowerSeries.Derivative"
+      },
+      {
+        "theorem": "PowerSeries.coeff_mul",
+        "description": "The Cauchy product coeff n (f·g) = Σ_{(i,j)∈antidiagonal n} coeff i f · coeff j g — expands coeff n (exp·bellEGF) as Σ_{i+j=n} (1/i!)(B_j/j!).",
+        "module": "Mathlib.RingTheory.PowerSeries.Basic"
+      },
+      {
+        "theorem": "PowerSeries.coeff_exp",
+        "description": "coeff n (exp A) = algebraMap ℚ A (1/n!); specialized to A = ℚ it gives coeff n (exp ℚ) = 1/n!, the formal exponential's coefficients.",
+        "module": "Mathlib.RingTheory.PowerSeries.WellKnown"
+      },
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "C(n,i)·i!·(n−i)! = n! for i ≤ n — the factorial identity that converts the Bell recurrence into the coefficient form of the ODE (C(n,i)/n! = 1/(i!·(n−i)!)).",
+        "module": "Mathlib.Data.Nat.Choose.Factorization"
+      }
+    ],
+    "originalContributions": [
+      "bellEGF: the exponential generating function Σ (Bₙ/n!) Xⁿ of the Bell numbers, defined as a formal power series over ℚ (absent from pinned Mathlib)",
+      "derivative_bellEGF: the defining ODE d⁄dX bellEGF = exp · bellEGF, shown to be a re-encoding of the Bell binomial recurrence Nat.bell_succ' after clearing factorials",
+      "ode_unique: a from-scratch uniqueness theorem for the formal ODE y' = exp·y (equal constant term ⇒ equal), by strong induction on coefficients",
+      "bellEGF_unique: the characterization of bellEGF as the unique constant-term-1 solution of the ODE — i.e. the formal series exp(eˣ − 1)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 164,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. #print axioms reports only [propext, Classical.choice, Quot.sound] for derivative_bellEGF, ode_unique, and bellEGF_unique. Compiled against Mathlib v4.26.0. The EGF closed form is classical; the contribution is its formal-power-series encoding via the defining ODE and the elementary uniqueness proof. The literal substitution identity bellEGF = subst (exp X − 1) exp is intentionally not proved: it would require a chain rule for formal power series substitution, which pinned Mathlib lacks (recorded as an open question).",
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "prerequisites": [
+      "Bell numbers and the binomial recurrence (Nat.bell, Nat.bell_succ')",
+      "Formal power series over a field: coefficients, PowerSeries.mk, the Cauchy product",
+      "The formal exponential PowerSeries.exp and formal derivative PowerSeries.derivative",
+      "Exponential generating functions and the ODE viewpoint; strong induction and the identity C(n,i)·i!·(n−i)! = n!"
+    ],
+    "relatedProblems": [
+      "bell-numbers-oq-01"
+    ]
+  }
+}
