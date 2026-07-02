@@ -1,0 +1,126 @@
+[
+  {
+    "id": "ann-abundoq0302-header",
+    "proofId": "abundant-number-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "From infinitude to a quantitative counting bound",
+    "content": "The module docstring frames the goal. A positive integer n is abundant when σ(n) > 2n (Mathlib's Nat.Abundant); the smallest odd abundant number is 945 = 3³·5·7. The sibling entry AbundantOddInfiniteOQ03 already proves there are infinitely many odd abundant numbers via the family 945·(2k+1). That is only a qualitative statement. This file answers the parent's SECOND open question by upgrading it to a quantitative lower bound on the counting function A(x) = #{n ∈ [1,x] : n odd and abundant}: from the single seed 945 one gets x < 1890·A(x) + 945, i.e. A(x) > x/1890 − 1/2, so the odd abundant numbers have positive lower density at least 1/1890. The constant 1/1890 is the density of the odd multiples of 945 and is deliberately non-optimal — accounting for the other odd abundant seeds 1575, 2205, … would raise it — but it is the honest bound from one seed. The whole argument is axiom-free: no sorry, no axiom, no native_decide.",
+    "mathContext": "$A(x) := \\#\\{\\,n\\in[1,x] : n\\text{ odd},\\ \\sigma(n) > 2n\\,\\}$; the file proves $A(x) > \\dfrac{x}{1890} - \\dfrac12$, so $\\liminf_{x\\to\\infty} A(x)/x \\ge \\dfrac{1}{1890} > 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "abundant numbers (σ(n) > 2n)",
+      "odd abundant numbers, smallest 945 = 3³·5·7",
+      "counting function / lower density",
+      "from infinitude to a quantitative bound"
+    ],
+    "prerequisites": [
+      "sum-of-divisors function σ and abundance",
+      "the notion of lower asymptotic density",
+      "the sibling infinitude result AbundantOddInfiniteOQ03"
+    ]
+  },
+  {
+    "id": "ann-abundoq0302-imports",
+    "proofId": "abundant-number-oq-03-oq-02",
+    "range": {
+      "startLine": 36,
+      "endLine": 48
+    },
+    "type": "concept",
+    "title": "Imports, the reused sibling, and classical decidability",
+    "content": "The file imports all of Mathlib plus Proofs.AbundantOddInfiniteOQ03, whose namespace it opens to reuse two facts: odd_abundant_945_mul (each 945·(2k+1) is odd and abundant) and odd_mul_succ_injective (the map k ↦ 945·(2k+1) is injective). The `open Classical` line matters for axiom integrity: Nat.Abundant carries no registered Decidable instance, so the Finset filter defining the counting function is decided classically, forcing the definition to be noncomputable. This affects only computability, not logical content — #print axioms still reports exactly the three standard foundational axioms (propext, Classical.choice, Quot.sound) and never sorryAx or Lean.ofReduceBool.",
+    "mathContext": "Reused: $\\forall k,\\ \\mathrm{Odd}(945(2k+1)) \\wedge \\mathrm{Abundant}(945(2k+1))$ and injectivity of $k\\mapsto 945(2k+1)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "namespace reuse (AbundantOddInfiniteOQ03)",
+      "classical decidability of Nat.Abundant",
+      "noncomputable definitions",
+      "axiom integrity (propext, Classical.choice, Quot.sound only)"
+    ],
+    "prerequisites": [
+      "Lean 4 import/open mechanics",
+      "Decidable instances and classical logic",
+      "why a filtered Finset can be noncomputable"
+    ]
+  },
+  {
+    "id": "ann-abundoq0302-def",
+    "proofId": "abundant-number-oq-03-oq-02",
+    "range": {
+      "startLine": 50,
+      "endLine": 53
+    },
+    "type": "definition",
+    "title": "countOddAbundant: the counting function A(x)",
+    "content": "The counting function is defined as the cardinality of the finite set of odd abundant integers in the interval [1, x]: A(x) = #((Finset.Icc 1 x).filter (fun n => Odd n ∧ n.Abundant)). Working over the concrete Finset.Icc 1 x (rather than an abstract density) keeps everything finite and lets the lower bound be proved by a direct Finset.card_le_card comparison against an explicitly constructed subset. It is marked noncomputable because the abundance predicate is decided classically (see the previous annotation).",
+    "mathContext": "$\\mathrm{countOddAbundant}(x) = \\big|\\{\\,n\\in\\mathrm{Icc}\\,1\\,x : \\mathrm{Odd}\\,n \\wedge n.\\mathrm{Abundant}\\,\\}\\big|.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.Icc and Finset.filter",
+      "cardinality of a filtered Finset",
+      "noncomputable def"
+    ],
+    "prerequisites": [
+      "Finset basics (Icc, filter, card)",
+      "the Abundant predicate"
+    ]
+  },
+  {
+    "id": "ann-abundoq0302-counting",
+    "proofId": "abundant-number-oq-03-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "odd_abundant_counting_lower_bound: x < 1890·A(x) + 945",
+    "content": "The core result. Set M = x/945 (Nat division) and K = (M+1)/2. The odd-multiples family k ↦ 945·(2k+1), restricted to k ∈ Finset.range K, is shown to land inside the counted set: via Finset.image_subset_iff each image element is odd and abundant (odd_abundant_945_mul) and lies in [1, x] because k < K forces 2k+1 ≤ x/945, hence 945·(2k+1) ≤ 945·(x/945) ≤ x (discharged by omega). Because the map is injective (odd_mul_succ_injective), Finset.card_image_of_injective gives the image cardinality exactly K, and Finset.card_le_card on the subset inclusion yields K ≤ countOddAbundant x. The closing inequality x < 1890·A(x) + 945 is then pure Nat division arithmetic — x < 945·(x/945) + 945 and x/945 ≤ 2·((x/945+1)/2) — closed by omega. The pattern 'inject an explicit family, count its image, compare cardinalities' is the workhorse of quantitative existence bounds.",
+    "mathContext": "With $K = \\lceil (x/945)/2\\rceil$, the $K$ witnesses $945(2k+1)$, $k<K$, are distinct odd abundant numbers in $[1,x]$, so $K \\le A(x)$ and $x < 1890\\,A(x) + 945$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.image_subset_iff",
+      "Finset.card_image_of_injective",
+      "Finset.card_le_card (monotonicity of cardinality)",
+      "omega for Nat division arithmetic"
+    ],
+    "prerequisites": [
+      "injective image cardinality",
+      "Nat floor division inequalities",
+      "constructing an explicit witness family"
+    ]
+  },
+  {
+    "id": "ann-abundoq0302-density",
+    "proofId": "abundant-number-oq-03-oq-02",
+    "range": {
+      "startLine": 93,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "odd_abundant_density_lower: x/1890 − 1/2 < A(x)",
+    "content": "The counting bound is recast over ℝ. Casting x < 1890·countOddAbundant x + 945 to the reals (exact_mod_cast) and rearranging with linarith gives x/1890 − 1/2 < countOddAbundant x for every x. Dividing by x and letting x → ∞ shows the lower density is at least 1/1890, a positive constant — the quantitative strengthening of the sibling's qualitative infinitely_many_odd_abundant. The subtraction of 1/2 (from the ⌈·⌉ in the Nat argument) is a bounded additive slack that vanishes in the density limit. Two #print axioms commands immediately follow the theorems as an in-file audit: they confirm both results depend only on the three standard foundational axioms (propext, Classical.choice, Quot.sound) and NOT on sorryAx (an incomplete proof) or Lean.ofReduceBool (which native_decide would introduce), so the result is genuinely axiom-free, matching meta.json status 'verified' and axiomCount 0. The Classical.choice entry comes solely from the classical decidability of Abundant in the counting-set definition, not from any unproven hypothesis.",
+    "mathContext": "$\\dfrac{x}{1890} - \\dfrac12 < A(x) \\ \\Longrightarrow\\ \\liminf_{x\\to\\infty}\\dfrac{A(x)}{x} \\ge \\dfrac{1}{1890}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "casting Nat inequalities to ℝ (exact_mod_cast)",
+      "linarith",
+      "lower asymptotic density",
+      "quantitative vs qualitative infinitude",
+      "#print axioms as a verification tool",
+      "foundational axioms vs mathematical assumptions",
+      "native_decide and Lean.ofReduceBool",
+      "axiom integrity policy"
+    ],
+    "prerequisites": [
+      "real-number inequalities",
+      "the notion of lower density as a liminf",
+      "Nat-to-ℝ casts",
+      "Lean 4 axiom tracking",
+      "the meaning of propext / Classical.choice / Quot.sound"
+    ]
+  }
+]
