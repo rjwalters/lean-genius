@@ -91,6 +91,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Second Moment of the Geometric Series",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports and module docstring for the closed form ∑ n² rⁿ = r(1+r)/(1−r)³ (‖r‖<1), completing the low-order moment family (zeroth 1/(1−r), first r/(1−r)²). These head lines explain that Mathlib supplies the zeroth and first moments and the rising-binomial family ∑ (n+k choose k) rⁿ = 1/(1−r)^{k+1} but not the second moment, and that it is assembled from the k=2 member via the polynomial identity n² = 2·(n+2 choose 2) − 3n − 2, with a probabilistic reading giving Var(X)=r/(1−r)², before the namespace opens.",
+      "mathContext": "The second moment ∑ n² rⁿ = r(1+r)/(1−r)³ is built as the linear combination 2·h₂ − 3·h₁ − 2·h₀ of Mathlib HasSum facts (the k=2 rising-binomial sum, the first moment, and the geometric series), since n² = 2(n+2 choose 2) − 3n − 2. The resulting value simplifies by field_simp; ring. Probabilistically, for X geometric with P(X=n)=(1−r)rⁿ this gives E[X]=r/(1−r), E[X²]=r(1+r)/(1−r)², Var(X)=r/(1−r)². 0 sorries, 0 axioms."
+    },
+    {
       "id": "basis-identity",
       "title": "The Polynomial Basis Identity",
       "startLine": 65,
