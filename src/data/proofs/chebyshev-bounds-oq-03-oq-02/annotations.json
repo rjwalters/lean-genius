@@ -4,7 +4,7 @@
     "proofId": "chebyshev-bounds-oq-03-oq-02",
     "range": {
       "startLine": 5,
-      "endLine": 45
+      "endLine": 19
     },
     "type": "concept",
     "title": "Removing the log Factor from ψ − θ",
@@ -21,6 +21,31 @@
       "Chebyshev's prime-sum functions",
       "the parent ψ ∼ θ result",
       "big-O notation"
+    ]
+  },
+  {
+    "id": "ann-cb030202-architecture",
+    "proofId": "chebyshev-bounds-oq-03-oq-02",
+    "range": {
+      "startLine": 20,
+      "endLine": 45
+    },
+    "type": "insight",
+    "title": "Why the log Appears — and the Exponent-Budget That Kills It",
+    "content": "The docstring lays out the whole strategy, and its key observation is that the log factor is not real growth but a term count. The naive route bounds every one of the K ≈ log x/log 2 terms θ(x^{1/n}) by the leading θ(√x) ≤ log 4·√x and multiplies by K, reproducing exactly the √x·log x estimate. The sharp route separates the single term that genuinely has size √x (n = 2) from the rest (n ≥ 3, each of size ≤ x^{1/3}). The tail now carries a real power saving x^{1/3} against the leading √x, and the leftover log x is absorbed by the elementary decay log x ≤ 6·x^{1/6}: the exponent budget 1/6 + 1/3 = 1/2 is exactly what lands the tail back at √x with only a constant (12) to show for it. This 'isolate the main term, spend a power-saving on the tail, then eat the residual log with x^ε' pattern is the reusable template of the whole file.",
+    "mathContext": "Naive $K\\cdot\\theta(\\sqrt x)\\sim\\sqrt x\\log x$ vs. sharp $\\theta(\\sqrt x)+\\sum_{n\\ge 3}\\log 4\\,x^{1/3}$; the tail's residual log is eaten by $x^{1/6}$ since $\\tfrac16+\\tfrac13=\\tfrac12$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "power-savings error term",
+      "main-term isolation",
+      "term-count vs genuine growth",
+      "exponent budget",
+      "log = O(x^ε)"
+    ],
+    "prerequisites": [
+      "the ψ = θ + Σθ decomposition",
+      "counting terms in a dyadic sum",
+      "trading a log factor for a power x^ε"
     ]
   },
   {
