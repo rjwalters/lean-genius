@@ -238,6 +238,112 @@ theorem isGFree_iff_not_mem_range (g : ℕ → ℕ) (n : ℕ) :
   simp only [isGFree, Set.mem_range, not_exists, ne_eq]
 
 /-!
+## Section 4·chase: The collision chase is a *bounded* forward-orbit walk
+
+The stage-wise scheduler behind `myhill_isomorphism` places a fresh domain point `a` by
+trying its image `f a`. When `f a` is already used (a **collision**), the blocking pair is
+the `g`-edge `(g (f a), f a)` (see the `collision_f_source` analysis), so the obstruction
+is the *already-placed* element `g (f a)` — and by the recurrence `fwdOrbit f g a (k+1) =
+g (f (fwdOrbit f g a k))` this is exactly the next forward-orbit point `fwdOrbit f g a 1`.
+Hence "chasing the collision" means walking the forward orbit `a, g(f a), g(f(g(f a))),
+…`, which is computable (`fwdOrbit_computable`) and never decides the `Π₁` predicate
+`isGFree`.
+
+The one thing the scheduler still needs from this walk is that it **terminates**: the
+search for a fresh target is *bounded*, so it is a genuine computable step (not an
+unbounded μ-search). That is what this section supplies, with no reference to `isGFree`:
+
+* `fwdOrbit_succ` — the chase-step recurrence, making `g (f x)` the successor target.
+* `fwdOrbit_prefix_distinct` — **acyclicity of a fresh-anchored colliding prefix.** If the
+  orbit is anchored at a point `a ∉ D` and every later point up to stage `N` lies in the
+  occupied set `D`, then the points `fwdOrbit f g a 0, …, N` are pairwise distinct. (If two
+  coincided, injectivity of `g ∘ f` would make `a` itself periodic, i.e. `a = fwdOrbit f g
+  a d ∈ D` for some `1 ≤ d`, contradicting freshness.)
+* `fwdOrbit_chase_length_le` — the resulting **length bound**: a colliding prefix whose
+  interior stays inside a finite list `D` has length `≤ D.length`. Instantiated with `D :=
+  mDom L` (the current matching's domain), this bounds the collision chase by the size of
+  the partial bijection built so far, discharging the "bounded search" obligation.
+-/
+
+/-- **Chase-step recurrence.** From orbit point `x = fwdOrbit f g a k`, the next point is
+    the collision blocker `g (f x)`: `fwdOrbit f g a (k+1) = g (f (fwdOrbit f g a k))`. In
+    particular the element obstructing a fresh domain point `a` (namely `g (f a)`) is the
+    first orbit step `fwdOrbit f g a 1`. This is the definitional unfolding of `fwdOrbit`,
+    isolated here because it is the exact link between the collision analysis and the
+    forward orbit. -/
+theorem fwdOrbit_succ (f g : ℕ → ℕ) (n k : ℕ) :
+    fwdOrbit f g n (k + 1) = g (f (fwdOrbit f g n k)) := rfl
+
+/-- **Acyclicity of a fresh-anchored colliding orbit prefix.** Let `g ∘ f` be injective
+    (guaranteed by `f`, `g` injective). Suppose the forward orbit of `a` has its anchor
+    *outside* the occupied set (`¬ D a`) while every later point up to stage `N` is
+    *inside* it (`D (fwdOrbit f g a k)` for `1 ≤ k ≤ N`) — exactly the situation of a
+    collision chase that keeps hitting already-placed points. Then the prefix
+    `fwdOrbit f g a 0, …, fwdOrbit f g a N` is **injective** (no repeats).
+
+    *Why.* A repeat `fwdOrbit a i = fwdOrbit a j` with `i < j` would, via injectivity of
+    `(g ∘ f)^[i]`, force `a = fwdOrbit a (j - i)` with `1 ≤ j - i ≤ N`; but that point lies
+    in `D`, so `a ∈ D`, contradicting freshness. Thus the orbit cannot re-enter its anchor,
+    and a colliding chase visits only fresh orbit points — which is what makes it bounded. -/
+theorem fwdOrbit_prefix_distinct {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {a : ℕ} {D : ℕ → Prop} (h0 : ¬ D a) {N : ℕ}
+    (hchase : ∀ k, 1 ≤ k → k ≤ N → D (fwdOrbit f g a k)) :
+    ∀ ⦃i⦄, i ≤ N → ∀ ⦃j⦄, j ≤ N → fwdOrbit f g a i = fwdOrbit f g a j → i = j := by
+  have hT : Function.Injective (fun x => g (f x)) := fun x y h => hf (hg h)
+  have hiter : ∀ k, fwdOrbit f g a k = (fun x => g (f x))^[k] a :=
+    fun k => fwdOrbit_eq_iterate f g a k
+  intro i hi j hj hij
+  rcases le_total i j with hle | hle
+  · obtain ⟨d, rfl⟩ := Nat.le.dest hle
+    rcases Nat.eq_zero_or_pos d with hd | hd
+    · subst hd; simp
+    · exfalso
+      rw [hiter i, hiter (i + d), Function.iterate_add_apply] at hij
+      have hax : a = (fun x => g (f x))^[d] a := (hT.iterate i) hij
+      have hdN : d ≤ N := le_trans (Nat.le_add_left d i) hj
+      have hDa : D (fwdOrbit f g a d) := hchase d hd hdN
+      rw [hiter d, ← hax] at hDa
+      exact h0 hDa
+  · obtain ⟨d, rfl⟩ := Nat.le.dest hle
+    rcases Nat.eq_zero_or_pos d with hd | hd
+    · subst hd; simp
+    · exfalso
+      rw [hiter (j + d), hiter j, Function.iterate_add_apply] at hij
+      have hax : (fun x => g (f x))^[d] a = a := (hT.iterate j) hij
+      have hdN : d ≤ N := le_trans (Nat.le_add_left d j) hi
+      have hDa : D (fwdOrbit f g a d) := hchase d hd hdN
+      rw [hiter d, hax] at hDa
+      exact h0 hDa
+
+/-- **The collision chase is bounded by the occupied domain.** If the fresh anchor `a`
+    lies outside the finite occupied list `D`, and every chase point `fwdOrbit f g a k`
+    for `1 ≤ k ≤ N` lies inside `D`, then `N ≤ D.length`. In the scheduler, taking
+    `D := mDom L` (the domain of the current finite matching `L`) bounds the number of
+    collision-chase steps by `L.length`, so the search for a fresh `f`-target is a genuine
+    *bounded* (hence computable) step — the last piece the "each stage terminates" clause
+    of `myhill_isomorphism` rests on. -/
+theorem fwdOrbit_chase_length_le {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {a : ℕ} {D : List ℕ} (h0 : a ∉ D) {N : ℕ}
+    (hchase : ∀ k, 1 ≤ k → k ≤ N → fwdOrbit f g a k ∈ D) :
+    N ≤ D.length := by
+  have hdist := fwdOrbit_prefix_distinct hf hg (D := fun n => n ∈ D) h0 hchase
+  have hInj : Set.InjOn (fwdOrbit f g a) ↑(Finset.Icc 1 N) := by
+    intro i hi j hj hij
+    simp only [Finset.coe_Icc, Set.mem_Icc] at hi hj
+    exact hdist hi.2 hj.2 hij
+  have hmaps : ∀ k ∈ Finset.Icc 1 N, fwdOrbit f g a k ∈ D.toFinset := by
+    intro k hk
+    simp only [Finset.mem_Icc] at hk
+    exact List.mem_toFinset.mpr (hchase k hk.1 hk.2)
+  have hcard : (Finset.Icc 1 N).card ≤ D.toFinset.card :=
+    Finset.card_le_card_of_injOn (fwdOrbit f g a) hmaps hInj
+  have hIcc : (Finset.Icc 1 N).card = N := by rw [Nat.card_Icc]; omega
+  rw [hIcc] at hcard
+  exact le_trans hcard (List.toFinset_card_le D)
+
+/-!
 ## Section 4a: The Σ₁ / Π₁ complexity of `range g` — machine-checked
 
 The docstrings above justify the failure of the naive orbit classification by the
