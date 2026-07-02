@@ -1,5 +1,30 @@
 [
   {
+    "id": "erdos-424-overview",
+    "proofId": "erdos-424",
+    "range": {
+      "startLine": 1,
+      "endLine": 27
+    },
+    "type": "concept",
+    "title": "Overview: Density of the a·b−1 Sequence (Erdős #424)",
+    "content": "Start with a₁ = 2, a₂ = 3, and repeatedly adjoin every value a_i·a_j − 1 (for distinct indices) not already present, giving 2, 3, 5, 9, 14, 17, 26, … (OEIS A005244). Erdős Problem #424 asks whether the set of integers that eventually appear has positive density. The problem is OPEN. This file formalizes the generative process — the next-generation operator nextGeneration, its iterate sequenceSet n, and the union generatedSet — and proves the structural facts that constrain any answer: the sequence is monotone across generations, the generated set is closed under the operation, and, most notably, the mod-3 obstruction. No integer ≡ 1 (mod 3) can ever appear, because 2 ≡ −1 and 3 ≡ 0 lie in the multiplicatively-closed residue set {0, 2} mod 3 and a·b − 1 stays in {0, 2} whenever a, b ∈ {0, 2}. This caps the achievable density at 2/3 — an unconditional upper bound on the OPEN conjecture. The formalized fragments are clean (0 axioms, 0 sorries); the density question itself remains unresolved.",
+    "mathContext": "Rule: $A_{n+1}=A_n\\cup\\{ab-1: a,b\\in A_n,\\ a\\ne b\\}$ from $A_1=\\{2,3\\}$. Mod-3 invariant: $\\{0,2\\}\\pmod 3$ is closed under $(a,b)\\mapsto ab-1$ (e.g. $2\\cdot2-1=3\\equiv0$, $2\\cdot0-1\\equiv2$, $0\\cdot0-1\\equiv2$), and $2,3\\in\\{0,2\\}$, so no term is $\\equiv 1\\pmod 3$. Hence upper density $\\le 2/3$; positive lower density is the open part.",
+    "significance": "key",
+    "relatedConcepts": [
+      "natural density",
+      "multiplicatively generated sequences",
+      "congruence obstructions",
+      "OEIS A005244",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "sets of natural numbers and closure operators",
+      "residues modulo 3",
+      "asymptotic (natural) density"
+    ]
+  },
+  {
     "id": "ann-e424-nextgen",
     "proofId": "erdos-424",
     "range": {
