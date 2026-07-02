@@ -1,0 +1,65 @@
+[
+  {
+    "id": "hall-defect-context",
+    "proofId": "halls-theorem-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 39 },
+    "type": "concept",
+    "title": "From Exact Hall to the Deficiency Bound",
+    "content": "Hall's marriage theorem gives a full system of distinct representatives exactly when the Hall condition #S ≤ #(S.biUnion t) holds for every subfamily S. When it fails, the deficiency (defect / König–Ore) version quantifies how much matching survives. This entry proves the one-sided form: if the condition fails by at most a uniform slack d — #S ≤ #(S.biUnion t) + d for all S — then at most d indices go unmatched. Mathlib has the exact theorem but not this refinement; the proof reduces to the exact case by adjoining d dummy targets.",
+    "mathContext": "If $\\forall S,\\ \\#S \\le \\#(S.\\mathrm{biUnion}\\ t) + d$, then $\\exists s,\\ |\\iota| \\le \\#s + d$ with an injective $f$ satisfying $f\\,x \\in t\\,x$ for all $x \\in s$: a matching missing at most $d$ indices.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "systems of distinct representatives",
+      "deficiency version",
+      "König–Ore theorem",
+      "bipartite matching"
+    ],
+    "prerequisites": [
+      "Hall's marriage theorem",
+      "finite cardinality arguments",
+      "injective functions"
+    ]
+  },
+  {
+    "id": "hall-defect-main",
+    "proofId": "halls-theorem-oq-02-oq-01",
+    "range": { "startLine": 47, "endLine": 160 },
+    "type": "theorem",
+    "title": "hall_defect: the Dummy-Augmentation Reduction",
+    "content": "The main theorem. The proof adjoins d universal dummy targets by working in α ⊕ Fin d, with t' i = (t i).image Sum.inl ∪ D and D = univ.image Sum.inr the set of all d dummies. For nonempty S the augmented biUnion contains the disjoint union (S.biUnion t).image inl ⊍ D, so its cardinality is at least #(S.biUnion t) + d ≥ #S — exactly the exact Hall condition for t'. Mathlib's all_card_le_biUnion_card_iff_exists_injective then yields an injective g : ι → α ⊕ Fin d. The matched set s = {x | g x ∉ D} carries f (where g factors as Sum.inl (f x)); the complement injects via g into the d dummies, so |complement| ≤ d and Fintype.card ι ≤ #s + d.",
+    "mathContext": "Adjoin $d$ dummies: $t'(i) = \\iota_{\\mathrm{inl}}(t\\,i) \\cup D$, $D = \\{\\mathrm{inr}\\,j : j \\in \\mathrm{Fin}\\,d\\}$. Then $\\#(S.\\mathrm{biUnion}\\ t') \\ge \\#(S.\\mathrm{biUnion}\\ t) + d \\ge \\#S$, so Hall applies to $t'$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "dummy augmentation",
+      "coproduct α ⊕ Fin d",
+      "disjoint union cardinality",
+      "injective transversal",
+      "pigeonhole"
+    ],
+    "prerequisites": [
+      "Finset.biUnion and card",
+      "Sum types and Sum.inl/inr injectivity",
+      "Mathlib's Hall theorem"
+    ]
+  },
+  {
+    "id": "hall-defect-recovers-hall",
+    "proofId": "halls-theorem-oq-02-oq-01",
+    "range": { "startLine": 162, "endLine": 177 },
+    "type": "theorem",
+    "title": "hall_of_hall_defect: Recovering Classical Hall at d = 0",
+    "content": "Specialising the defect theorem to d = 0 makes the dummy set D empty, so no index can be unmatched: the size bound Fintype.card ι ≤ #s forces s = univ, and the partial injective transversal becomes a total injective transversal. This recovers Mathlib's exact Hall marriage theorem verbatim, confirming that hall_defect is a genuine generalisation rather than a weaker sibling.",
+    "mathContext": "At $d = 0$: $\\#S \\le \\#(S.\\mathrm{biUnion}\\ t)$ gives $s = \\mathrm{univ}$ and a total injective $f$ with $f\\,x \\in t\\,x$ — the classical system of distinct representatives.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "specialisation",
+      "system of distinct representatives"
+    ],
+    "prerequisites": [
+      "the defect theorem hall_defect",
+      "Finset.eq_univ_of_card"
+    ]
+  }
+]
