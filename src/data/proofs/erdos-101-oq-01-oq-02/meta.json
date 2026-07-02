@@ -61,6 +61,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Exact Base Cases of the Extremal Function",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "The docstring frames this leaf against parent Erdos101OQ01, which defines the size-indexed extremal quantity maxCountAtSize n = sSup{fourPointLineCount Q : |Q|=n, NoFiveCollinear Q} and gives an O(n²) upper certificate but says nothing about small n. This file pins the base cases exactly: maxCountAtSize n = 0 for n < 4 (too few points for a four-point line), and maxCountAtSize 4 = 1 — the first non-trivial value, whose lower half is witnessed by an explicit four-points-on-the-x-axis configuration and whose upper half follows from improved_upper_bound. All results are unconditional and axiom-free, independent of the parent's two deferred obligations. Imports Erdos101OQ01, opens Classical, sets up namespace Erdos101OQ01OQ02.",
+      "mathContext": "$\\mathrm{maxCountAtSize}\\,n = 0$ for $n<4$ and $\\mathrm{maxCountAtSize}\\,4 = 1$ — the smallest concrete anchor points of the OQ-01 extremal function."
+    },
+    {
       "id": "base-values",
       "title": "Base Values n < 4: the extremal function vanishes",
       "summary": "maxCountAtSize_eq_zero_of_lt_four: for every n < 4 the size-indexed extremal four-point-line function is 0, since every candidate set of fewer than four points has fourPointLineCount = 0.",
