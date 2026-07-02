@@ -203,3 +203,97 @@ axiom-free.
 
 (`five_dvd_gal_card` IS clean — propext/Classical.choice/Quot.sound only. The
 `native_decide` lives in the divisibility-bound and order-exclusion lemmas.)
+
+---
+
+## Session 2026-07-02 (researcher-9) — Mathlib re-survey: Part (A) is no longer a "missing theorem"
+
+**Mode**: ASSESS (claimed slug) · **Outcome**: gap re-characterized (roadmap, no new Lean)
+
+### Why re-survey
+Every prior iteration (and both `problem.md` and `state.md`) asserts that the
+residual half — Part (A), "(1,1,3) factor type ⟹ Frobenius 3-cycle ⟹
+`3 ∣ |Gal|`", i.e. the sibling sorry
+`InverseGaloisA5Dedekind.exists_gal_order_three : ∃ σ : q.Gal, orderOf σ = 3` —
+is a **Mathlib gap** ("Dedekind's theorem itself is a Mathlib gap"). I verified
+this against the actual Mathlib v4.26 source shipped in
+`proofs/.lake/packages/mathlib`. **That claim is now stale: the abstract
+ingredients all exist.** The gap is no longer "a theorem missing from Mathlib" —
+it is "assemble existing Mathlib pieces + discharge one specific arithmetic
+side-condition." This changes the strategy for the sibling track.
+
+### The three ingredients, all present in Mathlib v4.26 (verified by reading source)
+
+1. **Kummer–Dedekind factorization correspondence** —
+   `Mathlib/NumberTheory/KummerDedekind.lean`:
+   `normalizedFactorsMapEquivNormalizedFactorsMinPolyMk` (bijection between
+   `normalizedFactors (I.map (algebraMap R S))` and
+   `normalizedFactors ((minpoly R x).map (Ideal.Quotient.mk I))`) and
+   `normalizedFactors_ideal_map_eq_normalizedFactors_min_poly_mk_map`. This is
+   exactly "prime factors of `(7)·O_L` ↔ irreducible factors of `q mod 7`",
+   matching the `(1,1,3)` shape we already proved in `q_mod7_factor_type`.
+   Requires `IsMaximal I` and the **conductor-coprimality** hypotheses
+   `(conductor R x).comap (algebraMap R S) ⊔ I = ⊤` (see side-condition below).
+
+2. **Ramification / inertia in the Galois setting** —
+   `Mathlib/NumberTheory/RamificationInertia/Galois.lean`: `inertiaDeg`,
+   `inertiaDegIn`, `ramificationIdxIn`, the transitivity/counting theorems
+   (`ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn`), and crucially the
+   decomposition-group machinery `Ideal.Quotient.stabilizerHom` with
+   `card_inertia_eq_ramificationIdxIn` and
+   `ncard_primesOver_mul_card_inertia_mul_finrank`. For an **unramified** prime
+   (ramificationIdx = 1, which our `q_mod7_squarefree` gives) the inertia
+   subgroup is trivial, so the decomposition group ≅ the residue-field Galois
+   group, cyclic of order = `inertiaDeg` = the factor degree (= 3 for the cubic).
+
+3. **Frobenius elements** — `Mathlib/RingTheory/Frobenius.lean`:
+   `IsArithFrobAt`, `arithFrobAt` (a chosen Frobenius over `Q`, well-defined for
+   `[Q.IsPrime] [Finite (S ⧸ Q)]`), `exists_of_isInvariant` (existence),
+   `IsArithFrobAt.restrict` (restricts to the `x ↦ x^(card residue)` map on
+   `S ⧸ Q`), and `eq_of_isUnramifiedAt` (uniqueness when unramified). The
+   Frobenius over a prime with `inertiaDeg = 3` has order divisible by 3 — the
+   **easy direction** that alone suffices (`3 ∣ orderOf σ ∣ |Gal|`).
+
+### The residual obstruction (the real remaining work, now precisely located)
+
+Not number theory — it is **setup/plumbing** to instantiate the abstract
+theorems for *this* quintic:
+
+- **(i) `q.Gal ≃ Gal(L/K)` identification.** `three_dvd_gal_card` and the sibling
+  sorry are phrased for `Polynomial.Gal q = (q.SplittingField ≃ₐ[ℚ] ·)`. The
+  Mathlib Frobenius/ramification API acts on `G ≃ (B ≃ₐ[A] B)` / `Gal(L/K)` for a
+  Dedekind extension `B/A` with `L = FractionField B`, `K = FractionField A`.
+  Need `L := q.SplittingField`, `A := ℤ`, `B := 𝓞 L` (`NumberField.RingOfIntegers`),
+  `K := ℚ`, then transport along `IsGalois ℚ L` (already have `IsSplittingField`
+  ⟹ normal, separable in char 0) — likely via `galRestrict` / the existing
+  `InverseGaloisOQ06OQ02GalAction.galActionHom` order-preserving bridge, which is
+  already 0-axiom.
+- **(ii) The conductor/monogenicity side-condition — the ONE genuine arithmetic
+  check.** Kummer–Dedekind needs a generator `x ∈ 𝓞 L` (or of the relevant
+  order) with `minpoly ℤ x = q` and `7 ∤` the conductor of `ℤ[x]` in `𝓞 L`
+  (equivalently `7 ∤ [𝓞 L : ℤ[α]]`). `q = X⁵-5X⁴+10X³-10X²+25X-5` is Eisenstein
+  at 5 (so 5 ramifies / 5 ∣ index issues live there, not at 7). Whether 7 divides
+  the index still needs an explicit argument; `q_mod7_squarefree` (7 unramified)
+  is *evidence* 7 ∤ index but does not by itself discharge the conductor-coprimality
+  hypothesis in the required form. This is the crux to nail for the sibling track.
+
+### Recommended next action (sibling `inverse-galois-a5-oq-01`, NOT this slug)
+
+Discharge `exists_gal_order_three` by: pick `α` a root, `x := α ∈ 𝓞 L`; establish
+`minpoly ℤ x = q` and the conductor-coprimality at `7`; apply Kummer–Dedekind to
+transport `q_mod7_factor_type`'s cubic factor to a prime `Q | 7` with
+`inertiaDeg = 3`; take `σ := arithFrobAt Q`; show `3 ∣ orderOf σ` via the residue
+Frobenius order = inertiaDeg; transport through `galActionHom` to `q.Gal`. Then
+`three_dvd_card_gal_of_cycleType` / `three_dvd_card_gal_of_orderOf_three`
+(already 0-axiom in `InverseGaloisOQ06OQ02GalAction.lean`) finishes.
+
+### Why no Lean shipped this iteration
+The above is a multi-file formalization (ring-of-integers instances, `IsGalois`
+transport, the conductor computation) — genuinely a fresh research task for the
+sibling slug, not a marginal edit here. This slug's own deliverables (algebraic
+input at p=7,11; deterministic half B; faithful `q.Gal` bridge; gap
+characterization) are already complete. Attempting a fragile large build under a
+reaped worktree + 100%-full disk risks introducing false theorems (cf. the
+`erdos-601` / `three_dvd` history) for no verified gain. Value here is the
+corrected map: **Mathlib now HAS the theorems; the gap is instantiation + the
+7-conductor check.**
