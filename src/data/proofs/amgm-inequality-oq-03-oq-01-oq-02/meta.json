@@ -145,7 +145,11 @@
   "conclusion": {
     "summary": "This formalization proves the full generalized mean inequality M_p ≤ M_q for all nonzero real p ≤ q with 0 axioms and 0 sorries, packaged as a single Mathlib-idiom theorem (rpow_mean_le_rpow_mean) stated on the bare expression (∑ wᵢzᵢ^p)^(1/p). It consolidates the positive, negative, and sign-crossing cases — previously split across the parent file's custom weightedPowerMean definition — into one self-contained statement ready for upstream contribution.",
     "implications": "**For Mathlib**: Directly answers the explicit TODO in Mathlib.Analysis.MeanInequalitiesPow ('generalized mean inequality with any p ≤ q, including negative numbers'). The theorem is stated to match Real.arith_mean_le_rpow_mean (its p=1 special case), so it slots in beside the existing API with no new definitions.\n\n**For the power mean theory**: Completes the monotone chain min ≤ HM = M_{-1} ≤ GM = M_0 ≤ AM = M_1 ≤ max for all real exponents of either sign, with the geometric mean as the explicit crossing point.\n\n**Technique**: The sign-dispatch + duality-involution + geometric-mean-bridge pattern is reusable for any one-parameter family of means whose definition degenerates at an interior point of the parameter range.",
-    "futureDirections": "A genuine upstream PR would (1) drop the private pmean abbreviation in favor of fully unfolded expressions or align with any future Mathlib powerMean definition, (2) add the companion equality-characterization (M_p = M_q ↔ all zᵢ equal), the second item in the same Mathlib TODO, and (3) provide NNReal/ENNReal versions matching the rest of the file's structure."
+    "openQuestions": [
+      "Can the private `pmean` abbreviation be dropped in favor of fully unfolded expressions (or aligned with a future Mathlib `powerMean` definition) so the theorem is upstream-ready without introducing a new definition?",
+      "Can the companion equality characterization M_p = M_q ↔ all zᵢ equal — the second item in the same Mathlib TODO in Analysis.MeanInequalitiesPow — be formalized alongside the inequality?",
+      "Do the NNReal / ENNReal versions matching the rest of MeanInequalitiesPow follow from this real-valued statement, completing the API surface for upstream contribution?"
+    ]
   },
   "leanFile": {
     "imports": [
