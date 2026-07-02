@@ -159,5 +159,145 @@
       "startLine": 50,
       "endLine": 56
     }
+  },
+  {
+    "id": "ann-k22-c4-equivalence",
+    "proofId": "erdos-1008",
+    "range": {
+      "startLine": 58,
+      "endLine": 100
+    },
+    "type": "concept",
+    "title": "K₂,₂ = C₄ equivalence",
+    "content": "The three theorems k22_implies_c4, c4_implies_k22, and k22_iff_c4 establish that containing a complete bipartite K₂,₂ is exactly the same as containing a 4-cycle. Forward: two disjoint pairs S={a,c}, T={b,d} with all four cross-edges present spell out the cycle a-b-c-d-a (the disjointness of S,T supplies the four required distinctness facts). Backward: a 4-cycle a-b-c-d-a splits into the bipartition S={a,c}, T={b,d}. This identifies C₄-freeness with the s=t=2 case of the Zarankiewicz problem z(m,n;2,2), the bridge to the Kővári–Sós–Turán bound.",
+    "mathContext": "$\\mathrm{HasK}_{2,2}(G)\\iff \\mathrm{HasC}_4(G)$: disjoint pairs $S=\\{a,c\\},\\,T=\\{b,d\\}$ with all cross-edges $\\iff$ the cycle $a\\!-\\!b\\!-\\!c\\!-\\!d\\!-\\!a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zarankiewicz problem",
+      "complete bipartite graph K₂,₂",
+      "4-cycle",
+      "bipartition"
+    ],
+    "prerequisites": [
+      "Finset.card_eq_two",
+      "SimpleGraph adjacency",
+      "disjoint finsets"
+    ]
+  },
+  {
+    "id": "ann-common-neighbor-unique",
+    "proofId": "erdos-1008",
+    "range": {
+      "startLine": 126,
+      "endLine": 176
+    },
+    "type": "insight",
+    "title": "The key structural constraint: ≤ 1 common neighbor",
+    "content": "c4free_common_neighbor_unique is the single combinatorial fact powering every extremal bound: in a C₄-free graph, any two distinct vertices a, b have at most one common neighbor — for if x ≠ y were both adjacent to both a and b, then a-x-b-y-a is a 4-cycle. Equivalently the 'cherries' (paths of length 2) with fixed endpoints number at most one per pair. c4free_of_few_edges records the base case that ≤ 3 edges cannot contain a C₄. This ≤1-common-neighbor bound is what makes the cherry double-count ∑_v C(d(v),2) ≤ C(n,2) go through.",
+    "mathContext": "C₄-free $\\Rightarrow$ every pair $\\{a,b\\}$ shares $\\le 1$ common neighbor: $x\\ne y$ both adjacent to $a,b$ would give the cycle $a\\!-\\!x\\!-\\!b\\!-\\!y\\!-\\!a$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "common neighbors",
+      "cherry (path of length 2)",
+      "extremal graph theory",
+      "double counting"
+    ],
+    "prerequisites": [
+      "proof by contradiction",
+      "SimpleGraph.ne_of_adj"
+    ]
+  },
+  {
+    "id": "ann-kst-proof",
+    "proofId": "erdos-1008",
+    "range": {
+      "startLine": 302,
+      "endLine": 335
+    },
+    "type": "technique",
+    "title": "Kővári–Sós–Turán via cherry counting + Cauchy–Schwarz",
+    "content": "The proved KST bound turns the ≤1-common-neighbor constraint into a quantitative edge bound. Step 1 (cherry count): ∑_v d(v)(d(v)−1) ≤ n(n−1), since each ordered pair of neighbors of v is a distinct cherry and each endpoint-pair occurs ≤ once. Step 2: rewriting d² = d(d−1) + d and using handshaking ∑d = 2m gives ∑ d(v)² ≤ n(n−1) + 2m. Step 3 (Cauchy–Schwarz): (2m)² = (∑d)² ≤ n·∑d². Combining yields 4m² ≤ n²(n−1) + 2nm, i.e. m = O(n^{3/2}) — the classical extremal count for C₄-free graphs.",
+    "mathContext": "$4m^2 \\le n^2(n-1) + 2nm$, from $\\sum_v d(d-1)\\le n(n-1)$, $\\sum d = 2m$, and $(\\,\\sum d\\,)^2 \\le n\\sum d^2$ (Cauchy–Schwarz). Hence $m=O(n^{3/2})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kővári–Sós–Turán theorem",
+      "Cauchy–Schwarz (sq_sum_le)",
+      "handshaking lemma",
+      "degree sequence"
+    ],
+    "prerequisites": [
+      "Cauchy–Schwarz for finite sums",
+      "sum_degrees_eq_twice_card_edges",
+      "real-cast inequalities"
+    ]
+  },
+  {
+    "id": "ann-bipartite-folkman",
+    "proofId": "erdos-1008",
+    "range": {
+      "startLine": 336,
+      "endLine": 584
+    },
+    "type": "concept",
+    "title": "Bipartite KST and Folkman's K_{n,n²} construction",
+    "content": "This block builds the lower-bound machinery certifying that the exponent 2/3 cannot be improved. KB p q is the complete bipartite graph on Fin p ⊕ Fin q (kb_edges_ge: it has ≥ p·q edges). The bipartite cherry lemmas (bip_cherry_disjoint, bip_cherry_count, bip_degree_left/right, bip_edge_sum) count paths through the two sides, culminating in bip_edge_bound: any C₄-free subgraph H of K_{p,q} has |E(H)| < p + q² (each right vertex, and each pair of left vertices, contributes boundedly by the ≤1-common-neighbor rule). Applied to Folkman's G = K_{n,n²}, a C₄-free subgraph thus has fewer than n·n + n² = 2n² edges even though G itself has ≥ n³ edges.",
+    "mathContext": "$G=K_{n,n^2}$ has $\\ge n^3$ edges, yet any C₄-free $H\\le G$ has $|E(H)| < n\\!\\cdot\\! n + n^2 = 2n^2$ (bipartite cherry bound).",
+    "significance": "key",
+    "relatedConcepts": [
+      "complete bipartite graph",
+      "Folkman construction",
+      "bipartite cherry counting",
+      "extremal lower bound"
+    ],
+    "prerequisites": [
+      "SimpleGraph on a sum type",
+      "Finset injection edge counts",
+      "bipartite degree sums"
+    ]
+  },
+  {
+    "id": "ann-exponent-optimal-proof",
+    "proofId": "erdos-1008",
+    "range": {
+      "startLine": 605,
+      "endLine": 686
+    },
+    "type": "insight",
+    "title": "The exponent 2/3 is optimal (rpow arithmetic chain)",
+    "content": "exponent_optimal makes the optimality quantitative: for every ε > 0 there is a graph G on which no C₄-free subgraph reaches m^{2/3+ε} edges. Take G = K_{n,n²} with n large enough (Archimedean: exists_nat_gt) that n^{3ε} > 3. Then a real-power chain closes the gap: |E(H)| < 2n² (bipartite bound) < n^{2+3ε} (since n^{3ε} > 3) = (n³)^{2/3+ε} (law of exponents) ≤ |E(G)|^{2/3+ε} (monotonicity of rpow, since |E(G)| ≥ n³). The delicate steps are Real.rpow_mul/Real.rpow_add bookkeeping and Real.rpow_lt_rpow / Real.rpow_le_rpow monotonicity. Together with the axiom erdos_1008 (the Ω(m^{2/3}) lower bound of Conlon–Fox–Sudakov), this pins the optimal exponent at exactly 2/3.",
+    "mathContext": "$|E(H)| < 2n^2 < n^{2+3\\varepsilon} = (n^3)^{2/3+\\varepsilon} \\le |E(G)|^{2/3+\\varepsilon}$, using $n^{3\\varepsilon}>3$ and monotonicity of $x\\mapsto x^{2/3+\\varepsilon}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "optimal exponent",
+      "real power (rpow)",
+      "Archimedean property",
+      "Conlon–Fox–Sudakov"
+    ],
+    "prerequisites": [
+      "Real.rpow_add / Real.rpow_mul",
+      "Real.rpow_lt_rpow / Real.rpow_le_rpow",
+      "exists_nat_gt"
+    ]
+  },
+  {
+    "id": "ann-derived-results",
+    "proofId": "erdos-1008",
+    "range": {
+      "startLine": 687,
+      "endLine": 698
+    },
+    "type": "context",
+    "title": "Derived results",
+    "content": "c4free_subgraph_exists records the trivial existence statement — every graph has a C₄-free subgraph, witnessed by the empty graph ⊥ — the qualitative shadow of the axiom erdos_1008's quantitative Ω(m^{2/3}). The closing #check block confirms the final API surface: the axiom erdos_1008, the verified exponent_optimal, and kovari_sos_turan (noted as 'now proved' — it was formerly an axiom).",
+    "mathContext": "Every $G$ has a C₄-free subgraph ($\\bot \\le G$); the content is the quantitative $\\Omega(m^{2/3})$ bound.",
+    "significance": "context",
+    "relatedConcepts": [
+      "existence witness",
+      "empty graph",
+      "API surface"
+    ],
+    "prerequisites": [
+      "bot_le for SimpleGraph"
+    ]
   }
 ]
