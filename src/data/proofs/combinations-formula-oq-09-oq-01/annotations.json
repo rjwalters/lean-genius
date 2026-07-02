@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-pointwise-shift",
+    "proofId": "combinations-formula-oq-09-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 78
+    },
+    "type": "theorem",
+    "title": "Pointwise Reindexed Identity via Subset-of-a-Subset",
+    "content": "descFactorial_choose_shift is the engine of the whole entry: after shifting the summation index by j, the weighted binomial term factors as (j+i)_j·C(n,j+i) = (n)_j·C(n-j,i). The proof expands each falling factorial as (m)_j = j!·C(m,j) (Nat.descFactorial_eq_factorial_mul_choose) and applies the trinomial-revision identity C(n,j+i)·C(j+i,j) = C(n,j)·C(n-j,i) (Nat.choose_mul), using (j+i)-j = i. This one reindexing replaces the j-fold iterated absorption the parent used for j=1,2."
+  },
+  {
+    "id": "ann-factorial-moment",
+    "proofId": "combinations-formula-oq-09-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 118
+    },
+    "type": "theorem",
+    "title": "The General j-th Factorial Moment",
+    "content": "factorial_moment is the headline result: ∑_{k=0}^{n} (k)_j·C(n,k) = (n)_j·2^{n-j}, holding unconditionally in j. For j ≤ n the head terms k<j vanish (Nat.descFactorial k j = 0), so the sum reduces to Ico j (n+1); shifting k = j+i (Finset.sum_Ico_eq_sum_range) and applying descFactorial_choose_shift pulls the constant (n)_j out, leaving the shorter row sum ∑_i C(n-j,i) = 2^{n-j} (Nat.sum_range_choose). For j > n both sides are 0."
+  },
+  {
+    "id": "ann-first-moment-recovered",
+    "proofId": "combinations-formula-oq-09-oq-01",
+    "range": {
+      "startLine": 121,
+      "endLine": 127
+    },
+    "type": "theorem",
+    "title": "First Moment Recovered (j = 1)",
+    "content": "sum_range_choose_mul_id specializes the general theorem to j = 1, recovering the parent entry's first moment ∑ k·C(n,k) = n·2^{n-1} through (m)_1 = m (Nat.descFactorial_one). This exhibits the parent's result as a single instance of the uniform identity."
+  },
+  {
+    "id": "ann-second-factorial-moment",
+    "proofId": "combinations-formula-oq-09-oq-01",
+    "range": {
+      "startLine": 129,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Second Factorial Moment (j = 2)",
+    "content": "sum_range_choose_mul_pred_mul gives the expanded j = 2 instance ∑ (k-1)·k·C(n,k) = (n-1)·n·2^{n-2}, using descFactorial_two: (m)_2 = (m-1)·m. Together with the first moment and k² = (k-1)·k + k this reconstructs the parent's ordinary second moment ∑ k²·C(n,k)."
+  },
+  {
+    "id": "ann-checks",
+    "proofId": "combinations-formula-oq-09-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 155
+    },
+    "type": "example",
+    "title": "Higher-Order Numerical Verifications",
+    "content": "The base case j=0 recovers ∑ C(n,k) = 2^n, and the worked instances ∑_{k≤4} (k)_2·C(4,k) = 48 = (4)_2·2² and ∑_{k≤5} (k)_3·C(5,k) = 240 = (5)_3·2² confirm the closed form at orders the parent's first/second-moment results cannot reach. All are decided, adding no Lean.ofReduceBool axiom."
+  }
+]
