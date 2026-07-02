@@ -17,7 +17,11 @@
       "Complex analysis",
       "Analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex numbers and their modulus",
+      "power sums of a sequence",
+      "the unit disk and unit circle in the complex plane"
+    ]
   },
   {
     "id": "ann-973-definitions",
@@ -37,7 +41,11 @@
       "Finset operations",
       "Supremum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "complex-valued sequences (Fin n → ℂ)",
+      "the modulus |z| of a complex number",
+      "supremum over a finite index set"
+    ]
   },
   {
     "id": "ann-973-question",
@@ -56,7 +64,11 @@
       "Cancellation",
       "Open problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exponential decay rates (C^{-n})",
+      "the modulus constraint |z_i| ≥ 1",
+      "existential quantification over sequences"
+    ]
   },
   {
     "id": "ann-973-unit-disk",
@@ -75,7 +87,11 @@
       "Erdős constant",
       "Constructive existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the closed unit disk (|z| ≤ 1)",
+      "decay of powers z^k inside the unit disk",
+      "constructive existence via axiom"
+    ]
   },
   {
     "id": "ann-973-unit-circle",
@@ -95,7 +111,11 @@
       "L. Erdős 1992",
       "Tight bounds"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the unit circle (|z| = 1)",
+      "infimum of a family of quantities",
+      "power sums of unit-modulus numbers"
+    ]
   },
   {
     "id": "ann-973-turan",
@@ -115,7 +135,11 @@
       "Asymptotic analysis",
       "2e constant"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bounds with (1+ε) exponents",
+      "the constant 2e",
+      "Turán's power sum method"
+    ]
   },
   {
     "id": "ann-973-answer",
@@ -134,7 +158,11 @@
       "Summary theorem",
       "Open vs solved"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the three modulus regimes (disk, circle, exterior)",
+      "conjunction of propositions",
+      "the distinction between open and solved problems"
+    ]
   },
   {
     "id": "ann-973-roots",
@@ -153,7 +181,11 @@
       "Orthogonality",
       "Extremal sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the n-th roots of unity e^{2πik/n}",
+      "orthogonality relations for roots of unity",
+      "the modulus of a complex exponential"
+    ]
   },
   {
     "id": "ann-973-summary",
@@ -172,6 +204,10 @@
       "Summary theorems",
       "Axiom usage"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "extracting witnesses from existential axioms",
+      "definitional equality in Lean",
+      "combining several axioms into one theorem"
+    ]
   }
 ]
