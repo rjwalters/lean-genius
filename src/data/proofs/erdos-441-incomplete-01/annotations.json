@@ -1,10 +1,33 @@
 [
   {
+    "id": "ann-441lb-setup",
+    "proofId": "erdos-441-incomplete-01",
+    "range": {
+      "startLine": 45,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "Formalizing g(N): LCM-Bounded Subsets of {1,...,N}",
+    "content": "The problem is set up in five layers. `IsSubsetOfInterval A N` says every element lies in {1,...,N} (1 ≤ a ≤ N). `HasBoundedLCM A N` is the extremal constraint: `Nat.lcm a b ≤ N` for all a,b ∈ A. `IsLCMBounded` conjoins the two. `lcmBoundedCards N` is the set of cardinalities {n | ∃ A, IsLCMBounded A N ∧ A.card = n} that are actually achievable, and `g N := sSup (lcmBoundedCards N)` is the extremal function — the largest attainable size, defined as a conditional supremum over ℕ. Splitting the definition this way lets the lower bound (exhibit one good A) and the upper bound (bound the whole set) be proved independently.",
+    "mathContext": "g(N) = max{|A| : A ⊆ {1,...,N}, lcm(a,b) ≤ N ∀ a,b ∈ A}. Encoding g as sSup over the achievable-cardinality set means `le_csSup`/`csSup_le` become the two tools for lower and upper bounds respectively.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sSup",
+      "Nat.lcm",
+      "Finset.card",
+      "extremal function"
+    ],
+    "prerequisites": [
+      "Conditionally complete lattice on ℕ",
+      "Least common multiple"
+    ]
+  },
+  {
     "id": "ann-441lb-lcm-le-mul",
     "proofId": "erdos-441-incomplete-01",
     "range": {
-      "startLine": 75,
-      "endLine": 84
+      "startLine": 68,
+      "endLine": 74
     },
     "type": "tactic",
     "title": "The Crude lcm ≤ product Bound",
@@ -24,8 +47,8 @@
     "id": "ann-441lb-witness",
     "proofId": "erdos-441-incomplete-01",
     "range": {
-      "startLine": 86,
-      "endLine": 103
+      "startLine": 79,
+      "endLine": 91
     },
     "type": "concept",
     "title": "Why {1,...,⌊√N⌋} Is LCM-Bounded",
@@ -46,7 +69,7 @@
     "id": "ann-441lb-bddabove",
     "proofId": "erdos-441-incomplete-01",
     "range": {
-      "startLine": 94,
+      "startLine": 95,
       "endLine": 103
     },
     "type": "tactic",
@@ -65,11 +88,55 @@
     ]
   },
   {
+    "id": "ann-441lb-main",
+    "proofId": "erdos-441-incomplete-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 115
+    },
+    "type": "main-result",
+    "title": "Main Result: g(N) ≥ ⌊√N⌋",
+    "content": "The unconditional lower bound is now a two-line assembly. First, ⌊√N⌋ ∈ lcmBoundedCards N: the witness `Finset.Icc 1 (Nat.sqrt N)` is LCM-bounded (`interval_isLCMBounded`) and has cardinality `Nat.card_Icc` = ⌊√N⌋ − 1 + 1 = ⌊√N⌋ (closed by `omega`). Then `le_csSup lcmBoundedCards_bddAbove hmem` pins g(N) = sSup ≥ ⌊√N⌋. This already fixes the correct order of magnitude g(N) = Θ(√N); the deep Chen–Dai work only sharpens the constant from 1 to (9/8)^{1/2}. Crucially the proof uses no axioms beyond propext/Classical/Quot — it does not touch the axiomatized material of the parent entry.",
+    "mathContext": "g(N) ≥ ⌊√N⌋ combined with the trivial g(N) ≤ N — or better, the Chen–Dai g(N) ~ (9N/8)^{1/2} — yields g(N) = Θ(√N). The whole content is exhibiting one witness of size ⌊√N⌋ and invoking the sup's defining inequality.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "le_csSup",
+      "Nat.card_Icc",
+      "interval_isLCMBounded",
+      "Θ(√N)"
+    ],
+    "prerequisites": [
+      "The witness set is LCM-bounded",
+      "BddAbove of the cardinality set"
+    ]
+  },
+  {
+    "id": "ann-441lb-singleton",
+    "proofId": "erdos-441-incomplete-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 123
+    },
+    "type": "corollary",
+    "title": "Nontriviality for N ≥ 1: g(N) ≥ 1",
+    "content": "A sanity corollary: for N ≥ 1 the extremal set is nonempty, g(N) ≥ 1. It follows from the main bound because ⌊√N⌋ ≥ 1 whenever N ≥ 1 (`Nat.sqrt_le_sqrt hN` with `Nat.sqrt_one`), and `omega` chains ⌊√N⌋ ≤ g(N) with 1 ≤ ⌊√N⌋. Concretely the singleton {1} is always LCM-bounded (lcm(1,1) = 1 ≤ N), so the maximum is never zero for a nonempty ambient interval.",
+    "mathContext": "For N ≥ 1, 1 ≤ ⌊√N⌋ ≤ g(N). The witness {1} shows g is a maximum over a nonempty family, so the supremum is attained and positive.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.sqrt_le_sqrt",
+      "Nat.sqrt_one",
+      "singleton witness"
+    ],
+    "prerequisites": [
+      "g(N) ≥ ⌊√N⌋"
+    ]
+  },
+  {
     "id": "ann-441lb-real-form",
     "proofId": "erdos-441-incomplete-01",
     "range": {
-      "startLine": 125,
-      "endLine": 145
+      "startLine": 130,
+      "endLine": 144
     },
     "type": "concept",
     "title": "Real-Analytic Form and the Missing 6%",
