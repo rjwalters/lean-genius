@@ -17,7 +17,11 @@
       "floor-function",
       "open-problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "irrational numbers",
+      "the floor function ⌊x⌋"
+    ]
   },
   {
     "id": "ann-e972-imports",
@@ -36,7 +40,11 @@
       "floor-function",
       "primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.Prime in Mathlib",
+      "the natural-number floor ⌊·⌋₊",
+      "the Irrational predicate"
+    ]
   },
   {
     "id": "ann-e972-prime-set",
@@ -55,7 +63,11 @@
       "set-builder",
       "floor-function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "set-builder notation",
+      "primality of a natural number",
+      "the floor function applied to αp"
+    ]
   },
   {
     "id": "ann-e972-alpha-one",
@@ -74,7 +86,11 @@
       "trivial",
       "identity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the floor of a natural number (Nat.floor_natCast)",
+      "the set of all primes",
+      "scaling by the identity α = 1"
+    ]
   },
   {
     "id": "ann-e972-alpha-less-one",
@@ -93,7 +109,11 @@
       "scaling-down",
       "inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "real inequalities versus natural-number inequalities",
+      "the floor bound ⌊x⌋ ≤ x",
+      "the role of a sorry placeholder"
+    ]
   },
   {
     "id": "ann-e972-conjecture",
@@ -112,7 +132,11 @@
       "infinite-set",
       "irrational"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "propositions as types (Prop)",
+      "infinite sets (Set.Infinite)",
+      "irrational reals greater than 1"
+    ]
   },
   {
     "id": "ann-e972-vinogradov",
@@ -131,7 +155,11 @@
       "uniform-distribution",
       "exponential-sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "equidistribution / uniform distribution mod 1",
+      "exponential sums over primes",
+      "the fractional part {x}"
+    ]
   },
   {
     "id": "ann-e972-distinction",
@@ -150,7 +178,11 @@
       "hard-problem",
       "distinction"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "domain versus range of a function",
+      "the prime set primeSet(α)",
+      "the floor of nα"
+    ]
   },
   {
     "id": "ann-e972-examples",
@@ -169,7 +201,11 @@
       "verification",
       "norm_num"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "computing floors of specific products",
+      "the norm_num tactic",
+      "membership in primeSet(α)"
+    ]
   },
   {
     "id": "ann-e972-golden-ratio",
@@ -188,6 +224,10 @@
       "irrational",
       "algebraic-number"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the golden ratio (1+√5)/2",
+      "algebraic irrational numbers",
+      "irrationality of √5"
+    ]
   }
 ]
