@@ -169,5 +169,55 @@
     ]
   },
   "sorries": [],
-  "additionalFiles": []
+  "additionalFiles": [],
+  "sections": [
+    {
+      "id": "the-question",
+      "title": "The Question: Is Analysis Inherently Required?",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring framing the parent entry's open question — can the FTA be proved from the field axioms alone, or is analysis unavoidable? States the verdict: analysis is required but reduces to exactly two order/analytic facts about ℝ (ingredients A and B), with the rest of the closure argument being pure algebra (Artin–Schreier / Sylow / Galois).",
+      "mathContext": "FTA $\\Leftrightarrow$ $\\mathbb{R}$ is real-closed; the only non-algebraic inputs are (A) odd-degree real roots and (B) complex square roots."
+    },
+    {
+      "id": "ingredient-a",
+      "title": "Analytic Ingredient (A): Odd-Degree Real Polynomials Have a Root",
+      "startLine": 68,
+      "endLine": 121,
+      "summary": "A sign-change helper (positive-leading-coefficient polynomials → +∞ at +∞) plus odd_degree_real_root: reflecting through X ↦ −X gives −∞ at −∞, so Continuous.surjective forces a zero. This is the irreducible Intermediate-Value-Theorem / order-completeness input the older 'algebraic' proofs silently assumed.",
+      "mathContext": "$p$ odd degree $\\Rightarrow p(x)\\to\\pm\\infty$ at $\\pm\\infty$; continuity + IVT $\\Rightarrow \\exists x,\\ p(x)=0$."
+    },
+    {
+      "id": "ingredient-b",
+      "title": "Analytic Ingredient (B): Complex Numbers Have Square Roots",
+      "startLine": 123,
+      "endLine": 140,
+      "summary": "complex_has_sqrt builds a square root of any z ∈ ℂ from the real square root via polar form w = √‖z‖·exp(i·arg z/2), using Real.sqrt and Complex.norm_mul_exp_arg_mul_I — crucially WITHOUT invoking algebraic closure, so it is a genuinely independent (non-circular) analytic ingredient.",
+      "mathContext": "$w=\\sqrt{\\lVert z\\rVert}\\,e^{i\\arg z/2}\\Rightarrow w^2=\\lVert z\\rVert e^{i\\arg z}=z$."
+    },
+    {
+      "id": "obstruction",
+      "title": "The Algebraic Obstruction: These Facts Are Not Field-Theoretic",
+      "startLine": 142,
+      "endLine": 164,
+      "summary": "real_not_alg_closed (X²+1 > 0 over ℝ, via positivity) and cubic_no_root_zmod2 (the odd-degree cubic X³+X+1 has no root in 𝔽₂, by kernel decide) show neither 'is algebraically closed' nor 'odd degree ⇒ root' follows from the field axioms — ℝ satisfies the IVT yet is not algebraically closed, and odd-degree roots fail over 𝔽₂.",
+      "mathContext": "$X^2+1\\neq 0$ on $\\mathbb{R}$; $X^3+X+1\\neq 0$ on $\\mathbb{F}_2$ — the analytic facts are special to $\\mathbb{R}$."
+    },
+    {
+      "id": "conclusion-target",
+      "title": "The Conclusion the Algebraic Reduction Targets",
+      "startLine": 166,
+      "endLine": 176,
+      "summary": "fta_complex restates the FTA (every non-constant complex polynomial has a root) via Mathlib's Complex.exists_root — the endpoint the Artin–Schreier reduction reaches once ingredients (A) and (B) are supplied. The file formalizes the two analytic inputs and the obstruction, citing the deep Sylow/Galois reduction as the algebraic bridge.",
+      "mathContext": "$\\deg p>0\\Rightarrow \\exists z\\in\\mathbb{C},\\ p(z)=0$ (Mathlib's Complex.exists_root)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry answers the parent FTA entry's open question definitively: a proof from the field axioms alone is impossible, but the analytic content of the FTA condenses into exactly two order/analytic facts about ℝ — (A) every odd-degree real polynomial has a real root (the IVT input) and (B) every complex number has a square root (built non-circularly from the real square root). Both are formalized with 0 axioms and 0 sorries, alongside the algebraic obstruction (X²+1 has no real root; X³+X+1 has no root in 𝔽₂) showing neither fact is field-theoretic, and a restatement of the FTA itself from Mathlib's Complex.exists_root.",
+    "implications": "The verdict sharpens the folklore 'the FTA requires analysis' into a precise statement: analysis is unavoidable but not diffuse — given ingredients (A) and (B), the algebraic closure of ℝ[i] follows by pure algebra (Sylow theorems + Galois theory, the Artin–Schreier reduction). This locates the FTA as equivalent to ℝ being a real-closed field, and pinpoints order-completeness (via the IVT) as the single deepest non-algebraic input.",
+    "openQuestions": [
+      "Formalize the Artin–Schreier reduction itself — that ℝ[i] is algebraically closed given ingredients (A) and (B) — to obtain a from-scratch FTA proof depending only on the two isolated analytic facts rather than on Mathlib's Liouville-based Complex.exists_root.",
+      "Characterize abstractly which ordered fields admit ingredient (A): formalize that a field is real-closed iff it is formally real and every odd-degree polynomial has a root, closing the loop between the analytic facts and the real-closed-field axioms."
+    ]
+  }
 }
