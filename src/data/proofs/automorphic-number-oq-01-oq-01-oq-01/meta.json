@@ -1,64 +1,80 @@
 {
   "id": "automorphic-number-oq-01-oq-01-oq-01",
   "slug": "automorphic-number-oq-01-oq-01-oq-01",
-  "title": "Automorphic Residues Count Squarefree Divisors",
-  "description": "The parent entry proves the number of idempotents of ZMod n — equivalently the automorphic residues e²≡e (mod n) — is exactly 2^ω(n), where ω(n) is the number of distinct prime factors of n. This follow-up gives that count a divisor-theoretic meaning: 2^ω(n) is also the number of SQUAREFREE DIVISORS of n, and both are the number of subsets of the prime-factor set of n. The heart is a clean bijection realized by Finset.card_image_of_injOn: the map s ↦ ∏ p ∈ s, p sends the powerset of n.primeFactors onto the squarefree divisors of n. A product of a subset of the distinct primes dividing n divides ∏ p ∈ n.primeFactors, p ∣ n (Nat.prod_primeFactors_dvd) and is squarefree (Finset.squarefree_prod_of_pairwise_isCoprime, distinct primes being coprime); conversely every squarefree divisor d is recovered as ∏ p ∈ d.primeFactors, p (Nat.prod_primeFactors_of_squarefree) with d.primeFactors ⊆ n.primeFactors (Nat.primeFactors_mono). The map is injective on the powerset because s ↦ ∏ p ∈ s, p has the left inverse primeFactors on sets of primes (Nat.primeFactors_prod). Finset.card_powerset then yields 2^ω(n), and the parent's idempotent_count closes the loop: the automorphic residues of a modulus are equinumerous with its squarefree divisors — the arithmetic shadow of the parent's remark that 2^ω(n) counts the ways to split n into complementary coprime factors. The decimal case 10^k has 4 squarefree divisors 1, 2, 5, 10.",
+  "title": "Automorphic Residues Count Squarefree Divisors — and the Product-of-Local-Rings Mechanism",
+  "description": "The parent entry proves that ZMod n has exactly 2^ω(n) idempotents (equivalently, 2^ω(n) automorphic residues e²≡e mod n), where ω(n) is the number of distinct primes dividing n. This entry answers the parent's first open question — how does that count generalize beyond ℤ? — from two directions. Arithmetically, 2^ω(n) is exactly the number of squarefree divisors of n: the map s ↦ ∏ p∈s p is a bijection from the powerset of n's prime factors onto the squarefree divisors, so the automorphic residues of n are equinumerous with its squarefree divisors (idempotents_eq_squarefreeDivisors). Algebraically — the direction the open question actually asks for — the count is a power of two because the Chinese Remainder Theorem writes the modulus as a finite product of LOCAL rings, and a local ring has no idempotents besides 0 and 1. This entry isolates that mechanism for an arbitrary commutative ring: idempotent_count_pi_local shows a finite product of nontrivial local rings ∏ᵢ Rᵢ has exactly 2^(number of factors) idempotents, and idempotent_count_of_ringEquiv transports the count across any ring isomorphism S ≃+* ∏ᵢ Rᵢ. For ZMod n the local factors are the ZMod(pᵢ^eᵢ), recovering 2^ω(n); for the quotient 𝒪_K/𝔞 of a number ring by an ideal — the object named in the open question — the local factors are the 𝒪_K/𝔭ᵢ^eᵢ, giving 2^(number of distinct prime ideals dividing 𝔞). The local-ring fact isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing does the essential work: for idempotent e, e·(1−e)=0, and in a local ring one of e, 1−e is a unit, forcing its partner to vanish.",
   "meta": {
-    "author": "Lean Genius Researcher-5",
+    "author": "Lean Genius Researcher-4",
     "status": "verified",
     "proofRepoPath": "Proofs/AutomorphicNumberOQ01OQ01OQ01.lean",
     "tags": [
       "number-theory",
       "automorphic-numbers",
       "idempotents",
+      "local-rings",
+      "chinese-remainder-theorem",
       "squarefree-divisors",
-      "divisor-function",
+      "commutative-algebra",
       "prime-factorization",
-      "bijective-counting",
-      "arithmetic-functions"
+      "ring-of-integers"
     ],
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 149,
-    "theoremCount": 9,
+    "lineCount": 249,
+    "theoremCount": 14,
     "definitionCount": 1,
-    "assumptions": "None. 0 axioms, 0 sorries, no native_decide, no decide. All results depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). Builds on the verified parent entry AutomorphicNumberOQ01OQ01.lean, reusing its idempotent_count and primeFactors_ten_pow for the bridge and decimal-recovery theorems.",
+    "assumptions": "None. 0 axioms, 0 sorries, no native_decide. Results depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (Classical.choice / Quot.sound enter via Nat.card and the noncomputable equivalences built from Equiv.subtypeEquivRight / subtypePiEquivPi). Builds on the verified parent entries AutomorphicNumberOQ01 and AutomorphicNumberOQ01OQ01, reusing the latter's idempotent_count.",
     "mathlibDependencies": [
       {
-        "theorem": "Finset.squarefree_prod_of_pairwise_isCoprime",
-        "description": "A product ∏ i ∈ s, f i is squarefree when the factors are pairwise relatively prime and each is squarefree — applied to a finset of distinct primes to show ∏ p ∈ s, p is squarefree",
-        "module": "Mathlib.Algebra.Squarefree.Basic"
+        "theorem": "IsLocalRing.isUnit_or_isUnit_one_sub_self",
+        "description": "In a local ring, for every a either a or 1 − a is a unit — the fact that forces a local ring's only idempotents to be 0 and 1",
+        "module": "Mathlib.RingTheory.LocalRing.Basic"
       },
       {
-        "theorem": "Nat.prod_primeFactors_dvd",
-        "description": "∏ p ∈ n.primeFactors, p ∣ n — the radical of n divides n, giving divisibility of any sub-product of distinct prime factors",
-        "module": "Mathlib.Data.Nat.Factorization.Basic"
+        "theorem": "IsUnit.mul_right_eq_zero",
+        "description": "For a unit a, a*b=0 ↔ b=0 in any MonoidWithZero (no NoZeroDivisors needed) — how a unit annihilating its partner forces the partner to 0",
+        "module": "Mathlib.Algebra.GroupWithZero.Units.Basic"
       },
       {
-        "theorem": "Nat.prod_primeFactors_of_squarefree",
-        "description": "For squarefree n, ∏ p ∈ n.primeFactors, p = n — recovers a squarefree divisor as the product over its own prime factors, giving surjectivity of the counting bijection",
-        "module": "Mathlib.Data.Nat.Squarefree"
+        "theorem": "IsIdempotentElem.mul_one_sub_self",
+        "description": "For an idempotent e, e·(1 − e) = 0; combined with the unit dichotomy this pins e to 0 or 1",
+        "module": "Mathlib.Algebra.Ring.Idempotent"
       },
       {
-        "theorem": "Nat.primeFactors_prod",
-        "description": "For a finset s of primes, primeFactors (∏ p ∈ s, p) = s — the left inverse of s ↦ ∏ p ∈ s, p on sets of primes, giving injectivity",
-        "module": "Mathlib.Data.Nat.Squarefree"
+        "theorem": "Equiv.subtypePiEquivPi",
+        "description": "{f : ∀ i, β i // ∀ i, p i (f i)} ≃ ∀ i, {b : β i // p i b} — turns an idempotent of the product ring into a tuple of idempotents of the factors",
+        "module": "Mathlib.Logic.Equiv.Basic"
       },
       {
-        "theorem": "Nat.primeFactors_mono",
-        "description": "m ∣ n and n ≠ 0 imply m.primeFactors ⊆ n.primeFactors — places each squarefree divisor's prime-factor set inside the powerset of n.primeFactors",
-        "module": "Mathlib.Data.Nat.PrimeFin"
+        "theorem": "Equiv.subtypeEquiv",
+        "description": "Transports a subtype across an equivalence with a matching predicate; used to move idempotents across the ring isomorphism S ≃+* ∏ Rᵢ",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "Nat.card_pi",
+        "description": "Nat.card (∀ i, β i) = ∏ i, Nat.card (β i) for finite index; turns the product-ring idempotent count into a product of the per-factor counts",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "Nat.card_congr",
+        "description": "An equivalence α ≃ β gives Nat.card α = Nat.card β, used to count idempotent subtypes via the constructed equivalences",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
       },
       {
         "theorem": "Finset.card_image_of_injOn",
-        "description": "#(s.image f) = #s when f is injective on s — turns the image description of the squarefree divisors into a cardinality equal to that of the powerset",
-        "module": "Mathlib.Data.Finset.Image"
+        "description": "Cardinality of an injective image; with Finset.card_powerset this gives #squarefree divisors = 2^ω(n)",
+        "module": "Mathlib.Data.Finset.Card"
       },
       {
-        "theorem": "Finset.card_powerset",
-        "description": "#(s.powerset) = 2 ^ #s — supplies the 2^ω(n) count once the squarefree divisors are identified with the powerset of the prime factors",
-        "module": "Mathlib.Data.Finset.Powerset"
+        "theorem": "Nat.prod_primeFactors_of_squarefree",
+        "description": "A squarefree n is the product of its prime factors; the left inverse recovering a squarefree divisor from a set of primes",
+        "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "Finset.squarefree_prod_of_pairwise_isCoprime",
+        "description": "A product of pairwise-coprime squarefree factors is squarefree; distinct primes are pairwise coprime, so ∏ p∈s p is squarefree",
+        "module": "Mathlib.RingTheory.UniqueFactorizationDomain.Basic"
       }
     ],
     "dateAdded": "2026-07-01",
@@ -73,134 +89,124 @@
       "Finset"
     ],
     "namespace": "AutomorphicNumberOQ01OQ01OQ01",
-    "lineCount": 149,
+    "lineCount": 249,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 14,
     "definitionCount": 1,
     "path": "Proofs/AutomorphicNumberOQ01OQ01OQ01.lean",
     "sorries": 0
   },
   "mainTheorems": [
     {
-      "name": "squarefreeDivisors_card",
+      "name": "idempotent_count_of_ringEquiv",
       "type": "headline",
-      "statement": "n ≠ 0 → (squarefreeDivisors n).card = 2 ^ n.primeFactors.card",
-      "description": "The number of squarefree divisors of n ≥ 1 is 2^ω(n). Proved by identifying the squarefree divisors with the image of the powerset of n.primeFactors under s ↦ ∏ p ∈ s, p, an injection, then applying Finset.card_powerset.",
-      "significance": "The divisor-theoretic incarnation of the parent's idempotent count: the same 2^ω(n) that counts automorphic residues counts squarefree divisors, both being 2^(number of distinct primes)."
+      "statement": "(φ : S ≃+* ∀ i, R i) → [each Rᵢ a nontrivial local ring, ι finite] → Nat.card {e : S // IsIdempotentElem e} = 2 ^ Nat.card ι",
+      "description": "The idempotent count of any commutative ring isomorphic to a finite product of nontrivial local rings is 2^(number of factors). This is the general form of the open question: the Chinese Remainder Theorem supplies such an isomorphism for ZMod n and for 𝒪_K/𝔞, so both counts are powers of two governed by the number of local factors.",
+      "significance": "Answers the parent's open question at the level of mechanism, not just for ℤ: the count is 2^(number of local CRT factors), whether those factors are ZMod(pᵏ) or 𝒪_K/𝔭ᵏ."
+    },
+    {
+      "name": "idempotent_count_pi_local",
+      "type": "headline",
+      "statement": "[each Rᵢ a nontrivial local ring, ι finite] → Nat.card {e : (∀ i, R i) // IsIdempotentElem e} = 2 ^ Nat.card ι",
+      "description": "A finite product of nontrivial local rings has exactly 2^(number of factors) idempotents. Each local factor contributes its two idempotents 0 and 1 independently, and idempotents of a product are exactly the coordinatewise idempotents.",
+      "significance": "The ring-theoretic heart of every 2^ω-style idempotent count: the power of two comes from an independent binary choice at each local factor."
     },
     {
       "name": "idempotents_eq_squarefreeDivisors",
       "type": "headline",
       "statement": "0 < n → Nat.card {e : ZMod n // e * e = e} = (squarefreeDivisors n).card",
-      "description": "The number of idempotents of ZMod n — the automorphic residues e²≡e (mod n) — equals the number of squarefree divisors of n. Combines the parent's idempotent_count = 2^ω(n) with squarefreeDivisors_card = 2^ω(n).",
-      "significance": "Makes precise the parent's remark that 2^ω(n) counts the ways to split n into complementary coprime factors: automorphic residues and squarefree divisors of n are equinumerous."
+      "description": "The automorphic residues of n — the idempotents of ZMod n — are equinumerous with the squarefree divisors of n. Both counts equal 2^ω(n).",
+      "significance": "Gives the parent's abstract count 2^ω(n) a concrete divisor-theoretic meaning: each idempotent corresponds to a choice of squarefree 'support' divisor built from a subset of n's primes."
     },
     {
-      "name": "squarefreeDivisors_eq_image",
+      "name": "isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing",
       "type": "core",
-      "statement": "n ≠ 0 → squarefreeDivisors n = (n.primeFactors.powerset).image (fun s => ∏ p ∈ s, p)",
-      "description": "The squarefree divisors of n are exactly the products ∏ p ∈ s, p over subsets s of the distinct prime factors of n. Forward: a squarefree divisor d equals the product over its own prime factors, a subset of n's. Backward: any such product divides the radical (hence n) and is a product of distinct primes, hence squarefree.",
-      "significance": "The structural bijection with the powerset of the prime factors — the concrete content behind the 2^ω(n) count and the correspondence with CRT idempotent supports."
+      "statement": "[IsLocalRing R] → (IsIdempotentElem e ↔ e = 0 ∨ e = 1)",
+      "description": "A local ring has no idempotents besides 0 and 1. For idempotent e we have e·(1−e)=0; in a local ring one of e, 1−e is a unit, and a unit annihilating its partner forces that partner to be 0.",
+      "significance": "The single fact that makes each local factor contribute exactly 2 idempotents; without it the CRT decomposition would not yield a power of two."
     },
     {
-      "name": "injOn_prod_powerset",
+      "name": "squarefreeDivisors_card",
       "type": "core",
-      "statement": "Set.InjOn (fun s => ∏ p ∈ s, p) ↑n.primeFactors.powerset",
-      "description": "The map s ↦ ∏ p ∈ s, p is injective on the powerset of n.primeFactors: on sets of primes it has the left inverse primeFactors (Nat.primeFactors_prod), so equal products force equal index sets.",
-      "significance": "Injectivity is what upgrades 'squarefree divisors are the image of the powerset' to an exact cardinality equality 2^ω(n)."
+      "statement": "n ≠ 0 → (squarefreeDivisors n).card = 2 ^ n.primeFactors.card",
+      "description": "The number of squarefree divisors of n is 2^ω(n), via the bijection s ↦ ∏ p∈s p from the powerset of n.primeFactors onto the squarefree divisors (Finset.card_image_of_injOn + Finset.card_powerset).",
+      "significance": "The arithmetic side of the count: squarefree divisors are indexed by subsets of the prime-factor set, so there are 2^ω(n) of them."
     },
     {
-      "name": "prod_mem_squarefreeDivisors",
+      "name": "idempotent_count_local",
       "type": "supporting",
-      "statement": "n ≠ 0 → s ⊆ n.primeFactors → (∏ p ∈ s, p) ∈ squarefreeDivisors n",
-      "description": "A product of a subset of the distinct primes dividing n is a squarefree divisor of n: it divides ∏ p ∈ n.primeFactors, p ∣ n (Nat.prod_primeFactors_dvd), and being a product of distinct — hence pairwise coprime — primes it is squarefree.",
-      "significance": "The well-definedness half of the bijection: every point of the powerset lands in the squarefree divisors."
-    },
-    {
-      "name": "squarefreeDivisors_card_prime_pow",
-      "type": "supporting",
-      "statement": "p.Prime → 0 < k → (squarefreeDivisors (p ^ k)).card = 2",
-      "description": "A prime power p^k has exactly two squarefree divisors, 1 and p, matching 2^ω(p^k) = 2^1 = 2 and the parent's two idempotents of ZMod (p^k).",
-      "significance": "The ω = 1 case, consistent with the general formula and the parent's prime-power idempotent count."
+      "statement": "[IsLocalRing R] [Nontrivial R] → Nat.card {e : R // IsIdempotentElem e} = 2",
+      "description": "A nontrivial local ring has exactly two idempotents. Packages the {0,1} characterization as an equivalence with Bool.",
+      "significance": "The per-factor base case: 2 = 2^1, the building block of the product count."
     }
   ],
   "sections": [
     {
       "id": "squarefree-divisors-def",
-      "title": "Part I: The squarefree divisors and the powerset map",
-      "startLine": 55,
-      "endLine": 84,
-      "summary": "squarefreeDivisors n is the finset {d ∈ n.divisors | Squarefree d}; mem_squarefreeDivisors unfolds membership to (d ∣ n ∧ n ≠ 0) ∧ Squarefree d. prod_mem_squarefreeDivisors shows the product ∏ p ∈ s, p over a subset s ⊆ n.primeFactors is a squarefree divisor: it divides the radical ∏ p ∈ n.primeFactors, p (Nat.prod_primeFactors_dvd), which divides n, and it is squarefree because distinct primes are pairwise coprime (Finset.squarefree_prod_of_pairwise_isCoprime with Nat.coprime_primes / coprime_iff_isRelPrime).",
-      "mathContext": "Each subset of the prime factors of n yields a squarefree divisor; the radical of n bounds divisibility and coprimality of distinct primes gives squarefreeness."
+      "title": "Part I: Squarefree divisors and the powerset bijection",
+      "startLine": 84,
+      "endLine": 136,
+      "summary": "squarefreeDivisors n := {d ∈ n.divisors | Squarefree d}. prod_mem_squarefreeDivisors: a product ∏ p∈s p over a subset s of n's prime factors is a squarefree divisor (divisibility via Nat.prod_primeFactors_dvd; squarefreeness because distinct primes are pairwise coprime). squarefreeDivisors_eq_image: every squarefree divisor is recovered as ∏ over its own prime factors, so the squarefree divisors are exactly the image of n.primeFactors.powerset under s ↦ ∏ p∈s p. injOn_prod_powerset: that map is injective on the powerset since primeFactors is a left inverse on sets of primes (Nat.primeFactors_prod).",
+      "mathContext": "Squarefree divisors of n ⟷ subsets of the prime-factor set of n, via the product-of-a-subset-of-primes bijection."
     },
     {
-      "id": "bijection-image",
-      "title": "Part II: Squarefree divisors as the image of the powerset",
-      "startLine": 85,
-      "endLine": 114,
-      "summary": "squarefreeDivisors_eq_image proves squarefreeDivisors n = (n.primeFactors.powerset).image (fun s => ∏ p ∈ s, p) by mutual membership: a squarefree divisor d is the image of d.primeFactors (⊆ n.primeFactors by Nat.primeFactors_mono) since ∏ p ∈ d.primeFactors, p = d (Nat.prod_primeFactors_of_squarefree); conversely any image point is a squarefree divisor by Part I. injOn_prod_powerset shows the map is injective on the powerset via the left inverse primeFactors (Nat.primeFactors_prod on sets of primes).",
-      "mathContext": "The map s ↦ ∏ p ∈ s, p is a bijection between subsets of n's distinct primes and squarefree divisors of n, with inverse d ↦ d.primeFactors."
+      "id": "squarefree-count",
+      "title": "Part II: The count 2^ω(n) and the bridge to automorphic residues",
+      "startLine": 138,
+      "endLine": 173,
+      "summary": "squarefreeDivisors_card: card_image_of_injOn on the bijection plus Finset.card_powerset gives #squarefree divisors = 2^ω(n). idempotents_eq_squarefreeDivisors: composing with the parent's idempotent_count shows the automorphic residues of n are equinumerous with its squarefree divisors. Corollaries pin the degenerate cases: count = 1 ⟺ n = 1, count = 2 ⟺ n is a prime power, and the decimal recovery #squarefreeDivisors(10^k) = 4.",
+      "mathContext": "#{idempotents of ZMod n} = #{squarefree divisors of n} = 2^ω(n); the classical decimal '4' is the case ω(10^k)=2."
     },
     {
-      "id": "counting-and-bridge",
-      "title": "Part III: The count 2^ω(n) and the bridge to idempotents",
-      "startLine": 115,
-      "endLine": 141,
-      "summary": "squarefreeDivisors_card: rewriting by the image description, Finset.card_image_of_injOn, and Finset.card_powerset gives 2 ^ n.primeFactors.card. idempotents_eq_squarefreeDivisors chains the parent's idempotent_count = 2^ω(n) with this to equate automorphic residues and squarefree divisors. squarefreeDivisors_card_eq_one_iff (Nat.pow_eq_one, primeFactors_eq_empty) characterizes count 1 ⟺ n = 1, and squarefreeDivisors_card_prime_pow gives count 2 for prime powers.",
-      "mathContext": "Card of the image = card of the powerset = 2^ω(n); combined with the parent this counts automorphic residues as squarefree divisors."
-    },
-    {
-      "id": "decimal-recovery",
-      "title": "Part IV: The decimal case",
-      "startLine": 142,
-      "endLine": 149,
-      "summary": "squarefreeDivisors_ten_pow_card: substituting the parent's ω(10^k) = 2 (primeFactors_ten_pow) into squarefreeDivisors_card gives 2^2 = 4 — the four squarefree divisors 1, 2, 5, 10 of 10^k, mirroring the four automorphic residues mod 10^k.",
-      "mathContext": "The classical decimal '4' reappears as the count of squarefree divisors of 10^k, one for each subset of {2, 5}."
+      "id": "local-product-mechanism",
+      "title": "Part III: The product-of-local-rings mechanism (the open question)",
+      "startLine": 174,
+      "endLine": 273,
+      "summary": "isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing: a local ring has only the idempotents 0 and 1 (via IsLocalRing.isUnit_or_isUnit_one_sub_self and e·(1−e)=0, using IsUnit.mul_right_eq_zero — no NoZeroDivisors, since a local ring like ZMod pᵏ has zero divisors). idempotent_count_local: the idempotent subtype is equivalent to the two-element set {0,1}, so Nat.card_coe_set_eq and Set.ncard_pair give 2. isIdempotentElem_pi_iff: idempotents of a product ring are exactly the coordinatewise idempotents. idempotent_count_pi_local: subtypeEquivRight and subtypePiEquivPi give {idempotents of ∏ Rᵢ} ≃ ∀ i, {idempotents of Rᵢ}, so Nat.card_pi turns the count into a product of 2 over the factors, i.e. 2^(card ι). idempotent_count_of_ringEquiv: transports the count across any ring isomorphism S ≃+* ∏ Rᵢ (idempotents correspond under a ring iso via map_mul and injectivity), the form applicable to ZMod n and 𝒪_K/𝔞 via CRT.",
+      "mathContext": "The count is 2^(number of local factors) because each local factor of the CRT decomposition contributes an independent binary idempotent choice."
     }
   ],
   "overview": {
-    "historicalContext": "The number of squarefree divisors of an integer $n$ — equivalently the number of unitary 'complementary' factorizations $n = a \\cdot b$ with $\\gcd(a,b) = 1$ — is one of the oldest multiplicative counting functions in number theory, equal to $2^{\\omega(n)}$ where $\\omega(n)$ counts the distinct prime divisors of $n$. It is the value $|\\mu|\\!*\\!1$ at $n$ (the Dirichlet convolution of $|\\mu|$ with the constant $1$), and its Dirichlet series $\\sum_n 2^{\\omega(n)} n^{-s} = \\zeta(s)^2/\\zeta(2s)$ is a staple of analytic number theory. The parent entry showed that this same $2^{\\omega(n)}$ counts the idempotents of $\\mathbb{Z}/n\\mathbb{Z}$ — the automorphic residues $e^2 \\equiv e \\pmod n$ — through the Chinese Remainder decomposition into local rings. This follow-up makes the coincidence explicit and elementary: it exhibits an honest bijection, not merely an equality of counts, between the squarefree divisors of $n$ and the subsets of its prime-factor set, and hence between squarefree divisors and automorphic residues. The bijection is the arithmetic residue of the fact — noted in the parent's implications — that each idempotent of $\\mathbb{Z}/n\\mathbb{Z}$ selects a 'support' set of primes, assembling a unitary complementary factor of $n$.",
-    "problemStatement": "Give a divisor-theoretic meaning to the automorphic-residue count $2^{\\omega(n)}$. Concretely: prove that for every $n \\geq 1$ the number of squarefree divisors of $n$ is $2^{\\omega(n)}$, exhibit the underlying bijection with the powerset of the prime factors of $n$, and conclude that the automorphic residues of $\\mathbb{Z}/n\\mathbb{Z}$ (idempotents $e^2 \\equiv e$) are equinumerous with the squarefree divisors of $n$. Recover the decimal case: $10^k$ has $4$ squarefree divisors, $1, 2, 5, 10$.",
-    "proofStrategy": "Work with the finite set $\\operatorname{squarefreeDivisors}(n) = \\{d \\in \\operatorname{divisors}(n) : \\operatorname{Squarefree} d\\}$. The key is a bijection realized by the map $\\varphi : s \\mapsto \\prod_{p \\in s} p$ from the powerset of $n.\\!\\operatorname{primeFactors}$. First show $\\varphi$ lands in the squarefree divisors: a product of a subset of the distinct primes of $n$ divides the radical $\\prod_{p \\mid n} p$, which divides $n$ (Nat.prod_primeFactors_dvd), and a product of distinct — pairwise coprime — primes is squarefree (Finset.squarefree_prod_of_pairwise_isCoprime). Then show every squarefree divisor is hit: a squarefree $d \\mid n$ equals $\\prod_{p \\in d.\\!\\operatorname{primeFactors}} p$ (Nat.prod_primeFactors_of_squarefree), and $d.\\!\\operatorname{primeFactors} \\subseteq n.\\!\\operatorname{primeFactors}$ (Nat.primeFactors_mono). This gives $\\operatorname{squarefreeDivisors}(n)$ as the image of the powerset. Injectivity of $\\varphi$ on the powerset follows from the left inverse $\\operatorname{primeFactors}$ on sets of primes (Nat.primeFactors_prod). Finset.card_image_of_injOn and Finset.card_powerset then deliver $2^{\\omega(n)}$. Finally, chaining the parent's $\\operatorname{idempotent\\_count} = 2^{\\omega(n)}$ equates automorphic residues with squarefree divisors, and the parent's $\\omega(10^k) = 2$ recovers the count $4$.",
+    "historicalContext": "The idempotents of a finite commutative ring, and their count as a power of two, are a classical consequence of the structure theory of Artinian rings: every such ring is a finite product of local rings, and a local (indeed any connected) ring has only the trivial idempotents 0 and 1. For ℤ/nℤ this product decomposition is exactly the Chinese Remainder Theorem, ℤ/nℤ ≅ ∏ ℤ/pᵢ^{eᵢ}ℤ, so the number of idempotents is 2^{ω(n)} — the decimal shadow of which is the recreational fact that there are two nontrivial k-digit automorphic numbers for every k. The same decomposition holds for the ring of integers 𝒪_K of a number field modulo an ideal 𝔞: unique factorization of ideals gives 𝔞 = ∏ 𝔭ᵢ^{eᵢ}, and CRT yields 𝒪_K/𝔞 ≅ ∏ 𝒪_K/𝔭ᵢ^{eᵢ} with each factor local, so the idempotent count is 2^{(number of distinct primes dividing 𝔞)}. This entry formalizes the ring-theoretic mechanism behind all of these counts — a finite product of local rings has 2^{(number of factors)} idempotents — together with the arithmetic reinterpretation of the ℤ-case count as the number of squarefree divisors.",
+    "problemStatement": "The parent entry proves #{idempotents of ℤ/nℤ} = 2^{ω(n)} and asks how the count generalizes beyond ℤ, e.g. to 𝒪_K/𝔞. Two questions are addressed: (1) arithmetic — identify 2^{ω(n)} concretely as the number of squarefree divisors of n; (2) algebraic — isolate, for an arbitrary commutative ring, the mechanism that makes the count a power of two, in a form that applies to any ring the Chinese Remainder Theorem writes as a finite product of local rings (both ℤ/nℤ and 𝒪_K/𝔞).",
+    "proofStrategy": "For the arithmetic side, exhibit the bijection s ↦ ∏_{p∈s} p from the powerset of n.primeFactors onto the squarefree divisors of n: a product of a subset of the distinct primes is a squarefree divisor (divisibility from Nat.prod_primeFactors_dvd, squarefreeness because distinct primes are pairwise coprime), every squarefree divisor is the product over its own prime factors, and the map is injective because primeFactors is a left inverse on sets of primes. Finset.card_image_of_injOn and Finset.card_powerset then give 2^{ω(n)}, and composing with the parent's idempotent_count bridges to automorphic residues. For the algebraic side, first prove a local ring has only the idempotents 0 and 1: for idempotent e, e·(1−e)=0, and IsLocalRing.isUnit_or_isUnit_one_sub_self makes one of e, 1−e a unit, which annihilating its partner forces the partner to 0. The idempotent subtype is then the two-element set {0,1} (0≠1 in a nontrivial ring), of cardinality 2. Idempotents of a product ring are the coordinatewise idempotents (isIdempotentElem_pi_iff), so subtypePiEquivPi give an equivalence {idempotents of ∏ Rᵢ} ≃ (∀ i, {idempotents of Rᵢ}), whence Nat.card_pi yields the product of 2 over the factors, i.e. 2^{(card ι)}. Finally, idempotents transport across a ring isomorphism (Equiv.subtypeEquiv with the predicate correspondence IsIdempotentElem e ↔ IsIdempotentElem (φ e), from map_mul and injectivity), giving the count for any S ≃+* ∏ Rᵢ.",
     "keyInsights": [
-      "The automorphic-residue count $2^{\\omega(n)}$ is not just numerically equal to the number of squarefree divisors of $n$ — the two are joined by an explicit bijection, both being the number of subsets of the prime-factor set of $n$.",
-      "A squarefree divisor of $n$ is completely determined by which of $n$'s primes it contains: the map $d \\mapsto d.\\!\\operatorname{primeFactors}$ and its inverse $s \\mapsto \\prod_{p \\in s} p$ set up the correspondence with the powerset.",
-      "Divisibility of the sub-products is controlled by the radical: $\\prod_{p \\in s} p$ divides $\\prod_{p \\mid n} p$, which divides $n$ — so no divisor test beyond 'subset of the prime factors' is needed.",
-      "Squarefreeness of $\\prod_{p \\in s} p$ is exactly the pairwise coprimality of distinct primes, packaged by Finset.squarefree_prod_of_pairwise_isCoprime — the same coprimality that drives the CRT splitting behind the idempotent count.",
-      "The equinumerosity of idempotents and squarefree divisors is the arithmetic shadow of a ring fact: an idempotent of $\\mathbb{Z}/n\\mathbb{Z}$ picks out a unitary complementary factorization $n = a \\cdot b$ with $\\gcd(a,b)=1$, whose squarefree part is a squarefree divisor.",
-      "Phrasing the count through a Finset image and Finset.card_powerset avoids any induction on $\\omega(n)$: the powerset carries the $2^{\\omega(n)}$ for free once the bijection is in place."
+      "The power of two in every 2^ω-style idempotent count comes from a single ring-theoretic fact: a local ring has no idempotents besides 0 and 1, so each local factor of a CRT decomposition contributes an independent binary choice.",
+      "The essential local-ring argument is one line of algebra: for idempotent e, e·(1−e)=0, and since one of e, 1−e is a unit in a local ring, its partner must vanish — so e ∈ {0,1}.",
+      "Idempotents of a finite product ring are exactly the tuples of idempotents of the factors; there is no interaction between factors, which is why the counts multiply to a pure power of two.",
+      "The count 2^{ω(n)} for ℤ/nℤ has a concrete divisor-theoretic face: it is the number of squarefree divisors of n, indexed by subsets of the prime-factor set via s ↦ ∏_{p∈s} p.",
+      "Phrasing the general statement through a ring isomorphism S ≃+* ∏ Rᵢ makes it directly applicable to 𝒪_K/𝔞: the Chinese Remainder Theorem provides the isomorphism, the local factors are 𝒪_K/𝔭ᵢ^{eᵢ}, and the count is 2^{(number of distinct prime ideals dividing 𝔞)} — the answer the open question conjectured.",
+      "Using Nat.card throughout (rather than Fintype.card) keeps the local factors and the ambient ring free of finiteness hypotheses beyond the finite index set of factors, so the mechanism theorem is stated at full generality."
     ]
   },
   "conclusion": {
-    "summary": "For every $n \\geq 1$ the number of squarefree divisors of $n$ is exactly $2^{\\omega(n)}$, established by an explicit bijection $s \\mapsto \\prod_{p \\in s} p$ between the powerset of $n$'s distinct prime factors and its squarefree divisors (injective by the left inverse $\\operatorname{primeFactors}$, surjective by $\\prod_{p \\in d.\\operatorname{primeFactors}} p = d$ for squarefree $d$). Chaining this with the parent entry's idempotent count $2^{\\omega(n)}$ shows the automorphic residues $e^2 \\equiv e \\pmod n$ of $\\mathbb{Z}/n\\mathbb{Z}$ are equinumerous with the squarefree divisors of $n$. The decimal case reappears: $10^k$ has the four squarefree divisors $1, 2, 5, 10$, mirroring its four automorphic residues. Fully machine-checked: $0$ sorries, $0$ axioms, no `native_decide`, no `decide`.",
-    "implications": "The result upgrades the parent's numerical coincidence to a structural one: automorphic residues, squarefree divisors, and subsets of the prime-factor set are three faces of the same $2^{\\omega(n)}$. The bijection makes the parent's remark about 'splitting $n$ into complementary coprime factors' literal — each squarefree divisor $d$ pairs with the unitary complement supported on the remaining primes. Methodologically it is a template for turning a multiplicative count into a combinatorial one: identify the objects with subsets of the primes, exhibit the product/prime-factor inverse pair, and read off $2^{\\omega(n)}$ from the powerset.",
+    "summary": "The idempotent count 2^{ω(n)} of the parent entry is given two further meanings. Arithmetically it is the number of squarefree divisors of n, via the bijection between subsets of n's prime factors and squarefree divisors. Algebraically it is a special case of a general mechanism: a finite product of nontrivial local rings ∏ᵢ Rᵢ has exactly 2^{(number of factors)} idempotents (each local factor contributes its two idempotents 0 and 1 independently), and this count transports across any ring isomorphism S ≃+* ∏ᵢ Rᵢ. The Chinese Remainder Theorem supplies such an isomorphism for ℤ/nℤ (local factors ℤ/pᵢ^{eᵢ}ℤ) and for 𝒪_K/𝔞 (local factors 𝒪_K/𝔭ᵢ^{eᵢ}), so both idempotent counts are powers of two governed by the number of distinct primes. Fully machine-checked: 0 sorries, 0 axioms, no native_decide.",
+    "implications": "The entry explains why every CRT-driven count of idempotents is a power of two, and does so at the level of arbitrary commutative rings rather than ℤ specifically. The general theorems idempotent_count_pi_local and idempotent_count_of_ringEquiv apply verbatim to the number-field setting named in the open question: given the CRT isomorphism 𝒪_K/𝔞 ≅ ∏ 𝒪_K/𝔭ᵢ^{eᵢ} (each factor local) the idempotent count is 2^{(number of distinct prime ideals dividing 𝔞)}. The squarefree-divisor reinterpretation connects the count to standard multiplicative number theory (the divisor function 2^{ω} = number of squarefree divisors).",
     "openQuestions": [
-      "The squarefree divisors of $n$ carry a Boolean-lattice structure (isomorphic to the powerset of $n.\\!\\operatorname{primeFactors}$ under divisibility); can this order isomorphism be formalized and matched to the lattice of idempotents of $\\mathbb{Z}/n\\mathbb{Z}$ under $e \\leq f \\iff ef = e$?",
-      "Beyond counting, can the CRT idempotent-to-squarefree-divisor correspondence be made an explicit map in Lean — sending an idempotent $e$ to the product of the primes $p \\mid n$ at which the local component of $e$ is $1$ — and proven to be the bijection whose existence is here established only through cardinalities?",
-      "Does the same powerset bijection give the count of UNITARY divisors of $n$ (divisors $d$ with $\\gcd(d, n/d)=1$), which is likewise $2^{\\omega(n)}$, and can the two divisor families be related by $d \\mapsto \\operatorname{rad}(d)$?",
-      "Can the partial sums $\\sum_{n \\leq x} (\\text{number of squarefree divisors of } n) = \\sum_{n \\leq x} 2^{\\omega(n)}$ and their $\\zeta(s)^2/\\zeta(2s)$ Dirichlet series be formalized, connecting this exact count to its average order?"
+      "Can the CRT isomorphism 𝒪_K/𝔞 ≅ ∏ 𝒪_K/𝔭ᵢ^{eᵢ} be produced in Mathlib and fed to idempotent_count_of_ringEquiv to state the number-field count 2^{(number of distinct prime ideals dividing 𝔞)} as a standalone theorem, including the fact that each 𝒪_K/𝔭ᵢ^{eᵢ} is a local ring?",
+      "For a general finite commutative ring, the idempotents biject with the clopen subsets of Spec(R), giving 2^{(number of connected components)}; can idempotent_count_pi_local be upgraded to this topological form via the primitive-idempotent decomposition, removing the explicit product hypothesis?"
     ]
   },
   "crossReferences": [
     {
       "proofId": "automorphic-number-oq-01-oq-01",
       "relationship": "parent",
-      "description": "Why Exactly Four? Counting Automorphic Residues mod n as 2^ω(n) — proves the idempotent/automorphic-residue count is 2^ω(n); this entry supplies its idempotent_count and primeFactors_ten_pow, and reinterprets the same 2^ω(n) as a squarefree-divisor count."
+      "description": "Counting Automorphic Residues mod n as 2^ω(n) — proves the count this entry reinterprets (as squarefree divisors) and generalizes (as the product-of-local-rings mechanism); its idempotent_count is reused directly in the bridge theorem."
     },
     {
       "proofId": "automorphic-number-oq-01-oq-02",
       "relationship": "sibling",
-      "description": "The Complementary Pairing of Automorphic Idempotents mod 10^k — the complementary pairing e ↦ 1-e of idempotents mirrors the complementary pairing d ↦ n/d of unitary/squarefree divisors that this entry's bijection makes explicit."
+      "description": "The Complementary Pairing of Automorphic Idempotents — studies the involution e ↦ 1−e on the idempotents that this entry counts; the pairing reflects the two idempotents 0 and 1 of each local factor."
+    },
+    {
+      "proofId": "chinese-remainder-constructive",
+      "relationship": "uses",
+      "description": "Chinese Remainder Theorem (Constructive) — the source of the ring isomorphism S ≃+* ∏ Rᵢ into local factors that idempotent_count_of_ringEquiv consumes; the mechanism behind both the ℤ/nℤ and 𝒪_K/𝔞 counts."
     },
     {
       "proofId": "fundamental-arithmetic",
       "relationship": "foundation",
-      "description": "Fundamental Theorem of Arithmetic — unique prime factorization underlies ω(n), the radical ∏ p ∈ n.primeFactors, p, and the powerset over which the squarefree-divisor bijection is built."
-    },
-    {
-      "proofId": "euler-totient",
-      "relationship": "related-technique",
-      "description": "Euler's Generalization of Fermat's Little Theorem — another multiplicative arithmetic function evaluated across the prime factorization; the squarefree-divisor count 2^ω(n) is the |μ|*1 convolution, a companion to φ in the same multiplicative-function toolkit."
+      "description": "Fundamental Theorem of Arithmetic — unique factorization underlies both ω(n) and the squarefree-divisor bijection, and (in its ideal-theoretic form) the CRT decomposition of 𝒪_K/𝔞 into prime-power local factors."
     }
   ]
 }

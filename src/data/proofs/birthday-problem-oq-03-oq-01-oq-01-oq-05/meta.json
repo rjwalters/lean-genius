@@ -95,29 +95,25 @@
       "title": "Module header and context",
       "startLine": 1,
       "endLine": 30,
-      "summary": "Recalls the parent's slot recurrence R and the closed forms for n = 1, 2, 3, and states the goal: the next term birthdayCount3 4 d = d⁴ − 4d² + 3d = d(d−1)(d²+d−3), proved 0-axiom by symbolic unfolding rather than native_decide.",
-      "id": "module-header-and-context"
+      "summary": "Recalls the parent's slot recurrence R and the closed forms for n = 1, 2, 3, and states the goal: the next term birthdayCount3 4 d = d⁴ − 4d² + 3d = d(d−1)(d²+d−3), proved 0-axiom by symbolic unfolding rather than native_decide."
     },
     {
       "title": "The slot recurrence and base lemmas",
       "startLine": 36,
       "endLine": 49,
-      "summary": "Reproduces the recurrence R n e s (state = empty/single days) and birthdayCount3 n d = R n d 0 for a self-contained, fast-compiling file, with the simp lemmas R_zero, R_succ and the base identity R_one: R 1 e s = e + s.",
-      "id": "the-slot-recurrence-and-base-lemmas"
+      "summary": "Reproduces the recurrence R n e s (state = empty/single days) and birthdayCount3 n d = R n d 0 for a self-contained, fast-compiling file, with the simp lemmas R_zero, R_succ and the base identity R_one: R 1 e s = e + s."
     },
     {
       "title": "The n = 4 closed form",
       "startLine": 51,
       "endLine": 62,
-      "summary": "birthdayCount3_four: d⁴ − 4d² + 3d over ℤ, via small-case evaluation and symbolic unfolding of the recurrence for d = k+3.",
-      "id": "the-n-4-closed-form"
+      "summary": "birthdayCount3_four: d⁴ − 4d² + 3d over ℤ, via small-case evaluation and symbolic unfolding of the recurrence for d = k+3."
     },
     {
       "title": "Factored and ℕ forms",
       "startLine": 64,
       "endLine": 75,
-      "summary": "birthdayCount3_four_factored (d(d−1)(d²+d−3)) and birthdayCount3_four_eq_nat (a truncation-free ℕ identity for d ≥ 1).",
-      "id": "factored-and-forms"
+      "summary": "birthdayCount3_four_factored (d(d−1)(d²+d−3)) and birthdayCount3_four_eq_nat (a truncation-free ℕ identity for d ≥ 1)."
     }
   ],
   "sorries": []

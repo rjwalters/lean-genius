@@ -85,43 +85,37 @@
       "title": "Module header and context",
       "startLine": 1,
       "endLine": 43,
-      "summary": "States the goal — the parent's second open question on companion Lucas-number diagonal identities — and notes that Mathlib has Nat.fib but no Lucas sequence (only the unrelated Lucas–Lehmer test). Lists the five results and imports Mathlib.",
-      "id": "module-header-and-context"
+      "summary": "States the goal — the parent's second open question on companion Lucas-number diagonal identities — and notes that Mathlib has Nat.fib but no Lucas sequence (only the unrelated Lucas–Lehmer test). Lists the five results and imports Mathlib."
     },
     {
       "title": "The Lucas sequence",
       "startLine": 44,
       "endLine": 53,
-      "summary": "Defines lucas by L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1), with the base evaluations and the recurrence lucas_add_two as definitional (rfl) facts.",
-      "id": "the-lucas-sequence"
+      "summary": "Defines lucas by L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1), with the base evaluations and the recurrence lucas_add_two as definitional (rfl) facts."
     },
     {
       "title": "The Lucas–Fibonacci bridge",
       "startLine": 55,
       "endLine": 76,
-      "summary": "lucas_add_fib: L(n)+F(n)=2·F(n+1), proved subtraction-free by two-step induction. lucas_eq: the Lucas–Fibonacci relation L(n+1)=F(n+2)+F(n), read off from the bridge via Nat.fib_add_two and omega.",
-      "id": "the-lucas-fibonacci-bridge"
+      "summary": "lucas_add_fib: L(n)+F(n)=2·F(n+1), proved subtraction-free by two-step induction. lucas_eq: the Lucas–Fibonacci relation L(n+1)=F(n+2)+F(n), read off from the bridge via Nat.fib_add_two and omega."
     },
     {
       "title": "Shallow-diagonal sums of Pascal's triangle",
       "startLine": 78,
       "endLine": 98,
-      "summary": "fib_shallow_diagonal_alt and fib_shallow_diagonal: the parent's Fibonacci diagonal identity ∑_j C(n−j, j) = F(n+1) in both index conventions, replicated so the file is self-contained.",
-      "id": "shallow-diagonal-sums-of-pascal-s-triangle"
+      "summary": "fib_shallow_diagonal_alt and fib_shallow_diagonal: the parent's Fibonacci diagonal identity ∑_j C(n−j, j) = F(n+1) in both index conventions, replicated so the file is self-contained."
     },
     {
       "title": "Companion Lucas-number diagonal identities",
       "startLine": 100,
       "endLine": 133,
-      "summary": "lucas_shallow_diagonal and lucas_shallow_diagonal_alt: L(n+2) equals the sum of the (n+2)-nd and n-th shallow diagonals of Pascal's triangle, obtained from L(n+2)=F(n+3)+F(n+1) by expanding each Fibonacci term as a shallow diagonal.",
-      "id": "companion-lucas-number-diagonal-identities"
+      "summary": "lucas_shallow_diagonal and lucas_shallow_diagonal_alt: L(n+2) equals the sum of the (n+2)-nd and n-th shallow diagonals of Pascal's triangle, obtained from L(n+2)=F(n+3)+F(n+1) by expanding each Fibonacci term as a shallow diagonal."
     },
     {
       "title": "Mixed Fibonacci–Lucas identity",
       "startLine": 135,
       "endLine": 146,
-      "summary": "fib_two_mul_lucas: F(2n)=F(n)·L(n), obtained from Mathlib's Nat.fib_two_mul together with the bridge identifying 2·F(n+1)−F(n) as L(n).",
-      "id": "mixed-fibonacci-lucas-identity"
+      "summary": "fib_two_mul_lucas: F(2n)=F(n)·L(n), obtained from Mathlib's Nat.fib_two_mul together with the bridge identifying 2·F(n+1)−F(n) as L(n)."
     }
   ],
   "sorries": [],

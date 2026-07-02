@@ -44,25 +44,16 @@
   },
   "sections": [
     {
-      "id": "the-integer-unit-from-a-coprimality-hypothesis",
       "title": "The integer unit from a coprimality hypothesis",
-      "startLine": 1,
-      "endLine": 87,
-      "summary": "intCast_isUnit_of_isCoprime: if an integer c is coprime to k, then (c : ℤ/k) is a unit. Bezout's x·c + y·k = 1 reduces mod k (where k = 0) to x·c = 1, exhibiting the inverse. This manufactures the CRT component units at each prime factor."
+      "content": "intCast_isUnit_of_isCoprime: if an integer c is coprime to k, then (c : ℤ/k) is a unit. Bezout's x·c + y·k = 1 reduces mod k (where k = 0) to x·c = 1, exhibiting the inverse. This manufactures the CRT component units at each prime factor."
     },
     {
-      "id": "the-main-induction",
       "title": "The main induction",
-      "startLine": 88,
-      "endLine": 167,
-      "summary": "main: strong induction on n via its smallest prime factor. The n = 1 base uses the subsingleton structure of ℤ/1; the inductive step splits n = p·m coprimely, applies the grandparent's CRT multiplicativity, the parent's prime base case, the inductive hypothesis on the cofactor, and jacobiSym.mul_right to assemble J(a | n)."
+      "content": "main: strong induction on n via its smallest prime factor. The n = 1 base uses the subsingleton structure of ℤ/1; the inductive step splits n = p·m coprimely, applies the grandparent's CRT multiplicativity, the parent's prime base case, the inductive hypothesis on the cofactor, and jacobiSym.mul_right to assemble J(a | n)."
     },
     {
-      "id": "clean-statement",
       "title": "Clean statement",
-      "startLine": 168,
-      "endLine": 211,
-      "summary": "sign_ringMulPerm_eq_jacobiSym: the result in ordinary binder form — for n odd squarefree, c coprime to n, and the unit u representing c, sign(ringMulPerm u) = J(c | n)."
+      "content": "sign_ringMulPerm_eq_jacobiSym: the result in ordinary binder form — for n odd squarefree, c coprime to n, and the unit u representing c, sign(ringMulPerm u) = J(c | n)."
     }
   ],
   "meta": {

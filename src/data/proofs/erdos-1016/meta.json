@@ -21,9 +21,9 @@
     "erdosNumber": 1016,
     "erdosUrl": "https://erdosproblems.com/1016",
     "erdosProblemStatus": "open",
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 265,
-    "assumptions": "1 assumption: Lean.ofReduceBool, introduced by native_decide in bondy_quadratic_threshold (verifying n^2/4 >= n + log2 n for the small cases 7<=n<=15). No `axiom` declarations remain: the five former lower-bound axioms were removed because the abstract IsPancyclic model is flawed (edgeCount is disconnected from hasCycleOfLength, forcing pancyclicExcess n = 0). The grounded SimpleGraph model at the end recovers a non-vacuous edge lower bound. The mathematical results (Bondy, Griffin, GKW) are correct but their real proofs remain open on top of the grounded model.",
+    "assumptions": "0 axioms. All 5 former axioms were removed because the abstract IsPancyclic model is flawed (edgeCount disconnected from hasCycle makes axioms FALSE). The mathematical results (Bondy, Griffin, GKW) are correct but require a proper SimpleGraph-based model to formalize.",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
     "definitionCount": 5
@@ -87,14 +87,6 @@
       "startLine": 157,
       "endLine": 209,
       "mathContext": "$n^2/4\\ge n+\\log_2 n$ for $n\\ge 7$ (Bondy's quadratic threshold is far from the $\\log$-scale truth); $h(3)=0$."
-    },
-    {
-      "id": "sec-1016-grounded",
-      "title": "Grounded SimpleGraph Pancyclic Model",
-      "startLine": 213,
-      "endLine": 265,
-      "summary": "Replaces the flawed abstract scaffold with a model on SimpleGraph (Fin n): HasCycleOfLength / IsPancyclicGraph pin cycles to the concrete graph, and pancyclicGraph_card_edgeFinset_ge derives the non-vacuous baseline n <= |E(G)| from the genuine Hamiltonian cycle.",
-      "mathContext": "A length-k cycle is a trail of k distinct edges, so k <= G.edgeFinset.card; pancyclicity yields n <= |E(G)| for n >= 3 — the edge-cycle link the abstract model could not express."
     }
   ],
   "conclusion": {

@@ -135,7 +135,7 @@
       "startLine": 165,
       "endLine": 171
     },
-    "type": "context",
+    "type": "concept",
     "title": "Two People: P = 1/365",
     "content": "With 2 people, the probability they share a birthday is:\n\n$$P(2) = 1 - \\frac{365 \\times 364}{365^2} = 1 - \\frac{364}{365} = \\frac{1}{365}$$\n\nThis makes intuitive sense: once person 1's birthday is fixed, person 2 has a 1/365 chance of matching.\n\nIn Lean: `prob_shared_birthday 2 = 1 / 365`",
     "mathContext": "$P(2) = 1/365 \\approx 0.27\\%$",

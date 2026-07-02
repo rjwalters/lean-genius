@@ -43,32 +43,20 @@
   },
   "sections": [
     {
-      "id": "generic-bridges-units-reduction-crt-components-legendresym-congruence",
       "title": "Generic bridges: units reduction, CRT components, legendreSym congruence",
-      "startLine": 1,
-      "endLine": 112,
-      "summary": "coe_unitsMap: (ZMod.unitsMap h u : ℤ/m) = castHom h (u : ℤ/n). chineseRemainder_fst / chineseRemainder_snd: the two projections of ZMod.chineseRemainder are the canonical casts to ℤ/m and ℤ/n — proved by RingHom.ext_zmod (any two ring homs out of ℤ/(m·n) are equal). legendreSym_congr: equal residues mod p give equal Legendre symbols (legendreSym.mod + ZMod.intCast_eq_intCast_iff)."
+      "content": "coe_unitsMap: (ZMod.unitsMap h u : ℤ/m) = castHom h (u : ℤ/n). chineseRemainder_fst / chineseRemainder_snd: the two projections of ZMod.chineseRemainder are the canonical casts to ℤ/m and ℤ/n — proved by RingHom.ext_zmod (any two ring homs out of ℤ/(m·n) are equal). legendreSym_congr: equal residues mod p give equal Legendre symbols (legendreSym.mod + ZMod.intCast_eq_intCast_iff)."
     },
     {
-      "id": "the-prime-power-base-in-representative-free-form",
       "title": "The prime-power base in representative-free form",
-      "startLine": 113,
-      "endLine": 137,
-      "summary": "sign_ringMulPerm_eq_jacobiSym_of_cast: for an odd prime p, k ≥ 1, a unit a : (ℤ/pᵏ)ˣ and any integer A ≡ a (mod pᵏ), sign(ringMulPerm a) = J(A | pᵏ). Repackages the parent's sign_ringMulPerm_eq_legendre_pow and jacobiSym_prime_pow, reducing both legendre symbols (of (a mod p).val and of A) to the same residue mod p via legendreSym_congr and one cast of the hypothesis A ≡ a down to ℤ/p."
+      "content": "sign_ringMulPerm_eq_jacobiSym_of_cast: for an odd prime p, k ≥ 1, a unit a : (ℤ/pᵏ)ˣ and any integer A ≡ a (mod pᵏ), sign(ringMulPerm a) = J(A | pᵏ). Repackages the parent's sign_ringMulPerm_eq_legendre_pow and jacobiSym_prime_pow, reducing both legendre symbols (of (a mod p).val and of A) to the same residue mod p via legendreSym_congr and one cast of the hypothesis A ≡ a down to ℤ/p."
     },
     {
-      "id": "multiplicative-induction-over-the-odd-modulus",
       "title": "Multiplicative induction over the odd modulus",
-      "startLine": 138,
-      "endLine": 193,
-      "summary": "main_aux: Nat.recOnPosPrimePosCoprime. zero excluded by NeZero; one is ℤ/1 trivial (jacobiSym.one_right); prime_pow derives p ≠ 2 from Odd (pᵏ) and applies the base; coprime n = u·v takes a₁, a₂ = unitsMap a, proves the CRT-component and numerator-cast hypotheses, splits the sign by sign_ringMulPerm_mul_of_odd, applies both inductive hypotheses, and recombines with jacobiSym.mul_right."
+      "content": "main_aux: Nat.recOnPosPrimePosCoprime. zero excluded by NeZero; one is ℤ/1 trivial (jacobiSym.one_right); prime_pow derives p ≠ 2 from Odd (pᵏ) and applies the base; coprime n = u·v takes a₁, a₂ = unitsMap a, proves the CRT-component and numerator-cast hypotheses, splits the sign by sign_ringMulPerm_mul_of_odd, applies both inductive hypotheses, and recombines with jacobiSym.mul_right."
     },
     {
-      "id": "the-full-odd-modulus-zolotarev-frobenius-identity",
       "title": "The full odd-modulus Zolotarev–Frobenius identity",
-      "startLine": 194,
-      "endLine": 216,
-      "summary": "sign_ringMulPerm_eq_jacobiSym_odd: for every odd n > 0, unit a, and representative A ≡ a (mod n), sign(ringMulPerm a) = J(A | n). sign_ringMulPerm_eq_jacobiSym_val: the canonical-representative form J((a).val | n). signRingHom_eq_jacobiSym: through ZolotarevCRT.signRingHom, the Zolotarev sign CHARACTER on (ℤ/n)ˣ IS the Jacobi symbol for odd n."
+      "content": "sign_ringMulPerm_eq_jacobiSym_odd: for every odd n > 0, unit a, and representative A ≡ a (mod n), sign(ringMulPerm a) = J(A | n). sign_ringMulPerm_eq_jacobiSym_val: the canonical-representative form J((a).val | n). signRingHom_eq_jacobiSym: through ZolotarevCRT.signRingHom, the Zolotarev sign CHARACTER on (ℤ/n)ˣ IS the Jacobi symbol for odd n."
     }
   ],
   "meta": {

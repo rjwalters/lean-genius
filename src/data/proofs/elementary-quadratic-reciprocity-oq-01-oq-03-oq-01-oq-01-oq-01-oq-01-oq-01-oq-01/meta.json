@@ -43,32 +43,20 @@
   },
   "sections": [
     {
-      "id": "negation-is-an-involution",
       "title": "Negation is an involution",
-      "startLine": 1,
-      "endLine": 71,
-      "summary": "ringMulPerm_neg_one_sq: the Zolotarev permutation for a = -1 is multiplication by -1, i.e. negation x ↦ -x, and (ringMulPerm (-1))² = 1 because (-1)·(-1) = 1 in the units (ringMulPerm_mul, neg_one_mul, neg_neg, ringMulPerm_one)."
+      "content": "ringMulPerm_neg_one_sq: the Zolotarev permutation for a = -1 is multiplication by -1, i.e. negation x ↦ -x, and (ringMulPerm (-1))² = 1 because (-1)·(-1) = 1 in the units (ringMulPerm_mul, neg_one_mul, neg_neg, ringMulPerm_one)."
     },
     {
-      "id": "for-odd-n-negation-fixes-exactly-one-point",
       "title": "For odd n, negation fixes exactly one point",
-      "startLine": 72,
-      "endLine": 105,
-      "summary": "card_fixedPoints_neg_one: via Fintype.card_eq_one_iff, the fixed-point set of negation is {0}. From -x = x one gets 2x = 0 (linear_combination); since n is odd, 2 is coprime to n (Nat.prime_two.coprime_iff_not_dvd + Nat.two_dvd_ne_zero + Nat.odd_iff) hence a unit mod n (ZMod.isUnit_iff_coprime), so x = 0 (IsUnit.mul_right_eq_zero)."
+      "content": "card_fixedPoints_neg_one: via Fintype.card_eq_one_iff, the fixed-point set of negation is {0}. From -x = x one gets 2x = 0 (linear_combination); since n is odd, 2 is coprime to n (Nat.prime_two.coprime_iff_not_dvd + Nat.two_dvd_ne_zero + Nat.odd_iff) hence a unit mod n (ZMod.isUnit_iff_coprime), so x = 0 (IsUnit.mul_right_eq_zero)."
     },
     {
-      "id": "the-parity-of-the-negation-permutation",
       "title": "The parity of the negation permutation",
-      "startLine": 106,
-      "endLine": 124,
-      "summary": "sign_neg_one: Equiv.Perm.sign_of_pow_two_eq_one applied to the involution gives sign(ringMulPerm (-1)) = (-1)^((|ℤ/n| - |fixedPoints|)/2); substituting ZMod.card n = n and card_fixedPoints_neg_one = 1 yields (-1)^((n-1)/2)."
+      "content": "sign_neg_one: Equiv.Perm.sign_of_pow_two_eq_one applied to the involution gives sign(ringMulPerm (-1)) = (-1)^((|ℤ/n| - |fixedPoints|)/2); substituting ZMod.card n = n and card_fixedPoints_neg_one = 1 yields (-1)^((n-1)/2)."
     },
     {
-      "id": "the-first-supplement-and-its-specializations",
       "title": "The first supplement and its specializations",
-      "startLine": 125,
-      "endLine": 153,
-      "summary": "jacobiSym_neg_one: J(-1 | n) = (-1)^((n-1)/2) by rewriting through the parent's sign_ringMulPerm_eq_jacobiSym_odd (a = -1, A = -1) and sign_neg_one. jacobiSym_neg_one_eq_chi4: the same value equals χ₄ n (jacobiSym.at_neg_one), recovering ZMod.χ₄_eq_neg_one_pow. legendreSym_neg_one: the Legendre/Euler-criterion case (-1 / p) = (-1)^((p-1)/2) at an odd prime, via jacobiSym.legendreSym.to_jacobiSym and Nat.Prime.odd_of_ne_two."
+      "content": "jacobiSym_neg_one: J(-1 | n) = (-1)^((n-1)/2) by rewriting through the parent's sign_ringMulPerm_eq_jacobiSym_odd (a = -1, A = -1) and sign_neg_one. jacobiSym_neg_one_eq_chi4: the same value equals χ₄ n (jacobiSym.at_neg_one), recovering ZMod.χ₄_eq_neg_one_pow. legendreSym_neg_one: the Legendre/Euler-criterion case (-1 / p) = (-1)^((p-1)/2) at an odd prime, via jacobiSym.legendreSym.to_jacobiSym and Nat.Prime.odd_of_ne_two."
     }
   ],
   "meta": {

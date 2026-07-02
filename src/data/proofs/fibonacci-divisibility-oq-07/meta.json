@@ -86,7 +86,7 @@
       "title": "Module Header and Framing",
       "startLine": 1,
       "endLine": 31,
-      "summary": "The file imports Mathlib and situates itself: Nat.fib_dvd and Nat.fib_gcd are present, but the converse and the full biconditional are not. It flags the F₁ = F₂ = 1 coincidence as the source of the single exceptional index m = 2, and notes that only kernel-reducible `decide` (no native_decide) is used on the closed numerals fib 2/3/4."
+      "content": "The file imports Mathlib and situates itself: Nat.fib_dvd and Nat.fib_gcd are present, but the converse and the full biconditional are not. It flags the F₁ = F₂ = 1 coincidence as the source of the single exceptional index m = 2, and notes that only kernel-reducible `decide` (no native_decide) is used on the closed numerals fib 2/3/4."
     },
     {
       "id": "converse",

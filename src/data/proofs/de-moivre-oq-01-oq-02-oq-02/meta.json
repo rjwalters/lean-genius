@@ -27,29 +27,25 @@
       "title": "Header and Open Question",
       "startLine": 1,
       "endLine": 35,
-      "summary": "States the parent's OQ #2 — does the $T_n$ cos/cosh unification extend to $U_n$ and the sine ratios? — and the answer: yes, via the purely algebraic Laurent identity $U_n((w+w^{-1})/2)(w-w^{-1}) = w^{n+1}-w^{-(n+1)}$.",
-      "id": "header-and-open-question"
+      "summary": "States the parent's OQ #2 — does the $T_n$ cos/cosh unification extend to $U_n$ and the sine ratios? — and the answer: yes, via the purely algebraic Laurent identity $U_n((w+w^{-1})/2)(w-w^{-1}) = w^{n+1}-w^{-(n+1)}$."
     },
     {
       "title": "Part 1 — The unifying algebraic Laurent identity (★)",
       "startLine": 37,
       "endLine": 92,
-      "summary": "`U_resolvent_aux` proves the two-variable identity for $wv=1$ by paired induction on the Chebyshev recurrence, the constraint entering once via `linear_combination`. `U_resolvent` specializes $v=w^{-1}$. No transcendental functions appear — this is the common algebraic root of both analytic ratios.",
-      "id": "part-1-the-unifying-algebraic-laurent-identity"
+      "summary": "`U_resolvent_aux` proves the two-variable identity for $wv=1$ by paired induction on the Chebyshev recurrence, the constraint entering once via `linear_combination`. `U_resolvent` specializes $v=w^{-1}$. No transcendental functions appear — this is the common algebraic root of both analytic ratios."
     },
     {
       "title": "Part 2 — Both ratios as specializations of (★)",
       "startLine": 94,
       "endLine": 126,
-      "summary": "`U_resolvent_sinh`: setting $w=e^{z}$ turns ($\\star$) into $\\sinh((n+1)z)=U_n(\\cosh z)\\sinh z$. `U_resolvent_sin`: substituting $z\\mapsto xi$ recovers $\\sin((n+1)x)=U_n(\\cos x)\\sin x$. One identity yields both.",
-      "id": "part-2-both-ratios-as-specializations-of"
+      "summary": "`U_resolvent_sinh`: setting $w=e^{z}$ turns ($\\star$) into $\\sinh((n+1)z)=U_n(\\cosh z)\\sinh z$. `U_resolvent_sin`: substituting $z\\mapsto xi$ recovers $\\sin((n+1)x)=U_n(\\cos x)\\sin x$. One identity yields both."
     },
     {
       "title": "Part 3 — Packaged 'one Uₙ, both ratios' statement",
       "startLine": 128,
       "endLine": 139,
-      "summary": "`U_eval_cos_and_cosh` bundles the circular and hyperbolic sine ratios into one statement, the direct $U$-analogue of the parent's `T_eval_cos_and_cosh`.",
-      "id": "part-3-packaged-one-u-both-ratios-statement"
+      "summary": "`U_eval_cos_and_cosh` bundles the circular and hyperbolic sine ratios into one statement, the direct $U$-analogue of the parent's `T_eval_cos_and_cosh`."
     }
   ],
   "conclusion": {

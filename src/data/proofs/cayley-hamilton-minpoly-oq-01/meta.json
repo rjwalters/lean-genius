@@ -120,43 +120,37 @@
       "title": "Part I: Eigenvalues and the Minimal Polynomial",
       "startLine": 52,
       "endLine": 91,
-      "summary": "eigenvalue_iff_root_minpoly wraps hasEigenvalue_iff_isRoot: eigenvalue ↔ root of minpoly. eigenvalue_linear_factor_dvd_minpoly: (X - C μ) | minpoly via dvd_iff_isRoot. minpoly_dvd_charpoly wraps Matrix.minpoly_dvd_charpoly. finite_eigenvalues: eigenvalue set is finite. minpoly_annihilates: aeval f (minpoly K f) = 0. minpoly_monic: minpoly is monic. Note: degree bound natDegree ≤ finrank K V not proved here due to whnf timeout in Lean 4.26.0 when computing finrank K (End K V).",
-      "id": "part-i-eigenvalues-and-the-minimal-polynomial"
+      "summary": "eigenvalue_iff_root_minpoly wraps hasEigenvalue_iff_isRoot: eigenvalue ↔ root of minpoly. eigenvalue_linear_factor_dvd_minpoly: (X - C μ) | minpoly via dvd_iff_isRoot. minpoly_dvd_charpoly wraps Matrix.minpoly_dvd_charpoly. finite_eigenvalues: eigenvalue set is finite. minpoly_annihilates: aeval f (minpoly K f) = 0. minpoly_monic: minpoly is monic. Note: degree bound natDegree ≤ finrank K V not proved here due to whnf timeout in Lean 4.26.0 when computing finrank K (End K V)."
     },
     {
       "title": "Part II: Generalized Eigenspace Structure",
       "startLine": 93,
       "endLine": 124,
-      "summary": "generalized_eigenspaces_span_top: over algebraically closed K, ⨆ (genEigenspace μ k) = ⊤, proved via iSup_genEigenspace_eq + iSup_maxGenEigenspace_eq_top. disjoint_generalized_eigenspaces: distinct eigenvalues give disjoint genEigenspaces (disjoint_genEigenspace). nilpotent_shift_on_genEigenspace: (f - μI) restricted to genEigenspace μ k is nilpotent (isNilpotent_restrict_sub_algebraMap). genEigenspace_stabilizes: the chain stabilizes at maxGenEigenspaceIndex (genEigenspace_eq_genEigenspace_maxUnifEigenspaceIndex_of_le).",
-      "id": "part-ii-generalized-eigenspace-structure"
+      "summary": "generalized_eigenspaces_span_top: over algebraically closed K, ⨆ (genEigenspace μ k) = ⊤, proved via iSup_genEigenspace_eq + iSup_maxGenEigenspace_eq_top. disjoint_generalized_eigenspaces: distinct eigenvalues give disjoint genEigenspaces (disjoint_genEigenspace). nilpotent_shift_on_genEigenspace: (f - μI) restricted to genEigenspace μ k is nilpotent (isNilpotent_restrict_sub_algebraMap). genEigenspace_stabilizes: the chain stabilizes at maxGenEigenspaceIndex (genEigenspace_eq_genEigenspace_maxUnifEigenspaceIndex_of_le)."
     },
     {
       "title": "Part III: Nilpotent Endomorphisms and the Minimal Polynomial",
       "startLine": 126,
       "endLine": 194,
-      "summary": "eigenvalue_zero_of_nilpotent: nilpotent f has only eigenvalue 0 (proof: μ^k•v = f^k(v) = 0, v≠0, so μ^k = 0, so μ = 0 in a field). minpoly_dvd_pow_of_nilpotent: f^n = 0 ⇒ minpoly | X^n via minpoly.dvd. minpoly_pow_X_of_nilpotent: nilpotent ⇒ minpoly = X^j by UFD: X is prime, dvd_prime_pow, Associated monic polynomials are equal. nilpotent_of_minpoly_pow_X: converse via aeval f (X^k) = f^k = 0. nilpotent_iff_minpoly_pow_X: full iff combining both directions.",
-      "id": "part-iii-nilpotent-endomorphisms-and-the-minimal-polynomial"
+      "summary": "eigenvalue_zero_of_nilpotent: nilpotent f has only eigenvalue 0 (proof: μ^k•v = f^k(v) = 0, v≠0, so μ^k = 0, so μ = 0 in a field). minpoly_dvd_pow_of_nilpotent: f^n = 0 ⇒ minpoly | X^n via minpoly.dvd. minpoly_pow_X_of_nilpotent: nilpotent ⇒ minpoly = X^j by UFD: X is prime, dvd_prime_pow, Associated monic polynomials are equal. nilpotent_of_minpoly_pow_X: converse via aeval f (X^k) = f^k = 0. nilpotent_iff_minpoly_pow_X: full iff combining both directions."
     },
     {
       "title": "Part IV: Diagonalizability and the Minimal Polynomial",
       "startLine": 196,
       "endLine": 217,
-      "summary": "minpoly_squarefree_of_semisimple: IsSemisimple f ⇒ Squarefree (minpoly K f) via IsSemisimple.minpoly_squarefree. isSemisimple_iff_squarefree_minpoly: full iff, backward direction uses isSemisimple_of_squarefree_aeval_eq_zero. semisimple_nilpotent_eq_zero: semisimple + nilpotent = 0 (eq_zero_of_isNilpotent_isSemisimple) — the uniqueness core of Jordan-Chevalley.",
-      "id": "part-iv-diagonalizability-and-the-minimal-polynomial"
+      "summary": "minpoly_squarefree_of_semisimple: IsSemisimple f ⇒ Squarefree (minpoly K f) via IsSemisimple.minpoly_squarefree. isSemisimple_iff_squarefree_minpoly: full iff, backward direction uses isSemisimple_of_squarefree_aeval_eq_zero. semisimple_nilpotent_eq_zero: semisimple + nilpotent = 0 (eq_zero_of_isNilpotent_isSemisimple) — the uniqueness core of Jordan-Chevalley."
     },
     {
       "title": "Part V: Jordan Normal Form (Axiomatic)",
       "startLine": 218,
       "endLine": 257,
-      "summary": "Three axioms for JCF results not yet in Mathlib 4.26.0. jordan_normal_form_basis: existence of a Jordan basis (sigma-indexed family with Jordan block action). minpoly_product_formula: minpoly K f = Π_{μ∈s} (X - C μ)^(maxGenEigenspaceIndex f μ). maxGenEigenspaceIndex_exact: the exponent is tight — there exists v in maxGenEigenspace μ with (f - μ)^{e-1}(v) ≠ 0. The placeholder condition LinearMap.ker (LinearMap.id - f) ≤ ⊤ in jordan_normal_form_basis acknowledges the sigma-family linear independence encoding challenge.",
-      "id": "part-v-jordan-normal-form-axiomatic"
+      "summary": "Three axioms for JCF results not yet in Mathlib 4.26.0. jordan_normal_form_basis: existence of a Jordan basis (sigma-indexed family with Jordan block action). minpoly_product_formula: minpoly K f = Π_{μ∈s} (X - C μ)^(maxGenEigenspaceIndex f μ). maxGenEigenspaceIndex_exact: the exponent is tight — there exists v in maxGenEigenspace μ with (f - μ)^{e-1}(v) ≠ 0. The placeholder condition LinearMap.ker (LinearMap.id - f) ≤ ⊤ in jordan_normal_form_basis acknowledges the sigma-family linear independence encoding challenge."
     },
     {
       "title": "Part VI: Corollaries and Summary",
       "startLine": 258,
       "endLine": 307,
-      "summary": "jordan_block_power_dvd_minpoly: (X - C μ)^{e_μ} | minpoly K f by Finset.dvd_prod_of_mem applied to the product formula. diagonalizable_iff_squarefree_minpoly: alias of isSemisimple_iff_squarefree_minpoly. Summary docstring synthesizes the four key equivalences and the two-tier structure (Parts I-IV fully verified, Part V axiomatized pending Mathlib JNF block matrix).",
-      "id": "part-vi-corollaries-and-summary"
+      "summary": "jordan_block_power_dvd_minpoly: (X - C μ)^{e_μ} | minpoly K f by Finset.dvd_prod_of_mem applied to the product formula. diagonalizable_iff_squarefree_minpoly: alias of isSemisimple_iff_squarefree_minpoly. Summary docstring synthesizes the four key equivalences and the two-tier structure (Parts I-IV fully verified, Part V axiomatized pending Mathlib JNF block matrix)."
     }
   ],
   "sorries": 0

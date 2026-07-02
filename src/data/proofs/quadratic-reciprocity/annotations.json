@@ -131,7 +131,7 @@
       "startLine": 207,
       "endLine": 210
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Euler's Criterion",
     "content": "**Euler's Criterion** provides a computational formula for the Legendre symbol:\n\n$$\\left(\\frac{a}{p}\\right) \\equiv a^{(p-1)/2} \\pmod{p}$$\n\n**Proof sketch**: By Fermat, $a^{p-1} \\equiv 1 \\pmod{p}$. Factor: $a^{p-1} - 1 = (a^{(p-1)/2} - 1)(a^{(p-1)/2} + 1)$. So $a^{(p-1)/2} \\equiv \\pm 1 \\pmod{p}$. If $a \\equiv x^2$ then $a^{(p-1)/2} \\equiv x^{p-1} \\equiv 1$; conversely one shows QNRs give $-1$.\n\n**Computational use**: Euler's criterion reduces Legendre symbol evaluation to a single modular exponentiation computable in $O(\\log p)$ multiplications — much faster than trial and error.\n\n**In Lean**: `euler_criterion` is proved using `legendreSym.eq_pow p a` from Mathlib. The statement `(legendreSym p a : ZMod p) = (a : ZMod p) ^ (p / 2)` uses Lean integer division, where `p / 2` equals $(p-1)/2$ for odd prime $p$.\n\n**Historical note**: Euler stated this criterion (without the Legendre symbol notation) in 1748. Legendre introduced the symbol notation in 1798.",
     "mathContext": "$(a/p) = a^{(p-1)/2} \\mod p$",
@@ -156,7 +156,7 @@
       "startLine": 217,
       "endLine": 220
     },
-    "type": "technique",
+    "type": "tactic",
     "title": "Multiplicativity",
     "content": "The Legendre symbol is **completely multiplicative**:\n\n$$\\left(\\frac{ab}{p}\\right) = \\left(\\frac{a}{p}\\right) \\cdot \\left(\\frac{b}{p}\\right)$$\n\nThis means the map $a \\mapsto (a/p)$ is a **group homomorphism** from $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ to $\\{\\pm 1\\}$. Its kernel is precisely the subgroup of quadratic residues (index 2).\n\n**Computational power**: Together with reciprocity and the supplementary laws, multiplicativity reduces $\\left(\\frac{a}{p}\\right)$ for any $a$ to a sequence of smaller reciprocity applications — an algorithm analogous to the Euclidean algorithm.\n\n**Example**: $(6/7) = (2/7)(3/7)$. We have $(2/7) = 1$ (since $7 \\equiv 7 \\pmod{8}$) and $(3/7) = -(7/3) = -(1/3) = -1$ (since $7 \\equiv 3 \\pmod{4}$ and $3 \\equiv 3 \\pmod{4}$). So $(6/7) = -1$.\n\n**Jacobi symbol generalization**: The multiplicativity property extends to the Jacobi symbol $(a/n)$ for odd $n$, enabling efficient computation without factoring $n$ first.\n\n**In Lean**: `legendre_mul` is proved by `legendreSym.mul p a b` from Mathlib.",
     "mathContext": "$(ab/p) = (a/p)(b/p)$",
