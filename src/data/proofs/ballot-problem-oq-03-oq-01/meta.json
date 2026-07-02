@@ -125,6 +125,14 @@
   ],
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The 2×2 LGV Lemma via Crossing",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Imports and module docstring for the 2×2 Lindström–Gessel–Viennot lemma, which extends the 1D ballot reflection principle to planar lattice paths. These head lines introduce the crossing lemma (a discrete IVT: a path starting lower but ending higher must share a lattice point), the northBeforeEast column-entry function, and the complement-counting / Lindström-involution route to e(A₁,B₁)·e(A₂,B₂) − e(A₁,B₂)·e(A₂,B₁), before the LatticePathLGV namespace opens.",
+      "mathContext": "The 2×2 LGV lemma counts non-intersecting pairs of lattice paths as a 2×2 determinant of binomial path counts e(A,B)=C(dx+dy,dx). The engine is a 2D reflection principle: if P₁ enters each column below P₂ yet ends above it, monotonicity of the column-entry offset forces a shared lattice point (crossing lemma); swapping tails there is the sign-reversing involution. Machine-checked, with the example computations discharged by native_decide."
+    },
+    {
       "id": "lattice-path-defs",
       "title": "Part I: Lattice Path Definitions and northBeforeEast",
       "startLine": 70,
