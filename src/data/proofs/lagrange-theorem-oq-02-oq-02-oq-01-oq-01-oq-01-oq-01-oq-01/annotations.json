@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-lag02020101-context",
+    "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 8,
+      "endLine": 79
+    },
+    "type": "concept",
+    "title": "Conjugation Is a Group Action — So Orbit-Stabilizer Is the Class Equation",
+    "content": "The open question asks to specialise the parent's orbit-counting index identity `Nat.card (orbit G x) = [G : stabilizer G x]` to the conjugation action `ConjAct G ↷ G`. The payoff is the **conjugacy-class size formula** `Nat.card (class(g)) = [G : C_G(g)]`, the single-orbit heart of the class equation `|G| = Σ_classes [G : C_G(g)]`. Everything rests on one dictionary: under conjugation the **orbit** of `g` is its **conjugacy class** (`orbit_eq_carrier_conjClasses`) and the **stabilizer** of `g` is its **centralizer**. Because the parent's identity is proved from the finiteness-free orbit/coset bijection, the size formula inherits that generality — it needs **no** `Finite`/`Fintype` instance.",
+    "mathContext": "Conjugation action $\\mathrm{ConjAct}\\,G\\curvearrowright G$: $\\mathrm{orbit}(g)=$ conjugacy class of $g$ ($\\mathtt{orbit\\_eq\\_carrier\\_conjClasses}$), $\\mathrm{stab}(g)=C_G(g)$. Orbit–stabilizer $\\#\\mathrm{orbit}(g)=[G:\\mathrm{stab}(g)]$ specializes to the class-size formula $\\#\\mathrm{cl}(g)=[G:C_G(g)]$, the single-orbit heart of the class equation $|G|=\\sum_{\\text{classes}}[G:C_G(g)]$. No finiteness needed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjugation action",
+      "conjugacy class",
+      "centralizer",
+      "orbit-stabilizer theorem",
+      "class equation"
+    ],
+    "prerequisites": [
+      "group actions and orbits/stabilizers",
+      "conjugation and conjugacy classes",
+      "Nat.card"
+    ]
+  },
+  {
+    "id": "ann-lag02020101-indexmatch",
+    "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 82,
+      "endLine": 93
+    },
+    "type": "tactic",
+    "title": "Centralizer Index = Stabilizer Index (via a Surjection)",
+    "content": "`index_centralizer_eq_index_stabilizer` matches the two indices that live in the two isomorphic copies of the group. The centralizer `C_G(g)` sits in `G`, while the conjugation stabilizer sits in `ConjAct G`. Mathlib's `Subgroup.centralizer_eq_comap_stabilizer` exhibits `centralizer {g}` as the pullback (`comap`) of `stabilizer (ConjAct G) g` along the isomorphism `ConjAct.toConjAct`. Since that map is **surjective**, `Subgroup.index_comap_of_surjective` says pulling back preserves the index, so `(centralizer {g}).index = (stabilizer (ConjAct G) g).index`. No finiteness is used — index is a `Nat.card` of a quotient, and the surjection identifies the two quotients.",
+    "mathContext": "$C_G(g)=\\mathrm{comap}\\,\\mathrm{ConjAct.toConjAct}\\,(\\mathrm{stab}_{\\mathrm{ConjAct}\\,G}(g))$ ($\\mathtt{centralizer\\_eq\\_comap\\_stabilizer}$); since $\\mathrm{ConjAct.toConjAct}:G\\simeq^* \\mathrm{ConjAct}\\,G$ is surjective, $\\mathtt{index\\_comap\\_of\\_surjective}$ gives $[G:C_G(g)]=[\\mathrm{ConjAct}\\,G:\\mathrm{stab}(g)]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "subgroup index",
+      "comap along a homomorphism",
+      "surjective homomorphism preserves index",
+      "ConjAct.toConjAct"
+    ],
+    "prerequisites": [
+      "Subgroup.index",
+      "comap/pullback of subgroups",
+      "index invariance under surjections"
+    ]
+  },
+  {
+    "id": "ann-lag02020101-sizeformula",
+    "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 105
+    },
+    "type": "main-result",
+    "title": "The Conjugacy-Class Size Formula, Unconditional",
+    "content": "`card_conjugacyClass_eq_index_centralizer` is the main result: `Nat.card (orbit (ConjAct G) g) = (centralizer {g}).index`. After matching the centralizer index to the stabilizer index, the proof unfolds `Subgroup.index_eq_card` (index `=` `Nat.card` of the coset space) and transports the finiteness-free bijection `orbitEquivQuotientStabilizer (ConjAct G) g` through `Nat.card_congr`. The bijection — not any cardinal arithmetic — does the work, so the identity holds for **every** group `G` with no finiteness hypothesis. This is `|class(g)| = [G : C_G(g)]` over the total `Nat.card`.",
+    "mathContext": "$\\#\\mathrm{orbit}_{\\mathrm{ConjAct}\\,G}(g)=[G:C_G(g)]$. Proof: match centralizer/stabilizer indices, unfold $[G:H]=\\#(G/H)$ ($\\mathtt{index\\_eq\\_card}$), transport the finiteness-free bijection $\\mathtt{orbitEquivQuotientStabilizer}$ through $\\mathtt{Nat.card\\_congr}$. Holds for every group — no $\\mathrm{Finite}$ hypothesis.",
+    "significance": "key",
+    "relatedConcepts": [
+      "conjugacy-class size formula",
+      "orbitEquivQuotientStabilizer",
+      "index_eq_card",
+      "unconditional (no finiteness)"
+    ],
+    "prerequisites": [
+      "orbit–quotient bijection",
+      "Subgroup.index_eq_card",
+      "Nat.card_congr"
+    ]
+  },
+  {
+    "id": "ann-lag02020101-product",
+    "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 116
+    },
+    "type": "tactic",
+    "title": "The Product Form |class(g)|·|C_G(g)| = |G|",
+    "content": "`card_conjugacyClass_mul_card_centralizer` gives the multiplicative companion. `Group.nat_card_centralizer_nat_card_stabilizer` swaps `Nat.card (centralizer {g})` for `Nat.card (stabilizer (ConjAct G) g)`; then `← Nat.card_prod` and `Nat.card_congr (orbitProdStabilizerEquivGroup (ConjAct G) g)` collapse the product of orbit and stabilizer cardinalities to `Nat.card (ConjAct G)`; finally `ConjAct.toConjAct.toEquiv` identifies `Nat.card (ConjAct G)` with `Nat.card G`. The result `|class(g)|·|C_G(g)| = |G|` is the conjugation instance of `|orbit|·|Stab| = |G|`.",
+    "mathContext": "$\\#\\mathrm{orbit}(g)\\cdot\\#C_G(g)=\\#G$. Swap $\\#C_G(g)=\\#\\mathrm{stab}(g)$ ($\\mathtt{nat\\_card\\_centralizer\\_nat\\_card\\_stabilizer}$), then $\\mathtt{Nat.card\\_prod}+\\mathtt{orbitProdStabilizerEquivGroup}$ collapse $\\#(\\mathrm{orbit}\\times\\mathrm{stab})=\\#\\mathrm{ConjAct}\\,G=\\#G$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "orbit–stabilizer product form",
+      "orbitProdStabilizerEquivGroup",
+      "Nat.card_prod",
+      "|orbit|·|Stab|=|G|"
+    ],
+    "prerequisites": [
+      "product of cardinalities",
+      "orbit×stabilizer ≃ G bijection"
+    ]
+  },
+  {
+    "id": "ann-lag02020101-carrier",
+    "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 130
+    },
+    "type": "concept",
+    "title": "Restated Over the Honest Conjugacy-Class Carrier",
+    "content": "`card_conjClasses_carrier_eq_index_centralizer` and `card_conjClasses_carrier_mul_card_centralizer` re-express both identities over `(ConjClasses.mk g).carrier` — the genuine set `{ y | IsConj g y }` of elements conjugate to `g` — rather than the `ConjAct`-orbit. The bridge is a single `rw [← MulAction.orbit_eq_carrier_conjClasses]`, which rewrites the carrier back to the orbit and defers to the orbit-level theorems. This is what makes the statement read as an honest fact about conjugacy classes.",
+    "mathContext": "Restated over $(\\mathrm{ConjClasses.mk}\\,g).\\mathrm{carrier}=\\{y\\mid \\mathrm{IsConj}\\,g\\,y\\}$: a single $\\mathtt{rw}[\\leftarrow \\mathtt{orbit\\_eq\\_carrier\\_conjClasses}]$ rewrites the carrier to the orbit and defers to the orbit-level theorems, making the statement an honest fact about conjugacy classes.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ConjClasses carrier",
+      "IsConj",
+      "honest conjugacy-class statement",
+      "orbit = carrier"
+    ],
+    "prerequisites": [
+      "ConjClasses.mk and its carrier set",
+      "rewriting a definitional bridge"
+    ]
+  },
+  {
+    "id": "ann-lag02020101-center",
+    "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 149
+    },
+    "type": "insight",
+    "title": "Central Elements: Singleton Classes",
+    "content": "`card_conjugacyClass_center_eq_one` checks the degenerate stratum: if `g ∈ Z(G)` then everything commutes with `g`, so `centralizer {g} = ⊤`, its index is `1` (`Subgroup.index_top`), and the class of `g` is a singleton. This is exactly the `|Z(G)|` term of the class equation `|G| = |Z(G)| + Σ_{noncentral} [G : C_G(g)]`, recovered as a limiting case of the size formula. It also confirms the formula degrades correctly: central elements are fixed points of conjugation.",
+    "mathContext": "For $g\\in Z(G)$: everything commutes with $g$ so $C_G(g)=\\top$, $[G:\\top]=1$ ($\\mathtt{index\\_top}$), hence $\\#\\mathrm{cl}(g)=1$. This is the $|Z(G)|$ term of the class equation $|G|=|Z(G)|+\\sum_{\\text{noncentral}}[G:C_G(g)]$, recovered as the degenerate stratum (central elements are conjugation fixed points).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "center Z(G)",
+      "singleton conjugacy classes",
+      "class equation Z(G) term",
+      "Subgroup.index_top",
+      "fixed points of conjugation"
+    ],
+    "prerequisites": [
+      "center of a group",
+      "centralizer = ⊤ for central elements",
+      "index of the top subgroup"
+    ]
+  }
+]
