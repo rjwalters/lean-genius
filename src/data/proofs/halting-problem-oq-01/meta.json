@@ -85,6 +85,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Where the Halting Approximation Gap Lives in the Arithmetical Hierarchy",
+      "startLine": 1,
+      "endLine": 84,
+      "summary": "Import of Mathlib.Computability.Halting and module docstring. The companion HaltingApproximation proves only a schematic single-point barrier; this file gives the genuine computability reading (OQ-01c) using Nat.Partrec.Code / REPred / ComputablePred. Fixing an input, K = Halts n c is shown recursively enumerable (halts_re, Σ⁰₁) but not computable, with non-r.e. complement (halts_compl_not_re) — properly Σ⁰₁, so the gap lives in Π⁰₁∖Σ⁰₁. The core new content: modelling a computable approximator as a partial computable f : Code →. Bool, re_confirmedFalse (the confirmed-non-halting set is r.e.), no_sound_approx_confirms_all_nonhalting, sound_approx_undefined_on_nonhalting, and the sharp decline_set_on_nonhalting_not_re — the decline set restricted to non-halting inputs is itself non-r.e. (hence infinite), via REPred.or over Kᶜ = {confirmed false} ∪ {non-halting ∧ declines}. 0 axioms, 0 sorries.",
+      "mathContext": "The three hierarchy-placement theorems are thin wrappers over Mathlib's halting theorems; the genuine content is the schematic→partial-computable approximator bridge and the strengthening of a single forced decline point to a non-r.e. (infinite) decline set, driven by the Σ⁰₁/Π⁰₁ asymmetry (halting is semi-decidable, non-halting is not). Density/generic-case complexity (OQ-01b) is explicitly out of scope."
+    },
+    {
       "id": "hierarchy-placement",
       "title": "Section 1: The Parametrized Halting Set and its Hierarchy Placement",
       "startLine": 85,
