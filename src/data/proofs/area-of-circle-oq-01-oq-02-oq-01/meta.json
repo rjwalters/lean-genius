@@ -74,10 +74,10 @@
         "relationship": "Parent of this entry, providing the surface area formulation that this entry integrates"
       }
     ],
-    "lineCount": 290,
+    "lineCount": 284,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 26,
+    "theoremCount": 25,
     "definitionCount": 3
   },
   "overview": {
@@ -130,47 +130,47 @@
       "id": "derivative-relation",
       "title": "The Derivative Relation",
       "startLine": 106,
-      "endLine": 132,
+      "endLine": 126,
       "summary": "d/dr[V_n(r)] = S_n(r) via the power rule (hasDerivAt_pow), plus continuity of V_n and S_n. This is the n-dimensional 'onion peeling' principle.",
       "mathContext": "Mathematical content: d/dr[V_n(r)] = S_n(r) via the power rule (hasDerivAt_pow), plus continuity of V_n and S_n. This is the n-dimensional 'onion peeling' principle."
     },
     {
       "id": "integral-formula",
       "title": "The Integral Formula (Main Theorem)",
-      "startLine": 133,
-      "endLine": 166,
+      "startLine": 127,
+      "endLine": 160,
       "summary": "V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, using V_n(0) = 0. Also proves FTC Part 1 recovery: d/dr[∫₀ʳ S_n] = S_n(r).",
       "mathContext": "Verified: V_n(r) = ∫₀ʳ S_n(ρ) dρ via FTC Part 2, using V_n(0) = 0. Also proves FTC Part 1 recovery: d/dr[∫₀ʳ S_n] = S_n(r)."
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
-      "startLine": 167,
-      "endLine": 212,
+      "startLine": 161,
+      "endLine": 206,
       "summary": "n=1,2,3 special cases recovering classical formulas. Explicit formulas S₂=2πr, S₃=4πr², V₂=πr², V₃=(4π/3)r³ confirmed by substituting ω_n values.",
       "mathContext": "Mathematical content: n=1,2,3 special cases recovering classical formulas. Explicit formulas S₂=2πr, S₃=4πr², V₂=πr², V₃=(4π/3)r³ confirmed by substituting ω_n values."
     },
     {
       "id": "shell-volumes",
       "title": "Shell/Annulus Generalization",
-      "startLine": 213,
-      "endLine": 231,
+      "startLine": 207,
+      "endLine": 225,
       "summary": "∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for shells. The 3D spherical shell formula is given as a corollary.",
       "mathContext": "Mathematical content: ∫_{r₁}^{r₂} S_n = V_n(r₂) - V_n(r₁) for shells. The 3D spherical shell formula is given as a corollary."
     },
     {
       "id": "scaling",
       "title": "Scaling Properties and Surface-to-Volume Ratio",
-      "startLine": 232,
-      "endLine": 263,
+      "startLine": 226,
+      "endLine": 257,
       "summary": "Scaling laws V_n(cr) = c^n·V_n(r), S_n(cr) = c^(n-1)·S_n(r), and the key ratio S_n/V_n = n/r explaining concentration of measure in high dimensions.",
       "mathContext": "Mathematical content: Scaling laws V_n(cr) = c^n·V_n(r), S_n(cr) = c^(n-1)·S_n(r), and the key ratio S_n/V_n = n/r explaining concentration of measure in high dimensions."
     },
     {
       "id": "summary",
       "title": "Summary and Open Question Chain",
-      "startLine": 264,
-      "endLine": 290,
+      "startLine": 258,
+      "endLine": 284,
       "summary": "Recapitulates all results and traces the open question chain: Wiedijk #9 (A=πr²) → OQ01 (C=dA/dr) → OQ02 (A=∫C) → this file (V_n=∫S_n).",
       "mathContext": "Recapitulates all results and traces the open question chain: Wiedijk #9 (A=πr²) $\\to$ OQ01 (C=dA/dr) $\\to$ OQ02 (A=∫C) $\\to$ this file (V_n=∫S_n)."
     }
@@ -225,9 +225,9 @@
       "MeasureTheory"
     ],
     "namespace": "NDimVolumeIntegral",
-    "lineCount": 290,
+    "lineCount": 284,
     "axiomCount": 0,
-    "theoremCount": 26,
+    "theoremCount": 25,
     "definitionCount": 3,
     "path": "Proofs/AreaOfCircleOQ01OQ02OQ01.lean",
     "sorries": 0
