@@ -203,6 +203,21 @@
       "proofId": "frobenius-endomorphism-oq-01-oq-02",
       "relationship": "extends",
       "description": "The parent characterizes the fixed field of the Frobenius as the prime subfield 𝔽ₚ and records that on a perfect field (every finite field) the Frobenius is bijective. This entry answers the parent's second open question from the other side of the dichotomy: it exhibits an explicit imperfect field 𝔽ₚ(X) where the Frobenius fails to be surjective, with the polynomial ring 𝔽ₚ[X] as the imperfect-ring stepping stone."
+    },
+    {
+      "proofId": "frobenius-endomorphism-oq-01",
+      "relationship": "extends",
+      "description": "The grandparent: the Frobenius x ↦ x^p is a ring homomorphism in characteristic p. This entry lives at the far end of that thread — the same map, now shown to lose surjectivity on the infinite field 𝔽ₚ(X)."
+    },
+    {
+      "proofId": "frobenius-endomorphism-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Sibling giving the perfect side of the dichotomy this entry sharpens: it proves the Frobenius is a monomorphism on any domain and an automorphism (hence surjective) on a finite field. The contrast is exact — injectivity survives on 𝔽ₚ(X), but the finiteness that forced surjectivity there is gone, so surjectivity fails."
+    },
+    {
+      "proofId": "algebraic-numbers-countable-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The complementary witness: an infinite perfect field (the algebraic numbers, char 0, no inseparable extensions). Together the two entries show perfection is orthogonal to cardinality — 𝔽ₚ(X) is infinite and imperfect, ℚ̄ is infinite and perfect — so finiteness, not size, is what makes finite fields perfect."
     }
   ],
   "references": [
