@@ -263,5 +263,143 @@
       "gcdPowerSeq",
       "gcd(1, x) = 1"
     ]
+  },
+  {
+    "id": "erdos-770-monotone-stability",
+    "proofId": "erdos-770",
+    "range": {
+      "startLine": 238,
+      "endLine": 260
+    },
+    "type": "insight",
+    "title": "Monotone Divisibility and GCD Stability",
+    "content": "These lemmas establish the order structure of the gcd sequence g(n,k) = gcd(2^n-1, ..., k^n-1). `gcdPowerSeq_dvd_of_le` shows that extending the range divides the shorter fold: g(n,k) | g(n,j) whenever j <= k (more terms can only shrink the gcd). `gcdPowerSeq_stable` is the crucial monotonicity consequence: once the gcd hits 1 at some k, it stays 1 for all larger j — so the set {k : g(n,k) = 1} is an up-set and h(n) is well-defined as its minimum. `gcdPowerSeq_ne_one_of_le` is the contrapositive, and `gcdPowerSeq_dvd_term` records that the fold divides each individual a^n - 1 in range. All follow from `fold_gcd_dvd_of_subset` via Finset.Icc containments.",
+    "mathContext": "$g(n,k)=\\gcd_{2\\le a\\le k}(a^n-1)$; $j\\le k \\Rightarrow g(n,k)\\mid g(n,j)$, and $g(n,k)=1,\\ k\\le j \\Rightarrow g(n,j)=1$ (the solution set is an up-set).",
+    "significance": "key",
+    "relatedConcepts": [
+      "gcd monotonicity",
+      "Finset.fold",
+      "divisibility"
+    ],
+    "prerequisites": [
+      "Nat.gcd",
+      "Finset.Icc",
+      "Finset.fold induction"
+    ]
+  },
+  {
+    "id": "erdos-770-fermat-mechanism",
+    "proofId": "erdos-770",
+    "range": {
+      "startLine": 281,
+      "endLine": 349
+    },
+    "type": "insight",
+    "title": "The Fermat Mechanism: Why a Prime p Governs the GCD up to k = p",
+    "content": "This block is the number-theoretic engine of the problem. `prime_dvd_pow_sub_one` applies Fermat's little theorem in ZMod p: if p is prime, (p-1) | n, and p does not divide a, then a^n = (a^{p-1})^m = 1 (mod p), so p | a^n - 1. `prime_not_dvd_self_pow_sub_one` shows the opposite for the base a = p: p never divides p^n - 1 (else p | 1). Combining these, `prime_dvd_gcdPowerSeq` proves p | g(n,k) for every k < p (all terms a in [2,k] are coprime to p), while `prime_not_dvd_gcdPowerSeq_self` shows p does not divide g(n,p) (the term p^n - 1 spoils it). `gcdPowerSeq_ne_one_of_large_prime` packages the divisibility as g(n,k) != 1, and `gcdPowerSeq_fermat_transition` states the phase transition crisply: p divides g(n,p-1) but not g(n,p) — this is the exact moment the shared factor p is broken, pinning h(n) to p.",
+    "mathContext": "For prime $p$ with $(p-1)\\mid n$: $p\\mid a^n-1$ for all $a\\not\\equiv 0$ (Fermat), so $p\\mid g(n,k)$ for $k<p$, but $p\\nmid p^n-1$ gives $p\\nmid g(n,p)$. The transition at $k=p$ fixes $h(n)=p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "ZMod p",
+      "order of elements",
+      "divisibility"
+    ],
+    "prerequisites": [
+      "ZMod.pow_card_sub_one_eq_one",
+      "Nat.Prime",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "erdos-770-root-counting-bound",
+    "proofId": "erdos-770",
+    "range": {
+      "startLine": 447,
+      "endLine": 471
+    },
+    "type": "insight",
+    "title": "Main Structural Bound h(n) <= n+1 via Polynomial Root Counting",
+    "content": "`gcdPowerSeq_at_succ_eq_one` proves g(n, n+1) = 1 for every n >= 1, i.e. h(n) <= n+1. The argument extracts a prime q dividing the gcd and derives a contradiction in two regimes (private lemmas `no_small_prime_...` and `no_large_prime_...`): if q <= n+1 then q lies in the fold range, forcing q | q^n - 1 hence q | 1; if q > n+1 then all n+1 residues 1,2,...,n+1 are distinct roots of X^n - 1 over the field ZMod q, but a nonzero degree-n polynomial has at most n roots (`Polynomial.card_roots_le_degree`) — contradiction. `h_eq_succ_of_prime` then sharpens this to an equality h(n) = n+1 whenever n+1 is prime, pairing the Fermat lower bound with this upper bound.",
+    "mathContext": "$g(n,n+1)=1$ for all $n\\ge 1$ (so $h(n)\\le n+1$): a large prime divisor $q>n+1$ would make $\\{1,\\dots,n+1\\}$ into $n+1$ distinct roots of $X^n-1$ in $\\mathbb{F}_q$, exceeding $\\deg=n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polynomial root bound",
+      "finite fields",
+      "Fermat's little theorem"
+    ],
+    "prerequisites": [
+      "Polynomial.card_roots_le_degree",
+      "ZMod q as field",
+      "Finset.card_image_of_injOn"
+    ]
+  },
+  {
+    "id": "erdos-770-hmink-def",
+    "proofId": "erdos-770",
+    "range": {
+      "startLine": 477,
+      "endLine": 496
+    },
+    "type": "definition",
+    "title": "Formal Definition of h(n) as hMinK and Its Defining Properties",
+    "content": "`hMinK n` is the formal definition of h(n): the least k with g(n,k) = 1, obtained via `Nat.find` on the predicate exists-k-with-gcd-one. The existence witness needed by `Nat.find` is exactly `gcdPowerSeq_at_succ_eq_one` (k = n+1 always works), so h is total for n >= 1 and returns 0 at n = 0. The three companion theorems certify the minimality contract: `hMinK_spec` (g(n, hMinK n) = 1, the value achieves gcd 1), `hMinK_le_succ` (hMinK n <= n+1), and `hMinK_is_min` (g(n,k) != 1 for every k < hMinK n). Together they pin hMinK down as a genuine minimum, not just some valid cutoff.",
+    "mathContext": "$h(n)=\\text{hMinK}(n)=\\min\\{k: g(n,k)=1\\}$ via `Nat.find`, well-defined because $g(n,n+1)=1$; minimality: $k<h(n)\\Rightarrow g(n,k)\\ne 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.find",
+      "well-defined minimum",
+      "arithmetic functions"
+    ],
+    "prerequisites": [
+      "Nat.find / Nat.find_spec / Nat.find_min",
+      "noncomputable definitions"
+    ]
+  },
+  {
+    "id": "erdos-770-fermat-formula",
+    "proofId": "erdos-770",
+    "range": {
+      "startLine": 504,
+      "endLine": 523
+    },
+    "type": "insight",
+    "title": "The Fermat Formula h(p-1) = p",
+    "content": "`hMinK_prime_minus_one` proves the exact formula h(p-1) = p for every prime p, by antisymmetry. Upper bound: g(p-1, p) = 1 (this is g(n, n+1) = 1 at n = p-1), so h(p-1) <= p. Lower bound: by the Fermat mechanism every k < p has g(p-1, k) != 1, so h(p-1) cannot be smaller than p. `hMinK_succ_of_prime` restates the same fact in the common form h(n) = n+1 whenever n+1 is prime. This closed formula on the arithmetic progression {p-1 : p prime} is what drives every quantitative consequence, including unboundedness.",
+    "mathContext": "For prime $p$: $h(p-1)=p$. Equivalently $h(n)=n+1$ when $n+1$ is prime — the sharp value on inputs one below a prime.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat's little theorem",
+      "exact formulas",
+      "primes"
+    ],
+    "prerequisites": [
+      "Nat.le_antisymm",
+      "Nat.find_le",
+      "Nat.Prime"
+    ]
+  },
+  {
+    "id": "erdos-770-unbounded-formal",
+    "proofId": "erdos-770",
+    "range": {
+      "startLine": 530,
+      "endLine": 550
+    },
+    "type": "concept",
+    "title": "Unboundedness (Q2, Resolved) and the Remaining Open Questions Q1, Q3",
+    "content": "`hMinK_unbounded` formally resolves the upper half of Question 2: h is unbounded. The proof is immediate from the Fermat formula — for any bound M, pick a prime p > M+1 (`Nat.exists_infinite_primes`), then h(p-1) = p > M. The remaining questions stay genuinely open and are recorded as axioms rather than theorems: `erdos_770_q1` posits that the natural density of {n : h(n) = p} exists for each prime p (needs density theory for multiplicative functions not yet in Mathlib), and `erdos_770_q3` posits the dominant-prime characterization h(n) = p for the largest prime with (p-1) | n on large n. These two axioms are the entry's honest assumptions; only Q2's unboundedness is machine-checked here.",
+    "mathContext": "$\\forall M,\\ \\exists n,\\ h(n)>M$ (from $h(p-1)=p$ with $p>M$). Open (axiomatized): existence of density $\\delta_p$ of $\\{n:h(n)=p\\}$ (Q1) and the largest-prime characterization (Q3).",
+    "significance": "key",
+    "relatedConcepts": [
+      "unboundedness",
+      "infinitude of primes",
+      "natural density",
+      "open problems"
+    ],
+    "prerequisites": [
+      "Nat.exists_infinite_primes",
+      "Erdős problem context"
+    ]
   }
 ]
