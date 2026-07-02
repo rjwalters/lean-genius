@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module Header, Imports, and the Open Question",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Module docstring restating the parent entry's first open question — can cantor_normal_form_exists be proved non-trivially by transfinite induction using Ordinal.log and Ordinal.div? — and answering it affirmatively via Mathlib's Ordinal.CNF omega o. Imports Mathlib and opens the Ordinal and List namespaces.",
+      "mathContext": "$o = \\omega^{e_1} c_1 + \\dots + \\omega^{e_n} c_n$ produced by $\\mathrm{CNF}\\,\\omega\\,o$, defined by recursion descending along $o \\bmod \\omega^{\\log_\\omega o}$."
+    },
+    {
       "id": "existence",
       "title": "Existence of the Cantor Normal Form",
       "startLine": 43,
