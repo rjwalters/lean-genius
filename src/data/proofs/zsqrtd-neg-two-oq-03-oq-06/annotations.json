@@ -1,0 +1,76 @@
+[
+  {
+    "id": "ann-zsq-oq03oq06-isunit",
+    "proofId": "zsqrtd-neg-two-oq-03-oq-06",
+    "range": {
+      "startLine": 42,
+      "endLine": 58
+    },
+    "type": "theorem",
+    "title": "IsUnit ↔ Norm = 1",
+    "content": "isUnit_iff_norm_eq_one characterises the units of ℤ[ω] by their norm. Forward: a unit u satisfies u · u⁻¹ = 1, so by multiplicativity of the norm N(u)·N(u⁻¹) = N(1) = 1, giving N(u) ∣ 1; since a unit is nonzero its norm is a positive integer, and Int.le_of_dvd + omega force N(u) = 1. Backward: if N(z) = 1 then the parent's identity z · conj z = ⟨N z, 0⟩ = 1 exhibits conj z as a two-sided inverse, so z is a unit.",
+    "mathContext": "$\\mathrm{IsUnit}(z) \\iff N(z) = 1$; forward from $N(u)\\mid 1$ and $N(u) > 0$, backward from $z\\cdot\\overline z = N(z) = 1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "multiplicative norm",
+      "units of a ring",
+      "conjugate inverse",
+      "norm-Euclidean domain"
+    ],
+    "prerequisites": [
+      "Units.mul_inv",
+      "Int.le_of_dvd",
+      "Proofs.Eisenstein.mul_conj",
+      "Proofs.Eisenstein.norm_mul"
+    ]
+  },
+  {
+    "id": "ann-zsq-oq03oq06-enumerate",
+    "proofId": "zsqrtd-neg-two-oq-03-oq-06",
+    "range": {
+      "startLine": 64,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "Enumerating the Six Norm-1 Elements",
+    "content": "norm_eq_one_iff lists the norm-1 Eisenstein integers explicitly. From N(z) = 1 the identity 4·N(z) = (2·re − im)² + 3·im² (proved by linear_combination) gives 3·im² ≤ 4 and, symmetrically, 3·re² ≤ 4. Each square is then sharpened from ≤ 4/3 to ≤ 1 by an integer argument (1 < x² ⟹ 2 ≤ x²), pinning both coordinates to {−1,0,1}. interval_cases enumerates the nine candidates and decide keeps exactly the six with norm 1.",
+    "mathContext": "$4(a^2 - ab + b^2) = (2a-b)^2 + 3b^2$; integrality forces $a,b \\in \\{-1,0,1\\}$, leaving six norm-1 points.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "quadratic form bounding",
+      "integer squeeze",
+      "interval_cases enumeration",
+      "sixth roots of unity"
+    ],
+    "prerequisites": [
+      "linear_combination",
+      "nlinarith",
+      "Int.add_one_le_iff",
+      "interval_cases"
+    ]
+  },
+  {
+    "id": "ann-zsq-oq03oq06-group",
+    "proofId": "zsqrtd-neg-two-oq-03-oq-06",
+    "range": {
+      "startLine": 97,
+      "endLine": 123
+    },
+    "type": "theorem",
+    "title": "The Unit Group has Exactly Six Elements",
+    "content": "isUnit_iff composes the norm characterisation with the enumeration to classify units at the element level. unitsFinset collects the six units as a Finset, card_unitsFinset certifies its cardinality is 6 (by decide over the derived DecidableEq), and isUnit_iff_mem_unitsFinset records the membership form — so the unit group of ℤ[ω] has exactly six elements, the sixth roots of unity.",
+    "mathContext": "$\\mathbb{Z}[\\omega]^\\times = \\{\\pm 1, \\pm\\omega, \\pm\\omega^2\\}$, a cyclic group of order 6.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit group",
+      "cardinality via decide",
+      "roots of unity",
+      "Finset membership"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "Finset.mem_insert",
+      "DecidableEq"
+    ]
+  }
+]
