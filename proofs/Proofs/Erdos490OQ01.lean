@@ -18,7 +18,11 @@
   5. Structural analysis: cardinality bounds, trivial bound (§6)
 
   Sorry count: 0
-  Axiom count: 3 (Szemerédi bound, optimal example lower bound, maxProd existence)
+  Axiom count: 2 (Szemerédi bound, optimal example lower bound). `maxProd_exists` is now
+  a proved theorem: the maximum ranges over subsets of the finite set {1,...,N}, so the
+  achievable-value set is a nonempty finite set of naturals and we take its `Finset.max'`.
+  (Also repaired Mathlib v4.26 API drift: div_le_iff→div_le_iff₀, le_div_iff→le_div_iff₀,
+  Finset.card_Icc→Nat.card_Icc, Nat.cast_nonneg now needs its explicit argument.)
 -/
 
 import Mathlib
@@ -42,13 +46,62 @@ def HasDistinctProducts' (A B : Finset ℕ) : Prop :=
 -- § 2. The Maximum Product Size
 -- ============================================================================
 
-/-- The maximum of |A|·|B| over all valid pairs with distinct products in {1,...,N}.
-    We axiomatize its existence since the optimization is over finite sets. -/
-axiom maxProd_exists (N : ℕ) (hN : 2 ≤ N) :
-  ∃ M : ℕ, (∀ A B : Finset ℕ, IsSubsetUpTo' A N → IsSubsetUpTo' B N →
+/-- Membership bridge: `IsSubsetUpTo' A N` is exactly `A ∈ (Icc 1 N).powerset`. -/
+theorem isSubsetUpTo_iff_mem_powerset (A : Finset ℕ) (N : ℕ) :
+    IsSubsetUpTo' A N ↔ A ∈ (Finset.Icc 1 N).powerset := by
+  rw [Finset.mem_powerset, Finset.subset_iff]
+  constructor
+  · intro h a ha; exact Finset.mem_Icc.mpr (h a ha)
+  · intro h a ha; exact Finset.mem_Icc.mp (h ha)
+
+/-- The maximum of |A|·|B| over all valid pairs with distinct products in {1,...,N}
+    **exists** (previously an axiom). The optimization ranges over subsets of the finite
+    set `{1,...,N}`, so the value set is a nonempty finite set of naturals and we take its
+    `Finset.max'`. Nonemptiness comes from the valid pair `A = B = {1}`. -/
+theorem maxProd_exists (N : ℕ) (hN : 2 ≤ N) :
+    ∃ M : ℕ, (∀ A B : Finset ℕ, IsSubsetUpTo' A N → IsSubsetUpTo' B N →
       HasDistinctProducts' A B → A.card * B.card ≤ M) ∧
     (∃ A B : Finset ℕ, IsSubsetUpTo' A N ∧ IsSubsetUpTo' B N ∧
-      HasDistinctProducts' A B ∧ A.card * B.card = M)
+      HasDistinctProducts' A B ∧ A.card * B.card = M) := by
+  classical
+  -- All valid pairs live in the finite family of subsets of `{1,...,N}`.
+  set 𝒜 : Finset (Finset ℕ) := (Finset.Icc 1 N).powerset with h𝒜
+  -- The finite set of achievable products `|A|·|B|`.
+  set V : Finset ℕ :=
+    (((𝒜 ×ˢ 𝒜).filter (fun p => HasDistinctProducts' p.1 p.2)).image
+      (fun p => p.1.card * p.2.card)) with hV
+  -- `A = B = {1}` is a valid pair, so the value `1` is achievable and `V` is nonempty.
+  have h1mem : ({1} : Finset ℕ) ∈ 𝒜 := by
+    rw [h𝒜, ← isSubsetUpTo_iff_mem_powerset]
+    intro a ha
+    simp only [Finset.mem_singleton] at ha
+    subst ha; exact ⟨le_refl 1, by omega⟩
+  have hdist11 : HasDistinctProducts' ({1} : Finset ℕ) ({1} : Finset ℕ) := by
+    intro a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ _
+    simp only [Finset.mem_singleton] at ha₁ ha₂ hb₁ hb₂
+    omega
+  have hVne : V.Nonempty := by
+    refine ⟨1, ?_⟩
+    rw [hV, Finset.mem_image]
+    refine ⟨({1}, {1}), ?_, by simp⟩
+    rw [Finset.mem_filter, Finset.mem_product]
+    exact ⟨⟨h1mem, h1mem⟩, hdist11⟩
+  refine ⟨V.max' hVne, ?_, ?_⟩
+  · -- upper bound: every valid pair contributes an element of `V`, hence ≤ max'
+    intro A B hA hB hd
+    refine Finset.le_max' V _ ?_
+    rw [hV, Finset.mem_image]
+    refine ⟨(A, B), ?_, rfl⟩
+    rw [Finset.mem_filter, Finset.mem_product]
+    exact ⟨⟨(isSubsetUpTo_iff_mem_powerset A N).mp hA,
+            (isSubsetUpTo_iff_mem_powerset B N).mp hB⟩, hd⟩
+  · -- achieved: `max'` is itself a member of `V`, coming from some valid pair
+    have hmax : V.max' hVne ∈ V := Finset.max'_mem V hVne
+    obtain ⟨⟨A, B⟩, hpmem, hval⟩ := Finset.mem_image.mp hmax
+    rw [Finset.mem_filter, Finset.mem_product] at hpmem
+    obtain ⟨⟨hA𝒜, hB𝒜⟩, hd⟩ := hpmem
+    exact ⟨A, B, (isSubsetUpTo_iff_mem_powerset A N).mpr hA𝒜,
+      (isSubsetUpTo_iff_mem_powerset B N).mpr hB𝒜, hd, hval⟩
 
 /-- The maximum product size for parameter N. -/
 noncomputable def maxProd (N : ℕ) (hN : 2 ≤ N) : ℕ :=
@@ -93,7 +146,7 @@ theorem productRatio_bounded_above :
   unfold productRatio'
   have hlog_pos : 0 < Real.log (N : ℝ) := Real.log_pos (by exact_mod_cast (show 1 < N by omega))
   have hN2_pos : (0 : ℝ) < (N : ℝ)^2 := by positivity
-  rw [div_le_iff hN2_pos]
+  rw [div_le_iff₀ hN2_pos]
   calc (maxProd N hN : ℝ) * Real.log ↑N
       = Real.log ↑N * (maxProd N hN : ℝ) := by ring
     _ ≤ Real.log ↑N * (C * ↑N ^ 2 / Real.log ↑N) := by
@@ -108,7 +161,7 @@ theorem productRatio_bounded_below :
   unfold productRatio'
   have hlog_pos : 0 < Real.log (N : ℝ) := Real.log_pos (by exact_mod_cast (show 1 < N by omega))
   have hN2_pos : (0 : ℝ) < (N : ℝ)^2 := by positivity
-  rw [le_div_iff hN2_pos]
+  rw [le_div_iff₀ hN2_pos]
   calc c * ↑N ^ 2
       = Real.log ↑N * (c * ↑N ^ 2 / Real.log ↑N) := by field_simp
     _ ≤ Real.log ↑N * (maxProd N hN : ℝ) := by
@@ -165,7 +218,7 @@ theorem productRatio_nonneg (N : ℕ) (hN : 2 ≤ N) :
   unfold productRatio'
   apply div_nonneg
   · apply mul_nonneg
-    · exact Nat.cast_nonneg
+    · exact Nat.cast_nonneg _
     · exact (Real.log_pos (by exact_mod_cast (show 1 < N by omega))).le
   · positivity
 
@@ -176,7 +229,7 @@ theorem card_le_of_subset_upto (A : Finset ℕ) (N : ℕ) (hA : IsSubsetUpTo' A 
         apply Finset.card_le_card
         intro a ha
         exact Finset.mem_Icc.mpr (hA a ha)
-    _ = N := by simp [Finset.card_Icc]
+    _ = N := by rw [Nat.card_Icc]; omega
 
 /-- maxProd(N) ≤ N² (trivial bound). -/
 theorem maxProd_le_sq (N : ℕ) (hN : 2 ≤ N) :
