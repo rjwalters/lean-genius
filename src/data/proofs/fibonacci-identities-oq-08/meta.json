@@ -1,0 +1,128 @@
+{
+  "id": "fibonacci-identities-oq-08",
+  "title": "Lucas-Number Summation Identities",
+  "slug": "fibonacci-identities-oq-08",
+  "description": "Mathlib carries the Fibonacci sequence (Nat.fib) with a rich pointwise identity library but no Lucas sequence at all. This entry builds the Lucas numbers Lₙ (same recurrence, seed L₀=2, L₁=1) from scratch and proves the classical summation identities: the Lucas–Fibonacci bridge Lₙ + Fₙ = 2Fₙ₊₁, the partial sum (∑ᵢ Lᵢ)+1 = Lₙ₊₂, the doubling identity Fₙ·Lₙ = F₂ₙ, and the mixed partial sum (∑ᵢ Fᵢ·Lᵢ)+1 = F₂ₙ₊₁. Each is a self-contained induction, no axioms, no native_decide.",
+  "meta": {
+    "author": "Édouard Lucas (1878)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lucas_number",
+    "date": "1878",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ08.lean",
+    "tags": ["number-theory", "fibonacci", "lucas-numbers", "summation-identities", "induction", "open-question"],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "lineCount": 109,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "assumptions": "None. Fully machine-verified from Mathlib (only the foundational propext / Classical.choice / Quot.sound; no native_decide, no sorry). The Lucas sequence is defined locally; the only Fibonacci facts used are Nat.fib_add_two and Nat.fib_two_mul.",
+    "originalContributions": [
+      "lucas: a local definition of the Lucas sequence Lₙ (Lₙ₊₂ = Lₙ₊₁ + Lₙ, seed L₀ = 2, L₁ = 1) — Mathlib has Nat.fib but no Lucas sequence",
+      "lucas_add_fib: the Lucas–Fibonacci bridge Lₙ + Fₙ = 2·Fₙ₊₁ (equivalently Lₙ = Fₙ₊₁ + Fₙ₋₁), by two-step induction on the shared recurrence",
+      "lucas_sum: the partial-sum identity (L₀ + ⋯ + Lₙ) + 1 = Lₙ₊₂, the Lucas analogue of ∑ Fᵢ = Fₙ₊₂ − 1",
+      "fib_mul_lucas: the doubling identity Fₙ · Lₙ = F₂ₙ, Nat.fib_two_mul reread through the bridge",
+      "fib_mul_lucas_sum: the mixed partial sum (∑ᵢ Fᵢ·Lᵢ) + 1 = F₂ₙ₊₁, summing the doubling identity and telescoping"
+    ],
+    "prerequisites": [
+      "Fibonacci numbers Nat.fib and the recurrence Nat.fib_add_two",
+      "the doubling formula Nat.fib_two_mul: F₂ₙ = Fₙ(2Fₙ₊₁ − Fₙ)",
+      "Nat.twoStepInduction and Finset.sum_range_succ"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Lucas numbers 2, 1, 3, 4, 7, 11, 18, … are the companion sequence to the Fibonacci numbers: same recurrence, different seed. Introduced by Édouard Lucas (1878) alongside his general theory of second-order linear recurrences, they are tied to the Fibonacci numbers by the bridge Lₙ = Fₙ₋₁ + Fₙ₊₁ and the doubling law Fₙ Lₙ = F₂ₙ, and they enjoy the same style of telescoping summation identities. Mathlib formalizes Nat.fib in depth but records no Lucas sequence, so both the sequence and its identities are built here from the ground up.",
+    "problemStatement": "Define the Lucas numbers in Lean and prove, fully verified, the classical summation identities: the Lucas–Fibonacci bridge, the partial sum ∑ Lᵢ = Lₙ₊₂ − 1, the doubling identity Fₙ Lₙ = F₂ₙ, and the mixed partial sum ∑ Fᵢ Lᵢ = F₂ₙ₊₁ − 1.",
+    "proofStrategy": "The Lucas sequence is defined by structural recursion with the two-value seed L₀ = 2, L₁ = 1. The bridge Lₙ + Fₙ = 2Fₙ₊₁ is proved by Nat.twoStepInduction: it holds at n = 0, 1, and both sequences share the recurrence, so the additive relation propagates linearly (closed by omega once the recurrences are unfolded). The partial-sum identity lucas_sum is a single-step induction using Finset.sum_range_succ and the Lucas recurrence. The doubling identity fib_mul_lucas is Mathlib's Nat.fib_two_mul (F₂ₙ = Fₙ(2Fₙ₊₁ − Fₙ)) with the parenthesised factor rewritten as Lₙ via the bridge. Finally fib_mul_lucas_sum sums the doubling identity term by term: each Fᵢ Lᵢ becomes F₂ᵢ, and the sum telescopes through the Fibonacci recurrence.",
+    "keyInsights": [
+      "The bridge Lₙ + Fₙ = 2Fₙ₊₁ is the single fact that links the freshly-defined Lucas sequence to Mathlib's Fibonacci library; everything else follows from it plus the two recurrences",
+      "Because both sequences satisfy xₙ₊₂ = xₙ₊₁ + xₙ, any linear relation between them that holds at two consecutive seeds holds everywhere — the payload of Nat.twoStepInduction",
+      "The doubling identity Fₙ Lₙ = F₂ₙ is not new arithmetic: it is exactly Nat.fib_two_mul with 2Fₙ₊₁ − Fₙ recognised as Lₙ, so the ℕ-subtraction is discharged by omega through the bridge",
+      "Additive phrasing ((∑ …) + 1 = …) keeps the partial-sum identities inside ℕ, avoiding truncated subtraction while stating exactly ∑ Lᵢ = Lₙ₊₂ − 1 and ∑ Fᵢ Lᵢ = F₂ₙ₊₁ − 1",
+      "Aligning every Fibonacci/Lucas argument to a canonical n, n+1, n+2, n+3 form is what lets omega finish the inductive steps — it treats fib/lucas at differently-written indices as distinct atoms"
+    ],
+    "prerequisites": [
+      "Nat.fib and its recurrence Nat.fib_add_two",
+      "Nat.fib_two_mul (Fibonacci doubling formula)",
+      "Nat.twoStepInduction (two-seed induction)",
+      "Finset.sum_range_succ (peeling the top term of a range sum)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lucas-definition",
+      "title": "The Lucas Sequence and the Fibonacci Bridge",
+      "summary": "Defines lucas (Lₙ₊₂ = Lₙ₊₁ + Lₙ, seed 2, 1) and proves the bridge lucas_add_fib: Lₙ + Fₙ = 2Fₙ₊₁ by two-step induction.",
+      "startLine": 42,
+      "endLine": 71,
+      "mathContext": "The Lucas numbers share the Fibonacci recurrence $L_{n+2}=L_{n+1}+L_n$ but start from $L_0=2,\\ L_1=1$. The bridge $L_n+F_n=2F_{n+1}$ (equivalently $L_n=F_{n+1}+F_{n-1}$) is proved by `Nat.twoStepInduction`: it holds at $n=0,1$, and since both sequences obey the same recurrence, the linear relation propagates — `omega` closes each step once the recurrences are unfolded to a common index form."
+    },
+    {
+      "id": "summation-identities",
+      "title": "Partial Sums and the Doubling Identity",
+      "summary": "lucas_sum: (∑ᵢ Lᵢ)+1 = Lₙ₊₂; fib_mul_lucas: Fₙ·Lₙ = F₂ₙ; fib_mul_lucas_sum: (∑ᵢ Fᵢ·Lᵢ)+1 = F₂ₙ₊₁.",
+      "startLine": 73,
+      "endLine": 108,
+      "mathContext": "The Lucas partial sum $\\sum_{i\\le n} L_i = L_{n+2}-1$ telescopes by the recurrence (single-step induction). The doubling identity $F_n L_n = F_{2n}$ is Mathlib's `Nat.fib_two_mul`, $F_{2n}=F_n(2F_{n+1}-F_n)$, with the factor $2F_{n+1}-F_n$ recognised as $L_n$ via the bridge. Summing it gives $\\sum_{i\\le n} F_i L_i = \\sum_{i\\le n} F_{2i} = F_{2n+1}-1$, telescoping through the Fibonacci recurrence."
+    }
+  ],
+  "conclusion": {
+    "summary": "Builds the Lucas sequence from scratch (absent from Mathlib) and proves the classical Lucas summation identities fully verified: the Lucas–Fibonacci bridge Lₙ + Fₙ = 2Fₙ₊₁, the partial sum (∑ᵢ Lᵢ)+1 = Lₙ₊₂, the doubling identity Fₙ·Lₙ = F₂ₙ, and the mixed partial sum (∑ᵢ Fᵢ·Lᵢ)+1 = F₂ₙ₊₁. 109 lines, 1 definition, 7 theorems, 0 sorries, 0 axioms.",
+    "implications": "Establishes a reusable local Lucas sequence and the one bridge lemma (Lₙ + Fₙ = 2Fₙ₊₁) that connects it to Mathlib's Fibonacci library, from which the standard summation and doubling identities follow. The same template (two-step induction for cross-sequence relations, sum_range_succ + omega for partial sums) transfers to further Lucas identities.",
+    "openQuestions": [
+      "Prove the Lucas analogue of the sum-of-squares identity ∑ Lᵢ² and the Lucas Cassini-type relation Lₙ₋₁Lₙ₊₁ − Lₙ² = ±5(−1)ⁿ",
+      "Establish L₂ₙ = Lₙ² − 2(−1)ⁿ and L²ₙ − 5F²ₙ = 4(−1)ⁿ, the Lucas–Fibonacci Pell-type relation",
+      "Contribute the Lucas sequence (or the general Lucas sequence Uₙ, Vₙ of a second-order recurrence) to Mathlib, so that these identities become library lemmas rather than local constructions"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "extends",
+      "description": "Parent: Fibonacci summation identities. This entry supplies the companion Lucas sequence and the analogous Lucas summation identities, reusing the same sum_range_succ + induction template."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-07",
+      "relationship": "related",
+      "description": "Sibling on the Fibonacci divisibility characterization, which likewise notes the Lucas connection; that entry works with Nat.fib_gcd while this one builds the Lucas sequence itself and its summation laws."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lucas, Édouard",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics 1(3), pp. 184–240 and 1(4), pp. 289–321",
+      "note": "Introduces the Lucas numbers and the general theory of second-order recurrences, including the Fibonacci–Lucas bridge and doubling laws"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Comprehensive treatment of Fibonacci and Lucas summation identities, including ∑ Lᵢ = Lₙ₊₂ − 1 and Fₙ Lₙ = F₂ₙ"
+    },
+    {
+      "authors": "Vajda, Steven",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood",
+      "note": "Develops the Lucas sequence and the bridge Lₙ = Fₙ₋₁ + Fₙ₊₁ used to connect it to the Fibonacci numbers"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset"],
+    "namespace": "FibonacciIdentitiesOQ08",
+    "lineCount": 109,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 4,
+    "trivialSpecializations": 0,
+    "definitionCount": 1,
+    "path": "Proofs/FibonacciIdentitiesOQ08.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

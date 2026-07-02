@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-fib08-header",
+    "proofId": "fibonacci-identities-oq-08",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "Lucas Numbers: Fibonacci's Companion Sequence",
+    "content": "The Lucas numbers 2, 1, 3, 4, 7, 11, 18, … obey the same recurrence as the Fibonacci numbers, Lₙ₊₂ = Lₙ₊₁ + Lₙ, but start from the seed L₀ = 2, L₁ = 1. They are the canonical companion of the Fibonacci sequence, linked to it by Lₙ = Fₙ₋₁ + Fₙ₊₁ and Fₙ Lₙ = F₂ₙ. Mathlib formalizes Nat.fib in depth but records no Lucas sequence, so this entry builds the sequence and its classical summation identities from scratch — each a self-contained induction with no axioms and no native_decide.",
+    "mathContext": "Lucas recurrence $L_{n+2}=L_{n+1}+L_n$, seed $L_0=2,\\ L_1=1$; bridge $L_n=F_{n+1}+F_{n-1}$; doubling $F_nL_n=F_{2n}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lucas numbers", "Fibonacci numbers", "linear recurrence", "companion sequence", "Nat.fib"],
+    "prerequisites": ["second-order linear recurrences", "Fibonacci numbers"]
+  },
+  {
+    "id": "ann-fib08-definition-bridge",
+    "proofId": "fibonacci-identities-oq-08",
+    "range": { "startLine": 42, "endLine": 71 },
+    "type": "definition",
+    "title": "The Lucas Sequence and the Fibonacci Bridge",
+    "content": "The Lucas sequence is defined by structural recursion with the two-value seed (L₀ = 2, L₁ = 1) and the shared recurrence Lₙ₊₂ = Lₙ₊₁ + Lₙ. The key link to Mathlib's Fibonacci library is the bridge lucas_add_fib: Lₙ + Fₙ = 2·Fₙ₊₁ (equivalently Lₙ = Fₙ₊₁ + Fₙ₋₁). Because both sequences satisfy xₙ₊₂ = xₙ₊₁ + xₙ, a linear relation between them holding at two consecutive seeds holds for all n — exactly the payload of Nat.twoStepInduction. Each inductive step is closed by omega after unfolding both recurrences to a common index form.",
+    "mathContext": "Bridge $L_n+F_n=2F_{n+1}$ by two-step induction: base $n=0,1$, step propagates the linear relation through the shared recurrence.",
+    "significance": "central",
+    "relatedConcepts": ["Nat.twoStepInduction", "structural recursion", "Lucas–Fibonacci bridge", "Nat.fib_add_two"],
+    "prerequisites": ["two-step induction", "Fibonacci recurrence", "omega"]
+  },
+  {
+    "id": "ann-fib08-lucas-sum",
+    "proofId": "fibonacci-identities-oq-08",
+    "range": { "startLine": 73, "endLine": 82 },
+    "type": "insight",
+    "title": "lucas_sum: Partial Sums of the Lucas Numbers",
+    "content": "The Lucas analogue of the Fibonacci partial-sum law ∑ Fᵢ = Fₙ₊₂ − 1: here (L₀ + L₁ + ⋯ + Lₙ) + 1 = Lₙ₊₂. Stated additively to stay inside ℕ (no truncated subtraction). The proof is a single-step induction — peel the top term with Finset.sum_range_succ, apply the Lucas recurrence lucas_add_two, and let omega telescope, taking care to normalise lucas (k+1+1) to lucas (k+2) so omega sees a single atom.",
+    "mathContext": "$\\sum_{i=0}^{n} L_i = L_{n+2}-1$, telescoping via $L_{n+2}=L_{n+1}+L_n$.",
+    "significance": "central",
+    "relatedConcepts": ["Finset.sum_range_succ", "telescoping sum", "partial sums", "induction"],
+    "prerequisites": ["range sums", "Lucas recurrence"]
+  },
+  {
+    "id": "ann-fib08-doubling",
+    "proofId": "fibonacci-identities-oq-08",
+    "range": { "startLine": 84, "endLine": 90 },
+    "type": "insight",
+    "title": "fib_mul_lucas: The Doubling Identity Fₙ·Lₙ = F₂ₙ",
+    "content": "The product of matched Fibonacci and Lucas terms is an even-indexed Fibonacci number. This is not new arithmetic — it is Mathlib's Nat.fib_two_mul, F₂ₙ = Fₙ·(2Fₙ₊₁ − Fₙ), with the parenthesised factor 2Fₙ₊₁ − Fₙ recognised as Lₙ through the bridge lucas_add_fib. The ℕ-subtraction 2Fₙ₊₁ − Fₙ is discharged by omega using the bridge equation, then a single rewrite finishes the identity.",
+    "mathContext": "$F_n L_n = F_{2n}$ from `Nat.fib_two_mul` $F_{2n}=F_n(2F_{n+1}-F_n)$ and $L_n=2F_{n+1}-F_n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.fib_two_mul", "doubling formula", "Lucas–Fibonacci bridge"],
+    "prerequisites": ["Fibonacci doubling formula", "truncated subtraction in ℕ"]
+  },
+  {
+    "id": "ann-fib08-mixed-sum",
+    "proofId": "fibonacci-identities-oq-08",
+    "range": { "startLine": 92, "endLine": 108 },
+    "type": "insight",
+    "title": "fib_mul_lucas_sum: The Mixed Partial Sum",
+    "content": "Summing the doubling identity gives (F₀L₀ + F₁L₁ + ⋯ + FₙLₙ) + 1 = F₂ₙ₊₁. Each term Fᵢ·Lᵢ equals the even-indexed F₂ᵢ (fib_mul_lucas), so the mixed sum is ∑ᵢ F₂ᵢ, which telescopes through the Fibonacci recurrence F₂ₖ₊₃ = F₂ₖ₊₁ + F₂ₖ₊₂. The induction peels the top term, rewrites it via the doubling identity, and closes with omega after aligning the doubled indices 2(k+1), 2k+1 to a common form.",
+    "mathContext": "$\\sum_{i=0}^{n} F_i L_i = \\sum_{i=0}^{n} F_{2i} = F_{2n+1}-1$, telescoping via the Fibonacci recurrence at even/odd indices.",
+    "significance": "central",
+    "relatedConcepts": ["Finset.sum_range_succ", "even-indexed Fibonacci", "telescoping sum", "doubling identity"],
+    "prerequisites": ["range sums", "Fibonacci recurrence", "doubling identity FₙLₙ = F₂ₙ"]
+  }
+]
