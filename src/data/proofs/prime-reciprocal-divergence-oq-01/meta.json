@@ -138,7 +138,12 @@
   ],
   "conclusion": {
     "summary": "This entry packages the full convergence/divergence dichotomy of the prime zeta function $P(s) = \\sum_p 1/p^s$ as the single iff `prime_zeta_summable_iff`: summable exactly when $s > 1$. It reduces the $1/p^s$ form used throughout the surrounding gallery questions to Mathlib's $p^{-s}$ dichotomy `Nat.Primes.summable_rpow` by the pointwise rewrite $1/p^s = p^{-s}$, then reads off the two one-directional corollaries, the divergent boundary $s = 1$ (Euler's prime reciprocal divergence), and the convergent instance $s = 2$. All results are fully machine-checked with 0 axioms and 0 sorries.",
-    "implications": "The critical exponent $s = 1$ isolated here is exactly the boundary that the parent entry's open question — the Mertens error term $\\sum_{p \\leq n} 1/p = \\ln\\ln n + M + E(n)$ — refines quantitatively. While the sharp asymptotic remains beyond Mathlib, the qualitative dichotomy is the clean foundation on which such refinements sit, and it connects to the Riemann zeta function through $\\ln \\zeta(s) = \\sum_p \\sum_{k \\geq 1} p^{-ks}/k$, whose $s \\to 1^+$ divergence mirrors the boundary case established here."
+    "implications": "The critical exponent $s = 1$ isolated here is exactly the boundary that the parent entry's open question — the Mertens error term $\\sum_{p \\leq n} 1/p = \\ln\\ln n + M + E(n)$ — refines quantitatively. While the sharp asymptotic remains beyond Mathlib, the qualitative dichotomy is the clean foundation on which such refinements sit, and it connects to the Riemann zeta function through $\\ln \\zeta(s) = \\sum_p \\sum_{k \\geq 1} p^{-ks}/k$, whose $s \\to 1^+$ divergence mirrors the boundary case established here.",
+    "openQuestions": [
+      "Formalize Mertens' second theorem $\\sum_{p \\leq n} 1/p = \\ln\\ln n + M + o(1)$, pinning the Meissel–Mertens constant $M$ and an explicit error term — the quantitative refinement of the $s = 1$ boundary divergence isolated here.",
+      "Establish the Euler-product logarithm $\\ln\\zeta(s) = \\sum_p \\sum_{k \\geq 1} p^{-ks}/k$ inside Mathlib and derive $P(s)$'s $s \\to 1^+$ divergence rate $\\sim \\ln\\frac{1}{s-1}$ from the simple pole of $\\zeta$ at $s = 1$.",
+      "Contrast with Brun's theorem: the reciprocal sum over twin primes converges. Formalize a convergent prime-subset zeta to delimit exactly which arithmetic subsequences of the primes preserve the $s = 1$ boundary and which push it left."
+    ]
   },
   "crossReferences": [
     {
