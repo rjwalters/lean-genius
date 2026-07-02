@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-setup-definitions",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
+    "range": { "startLine": 49, "endLine": 63 },
+    "type": "definition",
+    "title": "Cyclic Vector and Nonderogatory: the Two Core Definitions",
+    "content": "The file is deliberately self-contained: because the parent CayleyHamiltonMinpolyOQ04Backward no longer compiles against the current Mathlib toolchain, the two governing notions are reproved locally rather than imported. `IsCyclicVector M v` says v is cyclic when the only polynomial of degree < n annihilating v under M is zero — equivalently, the orbit {v, Mv, M²v, …, Mⁿ⁻¹v} is linearly independent, so v generates the whole space under M. `IsNonderogatory M` is the compact characterization that the minimal polynomial equals the characteristic polynomial, i.e. deg(minpoly) = n. The whole file establishes the backward implication nonderogatory ⟹ cyclic-vector in the special case where minpoly K M is irreducible, where the conclusion strengthens to: EVERY nonzero v is cyclic. The ambient `variable {K : Type*} [Field K] {n : ℕ}` fixes an arbitrary field (no infinitude or algebraic-closure hypothesis is needed for the irreducible case).",
+    "mathContext": "$$\\text{IsCyclicVector}(M,v) \\iff \\bigl(\\forall p,\\ \\deg p < n \\wedge p(M)v = 0 \\Rightarrow p = 0\\bigr), \\qquad \\text{IsNonderogatory}(M) \\iff \\mu_M = \\chi_M.$$",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclic vector", "nonderogatory matrix", "minimal polynomial", "characteristic polynomial", "Krylov subspace"],
+    "prerequisites": ["minimal vs characteristic polynomial", "matrix action via mulVec", "polynomial degree"]
+  },
+  {
     "id": "ann-gcd-bezout",
     "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01",
     "range": { "startLine": 66, "endLine": 90 },
