@@ -56,7 +56,7 @@
     ],
     "dateAdded": "2026-06-27",
     "axiomCount": 0,
-    "lineCount": 142,
+    "lineCount": 94,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (single-file checked with `lake env lean`). #print axioms reports only the foundational propext / Classical.choice / Quot.sound (none of which count). No native_decide, so no Lean.ofReduceBool. No structure-encoded hypotheses. Scope note: this is the characteristic-independent core; the characteristic-p Abhyankar refinements are not formalized. The remaining threshold case S₄ (needing A₄ solvable) is deferred to a companion file and is NOT claimed here.",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,

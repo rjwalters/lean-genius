@@ -51,7 +51,7 @@
     ],
     "dateAdded": "2026-06-25",
     "axiomCount": 0,
-    "lineCount": 121,
+    "lineCount": 215,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for all four results (none of which count as assumptions). The single `decide` (for S₂ commutativity) is kernel decidability, not native_decide, so it does not introduce Lean.ofReduceBool. No structure-encoded hypotheses. Scope note: this is the characteristic-independent core; the characteristic-p Abhyankar-conjecture refinements are not formalized.",
     "mathlib_version": "4.26.0",
     "theoremCount": 5,

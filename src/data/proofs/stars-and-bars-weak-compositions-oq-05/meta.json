@@ -52,7 +52,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 176,
+    "lineCount": 181,
     "assumptions": "0 axioms, 0 sorries, no native_decide. Both named theorems (card_weakComposition_first_eq, sum_marginals_eq_total) and the bijection dropFirstEquiv were verified to depend only on the foundational propext / Classical.choice / Quot.sound. The marginal count card_weakComposition_first_eq holds for every k ≥ 1 and d ≤ n; the d ≤ n hypothesis is essential, since for d > n the set is empty (count 0) while the closed form would read C(n−d+k−2, 0) = 1. The summation consistency sum_marginals_eq_total holds for all k ≥ 1, with the k = 1 (single-part) boundary handled separately: only the d = n term survives. The worked examples are discharged by kernel evaluation of Nat.choose on literals (decide), not native_decide.",
     "mathlib_version": "4.26.0",
     "theoremCount": 2,

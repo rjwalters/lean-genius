@@ -50,7 +50,7 @@
     ],
     "dateAdded": "2026-06-25",
     "axiomCount": 0,
-    "lineCount": 80,
+    "lineCount": 78,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms on fixedPoints_Icc_nonempty_isCompact and exists_fixedPoint_Icc reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide, no structure-encoded hypotheses. Imports only Mathlib — deliberately NOT the axiom-bearing base file SchauderFixedPoint.lean (which carries brouwer/mazur axioms).",
     "mathlib_version": "4.26.0",
     "theoremCount": 5,

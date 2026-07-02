@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 204,
+    "lineCount": 255,
     "assumptions": "Fully machine-checked, 0 sorries, 0 axiom declarations; all theorems depend only on the foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool — kernel-verified). Honest scope: this file proves the NUMBER-THEORETIC core that explains why the Erdős–Salamon forbidden set is exactly {C(n,2)−1, C(n,2)−3}, namely that the gap set of the numerical semigroup ⟨2,5⟩ is exactly {1,3}. It does NOT prove geometric realizability (that disjoint collinear triples/quadruples can be embedded in the plane — the geometric content carried by the parent file's axioms), nor the open Erdős–Salamon threshold N₀ (OQ-01's literal question).",
     "dateAdded": "2026-06-22",
     "mathlib_version": "4.26.0",

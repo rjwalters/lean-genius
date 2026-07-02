@@ -57,7 +57,7 @@
       "fib_two_exception: fib 2 ∣ fib 1 ∧ ¬ (2 ∣ 1) — the concrete sharpness witness at m = 2"
     ],
     "dateAdded": "2026-07-01",
-    "lineCount": 106,
+    "lineCount": 108,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). The tactic `decide` is used only to evaluate the closed numerals fib 2 = 1, fib 3 = 2, fib 4 = 3 and the ground fact ¬(2 ∣ 1); these reduce in the kernel (fib_zero/one/two are rfl) and introduce no `Lean.ofReduceBool` — no `native_decide` appears.",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,

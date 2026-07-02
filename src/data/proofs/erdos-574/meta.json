@@ -22,7 +22,7 @@
     "assumptions": "0 axioms, 0 sorries. The headline Erdős–Simonovits conjecture (#574) remains OPEN and is stated only as commentary, not as a proven theorem — hence the 'axiomatized' status. The file now contributes three machine-checked theorems formalizing the unconditional lower-bound core: a bipartite graph has no cycle of odd length (bipartite_not_hasCycle_odd), hence contains no C_{2k−1} (bipartite_no_odd_consecutive), hence a bipartite C_{2k}-free graph is automatically {C_{2k−1}, C_{2k}}-free (bipartite_evenFree_consecutiveFree). This is the structural reason the lower bound for ex(n; {C_{2k−1}, C_{2k}}) transfers with no loss from ex(n; C_{2k}); the only open content is the matching upper bound.",
     "proofRepoPath": "Proofs/Erdos574Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 188,
+    "lineCount": 220,
     "theoremCount": 3,
     "definitionCount": 6
   },
