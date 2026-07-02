@@ -97,6 +97,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the algebraic numbers ARE an algebraic closure of ℚ",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "Header docstring and imports: the lineage from the grandparent/parent/sibling entries, the structural step this file adds (identifying the algebraic numbers with the abstract AlgebraicClosure ℚ), and the three-step method.",
+      "mathContext": "This file (open question oq-01-oq-03) completes the structural picture of the algebraic numbers. Lineage: the grandparent AlgebraicNumbersCountable shows they form a countable subset of ℂ (#{z:ℂ | IsAlgebraic ℚ z} = ℵ₀); the parent OQ01 shows the algebraic elements of L/K form a subfield; the sibling OQ01OQ01 upgrades that to an IntermediateField algebraicNumbersField, proves it algebraically closed, and identifies it with Mathlib's *relative* closure algebraicClosure ℚ ℂ (still inside ℂ). This file takes the last step: identifying the algebraic numbers with the *abstract* algebraic closure AlgebraicClosure ℚ (built from ℚ alone, no ambient field). The bridge is uniqueness of algebraic closures: (1) algebraicNumbersField is an IsAlgClosure ℚ · — algebraically closed (sibling) and algebraic over ℚ by definition; (2) since AlgebraicClosure ℚ is also IsAlgClosure ℚ ·, Mathlib's IsAlgClosure.equiv gives a ℚ-algebra isomorphism algebraicNumbersEquivAlgebraicClosure : algebraicNumbersField ≃ₐ[ℚ] AlgebraicClosure ℚ fixing ℚ pointwise; (3) cardinality transport across this bijection carries the grandparent's ℵ₀ count to cardinalMk_algebraicClosure_rat (#(AlgebraicClosure ℚ) = ℵ₀) and hence countable_algebraicClosure_rat. The mathematical content is the *transport*: the sibling supplies the algebraically-closed intermediate field, Mathlib supplies uniqueness of algebraic closures, and combining them pins the intrinsic AlgebraicClosure ℚ to the concrete algebraic numbers, including countability. Fully verified: 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions (only foundational propext / Classical.choice / Quot.sound)."
+    },
+    {
       "id": "isalgclosure",
       "title": "§1: The algebraic numbers are an algebraic closure of ℚ",
       "startLine": 73,
