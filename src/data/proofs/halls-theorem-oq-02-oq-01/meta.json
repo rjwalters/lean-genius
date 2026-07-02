@@ -1,0 +1,68 @@
+{
+  "id": "halls-theorem-oq-02-oq-01",
+  "title": "The Defect Form of Hall's Marriage Theorem: Matching All But d Indices",
+  "slug": "halls-theorem-oq-02-oq-01",
+  "description": "Answers the parent (halls-theorem-oq-02)'s open question by proving the defect / deficiency (König–Ore) form of Hall's marriage theorem in Lean 4. Where the classical theorem demands the exact Hall condition #S ≤ #(S.biUnion t) for a full system of distinct representatives, this entry allows the condition to fail by a fixed slack d: if #S ≤ #(S.biUnion t) + d for every S, then some index subset s of size at least |ι| − d still carries an injective choice function f with f x ∈ t x. The proof is a clean reduction — adjoin d universal dummy targets in α ⊕ Fin d so the +d slack becomes an exact Hall condition for the augmented family, invoke Mathlib's Finset.all_card_le_biUnion_card_iff_exists_injective, and read off the genuine matching from the indices that avoid the d dummies (at most d of them, since the transversal is injective). Specialising d = 0 recovers Mathlib's Hall theorem, so the result is a strict generalisation.",
+  "meta": {
+    "author": "Lean Genius researcher-14",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HallsTheoremOQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 179,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "assumptions": "None beyond the ambient hypotheses of the statement (finite index type ι with DecidableEq, target type α with DecidableEq and Nonempty, and the defect Hall condition). Fully machine-checked; 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (no Lean.ofReduceBool, no native_decide, no sorryAx).",
+    "tags": [
+      "halls-theorem",
+      "marriage-theorem",
+      "deficiency",
+      "defect-version",
+      "konig-ore",
+      "system-of-distinct-representatives",
+      "matching",
+      "combinatorics",
+      "finset"
+    ],
+    "dateAdded": "2026-07-01",
+    "originalContributions": [
+      "HallDefect.hall_defect: the defect / deficiency form of Hall's marriage theorem — if the Hall condition fails by at most d (∀ S, #S ≤ #(S.biUnion t) + d) then there is a subset s with Fintype.card ι ≤ #s + d and an injective f with f x ∈ t x for all x ∈ s; i.e. a matching saturating all but at most d indices. Not present in Mathlib, which has only the exact (d = 0) Hall theorem.",
+      "The dummy-augmentation reduction: passing to α ⊕ Fin d with t' i = (t i).image Sum.inl ∪ (all d dummies) converts the +d defect slack into an exact Hall condition, so a single application of Mathlib's Hall theorem yields the deficient matching — no direct augmenting-path argument needed.",
+      "HallDefect.hall_of_hall_defect: specialising to d = 0 recovers the classical system of distinct representatives (a full injective transversal), exhibiting the defect theorem as a genuine generalisation of Finset.all_card_le_biUnion_card_iff_exists_injective."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.all_card_le_biUnion_card_iff_exists_injective",
+        "description": "Mathlib's Hall marriage theorem in indexed-family form: (∀ S, #S ≤ #(S.biUnion t)) ↔ ∃ f, Injective f ∧ ∀ x, f x ∈ t x. Applied to the augmented family t' to extract the injective transversal g : ι → α ⊕ Fin d.",
+        "module": "Mathlib.Combinatorics.Hall.Basic"
+      },
+      {
+        "theorem": "Finset.card_union_of_disjoint",
+        "description": "#(s ∪ t) = #s + #t for disjoint finsets. Splits the augmented biUnion into its inl (real targets) and inr (dummy) halves to produce the +d.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "#(s.image f) = #s when f is injective on s. Bounds the complement of the matched set by carrying it injectively (via g) into the d dummies.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.filter_card_add_filter_neg_card_eq_card",
+        "description": "#(univ.filter p) + #(univ.filter ¬p) = #univ. Splits the index type into matched (g x not a dummy) and unmatched parts to derive Fintype.card ι ≤ #s + d.",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hall's marriage theorem (1935) characterises when a family of finite sets admits a system of distinct representatives (SDR): exactly when every subfamily of k sets covers at least k elements (the Hall condition). When the condition fails, the natural quantitative question — how large a partial SDR still exists — was answered by the deficiency (or defect) version, associated with the König–Ore line of matching theory: the maximum matching misses exactly max_S (|S| − |N(S)|) indices. Mathlib formalises the exact theorem (Finset.all_card_le_biUnion_card_iff_exists_injective) but not its deficiency refinement. This entry supplies the one-sided defect bound: a uniform slack d in the Hall condition costs at most d unmatched indices.",
+    "problemStatement": "Open question of halls-theorem-oq-02: derive the defect/deficiency form — when the one-sided Hall condition fails by at most d (∀ S : Finset ι, #S ≤ #(S.biUnion t) + d), the maximum matching saturates all but at most d indices of the left part. Formalise it from Mathlib's Hall theorem plus a counting/reduction argument, over an arbitrary finite index type ι and target type α.",
+    "proofStrategy": "Reduction by dummy augmentation. Work in the coproduct α ⊕ Fin d and define t' i = (t i).image Sum.inl ∪ D where D = univ.image Sum.inr is the set of all d dummy targets, available to every index. For nonempty S the augmented union contains the disjoint union of (S.biUnion t).image Sum.inl and D, so #(S.biUnion t') ≥ #(S.biUnion t) + d ≥ #S by the defect hypothesis; the empty case is trivial. Thus t' satisfies the exact Hall condition and Mathlib's theorem gives an injective g : ι → α ⊕ Fin d with g x ∈ t' x. Let s = {x | g x ∉ D} be the indices matched to real targets; on s, g factors as Sum.inl (f x) with f x ∈ t x, and injectivity of g gives injectivity of f on s. The complement injects (via g) into the d dummies, so it has size ≤ d; hence Fintype.card ι ≤ #s + d. Setting d = 0 makes D empty, forces s = univ, and recovers the full injective transversal.",
+    "keyInsights": [
+      "The defect slack d is exactly a d-fold enlargement of the target side: adding d universal dummies converts '∀ S, #S ≤ #(S.biUnion t) + d' into the exact Hall condition for the augmented family. The +d and the d dummies are the same d.",
+      "No augmenting-path or max-flow machinery is needed. The deficiency bound follows from a single black-box call to Mathlib's Hall theorem plus finite-cardinality bookkeeping: the reduction does all the combinatorial work.",
+      "Injectivity of the transversal is what bounds the deficiency: at most d indices can land on d dummies because g is injective, so at most d indices are unmatched — the pigeonhole step is card_image_of_injOn into D.",
+      "The result is a strict generalisation of Mathlib's Hall theorem, recovered verbatim at d = 0; the two live in one statement parameterised by the allowed defect."
+    ]
+  }
+}
