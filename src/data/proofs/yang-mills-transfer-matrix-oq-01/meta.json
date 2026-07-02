@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Yang–Mills Mass Gap in the Infinite-Volume Limit",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring for the transfer-matrix mass gap of lattice Yang–Mills and whether it survives L → ∞. These head lines record that the finite-volume gap Δ_L = log(λ₀/λ₁)/a > 0 is a Perron–Frobenius theorem for every finite L, that the open question is inf_{L≥2} Δ_L > 0, and enumerate the ~18 proved results — most importantly the strong-coupling regime where Δ = a·g²·C₂/2 is L-independent and positive (SU(2): 3ag²/8, SU(3): 2ag²/3), giving a uniform bound — while the general weak-coupling case remains the Clay Millennium problem, before the results.",
+      "mathContext": "The lattice transfer matrix has a spectral gap Δ_L = −log(λ₁/λ₀) > 0 at finite volume via Perron–Frobenius. The Millennium question is whether the gap stays bounded below as L → ∞. In strong coupling the gap is computed exactly, Δ = a·g²·C₂(rep)/2, independent of L, so a positive uniform bound holds and the infinite-volume gap is not a finite-volume artifact. The strong-coupling infinite-volume survival for a general family (Seiler 1982) is taken as one axiom; the weak-coupling case is open (Clay). Entry axiomatized (1 axiom)."
+    },
+    {
       "id": "setup",
       "title": "Part I: Finite-Volume Setup",
       "summary": "Defines FiniteVolumePFData (eigenvalue data for volume L) and finiteVolumeMassGap Δ_L = log(λ₀/λ₁).",
