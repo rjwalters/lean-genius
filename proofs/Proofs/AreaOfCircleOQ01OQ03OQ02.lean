@@ -312,18 +312,37 @@ lemma wirtinger_sum_sq_bound_lip (γ : LipschitzClosedCurve)
   have hy_int : IntervalIntegrable (fun t => γ.y t ^ 2)
       MeasureTheory.volume 0 (2 * π) :=
     (hy.continuous.pow 2).intervalIntegrable _ _
+  -- A Lipschitz function on ℝ has a derivative bounded (in norm) by its Lipschitz
+  -- constant everywhere: at differentiable points by `norm_deriv_le_of_lipschitz`, and
+  -- at non-differentiable points `deriv = 0 ≤ K` by Lean's convention. Hence `(deriv)²`
+  -- is a bounded, (Borel-)measurable function, so it is integrable on the finite
+  -- interval `[0, 2π]`. This replaces the earlier Rademacher-flavoured sorry with the
+  -- exact Mathlib API (`norm_deriv_le_of_lipschitz`, `measurable_deriv`,
+  -- `Measure.integrableOn_of_bounded`).
+  have hbx : ∀ t : ℝ, ‖deriv γ.x t ^ 2‖ ≤ (Kx : ℝ) ^ 2 := by
+    intro t
+    have hb : ‖deriv γ.x t‖ ≤ (Kx : ℝ) := norm_deriv_le_of_lipschitz hx
+    rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
+    have h2 : |deriv γ.x t| ≤ (Kx : ℝ) := by rwa [Real.norm_eq_abs] at hb
+    nlinarith [h2, abs_nonneg (deriv γ.x t), sq_abs (deriv γ.x t), NNReal.coe_nonneg Kx]
+  have hby : ∀ t : ℝ, ‖deriv γ.y t ^ 2‖ ≤ (Ky : ℝ) ^ 2 := by
+    intro t
+    have hb : ‖deriv γ.y t‖ ≤ (Ky : ℝ) := norm_deriv_le_of_lipschitz hy
+    rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
+    have h2 : |deriv γ.y t| ≤ (Ky : ℝ) := by rwa [Real.norm_eq_abs] at hb
+    nlinarith [h2, abs_nonneg (deriv γ.y t), sq_abs (deriv γ.y t), NNReal.coe_nonneg Ky]
   have hdx_int : IntervalIntegrable (fun t => deriv γ.x t ^ 2)
       MeasureTheory.volume 0 (2 * π) := by
-    -- TECHNICAL SORRY: LipschitzWith Kx γ.x implies |deriv γ.x t| ≤ Kx at all
-    -- differentiable points (= 0 at non-differentiable points by Lean's convention),
-    -- so (deriv γ.x)² ≤ Kx² everywhere. The function is bounded and a.e. measurable
-    -- (Rademacher: Lipschitz → differentiable a.e.) hence integrable on [0, 2π].
-    -- This requires either LipschitzWith.norm_deriv_le or Rademacher in Mathlib.
-    sorry
+    rw [intervalIntegrable_iff]
+    exact MeasureTheory.Measure.integrableOn_of_bounded (by rw [Set.uIoc_of_le (by positivity : (0:ℝ) ≤ 2 * π)]; exact measure_Ioc_lt_top.ne)
+      ((measurable_deriv γ.x).pow_const 2).aestronglyMeasurable
+      (ae_of_all _ hbx)
   have hdy_int : IntervalIntegrable (fun t => deriv γ.y t ^ 2)
       MeasureTheory.volume 0 (2 * π) := by
-    -- Same argument as hdx_int but for γ.y with constant Ky.
-    sorry
+    rw [intervalIntegrable_iff]
+    exact MeasureTheory.Measure.integrableOn_of_bounded (by rw [Set.uIoc_of_le (by positivity : (0:ℝ) ≤ 2 * π)]; exact measure_Ioc_lt_top.ne)
+      ((measurable_deriv γ.y).pow_const 2).aestronglyMeasurable
+      (ae_of_all _ hby)
   calc ∫ t in (0 : ℝ)..(2 * π), (γ.x t ^ 2 + γ.y t ^ 2)
       = (∫ t in (0 : ℝ)..(2 * π), γ.x t ^ 2) +
         (∫ t in (0 : ℝ)..(2 * π), γ.y t ^ 2) :=
