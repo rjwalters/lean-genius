@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "arithseries-wz-overview",
+      "title": "Overview: The Wilf–Zeilberger Telescoping Engine in Lean",
+      "summary": "Module docstring, import, namespace, opens. Answers arithmetic-series-oq-02-oq-02-oq-03-oq-04: can a WZ certificate be formalized in Lean? The WZ method proves ∑ₖ F(n,k)=RHS by normalizing to ∑ₖ F=1 and exhibiting a mate G=R·F satisfying the WZ equation F(n+1,k)−F(n,k)=G(n,k+1)−G(n,k); summing telescopes the RHS to 0, so the row sum is constant and one base case closes it. This file delivers (1) wz_telescope — the abstract engine over an arbitrary AddCommGroup: the WZ equation plus boundary conditions G n 0 = G n N = 0 force consecutive windowed row sums equal, reusable for any WZ pair; and (2) a complete worked example — the identity ∑ₖ C(n,k)=2ⁿ with explicit mate G(n,k)=−C(n,k−1)/2ⁿ⁺¹, verified by hand and derived from telescoping alone (not Nat.sum_range_choose). The full parallel-Vandermonde certificate is honestly deferred; the engine accepts it unchanged.",
+      "startLine": 1,
+      "endLine": 58,
+      "mathContext": "WZ equation $F(n{+}1,k)-F(n,k)=G(n,k{+}1)-G(n,k)$ with $G$ finitely supported in $k$ $\\Rightarrow$ $s(n)=\\sum_k F(n,k)$ constant; worked pair $F=\\binom{n}{k}/2^n$, $G(n,k)=-\\binom{n}{k-1}/2^{n+1}$ gives $\\sum_k\\binom{n}{k}=2^n$."
+    },
+    {
       "id": "wz-telescope-engine",
       "title": "The Abstract WZ Telescoping Engine",
       "summary": "wz_telescope: over any AddCommGroup, the WZ equation plus boundary conditions force equal consecutive windowed row sums.",
