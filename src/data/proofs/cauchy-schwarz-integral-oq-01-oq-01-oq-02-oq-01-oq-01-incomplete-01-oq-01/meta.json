@@ -56,19 +56,27 @@
   "sections": [
     {
       "title": "Overview and Statement",
-      "content": "Two dual continuous linear maps relate the local Lᵖ space Lp(μ.restrict S) and the global Lp(μ): extension-by-zero (by the indicator of S) and restriction (to the sub-measure). This file builds the restriction map and proves it retracts extension-by-zero."
+      "content": "Two dual continuous linear maps relate the local Lᵖ space Lp(μ.restrict S) and the global Lp(μ): extension-by-zero (by the indicator of S) and restriction (to the sub-measure). This file builds the restriction map and proves it retracts extension-by-zero.",
+      "startLine": 1,
+      "endLine": 51
     },
     {
       "title": "§1. Extension-by-Zero (self-contained)",
-      "content": "memLp_indicator_of_restrict lifts MemLp f p (μ.restrict S) to MemLp (S.indicator f) p μ using Mathlib's eLpNorm_indicator_eq_eLpNorm_restrict, which preserves the eLpNorm exactly. extByZeroCLM packages this into an isometric continuous linear map Lp(μ.restrict S) →L[ℝ] Lp(μ), and extByZeroCLM_coeFn records that its underlying function is S.indicator ⇑g almost everywhere."
+      "content": "memLp_indicator_of_restrict lifts MemLp f p (μ.restrict S) to MemLp (S.indicator f) p μ using Mathlib's eLpNorm_indicator_eq_eLpNorm_restrict, which preserves the eLpNorm exactly. extByZeroCLM packages this into an isometric continuous linear map Lp(μ.restrict S) →L[ℝ] Lp(μ), and extByZeroCLM_coeFn records that its underlying function is S.indicator ⇑g almost everywhere.",
+      "startLine": 53,
+      "endLine": 118
     },
     {
       "title": "§2. The Restriction Map",
-      "content": "restrictToLpCLM S sends the class of f to the class of the same function under μ.restrict S. Linearity is proved classwise via ae_restrict_of_ae; the norm bound ‖restrictToLpCLM S f‖ ≤ ‖f‖ follows from eLpNorm_restrict_le, giving operator norm ≤ 1 (restrictToLpCLM_opNorm_le_one). restrictToLpCLM_coeFn characterizes the underlying function."
+      "content": "restrictToLpCLM S sends the class of f to the class of the same function under μ.restrict S. Linearity is proved classwise via ae_restrict_of_ae; the norm bound ‖restrictToLpCLM S f‖ ≤ ‖f‖ follows from eLpNorm_restrict_le, giving operator norm ≤ 1 (restrictToLpCLM_opNorm_le_one). restrictToLpCLM_coeFn characterizes the underlying function.",
+      "startLine": 119,
+      "endLine": 183
     },
     {
       "title": "§3. The Retraction",
-      "content": "restrictToLpCLM_extByZeroCLM proves restrictToLpCLM S (extByZeroCLM hS g) = g: restricting the extension recovers the original class, because μ.restrict S is concentrated on S (ae_restrict_mem) where the indicator equals ⇑g. restrictToLpCLM_comp_extByZeroCLM states the operator-level identity comp = id, and extByZeroCLM_injective is the immediate split-mono corollary."
+      "content": "restrictToLpCLM_extByZeroCLM proves restrictToLpCLM S (extByZeroCLM hS g) = g: restricting the extension recovers the original class, because μ.restrict S is concentrated on S (ae_restrict_mem) where the indicator equals ⇑g. restrictToLpCLM_comp_extByZeroCLM states the operator-level identity comp = id, and extByZeroCLM_injective is the immediate split-mono corollary.",
+      "startLine": 184,
+      "endLine": 218
     }
   ],
   "openQuestions": [
@@ -99,6 +107,11 @@
       "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
       "relationship": "parent",
       "description": "Direct parent — `Lp Riesz Representation for Sigma-Finite Measures (Complete)`. Its open question oq-01 asked whether the Lp restriction map could serve as the localization device; this entry constructs that map and proves it retracts the parent's extByZeroCLM."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "ancestor",
+      "description": "Thread root — the Bunyakovsky–Schwarz integral inequality (p=q=2) at the base of the Hölder ⇒ Lᵖ-duality ⇒ σ-finite-Riesz chain this entry's restriction/extension maps ultimately serve."
     }
   ],
   "sorries": [],
