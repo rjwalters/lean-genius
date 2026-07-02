@@ -1,5 +1,30 @@
 [
   {
+    "id": "shannon-source-coding-oq-06-ann-overview",
+    "proofId": "shannon-source-coding-oq-06",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Overview: the incompressibility counting bound",
+    "content": "The docstring frames open question oq-06 (universal compression — reaching the entropy rate without knowing the source distribution) and isolates its converse: the distribution-free, finite reason no universal scheme can beat the entropy rate is a pigeonhole/counting bound. It previews the five results assembled here: ∑_{k<L} 2ᵏ = 2ᴸ−1 (the number of binary strings shorter than L), the incompressibility bound that at most 2ᴸ−1 messages have codewords shorter than L bits, its strict form, the existence of a message needing ≥ L bits when there are ≥ 2ᴸ messages (no lossless code compresses everything), and the Finset restatement. The upshot: whatever the code, at most a 2^{−c} fraction of messages can be compressed by c bits below the blocklength. It then fixes the setup — import Mathlib, the InformationTheory.UniversalSourceCoding namespace, and the distribution-free lossless (injective) code model.",
+    "mathContext": "$\\#\\{m : |f(m)| < L\\}\\le 2^L-1$ for injective $f$; if $\\#\\alpha\\ge 2^L$ then some message needs $\\ge L$ bits, so worst-case length $\\ge \\log_2 \\#\\alpha$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "source coding",
+      "Kolmogorov complexity",
+      "pigeonhole principle",
+      "lossless codes",
+      "entropy rate"
+    ],
+    "prerequisites": [
+      "injective functions",
+      "binary strings",
+      "counting arguments"
+    ]
+  },
+  {
     "id": "ann-is-lossless",
     "proofId": "shannon-source-coding-oq-06",
     "range": {
