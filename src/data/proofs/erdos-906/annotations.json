@@ -16,7 +16,11 @@
       "transcendental",
       "dense set"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Entire functions",
+      "Transcendental functions",
+      "Dense subsets of $\\mathbb{C}$"
+    ]
   },
   {
     "id": "ann-e906-imports",
@@ -35,7 +39,11 @@
       "Complex.exp",
       "Dense"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex analysis",
+      "Differential calculus",
+      "Topology of $\\mathbb{C}$"
+    ]
   },
   {
     "id": "ann-e906-entire",
@@ -54,7 +62,11 @@
       "holomorphic",
       "complex analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex differentiability",
+      "Holomorphic functions",
+      "Cauchy–Riemann equations"
+    ]
   },
   {
     "id": "ann-e906-transcendental",
@@ -73,7 +85,11 @@
       "infinite degree",
       "non-algebraic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomials",
+      "Algebraic vs. transcendental functions",
+      "Entire functions"
+    ]
   },
   {
     "id": "ann-e906-iterated-deriv",
@@ -92,7 +108,11 @@
       "recursion",
       "higher order"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Derivatives of complex functions",
+      "Recursion / iteration",
+      "Higher-order derivatives $f^{(n)}$"
+    ]
   },
   {
     "id": "ann-e906-zero-set",
@@ -111,7 +131,11 @@
       "union",
       "subsequence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Zero sets of functions",
+      "Subsequences",
+      "Set unions over an index"
+    ]
   },
   {
     "id": "ann-e906-main-property",
@@ -130,7 +154,11 @@
       "StrictMono",
       "universal quantifier"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Dense sets",
+      "Strictly monotone sequences",
+      "Universal quantification"
+    ]
   },
   {
     "id": "ann-e906-polynomial-trivial",
@@ -149,7 +177,11 @@
       "vanishing derivative",
       "trivial case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Polynomial degree",
+      "Vanishing higher derivatives",
+      "Density (trivially, the whole plane)"
+    ]
   },
   {
     "id": "ann-e906-open-question",
@@ -168,7 +200,11 @@
       "unclear status",
       "missing proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existential statements",
+      "Open problems in complex analysis",
+      "Axiomatizing unknown claims"
+    ]
   },
   {
     "id": "ann-e906-statement",
@@ -187,7 +223,11 @@
       "conjunction",
       "formal statement"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Existential quantifiers",
+      "Logical conjunction",
+      "Entire / transcendental / density predicates"
+    ]
   },
   {
     "id": "ann-e906-exp-entire",
@@ -206,7 +246,11 @@
       "entire",
       "transcendental"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Complex exponential $e^z$",
+      "Entire functions",
+      "Transcendence of $\\exp$"
+    ]
   },
   {
     "id": "ann-e906-exp-fails",
@@ -225,7 +269,11 @@
       "empty set",
       "no zeros"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Zeros of $e^z$",
+      "Counterexamples",
+      "The empty zero set"
+    ]
   },
   {
     "id": "ann-e906-related",
@@ -244,7 +292,11 @@
       "Weierstrass",
       "zero distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Pólya on derivative zeros",
+      "Weierstrass factorization",
+      "Distribution of zeros"
+    ]
   },
   {
     "id": "ann-e906-properties",
@@ -263,6 +315,10 @@
       "discrete set",
       "isolated zeros"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Closed sets",
+      "Discrete / isolated zeros",
+      "Identity theorem for holomorphic functions"
+    ]
   }
 ]
