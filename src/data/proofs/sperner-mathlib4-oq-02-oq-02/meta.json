@@ -85,15 +85,18 @@
   "crossReferences": [
     {
       "targetId": "sperner-mathlib4-oq-02-oq-01",
-      "relationship": "Sibling entry: found empirically that the natural door graph produces no endpoints on many labellings while Tucker holds, concluding the remaining input must be an oriented / antipodally-signed count. This entry proves the dimension-free structural reason — antipodal symmetry forces even endpoint counts."
+      "relationship": "sibling",
+      "description": "Sibling entry: found empirically that the natural door graph produces no endpoints on many labellings while Tucker holds, concluding the remaining input must be an oriented / antipodally-signed count. This entry proves the dimension-free structural reason — antipodal symmetry forces even endpoint counts."
     },
     {
       "targetId": "sperner-mathlib4-oq-02",
-      "relationship": "Parent obstruction entry for the n = 2 door-choice failure; this entry generalizes the negative parity finding from the concrete hexagon to a dimension-free no-go theorem about antipodally-symmetric door graphs."
+      "relationship": "parent",
+      "description": "Parent obstruction entry for the n = 2 door-choice failure; this entry generalizes the negative parity finding from the concrete hexagon to a dimension-free no-go theorem about antipodally-symmetric door graphs."
     },
     {
       "targetId": "sperner-mathlib4",
-      "relationship": "Grandparent entry: supplies the verified door-counting engine and the TuckerTower dimension recursion whose odd-interior requirement (tower_interior_odd) this no-go theorem shows is incompatible with antipodal graph symmetry."
+      "relationship": "grandparent",
+      "description": "Grandparent entry: supplies the verified door-counting engine and the TuckerTower dimension recursion whose odd-interior requirement (tower_interior_odd) this no-go theorem shows is incompatible with antipodal graph symmetry."
     }
   ],
   "leanFile": {
