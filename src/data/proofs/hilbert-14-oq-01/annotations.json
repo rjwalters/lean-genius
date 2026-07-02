@@ -1,5 +1,33 @@
 [
   {
+    "id": "ann-h14oq01-overview",
+    "proofId": "hilbert-14-oq-01",
+    "range": {
+      "startLine": 10,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Overview: Hilbert's 14th Problem in the Non-Reductive Case",
+    "content": "This file formalizes the finite-generation question at the heart of Hilbert's 14th problem: given a group G acting on a ring R (e.g. a polynomial ring), is the invariant subring R^G finitely generated as an algebra? For reductive groups the answer is always YES (Hilbert-Mumford-Haboush), proved via a Reynolds operator that splits the inclusion R^G \u2192 R. The non-reductive case is subtler: Nagata's famous counterexample shows G_a^n (n \u2265 13) can produce non-finitely-generated invariants. The deepest positive result is the Grosshans criterion (1997): for a closed subgroup H of a reductive group G, the invariants k[V]^H are finitely generated for all representations V exactly when the homogeneous space G/H is quasi-affine (equivalently, k[G/H] is finitely generated). Such H are the Grosshans subgroups. The file below formalizes the sorry-free core \u2014 InvariantSubset, the ReynoldsOperator structure, its idempotent retraction property, and Noetherianity of invariants from Reynolds plus the Hilbert basis theorem \u2014 and states the algebraic-geometry-heavy criteria (Grosshans characterization, finite-group Reynolds operators, observable-subgroup criterion) as axioms, since the underlying theory of algebraic groups and quotient varieties is not yet in Mathlib.",
+    "mathContext": "For $R = k[x_1,\\ldots,x_n]$ and $G \\le \\mathrm{GL}_n$ acting linearly, $R^G = \\{f \\mid g\\cdot f = f\\ \\forall g\\}$. Hilbert (1890) proved $R^G$ finitely generated for $G = \\mathrm{SL}_n, \\mathrm{GL}_n$; his 14th problem (1900) asked whether this holds for every $G$. Zariski reduced it to subgroups $H \\le G$ with $G$ reductive, and Nagata (1959) gave a negative answer via an action of $G_a^{13}$. The organizing modern statement is Grosshans': $k[V]^H$ is finitely generated for all $V$ iff $G/H$ is quasi-affine.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert-14th-problem",
+      "invariant-theory",
+      "reductive-groups",
+      "Grosshans-subgroup",
+      "Nagata-counterexample",
+      "Reynolds-operator",
+      "finite-generation"
+    ],
+    "prerequisites": [
+      "ring of invariants R^G",
+      "reductive vs non-reductive groups",
+      "finitely generated algebras",
+      "Hilbert basis theorem"
+    ]
+  },
+  {
     "id": "ann-h14oq01-invariant-subset",
     "proofId": "hilbert-14-oq-01",
     "range": {
