@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-denum0404-docstring",
+    "proofId": "denumerability-rationals-oq-04-oq-04",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "Countable → Denumerable, and the Constructive Caveat",
+    "content": "The docstring frames the promotion: the parent proves the algebraic numbers are `Countable`; here we upgrade to `Denumerable`, Mathlib's strongest countability notion — an explicit bijection with ℕ. The crucial honesty: the instance is **classical/noncomputable**, factoring through `Encodable.ofCountable` (which uses `Classical.choice`). So the bijection Q̄ ≅ ℕ exists but does not compute an index for a given algebraic number; a genuinely constructive enumeration (effective root isolation) is the parent's open question 1 and remains unresolved. `#print axioms` shows only propext/Classical.choice/Quot.sound — none counting — so the file is verified, merely noncomputable."
+  },
+  {
+    "id": "ann-denum0404-countable",
+    "proofId": "denumerability-rationals-oq-04-oq-04",
+    "range": { "startLine": 54, "endLine": 60 },
+    "type": "concept",
+    "title": "Countability from Mathlib",
+    "content": "AlgQ := {x : ℂ // IsAlgebraic ℚ x} is the field of complex algebraic numbers. Its `Countable` instance is Mathlib's `Algebraic.countable ℚ ℂ` (the algebraic elements over a countable base ring are countable), transported to the subtype by `.to_subtype`. This is Cantor's 1874 theorem, already in the library."
+  },
+  {
+    "id": "ann-denum0404-infinite",
+    "proofId": "denumerability-rationals-oq-04-oq-04",
+    "range": { "startLine": 62, "endLine": 68 },
+    "type": "proof-technique",
+    "title": "Infinitude via the Embedding of ℚ",
+    "content": "The `Infinite` instance embeds the (already infinite) rationals into the algebraic numbers: q ↦ ⟨algebraMap ℚ ℂ q, isAlgebraic_algebraMap q⟩ (every rational is algebraic). Injectivity follows from `FaithfulSMul.algebraMap_injective ℚ ℂ` applied through `Subtype.ext_iff`, so `Infinite.of_injective` gives `Infinite AlgQ`. Infinitude is the only ingredient beyond the parent's countability needed for the promotion."
+  },
+  {
+    "id": "ann-denum0404-denumerable",
+    "proofId": "denumerability-rationals-oq-04-oq-04",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "key-insight",
+    "title": "The Denumerable Instance and the Bijection Q̄ ≅ ℕ",
+    "content": "`instDenumerableAlgQ` combines an `Encodable AlgQ` (obtained noncomputably from countability via `Encodable.ofCountable`) with the `Infinite` instance, feeding both to `Denumerable.ofEncodableOfInfinite`. `algebraicEquivNat := Denumerable.eqv AlgQ` is then the explicit bijection Q̄ ≅ ℕ requested by the open question. The `noncomputable` marker is the visible trace of the Classical.choice used inside `Encodable.ofCountable`."
+  },
+  {
+    "id": "ann-denum0404-existence",
+    "proofId": "denumerability-rationals-oq-04-oq-04",
+    "range": { "startLine": 81, "endLine": 88 },
+    "type": "concept",
+    "title": "Choiceless Existence Statements",
+    "content": "`nonempty_denumerable_algQ : Nonempty (Denumerable AlgQ)` (from Mathlib's `nonempty_denumerable`, requiring only Countable + Infinite) and `nonempty_equiv_nat : Nonempty (AlgQ ≃ ℕ)` record the existence of the structure and bijection independently of any particular chosen instance."
+  },
+  {
+    "id": "ann-denum0404-cardinal",
+    "proofId": "denumerability-rationals-oq-04-oq-04",
+    "range": { "startLine": 90, "endLine": 102 },
+    "type": "key-insight",
+    "title": "The Cardinality Form #AlgQ = ℵ₀",
+    "content": "`cardinalMk_algQ : #AlgQ = ℵ₀` is the cardinal-arithmetic form of denumerability, from Mathlib's `cardinalMk_of_countable_of_charZero` (ℚ countable, ℂ of characteristic zero). `denumerable_iff_cardinal` proves `Nonempty (Denumerable AlgQ) ↔ #AlgQ = ℵ₀`, confirming that the explicit bijection with ℕ and the statement 'cardinality ℵ₀' carry precisely the same information."
+  }
+]
