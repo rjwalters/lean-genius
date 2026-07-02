@@ -109,5 +109,35 @@
   },
   "crossReferences": [
     "navier-stokes-oq-01"
+  ],
+  "references": [
+    {
+      "authors": "Ladyzhenskaya, Olga A.",
+      "title": "The Mathematical Theory of Viscous Incompressible Flow (2nd ed.)",
+      "year": "1969",
+      "venue": "Gordon and Breach, New York",
+      "note": "Source of the 2D interpolation inequality ‖u‖_{L⁴}² ≤ C‖u‖_{L²}‖∇u‖_{L²} and its use in 2D Navier–Stokes global regularity"
+    },
+    {
+      "authors": "Nirenberg, Louis",
+      "title": "On elliptic partial differential equations",
+      "year": "1959",
+      "venue": "Ann. Scuola Norm. Sup. Pisa 13, 115–162",
+      "note": "The Gagliardo–Nirenberg interpolation inequalities, of which Ladyzhenskaya's L⁴ estimate is the 2D endpoint case"
+    },
+    {
+      "authors": "Constantin, Peter; Foias, Ciprian",
+      "title": "Navier–Stokes Equations",
+      "year": "1988",
+      "venue": "University of Chicago Press, Chicago Lectures in Mathematics",
+      "note": "Modern treatment of 2D global regularity via the enstrophy estimate that the Ladyzhenskaya inequality closes"
+    },
+    {
+      "authors": "Fefferman, Charles L.",
+      "title": "Existence and smoothness of the Navier–Stokes equation",
+      "year": "2006",
+      "venue": "The Millennium Prize Problems, Clay Mathematics Institute, 57–67",
+      "note": "Official statement of the Clay Millennium problem; 3D regularity is open while the 2D case (this inequality) is classical"
+    }
   ]
 }
