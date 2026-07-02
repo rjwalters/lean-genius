@@ -16,7 +16,11 @@
       "density",
       "erdos-prachar"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sequence of prime numbers p_n",
+      "natural density of a subset of ℕ",
+      "the Prime Number Theorem p_n ~ n log n"
+    ]
   },
   {
     "id": "ann-e968-normalized-def",
@@ -35,7 +39,11 @@
       "normalization",
       "pnt"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the nth-prime function (Nat.nth Nat.Prime)",
+      "0-based vs 1-based indexing",
+      "the Prime Number Theorem asymptotic p_n ~ n log n"
+    ]
   },
   {
     "id": "ann-e968-density",
@@ -54,7 +62,11 @@
       "limit",
       "counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits of sequences",
+      "counting elements of a set up to n",
+      "the primes having density zero"
+    ]
   },
   {
     "id": "ann-e968-step-types",
@@ -73,7 +85,11 @@
       "step-classification",
       "prime-gaps"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the normalized prime sequence u(n)=p_{n+1}/(n+1)",
+      "partitioning ℕ into disjoint sets",
+      "gaps between consecutive primes"
+    ]
   },
   {
     "id": "ann-e968-total-variation",
@@ -92,7 +108,11 @@
       "asymptotics",
       "oscillation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "total variation as a sum of absolute differences",
+      "Θ (theta) asymptotic notation",
+      "logarithmic growth of u(n)"
+    ]
   },
   {
     "id": "ann-e968-decreasing-density",
@@ -111,7 +131,11 @@
       "prime-gaps",
       "sieve-methods"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "positive natural density",
+      "prime gap distribution",
+      "sieve methods in analytic number theory"
+    ]
   },
   {
     "id": "ann-e968-open-question",
@@ -130,7 +154,11 @@
       "density-question",
       "gap-threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "natural density of increasing steps",
+      "the increasing/decreasing/flat partition",
+      "prime gaps exceeding log n"
+    ]
   },
   {
     "id": "ann-e968-triples",
@@ -149,7 +177,11 @@
       "consecutive-gaps",
       "correlation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive step directions of u(n)",
+      "correlations between consecutive prime gaps",
+      "the meaning of an open problem"
+    ]
   },
   {
     "id": "ann-e968-pnt-connection",
@@ -168,7 +200,11 @@
       "asymptotic",
       "logarithmic-growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Prime Number Theorem",
+      "asymptotic equivalence (~)",
+      "the ε-formulation of a limit"
+    ]
   },
   {
     "id": "ann-e968-prime-axioms",
@@ -187,7 +223,11 @@
       "prime-sequence",
       "axiomatization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the nth-prime function Nat.nth",
+      "noncomputable definitions in Lean",
+      "why native_decide cannot evaluate classical functions"
+    ]
   },
   {
     "id": "ann-e968-u-values",
@@ -206,7 +246,11 @@
       "computation",
       "norm-num"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the definition u(n)=p_{n+1}/(n+1)",
+      "the first few primes 2,3,5",
+      "rational arithmetic (norm_num)"
+    ]
   },
   {
     "id": "ann-e968-first-steps",
@@ -225,7 +269,11 @@
       "examples",
       "decreasing-step"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the computed values u(0),u(1),u(2)",
+      "the increasing/decreasing step sets",
+      "comparing rationals"
+    ]
   },
   {
     "id": "ann-e968-gap-condition",
@@ -244,6 +292,10 @@
       "threshold",
       "log-n"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the definition of increasingSteps",
+      "algebraic rearrangement of p_{n+1}/(n+1) > p_n/n",
+      "u(n) ~ log n"
+    ]
   }
 ]
