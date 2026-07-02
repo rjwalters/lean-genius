@@ -18,6 +18,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Fixed-Target Dirichlet Selection and the n = 3 Obstruction",
+      "startLine": 1,
+      "endLine": 86,
+      "summary": "Imports (Mathlib + parent slice LagrangeFourSquaresWaringG2OQ03OQ07) and module docstring. This OQ-03-OQ-07-OQ-01 follow-up completes the multiplier–quadratic-residue reduction of its parent. §1 fills a Mathlib gap — legendreSym_eq_of_prime_modeq: for odd primes p ≡ q (mod 4|a|), legendreSym p a = legendreSym q a — so the condition legendreSym p (−n)=1 is constant on residue classes of p mod 4n, making Dirichlet selection a fixed-target problem. §2 turns the parent's conditional reduction into an unconditional supply: given one qualifying residue r, Dirichlet supplies infinitely many primes p ≡ r (mod 4n) forcing the geometry's QR hypothesis (non-empty for n=2 via r=3). §3 exhibits a sharp negative obstruction at n=3: every multiplier prime has p ≡ 2 (mod 3), forcing legendreSym p (−3) = −1, so the −n-residue route certifies no representation even though 3 = 1²+1²+1². 0 axioms, 0 sorries, no native_decide.",
+      "mathContext": "A qualifying residue class exists iff n avoids Legendre's excluded form 4^a(8b+7) — the genus condition and the actual open content of the parent umbrella. This entry does not discharge the sufficiency axiom not_excluded_form_is_sum_three_sq; §3 documents why the −n-multiplier route alone is insufficient."
+    },
+    {
       "id": "periodicity",
       "title": "§1 Periodicity of the Legendre Symbol in the Prime",
       "startLine": 87,
