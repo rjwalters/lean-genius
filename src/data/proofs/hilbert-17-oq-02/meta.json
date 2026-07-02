@@ -157,7 +157,14 @@
   },
   "conclusion": {
     "summary": "A 195-line, 0-sorry, 0-axiom formalization that quantifies the PSD/SOS gap for the canonical homogeneous Choi–Lam form x⁴y²+y⁴z²+z⁴x²−3x²y²z²: an explicit ring-checked sum-of-squares identity for (x²+y²+z²)·CL exhibits a minimal degree-2 denominator certificate (Artin's theorem made concrete), from which PSD-ness and the sharp PSD threshold c ≤ 3 follow, in both real-function and MvPolynomial forms.",
-    "implications": "The entry gives, for a canonical homogeneous element of the PSD/SOS gap, an explicit and minimal answer to the quantitative form of Hilbert's 17th problem: degree-2 denominator suffices and is necessary. This complements the gallery's non-SOS results (Motzkin, Robinson) and the affine Motzkin threshold by supplying the genuine homogeneous member together with its certificate, and it locates the gap boundary exactly at the AM–GM coefficient c = 3."
+    "implications": "The entry gives, for a canonical homogeneous element of the PSD/SOS gap, an explicit and minimal answer to the quantitative form of Hilbert's 17th problem: degree-2 denominator suffices and is necessary. This complements the gallery's non-SOS results (Motzkin, Robinson) and the affine Motzkin threshold by supplying the genuine homogeneous member together with its certificate, and it locates the gap boundary exactly at the AM–GM coefficient c = 3.",
+    "openQuestions": [
+      "Is the multiplier x²+y²+z² unique (up to positive scaling) among degree-2 forms q for which q·CL is a sum of squares, or does a whole family of quadratic denominators certify the Choi–Lam form?",
+      "The certificate here uses 6 squares (three quartic-cubic terms plus three squared differences with weight ½). What is the minimal number of squares — the length of the shortest SOS representation of (x²+y²+z²)·CL — and does it meet the Hilbert–Burgdorf–Scheiderer bounds for ternary forms?",
+      "Does the analogous n-term cyclic form x₁⁴x₂² + x₂⁴x₃² + ⋯ + xₙ⁴x₁² − n·∏xᵢ² (the homogeneous n-variable AM–GM gap member) admit a sum-of-squares certificate after multiplication by a degree-2 form, or does the minimal denominator degree grow with n?",
+      "Can the non-SOS-ness of CL — currently cited from Choi–Lam's Gram-matrix argument for the sibling Motzkin/Robinson forms — be formalized directly in Lean, closing the last classically-cited gap and making the PSD/SOS separation for this entry fully machine-checked?",
+      "How does the degree-2 denominator here compare with the Pythagoras number and the effective degree bounds in Artin's solution to Hilbert's 17th: is 2 the minimal denominator degree over all non-SOS PSD ternary sextics, or only for the Choi–Lam form specifically?"
+    ]
   },
   "references": [
     {
