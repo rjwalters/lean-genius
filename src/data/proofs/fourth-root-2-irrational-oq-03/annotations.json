@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "fourth-root-2-irrational-oq-03",
+    "range": {
+      "startLine": 3,
+      "endLine": 43
+    },
+    "type": "concept",
+    "title": "Galois property and |Gal| = 8: the step deferred by the degree computation",
+    "content": "The docstring frames this entry against the sibling FourthRoot2GaloisClosure, which secured the degree [ℚ(⁴√2, i) : ℚ] = 8 but deferred the group-theoretic content. Here ℚ(⁴√2, i) is shown to be a GALOIS extension of ℚ and its automorphism group to have order exactly 8. The method: ℚ(⁴√2, i) is the splitting field of X⁴ − 2 (its four roots ±⁴√2, ±i·⁴√2 are exactly the solutions of z⁴ = 2), X⁴ − 2 is separable over ℚ (irreducible in characteristic zero), so the splitting field is Galois, and IsGalois.card_aut_eq_finrank turns the degree 8 into #Gal = 8. Zero axioms; reuses only Mathlib and the parent."
+  },
+  {
+    "id": "ann-polynomial-separable",
+    "proofId": "fourth-root-2-irrational-oq-03",
+    "range": {
+      "startLine": 51,
+      "endLine": 80
+    },
+    "type": "concept",
+    "title": "X⁴ − 2 is separable, and ⁴√2, i·⁴√2 lie in its root set",
+    "content": "p = X⁴ − 2 equals minpoly ℚ (⁴√2) (parent fact), so it is irreducible and — because ℚ has characteristic zero — separable (p_separable). Separability is one of the two ingredients of the Galois property. The two theorems a_mem_rootSet and Ia_mem_rootSet certify that a = (⁴√2 : ℂ) and i·⁴√2 are roots: aeval reduces to their fourth powers, both equal to 2 by the parent's a_pow_four and I_mul_a_pow_four."
+  },
+  {
+    "id": "ann-adjoin-rootset",
+    "proofId": "fourth-root-2-irrational-oq-03",
+    "range": {
+      "startLine": 82,
+      "endLine": 115
+    },
+    "type": "insight",
+    "title": "The root set generates exactly ℚ(⁴√2, i)",
+    "content": "adjoin_rootSet_eq is the field-theoretic crux, proved by antisymmetry. Forward (⊆): any root z satisfies z⁴ = 2 = a⁴, and the factorization z⁴ − a⁴ = (z−a)(z+a)(z−i·a)(z+i·a) — valid because i² = −1, discharged by linear_combination on Complex.I_sq — forces z ∈ {±a, ±i·a}, each already in ℚ(⁴√2, i) by the parent's roots_mem_closure. Reverse (⊇): a is a root, and i is recovered as (i·a)·a⁻¹, so both generators of ℚ(⁴√2, i) lie in the adjoined field. This identity is what lets the abstract splitting-field machinery land on the concrete field ℚ(⁴√2, i)."
+  },
+  {
+    "id": "ann-galois-cardinality",
+    "proofId": "fourth-root-2-irrational-oq-03",
+    "range": {
+      "startLine": 117,
+      "endLine": 146
+    },
+    "type": "insight",
+    "title": "Splitting field ⟹ Galois ⟹ |Gal| = 8",
+    "content": "With the root-set identity in hand, isSplittingField follows because X⁴ − 2 splits over the algebraically closed ℂ (adjoin_rootSet_isSplittingField, then rewrite). A separable splitting field is Galois (isGalois via IsGalois.of_separable_splitting_field), and it is finite-dimensional (finiteDimensional), which supplies the Fintype instance on the Galois group. Finally card_gal: converting Fintype.card to Nat.card and applying IsGalois.card_aut_eq_finrank equates #Gal with the finrank, which the parent computed to be 8. The order-8 Galois group is the exact prerequisite for identifying it with the dihedral group D₄."
+  }
+]
