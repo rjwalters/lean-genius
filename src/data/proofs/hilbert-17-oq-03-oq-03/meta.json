@@ -154,7 +154,12 @@
   },
   "conclusion": {
     "summary": "A 423-line, 0-sorry, 0-axiom formalization that Robinson's polynomial is not a sum of squares of polynomials, via the zero-set / linear-algebra route: each cubic form in an SOS decomposition vanishes at R's ten real projective zeros, and the determinant-128 evaluation matrix forces it to be zero. Discharges the parent entry's axiom robinson_not_sos_aux (parent axiom count 4 → 3).",
-    "implications": "Robinson joins Motzkin (sibling hilbert-17-oq-03-oq-02) as a second fully machine-checked example of a PSD polynomial that is not polynomial-SOS — the negative half of Hilbert's 17th problem. Notably, this corrects an earlier project survey that judged Robinson non-SOS to need multi-session Gram-matrix or dual-functional machinery: the elementary zero-set argument succeeds because R's ten zeros impose ten independent conditions on the ten-dimensional space of ternary cubic forms (the evaluation determinant is 128, not 0)."
+    "implications": "Robinson joins Motzkin (sibling hilbert-17-oq-03-oq-02) as a second fully machine-checked example of a PSD polynomial that is not polynomial-SOS — the negative half of Hilbert's 17th problem. Notably, this corrects an earlier project survey that judged Robinson non-SOS to need multi-session Gram-matrix or dual-functional machinery: the elementary zero-set argument succeeds because R's ten zeros impose ten independent conditions on the ten-dimensional space of ternary cubic forms (the evaluation determinant is 128, not 0).",
+    "openQuestions": [
+      "Discharge the parent entry's two remaining deep axioms — `quadratic_psd_is_sos_aux` (the Gram/Cholesky PSD-quadratic-form fact) and `pfister_bound_aux` (Pfister's $2^n$ bound) — to bring the parent's axiom count to zero.",
+      "Formalize Artin's theorem for this example: exhibit Robinson's polynomial as a sum of squares of *rational* functions, the positive resolution of Hilbert's 17th problem that complements this negative (not polynomial-SOS) result.",
+      "Abstract the zero-set / evaluation-determinant route into a general criterion: when do the real projective zeros of a PSD ternary form impose enough independent linear conditions on the space of cubic forms to force non-SOS?"
+    ]
   },
   "references": [
     {
