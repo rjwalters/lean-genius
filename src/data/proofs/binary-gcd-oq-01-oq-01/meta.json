@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "header-and-cost-model",
+      "title": "Module Header: Unit-Cost Steps vs. Honest Bit Cost",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Module docstring framing the open question: the parent binary-gcd-oq-01 counts reduction steps under a unit-cost model, but a Stein step touches every bit of the current pair, so its honest cost is Nat.size a + Nat.size b. Includes a fully worked trace for (12,8) giving binaryGcdCost 12 8 = 8+6+4+3+2 = 23, and states the two main results (bound by steps times initial bit-length, and the classical O((log N)^2) quadratic bound). Imports Mathlib and the parent BinaryGcdOQ01.",
+      "mathContext": "$\\text{step cost} = \\mathtt{Nat.size}\\,a + \\mathtt{Nat.size}\\,b$; worked trace $(12,8)$: $8+6+4+3+2 = 23$."
+    },
+    {
       "id": "cost-definition",
       "title": "The total bit-operation cost model",
       "startLine": 59,
