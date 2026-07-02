@@ -41,7 +41,8 @@
       "Tracking natDegree and leadingCoeff together is what makes the induction go through: the leading-coefficient hypothesis (2ⁿ ≠ 0) is exactly the witness that T(n+1) ≠ 0, which the degree calculus for the product 2·X·T(n+1) requires.",
       "Working over the integral domain ℤ keeps degree additive and leading coefficient multiplicative on products (natDegree_mul / leadingCoeff_mul) with no monic hypotheses — the Chebyshev polynomials are not monic for n ≥ 2, so a monic-based argument would not apply.",
       "The subtracted lower-degree term T n is handled once, generically: natDegree_sub_eq_left_of_natDegree_lt and leadingCoeff_add_of_degree_lt' encapsulate 'a strictly-lower-degree perturbation changes neither the degree nor the leading coefficient'.",
-      "Writing the leading coefficient as 2^(n−1) with truncated natural subtraction absorbs the n = 0 base case (2⁰ = 1) into the same formula used for all n, avoiding a separate statement for T₀."
+      "Writing the leading coefficient as 2^(n−1) with truncated natural subtraction absorbs the n = 0 base case (2⁰ = 1) into the same formula used for all n, avoiding a separate statement for T₀.",
+      "The degree and leading coefficient are the unstated prerequisites of Mathlib's own Chebyshev TODOs: 'compute zeroes and extrema' and the minimax property both presuppose deg Tₙ = n and the 2ⁿ⁻¹ normalization, yet Mathlib records neither. Supplying them — especially the subtraction-free T_leadingCoeff_succ (lc Tₙ₊₁ = 2ⁿ) that yields the monic Tₙ₊₁/2ⁿ — is exactly the missing hinge for the extremal/minimax theory the parent entry pursues."
     ],
     "prerequisites": [
       "The first-kind Chebyshev polynomials and their recurrence T(n+2) = 2·X·T(n+1) − T n (Mathlib's Polynomial.Chebyshev.T)",
@@ -75,12 +76,20 @@
       "mathContext": "Inductive step: $T_{n+2} = 2X\\,T_{n+1} - T_n$, with $\\deg(2X\\,T_{n+1}) = n+2 > n = \\deg T_n$."
     },
     {
-      "id": "corollaries",
-      "title": "Extracted Degree and Leading-Coefficient Theorems",
+      "id": "projections",
+      "title": "Projected Degree and Leading-Coefficient Theorems",
       "startLine": 111,
+      "endLine": 117,
+      "summary": "T_natDegree and T_leadingCoeff project the two halves of the joint induction into separately citable one-line lemmas (natDegree = n; leadingCoeff = 2^(n−1)) — the idiomatic way to expose two mutually-dependent invariants proved together.",
+      "mathContext": "$\\deg T_n = n$; $\\mathrm{lc}(T_n) = 2^{n-1}$."
+    },
+    {
+      "id": "succ-form",
+      "title": "Minimax-Facing Leading Coefficient 2ⁿ",
+      "startLine": 119,
       "endLine": 126,
-      "summary": "T_natDegree and T_leadingCoeff project the two halves of the induction; T_leadingCoeff_succ restates the leading coefficient for n ≥ 1 as 2ⁿ (no truncated subtraction), the form most convenient for downstream minimax/extremal use.",
-      "mathContext": "$\\deg T_n = n$; $\\mathrm{lc}(T_n) = 2^{n-1}$; $\\mathrm{lc}(T_{n+1}) = 2^{n}$."
+      "summary": "T_leadingCoeff_succ restates the leading coefficient for n ≥ 1 as the clean 2ⁿ (indexing by n+1, no truncated subtraction) — the exact factor the minimax/extremal theory divides by to normalize Tₙ₊₁ to a monic polynomial.",
+      "mathContext": "$\\mathrm{lc}(T_{n+1}) = 2^{n}$; monic normalization $T_{n+1}/2^{n}$."
     }
   ],
   "conclusion": {
