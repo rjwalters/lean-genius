@@ -106,6 +106,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: full failure profile of the ordinary-derivative multiplicity test over 𝔽_q",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "The polynomial/char-p imports (HasseDeriv, Derivative, RingDivision, Taylor, Div, CharP.Basic, Prime.Factorial, Tactic) and the module docstring. Pins down exactly at which derivative order the ordinary iterated-derivative multiplicity test goes blind over a characteristic-p field (hence every 𝔽_q = p^f), and generalizes the Xᵖ/𝔽_p counterexample to the whole family X^{p^e}.",
+      "mathContext": "The engine is Mathlib's factorial_smul_hasseDeriv: derivative^[k] f = k!•hasseDeriv k f, so the ordinary derivative is the Hasse derivative scaled by k!, and information loss is governed entirely by whether (k! : F) vanishes. Main results: factorial_cast_eq_zero_iff (the exact threshold (k!:F) = 0 ↔ p ≤ k, via Nat.Prime.dvd_factorial); iterate_derivative_eq_smul_hasseDeriv (scaling identity); iterate_derivative_eq_zero_of_char_le (above the threshold every ordinary derivative vanishes — blind at orders ≥ p); iterate_derivative_eq_zero_iff_hasseDeriv_of_lt (below the threshold the two agree, k! a unit) — together the ordinary test is reliable exactly up to order p−1 and useless from order p on. The concrete X^{p^e} family (rootMultiplicity_X_pow, derivative_X_pow_char, iterate_derivative_X_pow_char_eq_zero, failure_profile_X_pow) shows the Hasse test returns the true multiplicity p^e while every positive-order ordinary derivative vanishes. Part IV proves the positive complement — the Hasse-derivative multiplicity criterion sub_pow_dvd_iff_hasseDeriv_eval_eq_zero over any commutative ring."
+    },
+    {
       "id": "threshold",
       "title": "Part I: The Exact Factorial Threshold in Characteristic p",
       "startLine": 68,
