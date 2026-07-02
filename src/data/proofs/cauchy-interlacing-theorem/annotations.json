@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-cauchy-interlacing-compression",
+    "proofId": "cauchy-interlacing-theorem",
+    "range": {
+      "startLine": 30,
+      "endLine": 52
+    },
+    "type": "concept",
+    "title": "Why Rayleigh-Agreement Is Exactly the Compression Hypothesis",
+    "content": "The abstract theorem never mentions matrices or principal submatrices — it links T and TH through the single hypothesis `hRayleigh : ∀ y ∈ H, y ≠ 0 → R_TH(y) = R_T(↑y)`. This docstring records why that lone hypothesis is the right abstraction: for the orthogonal compression TH = P_H ∘ T ∘ ι, and any y ∈ H, one has ⟪TH y, y⟫_H = ⟪P_H(T ↑y), ↑y⟫ = ⟪T ↑y, ↑y⟫ (the projection is invisible because ↑y already lies in H) and ‖y‖_H = ‖↑y‖_V, so the two Rayleigh quotients coincide. Isolating this as a hypothesis keeps the file order-theoretic and reusable: the spectral theorem on H supplies bH, mu, hTH, and the compression supplies hRayleigh.",
+    "mathContext": "$R_{TH}(y) = \\dfrac{\\langle P_H(T\\,\\iota y),\\, y\\rangle}{\\lVert y\\rVert^2} = \\dfrac{\\langle T\\,\\iota y,\\, \\iota y\\rangle}{\\lVert \\iota y\\rVert^2} = R_T(\\iota y)$ for all $0 \\neq y \\in H$, since $\\iota y \\in H$ makes $P_H$ act as the identity under the inner product.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthogonal compression",
+      "principal submatrix",
+      "Rayleigh quotient agreement",
+      "self-adjoint projection"
+    ],
+    "prerequisites": [
+      "orthogonal projection",
+      "Rayleigh quotient",
+      "inner product space"
+    ]
+  },
+  {
     "id": "ann-cauchy-interlacing-statement",
     "proofId": "cauchy-interlacing-theorem",
     "range": {
