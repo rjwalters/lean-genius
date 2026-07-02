@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-overview-scope",
+    "proofId": "navier-stokes-oq-01-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 49
+    },
+    "type": "context",
+    "title": "Scope: the honest algebra/analysis split of Ladyzhenskaya’s proof",
+    "content": "The module docstring frames the entry against parent `navier-stokes-oq-01`, which asks whether Ladyzhenskaya's 2D interpolation inequality ‖u‖_{L⁴} ≤ C·‖u‖_{L²}^{1/2}·‖∇u‖_{L²}^{1/2} — the estimate driving 2D Navier–Stokes regularity — can be formalized. As of Mathlib v4.26 there is no Gagliardo–Nirenberg–Sobolev or Ladyzhenskaya inequality, and the weak-derivative/Sobolev API for the analytic half is absent (a >1000-line foundational effort). The classical proof factors into (A) three ANALYTIC facts (an integrated pointwise product bound and two Cauchy–Schwarz slice estimates) and (B) a purely ALGEBRAIC assembly, including the sharp constant. This file verifies part (B) with 0 axioms / 0 sorries and exposes part (A) as explicit hypotheses — so it doubles as a precise specification of the missing Mathlib lemmas. Notation: n2 = ‖u‖_{L²}, n4 = ‖u‖_{L⁴}, d1 = ‖∂₁u‖_{L²}, d2 = ‖∂₂u‖_{L²}, ng² = d1² + d2².",
+    "mathContext": "Target: $\\|u\\|_{L^4}\\le C\\,\\|u\\|_{L^2}^{1/2}\\|\\nabla u\\|_{L^2}^{1/2}$ with sharp $C=2^{1/4}$. Verified: the algebraic core (B); assumed: the three analytic inputs (A).",
+    "significance": "context",
+    "relatedConcepts": [
+      "Ladyzhenskaya inequality",
+      "Gagliardo–Nirenberg–Sobolev",
+      "Navier–Stokes regularity",
+      "Sobolev spaces / weak derivatives",
+      "specification of a formalization gap"
+    ],
+    "prerequisites": [
+      "L^p norms of functions on ℝ²",
+      "interpolation inequalities",
+      "the structure of Ladyzhenskaya’s classical proof"
+    ]
+  },
+  {
     "id": "ann-sharp-amgm-step",
     "proofId": "navier-stokes-oq-01-oq-01",
     "range": {
@@ -12,6 +37,14 @@
     "mathContext": "$d_1 d_2 \\le \\tfrac12(d_1^2+d_2^2)$, sharp iff $d_1=d_2$.",
     "prerequisites": [
       "sq_nonneg and the nlinarith tactic for polynomial inequality goals"
+    ],
+    "significance": "key",
+    "relatedConcepts": [
+      "AM–GM inequality",
+      "sharp constant",
+      "gradient L² norm",
+      "sq_nonneg / nlinarith",
+      "Ladyzhenskaya inequality"
     ]
   },
   {
@@ -29,6 +62,14 @@
       "mul_le_mul and mul_le_mul_of_nonneg_left for combining and scaling bounds",
       "The sharp AM–GM step cross_le_grad_sq",
       "The classical slice-and-Cauchy-Schwarz structure of Ladyzhenskaya's proof (supplied here as hypotheses)"
+    ],
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy–Schwarz inequality",
+      "interpolation inequality",
+      "sharp constant 2^{1/4}",
+      "specification of a Mathlib gap",
+      "2D Navier–Stokes regularity"
     ]
   },
   {
@@ -45,6 +86,13 @@
     "prerequisites": [
       "Real square-root API: Real.sqrt_sq, Real.sq_sqrt, Real.sqrt_le_sqrt",
       "Nonnegativity bookkeeping (sq_nonneg, mul_nonneg) and nlinarith"
+    ],
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone square roots",
+      "Real.sqrt API",
+      "L⁴/L² interpolation",
+      "norm-form of the estimate"
     ]
   }
 ]
