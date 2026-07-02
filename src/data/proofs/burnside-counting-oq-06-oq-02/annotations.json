@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-mobius-companion-prime",
+    "proofId": "burnside-counting-oq-06-oq-02",
+    "range": { "startLine": 52, "endLine": 59 },
+    "type": "concept",
+    "title": "Möbius companion collapses at a prime",
+    "content": "At a prime p the Möbius (Lyndon-word) closed form has only two surviving terms. The divisors of p are {1, p} (Nat.Prime.divisors), so Finset.sum_pair expands the sum into μ(1)·k^{p/1} + μ(p)·k^{p/p}. With p/1 = p, p/p = 1, μ(1) = 1, and μ(p) = −1, ring finishes: the sum equals k^p − k. No general Möbius-inversion machinery is needed for the prime case.",
+    "mathContext": "$\\sum_{d\\mid p}\\mu(d)\\,k^{p/d} = \\mu(1)k^{p} + \\mu(p)k = k^p - k$",
+    "significance": "key",
+    "relatedConcepts": ["Möbius function", "Lyndon words", "divisor sum", "Finset.sum_pair"],
+    "prerequisites": ["μ(1)=1 and μ(prime)=−1", "divisors of a prime"]
+  },
+  {
+    "id": "ann-aperiodic-def",
+    "proofId": "burnside-counting-oq-06-oq-02",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "definition",
+    "title": "The aperiodic (Lyndon) necklace count",
+    "content": "L(p) is defined as the total number of k-colored p-bead necklaces (the orbit count of the rotation action Rot p on colorings Rot p → Fin k, inherited from the parent) minus the k monochromatic ones. At prime length this is exactly the aperiodic count: a coloring of prime period p has period 1 (constant, k of these) or period p (aperiodic), so removing the k constant necklaces leaves precisely the full-period orbits.",
+    "mathContext": "$L(p) := N - k, \\quad N = \\#\\{\\text{orbits of } \\mathrm{Rot}\\,p \\curvearrowright (\\mathrm{Rot}\\,p \\to \\mathrm{Fin}\\,k)\\}$",
+    "significance": "key",
+    "relatedConcepts": ["necklace", "orbit quotient", "cyclic group action", "aperiodic coloring"],
+    "prerequisites": ["Nat.card of an orbit quotient", "necklace framework (parent entry)"]
+  },
+  {
+    "id": "ann-necklaces-key",
+    "proofId": "burnside-counting-oq-06-oq-02",
+    "range": { "startLine": 67, "endLine": 89 },
+    "type": "technique",
+    "title": "Auxiliary: N·p = (k^p − k) + k·p and k ≤ N",
+    "content": "This private lemma converts the parent's totient count into the shape the aperiodic identity needs. Casting necklaces_mul_prime_eq to ℤ gives N·p = φ(p)·k + k^p; substituting φ(p) = p − 1 (from Nat.totient_prime) and rearranging by linear_combination yields N·p = (k^p − k) + k·p. Using k ≤ k^p (Nat.le_self_pow) and cancelling the positive factor p (le_of_mul_le_mul_right) also proves k ≤ N, so the subtraction N − k is a genuine ℕ count.",
+    "mathContext": "$N\\cdot p = \\varphi(p)k + k^p = (k^p - k) + kp, \\qquad k \\le N$",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler totient", "linear_combination tactic", "cancellation of a positive factor"],
+    "prerequisites": ["parent's necklaces_mul_prime_eq", "Nat.totient_prime", "ℕ→ℤ casting"]
+  },
+  {
+    "id": "ann-aperiodic-mul-prime",
+    "proofId": "burnside-counting-oq-06-oq-02",
+    "range": { "startLine": 91, "endLine": 97 },
+    "type": "insight",
+    "title": "p·L(p) = k^p − k",
+    "content": "The central identity: multiplying the aperiodic count by p recovers exactly the Möbius companion numerator. From the auxiliary lemma's N·p = (k^p − k) + k·p and k ≤ N, Nat.cast_sub turns (N − k) into a clean ℤ subtraction and a single linear_combination gives (N − k)·p = k^p − k. This is the cleaner Fermat witness the totient form does not directly expose.",
+    "mathContext": "$p\\,L(p) = (N-k)\\,p = k^p - k$",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's little theorem", "Nat.cast_sub", "aperiodic necklaces"],
+    "prerequisites": ["necklaces_key auxiliary lemma"]
+  },
+  {
+    "id": "ann-aperiodic-eq-mobius",
+    "proofId": "burnside-counting-oq-06-oq-02",
+    "range": { "startLine": 99, "endLine": 106 },
+    "type": "insight",
+    "title": "Identification: combinatorial count = Möbius sum",
+    "content": "The pairing requested by the open question. Chaining mobius_companion_prime (the Möbius sum equals k^p − k) with aperiodicNecklaces_mul_prime (p·L(p) equals k^p − k) identifies the combinatorial aperiodic count L(p) = N − k with the number-theoretic Möbius closed form. This closes the loop between the Burnside/necklace picture and the Lyndon-word divisor sum.",
+    "mathContext": "$p\\,L(p) = \\sum_{d\\mid p}\\mu(d)\\,k^{p/d}$",
+    "significance": "key",
+    "relatedConcepts": ["Möbius inversion", "Lyndon words", "necklace counting"],
+    "prerequisites": ["mobius_companion_prime", "aperiodicNecklaces_mul_prime"]
+  },
+  {
+    "id": "ann-fermat-dvd",
+    "proofId": "burnside-counting-oq-06-oq-02",
+    "range": { "startLine": 108, "endLine": 121 },
+    "type": "concept",
+    "title": "Fermat's little theorem (divisibility, with explicit witness)",
+    "content": "Divisibility p ∣ k^p − k over ℤ follows immediately from p·L(p) = k^p − k, with the aperiodic necklace count L(p) as the explicit quotient — a combinatorially meaningful witness, not just an abstract divisor. The ℕ form fermat_dvd_nat casts back, using k ≤ k^p (Nat.le_self_pow) to justify the natural subtraction.",
+    "mathContext": "$k^p - k = p \\cdot L(p) \\ \\Rightarrow\\ p \\mid k^p - k$",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's little theorem", "divisibility", "explicit witness"],
+    "prerequisites": ["aperiodicNecklaces_mul_prime", "Nat.le_self_pow"]
+  },
+  {
+    "id": "ann-fermat-modeq",
+    "proofId": "burnside-counting-oq-06-oq-02",
+    "range": { "startLine": 123, "endLine": 129 },
+    "type": "concept",
+    "title": "Fermat's little theorem (congruence form)",
+    "content": "The familiar congruence k^p ≡ k [MOD p] is derived from the ℕ divisibility via Nat.modEq_iff_dvd' (which needs k ≤ k^p), then symmetrized. This is the classical statement of Fermat's little theorem, here proved entirely through the aperiodic-necklace / Lyndon-word route rather than by group-theoretic order arguments.",
+    "mathContext": "$k^p \\equiv k \\pmod p$",
+    "significance": "key",
+    "relatedConcepts": ["modular arithmetic", "Nat.ModEq", "Fermat's little theorem"],
+    "prerequisites": ["Nat.modEq_iff_dvd'", "fermat_dvd_nat"]
+  }
+]
