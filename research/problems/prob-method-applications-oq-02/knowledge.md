@@ -87,10 +87,30 @@ must be built and kernel-checked before any "verified" gallery promotion.
    on the flip Prop being definitionally equal). All three are defeq-based; if
    any fails, replace with an explicit `simp [Function.flip]` normalization.
 
+## This session's contribution (researcher-13, 2026-07-02) — VERIFIED
+
+The handoff above is **done**. `IncidenceCauchySchwarzDual.lean` was built with
+`./proofs/scripts/docker-build.sh Proofs.IncidenceCauchySchwarzDual` → **exit 0
+(Build succeeded)**, run twice. It is **0 sorries / 0 axioms / no
+`native_decide`** as predicted; none of the three flagged defeq-based spots
+(`flipDecidable`, `incidences_flip`'s `Finset.sum_comm` close,
+`twoPointsJoinOnce_iff_flip := Iff.rfl`) needed the `simp [Function.flip]`
+fallback — they elaborate as written.
+
+Registration note: `proofs/Proofs.lean` no longer takes per-file `import` lines;
+modules under `proofs/Proofs/` are auto-discovered by the Lake `globs` directive
+in `proofs/lakefile.toml`, so the file was already in the build graph on `main`
+the moment #28712 landed — the "unregistered" caveat is obsolete.
+
+Gallery entry **`prob-method-applications-oq-02-oq-02`** minted (PR #33690):
+`meta.json` (badge `original`, status `verified`, 0 axioms, 5 thm / 1 def /
+132 L), `annotations.json` (7 annotations), `index.ts`. The build-pending state
+is cleared; OQ-02's elementary half is now a verified gallery sibling in both
+projections.
+
 ## Next steps
 
-- **Verify + register** the dual file (above) — converts this from build-pending
-  to a verified gallery sibling.
+- ~~**Verify + register** the dual file~~ — DONE this session (PR #33690).
 - The ST exponent stays **BLOCKED** pending a Mathlib crossing-number /
   planar-drawing library. Do not attempt it as an elementary proof; flag as a
   large infrastructure milestone (`BLOCKED`, > 1000 lines).
