@@ -31,13 +31,17 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 
 open Real
 
+-- Real equalities and the Pi order on `Fin d → ℝ` are not constructively decidable,
+-- so the counting definitions below rely on classical decidability.
+attribute [local instance] Classical.propDecidable
+
 namespace Erdos755
 
 /-
 ## Part I: Euclidean Space Setup
 -/
 
-/--
+/-
 **Euclidean distance in ℝᵈ:**
 We work with finite point sets in d-dimensional Euclidean space.
 -/
@@ -72,9 +76,10 @@ by n points in ℝ⁶.
 noncomputable def T6_unit (n : ℕ) : ℕ :=
   -- Supremum over all n-point configurations
   sSup { k : ℕ | ∃ (P : Finset (Fin 6 → ℝ)), P.card = n ∧
-    k = (P.filter (fun p₁ => P.filter (fun p₂ => P.filter (fun p₃ =>
-      IsUnitEquilateralTriangle p₁ p₂ p₃ ∧ p₁ < p₂ ∧ p₂ < p₃
-    ) |>.card > 0) |>.card > 0) |>.card) }
+    k = (P.filter (fun p₁ =>
+          0 < (P.filter (fun p₂ =>
+            0 < (P.filter (fun p₃ =>
+              IsUnitEquilateralTriangle p₁ p₂ p₃ ∧ p₁ < p₂ ∧ p₂ < p₃)).card)).card)).card }
 
 /--
 **T₆(n): Count of equilateral triangles of any size**
@@ -83,9 +88,10 @@ formed by n points in ℝ⁶.
 -/
 noncomputable def T6 (n : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ (P : Finset (Fin 6 → ℝ)), P.card = n ∧
-    k = (P.filter (fun p₁ => P.filter (fun p₂ => P.filter (fun p₃ =>
-      IsEquilateralTriangle p₁ p₂ p₃ ∧ p₁ < p₂ ∧ p₂ < p₃
-    ) |>.card > 0) |>.card > 0) |>.card) }
+    k = (P.filter (fun p₁ =>
+          0 < (P.filter (fun p₂ =>
+            0 < (P.filter (fun p₃ =>
+              IsEquilateralTriangle p₁ p₂ p₃ ∧ p₁ < p₂ ∧ p₂ < p₃)).card)).card)).card }
 
 /--
 **T_d(n): General dimension count**
@@ -93,22 +99,22 @@ For even d ≥ 6, the maximum count of equilateral triangles.
 -/
 noncomputable def T_d (d n : ℕ) : ℕ :=
   sSup { k : ℕ | ∃ (P : Finset (Fin d → ℝ)), P.card = n ∧
-    k = (P.filter (fun p₁ => P.filter (fun p₂ => P.filter (fun p₃ =>
-      IsEquilateralTriangle p₁ p₂ p₃ ∧ p₁ < p₂ ∧ p₂ < p₃
-    ) |>.card > 0) |>.card > 0) |>.card) }
+    k = (P.filter (fun p₁ =>
+          0 < (P.filter (fun p₂ =>
+            0 < (P.filter (fun p₃ =>
+              IsEquilateralTriangle p₁ p₂ p₃ ∧ p₁ < p₂ ∧ p₂ < p₃)).card)).card)).card }
 
 /-
 ## Part III: The Lenz Construction
 -/
 
-/--
+/-
 **The Lenz Construction:**
 Using three mutually orthogonal circles in ℝ⁶, place n/3 points on each.
 The points on each circle form inscribed squares.
 
 This construction achieves T₆ᵘ(n) ≥ n³/27 - O(n²).
--/
-/--
+
 **Lower bound: T₆ᵘ(n) ≥ n³/27 - O(n²)**
 -/
 /-
@@ -153,7 +159,52 @@ axiom cdl_2025_main :
     implies sides equal with positive length), so the unit count for any fixed
     configuration P is ≤ the general count, hence sSup over P is also ≤. -/
 theorem T6_unit_le_T6 (n : ℕ) : T6_unit n ≤ T6 n := by
-  sorry -- Monotonicity: IsUnitEquilateralTriangle → IsEquilateralTriangle + sSup monotone
+  -- For a fixed configuration `P`, every unit equilateral triangle is equilateral,
+  -- so the unit vertex-count is ≤ the general vertex-count (filter monotonicity).
+  have himp : ∀ (P : Finset (Fin 6 → ℝ)),
+      (P.filter (fun p₁ => 0 < (P.filter (fun p₂ => 0 < (P.filter (fun p₃ =>
+        IsUnitEquilateralTriangle p₁ p₂ p₃ ∧ p₁ < p₂ ∧ p₂ < p₃)).card)).card)).card ≤
+      (P.filter (fun p₁ => 0 < (P.filter (fun p₂ => 0 < (P.filter (fun p₃ =>
+        IsEquilateralTriangle p₁ p₂ p₃ ∧ p₁ < p₂ ∧ p₂ < p₃)).card)).card)).card := by
+    intro P
+    apply Finset.card_le_card
+    intro p₁ hp₁
+    rw [Finset.mem_filter] at hp₁ ⊢
+    refine ⟨hp₁.1, ?_⟩
+    refine lt_of_lt_of_le hp₁.2 (Finset.card_le_card ?_)
+    intro p₂ hp₂
+    rw [Finset.mem_filter] at hp₂ ⊢
+    refine ⟨hp₂.1, ?_⟩
+    refine lt_of_lt_of_le hp₂.2 (Finset.card_le_card ?_)
+    intro p₃ hp₃
+    rw [Finset.mem_filter] at hp₃ ⊢
+    refine ⟨hp₃.1, ?_⟩
+    obtain ⟨hU, hord⟩ := hp₃.2
+    simp only [IsUnitEquilateralTriangle] at hU
+    obtain ⟨h12, h23, h31⟩ := hU
+    refine ⟨?_, hord⟩
+    simp only [IsEquilateralTriangle]
+    refine ⟨?_, ?_, ?_⟩
+    · rw [h12, h23]
+    · rw [h23, h31]
+    · rw [h12]; norm_num
+  -- Distinct constant configurations give an `n`-point set, so the unit set is nonempty.
+  have hinj : Function.Injective (fun (k : ℕ) => (fun _ => (k : ℝ) : Fin 6 → ℝ)) := by
+    intro a b hab
+    have := congrFun hab 0
+    simpa using this
+  unfold T6_unit T6
+  refine csSup_le ⟨_, (Finset.range n).image (fun (k : ℕ) => (fun _ => (k : ℝ) : Fin 6 → ℝ)),
+    ?_, rfl⟩ ?_
+  · rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
+  · rintro k ⟨P, hP, rfl⟩
+    refine le_trans (himp P) ?_
+    apply le_csSup
+    · -- The general counts are bounded above by `n = P.card`.
+      refine ⟨n, ?_⟩
+      rintro m ⟨Q, hQ, rfl⟩
+      exact le_trans (Finset.card_filter_le _ _) (le_of_eq hQ)
+    · exact ⟨P, hP, rfl⟩
 
 /--
 **Corollary: Unit triangles conjecture is true**
@@ -170,7 +221,7 @@ theorem erdos_conjecture_unit_true : erdos_conjecture_unit := by
   -- T6_unit(n) ≤ T6(n) by monotonicity
   have h_mono : (T6_unit n : ℝ) ≤ (T6 n : ℝ) := by exact_mod_cast T6_unit_le_T6 n
   -- Combine: T6_unit(n) ≤ (1/27 + ε)·n³
-  linarith
+  nlinarith [h_T6_upper, h_mono, mul_nonneg hε.le (pow_nonneg (Nat.cast_nonneg n) 3)]
 
 /--
 **Corollary: Any-size triangles conjecture is true**
@@ -189,12 +240,11 @@ theorem erdos_conjecture_any_size_true : erdos_conjecture_any_size := by
 ## Part VI: Exact Formula for Higher Dimensions
 -/
 
-/--
+/-
 **General dimension formula (even d ≥ 6):**
 Clemen-Dumitrescu-Liu found exact formulas for T_d(n) for all even d ≥ 6
 and sufficiently large n.
--/
-/--
+
 **The constant for d = 6:**
 c₆ = 1/27
 -/
@@ -202,7 +252,7 @@ c₆ = 1/27
 ## Part VII: Why 1/27?
 -/
 
-/--
+/-
 **The constant 1/27 explained:**
 In the Lenz construction:
 - Place n/3 points on each of 3 orthogonal circles
@@ -221,7 +271,7 @@ The constant 1/27 = 1/3³ arises from partitioning n points into 3 groups.
 ## Part VIII: Related Results
 -/
 
-/--
+/-
 **Connection to other dimensions:**
 - d = 2: T₂(n) ≤ n (obvious)
 - d = 3: T₃(n) = Θ(n²) (different behavior)
