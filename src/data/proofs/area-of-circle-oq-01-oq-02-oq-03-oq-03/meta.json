@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Steiner's formula d/dr Vol(Bₙ) = Area(∂Bₙ) for n-dimensional balls",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "The import of Mathlib, the module docstring with the special-case table, and the namespace/open/noncomputable setup with the unit-ball volume and surface-area definitions. Formalizes the infinitesimal Archimedes principle — a thin shell of thickness dr at radius r contributes Area × dr to the ball's volume — as Steiner's formula for n-balls.",
+      "mathContext": "Since Vol(B_r^n) = ωₙ·rⁿ is polynomial in r, the power rule gives d/dr[ωₙrⁿ] = n·ωₙ·r^{n-1} = Area(∂B_r^n) — the n-dimensional generalization of d(πr²)/dr = 2πr. Nine theorems, 0 sorries, 0 axioms, across five parts: Part I Steiner's formula via direct differentiation (HasDerivAt and deriv forms), Part II the Archimedes shell-limit interpretation, Part III volume from surface area via FTC (∫₀ʳ Sₙ = Vₙ), Part IV the shell/annulus formula (∫_{r₁}^{r₂} Sₙ = Vₙ(r₂) − Vₙ(r₁)), and Part V the explicit special cases n = 2, 3. Extends the parent (Archimedes exhaustion meets FTC in 2D) by showing the FTC half generalizes cleanly to all dimensions."
+    },
+    {
       "id": "sec-definitions",
       "title": "Definitions: n-Ball Volume and Sphere Surface Area",
       "startLine": 69,
@@ -220,35 +228,45 @@
   ],
   "references": [
     {
-      "authors": ["Jacob Steiner"],
+      "authors": [
+        "Jacob Steiner"
+      ],
       "title": "Über parallele Flächen",
       "year": "1840",
       "venue": "Monatsbericht der Königlich Preußischen Akademie der Wissenschaften zu Berlin, pp. 114–118",
       "note": "Steiner's original 1840 paper introducing the parallel-body formula Vol(K ⊕ εB^n) = Σ C(n,k) W_k(K) ε^k for convex K. The n-ball case formalized here is the simplest instance, where K = {0} and the formula reduces to V_n(r) = ω_n r^n."
     },
     {
-      "authors": ["Archimedes of Syracuse"],
+      "authors": [
+        "Archimedes of Syracuse"
+      ],
       "title": "On the Sphere and Cylinder, Book I",
       "year": "ca. 225 BCE",
       "venue": "In: T. L. Heath (ed.), *The Works of Archimedes*, Cambridge University Press (1897)",
       "note": "Archimedes' derivation that the surface area of a sphere is 4πr² and the volume is (4π/3)r³ — implicitly establishing d/dr[(4π/3)r³] = 4πr², the n=3 case of Steiner's formula 2000 years before Steiner. The geometric origin of the result formalized here."
     },
     {
-      "authors": ["Hermann Weyl"],
+      "authors": [
+        "Hermann Weyl"
+      ],
       "title": "On the Volume of Tubes",
       "year": "1939",
       "venue": "American Journal of Mathematics, vol. 61, no. 2, pp. 461–472",
       "note": "Weyl's tube formula generalizes Steiner's formula to Riemannian manifolds: for a submanifold M ⊂ ℝ^n, Vol(Tube(M, r)) is a polynomial in r whose coefficients are intrinsic volumes involving curvature integrals. The next-most-general formula beyond Steiner's; listed in this file's `openQuestions` as a target for future Lean formalization."
     },
     {
-      "authors": ["Rolf Schneider"],
+      "authors": [
+        "Rolf Schneider"
+      ],
       "title": "Convex Bodies: The Brunn–Minkowski Theory",
       "year": "2014",
       "venue": "Encyclopedia of Mathematics and its Applications 151, Cambridge University Press, 2nd expanded ed., Ch. 4",
       "note": "Modern reference for Steiner's formula in the full generality of convex bodies and Alexandrov's mixed volume theory. The standard text for the convex-body extension that this file's `openQuestions` cites as out of reach pending Minkowski-sum infrastructure in Mathlib."
     },
     {
-      "authors": ["The Mathlib Community"],
+      "authors": [
+        "The Mathlib Community"
+      ],
       "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",
