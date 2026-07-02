@@ -1,0 +1,66 @@
+[
+  {
+    "id": "perfect-numbers-oq-05-oq-01-module-header",
+    "proofId": "perfect-numbers-oq-05-oq-01",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 53 },
+    "title": "Module Header: From the inequality to the exact gap",
+    "content": "The parent entry proves the **inequality** $\\sigma(p^k) < 2p^k$ — every prime power is deficient. Its first open question asks for the *exact size* of the deficiency\n$$\\text{deficiency}(n) := 2n - \\sigma(n).$$\nThis file computes it in closed form for every prime power:\n$$2p^k - \\sigma(p^k) = p^k - (1 + p + \\cdots + p^{k-1}) = p^k - \\frac{p^k - 1}{p - 1}.$$\nTwo sharp consequences: the gap is **always $\\ge 1$**, and for $p = 2$ it is **exactly $1$** for every $k$ — the powers of two are the *almost-perfect* numbers $\\sigma(2^k) = 2^{k+1} - 1$."
+  },
+  {
+    "id": "perfect-numbers-oq-05-oq-01-deficiency-def",
+    "proofId": "perfect-numbers-oq-05-oq-01",
+    "type": "definition",
+    "range": { "startLine": 54, "endLine": 56 },
+    "title": "The deficiency gap",
+    "content": "`deficiency n := 2 * n - sigma 1 n`, the amount by which the divisor sum falls short of $2n$. It is $0$ iff $n$ is perfect and positive iff $n$ is deficient — the quantity the open question asks to compute for prime powers."
+  },
+  {
+    "id": "perfect-numbers-oq-05-oq-01-pred-mul-geomSum",
+    "proofId": "perfect-numbers-oq-05-oq-01",
+    "type": "lemma",
+    "range": { "startLine": 74, "endLine": 90 },
+    "title": "Division-free meaning of (pᵏ − 1)/(p − 1)",
+    "content": "`pred_mul_geomSum_add_one`: for $p \\ge 1$,\n$$(p - 1)\\sum_{j<k} p^j + 1 = p^k.$$\nThis gives the truncated $\\mathbb{N}$-division $(p^k - 1)/(p - 1)$ a rigorous, side-condition-free meaning. Proved by induction on $k$: the base case is $p^0 = 1$, and the step factors $p^n\\,(1 + (p-1)) = p^n \\cdot p = p^{n+1}$, with `omega` closing the linear recombination."
+  },
+  {
+    "id": "perfect-numbers-oq-05-oq-01-sigma-split",
+    "proofId": "perfect-numbers-oq-05-oq-01",
+    "type": "lemma",
+    "range": { "startLine": 91, "endLine": 96 },
+    "title": "σ(pᵏ) as lower tail plus top term",
+    "content": "`sigma_prime_pow_split`: $\\sigma(p^k) = (1 + p + \\cdots + p^{k-1}) + p^k$, obtained by rewriting $\\sigma(p^k) = \\sum_{j \\le k} p^j$ (`sigma_one_apply_prime_pow`) and peeling the top term with `Finset.sum_range_succ`. This algebraic pivot feeds every deficiency statement below."
+  },
+  {
+    "id": "perfect-numbers-oq-05-oq-01-exact-gap",
+    "proofId": "perfect-numbers-oq-05-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 98, "endLine": 120 },
+    "title": "The exact deficiency and its closed form",
+    "content": "`deficiency_prime_pow_eq`: $2p^k - \\sigma(p^k) = p^k - \\sum_{j<k} p^j$ — the exact gap is the top term minus the geometric lower tail. Since the tail is $< p^k$ (`geomSum_lt_pow`, an instance of `Nat.geomSum_lt`), `omega` computes the $\\mathbb{N}$ subtraction directly. `deficiency_prime_pow_eq_div` then rewrites the tail with `Nat.geomSum_eq` into the open question's literal form $p^k - (p^k - 1)/(p - 1)$."
+  },
+  {
+    "id": "perfect-numbers-oq-05-oq-01-one-le",
+    "proofId": "perfect-numbers-oq-05-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 129, "endLine": 143 },
+    "title": "Deficient by at least 1",
+    "content": "`one_le_deficiency`: $1 \\le 2p^k - \\sigma(p^k)$ for every prime power. A quantitative refinement of the parent's strict inequality: not merely deficient, but deficient by a definite amount. The next theorem shows this bound is attained."
+  },
+  {
+    "id": "perfect-numbers-oq-05-oq-01-almost-perfect",
+    "proofId": "perfect-numbers-oq-05-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 144, "endLine": 156 },
+    "title": "Powers of two are almost perfect",
+    "content": "`deficiency_two_pow_eq_one`: $2 \\cdot 2^k - \\sigma(2^k) = 1$ for every $k$, equivalently $\\sigma(2^k) = 2^{k+1} - 1$. For $p = 2$ the lower tail collapses to $1 + 2 + \\cdots + 2^{k-1} = 2^k - 1$, one unit short of $2^k$, so the gap is exactly $1$ — the tightest possible deficiency, attaining `one_le_deficiency`. These are the classical *almost-perfect* numbers."
+  },
+  {
+    "id": "perfect-numbers-oq-05-oq-01-concrete",
+    "proofId": "perfect-numbers-oq-05-oq-01",
+    "type": "example",
+    "range": { "startLine": 157, "endLine": 167 },
+    "title": "Concrete gaps without native_decide",
+    "content": "`deficiency 8 = 1` (as $2^3$, an almost-perfect number, $\\sigma(8) = 15$) and `deficiency 9 = 5` (as $3^2$, $\\sigma(9) = 13 = 18 - 5$). Each is a substitution into the general theorem, kernel-checked with $0$ axioms rather than trusted to `native_decide`."
+  }
+]
