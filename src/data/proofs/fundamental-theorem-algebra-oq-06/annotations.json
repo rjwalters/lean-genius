@@ -12,6 +12,18 @@
     "prerequisites": ["polynomial evaluation", "Lean 4 module system"]
   },
   {
+    "id": "ann-statement-both-signs",
+    "proofId": "fundamental-theorem-algebra-oq-06",
+    "range": { "startLine": 45, "endLine": 52 },
+    "type": "concept",
+    "title": "Statement and Reduction to Positive Degree",
+    "content": "The workhorse lemma `exists_neg_and_pos_eval` claims an odd-degree `P` attains both a strictly negative and a strictly positive value; the root theorem then follows by the IVT. The proof opens by unpacking the hypothesis `Odd P.natDegree` as `natDegree P = 2m + 1`, from which `omega` derives `0 < P.natDegree`, and `natDegree_pos_iff_degree_pos` upgrades this to `0 < P.degree`. Positive degree — not oddness directly — is what the end-behaviour lemmas require: a constant polynomial has no limit at infinity, so the argument would collapse without it. Oddness re-enters only later, through the sign of `(-1)^(natDegree P)`.",
+    "mathContext": "$\\mathrm{Odd}(\\deg P) \\Rightarrow \\deg P = 2m+1 \\Rightarrow 0 < \\deg P$; the `natDegree`/`degree` distinction matters because `degree 0 = -\\infty` while `natDegree 0 = 0`.",
+    "significance": "supporting",
+    "relatedConcepts": ["parity", "polynomial degree", "natDegree versus degree"],
+    "prerequisites": ["Odd", "natDegree_pos_iff_degree_pos", "omega"]
+  },
+  {
     "id": "ann-reflected-polynomial",
     "proofId": "fundamental-theorem-algebra-oq-06",
     "range": { "startLine": 53, "endLine": 67 },
