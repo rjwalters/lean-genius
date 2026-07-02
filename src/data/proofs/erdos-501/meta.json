@@ -29,7 +29,9 @@
     "definitionCount": 12,
     "additionalFiles": [
       "Proofs/Erdos501Aristotle.lean",
-      "Proofs/Erdos501ProblemProvable.lean"
+      "Proofs/Erdos501ProblemProvable.lean",
+      "Proofs/Erdos501Hull.lean",
+      "Proofs/Erdos501Fubini.lean"
     ]
   },
   "overview": {
@@ -42,7 +44,8 @@
       "**CH enables diagonalization**: Under CH, $|\\mathbb{R}| = \\aleph_1$, allowing a transfinite construction that builds each $A_x$ to block all potential infinite independent sequences. Without CH, such constructions may not be possible",
       "**Closedness provides structure**: For closed families, the topological structure (limits of convergent sequences stay in the set) enables a ZFC proof of infinite independence — the Baire category theorem or measure-theoretic compactness arguments apply",
       "**Independence is hereditary**: Subsets of independent sets are independent, so the problem reduces to constructing one maximal independent set. The insertion lemma gives the precise condition for extending an independent set by one element",
-      "**Set-theoretic independence as a mathematical phenomenon**: This is a natural analytic question whose answer depends on axioms beyond ZFC — comparable to the Whitehead problem in algebra or the existence of non-measurable sets without AC"
+      "**Set-theoretic independence as a mathematical phenomenon**: This is a natural analytic question whose answer depends on axioms beyond ZFC — comparable to the Whitehead problem in algebra or the existence of non-measurable sets without AC",
+      "**The outer-measure Fubini trap and its honest fix**: The tempting one-line proof of Erdős-Hajnal — bound the conflict set $C_{ij}=\\{f\\in[0,L]^n : f(i)\\in A(f(j))\\}$ by 'each section has outer measure $<1$, so $\\mu(C_{ij})<L^{n-1}$' — uses the FALSE direction of Fubini for outer measure: a Sierpiński set has all sections null yet full planar outer measure. The correct route passes to measurable hulls $H_x\\supseteq A_x$ of equal measure (`Erdos501Hull.lean`) and runs *measurable* Fubini; the sole remaining obstruction is the **joint measurability** of $x\\mapsto H_x$. `Erdos501Fubini.lean` discharges the measurable half completely: assuming the conflict relation $\\{(a,b):b\\in H_a\\}$ is measurable, a Fubini union bound over $[0,3]^2$ (each conflict region has planar measure $\\le L$, the diagonal is null, and $L^2>2L$) yields an independent pair — the $n=2$ Erdős-Hajnal / Gladysz statement, verified with 0 axioms. The non-measurability that blocks the general case is the very same phenomenon that makes the infinite question CH-dependent (Hechler 1972)"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -148,7 +151,9 @@
     "sorries": 3,
     "additionalFiles": [
       "Proofs/Erdos501Aristotle.lean",
-      "Proofs/Erdos501ProblemProvable.lean"
+      "Proofs/Erdos501ProblemProvable.lean",
+      "Proofs/Erdos501Hull.lean",
+      "Proofs/Erdos501Fubini.lean"
     ]
   },
   "references": [
