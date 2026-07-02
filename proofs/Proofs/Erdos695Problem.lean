@@ -49,11 +49,17 @@ theorem chain_equiv (p : ℕ → ℕ) (hp : ∀ i, (p i).Prime) :
     (∀ i, p (i + 1) % p i = 1) ↔ ChainDivisibility p := by
   constructor
   · intro h i
-    have := h i
-    exact Nat.dvd_sub' (Nat.dvd_of_mod_eq_zero (by omega)) (Nat.dvd_refl _)
+    -- p(i+1) % p i = 1 ⟹ p i ∣ p(i+1) - 1; keep `p i * (p(i+1)/p i)` as one atom for omega
+    have hdm : p i * (p (i + 1) / p i) + p (i + 1) % p i = p (i + 1) := Nat.div_add_mod _ _
+    rw [h i] at hdm
+    exact ⟨p (i + 1) / p i, by omega⟩
   · intro h i
-    have := h i
-    omega
+    -- p i ∣ p(i+1) - 1 ⟹ p(i+1) = 1 + p i * c ⟹ p(i+1) % p i = 1
+    obtain ⟨c, hc⟩ := h i
+    have hpi : 1 < p i := (hp i).one_lt
+    have hpi1 : 1 ≤ p (i + 1) := (hp (i + 1)).pos
+    have heq : p (i + 1) = 1 + p i * c := by omega
+    rw [heq, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hpi]
 
 /-
 # Part 2: Growth Questions
@@ -102,7 +108,7 @@ theorem question1_equiv :
     have hkth : c < kthRoot p k := by linarith [hk₀ k (by omega : k₀ ≤ k)]
     -- c^k < (kthRoot p k)^k = p k
     calc (c : ℝ) ^ k < (kthRoot p k) ^ k :=
-          pow_lt_pow_left hkth (le_of_lt hc) hkne
+          pow_lt_pow_left₀ hkth (le_of_lt hc) hkne
       _ = (p k : ℝ) := by
           exact rpow_inv_pow _ hpk_pos k hkne
   · -- (←) p_k > c^k eventually implies kthRoot tends to ∞
@@ -162,10 +168,11 @@ Prime chains connect to OEIS A061092 and Cunningham chains.
 noncomputable def smallestPrimeCongruentOne (p : ℕ) (hp : p.Prime) : ℕ :=
   Nat.find (show ∃ q, q.Prime ∧ q % p = 1 from by
     have hcop : Nat.Coprime 1 p := Nat.coprime_one_left p
-    obtain ⟨q, hq_prime, -, hq_mod⟩ := Nat.forall_exists_prime_gt_and_modEq hp.ne_zero hcop 0
+    obtain ⟨q, -, hq_prime, hq_mod⟩ := Nat.forall_exists_prime_gt_and_modEq 0 hp.ne_zero hcop
     refine ⟨q, hq_prime, ?_⟩
-    have := hq_mod  -- q ≡ 1 [MOD p] i.e. q % p = 1 % p
-    rwa [Nat.mod_eq_of_lt hp.one_lt] at this)
+    -- `Nat.ModEq p q 1` is defeq to `q % p = 1 % p`; reduce `1 % p` via `p > 1`
+    have hmod : q % p = 1 % p := hq_mod
+    rwa [Nat.mod_eq_of_lt hp.one_lt] at hmod)
 
 -- Cunningham chain of the first kind: p, 2p+1, 4p+3, ...
 def IsCunninghamChainFirst (p : ℕ → ℕ) : Prop :=
@@ -196,20 +203,24 @@ This gives exponential growth: p(k) ≥ 2^k for any prime chain.
     q = p₀ + 1 is even and ≥ 4 (not prime since p₀ is odd). So k ≥ 2. -/
 theorem chain_step_ge {p₀ q : ℕ} (hp₀ : p₀.Prime) (hq : q.Prime)
     (hp₀3 : 3 ≤ p₀) (hmod : q % p₀ = 1) : 2 * p₀ + 1 ≤ q := by
-  suffices 2 ≤ q / p₀ by
-    have := Nat.div_mul_le_self q p₀
+  suffices h2 : 2 ≤ q / p₀ by
+    have hdm := Nat.div_add_mod q p₀            -- p₀ * (q/p₀) + q % p₀ = q
+    rw [hmod] at hdm                            -- p₀ * (q/p₀) + 1 = q
+    have hm2 : p₀ * 2 ≤ p₀ * (q / p₀) := Nat.mul_le_mul (le_refl p₀) h2
     omega
   by_contra hlt
   push_neg at hlt
   have hlt1 : q / p₀ ≤ 1 := by omega
-  rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hlt1 with rfl | rfl
+  rcases Nat.le_one_iff_eq_zero_or_eq_one.mp hlt1 with h0 | h1
   · -- k = 0: q = 0·p₀ + 1 = 1, not prime
-    have : q < p₀ := Nat.div_eq_zero_iff hp₀.pos |>.mp rfl
-    have : q = 1 := by omega
-    subst this; exact absurd hq (by decide)
+    have hdm := Nat.div_add_mod q p₀            -- p₀ * (q/p₀) + q % p₀ = q
+    rw [h0, hmod] at hdm                        -- p₀ * 0 + 1 = q
+    have hq1 : q = 1 := by omega
+    rw [hq1] at hq; exact absurd hq (by decide)
   · -- k = 1: q = p₀ + 1, which is even (p₀ odd) and ≥ 4, not prime
     have hqeq : q = p₀ + 1 := by
-      have := Nat.div_add_mod q p₀; omega
+      have hdm := Nat.div_add_mod q p₀          -- p₀ * (q/p₀) + q % p₀ = q
+      rw [h1, hmod] at hdm; omega
     subst hqeq
     have hdvd : 2 ∣ (p₀ + 1) := by
       obtain ⟨k, rfl⟩ := hp₀.odd_of_ne_two (by omega)
@@ -226,7 +237,7 @@ theorem exponential_lower_bound : ∃ c : ℝ, c > 1 ∧
     intro k
     induction k with
     | zero => exact (hp 0).two_le
-    | succ n ih => exact Nat.succ_le_of_lt (lt_of_le_of_lt ih (hm (Nat.lt.base n)))
+    | succ n ih => exact Nat.succ_le_of_lt (lt_of_le_of_lt ih (hm (Nat.lt_add_one n)))
   -- Main: p(k) ≥ 2^k (in ℕ, then cast to ℝ)
   suffices hnat : ∀ k, 2 ^ k ≤ p k from
     fun k => by exact_mod_cast hnat k
@@ -277,16 +288,12 @@ The following are the precise formal statements.
 -/
 
 -- Part 1: Does the k-th root tend to infinity?
+-- `Question1` says exactly this for every prime chain, so the two are definitionally equal
+-- (note `→` binds tighter than `↔`, so the quantified statement needs explicit parentheses).
 theorem erdos_695_main :
-    ∀ p : ℕ → ℕ, IsPrimeChain p →
-      Tendsto (fun k => (p k : ℝ) ^ (1 / k : ℝ)) atTop atTop ↔
-      Question1 := by
-  intro p hp
-  simp only [Question1]
-  constructor <;> intro h
-  · intro q hq
-    exact h
-  · exact h p hp
+    (∀ p : ℕ → ℕ, IsPrimeChain p →
+      Tendsto (fun k => (p k : ℝ) ^ (1 / k : ℝ)) atTop atTop) ↔
+      Question1 := Iff.rfl
 
 -- Part 2: Does there exist a chain with the bound?
 theorem erdos_695_variant :
