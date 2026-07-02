@@ -40,6 +40,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Joint Continuity of curvatureSin Across the Curvature Seam",
+      "startLine": 1,
+      "endLine": 87,
+      "summary": "Imports (trig/hyperbolic derivatives, slope, order topology, Real.sqrt, Mathlib.Tactic) and module docstring. The parent SynthesisCurvaturePtolemy.lean defines curvatureSin K t — equal to t (Euclidean K=0), sin(√K·t)/√K (spherical K>0), sinh(√(−K)·t)/√(−K) (hyperbolic K<0) — unifying the three constant-curvature geometries, and proves properties for fixed K. This OQ-03 entry proves the JOINT continuity of (K,t) ↦ curvatureSin K t as ℝ×ℝ → ℝ: there is no discontinuity at the Euclidean seam K=0, even though the formula switches there between sin and sinh. The proof factors the seam into one real variable via the even curvature sinc and the identity curvatureSin K t = t·curvatureSinc(K·t²), then handles the seam by gluing the two one-sided limits (both →1, from HasDerivAt.tendsto_slope for sin/sinh at 0) via 𝓝[<]0 ⊔ 𝓝[>]0 = 𝓝[≠]0. 0 sorries, 0 axioms.",
+      "mathContext": "Mathlib supplies continuous_sin, continuous_sinh, Real.continuous_sqrt, the slope characterisation, and the order-topology gluing lemmas, but has no curvatureSin/curvatureSinc; the new content is the single-variable factorisation curvatureSin_eq, continuity of curvatureSinc (seam included), and the joint continuity continuous_curvatureSin."
+    },
+    {
       "title": "curvatureSin and the curvature sinc",
       "startLine": 88,
       "endLine": 144,
