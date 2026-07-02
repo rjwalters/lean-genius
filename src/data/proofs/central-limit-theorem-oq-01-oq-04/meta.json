@@ -103,7 +103,13 @@
   ],
   "conclusion": {
     "summary": "Berry–Esseen rests on a second-order Taylor expansion of the characteristic function whose a² remainder integrates to the variance/third-moment term, yielding the 1/√n rate. For α-stable limits with α < 2 the characteristic exponent |t|^α is sub-quadratic, so φ_α deviates from the Gaussian at order |t|^α near 0 — below the order the classical expansion controls — and the two characteristic functions cross exactly at |t| = 1. This is the precise analytic obstruction to a direct α-stable Berry–Esseen rate, formalized axiom-free.",
-    "implications": "The entry does not resolve the open question (whether an α-stable Berry–Esseen rate exists) but pins down what any such theorem must overcome: the second-order expansion has no finite α < 2 analogue, so the rate must be governed by the |t|^α exponent. It also provides reusable, verified building blocks — the real α-stable characteristic function with its Gaussian/Cauchy specializations, the exponent-crossover lemmas, and the deterministic Berry–Esseen kernel bounds — for further work on rates of convergence to stable laws."
+    "implications": "The entry does not resolve the open question (whether an α-stable Berry–Esseen rate exists) but pins down what any such theorem must overcome: the second-order expansion has no finite α < 2 analogue, so the rate must be governed by the |t|^α exponent. It also provides reusable, verified building blocks — the real α-stable characteristic function with its Gaussian/Cauchy specializations, the exponent-crossover lemmas, and the deterministic Berry–Esseen kernel bounds — for further work on rates of convergence to stable laws.",
+    "openQuestions": [
+      "Resolve the headline question: does an α-stable Berry–Esseen rate exist for α < 2, and what is its order in n? The obstruction isolated here suggests the rate must be governed by the |t|^α exponent rather than the classical n^{−1/2}.",
+      "Formalize an α-analogue of the deterministic kernel bounds proved here — a |t|^α-order remainder estimate replacing the a² remainder — that could integrate against the α-stable characteristic function to yield a rate.",
+      "Prove the infinite-variance CLT itself (convergence in distribution to the α-stable law) using the characteristic function stablePhi developed here, so that a rate theorem has a limit theorem to attach to.",
+      "Extend from the symmetric standard case φ_α(t) = exp(−|t|^α) to the full four-parameter stable family (skewness β, scale, location), where the characteristic exponent acquires the asymmetric tan(πα/2) term and the crossover analysis must be redone."
+    ]
   },
   "leanFile": {
     "imports": [
