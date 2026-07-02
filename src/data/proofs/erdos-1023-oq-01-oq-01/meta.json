@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the LYM inequality and the antichain extremal value (Erdős #1023)",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The import of Mathlib, the module docstring, and the namespace/definitions setup (SetFamily, isAntichain, isTwoUnionOf, isTwoUnionFree). Answers the parent's first open question: prove the Erdős–Kleitman upper bound (which the parent leaves as the axiom problem_447_solution) via the LYM inequality — and honestly delimits how far LYM gets.",
+      "mathContext": "The Lubell–Yamamoto–Meshalkin inequality and Sperner's theorem are both in Mathlib (lubell_yamamoto_meshalkin_inequality_sum_inv_choose, IsAntichain.sperner). Used axiom-free here to prove the antichain analogue of Problem 447: lym_inequality (∑_{A∈F} 1/C(n,|A|) ≤ 1 in the parent's vocabulary), sperner_bound (any antichain in 2^[n] has size ≤ C(n,⌊n/2⌋)), and antichainMax_eq (the maximum antichain size is exactly C(n,⌊n/2⌋), witnessed by the middle layer). Since antichains are 2-union-free, this also discharges the lower bound of problem_447_solution axiom-free (twoUnionFree_max_ge_middle). Honest gap: LYM does not close the full question — a 2-union-free family need not be an antichain and can be strictly larger, so the upper bound that no 2-union-free family exceeds C(n,⌊n/2⌋) is the deeper Erdős–Kleitman content, not a corollary of LYM; the parent's problem_447_solution keeps its upper-bound half as the open analytic core. This file itself is axiom-free."
+    },
+    {
       "id": "bridge",
       "title": "Part I: Bridge to Mathlib's IsAntichain",
       "startLine": 67,
