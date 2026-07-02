@@ -36,15 +36,27 @@
     "prerequisites": ["the orbit/stabilizer/centralizer bridges"]
   },
   {
-    "id": "conjclass-oq01-ann-dvd-instance",
+    "id": "conjclass-oq01-ann-dvd",
     "proofId": "conjugacy-class-equation-oq-01",
-    "range": { "startLine": 65, "endLine": 79 },
+    "range": { "startLine": 65, "endLine": 69 },
     "type": "theorem",
-    "title": "Per-Class Divisibility and the S₃ Witness",
-    "content": "`conjClass_card_dvd_card`: |class(g)| ∣ |G|, immediate from the product identity (the centralizer order is the explicit cofactor `⟨_, …⟩`). This per-class divisibility — not the summed class equation — is what Mathlib leaves implicit and is the key step in, e.g., proving a nontrivial p-group has nontrivial center. The closing example specializes to S₃ = Equiv.Perm (Fin 3): computing Nat.card = 3! = 6 by kernel `decide` (no native_decide), every conjugacy class size divides 6. Stated with Nat.card and Subgroup.index, the identities hold for any group and recover the classical finite statements without a Fintype instance.",
-    "mathContext": "$|\\mathrm{class}(g)| \\mid |G|; \\qquad |S_3| = 3! = 6,\\ \\text{every class size} \\mid 6.$",
+    "title": "Per-Class Divisibility |class(g)| ∣ |G|",
+    "content": "`conjClass_card_dvd_card`: |class(g)| ∣ |G|, immediate from the product identity — the divisibility witness is the anonymous constructor `⟨_, (conjClass_card_mul_card_centralizer g).symm⟩`, with the centralizer order supplied as the explicit cofactor. This per-class divisibility — not the summed class equation — is what Mathlib leaves implicit, and it is the arithmetic engine behind the standard corollaries: it is the step that forces a nontrivial p-group to have nontrivial center and underlies Sylow counting. Stated with Nat.card and Subgroup.index, it holds for any group and recovers the classical finite statement without needing a Fintype instance.",
+    "mathContext": "$|\\mathrm{class}(g)| \\mid |G|$, with cofactor $|C_G(g)|$ from $|\\mathrm{class}(g)|\\cdot|C_G(g)| = |G|$.",
     "significance": "critical",
-    "relatedConcepts": ["divisibility", "p-group center", "Sylow theory", "kernel decide"],
-    "prerequisites": ["the product identity", "Nat.card of a permutation group"]
+    "relatedConcepts": ["divisibility", "p-group center", "Sylow theory", "class equation"],
+    "prerequisites": ["the product identity", "Dvd via an explicit cofactor"]
+  },
+  {
+    "id": "conjclass-oq01-ann-s3",
+    "proofId": "conjugacy-class-equation-oq-01",
+    "range": { "startLine": 71, "endLine": 79 },
+    "type": "example",
+    "title": "Concrete Witness: Classes of S₃ Divide 6",
+    "content": "The closing `example` grounds the abstract identity in S₃ = Equiv.Perm (Fin 3): every conjugacy class of S₃ has size dividing |S₃| = 6. The order is computed by reducing Nat.card to Fintype.card and then Fintype.card_perm/Fintype.card_fin to 3!, discharged by kernel `decide` (not native_decide, so no Lean.ofReduceBool axiom enters), and the general theorem `conjClass_card_dvd_card` is specialized via `simpa`. Concretely the three classes of S₃ — the identity (size 1), the three transpositions (size 2), and the two 3-cycles (size 3) — have sizes 1, 2, 3, each dividing 6.",
+    "mathContext": "$|S_3| = 3! = 6$; class sizes $1 + 2 + 3 = 6$, each dividing $6$.",
+    "significance": "supporting",
+    "relatedConcepts": ["symmetric group S₃", "kernel decide vs native_decide", "cycle type", "worked example"],
+    "prerequisites": ["Nat.card of a permutation group", "Fintype.card_perm"]
   }
 ]

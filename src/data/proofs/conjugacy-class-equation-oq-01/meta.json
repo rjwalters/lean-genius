@@ -71,7 +71,8 @@
       "**A conjugacy class is an orbit.** The single conceptual move is to view the conjugacy class of g as the orbit of g under the conjugation action ConjAct G ↷ G; every arithmetic property then follows from orbit–stabilizer.",
       "**Stabilizer = centralizer.** Under conjugation the stabilizer of g is exactly its centralizer C_G(g), so the orbit–stabilizer product |orbit|·|stabilizer| = |G| becomes |class(g)|·|C_G(g)| = |G|.",
       "**Per-class divisibility is the missing piece.** Mathlib records the orbit–stabilizer theorem and the *summed* class equation, but not the clean per-class statement |class(g)| ∣ |G| nor |class(g)| = [G : C_G(g)]; these are the lemmas one actually cites when applying the class equation.",
-      "**Stated with Nat.card, valid generally.** Using Nat.card and Subgroup.index, the identities hold for any group (vacuously when infinite) and recover the classical finite statements without carrying a Fintype instance — the concrete S₃ example supplies finiteness only where a numeric value is needed."
+      "**Stated with Nat.card, valid generally.** Using Nat.card and Subgroup.index, the identities hold for any group (vacuously when infinite) and recover the classical finite statements without carrying a Fintype instance — the concrete S₃ example supplies finiteness only where a numeric value is needed.",
+      "**Divisibility, not the summed identity, is the corollary engine.** The classical applications — a nontrivial p-group has nontrivial center, and the Sylow existence/counting arguments — turn on each summand [G : C_G(gᵢ)] being a divisor of |G|, i.e. on the per-class statement |class(g)| ∣ |G| rather than on the aggregate |G| = |Z(G)| + Σ[G : C_G(gᵢ)]. Isolating the per-class divisibility is exactly what makes those corollaries one-liners."
     ],
     "prerequisites": [
       "The conjugation action ConjAct G ↷ G and ConjClasses (GroupAction/ConjAct.lean)",
@@ -106,11 +107,19 @@
     },
     {
       "id": "divisibility",
-      "title": "Per-Class Divisibility and a Concrete Instance",
-      "startLine": 68,
+      "title": "Per-Class Divisibility",
+      "startLine": 65,
+      "endLine": 69,
+      "summary": "conjClass_card_dvd_card: |class(g)| ∣ |G| as an immediate corollary of the product identity, the divisibility witness being the centralizer order as explicit cofactor. This is the per-class form Mathlib leaves implicit and the engine behind the p-group-center and Sylow corollaries.",
+      "mathContext": "$|\\mathrm{class}(g)| \\mid |G|$, with cofactor $|C_G(g)|$."
+    },
+    {
+      "id": "s3-example",
+      "title": "Concrete Instance: S₃",
+      "startLine": 71,
       "endLine": 79,
-      "summary": "conjClass_card_dvd_card: |class(g)| ∣ |G| as a corollary of the product identity. The closing example specializes to Equiv.Perm (Fin 3) (order 6), showing every conjugacy class size divides 6.",
-      "mathContext": "$|\\mathrm{class}(g)| \\mid |G|$; in $S_3$ every class size divides $6$."
+      "summary": "The closing example specializes to S₃ = Equiv.Perm (Fin 3) (order 3! = 6 by kernel decide), showing every conjugacy class size divides 6 — the three classes have sizes 1, 2, 3.",
+      "mathContext": "$|S_3| = 6$; class sizes $1, 2, 3$ each divide $6$."
     }
   ],
   "crossReferences": [
