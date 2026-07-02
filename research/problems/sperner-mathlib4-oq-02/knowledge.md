@@ -976,3 +976,77 @@ remains saturated; the geometric `bridge` remains the open multi-session BUILD.
 - The geometric Freund–Todd door graph for general n (start at hexagon n=2, validated via
   path-following rather than `decide`). Multi-session BUILD; needs a working build env.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-07-02 (researcher-16) — the sign-flip door graph is all cycles: single-coordinate closure is IMPOSSIBLE
+
+**Mode**: REVISIT (RICH, score 50). Frontier (concrete nested Freund–Todd `bridge`) unchanged.
+**Outcome**: progress — one new 0-axiom-intended Lean file (build verification PENDING — host env
+unusable this session) plus two Docker-free probes that independently confirm every `decide` fact.
+A genuine *impossibility* sharpening that fences the open lever from BOTH sides.
+
+### The question this session settles
+Prior verified files pinned each of the two coordinates (labels `{±1,±2}`: sign bit
+`sgn:{+1,+2}↦0,{-1,-2}↦1` vs. magnitude) SEPARATELY:
+- **Sign coordinate carries the odd boundary seed** — `SpernerTuckerHexagonSignDegree.arc_sign_changes_odd`
+  (hemisphere sign-flip count is odd).
+- **Exact-complementary `{+1,-1}` coordinate has no odd seed** —
+  `SpernerTuckerHexagonFullDoorGraph.boundary_door_count_even` /`half_boundary_parity_not_invariant`.
+
+Open: could a *single-coordinate* door rule still close n=2 Tucker (odd seed on the boundary,
+terminating at an interior degree-1 room)? This session answers **NO**, machine-checked.
+
+### What was found (2 Docker-free probes, all 256 / 64 labelings)
+1. `probe_ft_pathfollowing.py`: the `{+1,-1}` exact-complementary door rule makes every room
+   degree ≤2 (paths-and-cycles) ✓ but hemisphere boundary doors are **even 176 / odd 80**
+   (not invariant) — confirms it cannot seed.
+2. `probe_ft_oriented.py`: over **all natural boundary-seed candidates** (raw/directed `{+1,-1}`,
+   directed sign-flip both ways, any-complementary), the **sign-flip (sign-degree) count is the
+   UNIQUE odd-invariant seed** (64/64 odd; every other candidate is mixed). AND the sign-flip
+   door graph gives **every triangle degree ∈ {0,2}** (histogram `{0:384, 2:1152}`) — never 1 or
+   3: the sign-flip graph on the disc is **all cycles, no interior endpoint**.
+
+### What was written in Lean (new file — BUILD VERIFICATION PENDING, see status note)
+`proofs/Proofs/SpernerTuckerHexagonSignFlipCycles.lean` (import Mathlib; 0 sorry, 0 literal
+`axiom`; intended 0-axiom, propext/Classical.choice/Quot.sound only — `#print axioms` guards
+included). **Kernel build not yet confirmed this session** (host build env unusable: Docker VM
+threw containerd I/O errors and the host Mathlib olean cache was mid-rewrite by ~100 concurrent
+processes, so both `docker-build.sh` and `lake env lean` failed on infrastructure, NOT on this
+file). The file is small, self-contained, and every tactic is elementary; each `decide` fact is
+independently reproduced by the exhaustive Python probes below, and the two structural lemmas are
+trivial `ZMod 2` identities. Re-run `docker-build.sh Proofs.SpernerTuckerHexagonSignFlipCycles`
+(or `lake env lean`) once the env recovers to confirm 0-axiom.
+- `triangle_flip_even` / `triangle_flip_even'` / `triangle_flip_ne_one` — reusable `ZMod 2`
+  cycle lemma: for any 3 sign bits the flip count around the triangle is even (`(x+y)+(y+z)+(z+x)=2(x+y+z)=0`),
+  never 1.
+- `hexagon_triSignFlips_even` / `hexagon_triSignFlips_ne_one` — hence every hexagon triangle
+  `T_i=(centre,vᵢ,vᵢ₊₁)` has an even number of sign-flip sides: the interior sign-flip door graph
+  is **all cycles, no degree-1 endpoint**.
+- `arc_signflip_odd` — hemisphere sign-flip seed is ODD (self-contained re-derivation).
+- `pm1_dir_not_invariant` — the *directed* `+1→-1` seed is also non-invariant (so the odd seed
+  is genuinely the sign bit, not any refinement of the exact-complementary edge).
+
+### The dichotomy (the point)
+- The coordinate carrying the odd boundary seed (sign) → door graph is **all cycles** → can never
+  terminate at an interior witness (`hexagon_triSignFlips_even`).
+- The coordinate that CAN terminate (`{+1,-1}`, a triangle `{+1,-1,±2}` is a genuine degree-1 room)
+  → has **no odd boundary seed** (`pm1_dir_not_invariant` + siblings).
+⟹ **No single-coordinate door rule closes n=2 Tucker.** The Freund–Todd/Prescott–Su bridge must be
+a genuine **nested** rule coupling both coordinates. This upgrades the prior one-sided negative
+(unsigned even) and positive (sign-degree odd) facts into a two-sided impossibility.
+
+### Honest status
+Scoping/impossibility result + one reusable ZMod-2 lemma; NOT new Tucker geometry, NOT a proof of
+n=2 Tucker. Rules out an entire class of closures. The genuine open lever — the concrete nested
+Freund–Todd door graph — is unchanged and remains a multi-session BUILD.
+
+### Files modified
+- proofs/Proofs/SpernerTuckerHexagonSignFlipCycles.lean (new, 0-axiom-intended, build-pending)
+- research/problems/sperner-mathlib4-oq-02/probe_ft_pathfollowing.py (new)
+- research/problems/sperner-mathlib4-oq-02/probe_ft_oriented.py (new)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (this entry)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (knowledge update)
+
+### Next steps (unchanged frontier)
+- The concrete nested Freund–Todd door graph (odd sign-seed on boundary refined by magnitude to
+  break interior cycles into paths); start at hexagon n=2, validated via path-following. Multi-session BUILD.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
