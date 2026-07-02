@@ -62,13 +62,14 @@
   "references": [
     {
       "authors": "Hurwitz, Adolf",
-      "title": "Sur le problème des isopérimètres",
-      "year": "1901",
-      "venue": "Comptes Rendus de l'Académie des Sciences 132, 401–403"
+      "title": "Sur quelques applications géométriques des séries de Fourier",
+      "year": "1902",
+      "venue": "Annales Scientifiques de l'École Normale Supérieure 19, 357–408",
+      "note": "Fourier-series proof of the isoperimetric inequality and its equality case."
     },
     {
       "authors": "Osserman, Robert",
-      "title": "The isoperimetric inequality",
+      "title": "The Isoperimetric Inequality",
       "year": "1978",
       "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
     },
@@ -76,13 +77,14 @@
       "authors": "do Carmo, Manfredo P.",
       "title": "Differential Geometry of Curves and Surfaces",
       "year": "1976",
-      "venue": "Prentice-Hall"
+      "venue": "Prentice-Hall",
+      "note": "Wirtinger's inequality, arc-length reparametrization, and the isoperimetric inequality for plane curves."
     },
     {
       "authors": "The mathlib Community",
-      "title": "integration by parts, Fourier coefficients and Parseval; Analysis.Fourier",
+      "title": "Arc length, curve reparametrization and volume lemmas (Mathlib.Geometry / Mathlib.MeasureTheory)",
       "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+      "venue": "Mathlib4"
     }
   ],
   "overview": {
@@ -103,6 +105,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "sec-overview",
+      "title": "Overview: Axiom-Free Isoperimetric Capstone",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "Module docstring for the final assembly of the Hurwitz isoperimetric program, proving 4πA ≤ L² for regular closed curves with 0 axioms and 0 sorries. These head lines recount how the parent proof rests on five disclosed analytic axioms (Fourier decomposition, IFT reparametrization, Wirtinger, and two Cauchy–Schwarz bounds), how each was individually discharged 0-axiom in self-contained companions, and how this file feeds those discharged bounds into the algebraic kernel — the maximal honest endpoint, since the reparametrization axiom is genuinely false at stationary points off the regular locus.",
+      "mathContext": "The isoperimetric inequality 4πA ≤ L² for a regular closed curve follows a Fourier ⇒ Wirtinger ⇒ Cauchy–Schwarz ⇒ IFT-reparametrization ⇒ arithmetic-kernel chain. Passing to the constant-speed, zero-mean reparametrization (c = L/2π), Wirtinger bounds ∫(x²+y²) ≤ 2πc², L² Cauchy–Schwarz bounds the perimeter integral, and a pointwise Cauchy–Schwarz bounds 2·area ≤ c·S; the algebraic kernel assembles these. Every axiom of the parent is replaced by its 0-axiom companion, giving an end-to-end machine-checked proof on the regular locus."
+    },
     {
       "id": "setup",
       "title": "Imports and the Discharged Companions",
@@ -140,33 +150,5 @@
       "Beyond the regular locus: recover the full all-$C^1$-curves statement axiom-free by an approximation argument — regularize a curve with isolated stationary points, apply the regular bound, and pass to the limit — rather than treating the all-curves version as inherently axiom-bound.",
       "Higher dimensions: extend to the $n$-dimensional isoperimetric inequality $\\mathrm{vol}(\\partial\\Omega)^n \\ge n^n \\omega_n \\mathrm{vol}(\\Omega)^{n-1}$, where the Fourier/Wirtinger machinery is replaced by Brunn–Minkowski or symmetrization, and assess how much can be made axiom-free in Mathlib."
     ]
-  },
-  "references": [
-    {
-      "authors": "Hurwitz, Adolf",
-      "title": "Sur quelques applications géométriques des séries de Fourier",
-      "year": "1902",
-      "venue": "Annales Scientifiques de l'École Normale Supérieure 19, 357–408",
-      "note": "Fourier-series proof of the isoperimetric inequality and its equality case."
-    },
-    {
-      "authors": "Osserman, Robert",
-      "title": "The Isoperimetric Inequality",
-      "year": "1978",
-      "venue": "Bulletin of the American Mathematical Society 84(6), 1182–1238"
-    },
-    {
-      "authors": "do Carmo, Manfredo P.",
-      "title": "Differential Geometry of Curves and Surfaces",
-      "year": "1976",
-      "venue": "Prentice-Hall",
-      "note": "Wirtinger's inequality, arc-length reparametrization, and the isoperimetric inequality for plane curves."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Arc length, curve reparametrization and volume lemmas (Mathlib.Geometry / Mathlib.MeasureTheory)",
-      "year": "2024",
-      "venue": "Mathlib4"
-    }
-  ]
+  }
 }
