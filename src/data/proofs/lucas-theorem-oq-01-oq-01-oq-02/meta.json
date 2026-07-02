@@ -101,6 +101,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Kummer's carry count and the zero-carry stratum of Fine's theorem",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The imports of Mathlib and the parent LucasTheoremOQ01OQ01, the module docstring, and the namespace/open setup. Builds the bridge from Kummer's valuation statement to Lucas' divisibility criterion, and uses it to recover Fine's theorem as the zero-carry stratum.",
+      "mathContext": "Kummer's theorem (1852) identifies (C(n,k)).factorization p with the number of carries when adding k and n−k in base p; Mathlib packages this as Nat.factorization_choose. The file proves Lucas' criterion not_dvd_choose_iff_forall_digit_le: ¬ p ∣ C(n,k) ↔ every base-p digit of k is ≤ the corresponding digit of n (digit dominance, no borrow), with dual p ∣ C(n,k) ↔ ∃ i, nᵢ < kᵢ — a criterion not named in Mathlib (which has only the single-digit Nat.dvd_choose and the Lucas congruence). Combined with the Kummer valuation, this gives the zero-carry stratum carries_eq_zero_iff_forall_digit_le: for k ≤ n, kummerCarries p n k = 0 ↔ ∀ i kᵢ ≤ nᵢ ↔ ¬ p ∣ C(n,k) — no carries (Kummer) ⟺ digit dominance (Lucas) ⟺ survives mod p (Fine); fineRow_eq_digitDominated rewrites Fine's surviving set as the digit-dominated columns, so Fine's count ∏ᵢ(nᵢ+1) is the size of the zero-carry stratum. Proof engine: the Lucas congruence factors C(n,k) ≡ ∏ C(nᵢ,kᵢ) mod p, and for single digits nᵢ < p the helper not_dvd_choose_lt_iff gives p ∤ C(nᵢ,kᵢ) ↔ kᵢ ≤ nᵢ. 0 sorry, 0 axiom, no native_decide."
+    },
+    {
       "id": "single-digit",
       "title": "The single-digit Lucas step (not_dvd_choose_lt_iff)",
       "startLine": 67,
