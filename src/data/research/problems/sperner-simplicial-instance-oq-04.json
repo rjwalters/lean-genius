@@ -31,17 +31,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (S1): formalized the interval-case continuous-coloring -> Sperner-coloring reduction; discrete sign-change theorem for real f proven on top of the existing discrete IVT. Continuous limit + n-d Brouwer remain open.",
+    "progressSummary": "PROGRESS (ACT, S2): part (b) continuous 1-d IVT proven and VERIFIED 0-axiom, derived through the discrete Sperner bracket. Parts (a)+(b) machine-checked; only n-d Brouwer (c) remains BLOCKED.",
     "builtItems": [
       "signColoring/meshPt + signColoring_apply/_zero/_self (SpernerSimplicialInstanceOQ04.lean): the continuous-coloring -> Sperner-coloring reduction in 1-d",
       "exists_sign_change_cell (OQ04.lean): discrete IVT for real f -- for every mesh m>0 a width-1/m cell straddles a sign change, via OQ05Scarf1d.discrete_ivt_panchromatic_cell on the sign coloring",
-      "exists_sign_change_bracket (OQ04.lean): product form f(a)*f(b) <= 0 of the sign-change cell"
+      "exists_sign_change_bracket (OQ04.lean): product form f(a)*f(b) <= 0 of the sign-change cell",
+      "continuous_ivt_of_bridge (SpernerSimplicialInstanceOQ04.lean): continuous 1-d IVT for f:ℝ→ℝ with f0≤0≤f1, ∃x∈[0,1] f x=0, DERIVED via the discrete Sperner bracket (exists_sign_change_bracket) + IsCompact.tendsto_subseq (Bolzano-Weierstrass on [0,1]) + Continuous.tendsto + le_of_tendsto, NOT intermediate_value_Icc. VERIFIED 0-axiom (propext/Classical.choice/Quot.sound only)."
     ],
     "insights": [
       "oq-04 decomposes into (a) discrete sign-change [DONE here, corollary of OQ05 discrete_ivt], (b) continuous 1-d IVT via mesh refinement + Bolzano-Weierstrass [moderate, ~150 lines], (c) n-d Brouwer via barycentric subdivision + sperner-ndim [>1000 lines, BLOCKED].",
       "Sibling OQ05Scarf1d already proves the discrete IVT (discrete_ivt_panchromatic_cell, c0!=cm => exists panchromatic cell); oq-04 only adds the real-function reduction layer, not new combinatorics.",
       "Discrete statement needs NO continuity: sign coloring c(j)=if f(j/m)<=0 then 0 else 1 has c(0)=0,c(m)=1 from f(0)<=0<f(1), and discrete_ivt yields a sign change. Continuity is only needed for the m->inf limit to an exact root.",
-      "Cert verify_sperner_oq04_bridge.py (transcendental root x-cos x, irrational cubic root, and a multi-root cubic): sign-change cell exists & brackets a true root for every mesh; |f(midpoint)| -> 0 at rate <= L*(1/m)."
+      "Cert verify_sperner_oq04_bridge.py (transcendental root x-cos x, irrational cubic root, and a multi-root cubic): sign-change cell exists & brackets a true root for every mesh; |f(midpoint)| -> 0 at rate <= L*(1/m).",
+      "Part (b) DONE+VERIFIED (S2): the full 1-d Sperner→root chain (discrete IVT → continuous IVT) is machine-checked, 0-axiom. Sperner content is in part (a); part (b) is the m→∞ compactness/continuity limit threaded through the discrete bracket. bₙ-aₙ=1/(n+1)→0 gives b_{φk}→x* by Tendsto.congr; product f(a)·f(b)≤0 passes to f(x*)²≤0 by le_of_tendsto, forcing f x*=0."
     ],
     "mathlibGaps": [
       "No packaged Sperner->Brouwer bridge in Mathlib; Brouwer exists but is not derived from a discrete Sperner lemma.",
@@ -49,9 +51,8 @@
       "n-d barycentric subdivision / mesh-shrinking for the cube [0,1]^n is not available as reusable infra."
     ],
     "nextSteps": [
-      "ACT next: prove continuous 1-d IVT from exists_sign_change_bracket -- take a_m = meshPt m i_m (bracket left ends), extract convergent subsequence via tendsto_subseq_of_bounded on [0,1], pass continuity through to get f(x*)=0; use intermediate_value_Icc only as cross-check, not the derivation.",
-      "Then n-d: replace intervalTriangulation with sperner-ndim's d-simplex triangulation + barycentric refinement; the >1000-line blocked remainder -- keep BLOCKED until 1-d limit lands.",
-      "Build pending (docker backend blackout this session); file intentionally UNREGISTERED in Proofs.lean to avoid breaking auto-merge until CI verifies."
+      "Part (c) n-d Brouwer BLOCKED (>1000 lines: barycentric subdivision + sperner-ndim d-simplex triangulation + mesh shrinking on [0,1]^n).",
+      "Optional: create gallery entry for oq-04 (parent + oq-05 already have entries) now that discrete+continuous 1-d IVT is a coherent verified deliverable."
     ]
   },
   "tags": [

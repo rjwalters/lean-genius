@@ -10,14 +10,64 @@ of `|f(x₀)| → 0` for any continuous `f : [0,1] → [-1,1]` with `f(0) ≤ 0 
 
 | Part | Content | Status | Size |
 |------|---------|--------|------|
-| (a) | Discrete sign-change for real `f` (continuous-coloring → Sperner-coloring reduction) | **DONE (this session)** | ~90 lines |
-| (b) | Continuous 1-d IVT via mesh refinement + Bolzano–Weierstrass | OPEN, tractable | ~150 lines |
+| (a) | Discrete sign-change for real `f` (continuous-coloring → Sperner-coloring reduction) | **DONE (S1)** | ~90 lines |
+| (b) | Continuous 1-d IVT via mesh refinement + Bolzano–Weierstrass | **DONE (S2), VERIFIED 0-axiom** | ~86 lines |
 | (c) | `n`-d Brouwer via barycentric subdivision + `sperner-ndim` | BLOCKED | >1000 lines |
 
 The **discrete IVT itself** (`c(0) ≠ c(m) ⟹ ∃` panchromatic cell) was already
 proven in the sibling `SpernerSimplicialInstanceOQ05Scarf1d.lean`
 (`discrete_ivt_panchromatic_cell`). oq-04 only adds the real-function reduction
 layer on top of it; there is no new combinatorics in part (a).
+
+## Session 2026-07-02 (Session 2) — Continuous 1-d IVT via the discrete bridge (part b)
+
+**Mode**: REVISIT · **Outcome**: progress (ACT) · **Status**: VERIFIED, 0-axiom
+
+### What I Did
+- Added `continuous_ivt_of_bridge` to `proofs/Proofs/SpernerSimplicialInstanceOQ04.lean`
+  (part (b) of the decomposition): for continuous `f : ℝ → ℝ` with `f 0 ≤ 0 ≤ f 1`,
+  there is `x ∈ [0,1]` with `f x = 0`. **Derived through the discrete Sperner
+  bracket**, not Mathlib's `intermediate_value_Icc`:
+  1. `exists_sign_change_bracket` gives, for each mesh `m = n+1`, a bracket
+     `[aₙ, bₙ] ⊆ [0,1]` with `bₙ - aₙ = 1/(n+1)` and `f(aₙ)·f(bₙ) ≤ 0`
+     (packaged with `choose`).
+  2. `IsCompact.tendsto_subseq` on `Set.Icc 0 1` extracts `a_{φ k} → x*`.
+  3. `bₙ - aₙ → 0` (via `tendsto_one_div_add_atTop_nhds_zero_nat ∘ φ.tendsto_atTop`)
+     ⟹ `b_{φ k} → x*` (`Tendsto.congr` on the sum).
+  4. `Continuous.tendsto` passes both limits through; `le_of_tendsto` on the
+     eventually-nonpositive product forces `f(x*)² ≤ 0`, hence `f x* = 0`
+     (`mul_self_eq_zero`).
+- Degenerate `f 1 = 0` handled separately (root at `x = 1`), so the statement is
+  the clean `f 0 ≤ 0 ≤ f 1` hypothesis.
+
+### Verification
+- Compiled with `lean` (toolchain v4.26.0) against project Mathlib oleans
+  (docker/lake unusable this session: `.loom` + `/private/tmp` worktrees were
+  being reaped concurrently, and the deployer-branch `packages/mathlib` is not a
+  git repo so docker forces a destructive re-clone).
+- `#print axioms continuous_ivt_of_bridge` → `[propext, Classical.choice,
+  Quot.sound]` only. No `sorry`, no `axiom`, no `Lean.ofReduceBool`. **Genuinely
+  verified / 0-axiom.**
+
+### Key Findings
+- The whole 1-d Sperner→root chain (discrete IVT → continuous IVT) is now
+  machine-checked. The Sperner content lives entirely in part (a); part (b) is
+  the standard `m → ∞` compactness/continuity limit, but it is threaded *through*
+  the discrete bracket rather than shortcutting to `intermediate_value_Icc`.
+- `Continuous.tendsto x` (not `ContinuousAt`) composes cleanly with the
+  subsequence limit; `le_of_tendsto` + `filter_upwards` is the tidy way to pass a
+  pointwise `≤ 0` to the limit.
+
+### Files Modified
+- `proofs/Proofs/SpernerSimplicialInstanceOQ04.lean` (+86 lines: `continuous_ivt_of_bridge`)
+- `research/problems/sperner-simplicial-instance-oq-04/knowledge.md`
+- `src/data/research/problems/sperner-simplicial-instance-oq-04.json`
+
+### Next Steps
+1. Part (c) `n`-d Brouwer remains BLOCKED (>1000 lines: barycentric subdivision +
+   `sperner-ndim` d-simplex triangulation + mesh shrinking on `[0,1]^n`).
+2. Optional: a gallery entry for oq-04 (parent + oq-05 already have entries); the
+   discrete+continuous 1-d IVT is now a coherent verified deliverable.
 
 ## Session 2026-06-15 (Session 1) — Continuous-coloring reduction (interval case)
 
