@@ -40,7 +40,7 @@
     "assumptions": "0 axioms in this file. 4 sorries (aggregate): 0 in the main bridge file ShannonChannelCodingOQ02OQ01.lean + 4 in the Aristotle companion ShannonChannelCodingOQ02OQ01Aristotle.lean (workbench targets for automated proof search). Removed the unused `axiom import_shannon_entropy_blocked : False` placeholder (asserting False is logically unsound — even an unused declaration is a footgun). The blocker explanation is preserved as a comment block. The target axiom `fano_inequality` (in ShannonChannelCoding.lean) is now DISCHARGED: it is a `theorem` (ShannonChannelCoding.lean line 199) defined as `:= FanoFromConditionalEntropy.fano_inequality_proved pXY hp hsum`, routing through this file's `fano_inequality_proved` (which dispatches on `Fintype.card α` to `fano_singleton_card_one` and `fano_from_oq03_std`, the latter built on OQ-03's `fano_theorem`). This route bypasses the earlier ShannonEntropy.lean strong_subadditivity blocker entirely. The parent gallery entry's axiomCount dropped 4 → 3 accordingly (and later 3 → 2 when the bsc_capacity_eq axiom was removed); the parent file's own header now lists Axioms: 2 (channel_coding_achievability, channel_coding_converse), with `fano_inequality` among its 18 theorems.",
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
-    "lineCount": 312,
+    "lineCount": 318,
     "prerequisites": [
       "Fano's inequality (OQ-03): H(X|Y) ≤ h(P_e) + P_e·log(|X|-1)",
       "Binary entropy function and concavity (OQ-04)",

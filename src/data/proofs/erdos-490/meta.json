@@ -74,7 +74,7 @@
       "productSet_eq_image: productSet A B = image of product map on A×ˢB"
     ],
     "axiomCount": 3,
-    "lineCount": 506,
+    "lineCount": 557,
     "assumptions": "3 axioms, 0 sorries. Axioms: szemeredi_theorem (Szemerédi 1976 upper bound, deep); optimal_has_distinct_products (the optimal example has distinct products, deep); primes_upper_half_lower_bound (Chebyshev-type lower bound — the count of primes in (N/2,N] is ≳ N/log N; isolated as an axiom because Mathlib's Nat.primeCounting provides only an upper bound, no lower bound on π(N)−π(N/2); the bridge lemma optimalB_card_eq_primeCounting now proves |optimalB N| = π(N)−π(N/2) in Mathlib's API, 0-axiom, so the axiom is reduced to exactly a Chebyshev lower bound for π(N)−π(N/2)). Progression: researcher-8 (2026-06-28) repaired the build against the current Mathlib pin and eliminated 4 sorries with 0-axiom proofs (optimal_works_because_primes, the two IsSubsetUpTo subgoals, primes_products_determine_pair). researcher-3 (2026-06-28) then proved distinct_minimal_energy (HasDistinctProducts ↔ multiplicative energy = |A||B|) 0-axiom via the diagonal-subset argument, and in a follow-up session eliminated the last sorry: proved optimalA_card (|optimalA N| = ⌊N/2⌋, 0-axiom) and discharged the bound_is_optimal lower bound from the isolated Chebyshev axiom (note: the previously hardcoded constant 1/3 was false at small N, e.g. N=10 where the product ratio dips to ≈0.115, so the theorem is now in its honest ∃c>0 form).",
     "theoremCount": 14,
     "definitionCount": 15,

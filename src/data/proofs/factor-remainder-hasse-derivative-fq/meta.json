@@ -64,7 +64,7 @@
       "Supporting concrete results: rootMultiplicity_X_pow (rootMultiplicity 0 (X^n) = n), derivative_X_pow_char (first ordinary derivative of X^{p^e} is 0), iterate_derivative_X_pow_char_eq_zero (all positive-order ordinary derivatives vanish)."
     ],
     "axiomCount": 0,
-    "lineCount": 150,
+    "lineCount": 280,
     "assumptions": "None. All 8 theorems fully proved with 0 axioms and 0 sorries (no native_decide); #print axioms reports only [propext, Classical.choice, Quot.sound]. Results assume the standard CharP F p with p prime (Part I/II hold over an arbitrary characteristic-p commutative ring; the agreement and X^{p^e} multiplicity results specialize to a field, which every 𝔽_q is). No assumption is encoded in any structure or typeclass beyond Mathlib's CharP.",
     "theoremCount": 8,
     "definitionCount": 0,

@@ -54,7 +54,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 131,
+    "lineCount": 203,
     "assumptions": "0 axioms, 0 sorries, no native_decide. All seven named theorems (weakCompositionGenFun_zero, weakCompositionGenFun_eq_invOneSubPow_val, weakCompositionGenFun_mul, vandermonde_negBinomial, card_weakComposition_recurrence, card_weakComposition_partial_sum, negBinomial_hockey_stick) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The multiplicativity weakCompositionGenFun_mul and the unit weakCompositionGenFun_zero hold for all k₁, k₂, k ≥ 0. The convolution vandermonde_negBinomial is stated without positivity hypotheses: for k₁, k₂ ≥ 1 it is the genuine negative-binomial Vandermonde identity, while at k = 0 the term C(·−1,·) collapses to the indicator of 0 (matching W(0)=1), so the stated identity remains true. The ℕ identity is obtained from the ℤ-coefficient identity by exact_mod_cast (injectivity of ℕ → ℤ).",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,

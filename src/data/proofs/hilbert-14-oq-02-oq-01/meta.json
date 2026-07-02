@@ -59,7 +59,7 @@
       "esymm_algebraicIndependent / esymm_isHomogeneous: self-contained re-proofs of the two parent facts the argument rests on, so the entry stands alone"
     ],
     "axiomCount": 0,
-    "lineCount": 130,
+    "lineCount": 136,
     "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound]. SCOPE: this proves the SHARPNESS (lower bound β(Sₙ) ≥ n) for the symmetric group Sₙ, complementing the parent's upper bound β(Sₙ) ≤ n. The non-membership is stated for the lower ELEMENTARY symmetric family; a fully general 'no generating set in degrees < n' statement (over ALL degree-<n invariants) would additionally require that every invariant of degree < n is a polynomial in e₁,…,e_{n-1}, which is true but not formalized here — see open questions.",
     "theoremCount": 6,
     "definitionCount": 0,
