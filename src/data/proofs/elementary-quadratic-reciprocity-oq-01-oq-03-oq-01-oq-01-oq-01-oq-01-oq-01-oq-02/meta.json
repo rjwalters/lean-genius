@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Second Supplement (a = 2), the Zolotarev Way",
+      "startLine": 1,
+      "endLine": 79,
+      "summary": "Module docstring, parent import (ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01), and setup (namespace ZolotarevSecondSupplement; open Equiv.Perm; ringMulPerm from ZolotarevCRT; variable {n : ℕ} [NeZero n]). This entry delivers the SECOND supplement to quadratic reciprocity, J(2|n) = (-1)^((n²-1)/8) for odd n>0, and identifies it as the sign of the doubling permutation x ↦ 2x on ℤ/n. Unlike the a=-1 first supplement (negation is an involution, allowing a Gauss-free fixed-point parity count), doubling is not an involution, so the proof routes through the parent identity sign(ringMulPerm 2) = J(2|n) and Mathlib's jacobiSym.at_two. The genuinely new content is the closed-form power formula χ₈ n = (-1)^((n²-1)/8) (Mathlib provides only the mod-8 case split), proved via the triangular-number identity (n²-1)/8 = m(m+1)/2 and the parity fact exponent_parity. Content (0 sorries, 0 axioms): exponent_parity, neg_one_pow_exponent, chi8_eq_neg_one_pow, jacobiSym_two, sign_ringMulPerm_two, sign_doubling, legendreSym_two.",
+      "mathContext": "Zolotarev's 1872 insight recasts the Legendre/Jacobi symbol as the sign of a permutation on ℤ/n; here the unit 2 gives the doubling permutation whose sign is the second supplement — completing the dictionary between permutation signs and the full Jacobi symbol in the spirit of Frobenius (1914)."
+    },
+    {
       "title": "Parity of the supplement exponent",
       "startLine": 80,
       "endLine": 113,
