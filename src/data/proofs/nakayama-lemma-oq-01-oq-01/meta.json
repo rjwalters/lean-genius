@@ -93,6 +93,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: minimal number of generators equals dim of the residue space M/𝔪M",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Imports and header docstring: the headline result over a local ring, the residue-space k-vector-space structure, the bridge lemma, the two-sided count, and the relation to Mathlib and the parent.",
+      "mathContext": "This file (open question nakayama-lemma-oq-01-oq-01) proves that over a local ring (R,𝔪) with residue field k = R/𝔪, a finitely generated module M has a minimal number of generators computed by a single linear-algebra invariant: the k-dimension of the residue vector space M/𝔪M. The header docstring (lines 1–70) lays out the pieces: (1) the residue space ResidueModule R M = M ⧸ 𝔪•⊤ is an R-module annihilated by 𝔪, hence a k-vector space (Mathlib's Module.instModuleQuotientIdealSMulTop), finite-dimensional when M is R-finite; (2) the bridge lemma span_residueModule_eq_top_iff — a set t ⊆ M has image spanning M/𝔪M over k iff span R t ⊔ 𝔪•⊤ = ⊤, via Submodule.map_mkQ_eq_top and Submodule.restrictScalars_span (spans over R and over k coincide since R→k is surjective); (3) the lower bound finrank_le_card_of_span_eq_top — every generating set of M has ≥ dim_k(M/𝔪M) elements; (4) the existence/upper bound exists_spanning_finset_card_eq_finrank — lift a k-basis of M/𝔪M and use the parent's nakayama_span_of_span_quotient to promote 'spans mod 𝔪M' to 'spans M'; (5) the headline numGenerators_eq_finrank — numGenerators R M = finrank (ResidueField R) (M/𝔪M). Relation to Mathlib: Mathlib has Nakayama, the residue field, the k-structure on M/𝔪M, and the cotangent-space specialisation 𝔪/𝔪² but states μ(M) = dim_k M/𝔪M for no module (only the principal-ideal corollary); the parent NakayamaLemmaOQ01 supplies the lifting lemma this file builds the two-sided count on. 0-axiom (only propext/Classical.choice/Quot.sound; no native_decide, no axiom, no sorry)."
+    },
+    {
       "id": "setup",
       "title": "Residue Space as a k-Vector Space",
       "startLine": 71,
