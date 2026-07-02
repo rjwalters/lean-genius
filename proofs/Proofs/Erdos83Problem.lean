@@ -172,15 +172,43 @@ def erdos83Question (n : ℕ) : Prop :=
 -/
 
 /--
+**The Core Set:**
+The fixed `2n`-element core `{0, 1, …, 2n-1} ⊆ [4n]`, realized as the first `2n`
+elements of `Fin (4n)`.  This is the "core" from which majority sets take at
+least `n+1` elements.
+-/
+def erdos83Core (n : ℕ) : Finset (Fin (4 * n)) :=
+  Finset.univ.filter (fun i => (i : ℕ) < 2 * n)
+
+/--
+**The Core has exactly `2n` elements.**
+`erdos83Core n` is the image of `Fin (2n)` under the order-preserving embedding
+`Fin (2n) ↪ Fin (4n)`, hence has cardinality `2n`.
+-/
+theorem erdos83Core_card (n : ℕ) : (erdos83Core n).card = 2 * n := by
+  have h : (2 : ℕ) * n ≤ 4 * n := by omega
+  have hmap : erdos83Core n = Finset.univ.map (Fin.castLEEmb h) := by
+    ext i
+    simp only [erdos83Core, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map,
+      Fin.castLEEmb_apply]
+    constructor
+    · intro hi
+      exact ⟨⟨(i : ℕ), hi⟩, by apply Fin.ext; rfl⟩
+    · rintro ⟨j, rfl⟩
+      simp only [Fin.coe_castLE]
+      exact j.isLt
+  rw [hmap, Finset.card_map, Finset.card_univ, Fintype.card_fin]
+
+/--
 **Star-Like Family (Majority Family):**
-Sets containing at least n+1 elements from a fixed 2n-set (the core).
-For this problem with t=2, r=n-1: sets containing ≥ n+1 elements from [2n].
-Two majority sets always share ≥ 2 elements by pigeonhole:
-(n+1) + (n+1) - 2n = 2.
+All `2n`-subsets of `[4n]` containing at least `n+1` elements from the fixed
+`2n`-element core.  For this problem with `t = 2, r = n-1`: sets containing
+`≥ n+1` elements from `[2n]`.  Two majority sets always share `≥ 2` elements by
+pigeonhole: `(n+1) + (n+1) - 2n = 2`.
 -/
 def starLikeFamily (n : ℕ) : Finset (Finset (Fin (4 * n))) :=
-  -- All 2n-subsets of [4n] containing ≥ n+1 elements from [2n]
-  sorry -- Construction requires embedding Fin (2*n) into Fin (4*n)
+  (Finset.univ : Finset (Fin (4 * n))).powerset.filter
+    (fun S => S.card = 2 * n ∧ n + 1 ≤ (S ∩ erdos83Core n).card)
 
 /--
 **Extremal Family Achieves Bound:**
@@ -190,9 +218,42 @@ axiom starLikeFamily_achieves (n : ℕ) (hn : n ≥ 1) :
 
 /--
 **Extremal Family is Valid:**
--/
-axiom starLikeFamily_valid (n : ℕ) (hn : n ≥ 1) :
-  isValidErdos83Family n (starLikeFamily n)
+Every member is a `2n`-subset (`k`-uniform), and any two members meet in at least
+`2` points.  The intersection bound is a pure pigeonhole argument on the core:
+if `A, B` each contain `≥ n+1` of the `2n` core elements, then `A ∩ B` already
+contains `(n+1) + (n+1) - 2n = 2` core elements.  This is fully machine-checked
+(no dependence on the deep Ahlswede–Khachatrian axioms). -/
+theorem starLikeFamily_valid (n : ℕ) (_hn : n ≥ 1) :
+    isValidErdos83Family n (starLikeFamily n) := by
+  refine ⟨?_, ?_⟩
+  · -- k-uniform: membership forces `S.card = 2 * n`
+    intro A hA
+    simp only [starLikeFamily, Finset.mem_filter, Finset.mem_powerset] at hA
+    exact hA.2.1
+  · -- 2-intersecting: pigeonhole on the core
+    intro A hA B hB
+    simp only [starLikeFamily, Finset.mem_filter, Finset.mem_powerset] at hA hB
+    obtain ⟨_, _, hAcore⟩ := hA
+    obtain ⟨_, _, hBcore⟩ := hB
+    set X := A ∩ erdos83Core n with hX
+    set Y := B ∩ erdos83Core n with hY
+    -- `X, Y ⊆ core`, hence `X ∪ Y ⊆ core` and `|X ∪ Y| ≤ 2n`
+    have hunion_le : (X ∪ Y).card ≤ 2 * n := by
+      calc (X ∪ Y).card
+          ≤ (erdos83Core n).card :=
+            Finset.card_le_card (Finset.union_subset
+              Finset.inter_subset_right Finset.inter_subset_right)
+        _ = 2 * n := erdos83Core_card n
+    -- inclusion–exclusion on the core intersections
+    have hIE := Finset.card_union_add_card_inter X Y
+    -- `X ∩ Y ⊆ A ∩ B`, so it suffices to bound `|X ∩ Y|`
+    have hsub : X ∩ Y ⊆ A ∩ B := by
+      intro z hz
+      rw [hX, hY, Finset.mem_inter, Finset.mem_inter, Finset.mem_inter] at hz
+      exact Finset.mem_inter.mpr ⟨hz.1.1, hz.2.1⟩
+    have hcardAB : (X ∩ Y).card ≤ (A ∩ B).card := Finset.card_le_card hsub
+    have h2 : 2 ≤ (X ∩ Y).card := by omega
+    exact le_trans h2 hcardAB
 
 /-
 ## Part VI: The Complete Intersection Theorem
