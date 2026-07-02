@@ -50,11 +50,11 @@
     "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-04",
     "range": { "startLine": 114, "endLine": 123 },
     "type": "tactic",
-    "title": "Boundary lemmas: G vanishes at both window ends",
-    "content": "G_zero (G(n,0) = 0 by rfl, from the guard) and G_top (G(n,N) = 0 when n+1 < N) supply the two hypotheses wz_telescope needs. G_top uses Nat.choose_eq_zero_of_lt: above the binomial support C(n,N−1) = 0, so the mate vanishes past the diagonal. These are exactly the two boundary conditions that make the telescoped right-hand side collapse to 0.",
-    "mathContext": "$G(n,0)=0$ (guard); for $n+1<N$, $\\binom{n}{N-1}=0$ so $G(n,N)=0$. Together: $G(n,N)-G(n,0)=0$.",
+    "title": "Values of the mate G: two vanishing endpoints and the nonzero k=1 value",
+    "content": "Three small lemmas pin down the values of G that later proofs consume. Two are the boundary conditions wz_telescope needs: G_zero (G(n,0) = 0 by rfl, straight from the guard) and G_top (G(n,N) = 0 when n+1 < N, via Nat.choose_eq_zero_of_lt — above the binomial support C(n,N−1) = 0, so the mate vanishes past the diagonal). Together they make the telescoped right-hand side collapse to G(n,N) − G(n,0) = 0. The third, G_one, is not a vanishing lemma at all: it records the *nonzero* value G(n,1) = −1/2ⁿ⁺¹ (the guard is off since k = 1 ≠ 0, and C(n,0) = 1). It is exactly the mate value that wz_equation needs at its k = 0 base case, where G(n,k+1) = G(n,1) must be evaluated explicitly.",
+    "mathContext": "$G(n,0)=0$ (guard) and, for $n+1<N$, $\\binom{n}{N-1}=0$ so $G(n,N)=0$ — together $G(n,N)-G(n,0)=0$. But $G(n,1)=-\\dfrac{1}{2^{n+1}}\\neq 0$, the value used in the $k=0$ case of the WZ equation.",
     "significance": "supporting",
-    "relatedConcepts": ["binomial support", "vanishing above the diagonal", "boundary conditions"],
+    "relatedConcepts": ["binomial support", "vanishing above the diagonal", "boundary conditions", "ℕ-subtraction guard"],
     "prerequisites": ["binomial coefficients"]
   },
   {
