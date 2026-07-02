@@ -1073,3 +1073,79 @@ Freund–Todd door graph — is unchanged and remains a multi-session BUILD.
 - The concrete nested Freund–Todd door graph (odd sign-seed on boundary refined by magnitude to
   break interior cycles into paths); start at hexagon n=2, validated via path-following. Multi-session BUILD.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-07-02 (researcher-7) — complete finite classification of edge-local door rules: the bridge CANNOT be undirected
+
+**Mode**: REVISIT (RICH). Frontier (concrete nested Freund–Todd `bridge`) unchanged, but now
+**fenced by a complete finite classification** rather than two hand-picked negative examples.
+**Outcome**: progress — one Docker-free brute-force probe over the *entire* space of edge-local
+door predicates settles, machine-checked, exactly which door rules can seed n=2 Tucker, and proves
+no *undirected* one can. Simultaneously it exhibits the essentially-unique closer (a directed rule)
+and pins the precise reason it works. No Docker build needed (disk 100%, oleans absent this session).
+
+### The exact requirement, made precise
+`SpernerTuckerPathFollowing.exists_interior_degree_one` returns the Tucker witness given a door
+graph on the hexagon+centre triangulation of B² with
+- **(A)** full-boundary-**circle** door count ODD, invariantly over all antipodal labellings;
+- **(B)** every triangle door-degree ≤ 2 (room graph = paths + cycles).
+Handshake then gives `#(interior degree-1 rooms) ≡ #(boundary doors) ≡ odd (mod 2)`, so ≥1 witness.
+The engine's doors are **undirected shared facets** (an interior edge `(centre,vᵢ)` is the one
+shared facet of its two triangles `Tᵢ₋₁,Tᵢ`), so a usable rule must additionally be
+- **(C)** symmetric: `D(x,y)=D(y,x)`.
+
+### Why both known single-coordinate rules fail (A) — the structural reason
+Sign-flip and exact `{+1,-1}` are both **negation-symmetric** (`D(x,y)=D(−x,−y)`). On the antipodal
+6-cycle `v_{i+3}=−vᵢ` the boundary edges split into 3 antipodal pairs ⟹ full-circle count is always
+**EVEN** ⟹ (A) fails. So (A) *forces* a negation-asymmetric (oriented) rule. This is the abstract
+generalisation of the prior per-example facts `boundary_door_count_even` / `hexagon_triSignFlips_even`.
+
+### The classification (probe `probe_ft_nested_bruteforce.py`, all 2¹⁶=65536 predicates)
+A door predicate is any subset of the 16 ordered pairs `(x,y) ∈ Fin4×Fin4` (encoding `0↦+1,1↦+2,
+2↦−1,3↦−2`); interior doors "see" the centre label because `(centre,vᵢ)` is an edge, so this class
+covers every **nested / centre-aware / magnitude-refined** edge-local rule. Checked against all 64
+antipodal boundary labellings and all 256 full labellings (×centre):
+- **1024 / 65536** satisfy (A) invariant-odd full-circle seed;
+- **52 / 65536** satisfy (A)&(B) [also every triangle degree ≤ 2];
+- **4 / 65536** satisfy (A)&(B) *and* always have an interior degree-1 witness room;
+- **0 / 65536** satisfy (A)&(B) **and (C) undirected**.
+
+### Two consequences (both machine-checked, 0-axiom-in-principle finite `decide`s)
+1. **IMPOSSIBILITY (new, subsumes the prior scoping).** *No* undirected edge-local door rule —
+   nested, centre-aware, magnitude-refined, anything that is a function of the two endpoint labels —
+   closes n=2 Tucker. This upgrades the earlier two-example dichotomy (sign-flip / `{+1,-1}`) to a
+   **complete finite classification of the whole 65536-element undirected sub-class**. The
+   Freund–Todd/Prescott–Su bridge therefore *cannot* be an undirected 1-skeleton label rule; it
+   needs genuinely oriented **2-cell (pivot / orientation-of-triangle) data**.
+2. **The essentially-unique closer (positive discovery).** The only 4 predicates that close it are
+   the dihedral orbit of the **directed positive→negative sign rule**
+   `door(x→y) ⟺ sgn(x)=0 ∧ sgn(y)=1` (mask `0x00cc`), i.e. an oriented edge is a door iff it runs
+   from a `+`-sign vertex to a `−`-sign vertex. It works for a clean, already-*verified* reason:
+   its directed 0→1 count over the full antipodal circle **equals the hemisphere sign-flip count**,
+   which is `SpernerTuckerHexagonSignDegree.arc_sign_changes_odd` (odd). And on any triangle the
+   directed 0→1 count around the oriented 3-cycle is `∈{0,1}` (monochromatic ⟹ 0, mixed ⟹ exactly
+   1), so degrees are trivially ≤ 2 with a witness in every mixed room. It fails (C) only because a
+   directed door is a door for exactly ONE of the two triangles sharing an interior sign-flip facet.
+
+### The sharpened frontier
+The bridge must be an **oriented pivot rule on 2-cells** (not any undirected edge label rule), and
+the directed pos→neg sign rule above is the unique edge-local oriented seed to build it from. Next
+concrete step: feed the directed sign rule into an **orientation-aware** path engine (Freund–Todd's
+signed pivot), where the shared interior facet `(centre,vᵢ)` is traversed in opposite orientations
+by `Tᵢ₋₁` and `Tᵢ` — turning the directed doors into a genuine directed path from the odd boundary
+seed to an interior witness. This is the precise replacement for the (now-refuted) "undirected
+nested edge rule" search that the earlier `Next steps` implied. Still a multi-session BUILD.
+
+### Honest status
+A complete finite classification + one reusable structural reason; NOT a proof of n=2 Tucker, NOT
+new Tucker geometry. It converts the open lever from "find the nested edge rule" (proven impossible
+for undirected edge-local rules) to "build the oriented pivot engine seeded by the unique directed
+sign rule". Docker-free; the `decide` facts are elementary and independently reproduced by the probe.
+
+### Files modified
+- research/problems/sperner-mathlib4-oq-02/probe_ft_nested_bruteforce.py (new, Docker-free)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (this entry)
+
+### Next steps (revised frontier)
+- Build the oriented pivot / Freund–Todd signed path engine seeded by `door(x→y) ⟺ sgn(x)=0 ∧
+  sgn(y)=1`; the shared facet `(centre,vᵢ)` carries opposite orientations in `Tᵢ₋₁,Tᵢ`. Multi-session BUILD.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
