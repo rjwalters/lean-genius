@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: A Cube Cannot Be Dissected into Distinct Smaller Cubes",
+      "startLine": 1,
+      "endLine": 85,
+      "summary": "Imports (Mathlib.Tactic, Finset, Real, Order.WellFounded) and module docstring for Wiedijk #82: a cube cannot be dissected into finitely many smaller cubes all of different sizes — equivalently, any partition into smaller cubes forces two of the same size. The elegant Littlewood proof is by infinite descent on the bottom face: the smallest cube touching a floor is surrounded by taller cubes, so its top face becomes a new higher floor covered by strictly smaller cubes; repeating yields an impossible infinite strictly-decreasing sequence of sizes. The file formalizes the impossibility statement, cube-dissection definitions, structural lemmas, and the well-foundedness framework (chain_length_bounded via Fintype.card_le_of_injective; smallest_cube_top_is_floor via Finset.exists_min_image), with the 3D geometric-covering steps (smaller_cube_above, all_different_implies_long_chains) taken as stated axioms. Contrast: in 2D a square CAN be squared into distinct squares (Brooks–Smith–Stone–Tutte, 1940).",
+      "mathContext": "Status axiomatized (2 axioms): the combinatorial descent is fully formalized, but the two 3D tiling facts — that the smallest floor cube is overtopped and that distinct sizes force arbitrarily long descending chains — are assumed rather than derived from a formal 3D covering model."
+    },
+    {
       "id": "basic-definitions",
       "title": "Basic Definitions",
       "startLine": 86,
