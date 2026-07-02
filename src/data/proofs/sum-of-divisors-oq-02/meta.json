@@ -71,6 +71,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Euler's Converse for Even Perfect Numbers (Six-Step Decomposition)",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "Module docstring, imports (Archive.Wiedijk100Theorems.PerfectNumbers, Mathlib.Tactic), and setup (namespace SumOfDivisorsOQ02; open ArithmeticFunction Finset Nat, scoped sigma). A pedagogical decomposition of Euler's 1747 theorem (every even perfect number is n = 2ᵏ·(2^{k+1}−1) with 2^{k+1}−1 a Mersenne prime) into 6 named lemmas exposing the algebraic skeleton: σ-multiplicativity over coprime factorizations (sigma_two_pow_mul_odd), σ(2ᵏ)=M_{k+1} (sigma_two_pow_eq_mersenne), the perfect equation M_{k+1}·σ(m)=2^{k+1}·m (mersenne_mul_sigma_eq_two_pow_mul), M_{k+1} ∣ m (mersenne_dvd_odd_part), σ(m)=m+c with c=m/M_{k+1} (sigma_eq_self_add_cofactor), and the two-divisor analysis forcing c=1 and m.Prime (cofactor_one_and_prime). The capstone euler_converse_self_contained chains the steps after the Archive 2-adic split. Status: VERIFIED (0 sorries, 0 axioms; Docker build clean); the Archive is used only for the 2-adic split and σ(2ᵏ) value, with Step 6 and the bound derivations proved from first principles.",
+      "mathContext": "The Archive proves Euler's converse in a single block; the gallery value here is the named six-step decomposition exposing the algebraic skeleton, with the two-divisor heart and bound-chasing proved independently rather than quoted."
+    },
+    {
       "id": "steps-1-2-sigma-values",
       "title": "Steps 1–2: σ-Multiplicativity and the Power-of-Two Value",
       "startLine": 73,
