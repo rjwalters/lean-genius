@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-01-oq-02-oq-01",
   "title": "N-Dimensional Volume from Surface Area Integration",
   "slug": "area-of-circle-oq-01-oq-02-oq-01",
-  "description": "Generalizes A(r) = ∫₀ʳ C(ρ) dρ to n dimensions: V_n(r) = ∫₀ʳ S_n(ρ) dρ, where S_n is the sphere surface area. Proves the derivative relation, FTC integral formula, shell volumes, scaling, and surface-to-volume ratio n/r.",
+  "description": "Generalizes A(r) = ∫₀ʳ C(ρ) dρ to n dimensions: V_n(r) = ∫₀ʳ S_n(ρ) dρ, where S_n is the sphere surface area. Proves the derivative relation, FTC integral formula, shell volumes, scaling, and surface-to-volume ratio n/r. (25 theorems including supporting lemmas and special-case instantiations, plus 3 definitions; 0 sorries)",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Volume_of_an_n-ball",
@@ -176,7 +176,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file generalizes the 2D area-circumference integral relation A = ∫C to arbitrary dimensions with zero sorries. The main theorem V_n(r) = ∫₀ʳ S_n(ρ) dρ follows cleanly from the polynomial structure of V_n and the Fundamental Theorem of Calculus. Rich consequences include shell volumes, scaling laws, and the surface-to-volume ratio n/r.",
+    "summary": "This file generalizes the 2D area-circumference integral relation A = ∫C to arbitrary dimensions with zero sorries. The main theorem V_n(r) = ∫₀ʳ S_n(ρ) dρ follows cleanly from the polynomial structure of V_n and the Fundamental Theorem of Calculus. Natural consequences include shell volumes, scaling laws, and the surface-to-volume ratio n/r.",
     "implications": "The volume-surface duality V_n' = S_n is the foundation of geometric measure theory in n dimensions The ratio S_n/V_n = n/r explains concentration of measure in high dimensions — the 'curse of dimensionality' Completes the Wiedijk #9 open question chain: circle area → circumference-area duality → n-dimensional integration The polynomial structure V_n = ω_n·r^n suggests that similar integral relations hold for other homogeneous geometric quantities",
     "openQuestions": [
       "Can the Gamma function values ω_n be computed for all n via a recursive formula ω_{n+2} = (2π/n)·ω_n?",
