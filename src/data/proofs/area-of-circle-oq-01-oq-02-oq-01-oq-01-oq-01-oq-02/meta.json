@@ -64,7 +64,7 @@
       "Gamma function recurrence Γ(s+1) = s·Γ(s)",
       "Even ball-volume closed form ω_{2k} = π^k/k!"
     ],
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 1
   },
   "overview": {
@@ -76,7 +76,8 @@
       "**Exact even formula is the lever**: because ω_{2k} = π^k/k! is *exact*, the asymptotic reduces to Stirling for k! with no error analysis — the equivalence calculus (mul, inv, congr_right) does the rest.",
       "**The posed constant is wrong**: Stirling gives ω_n ~ (2πe/n)^(n/2)/√(πn), i.e. coefficient 1/√(πn). The originally-stated √(2π/n) differs by the factor √2·π. We prove and record the correct constant.",
       "**Super-exponential decay made precise**: the shape (πe/k)^k = (πe/k)^k vanishes faster than any geometric rate once k > πe, quantifying exactly how fast the ball 'empties'.",
-      "**Drift repair as a by-product**: the committed ancestor file no longer builds under Mathlib v4.26 (an orphaned doc-comment and a Gamma cast-rewrite that drifted). The recurrence is re-proved here correctly, keeping this entry independently machine-checkable."
+      "**Drift repair as a by-product**: the committed ancestor file no longer builds under Mathlib v4.26 (an orphaned doc-comment and a Gamma cast-rewrite that drifted). The recurrence is re-proved here correctly, keeping this entry independently machine-checkable.",
+      "**Why only the even subsequence is clean**: the exactness that drives the whole argument is special to even dimensions, where Γ(k+1) = k! is an integer factorial and Mathlib's Stirling lemma applies verbatim. The odd terms ω_{2k+1} = π^{k+1/2}/Γ(k+3/2) hinge on *half-integer* Gamma values, for which no bare factorial identity exists; sharpening them (open question 1) needs the Legendre duplication formula Γ(k+1/2) = (2k)!√π/(4^k k!) or a direct Stirling estimate of Γ at half-integers. The even/odd split is thus not laziness but the natural fault line of the closed form."
     ],
     "prerequisites": [
       "Stirling's formula (Mathlib, IsEquivalent form)",
