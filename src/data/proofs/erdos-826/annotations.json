@@ -16,7 +16,11 @@
       "arithmetic functions",
       "number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n) = σ₀(n)",
+      "linear growth in a parameter k",
+      "infinitude of a set of integers"
+    ]
   },
   {
     "id": "ann-e826-tau",
@@ -35,7 +39,11 @@
       "multiplicative functions",
       "divisors"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer and prime powers",
+      "multiplicative arithmetic functions",
+      "Mathlib's σ_k arithmetic function"
+    ]
   },
   {
     "id": "ann-e826-growth",
@@ -54,7 +62,11 @@
       "highly composite numbers",
       "average order"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "average and maximum order of an arithmetic function",
+      "highly composite numbers"
+    ]
   },
   {
     "id": "ann-e826-linear-bound",
@@ -73,7 +85,11 @@
       "set theory"
     ],
     "mathContext": "See annotation content for formal details of the linear bound condition",
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "quantifying over all shifts k ≥ 1",
+      "sets of integers satisfying a predicate"
+    ]
   },
   {
     "id": "ann-e826-conjecture",
@@ -92,7 +108,11 @@
       "infinitely many solutions",
       "existential quantification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the linear bound condition on divisor counts",
+      "existential quantification over a constant C",
+      "Vinogradov ≪ notation"
+    ]
   },
   {
     "id": "ann-e826-relation248",
@@ -111,7 +131,11 @@
       "Erdős problems"
     ],
     "mathContext": "See annotation content for formal details of relation to problem #248",
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős #826 conjecture statement",
+      "logical implication between problems",
+      "strictly stronger versus weaker conditions"
+    ]
   },
   {
     "id": "ann-e826-k1-constraint",
@@ -130,7 +154,11 @@
       "simultaneous conditions"
     ],
     "mathContext": "See annotation content for formal details of the k=1 constraint and primes",
-    "prerequisites": []
+    "prerequisites": [
+      "τ(p) = 2 for a prime p",
+      "the linear bound at k=1",
+      "simultaneous constraints over all k"
+    ]
   },
   {
     "id": "ann-e826-heuristic",
@@ -149,7 +177,11 @@
       "average order",
       "independence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the average order log(m) of the divisor function",
+      "probabilistic independence heuristics",
+      "correlations between consecutive integers' divisor counts"
+    ]
   },
   {
     "id": "ann-e826-smooth",
@@ -168,7 +200,11 @@
       "factorization patterns"
     ],
     "mathContext": "See annotation content for formal details of connection to smooth numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "smooth numbers (small prime factors)",
+      "the divisor function σ₀(m)",
+      "distribution of numbers in short intervals"
+    ]
   },
   {
     "id": "ann-e826-difficulty",
@@ -187,7 +223,11 @@
       "analytic number theory",
       "correlation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sieve methods and upper bounds on τ in short intervals",
+      "correlation via shared small prime factors",
+      "the simultaneous all-k control requirement"
+    ]
   },
   {
     "id": "ann-e826-main",
@@ -206,6 +246,10 @@
       "Erdős problems",
       "number theory conjectures"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the erdos_826 conjecture and goodStartingPoints",
+      "implication toward the weaker Problem #248",
+      "the role of axioms in documenting an open problem"
+    ]
   }
 ]
