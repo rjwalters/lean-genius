@@ -840,3 +840,68 @@ descendants of this engine — they will all be conditional on the same `bridge`
 value-adding next step is the concrete Freund–Todd door-graph construction (start at the
 hexagon n=2 to validate the engine thesis end-to-end via path-following rather than `decide`
 brute force, then generalize). Treat as a multi-session BUILD, not a one-shot research iteration.
+
+## Session 2026-07-02 (researcher-7) — systematic closure of the "direct signed count" shortcut
+
+**Mode**: REVISIT (RICH, score 45). Frontier (geometric Freund–Todd `bridge`) unchanged.
+**Outcome**: progress (negative/scoping) — new Docker-free artifact
+`research/problems/sperner-mathlib4-oq-02/probe_oriented_invariant.py`, exhaustive over
+all 256 antipodal labellings of the hexagon+centre model. **No Lean shipped this session:
+the host was at 100% disk with 7 concurrent `lean-build` containers, so neither
+`docker-build.sh` nor host `lake env lean` could verify a new `decide` artifact — and an
+unverified `decide` file is exactly the "wrong/vacuous artifact" the prior saturation
+session warned against.** So the deliverable is a correct, verification-independent
+computational result.
+
+### What was tested and why
+The existing `SpernerTuckerHexagon.count_parity_not_invariant` shows only that the **raw**
+complementary-edge count is not a mod-2 invariant for n=2. That leaves open the natural
+escape hatch: *maybe some cleverer **signed** count is invariantly odd, giving a direct
+"count the target, show it's odd" proof after all* (as in n=1) and sidestepping the
+path-following engine. This session closes that hatch by exhaustively testing a systematic
+family of signed / per-axis / boundary-restricted counts:
+
+| candidate | result over 256 labellings |
+|-----------|----------------------------|
+| raw count, all edges | MIXED parity (known) |
+| **oriented** count, all edges | MIXED (symmetric dist `{-3:16,-2:48,-1:48,0:32,1:48,2:48,3:16}`) |
+| oriented count, **boundary edges only** | **identically 0** (`{0:256}`) |
+| oriented count, spokes only | MIXED (= all-edges, since boundary ≡ 0) |
+| raw / oriented count, fixed axis 1 or 2 | MIXED |
+| oriented count, fixed axis, boundary only | identically 0 |
+| sign-reduced boundary sign-changes (winding) on the closed 6-cycle | invariantly **even** (`{2:48,6:16}`) |
+| sign-reduced complementary edges on the cycle | invariantly **even** |
+
+### Conclusions (all machine-checked, Docker-free)
+1. **No natural direct signed count is invariantly odd.** Every candidate is either MIXED or
+   invariantly *even* — none is invariantly odd. So the n=1 "count the target, show it's odd"
+   route provably does not lift to n=2 under *any* of these signed refinements, not just the
+   raw count. This is a strict generalization of `count_parity_not_invariant`.
+2. **The oriented boundary count is identically 0** — sharper than
+   `SpernerTuckerAntipodalParity.even_card_antipodal_boundary` (which gives only *even*): with
+   an orientation, the antipodal `d ↦ -d` involution is sign-reversing, so the boundary
+   contribution cancels to exactly 0. The full boundary circle S¹ therefore supplies **no**
+   parity at all; the odd input the path-following engine needs comes only from a *hemisphere*
+   (an arc = interval, where n=1 Tucker gives odd), via
+   `SpernerTuckerHemisphere.card_eq_two_mul_hemisphere` — consistent with the existing design.
+3. **Net effect on the frontier**: this rules out a whole class of "direct invariant" shortcuts,
+   confirming (independently of the broken build env) that the genuine remaining lever is the
+   geometric Freund–Todd door graph the prior sessions named. It does **not** advance that
+   construction — it fences it more tightly, the same character of result as
+   `count_parity_not_invariant` and `spoke_graph_empty_yet_complementary`.
+
+### Honest status
+This is a scoping/negative result, not new Tucker geometry and not a Lean artifact. It is a
+correct, exhaustive, Docker-free confirmation that no direct signed count replaces
+path-following, plus one sharpened fact (oriented boundary count ≡ 0). The abstract program
+remains saturated; the geometric `bridge` remains the open multi-session BUILD.
+
+### Files modified
+- research/problems/sperner-mathlib4-oq-02/probe_oriented_invariant.py (new)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (this entry)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (insight + progressSummary)
+
+### Next steps (unchanged)
+- The geometric Freund–Todd door graph for general n (start at hexagon n=2, validated via
+  path-following rather than `decide`). Multi-session BUILD; needs a working build env.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
