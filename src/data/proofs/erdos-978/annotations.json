@@ -16,7 +16,11 @@
       "Irreducible polynomials",
       "Asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization and prime powers",
+      "irreducible polynomials over ℤ",
+      "asymptotic / natural density of a set"
+    ]
   },
   {
     "id": "ann-e978-powerfree-def",
@@ -35,7 +39,11 @@
       "Prime divisibility",
       "Zeta function"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime divisibility (p^k | n)",
+      "prime numbers",
+      "the squarefree property as a special case"
+    ]
   },
   {
     "id": "ann-e978-squarefree-cubefree",
@@ -53,7 +61,11 @@
       "Prime factorization"
     ],
     "mathContext": "See annotation content for formal details of squarefree and cubefree",
-    "prerequisites": []
+    "prerequisites": [
+      "the k-power-free definition",
+      "prime factorization of an integer",
+      "prime powers p² and p³"
+    ]
   },
   {
     "id": "ann-e978-squarefree-examples",
@@ -71,7 +83,11 @@
       "Squarefree numbers"
     ],
     "mathContext": "See annotation content for formal details of squarefree examples",
-    "prerequisites": []
+    "prerequisites": [
+      "the squarefree definition (2-power-free)",
+      "case analysis on small primes (interval_cases)",
+      "the omega arithmetic tactic"
+    ]
   },
   {
     "id": "ann-e978-irreducible",
@@ -90,7 +106,11 @@
       "Gauss's lemma",
       "Eisenstein criterion"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomials over ℤ and their degree",
+      "factorization g·h of polynomials",
+      "Gauss's lemma relating ℤ and ℚ irreducibility"
+    ]
   },
   {
     "id": "ann-e978-f-example",
@@ -108,7 +128,11 @@
       "Polynomial irreducibility"
     ],
     "mathContext": "See annotation content for formal details of the polynomial n⁴ + 2",
-    "prerequisites": []
+    "prerequisites": [
+      "irreducible polynomials over ℤ",
+      "Eisenstein's irreducibility criterion",
+      "polynomial coefficients and the constant term"
+    ]
   },
   {
     "id": "ann-e978-density",
@@ -127,7 +151,11 @@
       "Asymptotic analysis",
       "Counting functions"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "evaluating a polynomial at integers (f.eval n)",
+      "Finset.filter and cardinality",
+      "the notion of a limiting proportion / density"
+    ]
   },
   {
     "id": "ann-e978-erdos-1953",
@@ -145,7 +173,11 @@
       "Power-free polynomial values"
     ],
     "mathContext": "See annotation content for formal details of erdős's original result (1953)",
-    "prerequisites": []
+    "prerequisites": [
+      "(d-1)-power-free values",
+      "irreducible polynomials of degree d ≠ 2^l",
+      "'infinitely many n' existential statements"
+    ]
   },
   {
     "id": "ann-e978-hooley",
@@ -164,7 +196,11 @@
       "Asymptotic density",
       "Hooley 1967"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density converging to a positive constant",
+      "sieve methods",
+      "Erdős's 1953 infinitely-many result"
+    ]
   },
   {
     "id": "ann-e978-heath-brown-browning",
@@ -183,7 +219,11 @@
       "Browning 2011",
       "Determinant method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "(d-2)-power-free values",
+      "the determinant method in Diophantine geometry",
+      "counting solutions with polynomial constraints"
+    ]
   },
   {
     "id": "ann-e978-n4-plus-2",
@@ -202,7 +242,11 @@
       "n⁴ + 2",
       "Open problems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the polynomial n⁴+2 and its degree",
+      "squarefree vs cubefree (2- vs 3-power-free)",
+      "the degree ranges of Hooley and Browning"
+    ]
   },
   {
     "id": "ann-e978-n4-cubefree",
@@ -221,7 +265,11 @@
       "Known results"
     ],
     "mathContext": "See annotation content for formal details of what is known: n⁴ + 2 is cubefree",
-    "prerequisites": []
+    "prerequisites": [
+      "Hooley's (d-1)-power-free theorem",
+      "cubefree numbers",
+      "specializing to degree d=4"
+    ]
   },
   {
     "id": "ann-e978-summary",
@@ -240,6 +288,10 @@
       "Research frontier"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "the three questions of Erdős 978",
+      "the roles of Hooley and Browning",
+      "the frontier between (d-1) and (d-2) power-free"
+    ]
   }
 ]
