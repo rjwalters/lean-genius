@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-ekr-sharpness-nonvacuous",
+    "proofId": "erdos-ko-rado-oq-01",
+    "range": {
+      "startLine": 220,
+      "endLine": 240
+    },
+    "type": "insight",
+    "title": "Sharpness Check: the Bound k Is Attained and Nonvacuous",
+    "content": "After proving the upper bound (a pairwise-intersecting family of cyclic arcs has at most k members), the file closes with a sharpness note. The extremal families are the k arcs anchored at a common point — sharing position 0 they pairwise intersect, so k cannot be lowered. `singleton_family_bound` records the simplest instance concretely: a single arc {i} is a pairwise-intersecting family, so applying `at_most_k_intersecting_cyclic_intervals` to it discharges the membership and intersection hypotheses (the singleton meets itself at 0) and confirms the bound is nonvacuous — there really are families the lemma governs. This closes the loop between the abstract inequality and an exhibited witness.",
+    "mathContext": "Katona's lemma: a family of cyclic intervals of length $k$ on $\\mathbb{Z}/n$ ($n \\ge 2k$) that is pairwise intersecting has at most $k$ members, and $k$ is attained by the pencil of arcs through a fixed point.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Erdős–Ko–Rado theorem",
+      "Katona's cyclic-interval method",
+      "extremal set theory",
+      "tightness / sharpness"
+    ],
+    "prerequisites": [
+      "at_most_k_intersecting_cyclic_intervals",
+      "Finset.card_singleton"
+    ]
+  },
+  {
     "id": "ann-arc-calculus",
     "proofId": "erdos-ko-rado-oq-01",
     "range": {
