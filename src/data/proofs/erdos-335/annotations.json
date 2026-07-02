@@ -4,18 +4,18 @@
     "proofId": "erdos-335",
     "range": {
       "startLine": 20,
-      "endLine": 25
+      "endLine": 31
     },
     "type": "concept",
     "title": "Imports and Setup",
-    "content": "Imports Mathlib's **Real.Basic**, **Filter.Basic**, **Set.Card**, and **Tactic**. Opens **Set** and **Filter** for set operations and filter-based limits.",
+    "content": "Imports Mathlib's **Real.Basic**, **Irrational**, **Order.Filter.Basic**, **Set.Card**, **Combinatorics.Schnirelmann**, and **Tactic**. Opens **Set** and **Filter** so filter-based limits and set-cardinality lemmas are in scope.",
     "significance": "supporting",
-    "mathContext": "The formalization needs `ℝ` (reals for density values), `Filter.Tendsto` and `Filter.atTop` (for $\\lim_{N \\to \\infty}$), `nhds` (neighborhood filter for convergence), `Set.ncard` (finite cardinality of set intersections), and `Irrational` (irrationality predicate for Weyl's theorem).",
+    "mathContext": "The formalization needs `ℝ` (real-valued densities), `Filter.Tendsto`/`Filter.atTop` for $\\lim_{N\\to\\infty}$, `nhds` (the neighbourhood filter), `Set.ncard` (cardinality of the finite intersection $A\\cap[1,N]$), `Irrational` for Weyl's theorem, and `schnirelmannDensity` for the bridge section.",
     "relatedConcepts": [
       "real analysis",
       "filters",
       "set cardinality",
-      "irrationality"
+      "Schnirelmann density"
     ],
     "prerequisites": [
       "Mathlib basics"
@@ -25,116 +25,63 @@
     "id": "ann-e335-counting",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 29,
-      "endLine": 31
+      "startLine": 35,
+      "endLine": 38
     },
     "type": "definition",
     "title": "Counting Function",
-    "content": "**countingFn A N** $= |A \\cap \\{1, \\ldots, N\\}|$. The number of elements of $A$ up to $N$, using `Set.ncard` for cardinality of finite set intersections.",
+    "content": "**countingFn A N** $= |A \\cap \\{1,\\ldots,N\\}|$, the number of elements of $A$ up to $N$. Implemented with `Set.ncard (A \\cap Set.Icc 1 N)`, the cardinality of the (finite) intersection with the interval $[1,N]$.",
     "significance": "supporting",
-    "mathContext": "The counting function $A(N) = |A \\cap [1, N]|$ is the basic quantity from which asymptotic density is derived. It uses `Set.ncard` (which returns $0$ for infinite sets) applied to $A \\cap \\mathrm{Set.Icc}\\, 1\\, N$, which is always finite. The function is `noncomputable` due to the decidability requirements of `ncard`.",
+    "mathContext": "`Set.ncard` returns a natural number and is well-behaved because $A\\cap\\mathrm{Icc}\\,1\\,N$ is always finite. The interval starts at $1$ (not $0$), matching the classical convention $A(N)=\\#\\{a\\in A: 1\\le a\\le N\\}$ and aligning with Mathlib's `schnirelmannDensity`.",
     "relatedConcepts": [
       "counting function",
-      "Set.ncard",
-      "Set.Icc",
-      "noncomputable"
+      "set cardinality",
+      "asymptotic density"
     ],
     "prerequisites": [
-      "Set.ncard",
-      "Set.Icc"
+      "Set.ncard"
     ]
   },
   {
-    "id": "ann-e335-density",
+    "id": "ann-e335-asymptotic-density",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 33,
-      "endLine": 35
-    },
-    "type": "definition",
-    "title": "Counting Function",
-    "content": "The counting function $|A \\cap \\{1,\\ldots,N\\}|$ measures how many elements of $A$ lie in the initial interval. Implemented via `Set.ncard` (the cardinality of a set, possibly infinite but here applied to the finite intersection $A \\cap [1, N]$). This is the building block for asymptotic density.",
-    "mathContext": "$\\text{countingFn}(A, N) = |A \\cap \\{1, \\ldots, N\\}| = \\text{Set.ncard}(A \\cap \\text{Set.Icc}\\, 1\\, N)$. The use of `Set.Icc 1 N` (closed interval in $\\mathbb{N}$) ensures we count elements in $\\{1, 2, \\ldots, N\\}$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Set.ncard",
-      "Set.Icc",
-      "counting measure",
-      "partial sums"
-    ],
-    "prerequisites": [
-      "set intersection",
-      "natural number intervals",
-      "cardinality"
-    ]
-  },
-  {
-    "id": "erdos-335-ann-density",
-    "proofId": "erdos-335",
-    "range": {
-      "startLine": 34,
-      "endLine": 35
-    },
-    "type": "definition",
-    "title": "Counting Function",
-    "content": "The counting function $|A \\cap \\{1,\\ldots,N\\}|$ measures how many elements of $A$ lie in the initial interval. Implemented via `Set.ncard` (the cardinality of a set, possibly infinite but here applied to the finite intersection $A \\cap [1, N]$). This is the building block for asymptotic density.",
-    "mathContext": "$\\text{countingFn}(A, N) = |A \\cap \\{1, \\ldots, N\\}| = \\text{Set.ncard}(A \\cap \\text{Set.Icc}\\, 1\\, N)$. The use of `Set.Icc 1 N` (closed interval in $\\mathbb{N}$) ensures we count elements in $\\{1, 2, \\ldots, N\\}$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Set.ncard",
-      "Set.Icc",
-      "counting measure",
-      "partial sums"
-    ],
-    "prerequisites": [
-      "set intersection",
-      "natural number intervals",
-      "cardinality"
-    ]
-  },
-  {
-    "id": "erdos-335-ann-asymptotic-density",
-    "proofId": "erdos-335",
-    "range": {
-      "startLine": 34,
-      "endLine": 35
+      "startLine": 39,
+      "endLine": 42
     },
     "type": "definition",
     "title": "Asymptotic Density",
-    "content": "**asympDensity A** $= \\lim_{N \\to \\infty} |A \\cap [1,N]|/N$. The natural measure of 'how thick' a set of integers is, defined via `Filter.limUnder atTop`.",
+    "content": "**asympDensity A** $= \\lim_{N\\to\\infty} |A\\cap[1,N]|/N$, defined via `limUnder atTop`. This is the *natural* (asymptotic) density, the standard measure of how thick a set of integers is — it is not yet in Mathlib at the pinned SHA (the module TODO lists it as unformalized).",
     "significance": "key",
-    "mathContext": "The asymptotic (or natural) density $d(A) = \\lim_{N \\to \\infty} A(N)/N$ exists for many natural sets (arithmetic progressions, sets defined by digit conditions, etc.) but not all. When it exists, $d(A) \\in [0, 1]$. The definition uses Mathlib's `Filter.limUnder atTop`, which returns the limit if it exists and a junk value otherwise.",
+    "mathContext": "`limUnder atTop f` denotes $\\lim_{N\\to\\infty} f(N)$ using the filter `atTop`; it returns a junk value if the limit fails to exist, which is why `DensityExists` is tracked separately as a hypothesis.",
     "relatedConcepts": [
-      "natural density",
-      "Schnirelmann density",
-      "upper/lower density",
-      "Filter.limUnder"
+      "asymptotic density",
+      "limits",
+      "filters"
     ],
     "prerequisites": [
-      "countingFn",
-      "Filter.atTop"
+      "Filter.limUnder",
+      "Filter.Tendsto"
     ]
   },
   {
     "id": "ann-e335-density-exists",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 37,
-      "endLine": 39
+      "startLine": 43,
+      "endLine": 46
     },
     "type": "definition",
     "title": "Density Existence",
-    "content": "**DensityExists A** asserts that the limit $\\lim_{N \\to \\infty} A(N)/N$ converges. Not all sets have well-defined asymptotic density.",
+    "content": "**DensityExists A** asserts $\\exists d,\\ (\\text{countingFn}\\,A\\,N)/N \\to d$ — i.e. the defining limit converges. Not every $A\\subseteq\\mathbb{N}$ has an asymptotic density, so this predicate is threaded through every result as an explicit hypothesis.",
     "significance": "supporting",
-    "mathContext": "Defined as $\\exists d,\\, \\mathrm{Filter.Tendsto}\\, (N \\mapsto A(N)/N)\\, \\mathrm{atTop}\\, (\\mathrm{nhds}\\, d)$. Sets without density include those oscillating between high and low density (e.g., integers whose binary representation has even length). The density-additivity condition requires all three densities ($A$, $B$, $A+B$) to exist.",
+    "mathContext": "Phrasing existence as `∃ d, Tendsto … (nhds d)` (rather than asserting convergence of `limUnder`) makes the limit value available for rewriting via `Tendsto.limUnder_eq`, the workhorse used repeatedly below.",
     "relatedConcepts": [
       "convergence",
-      "Filter.Tendsto",
-      "nhds",
-      "density existence"
+      "asymptotic density",
+      "filters"
     ],
     "prerequisites": [
-      "countingFn",
       "Filter.Tendsto"
     ]
   },
@@ -142,271 +89,459 @@
     "id": "ann-e335-positive-density",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 41,
-      "endLine": 43
+      "startLine": 47,
+      "endLine": 50
     },
     "type": "definition",
     "title": "Positive Density",
-    "content": "**HasPositiveDensity A** asserts $d(A) > 0$. The problem restricts to sets with positive density to avoid trivial cases.",
+    "content": "**HasPositiveDensity A** asserts $d(A) > 0$. Erdős #335 restricts attention to sets of positive density; the degenerate density-zero cases are structurally uninteresting (any finite set is density-additive vacuously).",
     "significance": "supporting",
-    "mathContext": "Sets with density $0$ (like primes, perfect squares, or finite sets) are excluded. Positive density ensures $A$ has 'substantial' presence among the integers. For fractional part sets, $d(\\{n : \\{n\\theta\\} \\in X\\}) = \\mu(X)$ by Weyl, so positive density $\\Leftrightarrow$ positive measure of $X$.",
+    "mathContext": "Definitionally $0 < \\text{asympDensity}\\,A$; the file later builds a genuine positive-density witness (density $1/4$) to show the hypothesis is satisfiable in the regime the problem concerns.",
     "relatedConcepts": [
       "positive density",
-      "thick sets",
-      "Szemerédi's theorem context"
+      "asymptotic density"
     ],
     "prerequisites": [
-      "asympDensity"
+      "asymptotic density"
     ]
   },
   {
     "id": "ann-e335-sumset",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 47,
-      "endLine": 49
+      "startLine": 53,
+      "endLine": 56
     },
     "type": "definition",
     "title": "Sumset",
-    "content": "**Sumset A B** $= \\{a + b : a \\in A,\\, b \\in B\\}$. The Minkowski sum of two sets of natural numbers.",
+    "content": "**Sumset A B** $= \\{a+b : a\\in A,\\ b\\in B\\}$, the Minkowski sum of two sets of naturals, written $\\{n \\mid \\exists a\\in A, \\exists b\\in B,\\ n=a+b\\}$.",
     "significance": "key",
-    "mathContext": "The sumset $A + B = \\{n : \\exists a \\in A,\\, \\exists b \\in B,\\, n = a + b\\}$ is the central object in additive combinatorics. Its density is controlled by the Plünnecke-Ruzsa inequality: $d(A+B) \\geq \\min(d(A) + d(B), 1)$. Problem #335 asks about the extremal case where this inequality is tight.",
+    "mathContext": "The predicate form $\\{n \\mid \\exists a\\in A,\\exists b\\in B, n=a+b\\}$ makes membership proofs (`⟨a, ha, b, hb, rfl⟩`) direct and drives the algebraic lemmas (commutativity, associativity, monotonicity, identities) proved later.",
     "relatedConcepts": [
+      "sumset",
       "Minkowski sum",
-      "additive combinatorics",
-      "sumset structure",
-      "Freiman's theorem"
+      "additive combinatorics"
     ],
     "prerequisites": [
-      "Set notation"
+      "set-builder notation"
     ]
   },
   {
     "id": "ann-e335-additive",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 51,
-      "endLine": 56
+      "startLine": 57,
+      "endLine": 63
     },
     "type": "definition",
     "title": "Density Additivity",
-    "content": "**DensityAdditive A B** asserts that all three densities exist and $d(A + B) = d(A) + d(B)$. This is the central structural condition of Problem #335.",
+    "content": "**DensityAdditive A B** bundles four facts: $A$, $B$, and $A+B$ all have densities, and $d(A+B) = d(A)+d(B)$. This exact additivity is the central structural condition of Problem #335 — far more restrictive than the general Plünnecke–Ruzsa lower bound $d(A+B)\\ge\\min(d(A)+d(B),1)$.",
     "significance": "key",
-    "mathContext": "The condition has four components: (1) $d(A)$ exists, (2) $d(B)$ exists, (3) $d(A+B)$ exists, (4) $d(A+B) = d(A) + d(B)$. Condition (4) is extremely restrictive. By the Plünnecke-Ruzsa inequality, $d(A+B) \\geq d(A) + d(B)$ when the sum is $\\leq 1$, so additivity means this general lower bound is tight. This 'tightness' characterization is the essence of the problem.",
+    "mathContext": "Packaging the three existence facts alongside the equation means every downstream lemma can destructure `⟨hA, hB, hAB, heq⟩` and immediately rewrite with the additivity equation `h.2.2.2`.",
     "relatedConcepts": [
       "density additivity",
-      "extremal sumsets",
-      "tightness of Plünnecke-Ruzsa"
+      "sumset",
+      "Plünnecke–Ruzsa"
     ],
     "prerequisites": [
-      "asympDensity",
-      "DensityExists",
-      "Sumset"
+      "Sumset",
+      "asymptotic density"
     ]
   },
   {
     "id": "ann-e335-frac",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 60,
-      "endLine": 66
+      "startLine": 66,
+      "endLine": 72
     },
     "type": "definition",
     "title": "Fractional Part Construction",
-    "content": "**frac x** $= x - \\lfloor x \\rfloor$ and **FractionalPartSet $\\theta$ X** $= \\{n > 0 : \\{n\\theta\\} \\in X\\}$. The sets obtained by filtering integers based on where their $\\theta$-multiples land modulo 1.",
+    "content": "**frac x** $= x - \\lfloor x\\rfloor$ and **FractionalPartSet θ X** $= \\{n>0 : \\{n\\theta\\}\\in X\\}$. For irrational $\\theta$ these Bohr-set-like sequences are the known source of density-additive pairs — the constructions Erdős #335 asks whether *all* additive pairs come from.",
     "significance": "key",
-    "mathContext": "For irrational $\\theta$, the sequence $\\{n\\theta\\}_{n=1}^{\\infty}$ is equidistributed on $[0,1)$ by Weyl's theorem. So $d(\\{n : \\{n\\theta\\} \\in X\\}) = \\mu(X)$ for any Jordan-measurable $X \\subseteq [0,1)$. If $X_A + X_B$ (mod 1) has measure $\\mu(X_A) + \\mu(X_B)$ (possible when $X_A, X_B$ are disjoint arcs), then the corresponding fractional part sets are density-additive.",
+    "mathContext": "The sets $\\{n : \\{n\\theta\\}\\in X\\}$ are pullbacks of measurable $X\\subseteq[0,1)$ under the equidistributed orbit $n\\mapsto\\{n\\theta\\}$; their densities equal $\\mu(X)$ by Weyl, giving a rich supply of prescribed-density sets.",
     "relatedConcepts": [
-      "fractional parts",
+      "fractional part",
       "equidistribution",
-      "irrational rotation",
-      "circle group"
+      "Bohr sets"
     ],
     "prerequisites": [
       "floor function",
-      "Irrational"
+      "irrationality"
     ]
   },
   {
     "id": "ann-e335-weyl",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 68,
-      "endLine": 71
+      "startLine": 74,
+      "endLine": 80
     },
-    "type": "definition",
-    "title": "Weyl Equidistribution",
-    "content": "**weyl_equidistribution**: For irrational $\\theta$, the fractional part set $\\{n : \\{n\\theta\\} \\in X\\}$ has well-defined density. This follows from Weyl's equidistribution theorem (1916).",
-    "significance": "supporting",
-    "mathContext": "Weyl's theorem states: if $\\theta$ is irrational, then for any interval $[a, b) \\subseteq [0, 1)$, $\\lim_{N \\to \\infty} |\\{1 \\leq n \\leq N : \\{n\\theta\\} \\in [a,b)\\}|/N = b - a$. More generally, this extends to Jordan-measurable sets. The axiom captures the density existence part; the actual value $d = \\mu(X)$ is implicit.",
+    "type": "concept",
+    "title": "Weyl Equidistribution (axiom)",
+    "content": "**weyl_equidistribution** (stated as an axiom): for irrational $\\theta$ and measurable $X\\subseteq[0,1)$ with measure $\\mu_X\\in[0,1]$, the fractional-part set has a well-defined density equal to $\\mu_X$. This packages Weyl's classical equidistribution theorem, which is not in Mathlib at the pinned SHA.",
+    "significance": "key",
+    "mathContext": "Weyl's theorem says $\\{n\\theta\\}$ is equidistributed mod $1$ for irrational $\\theta$, so the proportion of $n\\le N$ landing in $X$ tends to $\\mu(X)$. It is one of the two construction axioms this entry declares (see `assumptions`).",
     "relatedConcepts": [
-      "Weyl's theorem",
-      "equidistribution mod 1",
-      "discrepancy theory",
-      "1916"
+      "Weyl equidistribution",
+      "uniform distribution mod 1",
+      "axiom"
     ],
     "prerequisites": [
-      "FractionalPartSet",
-      "DensityExists",
-      "Irrational"
+      "equidistribution",
+      "measure theory"
     ]
   },
   {
     "id": "ann-e335-frac-additive",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 73,
-      "endLine": 78
+      "startLine": 82,
+      "endLine": 87
     },
     "type": "concept",
-    "title": "Fractional Part Density Additivity",
-    "content": "**fractional_part_density_additive**: For irrational $\\theta$, fractional part sets $A = \\{n : \\{n\\theta\\} \\in X_A\\}$ and $B = \\{n : \\{n\\theta\\} \\in X_B\\}$ are density-additive. This is the known construction producing density-additive pairs.",
+    "title": "Fractional-Part Density Additivity (axiom)",
+    "content": "**fractional_part_density_additive** (axiom): for irrational $\\theta$ and measures with $\\mu_A+\\mu_B\\le 1$, the fractional-part sets for $X_A, X_B$ form a *density-additive* pair. This encodes the measure-additivity of the rotation construction on $\\mathbb{R}/\\mathbb{Z}$.",
     "significance": "key",
-    "mathContext": "The key insight: if $X_A, X_B \\subseteq [0,1)$ are chosen so that $X_A + X_B$ (mod 1) has measure $\\mu(X_A) + \\mu(X_B)$ (e.g., $X_A$ and $X_B$ are arcs whose sumset doesn't wrap around), then by Weyl's theorem, $d(A+B) = \\mu(X_A + X_B) = \\mu(X_A) + \\mu(X_B) = d(A) + d(B)$. This works because the fractional part map is a group homomorphism from $(\\mathbb{Z}, +)$ to $(\\mathbb{R}/\\mathbb{Z}, +)$.",
+    "mathContext": "When the target sets tile without overlap up to measure $1$, additivity of Lebesgue measure transfers to additivity of the induced integer densities. This is the second stated construction axiom and supplies the non-degenerate witnesses built later.",
     "relatedConcepts": [
-      "group homomorphism",
-      "torus structure",
-      "measure additivity",
-      "arc sums"
+      "density additivity",
+      "rotation construction",
+      "axiom"
     ],
     "prerequisites": [
       "FractionalPartSet",
-      "DensityAdditive",
-      "weyl_equidistribution"
+      "measure additivity"
     ]
   },
   {
     "id": "ann-e335-conjecture",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 82,
-      "endLine": 95
+      "startLine": 89,
+      "endLine": 104
     },
     "type": "concept",
-    "title": "Main Conjecture",
-    "content": "**erdos_335_conjecture** (OPEN): Every density-additive pair $(A, B)$ with positive density arises from a fractional part construction with irrational $\\theta$. This asks whether the known examples are the *only* examples.",
+    "title": "Main Conjecture (Erdős #335, OPEN)",
+    "content": "**erdos_335_conjecture** (axiom, OPEN): every density-additive pair $(A,B)$ of positive density arises — up to density — from a fractional-part / group-rotation construction. Formally, there exist irrational $\\theta$ and measurable $X_A, X_B$ with $d(A)=d(\\text{FractionalPartSet}\\,\\theta\\,X_A)$ and likewise for $B$.",
+    "significance": "critical",
+    "mathContext": "This is the open problem itself, hence declared as an `axiom` and flagged OPEN: it is a *converse/classification* statement (all additive pairs are rotation pairs), the hard direction — the constructions above already give the easy direction. Reference: Erdős–Graham (1980), erdosproblems.com/335.",
+    "relatedConcepts": [
+      "Erdős problems",
+      "open problem",
+      "inverse theorems"
+    ],
+    "prerequisites": [
+      "density additivity",
+      "fractional part construction"
+    ]
+  },
+  {
+    "id": "ann-e335-basic-bounds",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 108,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Density Lives in [0,1]",
+    "content": "Three foundational bounds: **density_nonneg** ($d(A)\\ge 0$), the helper **countingFn_le** ($|A\\cap[1,N]|\\le N$), and **density_le_one** ($d(A)\\le 1$ when it exists). Together they confine every asymptotic density to $[0,1]$.",
+    "significance": "supporting",
+    "mathContext": "`density_nonneg` uses `ge_of_tendsto` on the eventually-nonnegative ratio; `density_le_one` uses `le_of_tendsto` after `countingFn_le` bounds the counting ratio by $1$ via `Set.ncard_le_ncard` on $A\\cap\\mathrm{Icc}\\,1\\,N \\subseteq \\mathrm{Icc}\\,1\\,N$.",
+    "relatedConcepts": [
+      "density bounds",
+      "monotone convergence",
+      "counting function"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto",
+      "Set.ncard"
+    ]
+  },
+  {
+    "id": "ann-e335-additive-tight",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 137,
+      "endLine": 149
+    },
+    "type": "theorem",
+    "title": "Additivity Forces d(A)+d(B) ≤ 1 and Tightness",
+    "content": "**additive_sum_le_one**: a density-additive pair satisfies $d(A)+d(B)\\le 1$ (else $d(A+B)>1$, impossible). **additive_implies_tight**: density additivity means the Plünnecke–Ruzsa bound is *attained*, $d(A+B)=\\min(d(A)+d(B),1)$.",
     "significance": "key",
-    "mathContext": "The conjecture states: $\\forall A, B \\subseteq \\mathbb{N}$ with positive density and $d(A+B) = d(A) + d(B)$, $\\exists \\theta \\in \\mathbb{R} \\setminus \\mathbb{Q}$ and measurable $X_A, X_B \\subseteq [0,1)$ such that $A = \\{n : \\{n\\theta\\} \\in X_A\\}$ and $B = \\{n : \\{n\\theta\\} \\in X_B\\}$. The full version uses general compact abelian groups $G$ rather than just $\\mathbb{R}/\\mathbb{Z}$.",
+    "mathContext": "`additive_sum_le_one` rewrites $d(A)+d(B)$ back to $d(A+B)$ via the additivity equation and applies `density_le_one` to $A+B$. `additive_implies_tight` then reads $\\min(d(A)+d(B),1)=d(A)+d(B)$ since the sum is $\\le 1$.",
     "relatedConcepts": [
-      "characterization problem",
-      "inverse theorems",
-      "compact abelian groups",
-      "structural additive combinatorics"
+      "Plünnecke–Ruzsa",
+      "extremal sets",
+      "density additivity"
     ],
     "prerequisites": [
-      "HasPositiveDensity",
-      "DensityAdditive",
-      "FractionalPartSet"
-    ]
-  },
-  {
-    "id": "ann-e335-nonneg",
-    "proofId": "erdos-335",
-    "range": {
-      "startLine": 99,
-      "endLine": 100
-    },
-    "type": "concept",
-    "title": "Density Non-Negativity",
-    "content": "**density_nonneg**: $d(A) \\geq 0$ for all $A \\subseteq \\mathbb{N}$. Counting functions and ratios are non-negative.",
-    "significance": "supporting",
-    "mathContext": "Since $|A \\cap [1,N]| \\geq 0$ and $N > 0$, each ratio $A(N)/N \\geq 0$. The limit (if it exists) of non-negative terms is non-negative. This is a basic property but needed for the chain of inequalities.",
-    "relatedConcepts": [
-      "non-negativity",
-      "limit of non-negative sequence"
-    ],
-    "prerequisites": [
-      "asympDensity"
-    ]
-  },
-  {
-    "id": "ann-e335-le-one",
-    "proofId": "erdos-335",
-    "range": {
-      "startLine": 102,
-      "endLine": 103
-    },
-    "type": "concept",
-    "title": "Density at Most 1",
-    "content": "**density_le_one**: If $d(A)$ exists, then $d(A) \\leq 1$. A set cannot contain more than $N$ elements in $\\{1, \\ldots, N\\}$.",
-    "significance": "supporting",
-    "mathContext": "Since $|A \\cap [1,N]| \\leq N$, each ratio $A(N)/N \\leq 1$. The limit of terms bounded by $1$ is at most $1$. Combined with non-negativity, this gives $d(A) \\in [0, 1]$ whenever the density exists.",
-    "relatedConcepts": [
-      "upper bound",
-      "probability measure analogy"
-    ],
-    "prerequisites": [
-      "asympDensity",
-      "DensityExists"
-    ]
-  },
-  {
-    "id": "ann-e335-sum-le-one",
-    "proofId": "erdos-335",
-    "range": {
-      "startLine": 105,
-      "endLine": 108
-    },
-    "type": "concept",
-    "title": "Sum Constraint",
-    "content": "**additive_sum_le_one**: If $(A, B)$ is density-additive, then $d(A) + d(B) \\leq 1$. Otherwise $d(A+B) = d(A) + d(B) > 1$, contradicting $d(A+B) \\leq 1$.",
-    "significance": "supporting",
-    "mathContext": "If $d(A+B) = d(A) + d(B)$ and $d(A+B) \\leq 1$, then $d(A) + d(B) \\leq 1$. This constraint means density-additive pairs can only have 'small' combined density. For example, if $d(A) = 0.6$, then $d(B) \\leq 0.4$.",
-    "relatedConcepts": [
-      "density constraint",
-      "feasible pairs",
-      "complementary density"
-    ],
-    "prerequisites": [
-      "DensityAdditive",
+      "additive_sum_le_one",
       "density_le_one"
     ]
   },
   {
-    "id": "ann-e335-plunnecke",
+    "id": "ann-e335-self-and-algebra",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 110,
-      "endLine": 115
+      "startLine": 154,
+      "endLine": 180
     },
-    "type": "concept",
-    "title": "Plünnecke-Ruzsa Lower Bound",
-    "content": "**plunnecke_ruzsa_lower**: $d(A + B) \\geq \\min(d(A) + d(B), 1)$. The general lower bound on sumset density, showing that density additivity achieves the minimum possible value.",
+    "type": "theorem",
+    "title": "The d(A) ≤ 1/2 Bound and Sumset Algebra",
+    "content": "**self_additive_density_le_half**: if $A$ is density-additive with itself then $d(A)\\le 1/2$ (from $2d(A)\\le 1$). Alongside sit the basic sumset laws: **Sumset_mono** (monotone in both arguments), **Sumset_comm** (commutative), and **density_additive_comm** (the additivity relation is symmetric).",
     "significance": "key",
-    "mathContext": "The Plünnecke-Ruzsa inequality is a cornerstone of additive combinatorics. The simplified version used here states: for sets with well-defined density, $d(A+B) \\geq \\min(d(A) + d(B), 1)$. The full inequality involves doubling constants and iterated sumsets. Density additivity ($d(A+B) = d(A) + d(B)$ with $d(A) + d(B) \\leq 1$) means this lower bound is achieved with equality — the extremal case.",
+    "mathContext": "$d(A)\\le 1/2$ is a hard ceiling on any self-additive set and is later shown *attained* (density exactly $1/4$, giving $d(A+A)=1/2$). Commutativity of the sumset is proved by swapping the existential witnesses ($n=a+b=b+a$).",
     "relatedConcepts": [
-      "Plünnecke-Ruzsa inequality",
-      "sumset growth",
-      "doubling constant",
-      "additive combinatorics"
+      "self-additive sets",
+      "sumset algebra",
+      "commutativity"
     ],
     "prerequisites": [
-      "asympDensity",
-      "DensityExists",
+      "additive_sum_le_one",
       "Sumset"
     ]
   },
   {
-    "id": "ann-e335-tight",
+    "id": "ann-e335-extremal-degenerate",
     "proofId": "erdos-335",
     "range": {
-      "startLine": 117,
-      "endLine": 122
+      "startLine": 183,
+      "endLine": 209
     },
-    "type": "concept",
-    "title": "Tightness Theorem (PROVED)",
-    "content": "**additive_implies_tight** (PROVED): Density additivity implies $d(A+B) = \\min(d(A) + d(B), 1)$. The Plünnecke-Ruzsa bound is tight for density-additive pairs.",
-    "significance": "key",
-    "mathContext": "The proof: from $d(A+B) = d(A) + d(B)$ and $d(A) + d(B) \\leq 1$ (by `additive_sum_le_one`), we get $\\min(d(A) + d(B), 1) = d(A) + d(B) = d(A+B)$. The `obtain` tactic destructures `DensityAdditive` and `min_eq_left` handles the minimum. This is a clean example of formalizing a simple but conceptually important observation.",
+    "type": "theorem",
+    "title": "Extremality and Degenerate Cases",
+    "content": "**additive_achieves_lower_bound**: additive pairs meet the Plünnecke–Ruzsa lower bound (they are extremal). **density_additive_pos**: positive-density additive pairs have positive-density sumsets. **density_additive_zero**: if $d(B)=0$ then $d(A+B)=d(A)$. **Sumset_empty_left/right**: $\\varnothing + B = A + \\varnothing = \\varnothing$.",
+    "significance": "supporting",
+    "mathContext": "These record the boundary behaviour of the additivity relation: extremal at the lower bound, positivity-preserving, collapsing correctly when one part has zero density, and annihilated by the empty set.",
     "relatedConcepts": [
-      "extremal equality",
-      "tightness",
-      "min_eq_left",
-      "obtain tactic"
+      "extremal configurations",
+      "sumset identities",
+      "density additivity"
     ],
     "prerequisites": [
-      "DensityAdditive",
+      "additive_implies_tight",
+      "Sumset"
+    ]
+  },
+  {
+    "id": "ann-e335-deeper-algebra",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 214,
+      "endLine": 239
+    },
+    "type": "theorem",
+    "title": "Associativity, Translation-by-Universe, and Monotonicity",
+    "content": "**Sumset_assoc**: $(A+B)+C = A+(B+C)$. **Sumset_univ_right**: adding the universal set fills in all sufficiently large $n$ (if $a\\in A$ then every $n\\ge a$ lies in $A+\\mathbb{N}$). **Sumset_mono_left/right**: the one-sided monotonicity specializations of `Sumset_mono`.",
+    "significance": "supporting",
+    "mathContext": "Associativity is proved by re-associating the witnesses $n=(a+b)+c=a+(b+c)$; it underwrites the multi-set chain result. `Sumset_univ_right` records that adding a full-density set saturates the tail.",
+    "relatedConcepts": [
+      "associativity",
+      "monotonicity",
+      "sumset algebra"
+    ],
+    "prerequisites": [
+      "Sumset",
+      "Sumset_mono"
+    ]
+  },
+  {
+    "id": "ann-e335-parts-and-full",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 241,
+      "endLine": 261
+    },
+    "type": "theorem",
+    "title": "Component Bounds and Full-Density Case",
+    "content": "**density_additive_parts_le_one / parts_nonneg**: in an additive pair both components lie in $[0,1]$. **density_additive_full**: if $d(A)+d(B)=1$ then $d(A+B)=1$ (the sumset is full). **density_sumset_empty**: both one-sided sumsets with $\\varnothing$ collapse to $\\varnothing$.",
+    "significance": "supporting",
+    "mathContext": "These package componentwise consequences of additivity: the boundary case $d(A)+d(B)=1$ forces a full-density sumset, the natural extreme of the tightness theorem.",
+    "relatedConcepts": [
+      "density bounds",
+      "full density",
+      "sumset"
+    ],
+    "prerequisites": [
+      "density_le_one",
+      "additive_implies_tight"
+    ]
+  },
+  {
+    "id": "ann-e335-counting-mono",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 263,
+      "endLine": 289
+    },
+    "type": "theorem",
+    "title": "Counting-Function Monotonicity and Singleton Sumset",
+    "content": "**countingFn_empty**: $|\\varnothing\\cap[1,N]|=0$. **countingFn_mono**: monotone in the set ($A\\subseteq B\\Rightarrow$ counts increase). **countingFn_mono_N**: monotone in $N$ for fixed $A$. **Sumset_singleton**: $\\{a\\}+\\{b\\}=\\{a+b\\}$.",
+    "significance": "supporting",
+    "mathContext": "Both monotonicities reduce to `Set.ncard_le_ncard` on the corresponding intersection inclusions; they justify treating the counting ratio as a well-behaved approximant to the density.",
+    "relatedConcepts": [
+      "counting function",
+      "monotonicity",
+      "singletons"
+    ],
+    "prerequisites": [
+      "countingFn",
+      "Set.ncard_le_ncard"
+    ]
+  },
+  {
+    "id": "ann-e335-identity-chain",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 293,
+      "endLine": 322
+    },
+    "type": "theorem",
+    "title": "Additive Identity and the Chain Rule",
+    "content": "**Sumset_zero_right / Sumset_zero_left**: $\\{0\\}$ is a two-sided identity, $A+\\{0\\}=\\{0\\}+A=A$. **density_additive_chain**: additivity composes — $d(A+B)=d(A)+d(B)$ and $d((A+B)+C)=d(A+B)+d(C)$ give $d(A+B+C)=d(A)+d(B)+d(C)$. **density_additive_complement_bound**: $d(B)\\le 1-d(A)$. **density_double_sumset**: $d(A+A)=2d(A)$ when self-additive.",
+    "significance": "key",
+    "mathContext": "The chain rule shows density additivity is stable under iterated sumsets, an inductive scaffold toward multi-set Freiman-type statements. The complement bound is the componentwise restatement of $d(A)+d(B)\\le 1$.",
+    "relatedConcepts": [
+      "monoid identity",
+      "iterated sumsets",
+      "density additivity"
+    ],
+    "prerequisites": [
+      "Sumset_comm",
       "additive_sum_le_one"
+    ]
+  },
+  {
+    "id": "ann-e335-concrete-densities",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 326,
+      "endLine": 365
+    },
+    "type": "theorem",
+    "title": "Concrete Densities: d(ℕ)=1 and Finite Sets Have Density 0",
+    "content": "**countingFn_univ_eq**: $|\\mathbb{N}\\cap[1,N]|=N$. **density_univ_one**: $d(\\mathbb{N})=1$ (the ratio is identically $1$). **countingFn_le_ncard**: a finite set's count is capped by its cardinality. **density_finite_zero**: every finite $A$ has density $0$ (the bounded count over $N\\to\\infty$ vanishes).",
+    "significance": "supporting",
+    "mathContext": "`density_finite_zero` is the only genuine $\\varepsilon$–$N$ argument in the file: given $\\varepsilon$, choose $N>|A|/\\varepsilon$ so $|A|/N<\\varepsilon$. These anchor the abstract density in computable endpoints.",
+    "relatedConcepts": [
+      "density computation",
+      "epsilon-delta",
+      "finite sets"
+    ],
+    "prerequisites": [
+      "countingFn",
+      "Metric.tendsto_atTop"
+    ]
+  },
+  {
+    "id": "ann-e335-translates-witness",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 372,
+      "endLine": 416
+    },
+    "type": "theorem",
+    "title": "Singleton Translates and the Degenerate Witness",
+    "content": "**Sumset_singleton_left/right**: adding $\\{k\\}$ translates a set, $\\{k\\}+A=A+\\{k\\}=(\\cdot+k)\\,''\\,A$. **density_additive_zero_singleton**: $(\\{0\\},A)$ is *always* density-additive (a degenerate, density-zero witness). **density_additive_lt_one_left/right**: if the partner has positive density then $d(A)<1$ strictly.",
+    "significance": "key",
+    "mathContext": "The translate lemmas generalize the identity laws ($k=0$) and expose the translation structure of singleton sums. `density_additive_zero_singleton` proves the additivity relation is non-vacuous — though only degenerately, which the next section fixes.",
+    "relatedConcepts": [
+      "translation",
+      "image of a set",
+      "degenerate witness"
+    ],
+    "prerequisites": [
+      "Sumset_comm",
+      "density_finite_zero"
+    ]
+  },
+  {
+    "id": "ann-e335-witness-positive",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 432,
+      "endLine": 447
+    },
+    "type": "theorem",
+    "title": "A Positive-Density Additive Pair Exists",
+    "content": "**exists_positive_density_additive_pair**: instantiating the $\\sqrt2$-rotation with target $[0,1/4)$ yields a set of density $1/4>0$ that is density-additive with itself. This closes the gap left by the degenerate $(\\{0\\},A)$ witness, exhibiting a genuine positive-density additive pair in exactly the regime Erdős #335 concerns.",
+    "significance": "key",
+    "mathContext": "Uses `irrational_sqrt_two`, then `weyl_equidistribution` (density $=1/4$) and `fractional_part_density_additive` (self-additivity). Depends on the two stated construction axioms, so it certifies non-vacuity conditional on them.",
+    "relatedConcepts": [
+      "explicit witness",
+      "irrational rotation",
+      "positive density"
+    ],
+    "prerequisites": [
+      "weyl_equidistribution",
+      "fractional_part_density_additive"
+    ]
+  },
+  {
+    "id": "ann-e335-witness-quarter",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 449,
+      "endLine": 461
+    },
+    "type": "theorem",
+    "title": "The 1/4 Witness Attains the 1/2 Ceiling",
+    "content": "**exists_self_additive_density_quarter**: the $\\sqrt2$/$[0,1/4)$ witness has density exactly $1/4$, so $d(A+A)=1/2$. This realizes the `self_additive_density_le_half` bound $d(A)\\le 1/2$ at an interior point with a genuine set — proving that ceiling is attained, not vacuous.",
+    "significance": "key",
+    "mathContext": "By pinning the numeric density to $1/4$ and computing $d(A+A)=2\\cdot\\tfrac14=\\tfrac12$, the entry shows the structural inequalities are sharp: the extremal $d(A+A)=1/2$ is achieved by a concrete equidistribution construction.",
+    "relatedConcepts": [
+      "sharpness",
+      "extremal example",
+      "self-additive sets"
+    ],
+    "prerequisites": [
+      "exists_positive_density_additive_pair",
+      "self_additive_density_le_half"
+    ]
+  },
+  {
+    "id": "ann-e335-schnirelmann-count",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 478,
+      "endLine": 499
+    },
+    "type": "theorem",
+    "title": "Counting Function Matches Mathlib's Schnirelmann Counting",
+    "content": "**countingFn_eq_filter_card**: this file's `countingFn A N` (a `Set.ncard`) equals the `Finset.filter`-cardinal counting $\\#\\{a\\in\\mathrm{Ioc}\\,0\\,N \\mid a\\in A\\}$ used by Mathlib's `schnirelmannDensity`, because $\\mathrm{Ioc}\\,0\\,N=\\mathrm{Icc}\\,1\\,N$ on $\\mathbb{N}$.",
+    "significance": "supporting",
+    "mathContext": "This identity is the technical hinge of the bridge: it reconciles the set-cardinality formulation here with Mathlib's decidable filtered-Finset counting, letting Schnirelmann lemmas be imported.",
+    "relatedConcepts": [
+      "Schnirelmann density",
+      "counting function",
+      "Finset"
+    ],
+    "prerequisites": [
+      "countingFn",
+      "schnirelmannDensity"
+    ]
+  },
+  {
+    "id": "ann-e335-schnirelmann-bridge",
+    "proofId": "erdos-335",
+    "range": {
+      "startLine": 500,
+      "endLine": 524
+    },
+    "type": "theorem",
+    "title": "Schnirelmann ≤ Asymptotic Density Bridge",
+    "content": "**schnirelmann_le_asymp**: $\\mathrm{schnirelmannDensity}\\,A \\le d(A)$ whenever the asymptotic density exists (the infimum of the ratios cannot exceed their limit; the gap can be strict — e.g. evens give $0$ vs $1/2$). **hasPositiveDensity_of_schnirelmann_pos**: positive Schnirelmann density certifies positive asymptotic density. **schnirelmann_le_complement**: combines the bridge with the complement bound, $\\mathrm{schnirelmannDensity}\\,A\\le 1-d(B)$.",
+    "significance": "key",
+    "mathContext": "The bridge connects the file's un-formalized asymptotic density to Mathlib's ~20 Schnirelmann lemmas: since Schnirelmann is the *infimum* and asymptotic is the *limit* of the same ratios $|A\\cap[1,n]|/n$, `ge_of_tendsto` gives inf $\\le$ lim. It opens a route to transfer Mathlib results into asymptotic-density statements.",
+    "relatedConcepts": [
+      "Schnirelmann density",
+      "infimum vs limit",
+      "Mathlib bridge"
+    ],
+    "prerequisites": [
+      "schnirelmannDensity",
+      "countingFn_eq_filter_card"
     ]
   }
 ]
