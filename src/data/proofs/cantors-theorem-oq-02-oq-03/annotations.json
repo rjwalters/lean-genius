@@ -58,11 +58,11 @@
   {
     "id": "ann-cantor-oq0203-retract-fpp",
     "proofId": "cantors-theorem-oq-02-oq-03",
-    "range": { "startLine": 113, "endLine": 169 },
+    "range": { "startLine": 113, "endLine": 142 },
     "type": "technique",
-    "title": "HasFPP as a retract-stable invariant, and its failure on Prop/Bool",
-    "content": "`HasFPP β` (every endomorphism of $\\beta$ has a fixed point) is the target-side hypothesis of the contrapositive, promoted to a first-class invariant. `hasFPP_of_retract` shows it **transfers along retracts** ($r\\circ s=\\mathrm{id}$) — the categorical 'retract' content of Lawvere's formulation — turning the framework into an algebra of obstructions rather than a list of ad-hoc diagonals. `not_hasFPP_Prop` and `not_hasFPP_Bool` show negation is fixed-point-free, so both fail HasFPP; and `not_hasFPP_of_retracts_onto_Prop` propagates that failure to anything retracting onto Prop.",
-    "mathContext": "For $h:\\beta\\to\\beta$, transport to $\\beta'$ as $s\\circ h\\circ r$; a fixed point $b'$ there satisfies $s(h(r\\,b'))=b'$, and applying $r$ with $r\\circ s=\\mathrm{id}$ gives $h(r\\,b')=r\\,b'$. Inhabited subsingletons have HasFPP via `Subsingleton.elim`.",
+    "title": "Part B: HasFPP as a retract-stable invariant",
+    "content": "`HasFPP β` (every endomorphism of $\\beta$ has a fixed point) promotes the target-side hypothesis of the contrapositive to a **first-class invariant**, so obstructions can be reasoned about algebraically instead of via ad-hoc diagonals. Its central structural fact, `hasFPP_of_retract`, is that HasFPP **transfers along retracts** — if $\\beta$ is a retract of $\\beta'$ ($r\\circ s=\\mathrm{id}$) and $\\beta'$ has the property, so does $\\beta$. This is exactly the categorical 'retract' content of Lawvere's original formulation. The companion `hasFPP_of_subsingleton` records the trivial positive case: an inhabited subsingleton (e.g. `Unit`) has HasFPP because every endomorphism is forced to fix its unique element.",
+    "mathContext": "Given $h:\\beta\\to\\beta$, transport it to $\\beta'$ as $s\\circ h\\circ r$; a fixed point $b'$ there satisfies $s(h(r\\,b'))=b'$, and applying $r$ with $r\\circ s=\\mathrm{id}$ collapses to $h(r\\,b')=r\\,b'$, so $r\\,b'$ is the fixed point of $h$. For an inhabited subsingleton, `Subsingleton.elim` forces $h(\\mathrm{default})=\\mathrm{default}$.",
     "significance": "key",
     "relatedConcepts": [
       "retract (section–retraction) in a category",
@@ -70,25 +70,65 @@
       "Subsingleton.elim"
     ],
     "prerequisites": [
-      "neg_no_fixed_point : ¬∃ p : Prop, p ↔ ¬p",
+      "function composition and identity",
       "congrArg"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq0203-prop-bool-fail",
+    "proofId": "cantors-theorem-oq-02-oq-03",
+    "range": { "startLine": 144, "endLine": 169 },
+    "type": "insight",
+    "title": "Part C: sharpness — Prop and Bool fail HasFPP, and it propagates",
+    "content": "Part B built the machine; Part C feeds it the single obstruction from Part 0. `not_hasFPP_Prop` shows `Prop` lacks the fixed-point property because negation is fixed-point-free (directly from `neg_no_fixed_point`), and `not_hasFPP_Bool` does the same for `Bool` via `Bool.not` (a two-case `simp`). Then `not_hasFPP_of_retracts_onto_Prop` closes the loop with Part B: **any** type retracting onto `Prop` inherits the failure, since a hypothetical HasFPP would transfer down the retraction to `Prop`. This is what makes the framework sharp — the obstruction is not confined to Prop/Bool but spreads to every type large enough to encode them.",
+    "mathContext": "$\\neg\\,\\mathrm{HasFPP}\\,\\mathrm{Prop}$: from $\\mathrm{Not}\\,p = p$ recover $p\\leftrightarrow\\neg p$ (via `Eq.mp` both ways), contradicting `neg_no_fixed_point`. Propagation is the contrapositive of `hasFPP_of_retract`: $\\mathrm{HasFPP}\\,\\beta \\wedge (\\beta \\twoheadrightarrow \\mathrm{Prop}) \\Rightarrow \\mathrm{HasFPP}\\,\\mathrm{Prop}$, which is false.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixed-point-free negation",
+      "obstruction propagation along retracts",
+      "Bool.not / Eq.mp"
+    ],
+    "prerequisites": [
+      "neg_no_fixed_point : ¬∃ p : Prop, p ↔ ¬p",
+      "hasFPP_of_retract"
     ]
   },
   {
     "id": "ann-cantor-oq0203-sharp-cantor",
     "proofId": "cantors-theorem-oq-02-oq-03",
-    "range": { "startLine": 171, "endLine": 205 },
-    "type": "concept",
-    "title": "Sharp Cantor for arbitrary targets, and the sharpened unity",
-    "content": "`no_weaklyPointSurjective_of_fixedPointFree` packages the general principle: any target with a fixed-point-free endomorphism forbids weakly point-surjective maps into its exponential. `cantor_weak_bool` instantiates it at Bool (via `Bool.not`, discharged by `decide` — kernel-checked, no `native_decide`). The capstone `lawvere_weak_unity` bundles the sharpened Cantor clause with Russell and the Prop obstruction, mirroring the parent's `lawvere_cantor_unity` but with the weaker (hence stronger) hypothesis.",
-    "mathContext": "$\\forall h,\\ (\\forall b,\\ h\\,b\\ne b)\\Rightarrow \\neg\\,\\mathrm{WeaklyPointSurjective}\\,f$. For Bool, $\\mathrm{Bool.not}$ is fixed-point-free; for Prop, $\\neg$ is.",
+    "range": { "startLine": 171, "endLine": 187 },
+    "type": "technique",
+    "title": "Part D: weak Cantor for arbitrary targets",
+    "content": "`no_weaklyPointSurjective_of_fixedPointFree` packages the general principle in its most reusable form: **any** target $\\beta$ carrying a fixed-point-free endomorphism $h$ forbids every weakly point-surjective $f:\\alpha\\to(\\alpha\\to\\beta)$ — no self-indexed family can even pointwise-cover the exponential $\\alpha\\to\\beta$. It is a one-line specialization of `lawvere_weak_contrapositive`. `cantor_weak_bool` instantiates it at `Bool` using `Bool.not`, whose fixed-point-freeness is discharged by `decide` — kernel-checked, so the entry stays 0-axiom (no `native_decide`, no `Lean.ofReduceBool`).",
+    "mathContext": "$\\forall h:\\beta\\to\\beta,\\ (\\forall b,\\ h\\,b\\ne b)\\Rightarrow \\forall f,\\ \\neg\\,\\mathrm{WeaklyPointSurjective}\\,f$. For `Bool`, $\\mathrm{Bool.not}$ is fixed-point-free (`cases b <;> decide`); for `Prop`, $\\neg$ is (`cantor_weak`).",
     "significance": "supporting",
     "relatedConcepts": [
       "Cantor's theorem (sharp form)",
-      "decidability via `decide` (no native_decide)"
+      "decidability via `decide` (no native_decide)",
+      "fixed-point-free endomorphism"
     ],
     "prerequisites": [
       "lawvere_weak_contrapositive"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq0203-capstone",
+    "proofId": "cantors-theorem-oq-02-oq-03",
+    "range": { "startLine": 189, "endLine": 205 },
+    "type": "concept",
+    "title": "Capstone: the sharpened Lawvere–Cantor unity",
+    "content": "`lawvere_weak_unity` bundles the three faces of the diagonal argument into a single theorem, mirroring the parent's `lawvere_cantor_unity` but under the **weaker** (hence logically stronger) point-surjective hypothesis: (1) no weakly point-surjective $f:\\alpha\\to(\\alpha\\to\\mathrm{Prop})$ exists [sharp Cantor], (2) negation has no fixed point [Russell], (3) `Prop` lacks the fixed-point property [target-side obstruction]. Its proof is a bare tuple $\\langle\\text{cantor\\_weak}, \\text{neg\\_no\\_fixed\\_point}, \\text{not\\_hasFPP\\_Prop}\\rangle$ — the payoff of routing everything through Part 0: Cantor, Russell and the HasFPP failure are literally the same fact viewed at three levels of packaging.",
+    "mathContext": "The conjunction $\\big(\\forall\\alpha\\,f,\\ \\neg\\mathrm{WPS}\\,f\\big)\\wedge\\big(\\neg\\exists p,\\ p\\leftrightarrow\\neg p\\big)\\wedge\\big(\\neg\\mathrm{HasFPP}\\,\\mathrm{Prop}\\big)$, each conjunct discharged by a Part 0/A/C lemma with no further work.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unification of Cantor / Russell / Gödel / Tarski",
+      "Lawvere fixed-point theorem",
+      "diagonal argument"
+    ],
+    "prerequisites": [
+      "cantor_weak",
+      "neg_no_fixed_point",
+      "not_hasFPP_Prop"
     ]
   }
 ]
