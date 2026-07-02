@@ -77,6 +77,13 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Overview: γ = -Γ'(1)",
+      "startLine": 1,
+      "endLine": 42,
+      "description": "Docstring and imports. Frames the entry as discharging the parent Euler–Mascheroni entry's second open question — identifying the Euler–Mascheroni constant γ as the negative derivative of the Gamma function at 1 — and states the results proved: the defining identity, its integer-argument generalization, and supporting positivity/monotonicity facts."
+    },
+    {
       "id": "sec-gamma-deriv-connection",
       "title": "The Defining Connection γ = -Γ'(1)",
       "startLine": 43,
