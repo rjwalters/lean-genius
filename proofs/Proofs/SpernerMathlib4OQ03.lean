@@ -99,7 +99,7 @@ theorem exists_panchromatic_of_boundaryIndex_ne_zero
     (h : boundaryIndex c K ≠ 0) :
     ∃ s : K.Cell, IsPanchromatic c K s := by
   apply sperner c K
-  rw [← not_even_iff_odd]
+  apply Nat.not_even_iff_odd.mp
   intro heven
   exact h (by
     unfold boundaryIndex
@@ -134,7 +134,7 @@ theorem even_panchromaticCount_of_no_boundary_doors
     (h : boundaryDoorCount c K = 0) :
     Even (panchromaticCount c K) := by
   rw [even_panchromaticCount_iff_even_boundaryDoorCount, h]
-  exact even_zero
+  exact ⟨0, rfl⟩
 
 /-- Recovering Sperner's Lemma in index language: an odd boundary index forces a
 fixed point. (Here "odd boundary index" means the underlying count is odd.) -/
