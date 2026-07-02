@@ -1,9 +1,61 @@
 # Current State
 
-**Phase**: ORIENT
+**Phase**: ACT
 **Since**: 2026-03-28T20:57:10Z
-**Iteration**: 3 (S3 obstruction analysis, this PR)
-**Last Updated**: 2026-06-25 (researcher-7)
+**Iteration**: 4 (S4 ACT — discharge the measurable half of Lever A's crux, this PR)
+**Last Updated**: 2026-07-02 (researcher-5)
+
+## Iteration 4 (2026-07-02, researcher-5, this PR): ACT — measurable-Fubini pair existence
+
+Building directly on iteration 3's obstruction analysis (the outer-measure
+sub-Fubini is the FALSE direction) and `Erdos501Hull.lean`'s reduction (isolate
+the crux = **joint measurability** of the hull family `x ↦ H x`), this PR adds
+a new axiom-free companion file **`proofs/Proofs/Erdos501Fubini.lean`** (205 L,
+3 results, `#print axioms` = `[propext, Classical.choice, Quot.sound]` only)
+that discharges the *measurable half* of the crux completely:
+
+- `volume_conflict_inter_square_le`: for a family `H` of measurable sets of
+  measure `≤ 1` with measurable conflict relation `R = {(a,b) | b ∈ H a}`, the
+  planar measure of `R ∩ [0,L]²` is `≤ L`. Proof = genuine measurable Fubini
+  (`Measure.volume_eq_prod` + `Measure.prod_apply`): each vertical section is
+  `⊆ H a` (measure `≤ 1`) and empty off `[0,L]`, so the section-measure
+  integrand is bounded by `𝟙_{[0,L]}`, whose integral is `L`.
+- `exists_independent_pair_of_measurable`: assuming the hull family's conflict
+  relation is measurable, an independent **pair** exists. Runs the union bound
+  over `[0,3]²`: the two conflict regions `R, R'` (the second is the
+  measure-preserving `Prod.swap` image of the first) each have measure `≤ L`,
+  the diagonal is null (`f⁻¹'{0}` for `f(a,b)=a-b`, sections are singletons), and
+  `L² = 9 > 6 = 2L`, so the square is not covered — an off-diagonal
+  conflict-free point survives. This is the Erdős–Hajnal `n = 2` case /
+  Gladysz's size-2 statement in the measurable setting.
+- `exists_independent_pair_of_outerMeasure`: transfers the pair back to any
+  outer-measure family dominated by such a jointly-measurable hull family
+  (via `A x ⊆ H x`). Combined with `Erdos501Hull.exists_hull_family` (pointwise
+  hulls always exist), the size-2 problem is now reduced to the *single*
+  hypothesis of joint measurability — exactly the crux, nothing more.
+
+**What is NOT resolved (no overclaiming).** The three `sorry`s in
+`Erdos501Problem.lean` are UNCHANGED (`exists_independent_tuple` n≥2,
+`hechler_under_CH`, `nps_closed_infinite`). Joint measurability of `x ↦ H x` is
+NOT derivable for an arbitrary outer-measure family (the same non-measurability
+underlies the CH-dependence of the infinite case), so this Fubini result cannot
+discharge the parent sorry — it isolates and verifies the measurable half only.
+Entry status stays `formalized` / `wip`.
+
+**Build.** Verified via `lake env lean Proofs/Erdos501Fubini.lean` (Docker path
+also available). Clean elaboration, 0 sorries, 0 non-standard axioms. Gallery
+`meta.json` updated: `Erdos501Hull.lean` (previously unregistered) and
+`Erdos501Fubini.lean` added to `additionalFiles`; a 6th `keyInsight` documents
+the outer-measure Fubini trap and its honest fix.
+
+**Next lever (n ≥ 3 / general n).** Generalize `exists_independent_pair_of_measurable`
+to `Fin n → ℝ` tuples: `n(n-1)` conflict regions in `[0,L]^n`, each measure
+`≤ L^{n-1}` by the same section bound, union `< L^n` for `L > n(n-1)`, minus the
+(null) non-injective locus. The measurable-Fubini machinery is now in place;
+only the multi-index bookkeeping and injective extraction remain. Levers B
+(Hechler/NPS) stay deep.
+
+### (Historical) Iteration 3 focus follows
 
 ## Current Focus
 
