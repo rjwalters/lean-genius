@@ -1,0 +1,111 @@
+[
+  {
+    "id": "ann-dcoq0702-header",
+    "proofId": "derangements-convergence-oq-07-oq-02",
+    "range": { "startLine": 1, "endLine": 54 },
+    "type": "concept",
+    "title": "Module Overview: Inverting the Fixed-Point Convolution",
+    "content": "This module inverts the parent entry's fixed-point convolution n! = Σ_{k=0}^{n} C(n,k)·D(n−k) to recover the classical closed form D(n) = Σ_{k=0}^{n} (−1)^k·C(n,k)·(n−k)!, where D = numDerangements. The docstring lays out the strategy: package a general binomial (Möbius) inversion theorem over ℤ, prove its orthogonality kernel, recast the parent convolution as a binomial transform, and apply the inversion. It also records that Mathlib already has a closed form (numDerangements_sum, in ascFactorial notation) but proves it from the D(n+2)=(n+1)(D(n+1)+D(n)) recursion — so deriving the textbook C(n,k)(n−k)! form by inversion is a genuinely different route. Imports are narrow: the parent (Proofs.DerangementsConvergenceOQ07) for the convolution, Choose.Sum for the alternating binomial sum, Intervals for the reflection/reindexing lemmas.",
+    "mathContext": "The factorial sequence is the *binomial transform* of the derangement sequence: $n! = \\sum_i \\binom{n}{i} D(i)$. Binomial inversion — the discrete analogue of Möbius inversion over the Boolean lattice — recovers $D$ from its transform with the signed inverse $D(n) = \\sum_k (-1)^{n-k}\\binom{n}{k} k!$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "numDerangements",
+      "binomial transform",
+      "Möbius inversion",
+      "inclusion–exclusion",
+      "fixed-point convolution"
+    ],
+    "prerequisites": [
+      "The parent convolution n! = Σ C(n,k)·D(n−k)",
+      "Nat.choose combinatorial identities",
+      "Finset big-operator API"
+    ]
+  },
+  {
+    "id": "ann-dcoq0702-orthogonality",
+    "proofId": "derangements-convergence-oq-07-oq-02",
+    "range": { "startLine": 56, "endLine": 119 },
+    "type": "theorem",
+    "title": "Orthogonality of the Binomial Kernel",
+    "content": "alternating_choose_mul_choose proves the orthogonality relation Σ_{i∈Icc j n} (−1)^{n−i}·C(n,i)·C(i,j) = [j = n] for j ≤ n. The proof runs in three rewrites. Step 1 replaces C(n,i)·C(i,j) with C(n,j)·C(n−j, i−j) using the subset-of-a-subset identity Nat.choose_mul (transported through the ℤ-cast by exact_mod_cast) and factors out the constant C(n,j) via Finset.mul_sum. Step 2 reindexes i = j + t: it rewrites Icc j n = Ico j (n+1) (proved by Finset.ext + Nat.lt_succ_iff) and applies Finset.sum_Ico_eq_sum_range, then simplifies n−(j+t) = (n−j)−t and (j+t)−j = t by omega, setting m := n−j. Step 3 rewrites (−1)^{m−t} = (−1)^m·(−1)^t — from (−1)^m·(−1)^t = (−1)^{m−t}, itself proved by m+t = (m−t)+2t and (−1)^{2t} = 1 — factors out (−1)^m, and finishes with Int.alternating_sum_range_choose. A by_cases on j = n reads off the value: j = n forces m = 0 (value 1), otherwise m ≠ 0 makes the alternating sum vanish.",
+    "mathContext": "This is the identity $T \\cdot T^{-1} = I$ for the binomial transform: the signed matrix $[(-1)^{n-i}\\binom{n}{i}]$ inverts $[\\binom{i}{j}]$. It is the size-graded form of Möbius orthogonality on $(2^{[n]}, \\subseteq)$, whose Möbius function is $\\mu(S,T) = (-1)^{|T \\setminus S|}$. The vanishing inner sum $\\sum_{t=0}^{m}(-1)^t\\binom{m}{t} = [m=0]$ is the alternating row sum of Pascal's triangle, i.e. $(1-1)^m$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Nat.choose_mul (subset-of-a-subset)",
+      "Int.alternating_sum_range_choose",
+      "Finset.sum_Ico_eq_sum_range",
+      "Möbius function of the Boolean lattice",
+      "binomial transform orthogonality"
+    ],
+    "prerequisites": [
+      "The identity C(n,i)C(i,j) = C(n,j)C(n−j,i−j)",
+      "Alternating binomial sum Σ (−1)^t C(m,t) = [m=0]",
+      "Reindexing a sum over Icc j n by i = j + t"
+    ]
+  },
+  {
+    "id": "ann-dcoq0702-inversion",
+    "proofId": "derangements-convergence-oq-07-oq-02",
+    "range": { "startLine": 121, "endLine": 159 },
+    "type": "theorem",
+    "title": "General Binomial (Möbius) Inversion",
+    "content": "binomial_inversion is the reusable engine: if G m = Σ_{i∈range(m+1)} C(m,i)·F i for all m (G is the binomial transform of F), then F n = Σ_{i∈range(n+1)} (−1)^{n−i}·C(n,i)·G i. The proof works on the reversed goal with a calc chain. First, each G i is expanded via the hypothesis and distributed with Finset.mul_sum, producing the triangular double sum Σ_{i∈range(n+1)} Σ_{j∈range(i+1)} (−1)^{n−i} C(n,i) C(i,j) F j. Second, Finset.sum_comm' swaps the order to Σ_{j∈range(n+1)} Σ_{i∈Icc j n}, with the membership equivalence (i≤n ∧ j≤i) ↔ (j≤i≤n ∧ j≤n) discharged by omega. Third, F j is pulled out with Finset.sum_mul and the inner sum over i collapses to (if j = n then 1 else 0) by the orthogonality lemma. Finally Finset.sum_eq_single n reads off F n.",
+    "mathContext": "Binomial inversion states that the linear operator $(TF)(m) = \\sum_i \\binom{m}{i} F(i)$ has inverse $(T^{-1}G)(n) = \\sum_i (-1)^{n-i}\\binom{n}{i} G(i)$. Stated for arbitrary $F, G : \\mathbb{N} \\to \\mathbb{Z}$, it applies to any binomial-transform pair — Stirling relations, factorial-moment/moment conversions, and the derangement/factorial pair specialized below.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "binomial transform and its inverse",
+      "Finset.sum_comm' (dependent double-sum swap)",
+      "Finset.sum_eq_single",
+      "Möbius inversion",
+      "triangular summation"
+    ],
+    "prerequisites": [
+      "The orthogonality kernel alternating_choose_mul_choose",
+      "Swapping the order of a triangular double sum",
+      "Distributing a scalar over a Finset sum (mul_sum / sum_mul)"
+    ]
+  },
+  {
+    "id": "ann-dcoq0702-aligned",
+    "proofId": "derangements-convergence-oq-07-oq-02",
+    "range": { "startLine": 161, "endLine": 184 },
+    "type": "theorem",
+    "title": "Aligning the Parent Convolution as a Binomial Transform",
+    "content": "factorial_eq_sum_choose_mul_numDerangements_aligned recasts the parent identity into the exact form the inversion theorem consumes: (m! : ℤ) = Σ_{i∈range(m+1)} C(m,i)·D(i). It starts from the parent's ℕ statement n! = Σ_k C(m,k)·D(m−k), casts it to ℤ with push_cast, then reflects the summation index with Finset.sum_range_reflect (turning Σ_k f(k) into Σ_k f(m−k)) and rewrites C(m, m−k) = C(m,k) via Nat.choose_symm, converting Σ C(m,k)·D(m−k) into Σ C(m,i)·D(i).",
+    "mathContext": "The parent's convolution $n! = \\sum_k \\binom{n}{k} D(n-k)$ is the Cauchy-product form; substituting $i = n-k$ (a self-bijection of $\\{0,\\dots,n\\}$) turns it into the binomial-transform form $n! = \\sum_i \\binom{n}{i} D(i)$, since $\\binom{n}{n-i} = \\binom{n}{i}$. This is exactly the hypothesis of binomial_inversion with $F = D$, $G = (\\cdot!)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_range_reflect",
+      "Nat.choose_symm",
+      "binomial transform",
+      "index reflection k ↦ n−k"
+    ],
+    "prerequisites": [
+      "The parent theorem factorial_eq_sum_choose_mul_numDerangements",
+      "Reflecting a range-sum index",
+      "Symmetry of binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-dcoq0702-closedform",
+    "proofId": "derangements-convergence-oq-07-oq-02",
+    "range": { "startLine": 186, "endLine": 228 },
+    "type": "theorem",
+    "title": "The Derangement Closed Form and Sanity Checks",
+    "content": "numDerangements_eq_alternating_sum (restated verbatim as numDerangements_closed_form) is the payoff: (D(n):ℤ) = Σ_{k∈range(n+1)} (−1)^k·C(n,k)·(n−k)!. It applies binomial_inversion with F = numDerangements and G = factorial — the hypothesis supplied by the aligned convolution — to obtain D(n) = Σ_{i} (−1)^{n−i}·C(n,i)·i!, then reflects the index i ↦ n−i (Finset.sum_range_reflect, Nat.choose_symm, and omega for n−(n−i)=i) to reach the target Σ_k (−1)^k·C(n,k)·(n−k)!. Three sanity checks follow: the n=4 instance of the closed form, its numerical evaluation Σ = 24 − 24 + 12 − 4 + 1 = 9, and D(4) = 9 obtained straight from the formula — confirming the inversion reproduces the known small value without touching Mathlib's recursion.",
+    "mathContext": "The result is the inclusion–exclusion closed form $D(n) = \\sum_{k=0}^{n} (-1)^k \\binom{n}{k}(n-k)! = n!\\sum_{k=0}^{n}\\frac{(-1)^k}{k!}$, here obtained purely by inverting the convolution. Dividing by $n!$ gives the partial sums of $e^{-1}$, connecting to the grandparent's limit $D(n)/n! \\to 1/e$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "derangement closed form",
+      "inclusion–exclusion",
+      "Finset.sum_range_reflect",
+      "numDerangements small values",
+      "partial sums of 1/e"
+    ],
+    "prerequisites": [
+      "binomial_inversion and the aligned convolution",
+      "Index reflection i ↦ n−i",
+      "Evaluating a short alternating sum (norm_num)"
+    ]
+  }
+]
