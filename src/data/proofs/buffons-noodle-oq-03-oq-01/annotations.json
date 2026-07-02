@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-buffons-noodle-oq-03-oq-01-recurrence-values",
+    "proofId": "buffons-noodle-oq-03-oq-01",
+    "range": {
+      "startLine": 198,
+      "endLine": 231
+    },
+    "type": "insight",
+    "title": "Concrete Payoff: α₂ = 2/π and α₃ = 1/2",
+    "content": "The abstract crossing factor is pinned to two named constants here. `crossing_factor_recurrence` gives the dimensional step α_{m+2} = ((m+2)/(m+3))·α_m directly from the sine-power integral recurrence (via field_simp/ring after clearing the shared denominator sinPowIntegral m ≠ 0). Feeding this the Γ-form `crossing_factor_eq_Gamma` produces the anchors: `crossing_factor_two` evaluates α₂ = 2/π — literally Buffon's needle constant, recovered by Γ(1/2) = √π and √π·√π = π — and `crossing_factor_three` evaluates α₃ = 1/2 using Γ(3/2) = (1/2)√π. So the same Gamma-integral engine that governs the planar noodle reproduces the classical 2/π and continues to all dimensions.",
+    "mathContext": "$\\alpha_2 = \\dfrac{\\Gamma(1)}{\\Gamma(3/2)}\\cdot\\dfrac{\\Gamma(1)}{\\Gamma(1)} = \\dfrac{2}{\\pi}$ using $\\Gamma(1/2)=\\sqrt\\pi$; $\\alpha_3 = \\dfrac12$ using $\\Gamma(3/2)=\\tfrac12\\sqrt\\pi$. Recurrence: $\\alpha_{m+2} = \\dfrac{m+2}{m+3}\\,\\alpha_m$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Buffon's needle constant",
+      "Gamma function",
+      "Wallis / sine-power integrals",
+      "dimensional recurrence"
+    ],
+    "prerequisites": [
+      "Real.Gamma_one_half_eq",
+      "Real.Gamma_add_one",
+      "sinPowIntegral_recurrence"
+    ]
+  },
+  {
     "id": "ann-buffons-noodle-oq-03-oq-01-01",
     "proofId": "buffons-noodle-oq-03-oq-01",
     "range": {
