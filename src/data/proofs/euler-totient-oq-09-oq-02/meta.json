@@ -102,7 +102,8 @@
       "**The density is a constant, independent of the exponent.** Because φ(pᵏ)/pᵏ = 1 − 1/p for every k ≥ 1, raising the power does not dilute the totient relative to its modulus — captured cleanly in ℕ by the cross-ratio p^j·φ(pᵏ) = pᵏ·φ(pʲ).",
       "**Growth is purely geometric.** Each extra factor of p in the modulus multiplies the totient by exactly p: φ(p^(k+1)) = p·φ(pᵏ). The totient of a prime power is pᵏ⁻¹(p−1), a geometric sequence in k with ratio p and leading coefficient (p−1).",
       "**A clean two-sided envelope.** Since p ≥ 2 gives p ≤ 2(p−1), the totient never drops below half the modulus, and `Nat.totient_lt` keeps it strictly below: pᵏ/2 ≤ φ(pᵏ) < pᵏ. The lower half-bound follows immediately from the single prime factor of pᵏ — the density 1 − 1/p ≥ 1/2.",
-      "**√n for genuine powers.** For k ≥ 2 the base-power floor pᵏ⁻¹ ≤ φ(pᵏ) squares to pᵏ ≤ φ(pᵏ)², recovering the classical φ(m) ≥ √m (m ≠ 2, 6) on prime powers without invoking the general theorem."
+      "**√n for genuine powers.** For k ≥ 2 the base-power floor pᵏ⁻¹ ≤ φ(pᵏ) squares to pᵏ ≤ φ(pᵏ)², recovering the classical φ(m) ≥ √m (m ≠ 2, 6) on prime powers without invoking the general theorem.",
+      "**One exact value carries every bound.** Every one of the nine results is `Nat.totient_prime_pow_succ` (φ(p^(n+1)) = pⁿ(p−1)) substituted, followed only by elementary ℕ arithmetic — `ring` for the density and growth identities, `gcongr`+`omega` for the envelope and floors, `Nat.totient_lt` for the strict upper bound. There is no induction on the exponent and no analytic estimate: the entire quantitative picture is squeezed out of the single closed form, which is exactly why it stays 0-axiom and needs no `native_decide` even for the numeric checks."
     ],
     "prerequisites": [
       "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
@@ -138,8 +139,15 @@
       "id": "growth-envelope",
       "title": "Geometric Growth and the Two-Sided Envelope",
       "startLine": 64,
+      "endLine": 86,
+      "summary": "`totient_prime_pow_ratio`: φ(p^(k+1)) = p·φ(pᵏ), geometric growth with ratio exactly p (both sides rewritten by `Nat.totient_prime_pow_succ`, closed by `ring`). `two_mul_totient_prime_pow_ge`: pᵏ ≤ 2·φ(pᵏ), the lower half-bound — after the rewrite pⁿ·p ≤ pⁿ·(2(p−1)) reduces by `gcongr` to p ≤ 2(p−1), discharged by `omega` from p ≥ 2. `totient_prime_pow_lt`: φ(pᵏ) < pᵏ, immediate from `Nat.totient_lt` once `Nat.one_lt_pow` supplies pᵏ > 1."
+    },
+    {
+      "id": "floors",
+      "title": "The Base-Power and Square-Root Floors",
+      "startLine": 88,
       "endLine": 110,
-      "summary": "`totient_prime_pow_ratio`: φ(p^(k+1)) = p·φ(pᵏ), geometric growth with ratio exactly p. `two_mul_totient_prime_pow_ge`: pᵏ ≤ 2·φ(pᵏ) (lower half-bound, from p ≤ 2(p−1) via `gcongr`/`omega`). `totient_prime_pow_lt`: φ(pᵏ) < pᵏ (strict upper bound, `Nat.totient_lt` with pᵏ > 1). `base_pow_le_totient_prime_pow`: pᵏ⁻¹ ≤ φ(pᵏ) (since p − 1 ≥ 1). `sq_prime_pow_le_totient_sq`: pᵏ ≤ φ(pᵏ)² for k ≥ 2, i.e. φ(pᵏ) ≥ √(pᵏ), by squaring the base-power floor (`Nat.pow_le_pow_left`) and comparing exponents (`Nat.pow_le_pow_right`)."
+      "summary": "`base_pow_le_totient_prime_pow`: pᵏ⁻¹ ≤ φ(pᵏ), the next-lower power as a floor, since φ(pᵏ) = pᵏ⁻¹(p−1) with p − 1 ≥ 1 (factored pⁿ = pⁿ·1 ≤ pⁿ·(p−1) by `gcongr`). `sq_prime_pow_le_totient_sq`: for k ≥ 2, pᵏ ≤ φ(pᵏ)², i.e. φ(pᵏ) ≥ √(pᵏ) — chain pᵏ ≤ (pᵏ⁻¹)² = p^(2(k−1)) (`Nat.pow_le_pow_right`, valid because k ≤ 2(k−1) for k ≥ 2) with the base-power floor squared (`Nat.pow_le_pow_left`). This recovers the classical φ(m) ≥ √m on genuine prime powers without the general theorem."
     },
     {
       "id": "numeric-checks",
