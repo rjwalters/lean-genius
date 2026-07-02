@@ -224,7 +224,11 @@
   ],
   "conclusion": {
     "summary": "Every falling-factorial moment of the fixed-point count of a uniform random permutation of Fin n equals 1 (for r ≤ n), the exact algebraic signature of the Poisson(1) distribution. The result is proved by a single double count — flagging permutations with ordered r-tuples of their fixed points — reducing to the counting lemma that (n−|S|)! permutations fix a given set S pointwise. It is a finite-n, error-free certificate of the same Poisson(1) limit the parent entry established asymptotically.",
-    "significance": "Supplies the moment-side companion to the parent's mass-function limit: where D_k(n)/n! → e⁻¹/k! is asymptotic, E[(X_n)_r] = 1 is exact at every finite n. Together they pin the Poisson(1) approximation from both the distribution and the moment directions. The counting lemma card_perm_fixesPointwise ('fix at least S') is reusable infrastructure alongside the parent's 'fix exactly S' lemma.",
-    "futureDirections": "The same double count computes ordinary moments E[X_n^r] via Stirling numbers (∑_j S(r,j)·(X)_j), and generalises to the joint factorial moments of the cycle-type counts, each of which is asymptotically an independent Poisson. A total-variation bound between X_n and Poisson(1) would combine these moment identities with the sibling's rate estimate."
+    "implications": "Supplies the moment-side companion to the parent's mass-function limit: where D_k(n)/n! → e⁻¹/k! is asymptotic, E[(X_n)_r] = 1 is exact at every finite n. Together they pin the Poisson(1) approximation from both the distribution and the moment directions. The counting lemma card_perm_fixesPointwise ('fix at least S') is reusable infrastructure alongside the parent's 'fix exactly S' lemma.",
+    "openQuestions": [
+      "Can the same double count be pushed to the ordinary moments E[X_n^r] via Stirling numbers, ∑_j S(r,j)·E[(X_n)_j] = ∑_j S(r,j) = B_r (the Bell numbers), giving an exact finite-n formula matching Poisson(1)'s ordinary moments?",
+      "Do the joint factorial moments of the cycle-type counts (fixed points, transpositions, …) factor as the product of independent Poisson factorial moments at finite n, or only asymptotically?",
+      "Can these exact moment identities be combined with the sibling entry's rate estimate to prove a formal total-variation bound between X_n and Poisson(1)?"
+    ]
   }
 }
