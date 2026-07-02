@@ -55,6 +55,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Erdős #1098 — Neumann's theorem ω(Γ(G)) finite ⟺ [G:Z(G)] finite",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "In the non-commuting graph Γ(G) (vertices = group elements, edges = non-commuting pairs) a clique is a set of pairwise non-commuting elements and ω(Γ(G)) is the clique number. Erdős asked whether every group with all such cliques finite must have a centre of finite index; B. H. Neumann (1976) proved yes, and the converse is elementary — Neumann's theorem: ω(Γ(G)) finite ⟺ [G:Z(G)] finite. The file formalizes `BoundedCliques G` and proves: the easy direction FULLY (every clique injects into G⧸Z(G), giving the sharp bound ω ≤ [G:Z(G)]), plus the first two steps of Neumann's hard direction — a single maximal clique's centralizers cover G (`exists_clique_centralizer_cover`), and via Mathlib's coset-covering theorem `CosetCover` some centralizer has finite index (`exists_finiteIndex_centralizer_of_boundedCliques`). The final BFC step (one finite-index centralizer ⇒ finite-index centre) remains the single clearly-labelled axiom `neumann_hard_direction`, unavailable in Mathlib. 0 sorries, 1 axiom; status: honestly axiomatized.",
+      "mathContext": "The bridge between clique number and central index is the quotient G → G⧸Z(G): if a⁻¹b ∈ Z(G) then a and b commute, so non-commuting elements land in distinct central cosets and any clique injects into G⧸Z(G) — instantly giving the sharp bound ω ≤ [G:Z(G)]. Neumann's deep converse uses that a maximal clique's centralizers cover G (a group is never the union of finitely many proper-finite-index subgroups unless one has finite index — B. H. Neumann's coset-covering theorem), reducing to a single finite-index centralizer; the remaining descent to a finite-index centre is the genuine BFC (bounded finite conjugacy) content axiomatized here."
+    },
+    {
       "id": "definitions",
       "title": "Definitions",
       "startLine": 75,
