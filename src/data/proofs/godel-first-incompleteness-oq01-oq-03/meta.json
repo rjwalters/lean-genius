@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "godel-oq0103-overview",
+      "title": "Overview: (In)dependence of the Five Incompleteness Axioms",
+      "summary": "Import, docstring, namespace. Answers OQ-03 of godel-first-incompleteness-oq01: are the parent's five axioms on an opaque Provable predicate actually logically independent? Instantiated at the trio G, Prov(⌜G⌝), ¬G (codes 42,84,43), the four substantive axioms become D1G, SelfRef, OmegaCons, NegGProv. Two findings: core_inconsistency shows D1G, SelfRef, OmegaCons are jointly inconsistent for every P, so the parent's axiom set has no model (no_model_of_all_axioms) — its First Incompleteness theorem holds only vacuously, because the meta-level equivalence ⊢G ↔ ¬⊢Prov⌜G⌝ was asserted as an axiom (genuine arithmetic gives only the object-level F ⊢ (G ↔ ¬Prov⌜G⌝)); and negGProv_derivable shows the fourth axiom follows from D1G ∧ SelfRef, so it is not independent. The inconsistency is shown minimal (each of the three is independent of the other two). 0-axiom, stated over an arbitrary P : ℕ → Prop.",
+      "startLine": 1,
+      "endLine": 51,
+      "mathContext": "For every $P$, the trio $D1G$ ($PG\\to P\\mathrm{Prov}G$), $SelfRef$ ($PG \\leftrightarrow \\neg P\\mathrm{Prov}G$), $OmegaCons$ ($\\neg PG \\to \\neg P\\mathrm{Prov}G$) is inconsistent, and $NegGProv$ follows from $D1G\\wedge SelfRef$ — so the five axioms are not independent."
+    },
+    {
       "id": "encoding",
       "title": "The Four Axioms as Predicates",
       "startLine": 52,
