@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: unconditional |bracelets(4,2)| = 6 via a concrete dihedral action",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "The import of Mathlib, the module docstring, and the namespace/positions/colourings setup (Pos = ZMod 4, Coloring = Pos → Fin 2, the 16 binary colourings). Answers the parent's OQ-01 by building a genuine D₄ action and discharging the hypotheses the parent's conditional bracelet count left open — with no native_decide.",
+      "mathContext": "The action is the faithful permutation representation ρ : D₄ → Perm(ZMod 4), r i ↦ (x ↦ x+i), sr i ↦ (x ↦ −i−x), lifted to colourings by (g•c)p = c((ρg)⁻¹ p); that ρ is a homomorphism is checked against Mathlib's dihedral multiplication table (r_mul_r, r_mul_sr, sr_mul_r, sr_mul_sr). Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) gives ∑_{g∈D₄}|Fix(g)| = |Coloring/D₄|·|D₄|. The fixed-point sum evaluates to 48 by kernel decide (8 group elements × 16 colourings — light), and |D₄| = 8, so |bracelets|·8 = 48, i.e. Fintype.card (orbitRel.Quotient (DihedralGroup 4) Coloring) = 6 with no hypotheses. The contribution is the unconditional, axiom-free (kernel decide, not native_decide) count plus the concrete action the parent leaves unbuilt; #print axioms confirms only propext/Classical.choice/Quot.sound."
+    },
+    {
       "id": "representation",
       "title": "The Faithful Dihedral Representation ρ",
       "startLine": 68,
