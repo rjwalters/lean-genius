@@ -3,8 +3,8 @@
     "id": "godel-oq03-double-negation-bridge",
     "proofId": "godel-incompleteness-oq-03",
     "range": {
-      "startLine": 55,
-      "endLine": 85
+      "startLine": 71,
+      "endLine": 89
     },
     "type": "theorem",
     "title": "The Double-Negation Satisfiability Bridge",
@@ -28,8 +28,8 @@
     "id": "godel-oq03-independence-incompleteness",
     "proofId": "godel-incompleteness-oq-03",
     "range": {
-      "startLine": 86,
-      "endLine": 102
+      "startLine": 94,
+      "endLine": 107
     },
     "type": "definition",
     "title": "Independence Forces Incompleteness",
@@ -51,8 +51,8 @@
     "id": "godel-oq03-satisfiable-witnesses",
     "proofId": "godel-incompleteness-oq-03",
     "range": {
-      "startLine": 103,
-      "endLine": 118
+      "startLine": 111,
+      "endLine": 124
     },
     "type": "theorem",
     "title": "Both One-Sentence Extensions Are Satisfiable",
@@ -74,8 +74,8 @@
     "id": "godel-oq03-characterization",
     "proofId": "godel-incompleteness-oq-03",
     "range": {
-      "startLine": 119,
-      "endLine": 145
+      "startLine": 132,
+      "endLine": 151
     },
     "type": "theorem",
     "title": "Model-Theoretic Characterization and Completeness",
@@ -92,6 +92,76 @@
       "complete theory",
       "independence",
       "Continuum Hypothesis"
+    ]
+  },
+  {
+    "id": "godel-oq03-calculus",
+    "proofId": "godel-incompleteness-oq-03",
+    "range": {
+      "startLine": 165,
+      "endLine": 186
+    },
+    "type": "theorem",
+    "title": "A Structural Calculus of Independence",
+    "content": "Four short lemmas make the Independent relation manipulable. Independent.isSatisfiable: any independent sentence forces T.IsSatisfiable — it is satisfiable_insert.mono Set.subset_union_left, since an inconsistent theory entails everything and cannot leave φ undecided. neg_iff: Independent T φ.not ↔ Independent T φ — independence is symmetric under negation, proved by rewriting both sides via independent_iff_satisfiable_both, applying the double-negation bridge, and commuting the conjunction (and_comm). neg is the .mpr direction. mono: independence descends to subtheories — if Independent T₁ φ and T₀ ⊆ T₁ then Independent T₀ φ, because each satisfiable extension of the weaker T₀ is contained in the corresponding extension of T₁ (Set.union_subset_union_left) and IsSatisfiable is antitone under .mono. Concretely a sentence independent of PA is independent of every subtheory of PA.",
+    "mathContext": "Independence is a well-behaved relation: it implies Con(T), is symmetric in $\\varphi \\leftrightarrow \\neg\\varphi$, and is monotone-decreasing in the theory ($T_0 \\subseteq T_1$ and independent of $T_1$ ⟹ independent of $T_0$).",
+    "significance": "supporting",
+    "prerequisites": [
+      "independent_iff_satisfiable_both",
+      "isSatisfiable_insert_not_not_iff",
+      "FirstOrder.Language.Theory.IsSatisfiable.mono"
+    ],
+    "relatedConcepts": [
+      "consistency",
+      "negation symmetry",
+      "monotonicity",
+      "subtheory"
+    ]
+  },
+  {
+    "id": "godel-oq03-inconsistent-decides-all",
+    "proofId": "godel-incompleteness-oq-03",
+    "range": {
+      "startLine": 193,
+      "endLine": 195
+    },
+    "type": "theorem",
+    "title": "An Inconsistent Theory Has No Independent Sentences",
+    "content": "not_independent_of_not_isSatisfiable is the contrapositive of Independent.isSatisfiable: if ¬ T.IsSatisfiable then ¬ Independent T φ for every φ. An unsatisfiable theory proves every sentence vacuously (there are no models to falsify anything), so it decides every sentence and nothing is left undecided. The one-line proof fun hind => h hind.isSatisfiable feeds a hypothetical independent witness back through isSatisfiable to contradict unsatisfiability. This closes the loop: independence lives exactly at consistent theories.",
+    "mathContext": "Inconsistent $T$ satisfies $T \\models \\varphi$ for all $\\varphi$ (ex falso), so no sentence can be independent; equivalently, $\\mathrm{Independent}(T,\\varphi) \\Rightarrow \\mathrm{Con}(T)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Independent.isSatisfiable"
+    ],
+    "relatedConcepts": [
+      "ex falso quodlibet",
+      "consistency",
+      "vacuous provability"
+    ]
+  },
+  {
+    "id": "godel-oq03-splitting-completions",
+    "proofId": "godel-incompleteness-oq-03",
+    "range": {
+      "startLine": 213,
+      "endLine": 238
+    },
+    "type": "theorem",
+    "title": "Independence Splits T Into Two Disagreeing Completions",
+    "content": "Independent.exists_isComplete_extensions is the converse face of not_isComplete: an independent φ produces two complete extensions T₁, T₂ ⊇ T that decide φ oppositely (T₁ ⊨ᵇ φ, T₂ ⊨ᵇ ¬φ, hence T₁ ≠ T₂). The construction is fully constructive — no Zorn or Lindenbaum. Take a model M of T ∪ {φ} and a model N of T ∪ {¬φ} (both exist by independent_iff_satisfiable_both), then let T₁ = L.completeTheory M and T₂ = L.completeTheory N. The complete theory of any model is automatically maximal-consistent (completeTheory.isComplete) and contains T (completeTheory.subset), and membership of φ / ¬φ transfers via mem_completeTheory + models_sentence_of_mem. Distinctness is forced: were T₁ = T₂, the complete (hence consistent) Th(M) would entail both φ and ¬φ, impossible by hc1.models_not_iff. This is the model-theoretic substance of 'φ is undecided'.",
+    "mathContext": "An undecided $\\varphi$ yields two maximal-consistent extensions $T_1 = \\mathrm{Th}(M) \\supseteq T$ and $T_2 = \\mathrm{Th}(N) \\supseteq T$ sitting on opposite sides of $\\varphi$; the completions are the complete theories of explicit models, so no maximal-ideal / Lindenbaum construction is needed.",
+    "significance": "critical",
+    "prerequisites": [
+      "independent_iff_satisfiable_both",
+      "FirstOrder.Language.completeTheory.isComplete",
+      "FirstOrder.Language.Theory.completeTheory.subset",
+      "FirstOrder.Language.mem_completeTheory"
+    ],
+    "relatedConcepts": [
+      "completion",
+      "maximal consistent theory",
+      "complete theory of a model",
+      "Lindenbaum's lemma"
     ]
   }
 ]
