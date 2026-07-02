@@ -15,6 +15,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the discrete Abel transform is biadditive — summation by parts over any ring or module",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "The import of Mathlib, the module docstring, and the namespace/open setup. Answers the parent's second open question: whether Abel summation by parts survives the loss of commutativity, extending to a non-commutative ring or a bimodule-valued pairing where f and G take values in different modules with a fixed multiplication order.",
+      "mathContext": "The parent proved (A) ∑_{k<n} f k·(G(k+1)−G k) = f n·G n − f 0·G 0 − ∑_{k<n}(f(k+1)−f k)·G(k+1) over a commutative ring via a ring-closed induction. The sole fact that induction used is biadditivity, so this file replaces the product by an arbitrary biadditive pairing p : A →+ B →+ M between three abelian groups and proves the master identity (A') in the same shape. Three specialisations follow: abel_summation_ring (p = AddMonoidHom.mul) recovers (A) over any ring, dropping commutativity; abel_summation_smul (p = scalar action) gives the module-valued transform with f : ℕ → R and G : ℕ → M; abel_summation_swap_biadditive is the order-swapped form. Method: induction identical to the parent, but the leftover identity lives in the abelian group M, so map_sub (biadditivity) + abel replaces ring — precisely the move that frees the identity from commutativity. 0 sorries, 0 axioms."
+    },
+    {
       "id": "biadditive-master",
       "title": "The Biadditive Abel Transform and its Swap Form",
       "startLine": 69,
