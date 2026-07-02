@@ -1,9 +1,54 @@
 [
   {
+    "id": "ann-l4s-oq0103-header",
+    "proofId": "lagrange-four-squares-oq-01-oq-03",
+    "range": {
+      "startLine": 3,
+      "endLine": 46
+    },
+    "type": "context",
+    "title": "Honest Scope: A Genuine Mathlib Gap and the Oracle Increment",
+    "content": "Jacobi's four-square formula r₄(n) = 8·Σ_{d|n, 4∤d} d is a real Mathlib gap: Mathlib has four-square EXISTENCE (Nat.sum_four_squares) and Euler's multiplicativity identity, but no representation COUNT r₄, no two-square count r₂, and no Jacobi formula. All three classical routes are blocked by ≫1000-LOC prerequisites: weight-2 modular forms θ⁴ ∈ M₂(Γ₀(4)) (theta identity absent), Hurwitz-quaternion order arithmetic (undeveloped), and the elementary Lambert/Liouville method (needs the missing r₂). Rather than overclaim, this file pins the counting CONVENTION and provides a machine-checked oracle that the divisor-sum RHS matches a brute-force lattice count for 1≤n≤24 — mirroring the parent OQ-01's 'verified for small cases' pattern. The docstring's axiom-status paragraph is accurate: the oracle uses native_decide (⇒ Lean.ofReduceBool), so the entry is honestly status=axiomatized, while the structural lemmas are 0-axiom.",
+    "mathContext": "$r_4(n)=8\\sum_{d\\mid n,\\,4\\nmid d} d$ (Jacobi). Mathlib has existence and Euler's identity $(\\sum x_i^2)(\\sum y_i^2)=\\sum z_i^2$, but no count.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Jacobi four-square formula",
+      "modular forms",
+      "Hurwitz quaternions",
+      "Mathlib gaps"
+    ],
+    "prerequisites": [
+      "sums of squares",
+      "divisor functions"
+    ]
+  },
+  {
+    "id": "ann-l4s-oq0103-box",
+    "proofId": "lagrange-four-squares-oq-01-oq-03",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "definition",
+    "title": "The Finite Search Box [-sqrt n, sqrt n]",
+    "content": "Any component x of a four-square representation of n satisfies x² ≤ n, hence |x| ≤ √n, so x ∈ [-⌊√n⌋, ⌊√n⌋] (using ℕ's Nat.sqrt as an integer bound). Confining the search to box n makes r4 n a genuinely finite, decidable Finset.card over box n ^ 4 — this finiteness is exactly what lets native_decide evaluate the count. Without a proven a-priori bound the ordered count over all of ℤ⁴ would not be computable.",
+    "mathContext": "$x^2\\le n \\Rightarrow |x|\\le\\sqrt n$, so representations live in $[-\\lfloor\\sqrt n\\rfloor,\\lfloor\\sqrt n\\rfloor]^4\\subset\\mathbb Z^4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decidable enumeration",
+      "Nat.sqrt",
+      "lattice point counting"
+    ],
+    "prerequisites": [
+      "Finset.Icc",
+      "integer square root"
+    ]
+  },
+  {
     "id": "ann-lfs-oq0103-r4-def",
     "proofId": "lagrange-four-squares-oq-01-oq-03",
     "range": {
-      "startLine": 58,
+      "startLine": 59,
       "endLine": 69
     },
     "type": "definition",
@@ -22,6 +67,28 @@
       "Finset.Icc as a LocallyFiniteOrder on ℤ",
       "Nat.sqrt (integer square root)",
       "Decidable equality for the sum-of-squares filter"
+    ]
+  },
+  {
+    "id": "ann-l4s-oq0103-jacobicount",
+    "proofId": "lagrange-four-squares-oq-01-oq-03",
+    "range": {
+      "startLine": 71,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "The Jacobi Right-Hand Side 8 times sum of d",
+    "content": "jacobiCount n is the arithmetic side of the formula: eight times the sum of divisors of n that are NOT divisible by 4. The 4∤d filter is the subtle part — it is what distinguishes Jacobi's count from the naive 8·σ(n) and is proved load-bearing by naive_sigma_fails (dropping d=4 turns 56 into the correct 24). For odd n the filter is vacuous, recovering 8·σ(n) (jacobiCount_odd). Defined over Nat.divisors, it is fully computable, so the oracle can compare it to r4 term by term.",
+    "mathContext": "$\\text{jacobiCount}(n)=8\\sum_{d\\mid n,\\ 4\\nmid d} d$; odd $n\\Rightarrow =8\\sigma(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisor sum",
+      "sigma function",
+      "Jacobi four-square formula"
+    ],
+    "prerequisites": [
+      "Nat.divisors",
+      "Finset.filter"
     ]
   },
   {
