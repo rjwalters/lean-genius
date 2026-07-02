@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Newton's Generalized Binomial Coefficient and the Negative Binomial Theorem",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "Imports (RingTheory.Binomial, PowerSeries.WellKnown/Binomial, Tactic, parent StarsAndBarsWeakCompositionsOQ01), module docstring, and setup (open PowerSeries; namespace StarsAndBarsNegBinom). The parent identifies the weak-composition generating function with Mathlib's invOneSubPow (1/(1−X)ᵏ) and reads off coefficients as the stars-and-bars count C(n+k−1,n). This entry supplies the negative-binomial-theorem reading, answering the parent's second open question: Newton's generalized binomial coefficient C(r,n) = Ring.choose r n satisfies the upper-negation identity (−1)ⁿ·C(−k,n) = C(n+k−1,n), so 1/(1−X)ᵏ = ∑ₙ C(−k,n)(−X)ⁿ. Uses Mathlib's Ring.choose_neg (sign as a unit Int.negOnePow), Ring.choose_natCast, and rescale_neg_one_invOneSubPow; the added bridge rewrites the unit as the ring element (−1)ⁿ and specializes to r=k:ℤ, k≥1. New results: ringChoose_neg_eq, ringChoose_neg_natCast, negOnePow_mul_ringChoose_neg, coeff_invOneSubPow_eq_negOnePow_mul_ringChoose, coeff_rescale_invOneSubPow, negOnePow_mul_ringChoose_eq_card_weakComposition.",
+      "mathContext": "The generalized binomial coefficient C(−k,n) counts weak compositions up to the sign (−1)ⁿ — connecting Mathlib's abstract Ring.choose upper-negation to the enumerative stars-and-bars content of the parent entry."
+    },
+    {
       "id": "upper-negation",
       "title": "Upper Negation in (−1)ⁿ Form",
       "startLine": 74,
