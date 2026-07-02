@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-header-oq04",
+    "proofId": "inverse-galois-oq-04",
+    "range": { "startLine": 3, "endLine": 53 },
+    "type": "concept",
+    "title": "OQ-04: eliminating the last A₅ axiom, and the tower setup",
+    "content": "The docstring frames the parent's open question OQ-04 — can Dedekind's theorem be formalized to eliminate the last A₅ axiom `three_dvd_gal_card : 3 ∣ Fintype.card q.Gal`? A companion file already reduces that axiom to a single arithmetic fact, `3 ∣ inertiaDegIn (7) (𝒪 q.SplittingField)`, and lays out a three-step Kummer–Dedekind route: (1) a cubic factor of q mod 7 yields a prime of inertia degree 3; (2) inertia degrees multiply in a tower; (3) Galois uniformity spreads the degree to all primes over 7. This file machine-checks the abstract heart — steps (2) and (3) — with 0 axioms and 0 sorries. The variable block fixes a scalar tower R ⊆ S ⊆ T (`IsScalarTower R S T`) with a finite group G making `IsGaloisGroup G R T`, and a compatible chain of maximal ideals p ⊲ R, P ⊲ S, Q ⊲ T with lying-over instances; critically S carries NO normality hypothesis, since in the A₅ application the middle field ℚ(α) is not Galois over ℚ. The `include G Q` directive forces G and the top prime Q to be quantified arguments.",
+    "mathContext": "Inertia degree $f(\\mathfrak{P}\\mid p) = [\\mathcal{O}/\\mathfrak{P} : \\mathcal{O}_R/p]$. For a Galois extension all primes over $p$ share one inertia degree, denoted $\\mathrm{inertiaDegIn}\\,p\\,T$. Here $R \\subseteq S \\subseteq T$ with $T/R$ Galois via $G$ and $S$ possibly non-normal.",
+    "significance": "critical",
+    "relatedConcepts": ["inverse Galois problem", "inertia degree", "Kummer–Dedekind", "scalar tower", "non-normal extension"]
+  },
+  {
+    "id": "ann-tower-brick",
+    "proofId": "inverse-galois-oq-04",
+    "range": { "startLine": 55, "endLine": 72 },
+    "type": "technique",
+    "title": "The brick: inertiaDeg p P ∣ inertiaDegIn p T",
+    "content": "inertiaDeg_dvd_inertiaDegIn is the core theorem. Its proof is a two-line assembly: `inertiaDeg_algebra_tower` gives the multiplicativity inertiaDeg p Q = inertiaDeg p P · inertiaDeg P Q (no Galois hypothesis on S), and `inertiaDegIn_eq_inertiaDeg` uses the Galois action to identify inertiaDegIn p T with inertiaDeg p Q. Rewriting with both and applying `dvd_mul_right` exhibits inertiaDeg p P as a factor. Transitivity of lying-over (Q lies over p) comes from `LiesOver.trans`.",
+    "mathContext": "$\\mathrm{inertiaDegIn}\\,p\\,T = f(Q\\mid p) = f(P\\mid p)\\,f(Q\\mid P)$, so $f(P\\mid p) \\mid \\mathrm{inertiaDegIn}\\,p\\,T$.",
+    "significance": "critical",
+    "relatedConcepts": ["inertia degree multiplicativity", "Galois uniformity", "divisibility"]
+  },
+  {
+    "id": "ann-reduction-form",
+    "proofId": "inverse-galois-oq-04",
+    "range": { "startLine": 74, "endLine": 85 },
+    "type": "concept",
+    "title": "The reduction form consumed by the A₅ argument",
+    "content": "dvd_inertiaDegIn_of_dvd_inertiaDeg restates the brick in the shape the A₅ realization needs: to prove d ∣ inertiaDegIn p T it suffices to exhibit ONE intermediate prime P (over p, below a chosen top prime Q) with d ∣ inertiaDeg p P. The proof is `hd.trans (inertiaDeg_dvd_inertiaDegIn G p P Q)`. In the application, Kummer–Dedekind produces a prime P of 𝒪(ℚ(α)) with inertiaDeg (7) P = 3, and this lemma promotes 3 ∣ inertiaDeg (7) P to 3 ∣ inertiaDegIn (7) (𝒪 q.SplittingField).",
+    "mathContext": "$d \\mid f(P\\mid p) \\Rightarrow d \\mid \\mathrm{inertiaDegIn}\\,p\\,T$, applied with $d = 3$, $p = (7)$.",
+    "significance": "critical",
+    "relatedConcepts": ["reduction lemma", "Kummer–Dedekind", "three_dvd_gal_card", "A₅ realizability"]
+  }
+]
