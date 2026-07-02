@@ -167,6 +167,7 @@ theorem boundary_simplex_door_eq {n : ℕ} (d : Finset (Fin (n + 2)))
     exact ⟨fun h => hi' (h ▸ hx), fun h => hj' (h ▸ hx)⟩
   have hcard : ({i, j} : Finset (Fin (n + 2)))ᶜ.card = n := by
     rw [Finset.card_compl, Fintype.card_fin, Finset.card_pair hij]
+    omega
   exact Finset.eq_of_subset_of_card_le hsub (hcard.trans hd.symm).le
 
 /-- **General `hpair` (the pair bound) for `∂Δ^{n+1}`, all `n`.**  Two doors `d`, `d'`
