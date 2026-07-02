@@ -1,0 +1,73 @@
+{
+  "slug": "gauss-wilson-non-cyclic-oq-04",
+  "id": "gauss-wilson-non-cyclic-oq-04",
+  "title": "Counting Square Roots of Unity mod n: the Odd Case 2^ω(n)",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GaussWilsonNonCyclicOQ04.lean",
+    "tags": [
+      "number-theory",
+      "zmod",
+      "chinese-remainder-theorem",
+      "prime-factorization",
+      "multiplicative-functions",
+      "wilson-gauss"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-01",
+    "axiomCount": 0,
+    "lineCount": 177,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "assumptions": "None. Fully machine-verified from Mathlib.",
+    "originalContributions": [
+      "sqrtOneCount: the counting function N(n) = #{x : ZMod n | x² = 1}, the number of square roots of unity modulo n",
+      "sq_eq_one_iff_prime_pow: elementary local classification — in ZMod (p^k) with p an odd prime, x² = 1 ↔ x = 1 ∨ x = -1, proved via the coprimality of (a-1) and (a+1) rather than cyclic-group structure",
+      "sqrtOneCount_prime_pow: the local count N(p^k) = 2 for every odd prime power",
+      "sqrtOneCount_mul: multiplicativity N(m·n) = N(m)·N(n) for coprime m, n, transported across the CRT ring isomorphism ZMod (m·n) ≃+* ZMod m × ZMod n",
+      "sqrtOneCount_odd: the headline result — for odd n, N(n) = 2^ω(n) where ω(n) = n.primeFactors.card, assembled from multiplicativity via Nat.multiplicative_factorization"
+    ]
+  },
+  "leanFile": {
+    "namespace": "GaussWilsonSqrtCount",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/GaussWilsonNonCyclicOQ04.lean",
+    "sorries": 0
+  },
+  "description": "Counts the square roots of unity modulo an odd n. For N(n) = #{x : ZMod n | x² = 1}, proves N(n) = 2^ω(n), where ω(n) is the number of distinct prime factors. The argument is elementary and structural: at each odd prime power p^k the only solutions of x² = 1 are ±1 (because p, being odd, cannot divide both x−1 and x+1), giving N(p^k) = 2; the Chinese Remainder Theorem makes N multiplicative; and Nat.multiplicative_factorization assembles the product 2·2·…·2 = 2^ω(n) over the distinct primes.",
+  "overview": {
+    "problem": "The parent entry studies the 2-torsion of (ZMod n)ˣ — the square roots of unity. Its open question asks for the exact count N(n) = #{x : x² = 1} in the form 2^(ω_odd(n) + δ), where ω_odd counts odd prime factors and δ ∈ {0,1,2} is a 2-adic correction. This entry resolves the odd-modulus case, where δ = 0 and ω_odd(n) = ω(n).",
+    "approach": "Work with roots of unity in the ring ZMod n (a root of x²=1 is automatically a unit, so this counts the same set). Three steps: (1) a self-contained elementary proof that ZMod (p^k) has exactly the two square roots ±1 for odd p; (2) CRT transports x²=1 componentwise, so N is multiplicative on coprime arguments; (3) the standard multiplicative-function factorization collapses the product over the prime factorization to 2^ω(n).",
+    "significance": "Gives a fully verified, axiom-free count for the odd case using an elementary coprimality argument rather than the cyclic-group machinery of the parent, and packages N as a genuine multiplicative arithmetic function. It isolates exactly what the 2-adic prime contributes (the δ correction) by removing it."
+  },
+  "conclusion": {
+    "summary": "For odd n, the number of square roots of unity modulo n is exactly 2^ω(n), where ω(n) = n.primeFactors.card. 177 lines, 6 theorems, 1 definition, 0 sorries, 0 axioms. The count N is built as a multiplicative arithmetic function: N(p^k) = 2 at every odd prime power (elementary ±1 classification), N is multiplicative via the Chinese Remainder Theorem, and Nat.multiplicative_factorization assembles 2^ω(n).",
+    "implications": "This is the δ = 0 slice of the parent's open question 2^(ω_odd(n)+δ). By handling the odd case with a clean elementary argument, it makes precise that all of the non-2^ω behavior in the general formula is 2-adic in origin: the factor of 2, 4 (Klein four-group) refinements only appear from the prime 2. The multiplicative packaging also directly recovers classical facts such as N(n) = 2 iff n is 1, 2, or an odd prime power times at most one factor of 2.",
+    "openQuestions": [
+      "The 2-adic completion: extend to all n by computing N(2^k) = 1, 2, 4 for k = 1, 2, ≥3 (the Klein four-group (ZMod 2^k)ˣ[2] for k ≥ 3) and combining with the odd part to obtain the full 2^(ω_odd(n)+δ) formula.",
+      "The dual Gauss–Wilson product: relate N(n) to the value of the product of all units of ZMod n (the generalized Wilson theorem), whose sign is governed by whether N(n) = 2."
+    ]
+  },
+  "sections": [],
+  "references": [
+    {
+      "title": "Gauss's generalization of Wilson's theorem",
+      "type": "textbook",
+      "note": "The structure of (ZMod n)ˣ and its 2-torsion underlies the count of square roots of unity."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gauss-wilson-non-cyclic",
+      "relationship": "extends",
+      "description": "Parent. Resolves the odd-modulus case of its open question on the exact number of square roots of unity, N(n) = 2^(ω_odd(n)+δ), by proving the δ = 0 formula N(n) = 2^ω(n)."
+    }
+  ],
+  "sorries": 0
+}
