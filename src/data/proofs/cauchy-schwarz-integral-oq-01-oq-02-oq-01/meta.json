@@ -154,8 +154,19 @@
   ],
   "crossReferences": [
     {
-      "relationship": "Discharges the hadamard_three_lines axiom assumed by the parent Riesz–Thorin-from-Hölder entry.",
-      "targetId": "cauchy-schwarz-integral-oq-01-oq-02"
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Discharges the hadamard_three_lines axiom assumed by the parent Riesz–Thorin-from-Hölder entry, so its interpolation theorem no longer rests on that assumption."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "foundational",
+      "description": "Hölder's inequality is the algebraic input to Riesz–Thorin interpolation; the three-lines lemma proved here supplies the complex-analytic input to the same theorem."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral",
+      "relationship": "ancestor",
+      "description": "The Bunyakovsky–Schwarz integral inequality is the p=q=2 root of the Hölder/Riesz–Thorin thread this entry sits in."
     }
   ],
   "sorries": 0
