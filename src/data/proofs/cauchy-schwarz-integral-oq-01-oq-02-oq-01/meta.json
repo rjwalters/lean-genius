@@ -65,7 +65,8 @@
       "The lemma is fully available in Mathlib (Complex.HadamardThreeLines) — the open question was really 'is it wired up?', and the answer is yes.",
       "The only genuine work is hypothesis translation between the entry's hand-rolled strip geometry and Mathlib's verticalStrip API; the mathematical content is Mathlib's.",
       "Discharging the three-lines axiom reduces the parent's axiom count from the analytic core; only the packaging axiom riesz_thorin (which follows from three-lines) remains.",
-      "The logarithmic form makes the convexity of t ↦ log‖F(t+iy)‖ explicit — exactly the statement that interpolates operator norms."
+      "The logarithmic form makes the convexity of t ↦ log‖F(t+iy)‖ explicit — exactly the statement that interpolates operator norms.",
+      "The technical crux of the translation is the topological identity closure(verticalStrip 0 1) = verticalClosedStrip 0 1 (from closure_preimage_re + closure_Ioo): it is what lets continuity-on-the-closed-strip plus holomorphy-on-the-open-strip assemble into Mathlib's single DiffContOnCl hypothesis, the exact input the maximum-principle result expects."
     ],
     "prerequisites": [
       "Complex analysis (maximum modulus principle)",
