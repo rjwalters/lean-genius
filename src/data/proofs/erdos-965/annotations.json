@@ -16,7 +16,11 @@
       "Cardinal arithmetic",
       "Partition calculus"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ramsey theory and monochromatic structures",
+      "cardinal arithmetic and ℵ₁",
+      "the Continuum Hypothesis (CH)"
+    ]
   },
   {
     "id": "ann-e965-coloring",
@@ -34,7 +38,11 @@
       "Ramsey theory"
     ],
     "mathContext": "See annotation content for formal details of 2-coloring of ℝ",
-    "prerequisites": []
+    "prerequisites": [
+      "the real numbers ℝ",
+      "functions into a two-element set (Bool)",
+      "the idea of coloring a set"
+    ]
   },
   {
     "id": "ann-e965-pairwise",
@@ -52,7 +60,11 @@
       "Additive combinatorics"
     ],
     "mathContext": "See annotation content for formal details of pairwise sums",
-    "prerequisites": []
+    "prerequisites": [
+      "sumsets and pairwise sums a+b",
+      "set-builder notation in Lean (Set ℝ)",
+      "existential quantifiers"
+    ]
   },
   {
     "id": "ann-e965-mono",
@@ -70,7 +82,11 @@
       "Colorings"
     ],
     "mathContext": "See annotation content for formal details of monochromatic set",
-    "prerequisites": []
+    "prerequisites": [
+      "2-colorings of ℝ",
+      "universal quantification over a set",
+      "the notion of a color class"
+    ]
   },
   {
     "id": "ann-e965-aleph1",
@@ -89,7 +105,11 @@
       "ℵ₁",
       "Continuum hypothesis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinal numbers and cardinality",
+      "countable vs uncountable sets",
+      "the first uncountable cardinal and 2^ℵ₀"
+    ]
   },
   {
     "id": "ann-e965-conjecture",
@@ -107,7 +127,11 @@
       "Disproved"
     ],
     "mathContext": "See annotation content for formal details of the original conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "monochromatic pairwise sums",
+      "cardinality ℵ₁ of a set",
+      "existential/universal quantifier nesting"
+    ]
   },
   {
     "id": "ann-e965-counterexample",
@@ -125,7 +149,11 @@
       "Counterexample",
       "Komjáth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the original Erdős 965 conjecture",
+      "partition calculus",
+      "negation of a monochromatic statement"
+    ]
   },
   {
     "id": "ann-e965-disproved",
@@ -143,7 +171,11 @@
       "Disproof"
     ],
     "mathContext": "See annotation content for formal details of conjecture disproved",
-    "prerequisites": []
+    "prerequisites": [
+      "the counterexample-exists axiom",
+      "proof by contradiction in Lean",
+      "obtaining witnesses from existentials"
+    ]
   },
   {
     "id": "ann-e965-ksums",
@@ -161,7 +193,11 @@
       "k-sums"
     ],
     "mathContext": "See annotation content for formal details of generalized k-sums",
-    "prerequisites": []
+    "prerequisites": [
+      "pairwise sums generalized to k distinct elements",
+      "the Continuum Hypothesis",
+      "uncountable sets of reals"
+    ]
   },
   {
     "id": "ann-e965-komjath",
@@ -180,7 +216,11 @@
       "ZFC",
       "Set theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ZFC axiom system",
+      "independence from the Continuum Hypothesis",
+      "the pairwise-sum counterexample"
+    ]
   },
   {
     "id": "ann-e965-countable",
@@ -199,7 +239,11 @@
       "Ramsey boundary"
     ],
     "mathContext": "See annotation content for formal details of countable vs uncountable",
-    "prerequisites": []
+    "prerequisites": [
+      "countable vs uncountable infinity",
+      "Schur/Ramsey-type sum theorems",
+      "monochromatic pairwise sums"
+    ]
   },
   {
     "id": "ann-e965-partition",
@@ -217,7 +261,11 @@
       "Erdős-Hajnal-Rado"
     ],
     "mathContext": "See annotation content for formal details of partition calculus",
-    "prerequisites": []
+    "prerequisites": [
+      "the Erdős-Rado partition calculus arrow notation",
+      "infinite combinatorics",
+      "colorings of infinite structures"
+    ]
   },
   {
     "id": "ann-e965-summary",
@@ -235,6 +283,10 @@
       "Final answer"
     ],
     "mathContext": "See annotation content for formal details of problem summary",
-    "prerequisites": []
+    "prerequisites": [
+      "the full history of Erdős 965",
+      "the countable/uncountable contrast",
+      "the ZFC vs ZFC+CH distinction"
+    ]
   }
 ]
