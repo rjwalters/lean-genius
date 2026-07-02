@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Triangle Angle Sum Converse",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring and imports for the converse question: if every triangle has angle sum π, must the geometry be Euclidean? These head lines answer yes (equivalent to Saccheri–Legendre in neutral geometry), lay out the three neutral-geometry inputs — Saccheri–Legendre (angle sum ≤ π), defect transitivity (one triangle with sum π forces all), and angle sum π ↔ parallel postulate — and describe the file's five results culminating in the full equivalence angle_sum_iff_parallel, before the TriangleAngleSumOQ01 namespace opens.",
+      "mathContext": "In neutral (absolute) geometry, Saccheri–Legendre bounds every triangle's angle sum by π and defect transitivity makes the sum constant; a single triangle with sum π then builds a rectangle, yielding Playfair's parallel axiom, and conversely the parallel postulate forces sum π. The three deep neutral-geometry theorems (Saccheri–Legendre, defect transitivity, sum-π ⇒ Playfair), whose proofs need ~1000+ lines not yet in Mathlib, are stated as axioms, so the entry is axiomatized (4 axioms); the equivalence is then derived with 0 sorries."
+    },
+    {
       "id": "framework",
       "title": "AngledNeutralGeometry Framework",
       "startLine": 65,
