@@ -22,9 +22,11 @@
 
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Complex
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Data.Real.Archimedean
 import Mathlib.Order.Filter.Basic
 
 namespace Erdos227
@@ -44,11 +46,11 @@ structure EntireFunction where
 
 /-- The maximum term μ(r) = max_n |aₙ|rⁿ -/
 noncomputable def maxTerm (f : EntireFunction) (r : ℝ) : ℝ :=
-  ⨆ n : ℕ, Complex.abs (f.coeff n) * r ^ n
+  ⨆ n : ℕ, ‖f.coeff n‖ * r ^ n
 
 /-- The maximum modulus M(r) = max_{|z|=r} |f(z)| -/
 noncomputable def maxModulus (f : EntireFunction) (r : ℝ) : ℝ :=
-  ⨆ θ : ℝ, Complex.abs (∑' n, f.coeff n * (r * exp (I * θ)) ^ n)
+  ⨆ θ : ℝ, ‖∑' n, f.coeff n * (r * exp (I * θ)) ^ n‖
 
 /-- The ratio μ(r)/M(r) -/
 noncomputable def termModulusRatio (f : EntireFunction) (r : ℝ) : ℝ :=
@@ -78,8 +80,8 @@ The conjecture is FALSE: the limit can be any λ ∈ [0, 1/2].
 
 /-- There exist entire functions achieving any limit in [0, 1/2] -/
 axiom clunie_hayman_1964 :
-  ∀ λ : ℝ, 0 ≤ λ → λ ≤ 1/2 →
-    ∃ f : EntireFunction, Tendsto (termModulusRatio f) atTop (nhds λ)
+  ∀ lam : ℝ, 0 ≤ lam → lam ≤ 1/2 →
+    ∃ f : EntireFunction, Tendsto (termModulusRatio f) atTop (nhds lam)
 
 /-- The upper bound is 1/2 -/
 axiom ratio_upper_bound (f : EntireFunction) (L : ℝ)
@@ -107,6 +109,16 @@ The set of achievable limits is exactly [0, 1/2].
 def AchievableLimits : Set ℝ :=
   { L | ∃ f : EntireFunction, Tendsto (termModulusRatio f) atTop (nhds L) }
 
+/-- The term-to-modulus ratio is non-negative for every `r ≥ 0`: both `maxTerm`
+    (a supremum of `‖aₙ‖·rⁿ ≥ 0`) and `maxModulus` (a supremum of norms `≥ 0`) are
+    non-negative, so their quotient is. -/
+theorem termModulusRatio_nonneg (f : EntireFunction) {r : ℝ} (hr : 0 ≤ r) :
+    0 ≤ termModulusRatio f r := by
+  unfold termModulusRatio maxTerm maxModulus
+  apply div_nonneg
+  · exact Real.iSup_nonneg fun n => mul_nonneg (norm_nonneg _) (pow_nonneg hr n)
+  · exact Real.iSup_nonneg fun _ => norm_nonneg _
+
 /-- Complete characterization of achievable limits -/
 theorem achievable_limits_characterization :
     AchievableLimits = Set.Icc 0 (1/2) := by
@@ -115,8 +127,10 @@ theorem achievable_limits_characterization :
   · -- If L is achievable, then L ∈ [0, 1/2]
     intro ⟨f, hf⟩
     constructor
-    · -- L ≥ 0 (ratios are non-negative)
-      sorry
+    · -- L ≥ 0: the ratio is eventually non-negative (for r ≥ 0), so its limit is ≥ 0
+      refine ge_of_tendsto hf ?_
+      filter_upwards [eventually_ge_atTop (0 : ℝ)] with r hr
+      exact termModulusRatio_nonneg f hr
     · -- L ≤ 1/2 (Clunie-Hayman upper bound)
       exact ratio_upper_bound f L hf
   · -- If L ∈ [0, 1/2], then L is achievable
@@ -129,28 +143,40 @@ theorem achievable_limits_characterization :
 The maximum term is achieved at specific indices.
 -/
 
-/-- The central index: n where |aₙ|rⁿ = μ(r) -/
-noncomputable def centralIndex (f : EntireFunction) (r : ℝ) : ℕ :=
-  Classical.choose (⟨0, le_refl _⟩ : ∃ n, Complex.abs (f.coeff n) * r ^ n ≤ maxTerm f r)
+/-- A choice of index whose term `‖aₙ‖rⁿ` dominates the constant term `‖a₀‖`.
 
-/-- Central index grows to infinity as r → ∞ -/
+    The genuine central index `ν(r)` is the largest `n` with `‖aₙ‖rⁿ = μ(r)`, but
+    that is only well-defined when the maximum term is actually attained (the `iSup`
+    defining `maxTerm` can be a junk value when the terms are unbounded). This
+    well-typed stand-in picks, via choice, some `n` with `‖a₀‖ ≤ ‖aₙ‖rⁿ` (witnessed
+    by `n = 0`), which always exists. -/
+noncomputable def centralIndex (f : EntireFunction) (r : ℝ) : ℕ :=
+  Classical.choose (⟨0, le_refl _⟩ : ∃ n : ℕ, ‖f.coeff 0‖ * r ^ (0 : ℕ) ≤ ‖f.coeff n‖ * r ^ n)
+
+/- Central index grows to infinity as r → ∞ -/
 /-
 ## Part 6: Asymptotic Relations
 
 Relation between μ(r), M(r), and the growth of f.
 -/
 
-/-- For any entire function, μ(r) ≤ M(r) -/
+/- For any entire function, μ(r) ≤ M(r) -/
 /-- Asymptotic: M(r) ~ μ(r) for "normal" functions -/
 def IsNormal (f : EntireFunction) : Prop :=
   Tendsto (termModulusRatio f) atTop (nhds 0)
 
-/-- Positive coefficient functions are normal -/
+/-- Positive coefficient functions are normal.
+
+    NOTE: this asserts more than `clunie_positive_coeffs`, which only says that
+    *if* the ratio converges to some `L` then `L = 0`. `IsNormal` additionally
+    requires that the limit *exists* (and equals `0`). Establishing existence is
+    the analytic heart of Clunie's (unpublished) result and is not implied by the
+    conditional axiom, so this remains a `sorry`. -/
 theorem positive_coeffs_normal (f : EntireFunction)
     (hpos : ∀ n, (f.coeff n).re ≥ 0 ∧ (f.coeff n).im = 0) :
     IsNormal f := by
   unfold IsNormal
-  -- Follows from Clunie's result
+  -- Requires the existence of the limit (Clunie's full result), not just its value.
   sorry
 
 /-
@@ -167,15 +193,15 @@ noncomputable def order (f : EntireFunction) : ℝ :=
 noncomputable def typeOfOrder (f : EntireFunction) (ρ : ℝ) : ℝ :=
   sInf { σ : ℝ | ∃ C : ℝ, ∀ r > 0, maxModulus f r ≤ C * Real.exp (σ * r ^ ρ) }
 
-/-- Functions of order 0 have ratio tending to 0 -/
+/- Functions of order 0 have ratio tending to 0 -/
 /-
 ## Part 8: Examples
 
 Specific examples illustrating the theorem.
 -/
 
-/-- The exponential function has ratio → 0 -/
-/-- Existence of pathological examples -/
+/- The exponential function has ratio → 0 -/
+/- Existence of pathological examples -/
 /-
 ## Part 9: Main Problem Statement
 -/
@@ -190,11 +216,8 @@ theorem erdos_227_statement :
       ∀ L, Tendsto (termModulusRatio f) atTop (nhds L) → L = 0) ∧
     -- Clunie-Hayman complete answer: achievable limits = [0, 1/2]
     AchievableLimits = Set.Icc 0 (1/2) := by
-  constructor
-  · exact original_conjecture_false
-  constructor
-  · exact clunie_positive_coeffs
-  · exact achievable_limits_characterization
+  refine ⟨original_conjecture_false, ?_, achievable_limits_characterization⟩
+  exact clunie_positive_coeffs
 
 /-
 ## Part 10: Summary
@@ -209,12 +232,9 @@ theorem erdos_227_summary :
     -- Special case for positive coefficients
     (∀ f : EntireFunction, (∀ n, (f.coeff n).re ≥ 0 ∧ (f.coeff n).im = 0) →
       ∀ L, Tendsto (termModulusRatio f) atTop (nhds L) → L = 0) := by
-  constructor
-  · exact original_conjecture_false
-  constructor
-  · exact achievable_limits_characterization
-  · exact clunie_positive_coeffs
+  refine ⟨original_conjecture_false, achievable_limits_characterization, ?_⟩
+  exact clunie_positive_coeffs
 
-/-- Erdős Problem #227: SOLVED (DISPROVED). -/
+/- Erdős Problem #227: SOLVED (DISPROVED). -/
 
 end Erdos227
