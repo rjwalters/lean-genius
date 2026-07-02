@@ -103,6 +103,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: rate of convergence for orthonormal expansions",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "The analysis imports (InnerProductSpace.Orthonormal, SpecificLimits.Basic, InfiniteSum.NatInt, Tactic), the module docstring, the namespace/open/variable setup, and the definition of the orthonormal partial sum. Studies how fast the abstract Fourier/Legendre partial sum S s = ∑_{i∈s}⟪v i, x⟫•v i converges to x, building on the parent's Bessel inequality.",
+      "mathContext": "The engine is an error identity Mathlib proves inside its Bessel proof but never exposes: ‖x − S s‖² = ‖x‖² − ∑_{i∈s}‖⟪v i, x⟫‖², extracted here as norm_sub_partialSum_sq. On top of it: sq_error_antitone (the squared error is monotone non-increasing — enlarging the index set never worsens the approximation), partialSum_isBestApprox_le (Bessel's finite inequality recovered), tendsto_sq_error (the squared error converges to the Parseval defect ‖x‖² − ∑'‖⟪v i,x⟫‖² along finite index sets), tendsto_partialSum_iff_parseval (partial sums converge to x iff Parseval holds — completeness at x), and sq_error_eq_tail_of_parseval / geometric_rate (under Parseval the error after n terms equals the tail; with geometric coefficient decay ‖⟪v i,x⟫‖² ≤ C rⁱ, 0 ≤ r < 1, this gives the explicit rate ‖x − S(range n)‖² ≤ C rⁿ/(1−r)). All results 0-axiom, 0-sorry."
+    },
+    {
       "id": "error-identity",
       "title": "Part I: The Error Identity Mathlib Hides",
       "startLine": 68,
