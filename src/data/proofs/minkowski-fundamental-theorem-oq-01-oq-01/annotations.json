@@ -18,6 +18,24 @@
     ]
   },
   {
+    "id": "ann-mft-oq01oq01-extreme-indices",
+    "proofId": "minkowski-fundamental-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "The Extreme Indices of Fin n",
+    "content": "Part I names the two endpoints of the index set `Fin n` and pins down their order-theoretic role. `botIndex = ⟨0, _⟩` and `topIndex = ⟨n-1, _⟩` are well-defined because `n ≠ 0` (supplied by the `NeZero n` instance via `Nat.pos_of_ne_zero (NeZero.ne n)`). The two lemmas `botIndex_le` and `le_topIndex` establish that these are genuinely the minimum and maximum of `Fin n`: every index `i` satisfies `botIndex ≤ i ≤ topIndex`, proved by unfolding `Fin.le_def` to a comparison of underlying naturals and closing with `Nat.zero_le` / `omega` (using `i.isLt : i.val < n`). These are the concrete handles for `λ₀ = λ_{botIndex}` (the first minimum) and `λ_{n-1} = λ_{topIndex}` (the last minimum) that the extreme-minima bracketing is stated in terms of.",
+    "mathContext": "botIndex = 0, topIndex = n-1 in Fin n (n ≠ 0); ∀ i, botIndex ≤ i ≤ topIndex — the bottom/top elements of the linear order on Fin n.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fin n order structure",
+      "NeZero instance",
+      "extreme elements of a finite linear order"
+    ]
+  },
+  {
     "id": "ann-mft-oq01oq01-attainment",
     "proofId": "minkowski-fundamental-theorem-oq-01-oq-01",
     "range": {
