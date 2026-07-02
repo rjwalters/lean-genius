@@ -61,6 +61,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: q-binomial reflection symmetry and the dual q-Pascal rule",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Header docstring and imports: the parent q-Pascal setup, the three identities proved (ratio invariant, dual q-Pascal, reflection symmetry), the CommRing setting, the proof architecture, and references.",
+      "mathContext": "This file (open question binomial-theorem-oq-02-oq-02-oq-01-oq-03) proves two results the parent BinomialTheoremOQ02OQ02OQ01 listed as open future work, plus the algebraic invariant driving them. The parent builds the Gaussian q-binomial qBinomial q n k from the q-Pascal recurrence (A) binom{n+1}{k+1}_q = q^{k+1}·binom{n}{k+1}_q + binom{n}{k}_q. This file proves: the dual q-Pascal rule (B) binom{n+1}{k+1}_q = binom{n}{k+1}_q + q^{n−k}·binom{n}{k}_q; the reflection symmetry binom{n}{k}_q = binom{n}{n−k}_q for k ≤ n; and the ratio invariant (RATIO) (q^{k+1}−1)·binom{n}{k+1}_q = (q^{n−k}−1)·binom{n}{k}_q. All three are polynomial identities in q; because the proofs use factors q^j−1 (genuine subtraction) they are stated over a CommRing R (covering ℤ[q], ℚ(q), ℝ, ℂ and finite fields), and every parent lemma (over CommSemiring) specializes here. Proof architecture from the header docstring (lines 1–69): qBinomial_ratio by induction on n with base k=0 the telescoping geom_sum_mul using the parent's binom{n}{1}_q = ∑_{i<n} q^i and inductive step by linear_combination of RATIO(n,j) and RATIO(n,j+1); qBinomial_dual_pascal immediate from (A)+RATIO; qBinomial_reflection by induction, expanding with (A) and dual (B) then the IH, differing only by add_comm. References: Andrews (1976), Kac & Cheung (2002), Stanley (2011)."
+    },
+    {
       "id": "ratio-invariant",
       "title": "The Ratio Invariant",
       "summary": "qBinomial_ratio: (q^{k+1}-1)·\\binom{n}{k+1}_q = (q^{n-k}-1)·\\binom{n}{k}_q, by induction on n with the k=0 telescoping geometric-sum base case.",
