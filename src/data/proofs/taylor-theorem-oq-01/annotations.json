@@ -1,5 +1,31 @@
 [
   {
+    "id": "ann-tt01-overview",
+    "proofId": "taylor-theorem-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 54
+    },
+    "type": "concept",
+    "title": "Overview: Multivariate Taylor's Theorem via Restriction to a Line",
+    "content": "The parent (Taylor's theorem, Wiedijk #35) asks whether Lean can formalize the multivariate Taylor theorem with remainder. The fully general statement expresses the k-th term as a symmetric k-linear map applied to k copies of the displacement — heavy packaging. This entry establishes the STANDARD REDUCTION underlying every proof: restrict f : E → ℝ to the line t ↦ f(a + t•v) and apply the one-dimensional Taylor theorem already in Mathlib. It proves: restriction_contDiff (g inherits f's smoothness via composition with the affine map t ↦ a + t•v); restriction_hasDerivAt/restriction_deriv (g'(t) is the directional/Fréchet derivative Df(a+t•v)(v)); multivariate_taylor_lagrange (the expansion with Lagrange remainder carried by the iterated derivative of the restriction); and the headline multivariate_taylor_first_order (n=0 case, the multivariate mean value theorem f(a+v) = f(a) + Df(a+θ•v)(v) with the gradient explicit). HONEST SCOPE: the remainder is expressed through the iterated DIRECTIONAL derivative along v; the fully symmetric-multilinear/multi-index packaging (writing g^{(k)}(0) as D^k f(a)(v,…,v)) is left as future work, requiring the chain-rule bridge iteratedDeriv k g t = iteratedFDeriv ℝ k f (a+t•v)(…). The first-order term IS given the explicit Fréchet-derivative form.",
+    "mathContext": "Restricting $f:E\\to\\mathbb{R}$ to the line $g(t)=f(a+tv)$ reduces multivariate Taylor to the 1-D theorem: $f(a+v)=\\sum_{k\\le n} g^{(k)}(0)/k! + g^{(n+1)}(\\theta)/(n+1)!$ for some $\\theta\\in(0,1)$, with $g'(t)=Df(a+tv)(v)$. Smoothness and derivatives transfer through composition with the affine parametrisation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Taylor's theorem",
+      "directional derivative",
+      "Fréchet derivative",
+      "Lagrange remainder",
+      "chain rule",
+      "mean value theorem"
+    ],
+    "prerequisites": [
+      "multivariable calculus",
+      "Fréchet derivatives",
+      "one-dimensional Taylor's theorem"
+    ]
+  },
+  {
     "id": "ann-taylor-oq01-restriction",
     "proofId": "taylor-theorem-oq-01",
     "range": {
