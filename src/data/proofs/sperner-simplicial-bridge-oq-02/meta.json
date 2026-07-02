@@ -43,6 +43,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: extending the Sperner bridge to Mathlib's Geometry.SimplicialComplex",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The license header, the imports of the parent SpernerSimplicialBridge and Mathlib's SimplicialComplex/AffineSpace, the module docstring, and the namespace/open setup. Answers the parent's open question: does the finset-of-vertices Sperner bridge extend to Mathlib's affine-set Geometry.SimplicialComplex type?",
+      "mathContext": "The reconciliation is clean: Mathlib already stores faces of a Geometry.SimplicialComplex 𝕜 E as Finset E (vertex sets), the same encoding the bridge consumes; the affine structure (AffineIndependent, convex-hull gluing) is extra data layered on top, not a competing encoding. So the bridge applies verbatim once three structural facts are packaged — facet extraction/finiteness, purity (every facet has d+1 vertices), and the pseudomanifold condition (every codimension-1 face lies in ≤ 2 facets). Main results: exists_facet_superset (in a finite complex every face lies below a facet — genuinely new; Mathlib has only not_facet_iff_subface); facet_affineIndependent (facet vertices are affinely independent); facet_card_le_finrank_succ / facet_dim_le_ambient (the affine encoding bounds the combinatorial dimension, d ≤ finrank 𝕜 E); exists_panchromatic_facet (the bridge applied — a panchromatic facet exists as a genuine element of K.facets); and exists_panchromatic_facet_of_finrank (the finite-dimensional-field version certifying d ≤ finrank)."
+    },
+    {
       "id": "facet-extraction",
       "title": "Facet extraction for finite Mathlib complexes",
       "startLine": 67,
@@ -149,21 +157,28 @@
   ],
   "references": [
     {
-      "authors": ["Sperner, Emanuel"],
+      "authors": [
+        "Sperner, Emanuel"
+      ],
       "year": 1928,
       "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
       "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg, vol. 6, pp. 265-272",
       "note": "Sperner's original labeled-triangulation lemma."
     },
     {
-      "authors": ["Dillies, Yaël", "Mehta, Bhavik"],
+      "authors": [
+        "Dillies, Yaël",
+        "Mehta, Bhavik"
+      ],
       "year": 2021,
       "title": "Mathlib: Analysis.Convex.SimplicialComplex.Basic",
       "venue": "leanprover-community/mathlib4",
       "note": "Mathlib's Geometry.SimplicialComplex: faces as affinely independent finsets whose convex hulls glue nicely; defines vertices and facets. The target API this entry bridges to."
     },
     {
-      "authors": ["De Longueville, Mark"],
+      "authors": [
+        "De Longueville, Mark"
+      ],
       "year": 2013,
       "title": "A Course in Topological Combinatorics",
       "venue": "Springer Universitext",
