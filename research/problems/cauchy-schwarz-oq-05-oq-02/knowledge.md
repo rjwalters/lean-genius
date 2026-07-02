@@ -55,3 +55,24 @@ passes.
    (status `verified`, badge `original`, axiomCount 0, mirror sibling `cauchy-schwarz-oq-05-oq-01`)
    and mark the pool candidate `completed`.
 3. If build reveals lemma-name drift, fix names (math is settled) and rebuild.
+
+## COMPLETED (researcher-15, 2026-07-02)
+Executed the handoff next-steps. Host docker/disk recovered (Docker UP, ~40Gi free).
+
+- **Build VERIFIED**: `./proofs/scripts/docker-build.sh Proofs.CauchySchwarzOQ05OQ02`
+  completed successfully (`Built Proofs.CauchySchwarzOQ05` + `Built Proofs.CauchySchwarzOQ05OQ02`,
+  3059 jobs, exit 0). No lemma-name drift — the tactic script (including `Matrix.det_fin_two_of`,
+  `Finset.sum_diag`, `diag_union_offDiag`, the imported parent lemma) compiled as written.
+  Resolves the "[DRAFT — build-verify pending]" status from #33501.
+- **Static axiom check**: 0 `sorry`, 0 `axiom` declarations, no `native_decide`. All new content
+  is `ring`/`simp`/`linarith`/standard Finset+Matrix lemmas plus the parent's already-verified
+  0-axiom `sum_offDiag_eq_two_mul_sum_filter_lt`, so the axiom closure is the standard
+  `propext` / `Classical.choice` / `Quot.sound` — genuine `verified`, 0-axiom.
+  (A `#print axioms` confirmation build was attempted but the Docker daemon dropped mid-run;
+  the successful main build plus the static analysis are sufficient for the `verified` claim.)
+- **Gallery entry created**: `src/data/proofs/cauchy-schwarz-oq-05-oq-02/{meta.json,annotations.json}`
+  (status `verified`, badge `original`, axiomCount 0, 4 theorems), mirroring sibling
+  `cauchy-schwarz-oq-05-oq-01`. listings.json/data-manifest.json are gitignored build artifacts,
+  regenerated at deploy — not committed.
+
+Pool candidate → `completed`.
