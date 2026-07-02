@@ -16,7 +16,11 @@
       "Waring's problem",
       "Lagrange's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases and representing integers as sums",
+      "Waring's problem and g(k)",
+      "Lagrange's four-square theorem"
+    ]
   },
   {
     "id": "ann-881-basis-def",
@@ -34,7 +38,11 @@
       "representation",
       "additive number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sums of at most k elements from a set",
+      "the 'sufficiently large' / asymptotic qualifier",
+      "Finset sums over subsets of ℕ"
+    ]
   },
   {
     "id": "ann-881-order-one",
@@ -52,7 +60,11 @@
       "order 1",
       "trivial representation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the definition of a basis of order k",
+      "singleton representations {n}",
+      "iff proofs in Lean"
+    ]
   },
   {
     "id": "ann-881-minimal-def",
@@ -70,7 +82,11 @@
       "minimality",
       "redundancy"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic additive bases of order k",
+      "infinite subsets B ⊆ A",
+      "the notion of redundancy in a basis"
+    ]
   },
   {
     "id": "ann-881-minimal-infinite",
@@ -88,7 +104,11 @@
       "finiteness"
     ],
     "mathContext": "See annotation content for formal details of minimal bases are infinite",
-    "prerequisites": []
+    "prerequisites": [
+      "finite vs infinite sets",
+      "the finitely-many sums a finite set produces",
+      "minimal additive bases"
+    ]
   },
   {
     "id": "ann-881-conjecture",
@@ -106,7 +126,11 @@
       "open problem",
       "order increase"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "minimal additive bases of order k",
+      "the order of a basis increasing by exactly 1",
+      "removing an infinite subset from a basis"
+    ]
   },
   {
     "id": "ann-881-weak",
@@ -124,7 +148,11 @@
       "relaxation"
     ],
     "mathContext": "See annotation content for formal details of weak version",
-    "prerequisites": []
+    "prerequisites": [
+      "the main Erdős 881 conjecture",
+      "increasing the order by a finite amount m",
+      "relaxing a conjecture"
+    ]
   },
   {
     "id": "ann-881-implication",
@@ -142,7 +170,11 @@
       "weakening"
     ],
     "mathContext": "See annotation content for formal details of strong implies weak",
-    "prerequisites": []
+    "prerequisites": [
+      "the strong conjecture (m=1) and the weak version",
+      "specializing a witness (m=1)",
+      "logical implication between statements"
+    ]
   },
   {
     "id": "ann-881-squares",
@@ -160,7 +192,11 @@
       "Lagrange",
       "four squares"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the set of perfect squares",
+      "Lagrange's four-square theorem",
+      "additive basis of order 4"
+    ]
   },
   {
     "id": "ann-881-monotone",
@@ -178,7 +214,11 @@
       "monotonicity",
       "order"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the order-k basis property",
+      "a k-representation as a k'-representation for k'≥k",
+      "monotonicity of a property"
+    ]
   },
   {
     "id": "ann-881-subset",
@@ -196,7 +236,11 @@
       "superset"
     ],
     "mathContext": "See annotation content for formal details of subset property",
-    "prerequisites": []
+    "prerequisites": [
+      "additive bases of order k",
+      "subset/superset relations A ⊆ A'",
+      "how adding elements affects representability"
+    ]
   },
   {
     "id": "ann-881-summary",
@@ -214,6 +258,10 @@
       "open problems"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "the main Erdős 881 conjecture",
+      "Waring's problem and Sidon sets",
+      "the Erdős-Turán conjecture"
+    ]
   }
 ]
