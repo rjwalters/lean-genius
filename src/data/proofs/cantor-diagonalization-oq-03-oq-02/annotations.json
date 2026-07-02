@@ -1,0 +1,135 @@
+[
+  {
+    "id": "ann-cantor-oq0302-header",
+    "proofId": "cantor-diagonalization-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 80 },
+    "type": "concept",
+    "title": "The Open Question: A Predicative, Propext-Free Lawvere",
+    "content": "The parent proves Cantor via Lawvere using the impredicative power type A → Prop, with Not : Prop → Prop as the fixed-point-free endomorphism. Its open question 2 asks for a constructive analogue in a predicative type theory without propositional extensionality. The header pins the answer down: two features of the Prop development are avoidable — its impredicativity (Prop = Sort 0) and the propext-dependence of the embedding a ↦ (· = a). Replacing Prop by the data type Bool removes both at once.",
+    "mathContext": "A → Bool : Type u lives in the same universe as A : Type u (predicative); the Bool embedding is injective by decide, not propext.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Lawvere fixed-point theorem",
+      "Cantor's theorem",
+      "predicativity",
+      "propositional extensionality",
+      "impredicative Prop"
+    ],
+    "prerequisites": [
+      "diagonal argument",
+      "type universes",
+      "decidable equality"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq0302-lawvere",
+    "proofId": "cantor-diagonalization-oq-03-oq-02",
+    "range": { "startLine": 81, "endLine": 93 },
+    "type": "theorem",
+    "title": "Lawvere's Fixed-Point Theorem (Constructive)",
+    "content": "If e : A → (A → B) is surjective then every f : B → B has a fixed point. The proof is the diagonal argument: apply surjectivity to a ↦ f (e a a) to get a witness a₀, and then e a₀ a₀ is a fixed point of f. It eliminates a single surjectivity witness into a ∃-goal, so it uses neither Classical.choice nor propext — the constructivity that the open question requires is already present in Lawvere itself.",
+    "mathContext": "∃ b, f b = b, from a diagonal witness e a₀ a₀ with e a₀ = (a ↦ f (e a a)).",
+    "significance": "central",
+    "relatedConcepts": [
+      "diagonal argument",
+      "surjection",
+      "fixed point"
+    ],
+    "prerequisites": [
+      "function surjectivity",
+      "congr_fun"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq0302-engine",
+    "proofId": "cantor-diagonalization-oq-03-oq-02",
+    "range": { "startLine": 94, "endLine": 107 },
+    "type": "theorem",
+    "title": "The Contrapositive Engine: Fixed-Point-Free ⟹ No Surjection",
+    "content": "FixedPointFree g isolates the exact hypothesis (g moves every element) that drives every Cantor/Russell/Gödel/Turing diagonal. no_surjection_of_fpf turns Lawvere around: if any g : B → B is fixed-point free then no e : A → (A → B) can be surjective — a surjection would hand g a fixed point via Lawvere. This one engine, instantiated at different alphabets B, produces all the concrete Cantor statements below.",
+    "mathContext": "(∀ b, g b ≠ b) → ¬ Surjective e, for arbitrary alphabet B.",
+    "significance": "central",
+    "relatedConcepts": [
+      "fixed-point-free endomorphism",
+      "contrapositive",
+      "no surjection"
+    ],
+    "prerequisites": [
+      "Lawvere fixed-point theorem"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq0302-bool",
+    "proofId": "cantor-diagonalization-oq-03-oq-02",
+    "range": { "startLine": 108, "endLine": 123 },
+    "type": "theorem",
+    "title": "Predicative Cantor over Bool (No-Surjection Direction)",
+    "content": "Boolean negation (! ·) is fixed-point free (by decide), so there is no surjection A → (A → Bool). Crucially the codomain A → Bool : Type u sits in the same universe as A : Type u — the argument is predicative, needing no impredicative Prop — and it invokes no propositional extensionality. This is the direct predicative replacement for the parent's no-surjection-onto-A → Prop.",
+    "mathContext": "¬ Surjective (e : A → (A → Bool)), via not_fixedPointFree and the engine.",
+    "significance": "central",
+    "relatedConcepts": [
+      "boolean negation",
+      "predicativity",
+      "decide"
+    ],
+    "prerequisites": [
+      "decidability of Bool equality"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq0302-embed",
+    "proofId": "cantor-diagonalization-oq-03-oq-02",
+    "range": { "startLine": 124, "endLine": 140 },
+    "type": "definition",
+    "title": "The Propext-Free Embedding A ↪ (A → Bool)",
+    "content": "embed_bool sends a to its decidable characteristic function x ↦ decide (x = a). Its injectivity (embed_bool_injective) is discharged by decide_eq_decide plus rfl — a pure computation on Bool. This is the heart of the answer: the analogous Prop embedding a ↦ (· = a) is injective only by transporting the propositional equality (a = a) = (a = a') across propext, whereas the Bool version needs no propext at all.",
+    "mathContext": "Injective (a ↦ fun x => decide (x = a)); injectivity from decide (a = a) = decide (a = a') ↔ (a = a).",
+    "significance": "central",
+    "relatedConcepts": [
+      "characteristic function",
+      "injective embedding",
+      "propositional extensionality"
+    ],
+    "prerequisites": [
+      "DecidableEq",
+      "decide_eq_decide"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq0302-strict",
+    "proofId": "cantor-diagonalization-oq-03-oq-02",
+    "range": { "startLine": 141, "endLine": 144 },
+    "type": "theorem",
+    "title": "Strict Growth Within a Single Universe",
+    "content": "predicative_cantor bundles the two directions: for A with decidable equality there is an injection A ↪ (A → Bool) but no surjection A → (A → Bool). So the decidable power A → Bool is strictly larger than A, entirely within Type u, using neither impredicative Prop nor propositional extensionality — the complete predicative, constructive answer to open question 2.",
+    "mathContext": "(∃ i, Injective i) ∧ (∀ e, ¬ Surjective e) for i, e : A → (A → Bool).",
+    "significance": "central",
+    "relatedConcepts": [
+      "strict cardinality inequality",
+      "predicative power object"
+    ],
+    "prerequisites": [
+      "embed_bool_injective",
+      "no_surjection_to_bool"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq0302-general",
+    "proofId": "cantor-diagonalization-oq-03-oq-02",
+    "range": { "startLine": 145, "endLine": 171 },
+    "type": "theorem",
+    "title": "Arbitrary Decidable Alphabets, and the ℕ Instance",
+    "content": "The two ingredients generalize: embed_of_two builds the (still propext-free) embedding A ↪ (A → B) from any two distinct decidable values of B, and any fixed-point-free endomorphism of B forbids the surjection. succ_fixedPointFree (n + 1 ≠ n) instantiates the engine over ℕ, giving no surjection A → (A → ℕ) and showing the argument is not special to Bool — any alphabet with a fixed-point-free self-map suffices.",
+    "mathContext": "b₀ ≠ b₁ ⟹ injective a ↦ (x ↦ if x = a then b₁ else b₀); Nat.succ_ne_self ⟹ no surjection onto A → ℕ.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "generalization",
+      "finite alphabet",
+      "successor"
+    ],
+    "prerequisites": [
+      "if-then-else on decidable propositions",
+      "Nat.succ_ne_self"
+    ]
+  }
+]
