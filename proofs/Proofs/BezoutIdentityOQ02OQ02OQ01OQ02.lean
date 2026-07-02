@@ -9,7 +9,7 @@ From bezout-identity-oq-02-oq-02-oq-01 (Constructive Divisibility Algorithm):
 "Can the algorithm be extended to multivariate Bézout identities in
 polynomial rings?"
 
-## Answer: YES
+## Answer: YES over any Bézout ring (so over F[X]); NO in genuine multivariate rings.
 
 The two-element Bézout identity `u * a + v * b = gcd a b` generalizes to a
 *finite family* `a : ι → R` in any **Bézout ring** `R` (a commutative ring in
@@ -26,14 +26,25 @@ range of `a` is finitely generated (the index type is finite), hence principal
 by the Bézout hypothesis; its generator is the sought `d`, and membership of `d`
 in the span produces the explicit coefficient vector.
 
-Because polynomial rings `F[X]` over a field are Euclidean domains — hence
-principal ideal rings, hence Bézout — the identity specializes directly to the
-multivariate polynomial setting the open question asks about. It also
-specializes to `ℤ` and to any principal ideal domain.
+Because *univariate* polynomial rings `F[X]` over a field are Euclidean domains
+— hence principal ideal rings, hence Bézout — the identity specializes directly
+to the polynomial setting the open question asks about. It also specializes to
+`ℤ` and to any principal ideal domain.
 
 This entry works over an arbitrary `IsBezout` commutative ring; no integral
 domain hypothesis is needed, since both the divisibility and the universal
 property follow from the linear combination itself.
+
+**The sharp boundary (Part VII).** The affirmative answer is exactly as wide as
+the Bézout hypothesis, and no wider. *Genuine* multivariate polynomial rings
+`F[x₁,…,xₙ]` with `n ≥ 2` are **not** Bézout rings — not even principal ideal
+domains — so the identity fails there. We exhibit the obstruction concretely in
+`F[x, y] = MvPolynomial (Fin 2) F`: the variables `X` and `Y` share no common
+non-unit factor, yet the constant polynomial `1` is **not** an `F[x,y]`-linear
+combination of `X` and `Y`, because every element of the ideal `(X, Y)` has zero
+constant term. Hence there are no cofactors `f, g` with `f·X + g·Y = 1`, and the
+extended Euclidean / Bézout construction genuinely does not survive the passage
+to more than one variable.
 -/
 
 namespace BezoutIdentityOQ02OQ02OQ01OQ02
@@ -86,7 +97,7 @@ theorem exists_bezout_coeffs {R : Type*} [CommRing R] [IsBezout R]
     {ι : Type*} [Fintype ι] (a : ι → R) :
     ∃ u : ι → R, ∑ i, u i * a i = familyGcd a := by
   have hmem : familyGcd a ∈ Submodule.span R (Set.range a) := familyGcd_mem_span a
-  rw [mem_span_range_iff_exists_fun] at hmem
+  rw [Submodule.mem_span_range_iff_exists_fun] at hmem
   obtain ⟨u, hu⟩ := hmem
   exact ⟨u, by simpa only [smul_eq_mul] using hu⟩
 
@@ -194,5 +205,56 @@ example : (1 : ℤ) * 4 + (-2) * 6 + 1 * 9 = 1 := by norm_num
 `(-1)·X + 1·(X + 1) = 1`, exhibiting the constant polynomial `1` as a gcd. -/
 example : (-1 : Polynomial ℚ) * Polynomial.X + 1 * (Polynomial.X + 1) = 1 := by
   ring
+
+/-
+## Part VII: The Sharp Boundary — Genuine Multivariate Rings are not Bézout
+
+The affirmative results above rest entirely on the `IsBezout` hypothesis, and
+`F[x₁,…,xₙ]` fails it for `n ≥ 2`.  We make the failure explicit in
+`F[x, y] = MvPolynomial (Fin 2) F`.  `X` and `Y` are coprime (they share no
+common non-unit factor), yet `1 ∉ (X, Y)`, so no Bézout identity
+`f·X + g·Y = 1` exists.  The witness is the constant-coefficient homomorphism:
+every element of `(X, Y)` has zero constant term.
+-/
+
+open MvPolynomial
+
+/-- The generating pair `{X 0, X 1}` lies in the kernel of the
+constant-coefficient homomorphism, so the whole ideal it spans does. -/
+theorem span_X_le_ker_constantCoeff {F : Type*} [CommRing F] :
+    Ideal.span {X (0 : Fin 2), X 1} ≤
+      RingHom.ker (constantCoeff : MvPolynomial (Fin 2) F →+* F) := by
+  rw [Ideal.span_le]
+  intro x hx
+  rcases hx with h | h
+  · rw [h, SetLike.mem_coe, RingHom.mem_ker, constantCoeff_X]
+  · rw [Set.mem_singleton_iff] at h
+    rw [h, SetLike.mem_coe, RingHom.mem_ker, constantCoeff_X]
+
+/-- **Boundary theorem.** In `F[x, y]` (for a nontrivial commutative ring `F`)
+the constant polynomial `1` is *not* a linear combination of `X` and `Y`, even
+though `X` and `Y` are coprime.  This is the concrete obstruction stopping the
+Bézout identity from extending to genuine multivariate polynomial rings. -/
+theorem one_not_mem_span_X_Y {F : Type*} [CommRing F] [Nontrivial F] :
+    (1 : MvPolynomial (Fin 2) F) ∉ Ideal.span {X (0 : Fin 2), X 1} := by
+  intro h
+  have hker : (1 : MvPolynomial (Fin 2) F) ∈
+      RingHom.ker (constantCoeff : MvPolynomial (Fin 2) F →+* F) :=
+    span_X_le_ker_constantCoeff h
+  rw [RingHom.mem_ker, map_one] at hker
+  exact one_ne_zero hker
+
+/-- Restated as the impossibility of the two-generator Bézout identity in
+`F[x, y]`: there are no cofactors `f, g` with `f * X + g * Y = 1`.  Contrast
+with `multivariate_bezout_polynomial`, which *does* hold in the univariate ring
+`F[X]`. -/
+theorem no_bezout_identity_X_Y {F : Type*} [CommRing F] [Nontrivial F] :
+    ¬ ∃ f g : MvPolynomial (Fin 2) F, f * X 0 + g * X 1 = 1 := by
+  rintro ⟨f, g, hfg⟩
+  refine one_not_mem_span_X_Y (F := F) ?_
+  rw [← hfg]
+  exact Ideal.add_mem _
+    (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))
+    (Ideal.mul_mem_left _ _ (Ideal.subset_span (by simp)))
 
 end BezoutIdentityOQ02OQ02OQ01OQ02
