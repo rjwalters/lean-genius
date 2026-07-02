@@ -114,6 +114,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The r×r LGV Determinant",
+      "startLine": 1,
+      "endLine": 76,
+      "summary": "Module docstring, imports, and namespace setup for the general r×r Lindström–Gessel–Viennot lemma. These head lines introduce the problem — counting r-tuples of pairwise non-intersecting lattice paths as det[e(Aᵢ,Bⱼ)] with e(A,B)=C(dx+dy,dx) — and the sign-reversing Gessel–Viennot involution strategy that cancels every non-identity permutation, before the LGV namespace opens.",
+      "mathContext": "The LGV lemma (Lindström 1973; Gessel–Viennot 1985) expresses the number of non-intersecting path families as a determinant of single-path counts. Expanding det as an alternating sum over Sᵣ, the identity permutation contributes ∏ e(Aᵢ,Bᵢ) while every other permutation is killed by a sign-reversing involution built from swapping path tails at a forced crossing. Fully machine-checked: 0 axioms, 0 sorries."
+    },
+    {
       "id": "lattice-path-foundations",
       "title": "Part 1: Lattice Path Foundations",
       "startLine": 77,
