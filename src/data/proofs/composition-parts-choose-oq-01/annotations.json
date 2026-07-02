@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-overview-header",
+    "proofId": "composition-parts-choose-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Overview: the part-graded refinement of the composition count",
+    "content": "A *composition* of $n$ into $k$ parts is an ordered $k$-tuple of positive integers summing to $n$ — in Lean, an element `c : Composition n` with `c.length = k`. Mathlib already counts compositions in the *ungraded* sense, $\\operatorname{card}(\\text{Composition } n) = 2^{n-1}$, via the two bijections `compositionEquiv n : Composition n ≃ CompositionAsSet n` and `compositionAsSetEquiv n : CompositionAsSet n ≃ Finset (Fin (n-1))`. This file supplies the finer, *part-graded* count it omits: $\\operatorname{card}\\{c : \\text{Composition } n \\mid c.\\text{length} = k\\} = \\binom{n-1}{k-1}$ for $n,k \\ge 1$. The bijective idea is the classical stars-and-bars picture: write $n$ as $n$ unit boxes with $n-1$ internal gaps; a composition is exactly a choice of which gaps to cut, and cutting $k-1$ of the $n-1$ gaps yields a composition into $k$ parts — so compositions of $n$ into $k$ parts correspond to $(k-1)$-element subsets of an $(n-1)$-element set, of which there are $\\binom{n-1}{k-1}$. Summing over $k$ recovers the headline $\\sum_k \\binom{n-1}{k-1} = 2^{n-1}$ by the binomial theorem, so the graded count is the finer statement from which the ungraded one follows. The header also fixes the namespace `CompositionPartsChooseOQ01`, opens `Finset`, and introduces the ambient variables `n k : ℕ`.",
+    "mathContext": "$\\operatorname{card}\\{c : \\text{Composition } n \\mid c.\\text{length}=k\\} = \\binom{n-1}{k-1}$; summing over $k$ gives $\\sum_{k}\\binom{n-1}{k-1}=2^{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "composition of an integer",
+      "stars and bars",
+      "binomial coefficient",
+      "hockey-stick identity",
+      "Fintype cardinality"
+    ],
+    "prerequisites": [
+      "compositions of an integer",
+      "subsets of a finite set",
+      "binomial theorem"
+    ]
+  },
+  {
     "id": "ann-composite-bijection-and-crux",
     "proofId": "composition-parts-choose-oq-01",
     "range": {
