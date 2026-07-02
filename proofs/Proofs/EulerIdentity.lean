@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.Complex.Trigonometric
 
 /-!
 # Euler's Identity
@@ -30,7 +31,7 @@ mathematical constants (e, i, π, 1, 0) in one elegant equation.
 - `Complex.exp_mul_I` : Euler's formula exp(x * I) = cos(x) + sin(x) * I
 - `Complex.exp_two_pi_mul_I` : Full rotation exp(2π * I) = 1
 - `Real.cos_pi`, `Real.sin_pi` : Trigonometric values at π
-- `Complex.abs_cos_add_sin_mul_I` : |cos(θ) + sin(θ)*I| = 1
+- `Complex.norm_exp_ofReal_mul_I` : ‖exp(θ*I)‖ = 1
 
 Historical Note: Euler published this in 1748 in "Introductio in analysin
 infinitorum," though he may never have written it in this exact form.
@@ -179,10 +180,9 @@ theorem quarter_rotation : Complex.exp (Real.pi / 2 * Complex.I) = Complex.I := 
   The complex exponential parameterizes the unit circle!
 -/
 
--- e^(iθ) lies on the unit circle: |e^(iθ)| = 1
-theorem exp_on_unit_circle (θ : ℝ) : Complex.abs (Complex.exp (θ * Complex.I)) = 1 := by
-  rw [Complex.exp_mul_I]
-  simp [Complex.abs_cos_add_sin_mul_I]
+-- e^(iθ) lies on the unit circle: ‖e^(iθ)‖ = 1
+theorem exp_on_unit_circle (θ : ℝ) : ‖Complex.exp (θ * Complex.I)‖ = 1 :=
+  Complex.norm_exp_ofReal_mul_I θ
 
 -- ============================================================
 -- PART 7: Connection to Trigonometry
@@ -279,7 +279,7 @@ theorem pow_mul_I_even (z : ℂ) (k : ℕ) :
         = (z * I) ^ (2 * n) * (z * I) ^ 2 := by
             rw [show 2 * (n + 1) = 2 * n + 2 from by ring, pow_add]
       _ = (-1) ^ n * z ^ (2 * n) * (z ^ 2 * (I * I)) := by rw [ih]; ring
-      _ = (-1) ^ n * z ^ (2 * n) * (z ^ 2 * (-1)) := by rw [I_sq]
+      _ = (-1) ^ n * z ^ (2 * n) * (z ^ 2 * (-1)) := by rw [Complex.I_mul_I]
       _ = (-1) ^ (n + 1) * z ^ (2 * (n + 1)) := by ring
 
 /-- Odd powers of (z * I) carry a factor of I: (z*I)^{2k+1} = (-1)^k · z^{2k+1} · I.
@@ -328,7 +328,7 @@ theorem euler_formula_algebraic (z : ℂ) :
   have h : ((b - a) * I / 2) * I = (a - b) / 2 := by
     calc ((b - a) * I / 2) * I
         = (b - a) * (I * I) / 2 := by ring
-      _ = (b - a) * (-1) / 2 := by rw [I_sq]
+      _ = (b - a) * (-1) / 2 := by rw [Complex.I_mul_I]
       _ = (a - b) / 2 := by ring
   rw [h]
   ring
