@@ -50,7 +50,7 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 364,
+    "lineCount": 428,
     "assumptions": "2 sorries: galois_two_group_implies_tower (~500 lines, Galois correspondence glue) and tower_implies_galois_two_group (~300 lines, splitting field degree). Newly proved this session: sqrt2_constructible_tower (concrete witness ℚ⟮√2⟯ is a height-1 quadratic tower containing √2; uses Sqrt2Minpoly.adjoin_sqrt_two_finrank + finrank tower formula). Companion Aristotle file now sorry-free (delegates to main).",
     "originalContributions": [
       "Proper inductive definition of QuadraticTower replacing the alias TowerCriterion = DegreeCriterion",
@@ -59,7 +59,7 @@
       "Proof that tower degree = 2^n by structural induction (modulo finrank multiplicativity)",
       "Key 2-group lemmas: existence of index-2 subgroups, trivial characterization"
     ],
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 1
   },
   "references": [
@@ -210,9 +210,9 @@
       "FiniteDimensional"
     ],
     "namespace": "AngleTrisectionOQ02OQ04OQ01",
-    "lineCount": 364,
+    "lineCount": 428,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "substantiveTheoremCount": 8,
     "duplicateTheorems": 0,
     "definitionCount": 1,
