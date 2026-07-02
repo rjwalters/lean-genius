@@ -142,6 +142,14 @@
   ],
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Automorphic Residues Count Squarefree Divisors",
+      "startLine": 1,
+      "endLine": 83,
+      "summary": "Imports (Mathlib + parent AutomorphicNumberOQ01OQ01) and module docstring. The grandparent shows ZMod (10^k) has exactly four idempotents; the parent explains 'four' as 2^ω(n), the number of automorphic residues e²≡e (mod n). This file gives that count two further meanings. Arithmetic shadow: 2^ω(n) equals the number of squarefree divisors of n (squarefreeDivisors_card), and idempotents of ZMod n are equinumerous with them (idempotents_eq_squarefreeDivisors), via the bijection with the powerset of n.primeFactors. Algebraic mechanism: for arbitrary commutative rings, a finite product of nontrivial local rings has exactly 2^(#factors) idempotents (idempotent_count_pi_local, idempotent_count_of_ringEquiv) — a local ring has only 0,1 as idempotents and product idempotents are tuples. Via CRT this recovers 2^ω(n) for ZMod n and generalizes to 𝒪_K/𝔞 = 2^(#distinct prime ideals). 0 axioms, 0 sorries.",
+      "mathContext": "The open question motivating the entry is how 2^ω(n) generalizes beyond ℤ; the local-product idempotent count is the ring-theoretic mechanism, answering it for number-field quotients 𝒪_K/𝔞 through the CRT decomposition into local factors."
+    },
+    {
       "id": "squarefree-divisors-def",
       "title": "Part I: Squarefree divisors and the powerset bijection",
       "startLine": 84,
