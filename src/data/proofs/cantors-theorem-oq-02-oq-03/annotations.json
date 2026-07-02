@@ -18,6 +18,25 @@
     ]
   },
   {
+    "id": "ann-cantor-oq0203-obstruction",
+    "proofId": "cantors-theorem-oq-02-oq-03",
+    "range": { "startLine": 45, "endLine": 62 },
+    "type": "insight",
+    "title": "Part 0: the single obstruction the whole framework bottoms out at",
+    "content": "Every diagonal argument in this entry — sharp Cantor, Russell, the Prop/Bool failures of HasFPP — ultimately reduces to **one** fact: the negation map on `Prop` has no fixed point, i.e. no proposition satisfies $p \\leftrightarrow \\neg p$. `neg_no_fixed_point` proves it in three lines with no axioms beyond `propext`: from a hypothetical $p \\leftrightarrow \\neg p$ derive $\\neg p$ (assuming $p$ gives $\\neg p$, hence a contradiction), then feed $\\neg p$ back through the iff to get $p$. This is Russell's paradox in its most distilled propositional form, and it is the *only* piece of genuine logical content in the file — Parts A–D are all structural machinery that transports this single impossibility to arbitrary targets and exponentials.",
+    "mathContext": "Proof: assume $\\exists p,\\ p \\leftrightarrow \\neg p$. Then $\\neg p$ holds (if $p$ then by $\\Rightarrow$ also $\\neg p$, contradiction), and applying $\\Leftarrow$ to $\\neg p$ gives $p$ — contradicting $\\neg p$. The `Not`-is-fixed-point-free lemmas `not_hasFPP_Prop` and `cantor_weak` are then one-line wrappers around this fact.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Russell's paradox (propositional core)",
+      "self-reference and diagonalization",
+      "fixed-point-free endomorphism"
+    ],
+    "prerequisites": [
+      "Iff.mp / Iff.mpr",
+      "propositional logic (proof by contradiction)"
+    ]
+  },
+  {
     "id": "ann-cantor-oq0203-weak-lawvere",
     "proofId": "cantors-theorem-oq-02-oq-03",
     "range": { "startLine": 63, "endLine": 111 },
