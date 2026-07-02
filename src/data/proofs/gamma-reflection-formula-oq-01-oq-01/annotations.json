@@ -71,6 +71,30 @@
     ]
   },
   {
+    "id": "ann-gamma-refl-oq0101-arcsine-bridge",
+    "proofId": "gamma-reflection-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 75
+    },
+    "type": "insight",
+    "title": "Reading the Beta Value as a Real Integral: the Arcsine Kernel",
+    "content": "This section-header commentary is the conceptual pivot of the file: it reinterprets the abstract value B(1/2,1/2) = π as a statement about a concrete real integral. The complex Beta integrand at (1/2,1/2) is x^(1/2-1)·(1-x)^(1/2-1) = x^(-1/2)·(1-x)^(-1/2), which on [0,1] is the cast of the real arcsine kernel 1/√(x(1-x)). The subtlety recorded here is the endpoint convention: at x = 0 and x = 1 the negative powers x^(-1/2) and (1-x)^(-1/2) are read as 0 (Mathlib's rpow/cpow convention for the base 0), and both sides of the identification vanish there, so the pointwise equality holds throughout the closed interval. This bridge is what lets betaIntegral_half_half be transported to arcsine_total_mass.",
+    "mathContext": "$x^{1/2-1}(1-x)^{1/2-1} = \\dfrac{1}{\\sqrt{x(1-x)}}$ on $[0,1]$; the integrable singularities at the endpoints have the convention $0^{-1/2}=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Beta integrand",
+      "arcsine distribution",
+      "improper integral",
+      "rpow endpoint convention"
+    ],
+    "prerequisites": [
+      "Beta function",
+      "real analysis",
+      "complex power functions"
+    ]
+  },
+  {
     "id": "ann-gamma-refl-oq0101-arcsine-mass",
     "proofId": "gamma-reflection-formula-oq-01-oq-01",
     "range": {

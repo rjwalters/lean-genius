@@ -163,7 +163,8 @@
     "summary": "The Beta value B(1/2,1/2) = π is derived from Γ(1/2)² = π via Mathlib's Beta–Gamma relation Γ(s)Γ(t) = Γ(s+t)B(s,t) at s = t = 1/2 (with Γ(1) = 1 and Γ(1/2) = π^(1/2)). Unfolding the Beta integral and identifying its integrand with the real arcsine kernel 1/√(x(1-x)) on [0,1] transports the value to the real closed form ∫₀¹ dx/√(x(1-x)) = π, and factoring out 1/π shows the arcsine density 1/(π√(x(1-x))) integrates to 1. 119 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries.",
     "implications": "The Beta integral and the Beta–Gamma relation are Mathlib's (used as bridges), but the special value B(1/2,1/2) = π, the real closed form ∫₀¹ dx/√(x(1-x)) = π, and the arcsine probability normalisation are new — hence the original badge. The entry exhibits the reflection-formula constant π simultaneously as a Gamma special value, a Beta integral, and the normalising constant of the arcsine distribution.",
     "openQuestions": [
-      "Compute the general symmetric Beta value B(s,1-s) = π/sin(πs) by combining the Beta–Gamma relation with Euler's reflection formula."
+      "Compute the general symmetric Beta value B(s,1-s) = π/sin(πs) by combining the Beta–Gamma relation with Euler's reflection formula.",
+      "Identify the arcsine density 1/(π√(x(1-x))) as the equilibrium (Chebyshev) measure of [0,1] and compute its moments ∫₀¹ xⁿ dμ, recovering the central binomial pattern C(2n,n)/4ⁿ and connecting this entry to the central-binomial Beta values B(n+1,n+1)."
     ]
   }
 }
