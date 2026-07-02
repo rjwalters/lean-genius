@@ -42,7 +42,8 @@
       "The second-kind leading-coefficient formula 2ⁿ is uniform — no truncated subtraction is needed — because U 1 = 2·X already supplies the factor of two that T 1 = X lacks; the base value 2⁰ = 1 at n = 0 matches U 0 = 1 automatically.",
       "Tracking natDegree and leadingCoeff together is what makes the induction go through: the leading-coefficient hypothesis (2ⁿ⁺¹ ≠ 0) is exactly the witness that U(n+1) ≠ 0, which the degree calculus for the product 2·X·U(n+1) requires.",
       "Working over the integral domain ℤ keeps degree additive and leading coefficient multiplicative on products (natDegree_mul / leadingCoeff_mul) with no monic hypotheses — Uₙ is not monic for n ≥ 1, so a monic-based argument would not apply.",
-      "The subtracted lower-degree term U n is handled once, generically: natDegree_sub_eq_left_of_natDegree_lt and leadingCoeff_add_of_degree_lt' encapsulate 'a strictly-lower-degree perturbation changes neither the degree nor the leading coefficient'."
+      "The subtracted lower-degree term U n is handled once, generically: natDegree_sub_eq_left_of_natDegree_lt and leadingCoeff_add_of_degree_lt' encapsulate 'a strictly-lower-degree perturbation changes neither the degree nor the leading coefficient'.",
+      "The real downstream payload is the nonvanishing Uₙ ≠ 0, a free corollary of leadingCoeff = 2ⁿ ≠ 0: it is precisely the hypothesis that root-counting, natDegree_mul, and the derivative identity Tₙ′ = n·Uₙ₋₁ need, so the degree/leading-coefficient package pays off exactly by licensing that one-line lemma."
     ],
     "prerequisites": [
       "The second-kind Chebyshev polynomials and their recurrence U(n+2) = 2·X·U(n+1) − U n (Mathlib's Polynomial.Chebyshev.U)",
@@ -76,12 +77,20 @@
       "mathContext": "Inductive step: $U_{n+2} = 2X\\,U_{n+1} - U_n$, with $\\deg(2X\\,U_{n+1}) = n+2 > n = \\deg U_n$."
     },
     {
-      "id": "corollaries",
-      "title": "Extracted Degree, Leading-Coefficient, and Nonvanishing Theorems",
-      "startLine": 115,
+      "id": "projections",
+      "title": "Projected Degree and Leading-Coefficient Theorems",
+      "startLine": 114,
+      "endLine": 120,
+      "summary": "U_natDegree and U_leadingCoeff project the two halves of the joint induction into separately citable one-line lemmas (natDegree = n; leadingCoeff = 2ⁿ, uniform with no truncated subtraction).",
+      "mathContext": "$\\deg U_n = n$; $\\mathrm{lc}(U_n) = 2^{n}$."
+    },
+    {
+      "id": "nonvanishing",
+      "title": "Nonvanishing Uₙ ≠ 0",
+      "startLine": 122,
       "endLine": 129,
-      "summary": "U_natDegree and U_leadingCoeff project the two halves of the induction; U_ne_zero deduces that Uₙ is never the zero polynomial from the nonzero leading coefficient 2ⁿ.",
-      "mathContext": "$\\deg U_n = n$; $\\mathrm{lc}(U_n) = 2^{n}$; $U_n \\ne 0$."
+      "summary": "U_ne_zero deduces that Uₙ is never the zero polynomial from its nonzero leading coefficient 2ⁿ — the lemma downstream root-counting, natDegree_mul, and the derivative identity Tₙ′ = n·Uₙ₋₁ actually consume.",
+      "mathContext": "$U_n \\ne 0$ since $\\mathrm{lc}(U_n) = 2^{n} \\ne 0$."
     }
   ],
   "conclusion": {
