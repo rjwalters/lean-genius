@@ -16,7 +16,11 @@
       "additive number theory",
       "Waring problem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers and their k-th powers",
+      "additive representations of an integer",
+      "limit superior (lim sup) of a sequence"
+    ]
   },
   {
     "id": "ann-e979-imports",
@@ -35,7 +39,11 @@
       "Multiset",
       "Filter"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multisets (unordered collections with repetition)",
+      "Filter.limsup",
+      "BigOperators sum notation in Lean"
+    ]
   },
   {
     "id": "ann-e979-solution-set",
@@ -54,7 +62,11 @@
       "Set comprehension",
       "extended naturals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multisets and Multiset.card",
+      "set-builder comprehension in Lean",
+      "extended natural numbers ℕ∞ and Set.encard"
+    ]
   },
   {
     "id": "ann-e979-small-cases",
@@ -73,7 +85,11 @@
       "card_eq_zero",
       "positive primes"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the empty multiset and card_eq_zero",
+      "positivity of prime powers",
+      "why a statement may be axiomatized in Lean"
+    ]
   },
   {
     "id": "ann-e979-example-k2",
@@ -92,7 +108,11 @@
       "smallest solution",
       "concrete verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squares of primes",
+      "multisets with repeated elements",
+      "the solution-counting function f k n"
+    ]
   },
   {
     "id": "ann-e979-example-k3",
@@ -111,7 +131,11 @@
       "k=3 case",
       "multiplicity three"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cubes of primes",
+      "multiplicity of an element in a multiset",
+      "the solution set for k=3"
+    ]
   },
   {
     "id": "ann-e979-main-k2",
@@ -130,7 +154,11 @@
       "analytic number theory",
       "prime distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "lim sup equal to infinity",
+      "the Hardy-Littlewood circle method",
+      "primes in arithmetic progressions"
+    ]
   },
   {
     "id": "ann-e979-main-k3",
@@ -149,7 +177,11 @@
       "unpublished",
       "singular series"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the k=2 result and its methods",
+      "singular series in the circle method",
+      "cubes of primes"
+    ]
   },
   {
     "id": "ann-e979-open",
@@ -168,7 +200,11 @@
       "sparse sets",
       "growth rate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function f_k(n)",
+      "sparsity of k-th powers of primes",
+      "lim sup as a growth measure"
+    ]
   },
   {
     "id": "ann-e979-connections",
@@ -187,7 +223,11 @@
       "Waring problem",
       "circle method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Goldbach conjecture",
+      "Waring's problem",
+      "the Hardy-Littlewood circle method"
+    ]
   },
   {
     "id": "ann-e979-bounds",
@@ -206,7 +246,11 @@
       "smallest prime",
       "feasibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the smallest prime (2) and minimal sums of prime powers",
+      "emptiness and nonemptiness of the solution set",
+      "the bound n < 2^k"
+    ]
   },
   {
     "id": "ann-e979-summary",
@@ -225,6 +269,10 @@
       "definition validation",
       "summary"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the concrete k=2 and k=3 examples",
+      "conjunction of formal statements in Lean",
+      "the solution-set definition"
+    ]
   }
 ]
