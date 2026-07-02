@@ -107,11 +107,21 @@
       "targetId": "area-of-circle-oq-05-oq-03-oq-04",
       "relationship": "related",
       "description": "The moment/cumulant generating function of the Gaussian, the natural probabilistic sequel once the density is normalized: the standard-normal MGF and characteristic function ∫ e^{tx}e^{-x²/2} = e^{t²/2}√(2π) carry the very √(2π) prefactor that std_normal_normalization cancels to 1 here."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-oq-03",
+      "relationship": "related",
+      "description": "OQ-05-OQ-03 proves the Gaussian is its own Fourier transform. The self-duality is stated for e^{-x²/2}, the exact integrand normalized here: the √(2π) that makes ∫ (1/√(2π))e^{-x²/2} = 1 is the same constant appearing in the Fourier normalization that makes e^{-x²/2} a fixed point, so this density-normalization strand and the Fourier strand share their one nontrivial constant."
     }
   ],
   "conclusion": {
     "summary": "The normalization constants of the normal distribution — √(2π), σ√(2π) — and the probability-density normalizations ∫ (1/√(2π))e^{-x²/2} = 1 and ∫ (1/(σ√(2π)))e^{-x²/(2σ²)} = 1 are derived axiom-free from the Gaussian integral ∫ e^{-x²} = √π, together with mean-shift invariance and the area identity (∫ e^{-x²})² = π. The bell curve's constants are exactly √π evaluated at different rates.",
-    "implications": "This completes the elementary 1D strand of the area-of-circle Gaussian-integral lineage with the probability-density normalizations, making explicit the bridge from the geometric Gaussian integral to the normal distribution. The lemmas (rate-matched Gaussian integrals, constant pull-out, mean-shift invariance) are reusable for further probabilistic formalization built on Mathlib's Gaussian API."
+    "implications": "This completes the elementary 1D strand of the area-of-circle Gaussian-integral lineage with the probability-density normalizations, making explicit the bridge from the geometric Gaussian integral to the normal distribution. The lemmas (rate-matched Gaussian integrals, constant pull-out, mean-shift invariance) are reusable for further probabilistic formalization built on Mathlib's Gaussian API.",
+    "openQuestions": [
+      "Formalize the moments of the standard normal from these normalizations: E[X^{2k}] = (2k−1)!! (double factorial) and E[X^{2k+1}] = 0 by symmetry, obtained by repeated integration by parts against the normalized density (or by differentiating the MGF ∫ e^{tx}·(1/√(2π))e^{-x²/2} = e^{t²/2}).",
+      "Prove closure under convolution: the sum of independent N(μ₁,σ₁²) and N(μ₂,σ₂²) is N(μ₁+μ₂, σ₁²+σ₂²). This is the analytic backbone of the central limit theorem and is naturally attacked through the Fourier-transform sibling (oq-05-oq-03) once the density is normalized.",
+      "Extend the normalization to the multivariate normal N(0,Σ): the constant (2π)^{n/2}√(det Σ). The diagonal case factors into a product of the scalar σᵢ√(2π) constants derived here (see oq-05-oq-02); the general positive-definite case needs a spectral change of variables."
+    ]
   },
   "leanFile": {
     "imports": [
