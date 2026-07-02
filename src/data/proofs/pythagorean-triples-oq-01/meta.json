@@ -113,6 +113,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Density of Primitive Pythagorean Triples",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Aristotle provenance header, module docstring, and imports framing the theorem that primitive Pythagorean triples with hypotenuse c ≤ N number asymptotically N/(2π). These head lines lay out the six-step argument — the (m,n) parametrization, lattice-point counting over the sector {0<y<x, x²+y²≤R²} of area πR²/8, the 6/π² coprime density, and the 2/3 parity correction — before the PythagoreanTriplesDensity namespace opens.",
+      "mathContext": "Primitive triples biject with coprime pairs m>n>0 of opposite parity via (m²−n², 2mn, m²+n²), so counting those with c ≤ N reduces to lattice points in a circular sector. The asymptotic πN/8 · (6/π²) · (2/3) = N/(2π) combines Gauss circle-sector area, the ζ(2)⁻¹ = 6/π² coprimality density, and a parity fraction. The entry is axiomatized: the sector density, coprime fraction, and bothOdd fraction are taken as stated analytic-density inputs, while the combinatorial parametrization and parity lemmas are proved (several by Aristotle)."
+    },
+    {
       "id": "counting-functions",
       "title": "Parts I-II: Counting Functions and Parametrization",
       "summary": "Defines isPrimParam, primitiveTripleCount, and tripleDensityConstant = 1/(2π). Connects to Mathlib's PythagoreanTriple via parametric_triple, coprime_triple_classified, and triple_classified, establishing the bijection between primitive triples and valid parameter pairs (m,n).",
