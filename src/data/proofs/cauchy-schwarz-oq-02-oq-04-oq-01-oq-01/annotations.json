@@ -1,5 +1,51 @@
 [
   {
+    "id": "csq02040101-ann-overview",
+    "proofId": "cauchy-schwarz-oq-02-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 6,
+      "endLine": 45
+    },
+    "type": "context",
+    "title": "Kittaneh's Numerical-Radius Inequality from Buzano",
+    "content": "The numerical radius w(T) = sup_{‖x‖=1} ‖⟪T x, x⟫‖ trivially satisfies w(T) ≤ ‖T‖ by Cauchy-Schwarz. Kittaneh (2003) proved the genuine strengthening w(T)² ≤ ½(‖T‖² + ‖T²‖), which never exceeds ‖T‖² (since ‖T²‖ ≤ ‖T‖²) and is strictly sharper whenever ‖T²‖ < ‖T‖² (e.g. nilpotents). This file derives the pointwise form ‖⟪T x, x⟫‖² ≤ ½(‖T‖² + ‖T²‖) for unit x directly from the parent's Buzano inequality via the adjoint trick — feeding Buzano the vectors T x and T†x, so the two adjoint identities ⟪x,T†x⟫ = ⟪T x,x⟫ and ⟪T x,T†x⟫ = ⟪T²x,x⟫ manufacture the squared left side and the ‖T²‖-controlled cross term. The result is not in Mathlib.",
+    "mathContext": "$$w(T)^2 \\le \\tfrac{1}{2}\\big(\\|T\\|^2 + \\|T^2\\|\\big) \\le \\|T\\|^2$$",
+    "significance": "context",
+    "relatedConcepts": [
+      "numerical radius",
+      "Kittaneh's inequality",
+      "Buzano's inequality",
+      "Hilbert-space adjoint"
+    ],
+    "prerequisites": [
+      "bounded operators on a Hilbert space",
+      "the parent Buzano inequality",
+      "operator norm"
+    ]
+  },
+  {
+    "id": "csq02040101-ann-03",
+    "proofId": "cauchy-schwarz-oq-02-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 65
+    },
+    "type": "concept",
+    "title": "Why Kittaneh Refines w(T) ≤ ‖T‖: Submultiplicativity",
+    "content": "`opNorm_sq_le` proves ‖T²‖ ≤ ‖T‖² from the submultiplicativity of the operator-norm ring (`norm_mul_le`, with T² = T·T). This single fact is what upgrades Kittaneh's bound from 'a bound' to 'a refinement': in `kittaneh_inner_sq_le_opNorm_sq` it gives (‖T‖² + ‖T²‖)/2 ≤ ‖T‖², so the Kittaneh right side is always sandwiched between ‖T²‖ and ‖T‖² and never loses to the trivial numerical-radius bound. The recovery `inner_diag_le_opNorm` (‖⟪T x, x⟫‖ ≤ ‖T‖) is then immediate by chaining through Real.sqrt.",
+    "mathContext": "$\\|T^2\\| \\le \\|T\\|^2 \\ \\Rightarrow\\ \\tfrac{1}{2}(\\|T\\|^2 + \\|T^2\\|) \\le \\|T\\|^2 \\ \\Rightarrow\\ \\|\\langle Tx,x\\rangle\\| \\le \\|T\\|.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "submultiplicativity",
+      "numerical radius",
+      "refinement vs. trivial bound"
+    ],
+    "prerequisites": [
+      "norm_mul_le in the operator normed ring",
+      "Real.sqrt monotonicity and √(a²) = a"
+    ]
+  },
+  {
     "id": "csq02040101-ann-01",
     "proofId": "cauchy-schwarz-oq-02-oq-04-oq-01-oq-01",
     "range": {
@@ -47,25 +93,27 @@
     ]
   },
   {
-    "id": "csq02040101-ann-03",
+    "id": "csq02040101-ann-consequences",
     "proofId": "cauchy-schwarz-oq-02-oq-04-oq-01-oq-01",
     "range": {
-      "startLine": 61,
-      "endLine": 65
+      "startLine": 116,
+      "endLine": 137
     },
-    "type": "concept",
-    "title": "Why Kittaneh Refines w(T) ≤ ‖T‖: Submultiplicativity",
-    "content": "`opNorm_sq_le` proves ‖T²‖ ≤ ‖T‖² from the submultiplicativity of the operator-norm ring (`norm_mul_le`, with T² = T·T). This single fact is what upgrades Kittaneh's bound from 'a bound' to 'a refinement': in `kittaneh_inner_sq_le_opNorm_sq` it gives (‖T‖² + ‖T²‖)/2 ≤ ‖T‖², so the Kittaneh right side is always sandwiched between ‖T²‖ and ‖T‖² and never loses to the trivial numerical-radius bound. The recovery `inner_diag_le_opNorm` (‖⟪T x, x⟫‖ ≤ ‖T‖) is then immediate by chaining through Real.sqrt.",
-    "mathContext": "$\\|T^2\\| \\le \\|T\\|^2 \\ \\Rightarrow\\ \\tfrac{1}{2}(\\|T\\|^2 + \\|T^2\\|) \\le \\|T\\|^2 \\ \\Rightarrow\\ \\|\\langle Tx,x\\rangle\\| \\le \\|T\\|.$",
-    "significance": "key",
+    "type": "insight",
+    "title": "From the Squared Bound to the Classical Consequences",
+    "content": "Three corollaries unpack the headline squared inequality. kittaneh_inner_le takes square roots to give the root form ‖⟪T x, x⟫‖ ≤ √(½(‖T‖²+‖T²‖)) (rewrite ‖·‖ = √(‖·‖²) via Real.sqrt_sq, then Real.sqrt_le_sqrt). kittaneh_inner_sq_le_opNorm_sq feeds submultiplicativity ‖T²‖ ≤ ‖T‖² into a one-line linarith to show the Kittaneh right side ½(‖T‖²+‖T²‖) ≤ ‖T‖² — it never loses to the trivial bound. Chaining these, inner_diag_le_opNorm recovers the elementary numerical-radius bound ‖⟪T x, x⟫‖ ≤ ‖T‖ through a Real.sqrt monotonicity calc, confirming Kittaneh's inequality is a strict refinement rather than a competitor.",
+    "mathContext": "$$\\|\\langle Tx,x\\rangle\\| \\le \\sqrt{\\tfrac{1}{2}(\\|T\\|^2+\\|T^2\\|)} \\le \\|T\\|$$",
+    "significance": "supporting",
     "relatedConcepts": [
+      "root form",
+      "Real.sqrt monotonicity",
       "submultiplicativity",
-      "numerical radius",
-      "refinement vs. trivial bound"
+      "recovery of w(T) ≤ ‖T‖"
     ],
     "prerequisites": [
-      "norm_mul_le in the operator normed ring",
-      "Real.sqrt monotonicity and √(a²) = a"
+      "kittaneh_inner_sq",
+      "opNorm_sq_le",
+      "Real.sqrt_sq and Real.sqrt_le_sqrt"
     ]
   },
   {
