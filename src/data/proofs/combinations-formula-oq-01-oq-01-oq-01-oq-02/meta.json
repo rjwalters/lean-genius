@@ -83,25 +83,29 @@
       "title": "Module header and context",
       "startLine": 1,
       "endLine": 44,
-      "summary": "States the goal — the parent's open question on the Lucas analogue of Cassini's identity — notes that Mathlib has neither a Lucas sequence nor a Fibonacci Cassini/Catalan lemma, lists the four results, and imports the parent."
+      "summary": "States the goal — the parent's open question on the Lucas analogue of Cassini's identity — notes that Mathlib has neither a Lucas sequence nor a Fibonacci Cassini/Catalan lemma, lists the four results, and imports the parent.",
+      "id": "module-header-and-context"
     },
     {
       "title": "Fibonacci Catalan/Cassini identity (helper)",
       "startLine": 46,
       "endLine": 65,
-      "summary": "fib_catalan_int: F(n+1)² − F(n)·F(n+2) = (−1)^n over ℤ, proved by a one-step induction whose step substitutes both Fibonacci recurrences and collapses to the negation of the inductive hypothesis (linear_combination -ih)."
+      "summary": "fib_catalan_int: F(n+1)² − F(n)·F(n+2) = (−1)^n over ℤ, proved by a one-step induction whose step substitutes both Fibonacci recurrences and collapses to the negation of the inductive hypothesis (linear_combination -ih).",
+      "id": "fibonacci-catalan-cassini-identity-helper"
     },
     {
       "title": "The Lucas analogue of Cassini's identity",
       "startLine": 67,
       "endLine": 96,
-      "summary": "lucas_cassini_int: the subtraction-free reindexed form L(n)·L(n+2) − L(n+1)² = (−1)^n·5, by the same sign-flipping induction using the parent's lucas_add_two. lucas_cassini: the literal n−1 open-question form for n ≥ 1, obtained by writing n = 1 + m and normalising indices with omega."
+      "summary": "lucas_cassini_int: the subtraction-free reindexed form L(n)·L(n+2) − L(n+1)² = (−1)^n·5, by the same sign-flipping induction using the parent's lucas_add_two. lucas_cassini: the literal n−1 open-question form for n ≥ 1, obtained by writing n = 1 + m and normalising indices with omega.",
+      "id": "the-lucas-analogue-of-cassini-s-identity"
     },
     {
       "title": "Structural consequence: the discriminant identity",
       "startLine": 98,
       "endLine": 120,
-      "summary": "lucas_sq_sub_five_fib_sq: L(n)² − 5·F(n)² = 4·(−1)^n, derived algebraically from fib_catalan_int and the parent's bridge L(n)=2·F(n+1)−F(n) via linear_combination, exhibiting the Cassini constant 5 as the discriminant of x²−x−1."
+      "summary": "lucas_sq_sub_five_fib_sq: L(n)² − 5·F(n)² = 4·(−1)^n, derived algebraically from fib_catalan_int and the parent's bridge L(n)=2·F(n+1)−F(n) via linear_combination, exhibiting the Cassini constant 5 as the discriminant of x²−x−1.",
+      "id": "structural-consequence-the-discriminant-identity"
     }
   ],
   "sorries": [],

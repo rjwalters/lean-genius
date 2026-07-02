@@ -151,60 +151,55 @@
       "title": "Header: Question, Answer, and Imports",
       "startLine": 1,
       "endLine": 50,
-      "summary": "Module docstring stating the question (next-weakest dependence beyond independence with vanishing mixing coefficients), the answer (m-dependence, α(n) = 0 for n > m), and the five proven results. Imports the parent CentralLimitTheoremOQ02 α-mixing infrastructure plus Mathlib; opens MeasureTheory/Filter/Topology and the parent namespace.",
-      "mathContext": "An m-dependent sequence has $\\alpha(n) = 0$ for $n > m$; independence is $m = 0$."
+      "summary": "Module docstring stating the question (next-weakest dependence beyond independence with vanishing mixing coefficients), the answer (m-dependence, α(n) = 0 for n > m), and the five proven results. Imports the parent CentralLimitTheoremOQ02 α-mixing infrastructure plus Mathlib; opens MeasureTheory/Filter/Topology and the parent namespace."
     },
     {
       "id": "mdependence",
       "title": "Part I: m-Dependence",
       "startLine": 53,
       "endLine": 73,
-      "summary": "Defines MDependent μ σ_k m: for events A measurable w.r.t. σ_k k and B measurable w.r.t. σ_k (k+n) with n > m, μ(A∩B) = μA·μB. The m = 0 case is the gap-≥-1 independence hypothesis of the parent.",
-      "mathContext": "$\\mu(A\\cap B)=\\mu(A)\\,\\mu(B)$ whenever the index gap $n>m$."
+      "summary": "Defines MDependent μ σ_k m: for events A measurable w.r.t. σ_k k and B measurable w.r.t. σ_k (k+n) with n > m, μ(A∩B) = μA·μB. The m = 0 case is the gap-≥-1 independence hypothesis of the parent."
     },
     {
       "id": "alpha-zero",
       "title": "Part II: m-Dependence ⇒ α(n) = 0 for n > m",
       "startLine": 75,
       "endLine": 117,
-      "summary": "The headline mDependent_alpha_zero. Mirrors the parent's independent_implies_zero_mixing: every term of the defining nested supremum vanishes by independence (ENNReal.toReal_mul), and a Prop-indexed nested supremum of the constant 0 over ℝ collapses via a Nonempty/IsEmpty case split, sidestepping the lack of CompleteLattice ℝ.",
-      "mathContext": "$\\alpha(\\sigma_k(k),\\sigma_k(k+n)) = \\sup_{A,B}|\\mu(A\\cap B)-\\mu A\\,\\mu B| = 0$ for $n>m$."
+      "summary": "The headline mDependent_alpha_zero. Mirrors the parent's independent_implies_zero_mixing: every term of the defining nested supremum vanishes by independence (ENNReal.toReal_mul), and a Prop-indexed nested supremum of the constant 0 over ℝ collapses via a Nonempty/IsEmpty case split, sidestepping the lack of CompleteLattice ℝ."
     },
     {
       "id": "independence",
       "title": "Part III: m = 0 Recovers Independence",
       "startLine": 119,
       "endLine": 134,
-      "summary": "mZeroDependent_recovers_independence: specializing the headline to m = 0 (gap n ≥ 1) re-derives the conclusion of the parent's independent_implies_zero_mixing.",
-      "mathContext": "Independence $\\iff$ 0-dependence; $\\alpha(n)=0$ for all $n\\ge 1$."
+      "summary": "mZeroDependent_recovers_independence: specializing the headline to m = 0 (gap n ≥ 1) re-derives the conclusion of the parent's independent_implies_zero_mixing."
     },
     {
       "id": "decay",
       "title": "Part IV: Mixing Decay is Trivial",
       "startLine": 136,
       "endLine": 150,
-      "summary": "mDependent_mixing_decay: the lag-indexed coefficient n ↦ α(n) tends to 0, because it is eventually identically 0 (past lag m), via tendsto_atTop_of_eventually_const.",
-      "mathContext": "$\\alpha(n)\\to 0$ since $\\alpha(n)=0$ for all $n>m$."
+      "summary": "mDependent_mixing_decay: the lag-indexed coefficient n ↦ α(n) tends to 0, because it is eventually identically 0 (past lag m), via tendsto_atTop_of_eventually_const."
     },
     {
       "id": "summable",
       "title": "Part V: Ibragimov's Series Converges for Every Exponent",
       "startLine": 152,
       "endLine": 185,
-      "summary": "summable_rpow_of_eventually_zero (reusable: eventually-zero ⇒ summable rpow powers, finite support, θ ≠ 0) and mDependent_summable_mixing_rpow (Ibragimov's series ∑ₙ α(n)^θ converges for every θ ≠ 0, so the OQ-02-OQ-04 CLT applies with no rate constraint).",
-      "mathContext": "$\\sum_n \\alpha(n)^\\theta < \\infty$ for every $\\theta>0$, since $\\alpha(n)=0$ for $n>m$."
+      "summary": "summable_rpow_of_eventually_zero (reusable: eventually-zero ⇒ summable rpow powers, finite support, θ ≠ 0) and mDependent_summable_mixing_rpow (Ibragimov's series ∑ₙ α(n)^θ converges for every θ ≠ 0, so the OQ-02-OQ-04 CLT applies with no rate constraint)."
     },
     {
       "id": "hierarchy",
       "title": "Part VI: Hierarchy Placement",
       "startLine": 187,
       "endLine": 208,
-      "summary": "Places m-dependence strictly between independence and general α-mixing: Independent (= 0-dependent) ⊊ m-dependent ⊊ α-mixing with summable rate ⊊ α-mixing. Notes the strictness witnesses (MA(1) is 1-dependent but not independent; long-memory α-mixing is not m-dependent) and the necessity of θ ≠ 0.",
-      "mathContext": "Independent $\\subsetneq$ $m$-dependent $\\subsetneq$ summable-rate $\\alpha$-mixing $\\subsetneq$ $\\alpha$-mixing."
+      "summary": "Places m-dependence strictly between independence and general α-mixing: Independent (= 0-dependent) ⊊ m-dependent ⊊ α-mixing with summable rate ⊊ α-mixing. Notes the strictness witnesses (MA(1) is 1-dependent but not independent; long-memory α-mixing is not m-dependent) and the necessity of θ ≠ 0."
     },
     {
       "id": "bounds-mono",
       "title": "Coefficient Bound and m-Monotonicity",
+      "startLine": 209,
+      "endLine": 256,
       "summary": "alphaMixingCoeff_le_one: on a probability space the α-mixing coefficient is ≤ 1 (every term |x−yz| with x,y,z∈[0,1]; proved via Real.iSup_le whose 0≤a side-condition absorbs the empty-index sup) — the upper bound the parent omits. mDependent_mono: m-dependence is monotone in m, nesting the finite-range classes upward."
     }
   ],

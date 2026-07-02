@@ -20,49 +20,57 @@
       "title": "Header and Open Question",
       "startLine": 1,
       "endLine": 57,
-      "summary": "Frames the goal: take the honest combinatorial definition of Jordan's totient $J_k(n)$ as the count of $k$-tuples setwise coprime to $n$, and derive its explicit arithmetic values (divisor-sum identity, prime-power closed form, Euler/Gauss recovery) self-containedly from the geometry."
+      "summary": "Frames the goal: take the honest combinatorial definition of Jordan's totient $J_k(n)$ as the count of $k$-tuples setwise coprime to $n$, and derive its explicit arithmetic values (divisor-sum identity, prime-power closed form, Euler/Gauss recovery) self-containedly from the geometry.",
+      "id": "header-and-open-question"
     },
     {
       "title": "Definition and the scaling lemma",
       "startLine": 64,
       "endLine": 75,
-      "summary": "`jordanCount k n` filters $\\{0,\\dots,n-1\\}^k$ by the entrywise-gcd coprimality condition $\\gcd(\\gcd(a),n)=1$. `gcd_smul` records that scaling a tuple coordinatewise by $d$ multiplies its `Finset.gcd` by $d$ (from `Finset.gcd_mul_left`)."
+      "summary": "`jordanCount k n` filters $\\{0,\\dots,n-1\\}^k$ by the entrywise-gcd coprimality condition $\\gcd(\\gcd(a),n)=1$. `gcd_smul` records that scaling a tuple coordinatewise by $d$ multiplies its `Finset.gcd` by $d$ (from `Finset.gcd_mul_left`).",
+      "id": "definition-and-the-scaling-lemma"
     },
     {
       "title": "The fibre bijection",
       "startLine": 77,
       "endLine": 148,
-      "summary": "`fiber_card`: a `Finset.card_bij'` with the mutually-inverse rescaling maps $a\\mapsto(a_j/d)$ and $b\\mapsto(d\\,b_j)$ proving that tuples with $\\gcd(\\gcd(a),n)=d$ biject with the coprime tuples mod $n/d$, so the fibre over $d$ has $\\mathrm{jordanCount}\\,k\\,(n/d)$ elements."
+      "summary": "`fiber_card`: a `Finset.card_bij'` with the mutually-inverse rescaling maps $a\\mapsto(a_j/d)$ and $b\\mapsto(d\\,b_j)$ proving that tuples with $\\gcd(\\gcd(a),n)=d$ biject with the coprime tuples mod $n/d$, so the fibre over $d$ has $\\mathrm{jordanCount}\\,k\\,(n/d)$ elements.",
+      "id": "the-fibre-bijection"
     },
     {
       "title": "Headline: the geometric Gauss identity",
       "startLine": 150,
       "endLine": 172,
-      "summary": "`jordan_count_divisor_sum`: partitioning all $n^k$ tuples by $d=\\gcd(\\gcd(a),n)\\in\\mathrm{divisors}(n)$ via `card_eq_sum_card_fiberwise`, applying `fiber_card`, and reindexing with `Nat.sum_div_divisors` yields $\\sum_{d\\mid n}\\mathrm{jordanCount}\\,k\\,d = n^k$."
+      "summary": "`jordan_count_divisor_sum`: partitioning all $n^k$ tuples by $d=\\gcd(\\gcd(a),n)\\in\\mathrm{divisors}(n)$ via `card_eq_sum_card_fiberwise`, applying `fiber_card`, and reindexing with `Nat.sum_div_divisors` yields $\\sum_{d\\mid n}\\mathrm{jordanCount}\\,k\\,d = n^k$.",
+      "id": "headline-the-geometric-gauss-identity"
     },
     {
       "title": "Immediate corollaries: J_k(1) and the bound",
       "startLine": 174,
       "endLine": 184,
-      "summary": "`jordan_count_one` ($J_k(1)=1$) and `jordan_count_le_pow` ($J_k(n)\\le n^k$, since one divisor term is bounded by the full sum) drop straight out of the headline identity."
+      "summary": "`jordan_count_one` ($J_k(1)=1$) and `jordan_count_le_pow` ($J_k(n)\\le n^k$, since one divisor term is bounded by the full sum) drop straight out of the headline identity.",
+      "id": "immediate-corollaries-j-k-1-and-the-bound"
     },
     {
       "title": "Euler recovery at k = 1",
       "startLine": 186,
       "endLine": 219,
-      "summary": "`gcd_fin_one` (the gcd of a length-one tuple is its entry) and `jordan_count_eq_totient`: a length-one `card_bij'` identifying the coprimality condition with $\\gcd(a_0,n)=1$, proving $\\mathrm{jordanCount}\\,1\\,n = \\varphi(n)$."
+      "summary": "`gcd_fin_one` (the gcd of a length-one tuple is its entry) and `jordan_count_eq_totient`: a length-one `card_bij'` identifying the coprimality condition with $\\gcd(a_0,n)=1$, proving $\\mathrm{jordanCount}\\,1\\,n = \\varphi(n)$.",
+      "id": "euler-recovery-at-k-1"
     },
     {
       "title": "Gauss's classical totient identity",
       "startLine": 221,
       "endLine": 229,
-      "summary": "`sum_totient_eq_self`: specialising the headline to $k=1$ and rewriting by the Euler recovery gives a combinatorial proof of Gauss's $\\sum_{d\\mid n}\\varphi(d) = n$."
+      "summary": "`sum_totient_eq_self`: specialising the headline to $k=1$ and rewriting by the Euler recovery gives a combinatorial proof of Gauss's $\\sum_{d\\mid n}\\varphi(d) = n$.",
+      "id": "gauss-s-classical-totient-identity"
     },
     {
       "title": "Prime-power closed form",
       "startLine": 231,
       "endLine": 246,
-      "summary": "`jordan_count_prime_pow` telescopes the divisor sum over $\\{p^0,\\dots,p^{m+1}\\}$ (via `Nat.sum_divisors_prime_pow` and `sum_range_succ`); `jordan_count_prime_pow_sub` rearranges to $J_k(p^{m+1}) = p^{(m+1)k}-p^{mk}$, which is $\\varphi(p^{m+1})=p^{m+1}-p^m$ at $k=1$."
+      "summary": "`jordan_count_prime_pow` telescopes the divisor sum over $\\{p^0,\\dots,p^{m+1}\\}$ (via `Nat.sum_divisors_prime_pow` and `sum_range_succ`); `jordan_count_prime_pow_sub` rearranges to $J_k(p^{m+1}) = p^{(m+1)k}-p^{mk}$, which is $\\varphi(p^{m+1})=p^{m+1}-p^m$ at $k=1$.",
+      "id": "prime-power-closed-form"
     }
   ],
   "conclusion": {

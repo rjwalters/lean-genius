@@ -139,43 +139,50 @@
       "title": "Module header and scope",
       "startLine": 1,
       "endLine": 51,
-      "summary": "States the goal — the closed evaluation of the reflection half of the parent's bracelet_burnside identity for both parities — and the structural plan: a reflection acts by the involution refl i : p ↦ -i - p, fixed colourings are constant on its orbits, the orbit count of any involution is (|α| + |Fix|)/2, and f_i = #{p : 2p = -i} splits by parity. Records the axiom-hygiene claim (only propext/Classical.choice/Quot.sound)."
+      "summary": "States the goal — the closed evaluation of the reflection half of the parent's bracelet_burnside identity for both parities — and the structural plan: a reflection acts by the involution refl i : p ↦ -i - p, fixed colourings are constant on its orbits, the orbit count of any involution is (|α| + |Fix|)/2, and f_i = #{p : 2p = -i} splits by parity. Records the axiom-hygiene claim (only propext/Classical.choice/Quot.sound).",
+      "id": "module-header-and-scope"
     },
     {
       "title": "Unfolding the reflection action",
       "startLine": 52,
       "endLine": 77,
-      "summary": "reflection_smul_apply: (sr i • c) p = c (-i - p), reading off the parent's smul_apply with ρ (sr i) = Equiv.subLeft (-i). fixed_iff_symm: sr i • c = c ↔ ∀ p, c (-i - p) = c p — the symmetry condition that makes a fixed colouring constant on refl i-orbits."
+      "summary": "reflection_smul_apply: (sr i • c) p = c (-i - p), reading off the parent's smul_apply with ρ (sr i) = Equiv.subLeft (-i). fixed_iff_symm: sr i • c = c ↔ ∀ p, c (-i - p) = c p — the symmetry condition that makes a fixed colouring constant on refl i-orbits.",
+      "id": "unfolding-the-reflection-action"
     },
     {
       "title": "The reflection involution on positions",
       "startLine": 78,
       "endLine": 88,
-      "summary": "refl i : p ↦ -i - p and refl_involutive: refl i is an involution (-i - (-i - p) = p). This is the involution whose invariant 2-colourings are exactly the colourings fixed by sr i."
+      "summary": "refl i : p ↦ -i - p and refl_involutive: refl i is an involution (-i - (-i - p) = p). This is the involution whose invariant 2-colourings are exactly the colourings fixed by sr i.",
+      "id": "the-reflection-involution-on-positions"
     },
     {
       "title": "Counting invariant 2-colourings of an arbitrary involution",
       "startLine": 89,
       "endLine": 206,
-      "summary": "card_invariant_colorings_involutive: for any involution σ on a finite type α, |{c : α → Fin 2 // ∀ a, c (σ a) = c a}| = 2^{(|α| + |Fix σ|)/2}. Elementary proof: index α by ℕ (Fintype.equivFin), representative = smaller-indexed element of {a, σ a}, invariant colourings ≃ (R → Fin 2), and |R| = (|α| + |Fix σ|)/2 from R = L ∪ Fix (disjoint), R.card + G.card = |α|, and |L| = |G| (Finset.card_nbij' with σ). No group actions, Burnside, or orbit-quotient Fintype instances."
+      "summary": "card_invariant_colorings_involutive: for any involution σ on a finite type α, |{c : α → Fin 2 // ∀ a, c (σ a) = c a}| = 2^{(|α| + |Fix σ|)/2}. Elementary proof: index α by ℕ (Fintype.equivFin), representative = smaller-indexed element of {a, σ a}, invariant colourings ≃ (R → Fin 2), and |R| = (|α| + |Fix σ|)/2 from R = L ∪ Fix (disjoint), R.card + G.card = |α|, and |L| = |G| (Finset.card_nbij' with σ). No group actions, Burnside, or orbit-quotient Fintype instances.",
+      "id": "counting-invariant-2-colourings-of-an-arbitrary-involution"
     },
     {
       "title": "The per-reflection fixed-colouring count",
       "startLine": 207,
       "endLine": 224,
-      "summary": "reflFix i = #{p : refl i p = p} = #{p : 2p = -i} (the fixed-bead count), and card_fixedBy_reflection: |Fix(sr i)| = 2^{(n + reflFix i)/2} via Equiv.subtypeEquivRight to the invariant colourings of refl i and the involution count."
+      "summary": "reflFix i = #{p : refl i p = p} = #{p : 2p = -i} (the fixed-bead count), and card_fixedBy_reflection: |Fix(sr i)| = 2^{(n + reflFix i)/2} via Equiv.subtypeEquivRight to the invariant colourings of refl i and the involution count.",
+      "id": "the-per-reflection-fixed-colouring-count"
     },
     {
       "title": "Odd n: every reflection fixes one bead",
       "startLine": 225,
       "endLine": 268,
-      "summary": "reflFix_odd: for odd n, 2 is a unit in ZMod n (ZMod.isUnit_iff_coprime + Nat.coprime_two_left), so 2p = -i has a unique solution (Units.mulLeft_bijective + Bijective.existsUnique + Finset.card_eq_one) and reflFix i = 1. reflection_sum_odd: Σ_{i∈ZMod n} |Fix(sr i)| = n·2^{(n+1)/2}."
+      "summary": "reflFix_odd: for odd n, 2 is a unit in ZMod n (ZMod.isUnit_iff_coprime + Nat.coprime_two_left), so 2p = -i has a unique solution (Units.mulLeft_bijective + Bijective.existsUnique + Finset.card_eq_one) and reflFix i = 1. reflection_sum_odd: Σ_{i∈ZMod n} |Fix(sr i)| = n·2^{(n+1)/2}.",
+      "id": "odd-n-every-reflection-fixes-one-bead"
     },
     {
       "title": "Even n: reflections split by parity",
       "startLine": 269,
       "endLine": 428,
-      "summary": "two_mul_eq_zero_iff: for even n = 2m the doubling kernel is exactly {0, m}. reflFix_even: reflFix i ∈ {0, 2} (the solution set of 2p = -i is empty or a coset of {0, n/2}). reflFix_sum: Σ_i reflFix i = n for every n, a fiberwise Finset.sum_comm count (each bead is the unique fixed point of one axis). card_even_reflections: exactly n/2 reflections have reflFix i = 2 (omega from Σ reflFix = n and each term ∈ {0,2}). reflection_sum_even: Σ_{i∈ZMod n} |Fix(sr i)| = 3·(n/2)·2^{n/2}, via an additive split of each term that uses only the positive filter. Axiom audit confirms only the foundational axioms."
+      "summary": "two_mul_eq_zero_iff: for even n = 2m the doubling kernel is exactly {0, m}. reflFix_even: reflFix i ∈ {0, 2} (the solution set of 2p = -i is empty or a coset of {0, n/2}). reflFix_sum: Σ_i reflFix i = n for every n, a fiberwise Finset.sum_comm count (each bead is the unique fixed point of one axis). card_even_reflections: exactly n/2 reflections have reflFix i = 2 (omega from Σ reflFix = n and each term ∈ {0,2}). reflection_sum_even: Σ_{i∈ZMod n} |Fix(sr i)| = 3·(n/2)·2^{n/2}, via an additive split of each term that uses only the positive filter. Axiom audit confirms only the foundational axioms.",
+      "id": "even-n-reflections-split-by-parity"
     }
   ],
   "leanFile": {

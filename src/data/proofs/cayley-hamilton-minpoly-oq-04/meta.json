@@ -137,55 +137,64 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 52,
-      "summary": "Documentation header stating the main theorem (a matrix M is nonderogatory, μ_M = χ_M, iff it has a cyclic vector v with {v, Mv, ..., M^{n-1}v} a basis), the four main results, the forward-direction proof strategy, references (Horn & Johnson, Hoffman & Kunze), and dependencies. Imports Mathlib charpoly/minpoly, linear independence, and opens the Nonderogatory namespace over a field K."
+      "summary": "Documentation header stating the main theorem (a matrix M is nonderogatory, μ_M = χ_M, iff it has a cyclic vector v with {v, Mv, ..., M^{n-1}v} a basis), the four main results, the forward-direction proof strategy, references (Horn & Johnson, Hoffman & Kunze), and dependencies. Imports Mathlib charpoly/minpoly, linear independence, and opens the Nonderogatory namespace over a field K.",
+      "id": "module-header-and-imports"
     },
     {
       "title": "Part I: Definitions",
       "startLine": 53,
       "endLine": 88,
-      "summary": "IsCyclicVector M v (annihilator formulation): every polynomial of degree < n annihilating v must be 0. IsCyclicVectorLI M v (linear independence formulation): Krylov vectors {M^k v : k < n} are linearly independent. IsNonderogatory M: minpoly K M = M.charpoly. The annihilator formulation is used throughout proofs; IsCyclicVectorLI is included for reference. The docstring explains the K[X]-module perspective: IsCyclicVector says the annihilator ideal has no low-degree elements."
+      "summary": "IsCyclicVector M v (annihilator formulation): every polynomial of degree < n annihilating v must be 0. IsCyclicVectorLI M v (linear independence formulation): Krylov vectors {M^k v : k < n} are linearly independent. IsNonderogatory M: minpoly K M = M.charpoly. The annihilator formulation is used throughout proofs; IsCyclicVectorLI is included for reference. The docstring explains the K[X]-module perspective: IsCyclicVector says the annihilator ideal has no low-degree elements.",
+      "id": "part-i-definitions"
     },
     {
       "title": "Part II: Bridge Lemma",
       "startLine": 89,
       "endLine": 133,
-      "summary": "minpoly_eq_charpoly_of_natDegree_eq: natDeg(minpoly) = natDeg(charpoly) ⇒ minpoly = charpoly. Proof: write charpoly = minpoly * r via minpoly_dvd_charpoly; degree additivity forces natDeg(r) = 0; r is monic (leadingCoeff = 1 from charpoly monic and minpoly monic); monic degree-0 polynomial must be 1; so charpoly = minpoly * 1 = minpoly."
+      "summary": "minpoly_eq_charpoly_of_natDegree_eq: natDeg(minpoly) = natDeg(charpoly) ⇒ minpoly = charpoly. Proof: write charpoly = minpoly * r via minpoly_dvd_charpoly; degree additivity forces natDeg(r) = 0; r is monic (leadingCoeff = 1 from charpoly monic and minpoly monic); monic degree-0 polynomial must be 1; so charpoly = minpoly * 1 = minpoly.",
+      "id": "part-ii-bridge-lemma"
     },
     {
       "title": "Part III: Forward Direction (Cyclic → Nonderogatory)",
       "startLine": 134,
       "endLine": 168,
-      "summary": "cyclic_implies_nonderogatory: applies bridge lemma after proving natDeg(minpoly) = n. Key steps: (1) natDeg(minpoly) ≤ natDeg(charpoly) = n from minpoly | charpoly; (2) by contradiction assume natDeg(minpoly) < n; (3) minpoly.aeval gives (aeval M (minpoly K M)).mulVec v = 0; (4) IsCyclicVector forces minpoly = 0; (5) contradiction with Monic.ne_zero. Clean by_contra + omega proof."
+      "summary": "cyclic_implies_nonderogatory: applies bridge lemma after proving natDeg(minpoly) = n. Key steps: (1) natDeg(minpoly) ≤ natDeg(charpoly) = n from minpoly | charpoly; (2) by contradiction assume natDeg(minpoly) < n; (3) minpoly.aeval gives (aeval M (minpoly K M)).mulVec v = 0; (4) IsCyclicVector forces minpoly = 0; (5) contradiction with Monic.ne_zero. Clean by_contra + omega proof.",
+      "id": "part-iii-forward-direction-cyclic-nonderogatory"
     },
     {
       "title": "Part IV: Backward Direction (Nonderogatory → Cyclic, Axiomatized)",
       "startLine": 169,
       "endLine": 207,
-      "summary": "Comment discusses three approaches: (1) PID structure theorem V ≅ K[X]/(d₁) ⊕ ... ⊕ K[X]/(d_k), minpoly = charpoly forces k = 1; (2) Jordan Normal Form for alg. closed fields; (3) union of proper subspaces for infinite fields. axiom nonderogatory_has_cyclic_vector: IsNonderogatory M → ∃ v, IsCyclicVector M v. Holds over ALL fields (finite included), ruling out Approach 3 for the general statement."
+      "summary": "Comment discusses three approaches: (1) PID structure theorem V ≅ K[X]/(d₁) ⊕ ... ⊕ K[X]/(d_k), minpoly = charpoly forces k = 1; (2) Jordan Normal Form for alg. closed fields; (3) union of proper subspaces for infinite fields. axiom nonderogatory_has_cyclic_vector: IsNonderogatory M → ∃ v, IsCyclicVector M v. Holds over ALL fields (finite included), ruling out Approach 3 for the general statement.",
+      "id": "part-iv-backward-direction-nonderogatory-cyclic-axiomatized"
     },
     {
       "title": "Part V: Full Characterization",
       "startLine": 208,
       "endLine": 224,
-      "summary": "nonderogatory_iff_cyclic_vector: full iff combining the proved forward direction and the axiomatized backward direction. nonderogatory_has_cyclic_vector provides the → direction, cyclic_implies_nonderogatory provides the ← direction."
+      "summary": "nonderogatory_iff_cyclic_vector: full iff combining the proved forward direction and the axiomatized backward direction. nonderogatory_has_cyclic_vector provides the → direction, cyclic_implies_nonderogatory provides the ← direction.",
+      "id": "part-v-full-characterization"
     },
     {
       "title": "Part VI: Corollaries",
       "startLine": 225,
       "endLine": 253,
-      "summary": "minpoly_natDegree_eq_dim_of_cyclic: cyclic → natDeg(minpoly) = n (repackages intermediate step from forward direction). nonderogatory_algebra_dim: nonderogatory → natDeg(minpoly) = n (same via IsNonderogatory). nonderogatory_minpoly_dvd_charpoly: minpoly | charpoly for nonderogatory M (trivially, since they're equal)."
+      "summary": "minpoly_natDegree_eq_dim_of_cyclic: cyclic → natDeg(minpoly) = n (repackages intermediate step from forward direction). nonderogatory_algebra_dim: nonderogatory → natDeg(minpoly) = n (same via IsNonderogatory). nonderogatory_minpoly_dvd_charpoly: minpoly | charpoly for nonderogatory M (trivially, since they're equal).",
+      "id": "part-vi-corollaries"
     },
     {
       "title": "Part VII: Degree Characterization",
       "startLine": 254,
       "endLine": 281,
-      "summary": "nonderogatory_iff_natDegree_eq: IsNonderogatory M ↔ natDeg(minpoly) = n. derogatory_iff_natDegree_lt: ¬IsNonderogatory M ↔ natDeg(minpoly) < n (requires Nontrivial hypothesis). Both proved cleanly by combining bridge lemma with charpoly_natDegree_eq_dim."
+      "summary": "nonderogatory_iff_natDegree_eq: IsNonderogatory M ↔ natDeg(minpoly) = n. derogatory_iff_natDegree_lt: ¬IsNonderogatory M ↔ natDeg(minpoly) < n (requires Nontrivial hypothesis). Both proved cleanly by combining bridge lemma with charpoly_natDegree_eq_dim.",
+      "id": "part-vii-degree-characterization"
     },
     {
       "title": "Summary",
       "startLine": 282,
       "endLine": 316,
-      "summary": "Closing summary docstring recapping the definitions (IsCyclicVector, IsNonderogatory), main results (cyclic_implies_nonderogatory proved; nonderogatory_has_cyclic_vector axiom; nonderogatory_iff_cyclic_vector), the degree characterizations, the bridge lemma, and the proof status: 0 sorries with a single axiom (nonderogatory_has_cyclic_vector, requiring the PID module structure theorem)."
+      "summary": "Closing summary docstring recapping the definitions (IsCyclicVector, IsNonderogatory), main results (cyclic_implies_nonderogatory proved; nonderogatory_has_cyclic_vector axiom; nonderogatory_iff_cyclic_vector), the degree characterizations, the bridge lemma, and the proof status: 0 sorries with a single axiom (nonderogatory_has_cyclic_vector, requiring the PID module structure theorem).",
+      "id": "summary"
     }
   ],
   "sorries": 0

@@ -19,37 +19,43 @@
       "title": "Header and open question",
       "startLine": 1,
       "endLine": 61,
-      "summary": "Frames the goal and locates it in the gallery: prove the Gauss divisor-sum identity $\\sum_{d\\mid n}J_k(d)=n^k$ for the abstract arithmetic function $J_k=\\mu*\\mathrm{pow}\\,k$, working inside Mathlib's Dirichlet convolution ring, and add the uniqueness characterisation absent from the combinatorial siblings. Opens `Finset`, `ArithmeticFunction`, and the `ArithmeticFunction.zeta` scope."
+      "summary": "Frames the goal and locates it in the gallery: prove the Gauss divisor-sum identity $\\sum_{d\\mid n}J_k(d)=n^k$ for the abstract arithmetic function $J_k=\\mu*\\mathrm{pow}\\,k$, working inside Mathlib's Dirichlet convolution ring, and add the uniqueness characterisation absent from the combinatorial siblings. Opens `Finset`, `ArithmeticFunction`, and the `ArithmeticFunction.zeta` scope.",
+      "id": "header-and-open-question"
     },
     {
       "title": "Definition of Jordan's totient",
       "startLine": 63,
       "endLine": 65,
-      "summary": "`jordan k := moebius * (pow k : ArithmeticFunction Z)` — Jordan's totient as a Dirichlet convolution in the ring $\\mathrm{ArithmeticFunction}\\ \\mathbb{Z}$, the same object studied by the sibling erdos-1000-oq-03-oq-01-oq-01."
+      "summary": "`jordan k := moebius * (pow k : ArithmeticFunction Z)` — Jordan's totient as a Dirichlet convolution in the ring $\\mathrm{ArithmeticFunction}\\ \\mathbb{Z}$, the same object studied by the sibling erdos-1000-oq-03-oq-01-oq-01.",
+      "id": "definition-of-jordan-s-totient"
     },
     {
       "title": "Reconstruction identity J_k * zeta = pow k",
       "startLine": 67,
       "endLine": 74,
-      "summary": "`jordan_mul_zeta`: the arithmetic-function identity $J_k*\\zeta=\\mathrm{pow}\\,k$, proved in one `rw` via `mul_right_comm` and $\\mu*\\zeta=1$ (`moebius_mul_coe_zeta`). This is the reconstruction dual of the gallery's Möbius inversion $J_k=\\mu*\\mathrm{pow}\\,k$."
+      "summary": "`jordan_mul_zeta`: the arithmetic-function identity $J_k*\\zeta=\\mathrm{pow}\\,k$, proved in one `rw` via `mul_right_comm` and $\\mu*\\zeta=1$ (`moebius_mul_coe_zeta`). This is the reconstruction dual of the gallery's Möbius inversion $J_k=\\mu*\\mathrm{pow}\\,k$.",
+      "id": "reconstruction-identity-j-k-zeta-pow-k"
     },
     {
       "title": "Headline: Gauss's divisor-sum identity",
       "startLine": 76,
       "endLine": 84,
-      "summary": "`jordan_divisor_sum`: $\\sum_{d\\mid n}J_k(d)=n^k$ for $n\\neq 0$, the pointwise reading of `jordan_mul_zeta` through `coe_mul_zeta_apply` and `pow_apply`."
+      "summary": "`jordan_divisor_sum`: $\\sum_{d\\mid n}J_k(d)=n^k$ for $n\\neq 0$, the pointwise reading of `jordan_mul_zeta` through `coe_mul_zeta_apply` and `pow_apply`.",
+      "id": "headline-gauss-s-divisor-sum-identity"
     },
     {
       "title": "Uniqueness: the divisor-sum characterises J_k",
       "startLine": 86,
       "endLine": 102,
-      "summary": "`jordan_unique`: any $f:\\mathbb{N}\\to\\mathbb{Z}$ with $\\sum_{d\\mid n}f(d)=n^k$ for all $n>0$ equals $J_k$ on the positives. Möbius-inverts the hypothesis with `sum_eq_iff_sum_smul_moebius_eq` and matches the result to $(\\mu*\\mathrm{pow}\\,k)\\,n$ termwise via `mul_apply`."
+      "summary": "`jordan_unique`: any $f:\\mathbb{N}\\to\\mathbb{Z}$ with $\\sum_{d\\mid n}f(d)=n^k$ for all $n>0$ equals $J_k$ on the positives. Möbius-inverts the hypothesis with `sum_eq_iff_sum_smul_moebius_eq` and matches the result to $(\\mu*\\mathrm{pow}\\,k)\\,n$ termwise via `mul_apply`.",
+      "id": "uniqueness-the-divisor-sum-characterises-j-k"
     },
     {
       "title": "Euler recovery and Gauss's classical identity (k = 1)",
       "startLine": 104,
       "endLine": 123,
-      "summary": "`jordan_one_apply` ($J_1=\\varphi$, from uniqueness plus `Nat.sum_totient`) and `sum_totient_eq_self` (Gauss's $\\sum_{d\\mid n}\\varphi(d)=n$, the $k=1$ case of the headline)."
+      "summary": "`jordan_one_apply` ($J_1=\\varphi$, from uniqueness plus `Nat.sum_totient`) and `sum_totient_eq_self` (Gauss's $\\sum_{d\\mid n}\\varphi(d)=n$, the $k=1$ case of the headline).",
+      "id": "euler-recovery-and-gauss-s-classical-identity-k-1"
     }
   ],
   "conclusion": {

@@ -100,16 +100,25 @@
   },
   "sections": [
     {
-      "title": "The Coordinate Isometry",
-      "content": "The natural basis vectors e_{j.succAbove i} of the coordinate hyperplane are orthonormal (orthonormal_hyperplaneBasis) and span it (span_hyperplaneBasis_top), so OrthonormalBasis.mk assembles them into coordBasis : OrthonormalBasis (Fin n) 𝕜 H. Its inverse representation coordEquiv := coordBasis.repr.symm is the linear isometry equivalence EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H sending the standard basis vector e_i to e_{j.succAbove i}; reading any coordinate of an image against the basis returns the input coordinate (coordBasis_inner_coordEquiv)."
-    },
-    {
-      "title": "The Intertwining: Compression Is the Submatrix Operator",
-      "content": "On a single coordinate vector, coordBasis.repr.injective reduces the intertwining to one submodule inner product, evaluated by the previous entry's compress_inner_eq_principalSubmatrix as an entry of the principal submatrix (compress_coordBasis). Expanding a general x in the standard basis and pushing compress, toEuclideanLin A' and coordEquiv through the sum with map_sum/map_smul yields the full intertwining compress (toEuclideanLin A) H (coordEquiv x) = coordEquiv (toEuclideanLin A' x) (compress_intertwine)."
-    },
-    {
+      "id": "the-transfer-engine-and-the-eigenvalue-corollary",
       "title": "The Transfer Engine and the Eigenvalue Corollary",
-      "content": "interlacing_of_intertwine is a reusable abstract theorem: an isometric intertwining of the compression with a symmetric operator T' transports T''s antitone eigenbasis onto an eigenbasis of the compression with the same eigenvalues, which — with the orthogonal compression's Rayleigh agreement — feeds the gallery's abstract cauchy_interlacing. Instantiating it with the coordinate isometry yields the operator form principalSubmatrix_eigenvalues_interlacing; the bookkeeping lemma eigenvalues_finrank_congr then re-expresses it in Mathlib's Matrix.IsHermitian.eigenvalues₀ indexing as eigenvalues₀_principalSubmatrix_interlacing: λ_{k+1} ≤ μ_k ≤ λ_k."
+      "startLine": 74,
+      "endLine": 110,
+      "summary": "interlacing_of_intertwine is a reusable abstract theorem: an isometric intertwining of the compression with a symmetric operator T' transports T''s antitone eigenbasis onto an eigenbasis of the compression with the same eigenvalues, which — with the orthogonal compression's Rayleigh agreement — feeds the gallery's abstract cauchy_interlacing. Instantiating it with the coordinate isometry yields the operator form principalSubmatrix_eigenvalues_interlacing; the bookkeeping lemma eigenvalues_finrank_congr then re-expresses it in Mathlib's Matrix.IsHermitian.eigenvalues₀ indexing as eigenvalues₀_principalSubmatrix_interlacing: λ_{k+1} ≤ μ_k ≤ λ_k."
+    },
+    {
+      "id": "the-coordinate-isometry",
+      "title": "The Coordinate Isometry",
+      "startLine": 111,
+      "endLine": 164,
+      "summary": "The natural basis vectors e_{j.succAbove i} of the coordinate hyperplane are orthonormal (orthonormal_hyperplaneBasis) and span it (span_hyperplaneBasis_top), so OrthonormalBasis.mk assembles them into coordBasis : OrthonormalBasis (Fin n) 𝕜 H. Its inverse representation coordEquiv := coordBasis.repr.symm is the linear isometry equivalence EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H sending the standard basis vector e_i to e_{j.succAbove i}; reading any coordinate of an image against the basis returns the input coordinate (coordBasis_inner_coordEquiv)."
+    },
+    {
+      "id": "the-intertwining-compression-is-the-submatrix-operator",
+      "title": "The Intertwining: Compression Is the Submatrix Operator",
+      "startLine": 165,
+      "endLine": 294,
+      "summary": "On a single coordinate vector, coordBasis.repr.injective reduces the intertwining to one submodule inner product, evaluated by the previous entry's compress_inner_eq_principalSubmatrix as an entry of the principal submatrix (compress_coordBasis). Expanding a general x in the standard basis and pushing compress, toEuclideanLin A' and coordEquiv through the sum with map_sum/map_smul yields the full intertwining compress (toEuclideanLin A) H (coordEquiv x) = coordEquiv (toEuclideanLin A' x) (compress_intertwine)."
     }
   ],
   "references": [

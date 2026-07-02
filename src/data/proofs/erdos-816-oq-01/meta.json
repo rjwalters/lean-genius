@@ -98,25 +98,29 @@
       "title": "Overview and imports",
       "startLine": 1,
       "endLine": 35,
-      "summary": "Docstring stating the two structural facts the parent left as prose — the K_{n,n+1} counterexample mechanism (Part V) and the degree pigeonhole (Part VII) — and the parity intuition (a length-3 odd path joins opposite parts). Imports Mathlib, opens SimpleGraph, and fixes the vertex type V."
+      "summary": "Docstring stating the two structural facts the parent left as prose — the K_{n,n+1} counterexample mechanism (Part V) and the degree pigeonhole (Part VII) — and the parity intuition (a length-3 odd path joins opposite parts). Imports Mathlib, opens SimpleGraph, and fixes the vertex type V.",
+      "id": "overview-and-imports"
     },
     {
       "title": "Inlined definitions",
       "startLine": 36,
       "endLine": 62,
-      "summary": "Self-contained copies of hasPath3, sameDegree, hasEqualDegreePath3Pair (the parent file does not compile on v4.26.0) and the Boolean bipartition predicate IsBipartition."
+      "summary": "Self-contained copies of hasPath3, sameDegree, hasEqualDegreePath3Pair (the parent file does not compile on v4.26.0) and the Boolean bipartition predicate IsBipartition.",
+      "id": "inlined-definitions"
     },
     {
       "title": "Parity of length-3 paths and the counterexample",
       "startLine": 64,
       "endLine": 114,
-      "summary": "hasPath3_opposite_color (odd path joins opposite parts) and the obstruction theorems no_equalDegreePath3_of_bipartition / _distinctDegrees / _partDegrees — the K_{n,n+1} mechanism."
+      "summary": "hasPath3_opposite_color (odd path joins opposite parts) and the obstruction theorems no_equalDegreePath3_of_bipartition / _distinctDegrees / _partDegrees — the K_{n,n+1} mechanism.",
+      "id": "parity-of-length-3-paths-and-the-counterexample"
     },
     {
       "title": "Degree pigeonhole",
       "startLine": 116,
       "endLine": 161,
-      "summary": "exists_sameDegree_pair: any graph on ≥ 2 vertices has two vertices of equal degree, via injective-implies-surjective degree packaging and the degree-0 / degree-(card−1) clash."
+      "summary": "exists_sameDegree_pair: any graph on ≥ 2 vertices has two vertices of equal degree, via injective-implies-surjective degree packaging and the degree-0 / degree-(card−1) clash.",
+      "id": "degree-pigeonhole"
     }
   ],
   "sorries": []
