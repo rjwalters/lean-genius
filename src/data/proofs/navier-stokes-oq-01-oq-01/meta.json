@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview-scope",
+      "title": "Overview: The Honest Algebra/Analysis Split",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "The docstring states the parent problem navier-stokes-oq-01 — can the Ladyzhenskaya interpolation inequality ‖u‖_{L⁴(ℝ²)} ≤ C·‖u‖_{L²}^{1/2}·‖∇u‖_{L²}^{1/2} be formalized — and honestly scopes what Mathlib v4.26 does and does not provide (no Gagliardo–Nirenberg–Sobolev, no Ladyzhenskaya, no adequate weak-derivative API). Ladyzhenskaya's classical proof is factored into (A) three analytic facts, exposed here as explicit hypotheses that double as a specification of the missing Mathlib API, and (B) a purely algebraic assembly with the sharp constant, verified in full (0 axioms, 0 sorries). The namespace, open scoped Real, and norm notation (n2, n4, d1, d2, ng with ng² = d1²+d2²) set up the elementary working context.",
+      "mathContext": "Scope: prove part (B), the elementary algebraic assembly of Ladyzhenskaya's inequality with sharp constant √2, taking the three analytic facts (part A) as hypotheses."
+    },
+    {
       "id": "sharp-amgm-step",
       "title": "The Sharp AM–GM Step",
       "startLine": 51,
@@ -96,6 +104,14 @@
       "endLine": 112,
       "mathContext": "$n_4^2 \\le \\sqrt{2}\\,n_2\\,n_g$ from $n_4^4 \\le 2 n_2^2 n_g^2$, i.e. $\\|u\\|_4^2 \\le \\sqrt2\\,\\|u\\|_2\\,\\|\\nabla u\\|_2$.",
       "summary": "ladyzhenskaya_sq_form takes square roots of the quartic bound to the clean norm form, comparing squares via Real.sq_sqrt (√2²=2) and monotone Real.sqrt_le_sqrt / Real.sqrt_sq. One further root recovers ‖u‖₄ ≤ 2^{1/4}‖u‖₂^{1/2}‖∇u‖₂^{1/2}."
+    },
+    {
+      "id": "sec-final-verification",
+      "title": "Final Verification",
+      "startLine": 114,
+      "endLine": 122,
+      "summary": "A #check block re-exhibiting the three exported results — cross_le_grad_sq, ladyzhenskaya_assembly, and ladyzhenskaya_sq_form — confirming their fully-elaborated types, followed by end NavierStokes.OQ0101.",
+      "mathContext": "Type-level confirmation that the sharp AM–GM step and both assembled forms of the inequality are available for downstream use."
     }
   ],
   "conclusion": {
