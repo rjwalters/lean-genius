@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "ekr-oq01-overview",
+      "title": "Overview: De-Axiomatizing Katona's Cyclic-Interval Lemma",
+      "summary": "Import, docstring, namespace, open. The parent ErdosKoRado formalizes EKR via Katona's cyclic-permutation argument but left its combinatorial heart as an axiom: in any cyclic order of n ≥ 2k points, at most k of the n length-k arcs can be pairwise intersecting. Sibling OQ-02 recorded this 'released unsolved' and side-stepped it via Kruskal–Katona. This file proves that exact statement as a theorem, 0-axiom and no native_decide, so the parent's axiom is dischargeable. The proof is Katona's collapse-pairing: fixing an arc A_{i₀}, every intersecting arc's offset r(j)=(j−i₀) mod n lies in {0,…,k−1}∪{n−k+1,…,n−1} (offset_range); the map collapsing each pair {s, s+(n−k)} to a value in {0,…,k−1} is injective on the family because two arcs whose starts differ by exactly k are disjoint when n≥2k (not_intersect_mixed) and offset is injective within a block (offset_inj); so the family injects into range k, giving card ≤ k.",
+      "startLine": 1,
+      "endLine": 46,
+      "mathContext": "In a cyclic order of $n\\ge 2k$ points, a pairwise-intersecting family of length-$k$ arcs $A_i=\\{i,\\dots,i+k-1\\}\\bmod n$ injects into $\\{0,\\dots,k-1\\}$ via a collapse of offset pairs $\\{s,s+(n-k)\\}$, so its cardinality is $\\le k$."
+    },
+    {
       "id": "arc-calculus",
       "title": "A Membership Calculus for Arcs",
       "startLine": 47,
