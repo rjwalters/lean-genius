@@ -1,5 +1,17 @@
 [
   {
+    "id": "overview",
+    "proofId": "composition-parts-choose-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Overview: Counting Compositions by Number of Parts — C(n−1, k−1)",
+    "content": "A composition of n into k parts is an ordered k-tuple of positive integers summing to n (an element c : Composition n with c.length = k). This file proves the part-graded refinement of the classical count card (Composition n) = 2^(n−1): Fintype.card {c : Composition n // c.length = k} = (n−1).choose (k−1) for n, k ≥ 1, from which summing over k recovers ∑ₖ C(n−1, k−1) = 2^(n−1) by the binomial theorem. The bijective idea: write n as n unit boxes in a row with n−1 internal gaps; a composition is the same data as a choice of which gaps to cut, and cutting k−1 of the n−1 gaps yields a composition into exactly k parts, so compositions of n into k parts correspond to (k−1)-element subsets of an (n−1)-element set, of which there are C(n−1, k−1). Mathlib provides only the ungraded count via compositionEquiv / compositionAsSetEquiv; this adds the part-graded refinement and the key fact that the gap-subset attached to a composition has cardinality length−1. Contributions: `card_gapSubset` (the cut-count is one less than the part-count under the composite bijection Composition n ≃ Finset (Fin (n−1))), `card_composition_length` (the C(n−1, k−1) count), and `sum_card_composition_length` (consistency with the total 2^(n−1) via the hockey-stick / binomial identity). Complete, 0 sorries, 0 axioms.",
+    "significance": "critical"
+  },
+  {
     "id": "ann-composite-bijection-and-crux",
     "proofId": "composition-parts-choose-oq-01",
     "range": {
