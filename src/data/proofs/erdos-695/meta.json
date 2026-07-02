@@ -66,8 +66,8 @@
       "Asymptotic notation (big-O, little-o)",
       "Lean 4 / Mathlib (Filter.Tendsto, Asymptotics.IsLittleO, Nat.Prime)"
     ],
-    "lineCount": 299,
-    "assumptions": "1 axiom: small_prime_conjecture (conjectured). 1 sorry: conjecture_implies_question2. Proved question1_equiv (rpow/tendsto equivalence) and fixed smallestPrimeCongruentOne (Dirichlet's theorem from Mathlib).",
+    "lineCount": 306,
+    "assumptions": "1 axiom: small_prime_conjecture (conjectured polynomial bound on the least prime ≡ 1 mod p). 1 sorry: conjecture_implies_question2 (the hard asymptotic chain construction). All other results are fully machine-checked, including chain_equiv, question1_equiv (rpow/tendsto growth equivalence), chain_step_ge and exponential_lower_bound (p_k ≥ 2^k), and the Dirichlet-based smallestPrimeCongruentOne. The companion Erdos695Aristotle.lean is now sorry-free (prime_cong_one_exists and rpow_tendsto_atTop_iff proved). Both files updated for Mathlib v4.26.0 API (pow_lt_pow_left₀, forall_exists_prime_gt_and_modEq new signature, etc.).",
     "theoremCount": 8,
     "definitionCount": 10
   },
@@ -184,7 +184,7 @@
       "Real"
     ],
     "namespace": "Erdos695",
-    "lineCount": 299,
+    "lineCount": 306,
     "axiomCount": 1,
     "theoremCount": 8,
     "definitionCount": 10,
