@@ -1,0 +1,70 @@
+[
+  {
+    "id": "ann-e286oq01-k2",
+    "proofId": "erdos-286-oq-01",
+    "range": {
+      "startLine": 42,
+      "endLine": 62
+    },
+    "type": "theorem",
+    "title": "k = 2 Impossibility",
+    "content": "no_two_distinct_unit_fractions shows 1 has no representation as a sum of two distinct unit fractions. The proof is a clean two-case split on the smaller denominator a: if a = 1 the equation forces 1/b = 0, impossible for b > 0; if a ≥ 2 then b > a gives b ≥ 3, so 1/a + 1/b ≤ 1/2 + 1/3 = 5/6 < 1. Each case closes with linarith after reciprocal bounds from one_div_le_one_div_of_le. This complements the parent's identity-based argument (x−1)(y−1) = 1.",
+    "mathContext": "$\\tfrac1a + \\tfrac1b = 1,\\ a < b$: $a = 1 \\Rightarrow \\tfrac1b = 0$ (impossible); $a \\ge 2 \\Rightarrow \\tfrac1a + \\tfrac1b \\le \\tfrac12 + \\tfrac13 = \\tfrac56 < 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "reciprocal monotonicity",
+      "case analysis on smallest denominator"
+    ],
+    "prerequisites": [
+      "one_div_le_one_div_of_le",
+      "one_div_pos"
+    ]
+  },
+  {
+    "id": "ann-e286oq01-uniqueness",
+    "proofId": "erdos-286-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "Uniqueness of {2, 3, 6} for k = 3",
+    "content": "three_distinct_unit_fractions_eq_one is the heart of the entry: for a < b < c the only solution of 1/a + 1/b + 1/c = 1 is (2,3,6). Since a is smallest, 1 = 1/a + 1/b + 1/c < 3/a forces a < 3 (via one_div_le_one_div_of_le + linarith in a by_contra), and a = 1 is ruled out because the other two terms are positive, so a = 2 by omega. Substituting leaves 1/b + 1/c = 1/2; with 1/c < 1/b this yields 1/4 < 1/b, hence b < 4, and b > 2, so b = 3. Then 1/c = 1/2 − 1/3 = 1/6 (linear_combination), and inv_inj converts c⁻¹ = 6⁻¹ to c = 6.",
+    "mathContext": "Squeeze: $1 < 3/a \\Rightarrow a < 3$, $a \\ne 1 \\Rightarrow a = 2$; then $\\tfrac1b + \\tfrac1c = \\tfrac12$, $\\tfrac1c < \\tfrac1b \\Rightarrow \\tfrac14 < \\tfrac1b \\Rightarrow b = 3$; then $\\tfrac1c = \\tfrac16 \\Rightarrow c = 6$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "uniqueness classification",
+      "bounding the smallest denominator",
+      "injectivity of inversion",
+      "linear_combination over ℚ"
+    ],
+    "prerequisites": [
+      "one_div_lt_one_div_of_lt",
+      "one_div_le_one_div_of_le",
+      "inv_inj",
+      "omega"
+    ]
+  },
+  {
+    "id": "ann-e286oq01-existence-iff",
+    "proofId": "erdos-286-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "Existence and the iff-Characterisation",
+    "content": "repr_236 records the existence witness 1/2 + 1/3 + 1/6 = 1 (a norm_num computation), and three_distinct_iff packages existence and uniqueness into a single equivalence: for a < b < c, the sum equals 1 exactly when (a,b,c) = (2,3,6). Together with the k = 2 impossibility, this makes k = 3 the minimal distinct-denominator representation of 1, uniquely realized.",
+    "mathContext": "$\\tfrac12 + \\tfrac13 + \\tfrac16 = 1$; and for $a<b<c$, $\\tfrac1a+\\tfrac1b+\\tfrac1c = 1 \\iff (a,b,c) = (2,3,6)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existence witness",
+      "iff-characterisation",
+      "minimal term count"
+    ],
+    "prerequisites": [
+      "norm_num"
+    ]
+  }
+]
