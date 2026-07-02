@@ -89,6 +89,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Three-Gap (Steinhaus) Theorem — Statement and Path",
+      "startLine": 1,
+      "endLine": 79,
+      "summary": "Module docstring and imports for erdos-998-oq-04. Erdős Problem #998 (Kesten equidistribution) rests on the orbit of the irrational rotation m ↦ {mα}; the three-distance theorem (Steinhaus conjecture; Sós–Surányi–Świerczkowski) states that the N points {0,{α},…,{(N-1)α}} cut the circle into arcs taking at most THREE distinct lengths, the largest being the sum of the other two when three occur. Mathlib has no three-gap theorem, so this file gives the first formal Lean statement plus the elementary infrastructure (orbit_mem_Ico, zero_mem_orbit, orbit_nonempty, forwardGap_nonneg, orbit_card via Int.fract_eq_fract injectivity, and the STEP A primitive fract_fract_sub_fract) and the classification core exists_gap_triple that discharges three_gap and three_gap_additive. Purely finite/order-theoretic: built from Int.fract, Finset, and the linear order on ℝ.",
+      "mathContext": "The three-gap theorem turns the a-priori-arbitrary geometry of an irrational-rotation orbit into a rigid three-value structure, the combinatorial backbone of equidistribution and continued-fraction dynamics. NOTE: the entry marks the classification core as closed by external (Aristotle) proof search with build verification still pending under this repo's pinned toolchain — see the entry's status field."
+    },
+    {
       "id": "imports-setup",
       "title": "Imports and Setup",
       "startLine": 80,
