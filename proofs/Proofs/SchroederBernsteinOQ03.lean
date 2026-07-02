@@ -1182,6 +1182,142 @@ theorem matching_step_chase {p q : ℕ → Prop} {f g : ℕ → ℕ}
       MatchingCorr p q ((a, chaseTarget f g a k) :: L) :=
   ⟨isMatching_cons hL ha ht, matchingCorr_cons hC (chaseTarget_corr hfpq hgpq a k)⟩
 
+
+/-!
+## Section 4i: Escape existence — the collision chase always finds a fresh target
+
+Sections 4·chase / 4g / 4h supply the pieces of the domain step *given* a fresh green
+target `chaseTarget f g a N ∉ mRan L` (`matching_step_chase`). What was still open — the
+residual crux flagged across several prior sessions — is that such an `N` **exists**: the
+bounded collision chase cannot collide forever. This section closes that gap, with no
+reference to the non-computable Π₁ predicate `isGFree`.
+
+The key is that a *persistent* collision forces the forward orbit into the finite occupied
+domain `mDom L`. At each colliding stage the blocker is the `g`-edge `(fwdOrbit f g a (k+1),
+f (fwdOrbit f g a k))`; the alternative `f`-edge is ruled out by **matching functionality** —
+an `f`-edge at `fwdOrbit f g a k` would share a domain point with the previous stage's
+`g`-edge, forcing (`matching_functional` + injectivity of `f`) an orbit repeat, hence — via
+`fwdOrbit_prefix_distinct` — `a ∈ mDom L`, contradicting freshness. So every chase point lies
+in `mDom L`, and `fwdOrbit_chase_length_le` bounds the chase by `L.length`; a chase surviving
+`L.length + 1` collisions is impossible, so some stage `N ≤ L.length` escapes.
+
+This resolves the specific "escape existence is not free" obstruction recorded in the
+knowledge base: the naive "keep colliding ⟹ stay in `mDom L`" induction does fail *pointwise*,
+but the `g`-edge chain (threaded through matching functionality) recovers it.
+-/
+
+/-- **The persistent-collision `g`-edge chain.** If every green candidate up to (but not
+    including) stage `N` is already used (`f (fwdOrbit f g a j) ∈ mRan L` for `j < N`), then
+    for every `1 ≤ m ≤ N` the matching contains the `g`-edge `(fwdOrbit f g a m,
+    f (fwdOrbit f g a (m-1)))`. In particular each chase point `fwdOrbit f g a m` then lies in
+    `mDom L`. The `f`-edge alternative is excluded by matching functionality (it would create
+    an orbit repeat and hence, by freshness of `a`, a contradiction). Proved by induction on
+    the stage bound `t`, so the inductive hypothesis supplies *all* earlier `g`-edges at once —
+    exactly what the functionality/acyclicity argument consumes. -/
+theorem chase_gedge_chain {f g : ℕ → ℕ} (hf : Function.Injective f)
+    (hg : Function.Injective g) {L : List (ℕ × ℕ)} (hL : IsMatching L) (hB : BuiltFrom f g L)
+    {a : ℕ} (ha : a ∉ mDom L) {N : ℕ}
+    (hcoll : ∀ j, j < N → f (fwdOrbit f g a j) ∈ mRan L) :
+    ∀ t, t ≤ N → ∀ m, 1 ≤ m → m ≤ t →
+      (fwdOrbit f g a m, f (fwdOrbit f g a (m - 1))) ∈ L := by
+  intro t
+  induction t with
+  | zero => intro _ m hm1 hm0; omega
+  | succ i IH =>
+    intro hiN m hm1 hmi
+    have hiN' : i ≤ N := by omega
+    rcases Nat.lt_or_ge m (i + 1) with hlt | _
+    · exact IH hiN' m hm1 (by omega)
+    · have hm : m = i + 1 := by omega
+      subst hm
+      have himg : f (fwdOrbit f g a i) ∈ mRan L := hcoll i (by omega)
+      simp only [mRan, List.mem_map] at himg
+      obtain ⟨⟨u, w⟩, hmem, hw⟩ := himg
+      have hw' : w = f (fwdOrbit f g a i) := hw
+      subst hw'
+      have hstep : fwdOrbit f g a (i + 1) = g (f (fwdOrbit f g a i)) := fwdOrbit_succ f g a i
+      have hidx : (i + 1) - 1 = i := by omega
+      rw [hidx]
+      rcases hB (u, f (fwdOrbit f g a i)) hmem with hedge | hedge
+      · -- f-edge: `f (o i) = f u ⟹ u = o i`; then matching functionality forces a repeat
+        have hue : f (fwdOrbit f g a i) = f u := hedge
+        have hu : u = fwdOrbit f g a i := (hf hue).symm
+        rw [hu] at hmem
+        rcases Nat.eq_zero_or_pos i with hi0 | hipos
+        · exfalso
+          apply ha
+          subst hi0
+          exact List.mem_map.mpr ⟨(fwdOrbit f g a 0, f (fwdOrbit f g a 0)), hmem, rfl⟩
+        · exfalso
+          have hprev : (fwdOrbit f g a i, f (fwdOrbit f g a (i - 1))) ∈ L :=
+            IH hiN' i hipos (by omega)
+          have hfun : f (fwdOrbit f g a i) = f (fwdOrbit f g a (i - 1)) :=
+            matching_functional hL hmem hprev
+          have hrepeat : fwdOrbit f g a i = fwdOrbit f g a (i - 1) := hf hfun
+          have hdomk : ∀ k, 1 ≤ k → k ≤ i → fwdOrbit f g a k ∈ mDom L := by
+            intro k hk1 hki
+            have hk := IH hiN' k hk1 hki
+            exact List.mem_map.mpr ⟨(fwdOrbit f g a k, f (fwdOrbit f g a (k - 1))), hk, rfl⟩
+          have hinj := fwdOrbit_prefix_distinct hf hg (D := fun n => n ∈ mDom L) ha
+            (N := i) hdomk
+          have hcontra : i = i - 1 := hinj (le_refl i) (by omega) hrepeat
+          omega
+      · -- g-edge: `u = g (f (o i)) = o (i+1)`
+        have hue : u = g (f (fwdOrbit f g a i)) := hedge
+        have hu : u = fwdOrbit f g a (i + 1) := by rw [hue]; exact hstep.symm
+        rw [hu] at hmem
+        exact hmem
+
+/-- **Escape existence (bounded).** For a fresh domain anchor `a ∉ mDom L` in a matching `L`
+    satisfying the construction invariant, some forward-orbit stage `N ≤ (mDom L).length` has a
+    green image `f (fwdOrbit f g a N)` that is *fresh* in the range. Equivalently the collision
+    chase `chaseTarget f g a 0, 1, 2, …` cannot stay inside `mRan L` forever; it escapes within
+    `L.length` steps, so the domain step's search is a genuine bounded (hence computable) loop.
+
+    This is the termination certificate the priority scheduler's even stage rests on, and the
+    missing ingredient that turns `matching_step_chase` into a *total* domain step
+    (`domain_step_exists`). Proof: were every stage `N ≤ (mDom L).length` a collision, the
+    `g`-edge chain (`chase_gedge_chain`) would put all of `fwdOrbit f g a 1, …,
+    (mDom L).length + 1` into `mDom L`, and `fwdOrbit_chase_length_le` would then bound
+    `(mDom L).length + 1 ≤ (mDom L).length` — impossible. -/
+theorem escape_exists {f g : ℕ → ℕ} (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hL : IsMatching L) (hB : BuiltFrom f g L) {a : ℕ} (ha : a ∉ mDom L) :
+    ∃ N, N ≤ (mDom L).length ∧ f (fwdOrbit f g a N) ∉ mRan L := by
+  by_contra hcon
+  push_neg at hcon
+  have hcoll : ∀ j, j < (mDom L).length + 1 → f (fwdOrbit f g a j) ∈ mRan L := by
+    intro j hj; exact hcon j (by omega)
+  have hdom : ∀ i, 1 ≤ i → i ≤ (mDom L).length + 1 → fwdOrbit f g a i ∈ mDom L := by
+    intro i hi1 hiM
+    have hpair := chase_gedge_chain hf hg hL hB ha hcoll ((mDom L).length + 1) (le_refl _) i hi1 hiM
+    exact List.mem_map.mpr ⟨(fwdOrbit f g a i, f (fwdOrbit f g a (i - 1))), hpair, rfl⟩
+  have hlen : (mDom L).length + 1 ≤ (mDom L).length :=
+    fwdOrbit_chase_length_le hf hg (D := mDom L) ha hdom
+  omega
+
+/-- **The even-stage domain step is total.** Any fresh domain anchor `a ∉ mDom L` can be placed:
+    there is a partner `b` (the escaped chase target `chaseTarget f g a N` of `escape_exists`)
+    such that prepending `(a, b)` keeps `L` a matching *and* preserves the correspondence
+    `p ↔ q`. This combines the bounded collision chase (`escape_exists`) with the correspondence
+    invariant (`matching_step_chase`), discharging the "each even stage terminates and extends"
+    obligation of the `myhill_isomorphism` priority construction.
+
+    Note this places `a` while preserving `IsMatching` and `MatchingCorr`, the two invariants
+    `matching_step_chase` maintains. It does **not** by itself preserve `BuiltFrom` (the added
+    pair `(a, f (fwdOrbit f g a N))` is in general neither an `f`-edge nor a `g`-edge when
+    `N > 0`); iterating the scheduler while keeping the invariant that feeds `collision_f_source`
+    requires the augmenting-path variant that re-labels the chased `g`-edges `(oₖ, f oₖ₋₁)` as
+    `f`-edges `(oₖ, f oₖ)` — see the knowledge base. That list surgery is the remaining piece of
+    the full construction; the termination heart of it is exactly `escape_exists` above. -/
+theorem domain_step_exists {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hL : IsMatching L) (hC : MatchingCorr p q L) (hB : BuiltFrom f g L)
+    {a : ℕ} (ha : a ∉ mDom L) :
+    ∃ b, IsMatching ((a, b) :: L) ∧ MatchingCorr p q ((a, b) :: L) := by
+  obtain ⟨N, _, hN⟩ := escape_exists hf hg hL hB ha
+  exact ⟨chaseTarget f g a N, matching_step_chase hfpq hgpq hL hC ha hN⟩
+
 /-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/

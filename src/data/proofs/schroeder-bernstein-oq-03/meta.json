@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1213,
+    "lineCount": 1435,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -54,13 +54,14 @@
       "firstMissing_le_length: exhaustion bound firstMissing L ≤ L.length — the quantitative termination measure guaranteeing every k enters by a bounded stage (VERIFIED, 0-axiom)",
       "Domain/range duality (Section 4e): mDom_map_swap, mRan_map_swap, isMatching_map_swap, matchingCorr_map_swap — coordinate-swap L ↦ L.map Prod.swap makes the odd (range) stage the even (domain) stage of the swapped problem (q,p), so the scheduler need define only one stage move (VERIFIED, 0-axiom)",
       "Collision chase is a bounded forward-orbit walk (Section 4·chase): fwdOrbit_succ, fwdOrbit_prefix_distinct (acyclicity of a fresh-anchored colliding prefix via injectivity of g∘f), fwdOrbit_chase_length_le (chase length ≤ current matching size) — discharges the bounded-search obligation of the collision-resolving stage move (VERIFIED, 0-axiom)",
-      "Read-off coherence layer (Section 4f-bis): mLookup_mem_of_mem_dom (the lookup lands on a genuine recorded edge), mLookup_injOn (the read-off is injective across the domain, via range-side Nodup), and mLookup_stable (read-off values are stable as the matching grows) — the well-definedness/injectivity/coherence obligations the eventual assembly of the limit permutation consumes, collision-independent (VERIFIED, 0-axiom)"
+      "Read-off coherence layer (Section 4f-bis): mLookup_mem_of_mem_dom (the lookup lands on a genuine recorded edge), mLookup_injOn (the read-off is injective across the domain, via range-side Nodup), and mLookup_stable (read-off values are stable as the matching grows) — the well-definedness/injectivity/coherence obligations the eventual assembly of the limit permutation consumes, collision-independent (VERIFIED, 0-axiom)",
+      "Escape existence for the collision chase (Section 4i): escape_exists — for a fresh domain anchor a ∉ mDom L in a BuiltFrom matching, some forward-orbit stage N ≤ (mDom L).length has a range-fresh image f(fwdOrbit f g a N), so the even-stage collision chase always terminates within L.length steps. Proved via chase_gedge_chain (a persistent collision forces the g-edge (o_{k+1}, f o_k) at every stage — the f-edge alternative is excluded by matching functionality, which would force an orbit repeat and hence a ∈ mDom L) + fwdOrbit_chase_length_le. domain_step_exists then makes the even-stage domain step total (preserving IsMatching and MatchingCorr). Resolves the documented \"escape existence is not free\" obstruction; VERIFIED, 0-axiom."
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
     ],
-    "theoremCount": 67,
-    "definitionCount": 14,
+    "theoremCount": 75,
+    "definitionCount": 15,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
     ]
@@ -249,10 +250,10 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 1213,
+    "lineCount": 1435,
     "axiomCount": 0,
-    "theoremCount": 67,
-    "definitionCount": 14,
+    "theoremCount": 75,
+    "definitionCount": 15,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",
     "additionalFiles": [
