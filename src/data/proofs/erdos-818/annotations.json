@@ -22,7 +22,11 @@
       "pairwise-sums",
       "finset-image"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset (finite sets in Lean) and the Cartesian product A ×ˢ A",
+      "Finset.image (the image of a finset under a function)",
+      "arithmetic progressions and their length"
+    ]
   },
   {
     "id": "ann-818-2",
@@ -47,7 +51,11 @@
       "finset-image",
       "sum-product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset (finite sets in Lean) and the Cartesian product A ×ˢ A",
+      "Finset.image applied to multiplication",
+      "geometric progressions"
+    ]
   },
   {
     "id": "ann-818-3",
@@ -72,7 +80,11 @@
       "Freiman-theorem",
       "additive-structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sumset A + A and its cardinality",
+      "the doubling constant |A+A|/|A|",
+      "arithmetic progressions as sets with small doubling"
+    ]
   },
   {
     "id": "ann-818-4",
@@ -97,7 +109,11 @@
       "product-set-bound",
       "additive-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sumset A + A and product set A · A",
+      "the small-sumset condition |A+A| ≤ K|A|",
+      "polylogarithmic factors (log|A|)^C"
+    ]
   },
   {
     "id": "ann-818-5",
@@ -122,7 +138,11 @@
       "optimal-bound",
       "energy-method"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the statement of Erdős conjecture #818",
+      "the product set A · A and its cardinality",
+      "asymptotic constants and log factors in lower bounds"
+    ]
   },
   {
     "id": "ann-818-6",
@@ -147,7 +167,11 @@
       "Cauchy-Schwarz",
       "four-tuples"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the product set A · A and its cardinality",
+      "the Cauchy–Schwarz inequality",
+      "counting 4-tuples with a multiplicative collision a₁a₂ = a₃a₄"
+    ]
   },
   {
     "id": "ann-818-7",
@@ -172,7 +196,11 @@
       "additive-multiplicative-bridge",
       "sum-product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "multiplicative energy E×(A)",
+      "the sumset A + A and its size",
+      "Solymosi's geometric/graph argument bridging additive and multiplicative structure"
+    ]
   },
   {
     "id": "ann-818-8",
@@ -197,7 +225,11 @@
       "energy-method",
       "inequality-chaining"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the lower bound E×(A) ≥ |A|⁴/|AA| via Cauchy–Schwarz",
+      "Solymosi's energy upper bound E×(A) ≤ |A|²·|A+A|·log|A|",
+      "algebraic rearrangement of inequality chains"
+    ]
   },
   {
     "id": "ann-818-9",
@@ -222,7 +254,11 @@
       "multiplication-table",
       "tightness"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the interval set A = {1,...,n} as an arithmetic progression",
+      "the Erdős multiplication table problem (|{1,...,n}²| ≈ n²/log n)",
+      "the role of the log factor in Solymosi's bound"
+    ]
   },
   {
     "id": "ann-818-10",
@@ -247,6 +283,10 @@
       "Solymosi",
       "additive-combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sum-product phenomenon / dichotomy",
+      "the small-sumset hypothesis |A+A| ≤ K|A|",
+      "Solymosi's theorem and its optimality"
+    ]
   }
 ]
