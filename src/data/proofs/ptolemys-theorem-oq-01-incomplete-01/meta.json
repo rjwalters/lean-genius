@@ -121,7 +121,9 @@
   "conclusion": {
     "summary": "Ptolemy equality ↔ CCW or CW order for distinct unit-circle points (under non-degeneracy conditions). The converse direction is new; the forward direction combines the result of PtolemysTheoremOQ01.lean with ptolemy_equality_of_proportional.",
     "openQuestions": [
-      "Can the non-degeneracy hypotheses (hdenom ≠ 0, hnumer ≠ 0) be relaxed or shown to follow from distinctness?"
+      "Can the non-degeneracy hypotheses (hdenom ≠ 0, hnumer ≠ 0) be relaxed or shown to follow from distinctness?",
+      "Does the converse generalize from the unit circle to points on an arbitrary circle, or to the general Ptolemy inequality |AC||BD| ≤ |AB||CD| + |BC||DA| where equality characterizes concyclic OR collinear configurations? The current argument depends on writing z_k = exp(iθ_k), which is special to the unit circle.",
+      "Can the exhaustive 8-case sign analysis be replaced by a single conceptual invariant — e.g. a winding number or an orientation form — that recovers CCW/CW order from t > 0 without the case explosion, yielding a shorter and more reusable formal proof?"
     ],
     "implications": "Completes the formal Lean 4 proof that Ptolemy's equality characterizes cyclic quadrilaterals. Demonstrates that half-angle sine sign analysis is a viable substitute for inscribed angle theorem arguments in formal proofs."
   },
