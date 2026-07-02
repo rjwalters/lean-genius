@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Convolution Law of Weak Compositions",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports and module docstring for the multiplicative structure of weak-composition generating functions. These head lines recall the sibling identification of W(k) = ∑ₙ #{weak compositions of n into k parts}·Xⁿ with 1/(1−X)ᵏ, then record the concatenation law W(k₁)·W(k₂) = W(k₁+k₂) with unit W(0)=1, and its coefficient reading — the negative-binomial Vandermonde identity ∑_{i+j=n} C(i+k₁−1,i)·C(j+k₂−1,j) = C(n+k₁+k₂−1,n) — before the StarsAndBarsGenFun namespace opens.",
+      "mathContext": "Weak-composition counts have OGF 1/(1−X)ᵏ, an exponential in k, so the generating functions multiply: W(k₁)·W(k₂)=W(k₁+k₂), combinatorially the concatenation of compositions. Extracting the Xⁿ coefficient via the Cauchy product yields the negative-binomial Vandermonde convolution, dual to the binomial ∑C(a,i)C(b,n−i)=C(a+b,n) that expresses multiplicativity of (1+X)ᵏ. The proof upgrades the parent's bridge to all k and pushes Mathlib's invOneSubPow_add through. 0 sorries, 0 axioms."
+    },
+    {
       "id": "the-unit",
       "title": "The Empty Composition is the Unit: W(0) = 1",
       "startLine": 65,
