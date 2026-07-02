@@ -131,7 +131,8 @@
       "The correct invariant for the power map's image is the group EXPONENT, not the order: range(x ↦ xⁿ) = range(x ↦ x^gcd(n, exp G)) holds in every group, whereas the parent's order-based proof was confined to the cyclic case.",
       "The hard inclusion is a one-line Bézout identity: gcd(n, exp G) = n·A + exp G·B over ℤ, and x^exp G = 1 collapses the second term, so x^gcd(n,exp G) = (x^A)ⁿ is manifestly an n-th power.",
       "No commutativity or finiteness is needed for the set-level kernel and image equalities; commutativity enters only to phrase them as subgroup equalities, and finiteness only for the counting partition #range · #ker = |G|.",
-      "The partition analogue the parent asked for is first-isomorphism bookkeeping: in a finite abelian group the constant fibre size is #ker, and #range · #ker = |G|; the cyclic identity #(n-th powers) · gcd(n, m) = m is the special case #ker = gcd(n, m), exp G = m."
+      "The partition analogue the parent asked for is first-isomorphism bookkeeping: in a finite abelian group the constant fibre size is #ker, and #range · #ker = |G|; the cyclic identity #(n-th powers) · gcd(n, m) = m is the special case #ker = gcd(n, m), exp G = m.",
+      "The proof is cleanly stratified by hypothesis: the set-level kernel and image equalities need only a group; commutativity is spent solely to promote them to subgroup equalities of ker/range of powMonoidHom (where the power map becomes a homomorphism, so ker and range are subgroups at all — finite or infinite); and finiteness is spent solely on the last step, the counting partition #range · #ker = |G|."
     ]
   },
   "sections": [
