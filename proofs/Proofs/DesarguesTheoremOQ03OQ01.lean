@@ -163,7 +163,7 @@ theorem collinear_semilinear (σ : K →+* K) {p q r : Fin 3 → K}
     (h : Collinear p q r) :
     Collinear (fun i => σ (p i)) (fun i => σ (q i)) (fun i => σ (r i)) := by
   unfold Collinear at *
-  rw [rowMat_map, ← RingHom.map_det, h, map_zero]
+  rw [rowMat_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h, map_zero]
 
 -- ============================================================
 -- PART 4: PΓL(3,K) ⊆ Collineations  (the constructive half of the FTPG)
@@ -252,35 +252,28 @@ theorem frame_stabilizer_scalar (M : Matrix (Fin 3) (Fin 3) K) (a b c d : K)
     simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero,
       Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons,
       Pi.smul_apply, smul_eq_mul, mul_one] at h
-    rw [e00, e01, e02] at h; linarith [h]
+    rw [e00, e01, e02] at h; linear_combination h
   have hdb : b = d := by
     have h := congrFun hd 1
     simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero,
       Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons,
       Pi.smul_apply, smul_eq_mul, mul_one] at h
-    rw [e10, e11, e12] at h; linarith [h]
+    rw [e10, e11, e12] at h; linear_combination h
   have hdc : c = d := by
     have h := congrFun hd 2
     simp only [Matrix.mulVec, dotProduct, Fin.sum_univ_three, Matrix.cons_val_zero,
       Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons,
       Pi.smul_apply, smul_eq_mul, mul_one] at h
-    rw [e20, e21, e22] at h; linarith [h]
+    rw [e20, e21, e22] at h; linear_combination h
   refine ⟨hda, hdb, hdc, ?_⟩
-  -- Assemble `M = d • 1` entrywise.
+  -- Assemble `M = d • 1` entrywise from the nine entry equations.  `fin_cases`
+  -- introduces the indices in `Fin.mk` form, so we reduce the identity matrix with
+  -- `simp only` and finish with `simp_all`, whose `Fin.isValue` normalization matches
+  -- the `Fin.mk` indices against the entry hypotheses `e..` and the scalars `hda..hdc`.
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_one, mul_zero] <;>
-    first
-      | (rw [e00, hda])
-      | (rw [e11, hdb])
-      | (rw [e22, hdc])
-      | (rw [e10]; ring)
-      | (rw [e20]; ring)
-      | (rw [e01]; ring)
-      | (rw [e21]; ring)
-      | (rw [e02]; ring)
-      | (rw [e12]; ring)
-      | simp
+    simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] <;>
+    simp_all
 
 -- ============================================================
 -- PART 7: Projective invariance of the Desargues configuration over K
