@@ -680,6 +680,88 @@ theorem firstMissing_lt_cons_self (L : List ℕ) :
   omega
 
 /-!
+## Section 4f: Reading the permutation off a matching — the computable evaluator
+
+The scheduler assembles a chain of finite matchings `L₀ ⊆ L₁ ⊆ …`; the permutation
+`σ` is then read off by *looking up* the partner of `n` in the matching at the stage
+`n` enters the domain (obligation (d) of `myhill_isomorphism`). This section supplies
+that evaluator as a **total, computable** function of the matching and the argument,
+together with its correctness: on a matching it recovers the recorded partner exactly.
+
+`mLookup L n` reads the entry of `mRan L` at the position of `n` in `mDom L`
+(`List.idxOf`). Because `mDom L` and `mRan L` are the two coordinate projections of the
+same list, they are index-aligned, so this returns the second coordinate of the pair
+whose first coordinate is `n`. Off the domain (`n ∉ mDom L`) the index is out of range
+and the placeholder `0` is returned — harmless, since the read-off only queries
+`n ∈ mDom`. The two `Nodup` conditions of `IsMatching` are exactly what make the lookup
+single-valued (`matching_functional`), so `mLookup` is the computable realization of the
+finite partial bijection a matching represents.
+-/
+
+/-- **Partner lookup in a matching.** The value the finite partial map `L` associates to
+    `n`: the entry of the range list `mRan L` at the index of `n` in the domain list
+    `mDom L`. A total function; off the domain it returns the placeholder `0`. -/
+def mLookup (L : List (ℕ × ℕ)) (n : ℕ) : ℕ :=
+  (mRan L).getD (List.idxOf n (mDom L)) 0
+
+/-- **Correctness of `mLookup`.** On a matching, the lookup recovers the recorded
+    partner: if `(n, b) ∈ L` then `mLookup L n = b`. The domain-side `Nodup` (via
+    `IsMatching`) guarantees `n` occurs once in `mDom L`, so its index selects exactly
+    the aligned range entry `b`. This makes `mLookup` the evaluation of the finite
+    partial bijection a matching encodes — the read-off used to define `σ`. -/
+theorem mLookup_eq_of_mem :
+    ∀ {L : List (ℕ × ℕ)}, IsMatching L → ∀ {n b : ℕ}, (n, b) ∈ L → mLookup L n = b := by
+  intro L
+  induction L with
+  | nil => intro _ n b h; simp at h
+  | cons hd tl ih =>
+    obtain ⟨a, c⟩ := hd
+    intro hL n b h
+    have hnodupD : (a :: mDom tl).Nodup := by simpa using hL.1
+    have hnodupR : (c :: mRan tl).Nodup := by simpa using hL.2
+    have ha_notin : a ∉ mDom tl := (List.nodup_cons.mp hnodupD).1
+    have hMtl : IsMatching tl :=
+      ⟨(List.nodup_cons.mp hnodupD).2, (List.nodup_cons.mp hnodupR).2⟩
+    rw [List.mem_cons] at h
+    rcases h with h | h
+    · -- the pair is the head: `(n, b) = (a, c)`
+      have hn : n = a := congrArg Prod.fst h
+      have hb : b = c := congrArg Prod.snd h
+      subst hn; subst hb
+      simp only [mLookup, mDom_cons, mRan_cons, List.idxOf_cons_self, List.getD_cons_zero]
+    · -- the pair is in the tail: recurse, the head index is skipped
+      have hn_mem : n ∈ mDom tl := by
+        simp only [mDom, List.mem_map]; exact ⟨(n, b), h, rfl⟩
+      have hne : a ≠ n := fun heq => ha_notin (heq ▸ hn_mem)
+      simp only [mLookup, mDom_cons, mRan_cons, List.idxOf_cons_ne _ hne,
+        List.getD_cons_succ]
+      exact ih hMtl h
+
+/-- **`mLookup` is computable** (indeed primitive recursive) in both the matching and the
+    argument. The domain/range projections `mDom`, `mRan` are list maps of the coordinate
+    projections; `List.idxOf` and `List.getD` are primitive recursive (`Primrec.list_idxOf`,
+    `Primrec.list_getD`). Combined with `mLookup_eq_of_mem`, this is the computability
+    guarantee behind reading a *computable* permutation off the stage-wise matchings:
+    once the (computable) sequence of matchings is built, `σ n` is a computable lookup. -/
+theorem mLookup_computable : Computable₂ mLookup := by
+  have hmDom : Computable (fun L : List (ℕ × ℕ) => mDom L) := by
+    have h : Primrec (fun L : List (ℕ × ℕ) => L.map Prod.fst) :=
+      Primrec.list_map Primrec.id (Primrec.fst.comp Primrec.snd)
+    exact h.to_comp
+  have hmRan : Computable (fun L : List (ℕ × ℕ) => mRan L) := by
+    have h : Primrec (fun L : List (ℕ × ℕ) => L.map Prod.snd) :=
+      Primrec.list_map Primrec.id (Primrec.snd.comp Primrec.snd)
+    exact h.to_comp
+  have hIdx : Computable (fun p : List (ℕ × ℕ) × ℕ => List.idxOf p.2 (mDom p.1)) :=
+    Primrec.list_idxOf.to_comp.comp Computable.snd (hmDom.comp Computable.fst)
+  have hRanP : Computable (fun p : List (ℕ × ℕ) × ℕ => mRan p.1) :=
+    hmRan.comp Computable.fst
+  have hget : Computable (fun p : List (ℕ × ℕ) × ℕ =>
+      (mRan p.1).getD (List.idxOf p.2 (mDom p.1)) 0) :=
+    (Primrec.list_getD (0 : ℕ)).to_comp.comp hRanP hIdx
+  exact hget.of_eq (fun _ => rfl)
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
