@@ -1,0 +1,125 @@
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
+import Mathlib.Tactic
+
+/-
+# Putzer's Algorithm for the Matrix Exponential — Algebraic Core
+
+Putzer's algorithm computes the matrix exponential
+
+  e^{tA} = ∑_{k=1}^n P_k(t) · ρ_{k-1}
+
+**without diagonalizing A or computing eigenvectors**, using only the eigenvalues
+λ_1, …, λ_n (the roots of the characteristic polynomial).  Here
+
+  ρ_k = (A - λ_k · I) · … · (A - λ_1 · I),        ρ_0 = I,
+
+and the scalar coefficients P_k(t) solve the triangular linear ODE system
+
+  Ṗ_1 = λ_1 P_1,      P_1(0) = 1,
+  Ṗ_k = λ_k P_k + P_{k-1},   P_k(0) = 0   (2 ≤ k ≤ n).
+
+The completed proof differentiates M(t) := ∑_k P_k(t) ρ_{k-1} and, using the
+telescoping identity below together with the ODE relations, shows Ṁ = A·M and
+M(0) = I; ODE uniqueness against `NormedSpace.exp` then gives M(t) = e^{tA}.
+
+## This file: the purely *algebraic* scaffolding
+
+Everything here requires **no analysis** — it is the algebra that drives the
+derivative computation Ṁ = A·M.  Note that `ρ_k` is an *ordered* product of the
+(mutually commuting) factors `A - λ_i • 1`; since `Matrix n n R` is not a
+`CommMonoid` we build it by the recursion `ρ_{k+1} = ρ_k · (A - λ_k • 1)`.
+
+* `rho_succ`     : ρ_{k+1} = ρ_k · (A - λ_k • 1)                (definitional)
+* `commute_A_rho`: A commutes with every ρ_k (each factor is a polynomial in A)
+* `A_mul_rho`    : A · ρ_k = ρ_{k+1} + λ_k • ρ_k               — the *key telescoping identity*
+* `rho_card`     : ρ_n = 0  when χ_A splits as ∏ (X - λ_i)     (Cayley–Hamilton truncation)
+
+`A_mul_rho` is precisely what converts the term-by-term derivative
+d/dt (P_k ρ_{k-1}) = Ṗ_k ρ_{k-1} into a multiple of A, and `rho_card` is what makes
+the boundary term P_n ρ_n vanish so the sum closes on itself.
+
+The analytic completion (constructing P_k, differentiating the finite sum, and the
+matrix-valued ODE-uniqueness step) is deferred to a companion development.
+
+## Status
+- [x] Algebraic core: complete, no sorries
+- [ ] Analytic layer (P_k construction, Ṁ = A·M, ODE uniqueness): future work
+
+## Mathlib dependencies
+- `Matrix.aeval_self_charpoly` : Cayley–Hamilton (χ_A(A) = 0)
+- `Fin.prod_univ_eq_prod_range`, `Finset.prod_range_succ`
+- `Algebra.algebraMap_eq_smul_one`
+-/
+
+namespace PutzerMatrixExp
+
+open Matrix Polynomial BigOperators
+
+variable {n : Type*} [DecidableEq n] [Fintype n]
+variable {R : Type*} [CommRing R]
+
+/-- Putzer partial product, built by the ordered recursion
+`ρ 0 = 1`, `ρ (k+1) = ρ k · (A - λ_k • 1)`.  The factors mutually commute, so this
+is the ordinary product `∏_{i<k} (A - λ_i • 1)` written in a way that does not need
+`Matrix n n R` to be a `CommMonoid`. -/
+def rho (A : Matrix n n R) (lam : ℕ → R) : ℕ → Matrix n n R
+  | 0 => 1
+  | (k + 1) => rho A lam k * (A - lam k • (1 : Matrix n n R))
+
+@[simp] lemma rho_zero (A : Matrix n n R) (lam : ℕ → R) : rho A lam 0 = 1 := rfl
+
+/-- The defining recursion: `ρ_{k+1} = ρ_k · (A - λ_k • 1)`. -/
+lemma rho_succ (A : Matrix n n R) (lam : ℕ → R) (k : ℕ) :
+    rho A lam (k + 1) = rho A lam k * (A - lam k • (1 : Matrix n n R)) := rfl
+
+/-- `A` commutes with each factor `A - λ_i • 1`. -/
+lemma commute_A_factor (A : Matrix n n R) (lam : ℕ → R) (i : ℕ) :
+    Commute A (A - lam i • (1 : Matrix n n R)) :=
+  (Commute.refl A).sub_right ((Commute.one_right A).smul_right (lam i))
+
+/-- `A` commutes with every partial product `ρ_k` (it is a polynomial in `A`). -/
+lemma commute_A_rho (A : Matrix n n R) (lam : ℕ → R) (k : ℕ) :
+    Commute A (rho A lam k) := by
+  induction k with
+  | zero => simp [rho]
+  | succ k ih => rw [rho_succ]; exact ih.mul_right (commute_A_factor A lam k)
+
+lemma A_comm_rho (A : Matrix n n R) (lam : ℕ → R) (k : ℕ) :
+    A * rho A lam k = rho A lam k * A :=
+  commute_A_rho A lam k
+
+/-- **Key telescoping identity.** `A · ρ_k = ρ_{k+1} + λ_k • ρ_k`.
+
+This is the algebraic engine of Putzer's algorithm: it lets the derivative of the
+`k`-th term be re-expressed so the whole sum telescopes into `A · M`. -/
+lemma A_mul_rho (A : Matrix n n R) (lam : ℕ → R) (k : ℕ) :
+    A * rho A lam k = rho A lam (k + 1) + lam k • rho A lam k := by
+  rw [rho_succ, A_comm_rho, mul_sub, mul_smul_comm, mul_one]
+  abel
+
+/-- Evaluation of a linear factor: `aeval A (X - C c) = A - c • 1`. -/
+lemma aeval_X_sub_C (A : Matrix n n R) (c : R) :
+    (aeval A) (X - C c) = A - c • (1 : Matrix n n R) := by
+  rw [map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]
+
+/-- `ρ_k` is the evaluation at `A` of the (commutative, in `R[X]`) partial product
+`∏_{i<k} (X - λ_i)`. -/
+lemma rho_eq_aeval_prod (A : Matrix n n R) (lam : ℕ → R) (k : ℕ) :
+    rho A lam k = (aeval A) (∏ i ∈ Finset.range k, (X - C (lam i))) := by
+  induction k with
+  | zero => simp [rho]
+  | succ k ih =>
+    rw [rho_succ, ih, Finset.prod_range_succ, map_mul, aeval_X_sub_C]
+
+/-- **Cayley–Hamilton truncation.** When the characteristic polynomial splits as
+`χ_A = ∏ i, (X - λ_i)`, the top partial product vanishes: `ρ_n = 0`.
+
+This is what makes Putzer's sum finite (it stops at `n` terms) and forces the
+boundary term `P_n ρ_n` to drop out of the derivative computation. -/
+lemma rho_card {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (lam : ℕ → R)
+    (hlam : A.charpoly = ∏ i : Fin n, (X - C (lam i))) :
+    rho A lam n = 0 := by
+  rw [rho_eq_aeval_prod, ← Fin.prod_univ_eq_prod_range (fun i => X - C (lam i)) n, ← hlam,
+      Matrix.aeval_self_charpoly]
+
+end PutzerMatrixExp
