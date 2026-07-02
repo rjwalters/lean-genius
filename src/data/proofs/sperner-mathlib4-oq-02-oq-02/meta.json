@@ -46,6 +46,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: antipodal symmetry kills the door-graph endpoint parity (n ≥ 1)",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "The module docstring, the imports of Mathlib and the inductive tower, and the namespace/open setup. A research artifact for sperner-mathlib4-oq-02 that turns the antipodal symmetry of the almost-complementary door graph into a dimension-free structural no-go theorem, pinning the exact shape of the open geometric bridge the Tucker tower consumes.",
+      "mathContext": "For a door graph G with boundary predicate B and antipodal map σ that is a free involution (σ∘σ=id, σv≠v) and a boundary-preserving graph automorphism, the file proves: degree_eq_of_aut (σ preserves every vertex degree), even_card_interiorEndpoints and even_card_boundaryEndpoints (both degree-1 endpoint classes have even count), not_odd_card_interiorEndpoints, and the capstone symmetric_graph_not_tucker_level — an antipodally-symmetric door graph can never be a Tucker level, since the tower needs Odd(interior n). The oddness can only appear once the symmetry is broken, on a hemisphere fundamental domain — so the labelling-induced asymmetry is essential. The reusable general lemma even_card_filter_of_free_involution (a free involution preserving a decidable predicate forces an even fibre) is a Mathlib-gap fact. Self-contained, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only — no decide/native_decide/ofReduceBool)."
+    },
+    {
       "id": "free-involution-parity",
       "title": "A Free Involution Forces an Even Fibre",
       "startLine": 70,
