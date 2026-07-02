@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-coprime-Q",
+    "proofId": "lucas-sequence-degree2-identities-oq-02-oq-01",
+    "range": { "startLine": 53, "endLine": 71 },
+    "type": "technique",
+    "title": "Auxiliary Coprimality Uₙ₊₁ ⟂ Q",
+    "content": "`U_succ_coprime_Q` proves IsCoprime Uₙ₊₁ Q by induction on n. The base case is U₁ = 1, coprime to everything (`isCoprime_one_left`). The step rewrites Uₙ₊₂ = P·Uₙ₊₁ − Q·Uₙ = (P·Uₙ₊₁) + Q·(−Uₙ): the term Q·(−Uₙ) is a multiple of Q, so `IsCoprime.add_mul_left_left` drops it, and `IsCoprime.mul_left` splits the remaining P·Uₙ₊₁ into the hypothesis gcd(P,Q)=1 and the inductive Uₙ₊₁ ⟂ Q. Modulo Q the recurrence is Uₙ₊₂ ≡ P·Uₙ₊₁, i.e. Uₙ₊₁ ≡ Pⁿ, which is why coprimality of P and Q propagates.",
+    "mathContext": "$U_{n+1} \\equiv P^n \\pmod Q$, so $\\gcd(U_{n+1}, Q) = \\gcd(P^n, Q) = 1$ when $\\gcd(P,Q)=1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["coprimality", "Lucas sequence recurrence", "IsCoprime.mul_left"],
+    "prerequisites": ["IsCoprime API", "induction over ℕ"]
+  },
+  {
+    "id": "ann-coprime-succ",
+    "proofId": "lucas-sequence-degree2-identities-oq-02-oq-01",
+    "range": { "startLine": 73, "endLine": 96 },
+    "type": "concept",
+    "title": "Consecutive Fundamental Terms are Coprime",
+    "content": "`U_coprime_succ` proves IsCoprime Uₙ Uₙ₊₁ by induction. Base: IsCoprime 0 1 (U₀=0, U₁=1). Step: rewrite Uₙ₊₂ = P·Uₙ₊₁ − Q·Uₙ = −(Q·Uₙ) + Uₙ₊₁·P. The multiple Uₙ₊₁·P is removed by `IsCoprime.add_mul_left_right`, leaving IsCoprime Uₙ₊₁ (Q·Uₙ); this splits by `IsCoprime.mul_right` into Uₙ₊₁ ⟂ Q (from `U_succ_coprime_Q`) and Uₙ₊₁ ⟂ Uₙ (the symmetric inductive hypothesis). This is the general-parameter analogue of consecutive Fibonacci numbers being coprime.",
+    "mathContext": "$\\gcd(U_n, U_{n+1}) = 1$ for $\\gcd(P,Q)=1$; e.g. consecutive Fibonacci numbers are always coprime.",
+    "significance": "key",
+    "relatedConcepts": ["consecutive coprimality", "Lucas sequence", "strong divisibility"],
+    "prerequisites": ["IsCoprime.mul_right", "U_succ_coprime_Q"]
+  },
+  {
+    "id": "ann-main-bound",
+    "proofId": "lucas-sequence-degree2-identities-oq-02-oq-01",
+    "range": { "startLine": 98, "endLine": 116 },
+    "type": "insight",
+    "title": "The Sharp Bound gcd(Uₙ, Vₙ) ∣ 2",
+    "content": "`gcd_dvd_two_of_coprime` sets g = gcd(Uₙ, Vₙ). From g ∣ Uₙ and g ∣ Vₙ we get g ∣ Vₙ + P·Uₙ, and the companion relation `V_eq` (Vₙ = 2·Uₙ₊₁ − P·Uₙ) makes that sum exactly 2·Uₙ₊₁, so g ∣ 2·Uₙ₊₁. Because g ∣ Uₙ and Uₙ ⟂ Uₙ₊₁ (`U_coprime_succ`), coprimality transports along the divisor (`IsCoprime.of_isCoprime_of_dvd_left`) to give IsCoprime g Uₙ₊₁. Then `IsCoprime.dvd_of_dvd_mul_right` cancels the Uₙ₊₁ factor, leaving g ∣ 2. The constant 2 (not 4) is forced precisely because g is coprime to Uₙ₊₁, so it cannot absorb any of that factor.",
+    "mathContext": "$\\gcd(U_n, V_n) \\mid 2$ when $\\gcd(P,Q)=1$, improving the unconditional $\\gcd(U_n,V_n) \\mid 4Q^n$; sharp since $\\gcd(F_3,L_3)=2$.",
+    "significance": "key",
+    "relatedConcepts": ["gcd divisibility", "companion relation", "coprime cancellation"],
+    "prerequisites": ["V_eq", "U_coprime_succ", "IsCoprime.dvd_of_dvd_mul_right"]
+  },
+  {
+    "id": "ann-instances",
+    "proofId": "lucas-sequence-degree2-identities-oq-02-oq-01",
+    "range": { "startLine": 117, "endLine": 126 },
+    "type": "concept",
+    "title": "Fibonacci/Lucas and Pell Instances",
+    "content": "`fib_lucas_gcd_dvd_two` specializes the bound to (P,Q)=(1,−1), recovering the classical gcd(Fₙ, Lₙ) ∣ 2, and `pell_gcd_dvd_two` to (2,−1) for the Pell pair gcd(Pₙ, Qₙ) ∣ 2. In both the coprimality hypothesis gcd(P,Q)=1 is discharged automatically by `norm_num` on IsCoprime 1 (-1) / IsCoprime 2 (-1).",
+    "mathContext": "Classical corollary $\\gcd(F_n, L_n) \\in \\{1,2\\}$ and the Pell analogue.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fibonacci", "Lucas numbers", "Pell numbers", "specialization"],
+    "prerequisites": ["gcd_dvd_two_of_coprime"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "lucas-sequence-degree2-identities-oq-02-oq-01",
+    "range": { "startLine": 128, "endLine": 139 },
+    "type": "concept",
+    "title": "Numerical Sanity Checks",
+    "content": "Three decidable checks confirm the bound is meaningful: gcd(F₃, L₃) = gcd(2, 4) = 2 (the bound is attained), gcd(F₄, L₄) = gcd(3, 7) = 1 (the gcd can also be 1), and gcd(P₂, Q₂) = gcd(2, 6) = 2 for the Pell parameters. All are closed by kernel `decide`, so no `native_decide` and no `Lean.ofReduceBool` dependency is introduced.",
+    "mathContext": "The gcd oscillates between 1 and 2, so 2 is a genuine (attained, non-vacuous) ceiling.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidability", "kernel decide", "sharpness"],
+    "prerequisites": ["decide tactic"]
+  }
+]
