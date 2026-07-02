@@ -115,6 +115,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the higher-even-moment British Flag defect — the 2m-th power alternating sum",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The module docstring, the imports of Mathlib and the parent parallelepiped file, and the namespace/open/variable setup. Generalizes the British Flag Theorem's squared-distance identity to the arbitrary even moment over the 2ⁿ vertices of an n-dimensional parallelepiped, uniformly in m.",
+      "mathContext": "For the signed powerset sum defect_m = ∑_{t⊆{0,…,n-1}} (−1)^{|t|}·‖X − vertex t‖^{2m} with vertex t = c + ∑_{i∈t} uᵢ, the headline even_moment_defect_eq_zero proves 2m < n ⟹ defect_m = 0 for every base c, arbitrary (possibly skew) edge system u, and observer X — subsuming the parent's second-moment n ≥ 3 threshold and the sibling's fourth-moment n ≥ 5. Architecture: writing w = X − c, the displacement X − vertex t = ∑_a indᵗ(a)·e(a) over a ∈ Option(Fin n) (e(none)=w, e(some i)=−uᵢ) makes ‖X − vertex t‖² a single sum whose t-dependence sits only in indicator factors; Fintype.sum_pow turns ‖·‖^{2m} into a sum over multi-indices π of 2m indicator factors times a t-independent inner-product coefficient. Each product touches ≤ 2m coordinates, so as 2m < n it omits some coordinate, and the parent's alt_sum_eq_zero_of_indep kills the signed powerset sum. Sorry-free and axiom-free over an arbitrary real inner product space."
+    },
+    {
       "id": "vanishing-principle",
       "title": "The Abstract Vanishing Principle",
       "startLine": 67,
