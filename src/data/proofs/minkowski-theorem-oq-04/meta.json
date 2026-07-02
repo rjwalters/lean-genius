@@ -95,6 +95,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Blichfeldt's theorem via fundamental-domain pigeonhole",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "The imports (ZLattice.Basic, GeometryOfNumbers, Lebesgue.Basic, the parent Minkowski fundamental theorem, Tactic), the module docstring, and the namespace/open setup. Proves Blichfeldt's theorem (1914): a measurable S ⊆ ℝⁿ with Lebesgue measure > k contains k+1 distinct points whose pairwise differences lie in ℤⁿ — a generalization of Minkowski's convex body theorem needing no convexity or symmetry.",
+      "mathContext": "Strategy is fundamental-domain pigeonhole: ℤⁿ tiles ℝⁿ with F = [0,1)ⁿ; defining Sᵥ = {z ∈ F | z+v ∈ S} gives vol(S) = ∑ᵥ vol(Sᵥ), so if measure exceeds the covolume the Sᵥ cannot be pairwise disjoint. The k=1 case blichfeldt_basic applies Mathlib's IsAddFundamentalDomain.exists_ne_zero_vadd_eq directly. The general k≥0 case blichfeldt_general is a proved theorem via Path A contrapose: Move A rewrites vol(S) as ∫_F c(z) with c(z) = ∑'_v 1_S(v+z) (volume_eq_setLIntegral_indicator_tsum, from IsAddFundamentalDomain.lintegral_eq_tsum'' + Tonelli); Move B bounds c(z) ≤ k pointwise via encard and Fintype.equivFinOfCardEq; Move C integrates to vol(S) ≤ k, contradicting k < vol(S). Minkowski is recovered as minkowski_from_blichfeldt (sorry-free, half-scaling T = (1/2)·s with Measure.addHaar_smul). Per the docstring, zero axioms remain (down from four); the meta.json verified flag is synced separately once Docker CI confirms the axiom→theorem flip."
+    },
+    {
       "id": "axioms",
       "title": "Measure-Theoretic Infrastructure (helpers, no axioms)",
       "startLine": 68,
