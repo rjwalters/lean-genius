@@ -16,7 +16,10 @@
       "uniform distribution",
       "spherical geometry"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrepancy theory",
+      "uniform distribution"
+    ]
   },
   {
     "id": "ann-988-unitsphere",
@@ -35,7 +38,10 @@
       "norm",
       "Fin type"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean space",
+      "vector norms"
+    ]
   },
   {
     "id": "ann-988-sphericalcap",
@@ -54,7 +60,10 @@
       "half-space",
       "spherical measure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "inner products",
+      "half-spaces"
+    ]
   },
   {
     "id": "ann-988-configuration",
@@ -73,7 +82,10 @@
       "cardinality",
       "membership predicate"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset (finite sets in Lean)",
+      "set membership"
+    ]
   },
   {
     "id": "ann-988-capdiscrepancy",
@@ -92,7 +104,10 @@
       "expected count",
       "uniform distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "absolute value",
+      "proportion and expected count"
+    ]
   },
   {
     "id": "ann-988-discrepancy",
@@ -111,7 +126,10 @@
       "worst-case analysis",
       "noncomputable"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "supremum",
+      "worst-case analysis"
+    ]
   },
   {
     "id": "ann-988-mindiscrepancy",
@@ -130,7 +148,10 @@
       "optimization",
       "point distribution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "infimum",
+      "optimization over configurations"
+    ]
   },
   {
     "id": "ann-988-roth",
@@ -149,7 +170,10 @@
       "logarithmic growth",
       "unit square"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "discrepancy theory",
+      "logarithmic growth"
+    ]
   },
   {
     "id": "ann-988-schmidt",
@@ -168,7 +192,10 @@
       "dimensional dependence",
       "lower bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bounds",
+      "polynomial growth"
+    ]
   },
   {
     "id": "ann-988-tendsto",
@@ -187,7 +214,10 @@
       "Filter",
       "atTop"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "limits (Tendsto)",
+      "filters (atTop)"
+    ]
   },
   {
     "id": "ann-988-mainresult",
@@ -206,7 +236,10 @@
       "universal quantification",
       "impossibility result"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "universal quantification",
+      "impossibility results"
+    ]
   },
   {
     "id": "ann-988-lowerbound",
@@ -225,7 +258,10 @@
       "explicit exponent",
       "S²"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic lower bounds",
+      "growth exponents"
+    ]
   },
   {
     "id": "ann-988-upperbound",
@@ -244,7 +280,10 @@
       "constructive existence",
       "exponent gap"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic upper bounds",
+      "constructive existence"
+    ]
   },
   {
     "id": "ann-988-summary",
@@ -263,6 +302,9 @@
       "summary",
       "historical context"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "logical conjunction",
+      "discrepancy theory"
+    ]
   }
 ]
