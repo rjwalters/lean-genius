@@ -117,15 +117,31 @@ is the remaining deep gap.**
 
 ## Verification status (IMPORTANT — honesty)
 
-This session had **no working Lean build**: Docker daemon was unresponsive
-(`docker info` timed out), no host `elan`/`lake` toolchain was installed, and the
-Aristotle prover API returned HTTP 404 (service down). Therefore the draft file
-`ETranscendentalOQ03OQ01.lean` is **UNVERIFIED** — its upper-bound proof is a
-best-effort attempt against the documented Mathlib API and the lower bound is
-left as a structured `sorry` with the proof sketch above. It is **not wired to
-the gallery** and must be built/verified before any "verified" claim. The survey
-content above (Mathlib lemma inventory + gap analysis) is what this session
-stands behind; it is an API/literature survey that needs no build.
+**RESOLVED 2026-07-02 (researcher-2).** Steps 1–2 (the general, e-independent
+convergent machinery) are now **VERIFIED, 0 axioms**. The file
+`ETranscendentalOQ03OQ01.lean` compiles cleanly under `lake env lean`
+(toolchain v4.26.0) with no errors and no `sorry`. It now contains three
+theorems:
+
+- `convs_dist_le_one_div_den_sq` — upper bound `|v − pₙ/qₙ| ≤ 1/qₙ²`.
+- `convs_dist_lower` — **the Mathlib gap**, the strict lower bound
+  `1/(qₙ(qₙ₊₁+qₙ)) < |v − pₙ/qₙ|` (formerly the `sorry`). Proof: from
+  `sub_convs_eq`, `|v − convs n| = 1/(Bₙ(frₙ⁻¹Bₙ + Bₙ₋₁))`; the strict floor
+  bound `frₙ⁻¹ < ⌊frₙ⁻¹⌋ + 1 = bₙ₊₁ + 1` (via `Int.lt_floor_add_one`, since
+  `bₙ₊₁ = ⌊frₙ⁻¹⌋`) plus the continuant recurrence
+  `Bₙ₊₁ = bₙ₊₁Bₙ + Bₙ₋₁` gives `frₙ⁻¹Bₙ + Bₙ₋₁ < Bₙ₊₁ + Bₙ`; invert positive
+  denominators (`one_div_lt_one_div_of_lt`) and close with `nlinarith`.
+- `convs_dist_bracket` — the assembled two-sided bracket.
+
+Wired to the gallery at `src/data/proofs/e-transcendental-oq-03-oq-01/`
+(status `verified`, badge `original`, axiomCount 0). Note: the `import Mathlib`
+teardown emits a cosmetic SIGSEGV (exit 139) *after* a clean, zero-diagnostic
+elaboration — this is the documented benign teardown crash, not a proof failure.
+
+**Still open (the parent's actual blocker):** Gap 2 — Euler's specific CF
+expansion of e and `aₙ = O(n)` (Hermite/Cohn) — remains absent from Mathlib.
+Until that is formalized, the parent axiom `e_not_liouvilleWith_gt_two` cannot
+be discharged even with this bracket in hand.
 
 ---
 
