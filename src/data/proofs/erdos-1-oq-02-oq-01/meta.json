@@ -1,0 +1,155 @@
+{
+  "id": "erdos-1-oq-02-oq-01",
+  "slug": "erdos-1-oq-02-oq-01",
+  "title": "The Elementary Counting Lower Bound for Distinct Subset Sums",
+  "description": "A child of erdos-1-oq-02 (Erdős's distinct-subset-sums problem #1), which proves the sharp second-moment anticoncentration bound 2^|A| ≤ 3·√(Σaᵢ²) + 2. This entry records the elementary counterpart that predates and motivates it: if A ⊆ ℕ has distinct subset sums then 2^|A| ≤ ΣA + 1, because the 2^|A| distinct subset sums all lie in {0,…,ΣA}. Combined with ΣA ≤ |A|·max(A) this yields the classical Erdős–Moser bound 2^|A| ≤ |A|·max(A) + 1 (i.e. max(A) ≥ (2^|A|−1)/|A|), the trivial lower bound Erdős's conjecture max(A) ≥ c·2^|A| aims to sharpen. Machine-checked, 0 sorries, 0 axioms.",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1OQ02OQ01",
+    "lineCount": 118,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "",
+    "date": "2026-07-02",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1OQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "distinct-subset-sums",
+      "erdos-problems",
+      "counting-bound",
+      "erdos-moser",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "an injective-on-set image has the same cardinality; turns 2^|A| distinct sums into a card equality",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_powerset",
+        "description": "|powerset A| = 2^|A|; the count of subsets",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "Finset.sum_le_sum_of_subset",
+        "description": "over ℕ (canonically ordered), a subset sum is ≤ the whole sum; bounds each subset sum by ΣA",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_le_card_nsmul",
+        "description": "ΣA ≤ |A|·max A via a uniform per-element bound",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.lt_two_pow_self",
+        "description": "n < 2^n; upgrades the counting bound to |A| ≤ ΣA",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "two_pow_card_le_sum_succ: the elementary counting bound 2^|A| ≤ ΣA + 1 — the 2^|A| distinct subset sums are distinct integers in {0,…,ΣA}, proved by embedding the injective image of the powerset into range(ΣA+1)",
+      "two_pow_card_le_card_mul_max: the Erdős–Moser bound 2^|A| ≤ |A|·max(A) + 1, hence max(A) ≥ (2^|A|−1)/|A|, obtained from ΣA ≤ |A|·max A",
+      "subsetSum_injOn: the subset-sum map is injective on the powerset (the definitional content, packaged as Set.InjOn)",
+      "zero_not_mem and HasDistinctSubsetSums.subset: 0 ∉ A, and the property is hereditary under taking subsets",
+      "card_le_sum and geomSum_two_succ: |A| ≤ ΣA, and the identity Σ_{i<n} 2^i + 1 = 2^n witnessing that the powers of two make the counting bound an equality (near-tight extremal example)"
+    ],
+    "dateAdded": "2026-07-02",
+    "axiomCount": 0,
+    "lineCount": 118,
+    "mathlib_version": "4.31.0",
+    "assumptions": "None beyond Lean/Mathlib's standard foundations. Fully verified with 0 sorries and 0 axiom declarations. #print axioms reports only the ordinary foundational axioms propext / Classical.choice / Quot.sound for every result — no sorryAx, no Lean.ofReduceBool, no native_decide. Self-contained: restates the HasDistinctSubsetSums predicate and imports only Mathlib.",
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Erdős's distinct-subset-sums problem (#1) asks: if a finite set A ⊆ ℕ has all 2^|A| subset sums distinct, how large must its elements be? The powers of two {1,2,…,2^{n−1}} qualify with maximum 2^{n−1}, and Erdős conjectured max(A) ≥ c·2^{|A|} for an absolute constant c — offering money for a proof. The parent gallery entry (`erdos-1-oq-02`) formalizes the sharp analytic step toward this, the second-moment anticoncentration bound 2^{|A|} ≤ 3·√(Σaᵢ²) + 2.\n\nBefore any analysis, there is a purely combinatorial lower bound, essentially Moser's: the subset sums are 2^{|A|} distinct numbers in {0,…,ΣA}, so 2^{|A|} ≤ ΣA + 1, which with ΣA ≤ |A|·max(A) gives max(A) ≥ (2^{|A|} − 1)/|A|. This entry formalizes exactly that elementary bound.",
+    "problemStatement": "**Open Question (OQ-02.1)**: isolate the elementary counting bound underlying Erdős #1, independent of the second-moment machinery.\n\n**Answer**: For a distinct-subset-sums set A,\n- **counting bound**: $2^{|A|} \\le \\sum A + 1$ (the subset sums are $2^{|A|}$ distinct integers in $\\{0,\\dots,\\sum A\\}$), and\n- **Erdős–Moser bound**: $2^{|A|} \\le |A|\\cdot\\max A + 1$, i.e. $\\max A \\ge (2^{|A|}-1)/|A|$.\n\nThe powers of two attain $\\sum A + 1 = 2^{|A|}$ (identity $\\sum_{i<n}2^i + 1 = 2^n$), so the counting bound is tight.",
+    "proofStrategy": "1. **Injectivity (Section 1)**: subsetSum_injOn repackages the definition as Set.InjOn of `S ↦ Σ S` on the powerset; zero_not_mem and the hereditary lemma are immediate structural consequences.\n\n2. **Counting bound (Section 2)**: two_pow_card_le_sum_succ embeds the injective image of the powerset into range(ΣA + 1) — each subset sum is ≤ ΣA by Finset.sum_le_sum_of_subset — so 2^{|A|} = |image| ≤ |range(ΣA+1)| = ΣA + 1 by card_image_of_injOn + card_powerset + card_le_card. card_le_sum then extracts |A| ≤ ΣA using |A| < 2^{|A|}.\n\n3. **Max bound (Section 3)**: two_pow_card_le_card_mul_max combines the counting bound with ΣA ≤ |A|·max A (Finset.sum_le_card_nsmul against Finset.le_max'). geomSum_two_succ proves Σ_{i<n}2^i + 1 = 2^n by induction, certifying the powers of two make the counting bound an equality.",
+    "keyInsights": [
+      "**Distinctness is a counting constraint before it is an analytic one.** The subset sums are 2^{|A|} distinct integers pinned to the interval [0, ΣA]; a pigeonhole embedding already forces 2^{|A|} ≤ ΣA + 1 without any second moment or square root.",
+      "**The bound is genuinely tight.** The powers of two satisfy ΣA = 2^{|A|} − 1 (geomSum_two_succ), so 2^{|A|} = ΣA + 1 exactly — the counting inequality cannot be improved in general, and any progress toward Erdős's conjecture must exploit more than distinctness.",
+      "**From sum to max is one convexity-free step.** ΣA ≤ |A|·max A turns the sum bound into the Erdős–Moser max bound max A ≥ (2^{|A|} − 1)/|A|, the classical elementary lower bound that the conjectural c·2^{|A|} seeks to beat by a factor of |A|.",
+      "**Complements the parent, doesn't duplicate it.** The parent's second-moment bound 2^{|A|} ≤ 3√(Σaᵢ²) + 2 is stronger (it sees the spread of A), while this counting bound is weaker but elementary and tight for the powers of two — together they frame exactly where the difficulty of Erdős #1 lives."
+    ],
+    "prerequisites": [
+      "Finite sets, powersets, and subset sums",
+      "Pigeonhole / injective-image cardinality counting",
+      "The distinct-subset-sums problem and Erdős's conjecture"
+    ]
+  },
+  "sections": [
+    {
+      "id": "structure",
+      "title": "Basic Structure",
+      "startLine": 41,
+      "endLine": 62,
+      "summary": "subsetSum_injOn packages distinctness as Set.InjOn of the subset-sum map on the powerset; zero_not_mem shows 0 ∉ A; HasDistinctSubsetSums.subset shows the property is hereditary.",
+      "mathContext": "$S \\mapsto \\sum S$ is injective on $\\mathcal{P}(A)$; $0 \\notin A$; subsets of a distinct-subset-sums set inherit the property."
+    },
+    {
+      "id": "counting",
+      "title": "The Counting Bound 2^|A| ≤ ΣA + 1",
+      "startLine": 64,
+      "endLine": 90,
+      "summary": "two_pow_card_le_sum_succ embeds the injective image of the powerset into range(ΣA+1), giving 2^|A| ≤ ΣA + 1; card_le_sum extracts |A| ≤ ΣA.",
+      "mathContext": "$2^{|A|}$ distinct subset sums lie in $\\{0,\\dots,\\Sigma A\\}$, so $2^{|A|} \\le \\Sigma A + 1$."
+    },
+    {
+      "id": "maxbound",
+      "title": "The Erdős–Moser Max Bound",
+      "startLine": 92,
+      "endLine": 118,
+      "summary": "two_pow_card_le_card_mul_max combines the counting bound with ΣA ≤ |A|·max A to get 2^|A| ≤ |A|·max A + 1; geomSum_two_succ certifies tightness for the powers of two.",
+      "mathContext": "$2^{|A|} \\le |A|\\cdot\\max A + 1$, i.e. $\\max A \\ge (2^{|A|}-1)/|A|$; equality $\\sum_{i<n}2^i + 1 = 2^n$ for the powers of two."
+    }
+  ],
+  "references": [
+    {
+      "text": "P. Erdős, distinct subset sums (Problem #1); Erdős's conjecture max A ≥ c·2^{|A|}.",
+      "url": "https://www.erdosproblems.com/1"
+    },
+    {
+      "text": "Distinct (Sidon-like) subset sums and the Erdős–Moser elementary bound.",
+      "url": "https://en.wikipedia.org/wiki/Sum-free_set"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-1-oq-02",
+      "relationship": "extends",
+      "description": "The parent proves the sharp second-moment anticoncentration bound 2^|A| ≤ 3√(Σaᵢ²) + 2. This entry records the elementary counting bound 2^|A| ≤ ΣA + 1 and the Erdős–Moser max bound underlying it."
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "The base entry on Erdős's distinct-subset-sums problem; this child supplies the elementary lower bound that the conjecture max A ≥ c·2^|A| aims to sharpen."
+    }
+  ],
+  "conclusion": {
+    "summary": "We formalize the elementary counting lower bound for Erdős's distinct-subset-sums problem: a distinct-subset-sums set A satisfies 2^|A| ≤ ΣA + 1 (its subset sums are 2^|A| distinct integers in {0,…,ΣA}), and hence the Erdős–Moser bound 2^|A| ≤ |A|·max A + 1, i.e. max A ≥ (2^|A|−1)/|A|. The powers of two attain equality in the counting bound. Fully machine-checked, 0 sorries, 0 axioms.",
+    "implications": "**Frames where the difficulty lives.** The counting bound is tight for the powers of two, so distinctness alone yields only max A ≥ (2^|A|−1)/|A| — a factor of |A| short of Erdős's conjectural c·2^|A|. Closing that gap is exactly what the parent's second-moment bound and deeper Fourier-analytic methods attack.\n\n**A clean, reusable elementary core.** The injective-image counting argument (2^|A| distinct sums in an interval of length ΣA) is the reusable combinatorial skeleton beneath every sharper anticoncentration estimate for subset sums.",
+    "openQuestions": [
+      "Formalize that the powers of two {1,2,…,2^{n−1}} actually have distinct subset sums (binary uniqueness), turning geomSum_two_succ's equality into a genuine extremal example inside HasDistinctSubsetSums.",
+      "Combine this counting bound with the parent's second-moment bound to formalize the current best known constant in max A ≥ c·2^|A|/√|A|-type improvements.",
+      "Extend the counting argument to distinct sums over ℤ (signed subset sums) and compare the resulting interval-length constraint."
+    ]
+  }
+}
