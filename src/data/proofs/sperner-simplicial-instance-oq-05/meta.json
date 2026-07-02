@@ -105,6 +105,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: brute-force panchromatic-cell extractor (OQ-05 candidate C1)",
+      "startLine": 1,
+      "endLine": 85,
+      "summary": "The simplest of three candidates in the `sperner-simplicial-instance-oq-05` dossier: a `Decidable`-driven witness extractor `Triangulation V n → (V → Fin (n+1)) → Option T.Cell` that names a panchromatic cell of a Sperner-coloured triangulation, plus a totality theorem grounded in `Triangulation.sperner`. The mathematical content is deliberately shallow — every step is forced by the existing `cellFintype` and `decidableIsPanchromatic` instances — the value is a concrete, named witness. The docstring is scrupulously honest about scope: this is brute-force O(|T.Cell|), NOT Scarf's O(door-path) pivot (candidate C2), does not replace the `axiom scarf_approx_fixed_point` in BrouwerFixedPointOQ04OQ04, and is not the noncomputable-free generalisation (C3). 0 sorries, 0 new axioms, 3 theorems.",
+      "mathContext": "Sperner's lemma guarantees a panchromatic (fully-coloured) cell in any Sperner colouring of a triangulation; here it is made computational by enumerating `T.Cell`'s `Fintype` and filtering on the decidable predicate `IsPanchromatic`. Downstream consumers should rely on the membership characterisation `findPanchromaticBrute_isSome_iff` rather than the implementation-specific 'first cell' order. The docstring pins Mathlib bearer lines (`Finset.toList_eq_nil`, `Nonempty.toList_ne_nil`, `nonempty_iff_ne_empty`, `List.mem_of_head?`) verified at the build-pinned Mathlib v4.26.0 SHA, distinguishing name-stability from line-citation drift in the merged PREP memos."
+    },
+    {
       "id": "sec-def-finder",
       "title": "Definition: findPanchromaticBrute (L86–90)",
       "startLine": 86,
