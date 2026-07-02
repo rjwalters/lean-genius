@@ -3,13 +3,13 @@
     "id": "ann-1056-definitions",
     "proofId": "erdos-1056-oq-01",
     "range": {
-      "startLine": 36,
-      "endLine": 77
+      "startLine": 51,
+      "endLine": 110
     },
     "type": "definition",
-    "title": "Core Definitions: intervalProd and Parameterized Solution Predicates",
-    "content": "`intervalProd a b` computes the product of all integers in the half-open interval [a, b) as a Finset.Ico product. The `HasSolution_k` predicates encode exactly what a witness must satisfy: a prime p, strictly increasing boundary points b₀ < b₁ < ··· < bₖ, and the product condition intervalProd(bᵢ, bᵢ₊₁) ≡ 1 (mod p) for each consecutive pair. Each is defined separately (HasSolution2 through HasSolution6) rather than parametrically because the arity of the boundary sequence varies with k. `ExistsSolution k` wraps each with existential quantifiers, providing the clean existence statement used in the main theorems.",
-    "mathContext": "$\\text{intervalProd}(a,b) = \\prod_{n=a}^{b-1} n = \\frac{(b-1)!}{(a-1)!}$ for $a \\geq 1$. $\\text{HasSolution}_k(p, b_0,\\ldots,b_k)$: $p$ prime, $b_0 < \\cdots < b_k$, and $\\prod_{n=b_{i-1}}^{b_i - 1} n \\equiv 1 \\pmod{p}$ for $i = 1,\\ldots,k$.",
+    "title": "Core Definitions: intervalProd and the HasSolution_k Predicates",
+    "content": "`intervalProd a b` computes the product of all integers in the half-open interval [a, b) as a `Finset.Ico` product, so intervalProd(a,b) = (b-1)!/(a-1)! for a >= 1. The parameterized predicates `HasSolution2` through `HasSolution9` each encode exactly what a witness must supply for a given k: a prime p together with k+1 strictly increasing boundaries b_0 < b_1 < ... < b_k such that every one of the k consecutive interval products satisfies intervalProd(b_{i-1}, b_i) = 1 (mod p). Packaging the k disjoint intervals as a boundary list turns Erdos's existential question into a concrete, machine-checkable statement: exhibit the boundaries and evaluate k modular products.",
+    "mathContext": "$\\text{intervalProd}(a,b)=\\prod_{n=a}^{b-1} n = \\frac{(b-1)!}{(a-1)!}$; $\\text{HasSolution}_k(p,b_0,\\ldots,b_k)$ asserts $p$ prime, $b_0<\\cdots<b_k$, and $\\prod_{n=b_{i-1}}^{b_i-1} n \\equiv 1 \\pmod p$ for $1\\le i\\le k$.",
     "significance": "key",
     "relatedConcepts": [
       "Finset.Ico",
@@ -24,143 +24,231 @@
     ]
   },
   {
-    "id": "ann-1056-wilson",
-    "proofId": "erdos-1056-oq-01",
-    "range": {
-      "startLine": 82,
-      "endLine": 91
-    },
-    "type": "insight",
-    "title": "Wilson's Theorem as a Structural Constraint",
-    "content": "Wilson's theorem states (p-1)! ≡ -1 (mod p) for every prime p. These four theorems verify this as `(p-1)! % p = p-1`, i.e., the product of integers in [1, p) is ≡ -1 (not 1). This is critical context: the problem asks for the product of a sub-interval to equal 1, so the intervals cannot simply partition [1, p). The boundary points must be chosen so that products of sub-intervals balance to give +1, despite the full product being -1. Wilson's theorem constrains which sub-interval structures are possible.",
-    "mathContext": "Wilson (1770): for prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$. Equivalently, $\\prod_{n=1}^{p-1} n \\equiv p-1 \\pmod{p}$. The product of ALL integers in $[1,p)$ is $-1 \\not\\equiv 1$, so intervals must cover a strict sub-range of $[1,p)$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Wilson's theorem",
-      "group theory of (Z/pZ)*",
-      "quadratic residues"
-    ],
-    "prerequisites": [
-      "Wilson's theorem",
-      "modular arithmetic",
-      "group of units mod p"
-    ]
-  },
-  {
     "id": "ann-1056-factorial-key-insight",
     "proofId": "erdos-1056-oq-01",
     "range": {
-      "startLine": 95,
-      "endLine": 135
+      "startLine": 112,
+      "endLine": 125
     },
     "type": "insight",
-    "title": "Factorial Congruence Reformulation: Finding Solutions via Repeated Factorial Values",
-    "content": "The fundamental observation connecting interval products to factorials: intervalProd(a, b) = (b-1)!/(a-1)!, so intervalProd(a, b) ≡ 1 (mod p) if and only if (b-1)! ≡ (a-1)! (mod p). Therefore, a k-interval solution with boundaries b₀ < ··· < bₖ exists if and only if all the values (b₀-1)!, (b₁-1)!, ..., (bₖ-1)! are mutually congruent mod p. Finding solutions reduces to finding primes p with many repeated values in the sequence 0!, 1!, 2!, ..., (p-2)! (mod p). For p=23: 1!, 4!, 8!, 11!, 21! are all ≡ 1 (mod 23). For p=71: 7!, 9!, 19!, 51!, 61!, 63!, 70! are all congruent mod 71.",
-    "mathContext": "$\\text{intervalProd}(a,b) \\equiv 1 \\pmod{p} \\iff \\frac{(b-1)!}{(a-1)!} \\equiv 1 \\pmod{p} \\iff (b-1)! \\equiv (a-1)! \\pmod{p}$. For $p=23$: $1 \\equiv 24 \\equiv 40320 \\equiv \\cdots \\equiv 1 \\pmod{23}$ at positions $1!, 4!, 8!, 11!, 21!$.",
+    "title": "ExistsSolution and the Factorial Reformulation",
+    "content": "`ExistsSolution k` existentially quantifies over the prime and all boundaries, packaging the raw question 'does a k-interval solution exist?' into a single proposition. The key that makes any of this tractable is the factorial identity intervalProd(a,b) = (b-1)!/(a-1)!: a consecutive interval product is = 1 (mod p) exactly when (b-1)! = (a-1)! (mod p). Hence finding k disjoint unit-product intervals is equivalent to finding a chain of k+1 indices whose factorials all land in the same residue class mod p. This converts an interval-product search into a search for repeated values in the factorial sequence modulo p, which is what every later solution exploits.",
+    "mathContext": "$\\text{intervalProd}(a,b)\\equiv 1\\pmod p \\iff (b-1)!\\equiv (a-1)!\\pmod p$; a k-interval solution corresponds to $k+1$ indices sharing one factorial residue class.",
     "significance": "key",
     "relatedConcepts": [
-      "factorial function mod p",
-      "Wilson's theorem",
-      "modular inverses",
-      "group theory"
+      "factorials mod p",
+      "residue classes",
+      "pigeonhole principle",
+      "Wilson's theorem"
     ],
     "prerequisites": [
+      "Nat.factorial",
       "modular arithmetic",
-      "factorial function",
-      "basic group theory"
+      "existential quantifiers in Lean"
+    ]
+  },
+  {
+    "id": "ann-1056-wilson",
+    "proofId": "erdos-1056-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 147
+    },
+    "type": "insight",
+    "title": "Wilson's Theorem Checks for Every Prime Used",
+    "content": "Wilson's theorem states (p-1)! = -1 (mod p) for every prime p. The theorems `wilson_11`, `wilson_17`, `wilson_23`, `wilson_71`, `wilson_599`, `wilson_673`, and `wilson_3011` verify this for each prime appearing in the construction, in the concrete form (Finset.Ico 1 p).prod id % p = p-1 (i.e. the full product over [1,p) is congruent to -1, not 1). These serve as a structural sanity check on the factorial residues: because (p-1)! = -1, the residue class containing the identity cannot also contain (p-1)!, which constrains which index chains are available. Each is discharged by `native_decide`.",
+    "mathContext": "$(p-1)! \\equiv -1 \\pmod p$ for prime $p$ (Wilson); verified as $\\prod_{n=1}^{p-1} n \\bmod p = p-1$ for $p\\in\\{11,17,23,71,599,673,3011\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "factorials mod p",
+      "primality"
+    ],
+    "prerequisites": [
+      "Wilson's theorem",
+      "Finset.prod",
+      "native_decide"
     ]
   },
   {
     "id": "ann-1056-k4-solution",
     "proofId": "erdos-1056-oq-01",
     "range": {
-      "startLine": 147,
-      "endLine": 170
+      "startLine": 161,
+      "endLine": 191
     },
-    "type": "concept",
-    "title": "New Solutions: k=4 (p=23) and k=5,6 (p=71)",
-    "content": "The three new theorems `erdos_k4`, `erdos_k5`, `erdos_k6` extend the known catalog. For k=4 with p=23, the explicit products are 2·3·4=24≡1, 5·6·7·8=1680≡1, 9·10·11=990≡1, and 12·13·...·21≡1 (all mod 23). The k=5 and k=6 solutions share the prime p=71 — uniquely, the same boundary set {8,10,20,52,62,64,71} supports both by taking the first 5 or all 6 intervals. This reveals that a rich prime like p=71 can simultaneously host multiple solution structures. All three proofs use `native_decide` to verify the modular arithmetic.",
-    "mathContext": "$k=4,\\, p=23$: $[2,5),[5,9),[9,12),[12,22)$, products $24, 1680, 990, \\ldots \\equiv 1 \\pmod{23}$. $k=5,\\, p=71$: $[8,10),[10,20),[20,52),[52,62),[62,64)$: products $72, \\ldots \\equiv 1 \\pmod{71}$. $k=6,\\, p=71$: adds $[64,71)$: $64 \\cdot 65 \\cdots 70 \\equiv 1 \\pmod{71}$.",
+    "type": "insight",
+    "title": "Interval Verifications for k=4, k=5, k=6 (p=23, p=71)",
+    "content": "These theorems verify each individual consecutive interval product for the smaller solutions. For k=4 with p=23 (`k4_interval_1..4`): 2*3*4=24=1, 5*6*7*8=1680=1, 9*10*11=990=1, and 12*13*...*21=1 (all mod 23). For k=5 with p=71 (`k5_interval_1..5`): 8*9=72=1, then three longer blocks and 62*63=3906=1 (mod 71). The k=6 solution reuses the k=5 boundaries and splits the tail: `k6_interval_6` checks 64*65*...*70=1 (mod 71), extending five intervals to six under the same prime. Each product is confirmed by `native_decide`.",
+    "mathContext": "$k=4,p=23$: intervals $[2,5),[5,9),[9,12),[12,22)$; $k=5,p=71$: $[8,10),[10,20),[20,52),[52,62),[62,64)$; $k=6$ adds $[64,71)$. Every $\\prod \\equiv 1 \\pmod p$.",
     "significance": "key",
     "relatedConcepts": [
-      "computational number theory",
-      "native_decide tactic",
-      "modular products"
+      "modular arithmetic",
+      "interval products",
+      "explicit witnesses"
     ],
     "prerequisites": [
+      "native_decide",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-1056-k7-chain",
+    "proofId": "erdos-1056-oq-01",
+    "range": {
+      "startLine": 197,
+      "endLine": 216
+    },
+    "type": "insight",
+    "title": "The k=7 Chain: Seven Unit Intervals Modulo p=673",
+    "content": "`k7_interval_1` through `k7_interval_7` verify the seven consecutive interval products for the k=7 solution with prime p=673, using the boundary list [160, 317, 355, 394, 398, 507, 546, 648]. Each intervalProd(b_{i-1}, b_i) = 1 (mod 673) is confirmed by `native_decide`. These seven facts are the per-interval obligations that `erdos_k7` later assembles into a `HasSolution7` witness. The boundaries are read off the factorial pattern 159! = 316! = 354! = 393! = 397! = 506! = 545! = 647! (mod 673): consecutive equal factorial residues give unit interval products.",
+    "mathContext": "$k=7$, $p=673$, boundaries $[160,317,355,394,398,507,546,648]$; seven products $\\prod_{n=b_{i-1}}^{b_i-1} n \\equiv 1 \\pmod{673}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorials mod p",
+      "interval products",
+      "residue chains"
+    ],
+    "prerequisites": [
+      "native_decide",
       "modular arithmetic",
-      "Lean 4 native_decide",
-      "HasSolution definitions"
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "ann-1056-k8-chain",
+    "proofId": "erdos-1056-oq-01",
+    "range": {
+      "startLine": 222,
+      "endLine": 244
+    },
+    "type": "insight",
+    "title": "The k=8 Chain: p=599, the Smallest Prime Reaching Eight Intervals",
+    "content": "`k8_interval_1` through `k8_interval_8` verify the eight consecutive interval products for k=8 with prime p=599 and boundaries [29, 51, 123, 184, 251, 290, 501, 540, 556]. p=599 is the smallest prime whose factorial sequence contains a residue class with nine members, yielding eight consecutive unit intervals. Each intervalProd(b_{i-1}, b_i) = 1 (mod 599) is checked by `native_decide`, and the eight facts feed `erdos_k8`. The underlying chain is 28! = 50! = 122! = 183! = 250! = 289! = 500! = 539! = 555! (mod 599) — nine factorials in one residue class.",
+    "mathContext": "$k=8$, $p=599$ (minimal), boundaries $[29,51,123,184,251,290,501,540,556]$; eight products $\\equiv 1 \\pmod{599}$ from nine equal factorial residues.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorials mod p",
+      "minimal prime search",
+      "residue chains"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "modular arithmetic",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "ann-1056-k9-chain",
+    "proofId": "erdos-1056-oq-01",
+    "range": {
+      "startLine": 250,
+      "endLine": 276
+    },
+    "type": "insight",
+    "title": "The k=9 Chain: p=3011 with a Ten-Index Identity Class",
+    "content": "`k9_interval_1` through `k9_interval_9` verify the nine consecutive interval products for k=9 with prime p=3011 and boundaries [1, 612, 724, 750, 806, 2206, 2262, 2288, 2400, 3010]. p=3011 is the smallest prime found by exhaustive search up to 5000 admitting a chain of ten indices in one factorial residue class. Remarkably that shared residue is 1: the factorials 0!, 611!, 723!, 749!, 805!, 2205!, 2261!, 2287!, 2399!, 3009! are all = 1 (mod 3011), so every interval product collapses to the identity. Each is confirmed by `native_decide`.",
+    "mathContext": "$k=9$, $p=3011$, boundaries $[1,612,724,750,806,2206,2262,2288,2400,3010]$; nine products $\\equiv 1 \\pmod{3011}$ from ten factorials all $\\equiv 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorials mod p",
+      "exhaustive prime search",
+      "identity residue class"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "modular arithmetic",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "ann-1056-witnesses",
+    "proofId": "erdos-1056-oq-01",
+    "range": {
+      "startLine": 280,
+      "endLine": 333
+    },
+    "type": "concept",
+    "title": "Combined Solution Theorems: Assembling the HasSolution_k Witnesses",
+    "content": "Part IV bundles the per-interval facts into named `HasSolution_k` witnesses for every k from 2 to 9. `erdos_k2` (p=11, Erdos 1979) and `makowski_k3` (p=17, Makowski 1983) recover the two historically known solutions, while `erdos_k4` through `erdos_k9` are the new ones (p=23, 71, 71, 673, 599, 3011). Each theorem unfolds the corresponding `HasSolution_k` predicate and discharges the primality, ordering, and modular-product obligations together via `decide`/`native_decide`. This is the layer where the explicit boundary data is certified to actually satisfy the solution predicate.",
+    "mathContext": "$\\text{HasSolution}_k(p,\\vec b)$ witnesses: $k=2,p=11$; $k=3,p=17$; $k=4,p=23$; $k=5,6,p=71$; $k=7,p=673$; $k=8,p=599$; $k=9,p=3011$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "explicit witnesses",
+      "decision procedures",
+      "Erdős problems",
+      "Makowski"
+    ],
+    "prerequisites": [
+      "native_decide",
+      "structure/predicate unfolding in Lean"
     ]
   },
   {
     "id": "ann-1056-existence",
     "proofId": "erdos-1056-oq-01",
     "range": {
-      "startLine": 174,
-      "endLine": 185
+      "startLine": 337,
+      "endLine": 356
     },
     "type": "concept",
     "title": "Existential Packaging: From Witnesses to ExistsSolution",
-    "content": "The existence theorems `exists_k2` through `exists_k6` wrap the explicit witness theorems in existential quantifiers. The pattern is straightforward: supply all boundary values explicitly, using angle-bracket notation for anonymous constructors. `all_solutions_2_to_6` then combines all five existence results into a single conjunction. This two-layer design — first prove `HasSolution_k` with explicit witnesses, then existentially quantify — keeps the computational proof obligations in the witness layer while the existence layer stays lightweight. The design also mirrors the mathematical structure: Erdős's question asks for existence, so `ExistsSolution` is the natural statement.",
-    "mathContext": "$\\exists p, b_0, \\ldots, b_k : \\text{HasSolution}_k(p, b_0,\\ldots,b_k)$ proved by giving $p, b_0, \\ldots, b_k$ explicitly. `all_solutions_2_to_6`: $\\bigwedge_{k=2}^{6} \\text{ExistsSolution}(k)$.",
-    "significance": "supporting",
+    "content": "The existence theorems `exists_k2` through `exists_k9` wrap each explicit `HasSolution_k` witness in the existential predicate `ExistsSolution k`, supplying all boundary values through anonymous-constructor angle-bracket notation. `all_solutions_2_to_9` then combines the eight existence results into a single conjunction spanning 2 <= k <= 9. This two-layer design keeps the heavy computational obligations in the witness layer while the existence layer stays lightweight and mirrors the mathematical statement: Erdos asks for existence, so `ExistsSolution` is the natural top-level form.",
+    "mathContext": "$\\text{ExistsSolution}(k)=\\exists p\\,\\vec b,\\ \\text{HasSolution}_k(p,\\vec b)$; `all_solutions_2_to_9` proves $\\bigwedge_{k=2}^{9}\\text{ExistsSolution}(k)$.",
+    "significance": "key",
     "relatedConcepts": [
-      "existential introduction",
-      "anonymous constructors in Lean 4",
-      "conjunction"
+      "existential quantifiers",
+      "anonymous constructors",
+      "proof layering"
     ],
     "prerequisites": [
-      "Lean 4 exists introduction",
-      "And constructor"
+      "existential quantifiers in Lean",
+      "anonymous constructor notation"
     ]
   },
   {
     "id": "ann-1056-factorial-pattern",
     "proofId": "erdos-1056-oq-01",
     "range": {
-      "startLine": 189,
-      "endLine": 208
+      "startLine": 363,
+      "endLine": 421
     },
     "type": "insight",
-    "title": "Factorial Congruence Chains: The Combinatorial Signature of Each Solution",
-    "content": "`factorial_pattern_23` and `factorial_pattern_71` explicitly verify the factorial congruence chains that underlie the solutions. For p=23: 1! ≡ 4! ≡ 8! ≡ 11! ≡ 21! (mod 23) — these are precisely the factorials at positions bᵢ - 1 for the k=4 boundaries. For p=71: the chain has 7 congruent factorial values, supporting both the k=5 and k=6 solutions. These theorems are mathematically richer than the solution theorems themselves: they reveal the algebraic structure behind the interval decomposition and suggest a computational search strategy for larger k: enumerate factorials mod p and look for long chains of equal values.",
-    "mathContext": "$p=23$: $1! \\equiv 4! \\equiv 8! \\equiv 11! \\equiv 21! \\pmod{23}$ (all $\\equiv 1 \\pmod{23}$). $p=71$: $7! \\equiv 9! \\equiv 19! \\equiv 51! \\equiv 61! \\equiv 63! \\equiv 70! \\pmod{71}$. A length-$(k+1)$ factorial chain at positions $c_0 < \\cdots < c_k$ gives a $k$-interval solution with boundaries $c_i + 1$.",
+    "title": "Factorial Congruence Chains: The Signature Behind Each Solution",
+    "content": "Part VI makes the mechanism explicit: `factorial_pattern_23`, `_71`, `_673`, `_599`, and `_3011` verify the exact chains of equal factorial residues that generate the boundaries. For p=23: 1! = 4! = 8! = 11! = 21! (mod 23). For p=71 a chain of seven; for p=673 eight; for p=599 nine; and for p=3011 a chain of ten factorials all equal to 1 (mod 3011). Because intervalProd(a,b) = (b-1)!/(a-1)!, each adjacent equality (a-1)! = (b-1)! is precisely a unit interval product, so these congruence chains ARE the solutions in factorial form. Each is verified by `native_decide`.",
+    "mathContext": "Equal-residue chains: $p=23$: $1!\\equiv 4!\\equiv 8!\\equiv 11!\\equiv 21!$; larger primes give chains of $7,8,9,10$ equal factorial residues, the last collapsing to $1\\pmod{3011}$.",
     "significance": "key",
     "relatedConcepts": [
-      "factorial sequences mod p",
-      "collision search",
-      "birthday paradox",
-      "computational search"
+      "factorials mod p",
+      "residue chains",
+      "pigeonhole principle"
     ],
     "prerequisites": [
       "Nat.factorial",
-      "modular arithmetic",
-      "native_decide"
+      "native_decide",
+      "modular arithmetic"
     ]
   },
   {
     "id": "ann-1056-summary",
     "proofId": "erdos-1056-oq-01",
     "range": {
-      "startLine": 212,
-      "endLine": 226
+      "startLine": 429,
+      "endLine": 444
     },
     "type": "concept",
-    "title": "Main Results: Solutions Extended to k=4,5,6; Open Questions Remain",
-    "content": "`erdos_1056_new_solutions` and `all_solutions_2_to_6` are the top-level theorems. The open problem — do solutions exist for ALL k? — remains fully open. The computational approach scales: to find a k=7 solution, one would search for a prime p where the factorial sequence mod p has at least 8 equal values. The expected prime needed grows with k (a birthday-paradox argument: factorials mod p ≈ uniform in (Z/pZ)*, so a chain of length k+1 requires p ≈ (k+1)^2 by the birthday bound). For k=7, a prime near 64 might suffice; for large k, the needed prime grows quadratically. Whether this pattern continues indefinitely is the core open question.",
-    "mathContext": "Birthday bound: with $k+1$ uniform samples from $(\\mathbb{Z}/p\\mathbb{Z})^*$ (size $p-1$), a collision requires $p \\gtrsim (k+1)^2$. Solution primes: $11, 17, 23, 71$ for $k=2,3,4,5/6$ — growth slower than $(k+1)^2$ so far. Open: $\\forall k \\geq 2, \\exists$ solution.",
-    "significance": "supporting",
+    "title": "Main Results and the Wilson Cross-Check; the Full Problem Stays Open",
+    "content": "`erdos_1056_new_solutions` is the headline theorem: it proves ExistsSolution for k=4,5,6,7,8,9, the six new values added on top of the classically known k=2 (Erdos 1979) and k=3 (Makowski 1983), each obtained from a chain of factorials sharing a residue class mod a prime. `wilson_constraints_verified` collects the Wilson checks for all seven primes as a single conjunction. What remains fully open is Erdos's actual question — whether solutions exist for ALL k; the computational method exhibits solutions one k at a time but gives no bound or construction covering every k.",
+    "mathContext": "Main theorem: $\\bigwedge_{k=4}^{9}\\text{ExistsSolution}(k)$. Open: does $\\text{ExistsSolution}(k)$ hold for all $k$? Only finitely many $k$ are settled here.",
+    "significance": "key",
     "relatedConcepts": [
-      "birthday paradox",
+      "Erdős problems",
       "open problems",
-      "computational number theory",
-      "Chinese remainder theorem"
+      "Wilson's theorem"
     ],
     "prerequisites": [
-      "birthday paradox",
-      "natural density",
-      "group theory of (Z/pZ)*"
+      "existential quantifiers",
+      "Erdős problem context"
     ]
   }
 ]
