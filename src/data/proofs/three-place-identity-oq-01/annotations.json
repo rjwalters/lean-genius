@@ -90,5 +90,29 @@
       "derivedMem_iff",
       "parent roundtrip theorem"
     ]
+  },
+  {
+    "id": "ann-tpioq01-selfreg-idem",
+    "proofId": "three-place-identity-oq-01",
+    "range": {
+      "startLine": 158,
+      "endLine": 179
+    },
+    "type": "insight",
+    "title": "Self-Regularization: The Derivation Is an Idempotent Projection",
+    "content": "The closing part packages the derived membership relation as a bona fide WellFoundedMembership structure (derivedWFM), using the already-established fact that derivedMem mem is irreflexive and hence well-founded. The payoff is derivedMem_idempotent: applying the round-trip a second time changes nothing, derivedMem (derivedMem mem) = derivedMem mem. So the derivation behaves like a projection operator — it maps an arbitrary membership relation into the class of well-founded ones and fixes everything already there. The final #check block re-exposes the file five headline results as a machine-checked summary.",
+    "mathContext": "$\\operatorname{der}(\\operatorname{der}(\\in)) = \\operatorname{der}(\\in)$, i.e. $\\operatorname{der}$ is idempotent ($\\operatorname{der}^2 = \\operatorname{der}$). Equivalently $\\operatorname{der}$ is a retraction of the space of binary relations onto its subspace of well-founded (foundation-satisfying) relations, fixing that subspace pointwise.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "idempotence",
+      "projection/retraction",
+      "well-founded relation",
+      "regularization"
+    ],
+    "prerequisites": [
+      "well-founded relations",
+      "axiom of foundation",
+      "structures in Lean"
+    ]
   }
 ]
