@@ -55,7 +55,7 @@
       "lambdaRecip_sub_log_le: the conditional Λ-weighted first Mertens estimate |Σ_{d=1}^N Λ(d)/d − log N| ≤ 1 + c_S + c_ψ for N ≥ 2, derived from Steps A–C plus the Chebyshev ψ(N) ≤ c_ψ·N and Stirling |Σ log n − (N log N − N)| ≤ c_S·log N hypotheses of the MertensInputs structure"
     ],
     "axiomCount": 2,
-    "lineCount": 246,
+    "lineCount": 250,
     "assumptions": "The unconditional results — the floor identity (Step A), its decomposition (Step B), the remainder sandwich (Step C), and the rearrangement lambdaRecip_eq — are fully verified, 0 axioms and 0 sorries (only propext / Classical.choice / Quot.sound), no native_decide. The headline Λ-weighted first Mertens estimate lambdaRecip_sub_log_le is CONDITIONAL: it is a verified implication taking the two analytic inputs as the hypotheses of the MertensInputs structure — (1) Chebyshev's bound ψ(N) ≤ c_ψ·N (the gallery's standing open chebyshevPsi_asymptotic, upper half) and (2) Stirling's estimate |Σ_{n≤N} log n − (N log N − N)| ≤ c_S·log N. These two structure-encoded assumptions are counted as axiomCount = 2 per the project's axiom-integrity policy (leanFile.axiomCount = 0 since there are no literal `axiom` declarations). Neither input is proved here. The prime-power strip from the Λ-sum to the genuine prime sum Σ_{p≤x}(log p)/p, and the Abel partial-summation passage to Mertens' second theorem Σ_{p≤x} 1/p = log log x + M + O(1/log x), remain the open targets.",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,

@@ -25,7 +25,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 206,
+    "lineCount": 211,
     "theoremCount": 8,
     "definitionCount": 0,
     "assumptions": "None. The file is textually 0-axiom (no `axiom` declarations, no structure-encoded assumptions) and 0-sorry, and uses no `native_decide`. It reduces to the parent entry's verified engine `BlichfeldtTheorem.blichfeldt_general_lattice` (already proved lattice-parametrically) plus the Mathlib `ZLattice.covolume` API. Docker build verified clean against Lean 4.26.0 / Mathlib 4.26.0.",

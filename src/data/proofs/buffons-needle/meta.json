@@ -39,7 +39,7 @@
     ],
     "dateAdded": "2025-12-27",
     "axiomCount": 0,
-    "lineCount": 266,
+    "lineCount": 254,
     "assumptions": "0 axioms, 0 sorries. What is machine-checked is the integral computation ∫₀^π (ℓ/2)sin θ dθ = ℓ (via Mathlib's integral_sin) and the algebraic identity ℓ/(πd/2) = 2ℓ/(πd). The step 'probability = crossing-region area / sample-space area' is encoded by the crossingRegion and sampleSpace set definitions rather than derived measure-theoretically: no probability measure, random variable, or set measure is formalized, so the probabilistic statement P(crossing) = 2ℓ/(πd) is modeled geometrically, not proved as a theorem about a measure.",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,

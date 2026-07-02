@@ -17,7 +17,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 208,
+    "lineCount": 213,
     "buildStatus": "broken",
     "assumptions": "BUILD BROKEN (2026-06-24, issue #28788): this file transitively fails to compile against leanprover/lean4:v4.26.0. It imports the chain foundation CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean, which produces 53 Mathlib-drift errors; the dependent companion CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean and this file therefore also fail to build. There are 0 literal `sorry` tactics and 0 `axiom` declarations — the formalization exists but is not currently machine-checked, so status was downgraded verified→formalized pending repair of the foundation file. Mathematical content (3 main theorems delegated to RieszSigmaFiniteComplete.* via exact calls) is unchanged.",
     "dateAdded": "2026-05-03",
