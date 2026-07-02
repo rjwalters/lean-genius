@@ -17,7 +17,11 @@
       "Sieve methods",
       "Analytic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the ring of integer polynomials ℤ[x] and polynomial evaluation f(m)",
+      "prime factorization and the fundamental theorem of arithmetic",
+      "asymptotic notation (≫ / Vinogradov, big-O)"
+    ]
   },
   {
     "id": "ann-e976-irreducible",
@@ -36,7 +40,11 @@
       "Polynomial factorization",
       "Algebraic number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomials over a ring and their degree",
+      "prime numbers as the multiplicative building blocks of ℤ",
+      "factorization of polynomials into products of lower-degree factors"
+    ]
   },
   {
     "id": "ann-e976-gpd",
@@ -55,7 +63,11 @@
       "Dickman function",
       "Prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization of a positive integer",
+      "the maximum of a finite set of numbers",
+      "Nat.factors (the prime factor list of a natural number in Lean)"
+    ]
   },
   {
     "id": "ann-e976-ff",
@@ -74,7 +86,11 @@
       "Polynomial evaluation",
       "Maximum over sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the greatest prime divisor function P(n)",
+      "polynomial evaluation at integer arguments",
+      "the fact that the greatest prime factor of a product is the max over the factors"
+    ]
   },
   {
     "id": "ann-e976-nagell-ricci",
@@ -93,7 +109,11 @@
       "Elementary bounds",
       "Counting arguments"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the extremal function F_f(n) and its meaning",
+      "the prime number theorem and prime density π(x) ~ x/log x",
+      "super-linear vs linear growth of arithmetic functions"
+    ]
   },
   {
     "id": "ann-e976-erdos-1952",
@@ -112,7 +132,11 @@
       "Iterated logarithms",
       "Erdős sieve"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Nagell–Ricci n log n baseline bound",
+      "the sieve of Eratosthenes and general sieve methods",
+      "iterated logarithms log log log n and their slow growth"
+    ]
   },
   {
     "id": "ann-e976-tenenbaum",
@@ -131,7 +155,11 @@
       "Sub-exponential functions",
       "Tenenbaum"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the earlier Erdős n(log n)^{log log log n} bound",
+      "the large sieve inequality",
+      "sub-exponential growth functions exp((log x)^c)"
+    ]
   },
   {
     "id": "ann-e976-conjectures",
@@ -150,7 +178,11 @@
       "Open conjectures",
       "Growth rate classification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the current best known bound n·exp((log n)^c)",
+      "the degree d = deg(f) of a polynomial",
+      "polynomial growth rates and comparison of n^{1+c} vs sub-polynomial factors"
+    ]
   },
   {
     "id": "ann-e976-upper",
@@ -169,7 +201,11 @@
       "Polynomial growth",
       "Theta notation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the bound |f(m)| = O(m^d) for a degree-d polynomial",
+      "the fact that a prime divisor of n cannot exceed n itself",
+      "Theta notation Θ and matching upper/lower bounds"
+    ]
   },
   {
     "id": "ann-e976-examples",
@@ -188,7 +224,11 @@
       "Primorial numbers",
       "Computational verification"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the greatest prime divisor function P(n)",
+      "prime factorization of small integers",
+      "native_decide (kernel-level decidable computation in Lean)"
+    ]
   },
   {
     "id": "ann-e976-summary",
@@ -207,6 +247,10 @@
       "Tenenbaum bound",
       "State of the art"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the Tenenbaum bound F_f(n) ≫ n·exp((log n)^c)",
+      "stating a known result as an axiom in a Lean formalization",
+      "the `exact` tactic applying a hypothesis or axiom directly"
+    ]
   }
 ]
