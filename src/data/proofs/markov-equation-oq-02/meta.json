@@ -5,7 +5,7 @@
   "title": "Mod-3 Arithmetic Structure of Markov Triples",
   "description": "A self-contained, axiom-free formalization of the prime-3 rigidity of the Markov equation x² + y² + z² = 3xyz. The result complements the parent entry's parity (prime-2) layer: no coordinate of a Markov triple is divisible by 3, and consequently every coordinate is congruent to ±1 modulo 3 (its residue squares to 1 in ZMod 3). The proof is the standard residue argument — reduce the equation modulo 3, where the right-hand side 3xyz vanishes, so the residues satisfy a² + b² + c² ≡ 0; a finite decide over ZMod 3 shows any single zero residue forces all three to vanish, which contradicts the pairwise coprimality already established for Markov triples. The factor of 3 on the right-hand side is what flips the conclusion relative to the unscaled Markov–Hurwitz equation x² + y² + z² = xyz, whose mod-3 analysis forces every coordinate to be divisible by 3.",
   "leanFile": {
-    "lineCount": 105,
+    "lineCount": 104,
     "axiomCount": 0,
     "path": "Proofs/MarkovEquationOQ02.lean",
     "sorries": 0,
@@ -29,7 +29,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-06-28",
-    "lineCount": 105,
+    "lineCount": 104,
     "originalContributions": [
       "not_three_dvd_both: a coprime pair of integers cannot share the non-unit factor 3 — the prime-3 analogue of the parent's not_two_dvd_both, proved via IsCoprime.isUnit_of_dvd' and Int.isUnit_iff",
       "markov_not_three_dvd: the main result — no coordinate of a Markov triple x² + y² + z² = 3xyz is divisible by 3. The integer equation is cast into ZMod 3 (where the right-hand side 3xyz is identically 0), and a decide establishes that over ZMod 3 a single vanishing residue forces all three to vanish; the resulting triple-divisibility contradicts pairwise coprimality",

@@ -20,7 +20,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 159,
+    "lineCount": 158,
     "theoremCount": 7,
     "assumptions": "None. 0 axioms, 0 sorries, no native_decide. Verified via #print axioms: aperyB_le_64_pow, aperyB_odd, aperyB_le_centralBinom_cube and two_dvd_choose_mul each depend only on the standard foundational axioms propext / Classical.choice / Quot.sound — no Lean.ofReduceBool, no sorryAx. The Apéry numbers bₙ are inherited from the parent companion (also axiom-free), so none of the five axioms of the grandparent ζ(3) irrationality file enter the dependency graph.",
     "mathlibDependencies": [
@@ -90,7 +90,7 @@
       "Nat"
     ],
     "namespace": "AperyCentralBinom",
-    "lineCount": 159,
+    "lineCount": 158,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 0,

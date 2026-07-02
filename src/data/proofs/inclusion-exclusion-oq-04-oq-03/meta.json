@@ -71,7 +71,7 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 285,
+    "lineCount": 284,
     "assumptions": "0 axioms, 0 sorries, no native_decide; the file is self-contained (imports only Mathlib.Data.Finset.Powerset and Mathlib.Tactic) and the result holds for an arbitrary finite universe α, finite index type ι, and family A : ι → Finset α. Kernel build pending: the project's Docker build wrapper and the Aristotle service were both unavailable during the authoring session, so the file has not yet been machine-checked in this environment; the deployer's build gate must confirm a clean compile before this entry is treated as fully verified. The proof is a tight structural mirror of the already-verified gallery file InclusionExclusionSieveDerangementsBonferroni (with element x in place of permutation σ).",
     "mathlib_version": "4.26.0",
     "theoremCount": 13,
@@ -88,7 +88,7 @@
       "Finset"
     ],
     "namespace": "InclusionExclusionBonferroniGeneral",
-    "lineCount": 285,
+    "lineCount": 284,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 5,

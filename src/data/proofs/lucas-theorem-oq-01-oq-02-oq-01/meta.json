@@ -62,7 +62,7 @@
     ],
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries. No native_decide — the three concrete sanity checks (totalEntries 2 = 10, totalEntries 3 = 36, 2·totalEntries 3 = 8·9) use kernel `decide`, so no Lean.ofReduceBool. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
-    "lineCount": 219,
+    "lineCount": 218,
     "theoremCount": 15,
     "definitionCount": 3
   },
@@ -172,7 +172,7 @@
     "imports": ["Mathlib", "Proofs.LucasTheoremOQ01"],
     "opens": ["Nat", "Finset", "LucasOddEntries"],
     "namespace": "LucasSierpinskiDimension",
-    "lineCount": 219,
+    "lineCount": 218,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 3,

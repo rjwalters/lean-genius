@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 10,
-    "lineCount": 264,
+    "lineCount": 263,
     "assumptions": "Carriers: Space (Z/p-spaces), idx (Fadell-Husseini index in WithTop Nat), GMap (existence of equivariant map), HasFixedPoint (fixed-point set nonempty), freeSphere (free Z/p-spheres), ZeroAvoidingMap (test-map relation). Properties: idx_freeSphere (free index = n), idx_mono (equivariant maps increase index), idx_localization (a fixed point trivializes the index: idx = TOP), zeroAvoiding_iff (test-map scheme: zero-avoiding map <-> map to free sphere).",
     "originalContributions": [
       "Resolves OQ-02-OQ-04: for non-free Z/p actions the equivariant index does NOT control vanishing; it collapses to +infinity and control passes to the fixed-point set",
@@ -170,7 +170,7 @@
   ],
   "leanFile": {
     "axiomCount": 10,
-    "lineCount": 264,
+    "lineCount": 263,
     "path": "Proofs/BorsukUlamOQ02OQ04.lean",
     "sorries": 0,
     "definitionCount": 0,
