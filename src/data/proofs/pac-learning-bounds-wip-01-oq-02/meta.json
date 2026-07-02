@@ -167,5 +167,46 @@
       "summary": "trace_card_le_sum_choose: |Π_H(S)| ≤ Σ_{i≤VCDim H} C(|S|,i) for an arbitrary set S over an arbitrary type (no Fintype α), composing card_restrFam, Mathlib's shatterer count on ↥S (Fintype.card_coe), and vcDim_restrFam_le. Corollaries trace_card_le_sum_choose_of_le and trace_card_le_sum_range_choose give the bound for any explicit d ≥ VCDim H, the latter in the Σ_{i=0}^{d} C(m,i) form.",
       "mathContext": "The growth-function form Π_H(m) ≤ Σ_{i≤d} C(m,i) that uniform-convergence and sample-complexity arguments actually consume."
     }
+  ],
+  "conclusion": {
+    "summary": "This entry closes the open problem left by pac-learning-bounds-wip-01 by supplying the hard half of the Sauer–Shelah lemma in two forms. Bridging the parent's hand-rolled Shatters/VCDim to Mathlib's Finset.Shatters/Finset.vcDim (shatters_iff_finsetShatters, vcDim_eq), it transports Mathlib's Sauer–Shelah bound to the class-cardinality form |H| ≤ Σ_{k≤d} C(n,k) over a finite ground type (n = |α|, d = VCDim H), and — its original contribution — proves the growth-function form |Π_H(S)| ≤ Σ_{i≤d} C(|S|,i) for an arbitrary set S over an arbitrary, possibly infinite, ambient type by count-preservingly transporting the trace onto the finite subtype ↥S. The result is a polynomial O(n^d) bound, an exponential sharpening of the parent's 2^|S| trace bound and log₂|H| estimate. 12 theorems, 2 definitions, 0 sorries, 0 axiom declarations, no native_decide.",
+    "implications": "The growth-function bound is precisely the combinatorial input that uniform-convergence and PAC-learnability arguments consume: bounding Π_H(m) polynomially in m collapses the exponential union bound over 2^m dichotomies to a polynomial one, yielding sample complexity O((d/ε)·log(1/ε)) for classes of VC dimension d. Dropping Mathlib's Fintype-on-the-ambient-type hypothesis is what makes the bound usable for the infinite hypothesis classes (halfspaces, intervals, axis-aligned rectangles) that learning theory actually studies — Mathlib's Fintype-only statement cannot express the growth function on an infinite domain. The bridge lemmas vcDim_eq and shatters_iff_finsetShatters also let any future Mathlib development on VC theory be quoted directly against the parent's from-scratch framework.",
+    "openQuestions": [
+      "Can this growth-function bound be composed with a uniform-convergence / symmetrization argument to obtain a fully formalized PAC sample-complexity theorem O((d/ε)·log(1/ε)) in the parent's framework?",
+      "Is the bound tight? Σ_{k≤d} C(m,k) is achieved by classes of VC dimension exactly d (e.g. all subsets of a d-element set together with the ambient type); can such an extremal family be exhibited in Lean to prove the bound cannot be improved?",
+      "Can the finite-ground result's [Fintype α] hypothesis be removed uniformly by routing the class-cardinality form |H| ≤ Σ C(n,k) itself through the ↥S transport, unifying the two capstones?",
+      "Does the transport technique extend to real-valued function classes via the pseudo-dimension / fat-shattering dimension, giving the corresponding polynomial covering-number bounds?",
+      "Pending item flagged in the source: a CI/Docker rebuild of PACLearningBoundsWIP01SauerShelah.lean to machine-confirm the 0-sorry/0-axiom proof term, which the authoring session could not execute."
+    ]
+  },
+  "references": [
+    {
+      "authors": "N. Sauer",
+      "title": "On the density of families of sets",
+      "year": 1972,
+      "venue": "Journal of Combinatorial Theory, Series A, 13(1), 145–147",
+      "note": "One of the independent origins of the bound |Π_H(m)| ≤ Σ_{k≤d} C(m,k); answers a question of Erdős on the density of set families."
+    },
+    {
+      "authors": "S. Shelah",
+      "title": "A combinatorial problem; stability and order for models and theories in infinitary languages",
+      "year": 1972,
+      "venue": "Pacific Journal of Mathematics, 41(1), 247–261",
+      "note": "Independent derivation in the model-theoretic setting of stability; the lemma bounds the trace of a definable family."
+    },
+    {
+      "authors": "V. N. Vapnik and A. Ya. Chervonenkis",
+      "title": "On the uniform convergence of relative frequencies of events to their probabilities",
+      "year": 1971,
+      "venue": "Theory of Probability & Its Applications, 16(2), 264–280",
+      "note": "Introduces the VC dimension and the growth-function argument for uniform convergence; the learning-theory motivation for this entry's growth-function form."
+    },
+    {
+      "authors": "Shai Shalev-Shwartz and Shai Ben-David",
+      "title": "Understanding Machine Learning: From Theory to Algorithms",
+      "year": 2014,
+      "venue": "Cambridge University Press, Chapter 6",
+      "note": "Textbook treatment of Sauer–Shelah and the growth function within the PAC / uniform-convergence framework this entry targets."
+    }
   ]
 }
