@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-e286oq01-intro",
+    "proofId": "erdos-286-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 40
+    },
+    "type": "context",
+    "title": "Setup: the small-k Egyptian-fraction picture for 1",
+    "content": "This is a child of Erdős Problem #286 (unit fractions in short intervals). The parent asks how narrow an interval of denominators can represent 1 as a sum of k distinct unit fractions; this entry pins down the exact small-k picture with denominator-free statements. Writing 1 = Σ 1/nᵢ with distinct positive integers nᵢ, there is no 2-term representation and a unique 3-term one, {2,3,6}. Working over ℚ (all denominators are ordered a < b < c) keeps every step a linear/reciprocal inequality dischargeable by linarith/omega, so the whole file is 0-axiom: no sorry, no axiom, and crucially no native_decide (which would pull in Lean.ofReduceBool).",
+    "mathContext": "Distinct-denominator Egyptian representations of $1$: $\\nexists\\,a<b:\\tfrac1a+\\tfrac1b=1$, and for $a<b<c$ the unique solution of $\\tfrac1a+\\tfrac1b+\\tfrac1c=1$ is $(2,3,6)$. So $k=3$ is minimal.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Egyptian fractions",
+      "Erdős problem #286",
+      "unit fractions",
+      "minimal representation length"
+    ],
+    "prerequisites": [
+      "rational arithmetic",
+      "ordering of reciprocals"
+    ]
+  },
+  {
     "id": "ann-e286oq01-k2",
     "proofId": "erdos-286-oq-01",
     "range": {
@@ -22,11 +45,32 @@
     ]
   },
   {
+    "id": "ann-e286oq01-existence",
+    "proofId": "erdos-286-oq-01",
+    "range": {
+      "startLine": 67,
+      "endLine": 69
+    },
+    "type": "theorem",
+    "title": "Existence for k = 3: the witness 1/2 + 1/3 + 1/6",
+    "content": "repr_236 records the existence witness 1/2 + 1/3 + 1/6 = 1, a one-line norm_num computation. Combined with the k = 2 impossibility above, it shows that k = 3 is the minimal number of distinct unit fractions summing to 1 — two terms never suffice, three do.",
+    "mathContext": "$\\tfrac12 + \\tfrac13 + \\tfrac16 = 1$: the smallest-$k$ distinct Egyptian representation of $1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "existence witness",
+      "Egyptian fractions",
+      "minimal term count"
+    ],
+    "prerequisites": [
+      "norm_num"
+    ]
+  },
+  {
     "id": "ann-e286oq01-uniqueness",
     "proofId": "erdos-286-oq-01",
     "range": {
       "startLine": 71,
-      "endLine": 125
+      "endLine": 124
     },
     "type": "theorem",
     "title": "Uniqueness of {2, 3, 6} for k = 3",
@@ -47,24 +91,24 @@
     ]
   },
   {
-    "id": "ann-e286oq01-existence-iff",
+    "id": "ann-e286oq01-iff",
     "proofId": "erdos-286-oq-01",
     "range": {
-      "startLine": 66,
-      "endLine": 133
+      "startLine": 125,
+      "endLine": 131
     },
     "type": "theorem",
-    "title": "Existence and the iff-Characterisation",
-    "content": "repr_236 records the existence witness 1/2 + 1/3 + 1/6 = 1 (a norm_num computation), and three_distinct_iff packages existence and uniqueness into a single equivalence: for a < b < c, the sum equals 1 exactly when (a,b,c) = (2,3,6). Together with the k = 2 impossibility, this makes k = 3 the minimal distinct-denominator representation of 1, uniquely realized.",
-    "mathContext": "$\\tfrac12 + \\tfrac13 + \\tfrac16 = 1$; and for $a<b<c$, $\\tfrac1a+\\tfrac1b+\\tfrac1c = 1 \\iff (a,b,c) = (2,3,6)$.",
+    "title": "The iff-characterisation of {2, 3, 6}",
+    "content": "three_distinct_iff packages existence and uniqueness into a single equivalence: for a < b < c, the sum 1/a + 1/b + 1/c equals 1 exactly when (a, b, c) = (2, 3, 6). The forward direction is the uniqueness theorem three_distinct_unit_fractions_eq_one; the reverse is the witness repr_236. Together with the k = 2 impossibility, this makes {2, 3, 6} the unique minimal distinct-denominator representation of 1.",
+    "mathContext": "For $a<b<c$: $\\tfrac1a+\\tfrac1b+\\tfrac1c = 1 \\iff (a,b,c) = (2,3,6)$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "existence witness",
       "iff-characterisation",
-      "minimal term count"
+      "existence and uniqueness",
+      "minimal representation"
     ],
     "prerequisites": [
-      "norm_num"
+      "logical equivalence (constructor/rintro)"
     ]
   }
 ]
