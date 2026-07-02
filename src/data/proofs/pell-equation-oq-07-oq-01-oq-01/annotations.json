@@ -1,0 +1,106 @@
+[
+  {
+    "id": "ann-pell-oq070101-docstring",
+    "proofId": "pell-equation-oq-07-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 70 },
+    "type": "concept",
+    "title": "Reading the Determinant off the Companion Power Form",
+    "content": "The docstring answers the parent entry's first open question. The parent (pell-equation-oq-07-oq-01) proved the companion-matrix closed form Mⁿ = !![re(aⁿ), d·im(aⁿ); im(aⁿ), re(aⁿ)] with det M = N(a). This entry reads the determinant off that form two ways: multiplicatively det(Mⁿ) = (det M)ⁿ = N(a)ⁿ, and by direct 2×2 evaluation re(aⁿ)² − d·im(aⁿ)². Equating them gives the norm-power identity N(aⁿ) = N(a)ⁿ, which for a Pell generator is the Pell equation xₙ² − d·yₙ² = 1 for every power. The same conjugate decomposition then yields the Cassini/Catalan identities of three consecutive coordinates, proved √d-free inside ℤ[√d].",
+    "mathContext": "$\\det(M^n)=(\\det M)^n=N(a)^n=\\mathrm{re}(a^n)^2-d\\,\\mathrm{im}(a^n)^2.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pell's equation",
+      "companion matrix",
+      "determinant multiplicativity",
+      "Cassini identity",
+      "Catalan identity",
+      "quadratic integers"
+    ],
+    "prerequisites": [
+      "the ring ℤ[√d] (Zsqrtd) with norm and conjugation star",
+      "the companion-matrix closed form Mⁿ (parent entry)",
+      "multiplicativity of the matrix determinant"
+    ]
+  },
+  {
+    "id": "ann-pell-oq070101-elementary",
+    "proofId": "pell-equation-oq-07-oq-01-oq-01",
+    "range": { "startLine": 89, "endLine": 100 },
+    "type": "insight",
+    "title": "Two Elementary ℤ[√d] Identities",
+    "content": "mul_star_eq restates Mathlib's norm_eq_mul_conj as a product rule: a · star a = ⟨N(a), 0⟩, a purely rational element. sub_star_mul_self computes (a − star a)² = ⟨4·d·y₁², 0⟩, since a − star a = ⟨0, 2y₁⟩ is purely √d and squaring a purely-√d element ⟨0,p⟩ gives ⟨d·p², 0⟩. These two rational elements are exactly what the determinant right-hand sides factor through: the norm N(a) and the discriminant term 4dy₁².",
+    "mathContext": "$a\\cdot\\overline a=\\langle N(a),0\\rangle,\\qquad (a-\\overline a)^2=\\langle 4dy_1^2,0\\rangle.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "conjugation (star involution)",
+      "norm on ℤ[√d]",
+      "discriminant"
+    ],
+    "prerequisites": [
+      "Zsqrtd.norm_eq_mul_conj",
+      "Zsqrtd.ext and the re/im projections",
+      "re_mul / im_mul / re_sub / re_star"
+    ]
+  },
+  {
+    "id": "ann-pell-oq070101-normpower",
+    "proofId": "pell-equation-oq-07-oq-01-oq-01",
+    "range": { "startLine": 109, "endLine": 136 },
+    "type": "concept",
+    "title": "The Norm-Power Identity via the Determinant",
+    "content": "det_companion_pow computes det(Mⁿ) = N(a)ⁿ using Matrix.det_pow (det(Mⁿ) = (det M)ⁿ) and the parent's companion_det (det M = N(a)). norm_pow_eq equates this with the direct 2×2 determinant of the explicit power form !![xₙ, d·yₙ; yₙ, xₙ], which is xₙ² − d·yₙ², giving re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ — the multiplicativity of the norm along powers, N(aⁿ) = N(a)ⁿ, obtained purely from the determinant. pell_pow specializes to a Pell generator (N(a) = 1): xₙ² − d·yₙ² = 1 for every power, the entire infinite family of Pell solutions from one determinant identity.",
+    "mathContext": "$\\mathrm{re}(a^n)^2-d\\,\\mathrm{im}(a^n)^2=N(a)^n;\\quad N(a)=1\\Rightarrow x_n^2-dy_n^2=1.$",
+    "significance": "central",
+    "relatedConcepts": [
+      "norm multiplicativity",
+      "Pell equation for every power",
+      "Matrix.det_pow",
+      "first integral of a recurrence"
+    ],
+    "prerequisites": [
+      "Matrix.det_pow and Matrix.det_fin_two_of",
+      "the parent's companion_pow and companion_det",
+      "linear_combination"
+    ]
+  },
+  {
+    "id": "ann-pell-oq070101-cassini",
+    "proofId": "pell-equation-oq-07-oq-01-oq-01",
+    "range": { "startLine": 147, "endLine": 192 },
+    "type": "concept",
+    "title": "The Cassini/Catalan Identities of Consecutive Coordinates",
+    "content": "The core ring identities cassini_re_elt and cassini_im_elt — (αⁿ+βⁿ)(αⁿ⁺²+βⁿ⁺²) − (αⁿ⁺¹+βⁿ⁺¹)² = (αβ)ⁿ(α−β)² with β = star a, and its difference-branch dual carrying an overall minus sign — are pure commutative-ring facts proved by `ring` with symbolic exponents. Substituting the parent's isolation lemmas pow_add_star_pow / pow_sub_star_pow turns 2xₖ, 2yₖ into ℤ[√d] elements; rewriting mul_star_eq and sub_star_mul_self and reading the rational coordinate (congrArg Zsqrtd.re + simp, then cancelling the factor 4) gives cassini_re: xₙxₙ₊₂ − xₙ₊₁² = d·y₁²·N(a)ⁿ, and cassini_im: d·(yₙyₙ₊₂ − yₙ₊₁²) = −d·y₁²·N(a)ⁿ. The classical Fibonacci Cassini identity Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ is the D = 5 shadow.",
+    "mathContext": "$x_n x_{n+2}-x_{n+1}^2=d y_1^2 N(a)^n,\\qquad d\\,(y_n y_{n+2}-y_{n+1}^2)=-d y_1^2 N(a)^n.$",
+    "significance": "central",
+    "relatedConcepts": [
+      "Cassini identity",
+      "Catalan identity for Lucas sequences",
+      "conjugate decomposition (star)",
+      "consecutive-terms determinant"
+    ],
+    "prerequisites": [
+      "pow_add_star_pow / pow_sub_star_pow (parent isolation lemmas)",
+      "ring with symbolic exponents; mul_pow",
+      "mul_left_cancel₀"
+    ]
+  },
+  {
+    "id": "ann-pell-oq070101-d2",
+    "proofId": "pell-equation-oq-07-oq-01-oq-01",
+    "range": { "startLine": 201, "endLine": 228 },
+    "type": "concept",
+    "title": "The D = 2 Instance: Pell Equation and Cassini Constant 8",
+    "content": "For the fundamental norm-1 unit 3 + 2√2 = ⟨3,2⟩ ∈ ℤ[√2], with power chain x : 1,3,17,99,… and y : 0,2,12,70,…: pell_pow_two instantiates the norm identity to the Pell equation xₙ² − 2yₙ² = 1 (e.g. 17² − 2·12² = 289 − 288 = 1), and cassini_re_two instantiates the Cassini identity to the constant d·y₁² = 2·2² = 8, so xₙxₙ₊₂ − xₙ₊₁² = 8 for all n (e.g. 1·17 − 3² = 8). Small cases are checked by kernel `decide`.",
+    "mathContext": "$3+2\\sqrt2:\\quad x_n^2-2y_n^2=1,\\qquad x_n x_{n+2}-x_{n+1}^2=8.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fundamental unit of ℤ[√2]",
+      "Pell chain 1,3,17,99,577",
+      "concrete verification"
+    ],
+    "prerequisites": [
+      "PellEquationOQ07.norm_three_two",
+      "kernel decide vs native_decide"
+    ]
+  }
+]

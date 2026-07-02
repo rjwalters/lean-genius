@@ -1,0 +1,156 @@
+{
+  "id": "pell-equation-oq-07-oq-01-oq-01",
+  "title": "Determinant Norm Identity and the Cassini/Catalan Identities for Pell Coordinate Sequences",
+  "slug": "pell-equation-oq-07-oq-01-oq-01",
+  "description": "The parent entry (pell-equation-oq-07-oq-01) supplies the companion-matrix closed form Mⁿ = !![re(aⁿ), d·im(aⁿ); im(aⁿ), re(aⁿ)] for the power sequence aⁿ of a generator a = ⟨x₁,y₁⟩ ∈ ℤ[√d], with M = !![x₁, d·y₁; y₁, x₁], trace 2x₁, and determinant N(a). This entry answers the parent's own first open question by reading the determinant off that closed form. Because the determinant is multiplicative, det(Mⁿ) = (det M)ⁿ = N(a)ⁿ; evaluating the determinant of the explicit power matrix instead gives re(aⁿ)² − d·im(aⁿ)². Equating the two recovers the norm-power identity re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ — that is, N(aⁿ) = N(a)ⁿ — obtained here purely from det(Mⁿ) = (det M)ⁿ. For a Pell generator (N(a) = 1) this is exactly the Pell equation xₙ² − d·yₙ² = 1 for every power, so the single determinant identity produces the entire infinite family of Pell solutions at once. From the same conjugate-symmetric decompositions the parent uses for Binet's formula, the entry then derives the Cassini/Catalan identities — the second determinant of three consecutive coordinates — xₙ·xₙ₊₂ − xₙ₊₁² = d·y₁²·N(a)ⁿ and d·(yₙ·yₙ₊₂ − yₙ₊₁²) = −d·y₁²·N(a)ⁿ, where xₖ = re(aᵏ), yₖ = im(aᵏ). The Cassini proofs are √d-free: writing α = a, β = star a, the isolation lemmas turn 2xₖ into αᵏ + βᵏ and 2yₖ into the √d-part of αᵏ − βᵏ, the identity becomes the pure commutative-ring fact (αⁿ+βⁿ)(αⁿ⁺²+βⁿ⁺²) − (αⁿ⁺¹+βⁿ⁺¹)² = (αβ)ⁿ(α−β)², and its right-hand side factors through αβ = ⟨N(a),0⟩ and (α−β)² = ⟨4dy₁²,0⟩. The classical Fibonacci Cassini identity Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ is the shadow of this general Catalan identity for Lucas sequences.",
+  "leanFile": {
+    "path": "Proofs/PellEquationOQ07OQ01OQ01.lean",
+    "lineCount": 228,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "sorryCount": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius (norm-power identity via det(Mⁿ) = (det M)ⁿ and √d-free Cassini/Catalan identities inside ℤ[√d]); Catalan/Cassini (classical consecutive-terms determinant for Lucas sequences)",
+    "date": "2026-07-01",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PellEquationOQ07OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "pell-equation",
+      "quadratic-integers",
+      "zsqrtd",
+      "companion-matrix",
+      "determinant",
+      "cassini-identity",
+      "catalan-identity",
+      "norm-multiplicativity",
+      "conjugation",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-07-01",
+    "lineCount": 228,
+    "originalContributions": [
+      "norm_pow_eq: the norm-power identity re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ, read off by equating the two evaluations of det(Mⁿ) — the explicit companion power form !![xₙ, d·yₙ; yₙ, xₙ] has determinant xₙ² − d·yₙ², while multiplicativity of the determinant (Matrix.det_pow) with det M = N(a) gives N(a)ⁿ; this is N(aⁿ) = N(a)ⁿ derived from det(Mⁿ) = (det M)ⁿ",
+      "det_companion_pow: det(Mⁿ) = N(a)ⁿ via Matrix.det_pow and the parent's companion_det, the multiplicative half of the norm-power identity",
+      "pell_pow: for a Pell generator (N(a) = 1), re(aⁿ)² − d·im(aⁿ)² = 1 for every n — the single companion determinant produces the whole infinite family of Pell solutions xₙ² − d·yₙ² = 1",
+      "norm_pow: the same identity restated as (aⁿ).norm = a.norm ^ n through Zsqrtd.norm_def, matching Mathlib's multiplicativity of Zsqrtd.norm",
+      "cassini_re: the Cassini/Catalan identity for the real coordinate, xₙ·xₙ₊₂ − xₙ₊₁² = d·y₁²·N(a)ⁿ, the 2×2 determinant of consecutive coordinates — proved √d-free inside ℤ[√d] via the ring identity (αⁿ+βⁿ)(αⁿ⁺²+βⁿ⁺²) − (αⁿ⁺¹+βⁿ⁺¹)² = (αβ)ⁿ(α−β)² with β = star a, then reading the rational coordinate through αβ = ⟨N(a),0⟩ and (α−β)² = ⟨4dy₁²,0⟩",
+      "cassini_im: the dual Cassini identity for the √d coordinate, d·(yₙ·yₙ₊₂ − yₙ₊₁²) = −d·y₁²·N(a)ⁿ (stated with the d factor so it holds at d = 0; for d ≠ 0 it reads yₙyₙ₊₂ − yₙ₊₁² = −y₁²N(a)ⁿ), from the difference-branch ring identity with an overall sign",
+      "mul_star_eq / sub_star_mul_self: the two elementary ℤ[√d] facts underlying the determinant computations — a·star a = ⟨N(a),0⟩ (Mathlib's norm_eq_mul_conj) and (a − star a)² = ⟨4·d·y₁²,0⟩ (the square of the purely-√d element ⟨0,2y₁⟩)",
+      "pell_pow_two / cassini_re_two: the D = 2 instance for the fundamental unit 3 + 2√2 = ⟨3,2⟩ ∈ ℤ[√2] — the norm identity is the Pell equation xₙ² − 2yₙ² = 1 (e.g. 17² − 2·12² = 1) and the Cassini constant is d·y₁² = 2·2² = 8, so xₙxₙ₊₂ − xₙ₊₁² = 8 for all n (e.g. 1·17 − 3² = 8)"
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide (the two `decide` uses are kernel `decide`, not `native_decide`, so no Lean.ofReduceBool). #print axioms reports only the standard triple [propext, Classical.choice, Quot.sound]. Uses Mathlib's Zsqrtd API (star, norm_def, norm_eq_mul_conj, re_mul/im_mul/re_sub/re_star), the 2×2 Matrix determinant API (det_pow, det_fin_two_of), the parent's companion / companion_pow / companion_det and pow_add_star_pow / pow_sub_star_pow isolation lemmas, and standard tactics (ring, linear_combination, simp, mul_left_cancel₀, decide).",
+    "theoremCount": 12,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "pell-equation-oq-07-oq-01",
+      "relationship": "extends",
+      "description": "The parent proves the companion-matrix closed form Mⁿ = !![re(aⁿ), d·im(aⁿ); im(aⁿ), re(aⁿ)] with det M = N(a), and lists as its first open question the derivation of a Cassini/Catalan identity from det(Mⁿ) = (det M)ⁿ = N(a)ⁿ. This entry answers exactly that: the norm-power identity re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ via Matrix.det_pow, and the Cassini identities xₙxₙ₊₂ − xₙ₊₁² = d·y₁²·N(a)ⁿ and its √d-coordinate dual, reusing the parent's pow_add_star_pow / pow_sub_star_pow isolation lemmas."
+    },
+    {
+      "targetId": "pell-equation-oq-07",
+      "relationship": "related",
+      "description": "The grandparent derives the recurrence uₙ₊₂ = 2x₁·uₙ₊₁ − N(a)·uₙ that the Pell coordinate sequences satisfy. This entry supplies the two conserved quadratic quantities of that recurrence: the norm re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ (a first integral) and the Cassini determinant of consecutive terms."
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "related",
+      "description": "The root entry classifies Pell solutions multiplicatively as powers of a fundamental unit. This entry shows the Pell equation xₙ² − d·yₙ² = 1 for every power is a single determinant identity det(Mⁿ) = (det M)ⁿ = 1, turning the multiplicative classification into one conserved determinant."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Two classical facts about Pell coordinate sequences flow from a single determinant. First, the norm of ℤ[√D] is multiplicative — N((x₁+y₁√D)ⁿ) = N(x₁+y₁√D)ⁿ — which for a Pell unit N = 1 says every power (xₙ, yₙ) is again a solution of xₙ² − D·yₙ² = 1. Second, the Cassini identity Fₙ₋₁Fₙ₊₁ − Fₙ² = (−1)ⁿ for Fibonacci, and more generally the Catalan identity for Lucas sequences, express the 2×2 determinant of three consecutive terms as a constant times the n-th power of the recurrence's determinant. Both are instances of det(Mⁿ) = (det M)ⁿ for the transfer/companion matrix M whose determinant is the norm N(a): the norm identity is det of the coordinate matrix Mⁿ, and Cassini is det of the matrix of two consecutive coordinate vectors. This entry formalizes both inside Mathlib's ℤ[√d] for arbitrary d, deriving the norm identity from Matrix.det_pow and the Cassini identities √d-free from the ring structure of ℤ[√d].",
+    "problemStatement": "The parent proved the companion-matrix closed form Mⁿ = !![re(aⁿ), d·im(aⁿ); im(aⁿ), re(aⁿ)] but left as its first open question the Cassini/Catalan identity xₙ₋₁xₙ₊₁ − xₙ² = (constant)·N(a)ⁿ, to be derived from det(Mⁿ) = (det M)ⁿ = N(a)ⁿ. Can one read the norm-power identity off the determinant of the companion power form, and obtain the Cassini determinant of consecutive coordinates as a √d-free integer identity?",
+    "proofStrategy": "Work in Mathlib's ℤ√d = Zsqrtd d, importing the parent's companion, companion_pow, companion_det, pow_add_star_pow, pow_sub_star_pow. (1) det_companion_pow: rewrite det(Mⁿ) with Matrix.det_pow to (det M)ⁿ and companion_det to N(a)ⁿ. (2) norm_pow_eq: rewrite det(Mⁿ) instead through companion_pow and Matrix.det_fin_two_of to re(aⁿ)² − d·im(aⁿ)², then equate via linear_combination; specialize to Pell (N(a)=1) for pell_pow. (3) For Cassini, prove the pure ring identities cassini_re_elt/cassini_im_elt by `ring` (they hold for any commutative ring with symbolic exponents), substitute pow_add_star_pow / pow_sub_star_pow to turn 2xₖ, 2yₖ into ℤ√d elements, rewrite mul_star_eq (a·star a = ⟨N(a),0⟩) and sub_star_mul_self ((a−star a)² = ⟨4dy₁²,0⟩), then read the rational coordinate with congrArg Zsqrtd.re + simp and cancel the factor 4 with mul_left_cancel₀. (4) Instantiate at a = ⟨3,2⟩ ∈ ℤ[√2]: the norm identity becomes the Pell equation xₙ² − 2yₙ² = 1 and the Cassini constant is d·y₁² = 8, checked by decide at small n.",
+    "keyInsights": [
+      "The Pell equation xₙ² − d·yₙ² = 1 for every power n is not an infinite family of separate facts but a single determinant identity: det(Mⁿ) = (det M)ⁿ. Multiplicativity of the determinant (Matrix.det_pow) does all the work — the explicit power form !![xₙ, d·yₙ; yₙ, xₙ] has determinant xₙ² − d·yₙ², and det M = N(a) = 1 forces every one of these determinants to equal 1.",
+      "The same identity is the multiplicativity of the norm, N(aⁿ) = N(a)ⁿ, exhibited without Mathlib's norm_mul: the companion matrix converts the multiplicative norm into a matrix determinant, and det(Mⁿ) = (det M)ⁿ is exactly norm-multiplicativity along powers.",
+      "The Cassini/Catalan determinant of three consecutive coordinates is √d-free. Writing α = a, β = star a, the parent's isolation lemmas make 2xₖ = αᵏ + βᵏ a rational element, so the Cassini expression is the pure commutative-ring identity (αⁿ+βⁿ)(αⁿ⁺²+βⁿ⁺²) − (αⁿ⁺¹+βⁿ⁺¹)² = (αβ)ⁿ(α−β)², provable by `ring` with symbolic exponents — no analysis, no √d.",
+      "The right-hand side factors through two rational elements of ℤ[√d]: αβ = a·star a = ⟨N(a),0⟩ (the norm) and (α−β)² = (a − star a)² = ⟨4·d·y₁²,0⟩ (the square of the purely-irrational ⟨0,2y₁⟩). Reading the rational coordinate turns the ring identity into the integer Cassini identity xₙxₙ₊₂ − xₙ₊₁² = d·y₁²·N(a)ⁿ, with the Fibonacci constant (−1)ⁿ recovered as the D = 5 shadow.",
+      "For the D = 2 fundamental unit 3 + 2√2 = ⟨3,2⟩ the two identities specialize to the classical Pell chain: xₙ² − 2yₙ² = 1 on 1,3,17,99,… / 0,2,12,70,… (e.g. 17² − 2·12² = 289 − 288 = 1), and the Cassini constant d·y₁² = 2·2² = 8 gives xₙxₙ₊₂ − xₙ₊₁² = 8 for all n (e.g. 1·17 − 3² = 8)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-determinant",
+      "title": "Reading the Determinant off the Companion Power Form",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Frames the goal: the parent's companion-matrix closed form Mⁿ = !![xₙ, d·yₙ; yₙ, xₙ] has a determinant that can be read two ways. Multiplicativity gives det(Mⁿ) = (det M)ⁿ = N(a)ⁿ; direct 2×2 evaluation gives xₙ² − d·yₙ². Equating them yields the norm-power identity and, for a Pell unit, the Pell equation for every power. The Cassini/Catalan determinant of consecutive coordinates follows from the same conjugate decomposition, √d-free.",
+      "mathContext": "$\\det(M^n)=(\\det M)^n=N(a)^n=\\mathrm{re}(a^n)^2-d\\,\\mathrm{im}(a^n)^2$."
+    },
+    {
+      "id": "elementary-identities",
+      "title": "Two Elementary ℤ[√d] Identities",
+      "startLine": 76,
+      "endLine": 100,
+      "summary": "mul_star_eq: a·star a = ⟨N(a),0⟩ (Mathlib's norm_eq_mul_conj read as a product rule). sub_star_mul_self: (a − star a)² = ⟨4·d·y₁²,0⟩, since a − star a = ⟨0,2y₁⟩ is purely √d. These are the two rational elements the determinant right-hand sides factor through.",
+      "mathContext": "$a\\cdot\\overline a=\\langle N(a),0\\rangle,\\quad (a-\\overline a)^2=\\langle 4dy_1^2,0\\rangle.$"
+    },
+    {
+      "id": "norm-power-identity",
+      "title": "The Norm-Power Identity via the Determinant",
+      "startLine": 102,
+      "endLine": 140,
+      "summary": "det_companion_pow: det(Mⁿ) = N(a)ⁿ via Matrix.det_pow and companion_det. norm_pow_eq: equating with the direct 2×2 determinant gives re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ. norm_pow restates it as (aⁿ).norm = a.norm ^ n; pell_pow specializes to xₙ² − d·yₙ² = 1 for a Pell generator, the whole family of Pell solutions from one determinant.",
+      "mathContext": "$\\mathrm{re}(a^n)^2-d\\,\\mathrm{im}(a^n)^2=N(a)^n;\\quad N(a)=1\\Rightarrow x_n^2-d y_n^2=1.$"
+    },
+    {
+      "id": "cassini-identities",
+      "title": "The Cassini/Catalan Identities of Consecutive Coordinates",
+      "startLine": 142,
+      "endLine": 200,
+      "summary": "The core ring identities cassini_re_elt / cassini_im_elt ((αⁿ+βⁿ)(αⁿ⁺²+βⁿ⁺²) − (αⁿ⁺¹+βⁿ⁺¹)² = (αβ)ⁿ(α−β)², and its difference-branch dual with a sign) are proved by `ring`. Substituting the isolation lemmas and reading the rational coordinate gives cassini_re: xₙxₙ₊₂ − xₙ₊₁² = d·y₁²·N(a)ⁿ, and cassini_im: d·(yₙyₙ₊₂ − yₙ₊₁²) = −d·y₁²·N(a)ⁿ.",
+      "mathContext": "$x_n x_{n+2}-x_{n+1}^2=d y_1^2 N(a)^n,\\quad d\\,(y_n y_{n+2}-y_{n+1}^2)=-d y_1^2 N(a)^n.$"
+    },
+    {
+      "id": "d2-instance",
+      "title": "The D = 2 Instance: Pell Equation and Cassini Constant 8",
+      "startLine": 202,
+      "endLine": 228,
+      "summary": "For the fundamental unit 3 + 2√2 = ⟨3,2⟩ ∈ ℤ[√2]: pell_pow_two gives the Pell equation xₙ² − 2yₙ² = 1 on the chain 1,3,17,99,… / 0,2,12,70,… (17² − 2·12² = 1), and cassini_re_two gives xₙxₙ₊₂ − xₙ₊₁² = 8 (constant d·y₁² = 2·2² = 8; e.g. 1·17 − 3² = 8), verified by decide at small n.",
+      "mathContext": "$3+2\\sqrt2:\\ x_n^2-2y_n^2=1,\\quad x_n x_{n+2}-x_{n+1}^2=8.$"
+    }
+  ],
+  "conclusion": {
+    "summary": "This fully verified 228-line file (0 sorries, 0 axioms, no native_decide) answers the parent entry's first open question. Reading the determinant off the companion power form two ways — multiplicatively det(Mⁿ) = (det M)ⁿ = N(a)ⁿ and by direct 2×2 evaluation re(aⁿ)² − d·im(aⁿ)² — yields the norm-power identity re(aⁿ)² − d·im(aⁿ)² = N(a)ⁿ (norm_pow_eq), which for a Pell generator is the Pell equation xₙ² − d·yₙ² = 1 for every power at once (pell_pow). From the parent's conjugate-symmetric isolation lemmas the entry then derives the Cassini/Catalan identities of three consecutive coordinates, xₙxₙ₊₂ − xₙ₊₁² = d·y₁²·N(a)ⁿ (cassini_re) and its √d-coordinate dual (cassini_im), √d-free via the ring identity (αⁿ+βⁿ)(αⁿ⁺²+βⁿ⁺²) − (αⁿ⁺¹+βⁿ⁺¹)² = (αβ)ⁿ(α−β)² with αβ = ⟨N(a),0⟩ and (α−β)² = ⟨4dy₁²,0⟩.",
+    "implications": "The two identities are the conserved quantities of the Pell recurrence: the norm N(aⁿ) = N(a)ⁿ is a first integral fixing every power to the same conic xₙ² − d·yₙ² = N(a)ⁿ, and the Cassini determinant records the second-order structure of consecutive terms. Both are one determinant identity det(Mⁿ) = (det M)ⁿ, so the technique — convert a multiplicative invariant into a matrix determinant, then use det_pow — transfers to any Lucas-type sequence (Fibonacci/Pell/Solution₁ generators, continued-fraction convergents). The Cassini computation is entirely √d-free, showing the identity lives at the level of the ring involution star, not the real embedding.",
+    "openQuestions": [
+      "Upgrade cassini_im to the divided form yₙyₙ₊₂ − yₙ₊₁² = −y₁²·N(a)ⁿ under d ≠ 0, and combine cassini_re, cassini_im into the full matrix Cassini det !![xₙ₊₁, xₙ; xₙ, xₙ₋₁] statement for the coordinate vector sequence.",
+      "Derive the addition/duplication formulas x_{m+n} = xₘxₙ + d·yₘyₙ, y_{m+n} = xₘyₙ + xₙyₘ from the same star-decomposition, giving the group law on Pell solutions in coordinate form and recovering Cassini as the m = 1 case.",
+      "Connect norm_pow to Mathlib's Pell.Solution₁: show the norm-power identity is the statement that the coordinate maps of a fundamental Solution₁ generator land in the Pell conic, closing the loop with the multiplicative classification."
+    ]
+  },
+  "references": [
+    {
+      "authors": "E. Catalan",
+      "title": "Note sur la théorie des nombres (Catalan's identity for Lucas sequences)",
+      "year": 1879,
+      "venue": "Mém. Soc. Roy. Sci. Liège",
+      "note": "The general identity uₙ₋ᵣuₙ₊ᵣ − uₙ² = (−1)ⁿ⁻ʳ⁺¹ uᵣ² for Lucas sequences, of which Cassini (r = 1) is the special case."
+    },
+    {
+      "authors": "E. J. Barbeau",
+      "title": "Pell's Equation",
+      "year": 2003,
+      "venue": "Springer",
+      "note": "Book-length treatment of Pell solutions, their recurrences, norm multiplicativity, and consecutive-term identities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides the Zsqrtd (ℤ[√d]) norm/star API and the 2×2 Matrix determinant lemmas (det_pow, det_fin_two_of) underlying this formalization."
+    }
+  ]
+}
