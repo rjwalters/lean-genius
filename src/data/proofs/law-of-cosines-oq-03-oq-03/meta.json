@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Hyperbolic AAA Congruence",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports and module docstring for hyperbolic AAA congruence: unlike Euclidean geometry, the three angles of a hyperbolic triangle determine its sides. These head lines invert the second hyperbolic law of cosines cos C = −cos A·cos B + sin A·sin B·cosh c to cosh c = (cos C + cos A·cos B)/(sin A·sin B), note that cosh injective on [0,∞) forces congruence (no non-trivial similar triangles), and record two consequences — the angular defect A+B+C<π is exactly what makes the formula exceed 1, and the equilateral closed form cosh(side)=cos θ/(1−cos θ) — before the HyperbolicAAA namespace opens.",
+      "mathContext": "The second hyperbolic law of cosines relates an angle to the opposite side's cosh; inverting all three expresses each side via the three angles, and injectivity of cosh yields AAA congruence — hyperbolic geometry has no similar triangles, the angular defect (= area) being forced. The three law-of-cosines relations and the defect are encoded as structure fields (geometric assumptions, as in the parent), so the entry is axiomatized; all theorems are derived from those fields with no further axioms and no sorries."
+    },
+    {
       "id": "structure",
       "title": "HyperbolicTriangle Structure",
       "startLine": 66,
@@ -139,21 +147,30 @@
   "references": [
     {
       "authors": [
-        "Ratcliffe, J.G."
+        "John G. Ratcliffe"
       ],
       "title": "Foundations of Hyperbolic Manifolds",
-      "year": "2019",
-      "venue": "3rd ed., Graduate Texts in Mathematics 149, Springer",
-      "note": "Hyperboloid model of the hyperbolic plane and the hyperbolic laws of cosines and sines."
+      "year": 2019,
+      "venue": "Springer, Graduate Texts in Mathematics 149 (3rd ed.)",
+      "note": "Second law of cosines cosh c = (cos C + cos A cos B)/(sin A sin B) expressing sides via angles — basis of AAA congruence."
     },
     {
       "authors": [
-        "Coxeter, H.S.M."
+        "William P. Thurston"
       ],
-      "title": "Non-Euclidean Geometry",
-      "year": "1998",
-      "venue": "6th ed., Mathematical Association of America",
-      "note": "Unified treatment of spherical and hyperbolic trigonometry and their dualities."
+      "title": "Three-Dimensional Geometry and Topology, Volume 1",
+      "year": 1997,
+      "venue": "Princeton University Press",
+      "note": "Explains the rigidity of hyperbolic triangles: angles determine the triangle, so there are no non-trivial similar triangles."
+    },
+    {
+      "authors": [
+        "James W. Anderson"
+      ],
+      "title": "Hyperbolic Geometry",
+      "year": 2005,
+      "venue": "Springer (Springer Undergraduate Mathematics Series, 2nd ed.)",
+      "note": "Treats hyperbolic congruence criteria and the absence of similarity in hyperbolic geometry."
     }
   ],
   "conclusion": {
@@ -279,34 +296,5 @@
       "significance": "Establishes that there are no non-trivial similar triangles in hyperbolic geometry and exhibits the explicit angle-to-side map, completing the basic congruence theory alongside the laws of cosines and sines."
     }
   },
-  "sorries": 0,
-  "references": [
-    {
-      "authors": [
-        "John G. Ratcliffe"
-      ],
-      "title": "Foundations of Hyperbolic Manifolds",
-      "year": 2019,
-      "venue": "Springer, Graduate Texts in Mathematics 149 (3rd ed.)",
-      "note": "Second law of cosines cosh c = (cos C + cos A cos B)/(sin A sin B) expressing sides via angles — basis of AAA congruence."
-    },
-    {
-      "authors": [
-        "William P. Thurston"
-      ],
-      "title": "Three-Dimensional Geometry and Topology, Volume 1",
-      "year": 1997,
-      "venue": "Princeton University Press",
-      "note": "Explains the rigidity of hyperbolic triangles: angles determine the triangle, so there are no non-trivial similar triangles."
-    },
-    {
-      "authors": [
-        "James W. Anderson"
-      ],
-      "title": "Hyperbolic Geometry",
-      "year": 2005,
-      "venue": "Springer (Springer Undergraduate Mathematics Series, 2nd ed.)",
-      "note": "Treats hyperbolic congruence criteria and the absence of similarity in hyperbolic geometry."
-    }
-  ]
+  "sorries": 0
 }
