@@ -22,6 +22,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Bonferroni inequalities for the derangement sieve",
+      "startLine": 1,
+      "endLine": 81,
+      "summary": "Where the parent `InclusionExclusionSieveDerangements` proves the exact sieve identity D_n = Σ_{k=0}^n (−1)^k C(n,k)(n−k)!, this file proves the corresponding Bonferroni inequalities: the truncated sums B(n,m) = Σ_{k=0}^m (−1)^k C(n,k)(n−k)! bracket the true count, alternately from above (m even) and below (m odd), unified by (−1)^m·(B(n,m) − D_n) ≥ 0. This is the prototypical Bonferroni phenomenon — stopping the alternating inclusion–exclusion sieve early yields a one-sided estimate whose direction is the parity of the last index. Mathlib has the exact identity but no truncated one-sided bound, so this bracketing is proved for the first time in the gallery. Complete: no sorry, no axiom, no native_decide (worked examples use decide).",
+      "mathContext": "The proof reindexes per permutation. Each term C(n,k)(n−k)! counts pairs (t,σ) with |t|=k and σ fixing t pointwise (the parent's `card_fixesOn`); summing the truncated sieve and swapping order (`Finset.sum_comm`) gives B(n,m) = Σ_σ A(f_σ, m) where A(f,m) = Σ_{j=0}^m (−1)^j C(f,j) is the partial alternating binomial sum and f_σ counts fixed points. Pascal telescoping collapses it: A(0,m)=1 and A(f+1,m)=(−1)^m C(f,m). Derangements (f_σ=0) contribute 1 and reproduce D_n; every non-derangement contributes the single signed term (−1)^m C(f_σ−1, m), so B(n,m) − D_n = (−1)^m Σ_{f_σ≥1} C(f_σ−1, m), whose sign is (−1)^m since binomials are non-negative."
+    },
+    {
       "id": "partial-alternating-binomial",
       "title": "The Partial Alternating Binomial Sum",
       "startLine": 82,

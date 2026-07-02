@@ -17,7 +17,11 @@
   "conclusion": {
     "summary": "A complete 0-axiom Lean 4 proof that the universal divisors of Pythagorean products are exactly the divisors of 60, so 60 is the greatest such constant (IsGreatest). The single triple (3,4,5), with product exactly 60, supplies the entire upper bound and certifies that no higher prime power (8, 9, 25) is forced. The 60 ∣ xyz engine is reproduced self-contained from the sibling entry.",
     "implications": "Complements the sibling's divisibility package with its sharp converse: 60 is not merely a divisor but the maximal universal divisor, and the universal divisors form precisely the divisor lattice of 60. The proof illustrates that sharpness of a universal divisibility constant can be certified by a single explicit witness whose product equals the constant. The UniversalDivisor predicate and the witness-application pattern transfer to other 'largest constant dividing every solution' problems.",
-    "openQuestions": []
+    "openQuestions": [
+      "Determine the sharp universal divisor for *primitive* Pythagorean triples separately, where the powers of $2$ behave differently, and for the partial products $xy$ and the legs alone rather than the full product $xyz$.",
+      "Generalize the `UniversalDivisor` predicate and single-witness sharpness pattern to Pythagorean $k$-tuples $x_1^2 + \\cdots + x_{k-1}^2 = x_k^2$ and compute the maximal universal divisor of the product as a function of $k$.",
+      "Characterize the universal divisors of other Diophantine families (products in Markov triples, or in solutions of $x^2+y^2+z^2 = w^2$), testing how widely the 'largest constant dividing every solution, certified by one extremal witness' method extends."
+    ]
   },
   "sections": [
     {
@@ -91,7 +95,9 @@
   "leanFile": {
     "axiomCount": 0,
     "definitionCount": 1,
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "lineCount": 158,
     "namespace": "PythagoreanTriples60Sharp",
     "opens": [],

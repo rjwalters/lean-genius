@@ -43,11 +43,11 @@
       "Proved: maxProd(N) ≤ N² (trivial bound from cardinality)",
       "Proved: full sandwich — positive constants c ≤ C bracket all ratios"
     ],
-    "axiomCount": 3,
-    "lineCount": 215,
-    "assumptions": "3 axioms: Szemerédi upper bound, optimal example lower bound, maxProd existence. All encode deep number-theoretic results.",
+    "axiomCount": 2,
+    "lineCount": 268,
+    "assumptions": "2 axioms (both deep number-theoretic results): the Szemerédi upper bound maxProd(N) ≤ C·N²/log N and the optimal-example lower bound maxProd(N) ≥ c·N²/log N. The former existence axiom `maxProd_exists` (that the maximum of |A||B| over valid pairs is attained) is now a proved theorem — the optimization ranges over subsets of the finite set {1,...,N}, so the achievable-value set is a nonempty finite Finset of naturals and the maximum is its Finset.max'. Fully machine-checked apart from the 2 stated axioms (#print axioms lists only those two plus propext/Classical.choice/Quot.sound).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 11,
     "definitionCount": 5
   },
   "sections": [
@@ -132,9 +132,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 215,
-    "axiomCount": 3,
-    "theoremCount": 9,
+    "lineCount": 268,
+    "axiomCount": 2,
+    "theoremCount": 11,
     "definitionCount": 5,
     "path": "Proofs/Erdos490OQ01.lean",
     "sorries": 0

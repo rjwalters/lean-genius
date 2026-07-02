@@ -1,5 +1,31 @@
 [
   {
+    "id": "erdos-155-overview",
+    "proofId": "erdos-155",
+    "range": {
+      "startLine": 1,
+      "endLine": 25
+    },
+    "type": "concept",
+    "title": "Overview: Slow Growth of Maximum Sidon Subsets (Erdős #155)",
+    "content": "A Sidon set (B₂ set) is a set of integers whose pairwise sums are all distinct. Let F(N) be the size of the largest Sidon subset of {1, …, N}. Erdős and Turán (1941) showed F(N) = (1 + o(1))·√N, and Lindström (1969) sharpened the upper bound to F(N) ≤ √N + N^{1/4} + 1, but the fine growth structure of F remains poorly understood. Erdős Problem #155 asks a smoothness question: is it true that for every fixed k ≥ 1, F(N+k) ≤ F(N) + 1 for all sufficiently large N? Equivalently, the points where F increases become sparse — F cannot jump repeatedly on short intervals. Erdős further suggested this may hold even with k ≈ ε·√N, so F rises by at most 1 over intervals of length proportional to √N. The problem is OPEN. This file formalizes the definitions (Sidon sets, F(N), its achievability/optimality, monotonicity F(N) ≤ F(N+1) ≤ F(N)+1), records the known asymptotic bounds, and states the conjecture; it is axiomatized (1 axiom, 0 sorries) since the analytic bounds are stated rather than reproved.",
+    "mathContext": "$F(N)=\\max\\{|A|: A\\subseteq\\{1,\\dots,N\\},\\ A\\ \\text{Sidon}\\}$. Sidon: the sums $a+b$ ($a\\le b$) are distinct. Asymptotics $F(N)=(1+o(1))\\sqrt N$ (Erdős–Turán 1941; Lindström/Cilleruelo), refined $F(N)\\le \\sqrt N+N^{1/4}+1$ (Lindström 1969). Conjecture: $\\forall k\\ge 1,\\ F(N+k)\\le F(N)+1$ for large $N$; stronger form allows $k\\approx\\varepsilon\\sqrt N$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sidon sets (B₂ sets)",
+      "Erdős–Turán theorem",
+      "additive combinatorics",
+      "perfect difference sets",
+      "Lindström bound",
+      "Erdős problems"
+    ],
+    "prerequisites": [
+      "distinct pairwise sums",
+      "asymptotic notation o(1)",
+      "extremal set theory over {1,…,N}"
+    ]
+  },
+  {
     "id": "ann-155-imports",
     "proofId": "erdos-155",
     "range": {

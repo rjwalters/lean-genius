@@ -79,8 +79,8 @@ theorem Q_mulVec (q : ℤ) (v : Fin 2 → ℤ) :
     (Q q).mulVec v = euclidStep q v := by
   funext i
   fin_cases i <;>
-    simp [Q, euclidStep, Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_two,
-      Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;> ring
+    simp [Q, euclidStep, Matrix.mulVec, dotProduct, Fin.sum_univ_two,
+      Matrix.cons_val_zero, Matrix.cons_val_one] <;> ring
 
 /-- **Unimodularity of a single quotient matrix**: `det (Q q) = -1`.
     Each Euclidean step is encoded by a determinant `-1` matrix. -/

@@ -1,0 +1,129 @@
+{
+  "id": "lagrange-four-squares-oq-03-oq-01",
+  "title": "Sharpening the Elementary Waring Bound: g(4) ≤ 50",
+  "slug": "lagrange-four-squares-oq-03-oq-01",
+  "description": "A fully machine-checked, axiom-free proof that every natural number is a sum of at most 50 fourth powers, strictly improving the parent entry's Liouville bound g(4) ≤ 53. This answers the parent's first open question ('sharpen the constant 53 → 50 → … by a purely elementary, machine-checked argument'). The engine is unchanged — every 6·Q is a sum of 48 fourth powers via Liouville's identity and Lagrange's four-square theorem — but the residue modulo 6 is paid off far more efficiently by borrowing one small fourth power per class: 6Q+1⁴ (49), 6Q+1⁴+1⁴ (50), 3⁴+6Q (49, since 81≡3), 2⁴+6Q (49, since 16≡4), 2⁴+6Q+1⁴ (50, since 16+1≡5). The finitely many small cases N<81 are handled uniformly by the base-16 representation N=(N/16)·2⁴+(N%16)·1⁴, costing N/16+N%16 ≤ 20 ≤ 50 powers. The optimal g(4)=19 still requires the circle method; 50 is the standard bound reachable by self-contained elementary means.",
+  "meta": {
+    "author": "Liouville (identity, 1859); residue sharpening formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Waring%27s_problem",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "additive-combinatorics",
+      "waring-problem",
+      "four-squares",
+      "lagrange",
+      "fourth-powers",
+      "liouville-identity",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/LagrangeFourSquaresOQ03OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sum_four_squares",
+        "description": "Lagrange's four-square theorem: every n : ℕ is a sum of four squares. Used in the reused engine (sixMulSq, sixMul) to turn 6·(sum of squares)² into 6m² and to split 6Q into four 6mᵢ² blocks.",
+        "module": "Mathlib.NumberTheory.SumFourSquares"
+      },
+      {
+        "theorem": "Int.abs_eq_natAbs",
+        "description": "|z| = ↑z.natAbs for z : ℤ, the bridge realising the difference summands (xᵢ−xⱼ)⁴ of Liouville's identity as fourth powers of natural numbers.",
+        "module": "Mathlib.Data.Int.Order"
+      }
+    ],
+    "originalContributions": [
+      "A machine-checked, axiom-free proof of g(4) ≤ 50 — strictly sharper than the parent's g(4) ≤ 53 — answering the parent entry's open question on how far a purely elementary argument can push the constant",
+      "A residue-borrowing scheme: for each class N mod 6 a single small fourth power (1⁴, 2⁴=16, or 3⁴=81) is borrowed so that the remainder is a multiple of 6 handled by the 48-power Liouville block, capping every large N at ≤ 50",
+      "The base-16 representation lemma N = (N/16)·2⁴ + (N%16)·1⁴, which disposes of all N < 81 in ≤ 20 fourth powers and removes the need for any bounded case check",
+      "A reusable 'monotone in the number of summands' lemma (le) and unit-/16-power builders (ones, twos), extending the parent's IsSumOfFourthPowers combinator toolkit",
+      "A self-contained development: the Liouville identity and 6Q-block engine are reproduced verbatim so the file compiles against Mathlib alone, with no inter-file dependency"
+    ],
+    "dateAdded": "2026-07-02",
+    "axiomCount": 0,
+    "lineCount": 195,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms on waring_four_fifty and waring_four_lt_53 reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide (so no Lean.ofReduceBool), no structure-encoded hypotheses.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 18,
+    "definitionCount": 1
+  },
+  "leanFile": {
+    "namespace": "LagrangeFourSquaresOQ03OQ01",
+    "lineCount": 195,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 1,
+    "path": "Proofs/LagrangeFourSquaresOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "base-machinery",
+      "title": "Reused Liouville engine (from the parent)",
+      "startLine": 45,
+      "endLine": 126,
+      "summary": "Reproduced verbatim from lagrange-four-squares-oq-03: Liouville's identity 6(a²+b²+c²+d²)² = Σ_{i<j}((xᵢ+xⱼ)⁴+(xᵢ−xⱼ)⁴) (closed by ring), the natAbs bridge, the IsSumOfFourthPowers predicate with its closure lemmas (single, append, zeros, succ), and the flagship sixMul: every 6·Q is a sum of 48 fourth powers. Kept in-file so the entry depends on Mathlib only."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity and small-power builders",
+      "startLine": 92,
+      "endLine": 150,
+      "summary": "le: a sum of k fourth powers is a sum of any k' ≥ k (pad with zeros) — the lemma that lets every branch be widened to exactly 50. ones k realises k as k copies of 1⁴; twos a realises 16·a as a copies of 2⁴; twoPow16 and threePow81 expose 16 = 2⁴ and 81 = 3⁴ as single fourth powers, the borrowed powers of the residue scheme."
+    },
+    {
+      "id": "small-numbers",
+      "title": "Base-16 representation for N < 81",
+      "startLine": 151,
+      "endLine": 156,
+      "summary": "small: for N < 81 the greedy base-16 split N = (N/16)·2⁴ + (N%16)·1⁴ uses N/16 + N%16 ≤ 5 + 15 = 20 ≤ 50 fourth powers. This disposes of every case the residue-borrowing cannot reach (it needs N ≥ 81 to borrow 3⁴), with no bounded/`decide` enumeration."
+    },
+    {
+      "id": "main",
+      "title": "Main theorem: g(4) ≤ 50",
+      "startLine": 157,
+      "endLine": 193,
+      "summary": "waring_four_fifty: every N is a sum of ≤ 50 fourth powers. Case N < 81 uses `small`; otherwise split on N mod 6 and borrow one small fourth power per class so the remainder is a multiple of 6 (48 powers): residues 0,1,2 → 48,49,50; residue 3 borrows 3⁴ (81≡3); residue 4 borrows 2⁴ (16≡4); residue 5 borrows 2⁴ and a 1⁴ (16+1≡5). All arithmetic side goals are closed by omega. waring_four_lt_53 restates this as ∃ G < 53 answering the formal open question."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Waring's problem and the size of $g(4)$.** Waring (1770) asserted that for every exponent $k$ there is a least $g(k)$ with every positive integer a sum of at most $g(k)$ non-negative $k$-th powers; Hilbert (1909) proved $g(k)$ finite for all $k$. For fourth powers, Liouville (1859) gave the elementary finiteness proof via\n$$6(a^2+b^2+c^2+d^2)^2 = \\sum_{1\\le i<j\\le 4}\\big((x_i+x_j)^4+(x_i-x_j)^4\\big),$$\nwhich makes $6m^2$ a sum of $12$ fourth powers for every $m$. The crude assembly gives $g(4)\\le 53$; classical refinements of the residue bookkeeping bring the elementary bound down to $50$ and below. The true value $g(4)=19$ was settled only in 1986 (Balasubramanian–Deshouillers–Dress) using the Hardy–Littlewood circle method; the bad numbers $n=31\\cdot 16^k$ force $g(4)\\ge 19$. This entry realises the elementary sharpening $53\\to 50$ in Lean.",
+    "problemStatement": "**Sharpen the elementary Waring bound.** The parent entry proves $g(4)\\le 53$ by writing $N = 6\\lfloor N/6\\rfloor + (N\\bmod 6)$ and spending up to $5$ unit powers on the residue. Its open question asks how far a purely elementary, machine-checked argument can push the constant. Here we prove the standard elementary sharpening: every natural number is a sum of at most $50$ fourth powers, machine-checked with $0$ axioms and $0$ sorries.",
+    "proofStrategy": "**Same engine, smarter residues.** Keep $\\text{sixMul}$: every $6Q$ is a sum of $48$ fourth powers. For $N\\ge 81$ split on $r = N\\bmod 6$ and borrow one small fourth power so that what remains is a multiple of $6$: $r=0$ costs $48$; $r=1,2$ add one/two $1^4$ ($49,50$); $r=3$ borrows $3^4=81$ ($81\\equiv 3$, so $N-81$ is a multiple of $6$: $49$); $r=4$ borrows $2^4=16$ ($16\\equiv 4$: $49$); $r=5$ borrows $2^4$ and a $1^4$ ($16+1\\equiv 5$: $50$). The finitely many $N<81$ — the only ones too small to borrow $81$ — are handled uniformly by the base-$16$ representation $N=(N/16)\\,2^4+(N\\bmod 16)\\,1^4$, using $\\le 20$ powers. Every branch lands at $\\le 50$.",
+    "keyInsights": [
+      "**Borrowing beats padding.** The parent pays the residue $r$ with $r$ unit powers (up to $5$). Borrowing a single fourth power whose value is $\\equiv r \\pmod 6$ turns the remainder into a multiple of $6$ — absorbed for free by the $48$-power block — so no class costs more than two extra powers.",
+      "**Fourth powers mod 6 supply the residues.** $1^4\\equiv 1$, $2^4=16\\equiv 4$, $3^4=81\\equiv 3$; combining at most two of these reaches every residue $0$–$5$, which is exactly why $\\le 50$ (not less by this scheme) is attainable while $r=2,5$ need the extra $1^4$.",
+      "**Small numbers are not the obstruction they seem.** A number like $75$ is not $75$ unit powers: the base-16 split $75 = 4\\cdot 2^4 + 11\\cdot 1^4$ is only $15$ powers. In general every $N<576$ is $\\le 50$ fourth powers this way, comfortably covering the $N<81$ gap where borrowing $81$ is impossible.",
+      "**One monotonicity lemma unifies the branches.** Each residue lands at a different exact count ($48$–$50$); a single `le` (zero-padding) lemma widens them all to the uniform statement $\\text{IsSumOfFourthPowers}\\ 50\\ N$.",
+      "**Elementary has a floor here.** This scheme cannot reach $g(4)=19$: that needs the circle method. $50$ is the honest ceiling of the Lagrange+Liouville route with clean residue borrowing."
+    ],
+    "prerequisites": [
+      "The parent entry's engine: Liouville's identity and sixMul (every 6Q is a sum of 48 fourth powers)",
+      "Euclidean division and residues modulo 6; the omega tactic for the divisibility bookkeeping",
+      "Lagrange's four-square theorem (Nat.sum_four_squares), used inside the reused engine",
+      "Finite sums over lists and the IsSumOfFourthPowers combinator (append, zero-padding)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Every natural number is a sum of at most 50 fourth powers, sharpening the parent's g(4) ≤ 53. The Liouville/Lagrange engine (every 6Q is 48 fourth powers) is reused unchanged; the improvement is a residue-borrowing scheme modulo 6 (one small fourth power per class) plus a base-16 representation for N < 81. 18 theorems, 1 definition, 195 lines, 0 axioms, 0 sorries.",
+    "implications": [
+      "Answers the parent entry's open question on sharpening the elementary Waring constant, realising the classical 53 → 50 improvement in a machine-checked, axiom-free form.",
+      "Tightens the gallery's bracket on the Waring constant to 19 ≤ g(4) ≤ 50 by entirely finite means (the lower bound coming from the lagrange-four-squares-waring-g2 entries).",
+      "Provides a reusable residue-borrowing template and small-power builders (ones, twos, le) that further sharpenings or higher-power Waring bounds can build on."
+    ],
+    "openQuestions": [
+      "Push below 50 by a finer scheme: representing residues with fourth powers other than 1⁴ across small numbers (or a bounded `decide` sweep) can shave further toward the classical elementary records — how low can a machine-checked elementary argument reach?",
+      "Formalize the exact value g(4) = 19 by combining this finiteness route with the Balasubramanian–Deshouillers–Dress circle-method upper bound and the n = 31·16ᵏ lower-bound family.",
+      "Adapt the borrowing scheme to g(3) (cubes, g(3) = 9) or to even exponents with Liouville-type identities, quantifying how much the elementary constant loses to the true value in each case."
+    ]
+  },
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry proving g(4) ≤ 53 by the Liouville route; this sharpens the constant to 50 by residue borrowing, answering that entry's first open question and reusing its sixMul engine."
+    }
+  ]
+}

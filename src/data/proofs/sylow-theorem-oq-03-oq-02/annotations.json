@@ -22,7 +22,34 @@
     ],
     "content": "Forced normality is the bridge: counting decides that the larger prime's Sylow subgroup is normal, and the Hall property makes Schur–Zassenhaus split it for free.",
     "proofId": "sylow-theorem-oq-03-oq-02",
-    "range": { "startLine": 1, "endLine": 50 }
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    }
+  },
+  {
+    "id": "ann-section1-setup",
+    "proofId": "sylow-theorem-oq-03-oq-02",
+    "range": {
+      "startLine": 52,
+      "endLine": 87
+    },
+    "type": "lemma",
+    "title": "Section I setup: the order and index of a Sylow q-subgroup of a group of order pq",
+    "content": "Two supporting lemmas that pin down the arithmetic used by the counting argument, for distinct primes p < q and a group G with Nat.card G = p * q. card_sylow_q: a Sylow q-subgroup Q has order exactly q, since the q-part of p·q is q¹ — computed via Nat.factorization of p * q, using that q ∤ p (as p < q are distinct primes) so (Nat.card G).factorization q = 1, then Q.card_eq_multiplicity. index_sylow_q: the index of Q is therefore p, from Q.card_mul_index (q · index = p · q) cancelled by Nat.eq_of_mul_eq_mul_left. These feed the headline card_sylow_q_eq_one (Section I's 'counting heart', annotated next), where n_q ∣ p and n_q ≡ 1 (mod q) force n_q = 1.",
+    "mathContext": "For primes $p<q$ and $|G|=pq$: $|Q|=q$ (the $q$-part of $pq$ is $q^1$) and $[G:Q]=p$ (from $|Q|\\cdot[G:Q]=pq$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Sylow subgroups",
+      "p-adic valuation / factorization",
+      "subgroup order times index",
+      "Nat.card"
+    ],
+    "prerequisites": [
+      "Sylow q G and card_eq_multiplicity",
+      "Nat.factorization of a product",
+      "card_mul_index"
+    ]
   },
   {
     "id": "ann-sylow-oq0302-counting",
@@ -44,7 +71,10 @@
     ],
     "content": "The whole classification turns on a one-line number-theoretic impossibility: q cannot divide p − 1 when p < q.",
     "proofId": "sylow-theorem-oq-03-oq-02",
-    "range": { "startLine": 88, "endLine": 127 }
+    "range": {
+      "startLine": 88,
+      "endLine": 127
+    }
   },
   {
     "id": "ann-sylow-oq0302-splitting",
@@ -67,7 +97,10 @@
     ],
     "content": "Normality was the only missing ingredient; once counting supplies it, the Hall property closes the gap to a full semidirect decomposition.",
     "proofId": "sylow-theorem-oq-03-oq-02",
-    "range": { "startLine": 128, "endLine": 177 }
+    "range": {
+      "startLine": 128,
+      "endLine": 177
+    }
   },
   {
     "id": "ann-sylow-oq0302-concrete",
@@ -88,6 +121,9 @@
     ],
     "content": "S₃ and ℤ/6 are both ℤ/3 ⋊ (order 2); the formalization treats them with one lemma.",
     "proofId": "sylow-theorem-oq-03-oq-02",
-    "range": { "startLine": 178, "endLine": 211 }
+    "range": {
+      "startLine": 178,
+      "endLine": 211
+    }
   }
 ]

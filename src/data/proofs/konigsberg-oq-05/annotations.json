@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-konig05-overview",
+    "proofId": "konigsberg-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 28
+    },
+    "type": "concept",
+    "title": "Overview: Eulerian-Trail Endpoints Are Exactly the Odd-Degree Vertices",
+    "content": "This file completes the degree characterization of Eulerian trails for finite simple graphs. Mathlib's IsEulerian.even_degree_iff gives an awkwardly-quantified statement and IsEulerian.card_odd_degree gives the count 0 ∨ 2; the sibling KonigsbergOQ01 derives only the non-endpoint ⟹ even half. What was missing — proved here — is the clean two-sided form. OPEN TRAIL (u ≠ v): Odd (G.degree w) ↔ (w = u ∨ w = v), i.e. the odd-degree vertices are EXACTLY the two endpoints; the new content is the converse (endpoint ⟹ odd). As a set {w | Odd (G.degree w)} = {u,v}, and the count is exactly 2 (sharpening Mathlib's 0 ∨ 2 to = 2). CLOSED TRAIL (circuit, u = v): {w | Odd (G.degree w)} = ∅, count 0. Together these give the sharp dichotomy: an Eulerian trail exists as an open walk with distinct endpoints iff there are exactly two odd vertices (and they are the endpoints), and as a circuit iff there are none.",
+    "mathContext": "Euler's theorem: a connected multigraph has an Eulerian trail iff it has $0$ or $2$ odd-degree vertices — $0$ for a closed circuit, $2$ for an open trail whose endpoints are precisely those two odd vertices. This file proves the endpoint$\\iff$odd equivalence and pins the odd-vertex count to exactly $2$ (open) or $0$ (closed).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Eulerian trail",
+      "vertex degree parity",
+      "Euler's theorem",
+      "Königsberg bridges",
+      "graph circuits"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "Eulerian trails and circuits",
+      "vertex degree"
+    ]
+  },
+  {
     "id": "ann-odd-iff-endpoint",
     "proofId": "konigsberg-oq-05",
     "range": {

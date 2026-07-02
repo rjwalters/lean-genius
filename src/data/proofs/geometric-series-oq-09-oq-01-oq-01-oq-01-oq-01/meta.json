@@ -33,6 +33,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Converse Multisection — Residue-Subseries Summability ⟺ Summability",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Imports (InfiniteSum.Basic/Group, Equiv.Fin.Basic, Tactic), module docstring, and setup (namespace GeometricSeriesOQ09OQ01OQ01OQ01OQ01; unusedSectionVars option). The parent proved the forward multisection of a summable family f:ℕ→M (each residue subseries n↦f(qn+a) is summable, with regrouping ∑_{a<q}∑'ₙ f(qn+a)=∑'ₘ f m), needing a complete Hausdorff uniform abelian group. This file answers its open question — the converse — and finds it structurally cheaper: the converse (hasSum_of_residues) needs only a topological commutative additive MONOID with ContinuousAdd (no group, no uniform/Cauchy structure, no completeness), because q is finite so it is a finite combination of HasSums; the value identity survives dropping to a merely Hausdorff M; and the two-sided equivalence Summable f ↔ ∀a, Summable(n↦f(qn+a)) holds over a complete uniform abelian group, the forward direction genuinely needing the Cauchy criterion (Summable.comp_injective). Mathlib has the pieces (Nat.divModEquiv, Equiv.hasSum_iff, hasSum_sum, Summable.comp_injective) but not their assembly. Status: 0 sorries, 0 axioms.",
+      "mathContext": "The minimal-hypothesis answer: completeness was an artifact of the forward direction (proving each subseries converges); the converse takes convergence as hypothesis and needs nothing beyond a bare monoid, so the two implications are genuinely asymmetric."
+    },
+    {
       "id": "residue-injectivity",
       "title": "Injectivity of the Residue Map",
       "startLine": 76,

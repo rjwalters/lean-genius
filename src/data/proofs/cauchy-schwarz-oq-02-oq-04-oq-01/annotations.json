@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-csb020401-overview",
+    "proofId": "cauchy-schwarz-oq-02-oq-04-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 40
+    },
+    "type": "concept",
+    "title": "Overview: Buzano's Inequality Strengthens Cauchy–Schwarz",
+    "content": "Cauchy–Schwarz bounds a single inner product, ‖⟪x,y⟫‖ ≤ ‖x‖·‖y‖. Buzano's inequality (M. L. Buzano, 1974) is a genuine strengthening bounding the PRODUCT of two inner products against a fixed unit vector e: ‖⟪x,e⟫‖·‖⟪e,y⟫‖ ≤ (‖x‖·‖y‖ + ‖⟪x,y⟫‖)/2 for ‖e‖ = 1. Cauchy–Schwarz is exactly the special case e = x/‖x‖ (buzano_recovers_cauchy_schwarz), so Buzano is strictly more general. The file develops it over an RCLike inner product space (𝕜 = ℝ or ℂ), self-contained and 0-axiom, resting on ONE geometric idea: for a unit vector e, the reflection y ↦ 2⟪e,y⟫•e − y through the line span(e) is an isometry (reflection_isometry). Applying Cauchy–Schwarz to ⟪x, 2⟪e,y⟫•e − y⟫ bounds ‖2⟪x,e⟫⟪e,y⟫ − ⟪x,y⟫‖ by ‖x‖·‖y‖, and the triangle inequality then isolates 2‖⟪x,e⟫‖·‖⟪e,y⟫‖. Buzano's inequality is not in Mathlib; the file adds all seven supporting theorems.",
+    "mathContext": "On an inner product space over $\\mathbb{R}$ or $\\mathbb{C}$, for a unit vector $e$ the reflection $R_e(y)=2\\langle e,y\\rangle e - y$ satisfies $\\|R_e(y)\\|=\\|y\\|$. Cauchy–Schwarz applied to $\\langle x, R_e(y)\\rangle$ gives $\\|2\\langle x,e\\rangle\\langle e,y\\rangle-\\langle x,y\\rangle\\|\\le\\|x\\|\\|y\\|$, and $\\|2ab\\|\\le\\|2ab-c\\|+\\|c\\|$ yields Buzano.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cauchy–Schwarz inequality",
+      "Buzano's inequality",
+      "inner product space",
+      "reflection isometry",
+      "triangle inequality"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "Cauchy–Schwarz inequality",
+      "norms and the triangle inequality"
+    ]
+  },
+  {
     "id": "csq020401-ann-01",
     "proofId": "cauchy-schwarz-oq-02-oq-04-oq-01",
     "range": {

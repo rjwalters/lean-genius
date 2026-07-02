@@ -786,6 +786,223 @@ theorem firstMissing_lt_cons_self (L : List ℕ) :
   omega
 
 /-!
+## Section 4f: Reading the permutation off a matching — the computable evaluator
+
+The scheduler assembles a chain of finite matchings `L₀ ⊆ L₁ ⊆ …`; the permutation
+`σ` is then read off by *looking up* the partner of `n` in the matching at the stage
+`n` enters the domain (obligation (d) of `myhill_isomorphism`). This section supplies
+that evaluator as a **total, computable** function of the matching and the argument,
+together with its correctness: on a matching it recovers the recorded partner exactly.
+
+`mLookup L n` reads the entry of `mRan L` at the position of `n` in `mDom L`
+(`List.idxOf`). Because `mDom L` and `mRan L` are the two coordinate projections of the
+same list, they are index-aligned, so this returns the second coordinate of the pair
+whose first coordinate is `n`. Off the domain (`n ∉ mDom L`) the index is out of range
+and the placeholder `0` is returned — harmless, since the read-off only queries
+`n ∈ mDom`. The two `Nodup` conditions of `IsMatching` are exactly what make the lookup
+single-valued (`matching_functional`), so `mLookup` is the computable realization of the
+finite partial bijection a matching represents.
+-/
+
+/-- **Partner lookup in a matching.** The value the finite partial map `L` associates to
+    `n`: the entry of the range list `mRan L` at the index of `n` in the domain list
+    `mDom L`. A total function; off the domain it returns the placeholder `0`. -/
+def mLookup (L : List (ℕ × ℕ)) (n : ℕ) : ℕ :=
+  (mRan L).getD (List.idxOf n (mDom L)) 0
+
+/-- **Correctness of `mLookup`.** On a matching, the lookup recovers the recorded
+    partner: if `(n, b) ∈ L` then `mLookup L n = b`. The domain-side `Nodup` (via
+    `IsMatching`) guarantees `n` occurs once in `mDom L`, so its index selects exactly
+    the aligned range entry `b`. This makes `mLookup` the evaluation of the finite
+    partial bijection a matching encodes — the read-off used to define `σ`. -/
+theorem mLookup_eq_of_mem :
+    ∀ {L : List (ℕ × ℕ)}, IsMatching L → ∀ {n b : ℕ}, (n, b) ∈ L → mLookup L n = b := by
+  intro L
+  induction L with
+  | nil => intro _ n b h; simp at h
+  | cons hd tl ih =>
+    obtain ⟨a, c⟩ := hd
+    intro hL n b h
+    have hnodupD : (a :: mDom tl).Nodup := by simpa using hL.1
+    have hnodupR : (c :: mRan tl).Nodup := by simpa using hL.2
+    have ha_notin : a ∉ mDom tl := (List.nodup_cons.mp hnodupD).1
+    have hMtl : IsMatching tl :=
+      ⟨(List.nodup_cons.mp hnodupD).2, (List.nodup_cons.mp hnodupR).2⟩
+    rw [List.mem_cons] at h
+    rcases h with h | h
+    · -- the pair is the head: `(n, b) = (a, c)`
+      have hn : n = a := congrArg Prod.fst h
+      have hb : b = c := congrArg Prod.snd h
+      subst hn; subst hb
+      simp only [mLookup, mDom_cons, mRan_cons, List.idxOf_cons_self, List.getD_cons_zero]
+    · -- the pair is in the tail: recurse, the head index is skipped
+      have hn_mem : n ∈ mDom tl := by
+        simp only [mDom, List.mem_map]; exact ⟨(n, b), h, rfl⟩
+      have hne : a ≠ n := fun heq => ha_notin (heq ▸ hn_mem)
+      simp only [mLookup, mDom_cons, mRan_cons, List.idxOf_cons_ne _ hne,
+        List.getD_cons_succ]
+      exact ih hMtl h
+
+/-- **`mLookup` is computable** (indeed primitive recursive) in both the matching and the
+    argument. The domain/range projections `mDom`, `mRan` are list maps of the coordinate
+    projections; `List.idxOf` and `List.getD` are primitive recursive (`Primrec.list_idxOf`,
+    `Primrec.list_getD`). Combined with `mLookup_eq_of_mem`, this is the computability
+    guarantee behind reading a *computable* permutation off the stage-wise matchings:
+    once the (computable) sequence of matchings is built, `σ n` is a computable lookup. -/
+theorem mLookup_computable : Computable₂ mLookup := by
+  have hmDom : Computable (fun L : List (ℕ × ℕ) => mDom L) := by
+    have h : Primrec (fun L : List (ℕ × ℕ) => L.map Prod.fst) :=
+      Primrec.list_map Primrec.id (Primrec.fst.comp Primrec.snd)
+    exact h.to_comp
+  have hmRan : Computable (fun L : List (ℕ × ℕ) => mRan L) := by
+    have h : Primrec (fun L : List (ℕ × ℕ) => L.map Prod.snd) :=
+      Primrec.list_map Primrec.id (Primrec.snd.comp Primrec.snd)
+    exact h.to_comp
+  have hIdx : Computable (fun p : List (ℕ × ℕ) × ℕ => List.idxOf p.2 (mDom p.1)) :=
+    Primrec.list_idxOf.to_comp.comp Computable.snd (hmDom.comp Computable.fst)
+  have hRanP : Computable (fun p : List (ℕ × ℕ) × ℕ => mRan p.1) :=
+    hmRan.comp Computable.fst
+  have hget : Computable (fun p : List (ℕ × ℕ) × ℕ =>
+      (mRan p.1).getD (List.idxOf p.2 (mDom p.1)) 0) :=
+    (Primrec.list_getD (0 : ℕ)).to_comp.comp hRanP hIdx
+  exact hget.of_eq (fun _ => rfl)
+
+/-!
+## Section 4g: Collision structure — what blocks a fresh domain/range extension
+
+Sections 4c–4f supply the *collision-free* atomic steps (`matching_step_f`,
+`matching_step_g`), the least-fresh target (`firstMissing`), the strictly-increasing
+progress measure, and the computable read-off (`mLookup`). The single obligation they
+leave open — the crux of `myhill_isomorphism`, where the classical orbit classification
+fails because `isGFree` is Π₁ (Section 4a) — is what to do when an atomic step's
+*freshness* hypothesis fails: the target `f a` is already used in the range (a
+**collision**), so `matching_step_f` does not apply.
+
+This section pins down the exact structure of such a collision. The handle is a
+construction invariant satisfied by every matching the scheduler builds: each recorded
+pair is either an `f`-edge `(x, f x)` (a domain step) or a `g`-edge `(g y, y)` (a range
+step). Call this `BuiltFrom f g L`. It is preserved by both atomic steps
+(`builtFrom_cons_f`, `builtFrom_cons_g`) and is self-dual under coordinate swap with
+`f`, `g` exchanged (`builtFrom_map_swap`), so it holds throughout the back-and-forth.
+
+Under this invariant a domain-side collision has a **unique, explicitly identified
+source**: if the fresh point `a`'s image `f a` is already in the range, the blocking
+pair *must* be the `g`-edge `(g (f a), f a)` — it cannot be an `f`-edge, since `f x = f
+a` would force `x = a`, putting `a` back in the domain (`collision_f_source`). Dually, a
+range-side collision when placing `c` is blocked precisely by the `f`-edge
+`(g c, f (g c))` (`collision_g_source`). Contrapositively, whenever the identified
+blocking edge is *absent* the naive atomic step is available
+(`step_f_available_or_collision`). This is exactly the determinacy the collision-chasing
+recursion needs: it turns an opaque "the target is taken" into a named already-placed
+element (`g (f a)`), i.e. the next orbit point to chase — reducing the residual work in
+`myhill_isomorphism` to bounding that chase, with no appeal to the non-computable
+`isGFree`.
+-/
+
+/-- **Construction invariant.** Every pair in the matching is either an `f`-edge
+    `(x, f x)` (a domain step, `matching_step_f`) or a `g`-edge `(g y, y)` (a range step,
+    `matching_step_g`). The scheduler only ever prepends pairs of these two shapes, so
+    this predicate holds along the entire back-and-forth. -/
+def BuiltFrom (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) : Prop :=
+  ∀ ab ∈ L, ab.2 = f ab.1 ∨ ab.1 = g ab.2
+
+/-- The empty matching is (vacuously) built from `f`, `g`. -/
+theorem builtFrom_nil (f g : ℕ → ℕ) : BuiltFrom f g [] := by
+  intro _ h; simp at h
+
+/-- A domain step preserves the invariant: the new pair `(a, f a)` is an `f`-edge. -/
+theorem builtFrom_cons_f {f g : ℕ → ℕ} {L : List (ℕ × ℕ)} (hB : BuiltFrom f g L)
+    (a : ℕ) : BuiltFrom f g ((a, f a) :: L) := by
+  intro ab hmem
+  rcases List.mem_cons.mp hmem with h | h
+  · subst h; exact Or.inl rfl
+  · exact hB ab h
+
+/-- A range step preserves the invariant: the new pair `(g c, c)` is a `g`-edge. -/
+theorem builtFrom_cons_g {f g : ℕ → ℕ} {L : List (ℕ × ℕ)} (hB : BuiltFrom f g L)
+    (c : ℕ) : BuiltFrom f g ((g c, c) :: L) := by
+  intro ab hmem
+  rcases List.mem_cons.mp hmem with h | h
+  · subst h; exact Or.inr rfl
+  · exact hB ab h
+
+/-- The invariant is self-dual under coordinate swap, with `f`, `g` exchanged: an
+    `f`-edge `(x, f x)` becomes a `g`-edge `(f x, x)` of the swapped problem, and a
+    `g`-edge becomes an `f`-edge. This is what lets the range-side collision analysis be
+    obtained from the domain-side one (Section 4e duality). -/
+theorem builtFrom_map_swap {f g : ℕ → ℕ} {L : List (ℕ × ℕ)} (hB : BuiltFrom f g L) :
+    BuiltFrom g f (L.map Prod.swap) := by
+  intro ab hmem
+  rw [List.mem_map] at hmem
+  obtain ⟨cd, hcd, rfl⟩ := hmem
+  exact (hB cd hcd).symm
+
+/-- **Domain-side collision has a determined source.** Assume the matching `L` satisfies
+    the construction invariant and `f` is injective, and we try to place a fresh domain
+    point `a ∉ mDom L` via its image `f a`. If that image is already used
+    (`f a ∈ mRan L` — the collision case *not* covered by `matching_step_f`), then the
+    blocking pair is necessarily the `g`-edge `(g (f a), f a)`: the collision cannot come
+    from an `f`-edge, since `f x = f a` would force `x = a ∈ mDom L`. Thus the element
+    obstructing `a` is `g (f a)`, already in the domain — the next point of the orbit to
+    chase. No decision of the Π₁ predicate `isGFree` is involved. -/
+theorem collision_f_source {f g : ℕ → ℕ} (hf : Injective f)
+    {L : List (ℕ × ℕ)} (hB : BuiltFrom f g L) {a : ℕ} (ha : a ∉ mDom L)
+    (hfa : f a ∈ mRan L) : (g (f a), f a) ∈ L := by
+  simp only [mRan, List.mem_map] at hfa
+  obtain ⟨⟨u, w⟩, hmem, hw⟩ := hfa
+  have hw' : w = f a := hw
+  subst hw'
+  rcases hB (u, f a) hmem with h | h
+  · -- f-edge: `f a = f u` ⟹ `a = u` ⟹ `a ∈ mDom L`, contradicting freshness
+    exfalso
+    have hau : a = u := hf h
+    apply ha
+    rw [hau]
+    exact List.mem_map.mpr ⟨(u, f a), hmem, rfl⟩
+  · -- g-edge: `u = g (f a)`, so the blocking pair is `(g (f a), f a)`
+    have hu : u = g (f a) := h
+    rw [hu] at hmem
+    exact hmem
+
+/-- **Range-side collision has a determined source** (dual to `collision_f_source`).
+    Assume the invariant and `g` injective, and try to place a fresh range point
+    `c ∉ mRan L` via `g c`. If `g c` is already used in the domain (`g c ∈ mDom L`), the
+    blocking pair is necessarily the `f`-edge `(g c, f (g c))`: it cannot be a `g`-edge,
+    since `g w = g c` would force `w = c ∈ mRan L`. So the obstructing element is
+    `f (g c)`, already in the range. -/
+theorem collision_g_source {f g : ℕ → ℕ} (hg : Injective g)
+    {L : List (ℕ × ℕ)} (hB : BuiltFrom f g L) {c : ℕ} (hc : c ∉ mRan L)
+    (hgc : g c ∈ mDom L) : (g c, f (g c)) ∈ L := by
+  simp only [mDom, List.mem_map] at hgc
+  obtain ⟨⟨u, w⟩, hmem, hu⟩ := hgc
+  have hu' : u = g c := hu
+  subst hu'
+  rcases hB (g c, w) hmem with h | h
+  · -- f-edge: `w = f (g c)`, so the blocking pair is `(g c, f (g c))`
+    have hw : w = f (g c) := h
+    rw [hw] at hmem
+    exact hmem
+  · -- g-edge: `g c = g w` ⟹ `c = w` ⟹ `c ∈ mRan L`, contradicting freshness
+    exfalso
+    have hcw : c = w := hg h
+    apply hc
+    rw [hcw]
+    exact List.mem_map.mpr ⟨(g c, w), hmem, rfl⟩
+
+/-- **The domain step is either available or its blocker is named.** Combining the
+    atomic freshness condition with `collision_f_source`: for a fresh domain point `a`,
+    either `f a` is fresh in the range (so `matching_step_f` applies directly), or the
+    matching already contains the specific `g`-edge `(g (f a), f a)` that blocks it. This
+    is the case split the scheduler performs at each even stage — no unbounded search and
+    no `isGFree` decision. -/
+theorem step_f_available_or_collision {f g : ℕ → ℕ} (hf : Injective f)
+    {L : List (ℕ × ℕ)} (hB : BuiltFrom f g L) {a : ℕ} (ha : a ∉ mDom L) :
+    f a ∉ mRan L ∨ (g (f a), f a) ∈ L := by
+  by_cases h : f a ∈ mRan L
+  · exact Or.inr (collision_f_source hf hB ha h)
+  · exact Or.inl h
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 

@@ -99,6 +99,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Ptolemy's theorem ⟹ the sine addition formula (chord-table derivation)",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Imports and header docstring: the historical derivation of sin(α+β) from Ptolemy's theorem, the cyclic-quadrilateral construction, the four formalized items and their dependencies.",
+      "mathContext": "This file (open question ptolemys-theorem-oq-03) formalizes the historical derivation, from Ptolemy's Almagest (Book I, Ch. 10), of the sine addition formula sin(α+β) = sin α·cos β + cos α·sin β from Ptolemy's theorem applied to a cyclic quadrilateral inscribed in a circle of diameter 1. The header docstring (lines 1–70) gives the construction in ℂ: with diameter AC from A=0 to C=1, Thales lets one drop two right triangles B = cos α·e^{iα} (∠BAC=α, AB=cos α, BC=sin α) and D = cos β·e^{−iβ} (∠CAD=β, AD=cos β, CD=sin β) on opposite sides; the inscribed angle ∠BAD = α+β subtends chord BD = sin(α+β), so Ptolemy's AC·BD = AB·CD + BC·AD reads 1·sin(α+β) = cos α·sin β + sin α·cos β. Four items are formalized: (1) ptolemy_identity — the complex identity (a−c)(b−d) = (a−b)(c−d) + (a−d)(b−c) for all complex numbers (ring), whose moduli give Ptolemy for concyclic points; (2) the six chord lengths, each computed from sin²+cos²=1 only (no addition formula) — in particular BD = sin α·cos β + cos α·sin β falls out of the coordinates, the substantive content; (3) ptolemy_relation confirming the configuration is a genuine Ptolemy instance; (4) sin_add_from_ptolemy — the classical formula, bridging the geometric diagonal BD to the symbol sin(α+β) using the cosine addition formula Real.cos_add (distinct from Real.sin_add), exactly as Ptolemy's chord table paired an arc's chord with its supplement's — a genuine re-derivation of sin_add, not an appeal to Real.sin_add. Fully machine-checked, 0 axioms, 0 sorries."
+    },
+    {
       "id": "algebraic-ptolemy",
       "title": "The Algebraic Core of Ptolemy's Theorem",
       "startLine": 71,

@@ -69,7 +69,8 @@
       "The jump a₍k₊₁₎ − aₖ is not just a number: it is the dimension of the honest subspace Uₖ = Nᵏ(ker Nᵏ⁺¹), obtained from rank–nullity applied to Nᵏ restricted to ker Nᵏ⁺¹.",
       "Monotonicity of the whole tower reduces to a single subspace inclusion U₍k₊₁₎ ⊆ Uₖ, proved by exhibiting N x as the preimage witness — this avoids constructing the usual quotient-space injection ker Nᵏ⁺¹/ker Nᵏ ↪ ker Nᵏ/ker Nᵏ⁻¹.",
       "No Jordan normal form, algebraic closure, or perfect-field hypothesis is needed: the concavity is a rank inequality valid over any field, machine-checked with 0 axioms.",
-      "The result is the abstract engine behind the Weyr = conjugate-of-Segre partition identity: it is exactly the statement that the counts of Jordan blocks of size ≥ k form a non-increasing (partition) sequence."
+      "The result is the abstract engine behind the Weyr = conjugate-of-Segre partition identity: it is exactly the statement that the counts of Jordan blocks of size ≥ k form a non-increasing (partition) sequence.",
+      "By rank–nullity for the whole space, dim ker Nᵏ + rank Nᵏ = dim V, so concavity of the kernel dimensions is equivalent to convexity of the ranks: the successive rank drops rank Nᵏ − rank Nᵏ⁺¹ are themselves non-increasing. This is the form in which the result is often used to bound how fast a nilpotent part can collapse."
     ],
     "prerequisites": [
       "Generalized eigenspaces and kernels of operator powers",
@@ -114,6 +115,12 @@
     }
   ],
   "sections": [
+    {
+      "title": "Statement, setup, and the Weyr characteristic",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "The docstring fixes an eigenvalue μ, sets N = f − μ and aₖ = dim ker Nᵏ, and states the goal: the jumps wₖ = a₍k₊₁₎ − aₖ (the k-th Weyr number, counting Jordan blocks of size ≥ k+1) are non-increasing, equivalently the sequence (aₖ) is concave. It also sketches the quotient-free proof via the subspaces Uₖ = Nᵏ(ker Nᵏ⁺¹). The code then imports Mathlib and fixes an arbitrary field K with a finite-dimensional K-vector space V."
+    },
     {
       "title": "Powers of an operator and their kernels",
       "startLine": 51,

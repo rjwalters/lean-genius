@@ -107,4 +107,79 @@ theorem shatters_mono {H H' : Finset (Finset α)} (S : Finset α) (hHH : H ⊆ H
   calc 2 ^ S.card = (trace H S).card := h.symm
     _ ≤ (trace H' S).card := Finset.card_le_card h1
 
+-- ============================================================================
+-- Tightness of the bounds and the VC dimension itself
+-- ============================================================================
+
+/-- **The bounds are tight.** The full powerset class `2^S` shatters `S`: intersecting any
+subset `h ⊆ S` with `S` returns `h` itself, so the trace is *all* of `S.powerset`. -/
+theorem trace_powerset_self (S : Finset α) :
+    trace S.powerset S = S.powerset := by
+  refine Finset.Subset.antisymm (trace_subset_powerset _ _) ?_
+  intro T hT
+  have hTS : T ⊆ S := Finset.mem_powerset.mp hT
+  simp only [trace, Finset.mem_image]
+  exact ⟨T, hT, Finset.inter_eq_left.mpr hTS⟩
+
+/-- The powerset class `2^S` shatters `S`. -/
+theorem powerset_shatters (S : Finset α) : Shatters S.powerset S :=
+  trace_powerset_self S
+
+/-- **Sharpness of `shatters_card_le`.** For every `S` there is a class of size *exactly*
+`2^|S|` that shatters `S` — namely `2^S` — so the size bound cannot be improved. -/
+theorem shatters_card_le_sharp (S : Finset α) :
+    ∃ H : Finset (Finset α), Shatters H S ∧ H.card = 2 ^ S.card :=
+  ⟨S.powerset, powerset_shatters S, Finset.card_powerset S⟩
+
+/-- The empty set is shattered by any nonempty class (its only subset is `∅`, realised by
+`h ∩ ∅ = ∅`). -/
+theorem shatters_empty {H : Finset (Finset α)} (hH : H.Nonempty) : Shatters H ∅ := by
+  unfold Shatters trace
+  rw [Finset.powerset_empty]
+  ext T
+  simp only [Finset.mem_image, Finset.inter_empty, Finset.mem_singleton]
+  constructor
+  · rintro ⟨h, _, rfl⟩; rfl
+  · rintro rfl
+    obtain ⟨h, hh⟩ := hH
+    exact ⟨h, hh, rfl⟩
+
+/-- The **VC dimension** of a finite hypothesis class `H`: the largest cardinality of a
+finite set shattered by `H`. The set of shattered-set cardinalities is bounded by
+`log₂|H|` (`shatters_card_le_log`), so the supremum is attained. This supplies the proper
+Lean object the parent entry's placeholder `growthFunction := 0` never defined. -/
+noncomputable def VCDim (H : Finset (Finset α)) : ℕ :=
+  sSup {n | ∃ S : Finset α, S.card = n ∧ Shatters H S}
+
+/-- The set of cardinalities of shattered sets is bounded above (by `log₂|H|`). -/
+theorem vcDim_bddAbove (H : Finset (Finset α)) :
+    BddAbove {n | ∃ S : Finset α, S.card = n ∧ Shatters H S} := by
+  refine ⟨Nat.log 2 H.card, fun n hn => ?_⟩
+  obtain ⟨S, rfl, hS⟩ := hn
+  exact shatters_card_le_log H S hS
+
+/-- **Shattered sets are small.** Any set shattered by `H` has cardinality at most the VC
+dimension of `H`. -/
+theorem card_le_vcDim (H : Finset (Finset α)) (S : Finset α) (h : Shatters H S) :
+    S.card ≤ VCDim H :=
+  le_csSup (vcDim_bddAbove H) ⟨S, rfl, h⟩
+
+/-- **VC dimension is at most `log₂|H|`** — the definitional counterpart of
+`shatters_card_le_log`, now stated for the class as a whole. -/
+theorem vcDim_le_log (H : Finset (Finset α)) :
+    VCDim H ≤ Nat.log 2 H.card := by
+  rcases Set.eq_empty_or_nonempty {n | ∃ S : Finset α, S.card = n ∧ Shatters H S} with he | hne
+  · rw [VCDim, he, csSup_empty]; exact bot_le
+  · refine csSup_le hne (fun n hn => ?_)
+    obtain ⟨S, rfl, hS⟩ := hn
+    exact shatters_card_le_log H S hS
+
+/-- **The VC dimension is attained, and the `log₂|H|` bound is sharp.** The class `2^S` has
+VC dimension exactly `|S|`: it shatters `S`, so `|S| ≤ VCDim`, while `VCDim ≤ log₂|2^S| =
+log₂ 2^{|S|} = |S|`. -/
+theorem vcDim_powerset (S : Finset α) : VCDim S.powerset = S.card := by
+  refine le_antisymm ?_ (card_le_vcDim S.powerset S (powerset_shatters S))
+  have h := vcDim_le_log S.powerset
+  rwa [Finset.card_powerset, Nat.log_pow (by norm_num)] at h
+
 end PACLearningBoundsWIP01

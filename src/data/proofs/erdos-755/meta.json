@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 755,
     "erdosUrl": "https://erdosproblems.com/755",
     "erdosProblemStatus": "solved",
@@ -55,8 +55,8 @@
       "erdos_755_summary: combined main results"
     ],
     "axiomCount": 1,
-    "lineCount": 272,
-    "assumptions": "1 axiom: cdl_2025_main. 1 sorry.",
+    "lineCount": 322,
+    "assumptions": "1 axiom: cdl_2025_main (the Clemen-Dumitrescu-Liu 2025 asymptotic). 0 sorries.",
     "theoremCount": 4,
     "definitionCount": 7,
     "additionalFiles": [
@@ -170,12 +170,12 @@
       "Real"
     ],
     "namespace": "Erdos755",
-    "lineCount": 272,
+    "lineCount": 322,
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 7,
     "path": "Proofs/Erdos755Problem.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos755Aristotle.lean"
     ]
@@ -197,5 +197,5 @@
       "description": "Related Erdős problem sharing themes: combinatorial-geometry, discrete-geometry, geometry"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

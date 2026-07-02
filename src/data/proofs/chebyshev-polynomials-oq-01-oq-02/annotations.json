@@ -74,12 +74,35 @@
     "proofId": "chebyshev-polynomials-oq-01-oq-02",
     "range": {
       "startLine": 110,
-      "endLine": 146
+      "endLine": 132
     },
     "type": "insight",
-    "title": "Second-kind Chebyshev Uₙ: the composition law fails",
-    "content": "The negative result. U_one_ne_X shows U₁ = 2X ≠ X — the root obstruction, since a monoid morphism into (R[X], ∘, X) must send the multiplicative unit to X. U_comp_law_fails_at_one turns this into a failure of the composition law already at m = n = 1: (2X) ∘ (2X) = 4X ≠ 2X. U_comp_law_fails_deg_two gives a positive-degree witness U₄ ≠ U₂ ∘ U₂, proved by the evaluation-at-1 homomorphism and Uₙ(1) = n+1: the left side is 5, the right side U₂(3) = 35.",
-    "mathContext": "$U_1 = 2X \\neq X$; $(2X)\\circ(2X) = 4X$; $U_4(1) = 5 \\neq 35 = U_2(U_2(1))$.",
+    "title": "Second-kind Chebyshev Uₙ: the identity-level obstruction",
+    "content": "The negative result begins at the multiplicative identity. U_one_ne_X shows U₁ = 2X ≠ X — the root obstruction, since any monoid morphism into the compositional monoid (R[X], ∘, X) must send the multiplicative unit to the compositional unit X, and over ℤ the constant 2 is not 1. U_comp_law_fails_at_one promotes this to a failure of the composition law already at m = n = 1: were U_{m·n} = U_m ∘ U_n to hold there, it would assert 2X = (2X) ∘ (2X) = 4X, and evaluation at 1 gives 2 = 4. So n ↦ Uₙ is not a compositional homomorphism at all.",
+    "mathContext": "$U_1 = 2X \\neq X$; the law at $m=n=1$ would force $2X = (2X)\\circ(2X) = 4X$, i.e. $2 = 4$ at $x=1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Chebyshev polynomials of the second kind",
+      "polynomial composition",
+      "compositional identity",
+      "monoid morphism"
+    ],
+    "prerequisites": [
+      "Chebyshev polynomials of the second kind",
+      "polynomial evaluation"
+    ]
+  },
+  {
+    "id": "ann-u-fails-degree-two",
+    "proofId": "chebyshev-polynomials-oq-01-oq-02",
+    "range": {
+      "startLine": 134,
+      "endLine": 145
+    },
+    "type": "insight",
+    "title": "A positive-degree witness that the law genuinely fails",
+    "content": "The identity-level obstruction could be dismissed as a normalization artifact, so U_comp_law_fails_deg_two supplies a quantitative counterexample at genuine positive degree: U₄ ≠ U₂ ∘ U₂. The proof applies the evaluation-at-1 ring homomorphism together with the closed form Uₙ(1) = n + 1 (U_eval_one). The left side evaluates to U₄(1) = 5; the right side to U₂(U₂(1)) = U₂(3) = 4·9 − 1 = 35 (using U₂ = 4X² − 1). Since 5 ≠ 35 the two polynomials differ — the composition law fails on real inputs, not merely at the unit. This is the sharp form of the second-kind negative answer to the open question.",
+    "mathContext": "$U_4(1) = 5$ while $U_2(U_2(1)) = U_2(3) = 4\\cdot 9 - 1 = 35$; $5 \\neq 35 \\Rightarrow U_4 \\neq U_2 \\circ U_2$.",
     "significance": "critical",
     "relatedConcepts": [
       "Chebyshev polynomials of the second kind",
@@ -89,7 +112,8 @@
     ],
     "prerequisites": [
       "Chebyshev polynomials of the second kind",
-      "polynomial evaluation"
+      "polynomial evaluation",
+      "ring homomorphism eval"
     ]
   }
 ]

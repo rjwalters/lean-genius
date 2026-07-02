@@ -65,6 +65,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Monster 𝕄 as a Galois Group over ℚ (Resolved Sporadic Case)",
+      "startLine": 1,
+      "endLine": 76,
+      "summary": "Imports (Mathlib, InverseGalois, InverseGaloisOQ01), module docstring, and setup (open scoped Classical; namespace InverseGaloisOQ03). Unlike the Mathieu group M₂₃ (OQ-02, still open), the Monster 𝕄 — the largest sporadic simple group, |𝕄| = 2⁴⁶·3²⁰·5⁹·7⁶·11²·13³·17·19·23·29·31·41·47·59·71 — IS known to be a Galois group over ℚ, established by Thompson (1984) via his rigidity criterion (rigid rational triple 2A,3B,29A). Since the smallest faithful permutation representation has degree ~10¹⁹, 𝕄 is axiomatized as an abstract finite group. From 6 cited axioms (Monster type/group/finiteness, Monster_card, Monster_isSimple, Monster_realizable_over_Q) the file derives with no further assumptions: the order value, nontriviality, non-primality, divisibility by each prime factor (Sylow inputs), non-commutativity, perfectness [𝕄,𝕄]=𝕄, non-solvability, and that 𝕄 lies beyond Shafarevich's solvable-group theorem.",
+      "mathContext": "The positive bookend to OQ-02: the same simplicity ⇒ non-solvability ⇒ beyond-Shafarevich machinery, but with an affirmative realizability answer via Thompson's rigidity method. NOTE: this entry is honestly AXIOMATIZED — the 6 classification-of-finite-simple-groups / Thompson inputs are cited facts, not reproved; see the entry's status and assumptions fields."
+    },
+    {
       "id": "axiomatization",
       "title": "Part I: Axiomatization of the Monster 𝕄",
       "startLine": 77,

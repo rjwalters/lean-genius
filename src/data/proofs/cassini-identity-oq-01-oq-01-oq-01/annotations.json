@@ -16,6 +16,11 @@
       "Fibonacci addition formula",
       "Bilinear identity",
       "Cassini's identity"
+    ],
+    "prerequisites": [
+      "Fibonacci numbers",
+      "Fibonacci addition formula F(n+k)",
+      "bilinear identities / induction"
     ]
   },
   {
@@ -34,6 +39,11 @@
       "Catalan's identity",
       "Diagonal specialization",
       "Open question resolution"
+    ],
+    "prerequisites": [
+      "Vajda's identity",
+      "diagonal specialization i=j=r",
+      "Fibonacci numbers"
     ]
   },
   {
@@ -52,6 +62,11 @@
       "d'Ocagne's identity",
       "Specialization",
       "Fibonacci shift"
+    ],
+    "prerequisites": [
+      "Vajda's identity",
+      "specialization j=1",
+      "Fibonacci shift"
     ]
   },
   {
@@ -69,6 +84,11 @@
     "relatedConcepts": [
       "Cassini's identity",
       "Specialization",
+      "Fibonacci recurrence"
+    ],
+    "prerequisites": [
+      "Vajda's identity",
+      "specialization i=j=1",
       "Fibonacci recurrence"
     ]
   },
@@ -89,6 +109,11 @@
       "norm_num",
       "Bilinear off-diagonal case",
       "Parity of the Cassini sign"
+    ],
+    "prerequisites": [
+      "evaluating Fibonacci numbers",
+      "norm_num",
+      "parity of (-1)^n"
     ]
   }
 ]

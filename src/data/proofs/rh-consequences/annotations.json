@@ -1,5 +1,33 @@
 [
   {
+    "id": "ann-rhconseq-overview",
+    "proofId": "rh-consequences",
+    "range": {
+      "startLine": 1,
+      "endLine": 19
+    },
+    "type": "concept",
+    "title": "Overview: Consequences of the Riemann Hypothesis",
+    "content": "This survey file formalizes several classical consequences of the Riemann Hypothesis (RH). It builds on Mathlib's existing `RiemannHypothesis` definition (from `NumberTheory.LSeries.RiemannZeta`), which states that every non-trivial zero of the Riemann zeta function lies on the critical line Re(s) = 1/2. On top of it, the file defines the Mertens function M(x) = \u03a3_{n\u2264x} \u03bc(n) and the Chebyshev function \u03b8(x), and states \u2014 as axioms, since their full proofs need analytic machinery not yet in Mathlib \u2014 the sharp error terms that RH implies: |M(x)| = O(\u221ax) for the Mertens summatory function, |\u03c0(x) \u2212 li(x)| = O(\u221ax log x) for the prime-counting function against the logarithmic integral, and the prime-gap bound p_{n+1} \u2212 p_n = O(\u221ap_n log p_n). These conditional statements illustrate why RH is central to analytic number theory: it pins down the error in the Prime Number Theorem to essentially square-root size, the best possible.",
+    "mathContext": "RH \u27fa $\\psi(x) = x + O(\\sqrt{x}\\log^2 x)$ \u27fa $|M(x)| = O(x^{1/2+\\varepsilon})$; the sharp forms stated here are the classical corollaries. Writing $\\pi(x)$ for the prime counting function and $\\mathrm{li}(x)=\\int_0^x dt/\\log t$, RH is equivalent to $\\pi(x) = \\mathrm{li}(x) + O(\\sqrt{x}\\log x)$ (von Koch, 1901). The Mertens function bound $|M(x)| = O(\\sqrt{x})$ is strictly weaker than the disproved Mertens conjecture $|M(x)| < \\sqrt{x}$ but is implied by RH. The critical-line statement itself: all zeros $\\rho$ of $\\zeta$ with $0 < \\mathrm{Re}(\\rho) < 1$ satisfy $\\mathrm{Re}(\\rho) = 1/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Riemann-hypothesis",
+      "Mertens-function",
+      "Chebyshev-function",
+      "prime-counting-function",
+      "logarithmic-integral",
+      "prime-gaps",
+      "Prime-Number-Theorem"
+    ],
+    "prerequisites": [
+      "Riemann zeta function and its non-trivial zeros",
+      "Mobius function and Mertens summatory function",
+      "Prime Number Theorem",
+      "asymptotic (big-O) error terms"
+    ]
+  },
+  {
     "id": "ann-rh-mertens-def",
     "proofId": "rh-consequences",
     "range": {

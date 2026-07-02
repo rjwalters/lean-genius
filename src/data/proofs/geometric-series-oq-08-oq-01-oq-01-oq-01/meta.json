@@ -33,6 +33,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: A Division-Free Recurrence for the Finite m-th Moment ∑ kᵐxᵏ",
+      "startLine": 1,
+      "endLine": 76,
+      "summary": "Imports (Mathlib.Analysis.SpecificLimits.Normed, Mathlib.Tactic), module docstring, and setup (namespace GeometricSeriesOQ08OQ01OQ01OQ01; open Finset; CommRing R). For a ratio x, length n, exponent m, the finite m-th moment momentSum m n x := ∑_{k<n} kᵐxᵏ satisfies over any commutative ring the division-free recurrence (1−x)·momentSum m n x = 0ᵐ − nᵐxⁿ + x·∑_{i<m} C(m,i)·momentSum i n x (★), the unified statement behind the whole ∑ kᵐxᵏ family. Specializing m=0,1,2 recovers the gallery's closed forms; the interior part is the Eulerian recurrence in the n→∞ limit, with the extra n-dependent boundary term nᵐxⁿ distinguishing the finite case. Mathlib has geom_sum_eq but no finite moment sum nor cross-m recurrence. Proof: sum_choose_mul_pow (∑_{i<m}C(m,i)aⁱ = (a+1)ᵐ−aᵐ), momentSum_succ (peel top term), momentSum_recurrence via induction on n with linear_combination, and specializations. Depends only on propext, Classical.choice, Quot.sound.",
+      "mathContext": "Recurrence (★) is the sharpest fully general, division-free statement for finite weighted geometric moments — uniform in m, valid over any commutative ring, reducing moment m to all lower moments in one step; the child oq-02 passes it to the infinite limit."
+    },
+    {
       "id": "definition-helper",
       "title": "The Moment Sum and the Binomial Helper",
       "startLine": 77,

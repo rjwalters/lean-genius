@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-662-ann-overview",
+    "proofId": "erdos-662",
+    "range": {
+      "startLine": 1,
+      "endLine": 10
+    },
+    "type": "concept",
+    "title": "Overview: Distances in separated point sets",
+    "content": "The Erdős–Lovász–Vesztergombi conjecture (1997) states that among all $n$-point $1$-separated sets in $\\mathbb{R}^2$ (pairwise distances $\\ge 1$), the triangular lattice maximizes the number of pairs at distance $\\le t$, for every $t\\ge 1$. The problem is open in general. This entry formalizes the triangular-lattice shell counts, proves the planar kissing-number bound as the geometric engine, and settles the conjecture unconditionally for the base case $t=1$ (unit distances).",
+    "mathContext": "Among $n$-point sets with pairwise distance $\\ge 1$, does the triangular lattice maximize $\\#\\{$pairs at distance $\\le t\\}$ for all $t\\ge 1$? Open; the $t=1$ case is proved here.",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangular lattice",
+      "1-separated set",
+      "kissing number",
+      "extremal distance problems"
+    ],
+    "prerequisites": [
+      "discrete geometry",
+      "Euclidean geometry"
+    ]
+  },
+  {
     "id": "erdos-662-ann-imports",
     "proofId": "erdos-662",
     "range": {
@@ -292,6 +315,74 @@
       "1-separated sets",
       "pair count function",
       "triangular lattice count"
+    ]
+  },
+  {
+    "id": "erdos-662-ann-geometry",
+    "proofId": "erdos-662",
+    "range": {
+      "startLine": 101,
+      "endLine": 248
+    },
+    "type": "technique",
+    "title": "Geometry of unit neighbors",
+    "content": "The technical core studies, for a point $p$ in a $1$-separated set, its *unit neighbors* at exactly unit distance. Each such neighbor is a unit vector from $p$; converting to complex numbers, a unit vector has $\\|z\\|=1$ and its direction is captured by an argument normalized to $[0,2\\pi)$. Two distinct unit neighbors subtend an angle $\\ge \\pi/3$: if $|\\theta|<\\pi/3$ then $\\cos\\theta>1/2$, but separation forces $\\cos\\theta\\le 1/2$ (dot product $=\\cos$ of the argument difference for unit vectors). This angular gap is the crux of the kissing bound.",
+    "mathContext": "Unit neighbors are unit vectors; for distinct ones the angle $\\theta$ satisfies $\\cos\\theta\\le 1/2$, i.e. $|\\theta|\\ge\\pi/3$. Dot product of unit vectors $=\\cos(\\arg z_1-\\arg z_2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit vectors",
+      "argument/angle",
+      "cosine monotonicity",
+      "dot product"
+    ],
+    "prerequisites": [
+      "complex numbers",
+      "trigonometry"
+    ]
+  },
+  {
+    "id": "erdos-662-ann-kissing",
+    "proofId": "erdos-662",
+    "range": {
+      "startLine": 249,
+      "endLine": 333
+    },
+    "type": "insight",
+    "title": "The planar kissing number is 6",
+    "content": "The angular gap $\\ge\\pi/3$ implies at most $\\lfloor 2\\pi/(\\pi/3)\\rfloor = 6$ unit vectors can be pairwise separated — the 2D kissing number bound `kissing_number_2d`. Applied pointwise, every point of a $1$-separated set has at most $6$ unit neighbors (`unit_neighbor_bound`), exactly matching the triangular lattice's $6$ nearest neighbors.",
+    "mathContext": "At most $6$ pairwise-$\\ge\\pi/3$-separated unit vectors fit in $\\mathbb{R}^2$; hence each point of a $1$-separated set has $\\le 6$ unit neighbors, achieved by the triangular lattice.",
+    "significance": "key",
+    "relatedConcepts": [
+      "kissing number",
+      "triangular lattice",
+      "nearest neighbors",
+      "packing"
+    ],
+    "prerequisites": [
+      "discrete geometry"
+    ]
+  },
+  {
+    "id": "erdos-662-ann-unitcase",
+    "proofId": "erdos-662",
+    "range": {
+      "startLine": 334,
+      "endLine": 409
+    },
+    "type": "insight",
+    "title": "The t = 1 case, unconditionally",
+    "content": "Summing the per-point bound gives at most $6n$ ordered unit-distance pairs, hence at most $3n$ unordered ones (`contact_number_3n`). Since the triangular lattice attains $3n - O(\\sqrt n)$ unit-distance pairs, it is optimal at $t=1$: `erdos_662_unit_case` proves the Erdős–Lovász–Vesztergombi conjecture unconditionally for unit distances, while the general threshold form remains an axiom (`erdos_662_lattice_optimal`).",
+    "mathContext": "Ordered unit pairs $\\le 6n$; unordered $\\le 3n$; triangular lattice achieves $\\approx 3n$, so it maximizes unit-distance pairs ($t=1$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "contact number",
+      "unordered pairs",
+      "unconditional base case",
+      "open conjecture"
+    ],
+    "prerequisites": [
+      "discrete geometry",
+      "combinatorics"
     ]
   }
 ]

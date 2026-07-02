@@ -46,7 +46,8 @@
       "The squares in ∑ C(n,k)² are not intrinsic: they arise purely from the symmetry C(n,n-k) = C(n,k) applied to the second factor of Vandermonde's diagonal — the identity is really a self-convolution, not a sum of squares.",
       "Working with the single symmetry lemma Nat.choose_symm_of_eq_add (n = a + b ⟹ C(n,a) = C(n,b)) keeps every step free of truncated ℕ-subtraction: each subtraction equality (n = ((n-d)-k)+(k+d) and 2n = (n-d)+(n+d)) is a one-line omega fact under d ≤ n.",
       "Proving the shifted diagonal first and recovering the sum-of-squares as the d=0 corollary is strictly more general than proving the squares directly, at no extra cost — the same Vandermonde specialization handles both.",
-      "Stating the closed form as C(2n,n+d) rather than C(2n,n-d) (the two are equal by symmetry) makes the d=0 case land exactly on the central binomial coefficient C(2n,n)."
+      "Stating the closed form as C(2n,n+d) rather than C(2n,n-d) (the two are equal by symmetry) makes the d=0 case land exactly on the central binomial coefficient C(2n,n).",
+      "The shifted diagonal has a clean double-counting reading: to select n+d objects from 2n split into two blocks of n, take k from the first block and n+d-k from the second; summing C(n,k)·C(n,n+d-k) = C(n,k)·C(n,k+d) over k recounts C(2n,n+d) — the algebraic Vandermonde specialization is the bijective count made formal."
     ]
   },
   "sections": [
@@ -54,8 +55,15 @@
       "id": "header",
       "title": "Open Question and Mathematical Context",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 36,
       "summary": "Header stating OQ-10: the diagonal specialization of Vandermonde. Notes that the general convolution and Chu–Vandermonde generalizations are already in the gallery, and that this file adds the self-convolution diagonal and the central-binomial sum-of-squares identity."
+    },
+    {
+      "id": "method",
+      "title": "Proof Method Overview",
+      "startLine": 38,
+      "endLine": 52,
+      "summary": "The `## Method` block: specialize Vandermonde's Nat.add_choose_eq at m=n, r=n-d and route every rewrite through the single symmetry lemma Nat.choose_symm_of_eq_add, keeping the whole argument free of truncated ℕ-subtraction (each index split discharged by omega under d ≤ n). Sets up imports and the Nat/Finset API."
     },
     {
       "id": "shifted-diagonal",

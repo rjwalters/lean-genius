@@ -33,7 +33,7 @@ structure UnitDiscPolynomial where
   /-- The roots of the polynomial. -/
   roots : Fin degree → ℂ
   /-- All roots lie in the closed unit disc. -/
-  roots_in_disc : ∀ i, Complex.abs (roots i) ≤ 1
+  roots_in_disc : ∀ i, ‖roots i‖ ≤ 1
 
 variable (f : UnitDiscPolynomial)
 
@@ -43,7 +43,7 @@ noncomputable def UnitDiscPolynomial.eval (z : ℂ) : ℂ :=
 
 /-- The sublevel set {z : |f(z)| < 1}. -/
 def sublevelSet : Set ℂ :=
-  {z : ℂ | Complex.abs (f.eval z) < 1}
+  {z : ℂ | ‖f.eval z‖ < 1}
 
 /-
 ## Inscribed Disc Radius
@@ -51,7 +51,7 @@ def sublevelSet : Set ℂ :=
 
 /-- A disc of radius r centered at c is inscribed in S. -/
 def isInscribedDisc (S : Set ℂ) (c : ℂ) (r : ℝ) : Prop :=
-  r > 0 ∧ ∀ z : ℂ, Complex.abs (z - c) < r → z ∈ S
+  r > 0 ∧ ∀ z : ℂ, ‖z - c‖ < r → z ∈ S
 
 /-- The supremum of radii of inscribed discs. -/
 noncomputable def inscribedDiscRadius (S : Set ℂ) : ℝ :=
@@ -65,12 +65,12 @@ noncomputable def rho : ℝ := inscribedDiscRadius (sublevelSet f)
 -/
 
 /-- The polynomial zⁿ - 1 has roots at the n-th roots of unity. -/
-def rootsOfUnity (n : ℕ) (hn : n > 0) : UnitDiscPolynomial where
+noncomputable def rootsOfUnity (n : ℕ) (hn : n > 0) : UnitDiscPolynomial where
   degree := n
   roots := fun k => Complex.exp (2 * Real.pi * Complex.I * k / n)
   roots_in_disc := by
     intro i
-    simp only [Complex.abs_exp]
+    simp only [Complex.norm_exp]
     -- The argument is purely imaginary: rewrite as (real * I), then re = 0
     have heq : 2 * ↑Real.pi * Complex.I * ↑↑(i : ℕ) / ↑(n : ℕ) =
       ↑(2 * Real.pi * (↑(i : ℕ) : ℝ) / (↑n : ℝ)) * Complex.I := by
@@ -126,10 +126,10 @@ theorem klr_better_than_pommerenke :
           mul_lt_mul_of_pos_left h1 hsqrt_pos
       _ = Real.log (n : ℝ) := Real.mul_self_sqrt (le_of_lt hlog_pos)
   have hlog_lt_n : Real.log (n : ℝ) < (n : ℝ) := by
-    have := Real.add_one_le_exp hlog_pos.le
+    have := Real.add_one_le_exp (Real.log (n : ℝ))
     rw [Real.exp_log hn_pos] at this; linarith
   -- 1/(n√(log n)) > 1/(2en²) ⟺ 2en² > n√(log n) ⟺ 2en > √(log n)
-  rw [gt_iff_lt, div_lt_div_iff (by positivity) (mul_pos hn_pos hsqrt_pos)]
+  rw [gt_iff_lt, div_lt_div_iff₀ (by positivity) (mul_pos hn_pos hsqrt_pos)]
   simp only [one_mul]
   push_cast
   nlinarith [Real.exp_one_gt_d9,
@@ -144,7 +144,7 @@ def ehpConjecture : Prop :=
   ∃ c > 0, ∀ (f : UnitDiscPolynomial), f.degree > 0 →
     rho f ≥ c / f.degree
 
-/-- The EHP conjecture is an open problem. We neither prove nor disprove it.
+/- The EHP conjecture is an open problem. We neither prove nor disprove it.
     (The previous axiom `¬(P ∨ ¬P)` was inconsistent with classical logic.) -/
 
 /-
@@ -179,14 +179,16 @@ theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : 0 < c) (hc' : c < Re
     have hexp_le : Real.exp 1 ≤ (n : ℝ) := by
       have : Real.exp 1 < 3 := by linarith [Real.exp_one_lt_d9]
       linarith
-    rwa [Real.exp_le_iff_le_log hn_pos] at hexp_le
+    rwa [← Real.le_log_iff_exp_le hn_pos] at hexp_le
   have hsqrt_ge_1 : 1 ≤ Real.sqrt (Real.log (n : ℝ)) := by
     have := Real.sqrt_le_sqrt hlog_ge_1; rwa [Real.sqrt_one] at this
   -- Reduce to: 2c < π√(log n), by clearing positive denominators
-  rw [div_lt_div_iff (mul_pos hn_pos hsqrt_pos) (by positivity : (0 : ℝ) < 2 * ↑n)]
+  rw [div_lt_div_iff₀ (mul_pos hn_pos hsqrt_pos) (by positivity : (0 : ℝ) < 2 * ↑n)]
   -- Goal: c * (2 * ↑n) < π * (↑n * √(log ↑n))
   -- From c < π/2 and √(log n) ≥ 1: 2cn < πn ≤ πn√(log n)
-  nlinarith [Real.pi_pos]
+  nlinarith [Real.pi_pos, hn_pos, hsqrt_ge_1,
+    mul_lt_mul_of_pos_right hc' (show (0 : ℝ) < 2 * (n : ℝ) by positivity),
+    mul_le_mul_of_nonneg_left hsqrt_ge_1 (show (0 : ℝ) ≤ Real.pi * (n : ℝ) by positivity)]
 
 /-
 ## Lemniscate Properties
@@ -194,13 +196,13 @@ theorem bounds_gap (n : ℕ) (hn : n ≥ 3) (c : ℝ) (hc : 0 < c) (hc' : c < Re
 
 /-- The lemniscate {z : |f(z)| = 1}. -/
 def lemniscate : Set ℂ :=
-  {z : ℂ | Complex.abs (f.eval z) = 1}
+  {z : ℂ | ‖f.eval z‖ = 1}
 
 /-- The sublevel set is open (preimage of (-∞, 1) under the continuous map |f|). -/
 theorem sublevelSet_isOpen : IsOpen (sublevelSet f) := by
   simp only [sublevelSet, UnitDiscPolynomial.eval]
   exact isOpen_lt
-    (Complex.continuous_abs.comp
+    (continuous_norm.comp
       (continuous_finset_prod Finset.univ fun i _ => continuous_id.sub continuous_const))
     continuous_const
 
@@ -244,7 +246,7 @@ theorem degree_one_optimal :
 
 /-- For clustered roots, the inscribed disc can be larger. -/
 def hasClusteredRoots (f : UnitDiscPolynomial) (ε : ℝ) : Prop :=
-  ∃ c : ℂ, ∀ i, Complex.abs (f.roots i - c) < ε
+  ∃ c : ℂ, ∀ i, ‖f.roots i - c‖ < ε
 
 /-- Clustered roots give larger inscribed disc. -/
 theorem clustered_implies_large_disc (ε : ℝ) (hε : ε > 0) (hε' : ε < 1) :
@@ -258,7 +260,7 @@ theorem clustered_implies_large_disc (ε : ℝ) (hε : ε > 0) (hε' : ε < 1) :
 
 /-- For random polynomials, the expected ρ is of order 1/√n. -/
 axiom random_polynomial_expected :
-  ∃ c₁ c₂ > 0, ∀ n : ℕ, n ≥ 2 →
+  ∃ c₁ > 0, ∃ c₂ > 0, ∀ n : ℕ, n ≥ 2 →
     c₁ / Real.sqrt n ≤ -- Expected[rho(random poly of degree n)]
     c₂ / Real.sqrt n
 

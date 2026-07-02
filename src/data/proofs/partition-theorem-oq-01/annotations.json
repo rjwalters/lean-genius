@@ -1,5 +1,32 @@
 [
   {
+    "id": "ann-partition-oq01-overview",
+    "proofId": "partition-theorem-oq-01",
+    "range": {
+      "startLine": 5,
+      "endLine": 34
+    },
+    "type": "concept",
+    "title": "Overview: Rogers-Ramanujan and Schur Partition Identities (OQ-01)",
+    "content": "This file formalizes three celebrated partition identities. The First Rogers-Ramanujan identity (RR1): the number of partitions of n whose parts differ by at least 2 equals the number of partitions of n into parts congruent to 1 or 4 (mod 5). The Second (RR2): partitions of n with minimum gap 2 and smallest part at least 2 equal partitions into parts congruent to 2 or 3 (mod 5). Schur's identity (1926): partitions of n into distinct parts congruent to plus or minus 1 (mod 3) equal partitions into parts where consecutive parts differ by at least 3 (and by at least 4 when a part is divisible by 3). These are prototypical 'gap-condition equals congruence-condition' partition theorems of additive number theory. The file defines the relevant partition subsets via decidable predicates on Nat.Partition n, states the identities, proves structural theorems, and verifies small cases computationally with decide.",
+    "mathContext": "A partition of $n$ is a multiset of positive integers summing to $n$. RR1: $\\#\\{\\lambda \\vdash n : \\lambda_i - \\lambda_{i+1} \\ge 2\\} = \\#\\{\\lambda \\vdash n : \\text{parts} \\equiv 1,4 \\pmod 5\\}$. Generating-function form: $\\sum_n p_{\\text{gap}\\ge 2}(n)q^n = \\prod_{k\\ge 0}\\frac{1}{(1-q^{5k+1})(1-q^{5k+4})}$. Each identity equates a difference (gap) condition with a residue-class condition, the archetype of the Rogers-Ramanujan-Schur family.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Rogers-Ramanujan-identities",
+      "Schur-partition-identity",
+      "integer-partitions",
+      "q-series",
+      "gap-condition",
+      "generating-functions"
+    ],
+    "prerequisites": [
+      "integer partitions Nat.Partition",
+      "congruence conditions mod 5 / mod 3",
+      "partition generating functions",
+      "q-series identities"
+    ]
+  },
+  {
     "id": "hasMinGap-definition",
     "proofId": "partition-theorem-oq-01",
     "range": {
@@ -214,7 +241,7 @@
     },
     "type": "definition",
     "title": "RR1 Gap Subset and Containment Hierarchy",
-    "content": "This theorem wraps `rr1_gap_implies_distinct` into a Finset subset statement: `rr1GapPartitions n ⊆ Nat.Partition.distincts n`. Together with `rr2_subset_rr1`, this establishes the complete containment hierarchy: RR2 gap $\\subseteq$ RR1 gap $\\subseteq$ distinct $\\subseteq$ all partitions. The formalization catalogs 6 partition set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), and 3 fully proved structural theorems with 0 sorries. The axiomatization is justified by the infrastructure gap: proving the identities would require q-series manipulation (Jacobi triple product) or bijective proofs (Garsia-Milne involution, ~500+ lines each).",
+    "content": "This theorem wraps `rr1_gap_implies_distinct` into a Finset subset statement: `rr1GapPartitions n \u2286 Nat.Partition.distincts n`. Together with `rr2_subset_rr1`, this establishes the complete containment hierarchy: RR2 gap $\\subseteq$ RR1 gap $\\subseteq$ distinct $\\subseteq$ all partitions. The formalization catalogs 6 partition set definitions, 3 axiomatized identities (Rogers-Ramanujan I & II, Schur), and 3 fully proved structural theorems with 0 sorries. The axiomatization is justified by the infrastructure gap: proving the identities would require q-series manipulation (Jacobi triple product) or bijective proofs (Garsia-Milne involution, ~500+ lines each).",
     "mathContext": "$\\text{RR2\\_gap}(n) \\subseteq \\text{RR1\\_gap}(n) \\subseteq \\mathcal{D}(n) \\subseteq \\mathcal{P}(n)$. The q-series proof requires $(q;q)_k = \\prod_{i=1}^k (1-q^i)$.",
     "significance": "supporting",
     "relatedConcepts": [

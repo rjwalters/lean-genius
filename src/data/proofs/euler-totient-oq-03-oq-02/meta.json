@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "totient-oq0302-overview",
+      "title": "Overview: φ(n) ≥ √n for n > 6 by Elementary Nat Arithmetic",
+      "summary": "Import, docstring, opens, namespace. Answers euler-totient-oq-03's open question for a Lean proof of φ(n) ≥ √n for n > 6. Squaring avoids real roots: the claim is n ≤ φ(n)², with the only exceptions n=2 (φ²=1) and n=6 (φ²=4). Strategy without analytic prime estimates: f(n)=φ(n)²/n is multiplicative, so the bound reduces to prime powers — every odd prime power pᵏ satisfies pᵏ ≤ φ(pᵏ)² with room, and 2¹ is the sole deficient one. Writing n=2ᵏ·m (m odd), the odd part obeys m ≤ φ(m)² always and 2m ≤ φ(m)² once m∉{1,3} (by induction via Nat.recOnPosPrimePosCoprime); gluing the 2-part, k≥2 gives 2^{2k−2} dominating 2ᵏ and k=1 with n>6 forces m≥5. Delivered (0-axiom): totient_sq_ge_self, sqrt_le_totient (literal ℝ form), and the odd-part lemmas phi_sq_ge_self_of_odd / phi_sq_ge_two_mul_of_odd.",
+      "startLine": 1,
+      "endLine": 49,
+      "mathContext": "$6<n \\Rightarrow n \\le \\varphi(n)^2$ (i.e. $\\sqrt n \\le \\varphi(n)$); proof via multiplicativity of $\\varphi(n)^2/n$, reducing to prime powers where only $2^1$ is deficient, plus the odd-part bound $2m \\le \\varphi(m)^2$ for odd $m\\notin\\{1,3\\}$."
+    },
+    {
       "id": "arithmetic-kernels",
       "title": "Arithmetic Kernels for the Prime-Power Estimate",
       "startLine": 50,

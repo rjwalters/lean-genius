@@ -16,6 +16,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Finite Taylor–Abel Expansion via Iterated Discrete Integration by Parts",
+      "startLine": 1,
+      "endLine": 76,
+      "summary": "Imports (Mathlib.Algebra.BigOperators.Module, Mathlib.Tactic), module docstring, and setup (namespace SummationByPartsOQ01OQ01OQ01OQ02OQ01; open Finset; CommRing R). Over any commutative ring, for a sequence f and a tower of antidifferences G linked by G(d+1)(k+1) − G(d+1)k = G d (k+1) (hG), the main theorem discrete_taylor_abel gives the D-fold closed identity ∑_{k<n} f k·G 0 (k+1) = ∑_{d<D}(−1)ᵈ(Δ^[d]f n·G(d+1)n − Δ^[d]f 0·G(d+1)0) + (−1)ᴰ ∑_{k<n} Δ^[D]f k·G D (k+1) — the discrete mirror of repeated integration by parts producing a Taylor-with-remainder series. It iterates the parent's single-step discrete Abel transform (SummationByPartsOQ01OQ01OQ01OQ02), answering its open question. Proved by induction on depth D, each step applying the parent transform once (lemma step) to peel the top remainder, flip the sign, and append one boundary term; the corollary discrete_taylor_abel_of_fdiff_eq_zero records termination when Δ^[D]f = 0 (discrete polynomial of degree < D).",
+      "mathContext": "Each layer trades one forward difference off f onto the next antidifference of G, paying an alternating boundary term at the fixed endpoints 0 and n; after D layers a remainder sum is left — the discrete finite Taylor formula, valid over any commutative ring."
+    },
+    {
       "id": "forward-difference",
       "title": "The Forward Difference and Its Iterate",
       "startLine": 77,

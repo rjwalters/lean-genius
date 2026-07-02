@@ -36,6 +36,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Infinite-Limit Moment Recurrence ∑_{k≥0} kᵐxᵏ",
+      "startLine": 1,
+      "endLine": 79,
+      "summary": "Imports (Mathlib.Analysis.SpecificLimits.Normed, parent GeometricSeriesOQ08OQ01OQ01OQ01) and module docstring. For |x|<1 the infinite m-th moment infMoment m x := ∑_{k≥0} kᵐxᵏ satisfies the binomial-convolution recurrence (1−x)·infMoment m x = 0ᵐ + x·∑_{i<m} C(m,i)·infMoment i x (★∞), the n→∞ limit of the parent's finite master recurrence for momentSum: the boundary term nᵐxⁿ washes out as the general term of a convergent series. This complements the two explicit closed forms in the gallery (Stirling form oq-07-oq-01 and Frobenius/Eulerian-polynomial form oq-07-oq-01-oq-01) by instead characterizing the whole sequence (infMoment m)ₘ recursively. Mathlib records summability of ∑nᵏrⁿ but neither the named moment sum nor any cross-m recurrence. Proof strategy: summability (summable_pow_mul_geometric_of_norm_lt_one) → partial-sum convergence (HasSum.tendsto_sum_nat) → boundary vanishing (Summable.tendsto_atTop_zero) → pass to the limit → specializations at m=0,1,2 recovering 1/(1−x), x/(1−x)², x(1+x)/(1−x)³. Depends only on propext, Classical.choice, Quot.sound.",
+      "mathContext": "This recurrence is the cleanest bridge from the finite arithmetico-geometric theory to the infinite one, expressing each moment through all lower ones with Pascal weights and no derivatives or special functions."
+    },
+    {
       "id": "definition-limits",
       "title": "The Infinite Moment and Its Limit Infrastructure",
       "startLine": 80,

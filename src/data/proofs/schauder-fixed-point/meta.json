@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Fixed-Point Theorems in Infinite Dimensions (Schauder / Tychonoff)",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "A large import block (topology, finite-dimensional and inner-product analysis, convexity, locally convex spaces, metric/uniform structure, parent SchauderFixedPointOQ01), the module docstring, and setup (linter option; open Set Metric Filter; noncomputable section; namespace FixedPointTheorems). Formalizes the generalization of Brouwer's fixed-point theorem to infinite dimensions: the Schauder fixed-point theorem (1930, every continuous self-map of a nonempty compact convex subset of a normed space has a fixed point, PROVED from the Schauder projection lemma and Brouwer), the compact-operator version (PROVED from Schauder + Mazur), and the Tychonoff fixed-point theorem (1935, PROVED from Schauder). Axiom reduction from 8 axioms/3 theorems to 5 axioms/7 theorems (0 sorries); retained foundational axioms are Brouwer (needs homology), Mazur, Peano existence, and the infinite-dim counterexample. Historical note: Schauder 1930, Tychonoff 1935, Kakutani 1941 (set-valued, basis of Nash equilibrium).",
+      "mathContext": "Schauder/Tychonoff/compact-operator are all reduced to theorems; only Brouwer (finite-dim, homological), Mazur, Peano, and the necessity-of-compactness counterexample remain as clearly-labelled foundational axioms. NOTE: this entry is honestly AXIOMATIZED (5 axioms) — see its status/assumptions fields."
+    },
+    {
       "id": "framework",
       "title": "Fixed Point Framework",
       "startLine": 74,

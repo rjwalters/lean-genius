@@ -56,6 +56,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the Free CLT as a renormalization fixed point",
+      "startLine": 1,
+      "endLine": 76,
+      "summary": "Classically the CLT says the Gaussian is the unique fixed point and attractor of the convolution renormalization flow; this file asks how that topological picture extends to Voiculescu's non-commutative (free) probability. The answer: the semicircle (Wigner) distribution plays exactly the Gaussian's role. The docstring's dictionary aligns the two theories — convolution * ↔ free convolution ⊞, characteristic function ↔ R-transform (φ(μ*ν)=φ(μ)φ(ν) ↔ R(μ⊞ν)=R(μ)+R(ν)), Gaussian N(0,1) ↔ semicircle w(0,1), CLT μ^{*n}/√n→Gaussian ↔ free CLT μ^{⊞n}/√n→semicircle. It formalizes tracial *-algebra ncps, free independence, free convolution and R-transforms, semicircle properties, and the free CLT as a fixed-point/attractor theorem. Since Mathlib lacks free probability, the core objects (ncps, free cumulants, free convolution) are AXIOMATIZED (9 axioms) and the structural theorems (commutativity, associativity, R-transform additivity) are PROVED from them — the entry is honestly axiomatized.",
+      "mathContext": "Free probability replaces the tensor-independence of classical random variables with Voiculescu's freeness, under which mixed free cumulants vanish; the R-transform (the free analog of log of the characteristic function) linearizes free convolution, R(μ⊞ν)=R(μ)+R(ν). Just as the Gaussian is characterized by φ(t)=exp(−t²/2) being the additive-fixed-point of characteristic functions, the semicircle is characterized by the linear R-transform R_w(z)=z being the additive fixed point of R-transforms — making it the unique attractor of the √n-renormalized free convolution flow. This structural parallel (Voiculescu 1985 → Speicher 1990 → Nica–Speicher 2006) is the entry's content, built on axiomatized free-probability primitives."
+    },
+    {
       "id": "nc-probability-spaces",
       "title": "Non-Commutative Probability Spaces",
       "summary": "Defines `NCDistribution` as a moment sequence $\\{m_n\\}$ with normalization $m_0 = 1$. Proves extensionality (`nc_dist_ext`: equal moments implies equal distributions) and defines `diracNC` ($m_n = 0$ for $n \\geq 1$).",

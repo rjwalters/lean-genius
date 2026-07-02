@@ -147,7 +147,12 @@
   },
   "conclusion": {
     "summary": "A 208-line, 0-sorry, 0-axiom formalization of the univariate case of Hilbert's 17th problem: every non-negative real univariate polynomial is a sum of two squares of polynomials. Discharges the parent entry's axiom univariate_psd_is_sos_aux (parent axiom count 3 → 2).",
-    "implications": "This is the positive counterpart to the Motzkin and Robinson entries: in one variable, non-negativity and 'sum of squares of polynomials' coincide, so no passage to rational functions is needed. The proof is fully elementary — induction on degree, the FTA, even multiplicity of real roots via one-sided limits, and the two-square identity — with no real-closed-field, Gram-matrix, or Positivstellensatz machinery. It leaves the parent entry with just two genuinely deep axioms: quadratic_psd_is_sos_aux (Gram/Cholesky) and pfister_bound_aux (Pfister's 2ⁿ bound)."
+    "implications": "This is the positive counterpart to the Motzkin and Robinson entries: in one variable, non-negativity and 'sum of squares of polynomials' coincide, so no passage to rational functions is needed. The proof is fully elementary — induction on degree, the FTA, even multiplicity of real roots via one-sided limits, and the two-square identity — with no real-closed-field, Gram-matrix, or Positivstellensatz machinery. It leaves the parent entry with just two genuinely deep axioms: quadratic_psd_is_sos_aux (Gram/Cholesky) and pfister_bound_aux (Pfister's 2ⁿ bound).",
+    "openQuestions": [
+      "Discharge the parent entry's two remaining deep axioms — `quadratic_psd_is_sos_aux` (Gram/Cholesky) and `pfister_bound_aux` (Pfister's $2^n$ bound) — completing the multivariate side of Hilbert's 17th in the gallery.",
+      "Quantify the Pythagoras number gap: this entry shows $\\mathbb{R}[x]$ has Pythagoras number $2$; formalize that $\\mathbb{R}[x,y]$ has Pythagoras number $> 2$ and locate the exact value for two and more variables.",
+      "Extend to the trigonometric analogue — the Fejér–Riesz theorem that every non-negative trigonometric (Laurent) polynomial is the squared modulus of a polynomial — the circle counterpart of this univariate line result."
+    ]
   },
   "references": [
     {

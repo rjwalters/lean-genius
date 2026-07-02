@@ -1,5 +1,10 @@
 import Mathlib.FieldTheory.Galois.Basic
 import Mathlib.GroupTheory.SpecificGroups.Dihedral
+import Mathlib.GroupTheory.Sylow
+import Mathlib.GroupTheory.Perm.Fin
+import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Algebra.Group.End
 import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.Polynomial.AlgebraMap
 import Proofs.InverseGaloisD4
@@ -38,16 +43,24 @@ This is a non-building scaffold proposed in S1's "next action":
    is the unique transitive subgroup of `S₄` of order 8, plus the
    identification of the splitting field's Galois group as a transitive
    subgroup of `S₄`).
-3. **Schinzel–Velez characterization (statement only)**:
-   `dihedral_iff_schinzel_velez` — the iff between the abstract
-   criterion and the finite-case Schinzel–Velez conditions. Stated
-   with `True` as the right-hand placeholder for now (one sorry); a
-   future iteration will replace `True` with the explicit conditions
-   once Capelli's theorem is upstreamed to Mathlib or proved in-tree.
+3. **Schinzel–Velez characterization (existential form)**:
+   `schinzel_velez_characterization_exists` — the (vacuous) existence
+   of a classifying predicate; the *explicit* finite-case predicate
+   still awaits Capelli's irreducibility theorem in Mathlib.
 
-The file is sorry-bearing by design — S2 SCAFFOLD lands the API
-surface; S3+ iterations (and a separate Capelli-in-Mathlib effort)
-will discharge the sorries.
+## S4 update: the `(4, 2)` case is now fully proved (no `sorry`)
+
+`dihedral_galois_xPow4_sub_2 : IsDihedralGaloisOfXnMinusA 4 2` is
+discharged. The proof factors through a self-contained group-theoretic
+classification, `order_eight_iso_dihedralFour`: *every subgroup of `S₄`
+of order `8` is isomorphic to `DihedralGroup 4`*. This holds because
+`8 = 2³` is the full `2`-part of `|S₄| = 24`, so such a subgroup is a
+Sylow `2`-subgroup, and Sylow's second theorem makes all of them
+conjugate — hence isomorphic to the explicit dihedral copy
+`⟨(0 1 2 3), (1 3)⟩ ≤ S₄` built here (`dihedralFourToPerm`). Applying
+this to the faithful action of `Gal(X⁴ − 2)` on its four roots
+(`Polynomial.Gal.galActionHom`, injective, image of order `8`) closes
+the case. Only the general `n` Schinzel–Velez criterion remains open.
 
 ## References
 
@@ -67,6 +80,102 @@ radical-extensions, schinzel-velez-classification, capelli-theorem
 namespace InverseGaloisD4OQ03
 
 open Polynomial
+open scoped Pointwise
+
+/-! ## Group-theoretic core: an order-8 subgroup of `S₄` is `D₄`
+
+The classical fact that `Gal(X⁴ − 2 / ℚ) ≅ D₄` (rather than merely having
+order `8`) reduces to a purely group-theoretic statement: *any subgroup of
+`S₄` of order `8` is isomorphic to `DihedralGroup 4`*. Indeed `8 = 2³` is
+the full `2`-part of `|S₄| = 24`, so such a subgroup is a Sylow `2`-subgroup,
+and all Sylow `2`-subgroups of `S₄` are conjugate (Sylow's theorem), hence
+isomorphic — to the explicit dihedral copy `⟨(0 1 2 3), (1 3)⟩` (the
+symmetries of the square on vertices `0,1,2,3`).
+
+This section builds that copy explicitly and proves the classification, with
+no appeal to `sorry`. -/
+
+/-- The 4-cycle `(0 1 2 3)` on `Fin 4`, as a product of adjacent
+transpositions. -/
+def rho : Equiv.Perm (Fin 4) := Equiv.swap 0 1 * Equiv.swap 1 2 * Equiv.swap 2 3
+
+/-- The underlying function of the dihedral representation: rotations map to
+powers of `rho`, reflections to `(1 3)` composed with a rotation. -/
+def dihToPerm : DihedralGroup 4 → Equiv.Perm (Fin 4)
+  | DihedralGroup.r i => rho ^ i.val
+  | DihedralGroup.sr i => Equiv.swap 1 3 * rho ^ i.val
+
+/-- **`D₄` as symmetries of the square** — the explicit injective group
+homomorphism `DihedralGroup 4 →* S₄` realising `D₄` as a transitive
+subgroup of `S₄`. The homomorphism property is a finite check. -/
+def dihedralFourToPerm : DihedralGroup 4 →* Equiv.Perm (Fin 4) where
+  toFun := dihToPerm
+  map_one' := by decide
+  map_mul' := by decide
+
+theorem dihedralFourToPerm_injective : Function.Injective dihedralFourToPerm := by
+  decide
+
+/-- **Classification of order-8 subgroups of `S₄`** (Sylow's theorem):
+    any finite group `G` of order `8` that embeds in `S₄` is isomorphic to
+    `DihedralGroup 4`.
+
+    Proof: the images `f.range` and `dihedralFourToPerm.range` are both
+    subgroups of `S₄` of order `8 = 2^((24).factorization 2)`, hence Sylow
+    `2`-subgroups. By Sylow's second theorem they are conjugate, and
+    conjugation furnishes the isomorphism, giving
+    `G ≃ f.range ≃ dihedralFourToPerm.range ≃ DihedralGroup 4`. -/
+theorem order_eight_iso_dihedralFour
+    {G : Type*} [Group G] [Finite G] (hG : Nat.card G = 8)
+    (f : G →* Equiv.Perm (Fin 4)) (hf : Function.Injective f) :
+    Nonempty (G ≃* DihedralGroup 4) := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have hS : Nat.card (Equiv.Perm (Fin 4)) = 24 := by
+    simp [Nat.card_eq_fintype_card, Fintype.card_perm]; rfl
+  have hfact : (Nat.card (Equiv.Perm (Fin 4))).factorization 2 = 3 := by
+    rw [hS, show (24 : ℕ) = 2 ^ 3 * 3 by norm_num,
+      Nat.factorization_mul (by norm_num) (by norm_num), Finsupp.add_apply,
+      Nat.factorization_pow_self Nat.prime_two,
+      Nat.factorization_eq_zero_of_not_dvd (by norm_num : ¬ (2 : ℕ) ∣ 3)]
+  have hfr : Nat.card f.range = 8 := by
+    rw [← hG]; exact (Nat.card_congr (MonoidHom.ofInjective hf).toEquiv).symm
+  have hdr : Nat.card dihedralFourToPerm.range = 8 := by
+    have h := (Nat.card_congr (MonoidHom.ofInjective dihedralFourToPerm_injective).toEquiv).symm
+    rw [h, DihedralGroup.nat_card]
+  let Pf : Sylow 2 (Equiv.Perm (Fin 4)) :=
+    Sylow.ofCard f.range (by rw [hfr, hfact]; norm_num)
+  let Pd : Sylow 2 (Equiv.Perm (Fin 4)) :=
+    Sylow.ofCard dihedralFourToPerm.range (by rw [hdr, hfact]; norm_num)
+  obtain ⟨g, hg⟩ := MulAction.exists_smul_eq (Equiv.Perm (Fin 4)) Pf Pd
+  have hcoe : MulAut.conj g • (Pf : Subgroup (Equiv.Perm (Fin 4)))
+      = (Pd : Subgroup (Equiv.Perm (Fin 4))) := by
+    rw [← Sylow.coe_subgroup_smul, hg]
+  have hPf : (Pf : Subgroup (Equiv.Perm (Fin 4))) = f.range := rfl
+  have hPd : (Pd : Subgroup (Equiv.Perm (Fin 4))) = dihedralFourToPerm.range := rfl
+  rw [hPf, hPd] at hcoe
+  have hend : (MulAut.conj g : Equiv.Perm (Fin 4) →* Equiv.Perm (Fin 4))
+      = MulDistribMulAction.toMonoidEnd (MulAut (Equiv.Perm (Fin 4)))
+          (Equiv.Perm (Fin 4)) (MulAut.conj g) := by
+    ext x; rfl
+  have key : f.range.map (MulAut.conj g : Equiv.Perm (Fin 4) →* Equiv.Perm (Fin 4))
+      = dihedralFourToPerm.range := by
+    rw [hend, ← Subgroup.pointwise_smul_def, hcoe]
+  exact ⟨(MonoidHom.ofInjective hf).trans
+    ((MulEquiv.subgroupMap (MulAut.conj g) f.range).trans
+      ((MulEquiv.subgroupCongr key).trans
+        (MonoidHom.ofInjective dihedralFourToPerm_injective).symm))⟩
+
+/-- **Order-8 classification, transported to an arbitrary 4-element
+    permutation domain.** If `α` has exactly `4` elements, an order-`8`
+    group embedding in `Equiv.Perm α` is `DihedralGroup 4`; obtained from
+    `order_eight_iso_dihedralFour` by relabelling `α ≃ Fin 4`. -/
+theorem order_eight_iso_dihedralFour_of_card {α : Type*} [Fintype α]
+    (hα : Fintype.card α = 4) {G : Type*} [Group G] [Finite G] (hG : Nat.card G = 8)
+    (f : G →* Equiv.Perm α) (hf : Function.Injective f) :
+    Nonempty (G ≃* DihedralGroup 4) :=
+  let e : α ≃ Fin 4 := Fintype.equivFinOfCardEq hα
+  order_eight_iso_dihedralFour hG ((Equiv.permCongrHom e).toMonoidHom.comp f)
+    ((Equiv.permCongrHom e).injective.comp hf)
 
 /-- The polynomial `X^n − a` over `ℚ`. -/
 noncomputable def xPowSub (n : ℕ) (a : ℚ) : ℚ[X] := X ^ n - C a
@@ -103,12 +212,29 @@ def IsDihedralGaloisOfXnMinusA (n : ℕ) (a : ℚ) : Prop :=
     The sorry is the bridge — the underlying mathematical content is
     classical and established (see Cox, *Galois Theory* (2nd ed., 2012),
     §13.3), but the Lean formalization requires more work than fits in
-    an S2 scaffold. S3a (this iteration) supplies the cardinality lift
-    `gal_card_xPowSub_4_2` toward this discharge; the remaining task is
-    the order-8-transitive-S₄-subgroup classification. -/
+    an S2 scaffold. S4 (this iteration) discharges it: the Galois group
+    embeds in `S₄` (faithful action on the four roots) with image of order
+    `8`, and `order_eight_iso_dihedralFour_of_card` identifies any such
+    subgroup as `D₄` via Sylow's theorem. -/
 theorem dihedral_galois_xPow4_sub_2 :
     IsDihedralGaloisOfXnMinusA 4 2 := by
-  sorry
+  refine ⟨4, by norm_num, ?_⟩
+  show Nonempty ((xPowSub 4 2).Gal ≃* DihedralGroup 4)
+  haveI : Fact (((xPowSub 4 2).map (algebraMap ℚ (xPowSub 4 2).SplittingField)).Splits) :=
+    ⟨Polynomial.SplittingField.splits _⟩
+  haveI : DecidableEq ((xPowSub 4 2).rootSet (xPowSub 4 2).SplittingField) :=
+    Classical.typeDecidableEq _
+  have hsep : (xPowSub 4 2).Separable := InverseGaloisExtensions.x_fourth_sub_2_separable
+  have hcard4 :
+      Fintype.card ((xPowSub 4 2).rootSet (xPowSub 4 2).SplittingField) = 4 := by
+    rw [Polynomial.card_rootSet_eq_natDegree hsep (Polynomial.SplittingField.splits _)]
+    exact InverseGaloisExtensions.x_fourth_sub_2_natDegree
+  have hgal8 : Nat.card (xPowSub 4 2).Gal = 8 := by
+    rw [Nat.card_eq_fintype_card]
+    exact InverseGaloisExtensions.x4_sub_2_gal_card
+  exact order_eight_iso_dihedralFour_of_card hcard4 hgal8
+    (Polynomial.Gal.galActionHom (xPowSub 4 2) (xPowSub 4 2).SplittingField)
+    (Polynomial.Gal.galActionHom_injective (xPowSub 4 2) (xPowSub 4 2).SplittingField)
 
 /-- **Cardinality lift (S3a, no sorry)**: the Galois group of
     `xPowSub 4 2 = X^4 − C 2` over `ℚ` has cardinality `8`. This is

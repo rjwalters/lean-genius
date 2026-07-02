@@ -1,5 +1,31 @@
 [
   {
+    "id": "ann-erdos319-overview",
+    "proofId": "erdos-319",
+    "range": {
+      "startLine": 1,
+      "endLine": 18
+    },
+    "type": "concept",
+    "title": "Overview: Erd\u0151s #319 \u2014 Maximum Irreducible Signed Unit-Fraction Sum",
+    "content": "Erd\u0151s Problem #319 asks for the maximum size c(N) of a set A \u2286 {1,...,N} admitting a sign assignment \u03b4 : A \u2192 {\u22121,+1} such that the signed unit-fraction sum \u03a3_{n\u2208A} \u03b4(n)/n = 0 while every non-empty proper subset A' \u228a A has \u03a3_{n\u2208A'} \u03b4(n)/n \u2260 0. In other words, the signed reciprocal sum vanishes but is 'irreducible' \u2014 removing any element destroys the cancellation. The problem is OPEN. The file formalizes the signing predicate `IsSigning`, the signed sum `signedSum`, and the irreducibility condition `IsIrreducibleZeroSum`. Known partial results: Croot (2001) showed every integer in [1,N] is a sum of distinct unit fractions from {1,...,N}, a tool for constructions; Adenwalla gave a lower bound |A| \u2265 (1 \u2212 1/e + o(1))N by taking B \u2286 [(1/e \u2212 o(1))N, N] with \u03a3 1/b = 1 and setting A = B \u222a {1}.",
+    "mathContext": "An irreducible zero-sum signing is a minimal $\\pm 1$-weighted subset of $\\{1/n\\}$ summing to $0$: $\\sum_{n\\in A}\\delta(n)/n = 0$ yet no proper non-empty $A'$ has $\\sum_{n\\in A'}\\delta(n)/n = 0$. The extremal quantity is $c(N) = \\max |A|$ over all such $(A,\\delta)$ with $A\\subseteq\\{1,\\dots,N\\}$. Adenwalla's construction gives $c(N) \\ge (1-1/e+o(1))N$; the true growth rate is unknown.",
+    "significance": "key",
+    "relatedConcepts": [
+      "unit-fractions",
+      "Egyptian-fractions",
+      "signed-sum",
+      "irreducibility",
+      "Croot-theorem"
+    ],
+    "prerequisites": [
+      "unit (Egyptian) fractions",
+      "signed reciprocal sums",
+      "minimal/irreducible subsets",
+      "rational arithmetic"
+    ]
+  },
+  {
     "id": "ann-e319-signing",
     "proofId": "erdos-319",
     "range": {
@@ -8,7 +34,7 @@
     },
     "type": "definition",
     "title": "Signing Function",
-    "content": "**IsSigning A δ**: Asserts that $\\delta$ is a valid signing of $A$, meaning $\\delta(n) \\in \\{+1, -1\\}$ for every $n \\in A$. Formalized as $\\forall n \\in A, \\delta(n) = 1 \\lor \\delta(n) = -1$. The function $\\delta : \\mathbb{N} \\to \\mathbb{Z}$ is defined on all of $\\mathbb{N}$ but only constrained on elements of $A$.",
+    "content": "**IsSigning A \u03b4**: Asserts that $\\delta$ is a valid signing of $A$, meaning $\\delta(n) \\in \\{+1, -1\\}$ for every $n \\in A$. Formalized as $\\forall n \\in A, \\delta(n) = 1 \\lor \\delta(n) = -1$. The function $\\delta : \\mathbb{N} \\to \\mathbb{Z}$ is defined on all of $\\mathbb{N}$ but only constrained on elements of $A$.",
     "mathContext": "$\\delta : A \\to \\{\\pm 1\\}$, i.e., $\\forall n \\in A, \\delta(n) \\in \\{+1, -1\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -30,7 +56,7 @@
     },
     "type": "definition",
     "title": "Signed Unit-Fraction Sum",
-    "content": "**signedSum A δ**: The signed unit-fraction sum $\\sum_{n \\in A} \\delta(n)/n \\in \\mathbb{Q}$, computed via `Finset.sum` with the function $n \\mapsto (\\delta(n) : \\mathbb{Q}) / n$. Working over $\\mathbb{Q}$ (rather than $\\mathbb{R}$) is natural since all terms are rational, and exact rational arithmetic avoids rounding issues. The sum is noncomputable because it involves division in $\\mathbb{Q}$.",
+    "content": "**signedSum A \u03b4**: The signed unit-fraction sum $\\sum_{n \\in A} \\delta(n)/n \\in \\mathbb{Q}$, computed via `Finset.sum` with the function $n \\mapsto (\\delta(n) : \\mathbb{Q}) / n$. Working over $\\mathbb{Q}$ (rather than $\\mathbb{R}$) is natural since all terms are rational, and exact rational arithmetic avoids rounding issues. The sum is noncomputable because it involves division in $\\mathbb{Q}$.",
     "mathContext": "$\\sum_{n \\in A} \\frac{\\delta(n)}{n} \\in \\mathbb{Q}$",
     "significance": "key",
     "relatedConcepts": [
@@ -54,7 +80,7 @@
     },
     "type": "definition",
     "title": "Irreducible Zero Sum",
-    "content": "**IsIrreducibleZeroSum A δ**: A signing $\\delta$ of $A$ is an irreducible zero sum if three conditions hold: (1) $\\delta$ is a valid signing (`IsSigning`), (2) the signed sum vanishes ($\\sum \\delta(n)/n = 0$), and (3) no proper nonempty subset $A' \\subsetneq A$ has vanishing signed sum. The irreducibility condition $\\forall A' \\subset A, A'.\\text{Nonempty} \\to \\text{signedSum}(A', \\delta) \\neq 0$ uses strict subset ($\\subset$, i.e., `Finset.Subset` with $A' \\neq A$).",
+    "content": "**IsIrreducibleZeroSum A \u03b4**: A signing $\\delta$ of $A$ is an irreducible zero sum if three conditions hold: (1) $\\delta$ is a valid signing (`IsSigning`), (2) the signed sum vanishes ($\\sum \\delta(n)/n = 0$), and (3) no proper nonempty subset $A' \\subsetneq A$ has vanishing signed sum. The irreducibility condition $\\forall A' \\subset A, A'.\\text{Nonempty} \\to \\text{signedSum}(A', \\delta) \\neq 0$ uses strict subset ($\\subset$, i.e., `Finset.Subset` with $A' \\neq A$).",
     "mathContext": "$\\sum_{n \\in A} \\delta(n)/n = 0 \\wedge \\forall \\emptyset \\neq A' \\subsetneq A, \\sum_{n \\in A'} \\delta(n)/n \\neq 0$",
     "significance": "key",
     "relatedConcepts": [
@@ -79,7 +105,7 @@
     },
     "type": "definition",
     "title": "Maximum Irreducible Size c(N)",
-    "content": "**maxIrreducibleSize N**: The extremal function $c(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\}, \\exists \\delta, \\text{IsIrreducibleZeroSum}(A, \\delta)\\}$. Computed as the supremum of `Finset.card` over `(Finset.Icc 1 N).powerset` filtered by the existence of an irreducible zero sum. This is the quantity Erdős asks to estimate.",
+    "content": "**maxIrreducibleSize N**: The extremal function $c(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\}, \\exists \\delta, \\text{IsIrreducibleZeroSum}(A, \\delta)\\}$. Computed as the supremum of `Finset.card` over `(Finset.Icc 1 N).powerset` filtered by the existence of an irreducible zero sum. This is the quantity Erd\u0151s asks to estimate.",
     "mathContext": "$c(N) = \\max\\{|A| : A \\subseteq \\{1,\\ldots,N\\},\\; \\exists \\delta : A \\to \\{\\pm 1\\},\\; \\sum \\delta(n)/n = 0 \\text{ irreducibly}\\}$",
     "significance": "key",
     "relatedConcepts": [
@@ -102,7 +128,7 @@
       "endLine": 55
     },
     "type": "concept",
-    "title": "Erdős Problem #319: Lower Bound Conjecture",
+    "title": "Erd\u0151s Problem #319: Lower Bound Conjecture",
     "content": "**erdos_319_conjecture**: For every $\\varepsilon > 0$, for all sufficiently large $N$, $c(N) \\geq (1 - 1/e - \\varepsilon)N$, where $e = \\exp(1)$. This is axiomatized using `Real.exp 1` for the constant $e \\approx 2.718$, giving the threshold $(1 - 1/e) \\approx 0.632$. The conjecture captures the best known asymptotic lower bound, achieved by Adenwalla's construction.",
     "mathContext": "$\\forall \\varepsilon > 0, \\exists N_0 : \\forall N \\geq N_0,\\; c(N) \\geq (1 - 1/e - \\varepsilon)N$",
     "significance": "key",

@@ -9,17 +9,46 @@
     "date": "2026-07-02",
     "status": "verified",
     "proofRepoPath": "Proofs/LagrangeFourSquaresOQ02OQ02.lean",
-    "tags": ["number-theory", "sum-of-four-squares", "combinatorics", "orbit-stabilizer", "multinomial", "divisibility", "representation-theory", "open-problem"],
+    "tags": [
+      "number-theory",
+      "sum-of-four-squares",
+      "combinatorics",
+      "orbit-stabilizer",
+      "multinomial",
+      "divisibility",
+      "representation-theory",
+      "open-problem"
+    ],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-07-02",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
-      {"theorem": "Nat.prod_factorial_dvd_factorial_sum", "description": "The product of the factorials of a Finset-indexed family divides the factorial of their sum — multinomial integrality", "module": "Mathlib.Data.Nat.Factorial.BigOperators"},
-      {"theorem": "List.prod_toFinset", "description": "Product of a mapped nodup list equals the Finset product over its toFinset", "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"},
-      {"theorem": "List.sum_map_count_dedup_eq_length", "description": "The multiplicities of a list (counts over its dedup) sum to its length", "module": "Mathlib.Algebra.BigOperators.Group.List.Lemmas"},
-      {"theorem": "pow_dvd_pow", "description": "2^a ∣ 2^b when a ≤ b, used to bound the sign factor by 16", "module": "Mathlib.Algebra.GroupPower.Basic"},
-      {"theorem": "mul_dvd_mul", "description": "Divisibility is multiplicative: a∣b and c∣d give ac∣bd", "module": "Mathlib.Algebra.Order.Ring.Lemmas"}
+      {
+        "theorem": "Nat.prod_factorial_dvd_factorial_sum",
+        "description": "The product of the factorials of a Finset-indexed family divides the factorial of their sum — multinomial integrality",
+        "module": "Mathlib.Data.Nat.Factorial.BigOperators"
+      },
+      {
+        "theorem": "List.prod_toFinset",
+        "description": "Product of a mapped nodup list equals the Finset product over its toFinset",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "List.sum_map_count_dedup_eq_length",
+        "description": "The multiplicities of a list (counts over its dedup) sum to its length",
+        "module": "Mathlib.Algebra.BigOperators.Group.List.Lemmas"
+      },
+      {
+        "theorem": "pow_dvd_pow",
+        "description": "2^a ∣ 2^b when a ≤ b, used to bound the sign factor by 16",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "mul_dvd_mul",
+        "description": "Divisibility is multiplicative: a∣b and c∣d give ac∣bd",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
     ],
     "originalContributions": [
       "The UNIVERSAL orbit–stabilizer divisibility law: contribution t ∣ 384 for every representation type t of every n, hypothesis-free and case-free — generalizing the parent's six per-family orbit_stabilizer_* theorems into a single uniform statement",
@@ -47,11 +76,21 @@
       "**The two factors are independent**: orderings contribute a divisor of 24 (the S₄ part) and signs contribute a divisor of 16 (the (ℤ/2ℤ)⁴ part); their product structure is exactly |S₄ × (ℤ/2ℤ)⁴| = 384.",
       "**Sharp at both ends**: 384 is attained by the fully asymmetric type (1,2,3,4) (trivial stabilizer) and 1 by the fully symmetric type (0,0,0,0) (full stabilizer), so no smaller universal multiple works and the bound cannot be lowered."
     ],
-    "prerequisites": ["Lagrange four-square theorem (statement)", "Multinomial coefficients and factorials", "Orbit–stabilizer theorem", "Basic divisibility in ℕ"]
+    "prerequisites": [
+      "Lagrange four-square theorem (statement)",
+      "Multinomial coefficients and factorials",
+      "Orbit–stabilizer theorem",
+      "Basic divisibility in ℕ"
+    ]
   },
   "conclusion": {
     "summary": "For every sorted four-square representation type t of every n, contribution(t) ∣ 384 = |S₄ × (ℤ/2ℤ)⁴|, with 1 ≤ contribution(t) ≤ 384 and stabOrder(t) := 384/contribution(t) satisfying contribution·stabOrder = 384 and stabOrder ∣ 384. This is the universal (hypothesis-free, case-free) form of the parent file's six per-family orbit–stabilizer theorems. 14 theorems, 6 definitions, 231 lines; 0 axioms, 0 sorries, and no native_decide — every result depends only on propext, Classical.choice, Quot.sound.",
-    "implications": "The universal divisibility law confirms that the orbit–stabilizer relation contribution = 384/|stabilizer| is a structural feature of the entire (infinite) family of representation types, not a coincidence of the six tabulated cases. It constrains any future exact distribution formula for r₄(n) among orderings: each type's contribution must be one of the divisors of 384 realizable as 24/d · 2^e with d ∣ 24 and e ≤ 4."
+    "implications": "The universal divisibility law confirms that the orbit–stabilizer relation contribution = 384/|stabilizer| is a structural feature of the entire (infinite) family of representation types, not a coincidence of the six tabulated cases. It constrains any future exact distribution formula for r₄(n) among orderings: each type's contribution must be one of the divisors of 384 realizable as 24/d · 2^e with d ∣ 24 and e ≤ 4.",
+    "openQuestions": [
+      "Determine which stabilizer orders $384/\\text{contribution}(t)$ actually occur, and characterize the sorted four-square representation types realizing each divisor of $384 = |S_4 \\times (\\mathbb{Z}/2)^4|$.",
+      "Sum the universal orbit–stabilizer counts over sorted types to derive a closed formula for $r_4(n)$, recovering Jacobi's four-square theorem $r_4(n) = 8\\sum_{d \\mid n,\\, 4 \\nmid d} d$ combinatorially.",
+      "Generalize the hypothesis-free $\\text{contribution} \\mid |S_k \\times (\\mathbb{Z}/2)^k|$ framework to $k$-square representations for $k \\neq 4$ and to representations by other quadratic forms."
+    ]
   },
   "leanFile": {
     "namespace": "LagrangeFourSquaresOQ02OQ02",
@@ -75,13 +114,55 @@
     }
   ],
   "sections": [
-    {"id": "header", "title": "Header: OQ-02·OQ-02 and Roadmap", "startLine": 1, "endLine": 61, "summary": "Module docstring framing the child open question, the parent's per-family results, and the universal divisibility law proven here; specific imports keeping the file lightweight."},
-    {"id": "definitions", "title": "Definitions (mirroring the parent)", "startLine": 62, "endLine": 97, "summary": "RepType n structure (sorted, sum of squares = n) with nonzeroCount, the multinomial permutations, signFactor = 2^nonzeroCount, and contribution = permutations · signFactor — verbatim copies of the parent's contribution data."},
-    {"id": "multinomial-denom", "title": "The Multinomial Denominator Divides 4!", "startLine": 98, "endLine": 127, "summary": "multinomial_denom_dvd_24: the product ∏_v (count v)! over the dedup of any 4-tuple divides 24 = 4!, bridging the list product to a Finset product and applying Nat.prod_factorial_dvd_factorial_sum with the multiplicities summing to the length 4."},
-    {"id": "factor-divisibilities", "title": "The Two Factor Divisibilities", "startLine": 128, "endLine": 148, "summary": "nonzeroCount ≤ 4, signFactor ∣ 16 (via pow_dvd_pow), and permutations ∣ 24 (from the multinomial denominator dividing 24)."},
-    {"id": "universal-law", "title": "The Universal Orbit–Stabilizer Divisibility Law", "startLine": 149, "endLine": 178, "summary": "contribution_dvd_384 (the main theorem, for all types of all n), contribution_pos (≥ 1), and contribution_le_384 (the sharp upper bound)."},
-    {"id": "stabilizer-form", "title": "Stabilizer Form", "startLine": 179, "endLine": 202, "summary": "stabOrder := 384/contribution, with contribution·stabOrder = 384, stabOrder ∣ 384, and contribution = 384/stabOrder — the orbit–stabilizer identity in native form for every type."},
-    {"id": "sharpness", "title": "Sharpness: 384 and 1 Are Attained", "startLine": 203, "endLine": 231, "summary": "The all-distinct type (1,2,3,4) attains contribution 384 / stabOrder 1, and the all-zero type (0,0,0,0) attains contribution 1 / stabOrder 384, via kernel decide."}
+    {
+      "id": "header",
+      "title": "Header: OQ-02·OQ-02 and Roadmap",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "Module docstring framing the child open question, the parent's per-family results, and the universal divisibility law proven here; specific imports keeping the file lightweight."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions (mirroring the parent)",
+      "startLine": 62,
+      "endLine": 97,
+      "summary": "RepType n structure (sorted, sum of squares = n) with nonzeroCount, the multinomial permutations, signFactor = 2^nonzeroCount, and contribution = permutations · signFactor — verbatim copies of the parent's contribution data."
+    },
+    {
+      "id": "multinomial-denom",
+      "title": "The Multinomial Denominator Divides 4!",
+      "startLine": 98,
+      "endLine": 127,
+      "summary": "multinomial_denom_dvd_24: the product ∏_v (count v)! over the dedup of any 4-tuple divides 24 = 4!, bridging the list product to a Finset product and applying Nat.prod_factorial_dvd_factorial_sum with the multiplicities summing to the length 4."
+    },
+    {
+      "id": "factor-divisibilities",
+      "title": "The Two Factor Divisibilities",
+      "startLine": 128,
+      "endLine": 148,
+      "summary": "nonzeroCount ≤ 4, signFactor ∣ 16 (via pow_dvd_pow), and permutations ∣ 24 (from the multinomial denominator dividing 24)."
+    },
+    {
+      "id": "universal-law",
+      "title": "The Universal Orbit–Stabilizer Divisibility Law",
+      "startLine": 149,
+      "endLine": 178,
+      "summary": "contribution_dvd_384 (the main theorem, for all types of all n), contribution_pos (≥ 1), and contribution_le_384 (the sharp upper bound)."
+    },
+    {
+      "id": "stabilizer-form",
+      "title": "Stabilizer Form",
+      "startLine": 179,
+      "endLine": 202,
+      "summary": "stabOrder := 384/contribution, with contribution·stabOrder = 384, stabOrder ∣ 384, and contribution = 384/stabOrder — the orbit–stabilizer identity in native form for every type."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness: 384 and 1 Are Attained",
+      "startLine": 203,
+      "endLine": 231,
+      "summary": "The all-distinct type (1,2,3,4) attains contribution 384 / stabOrder 1, and the all-zero type (0,0,0,0) attains contribution 1 / stabOrder 384, via kernel decide."
+    }
   ],
   "sorries": 0
 }

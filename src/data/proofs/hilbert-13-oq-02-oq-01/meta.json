@@ -90,7 +90,12 @@
   "conclusion": {
     "summary": "This file gives the covering-dimension framework of hilbert-13-oq-02 its first nontrivial value: every discrete topological space is zero-dimensional, proved by least-index disjointification of an arbitrary finite open cover. The parent's subsingleton base case is recovered as a corollary, and the dimension bound is shown monotone.",
     "implications": "Together with the parent's homeomorphism-invariance of covering dimension, the result confirms the framework computes the classically correct dimension for the simplest infinite family of spaces (discrete spaces), strengthening confidence that the 2n+1 Kolmogorov–Arnold superposition term count it controls is the intended invariant. It does not address the genuinely open OQ-02: the computational complexity of producing a KA superposition for an effectively-presented continuous function.",
-    "futureWork": "Compute covDimLE for further concrete spaces (intervals, finite simplicial complexes, products) and connect to Mathlib's topological-dimension API once universe/decidability issues are resolved."
+    "futureWork": "Compute covDimLE for further concrete spaces (intervals, finite simplicial complexes, products) and connect to Mathlib's topological-dimension API once universe/decidability issues are resolved.",
+    "openQuestions": [
+      "Attack the genuinely open OQ-02: the computational complexity of producing a Kolmogorov–Arnold superposition for an effectively-presented continuous function — the covering-dimension framework here controls the $2n+1$ term count but says nothing about the cost of constructing the inner/outer functions.",
+      "Prove that this covering-dimension framework agrees with the classical Lebesgue covering dimension in general (a full equivalence theorem), rather than only on discrete spaces and subsingletons.",
+      "Compute the framework's dimension on further classical families — finite products, subspaces, and low-dimensional manifolds — to further validate that it returns the classically correct invariant that bounds the KA superposition term count."
+    ]
   },
   "crossReferences": [
     {

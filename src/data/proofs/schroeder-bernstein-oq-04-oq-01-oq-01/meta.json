@@ -25,6 +25,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: a Σ⁰₁ (semi-decidable) presentation of the CBS orbit classification",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "The parent `SchroederBernsteinOQ04OQ01` proves Cantor–Bernstein–Schroeder for arbitrary types via the union-of-iterates reachable set reachableSet f g = ⋃ₙ (step f g)^[n](baseSet g), noting that without finiteness the orbit test a ∈ reachableSet f g is only semi-decidable (Σ⁰₁) — no a-priori bound on how many step iterations to unfold. This file makes that precise and proves it. Section A: reachableSet is definitionally an existential over monotone stages stage f g n, exactly the Σ⁰₁ shape a ∈ reachableSet ↔ ∃ n, a ∈ stage n. Section B: every member has a least certifying stage (search halts on members). Section C: if stages ever stabilise, the union collapses to that stage and membership becomes decidable — recovering the parent's Fintype case. Section D: for α=β=ℕ, f=g=Nat.succ the stages {0,2,…,2N} strictly grow forever, so no stage is stationary and `unbounded_search` holds — the formal content of 'no a-priori bound'. Honesty note: this captures the precise logical form and unbounded search, not a full computability-theoretic RePred (which would need effectively-given injections). 0 sorries, 0 axioms.",
+      "mathContext": "Σ⁰₁ (recursively enumerable / semi-decidable) predicates are exactly existentials ∃n. R(n,x) over a decidable/uniform family — a search that halts on members but need not on non-members. Here the family is the monotone stage sequence stage f g n = (step f g)^[n](baseSet g) whose union is reachableSet; the least-witness property is positive semi-decidability, and the decidability criterion is stabilisation of the increasing chain (forced on a Fintype, since a strictly increasing chain of subsets of a finite type must terminate). The Nat.succ shift instance exhibits a non-stabilising chain, proving the Σ⁰₁ presentation genuinely cannot collapse to a bounded decidable test — the mechanism, not the mere possibility, of undecidability of the reachable-set classification in the infinite CBS construction."
+    },
+    {
       "id": "sec-stage-family",
       "title": "The Stage Family",
       "startLine": 75,

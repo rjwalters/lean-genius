@@ -72,6 +72,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the dual (angles) spherical law of cosines",
+      "startLine": 1,
+      "endLine": 99,
+      "summary": "Research file for OQ-03 of `spherical-law-of-cosines`. The parent proves the side law cos c = cos a·cos b + sin a·sin b·cos C; OQ-03 formalises its polar dual, the angles law cos C = −cos A·cos B + sin A·sin B·cos c, whose leading minus sign is the hallmark of spherical duality. The head docstring lays out the radical-free, division-free strategy: model ℝ³ vectors as a 3-field structure V with dot and cross products, express angle cosines/sines in normal form over sin b·sin c, clear denominators to reduce the identity to a polynomial proved by `ring`, and recover the trig form by dividing back through the side sines. It also catalogues the file's 26 theorems / 4 definitions (binet_cauchy, lagrange_identity, triple_sq, dual_poly, dual_spherical_law_cleared, the cross-product and polar forms) and records the build provenance.",
+      "mathContext": "Polar duality of the sphere: the polar triangle has sides π−A and angles π−a, swapping the roles of sides and angles and injecting the characteristic minus sign. Key algebraic tools are the Binet–Cauchy identity ⟨a×b,c×d⟩ = ⟨a,c⟩⟨b,d⟩ − ⟨a,d⟩⟨b,c⟩, the Lagrange identity ‖a×b‖² = ‖a‖²‖b‖² − ⟨a,b⟩² (giving sin²a = 1 − cos²a), and the scalar triple product [u v w] = ⟨u, v×w⟩ whose square is the Gram determinant (= sin²A·sin²b·sin²c). Clearing denominators turns the trig dual law into (cc − ca·cb)(1 − cc²) = −(ca − cb·cc)(cb − ca·cc) + [u v w]²·cc, an identity in the raw dot/cross data provable purely by ring, avoiding the non-degeneracy side-conditions that square roots and divisions would force."
+    },
+    {
       "id": "part1-vector-toolkit",
       "title": "Part I: Vector Toolkit in ℝ³",
       "startLine": 100,

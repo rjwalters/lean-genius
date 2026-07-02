@@ -183,3 +183,270 @@ correctly `axiomatized` (axiomCount 1) — no gallery change.
   top ring), stated over an `[IsGaloisGroup G R T]` tower with `[IsScalarTower R S T]`
   and `LiesOver` instances chained by `Ideal.LiesOver.trans`. Keeps the middle field
   non-normal — the whole point for `ℚ(α) ⊂ splitting field`.
+
+## Session 5 (researcher-5, 2026-07-02): PACKAGED the Kummer–Dedekind factor brick (Step 1) + PINNED the sole residual gap to `¬ 7 ∣ exponent α`
+
+New file `proofs/Proofs/DedekindInertiaFactor.lean` isolates **Step 1** (the
+"Kummer–Dedekind conductor step") as the natural companion to Session 4's
+`DedekindInertiaTower` (which packaged Steps 2–3). It is a thin, careful wrapper over
+Mathlib's `NumberField.Ideal.primesOverSpanEquivMonicFactorsMod` API:
+
+- `DedekindInertiaFactor.inertiaDeg_associatedPrime_eq` : for `θ : 𝓞 K` (`K` a number
+  field), `hexp : ¬ p ∣ exponent θ`, and a monic irreducible factor `Q ∈ monicFactorsMod θ p`,
+  the ideal `(primesOverSpanEquivMonicFactorsMod hexp).symm ⟨Q, hQ⟩` is **maximal**, **lies
+  over `(p)`**, and has `inertiaDeg (p) · = Q.natDegree`.
+- `DedekindInertiaFactor.exists_isMaximal_liesOver_inertiaDeg_eq` : existential form —
+  `∃ P, P.IsMaximal ∧ P.LiesOver (span {(p:ℤ)}) ∧ inertiaDeg (p) P = Q.natDegree`.
+- `DedekindInertiaFactor.exists_dvd_inertiaDeg` : divisibility form (`d ∣ Q.natDegree ⟹
+  ∃ P …, d ∣ inertiaDeg (p) P`) — this is *exactly* the hypothesis of
+  `DedekindInertiaTower.dvd_inertiaDegIn_of_dvd_inertiaDeg`. Chaining the two bricks with
+  `d = 3` and the degree-3 cubic factor yields `3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)`.
+
+Proof extracts the maximality that Mathlib's raw lemma omits: the associated ideal lives in
+`primesOver (span {(p:ℤ)}) (𝓞 K)` (so `IsPrime` + `LiesOver` come for free), is nonzero via
+`Ideal.ne_bot_of_mem_primesOver` (`span {(p:ℤ)} ≠ ⊥`), and a nonzero prime of the Dedekind
+domain `𝓞 K` is maximal (`Ideal.IsPrime.isMaximal`). The inertia degree is
+`inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply'`.
+
+### ⚠ BUILD STATUS: written, NOT yet machine-verified (host-disk/docker infra block)
+The docker build (`docker-build.sh Proofs.DedekindInertiaFactor`) failed on **infrastructure**,
+not on any Lean error: host disk at **100 %** (`/System/Volumes/Data` 369Mi free), 5 concurrent
+`lean-build-*` containers, and the container aborted the mathlib cache fetch
+(`could not execute external process 'curl'` + containerd `input/output error`). The file never
+compiled. This is the same host-disk block seen across recent mechanic/researcher cycles
+(do-not-retry until disk is reclaimed). **The brick must be built and its `#print axioms`
+confirmed before it can be claimed VERIFIED.** Gallery entry `inverse-galois-a5` stays
+correctly `axiomatized` (axiomCount 1) — no gallery change.
+
+### DECISIVE finding: the sole residual obligation is now `¬ 7 ∣ exponent α`, and Mathlib has NO way to discharge it
+With Steps 1–3 all packaged as abstract bricks, the *entire* remaining gap for
+`3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)` collapses to the single hypothesis fed to the
+Step-1 brick:
+
+> `hexp : ¬ (7 : ℕ) ∣ NumberField.RingOfIntegers.exponent α`   (α a root of `q`, `K = ℚ(α)`)
+
+`exponent θ := Ideal.absNorm (Ideal.under ℤ (conductor ℤ θ))` (KummerDedekind.lean:64), and
+`not_dvd_exponent_iff` characterizes `¬ p ∣ exponent θ` as
+`Codisjoint (comap (algebraMap ℤ (𝓞 K)) (conductor ℤ θ)) (span {↑p})` — i.e. the conductor of
+`ℤ[α]` in `𝓞 K` is coprime to `(7)`. This is the classical **Dedekind criterion** datum, true
+here because `q mod 7` is squarefree (`⟺ 7 ∤ disc q = 32000²`).
+
+**A full Mathlib inventory (pinned v4.26) confirms the criterion is ABSENT:**
+- `Mathlib/RingTheory/Conductor.lean` has only `conductor_eq_top_of_adjoin_eq_top` /
+  `_of_powerBasis` and `comap_map_eq_map_adjoin_of_coprime_conductor` — it never derives
+  conductor-coprimality from a squarefree/separable reduction or from `p ∤ disc`.
+- `KummerDedekind.lean` *assumes* `¬ p ∣ exponent θ` everywhere; the only way it is ever
+  discharged in Mathlib is the monogenic case `exponent_eq_one_iff` (`ℤ[θ] = 𝓞 K`, conductor
+  `⊤`) — used by `Cyclotomic/Ideal.lean` because `ℤ[ζ] = 𝓞_{ℚ(ζ)}`. Our `ℤ[α] ⊊ 𝓞_{ℚ(α)}`, so
+  that shortcut is unavailable.
+- `RingTheory/Discriminant.lean` has the trace-form/`powerBasis` discriminant but **no
+  discriminant–index relation** `disc(ℤ[θ]) = [𝓞_K:ℤ[θ]]² · disc(𝓞_K)` and no
+  `p ∤ disc → p ∤ index`. Grep for "Dedekind criterion" across all of Mathlib hits only the
+  KummerDedekind filename.
+
+**Buildability assessment (per research policy):** discharging `¬ 7 ∣ exponent α` from scratch
+requires the chain `q mod 7 squarefree ⟹ 7 ∤ disc q ⟹ 7 ∤ [𝓞_K:ℤ[α]] ⟹ 7 ∤ exponent α`, i.e.
+the discriminant–index relation + p-maximality/round-2 theory + the conductor⇔index prime
+correspondence. This is **> 1000 lines of missing foundational infrastructure** (a genuine
+Mathlib contribution, not a local build) → **BLOCKED**, not premature. The three abstract bricks
+(Dedekind–Frobenius bridge, inertia tower, and now the factor brick) are the maximal
+0-axiom skeleton reachable without it.
+
+### Next steps
+- (blocked) Prove/upstream Dedekind's criterion `Squarefree (minpoly θ |> map (ZMod p)) ⟹
+  ¬ p ∣ exponent θ` (or the weaker `p ∤ disc(minpoly θ) ⟹ ¬ p ∣ exponent θ`). Watch Mathlib
+  for a discriminant–index or p-maximality lemma; that single lemma unblocks the whole entry.
+- (tractable, once disk is reclaimed) Build `DedekindInertiaFactor.lean` and confirm
+  `#print axioms` is clean; then a concrete instantiation file can set `θ = α`, `K = ℚ(α)`,
+  prove `cubic7 ∈ monicFactorsMod α 7` (Session 3's factorization), and assemble
+  factor-brick + tower-brick + `three_dvd_gal_card_of_bridge`, leaving `¬ 7 ∣ exponent α` as the
+  single named hypothesis.
+- Setting up `θ = α ∈ 𝓞 ℚ(α)` with `minpoly ℤ α = q` and the tower `ℚ ⊆ ℚ(α) ⊆ q.SplittingField`
+  (IsScalarTower / LiesOver / IsGaloisGroup instances) is itself non-trivial integration work,
+  independent of the Mathlib gap.
+
+### Drafted brick source (proofs/Proofs/DedekindInertiaFactor.lean — BUILD-PENDING, preserve for next session)
+
+```lean
+import Mathlib
+
+/-!
+# Kummer–Dedekind factor brick for inertia degrees (inverse-Galois A₅, OQ-04)
+
+This file isolates the abstract **Step 1** ("Kummer–Dedekind conductor step") of the ongoing
+effort to discharge the last assumption of `Proofs.InverseGaloisA5`,
+
+```
+axiom three_dvd_gal_card : 3 ∣ Fintype.card q.Gal     -- InverseGaloisA5.lean:309
+```
+
+Its companion `Proofs.InverseGaloisA5DedekindInstantiation` reduces that axiom to the single
+sharp arithmetic fact `3 ∣ Ideal.inertiaDegIn (7) (𝓞 q.SplittingField)`, and spells out a
+three-step route to prove it:
+
+1. **Kummer–Dedekind** — the prime of `𝓞 ℚ(α)` matching the *irreducible cubic factor* of
+   `q mod 7` has inertia degree `3`;
+2. **inertia-degree multiplicativity in a tower** (no Galois hypothesis on the middle field);
+3. **Galois uniformity** — all primes of the *splitting field* over `7` share this inertia degree.
+
+`Proofs.DedekindInertiaTower` already packages steps **2 & 3** as a single divisibility brick
+`dvd_inertiaDegIn_of_dvd_inertiaDeg`, whose input is exactly `d ∣ inertiaDeg p P` for one
+intermediate prime `P`. This file packages **step 1** as its natural companion:
+`exists_isMaximal_liesOver_inertiaDeg_eq` turns a monic irreducible factor `Q` of
+`minpoly ℤ θ mod p` (of degree `d`) into an honest maximal prime `P` of `𝓞 K` over `(p)` with
+`inertiaDeg (p) P = d`. Chaining the two bricks reduces the residual A₅ gap to producing the
+single hypothesis `¬ p ∣ exponent θ` (the conductor being coprime to `p`) — for the A₅ quintic,
+`p = 7` and `7 ∤ disc q = 32000²`, which is the last remaining, standard, number-theoretic input
+(Dedekind's criterion: `q mod 7` squarefree).
+
+Only ordinary foundational axioms (`propext`, `Classical.choice`, `Quot.sound`) are used — no
+`sorry`, no new `axiom`. Everything is a thin, verified wrapper over Mathlib's
+`NumberField.Ideal.primesOverSpanEquivMonicFactorsMod` API.
+-/
+
+open Polynomial Ideal
+open scoped NumberField
+
+namespace DedekindInertiaFactor
+
+open NumberField NumberField.Ideal
+
+variable {K : Type*} [Field K] [NumberField K]
+variable {p : ℕ} [Fact p.Prime] (θ : 𝓞 K)
+
+/-- **Kummer–Dedekind factor brick (subtype form).** If `p ∤ exponent θ` and `Q` is a monic
+irreducible factor of `minpoly ℤ θ` modulo `p`, then the ideal `P` of `𝓞 K` associated to `Q`
+by Mathlib's bijection `primesOverSpanEquivMonicFactorsMod` is a *maximal* ideal lying over the
+rational prime `(p)`, and its inertia degree is exactly `natDegree Q`.
+
+This is the honest packaging of `inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply'`:
+Mathlib's lemma gives the inertia degree of the associated prime, and here we additionally
+extract that the associated ideal really is a maximal prime over `(p)` (it lives in
+`primesOver (span {(p : ℤ)}) (𝓞 K)`, is nonzero, and `𝓞 K` is a Dedekind domain, so a nonzero
+prime is maximal). -/
+theorem inertiaDeg_associatedPrime_eq
+    (hexp : ¬ p ∣ exponent θ) {Q : (ZMod p)[X]} (hQ : Q ∈ monicFactorsMod θ p) :
+    (((primesOverSpanEquivMonicFactorsMod hexp).symm ⟨Q, hQ⟩ : Ideal (𝓞 K))).IsMaximal ∧
+      (((primesOverSpanEquivMonicFactorsMod hexp).symm ⟨Q, hQ⟩ : Ideal (𝓞 K))).LiesOver
+        (span {(p : ℤ)}) ∧
+      inertiaDeg (span {(p : ℤ)})
+        ((primesOverSpanEquivMonicFactorsMod hexp).symm ⟨Q, hQ⟩ : Ideal (𝓞 K)) = Q.natDegree := by
+  set P : Ideal (𝓞 K) := (primesOverSpanEquivMonicFactorsMod hexp).symm ⟨Q, hQ⟩ with hP
+  -- `P` is (by construction) a prime lying over `(p)`.
+  have hmem : P ∈ primesOver (span {(p : ℤ)}) (𝓞 K) :=
+    ((primesOverSpanEquivMonicFactorsMod hexp).symm ⟨Q, hQ⟩).2
+  have hprime : P.IsPrime := hmem.1
+  have hlo : P.LiesOver (span {(p : ℤ)}) := hmem.2
+  -- `(p)` is a nonzero ideal of `ℤ`, so `P` is a nonzero prime of the Dedekind domain `𝓞 K`,
+  -- hence maximal.
+  have hspan : (span {(p : ℤ)} : Ideal ℤ) ≠ ⊥ := by simp [NeZero.ne p]
+  have hne : P ≠ ⊥ := ne_bot_of_mem_primesOver hspan hmem
+  have hmax : P.IsMaximal := hprime.isMaximal hne
+  -- The inertia degree is the degree of `Q` by Kummer–Dedekind.
+  refine ⟨hmax, hlo, ?_⟩
+  exact inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply' hexp hQ
+
+/-- **Kummer–Dedekind factor brick (existential form).** From a monic irreducible factor `Q`
+of `minpoly ℤ θ` modulo `p` (with `p ∤ exponent θ`) one obtains a maximal prime `P` of `𝓞 K`
+over the rational prime `(p)` whose inertia degree equals `natDegree Q`.
+
+This is the shape consumed by the A₅ inverse-Galois argument: applied to `θ = α` (a root of the
+quintic `q` generating `ℚ(α)`) and the irreducible cubic factor `Q` of `q mod 7`, it yields a
+prime `P` of `𝓞 ℚ(α)` with `inertiaDeg (7) P = 3`. Feeding `3 ∣ inertiaDeg (7) P` into
+`DedekindInertiaTower.dvd_inertiaDegIn_of_dvd_inertiaDeg` then gives
+`3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)`. -/
+theorem exists_isMaximal_liesOver_inertiaDeg_eq
+    (hexp : ¬ p ∣ exponent θ) {Q : (ZMod p)[X]} (hQ : Q ∈ monicFactorsMod θ p) :
+    ∃ P : Ideal (𝓞 K), P.IsMaximal ∧ P.LiesOver (span {(p : ℤ)}) ∧
+      inertiaDeg (span {(p : ℤ)}) P = Q.natDegree :=
+  ⟨_, inertiaDeg_associatedPrime_eq θ hexp hQ⟩
+
+/-- **Divisibility form.** If some `d` divides the degree of a monic irreducible factor `Q` of
+`minpoly ℤ θ mod p`, then there is a maximal prime `P` of `𝓞 K` over `(p)` with
+`d ∣ inertiaDeg (p) P`. This is precisely the hypothesis of
+`DedekindInertiaTower.dvd_inertiaDegIn_of_dvd_inertiaDeg`; the A₅ instance uses `d = 3` and the
+degree-`3` cubic factor. -/
+theorem exists_dvd_inertiaDeg
+    (hexp : ¬ p ∣ exponent θ) {Q : (ZMod p)[X]} (hQ : Q ∈ monicFactorsMod θ p)
+    {d : ℕ} (hd : d ∣ Q.natDegree) :
+    ∃ P : Ideal (𝓞 K), P.IsMaximal ∧ P.LiesOver (span {(p : ℤ)}) ∧
+      d ∣ inertiaDeg (span {(p : ℤ)}) P := by
+  obtain ⟨P, hmax, hlo, hdeg⟩ := exists_isMaximal_liesOver_inertiaDeg_eq θ hexp hQ
+  exact ⟨P, hmax, hlo, hdeg ▸ hd⟩
+
+end DedekindInertiaFactor
+```
+
+## Session 6 (researcher-6, 2026-07-02): CHAINED Step 1 → `inertiaDegIn(𝓞 L)` (the deferred composite brick) + INDEPENDENTLY re-confirmed the sole blocker is `¬ 7 ∣ exponent α`
+
+Session 5 (researcher-5) packaged Step 1 as `DedekindInertiaFactor` (factor `Q` of
+`minpoly θ mod p` ⟶ maximal prime `P` of `𝓞 K` over `(p)` with `inertiaDeg (p) P = deg Q`),
+built-pending, and listed as its next step "chaining the two bricks ... yields
+`3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)`". This session **builds that chaining brick**.
+
+### New file `proofs/Proofs/InverseGaloisA5DedekindKummer.lean` (BUILD-PENDING — host disk full)
+`InverseGaloisA5DedekindKummer.dvd_inertiaDegIn_of_monicFactorMod` composes, in one lemma,
+all three steps for a number-field tower `K ⊆ L` (`L/ℚ` Galois via `G`, `[IsGaloisGroup G ℤ (𝓞 L)]`):
+
+> for `θ : 𝓞 K`, `¬ p ∣ RingOfIntegers.exponent θ`, and a monic factor `Q` of `minpoly ℤ θ`
+> mod `p`, `(Q.map (Int.castRingHom (ZMod p))).natDegree ∣ Ideal.inertiaDegIn (span {(p:ℤ)}) (𝓞 L)`.
+
+Proof chain (all named Mathlib decls confirmed present in pinned v4.26, plus the local
+tower brick):
+1. `NumberField.Ideal.inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply` — the
+   Kummer–Dedekind prime `P := (primesOverSpanEquivMonicFactorsMod hp).symm ⟨Q̄, hQ⟩` of `𝓞 K`
+   has `inertiaDeg (p) P = natDegree Q̄`. It is `IsPrime`+`LiesOver (p)` from `primesOver`
+   membership (`Pe.2.1`/`Pe.2.2`); `Int.ideal_span_isMaximal_of_prime` makes `(p)` maximal so
+   `Ideal.IsMaximal.of_liesOver_isMaximal` makes `P` maximal.
+2. `Ideal.exists_ideal_over_maximal_of_isIntegral` — lift `P` to a maximal `𝔮 ◁ 𝓞 L` over `P`
+   (`ker (algebraMap (𝓞 K) (𝓞 L)) = ⊥` via `RingOfIntegers.ker_algebraMap_eq_bot`).
+3. `DedekindInertiaTower.dvd_inertiaDegIn_of_dvd_inertiaDeg` (Session 4's brick) — promote
+   `natDegree Q̄ ∣ inertiaDeg (p) P` through the Galois tower `ℤ ⊆ 𝓞 K ⊆ 𝓞 L` to
+   `natDegree Q̄ ∣ inertiaDegIn (p) (𝓞 L)`.
+
+This **subsumes** Session 5's `DedekindInertiaFactor` (it inlines Step 1 rather than importing
+it) and delivers the divisibility in the *splitting field's* ring of integers directly — i.e.
+exactly the `3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField)` shape consumed by
+`InverseGaloisA5DedekindInstantiation.three_dvd_gal_card_of_bridge`. Once instantiated with
+`K = ℚ(α)`, `L = q.SplittingField`, `p = 7`, `Q = cubic7` (Session 3), and `G = q.Gal`, the
+*only* remaining hypothesis is `¬ 7 ∣ exponent α`.
+
+### ⚠ BUILD STATUS: NOT machine-verified this session (same host-disk block as Session 5)
+`docker-build.sh Proofs.InverseGaloisA5DedekindKummer` failed on **infrastructure**, not Lean:
+host `/System/Volumes/Data` at **100 %** (≈759 Mi free), the Docker daemon aborted the layer
+commit with an overlayfs `input/output error` (#33336). The Aristotle MCP endpoint returned
+`Resource not found` (unreachable this session), so the fallback verifier was also unavailable.
+The proof is written against confirmed API signatures but must be built + `#print axioms`-checked
+before being claimed VERIFIED. Gallery entry `inverse-galois-a5` stays `axiomatized`
+(axiomCount 1) — **no gallery change**.
+
+### Independent re-confirmation of the sole blocker `¬ 7 ∣ exponent α` (agrees with Session 5)
+A fresh Mathlib inventory (pinned v4.26) reproduces Session 5's decisive finding: the ONLY
+ways Mathlib ever discharges `¬ p ∣ exponent θ` are
+- `exponent_eq_one_iff` — the *monogenic* case `Algebra.adjoin ℤ {θ} = ⊤` (`ℤ[θ] = 𝓞 K`),
+  used solely for cyclotomic fields (`Cyclotomic/Ideal.lean`, where `ℤ[ζ] = 𝓞`); inapplicable
+  to `ℚ(α)` since `ℤ[α] ⊊ 𝓞 ℚ(α)` (the index is divisible by 2 and 5), and
+- the raw characterization `not_dvd_exponent_iff` (`¬ p ∣ exponent θ ↔ Codisjoint (conductor
+  comap) (span {p})`), which is never *derived* from a squarefree/`p ∤ disc` hypothesis.
+
+There is still **no** discriminant–index relation (`disc(ℤ[θ]) = [𝓞_K:ℤ[θ]]² · disc 𝓞_K`), **no**
+`p ∤ disc → p ∤ index`, **no** p-maximality/round-2, and **no** "Dedekind's criterion"
+(`Squarefree (minpoly θ mod p) → ¬ p ∣ exponent θ`) anywhere in Mathlib. Discharging
+`¬ 7 ∣ exponent α` from `7 ∤ disc q = 32000²` remains a genuine **> 1000-line upstream Mathlib
+contribution** → the entry is **BLOCKED**, not a local build task. The now-four abstract bricks
+(Dedekind–Frobenius bridge; inertia tower Steps 2–3; Kummer–Dedekind factor Step 1; and this
+session's full Step-1→`inertiaDegIn(𝓞 L)` chaining lemma) are the maximal 0-axiom skeleton
+reachable without it.
+
+### Next steps (unchanged in substance from Session 5, sharper on the target)
+- (BLOCKED, upstream) Prove/upstream `Squarefree (minpoly θ |>.map (Int.castRingHom (ZMod p)))
+  → ¬ p ∣ exponent θ`, or the discriminant–index relation feeding it. One lemma unblocks the
+  whole entry. Watch Mathlib `RRingTheory/Discriminant`, `RingTheory/Conductor`.
+- (tractable once disk is reclaimed) Build `InverseGaloisA5DedekindKummer.lean`; confirm
+  `#print axioms` clean. Then a single concrete instantiation file sets `K = ℚ(α)`,
+  `L = q.SplittingField`, proves `cubic7 ∈ monicFactorsMod α 7` (Session 3's factorization),
+  and calls `dvd_inertiaDegIn_of_monicFactorMod q.Gal` — leaving `¬ 7 ∣ exponent α` as the
+  single named `sorry`/hypothesis, i.e. the whole entry reduced to ONE arithmetic input.
+- The `K = ℚ(α)` intermediate-field setup (IsScalarTower/LiesOver/IsGaloisGroup ℤ (𝓞 L)
+  instances for the tower `ℚ ⊆ ℚ(α) ⊆ q.SplittingField`) is non-trivial integration work,
+  independent of the Mathlib gap.

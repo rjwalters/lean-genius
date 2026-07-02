@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Full Failure Profile of the Ordinary-Derivative Test over 𝔽_q",
+      "startLine": 1,
+      "endLine": 76,
+      "summary": "Import (Mathlib), module docstring, and setup (namespace FactorRemainderTheoremOQ01OQ01OQ01OQ01; open Polynomial; Field K of characteristic p; exponent e). Generalizes the parent's prime-field witness f = Xᵖ to f = X^{pᵉ} over an arbitrary finite field 𝔽_q (any [Field K][CharP K p]), giving the complete failure profile of the ordinary-derivative multiplicity test. New content, driven by Kummer's theorem: for X^{pᵉ} the Hasse derivatives vanish identically at every intermediate order 0<j<pᵉ (since p ∣ C(pᵉ,j)), surviving only at the extreme orders j=0 and j=pᵉ. Main results (0-axiom, 0-sorry): derivative_X_pe_eq_zero, ordinary_criterion_vacuous, coeff_criterion_correct (Xᵏ ∣ X^{pᵉ} ↔ k≤pᵉ, multiplicity_eq_pe), hasseDeriv_X_pe closed form, hasseDeriv_intermediate_eq_zero (the Kummer collapse), hasseDeriv_X_pe_ne_zero_iff (the sharp profile), ordinary_collapses_hasse_survives (capstone contrast), factorial_annihilates_hasseDeriv.",
+      "mathContext": "The p-power witnesses have extra rigidity over a generic polynomial: the Hasse derivative is dead throughout the open interval (0, pᵉ), pinpointing exactly where the ordinary-derivative multiplicity test fails in positive characteristic while the characteristic-free coefficient/Taylor test stays sharp."
+    },
+    {
       "id": "collapse",
       "title": "The ordinary-derivative test collapses over 𝔽_q",
       "startLine": 77,

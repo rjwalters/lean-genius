@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BUILD: circle-to-great-circle tangency + spherical incircle scaffolding (FeuerbachsTheoremOQ04.lean, 894L, 0-axiom/0-sorry, VERIFIED docker [7743/7743]). sGreatCircle/greatCircleFoot/TangentToGreatCircle + greatCircleFoot_mem + circle_tangent_greatCircle_inter (singleton intersection) + sdist_greatCircleFoot_center establish the incircle-to-side tangency primitive. sGreatCircle_eq_sCircle shows great circles are the radius-π/2 circles (unifying the two tangency notions). SphericalIncircle (tangent to 3 side poles) + sphericalIncircle_contact_points (incircle meets each side in exactly one point, explicit feet) package the first Feuerbach ingredient. REMAINING HARD STEP: existence/uniqueness of the incenter O for a given triangle (angle-bisector argument); then spherical nine-point circle + Feuerbach tangency.",
+    "progressSummary": "PROGRESS: added the spherical circumcircle existence primitive (three points -> common sCircle) underneath the nine-point circle; Feuerbach tangency still the hard frontier.",
     "builtItems": [
       "FeuerbachsTheoremOQ04.chord_sq (Proofs/FeuerbachsTheoremOQ04.lean) — chord-cosine bridge: for unit vectors, ||P-Q||^2 = 2 - 2*scos P Q; turns spherical tangency into an inner-product equation. 0-axiom.",
       "FeuerbachsTheoremOQ04.abs_scos_le_one/scos_le_one/neg_one_le_scos — spherical cosine in [-1,1] (Cauchy-Schwarz on unit vectors)",
@@ -53,7 +53,9 @@
       "inner_orthoComp_self / inner_orthoComp_left — ⟪O⊥,·⟫ = 1-⟪O,N⟫² helper lemmas",
       "sGreatCircle_eq_sCircle — great circle = sCircle N (π/2), unifies great-circle & circle-circle tangency",
       "SphericalIncircle Na Nb Nc O ρ — circle tangent to all 3 side poles of a spherical triangle",
-      "sphericalIncircle_contact_points — incircle meets each of the 3 sides in exactly one point (explicit feet)"
+      "sphericalIncircle_contact_points — incircle meets each of the 3 sides in exactly one point (explicit feet)",
+      "sphericalCircumcircle_exists in FeuerbachsTheoremOQ04Circumcircle.lean: any three model points lie on a common sCircle O rho (circumcircle), via greatCircles_inter on poles A-B, B-C. [VERIFIED, 0-axiom]",
+      "sphericalCircumcircle_equidistant + inner_sub_eq_zero_iff_scos_eq in FeuerbachsTheoremOQ04Circumcircle.lean: circumcentre is spherically equidistant sdist A O = sdist B O = sdist C O. [VERIFIED, 0-axiom]"
     ],
     "insights": [
       "Mathlib has clean spherical geometry for free (unit vectors of any InnerProductSpace R E; geodesic distance = arccos of inner product) but essentially no hyperbolic metric, so the spherical model is the tractable non-Euclidean route for Feuerbach.",
@@ -61,7 +63,8 @@
       "Spherical circle tangency target: internal iff sdist(O1,O2)=|rho1-rho2|, external iff sdist(O1,O2)=rho1+rho2 — the non-Euclidean analog of the Euclidean d=|r1-r2| / r1+r2 used in the verified Euclidean Feuerbach gallery files.",
       "Spherical common tangent at a contact point is captured coordinate-free: since P ∈ span{O₁,O₂}, any T ⟂ {O₁,O₂} is simultaneously in the tangent space at P and tangent to both circles — no explicit geodesic parametrisation needed.",
       "Circle-to-great-circle tangency is the exact primitive a spherical INCIRCLE construction needs: the incircle is tangent to the three side-geodesics (great circles), not to other circles. Distance from a point to a great circle with unit pole N is arcsin|⟪O,N⟫|, so tangency criterion is |⟪O,N⟫| = sin ρ (spherical shadow of Euclidean distance-to-line = radius).",
-      "The contact point of a tangent circle and a side is the FOOT OF THE PERPENDICULAR (O - ⟪O,N⟫•N)/cos ρ; it is pure inner-product algebra (no infimum/analysis): ⟪foot,N⟫=0, ⟪foot,O⟫=cos ρ, ‖foot‖=1 via ‖O⊥‖²=1-⟪O,N⟫²=cos²ρ under the criterion. Uniqueness via ⟪Q,foot⟫=1 ⟹ Q=foot (scos_eq_one_iff)."
+      "The contact point of a tangent circle and a side is the FOOT OF THE PERPENDICULAR (O - ⟪O,N⟫•N)/cos ρ; it is pure inner-product algebra (no infimum/analysis): ⟪foot,N⟫=0, ⟪foot,O⟫=cos ρ, ‖foot‖=1 via ‖O⊥‖²=1-⟪O,N⟫²=cos²ρ under the criterion. Uniqueness via ⟪Q,foot⟫=1 ⟹ Q=foot (scos_eq_one_iff).",
+      "Spherical perpendicular bisector of a segment AB is the great circle with pole A-B: model points equidistant (equal scos) from A and B are exactly those orthogonal to A-B (inner_sub_eq_zero_iff_scos_eq). Dual to the side-pole bisector equidistant_two_sides_iff."
     ],
     "mathlibGaps": [
       "No developed hyperbolic-geometry metric (hyperboloid / Poincare disk distance) in Mathlib — blocks an axiom-free hyperbolic Feuerbach without building the model first.",
@@ -71,7 +74,8 @@
       "Bundle (S^n, sdist) as an actual Mathlib MetricSpace instance on the sphere subtype (sdist_isMetric supplies all four axioms; the remaining work is the subtype packaging).",
       "Tangent-point existence for tangent spherical circles (slerp midpoint on the geodesic between centres), using sdist_triangle for the betweenness/uniqueness argument.",
       "Construct the spherical incircle and nine-point circle for a spherical triangle, then attempt the tangency conclusion.",
-      "Relate the common tangent direction to a spherical Feuerbach configuration (incircle/nine-point-analogue tangency) building on the contact-point tangent structure."
+      "Relate the common tangent direction to a spherical Feuerbach configuration (incircle/nine-point-analogue tangency) building on the contact-point tangent structure.",
+      "Combine sphericalCircumcircle_exists with the in-flight side-midpoints (sMidpoint) to DEFINE the spherical nine-point circle as the circumcircle of the medial triangle."
     ]
   },
   "tags": [

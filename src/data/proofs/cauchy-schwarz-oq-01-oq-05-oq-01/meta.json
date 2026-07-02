@@ -82,6 +82,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Cauchy–Schwarz Defect as ‖Orthogonal Residual‖²",
+      "startLine": 1,
+      "endLine": 77,
+      "summary": "Module docstring, parent import (CauchySchwarzOQ01OQ05) and Mathlib projection API, plus setup (namespace CauchySchwarzOQ01OQ05OQ01; RCLike 𝕜; inner-product space E; the defs proj x y := (𝕜∙x).starProjection y and residual x y := y − proj x y). The entry packages the Cauchy–Schwarz defect as the squared norm of an explicit orthogonal residual, connecting the algebraic Lagrange identity to Mathlib's starProjection onto a single vector. The parent's division-free Gram identity ‖w‖² = ‖x‖²(‖x‖²‖y‖² − ‖⟪x,y⟫‖²) for w = ⟪x,x⟫•y − ⟪x,y⟫•x is bridged via w = ⟪x,x⟫•r (using starProjection_singleton), yielding after cancellation defect = ‖x‖²·‖r‖². Formalizes: residual ⟂ x, the bridge identity, defect-as-residual (x≠0), Cauchy–Schwarz from ‖r‖²≥0, the equality characterization ‖⟪x,y⟫‖=‖x‖‖y‖ ↔ P x y = y, and ℝ/ℂ specializations.",
+      "mathContext": "Recasting the Cauchy–Schwarz gap as the squared length of the perpendicular component gives the geometric meaning of equality (y on the line 𝕜∙x) and links the classical Lagrange identity to Mathlib's Hilbert-space orthogonal-projection machinery."
+    },
+    {
       "id": "residual-orthogonal",
       "title": "The Residual is Orthogonal to x",
       "summary": "⟪x, y − P x y⟫ = 0, from sub_starProjection_mem_orthogonal and mem_orthogonal_singleton_iff_inner_right; plus the explicit projection formula P x y = (⟪x,y⟫/‖x‖²)•x.",

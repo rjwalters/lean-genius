@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Power-Mean Monotonicity Across Zero, M_r ≤ M_s for r < 0 < s",
+      "startLine": 1,
+      "endLine": 79,
+      "summary": "Module docstring and imports (MeanInequalities, Pow.Real, Tactic, parent AmgmInequalityOQ03). The parent proves power-mean monotonicity only in the two same-sign regimes 0 < r ≤ s and r ≤ s < 0, leaving open the mixed-sign case r < 0 < s that must cross the geometric-mean limit at exponent 0. This file closes it: for positive reals with weights summing to 1, M_r ≤ M_s whenever r < 0 < s. The route goes through the weighted geometric mean GM = ∏ zᵢ^{wᵢ} = lim_{p→0} M_p, using the single Mathlib input Real.geom_mean_le_arith_mean_weighted applied to yᵢ = zᵢ^p to get the core estimate (★) GM^p ≤ ∑ wᵢ zᵢ^p valid for every p; the sign of p then flips the direction of t ↦ t^{1/p}, giving GM ≤ M_s (s>0) and M_r ≤ GM (r<0), chained to M_r ≤ GM ≤ M_s. Theorems: geomMean_rpow_le_weighted_sum, geomMean_le_powerMean_pos, powerMean_le_geomMean_neg, power_mean_monotone_mixed. 0 sorries, 0 axioms.",
+      "mathContext": "The sign flip of 1/p is exactly why the parent's two same-sign theorems cannot be combined directly: there is no common exponent between a negative r and a positive s except the degenerate order 0 represented by the geometric mean itself."
+    },
+    {
       "id": "core-estimate",
       "title": "Core Estimate: GM^p ≤ ∑ wᵢzᵢ^p for every p",
       "startLine": 80,

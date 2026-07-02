@@ -71,6 +71,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: modulus-monotonicity of divisibility-restricted partition counts",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "Imports and header docstring: Euler/Glaisher background, the modulus-monotonicity main result, why it is invisible on the divisibility side and transparent on the repetition side, and the consequences.",
+      "mathContext": "This file (open question partition-theorem-oq-02) proves modulus monotonicity of divisibility-restricted partition counts. Background: the parent is Euler's identity (#partitions into odd parts = #into distinct parts), and Mathlib records both Euler (Nat.Partition.card_odds_eq_card_distincts) and Glaisher's general modulus-m form (Nat.Partition.card_restricted_eq_card_countRestricted): #{no part divisible by m} = #{every part used fewer than m times}, with Euler the m=2 case. Writing A_m(n) = #{partitions of n with no part divisible by m} and B_m(n) = #{each part used < m times}, Glaisher says A_m = B_m. Main result: for 0 < m ≤ m', A_m(n) ≤ A_{m'}(n). This is non-obvious because the divisibility families are NOT nested (avoiding multiples of m says nothing about multiples of m'), so there is no containment to read the inequality from — on the divisibility side the monotonicity is invisible. It becomes transparent on the other side of Glaisher: the repetition-restricted families ARE manifestly nested (used < m times ⇒ used < m' times when m ≤ m'), so B_m(n) ⊆ B_{m'}(n) as finsets; transporting through Glaisher's equalities yields A_m ≤ A_{m'}. Glaisher's theorem is the essential bridge between two families with no direct combinatorial comparison. The header docstring (lines 1–69) lists consequences: card_not_dvd_three_eq_card_lt_three_repeats (the m=3 case), card_odds_le_card_not_dvd_three (monotonicity at 2 ≤ 3), card_distincts_le_card_not_dvd_three (via Euler); and the proved lemmas countRestricted_mono, card_restricted_not_dvd_mono. All over Mathlib's Nat.Partition API, fully machine-checked."
+    },
+    {
       "id": "setup",
       "title": "The Two Families and Glaisher's Bridge",
       "summary": "Recalls Mathlib's restricted n (¬ m ∣ ·) (no part divisible by m) and countRestricted n m (each part used < m times), and Glaisher's theorem equating their cardinalities. The repetition family countRestricted is nested in its bound m, which countRestricted_mono records.",

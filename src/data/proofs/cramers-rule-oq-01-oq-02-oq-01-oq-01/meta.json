@@ -45,6 +45,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Inductive n×n Quasideterminant Theory",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "Imports (Matrix.Adjugate, NonsingularInverse, Tactic, parents CramersRuleOQ01OQ02 and OQ01OQ02OQ01), and the module docstring. Extends the 2×2/3×3 Gelfand–Retakh quasideterminant theory to general n×n matrices along two routes. Route A (commutative, S2): the uniform-in-n definition qdetF A i j := det(A)/det(minor_{ij}(A)), which recovers qdet3 (n=3, rfl) and qdet00/qdet11 (n=2). Route B (non-commutative, S3): the one-step Schur formula qdetN_step over a division ring (taking the minor inverse Minv as input, avoiding mutual recursion), with the mutual recursion qdetN ↔ qdetN_inv deferred to S4. Main results: qdetF and its field-quotient/nonvanishing/reduction lemmas; qdetN_step and its degenerate case; the S4 sign lemma aux_insert_row_sign; the division-free Schur–cofactor identity qdetN_step_eq_qdetF_aux (det M·A i j − Σ adj(M) = (−1)^{i+j}·det A, PROVED via double cofactor expansion); and field-consistency qdetN_step_eq_qdetF (signed form, PROVED). The file is sorry-free. Refs: Gelfand–Retakh (1991, 2005).",
+      "mathContext": "The combinatorial heart is the division-free Schur–cofactor polynomial identity; the unsigned form is false for off-diagonal pivots, so the cofactor sign (−1)^{i+j} is essential — anchoring the noncommutative quasideterminant recurrence to the classical determinant over a field."
+    },
+    {
       "id": "complementary-submatrix",
       "title": "Part I — The Complementary n×n Submatrix",
       "startLine": 74,

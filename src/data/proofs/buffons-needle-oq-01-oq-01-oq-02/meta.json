@@ -87,6 +87,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: discharging the integrability hypothesis for Buffon–Barbier",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "Imports and header docstring: the open question, the answer via the angular-average theorem, the identification of the inner integral with twice the curve speed, and the six theorems proved.",
+      "mathContext": "This file (open question buffons-needle-oq-01-oq-01-oq-02) removes the explicit integrability hypothesis from the parent's Buffon–Barbier smooth-curve formula. The parent BuffonsNeedleOQ01OQ01 proves concreteSmoothExpectedCrossings γ a b d = 2·planarArcLength γ a b/(π·d) but its main theorems carry hInnerInt: IntervalIntegrable (fun t => ∫ θ in 0..π, |γ'ₓ(t)·sin θ + γ'ᵧ(t)·cos θ|) volume a b on the inner angular integral. The open question asks: can hInnerInt be derived from smoothness of γ rather than assumed? Answer: YES — a pointwise consequence of the already-proved angular_average identity ∫ θ in 0..π, |a·sin θ + b·cos θ| = 2·√(a²+b²), which holds for every (a,b). Applied pointwise at (γ'ₓ(t),γ'ᵧ(t)) it shows the inner-integral function equals t ↦ 2√(γ'ₓ(t)²+γ'ᵧ(t)²) = 2‖γ'(t)‖, twice the continuous speed; so C¹ smoothness gives both the pointwise HasDerivAt the parent needs and continuity, and the whole formula holds for any C¹ curve with no integrability side-condition. The header docstring (lines 1–70) lists the theorems: innerIntegral_eq (inner integral = 2‖γ'(·)‖), innerIntegral_continuousOn/continuous, hInnerInt_of_continuousOn/continuous (the hypothesis discharged), buffon_smooth_of_continuousOn/continuous (formula with hInnerInt removed), and the headline buffon_smooth_of_contDiff (Buffon–Barbier for any C¹ curve, no analytic side-conditions). This closes the integrability gap: the only genuine analytic input remaining is the angular-average identity itself."
+    },
+    {
       "id": "inner-integral-eq",
       "title": "The Inner Integral is Twice the Speed",
       "startLine": 71,

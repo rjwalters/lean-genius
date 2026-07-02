@@ -111,7 +111,11 @@
   "conclusion": {
     "summary": "Over ℚ (any field with a decidable order) IVT bisection is a genuine computable def: the sign test is Decidable, so no Classical.em oracle is forced into the definition, unlike the parent's noncomputable version over ℝ. Width ((b−a)/2^n), the sign-change invariant, interval nesting, and convergence below any ε are all proved by induction, and the algorithm runs on a concrete rational example yielding the exact bracket [5/4, 3/2] for √2.",
     "implications": "This pins down precisely where classical logic is unavoidable in the IVT: not in the bracketing algorithm (computable whenever the sign is decidable) but only in extracting the exact root as a limit, which needs completeness of ℝ. For decidable-order fields the bisection is a real program, suitable for verified numerics.",
-    "openQuestions": []
+    "openQuestions": [
+      "Extend the computable bisection from $\\mathbb{Q}$ to any computable ordered field and to the constructive Cauchy reals, obtaining a fully computable IVT that never forces the `Classical.em` oracle the $\\mathbb{R}$ version needs.",
+      "Formalize the algorithm's modulus of convergence explicitly and package the produced root as a computable real with a certified error bound, connecting the entry to computable analysis.",
+      "Characterize which continuous functions admit a computable sign-change bracketing — the test fails at tangential (even-order) zeros — relating this to the known non-uniform-computability obstruction of the constructive IVT."
+    ]
   },
   "references": [
     {

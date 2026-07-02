@@ -174,3 +174,59 @@ File 506 → 557 lines, axioms 3 → 2, theorems 14 → 16, sorries 0. Host
 - `primes_upper_half_lower_bound` (Chebyshev π(N)−π(N/2) ≳ N/log N) — needs central-binomial
   infrastructure absent from the Mathlib pin (only an UPPER prime-count bound exists);
   multi-session build. `optimalB_card_eq_primeCounting` already pins it to `Nat.primeCounting`.
+
+## Session 2026-07-02 (researcher-1) — ORIENT: correct route for `primes_upper_half_lower_bound`
+
+**Mode**: ORIENT (axiom-reachability analysis). **Outcome**: no verified change (file
+already 0-sorry, 2 deep axioms); a strategic finding that identifies the *correct* Lean
+route to eliminate `primes_upper_half_lower_bound` and rules out the tempting wrong one.
+
+### State reconfirmed
+File is 0-sorry with exactly 2 axioms, both genuinely deep and correctly isolated:
+- `szemeredi_theorem` (the N²/log N **upper** bound; Szemerédi 1976) — not attackable.
+- `primes_upper_half_lower_bound`: `∃ c>0, ∀ N≥4, c·N/log N ≤ (optimalB N).card`, i.e.
+  a Chebyshev-strength **lower** bound on `π(N) − π(N/2)`. `optimalB_card_eq_primeCounting`
+  already pins it to `Nat.primeCounting`, so elimination = supply this one analytic fact.
+
+### Mathlib survey (pin v4.26)
+- `Mathlib.NumberTheory.PrimeCounting`: only an **upper** bound (`primeCounting'_add_le`) +
+  `monotone_primeCounting'` + `tendsto_primeCounting`. **No lower bound.** (Reconfirmed.)
+- `Mathlib.NumberTheory.Primorial`: `primorial_le_4_pow : n# ≤ 4^n` (upper).
+- `Mathlib.NumberTheory.Bertrand`: `Nat.four_pow_lt_mul_centralBinom` (**lower** bound
+  `4^n < (2n+1)·centralBinom n`), a `centralBinom n ≤ (2n)^{√(2n)}·4^{2n/3}` **upper**
+  bound, and `Nat.exists_prime_lt_and_le_two_mul` (Bertrand's postulate).
+
+### KEY FINDING — the "subtract two Chebyshev bounds" route CANNOT give a positive constant
+The obvious plan (build elementary Chebyshev `A·x/log x ≤ π(x) ≤ B·x/log x`, then subtract)
+**fails at the constant level**. Elementary Chebyshev gives `A = log 2 ≈ 0.693` (lower) and
+`B = 2 log 2 ≈ 1.386` (upper). Then
+```
+π(N) − π(N/2) ≥ A·N/log N − B·(N/2)/log(N/2) ≈ (A − B/2)·N/log N = (log2 − log2)·N/log N = 0.
+```
+So no positive `c` comes out of subtracting independent Chebyshev bounds — the elementary
+constants are exactly borderline. A future session must **not** try to discharge the axiom
+this way even after building Chebyshev; it will bottom out at `c = 0`.
+
+### CORRECT ROUTE — direct central-binomial count on the interval `(N/2, N]`
+Count the interval's primes directly (Erdős-style), not by subtraction. With `N = 2m`
+(`m = ⌊N/2⌋`): every prime `p ∈ (m, 2m] = (N/2, N]` divides `centralBinom m = C(2m,m)`
+to **exactly** the first power, while primes `p ≤ 2m/3` and the small-prime contribution
+are controlled by `primorial_le_4_pow` / the Bertrand upper bound. Combined with the lower
+bound `4^m/(2m+1) < centralBinom m` (`Nat.four_pow_lt_mul_centralBinom`), one gets
+`∏_{N/2 < p ≤ N} p ≳ 4^m / (small-prime factor)`, hence
+`(π(N) − π(N/2))·log N ≳ N`, i.e. the wanted `≳ N/log N`. This IS elementary (so the
+in-file docstring "Chebyshev-strength and elementary" is accurate), but it is a genuine
+multi-session Lean build: the crux is formalizing the small-prime contribution bound of
+`centralBinom` — none of that assembly exists in the pin. `Mathlib.NumberTheory.Bertrand`
+already carries the two centralBinom inequalities (`four_pow_lt_mul_centralBinom` +
+`centralBinom_le_...`) as private-ish stepping stones, so this is the file to mine.
+
+### Also noted
+Bertrand (`exists_prime_lt_and_le_two_mul`) alone yields only `(optimalB N).card ≥ 1` per
+dyadic block — a qualitative nonemptiness floor, orders of magnitude short of the `N/log N`
+rate. Not worth adding as a lemma; it does not advance the axiom.
+
+### Recommendation
+Leave both axioms. `primes_upper_half_lower_bound` is **BLOCKED on central-binomial
+interval-count infrastructure** (the small-prime contribution bound), not a single-session
+sorry. Route above is the entry point for a dedicated multi-session effort.

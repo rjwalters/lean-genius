@@ -19,12 +19,12 @@
       "research"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 2,
     "axiomCount": 2,
     "theoremCount": 17,
-    "lineCount": 604,
+    "lineCount": 623,
     "defCount": 4,
-    "assumptions": "2 axioms: (1) wirtinger_ac — Wirtinger inequality for Lipschitz/AC 2π-periodic functions with zero mean: ∫f² ≤ ∫(f')²; (2) exists_lip_nice_reparam — arc-length reparametrization for Lipschitz curves with positive speed a.e., giving constant-speed and zero-mean reparametrization. The smooth→Lipschitz embedding (lip_x/lip_y) is now fully proved via the genuine lemma contDiff_periodic_lipschitz (a 2π-periodic C¹ function is globally Lipschitz with an honest constant sup|f'| on the compact period, axiom-free). 4 technical sorries remain: hdx_int/hdy_int (derivative-squared integrability from LipschitzWith), harea_zero (area=0 from circumference=0), hf_int (integrability of xy'−yx' for Lipschitz curves) — all reducible to Rademacher / LipschitzWith.norm_deriv_le in Mathlib.",
+    "assumptions": "2 axioms: (1) wirtinger_ac — Wirtinger inequality for Lipschitz/AC 2π-periodic functions with zero mean: ∫f² ≤ ∫(f')²; (2) exists_lip_nice_reparam — arc-length reparametrization for Lipschitz curves with positive speed a.e., giving constant-speed and zero-mean reparametrization. The smooth→Lipschitz embedding (lip_x/lip_y) is fully proved via contDiff_periodic_lipschitz. The derivative-squared integrability facts hdx_int/hdy_int are now proved (norm_deriv_le_of_lipschitz + measurable_deriv + Measure.integrableOn_of_bounded), so wirtinger_sum_sq_bound_lip is sorry-free. 2 technical sorries remain, both inside the main theorem: harea_zero (area=0 from circumference=0) and hf_int (integrability of xy'−yx' for Lipschitz curves).",
     "originalContributions": [
       "LipschitzClosedCurve structure: Lipschitz-component closed curves (generalizes SmoothClosedCurve)",
       "LipschitzClosedCurve.circumference and .area via Lebesgue integrals of a.e. derivatives",
@@ -155,15 +155,15 @@
       "title": "Sorry Inventory and Summary",
       "startLine": 534,
       "endLine": 604,
-      "summary": "Inventory of the 14 sorry-free results (the new contDiff_periodic_lipschitz embedding lemma, square/circle examples, structural bounds, scale invariance, minimum circumference), the 2 axioms (wirtinger_ac, exists_lip_nice_reparam), and the 4 remaining technical sorries (derivative integrability / degenerate-area facts for Lipschitz functions, all ultimately reducible to Rademacher's theorem), with a note on mathematical significance.",
+      "summary": "Inventory of the 15 sorry-free results (now including wirtinger_sum_sq_bound_lip) (the new contDiff_periodic_lipschitz embedding lemma, square/circle examples, structural bounds, scale invariance, minimum circumference), the 2 axioms (wirtinger_ac, exists_lip_nice_reparam), and the 2 remaining technical sorries in the main theorem (harea_zero and hf_int); the derivative-squared integrability facts hdx_int/hdy_int are now fully proved via norm_deriv_le_of_lipschitz, with a note on mathematical significance.",
       "mathContext": "The remaining sorries are technical regularity facts (e.g. $\\mathrm{LipschitzWith}\\,K\\,f \\Rightarrow |f'| \\le K$ a.e.), not additional mathematical assumptions; the one blocking the main theorem is integrability of $xy'-yx'$ for Lipschitz curves."
     }
   ],
   "conclusion": {
-    "summary": "This formalization extends the isoperimetric inequality to Lipschitz closed curves, covering all piecewise-smooth curves (polygons, convex bodies). The proof is structurally identical to the smooth case, demonstrating that Lipschitz regularity is the natural level for the isoperimetric inequality. The smooth→Lipschitz embedding is now fully rigorous: contDiff_periodic_lipschitz discharges lip_x/lip_y with an honest Lipschitz constant. Two axioms (Wirtinger-AC and arc-length reparametrization) capture the deep analytical content; 4 technical sorries remain for derivative integrability and the degenerate area case (blocked on Rademacher/LipschitzWith.norm_deriv_le in Mathlib).",
+    "summary": "This formalization extends the isoperimetric inequality to Lipschitz closed curves, covering all piecewise-smooth curves (polygons, convex bodies). The proof is structurally identical to the smooth case, demonstrating that Lipschitz regularity is the natural level for the isoperimetric inequality. The smooth→Lipschitz embedding is now fully rigorous: contDiff_periodic_lipschitz discharges lip_x/lip_y with an honest Lipschitz constant. Two axioms (Wirtinger-AC and arc-length reparametrization) capture the deep analytical content; the derivative-squared integrability sorries (hdx_int/hdy_int) are now discharged via norm_deriv_le_of_lipschitz, leaving 2 technical sorries in the main theorem: the degenerate area case (harea_zero) and the integrability of xy'-yx' (hf_int).",
     "implications": "The Lipschitz isoperimetric inequality strictly generalizes the smooth version and applies to the unit square, regular polygons, and any Lipschitz boundary. The proof strategy — Wirtinger + Cauchy-Schwarz + arithmetic kernel — is fully modular and reuses all infrastructure from the parent smooth proof.",
     "openQuestions": [
-      "Can the 4 remaining technical sorries be closed using Rademacher's theorem (Lipschitz → differentiable a.e.) once it is formalized in Mathlib?",
+      "Can the 2 remaining technical sorries (harea_zero, hf_int) be closed using Rademacher's theorem (Lipschitz → differentiable a.e.) once it is formalized in Mathlib?",
       "Does Mathlib 4.26 have LipschitzWith.norm_deriv_le or an analogue for bounding derivative norms?",
       "Can the degenerate case (harea_zero: circumference=0 implies area=0) be proved from Mathlib's integral_eq_zero_iff machinery?"
     ]
@@ -181,13 +181,13 @@
       "IsoperimetricOQ"
     ],
     "namespace": "LipschitzIsoperimetric",
-    "lineCount": 604,
+    "lineCount": 623,
     "axiomCount": 2,
     "theoremCount": 17,
     "lemmaCount": 1,
     "definitionCount": 4,
     "substantiveTheoremCount": 6,
-    "sorries": 4,
+    "sorries": 2,
     "path": "Proofs/AreaOfCircleOQ01OQ03OQ02.lean",
     "additionalFiles": [
       "Proofs/AreaOfCircleOQ01OQ03OQ02Aristotle.lean"
@@ -258,5 +258,5 @@
       "description": "oq-03-oq-02 explores geometric measure theory extensions; both address generalizations of the classical isoperimetric result beyond smooth curves"
     }
   ],
-  "sorries": 4
+  "sorries": 2
 }

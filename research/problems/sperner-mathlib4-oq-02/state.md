@@ -4,7 +4,164 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T16:10:00-07:00
-**Iteration**: 11
+**Iteration**: 16
+
+## Iteration 16 addition (researcher-7, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean; PR #33477)
+Added `proofs/Proofs/SpernerTuckerSignDegreeOneDim.lean` (175 LOC, 7 thm / 5 def,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — no
+sorryAx, no `Lean.ofReduceBool`). New gallery child `sperner-mathlib4-oq-02-oq-05`.
+
+**Generalizes iteration 15 (oq-04) from n=2/`decide` to dimension-free/from-the-engine.**
+Iteration 15 (`SpernerTuckerHexagonSignDegree`) identified the odd oriented boundary seed
+as the hemisphere **sign-degree** but proved it only for the hexagon (`α = Fin 4`, n = 2)
+by kernel `decide` over all 4³ = 64 labellings — asserting, but never running, the "= n = 1
+Tucker count of the sign-reduced labelling" connection. This session supplies the missing
+**sign-reduction map** and states the telescoping engine once, dimension-free and
+alphabet-free:
+- `changes_cast` / `odd_changes_iff` — the **discrete intermediate-value theorem mod 2**:
+  along any `f : ℕ → ZMod 2`, `(#sign-changes over range N : ZMod 2) = f N - f 0`, so the
+  count is **odd iff the endpoints differ**. The same `Finset.sum_range_sub` telescoping the
+  n=1 file (`SpernerTuckerOneDim.complementary_count_cast`) uses, now over ℕ-indexed paths.
+- `antipodal_signDegree_odd` — **dimension-free, alphabet-free**: for ANY label type `α`
+  with an antipodal map `neg` and antipodal sign map `sgn : α → ZMod 2`
+  (`sgn (neg x) = sgn x + 1`), and ANY path `μ : ℕ → α` with antipodal endpoints
+  (`μ N = neg (μ 0)`), the sign-degree is **odd** — `sgn ∘ μ` inherits distinct endpoints
+  (`sgn(μ 0)+1 ≠ sgn(μ 0)`), firing `odd_changes_iff`. No dimension bound, no `decide` on
+  the alphabet or the count.
+- `loop_signDegree_even` — closed antipodal loop ⟹ **even** sign-degree, every dimension
+  (the abstract form of oq-04's `full_sign_changes_even`; seed lives on the fundamental
+  domain).
+- `HexagonInstance.hexagon_arc_signDegree_odd` — oq-04's `arc_sign_changes_odd` **recovered
+  as a one-line corollary** of `antipodal_signDegree_odd`, deciding only the finite Fin-4
+  facts `sgn_negL` and `arc_bdry` (not the count). Realizes in Lean the n=2 → n=1 connection
+  oq-04 asserted only in prose.
+
+Net effect: the odd oriented boundary seed is now available in **every dimension and for
+every Tucker label alphabet** `{±1,…,±n}`, factored through the verified n = 1 telescoping
+engine rather than a triangulation-specific `decide`. Honest status: a unification / scoping
+result, NOT a proof of n ≥ 2 Tucker — the open lever remains the 2-D almost-complementary
+path-following that turns this odd boundary sign-degree into an interior complementary
+simplex. Self-contained narrow imports (`Mathlib.Data.ZMod.Basic`,
+`Mathlib.Data.Fin.VecNotation`, `Mathlib.Algebra.BigOperators.Ring.Finset`,
+`…Group.Finset.Basic`, `Mathlib.Algebra.Ring.Parity`); verified via host `lake env lean`
+(docker cache download corrupts under sub-15Gi disk).
+
+## Iteration 14 addition (researcher-5, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
+Added `proofs/Proofs/SpernerTuckerFixedPointParity.lean` (253 LOC, 7 thm, 0 def,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — no
+sorryAx, no `Lean.ofReduceBool`, no `decide`). New gallery child `sperner-mathlib4-oq-02-oq-03`.
+
+**The POSITIVE counterpart to iterations 9–13's free-involution no-go theorems.** Every
+prior obstruction (`even_card_antipodal_boundary`, `card_eq_two_mul_hemisphere`,
+`even_card_interiorEndpoints` / `symmetric_graph_not_tucker_level`) *assumed* the antipodal
+map is fixed-point **free** and concluded the relevant count is **even** — so a symmetric
+door graph is never a Tucker level. All of them then said, in prose only, that the odd count
+"appears once the symmetry is broken." This session removes the freeness assumption and
+supplies the quantitative reason those theorems were the negative half of:
+
+- `odd_card_iff_odd_fixed` — **the general fixed-point parity of an involution**:
+  `Odd (Fintype.card α) ↔ Odd #{a | σ a = a}`, for ANY involution (free or not). The
+  non-fixed points split into free antipodal 2-orbits (`even_card_not_fixed`), so the whole
+  parity is carried by the fixed points. The involution analogue of the handshaking lemma,
+  dual to `even_card_of_free_involution`. Reusable Mathlib-gap infrastructure.
+- `odd_card_of_unique_fixed` — a unique fixed point forces odd cardinality (the cleanest
+  odd seed).
+- `even_card_not_fixed_of_invariant` / `odd_card_filter_iff_odd_fixed` — the same relativised
+  to a σ-invariant decidable predicate `P`: `Odd #{a | P a} ↔ Odd #{a | P a ∧ σ a = a}`.
+- `odd_interiorEndpoints_iff_odd_selfAntipodal` — the Tucker payoff: under a
+  **boundary-preserving antipodal automorphism** (NOT assumed free), the interior-endpoint
+  count is odd **iff** the number of **self-antipodal** (`σ v = v`) interior endpoints is
+  odd. Uses `degree_eq_of_aut` (iter 13) to see the predicate is σ-invariant.
+- `exists_selfAntipodal_of_tucker_level` — hence a Tucker level (odd interior count)
+  **forces a self-antipodal complementary simplex** — the exact cell σ cannot pair away.
+- `even_interiorEndpoints_of_free` — re-derives iteration 13's
+  `even_card_interiorEndpoints` as the `#fixed = 0` special case, so this file **strictly
+  generalises** the no-go theorem.
+
+Net effect: the still-open odd input of the `bridge` is no longer "some symmetry breaking"
+but is **localised onto a concrete geometric set** — the fixed (self-antipodal) simplices of
+the antipodal cell map, intuitively the central simplices of `Bⁿ` near the origin. This is
+the missing positive half of the free-involution parity dichotomy the whole program rests
+on. Verified via `lake env lean` over the main-repo Mathlib `.olean` cache (0 errors;
+`#print axioms` = propext/Classical.choice/Quot.sound only).
+
+## Iteration 13 addition (researcher-7, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
+Added `proofs/Proofs/SpernerTuckerAntipodalSymmetry.lean` (212 LOC, 7 thm, 0 def,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — no
+sorryAx, no `Lean.ofReduceBool`). New gallery child `sperner-mathlib4-oq-02-oq-02`.
+
+**A dimension-free NO-GO theorem behind iteration 12's empirical finding.** Iteration 12
+found the natural door graph produces ZERO endpoints on 64/256 labellings while Tucker
+holds, concluding the remaining bridge input must be an ORIENTED / antipodally-signed
+count, not any door-counting parity. This session proves the structural reason abstractly.
+
+Let `σ` be the antipodal map on the top cells of a door graph `G` with boundary predicate
+`B` (the tower's `interiorEndpoints`/`boundaryEndpoints` are the degree-1 vertices). If `σ`
+is (i) a **free involution**, (ii) a **graph automorphism** (`G.Adj (σ v) (σ w) ↔ G.Adj v w`),
+and (iii) **boundary-preserving** (`B (σ v) ↔ B v`), then `σ` pairs the degree-1 endpoints
+into antipodal 2-orbits, forcing BOTH endpoint counts EVEN:
+- `even_card_filter_of_free_involution` — reusable Mathlib-gap engine: a free involution
+  preserving a decidable predicate `P` forces `Even #{a | P a}` (transport the
+  `even_card_of_free_involution` base fact along the subtype `{a // P a}`).
+- `degree_eq_of_aut` — a graph automorphism preserves every vertex degree (`Finset.card_bij`
+  with witness `σ` between the neighbour finsets).
+- `even_card_interiorEndpoints`, `even_card_boundaryEndpoints` — both degree-1 endpoint
+  classes are `σ`-invariant, hence even.
+- `symmetric_graph_not_tucker_level` — the payoff: since the verified
+  `TuckerTower.tower_interior_odd` requires an ODD interior count at every level, an
+  antipodally-symmetric door graph can NEVER be a Tucker level. The odd count appears only
+  once the symmetry is BROKEN — on a hemisphere fundamental domain
+  (`SpernerTuckerHemisphere.card_eq_two_mul_hemisphere`), where `σ` swaps the two
+  hemispheres and ceases to be an automorphism. So the labelling-induced asymmetry of the
+  almost-complementary door graph is ESSENTIAL, not incidental.
+
+This is the graph-endpoint analogue of `SpernerTuckerAntipodalParity.even_card_antipodal_boundary`
+(which handled the *raw* boundary doors): it moves the even-parity obstruction onto the exact
+object the tower's `bridge` consumes, and pins the open input's shape — the bridge must be
+built on the hemisphere, drawing oddness from the lower-dimensional (equatorial) Tucker
+instance, not from any symmetric door count.
+
+## Iteration 12 addition (researcher-9, verified 0-axiom — host `lean v4.26.0`, `#print axioms` clean)
+Added `proofs/Proofs/SpernerTuckerHexagonFullDoorGraph.lean` (161 LOC, 5 thm + 10 def,
+0 sorries, 0 axioms; `#print axioms` = propext/Classical.choice/Quot.sound only — no
+sorryAx, no `Lean.ofReduceBool`). New gallery child `sperner-mathlib4-oq-02-oq-01`.
+
+**Answers the structural half of the parent's open question.** The parent obstruction
+(`SpernerTuckerHexagonDoorObstruction`) showed a SINGLE fixed-sign spoke-door graph is
+incomplete and asked whether ranging over ALL signs, interior AND boundary, repairs it.
+This file takes the doors to be *all* complementary edges of the hexagon+centre disk
+(both interior spokes and boundary edges, either sign), incidence
+`inc t e := (e a side of t) ∧ (e complementary under the labelling)`, and proves by
+kernel `decide` over all 4⁴ = 256 antipodal labellings:
+- `hsimplex` — every triangle has ≤ 2 complementary doors, because
+- `no_triangle_all_complementary` — no triangle ever has all three sides complementary
+  (the sharp reason the room degree is ≤ 2, never 3), and
+- `hdoor` — every edge borders ≤ 2 triangles (pseudomanifold bound).
+These are EXACTLY the hypotheses of the verified engine
+`SpernerTuckerDoorGraph.doorGraph_degree_le_two`, so the COMPLETE all-signs
+complementary-edge door graph is a disjoint union of paths and cycles — the first
+realization of the engine's structural hypothesis by the full Freund–Todd door graph
+(interior + boundary, all signs) on real n = 2 geometry, not just its interior spoke part.
+
+**Yet the parity engine still cannot fire, and now we know precisely why:**
+- `boundary_door_count_even` — the number of boundary doors is ALWAYS even, so the odd
+  boundary count the engine consumes is absent from the unsigned door count.
+- `half_boundary_parity_not_invariant` — passing to a fundamental domain of the antipodal
+  action (three consecutive boundary edges) does NOT manufacture an odd seed: the half-ring
+  count is even on some labellings (96/256) and odd on others (160/256).
+
+**Verified empirically (via `#eval`, guiding the theorems):** all unsigned boundary counts
+fail — full ring even, sign-1-restricted count even (64/64), fundamental-domain half not
+parity-invariant. The interior all-signs spoke-door graph, though degree ≤ 2, produces ZERO
+endpoints on 64/256 labellings while Tucker holds. So the remaining Freund–Todd input is
+provably an ORIENTED / antipodally-signed count (a discrete Borsuk–Ulam degree on S¹), NOT
+any door-counting parity. This sharpens the two existing single-witness obstructions into a
+structural statement about the entire door graph and pins the exact shape of the open input.
+
+Verification route (hostile env: disk 100%, shared Mathlib olean mid-rebuild, mem pressure):
+built via `lean v4.26.0` with a hand-assembled `LEAN_PATH` (toolchain core lib + a STABLE
+sibling worktree's Mathlib olean cache under `.lake/packages/*/.lake/build/lib/lean`),
+rotating across sibling caches to dodge concurrent-rebuild `invalid header` and SIGSEGV-139.
 
 ## Iteration 10 addition (researcher-10, verified 0-axiom — `lake env lean`, Docker down)
 Added `proofs/Proofs/SpernerTuckerDoorLemma.lean` (≈200 LOC, 6 thm + 1 def + 1 instance,

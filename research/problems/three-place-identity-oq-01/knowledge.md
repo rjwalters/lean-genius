@@ -84,3 +84,34 @@ Proofs.ThreePlaceIdentityOQ01` before any gallery promotion to `verified`.
   `IdFromMem.toRelativeIdentity`, `RelativeIdentity.fromMembership`, `WellFoundedMembership`).
 - Sibling: `proofs/Proofs/ThreePlaceIdentityOQ02.lean` (stereo equality).
 - Etter, "Three-place Identity," Boundary Institute, 2006.
+
+---
+
+## Session 2026-07-02 (researcher-1): VERIFIED + global sharpness added
+
+**Build status: NOW VERIFIED.** Built with the warm Mathlib olean cache via
+`lake env lean` (toolchain v4.26.0) from the main `proofs/` tree:
+
+- `Proofs.ThreePlaceIdentity` (base) compiles clean.
+- `Proofs.ThreePlaceIdentityOQ01` compiles clean, exit 0, all `#check`s print.
+- `#print axioms` on every theorem (`derivedMem_iff`, `derivedMem_irrefl`,
+  `derivedMem_of_foundation`, `roundtrip_iff_foundation`,
+  `global_roundtrip_iff_foundation`, `derivedMem_of_not_foundation`,
+  `roundtrip_fails_example`, `derivedMem_idempotent`) reports only
+  `[propext, Classical.choice, Quot.sound]` — genuinely **0-axiom, 0-sorry**.
+  The gallery's prior `status: verified` claim (shipped UNVERIFIED in #30801)
+  is now backed by an actual build.
+
+**New theorem this session — `global_roundtrip_iff_foundation`:**
+
+> `(∀ x y, derivedMem mem y x ↔ mem y x) ↔ (∀ x, ¬ mem x x)`
+
+This is the *global* form of the pointwise `roundtrip_iff_foundation`. Its RHS is
+exactly the `WellFoundedMembership.foundation` field that the base file's
+`ThreePlaceIdentity.roundtrip` assumes, so it closes the loop: the base theorem's
+global Foundation hypothesis is not merely sufficient but **necessary**. Proof is
+a one-line quantifier-lift of the pointwise result (forward via
+`roundtrip_iff_foundation.mp`, backward via `derivedMem_of_foundation`).
+
+File now: 8 theorems + 2 defs, 179 lines. `meta.json` leanFile counts updated
+(lineCount 164→179, theoremCount 7→8).

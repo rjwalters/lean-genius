@@ -2,10 +2,10 @@
 
 ## Current State
 
-**Phase**: ACT (new verified file shipped)
+**Phase**: ASSESS (this slug's deliverables complete; residual gap re-mapped)
 **Path**: full
 **Since**: 2026-06-27
-**Iteration**: 1
+**Iteration**: 6
 
 ## Iteration 1 (researcher-3, 2026-06-27) — ACT: verified mod-7 irreducible factorization
 
@@ -86,10 +86,44 @@ No new mathematics; this tightens the existing statement so it actually entails
 what Dedekind's theorem consumes. The remaining gap is unchanged (Frobenius
 bridge, sibling track).
 
+## Iteration 6 (researcher-9, 2026-07-02) — ASSESS: Part (A) is no longer a Mathlib gap
+
+**Outcome**: Re-surveyed Mathlib v4.26 source. The long-standing claim that the
+residual half ("Dedekind's theorem itself is a Mathlib gap") is **stale**. All
+three abstract ingredients now ship in Mathlib and were verified by reading the
+package source:
+
+- **Kummer–Dedekind** (`Mathlib/NumberTheory/KummerDedekind.lean`):
+  `normalizedFactorsMapEquivNormalizedFactorsMinPolyMk` — prime factors of
+  `(7)·O_L` ↔ irreducible factors of `q mod 7` (our `q_mod7_factor_type`).
+- **Ramification/inertia in Galois setting**
+  (`Mathlib/NumberTheory/RamificationInertia/Galois.lean`): `inertiaDeg`,
+  `Ideal.Quotient.stabilizerHom`, `card_inertia_eq_ramificationIdxIn`.
+- **Frobenius elements** (`Mathlib/RingTheory/Frobenius.lean`): `arithFrobAt`,
+  `IsArithFrobAt`, `exists_of_isInvariant`, `IsArithFrobAt.restrict`.
+
+The residual work is therefore **instantiation, not a missing theorem**:
+(i) the `q.Gal ≃ Gal(L/K)` identification (transport via the existing 0-axiom
+`galActionHom` bridge), and (ii) the one genuine arithmetic side-condition —
+`7 ∤` the conductor of `ℤ[α]` in `𝓞 L` (Kummer–Dedekind's coprimality
+hypothesis). See knowledge.md "Session 2026-07-02" for the full roadmap.
+
+No Lean shipped: (i)+(ii) is a multi-file formalization owned by the sibling
+slug `inverse-galois-a5-oq-01` (`exists_gal_order_three`), not a marginal edit
+here; and this slug's own deliverables are already complete. Attempting a large
+fragile build under a reaped worktree + 100%-full disk risks false theorems for
+no verified gain.
+
 ## Next Action
 
-If Dedekind's theorem lands in Mathlib (or the sibling Frobenius bridge
-completes), `q_mod7_factor_type` / `q_mod11_factor_type` plug in directly to
-discharge the axiom. The algebraic input is now complete and symmetric at both
+**For the sibling `inverse-galois-a5-oq-01`**: discharge `exists_gal_order_three`
+by instantiating Kummer–Dedekind + `arithFrobAt` at `p = 7` (α a root, `x := α`,
+`minpoly ℤ x = q`, conductor coprime to 7), obtaining a prime `Q | 7` with
+`inertiaDeg = 3`, so `3 ∣ orderOf (arithFrobAt Q)`; transport through
+`galActionHom` and finish with the already-verified
+`InverseGaloisOQ06OQ02GalAction.three_dvd_card_gal_of_orderOf_three`.
+
+For **this** slug: `q_mod7_factor_type` / `q_mod11_factor_type` are the ready
+inputs; nothing further to add. Algebraic input complete and symmetric at both
 unramified primes (7, 11): irreducible factors + degrees + distinctness +
 squarefreeness + factorization identity.

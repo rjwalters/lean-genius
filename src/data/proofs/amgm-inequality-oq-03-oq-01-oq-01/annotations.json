@@ -1,5 +1,30 @@
 [
   {
+    "id": "ann-amgm030101-overview",
+    "proofId": "amgm-inequality-oq-03-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "Overview: Power-Mean Monotonicity in the Mixed-Sign Case r < 0 < s",
+    "content": "The parent file proves power-mean monotonicity M_r ≤ M_s in two regimes that do NOT cross zero (0 < r ≤ s, and r ≤ s < 0), explicitly leaving open the MIXED-SIGN case r < 0 < s, where the comparison must cross the geometric-mean limit at exponent 0. This file closes that gap. For positive reals zᵢ with nonnegative weights summing to 1 and r < 0 < s, it proves M_r ≤ M_s where M_p = (∑ᵢ wᵢ zᵢ^p)^{1/p}. The proof routes through the weighted geometric mean GM = ∏ zᵢ^{wᵢ} = lim_{p→0} M_p, using a single Mathlib input — the weighted AM-GM inequality Real.geom_mean_le_arith_mean_weighted — applied to yᵢ = zᵢ^p to get the core estimate (★) GM^p ≤ ∑ wᵢ zᵢ^p for EVERY p. The sign of p then controls direction after taking 1/p-th powers: for s > 0 the map t ↦ t^{1/s} is increasing so (★) gives GM ≤ M_s; for r < 0 it is decreasing so (★) reverses to M_r ≤ GM. Chaining gives M_r ≤ GM ≤ M_s. The zero-crossing is exactly the sign flip of 1/p, which is why the two same-sign parent theorems cannot combine directly.",
+    "mathContext": "The weighted power mean $M_p(z,w)=(\\sum_i w_i z_i^p)^{1/p}$ is nondecreasing in $p$, with $M_0 = \\prod_i z_i^{w_i}$ (geometric mean) as the removable limit. AM-GM gives $\\mathrm{GM}^p \\le \\sum_i w_i z_i^p$ for all $p$; raising to $1/p$ flips direction across $p=0$, yielding $M_r \\le \\mathrm{GM} \\le M_s$ for $r<0<s$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "power mean",
+      "AM-GM inequality",
+      "weighted geometric mean",
+      "power mean monotonicity",
+      "convexity"
+    ],
+    "prerequisites": [
+      "weighted means",
+      "AM-GM inequality",
+      "real powers (rpow)"
+    ]
+  },
+  {
     "id": "ann-amgm-oq030101-01-core",
     "proofId": "amgm-inequality-oq-03-oq-01-oq-01",
     "range": {

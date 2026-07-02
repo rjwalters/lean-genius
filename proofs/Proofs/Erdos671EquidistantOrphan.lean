@@ -164,6 +164,39 @@ theorem node_sub_node (n : ℕ) (hn : n ≥ 2) (i j : Fin n) :
   ring
 
 /--
+  MIDPOINT BASIS TERM AS AN INTEGER RATIO PRODUCT.
+
+  Substituting the two node-difference formulas into `abs_lagrangeBasis_eval`
+  cancels the common `1/(n-1)` scale in every factor, leaving a product of purely
+  *integer* ratios:
+  `|p_m(x*)| = ∏_{j ≠ m} |2j - 1| / (2 · |m - j|)`.
+
+  This is the key simplification: it removes ALL analytic / `(n-1)` structure, so
+  the residual pointwise bound becomes a finite inequality about integers only.
+  From here `∏_{j≠m} |2j-1| = (2n-3)!! / |2m-1|` and `∏_{j≠m} |m-j| = m!·(n-1-m)!`
+  recover the factorial closed form, but the ratio product itself is already the
+  cleanest object for the numeric estimate.
+-/
+theorem abs_lagrangeBasis_midPoint (n : ℕ) (hn : n ≥ 2) (m : Fin n) :
+    |(lagrangeBasis (equidistantNodes n hn) m).eval (midPoint n)| =
+      ∏ j ∈ (Finset.univ : Finset (Fin n)).filter (fun k => k ≠ m),
+        |2 * (j.val : ℝ) - 1| / (2 * |(m.val : ℝ) - (j.val : ℝ)|) := by
+  have hn_cast : (1 : ℝ) < (n : ℝ) := by exact_mod_cast Nat.lt_of_lt_of_le one_lt_two hn
+  have hn1_pos : (0 : ℝ) < (n : ℝ) - 1 := by linarith
+  rw [abs_lagrangeBasis_eval]
+  apply Finset.prod_congr rfl
+  intro j _
+  rw [midPoint_sub_node n hn j, node_sub_node n hn m j]
+  -- `|(1 - 2j)/(n-1)| / |2(m-j)/(n-1)| = |2j - 1| / (2 |m - j|)`
+  have e1 : |(1 - 2 * (j.val : ℝ)) / ((n : ℝ) - 1)|
+      = |2 * (j.val : ℝ) - 1| / ((n : ℝ) - 1) := by
+    rw [abs_div, abs_of_pos hn1_pos, abs_sub_comm]
+  have e2 : |2 * ((m.val : ℝ) - (j.val : ℝ)) / ((n : ℝ) - 1)|
+      = 2 * |(m.val : ℝ) - (j.val : ℝ)| / ((n : ℝ) - 1) := by
+    rw [abs_div, abs_of_pos hn1_pos, abs_mul, abs_two]
+  rw [e1, e2, div_div_div_cancel_right₀ hn1_pos.ne']
+
+/--
   POINTWISE LEBESGUE LOWER BOUND (the mathematical heart of `equidistant_diverges`).
 
   At the midpoint x* = -1 + 1/(n-1) of the first equidistant subinterval, the
@@ -171,21 +204,28 @@ theorem node_sub_node (n : ℕ) (hn : n ≥ 2) (i j : Fin n) :
 
   The polynomial reduction is now fully discharged: `lebesgueFunction_ge_single`
   reduces the goal to producing a single index `m` whose basis term reaches the
-  target, and `abs_lagrangeBasis_eval` + `midPoint_sub_node` + `node_sub_node`
-  express that term as the explicit factorial ratio
-  `(2n-3)!! / (|2m-1| · 2^(n-1) · m! · (n-1-m)!)`.
+  target, and `abs_lagrangeBasis_midPoint` rewrites that term as the integer
+  ratio product `∏_{j≠m} |2j-1| / (2·|m-j|)`.
 
-  The remaining sorry is therefore a PURE FINITE REAL-ARITHMETIC inequality:
-  the existence of a central index `m ≈ ⌊(n-2)/2⌋` whose ratio is `≥ 2^(n-1)/n^2`.
+  The remaining sorry is therefore a PURE INTEGER inequality with NO analytic or
+  `(n-1)` content: the existence of a central index `m ≈ ⌊(n-2)/2⌋` whose ratio
+  product is `≥ 2^(n-1)/n^2`. Equivalently the factorial inequality
+  `(2n-3)!! · n^2 ≥ |2m-1| · 2^(2n-2) · m! · (n-1-m)!`.
   Verified numerically for n = 2..25 (verify-equidistant-bound.py).
 -/
 theorem lebesgueFunction_midPoint_ge (n : ℕ) (hn : n ≥ 2) :
     lebesgueFunction (equidistantNodes n hn) (midPoint n) ≥ 2 ^ (n - 1) / (n : ℝ) ^ 2 := by
-  -- Reduce to a single central index, then to the explicit factorial ratio.
+  -- Reduce to a single central index, then (via `abs_lagrangeBasis_midPoint`) to
+  -- a pure integer-ratio inequality.
   obtain ⟨m, hm⟩ : ∃ m : Fin n,
       2 ^ (n - 1) / (n : ℝ) ^ 2
         ≤ |(lagrangeBasis (equidistantNodes n hn) m).eval (midPoint n)| := by
-    sorry
+    obtain ⟨m, hm⟩ : ∃ m : Fin n,
+        2 ^ (n - 1) / (n : ℝ) ^ 2 ≤
+          ∏ j ∈ (Finset.univ : Finset (Fin n)).filter (fun k => k ≠ m),
+            |2 * (j.val : ℝ) - 1| / (2 * |(m.val : ℝ) - (j.val : ℝ)|) := by
+      sorry
+    exact ⟨m, by rw [abs_lagrangeBasis_midPoint n hn m]; exact hm⟩
   exact le_trans hm (lebesgueFunction_ge_single _ _ m)
 
 end Erdos671Orphan
