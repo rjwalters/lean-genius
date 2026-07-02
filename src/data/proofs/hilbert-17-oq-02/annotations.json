@@ -1,5 +1,32 @@
 [
   {
+    "id": "ann-h1702-overview",
+    "proofId": "hilbert-17-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Overview: Quantifying the PSD/SOS Gap for the Homogeneous Choi–Lam Form",
+    "content": "The gallery's existing canonical PSD-but-not-SOS members are AFFINE (Motzkin, Robinson). The genuine HOMOGENEOUS member of the gap on ℝ³ is the cyclic Choi–Lam form CL(x,y,z) = x⁴y² + y⁴z² + z⁴x² − 3x²y²z² (Choi–Lam, 1977), which is PSD on all of ℝ³ yet is not a sum of squares of polynomials — because the underlying inequality x⁴y² + y⁴z² + z⁴x² ≥ 3x²y²z² is the three-term AM–GM, which has no polynomial SOS proof (that classical non-SOS fact is not re-derived here). This file QUANTIFIES the gap with a sharp explicit certificate. By Artin's theorem CL is a sum of squares of RATIONAL functions; the question 'how complex is the certificate?' is answered by an explicit degree-2 denominator: multiplying CL by x² + y² + z² turns it into an honest polynomial sum of squares (the multiplier_sos_identity). So the gap is bridged by a multiplier of degree exactly 2 — the minimal possible, since CL is not SOS. From this it reads off choiLam_three_nonneg (CL is PSD, dividing by the positive multiplier off the origin), and choiLam_psd_iff (the family x⁴y² + y⁴z² + z⁴x² − c·x²y²z² is PSD iff c ≤ 3, the same AM–GM threshold as the affine Motzkin family, here in genuine homogeneous ternary form). Everything is 0-axiom over ℝ and MvPolynomial (Fin 3) ℝ.",
+    "mathContext": "Artin's solution to Hilbert's 17th: every PSD polynomial is a sum of squares of rational functions. For the Choi–Lam form, $(x^2+y^2+z^2)\\cdot CL$ is an explicit polynomial SOS, so a degree-2 denominator suffices — minimal, as $CL$ itself is not SOS. The threshold $c\\le 3$ is the three-variable AM–GM boundary.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hilbert's 17th problem",
+      "Choi–Lam form",
+      "sum of squares",
+      "Artin's theorem",
+      "rational SOS certificate",
+      "AM–GM inequality"
+    ],
+    "prerequisites": [
+      "positive semidefinite forms",
+      "sums of squares",
+      "Artin's theorem",
+      "homogeneous polynomials"
+    ]
+  },
+  {
     "id": "h17g-choilam-def",
     "proofId": "hilbert-17-oq-02",
     "range": {
