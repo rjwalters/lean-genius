@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-csint-oq020301-overview",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 6,
+      "endLine": 47
+    },
+    "type": "context",
+    "title": "The Open Question: When Is the Reverse Triangle Inequality Sharp?",
+    "content": "The parent problem derived the reverse Minkowski / reverse triangle inequality |‖f‖−‖g‖| ≤ ‖f+g‖ from the Cauchy-Schwarz LOWER bound ⟪f,g⟫ ≥ −‖f‖·‖g‖, exactly mirroring how the forward inequality uses the CS UPPER bound. This file answers the follow-up: characterise the pairs achieving equality. The clean, division-free, zero-tolerant answer is that the vectors are ANTIPARALLEL: |‖u‖−‖v‖| = ‖u+v‖ ⟺ ‖v‖•u = −(‖u‖•v). For nonzero vectors this is v = r•u with r < 0 — they point in genuinely opposite directions. The result is the exact sign-dual of the forward triangle equality ‖u+v‖ = ‖u‖+‖v‖ ⟺ ‖v‖•u = ‖u‖•v (vectors parallel, r ≥ 0).",
+    "mathContext": "$$\\big|\\|u\\|-\\|v\\|\\big| = \\|u+v\\| \\iff \\|v\\|\\cdot u = -(\\|u\\|\\cdot v)$$",
+    "significance": "context",
+    "relatedConcepts": [
+      "reverse Minkowski inequality",
+      "reverse triangle inequality",
+      "antiparallel vectors",
+      "Cauchy-Schwarz lower bound"
+    ],
+    "prerequisites": [
+      "real inner-product spaces",
+      "norms induced by inner products",
+      "triangle inequality"
+    ]
+  },
+  {
     "id": "ann-cs-lower-tight",
     "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
     "range": {
@@ -46,6 +70,29 @@
     ]
   },
   {
+    "id": "ann-csint-oq020301-unconditional-le",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 96,
+      "endLine": 103
+    },
+    "type": "technique",
+    "title": "The Unconditional Bound, Re-derived from |⟪u,v⟫| ≤ ‖u‖‖v‖",
+    "content": "The reverse Minkowski inequality itself is proven here as a private helper so the strict-inequality form becomes a clean dichotomy. From abs_real_inner_le_norm we read off −‖u‖‖v‖ ≤ ⟪u,v⟫ (the lower half of |⟪u,v⟫| ≤ ‖u‖‖v‖); norm_add_sq_real plus nlinarith give (‖u‖−‖v‖)² ≤ ‖u+v‖²; taking square roots via Real.sqrt_le_sqrt, then Real.sqrt_sq_eq_abs and Real.sqrt_sq (both sides nonnegative) restores the absolute-value form |‖u‖−‖v‖| ≤ ‖u+v‖. Kept private because the ≤-direction is subsumed by the equality/strict characterisations, yet it is exactly what turns 'not equality' into 'strict inequality'.",
+    "mathContext": "$$\\big|\\|u\\|-\\|v\\|\\big| \\le \\|u+v\\|$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "abs_real_inner_le_norm",
+      "norm_add_sq_real",
+      "Real.sqrt_sq_eq_abs",
+      "reverse triangle inequality"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz inequality",
+      "monotonicity of the square root"
+    ]
+  },
+  {
     "id": "ann-strict-dichotomy",
     "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
     "range": {
@@ -69,6 +116,29 @@
     ]
   },
   {
+    "id": "ann-csint-oq020301-neg-smul",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 119,
+      "endLine": 128
+    },
+    "type": "insight",
+    "title": "Nonzero Vectors: Equality ⟺ v Is a NEGATIVE Multiple of u",
+    "content": "For u, v ≠ 0 the symmetric antiparallel condition ‖v‖•u = −(‖u‖•v) sharpens to the concrete v = r•u with r < 0. The proof routes through Mathlib's real_inner_div_norm_mul_norm_eq_neg_one_iff, which states ⟪u,v⟫/(‖u‖‖v‖) = −1 ↔ ∃ r < 0, v = r•u; clearing the nonzero denominator with div_eq_iff and neg_one_mul matches the inner-product form ⟪u,v⟫ = −(‖u‖‖v‖) obtained earlier, and and_iff_right discharges the u ≠ 0 side-condition. This is the geometrically vivid reading of equality in the reverse triangle inequality: the two vectors point in exactly opposite directions.",
+    "mathContext": "$$\\big|\\|u\\|-\\|v\\|\\big| = \\|u+v\\| \\iff \\exists\\, r<0,\\ v = r\\cdot u$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "real_inner_div_norm_mul_norm_eq_neg_one_iff",
+      "antiparallel vectors",
+      "collinearity",
+      "div_eq_iff"
+    ],
+    "prerequisites": [
+      "nonzero norms",
+      "scalar multiples in inner-product spaces"
+    ]
+  },
+  {
     "id": "ann-forward-reverse-mirror",
     "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
     "range": {
@@ -89,6 +159,29 @@
     "prerequisites": [
       "forward triangle equality case",
       "the v ↦ −v reflection"
+    ]
+  },
+  {
+    "id": "ann-csint-oq020301-l2",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 163,
+      "endLine": 167
+    },
+    "type": "context",
+    "title": "Answering the Question in L²(μ): the Motivating Setting",
+    "content": "Lp ℝ 2 μ carries a real inner-product-space structure, so the abstract equality case applies verbatim — the L² statement is definitionally the general theorem specialised to f, g ∈ L²(μ) (the proof term is literally reverse_minkowski_eq_iff f g). This closes the loop with the parent problem, which posed the reverse Minkowski inequality for square-integrable functions: equality |‖f‖−‖g‖| = ‖f+g‖ holds iff ‖g‖•f = −(‖f‖•g), i.e. f and g are antiparallel as L² elements (proportional with a nonpositive ratio a.e.).",
+    "mathContext": "$$\\big|\\|f\\|-\\|g\\|\\big| = \\|f+g\\| \\iff \\|g\\|\\cdot f = -(\\|f\\|\\cdot g)\\quad (f,g\\in L^2(\\mu))$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "L² space",
+      "Lp inner product",
+      "reverse Minkowski inequality",
+      "measure theory"
+    ],
+    "prerequisites": [
+      "L² as an inner-product space",
+      "the abstract equality case"
     ]
   }
 ]
