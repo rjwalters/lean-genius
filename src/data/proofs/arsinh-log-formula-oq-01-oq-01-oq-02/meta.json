@@ -62,6 +62,13 @@
       "The catenary arc-length element √(1 + sinh²x) = cosh x (hyperbolic Pythagoras) turns the surface-of-revolution integrand 2π·cosh x·√(1+sinh²x) into 2π·cosh²x.",
       "cosh² has the hand-built antiderivative ½(x + sinh x·cosh x): the product rule gives (sinh·cosh)' = cosh² + sinh², and cosh² = 1 + sinh² collapses ½(1 + cosh² + sinh²) to cosh².",
       "The Fundamental Theorem of Calculus (intervalIntegral.integral_eq_sub_of_hasDerivAt) turns each hand-built derivative into the corresponding definite-integral evaluation."
+    ],
+    "keyInsights": [
+      "The catenary arc length's 'logarithmic closed form' is not a re-derivation but a definitional identity: Mathlib defines arsinh x := log(x + √(1+x²)), so ½(b√(1+b²) + arsinh b) and the classical table entry ½(b√(1+b²) + log(b + √(1+b²))) are the same term — the passage to logarithms closes by unfolding a definition, not by new analysis.",
+      "Hyperbolic Pythagoras cosh² = 1 + sinh² does double duty here: √(1+sinh²x) = cosh x collapses the catenary arc-length element to ds = cosh x·dx, and the same identity collapses the product-rule expansion (sinh·cosh)' = cosh² + sinh² into a clean antiderivative for cosh².",
+      "The catenary is the curve whose arc-length element equals its own height, ds = cosh x·dx = y·dx; this is exactly why the Pappus surface-of-revolution integrand 2π·y·ds simplifies to 2π·cosh²x, reducing a 2-D area computation to the same cosh² integral that governs the 1-D arc length.",
+      "Mathlib provides the derivatives of sinh, cosh, and arsinh but no antiderivatives for √(1+t²) or cosh²; the substantive work is guessing each antiderivative and verifying its derivative, then invoking the FTC — the concrete face of 'a closed form for an integral' as a formalization task.",
+      "Computing the catenoid's lateral area π(b + sinh b·cosh b) in closed form ties Euler's classical minimal surface to an elementary hyperbolic integral, and the elementary computation is the springboard for the variational (Euler–Lagrange) characterization posed in the entry's open question."
     ]
   },
   "sections": [
