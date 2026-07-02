@@ -135,6 +135,20 @@ theorem roundtrip_fails_example :
   rw [derivedMem_of_not_foundation (fun _ _ => True) () () trivial]
   simp
 
+/-- **Global sharpness.** Quantifying over every viewpoint, the round-trip
+    recovers `mem` everywhere **iff** `mem` satisfies Foundation everywhere.
+    The right-hand side is *exactly* the `WellFoundedMembership.foundation`
+    field the base file's `roundtrip` assumes — so this closes the loop: the
+    global hypothesis of `ThreePlaceIdentity.roundtrip` is not merely sufficient
+    but necessary. -/
+theorem global_roundtrip_iff_foundation (mem : U → U → Prop) :
+    (∀ x y, derivedMem mem y x ↔ mem y x) ↔ (∀ x, ¬ mem x x) := by
+  constructor
+  · intro h x
+    exact (roundtrip_iff_foundation mem x).mp (fun y => h x y)
+  · intro hx x y
+    exact derivedMem_of_foundation mem y x (hx x)
+
 -- ═══════════════════════════════════════════════════════════════
 -- PART V: Self-Regularization and Idempotence
 -- ═══════════════════════════════════════════════════════════════
@@ -158,6 +172,7 @@ theorem derivedMem_idempotent (mem : U → U → Prop) (y x : U) :
 
 #check @derivedMem_iff
 #check @roundtrip_iff_foundation
+#check @global_roundtrip_iff_foundation
 #check @derivedMem_of_not_foundation
 #check @derivedMem_idempotent
 
