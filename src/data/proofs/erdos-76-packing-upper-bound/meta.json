@@ -47,7 +47,8 @@
       "The upper-bound direction of Erdős #76 is elementary: it is a single application of the double-counting principle (edges used = 6 per triangle, all disjoint, all inside K_n), needing none of the regularity-method machinery behind the lower bound.",
       "Using ordered edges (offDiag) keeps the arithmetic exact: 6 edges per triangle and |V|²−|V| edges total, so the bound is literally 6·|ts| ≤ |V|²−|V| with no hidden factors, and Finset.card_biUnion converts edge-disjointness directly into a sum.",
       "The trivial upper bound is n²/6 — exactly twice the true optimum n²/12. That factor-of-2 slack is the whole difficulty of the problem: the extremal coloring can only reach half the crude edge budget because it deliberately wastes one color on a triangle-free bipartite class.",
-      "Lifting the per-packing bound to maxPackingSize needs only that the set of achievable sizes is nonempty (the empty packing witnesses 0) and bounded above, so csSup_le applies with no completeness subtleties."
+      "Lifting the per-packing bound to maxPackingSize needs only that the set of achievable sizes is nonempty (the empty packing witnesses 0) and bounded above, so csSup_le applies with no completeness subtleties.",
+      "The bound is stated as the exact natural-number floor C(n,2)/3, not merely the asymptotic n²/6, and getting there over ℕ needs a small but genuine care point: truncated ℕ subtraction hides the identity n(n−1) = n²−n, so a dedicated helper (mul_pred_self) supplies it before omega can finish — a reminder that even 'trivial' edge-counting carries real formalization overhead in a machine-checked setting."
     ],
     "prerequisites": [
       "Finset off-diagonals and their cardinality: Finset.offDiag, Finset.mem_offDiag, Finset.offDiag_card (|s.offDiag| = |s|² − |s|)",
@@ -57,27 +58,43 @@
   },
   "sections": [
     {
+      "id": "framing",
+      "title": "§0: Module Framing — the Easy Half of Erdős #76",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring and imports. Positions this file as the companion that discharges the `sorry` left in Erdos76Problem.lean, contrasts the elementary n²/6 upper bound proved here against the deep regularity-method lower bound n²/12, and fixes the ambient setup: a finite, decidable-equality vertex type V (variable {V} [Fintype V] [DecidableEq V]).",
+      "mathContext": "Target inequality: $\\mathrm{maxPackingSize}\\,c \\le \\lfloor\\binom{n}{2}/3\\rfloor \\approx n^2/6$, exactly twice the true optimum $n^2/12$."
+    },
+    {
       "id": "triangles",
       "title": "§I: Triangles and Their Six Edges",
-      "startLine": 43,
+      "startLine": 42,
       "endLine": 62,
-      "summary": "Declares the Triangle structure and its edge set (the offDiag of the vertex Finset), and proves Triangle.edges_card: every triangle carries exactly 3·3 − 3 = 6 ordered edges.",
+      "summary": "Declares the Triangle structure (a Finset of vertices with card_eq : card = 3) and its edge set Triangle.edges (the offDiag of the vertex Finset), and proves Triangle.edges_card: every triangle carries exactly 3·3 − 3 = 6 ordered edges, by simp with Finset.offDiag_card and the card_eq field.",
       "mathContext": "Ordered edges make the count exact: a 3-vertex clique has $3^2 - 3 = 6$ ordered pairs of distinct vertices."
     },
     {
       "id": "edge-bound",
-      "title": "§II: Edge-Disjoint Packings and the Double-Counting Bound",
-      "startLine": 64,
-      "endLine": 124,
-      "summary": "Defines isPacking (pairwise edge-disjoint triangles) and proves the core packing_edge_bound (6·|ts| ≤ |V|²−|V|) via Finset.card_biUnion, then packing_card_le_choose (|ts| ≤ C(|V|,2)/3 ≈ |V|²/6).",
-      "mathContext": "Disjoint edge sets of total size $6|ts|$ embed in the $|V|^2-|V|$ ordered edges of $K_{|V|}$, so $6|ts| \\le |V|^2-|V|$ and $|ts| \\le \\binom{|V|}{2}/3$."
+      "title": "§II: Edge-Disjoint Packings and the Core Double-Counting Bound",
+      "startLine": 63,
+      "endLine": 104,
+      "summary": "Defines isPacking (pairwise edge-disjoint triangles) and proves the core packing_edge_bound (6·|ts| ≤ |V|²−|V|): the packing's edge sets form a PairwiseDisjoint family, so Finset.card_biUnion turns the union's card into ∑ 6 = 6·|ts|, and Finset.card_le_card embeds that union in univ.offDiag whose card is |V|²−|V|.",
+      "mathContext": "Disjoint edge sets of total size $6|ts|$ embed in the $|V|^2-|V|$ ordered edges of $K_{|V|}$, so $6|ts| \\le |V|^2-|V|$."
+    },
+    {
+      "id": "choose-bound",
+      "title": "§III: From Edges to Triangles — the C(n,2)/3 Bound",
+      "startLine": 105,
+      "endLine": 123,
+      "summary": "A private helper mul_pred_self (n·(n−1) = n²−n over ℕ, needed because truncated ℕ subtraction hides this identity) bridges the edge bound to packing_card_le_choose: rewriting C(n,2) via Nat.choose_two_right, collapsing /2/3 to /6 via Nat.div_div_eq_div_mul, clearing the division with Nat.le_div_iff_mul_le, then closing by omega. Yields |ts| ≤ C(|V|,2)/3.",
+      "mathContext": "$6|ts| \\le |V|^2-|V| = |V|(|V|-1)$, and $\\binom{|V|}{2} = |V|(|V|-1)/2$, so $|ts| \\le \\binom{|V|}{2}/3$."
     },
     {
       "id": "maxpacking",
-      "title": "§III: Lifting to maxPackingSize — the Parent's Open Statement",
-      "startLine": 125,
+      "title": "§IV: Lifting to maxPackingSize — the Parent's Open Statement",
+      "startLine": 124,
       "endLine": 160,
-      "summary": "Re-declares the 2-coloring vocabulary (Color, EdgeColoring, isMonochromatic, monochromaticPacking, maxPackingSize) and proves maxPackingSize_le: for every coloring, the maximum monochromatic packing has ≤ C(n,2)/3 triangles — the exact bound left as a `sorry` in Erdos76Problem.lean.",
+      "summary": "Re-declares the 2-coloring vocabulary (Color, EdgeColoring, isMonochromatic, monochromaticPacking, maxPackingSize as an sSup over achievable packing sizes) and proves maxPackingSize_le: for every coloring, the maximum monochromatic packing has ≤ C(n,2)/3 triangles — the exact bound left as a `sorry` in Erdos76Problem.lean. csSup_le needs nonemptiness (the empty packing witnesses 0) and the per-packing bound from §III.",
       "mathContext": "Every achievable monochromatic-packing size is $\\le \\binom{n}{2}/3$; the set of such sizes is nonempty (empty packing), so $\\sup$ obeys the same bound via csSup_le."
     }
   ],
