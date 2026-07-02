@@ -16,7 +16,11 @@
       "Intersecting families",
       "Extremal sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree numbers and repeated prime factors",
+      "intersecting families in combinatorics",
+      "extremal set problems"
+    ]
   },
   {
     "id": "ann-e844-nonsq-products",
@@ -34,7 +38,11 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree numbers",
+      "divisibility by a squared prime p²",
+      "predicates over pairs of set elements in Lean"
+    ]
   },
   {
     "id": "ann-e844-optimal-set",
@@ -52,7 +60,11 @@
       "Even numbers",
       "Non-squarefree numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "even numbers and odd numbers",
+      "non-squarefree numbers",
+      "union of sets"
+    ]
   },
   {
     "id": "ann-e844-even-product",
@@ -70,7 +82,11 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisibility by 2 and by 4",
+      "squarefree versus non-squarefree numbers",
+      "products of even numbers"
+    ]
   },
   {
     "id": "ann-e844-nonsq-inherit",
@@ -88,7 +104,11 @@
       "proof technique",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "repeated prime factors (p²|a)",
+      "divisibility of products",
+      "non-squarefree numbers"
+    ]
   },
   {
     "id": "ann-e844-maximal",
@@ -106,7 +126,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "maximal sets under a closure property",
+      "non-squarefree numbers infecting products",
+      "the non-squarefree-products constraint"
+    ]
   },
   {
     "id": "ann-e844-squarefree-crit",
@@ -124,7 +148,11 @@
       "Prime factorization",
       "Squarefree numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree numbers and their prime factors",
+      "shared prime factors of two integers",
+      "iff (logical equivalence) statements"
+    ]
   },
   {
     "id": "ann-e844-intersecting",
@@ -142,7 +170,11 @@
       "Chvátal's theorem"
     ],
     "mathContext": "See annotation content for formal details of intersecting family",
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree numbers",
+      "shared prime factors between elements",
+      "hypergraphs"
+    ]
   },
   {
     "id": "ann-e844-chvatal",
@@ -160,7 +192,11 @@
       "Chvátal 1974",
       "Intersecting hypergraphs"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "intersecting families of sets",
+      "multiples of a fixed prime",
+      "density of even squarefree numbers"
+    ]
   },
   {
     "id": "ann-e844-weisenberg",
@@ -178,7 +214,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the optimal set (even ∪ odd non-squarefree)",
+      "the non-squarefree-products property",
+      "cardinality bounds |A| ≤ |optimalSet N|"
+    ]
   },
   {
     "id": "ann-e844-ams",
@@ -196,6 +236,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the extremal result on non-squarefree products",
+      "the optimal set construction",
+      "independent proofs of the same theorem"
+    ]
   }
 ]
