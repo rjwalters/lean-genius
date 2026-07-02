@@ -26,14 +26,26 @@
   {
     "id": "ann-c4-free",
     "proofId": "erdos-1021-wip-02",
-    "range": { "startLine": 116, "endLine": 184 },
+    "range": { "startLine": 116, "endLine": 163 },
     "type": "theorem",
-    "title": "G_k is C₄-free — codegree ≤ 1 (Gk_common_neighbors_subsingleton)",
-    "content": "The heart of the file: the set of common neighbours of any two distinct vertices v ≠ w is a Set.Subsingleton (at most one element). The proof splits on the two sides of the bipartition. (1) Both primaries y_i, y_j: since G_k is bipartite, common neighbours are pair vertices; obtaining them as Sum.inr ⟨(e,f),·⟩ and rewriting through adj_primary_pair gives four membership disjunctions i ∈ {e₁,f₁}, j ∈ {e₁,f₁}, i ∈ {e₂,f₂}, j ∈ {e₂,f₂}; with i ≠ j and the orderings e < f, an rcases + omega sweep forces (e₁,f₁) = (e₂,f₂), i.e. both common neighbours are the unique pair {i,j}. (2) Mixed primary/pair: a common neighbour would have to be simultaneously a pair vertex (neighbour of a primary) and a primary (neighbour of a pair) — impossible, so the intersection is empty. (3) Both pair vertices {a,b} ≠ {c,d}: common neighbours are primaries y_m with m ∈ {a,b} ∩ {c,d}; distinctness ¬(a = c ∧ b = d) plus a < b, c < d forces m unique via rcases + omega, since two distinct 2-element sets meet in at most one point.",
-    "mathContext": "$v \\ne w \\implies |N(v) \\cap N(w)| \\le 1$: two primaries share only $\\{i,j\\}$; two distinct pairs share $\\le 1$ primary; bipartiteness kills the mixed case.",
+    "title": "G_k is C₄-free — Statement, Two-Primaries & Mixed Cases (Gk_common_neighbors_subsingleton)",
+    "content": "The heart of the file: the set of common neighbours of any two distinct vertices v ≠ w is a Set.Subsingleton (at most one element). After rintro-ing two common neighbours u₁, u₂ and simp-ing the neighborSet memberships, rcases splits v and w on the two sides of the bipartition. This annotation covers the first three of the four resulting cases. (1) Both primaries y_i, y_j (i ≠ j from hvw): since G_k is bipartite, common neighbours must be pair vertices, so u₁, u₂ are obtained as Sum.inr ⟨(e,f),·⟩; rewriting through adj_primary_pair yields four membership disjunctions i ∈ {e₁,f₁}, j ∈ {e₁,f₁}, i ∈ {e₂,f₂}, j ∈ {e₂,f₂}, and with i ≠ j and the orderings e < f a 16-way rcases + omega sweep forces (e₁,f₁) = (e₂,f₂) — both common neighbours are the unique pair {i,j}. (2)+(3) The two mixed primary/pair cases: a common neighbour would have to be simultaneously a pair vertex (neighbour of a primary, via adj_primary_iff) and a primary (neighbour of a pair, via adj_pair_iff) — impossible, so the intersection is empty, discharged by absurd.",
+    "mathContext": "$v \\ne w \\implies |N(v) \\cap N(w)| \\le 1$: two primaries share only the unique pair $\\{i,j\\}$; a primary and a pair share nothing (bipartiteness kills the mixed cases).",
     "significance": "key",
     "relatedConcepts": ["C₄-free / K_{2,2}-free", "codegree", "Kővári–Sós–Turán hypothesis", "Set.Subsingleton", "bipartite case analysis", "omega over Fin"],
-    "prerequisites": ["the adjacency lemmas", "Set.Subsingleton on a neighbourhood intersection", "rcases on disjunctions + omega", "distinct 2-sets meet in ≤ 1 point"]
+    "prerequisites": ["the adjacency lemmas", "Set.Subsingleton on a neighbourhood intersection", "rcases on disjunctions + omega", "bipartiteness of G_k"]
+  },
+  {
+    "id": "ann-c4-free-pairs",
+    "proofId": "erdos-1021-wip-02",
+    "range": { "startLine": 164, "endLine": 184 },
+    "type": "theorem",
+    "title": "C₄-freeness: Two Distinct Pairs Share ≤ 1 Primary",
+    "content": "The fourth and last case of Gk_common_neighbors_subsingleton: v and w are both pair vertices {a,b} ≠ {c,d}. The distinctness ¬(a = c ∧ b = d) is extracted from hvw. Since G_k is bipartite, the common neighbours u₁, u₂ must be primaries, obtained as Sum.inl m₁, Sum.inl m₂; rewriting through adj_pair_inl for both pairs gives m₁ ∈ {a,b}, m₁ ∈ {c,d}, m₂ ∈ {a,b}, m₂ ∈ {c,d}. Because two distinct 2-element subsets of Fin k intersect in at most one point, the orderings a < b, c < d together with ¬(a=c ∧ b=d) force m₁ = m₂ via the same 16-way rcases + omega sweep. This is the incidence-geometry statement that two distinct 'lines' meet in at most one 'point'.",
+    "mathContext": "$\\{a,b\\} \\ne \\{c,d\\} \\implies |\\{a,b\\} \\cap \\{c,d\\}| \\le 1$; the common primary neighbours $m \\in \\{a,b\\} \\cap \\{c,d\\}$ are therefore unique.",
+    "significance": "key",
+    "relatedConcepts": ["distinct 2-sets meet in ≤ 1 point", "partial linear space", "two lines meet in ≤ 1 point", "omega over Fin", "codegree ≤ 1"],
+    "prerequisites": ["adj_pair_inl", "the distinctness hypothesis ¬(a=c ∧ b=d)", "rcases on disjunctions + omega"]
   },
   {
     "id": "ann-corollaries",
