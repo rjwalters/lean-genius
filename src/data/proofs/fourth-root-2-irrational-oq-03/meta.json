@@ -120,7 +120,9 @@
       "Being Galois is 'separable + splitting field'. The obstruction to normality that made ℚ(⁴√2) non-Galois disappears once the two missing roots ±i·⁴√2 are adjoined: the enlarged field ℚ(⁴√2, i) is the splitting field of X⁴ − 2, and X⁴ − 2 is separable over ℚ (characteristic zero), so the extension is automatically Galois.",
       "The splitting-field identity is the whole content. Everything downstream (Galois, finite-dimensional, #Gal = 8) is Mathlib API once adjoin ℚ (rootSet (X⁴−2)) = ℚ(⁴√2, i) is established. That identity is proved by explicit factorization of z⁴ − a⁴ into the four linear factors — the same factorization that geometrically places the roots at the vertices of a square.",
       "#Gal = degree is exactly the Galois property. For a finite separable normal extension, Nat.card of the automorphism group equals the field degree; here that converts the parent's purely field-theoretic [ℚ(⁴√2, i) : ℚ] = 8 into the group-order fact |Gal| = 8 = |D₄|, the anchor for the eventual dihedral identification.",
-      "The result is the launch pad for D₄. A group of order 8 acting faithfully as the Galois group, together with the square arrangement of the four roots, pins the group down to D₄ once the eight automorphisms are exhibited — the natural next entry."
+      "The result is the launch pad for D₄. A group of order 8 acting faithfully as the Galois group, together with the square arrangement of the four roots, pins the group down to D₄ once the eight automorphisms are exhibited — the natural next entry.",
+      "Adjoining i does double duty. ℚ(⁴√2) is the real field ℝ ∩ ℚ(⁴√2, i): it is degree 4 but NOT normal, because it contains only the two real roots ±⁴√2 and misses the complex pair ±i·⁴√2. Adjoining i simultaneously supplies those two missing roots AND, via i² = −1, licenses the factorization z⁴ − a⁴ = (z−a)(z+a)(z−i·a)(z+i·a) that fails over ℝ — the same i that repairs normality repairs the factorization.",
+      "The doubling [ℚ(⁴√2, i) : ℚ(⁴√2)] = 2 is exactly the index of the fixed field of complex conjugation. Since ℚ(⁴√2) is real, complex conjugation restricts to a nontrivial order-2 element of Gal(ℚ(⁴√2, i)/ℚ) fixing ℚ(⁴√2) pointwise; it is the reflection generator of D₄, while ⁴√2 ↦ i·⁴√2 is the order-4 rotation — the concrete automorphisms whose existence |Gal| = 8 now guarantees."
     ]
   },
   "sections": [
@@ -141,12 +143,20 @@
       "mathContext": "The field-theoretic crux identifying the splitting field with ℚ(⁴√2, i)."
     },
     {
-      "id": "galois-cardinality",
-      "title": "Splitting Field, Galois Property, and |Gal| = 8",
+      "id": "splitting-field-galois",
+      "title": "Splitting Field ⟹ Galois",
       "startLine": 117,
+      "endLine": 130,
+      "summary": "isSplittingField upgrades adjoin_rootSet_eq to p.IsSplittingField ℚ ℚ(⁴√2, i) (using that p splits over the algebraically closed ℂ); isGalois then follows from IsGalois.of_separable_splitting_field applied to the separable X⁴ − 2, and normal packages the normality half separately.",
+      "mathContext": "A separable splitting field is Galois: separability came from irreducibility over the characteristic-zero ℚ, and normality is automatic for a splitting field."
+    },
+    {
+      "id": "order-of-galois-group",
+      "title": "Finite-Dimensionality and |Gal| = 8",
+      "startLine": 132,
       "endLine": 146,
-      "summary": "isSplittingField (from adjoin_rootSet_eq + p splits over ℂ), isGalois (separable splitting field), normal, finiteDimensional, and card_gal: #Gal(ℚ(⁴√2, i)/ℚ) = [ℚ(⁴√2, i) : ℚ] = 8 via IsGalois.card_aut_eq_finrank and the parent's degree.",
-      "mathContext": "Assembles the Galois property and converts the parent's degree into the group order 8."
+      "summary": "finiteDimensional records that a splitting field is finite over ℚ (supplying the Fintype on the automorphism group); card_gal then applies IsGalois.card_aut_eq_finrank to equate #Gal(ℚ(⁴√2, i)/ℚ) with [ℚ(⁴√2, i) : ℚ], which the parent computed to be 8.",
+      "mathContext": "For a finite Galois extension #Aut = [E : F]; here the parent's degree 8 becomes the group order |Gal| = 8 = |D₄|."
     }
   ],
   "conclusion": {

@@ -78,23 +78,48 @@
     "proofId": "fourth-root-2-irrational-oq-03",
     "range": {
       "startLine": 117,
-      "endLine": 146
+      "endLine": 130
     },
     "type": "insight",
-    "title": "Splitting field ⟹ Galois ⟹ |Gal| = 8",
-    "content": "With the root-set identity in hand, isSplittingField follows because X⁴ − 2 splits over the algebraically closed ℂ (adjoin_rootSet_isSplittingField, then rewrite). A separable splitting field is Galois (isGalois via IsGalois.of_separable_splitting_field), and it is finite-dimensional (finiteDimensional), which supplies the Fintype instance on the Galois group. Finally card_gal: converting Fintype.card to Nat.card and applying IsGalois.card_aut_eq_finrank equates #Gal with the finrank, which the parent computed to be 8. The order-8 Galois group is the exact prerequisite for identifying it with the dihedral group D₄.",
-    "mathContext": "Separable splitting field $\\Rightarrow$ Galois; then $\\#\\mathrm{Gal}(K/\\mathbb{Q}) = [K:\\mathbb{Q}]$ (IsGalois.card_aut_eq_finrank). With $[\\mathbb{Q}(\\sqrt[4]{2},i):\\mathbb{Q}] = 8$ this gives $\\#\\mathrm{Gal} = 8$.",
+    "title": "Splitting field ⟹ Galois",
+    "content": "With the root-set identity in hand, isSplittingField follows because X⁴ − 2 splits over the algebraically closed ℂ (adjoin_rootSet_isSplittingField, then rewrite by adjoin_rootSet_eq). A separable splitting field is automatically Galois: isGalois comes from IsGalois.of_separable_splitting_field, and normal packages the normality half of that Galois property separately. Both ingredients of 'Galois' — separability (from irreducibility over ℚ) and normality (from being a splitting field) — are now in place.",
+    "mathContext": "Separable splitting field $\\Rightarrow$ Galois. Normality is automatic for a splitting field; separability came from $X^4-2$ being irreducible over the characteristic-zero field $\\mathbb{Q}$.",
     "significance": "key",
     "relatedConcepts": [
       "Galois-extension",
       "splitting-field",
-      "finite-dimensional-extension",
-      "automorphism-group",
-      "dihedral-group"
+      "normal-extension",
+      "separable-polynomial",
+      "algebraically-closed-field"
     ],
     "prerequisites": [
       "IsGalois.of_separable_splitting_field",
+      "IntermediateField.adjoin_rootSet_isSplittingField",
+      "splitting of a polynomial over ℂ"
+    ]
+  },
+  {
+    "id": "ann-card-gal",
+    "proofId": "fourth-root-2-irrational-oq-03",
+    "range": {
+      "startLine": 132,
+      "endLine": 146
+    },
+    "type": "insight",
+    "title": "The headline: |Gal(ℚ(⁴√2, i)/ℚ)| = 8",
+    "content": "finiteDimensional records that a splitting field is finite over ℚ, supplying the Fintype instance on the automorphism group that card_gal needs. Then card_gal: converting Fintype.card to Nat.card and applying IsGalois.card_aut_eq_finrank equates #Gal with the finrank [ℚ(⁴√2, i) : ℚ], which the parent finrank_galois_closure computed to be 8. This order-8 group is exactly the input the eventual D₄ identification rests on — 8 = |D₄|, with ℚ as the fixed field.",
+    "mathContext": "For a finite Galois extension, $\\#\\mathrm{Gal}(K/\\mathbb{Q}) = [K:\\mathbb{Q}]$ (IsGalois.card_aut_eq_finrank). With $[\\mathbb{Q}(\\sqrt[4]{2},i):\\mathbb{Q}] = 8$ from the parent, $\\#\\mathrm{Gal} = 8 = |D_4|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "automorphism-group",
+      "finite-dimensional-extension",
+      "dihedral-group",
+      "Galois-correspondence",
+      "field-degree"
+    ],
+    "prerequisites": [
       "IsGalois.card_aut_eq_finrank",
+      "Polynomial.IsSplittingField.finiteDimensional",
       "Fintype/Nat.card conversions"
     ]
   }
