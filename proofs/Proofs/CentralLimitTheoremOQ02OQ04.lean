@@ -14,7 +14,21 @@ the Ibragimov (1962) covariance summability condition
 is satisfied, and the long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1})
 exists and is finite. If additionally σ² > 0, then S_n/√n →_d N(0, σ²).
 
-**S27 (this session): signed bounded-variable Davydov estimate.** Added
+**S28 (this session): L^∞ (symmetric-window) Davydov estimate.** Added
+`linfty_covariance_le_four_alpha` and `truncated_covariance_le_four_alpha_sq`
+(both PROVEN, 0-axiom): specialize the S27 signed estimate
+`|Cov(f,g)| ≤ α·(M−m)·(N−n)` to the *symmetric* truncation window
+`[−Bf, Bf] × [−Bg, Bg]`, yielding the canonical `L^∞` Davydov bound
+`|Cov(f,g)| ≤ 4·α·Bf·Bg` from the single essential-sup hypotheses `|f| ≤ Bf`,
+`|g| ≤ Bg` (unpacked via `abs_le`; the window-width product `(2Bf)(2Bg)`
+collapses to `4·Bf·Bg` by `ring`). The equal-bound corollary
+`truncated_covariance_le_four_alpha_sq` gives `|Cov| ≤ 4·α·T²` for a common
+truncation level `T` — verbatim the constant the L^p density step of
+`davydov_covariance_inequality` pays for the bounded part after truncating at
+level `T`, before the Hölder tail in the mixing rate `α^{(p−2)/p}` is added.
+Sorries unchanged (2).
+
+**S27: signed bounded-variable Davydov estimate.** Added
 `signed_bounded_covariance_le_alpha_mul_rectangle` (PROVEN, 0-axiom): lifts the
 S26 non-negative bounded estimate `|Cov(f,g)| ≤ α·M·N` to *signed* bounded
 variables `m ≤ f ≤ M`, `n ≤ g ≤ N`, giving `|Cov(f,g)| ≤ α·(M−m)·(N−n)`. The
@@ -1577,6 +1591,102 @@ theorem signed_bounded_covariance_le_alpha_mul_rectangle
     (f := fun ω => f ω - m) (g := fun ω => g ω - n) (M := M - m) (N := N - n)
     σPair hMm hNn hF_meas hG_meas hF_sig hG_sig hF_int hF_nn hF_ub hG_int hG_nn hG_ub
     h_joint_outer h_prod_outer
+
+/-- **L^∞ (symmetric-window) Davydov estimate** (S28, this session).
+
+Specializes the signed bounded estimate
+`signed_bounded_covariance_le_alpha_mul_rectangle` (S27) to the *symmetric*
+truncation window `[-Bf, Bf] × [-Bg, Bg]` — the canonical `L^∞` form of
+Davydov's inequality. For `f` bounded by `Bf` (`|f| ≤ Bf` a.e.) and measurable
+w.r.t. `σPair 0`, and `g` bounded by `Bg` measurable w.r.t. `σPair 1`,
+$$
+  \bigl|\mathrm{Cov}(f, g)\bigr|
+    \;=\; \Bigl|\!\int f g \,-\, \bigl(\!\int f\bigr)\bigl(\!\int g\bigr)\Bigr|
+    \;\le\; 4 \cdot \alpha(\mathcal F, \mathcal G)\cdot B_f \cdot B_g.
+$$
+
+**Proof.** Apply S27 with `m = -Bf`, `M = Bf`, `n = -Bg`, `N = Bg`. The single
+essential-sup hypothesis `|f| ≤ Bf` unpacks (`abs_le`) into the two-sided
+window `-Bf ≤ f ≤ Bf`, and likewise for `g`. The S27 conclusion
+`α · (Bf - (-Bf)) · (Bg - (-Bg))` collapses to `4 · α · Bf · Bg` because each
+window width is `2·(sup bound)` (`ring`). The two outer survival-integrability
+hypotheses are inherited unchanged from S27 (they feed the S24 layer-cake
+representation and are supplied by the caller together with the bound data).
+
+**Role.** This is the exact form the `L^p` density step of
+`davydov_covariance_inequality` consumes: after a symmetric truncation
+`f ↦ clamp f [-T, T]` the truncated covariance is controlled by `4 α T²`, and
+the Hölder tail estimate in the mixing rate `α^{(p-2)/p}` is added on top. It
+is the standard textbook statement of Davydov's inequality for *bounded*
+variables (Doukhan 1994 §1.2.2, Bradley 2007 Vol I Thm 3.7). -/
+theorem linfty_covariance_le_four_alpha
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {f g : Ω → ℝ} {Bf Bg : ℝ}
+    (hBf : 0 ≤ Bf) (hBg : 0 ≤ Bg)
+    (hf_meas : Measurable f) (hg_meas : Measurable g)
+    (hf_sig : Measurable[σPair 0] f) (hg_sig : Measurable[σPair 1] g)
+    (hf_int : Integrable f μ) (hf_bd : ∀ᵐ ω ∂μ, |f ω| ≤ Bf)
+    (hg_int : Integrable g μ) (hg_bd : ∀ᵐ ω ∂μ, |g ω| ≤ Bg)
+    (h_joint_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 (Bg - -Bg), μ.real {ω | t < f ω - -Bf ∧ s < g ω - -Bg})
+      (Set.Ioc 0 (Bf - -Bf)))
+    (h_prod_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 (Bg - -Bg),
+        μ.real {ω | t < f ω - -Bf} * μ.real {ω | s < g ω - -Bg})
+      (Set.Ioc 0 (Bf - -Bf))) :
+    |∫ ω, f ω * g ω ∂μ - (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ)|
+      ≤ 4 * CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) * Bf * Bg := by
+  have hmM : -Bf ≤ Bf := by linarith
+  have hnN : -Bg ≤ Bg := by linarith
+  -- Unpack the symmetric essential-sup bounds into two-sided windows.
+  have hf_lb : (fun _ => -Bf) ≤ᵐ[μ] f := by
+    filter_upwards [hf_bd] with ω hω; exact (abs_le.mp hω).1
+  have hf_ub : f ≤ᵐ[μ] (fun _ => Bf) := by
+    filter_upwards [hf_bd] with ω hω; exact (abs_le.mp hω).2
+  have hg_lb : (fun _ => -Bg) ≤ᵐ[μ] g := by
+    filter_upwards [hg_bd] with ω hω; exact (abs_le.mp hω).1
+  have hg_ub : g ≤ᵐ[μ] (fun _ => Bg) := by
+    filter_upwards [hg_bd] with ω hω; exact (abs_le.mp hω).2
+  have h := signed_bounded_covariance_le_alpha_mul_rectangle
+    σPair (m := -Bf) (M := Bf) (n := -Bg) (N := Bg)
+    hmM hnN hf_meas hg_meas hf_sig hg_sig
+    hf_int hf_lb hf_ub hg_int hg_lb hg_ub
+    h_joint_outer h_prod_outer
+  refine le_trans h (le_of_eq ?_)
+  ring
+
+/-- **Symmetric-truncation Davydov base estimate** (S28, this session).
+
+The equal-bound special case of `linfty_covariance_le_four_alpha`: when both
+variables share the truncation level `T` (`|f| ≤ T`, `|g| ≤ T`), the covariance
+of the truncated pair is controlled by `4 · α · T²`. This is verbatim the
+constant the `L^p` density step of `davydov_covariance_inequality` pays for the
+bounded part after truncating at level `T`; the residual Hölder tail in the
+mixing rate is added separately. -/
+theorem truncated_covariance_le_four_alpha_sq
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {f g : Ω → ℝ} {T : ℝ}
+    (hT : 0 ≤ T)
+    (hf_meas : Measurable f) (hg_meas : Measurable g)
+    (hf_sig : Measurable[σPair 0] f) (hg_sig : Measurable[σPair 1] g)
+    (hf_int : Integrable f μ) (hf_bd : ∀ᵐ ω ∂μ, |f ω| ≤ T)
+    (hg_int : Integrable g μ) (hg_bd : ∀ᵐ ω ∂μ, |g ω| ≤ T)
+    (h_joint_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 (T - -T), μ.real {ω | t < f ω - -T ∧ s < g ω - -T})
+      (Set.Ioc 0 (T - -T)))
+    (h_prod_outer : IntegrableOn
+      (fun t => ∫ s in Set.Ioc 0 (T - -T),
+        μ.real {ω | t < f ω - -T} * μ.real {ω | s < g ω - -T})
+      (Set.Ioc 0 (T - -T))) :
+    |∫ ω, f ω * g ω ∂μ - (∫ ω, f ω ∂μ) * (∫ ω, g ω ∂μ)|
+      ≤ 4 * CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) * T ^ 2 := by
+  have h := linfty_covariance_le_four_alpha σPair (Bf := T) (Bg := T)
+    hT hT hf_meas hg_meas hf_sig hg_sig hf_int hf_bd hg_int hg_bd
+    h_joint_outer h_prod_outer
+  refine le_trans h (le_of_eq ?_)
+  ring
 
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
