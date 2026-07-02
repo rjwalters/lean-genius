@@ -15,6 +15,44 @@ Can Lagrange interpolation converge pointwise at a point x where the Lebesgue fu
 **Known**: Bernstein (1931): ∃ x₀ with limsup λ_n(x₀) = ∞ for any sequence.
 **Known**: Erdős-Vértesi (1980): ∃ continuous f with |L^n f(x)| → ∞ a.e. for any sequence.
 
+## Session 2026-07-02 (Session 8) — orphan residual reduced to a PURE INTEGER inequality (all analytic/(n-1) content eliminated)
+
+**Mode**: REVISIT (researcher-16). **Outcome**: real build-verified progress on the
+*orphan* (`Erdos671EquidistantOrphan.lean`). Registered gallery file unchanged
+(still axiomatized: 3 axioms + 7 sorries). Verified via `lake env lean` against the
+cached Mathlib v4.26.0 oleans (Docker/Aristotle not used; disk at 99%, so the
+single-file `lake env lean` route was chosen — it works under disk pressure).
+
+- **New build-verified lemma `abs_lagrangeBasis_midPoint`.** Substituting
+  `midPoint_sub_node` and `node_sub_node` into `abs_lagrangeBasis_eval` cancels
+  the common `1/(n-1)` scale in EVERY factor (via `div_div_div_cancel_right₀`),
+  proving the exact identity
+  `|p_m(x*)| = ∏_{j≠m} |2j-1| / (2·|m-j|)`.
+  Per-factor proof: `abs_div` + `abs_of_pos (n-1>0)` + `abs_sub_comm`
+  (`|1-2j| = |2j-1|`) + `abs_mul`/`abs_two` (`|2(m-j)| = 2|m-j|`), then the
+  group-with-zero cancellation. No `m≠j` side condition is needed — the identity
+  is structural.
+- **The single residual sorry is now a PURE INTEGER inequality**, with zero
+  analytic or `(n-1)` content:
+  `∃ m : Fin n, 2^(n-1)/n² ≤ ∏_{j≠m} |2j-1| / (2·|m-j|)`.
+  Equivalent factorial form: `(2n-3)!!·n² ≥ |2m-1|·2^(2n-2)·m!·(n-1-m)!` at a
+  central `m ≈ ⌊(n-2)/2⌋`. `lebesgueFunction_midPoint_ge` now threads this
+  through `abs_lagrangeBasis_midPoint` + `lebesgueFunction_ge_single`, so closing
+  the integer inequality closes the whole pointwise bound with no further analysis.
+- **Not attempted this session**: the integer inequality itself. It requires
+  choosing the optimal central index and a double-factorial induction — a
+  self-contained but nontrivial finite-combinatorics task (good future target;
+  numerics confirm it for n=2..25). Aristotle not tried (a hard parametrized
+  existential inequality is outside its comfort zone, per prior sessions).
+
+### Lean gotchas recorded
+- `div_div_div_cancel_right₀ (hc : c ≠ 0) : a/c/(b/c) = a/b` — pass `hn1_pos.ne'`.
+- `abs_two : |(2:ℝ)| = 2`; `abs_sub_comm a b : |a-b| = |b-a|` (turns `|1-2j|` into
+  `|2j-1|`).
+- The `m≠j` filter membership was initially threaded to prove `(m:ℝ)-(j:ℝ)≠0`, but
+  it is UNUSED — the factor identity holds even where `m=j` (excluded by the
+  filter anyway), so `intro j _` suffices.
+
 ## Session 2026-06-28 (Session 7) — orphan BUILD-VERIFIED; pointwise sorry decomposed into a pure arithmetic core
 
 **Mode**: REVISIT (researcher-2). **Outcome**: real verified progress on the *orphan*
