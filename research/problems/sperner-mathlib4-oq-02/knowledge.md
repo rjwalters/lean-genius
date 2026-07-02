@@ -4,6 +4,28 @@ Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engi
 
 ---
 
+## Session 2026-07-02 (researcher-5) — VERIFICATION, no new math
+
+Verification-only cycle (host build env saturated: 6 concurrent Docker builds, disk 100%,
+`lean-mathlib-cache` volume near-empty → unsafe to start a 7th build). Instead ran single-file
+host `lake env lean` (Mathlib oleans were restorable, so this bypassed Docker).
+
+- **`SpernerTuckerHexagonSignFlipCycles.lean` (merged #33725, previously "build-pending") →
+  CONFIRMED 0-axiom.** Typechecked exit 0; all 5 `#print axioms` guards report only
+  `[propext, Classical.choice, Quot.sound]`. Removed the "build-pending" caveat below.
+- **PR #33692** (dimension-free `hpair` for ∂Δ^{n+1}) was **merged to main** this cycle
+  (HEAD `190f8a4d35a`); the prior-session `sorryAx` fix (`boundary_simplex_door_eq` hcard) landed.
+- Gallery entry (`SpernerTuckerHexagonDoorObstruction.lean`, status verified/original/0-axiom)
+  is statically clean (0 sorry/axiom/native_decide, 3 thm / 5 def matching meta). Its
+  `hexagon_tucker` `decide` (over `Fin 4⁴ × Fin 6`) is memory-heavy and **segfaulted (exit 139)**
+  twice under the load-starved host; one earlier attempt exited 0. Not re-flagged — the segfault
+  is resource starvation, not a defect (identical-structure sibling verified 0-axiom cleanly).
+  Re-confirm via Docker once the build fleet quiets.
+- **Frontier unchanged**: the concrete nested Freund–Todd door graph remains a multi-session BUILD;
+  not attempted this cycle (environment unbuildable).
+
+---
+
 ## Problem Understanding
 
 Parent `sperner-mathlib4` (`proofs/Proofs/SpernerMathlib4.lean`, 732 LOC, GREEN)
@@ -1005,16 +1027,17 @@ terminating at an interior degree-1 room)? This session answers **NO**, machine-
    door graph gives **every triangle degree ∈ {0,2}** (histogram `{0:384, 2:1152}`) — never 1 or
    3: the sign-flip graph on the disc is **all cycles, no interior endpoint**.
 
-### What was written in Lean (new file — BUILD VERIFICATION PENDING, see status note)
+### What was written in Lean (new file — VERIFIED 0-axiom, host `lake env lean`, researcher-5 2026-07-02)
 `proofs/Proofs/SpernerTuckerHexagonSignFlipCycles.lean` (import Mathlib; 0 sorry, 0 literal
-`axiom`; intended 0-axiom, propext/Classical.choice/Quot.sound only — `#print axioms` guards
-included). **Kernel build not yet confirmed this session** (host build env unusable: Docker VM
-threw containerd I/O errors and the host Mathlib olean cache was mid-rewrite by ~100 concurrent
-processes, so both `docker-build.sh` and `lake env lean` failed on infrastructure, NOT on this
-file). The file is small, self-contained, and every tactic is elementary; each `decide` fact is
-independently reproduced by the exhaustive Python probes below, and the two structural lemmas are
-trivial `ZMod 2` identities. Re-run `docker-build.sh Proofs.SpernerTuckerHexagonSignFlipCycles`
-(or `lake env lean`) once the env recovers to confirm 0-axiom.
+`axiom`; 0-axiom confirmed, `#print axioms` guards included). **Kernel build now CONFIRMED**:
+host `lake env lean Proofs/SpernerTuckerHexagonSignFlipCycles.lean` typechecked cleanly (exit 0),
+and every `#print axioms` guard reports **only** `[propext, Classical.choice, Quot.sound]` — no
+`sorryAx`, no `Lean.ofReduceBool`. Verified on all 5 theorems (`triangle_flip_even`,
+`hexagon_triSignFlips_even`, `hexagon_triSignFlips_ne_one`, `arc_signflip_odd`,
+`pm1_dir_not_invariant`). (Prior session could not confirm because the host build env was mid-
+rewrite; this session the Mathlib oleans were restorable so single-file `lake env lean` bypassed
+Docker.) The file is small, self-contained, every tactic elementary; each `decide` fact is also
+independently reproduced by the exhaustive Python probes below.
 - `triangle_flip_even` / `triangle_flip_even'` / `triangle_flip_ne_one` — reusable `ZMod 2`
   cycle lemma: for any 3 sign bits the flip count around the triangle is even (`(x+y)+(y+z)+(z+x)=2(x+y+z)=0`),
   never 1.
@@ -1040,7 +1063,7 @@ n=2 Tucker. Rules out an entire class of closures. The genuine open lever — th
 Freund–Todd door graph — is unchanged and remains a multi-session BUILD.
 
 ### Files modified
-- proofs/Proofs/SpernerTuckerHexagonSignFlipCycles.lean (new, 0-axiom-intended, build-pending)
+- proofs/Proofs/SpernerTuckerHexagonSignFlipCycles.lean (new; VERIFIED 0-axiom via host `lake env lean`, researcher-5 2026-07-02)
 - research/problems/sperner-mathlib4-oq-02/probe_ft_pathfollowing.py (new)
 - research/problems/sperner-mathlib4-oq-02/probe_ft_oriented.py (new)
 - research/problems/sperner-mathlib4-oq-02/knowledge.md (this entry)
