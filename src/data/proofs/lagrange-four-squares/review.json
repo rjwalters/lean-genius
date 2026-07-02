@@ -108,28 +108,32 @@
       "priority": "high",
       "target": "researcher",
       "description": "Fix lipschitz_norm_multiplicative (line 343): either prove actual norm multiplicativity for LipschitzQuaternion (define multiplication, prove N(q1*q2) = N(q1)*N(q2)), or remove the theorem and replace with an honest axiom or comment noting it as future work.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Already resolved by prior source rework: LipschitzQuaternion.mul is now a genuine Hamilton-product definition and lipschitz_norm_multiplicative proves N(q₁·q₂)=N(q₁)·N(q₂) via ring (not a vacuous stub)."
     },
     {
       "id": "ai-2",
       "priority": "high",
       "target": "researcher",
       "description": "Fix the 3 vacuous True axioms: jacobi_four_squares (line 213), hurwitz_quaternions_euclidean (line 357), hurwitz_representation_count (line 365). Either state the actual mathematical content in the type signature or remove and keep as commentary only.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Already resolved by prior source rework: the three vacuous True stubs (jacobi_four_squares, hurwitz_quaternions_euclidean, hurwitz_representation_count) have been removed from the source; no `: True` declarations remain."
     },
     {
       "id": "ai-3",
       "priority": "medium",
       "target": "researcher",
       "description": "Fix or remove the r4 definition (line 203) which unconditionally returns 0. Either implement the actual representation count or remove the dead definition.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed the dead r4 definition (returned 0 unconditionally, no callers, not in #check list). sumDivisorsNot4 and r4_prime_formula retained."
     },
     {
       "id": "ai-4",
       "priority": "medium",
       "target": "researcher",
       "description": "Fix jacobi_implies_lagrange (line 238): the proof ignores its hypothesis. Either derive Lagrange from sumDivisorsNot4 positivity or reframe honestly.",
-      "status": "open"
+      "status": "resolved",
+      "resolution": "Removed jacobi_implies_lagrange: its proof ignored the sumDivisorsNot4-positivity hypothesis and simply invoked lagrange_four_squares. Honest reframing would make it a trivial duplicate of lagrange_four_squares, and the underlying Jacobi count is not formalized (its axiom stub was previously removed), so removal is the honest fix."
     },
     {
       "id": "ai-5",

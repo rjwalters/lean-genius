@@ -195,12 +195,6 @@ the number of representations of n as a sum of four squares:
 This connects to modular forms via the theta function θ(q)⁴.
 -/
 
-/-- r₄(n): number of ordered representations as sum of 4 squares (over ℤ) -/
-def r4 (_n : ℕ) : ℕ :=
-  -- Count (a,b,c,d) ∈ ℤ⁴ with a²+b²+c²+d² = n
-  -- Simplified placeholder; actual computation is over ℤ including negatives
-  0
-
 /-- Sum of divisors d of n where 4 does not divide d -/
 def sumDivisorsNot4 (n : ℕ) : ℕ :=
   (Finset.filter (fun d => d ∣ n ∧ ¬(4 ∣ d)) (Finset.range (n + 1))).sum id
@@ -224,15 +218,6 @@ theorem r4_prime_formula (p : ℕ) (hp : Nat.Prime p) (hp_odd : p % 2 = 1) :
       · exact ⟨by omega, dvd_refl _, h4_ndvd_p⟩
   rw [hfilt, Finset.sum_pair h1_ne_p]
   simp
-
-/-- Jacobi's formula gives r₄(n) > 0 for all n ≥ 1, providing an alternative
-    proof of Lagrange's theorem (four squares always suffice). -/
-theorem jacobi_implies_lagrange :
-    (∀ n : ℕ, n ≥ 1 → sumDivisorsNot4 n > 0) →
-    ∀ n : ℕ, n ≥ 1 → IsSumOfThreeSquares n ∨
-      ∃ a b c d : ℕ, a ^ 2 + b ^ 2 + c ^ 2 + d ^ 2 = n := by
-  intro h n _
-  right; exact lagrange_four_squares n
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART IV: WARING'S PROBLEM AND g(k)
