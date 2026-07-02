@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-header-overview",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 3, "endLine": 43 },
+    "type": "context",
+    "title": "The two dual determinant forms of Newton's identities",
+    "content": "The module docstring frames the result against its parent and sibling. Newton's identities link the elementary symmetric polynomials eₖ = esymm σ R k and the power sums pₖ = psum σ R k = ∑ᵢ Xᵢᵏ. There are two ways to package the recurrence as a single determinant: pₖ as a determinant in the eⱼ (this entry, the forward Girard–Waring form) and k!·eₖ as a determinant in the pᵢ (the reverse Toeplitz form of oq-01-oq-02). The forward matrix Mₖ is lower-Hessenberg: scaled polynomials 1·e₁, 2·e₂, …, k·eₖ down the first column, the eⱼ on the diagonals, and constant 1's on the super-diagonal. These are identities in MvPolynomial σ R for any finite σ and any commutative ring R, so no division by k! ever appears.",
+    "mathContext": "$p_1=\\det[e_1],\\quad p_2=\\det\\begin{pmatrix}e_1&1\\\\2e_2&e_1\\end{pmatrix},\\quad p_3=\\det\\begin{pmatrix}e_1&1&0\\\\2e_2&e_1&1\\\\3e_3&e_2&e_1\\end{pmatrix}$",
+    "significance": "context",
+    "relatedConcepts": ["Newton's identities", "elementary symmetric polynomials", "power sums", "Girard–Waring formula", "lower-Hessenberg matrix"],
+    "prerequisites": ["symmetric polynomials", "determinants"]
+  },
+  {
+    "id": "ann-setup",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 45, "endLine": 51 },
+    "type": "definition",
+    "title": "Generic setup: any finite index type over any commutative ring",
+    "content": "The proof opens the Finset, Matrix, and MvPolynomial namespaces and fixes an arbitrary index type σ that is a Fintype together with a commutative ring R. Working inside MvPolynomial σ R (rather than a numeric ring) is what makes the statements universal symmetric-function identities: they hold simultaneously for every choice of variable count and coefficient ring. The Fintype hypothesis is exactly what is needed for esymm and psum to be well-defined finite sums.",
+    "mathContext": "$\\sigma$ finite, $R$ a commutative ring, $e_j=\\operatorname{esymm}_\\sigma^R j$, $p_k=\\operatorname{psum}_\\sigma^R k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["MvPolynomial", "Fintype", "commutative ring", "universal identity"],
+    "prerequisites": ["multivariate polynomial rings", "type classes in Lean"]
+  },
+  {
+    "id": "ann-psum-one-eq",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "technique",
+    "title": "Degree-1 base case: p₁ = e₁",
+    "content": "The degree-1 identity is definitional: both the first power sum and the first elementary symmetric polynomial equal ∑ᵢ Xᵢ. Mathlib records this directly as psum_one and esymm_one, so a single rewrite by each closes the goal. This is the anchor of the recursive ladder — every higher identity is unwound down to this base.",
+    "mathContext": "$p_1 = \\sum_i X_i = e_1$",
+    "significance": "supporting",
+    "relatedConcepts": ["base case", "power sum", "elementary symmetric polynomial"],
+    "prerequisites": ["definition of psum and esymm"]
+  },
+  {
+    "id": "ann-psum-two-eq",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 63, "endLine": 74 },
+    "type": "technique",
+    "title": "Degree-2 scalar identity by unrolling the Newton recurrence",
+    "content": "This reproduces p₂ = e₁² − 2e₂ from Mathlib's recurrence psum_eq_mul_esymm_sub_sum. The recurrence's inner sum ranges over pairs (i, k−i) in the antidiagonal of 2 with 0 < i < 2; the auxiliary lemma hset proves this filtered index set is exactly the singleton {(1,1)}, discharged by omega after simp normalises the membership predicate. Finset.sum_singleton then collapses the sum, psum_one_eq feeds back the base case, and push_cast; ring finishes over the integer coefficients coming from the (−1)ⁱ signs.",
+    "mathContext": "$p_2 = (-1)^{3}\\cdot 2 e_2 - \\!\\!\\sum_{0<i<2}\\!\\!(-1)^i e_i\\,p_{2-i} = e_1^2 - 2e_2$",
+    "significance": "key",
+    "relatedConcepts": ["Newton recurrence", "antidiagonal", "Finset filtering", "omega"],
+    "prerequisites": ["MvPolynomial.psum_eq_mul_esymm_sub_sum", "finite sums over antidiagonals"]
+  },
+  {
+    "id": "ann-psum-three-eq",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 76, "endLine": 88 },
+    "type": "technique",
+    "title": "Degree-3 scalar identity: the two-term inner sum",
+    "content": "The degree-3 case follows the same recipe, but now the filtered antidiagonal of 3 with 0 < i < 3 is the two-element set {(1,2),(2,1)}, again proved by omega. Finset.sum_pair (whose (1,2) ≠ (2,1) side condition is closed by decide, a kernel reduction that introduces no ofReduceBool axiom) expands the sum, and the two previously proved identities psum_two_eq and psum_one_eq are substituted before push_cast; ring produces p₃ = e₁³ − 3e₁e₂ + 3e₃. This layered dependence (deg 3 on deg 2 on deg 1) mirrors the recursive nature of Newton's identities.",
+    "mathContext": "$p_3 = e_1^3 - 3 e_1 e_2 + 3 e_3$",
+    "significance": "key",
+    "relatedConcepts": ["Newton recurrence", "Finset.sum_pair", "decide", "recursion"],
+    "prerequisites": ["degree-2 identity", "finite sums over a pair"]
+  },
+  {
+    "id": "ann-psum-one-det",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 96, "endLine": 99 },
+    "type": "insight",
+    "title": "Degree-1 determinant: p₁ = det[e₁]",
+    "content": "The 1×1 Girard–Waring matrix is just [e₁], whose determinant Matrix.det_fin_one_of evaluates to its single entry. Rewriting by the scalar identity psum_one_eq closes the goal. Trivial as a determinant, it fixes the shape convention that the higher matrices generalise.",
+    "mathContext": "$p_1 = \\det[e_1] = e_1$",
+    "significance": "supporting",
+    "relatedConcepts": ["1×1 determinant", "Matrix.det_fin_one_of"],
+    "prerequisites": ["determinant of a 1×1 matrix"]
+  },
+  {
+    "id": "ann-psum-two-det",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 101, "endLine": 107 },
+    "type": "insight",
+    "title": "Degree-2 determinant and linear_combination",
+    "content": "The 2×2 matrix [[e₁,1],[2e₂,e₁]] expands under Matrix.det_fin_two_of to e₁·e₁ − 1·(2e₂) = e₁² − 2e₂. Rather than rewrite, the proof closes the gap to the scalar target with linear_combination psum_two_eq: this tactic certifies that goal minus e₁²−2e₂ is the zero combination of the supplied identity, letting ring-normalisation handle the algebra. The first-column scaling (2e₂, from the recurrence's k·eₖ term) is exactly what makes the cofactor expansion land on the scalar value.",
+    "mathContext": "$\\det\\begin{pmatrix}e_1&1\\\\2e_2&e_1\\end{pmatrix}=e_1^2-2e_2=p_2$",
+    "significance": "key",
+    "relatedConcepts": ["2×2 determinant", "Matrix.det_fin_two_of", "linear_combination", "cofactor expansion"],
+    "prerequisites": ["determinant of a 2×2 matrix", "linear_combination tactic"]
+  },
+  {
+    "id": "ann-psum-three-det",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 109, "endLine": 120 },
+    "type": "insight",
+    "title": "Degree-3 determinant and the Matrix.of_apply simp trap",
+    "content": "The degree-3 identity is the substantive one: the 3×3 lower-Hessenberg matrix expands under Matrix.det_fin_three, and linear_combination psum_three_eq matches it to e₁³ − 3e₁e₂ + 3e₃. The subtlety is the simp set: because the !![…] literal elaborates to Matrix.of ![…], det_fin_three leaves entries shaped as (Matrix.of M) i j. Matrix.of_apply must appear in the simp set (before the cons/head lemmas) so the outer Matrix.of is peeled first — otherwise simp reports 'no progress'. The 1×1 and 2×2 cases sidestep this by using the *_of determinant lemmas, which read entries directly.",
+    "mathContext": "$\\det\\begin{pmatrix}e_1&1&0\\\\2e_2&e_1&1\\\\3e_3&e_2&e_1\\end{pmatrix}=e_1^3-3e_1e_2+3e_3=p_3$",
+    "significance": "key",
+    "relatedConcepts": ["3×3 determinant", "Matrix.det_fin_three", "Matrix.of_apply", "simp normal form", "matrix notation"],
+    "prerequisites": ["determinant of a 3×3 matrix", "!![…] matrix literal elaboration", "simp lemma ordering"]
+  },
+  {
+    "id": "ann-example",
+    "proofId": "newton-power-sum-identities-oq-01-oq-03",
+    "range": { "startLine": 122, "endLine": 134 },
+    "type": "context",
+    "title": "Worked example over Fin 2 and ℤ",
+    "content": "Specialising the degree-2 determinant to σ = Fin 2, R = ℤ recovers the familiar two-variable formula p₂ = X₀² + X₁² = (X₀+X₁)² − 2X₀X₁ = e₁² − 2e₂, now read off as a 2×2 determinant. Because psum_two_det is universally quantified over σ and R, the example is a direct instantiation with no additional proof work, demonstrating that the abstract identity carries no hidden characteristic or dimension assumptions.",
+    "mathContext": "Over $\\mathbb{Z}$ with $X_0,X_1$: $p_2 = X_0^2+X_1^2 = e_1^2 - 2e_2$",
+    "significance": "context",
+    "relatedConcepts": ["instantiation", "concrete example", "two-variable symmetric functions"],
+    "prerequisites": ["specialising a universally quantified theorem"]
+  }
+]
