@@ -18,7 +18,11 @@
       "frequency distribution",
       "extremal combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Euclidean distance between planar points",
+      "extremal combinatorics",
+      "the Erdős distinct distances problem"
+    ]
   },
   {
     "id": "erdos-959-frequency",
@@ -37,7 +41,11 @@
       "pair counting",
       "Cartesian product"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "unordered versus ordered pairs",
+      "Cartesian product of a finite set",
+      "Finset filtering in Lean"
+    ]
   },
   {
     "id": "erdos-959-distinct",
@@ -55,7 +63,11 @@
       "Guth-Katz theorem"
     ],
     "mathContext": "See annotation content for formal details of distinct distances",
-    "prerequisites": []
+    "prerequisites": [
+      "the distance function on point sets",
+      "image of a function over a set",
+      "positive real distances"
+    ]
   },
   {
     "id": "erdos-959-gap",
@@ -74,7 +86,11 @@
       "distance concentration",
       "extremal configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "distance frequency f(d)",
+      "maximum and second-maximum of a multiset",
+      "extremal point configurations"
+    ]
   },
   {
     "id": "erdos-959-conjecture",
@@ -93,7 +109,11 @@
       "pigeonhole principle",
       "Guth-Katz theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the pigeonhole principle",
+      "the Guth-Katz distinct distances bound",
+      "superlinear growth (n log n)"
+    ]
   },
   {
     "id": "erdos-959-cdl",
@@ -112,7 +132,11 @@
       "lattice point constructions",
       "extremal configurations"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "additive combinatorics",
+      "lattice point constructions",
+      "asymptotic notation Omega(·)"
+    ]
   },
   {
     "id": "erdos-959-strong",
@@ -131,7 +155,11 @@
       "superpolynomial growth",
       "log log threshold"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "polynomial versus superpolynomial growth",
+      "the Erdős unit distance problem",
+      "the iterated logarithm (log log n)"
+    ]
   },
   {
     "id": "erdos-959-gapr",
@@ -150,7 +178,11 @@
       "sorted sequences",
       "rank statistics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the frequency gap f(d_1) - f(d_2)",
+      "sorting a sequence in decreasing order",
+      "rank statistics and indexing"
+    ]
   },
   {
     "id": "erdos-959-total",
@@ -169,7 +201,11 @@
       "binomial coefficient",
       "average frequency"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "double counting arguments",
+      "the binomial coefficient n choose 2",
+      "distance frequency f(d)"
+    ]
   },
   {
     "id": "erdos-959-empty",
@@ -187,6 +223,10 @@
       "degenerate configuration"
     ],
     "mathContext": "See annotation content for formal details of empty set base case",
-    "prerequisites": []
+    "prerequisites": [
+      "the empty set as a degenerate case",
+      "unfolding definitions in a proof",
+      "products over an empty index"
+    ]
   }
 ]
