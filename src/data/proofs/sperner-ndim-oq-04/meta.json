@@ -71,6 +71,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Kuhn's path-following algorithm for n-dimensional Sperner",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Formalizes Kuhn's (1968) CONSTRUCTIVE proof of Sperner's lemma via path-following in the door adjacency graph of an abstract triangulation: starting from a boundary door, follow a unique path through the door graph to a fully-coloured (FC) simplex in polynomial time. The file proves the door-degree structure (FC simplices have exactly 1 door, non-FC 0 or 2 under Kuhn compatibility), the deterministic Kuhn step and its WalkValid invariant, the KEY non-revisit lemma, the termination dichotomy (with |K.Simplex| fuel the walk ends at an FC or a boundary door), and the existential 'some boundary door's walk finds FC'. The docstring is candid: 1 axiom remains — `kuhn_path_existential` — whose FPF-involution proof needs a ~150-line `walkTrace_reversal` induction pending formalization (BLOCKED since Session 8); it also lists three theorems REMOVED as false-as-stated (the universal walk theorem, non-existential FC start, abstract boundary parity). Entry is honestly axiomatized.",
+      "mathContext": "Kuhn's algorithm is the algorithmic core of Sperner's lemma: a door at (s,k) is a facet whose d vertices excluding k carry all d colours; interior doors pair up via adjacency and boundary doors lie on the last face by the Sperner condition. The abstract door-parity theorem gives FC simplices odd door degree and non-FC even; imposing Kuhn compatibility (door degree ≤ 2) forces exactly-1 / 0-or-2, making the enter-one-door-exit-the-other walk deterministic. Termination is a fixed-point-free-involution argument on the boundary-door set: if every walk failed to reach an FC simplex, the walk-endpoint map would be an FPF involution on a finite set, impossible — the content axiomatized as `kuhn_path_existential`."
+    },
+    {
       "id": "kuhn-compatible",
       "title": "Door Degree and Kuhn Compatibility",
       "startLine": 81,
