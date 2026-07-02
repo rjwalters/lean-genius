@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: the sign of the real cubic discriminant classifies the root structure",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The import of the sibling SolutionOfCubicOQ01OQ01, the module docstring, and the namespace/open setup. Where the sibling treats the discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² as a characteristic-free algebraic invariant over ℂ, this file proves the classical real discriminant test — the sign of Δ classifies a real cubic's root structure.",
+      "mathContext": "The three forward sign implications (exhaustive for a real cubic, hence the full classification): Δ > 0 ⟺ three distinct real roots; Δ < 0 ⟺ one real root plus a non-real conjugate pair; Δ = 0 ⟺ a repeated root. Both come from the root form Δ = a⁴·((x₁−x₂)(x₁−x₃)(x₂−x₃))²: for all-real roots the bracket is real so Δ = a⁴·(real)² ≥ 0, strictly > 0 when distinct (realDiscriminant_pos_of_distinct_real_roots); for a conjugate pair r, w=m+ni, w̄, a single real ring identity collapses Δ to −4a⁴n²((r−m)²+n²)² (realDiscriminant_conj_pair, realDiscriminant_neg_of_conj_pair), < 0 exactly when n ≠ 0 — the complex root (w−w̄)² = −4n² flips the sign. realDiscriminant_conj_pair_root_form certifies the conjugate-pair parametrization really is the Vieta data of r, w, w̄, bridging to the sibling's complex generalDiscriminant_eq_root_form via the real-to-complex cast. Original content: realDiscriminant (real-valued, so its sign is meaningful) and its root form, sign, and repeated-root lemmas. Everything reduces to ring over ℝ plus positivity/nlinarith; the only complex work is the componentwise Vieta bridge. 0-axiom throughout."
+    },
+    {
       "id": "real-discriminant",
       "title": "Part 1: The Real Cubic Discriminant",
       "startLine": 67,
