@@ -40,6 +40,13 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Balanced Three-Moduli RNS Set {2ⁿ−1, 2ⁿ, 2ⁿ+1}",
+      "startLine": 1,
+      "endLine": 89,
+      "summary": "Module docstring, import Mathlib, and setup (namespace RNSThreeModuli, open Nat). OQ-03-OQ-02 asks which concrete RNS base is the canonical 'most efficient' choice for computer arithmetic. The parent formalizes general RNS efficiency criteria and siblings cover prime-base optimality (OQ-03-OQ-01) and a single power-of-2 channel (OQ-03-OQ-03); none formalize the single most-cited hardware base, the balanced three-moduli set {2ⁿ−1, 2ⁿ, 2ⁿ+1} (Soderstrand 1986) — three ~n-bit channels giving ~3n-bit dynamic range, two admitting trivial modular reduction. This file delivers, 0-axiom/0-sorry: pairwise coprimality, the exact range formula (2ⁿ−1)·2ⁿ·(2ⁿ+1)=2^(3n)−2ⁿ, a genuine RNSBase instance, a balance bound, the CRT reconstruction step, and concrete cross-checks for n=2,3,4. Section VI adds the four-moduli extension governed by a parity dichotomy: the admissible extra (n+1)-bit modulus flips with the parity of n, the obstruction being divisibility by 3 (controlled by 2ⁿ mod 3). Constructive characterization only — it does not claim global optimality (the open parent question)."
+    },
+    {
       "id": "coprimality",
       "title": "Pairwise Coprimality of the Three Moduli",
       "startLine": 90,
