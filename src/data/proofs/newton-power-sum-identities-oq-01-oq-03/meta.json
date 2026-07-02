@@ -120,11 +120,6 @@
       "targetId": "newton-power-sum-identities-oq-01",
       "relationship": "extends",
       "description": "Parent entry recording the forward scalar low-degree Newton identities p₁ = e₁, p₂ = e₁² − 2e₂, p₃ = e₁³ − 3e₁e₂ + 3e₃, which this entry packages as determinants."
-    },
-    {
-      "targetId": "newton-power-sum-identities-oq-01-oq-02",
-      "relationship": "dual",
-      "description": "Sibling entry proving the reverse Toeplitz-determinant form k!·eₖ = det Tₖ (each elementary symmetric polynomial as a determinant in the power sums). This entry proves the dual forward determinant pₖ = det Mₖ (each power sum as a determinant in the elementary symmetric polynomials)."
     }
   ],
   "conclusion": {

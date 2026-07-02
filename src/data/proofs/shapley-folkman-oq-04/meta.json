@@ -120,11 +120,6 @@
       "targetId": "shapley-folkman-oq-03",
       "relationship": "extends",
       "description": "Sharpens OQ03's Starr distance bound d·δ to min(d, k)·δ and generalizes OQ03's pointwise no_excess_for_convex into the counting statement that the entire excess set lies among the non-convex summands. Reuses OQ03's point-selection argument for the metric refinement."
-    },
-    {
-      "targetId": "caratheodory-theorem",
-      "relationship": "related",
-      "description": "The Shapley-Folkman lemma is a Minkowski-sum strengthening of Carathéodory's theorem; this refinement observes that only non-convex summands contribute to the Carathéodory-style vertex excess, so convex summands are 'transparent' to the bound."
     }
   ],
   "references": [

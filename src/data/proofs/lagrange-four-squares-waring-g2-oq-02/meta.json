@@ -134,36 +134,43 @@
       "targetId": "lagrange-four-squares-waring-g2",
       "relationship": "extends",
       "description": "Parent entry proves Waring's problem for squares g(2) = 4 (the easy Waring number). This entry addresses its open question OQ-02 about the hard Waring number G(k) for k ≥ 3, proving the elementary congruence lower bounds."
-    },
-    {
-      "targetId": "lagrange-four-squares-waring-g2-oq-01",
-      "relationship": "related",
-      "description": "Sibling OQ-01 pins the EASY Waring number g(k) = 2^k + ⌊(3/2)^k⌋ − 2 (lower bound proved, upper axiomatized). This entry treats the distinct HARD Waring number G(k) and its lower bounds."
     }
   ],
   "references": [
     {
-      "authors": ["G. H. Hardy", "E. M. Wright"],
+      "authors": [
+        "G. H. Hardy",
+        "E. M. Wright"
+      ],
       "title": "An Introduction to the Theory of Numbers",
       "year": "2008",
       "note": "6th ed., Chapter XXI (Waring's problem); the congruence lower bounds for G(k) and the values G(2)=4, G(4)=16."
     },
     {
-      "authors": ["H. Davenport"],
+      "authors": [
+        "H. Davenport"
+      ],
       "title": "On Waring's problem for fourth powers",
       "year": "1939",
       "note": "Annals of Mathematics 40, 731-747; proves G(4) = 16, matching the mod-16 lower bound of this entry."
     },
     {
-      "authors": ["R. C. Vaughan", "T. D. Wooley"],
+      "authors": [
+        "R. C. Vaughan",
+        "T. D. Wooley"
+      ],
       "title": "Waring's problem: a survey",
       "year": "2002",
       "note": "Number Theory for the Millennium III, 301-340; modern account of bounds on G(k)."
     }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["BigOperators"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators"
+    ],
     "namespace": "WaringGgLowerBoundsOQ02",
     "lineCount": 183,
     "axiomCount": 0,

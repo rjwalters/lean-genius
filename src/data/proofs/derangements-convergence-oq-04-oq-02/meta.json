@@ -127,11 +127,6 @@
       "targetId": "derangements",
       "relationship": "foundational",
       "description": "Root: derangement definitions and the recurrences numDerangements_add_two / numDerangements_succ underlying both component facts."
-    },
-    {
-      "targetId": "chinese-remainder-theorem",
-      "relationship": "foundational",
-      "description": "The fusion of the two coprime-modulus congruences into one modulo n(n−1) is a direct application of the CRT (here via IsCoprime.mul_dvd)."
     }
   ],
   "conclusion": {
