@@ -82,43 +82,50 @@
       "title": "Module header and context",
       "startLine": 1,
       "endLine": 51,
-      "summary": "States the p-step shallow-diagonal generalization (the parent's second open question), the step parametrization q = p−1, the main results (recurrence, base segment, Fibonacci corollary), and the worked specializations q=0 (powers of two), q=1 (Fibonacci), q=2 (Narayana's cows). Imports Mathlib."
+      "summary": "States the p-step shallow-diagonal generalization (the parent's second open question), the step parametrization q = p−1, the main results (recurrence, base segment, Fibonacci corollary), and the worked specializations q=0 (powers of two), q=1 (Fibonacci), q=2 (Narayana's cows). Imports Mathlib.",
+      "id": "module-header-and-context"
     },
     {
       "title": "The p-step shallow-diagonal sum",
       "startLine": 56,
       "endLine": 60,
-      "summary": "pbonacci q n := ∑_{j ∈ range (n+1)} C(n − q·j, j), the p-step diagonal sum; q=1 is the parent's Fibonacci diagonal."
+      "summary": "pbonacci q n := ∑_{j ∈ range (n+1)} C(n − q·j, j), the p-step diagonal sum; q=1 is the parent's Fibonacci diagonal.",
+      "id": "the-p-step-shallow-diagonal-sum"
     },
     {
       "title": "Range extension",
       "startLine": 62,
       "endLine": 73,
-      "summary": "pbonacci_extend: terms vanish once j outruns n − q·j, so the summation range may be enlarged above n without changing the value. Used to make the recurrence bookkeeping linear."
+      "summary": "pbonacci_extend: terms vanish once j outruns n − q·j, so the summation range may be enlarged above n without changing the value. Used to make the recurrence bookkeeping linear.",
+      "id": "range-extension"
     },
     {
       "title": "Pascal's rule on a diagonal term",
       "startLine": 77,
       "endLine": 106,
-      "summary": "diag_pascal (private helper): C(n+q+1 − q(j+1), j+1) = C(n − q·j, j+1) + C(n − q·j, j) for j ≥ 1, splitting by whether the subtraction truncates. This is the engine of the recurrence."
+      "summary": "diag_pascal (private helper): C(n+q+1 − q(j+1), j+1) = C(n − q·j, j+1) + C(n − q·j, j) for j ≥ 1, splitting by whether the subtraction truncates. This is the engine of the recurrence.",
+      "id": "pascal-s-rule-on-a-diagonal-term"
     },
     {
       "title": "The p-bonacci recurrence",
       "startLine": 108,
       "endLine": 155,
-      "summary": "pbonacci_rec: S q (n+q+1) = S q (n+q) + S q n. Peels the j=0 term, applies diag_pascal termwise, identifies the two resulting sums as S q (n+q) and S q n via pbonacci_extend, and closes with omega."
+      "summary": "pbonacci_rec: S q (n+q+1) = S q (n+q) + S q n. Peels the j=0 term, applies diag_pascal termwise, identifies the two resulting sums as S q (n+q) and S q n via pbonacci_extend, and closes with omega.",
+      "id": "the-p-bonacci-recurrence"
     },
     {
       "title": "Constant base segment",
       "startLine": 157,
       "endLine": 174,
-      "summary": "pbonacci_base: S q n = 1 for n ≤ q. Every term beyond j=0 vanishes because n − q(j+1) = 0, leaving the single leading C(n,0) = 1."
+      "summary": "pbonacci_base: S q n = 1 for n ≤ q. Every term beyond j=0 vanishes because n − q(j+1) = 0, leaving the single leading C(n,0) = 1.",
+      "id": "constant-base-segment"
     },
     {
       "title": "Recovering the parent Fibonacci identity",
       "startLine": 176,
       "endLine": 195,
-      "summary": "pbonacci_one_eq_fib: S 1 n = F(n+1), proved by two-step induction from pbonacci_rec at q=1 and Nat.fib_add_two — the parent result as a corollary of the general recurrence."
+      "summary": "pbonacci_one_eq_fib: S 1 n = F(n+1), proved by two-step induction from pbonacci_rec at q=1 and Nat.fib_add_two — the parent result as a corollary of the general recurrence.",
+      "id": "recovering-the-parent-fibonacci-identity"
     }
   ],
   "sorries": [],

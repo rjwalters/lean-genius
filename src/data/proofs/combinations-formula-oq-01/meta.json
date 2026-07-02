@@ -97,31 +97,36 @@
       "title": "Part I: Vandermonde's Identity",
       "startLine": 24,
       "endLine": 40,
-      "summary": "vandermonde proves C(m+n,r) = Σ C(m,k)·C(n,r-k) in two lines: rw [Nat.add_choose_eq] then exact with Finset.Nat.sum_antidiagonal_eq_sum_range_succ. Verified by native_decide for C(8,4)=70 and the matching sum."
+      "summary": "vandermonde proves C(m+n,r) = Σ C(m,k)·C(n,r-k) in two lines: rw [Nat.add_choose_eq] then exact with Finset.Nat.sum_antidiagonal_eq_sum_range_succ. Verified by native_decide for C(8,4)=70 and the matching sum.",
+      "id": "part-i-vandermonde-s-identity"
     },
     {
       "title": "Part II: Hockey Stick Identity",
       "startLine": 42,
       "endLine": 65,
-      "summary": "hockey_stick proves Σ_{i=0}^{n} C(i+r,r) = C(n+r+1,r+1) by induction. Base: simp [Nat.choose_self]. Step: Finset.sum_range_succ + induction hypothesis + Nat.choose_succ_succ (Pascal's rule) + omega. Verified by native_decide for r=0,1,2."
+      "summary": "hockey_stick proves Σ_{i=0}^{n} C(i+r,r) = C(n+r+1,r+1) by induction. Base: simp [Nat.choose_self]. Step: Finset.sum_range_succ + induction hypothesis + Nat.choose_succ_succ (Pascal's rule) + omega. Verified by native_decide for r=0,1,2.",
+      "id": "part-ii-hockey-stick-identity"
     },
     {
       "title": "Part III: Product/Double Counting Identity",
       "startLine": 67,
       "endLine": 109,
-      "summary": "choose_product proves C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j) for j≤k≤n. Strategy: multiply by j!·(k-j)!·(n-k)! and show both sides equal n! using Nat.choose_mul_factorial_mul_factorial. Cancel with mul_right_cancel₀ (positivity shows denominator ≠ 0). 30 lines of ring arithmetic."
+      "summary": "choose_product proves C(n,k)·C(k,j) = C(n,j)·C(n-j,k-j) for j≤k≤n. Strategy: multiply by j!·(k-j)!·(n-k)! and show both sides equal n! using Nat.choose_mul_factorial_mul_factorial. Cancel with mul_right_cancel₀ (positivity shows denominator ≠ 0). 30 lines of ring arithmetic.",
+      "id": "part-iii-product-double-counting-identity"
     },
     {
       "title": "Parts IV-VI: Row Sums and Binomial Bounds",
       "startLine": 111,
       "endLine": 158,
-      "summary": "choose_row_sum: exact Nat.sum_range_choose n (1 line). choose_alternating_sum: exact Int.alternating_sum_range_choose_of_ne. choose_le_pow2: C(n,k) ≤ Σ C(n,i) = 2ⁿ via Finset.single_le_sum; k>n case by Nat.choose_eq_zero_of_lt. central_binom_le: C(2n,n) ≤ 2^{2n} = 4ⁿ via choose_le_pow2 + pow_mul."
+      "summary": "choose_row_sum: exact Nat.sum_range_choose n (1 line). choose_alternating_sum: exact Int.alternating_sum_range_choose_of_ne. choose_le_pow2: C(n,k) ≤ Σ C(n,i) = 2ⁿ via Finset.single_le_sum; k>n case by Nat.choose_eq_zero_of_lt. central_binom_le: C(2n,n) ≤ 2^{2n} = 4ⁿ via choose_le_pow2 + pow_mul.",
+      "id": "parts-iv-vi-row-sums-and-binomial-bounds"
     },
     {
       "title": "Parts VII-VIII: Fibonacci Diagonals and Summary",
       "startLine": 160,
       "endLine": 185,
-      "summary": "Fibonacci diagonals Σ C(n-j,j) = F(n+1) verified by native_decide for n=5 (=8=F(6)) and n=6 (=13=F(7)). General proof is open. identities_summary bundles four identities as a conjunction: ⟨Nat.sum_range_choose, hockey_stick, vandermonde, choose_le_pow2⟩."
+      "summary": "Fibonacci diagonals Σ C(n-j,j) = F(n+1) verified by native_decide for n=5 (=8=F(6)) and n=6 (=13=F(7)). General proof is open. identities_summary bundles four identities as a conjunction: ⟨Nat.sum_range_choose, hockey_stick, vandermonde, choose_le_pow2⟩.",
+      "id": "parts-vii-viii-fibonacci-diagonals-and-summary"
     }
   ],
   "sorries": 0,

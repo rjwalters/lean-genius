@@ -113,43 +113,50 @@
       "title": "Part I: CRT for EuclideanDomains",
       "startLine": 34,
       "endLine": 123,
-      "summary": "Necessity (ed_crt_necessary): gcd(m,n) divides both m and n, so it divides (x-a)-(x-b) = a-b. Sufficiency (ed_crt_sufficient): explicit construction x = a - m·(gcdA·q) via Bézout. Uniqueness (ed_crt_unique): lcm(m,n) divides any x-y satisfying both congruences. Specializations to ℤ are one-liners. Three-moduli necessity, weakening, and combining lemmas round out the section."
+      "summary": "Necessity (ed_crt_necessary): gcd(m,n) divides both m and n, so it divides (x-a)-(x-b) = a-b. Sufficiency (ed_crt_sufficient): explicit construction x = a - m·(gcdA·q) via Bézout. Uniqueness (ed_crt_unique): lcm(m,n) divides any x-y satisfying both congruences. Specializations to ℤ are one-liners. Three-moduli necessity, weakening, and combining lemmas round out the section.",
+      "id": "part-i-crt-for-euclideandomains"
     },
     {
       "title": "Parts II-III: Polynomial CRT and Lagrange Interpolation",
       "startLine": 125,
       "endLine": 214,
-      "summary": "linear_factors_coprime proves IsCoprime (X-C a) (X-C b) for a≠b by explicit Bézout: C(b-a)⁻¹·(X-a) + (-C(b-a)⁻¹)·(X-b) = 1. polynomial_crt_two_points constructs the Lagrange interpolant. polynomial_crt_two_degree_bound proves degree ≤ 1. poly_crt_extend gives the inductive Newton step: given solution p₀ mod m, adjust to hit value b at point a."
+      "summary": "linear_factors_coprime proves IsCoprime (X-C a) (X-C b) for a≠b by explicit Bézout: C(b-a)⁻¹·(X-a) + (-C(b-a)⁻¹)·(X-b) = 1. polynomial_crt_two_points constructs the Lagrange interpolant. polynomial_crt_two_degree_bound proves degree ≤ 1. poly_crt_extend gives the inductive Newton step: given solution p₀ mod m, adjust to hit value b at point a.",
+      "id": "parts-ii-iii-polynomial-crt-and-lagrange-interpolation"
     },
     {
       "title": "Part IV: Ideal Bridge — IsCoprime ↔ Ideal.span sup = ⊤",
       "startLine": 216,
       "endLine": 274,
-      "summary": "isCoprime_iff_span_sup_eq_top: s·a + t·b = 1 ↔ 1 ∈ ⟨a⟩ + ⟨b⟩. Euclid's lemma (euclid_lemma_from_coprimality) and coprime multiplication (coprime_mul_dvd_iff) follow. coprime_crt_unique_ideal: IsCoprime m n → m·n ∣ (x₁-x₂) for two solutions. Summary theorem (crt_oq02_summary) bundles existence, uniqueness, and ideal characterization."
+      "summary": "isCoprime_iff_span_sup_eq_top: s·a + t·b = 1 ↔ 1 ∈ ⟨a⟩ + ⟨b⟩. Euclid's lemma (euclid_lemma_from_coprimality) and coprime multiplication (coprime_mul_dvd_iff) follow. coprime_crt_unique_ideal: IsCoprime m n → m·n ∣ (x₁-x₂) for two solutions. Summary theorem (crt_oq02_summary) bundles existence, uniqueness, and ideal characterization.",
+      "id": "part-iv-ideal-bridge-iscoprime-ideal-span-sup"
     },
     {
       "title": "Parts V-X: Structural and Multi-Moduli Results",
       "startLine": 276,
       "endLine": 501,
-      "summary": "Part V: crt_oq02_summary bundles existence + uniqueness + ideal bridge. Part VI: PID principal ideal lemma, Bézout existence, coprime CRT solvability and uniqueness. Part VII: degree bounds for 1-point and 2-point interpolation. Part VIII: coprime chain properties (IsCoprime transitivity, symmetry, self-coprimality). Part IX: structural lemmas (coprime subsumes non-coprime, contrapositive impossibility, reflexivity, transitivity). Part X: three-moduli coprime CRT with explicit CRT basis elements."
+      "summary": "Part V: crt_oq02_summary bundles existence + uniqueness + ideal bridge. Part VI: PID principal ideal lemma, Bézout existence, coprime CRT solvability and uniqueness. Part VII: degree bounds for 1-point and 2-point interpolation. Part VIII: coprime chain properties (IsCoprime transitivity, symmetry, self-coprimality). Part IX: structural lemmas (coprime subsumes non-coprime, contrapositive impossibility, reflexivity, transitivity). Part X: three-moduli coprime CRT with explicit CRT basis elements.",
+      "id": "parts-v-x-structural-and-multi-moduli-results"
     },
     {
       "title": "Part XI: Ideal-Theoretic CRT — The Most General Formulation",
       "startLine": 503,
       "endLine": 592,
-      "summary": "ideal_crt_iff: ∃ x, (x-a)∈I ∧ (x-b)∈J ↔ (a-b)∈I⊔J, for any ideals in any commutative ring. Necessity decomposes a-b = -(x-a) + (x-b). Sufficiency sets x = a-i from the I-component. Uniqueness: (x₁-x₂) ∈ I⊓J. Three-ideal extensions by pairwise application. Coprime case (I⊔J=⊤) gives automatic solvability."
+      "summary": "ideal_crt_iff: ∃ x, (x-a)∈I ∧ (x-b)∈J ↔ (a-b)∈I⊔J, for any ideals in any commutative ring. Necessity decomposes a-b = -(x-a) + (x-b). Sufficiency sets x = a-i from the I-component. Uniqueness: (x₁-x₂) ∈ I⊓J. Three-ideal extensions by pairwise application. Coprime case (I⊔J=⊤) gives automatic solvability.",
+      "id": "part-xi-ideal-theoretic-crt-the-most-general-formulation"
     },
     {
       "title": "Part XII: Closing the Loop — Ideal CRT Recovers Element CRT",
       "startLine": 594,
       "endLine": 647,
-      "summary": "mem_span_singleton_iff_dvd: x ∈ ⟨m⟩ ↔ m ∣ x. element_crt_from_ideal specializes ideal CRT to principal ideals. span_sup_top_of_isCoprime: IsCoprime m n → span{m} ⊔ span{n} = ⊤. element_coprime_crt_from_ideal shows coprime elements always give solvable systems."
+      "summary": "mem_span_singleton_iff_dvd: x ∈ ⟨m⟩ ↔ m ∣ x. element_crt_from_ideal specializes ideal CRT to principal ideals. span_sup_top_of_isCoprime: IsCoprime m n → span{m} ⊔ span{n} = ⊤. element_coprime_crt_from_ideal shows coprime elements always give solvable systems.",
+      "id": "part-xii-closing-the-loop-ideal-crt-recovers-element-crt"
     },
     {
       "title": "Part XIII: Non-Coprime CRT for PIDs — The Final Synthesis",
       "startLine": 649,
       "endLine": 705,
-      "summary": "pid_span_sup_principal: in a PID, span{m} ⊔ span{n} is principal (= ⟨gcd⟩). pid_noncoprime_crt_iff: element solvability ↔ (a-b) ∈ span{m} ⊔ span{n}. pid_noncoprime_crt_unique: uniqueness mod span{m} ⊓ span{n} (= ⟨lcm⟩). pid_noncoprime_crt_full: combined existence + uniqueness. Covers ℤ, k[X], ℤ[i] and all PIDs."
+      "summary": "pid_span_sup_principal: in a PID, span{m} ⊔ span{n} is principal (= ⟨gcd⟩). pid_noncoprime_crt_iff: element solvability ↔ (a-b) ∈ span{m} ⊔ span{n}. pid_noncoprime_crt_unique: uniqueness mod span{m} ⊓ span{n} (= ⟨lcm⟩). pid_noncoprime_crt_full: combined existence + uniqueness. Covers ℤ, k[X], ℤ[i] and all PIDs.",
+      "id": "part-xiii-non-coprime-crt-for-pids-the-final-synthesis"
     }
   ],
   "sorries": 0

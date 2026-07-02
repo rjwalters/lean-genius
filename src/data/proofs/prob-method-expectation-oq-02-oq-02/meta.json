@@ -52,37 +52,43 @@
       "title": "Edges and Colorings",
       "startLine": 1,
       "endLine": 47,
-      "summary": "Edges of K_n as 2-element subsets of Fin n (card C(n,2)); a coloring assigns a Bool to each edge (true = red, false = blue)."
+      "summary": "Edges of K_n as 2-element subsets of Fin n (card C(n,2)); a coloring assigns a Bool to each edge (true = red, false = blue).",
+      "id": "edges-and-colorings"
     },
     {
       "title": "Induced Clique Edges",
       "startLine": 49,
       "endLine": 79,
-      "summary": "The C(k,2) edges contained in a vertex set K, in bijection with the 2-subsets of K."
+      "summary": "The C(k,2) edges contained in a vertex set K, in bijection with the 2-subsets of K.",
+      "id": "induced-clique-edges"
     },
     {
       "title": "Color-Fixed Monochromatic Cliques",
       "startLine": 81,
       "endLine": 89,
-      "summary": "MonoColor c K col holds when every induced edge of K has the fixed color col; this separates red cliques (true) from blue cliques (false)."
+      "summary": "MonoColor c K col holds when every induced edge of K has the fixed color col; this separates red cliques (true) from blue cliques (false).",
+      "id": "color-fixed-monochromatic-cliques"
     },
     {
       "title": "Crux Count (Union-Bound Term)",
       "startLine": 91,
       "endLine": 131,
-      "summary": "Colorings constant of a fixed color on a fixed clique number at most 2^(C(n,2)−C(k,2)) — no factor of 2 — by an explicit injection into (off-clique edges → Bool)."
+      "summary": "Colorings constant of a fixed color on a fixed clique number at most 2^(C(n,2)−C(k,2)) — no factor of 2 — by an explicit injection into (off-clique edges → Bool).",
+      "id": "crux-count-union-bound-term"
     },
     {
       "title": "Off-Diagonal First-Moment Bound",
       "startLine": 133,
       "endLine": 245,
-      "summary": "Union bound over the C(n,s) red s-cliques and C(n,t) blue t-cliques yields a good coloring whenever C(n,s)·2^(C(t,2)) + C(n,t)·2^(C(s,2)) < 2^(C(s,2)+C(t,2))."
+      "summary": "Union bound over the C(n,s) red s-cliques and C(n,t) blue t-cliques yields a good coloring whenever C(n,s)·2^(C(t,2)) + C(n,t)·2^(C(s,2)) < 2^(C(s,2)+C(t,2)).",
+      "id": "off-diagonal-first-moment-bound"
     },
     {
       "title": "Ramsey Number Lower Bound and Concrete Witnesses",
       "startLine": 247,
       "endLine": 287,
-      "summary": "Witness form R(s,t) > n; the diagonal recovery R(4,4) > 6 and the off-diagonal instance R(3,4) > 4."
+      "summary": "Witness form R(s,t) > n; the diagonal recovery R(4,4) > 6 and the off-diagonal instance R(3,4) > 4.",
+      "id": "ramsey-number-lower-bound-and-concrete-witnesses"
     }
   ],
   "conclusion": {

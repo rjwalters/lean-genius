@@ -127,37 +127,43 @@
       "title": "Module header and scope",
       "startLine": 1,
       "endLine": 55,
-      "summary": "States the goal — the closed evaluation of the rotation half of the parent's bracelet_burnside identity as the gcd-cycle sum — and the structural reason the count is 2^{gcd(n,i)}: fixed colourings are constant on the gcd(n,i) rotation orbits. Records the axiom-hygiene claim (only propext/Classical.choice/Quot.sound)."
+      "summary": "States the goal — the closed evaluation of the rotation half of the parent's bracelet_burnside identity as the gcd-cycle sum — and the structural reason the count is 2^{gcd(n,i)}: fixed colourings are constant on the gcd(n,i) rotation orbits. Records the axiom-hygiene claim (only propext/Classical.choice/Quot.sound).",
+      "id": "module-header-and-scope"
     },
     {
       "title": "Unfolding the rotation action",
       "startLine": 56,
       "endLine": 81,
-      "summary": "rotation_smul_apply: (r i • c) p = c (p - i), reading off the parent's smul_apply with ρ (r i) = Equiv.addRight i and inverse · - i. fixed_iff_periodic: r i • c = c ↔ ∀ p, c (p - i) = c p."
+      "summary": "rotation_smul_apply: (r i • c) p = c (p - i), reading off the parent's smul_apply with ρ (r i) = Equiv.addRight i and inverse · - i. fixed_iff_periodic: r i • c = c ↔ ∀ p, c (p - i) = c p.",
+      "id": "unfolding-the-rotation-action"
     },
     {
       "title": "Invariance under the cyclic subgroup",
       "startLine": 82,
       "endLine": 105,
-      "summary": "periodic_zsmul: an i-periodic colouring satisfies c (a + k • i) = c a for every k : ℤ, by Int.induction_on using periodicity in both the +i and -i directions — the fact that lets a fixed colouring descend to the coset quotient."
+      "summary": "periodic_zsmul: an i-periodic colouring satisfies c (a + k • i) = c a for every k : ℤ, by Int.induction_on using periodicity in both the +i and -i directions — the fact that lets a fixed colouring descend to the coset quotient.",
+      "id": "invariance-under-the-cyclic-subgroup"
     },
     {
       "title": "The bijection with functions on the orbit quotient",
       "startLine": 106,
       "endLine": 140,
-      "summary": "fixedRotationEquiv: ↥(fixedBy (Coloring n) (r i)) ≃ (ZMod n ⧸ ⟨i⟩ → Fin 2). Forward by Quotient.lift of the fixed colouring (well-defined via QuotientAddGroup.leftRel_apply + mem_zmultiples_iff + periodic_zsmul); backward by pullback along QuotientAddGroup.mk; the two are mutually inverse."
+      "summary": "fixedRotationEquiv: ↥(fixedBy (Coloring n) (r i)) ≃ (ZMod n ⧸ ⟨i⟩ → Fin 2). Forward by Quotient.lift of the fixed colouring (well-defined via QuotientAddGroup.leftRel_apply + mem_zmultiples_iff + periodic_zsmul); backward by pullback along QuotientAddGroup.mk; the two are mutually inverse.",
+      "id": "the-bijection-with-functions-on-the-orbit-quotient"
     },
     {
       "title": "Counting the quotient: the index is gcd(n, i)",
       "startLine": 141,
       "endLine": 165,
-      "summary": "card_quotient_zmultiples: Nat.card (ZMod n ⧸ ⟨i⟩) = gcd(n, i.val), from Lagrange (card α = card quotient · card subgroup), Nat.card_zmultiples (subgroup order = addOrderOf i), ZMod.addOrderOf_coe (= n / gcd(n,i)), and the cancellation n / (n / gcd) = gcd."
+      "summary": "card_quotient_zmultiples: Nat.card (ZMod n ⧸ ⟨i⟩) = gcd(n, i.val), from Lagrange (card α = card quotient · card subgroup), Nat.card_zmultiples (subgroup order = addOrderOf i), ZMod.addOrderOf_coe (= n / gcd(n,i)), and the cancellation n / (n / gcd) = gcd.",
+      "id": "counting-the-quotient-the-index-is-gcd-n-i"
     },
     {
       "title": "The per-rotation count and the rotation half",
       "startLine": 166,
       "endLine": 190,
-      "summary": "card_fixedBy_rotation: |Fix(r i)| = 2^{gcd(n, i.val)} via Fintype.card_congr fixedRotationEquiv and Fintype.card_fun. rotation_sum_eq_gcd_cycle_sum: Σ_{i∈ZMod n} |Fix(r i)| = Σ_{i∈ZMod n} 2^{gcd(n, i.val)}, the closed rotation half. Axiom audit confirms only the foundational axioms."
+      "summary": "card_fixedBy_rotation: |Fix(r i)| = 2^{gcd(n, i.val)} via Fintype.card_congr fixedRotationEquiv and Fintype.card_fun. rotation_sum_eq_gcd_cycle_sum: Σ_{i∈ZMod n} |Fix(r i)| = Σ_{i∈ZMod n} 2^{gcd(n, i.val)}, the closed rotation half. Axiom audit confirms only the foundational axioms.",
+      "id": "the-per-rotation-count-and-the-rotation-half"
     }
   ],
   "leanFile": {

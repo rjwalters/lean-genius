@@ -46,25 +46,29 @@
       "title": "Parity of the supplement exponent",
       "startLine": 80,
       "endLine": 113,
-      "content": "exponent_parity: for odd n, ((n²-1)/8) % 2 = (if n % 8 = 1 ∨ n % 8 = 7 then 0 else 1). With n = 2m+1, (n²-1)/8 = m(m+1)/2 = T_m (the m-th triangular number), proved by omega from (2m+1)² = 4·m(m+1)+1. Decomposing m = 4j+s and rewriting m(m+1) = 2·(8j²+…) per residue, split_ifs + omega finish both the exponent parity and the n-mod-8 side condition."
+      "summary": "exponent_parity: for odd n, ((n²-1)/8) % 2 = (if n % 8 = 1 ∨ n % 8 = 7 then 0 else 1). With n = 2m+1, (n²-1)/8 = m(m+1)/2 = T_m (the m-th triangular number), proved by omega from (2m+1)² = 4·m(m+1)+1. Decomposing m = 4j+s and rewriting m(m+1) = 2·(8j²+…) per residue, split_ifs + omega finish both the exponent parity and the n-mod-8 side condition.",
+      "id": "parity-of-the-supplement-exponent"
     },
     {
       "title": "The supplement value as a signed power",
       "startLine": 114,
       "endLine": 126,
-      "content": "neg_one_pow_exponent: (-1)^((n²-1)/8) = (if n % 8 = 1 ∨ n % 8 = 7 then 1 else -1), obtained from exponent_parity via Even.neg_one_pow / Odd.neg_one_pow: +1 when n ≡ ±1 (mod 8), -1 when n ≡ ±3 (mod 8)."
+      "summary": "neg_one_pow_exponent: (-1)^((n²-1)/8) = (if n % 8 = 1 ∨ n % 8 = 7 then 1 else -1), obtained from exponent_parity via Even.neg_one_pow / Odd.neg_one_pow: +1 when n ≡ ±1 (mod 8), -1 when n ≡ ±3 (mod 8).",
+      "id": "the-supplement-value-as-a-signed-power"
     },
     {
       "title": "Closed-form power formula for χ₈",
       "startLine": 127,
       "endLine": 141,
-      "content": "chi8_eq_neg_one_pow: χ₈ n = (-1)^((n²-1)/8) for odd n — the octic analogue of ZMod.χ₄_eq_neg_one_pow, absent from Mathlib (which has only the case split χ₈_nat_eq_if_mod_eight). Proved by rewriting χ₈ via the case split and matching it to neg_one_pow_exponent, the n-even branch being killed by oddness."
+      "summary": "chi8_eq_neg_one_pow: χ₈ n = (-1)^((n²-1)/8) for odd n — the octic analogue of ZMod.χ₄_eq_neg_one_pow, absent from Mathlib (which has only the case split χ₈_nat_eq_if_mod_eight). Proved by rewriting χ₈ via the case split and matching it to neg_one_pow_exponent, the n-even branch being killed by oddness.",
+      "id": "closed-form-power-formula-for"
     },
     {
       "title": "The second supplement and the doubling permutation",
       "startLine": 142,
       "endLine": 197,
-      "content": "jacobiSym_two: J(2 | n) = (-1)^((n²-1)/8) by jacobiSym.at_two (J(2 | n) = χ₈ n) and chi8_eq_neg_one_pow. sign_ringMulPerm_two / sign_doubling: the parent's sign_ringMulPerm_eq_jacobiSym_odd gives sign(x ↦ 2·x on ℤ/n) = J(2 | n) = (-1)^((n²-1)/8), in a unit-hypothesis form and a canonical hypothesis-free form using ZMod.unitOfCoprime 2. legendreSym_two: the Legendre/Euler-criterion case (2 / p) = (-1)^((p²-1)/8) at an odd prime."
+      "summary": "jacobiSym_two: J(2 | n) = (-1)^((n²-1)/8) by jacobiSym.at_two (J(2 | n) = χ₈ n) and chi8_eq_neg_one_pow. sign_ringMulPerm_two / sign_doubling: the parent's sign_ringMulPerm_eq_jacobiSym_odd gives sign(x ↦ 2·x on ℤ/n) = J(2 | n) = (-1)^((n²-1)/8), in a unit-hypothesis form and a canonical hypothesis-free form using ZMod.unitOfCoprime 2. legendreSym_two: the Legendre/Euler-criterion case (2 / p) = (-1)^((p²-1)/8) at an odd prime.",
+      "id": "the-second-supplement-and-the-doubling-permutation"
     }
   ],
   "meta": {
