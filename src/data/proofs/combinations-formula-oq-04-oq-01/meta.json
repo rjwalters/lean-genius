@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Ultra-Log-Concavity of a Pascal Row",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports and module docstring sharpening the log-concavity of a Pascal row from the bare inequality C(n,k)·C(n,k+2) ≤ C(n,k+1)² to an exact quantitative identity. These head lines show that the parent's product identity a·c·(t+2)(k+2) = b²·(k+1)(t+1) hides the exact gap (t+2)(k+2) − (k+1)(t+1) = n+1, yielding (b²−a·c)·(k+1)(n−k−1) = (n+1)·a·c and the rational excess b²/(a·c) = 1 + (n+1)/((k+1)(n−k−1)) — the ultra-log-concavity factor — before the namespace opens.",
+      "mathContext": "Log-concavity of binomial coefficients (C(n,k+1)² ≥ C(n,k)C(n,k+2)) is classical; this entry computes the defect exactly. Combining the two adjacent-ratio relations from Nat.choose_succ_right_eq gives a subtraction-free product identity whose slack is precisely n+1, so the log-concavity gap is governed exactly by n+1: over ℚ the ratio b²/(ac) = 1 + (n+1)/((k+1)(n−k−1)) > 1. Both the parent's ≤ and the strict interior < drop out immediately. 0 sorries, 0 axioms."
+    },
+    {
       "id": "product-identity",
       "title": "Adjacent-Ratio Product Identity",
       "summary": "choose_adjacent_ratio_prod: the subtraction-free identity C(n,k)·C(n,k+2)·(t+2)(k+2) = C(n,k+1)²·(k+1)(t+1) with n = k+2+t, from two applications of Nat.choose_succ_right_eq. This is the exact form behind the parent's log-concavity inequality.",
