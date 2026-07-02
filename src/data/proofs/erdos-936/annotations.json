@@ -16,7 +16,10 @@
       "ABC conjecture",
       "Prime factorization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful numbers",
+      "prime factorization"
+    ]
   },
   {
     "id": "ann-e936-powerful-def",
@@ -35,7 +38,10 @@
       "Squarefree numbers",
       "Divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "squarefree numbers"
+    ]
   },
   {
     "id": "ann-e936-one-powerful",
@@ -53,7 +59,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "powerful numbers"
+    ]
   },
   {
     "id": "ann-e936-sq-powerful",
@@ -71,7 +80,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "perfect squares",
+      "prime factorization"
+    ]
   },
   {
     "id": "ann-e936-prime-not-powerful",
@@ -89,7 +101,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "powerful numbers"
+    ]
   },
   {
     "id": "ann-e936-eventually-not-powerful",
@@ -107,7 +122,10 @@
       "formal definition",
       "Lean 4 formalization"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "asymptotic density",
+      "powerful numbers"
+    ]
   },
   {
     "id": "ann-e936-concrete-examples",
@@ -125,7 +143,10 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "decidable computation",
+      "powerful numbers"
+    ]
   },
   {
     "id": "ann-e936-abc-conjecture",
@@ -144,7 +165,10 @@
       "Diophantine equations",
       "Fermat's Last Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the radical of an integer",
+      "the ABC conjecture"
+    ]
   },
   {
     "id": "ann-e936-cushing-pascoe",
@@ -162,7 +186,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful numbers",
+      "consecutive integers"
+    ]
   },
   {
     "id": "ann-e936-crowdmath",
@@ -180,7 +207,10 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful numbers",
+      "collaborative mathematics"
+    ]
   },
   {
     "id": "ann-e936-four-variants",
@@ -198,7 +228,10 @@
       "factorial function",
       "combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful numbers",
+      "problem variants"
+    ]
   },
   {
     "id": "ann-e936-squarefree",
@@ -217,7 +250,10 @@
       "Prime factorization"
     ],
     "mathContext": "See annotation content for formal details of squarefree numbers",
-    "prerequisites": []
+    "prerequisites": [
+      "squarefree numbers",
+      "the Möbius function"
+    ]
   },
   {
     "id": "ann-e936-summary",
@@ -235,6 +271,9 @@
       "proof technique",
       "prime numbers"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "powerful numbers",
+      "prime factorization"
+    ]
   }
 ]
