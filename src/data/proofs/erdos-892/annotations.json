@@ -1,5 +1,28 @@
 [
   {
+    "id": "erdos-892-ann-overview",
+    "proofId": "erdos-892",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Overview: Primitive Sequence Domination",
+    "content": "Erdős Problem #892 (Erdős–Sárközy–Szemerédi 1968) asks for necessary and sufficient conditions on an increasing sequence $b_1<b_2<\\cdots$ so that some *primitive* sequence $a_1<a_2<\\cdots$ (no $a_i \\mid a_j$ for $i\\neq j$) dominates it, $a_n \\ll b_n$ for all $n$. The problem is open. Known necessary conditions come from convergence of $\\sum 1/(b_n\\log b_n)$ (Erdős 1935) and the sparser sum estimate of Erdős–Sárközy–Szemerédi (1967). This entry formalizes the 1935 necessity direction and exhibits a concrete non-example.",
+    "mathContext": "Seek primitive $a$ with $a_n\\ll b_n$. Necessary (Erdős 1935): $\\sum_n 1/(b_n\\log b_n) < \\infty$; primitive $\\Rightarrow \\sum_n 1/(a_n\\log a_n) < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "primitive sequence",
+      "domination",
+      "Erdős primitive set",
+      "Behrend–Davenport"
+    ],
+    "prerequisites": [
+      "number theory",
+      "series convergence"
+    ]
+  },
+  {
     "id": "erdos-892-primitive-def",
     "proofId": "erdos-892",
     "type": "definition",
@@ -223,6 +246,72 @@
       "IsPrimitive",
       "Real.log",
       "Finset.range"
+    ]
+  },
+  {
+    "id": "erdos-892-ann-comparison",
+    "proofId": "erdos-892",
+    "range": {
+      "startLine": 122,
+      "endLine": 201
+    },
+    "type": "technique",
+    "title": "Reciprocal-log comparison and the analytic inputs",
+    "content": "The necessity proof hinges on transferring a divergent lower series to a contradiction. The multiplicative bound `product_log_comparison` and its `reciprocal_log_comparison` division form give $1/(b\\log b)\\le 2C/(a\\log a)$ when $a\\le C b$. Two analytic facts are taken as axioms: the Erdős (1935) convergence $\\sum 1/(a_n\\log a_n)<\\infty$ for any primitive sequence, and the divergence $\\sum 1/((n+2)\\log(n+2)) = +\\infty$ (Cauchy condensation). These bracket the comparison from both ends.",
+    "mathContext": "If $a\\le Cb$, $a,b\\ge 2$, $b\\ge C$: $\\frac{1}{b\\log b}\\le\\frac{2C}{a\\log a}$. Axioms: $\\sum\\frac{1}{a_n\\log a_n}<\\infty$ (primitive); $\\sum\\frac{1}{(n+2)\\log(n+2)}=\\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy condensation",
+      "comparison test",
+      "primitive set density",
+      "axiom"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "series"
+    ]
+  },
+  {
+    "id": "erdos-892-ann-necessary",
+    "proofId": "erdos-892",
+    "range": {
+      "startLine": 202,
+      "endLine": 278
+    },
+    "type": "insight",
+    "title": "The 1935 necessity theorem",
+    "content": "`erdos_1935_necessary`: if a primitive sequence $a$ dominates $b$ (with $a_n\\le C b_n$), then $\\sum 1/(b_n\\log b_n)$ converges. Proof: the primitive convergence of $\\sum 1/(a_n\\log a_n)$ pushes through the reciprocal-log comparison to bound $\\sum 1/(b_n\\log b_n)$ by a constant multiple, hence convergence. Contrapositive: any $b$ with divergent $\\sum 1/(b_n\\log b_n)$ admits *no* primitive dominator — the key obstruction.",
+    "mathContext": "$a$ primitive, $a_n\\le C b_n$ $\\Rightarrow \\sum 1/(b_n\\log b_n) \\le 2C\\sum 1/(a_n\\log a_n) < \\infty$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "contrapositive",
+      "necessary condition",
+      "comparison bound"
+    ],
+    "prerequisites": [
+      "number theory",
+      "series"
+    ]
+  },
+  {
+    "id": "erdos-892-ann-nonexample",
+    "proofId": "erdos-892",
+    "range": {
+      "startLine": 279,
+      "endLine": 333
+    },
+    "type": "insight",
+    "title": "GCD-free variant and a concrete non-example",
+    "content": "The file records Erdős's GCD-free refinement (does a GCD-free $b$ necessarily admit a primitive dominator?) and a clean unconditional non-example: the linear sequence $b(n)=n+2$ has divergent $\\sum 1/((n+2)\\log(n+2))$, so by the 1935 necessity it has *no* primitive dominator. This concretely shows the necessary condition has teeth.",
+    "mathContext": "$b(n)=n+2$: $\\sum 1/(b_n\\log b_n) = \\sum 1/((n+2)\\log(n+2)) = \\infty$, so no primitive $a$ with $a_n\\ll b_n$ exists.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "GCD-free sequence",
+      "linear growth",
+      "non-example"
+    ],
+    "prerequisites": [
+      "number theory"
     ]
   }
 ]
