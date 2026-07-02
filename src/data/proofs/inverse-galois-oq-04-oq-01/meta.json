@@ -95,7 +95,9 @@
       "Instantiate the concrete tower ℤ ⊆ 𝓞 ℚ(α) ⊆ 𝓞 q.SplittingField with a top prime over the Step-1 prime, so this brick and the OQ-04 tower brick compose to 3 ∣ inertiaDegIn (7) (𝓞 q.SplittingField).",
       "Verify the exponent hypothesis 7 ∤ exponent α for a root α of q (via 7 ∤ disc q = 32000²), matching the irreducible cubic factor of q mod 7 to the monicFactorsMod input of this brick.",
       "Chain the two bricks into InverseGaloisA5DedekindInstantiation.three_dvd_gal_card_of_bridge to fully discharge three_dvd_gal_card and make the A₅ realization 0-axiom."
-    ]
+    ],
+    "summary": "For any number field K, algebraic integer θ ∈ 𝓞 K, and rational prime p not dividing the Kummer–Dedekind exponent (conductor index) of θ, every monic irreducible factor Q of minpoly ℤ θ modulo p is matched by a maximal prime P of 𝓞 K lying over (p) with inertiaDeg (p) P = deg Q; in divisibility form, d ∣ deg Q yields a prime with d ∣ inertiaDeg (p) P. Both theorems are machine-checked with 0 axioms and 0 sorries. This supplies Step 1 of the three-step Kummer–Dedekind route that, composed with the already-verified tower brick (Steps 2–3), aims to eliminate the last A₅-realizability axiom three_dvd_gal_card.",
+    "implications": "The brick reduces the remaining A₅-realizability obstruction to a purely arithmetic fact about q mod 7: an irreducible cubic factor of q mod 7 manufactures a prime of inertia degree exactly 3 (hence a Frobenius element of order 3), and composing with the verified Steps 2–3 propagates 3 ∣ inertiaDegIn (7) up to the splitting field. Phrasing the output as a divisibility d ∣ inertiaDeg (p) P — rather than an exact degree — is precisely what lets the three steps snap together mechanically. More broadly, the entry repackages Mathlib's primesOverSpanEquivMonicFactorsMod bijection into the existence/divisibility interface that Frobenius-based inverse-Galois arguments actually consume, so any 'irreducible factor mod p ⇒ Frobenius of prescribed order' argument can reuse it directly."
   },
   "crossReferences": [
     {
