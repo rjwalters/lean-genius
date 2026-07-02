@@ -38,13 +38,25 @@
   {
     "id": "totient-oq09-ann-dvd-dichotomy",
     "proofId": "euler-totient-oq-09",
-    "range": { "startLine": 101, "endLine": 121 },
+    "range": { "startLine": 101, "endLine": 110 },
     "type": "theorem",
-    "title": "Divisibility and the n ↦ 2n Dichotomy",
-    "content": "Two divisibility facts read straight off the power law: `pow_pred_dvd_totient_pow` (nᵏ⁻¹ ∣ φ(nᵏ), the leading power factor survives) and `totient_dvd_totient_pow` (φ(n) ∣ φ(nᵏ)). The doubling dichotomy specializes the p = 2 prime-scaling lemmas: `totient_two_mul_of_even` (φ(2n) = 2φ(n) when 2 ∣ n, from `Nat.totient_mul_of_prime_of_dvd`) and `totient_two_mul_of_odd` (φ(2n) = φ(n) when n is odd, from `Nat.totient_mul_of_prime_of_not_dvd`). These refine how doubling interacts with the parity of φ.",
-    "mathContext": "$n^{k-1} \\mid \\varphi(n^k),\\ \\varphi(n) \\mid \\varphi(n^k); \\qquad \\varphi(2n) = \\begin{cases} 2\\varphi(n) & 2 \\mid n \\\\ \\varphi(n) & 2 \\nmid n \\end{cases}.$",
+    "title": "Divisibility Consequences of the Power Law",
+    "content": "Two divisibility facts read straight off the factored power law φ(nᵏ) = nᵏ⁻¹·φ(n). `pow_pred_dvd_totient_pow`: nᵏ⁻¹ ∣ φ(nᵏ) — the leading power factor survives the totient — proved by rewriting with `totient_pow` and taking `dvd_mul_right`. `totient_dvd_totient_pow`: φ(n) ∣ φ(nᵏ), the other factor, by `dvd_mul_left`. Together they express that φ(nᵏ) sits in the divisibility chain φ(n) ∣ φ(n²) ∣ φ(n³) ∣ … with each successive quotient equal to n.",
+    "mathContext": "$n^{k-1} \\mid \\varphi(n^k)$ and $\\varphi(n) \\mid \\varphi(n^k)$ for every $k \\ge 1$.",
     "significance": "key",
-    "relatedConcepts": ["divisibility", "parity dichotomy", "totient_mul_of_prime_of_dvd", "doubling map"],
-    "prerequisites": ["the power law", "single-prime scaling lemmas"]
+    "relatedConcepts": ["divisibility", "dvd_mul_right / dvd_mul_left", "totient divisibility chain"],
+    "prerequisites": ["the power law totient_pow", "elementary divisibility of products"]
+  },
+  {
+    "id": "totient-oq09-ann-dichotomy",
+    "proofId": "euler-totient-oq-09",
+    "range": { "startLine": 112, "endLine": 121 },
+    "type": "theorem",
+    "title": "The n ↦ 2n Parity Dichotomy",
+    "content": "The doubling map splits according to the parity of n, specializing the p = 2 prime-scaling lemmas. `totient_two_mul_of_even`: when 2 ∣ n, φ(2n) = 2φ(n) — this is literally the p = 2 case of `Nat.totient_mul_of_prime_of_dvd` (2's only prime already divides n, so the prime-saturated scaling applies). `totient_two_mul_of_odd`: when 2 ∤ n, φ(2n) = φ(n), from `Nat.totient_mul_of_prime_of_not_dvd` (which scales by p − 1 = 1) closed by norm_num. The dichotomy refines how doubling interacts with the parity classification of φ studied in the sibling oq-06.",
+    "mathContext": "$\\varphi(2n) = \\begin{cases} 2\\varphi(n) & 2 \\mid n \\\\ \\varphi(n) & 2 \\nmid n \\end{cases}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["parity dichotomy", "totient_mul_of_prime_of_dvd", "totient_mul_of_prime_of_not_dvd", "doubling map"],
+    "prerequisites": ["single-prime scaling lemmas", "the prime-saturated vs non-dividing split"]
   }
 ]

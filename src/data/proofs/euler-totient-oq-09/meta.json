@@ -95,7 +95,8 @@
       "**The product ∏(1 − 1/p) is a function of the prime support only.** Since n and n^k share every prime factor, φ(n^k)/n^k = φ(n)/n, and the power law is just clearing the n^k versus n factor — no induction on the exponent is needed.",
       "**The right level of generality is 'prime-saturated multiplier', not 'power'.** The single lemma φ(m·n) = m·φ(n) for m.primeFactors ⊆ n.primeFactors subsumes the power law, the recurrence, the square case, and Mathlib's single-prime φ(p·n) = p·φ(n) all at once.",
       "**The coprime multiplicative law is the wrong tool here.** `Nat.totient_mul` needs gcd(m, n) = 1, but n and n^k are maximally non-coprime; the product-formula route sidesteps coprimality entirely and works precisely because the prime supports coincide.",
-      "**The identity holds for every base, including 0.** φ(0^k) = φ(0) = 0 = 0^{k−1}·φ(0), so no positivity hypothesis on n is required — only k ≥ 1, which is genuinely necessary (the k = 0 statement φ(1) = n^{−1}·φ(n) is meaningless)."
+      "**The identity holds for every base, including 0.** φ(0^k) = φ(0) = 0 = 0^{k−1}·φ(0), so no positivity hypothesis on n is required — only k ≥ 1, which is genuinely necessary (the k = 0 statement φ(1) = n^{−1}·φ(n) is meaningless).",
+      "**φ(nᵏ)/nᵏ is a k-invariant of the base.** Because the ratio equals ∏_{p∣n}(1 − 1/p), which depends only on the radical (squarefree kernel) of n, every power of n — and indeed any two numbers with the same prime support — share the same totient density. This reframes the power law as the statement that powering moves along a level set of the density functional, and it is the structural reason the divisibility chain φ(n) ∣ φ(n²) ∣ φ(n³) ∣ … holds with each quotient exactly n."
     ],
     "prerequisites": [
       "Euler's totient φ and the unit group (ℤ/nℤ)ˣ",
@@ -136,11 +137,20 @@
       "summary": "`totient_pow` (φ(n^k) = n^(k−1)·φ(n) for k ≥ 1, via n^k = n^(k−1)·n and `Nat.primeFactors_pow`), `totient_pow_succ` (the recurrence φ(n^{k+1}) = n·φ(n^k) via n^{k+1} = n·n^k), and `totient_sq` (the k = 2 specialization φ(n²) = n·φ(n))."
     },
     {
-      "id": "divisibility-and-dichotomy",
-      "title": "Divisibility Consequences and the n ↦ 2n Dichotomy",
+      "id": "divisibility",
+      "title": "Divisibility Consequences of the Power Law",
       "startLine": 101,
+      "endLine": 110,
+      "summary": "`pow_pred_dvd_totient_pow` (n^{k−1} ∣ φ(n^k), the leading power factor survives the totient) and `totient_dvd_totient_pow` (φ(n) ∣ φ(n^k)) both read straight off `totient_pow` by rewriting and taking `dvd_mul_right` / `dvd_mul_left` on the factored form n^{k−1}·φ(n).",
+      "mathContext": "$n^{k-1} \\mid \\varphi(n^k)$ and $\\varphi(n) \\mid \\varphi(n^k)$ for every $k \\ge 1$."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The n ↦ 2n Parity Dichotomy",
+      "startLine": 112,
       "endLine": 121,
-      "summary": "`pow_pred_dvd_totient_pow` (n^{k−1} ∣ φ(n^k)) and `totient_dvd_totient_pow` (φ(n) ∣ φ(n^k)) read off the power law; `totient_two_mul_of_even` (φ(2n) = 2φ(n) for 2 ∣ n, the p = 2 case of `Nat.totient_mul_of_prime_of_dvd`) and `totient_two_mul_of_odd` (φ(2n) = φ(n) for n odd) record the doubling dichotomy."
+      "summary": "`totient_two_mul_of_even` (φ(2n) = 2φ(n) when 2 ∣ n, exactly the p = 2 case of `Nat.totient_mul_of_prime_of_dvd`) and `totient_two_mul_of_odd` (φ(2n) = φ(n) when 2 ∤ n, from `Nat.totient_mul_of_prime_of_not_dvd` then norm_num) record how the doubling map acts on the totient according to the parity of n.",
+      "mathContext": "$\\varphi(2n) = 2\\varphi(n)$ if $2 \\mid n$, and $\\varphi(2n) = \\varphi(n)$ if $2 \\nmid n$."
     }
   ],
   "crossReferences": [
