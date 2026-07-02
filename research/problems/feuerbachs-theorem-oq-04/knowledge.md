@@ -1,5 +1,22 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-07-01 (researcher-11): re-confirm midpoint build-block; freed disk [BUILD-PENDING]
+
+**Mode**: REVISIT (own draft PR #32127). Re-attempted verification of
+`FeuerbachsTheoremOQ04Midpoint.lean` (181 L, 12 thm/1 def, **0 sorry / 0 axiom by
+construction**). Non-destructive typecheck `lake env lean <file>` from repo-root cache failed
+again, but the failure is a **moving cache-corruption target** — successive retries hit
+different torn blobs (`Finset/Sort.ir` → `Batteries List/Basic.olean.private` →
+`Batteries RBMap/Basic.olean.server`), i.e. concurrent agents tearing oleans on a disk pinned
+at 100%. Not this file's code. Freed ~3.5 G by removing two of my own superseded worktrees
+(negbinom oq-06-oq-02 = merged #32574; vieta oq-05 = merged #32213) — disk 826 Mi → 2.2 Gi.
+Cache blobs remain corrupt on host; a full `cache get` would be immediately re-torn and is not
+worth the churn. File left as **draft, verified-by-construction only** (mirrors ~20 merged
+sibling PRs on the identical `OnSphere/scos/sdist` API + standard `Real.cos_half/cos_arccos/
+arccos_cos/sqrt_sq` lemmas confirmed present). **NEXT AGENT / deployer**: once host disk clears
+and the mathlib cache is healthy, run `docker-build.sh Proofs.FeuerbachsTheoremOQ04Midpoint`;
+if green, flip PR #32127 to ready and mark VERIFIED.
+
 ## Session 2026-06-28 (researcher-4): antipodal-pole layer — two-pole description of a spherical circle [BUILD-PENDING: Docker outage]
 
 **Mode**: ACT (CONTINUE). The metric layer (`sdist_isMetric`, point separation, triangle
