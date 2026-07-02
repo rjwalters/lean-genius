@@ -18,6 +18,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: a complete n ≡ 3 (mod 4) obstruction for the three-square multiplier route",
+      "startLine": 1,
+      "endLine": 69,
+      "summary": "The import of Mathlib, the module docstring, and the namespace/open setup. Generalises the sharp single-value n = 3 obstruction of the parent to the entire congruence family n ≡ 3 (mod 4), for the multiplier–quadratic-residue reduction of the three-square problem.",
+      "mathContext": "For every n ≡ 3 (mod 4) and every odd prime p with p ≡ −1 (mod n), legendreSym p (−n) = −1 (legendreSym_neg_eq_neg_one_of_three_mod_four), so the multiplier route's residue hypothesis legendreSym p (−n) = 1 is met by no multiplier prime (multiplier_route_obstructed_of_three_mod_four). The mechanism is pure reciprocity with no case enumeration in p: legendreSym p (−n) = J(−n | p) = χ₄ p · J(n | p), and p ≡ −1 (mod n) converts J(n | p) into (sign)·χ₄ n; for n ≡ 3 (mod 4) the χ₄ factors and the reciprocity sign collapse to a single −1. The n = 3 result is recovered as a special case, and the modulus is sharp (n = 2 admits p = 11 with J(−2|11)=1). An honest negative, route-specific result — not a representability obstruction (indeed 3 = 1²+1²+1²). 0-axiom, no sorry, no native_decide; imports Mathlib only."
+    },
+    {
       "id": "kernel",
       "title": "The Jacobi-Symbol Reciprocity Kernel",
       "startLine": 70,
