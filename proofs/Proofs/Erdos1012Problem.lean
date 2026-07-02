@@ -146,16 +146,6 @@ axiom ore_theorem : ∀ n ≥ 1, hasLongCycle n 0
     has an (n-1)-cycle. -/
 axiom bondy_theorem : ∀ n ≥ 1, hasLongCycle n 1
 
-/-- **Theorem**: Woodall's Theorem (1972) — the complete solution.
-    For n ≥ 2k+3 and sufficient edges, the graph has an (n-k)-cycle.
-    PROVED from woodall_pancyclic: pancyclicity up to n-k implies an (n-k)-cycle.
-    (Previously axiom; axiom count reduced 5→4.) -/
-theorem woodall_theorem (n k : ℕ) (hn : n ≥ 2 * k + 3) :
-    hasLongCycle n k := by
-  intro V inst1 inst2 hcard G inst3 hedges
-  have hpan := woodall_pancyclic n k hn V hcard G hedges
-  exact hpan (n - k) (by omega) le_rfl
-
 /-- **Axiom 4**: Woodall's stronger pancyclicity result.
     Under the same conditions, the graph actually has cycles of ALL lengths
     from 3 to n-k. -/
@@ -165,6 +155,16 @@ axiom woodall_pancyclic (n k : ℕ) (hn : n ≥ 2 * k + 3) :
       ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
         edgeCount G ≥ edgeThreshold n k →
         isPancyclicUpTo G (n - k)
+
+/-- **Theorem**: Woodall's Theorem (1972) — the complete solution.
+    For n ≥ 2k+3 and sufficient edges, the graph has an (n-k)-cycle.
+    PROVED from woodall_pancyclic: pancyclicity up to n-k implies an (n-k)-cycle.
+    (Previously axiom; axiom count reduced 5→4.) -/
+theorem woodall_theorem (n k : ℕ) (hn : n ≥ 2 * k + 3) :
+    hasLongCycle n k := by
+  intro V inst1 inst2 hcard G inst3 hedges
+  have hpan := woodall_pancyclic n k hn V hcard G hedges
+  exact hpan (n - k) (by omega) le_rfl
 
 /-- **Axiom 5**: The threshold is tight: extremal graphs exist with
     threshold - 1 edges that lack the required cycle.
