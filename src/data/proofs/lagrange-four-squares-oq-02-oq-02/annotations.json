@@ -1,0 +1,72 @@
+[
+  {
+    "id": "annotation-header-universal-law",
+    "lineStart": 1,
+    "lineEnd": 51,
+    "type": "insight",
+    "mathContext": "The parent file establishes the orbit–stabilizer identity $\\mathrm{contribution}(t) = 384/|\\mathrm{Stab}(t)|$ for six *named* type families (trivial, all-equal, three-equal, two-pair, two-equal, two-nonzero-distinct), each with side hypotheses. This file proves the UNIVERSAL form $\\mathrm{contribution}(t) \\mid 384$ for every sorted representation type $t$ of every $n$, with no case split. Here $384 = |S_4 \\times (\\mathbb{Z}/2\\mathbb{Z})^4| = 24 \\cdot 16$ is the order of the full symmetry group acting on ordered signed four-square representations.",
+    "significance": "key",
+    "relatedConcepts": ["orbit-stabilizer theorem", "symmetry group S₄ × (ℤ/2ℤ)⁴", "four-square representations", "divisibility"],
+    "prerequisites": ["Lagrange four-square theorem", "group actions and orbits"]
+  },
+  {
+    "id": "annotation-definitions",
+    "lineStart": 62,
+    "lineEnd": 97,
+    "type": "definition",
+    "mathContext": "`RepType n` is the sorted type $(a_1 \\le a_2 \\le a_3 \\le a_4)$ with $a_1^2+a_2^2+a_3^2+a_4^2 = n$. Its `contribution = permutations · signFactor` counts the ordered signed representations it generates: `permutations = 24 / \\prod_v (\\mathrm{count}\\,v)!` is the multinomial $4!/\\prod_i m_i!$ (orderings of the multiset), and `signFactor = 2^{\\mathrm{nonzeroCount}}$ counts the independent sign choices. These mirror the parent entry's definitions verbatim so the divisibility law refers to exactly the same quantities.",
+    "significance": "important",
+    "relatedConcepts": ["multinomial coefficient", "sign factor 2^k", "representation type"],
+    "prerequisites": ["multinomial 4!/(m₁!m₂!…)", "counting multiset permutations"]
+  },
+  {
+    "id": "annotation-multinomial-denom",
+    "lineStart": 98,
+    "lineEnd": 127,
+    "type": "proof-technique",
+    "mathContext": "The combinatorial heart: for any four naturals the multinomial denominator $\\prod_v (\\mathrm{count}\\,v)!$ divides $4! = 24$. This is the integrality of the multinomial coefficient specialised to a 4-element multiset. The proof bridges the list-based definition to Mathlib's Finset lemma `Nat.prod_factorial_dvd_factorial_sum` ($\\prod_{i} (f\\,i)! \\mid (\\sum_i f\\,i)!$) using `List.prod_toFinset` (nodup list product = Finset product over toFinset) and `List.sum_map_count_dedup_eq_length` (the multiplicities sum to the list length 4).",
+    "significance": "key",
+    "relatedConcepts": ["multinomial integrality", "Nat.prod_factorial_dvd_factorial_sum", "list-to-Finset bridge", "deduplication"],
+    "prerequisites": ["factorials and multinomial coefficients", "Finset products"]
+  },
+  {
+    "id": "annotation-factor-divisibilities",
+    "lineStart": 128,
+    "lineEnd": 148,
+    "type": "insight",
+    "mathContext": "The two independent factor divisibilities: `signFactor = 2^{\\mathrm{nonzeroCount}} \\mid 16 = 2^4$ (since at most 4 entries are nonzero, via `pow_dvd_pow`), corresponding to the $(\\mathbb{Z}/2\\mathbb{Z})^4$ sign part; and `permutations = 24/D \\mid 24$ (since the multinomial denominator $D \\mid 24$), corresponding to the $S_4$ ordering part. Their product structure is exactly $|S_4 \\times (\\mathbb{Z}/2\\mathbb{Z})^4| = 24 \\cdot 16 = 384$.",
+    "significance": "important",
+    "relatedConcepts": ["pow_dvd_pow", "sign part (ℤ/2ℤ)⁴", "ordering part S₄"],
+    "prerequisites": ["divisibility of powers of 2", "integer division facts"]
+  },
+  {
+    "id": "annotation-universal-law",
+    "lineStart": 149,
+    "lineEnd": 178,
+    "type": "insight",
+    "mathContext": "The main theorem `contribution_dvd_384`: multiplying `permutations ∣ 24` and `signFactor ∣ 16` via `mul_dvd_mul` gives $\\mathrm{contribution} = \\mathrm{permutations} \\cdot \\mathrm{signFactor} \\mid 24 \\cdot 16 = 384$ for EVERY type of EVERY $n$. Positivity (`contribution_pos`, $\\ge 1$) and the sharp upper bound (`contribution_le_384`, $\\le 384$) follow immediately. Unlike the parent's per-family theorems, this needs no hypotheses on the entries.",
+    "significance": "key",
+    "relatedConcepts": ["mul_dvd_mul", "orbit-stabilizer divisibility", "universal quantification over types"],
+    "prerequisites": ["multiplicativity of divisibility", "Nat.le_of_dvd"]
+  },
+  {
+    "id": "annotation-stabilizer-form",
+    "lineStart": 179,
+    "lineEnd": 202,
+    "type": "insight",
+    "mathContext": "The orbit–stabilizer identity in native form. Defining $\\mathrm{stabOrder}(t) := 384/\\mathrm{contribution}(t)$, the divisibility gives $\\mathrm{contribution} \\cdot \\mathrm{stabOrder} = 384$ (`Nat.mul_div_cancel'`), $\\mathrm{stabOrder} \\mid 384$, and the inverse $\\mathrm{contribution} = 384/\\mathrm{stabOrder}$ (`Nat.div_div_self`). Thus the tabulated relation $\\mathrm{contribution} = 384/|\\mathrm{Stab}|$ holds for all types simultaneously, with $\\mathrm{stabOrder}$ playing the role of the stabilizer order.",
+    "significance": "important",
+    "relatedConcepts": ["orbit-stabilizer theorem", "Nat.div_div_self", "stabilizer order"],
+    "prerequisites": ["exact division in ℕ", "orbit-stabilizer relation |G| = |orbit|·|stab|"]
+  },
+  {
+    "id": "annotation-sharpness",
+    "lineStart": 203,
+    "lineEnd": 231,
+    "type": "insight",
+    "mathContext": "The universal bound 384 is best possible and the unit 1 is attained. The fully asymmetric type $(1,2,3,4)$ (all entries distinct and nonzero) has trivial stabilizer and contributes $24 \\cdot 16 = 384$; the fully symmetric type $(0,0,0,0)$ has the whole group of order 384 as stabilizer and contributes $1 \\cdot 1 = 1$. Both witnesses are discharged by kernel `decide`, so — unlike the parent's `native_decide` computations — they add NO `Lean.ofReduceBool` dependency.",
+    "significance": "important",
+    "relatedConcepts": ["sharpness of bounds", "trivial vs full stabilizer", "kernel decide vs native_decide"],
+    "prerequisites": ["extreme symmetry types", "decidable computation in the kernel"]
+  }
+]
