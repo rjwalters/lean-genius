@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-sqrt-le-totient-headline",
+    "proofId": "euler-totient-oq-03-oq-02",
+    "range": {
+      "startLine": 237,
+      "endLine": 242
+    },
+    "type": "insight",
+    "title": "The Headline Bound: √n ≤ φ(n) as a One-Line Corollary",
+    "content": "`sqrt_le_totient` is the theorem named in the title — φ(n) ≥ √n for n > 6 — and it drops out of the arithmetic core `totient_sq_ge_self` in five lines. The whole analytic difficulty was already discharged over ℕ: `n ≤ φ(n)²`. Casting that to ℝ and applying `Real.sqrt_le_sqrt` gives √n ≤ √(φ(n)²), and `Real.sqrt_sq` (with φ(n) ≥ 0 via `positivity`) collapses the right side to φ(n). This is the payoff of the squaring strategy annotated above: by proving the *squared* inequality inside ℕ, the file never has to reason about √ of a non-perfect-square — the only square root taken is of a perfect square.",
+    "mathContext": "$\\sqrt{n} \\le \\sqrt{\\varphi(n)^2} = \\varphi(n)$, the middle step being monotonicity of $\\sqrt{\\cdot}$ applied to $n \\le \\varphi(n)^2$ and the last being $\\sqrt{x^2}=x$ for $x \\ge 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's totient",
+      "monotonicity of square root",
+      "cast from ℕ to ℝ",
+      "perfect square"
+    ],
+    "prerequisites": [
+      "Real.sqrt_le_sqrt",
+      "Real.sqrt_sq",
+      "totient_sq_ge_self"
+    ]
+  },
+  {
     "id": "ann-squaring-removes-analysis",
     "proofId": "euler-totient-oq-03-oq-02",
     "range": {
