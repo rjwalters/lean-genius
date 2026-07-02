@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Erdős #1028 — discrepancy of sign functions, and the Aristotle run",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Erdős Problem #1028 asks to estimate H(n) = min_f max_{X⊆{1..n}} |Σ_{x≠y∈X} f(x,y)| over sign functions f: X²→{−1,1}; the problem is SOLVED with H(n) = Θ(n^{3/2}). The head of this file records the provenance and results of an Aristotle proof-search run: Aristotle PROVED a suite of supporting theorems — H_spec (existence of a valid sign function attaining H n), symmetric_pairSum, discrepancy_as_imbalance (discrepancy as the natAbs of a signed-graph double sum), expected_discrepancy_bound (expectedDiscrepancy n k ≤ k), and homogeneous_small_discrepancy (a monochromatic clique has discrepancy card·(card−1)) — and NEGATED the candidate lower bound erdos_lower: H n ≥ n/4 for n ≥ 4, using a bundled `negate_state` tactic whose source is embedded. The block pins the Lean/Mathlib versions and Aristotle citation metadata.",
+      "mathContext": "H(n) measures the unavoidable ±1 discrepancy of a two-colouring of the edges of a complete graph, restricted to induced subsets X: no matter how f signs the pairs, some X forces an imbalance of order n^{3/2}. The formalization reframes discrepancy via a signed adjacency graph so that discrepancy f X is the absolute value of Σ_{x,y∈X} asSignedGraph f x y, exposes the symmetric-function pair-sum reduction (halving the double sum to strictly-ordered pairs), and bounds the expected discrepancy of a random restriction linearly in the subset size k. Aristotle's refutation of H n ≥ n/4 illustrates the machine-search value: it rules out a too-strong linear lower bound, consistent with the true Θ(n^{3/2}) growth."
+    },
+    {
       "id": "sign-functions",
       "title": "Sign Functions",
       "summary": "SignFunction, isValidSign, validSignFunctions",
