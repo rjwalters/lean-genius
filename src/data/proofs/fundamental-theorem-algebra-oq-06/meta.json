@@ -124,7 +124,8 @@
       "Oddness of the degree is exactly what makes the leading term flip sign between $+\\infty$ and $-\\infty$ — this is the entire content of the theorem.",
       "The sign flip at $-\\infty$ need not be proved by a separate atBot argument: composing with $-X$ converts $-\\infty$ behaviour into $+\\infty$ behaviour, and $\\mathrm{leadingCoeff}(P\\circ(-X)) = (-1)^{\\deg P}\\,\\mathrm{leadingCoeff}(P)$.",
       "Using the unordered interval `[[a,b]]` and `intermediate_value_uIcc` removes any need to track whether $a \\le b$ or $b \\le a$.",
-      "The result explains the asymmetry in ℝ: odd-degree polynomials always have roots, so the obstruction to ℝ being algebraically closed lives entirely in even degree (e.g. $X^2+1$)."
+      "The result explains the asymmetry in ℝ: odd-degree polynomials always have roots, so the obstruction to ℝ being algebraically closed lives entirely in even degree (e.g. $X^2+1$).",
+      "The argument is purely qualitative: it never bounds or locates the root, converting end behaviour directly into existence through the IVT. This is exactly why it transposes verbatim to any real-closed field once an order-topology intermediate value property is available — the ℝ-specific analysis is confined to Mathlib's `tendsto` end-behaviour lemmas."
     ],
     "historicalContext": "Gauss gave several proofs of the Fundamental Theorem of Algebra. His 1849 proof is the most algebraic, isolating the order structure of ℝ to two ingredients: the intermediate value property for odd-degree polynomials (proved here) and the existence of complex square roots. The general order-theoretic version — every odd-degree polynomial over a real-closed field has a root — is part of the Artin–Schreier theory of real-closed fields (1927).",
     "prerequisites": [
