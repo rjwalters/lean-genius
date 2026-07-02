@@ -1,5 +1,17 @@
 [
   {
+    "id": "overview",
+    "proofId": "viviani-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Overview: Viviani's Theorem — the Convex n-gon Characterisation",
+    "content": "The parent leaf viviani-theorem-oq-01-oq-01 proved the triangle converse: the signed perpendicular-distance sum is constant iff the three inward unit normals sum to zero, iff the triangle is equilateral. This leaf removes the triangle-specific \"equilateral\" half and isolates the genuinely general phenomenon, valid for an arbitrary finite family of edges (a convex n-gon, in fact any indexed family of normals). For a polygon whose edge i lies on the line {x : ⟪x, νᵢ⟫ = cᵢ} with outward unit normal νᵢ, the signed distance from an interior point x to edge i is dᵢ(x) = cᵢ − ⟪x, νᵢ⟫, so the total distance-sum S(x) = (∑ᵢ cᵢ) − ⟪x, ∑ᵢ νᵢ⟫ is an affine function of x with gradient −∑ᵢ νᵢ; hence S is constant on the plane ⇔ ∑ᵢ νᵢ = 0 (★). The headline corollary is that every regular n-gon has the Viviani property: its outward unit normals are the n-th roots of unity ζ⁰, ζ¹, …, ζⁿ⁻¹ with ζ = exp(2πi/n), and these sum to zero for n ≥ 2. The characterisation (★) is sharp and captures a strictly larger class than the regular polygons (any family of unit vectors closing up to zero, e.g. equiangular polygons). The Euclidean plane is modelled as ℂ, reusing the parent's explicit real inner product rdot; the whole argument is elementary linear algebra over a finite index set, needing no non-degeneracy hypothesis.",
+    "significance": "critical"
+  },
+  {
     "id": "ann-rdot-sum",
     "proofId": "viviani-theorem-oq-01-oq-01-oq-01",
     "range": {
