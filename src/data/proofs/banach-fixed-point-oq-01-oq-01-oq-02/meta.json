@@ -90,6 +90,57 @@
       "Package the contraction estimate as a bona fide ContractingWith instance on the space C([0,ε], ℝ) with sup-norm for ε < 1, recovering the parent's Banach fixed point from this concrete operator and matching the two convergence rates."
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Problem: making the Picard fixed point explicit",
+      "startLine": 3,
+      "endLine": 39,
+      "summary": "Docstring framing the parent's open question — expose the Picard operator, its successive approximations, and its contraction constant explicitly — and the answer for the model IVP y' = y, y(0) = 1: the iterates are the Taylor partial sums of exp, they converge, exp is the fixed point, and P contracts with an explicit constant."
+    },
+    {
+      "id": "sec-operator",
+      "title": "The Picard operator and its iterates",
+      "startLine": 46,
+      "endLine": 53,
+      "summary": "Defines the concrete Picard operator (P y)(t) = 1 + ∫₀ᵗ y and the successive approximations picardIter (constant seed 1, picardIter (n+1) = P (picardIter n))."
+    },
+    {
+      "id": "sec-helpers",
+      "title": "Taylor partial sum and its integral",
+      "startLine": 55,
+      "endLine": 74,
+      "summary": "Auxiliary definitions/lemmas: partialExp n = ∑_{k≤n} tᵏ/k!, its continuity (continuous_partialExp), and the term integral ∫₀ᵗ sᵏ/k! ds = tᵏ⁺¹/(k+1)! (integral_term) that drives the induction step."
+    },
+    {
+      "id": "sec-closed-form",
+      "title": "Closed form: iterates are Taylor partial sums",
+      "startLine": 75,
+      "endLine": 94,
+      "summary": "picardIter_eq: by induction, the n-th approximation equals ∑_{k=0}^{n} tᵏ/k!, integrating the partial sum term by term and reindexing via Finset.sum_range_succ'."
+    },
+    {
+      "id": "sec-convergence",
+      "title": "Convergence to exp and the fixed point",
+      "startLine": 96,
+      "endLine": 118,
+      "summary": "picardIter_tendsto (the iterates converge to exp t via the exponential power series), exp_isFixedPoint (exp t = 1 + ∫₀ᵗ exp), and exp_solves (deriv exp = exp, exp 0 = 1)."
+    },
+    {
+      "id": "sec-contraction",
+      "title": "Explicit contraction estimate",
+      "startLine": 120,
+      "endLine": 140,
+      "summary": "picard_contraction: |P y t − P z t| ≤ C·|t| via norm_integral_le_of_norm_le_const, so P contracts on [0, ε] with constant ε; picardIter_succ_eq records the recursion picardIter (n+1) = P (picardIter n)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "banach-fixed-point-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent Picard–Lindelöf entry. This entry answers its second open question by exhibiting the Picard operator, its successive approximations, and its contraction constant explicitly for the model linear IVP y' = y, y(0) = 1."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
