@@ -1,0 +1,121 @@
+[
+  {
+    "id": "module-header",
+    "proofId": "infinitude-primes-4k3-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "Module Header: The Elementary Mechanism for Primes ≡ 7 (mod 8)",
+    "content": "The header states OQ-01-OQ-01 and sketches the whole proof. For any odd a, M = a² − 2 is ≡ 7 (mod 8). Every prime p ∣ M makes 2 a square mod p, so by the supplementary law of quadratic reciprocity p ≡ ±1 (mod 8). A product of numbers all ≡ 1 (mod 8) stays ≡ 1, but M ≡ 7, so some prime factor is ≡ 7 (mod 8). Euclid's construction a = 3·∏(known primes ≡ 7 mod 8) then yields a fresh such prime. The file imports Mathlib and opens the namespace InfinitudePrimes4k3OQ01OQ01. The only nontrivial external fact used is ZMod.exists_sq_eq_two_iff.",
+    "mathContext": "Every prime is one of {2} ∪ {p ≡ 1,3,5,7 mod 8}. The residue character of 2 detects exactly the classes ≡ ±1 (mod 8); the quadratic form a² − 2 with a odd lands in the −1 half.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Euclid's infinitude argument",
+      "quadratic residues",
+      "supplementary reciprocity law for 2",
+      "arithmetic progressions of primes"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "Dirichlet's theorem (as the non-elementary comparison point)"
+    ]
+  },
+  {
+    "id": "odd-sq-mod-eight",
+    "proofId": "infinitude-primes-4k3-oq-01-oq-01",
+    "range": { "startLine": 36, "endLine": 44 },
+    "type": "lemma",
+    "title": "odd_sq_mod_eight: Odd Squares are 1 (mod 8)",
+    "content": "Writes an odd a as 2k+1 and uses Nat.even_mul_succ_self (k(k+1) is even, = 2t) to rewrite (2k+1)² = 4·k(k+1) + 1 = 8t + 1, so a² % 8 = 1 by omega. This is the arithmetic reason M = a² − 2 ≡ 7 (mod 8), which fixes the residue class the whole product argument depends on.",
+    "mathContext": "$(2k+1)^2 = 4k(k+1) + 1$ and $2 \\mid k(k+1)$ give $8 \\mid (2k+1)^2 - 1$, i.e. every odd square is $\\equiv 1 \\pmod 8$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "odd numbers",
+      "squares modulo 8",
+      "consecutive-integer parity"
+    ],
+    "prerequisites": [
+      "Nat.even_mul_succ_self",
+      "omega arithmetic"
+    ]
+  },
+  {
+    "id": "prime-factor-two-qr",
+    "proofId": "infinitude-primes-4k3-oq-01-oq-01",
+    "range": { "startLine": 46, "endLine": 62 },
+    "type": "lemma",
+    "title": "prime_factor_two_qr: The Quadratic-Residue Step",
+    "content": "The one place quadratic reciprocity enters. From p ∣ a² − 2 (with a² ≥ 2), casting into ZMod p via ZMod.natCast_eq_zero_iff and push_cast gives (a : ZMod p)² = 2, so 2 is a square mod p. Then ZMod.exists_sq_eq_two_iff concludes p % 8 = 1 or 7. Every prime factor of M = a² − 2 is thereby pinned to the classes ≡ ±1 (mod 8).",
+    "mathContext": "$p \\mid a^2 - 2 \\Rightarrow (a \\bmod p)^2 = 2 \\Rightarrow \\left(\\tfrac{2}{p}\\right) = 1 \\Rightarrow p \\equiv \\pm 1 \\pmod 8$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "quadratic residue",
+      "Legendre symbol",
+      "ZMod.exists_sq_eq_two_iff",
+      "supplementary reciprocity law"
+    ],
+    "prerequisites": [
+      "ZMod p as a field for prime p",
+      "ZMod.natCast_eq_zero_iff",
+      "quadratic reciprocity (character of 2)"
+    ]
+  },
+  {
+    "id": "exists-prime-factor-seven",
+    "proofId": "infinitude-primes-4k3-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 108 },
+    "type": "lemma",
+    "title": "exists_prime_factor_seven_mod_eight: The Product Argument",
+    "content": "The heart of the proof. For odd a ≥ 3, set M = a² − 2 ≥ 2 with M ≡ 7 (mod 8) (from odd_sq_mod_eight). Argue by contradiction: assume no prime factor is ≡ 7 (mod 8). By prime_factor_two_qr each factor is ≡ 1 or 7, so all are ≡ 1 (mod 8), hence each casts to 1 in ZMod 8. Then Nat.prod_primeFactorsList and Nat.cast_list_prod give (M : ZMod 8) = 1. But M ≡ 7 (mod 8) forces (M : ZMod 8) = 7, and 7 ≠ 1 in ZMod 8 (by decide) — contradiction.",
+    "mathContext": "A product of residues all $\\equiv 1 \\pmod 8$ is $\\equiv 1$; since $M \\equiv 7 \\pmod 8$, at least one prime factor must be $\\equiv 7 \\pmod 8$. This is the mod-8 lift of the classical ≡ 3 (mod 4) ‘not all factors ≡ 1’ trick.",
+    "significance": "core",
+    "relatedConcepts": [
+      "prime factorization",
+      "Nat.prod_primeFactorsList",
+      "product in ZMod 8",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "prime_factor_two_qr",
+      "odd_sq_mod_eight",
+      "casting products into ZMod 8"
+    ]
+  },
+  {
+    "id": "primes-seven-infinite",
+    "proofId": "infinitude-primes-4k3-oq-01-oq-01",
+    "range": { "startLine": 110, "endLine": 153 },
+    "type": "theorem",
+    "title": "primes_seven_mod_eight_infinite: The Euclid Construction",
+    "content": "The main theorem, directly answering OQ-01-OQ-01. Assume the set S = {p prime | p ≡ 7 mod 8} is finite (S = hcon.toFinset). Build a = 3·∏(q ∈ S). Each factor is odd (a prime ≡ 7 mod 8 is not 2), so a is odd; and a ≥ 3. By exists_prime_factor_seven_mod_eight there is a prime p ∣ a² − 2 with p ≡ 7 (mod 8), so p ∈ S, hence p ∣ a, hence p ∣ a². Then p ∣ a² and p ∣ a² − 2 give p ∣ 2, forcing p = 2 — contradicting p ≡ 7 (mod 8).",
+    "mathContext": "$a = 3\\prod_{q \\in S} q$; the produced prime $p \\equiv 7 \\pmod 8$ divides both $a$ and $a^2 - 2$, so $p \\mid 2$, impossible. The finite list can never be complete.",
+    "significance": "core",
+    "relatedConcepts": [
+      "Euclid's argument",
+      "Set.Infinite",
+      "Finset product",
+      "Prime.dvd_finset_prod_iff"
+    ],
+    "prerequisites": [
+      "exists_prime_factor_seven_mod_eight",
+      "Set.not_infinite / Set.Finite.toFinset",
+      "prime divisibility of products"
+    ]
+  },
+  {
+    "id": "no-largest-prime",
+    "proofId": "infinitude-primes-4k3-oq-01-oq-01",
+    "range": { "startLine": 155, "endLine": 161 },
+    "type": "theorem",
+    "title": "no_largest_prime_seven_mod_eight: No Largest Element",
+    "content": "Restates infinitude in ‘no maximal element’ form: for every n there is a prime p > n with p ≡ 7 (mod 8). Obtained by applying Set.Infinite.exists_gt to primes_seven_mod_eight_infinite and unpacking the membership predicate.",
+    "mathContext": "The dual of Set.Infinite: arbitrarily large primes ≡ 7 (mod 8) exist.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Set.Infinite.exists_gt",
+      "no largest prime"
+    ],
+    "prerequisites": [
+      "primes_seven_mod_eight_infinite"
+    ]
+  }
+]

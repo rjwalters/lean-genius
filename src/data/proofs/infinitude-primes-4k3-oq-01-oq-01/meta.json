@@ -1,0 +1,239 @@
+{
+  "id": "infinitude-primes-4k3-oq-01-oq-01",
+  "title": "Infinitely Many Primes ≡ 7 (mod 8) — An Elementary, L-function-Free Euclid Argument",
+  "slug": "infinitude-primes-4k3-oq-01-oq-01",
+  "description": "Answers OQ-01-OQ-01 from infinitude-primes-4k3: proves the set of primes ≡ 7 (mod 8) is Set.Infinite by a purely elementary Euclid argument, with no Dirichlet L-functions. For any odd a, the number M = a² − 2 is ≡ 7 (mod 8); every prime p ∣ M makes 2 a square mod p, so p ≡ ±1 (mod 8) (Mathlib's ZMod.exists_sq_eq_two_iff, the only quadratic-residue input). Since a product of numbers ≡ 1 (mod 8) stays ≡ 1 and M ≡ 7, some prime factor is ≡ 7 (mod 8). Euclid's construction a = 3·∏(known primes ≡ 7 mod 8) then yields a new such prime. 5 theorems/lemmas, 0 new axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dirichlet%27s_theorem_on_arithmetic_progressions",
+    "date": "formalized 2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "elementary",
+      "primes",
+      "modular-arithmetic",
+      "quadratic-residues",
+      "quadratic-reciprocity"
+    ],
+    "proofRepoPath": "Proofs/InfinitudePrimes4k3OQ01OQ01.lean",
+    "parentProofId": "infinitude-primes-4k3-oq-01",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "newAxiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.exists_sq_eq_two_iff",
+        "description": "For an odd prime p, 2 is a square in ZMod p iff p % 8 = 1 or p % 8 = 7 — the supplementary law of quadratic reciprocity for 2, the single QR input to the whole proof",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(a : ZMod b) = 0 ↔ b ∣ a — bridges natural-number divisibility p ∣ M and the equation (a:ZMod p)² = 2",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.prod_primeFactorsList",
+        "description": "The product of a number's prime-factor list recovers the number — used to push M ≡ 7 (mod 8) to a statement about its prime factors",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Prime.dvd_finset_prod_iff",
+        "description": "A prime dividing a finite product divides some factor — used to show 2 ∤ 3·∏(primes ≡ 7), so the Euclid number a is odd",
+        "module": "Mathlib.Algebra.BigOperators.Associated"
+      },
+      {
+        "theorem": "Nat.prime_dvd_prime_iff_eq",
+        "description": "For primes p, q: p ∣ q ↔ p = q — closes the Euclid contradiction (a factor p ≡ 7 would have to equal 2)",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "odd_sq_mod_eight: an odd natural number has square ≡ 1 (mod 8), the arithmetic reason a² − 2 ≡ 7 (mod 8)",
+      "prime_factor_two_qr: an odd prime p dividing a² − 2 (with a² ≥ 2) forces p ≡ 1 or 7 (mod 8), the single point where quadratic reciprocity (ZMod.exists_sq_eq_two_iff) enters",
+      "exists_prime_factor_seven_mod_eight: for odd a ≥ 3, the number a² − 2 has a prime factor ≡ 7 (mod 8) — proved by showing not all prime factors can be ≡ 1 (mod 8) via a product-in-ZMod-8 argument",
+      "primes_seven_mod_eight_infinite: Set.Infinite {p prime | p ≡ 7 (mod 8)} — the Euclid step, a = 3·∏(finite set), directly answering OQ-01-OQ-01",
+      "no_largest_prime_seven_mod_eight: there is no largest prime ≡ 7 (mod 8)"
+    ],
+    "dateAdded": "2026-07-01",
+    "lineCount": 163,
+    "assumptions": "0 new axioms. Depends only on propext, Classical.choice, Quot.sound (the standard Lean/Mathlib foundational axioms, which do not count as assumptions). No sorryAx, no Lean.ofReduceBool (the single `decide` at the ZMod-8 contradiction is Prop-level Decidable evaluation, not native_decide).",
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's theorem (1837) guarantees infinitely many primes in any residue class a (mod q) with gcd(a, q) = 1, but its general proof rests on Dirichlet L-functions and their non-vanishing at s = 1. Many individual classes, however, admit fully elementary Euclid-style proofs. The classes detectable by whether a fixed integer is a quadratic residue are the most classical: primes ≡ 3 (mod 4) (a product argument, the base entry), primes ≡ 1 (mod 4) (via −1 being a QR, the Φ₄ = x²+1 case), and — the subject here — primes ≡ ±1 (mod 8), governed by whether 2 is a quadratic residue. The supplementary law of quadratic reciprocity says 2 is a square mod an odd prime p exactly when p ≡ ±1 (mod 8). Feeding this into a Euclid construction on numbers of the form a² − 2 isolates the class ≡ 7 ≡ −1 (mod 8).",
+    "problemStatement": "**Open Question (infinitude-primes-4k3-OQ-01-OQ-01)**: The parent OQ-01 chain proved infinitely many primes in classes mod 12 and mod 24 by Dirichlet specialization. Can the class ≡ −1 ≡ 7 (mod 8) be handled by a purely elementary Euclidean argument — using only that 2 is a QR mod p iff p ≡ ±1 (mod 8) — with no appeal to Dirichlet's theorem or L-functions for this class?\n\n**Answer**: Yes. For odd a, M = a² − 2 ≡ 7 (mod 8). Every prime p ∣ M makes 2 a square mod p, so p ≡ 1 or 7 (mod 8). A product of numbers all ≡ 1 (mod 8) is ≡ 1 (mod 8), but M ≡ 7, so some prime factor of M is ≡ 7 (mod 8). Euclid's construction a = 3·∏(known primes ≡ 7 mod 8) produces a prime ≡ 7 (mod 8) not on the list, so the class is infinite.",
+    "proofStrategy": "**Arithmetic base** `odd_sq_mod_eight`: an odd square is ≡ 1 (mod 8) (write a = 2k+1, use 8 ∣ 4·k(k+1) since k(k+1) is even), giving a² − 2 ≡ 7 (mod 8).\n\n**Quadratic-residue step** `prime_factor_two_qr`: if an odd prime p ∣ a² − 2 then (a : ZMod p)² = 2, so 2 is a square mod p, and `ZMod.exists_sq_eq_two_iff` gives p % 8 ∈ {1, 7}. This is the only use of reciprocity.\n\n**Core lemma** `exists_prime_factor_seven_mod_eight`: for odd a ≥ 3 set M = a² − 2 ≥ 2 with M ≡ 7 (mod 8). By contradiction, assume no prime factor is ≡ 7 (mod 8); then every prime factor is ≡ 1 (mod 8), so casts to 1 in ZMod 8, and `Nat.prod_primeFactorsList` gives (M : ZMod 8) = 1. But M ≡ 7 (mod 8) forces (M : ZMod 8) = 7, and 7 ≠ 1 in ZMod 8 (by decide) — contradiction.\n\n**Euclid step** `primes_seven_mod_eight_infinite`: assume the set S = {p prime | p ≡ 7 mod 8} is finite. Put a = 3·∏(q ∈ S). Each factor is odd so a is odd, and a ≥ 3. The core lemma gives a prime p ∣ a² − 2 with p ≡ 7 (mod 8), so p ∈ S, hence p ∣ a, hence p ∣ a² and p ∣ a² − 2 force p ∣ 2, so p = 2 — contradicting p ≡ 7 (mod 8).",
+    "keyInsights": [
+      "**The quadratic form a² − 2 selects the QR-of-2 class**: a prime dividing a² − 2 must have 2 as a quadratic residue, which by the supplementary reciprocity law confines it to p ≡ ±1 (mod 8). Choosing a odd fixes the residue of M itself to 7 (mod 8), the ‘−1’ half of ±1.",
+      "**A parity/product argument isolates the −1 class from the +1 class**: both ≡ 1 and ≡ 7 (mod 8) primes can divide M, but a product of factors all ≡ 1 (mod 8) is ≡ 1 (mod 8). Since M ≡ 7, at least one factor must be ≡ 7 — the same ‘not all ≡ 1’ trick that drives the classical ≡ 3 (mod 4) proof, lifted to mod 8.",
+      "**Why a = 3·∏S rather than ∏S**: multiplying by 3 (any fixed odd number coprime to 2 works) guarantees a ≥ 3 and keeps a odd even when S is empty, so the construction is uniform and the odd-square lemma always applies.",
+      "**The Euclid contradiction is the standard one**: the produced prime p ≡ 7 (mod 8) is on the finite list, so p ∣ a; then p ∣ a² and p ∣ a² − 2 give p ∣ 2, impossible for an odd prime. No factor of the list can reappear.",
+      "**Elementary, not analytic**: the whole argument is the supplementary reciprocity law for 2 plus finite arithmetic. It never touches L-functions, characters, or the analytic non-vanishing that the general Dirichlet theorem for this modulus would require."
+    ],
+    "prerequisites": [
+      "Euclid's infinitude of primes (build a number with a prime factor outside any finite set)",
+      "Modular arithmetic and the ring ZMod p for p prime",
+      "The supplementary law of quadratic reciprocity: 2 is a QR mod odd prime p iff p ≡ ±1 (mod 8) (ZMod.exists_sq_eq_two_iff)",
+      "Odd squares are ≡ 1 (mod 8)",
+      "Prime factorization and the product-of-prime-factors identity (Nat.prod_primeFactorsList)",
+      "Parent/sibling files: infinitude-primes-4k3 (≡ 3 mod 4) and infinitude-primes-4k3-oq-01 (mod 12 / mod 24 Dirichlet specialization)"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "odd_sq_mod_eight",
+      "type": "supporting",
+      "statement": "$\\forall a,\\; a \\text{ odd} \\;\\Rightarrow\\; a^2 \\bmod 8 = 1$",
+      "significance": "The arithmetic reason a² − 2 ≡ 7 (mod 8) for odd a. Writing a = 2k+1, a² = 4·k(k+1) + 1 and k(k+1) is even, so 8 ∣ a² − 1. This fixes the residue class of the Euclid number M = a² − 2 and is what makes the product argument in the core lemma bite.",
+      "description": "An odd natural number has square ≡ 1 (mod 8)."
+    },
+    {
+      "name": "prime_factor_two_qr",
+      "type": "core",
+      "statement": "$\\forall p, a,\\; p \\text{ prime} \\wedge p \\neq 2 \\wedge p \\mid a^2 - 2 \\wedge 2 \\le a^2 \\;\\Rightarrow\\; p \\bmod 8 = 1 \\vee p \\bmod 8 = 7$",
+      "significance": "The single point where quadratic reciprocity enters. p ∣ a² − 2 gives (a : ZMod p)² = 2, so 2 is a square mod p, and the supplementary reciprocity law (ZMod.exists_sq_eq_two_iff) confines p to the classes ≡ ±1 (mod 8). Every prime factor of M is thereby pinned to {1, 7} mod 8.",
+      "description": "An odd prime dividing a² − 2 satisfies p ≡ 1 or 7 (mod 8), because 2 is then a quadratic residue mod p."
+    },
+    {
+      "name": "exists_prime_factor_seven_mod_eight",
+      "type": "core",
+      "statement": "$\\forall a,\\; a \\text{ odd} \\wedge 3 \\le a \\;\\Rightarrow\\; \\exists p,\\; p \\text{ prime} \\wedge p \\mid a^2 - 2 \\wedge p \\bmod 8 = 7$",
+      "significance": "The heart of the argument. Every prime factor of M = a² − 2 is ≡ 1 or 7 (mod 8); a product of factors all ≡ 1 (mod 8) is ≡ 1 (mod 8), but M ≡ 7 (mod 8), so at least one factor must be ≡ 7. Formalized by casting the prime-factor list into ZMod 8 and comparing (M : ZMod 8) = 1 (if all ≡ 1) against (M : ZMod 8) = 7.",
+      "description": "For odd a ≥ 3, the number a² − 2 has a prime factor ≡ 7 (mod 8)."
+    },
+    {
+      "name": "primes_seven_mod_eight_infinite",
+      "type": "core",
+      "statement": "$\\mathrm{Set.Infinite}\\,\\{p : \\mathbb{N} \\mid \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 8 = 7\\}$",
+      "significance": "Direct answer to OQ-01-OQ-01. The Euclid step: if the set were finite, a = 3·∏(its elements) is odd and ≥ 3, so a² − 2 has a prime factor p ≡ 7 (mod 8) by the core lemma. That p is on the list, so p ∣ a, hence p ∣ 2 — impossible. The elementary, L-function-free infinitude for the class ≡ 7 (mod 8).",
+      "description": "The set of primes ≡ 7 (mod 8) is infinite."
+    },
+    {
+      "name": "no_largest_prime_seven_mod_eight",
+      "type": "supporting",
+      "statement": "$\\forall n,\\; \\exists p,\\; \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 8 = 7 \\wedge n < p$",
+      "significance": "The ‘no largest element’ restatement of infinitude, obtained from primes_seven_mod_eight_infinite via Set.Infinite.exists_gt. Makes explicit that arbitrarily large primes ≡ 7 (mod 8) exist.",
+      "description": "For every n there is a prime p > n with p ≡ 7 (mod 8)."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Dirichlet, P.G.L. (1837). \"Beweis des Satzes, dass jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält.\" Abhandlungen der Königlich Preussischen Akademie der Wissenschaften, 45-81.",
+      "relevance": "The general theorem on primes in arithmetic progressions, of which ‘infinitely many primes ≡ 7 (mod 8)’ is the special case (q, a) = (8, 7) proved here elementarily. Dirichlet's proof uses L-functions; this file avoids all analytic machinery via the supplementary quadratic-reciprocity law for 2, which is available precisely for the classes ≡ ±1 (mod 8)."
+    },
+    {
+      "type": "textbook",
+      "citation": "Hardy, G.H., and Wright, E.M. (2008). \"An Introduction to the Theory of Numbers,\" 6th ed., revised by D.R. Heath-Brown and J.H. Silverman. Oxford University Press. §2.2 (Euclid's proof and variants), §6.5 (quadratic residues), §6.10 (the residue character of 2).",
+      "relevance": "Standard reference for the Euclid-style elementary infinitude proofs in special residue classes and for the residue character of 2 (2 is a QR mod p iff p ≡ ±1 mod 8) that drives the key lemma. §2.2 gives the ≡ 3 (mod 4) analogue; the ≡ 7 (mod 8) case via a² − 2 is the next classical example."
+    },
+    {
+      "type": "textbook",
+      "citation": "Ireland, K., and Rosen, M. (1990). \"A Classical Introduction to Modern Number Theory,\" 2nd ed. Springer GTM 84. Ch. 5 (Quadratic reciprocity and the Legendre symbol), §5.2 (the supplementary laws for −1 and 2).",
+      "relevance": "Develops the supplementary law (2/p) = (−1)^((p²−1)/8) that says 2 is a QR mod p iff p ≡ ±1 (mod 8), the exact input to prime_factor_two_qr. The book also discusses which residue classes admit elementary Euclid proofs (those detected by a quadratic character)."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Murty, M. Ram (1988). \"Primes in certain arithmetic progressions.\" Functiones et Approximatio Commentarii Mathematici, 35, 249-259.",
+      "relevance": "Characterizes which arithmetic progressions {a + kq} admit Euclid-style elementary infinitude proofs: essentially those with a² ≡ 1 (mod q). The class a = 7, q = 8 qualifies (7² = 49 ≡ 1 mod 8), which is exactly why the quadratic-residue argument on a² − 2 succeeds here without Dirichlet's analytic method."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity\" — `ZMod.exists_sq_eq_two_iff`. (accessed 2026)",
+      "relevance": "Supplies the sole quadratic-residue input: for an odd prime p, IsSquare (2 : ZMod p) ↔ p % 8 = 1 ∨ p % 8 = 7. This is the supplementary law of quadratic reciprocity for 2 on which the entire elementary argument pivots."
+    }
+  ],
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Open Question Statement",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "States OQ-01-OQ-01, answers it affirmatively, and sketches the mechanism: for odd a, M = a² − 2 ≡ 7 (mod 8); every prime factor makes 2 a QR so lies in {1, 7} mod 8; a product of ≡ 1 factors stays ≡ 1, so some factor is ≡ 7; a Euclid construction a = 3·∏(known such primes) then produces a new one. Imports Mathlib and opens the namespace.",
+      "mathContext": "The only nontrivial external fact is ZMod.exists_sq_eq_two_iff (2 is a QR mod p iff p ≡ ±1 mod 8); everything else is elementary arithmetic."
+    },
+    {
+      "id": "odd-square-mod-eight",
+      "title": "odd_sq_mod_eight: Odd Squares are 1 (mod 8)",
+      "startLine": 36,
+      "endLine": 44,
+      "summary": "Writes an odd a = 2k+1, uses that k(k+1) is even (Nat.even_mul_succ_self) to get a² = 8t + 1, and concludes a² % 8 = 1 by omega. This pins M = a² − 2 to ≡ 7 (mod 8).",
+      "mathContext": "$(2k+1)^2 = 4k(k+1)+1$ and $2 \\mid k(k+1)$, so $8 \\mid (2k+1)^2 - 1$."
+    },
+    {
+      "id": "quadratic-residue-step",
+      "title": "prime_factor_two_qr: The Quadratic-Residue Step",
+      "startLine": 46,
+      "endLine": 62,
+      "summary": "From p ∣ a² − 2 casts to (a : ZMod p)² = 2 via ZMod.natCast_eq_zero_iff and push_cast, then applies ZMod.exists_sq_eq_two_iff to conclude p % 8 ∈ {1, 7}. The one and only appeal to quadratic reciprocity.",
+      "mathContext": "$p \\mid a^2 - 2 \\Rightarrow (a \\bmod p)^2 = 2 \\Rightarrow 2 \\text{ is a QR mod } p \\Rightarrow p \\equiv \\pm 1 \\pmod 8$."
+    },
+    {
+      "id": "core-lemma",
+      "title": "exists_prime_factor_seven_mod_eight: The Product Argument",
+      "startLine": 64,
+      "endLine": 108,
+      "summary": "For odd a ≥ 3, sets M = a² − 2 ≥ 2 with M ≡ 7 (mod 8). By contradiction assumes no prime factor is ≡ 7; then all are ≡ 1 (mod 8), cast to 1 in ZMod 8, and Nat.prod_primeFactorsList gives (M : ZMod 8) = 1, contradicting (M : ZMod 8) = 7 (7 ≠ 1 by decide).",
+      "mathContext": "A product of residues all $\\equiv 1 \\pmod 8$ is $\\equiv 1$; since $M \\equiv 7$, some prime factor is $\\equiv 7 \\pmod 8$."
+    },
+    {
+      "id": "euclid-step",
+      "title": "primes_seven_mod_eight_infinite: The Euclid Construction",
+      "startLine": 110,
+      "endLine": 153,
+      "summary": "Assuming the set S of primes ≡ 7 (mod 8) is finite, builds a = 3·∏(S), shows a is odd (no factor is 2) and a ≥ 3, extracts p ∣ a² − 2 with p ≡ 7 via the core lemma, notes p ∈ S so p ∣ a, hence p ∣ a² and p ∣ a² − 2 give p ∣ 2, so p = 2 — contradiction.",
+      "mathContext": "$a = 3\\prod_{q \\in S} q$; the new prime $p \\equiv 7 \\pmod 8$ divides both $a$ and $a^2 - 2$, forcing $p \\mid 2$."
+    },
+    {
+      "id": "consequence",
+      "title": "no_largest_prime_seven_mod_eight: No Largest Element",
+      "startLine": 155,
+      "endLine": 161,
+      "summary": "Restates infinitude as: for every n there is a prime p > n with p ≡ 7 (mod 8), via Set.Infinite.exists_gt applied to primes_seven_mod_eight_infinite.",
+      "mathContext": "The dual ‘no maximal element’ form of Set.Infinite for the class ≡ 7 (mod 8)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question is answered: yes, the set of primes ≡ 7 (mod 8) is infinite by a purely elementary Euclid argument. The pivot is that a prime dividing a² − 2 makes 2 a quadratic residue, confining it to p ≡ ±1 (mod 8) (ZMod.exists_sq_eq_two_iff); an odd a forces M = a² − 2 ≡ 7 (mod 8), and a product argument extracts a factor ≡ 7. The proof is fully elementary, self-contained, and 0-axiom, with no Dirichlet L-functions.",
+    "implications": "This completes the mod-8 picture for the QR-detectable classes the parent chain pointed toward: ≡ 3 (mod 4) uses ‘product of ≡ 1 stays ≡ 1’, ≡ 1 (mod 4) uses the QR of −1, and ≡ 7 (mod 8) uses the QR of 2 on a² − 2. The companion class ≡ 1 (mod 8) (also QR of 2) is the natural next target: primes dividing a² − 2 landing in the +1 rather than −1 half.",
+    "openQuestions": [
+      "The class ≡ 1 (mod 8) also consists of primes for which 2 is a QR, but the sign argument on a² − 2 selects only the ≡ 7 half. Can an elementary Euclid argument isolate ≡ 1 (mod 8) — e.g. via a fourth-power / Φ₈ = x⁴ + 1 construction, where a prime dividing a⁴ + 1 forces order 8 and hence p ≡ 1 (mod 8)?",
+      "The three QR-detectable mod-8 classes proved across this chain (≡ 3 mod 4, ≡ 1 mod 4, ≡ 7 mod 8) suggest a unified elementary statement: every odd prime ≠ the ramified ones falls into a class detectable by a fixed quadratic character, and each such class is infinite. Can the a² − D template be parameterized over D to give one generic lemma covering all classes with a² ≡ 1 (mod q)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "infinitude-primes-4k3-oq-01",
+      "relationship": "parent",
+      "description": "Proves infinitely many primes ≡ −1 (mod 12) and (mod 24) by Dirichlet specialization; this file answers its OQ-01-OQ-01 by handling the ≡ 7 (mod 8) class purely elementarily via the QR of 2."
+    },
+    {
+      "proofId": "infinitude-primes-4k3",
+      "relationship": "ancestor",
+      "description": "The base entry proving infinitely many primes ≡ 3 (mod 4) by the product argument; this file lifts the same ‘not all factors ≡ 1’ idea from mod 4 to mod 8."
+    },
+    {
+      "proofId": "infinitude-primes-4k3-oq-03-oq-01",
+      "relationship": "sibling",
+      "description": "The cyclotomic Φ₃ Euclid argument for ≡ 1 (mod 3); a parallel elementary construction in the same chain, using multiplicative order instead of the QR of 2."
+    },
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "ancestor",
+      "description": "Euclid's original infinitude of primes; every variant here adapts its ‘build a number with a new prime factor’ skeleton."
+    }
+  ],
+  "leanFile": {
+    "namespace": "InfinitudePrimes4k3OQ01OQ01",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/InfinitudePrimes4k3OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
