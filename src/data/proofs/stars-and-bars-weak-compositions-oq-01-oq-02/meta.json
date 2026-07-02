@@ -125,7 +125,15 @@
     ]
   },
   "crossReferences": [
-    "stars-and-bars-weak-compositions-oq-01",
-    "stars-and-bars-weak-compositions"
+    {
+      "proofId": "stars-and-bars-weak-compositions-oq-01",
+      "relationship": "parent",
+      "description": "Identifies the generating function of the weak-composition counts with Mathlib's invOneSubPow S k and reads its n-th coefficient as C(n+k−1, n) (coeff_invOneSubPow_eq_choose). This entry answers that entry's second open question by giving the negative binomial theorem reading of those coefficients as generalized binomial coefficients (−1)ⁿ C(−k, n)."
+    },
+    {
+      "proofId": "stars-and-bars-weak-compositions",
+      "relationship": "generalizes",
+      "description": "The grandparent counts weak compositions of n into k parts as C(n+k−1, n) via the bijection to size-n multisets (card_weakComposition); this entry shows the generalized binomial coefficient C(−k, n) reproduces that count up to the sign (−1)ⁿ."
+    }
   ]
 }
