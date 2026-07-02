@@ -69,6 +69,50 @@
       "Dedekind's theorem (background): mod-p factorization type ↦ Frobenius cycle type"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: What Dedekind's Theorem Needs",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Docstring stating the goal — verify, axiom-free, the arithmetic inputs Dedekind's theorem consumes at p = 7 for q = x⁵−5x⁴+10x³−10x²+25x−5 — plus the honest scope (the Frobenius permutation itself is the one residual Mathlib gap) and the key Mathlib API used (squarefree_mul_iff, irreducibility-by-no-root)."
+    },
+    {
+      "id": "factors-degrees",
+      "title": "§1 The Three Factors and Their Degrees",
+      "startLine": 76,
+      "endLine": 103,
+      "summary": "Defines linFactor5 = X−5, linFactor6 = X−6, and the imported cubic cubicMod7 = X³+6X²+4X+1 over 𝔽₇; pins their degrees to 1, 1, 3 via compute_degree! and records each is nonzero — the raw (1,1,3) factor-type data."
+    },
+    {
+      "id": "irreducibility",
+      "title": "§2 Irreducibility",
+      "startLine": 104,
+      "endLine": 118,
+      "summary": "cubicMod7_irreducible via the degree-≤3 no-root criterion (irreducible_of_degree_le_three_of_not_isRoot); linFactor5/6_irreducible via irreducible_X_sub_C. All three factors are irreducible over 𝔽₇."
+    },
+    {
+      "id": "non-associated",
+      "title": "§3 Pairwise Non-Associated (Distinct Primes)",
+      "startLine": 119,
+      "endLine": 148,
+      "summary": "linFactors_not_associated (5 ≠ 6 in 𝔽₇) and the two linear-vs-cubic non-association lemmas (degree 1 ≠ 3), establishing the three irreducibles are pairwise distinct — required for a single 3-cycle Frobenius."
+    },
+    {
+      "id": "coprime-squarefree",
+      "title": "§4 Coprimality and Squarefreeness (7 Unramified)",
+      "startLine": 149,
+      "endLine": 186,
+      "summary": "Pairwise coprimality (isCoprime_X_sub_C_of_isUnit_sub for the linears; isRelPrime via no-root for linear-vs-cubic) and q_mod7_squarefree via squarefree_mul_iff twice — so 7 ∤ disc(q) and the Frobenius-at-7 interpretation is licensed."
+    },
+    {
+      "id": "packaged-input",
+      "title": "§5 Packaged Dedekind Input: Factor Type (1,1,3)",
+      "startLine": 187,
+      "endLine": 225,
+      "summary": "q_mod7_factorization confirms the product equals q mod 7, and q_mod7_factor_type bundles the whole 0-axiom arithmetic input (three distinct irreducibles of degrees 1,1,3, squarefree product) that Dedekind's theorem turns into 3 ∣ |Gal(q)|."
+    }
+  ],
   "conclusion": {
     "summary": "This entry fully verifies (0 axioms, 0 sorries, no native_decide) the two ingredients Dedekind's theorem consumes to force 3 ∣ |Gal(q)| in the parent A₅ realization: the arithmetic (1,1,3) factorization of q mod 7 (corroborated mod 11), and the deterministic group-theoretic eliminator that an n-cycle on the roots forces n ∣ |Gal(q)|, in arbitrary cycle length against the concrete Polynomial.Gal. A gap-characterization theorem shows the parent's lone open axiom three_dvd_gal_card is equivalent to |q.Gal| = 60, pinpointing the exact residual dependency.",
     "implications": "The work sharpens the parent's honest scope: everything except the construction of the Frobenius permutation itself is now machine-checked. The general cycle-length bridge is a reusable interface for Galois-group cardinality arguments — it already serves both the 3-cycle and 5-cycle inputs of the A₅ computation from a single lemma — and will connect directly to a future Mathlib Dedekind's theorem to eliminate the last axiom.",
