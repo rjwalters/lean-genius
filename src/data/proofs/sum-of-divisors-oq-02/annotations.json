@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-sod2-overview",
+    "proofId": "sum-of-divisors-oq-02",
+    "range": { "startLine": 1, "endLine": 59 },
+    "type": "context",
+    "title": "Euler's converse, decomposed into six named steps",
+    "content": "The header lays out the strategy. Euler's 1747 theorem — every even perfect number has the form n = 2^k·(2^(k+1)−1) with 2^(k+1)−1 a Mersenne prime — is the converse of Euclid's construction, and together they form the Euclid–Euler bijection between even perfect numbers and Mersenne primes. Mathlib's Archive proves the whole statement as one block (Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect); the gallery value of this file is exposing the argument as six reusable lemmas: (1) σ-multiplicativity over the coprime 2-adic split, (2) σ(2^k) = mersenne(k+1), (3) the perfect equation mersenne(k+1)·σ(m) = 2^(k+1)·m, (4) mersenne(k+1) ∣ m, (5) the cofactor identity σ(m) = m + c, and (6) the two-divisor pinch forcing c = 1 and m prime. The Archive is quoted only for the 2-adic split and the σ(2^k) value; the two-divisor heart and the bound-chasing are proved from first principles.",
+    "mathContext": "$n \\text{ even perfect} \\iff n = 2^k(2^{k+1}-1) \\text{ with } 2^{k+1}-1 \\text{ (Mersenne) prime.}$",
+    "significance": "context",
+    "relatedConcepts": ["perfect number", "Mersenne prime", "Euclid–Euler theorem", "sum-of-divisors function", "multiplicative function"],
+    "prerequisites": ["elementary number theory", "divisor functions", "coprimality"]
+  },
+  {
+    "id": "ann-sod2-step1-multiplicativity",
+    "proofId": "sum-of-divisors-oq-02",
+    "range": { "startLine": 68, "endLine": 77 },
+    "type": "technique",
+    "title": "Step 1: σ is multiplicative across the odd/even split",
+    "content": "sigma_two_pow_mul_odd specializes the multiplicativity of the sum-of-divisors function σ = ArithmeticFunction.sigma 1 to the factorization 2^k·m with m odd. Because m is odd, gcd(2^k, m) = 1, so σ(2^k·m) = σ(2^k)·σ(m). The proof is a single term: isMultiplicative_sigma.map_mul_of_coprime consumes a proof of Coprime (2^k) m, which is assembled from Odd.coprime_two_right hm_odd (giving Coprime m 2), symmetrized, and promoted to the k-th power by .pow_left. This is the structural engine of the whole argument — it lets the divisor sum of a perfect number factor along its 2-adic decomposition.",
+    "mathContext": "$\\gcd(2^k, m) = 1 \\Rightarrow \\sigma(2^k m) = \\sigma(2^k)\\,\\sigma(m).$",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative arithmetic function", "sum-of-divisors σ", "coprimality", "2-adic factorization"],
+    "prerequisites": ["arithmetic functions", "coprimality", "prime factorization"]
+  },
+  {
+    "id": "ann-sod2-step2-sigma-two-pow",
+    "proofId": "sum-of-divisors-oq-02",
+    "range": { "startLine": 78, "endLine": 83 },
+    "type": "concept",
+    "title": "Step 2: σ(2^k) = mersenne(k+1)",
+    "content": "sigma_two_pow_eq_mersenne records the exact value of the divisor sum of a power of two: σ(2^k) = 1 + 2 + 4 + ... + 2^k = 2^(k+1) − 1 = mersenne(k+1), the finite geometric series. This is an alias of the Archive lemma Theorems100.Nat.sigma_two_pow_eq_mersenne_succ. The appearance of the Mersenne number here is the reason perfect numbers and Mersenne primes are linked at all: the power-of-two part of a perfect number contributes exactly a Mersenne value to the divisor sum.",
+    "mathContext": "$\\sigma(2^k) = \\sum_{i=0}^{k} 2^i = 2^{k+1} - 1 = \\mathrm{mersenne}(k+1).$",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "Mersenne number", "sum-of-divisors σ", "prime powers"],
+    "prerequisites": ["geometric series", "divisor functions"]
+  },
+  {
+    "id": "ann-sod2-step3-perfect-equation",
+    "proofId": "sum-of-divisors-oq-02",
+    "range": { "startLine": 84, "endLine": 99 },
+    "type": "key-step",
+    "title": "Step 3: the perfect equation mersenne(k+1)·σ(m) = 2^(k+1)·m",
+    "content": "mersenne_mul_sigma_eq_two_pow_mul compresses perfectness into a single divisor equation. Perfectness of n = 2^k·m means σ(n) = 2n; via Nat.perfect_iff_sum_divisors_eq_two_mul and sigma_one_apply this becomes σ(2^k·m) = 2·(2^k·m). Applying Step 1 to the left (σ(2^k)·σ(m)) and Step 2 (σ(2^k) = mersenne(k+1)), then collapsing 2·2^k = 2^(k+1) with ←mul_assoc; ←pow_succ', yields mersenne(k+1)·σ(m) = 2^(k+1)·m. Everything downstream is extracting the consequence that the cofactor of mersenne(k+1) in m equals 1.",
+    "mathContext": "$\\sigma(n)=2n \\;\\Rightarrow\\; \\mathrm{mersenne}(k+1)\\cdot\\sigma(m) = 2^{k+1}\\cdot m.$",
+    "significance": "key",
+    "relatedConcepts": ["perfect number", "abundancy σ(n)=2n", "Mersenne number", "equation manipulation"],
+    "prerequisites": ["perfect numbers", "divisor functions"]
+  },
+  {
+    "id": "ann-sod2-step4-divisibility",
+    "proofId": "sum-of-divisors-oq-02",
+    "range": { "startLine": 100, "endLine": 123 },
+    "type": "technique",
+    "title": "Step 4: the Mersenne factor divides the odd part m",
+    "content": "mersenne_dvd_odd_part extracts mersenne(k+1) ∣ m from the perfect equation. The Mersenne number mersenne(k+1) = 2^(k+1) − 1 is odd, hence coprime to 2^(k+1); from mersenne(k+1)·σ(m) = 2^(k+1)·m it therefore divides the right side's m-factor. The term-mode proof chains Odd.coprime_two_right (with mersenne_odd discharged by simp) to Coprime (mersenne(k+1)) 2, boosts it to Coprime (mersenne(k+1)) (2^(k+1)) by .pow_right, packages the equation as a divisibility via Dvd.intro, and finishes with .dvd_of_dvd_mul_left — a divisor coprime to one factor of a product divides the other.",
+    "mathContext": "$\\gcd(\\mathrm{mersenne}(k+1),\\,2^{k+1})=1 \\text{ and } \\mathrm{mersenne}(k+1)\\mid 2^{k+1}m \\;\\Rightarrow\\; \\mathrm{mersenne}(k+1)\\mid m.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclid's lemma", "coprimality", "divisibility", "Mersenne number is odd"],
+    "prerequisites": ["divisibility", "coprimality"]
+  },
+  {
+    "id": "ann-sod2-step5-cofactor",
+    "proofId": "sum-of-divisors-oq-02",
+    "range": { "startLine": 124, "endLine": 151 },
+    "type": "technique",
+    "title": "Step 5: substitution gives σ(m) = m + c",
+    "content": "sigma_eq_self_add_cofactor turns the perfect equation into the shape that exposes primality. Writing m = mersenne(k+1)·c (the cofactor c from Step 4) and using the key identity 2^(k+1) = mersenne(k+1) + 1 (succ_mersenne), the right side 2^(k+1)·m = (mersenne(k+1)+1)·m = mersenne(k+1)·m + m, where the trailing m equals mersenne(k+1)·c. The equation mersenne(k+1)·σ(m) = mersenne(k+1)·(m+c) then cancels the positive factor mersenne(k+1) (Nat.eq_of_mul_eq_mul_left, positivity from mersenne_pos), leaving σ(m) = m + c. So the sum of divisors of m exceeds m by exactly its cofactor c.",
+    "mathContext": "$m = \\mathrm{mersenne}(k+1)\\cdot c,\\ \\ 2^{k+1} = \\mathrm{mersenne}(k+1)+1 \\;\\Rightarrow\\; \\sigma(m) = m + c.$",
+    "significance": "supporting",
+    "relatedConcepts": ["cancellation law", "Mersenne successor identity", "cofactor", "sum-of-divisors σ"],
+    "prerequisites": ["divisor functions", "natural-number arithmetic"]
+  },
+  {
+    "id": "ann-sod2-step6-two-divisor-pinch",
+    "proofId": "sum-of-divisors-oq-02",
+    "range": { "startLine": 152, "endLine": 174 },
+    "type": "insight",
+    "title": "Step 6: the two-divisor pinch forces c = 1 and m prime",
+    "content": "cofactor_one_and_prime is the mathematical heart, proved from first principles. Splitting σ(m) = (∑ proper divisors of m) + m against the Step-5 identity σ(m) = m + c shows the proper-divisor sum equals c. Since c ∣ m, this proper-divisor sum divides m — and Nat.sum_properDivisors_dvd forces any self-dividing proper-divisor sum to be either 1 or m. The value m would give c = m, contradicting c < m; so the sum is 1, whence c = 1. Finally Nat.sum_properDivisors_eq_one_iff_prime translates 'proper divisors sum to 1' into 'm is prime'. This is the crux that no even perfect number can hide extra structure: its odd part must be a single prime.",
+    "mathContext": "$\\textstyle\\sum_{d\\mid m,\\,d<m} d = c \\mid m \\Rightarrow c \\in \\{1,m\\};\\ c<m \\Rightarrow c=1 \\Rightarrow m \\text{ prime}.$",
+    "significance": "key",
+    "relatedConcepts": ["proper divisors", "primality characterization", "two-divisor argument", "proof by cases"],
+    "prerequisites": ["divisibility", "prime numbers", "proper divisor sums"]
+  },
+  {
+    "id": "ann-sod2-capstone",
+    "proofId": "sum-of-divisors-oq-02",
+    "range": { "startLine": 175, "endLine": 227 },
+    "type": "main-result",
+    "title": "Capstone: chaining the six steps to Mersenne form",
+    "content": "euler_converse_self_contained assembles the theorem: every even perfect n equals 2^k·mersenne(k+1) with mersenne(k+1) prime. It opens with the Archive 2-adic split eq_two_pow_mul_odd (n = 2^k·m, m odd), then derives the side conditions the earlier lemmas need — m > 0 (odd ⇒ nonzero), k ≠ 0 (else n = m is odd, contradicting evenness), 1 < m (else σ(m)=1 forces c=0 hence m=0), mersenne(k+1) > 1 (since 2^(k+1) ≥ 4), and 0 < c < m. Steps 3–5 produce the cofactor equation σ(m) = m + c, Step 6 pins c = 1 and m prime, and m = mersenne(k+1)·1 identifies m as the Mersenne prime, giving n = 2^k·mersenne(k+1). The bound derivations, not present in the six lemmas, are the capstone's own contribution.",
+    "mathContext": "$\\text{Even } n,\\ \\sigma(n)=2n \\;\\Rightarrow\\; \\exists k,\\ (\\mathrm{mersenne}(k+1))\\text{ prime} \\wedge n = 2^k\\,\\mathrm{mersenne}(k+1).$",
+    "significance": "key",
+    "relatedConcepts": ["Euclid–Euler theorem", "perfect number classification", "Mersenne prime", "proof composition"],
+    "prerequisites": ["perfect numbers", "Mersenne primes", "2-adic factorization"]
+  }
+]
