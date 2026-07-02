@@ -5,7 +5,11 @@
     "range": { "startLine": 1, "endLine": 54 },
     "type": "concept",
     "title": "The ∞-Topos Section Problem and Why Lean ≠ HoTT",
-    "content": "The module docstring frames the target: the Borsuk-Ulam covering obstruction, restated via classifying spaces, is the non-existence of a section of the universal ℤ/2-bundle $E\\mathbb{Z}/2 \\to B\\mathbb{Z}/2$. The total space $E\\mathbb{Z}/2$ is contractible while the base $B\\mathbb{Z}/2 = \\mathbb{R}P^\\infty$ has $\\pi_1 = \\mathbb{Z}/2 \\neq 0$; a section would make a contractible space retract onto one with nontrivial $\\pi_1$, a contradiction.\n\nCrucially, Lean 4 is **not** homotopy type theory: definitional proof irrelevance and UIP mean there is no homotopically nontrivial 'contractible' type and no univalence, so a literal synthetic-HoTT proof is unavailable in Mathlib. The file therefore formalizes the obstruction through the fundamental-group functor $\\pi_1(-)$ — the algebraic invariant the classical proof actually uses — which for $\\mathbb{Z}/2$ captures the entire argument."
+    "content": "The module docstring frames the target: the Borsuk-Ulam covering obstruction, restated via classifying spaces, is the non-existence of a section of the universal ℤ/2-bundle $E\\mathbb{Z}/2 \\to B\\mathbb{Z}/2$. The total space $E\\mathbb{Z}/2$ is contractible while the base $B\\mathbb{Z}/2 = \\mathbb{R}P^\\infty$ has $\\pi_1 = \\mathbb{Z}/2 \\neq 0$; a section would make a contractible space retract onto one with nontrivial $\\pi_1$, a contradiction.\n\nCrucially, Lean 4 is **not** homotopy type theory: definitional proof irrelevance and UIP mean there is no homotopically nontrivial 'contractible' type and no univalence, so a literal synthetic-HoTT proof is unavailable in Mathlib. The file therefore formalizes the obstruction through the fundamental-group functor $\\pi_1(-)$ — the algebraic invariant the classical proof actually uses — which for $\\mathbb{Z}/2$ captures the entire argument.",
+    "mathContext": "$E\\mathbb{Z}/2 \\to B\\mathbb{Z}/2$ with $E\\mathbb{Z}/2 \\simeq *$ (contractible) and $\\pi_1(B\\mathbb{Z}/2) = \\pi_1(\\mathbb{R}P^\\infty) = \\mathbb{Z}/2$; a section $s$ with $p\\circ s = \\mathrm{id}$ cannot exist because $\\pi_1$ would have to embed $\\mathbb{Z}/2 \\hookrightarrow \\pi_1(E) = 0$.",
+    "significance": "context",
+    "relatedConcepts": ["classifying space", "universal principal bundle", "homotopy type theory / univalence", "proof irrelevance & UIP", "fundamental group functor"],
+    "prerequisites": ["covering spaces & classifying spaces", "fundamental groups", "awareness of Lean's proof-irrelevant foundation vs HoTT"]
   },
   {
     "id": "ann-oq0403-section-injective",
@@ -13,7 +17,11 @@
     "range": { "startLine": 74, "endLine": 81 },
     "type": "proof-technique",
     "title": "A Homomorphism Section is Injective",
-    "content": "Applying $\\pi_1$ to a topological section $s : B \\to E$ (with $p \\circ s = \\mathrm{id}$) yields $s_* : \\pi_1(B) \\to \\pi_1(E)$ with $p_* \\circ s_* = \\mathrm{id}$. `section_injective` proves the purely algebraic consequence: any $s : G \\to H$ with $p \\circ s = \\mathrm{id}_G$ has $p$ as a left inverse, hence is injective. The proof extracts the pointwise identity from `hsec` via `congrArg (fun f => f x)` and applies `Function.LeftInverse.injective`. Topologically: $\\pi_1(B)$ embeds into $\\pi_1(E)$."
+    "content": "Applying $\\pi_1$ to a topological section $s : B \\to E$ (with $p \\circ s = \\mathrm{id}$) yields $s_* : \\pi_1(B) \\to \\pi_1(E)$ with $p_* \\circ s_* = \\mathrm{id}$. `section_injective` proves the purely algebraic consequence: any $s : G \\to H$ with $p \\circ s = \\mathrm{id}_G$ has $p$ as a left inverse, hence is injective. The proof extracts the pointwise identity from `hsec` via `congrArg (fun f => f x)` and applies `Function.LeftInverse.injective`. Topologically: $\\pi_1(B)$ embeds into $\\pi_1(E)$.",
+    "mathContext": "$p \\circ s = \\mathrm{id}_G \\implies s$ injective: $p$ is a left inverse of $s$, and $\\mathrm{LeftInverse}\\Rightarrow\\mathrm{Injective}$. Categorically, a split monomorphism is a monomorphism.",
+    "significance": "supporting",
+    "relatedConcepts": ["split monomorphism", "left inverse / retraction", "Function.LeftInverse.injective", "functoriality of π₁"],
+    "prerequisites": ["group homomorphisms", "injectivity via left inverse"]
   },
   {
     "id": "ann-oq0403-card-bound",
@@ -21,7 +29,11 @@
     "range": { "startLine": 83, "endLine": 89 },
     "type": "key-insight",
     "title": "Cardinality Obstruction |π₁(B)| ≤ |π₁(E)|",
-    "content": "`card_le_of_section` upgrades injectivity to a counting statement: when both fundamental groups are finite, a section forces $|\\pi_1(B)| \\le |\\pi_1(E)|$ via `Fintype.card_le_of_injective`. For the universal ℤ/2-bundle this reads $2 \\le 1$ — already impossible before any deeper structure is invoked. This is the crispest form of the obstruction and the one used quantitatively in `universalZ2Bundle_card_obstruction`."
+    "content": "`card_le_of_section` upgrades injectivity to a counting statement: when both fundamental groups are finite, a section forces $|\\pi_1(B)| \\le |\\pi_1(E)|$ via `Fintype.card_le_of_injective`. For the universal ℤ/2-bundle this reads $2 \\le 1$ — already impossible before any deeper structure is invoked. This is the crispest form of the obstruction and the one used quantitatively in `universalZ2Bundle_card_obstruction`.",
+    "mathContext": "$s : G \\hookrightarrow H$ injective with $G, H$ finite $\\implies |G| \\le |H|$, i.e. $|\\pi_1(B)| \\le |\\pi_1(E)|$ (Fintype.card_le_of_injective). Specialises to $2 \\le 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.card_le_of_injective", "pigeonhole principle", "cardinality of finite groups"],
+    "prerequisites": ["finite types & Fintype.card", "injections and cardinality"]
   },
   {
     "id": "ann-oq0403-split-epi",
@@ -29,7 +41,11 @@
     "range": { "startLine": 91, "endLine": 97 },
     "type": "proof-technique",
     "title": "The Projection is a Split Epimorphism",
-    "content": "`projStar_surjective_of_section` records the dual fact: a section makes $p_*$ surjective, exhibiting it as a split epimorphism. Given any target $g$, the witness $s\\,g$ satisfies $p_*(s\\,g) = g$ by the section identity. Together with injectivity of $s_*$ this is the categorical content of 'section of a fibration' — the short exact sequence of fundamental groups splits."
+    "content": "`projStar_surjective_of_section` records the dual fact: a section makes $p_*$ surjective, exhibiting it as a split epimorphism. Given any target $g$, the witness $s\\,g$ satisfies $p_*(s\\,g) = g$ by the section identity. Together with injectivity of $s_*$ this is the categorical content of 'section of a fibration' — the short exact sequence of fundamental groups splits.",
+    "mathContext": "$p \\circ s = \\mathrm{id}_G \\implies p$ surjective: for each $g$, $p(s\\,g) = g$. A split epimorphism. With $s$ mono, the sequence $\\pi_1(E) \\to \\pi_1(B)$ splits.",
+    "significance": "supporting",
+    "relatedConcepts": ["split epimorphism", "surjectivity witness", "split short exact sequence", "retraction/section duality"],
+    "prerequisites": ["surjective homomorphisms", "sections vs retractions"]
   },
   {
     "id": "ann-oq0403-core-obstruction",
@@ -37,7 +53,11 @@
     "range": { "startLine": 99, "endLine": 108 },
     "type": "key-insight",
     "title": "The Core Obstruction: Trivial Total Group Blocks Sections",
-    "content": "`no_section_of_trivial_total` is the algebraic heart of the argument: if $\\pi_1(E)$ is trivial (`Subsingleton H`, the total space contractible) and $\\pi_1(B)$ is nontrivial (`Nontrivial G`), then no group-theoretic section $p_* \\circ s_* = \\mathrm{id}$ exists. Proof: a section $s_*$ would be injective, yet all its values collapse in the subsingleton $H$ (so $s_*a = s_*b$ for the witnessing distinct $a \\neq b$), contradicting injectivity. This is exactly 'a fibration with contractible total space has no section over a base with nontrivial $\\pi_1$'."
+    "content": "`no_section_of_trivial_total` is the algebraic heart of the argument: if $\\pi_1(E)$ is trivial (`Subsingleton H`, the total space contractible) and $\\pi_1(B)$ is nontrivial (`Nontrivial G`), then no group-theoretic section $p_* \\circ s_* = \\mathrm{id}$ exists. Proof: a section $s_*$ would be injective, yet all its values collapse in the subsingleton $H$ (so $s_*a = s_*b$ for the witnessing distinct $a \\neq b$), contradicting injectivity. This is exactly 'a fibration with contractible total space has no section over a base with nontrivial $\\pi_1$'.",
+    "mathContext": "$\\mathrm{Subsingleton}(H)\\ \\wedge\\ \\mathrm{Nontrivial}(G) \\implies \\nexists\\, s.\\, p\\circ s = \\mathrm{id}_G$: any $s$ is injective, but $a\\neq b \\Rightarrow s\\,a = s\\,b$ in $H$ — contradiction. ($H = \\pi_1(E) = 0$, $G = \\pi_1(B)\\neq 0$.)",
+    "significance": "key",
+    "relatedConcepts": ["Subsingleton / Nontrivial typeclasses", "contractible total space", "proof by contradiction", "trivial group receives no injection"],
+    "prerequisites": ["subsingleton & nontrivial types", "injectivity contradiction arguments"]
   },
   {
     "id": "ann-oq0403-structure",
@@ -45,7 +65,11 @@
     "range": { "startLine": 120, "endLine": 145 },
     "type": "concept",
     "title": "The SectionProblem Structure",
-    "content": "The `SectionProblem` structure packages the π₁ data of a fibration mirroring the ∞-topos framing: `Total` = $\\pi_1(E)$, `Base` = $\\pi_1(B)$, and `projStar` = $p_*$, with group instances supplied as instance-implicit fields (pure data, no mathematical assumptions). `HasSection` asks for a homomorphism splitting of `projStar`. `SectionProblem.no_section` restates the core obstruction structurally: any problem with trivial `Total` and nontrivial `Base` has no section. This isolates the exact reusable data so the obstruction applies to any matching fibration."
+    "content": "The `SectionProblem` structure packages the π₁ data of a fibration mirroring the ∞-topos framing: `Total` = $\\pi_1(E)$, `Base` = $\\pi_1(B)$, and `projStar` = $p_*$, with group instances supplied as instance-implicit fields (pure data, no mathematical assumptions). `HasSection` asks for a homomorphism splitting of `projStar`. `SectionProblem.no_section` restates the core obstruction structurally: any problem with trivial `Total` and nontrivial `Base` has no section. This isolates the exact reusable data so the obstruction applies to any matching fibration.",
+    "mathContext": "$\\mathrm{SectionProblem} := (\\,\\pi_1(E),\\ \\pi_1(B),\\ p_* : \\pi_1(E)\\to\\pi_1(B)\\,)$; $\\mathrm{HasSection} := \\exists\\, s.\\ p_* \\circ s = \\mathrm{id}$. The fields carry data only — the axiom count stays 0.",
+    "significance": "supporting",
+    "relatedConcepts": ["structure as data package", "instance-implicit fields", "axiom integrity (data ≠ assumption)", "reusable abstraction"],
+    "prerequisites": ["Lean structures & typeclass instances", "existence of a splitting homomorphism"]
   },
   {
     "id": "ann-oq0403-universal-bundle",
@@ -53,7 +77,11 @@
     "range": { "startLine": 161, "endLine": 181 },
     "type": "key-insight",
     "title": "The Universal ℤ/2-Bundle Admits No Section",
-    "content": "The framework is instantiated with the fundamental-group data of the universal ℤ/2-bundle: $\\pi_1(E\\mathbb{Z}/2) = 0$ modelled by `PUnit` (contractible total space) and $\\pi_1(B\\mathbb{Z}/2) = \\mathbb{Z}/2$ modelled by `Multiplicative (ZMod 2)`, with the necessarily-trivial induced projection `1`. After establishing that the base group is nontrivial, `universalZ2Bundle_no_section` follows immediately from the structural obstruction: a section would embed $\\mathbb{Z}/2$ into the trivial group, which is impossible. This is the machine-checked answer to open question 3 of borsuk-ulam-oq-04."
+    "content": "The framework is instantiated with the fundamental-group data of the universal ℤ/2-bundle: $\\pi_1(E\\mathbb{Z}/2) = 0$ modelled by `PUnit` (contractible total space) and $\\pi_1(B\\mathbb{Z}/2) = \\mathbb{Z}/2$ modelled by `Multiplicative (ZMod 2)`, with the necessarily-trivial induced projection `1`. After establishing that the base group is nontrivial, `universalZ2Bundle_no_section` follows immediately from the structural obstruction: a section would embed $\\mathbb{Z}/2$ into the trivial group, which is impossible. This is the machine-checked answer to open question 3 of borsuk-ulam-oq-04.",
+    "mathContext": "$\\pi_1(E\\mathbb{Z}/2) = 0 \\cong \\mathrm{PUnit}$, $\\pi_1(B\\mathbb{Z}/2) = \\mathbb{Z}/2 \\cong \\mathrm{Multiplicative}(\\mathrm{ZMod}\\,2)$, $p_* = 1$. Then $\\neg\\,\\mathrm{HasSection}$: no $\\mathbb{Z}/2 \\hookrightarrow 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Multiplicative (ZMod 2)", "PUnit as trivial group", "instantiation of an abstract obstruction", "classifying space Bℤ/2 = ℝP^∞"],
+    "prerequisites": ["ZMod and Multiplicative", "nontrivial finite groups"]
   },
   {
     "id": "ann-oq0403-card-obstruction",
@@ -61,6 +89,10 @@
     "range": { "startLine": 183, "endLine": 192 },
     "type": "proof-technique",
     "title": "The Quantitative Form: 2 ≤ 1",
-    "content": "`universalZ2Bundle_card_obstruction` gives the obstruction its most concrete face: any putative section of the universal ℤ/2-bundle would force $|\\pi_1(B\\mathbb{Z}/2)| \\le |\\pi_1(E\\mathbb{Z}/2)|$, i.e. $2 \\le 1$. The proof combines `card_le_of_section` with `Fintype.one_lt_card` (the base has more than one element) and `Fintype.card_punit` (the total space has exactly one), closing with `omega`. It shows the impossibility is visible purely by counting, with no homotopy theory needed once the π₁ shadow is in hand."
+    "content": "`universalZ2Bundle_card_obstruction` gives the obstruction its most concrete face: any putative section of the universal ℤ/2-bundle would force $|\\pi_1(B\\mathbb{Z}/2)| \\le |\\pi_1(E\\mathbb{Z}/2)|$, i.e. $2 \\le 1$. The proof combines `card_le_of_section` with `Fintype.one_lt_card` (the base has more than one element) and `Fintype.card_punit` (the total space has exactly one), closing with `omega`. It shows the impossibility is visible purely by counting, with no homotopy theory needed once the π₁ shadow is in hand.",
+    "mathContext": "A section $\\implies |\\pi_1(B\\mathbb{Z}/2)| \\le |\\pi_1(E\\mathbb{Z}/2)|$, i.e. $2 \\le 1$; refuted by $\\mathrm{Fintype.one\\_lt\\_card}$ ($2 > 1$) + $\\mathrm{card\\_punit} = 1$, closed by `omega`.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.one_lt_card", "Fintype.card_punit", "omega decision procedure", "counting obstruction"],
+    "prerequisites": ["cardinalities of finite types", "linear-arithmetic closing tactics"]
   }
 ]
