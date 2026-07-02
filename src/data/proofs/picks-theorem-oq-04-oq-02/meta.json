@@ -66,6 +66,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: Orientation and Cyclic Symmetry of the Shoelace Sum",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports and module docstring for the two structural symmetries of the signed shoelace (surveyor's) sum S = Σ_k (x_k·y_{k+1} − x_{k+1}·y_k) of a lattice polygon. These head lines state the results — orientation reversal S(reverse vs) = −S(vs) and cyclic-rotation invariance S(rotate vs) = S(vs) — and the method: introduce the open edgeSum of a polyline, prove shoelaceAux first l = edgeSum (l ++ [first]), then derive edgeSum_snoc, edgeSum_reverse from the wedge antisymmetry cross a b = −cross b a, and rotation from re-associating the closed edge multiset. Everything is Int-valued and decidable.",
+      "mathContext": "The shoelace sum computes twice the signed area of a lattice polygon; its two invariances are what make 'signed area' well-defined — reversing traversal flips the sign (orientation), and cyclic relabelling of the starting vertex leaves it fixed (no distinguished vertex). Both factor through the open edge sum: closing the polyline appends the start vertex, edge_reverse follows from wedge antisymmetry, and rotation is re-association. Answers open question (2) of PicksTheoremOQ04, reusing its cross/shoelace primitives. 0 sorries, 0 axioms."
+    },
+    {
       "id": "wedge-antisymmetry",
       "title": "Part 1: The Wedge Product and its Antisymmetry",
       "startLine": 66,
@@ -146,7 +154,9 @@
   "status": "verified",
   "badge": "original",
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "opens": [],
     "namespace": "PicksTheoremOQ04OQ02",
     "lineCount": 271,
