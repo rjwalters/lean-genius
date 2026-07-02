@@ -75,6 +75,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: The Exact Degree of Every Prime Radical",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "The docstring situates this file against parent fourth-root-2-irrational (⁴√2 has degree 4 via Eisenstein-then-Gauss) whose OQ-02 asks to package that route as a reusable lemma for X^{2^k}−2 / X^{p^k}−p, filling the even-exponent / prime-power gap Mathlib's Kummer lemmas mark with TODOs. The irreducibility half already exists (CubeRoot3IrrationalOQ01: Xⁿ−p irreducible for every prime p, every n≥1); this file adds the degree half, identifying the minimal polynomial minpoly ℚ (p^{1/n}) = Xⁿ−p and computing [ℚ(p^{1/n}):ℚ] = n uniformly, with the named specializations 2^{1/2^k}, p^{1/p^k}, and the recovered 2^{1/4}. The radical is modeled as Real.rpow, matching NthRootIrrationalOQ01. Imports Mathlib and the sibling irreducibility lemma; opens Polynomial IntermediateField; namespace FourthRoot2IrrationalOQ02.",
+      "mathContext": "$\\mathrm{minpoly}_{\\mathbb Q}(p^{1/n}) = X^n - p$, hence $[\\mathbb Q(p^{1/n}):\\mathbb Q]=n$, uniformly in prime $p$ and $n\\ge 1$."
+    },
+    {
       "id": "radical-power",
       "title": "The Real Radical and Its Power Relation",
       "startLine": 49,
