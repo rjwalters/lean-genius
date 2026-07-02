@@ -158,6 +158,40 @@ theorem incidence_mul_transpose (head tail : E → V) (hloop : ∀ e, head e ≠
   · subst h; simp [lap, incidence_mul_transpose_diag head tail hloop]
   · simp [lap, h, incidence_mul_transpose_offdiag head tail i j h]
 
+/-! ### M1a-i′: the reduced Laplacian is a Gram matrix (Cauchy–Binet precondition)
+
+The Matrix-Tree proof does not take the determinant of the *full* Laplacian `lap = B Bᵀ`
+(that determinant is `0` — every row sums to zero, cf. Mathlib's `det_lapMatrix_eq_zero`).
+It deletes the root row/column and takes the determinant of the resulting **reduced**
+Laplacian.  The lemma below records the exact object Cauchy–Binet is then applied to: the
+reduced Laplacian is itself the Gram matrix `B_f (B_f)ᵀ` of the *reduced incidence* `B_f`
+(the incidence matrix with the deleted rows removed, i.e. `incidence` restricted along any
+reindexing `f : V' → V` of the retained vertices).
+
+This is a pure consequence of M1a-i (`incidence_mul_transpose`) and the submatrix/product
+algebra (`Matrix.submatrix_mul`, `Matrix.transpose_submatrix`), for an *arbitrary* index map
+`f` — in particular the classical "delete the root" specialization `f : {v // v ≠ r} ↪ V`.
+It reduces the remaining Matrix-Tree gap to the two genuinely-absent pieces: Cauchy–Binet
+`det (B_f B_fᵀ) = Σ_S det (B_f · col S)²` (M1a-ii) and the unimodularity `det ∈ {0, ±1}`
+that identifies the nonzero terms with spanning trees. -/
+
+omit [Fintype V] [DecidableEq E] in
+/-- **Reduced Laplacian = Gram matrix of the reduced incidence.** For any reindexing
+`f : V' → V` of a subset of vertices, the Laplacian restricted to those vertices equals
+`B_f (B_f)ᵀ`, where `B_f = (incidence head tail).submatrix f id` keeps only the `f`-rows.
+Applied with `f` the inclusion of the non-root vertices, the left side is the reduced
+Laplacian whose determinant is the spanning-tree / arborescence count. -/
+theorem reducedLaplacian_eq_gram
+    (head tail : E → V) (hloop : ∀ e, head e ≠ tail e)
+    {V' : Type*} (f : V' → V) :
+    (lap head tail).submatrix f f
+      = (incidence head tail).submatrix f id *
+        ((incidence head tail).submatrix f id)ᵀ := by
+  rw [← incidence_mul_transpose head tail hloop,
+    Matrix.submatrix_mul (incidence head tail) (incidence head tail)ᵀ f id f
+      Function.bijective_id,
+    Matrix.transpose_submatrix]
+
 /-! ### Concrete K₃ bridge
 
 Realizes the general identity on a base case: the oriented incidence of K₃ (edges
