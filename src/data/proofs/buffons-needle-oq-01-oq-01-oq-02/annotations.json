@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-bnoq0102-defs",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 76,
+      "endLine": 84
+    },
+    "type": "definition",
+    "title": "The Two Players: Inner Integral vs. Twice the Speed",
+    "content": "The reduction rests on naming two functions of the curve parameter `t`. `innerIntegral γ t` is the inner angular integral `∫ θ in 0..π, |γ'ₓ(t)·sin θ + γ'ᵧ(t)·cos θ|` — *definitionally* the integrand that appears inside the parent file's `hInnerInt` hypothesis. `twiceSpeed γ t` is `2·√(γ'ₓ(t)² + γ'ᵧ(t)²) = 2‖γ'(t)‖`, twice the Euclidean speed of the curve. Both are `noncomputable` because they involve `Real.sqrt` and a Bochner integral. The entire file amounts to the single claim that these two functions coincide (`innerIntegral γ = twiceSpeed γ`); once that equality is in hand, every analytic property of the intimidating parametrized integral is read off from the elementary speed function instead.",
+    "mathContext": "$\\text{innerIntegral}\\,\\gamma\\,t = \\displaystyle\\int_0^\\pi |\\gamma_x'(t)\\sin\\theta + \\gamma_y'(t)\\cos\\theta|\\,d\\theta,\\qquad \\text{twiceSpeed}\\,\\gamma\\,t = 2\\sqrt{\\gamma_x'(t)^2 + \\gamma_y'(t)^2} = 2\\lVert\\gamma'(t)\\rVert.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "arc-length speed",
+      "Bochner integral",
+      "noncomputable definition",
+      "deriv of a composition"
+    ],
+    "prerequisites": [
+      "intervalIntegral notation",
+      "Real.sqrt",
+      "Euclidean norm"
+    ]
+  },
+  {
     "id": "ann-bnoq0102-inner-eq",
     "proofId": "buffons-needle-oq-01-oq-01-oq-02",
     "range": {
@@ -65,6 +89,30 @@
     "prerequisites": [
       "interval integrability",
       "continuity on compact intervals"
+    ]
+  },
+  {
+    "id": "ann-bnoq0102-no-side-condition",
+    "proofId": "buffons-needle-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 155,
+      "endLine": 177
+    },
+    "type": "technique",
+    "title": "Removing hInnerInt from the Statement",
+    "content": "`buffon_smooth_of_continuousOn` and its global-continuity twin `buffon_smooth_of_continuous` strip `hInnerInt` out of the parent's `buffon_smooth_full` by supplying it internally through `hInnerInt_of_continuousOn`/`hInnerInt_of_continuous`. What survives in the signature is only honest analytic data: pointwise differentiability (`HasDerivAt` for both coordinate functions on `uIcc a b`) plus continuity of the derivatives. The conclusion is the exact Buffon–Barbier identity `concreteSmoothExpectedCrossings γ a b d = 2·planarArcLength γ a b/(π·d)`. These are the intermediate forms of the theorem; the final section collapses both the differentiability and the continuity requirements into the single, natural hypothesis `ContDiff ℝ 1`.",
+    "mathContext": "$\\text{concreteSmoothExpectedCrossings}\\,\\gamma\\,a\\,b\\,d = \\dfrac{2\\,\\text{planarArcLength}\\,\\gamma\\,a\\,b}{\\pi d},$ assuming only that each coordinate is differentiable with a continuous derivative on $[a,b]$ — the integrability side-condition is discharged internally rather than assumed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "hypothesis discharge",
+      "planarArcLength",
+      "HasDerivAt",
+      "Buffon–Barbier formula"
+    ],
+    "prerequisites": [
+      "buffon_smooth_full from buffons-needle-oq-01-oq-01",
+      "HasDerivAt",
+      "ContinuousOn"
     ]
   },
   {
