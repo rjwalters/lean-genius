@@ -1,5 +1,27 @@
 [
   {
+    "id": "lopsided-ann-08",
+    "proofId": "prob-method-lovasz-local-oq-03",
+    "range": {
+      "startLine": 43,
+      "endLine": 47
+    },
+    "type": "definition",
+    "title": "The Marginal LLL Bound — the Standard Lovász Condition",
+    "content": "`LLLBound` is the abstract ℚ-model of the classical Lovász Local Lemma hypothesis: every event's marginal probability is bounded by `x i` times the avoidance product `∏_{j ∈ adj i} (1 - x j)` over its dependency neighborhood. It is stated on the *marginal* probabilities only; the work of the lopsided version is to transfer this same bound to the *conditional* probabilities under the weaker negative-correlation hypothesis, so the classical recursion applies verbatim.",
+    "mathContext": "$\\mathrm{prob}(i) \\le x_i \\prod_{j \\in \\mathrm{adj}(i)} (1 - x_j)$ for every $i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "dependency graph",
+      "avoidance probability"
+    ],
+    "prerequisites": [
+      "marginal vs conditional probability",
+      "finite products over Finset"
+    ]
+  },
+  {
     "id": "ann-lopsided-negcorr-def",
     "proofId": "prob-method-lovasz-local-oq-03",
     "range": {
@@ -20,6 +42,28 @@
     "prerequisites": [
       "conditional probability",
       "the Lovász Local Lemma dependency condition"
+    ]
+  },
+  {
+    "id": "lopsided-ann-09",
+    "proofId": "prob-method-lovasz-local-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "The Classical Independence Hypothesis and the Unit-Interval Constraint",
+    "content": "Two supporting hypotheses. `Independence` (`condProb = prob`) is the *stronger* assumption of the classical LLL: conditioning on avoidance of other events is irrelevant. `XRange` fixes the assignment `x_i` to the half-open interval `[0,1)`, exactly the range that makes each factor `1 - x_j` lie in `(0,1]` and the avoidance product strictly positive. Independence will be shown to be a strict special case of negative correlation, and `XRange` powers every positivity and monotonicity estimate downstream.",
+    "mathContext": "$\\mathrm{condProb}(i) = \\mathrm{prob}(i)$ (independence); $0 \\le x_i < 1$ for all $i$ (range).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mutual independence",
+      "half-open unit interval",
+      "special-case reduction"
+    ],
+    "prerequisites": [
+      "the abstract ℚ probability model",
+      "the negative-correlation condition"
     ]
   },
   {
@@ -90,6 +134,50 @@
     ]
   },
   {
+    "id": "lopsided-ann-10",
+    "proofId": "prob-method-lovasz-local-oq-03",
+    "range": {
+      "startLine": 117,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "Conditional Probabilities Are Also Bounded by x_i",
+    "content": "This is the bound the LLL induction actually propagates. Chaining negative correlation (`condProb i ≤ prob i`) with the marginal bound (`prob i ≤ x i`) gives `condProb i ≤ x i` directly. The two-line `le_trans` proof is the whole point of the lopsided framework: the conditional estimate the recursion requires is available from the *weaker* lopsidependency hypothesis, never needing full independence.",
+    "mathContext": "$\\mathrm{condProb}(i) \\le \\mathrm{prob}(i) \\le x_i$, so $\\mathrm{condProb}(i) \\le x_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "transitivity of ≤",
+      "the LLL recursion step",
+      "negative correlation"
+    ],
+    "prerequisites": [
+      "lopsided_marginal_bound",
+      "the NegativeCorrelation hypothesis"
+    ]
+  },
+  {
+    "id": "lopsided-ann-11",
+    "proofId": "prob-method-lovasz-local-oq-03",
+    "range": {
+      "startLine": 130,
+      "endLine": 136
+    },
+    "type": "theorem",
+    "title": "The Avoidance Product Is Strictly Positive",
+    "content": "The quantitative payoff of the LLL: `∏_i (1 - x_i) > 0`. In the probabilistic model this lower-bounds `P(⋂ ¬A_i) > 0`, certifying that all bad events can be avoided simultaneously. Positivity follows termwise from `XRange` — each `1 - x_i > 0` because `x_i < 1` — via `Finset.prod_pos`. Crucially the conclusion is *identical* to the classical LLL; only the hypothesis was relaxed.",
+    "mathContext": "$\\prod_{i} (1 - x_i) > 0$, since $x_i < 1 \\Rightarrow 1 - x_i > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity of finite products",
+      "simultaneous avoidability",
+      "LLL conclusion"
+    ],
+    "prerequisites": [
+      "XRange",
+      "Finset.prod_pos"
+    ]
+  },
+  {
     "id": "ann-lopsided-packaged",
     "proofId": "prob-method-lovasz-local-oq-03",
     "range": {
@@ -109,6 +197,28 @@
     "prerequisites": [
       "the marginal and conditional bounds",
       "positivity of a product of positive factors"
+    ]
+  },
+  {
+    "id": "lopsided-ann-12",
+    "proofId": "prob-method-lovasz-local-oq-03",
+    "range": {
+      "startLine": 157,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "Symmetric Case: a Uniform Conditional Bound",
+    "content": "When all marginals share a common value `p`, negative correlation collapses to a single uniform bound `condProb i ≤ p` for every event. The one-line proof rewrites `prob i = p` into the lopsidependency inequality. This is what lets the symmetric LLL criterion be stated purely in terms of `p` and the maximum degree `d`, unchanged from the basic version even though the dependency graph may be sparser.",
+    "mathContext": "If $\\mathrm{prob}(i) = p$ for all $i$, then $\\mathrm{condProb}(i) \\le p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "symmetric LLL",
+      "uniform probability bound",
+      "maximum degree"
+    ],
+    "prerequisites": [
+      "the NegativeCorrelation hypothesis",
+      "substitution rewriting (▸)"
     ]
   },
   {
@@ -152,6 +262,28 @@
     "prerequisites": [
       "the four lopsided hypotheses",
       "rational arithmetic (norm_num)"
+    ]
+  },
+  {
+    "id": "lopsided-ann-13",
+    "proofId": "prob-method-lovasz-local-oq-03",
+    "range": {
+      "startLine": 199,
+      "endLine": 208
+    },
+    "type": "theorem",
+    "title": "Negative Correlation Is Strictly Weaker Than Independence",
+    "content": "The companion to `lopsided_strictly_extends`: a one-event witness (`prob = 1/4`, `condProb = 1/8`) satisfies `NegativeCorrelation` (`1/8 ≤ 1/4`) but violates `Independence` (`1/8 ≠ 1/4`). Paired with `independence_implies_negativeCorrelation`, this pins down the containment as *proper*: lopsidependency is a strictly larger hypothesis class than independence, so the lopsided LLL genuinely covers configurations the classical LLL cannot see.",
+    "mathContext": "Witness on $\\mathrm{Fin}\\,1$: $\\mathrm{prob}=1/4$, $\\mathrm{condProb}=1/8$; $1/8 \\le 1/4$ but $1/8 \\ne 1/4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strict containment",
+      "counterexample construction",
+      "hypothesis strength"
+    ],
+    "prerequisites": [
+      "independence_implies_negativeCorrelation",
+      "decidable rational (in)equalities"
     ]
   }
 ]
