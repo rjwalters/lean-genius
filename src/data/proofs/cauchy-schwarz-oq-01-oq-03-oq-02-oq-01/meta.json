@@ -43,28 +43,32 @@
       "title": "The Pointwise Min-Entropy Inequality",
       "startLine": 50,
       "endLine": 63,
-      "summary": "negMulLog_ge_mul_neg_log: for 0 ≤ x ≤ M (M > 0), x·(-log M) ≤ negMulLog x. The x = 0 case is trivial; x > 0 uses monotonicity of log and nlinarith."
+      "summary": "negMulLog_ge_mul_neg_log: for 0 ≤ x ≤ M (M > 0), x·(-log M) ≤ negMulLog x. The x = 0 case is trivial; x > 0 uses monotonicity of log and nlinarith.",
+      "mathContext": "For $0 \\le x \\le M$ ($M > 0$): $x\\cdot(-\\log M) \\le \\operatorname{negMulLog} x = -x\\log x$."
     },
     {
       "id": "min-entropy",
       "title": "The Min-Entropy Lower Bound",
       "startLine": 65,
       "endLine": 80,
-      "summary": "shannonEntropy_ge_neg_log_of_max: if every p_i ≤ M (M > 0) and ∑ p_i = 1, then H(p) ≥ -log M. Sum the pointwise bound and use ∑ p_i = 1. With M = max p_i this is H(p) ≥ H_∞(p)."
+      "summary": "shannonEntropy_ge_neg_log_of_max: if every p_i ≤ M (M > 0) and ∑ p_i = 1, then H(p) ≥ -log M. Sum the pointwise bound and use ∑ p_i = 1. With M = max p_i this is H(p) ≥ H_∞(p).",
+      "mathContext": "If $p_i \\le M$ for all $i$ ($M > 0$) and $\\sum_i p_i = 1$, then $H(p) \\ge -\\log M$; taking $M = \\max_i p_i$ gives $H(p) \\ge H_\\infty(p)$."
     },
     {
       "id": "point-mass",
       "title": "Deterministic Distributions Have Zero Entropy",
       "startLine": 82,
       "endLine": 94,
-      "summary": "shannonEntropy_point_mass: a distribution with each entry 0 or 1 has H = 0, since negMulLog 0 = negMulLog 1 = 0."
+      "summary": "shannonEntropy_point_mass: a distribution with each entry 0 or 1 has H = 0, since negMulLog 0 = negMulLog 1 = 0.",
+      "mathContext": "If each $p_i \\in \\{0, 1\\}$ then $H(p) = 0$, since $\\operatorname{negMulLog} 0 = \\operatorname{negMulLog} 1 = 0$."
     },
     {
       "id": "eigenstate-eup",
       "title": "The Eigenstate Case of Maassen–Uffink",
       "startLine": 96,
       "endLine": 122,
-      "summary": "maassen_uffink_eigenstate: p a point mass and q_k ≤ c² (0 < c) ⟹ -2 log c ≤ H(p) + H(q). Combines the point-mass and min-entropy lemmas with Real.log_pow."
+      "summary": "maassen_uffink_eigenstate: p a point mass and q_k ≤ c² (0 < c) ⟹ -2 log c ≤ H(p) + H(q). Combines the point-mass and min-entropy lemmas with Real.log_pow.",
+      "mathContext": "If $p$ is a point mass ($H(p)=0$) and $q_k \\le c^2$ for all $k$ ($c > 0$), then $-2\\log c \\le H(p) + H(q)$ — using $H(q) \\ge -\\log(c^2) = -2\\log c$."
     }
   ],
   "conclusion": {
