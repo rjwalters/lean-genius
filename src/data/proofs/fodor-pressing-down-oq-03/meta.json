@@ -95,5 +95,49 @@
       "summary": "`reflected_nonempty : Reflects C α → 0 < α → (C ∩ Iio α).Nonempty` (IsClubBelow.nonempty). Closes with `#print axioms` on clubReflects, trace_subset, reflects_of_mem_trace, confirming dependence only on propext / Classical.choice / Quot.sound.",
       "mathContext": "The reflected club is nonempty below a positive ordinal; the whole layer is axiom-free."
     }
+  ],
+  "conclusion": {
+    "summary": "A 122-line, 0-axiom Lean 4 / Mathlib development adding a stationary-reflection base layer on top of Proofs.Club.Basic. It defines the reflection vocabulary (Reflects, Trace), proves the unconditional base case clubReflects — a club below o cut at one of its accumulation points α ≤ o is again a club below α, with no cofinality hypothesis — and records the supporting facts trace_subset (a club contains its trace), reflects_of_mem_trace, Trace_mono, and reflected_nonempty. Crucially, it proves NONE of the false or independent statements the open question probes.",
+    "implications": "The value here is a clean separation of the ZFC-provable from the independence-sensitive. Reflection has an unconditional core — clubs reflect — because closedness and unboundedness both transfer locally to an initial segment. Stationary reflection is the *same* statement for stationary sets, yet it is independent of ZFC: it can be forced true and Jensen's □_κ forces it false. The dividing line is cofinality, and the concrete counterexample Trace(Iio ω, ω) = ∅ pins exactly why the naive 'trace of a club is a club' fails at cofinality ω — the reason non-trivial reflection first appears at ω₂. Formalizing the honest boundary (proving the base case, naming the frontier with a witness) is itself the deliverable: it prevents the common overclaim of a 'verified reflection theorem' that would be false in ZFC, and it leaves a reusable base module for sibling slugs to extend.",
+    "openQuestions": [
+      "Formalize the cofinality dichotomy quantitatively: prove 'the trace of a club below o is a club below o' UNDER the hypothesis cf(o) > ω, and derive the ω-cofinality counterexample Trace(Iio ω, ω) = ∅ as a theorem rather than a docstring remark.",
+      "Build the order-type / coherence infrastructure needed to state Jensen's □_κ in the current Set Ordinal idiom, and formalize the implication '□_κ ⟹ there is a non-reflecting stationary subset of κ⁺' in hypothesis-taking form.",
+      "Connect this base layer to Fodor's pressing-down lemma (parent entry) to formalize a genuine stationary-reflection statement at a point of uncountable cofinality, the first non-degenerate case."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fodor-pressing-down",
+      "relationship": "extends",
+      "description": "Root of the thread — Fodor's pressing-down lemma and the club / stationary substrate (Proofs.Club.Basic). This entry adds the reflection base layer on top of that development, reusing its IsClubBelow API unchanged."
+    },
+    {
+      "targetId": "fodor-pressing-down-oq-02",
+      "relationship": "related",
+      "description": "Sibling in the infinitary-combinatorics thread: Jensen's ◇ ⟹ CH. The □/◇ principles it touches are exactly the independence-sensitive frontier this entry declines to assert — □_κ is what forces stationary reflection false."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Fodor, Géza",
+      "title": "Eine Bemerkung zur Theorie der regressiven Funktionen",
+      "year": "1956",
+      "venue": "Acta Sci. Math. (Szeged) 17, 139–142",
+      "note": "The pressing-down lemma; origin of the club/stationary machinery underlying reflection theory"
+    },
+    {
+      "authors": "Jech, Thomas",
+      "title": "Set Theory (3rd millennium edition)",
+      "year": "2003",
+      "venue": "Springer Monographs in Mathematics",
+      "note": "Club and stationary sets, the closed unbounded filter, and stationary reflection (Ch. 8, 23); independence of full reflection"
+    },
+    {
+      "authors": "Jensen, Ronald B.",
+      "title": "The fine structure of the constructible hierarchy",
+      "year": "1972",
+      "venue": "Ann. Math. Logic 4, 229–308",
+      "note": "The □_κ (square) principle, which forces the existence of a non-reflecting stationary set — the obstruction bounding this entry's scope"
+    }
   ]
 }
