@@ -48,31 +48,54 @@
     "id": "ann-erdos76pub-edgebound",
     "proofId": "erdos-76-packing-upper-bound",
     "range": {
-      "startLine": 64,
-      "endLine": 124
+      "startLine": 63,
+      "endLine": 104
     },
     "type": "tactic",
-    "title": "Double Counting: 6·|ts| ≤ n² − n ⟹ |ts| ≤ C(n,2)/3",
-    "content": "A packing is a finite set of pairwise edge-disjoint triangles. Because their edge sets are pairwise disjoint, Finset.card_biUnion equates the size of their union with the sum of the individual sizes, ∑ 6 = 6·|ts|. That union embeds in univ.offDiag — the |V|²−|V| ordered distinct pairs of the whole vertex type — so Finset.card_le_card gives packing_edge_bound: 6·|ts| ≤ |V|² − |V|. Dividing through (Nat.choose_two_right rewrites C(n,2) = n(n−1)/2, Nat.div_div_eq_div_mul collapses /2/3 into /6, and Nat.le_div_iff_mul_le converts the goal to a multiplication) yields packing_card_le_choose: |ts| ≤ C(|V|,2)/3.",
-    "mathContext": "$\\sum_{t \\in ts} |t.\\mathrm{edges}| = 6|ts| = |\\bigcup_t t.\\mathrm{edges}| \\le |\\mathrm{univ.offDiag}| = |V|^2 - |V|$, so $|ts| \\le \\binom{|V|}{2}/3$.",
+    "title": "Double Counting: 6·|ts| ≤ n² − n",
+    "content": "A packing is a finite set of pairwise edge-disjoint triangles (isPacking). Because their edge sets are pairwise disjoint, they form a PairwiseDisjoint family and Finset.card_biUnion equates the size of their union with the sum of the individual sizes, ∑ 6 = 6·|ts| (using Triangle.edges_card in each summand and Finset.sum_const). That union embeds in univ.offDiag — the |V|²−|V| ordered distinct pairs of the whole vertex type — so Finset.card_le_card gives the core packing_edge_bound: 6·|ts| ≤ |V|² − |V|. This is the single inequality that carries the entire result.",
+    "mathContext": "$\\sum_{t \\in ts} |t.\\mathrm{edges}| = 6|ts| = |\\bigcup_t t.\\mathrm{edges}| \\le |\\mathrm{univ.offDiag}| = |V|^2 - |V|$.",
     "significance": "key",
     "relatedConcepts": [
       "Finset.card_biUnion",
       "PairwiseDisjoint",
       "double counting",
-      "Nat.le_div_iff_mul_le"
+      "Finset.card_le_card"
     ],
     "prerequisites": [
       "Finset.card_biUnion for a pairwise-disjoint family",
       "Finset.card_le_card for the ambient embedding",
-      "natural-number division lemmas"
+      "PairwiseDisjoint families"
+    ]
+  },
+  {
+    "id": "ann-erdos76pub-choosebound",
+    "proofId": "erdos-76-packing-upper-bound",
+    "range": {
+      "startLine": 105,
+      "endLine": 123
+    },
+    "type": "tactic",
+    "title": "From Edges to Triangles: |ts| ≤ C(n,2)/3",
+    "content": "Converting the edge bound 6·|ts| ≤ |V|²−|V| into the headline triangle bound is pure natural-number arithmetic, but it is not automatic over ℕ. Nat.choose_two_right rewrites C(n,2) as n(n−1)/2, Nat.div_div_eq_div_mul collapses the nested /2/3 into a single /6, and Nat.le_div_iff_mul_le clears the floor division into a multiplication goal. The truncated ℕ subtraction hides the identity n(n−1) = n²−n, so a dedicated private helper mul_pred_self establishes it (by a case split on n and omega) before the final omega can close packing_card_le_choose: |ts| ≤ C(|V|,2)/3 ≈ |V|²/6.",
+    "mathContext": "$6|ts| \\le |V|(|V|-1)$ and $\\binom{|V|}{2} = |V|(|V|-1)/2$ give $|ts| \\le \\binom{|V|}{2}/3$; over $\\mathbb{N}$ this is the exact floor, not just the asymptotic $|V|^2/6$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose_two_right",
+      "Nat.div_div_eq_div_mul",
+      "Nat.le_div_iff_mul_le",
+      "truncated natural-number subtraction"
+    ],
+    "prerequisites": [
+      "natural-number floor division lemmas",
+      "omega for linear arithmetic over ℕ"
     ]
   },
   {
     "id": "ann-erdos76pub-maxpacking",
     "proofId": "erdos-76-packing-upper-bound",
     "range": {
-      "startLine": 125,
+      "startLine": 124,
       "endLine": 160
     },
     "type": "tactic",
