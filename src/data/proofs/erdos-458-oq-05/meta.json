@@ -37,7 +37,8 @@
     "keyInsights": [
       "The whole account is kernel-checkable: replacing `native_decide` with `decide` throughout removes the `Lean.ofReduceBool` axiom, turning the parent's `axiomatized` base cases into genuinely `verified` (0-axiom) ones.",
       "`Nat.nth_count` is the exact tool for value facts about Nat.nth: it converts 'n is prime and there are k primes below n' into 'the k-th prime is n', so no prime-index value ever needs to be asserted.",
-      "Kernel `decide` scales far enough for this range: primality and prime-counting up to 31, and lcm(1,…,12) = 27720, all reduce in the kernel without the compiler."
+      "Kernel `decide` scales far enough for this range: primality and prime-counting up to 31, and lcm(1,…,12) = 27720, all reduce in the kernel without the compiler.",
+      "Kernel `decide` keeps every prime value and base case axiom-free, whereas the parent's `native_decide` pulls in `Lean.ofReduceBool`. The price is that kernel reduction of `Nat.count` and of `lcm(1..12)` is far more expensive — which is exactly what caps the verified reach at the 11th prime (31) and at k = 4."
     ],
     "prerequisites": [
       "The parent formalization erdos-458 (statement of the LCM inequality and the nthPrime setup)",
