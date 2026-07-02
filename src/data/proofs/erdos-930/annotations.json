@@ -16,7 +16,10 @@
       "consecutive integers",
       "Erdős-Selfridge theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "perfect powers",
+      "consecutive integers"
+    ]
   },
   {
     "id": "ann-e930-imports",
@@ -35,7 +38,10 @@
       "intervals"
     ],
     "mathContext": "See annotation content for formal details of imports and setup",
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib finite sets",
+      "integer intervals"
+    ]
   },
   {
     "id": "ann-e930-ispower",
@@ -54,7 +60,10 @@
       "cubes",
       "exponentiation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "exponentiation",
+      "squares and cubes"
+    ]
   },
   {
     "id": "ann-e930-interval-helpers",
@@ -73,7 +82,10 @@
       "factorials"
     ],
     "mathContext": "See annotation content for formal details of interval helpers",
-    "prerequisites": []
+    "prerequisites": [
+      "products over intervals",
+      "factorials"
+    ]
   },
   {
     "id": "ann-e930-main-conjecture",
@@ -92,7 +104,10 @@
       "disjoint intervals",
       "product formula"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "open problems",
+      "products of consecutive integers"
+    ]
   },
   {
     "id": "ann-e930-selfridge",
@@ -111,7 +126,10 @@
       "solved case",
       "Illinois J. Math."
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "consecutive integers",
+      "perfect powers"
+    ]
   },
   {
     "id": "ann-e930-nextprime",
@@ -130,7 +148,10 @@
       "infinitude",
       "existence"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "the infinitude of primes"
+    ]
   },
   {
     "id": "ann-e930-technical-lemma",
@@ -149,7 +170,10 @@
       "multiplicity",
       "divisibility"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "p-adic valuation (multiplicity)"
+    ]
   },
   {
     "id": "ann-e930-basic-powers",
@@ -168,7 +192,10 @@
       "trivial cases"
     ],
     "mathContext": "See annotation content for formal details of basic perfect power facts",
-    "prerequisites": []
+    "prerequisites": [
+      "squares and cubes",
+      "perfect powers"
+    ]
   },
   {
     "id": "ann-e930-examples",
@@ -186,7 +213,10 @@
       "computation"
     ],
     "mathContext": "See annotation content for formal details of verified examples",
-    "prerequisites": []
+    "prerequisites": [
+      "perfect powers",
+      "decidable computation"
+    ]
   },
   {
     "id": "ann-e930-non-powers",
@@ -205,6 +235,9 @@
       "prime factorization",
       "case analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime factorization",
+      "case analysis"
+    ]
   }
 ]
