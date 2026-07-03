@@ -45,7 +45,121 @@
       "Number theory (primes, divisibility)"
     ]
   },
-  "sections":   [
+  "mainTheorems": [
+    {
+      "name": "erdos_1201_half_case",
+      "type": "axiom",
+      "statement": "∀ η > 0, ∃ k, upperDensity {n | √n < P(n,k)} ≥ 1 − η",
+      "significance": "Erdős's partial result at ε = 1/2: for consecutive products n(n+1)···(n+k), almost all n have greatest prime factor exceeding √n once the window k is large enough. Axiomatized as the one classical input the formalization builds on; the full Erdős 1201 conjecture (any ε < 1) is open.",
+      "description": "Stated as an `axiom`; the sole assumption of the entry. All unconditional density theorems below reduce the ε ≥ 1/2 regime to this single case."
+    },
+    {
+      "name": "gpf_prime",
+      "type": "theorem",
+      "statement": "2 ≤ n → (greatestPrimeFactor n).Prime",
+      "significance": "Foundational well-definedness: for n ≥ 2 the greatest-prime-factor operator returns an actual prime. The base guarantee that P(n,k) is a genuine prime, not a spurious maximum.",
+      "description": "Unfolds greatestPrimeFactor as a Finset.max over n.primeFactors and extracts primality; axiom-free."
+    },
+    {
+      "name": "gpf_max",
+      "type": "theorem",
+      "statement": "p ∈ n.primeFactors → p ≤ greatestPrimeFactor n",
+      "significance": "Establishes greatestPrimeFactor as the actual maximum of the prime divisors — every prime factor is bounded by it. The order property underpinning the max-formula and all lower-bound estimates.",
+      "description": "Finset.le_max over the prime-factor set; axiom-free."
+    },
+    {
+      "name": "gpfConsecutive_eq_sup_range",
+      "type": "theorem",
+      "statement": "2 ≤ n → gpfConsecutive n k = (range (k+1)).sup (fun i => greatestPrimeFactor (n+i))",
+      "significance": "The Max Formula: the greatest prime factor of the whole product n(n+1)···(n+k) equals the maximum of the individual terms' greatest prime factors. Reduces the multiplicative problem to a pointwise one and is the bridge to smooth-number density.",
+      "description": "Antisymmetry: the product's GPF divides some term (so ≤ that term's GPF ≤ sup), and each term divides the product (so its GPF ≤ product GPF). Axiom-free."
+    },
+    {
+      "name": "gpfConsecutive_le_iff",
+      "type": "theorem",
+      "statement": "2 ≤ n → (gpfConsecutive n k ≤ t ↔ ∀ i ≤ k, greatestPrimeFactor (n+i) ≤ t)",
+      "significance": "The Smooth-Window Reformulation: P(n,k) ≤ t exactly when all k+1 consecutive integers in [n, n+k] are t-smooth. This recasts 'n is a bad case' as 'the window is smooth', the form in which smooth-number density theory attacks the conjecture.",
+      "description": "Immediate corollary of the Max Formula gpfConsecutive_eq_sup_range; axiom-free."
+    },
+    {
+      "name": "factorial_dvd_consecutiveProduct",
+      "type": "theorem",
+      "statement": "(k+1)! ∣ consecutiveProduct n k = n(n+1)···(n+k)",
+      "significance": "The classical divisibility of a product of k+1 consecutive integers by (k+1)!. Supplies, for any prime p ≤ k+1, a guaranteed prime factor of the product — the mechanism forcing P(n,k) to grow with k.",
+      "description": "Reduces to the binomial-coefficient integrality (product = (k+1)!·C(n+k, k+1)); axiom-free."
+    },
+    {
+      "name": "gpfConsecutive_gt_half_k",
+      "type": "theorem",
+      "statement": "1 ≤ n → 2 ≤ k → k < 2 · gpfConsecutive n k   (i.e. P(n,k) > k/2)",
+      "significance": "An unconditional lower bound independent of n: the greatest prime factor of any window of width k exceeds k/2. Follows from Bertrand's postulate applied to k/2 (a prime in (k/2, k+1] divides (k+1)! hence the product).",
+      "description": "Bertrand (Nat.exists_prime_lt_and_le_two_mul) plus factorial_dvd_consecutiveProduct; axiom-free."
+    },
+    {
+      "name": "gpfConsecutive_bertrand",
+      "type": "theorem",
+      "statement": "1 ≤ n → ∃ k ≤ n, (n+k).Prime ∧ gpfConsecutive n k = n + k",
+      "significance": "For every n there is a window whose right endpoint n+k is prime and IS the greatest prime factor — a sharp realization of the maximum. Uses Bertrand's postulate to place a prime in (n, 2n].",
+      "description": "Bertrand gives a prime p ∈ (n, 2n]; take k = p − n and apply gpfConsecutive_eq_of_prime_right. Axiom-free."
+    },
+    {
+      "name": "erdos_1201_threshold_bound",
+      "type": "theorem",
+      "statement": "1 ≤ n, 2 ≤ k, n^(1−ε) < k/2 → n^(1−ε) < gpfConsecutive n k",
+      "significance": "A concrete sufficient condition: once the window k is large relative to n^(1−ε), every such n is automatically 'good'. Combines the n-independent bound P > k/2 with the threshold, isolating the finitely many n that could fail.",
+      "description": "Chains gpfConsecutive_gt_half_k (P > k/2) with the hypothesis n^(1−ε) < k/2; axiom-free."
+    },
+    {
+      "name": "erdos_1201_half_case_implies",
+      "type": "theorem",
+      "statement": "1/2 ≤ ε < 1, η > 0 → ∃ k, upperDensity {n | n^(1−ε) < P(n,k)} ≥ 1 − η",
+      "significance": "Propagates Erdős's ε = 1/2 result to the entire easy half ε ∈ [1/2, 1): since n^(1−ε) ≤ √n there, the ε = 1/2 good set is contained in the ε good set and inherits its density bound.",
+      "description": "Monotonicity of upperDensity plus √n ≤ n^(1−ε) for ε ≥ 1/2 (erdos_1201_sqrt_le_rpow_of_large_eps); depends on the erdos_1201_half_case axiom."
+    },
+    {
+      "name": "erdos_1201_partial_conjecture",
+      "type": "theorem",
+      "statement": "ErdosProblem1201 restricted to ε ≥ 1/2 holds unconditionally",
+      "significance": "The headline unconditional theorem: the Erdős 1201 conjecture is proved for all ε ≥ 1/2. Establishes the 'easy half' rigorously, leaving only the ε < 1/2 regime open.",
+      "description": "Direct application of erdos_1201_half_case_implies; depends on the erdos_1201_half_case axiom."
+    },
+    {
+      "name": "erdos_1201_equiv_small_eps",
+      "type": "theorem",
+      "statement": "ErdosProblem1201 ↔ (the same statement quantified only over ε < 1/2)",
+      "significance": "A clean reduction of the full open conjecture to its hard half: because ε ≥ 1/2 is already settled, proving Erdős 1201 is equivalent to proving it for small ε alone. Sharpens where the remaining difficulty lies.",
+      "description": "Splits on ε ≥ 1/2 (handled by erdos_1201_conjecture_large_eps) versus ε < 1/2; depends on the axiom through the large-ε branch."
+    },
+    {
+      "name": "erdos_1201_strong_iff_smooth_decay",
+      "type": "theorem",
+      "statement": "ErdosProblem1201Strong ↔ ∀ ε∈(0,1), η>0, ∃ k with upperDensity of the fully n^(1−ε)-smooth windows ≤ η",
+      "significance": "The decisive reformulation connecting the conjecture to analytic number theory: the strong (all-n) form holds iff the density of windows [n, n+k] that are entirely n^(1−ε)-smooth decays to zero. This is exactly the statement smooth-number estimates are expected to deliver.",
+      "description": "Complements the good set with its smooth-window characterization (gpfConsecutive_le_iff) and transfers density bounds; axiom-free (an equivalence of the two open predicates)."
+    },
+    {
+      "name": "erdos_1201_from_bad_density_bound",
+      "type": "theorem",
+      "statement": "0 < ε < 1: a uniform bound on the density of bad (smooth-window) n implies the conjecture for that ε",
+      "significance": "Packages the conditional strategy: any future proof that the exceptional smooth-window set is small immediately yields Erdős 1201. Converts the open problem into a concrete density-estimate target.",
+      "description": "Uses the complement density inequality upperDensity_compl_ge on the smooth-window set; axiom-free (a conditional implication)."
+    },
+    {
+      "name": "erdos_1201_prime_right_infinite",
+      "type": "theorem",
+      "statement": "∀ k, infinitely many n have gpfConsecutive n k = n + k with n+k prime",
+      "significance": "An unconditional infinitude result: for every fixed window width there are infinitely many starting points whose product's greatest prime factor is the (prime) right endpoint. Concrete evidence toward the conjecture's positive direction.",
+      "description": "Builds on the infinitude of primes and gpfConsecutive_eq_of_prime_right; axiom-free."
+    },
+    {
+      "name": "upperDensity_compl_ge",
+      "type": "theorem",
+      "statement": "∀ S ⊆ ℕ, 1 − upperDensity S ≤ upperDensity Sᶜ",
+      "significance": "A reusable density-toolkit lemma: the upper density of a complement is at least one minus the upper density of the set. The bridge that turns 'few bad n' into 'density of good n near 1', used throughout the conditional reductions.",
+      "description": "limsup/liminf complementarity for the counting-density definition; axiom-free."
+    }
+  ],
+  "sections": [
     {
       "id": "header",
       "title": "Problem Statement and References",
