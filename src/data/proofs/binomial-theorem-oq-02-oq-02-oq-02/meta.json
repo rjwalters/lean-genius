@@ -123,6 +123,11 @@
       "targetId": "binomial-theorem-oq-02-oq-02-oq-01",
       "relationship": "sibling",
       "description": "Sibling addressing the first open question (q-Vandermonde base cases via Gaussian binomials)"
+    },
+    {
+      "targetId": "arithmetic-series",
+      "relationship": "related",
+      "description": "Gauss's formula 1+2+…+n = n(n+1)/2 proved directly (the classic pairing argument). This entry re-derives the very same closed form (gauss_sum) as the r = 1 specialization of the hockey-stick identity — the triangular numbers are the r = 1 diagonal of Pascal's triangle — so the two entries give complementary routes to Gauss's sum: elementary pairing versus a binomial-coefficient telescope of Pascal's rule."
     }
   ],
   "mainTheorems": [
