@@ -2,7 +2,7 @@
   "id": "laws-of-large-numbers-oq-01-oq-02-oq-01",
   "title": "Kronecker's Lemma and the Kolmogorov Martingale Assembly for the Marcinkiewicz–Zygmund SLLN",
   "slug": "laws-of-large-numbers-oq-01-oq-02-oq-01",
-  "description": "The Marcinkiewicz–Zygmund strong law (rate n^{1/p} for E|X|^p < ∞, 1 ≤ p < 2) is a multi-session build whose classical proof factors into an analytic passage (Kronecker's lemma) and a probabilistic engine (Kolmogorov's convergence criterion). This entry supplies the reusable infrastructure for both, verified with 0 sorries and 0 axioms. (1) Kronecker's lemma: if a_n > 0 is nondecreasing with a_n → ∞ and ∑ x_n / a_n converges, then (∑_{i<n} x_i) / a_n → 0 — absent from Mathlib, built on a Toeplitz/Silverman weighted-average null step. (2) Kolmogorov's criterion, assembled via Mathlib's a.e. martingale-convergence theorem: the shifted partial sums of independent mean-zero variables form a martingale w.r.t. the natural filtration (martingale_sum_of_indep_mean_zero), and an L¹-bounded such sum converges a.s. (ae_tendsto_sum_of_indep_of_eLpNorm_bdd), reducing the criterion to a uniform L¹ bound.",
+  "description": "The Marcinkiewicz–Zygmund strong law (rate n^{1/p} for E|X|^p < ∞, 1 ≤ p < 2) is a multi-session build whose classical proof factors into an analytic passage (Kronecker's lemma) and a probabilistic engine (Kolmogorov's convergence criterion). This entry supplies the reusable infrastructure for both, verified with 0 sorries and 0 axioms. (1) Kronecker's lemma: if a_n > 0 is nondecreasing with a_n → ∞ and ∑ x_n / a_n converges, then (∑_{i<n} x_i) / a_n → 0 — absent from Mathlib, built on a Toeplitz/Silverman weighted-average null step. (2) Kolmogorov's criterion, assembled via Mathlib's a.e. martingale-convergence theorem: the shifted partial sums of independent mean-zero variables form a martingale w.r.t. the natural filtration (martingale_sum_of_indep_mean_zero), and an L¹-bounded such sum converges a.s. (ae_tendsto_sum_of_indep_of_eLpNorm_bdd), reducing the criterion to a uniform L¹ bound. (3) Capstone — the Kolmogorov–Kronecker normalisation step of the Marcinkiewicz–Zygmund law itself (ae_tendsto_average_zero_of_variance_weighted_bdd): for independent mean-zero L² variables Y_i and a positive nondecreasing weight a_n → ∞ with ∑_i Var(Y_i)/a_i² < ∞, almost surely a_n⁻¹ ∑_{i<n} Y_i → 0, by running Kolmogorov's criterion on the rescaled X_i = a_i⁻¹·Y_i and feeding its a.s.-convergence output through the a.e. Kronecker lift.",
   "meta": {
     "author": "Leopold Kronecker & A. Kolmogorov (results); formalization researcher-16, researcher-14",
     "sourceUrl": "https://en.wikipedia.org/wiki/Kronecker%27s_lemma",
@@ -23,9 +23,9 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 12,
     "definitionCount": 0,
-    "lineCount": 409,
+    "lineCount": 689,
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_range_by_parts",
@@ -90,9 +90,9 @@
       "ProbabilityTheory"
     ],
     "namespace": "LawsOfLargeNumbers.MZ",
-    "lineCount": 409,
+    "lineCount": 689,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 12,
     "definitionCount": 0,
     "path": "Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean",
     "sorries": 0
