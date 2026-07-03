@@ -49,6 +49,11 @@
       "targetId": "pell-equation",
       "relationship": "extends",
       "description": "The root entry proves x² − Dy² = 1 always has infinitely many solutions for non-square D > 0. This entry treats the negative form x² − Dy² = −1, which is far more restrictive, and proves congruence obstructions (D ≢ 3 mod 4; no prime factor ≡ 3 mod 4) that must hold for any solution to exist."
+    },
+    {
+      "targetId": "pell-equation-oq-06-oq-01",
+      "relationship": "related",
+      "description": "The existence-side complement: for the smallest solvable negative instance D = 2, that entry classifies all positive solutions of x² − 2y² = −1 as the odd-power chain of the fundamental unit of ℤ[√2]. Together the two entries frame negative-Pell solvability from both sides — this file certifies non-existence by local congruence obstructions (D ≡ 3 mod 4, or a prime factor ≡ 3 mod 4), while the sibling constructs the full infinite solution family precisely when the obstruction is absent and the fundamental unit has norm −1."
     }
   ],
   "overview": {
