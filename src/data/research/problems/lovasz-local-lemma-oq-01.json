@@ -43,17 +43,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: measure-theoretic d=0 base case of symmetric LLL fully verified (0-axiom) in LovaszLocalLemmaOQ01.lean; general dependency-degree LLL remains open.",
+    "progressSummary": "PROGRESS: measure-theoretic bridge indepSet_avoidance (iIndepSet A μ ⇒ IndepSet (A i)(⋂_{j∈S}(A j)ᶜ) μ) verified 0-axiom in LovaszLocalLemmaOQ01CondIndep.lean, discharging the standing IndepSet hypothesis of the OQ-01 sequential/subset toolkit. General bounded-dependency-degree LLL remains open.",
     "builtItems": [
       "Proofs/LovaszLocalLemmaOQ01.lean: lll_independent_meas_iInter_compl (exact factorization)",
       "Proofs/LovaszLocalLemmaOQ01.lean: lll_independent_avoidance (positive avoidance under mu(A i)<1) - measure-theoretic d=0 symmetric LLL, 0-axiom verified",
       "Proofs/LovaszLocalLemmaOQ01.lean: lll_independent_avoidance_symmetric (uniform bound mu(A i)<=p<1 form)",
-      "Proofs/LovaszLocalLemmaOQ01.lean: compl_measurable_generateFrom (helper)"
+      "Proofs/LovaszLocalLemmaOQ01.lean: compl_measurable_generateFrom (helper)",
+      "Proofs/LovaszLocalLemmaOQ01CondIndep.lean: indepSet_avoidance — iIndepSet A μ → i∉S → IndepSet (A i) (⋂_{j∈S}(A j)ᶜ) μ (the bridge discharging the toolkits standing IndepSet hypothesis, 0-axiom verified)",
+      "Proofs/LovaszLocalLemmaOQ01CondIndep.lean: indep_avoidance — μ(A i ∩ ⋂_{j∈S}(A j)ᶜ)=μ(A i)·μ(⋂...) via iIndepSet.indep_generateFrom_of_disjoint",
+      "Proofs/LovaszLocalLemmaOQ01CondIndep.lean: cond_avoidance_eq_self / cond_prefix_eq_self — hypothesis-free μ[A i|⋂_{j∈S}(A j)ᶜ]=μ(A i) (discharges DependencySplits cond_failure_eq_measure_of_indep_subset)"
     ],
     "insights": [
       "The d=0 (mutually independent) base case of the symmetric LLL is fully provable over a real measure space in Mathlib: given iIndepSet A mu and mu(A i)<1 for all i, mu of the intersection of complements = product of (1-mu(A i)) > 0.",
       "Bridge: iIndepSet_iff_iIndep converts event-independence to sigma-algebra independence (iIndep (generateFrom {A i})), after which iIndep.meas_iInter applies to the complements since each (A i) complement is measurable in generateFrom {A i} via measurableSet_generateFrom(mem_singleton).compl.",
-      "prob_compl_eq_one_sub (needs IsProbabilityMeasure from hind.isProbabilityMeasure) rewrites mu of complement as 1-mu(A i); ENNReal product positivity via zero_lt_iff + Finset.prod_ne_zero_iff + tsub_pos_iff_lt."
+      "prob_compl_eq_one_sub (needs IsProbabilityMeasure from hind.isProbabilityMeasure) rewrites mu of complement as 1-mu(A i); ENNReal product positivity via zero_lt_iff + Finset.prod_ne_zero_iff + tsub_pos_iff_lt.",
+      "The OQ-01 toolkit (Independence.lean/DependencySplit.lean) assumed IndepSet (A i) (⋂_{j∈S}(A j)ᶜ) μ as an unproven hypothesis; it is derivable from iIndepSet A μ via Mathlibs iIndepSet.indep_generateFrom_of_disjoint (disjoint index sets {i} and S ⇒ independent generated σ-algebras), then indepSet_iff_measure_inter_eq_mul packages it. This closes the gap between family mutual independence and the pairwise/avoidance independence the rest of the program consumes.",
+      "The finite avoidance ⋂_{j∈S}(A j)ᶜ is measurable in generateFrom {A k : k∈S} because it is a finite intersection of complements of generators (Finset.measurableSet_biInter of (measurableSet_generateFrom _).compl) — this is the technical key letting the two-σ-algebra independence apply to it."
     ],
     "mathlibGaps": [
       "Mathlib has NO complement-independence lemma for iIndepSet directly; must route through iIndepSet_iff_iIndep + generateFrom. A reusable iIndepSet.meas_iInter_compl would be a clean upstream contribution.",
@@ -62,7 +67,10 @@
     "nextSteps": [
       "Extend from d=0 to the dependency-graph LLL: state the general measure-theoretic symmetric LLL; the d=0 case is now the verified induction base.",
       "Prove pairwise/two-event inclusion-exclusion lower bound as next increment toward the dependency case.",
-      "Package lll_independent_meas_iInter_compl as upstream Mathlib PR candidate (iIndepSet.meas_iInter_compl)."
+      "Package lll_independent_meas_iInter_compl as upstream Mathlib PR candidate (iIndepSet.meas_iInter_compl).",
+      "Generalise indepSet_avoidance to the dependency-graph setting: hypothesis A i mutually independent of {A j : j∉Γ(i)}, conclusion IndepSet (A i)(⋂_{j∈S}(A j)ᶜ) for S disjoint from Γ(i) — the actual non-neighbour hypothesis of the general LLL.",
+      "Combine indepSet_avoidance with DependencySplit numerator bound + DenominatorStep survival peel to prove μ[A i|⋂_{j∈S}(A j)ᶜ] ≤ x_i by induction on |S| (the missing core of bounded-degree LLL).",
+      "Feed indepSet_avoidance into seq_indep_avoidance_eq_prod for a chain-rule derivation of μ(⋂ Aᵢᶜ)=∏(1-μ(Aᵢ)) from iIndepSet, cross-checking the base-case meas_iInter derivation."
     ],
     "markdown": "# Knowledge Base: lovasz-local-lemma-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
