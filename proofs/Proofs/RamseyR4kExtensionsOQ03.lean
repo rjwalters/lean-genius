@@ -309,4 +309,81 @@ theorem cliqueDependencyBound_le_total {n k : ℕ} (hk : 2 ≤ k) (hn : 2 ≤ n)
     gcongr
   exact le_of_mul_le_mul_left key hpos
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VII: HONEST COMPARISON WITH THE OPTIMIZED UNION BOUND
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Optimized first-moment (union-bound) feasibility test.**  A uniformly random
+    2-colouring of `K_n` has positive probability of avoiding every monochromatic
+    k-clique as soon as the *expected* number of monochromatic k-cliques is `< 1`,
+    i.e. `C(n,k)·2·2^{-C(k,2)} < 1`, equivalently the integer inequality
+    `2·C(n,k) < 2^{C(k,2)}`.  This is the honest first-moment threshold: the sharp
+    optimum of the union bound, *not* the deliberately weakened closed form
+    `R(k,k) > 2^{⌊k/2⌋}` used elsewhere for its clean shape.  A `ℕ` inequality, so
+    decidable. -/
+def firstMomentCondition (n k : ℕ) : Prop := 2 * n.choose k < 2 ^ (k.choose 2)
+
+instance (n k : ℕ) : Decidable (firstMomentCondition n k) := by
+  unfold firstMomentCondition; infer_instance
+
+/-- **The two tests are governed by proportional core terms.**  Rescaling the exact
+    dependency identity `C(n,2)·d = C(k,2)²·C(n,k)` (`cliqueDependency_total_identity`)
+    by `6` exhibits the LLL test's core quantity `6·d` and the union-bound test's
+    core quantity `2·C(n,k)` as proportional:
+    `C(n,2)·(6·d) = 3·C(k,2)²·(2·C(n,k))`.
+    Both tests compare their core against the *same* budget `2^{C(k,2)}` (LLL wants
+    `6(d+1) ≤ 2^{C(k,2)}` by `ramseyLLLCondition_iff`; the union bound wants
+    `2·C(n,k) < 2^{C(k,2)}`), so the ratio `3·C(k,2)² / C(n,2)` decides which test is
+    the more permissive.  This is the exact, finite crossover criterion between the
+    symmetric LLL and the union bound. -/
+theorem lll_core_eq_firstMoment_core {n k : ℕ} (hk : 2 ≤ k) :
+    n.choose 2 * (6 * cliqueDependencyBound n k)
+      = 3 * (k.choose 2) ^ 2 * (2 * n.choose k) := by
+  have h := cliqueDependency_total_identity (n := n) (k := k) hk
+  calc n.choose 2 * (6 * cliqueDependencyBound n k)
+      = 6 * (n.choose 2 * cliqueDependencyBound n k) := by ring
+    _ = 6 * ((k.choose 2) ^ 2 * n.choose k) := by rw [h]
+    _ = 3 * (k.choose 2) ^ 2 * (2 * n.choose k) := by ring
+
+/-- **Crossover, large-`n` (asymptotic) side.**  When `3·C(k,2)² ≤ C(n,2)` — i.e.
+    `n` is large relative to `k²`, the regime `n ≈ 2^{k/2}` of the actual Ramsey
+    application — the LLL core `6·d` is at most the union-bound core `2·C(n,k)`, so
+    the symmetric LLL test is the more permissive of the two.  This is the precise,
+    axiom-free sense in which the LLL eventually beats the union bound (and, chased
+    through the constants, delivers the extra factor `Θ(k)`). -/
+theorem lll_core_le_firstMoment_core {n k : ℕ} (hk : 2 ≤ k) (hn : 2 ≤ n)
+    (hreg : 3 * (k.choose 2) ^ 2 ≤ n.choose 2) :
+    6 * cliqueDependencyBound n k ≤ 2 * n.choose k := by
+  have hpos : 0 < n.choose 2 := Nat.choose_pos hn
+  have key : n.choose 2 * (6 * cliqueDependencyBound n k)
+      ≤ n.choose 2 * (2 * n.choose k) := by
+    rw [lll_core_eq_firstMoment_core hk]
+    gcongr
+  exact le_of_mul_le_mul_left key hpos
+
+/-- **Crossover, small-`k` side — the LLL as set up here does NOT beat the honest
+    union bound at `k = 6`.**  The union bound is feasible all the way to `n = 17`
+    (`2·C(17,6) = 24752 < 32768 = 2^{15}`), giving `R(6,6) > 17`, whereas the LLL
+    test already *fails* at `n = 14` (indeed at `n = 17`).  So the improvement over
+    the first moment claimed elsewhere in this entry is only over the *weakened*
+    closed form `R(6,6) > 2^{⌊6/2⌋} = 8`; against the sharp union bound the LLL is
+    strictly worse here — the LLL's factor-`Θ(k)` gain is asymptotic and has not yet
+    kicked in at `k = 6` (consistent with `3·C(6,2)² = 675 > 136 = C(17,2)`, the
+    small-`n` side of `lll_core_le_firstMoment_core`). -/
+theorem unionBound_beats_lll_at_6 :
+    firstMomentCondition 17 6 ∧ ¬ RamseyLLLCondition 17 6 := by
+  refine ⟨by decide, ?_⟩
+  rw [ramseyLLLCondition_iff]
+  decide
+
+/-- The same phenomenon at `k = 7`: the union bound is feasible at `n = 27`
+    (`2·C(27,7) = 1776060 < 2097152 = 2^{21}`, giving `R(7,7) > 27`), while the LLL
+    test fails there.  So at `k = 7` too the sharp first moment is stronger than the
+    symmetric-LLL test of this file. -/
+theorem unionBound_beats_lll_at_7 :
+    firstMomentCondition 27 7 ∧ ¬ RamseyLLLCondition 27 7 := by
+  refine ⟨by decide, ?_⟩
+  rw [ramseyLLLCondition_iff]
+  decide
+
 end RamseyLLL

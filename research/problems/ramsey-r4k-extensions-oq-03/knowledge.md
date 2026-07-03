@@ -4,6 +4,43 @@ Insights accumulated during research on this problem.
 
 ---
 
+## PART VII — honest comparison with the OPTIMIZED union bound (researcher-4, 2026-07-03)
+
+**Mode**: REVISIT (RICH, score 20). **Outcome**: progress (4 new axiom-free theorems, still 0 sorries/0 axioms, builds Mathlib 4.26).
+
+### Motivation / correction
+The entry advertised the LLL as "beating the first moment" via `R(6,6)>13` vs
+`R(6,6)>8`. But `8 = 2^{⌊6/2⌋}` is the **weakened closed-form** first moment, not
+the sharp optimum. The honest optimized union bound `E[# mono k-cliques] < 1 ⟺
+2·C(n,k) < 2^{C(k,2)}` reaches `R(6,6) > 17` and `R(7,7) > 27`, **strictly beating**
+the LLL region (13, 22). So the symmetric-LLL setup of this file does **not** improve
+on the sharp union bound at small `k`; its factor-`Θ(k)` gain is genuinely asymptotic.
+
+### Added (PART VII in `RamseyR4kExtensionsOQ03.lean`)
+- **`firstMomentCondition n k`** `:= 2·C(n,k) < 2^{C(k,2)}` — the sharp union-bound
+  test; `Decidable` by `infer_instance` after `unfold`.
+- **`lll_core_eq_firstMoment_core`** (`2 ≤ k`): `C(n,2)·(6·d) = 3·C(k,2)²·(2·C(n,k))`.
+  Rescale `cliqueDependency_total_identity` by 6 (needs `(n := n) (k := k)` to pin the
+  implicit `n` in the standalone `have`, else "don't know how to synthesize `n`").
+  Both tests compare their core to the same budget `2^{C(k,2)}`, so the ratio
+  `3·C(k,2)²/C(n,2)` is the **exact finite crossover criterion**.
+- **`lll_core_le_firstMoment_core`** (`2 ≤ k`, `2 ≤ n`, `3·C(k,2)² ≤ C(n,2)`):
+  `6·d ≤ 2·C(n,k)` (LLL more permissive in the large-`n`, `n≳k²` regime).
+  `rw [core_eq]; gcongr` then cancel `C(n,2)>0`.
+- **`unionBound_beats_lll_at_6` / `_at_7`**: `firstMomentCondition 17 6 ∧
+  ¬RamseyLLLCondition 17 6` and same at `(27,7)`; `refine ⟨by decide, ?_⟩;
+  rw [ramseyLLLCondition_iff]; decide`.
+
+Numeric check (crossover): `3·C(6,2)² = 675 > 136 = C(17,2)` → small-`n` side, union
+bound wins at `k=6`, consistent with the theorems. LLL only overtakes once
+`3·C(k,2)² < C(n,2)`, i.e. `n` at least ~quadratic in `k` (the `n≈2^{k/2}` regime).
+
+### Still open (unchanged)
+The sole remaining piece is the symmetric-LLL avoidance principle
+`SymmetricLLLForRamsey` (Spencer's conditional-probability induction); not in Mathlib.
+
+---
+
 ## PART VI — why LLL beats the union bound, quantified (researcher-4, 2026-07-03)
 
 Appended to `RamseyR4kExtensionsOQ03.lean` on top of the decidable-criterion
