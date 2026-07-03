@@ -523,3 +523,50 @@ remaining work.
   reducible); use `exact`-at-defeq (`rw [hk0] at hk; exact hk`) or an explicit `rfl` tactic.
 - Destructure list pairs to `⟨u,w⟩` and capture clean equalities (`have hwy : w = y := hab2`)
   so later `rw` sees `w`, not the stuck projection `(u,w).2`.
+
+## Session 2026-07-03 (researcher-14): edge preservation (pairs) — Section 4k f-edge / 4l g-edge [VERIFIED 0-axiom]
+
+Strengthened both stage moves to expose **pair-level edge preservation**, the ingredient the
+limit read-off actually needs (see the sharpened obstruction below). Host `lake env lean`
+v4.26.0, EXIT 0; `#print axioms augment_domain_step` = `#print axioms augment_range_step` =
+`[propext, Classical.choice, Quot.sound]` — no `sorryAx`, no `ofReduceBool`. File 1773→1811
+lines, 75→84 theoremCount (meta leanFile synced). Main `myhill_isomorphism` → sorry UNCHANGED.
+
+- `augment_domain_step` (Section 4k): added conjunct `(∀ ab ∈ L, ab.2 = f ab.1 → ab ∈ L')`.
+  I.e. the even-stage splice **preserves every existing `f`-edge as an actual pair**, not just
+  its domain/range membership. Proof: `keptL` drops only pairs whose domain lies on the orbit
+  prefix `mDom (augPath) = {o₀,…,o_N}`; an `f`-edge `(x, f x)` with `x = oₖ` forces (via the
+  stale `g`-edge `(oₖ, f o_{k-1}) ∈ L` + `matching_functional`) `f oₖ = f o_{k-1}`, hence
+  (`f` inj) `oₖ = o_{k-1}`, contradicting `fwdOrbit_prefix_distinct`; `k=0` gives `x = a ∈ mDom L`
+  against freshness. So `x ∉ mDom (augPath)`, thus `(x, f x) ∈ keptL ⊆ L'`.
+- `augment_range_step` (Section 4l): dual conjunct `(∀ ab ∈ L, ab.1 = g ab.2 → ab ∈ L')` — the
+  odd-stage move **preserves every existing `g`-edge**. Free from the `Prod.swap` duality: a
+  `g`-edge `(u,w)` (`u = g w`) is a swapped-world `f`-edge `(w,u)`, preserved by
+  `augment_domain_step` in the swapped problem, then swapped back (`List.mem_map.mpr ⟨·,·,rfl⟩`).
+
+**SHARPENED OBSTRUCTION (correcting prior "Next Steps").** Prior sessions' plan — "read off the
+limit `σ n` via `mLookup` at any stage past the one where `n` enters `mDom`" — tacitly assumes
+`mLookup` is *stable* along the chain. But `mLookup_stable` (Section 4f-bis) requires
+`∀ x ∈ L₁, x ∈ L₂` (**every pair preserved**), and the rerouting augment step *violates this*: a
+domain step **removes** the stale `g`-edges `(oₖ, f o_{k-1})` and re-adds `f`-edges `(oₖ, f oₖ)`,
+so the partner of a domain point genuinely *changes* between stages. Hence the read-off value is
+**not** monotone/eventually-constant for free. The real remaining crux is a **finite-injury
+stabilization** argument (recursion-theoretic): each point is rerouted only finitely often
+(a domain point survives as an `f`-edge across all *domain* steps — this session's
+`augment_domain_step` f-edge conjunct — but can be flipped to a `g`-edge by a *range* step, and
+vice versa), so `mLookup (stage s) n` stabilizes as `s → ∞`. Bounding the number of flips per
+point (priority/injury count) is the genuine open work; `mLookup_stable` as stated is *too weak*
+to close the limit and should not be cited as if the read-off were mechanical.
+
+### Next Steps (revised — supersedes the earlier "read off via mLookup" step)
+1. **Do NOT** assume monotone pair-preservation across a full stage. State and prove a
+   *stabilization* lemma: for each `n`, `∃ S, ∀ s ≥ S, mLookup (stage s) n = mLookup (stage S) n`.
+   The edge-preservation conjuncts added this session are the base: an `f`-edge at `n` is immune
+   to all future *domain* steps; only *range* steps can disturb it (and dually). Bound the
+   disturbances (finite injury) to get stabilization.
+2. Alternatively, investigate an **extension-only reformulation** of the scheduler (pairs never
+   removed) so `mLookup_stable` applies directly — this trades the rerouting splice for a
+   cleverer anchor choice (classical Rogers §7.4 back-and-forth extends without revising). If
+   feasible this sidesteps finite injury entirely and is likely the shorter path to closing.
+3. Only after stabilization: coverage (`firstMissing_le_length`) + read off `ℕ ≃ ℕ` +
+   computability of the (now explicit) stage function.

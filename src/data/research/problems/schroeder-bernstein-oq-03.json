@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: augment_domain_step (Section 4k) is the augmenting-path SPLICE that r4 named as the remaining list-surgery, now DONE and VERIFIED (0-axiom): the even-stage domain move is total, BuiltFrom-preserving, and iterable (monotone both sides, covers the fresh anchor). Every atomic per-stage obligation of the Myhill scheduler is now proved; only the outer stage recursion + computable read-off remain. Main myhill_isomorphism still sorry (open).",
+    "progressSummary": "PROGRESS: both stage moves now expose pair-level edge preservation (VERIFIED 0-ax). Sharpened the remaining crux from vague \"read off via mLookup\" to a concrete finite-injury stabilization obligation (mLookup_stable is too weak because the rerouting splice does not preserve pairs). Main myhill_isomorphism sorry UNCHANGED.",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
@@ -60,7 +60,9 @@
       "escape_exists (Section 4i, VERIFIED 0-axiom): ∃ N ≤ (mDom L).length, f(fwdOrbit f g a N) ∉ mRan L — the bounded termination certificate for the even-stage collision chase.",
       "domain_step_exists (Section 4i, VERIFIED 0-axiom): the even-stage domain step is TOTAL — any fresh a can be placed as (a, chaseTarget f g a N) preserving IsMatching and MatchingCorr (does NOT preserve BuiltFrom; see next steps).",
       "augPath + mem_augPath_iff/mDom_augPath/mRan_augPath + augPath_builtFrom + augPath_matchingCorr + augPath_isMatching + augPath_isMatching_of_chase in SchroederBernsteinOQ03.lean Section 4j (8 decls, all VERIFIED 0-axiom)",
-      "augment_domain_step (SchroederBernsteinOQ03.lean:1466): BuiltFrom-preserving TOTAL even-stage domain step. Fresh anchor a not in mDom L implies exists Lprime with IsMatching, MatchingCorr, BuiltFrom, a in mDom Lprime, and mDom/mRan monotone. VERIFIED, axioms = {propext, Classical.choice, Quot.sound}."
+      "augment_domain_step (SchroederBernsteinOQ03.lean:1466): BuiltFrom-preserving TOTAL even-stage domain step. Fresh anchor a not in mDom L implies exists Lprime with IsMatching, MatchingCorr, BuiltFrom, a in mDom Lprime, and mDom/mRan monotone. VERIFIED, axioms = {propext, Classical.choice, Quot.sound}.",
+      "augment_domain_step f-edge preservation conjunct (Section 4k), SchroederBernsteinOQ03.lean",
+      "augment_range_step g-edge preservation conjunct (Section 4l), SchroederBernsteinOQ03.lean"
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -80,7 +82,9 @@
       "augPath f g a N (the augmenting path: f-edges (oₖ, f oₖ) for k=0..N, oₖ=fwdOrbit f g a k) is the object that RESTORES BuiltFrom after a collision chase — domain_step_exists preserves IsMatching+MatchingCorr but its single anchor pair (a, f(oₙ)) is neither an f-edge nor g-edge for N>0. Re-labelling the whole chased chain into f-edges fixes this. VERIFIED 0-axiom (propext/Classical.choice/Quot.sound only).",
       "Only the f-reduction (p n iff q (f n)) is needed for the even-stage augmenting-path move; hgpq is unnecessary because every augmenting edge (o_k, f o_k) is an f-edge, so MatchingCorr of the block follows from hfpq alone (augment_domain_step, Section 4k).",
       "The augmenting-path splice is TOTAL and preserves ALL THREE invariants plus two-sided monotonicity: mDom L subset mDom Lprime, mRan L subset mRan Lprime. Monotonicity holds because every removed g-edge endpoint (domains o_1..o_N, ranges f o_0..f o_(N-1)) is re-added by augPath ({o_0..o_N} on the domain, {f o_0..f o_N} on the range).",
-      "Range-disjointness of the spliced matching is the delicate part: for aug index k<N, f o_k is the unique range value of the removed g-edge (o_(k+1), f o_k) by matching_cofunctional, so no kept pair can carry it; for k=N it is the escape point f o_N not in mRan L (escape_exists)."
+      "Range-disjointness of the spliced matching is the delicate part: for aug index k<N, f o_k is the unique range value of the removed g-edge (o_(k+1), f o_k) by matching_cofunctional, so no kept pair can carry it; for k=N it is the escape point f o_N not in mRan L (escape_exists).",
+      "r14 (07-03): strengthened augment_domain_step / augment_range_step with pair-level edge preservation (f-edges survive domain steps; g-edges survive range steps), VERIFIED 0-axiom [propext,Classical.choice,Quot.sound].",
+      "SHARPENED OBSTRUCTION: the limit read-off is NOT mechanical. mLookup_stable needs full pair-preservation, but the rerouting augment step removes stale g-edges and re-adds f-edges, so a domain point partner CHANGES across stages. Real crux = finite-injury stabilization (each point rerouted finitely often), or an extension-only reformulation of the scheduler."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
@@ -88,7 +92,9 @@
     "nextSteps": [
       "Derive the range-stage dual augment_range_step from augment_domain_step via the Section 4e swap duality (isMatching_map_swap / matchingCorr_map_swap / builtFrom_map_swap).",
       "Define the alternating stage recursion sigma : Nat -> List(NatxNat) anchoring at firstMissing (mDom sigma_s) / firstMissing (mRan sigma_s); prove coverage (k in mDom by stage 2k+1) from monotonicity + firstMissing progress.",
-      "Read off e : Nat equiv Nat via mLookup, prove Computable, and discharge myhill_isomorphism."
+      "Read off e : Nat equiv Nat via mLookup, prove Computable, and discharge myhill_isomorphism.",
+      "Prove a stabilization lemma: for each n, mLookup(stage s) n is eventually constant (finite injury), using the new edge-preservation base.",
+      "Investigate extension-only scheduler reformulation so mLookup_stable applies directly (likely shorter path)."
     ],
     "markdown": "# Knowledge Base: schroeder-bernstein-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
