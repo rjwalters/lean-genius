@@ -80,7 +80,8 @@
       "**Recoloring repairs; deletion discards.** The deletion method (sibling oq-03 entry) throws away each monochromatic edge to expose a 2-colorable subfamily; recoloring instead FLIPS a vertex to fix the edge, keeping the whole family. This is the qualitative jump the Radhakrishnan–Srinivasan alteration needs.",
       "**Privacy, not disjointness, is the right hypothesis.** An edge needs only ONE vertex of its own (in no other edge) to be repairable without side effects; it may overlap other edges arbitrarily through its remaining vertices. recoloring_example_overlap shows two monochromatic edges sharing a vertex that are nonetheless both repaired.",
       "**The proof pinpoints why recoloring is hard in general.** Each step where privacy is invoked is exactly a place where a SHARED flip vertex would break the argument — the dependency between repairs. Removing privacy is precisely what forces RS to flip vertices probabilistically and union-bound the failures.",
-      "**Size ≥ 2 is essential.** Flipping a vertex of a singleton edge leaves it monochromatic (it is trivially monochromatic — see the sibling sharpness result); the repair needs a surviving second vertex of the original colour, which |e| ≥ 2 guarantees."
+      "**Size ≥ 2 is essential.** Flipping a vertex of a singleton edge leaves it monochromatic (it is trivially monochromatic — see the sibling sharpness result); the repair needs a surviving second vertex of the original colour, which |e| ≥ 2 guarantees.",
+      "**Both proof branches are one privacy argument, dualized.** The monochromatic case invokes privacy to show a *second* vertex u ≠ w(e) stays unflipped (so e gains two colours); the non-monochromatic case invokes it to show *every* vertex stays unflipped (so e is untouched). Each reduces to the same step: w(e'') ∈ e plus the privacy hypothesis forces the owning edge e'' to equal e. This shared mechanism is why the deterministic core is so short — and why the sole obstruction to the general RS statement is precisely a shared flip-vertex, which no privacy hypothesis rules out."
     ],
     "prerequisites": [
       "Erdős' Property B first-moment bound (grandparent entry property-b-first-moment) and its Mono predicate",
@@ -91,12 +92,36 @@
   },
   "sections": [
     {
-      "id": "recoloring-lemma",
-      "title": "Deterministic Recoloring Repairs Property B",
+      "id": "framing",
+      "title": "Framing: Recoloring vs Deletion",
       "startLine": 1,
-      "endLine": 117,
-      "mathContext": "$M=\\{e\\in E: \\mathrm{Mono}(e,c)\\},\\ |e|\\ge 2,\\ w(e)\\ \\text{private}\\ \\Rightarrow\\ \\exists c',\\ \\forall e\\in E,\\ \\neg\\,\\mathrm{Mono}(e,c')$",
-      "summary": "Module docstring contrasting recoloring (repair) with deletion (discard) and scoping the privacy hypothesis against the Radhakrishnan–Srinivasan target. property_b_of_recoloring: flip the private vertices S = M.image w; a monochromatic edge gets exactly one flip (its private vertex) and a surviving second vertex (exists_ne_of_one_lt_card) keeps the original colour, so it becomes bichromatic; a non-monochromatic edge contains no flipped vertex (privacy) and is untouched."
+      "endLine": 35,
+      "mathContext": "Deletion exposes a 2-colorable subfamily; recoloring flips a vertex per bad edge to 2-color the whole family. Privacy (a bad edge owns a vertex in no other edge) is strictly weaker than the bad edges forming a matching.",
+      "summary": "The module docstring positions the file in the alteration-method landscape: the parent proves Erdős' first-moment bound, the deletion sibling discards monochromatic edges, and this file supplies the harder recoloring half in its deterministic regime. Radhakrishnan–Srinivasan recolor probabilistically because bad edges share vertices; the deterministic statement isolates the shared-vertex-free case via a private-vertex hypothesis. Imports the parent (for Mono), opens Finset/BigOperators, fixes V a Fintype with DecidableEq."
+    },
+    {
+      "id": "theorem-setup",
+      "title": "The Recoloring Theorem: Statement and the Flip Coloring",
+      "startLine": 37,
+      "endLine": 71,
+      "mathContext": "$M=E.\\mathrm{filter}(\\mathrm{Mono}(\\cdot,c)),\\ S=M.\\mathrm{image}\\,w,\\ c'(x)=\\text{if }x\\in S\\text{ then }!c(x)\\text{ else }c(x)$",
+      "summary": "property_b_of_recoloring takes the family E, coloring c, private-vertex selector w, and three hypotheses (membership w e ∈ e, size 2 ≤ e.card, privacy w e ∈ e' → e' = e — all only for monochromatic e ∈ E). After classical, it names the monochromatic-edge set M and the private-vertex flip set S with their membership characterizations (memM via mem_filter, memS via mem_image), then defines the repaired coloring c' flipping exactly S and case-splits each edge on whether it is monochromatic under c."
+    },
+    {
+      "id": "repair-case",
+      "title": "Repair Case: Monochromatic Edges Become Bichromatic",
+      "startLine": 72,
+      "endLine": 102,
+      "mathContext": "$w(e)\\mapsto !b,\\ u\\ (\\ne w(e),\\ u\\in e)\\ \\text{keeps}\\ b\\ \\Rightarrow\\ e\\ \\text{bichromatic under}\\ c'$",
+      "summary": "For a monochromatic edge e of colour b: its private vertex w e ∈ S flips to !b, and Finset.exists_ne_of_one_lt_card (from 2 ≤ e.card) supplies a second vertex u ≠ w e with u ∉ S — because u ∈ S would name an owning edge e'' whose privacy forces e'' = e and u = w e, a contradiction. Then c'(w e) = !b ≠ b = c'(u), so e is not monochromatic under c'."
+    },
+    {
+      "id": "preserve-case",
+      "title": "Preservation Case: Non-Monochromatic Edges Untouched",
+      "startLine": 103,
+      "endLine": 118,
+      "mathContext": "$x\\in e\\Rightarrow x\\notin S\\ \\Rightarrow\\ c'|_e = c|_e\\ \\Rightarrow\\ \\neg\\,\\mathrm{Mono}(e,c')$",
+      "summary": "For a non-monochromatic edge e: every vertex x ∈ e satisfies x ∉ S, since x ∈ S would name an owning edge e'' whose privacy forces e'' = e, making e monochromatic — contradiction. Hence c' agrees with c on e, so Mono e c' would give Mono e c, contradicting the case assumption. This is the dual of the repair case, using the same privacy step."
     },
     {
       "id": "examples",
