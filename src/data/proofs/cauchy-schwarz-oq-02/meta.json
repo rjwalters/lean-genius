@@ -179,6 +179,134 @@
       "summary": "bessel_finite proves ∑ᵢ⟨x,eᵢ⟩²≤‖x‖² for orthonormal {e₁,...,eₙ} via ‖x-Px‖²≥0 where Px=∑⟨x,eᵢ⟩eᵢ. Equality would give Parseval. Closing summary section establishes the full dependency chain from Hölder to Bessel and positions Parseval's identity as the natural next step."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "holder_finite_nnreal",
+      "type": "theorem",
+      "statement": "For f, g : ι → ℝ≥0 on a finite set s and Hölder-conjugate exponents p, q, ∑ i∈s, f i · g i ≤ (∑ i∈s, f i^p)^(1/p) · (∑ i∈s, g i^q)^(1/q).",
+      "significance": "Hölder's inequality is the parent of the whole Cauchy-Schwarz family: it holds for every pair of conjugate exponents 1/p + 1/q = 1, and Cauchy-Schwarz is merely the symmetric p = q = 2 case. Establishing it first lets every finite-sum bound below descend from a single source.",
+      "description": "A direct wrapper of Mathlib's NNReal.inner_le_Lp_mul_Lq, working over ℝ≥0 so no non-negativity side conditions are needed."
+    },
+    {
+      "name": "cauchy_schwarz_from_holder",
+      "type": "theorem",
+      "statement": "For f, g : ι → ℝ≥0 on a finite set s, ∑ i∈s, f i · g i ≤ (∑ i∈s, f i^2)^(1/2) · (∑ i∈s, g i^2)^(1/2).",
+      "significance": "Exhibits Cauchy-Schwarz explicitly as the p = q = 2 specialization of Hölder, making the logical dependency concrete rather than merely asserted. This is the classical ∑ fg ≤ √(∑f²)·√(∑g²) discrete inequality.",
+      "description": "Applies holder_finite_nnreal and discharges the conjugacy obligation via Real.HolderConjugate.conjExponent for the exponent 2 (since 1 < 2)."
+    },
+    {
+      "name": "memLp_two_iff_sq_integrable",
+      "type": "theorem",
+      "statement": "For f : α → ℝ that is AEStronglyMeasurable, Memℒp f 2 μ ↔ Integrable (fun x => ‖f x‖^2) μ.",
+      "significance": "Characterizes membership in L² by the integrability of the squared norm, the bridge that lets the abstract L² norm be computed as an honest integral of a square — the analytic backbone of every L² statement that follows.",
+      "description": "A restatement of Mathlib's memLp_two_iff_integrable_sq_norm under the file's naming, given AE-strong-measurability of f."
+    },
+    {
+      "name": "L2_inner_integrable",
+      "type": "theorem",
+      "statement": "For f, g : Lp ℝ 2 μ, the pointwise product x ↦ f(x)·g(x) is Integrable with respect to μ.",
+      "significance": "Guarantees the product of two square-integrable functions is integrable — the L¹-in / L²-times-L² fact underlying the integral form of the inner product. Without it the expression ∫ f·g would not even be well defined.",
+      "description": "Derived from L2.integrable_inner over ℝ, converting the Mathlib inner-product integrand to the plain product via mul_comm."
+    },
+    {
+      "name": "L2_inner_eq_integral'",
+      "type": "theorem",
+      "statement": "For f, g : Lp ℝ 2 μ, ⟪f, g⟫_ℝ = ∫ a, f(a)·g(a) ∂μ.",
+      "significance": "Identifies the abstract Hilbert-space inner product on L² with the concrete integral of the product. This equation is what turns geometric statements about ⟪·,·⟫ into computable analytic ones.",
+      "description": "Unfolds L2.inner_def and rewrites the integrand with mul_comm to match the real-valued convention."
+    },
+    {
+      "name": "L2_norm_sq_eq_integral",
+      "type": "theorem",
+      "statement": "For f : Lp ℝ 2 μ, ‖f‖^2 = ∫ a, f(a)^2 ∂μ.",
+      "significance": "The fundamental L² bridge ‖f‖² = ∫ f² dμ. Every energy/variance interpretation of the L² norm rests on this identity, and it is the specialization of the inner-product formula to g = f.",
+      "description": "Rewrites ‖f‖² as ⟪f, f⟫ via real_inner_self_eq_norm_sq, then applies L2_inner_eq_integral' and simplifies f·f = f² with ring."
+    },
+    {
+      "name": "L2_norm_sq_nonneg",
+      "type": "theorem",
+      "statement": "For f : Lp ℝ 2 μ, 0 ≤ ∫ a, f(a)^2 ∂μ.",
+      "significance": "Records the positivity of the L² energy integral — a small but load-bearing fact, since non-negativity of ‖·‖² is exactly what makes Cauchy-Schwarz and Bessel-type inequalities go through.",
+      "description": "Rewrites the integral back to ‖f‖² via L2_norm_sq_eq_integral and closes with sq_nonneg."
+    },
+    {
+      "name": "pythagorean_L2",
+      "type": "theorem",
+      "statement": "For f, g : Lp ℝ 2 μ with ⟪f, g⟫ = 0, ‖f + g‖^2 = ‖f‖^2 + ‖g‖^2.",
+      "significance": "The infinite-dimensional Pythagorean theorem: orthogonal square-integrable functions add their energies. This is the analytic heart of Fourier analysis and least-squares approximation.",
+      "description": "Expands ‖f+g‖² with norm_add_sq_real and cancels the cross term using the orthogonality hypothesis."
+    },
+    {
+      "name": "pythagorean_L2_iff",
+      "type": "theorem",
+      "statement": "For f, g : Lp ℝ 2 μ, ‖f + g‖^2 = ‖f‖^2 + ‖g‖^2 ↔ ⟪f, g⟫ = 0.",
+      "significance": "Upgrades the Pythagorean theorem to a characterization: energy additivity happens exactly when the functions are orthogonal, so the norm alone detects orthogonality.",
+      "description": "Forward direction uses the norm_add_sq_real expansion and linarith; the reverse direction is pythagorean_L2."
+    },
+    {
+      "name": "parallelogram_law",
+      "type": "theorem",
+      "statement": "For f, g in any real inner product space E, ‖f + g‖^2 + ‖f - g‖^2 = 2·(‖f‖^2 + ‖g‖^2).",
+      "significance": "The parallelogram law characterizes which normed spaces come from an inner product (Jordan–von Neumann): a norm satisfies it iff it is induced by an inner product. Stated here at full generality, not just for L².",
+      "description": "Expands both squared norms with norm_add_sq_real and norm_sub_sq_real; the cross terms cancel and ring finishes."
+    },
+    {
+      "name": "parallelogram_law_L2",
+      "type": "theorem",
+      "statement": "For f, g : Lp ℝ 2 μ, ‖f + g‖^2 + ‖f - g‖^2 = 2·(‖f‖^2 + ‖g‖^2).",
+      "significance": "The parallelogram law specialized to L², confirming concretely that the L² norm is a genuine Hilbert-space norm.",
+      "description": "An immediate instance of parallelogram_law applied to the inner product space Lp ℝ 2 μ."
+    },
+    {
+      "name": "polarization_identity",
+      "type": "theorem",
+      "statement": "For f, g in any real inner product space E, ⟪f, g⟫ = (‖f + g‖^2 - ‖f - g‖^2)/4.",
+      "significance": "The polarization identity recovers the inner product from the norm, showing the two data are interchangeable in a real inner product space. It is the constructive converse to the parallelogram law.",
+      "description": "Expands the two squared norms with norm_add_sq_real / norm_sub_sq_real and simplifies with ring."
+    },
+    {
+      "name": "polarization_identity'",
+      "type": "theorem",
+      "statement": "For f, g in any real inner product space E, ⟪f, g⟫ = (‖f + g‖^2 - ‖f‖^2 - ‖g‖^2)/2.",
+      "significance": "An alternative, often more convenient, polarization formula using only ‖f+g‖, ‖f‖, ‖g‖. It is the identity that makes the Pythagorean cross-term explicit.",
+      "description": "Obtained directly from the norm_add_sq_real expansion by linarith."
+    },
+    {
+      "name": "weighted_cauchy_schwarz",
+      "type": "theorem",
+      "statement": "For weights w and sequences a, b : Fin n → ℝ with w i ≥ 0, (∑ i, w i · a i · b i)^2 ≤ (∑ i, w i · a i^2)·(∑ i, w i · b i^2).",
+      "significance": "The weighted (positive-measure) Cauchy-Schwarz inequality, the discrete probabilistic form covering covariance/variance bounds. It generalizes the unweighted case by absorbing √wᵢ into the vectors.",
+      "description": "Reduces to unweighted Cauchy-Schwarz by the substitution aᵢ ↦ √wᵢ·aᵢ, bᵢ ↦ √wᵢ·bᵢ (using Real.sq_sqrt on the non-negative weights), then proves the base case from Finset.inner_mul_le_norm_mul_sq together with the non-negative Lagrange sum ∑∑(uᵢvⱼ − uⱼvᵢ)² via nlinarith."
+    },
+    {
+      "name": "amgm_from_cauchy_schwarz",
+      "type": "theorem",
+      "statement": "For a, b ≥ 0, √(a·b) ≤ (a + b)/2.",
+      "significance": "The two-term AM–GM inequality, derived here in the Cauchy-Schwarz circle of ideas from the elementary square (√a − √b)² ≥ 0. It illustrates that the geometric mean never exceeds the arithmetic mean.",
+      "description": "Uses sq_nonneg (√a − √b), the identities Real.sq_sqrt for a and b, and √a·√b = √(ab) via Real.sqrt_mul, closed by nlinarith."
+    },
+    {
+      "name": "L1_le_sqrt_n_L2",
+      "type": "theorem",
+      "statement": "For a : Fin n → ℝ, (∑ i, |a i|)^2 ≤ n · ∑ i, a i^2.",
+      "significance": "The comparison between the ℓ¹ and ℓ² norms on ℝⁿ: ‖a‖₁ ≤ √n·‖a‖₂. This dimension-dependent bound is the sharp Cauchy-Schwarz consequence obtained by pairing |a| against the constant vector 1.",
+      "description": "Applies Finset.inner_mul_le_norm_mul_sq to |a| and the all-ones vector, simplifies ∑1 = n (Finset.card_univ / Fintype.card_fin) and sq_abs, then linarith."
+    },
+    {
+      "name": "triangle_ineq_via_CS",
+      "type": "theorem",
+      "statement": "For u, v in any real inner product space E, ‖u + v‖^2 ≤ (‖u‖ + ‖v‖)^2.",
+      "significance": "The triangle inequality derived from Cauchy-Schwarz: bounding the cross term ⟪u,v⟫ by ‖u‖·‖v‖ is exactly what upgrades the parallelogram expansion into subadditivity of the norm.",
+      "description": "Expands ‖u+v‖² via norm_add_sq_real, bounds ⟪u,v⟫ ≤ |⟪u,v⟫| ≤ ‖u‖·‖v‖ with abs_real_inner_le_norm and le_abs_self, and finishes with nlinarith."
+    },
+    {
+      "name": "bessel_finite",
+      "type": "theorem",
+      "statement": "For an orthonormal family e : Fin n → E (⟪eᵢ,eⱼ⟫ = 0 for i ≠ j, ‖eᵢ‖ = 1) and any x, ∑ i, ⟪x, e i⟫^2 ≤ ‖x‖^2.",
+      "significance": "Bessel's inequality: the total energy of the projections of x onto an orthonormal system never exceeds ‖x‖². It is the quantitative statement behind convergence of Fourier coefficients and the completeness gap measured by ‖x − p‖².",
+      "description": "Sets p = ∑ ⟪x,eᵢ⟫·eᵢ, proves ⟪eᵢ,p⟫ = ⟪x,eᵢ⟫ and ⟪x,p⟫ = ∑⟪x,eᵢ⟫² by orthonormality (peeling the diagonal term with Finset.add_sum_erase), derives ‖p‖² = ⟪x,p⟫, expands ‖x − p‖² = ‖x‖² − ∑⟪x,eᵢ⟫² with norm_sub_sq_real, and concludes from sq_nonneg ‖x − p‖."
+    }
+  ],
   "sorries": 0,
   "references": [
     {
