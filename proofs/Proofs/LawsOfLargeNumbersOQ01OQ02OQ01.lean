@@ -52,6 +52,16 @@
     * `tsum_measure_add_one_ne_top` — the finiteness corollary that feeds the
       first Borel–Cantelli lemma.
 
+  **Capstone — Kolmogorov + Kronecker (§ KolmogorovKronecker).** The analytic and
+  probabilistic halves are finally composed into the normalisation step of the
+  Marcinkiewicz–Zygmund law itself:
+
+    * `ae_tendsto_average_zero_of_variance_weighted_bdd` — for independent
+      mean-zero `L²` variables `Yᵢ` and a positive nondecreasing weight `aₙ → ∞`
+      with `∑ᵢ Var(Yᵢ)/aᵢ² < ∞`, almost surely `aₙ⁻¹ ∑_{i<n} Yᵢ → 0`. Obtained by
+      running Kolmogorov's criterion on the rescaled `Xᵢ = aᵢ⁻¹·Yᵢ` and feeding
+      its a.s.-convergence output through the a.e. Kronecker lift.
+
   Verified: 0 sorry, 0 axiom (only `propext`/`Classical.choice`/`Quot.sound`).
 -/
 import Mathlib
@@ -597,5 +607,83 @@ theorem tsum_measure_add_one_ne_top {Z : Ω → ℝ}
   ((tsum_measure_add_one_le_lintegral hZmeas hZnn).trans_lt hZint.lt_top).ne
 
 end TailSum
+
+/-! ## S5 — Kolmogorov + Kronecker: the SLLN normalisation step
+
+The two engines built above are finally composed. Kolmogorov's criterion
+(`ae_tendsto_sum_of_indep_of_variance_bdd`) turns a variance-sum bound into a.s.
+convergence of a series `∑ Xᵢ`; the a.e. Kronecker lift
+(`ae_tendsto_kronecker_average_zero`) turns a.s. convergence of `∑ Yᵢ/aᵢ` into
+the normalised average `(∑_{i<n} Yᵢ)/aₙ → 0`. Feeding the rescaled variables
+`Xᵢ = aᵢ⁻¹·Yᵢ` into the former and its output into the latter yields, in one
+clean statement, the **normalisation step of the Marcinkiewicz–Zygmund strong
+law**: for independent mean-zero `L²` variables `Yᵢ` and a positive nondecreasing
+weight `aₙ → ∞` with `∑ᵢ Var(Yᵢ)/aᵢ² < ∞`, almost surely `aₙ⁻¹ ∑_{i<n} Yᵢ → 0`.
+
+At `aₙ = n` and `Yᵢ = Xᵢ − 𝔼Xᵢ` this is Kolmogorov's classical SLLN under the
+`∑ Var(Xᵢ)/i² < ∞` hypothesis; the general weight is precisely the normaliser
+the MZ truncation feeds in. This is the capstone tying the file's analytic and
+probabilistic halves together — still on the 0-axiom track. -/
+
+section KolmogorovKronecker
+
+open MeasureTheory ProbabilityTheory
+open scoped ENNReal NNReal
+
+variable {Ω : Type*} {mΩ : MeasurableSpace Ω} {μ : Measure Ω}
+
+/-- **Kolmogorov–Kronecker normalisation step of the Marcinkiewicz–Zygmund SLLN.**
+For independent mean-zero `L²` random variables `Y i`, and a positive,
+nondecreasing weight sequence `a` with `a n → ∞` whose weighted variance partial
+sums are uniformly bounded, `∑_{i≤n} Var(Yᵢ)/aᵢ² ≤ V`, the normalised averages
+converge to zero almost surely:
+
+    (∑_{i<n} Yᵢ) / aₙ → 0     a.s.
+
+Proof: apply Kolmogorov's criterion `ae_tendsto_sum_of_indep_of_variance_bdd` to
+the rescaled variables `Xᵢ = aᵢ⁻¹·Yᵢ` — independence is preserved by
+`iIndepFun.comp`, the `L²` and mean-zero properties by `MemLp.const_mul` and
+`integral_const_mul`, and `Var(Xᵢ) = aᵢ⁻²·Var(Yᵢ)` by `variance_const_mul`, so
+the weighted-variance hypothesis becomes the plain variance-sum bound the engine
+needs — obtaining a.s. convergence of `∑ᵢ Yᵢ/aᵢ`; then feed that into the a.e.
+Kronecker lift `ae_tendsto_kronecker_average_zero`. -/
+theorem ae_tendsto_average_zero_of_variance_weighted_bdd [IsProbabilityMeasure μ]
+    (Y : ℕ → Ω → ℝ) (a : ℕ → ℝ)
+    (hmeas : ∀ i, StronglyMeasurable (Y i))
+    (hindep : iIndepFun Y μ) (hmemLp : ∀ i, MemLp (Y i) 2 μ)
+    (hmean : ∀ i, μ[Y i] = 0)
+    (ha_pos : ∀ n, 0 < a n) (ha_mono : Monotone a) (ha_top : Tendsto a atTop atTop)
+    (V : ℝ)
+    (hV : ∀ n, ∑ i ∈ range (n + 1), variance (Y i) μ / (a i) ^ 2 ≤ V) :
+    ∀ᵐ ω ∂μ, Tendsto (fun n => (∑ i ∈ range n, Y i ω) / a n) atTop (𝓝 0) := by
+  -- rescaled variables `Xᵢ = aᵢ⁻¹ · Yᵢ`
+  set X : ℕ → Ω → ℝ := fun i ω => (a i)⁻¹ * Y i ω with hXdef
+  have hXmeas : ∀ i, StronglyMeasurable (X i) := fun i => (hmeas i).const_mul _
+  have hXindep : iIndepFun X μ := by
+    have h := hindep.comp (fun i (y : ℝ) => (a i)⁻¹ * y)
+      (fun i => measurable_const.mul measurable_id)
+    simpa [hXdef, Function.comp] using h
+  have hXmemLp : ∀ i, MemLp (X i) 2 μ := fun i => (hmemLp i).const_mul _
+  have hXmean : ∀ i, μ[X i] = 0 := by
+    intro i
+    simp only [hXdef, integral_const_mul, hmean i, mul_zero]
+  -- `Var(Xᵢ) = aᵢ⁻² · Var(Yᵢ) = Var(Yᵢ)/aᵢ²`
+  have hXvar : ∀ i, variance (X i) μ = variance (Y i) μ / (a i) ^ 2 := by
+    intro i
+    rw [hXdef, variance_const_mul, inv_pow, div_eq_inv_mul]
+  -- Kolmogorov's criterion for the rescaled variables gives a.s. convergence of `∑ Xᵢ`
+  have hconv := ae_tendsto_sum_of_indep_of_variance_bdd X hXmeas hXindep hXmemLp hXmean V
+    (fun n => by simp_rw [hXvar]; exact hV n)
+  -- rewrite `∑ Xᵢ ω = ∑ Yᵢ ω / aᵢ` to feed the Kronecker lift
+  have hconv' : ∀ᵐ ω ∂μ, ∃ s : ℝ,
+      Tendsto (fun n => ∑ i ∈ range n, Y i ω / a i) atTop (𝓝 s) := by
+    filter_upwards [hconv] with ω hω
+    obtain ⟨c, hc⟩ := hω
+    refine ⟨c, hc.congr (fun n => ?_)⟩
+    refine Finset.sum_congr rfl (fun i _ => ?_)
+    simp only [hXdef, div_eq_inv_mul]
+  exact ae_tendsto_kronecker_average_zero a Y ha_pos ha_mono ha_top hconv'
+
+end KolmogorovKronecker
 
 end LawsOfLargeNumbers.MZ
