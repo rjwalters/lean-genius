@@ -422,3 +422,48 @@ import (`Mathlib.Order.Interval.Finset.Nat` supplies the `Finset.Icc` API the fi
 the committed file keeps `import Mathlib.Tactic` (superset; Docker has it intact), so the new
 lemmas (verified under the smaller set) elaborate identically there. Do NOT retry the full-umbrella
 host build until the disk frees.
+
+## Session 2026-07-02 (researcher-4): augmenting-path object built + VERIFIED
+
+Added **Section 4j** to `SchroederBernsteinOQ03.lean` (8 decls, all VERIFIED —
+`#print axioms` = {propext, Classical.choice, Quot.sound}; no `sorryAx`, no
+`ofReduceBool`). This constructs the **augmenting path**, the object the
+`BuiltFrom`-preserving domain step re-labels into — explicitly named as "the
+remaining piece" by the `domain_step_exists` docstring but never before built.
+
+- `augPath f g a N := (range (N+1)).map (fun k => (fwdOrbit f g a k, f (fwdOrbit f g a k)))`
+  — the `f`-edges `(oₖ, f oₖ)` for `k = 0..N`.
+- `mem_augPath_iff`, `mDom_augPath` (= orbit prefix), `mRan_augPath` (= its `f`-image).
+- `augPath_builtFrom` — every pair is an `f`-edge ⇒ `BuiltFrom` preserved. THIS is the
+  point: `domain_step_exists` places `(a, f(oₙ))`, neither f- nor g-edge for `N>0`, so it
+  breaks `BuiltFrom` and the next stage's `collision_f_source`/`escape_exists` can't fire.
+  Re-labelling the whole chased chain into f-edges restores the invariant.
+- `augPath_matchingCorr` — each `f`-edge corresponds via `hfpq` directly (no anchor, no `isGFree`).
+- `augPath_isMatching` — valid matching given orbit-prefix distinctness `hdist`.
+- `augPath_isMatching_of_chase` — `hdist` is automatic in the collision context
+  (`a ∉ mDom L`, `oₖ ∈ mDom L` for `1≤k≤N`) via `fwdOrbit_prefix_distinct`; this is the
+  form the scheduler invokes.
+
+**Main `myhill_isomorphism` → sorry UNCHANGED (still open).** What remains is the
+*splice*: `keptL := L` minus the `N` re-labelled `g`-edges `(oₖ, f o_{k-1})` (filter
+domain ∉ `{o_1..o_N}`), then `IsMatching (augPath ++ keptL)` via `List.Nodup.append`.
+Ingredients located:
+1. **Minimal escape depth** via `Nat.find` (pred decidable — `mRan L` membership), so
+   `∀ k<N, f oₖ ∈ mRan L` (collision) ⇒ by `collision_f_source` the g-edge `(o_{k+1}, f oₖ) ∈ L`.
+2. **Domain disjointness**: `mDom augPath = {a} ∪ {o_1..o_N}`; `a ∉ mDom L` (fresh) and
+   `o_1..o_N` are exactly the removed g-edge domains ⇒ disjoint from `mDom keptL`.
+3. **Range disjointness**: `mRan augPath = {f o_0..f o_N}`; `f o_0..f o_{N-1}` are the
+   removed g-edge ranges (unique per range value by `matching_cofunctional`), and `f o_N`
+   is the escape point `∉ mRan L` (`escape_exists`) ⇒ disjoint from `mRan keptL`.
+Then the stage recursion (increasing chain of `BuiltFrom` matchings) + coverage via
+`firstMissing` + reading off the computable `ℕ ≃ ℕ`.
+
+**Infra notes.** Build loop that works this session: the `.loom/worktrees/researcher-4`
+worktree was REAPED mid-session (again — the recurring hazard). Durable worktree at
+`/Users/rwalters/lg-r4-sb` (outside `.loom/worktrees` and `/private/tmp`, both of which
+get reaped) survived. `proofs/.lake` on the MAIN repo now carries Mathlib oleans on disk,
+so compile a worktree file with
+`cd <REPO_ROOT>/proofs && LAKE_UNSAFE=1 lake env lean /Users/rwalters/lg-r4-sb/proofs/Proofs/SchroederBernsteinOQ03.lean`
+(~30s warm). GOTCHA: `lake env lean Proofs/...` from `REPO_ROOT/proofs` compiles the
+MAIN-repo file, NOT the worktree — pass the absolute worktree path. `List.nodup_range`
+takes `n` IMPLICIT (`List.nodup_range.map_on`, not `(List.nodup_range (N+1))`).
