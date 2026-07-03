@@ -98,28 +98,40 @@
       "title": "Module Overview and the Wilson Quotient",
       "startLine": 1,
       "endLine": 53,
-      "summary": "Module docstring stating the goal (Wilson quotient W_p = ((p−1)!+1)/p as an integer, the three equivalent Wilson-prime conditions, certification of 5 and 13 axiom-free), the result list, imports of Mathlib.NumberTheory.Wilson and Mathlib.Tactic, and the definition `wilsonQuotient p = ((p−1)!+1)/p`."
+      "summary": "Module docstring stating the goal (Wilson quotient W_p = ((p−1)!+1)/p as an integer, the three equivalent Wilson-prime conditions, certification of 5 and 13 axiom-free), the result list, imports of Mathlib.NumberTheory.Wilson and Mathlib.Tactic, and the definition `wilsonQuotient p = ((p−1)!+1)/p`.",
+      "mathContext": "$W_p = \\dfrac{(p-1)!+1}{p}$; $p$ is a Wilson prime when $p \\mid W_p$, i.e. $p^2 \\mid (p-1)!+1$. Only 5, 13, 563 are known."
     },
     {
       "id": "wilson-divisibility-and-quotient",
       "title": "Wilson's Theorem in ℕ and the Quotient Identity",
       "startLine": 54,
       "endLine": 75,
-      "summary": "`prime_dvd_factorial_pred_add_one` re-derives p ∣ (p−1)!+1 from ZMod.wilsons_lemma via the cast bridge; `mul_wilsonQuotient` turns it into p·W_p = (p−1)!+1 with Nat.mul_div_cancel'; `wilsonQuotient_pos` shows W_p > 0 since p·W_p is a successor."
+      "summary": "`prime_dvd_factorial_pred_add_one` re-derives p ∣ (p−1)!+1 from ZMod.wilsons_lemma via the cast bridge; `mul_wilsonQuotient` turns it into p·W_p = (p−1)!+1 with Nat.mul_div_cancel'; `wilsonQuotient_pos` shows W_p > 0 since p·W_p is a successor.",
+      "mathContext": "$((p-1)!+1 : \\mathrm{ZMod}\\,p) = 0 \\Rightarrow p \\mid (p-1)!+1 \\Rightarrow p\\cdot W_p = (p-1)!+1$, so $W_p \\in \\mathbb{Z}_{>0}$."
     },
     {
       "id": "wilson-prime-conditions",
-      "title": "The Three Equivalent Wilson-Prime Conditions",
+      "title": "The Wilson-Prime Equivalence by Cancellation",
       "startLine": 77,
+      "endLine": 82,
+      "summary": "`dvd_wilsonQuotient_iff` proves p ∣ W_p ⟺ p² ∣ (p−1)!+1 by rewriting (p−1)!+1 = p·W_p, p² = p·p and cancelling the common factor p via Nat.mul_dvd_mul_iff_left.",
+      "mathContext": "$p \\mid W_p \\iff p\\cdot p \\mid p\\cdot W_p = (p-1)!+1 \\iff p^2 \\mid (p-1)!+1$ — pure left-cancellation of divisibility."
+    },
+    {
+      "id": "wilson-prime-definition",
+      "title": "The Wilson-Prime Definition and Its Equivalent Forms",
+      "startLine": 83,
       "endLine": 109,
-      "summary": "`dvd_wilsonQuotient_iff` proves p ∣ W_p ⟺ p² ∣ (p−1)!+1 by rewriting (p−1)!+1 = p·W_p, p² = p·p and cancelling via Nat.mul_dvd_mul_iff_left; `WilsonPrime` packages the definition; `wilsonPrime_iff_dvd_wilsonQuotient` restates it through the quotient; `sq_dvd_iff_factorial_cast_eq_neg_one` gives the ZMod (p²) congruence form (for any p)."
+      "summary": "`WilsonPrime p := p.Prime ∧ p² ∣ (p−1)!+1`; `wilsonPrime_iff_dvd_wilsonQuotient` restates it through the quotient (p ∣ W_p); `sq_dvd_iff_factorial_cast_eq_neg_one` gives the ZMod (p²) congruence form (p−1)! ≡ −1 (mod p²), which holds for any p.",
+      "mathContext": "Three interchangeable forms: $p^2 \\mid (p-1)!+1 \\iff p \\mid W_p \\iff (p-1)! \\equiv -1 \\pmod{p^2}$."
     },
     {
       "id": "wilson-prime-certificates",
       "title": "Certifying the Wilson Primes 5 and 13",
       "startLine": 111,
       "endLine": 126,
-      "summary": "`wilsonPrime_five` (25 ∣ 25) and `wilsonPrime_thirteen` (169 ∣ 479001601) certified by kernel `decide` — not `native_decide` — keeping the entry axiom-free; `wilsonQuotient_five` records W₅ = 5."
+      "summary": "`wilsonPrime_five` (25 ∣ 25) and `wilsonPrime_thirteen` (169 ∣ 479001601) certified by kernel `decide` — not `native_decide` — keeping the entry axiom-free; `wilsonQuotient_five` records W₅ = 5.",
+      "mathContext": "$4!+1 = 25 = 5^2$ and $12!+1 = 479001601 = 13^2\\cdot 2834329$, so $5$ and $13$ are Wilson primes."
     }
   ],
   "conclusion": {
