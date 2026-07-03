@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 3132,
+    "lineCount": 3171,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -57,13 +57,14 @@
       "Read-off coherence layer (Section 4f-bis): mLookup_mem_of_mem_dom (the lookup lands on a genuine recorded edge), mLookup_injOn (the read-off is injective across the domain, via range-side Nodup), and mLookup_stable (read-off values are stable as the matching grows) — the well-definedness/injectivity/coherence obligations the eventual assembly of the limit permutation consumes, collision-independent (VERIFIED, 0-axiom)",
       "Escape existence for the collision chase (Section 4i): escape_exists — for a fresh domain anchor a ∉ mDom L in a BuiltFrom matching, some forward-orbit stage N ≤ (mDom L).length has a range-fresh image f(fwdOrbit f g a N), so the even-stage collision chase always terminates within L.length steps. Proved via chase_gedge_chain (a persistent collision forces the g-edge (o_{k+1}, f o_k) at every stage — the f-edge alternative is excluded by matching functionality, which would force an orbit repeat and hence a ∈ mDom L) + fwdOrbit_chase_length_le. domain_step_exists then makes the even-stage domain step total (preserving IsMatching and MatchingCorr). Resolves the documented \"escape existence is not free\" obstruction; VERIFIED, 0-axiom.",
       "Computability keystones for the escape depth (r8, 2026-07-03): escape_exists_bounded — the escape_exists' dichotomy but RETAINING the N ≤ (mRan L).length bound both arms already prove (escape_of_balanced periodic + escape_of_infinite_orbit infinite), which escape_exists' had discarded; and escapeDepth_le — the least escaping stage escapeDepth f g L a (Nat.find) satisfies escapeDepth ≤ (mRan L).length. Together these establish that the CANONICAL domain-cons partner chaseTarget f g a (escapeDepth …) lives in a computable bounded window: it can be located by a plain bounded scan of the first (mRan L).length + 1 forward-orbit stages instead of Nat.find-with-existence-proof, the numerical fact that unblocks a fully computable rebuild of the extension-only scheduler. VERIFIED, 0-axiom.",
-      "Read-off collapse to a computable stage index (r8, 2026-07-03): sigmaB_eq_bound — the limit permutation value σ n equals mLookup (stageSeqB (2n+1)).1 n, i.e. the read-off is a lookup into the stage list at the FIXED computable index 2n+1, eliminating the noncomputable entryStageDomB (Nat.find) search from the read-off formula. Combined with (forthcoming) computability of the stage list and mLookup_computable, this is the final shape from which Computable σ follows. VERIFIED, 0-axiom."
+      "Read-off collapse to a computable stage index (r8, 2026-07-03): sigmaB_eq_bound — the limit permutation value σ n equals mLookup (stageSeqB (2n+1)).1 n, i.e. the read-off is a lookup into the stage list at the FIXED computable index 2n+1, eliminating the noncomputable entryStageDomB (Nat.find) search from the read-off formula. Combined with (forthcoming) computability of the stage list and mLookup_computable, this is the final shape from which Computable σ follows. VERIFIED, 0-axiom.",
+      "Bounded escape search = canonical escape depth (r8b, 2026-07-03): firstEscapeB f g L a := (List.range ((mRan L).length + 1)).findIdx (fun N => decide (f (fwdOrbit f g a N) ∉ mRan L)) — a plain total function (no Classical.choose, no proof argument, hence Computable-amenable) — and the bridge firstEscapeB_eq_escapeDepth proving firstEscapeB f g L a = escapeDepth f g L a (escape_exists' …) whenever the balance invariant licenses escape. Proof is List.findIdx_eq at index escapeDepth: the escape predicate is true there (escapeDepth_spec) and false at every earlier stage (escapeDepth_min), with escapeDepth_le placing escapeDepth inside the window. This is the flagged correctness keystone — it certifies the choice-free bounded scan reproduces the LEAST-depth pairing of the classical construction, so a scheduler may substitute firstEscapeB for escapeDepth verbatim. The remaining step to Computable σ is now the mechanical Primrec assembly of firstEscapeB (list_findIdx + list_range + fwdOrbit_computable + a list-membership Bool primrec). VERIFIED, 0-axiom."
     ],
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
     ],
-    "theoremCount": 159,
-    "definitionCount": 32,
+    "theoremCount": 160,
+    "definitionCount": 33,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
     ]
@@ -252,10 +253,10 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 3132,
+    "lineCount": 3171,
     "axiomCount": 0,
-    "theoremCount": 159,
-    "definitionCount": 32,
+    "theoremCount": 160,
+    "definitionCount": 33,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",
     "additionalFiles": [

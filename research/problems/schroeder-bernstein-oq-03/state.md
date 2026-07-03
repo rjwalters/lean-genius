@@ -7,7 +7,29 @@ VERIFIED; only COMPUTABILITY remains**
 **Since**: 2026-07-02
 **Iteration**: 10
 
-## Next Action (supersedes all below — 2026-07-03 r8)
+## Next Action (supersedes all below — 2026-07-03 r8b)
+**r8b landed the flagged-risk correctness keystone (VERIFIED 0-axiom, PR pending):**
+- `firstEscapeB f g L a := (List.range ((mRan L).length + 1)).findIdx (fun N => decide (f (fwdOrbit
+  f g a N) ∉ mRan L))` — a plain total function: NO `Classical.choose`, NO proof argument, so it is
+  `Computable`-amenable (unlike `escapeDepth`, which carries the escape-existence proof).
+- `firstEscapeB_eq_escapeDepth` — the bridge `firstEscapeB f g L a = escapeDepth f g L a
+  (escape_exists' …)` under the balance invariant. Proof: `List.findIdx_eq` at index `escapeDepth`
+  (`escapeDepth_le` puts it in-window; `escapeDepth_spec` = predicate true there; `escapeDepth_min`
+  = false at earlier stages; `List.getElem_range` for `(range n)[j]=j`). **This retires the
+  documented "only real risk (core findIdx lemma hunt)."** The lemmas used all exist in
+  Lean core v4.26.0 `Init.Data.List.Find`/`Range`: `findIdx_eq`, `getElem_range`, `length_range`.
+
+**REMAINING (concrete, next session) — pure mechanical Primrec assembly, no new math:**
+1. **`firstEscapeB_computable`** — `Computable (fun (La : List (ℕ×ℕ) × ℕ) => firstEscapeB f g La.1
+   La.2)` given `hf hg : Computable`. Building blocks all confirmed present:
+   `Primrec.list_findIdx` (Primrec.lean:1007), `Primrec.list_range` (:973), `Primrec.list_length`
+   (:996), `Primrec.list_map` (:967, for `mRan = map Prod.snd`), `fwdOrbit_computable` (in-file).
+   ONLY open sub-lemma: a **list-membership Bool primrec** `Primrec₂ (fun (l:List ℕ) y => decide (y
+   ∈ l))` for the per-element escape predicate — likely via `Primrec.list_idxOf` (:1013) +
+   `y ∈ l ↔ l.idxOf y < l.length`, or an `exists_mem_list`/`beq` route. This is the next lemma hunt.
+2. Then the computable scheduler + read-off + `myhill_isomorphism` discharge (unchanged from below).
+
+## Next Action (superseded — 2026-07-03 r8)
 **r8 landed the two definitional keystones for computability (VERIFIED 0-axiom, PR pending):**
 - `escape_exists_bounded` — merged dichotomy KEEPING the `N ≤ (mRan L).length` bound that
   `escape_exists'` discarded (both arms `escape_of_balanced` / `escape_of_infinite_orbit` already
