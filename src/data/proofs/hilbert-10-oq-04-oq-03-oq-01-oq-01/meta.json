@@ -151,6 +151,16 @@
       "targetId": "hilbert-10-oq-04-oq-03",
       "relationship": "extends",
       "description": "Recasts the grandparent's gcd-divisibility decision criterion as an explicit biconditional against Mathlib's abstract Finset.gcd."
+    },
+    {
+      "targetId": "hilbert-10-oq-04-oq-03-oq-02",
+      "relationship": "related",
+      "description": "The sibling systems direction named in this entry's open questions: it generalizes the single-equation Finset.gcd criterion to a full linear Diophantine system A·x = b, reducing solvability to membership of b in the ℤ-span of the columns of A (the invariant-factor / Smith-normal-form criterion). This entry is that program's single-equation base case."
+    },
+    {
+      "targetId": "hilbert-10-oq-04-oq-03-oq-03",
+      "relationship": "related",
+      "description": "The constructive companion at the two-variable level: supplies an explicit solution witness for a·x + b·y = c, mirroring how this entry's hard direction reuses the parent's exists_vec_combo to carry an actual solution vector alongside the abstract gcd-divisibility criterion."
     }
   ],
   "conclusion": {
