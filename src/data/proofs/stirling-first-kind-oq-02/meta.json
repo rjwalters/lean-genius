@@ -146,6 +146,16 @@
       "targetId": "stirling-second-kind-oq-01",
       "relationship": "related",
       "description": "Companion second-kind entry (the column closed form S(n,2) = 2^(n-1)−1); the second-kind numbers are connection coefficients in the opposite direction (powers in terms of falling factorials)"
+    },
+    {
+      "targetId": "stirling-first-kind-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Follow-up entry that develops this one: 'Stirling Orthogonality — the first- and second-kind triangles are inverse matrices.' It uses the generating identity proved here (c(n,k) = [Xᵏ] ascPochhammer ℤ n), together with its second-kind counterpart, to establish the orthogonality relation ∑ⱼ (−1)^{n−j} c(n,j) S(j,k) = [n=k]."
+    },
+    {
+      "targetId": "stirling-first-kind-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Direct follow-up that answers this entry's second open question: the alternating row sum ∑ₖ (−1)ᵏ c(n,k) = 0 for n ≥ 2, obtained by evaluating the same rising-factorial generating polynomial at X = −1 (where the factor (X+1) forces a zero)."
     }
   ],
   "conclusion": {
