@@ -111,14 +111,22 @@
       "id": "ftc-evaluation",
       "title": "The Fundamental Theorem of Calculus Evaluation",
       "startLine": 76,
-      "endLine": 113,
-      "summary": "integral_one_div_sqrt_one_add_sq (∫_a^b = arsinh b − arsinh a), integral_eq_log_sub_log (logarithmic closed form), integral_zero_to and integral_zero_to_log (the normalised ∫_0^b = arsinh b = log(b + √(1+b²))), and integral_symmetric (∫_{-a}^a = 2·arsinh a).",
-      "mathContext": "$\\int_a^b \\frac{dt}{\\sqrt{1+t^2}} = \\operatorname{arsinh} b - \\operatorname{arsinh} a$; $\\int_{-a}^a = 2\\operatorname{arsinh} a$."
+      "endLine": 90,
+      "summary": "integral_one_div_sqrt_one_add_sq applies intervalIntegral.integral_eq_sub_of_hasDerivAt with the antiderivative hasDerivAt_arsinh' and the integrability lemma to prove ∫_a^b 1/√(1+t²) dt = arsinh b − arsinh a — the definite-integral incarnation of '∫ 1/√(1+x²) dx = arsinh x + C'. integral_eq_log_sub_log then unfolds arsinh to its parent logarithmic closed form.",
+      "mathContext": "$\\int_a^b \\frac{dt}{\\sqrt{1+t^2}} = \\operatorname{arsinh} b - \\operatorname{arsinh} a = \\log(b+\\sqrt{1+b^2}) - \\log(a+\\sqrt{1+a^2})$."
+    },
+    {
+      "id": "normalisation-and-symmetry",
+      "title": "Normalisation (C = 0) and Symmetry",
+      "startLine": 92,
+      "endLine": 111,
+      "summary": "integral_zero_to and integral_zero_to_log anchor the lower limit at 0 (arsinh 0 = 0) to give the genuine '+C with C = 0' antiderivative ∫_0^b 1/√(1+t²) dt = arsinh b = log(b + √(1+b²)). integral_symmetric uses evenness of the integrand and oddness of arsinh (arsinh_neg) to get ∫_{-a}^a 1/√(1+t²) dt = 2·arsinh a.",
+      "mathContext": "$\\int_0^b \\frac{dt}{\\sqrt{1+t^2}} = \\operatorname{arsinh} b$ (the $C=0$ antiderivative); $\\int_{-a}^a = 2\\operatorname{arsinh} a$ because the integrand is even and $\\operatorname{arsinh}$ is odd."
     },
     {
       "id": "concrete-values",
       "title": "Concrete Logarithmic Evaluations",
-      "startLine": 115,
+      "startLine": 113,
       "endLine": 135,
       "summary": "integral_zero_to_three_quarters (∫_0^{3/4} = log 2) and integral_zero_to_four_thirds (∫_0^{4/3} = log 3), using the (3,4,5) triple to rationalise √(1+x²) and reuse the parent's closed-form values.",
       "mathContext": "$\\int_0^{3/4} \\frac{dt}{\\sqrt{1+t^2}} = \\log 2$, $\\int_0^{4/3} \\frac{dt}{\\sqrt{1+t^2}} = \\log 3$."

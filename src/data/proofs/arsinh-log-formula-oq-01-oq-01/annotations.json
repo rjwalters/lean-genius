@@ -50,22 +50,44 @@
     "proofId": "arsinh-log-formula-oq-01-oq-01",
     "range": {
       "startLine": 71,
-      "endLine": 112
+      "endLine": 90
     },
     "type": "insight",
     "title": "The FTC Evaluation and Its Logarithmic Form",
-    "content": "The capstone. integral_one_div_sqrt_one_add_sq applies the FTC with antiderivative arsinh: ∫_a^b 1/√(1+t²) dt = arsinh b − arsinh a. integral_eq_log_sub_log rewrites via the parent's logarithmic closed form arsinh x = log(x+√(1+x²)). integral_zero_to anchors the lower limit at 0 (so C = 0): ∫_0^b = arsinh b, and integral_zero_to_log gives = log(b+√(1+b²)). integral_symmetric exploits that the integrand is EVEN: ∫_{-a}^a = 2·arsinh a, the doubling identity.",
-    "mathContext": "$\\int_a^b \\frac{dt}{\\sqrt{1+t^2}} = \\operatorname{arsinh} b - \\operatorname{arsinh} a$; $\\int_0^b = \\log(b+\\sqrt{1+b^2})$; $\\int_{-a}^a = 2\\operatorname{arsinh} a$.",
+    "content": "The capstone. integral_one_div_sqrt_one_add_sq applies intervalIntegral.integral_eq_sub_of_hasDerivAt with antiderivative arsinh (supplied by hasDerivAt_arsinh') and the integrability lemma to prove ∫_a^b 1/√(1+t²) dt = arsinh b − arsinh a — the precise definite-integral meaning of '∫ 1/√(1+x²) dx = arsinh x + C'. integral_eq_log_sub_log then rewrites the answer via the parent's logarithmic closed form arsinh x = log(x+√(1+x²)), giving log(b+√(1+b²)) − log(a+√(1+a²)) purely by rfl after the rewrite.",
+    "mathContext": "$\\int_a^b \\frac{dt}{\\sqrt{1+t^2}} = \\operatorname{arsinh} b - \\operatorname{arsinh} a = \\log(b+\\sqrt{1+b^2}) - \\log(a+\\sqrt{1+a^2})$.",
     "significance": "key",
     "relatedConcepts": [
       "fundamental theorem of calculus",
       "logarithmic closed form",
-      "even integrand",
-      "symmetric interval doubling"
+      "antiderivative up to a constant"
     ],
     "prerequisites": [
-      "the antiderivative fact",
+      "the antiderivative fact hasDerivAt_arsinh'",
       "arsinh = log(x+√(1+x²))"
+    ]
+  },
+  {
+    "id": "arsinh-cap-ann-normsym",
+    "proofId": "arsinh-log-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 111
+    },
+    "type": "technique",
+    "title": "Normalisation (C = 0) and the Symmetric-Interval Doubling",
+    "content": "Two standard antiderivative manoeuvres. Anchoring the lower limit at 0, where arsinh 0 = 0, pins the integration constant: integral_zero_to gives ∫_0^b 1/√(1+t²) dt = arsinh b (the genuine 'arsinh x + C with C = 0'), and integral_zero_to_log its logarithmic form log(b+√(1+b²)). integral_symmetric then combines two symmetries — the integrand 1/√(1+t²) is EVEN and arsinh is ODD (arsinh_neg) — to collapse ∫_{-a}^a 1/√(1+t²) dt = arsinh a − arsinh(−a) = 2·arsinh a, the doubling identity for the symmetric interval.",
+    "mathContext": "$\\int_0^b \\frac{dt}{\\sqrt{1+t^2}} = \\operatorname{arsinh} b$; and since $\\operatorname{arsinh}(-a) = -\\operatorname{arsinh} a$, $\\int_{-a}^a = \\operatorname{arsinh} a - \\operatorname{arsinh}(-a) = 2\\operatorname{arsinh} a$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fixing the integration constant",
+      "even integrand",
+      "odd antiderivative",
+      "symmetric-interval doubling"
+    ],
+    "prerequisites": [
+      "the FTC evaluation ∫_a^b = arsinh b − arsinh a",
+      "arsinh 0 = 0 and arsinh_neg (arsinh is odd)"
     ]
   },
   {
