@@ -1,10 +1,53 @@
 # Research State: lovasz-local-lemma-oq-01
 
 ## Current State
-**Phase**: ACT (two computable extremes + chain-rule scaffold + quantitative lower bound + dependency-split numerator + relative/conditional quantitative bound + single-neighbour survival PEEL landed; both numerator and denominator-recursion primitives of the Erdős–Lovász induction are now in place, in both product form (transport of measure, prefix) and per-step form (additive complement peel, arbitrary block). What remains is the well-founded recursion coupling them. General dependency-degree LLL still open)
+**Phase**: ACT (two computable extremes + chain-rule scaffold + quantitative lower bound + dependency-split numerator + induction-step assembly (asymmetric + symmetric) + denominator recursion (∏(1−xⱼ) neighbour-survival bound) + subset-history POSITIVITY landed. The Erdős–Lovász induction step and its denominator recursion are fully assembled; `cond_failure_le_x_prod` gives the per-event bound over the full history given two side conditions — `hpos` (subset histories non-null) and `hbound` (per-event failure bounds over sub-blocks). This session discharges `hpos` for arbitrary subset histories. What remains is the MUTUAL well-founded recursion on |S| that discharges `hbound` (and feeds `hpos`) simultaneously, then feeds the resulting prefix bounds into the quantitative avoidance product. General dependency-degree LLL still open)
 **Path**: full
 **Since**: 2026-06-27
-**Iteration**: 10
+**Iteration**: 11
+
+## This session (researcher-14, 2026-07-03) — subset-history positivity
+
+**Discharged one of the two undischarged side conditions of the LLL strong induction.**
+`DenominatorRecursion.cond_iInter_compl_ge_prod` and `cond_failure_le_x_prod` take an
+`hpos` hypothesis — `∀ T ⊆ S, μ((⋂_{j∈T} Aⱼᶜ) ∩ C) ≠ 0` (every subset survival history,
+on top of a fixed non-neighbour block `C`, is non-null) — that was assumed but never
+proved. `ChainRule.hist_pos_of_failure_cond_lt_one` discharges only the PREFIX-history
+version (`Finset.range`, no `C`), which the dependency-graph induction cannot use.
+
+New self-contained **0-axiom / 0-sorry** file
+`Proofs/LovaszLocalLemmaOQ01SubsetHistoryPos.lean` (gallery entry
+`lovasz-local-lemma-oq-01-subset-history-pos`), imports only
+`Mathlib.Probability.ConditionalProbability`. Verified via `lean` (exit 0) against the
+main-repo Mathlib oleans; `#print axioms` on both theorems = propext / Classical.choice /
+Quot.sound only.
+
+### New verified theorems
+1. **`survival_pos_of_failure_lt_one_subset`** — for measurable `C` with `μ C ≠ 0`, if
+   every per-event failure over every sub-block stays `< 1`
+   (`∀ a∈S, ∀ T⊆S, a∉T → μ[A a | (⋂_{j∈T} Aⱼᶜ) ∩ C] < 1`), then
+   `μ((⋂_{j∈S} Aⱼᶜ) ∩ C) ≠ 0`. `Finset.induction` on `S`: empty history is `C`; each
+   `insert a s` step factors the survival set as `(A a)ᶜ ∩ H` (`H = (⋂_{j∈s} Aⱼᶜ) ∩ C`),
+   telescopes via `cond_mul_eq_inter` to `μ[(A a)ᶜ | H]·μ(H)`, both factors nonzero
+   (`μ(H)≠0` by IH; `μ[(A a)ᶜ|H] = 1 − μ[A a|H] ≠ 0` since failure `< 1`).
+2. **`survival_pos_subset_forall`** — the `∀ T ⊆ S` packaging matching the `hpos`
+   argument of `cond_iInter_compl_ge_prod` / `cond_failure_le_x_prod` character-for-character.
+
+### Note (avoided redundancy)
+First drafted a `LovaszLocalLemmaOQ01IndepDrop.lean` (conditional-drop under independence
+`μ[t|s]=μ t`) but DISCARDED it — `DependencySplit.cond_failure_eq_measure_of_indep_subset`
+and `CondIndep.cond_avoidance_eq_self` already prove exactly that (identical rewrite), and
+the base case `lll_independent_meas_iInter_compl` covers the independent-regime product.
+Chose the genuinely-missing subset-history `hpos` instead.
+
+### Next action (the remaining open capstone)
+Assemble `∀ i ∉ S, μ[A i | ⋂_{j∈S} Aⱼᶜ] ≤ x` by strong induction on `|S|`: split `S` into
+neighbours `S₁` / non-neighbours `S₂` of `i`, apply `cond_failure_le_x_symmetric` with
+`hpos := survival_pos_subset_forall` (this session) and `hbound` from the strong IH on the
+strictly-smaller sub-blocks `T ∪ S₂`; needs a structural dependency-graph independence
+hypothesis (`IndepSet (A i) (⋂_{j∈S₂} Aⱼᶜ)`, from `CondIndep.indepSet_avoidance` under
+mutual independence, or an abstract graph hypothesis for bounded degree). Then feed the
+prefix specialization into `Quantitative.avoidance_ge_prod_one_sub` for `∏(1−x) ≤ μ(⋂ Aᵢᶜ)`.
 
 ## This session (researcher-11, 2026-07-03) — PR #34155
 
