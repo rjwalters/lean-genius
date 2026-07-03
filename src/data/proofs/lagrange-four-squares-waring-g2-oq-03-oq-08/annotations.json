@@ -38,13 +38,25 @@
   {
     "id": "waringg2-ann-isleast",
     "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-08",
-    "range": { "startLine": 73, "endLine": 98 },
+    "range": { "startLine": 73, "endLine": 88 },
     "type": "theorem",
-    "title": "g(2) = 4 as IsLeast and as an Infimum",
-    "content": "`Sufficient k` collects the square-counts that represent every natural. `g2_isLeast` proves `IsLeast {k | Sufficient k} 4`: membership is `four_squares_universal`, and the lower-bound half assumes some sufficient $k$ and derives a contradiction if $k < 4$ — then $k \\le 3$, so the (assumed) representation of 7 promotes via `IsSumOfSquares.mono` to a 3-square representation, contradicting `seven_not_three`. `waring_g2` converts the least element to the infimum form $\\sInf\\{k \\mid \\text{Sufficient } k\\} = 4$ via `IsLeast.csInf_eq`. The closing `four_squares_suffice` / `three_squares_insufficient` give the human-readable two halves.",
-    "mathContext": "$\\mathrm{IsLeast}\\,S\\,4 \\iff 4 \\in S \\land \\forall k \\in S,\\ 4 \\le k$. With $S = \\{k \\mid \\text{Sufficient } k\\}$: $4 \\in S$ (Lagrange) and any $k \\in S$ has $k \\ge 4$ (else 7 fails), so $g(2) = \\min S = \\sInf S = 4$.",
+    "title": "g(2) = 4: four is the least sufficient square-count",
+    "content": "`Sufficient k` collects the square-counts that represent every natural number. `g2_isLeast` proves `IsLeast {k | Sufficient k} 4`. Membership is `four_squares_universal` (Lagrange's four-square theorem). The lower-bound half assumes some sufficient $k$ and derives a contradiction from $k < 4$: then $k \\le 3$, so the assumed representation of 7 promotes via `IsSumOfSquares.mono` to a 3-square representation of 7, contradicting `seven_not_three`. The one-line core `seven_not_three ((hk 7).mono (by omega))` packs both the monotonicity promotion and the $k \\le 3$ arithmetic.",
+    "mathContext": "$\\mathrm{IsLeast}\\,S\\,4 \\iff 4 \\in S \\land \\forall k \\in S,\\ 4 \\le k$. With $S = \\{k \\mid \\text{Sufficient } k\\}$: $4 \\in S$ (Lagrange) and any $k \\in S$ has $k \\ge 4$ (else 7 fails).",
     "significance": "key",
-    "relatedConcepts": ["IsLeast", "sInf", "IsLeast.csInf_eq", "proof by contradiction"],
-    "prerequisites": ["least element in ℕ", "infimum over ℕ"]
+    "relatedConcepts": ["IsLeast", "proof by contradiction", "IsSumOfSquares.mono", "sharp lower bound"],
+    "prerequisites": ["least element in ℕ", "the seven_not_three obstruction"]
+  },
+  {
+    "id": "waringg2-ann-waring",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-08",
+    "range": { "startLine": 89, "endLine": 98 },
+    "type": "theorem",
+    "title": "The Waring number g(2) = 4 as an infimum, and the two halves",
+    "content": "`waring_g2` restates the least-element result as the infimum $\\sInf\\{k \\mid \\text{Sufficient } k\\} = 4$ — the standard definition of the Waring number $g(2)$ — obtained from `g2_isLeast` by `IsLeast.csInf_eq` (in a conditionally complete order the least element is the infimum). The closing `four_squares_suffice : Sufficient 4` and `three_squares_insufficient : ¬ Sufficient 3` expose the two human-readable halves separately: four squares always suffice, three never do.",
+    "mathContext": "$g(2) := \\sInf\\{k \\mid \\forall n,\\ n \\text{ is a sum of } k \\text{ squares}\\} = 4$; equivalently Sufficient 4 holds and Sufficient 3 fails.",
+    "significance": "supporting",
+    "relatedConcepts": ["Waring number g(2)", "sInf", "IsLeast.csInf_eq", "Lagrange four-square theorem"],
+    "prerequisites": ["infimum over ℕ", "IsLeast implies csInf"]
   }
 ]
