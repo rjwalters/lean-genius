@@ -123,6 +123,16 @@
       "proofId": "amgm-inequality-oq-02",
       "relation": "related",
       "description": "“Maclaurin's Inequalities via Elementary Symmetric Polynomials.” The inequality-theoretic companion to these exact power-sum identities: both bodies of results are built on the elementary symmetric polynomials eₖ, one giving Newton's equalities relating them to the power sums, the other the Newton–Maclaurin chain of inequalities among the means eₖ/C(n,k)."
+    },
+    {
+      "proofId": "vietas-formulas",
+      "relation": "related",
+      "description": "Vieta's formulas identify the elementary symmetric polynomials eⱼ of the roots of a monic polynomial with (± its coefficients). Composing Vieta with these Newton identities converts the coefficients of a quartic or quintic directly into the power sums p₄, p₅ of its roots — the elementary-symmetric side is the shared bridge."
+    },
+    {
+      "proofId": "cayley-hamilton-minpoly",
+      "relation": "related",
+      "description": "For an n×n matrix the elementary symmetric polynomials of the eigenvalues are (up to sign) the coefficients of the characteristic polynomial, while the power sums pₖ are the traces tr(Mᵏ). Newton's identities are exactly the change of basis between these two invariants of a matrix — the same eigenvalue-symmetric-function circle of ideas this Cayley–Hamilton/minimal-polynomial entry works within."
     }
   ],
   "conclusion": {

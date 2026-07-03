@@ -48,6 +48,18 @@
     ]
   },
   {
+    "id": "newton-ps-oq0101-setup",
+    "proofId": "newton-power-sum-identities-oq-01-oq-01",
+    "range": { "startLine": 39, "endLine": 43 },
+    "type": "concept",
+    "title": "Universality: identities in MvPolynomial σ R for any finite σ, any commutative ring",
+    "content": "`variable (σ : Type*) (R : Type*) [CommRing R] [Fintype σ]` fixes the maximal generality. The results are proven inside the polynomial ring `MvPolynomial σ R`, so they are *universal symmetric-function identities* — one formula that holds no matter how the variables Xᵢ are later specialized, over any commutative ring (no field, no characteristic-zero hypothesis, and no invertibility of the integer coefficients 2, 4, 5 is required, since the recurrence produces them by repeated addition rather than division). Only `CommRing` and `Fintype σ` are assumed; the finiteness of σ makes the sums pₖ = ∑ᵢ Xᵢᵏ and eⱼ well-defined. When `card σ < k`, the elementary symmetric polynomial eₖ is the empty sum 0, so the higher terms silently vanish and the identities degenerate correctly (a single variable ⇒ p₄ = e₁⁴, p₅ = e₁⁵). This universality is exactly why the same statement specializes to the root-power relations of a quartic or quintic and to the trace-power/coefficient conversion of 4×4 and 5×5 matrices.",
+    "mathContext": "$p_k,\\,e_j \\in \\mathrm{MvPolynomial}\\,\\sigma\\,R,\\quad R\\ \\text{any CommRing},\\ \\sigma\\ \\text{finite};\\ \\ \\mathrm{card}\\,\\sigma < k \\Rightarrow e_k = 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["MvPolynomial", "symmetric function identity", "commutative ring generality", "esymm vanishing"],
+    "prerequisites": ["MvPolynomial", "Fintype", "elementary symmetric polynomial"]
+  },
+  {
     "id": "newton-ps-oq0101-deg123",
     "proofId": "newton-power-sum-identities-oq-01-oq-01",
     "range": {
