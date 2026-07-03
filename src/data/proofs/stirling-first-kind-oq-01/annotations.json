@@ -51,7 +51,7 @@
     "proofId": "stirling-first-kind-oq-01",
     "range": {
       "startLine": 74,
-      "endLine": 108
+      "endLine": 101
     },
     "type": "theorem",
     "title": "The Row Sum Equals n!",
@@ -74,24 +74,44 @@
     "id": "ann-positivity",
     "proofId": "stirling-first-kind-oq-01",
     "range": {
-      "startLine": 109,
-      "endLine": 115
+      "startLine": 103,
+      "endLine": 107
     },
     "type": "theorem",
-    "title": "Positivity and Concrete Checks",
-    "content": "stirlingFirst_row_sum_pos rewrites by the row-sum identity and applies Nat.factorial_pos: the row sum is strictly positive because every finite set admits at least one permutation. Two concrete checks close the file by kernel decide: the fourth row sums to 4! = 24, and c(4,2) = 11 (permutations of a 4-set with exactly two cycles).",
-    "mathContext": "$\\sum_k c(n,k) = n! > 0$ (Nat.factorial_pos); checks: row 4 sums to $4! = 24$, $c(4,2) = 11$.",
+    "title": "Positivity of the Row Sum",
+    "content": "stirlingFirst_row_sum_pos proves 0 < ∑_{k=0}^{n} c(n,k) in one step: rewrite by the just-proved row-sum identity ∑ c(n,k) = n!, then apply Nat.factorial_pos. Mathematically the row sum is strictly positive because every finite set admits at least one permutation (the identity), so the total number of permutations counted across all cycle-counts is at least 1. This is the immediate corollary of the row-sum theorem, isolated as its own lemma for downstream use.",
+    "mathContext": "$\\sum_{k=0}^{n} c(n,k) = n! > 0$ by Nat.factorial_pos.",
     "significance": "supporting",
     "relatedConcepts": [
       "positivity from factorial",
       "Nat.factorial_pos",
-      "kernel decide (axiom-free)",
-      "worked numerical checks"
+      "corollary of the row-sum identity"
     ],
     "prerequisites": [
       "the row-sum identity",
-      "factorials are positive",
-      "decide on concrete values"
+      "factorials are positive"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "stirling-first-kind-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 115
+    },
+    "type": "example",
+    "title": "Concrete Numerical Checks",
+    "content": "Two examples close the file by kernel decide (axiom-free, no native_decide): the fourth row sums to ∑_{k} c(4,k) = 24 = 4!, corroborating the general row-sum theorem at n = 4, and c(4,2) = 11 — the number of permutations of a 4-element set with exactly two cycles. These serve as sanity checks that the Nat.stirlingFirst definition matches the intended unsigned Stirling numbers of the first kind and that the row-sum identity holds on a concrete instance.",
+    "mathContext": "$\\sum_{k} c(4,k) = 24 = 4!$ and $c(4,2) = 11$, both by kernel decide.",
+    "significance": "context",
+    "relatedConcepts": [
+      "worked numerical checks",
+      "kernel decide (axiom-free)",
+      "unsigned Stirling numbers of the first kind"
+    ],
+    "prerequisites": [
+      "decide on concrete values",
+      "the definition of Nat.stirlingFirst"
     ]
   }
 ]
