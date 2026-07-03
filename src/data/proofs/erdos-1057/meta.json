@@ -184,6 +184,113 @@
       "mathContext": "Additional verified results: minimum prime $\\geq 3$, distinct prime factors (from squarefree), product-of-primes decomposition, multiplicity-one factorization, Korselt congruence $n \\equiv 1 \\pmod{p-1}$, double congruence, and all seven small Carmichaels have exactly 3 prime factors."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "korselt_theorem",
+      "type": "theorem",
+      "statement": "For composite n > 1: satisfiesKorselt n ↔ satisfiesFermat n",
+      "significance": "Korselt's criterion — the workhorse equivalence of the whole theory. It replaces the intractable 'a^n ≡ a (mod n) for all a' Fermat condition with the checkable arithmetic condition 'n squarefree and (p−1) | (n−1) for every prime p | n'. Every structural theorem below reasons through the Korselt side.",
+      "description": "Proves both directions via korselt_forward and korselt_backward, using pow_mod_prime_of_dvd (Fermat's little theorem per prime factor) and CRT-style recombination over the squarefree factorization."
+    },
+    {
+      "name": "carmichael_561",
+      "type": "theorem",
+      "statement": "IsCarmichael 561 (= 3 × 11 × 17)",
+      "significance": "The smallest Carmichael number, the canonical example fooling the Fermat primality test for every base. Establishes that Carmichael numbers exist concretely and grounds the counting question C(x).",
+      "description": "Verifies compositeness and the Fermat condition by native_decide, and squarefreeness via Nat.squarefree_iff_prime_squarefree with the explicit factorization 561 = 3·11·17 (factorization_561, korselt_561)."
+    },
+    {
+      "name": "carmichael_odd",
+      "type": "theorem",
+      "statement": "Every Carmichael number is odd",
+      "significance": "A first parity constraint: no even number can be Carmichael. Follows because an even Carmichael would need an odd prime factor p with 2 | (p−1) | (n−1), yet n−1 is odd — a contradiction that rules out half of all candidates.",
+      "description": "By contradiction from the Korselt condition: 2 | n and squarefree force 4 ∤ n so n−1 is odd, while an odd prime factor's (p−1) divisibility forces n−1 even."
+    },
+    {
+      "name": "korselt_two_primes_impossible",
+      "type": "theorem",
+      "statement": "If primes p < q and (q−1) | (pq−1), then False",
+      "significance": "The key impossibility lemma powering the 'at least three prime factors' theorem. Writing pq−1 = q(p−1)+(q−1) and using gcd(q, q−1)=1 forces (q−1) | (p−1), impossible for q > p.",
+      "description": "Algebraic manipulation of pq−1 with coprimality of q and q−1, reducing to (q−1) | (p−1) and contradicting p < q by omega."
+    },
+    {
+      "name": "carmichael_not_semiprime",
+      "type": "theorem",
+      "statement": "No Carmichael number equals a product of exactly two distinct primes p·q",
+      "significance": "Rules out the simplest composite shape. Together with squarefreeness this is the decisive step toward the three-prime-factor lower bound that characterizes Carmichael structure.",
+      "description": "Applies the Korselt divisibility at the larger prime and invokes korselt_two_primes_impossible to derive a contradiction."
+    },
+    {
+      "name": "carmichael_at_least_3_primes",
+      "type": "theorem",
+      "statement": "Every Carmichael number has at least 3 distinct prime factors",
+      "significance": "The central structural theorem: Carmichael numbers are always products of ≥ 3 distinct primes (561 = 3·11·17 being minimal). This shapes every counting heuristic and the sieve arguments behind the AGP bounds.",
+      "description": "Case analysis on primeFactors.card: 0 or 1 contradict compositeness/squarefreeness, and card = 2 is excluded by carmichael_not_semiprime."
+    },
+    {
+      "name": "carmichael_not_prime_power",
+      "type": "theorem",
+      "statement": "No Carmichael number is a prime power p^k",
+      "significance": "Complements the three-primes theorem: since a prime power has a single prime factor (< 3), it cannot be Carmichael. Reinforces that Carmichael numbers are genuinely 'spread out' composites.",
+      "description": "A prime power has primeFactors.card = 1, contradicting carmichael_at_least_3_primes."
+    },
+    {
+      "name": "carmichael_squarefree",
+      "type": "theorem",
+      "statement": "Every Carmichael number is squarefree",
+      "significance": "Projects out the squarefree half of the Korselt definition as a standalone fact, used repeatedly to move between n and its distinct prime factors.",
+      "description": "Direct projection of the IsCarmichael structure (h.2.2.1); companions carmichael_composite and carmichael_korselt_dvd expose the other fields."
+    },
+    {
+      "name": "carmichael_cong_one_mod",
+      "type": "theorem",
+      "statement": "If n is Carmichael and prime p | n, then n ≡ 1 (mod p−1)",
+      "significance": "Restates the Korselt divisibility as a simultaneous congruence system: n ≡ 1 modulo each (p−1). This congruence viewpoint drives the lcm-divisibility refinements below.",
+      "description": "Rewrites (p−1) | (n−1) as n % (p−1) = 1 % (p−1) using carmichael_korselt_dvd and Nat modular arithmetic."
+    },
+    {
+      "name": "C_mono",
+      "type": "theorem",
+      "statement": "C is monotone: x ≤ y → C(x) ≤ C(y), where C(x) = #{Carmichael n ≤ x}",
+      "significance": "Basic well-definedness of the counting function C(x) whose growth rate is the subject of Erdős #1057 (is C(x) = x^{1−o(1)}?). Monotonicity is the first sanity property of the object being estimated.",
+      "description": "Unfolds C as a filtered Finset card and applies Finset.card_le_card via filter_subset_filter over the enlarged range."
+    },
+    {
+      "name": "infinitely_many_carmichaels",
+      "type": "axiom",
+      "statement": "∀ N, ∃ n > N with IsCarmichael n (Alford–Granville–Pomerance, 1994)",
+      "significance": "The deep AGP theorem that Carmichael numbers are infinite — the foundation making the counting question meaningful. Stated as an axiom since its sieve-theoretic proof is far beyond current Mathlib.",
+      "description": "Declared `axiom` (the sole axiom in the file) per the Axiom Integrity Policy. Consumed by C_unbounded to show the count grows without bound."
+    },
+    {
+      "name": "C_unbounded",
+      "type": "theorem",
+      "statement": "∀ N, ∃ x with C(x) > N",
+      "significance": "Turns AGP infinitude into an unboundedness statement for the counting function: however large N, some cutoff x has more than N Carmichael numbers below it. The qualitative precursor to the quantitative C(x) = x^{1−o(1)} conjecture.",
+      "description": "Builds, from infinitely_many_carmichaels, a finite set of > N Carmichael numbers and takes x to be its supremum."
+    },
+    {
+      "name": "carmichael_smallest_prime_cube_le",
+      "type": "theorem",
+      "statement": "For Carmichael n with smallest prime factor p: p³ ≤ n",
+      "significance": "A size bound flowing from the ≥ 3 distinct primes structure: the least prime factor is at most n^{1/3}. Such bounds control the distribution of prime factors used in Carmichael-counting estimates.",
+      "description": "Uses carmichael_at_least_3_primes to obtain three primes p ≤ p₂ ≤ p₃ dividing n, giving n ≥ p·p₂·p₃ ≥ p³."
+    },
+    {
+      "name": "carmichael_prod_pred_dvd_pow",
+      "type": "theorem",
+      "statement": "For Carmichael n: (∏_{p | n} (p−1)) | (n−1)^{ω(n)}",
+      "significance": "Aggregates the per-prime Korselt divisibilities into a single product divisibility, sharpening the arithmetic of Carmichael numbers (refined further by carmichael_lcm_dvd / carmichael_mod_lcm).",
+      "description": "Since each (p−1) | (n−1), Finset.prod_dvd_prod_of_dvd bounds the product of (p−1) by (n−1)^{card} via carmichael_korselt_via_primeFactors."
+    },
+    {
+      "name": "nine_carmichaels_verified",
+      "type": "theorem",
+      "statement": "561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841 are all Carmichael",
+      "significance": "A machine-checked table of the first nine Carmichael numbers, giving concrete lower bounds on C(x) (e.g. C(8911) ≥ 7, C(2821) ≥ 5) and empirical grounding for the density conjecture.",
+      "description": "Conjunction of the individual carmichael_NNNN verifications; feeds first_five_carmichael, first_seven_carmichael, and the C_NNNN_ge_k count bounds."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization of Erdős Problem #1057 combines extensive verified proofs with axiomatized analytic bounds. Seven Carmichael numbers are individually verified, structural properties (oddness, $\\geq 3$ prime factors, no semiprimes) are proved from scratch, and 561's minimality is established computationally. The counting function $C(x)$ satisfies $x^{0.3389} < C(x) < x^{1-o(1)}$ for large $x$, with the conjecture $C(x) = x^{1-o(1)}$ remaining wide open.",
     "implications": "**Theoretical Significance**: The formalization demonstrates that significant structural properties of Carmichael numbers can be fully verified in Lean, while the deep analytic bounds require axiomatization.\n\nThe verified semiprime impossibility proof, using coprimality arguments lifted to $\\mathbb{Z}$, is a clean example of how number-theoretic reasoning works in a proof assistant. Understanding Carmichael number density has practical implications for cryptography: if they are as dense as conjectured, random composites frequently fool Fermat tests, making more sophisticated primality tests (Miller-Rabin, AKS) essential.",
