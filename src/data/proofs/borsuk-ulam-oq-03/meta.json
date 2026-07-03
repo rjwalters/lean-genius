@@ -95,6 +95,134 @@
       "Homological algebra (singular homology, exact sequences)"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "borsuk_ulam_general",
+      "type": "axiom",
+      "statement": "∀ n ≥ 1, continuous f : ℝⁿ⁺¹ → ℝⁿ → ∃ x ∈ Sⁿ with f(x) = f(−x)",
+      "significance": "The Borsuk–Ulam theorem in full generality: every continuous map from the n-sphere to ℝⁿ identifies some antipodal pair. Axiomatized for n ≥ 2 because the classical proofs need Brouwer degree / homology machinery not yet in Mathlib; the n = 1 case is proved constructively in the file. This is the single hypothesis on which all higher-dimensional consequences below rest.",
+      "description": "Stated as an `axiom`; the accompanying docstring records the three standard proof routes (degree, homology, Tucker's lemma). The n = 1 instance is borsuk_ulam_interval / borsuk_ulam_circle_param, proved axiom-free via the IVT."
+    },
+    {
+      "name": "borsuk_ulam_interval",
+      "type": "theorem",
+      "statement": "Continuous f : ℝ → ℝ → ∃ x ∈ [−1,1] with f(x) = f(−x)",
+      "significance": "The constructive 1-dimensional Borsuk–Ulam theorem — the base case that grounds the whole development. Any continuous real function agrees with its reflection somewhere on [−1,1].",
+      "description": "Axiom-free: apply the intermediate value theorem to the antisymmetric difference g(x) = f(x) − f(−x), which satisfies g(−1) = −g(1)."
+    },
+    {
+      "name": "borsuk_ulam_circle_param",
+      "type": "theorem",
+      "statement": "Continuous f : ℝ² → ℝ → ∃ θ ∈ [0,π] with f(cos θ, sin θ) = f(−cos θ, −sin θ)",
+      "significance": "Borsuk–Ulam on the circle S¹: every continuous scalar field on the plane takes equal values at some antipodal pair of the unit circle. The genuinely 1-dimensional (n = 1) instance of the general theorem, again proved constructively.",
+      "description": "Axiom-free: reduce to the IVT for g(θ) = f(cos θ, sin θ) − f(−cos θ, −sin θ) on [0,π]."
+    },
+    {
+      "name": "tucker_1d_holds",
+      "type": "theorem",
+      "statement": "For s : Fin (n+2) → Bool, if every adjacent pair agrees then s is constant (s 0 = s last)",
+      "significance": "Tucker's lemma in dimension 1 — the combinatorial (discrete) avatar of Borsuk–Ulam. A sign-labeling of a symmetric path with distinct endpoints must have an adjacent sign change; contrapositively, no adjacent change forces constancy.",
+      "description": "Axiom-free reformulation of tucker_1d_sign_change via Fin.induction; the equivalence tucker_1d_iff_constant packages the discrete-BU correspondence."
+    },
+    {
+      "name": "lusternik_schnirelman_S1",
+      "type": "theorem",
+      "statement": "If closed sets A, B cover S¹ then A or B contains an antipodal pair",
+      "significance": "The Lusternik–Schnirelmann covering theorem for S¹: any closed 2-set cover of the circle has a part containing two antipodal points. A classical equivalent of Borsuk–Ulam, here derived from the circle case.",
+      "description": "Proved from borsuk_ulam_circle_param applied to the continuous distance field p ↦ infDist(p, A); axiom-free."
+    },
+    {
+      "name": "ham_sandwich_1d",
+      "type": "theorem",
+      "statement": "Continuous f : ℝ → ℝ → ∃ x ∈ [−1,1] with f(x) = f(−x)",
+      "significance": "The 1-dimensional ham-sandwich theorem: a single measure/mass on the line can be bisected by an antipodally-symmetric point. Exhibited as literally the same statement as 1D Borsuk–Ulam, making the BU ⇒ ham-sandwich implication transparent.",
+      "description": "Definitionally borsuk_ulam_interval; axiom-free."
+    },
+    {
+      "name": "brouwer_fixed_point_1d",
+      "type": "theorem",
+      "statement": "Continuous f : [−1,1] → [−1,1] → ∃ x with f(x) = x",
+      "significance": "Brouwer's fixed-point theorem in dimension 1. Placed in the equivalence web to show BU, Brouwer, KKM and no-retraction are interderivable in 1D — all descendants of the intermediate value theorem.",
+      "description": "Axiom-free: IVT on g(x) = f(x) − x, using f(−1) ≥ −1 and f(1) ≤ 1."
+    },
+    {
+      "name": "brouwer_fixed_point",
+      "type": "theorem",
+      "statement": "∀ n ≥ 1, continuous self-map f of the n-ball → ∃ fixed point",
+      "significance": "Brouwer's fixed-point theorem in general dimension, obtained through the no-retraction principle that Borsuk–Ulam supplies. One of the flagship higher-dimensional consequences of the BU axiom.",
+      "description": "Derived via no_retraction_implies_brouwer_fp; depends on the BU development for the no-retraction input."
+    },
+    {
+      "name": "kkm_1d",
+      "type": "theorem",
+      "statement": "Closed A₀ ∋ 0, A₁ ∋ 1 covering [0,1] → A₀ ∩ A₁ ≠ ∅",
+      "significance": "The Knaster–Kuratowski–Mazurkiewicz (KKM) lemma in 1D: two closed sets anchored at opposite endpoints and covering the interval must intersect. The combinatorial-topological cousin of Sperner's lemma feeding the same equivalence hierarchy.",
+      "description": "Axiom-free: IVT on infDist(x,A₁) − infDist(x,A₀), whose zero lies in A₀ ∩ A₁ by closedness."
+    },
+    {
+      "name": "kkm_implies_brouwer_1d",
+      "type": "theorem",
+      "statement": "(1D KKM) → (1D Brouwer fixed point)",
+      "significance": "An explicit implication in the equivalence web: KKM ⇒ no-retraction ⇒ Brouwer. Formalizes the folklore that these fixed-point / covering principles are logically equivalent, here as a chain of Lean implications rather than mere analogy.",
+      "description": "Chains kkm_implies_no_retraction_1d with no_retraction_implies_brouwer_1d; axiom-free (a hypothesis-to-conclusion implication)."
+    },
+    {
+      "name": "no_equivariant_map_sphere",
+      "type": "theorem",
+      "statement": "∀ n ≥ 1, continuous antipodal-equivariant f : Sⁿ → ℝⁿ → f vanishes somewhere",
+      "significance": "The odd-map form of Borsuk–Ulam: an antipodal-equivariant (odd) continuous map from Sⁿ to ℝⁿ must have a zero. The workhorse consequence from which the isobarycentric and no-odd-map theorems follow.",
+      "description": "Immediate from borsuk_ulam_general (the antipodal pair with equal image is forced to be a zero by oddness); depends on the BU axiom."
+    },
+    {
+      "name": "no_odd_map_between_spheres",
+      "type": "theorem",
+      "statement": "∀ n ≥ 1, there is no continuous odd map g : Sⁿ → Sⁿ⁻¹",
+      "significance": "The classical Borsuk–Ulam corollary ruling out antipode-preserving maps from a sphere to one of lower dimension — the topological obstruction behind ham-sandwich, Lusternik–Schnirelmann and the necklace-splitting theorems.",
+      "description": "By contradiction from borsuk_ulam_general: BU produces x with g(x) = g(−x) = −g(x), forcing g(x) = 0, impossible on a sphere. Depends on the BU axiom."
+    },
+    {
+      "name": "isobarycentric_odd",
+      "type": "theorem",
+      "statement": "∀ n ≥ 1, odd continuous f₀,…,fₙ₋₁ : Sⁿ → ℝ → ∃ x ∈ Sⁿ with all fᵢ(x) = 0",
+      "significance": "The Isobarycentric Point Theorem, a less standard BU consequence: any family of odd continuous functions on the n-sphere has a common zero. Generalizes the 1D observation that f + g = 0 forces a zero.",
+      "description": "Specialization of no_equivariant_map_sphere to the bundled map x ↦ (f₀ x, …, fₙ₋₁ x); depends on the BU axiom."
+    },
+    {
+      "name": "antipodal_degree_alt",
+      "type": "theorem",
+      "statement": "antipodalDegree (n+1) = − antipodalDegree n   (so deg of antipode on Sⁿ is (−1)ⁿ⁺¹)",
+      "significance": "The degree-theoretic heart of Borsuk–Ulam: the antipodal map on Sⁿ has degree (−1)ⁿ⁺¹, alternating in n. This sign is exactly the obstruction that makes odd maps to lower spheres impossible.",
+      "description": "Axiom-free: the modelled antipodalDegree function satisfies the recurrence by `ring`; the base values antipodal_S0..S3 are checked by `decide`."
+    },
+    {
+      "name": "tverberg_r2_is_bu",
+      "type": "theorem",
+      "statement": "tverbergNumber d 2 = d + 2",
+      "significance": "Records that the topological Tverberg theorem at partition number r = 2 is exactly Borsuk–Ulam: the Tverberg number T(d,2) = d+2 is the BU dimension, so 'two disjoint faces with a common image' means 'antipodal points with equal value'. Anchors the BU → Tverberg generalization.",
+      "description": "Arithmetic identity on the encoded tverbergNumber (r−1)(d+1)+1, proved by `simp`; the geometric equivalence is documented in tverberg_generalizes_bu."
+    },
+    {
+      "name": "tverberg_6_fails",
+      "type": "theorem",
+      "statement": "tverbergStatusByR 6 = .disproved",
+      "significance": "Encodes the Mabillard–Wagner (2015) counterexample: the topological Tverberg conjecture is FALSE for r = 6, the smallest non-prime-power, breaking the prime-power positivity of Bárány–Shlosman–Szücs / Volovikov. A landmark negative result of the field.",
+      "description": "Checked by `native_decide` against the encoded classification table tverbergStatusByR (introduces Lean.ofReduceBool); the mathematical content is the literature status, not a formalized topological proof."
+    },
+    {
+      "name": "ham_sandwich_general",
+      "type": "theorem",
+      "statement": "∀ d ≥ 1, ∃ unit normal v and offset c (bisection condition abstracted as True)",
+      "significance": "The d-dimensional ham-sandwich theorem — d measurable masses in ℝᵈ are simultaneously bisected by a hyperplane — presented at the level of the existence of a normal direction. The classical high-dimensional payoff of Borsuk–Ulam.",
+      "description": "Provides an explicit unit normal witness; the measure-bisection predicate is abstracted as `True` pending Mathlib measure-theory support, so the geometric content is documentary rather than fully formalized."
+    },
+    {
+      "name": "tucker_2d_octahedral",
+      "type": "theorem",
+      "statement": "2-dimensional octahedral Tucker labeling identity on integer labels (a,b,c)",
+      "significance": "The 2D Tucker's lemma on the octahedral triangulation — the combinatorial engine for the S² case of Borsuk–Ulam. Extends the 1D discrete-BU correspondence one dimension up.",
+      "description": "An integer-label exhaustion result over the octahedral configuration; proved by finite case analysis, axiom-free."
+    }
+  ],
   "sections": [
     {
       "id": "foundations-1d-interval-circle",
