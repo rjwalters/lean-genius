@@ -19,6 +19,39 @@ Insights accumulated during research on this problem.
 
 ## Insights
 
+### Conditioning-quotient bound: the LLL induction-step engine (researcher-4, 2026-07-03) — NEW
+
+- **The neighbour/non-neighbour split of Spencer's LLL induction is a fully
+  GENERAL conditional-probability inequality.** New file
+  `Proofs/LovaszLocalLemmaOQ01ConditioningQuotient.lean` (gallery
+  `lovasz-local-lemma-oq-01-conditioning-quotient`, 0-axiom/0-sorry): for *any*
+  measurable `A, B, C` over any `IsProbabilityMeasure` with `μ(C ∩ B) ≠ 0`,
+  `cond_inter_mul_cond_le`: `μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B]` (division-free
+  core), and `cond_inter_le_div`: `μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B]` (the form
+  quoted in Alon–Spencer/Spencer). No independence, no dependency graph — the LLL
+  content lives only in the two inputs that bound numerator and denominator.
+- **Proof is division-free + monotonicity.** `μ(C ∩ B) ≠ 0` forces `μ B ≠ 0`
+  (`measure_mono_null` on `C∩B ⊆ B`) and `μ B ≠ ∞` (probability), so cancel `μ B`
+  via `ENNReal.mul_le_mul_iff_left`; telescope both conditionals with
+  `cond_mul_eq_inter` three times; the goal collapses to the set-monotonicity
+  `μ(C ∩ B ∩ A) ≤ μ(B ∩ A)` (`measure_mono` on `C∩B∩A ⊆ B∩A`).
+- **Reusable Lean gotchas.** Cancel a common finite-nonzero factor with
+  `rw [← ENNReal.mul_le_mul_iff_left hne htop]` (the multiplier is the RIGHT
+  factor despite the name). Quotient form: `ENNReal.le_div_iff_mul_le`
+  `(h0 : b ≠ 0 ∨ c ≠ 0) (ht : b ≠ ∞ ∨ c ≠ ∞) : a ≤ c/b ↔ a*b ≤ c`. Denominator
+  positivity+finiteness of a conditional: `cond_pos_of_inter_ne_zero`
+  (needs `μ(B∩C) ≠ 0`, so `Set.inter_comm` first) + `cond_isProbabilityMeasure`
+  then `measure_ne_top`.
+- **OQ-01 now reduces to exactly two dependency-graph inputs.**
+  `cond_inter_le_of_num_den` takes a numerator bound `μ[A | B] ≤ t` (indep.
+  collapse `μ[A|B]=μ(A)`) and a denominator lower bound `q ≤ μ[C | B]` (induction
+  hyp `q=∏_{nbrs}(1-x_j)`) and yields `μ[A | C ∩ B] ≤ t/q`;
+  `cond_inter_lt_one_of_num_den` (with `t/q < 1`) yields `μ[A|C∩B] < 1`, exactly
+  the input `avoidance_pos_of_failure_cond_lt_one'` (chain-rule scaffold) turns
+  into global avoidance positivity. The two remaining OPEN pieces both need a
+  formal measure-theoretic dependency graph: the numerator independence collapse
+  and the strong-induction denominator bound.
+
 ### Chain-rule scaffold + hypothesis-clean reduction (researcher-6, 2026-07-02→03) — NEW
 
 - **The LLL induction skeleton is a pure, independence-free chain rule.**

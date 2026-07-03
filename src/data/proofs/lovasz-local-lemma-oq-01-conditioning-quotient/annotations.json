@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-lll-oq01-cq-overview",
+    "proofId": "lovasz-local-lemma-oq-01-conditioning-quotient",
+    "range": {
+      "startLine": 1,
+      "endLine": 63
+    },
+    "type": "context",
+    "title": "The one inequality the LLL induction is really about",
+    "content": "Open question OQ-01 asks for the genuine **measure-theoretic** Lovász Local Lemma. The sibling entry `lovasz-local-lemma-oq-01-chain-rule` reduced the whole problem to a single per-event obligation — bound each conditional failure probability $\\mu[A_k \\mid \\bigcap_{j<k} A_j^c] < 1$ — but that scaffold is pure telescoping and never touches the dependency structure. This file supplies the piece that actually uses it: the arithmetic step of Spencer's LLL induction. There one bounds a conditional failure probability by splitting its survival history $H = C \\cap B$, with $C$ the survivals of the current event's graph **neighbours** and $B$ the survivals of its **non-neighbours**, and estimating $\\mu[A \\mid C \\cap B] \\le \\mu[A \\mid B] / \\mu[C \\mid B]$. The numerator later collapses to $\\mu(A)$ by independence of $A$ from the non-neighbours; the denominator is bounded below by the induction hypothesis. The inequality proved here is **completely general** — no independence, no graph, no LLL hypothesis — isolating exactly the measure-theoretic content of the step and leaving the independence collapse and the induction-hypothesis bound as the remaining open inputs.",
+    "mathContext": "Arbitrary measurable $A, B, C$ over an `IsProbabilityMeasure` $\\mu$ with $\\mu(C \\cap B) \\neq 0$; goal $\\mu[A \\mid C \\cap B] \\le \\mu[A \\mid B] / \\mu[C \\mid B]$, no independence hypothesis.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "conditional probability",
+      "dependency graph",
+      "neighbour/non-neighbour split",
+      "measure-theoretic probability"
+    ],
+    "prerequisites": [
+      "measure theory: probability measures",
+      "lovasz-local-lemma-oq-01-chain-rule (the reduction this feeds)",
+      "conditional probability μ[t|s]"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-cq-setup",
+    "proofId": "lovasz-local-lemma-oq-01-conditioning-quotient",
+    "range": {
+      "startLine": 64,
+      "endLine": 70
+    },
+    "type": "context",
+    "title": "The probability-space frame",
+    "content": "```lean\nimport Mathlib.Probability.ConditionalProbability\nopen MeasureTheory ProbabilityTheory\nopen scoped ENNReal\nnamespace LovaszLocalLemmaOQ01ConditioningQuotient\nvariable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]\nvariable {A B C : Set Ω}\n```\n\nThe entire development runs over an arbitrary `IsProbabilityMeasure` $\\mu$ and three arbitrary sets $A, B, C$. Two consequences of `IsProbabilityMeasure` drive the proof: it gives `IsFiniteMeasure`, so Mathlib's telescoping identity `cond_mul_eq_inter` ($\\mu[t \\mid s] \\cdot \\mu\\,s = \\mu(s \\cap t)$) is available and every measure is $\\neq \\infty$, which is exactly what the $\\mathbb{R}_{\\ge 0}^\\infty$ cancellation `ENNReal.mul_le_mul_iff_left` needs. Only $B$ and $C$ are required to be measurable in the results (via explicit `MeasurableSet` hypotheses); $A$ is completely arbitrary, since it enters only through the monotone quantity $\\mu(\\cdot \\cap A)$.",
+    "mathContext": "All measures valued in $\\mathbb{R}_{\\ge 0}^\\infty$; `IsProbabilityMeasure` supplies finiteness (for cancellation) and the telescoping identity `cond_mul_eq_inter`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsProbabilityMeasure",
+      "conditional probability cond",
+      "extended non-negative reals ℝ≥0∞"
+    ],
+    "prerequisites": [
+      "Mathlib.Probability.ConditionalProbability",
+      "cond_mul_eq_inter"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-cq-core",
+    "proofId": "lovasz-local-lemma-oq-01-conditioning-quotient",
+    "range": {
+      "startLine": 71,
+      "endLine": 90
+    },
+    "type": "key-step",
+    "title": "The division-free core: cancel μ B, telescope, and use monotonicity",
+    "content": "`cond_inter_mul_cond_le` proves the multiplicative heart of the step, $\\mu[A \\mid C \\cap B] \\cdot \\mu[C \\mid B] \\le \\mu[A \\mid B]$, with **no division and no independence**. The side condition $\\mu(C \\cap B) \\neq 0$ forces $\\mu B \\neq 0$ (since $C \\cap B \\subseteq B$, via `measure_mono_null`) and $\\mu B \\neq \\infty$ (probability measure), so a common factor of $\\mu B$ can be cancelled from both sides using `ENNReal.mul_le_mul_iff_left`. After multiplying through by $\\mu B$, three applications of the telescoping identity `cond_mul_eq_inter` collapse every conditional:\n\n$$\\mu[A \\mid C \\cap B]\\cdot\\big(\\mu[C\\mid B]\\cdot\\mu B\\big) = \\mu[A\\mid C\\cap B]\\cdot\\mu(B\\cap C) = \\mu[A\\mid C\\cap B]\\cdot\\mu(C\\cap B) = \\mu(C\\cap B\\cap A),$$\n\nand the right side becomes $\\mu[A\\mid B]\\cdot\\mu B = \\mu(B\\cap A)$. The goal is now the pure set-monotonicity $\\mu(C \\cap B \\cap A) \\le \\mu(B \\cap A)$, discharged by `measure_mono` on the inclusion $C \\cap B \\cap A \\subseteq B \\cap A$ (`fun x hx => ⟨hx.1.2, hx.2⟩`). Every step is elementary; the mathematical content of the LLL is *not* here but in the two inputs that later bound the numerator and denominator.",
+    "mathContext": "$\\mu[A \\mid C \\cap B] \\cdot \\mu[C \\mid B] \\le \\mu[A \\mid B]$ via cancellation of $\\mu B$ and $\\mu(C \\cap B \\cap A) \\le \\mu(B \\cap A)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "cond_mul_eq_inter (telescoping)",
+      "ENNReal.mul_le_mul_iff_left (cancellation)",
+      "measure_mono (monotonicity)",
+      "measure_mono_null"
+    ],
+    "prerequisites": [
+      "ℝ≥0∞ multiplicative cancellation with a finite nonzero factor",
+      "monotonicity of measures"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-cq-quotient",
+    "proofId": "lovasz-local-lemma-oq-01-conditioning-quotient",
+    "range": {
+      "startLine": 91,
+      "endLine": 113
+    },
+    "type": "key-step",
+    "title": "The quotient form quoted in the LLL literature",
+    "content": "`cond_inter_le_div` reformulates the core as the quotient bound $\\mu[A \\mid C \\cap B] \\le \\mu[A \\mid B] / \\mu[C \\mid B]$ — the shape that appears verbatim in Spencer's and Alon–Spencer's proofs. The conversion from the multiplicative core needs the denominator $\\mu[C \\mid B]$ to be (i) strictly positive and (ii) finite. Positivity is `cond_pos_of_inter_ne_zero hB` applied to $\\mu(B \\cap C) \\neq 0$ (the hypothesis after `Set.inter_comm`). Finiteness follows because conditioning on the positive-measure set $B$ yields a genuine probability measure — `cond_isProbabilityMeasure hBne` installs the `IsProbabilityMeasure (μ[|B])` instance, so `measure_ne_top` gives $\\mu[C \\mid B] \\neq \\infty$. With both facts, `ENNReal.le_div_iff_mul_le` (whose disjunctive side conditions are met by $\\mu[C\\mid B] \\neq 0$ and $\\neq \\infty$) turns the goal back into the already-proved core. This is a cosmetic — but genuinely useful — repackaging: division in $\\mathbb{R}_{\\ge 0}^\\infty$ is delicate, so the honest work was done multiplicatively and only exposed as a quotient here.",
+    "mathContext": "$\\mu[A \\mid C \\cap B] \\le \\mu[A \\mid B] / \\mu[C \\mid B]$; denominator positive (`cond_pos_of_inter_ne_zero`) and finite (`cond_isProbabilityMeasure`).",
+    "significance": "important",
+    "relatedConcepts": [
+      "cond_pos_of_inter_ne_zero",
+      "cond_isProbabilityMeasure",
+      "ENNReal.le_div_iff_mul_le",
+      "extended-real division"
+    ],
+    "prerequisites": [
+      "conditioning on a positive-measure set is a probability measure",
+      "ℝ≥0∞ division/multiplication bridge"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-cq-packaging",
+    "proofId": "lovasz-local-lemma-oq-01-conditioning-quotient",
+    "range": {
+      "startLine": 114,
+      "endLine": 139
+    },
+    "type": "key-step",
+    "title": "Packaging: numerator/denominator inputs to the failure bound < 1",
+    "content": "The final two results deliver the step in the exact form the LLL induction produces and the chain-rule scaffold consumes. `cond_inter_le_of_num_den` takes a **numerator bound** $\\mu[A \\mid B] \\le t$ — supplied in the LLL by independence of $A$ from the non-neighbour survivals $B$, collapsing $\\mu[A\\mid B]$ to $\\mu(A)$ — and a **denominator lower bound** $q \\le \\mu[C \\mid B]$ — supplied by the induction hypothesis, typically $q = \\prod_{j\\in S_1}(1-x_j)$ — and concludes $\\mu[A \\mid C \\cap B] \\le t/q$. The proof is the chain $\\mu[A\\mid C\\cap B]\\cdot q \\le \\mu[A\\mid C\\cap B]\\cdot\\mu[C\\mid B] \\le \\mu[A\\mid B] \\le t$ (`gcongr` for the first step, the core for the second), read through `ENNReal.le_div_iff_mul_le`. The mild disjunction $q \\neq \\infty \\lor t \\neq \\infty$ is free in the LLL setting where $t, q \\le 1$. Finally, `cond_inter_lt_one_of_num_den` adds the hypothesis $t/q < 1$ and concludes $\\mu[A \\mid C \\cap B] < 1$ by transitivity — **precisely** the per-event input that `avoidance_pos_of_failure_cond_lt_one'` in `lovasz-local-lemma-oq-01-chain-rule` turns into global avoidance positivity. This is the seam where a single induction step meets the global conclusion.",
+    "mathContext": "From $\\mu[A\\mid B]\\le t$ and $q\\le\\mu[C\\mid B]$: $\\mu[A\\mid C\\cap B]\\le t/q$; with $t/q<1$, $\\mu[A\\mid C\\cap B]<1$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "LLL induction step",
+      "independence collapse of the numerator",
+      "induction hypothesis (denominator bound)",
+      "avoidance_pos_of_failure_cond_lt_one'"
+    ],
+    "prerequisites": [
+      "monotonicity of ℝ≥0∞ multiplication (gcongr)",
+      "lovasz-local-lemma-oq-01-chain-rule"
+    ]
+  }
+]

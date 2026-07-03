@@ -1,0 +1,193 @@
+{
+  "id": "lovasz-local-lemma-oq-01-conditioning-quotient",
+  "title": "Lovász Local Lemma OQ-01: Conditioning-Quotient Bound (the induction-step engine)",
+  "slug": "lovasz-local-lemma-oq-01-conditioning-quotient",
+  "description": "The arithmetic engine of the Lovász Local Lemma's inductive step, formalized as a completely general conditional-probability inequality over a real IsProbabilityMeasure — no independence, no dependency graph, no LLL hypothesis. In Spencer's proof of the LLL one bounds a single conditional failure probability μ[A | H] by splitting its survival history H = C ∩ B, where C collects the survivals of the current event's graph neighbours and B collects the survivals of its non-neighbours, and estimating μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B]. This entry proves that quotient bound and its division-free core μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B] for arbitrary measurable A, B, C with μ(C ∩ B) ≠ 0. Both reduce, after cancelling μ B and telescoping via cond_mul_eq_inter, to the monotonicity of measures μ(C ∩ B ∩ A) ≤ μ(B ∩ A). Packaged for direct use in the LLL induction: cond_inter_le_of_num_den turns a numerator bound μ[A | B] ≤ t (the independence input) and a denominator lower bound q ≤ μ[C | B] (the induction hypothesis) into μ[A | C ∩ B] ≤ t / q, and cond_inter_lt_one_of_num_den produces exactly the hypothesis μ[A | H] < 1 that the chain-rule scaffold (lovasz-local-lemma-oq-01-chain-rule) consumes to deliver global avoidance positivity. This is the missing measure-theoretic piece between the chain-rule reduction (already formalized) and the independence/graph input (still open). Fully machine-verified, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-03",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LovaszLocalLemmaOQ01ConditioningQuotient.lean",
+    "tags": [
+      "combinatorics",
+      "probabilistic-method",
+      "lovász-local-lemma",
+      "measure-theory",
+      "probability",
+      "conditional-probability"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-07-03",
+    "axiomCount": 0,
+    "assumptions": "Fully verified: 0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide/decide (only foundational propext/Classical.choice/Quot.sound from the Mathlib lemmas used). IsProbabilityMeasure is an explicit hypothesis. The bound μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B] is proved for arbitrary measurable B, C and arbitrary A under the single side condition μ(C ∩ B) ≠ 0 — no independence, no dependency graph, no LLL hypothesis of any kind. cond_inter_le_of_num_den and cond_inter_lt_one_of_num_den carry the mild finiteness disjunction q ≠ ∞ ∨ t ≠ ∞ (harmless in the LLL setting where t, q ≤ 1), stated honestly as a hypothesis. Scope: this entry proves the general per-step conditioning-quotient inequality that the LLL induction uses; it does NOT prove the bounded-dependency-degree symmetric LLL bound (e·p·(d+1) ≤ 1), which requires the still-open independence/dependency-graph input and remains the research target. The numerator collapse μ[A | B] = μ(A) (via independence of A from the non-neighbour survivals B) and the denominator induction hypothesis q ≤ μ[C | B] are supplied as abstract hypotheses here, not derived.",
+    "lineCount": 139,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "verified": true,
+    "originalContributions": [
+      "cond_inter_mul_cond_le: the division-free core of the LLL induction step, μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B], for arbitrary measurable B, C with μ(C ∩ B) ≠ 0 and arbitrary A. Proved by cancelling a common factor μ B (ENNReal.mul_le_mul_iff_left, valid since μ(C ∩ B) ≠ 0 forces μ B ≠ 0 and μ B ≠ ∞ for a probability measure) and telescoping both conditionals via cond_mul_eq_inter (μ[t|s]·μ s = μ(s∩t)), reducing the claim to the measure monotonicity μ(C ∩ B ∩ A) ≤ μ(B ∩ A) since C ∩ B ∩ A ⊆ B ∩ A. No independence.",
+      "cond_inter_le_div: the quotient form μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B] used verbatim in Spencer's LLL proof, obtained from the core via ENNReal.le_div_iff_mul_le once the denominator is shown strictly positive (cond_pos_of_inter_ne_zero) and finite (a conditional probability of a probability measure, ≤ 1, via cond_isProbabilityMeasure + measure_ne_top).",
+      "cond_inter_le_of_num_den: the LLL induction-step conclusion in the exact form the argument produces — from a numerator bound μ[A | B] ≤ t (independence input) and a denominator lower bound q ≤ μ[C | B] (induction hypothesis) it delivers μ[A | C ∩ B] ≤ t / q, via ENNReal.le_div_iff_mul_le and the chain μ[A | C ∩ B]·q ≤ μ[A | C ∩ B]·μ[C | B] ≤ μ[A | B] ≤ t.",
+      "cond_inter_lt_one_of_num_den: the specialisation to a strict ratio t / q < 1, producing exactly the per-event hypothesis μ[A | C ∩ B] < 1 that the chain-rule scaffold's avoidance_pos_of_failure_cond_lt_one' consumes — the bridge from one LLL induction step to the global avoidance conclusion.",
+      "Framing contribution: the existing OQ-01 scaffold (chain rule, quantitative bound) reduces the LLL to a per-event conditional failure bound but never touches the dependency structure — those files are pure telescoping identities. This entry supplies the one measure-theoretic inequality the actual LLL induction adds on top: the neighbour/non-neighbour history split. It is completely general (no independence, no graph), isolating precisely the arithmetic content of the induction step and leaving only the independence collapse of the numerator and the induction-hypothesis lower bound on the denominator as the remaining open inputs."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Probability.ConditionalProbability"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory"
+    ],
+    "namespace": "LovaszLocalLemmaOQ01ConditioningQuotient",
+    "lineCount": 139,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "substantiveTheoremCount": 4,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/LovaszLocalLemmaOQ01ConditioningQuotient.lean",
+    "sorries": 0,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "cond_inter_mul_cond_le",
+      "type": "core",
+      "description": "The division-free engine of the LLL induction step: for arbitrary measurable B, C with μ(C ∩ B) ≠ 0 and arbitrary A, μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B]. No independence — the proof cancels a common factor μ B and telescopes both conditionals, reducing to the monotonicity μ(C ∩ B ∩ A) ≤ μ(B ∩ A).",
+      "leanType": "(hB : MeasurableSet B) → (hC : MeasurableSet C) → (hCB : μ (C ∩ B) ≠ 0) → μ[A | C ∩ B] * μ[C | B] ≤ μ[A | B]"
+    },
+    {
+      "name": "cond_inter_le_div",
+      "type": "core",
+      "description": "The quotient form μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B] used verbatim in Spencer's proof of the LLL, where C is the neighbour survival history and B the non-neighbour survival history. Immediate from cond_inter_mul_cond_le once the denominator is shown positive and finite.",
+      "leanType": "(hB : MeasurableSet B) → (hC : MeasurableSet C) → (hCB : μ (C ∩ B) ≠ 0) → μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B]"
+    },
+    {
+      "name": "cond_inter_le_of_num_den",
+      "type": "corollary",
+      "description": "The LLL induction-step conclusion: from a numerator bound μ[A | B] ≤ t (supplied by independence of A from the non-neighbour history B) and a denominator lower bound q ≤ μ[C | B] (supplied by the induction hypothesis on the neighbour history C), the conditional failure probability on the full history is bounded by the ratio μ[A | C ∩ B] ≤ t / q. The finiteness disjunction q ≠ ∞ ∨ t ≠ ∞ is harmless when t, q ≤ 1.",
+      "leanType": "(hB : MeasurableSet B) → (hC : MeasurableSet C) → (hCB : μ (C ∩ B) ≠ 0) → (hq : q ≠ 0) → (hqt : q ≠ ∞ ∨ t ≠ ∞) → (hnum : μ[A | B] ≤ t) → (hden : q ≤ μ[C | B]) → μ[A | C ∩ B] ≤ t / q"
+    },
+    {
+      "name": "cond_inter_lt_one_of_num_den",
+      "type": "corollary",
+      "description": "The specialisation producing exactly the hypothesis the chain-rule scaffold needs: if additionally the ratio t / q < 1, then the per-event conditional failure probability μ[A | C ∩ B] < 1, which avoidance_pos_of_failure_cond_lt_one' (in lovasz-local-lemma-oq-01-chain-rule) turns into global avoidance positivity.",
+      "leanType": "(hB : MeasurableSet B) → (hC : MeasurableSet C) → (hCB : μ (C ∩ B) ≠ 0) → (hq : q ≠ 0) → (hqt : q ≠ ∞ ∨ t ≠ ∞) → (hnum : μ[A | B] ≤ t) → (hden : q ≤ μ[C | B]) → (hratio : t / q < 1) → μ[A | C ∩ B] < 1"
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Lovász Local Lemma (Erdős–Lovász, 1975) certifies that finitely many 'bad' events can all be avoided (μ(⋂ Aᵢᶜ) > 0) when each is mutually independent of all but a bounded number d of the others and the local budget e·p·(d+1) ≤ 1 holds. Every classical proof — the original Lovász induction, Spencer's exposition, Shearer's optimal bounds — bounds the conditional probability μ[Aᵢ | ⋂_{j∈S} Aⱼᶜ] by strong induction on the conditioning set S. The heart of that induction is a single arithmetic step: split the conditioning history S into the neighbours S₁ of the current event i and the non-neighbours S₂, write μ[Aᵢ | ⋂_{S₁}Aᶜ ∩ ⋂_{S₂}Aᶜ] ≤ μ[Aᵢ | ⋂_{S₂}Aᶜ] / μ[⋂_{S₁}Aᶜ | ⋂_{S₂}Aᶜ], bound the numerator by μ(Aᵢ) using independence of Aᵢ from the non-neighbours, and bound the denominator below by ∏_{j∈S₁}(1 − xⱼ) using the induction hypothesis. The gallery's OQ-01 line has formalized the chain-rule scaffold that reduces the global LLL conclusion to per-event conditional bounds (lovasz-local-lemma-oq-01-chain-rule) and the quantitative avoidance lower bound (lovasz-local-lemma-oq-01-quantitative), plus the two computable extremes (independent base case, union bound). What all of those omit is the neighbour/non-neighbour split itself. This entry isolates and verifies exactly that step as a general measure-theoretic inequality.",
+    "problemStatement": "**Open question OQ-01 (from LovaszLocalLemma.lean)**: formalize the full probabilistic Lovász Local Lemma over measure-theoretic probability spaces.\n\n**This entry (conditioning-quotient bound)**: prove the arithmetic core of the LLL inductive step. For arbitrary measurable sets A, B, C in a real IsProbabilityMeasure with μ(C ∩ B) ≠ 0 — no independence, no dependency graph — establish μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B], equivalently the quotient bound μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B], and package it so that a numerator bound μ[A | B] ≤ t and a denominator lower bound q ≤ μ[C | B] with t/q < 1 yield the per-event failure bound μ[A | C ∩ B] < 1 that the chain-rule scaffold consumes.",
+    "text": "The one inequality the Lovász Local Lemma induction is really about, stripped of all its combinatorial packaging: if you condition an event A on a survival history that splits into two pieces C and B, the conditional probability of A can only grow from its value on the smaller history B by the reciprocal of how likely C was given B. Written as μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B], this holds for any events whatsoever over any probability space — it is pure measure theory. The LLL supplies the two inputs that make the right-hand side small: independence collapses the numerator to μ(A), and the induction hypothesis keeps the denominator away from zero.",
+    "proofStrategy": "**Division-free core (cond_inter_mul_cond_le).** To prove μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B], first note μ(C ∩ B) ≠ 0 forces μ B ≠ 0 (since C ∩ B ⊆ B) and μ B ≠ ∞ (probability measure), so a common factor μ B can be cancelled (ENNReal.mul_le_mul_iff_left). Multiplying both sides by μ B and telescoping via cond_mul_eq_inter (μ[t|s]·μ s = μ(s∩t)) three times — on μ[C|B]·μ B = μ(B∩C), on μ[A|C∩B]·μ(C∩B) = μ((C∩B)∩A), and on μ[A|B]·μ B = μ(B∩A) — reduces the goal to the set-monotonicity μ(C ∩ B ∩ A) ≤ μ(B ∩ A), which holds because C ∩ B ∩ A ⊆ B ∩ A.\n\n**Quotient form (cond_inter_le_div).** The denominator μ[C | B] is strictly positive by cond_pos_of_inter_ne_zero (μ(B ∩ C) ≠ 0) and finite because conditioning on a positive-measure set yields a probability measure (cond_isProbabilityMeasure), so measure_ne_top applies. ENNReal.le_div_iff_mul_le then converts the core into the quotient bound.\n\n**LLL packaging (cond_inter_le_of_num_den, cond_inter_lt_one_of_num_den).** Given μ[A | B] ≤ t and q ≤ μ[C | B], the chain μ[A | C ∩ B]·q ≤ μ[A | C ∩ B]·μ[C | B] ≤ μ[A | B] ≤ t (monotonicity of multiplication plus the core) gives μ[A | C ∩ B] ≤ t/q via ENNReal.le_div_iff_mul_le; if moreover t/q < 1 the per-event failure bound μ[A | C ∩ B] < 1 follows by transitivity.",
+    "keyInsights": [
+      "The neighbour/non-neighbour split of the LLL induction is, at its arithmetic core, a completely general inequality: μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B] for any events A, B, C over any probability measure. Neither independence nor the dependency graph enters the inequality itself — they only enter the two inputs (numerator collapse and denominator lower bound) that make the ratio small. Isolating the inequality shows exactly where the graph-theoretic content of the LLL is used and where it is not.",
+      "The proof is division-free at heart: the quotient bound is a cosmetic reformulation of μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B], which after cancelling μ B and telescoping the conditionals is nothing more than the monotonicity μ(C ∩ B ∩ A) ≤ μ(B ∩ A). Working in ℝ≥0∞ multiplicatively avoids the pitfalls of extended-real division entirely.",
+      "The side condition μ(C ∩ B) ≠ 0 is exactly what the LLL supplies for free: in the induction the conditioning history always has positive measure (the chain-rule scaffold's hist_pos_of_failure_cond_lt_one shows this is automatic from the failure bounds), so the hypothesis is not a restriction but a faithful statement of the induction's own guarantee.",
+      "cond_inter_lt_one_of_num_den closes the loop with the chain-rule scaffold: it produces precisely the per-event input μ[A | history] < 1 that avoidance_pos_of_failure_cond_lt_one' converts into global avoidance positivity. This entry and the chain-rule entry together reduce the entire LLL to two remaining ingredients — the independence collapse μ[A | B] = μ(A) and the induction-hypothesis denominator bound q ≤ μ[C | B] — both of which require a formal measure-theoretic dependency graph, the genuine open work."
+    ],
+    "prerequisites": [
+      "Measure-theoretic probability: IsProbabilityMeasure, measure monotonicity (measure_mono, measure_mono_null)",
+      "Conditional probability μ[t|s] = cond μ s t and the telescoping identity cond_mul_eq_inter : μ[t|s]·μ s = μ(s∩t)",
+      "cond_pos_of_inter_ne_zero (positivity of a conditional on a positive-intersection history) and cond_isProbabilityMeasure (conditioning on a positive-measure set is a probability measure)",
+      "ℝ≥0∞ arithmetic: ENNReal.mul_le_mul_iff_left (cancellation), ENNReal.le_div_iff_mul_le (division/multiplication bridge)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The arithmetic core of the Lovász Local Lemma's inductive step is fully machine-verified over a real probability space as a general conditional-probability inequality: for arbitrary measurable A, B, C with μ(C ∩ B) ≠ 0, μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B], equivalently μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B]. Packaged for the induction, a numerator bound μ[A | B] ≤ t and a denominator lower bound q ≤ μ[C | B] with t/q < 1 yield the per-event failure bound μ[A | C ∩ B] < 1 that the chain-rule scaffold turns into global avoidance positivity. 0 sorries, 0 axioms.",
+    "implications": "**Closes the arithmetic gap in the OQ-01 line**: the chain-rule scaffold (lovasz-local-lemma-oq-01-chain-rule) reduces the LLL to a per-event conditional failure bound but supplies no way to produce that bound; this entry supplies the exact inequality the classical induction uses to produce it, via the neighbour/non-neighbour history split. Together they reduce the full LLL to two clearly delineated remaining inputs — the independence collapse of the numerator μ[A | B] = μ(A) and the induction-hypothesis lower bound q ≤ μ[C | B] on the denominator — both of which need a formal measure-theoretic dependency graph.\n\n**Honest scope**: this is a general measure-theoretic inequality, presented as the arithmetic engine of the LLL step, not the LLL bound itself. The bounded-dependency-degree budget e·p·(d+1) ≤ 1 remains open.",
+    "openQuestions": [
+      "Formalize a measure-theoretic dependency graph and the mutual-independence hypothesis 'Aᵢ is independent of the σ-algebra generated by its non-neighbours', then discharge the numerator input of cond_inter_le_of_num_den by proving μ[Aᵢ | ⋂_{non-neighbours} Aⱼᶜ] = μ(Aᵢ).",
+      "Prove the LLL induction hypothesis that furnishes the denominator lower bound: μ[⋂_{j∈S₁} Aⱼᶜ | ⋂_{S₂} Aⱼᶜ] ≥ ∏_{j∈S₁}(1 − xⱼ), by strong induction on the conditioning set using this entry's quotient bound at each step, and assemble the full asymmetric LLL μ[Aᵢ | ⋂_{S} Aⱼᶜ] ≤ xᵢ.",
+      "Chain cond_inter_lt_one_of_num_den into the chain-rule scaffold's avoidance_pos_of_failure_cond_lt_one' to state and verify the symmetric LLL conclusion e·p·(d+1) ≤ 1 ⟹ μ(⋂ Aᵢᶜ) > 0 once the dependency-graph inputs are in place."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-overview",
+      "title": "Overview: the arithmetic engine of the LLL induction step",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Module docstring positioning this file as the neighbour/non-neighbour history split at the heart of Spencer's LLL induction: bound μ[A | C ∩ B] by μ[A | B] / μ[C | B], where C is the neighbour survival history and B the non-neighbour survival history. Emphasises that the inequality itself is completely general — the independence and dependency-graph content lives only in the two inputs that bound numerator and denominator.",
+      "mathContext": "General conditional-probability inequality over an IsProbabilityMeasure; no independence, no dependency graph. Side condition μ(C ∩ B) ≠ 0 is what the LLL induction supplies for free."
+    },
+    {
+      "id": "sec-setup",
+      "title": "Probability-space frame",
+      "startLine": 64,
+      "endLine": 70,
+      "summary": "Imports Mathlib.Probability.ConditionalProbability; sets up an arbitrary IsProbabilityMeasure μ and three arbitrary sets A, B, C. IsFiniteMeasure (from IsProbabilityMeasure) is what makes cond_mul_eq_inter and the ℝ≥0∞ cancellations available.",
+      "mathContext": "Arbitrary measurable B, C and arbitrary A; all measures valued in ℝ≥0∞ where the telescoping identity cond_mul_eq_inter and finite-factor cancellation drive the proof."
+    },
+    {
+      "id": "sec-core",
+      "title": "The division-free conditioning-quotient core",
+      "startLine": 71,
+      "endLine": 90,
+      "summary": "cond_inter_mul_cond_le: μ[A | C ∩ B] · μ[C | B] ≤ μ[A | B]. μ(C ∩ B) ≠ 0 gives μ B ≠ 0 and μ B ≠ ∞, so μ B cancels (ENNReal.mul_le_mul_iff_left); telescoping both conditionals via cond_mul_eq_inter reduces the goal to μ(C ∩ B ∩ A) ≤ μ(B ∩ A) (measure_mono on C ∩ B ∩ A ⊆ B ∩ A).",
+      "mathContext": "The multiplicative heart of the step: no division, no independence — just cancellation of μ B and monotonicity of measures."
+    },
+    {
+      "id": "sec-quotient",
+      "title": "The quotient form used in Spencer's proof",
+      "startLine": 91,
+      "endLine": 113,
+      "summary": "cond_inter_le_div: μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B]. The denominator is strictly positive (cond_pos_of_inter_ne_zero) and finite (cond_isProbabilityMeasure + measure_ne_top), so ENNReal.le_div_iff_mul_le converts the core into the quotient bound quoted verbatim in the LLL literature.",
+      "mathContext": "The familiar quotient shape μ[A | C ∩ B] ≤ μ[A | B] / μ[C | B]; the denominator's positivity is exactly the μ(C ∩ B) ≠ 0 side condition."
+    },
+    {
+      "id": "sec-lll-packaging",
+      "title": "LLL packaging: numerator/denominator bounds to failure bound < 1",
+      "startLine": 114,
+      "endLine": 139,
+      "summary": "cond_inter_le_of_num_den: from μ[A | B] ≤ t (independence input) and q ≤ μ[C | B] (induction hypothesis) derive μ[A | C ∩ B] ≤ t / q, via μ[A | C ∩ B]·q ≤ μ[A | C ∩ B]·μ[C | B] ≤ μ[A | B] ≤ t. cond_inter_lt_one_of_num_den: adding t / q < 1 yields μ[A | C ∩ B] < 1 — exactly the per-event hypothesis the chain-rule scaffold consumes.",
+      "mathContext": "The step's conclusion in the form the LLL induction produces and the chain-rule scaffold consumes; t and q are the numerator bound and denominator lower bound, both ≤ 1 in the LLL setting."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lovasz-local-lemma-oq-01-chain-rule",
+      "relationship": "extends",
+      "description": "The chain-rule scaffold reduces global avoidance positivity to a per-event conditional failure bound μ[A k | history] < 1 (avoidance_pos_of_failure_cond_lt_one') but supplies no way to produce it. This entry supplies exactly that: cond_inter_lt_one_of_num_den produces μ[A | C ∩ B] < 1 from a numerator/denominator ratio below 1, the input the scaffold needs. The two together reduce the LLL to the independence collapse of the numerator and the induction-hypothesis lower bound on the denominator."
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-01-quantitative",
+      "relationship": "related",
+      "description": "The quantitative scaffold turns a family of per-event failure bounds μ[A k | history] ≤ bₖ into the avoidance lower bound ∏(1 − bₖ) ≤ μ(⋂ Aᵢᶜ). This entry produces the per-event bounds bₖ = tₖ/qₖ that the quantitative scaffold consumes, via the neighbour/non-neighbour history split."
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-01",
+      "relationship": "related",
+      "description": "The mutually independent (d = 0) base case, where every conditioning history is a non-neighbour history and the numerator collapse μ[A | B] = μ(A) holds unconditionally. This entry generalises the induction step to arbitrary histories that mix neighbour and non-neighbour survivals."
+    },
+    {
+      "targetId": "lovasz-local-lemma",
+      "relationship": "related",
+      "description": "Parent gallery proof of the symmetric LLL over ℚ as a probability-budget surrogate. This entry provides the genuine measure-theoretic inequality (the induction step's quotient bound) that the rational surrogate stands in for."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Lovász",
+      "title": "Problems and Results on 3-Chromatic Hypergraphs and Some Related Questions",
+      "year": "1975",
+      "note": "Original LLL paper; the induction bounds conditional probabilities μ[Aᵢ | ⋂ Aⱼᶜ] by exactly the neighbour/non-neighbour quotient step formalized here."
+    },
+    {
+      "authors": "Alon, Spencer",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "note": "Standard reference; the LLL chapter's proof splits the conditioning history into dependent and independent parts and applies μ[Aᵢ | C ∩ B] ≤ μ[Aᵢ | B] / μ[C | B], the bound proved in this entry."
+    },
+    {
+      "authors": "Spencer",
+      "title": "Ten Lectures on the Probabilistic Method",
+      "year": "1994",
+      "note": "Presents the LLL induction via the conditional-probability quotient on split avoidance histories — the step this entry isolates as a general measure-theoretic inequality."
+    }
+  ]
+}
