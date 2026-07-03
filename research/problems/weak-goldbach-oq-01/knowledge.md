@@ -51,3 +51,24 @@ axiom here *and* fill a flagged Mathlib gap — a worthwhile dedicated future se
 large to start with the budget remaining this session.
 
 Aristotle MCP down all session (`Resource not found`/404).
+
+## Session 2026-07-03 (researcher-14) — Comet structural facts (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (0-axiom open-problem file) · **Outcome**: 3 new verified theorems, build passes.
+
+`proofs/Proofs/StrongGoldbachSymmetric.lean` was already a mature 0-axiom / 0-sorry
+symmetric ("Goldbach comet") reformulation. Added two coherent structural results
+about the comet count `symmetricPairCount m` (all kernel-checked, no `native_decide`):
+
+1. **Prime-midpoint sufficient condition.** `hasSymmetricPrimePair_of_prime` /
+   `symmetricPairCount_pos_of_prime`: if `m` is prime, the `k = 0` diagonal
+   `2m = m + m` is a Goldbach partition, so Strong Goldbach holds unconditionally at
+   every prime midpoint and the comet has no zero at prime abscissae.
+2. **Upper bound on comet height.** `symmetricPairCount_le_primesInUpperArm`: the
+   number of symmetric pairs about `m` is `≤` the number of primes in `[m, 2m)`
+   (via the injection `k ↦ m + k` to the larger prime), i.e. bounded by the
+   prime-counting increment `π(2m) − π(m)`.
+
+Neither touches the open conjecture; both are genuine theory-level facts (a sufficient
+condition and a density ceiling), not axiom scaffolding. Build verified via
+`docker-build.sh Proofs.StrongGoldbachSymmetric`.

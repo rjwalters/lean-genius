@@ -209,4 +209,54 @@ example : symmetricPairCount 6 = 1 := by decide
 example : 0 < symmetricPairCount 9 :=
   (hasSymmetricPrimePair_iff_count_pos 9).mp (by decide)
 
+/-! ## Sufficient Condition: Prime Midpoints
+
+If the midpoint `m` is itself prime, then `2 * m = m + m` is already a Goldbach
+partition — the `k = 0` "diagonal" of the comet, where the two summands coincide.
+So the Strong Goldbach Conjecture holds *unconditionally* at every prime midpoint,
+and the comet count is positive there. This is why the Goldbach comet has no zeros
+at prime abscissae `m`: the trivial pair is always available. -/
+
+/-- If `m` is prime then it has the trivial symmetric prime pair at offset `k = 0`
+(both `m - 0 = m` and `m + 0 = m` are prime), i.e. `2 * m = m + m` is a Goldbach
+partition. -/
+theorem hasSymmetricPrimePair_of_prime {m : ℕ} (hm : Nat.Prime m) :
+    HasSymmetricPrimePair m := by
+  refine ⟨0, hm.pos, ?_, ?_⟩
+  · simpa using hm
+  · simpa using hm
+
+/-- The comet count is positive at every prime midpoint. -/
+theorem symmetricPairCount_pos_of_prime {m : ℕ} (hm : Nat.Prime m) :
+    0 < symmetricPairCount m :=
+  (hasSymmetricPrimePair_iff_count_pos m).mp (hasSymmetricPrimePair_of_prime hm)
+
+-- `m = 7` is prime, so `14 = 7 + 7` is the diagonal Goldbach partition.
+example : HasSymmetricPrimePair 7 := hasSymmetricPrimePair_of_prime (by decide)
+
+/-! ## Upper Bound: Comet Height ≤ Primes in the Upper Arm
+
+Each symmetric pair `(m - k, m + k)` with `k < m` contributes a *distinct* prime
+`m + k` lying in the interval `[m, 2 * m)`. The map `k ↦ m + k` is injective, so
+the comet count is bounded above by the number of primes in that upper-arm
+interval. In particular the comet height never exceeds the prime-counting
+increment `π(2m) − π(m)`, a purely density-theoretic ceiling on how many Goldbach
+partitions `2 * m` can have. -/
+
+/-- **Upper bound on the comet count.** The number of symmetric prime pairs about
+`m` is at most the number of primes in the upper-arm interval `[m, 2 * m)`, via the
+injection `k ↦ m + k` sending each pair to its larger prime. -/
+theorem symmetricPairCount_le_primesInUpperArm (m : ℕ) :
+    symmetricPairCount m ≤
+      ((Finset.Ico m (2 * m)).filter (fun j => Nat.Prime j)).card := by
+  rw [symmetricPairCount]
+  apply Finset.card_le_card_of_injOn (fun k => m + k)
+  · intro k hk
+    rw [Finset.mem_filter, Finset.mem_range] at hk
+    obtain ⟨hkm, _, hpk⟩ := hk
+    rw [Finset.mem_filter, Finset.mem_Ico]
+    exact ⟨⟨Nat.le_add_right m k, by omega⟩, hpk⟩
+  · intro a _ b _ hab
+    simpa using hab
+
 end StrongGoldbach

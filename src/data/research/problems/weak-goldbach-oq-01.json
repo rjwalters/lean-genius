@@ -29,17 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (open problem): axiom-free symmetric/midpoint reformulation of Strong Goldbach verified and added to gallery (PR #33936). Conjecture itself remains open.",
+    "progressSummary": "PROGRESS (open problem): symmetric/comet reformulation extended with two structural facts — prime-midpoint sufficient condition (k=0 diagonal) and an upper bound on comet height by primes in [m,2m). All 0-axiom, 0-sorry; build verified. Conjecture remains open.",
     "builtItems": [
       "sumTwoPrimes_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:73 (per-n equivalence, 0-axiom)",
       "strong_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:98 (conjecture-level equivalence)",
       "decidableHasSymmetricPrimePair in Proofs/StrongGoldbachSymmetric.lean:118 (kernel-decide instance, axiom-free)",
-      "Gallery entry src/data/proofs/strong-goldbach-symmetric (meta+annotations), verified/original, PR #33936"
+      "Gallery entry src/data/proofs/strong-goldbach-symmetric (meta+annotations), verified/original, PR #33936",
+      "hasSymmetricPrimePair_of_prime in Proofs/StrongGoldbachSymmetric.lean (prime midpoint sufficient condition, 0-axiom)",
+      "symmetricPairCount_pos_of_prime in Proofs/StrongGoldbachSymmetric.lean (comet positive at prime midpoints)",
+      "symmetricPairCount_le_primesInUpperArm in Proofs/StrongGoldbachSymmetric.lean (comet height <= primes in [m,2m), via k -> m+k injection)"
     ],
     "insights": [
       "Strong Goldbach for even n=2m is equivalent to existence of a symmetric prime pair (m-k, m+k) with k<m — every Goldbach partition sits symmetrically about the midpoint n/2 (Goldbach comet).",
       "The midpoint-symmetry equivalence needs no lower bound on m: for m=0 both sides are false since primes are >=2, so it quantifies cleanly over all m in N.",
-      "Strong Goldbach and its symmetric form are logically identical (strong_iff_symmetric); the reformulation halves the search space to one bounded parameter k<n/2."
+      "Strong Goldbach and its symmetric form are logically identical (strong_iff_symmetric); the reformulation halves the search space to one bounded parameter k<n/2.",
+      "Prime midpoints are trivial: if m is prime then k=0 gives the diagonal Goldbach partition 2m = m + m, so Strong Goldbach holds unconditionally at every prime m and the Goldbach comet has no zero at prime abscissae.",
+      "The comet height symmetricPairCount m is bounded above by the number of primes in the upper-arm interval [m, 2m) (each pair injects to its larger prime m+k), i.e. by the prime-counting increment pi(2m) - pi(m)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
