@@ -113,5 +113,55 @@
       "squeeze_zero_norm",
       "limit arithmetic"
     ]
+  },
+  {
+    "id": "partial-sum-martingale",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 338,
+      "endLine": 380
+    },
+    "type": "insight",
+    "title": "Partial Sums of Independent Mean-Zero Variables Are a Martingale",
+    "content": "Kolmogorov's convergence criterion is realized through the a.e. martingale-convergence theorem, and this is the construction that unlocks it. Take the shifted partial sums f n = ∑_{i≤n} X_i and the natural filtration ℱ n = σ(X_0,…,X_n). The increment f(n+1) − f n = X(n+1) is independent of the past ℱ n, so its conditional expectation collapses to the mean: E[X(n+1) | ℱ n] = E[X(n+1)] = 0. That is exactly the hypothesis of Mathlib's increment criterion martingale_of_condExp_sub_eq_zero_nat, so f is a martingale. Adaptedness is a finite sum of natural-filtration-measurable coordinates; integrability is a finite sum of L¹ functions.",
+    "mathContext": "The key Mathlib input is `ProbabilityTheory.iIndepFun.condExp_natural_ae_eq_of_lt`: for $i < j$, $\\mu[X_j \\mid \\mathcal{F}_i] =^{ae} \\mathbb{E}[X_j]$. Applied at $j = n+1$, $i = n$ with $\\mathbb{E}[X_{n+1}] = 0$ it discharges the increment condition $\\mu[f(n+1) - f n \\mid \\mathcal{F} n] =^{ae} 0$. Using the shifted sum $f n = \\sum_{i \\le n} X_i$ (rather than $\\sum_{i<n}$) is what makes the increment $X_{n+1}$ land strictly in the future of $\\mathcal{F} n$, so independence — not measurability — governs its conditional expectation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "martingale",
+      "natural filtration",
+      "conditional expectation under independence",
+      "adapted process",
+      "Kolmogorov's convergence criterion"
+    ],
+    "prerequisites": [
+      "conditional expectation",
+      "filtrations",
+      "independence of random variables"
+    ]
+  },
+  {
+    "id": "kolmogorov-l1-reduction",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 382,
+      "endLine": 405
+    },
+    "type": "technique",
+    "title": "Reducing Kolmogorov's Criterion to an L¹ Bound",
+    "content": "With the partial-sum martingale in hand, a.s. convergence follows from Mathlib's a.e. martingale-convergence theorem Submartingale.exists_ae_tendsto_of_bdd, which needs only a uniform L¹ bound on the process. A martingale is a submartingale, so once the shifted sums are bounded in L¹ the engine yields a.e. convergence of f n = ∑_{i≤n} X_i; a one-step index shift (tendsto_add_atTop_iff_nat) transfers this to the target ∑_{i<n} X_i. This isolates the entire remaining probabilistic content of Kolmogorov's criterion into a single deterministic hypothesis — the uniform L¹ bound — which on a probability space follows from ∑ Var(X_i) < ∞.",
+    "mathContext": "On a probability measure $\\|S_n\\|_{L^1} \\le \\|S_n\\|_{L^2} = \\sqrt{\\mathrm{Var}[S_n]} = \\sqrt{\\sum_{i \\le n} \\mathrm{Var}[X_i]} \\le \\sqrt{\\sum_i \\mathrm{Var}[X_i]}$, using orthogonality of independent mean-zero increments (`IndepFun.variance_sum`) and `eLpNorm` monotonicity in the exponent. The theorem takes that bound $R : \\mathbb{R}_{\\ge 0}$ as a hypothesis, deferring the variance computation; supplying it completes the standalone criterion. Composed with `ae_tendsto_kronecker_average_zero`, this delivers the almost-sure normalisation at the heart of the Marcinkiewicz–Zygmund strong law.",
+    "significance": "key",
+    "relatedConcepts": [
+      "martingale convergence theorem",
+      "submartingale",
+      "L¹ boundedness",
+      "variance of independent sums",
+      "eLpNorm monotonicity"
+    ],
+    "prerequisites": [
+      "martingale convergence",
+      "Lᵖ spaces",
+      "variance"
+    ]
   }
 ]

@@ -1,10 +1,10 @@
 {
   "id": "laws-of-large-numbers-oq-01-oq-02-oq-01",
-  "title": "Kronecker's Lemma (Toeplitz Step) for the Marcinkiewicz–Zygmund SLLN",
+  "title": "Kronecker's Lemma and the Kolmogorov Martingale Assembly for the Marcinkiewicz–Zygmund SLLN",
   "slug": "laws-of-large-numbers-oq-01-oq-02-oq-01",
-  "description": "The Marcinkiewicz–Zygmund strong law (rate n^{1/p} for E|X|^p < ∞, 1 ≤ p < 2) is a multi-session build whose classical truncation proof closes with a purely analytic step: Kronecker's lemma. If a_n > 0 is nondecreasing with a_n → ∞ and the series ∑ x_n / a_n converges, then the weighted average (∑_{i<n} x_i) / a_n → 0. Mathlib has the unweighted Cesàro mean and Abel summation but no Kronecker lemma and no weighted Toeplitz mean. This entry supplies both, verified with 0 sorries and 0 axioms, as the reusable analytic engine for the M–Z assembly.",
+  "description": "The Marcinkiewicz–Zygmund strong law (rate n^{1/p} for E|X|^p < ∞, 1 ≤ p < 2) is a multi-session build whose classical proof factors into an analytic passage (Kronecker's lemma) and a probabilistic engine (Kolmogorov's convergence criterion). This entry supplies the reusable infrastructure for both, verified with 0 sorries and 0 axioms. (1) Kronecker's lemma: if a_n > 0 is nondecreasing with a_n → ∞ and ∑ x_n / a_n converges, then (∑_{i<n} x_i) / a_n → 0 — absent from Mathlib, built on a Toeplitz/Silverman weighted-average null step. (2) Kolmogorov's criterion, assembled via Mathlib's a.e. martingale-convergence theorem: the shifted partial sums of independent mean-zero variables form a martingale w.r.t. the natural filtration (martingale_sum_of_indep_mean_zero), and an L¹-bounded such sum converges a.s. (ae_tendsto_sum_of_indep_of_eLpNorm_bdd), reducing the criterion to a uniform L¹ bound.",
   "meta": {
-    "author": "Leopold Kronecker (lemma); formalization researcher-16",
+    "author": "Leopold Kronecker & A. Kolmogorov (results); formalization researcher-16, researcher-14",
     "sourceUrl": "https://en.wikipedia.org/wiki/Kronecker%27s_lemma",
     "date": "1885",
     "status": "verified",
@@ -23,9 +23,9 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 2,
+    "theoremCount": 5,
     "definitionCount": 0,
-    "lineCount": 248,
+    "lineCount": 409,
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_range_by_parts",
@@ -46,14 +46,37 @@
         "theorem": "squeeze_zero_norm",
         "description": "If ‖f n‖ ≤ g n and g n → 0 then f n → 0",
         "module": "Mathlib.Analysis.Normed.Order.Lattice"
+      },
+      {
+        "theorem": "ProbabilityTheory.iIndepFun.condExp_natural_ae_eq_of_lt",
+        "description": "For independent variables, the conditional expectation of X_j given the natural filtration up to i < j equals the mean E[X_j]",
+        "module": "Mathlib.Probability.BorelCantelli"
+      },
+      {
+        "theorem": "MeasureTheory.martingale_of_condExp_sub_eq_zero_nat",
+        "description": "A process is a martingale if it is adapted, integrable, and each increment has vanishing conditional expectation given the past",
+        "module": "Mathlib.Probability.Martingale.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.Submartingale.exists_ae_tendsto_of_bdd",
+        "description": "The a.e. martingale-convergence theorem: an L¹-bounded submartingale converges almost everywhere",
+        "module": "Mathlib.Probability.Martingale.Convergence"
+      },
+      {
+        "theorem": "MeasureTheory.Filtration.adapted_natural",
+        "description": "A process is adapted to its own natural filtration",
+        "module": "Mathlib.Probability.Process.Adapted"
       }
     ],
     "originalContributions": [
       "Theorem tendsto_weighted_average_zero: a Toeplitz/Silverman null step — nonnegative weights c_i whose partial sums are dominated by a normaliser A n → ∞, applied to a null sequence e n → 0, give (∑_{i<n} c_i e_i) / A n → 0. The reusable analytic core, absent from Mathlib.",
-      "Theorem kronecker_lemma: Kronecker's lemma for real sequences — a_n > 0 nondecreasing, a_n → ∞, ∑ x_n / a_n convergent ⟹ (∑_{i<n} x_i) / a_n → 0, via Abel summation reduced to the weighted-average step. Not present in Mathlib 4.26 (only the unrelated matrix Kronecker product exists)."
+      "Theorem kronecker_lemma: Kronecker's lemma for real sequences — a_n > 0 nondecreasing, a_n → ∞, ∑ x_n / a_n convergent ⟹ (∑_{i<n} x_i) / a_n → 0, via Abel summation reduced to the weighted-average step. Not present in Mathlib 4.26 (only the unrelated matrix Kronecker product exists).",
+      "Theorem ae_tendsto_kronecker_average_zero: the almost-everywhere lift of kronecker_lemma across a sample space — if for a.e. ω the series ∑ x_i(ω)/a_i converges, then a.e. the Kronecker average (∑_{i<n} x_i(ω))/a_n → 0. The deterministic glue joining Kolmogorov's a.s.-convergence output to the M–Z normalisation.",
+      "Theorem martingale_sum_of_indep_mean_zero: the shifted partial sums f n = ∑_{i≤n} X_i of independent, integrable, mean-zero random variables form a martingale with respect to the natural filtration. The probabilistic heart of Kolmogorov's convergence criterion; the martingale increment X_{n+1} is independent of the past σ-algebra, so its conditional expectation collapses to the vanishing mean (via iIndepFun.condExp_natural_ae_eq_of_lt and the increment criterion martingale_of_condExp_sub_eq_zero_nat).",
+      "Theorem ae_tendsto_sum_of_indep_of_eLpNorm_bdd: Kolmogorov's a.s.-convergence criterion reduced to a uniform L¹ bound — for independent mean-zero integrable X_i whose shifted partial sums are uniformly bounded in L¹, the series ∑_i X_i converges almost surely. Feeds the partial-sum martingale into Mathlib's a.e. martingale-convergence engine (Submartingale.exists_ae_tendsto_of_bdd) and shifts the index from ∑_{i≤n} back to ∑_{i<n}. Leaves only the deterministic ∑ Var < ∞ ⟹ L¹-bound bookkeeping for the final assembly step."
     ],
     "dateAdded": "2026-07-03",
-    "assumptions": "None. Fully machine-checked: 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms reports only propext, Classical.choice, Quot.sound (standard foundations).",
+    "assumptions": "None. Fully machine-checked: 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms on both Kolmogorov theorems reports only propext, Classical.choice, Quot.sound (standard foundations); no sorryAx, no Lean.ofReduceBool.",
     "mathlib_version": "4.26.0"
   },
   "leanFile": {
@@ -62,12 +85,14 @@
     ],
     "opens": [
       "Filter",
-      "Finset"
+      "Finset",
+      "MeasureTheory",
+      "ProbabilityTheory"
     ],
     "namespace": "LawsOfLargeNumbers.MZ",
-    "lineCount": 248,
+    "lineCount": 409,
     "axiomCount": 0,
-    "theoremCount": 2,
+    "theoremCount": 5,
     "definitionCount": 0,
     "path": "Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean",
     "sorries": 0
@@ -95,18 +120,32 @@
     {
       "id": "kronecker",
       "title": "Kronecker's Lemma via Abel Summation",
-      "startLine": 111,
-      "endLine": 248,
+      "startLine": 135,
+      "endLine": 259,
       "summary": "Proves kronecker_lemma. Uses Finset.sum_range_by_parts for Abel summation, a telescoping identity for the weight partial sums, and a centering split S_{m+1}−S_{i+1} = (S_{m+1}−s) − (S_{i+1}−s). The three resulting pieces converge to 0 by, respectively, null×bounded, squeeze, and the Toeplitz step above."
+    },
+    {
+      "id": "kronecker-lift",
+      "title": "Almost-Everywhere Kronecker Lift (S3 → S4 glue)",
+      "startLine": 261,
+      "endLine": 297,
+      "summary": "Proves ae_tendsto_kronecker_average_zero: the pointwise lift of kronecker_lemma across a measure space via filter_upwards. Turns a.e. convergence of the random series ∑ x_i(ω)/a_i directly into the a.e. Kronecker normalisation (∑_{i<n} x_i(ω))/a_n → 0 — the deterministic bridge from Kolmogorov's criterion to the M–Z conclusion."
+    },
+    {
+      "id": "kolmogorov-martingale",
+      "title": "Kolmogorov's Convergence Criterion — Martingale Assembly",
+      "startLine": 299,
+      "endLine": 407,
+      "summary": "Proves martingale_sum_of_indep_mean_zero (the shifted partial sums f n = ∑_{i≤n} X_i of independent mean-zero integrable variables are a martingale w.r.t. the natural filtration ℱ, since the increment X_{n+1} is independent of ℱ n so E[X_{n+1}|ℱ n] = E[X_{n+1}] = 0) and ae_tendsto_sum_of_indep_of_eLpNorm_bdd (feeding that martingale, once L¹-bounded, into Mathlib's Submartingale.exists_ae_tendsto_of_bdd and shifting the index down by one to conclude a.s. convergence of ∑_{i<n} X_i). Adaptedness is Finset.stronglyMeasurable_sum over Filtration.adapted_natural; the martingale identity is martingale_of_condExp_sub_eq_zero_nat fed by iIndepFun.condExp_natural_ae_eq_of_lt."
     }
   ],
   "conclusion": {
-    "summary": "This entry contributes the analytic engine of the strong laws of large numbers — Kronecker's lemma for real sequences and the Toeplitz weighted-average null step it rests on — fully verified in Lean 4 with 0 sorries and 0 axioms. Both results are absent from Mathlib 4.26 (which has only the unweighted Cesàro mean and matrix Kronecker products) and are independently reusable.",
-    "implications": "Kronecker's lemma is the deterministic bridge from convergence of a random series ∑ (Y_i − E Y_i)/a_i to almost-sure convergence of a normalized partial sum. Supplying it as a standalone, axiom-free lemma removes one of the two blocking gaps (the other being Kolmogorov's convergence/three-series criterion) on the path to a full Marcinkiewicz–Zygmund SLLN formalization, and is equally usable for Kolmogorov's classical SLLN. The Toeplitz step is a general summability tool with uses well beyond probability.",
+    "summary": "This entry contributes both engines of the strong laws of large numbers — the analytic Kronecker's lemma (with its Toeplitz weighted-average null step) and the probabilistic Kolmogorov convergence criterion (assembled through Mathlib's a.e. martingale-convergence theorem) — fully verified in Lean 4 with 0 sorries and 0 axioms. Kronecker's lemma and the Toeplitz step are absent from Mathlib 4.26; the Kolmogorov assembly wires existing Mathlib machinery (conditional expectation under independence, the increment martingale criterion, the upcrossing convergence engine) into the partial-sum martingale that the criterion needs. All five theorems are independently reusable.",
+    "implications": "The two blocking gaps on the path to a full Marcinkiewicz–Zygmund SLLN identified by the S1 survey were Kronecker's lemma and Kolmogorov's convergence criterion. Kronecker's lemma is supplied outright. For Kolmogorov's criterion, the S3 survey re-scoped it from a >300-line foundational build to an assembly of existing Mathlib martingale machinery; this entry realizes that assembly's two hard bricks — the martingale construction (martingale_sum_of_indep_mean_zero) and the reduction to the a.e. convergence engine (ae_tendsto_sum_of_indep_of_eLpNorm_bdd) — leaving only the deterministic ∑ Var < ∞ ⟹ uniform-L¹-bound computation (a variance-orthogonality + eLpNorm-monotonicity step, via IndepFun.variance_sum). Composed with ae_tendsto_kronecker_average_zero, these close every structural step of the M–Z normalisation; the remaining work is the truncation moment-estimates and the final variance bookkeeping.",
     "openQuestions": [
-      "Prove Kolmogorov's convergence criterion (a.s. convergence of a series of independent, mean-zero, summable-variance random variables) — the remaining >300-line bottleneck before Kronecker's lemma can be composed into the M–Z SLLN.",
+      "Discharge the uniform L¹ bound hypothesis of ae_tendsto_sum_of_indep_of_eLpNorm_bdd from ∑ Var(X_i) < ∞: on a probability space, eLpNorm(∑_{i≤n} X_i) 1 μ ≤ eLpNorm(...) 2 μ = sqrt(Var[∑_{i≤n} X_i]) = sqrt(∑_{i≤n} Var[X_i]) ≤ sqrt(∑ Var), via ProbabilityTheory.IndepFun.variance_sum and eLpNorm exponent monotonicity. This yields the standalone Kolmogorov convergence criterion.",
       "Package the Toeplitz null step into the general regular-matrix (Silverman–Toeplitz) summability theorem, of which both this lemma and Mathlib's Cesàro mean are special cases, as a candidate Mathlib contribution.",
-      "Assemble the full Marcinkiewicz–Zygmund SLLN for 1 ≤ p < 2 by combining truncation, the Borel–Cantelli tail bound, Kolmogorov's criterion, and this Kronecker lemma."
+      "Assemble the full Marcinkiewicz–Zygmund SLLN for 1 ≤ p < 2 by combining truncation (Y_i = X_i·1{|X_i| ≤ i^{1/p}}, ∑ P(X_i ≠ Y_i) < ∞ by Borel–Cantelli), the centered-truncation control, the variance-sum bound (with a_i = i^{1/p}, using p < 2), the Kolmogorov criterion above, and the Kronecker lift."
     ]
   },
   "crossReferences": [
