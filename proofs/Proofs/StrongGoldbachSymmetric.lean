@@ -33,6 +33,7 @@ for the symmetric predicate, so any concrete case is machine-checkable by `decid
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Totient
 import Mathlib.Tactic
 
 namespace StrongGoldbach
@@ -591,5 +592,85 @@ theorem symmetricPairCount_le_sub_div {m p : ℕ} (hp : Nat.Prime p)
 -- height of `30` is `3` (`7+23, 11+19, 13+17`), so `3 ≤ 10`.
 example : symmetricPairCount 15 ≤ 15 - 15 / 3 :=
   symmetricPairCount_le_sub_div (p := 3) (by decide) (by decide) (by decide)
+
+/-! ## The Euler-Totient Ceiling: `symmetricPairCount m ≤ φ(m)`
+
+The single-prime sieve `symmetricPairCount_le_sub_div` removes the multiples of *one*
+prime factor `p ∣ m`.  But `not_symmetric_pair_of_prime_dvd` applies to **every** prime
+factor of `m` simultaneously: a nonzero offset `k` contributing a symmetric prime pair
+cannot share *any* prime factor with `m`, so it must be **coprime to `m`**.  The nonzero
+part of the comet support therefore embeds into `{k < m : gcd(k, m) = 1}`, whose size is
+Euler's totient `φ(m)`.  This gives the unified ceiling
+
+    symmetricPairCount m ≤ φ(m) + 1,       and, for composite `m`,   ≤ φ(m).
+
+Since `φ(m) = m · ∏_{p ∣ m} (1 − 1/p) ≤ m · (1 − 1/p) = m − m/p` for any prime factor `p`,
+this **dominates every single-prime bound** `symmetricPairCount_le_sub_div`: the full
+multiplicative sieve over *all* prime factors is strictly sharper than removing just one.
+It also connects the comet height to a standard Mathlib object (`Nat.totient`). -/
+
+/-- **A nonzero contributing offset is coprime to the midpoint.**  If `k > 0` and both
+`m - k` and `m + k` are prime, then `gcd(k, m) = 1`: any common prime factor `p` of `k`
+and `m` would divide both `m - k` and `m + k` (via `not_symmetric_pair_of_prime_dvd`),
+which is impossible.  This is the simultaneous-over-all-primes form of the divisibility
+exclusion, and it is what upgrades the single-prime sieve to the full totient ceiling. -/
+theorem symmetric_pair_offset_coprime {m k : ℕ} (hk0 : 0 < k)
+    (hp1 : Nat.Prime (m - k)) (hp2 : Nat.Prime (m + k)) :
+    Nat.Coprime k m := by
+  by_contra hnc
+  obtain ⟨p, hp, hpk, hpm⟩ := Nat.Prime.not_coprime_iff_dvd.mp hnc
+  exact not_symmetric_pair_of_prime_dvd hp hpm hk0 hpk ⟨hp1, hp2⟩
+
+/-- **Euler-totient ceiling (general form).**  For every midpoint `m`,
+
+    symmetricPairCount m ≤ φ(m) + 1.
+
+The comet support splits into the possible `k = 0` diagonal (present only when `m` is
+prime) and the nonzero offsets, each of which is coprime to `m` by
+`symmetric_pair_offset_coprime`; the latter inject into the `φ(m)` totatives of `m`. -/
+theorem symmetricPairCount_le_totient_succ (m : ℕ) :
+    symmetricPairCount m ≤ Nat.totient m + 1 := by
+  rw [symmetricPairCount, Nat.totient_eq_card_coprime]
+  refine (Finset.card_le_card ?_).trans (Finset.card_insert_le 0 _)
+  intro k hk
+  simp only [Finset.mem_filter, Finset.mem_range] at hk
+  obtain ⟨hkm, h1, h2⟩ := hk
+  rcases Nat.eq_zero_or_pos k with hk0 | hk0
+  · subst hk0
+    exact Finset.mem_insert_self 0 _
+  · refine Finset.mem_insert_of_mem ?_
+    simp only [Finset.mem_filter, Finset.mem_range]
+    exact ⟨hkm, (symmetric_pair_offset_coprime hk0 h1 h2).symm⟩
+
+/-- **Euler-totient ceiling (composite midpoint).**  When `m` is *not* prime the `k = 0`
+diagonal cannot contribute (`m - 0 = m` would have to be prime), so the entire comet
+support consists of offsets coprime to `m` and
+
+    symmetricPairCount m ≤ φ(m).
+
+This is the sharpest closed-form ceiling in this file: it dominates every single-prime
+sieve bound `symmetricPairCount_le_sub_div`, since `φ(m) ≤ m − m/p` for each prime `p ∣ m`. -/
+theorem symmetricPairCount_le_totient_of_not_prime {m : ℕ} (hm : ¬ Nat.Prime m) :
+    symmetricPairCount m ≤ Nat.totient m := by
+  rw [symmetricPairCount, Nat.totient_eq_card_coprime]
+  refine Finset.card_le_card ?_
+  intro k hk
+  simp only [Finset.mem_filter, Finset.mem_range] at hk ⊢
+  obtain ⟨hkm, h1, h2⟩ := hk
+  rcases Nat.eq_zero_or_pos k with hk0 | hk0
+  · subst hk0
+    rw [Nat.sub_zero] at h1
+    exact absurd h1 hm
+  · exact ⟨hkm, (symmetric_pair_offset_coprime hk0 h1 h2).symm⟩
+
+-- Concrete totient ceiling: `m = 15 = 3 · 5` is composite, `φ(15) = 8`, and the comet
+-- height of `30` is `3`, so `3 ≤ 8`.
+example : symmetricPairCount 15 ≤ Nat.totient 15 :=
+  symmetricPairCount_le_totient_of_not_prime (by decide)
+
+-- The totient ceiling is strictly sharper than the single-prime `m − m/p` bound:
+-- `φ(15) = 8 < 10 = 15 − 15/3`.  Removing the multiples of *both* `3` and `5` beats
+-- removing the multiples of `3` alone.
+example : Nat.totient 15 < 15 - 15 / 3 := by decide
 
 end StrongGoldbach

@@ -228,3 +228,36 @@ opportunity; the other 4 axioms are irreducible.
 
 **Env note.** Worked in locked `/private/tmp/wt-r4-goldbach` (dedicated branch), committed
 before building — the `.loom/worktrees/researcher-4` deletion hazard did not recur this pass.
+
+## Session 2026-07-03 (researcher-14) — Euler-totient ceiling on the comet height (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (0-axiom open-problem file `StrongGoldbachSymmetric.lean`) · **Outcome**: 3 new
+verified theorems (0-axiom), build passes.
+
+The sieve section previously bottomed out at the *single-prime* closed form
+`symmetricPairCount m ≤ m − m/p` for one prime factor `p ∣ m`. But
+`not_symmetric_pair_of_prime_dvd` applies to **every** prime factor of `m` at once, so a
+nonzero contributing offset `k` shares no prime factor with `m` — i.e. it is **coprime to
+`m`**. Formalized this and the two resulting totient ceilings:
+
+1. **`symmetric_pair_offset_coprime`** — if `k > 0` and `(m−k, m+k)` are both prime then
+   `gcd(k, m) = 1`. Proof: `Nat.Prime.not_coprime_iff_dvd` extracts a common prime `p`, then
+   `not_symmetric_pair_of_prime_dvd` gives the contradiction.
+2. **`symmetricPairCount_le_totient_succ`** — `symmetricPairCount m ≤ φ(m) + 1` for all `m`
+   (nonzero offsets inject into the `φ(m)` totatives of `m`; the `+1` is the possible `k=0`
+   diagonal, present only at prime `m`).
+3. **`symmetricPairCount_le_totient_of_not_prime`** — for composite `m`,
+   `symmetricPairCount m ≤ φ(m)`.
+
+**Why this matters (not scaffolding).** The totient ceiling **strictly dominates every**
+single-prime bound `symmetricPairCount_le_sub_div`, because
+`φ(m) = m·∏_{p∣m}(1 − 1/p) ≤ m·(1 − 1/p) = m − m/p`. It is the sharpest closed-form ceiling
+in the file and connects the Goldbach-comet height to Mathlib's `Nat.totient`. Concrete
+check (machine-verified `example`s): `φ(15) = 8 < 10 = 15 − 15/3`, and the comet height of
+`30` is `3 ≤ 8`.
+
+**Honest status.** Still an **upper** bound — it does not touch the open conjecture. All comet
+ceilings to date bound the height from above; a nontrivial *lower* bound is the real advance
+and remains open. Build verified via `docker-build.sh Proofs.StrongGoldbachSymmetric` (3058
+jobs, ✔). New theorems use only pure tactics (no `decide`/`native_decide`/`axiom`), so the
+file remains 0-axiom / 0-sorry.
