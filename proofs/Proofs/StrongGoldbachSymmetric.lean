@@ -473,4 +473,60 @@ theorem symmetricPairCount_le_half {m : ℕ} (hm : 2 < m) :
 -- two Goldbach partitions (`3 + 7`, `5 + 5`) and `⌈5/2⌉ = 3`, so `2 ≤ 3`.
 example : symmetricPairCount 5 ≤ (5 + 1) / 2 := symmetricPairCount_le_half (by norm_num)
 
+/-! ## Divisibility Sieve: Every Prime Factor of `m` Thins the Offsets
+
+The parity ceiling above is the special case `p = 2` of a general phenomenon. If a
+prime `p` divides the midpoint `m`, then any offset `k` that is *also* divisible by `p`
+kills the pair: `p ∣ (m − k)` and `p ∣ (m + k)`, so for both to be prime we'd need
+`m − k = p = m + k`, impossible once `k > 0`. Hence contributing offsets avoid the
+multiples of every prime factor of `m`. This is the arithmetic behind the **rays of the
+Goldbach comet**: a midpoint `m` divisible by many small primes has *more* admissible
+offsets removed on the composite side, yet paradoxically tends to have a *higher* comet
+count because the surviving summands `m ± k` are freed of those small factors — the
+classic reason highly composite `m` sit on the comet's dense upper rays. -/
+
+/-- **Prime-divisibility exclusion.** If a prime `p` divides `m` and also divides a
+nonzero offset `k`, then `(m − k, m + k)` is *not* a symmetric prime pair: `p` divides
+both `m − k` and `m + k`, so each — if prime — would have to equal `p`, forcing
+`m − k = m + k`, impossible for `k > 0`. Generalizes `symmetric_pair_offset_parity` (the
+`p = 2` case) to every prime factor of `m`. -/
+theorem not_symmetric_pair_of_prime_dvd {m k p : ℕ} (hp : Nat.Prime p)
+    (hpm : p ∣ m) (hk0 : 0 < k) (hpk : p ∣ k) :
+    ¬(Nat.Prime (m - k) ∧ Nat.Prime (m + k)) := by
+  rintro ⟨h1, h2⟩
+  have hd1 : p ∣ (m - k) := Nat.dvd_sub' hpm hpk
+  have hd2 : p ∣ (m + k) := Nat.dvd_add hpm hpk
+  have e1 : p = m - k := (h1.eq_one_or_self_of_dvd p hd1).resolve_left hp.ne_one
+  have e2 : p = m + k := (h2.eq_one_or_self_of_dvd p hd2).resolve_left hp.ne_one
+  omega
+
+/-- **Sieve bound on the comet count from a proper prime factor of `m`.** If a prime `p`
+divides `m` with `p < m` (so `m` is composite), then every contributing offset avoids the
+multiples of `p`, hence the comet count is at most the number of offsets `k < m` that are
+*not* divisible by `p`. For odd `p` this is an arithmetic constraint independent of the
+parity ceiling `symmetricPairCount_le_half`. -/
+theorem symmetricPairCount_le_notDvd {m p : ℕ} (hp : Nat.Prime p)
+    (hpm : p ∣ m) (hpm' : p < m) :
+    symmetricPairCount m ≤ ((Finset.range m).filter (fun k => ¬ p ∣ k)).card := by
+  rw [symmetricPairCount]
+  apply Finset.card_le_card
+  intro k hk
+  simp only [Finset.mem_filter, Finset.mem_range] at hk ⊢
+  obtain ⟨hkm, hp1, hp2⟩ := hk
+  refine ⟨hkm, ?_⟩
+  intro hpk
+  rcases Nat.eq_zero_or_pos k with hk0 | hk0
+  · -- `k = 0`: `m - 0 = m` is prime yet `p ∣ m` with `1 < p < m`, impossible.
+    subst hk0
+    simp only [Nat.sub_zero] at hp1
+    rcases hp1.eq_one_or_self_of_dvd p hpm with h | h
+    · exact hp.ne_one h
+    · omega
+  · exact not_symmetric_pair_of_prime_dvd hp hpm hk0 hpk ⟨hp1, hp2⟩
+
+-- Concrete exclusion: `m = 15 = 3·5`, offset `k = 3` (a multiple of `3 ∣ 15`) gives
+-- `(12, 18)` — neither prime — so it contributes no Goldbach partition of `30`.
+example : ¬(Nat.Prime (15 - 3) ∧ Nat.Prime (15 + 3)) :=
+  not_symmetric_pair_of_prime_dvd (p := 3) (by decide) (by decide) (by decide) (by decide)
+
 end StrongGoldbach
