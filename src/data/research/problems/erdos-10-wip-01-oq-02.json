@@ -1,8 +1,8 @@
 {
   "slug": "erdos-10-wip-01-oq-02",
   "title": "Popcount subadditivity: characterize equality — popcount(a+b) = popcount a + popcount b ↔ a &&& b = 0",
-  "phase": "ORIENT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -41,16 +41,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT: Pinned the well-posed target. The seeker's proposed lower bound popcount(a+b) ≥ |popcount a − popcount b| is FALSE — smallest counterexample (a,b)=(1,7): popcount(8)=1 < |1−3|=2 (142 counterexamples for a,b<64). Correct result is the equality characterization popcount(a+b) = popcount a + popcount b ↔ a &&& b = 0, verified for all a,b<256. Identified the clean engine lemma popcount a + popcount b = popcount(a^^^b) + 2·popcount(a&&&b) and a full two-direction Lean proof plan. No Lean shipped: local build blocked (disk 100%) and Aristotle down; delivered as ORIENT analysis + proof plan.",
+    "progressSummary": "SOLVED: popcount(a+b)=popcount a+popcount b ↔ a&&&b=0 (equality of the subadditive bound holds exactly on disjoint binary supports / no carries). Shipped verified 0-axiom self-contained file Erdos10WIP01OQ02.lean (203 LOC, 10 thm/1 def) + gallery entry. Proof: one binary parity strong induction on a+b (popcount + &&& recursions, subadditivity re-derived in-file); odd/odd case = a carry is born so a&&&b odd≠0 and popcount strictly drops. Strict corollary popcount_add_lt included. Seeker lower-bound alternative refuted at (1,7).",
     "builtItems": [
-      "research/problems/erdos-10-wip-01-oq-02/knowledge.md — full ORIENT analysis, counterexample, engine identity, two-direction proof plan, Mathlib inventory."
+      "research/problems/erdos-10-wip-01-oq-02/knowledge.md — full ORIENT analysis, counterexample, engine identity, two-direction proof plan, Mathlib inventory.",
+      "Erdos10WIP01OQ02.lean (203 LOC, 10 thm/1 def, 0 sorry/0 axiom, Mathlib-only, host-verified): popcount_add_eq_iff (main), popcount_add_lt (strict corollary), popcount_add_le (self-contained subadditivity), popcount_two_mul(_add_one), and_two_mul / and_two_mul_add_one_left / and_two_mul_add_one_both.",
+      "Gallery entry src/data/proofs/erdos-10-wip-01-oq-02/ (meta.json + index.ts + 4 annotations)."
     ],
     "insights": [
       "The seeker's alternative target popcount(a+b) ≥ |popcount a − popcount b| is FALSE: a single carry chain can annihilate an arbitrarily long run of 1-bits (0b0111 + 1 = 0b1000). Smallest counterexample (1,7); 142 counterexamples over a,b<64.",
       "Correct characterization: popcount(a+b) = popcount a + popcount b ↔ a &&& b = 0 (disjoint binary supports = no carries). Verified exhaustively for a,b<256.",
       "A carry is only *born* at a position where both operands have a 1-bit (though it may propagate through single-bit positions); hence 'no carries' ⟺ a &&& b = 0.",
       "Engine identity (not in Mathlib): popcount a + popcount b = popcount(a^^^b) + 2·popcount(a&&&b). Combined with a + b = (a^^^b) + 2·(a&&&b) and popcount(2n)=popcount n and strong induction on a+b, it yields both the equality characterization and the strict inequality a&&&b≠0 ⇒ popcount(a+b) < popcount a + popcount b.",
-      "Forward direction (a&&&b=0 ⇒ equality) is the easy half: S(n)=(bitIndices n).toFinset, disjoint supports ⇒ a+b = ∑_{S a ∪ S b} 2^i, then binary uniqueness (Nat.bitIndices_twoPowsum) gives S(a+b)=S a ∪ S b and card adds (Finset.card_union_of_disjoint)."
+      "Forward direction (a&&&b=0 ⇒ equality) is the easy half: S(n)=(bitIndices n).toFinset, disjoint supports ⇒ a+b = ∑_{S a ∪ S b} 2^i, then binary uniqueness (Nat.bitIndices_twoPowsum) gives S(a+b)=S a ∪ S b and card adds (Finset.card_union_of_disjoint).",
+      "Equality in popcount subadditivity ⟺ disjoint binary supports: popcount(a+b)=popcount a+popcount b ↔ a&&&b=0. The odd/odd parity case is where a carry is born (a&&&b becomes odd hence nonzero) and popcount strictly drops.",
+      "The ORIENT plan overshot: the exact identity popcount a+popcount b=popcount(a^^^b)+2·popcount(a&&&b) and the testBit↔bitIndices membership bridge are NOT needed. A single binary parity strong induction on a+b, with the three &&& parity recursions, is a shorter fully-elementary route."
     ],
     "mathlibGaps": [
       "No `i ∈ Nat.bitIndices n ↔ n.testBit i` membership↔testBit bridge found in BitIndices.lean (provable from twoPowSum_bitIndices + testBit_two_pow).",
@@ -92,5 +96,7 @@
   "started": "2026-07-02T23:52:36.441Z",
   "lastUpdate": "2026-07-02T23:59:00.000Z",
   "significance": 5,
-  "tractability": 5
+  "tractability": 5,
+  "leanFile": "Proofs/Erdos10WIP01OQ02.lean",
+  "proofRepoPath": "Proofs/Erdos10WIP01OQ02.lean"
 }
