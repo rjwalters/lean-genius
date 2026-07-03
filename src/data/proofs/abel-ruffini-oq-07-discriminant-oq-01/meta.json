@@ -156,13 +156,26 @@
       "id": "criterion",
       "title": "The Discriminant–Square Criterion",
       "startLine": 143,
-      "endLine": 207,
-      "summary": "diffProd_mem_range_iff_fixed instantiates Galois descent: δ ∈ base field ⟺ fixed by all φ. disc_isSquare_iff_gal_le_alternating is the main theorem — disc = δ² is a square in F ⟺ every automorphism acts by an even permutation — proved by (i) 'square in F ⟺ δ ∈ F' via factoring c² − δ², (ii) Galois descent, (iii) the fixed-iff-even lemma quantified over the group. exists_odd_of_disc_not_square is the parent-facing contrapositive: a non-square discriminant supplies an odd permutation.",
+      "endLine": 188,
+      "summary": "diffProd_mem_range_iff_fixed instantiates Galois descent: δ ∈ base field ⟺ fixed by all φ. disc_isSquare_iff_gal_le_alternating is the main theorem — disc = δ² is a square in F ⟺ every automorphism acts by an even permutation — proved by (i) step1 'square in F ⟺ δ ∈ F' via factoring c² − δ² = (c−δ)(c+δ), (ii) Galois descent, (iii) the fixed-iff-even lemma quantified over the group with hperm supplying each induced permutation.",
       "mathContext": "disc square in F ⟺ δ ∈ F ⟺ (∀φ, φ δ = δ) ⟺ (∀φ, its permutation is even) ⟺ Gal ⊆ Aₙ.",
       "relatedConcepts": [
         "discriminant criterion",
         "Galois descent",
         "alternating group"
+      ]
+    },
+    {
+      "id": "corollary",
+      "title": "The Parent-Facing Corollary",
+      "startLine": 189,
+      "endLine": 207,
+      "summary": "exists_odd_of_disc_not_square: from a non-square discriminant it produces an automorphism f and a permutation σ with f(rᵢ) = r(σi) and σ ∉ alternatingGroup — an odd permutation in the Galois image. Proved by by_contra + push_neg: assuming all induced permutations even feeds the ⟸ direction of the main criterion to make disc a square, contradicting the hypothesis. This is the exact input the parent's assembler gal_eq_top_of_transitive_threeCycle_odd consumes.",
+      "mathContext": "¬(disc square in F) ⟹ ∃ f σ, f(rᵢ) = r(σi) ∧ σ ∉ Aₙ — the odd-permutation witness the parent requires.",
+      "relatedConcepts": [
+        "contrapositive",
+        "odd permutation",
+        "parent assembler interface"
       ]
     }
   ],

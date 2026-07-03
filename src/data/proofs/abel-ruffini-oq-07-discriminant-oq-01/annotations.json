@@ -38,13 +38,25 @@
   {
     "id": "ann-aro07doq01-criterion",
     "proofId": "abel-ruffini-oq-07-discriminant-oq-01",
-    "range": { "startLine": 143, "endLine": 207 },
+    "range": { "startLine": 143, "endLine": 188 },
     "type": "theorem",
-    "title": "The Criterion and the Parent-Facing Corollary",
-    "content": "diffProd_mem_range_iff_fixed instantiates Galois descent (IsGalois.mem_range_algebraMap_iff_fixed): δ lies in the base field iff every automorphism fixes it. disc_isSquare_iff_gal_le_alternating is the main theorem: disc = δ² is a square in F ⟺ Gal ⊆ Aₙ. Its proof chains three steps — (i) 'square in F ⟺ δ ∈ F', by factoring c² − δ² = (c−δ)(c+δ) so δ = ±c, both in the negation-closed base field; (ii) Galois descent; (iii) the fixed-iff-even lemma quantified over the whole group. exists_odd_of_disc_not_square is the contrapositive packaged exactly as the parent's assembler needs: a non-square discriminant yields an automorphism acting by an odd permutation.",
+    "title": "The Discriminant–Square Criterion",
+    "content": "diffProd_mem_range_iff_fixed instantiates Galois descent (IsGalois.mem_range_algebraMap_iff_fixed): δ lies in the base field iff every automorphism fixes it. disc_isSquare_iff_gal_le_alternating is the main theorem: disc = δ² is a square in F ⟺ Gal ⊆ Aₙ. Its proof chains three steps — (i) step1 'square in F ⟺ δ ∈ F', by factoring c² − δ² = (c−δ)(c+δ) via linear_combination so δ = ±c, both in the negation-closed base field (Set.range of the algebra map, closed under map_neg); (ii) rewriting through Galois descent; (iii) the fixed-iff-even lemma algEquiv_fixes_diffProd_iff_sign_one quantified over the whole group, with the hperm hypothesis supplying the induced permutation σ for each automorphism.",
     "mathContext": "$\\operatorname{disc}$ square in $F \\iff \\delta \\in F \\iff (\\forall\\varphi,\\ \\varphi\\delta=\\delta) \\iff (\\forall\\varphi,\\ \\text{its permutation is even}) \\iff \\mathrm{Gal} \\subseteq A_n$.",
     "significance": "key",
-    "relatedConcepts": ["Galois descent", "Discriminant criterion", "Alternating group", "Contrapositive"],
-    "prerequisites": ["IsGalois.mem_range_algebraMap_iff_fixed", "Equiv.Perm.mem_alternatingGroup", "mul_eq_zero"]
+    "relatedConcepts": ["Galois descent", "Discriminant criterion", "Alternating group", "factoring a difference of squares"],
+    "prerequisites": ["IsGalois.mem_range_algebraMap_iff_fixed", "mul_eq_zero", "linear_combination"]
+  },
+  {
+    "id": "ann-aro07doq01-corollary",
+    "proofId": "abel-ruffini-oq-07-discriminant-oq-01",
+    "range": { "startLine": 189, "endLine": 207 },
+    "type": "theorem",
+    "title": "The Parent-Facing Corollary: Non-Square ⟹ an Odd Permutation",
+    "content": "exists_odd_of_disc_not_square is the contrapositive packaged exactly as the parent's assembler consumes: from ¬(disc is a square in F) it produces an automorphism f and a permutation σ with f(rᵢ) = r(σi) and σ ∉ alternatingGroup — i.e. an odd permutation in the Galois image. The proof is by_contra + push_neg: assuming every induced permutation is even (∈ alternatingGroup, via Equiv.Perm.mem_alternatingGroup ⟺ sign = 1) feeds the ⟸ direction of disc_isSquare_iff_gal_le_alternating to make disc a square, contradicting the hypothesis. This discharges the parent's odd-permutation input to gal_eq_top_of_transitive_threeCycle_odd directly from a non-square discriminant.",
+    "mathContext": "$\\neg(\\operatorname{disc}\\ \\text{square in}\\ F) \\Rightarrow \\exists f,\\sigma:\\ f(r_i)=r(\\sigma i)\\ \\wedge\\ \\sigma \\notin A_n$ — the exact odd-permutation witness the parent's assembler requires.",
+    "significance": "supporting",
+    "relatedConcepts": ["contrapositive", "odd permutation", "alternating group membership", "parent assembler interface"],
+    "prerequisites": ["Equiv.Perm.mem_alternatingGroup", "by_contra / push_neg", "the discriminant criterion"]
   }
 ]
