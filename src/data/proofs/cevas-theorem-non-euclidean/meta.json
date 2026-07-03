@@ -122,6 +122,134 @@
       "summary": "Proves spherical_flat_limit (sin(t)/t → 1), derives HasDerivAt for sinh from exp chain rule, proves hyperbolic_flat_limit (sinh(t)/t → 1), and bundles both as flat_limit_connects_geometries, formally showing all three Ceva conditions coincide for infinitesimally small triangles."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "ceva_unified_principle",
+      "type": "theorem",
+      "statement": "0 < ρ bd → … → 0 < ρ fb → (ρ bd / ρ dc * (ρ ce / ρ ea) * (ρ af / ρ fb) = 1 ↔ ρ bd * ρ ce * ρ af = ρ dc * ρ ea * ρ fb)",
+      "significance": "The organising theorem: for ANY positive 'measure' ρ, the cevian product-of-ratios equals 1 iff the cross-products of measures agree. Euclidean, spherical, and hyperbolic Ceva are all this one statement with ρ = id, sin, sinh — a single algebraic identity underlying concurrency across all three geometries.",
+      "description": "Clears denominators via div_mul_div_comm twice and div_eq_one_iff_eq, using positivity of the ρ-values to justify the nonzero divisors."
+    },
+    {
+      "name": "generalized_ceva",
+      "type": "theorem",
+      "statement": "generalizedCevaProduct cfg = 1 ↔ cfg.bd * cfg.ce * cfg.af = cfg.dc * cfg.ea * cfg.fb",
+      "significance": "Abstract form on a GeneralizedCevianConfig (six positive measures bundled with their positivity proofs). The structure-packaged version of the unified principle that the three geometry-specific theorems reduce to.",
+      "description": "Same denominator-clearing argument as ceva_unified_principle, drawing the nonzero hypotheses from the config's *_pos fields."
+    },
+    {
+      "name": "trigonometric_ceva",
+      "type": "theorem",
+      "statement": "trigCevaProduct cfg = 1 ↔ sin ∠BAD * sin ∠CBE * sin ∠ACF = sin ∠DAC * sin ∠EBA * sin ∠FCA",
+      "significance": "Trigonometric Ceva (Euclidean): cevians AD, BE, CF concur iff the sine-ratio product is 1. More fundamental than the length-ratio form precisely because it transfers verbatim to non-Euclidean geometries.",
+      "description": "Rewrites through trigCevaProduct_eq_generalized and applies generalized_ceva to the sin-valued config."
+    },
+    {
+      "name": "spherical_ceva",
+      "type": "theorem",
+      "statement": "sphericalCevaProduct cfg = 1 ↔ sin(arc BD) * sin(arc CE) * sin(arc AF) = sin(arc DC) * sin(arc EA) * sin(arc FB)",
+      "significance": "Spherical Ceva: on the sphere, arc-length ratios are replaced by their sines, and concurrency holds iff the sine cross-products agree. The spherical instance of the unified principle (ρ = sin on arcs in (0,π)).",
+      "description": "Reduces to generalized_ceva via sphericalCevaProduct_eq_generalized."
+    },
+    {
+      "name": "hyperbolic_ceva",
+      "type": "theorem",
+      "statement": "hyperbolicCevaProduct cfg = 1 ↔ sinh(BD) * sinh(CE) * sinh(AF) = sinh(DC) * sinh(EA) * sinh(FB)",
+      "significance": "Hyperbolic Ceva: in the hyperbolic plane, sinh of the side-distances replaces the Euclidean ratios; concurrency holds iff the sinh cross-products agree. The hyperbolic instance of the unified principle (ρ = sinh).",
+      "description": "Reduces to generalized_ceva via hyperbolicCevaProduct_eq_generalized."
+    },
+    {
+      "name": "ceva_euclidean_specialization",
+      "type": "theorem",
+      "statement": "bd / dc * (ce / ea) * (af / fb) = 1 ↔ bd * ce * af = dc * ea * fb",
+      "significance": "The classical Euclidean Ceva recovered as ρ = id in the unified principle. Makes explicit that the ordinary length-ratio theorem is one specialization among three.",
+      "description": "ceva_unified_principle applied to id with the six positivity hypotheses."
+    },
+    {
+      "name": "ceva_spherical_specialization",
+      "type": "theorem",
+      "statement": "sin bd / sin dc * (sin ce / sin ea) * (sin af / sin fb) = 1 ↔ sin bd * sin ce * sin af = sin dc * sin ea * sin fb",
+      "significance": "Spherical Ceva as the ρ = sin specialization of the unified principle, with arcs constrained to (0,π) so every sine is positive.",
+      "description": "ceva_unified_principle with ρ = Real.sin, discharging positivity by Real.sin_pos_of_pos_of_lt_pi on each arc."
+    },
+    {
+      "name": "ceva_hyperbolic_specialization",
+      "type": "theorem",
+      "statement": "sinh bd / sinh dc * (sinh ce / sinh ea) * (sinh af / sinh fb) = 1 ↔ sinh bd * sinh ce * sinh af = sinh dc * sinh ea * sinh fb",
+      "significance": "Hyperbolic Ceva as the ρ = sinh specialization of the unified principle, for positive distances.",
+      "description": "ceva_unified_principle with ρ = Real.sinh, discharging positivity by sinh_pos_of_pos."
+    },
+    {
+      "name": "flat_limit_connects_geometries",
+      "type": "theorem",
+      "statement": "Tendsto (fun t => t⁻¹ * sin t) (𝓝[≠] 0) (𝓝 1) ∧ Tendsto (fun t => t⁻¹ * sinh t) (𝓝[≠] 0) (𝓝 1)",
+      "significance": "The unifying limit: as scale → 0 both sin t / t and sinh t / t tend to 1, so the spherical and hyperbolic Ceva conditions degenerate to the Euclidean one. Formalises how curved-space concurrency reduces to the flat case in the small-triangle limit.",
+      "description": "Pairs spherical_flat_limit and hyperbolic_flat_limit."
+    },
+    {
+      "name": "spherical_flat_limit",
+      "type": "theorem",
+      "statement": "Tendsto (fun t : ℝ => t⁻¹ * Real.sin t) (nhdsWithin 0 {0}ᶜ) (nhds 1)",
+      "significance": "sin t / t → 1 as t → 0: the spherical measure sin(arc) becomes the flat arc length in the small-scale limit. One half of the flat-limit bridge.",
+      "description": "The difference-quotient of sin at 0 is its derivative cos 0 = 1 (Real.hasDerivAt_sin 0 |>.tendsto_slope_zero)."
+    },
+    {
+      "name": "hyperbolic_flat_limit",
+      "type": "theorem",
+      "statement": "Tendsto (fun t : ℝ => t⁻¹ * Real.sinh t) (nhdsWithin 0 {0}ᶜ) (nhds 1)",
+      "significance": "sinh t / t → 1 as t → 0: the hyperbolic measure sinh(dist) becomes the flat distance in the small-scale limit. The other half of the flat-limit bridge.",
+      "description": "The difference-quotient of sinh at 0 is its derivative cosh 0 = 1, using hasDerivAt_sinh 0."
+    },
+    {
+      "name": "hasDerivAt_sinh",
+      "type": "theorem",
+      "statement": "HasDerivAt Real.sinh (Real.cosh x) x",
+      "significance": "The derivative of sinh is cosh, supplied here because it drives the hyperbolic flat-limit. A small piece of analytic infrastructure the file needs beyond Mathlib's sin support.",
+      "description": "Differentiates sinh = (exp x - exp (-x))/2 via hasDerivAt_exp and the chain rule on exp(-x)."
+    },
+    {
+      "name": "sinh_pos_of_pos",
+      "type": "theorem",
+      "statement": "0 < x → 0 < Real.sinh x",
+      "significance": "Positivity of sinh on the positive reals — the hyperbolic analogue of sin-positivity, ensuring the hyperbolic Ceva measures are valid (nonzero) divisors.",
+      "description": "From sinh x = (exp x - exp (-x))/2 with exp x > exp 0 = 1 > exp(-x)."
+    },
+    {
+      "name": "spherical_medians_concurrent",
+      "type": "theorem",
+      "statement": "0 < a → a < Real.pi → sin a / sin a * (sin a / sin a) * (sin a / sin a) = 1",
+      "significance": "Corollary: spherical medians concur. When D, E, F are midpoints (equal arcs on each side), the spherical Ceva product is trivially 1 — the sphere's version of the centroid.",
+      "description": "div_self on the nonzero sin a (positive on (0,π))."
+    },
+    {
+      "name": "hyperbolic_medians_concurrent",
+      "type": "theorem",
+      "statement": "0 < d → sinh d / sinh d * (sinh d / sinh d) * (sinh d / sinh d) = 1",
+      "significance": "Corollary: hyperbolic medians concur. Equal side-distances make the hyperbolic Ceva product 1 — the hyperbolic centroid.",
+      "description": "div_self on the nonzero sinh d (positive for d > 0)."
+    },
+    {
+      "name": "trigCevaProduct_eq_generalized",
+      "type": "lemma",
+      "statement": "trigCevaProduct cfg = generalizedCevaProduct cfg.toGeneralized",
+      "significance": "Bridge lemma: the trigonometric Ceva product is definitionally the generalized product on the sin-valued config. Lets trigonometric_ceva inherit generalized_ceva.",
+      "description": "rfl after unfolding the two products and the toGeneralized coercion."
+    },
+    {
+      "name": "sphericalCevaProduct_eq_generalized",
+      "type": "lemma",
+      "statement": "sphericalCevaProduct cfg = generalizedCevaProduct cfg.toGeneralized",
+      "significance": "Bridge lemma routing spherical Ceva to the abstract form.",
+      "description": "rfl after unfolding."
+    },
+    {
+      "name": "hyperbolicCevaProduct_eq_generalized",
+      "type": "lemma",
+      "statement": "hyperbolicCevaProduct cfg = generalizedCevaProduct cfg.toGeneralized",
+      "significance": "Bridge lemma routing hyperbolic Ceva to the abstract form.",
+      "description": "rfl after unfolding."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cevas-theorem",
