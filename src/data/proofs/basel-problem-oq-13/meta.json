@@ -118,6 +118,29 @@
       "mathContext": "The lambda value λ(4), recovered as ζ(4) minus its even part."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "hasSum_even_zeta_four",
+      "type": "theorem",
+      "statement": "HasSum (fun k : ℕ => 1 / ((2 * k : ℕ) : ℝ) ^ 4) (π ^ 4 / 1440)",
+      "significance": "The even part of the split: the sum over even indices is exactly a sixteenth of ζ(4), since (2k)⁴ = 16·k⁴. This is the lemma that lets the odd part be recovered by subtraction.",
+      "description": "Scales Mathlib's hasSum_zeta_four (ζ(4) = π⁴/90) by 1/16 via HasSum.mul_left, then matches the reindexed even series (2k)⁻⁴ = (1/16)·k⁻⁴ by push_cast and ring. Value: π⁴/90 · 1/16 = π⁴/1440."
+    },
+    {
+      "name": "hasSum_odd_zeta_four",
+      "type": "theorem",
+      "statement": "HasSum (fun k : ℕ => 1 / ((2 * k + 1 : ℕ) : ℝ) ^ 4) (π ^ 4 / 96)",
+      "significance": "The headline result: the odd-index fourth-power sum ∑ 1/(2k+1)⁴ = π⁴/96, the fourth-power analogue of the classical odd Basel sum ∑ 1/(2k+1)² = π²/8. It isolates the odd contribution to ζ(4) with no new analytic input.",
+      "description": "Uses HasSum.even_add_odd to reassemble ζ(4) as (even part) + (odd part); with the even part pinned to π⁴/1440 by hasSum_even_zeta_four and the total to π⁴/90 by hasSum_zeta_four, HasSum.unique + linarith give the odd part = π⁴/90 − π⁴/1440 = π⁴/96. Summability of the odd series comes from comp_injective on ζ(4)'s summability."
+    },
+    {
+      "name": "tsum_odd_zeta_four",
+      "type": "theorem",
+      "statement": "∑' k : ℕ, 1 / ((2 * k + 1 : ℕ) : ℝ) ^ 4 = π ^ 4 / 96",
+      "significance": "The same result packaged as an unconditional tsum equation, the form most convenient for downstream use where a closed-form value (rather than a HasSum witness) is needed.",
+      "description": "A one-line corollary: HasSum.tsum_eq applied to hasSum_odd_zeta_four."
+    }
+  ],
   "conclusion": {
     "summary": "The odd-fourth-power zeta sum λ(4) = ∑ 1/(2k+1)⁴ = π⁴/96 is formalized with 0 axioms and 0 sorries, built from Mathlib's ζ(4) = π⁴/90 by the even/odd parity split. The proof packages the even-indexed fourth-power sum (π⁴/1440) and the odd-indexed lambda value (π⁴/96) as reusable HasSum lemmas plus a tsum corollary.",
     "implications": "Completes the fourth-power analogue of the odd-square Basel sum ∑ 1/(2k+1)² = π²/8 and demonstrates the HasSum.even_add_odd splitting idiom at exponent 4. The same template — even part = scaled ζ, odd part by uniqueness — applies directly to the Dirichlet eta value η(4) = 7π⁴/720 from ζ(4) = π⁴/90, and to higher even exponents via Mathlib's hasSum_zeta_nat.",
