@@ -72,6 +72,14 @@
       {
         "id": "leibniz-pi",
         "relationship": "Namesake only: that entry is Leibniz's SERIES for π; this one is Leibniz's PRODUCT RULE for polynomial derivatives — unrelated results sharing Leibniz's name."
+      },
+      {
+        "id": "factor-remainder-hasse-derivative-fq",
+        "relationship": "Complementary boundary case: this entry proves the ordinary-derivative multiplicity test SUCCEEDS for distinct-rooted split polynomials over any integral domain; that entry charts exactly where the ordinary-derivative test FAILS in positive characteristic 𝔽_q (inseparability), where the Hasse derivative is required."
+      },
+      {
+        "id": "abel-ruffini-oq-07-discriminant",
+        "relationship": "The discriminant ∏_{i<j}(rᵢ−rⱼ)² is assembled from the same node differences (rᵢ−rⱼ) that eval_derivative_prod_X_sub_C collects into p'(rᵢ₀)=∏_{j≠i₀}(rᵢ₀−rⱼ); that entry uses the discriminant to read off a Galois group, this one supplies the derivative-at-a-root factor behind it (open question 1)."
       }
     ],
     "axiomCount": 0,
@@ -91,7 +99,8 @@
       "The Finset product rule follows from the two-factor rule by a single induction; the only real work is the erase/insert index bookkeeping",
       "Evaluating the split-polynomial derivative at a root p'(rᵢ₀) = ∏_{j≠i₀}(rᵢ₀ − rⱼ) needs NO injectivity — the off-diagonal terms vanish structurally",
       "That product is precisely the Lagrange-interpolation denominator at the node rᵢ₀ and a factor of the discriminant",
-      "Over an integral domain with distinct roots the value is nonzero, so simple roots of a split polynomial are never roots of its derivative — the multiplicity/derivative test in its cleanest form"
+      "Over an integral domain with distinct roots the value is nonzero, so simple roots of a split polynomial are never roots of its derivative — the multiplicity/derivative test in its cleanest form",
+      "The simple-root result is characteristic-independent: it holds over ℤ, ℚ, or 𝔽_p alike, using only distinctness of the roots and the no-zero-divisor law. Positive characteristic bites elsewhere — in the ordinary-derivative multiplicity test for polynomials with repeated or inseparable factors, where the ordinary derivative can degenerate and the Hasse derivative is needed instead"
     ],
     "prerequisites": [
       "Formal polynomial derivative and the two-factor product rule",
@@ -171,6 +180,16 @@
       "targetId": "vandermonde-interpolation-oq-01",
       "relationship": "related",
       "description": "Lagrange-interpolation companion. This entry evaluates the split-polynomial derivative at a node to obtain p'(rᵢ₀) = ∏_{j≠i₀}(rᵢ₀ − rⱼ) — precisely the Lagrange denominator whose reciprocal weights the interpolation basis. That entry proves Vandermonde nonvanishing and the resulting existence/uniqueness of polynomial interpolation through the same distinct nodes rᵢ; the nonvanishing of the denominator here (eval_derivative_prod_X_sub_C_ne_zero over a domain with distinct roots) is the local, derivative-side counterpart of the global Vandermonde nonvanishing there."
+    },
+    {
+      "targetId": "factor-remainder-hasse-derivative-fq",
+      "relationship": "related",
+      "description": "The converse cautionary tale: here the ordinary-derivative multiplicity test succeeds for distinct-rooted split polynomials over any integral domain, while that entry maps exactly where the ordinary-derivative test FAILS in positive characteristic 𝔽_q (inseparability), motivating the Hasse derivative."
+    },
+    {
+      "targetId": "abel-ruffini-oq-07-discriminant",
+      "relationship": "related",
+      "description": "The discriminant of a split polynomial is ∏_{i<j}(rᵢ−rⱼ)², built from the same node differences that p'(rᵢ₀)=∏_{j≠i₀}(rᵢ₀−rⱼ) collects; that entry uses the discriminant to detect the Galois group, this one computes the derivative-at-a-root factor behind it (open question 1)."
     }
   ],
   "references": [
