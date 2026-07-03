@@ -50,6 +50,30 @@
     ]
   },
   {
+    "id": "ann-sb-oq03oq02-chain",
+    "proofId": "schroeder-bernstein-oq-03-oq-02",
+    "range": {
+      "startLine": 88,
+      "endLine": 129
+    },
+    "type": "technique",
+    "title": "Building the Chain: Choice, Nat.rec, and ≤-Induction",
+    "content": "The proof of exhaustion is assembled from three standard Lean mechanisms. First, classical + Exists.choose turn the existential step hypotheses dstep/rstep into honest functions chD/chR : S → ℕ → S, each carrying an extension fact (chD_ext, chR_ext) and a coverage fact (chD_cov, chR_cov); this is the single point where Classical.choice enters. Second, the chain c is a primitive recursion, c = Nat.rec s₀ (fun n s => chR (chD s n) n), so that c 0 = s₀ and c (n+1) = chR (chD (c n) n) n hold definitionally (by rfl). Third, chain monotonicity for arbitrary j ≤ k (hextle) is obtained by induction on the ≤ proof itself — the refl case gives ext (c k) (c k) from ext_refl, and each step composes the inductive hypothesis with a one-step extension via ext_trans.",
+    "mathContext": "Nat.le is an inductively defined family (Nat.le.refl / Nat.le.step), so `induction hjk` recurses on the derivation of j ≤ k, converting 'reachable in finitely many steps' into a transitive-closure proof. Reading c (n+1) off by rfl avoids any auxiliary unfolding lemma.",
+    "significance": "Shows the engine needs no bespoke machinery — only choice to realize the steps, primitive recursion to schedule them, and ≤-induction to globalize one-step monotonicity — which is why it transplants unchanged to any other back-and-forth setting.",
+    "relatedConcepts": [
+      "Exists.choose / Exists.choose_spec",
+      "primitive recursion (Nat.rec)",
+      "induction on the ≤ relation",
+      "transitive closure of a one-step relation"
+    ],
+    "prerequisites": [
+      "Classical.choice and choice-based witness extraction",
+      "definitional unfolding of Nat.rec",
+      "the refl/step recursor for Nat.le"
+    ]
+  },
+  {
     "id": "ann-sb-oq03oq02-eventual",
     "proofId": "schroeder-bernstein-oq-03-oq-02",
     "range": {

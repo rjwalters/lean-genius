@@ -80,7 +80,8 @@
       "**Exhaustion is order theory, not computability.** The reason the back-and-forth reaches every element is entirely captured by monotone coverage plus 'any point is coverable' — no matchings, no Primrec, no permutations. Separating (b) from (c) turns the parent's open direction into a single remaining task: the computable read-off of an already-total limit.",
       "**Cover both coordinates at one stage.** Handling domain point n and range point n together at stage n+1 (chR ∘ chD) eliminates the even/odd parity bookkeeping of the textbook schedule; then only monotonicity of dcov (transported across the trailing range step) is needed for simultaneous coverage — rcov_mono is used solely to make coverage persist at later stages.",
       "**The hypotheses are exactly the parent's augment steps.** dstep and rstep are, verbatim up to the invariant bookkeeping, augment_domain_step and augment_range_step from schroeder-bernstein-oq-03; the engine is the missing glue that turns those two local moves into global totality and surjectivity of the limit relation.",
-      "**Non-vacuity is enumerability of ℕ.** The simplest honest model — finite lists growing by prepend — instantiates every hypothesis and yields a chain whose union is ℕ, so the engine's conclusion is genuinely inhabited and the exhaustion claim has content."
+      "**Non-vacuity is enumerability of ℕ.** The simplest honest model — finite lists growing by prepend — instantiates every hypothesis and yields a chain whose union is ℕ, so the engine's conclusion is genuinely inhabited and the exhaustion claim has content.",
+      "**Monotone coverage is what makes the limit well-defined.** Because dcov/rcov are required to be monotone under ext, coverage is never retracted: the moment n is covered at stage n+1 it stays covered forever, so each element has a single stabilization stage K = n+1. This 'defined-and-never-retracted' shape is precisely what lets the pointwise limit of the chain be read as a total function of ℕ — persistence is not a bonus lemma but the design constraint that turns a chain of partial states into a limit."
     ],
     "prerequisites": [
       "Order theory (preorders; monotone predicates; chains under an extension relation)",
@@ -90,12 +91,28 @@
   },
   "sections": [
     {
-      "id": "exhaustion-engine",
-      "title": "The Exhaustion Engine",
+      "id": "three-ingredients",
+      "title": "Three Separable Ingredients of the Priority Construction",
+      "startLine": 3,
+      "endLine": 54,
+      "summary": "The file docstring decomposes Myhill's back-and-forth priority construction (Rogers §7.4) into three logically independent ingredients: (a) each stage terminates, (b) domain/range exhaustion, (c) computability of the limit. The parent schroeder-bernstein-oq-03 already discharges (a) as its two augment steps; this file isolates (b) as a stand-alone order-theoretic fact, reducing the open direction to (c) alone.",
+      "mathContext": "Exhaustion (b) is not specific to computability — it is the order-theoretic heart of every back-and-forth argument, from Cantor's isomorphism of countable dense linear orders onward."
+    },
+    {
+      "id": "witnesses-and-chain",
+      "title": "Witness Selection and the Parity-Free Chain",
       "startLine": 72,
+      "endLine": 101,
+      "summary": "exhaustion's statement fixes a preorder ext, monotone coverage dcov/rcov, and step hypotheses dstep/rstep. Its proof opens by choosing witness functions chD/chR from dstep/rstep (via Exists.choose, the sole use of Classical.choice), each ext-monotone and coverage-achieving, then defines the chain c by Nat.rec with c 0 = s₀ and c (n+1) = chR (chD (c n) n) n — covering domain point n then range point n at the single stage n+1.",
+      "mathContext": "chD_ext / chR_ext give extension and chD_cov / chR_cov give coverage. Covering both coordinates at one stage (chR ∘ chD) replaces the even/odd parity schedule of the textbook construction."
+    },
+    {
+      "id": "monotonicity-coverage",
+      "title": "Monotonicity and Persistent Coverage",
+      "startLine": 102,
       "endLine": 129,
-      "summary": "exhaustion: from a preorder ext, monotone coverage dcov/rcov, and step hypotheses dstep/rstep, build a monotone chain c from s₀ (one-step hext1 and transitive hextle) with first coverage dcov (c (n+1)) n ∧ rcov (c (n+1)) n and persistent coverage at every later stage. The chain covers domain point n and range point n together at stage n+1, avoiding parity bookkeeping.",
-      "mathContext": "chD/chR are the ext-monotone, coverage-achieving witnesses of dstep/rstep (via Exists.choose). Monotonicity of dcov transports domain coverage across the trailing range step; ext_trans + Nat.le induction give chain monotonicity."
+      "summary": "From the chain, hext1 gives one-step monotonicity (chaining chD_ext and chR_ext through ext_trans) and hextle lifts it to ext (c j) (c k) for j ≤ k by induction on the ≤ proof. hcov1 establishes first coverage at stage n+1 — reading range coverage off chR_cov and transporting domain coverage across the trailing range step by dcov_mono — and hcov propagates it to every later stage k > n via hextle plus dcov_mono / rcov_mono.",
+      "mathContext": "Persistence is exactly monotonicity of the coverage predicates: once dcov (c (n+1)) n holds, extending the state keeps it, so n is never retracted."
     },
     {
       "id": "eventual-coverage",
