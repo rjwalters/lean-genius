@@ -44,8 +44,13 @@ Mathlib, so compile the worktree copy with `LEAN_PATH` → the main repo's prebu
    0-axiom.** Section 4i-bis now has `OnCycle`, `fwdOrbit_injective_of_not_onCycle`, and
    `escape_of_infinite_orbit` (the `¬OnCycle` arm of the escape dichotomy, drop-in matching the
    scaffold signature). `myhill_isomorphism` sorry still open — infrastructure, not closure.
-2. **NEXT (critical path):** Pick the Lean encoding of `Balanced`; prove `balanced_cons_domain` /
-   `balanced_cons_range` and `balanced_nil` (Claim B).
+   **Also DONE (same session):** cycle-period substrate — `orbitPeriod` (=`Nat.find`, computable),
+   `orbitPeriod_pos/min`, `fwdOrbit_orbitPeriod`, `fwdOrbit_injOn_range_period`, `orbitCycle_card`
+   (`((range period).image (fwdOrbit f g a)).card = period`). All VERIFIED. PR #34114.
+2. **NEXT (critical path):** Encode `Balanced` over the READY-MADE cycle
+   `orbitCycle a := (Finset.range (orbitPeriod h)).image (fwdOrbit f g a)` (recommended — avoids
+   bespoke cycle-set machinery; card already proven). Prove `balanced_nil`, `balanced_cons_domain`
+   / `balanced_cons_range` (Claim B).
 3. Prove `escape_of_balanced` (Claim A, cycle case); merge into `escape_exists'` by `OnCycle`
    dichotomy.
 4. Build the extension-only scheduler on `domain_step_exists` + dual range cons; read off `e`
