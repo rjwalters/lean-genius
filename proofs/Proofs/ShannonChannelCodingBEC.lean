@@ -240,4 +240,78 @@ theorem bec_capacity_le_log_two {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
   have hlog : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
   nlinarith [mul_nonneg hp0.le hlog]
 
+/-! ## Operational converse via Fano's inequality
+
+  The information capacity `C = (1 - p)·log 2` computed above is the *value* the
+  operational converse bounds against. The single-letter converse ingredient is
+  Fano's inequality, packaged in `ShannonChannelCoding.lean` as the proved
+  (axiom-free) theorem `fano_converse_capacity`:
+
+      log |α| ≤ channelCapacity ch + h(P_e) + P_e · log(|α| - 1)
+
+  for a uniform input, where `P_e` is the Fano error term of the joint
+  distribution. Specialising this to the BEC is unusually clean: the input
+  alphabet is `Bool`, so `|α| = 2` and the correction `P_e · log(|α| - 1) =
+  P_e · log 1 = 0` vanishes identically. Substituting the computed capacity
+  `C = (1 - p)·log 2` (`bec_capacity`) collapses the general single-letter
+  converse to the sharp BEC statement below — no `channel_coding_converse`
+  axiom is invoked. -/
+
+/-- **BEC single-letter Fano converse.** For the uniform (rate = 1 bit) input on
+    `BEC(p)`, the log-alphabet size is bounded by the capacity plus the binary
+    entropy of the Fano error term:
+
+      `log 2 ≤ (1 - p)·log 2 + h(P_e)`.
+
+    This is `fano_converse_capacity` specialised to `α = Bool`: the general
+    `P_e · log(|α| - 1)` correction is `P_e · log 1 = 0` for a binary input, and
+    `channelCapacity (bec p) = (1 - p)·log 2` by `bec_capacity`. Axiom-free. -/
+theorem bec_fano_converse {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
+    let P_e := 1 - ∑ y : Option Bool, ∑ x : Bool,
+                 jointDist (bec p hp0.le hp1.le) BSCCapacity.uniformBool (x, y) ^ 2 /
+                   (∑ x' : Bool, jointDist (bec p hp0.le hp1.le) BSCCapacity.uniformBool (x', y))
+    Real.log 2 ≤ (1 - p) * Real.log 2 + InformationTheory.BinaryEntropy.h P_e := by
+  intro P_e
+  -- The uniform Bool input is the constant `|α|⁻¹ = 1/2`.
+  have h_uniform : ∀ x : Bool,
+      BSCCapacity.uniformBool.p x = (Fintype.card Bool : ℝ)⁻¹ := by
+    intro x
+    simp only [BSCCapacity.uniformBool, Fintype.card_bool, Nat.cast_ofNat]
+    norm_num
+  -- Instantiate the proved single-letter Fano converse at the BEC.
+  have hfc :
+      Real.log (Fintype.card Bool) ≤
+        channelCapacity (bec p hp0.le hp1.le) +
+        InformationTheory.BinaryEntropy.h P_e +
+        P_e * Real.log ((Fintype.card Bool : ℝ) - 1) :=
+    fano_converse_capacity (bec p hp0.le hp1.le) BSCCapacity.uniformBool h_uniform
+  -- `|Bool| = 2`, so the log-cardinality is `log 2` and the correction vanishes.
+  have hcard : (Fintype.card Bool : ℝ) = 2 := by norm_num [Fintype.card_bool]
+  rw [hcard, bec_capacity hp0 hp1] at hfc
+  have h1 : ((2 : ℝ) - 1) = 1 := by norm_num
+  rw [h1, Real.log_one, mul_zero, add_zero] at hfc
+  exact hfc
+
+/-- **BEC Fano error lower bound.** Rearranging `bec_fano_converse`: for the
+    uniform (1-bit) input on `BEC(p)`, the binary entropy of the Fano error term
+    is at least `p·log 2`:
+
+      `p·log 2 ≤ h(P_e)`.
+
+    Operational reading: at the maximal input rate of one bit per channel use, a
+    fraction `p` of that bit is erased, and no single-letter decoding can drive
+    the residual error entropy below `p·log 2`. This is the sharp form of the
+    BEC converse — the capacity gap `log 2 - C = p·log 2` is exactly the floor on
+    `h(P_e)`. Axiom-free. -/
+theorem bec_fano_error_lower {p : ℝ} (hp0 : 0 < p) (hp1 : p < 1) :
+    let P_e := 1 - ∑ y : Option Bool, ∑ x : Bool,
+                 jointDist (bec p hp0.le hp1.le) BSCCapacity.uniformBool (x, y) ^ 2 /
+                   (∑ x' : Bool, jointDist (bec p hp0.le hp1.le) BSCCapacity.uniformBool (x', y))
+    p * Real.log 2 ≤ InformationTheory.BinaryEntropy.h P_e := by
+  intro P_e
+  have hb : Real.log 2 ≤ (1 - p) * Real.log 2 + InformationTheory.BinaryEntropy.h P_e :=
+    bec_fano_converse hp0 hp1
+  have hexp : (1 - p) * Real.log 2 = Real.log 2 - p * Real.log 2 := by ring
+  linarith [hb, hexp]
+
 end InformationTheory.ChannelCoding.BEC
