@@ -136,6 +136,43 @@
       "summary": "Proves by decide that 5, 13, 17, 29, 37 are all prime and ≡ 1 (mod 4). These are the first five elements of OEIS A002144 (primes ≡ 1 mod 4), all expressible as sums of two squares: 5=1²+2², 13=2²+3², 17=1²+4², 29=2²+5², 37=1²+6²."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "prime_dvd_sq_add_one_mod_four",
+      "type": "lemma",
+      "statement": "Nat.Prime p → p ≠ 2 → p ∣ k ^ 2 + 1 → p % 4 = 1",
+      "significance": "The number-theoretic heart of the proof: any odd prime dividing k² + 1 is ≡ 1 (mod 4). This is what makes the k² + 1 construction produce 1-mod-4 primes, exactly the extra ingredient the 4k+3 case does not need.",
+      "description": "From p ∣ k² + 1 deduces that −1 is a square in ZMod p (witness k), then invokes Mathlib's Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one to rule out p ≡ 3 (mod 4); oddness leaves p % 4 = 1."
+    },
+    {
+      "name": "exists_odd_prime_factor",
+      "type": "lemma",
+      "statement": "n > 1 → Odd n → ∃ p, Nat.Prime p ∧ p ∣ n ∧ p ≠ 2",
+      "significance": "Supplies the odd prime factor that the main construction feeds into the divisibility lemma: an odd number > 1 has a prime factor other than 2. Ensures the extracted factor is eligible for the ≡ 1 (mod 4) classification.",
+      "description": "Takes any prime factor via Nat.exists_prime_and_dvd; if it were 2 then n would be even, contradicting Odd n (closed by omega)."
+    },
+    {
+      "name": "infinitely_many_primes_1_mod_4",
+      "type": "theorem",
+      "statement": "∀ n : ℕ, ∃ p, Nat.Prime p ∧ p > n ∧ p % 4 = 1",
+      "significance": "THE MAIN THEOREM. For every n there is a prime p > n with p ≡ 1 (mod 4), hence infinitely many. An elementary special case of Dirichlet's theorem; unlike the 4k+3 case it hinges on the quadratic-residue fact that −1 is a square mod p exactly when p ≡ 1 (mod 4).",
+      "description": "Euclid-style with N = (2·(n+1)!)² + 1: N is odd and > 1, so exists_odd_prime_factor gives an odd prime p ∣ N; prime_dvd_sq_add_one_mod_four forces p ≡ 1 (mod 4), and p > n because p ∣ (n+1)! would force p ∣ 1."
+    },
+    {
+      "name": "primes_1_mod_4_infinite",
+      "type": "theorem",
+      "statement": "Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 1}",
+      "significance": "Repackages the result in Mathlib's Set.Infinite vocabulary: the set of primes ≡ 1 (mod 4) is infinite — the form most convenient for downstream library use.",
+      "description": "Uses Set.infinite_iff_exists_gt: for every n, infinitely_many_primes_1_mod_4 supplies a member p > n of the set."
+    },
+    {
+      "name": "no_largest_prime_1_mod_4",
+      "type": "theorem",
+      "statement": "¬∃ p, Nat.Prime p ∧ p % 4 = 1 ∧ ∀ q, Nat.Prime q → q % 4 = 1 → q ≤ p",
+      "significance": "The 'no largest prime' phrasing: there is no maximal prime ≡ 1 (mod 4), matching Euclid's classical negation-of-a-maximum formulation.",
+      "description": "Given a putative largest such prime p, apply the main theorem at p to obtain q > p with q ≡ 1 (mod 4), contradicting maximality (omega)."
+    }
+  ],
   "sorries": 0,
   "references": [
     {
