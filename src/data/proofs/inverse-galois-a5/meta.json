@@ -168,5 +168,119 @@
       "venue": "leanprover-community/mathlib4",
       "note": "Eisenstein irreducibility and Galois-group machinery used in the realization."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "q_gal_iso_a5",
+      "type": "theorem",
+      "statement": "Nonempty (q.Gal ≃* alternatingGroup (Fin 5))",
+      "significance": "The headline: the Galois group of q(x) = x⁵ − 5x⁴ + 10x³ − 10x² + 25x − 5 over ℚ is isomorphic to A₅. This realizes the smallest non-solvable simple group as a Galois group, going beyond Shafarevich's solvable case of the Inverse Galois Problem.",
+      "description": "From |Gal(q)| = 60 (q_gal_card) and Gal(q) ≤ A₅ (all signs even), the order-60 subgroup of A₅ must be all of A₅; the isomorphism follows."
+    },
+    {
+      "name": "a5_realizable",
+      "type": "theorem",
+      "statement": "∃ K/ℚ finite Galois with q.Gal ≃* A₅ (A₅ is a Galois group over ℚ)",
+      "significance": "States the Inverse Galois realization abstractly: there is a number field whose Galois group over ℚ is A₅. The existence half of the entry's raison d'être.",
+      "description": "Takes K = q.SplittingField; IsGalois ℚ K holds since q is separable, and q_gal_iso_a5 supplies the group isomorphism."
+    },
+    {
+      "name": "gal_not_solvable",
+      "type": "theorem",
+      "statement": "¬ IsSolvable q.Gal",
+      "significance": "The non-solvability that makes this realization significant: since Gal(q) ≅ A₅ and A₅ is non-solvable, q's roots are not expressible by radicals — a concrete quintic beyond the reach of Shafarevich's solvable-group theorem.",
+      "description": "Transports a5_not_solvable across q_gal_iso_a5: solvability is a group isomorphism invariant."
+    },
+    {
+      "name": "a5_not_solvable",
+      "type": "theorem",
+      "statement": "¬ IsSolvable (alternatingGroup (Fin 5))",
+      "significance": "The classical group-theoretic input: A₅ is the smallest non-solvable (indeed simple non-abelian) group, the obstruction Galois used to prove the general quintic is unsolvable by radicals.",
+      "description": "If A₅ were solvable then S₅ = Perm(Fin 5) would be too (A₅ has index 2), contradicting the known non-solvability of S₅."
+    },
+    {
+      "name": "q_irreducible",
+      "type": "theorem",
+      "statement": "Irreducible q  (over ℚ)",
+      "significance": "Eisenstein's criterion at p = 5 makes q irreducible: its non-leading coefficients (−5, 25, −10, 10, −5) are divisible by 5, the constant term −5 is not divisible by 25, and the leading coefficient is 1. Irreducibility forces 5 ∣ |Gal(q)| and transitivity.",
+      "description": "Reduces to irreducibility of the integer polynomial (primitive, via Gauss), discharged by Eisenstein at 5."
+    },
+    {
+      "name": "disc_q_val",
+      "type": "theorem",
+      "statement": "discr q = 1024000000 = 32000²  (a perfect square)",
+      "significance": "The discriminant Disc(q) = 2¹⁶·5⁶ = 32000² is a perfect square. By the classical criterion, a squared discriminant forces Gal(q) into the alternating group A₅ — the containment Gal(q) ≤ A₅.",
+      "description": "Computed from the Vandermonde product squared (vandermondeProduct_sq_eq_32000_sq) via the resultant/discriminant identity."
+    },
+    {
+      "name": "vandermondeProduct_sq_eq_32000_sq",
+      "type": "theorem",
+      "statement": "vandermondeProduct² = (algebraMap ℤ K 32000)²",
+      "significance": "Realizes the square-discriminant fact inside the splitting field: the Vandermonde product ∏(rᵢ − rⱼ) squares to 32000², so its value ±32000 is rational and fixed by the whole Galois group.",
+      "description": "Combines the identity vandermondeProduct² = Disc(q) with disc_q_val = 32000²."
+    },
+    {
+      "name": "gal_acts_on_vandermondeProduct",
+      "type": "theorem",
+      "statement": "σ(vandermondeProduct) = sign(σ) · vandermondeProduct",
+      "significance": "The bridge between Galois action and permutation parity: each automorphism scales the Vandermonde product by the sign of the induced root permutation. Even permutations fix it, odd ones negate it — the mechanism turning a square discriminant into A₅ containment.",
+      "description": "A Galois automorphism permutes the roots; the Vandermonde product transforms by the determinant of the permutation matrix, i.e. its sign."
+    },
+    {
+      "name": "all_gal_signs_positive",
+      "type": "theorem",
+      "statement": "∀ σ : q.Gal, galSign σ = 1",
+      "significance": "Every Galois automorphism induces an even root permutation, because it fixes the rational Vandermonde product. This is precisely the statement Gal(q) ⊆ A₅.",
+      "description": "Since vandermondeProduct is rational (gal_fixes_vandermondeProduct), gal_acts_on_vandermondeProduct forces sign(σ) = 1 for all σ."
+    },
+    {
+      "name": "gal_card_dvd_60_of_all_even",
+      "type": "theorem",
+      "statement": "(∀ σ, galSign σ = 1) ⟹ |Gal(q)| ∣ 60",
+      "significance": "Turns the parity fact into an order bound: an all-even Galois group embeds in A₅ (order 60), so its cardinality divides 60. The upper constraint that pins |Gal(q)| once combined with the divisibility lower bounds.",
+      "description": "All-even signs give an injection Gal(q) ↪ A₅ via the root-permutation representation; Lagrange gives |Gal(q)| ∣ |A₅| = 60."
+    },
+    {
+      "name": "five_dvd_gal_card",
+      "type": "theorem",
+      "statement": "5 ∣ |Gal(q)|",
+      "significance": "Irreducibility of the degree-5 polynomial makes the Galois action transitive on 5 roots, so 5 divides the group order — supplying a factor of 5 toward the target order 60.",
+      "description": "Applies Gal.prime_degree_dvd_card to the irreducible quintic q: the prime degree divides the Galois group order."
+    },
+    {
+      "name": "three_dvd_gal_card",
+      "type": "axiom",
+      "statement": "3 ∣ Fintype.card q.Gal",
+      "significance": "The single remaining assumption (status: axiomatized, axiomCount 1): that 3 divides |Gal(q)|. It is justified by a 3-cycle appearing in the factorization of q modulo a suitable prime, but that cycle-type computation is taken as an axiom here. Together with 5 ∣ |Gal| it yields 15 ∣ |Gal|.",
+      "description": "Stated as an axiom; the intended proof exhibits an order-3 element from q's cycle type mod 7 (a cubic factor with no roots, evidenced by q_has_three_cycle_evidence)."
+    },
+    {
+      "name": "gal_card_ne_15",
+      "type": "theorem",
+      "statement": "|Gal(q)| ≠ 15  (and gal_card_ne_30: ≠ 30)",
+      "significance": "Rules out the intermediate transitive subgroup orders: combined with 15 ∣ |Gal| ∣ 60 this eliminates 15 and 30, leaving 60 as the only possibility. The final squeeze forcing |Gal(q)| = 60.",
+      "description": "A group of order 15 (or 30) inside A₅ would be a transitive subgroup of the wrong structure; no_subgroup_order_15/30 show A₅ has none, contradicting transitivity."
+    },
+    {
+      "name": "q_gal_card",
+      "type": "theorem",
+      "statement": "Fintype.card q.Gal = 60",
+      "significance": "The order is exactly 60: 15 ∣ |Gal| (from 3 and 5 coprime) and |Gal| ∣ 60, while 15 and 30 are excluded, forces |Gal(q)| = 60 = |A₅|. This equality is what upgrades containment to isomorphism.",
+      "description": "Combines five_dvd_gal_card, three_dvd_gal_card (⟹ 15 ∣ |Gal|), gal_card_dvd_60_proved, and the exclusions gal_card_ne_15/30."
+    },
+    {
+      "name": "splitting_field_q_finrank",
+      "type": "theorem",
+      "statement": "Module.finrank ℚ q.SplittingField = 60",
+      "significance": "Records the field-theoretic size: the splitting field of q has degree 60 over ℚ, equal to |Gal(q)| as the Galois correspondence demands. The concrete number field realizing A₅ has this dimension.",
+      "description": "Uses Nat.card q.Gal = finrank ℚ (splitting field) for a Galois extension, then q_gal_card = 60."
+    },
+    {
+      "name": "q_rootSet_card",
+      "type": "theorem",
+      "statement": "Fintype.card (q.rootSet q.SplittingField) = 5",
+      "significance": "The separable quintic has exactly 5 distinct roots in its splitting field, so the Galois group acts faithfully on a 5-element set — the representation Gal(q) ↪ S₅ underlying every cycle-type and sign argument.",
+      "description": "card_rootSet_eq_natDegree applied to the separable q (q_separable), giving 5 = deg q roots."
+    }
   ]
 }
