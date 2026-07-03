@@ -1,0 +1,193 @@
+{
+  "id": "bezout-identity-oq-01-oq-02-oq-01",
+  "title": "The Euclidean Algorithm as an Explicit Product of Elementary Step Matrices",
+  "slug": "bezout-identity-oq-01-oq-02-oq-01",
+  "description": "Answers the grandparent's open question — realize the unimodular Bézout reduction matrix U as the explicit product of elementary step matrices E(q) = !![0,1; 1,-q] indexed by the Euclidean quotients qᵢ. Each division step a = q·b + r acts on the column (a,b) as E(q) ·ᵥ (a,b) = (b, a % b), so chaining the steps until the second coordinate vanishes yields euclidProd a b = E(q_k)·⋯·E(q_1). We prove reduction (euclidProd a b ·ᵥ (a,b) = (gcd a b, 0) for all a,b), unimodularity (det euclidProd a b is a unit of ℤ, since each factor has det −1), coprime specialization ((a,b) ↦ (1,0)), and the literal indexing euclidProd a b = stepProduct (euclidQuots a b) over the quotient list. 12 theorems, 4 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-02",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ01OQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "bezout-identity",
+      "euclidean-algorithm",
+      "linear-algebra",
+      "unimodular-matrix",
+      "elementary-matrices",
+      "continued-fractions",
+      "gcd",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-02",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified over Mathlib's Nat.gcd recursion (Nat.gcd_rec, Nat.mod_add_div); no new axioms and no native_decide. The three sanity checks are discharged by simp/norm_num over the definitional recursion.",
+    "lineCount": 188,
+    "theoremCount": 12,
+    "definitionCount": 4,
+    "originalContributions": [
+      "E: the elementary Euclidean step matrix !![0,1; 1,-q], with E_mulVec proving E(q) ·ᵥ (a,b) = (b, a - q·b) — one division step — and E_det giving det E(q) = -1",
+      "euclidProd: a well-founded recursion assembling the product of step matrices E(q_k)·⋯·E(q_1) along the algorithm's (a,b) ↦ (b, a % b) recursion",
+      "euclidProd_mulVec: euclidProd a b ·ᵥ (a,b) = (gcd a b, 0) for ALL a,b — the whole product's net effect matches the grandparent's closed-form reduction matrix U",
+      "euclidProd_det: det euclidProd a b is a unit of ℤ — the product of determinant −1 factors is ±1, so the reduction is an invertible integral change of basis",
+      "euclidQuots + stepProduct + euclidProd_eq_stepProduct: exposes the quotient list [q₁,…,q_k] and folds it into the step-matrix product, making 'product of elementary step matrices indexed by qᵢ' literal"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The matrix form of the Euclidean algorithm is classical folklore in computational number theory and the theory of continued fractions. Each division step a = q·b + r is left-multiplication by an elementary matrix E(q) = [[0,1],[1,-q]] of determinant −1, and the accumulated transition matrix is unimodular, carrying the input column (a,b) to (gcd,0). The grandparent gallery entry (bezout-identity-oq-01-oq-02) packaged this net effect as a single closed-form matrix U = !![gcdA, gcdB; -b/g, a/g] ∈ SL₂(ℤ) and asked precisely for the decomposition of U into the per-step elementary factors indexed by the Euclidean quotients. That decomposition is exactly the correspondence between the extended Euclidean algorithm and the continued-fraction expansion of a/b: the quotients qᵢ are the partial quotients [q₁; q₂, …, q_k], and the step-matrix product is the matrix of convergents. This entry supplies the decomposition and proves it realizes the same reduction.",
+    "problemStatement": "Realize the unimodular Bézout reduction of a pair (a,b) as the explicit ordered product of the elementary step matrices E(qᵢ) = !![0,1; 1,-qᵢ] indexed by the successive Euclidean quotients qᵢ, and prove that this product carries (a,b) to (gcd a b, 0), has unit determinant, and equals a fold of the quotient list.",
+    "text": "Define E(q) = !![0,1; 1,-q]; then E(q) ·ᵥ (a,b) = (b, a - q·b) = (b, a % b) when q = a / b, i.e. E(q) performs one Euclidean division step. Define euclidProd a b by well-founded recursion on b: euclidProd a 0 = 1, and for b ≠ 0, euclidProd a b = euclidProd b (a % b) · E(a / b). By construction euclidProd a b = E(q_k)·⋯·E(q_1) with q₁,…,q_k the successive quotients. Three theorems capture the content. (1) Reduction: euclidProd a b ·ᵥ (a,b) = (gcd a b, 0) for all a,b, by functional induction on the recursion, using Nat.mod_add_div to rewrite a - (a/b)·b = a % b and Nat.gcd_rec for the gcd bookkeeping. (2) Unimodularity: det euclidProd a b is a unit of ℤ; each factor E(q) has det −1, so det_mul plus induction shows the product's determinant is ±1. (3) Explicit indexing: euclidQuots a b = [q₁,…,q_k] is the quotient list, stepProduct folds it into E(q_k)·⋯·E(q_1), and euclidProd a b = stepProduct (euclidQuots a b), making the phrase 'product of elementary step matrices indexed by qᵢ' literal. Coprime pairs specialize to euclidProd a b ·ᵥ (a,b) = (1,0).",
+    "proofStrategy": "The definitions euclidProd and euclidQuots use identical well-founded recursions on b (terminating via Nat.mod_lt), so Lean's generated euclidProd.induct drives all three main proofs by functional induction. The step action E_mulVec is proved entrywise (funext over Fin 2, fin_cases, unfolding Matrix.mulVec and dotProduct). The reduction proof rewrites the composed action via Matrix.mulVec_mulVec and E_mulVec, converts a - (a/b)·b to a % b with a cast of Nat.mod_add_div, applies the induction hypothesis, and closes the gcd bookkeeping with Nat.gcd_rec/Nat.gcd_comm. Unimodularity uses Matrix.det_mul and E_det = −1 with IsUnit closure under multiplication and negation. The stepProduct identity is a direct structural induction matching the two recursions.",
+    "keyInsights": [
+      "One Euclidean division step is precisely left-multiplication by E(q) = !![0,1; 1,-q]: the swap-and-subtract [[0,1],[1,-q]] sends (a,b) to (b, a - q·b) = (b, a % b), so the algorithm IS a sequence of elementary matrix multiplications, not merely analogous to one.",
+      "Determinant −1 per factor is the structural heart of unimodularity: det euclidProd a b = (-1)^k is a unit for every input, so the whole reduction is an invertible integral change of basis — the extended Euclidean algorithm never leaves the lattice ℤ².",
+      "The quotient list euclidQuots a b is exactly the continued-fraction expansion of a/b, and stepProduct folds it into the matrix of convergents; euclidProd_eq_stepProduct is the bridge between the recursive matrix and the classical [q₁; q₂, …, q_k] partial-quotient data.",
+      "Reusing one recursion (on b, via Nat.mod_lt) for both euclidProd and euclidQuots means Lean's functional-induction principle euclidProd.induct discharges reduction, unimodularity, and the stepProduct identity uniformly — the proofs are three instances of the same induction skeleton.",
+      "The reduction euclidProd a b ·ᵥ (a,b) = (gcd,0) holds for ALL a,b including a = b = 0 (both sides (0,0)); confining nothing to the coprime case keeps the per-step realization exactly as general as the grandparent's closed-form U."
+    ],
+    "prerequisites": [
+      "Well-founded recursion in Lean 4 with termination_by/decreasing_by and the generated .induct principle",
+      "Nat.gcd recursion: Nat.gcd_rec, Nat.gcd_comm, Nat.gcd_zero_right",
+      "Nat.mod_add_div and Nat.mod_lt for the division-step bookkeeping",
+      "2×2 matrix arithmetic: Matrix.mulVec, Matrix.mulVec_mulVec, Matrix.det_fin_two_of, Matrix.det_mul"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Bézout reduction of (a,b) to (gcd,0) is realized as the explicit ordered product euclidProd a b = E(q_k)·⋯·E(q_1) of elementary step matrices E(q) = !![0,1; 1,-q] indexed by the Euclidean quotients qᵢ. The product carries (a,b) to (gcd a b, 0) for all a,b, has unit determinant (each factor has det −1), sends coprime pairs to (1,0), and equals stepProduct (euclidQuots a b) — the literal fold of the quotient list. 12 theorems, 4 definitions, 0 sorries, 0 axioms, 188 lines.",
+    "implications": "This closes the grandparent entry's open question, factoring the closed-form unimodular matrix U into its per-step elementary constituents. The decomposition exposes the extended Euclidean algorithm as the continued-fraction / convergent-matrix machinery: the quotient list is the partial-quotient sequence and the step-matrix product is the matrix of convergents, tying the arithmetic of gcds to the modular group SL₂(ℤ) and the Stern–Brocot tree.",
+    "openQuestions": [
+      "Extract the Bézout coefficients directly from the top row of euclidProd a b and prove they agree with Mathlib's Int.gcdA / Int.gcdB, closing the loop back to the grandparent's closed-form matrix U entrywise.",
+      "Identify euclidQuots a b with the continued-fraction expansion of a/b and prove the columns of the partial products are the convergents pᵢ/qᵢ, formalizing the convergent recurrence."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "euclidProd_mulVec",
+      "type": "core",
+      "description": "For all naturals a, b, the product of step matrices satisfies euclidProd a b ·ᵥ (a,b) = (gcd a b, 0): the per-step Euclidean algorithm, realized as one matrix product, has the same net effect as the grandparent's closed-form reduction matrix U. Proved by functional induction on the euclidProd recursion, rewriting a - (a/b)·b = a % b via Nat.mod_add_div and the gcd via Nat.gcd_rec."
+    },
+    {
+      "name": "euclidProd_det",
+      "type": "core",
+      "description": "det euclidProd a b is a unit of ℤ (in fact ±1): each elementary factor E(q) has determinant −1, so Matrix.det_mul and induction show the product's determinant is a unit — the reduction is an invertible integral change of basis."
+    },
+    {
+      "name": "euclidProd_eq_stepProduct",
+      "type": "core",
+      "description": "euclidProd a b = stepProduct (euclidQuots a b): the reduction matrix is exactly the fold of the elementary step matrices over the list of Euclidean quotients, making 'product of elementary step matrices indexed by qᵢ' literal. Structural induction matching the two shared recursions."
+    },
+    {
+      "name": "E_mulVec",
+      "type": "supporting",
+      "description": "E(q) ·ᵥ (a,b) = (b, a - q·b): the elementary step matrix performs one Euclidean division step. Proved entrywise via fin_cases over Fin 2."
+    },
+    {
+      "name": "euclidProd_mulVec_coprime",
+      "type": "supporting",
+      "description": "A coprime pair (Nat.Coprime a b) is carried to the standard basis vector (1,0), obtained by specializing euclidProd_mulVec with gcd a b = 1 — the per-step realization of the grandparent's coprime statement."
+    }
+  ],
+  "leanFile": {
+    "namespace": "BezoutIdentityOQ01OQ02OQ01",
+    "lineCount": 188,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 4,
+    "path": "Proofs/BezoutIdentityOQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Packages the extended Euclidean algorithm as a single closed-form unimodular matrix U ∈ SL₂(ℤ) and poses the open question — decompose U into the elementary step matrices indexed by the Euclidean quotients — answered here."
+    },
+    {
+      "targetId": "bezout-identity-oq-01",
+      "relationship": "related",
+      "description": "Formalizes the extended Euclidean algorithm as a computable function; this entry recasts its per-step recursion as a matrix product."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "related",
+      "description": "The classical Bézout identity, here realized through the elementary-matrix factorization of the Euclidean reduction."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Problem Statement",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module documentation states the grandparent's open question, introduces the step matrix E(q) = !![0,1; 1,-q], and describes the three results — reduction, unimodularity, and the explicit indexing euclidProd = stepProduct (euclidQuots) — with references to Bézout, Nat.gcd, and the determinant machinery."
+    },
+    {
+      "id": "sec-step-matrix",
+      "title": "The Elementary Step Matrix E(q)",
+      "startLine": 64,
+      "endLine": 77,
+      "summary": "Defines E q = !![0,1; 1,-q]. E_mulVec proves E(q) ·ᵥ (a,b) = (b, a - q·b) — one Euclidean division step — entrywise via fin_cases. E_det gives det E(q) = -1, so each step lies in GL₂(ℤ)."
+    },
+    {
+      "id": "sec-euclidprod",
+      "title": "Definition: The Product of Step Matrices",
+      "startLine": 79,
+      "endLine": 94,
+      "summary": "Defines euclidProd a b by well-founded recursion on b (euclidProd a 0 = 1; euclidProd a b = euclidProd b (a % b) · E(a/b) for b ≠ 0), terminating via Nat.mod_lt. Simp lemmas euclidProd_zero and euclidProd_pos expose the two recursion branches."
+    },
+    {
+      "id": "sec-reduction",
+      "title": "Reduction: euclidProd a b ·ᵥ (a,b) = (gcd, 0)",
+      "startLine": 96,
+      "endLine": 115,
+      "summary": "euclidProd_mulVec proves the reduction for all a,b by functional induction. The recursive step composes E_mulVec via Matrix.mulVec_mulVec, rewrites a - (a/b)·b to a % b using a cast of Nat.mod_add_div, applies the induction hypothesis, and closes the gcd bookkeeping with Nat.gcd_rec."
+    },
+    {
+      "id": "sec-unimodular",
+      "title": "Unimodularity: det euclidProd a b is a Unit",
+      "startLine": 116,
+      "endLine": 131,
+      "summary": "euclidProd_det shows the determinant is a unit of ℤ by induction: Matrix.det_mul and E_det = -1 reduce each step to closure of IsUnit under multiplication and negation. euclidProd_mulVec_coprime specializes the reduction to coprime pairs, sending (a,b) to (1,0)."
+    },
+    {
+      "id": "sec-quotients",
+      "title": "Explicit Indexing by the Euclidean Quotients",
+      "startLine": 132,
+      "endLine": 172,
+      "summary": "euclidQuots a b lists the successive quotients q₁,…,q_k (same recursion as euclidProd), stepProduct folds a quotient list into E(q_k)·⋯·E(q_1), and euclidProd_eq_stepProduct proves euclidProd a b = stepProduct (euclidQuots a b) — the literal product of elementary step matrices indexed by qᵢ."
+    },
+    {
+      "id": "sec-examples",
+      "title": "Concrete Sanity Checks",
+      "startLine": 173,
+      "endLine": 188,
+      "summary": "Three examples: (12,8) ↦ (gcd = 4, 0), the coprime pair (7,5) ↦ (1,0), and euclidQuots 12 8 = [1,2] (so euclidProd 12 8 = E 2 · E 1), discharged by simp/norm_num over the definitional recursion."
+    }
+  ],
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "M. Newman",
+      "title": "Integral Matrices",
+      "year": 1972,
+      "venue": "Academic Press",
+      "note": "Unimodular (SL₂(ℤ)) reduction and the elementary-matrix factorization of the Euclidean algorithm."
+    },
+    {
+      "authors": "A. Ya. Khinchin",
+      "title": "Continued Fractions",
+      "year": 1964,
+      "venue": "University of Chicago Press",
+      "note": "The partial-quotient sequence and the convergent-matrix product, the classical form of the step-matrix decomposition realized here."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Provides Nat.gcd_rec, Nat.mod_add_div, Nat.mod_lt, and the 2×2 matrix determinant/mulVec API underlying this formalization."
+    }
+  ]
+}

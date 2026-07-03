@@ -1,0 +1,162 @@
+[
+  {
+    "id": "ann-step-matrix",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "E(q): The Elementary Euclidean Step Matrix",
+    "content": "Defines E q = !![0,1; 1,-q], the 2×2 integer matrix implementing a single division step of the Euclidean algorithm. E_mulVec proves E(q) ·ᵥ (a,b) = (b, a - q·b), so with q = a / b the action is (a,b) ↦ (b, a % b) — the swap-and-subtract at the heart of the algorithm. E_det computes det E(q) = -1, exhibiting each step as an element of GL₂(ℤ) and supplying the −1 factors whose product yields unimodularity.",
+    "mathContext": "$E(q) = \\begin{pmatrix} 0 & 1 \\\\ 1 & -q \\end{pmatrix}, \\qquad E(q)\\cdot_{\\mathrm v}(a,b) = (b,\\; a - qb), \\qquad \\det E(q) = -1$",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "elementary matrices",
+      "Euclidean division step",
+      "GL₂(ℤ)"
+    ],
+    "prerequisites": [
+      "Matrix.mulVec",
+      "Matrix.det_fin_two_of",
+      "Fin.sum_univ_two"
+    ]
+  },
+  {
+    "id": "ann-euclidprod",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "euclidProd: The Accumulated Product of Step Matrices",
+    "content": "Assembles the product of step matrices along the algorithm by well-founded recursion on b: euclidProd a 0 = 1 (identity), and for b ≠ 0, euclidProd a b = euclidProd b (a % b) · E(a / b). Termination is via Nat.mod_lt (a % b < b when b > 0). By construction euclidProd a b = E(q_k)·⋯·E(q_1), the quotients appearing right-to-left. The simp lemmas euclidProd_zero and euclidProd_pos expose the two recursion branches for use in the induction proofs.",
+    "mathContext": "$\\mathrm{euclidProd}(a,b) = E(q_k)\\,E(q_{k-1})\\cdots E(q_1), \\qquad q_i = \\lfloor a_i/b_i\\rfloor$",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "well-founded recursion",
+      "Euclidean algorithm",
+      "matrix product"
+    ],
+    "prerequisites": [
+      "termination_by / decreasing_by",
+      "Nat.mod_lt",
+      "Nat.pos_of_ne_zero"
+    ]
+  },
+  {
+    "id": "ann-reduction",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 96,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "euclidProd_mulVec: The Product Reduces (a,b) to (gcd, 0)",
+    "content": "The central result: euclidProd a b ·ᵥ (a,b) = (gcd a b, 0) for all naturals a, b. Proved by functional induction on the euclidProd recursion (euclidProd.induct). The base case b = 0 uses euclidProd a 0 = 1 and gcd a 0 = a. The recursive step composes the action via Matrix.mulVec_mulVec and E_mulVec, converts a - (a/b)·b to a % b with a cast of Nat.mod_add_div, applies the induction hypothesis for (b, a % b), and rewrites gcd a b = gcd b (a % b) via Nat.gcd_rec. The whole product's net effect matches the grandparent's closed-form reduction matrix U.",
+    "mathContext": "$\\mathrm{euclidProd}(a,b)\\cdot_{\\mathrm v}(a,b) = (\\gcd(a,b),\\,0) \\quad\\text{for all } a,b\\in\\mathbb{N}$",
+    "significance": "core",
+    "relatedConcepts": [
+      "functional induction",
+      "Nat.mod_add_div",
+      "Nat.gcd_rec"
+    ],
+    "prerequisites": [
+      "Matrix.mulVec_mulVec",
+      "Nat.mod_add_div",
+      "Nat.gcd_rec"
+    ]
+  },
+  {
+    "id": "ann-unimodular",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 116,
+      "endLine": 125
+    },
+    "type": "theorem",
+    "title": "euclidProd_det: The Reduction is Unimodular",
+    "content": "det euclidProd a b is a unit of ℤ (in fact ±1). By induction on the recursion: the base case is det 1 = 1, and the step uses Matrix.det_mul together with E_det = -1, reducing to closure of IsUnit under multiplication and negation (ih.mul isUnit_one.neg). Since each elementary factor has determinant −1, the product's determinant is (-1)^k, always a unit — so the Euclidean reduction is an invertible integral change of basis that never leaves the lattice ℤ².",
+    "mathContext": "$\\det \\mathrm{euclidProd}(a,b) = (-1)^k \\in \\mathbb{Z}^\\times$",
+    "significance": "core",
+    "relatedConcepts": [
+      "unimodular matrix",
+      "determinant of a product",
+      "IsUnit"
+    ],
+    "prerequisites": [
+      "Matrix.det_mul",
+      "IsUnit.mul",
+      "IsUnit.neg"
+    ]
+  },
+  {
+    "id": "ann-coprime",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 126,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "euclidProd_mulVec_coprime: Coprime Pairs Map to (1,0)",
+    "content": "For a coprime pair (Nat.Coprime a b, i.e. gcd a b = 1), euclidProd a b ·ᵥ (a,b) = (1,0) — the standard basis vector. Immediate from euclidProd_mulVec by substituting gcd a b = 1. This is the per-step realization of the grandparent's coprime statement: the elementary-matrix product carries any primitive vector to e₁, the arithmetic seed of SL₂(ℤ) acting transitively on primitive vectors.",
+    "mathContext": "$\\gcd(a,b)=1 \\;\\Rightarrow\\; \\mathrm{euclidProd}(a,b)\\cdot_{\\mathrm v}(a,b) = (1,0)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "coprime integers",
+      "primitive vectors",
+      "SL₂(ℤ) transitivity"
+    ],
+    "prerequisites": [
+      "Nat.Coprime",
+      "euclidProd_mulVec"
+    ]
+  },
+  {
+    "id": "ann-quotients",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 162
+    },
+    "type": "definition",
+    "title": "euclidQuots and stepProduct: The Quotient List and Its Fold",
+    "content": "euclidQuots a b lists the successive Euclidean quotients q₁,…,q_k using the same well-founded recursion as euclidProd (euclidQuots a 0 = []; euclidQuots a b = (a/b) :: euclidQuots b (a % b)). stepProduct folds a quotient list into the product of step matrices via foldr: stepProduct [q₁,…,q_k] = E(q_k)·⋯·E(q_1), with stepProduct_nil = 1 and stepProduct_cons the fold step. Together they make 'product of elementary step matrices indexed by qᵢ' a literal object — the continued-fraction partial-quotient data and its convergent-matrix product.",
+    "mathContext": "$\\mathrm{euclidQuots}(a,b) = [q_1,\\dots,q_k], \\qquad \\mathrm{stepProduct}[q_1,\\dots,q_k] = E(q_k)\\cdots E(q_1)$",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "continued fractions",
+      "partial quotients",
+      "List.foldr"
+    ],
+    "prerequisites": [
+      "well-founded recursion",
+      "List.foldr",
+      "Nat.mod_lt"
+    ]
+  },
+  {
+    "id": "ann-eq-stepproduct",
+    "proofId": "bezout-identity-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 163,
+      "endLine": 172
+    },
+    "type": "theorem",
+    "title": "euclidProd_eq_stepProduct: The Explicit Product Indexed by Quotients",
+    "content": "euclidProd a b = stepProduct (euclidQuots a b): the accumulated reduction matrix is exactly the fold of the elementary step matrices over the list of Euclidean quotients. Proved by structural induction matching the two shared recursions — the base case is 1 = stepProduct [] and the step aligns euclidProd_pos with euclidQuots_pos and stepProduct_cons. This is the literal answer to the grandparent's open question, decomposing the closed-form U into E(q_k)·⋯·E(q_1) indexed by qᵢ.",
+    "mathContext": "$\\mathrm{euclidProd}(a,b) = \\mathrm{stepProduct}(\\mathrm{euclidQuots}(a,b)) = E(q_k)\\cdots E(q_1)$",
+    "significance": "core",
+    "relatedConcepts": [
+      "elementary-matrix factorization",
+      "structural induction",
+      "convergent matrix"
+    ],
+    "prerequisites": [
+      "euclidProd_pos",
+      "euclidQuots_pos",
+      "stepProduct_cons"
+    ]
+  }
+]
