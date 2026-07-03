@@ -1,0 +1,128 @@
+{
+  "id": "catalan-numbers-oq-01-oq-04-oq-02",
+  "title": "The Log-Concave Derived Catalan Sequence is the Reciprocal 1/Cₙ (and Cₙ/(n+1) is Not)",
+  "slug": "catalan-numbers-oq-01-oq-04-oq-02",
+  "description": "The open question asks for a sequence derived from the Catalan numbers Cₙ that is strictly log-concave, aₙ² > aₙ₋₁·aₙ₊₁, and proposes aₙ = Cₙ/(n+1) as a candidate. This entry settles it. First, the proposed candidate is FALSE: n ↦ Cₙ/(n+1) is not log-concave. Already at n = 1 one has a₁² = (C₁/2)² = 1/4 while a₀·a₂ = (C₀/1)(C₂/3) = 2/3, so a₁² > a₀·a₂ fails (catalanOverSucc_not_logConcave_at_one). The structural reason is that the Catalan numbers themselves are strictly log-CONVEX (the parent's Turán inequality Cₙ₊₁² < Cₙ·Cₙ₊₂), and dividing by the slowly-growing n+1 does not reverse that. The correct canonical log-concave derived sequence is the RECIPROCAL aₙ = 1/Cₙ. The entry proves the general pointwise principle recip_sq_gt_of_sq_lt: in any linearly ordered field, 0 < x,y,z with y² < x·z forces (1/x)(1/z) < (1/y)² — reciprocation t ↦ 1/t is a strictly antitone multiplicative map on the positive cone, so it sends a strict log-convex step to a strict log-concave step. Applied to the parent's catalan_turan this gives catalan_recip_logConcave: (1/Cₙ₊₁)² > (1/Cₙ)(1/Cₙ₊₂) over ℚ for every n, restated in standard indexing (catalan_recip_logConcave_shift) as aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1 with aₙ = 1/Cₙ. Mathlib has the Catalan API but neither the parent's Turán inequality nor this reciprocal log-concavity; the general reciprocation principle is a reusable lemma. Fully machine-checked, 0 axioms, 0 sorries.",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CatalanNumbersOQ01OQ04"
+    ],
+    "opens": [
+      "Nat",
+      "CatalanNumbersOQ01OQ04"
+    ],
+    "namespace": "CatalanNumbersOQ01OQ04OQ02",
+    "lineCount": 110,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CatalanNumbersOQ01OQ04OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Catalan_number",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CatalanNumbersOQ01OQ04OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "log-concavity",
+      "log-convexity",
+      "turan-inequality",
+      "inequality",
+      "reciprocal-sequence",
+      "counterexample",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-02",
+    "relatedProblems": [
+      {
+        "id": "catalan-numbers-oq-01-oq-04",
+        "relationship": "Direct parent. OQ-01-OQ-04 proves the strict Turán inequality (log-convexity) catalan (n+1)² < catalan n · catalan (n+2). This entry reciprocates that result: the general lemma recip_sq_gt_of_sq_lt turns a strict log-convexity step into a strict log-concavity step, so 1/Cₙ is strictly log-concave. catalan_turan and catalan_pos are reused directly."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 110,
+    "assumptions": "0 axioms, 0 sorries, no native_decide/decide. All four theorems (recip_sq_gt_of_sq_lt, catalan_recip_logConcave, catalan_recip_logConcave_shift, catalanOverSucc_not_logConcave_at_one) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. The general reciprocation lemma recip_sq_gt_of_sq_lt only requires 0 < y and y² < x·z (positivity of x, z is carried in the statement for readability but the reciprocal flip 1/(x·z) < 1/y² needs only the product x·z bounded below by the positive y²). The Catalan instance is over ℚ; catalan values C₀ = 1, C₁ = 1, C₂ = 2 are supplied by Mathlib's catalan_zero / catalan_one / catalan_two, and the counterexample inequality 1/4 < 2/3 is discharged by norm_num.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Log-concavity (aₙ² ≥ aₙ₋₁aₙ₊₁) and log-convexity (aₙ² ≤ aₙ₋₁aₙ₊₁) are the two basic second-order shape constraints on a positive sequence; the strict versions control whether the ratios aₙ₊₁/aₙ increase or decrease. The Catalan numbers Cₙ = C(2n,n)/(n+1) are a textbook example of a strictly log-convex sequence (their ratios Cₙ₊₁/Cₙ = 2(2n+1)/(n+2) strictly increase), a fact the parent entry formalizes as the Turán inequality Cₙ₊₁² < Cₙ·Cₙ₊₂. A positive sequence and its reciprocal have opposite convexity in the multiplicative sense: reciprocation is an order-reversing multiplicative involution on ℝ₊, so it exchanges log-convex with log-concave. Hence the honest 'derived Catalan sequence that is log-concave' is not the mild rescaling Cₙ/(n+1) — which stays log-convex-dominated and fails log-concavity immediately — but the reciprocal 1/Cₙ.",
+    "problemStatement": "The open question (catalan-numbers-oq-01-oq-04-oq-02) asks to establish strict log-concavity, aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1, for a sequence aₙ derived from the Catalan numbers, suggesting aₙ = Cₙ/(n+1) 'for instance'. The task here is to (1) determine whether the suggested candidate works and (2) exhibit and prove a correct log-concave derived sequence, reusing the parent's Turán inequality.",
+    "text": "The suggested candidate Cₙ/(n+1) is refuted by a single evaluation at n = 1 (a₁² = 1/4 < 2/3 = a₀·a₂). The correct sequence is the reciprocal 1/Cₙ, whose strict log-concavity is exactly the parent's strict log-convexity of Cₙ read through the order-reversing map x ↦ 1/x. This is captured once and for all by a field-level lemma and then specialized to Catalan.",
+    "proofStrategy": "recip_sq_gt_of_sq_lt is the crux: given 0 < x,y,z and y² < x·z in a LinearOrder Field (IsStrictOrderedRing), it rewrites (1/y)² = 1/y² and (1/x)(1/z) = 1/(x·z) (both by ring), notes 0 < y² (positivity), and applies Mathlib's one_div_lt_one_div_of_lt (antitonicity of t ↦ 1/t on ℝ₊) to y² < x·z to conclude 1/(x·z) < 1/y². catalan_recip_logConcave instantiates this over ℚ with x = Cₙ, y = Cₙ₊₁, z = Cₙ₊₂: positivity from the parent's catalan_pos, and the hypothesis y² < x·z is the parent's catalan_turan (cast to ℚ). catalan_recip_logConcave_shift reindexes n ↦ n-1 (via Nat.exists_eq_add_of_lt) to present the inequality in the standard aₙ² > aₙ₋₁aₙ₊₁ form for n ≥ 1. catalanOverSucc_not_logConcave_at_one rewrites catalan 0,1,2 to 1,1,2 (catalan_zero/one/two) and closes the false log-concavity claim with norm_num on 1/4 < 2/3.",
+    "keyInsights": [
+      "**Reciprocation swaps log-convex and log-concave.** The one-line principle recip_sq_gt_of_sq_lt is the entire mathematical content: because t ↦ 1/t is strictly antitone and multiplicative on the positive reals, y² < x·z (a log-convex step) becomes (1/x)(1/z) < (1/y)² (a log-concave step). No Catalan-specific computation is needed beyond the parent's Turán inequality.",
+      "**The suggested candidate is genuinely false, not merely hard.** Cₙ/(n+1) fails log-concavity already at n = 1 (1/4 vs 2/3). Recording the counterexample corrects the open question's premise and explains why the reciprocal, not a rescaling, is the right derived sequence — the Catalan numbers are strictly log-convex, and a slow rescaling cannot flip that.",
+      "**The heavy lifting is reused, not redone.** The strict inequality y² < x·z for Catalan is exactly catalan_turan from the parent; positivity is catalan_pos. The child adds only the abstract reciprocation flip, keeping the new content minimal and clearly separated from the parent's recurrence work.",
+      "**Field-level generality.** recip_sq_gt_of_sq_lt is stated for an arbitrary linearly ordered field, so it applies verbatim to any strictly log-convex positive sequence (over ℚ, ℝ, or any ordered field), making it a reusable bridge lemma rather than a Catalan-only fact."
+    ],
+    "prerequisites": [
+      "Log-concavity vs log-convexity of sequences and their strict forms aₙ² ⋛ aₙ₋₁·aₙ₊₁",
+      "The parent's Turán inequality catalan_turan : catalan (n+1)² < catalan n · catalan (n+2) and positivity catalan_pos",
+      "Antitonicity of reciprocation on the positive cone: Mathlib's one_div_lt_one_div_of_lt",
+      "Mathlib's small Catalan values catalan_zero, catalan_one, catalan_two, and norm_num for rational inequalities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-overview",
+      "title": "Overview: the reciprocal is the log-concave derived sequence",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring. States the open question (find a log-concave derived Catalan sequence, candidate Cₙ/(n+1)), records that the candidate is false (a₁² = 1/4 < 2/3 = a₀·a₂), and identifies the reciprocal 1/Cₙ as the correct log-concave sequence — its strict log-concavity being the parent's strict log-convexity of Cₙ under x ↦ 1/x.",
+      "mathContext": "Catalan numbers are strictly log-convex (Cₙ₊₁² < Cₙ·Cₙ₊₂); reciprocation reverses this to strict log-concavity of 1/Cₙ. The rescaling Cₙ/(n+1) does not reverse log-convexity and fails log-concavity."
+    },
+    {
+      "id": "recip-flip",
+      "title": "Reciprocation turns log-convexity into log-concavity",
+      "startLine": 53,
+      "endLine": 66,
+      "mathContext": "In a linearly ordered field, $0 < x,y,z$ and $y^2 < x z$ imply $\\frac1x\\cdot\\frac1z < \\left(\\frac1y\\right)^2$.",
+      "summary": "recip_sq_gt_of_sq_lt: the general pointwise principle. Rewrites (1/y)² = 1/y² and (1/x)(1/z) = 1/(x·z) by ring, then applies one_div_lt_one_div_of_lt (antitonicity of t ↦ 1/t) to the hypothesis y² < x·z, using 0 < y² from positivity. This is the whole mathematical content — a reusable log-convex ⇒ log-concave bridge for any ordered field."
+    },
+    {
+      "id": "catalan-recip",
+      "title": "Strict log-concavity of 1/Cₙ",
+      "startLine": 67,
+      "endLine": 82,
+      "mathContext": "$(1/C_{n+1})^2 > (1/C_n)(1/C_{n+2})$ over $\\mathbb{Q}$, for every $n$.",
+      "summary": "catalan_recip_logConcave instantiates recip_sq_gt_of_sq_lt over ℚ with x = Cₙ, y = Cₙ₊₁, z = Cₙ₊₂. Positivity comes from the parent's catalan_pos; the required y² < x·z is precisely the parent's catalan_turan cast to ℚ. Delivers the reciprocal Catalan strict log-concavity directly from the parent's Turán inequality."
+    },
+    {
+      "id": "catalan-recip-shift",
+      "title": "Standard indexing aₙ² > aₙ₋₁·aₙ₊₁",
+      "startLine": 83,
+      "endLine": 98,
+      "mathContext": "For $n \\ge 1$, with $a_n = 1/C_n$: $a_n^2 > a_{n-1}\\,a_{n+1}$.",
+      "summary": "catalan_recip_logConcave_shift reindexes catalan_recip_logConcave at n = m+1 (via Nat.exists_eq_add_of_lt) so the inequality reads in the textbook log-concavity form aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1."
+    },
+    {
+      "id": "counterexample",
+      "title": "The suggested candidate Cₙ/(n+1) is NOT log-concave",
+      "startLine": 99,
+      "endLine": 109,
+      "mathContext": "$a_1^2 = 1/4 < 2/3 = a_0\\,a_2$ for $a_n = C_n/(n+1)$, so log-concavity fails at $n=1$.",
+      "summary": "catalanOverSucc_not_logConcave_at_one refutes the open question's proposed candidate. Rewriting catalan 0,1,2 to 1,1,2 (catalan_zero/one/two), the claim a₁² > a₀·a₂ becomes 1/4 > 2/3, which norm_num shows is false. This is why the reciprocal, not the rescaling, is the correct log-concave derived sequence."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question's suggested derived sequence Cₙ/(n+1) is proven NOT log-concave (it fails at n = 1: 1/4 < 2/3), and the correct canonical log-concave derived Catalan sequence is identified as the reciprocal 1/Cₙ. Its strict log-concavity (1/Cₙ₊₁)² > (1/Cₙ)(1/Cₙ₊₂) is the parent's strict log-convexity Cₙ₊₁² < Cₙ·Cₙ₊₂ read through the order-reversing multiplicative map x ↦ 1/x, packaged as the reusable field-level lemma recip_sq_gt_of_sq_lt. Everything is axiom-free and reuses the parent's catalan_turan and catalan_pos.",
+    "implications": "The lemma recip_sq_gt_of_sq_lt makes 'reciprocal of a strictly log-convex positive sequence is strictly log-concave' available for any ordered field, so any future strictly log-convex sequence in the gallery immediately yields a strictly log-concave companion. The explicit counterexample fixes the open question's premise: not every natural rescaling of a log-convex sequence is log-concave, and identifying which derived sequence flips the convexity is the substantive step.",
+    "openQuestions": [
+      "Identify a genuinely NEW strictly log-concave Catalan-derived sequence that is not simply a reciprocal — e.g. a row or diagonal of the Catalan (ballot) triangle T(n,k), whose rows are conjecturally strictly log-concave, requiring a two-variable recurrence rather than the one-step Turán inequality.",
+      "Promote recip_sq_gt_of_sq_lt to a statement about whole sequences: `StrictLogConvex a → StrictLogConcave (fun n => 1 / a n)` for positive a, connecting to any Mathlib predicate for log-convex/log-concave sequences."
+    ]
+  },
+  "crossReferences": [
+    "catalan-numbers-oq-01-oq-04"
+  ]
+}

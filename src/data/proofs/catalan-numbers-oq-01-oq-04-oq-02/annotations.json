@@ -1,0 +1,118 @@
+[
+  {
+    "id": "ann-catalan-recip-overview",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 4,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Which derived Catalan sequence is log-concave — and which is not",
+    "content": "A positive sequence (aₙ) is strictly log-concave when aₙ² > aₙ₋₁·aₙ₊₁ and strictly log-convex when aₙ² < aₙ₋₁·aₙ₊₁. The Catalan numbers are strictly log-convex (the parent's Turán inequality). Reciprocation x ↦ 1/x is an order-reversing multiplicative involution on the positive reals, so it exchanges log-convex with log-concave: 1/Cₙ is strictly log-concave. The open question's suggested rescaling Cₙ/(n+1) is not — a slow rescaling cannot reverse log-convexity, and indeed it fails log-concavity already at n = 1 (a₁² = 1/4 < 2/3 = a₀·a₂).",
+    "mathContext": "Log-convex $C_{n+1}^2 < C_n C_{n+2}$ ⟺ log-concave $(1/C_{n+1})^2 > (1/C_n)(1/C_{n+2})$ under $x \\mapsto 1/x$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "log-concavity",
+      "log-convexity",
+      "reciprocal sequence",
+      "Catalan numbers",
+      "Turán inequality"
+    ],
+    "prerequisites": [
+      "log-concave and log-convex sequences",
+      "Catalan numbers",
+      "monotonicity of reciprocation on the positive reals"
+    ]
+  },
+  {
+    "id": "ann-catalan-recip-flip",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 66
+    },
+    "type": "proof-technique",
+    "title": "Reciprocation flip: log-convex step ⇒ log-concave step",
+    "content": "recip_sq_gt_of_sq_lt is the whole mathematical content, stated for an arbitrary linearly ordered field. Given 0 < x,y,z and y² < x·z it shows (1/x)(1/z) < (1/y)². The proof rewrites (1/y)² = 1/y² and (1/x)(1/z) = 1/(x·z) — both true field identities discharged by ring — reducing the goal to 1/(x·z) < 1/y². That is exactly Mathlib's one_div_lt_one_div_of_lt applied to the hypothesis y² < x·z with 0 < y² (from positivity): reciprocation is strictly antitone on the positive reals. Only positivity of y is truly needed; positivity of x and z is carried for readability.",
+    "mathContext": "$y^2 < xz,\\ 0<y^2 \\ \\Rightarrow\\ \\frac{1}{xz} < \\frac{1}{y^2}$, i.e. $\\frac1x\\frac1z < \\left(\\frac1y\\right)^2$ (antitone $t\\mapsto 1/t$).",
+    "significance": "central",
+    "relatedConcepts": [
+      "one_div_lt_one_div_of_lt",
+      "antitone reciprocal",
+      "ordered field",
+      "ring"
+    ],
+    "prerequisites": [
+      "ordered fields",
+      "monotonicity of x ↦ 1/x"
+    ]
+  },
+  {
+    "id": "ann-catalan-recip-instance",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 82
+    },
+    "type": "key-step",
+    "title": "Instantiating the flip at the Catalan Turán inequality",
+    "content": "catalan_recip_logConcave applies recip_sq_gt_of_sq_lt over ℚ with x = Cₙ, y = Cₙ₊₁, z = Cₙ₊₂. The three positivity hypotheses come from the parent's catalan_pos (cast to ℚ), and the required strict inequality y² < x·z — i.e. Cₙ₊₁² < Cₙ·Cₙ₊₂ — is precisely the parent's catalan_turan, cast to ℚ by exact_mod_cast. The result (1/Cₙ₊₁)² > (1/Cₙ)(1/Cₙ₊₂) is the strict log-concavity of the reciprocal Catalan sequence, obtained with no new Catalan-specific computation.",
+    "mathContext": "$x=C_n,\\ y=C_{n+1},\\ z=C_{n+2}$; hypothesis $y^2<xz$ is $C_{n+1}^2 < C_n C_{n+2}$ = catalan_turan.",
+    "significance": "central",
+    "relatedConcepts": [
+      "catalan_turan",
+      "catalan_pos",
+      "exact_mod_cast",
+      "reciprocal Catalan sequence"
+    ],
+    "prerequisites": [
+      "the parent Turán inequality",
+      "casting ℕ inequalities to ℚ"
+    ]
+  },
+  {
+    "id": "ann-catalan-recip-shift",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 83,
+      "endLine": 98
+    },
+    "type": "key-step",
+    "title": "Reindexing to the standard aₙ² > aₙ₋₁·aₙ₊₁ form",
+    "content": "catalan_recip_logConcave_shift restates catalan_recip_logConcave in the textbook log-concavity indexing. For n ≥ 1 it writes n = m + 1 using Nat.exists_eq_add_of_lt (from 0 < n), so n-1 = m, n = m+1, n+1 = m+2, and the inequality (1/Cₙ₋₁)(1/Cₙ₊₁) < (1/Cₙ)² becomes catalan_recip_logConcave m after simplifying the index arithmetic (Nat.add_sub_cancel).",
+    "mathContext": "$n = m+1$: $(1/C_{m})(1/C_{m+2}) < (1/C_{m+1})^2$, the case-$n{=}m{+}1$ of the previous step.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.exists_eq_add_of_lt",
+      "reindexing",
+      "log-concavity indexing"
+    ],
+    "prerequisites": [
+      "natural-number subtraction",
+      "reindexing an inequality"
+    ]
+  },
+  {
+    "id": "ann-catalan-recip-counterexample",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 99,
+      "endLine": 109
+    },
+    "type": "key-step",
+    "title": "Counterexample: Cₙ/(n+1) fails log-concavity at n = 1",
+    "content": "catalanOverSucc_not_logConcave_at_one refutes the open question's proposed candidate aₙ = Cₙ/(n+1). Using catalan_zero (C₀ = 1), catalan_one (C₁ = 1) and catalan_two (C₂ = 2), the log-concavity claim a₁² > a₀·a₂ becomes (1/2)² > 1·(2/3), i.e. 1/4 > 2/3, which norm_num shows is false. This single evaluation settles that the rescaling is not the right derived sequence, motivating the reciprocal 1/Cₙ.",
+    "mathContext": "$a_1^2 = (1/2)^2 = 1/4$, $a_0 a_2 = 1 \\cdot 2/3 = 2/3$, and $1/4 < 2/3$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "counterexample",
+      "catalan_two",
+      "norm_num",
+      "log-concavity failure"
+    ],
+    "prerequisites": [
+      "small Catalan values",
+      "rational arithmetic"
+    ]
+  }
+]
