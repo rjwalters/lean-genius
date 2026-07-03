@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (BUILD + repair): fixed a pre-existing build breakage in StrongGoldbachSymmetric.lean (symmetricPairCount_le_primesInUpperArm failed against pinned Mathlib — card_le_card_of_injOn gives Set-coerced membership) and added symmetricPairCount_eq_upperArm_partitions, the EXACT identity comet-height = #{Goldbach partitions of 2m indexed by larger prime}, upgrading the prior upper bound to an equality. Both 0-axiom, 0-sorry. WeakGoldbach.lean axioms remain irreducible (surveyed earlier); conjecture open.",
+    "progressSummary": "OPEN (well-surveyed). Axiom-free symmetric/midpoint reformulation in gallery (PR #33936). All 5 WeakGoldbach.lean axioms irreducible in Mathlib v4.26.0; main conjecture open. Only tractable axiom = schnirelmann_basis_theorem (elementary, ~300-500 LOC dedicated session); researcher-4 added a precise Mathlib-API starter kit + missing-lemma statement + proof outline to knowledge.md so that session starts at zero ramp-up. No code this session per anti-scaffolding rule.",
     "builtItems": [
       "sumTwoPrimes_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:73 (per-n equivalence, 0-axiom)",
       "strong_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:98 (conjecture-level equivalence)",
@@ -47,7 +47,8 @@
       "Strong Goldbach and its symmetric form are logically identical (strong_iff_symmetric); the reformulation halves the search space to one bounded parameter k<n/2.",
       "Prime midpoints are trivial: if m is prime then k=0 gives the diagonal Goldbach partition 2m = m + m, so Strong Goldbach holds unconditionally at every prime m and the Goldbach comet has no zero at prime abscissae.",
       "The comet height symmetricPairCount m is bounded above by the number of primes in the upper-arm interval [m, 2m) (each pair injects to its larger prime m+k), i.e. by the prime-counting increment pi(2m) - pi(m).",
-      "Researcher-4 (07-03, second visit): StrongGoldbachSymmetric.lean symmetricPairCount_le_primesInUpperArm was BROKEN on origin/main — merged unbuilt. Finset.card_le_card_of_injOn (f)(MapsTo)(InjOn) yields Set-coerced membership (a ∈ ↑s), so rw [Finset.mem_filter] on it fails; fix = add Finset.mem_coe to the simp/rw. Repaired. Then proved symmetricPairCount_eq_upperArm_partitions: comet count = #{primes j in [m,2m) with 2m-j prime} EXACTLY (bijection k↦m+k with inverse j↦j-m), realizing the docstring claim comet height = Goldbach partition count of 2m, upgrading the prior ≤ bound to =."
+      "Researcher-4 (07-03, second visit): StrongGoldbachSymmetric.lean symmetricPairCount_le_primesInUpperArm was BROKEN on origin/main — merged unbuilt. Finset.card_le_card_of_injOn (f)(MapsTo)(InjOn) yields Set-coerced membership (a ∈ ↑s), so rw [Finset.mem_filter] on it fails; fix = add Finset.mem_coe to the simp/rw. Repaired. Then proved symmetricPairCount_eq_upperArm_partitions: comet count = #{primes j in [m,2m) with 2m-j prime} EXACTLY (bijection k↦m+k with inverse j↦j-m), realizing the docstring claim comet height = Goldbach partition count of 2m, upgrading the prior ≤ bound to =.",
+      "SCHNIRELMANN STARTER KIT (researcher-4 SURVEY, no code): Mathlib v4.26.0 has the schnirelmannDensity API (mul_le_card_filter, le_schnirelmannDensity_iff counting bridges; eq_one_iff terminal step) but NOT the subadditivity theorem. Missing crux: sigma(A+B) >= sigma A + sigma B - sigma A * sigma B (elementary covering count, Nathanson Thm 7.4, ~120-180 LOC) + iteration to density>1/2 + basis-of-order-2 (~150-250 LOC). Discharges schnirelmann_basis_theorem axiom and fills Mathlib TODO. The ONLY tractable axiom in WeakGoldbach.lean; the other 4 are deep/open."
     ],
     "mathlibGaps": [],
     "nextSteps": [
