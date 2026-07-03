@@ -322,3 +322,40 @@ comet; the open conjecture is untouched and a nontrivial LOWER bound remains the
 The one large axiom-discharging target is still `schnirelmann_basis_theorem` (~300–500 LOC,
 elementary, flagged Mathlib gap). Worked in locked `/private/tmp/wt-r4-goldbach`, committed
 before building (the `.loom/worktrees/researcher-4` deletion hazard did not recur this pass).
+
+## Session 2026-07-03 (researcher-4) — ACT: Schnirelmann covering lemma VERIFIED (component toward discharging `schnirelmann_basis_theorem`)
+
+**Mode**: ACT (build) · **Outcome**: new verified file `proofs/Proofs/SchnirelmannBasis.lean`
+(3 theorems, 0 sorry, 0 axiom, kernel-checked). **Does NOT yet discharge the axiom** — one
+further ingredient remains (see below). No change to `WeakGoldbach.lean`; its 5 axioms stand.
+
+Prior sessions flagged `schnirelmann_basis_theorem` (σ(A)>0 ⟹ additive basis) as the one
+tractable-in-principle axiom, ~300–500 LOC, elementary, an explicit **Mathlib TODO**. This
+session built the first of its two components.
+
+**Built (`SchnirelmannBasis.lean`):**
+- `sumset_covers_of_density_add_ge_one` — **Schnirelmann's covering lemma**: `0∈A`, `0∈B`,
+  `σ(A)+σ(B) ≥ 1` ⟹ every `n` is `a+b`, `a∈A`, `b∈B`. This is verbatim the Mathlib TODO item
+  *"if the sum of two densities is at least one, the sumset covers the positive naturals."*
+  Proof = classical pigeonhole: `|A∩[0,n]| ≥ σA·n+1` (`card_Icc_filter_ge`) and the reflected
+  count `|{x∈[0,n] : n−x∈B}| ≥ σB·n+1` (`card_reflect_filter`, via the involution `x↦n−x`
+  injecting `B∩[1,n]` plus the endpoint `x=n`); disjoint ⟹ their union `⊆ [0,n]` forces
+  `(σA+σB)·n ≤ n−1`, contradicting `σA+σB≥1`, so they meet.
+- `basis_order_two_of_density_ge_half` — corollary: `0∈A`, `σ(A) ≥ 1/2` ⟹ `A⊕A ⊇ ℕ` (basis
+  of order 2). Immediate from the covering lemma with `B:=A`.
+
+Key Mathlib API leaned on: `schnirelmannDensity_mul_le_card_filter` (σ·n ≤ |A∩Ioc 0 n|),
+`card_image_of_injOn`, `card_union_of_disjoint`, `Nat.sub_sub_self`.
+
+**Remaining gap to discharge the axiom (documented in-file):**
+1. **Schnirelmann's inequality** `σ(A⊕B) ≥ σA+σB−σA·σB` (subadditivity of the deficiency
+   `1−σ`). This is the delicate gap-counting step (Ruzsa, *Sumsets and structure*) — the truly
+   hard part, still open here.
+2. Iteration: `1−σ(h·A) ≤ (1−σA)^h` ⟹ pick `h` with `σ(h·A) > 1/2`, then
+   `basis_order_two_of_density_ge_half` on `h·A` gives a basis of order `2h`.
+
+Once (1) lands, `schnirelmann_basis_theorem` becomes a theorem and one axiom leaves
+`WeakGoldbach.lean`. The covering engine (2's finisher) is now in place.
+
+Aristotle MCP available this cycle but not used (covering lemma proved manually; the residual
+sumset inequality is a gap-argument, not a named-lemma lookup Aristotle would resolve).

@@ -1,35 +1,34 @@
 # Research State: weak-goldbach-oq-01
 
 ## Current State
-**Phase**: SURVEY
+**Phase**: ACT (in progress)
 **Path**: full
-**Since**: 2026-07-03T21:40:00-07:00
-**Iteration**: 2
+**Since**: 2026-07-03
+**Iteration**: 3
 
 ## Current Focus
-Axiom audit complete. `proofs/Proofs/WeakGoldbach.lean` is a mature,
-legitimately-axiomatized file (30 theorems, 0 sorry, 5 axioms). All 5 axioms are
-irreducible with current Mathlib — binary Goldbach is open, and the supporting
-results (Helfgott, circle method, Chen) are unformalizable; the 4·10¹⁸
-verification is uncomputable in-kernel (a `decide`-checked `n ≤ 30` companion
-already exists).
+Discharging the `schnirelmann_basis_theorem` axiom in `WeakGoldbach.lean`. Split
+into two components; the **covering** component is now built and verified in
+`proofs/Proofs/SchnirelmannBasis.lean` (Schnirelmann's covering lemma + the
+density-≥-½ basis-of-order-2 corollary, 0 sorry / 0 axiom).
 
 ## Active Approach
-None active. No quick axiom-elimination exists here.
+Schnirelmann's theorem, decomposed:
+- [DONE] Covering lemma: σA+σB ≥ 1 ⟹ A⊕B ⊇ ℕ  (`sumset_covers_of_density_add_ge_one`).
+- [OPEN] Schnirelmann's inequality: σ(A⊕B) ≥ σA+σB−σA·σB — the gap-counting step.
+- [OPEN] Iteration 1−σ(h·A) ≤ (1−σA)^h to reach density > ½, then apply the
+  order-2 corollary to `h·A` ⟹ basis of order 2h ⟹ discharge the axiom.
 
 ## Attempt Count
-- Total attempts: 1 (survey)
-- Approaches tried: 0 mathematical
+- Total attempts: 2 (1 survey, 1 act)
+- Approaches tried: covering lemma (SUCCESS), sumset inequality (not yet attempted)
 
 ## Blockers
-- Binary Goldbach is genuinely open (must remain axiomatized).
-- The one tractable-in-principle axiom, `schnirelmann_basis_theorem`, is an explicit
-  **Mathlib TODO** (not available to import) — formalizing it is a large (~300–500 line)
-  dedicated effort, not a quick win.
-- Aristotle MCP down (`Resource not found`).
+- Schnirelmann's inequality is the delicate gap-counting argument (Ruzsa,
+  *Sumsets and structure*); an open Mathlib TODO. Non-trivial to formalize.
+- Binary Goldbach itself remains genuinely open (must stay axiomatized).
 
 ## Next Action
-Dedicated future session: formalize **Schnirelmann's theorem** (σ(A)>0 ⟹ additive
-basis) — elementary (sumset density inequality + iteration), would discharge one
-axiom here and fill a flagged Mathlib gap. Otherwise this problem is SURVEY-complete
-and blocked on deep/open results.
+Formalize Schnirelmann's inequality `σ(A⊕B) ≥ σA+σB−σA·σB` (with 0∈A, 0∈B), then
+the iteration; this closes the chain to `schnirelmann_basis_theorem`. The covering
+finisher is already in place in `SchnirelmannBasis.lean`.
