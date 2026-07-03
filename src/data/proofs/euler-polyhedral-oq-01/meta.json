@@ -395,5 +395,105 @@
       "Toroidal chromatic number = 7: requires Heawood's complete proof, which uses K₇ embeddability on the torus"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "euler_spanning",
+      "type": "theorem",
+      "statement": "∀ g : SpanningBuild, g.eulerChar = 2",
+      "significance": "The core invariance: building a connected planar graph from a single vertex by adding tree edges (V+1, F=1) and then cycle edges (E+1, F+1) keeps V − E + F fixed at 2. This is the spanning-tree proof of Euler's polyhedral formula, made structural rather than combinatorial.",
+      "description": "Induction on the SpanningBuild construction: the base single vertex has χ = 1 − 0 + 1 = 2; each tree-edge step adds one vertex and one edge (net 0), each cycle-edge step adds one edge and one face (net 0)."
+    },
+    {
+      "name": "tree_euler",
+      "type": "theorem",
+      "statement": "(buildTree n).eulerChar = 2",
+      "significance": "Specializes the invariance to a pure spanning tree on n vertices: V = n, E = n−1, F = 1, so V − E + F = 2. The base case from which every planar graph's Euler characteristic is grown.",
+      "description": "An immediate instance of euler_spanning applied to the buildTree n construction."
+    },
+    {
+      "name": "platonic_spanning_euler",
+      "type": "theorem",
+      "statement": "tetra_build.eulerChar = 2 ∧ cube_build.eulerChar = 2 ∧ octa_build.eulerChar = 2",
+      "significance": "Verifies V − E + F = 2 concretely for the tetrahedron, cube, and octahedron built through the spanning-tree method, confirming the abstract machinery reproduces the classical polyhedral counts.",
+      "description": "Evaluates eulerChar on the three explicit SpanningBuild terms; each reduces to 2 by computation."
+    },
+    {
+      "name": "edge_bound_simple",
+      "type": "theorem",
+      "statement": "V − E + F = 2 ∧ 3F ≤ 2E ⟹ E ≤ 3V − 6",
+      "significance": "The fundamental edge bound for simple planar graphs: since each face is bounded by at least 3 edges and each edge borders 2 faces, Euler's formula forces E ≤ 3V − 6. This single inequality drives non-planarity, degeneracy, and colorability.",
+      "description": "Eliminates F from Euler's formula using 3F ≤ 2E; linear arithmetic (linarith) over ℤ yields E ≤ 3V − 6."
+    },
+    {
+      "name": "edge_bound_bipartite",
+      "type": "theorem",
+      "statement": "V − E + F = 2 ∧ 4F ≤ 2E ⟹ E ≤ 2V − 4",
+      "significance": "The sharper bound for triangle-free (bipartite) planar graphs, where every face has ≥ 4 edges. It is exactly what rules out K₃,₃ (which has 9 > 2·6 − 4 = 8 edges).",
+      "description": "Same elimination as edge_bound_simple but with the girth-4 face bound 4F ≤ 2E, giving E ≤ 2V − 4 by linarith."
+    },
+    {
+      "name": "maximal_planar_edges",
+      "type": "theorem",
+      "statement": "V − E + F = 2 ∧ 3F = 2E ⟹ E = 3V − 6",
+      "significance": "Characterizes maximal (triangulated) planar graphs with equality E = 3V − 6: every face is a triangle. These are the extremal graphs against which the edge bound is tight.",
+      "description": "Substitutes the exact triangulation identity 3F = 2E into Euler's formula and solves the linear system for E."
+    },
+    {
+      "name": "face_edge_double_count",
+      "type": "theorem",
+      "statement": "V − E + F = 2 ∧ d·F ≤ 2E ⟹ (d−2)·E ≤ d·(V−2)",
+      "significance": "The general girth-d edge bound, unifying the simple (d=3) and bipartite (d=4) cases: a planar graph whose faces have ≥ d edges satisfies (d−2)E ≤ d(V−2). The master inequality behind all the specialized bounds.",
+      "description": "Double-counts edge–face incidences (d·F ≤ 2E) against Euler's formula, rearranging into (d−2)E ≤ d(V−2)."
+    },
+    {
+      "name": "exists_low_degree_vertex",
+      "type": "theorem",
+      "statement": "3 ≤ |V|, E ≤ 3V − 6 ⟹ ∃ v, G.degree v ≤ 5",
+      "significance": "The keystone of the six-color theorem: every planar graph has a vertex of degree at most 5. If all degrees were ≥ 6 the handshake sum would exceed 6V, contradicting 2E < 6V.",
+      "description": "By contradiction: minimum degree ≥ 6 gives ∑ deg ≥ 6V, i.e. 2E ≥ 6V, contradicting avg_degree_lt_six (2E < 6V) derived from the edge bound."
+    },
+    {
+      "name": "avg_degree_lt_six",
+      "type": "theorem",
+      "statement": "3 ≤ |V|, E ≤ 3V − 6 ⟹ 2E < 6V",
+      "significance": "States that planar graphs have average degree strictly below 6 — the quantitative form of 5-degeneracy and the reason planar graphs are sparse.",
+      "description": "Directly from the edge bound E ≤ 3V − 6 by linear arithmetic: 2E ≤ 6V − 12 < 6V."
+    },
+    {
+      "name": "planar_five_degenerate",
+      "type": "theorem",
+      "statement": "3 ≤ V, E ≤ 3V − 6 ⟹ 2E < 6V (every planar subgraph has a vertex of degree ≤ 5)",
+      "significance": "Encodes 5-degeneracy: because the edge bound is hereditary (holds for every subgraph), every subgraph has a low-degree vertex, giving the recursive vertex-removal ordering that yields 6-colorability.",
+      "description": "The arithmetic core 2E < 6V by linarith; combined across all subgraphs this is the degeneracy condition feeding the greedy coloring."
+    },
+    {
+      "name": "k5_not_planar",
+      "type": "theorem",
+      "statement": "V = 5, E = 10, V − E + F = 2, 3F ≤ 2E ⟹ False",
+      "significance": "Kuratowski obstruction #1: the complete graph K₅ (5 vertices, 10 edges) cannot be planar, since 10 > 3·5 − 6 = 9 violates the simple edge bound.",
+      "description": "Substitutes V = 5, E = 10 into the edge-bound derivation; the resulting inequality 10 ≤ 9 is contradictory (omega/linarith)."
+    },
+    {
+      "name": "k33_not_planar",
+      "type": "theorem",
+      "statement": "V = 6, E = 9, V − E + F = 2, 4F ≤ 2E ⟹ False",
+      "significance": "Kuratowski obstruction #2: the bipartite complete graph K₃,₃ is non-planar, since it is triangle-free with 9 > 2·6 − 4 = 8 edges, violating the bipartite bound.",
+      "description": "Uses the girth-4 bound (K₃,₃ has no triangles): E ≤ 2V − 4 gives 9 ≤ 8, a contradiction."
+    },
+    {
+      "name": "genus_edge_bound",
+      "type": "theorem",
+      "statement": "V − E + F = 2 − 2g ∧ 3F ≤ 2E ⟹ E ≤ 3(V + 2g) − 6",
+      "significance": "Generalizes the planar edge bound to surfaces of genus g via the Euler characteristic 2 − 2g. Recovers E ≤ 3V − 6 at g = 0 and quantifies how many extra edges a handle buys.",
+      "description": "Repeats the face/edge double-count against the genus-g Euler formula, yielding E ≤ 3(V + 2g) − 6."
+    },
+    {
+      "name": "torus_seven_degenerate",
+      "type": "theorem",
+      "statement": "1 ≤ V, E ≤ 3V ⟹ 2E ≤ 6V",
+      "significance": "The toroidal analogue of 5-degeneracy: graphs embeddable on the torus (genus 1, E ≤ 3V) are 7-degenerate, the combinatorial basis for the Heawood 7-color bound on the torus.",
+      "description": "From the genus-1 edge bound E ≤ 3V, linear arithmetic gives 2E ≤ 6V, so some vertex has degree ≤ 6 (hence 7-degenerate)."
+    }
+  ]
 }
