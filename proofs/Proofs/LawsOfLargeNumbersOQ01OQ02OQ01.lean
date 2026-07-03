@@ -9,25 +9,38 @@
       → -oq-01-oq-02-oq-01  (this leaf: Marcinkiewicz–Zygmund SLLN, 1 ≤ p < 2)
 
   The full Marcinkiewicz–Zygmund strong law is a multi-session build; its
-  classical proof (truncation + Kolmogorov's convergence criterion) closes with
-  a purely analytic step:
+  classical proof factors into a purely analytic passage (Kronecker's lemma)
+  and a probabilistic engine (Kolmogorov's convergence criterion). This file
+  supplies the reusable infrastructure for both.
 
-    **Kronecker's lemma.** If `a n` is a positive, nondecreasing sequence with
-    `a n → ∞` and the series `∑ x n / a n` converges, then the Cesàro-type
-    average `(∑_{i<n} x i) / a n → 0`.
-
-  Mathlib has the *unweighted* Cesàro mean (`Filter.Tendsto.cesaro`) and Abel
-  summation (`Finset.sum_range_by_parts`), but **no Kronecker lemma** and no
-  weighted Toeplitz mean. This file supplies both:
+  **Analytic core — Kronecker's lemma.** If `a n` is a positive, nondecreasing
+  sequence with `a n → ∞` and the series `∑ x n / a n` converges, then the
+  Cesàro-type average `(∑_{i<n} x i) / a n → 0`. Mathlib has the *unweighted*
+  Cesàro mean (`Filter.Tendsto.cesaro`) and Abel summation
+  (`Finset.sum_range_by_parts`), but **no Kronecker lemma** and no weighted
+  Toeplitz mean; we supply both:
 
     * `tendsto_weighted_average_zero` — a Toeplitz/Silverman step: nonnegative
       weights whose partial sums are dominated by a normaliser `A n → ∞`,
-      applied to a null sequence, give a null weighted average. Independently
-      useful and the reusable core.
+      applied to a null sequence, give a null weighted average. Reusable core.
     * `kronecker_lemma` — Kronecker's lemma for real sequences, via Abel
       summation + the weighted average step.
+    * `ae_tendsto_kronecker_average_zero` — the a.e. lift of `kronecker_lemma`
+      across a sample space (S3 → S4 glue).
 
-  Verified: 0 sorry, 0 axiom.
+  **Probabilistic engine — Kolmogorov's convergence criterion (§ Kolmogorov).**
+  For independent mean-zero `L²` variables with `∑ Var < ∞`, the series `∑ Xᵢ`
+  converges a.s. We assemble this from Mathlib's a.e. martingale-convergence
+  theorem, contributing the two pieces the S3 survey flagged as missing:
+
+    * `martingale_sum_of_indep_mean_zero` — the shifted partial sums form a
+      martingale w.r.t. the natural filtration (increment independent of the
+      past ⟹ conditional expectation collapses to the vanishing mean).
+    * `ae_tendsto_sum_of_indep_of_eLpNorm_bdd` — Kolmogorov's criterion reduced
+      to a uniform `L¹` bound on the partial sums, via
+      `Submartingale.exists_ae_tendsto_of_bdd`.
+
+  Verified: 0 sorry, 0 axiom (only `propext`/`Classical.choice`/`Quot.sound`).
 -/
 import Mathlib
 
@@ -282,5 +295,115 @@ theorem ae_tendsto_kronecker_average_zero
   filter_upwards [hconv] with ω hω
   obtain ⟨s, hs⟩ := hω
   exact kronecker_lemma a (fun i => x i ω) s ha_pos ha_mono ha_top hs
+
+/-! ## Kolmogorov's a.s.-convergence criterion — martingale assembly (S3)
+
+The probabilistic engine of the Marcinkiewicz–Zygmund proof (step 4 of the
+classical decomposition) is **Kolmogorov's convergence criterion**: for
+independent mean-zero `L²` random variables `Xᵢ` with `∑ Var(Xᵢ) < ∞`, the
+series `∑ Xᵢ` converges almost surely.
+
+The route is the a.e. martingale-convergence theorem. The shifted partial sums
+`f n = ∑_{i≤n} Xᵢ` form a **martingale** with respect to the natural filtration
+`ℱ = natural X` (`ℱ n = σ(X₀,…,Xₙ)`): the increment `f (n+1) − f n = X (n+1)` is
+independent of the past σ-algebra `ℱ n`, so `𝔼[X (n+1) | ℱ n] = 𝔼[X (n+1)] = 0`.
+An `L¹`-bounded submartingale converges a.s. by
+`MeasureTheory.Submartingale.exists_ae_tendsto_of_bdd`; on a probability space a
+uniform `L¹` bound on the partial sums follows from a uniform `L²` bound, i.e.
+from `∑ Var(Xᵢ) < ∞`.
+
+This section supplies the two *assembly* bricks flagged by the S3 survey — the
+martingale construction and the reduction to the convergence engine — leaving
+only the deterministic `∑ Var → L²`-bound bookkeeping (via
+`ProbabilityTheory.IndepFun.variance_sum`) for the final step. Neither brick
+introduces an axiom; the leaf stays on the 0-axiom track. -/
+
+section Kolmogorov
+
+open MeasureTheory ProbabilityTheory
+open scoped ENNReal NNReal
+
+variable {Ω : Type*} {mΩ : MeasurableSpace Ω} {μ : Measure Ω}
+
+/-- **Independent mean-zero partial sums are a martingale.** For independent,
+integrable random variables `X i` with `𝔼[X i] = 0`, the shifted partial sums
+`f n = ∑_{i < n+1} X i` form a martingale with respect to the natural filtration
+of `X`.
+
+This is the probabilistic heart of Kolmogorov's convergence criterion: the
+martingale increment `f (n+1) − f n = X (n+1)` is independent of the past
+σ-algebra `ℱ n = σ(X₀,…,Xₙ)`, so its conditional expectation collapses to the
+(vanishing) mean. Built from Mathlib's `iIndepFun.condExp_natural_ae_eq_of_lt`
+and the increment criterion `martingale_of_condExp_sub_eq_zero_nat`. -/
+theorem martingale_sum_of_indep_mean_zero [IsProbabilityMeasure μ]
+    (X : ℕ → Ω → ℝ) (hmeas : ∀ i, StronglyMeasurable (X i))
+    (hindep : iIndepFun X μ) (hint : ∀ i, Integrable (X i) μ)
+    (hmean : ∀ i, μ[X i] = 0) :
+    Martingale (fun n => ∑ i ∈ range (n + 1), X i)
+      (Filtration.natural X hmeas) μ := by
+  -- adaptedness: each `Xᵢ` (i ≤ n) is `ℱ n`-measurable, so is the finite sum
+  have hadp : Adapted (Filtration.natural X hmeas)
+      (fun n => ∑ i ∈ range (n + 1), X i) := by
+    intro n
+    refine Finset.stronglyMeasurable_sum _ (fun i hi => ?_)
+    have hi' : i ≤ n := by simp only [Finset.mem_range] at hi; omega
+    exact (Filtration.adapted_natural hmeas i).mono
+      ((Filtration.natural X hmeas).mono hi')
+  refine martingale_of_condExp_sub_eq_zero_nat hadp ?_ ?_
+  · -- integrability of each partial sum
+    intro n
+    exact integrable_finset_sum' _ (fun i _ => hint i)
+  · -- the increment's conditional expectation given the past vanishes
+    intro n
+    have hincr : (fun n => ∑ i ∈ range (n + 1), X i) (n + 1)
+        - (fun n => ∑ i ∈ range (n + 1), X i) n = X (n + 1) := by
+      funext ω
+      simp only [Pi.sub_apply, Finset.sum_apply]
+      rw [Finset.sum_range_succ]
+      ring
+    rw [hincr]
+    have hcond := iIndepFun.condExp_natural_ae_eq_of_lt hmeas hindep (Nat.lt_succ_self n)
+    filter_upwards [hcond] with ω hω
+    simp only [hω, Pi.zero_apply]
+    exact hmean (n + 1)
+
+/-- **Kolmogorov's a.s.-convergence criterion, reduced to the `L¹` bound.** For
+independent mean-zero integrable random variables `X i` whose shifted partial
+sums `∑_{i≤n} Xᵢ` are uniformly bounded in `L¹`, the series `∑ i, X i` converges
+almost surely.
+
+This is Kolmogorov's convergence criterion modulo the deterministic `L¹` bound
+`hbdd` (which on a probability space follows from `∑ Var(X i) < ∞` via a uniform
+`L²` bound and `eLpNorm` monotonicity in the exponent). The proof feeds the
+partial-sum martingale into `Submartingale.exists_ae_tendsto_of_bdd` and shifts
+the index back from `∑_{i≤n}` to `∑_{i<n}`. Composing this with the a.e.
+Kronecker lift `ae_tendsto_kronecker_average_zero` yields the normalisation
+conclusion of the Marcinkiewicz–Zygmund strong law. -/
+theorem ae_tendsto_sum_of_indep_of_eLpNorm_bdd [IsProbabilityMeasure μ]
+    (X : ℕ → Ω → ℝ) (hmeas : ∀ i, StronglyMeasurable (X i))
+    (hindep : iIndepFun X μ) (hint : ∀ i, Integrable (X i) μ)
+    (hmean : ∀ i, μ[X i] = 0) (R : ℝ≥0)
+    (hbdd : ∀ n, eLpNorm (fun ω => ∑ i ∈ range (n + 1), X i ω) 1 μ ≤ (R : ℝ≥0∞)) :
+    ∀ᵐ ω ∂μ, ∃ c : ℝ, Tendsto (fun n => ∑ i ∈ range n, X i ω) atTop (𝓝 c) := by
+  have hmg := martingale_sum_of_indep_mean_zero X hmeas hindep hint hmean
+  have hsub := hmg.submartingale
+  -- put the `L¹` bound in the shape the engine expects (sum-of-functions form)
+  have hbdd' : ∀ n, eLpNorm ((fun n => ∑ i ∈ range (n + 1), X i) n) 1 μ ≤ (R : ℝ≥0∞) := by
+    intro n
+    have hfun : ((fun n => ∑ i ∈ range (n + 1), X i) n)
+        = (fun ω => ∑ i ∈ range (n + 1), X i ω) := by
+      funext ω; simp only [Finset.sum_apply]
+    rw [hfun]; exact hbdd n
+  have hconv := hsub.exists_ae_tendsto_of_bdd hbdd'
+  filter_upwards [hconv] with ω hω
+  obtain ⟨c, hc⟩ := hω
+  refine ⟨c, ?_⟩
+  -- rewrite the pointwise partial sums and shift the index down by one
+  have hc' : Tendsto (fun n => ∑ i ∈ range (n + 1), X i ω) atTop (𝓝 c) := by
+    refine hc.congr (fun n => ?_)
+    simp only [Finset.sum_apply]
+  exact (tendsto_add_atTop_iff_nat 1).mp hc'
+
+end Kolmogorov
 
 end LawsOfLargeNumbers.MZ
