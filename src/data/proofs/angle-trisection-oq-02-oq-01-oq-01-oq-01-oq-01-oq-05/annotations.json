@@ -38,13 +38,25 @@
   {
     "id": "angtri-oq05-ann-inseparable",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05",
-    "range": { "startLine": 87, "endLine": 105 },
+    "range": { "startLine": 83, "endLine": 96 },
     "type": "insight",
     "title": "Purely inseparable boundary case",
-    "content": "subsingleton_algEquiv_of_isPurelyInseparable specializes the bound at the boundary: a finite purely inseparable extension has [K:F]_s = 1 (IsPurelyInseparable.finSepDegree_eq_one), so Nat.card (K ≃ₐ[F] K) ≤ 1, which Finite.card_le_one_iff_subsingleton turns into Subsingleton (K ≃ₐ[F] K). card_algEquiv_eq_one_of_isPurelyInseparable states it as the equality Nat.card = 1 (subsingleton + the identity witness). This answers the parent's second open question (Mathlib has no direct Subsingleton theorem here) and replaces the parent's char-p Frobenius identity (σ(x)−x)^{pⁿ}=0 with a one-line consequence of a general, reusable degree bound.",
-    "mathContext": "$K/F$ purely inseparable $\\Rightarrow [K:F]_s = 1 \\Rightarrow \\mathrm{Nat.card}(K\\simeq_F K) \\le 1 \\Rightarrow$ Subsingleton, in fact $=1$.",
+    "content": "subsingleton_algEquiv_of_isPurelyInseparable specializes the bound at the boundary: a finite purely inseparable extension has [K:F]_s = 1 (IsPurelyInseparable.finSepDegree_eq_one), so Nat.card (K ≃ₐ[F] K) ≤ 1, which Finite.card_le_one_iff_subsingleton turns into Subsingleton (K ≃ₐ[F] K). Finiteness of the automorphism group is itself obtained from the injection toEmb into the finite Field.Emb F K. This answers the parent's second open question (Mathlib has no direct Subsingleton theorem here) and replaces the parent's char-p Frobenius identity (σ(x)−x)^{pⁿ}=0 with a one-line consequence of a general, reusable degree bound.",
+    "mathContext": "$K/F$ purely inseparable $\\Rightarrow [K:F]_s = 1 \\Rightarrow \\mathrm{Nat.card}(K\\simeq_F K) \\le 1 \\Rightarrow$ Subsingleton.",
     "significance": "key",
     "relatedConcepts": ["IsPurelyInseparable.finSepDegree_eq_one", "Finite.card_le_one_iff_subsingleton", "purely inseparable extensions", "Frobenius-free argument"],
     "prerequisites": ["the automorphism bound", "purely inseparable extensions have separable degree 1"]
+  },
+  {
+    "id": "angtri-oq05-ann-eq-one",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05",
+    "range": { "startLine": 97, "endLine": 105 },
+    "type": "technique",
+    "title": "Sharpening the boundary case to an equality",
+    "content": "card_algEquiv_eq_one_of_isPurelyInseparable upgrades the subsingleton statement to the exact count Nat.card (K ≃ₐ[F] K) = 1. Where Subsingleton only says 'at most one', the equality also records that the group is nonempty — its single element being the identity automorphism. The proof feeds the subsingleton instance together with the inhabitant 1 : K ≃ₐ[F] K to Nat.card_eq_one_iff_unique, which characterises cardinality-one types as exactly the inhabited subsingletons (the types with a unique element). This is the crisp 'exactly the identity' form the parent's gal_card_one_of_purelyInseparable_splitting ultimately wants.",
+    "mathContext": "Nat.card_eq_one_iff_unique : Nat.card α = 1 ↔ Nonempty (Unique α); here uniqueness comes from the subsingleton instance and the identity 1 : K ≃ₐ[F] K as the inhabitant.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.card_eq_one_iff_unique", "unique element / inhabited subsingleton", "identity automorphism", "trivial Galois group"],
+    "prerequisites": ["the subsingleton boundary case", "Nat.card and card-one characterisations"]
   }
 ]
