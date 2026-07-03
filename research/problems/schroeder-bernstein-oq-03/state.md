@@ -7,25 +7,27 @@ VERIFIED; only COMPUTABILITY remains**
 **Since**: 2026-07-02
 **Iteration**: 10
 
-## Next Action (supersedes all below — 2026-07-03 r11)
-Section 5·B now builds the cons scheduler `stageSeqB` (pair-monotone) and reads off
+## Next Action (supersedes all below — 2026-07-03 r14)
+Section 5·B builds the cons scheduler `stageSeqB` (pair-monotone) and reads off
 `sigmaEquivB : ℕ ≃ ℕ` with `sigmaEquivB_corr : ∀ n, p n ↔ q (sigmaEquivB n)`, all VERIFIED
 0-axiom. The bijection + correspondence (the *mathematics* of Myhill's hard direction) are DONE.
 The **sole** remaining gap is `e.Computable`: `stageSeqB` is `noncomputable` (`Classical.choose`).
-Residual work (no new math, ~150–250 lines): (1) replace the escape `.choose N` with the bounded
-`Nat.rfind` search licensed by `escape_exists'` (`N ≤ (mRan L).length`) — **DOMAIN SIDE DONE
-2026-07-03 (r11), VERIFIED 0-axiom** (Section 5·B-comp): `escapeDepth` (computable `Nat.find`; the
-existence witness is a `Prop`, erased at runtime, so it reduces by a *real* bounded search even
-though `escape_exists'` is noncomputable) + `escapeDepth_spec` / `escapeDepth_min` /
-`chaseTarget_escapeDepth_notMem` + `domain_consStepC` (the `Classical.choose`-free twin of
-`domain_consStep`, returning the concrete computable partner `chaseTarget f g a (escapeDepth …)`
-with `StageInvB` preserved). NEXT within (1): the range dual `range_consStepC` (`Prod.swap`
-mirror on `escape_exists' hg hf`, with `escapeDepth g f (L.map swap) b`); (2) build a computable
-parallel `stageSeqBComp` (explicit cons recursion using `domain_consStepC` / `range_consStepC`)
-and prove `Computable (fun n => mLookup (stageSeqBComp (entryStageDomB n)) n)` via
+Residual work (no new math, ~150–200 lines): (1) replace the escape `.choose N` with the bounded
+`Nat.find` search licensed by `escape_exists'` (`N ≤ (mRan L).length`) — **BOTH SIDES NOW DONE,
+VERIFIED 0-axiom** (Section 5·B-comp): `escapeDepth` (computable `Nat.find`; the existence witness
+is a `Prop`, erased at runtime, so it reduces by a *real* bounded search even though `escape_exists'`
+is noncomputable) + `escapeDepth_spec` / `escapeDepth_min` / `chaseTarget_escapeDepth_notMem` +
+`domain_consStepC` (r11) **and now `range_consStepC` (r14, 2026-07-03)** — the `Prod.swap` mirror
+using `escape_exists' hg hf` on the swapped balance `hinv.2.2.2` with `escapeDepth g f (L.map swap) b`;
+direct hyp `hb' : b ∉ mDom (L.map swap)`, conclusion pair `(chaseTarget g f b (escapeDepth …), b)`,
+all four `StageInvB` invariants preserved via `balanced_swap_cons_range` + `balanced_cons_range`.
+Both choice-free cons twins are now available. NEXT: (2) build a computable
+parallel `stageSeqBComp` (explicit cons recursion using `domain_consStepC` / `range_consStepC` —
+no subtype `Classical.choose`, so it is a plain `def`, not `noncomputable`) and prove
+`Computable (fun n => mLookup (stageSeqBComp (entryStageDomB n)) n)` via
 `mLookup_computable` + `chaseTarget_computable`;
 (3) the inverse is the range-side `mLookup` on the swapped list — discharge `myhill_isomorphism`.
-See knowledge.md r11 entry. Do NOT re-open the Path-B fork or the splicing `stageSeq`.
+See knowledge.md r11/r14 entries. Do NOT re-open the Path-B fork or the splicing `stageSeq`.
 
 ## Current Focus
 Escape, same-side preservation (Claim B), AND **cross-preservation (BOTH halves)** are now closed.
