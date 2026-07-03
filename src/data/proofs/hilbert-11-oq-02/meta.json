@@ -83,6 +83,78 @@
       "Elliptic curves and the basic outline of descent (for context, not used in the proof)"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "selmer_hasse_principle_fails",
+      "type": "theorem",
+      "statement": "¬ selmerHassePrinciple",
+      "significance": "The headline result: the Hasse (local–global) principle FAILS for the Selmer cubic 3x³+4y³+5z³=0. It has solutions in ℝ and in every ℚₚ yet none in ℚ — Selmer's 1951 first-known counterexample to the local-global principle for cubic forms.",
+      "description": "Combines selmer_locally_soluble_everywhere (local) with selmer_no_rational_solution (no global); depends on both axioms."
+    },
+    {
+      "name": "selmer_no_rational_solution",
+      "type": "axiom",
+      "statement": "¬ ∃ (x y z : ℚ) nontrivial, 3x³ + 4y³ + 5z³ = 0",
+      "significance": "Selmer's 1951 theorem: the cubic has no nontrivial rational point. Its proof needs 3-descent on the elliptic curve y² = x³ − 432·15² and the 3-Selmer group, unavailable in Mathlib — hence axiomatized.",
+      "description": "Stated as an `axiom`; the global-insolubility half of the counterexample."
+    },
+    {
+      "name": "selmer_padic_solubility",
+      "type": "axiom",
+      "statement": "∀ prime p, ∃ (x y z : ℚₚ) nontrivial with 3x³+4y³+5z³ = 0",
+      "significance": "Local solubility at every prime: the Selmer cubic has a nontrivial ℚₚ-point for all p. Axiomatized at the top level, but largely RECOVERED below from explicit Hensel constructions.",
+      "description": "Stated as an `axiom`; selmer_padic_solubility_recovered reconstructs it from Case A/B Hensel lemmas except the p ≡ 1 (mod 3) fragment."
+    },
+    {
+      "name": "selmerCubic_real_solution",
+      "type": "theorem",
+      "statement": "∃ (x y z : ℝ) nontrivial, 3x³ + 4y³ + 5z³ = 0",
+      "significance": "Real local solubility, proved (not assumed) via the intermediate value theorem: the cubic form takes both signs, so it vanishes at a nontrivial real point. The one local place established fully constructively.",
+      "description": "IVT on a one-parameter slice of the form; axiom-free."
+    },
+    {
+      "name": "selmer_locally_soluble_everywhere",
+      "type": "theorem",
+      "statement": "real solubility ∧ (∀ prime p, ℚₚ-solubility)",
+      "significance": "Assembles solubility at ALL places — the real point and a p-adic point for every prime — the local side of the Hasse principle that makes the global failure striking.",
+      "description": "Pairs selmerCubic_real_solution with selmer_padic_solubility; depends on the p-adic axiom."
+    },
+    {
+      "name": "selmer_padic_solubility_recovered",
+      "type": "theorem",
+      "statement": "∀ prime p, ∃ nontrivial ℚₚ-solution (reconstructed from Hensel)",
+      "significance": "Reduces the p-adic axiom's load: for all primes except the p ≡ 1 (mod 3) Case-B fragment, ℚₚ-solubility is obtained constructively via Hensel lifting rather than assumed. Sharpens exactly where genuine assumption remains.",
+      "description": "Dispatches to selmer_padic_solubility_caseA_universal and selmer_padic_solubility_from_caseB; Case B remains the one load-bearing appeal."
+    },
+    {
+      "name": "selmer_padic_solubility_caseA_universal",
+      "type": "theorem",
+      "statement": "p prime, p ≢ 1 (mod 3) → ∃ nontrivial ℚₚ-solution",
+      "significance": "The uniform Case-A construction: for primes where cubing is injective mod p (p ≢ 1 mod 3), a cube root of −4/5 exists and yields an explicit p-adic point via Hensel — covering infinitely many primes at once, not just a finite table.",
+      "description": "Uses exists_cube_root_neg_four_fifths and Hensel lifting; axiom-free."
+    },
+    {
+      "name": "exists_cube_root_neg_four_fifths",
+      "type": "lemma",
+      "statement": "p prime, p ∉ {2,3,5}, p ≢ 1 (mod 3) → ∃ t : 𝔽ₚ, t³ = −4/5",
+      "significance": "The arithmetic key to Case A: when cubing is a bijection mod p, −4/5 has a cube root, giving the mod-p seed that Hensel lifts to a ℚₚ-solution. Turns the finite prime-by-prime checks into a uniform theorem.",
+      "description": "Cubing is a bijection on 𝔽ₚˣ when 3 ∤ (p−1); axiom-free."
+    },
+    {
+      "name": "selmer_padic_solubility_from_caseB",
+      "type": "theorem",
+      "statement": "Case-B (p ≡ 1 mod 3) ℚₚ-solubility from the residual hypothesis",
+      "significance": "Isolates the only genuinely non-constructive fragment: for p ≡ 1 (mod 3), cubing is 3-to-1 and the uniform argument breaks, so this case is the true residue of the p-adic assumption.",
+      "description": "Handles the p ≡ 1 (mod 3) primes; the single place where full elimination of the axiom is still open."
+    },
+    {
+      "name": "selmer_padic_solubility_p11_hensel",
+      "type": "theorem",
+      "statement": "∃ nontrivial ℚ₁₁-solution of 3x³+4y³+5z³ = 0",
+      "significance": "A representative explicit Hensel construction at p = 11, exhibiting a concrete mod-11 seed lifted to a genuine 11-adic point. Prototype for the dozens of per-prime _hensel witnesses that ground the general Case-A theorem.",
+      "description": "Hensel's lemma from an explicit mod-p root; axiom-free."
+    }
+  ],
   "sections": [
     {
       "id": "header",
