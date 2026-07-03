@@ -71,26 +71,49 @@
     ]
   },
   {
-    "id": "ann-aoc-oq05oq03oq02-fourier-shadow",
+    "id": "ann-aoc-oq05oq03oq02-mass",
     "proofId": "area-of-circle-oq-05-oq-03-oq-02",
     "range": {
       "startLine": 183,
+      "endLine": 196
+    },
+    "type": "technique",
+    "title": "Mass Preservation: Convolution Stays Among Probability Densities",
+    "content": "gaussian_density_integral_eq_one proves ∫_ℝ φ_σ(x) dx = 1 — each centred Gaussian density has total mass 1. This is the invariant that makes the convolution semigroup law (★) a statement about probability densities: since φ_{σ₁} and φ_{σ₂} are probability densities, their convolution φ_{√(σ₁²+σ₂²)} is too. The proof factors out the leading reciprocal (σ√(2π))⁻¹, evaluates the remaining bare Gaussian integral with Mathlib's integral_gaussian, and observes that the resulting √(π/(1/2σ²)) = σ√(2π) exactly cancels the reciprocal.",
+    "mathContext": "$\\int_{\\mathbb R} \\varphi_\\sigma(x)\\,dx = (\\sigma\\sqrt{2\\pi})^{-1}\\int e^{-x^2/(2\\sigma^2)}dx = (\\sigma\\sqrt{2\\pi})^{-1}\\cdot \\sigma\\sqrt{2\\pi} = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probability density",
+      "total mass / normalisation",
+      "integral_gaussian",
+      "convolution of densities"
+    ],
+    "prerequisites": [
+      "the Gaussian integral ∫ e^{-x²/(2σ²)} = σ√(2π)",
+      "probability densities integrate to 1"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq05oq03oq02-fourier-shadow",
+    "proofId": "area-of-circle-oq-05-oq-03-oq-02",
+    "range": {
+      "startLine": 198,
       "endLine": 216
     },
     "type": "insight",
     "title": "The Fourier Shadow: Convolution Becomes Multiplication",
-    "content": "Two corollaries close the entry. gaussian_density_integral_eq_one shows each φ_σ integrates to 1, so convolution preserves total mass — the result is again a probability density. charFun_mul records the dual of the convolution law on the Fourier side: with χ_σ(t)=e^{−σ²t²/2} (the characteristic function proved in the parent and its dilation sibling), χ_{σ₁}(t)·χ_{σ₂}(t)=χ_{√(σ₁²+σ₂²)}(t). This is exactly 'the Fourier transform turns convolution into multiplication', specialised to Gaussians — the same variance-addition viewed from the two sides of the transform.",
-    "mathContext": "Convolution of densities ↔ multiplication of characteristic functions; the density and Fourier sides of the same semigroup.",
+    "content": "charFun_mul records the dual of the convolution law on the Fourier side: with χ_σ(t)=e^{−σ²t²/2} (the characteristic function proved on the Fourier side in the parent and its dilation sibling), χ_{σ₁}(t)·χ_{σ₂}(t)=χ_{√(σ₁²+σ₂²)}(t). This is exactly 'the Fourier transform turns convolution into multiplication', specialised to Gaussians — the same variance-addition viewed from the two sides of the transform. charFun_zero (χ_σ(0)=1) records the normalisation that the characteristic function of a probability measure equals 1 at the origin, matching the mass-preservation corollary.",
+    "mathContext": "Convolution of densities ↔ multiplication of characteristic functions; $e^{-\\sigma_1^2 t^2/2}e^{-\\sigma_2^2 t^2/2}=e^{-(\\sigma_1^2+\\sigma_2^2)t^2/2}$ are the density and Fourier sides of the same semigroup.",
     "significance": "supporting",
     "relatedConcepts": [
       "characteristic function",
       "convolution theorem",
-      "probability density"
+      "variance addition",
+      "Fourier duality"
     ],
     "prerequisites": [
       "characteristic functions / Fourier transform",
-      "the convolution theorem (transform of a convolution is a product)",
-      "probability densities integrate to 1"
+      "the convolution theorem (transform of a convolution is a product)"
     ]
   }
 ]
