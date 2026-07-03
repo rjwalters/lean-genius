@@ -149,5 +149,56 @@
       "relationship": "related",
       "description": "The dedicated formalization of the ballot/Dyck side this entry re-exposes: Dyck words of semilength n are counted by catalan n. OQ-04 hinges on that count — its dyck_side_card theorem re-exports the very card_dyckWord_semilength_eq_catalan result proved there — so this entry supplies the non-crossing-partition codomain that the Dyck-counted domain of that entry bijects onto."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isNonCrossing_top",
+      "type": "theorem",
+      "statement": "IsNonCrossing (⊤ : Setoid (Fin n))",
+      "significance": "The coarsest partition — everything in one block — is non-crossing. One of the two boundary cases that any correct non-crossing predicate must accept, and (with isNonCrossing_bot) it certifies that IsNonCrossing is not vacuously empty. In the Catalan enumeration these are the two partitions present for every n.",
+      "description": "The conclusion s a b is s = ⊤, i.e. always true: rw [Setoid.top_def]; trivial."
+    },
+    {
+      "name": "isNonCrossing_bot",
+      "type": "theorem",
+      "statement": "IsNonCrossing (⊥ : Setoid (Fin n))",
+      "significance": "The finest partition — all singletons, the discrete partition — is non-crossing. The second boundary case. Here the argument is vacuous rather than trivial: an interleaving configuration would require a ~ c with a < b < c, but under ⊥ that forces a = c, a contradiction. Illustrates that the predicate excludes crossings by making the hypotheses unsatisfiable, not by proving the conclusion.",
+      "description": "rw [Setoid.bot_def] at hac turns a ~ c into a = c; then absurd hac (hab.trans hbc).ne closes the goal since a < c."
+    },
+    {
+      "name": "isNonCrossing_of_n_le_three",
+      "type": "theorem",
+      "statement": "n ≤ 3 → ∀ (s : Setoid (Fin n)), IsNonCrossing s",
+      "significance": "Every partition on at most three points is non-crossing, because a crossing needs four strictly increasing indices a < b < c < d that cannot fit in Fin n for n ≤ 3. This pins down where the Catalan/Bell agreement breaks: all B₄=15 partitions of a 4-set except the single crossing {{0,2},{1,3}} are non-crossing, giving catalan 4 = 14. Below four points the two counts coincide, which this theorem certifies structurally.",
+      "description": "exfalso, then unfold the Fin order (Fin.lt_def) and use d.isLt : d.val < n together with a < b < c < d; omega derives the numeric contradiction."
+    },
+    {
+      "name": "IsNonCrossing.all_related",
+      "type": "theorem",
+      "statement": "IsNonCrossing s → a < b → b < c → c < d → s a c → s b d → s a b ∧ s b c ∧ s c d",
+      "significance": "The headline structural theorem, and the precise meaning of non-crossing: if two blocks interleave (a ~ c and b ~ d with a < b < c < d) they must in fact be a single block, with all four indices a,b,c,d related. 'Blocks may interleave only by coinciding.' This is the algebraic backbone every OQ-04 bijection proof relies on.",
+      "description": "s a b is the raw predicate applied to the configuration; then b ~ a ~ c gives s b c and c ~ b ~ d gives s c d, each by symmetry + transitivity (s.symm', s.trans')."
+    },
+    {
+      "name": "IsNonCrossing.outer_related",
+      "type": "theorem",
+      "statement": "IsNonCrossing s → a < b → b < c → c < d → s a c → s b d → s a d",
+      "significance": "Corollary of all_related: the two outermost endpoints of a crossing are related, so an interleaving configuration collapses the entire interval [a,d] into one block. The cleanest statement of 'a crossing forces one block' and the form most directly usable when reasoning about block structure.",
+      "description": "obtain ⟨h1,h2,h3⟩ from all_related, then chain a ~ b ~ c ~ d by transitivity (s.trans')."
+    },
+    {
+      "name": "isNonCrossing_iff",
+      "type": "theorem",
+      "statement": "IsNonCrossing s ↔ ¬ ∃ a b c d, a < b ∧ b < c ∧ c < d ∧ s a c ∧ s b d ∧ ¬ s a b",
+      "significance": "The 'no genuine crossing' reformulation — the form in which non-crossing is usually stated in the literature: there is no quadruple whose outer pair {a,c} and inner pair {b,d} lie in genuinely different blocks. Converts the universally-quantified defining implication into the negation of an existential, the shape most convenient for decision procedures and for constructing counterexamples.",
+      "description": "Both directions are immediate unfoldings: forward, a genuine crossing contradicts the defining implication; backward, by_contra on ¬ s a b produces exactly the forbidden existential witness."
+    },
+    {
+      "name": "dyck_side_card",
+      "type": "theorem",
+      "statement": "Fintype.card { p : DyckWord // p.semilength = n } = catalan n",
+      "significance": "The ballot/Dyck side of the OQ-04 bijection: there are exactly catalan n Dyck words of semilength n — equivalently catalan n ballot sequences of n up- and n down-steps that never dip below the start. This is the domain of the sought bijection, whose codomain is the non-crossing partitions formalized in Parts 1–2. Re-exposes Mathlib's card_dyckWord_semilength_eq_catalan so both sides live in one entry.",
+      "description": "Direct application of Mathlib's DyckWord.card_dyckWord_semilength_eq_catalan n — the ballot side is already fully proved upstream."
+    }
   ]
 }
