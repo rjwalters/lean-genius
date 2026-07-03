@@ -118,10 +118,19 @@
     },
     {
       "id": "purely-inseparable",
-      "title": "Purely Inseparable Boundary Case",
-      "startLine": 87,
+      "title": "Purely Inseparable Boundary Case (Subsingleton)",
+      "startLine": 83,
+      "endLine": 96,
+      "summary": "subsingleton_algEquiv_of_isPurelyInseparable: for a finite purely inseparable K/F the automorphism group is a subsingleton. The injection toEmb gives Finite (K ≃ₐ[F] K), then Nat.card (K ≃ₐ[F] K) ≤ Field.finSepDegree F K = 1 (via IsPurelyInseparable.finSepDegree_eq_one) forces card ≤ 1, i.e. a subsingleton — recovering the parent's purely-inseparable conclusion without the Frobenius computation.",
+      "mathContext": "Purely inseparable ⟹ [K:F]_s = 1; combined with |Aut_F(K)| ≤ [K:F]_s this pins |Aut_F(K)| ≤ 1, and Finite.card_le_one_iff_subsingleton converts the count to Subsingleton (K ≃ₐ[F] K)."
+    },
+    {
+      "id": "boundary-case-equality",
+      "title": "Boundary Case as an Equality",
+      "startLine": 97,
       "endLine": 105,
-      "summary": "subsingleton_algEquiv_of_isPurelyInseparable and card_algEquiv_eq_one_of_isPurelyInseparable: the bound at [K:F]_s = 1 forces a trivial automorphism group, recovering the parent's purely-inseparable conclusion without the Frobenius computation."
+      "summary": "card_algEquiv_eq_one_of_isPurelyInseparable restates the boundary case sharply: a finite purely inseparable extension has exactly one F-algebra automorphism (the identity), Nat.card (K ≃ₐ[F] K) = 1. It upgrades the subsingleton (≤ 1) to an equality by exhibiting the identity automorphism as the unique element.",
+      "mathContext": "Nat.card_eq_one_iff_unique: a type has card 1 iff it is a subsingleton and inhabited; here inhabitedness is the identity automorphism 1 : K ≃ₐ[F] K."
     }
   ],
   "crossReferences": [
