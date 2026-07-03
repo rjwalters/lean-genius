@@ -128,6 +128,11 @@
       "targetId": "binomial-theorem-oq-04",
       "relationship": "extends",
       "description": "Grandparent entry on Vandermonde's identity"
+    },
+    {
+      "targetId": "catalan-numbers-oq-05",
+      "relationship": "related",
+      "description": "Another identity for the same central binomial coefficient C(2n,n): that entry expresses the Catalan numbers as the difference Cₙ = C(2n,n) − C(2n,n+1) over ℕ, where this entry expresses C(2n,n) itself as the sum of squares Σ C(n,k)². Together they give two complementary structural views of the central binomial coefficient — its ℓ² decomposition (this entry) and its relation to the Catalan sequence (that entry)."
     }
   ],
   "mainTheorems": [
