@@ -97,9 +97,17 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 25,
+      "mathContext": "Of the $B_4 = 15$ partitions of a 4-element set exactly one crosses, leaving $\\mathrm{catalan}\\,4 = 14$ non-crossing; the crossing one is the same-parity relation $\\{\\{0,2\\},\\{1,3\\}\\}$.",
+      "summary": "Docstring situating the file under the parent ballot-problem-oq-04 (IsNonCrossing on Setoid (Fin n); every partition with n ≤ 3 is non-crossing), and stating the goal: exhibit the unique crossing partition of Fin 4 — the same-parity relation {{0,2},{1,3}} whose interleaving 0 ~ 2, 1 ~ 3, ¬0 ~ 1 is the forbidden IsNonCrossing configuration — as a concrete verified witness for the n = 4 discriminator. Imports Proofs.BallotProblemOQ04, opens the parent namespace."
+    },
+    {
       "id": "definition",
       "title": "The Crossing Partition as Same-Parity",
-      "startLine": 27,
+      "startLine": 26,
       "endLine": 42,
       "mathContext": "$\\mathrm{crossing4} = \\ker(x \\mapsto x \\bmod 2)$, blocks $\\{0,2\\}$ and $\\{1,3\\}$.",
       "summary": "crossing4 is the same-parity equivalence on Fin 4 (kernel of the parity map); crossing4_iff records that membership is having equal parity, and crossing4_blocks exhibits the two interleaving blocks 0 ~ 2, 1 ~ 3 with ¬ 0 ~ 1."
