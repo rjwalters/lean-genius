@@ -202,6 +202,106 @@
       "mathContext": "On a distinct-part partition Franklin's involution pairs the smallest part s(λ) with the maximal descending top run of length ℓ(λ); both moves fail exactly when s=ℓ (positive) or s=ℓ+1 (negative), the staircases. For a contiguous block, min'(Ico a b)=a and card(Ico a b)=b-a, so s=ℓ ⇔ a=b-a ⇔ b=2a and s=ℓ+1 ⇔ a=b-a+1 ⇔ b=2a-1."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "genFun_pent_eq_tprod",
+      "type": "theorem",
+      "statement": "Nat.Partition.genFun pentChar = ∏' i, (1 - X^(i+1))",
+      "significance": "The analytic heart of the theorem: the partition generating function twisted by the pentagonal character equals Euler's infinite product ∏(1 − Xⁱ). Identifying the twisted generating series with the Euler product is what turns a statement about partitions into the product side of the Pentagonal Number Theorem.",
+      "description": "Proved termwise via `tprod_congr`: each factor's inner tsum collapses (`tsum_eq_single 0`) to −X^(i+1), giving the factor 1 − X^(i+1)."
+    },
+    {
+      "name": "coeff_genFun_pent",
+      "type": "theorem",
+      "statement": "(genFun pentChar).coeff n = ∑ p ∈ distincts n, (-1)^p.parts.card",
+      "significance": "Extracts the nth coefficient as a signed count over distinct-part partitions of n, each weighted by (−1)^(number of parts). This is the combinatorial side that Franklin's involution will evaluate.",
+      "description": "From `Nat.Partition.coeff_genFun`, reducing the product of `pentChar` over a nodup part-multiset to (−1)^(#parts)."
+    },
+    {
+      "name": "coeff_tprod_pent_eq_evenOdd_diff",
+      "type": "theorem",
+      "statement": "(∏' i, (1 - X^(i+1))).coeff n = #{distinct p : Even #parts} − #{distinct p : Odd #parts}",
+      "significance": "The Pentagonal Number Theorem in its raw combinatorial form: the coefficient equals the number of distinct-part partitions of n with an even number of parts minus those with an odd number. Franklin's involution shows this difference is 0, ±1.",
+      "description": "Splits the signed sum over distinct partitions by parity of the part count; the two filtered sums evaluate to the respective cardinalities."
+    },
+    {
+      "name": "isGenPent_iff_isSquare",
+      "type": "theorem",
+      "statement": "IsGenPent m ↔ ∃ s, 24*m + 1 = s^2",
+      "significance": "The square-discriminant criterion: an integer is a generalized pentagonal number exactly when 24m+1 is a perfect square. Converts membership in the sparse pentagonal set into a single arithmetic test, decoupling the index k from the value.",
+      "description": "Forward: 24·g(k)+1 = (6k−1)². Backward: a square s² = 24m+1 forces s ≡ ±1 (mod 6) (checked by `decide` on ZMod 6), which recovers the index k."
+    },
+    {
+      "name": "disc_genPent",
+      "type": "theorem",
+      "statement": "24 * genPent k + 1 = (6*k - 1)^2",
+      "significance": "The exact discriminant identity underlying the square criterion: shifting and scaling a pentagonal number produces the perfect square (6k−1)². Makes the ↔ criterion constructive by exhibiting the witnessing square directly.",
+      "description": "A `linear_combination` of `two_mul_genPent` (2·genPent k = k(3k−1))."
+    },
+    {
+      "name": "two_mul_genPent",
+      "type": "theorem",
+      "statement": "2 * genPent k = k * (3*k - 1)",
+      "significance": "The defining closed form: the generalized pentagonal number genPent k is k(3k−1)/2, expressed integrally to avoid division. Ranging k over all integers yields the classical exponents 0, 1, 2, 5, 7, 12, 15, … of the Euler product.",
+      "description": "Direct from the definition of genPent by ring normalization."
+    },
+    {
+      "name": "genPent_add_neg",
+      "type": "theorem",
+      "statement": "genPent k + genPent (-k) = 3 * k^2",
+      "significance": "Pairs the two pentagonal numbers with indices ±k, whose sum is the clean square multiple 3k². Encodes the ± symmetry that produces the two exponents k(3k∓1)/2 appearing together in each term of the product.",
+      "description": "Both closed forms are added and simplified by ring arithmetic."
+    },
+    {
+      "name": "franklin_fixed_point",
+      "type": "theorem",
+      "statement": "1 ≤ k → the staircase Ico k (2k) has card k, positive parts, sum genPent k, and sign (-1)^k = pentSign k",
+      "significance": "Exhibits the fixed points of Franklin's involution: the 'staircase' distinct-part partition {k, k+1, …, 2k−1} sums to the pentagonal number genPent k with exactly the surviving sign pentSign k. These uncancelled partitions are the source of every nonzero coefficient.",
+      "description": "Combines `staircase_sum_eq_genPent` with cardinality of Ico (= k) and the parity computation (−1)^k = pentSign k."
+    },
+    {
+      "name": "franklinStep_headline",
+      "type": "theorem",
+      "statement": "franklinStep S s ℓ m preserves the sum, negates the sign (-1)^card, and keeps all parts positive",
+      "significance": "The involution property at the core of Franklin's bijective proof: the single step (choose move A or B) is sum-preserving, positivity-preserving, and reverses the sign (−1)^(#parts). Sign-reversal is exactly what forces even/odd counts to cancel in pairs.",
+      "description": "Case split on the guard selecting `franklinMoveA` vs `franklinMoveB`, discharging each branch with the corresponding move headline lemma."
+    },
+    {
+      "name": "franklinMoveA_franklinMoveB_canonical",
+      "type": "theorem",
+      "statement": "Under the canonical hypotheses, franklinMoveA (franklinMoveB S ℓ m) … = S",
+      "significance": "Move A undoes move B (on the canonical configuration): the two Franklin moves are mutually inverse, so the step is a genuine involution, not merely sign-reversing. This is what upgrades the coefficient bound to an exact bijection between even- and odd-part partitions.",
+      "description": "Rewrites the min'/max' of `franklinMoveB S ℓ m` to ℓ and m, then simplifies the composite back to S."
+    },
+    {
+      "name": "pentSeriesCoeff_ne_zero_iff",
+      "type": "theorem",
+      "statement": "pentSeriesCoeff n ≠ 0 ↔ IsGenPent n",
+      "significance": "Pins down the support of the pentagonal series: the coefficient is nonzero precisely at the generalized pentagonal numbers, and is ±1 there. This is the ‘gaps’ half of the theorem — the product ∏(1 − Xⁱ) has almost all coefficients zero.",
+      "description": "Nonzero forces membership via the contrapositive of `pentSeriesCoeff_of_not`; conversely a pentagonal value gives coefficient pentSign k = ±1 ≠ 0."
+    },
+    {
+      "name": "genPent_injective",
+      "type": "theorem",
+      "statement": "Function.Injective genPent",
+      "significance": "Distinct indices give distinct generalized pentagonal numbers, so the exponents in Euler's product never collide. Guarantees each pentagonal value has a unique index and sign, making pentSign well defined on the value.",
+      "description": "Injectivity of k ↦ k(3k−1)/2 on ℤ, reduced to the closed form."
+    },
+    {
+      "name": "abs_index_le_genPent",
+      "type": "theorem",
+      "statement": "|k| ≤ genPent k",
+      "significance": "A growth bound tying the index size to the value: |k| never exceeds genPent k. Bounds how many indices can land below any threshold n, which is what makes the pentagonal index set finite.",
+      "description": "Combines `index_le_genPent` and `neg_index_le_genPent` (each from k² ≤ genPent k) via a case split on the sign of k."
+    },
+    {
+      "name": "indexSet_finite",
+      "type": "theorem",
+      "statement": "{k : ℤ | genPent k ≤ n}.Finite",
+      "significance": "Only finitely many indices produce pentagonal numbers below any bound n. Ensures the pentagonal series and its finite index sums are well defined, so coefficient extraction and the Franklin argument operate over honest finite sets.",
+      "description": "The growth bound |k| ≤ genPent k confines the index set to a bounded interval, hence a finite set."
+    }
+  ],
   "openQuestions": [
     "Close the open core: construct Franklin's sign-reversing involution on the NON-FIXED partitions into distinct parts, proving it cancels all non-pentagonal terms so that ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n). Both ends of Euler's identity are machine-checked (Part 6) AND the fixed-point/residual side is now formalized (Part 7: franklin_fixed_point); what remains is the involution witnessing the cancellation of the other terms.",
     "Derive Euler's partition recurrence p(n) = ∑_{k≥1}(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) as a corollary, using this entry's recognition criterion to index the pentagonal shifts."
