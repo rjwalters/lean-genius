@@ -2722,6 +2722,34 @@ theorem chaseTarget_escapeDepth_notMem (f g : ℕ → ℕ) (L : List (ℕ × ℕ
     chaseTarget f g a (escapeDepth f g L a hex) ∉ mRan L :=
   escapeDepth_spec f g L a hex
 
+/-- **Bounded merged escape.** The `escape_exists'` dichotomy, but *retaining the length bound*
+    that both arms already prove (`escape_of_balanced` on the periodic arm,
+    `escape_of_infinite_orbit` on the infinite arm): some forward-orbit stage `N ≤ (mRan L).length`
+    has a green image outside `mRan L`. `escape_exists'` discards this bound; keeping it is exactly
+    what lets the `Nat.find` escape depth be relocated into a *bounded* (plainly computable) search
+    over `List.range ((mRan L).length + 1)` — see `escapeDepth_le`. -/
+theorem escape_exists_bounded {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced f g L) {a : ℕ} (ha : a ∉ mDom L) :
+    ∃ N, N ≤ (mRan L).length ∧ f (fwdOrbit f g a N) ∉ mRan L := by
+  by_cases hac : OnCycle f g a
+  · exact escape_of_balanced hf hg hbal hac ha
+  · exact escape_of_infinite_orbit hf hg hac
+
+/-- **The escape depth is bounded by `(mRan L).length`.** Because `escapeDepth` is the *least*
+    escaping stage (`Nat.find`) and `escape_exists_bounded` supplies *some* escaping stage
+    `N ≤ (mRan L).length`, the least one is `≤ (mRan L).length` too. Consequences: the canonical
+    domain-cons partner `chaseTarget f g a (escapeDepth …)` can be found by scanning only the first
+    `(mRan L).length + 1` forward-orbit stages, so a plain bounded search (no `Nat.find`, no
+    existence-proof argument) computes the *same* value. This is the numerical fact that unblocks a
+    fully computable rebuild of the extension-only scheduler. -/
+theorem escapeDepth_le {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced f g L) {a : ℕ} (ha : a ∉ mDom L) :
+    escapeDepth f g L a (escape_exists' hf hg hbal ha) ≤ (mRan L).length := by
+  obtain ⟨N, hNle, hN⟩ := escape_exists_bounded hf hg hbal ha
+  exact le_trans (Nat.find_min' _ hN) hNle
+
 /-- **Choice-free domain cons step.** Prepends the concrete escaping pair
     `(a, chaseTarget f g a (escapeDepth …))` — the least-depth green image, located by the
     decidable `Nat.find` above rather than `Classical.choose` — and preserves all four
@@ -2915,6 +2943,16 @@ theorem sigmaB_eq_of_mem_dom {s n : ℕ}
     (stageSeqB_isMatching hfpq hgpq hf hg _)
     (fun x hx => stageSeqB_pair_subset hfpq hgpq hf hg hle hx)
     (mem_mDom_entryStageDomB hfpq hgpq hf hg n)).symm
+
+/-- **Read-off at the explicit bound `2n+1`.** The limit value `σ n` is already realised at stage
+    `2n+1`, because `n` is covered on the domain side by then (`stageSeqB_covers_dom`) and the
+    read-off is stable (`sigmaB_eq_of_mem_dom`). This eliminates the *noncomputable*
+    `entryStageDomB` search from the read-off formula: `σ n` is a lookup into the list at a *fixed,
+    computable* stage index `2n+1`. Combined with the (forthcoming) computability of the stage
+    list, `σ` becomes computable via `mLookup_computable`. -/
+theorem sigmaB_eq_bound (n : ℕ) :
+    sigmaB hfpq hgpq hf hg n = mLookup (stageSeqB hfpq hgpq hf hg (2 * n + 1)).1 n :=
+  (sigmaB_eq_of_mem_dom hfpq hgpq hf hg (stageSeqB_covers_dom hfpq hgpq hf hg n)).symm
 
 /-- The pair `(n, σ n)` is recorded at `n`'s entry stage. -/
 theorem sigmaB_pair_mem (n : ℕ) :
