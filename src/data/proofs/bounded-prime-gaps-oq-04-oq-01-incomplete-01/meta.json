@@ -61,6 +61,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: the cosecant→distance bridge",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Docstring situating this file between the sibling geometric sum bound |∑ e^{2πiθn}| ≤ 1/|sin(πθ)| and its sharper distance-to-nearest-integer form ≤ 1/(2‖θ‖). The bridge is the elementary inequality |sin(πθ)| ≥ 2‖θ‖ proved here in four steps (chord bound 2θ ≤ sin(πθ); its absolute-value form; the ‖·‖ version by π·ℤ-periodicity; the cosecant reciprocal), driven by Mathlib's Jordan inequality and abs_sub_round. Ends with the single import Mathlib.",
+      "mathContext": "$|\\sin(\\pi\\theta)| \\ge 2\\lVert\\theta\\rVert,\\qquad \\lVert\\theta\\rVert = |\\theta - \\mathrm{round}\\,\\theta| \\in [0,\\tfrac12].$"
+    },
+    {
       "id": "chord",
       "title": "Concavity chord bound and the [−1/2,1/2] cosecant bound",
       "startLine": 40,
