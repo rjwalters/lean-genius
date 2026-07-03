@@ -210,12 +210,82 @@ theorem ramsey_deletion_generalizes_first_moment
   refine ⟨c, fun K hKcard => ?_⟩
   exact hR K (by rw [hRuniv]; exact Finset.subset_univ K) hKcard
 
+-- ═══════════════════════════════════════════════════════════════════
+-- DELETION STRICTLY BEATS THE SHARP UNION BOUND (concrete, axiom-free)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-  The sibling file `Proofs/RamseyR4kExtensionsOQ03.lean` (PART VII) records an
+    honest limitation: the *symmetric Lovász Local Lemma as set up there* does NOT
+    beat the sharp first-moment/union bound at small `k` — its factor-`Θ(k)` gain is
+    asymptotic and has not kicked in by `k = 6, 7` (the LLL test caps at `R(6,6)>13`,
+    `R(7,7)>22`, while the sharp union bound already gives `R(6,6)>17`, `R(7,7)>27`).
+
+    The *deletion method* of this file, by contrast, **does** strictly beat the sharp
+    union bound at exactly those `k`.  The union bound (the `M = 0` case of
+    `ramsey_deletion`) certifies a monochromatic-`Kₖ`-free colouring of *all* of `Kₙ`
+    only when `2·C(n,k) < 2^{C(k,2)}`; deletion instead keeps a *surviving set* of
+    size `deletionBound n k = n − ⌊2·C(n,k)/2^{C(k,2)}⌋`, which is maximised past that
+    threshold.  The theorems below discharge the strict gain at `k = 6`: deletion
+    reaches an 18-vertex mono-free set where the union bound stops at 17.  (The same
+    phenomenon holds at `k = 7`, where `deletionBound 30 7 = 29` beats the union
+    bound's cap of 27 — `2·C(27,7) = 1776060 < 2^{21}` but `2·C(28,7) = 2368080 ≥ 2^{21}`
+    — but the `k = 7` binomials are large enough that a kernel `decide` is
+    impractical, so only `k = 6` is discharged as a theorem here.)  Everything is
+    settled by kernel `decide` on `ℕ`, so the results remain axiom-free (no
+    `native_decide`).  -/
+
+/-- The guaranteed surviving-set size of the deletion method: a monochromatic-`Kₖ`-free
+    2-colouring exists on `deletionBound n k` vertices.  This is exactly the lower
+    bound proved in `ramsey_deletion`. -/
+def deletionBound (n k : ℕ) : ℕ := n - (2 * n.choose k) / 2 ^ (k.choose 2)
+
+/-- Restatement of `ramsey_deletion` in terms of `deletionBound`: for `2 ≤ k ≤ n`
+    there is a 2-colouring `c` of `Kₙ` and a set `R` of at least `deletionBound n k`
+    vertices with no monochromatic `k`-clique. -/
+theorem ramsey_deletion_bound (hk : 2 ≤ k) (hkn : k ≤ n) :
+    ∃ (c : Coloring n) (R : Finset (Fin n)),
+      deletionBound n k ≤ R.card ∧
+      ∀ K : Finset (Fin n), K ⊆ R → K.card = k → ¬ Mono c K :=
+  ramsey_deletion hk hkn
+
+/-- **The sharp union bound caps at `n = 17` for `k = 6`.**  The first-moment test
+    `2·C(n,6) < 2^{C(6,2)} = 2^{15}` holds at `n = 17` (`2·12376 = 24752 < 32768`) but
+    fails at `n = 18` (`2·18564 = 37128 ≥ 32768`).  So the union bound alone certifies
+    a monochromatic-`K₆`-free colouring only up to 17 vertices, i.e. `R(6,6) > 17`. -/
+set_option maxHeartbeats 800000 in
+theorem unionBound_caps_at_17_for_K6 :
+    2 * (17 : ℕ).choose 6 < 2 ^ ((6 : ℕ).choose 2) ∧
+      ¬ (2 * (18 : ℕ).choose 6 < 2 ^ ((6 : ℕ).choose 2)) := by
+  decide
+
+/-- **Deletion reaches an 18-vertex monochromatic-`K₆`-free set.**  Applying the
+    deletion method at `n = 19, k = 6` gives `deletionBound 19 6 = 19 − ⌊2·C(19,6)/2^{15}⌋
+    = 19 − ⌊54264/32768⌋ = 19 − 1 = 18`: a 2-colouring of `K₁₉` and a set `R` of at
+    least 18 vertices with no monochromatic `K₆`.  This **strictly beats** the sharp
+    union bound (`unionBound_caps_at_17_for_K6`, which stops at 17), so the deletion
+    method certifies `R(6,6) > 18` — a strict improvement the symmetric LLL of the
+    sibling file does not achieve at `k = 6`. -/
+set_option maxHeartbeats 800000 in
+theorem deletion_no_mono_K6 :
+    ∃ (c : Coloring 19) (R : Finset (Fin 19)),
+      18 ≤ R.card ∧ ∀ K : Finset (Fin 19), K ⊆ R → K.card = 6 → ¬ Mono c K := by
+  obtain ⟨c, R, hRcard, hR⟩ :=
+    ramsey_deletion_bound (n := 19) (k := 6) (by norm_num) (by norm_num)
+  have h : deletionBound 19 6 = 18 := by decide
+  rw [h] at hRcard
+  exact ⟨c, R, hRcard, hR⟩
+
 #check @ramsey_deletion
 #check @ramsey_deletion_generalizes_first_moment
+#check @ramsey_deletion_bound
+#check @deletion_no_mono_K6
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
--- no `sorryAx`, no `Lean.ofReduceBool`, no `decide`, no `native_decide`.
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`.  The concrete `k = 6`
+-- witnesses use kernel `decide` (`of_decide_eq_true`), which is axiom-free — it does
+-- NOT introduce `Lean.ofReduceBool` the way `native_decide` would.
 #print axioms ramsey_deletion
 #print axioms ramsey_deletion_generalizes_first_moment
+#print axioms deletion_no_mono_K6
 
 end ProbMethod.RamseyDeletion
