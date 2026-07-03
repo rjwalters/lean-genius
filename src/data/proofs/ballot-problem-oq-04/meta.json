@@ -143,6 +143,11 @@
       "targetId": "ballot-problem-oq-03",
       "relationship": "related",
       "description": "A sibling ballot strand that, like this entry, bridges the ballot/lattice-path combinatorics to Mathlib's enumerative infrastructure. Both sit under the ballot/Catalan umbrella; this entry adds the non-crossing-partition side."
+    },
+    {
+      "targetId": "dyck-catalan-count-oq-01",
+      "relationship": "related",
+      "description": "The dedicated formalization of the ballot/Dyck side this entry re-exposes: Dyck words of semilength n are counted by catalan n. OQ-04 hinges on that count — its dyck_side_card theorem re-exports the very card_dyckWord_semilength_eq_catalan result proved there — so this entry supplies the non-crossing-partition codomain that the Dyck-counted domain of that entry bijects onto."
     }
   ]
 }
