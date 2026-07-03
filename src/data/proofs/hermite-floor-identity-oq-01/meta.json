@@ -37,7 +37,8 @@
     "keyInsights": [
       "The sawtooth identity is not independent of Hermite's floor identity — it is its mirror image. Writing {y} = y − ⌊y⌋, summing termwise turns ∑{x + k/n} into (exact sum) − (floor sum), where the floor sum is precisely Hermite's identity and the exact sum is elementary.",
       "The only genuinely new arithmetic is the average of the offsets: ∑_{k<n} k/n = (n−1)/2, the discrete average 1/2 of the sawtooth over its n−1 nonzero samples. This is why the additive constant is (n−1)/2.",
-      "Casting `Finset.sum_range_id` (which yields the ℕ-quotient n(n−1)/2) into ℝ obstructs `ring` because natural-number division is not a ring operation; proving the Gauss sum directly over ℝ by induction removes the obstruction entirely."
+      "Casting `Finset.sum_range_id` (which yields the ℕ-quotient n(n−1)/2) into ℝ obstructs `ring` because natural-number division is not a ring operation; proving the Gauss sum directly over ℝ by induction removes the obstruction entirely.",
+      "Re-centring by 1/2 reveals a **multiplication (distribution) relation**. For the sawtooth s(x) = {x} − 1/2, the identity ∑_{k<n}{x+k/n} = {nx} + (n−1)/2 rearranges to ∑_{k<n} s(x + k/n) = s(nx): summing the sawtooth over the n translates x + k/n reproduces the sawtooth at nx. This is exactly the Kubert distribution relation that the Bernoulli polynomials B₁ and the Hurwitz zeta function also satisfy, the same structural identity underlying Dedekind sums — so this elementary floor computation is a first instance of a deep family of multiplication formulas."
     ],
     "prerequisites": [
       "The fractional-part function {·} = Int.fract and the identity {y} = y − ⌊y⌋",
