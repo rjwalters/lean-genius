@@ -130,6 +130,36 @@
       "description": "Grandparent entry on Vandermonde's identity"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "central_binomial_eq_sum_sq",
+      "type": "theorem",
+      "statement": "Nat.choose (2*n) n = ∑ k ∈ range (n+1), (Nat.choose n k)^2",
+      "significance": "The central binomial coefficient is the sum of squared binomial coefficients: C(2n,n) = Σ C(n,k)². The headline identity — the diagonal case of Vandermonde's convolution, a classic and visually striking combinatorial fact.",
+      "description": "Specialise Vandermonde (Nat.add_choose_eq) at m=n, r=n; collapse the antidiagonal sum to a range sum; the term at k is C(n,k)·C(n,n-k), and C(n,n-k)=C(n,k) (Nat.choose_symm, k≤n) makes each term C(n,k)²."
+    },
+    {
+      "name": "centralBinom_eq_sum_sq",
+      "type": "theorem",
+      "statement": "Nat.centralBinom n = ∑ k ∈ range (n+1), (Nat.choose n k)^2",
+      "significance": "The same identity in Mathlib's canonical Nat.centralBinom notation, connecting the result to the library's central-binomial API.",
+      "description": "Rewrite Nat.centralBinom via Nat.centralBinom_eq_two_mul_choose, then apply central_binomial_eq_sum_sq."
+    },
+    {
+      "name": "sum_sq_choose_example",
+      "type": "theorem",
+      "statement": "∑ k ∈ range 4, (Nat.choose 3 k)^2 = 20",
+      "significance": "A concrete numeric instance: 1²+3²+3²+1² = 20, exhibiting the identity for n=3.",
+      "description": "decide."
+    },
+    {
+      "name": "central_binomial_three",
+      "type": "theorem",
+      "statement": "Nat.choose 6 3 = 20",
+      "significance": "Consistency check that the general theorem reproduces the numeric instance (C(6,3)=20 matches the sum-of-squares value).",
+      "description": "decide."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Basic",
