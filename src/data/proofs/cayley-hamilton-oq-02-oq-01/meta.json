@@ -2,7 +2,7 @@
   "id": "cayley-hamilton-oq-02-oq-01",
   "slug": "cayley-hamilton-oq-02-oq-01",
   "title": "Putzer's Algorithm: Algebraic Core (Telescoping Identity & Cayley–Hamilton Truncation)",
-  "description": "Establishes the purely algebraic scaffolding of Putzer's algorithm for the matrix exponential e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}, where ρₖ = (A-λₖI)…(A-λ₁I) is the ordered partial product of the eigenfactors. Proves the two identities that drive the (deferred) derivative computation Ṁ = A·M: the key telescoping identity A·ρₖ = ρ_{k+1} + λₖ·ρₖ, and the Cayley–Hamilton truncation ρₙ = 0 (when χ_A splits as ∏(X-λᵢ)). Defines ρ by an ordered recursion so no CommMonoid structure on matrices is required, and proves A commutes with every ρₖ. The analytic layer (constructing the ODE coefficients Pₖ, differentiating the finite sum, and matrix-valued ODE uniqueness against NormedSpace.exp) is NOT included and is documented as future work. 9 lemmas, 1 definition, 0 axioms, 0 sorries.",
+  "description": "Establishes the purely algebraic scaffolding of Putzer's algorithm for the matrix exponential e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}, where ρₖ = (A-λₖI)…(A-λ₁I) is the ordered partial product of the eigenfactors. Proves the two identities that drive the (deferred) derivative computation Ṁ = A·M: the key telescoping identity A·ρₖ = ρ_{k+1} + λₖ·ρₖ, and the Cayley–Hamilton truncation ρₙ = 0 (when χ_A splits as ∏(X-λᵢ)). Defines ρ by an ordered recursion so no CommMonoid structure on matrices is required, and proves A commutes with every ρₖ. Also closes the telescope: the reindex-and-truncate step A·∑ₖaₖρₖ = ∑ₖ(λₖaₖ+bₖ)ρₖ (with b the up-shift of a, using ρₙ=0 to discard the boundary term), whose coefficient λₖaₖ+bₖ is exactly the RHS of the Putzer ODE Ṗₖ=λₖPₖ+Pₖ₋₁ — reducing the matrix identity Ṁ=A·M to the scalar ODE system. The analytic layer (constructing the ODE coefficients Pₖ, the HasDerivAt assembly, and matrix-valued ODE uniqueness against NormedSpace.exp) is NOT included and is documented as future work. 11 lemmas, 1 definition, 0 axioms, 0 sorries.",
   "problemStatement": "Formalize Putzer's algorithm: given eigenvalues λ₁,…,λₙ of A, prove e^{tA} = ∑ₖ Pₖ(t)ρₖ where ρₖ = ∏_{i<k}(A-λᵢI) and Ṗₖ = λₖPₖ + Pₖ₋₁. This entry contributes the verified algebraic core; the analytic completion remains open.",
   "meta": {
     "author": "Lean Genius (researcher-15)",
@@ -20,8 +20,8 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 125,
-    "theoremCount": 9,
+    "lineCount": 233,
+    "theoremCount": 11,
     "definitionCount": 1,
     "assumptions": "Derives from Mathlib's Cayley–Hamilton theorem (Matrix.aeval_self_charpoly). All results are fully machine-checked over an arbitrary CommRing R (0 sorries, 0 axiom declarations, no structure-encoded assumptions). SCOPE: this file proves only the ALGEBRAIC core of Putzer's algorithm — the telescoping identity and ρₙ = 0. It does NOT prove the full analytic identity e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}; the ODE-coefficient construction and the matrix-valued ODE-uniqueness step are deferred future work, so the parent's open question is only partially answered.",
     "originalContributions": [
@@ -29,16 +29,18 @@
       "commute_A_rho: A commutes with every partial product ρₖ (each factor is a polynomial in A)",
       "A_mul_rho: the key telescoping identity A·ρₖ = ρ_{k+1} + λₖ•ρₖ — the algebraic engine that lets the derivative Ṁ collapse to A·M",
       "rho_eq_aeval_prod: ρₖ = aeval A (∏_{i<k}(X - C λᵢ)), bridging the ordered matrix product to the commutative polynomial product",
-      "rho_card: Cayley–Hamilton truncation ρₙ = 0 when χ_A = ∏(X - λᵢ), making Putzer's sum finite and killing the boundary term Pₙρₙ"
+      "rho_card: Cayley–Hamilton truncation ρₙ = 0 when χ_A = ∏(X - λᵢ), making Putzer's sum finite and killing the boundary term Pₙρₙ",
+      "putzer_shift_sum: the index shift ∑ₖ aₖ•ρ_{k+1} = ∑ₖ bₖ•ρₖ (b the up-shift of a), where the truncation ρₘ=0 discards the boundary term a_{m-1}ρₘ so the reindexed sum stays within range m",
+      "A_mul_putzer_sum_closed: the closed telescoped form A·∑ₖ aₖ•ρₖ = ∑ₖ (λₖaₖ+bₖ)•ρₖ — the coefficient λₖaₖ+bₖ is exactly the Putzer ODE RHS Ṗₖ=λₖPₖ+Pₖ₋₁, so matching against Ṁ=∑ₖ Ṗₖρ_{k-1} reduces Ṁ=A·M to the scalar ODE with no analysis"
     ]
   },
   "leanFile": {
     "namespace": "PutzerMatrixExp",
     "path": "Proofs/CayleyHamiltonOQ02OQ01.lean",
-    "lineCount": 167,
+    "lineCount": 233,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 1
   },
   "overview": {
@@ -97,11 +99,11 @@
     }
   ],
   "conclusion": {
-    "summary": "9 lemmas, 1 definition, 167 lines, 0 axioms, 0 sorries. A verified formalization of the algebraic core of Putzer's algorithm: the ordered partial product ρₖ, its commutation with A, the telescoping identity A·ρₖ = ρ_{k+1} + λₖ·ρₖ, and the Cayley–Hamilton truncation ρₙ = 0. Holds over any commutative ring R. This is the exact algebraic scaffolding that the derivative computation Ṁ = A·M rests on in the full proof of e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}.",
+    "summary": "11 lemmas, 1 definition, 233 lines, 0 axioms, 0 sorries. A verified formalization of the algebraic core of Putzer's algorithm: the ordered partial product ρₖ, its commutation with A, the telescoping identity A·ρₖ = ρ_{k+1} + λₖ·ρₖ, the Cayley–Hamilton truncation ρₙ = 0, and — new in this revision — the closed telescoped form A·∑ₖaₖρₖ = ∑ₖ(λₖaₖ+bₖ)ρₖ obtained by reindexing the shift ρₖ↦ρ_{k+1} and truncating at ρₙ=0. Holds over any commutative ring R. The closed form's coefficient λₖaₖ+bₖ matches the Putzer ODE Ṗₖ=λₖPₖ+Pₖ₋₁, so the matrix identity Ṁ=A·M reduces entirely to the scalar ODE system — the whole matrix content of the derivative computation, discharged algebraically.",
     "implications": "The telescoping identity and the truncation ρₙ = 0 are the two facts that make Putzer's construction work: the first re-expresses each term's derivative as a multiple of A so the sum closes on itself, and the second both truncates the sum to n terms and kills the boundary term produced by the index shift. With these in hand, the remaining work is analytic: constructing the scalar coefficients Pₖ as the solutions of the triangular ODE system, differentiating the finite matrix sum term-by-term, and invoking uniqueness of the matrix-valued linear ODE Ṁ = A·M, M(0) = I against Mathlib's NormedSpace.exp.",
     "openQuestions": [
       "Construct the ODE coefficients Pₖ : ℝ → ℂ with HasDerivAt (P₁) (λ₁·P₁ t) t, P₁(0)=1 and HasDerivAt (Pₖ) (λₖ·Pₖ t + P_{k-1} t) t, Pₖ(0)=0, e.g. as iterated convolutions of exponentials, and prove their derivative relations.",
-      "Prove HasDerivAt (fun t => ∑ₖ Pₖ t • ρ_{k-1}) (A · M t) t by assembling HasDerivAt.sum and HasDerivAt.smul with the telescoping identity A_mul_rho and the vanishing rho_card.",
+      "Prove HasDerivAt (fun t => ∑ₖ Pₖ t • ρ_{k-1}) (A · M t) t. The ALGEBRAIC content is now discharged: A_mul_putzer_sum_closed rewrites A·M(t) into ∑ₖ(λₖPₖ(t)+P_{k-1}(t))•ρₖ, and given the ODE relations HasDerivAt Pₖ (λₖPₖ(t)+P_{k-1}(t)) t this matches d/dt M(t) = ∑ₖ Ṗₖ(t)•ρₖ term-by-term. The remaining step is purely analytic: assemble HasDerivAt.sum / HasDerivAt.smul_const over a matrix normed space (bring in a Matrix.linftyOpNormedAddCommGroup instance) — no further algebra needed.",
       "Package Mathlib's ODE_solution_unique for matrix-valued functions ℝ → M_n(ℂ): the vector field M ↦ A·M is globally Lipschitz with constant ‖A‖_op, so the solution of Ṁ = A·M, M(0) = I is unique — concluding M(t) = NormedSpace.exp ℝ (t • A).",
       "Extend from the split-characteristic-polynomial case (χ_A = ∏(X - λᵢ) over ℂ) to a general field via an algebraic closure, and relate to the minimal-polynomial variant (fewer distinct factors)."
     ]

@@ -36,6 +36,8 @@ derivative computation Ṁ = A·M.  Note that `ρ_k` is an *ordered* product of 
 * `rho_succ_left`: ρ_{k+1} = (A - λ_k • 1) · ρ_k              (factor pulled to the left)
 * `rho_mul_A`    : ρ_k · A = ρ_{k+1} + λ_k • ρ_k             (right telescoping identity)
 * `A_mul_sum_rho`: A · ∑_k a_k • ρ_k = ∑_k a_k • (ρ_{k+1} + λ_k • ρ_k)   (sum-level telescoping)
+* `putzer_shift_sum`: ∑_k a_k • ρ_{k+1} = ∑_k b_k • ρ_k  (index shift; uses ρ_m = 0)
+* `A_mul_putzer_sum_closed`: A · ∑_k a_k • ρ_k = ∑_k (λ_k a_k + b_k) • ρ_k   (closed telescoped form)
 
 `A_mul_rho` is precisely what converts the term-by-term derivative
 d/dt (P_k ρ_{k-1}) = Ṗ_k ρ_{k-1} into a multiple of A, and `rho_card` is what makes
@@ -163,5 +165,69 @@ lemma A_mul_sum_rho (A : Matrix n n R) (lam : ℕ → R) (a : ℕ → R) (m : �
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl (fun k _ => ?_)
   rw [mul_smul_comm, A_mul_rho]
+
+/-! ## Closing the telescope: the reindex-and-truncate step
+
+`A_mul_sum_rho` leaves `A · ∑ a_k ρ_k` in the *un-closed* form `∑ a_k (ρ_{k+1} + λ_k ρ_k)`,
+where the shift `ρ_k ↦ ρ_{k+1}` prevents a direct term-by-term comparison against
+`Ṁ = ∑ Ṗ_k ρ_{k-1}`.  The two lemmas below close it back into a single `∑ c_k • ρ_k`.
+
+The shift `∑_{k<m} a_k ρ_{k+1} = ∑_{k<m} b_k ρ_k` (with `b` the up-shift of `a`,
+`b_0 = 0`, `b_{k+1} = a_k`) is where the Cayley–Hamilton truncation `ρ_m = 0` is
+actually used: it kills the boundary term `a_{m-1} ρ_m` produced by the reindex, so the
+shifted sum stays within `range m`.  Combining with the diagonal `λ_k a_k` term gives the
+closed form `A · ∑ a_k ρ_k = ∑ (λ_k a_k + b_k) • ρ_k`, whose coefficient `λ_k a_k + b_k`
+is exactly the right-hand side of the Putzer ODE `Ṗ_k = λ_k P_k + P_{k-1}`.  Matching this
+against `Ṁ = ∑ Ṗ_k ρ_{k-1}` reduces the matrix identity `Ṁ = A·M` to the scalar ODE system,
+with no analysis in this step. -/
+
+/-- **Index-shift with truncation.**  With `b` the up-shift of `a` (`b 0 = 0`,
+`b (k+1) = a k`) and the boundary vanishing `ρ_m = 0`, the shifted Putzer sum reindexes
+back onto `range m`:
+
+  `∑_{k<m} a_k • ρ_{k+1} = ∑_{k<m} b_k • ρ_k`.
+
+The truncation `ρ_m = 0` is what discards the boundary term `a_{m-1} ρ_m` created by the
+reindex. -/
+lemma putzer_shift_sum (A : Matrix n n R) (lam a b : ℕ → R) {m : ℕ}
+    (hb0 : b 0 = 0) (hb : ∀ k, b (k + 1) = a k) (hm : rho A lam m = 0) :
+    ∑ k ∈ Finset.range m, a k • rho A lam (k + 1)
+      = ∑ k ∈ Finset.range m, b k • rho A lam k := by
+  set g : ℕ → Matrix n n R := fun k => b k • rho A lam k with hg
+  have hg0 : g 0 = 0 := by simp [hg, hb0]
+  have hgm : g m = 0 := by simp [hg, hm]
+  have key : ∑ k ∈ Finset.range m, a k • rho A lam (k + 1)
+      = ∑ k ∈ Finset.range m, g (k + 1) := by
+    refine Finset.sum_congr rfl (fun k _ => ?_)
+    simp only [hg, hb]
+  have h1 : ∑ k ∈ Finset.range (m + 1), g k = ∑ k ∈ Finset.range m, g (k + 1) := by
+    rw [Finset.sum_range_succ', hg0, add_zero]
+  have h2 : ∑ k ∈ Finset.range (m + 1), g k = ∑ k ∈ Finset.range m, g k := by
+    rw [Finset.sum_range_succ, hgm, add_zero]
+  rw [key, ← h1, h2]
+
+/-- **Closed telescoped form of `A · M`.**  For the Putzer sum `M = ∑_{k<m} a_k • ρ_k`,
+with `b` the up-shift of the coefficients (`b 0 = 0`, `b (k+1) = a k`) and the truncation
+`ρ_m = 0`,
+
+  `A · ∑_{k<m} a_k • ρ_k = ∑_{k<m} (λ_k · a_k + b_k) • ρ_k`.
+
+The coefficient `λ_k a_k + b_k = λ_k a_k + a_{k-1}` is precisely the right-hand side of the
+Putzer ODE `Ṗ_k = λ_k P_k + P_{k-1}`.  Thus once the scalar coefficients `P_k` satisfy their
+ODE, this identity gives `Ṁ = A · M` term-by-term — the entire matrix content of the
+derivative computation, discharged algebraically over any `CommRing`. -/
+lemma A_mul_putzer_sum_closed (A : Matrix n n R) (lam a b : ℕ → R) {m : ℕ}
+    (hb0 : b 0 = 0) (hb : ∀ k, b (k + 1) = a k) (hm : rho A lam m = 0) :
+    A * ∑ k ∈ Finset.range m, a k • rho A lam k
+      = ∑ k ∈ Finset.range m, (lam k * a k + b k) • rho A lam k := by
+  rw [A_mul_sum_rho]
+  have expand : ∀ k, a k • (rho A lam (k + 1) + lam k • rho A lam k)
+      = a k • rho A lam (k + 1) + (lam k * a k) • rho A lam k := by
+    intro k
+    rw [smul_add, smul_smul, mul_comm (a k) (lam k)]
+  rw [Finset.sum_congr rfl (fun k _ => expand k), Finset.sum_add_distrib,
+      putzer_shift_sum A lam a b hb0 hb hm, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl (fun k _ => ?_)
+  rw [← add_smul, add_comm (b k) (lam k * a k)]
 
 end PutzerMatrixExp
