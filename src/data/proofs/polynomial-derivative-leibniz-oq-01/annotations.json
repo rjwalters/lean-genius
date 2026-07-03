@@ -55,15 +55,43 @@
     ]
   },
   {
-    "id": "ann-polyderivleibniz-root",
+    "id": "ann-polyderivleibniz-splitpoly",
     "proofId": "polynomial-derivative-leibniz-oq-01",
     "range": {
       "startLine": 82,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Differentiating a Split Polynomial",
+    "content": "`derivative_prod_X_sub_C` specializes the general Finset Leibniz rule to the monic linear factors fᵢ = X − C rᵢ, each of which has derivative 1. The proof rewrites with `derivative_finset_prod` and then, under `Finset.sum_congr`, simplifies every factor's derivative via `derivative_sub`, `derivative_X`, `derivative_C` (so derivative (X − C rᵢ) = 1). The multiplicative-1 factors disappear, leaving the clean formula d/dX ∏_{i∈s}(X − rᵢ) = ∑_{i∈s} ∏_{j∈s\\{i}}(X − rⱼ): the derivative of a split polynomial is the sum of its leave-one-out products. This is the polynomial identity from which the root-value and simple-root results below are read off.",
+    "mathContext": "$\\frac{d}{dX}\\prod_{i\\in s}(X-r_i)=\\sum_{i\\in s}\\prod_{j\\in s\\setminus\\{i\\}}(X-r_j)$, since each $(X-r_i)'=1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "product rule for linear factors",
+      "leave-one-out products",
+      "derivative_sub / derivative_X / derivative_C",
+      "split polynomial"
+    ],
+    "prerequisites": [
+      "derivative_finset_prod",
+      "Finset.sum_congr"
+    ],
+    "tags": [
+      "theorem",
+      "split-polynomial",
+      "leibniz-rule"
+    ]
+  },
+  {
+    "id": "ann-polyderivleibniz-root",
+    "proofId": "polynomial-derivative-leibniz-oq-01",
+    "range": {
+      "startLine": 89,
       "endLine": 110
     },
     "type": "insight",
     "title": "The Derivative at a Root Is the Lagrange Denominator — No Injectivity Needed",
-    "content": "Specializing fᵢ = X − C rᵢ (each with derivative 1) collapses the Finset rule to `derivative_prod_X_sub_C`: d/dX ∏(X − rᵢ) = ∑ᵢ ∏_{j≠i}(X − rⱼ). Evaluating at a node rᵢ₀ with i₀ ∈ s, `eval_derivative_prod_X_sub_C` gives the clean p'(rᵢ₀) = ∏_{j≠i₀}(rᵢ₀ − rⱼ). The mechanism is structural: for any i ≠ i₀ the leave-one-out product ∏_{j∈s.erase i} ranges over j that still includes i₀ (since i₀ ∈ s and i₀ ≠ i), so it carries the factor (rᵢ₀ − rᵢ₀) = 0 and the whole summand vanishes (`Finset.prod_eq_zero`). Only the i = i₀ term survives. Crucially, this needs NO assumption that the rᵢ are distinct — it is an identity of leave-one-out products. That product is exactly the denominator ∏_{j≠i₀}(rᵢ₀ − rⱼ) appearing in the Lagrange interpolation weight at rᵢ₀ and in the discriminant.",
+    "content": "Evaluating the split-polynomial derivative at a node rᵢ₀ with i₀ ∈ s, `eval_derivative_prod_X_sub_C` gives the clean p'(rᵢ₀) = ∏_{j≠i₀}(rᵢ₀ − rⱼ). The mechanism is structural: for any i ≠ i₀ the leave-one-out product ∏_{j∈s.erase i} ranges over j that still includes i₀ (since i₀ ∈ s and i₀ ≠ i), so it carries the factor (rᵢ₀ − rᵢ₀) = 0 and the whole summand vanishes (`Finset.prod_eq_zero`); only the i = i₀ term survives (`Finset.sum_eq_single`). Crucially, this needs NO assumption that the rᵢ are distinct — it is an identity of leave-one-out products. That product is exactly the denominator ∏_{j≠i₀}(rᵢ₀ − rⱼ) appearing in the Lagrange interpolation weight at rᵢ₀ and in the discriminant.",
     "mathContext": "For $p=\\prod_{i\\in s}(X-r_i)$, $p'(r_{i_0})=\\prod_{j\\ne i_0}(r_{i_0}-r_j)$. This is the $\\ell$-denominator of Lagrange interpolation and a factor of $\\operatorname{disc}(p)=\\prod_{i<j}(r_i-r_j)^2$.",
     "significance": "key",
     "relatedConcepts": [
