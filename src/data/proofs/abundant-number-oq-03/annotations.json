@@ -63,7 +63,7 @@
   {
     "id": "abundant03-ann-infinitude",
     "proofId": "abundant-number-oq-03",
-    "range": { "startLine": 52, "endLine": 70 },
+    "range": { "startLine": 52, "endLine": 68 },
     "type": "insight",
     "title": "Assembling Infinitude",
     "content": "The main theorem `infinitely_many_odd_abundant : {n | Odd n ∧ n.Abundant}.Infinite` is assembled in one step:\n$$ \\texttt{Set.infinite\\_of\\_injective\\_forall\\_mem}\\ \\texttt{odd\\_mul\\_succ\\_injective}\\ (\\lambda k.\\ \\texttt{odd\\_abundant\\_945\\_mul}\\ k). $$\nThe Mathlib lemma reduces infinitude of a set to two ingredients: an **injective** function $\\mathbb{N} \\to \\mathbb{N}$ (the witness family) and a proof that **every** output lies in the set (each $945\\cdot(2k+1)$ is odd and abundant). No diagonal argument or cardinality bookkeeping is needed. This is the *odd-case complement* to `infinitely_many_abundant` (in abundant-number-oq-01), which uses the even family $12\\cdot(k+1)$: there the witnesses are automatically even, whereas here oddness is preserved precisely because each multiplier $2k+1$ and the seed $945$ are odd. The entry thus separates **rarity from finiteness** — odd abundant numbers are scarce, yet the same closure-under-multiples engine that trivially yields infinitely many even abundant numbers yields infinitely many odd ones too. The whole proof is elementary and axiom-free: `#print axioms infinitely_many_odd_abundant` reports only propext / Classical.choice / Quot.sound.",
@@ -82,23 +82,23 @@
     ]
   },
   {
-    "id": "abundant03-ann-reuse",
+    "id": "abundant03-ann-axiom-audit",
     "proofId": "abundant-number-oq-03",
-    "range": { "startLine": 29, "endLine": 35 },
+    "range": { "startLine": 70, "endLine": 75 },
     "type": "context",
-    "title": "Reuse: Composition Without New Computation",
-    "content": "The entire result is a *composition* of two facts imported from sibling entries, with no new divisor-sum computation performed here. `import Proofs.AbundantNumberOQ02` brings `abundant_945` — the fact that $945$ is abundant, itself proved axiom-free by kernel `decide` over a kernel-reducible $\\sigma$ (the reducibility is what makes that `decide` feasible without `native_decide`). `import Proofs.AbundantMultiplesOQ01` brings `abundant_mul_right` — a purely arithmetic closure lemma. The `open AbundantNumberOQ02 AbundantMultiplesOQ01` then exposes both by short name. Because $945$'s abundance is inherited rather than recomputed, this file introduces *zero* computational content and its axiom footprint is exactly that of its two dependencies (the foundational three), never touching `Lean.ofReduceBool`.",
-    "mathContext": "abundant_945 : Nat.Abundant 945 (kernel-decide, oq-02); abundant_mul_right : a.Abundant → 0 < t → (a*t).Abundant (oq-01). This entry adds only the odd-multiplier restriction and the injectivity/assembly.",
+    "title": "Axiom Audit: Genuinely Axiom-Free",
+    "content": "The file closes with `#print axioms infinitely_many_odd_abundant`, whose output lists only the three ordinary foundational axioms of Lean/Mathlib — `propext`, `Classical.choice`, and `Quot.sound` — and crucially **not** `Lean.ofReduceBool` or `sorryAx`. This is the concrete check backing the entry's 'axiom-free' claim. `Lean.ofReduceBool` is the axiom that `native_decide` introduces by trusting compiled kernel reduction; its absence certifies that the abundance of the seed $945$ was discharged by ordinary kernel-checked `decide`/`norm_num` (in `abundant_945`), not by native compilation. Under the project's axiom-integrity policy the three foundational axioms do not count as assumptions, so `status: verified` and `axiomCount: 0` are honest here — the result is fully machine-checked with no escape hatches.",
+    "mathContext": "`#print axioms f` prints the axiom closure of `f`. Verified iff the closure ⊆ {propext, Classical.choice, Quot.sound}; the presence of `Lean.ofReduceBool` or `sorryAx` would force `axiomatized`/`formalized` respectively.",
     "significance": "supporting",
     "prerequisites": [
-      "Lean imports and `open` namespaces",
-      "kernel `decide` vs `native_decide` and their axiom footprints",
-      "abundant_945 (oq-02) and abundant_mul_right (oq-01)"
+      "`#print axioms` and the axiom closure of a declaration",
+      "the distinction between kernel `decide` and `native_decide` (`Lean.ofReduceBool`)"
     ],
     "relatedConcepts": [
-      "proof reuse / composition",
-      "axiom footprint of dependencies",
-      "kernel-reducible σ"
+      "axiom-freeness",
+      "Lean.ofReduceBool",
+      "native_decide vs decide",
+      "trusted kernel reduction"
     ]
   }
 ]
