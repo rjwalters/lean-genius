@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-setup",
+    "proofId": "erdos-1207-oq-04",
+    "range": { "startLine": 44, "endLine": 52 },
+    "type": "context",
+    "title": "Pseudometric setup and imported base theory",
+    "content": "The file imports the parent `Erdos1207Problem` (which defines `IsoscelesTriangle` and `IsoscelesFree`) and `Erdos1207OQ03` (the explicit base-3 lower bound on the line). The two source and target spaces `P` and `Q` are only assumed to be `PseudoMetricSpace`s — the transport engine never touches coordinates or dimension, so it applies to any metric setting.",
+    "mathContext": "`IsoscelesFree S` means no three distinct points $a,b,c \\in S$ form an isosceles triangle, where being isosceles is defined purely by the equality of two of the pairwise distances. Working over a `PseudoMetricSpace` (distinct points may sit at distance $0$) keeps the lemmas maximally general.",
+    "significance": "context",
+    "relatedConcepts": ["pseudometric space", "isosceles-free set", "metric invariant"],
+    "prerequisites": ["metric spaces", "Lean typeclasses"]
+  },
+  {
+    "id": "ann-reflect-triangle",
+    "proofId": "erdos-1207-oq-04",
+    "range": { "startLine": 56, "endLine": 65 },
+    "type": "technique",
+    "title": "Isometries reflect isosceles triangles",
+    "content": "`isoscelesTriangle_of_isometry` shows the apex/distinctness data pulls back through an isometry `f`. The three distinctness clauses reflect because `f a = f b` follows from `a = b` (`congrArg f`), so contrapositively `a ≠ b` is forced; the distance disjunction reflects because `hf.dist_eq` rewrites every `dist (f _) (f _)` to `dist _ _`, discharged by `simpa`.",
+    "mathContext": "If $f$ is an isometry then $\\operatorname{dist}(f x, f y) = \\operatorname{dist}(x,y)$ for all $x,y$. Hence the apex condition — say $\\operatorname{dist}(fa,fb) = \\operatorname{dist}(fa,fc)$ — is equivalent to $\\operatorname{dist}(a,b) = \\operatorname{dist}(a,c)$, and the three vertices stay distinct because $f$ maps distinct points to distinct images.",
+    "significance": "supporting",
+    "relatedConcepts": ["isometry", "distance preservation", "congrArg", "contrapositive"],
+    "prerequisites": ["isometries", "metric spaces"]
+  },
+  {
+    "id": "ann-transport-engine",
+    "proofId": "erdos-1207-oq-04",
+    "range": { "startLine": 67, "endLine": 73 },
+    "type": "insight",
+    "title": "The transport engine: images of isosceles-free sets are isosceles-free",
+    "content": "`isoscelesFree_image_isometry` is the load-bearing lemma. Any point of `f '' S` destructures as `f a` with `a ∈ S` (the `rintro ⟨a, ha, rfl⟩` pattern); a hypothetical isosceles triangle among three such images reflects — via the previous lemma — to an isosceles triangle in `S`, contradicting `IsoscelesFree S`. No dimension, coordinates, or Euclidean structure appear, so the result holds for isometries between arbitrary pseudometric spaces.",
+    "mathContext": "For an isometry $f : P \\to Q$ and $S \\subseteq P$: if $S$ is isosceles-free then so is $f(S) \\subseteq Q$. This is the metric form of dimension monotonicity — it is what makes $P_d(n) \\ge P_1(n)$ true once one exhibits an isometric embedding $\\mathbb{R} \\hookrightarrow \\mathbb{R}^d$.",
+    "significance": "key",
+    "relatedConcepts": ["isometric embedding", "image of a set", "isosceles-free set", "proof by contradiction"],
+    "prerequisites": ["isometries", "set images", "combinatorial geometry"]
+  },
+  {
+    "id": "ann-axis-isometry",
+    "proofId": "erdos-1207-oq-04",
+    "range": { "startLine": 77, "endLine": 83 },
+    "type": "definition",
+    "title": "The coordinate axis is an isometric copy of ℝ",
+    "content": "`isometry_euclideanSingle` supplies the concrete isometry the engine is applied to: `t ↦ EuclideanSpace.single i t`, which places the real `t` on the `i`-th coordinate axis and zeros elsewhere. The one-line proof feeds `EuclideanSpace.dist_single_same` (which computes the axis distance as `|s − t|`) into `Isometry.of_dist_eq`.",
+    "mathContext": "The map $t \\mapsto t\\,e_i \\in \\mathbb{R}^{\\lvert\\iota\\rvert}$ satisfies $\\lVert s e_i - t e_i\\rVert = \\lvert s - t\\rvert$, because only the $i$-th coordinate is nonzero. So $\\mathbb{R}$ embeds isometrically as any coordinate axis of Euclidean space.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanSpace", "coordinate axis", "isometric embedding", "Isometry.of_dist_eq"],
+    "prerequisites": ["Euclidean space", "norms", "isometries"]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "erdos-1207-oq-04",
+    "range": { "startLine": 87, "endLine": 98 },
+    "type": "insight",
+    "title": "Dimension monotonicity P_d(n) ≥ P₁(n)",
+    "content": "`exists_isoscelesFree_image_of_real` combines the two previous results: transport the source set along the axis isometry (isosceles-freeness preserved) and note the cardinality is unchanged via `Set.ncard_image_of_injective` using `(isometry_euclideanSingle i).injective`. The witness `T` is the axis image; the two goals are exactly the isosceles-freeness and the `ncard` equality.",
+    "mathContext": "Every isosceles-free $S \\subseteq \\mathbb{R}$ with $\\lvert S\\rvert = m$ yields an isosceles-free $T \\subseteq \\mathbb{R}^d$ with $\\lvert T\\rvert = m$. Cardinality is exactly preserved because an isometry from a metric space is injective. In problem notation: $P_d(n) \\ge P_1(n)$ for all $d \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["dimension monotonicity", "ncard", "injectivity of isometries", "cardinality preservation"],
+    "prerequisites": ["set cardinality", "isometries", "combinatorial geometry"]
+  },
+  {
+    "id": "ann-lower-bound-euclidean",
+    "proofId": "erdos-1207-oq-04",
+    "range": { "startLine": 102, "endLine": 112 },
+    "type": "insight",
+    "title": "The base-3 lower bound lifted to every dimension",
+    "content": "`exists_isoscelesFree_pow_euclidean` specialises the monotonicity lift to OQ-03's explicit construction: the base-3 \"no digit 2\" set `Set.range (embR k)`, which OQ-03 proves isosceles-free with `ncard = 2ᵏ`. Transporting it onto the `i`-th axis and rewriting the cardinality via `Erdos1207OQ03.ncard_range_embR` gives an explicit isosceles-free set of `2ᵏ` points in `ℝ^d`.",
+    "mathContext": "$P_d(3^k) \\ge 2^k$ for all $d \\ge 1$: the $2^k$ points with base-3 digits in $\\{0,1\\}$ (avoiding an arithmetic-progression midpoint on the line) remain isosceles-free once laid on a coordinate axis.",
+    "significance": "supporting",
+    "relatedConcepts": ["base-3 construction", "3-AP-free set", "explicit lower bound", "digit avoidance"],
+    "prerequisites": ["number bases", "arithmetic progressions", "combinatorial geometry"]
+  },
+  {
+    "id": "ann-planar",
+    "proofId": "erdos-1207-oq-04",
+    "range": { "startLine": 114, "endLine": 120 },
+    "type": "insight",
+    "title": "The planar headline: P₂(3ᵏ) ≥ 2ᵏ",
+    "content": "`exists_isoscelesFree_pow_plane` is the case Erdős emphasises, obtained by specialising the general lift to `ι = Fin 2`, `i = 0`. It exhibits an explicit isosceles-free set of `2ᵏ` points in the Euclidean plane — the lower-bound side of the open question about the growth of `P_2(n)`. No upper bound is proved: whether `P_2(n)` is subpolynomial remains exactly Erdős's problem.",
+    "mathContext": "$P_2(3^k) \\ge 2^k$. The construction places $3^k$ collinear base-3 points on the first axis of $\\mathbb{R}^2$; because the whole configuration is one-dimensional, isosceles-freeness is inherited from the line. The genuinely open question is whether higher dimensions or cleverer planar configurations beat this line-bound rate.",
+    "significance": "key",
+    "relatedConcepts": ["planar case", "Erdős open problem", "isosceles-free set", "lower bound"],
+    "prerequisites": ["Euclidean plane", "combinatorial geometry"]
+  }
+]
