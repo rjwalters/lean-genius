@@ -2,7 +2,7 @@
   "id": "ramsey-r4k-extensions",
   "title": "Ramsey R(4,k) Bounds: Probabilistic Method Extensions",
   "slug": "ramsey-r4k-extensions",
-  "description": "Formalizes Ramsey theory bounds for R(4,k) via the probabilistic method. Proves the Erdős 1947 lower bound R(k,k) ≥ 2^(k/2), the Spencer improvement, the Conlon-Fox-Sudakov upper bound, and the R(4,k) quadratic lower bound R(4,k) ≥ Ω(k²/log k). 74 theorems, 15 axioms for the deep analytic bounds.",
+  "description": "Formalizes Ramsey theory bounds for R(4,k) via the probabilistic method. Proves the Erdős 1947 lower bound R(k,k) ≥ 2^(k/2) (now fully axiom-free), the Spencer improvement, the Conlon-Fox-Sudakov upper bound, and the R(4,k) quadratic lower bound R(4,k) ≥ Ω(k²/log k). 75 theorems, 14 axioms for the deep analytic bounds.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
@@ -18,10 +18,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 15,
-    "assumptions": "15 axioms covering: erdos_probabilistic_lower_bound (R(k,k)≥2^(k/2) via first moment method), aks_r3k_upper_bound and kim_r3k_lower_bound (R(3,k) bounds), r4k_upper_bound and r4k_lower_bound (R(4,k) bounds), spencer_diagonal_lower_bound (Spencer's improvement), r4k_quadratic_lower (Ω(k²/log k) lower bound), cgms_diagonal_upper_bound and cgms_epsilon_estimate (Conlon-Fox-Sudakov 2009), book_algorithm_structure, and several supporting analytic bounds. These represent the state of the art in Ramsey theory, proofs of which require probabilistic method machinery not yet in Mathlib.",
-    "lineCount": 1142,
-    "theoremCount": 74,
+    "axiomCount": 14,
+    "assumptions": "14 axioms covering: aks_r3k_upper_bound and kim_r3k_lower_bound (R(3,k) bounds), r4k_upper_bound and r4k_lower_bound (R(4,k) bounds), spencer_diagonal_lower_bound (Spencer's improvement), r4k_quadratic_lower (Ω(k²/log k) lower bound), cgms_diagonal_upper_bound and cgms_epsilon_estimate (Conlon-Fox-Sudakov 2009), book_algorithm_structure, and several supporting analytic bounds. The Erdős first-moment lower bound erdos_probabilistic_lower_bound (R(k,k)≥2^(k/2)) is no longer an axiom — it is now a proved theorem discharged by the axiom-free formalization ErdosRamsey.erdos_probabilistic_lower_bound (Proofs/ErdosRamseyLowerBound.lean). The remaining axioms represent the state of the art in Ramsey theory, proofs of which require probabilistic method machinery not yet in Mathlib.",
+    "lineCount": 1154,
+    "theoremCount": 75,
     "definitionCount": 13,
     "originalContributions": [
       "IsRamseyColoring: 2-coloring of K_n edges avoiding monochromatic K_r or K_s",
@@ -56,19 +56,19 @@
     ]
   },
   "conclusion": {
-    "summary": "Ramsey number bounds are formalized with 15 axioms covering the deep probabilistic and analytic results. The elementary bounds (Pascal triangle, first moment setup) are fully proved. 74 theorems, 1142 lines documenting the state of the art in Ramsey theory.",
+    "summary": "Ramsey number bounds are formalized with 14 axioms covering the deep probabilistic and analytic results. The Erdős 1947 first-moment lower bound R(k,k)≥2^(k/2), previously axiomatized, is now fully proved (axiom-free). The elementary bounds (Pascal triangle, first moment setup) are fully proved. 75 theorems, 1150 lines documenting the state of the art in Ramsey theory.",
     "implications": "The probabilistic method established by Erdős is one of the most powerful tools in combinatorics. Formalizing even its setup (IsRamseyColoring, first moment framework) creates infrastructure for future Lean 4 probabilistic combinatorics. The R(4,k) problem remains one of the most actively studied in extremal combinatorics.",
     "openQuestions": [
-      "Prove erdos_probabilistic_lower_bound: requires formalization of uniform random colorings and expectation in Lean 4",
+      "Strengthen the proved bound via the symmetric Lovász Local Lemma: R(k,k) ≥ (1+o(1))·(k/e)·2^(k/2), a factor-k improvement over the first-moment bound",
       "Reduce the R(4,k) gap: closing from [k²/log k, k³/log k] to [k², k²] would be a major breakthrough",
       "Formalize the Lovász Local Lemma and its applications to Ramsey theory"
     ]
   },
   "leanFile": {
     "namespace": "RamseyR4kExtensions",
-    "lineCount": 1142,
-    "axiomCount": 15,
-    "theoremCount": 74,
+    "lineCount": 1154,
+    "axiomCount": 14,
+    "theoremCount": 75,
     "definitionCount": 13,
     "path": "Proofs/RamseyR4kExtensions.lean",
     "sorries": 0

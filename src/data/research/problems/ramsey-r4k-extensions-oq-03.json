@@ -1,0 +1,95 @@
+{
+  "slug": "ramsey-r4k-extensions-oq-03",
+  "title": "Lovász Local Lemma and Ramsey Lower Bounds",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(Symmetric LLL) Events } A_1,\\dots,A_m,\\ \\Pr[A_i]\\le p,\\ \\text{each } A_i \\text{ mutually independent of all but } \\le d \\text{ others},\\ e\\,p\\,(d+1)\\le 1 \\Rightarrow \\Pr\\!\\Big[\\bigcap_i \\overline{A_i}\\Big] > 0.",
+    "plain": "The Lovász Local Lemma (LLL) says that if you have many \"bad\" events, each unlikely and each depending on only a few of the others, then with positive probability none of the bad events happens — so a configuration avoiding all of them exists. We want to formalize the symmetric LLL in Lean 4 and use it in Ramsey theory: model a random 2-coloring of the edges of $K_n$, let the bad events be \"this particular $k$-clique is monochromatic,\" and apply LLL to prove that for suitable $n$ a coloring with no monochromatic $K_k$ exists, i.e. a lower bound $R(k,k) > n$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "erdos_probabilistic_lower_bound (R(k,k) > 2^(k/2)) is now a proved, axiom-free theorem — de-axiomatized in RamseyR4kExtensions.lean by wiring in the first-moment formalization ErdosRamsey.erdos_probabilistic_lower_bound."
+    ],
+    "open": [
+      "The symmetric Lovász Local Lemma itself is not yet formalized in Lean/Mathlib.",
+      "The factor-k LLL improvement R(k,k) > (1+o(1))(k/e)2^(k/2) over the first-moment bound."
+    ],
+    "goal": "Formalize the symmetric LLL and use it to strengthen the (now proved) first-moment Ramsey lower bound."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-02T22:00:00-07:00",
+    "iteration": 2,
+    "focus": "De-axiomatized erdos_probabilistic_lower_bound in RamseyR4kExtensions using the existing axiom-free first-moment proof. The symmetric LLL proper remains open.",
+    "blockers": [
+      "General symmetric LLL needs a conditional-probability induction (Spencer's argument) over a probability space — Mathlib has no LLL and the induction is delicate; estimated a multi-session BUILD."
+    ],
+    "nextAction": "Formalize the symmetric LLL statement and its induction proof, then apply it to obtain the factor-k stronger R(k,k) lower bound.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: de-axiomatized erdos_probabilistic_lower_bound (axiomCount 15→14) AND repaired 3 pre-existing Mathlib-bump breakages that had left the file non-compiling. Symmetric LLL itself remains an open BUILD.",
+    "builtItems": [
+      "RamseyR4kExtensions.lean: converted `axiom erdos_probabilistic_lower_bound` into a proved `theorem`, discharged by `ErdosRamsey.erdos_probabilistic_lower_bound k hk` (defeq statements); added `import Proofs.ErdosRamseyLowerBound`. File axiomCount 15→14.",
+      "REPAIR: the file did not compile on the pinned Mathlib (v4.26.0). Fixed 3 pre-existing breakages: (1) `positivity` could not prove `0 ≤ (4-ε)/4` from `ε<4` → `div_nonneg (by linarith) (by norm_num)` (~L1056); (2) `div_lt_div_iff` renamed → `div_lt_div_iff₀` (~L1069); (3) `ramsey_symmetric'` referenced an undefined `ramsey_symmetry` → reproved via zero case-split + existing `ramseyUpperBound_symm` (~L1127).",
+      "Updated gallery meta (ramsey-r4k-extensions): axiomCount 15→14, theoremCount 74→75, lineCount→1154, assumptions/summary/openQuestions revised to reflect the de-axiomatization."
+    ],
+    "insights": [
+      "The gallery entry ramsey-r4k-extensions claimed verified/0-sorry but its Lean file did NOT compile on the current Mathlib pin — three lemmas had been broken by a Mathlib rename/deprecation and an undefined-identifier typo. The de-axiomatization forced a full rebuild that surfaced this; repairing it restores the entry to a genuinely compiling state.",
+      "The `erdos_probabilistic_lower_bound` axiom targeted by this OQ is actually a first-moment (union-bound) result, not an LLL result — LLL only strengthens the constant. The measurable deliverable of the OQ (replace the axiom with a proved statement) is therefore achievable via the already-existing axiom-free first-moment proof in ErdosRamseyLowerBound.lean.",
+      "That first-moment proof (ErdosRamsey.erdos_probabilistic_lower_bound) states EXACTLY the axiom's proposition (k ≥ 3 vs 3 ≤ k are defeq), so the axiom collapses to a one-line re-export with no restatement or reproof.",
+      "No import cycle: ErdosRamseyLowerBound imports Mathlib only; RamseyR4kExtensions can import it cleanly.",
+      "The genuine LLL contribution (formalizing the symmetric LLL and getting the extra factor of k) remains open and is a substantially harder, multi-session BUILD."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no symmetric/general Lovász Local Lemma.",
+      "The LLL proof needs a conditional-probability induction over a finite product probability space; the supporting `ProbabilityTheory.cond` manipulation for the mutual-independence dependency graph is not packaged."
+    ],
+    "nextSteps": [
+      "Formalize the symmetric LLL statement (events, dependency degree d, e·p·(d+1) ≤ 1 ⇒ Pr[∩ ¬A_i] > 0).",
+      "Prove it via Spencer's conditional-probability induction over a finite probability space (measure-theory-free, rational-counting style consistent with the gallery's first-moment files if feasible).",
+      "Apply the LLL to the monochromatic-clique bad events to obtain R(k,k) > (1+o(1))(k/e)·2^(k/2)."
+    ],
+    "markdown": "# Knowledge Base: ramsey-r4k-extensions-oq-03\n\n## Problem Understanding\n\nThe OQ asks to formalize the symmetric Lovász Local Lemma (LLL) and apply it to Ramsey theory, **replacing the axiomatized `erdos_probabilistic_lower_bound` in the `ramsey-r4k-extensions` entry with a proved statement**.\n\n## Key realization\n\n`erdos_probabilistic_lower_bound` (R(k,k) > 2^(k/2)) is a **first-moment** result. Its exact proposition was already proved, axiom-free, in `Proofs/ErdosRamseyLowerBound.lean` as `ErdosRamsey.erdos_probabilistic_lower_bound`. So the OQ's concrete measurable deliverable is closed by wiring that proof in, without needing LLL.\n\n## What was done (Session 2026-07-02)\n\n- `RamseyR4kExtensions.lean`: `axiom erdos_probabilistic_lower_bound` → `theorem ... := ErdosRamsey.erdos_probabilistic_lower_bound k hk`; added `import Proofs.ErdosRamseyLowerBound`. Axiom count 15 → 14.\n- Updated gallery meta counts and prose.\n\n## Still open\n\n- The symmetric LLL itself (statement + conditional-probability induction proof).\n- The factor-k strengthening R(k,k) > (1+o(1))(k/e)·2^(k/2) that LLL yields over the first moment.\n\n## Dead Ends\n\n- None yet; LLL not attempted (scoped as a separate multi-session BUILD).\n"
+  },
+  "tags": [
+    "combinatorics",
+    "probabilistic-method",
+    "lovasz-local-lemma",
+    "ramsey",
+    "probability"
+  ],
+  "relatedProofs": [
+    "ramsey-r4k",
+    "ramsey-r4k-extensions",
+    "erdos-ramsey-lower-bound"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-02T18:04:16.809Z",
+  "lastUpdate": "2026-07-02T22:00:00-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/RamseyR4kExtensions.lean",
+      "filename": "RamseyR4kExtensions.lean",
+      "lineCount": 1154,
+      "theoremCount": 75,
+      "axiomCount": 14,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyR4kExtensions.lean"
+    }
+  ]
+}
