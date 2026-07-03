@@ -131,9 +131,9 @@
     {
       "id": "header-nat-card-family",
       "title": "From Fintype to a Nat.card Orbit-Stabilizer",
-      "startLine": 5,
-      "endLine": 55,
-      "summary": "Module docstring: the parent lifted Burnside off Fintype to Finite via a finiteness-free bijection; this file applies the same recipe to orbit-stabilizer and finds it needs no finiteness at all. Replaces every Fintype.card by the total Nat.card, adds the index form, and recovers the Fintype statement as a corollary. Imports GroupAction.Quotient, Cardinal.Finite, and Tactic; opens MulAction.",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Imports (GroupAction.Quotient, Cardinal.Finite, Tactic) and module docstring: the parent lifted Burnside off Fintype to Finite via a finiteness-free bijection; this file applies the same recipe to orbit-stabilizer and finds it needs no finiteness at all. Replaces every Fintype.card by the total Nat.card, adds the index form, and recovers the Fintype statement as a corollary. Opens the OrbitStabilizerFinite namespace and MulAction, and fixes a group G acting on a type X.",
       "mathContext": "Mathlib: $\\mathrm{Fintype.card}\\,(\\mathrm{orbit}\\,G\\,x)\\cdot\\mathrm{Fintype.card}\\,(\\mathrm{stab}\\,G\\,x)=\\mathrm{Fintype.card}\\,G$. Here, over $\\mathrm{Nat.card}$, with no finiteness instance."
     },
     {
@@ -164,7 +164,7 @@
   "openQuestions": [
     {
       "id": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01",
-      "question": "Combine the orbit-stabilizer product Nat.card (orbit G x) · Nat.card (stabilizer G x) = Nat.card G with Lagrange's theorem Nat.card (stabilizer G x) · Nat.card (G ⧸ stabilizer G x) = Nat.card G to derive the orbit-counting / index identity Nat.card (orbit G x) = [G : stabilizer G x] entirely over Nat.card, with no finiteness instances.",
+      "question": "The orbit-counting identity in quotient form, Nat.card (orbit G x) = Nat.card (G ⧸ stabilizer G x), is already proved here by card_orbit_eq_card_quotient_stabilizer_nat — and since Mathlib's [G : stabilizer G x] (Subgroup.index) is definitionally Nat.card (G ⧸ stabilizer G x), the index identity is essentially in hand. Remaining: state it explicitly using the Subgroup.index notation, and combine the orbit-stabilizer product with Lagrange to derive the classical division form |orbit G x| = Nat.card G / Nat.card (stabilizer G x) in the finite case.",
       "significance": "medium"
     },
     {
@@ -199,8 +199,8 @@
     "summary": "The orbit-stabilizer theorem, stated by Mathlib only for Fintype, generalises to the instance-free Nat.card form Nat.card (orbit G x) · Nat.card (stabilizer G x) = Nat.card G — and, unlike the parent's Finite Burnside lemma, needs no finiteness hypothesis whatsoever, because Nat.card is total and the underlying bijection orbitProdStabilizerEquivGroup is finiteness-free. The companion card_orbit_eq_card_quotient_stabilizer_nat records the orbit-size-equals-stabilizer-index identity (the orbit-counting half of Lagrange's theorem), and the Fintype statement is recovered as a corollary. 103 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "Together with the parent (Burnside over Finite) this builds a uniform Nat.card-stated family of orbit-counting identities: every Fintype-form statement in Mathlib's orbit-stabilizer/Burnside cluster has a total, instance-free shadow obtained by transporting the same finiteness-free bijection through Nat.card. The practical payoff is that downstream results no longer need to manufacture Fintype instances to state cardinality identities about orbits and stabilizers — the Nat.card forms hold unconditionally and specialise back to the classical Fintype versions on demand.",
     "openQuestions": [
-      "Derive the orbit-counting index identity Nat.card (orbit G x) = [G : stabilizer G x] over Nat.card by combining with Lagrange.",
-      "Specialise to the conjugation action to obtain the conjugacy-class size formula and connect to the class equation."
+      "The orbit-index identity in quotient form Nat.card (orbit G x) = Nat.card (G ⧸ stabilizer G x) is already proved here (card_orbit_eq_card_quotient_stabilizer_nat), and [G : stabilizer G x] is definitionally that quotient cardinality; remaining is to state it with Mathlib's Subgroup.index notation and derive the finite division form |orbit| = |G| / |stabilizer| via Lagrange.",
+      "Specialise to the conjugation action to obtain the conjugacy-class size formula Nat.card (conjugacy class of g) = [G : centralizer g] over Nat.card, and connect it to the class equation."
     ]
   }
 }
