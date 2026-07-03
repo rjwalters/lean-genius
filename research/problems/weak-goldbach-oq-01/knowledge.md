@@ -105,3 +105,42 @@ about the comet count `symmetricPairCount m` (all kernel-checked, no `native_dec
 Neither touches the open conjecture; both are genuine theory-level facts (a sufficient
 condition and a density ceiling), not axiom scaffolding. Build verified via
 `docker-build.sh Proofs.StrongGoldbachSymmetric`.
+
+## Session 2026-07-03 (researcher-4) — SURVEY: Schnirelmann formalization starter kit (no code; ramp-up for the one tractable axiom)
+
+**Mode**: SURVEY (REVISIT). **Outcome**: no code change — the axiom audit of the prior
+researcher-4 session stands (all 5 `WeakGoldbach.lean` axioms irreducible in Mathlib v4.26.0;
+main conjecture open). Per the anti-scaffolding rule I added no theorems on top of open axioms.
+This note front-loads the exact Mathlib API and the precise missing lemma so the future
+dedicated `schnirelmann_basis_theorem` session (est. 300–500 LOC, the *only* tractable axiom
+here — elementary, no analysis) starts at zero ramp-up.
+
+**Available in `Mathlib/Combinatorics/Schnirelmann.lean` (v4.26.0)** — density `σ` only, NOT the
+theorem:
+- `schnirelmannDensity A : ℝ` (noncomputable), `schnirelmannDensity_nonneg`, `_le_one`.
+- Counting bridge (the workhorses for a sumset argument):
+  `schnirelmannDensity_mul_le_card_filter : σ A * n ≤ #{a ∈ Ioc 0 n | a ∈ A}`
+  and `le_schnirelmannDensity_iff : x ≤ σ A ↔ ∀ n>0, x ≤ #{a ∈ Ioc 0 n | a ∈ A} / n`.
+- `schnirelmannDensity_eq_one_iff : σ A = 1 ↔ {0}ᶜ ⊆ A` (density-1 ⇒ contains every positive
+  integer ⇒ trivial basis — the *terminal* step of the iteration).
+- `exists_of_schnirelmannDensity_eq_zero`, and worked densities (`_setOf_prime = 0`,
+  `_setOf_Odd = 2⁻¹`, `_univ = 1`, `_finset = 0`).
+
+**The missing crux (what to prove).** Schnirelmann's subadditivity / sumset inequality, for
+`A B : Set ℕ` with `0 ∈ A`, `0 ∈ B`:
+  `σ(A + B) ≥ σ A + σ B − σ A · σ B`   (equivalently `1 − σ(A+B) ≤ (1−σ A)(1−σ B)`).
+Proof outline (elementary, Nathanson *Additive Number Theory* Thm 7.4 / the standard covering
+count): fix `n`; in `Ioc 0 n`, count elements of `A+B` by, for each `a ∈ A∩[0,n]`, covering the
+gap after `a` with a translate of `B`; the uncovered integers inject into `Bᶜ∩[1,·]`, giving
+`#((A+B)∩Ioc 0 n) ≥ #(A∩Ioc 0 n) + σ B · (n − #(A∩Ioc 0 n))`; divide by `n` and use
+`le_schnirelmannDensity_iff`. Then the **iteration**: `1 − σ(A^{⊕k}) ≤ (1−σ A)^k → 0`, so some
+finite sumset has density > 1/2, and (a second standard lemma) density > 1/2 with `0` present ⇒
+basis of order 2; hence `A` is an additive basis of bounded order. That discharges
+`schnirelmann_basis_theorem` and fills the flagged Mathlib TODO
+(`Schnirelmann.lean` line ~40: "Prove Schnirelmann's theorem and Mann's theorem").
+
+**Scoping.** The sumset inequality alone is ~120–180 LOC (the covering count is the hard part);
+the iteration + basis-of-order-2 lemma add ~150–250 LOC. Best done as one dedicated session
+(or split: inequality first, iteration second). Aristotle MCP was returning 404 this session,
+so per-sorry offload was unavailable. No follow-up OQ generated (slug depth 1, but this is an
+open problem in SURVEY — a follow-up would be premature).
