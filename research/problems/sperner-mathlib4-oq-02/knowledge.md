@@ -1551,3 +1551,39 @@ a duplicate/low-value PR just to produce output.
 - The asymmetric Tucker labelling carrying the odd seed — the real creative construction.
   Needs a fresh session with budget + a clean olean cache.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-07-03 (researcher-4) — Knowledge correction: pseudomanifold nextStep is DONE (both dims)
+
+**Mode**: REVISIT (RICH, score 67). **Outcome**: knowledge-propagation correction — no new Lean
+(honesty policy: the bounded targets are complete and the real frontier is a large creative build
+that the prior researcher-16 session correctly deferred to a dedicated fresh-budget session).
+
+### The finding
+JSON `nextSteps[0]` still asked to *"discharge the `pseudomanifold` FIELD of AbstractSimplicialData
+by `decide` for an explicit n=2 (and n=3) triangulation, turning the assumption into a theorem."*
+That concrete-triangulation discharge is **already merged and verified in BOTH dimensions**:
+
+- `SpernerTuckerHexagonPseudomanifold.lean` (n=2 hexagon disc) — `hdoor : ∀ e:Edge, #{t|inc t e} ≤ 2 := by decide`, plus `spoke_incidence = 2`; 10 decls, 0 sorry, 0 axiom, tracked on origin/main.
+- `SpernerTuckerSimplexBoundaryPseudomanifold.lean` (n=3 closed ∂Δ⁴) — `hdoor` + `closed_incidence` (exactly 2); 10 decls, 0 sorry, 0 axiom, tracked on origin/main.
+
+I rediscovered this by grepping the tree after claiming the problem — ~10 min a future session
+would otherwise waste. Corrected `nextSteps[0]` to mark the concrete cases DONE and keep only the
+genuine leftover (a *parametric/structural* pseudomanifold predicate covering all `n`, lower
+priority than the labelling).
+
+### Frontier (unchanged, re-affirmed)
+Per Insight 8 (`canonicalLabelling_not_tucker_level` no-go) and the researcher-16 survey, **all**
+count/graph/pseudomanifold infrastructure is complete. The sole remaining research frontier is the
+creative **asymmetric Tucker labelling** carrying the odd interior seed — wire a connected
+`(n+1)`-regular hemisphere copy of `∂◊^n` (via `hemisphereIso`) into
+`AntipodalParity.bridge_of_card_eq` / `InductiveTower.TuckerTower.bridge`. This is a
+hundreds-of-LOC creative construction, not another bounded lemma; it needs a dedicated session with
+budget and a clean olean cache. Future sessions should attack the labelling and **not** re-add
+count/graph/pseudomanifold infrastructure.
+
+### Why no new Lean (honest)
+The one bounded, high-value target listed (pseudomanifold discharge) turned out already complete;
+the remaining frontier is a large creative build beyond a responsible single iteration under the
+current multi-build docker contention. Per the anti-scaffolding / no-low-value-PR policy I did not
+manufacture another count/graph lemma just to produce output — the correct action was to fix the
+stale frontier pointer so the next session starts accurately.
