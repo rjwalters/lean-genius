@@ -53,13 +53,15 @@
     },
     "type": "theorem",
     "title": "Existence for k = 3: the witness 1/2 + 1/3 + 1/6",
-    "content": "repr_236 records the existence witness 1/2 + 1/3 + 1/6 = 1, a one-line norm_num computation. Combined with the k = 2 impossibility above, it shows that k = 3 is the minimal number of distinct unit fractions summing to 1 — two terms never suffice, three do.",
-    "mathContext": "$\\tfrac12 + \\tfrac13 + \\tfrac16 = 1$: the smallest-$k$ distinct Egyptian representation of $1$.",
+    "content": "repr_236 records the existence witness 1/2 + 1/3 + 1/6 = 1, a one-line norm_num computation. Combined with the k = 2 impossibility above, it shows that k = 3 is the minimal number of distinct unit fractions summing to 1 — two terms never suffice, three do. The witness is also the divisor fingerprint of the perfect number 6: since σ(6) = 12 = 2·6, the reciprocals of all divisors of 6 sum to 2, and dropping 1/1 leaves 1/2 + 1/3 + 1/6 = 1.",
+    "mathContext": "$\\tfrac12 + \\tfrac13 + \\tfrac16 = 1$: the smallest-$k$ distinct Egyptian representation of $1$, equivalently the reciprocals of the proper divisors $\\{2,3,6\\}$ of the perfect number $6$.",
     "significance": "supporting",
     "relatedConcepts": [
       "existence witness",
       "Egyptian fractions",
-      "minimal term count"
+      "minimal term count",
+      "perfect numbers",
+      "divisor reciprocal sums"
     ],
     "prerequisites": [
       "norm_num"
