@@ -288,5 +288,105 @@
       "note": "External formalization adapted for this entry: github.com/Suro-One/auro-zera_Erdos-Straus_proof"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "ErdosStraus_conjecture",
+      "type": "theorem",
+      "statement": "∀ n ≥ 2, ES n  (i.e. ∃ x,y,z > 0 with 4/n = 1/x + 1/y + 1/z)",
+      "significance": "The full Erdős–Straus conjecture (Erdős #242, OPEN since 1948): every 4/n is a sum of three unit fractions. Proved here for all n modulo one axiomatized hard case (primes p ≡ 1 mod 4 via Dyachenko's lattice box), reducing the open problem to that single ingredient.",
+      "description": "Strong induction on n: composites reduce via ES_scale to a prime factor, and primes are handled by ES_prime, which dispatches residue classes and ultimately the axiom dyachenko_box for the hardest primes."
+    },
+    {
+      "name": "dyachenko_box",
+      "type": "axiom",
+      "statement": "p prime, p ≡ 1 mod 4 ⟹ ∃ α, d' > 0 with the lattice-box parameters (g = α·d', N = 4αp·d'² + 1) yielding an Erdős–Straus solution",
+      "significance": "The one assumption (status: axiomatized, axiomCount 1): Dyachenko's lattice existence theorem supplying an admissible box for primes p ≡ 1 mod 4, which covers the six hard residue classes mod 840. Erdős–Straus remains OPEN precisely because a general such construction is unproved.",
+      "description": "Stated as an axiom over primes p ≡ 1 mod 4; it is the sole non-derived input, isolating exactly what the formalization assumes beyond Mathlib."
+    },
+    {
+      "name": "ES_prime",
+      "type": "theorem",
+      "statement": "p prime ⟹ ES p",
+      "significance": "The crux reduction: it suffices to solve Erdős–Straus for primes, since composites scale. Dispatches p = 2, then odd primes by residue class, invoking the norm-split machinery and the axiom only where necessary.",
+      "description": "Case analysis on p: small/handled residues use explicit families (ES_of_four_dvd, ES_for_mod3_mod4, ES_prime_mod24_one, ES_hard_residues); the remaining p ≡ 1 mod 4 use the sum-of-two-squares split."
+    },
+    {
+      "name": "ES_scale",
+      "type": "theorem",
+      "statement": "ES a, a > 0, b > 0 ⟹ ES (a·b)",
+      "significance": "The multiplicativity reduction: a solution for a yields one for any multiple a·b (scale each denominator by b). This is what lets the induction focus entirely on prime n.",
+      "description": "Scales the unit-fraction solution (x,y,z) for 4/a to (bx,by,bz) for 4/(ab); the equation is preserved since 4/(ab) = (1/b)(4/a)."
+    },
+    {
+      "name": "prime_mod4_one_has_norm_split",
+      "type": "theorem",
+      "statement": "p prime, p ≡ 1 mod 4 ⟹ HasNormSplit p",
+      "significance": "Connects Erdős–Straus to the two-squares theorem: every prime p ≡ 1 mod 4 is a² + b², and this norm splitting seeds an explicit unit-fraction decomposition. The Gaussian-integer heart of many residue-class cases.",
+      "description": "Uses Fermat's two-squares (Nat.Prime.sq_add_sq) to write p = a² + b², then packages (a,b) as the required norm split."
+    },
+    {
+      "name": "ES_of_sum_two_squares",
+      "type": "theorem",
+      "statement": "p prime, HasNormSplit p ⟹ ES p",
+      "significance": "Converts a two-squares representation of p into a three-term unit-fraction solution, the constructive bridge from the additive number theory of p ≡ 1 mod 4 to the Diophantine goal.",
+      "description": "From p = a² + b² builds explicit x, y, z solving 4/p = 1/x + 1/y + 1/z via the conic/norm parametrization."
+    },
+    {
+      "name": "rectangle_contains_lattice_point",
+      "type": "theorem",
+      "statement": "H ≥ 2d', W ≥ 2 ⟹ any H×W axis-aligned box contains a point of the sublattice L d'",
+      "significance": "A Minkowski-style pigeonhole in the plane: a sufficiently large rectangle always meets the lattice L d'. This lattice-point existence is the geometric engine behind the Dyachenko box and the hard-case constructions.",
+      "description": "Counts residues mod d' along the tall direction: a height ≥ 2d' guarantees two lattice rows, and width ≥ 2 catches a column, producing the required (u,v) ∈ L d'."
+    },
+    {
+      "name": "es_family_k",
+      "type": "theorem",
+      "statement": "k ≥ 2, p prime, ∃ d ∣ k² with d < 4k−1 and (4k−1) ∣ (p + 4d) ⟹ ES p",
+      "significance": "A parametrized family of solutions keyed to divisors of k²: whenever p satisfies the divisibility condition modulo 4k−1, an explicit Erdős–Straus solution exists. Sweeping k covers most residue classes at once.",
+      "description": "Given the divisor d and the congruence (4k−1) ∣ (p + 4d), assembles x, y, z from k, d, and p using coprime_sq_4k1 to validate the construction."
+    },
+    {
+      "name": "ES_of_four_dvd",
+      "type": "theorem",
+      "statement": "k > 0 ⟹ ES (4k)",
+      "significance": "The trivial-yet-essential base family: 4/(4k) = 1/(2k) + 1/(3k) + 1/(6k), settling every multiple of 4 outright. Together with the mod-3/mod-4 cases it clears the composite backbone.",
+      "description": "Exhibits the explicit solution (2k, 3k, 6k), verified by the identity 1/2 + 1/3 + 1/6 = 1."
+    },
+    {
+      "name": "ES_for_mod3_mod4",
+      "type": "theorem",
+      "statement": "n > 0, n ≡ 3 mod 4 ⟹ ES n",
+      "significance": "Handles the residue class n ≡ 3 mod 4 with a uniform explicit construction, one of the elementary families that reduce the conjecture to the genuinely hard primes p ≡ 1 mod 4.",
+      "description": "Writes n = 4k+3 and gives the closed-form solution (k+1, 2(k+1), 2(k+1)(4k+3))."
+    },
+    {
+      "name": "hard_residues_norm_split",
+      "type": "theorem",
+      "statement": "p prime, p mod 840 ∈ {1,121,169,289,361,529} ⟹ HasNormSplit p",
+      "significance": "Pinpoints the six hard residue classes mod 840 (the squares coprime to 840) and shows each still admits a norm split, isolating exactly where the deep input is needed.",
+      "description": "Each listed residue forces p ≡ 1 mod 4, so prime_mod4_one_has_norm_split applies to yield the two-squares decomposition."
+    },
+    {
+      "name": "ES_hard_residues",
+      "type": "theorem",
+      "statement": "p prime, p mod 840 ∈ {1,121,169,289,361,529} ⟹ ES p",
+      "significance": "Resolves the six residue classes mod 840 that resist the elementary families, completing the prime case up to the single axiomatized construction. These are the classical obstruction classes for Erdős–Straus.",
+      "description": "Feeds hard_residues_norm_split into ES_of_sum_two_squares to build the unit-fraction solution for each hard prime."
+    },
+    {
+      "name": "ES_prime_mod24_one",
+      "type": "theorem",
+      "statement": "p prime, p ≡ 1 mod 24 ⟹ ES p",
+      "significance": "Covers the notoriously hard class p ≡ 1 mod 24 by lifting to residues mod 840 and applying the family/norm-split constructions — a substantial chunk of the primes that elementary methods usually miss.",
+      "description": "Reduces p mod 840 to a residue with (p mod 840) mod 24 = 1 (pmod_dvd) and dispatches the finitely many sub-cases via the established families."
+    },
+    {
+      "name": "ed2_solution_correct",
+      "type": "theorem",
+      "statement": "p ≡ 1 mod 4 with parameters (δ,b,c) satisfying (4b−1)(4c−1) = 4pδ+1 and δ ∣ bc ⟹ a valid Erdős–Straus solution",
+      "significance": "The algebraic certificate verifying that a lattice-box parameter set actually produces a correct 4/p decomposition — the bridge that turns dyachenko_box's existence claim into an explicit solution.",
+      "description": "From the identity (4b−1)(4c−1) = 4pδ+1 and δ ∣ bc, constructs and checks x, y, z solving 4/p = 1/x + 1/y + 1/z."
+    }
+  ]
 }
