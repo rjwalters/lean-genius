@@ -74,7 +74,7 @@
       "startLine": 1,
       "endLine": 38,
       "summary": "Statement of OQ-01, the Gaussian-square narrative, and the honest bridge framing.",
-      "mathContext": "Mathematical content: the Gaussian-integer explanation of the parametrization."
+      "mathContext": "For $z = m+ni \\in \\mathbb{Z}[i]$: $z^2 = (m^2-n^2) + (2mn)i$ and $N(z) = m^2+n^2$, so a Pythagorean triple is $N(z^2) = N(z)^2$. Every primitive triple comes from a single such $z$ because $\\mathbb{Z}[i]$ is a unique factorization domain."
     },
     {
       "id": "param",
@@ -82,7 +82,7 @@
       "startLine": 40,
       "endLine": 64,
       "summary": "paramTriple map, the always-a-triple identity, and primitivity for coprime opposite-parity inputs.",
-      "mathContext": "Mathematical content: forward (constructive) direction."
+      "mathContext": "The identity $(m^2-n^2)^2 + (2mn)^2 = (m^2+n^2)^2$ holds for all $m,n$ (one `ring` call); and $\\gcd(m,n)=1$ with $m \\not\\equiv n \\pmod 2$ forces $\\gcd(m^2-n^2,\\,2mn)=1$, so the triple is primitive."
     },
     {
       "id": "classification",
@@ -90,7 +90,7 @@
       "startLine": 66,
       "endLine": 101,
       "summary": "Full biconditional classification (bridge), the positive standard form, and the hypotenuse sum-of-squares corollary.",
-      "mathContext": "Mathematical content: the classification packaged in Gaussian language."
+      "mathContext": "$(x^2+y^2=z^2 \\wedge \\gcd(x,y)=1) \\iff (x,y,z) = \\pm\\,\\mathrm{paramTriple}(m,n)$ for coprime opposite-parity $m,n$; normalizing to $x$ odd, $z>0$ gives $z = m^2+n^2 = N(m+ni)$, a sum of two squares."
     }
   ],
   "conclusion": {
@@ -98,7 +98,8 @@
     "implications": "Completes the Gaussian-integer thread of the Pythagorean-triples gallery by tying the algebraic z ↦ z² picture to the full classification, and exposes the hypotenuse-is-a-sum-of-two-squares corollary, connecting to Fermat's two-squares theorem (the sibling OQ-02 of the parent).",
     "openQuestions": [
       "Is there a Lean proof of Fermat's two-squares theorem p ≡ 1 (mod 4) ⟺ p = a²+b² in the same Gaussian framework? (parent OQ-02 #2)",
-      "Can the framework be transported to Eisenstein integers ℤ[ω] to characterize Loeschian numbers a²-ab+b²? (parent OQ-02 #3)"
+      "Can the framework be transported to Eisenstein integers ℤ[ω] to characterize Loeschian numbers a²-ab+b²? (parent OQ-02 #3)",
+      "Formalize the uniqueness half: show paramTriple restricted to coprime opposite-parity pairs with m > n > 0 is injective onto positive primitive triples, upgrading the existence classification to an explicit bijection (a → primitive triples ↔ generating pairs correspondence)."
     ]
   },
   "crossReferences": [
