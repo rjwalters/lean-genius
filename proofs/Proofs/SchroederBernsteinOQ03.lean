@@ -1469,7 +1469,8 @@ theorem augment_domain_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
     {L : List (ℕ × ℕ)} (hL : IsMatching L) (hC : MatchingCorr p q L) (hB : BuiltFrom f g L)
     {a : ℕ} (ha : a ∉ mDom L) :
     ∃ L', IsMatching L' ∧ MatchingCorr p q L' ∧ BuiltFrom f g L' ∧
-      a ∈ mDom L' ∧ (∀ x ∈ mDom L, x ∈ mDom L') ∧ (∀ y ∈ mRan L, y ∈ mRan L') := by
+      a ∈ mDom L' ∧ (∀ x ∈ mDom L, x ∈ mDom L') ∧ (∀ y ∈ mRan L, y ∈ mRan L') ∧
+      (∀ ab ∈ L, ab.2 = f ab.1 → ab ∈ L') := by
   -- Elementwise membership descriptions of `mDom`/`mRan` and their append behaviour.
   have mem_mDom : ∀ (l : List (ℕ × ℕ)) (x : ℕ), x ∈ mDom l ↔ ∃ ab, ab ∈ l ∧ ab.1 = x := by
     intro l x; simp only [mDom, List.mem_map]
@@ -1521,7 +1522,7 @@ theorem augment_domain_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
   have hRanKeptNodup : (mRan keptL).Nodup := by
     have hs : List.Sublist (mRan keptL) (mRan L) := hkeptSub.map Prod.snd
     exact hL.2.sublist hs
-  refine ⟨augPath f g a N ++ keptL, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨augPath f g a N ++ keptL, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · -- IsMatching
     refine ⟨?_, ?_⟩
     · -- domain side
@@ -1600,6 +1601,33 @@ theorem augment_domain_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
         exact (hRanA (f (fwdOrbit f g a (k - 1)))).mpr ⟨k - 1, by omega, rfl⟩
     · right
       exact (mem_mRan keptL y).mpr ⟨(u, w), (hmemKept (u, w)).mpr ⟨habL, hu⟩, hwy⟩
+  · -- f-edge preservation: an existing `f`-edge `(x, f x)` of `L` survives the splice.
+    -- Only stale `g`-edges on the orbit prefix `{o₁,…,o_N}` are removed (`keptL` filter),
+    -- and an `f`-edge domain point cannot lie on that prefix without forcing an orbit
+    -- repeat: if `x = oₖ` then the stale `g`-edge `(oₖ, f o_{k-1}) ∈ L` and functionality
+    -- give `f x = f o_{k-1}`, so `f oₖ = f o_{k-1}`, hence (`f` injective) `oₖ = o_{k-1}`,
+    -- contradicting prefix distinctness. So `x ∉ mDom (augPath …)` and `(x, f x) ∈ keptL`.
+    rintro ⟨x, y⟩ hxyL hyfx
+    have hxdom : x ∈ mDom L := (mem_mDom L x).mpr ⟨(x, y), hxyL, rfl⟩
+    rw [List.mem_append]
+    right
+    refine (hmemKept (x, y)).mpr ⟨hxyL, ?_⟩
+    intro hxA
+    obtain ⟨k, hkN, hxk⟩ := (hDomA x).mp hxA
+    rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+    · -- k = 0 ⇒ x = a, contradicting freshness `a ∉ mDom L`.
+      rw [hk0] at hxk
+      have hxa : x = a := hxk
+      exact ha (hxa ▸ hxdom)
+    · -- k ≥ 1 ⇒ orbit repeat, impossible.
+      have hgedge := hgedges k hkpos hkN
+      have hval : (fwdOrbit f g a k, y) ∈ L := hxk ▸ hxyL
+      have hyeq : y = f (fwdOrbit f g a (k - 1)) := matching_functional hL hval hgedge
+      have hyfok : y = f (fwdOrbit f g a k) := by rw [← hxk]; exact hyfx
+      have hokk : fwdOrbit f g a k = fwdOrbit f g a (k - 1) := hf (hyfok ▸ hyeq)
+      have hinj := fwdOrbit_prefix_distinct hf hg (D := fun n => n ∈ mDom L) ha hchase
+      have hkk : k = k - 1 := hinj hkN (by omega) hokk
+      omega
 
 /-!
 ## Section 4l: The dual range step — odd-stage coverage by `Prod.swap` duality
@@ -1635,16 +1663,17 @@ theorem augment_range_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
     {L : List (ℕ × ℕ)} (hL : IsMatching L) (hC : MatchingCorr p q L) (hB : BuiltFrom f g L)
     {c : ℕ} (hc : c ∉ mRan L) :
     ∃ L', IsMatching L' ∧ MatchingCorr p q L' ∧ BuiltFrom f g L' ∧
-      c ∈ mRan L' ∧ (∀ x ∈ mDom L, x ∈ mDom L') ∧ (∀ y ∈ mRan L, y ∈ mRan L') := by
+      c ∈ mRan L' ∧ (∀ x ∈ mDom L, x ∈ mDom L') ∧ (∀ y ∈ mRan L, y ∈ mRan L') ∧
+      (∀ ab ∈ L, ab.1 = g ab.2 → ab ∈ L') := by
   -- Move to the swapped problem `(q, p, g, f)` with matching `L.map Prod.swap`; the fresh
   -- range anchor `c` becomes a fresh *domain* anchor there.
   have hc' : c ∉ mDom (L.map Prod.swap) := by rw [mDom_map_swap]; exact hc
-  obtain ⟨M, hMmatch, hMcorr, hMbuilt, hcM, hdomMono, hranMono⟩ :=
+  obtain ⟨M, hMmatch, hMcorr, hMbuilt, hcM, hdomMono, hranMono, hMfedge⟩ :=
     augment_domain_step (p := q) (q := p) (f := g) (g := f) hgpq hg hf
       (isMatching_map_swap hL) (matchingCorr_map_swap hC) (builtFrom_map_swap hB) hc'
   -- Swap the witness back: `L' := M.map Prod.swap`.
   refine ⟨M.map Prod.swap, isMatching_map_swap hMmatch, matchingCorr_map_swap hMcorr,
-    builtFrom_map_swap hMbuilt, ?_, ?_, ?_⟩
+    builtFrom_map_swap hMbuilt, ?_, ?_, ?_, ?_⟩
   · -- `c ∈ mRan (M.map swap) = mDom M`
     rw [mRan_map_swap]; exact hcM
   · -- domain monotone: `mDom L ⊆ mDom (M.map swap) = mRan M`
@@ -1655,6 +1684,15 @@ theorem augment_range_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
     intro y hy
     rw [mRan_map_swap]
     exact hdomMono y (by rw [mDom_map_swap]; exact hy)
+  · -- g-edge preservation, dual to the domain step's f-edge preservation. A `g`-edge
+    -- `(u, w)` of `L` (`u = g w`) becomes an `f`-edge `(w, u)` of the swapped matching
+    -- (`(w,u).2 = u = g (w,u).1`), which `augment_domain_step` preserves into `M`; swapping
+    -- back returns `(u, w) ∈ M.map Prod.swap`.
+    rintro ⟨u, w⟩ huwL hguw
+    have hswapMem : (w, u) ∈ L.map Prod.swap := List.mem_map.mpr ⟨(u, w), huwL, rfl⟩
+    have hcond : (w, u).2 = g ((w, u).1) := hguw
+    have hMmem : (w, u) ∈ M := hMfedge (w, u) hswapMem hcond
+    exact List.mem_map.mpr ⟨(w, u), hMmem, rfl⟩
 
 /-!
 ## Section 5: The Myhill Isomorphism Theorem
