@@ -77,32 +77,35 @@
       "title": "The Descent Step (the Continued-Fraction Tail Map)",
       "startLine": 57,
       "endLine": 89,
-      "summary": "Proves that on a positive solution of a²=2b², the map (a,b) ↦ (2b−a, a−b) yields another solution with 0 < a−b < b. Establishes the bounds b < a < 2b, then the identity (2b−a)² = 2(a−b)² over ℤ.",
-      "mathContext": "Descent step: $0 < b,\\ a^2 = 2b^2 \\implies (2b-a)^2 = 2(a-b)^2 \\ \\wedge\\ 0 < a-b < b$. Bounds $b < a < 2b$ come from $a^2 = 2b^2$; the identity is $(2b-a)^2 - 2(a-b)^2 = 2b^2 - a^2 = 0$."
+      "summary": "descent_step: a positive solution a²=2b² satisfies b<a<2b (making the ℕ subtractions honest) and (2b−a)²=2(a−b)² with 0<a−b<b, discharged over ℤ by linear_combination. One backward step of √2's continued fraction; no coprimality assumed."
     },
     {
-      "id": "no-nat-solution",
+      "id": "infinite-descent",
       "title": "Infinite Descent ⇒ No Positive ℕ Solution",
       "startLine": 91,
       "endLine": 114,
-      "summary": "A fuel-bounded induction on n ≥ b: the recursive call consumes the strictly-smaller denominator a−b returned by the descent step, forcing a−b = 0 and contradicting 0 < a−b. Concludes a² = 2b² ⇒ b = 0.",
-      "mathContext": "$\\forall n\\, a\\, b,\\ b \\le n \\to a^2 = 2b^2 \\to b = 0$, by induction on the fuel $n$. The descent step gives $a - b < b \\le n+1$, so $a - b \\le n$ feeds the inductive hypothesis; it returns $a - b = 0$, impossible since $0 < a - b$."
+      "summary": "no_sol_aux does infinite descent as induction on a fuel n ≥ b: the shrinking denominator a−b ≤ n feeds the IH, contradicting 0<a−b. no_nat_solution instantiates fuel at n=b, forcing b=0."
     },
     {
-      "id": "int-rat-corollaries",
-      "title": "Integer and Rational Corollaries",
+      "id": "int-corollary",
+      "title": "Integer Corollary",
       "startLine": 116,
-      "endLine": 150,
-      "summary": "no_int_solution: x²=2y² ⇒ y=0 over ℤ via absolute values. sqrt2_not_rational: ¬∃ q∈ℚ, q²=2, by extracting num²=2·den² and forcing den=0.",
-      "mathContext": "$x^2 = 2y^2 \\implies y = 0$ over $\\mathbb{Z}$ (pass to $|x|, |y| \\in \\mathbb{N}$); and $\\neg\\exists q \\in \\mathbb{Q},\\ q^2 = 2$, since $q = \\mathrm{num}/\\mathrm{den}$ gives $\\mathrm{num}^2 = 2\\,\\mathrm{den}^2$, forcing $\\mathrm{den} = 0 \\bot$."
+      "endLine": 133,
+      "summary": "no_int_solution lifts to ℤ via absolute values (Int.natAbs_mul_self): x²=2y² becomes |x|²=2|y|² in ℕ, so |y|=0 and y=0."
     },
     {
-      "id": "cf-step-explicit",
+      "id": "rat-corollary",
+      "title": "Rational Corollary: √2 Irrational",
+      "startLine": 135,
+      "endLine": 150,
+      "summary": "sqrt2_not_rational: q²=2 with q=num/den clears to num²=2·den² over ℤ, so den=0 (contradiction). Needs no coprimality/lowest-terms normalization."
+    },
+    {
+      "id": "descent-map",
       "title": "The Descent Map, Made Explicit",
       "startLine": 152,
       "endLine": 167,
-      "summary": "Packages the tail map T(a,b) = (2b−a, a−b) as a function cfStep on pairs and restates the descent (cfStep_descends): on a positive solution it preserves the equation and strictly shrinks the denominator.",
-      "mathContext": "$\\mathrm{cfStep}(a,b) = (2b - a,\\ a - b)$; `cfStep_descends` repackages `descent_step` so the second coordinate strictly decreases — the one-step engine of the infinite descent / continued-fraction expansion of $\\sqrt{2}$."
+      "summary": "cfStep(a,b)=(2b−a,a−b) and cfStep_descends name the tail map, making the link to the continued-fraction algorithm and the side-and-diagonal numbers of √2 explicit."
     }
   ],
   "conclusion": {
