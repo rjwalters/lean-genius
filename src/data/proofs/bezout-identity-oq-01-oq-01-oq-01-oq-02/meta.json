@@ -107,6 +107,11 @@
       "targetId": "bezout-identity-oq-01-oq-01",
       "relationship": "builds-on",
       "description": "Grandparent entry on the extended Euclidean / Bézout identity, whose Euclidean steps and Bézout cofactors (continuants) are exactly the quantities the accumulated matrix product Rₖ encodes."
+    },
+    {
+      "targetId": "gcd-algorithm-oq-03",
+      "relationship": "related",
+      "description": "Lehmer's GCD — the classical multi-precision accelerator that Schönhage's HGCD generalizes. That entry formalizes the same core idea from the correctness side: a determinant ±1 (unimodular) 2×2 integer matrix, obtained by folding a batch of partial quotients from the leading words, preserves the GCD when applied to the full inputs (its headline gcd_unimodular). This entry formalizes the structural counterpart — that the product of the per-step quotient matrices Q(q) is itself unimodular (det_Rprod: det Rₖ = (−1)^k) and reproduces the Euclidean steps (Rprod_mulVec). Together they are the gallery's two treatments of the invariant 'unimodular 2×2 integer matrices encode partial Euclidean steps' for fast GCD: Lehmer's single splice and HGCD's recursive splicing."
     }
   ],
   "mainTheorems": [
