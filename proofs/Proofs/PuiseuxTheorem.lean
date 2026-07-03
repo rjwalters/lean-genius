@@ -251,6 +251,28 @@ theorem puiseux_binomial_ramification (hK : IsAlgClosed K) (n : ℕ+) (c : K) (h
     rw [hexp, ha]
   · rw [HahnSeries.orderTop_single ha0]
 
+/-- **Binomial polynomial root** — the binomial Puiseux root expressed as an honest
+`Polynomial.IsRoot`.
+
+`puiseux_binomial_root` establishes the *power equation* `yⁿ = single m c`. This corollary
+restates it in the language the definition of *algebraically closed* actually uses: the
+Puiseux series `y` is a genuine root of the polynomial
+`Xⁿ - C (single m c) ∈ (HahnSeries ℚ K)[X]`. Concretely, `eval y (Xⁿ - C d) = yⁿ - d = 0`.
+
+This is the polynomial-level form of a single Newton-polygon edge: the binomial
+`Xⁿ - C(single m c)` splits off a Puiseux root. It is the honest bridge from the
+Hahn-series computation to the algebraic-closure statement (which is about roots of
+polynomials, not power equations). The full Newton–Puiseux theorem for arbitrary
+polynomials — assembling such edge roots term by term with a char-0 convergence
+argument — remains unformalized here; only this binomial edge is proved. -/
+theorem puiseux_binomial_isRoot (hK : IsAlgClosed K) (n : ℕ+) (m : ℚ) (c : K) :
+    ∃ y : HahnSeries ℚ K, IsPuiseuxSeries y ∧
+      (Polynomial.X ^ (n : ℕ) - Polynomial.C (HahnSeries.single m c)).IsRoot y := by
+  obtain ⟨y, hpu, hy⟩ := puiseux_binomial_root K hK n m c
+  refine ⟨y, hpu, ?_⟩
+  rw [Polynomial.IsRoot.def, Polynomial.eval_sub, Polynomial.eval_pow,
+      Polynomial.eval_X, Polynomial.eval_C, hy, sub_self]
+
 end MainTheorem
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
