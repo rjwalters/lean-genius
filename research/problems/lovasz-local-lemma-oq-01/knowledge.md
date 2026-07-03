@@ -195,3 +195,44 @@ Insights accumulated during research on this problem.
   deriving them from a measure-theoretic dependency structure (`bₖ = 2p` under
   `e·p·(d+1) ≤ 1`) is the open target. This entry guarantees the quantitative LLL
   conclusion then follows with no further probability theory.
+
+### Euler condition ⇒ tight threshold bridge (researcher-4, 2026-07-03) — NEW
+
+- **The memorable symmetric condition `e·p·(d+1) ≤ 1` is implied by the tight
+  threshold `p ≤ T(d) = dᵈ/(d+1)^{d+1}`, and now this is machine-checked.** New file
+  `Proofs/LovaszLocalLemmaOQ01EulerThreshold.lean` (0 sorry / 0 axiom), gallery entry
+  `lovasz-local-lemma-oq-01-euler-threshold`: `euler_condition_implies_lllThreshold`
+  proves `e·p·(d+1) ≤ 1 → p ≤ (lllThreshold d : ℝ)` for `d ≥ 1` and any real `p`
+  (no `0 ≤ p` needed — negative `p` is trivial since `T(d) > 0`). This links the
+  parent proof's ℚ-valued tight threshold front to the Euler condition used
+  throughout the OQ-01 measure-theoretic entries.
+- **Core inequality: `(1 + 1/d)ᵈ ≤ e`** (`one_add_inv_pow_le_exp_one`). This is the
+  single fact that puts the constant `e` into the LLL. Route:
+  `Real.add_one_le_exp (1/d) : 1/d + 1 ≤ exp(1/d)` → `pow_le_pow_left₀ (by positivity)
+  hstep d` raises to the dᵗʰ power → `← Real.exp_nat_mul` rewrites `exp(1/d)^d =
+  exp(d·(1/d))`, and `mul_one_div; div_self (d ≠ 0)` gives `d·(1/d) = 1`, so RHS `= e`.
+- **Chain to the threshold.** `succ_pow_le_exp_mul`: clear the denominator
+  (`1+1/d = (d+1)/d`, `div_pow`, `div_le_iff₀`) to get `(d+1)ᵈ ≤ e·dᵈ`.
+  `lllThreshold_cast`: `(lllThreshold d : ℝ) = dᵈ/(d+1)^{d+1}` via
+  `simp only [lllThreshold, if_neg (d≠0)]; push_cast; ring`.
+  `inv_exp_mul_le_lllThreshold`: `1/(e(d+1)) ≤ T(d)` — after
+  `div_le_div_iff₀ .. ..; one_mul; pow_succ` the goal is `(d+1)ᵈ·(d+1) ≤ dᵈ·(e·(d+1))`,
+  closed by `nlinarith [mul_le_mul_of_nonneg_right succ_pow_le_exp_mul (le_of_lt hd1)]`.
+  Final bridge: `le_div_iff₀` turns `e·p·(d+1) ≤ 1` into `p ≤ 1/(e(d+1))`, then
+  `le_trans` with the threshold bound.
+- **Reusable Lean gotchas.** `lllThreshold` lives in namespace `ProbMethod.LovaszLocal`
+  (NOT `LovaszLocalLemma`) — `open ProbMethod.LovaszLocal`. `pow_le_pow_left` is gone /
+  unknown here; use `pow_le_pow_left₀ (ha : 0 ≤ a) (hab : a ≤ b) : ∀ n, aⁿ ≤ bⁿ`.
+  `Real.exp_nat_mul : exp(↑n * x) = exp x ^ n` (so `← Real.exp_nat_mul` collapses
+  `exp x ^ n`). `Real.add_one_le_exp x : x + 1 ≤ exp x`.
+- **Honest scope.** This is elementary real analysis about *which hypothesis is
+  stronger* (Euler form is a slightly conservative consequence of the tight
+  threshold: `1/(e(d+1)) < T(d)` strictly), NOT a proof that either hypothesis forces
+  positive avoidance. The measure-theoretic symmetric LLL induction (deriving the
+  per-event conditional bounds `bₖ = 2p` under `e·p·(d+1) ≤ 1`, to feed
+  `avoidance_ge_prod_one_sub` from the quantitative entry) remains the open target.
+- **Shared-repo build note.** Fresh researcher worktrees have no `.lake`/`node_modules`;
+  typecheck a single file via `cp` into MAIN `proofs/Proofs/` + `LAKE_UNSAFE=1 lake env
+  lean <file>` against MAIN's cached mathlib oleans. Under heavy concurrent load (70+
+  lean procs) expect transient `invalid header` / `configuration is invalid` errors —
+  retry with backoff; a clean pass confirms.
