@@ -348,4 +348,62 @@ theorem symmetricPairCount_le_oppositeParityOffsets {m : ℕ} (hm : 2 < m) :
   obtain ⟨hkm, hp1, hp2⟩ := hk
   exact ⟨hkm, symmetric_pair_offset_parity hm hkm hp1 hp2⟩
 
+/-! ## Closing the Offset Ceiling: an Explicit `⌈m/2⌉` Bound
+
+The offset-side bound above is phrased against the *count* of opposite-parity
+offsets.  That count has a closed form: among `{0, …, m - 1}` exactly `⌈m/2⌉`
+residues have parity opposite to `m`.  Turning the bound into this explicit value
+gives a fully elementary ceiling on the Goldbach comet height,
+
+    symmetricPairCount m ≤ ⌈m / 2⌉  =  (m + 1) / 2,
+
+i.e. the number of Goldbach partitions of `2 * m` is at most `≈ m / 2 ≈ n / 4`.
+Unlike the prime-arm bound `symmetricPairCount_le_primesInUpperArm`, this uses **no
+prime-counting input at all** — it is pure parity bookkeeping. -/
+
+/-- **Residue count in `[0, m)` by parity.**  For a target residue `c < 2`, the
+number of `k < m` with `k % 2 = c` is `(m + 1 - c) / 2`: `⌈m/2⌉` of the even
+residues (`c = 0`) and `⌊m/2⌋` of the odd ones (`c = 1`).  Proved by a direct
+induction on `m` (each new top element `n` contributes iff `n % 2 = c`). -/
+theorem card_filter_mod2_range (c m : ℕ) (hc : c < 2) :
+    ((Finset.range m).filter (fun k => k % 2 = c)).card = (m + 1 - c) / 2 := by
+  induction m with
+  | zero => simp only [Finset.range_zero, Finset.filter_empty, Finset.card_empty]; omega
+  | succ n ih =>
+    rw [Finset.range_add_one, Finset.filter_insert]
+    by_cases h : n % 2 = c
+    · rw [if_pos h, Finset.card_insert_of_notMem (by simp), ih]; omega
+    · rw [if_neg h, ih]; omega
+
+/-- **Opposite-parity offsets number exactly `⌈m/2⌉`.**  The number of offsets
+`k < m` whose parity differs from `m`'s is `(m + 1) / 2`.  These are the only
+offsets that can index a symmetric prime pair once `m > 2`
+(`symmetric_pair_offset_parity`). -/
+theorem oppositeParityOffsets_card (m : ℕ) :
+    ((Finset.range m).filter (fun k => m % 2 ≠ k % 2)).card = (m + 1) / 2 := by
+  have heq : (Finset.range m).filter (fun k => m % 2 ≠ k % 2)
+      = (Finset.range m).filter (fun k => k % 2 = 1 - m % 2) := by
+    apply Finset.filter_congr
+    intro k _
+    omega
+  rw [heq, card_filter_mod2_range (1 - m % 2) m (by omega)]
+  omega
+
+/-- **Explicit elementary ceiling on the Goldbach comet height.**  For `m > 2`,
+
+    symmetricPairCount m ≤ (m + 1) / 2  =  ⌈m / 2⌉,
+
+so `2 * m` has at most `⌈m/2⌉ ≈ n/4` Goldbach partitions.  This closes
+`symmetricPairCount_le_oppositeParityOffsets` to a closed form and needs no
+prime-density input — it follows purely from the parity constraint
+`symmetric_pair_offset_parity` and the count `oppositeParityOffsets_card`. -/
+theorem symmetricPairCount_le_half {m : ℕ} (hm : 2 < m) :
+    symmetricPairCount m ≤ (m + 1) / 2 :=
+  (symmetricPairCount_le_oppositeParityOffsets hm).trans
+    (oppositeParityOffsets_card m).le
+
+-- The explicit ceiling, checked against a concrete comet height: `2 * 5 = 10` has
+-- two Goldbach partitions (`3 + 7`, `5 + 5`) and `⌈5/2⌉ = 3`, so `2 ≤ 3`.
+example : symmetricPairCount 5 ≤ (5 + 1) / 2 := symmetricPairCount_le_half (by norm_num)
+
 end StrongGoldbach
