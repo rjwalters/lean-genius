@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T23:37:36Z",
-    "iteration": 2,
-    "focus": "Built axiom-free fractional chromatic number for finite graphs + LP lower bound χ_f(G) ≥ |V|/α(G); instantiated a concrete Moser spindle (Fin 7, α=2 by decide) giving χ_f ≥ 7/2 = 3.5 at the graph level.",
+    "iteration": 3,
+    "focus": "Added coordinate-free isomorphism-transport bridge: independenceNumber is a graph invariant (independenceNumber_congr), and fractionalChromaticNumber_ge_of_iso_moserSpindle transports χ_f ≥ 3.5 to ANY graph iso to moserSpindle. Remaining open step reduced to producing a single term moserSpindle ≃g unitDistGraph S.",
     "blockers": [],
-    "nextAction": "Realise moserSpindle by explicit unit-distance coordinates in Plane = EuclideanSpace R (Fin 2): verify the 11 edges have distance 1 and the 10 non-edges have distance != 1, then transport χ_f >= 3.5 to the unit-distance graph on R^2.",
+    "nextAction": "Construct the graph isomorphism moserSpindle ≃g unitDistGraph S for 7 explicit points S ⊆ Plane: build RelIso via map_adj_iff, needing 11 dist=1 (edges) + 10 dist≠1 (non-edges), each as a squared-distance polynomial (in)equality in √3,√11,√33. Then χ_f(ℝ²) ≥ 3.5 follows by fractionalChromaticNumber_ge_of_iso_moserSpindle.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,30 +29,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: axiom-free χ_f infrastructure + graph-level χ_f(MoserSpindle) ≥ 3.5 proved. Remaining: explicit ℝ² unit-distance embedding of the spindle.",
+    "progressSummary": "PROGRESS: axiom-free χ_f infra + graph-level χ_f(MoserSpindle) ≥ 3.5 + coordinate-free transport bridge (α is iso-invariant; χ_f ≥ 3.5 transports along any moserSpindle ≃g H). Remaining: the single embedding iso moserSpindle ≃g unitDistGraph S.",
     "builtItems": [
       "fractionalChromaticNumber (finite-graph fractional set-cover LP inf) in UnitDistanceIndependenceOQ04.lean",
       "card_div_indep_le_fractionalChromaticNumber: χ_f(G) ≥ |V|/α(G) (axiom-free LP averaging bound), OQ04.lean",
       "sum_coverage_eq: double-counting identity ∑_v cover(v) = ∑_I |I|·w(I), OQ04.lean",
       "moserSpindle : SimpleGraph (Fin 7) with independenceNumber = 2 (by decide), OQ04.lean",
-      "moserSpindle_fractionalChromaticNumber_ge: χ_f(moserSpindle) ≥ 7/2 = 3.5 (0 axioms), OQ04.lean"
+      "moserSpindle_fractionalChromaticNumber_ge: χ_f(moserSpindle) ≥ 7/2 = 3.5 (0 axioms), OQ04.lean",
+      "isIndepFinset_image_of_iso: graph iso carries independent finsets to independent finsets (image map), OQ04.lean",
+      "exists_indep_card_eq_independenceNumber: the α-defining sup is attained by an actual independent set, OQ04.lean",
+      "independenceNumber_congr: independence number is a graph invariant (G ≃g H ⇒ α(G)=α(H)), axiom-free, OQ04.lean",
+      "fractionalChromaticNumber_ge_of_iso_moserSpindle: χ_f(H) ≥ 7/2 for ANY H with moserSpindle ≃g H (coordinate-free transport), OQ04.lean"
     ],
     "insights": [
       "χ_f(G) ≥ |V|/α(G) holds for ALL finite graphs (not only vertex-transitive): one-line averaging over the fractional-cover LP. This converts any independence-ratio certificate into a χ_f lower bound.",
       "Moser spindle (7 vertices, α=2) already attains the Frankl–Wilson value 7/2 = 3.5; no larger construction is needed for the 3.5 bound.",
       "independenceNumber of a small explicit Fin n graph is provable by kernel `decide` (axiom-free), avoiding native_decide and its Lean.ofReduceBool axiom.",
-      "Derived spindle adjacency from the two-rhombi construction: shared acute apex 0; rhombus-1 {1,2 obtuse, 3 far apex}; rhombus-2 {4,5 obtuse, 6 far apex}; spindle edge 3–6. 11 edges total."
+      "Derived spindle adjacency from the two-rhombi construction: shared acute apex 0; rhombus-1 {1,2 obtuse, 3 far apex}; rhombus-2 {4,5 obtuse, 6 far apex}; spindle edge 3–6. 11 edges total.",
+      "The Frankl–Wilson 3.5 bound is a COMBINATORIAL invariant: it holds for every graph isomorphic to the Moser spindle. Proving α is iso-invariant (independenceNumber_congr) turns the plane problem into 'exhibit one graph iso', with no LP/α reasoning left in ℝ².",
+      "independenceNumber (a Finset.sup over the independent-set family) is attained (Finset.exists_mem_eq_sup, empty set gives nonemptiness); mapping the attaining set through the iso image gives the ≤ direction, and e.symm the other.",
+      "Coercion gotcha: Finset.card_image_of_injective must be fed EquivLike.injective e (Function.Injective ⇑e), not e.toEquiv.injective (⇑e.toEquiv) — the latter fails the rw pattern match on `image ⇑e S` though defeq."
     ],
     "mathlibGaps": [
       "Mathlib has NO fractional chromatic number (no SimpleGraph.fractionalChromaticNumber); built a minimal one locally (~80 lines).",
       "Remaining gap for full ℝ² claim: explicit Moser-spindle coordinates need irrational entries (√3, spindle-rotation angle); verifying 11 unit distances + 10 non-unit distances in EuclideanSpace ℝ (Fin 2) is the open engineering step."
     ],
     "nextSteps": [
-      "Give 7 explicit points in EuclideanSpace ℝ (Fin 2) realising moserSpindle; prove dist = 1 on the 11 edges and dist ≠ 1 on the 10 non-edges (submit distance lemmas to Aristotle if tedious).",
-      "Build a graph iso moserSpindle ≃g unitDistGraph S transporting independenceNumber and hence χ_f ≥ 3.5 to the plane.",
-      "Optionally generalise fractionalChromaticNumber_ge_of_seven_indep_two to χ_f ≥ n/α for arbitrary certified (n, α)."
+      "Construct moserSpindle ≃g unitDistGraph S: pick 7 explicit points (0=(0,0); rhombus-1 apex 3=(√3,0), obtuse (√3/2,±1/2); rhombus-2 rotated by θ=arccos(5/6): apex 6=(5√3/6,√33/6), obtuse via rotation) and prove the 11 dist=1 / 10 dist≠1 facts.",
+      "Reduce each distance fact to a squared-distance polynomial (in)equality in √3,√11,√33 (EuclideanSpace.dist_eq + Real.sq_sqrt), dischargeable by nlinarith/norm_num or Aristotle prove().",
+      "Then χ_f(ℝ²) ≥ 3.5 follows: fractionalChromaticNumber_ge_of_iso_moserSpindle (unitDistGraph S) e."
     ],
-    "markdown": "# Knowledge Base: unit-distance-independence-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n(Initial observations from OBSERVE phase will be recorded here.)\n\n---\n\n## Insights\n\n(Insights from research attempts will be accumulated here.)\n\n---\n\n## Mathlib Coverage Audit\n\n(After ORIENT phase: list of relevant Mathlib lemmas / APIs and their applicability.)\n\n---\n\n## Anti-Goals\n\n(Things explicitly NOT to attempt — discovered duplicates, scope creep risks, etc.)\n"
+    "markdown": "# Knowledge Base: unit-distance-independence-oq-04\n\nFrankl–Wilson (1981): the fractional chromatic number of the unit-distance\ngraph on the plane satisfies **χ_f(ℝ²) ≥ 3.5**, strengthening χ(ℝ²) ≥ 4.\n\n---\n\n## Problem Understanding\n\nThe standard route is the LP-duality lower bound χ_f(G) ≥ |V(G)|/α(G) applied to\na finite unit-distance subgraph. The **Moser spindle** (7 vertices, 11 edges,\nindependence number 2) already attains |V|/α = 7/2 = 3.5, so it is the natural\ncertificate.\n\n## Insights\n\n- **χ_f(G) ≥ |V|/α(G) for all finite graphs** (not just vertex-transitive): a\n  one-line averaging argument over the fractional set-cover LP. This is the\n  reusable engine that turns any independence-ratio certificate into a χ_f bound.\n- **Moser spindle attains 3.5 exactly** — no larger Frankl–Wilson construction is\n  needed for the 3.5 bound.\n- **`decide` proves α of a small explicit `Fin n` graph** axiom-free (avoid\n  `native_decide`, which would add `Lean.ofReduceBool`).\n- Spindle adjacency (two 60°/120° rhombi sharing acute apex `0`):\n  edges `{0-1,0-2,1-2,1-3,2-3, 0-4,0-5,4-5,4-6,5-6, 3-6}`. Rhombus-1 obtuse\n  vertices `1,2` + far apex `3`; rhombus-2 obtuse `4,5` + far apex `6`; spindle\n  edge `3-6`.\n\n## Mathlib Coverage Audit\n\n- Mathlib has **no** fractional chromatic number (`Mathlib/Combinatorics/\n  SimpleGraph/{Coloring,Clique,ConcreteColorings}.lean` — none define χ_f). Built\n  a minimal `fractionalChromaticNumber` locally (~80 lines, fractional set-cover\n  LP infimum).\n- `UnitDistanceIndependence.lean` provides `IsIndepFinset`, `independenceNumber`,\n  `indep_card_le_alpha`, `unitDistGraph`, `Plane = EuclideanSpace ℝ (Fin 2)`.\n\n## Remaining Gap (open engineering step)\n\nRealise `moserSpindle : SimpleGraph (Fin 7)` by explicit coordinates in `Plane`:\nverify `dist = 1` on the 11 edges and `dist ≠ 1` on the 10 non-edges. Coordinates\nare irrational (√3 and the spindle-rotation angle), so the ~21 distance checks\nare the tedious-but-bounded remaining work; then transport χ_f ≥ 3.5 to the plane\nvia a graph isomorphism `moserSpindle ≃g unitDistGraph S`.\n\n## Anti-Goals\n\n- Do NOT use `native_decide` for α (would forfeit axiom-free status).\n- Do NOT search for a rational-coordinate spindle — the Moser spindle requires\n  irrational coordinates.\n\n---\n\n## Session 2026-07-03 (Session 2, researcher-8) — χ_f infrastructure + graph-level 3.5\n\n**Mode**: FRESH · **Outcome**: progress (axiom-free)\n\n### What I did\n- Confirmed Mathlib has no χ_f; built a self-contained `fractionalChromaticNumber`\n  for finite graphs (fractional set-cover LP infimum) in\n  `proofs/Proofs/UnitDistanceIndependenceOQ04.lean`.\n- Proved the LP averaging bound `card_div_indep_le_fractionalChromaticNumber`:\n  χ_f(G) ≥ |V|/α(G), via the double-counting identity `sum_coverage_eq`.\n- Built the concrete `moserSpindle : SimpleGraph (Fin 7)`, proved\n  `independenceNumber = 2` by `decide`, hence\n  `moserSpindle_fractionalChromaticNumber_ge : (7:ℝ)/2 ≤ χ_f(moserSpindle)`.\n- Verified axiom-free: `#print axioms` → `[propext, Classical.choice, Quot.sound]`.\n\n### Files\n- `proofs/Proofs/UnitDistanceIndependenceOQ04.lean` (new, 232 lines, 0 sorries, 0 axioms)\n\n### Next steps\n- Explicit ℝ² embedding of the spindle (11 unit distances + 10 non-unit) and a\n  graph iso to `unitDistGraph`, transporting χ_f ≥ 3.5 to χ_f(ℝ²) ≥ 3.5.\n\n---\n\n## Session 2026-07-03 (Session 3, researcher-14) — coordinate-free transport bridge\n\n**Mode**: CONTINUE (built on PR #34199) · **Outcome**: progress (axiom-free)\n\n### What I did\nBuilt the **isomorphism-transport bridge** that reduces the remaining open step\nfrom \"embed + re-derive the LP bound in the plane\" to *purely exhibiting an\nembedding iso*. All coordinate-free graph theory, 0 axioms / 0 sorries:\n\n- `isIndepFinset_image_of_iso` — a graph iso `e : G ≃g H` carries independent\n  finsets to independent finsets via the image map `S ↦ e '' S`, using\n  `SimpleGraph.Iso.map_adj_iff`.\n- `exists_indep_card_eq_independenceNumber` — the defining `sup` for `α` is\n  attained by an actual independent set (`Finset.exists_mem_eq_sup`, empty set\n  witnesses nonemptiness).\n- `independenceNumber_le_of_iso` / **`independenceNumber_congr`** — the\n  independence number is a **graph invariant**: `G ≃g H ⇒ α(G) = α(H)`\n  (antisymmetry from the two `≤` directions via `e` and `e.symm`).\n- **`fractionalChromaticNumber_ge_of_iso_moserSpindle`** (and `'` decimal form)\n  — the payoff: *any* finite graph `H` with `moserSpindle ≃g H` satisfies\n  `χ_f(H) ≥ 7/2 = 3.5`. Vertex count transported by `Fintype.card_congr`, `α = 2`\n  by `independenceNumber_congr`, then the existing\n  `fractionalChromaticNumber_ge_of_seven_indep_two`.\n\n**Consequence**: to finish `χ_f(ℝ²) ≥ 3.5` it now suffices to produce a single\nterm `moserSpindle ≃g unitDistGraph S` for a 7-point `S ⊆ Plane`; no further LP\nor independence-number reasoning in the plane is needed. The bound then follows\nby `fractionalChromaticNumber_ge_of_iso_moserSpindle (unitDistGraph S) e`.\n\n### Files\n- `proofs/Proofs/UnitDistanceIndependenceOQ04.lean` (359 lines, +6 theorems,\n  0 sorries, 0 axioms; docker build ✔)\n\n### Insight for next session\nBuilding `moserSpindle ≃g unitDistGraph S` still needs the 21 exact distance\nfacts (11 `dist = 1`, 10 `dist ≠ 1`); but they now feed a *single* `≃g`\nconstructor (`RelIso.mk` with `map_adj_iff`) rather than a bespoke α computation\nin the plane. In `EuclideanSpace ℝ (Fin 2)`, reduce each to a squared-distance\npolynomial identity/inequality in √3, √11, √33 (`EuclideanSpace.dist_eq`,\n`Real.sq_sqrt`, then `nlinarith`/`norm_num`) — good `prove()` targets.\n"
   },
   "tags": [],
   "relatedProofs": [
@@ -65,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-07-03T06:52:01.409Z",
-  "lastUpdate": "2026-07-03T12:30:00Z",
+  "lastUpdate": "2026-07-03T21:30:00Z",
   "leanFiles": [
     {
       "path": "Proofs/UnitDistanceIndependence.lean",
