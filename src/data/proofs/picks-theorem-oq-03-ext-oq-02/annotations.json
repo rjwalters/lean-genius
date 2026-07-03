@@ -51,22 +51,45 @@
     "proofId": "picks-theorem-oq-03-ext-oq-02",
     "range": {
       "startLine": 64,
-      "endLine": 97
+      "endLine": 79
     },
     "type": "theorem",
     "title": "Hibi's Criterion: Palindromy = Self-Reciprocity",
-    "content": "The main theorem reflect_eq_iff_palindromic states reflect d (hStarPoly d h) = hStarPoly d h <-> Palindromic d h, over any commutative semiring. The forward direction reads off coefficient i of the polynomial identity: coeff_reflect gives (reflect d H).coeff i = H.coeff (revAt d i), and for i <= d the lemma revAt_le rewrites revAt d i = d - i, so equality of coefficients i is h (d-i) = h i. The reverse direction proves the polynomial identity by Polynomial.ext: for k <= d use revAt_le and palindromy; for k > d use revAt_eq_self_of_lt (so reflection fixes index k) and both coefficients vanish. The geometric reduction reflexive_hStar_palindromic packages the forward implication: if the h*-polynomial is self-reciprocal -- the form Ehrhart-Macdonald reciprocity takes for a reflexive polytope -- then the h*-vector is palindromic. Finally hStar_constant_eq_leading derives h_0 = h_d from palindromy (instantiating i = 0), the reflexive/Gorenstein normalization: with h_0 = 1 the top coefficient is also 1.",
-    "mathContext": "$\\mathrm{reflect}_d H = H \\iff (\\forall i \\le d,\\ h_i = h_{d-i})$. Reflexive $\\Rightarrow$ self-reciprocal $H(t) = t^d H(1/t) \\Rightarrow$ palindromic. Normalization: $h_0 = h_d$, so $h_0 = 1 \\Rightarrow h_d = 1$.",
+    "content": "The main theorem reflect_eq_iff_palindromic states reflect d (hStarPoly d h) = hStarPoly d h <-> Palindromic d h, over any commutative semiring. The forward direction reads off coefficient i of the polynomial identity: coeff_reflect gives (reflect d H).coeff i = H.coeff (revAt d i), and for i <= d the lemma revAt_le rewrites revAt d i = d - i, so equality of coefficients i is h (d-i) = h i. The reverse direction proves the polynomial identity by Polynomial.ext: for k <= d use revAt_le and palindromy; for k > d use revAt_eq_self_of_lt (so reflection fixes index k) and both coefficients vanish. This purely combinatorial equivalence is the algebraic heart of the entry — it holds for any coefficient function h, with no geometry attached.",
+    "mathContext": "$\\mathrm{reflect}_d H = H \\iff (\\forall i \\le d,\\ h_i = h_{d-i})$, where $\\mathrm{revAt}_d i = d - i$ for $i \\le d$ and fixes $i > d$.",
     "significance": "critical",
     "relatedConcepts": [
       "self-reciprocal polynomial",
       "Polynomial.reflect / coeff_reflect / revAt",
       "Hibi's palindromy theorem",
-      "Gorenstein normalization"
+      "Polynomial.ext coefficient argument"
     ],
     "prerequisites": [
       "Polynomial.ext and coeff_reflect",
       "revAt_le, revAt_eq_self_of_lt"
+    ]
+  },
+  {
+    "id": "ann-oq03extoq02-reflexive-corollaries",
+    "proofId": "picks-theorem-oq-03-ext-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 97
+    },
+    "type": "theorem",
+    "title": "Geometric Corollaries: Reflexivity Reduction and Normalization",
+    "content": "Two corollaries turn the abstract equivalence toward geometry. reflexive_hStar_palindromic packages the forward implication: it takes self-reciprocity reflect d (hStarPoly d h) = hStarPoly d h as a hypothesis — the form Ehrhart–Macdonald reciprocity imposes on a reflexive polytope's h*-polynomial (H(t) = t^d H(1/t)), a derivation Mathlib cannot supply, so it enters as an explicit hypothesis — and concludes palindromy of the h*-vector via (reflect_eq_iff_palindromic d h).mp. hStar_constant_eq_leading then derives the extreme-entry equality h_0 = h_d by instantiating palindromy at i = 0 (Nat.zero_le d) and simplifying: this is the Gorenstein/reflexive normalization, so with the lattice-polytope value h_0 = 1 the top coefficient h_d is forced to 1.",
+    "mathContext": "Reflexive $\\Rightarrow$ self-reciprocal $H(t) = t^d H(1/t) \\Rightarrow$ palindromic. Normalization: $h_0 = h_d$, so $h_0 = 1 \\Rightarrow h_d = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart–Macdonald reciprocity",
+      "reflexive polytope",
+      "Gorenstein normalization",
+      "hypothesis vs. derived fact (Mathlib gap)"
+    ],
+    "prerequisites": [
+      "reflect_eq_iff_palindromic",
+      "Ehrhart series and reflexivity"
     ]
   },
   {
