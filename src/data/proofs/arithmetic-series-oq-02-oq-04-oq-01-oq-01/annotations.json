@@ -26,26 +26,50 @@
     ]
   },
   {
-    "id": "ann-asoq0101-structural",
+    "id": "ann-asoq0101-integrality",
     "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-01",
     "range": {
       "startLine": 63,
-      "endLine": 86
+      "endLine": 71
     },
-    "type": "concept",
-    "title": "Integrality and the Ascending/Multiset Duality",
-    "content": "factorial_dvd_rising_product shows k! ∣ ∏ i ∈ range k, (n+i) by exhibiting the multiset coefficient as the cofactor — a free corollary of the main identity, with no separate induction. multiset_ascending_duality pairs the multiset form with the grandparent's ascending (simplicial) form: both are products of k consecutive integers, but the multiset product starts at n while the ascending product starts at n+1.",
-    "mathContext": "Integrality: $k! \\mid \\prod_{i=0}^{k-1}(n+i)$, equivalently $\\binom{n+k-1}{k} \\in \\mathbb{N}$. Duality: $\\binom{n+k-1}{k}k! = n(n+1)\\cdots(n+k-1)$ (origin $n$) versus $\\binom{n+k}{k}k! = (n+1)(n+2)\\cdots(n+k)$ (origin $n+1$) — adjacent index origins for the same kind of consecutive-integer product.",
+    "type": "insight",
+    "title": "Integrality: k! Divides Every Product of k Consecutive Integers",
+    "content": "factorial_dvd_rising_product shows k! ∣ ∏ i ∈ range k, (n+i) as a free corollary of the main identity: the witness is exactly the multiset coefficient C(n+k-1, k), so the divisibility term ⟨C(n+k-1, k), _⟩ is discharged by rewriting through multichoose_factorial and commuting the product — no separate induction on k is needed. Read the other way, this is precisely the statement that the multiset coefficient is a genuine natural number: C(n+k-1, k) = (∏ i ∈ range k, (n+i)) / k! has no remainder. It is the arithmetic shadow of a combinatorial fact — the quotient counts unordered k-multisets from n symbols (stars and bars), which cannot be fractional.",
+    "mathContext": "$k! \\mid \\prod_{i=0}^{k-1}(n+i)$, equivalently $\\binom{n+k-1}{k} = \\dfrac{n(n+1)\\cdots(n+k-1)}{k!} \\in \\mathbb{N}$. The classical elementary fact that any $k$ consecutive integers have product divisible by $k!$ falls out for free, with the multiset coefficient as the explicit cofactor.",
     "significance": "supporting",
     "relatedConcepts": [
       "divisibility",
-      "Nat.ascFactorial",
-      "simplicial number",
-      "Pochhammer symbol"
+      "multiset coefficient",
+      "stars and bars",
+      "integrality of binomial coefficients"
     ],
     "prerequisites": [
       "Dvd",
-      "ArithmeticSeriesOQ02OQ04.simplicial_product"
+      "Nat.mul_comm"
+    ]
+  },
+  {
+    "id": "ann-asoq0101-duality",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 86
+    },
+    "type": "concept",
+    "title": "Multiset vs. Ascending Duality: One Count, Two Index Origins",
+    "content": "multiset_ascending_duality bundles this file's multiset form with the grandparent's ascending (simplicial) form into a single conjunction, reusing ArithmeticSeriesOQ02OQ04.simplicial_product for the second half. Both sides are products of k consecutive integers; the only difference is where the product starts. The multiset product C(n+k-1, k)·k! begins at n, while the ascending product C(n+k, k)·k! begins at n+1 — adjacent index origins for the same ordered-selection count. Placing them side by side makes the family structure explicit: the descending (OQ01), ascending (OQ04), and multiset (this file) identities are three readings of ∏(k consecutive integers) shifted by one index each.",
+    "mathContext": "Multiset (origin $n$): $\\binom{n+k-1}{k}\\,k! = n(n+1)\\cdots(n+k-1)$. Ascending (origin $n+1$): $\\binom{n+k}{k}\\,k! = (n+1)(n+2)\\cdots(n+k)$. The two products are related by $n \\mapsto n+1$; together with the descending form $\\binom{n}{k}\\,k! = n(n-1)\\cdots(n-k+1)$ they exhaust the three natural index origins.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.ascFactorial",
+      "simplicial number",
+      "Pochhammer symbol",
+      "falling factorial",
+      "index shift"
+    ],
+    "prerequisites": [
+      "ArithmeticSeriesOQ02OQ04.simplicial_product",
+      "logical conjunction"
     ]
   },
   {
