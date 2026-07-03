@@ -51,9 +51,9 @@
       "wu_yan_conditional: Schanuel implies density 1"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 932,
-    "assumptions": "2 axioms: wolstenholme_theorem, divisibility_characterization. See Lean source for complete statements.",
+    "assumptions": "3 assumptions: (1) wolstenholme_theorem (p²∣numerator of H_{p-1} for prime p≥5) and (2) divisibility_characterization (p∣gcd(aₙ,Lₙ) ↔ p∣numerator of H(leadingDigit n p)·(leadingDigit n p)!) — both literal `axiom` declarations. (3) Lean.ofReduceBool — the credited concrete computations (small_examples / small_examples_extended giving harmonicGCD values for n=1..10, the L_two..L_ten value theorems, the leadingDigit_* base-p digit checks, and three_dvd_gcd_six/eight, five_dvd_gcd_24) are discharged with `native_decide` (28 occurrences), which trusts the Lean compiler kernel reduction and adds `Lean.ofReduceBool` to `#print axioms`. Per the project native_decide policy these credited results are counted, so meta.axiomCount = 3 (leanFile.axiomCount stays 2, literal axioms only). Foundational propext / Classical.choice / Quot.sound are not counted. 0 sorries. Part 2 (gcd>1 infinitely often) is proved; Part 1 (gcd=1 infinitely often) remains OPEN.",
     "theoremCount": 84,
     "definitionCount": 10
   },
@@ -74,7 +74,121 @@
       "Number theory (primes, divisibility)"
     ]
   },
-  "sections":   [
+  "mainTheorems": [
+    {
+      "name": "wolstenholme_theorem",
+      "type": "axiom",
+      "statement": "p prime, p ≥ 5 → p² ∣ (H(p−1)·(p−1)!).num.natAbs",
+      "significance": "Wolstenholme's theorem (1862): for any prime p ≥ 5 the numerator of the harmonic number H_{p−1} = 1 + 1/2 + ··· + 1/(p−1) is divisible by p². The classical divisibility input driving the p ≥ 5 branch of the whole analysis.",
+      "description": "Stated as an `axiom`; one of the entry's two literal assumptions."
+    },
+    {
+      "name": "divisibility_characterization",
+      "type": "axiom",
+      "statement": "p prime, p ≤ n → (p ∣ harmonicGCD n ↔ p ∣ numerator of H(leadingDigit n p)·(leadingDigit n p)!)",
+      "significance": "The leading-digit characterization: whether a prime p divides gcd(aₙ, Lₙ) depends only on the leading digit of n written in base p. This striking base-p reduction is the structural heart of Erdős Problem 291.",
+      "description": "Stated as an `axiom`; the second literal assumption. All Steinerberger-type divisibilities are derived from it."
+    },
+    {
+      "name": "steinerberger_criterion",
+      "type": "theorem",
+      "statement": "p prime, p ≤ n, p ≥ 3, leadingDigit n p = p − 1 → p ∣ harmonicGCD n",
+      "significance": "Steinerberger's observation, promoted to a theorem: if n's leading base-p digit is p−1 then p divides the harmonic gcd. The concrete mechanism for manufacturing infinitely many n with gcd > 1.",
+      "description": "From divisibility_characterization with leading digit p−1: p = 3 by direct computation, p ≥ 5 by Wolstenholme. Depends on both axioms."
+    },
+    {
+      "name": "erdos_291",
+      "type": "theorem",
+      "statement": "question_part2 : Set.Infinite {n | harmonicGCD n > 1}",
+      "significance": "The resolved half of Erdős Problem 291: there are infinitely many n with gcd(aₙ, Lₙ) > 1. Part 1 (infinitely many n with gcd = 1) remains OPEN. Establishes the 'easy YES' direction rigorously.",
+      "description": "Alias of part2_trivially_true; via the injective family n = 2·3^(k+1) each divisible-by-3 by three_dvd_gcd_two_pow_three. Depends on the axioms through the Steinerberger chain."
+    },
+    {
+      "name": "part2_trivially_true",
+      "type": "theorem",
+      "statement": "Set.Infinite {n | harmonicGCD n > 1} via the family n = 2·3^(k+1)",
+      "significance": "The explicit witness family proving Part 2: the numbers 2·3^(k+1) all have 3 ∣ gcd (leading base-3 digit 2 = 3−1), giving an injective infinite subset with gcd > 1.",
+      "description": "Set.infinite_of_injective_forall_mem with three_dvd_gcd_two_pow_three and positivity of the gcd; depends on the axioms."
+    },
+    {
+      "name": "three_dvd_gcd_two_pow_three",
+      "type": "theorem",
+      "statement": "k ≥ 1 → 3 ∣ harmonicGCD (2 · 3^k)",
+      "significance": "The prime-3 instance powering Part 2: for the family 2·3^k the leading base-3 digit is 2, so 3 divides the harmonic gcd. The seed divisibility multiplied into the infinite family.",
+      "description": "Applies steinerberger_criterion after computing the leading digit via leadingDigit_two_times_pow_three; depends on the axioms."
+    },
+    {
+      "name": "infinitely_many_five_dvd",
+      "type": "theorem",
+      "statement": "Set.Infinite {n | 5 ∣ harmonicGCD n}",
+      "significance": "A second, prime-5 witness family (n = 4·5^(k+1)) giving infinitely many n with 5 ∣ gcd — showing the gcd>1 phenomenon is not special to 3 and reinforcing that Part 2 holds abundantly.",
+      "description": "Injective family 4·5^(k+1) with five_dvd_gcd_four_pow_five; depends on the axioms."
+    },
+    {
+      "name": "prime_dvd_gcd_pm1_pow",
+      "type": "theorem",
+      "statement": "p prime, p ≥ 3, k ≥ 1 → p ∣ harmonicGCD ((p−1)·p^k)",
+      "significance": "The uniform Steinerberger family across all odd primes: (p−1)·p^k always has p ∣ gcd. Generalizes the 3- and 5-families into a single parametric infinite supply of gcd > 1 witnesses.",
+      "description": "steinerberger_criterion applied to n = (p−1)·p^k whose leading base-p digit is p−1; depends on the axioms."
+    },
+    {
+      "name": "small_examples",
+      "type": "theorem",
+      "statement": "harmonicGCD 1..5 = 1 and harmonicGCD 6 = 3",
+      "significance": "The concrete base-case table: the harmonic gcd is 1 for n ≤ 5 and first exceeds 1 at n = 6 (value 3). Pins the exact onset of the gcd > 1 behavior and anchors the whole problem in explicit arithmetic.",
+      "description": "Computes aₙ from Hₙ·Lₙ and gcd values; each gcd discharged by `native_decide` (contributes Lean.ofReduceBool)."
+    },
+    {
+      "name": "first_gcd_gt_one",
+      "type": "theorem",
+      "statement": "harmonicGCD 6 = 3",
+      "significance": "Identifies n = 6 as the first index where gcd(aₙ, Lₙ) > 1 — the minimal counterexample to 'gcd is always 1', motivating Part 2.",
+      "description": "Projection of small_examples; inherits Lean.ofReduceBool from its native_decide computation."
+    },
+    {
+      "name": "H_succ",
+      "type": "theorem",
+      "statement": "H (n+1) = H n + 1/(n+1)  (over ℚ)",
+      "significance": "The defining recurrence of the harmonic numbers as exact rationals. The computational backbone letting every Hₙ = aₙ/Lₙ be evaluated and its numerator/denominator tracked.",
+      "description": "Unfolds the Finset.range sum; axiom-free."
+    },
+    {
+      "name": "L_dvd_factorial",
+      "type": "theorem",
+      "statement": "L n ∣ n.factorial",
+      "significance": "The harmonic denominator Lₙ = lcm(1,…,n) divides n!, bounding its size and prime content. Together with dvd_L it pins Lₙ between lcm and factorial.",
+      "description": "By divisibility of the lcm into the factorial; axiom-free."
+    },
+    {
+      "name": "dvd_L",
+      "type": "theorem",
+      "statement": "1 ≤ k ≤ n → k ∣ L n",
+      "significance": "Every integer up to n divides Lₙ — i.e. Lₙ is a common multiple of 1,…,n. Establishes Lₙ as (a multiple of) lcm(1,…,n), the correct harmonic denominator.",
+      "description": "Induction on the running lcm definition of L; axiom-free."
+    },
+    {
+      "name": "prime_div_gcd_le",
+      "type": "theorem",
+      "statement": "p prime, p ∣ harmonicGCD n → p ≤ n",
+      "significance": "Any prime dividing the harmonic gcd is at most n. Bounds which primes can appear in gcd(aₙ, Lₙ) and legitimizes the finite base-p leading-digit analysis.",
+      "description": "From harmonicGCD ∣ Lₙ and prime_dvd_L_le (a prime dividing Lₙ is ≤ n); axiom-free."
+    },
+    {
+      "name": "leadingDigit_pm1_times_pow",
+      "type": "theorem",
+      "statement": "p > 1 → leadingDigit ((p−1)·p^k) p = p − 1",
+      "significance": "The base-p digit computation underpinning the Steinerberger families: (p−1)·p^k has leading digit exactly p−1 in base p, which is the trigger condition of steinerberger_criterion.",
+      "description": "Unfolds the recursive leadingDigit; axiom-free."
+    },
+    {
+      "name": "H_mul_L_eq_sum",
+      "type": "theorem",
+      "statement": "H n · (L n : ℚ) = ∑_{k=1}^{n} L n / k",
+      "significance": "Expresses the harmonic numerator aₙ = Hₙ·Lₙ as an explicit integer sum Σ Lₙ/k. The bridge from the rational harmonic number to the integer aₙ whose gcd with Lₙ is the object of study.",
+      "description": "Distributes Lₙ across the harmonic sum using the recurrence; axiom-free."
+    }
+  ],
+  "sections": [
     {
       "id": "header",
       "title": "Module Header and Overview",
