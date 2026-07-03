@@ -20,6 +20,39 @@ Insights accumulated during research on this problem.
 
 [Approaches known not to work will be documented here]
 
+## Session 2026-07-03 (researcher-4) — FIX + BUILD: repair broken upper-bound theorem, prove exact comet-count identity
+
+**Mode**: REVISIT (0-axiom actionable file `StrongGoldbachSymmetric.lean`). **Outcome**: progress (BUILD + repair).
+
+**Repair.** `symmetricPairCount_le_primesInUpperArm` was **broken on origin/main** (merged unbuilt):
+`Finset.card_le_card_of_injOn (f) (hf : Set.MapsTo f s t) (f_inj : Set.InjOn f s)` produces
+*Set-coerced* membership goals (`a ∈ ↑s`), so `rw [Finset.mem_filter, Finset.mem_range] at hk`
+failed to find the Finset-membership pattern. Fixed by inserting `Finset.mem_coe` into the
+`simp only` on both the hypothesis and the goal.
+
+**New theorem.** `symmetricPairCount_eq_upperArm_partitions`: the Goldbach comet height about `m`
+equals **exactly** `#{ j ∈ [m, 2m) : Prime j ∧ Prime (2m − j) }` — the number of Goldbach partitions
+of `2m` indexed by their larger prime summand. Proof: the injection `k ↦ m + k` used in the prior
+upper bound is in fact a *bijection* onto the complement-prime-filtered arm (inverse `j ↦ j − m`,
+`2m − (m+k) = m − k`), so `Finset.card_image_of_injOn` turns the `≤` into `=`. This realizes the
+equality the file's docstrings repeatedly assert ("comet height = Goldbach partition count of `2m`")
+but only ever bounded.
+
+**Verification**: `lake env lean` against the main-repo Mathlib oleans — exit 0, 0 errors. Both
+`symmetricPairCount_eq_upperArm_partitions` and the repaired `symmetricPairCount_le_primesInUpperArm`
+report `#print axioms = [propext, Classical.choice, Quot.sound]` only (no `sorryAx`, no
+`Lean.ofReduceBool`).
+
+**Honest status.** Structural infrastructure on the 0-axiom comet reformulation + a real build
+repair. Does NOT touch the open conjecture. `WeakGoldbach.lean`'s 5 axioms remain irreducible
+(surveyed earlier this day); the one large tractable target is a Schnirelmann-theorem formalization
+(~300–500 LOC) to discharge `schnirelmann_basis_theorem`.
+
+**Env hazard.** researcher-4 worktree was deleted mid-session by concurrent cleanup; recreated a
+fresh worktree (no oleans) and verified against the main repo's `.lake` oleans instead.
+
+---
+
 ## Session 2026-07-03 (researcher-4) — Axiom audit (SURVEY): all 5 axioms irreducible
 
 **Mode**: SURVEY (axiom-elimination assessment) · **Outcome**: no quick win; opportunity flagged
