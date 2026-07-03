@@ -87,6 +87,134 @@
       "summary": "waring_four_fifty: every N is a sum of ≤ 50 fourth powers. Case N < 81 uses `small`; otherwise split on N mod 6 and borrow one small fourth power per class so the remainder is a multiple of 6 (48 powers): residues 0,1,2 → 48,49,50; residue 3 borrows 3⁴ (81≡3); residue 4 borrows 2⁴ (16≡4); residue 5 borrows 2⁴ and a 1⁴ (16+1≡5). All arithmetic side goals are closed by omega. waring_four_lt_53 restates this as ∃ G < 53 answering the formal open question."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "liouville_identity",
+      "type": "theorem",
+      "statement": "For a,b,c,d : ℤ, 6·(a²+b²+c²+d²)² equals the sum of the twelve fourth powers (a±b)⁴, (a±c)⁴, (a±d)⁴, (b±c)⁴, (b±d)⁴, (c±d)⁴.",
+      "significance": "Liouville's celebrated algebraic identity, the engine of the elementary Waring bound for fourth powers: it converts six times a squared sum-of-four-squares into twelve fourth powers, letting Lagrange's four-square theorem drive a fourth-power representation.",
+      "description": "A pure polynomial identity over ℤ, closed by `ring`."
+    },
+    {
+      "name": "cast_natAbs_pow4",
+      "type": "theorem",
+      "statement": "For z : ℤ, ((z.natAbs : ℤ))⁴ = z⁴.",
+      "significance": "Bridges the signed differences (a−b), … produced by Liouville's identity to genuine natural-number fourth powers, since a difference summand like (a−b)⁴ must be realized as |a−b|⁴ over ℕ.",
+      "description": "Rewrites via Int.abs_eq_natAbs and abs_pow, then abs_of_nonneg with positivity."
+    },
+    {
+      "name": "zero",
+      "type": "theorem",
+      "statement": "IsSumOfFourthPowers 0 0: zero is the empty sum of fourth powers.",
+      "significance": "Base case of the sum-of-fourth-powers predicate — the empty list represents 0 with 0 summands, the identity element for concatenation.",
+      "description": "Witnessed by the empty list ([], rfl, rfl)."
+    },
+    {
+      "name": "single",
+      "type": "theorem",
+      "statement": "For a : ℕ, IsSumOfFourthPowers 1 (a⁴): a single fourth power is a one-term sum.",
+      "significance": "The atomic building block: every representation is assembled from single fourth powers via append.",
+      "description": "Witnessed by the one-element list [a], with the sum computed by simp."
+    },
+    {
+      "name": "append",
+      "type": "theorem",
+      "statement": "If IsSumOfFourthPowers k₁ x and IsSumOfFourthPowers k₂ y, then IsSumOfFourthPowers (k₁+k₂) (x+y).",
+      "significance": "Concatenation of representations — the compositional core that lets summand counts and values add. Every multi-term bound in the file is built by appending.",
+      "description": "Concatenates the two witnessing lists; List.length_append and List.map_append/List.sum_append give the count and value."
+    },
+    {
+      "name": "zeros",
+      "type": "theorem",
+      "statement": "For any k, IsSumOfFourthPowers k 0: zero is a sum of any number of fourth powers.",
+      "significance": "Allows padding a representation with harmless 0⁴ = 0 terms, which is how the 'at most k' reading (rather than exactly k) is realized.",
+      "description": "Witnessed by List.replicate k 0, with the mapped sum simplified to 0."
+    },
+    {
+      "name": "succ",
+      "type": "theorem",
+      "statement": "If IsSumOfFourthPowers k n then IsSumOfFourthPowers (k+1) n.",
+      "significance": "Increments the summand budget by one without changing the value — a convenience step toward full monotonicity in the count.",
+      "description": "Appends a single zero summand ((zeros 1).append h) and reassociates."
+    },
+    {
+      "name": "le",
+      "type": "theorem",
+      "statement": "If IsSumOfFourthPowers k n and k ≤ k', then IsSumOfFourthPowers k' n.",
+      "significance": "Monotonicity in the number of summands: any representation using k fourth powers also counts as using k' ≥ k of them. This is what lets each residue branch (48, 49, 50) be uniformly reported as '≤ 50'.",
+      "description": "Pads with k'−k zeros via (zeros (k'−k)).append h and cancels with Nat.sub_add_cancel."
+    },
+    {
+      "name": "sixMulSq_isSum",
+      "type": "theorem",
+      "statement": "For a,b,c,d : ℕ, IsSumOfFourthPowers 12 (6·(a²+b²+c²+d²)²).",
+      "significance": "The Liouville step realized over ℕ: six times a squared sum of four squares is a sum of exactly twelve fourth powers. This is where the algebraic identity becomes a counting statement.",
+      "description": "Supplies the twelve explicit summands (using natAbs for the differences), then matches them to liouville_identity via Nat.cast_inj, cast_natAbs_pow4, and linear_combination."
+    },
+    {
+      "name": "sixMulSq",
+      "type": "theorem",
+      "statement": "For m : ℕ, IsSumOfFourthPowers 12 (6·m²).",
+      "significance": "Feeds Lagrange's four-square theorem into the Liouville step: writing m² is unnecessary — instead m itself is written as a sum of four squares, so 6m² becomes twelve fourth powers.",
+      "description": "Applies Nat.sum_four_squares to m and substitutes into sixMulSq_isSum."
+    },
+    {
+      "name": "sixMul",
+      "type": "theorem",
+      "statement": "For Q : ℕ, IsSumOfFourthPowers 48 (6·Q): every multiple of six is a sum of 48 fourth powers.",
+      "significance": "The workhorse of the whole bound: any 6Q costs only 48 fourth powers. Combined with a cheap residue payment it yields g(4) ≤ 50.",
+      "description": "Writes Q = a²+b²+c²+d² (Lagrange), so 6Q splits into four blocks 6a²,6b²,6c²,6d², each a sum of 12 fourth powers via sixMulSq, appended to 48."
+    },
+    {
+      "name": "ones",
+      "type": "theorem",
+      "statement": "For k : ℕ, IsSumOfFourthPowers k k: k copies of 1⁴ = 1 realize k.",
+      "significance": "The unit-power currency used to pay off small residues (+1 or +2) on top of the 6Q block.",
+      "description": "Witnessed by List.replicate k 1, sum simplified via List.map_replicate."
+    },
+    {
+      "name": "twos",
+      "type": "theorem",
+      "statement": "For a : ℕ, IsSumOfFourthPowers a (16·a): a copies of 2⁴ = 16 realize 16a.",
+      "significance": "Provides 16-blocks for the base-16 fallback representation of small numbers (N < 81).",
+      "description": "Witnessed by List.replicate a 2, using List.sum_replicate and smul_eq_mul."
+    },
+    {
+      "name": "twoPow16",
+      "type": "theorem",
+      "statement": "IsSumOfFourthPowers 1 16: 16 = 2⁴ is a single fourth power.",
+      "significance": "The 'borrowed' small fourth power for residue classes 4 and 5 (mod 6), letting N = 16 + 6Q + … stay at ≤ 50.",
+      "description": "Rewrites 16 = 2^4 and applies single 2."
+    },
+    {
+      "name": "threePow81",
+      "type": "theorem",
+      "statement": "IsSumOfFourthPowers 1 81: 81 = 3⁴ is a single fourth power.",
+      "significance": "The borrowed small fourth power for residue class 3 (mod 6), since 81 ≡ 3, giving the N = 3⁴ + 6Q branch at 49.",
+      "description": "Rewrites 81 = 3^4 and applies single 3."
+    },
+    {
+      "name": "small",
+      "type": "theorem",
+      "statement": "For N < 81, IsSumOfFourthPowers 50 N.",
+      "significance": "Handles the finitely many numbers the residue-borrowing cannot reach, via the greedy base-16 representation N = (N/16)·2⁴ + (N%16)·1⁴, which never exceeds 20 ≤ 50 fourth powers.",
+      "description": "Appends twos (N/16) and ones (N%16), rewrites 16·(N/16)+N%16 = N by omega, and pads to 50 via .le."
+    },
+    {
+      "name": "waring_four_fifty",
+      "type": "theorem",
+      "statement": "For every N : ℕ, IsSumOfFourthPowers 50 N: every natural number is a sum of at most 50 fourth powers.",
+      "significance": "The headline sharpened Waring bound g(4) ≤ 50, strictly improving the parent entry's 53 and answering oq-01. Still above the true g(4) = 19 (which needs the circle method), but the best elementary Lagrange+Liouville constant.",
+      "description": "Splits N < 81 (via small) from N ≥ 81; for the latter, case-splits N mod 6 and pays each residue with a borrowed small fourth power on top of sixMul (N/6), each branch bounded by .le at ≤ 50."
+    },
+    {
+      "name": "waring_four_lt_53",
+      "type": "theorem",
+      "statement": "∃ G, G < 53 ∧ ∀ N, ∃ l : List ℕ, l.length = G ∧ (l.map (·⁴)).sum = N.",
+      "significance": "Restates the improvement as a bare existential: there is a uniform bound G < 53 (namely 50) working for every N — the crisp statement that this file beats the parent's 53.",
+      "description": "Instantiates G = 50, discharges 50 < 53 by norm_num, and supplies waring_four_fifty for the universal part."
+    }
+  ],
   "overview": {
     "historicalContext": "**Waring's problem and the size of $g(4)$.** Waring (1770) asserted that for every exponent $k$ there is a least $g(k)$ with every positive integer a sum of at most $g(k)$ non-negative $k$-th powers; Hilbert (1909) proved $g(k)$ finite for all $k$. For fourth powers, Liouville (1859) gave the elementary finiteness proof via\n$$6(a^2+b^2+c^2+d^2)^2 = \\sum_{1\\le i<j\\le 4}\\big((x_i+x_j)^4+(x_i-x_j)^4\\big),$$\nwhich makes $6m^2$ a sum of $12$ fourth powers for every $m$. The crude assembly gives $g(4)\\le 53$; classical refinements of the residue bookkeeping bring the elementary bound down to $50$ and below. The true value $g(4)=19$ was settled only in 1986 (Balasubramanian–Deshouillers–Dress) using the Hardy–Littlewood circle method; the bad numbers $n=31\\cdot 16^k$ force $g(4)\\ge 19$. This entry realises the elementary sharpening $53\\to 50$ in Lean.",
     "problemStatement": "**Sharpen the elementary Waring bound.** The parent entry proves $g(4)\\le 53$ by writing $N = 6\\lfloor N/6\\rfloor + (N\\bmod 6)$ and spending up to $5$ unit powers on the residue. Its open question asks how far a purely elementary, machine-checked argument can push the constant. Here we prove the standard elementary sharpening: every natural number is a sum of at most $50$ fourth powers, machine-checked with $0$ axioms and $0$ sorries.",
