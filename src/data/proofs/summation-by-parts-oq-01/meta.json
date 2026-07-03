@@ -58,6 +58,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Algebraic Setup",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Docstring stating the finite arithmetico-geometric identity ∑_{k<n} k·rᵏ = (r − n·rⁿ + (n−1)·rⁿ⁺¹)/(r−1)² for r ≠ 1, explaining that it is the discrete analogue of differentiating the geometric series and the finite partial sum behind the classical infinite value r/(1−r)². Notes the gap it fills — Mathlib has geom_sum_eq but no weighted ∑ k·rᵏ, and the gallery's GeometricSeriesOQ06 is the distinct infinite/normed object. Then the imports (BigOperators.Module, Tactic), the namespace, open Finset, and the ambient variable {K : Type*} [Field K] establishing that only a field and r ≠ 1 are assumed.",
+      "mathContext": "$\\sum_{k=0}^{n-1} k\\,r^{k} = \\frac{r - n r^{n} + (n-1) r^{n+1}}{(r-1)^{2}},\\qquad r \\neq 1.$"
+    },
+    {
       "id": "closed-form",
       "title": "The Closed Form by Induction",
       "startLine": 50,
