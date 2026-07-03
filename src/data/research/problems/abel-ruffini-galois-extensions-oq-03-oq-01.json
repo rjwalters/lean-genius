@@ -1,0 +1,110 @@
+{
+  "slug": "abel-ruffini-galois-extensions-oq-03-oq-01",
+  "title": "Every nontrivial normal subgroup of Aₙ (n≥5) contains a 3-cycle → unconditional Aₙ simplicity",
+  "path": "full",
+  "phase": "ORIENT",
+  "status": "in-progress",
+  "tier": "A",
+  "significance": 7,
+  "tractability": 6,
+  "started": "2026-07-02",
+  "lastUpdate": "2026-07-02",
+  "tags": [
+    "seeker-selected",
+    "galois-theory",
+    "group-theory",
+    "alternating-group",
+    "simple-groups"
+  ],
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-07-02",
+    "iteration": 1,
+    "focus": "Isolated the single classical lemma and stated the unconditional-simplicity assembly; documented the minimal-support/commutator proof plan.",
+    "blockers": [
+      "Aristotle MCP service returning 'Resource not found' (down) — cannot delegate the HARD lemma remotely this session.",
+      "Local Docker build corrupted (containerd metadata I/O error, lingering from a prior disk-full episode) — cannot run docker-build.sh."
+    ],
+    "nextAction": "When Aristotle is back up, submit exists_mem_isThreeCycle_of_normal async; otherwise formalize the minimal-support/commutator argument (steps 4A/4B) by hand with a working single-file build loop.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "problemStatement": {
+    "formal": "\\forall\\,(\\alpha : \\text{Fintype}),\\ 5 \\le |\\alpha| \\to \\forall H \\trianglelefteq A_\\alpha,\\ H \\ne \\bot \\to \\exists g \\in H,\\ g\\ \\text{is a 3-cycle}",
+    "plain": "Prove the classical cycle-type case-analysis lemma: every nontrivial normal subgroup of the alternating group on a finite set of at least 5 points contains a 3-cycle. Feeding this into the verified reduction of OQ-03 yields unconditional simplicity of Aₙ for all n ≥ 5, generalizing Mathlib's Fin-5-only isSimpleGroup_five.",
+    "whyMatters": [
+      "Mathlib proves alternating-group simplicity only for the concrete case alternatingGroup (Fin 5); the general n≥5 statement is a known gap.",
+      "The parent OQ-03 already reduced simplicity to this single 3-cycle-containment lemma; discharging it removes the last black box (isSimpleGroup_five) from the gallery's Abel–Ruffini chain."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent OQ-03 (0 sorry): threeCycle_normal_eq_top, isSimpleGroup_of_forall_normal_contains_threeCycle, isSimpleGroup_alternating_iff — the FORMAL half of the simplicity theorem.",
+      "Mathlib: IsThreeCycle.alternating_normalClosure (normal closure of one 3-cycle is ⊤ for n≥5), isThreeCycle_isConj, closure_three_cycles_eq_alternating, isSimpleGroup_five (Fin 5 only)."
+    ],
+    "open": [
+      "exists_mem_isThreeCycle_of_normal — the combinatorial core; classified HARD (known math), not OPEN."
+    ],
+    "goal": "IsSimpleGroup (alternatingGroup α) for every finite α with 5 ≤ card α, 0 sorry / 0 axiom."
+  },
+  "references": {
+    "papers": [
+      "Rotman, An Introduction to the Theory of Groups (minimal-support / commutator proof of Aₙ simplicity).",
+      "Jacobson, Basic Algebra I; Jordan's argument that a nontrivial normal subgroup of Aₙ contains a 3-cycle."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
+      "Equiv.Perm.support_conj",
+      "Equiv.Perm.card_support_conj",
+      "Equiv.Perm.support_mul_le",
+      "card_support_eq_three_iff",
+      "Equiv.Perm.sum_cycleType",
+      "Equiv.Perm.two_le_of_mem_cycleType",
+      "Equiv.Perm.isThreeCycle_swap_mul_swap_same",
+      "Subgroup.Normal.conj_mem",
+      "Finset.exists_min_image"
+    ]
+  },
+  "relatedProofs": [
+    "abel-ruffini-galois-extensions-oq-03",
+    "abel-ruffini-galois-extensions",
+    "abel-ruffini"
+  ],
+  "leanFiles": [
+    {
+      "path": "proofs/Proofs/AbelRuffiniGaloisExtensionsOQ03OQ01.lean",
+      "status": "wip",
+      "sorries": 1,
+      "axioms": 0,
+      "note": "Self-contained (Mathlib-only): inlines the verified reduction, states the HARD lemma as the single sorry, and assembles unconditional simplicity (isSimpleGroup_alternating) conditional on it."
+    }
+  ],
+  "knowledge": {
+    "insights": [
+      "The reduction 'every nontrivial normal subgroup contains a 3-cycle ⟹ Aₙ simple' is ALREADY verified in parent OQ-03 (isSimpleGroup_of_forall_normal_contains_threeCycle). So the entire remaining content of general Aₙ simplicity is the single lemma exists_mem_isThreeCycle_of_normal — nothing else needs building.",
+      "Mathlib supplies all the converse machinery generically (alternating_normalClosure, isThreeCycle_isConj, closure_three_cycles_eq_alternating) but assembles simplicity only for Fin 5 via cycle-type casework specific to 5 points (isSimpleGroup_five). The general casework over arbitrary α is the open formalization.",
+      "Signatures line up exactly: isSimpleGroup_of_forall_normal_contains_threeCycle h5 (fun H hHn hbot => exists_mem_isThreeCycle_of_normal h5 H hHn hbot) : IsSimpleGroup (alternatingGroup α). So a one-line assembly yields the headline once the lemma lands.",
+      "Right proof route is Jordan's minimal-support/commutator argument (not Mathlib's Fin-5 explicit casework, which does not generalize): pick σ∈H of minimal support, show it must be a 3-cycle by building commutators [τ,σ]∈H of strictly smaller support for a well-chosen 3-cycle τ.",
+      "An even permutation moving exactly 3 points is automatically a 3-cycle (card_support_eq_three_iff), giving the base case; the work is the strict-support-decrease step forcing support down to 3."
+    ],
+    "builtItems": [
+      "proofs/Proofs/AbelRuffiniGaloisExtensionsOQ03OQ01.lean — WIP: threeCycle_normal_eq_top and isSimpleGroup_of_forall_normal_contains_threeCycle re-inlined (0 sorry), exists_mem_isThreeCycle_of_normal stated (1 sorry, HARD), isSimpleGroup_alternating assembled."
+    ],
+    "mathlibGaps": [
+      "Mathlib has NO general alternating-group simplicity — only alternatingGroup.isSimpleGroup_five (Fin 5). The n≥5 statement is a genuine Mathlib-worthy gap; exists_mem_isThreeCycle_of_normal is the missing ingredient.",
+      "No off-the-shelf 'minimal-support element of a subgroup' selector; would use Finset.exists_min_image over the filtered finite group.",
+      "No packaged commutator-support bound; must assemble from support_conj + support_mul_le + card_support_conj."
+    ],
+    "nextSteps": [
+      "When Aristotle is available: submit exists_mem_isThreeCycle_of_normal async with the minimal-support/commutator hint; it is KNOWN math (Aristotle's sweet spot), potentially multi-hour.",
+      "Manual route (needs working single-file build loop): (1) minimal-support selection via Finset.exists_min_image; (2) base case #support=3 ⟹ IsThreeCycle; (3) case 4A: σ has a ≥3-cycle → commutator with τ=(c d e) strictly reduces support; (4) case 4B: σ is a product of ≥2 disjoint transpositions → commutator with τ=(c d e) on a 5th point yields a 3-cycle or smaller support.",
+      "Prove a reusable commutator-support lemma: (τ*σ*τ⁻¹*σ⁻¹).support ⊆ σ.support ∪ (σ.support.map τ.toEmbedding), then bound its card.",
+      "Once landed, promote to a verified gallery entry and consider a Mathlib PR (general alternatingGroup.isSimpleGroup)."
+    ],
+    "progressSummary": "PROGRESS (ORIENT): isolated the sole open lemma, stated the unconditional-simplicity assembly, and recorded a concrete Lean-oriented minimal-support/commutator proof plan grounded in confirmed Mathlib API. No sorries discharged — Aristotle (down) and local Docker build (corrupted) both blocked verification this session; file self-contained on Mathlib for future single-file elaboration."
+  }
+}
