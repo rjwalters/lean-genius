@@ -70,7 +70,8 @@
       "**The escape clause is not optional in general.** Over 𝔽_p, Xᵖ + 1 = (X + 1)ᵖ is a coprime relation with huge degrees but radical of degree 1; it survives only because every term has zero derivative. The characteristic-zero hypothesis is exactly what rules this out.",
       "**Homogeneous ↦ inhomogeneous by negation.** Mathlib states the theorem for a + b + c = 0; the textbook a + b = c form is the same theorem with c replaced by -c, and the radical is unit-invariant (radical_neg) so the bound is unchanged.",
       "**Characteristic zero linearises the dichotomy.** derivative p = 0 ⟺ p is constant over a torsion-free (e.g. CharZero) ring; this turns the disjunction 'bound OR all derivatives zero' into the clean implication 'non-constant ⟹ bound'.",
-      "**Rigidity is the contrapositive.** Reading the degree bound backwards: too few distinct roots in the product (deg rad ≤ deg c) forces total degeneracy — the polynomial shadow of 'abc-triples with small radical are rare'."
+      "**Rigidity is the contrapositive.** Reading the degree bound backwards: too few distinct roots in the product (deg rad ≤ deg c) forces total degeneracy — the polynomial shadow of 'abc-triples with small radical are rare'.",
+      "**The Wronskian is the hidden engine.** Mathlib's Polynomial.abc rests on Snyder's Wronskian proof: from a + b + c = 0 the Wronskians W(a,b) = a·b' − a'·b of any two factors all agree up to sign, and rad(a·b·c) divides this common W. Comparing degrees — deg W ≤ deg a + deg b − 1 against deg(a·b·c) − deg(rad) ≤ deg W — yields the bound, while W = 0 is exactly the derivative-vanishing escape clause. Every result in this file inherits both the sharp '−1' and that escape clause from this single Wronskian identity."
     ],
     "exampleSections": [
       {
