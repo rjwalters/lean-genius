@@ -65,36 +65,39 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "introduction",
       "title": "Introduction: From 'abelian' to the isomorphism type",
       "startLine": 1,
-      "endLine": 50,
-      "summary": "Module header explaining that Mathlib already proves groups of order p² are abelian, and that the genuine remaining content — packaged here — is the element-order dichotomy that separates ℤ/p² from (ℤ/p)².",
-      "mathContext": "Every finite $p$-group has nontrivial centre (class equation). For $|G| = p^2$ this yields abelian. The structure theorem splits abelian order-$p^2$ groups into $\\mathbb{Z}/p^2$ and $(\\mathbb{Z}/p)^2$; the separating invariant is whether an element of order $p^2$ exists."
+      "endLine": 45,
+      "summary": "Module docstring: Mathlib already gives that order-p² groups are abelian; the genuine content here is the element-order dichotomy distinguishing ℤ/p² from (ℤ/p)². Previews that Lagrange forces every element order into {1, p, p²}."
     },
     {
       "id": "abelian",
       "title": "Groups of order p² are abelian",
-      "startLine": 51,
-      "endLine": 61,
-      "summary": "Exposes Mathlib's `IsPGroup.commutative_of_card_eq_prime_sq` as the base of the classification.",
-      "mathContext": "$|G| = p^2 \\Rightarrow \\forall a\\,b,\\ ab = ba$, via nontrivial centre and the 'central quotient cyclic $\\Rightarrow$ abelian' principle."
+      "startLine": 46,
+      "endLine": 54,
+      "summary": "mul_comm_of_card_eq_prime_sq exposes Mathlib's IsPGroup.commutative_of_card_eq_prime_sq (nontrivial centre ⇒ cyclic central quotient ⇒ abelian) as the base of the classification."
     },
     {
       "id": "dichotomy",
       "title": "The structural dichotomy",
-      "startLine": 62,
-      "endLine": 83,
-      "summary": "Main result: a group of order p² is either cyclic or has every element satisfying g^p = 1, proved from Lagrange via the possible element orders 1, p, p².",
-      "mathContext": "$\\operatorname{ord}(g) \\mid p^2 \\Rightarrow \\operatorname{ord}(g) = p^m,\\ m \\le 2$. $m = 2 \\Rightarrow$ cyclic; $m \\le 1 \\Rightarrow \\operatorname{ord}(g) \\mid p \\Rightarrow g^p = 1$."
+      "startLine": 55,
+      "endLine": 78,
+      "summary": "isCyclic_or_pow_prime_eq_one: by Lagrange orderOf g = p^m with m ≤ 2; m = 2 makes g a generator (cyclic), else orderOf g ∣ p so g^p = 1. This is the invariant separating ℤ/p² from (ℤ/p)²."
     },
     {
-      "id": "characterization",
-      "title": "Cyclic ⇔ maximal-order element; the elementary-abelian branch",
-      "startLine": 84,
-      "endLine": 105,
-      "summary": "Cyclicity is equivalent to the existence of an element of order p², and in the non-cyclic case the exponent is exactly p, identifying (with abelian) the group as (ℤ/p)².",
-      "mathContext": "Non-cyclic $\\Rightarrow$ exponent $\\mid p$; exponent $\\ne 1$ since $|G| = p^2 > 1$; hence exponent $= p$."
+      "id": "cyclic-iff",
+      "title": "Cyclic ⇔ a maximal-order element",
+      "startLine": 79,
+      "endLine": 91,
+      "summary": "isCyclic_iff_exists_orderOf_eq: a group of order p² is cyclic exactly when some element attains order p² — the concrete recognition criterion for the ℤ/p² branch."
+    },
+    {
+      "id": "elementary-abelian",
+      "title": "The elementary-abelian branch: exponent p",
+      "startLine": 92,
+      "endLine": 109,
+      "summary": "exponent_eq_prime_of_not_isCyclic: in the non-cyclic case every g satisfies g^p = 1 so the exponent divides p, and it is not 1 (else G subsingleton), giving exponent exactly p — the elementary abelian group (ℤ/p)²."
     }
   ],
   "references": [
