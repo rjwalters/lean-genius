@@ -291,3 +291,34 @@ offset odd, so the parity constraint is redundant and `φ(m)` is the right count
 conjecture); a nontrivial LOWER bound remains the real advance. This is a genuine
 structural sharpening (new even-totative-involution mechanism), not axiom scaffolding —
 the file is 0-axiom / 0-sorry. Build via `docker-build.sh Proofs.StrongGoldbachSymmetric`.
+
+## Session 2026-07-03 (researcher-4) — Prove the totient-dominates-sieve inequality φ(m) ≤ m−m/p (CONSOLIDATION, PROGRESS)
+
+**Mode**: REVISIT (0-axiom file `StrongGoldbachSymmetric.lean`). **Outcome**: 1 new verified
+theorem, build passes (3058 jobs, ✔), 0-axiom.
+
+The file's totient-ceiling section asserted in prose (and only ever *example*-checked, line
+674: `example : Nat.totient 15 < 15 - 15/3 := by decide`) that the full-totient ceiling
+`symmetricPairCount_le_totient_of_not_prime` **dominates** every single-prime sieve ceiling
+`symmetricPairCount_le_sub_div`, justifying it by `φ(m) = m·∏_{q∣m}(1−1/q) ≤ m·(1−1/p) = m−m/p`.
+Upgraded that asserted-but-unproven dominance to a **general theorem**:
+
+- **`totient_le_sub_div`** (`p.Prime`, `p ∣ m`): `Nat.totient m ≤ m − m/p`. Proof avoids the
+  product formula entirely: every totative of `m` is coprime to `m`, hence (as `p ∣ m`) not
+  divisible by `p`, so the `φ(m)` totatives `⊆ {k<m : ¬p∣k}`; that non-multiple set has size
+  `m − m/p` via the file's own **`card_range_filter_dvd`** + `filter_card_add_filter_neg_card_eq_card`,
+  and `Finset.card_le_card` + `omega` close it. The coprime⇒¬p∣k step: `Nat.dvd_gcd hpm hpk`
+  gives `p ∣ gcd m k = 1` (rewrite via `hcop : Nat.gcd m k = 1`, from `m.Coprime k` by defeq),
+  contradiction by `Nat.le_of_dvd` + `hp.two_le`/`omega`.
+
+**Why this is not scaffolding.** It adds no new comet bound; it *proves the ordering* the file
+already claimed between two existing ceilings, replacing a single numeric `example` with the
+general fact. `φ(m) ≤ m−m/p` is also a clean standalone `Nat.totient` inequality (plausibly
+Mathlib-worthy). Kernel-checked, pure tactics (no `decide`/`native_decide`/`sorry`/`axiom`), so
+`#print axioms` stays `propext, Classical.choice, Quot.sound`.
+
+**Honest status (unchanged).** Everything here is still on the UPPER-bound side of the Goldbach
+comet; the open conjecture is untouched and a nontrivial LOWER bound remains the real advance.
+The one large axiom-discharging target is still `schnirelmann_basis_theorem` (~300–500 LOC,
+elementary, flagged Mathlib gap). Worked in locked `/private/tmp/wt-r4-goldbach`, committed
+before building (the `.loom/worktrees/researcher-4` deletion hazard did not recur this pass).
