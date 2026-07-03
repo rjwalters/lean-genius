@@ -173,3 +173,44 @@ Insights accumulated during research on this problem.
 ### Blockers (environment, not mathematical)
 - Aristotle MCP down all session (404). Docker build not attempted (single-file
   `lake env lean` sufficed and is faster with warm oleans).
+
+## Session 2026-07-03 (Session 4, researcher-4) — Crux discharged: file VERIFIED (0 sorry, 0 axiom)
+
+**Mode**: DEEP DIVE (continues #33855 → #33912 → #33923) · **Outcome**: SOLVED · **PR**: (this session)
+
+### What I did
+- **Proved `exists_smaller_commutator_of_involution` (Case B engine, 0 sorry)** — the
+  missing counterpart to the existing Case A engine. Parity-free: needs only five
+  distinct points `a,b,c,d,e` with `σ` swapping `a↔b`, `c↔d` (no global `σ²=1`, no
+  condition on `σe`). Take `τ=(c e d)=swap c d * swap c e`; then `ρ=τστ⁻¹σ⁻¹∈H`,
+  `ρ d = e ≠ d` (so `ρ≠1`), `ρ` **fixes both `a` and `b`**, and
+  `ρ.support ⊆ {c,d,e,σe}`. Case-split on `e∈σ.support`: if not, `σe=e` ⟹
+  `ρ.support⊆{c,d,e}` (≤3<4≤#σ); if so, `σ` moves all five points ⟹ `#σ≥5>4≥#ρ`.
+- **Wired the crux `isThreeCycle_of_min_support` completely (0 sorry):**
+  `by_cases σ²=1`.
+  - `σ²=1` (**Case B**): extract `a`(∈support), `b=σa`, `c`(∈support\{a,b}),
+    `d=σc`, `e`(∉{a,b,c,d}); apply Case B engine → smaller element → contradict `hmin`.
+  - `σ²≠1` (**Case A**): `a=x, b=σx, c=σ²x` (three distinct moved points on one
+    cycle); sub-split on `#support`. `≥5`: two more moved points `d,e` → Case A
+    engine. `=4`: `σ` is the 4-cycle `(x,σx,σ²x,d)`, **odd** by `IsCycle.sign`
+    (`sign = -(-1)^4 = -1`), contradicting `σ∈Aₙ` (`sign=1`).
+- **Verified**: single-file `lake env lean` against Mathlib v4.26.0 → EXIT 0, **0
+  errors, 0 sorry, 0 warnings**. `#print axioms isSimpleGroup_alternating` →
+  `[propext, Classical.choice, Quot.sound]` only (no `sorryAx`, no `Lean.ofReduceBool`).
+
+### Key Lean lessons
+- `Finset.card_sdiff` in Mathlib v4.26 has **no subset-hypothesis form**
+  (`(s\t).card = s.card - (t∩s).card`). For "a point outside a small set exists",
+  use `Finset.ssubset_iff_subset_ne` + `Finset.exists_of_ssubset` instead.
+- Cycle recognition: `SameCycle.refl` + `sameCycle_apply_right.mpr` chains one step
+  at a time (`x → σx → σ²x → σ³x`); `Equiv.Perm.apply_mem_support` keeps images in
+  the support; `Equiv.Perm.IsCycle.sign : sign f = -(-1)^#f.support` gives parity.
+- `rcases hy' with rfl | …` can substitute the WRONG variable (kills `x`); use named
+  `h` + `rw [h]` (which also auto-closes `SameCycle x x` via its `@[refl]` lemma).
+
+### Result / next steps
+- The single classical open content of general Aₙ-simplicity is now fully machine-
+  checked. Candidate for promotion to a verified gallery entry and a Mathlib PR
+  (`alternatingGroup.isSimpleGroup` for `5 ≤ card α`).
+- Aristotle MCP was **down all session** (`Resource not found`/404); the entire crux
+  was formalized by hand.

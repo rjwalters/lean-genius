@@ -1,14 +1,21 @@
 /-
-  Unconditional simplicity of Aₙ (n ≥ 5), reduced to a single classical lemma
-  (Open Question OQ-03-OQ-01 of abel-ruffini-galois-extensions).
+  Unconditional simplicity of Aₙ (n ≥ 5) — Open Question OQ-03-OQ-01 of
+  abel-ruffini-galois-extensions.
 
-  ## STATUS: WORK IN PROGRESS (1 sorry — a single sharply-isolated commutator step)
+  ## STATUS: VERIFIED (0 sorry, 0 axiom)
 
-  This file is *not* a verified gallery entry.  It isolates and states the single
-  remaining hard step needed to upgrade the parent file's *conditional* reduction
-  (`AbelRuffiniGaloisExtensionsOQ03`) into an **unconditional** proof that the
-  alternating group `Aₙ` is simple for every `n ≥ 5`, generalizing Mathlib's
-  `alternatingGroup.isSimpleGroup_five` (which covers only `Fin 5`).
+  `isSimpleGroup_alternating` is a complete, machine-checked proof that the
+  alternating group `Aₙ` is simple for **every** finite `α` with `5 ≤ card α`,
+  generalizing Mathlib's `alternatingGroup.isSimpleGroup_five` (which covers only
+  `Fin 5`).  `#print axioms isSimpleGroup_alternating` reports only the three
+  standard foundational axioms `propext`, `Classical.choice`, `Quot.sound` — no
+  `sorryAx`, no `Lean.ofReduceBool`.
+
+  The proof is the classical **Jordan minimal-support / commutator argument**:
+  every nontrivial normal subgroup `H ⊴ Aₙ` contains an element of minimal support,
+  which must be a 3-cycle (else a suitable commutator produces a strictly smaller
+  nonidentity element of `H`, contradicting minimality); a single 3-cycle already
+  normally generates all of `Aₙ`.
 
   ## What the parent already established (0 sorry)
 
@@ -24,62 +31,46 @@
 
       **every nontrivial normal subgroup of `Aₙ` (n ≥ 5) contains a 3-cycle.**
 
-  ## What this file adds (progress over PR #33855)
+  ## Structure of the proof
 
-  PR #33855 stated the whole containment lemma as one monolithic `sorry`.  This
-  revision *decomposes and discharges* the surrounding argument, leaving a single
-  sharply-focused `sorry` for the genuine crux:
+  * `three_le_card_support_of_mem` — A nontrivial *even* permutation moves at least
+    3 points (it cannot move exactly 1, and moving exactly 2 would make it an odd
+    transposition).
+  * `commutator_mem_of_normal` — For `H ⊴ Aₙ`, `σ ∈ H` and any `τ`, the commutator
+    `τ σ τ⁻¹ σ⁻¹` lies in `H`; the membership engine of the minimal-support argument.
+  * `exists_min_support_ne_one` — A nontrivial subgroup contains a nonidentity
+    element of minimal support cardinality.
+  * `support_commutator_subset` — If `τ.support ⊆ σ.support` then the commutator
+    `τ σ τ⁻¹ σ⁻¹` is supported within `σ.support`.
+  * `exists_smaller_commutator_of_five_points` — **Case A engine.** From five
+    distinct points `a,b,c,d,e` (with `b,c,d,e` moved and `σ a = b`, `σ b = c`, i.e.
+    a cycle of length `≥ 3`), the commutator with the 3-cycle `(c d e)` is a
+    nonidentity element of `H` of strictly smaller support.
+  * `exists_smaller_commutator_of_involution` — **Case B engine.** From five
+    distinct points with `σ` swapping `a ↔ b` and `c ↔ d`, the commutator with the
+    3-cycle `(c e d)` is a nonidentity element of `H` of strictly smaller support.
+  * `isThreeCycle_of_min_support` — **the crux, fully proved.** A support-minimal
+    nonidentity `σ ∈ H` is a 3-cycle.  The `#support = 3` case is immediate; for
+    `#support ≥ 4` a contradiction is derived by producing a strictly smaller
+    element:  Case B (`σ² = 1`, involution) and Case A (`σ² ≠ 1`) with `#support ≥ 5`
+    feed the two engines; the residual `#support = 4 ∧ σ² ≠ 1` case is impossible
+    because such a `σ` would be a 4-cycle, which is *odd* (via `IsCycle.sign`),
+    contradicting `σ ∈ Aₙ`.
+  * `exists_mem_isThreeCycle_of_normal` — every nontrivial normal `H ⊴ Aₙ` contains
+    a 3-cycle; assembled from `exists_min_support_ne_one` and the crux.
+  * `isSimpleGroup_alternating` — the unconditional simplicity theorem, fed into the
+    parent's formal reduction `isSimpleGroup_of_forall_normal_contains_threeCycle`.
 
-  * `three_le_card_support_of_mem` — **PROVED (0 sorry).** A nontrivial *even*
-    permutation moves at least 3 points.  (It cannot move 0 points without being
-    the identity, cannot move exactly 1 point, and cannot move exactly 2 points
-    since that would make it an odd transposition.)
-  * `commutator_mem_of_normal` — **PROVED (0 sorry).** For `H ⊴ Aₙ`, `σ ∈ H` and
-    any `τ`, the commutator `τ σ τ⁻¹ σ⁻¹` lies in `H`.  This is the membership
-    engine that feeds the minimal-support argument.
-  * `exists_min_support_ne_one` — **PROVED (0 sorry).** A nontrivial (in
-    particular, any nontrivial normal) subgroup contains a nonidentity element of
-    minimal support cardinality.
-  * `support_commutator_subset` — **PROVED (0 sorry).** If `τ.support ⊆ σ.support`
-    then the commutator `τ σ τ⁻¹ σ⁻¹` is supported within `σ.support`.
-  * `exists_smaller_commutator_of_five_points` — **PROVED (0 sorry).** The
-    strict-support-decrease *engine* for the cycle-of-length-`≥3` case: from five
-    distinct points `a,b,c,d,e` (with `b,c,d,e` moved and `σ a = b`, `σ b = c`),
-    the commutator with the 3-cycle `(c d e)` is a nonidentity element of `H` of
-    strictly smaller support.  This discharges the hard *quantitative* half of the
-    `#support ≥ 4` branch; what remains for the crux is the purely *combinatorial*
-    extraction of such a configuration (Case A) and the involution case (Case B).
-  * `isThreeCycle_of_min_support` — the **isolated crux**, and now the *only*
-    `sorry`.  Its `3 ≤ #support` and `#support = 3 ⇒ 3-cycle` branches are
-    **proved in-line**; the single remaining `sorry` is the `#support ≥ 4` branch,
-    now reduced (given the engine above) to producing the five-point configuration
-    or handling the disjoint-transposition (involution) case.
-  * `exists_mem_isThreeCycle_of_normal` — **PROVED (0 sorry) modulo the crux**:
-    assembled from `exists_min_support_ne_one` and `isThreeCycle_of_min_support`.
-  * `isSimpleGroup_alternating` — the unconditional simplicity theorem for all
-    `n ≥ 5`, obtained by feeding the containment lemma into the parent's
-    reduction.  Complete body; inherits exactly the one crux `sorry`.
+  ## Key Mathlib API used
 
-  ## The remaining crux (`isThreeCycle_of_min_support`, `#support ≥ 4` branch)
-     (Jordan's minimal-support / commutator argument)
-
-  Let `σ ∈ H` be nonidentity of *minimal* support with `#σ.support ≥ 4`.  Derive a
-  contradiction by exhibiting a nonidentity element of `H` with strictly smaller
-  support.  Choose a 3-cycle `τ` adapted to the cycle type of `σ`; the commutator
-  `ρ = τ σ τ⁻¹ σ⁻¹ ∈ H` (`commutator_mem_of_normal`) is `≠ 1` and satisfies
-  `ρ.support ⊆ σ.support ∪ τ • σ.support` with a strictly smaller count,
-  contradicting minimality.  Split on whether `σ` has a cycle of length `≥ 3`
-  (Case A) or is a product of disjoint transpositions (Case B).
-
-  ## Mathlib API this plan relies on (all confirmed present)
-
-  * `Equiv.Perm.support_mul_le`, `Equiv.Perm.support_conj`,
-    `Equiv.Perm.card_support_conj`      — support of products / conjugates
-  * `Equiv.Perm.card_support_eq_two` (`IsSwap`), `Equiv.Perm.card_support_ne_one`
-  * `card_support_eq_three_iff`          — 3 moved points ⇔ 3-cycle
-  * `Equiv.Perm.IsSwap.sign_eq`, `mem_alternatingGroup`
-  * `Subgroup.Normal.conj_mem`, `Subgroup.bot_or_exists_ne_one`
-  * `Finset.exists_min_image`            — minimal-support selection
+  * `Equiv.Perm.support_mul_le`, `Equiv.Perm.support_conj`, `support_inv`,
+    `apply_mem_support`                    — support of products / conjugates
+  * `Equiv.Perm.card_support_eq_two` (`IsSwap`), `Equiv.Perm.card_support_ne_one`,
+    `card_support_eq_three_iff`            — small-support characterizations
+  * `Equiv.Perm.IsCycle.sign`, `IsSwap.sign_eq`, `mem_alternatingGroup` — parity
+  * `Equiv.Perm.sameCycle_apply_right`, `SameCycle.refl` — cycle recognition
+  * `Subgroup.Normal.conj_mem`, `Subgroup.bot_or_exists_ne_one`,
+    `Finset.exists_min_image`              — normality & minimal-support selection
 -/
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.Tactic
@@ -314,19 +305,233 @@ theorem exists_smaller_commutator_of_five_points
       (Finset.ssubset_iff_of_subset hsub).mpr ⟨b, hbsupp, hbnotρ⟩
     exact Finset.card_lt_card hss
 
-/-! ### The classical combinatorial crux (the sole remaining `sorry`) -/
+/-- **Case B engine (0 sorry).** The strict-support-decrease step of Jordan's
+argument for the *involution* case, in the exact form the crux consumes for a
+permutation that is a product of disjoint transpositions.  Given five *distinct*
+points `a, b, c, d, e` such that `σ` swaps `a ↔ b` and `c ↔ d` (so `a, b, c, d`
+are all moved by `σ`), together with any fifth point `e`, the commutator of `σ`
+with the 3-cycle `τ = (c e d)` is a nonidentity element of `H` whose support is
+*strictly smaller* than that of `σ`.
 
-/-- **Crux (KNOWN result; single remaining `sorry`).** A nonidentity element `σ`
-of a normal subgroup `H ⊴ Aₙ` (`n ≥ 5`) whose support is *minimal* among the
-nonidentity elements of `H` is a 3-cycle.
+Mechanism: `ρ = τ σ τ⁻¹ σ⁻¹ ∈ H` by normality (`commutator_mem_of_normal`);
+`ρ d = e ≠ d` so `ρ ≠ 1`; `ρ` *fixes both* `a` and `b` (which `σ` moves); and
+`ρ.support ⊆ {c, d, e, σ e}` (the commutator is `τ` times the `σ`-conjugate of
+`τ⁻¹`, so it lives on `τ.support ∪ σ • τ.support = {c,d,e} ∪ {d, c, σ e}`).
+Two cases finish the count:
 
-The `3 ≤ #support` and `#support = 3 ⇒ 3-cycle` branches are discharged here; the
-remaining `sorry` is the `#support ≥ 4` branch.  Its quantitative core — that a
-suitable commutator strictly shrinks the support — is now the **proved** lemma
-`exists_smaller_commutator_of_five_points`; the residual `sorry` is the
-combinatorial extraction of a five-point configuration `a,b,c,d,e` with `σ a = b`,
-`σ b = c` (available whenever `σ² ≠ 1` and `#support ≥ 5`) together with the
-disjoint-transposition (`σ² = 1`) case. -/
+* `e ∉ σ.support`: then `σ e = e`, so `ρ.support ⊆ {c, d, e}` has at most 3
+  elements, while `σ.support ⊇ {a, b, c, d}` has at least 4.
+* `e ∈ σ.support`: then `σ` already moves the five distinct points
+  `a, b, c, d, e`, so `#σ.support ≥ 5`, while `#ρ.support ≤ 4`.
+
+Unlike the Case A engine this needs no `#support` side hypotheses: membership of
+`a, b, c, d` in `σ.support` follows from the swap relations. -/
+theorem exists_smaller_commutator_of_involution
+    {H : Subgroup (alternatingGroup α)} (hHn : H.Normal)
+    {σ : alternatingGroup α} (hσH : σ ∈ H)
+    {a b c d e : α}
+    (hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hbe : b ≠ e)
+    (hcd : c ≠ d) (hce : c ≠ e) (hde : d ≠ e)
+    (hσab : (σ : Perm α) a = b) (hσba : (σ : Perm α) b = a)
+    (hσcd : (σ : Perm α) c = d) (hσdc : (σ : Perm α) d = c) :
+    ∃ ρ : alternatingGroup α, ρ ∈ H ∧ ρ ≠ 1 ∧
+      (ρ : Perm α).support.card < (σ : Perm α).support.card := by
+  classical
+  set sp : Perm α := (σ : Perm α) with hsp
+  -- The 3-cycle τ = (c e d), as an element of the alternating group.
+  set τp : Perm α := Equiv.swap c d * Equiv.swap c e with hτp
+  have hτ3 : τp.IsThreeCycle := isThreeCycle_swap_mul_swap_same hcd hce hde
+  have hτmem : τp ∈ alternatingGroup α := hτ3.mem_alternatingGroup
+  set τ : alternatingGroup α := ⟨τp, hτmem⟩ with hτ
+  -- `τ.support ⊆ {c, d, e}`.
+  have hτsub : τp.support ⊆ ({c, d, e} : Finset α) := by
+    intro x hx
+    rw [hτp] at hx
+    have hx2 := support_mul_le (Equiv.swap c d) (Equiv.swap c e) hx
+    rw [Finset.sup_eq_union, support_swap hcd, support_swap hce] at hx2
+    simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] at hx2 ⊢
+    tauto
+  -- `a, b ∉ τ.support` (they are distinct from `c, d, e`).
+  have haτ : a ∉ τp.support := by
+    intro h; have := hτsub h
+    simp only [Finset.mem_insert, Finset.mem_singleton] at this
+    rcases this with h | h | h
+    · exact hac h
+    · exact had h
+    · exact hae h
+  have hbτ : b ∉ τp.support := by
+    intro h; have := hτsub h
+    simp only [Finset.mem_insert, Finset.mem_singleton] at this
+    rcases this with h | h | h
+    · exact hbc h
+    · exact hbd h
+    · exact hbe h
+  -- Pointwise values of `τ`, `τ⁻¹`.
+  have hτpa : τp a = a := notMem_support.mp haτ
+  have hτpb : τp b = b := notMem_support.mp hbτ
+  have hτpinva : τp⁻¹ a = a := notMem_support.mp (by rw [support_inv]; exact haτ)
+  have hτpinvb : τp⁻¹ b = b := notMem_support.mp (by rw [support_inv]; exact hbτ)
+  have hτpc : τp c = e := by
+    rw [hτp, Equiv.Perm.mul_apply, Equiv.swap_apply_left,
+      Equiv.swap_apply_of_ne_of_ne (Ne.symm hce) (Ne.symm hde)]
+  have hτpd : τp d = c := by
+    rw [hτp, Equiv.Perm.mul_apply,
+      Equiv.swap_apply_of_ne_of_ne (Ne.symm hcd) hde, Equiv.swap_apply_right]
+  have hτpinvc : τp⁻¹ c = d := by
+    rw [← hτpd]; exact Equiv.symm_apply_apply _ _
+  -- `σ⁻¹` values from the swap relations.
+  have hspinva : sp⁻¹ a = b := by rw [← hσba]; exact Equiv.symm_apply_apply _ _
+  have hspinvb : sp⁻¹ b = a := by rw [← hσab]; exact Equiv.symm_apply_apply _ _
+  have hspinvd : sp⁻¹ d = c := by rw [← hσcd]; exact Equiv.symm_apply_apply _ _
+  -- `a, b, c, d ∈ σ.support` (they are moved).
+  have hasupp : a ∈ sp.support := mem_support.mpr (by rw [hσab]; exact hab.symm)
+  have hbsupp : b ∈ sp.support := mem_support.mpr (by rw [hσba]; exact hab)
+  have hcsupp : c ∈ sp.support := mem_support.mpr (by rw [hσcd]; exact hcd.symm)
+  have hdsupp : d ∈ sp.support := mem_support.mpr (by rw [hσdc]; exact hcd)
+  -- The commutator element.
+  set ρ : alternatingGroup α := τ * σ * τ⁻¹ * σ⁻¹ with hρ
+  have hρcoe : (ρ : Perm α) = τp * sp * τp⁻¹ * sp⁻¹ := by
+    rw [hρ]; simp only [Subgroup.coe_mul, Subgroup.coe_inv, hτ, hsp]
+  -- Support containment: `ρ.support ⊆ {c, d, e, σ e}`.
+  have hsuppbound : (ρ : Perm α).support ⊆ ({c, d, e, sp e} : Finset α) := by
+    rw [hρcoe]
+    have hassoc : τp * sp * τp⁻¹ * sp⁻¹ = τp * (sp * τp⁻¹ * sp⁻¹) := by
+      group
+    rw [hassoc]
+    intro x hx
+    have hx2 : x ∈ τp.support ∪ (sp * τp⁻¹ * sp⁻¹).support := by
+      have h := support_mul_le τp (sp * τp⁻¹ * sp⁻¹) hx
+      simpa only [Finset.sup_eq_union] using h
+    rw [Finset.mem_union] at hx2
+    rcases hx2 with hx2 | hx2
+    · have := hτsub hx2
+      simp only [Finset.mem_insert, Finset.mem_singleton] at this ⊢
+      tauto
+    · rw [support_conj, support_inv, Finset.mem_map] at hx2
+      obtain ⟨y, hy, hxy⟩ := hx2
+      simp only [Equiv.coe_toEmbedding] at hxy
+      have hy3 := hτsub hy
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hy3
+      rw [← hxy]
+      rcases hy3 with rfl | rfl | rfl
+      · rw [hσcd]; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+      · rw [hσdc]; simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+      · simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+  refine ⟨ρ, ?_, ?_, ?_⟩
+  · rw [hρ]; exact commutator_mem_of_normal hHn hσH τ
+  · -- `ρ ≠ 1`, since its underlying permutation sends `d` to `e ≠ d`.
+    have hρd : (ρ : Perm α) d = e := by
+      rw [hρcoe]
+      simp only [Equiv.Perm.mul_apply]
+      rw [hspinvd, hτpinvc, hσdc, hτpc]
+    intro hρ1
+    have hd1 : (ρ : Perm α) d = d := by
+      rw [hρ1, Subgroup.coe_one, Equiv.Perm.one_apply]
+    rw [hρd] at hd1
+    exact hde hd1.symm
+  · -- Support strictly smaller.
+    -- `ρ` fixes `a` and `b`.
+    have hρa : (ρ : Perm α) a = a := by
+      rw [hρcoe]; simp only [Equiv.Perm.mul_apply]
+      rw [hspinva, hτpinvb, hσba, hτpa]
+    have hρb : (ρ : Perm α) b = b := by
+      rw [hρcoe]; simp only [Equiv.Perm.mul_apply]
+      rw [hspinvb, hτpinva, hσab, hτpb]
+    by_cases he : e ∈ sp.support
+    · -- `σ` moves all five distinct points, so `#σ.support ≥ 5`.
+      have hT5 : ({a, b, c, d, e} : Finset α).card = 5 := by
+        rw [Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨hab, hac, had, hae⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨hbc, hbd, hbe⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨hcd, hce⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_singleton]; exact hde),
+            Finset.card_singleton]
+      have hTsub : ({a, b, c, d, e} : Finset α) ⊆ sp.support := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl | rfl | rfl
+        · exact hasupp
+        · exact hbsupp
+        · exact hcsupp
+        · exact hdsupp
+        · exact he
+      have hσ5 : 5 ≤ sp.support.card := by
+        calc 5 = ({a, b, c, d, e} : Finset α).card := hT5.symm
+          _ ≤ sp.support.card := Finset.card_le_card hTsub
+      have hρ4 : (ρ : Perm α).support.card ≤ 4 := by
+        have hb0 : (ρ : Perm α).support.card ≤ ({c, d, e, sp e} : Finset α).card :=
+          Finset.card_le_card hsuppbound
+        have h1 : ({c, d, e, sp e} : Finset α).card ≤ ({d, e, sp e} : Finset α).card + 1 :=
+          Finset.card_insert_le _ _
+        have h2 : ({d, e, sp e} : Finset α).card ≤ ({e, sp e} : Finset α).card + 1 :=
+          Finset.card_insert_le _ _
+        have h3 : ({e, sp e} : Finset α).card ≤ ({sp e} : Finset α).card + 1 :=
+          Finset.card_insert_le _ _
+        have h4 : ({sp e} : Finset α).card = 1 := Finset.card_singleton _
+        omega
+      omega
+    · -- `σ e = e`, so `ρ.support ⊆ {c, d, e}`.
+      have hspe : sp e = e := notMem_support.mp he
+      have hsub3 : (ρ : Perm α).support ⊆ ({c, d, e} : Finset α) := by
+        intro x hx
+        have := hsuppbound hx
+        rw [hspe] at this
+        simp only [Finset.mem_insert, Finset.mem_singleton] at this ⊢
+        tauto
+      have hρ3 : (ρ : Perm α).support.card ≤ 3 := by
+        have hb0 : (ρ : Perm α).support.card ≤ ({c, d, e} : Finset α).card :=
+          Finset.card_le_card hsub3
+        have h1 : ({c, d, e} : Finset α).card ≤ ({d, e} : Finset α).card + 1 :=
+          Finset.card_insert_le _ _
+        have h2 : ({d, e} : Finset α).card ≤ ({e} : Finset α).card + 1 :=
+          Finset.card_insert_le _ _
+        have h3 : ({e} : Finset α).card = 1 := Finset.card_singleton _
+        omega
+      have hσ4 : 4 ≤ sp.support.card := by
+        have hS4 : ({a, b, c, d} : Finset α).card = 4 := by
+          rw [Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+                exact ⟨hab, hac, had⟩),
+              Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+                exact ⟨hbc, hbd⟩),
+              Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_singleton]; exact hcd),
+              Finset.card_singleton]
+        have hSsub : ({a, b, c, d} : Finset α) ⊆ sp.support := by
+          intro x hx
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl | rfl | rfl
+          · exact hasupp
+          · exact hbsupp
+          · exact hcsupp
+          · exact hdsupp
+        calc 4 = ({a, b, c, d} : Finset α).card := hS4.symm
+          _ ≤ sp.support.card := Finset.card_le_card hSsub
+      omega
+
+/-! ### The classical combinatorial crux (fully proved) -/
+
+/-- **Crux (0 sorry).** A nonidentity element `σ` of a normal subgroup `H ⊴ Aₙ`
+(`n ≥ 5`) whose support is *minimal* among the nonidentity elements of `H` is a
+3-cycle.
+
+`#support = 3` is immediate (`card_support_eq_three_iff`).  For `#support ≥ 4` we
+derive a contradiction by exhibiting a strictly smaller nonidentity element of `H`:
+
+* `σ² = 1` (**Case B**, involution): extract two disjoint transpositions `(a b)`,
+  `(c d)` and a fifth point `e`; `exists_smaller_commutator_of_involution` closes it.
+* `σ² ≠ 1` (**Case A**) with `#support ≥ 5`: extract `x, sp x, sp² x` (a length-`≥3`
+  cycle) plus two more moved points; `exists_smaller_commutator_of_five_points` closes it.
+* `σ² ≠ 1` with `#support = 4`: then `σ` is a 4-cycle `(x, sp x, sp² x, d)`, which is
+  *odd* (`IsCycle.sign`), contradicting `σ ∈ Aₙ`. -/
 theorem isThreeCycle_of_min_support
     (h5 : 5 ≤ Fintype.card α)
     {H : Subgroup (alternatingGroup α)} (hHn : H.Normal)
@@ -342,9 +547,206 @@ theorem isThreeCycle_of_min_support
   rcases eq_or_lt_of_le hge3 with h3 | h4
   · -- Exactly 3 moved points ⇒ 3-cycle.
     exact card_support_eq_three_iff.1 h3.symm
-  · -- `#support ≥ 4`: the classical strict-support-decrease commutator step,
-    -- contradicting minimality.  This is the sole remaining `sorry`.
-    sorry
+  · -- `#support ≥ 4`: no support-minimal `σ` can move ≥ 4 points, so this branch is
+    -- vacuous.  We produce a strictly smaller nonidentity element of `H`.
+    exfalso
+    set sp : Perm α := (σ : Perm α) with hsp
+    have h4' : 4 ≤ sp.support.card := h4
+    by_cases hsq : ∀ x, sp (sp x) = x
+    · -- **Case B: `σ² = 1` (involution).** Extract two disjoint transpositions and a
+      -- fifth point, then apply `exists_smaller_commutator_of_involution`.
+      obtain ⟨a, ha⟩ := Finset.card_pos.mp (by omega : 0 < sp.support.card)
+      have haa : sp a ≠ a := mem_support.mp ha
+      have hbmem : sp a ∈ sp.support := by
+        rw [mem_support, hsq a]; exact fun h => haa h.symm
+      have hab' : a ≠ sp a := fun h => haa h.symm
+      -- Third moved point `c ∉ {a, sp a}`.
+      have hsub_ab : ({a, sp a} : Finset α) ⊆ sp.support := by
+        intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl
+        · exact ha
+        · exact hbmem
+      have hcard_ab : ({a, sp a} : Finset α).card = 2 := by
+        rw [Finset.card_insert_of_notMem (by simp [hab']), Finset.card_singleton]
+      have hss_ab : ({a, sp a} : Finset α) ⊂ sp.support := by
+        rw [Finset.ssubset_iff_subset_ne]
+        refine ⟨hsub_ab, ?_⟩
+        intro heq; rw [heq] at hcard_ab; omega
+      obtain ⟨c, hc_supp, hc_notab⟩ := Finset.exists_of_ssubset hss_ab
+      have hcc : sp c ≠ c := mem_support.mp hc_supp
+      have hc_ne_a : c ≠ a := fun h => hc_notab (by rw [h]; simp)
+      have hc_ne_spa : c ≠ sp a := fun h => hc_notab (by rw [h]; simp)
+      -- `d := sp c` is the partner of `c`.
+      have hcd' : c ≠ sp c := fun h => hcc h.symm
+      have hbd' : sp a ≠ sp c := fun h => (hc_ne_a) (sp.injective h).symm
+      have h_a_ne_spc : a ≠ sp c := by
+        intro h
+        have hca : sp a = c := by rw [h]; exact hsq c
+        exact hc_ne_spa hca.symm
+      -- Fifth point `e ∉ {a, sp a, c, sp c}`.
+      have hcard_abcd : ({a, sp a, c, sp c} : Finset α).card = 4 := by
+        rw [Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨hab', hc_ne_a.symm, h_a_ne_spc⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨hc_ne_spa.symm, hbd'⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_singleton]; exact hcd'),
+            Finset.card_singleton]
+      have hss_abcd : ({a, sp a, c, sp c} : Finset α) ⊂ Finset.univ := by
+        rw [Finset.ssubset_iff_subset_ne]
+        refine ⟨Finset.subset_univ _, ?_⟩
+        intro heq
+        have hcc := congrArg Finset.card heq
+        rw [hcard_abcd, Finset.card_univ] at hcc; omega
+      obtain ⟨e, -, he_not⟩ := Finset.exists_of_ssubset hss_abcd
+      have he_a : a ≠ e := by rintro rfl; exact he_not (by simp)
+      have he_b : sp a ≠ e := by rintro rfl; exact he_not (by simp)
+      have he_c : c ≠ e := by rintro rfl; exact he_not (by simp)
+      have he_d : sp c ≠ e := by rintro rfl; exact he_not (by simp)
+      obtain ⟨ρ, hρH, hρ1, hρlt⟩ :=
+        exists_smaller_commutator_of_involution (σ := σ) (a := a) (b := sp a)
+          (c := c) (d := sp c) (e := e) hHn hσH
+          hab' hc_ne_a.symm h_a_ne_spc he_a hc_ne_spa.symm hbd' he_b hcd' he_c he_d
+          rfl (hsq a) rfl (hsq c)
+      exact absurd (hmin ρ hρH hρ1) (not_le.mpr hρlt)
+    · -- **Case A: `σ² ≠ 1`.**  There is `x` with `sp (sp x) ≠ x`; then `a = x`,
+      -- `b = sp x`, `c = sp (sp x)` are three distinct moved points on one cycle.
+      push_neg at hsq
+      obtain ⟨x, hx⟩ := hsq
+      have haa : sp x ≠ x := by intro h; exact hx (by rw [h, h])
+      have hab' : x ≠ sp x := fun h => haa h.symm
+      have hbc' : sp x ≠ sp (sp x) := fun h => hab' (sp.injective h)
+      have hac' : x ≠ sp (sp x) := fun h => hx h.symm
+      have haS : x ∈ sp.support := mem_support.mpr haa
+      have hbS : sp x ∈ sp.support := mem_support.mpr hbc'.symm
+      have hcS : sp (sp x) ∈ sp.support := by
+        rw [mem_support]; intro h; exact hbc' (sp.injective h).symm
+      -- `d`, a fourth moved point.
+      have hsub3 : ({x, sp x, sp (sp x)} : Finset α) ⊆ sp.support := by
+        intro y hy; simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+        rcases hy with rfl | rfl | rfl
+        · exact haS
+        · exact hbS
+        · exact hcS
+      have hcard3 : ({x, sp x, sp (sp x)} : Finset α).card = 3 := by
+        rw [Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+              exact ⟨hab', hac'⟩),
+            Finset.card_insert_of_notMem (by
+              simp only [Finset.mem_singleton]; exact hbc'),
+            Finset.card_singleton]
+      have hss3 : ({x, sp x, sp (sp x)} : Finset α) ⊂ sp.support := by
+        rw [Finset.ssubset_iff_subset_ne]
+        refine ⟨hsub3, ?_⟩
+        intro heq; rw [heq] at hcard3; omega
+      obtain ⟨d, hdS, hd_not⟩ := Finset.exists_of_ssubset hss3
+      have hxd : x ≠ d := by rintro rfl; exact hd_not (by simp)
+      have hbd : sp x ≠ d := by rintro rfl; exact hd_not (by simp)
+      have hcd : sp (sp x) ≠ d := by rintro rfl; exact hd_not (by simp)
+      by_cases hcard5 : 5 ≤ sp.support.card
+      · -- `#support ≥ 5`: a fifth moved point `e`, then engine A closes it.
+        have hsub4 : ({x, sp x, sp (sp x), d} : Finset α) ⊆ sp.support := by
+          intro y hy; simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+          rcases hy with rfl | rfl | rfl | rfl
+          · exact haS
+          · exact hbS
+          · exact hcS
+          · exact hdS
+        have hcard4 : ({x, sp x, sp (sp x), d} : Finset α).card = 4 := by
+          rw [Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+                exact ⟨hab', hac', hxd⟩),
+              Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+                exact ⟨hbc', hbd⟩),
+              Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_singleton]; exact hcd),
+              Finset.card_singleton]
+        have hss4 : ({x, sp x, sp (sp x), d} : Finset α) ⊂ sp.support := by
+          rw [Finset.ssubset_iff_subset_ne]
+          refine ⟨hsub4, ?_⟩
+          intro heq; rw [heq] at hcard4; omega
+        obtain ⟨e, heS, he_not⟩ := Finset.exists_of_ssubset hss4
+        have hxe : x ≠ e := by rintro rfl; exact he_not (by simp)
+        have hbe : sp x ≠ e := by rintro rfl; exact he_not (by simp)
+        have hce : sp (sp x) ≠ e := by rintro rfl; exact he_not (by simp)
+        have hde : d ≠ e := by rintro rfl; exact he_not (by simp)
+        obtain ⟨ρ, hρH, hρ1, hρlt⟩ :=
+          exists_smaller_commutator_of_five_points (σ := σ) (a := x) (b := sp x)
+            (c := sp (sp x)) (d := d) (e := e) hHn hσH
+            hab' hac' hxd hxe hbc' hbd hbe hcd hce hde
+            hbS hcS hdS heS rfl rfl
+        exact absurd (hmin ρ hρH hρ1) (not_le.mpr hρlt)
+      · -- `#support = 4` with `σ² ≠ 1`: then `σ` is the 4-cycle
+        -- `(x, sp x, sp² x, d)`, which is *odd* — contradicting `σ ∈ Aₙ`.
+        have hsupp4 : sp.support.card = 4 := by omega
+        have hsub4 : ({x, sp x, sp (sp x), d} : Finset α) ⊆ sp.support := by
+          intro y hy; simp only [Finset.mem_insert, Finset.mem_singleton] at hy
+          rcases hy with rfl | rfl | rfl | rfl
+          · exact haS
+          · exact hbS
+          · exact hcS
+          · exact hdS
+        have hcard4 : ({x, sp x, sp (sp x), d} : Finset α).card = 4 := by
+          rw [Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+                exact ⟨hab', hac', hxd⟩),
+              Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+                exact ⟨hbc', hbd⟩),
+              Finset.card_insert_of_notMem (by
+                simp only [Finset.mem_singleton]; exact hcd),
+              Finset.card_singleton]
+        -- The support is exactly `{x, sp x, sp² x, d}`.
+        have hsupp_eq : sp.support = ({x, sp x, sp (sp x), d} : Finset α) :=
+          (Finset.eq_of_subset_of_card_le hsub4 (le_of_eq (by rw [hsupp4, hcard4]))).symm
+        -- `sp³ x` lies in the support and is forced to equal `d`.
+        have h3mem : sp (sp (sp x)) ∈ sp.support := apply_mem_support.mpr hcS
+        have h3ne2 : sp (sp (sp x)) ≠ sp (sp x) := mem_support.mp hcS
+        have h3ne1 : sp (sp (sp x)) ≠ sp x := fun h => hac' (sp.injective h).symm
+        have hdd : sp d ≠ d := mem_support.mp hdS
+        have h3nex : sp (sp (sp x)) ≠ x := by
+          intro h
+          have hdmem : sp d ∈ sp.support := apply_mem_support.mpr hdS
+          rw [hsupp_eq] at hdmem
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hdmem
+          rcases hdmem with h1 | h2 | h3 | h4
+          · exact hd_not (by
+              rw [show d = sp (sp x) from sp.injective (h1.trans h.symm)]; simp)
+          · exact hd_not (by rw [show d = x from sp.injective h2]; simp)
+          · exact hd_not (by rw [show d = sp x from sp.injective h3]; simp)
+          · exact hdd h4
+        have hsp3d : sp (sp (sp x)) = d := by
+          have hmem := h3mem
+          rw [hsupp_eq] at hmem
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hmem
+          rcases hmem with h | h | h | h
+          · exact absurd h h3nex
+          · exact absurd h h3ne1
+          · exact absurd h h3ne2
+          · exact h
+        -- `σ` is a single cycle (the 4-cycle `x → sp x → sp² x → d → x`).
+        have hcyc : sp.IsCycle := by
+          refine ⟨x, haa, ?_⟩
+          intro y hy
+          have hy' : y ∈ sp.support := mem_support.mpr hy
+          rw [hsupp_eq] at hy'
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hy'
+          have sc1 : sp.SameCycle x (sp x) := sameCycle_apply_right.mpr (SameCycle.refl sp x)
+          have sc2 : sp.SameCycle x (sp (sp x)) := sameCycle_apply_right.mpr sc1
+          have sc3 : sp.SameCycle x (sp (sp (sp x))) := sameCycle_apply_right.mpr sc2
+          rcases hy' with h | h | h | h
+          · rw [h]
+          · rw [h]; exact sc1
+          · rw [h]; exact sc2
+          · rw [h, ← hsp3d]; exact sc3
+        -- A cycle supported on 4 points is odd, contradicting `sign σ = 1`.
+        have hsign : Perm.sign sp = -1 := by rw [hcyc.sign, hsupp4]; decide
+        have hsign1 : Perm.sign sp = 1 := mem_alternatingGroup.mp σ.2
+        rw [hsign] at hsign1
+        exact absurd hsign1 (by decide)
 
 /-! ### Assembly (0 sorry beyond the crux) -/
 
@@ -358,13 +760,11 @@ theorem exists_mem_isThreeCycle_of_normal
   obtain ⟨σ, hσH, hσ1, hmin⟩ := exists_min_support_ne_one hbot
   exact ⟨σ, isThreeCycle_of_min_support h5 hHn hσH hσ1 hmin, hσH⟩
 
-/-- **Unconditional simplicity of `Aₙ` for `n ≥ 5`.** Feeds the classical 3-cycle
-lemma into the parent file's formal reduction
-(`isSimpleGroup_of_forall_normal_contains_threeCycle`).  The body is complete; the
-result inherits exactly one `sorry`, namely the crux `isThreeCycle_of_min_support`.
-
-When that crux is discharged, this generalizes Mathlib's `Fin 5`-only
-`alternatingGroup.isSimpleGroup_five` to every finite `α` with `5 ≤ card α`. -/
+/-- **Unconditional simplicity of `Aₙ` for `n ≥ 5` (0 sorry, 0 axiom).** Feeds the
+classical 3-cycle lemma into the parent file's formal reduction
+(`isSimpleGroup_of_forall_normal_contains_threeCycle`).  This generalizes Mathlib's
+`Fin 5`-only `alternatingGroup.isSimpleGroup_five` to every finite `α` with
+`5 ≤ card α`. -/
 theorem isSimpleGroup_alternating (h5 : 5 ≤ Fintype.card α) :
     IsSimpleGroup (alternatingGroup α) :=
   isSimpleGroup_of_forall_normal_contains_threeCycle
