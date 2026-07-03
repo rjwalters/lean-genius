@@ -6,7 +6,10 @@
     "type": "concept",
     "title": "Reciprocation exchanges log-convexity and log-concavity",
     "content": "A positive sequence is log-convex when aₙ² ≤ aₙ₋₁·aₙ₊₁ and log-concave when the inequality reverses. The map t ↦ 1/t is an order-reversing multiplicative involution on the positive reals, so it swaps the two properties: the reciprocal of a strictly positive strictly log-convex sequence is strictly log-concave. The Catalan numbers are strictly log-convex (parent entry oq-01-oq-04), hence 1/Cₙ is strictly log-concave. The docstring also records an honest correction: the open question's suggested candidate Cₙ/(n+1) is NOT log-concave.",
-    "mathContext": "Parent: $C_{n+1}^2 < C_n C_{n+2}$. Reciprocal: $\\frac{1}{C_n}\\cdot\\frac{1}{C_{n+2}} < \\left(\\frac{1}{C_{n+1}}\\right)^2$."
+    "mathContext": "Parent: $C_{n+1}^2 < C_n C_{n+2}$. Reciprocal: $\\frac{1}{C_n}\\cdot\\frac{1}{C_{n+2}} < \\left(\\frac{1}{C_{n+1}}\\right)^2$.",
+    "significance": "context",
+    "relatedConcepts": ["log-convex sequence", "log-concave sequence", "Turán inequality", "order-reversing involution", "Catalan numbers"],
+    "prerequisites": ["log-concavity", "positive sequences", "Catalan numbers"]
   },
   {
     "id": "ann-recip-principle",
@@ -15,7 +18,10 @@
     "type": "technique",
     "title": "The field-level reciprocation principle",
     "content": "recip_sq_gt_of_sq_lt states the exchange abstractly: in any LinearOrderedField, if 0 < x,y,z and y² < x·z then (1/x)(1/z) < (1/y)². The proof rewrites (1/y)² = 1/y² (div_pow, one_pow) and (1/x)(1/z) = 1/(x·z) (div_mul_div_comm, one_mul), reducing the goal to 1/(x·z) < 1/y², which is exactly the order-reversal one_div_lt_one_div_of_lt applied to the hypothesis y² < x·z. Stating it over an arbitrary ordered field makes it reusable for the reciprocal of any positive log-convex sequence.",
-    "mathContext": "$0<x,y,z,\\; y^2 < xz \\;\\Rightarrow\\; \\tfrac1x\\tfrac1z < \\tfrac1{y^2}$ since $t\\mapsto 1/t$ reverses order on $\\mathbb{R}_{>0}$."
+    "mathContext": "$0<x,y,z,\\; y^2 < xz \\;\\Rightarrow\\; \\tfrac1x\\tfrac1z < \\tfrac1{y^2}$ since $t\\mapsto 1/t$ reverses order on $\\mathbb{R}_{>0}$.",
+    "significance": "key",
+    "relatedConcepts": ["linear ordered field", "one_div_lt_one_div_of_lt", "reciprocal", "abstraction for reuse"],
+    "prerequisites": ["ordered fields", "inequalities", "field arithmetic"]
   },
   {
     "id": "ann-catalan-instance",
@@ -24,7 +30,10 @@
     "type": "key-step",
     "title": "Applying the principle to the Catalan numbers",
     "content": "catalan_recip_logConcave instantiates the principle over ℚ. The three positivity hypotheses 0 < Cₙ, Cₙ₊₁, Cₙ₊₂ come from casting Nat.catalan_pos, and the Turán hypothesis y² < x·z is the parent's catalan_turan cast to ℚ (exact_mod_cast). Feeding these to recip_sq_gt_of_sq_lt yields (1/Cₙ)(1/Cₙ₊₂) < (1/Cₙ₊₁)² for every n — no new combinatorics, just the parent inequality read through reciprocation.",
-    "mathContext": "$\\frac{1}{C_n}\\cdot\\frac{1}{C_{n+2}} < \\left(\\frac{1}{C_{n+1}}\\right)^2$ over $\\mathbb{Q}$, for all $n\\ge 0$."
+    "mathContext": "$\\frac{1}{C_n}\\cdot\\frac{1}{C_{n+2}} < \\left(\\frac{1}{C_{n+1}}\\right)^2$ over $\\mathbb{Q}$, for all $n\\ge 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.catalan_pos", "Turán inequality", "cast to ℚ", "strict log-concavity"],
+    "prerequisites": ["Catalan numbers", "rational number casts", "Turán inequality"]
   },
   {
     "id": "ann-refutation",
@@ -33,6 +42,9 @@
     "type": "insight",
     "title": "Standard indexing and refutation of the Cₙ/(n+1) candidate",
     "content": "catalan_recip_logConcave_shift reindexes at n = m+1 to give the defining strict log-concavity aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1. catalanOverSucc_not_logConcave_at_one then refutes the open question's suggested candidate aₙ = Cₙ/(n+1): at n = 1, a₁² = (C₁/2)² = 1/4 while a₀·a₂ = (C₀/1)(C₂/3) = 2/3, so a₁² > a₀·a₂ FAILS. Evaluating catalan 0,1,2 and closing with norm_num makes the counterexample fully explicit — this is why the reciprocal, not Cₙ/(n+1), is the correct derived sequence.",
-    "mathContext": "$a_1^2 = \\tfrac14 < \\tfrac23 = a_0 a_2$ for $a_n = C_n/(n+1)$ — log-concavity fails."
+    "mathContext": "$a_1^2 = \\tfrac14 < \\tfrac23 = a_0 a_2$ for $a_n = C_n/(n+1)$ — log-concavity fails.",
+    "significance": "supporting",
+    "relatedConcepts": ["counterexample", "reindexing", "norm_num", "log-concavity failure"],
+    "prerequisites": ["Catalan numbers", "explicit computation", "log-concavity"]
   }
 ]
