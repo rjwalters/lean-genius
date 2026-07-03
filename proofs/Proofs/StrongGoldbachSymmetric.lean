@@ -305,4 +305,47 @@ example :
     ((Finset.Ico 5 10).filter (fun j => Nat.Prime j ∧ Nat.Prime (10 - j))).card = 2 := by
   decide
 
+/-! ## Offset-Side Ceiling: the Comet is Bounded by Half the Offsets
+
+The bounds above are all *prime-side*: they count admissible larger primes in the
+upper arm `[m, 2 * m)`.  There is a complementary *offset-side* constraint that
+needs no prime-counting input.  Once `m > 2` both summands `m - k` and `m + k` are
+odd (proved in `symmetric_pair_both_odd`), and `m - k` odd forces `k` to have the
+**opposite parity to `m`**.  So only offsets `k` with `k % 2 ≠ m % 2` can ever
+contribute a Goldbach partition — exactly half of `{0, …, m - 1}`.  This halves the
+offset search space and gives an elementary `≈ m/2` ceiling on the comet height,
+orthogonal to the prime-arm identity `symmetricPairCount_eq_upperArm_partitions`. -/
+
+/-- **Offset parity constraint.**  For `m > 2`, every offset `k` of a symmetric
+prime pair has the opposite parity to `m` (equivalently `m - k` and `m + k` are both
+odd).  Follows from `symmetric_pair_odd`: `m - k` odd means `m` and `k` differ in
+parity. -/
+theorem symmetric_pair_offset_parity {m k : ℕ} (hm : 2 < m) (hk : k < m)
+    (hp1 : Nat.Prime (m - k)) (hp2 : Nat.Prime (m + k)) :
+    m % 2 ≠ k % 2 := by
+  obtain ⟨j, hj⟩ := symmetric_pair_odd hm hk hp1 hp2
+  omega
+
+-- `m = 5` (odd): the contributing offsets `0, 2` are both even — opposite parity.
+example : (5 : ℕ) % 2 ≠ (2 : ℕ) % 2 :=
+  symmetric_pair_offset_parity (by norm_num) (by norm_num) (by decide) (by decide)
+-- `m = 6` (even): the contributing offset `1` is odd — opposite parity.
+example : (6 : ℕ) % 2 ≠ (1 : ℕ) % 2 :=
+  symmetric_pair_offset_parity (by norm_num) (by norm_num) (by decide) (by decide)
+
+/-- **Offset-side upper bound on the comet count.**  For `m > 2` the comet count is
+at most the number of offsets `k < m` of opposite parity to `m`.  Since exactly half
+of `{0, …, m - 1}` have opposite parity to `m`, this is an elementary `≈ m/2` ceiling
+on the Goldbach comet height that uses no density input, complementing the prime-arm
+bound `symmetricPairCount_le_primesInUpperArm`. -/
+theorem symmetricPairCount_le_oppositeParityOffsets {m : ℕ} (hm : 2 < m) :
+    symmetricPairCount m ≤
+      ((Finset.range m).filter (fun k => m % 2 ≠ k % 2)).card := by
+  rw [symmetricPairCount]
+  apply Finset.card_le_card
+  intro k hk
+  simp only [Finset.mem_filter, Finset.mem_range] at hk ⊢
+  obtain ⟨hkm, hp1, hp2⟩ := hk
+  exact ⟨hkm, symmetric_pair_offset_parity hm hkm hp1 hp2⟩
+
 end StrongGoldbach
