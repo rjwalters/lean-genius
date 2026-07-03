@@ -40,6 +40,18 @@
       to a uniform `L¹` bound on the partial sums, via
       `Submartingale.exists_ae_tendsto_of_bdd`.
 
+  **Truncation input — discrete layer cake (§ TailSum, step 2).** The MZ
+  truncation `Yᵢ = Xᵢ·𝟙{|Xᵢ| ≤ i^{1/p}}` is justified by Borel–Cantelli, whose
+  input is the summable tail `∑ᵢ P(|Xᵢ| > i^{1/p}) < ∞`. For `Z = |X₀|ᵖ` this is
+  the deterministic tail-sum bound below; Mathlib has the continuous layer cake
+  but no discrete companion, so we supply it:
+
+    * `tsum_measure_add_one_le_lintegral` — `∑ₙ μ{Z ≥ n+1} ≤ ∫⁻ ofReal Z` for
+      measurable `Z ≥ 0`, via `lintegral_tsum` and the pointwise count
+      `∑ₙ 𝟙{n+1 ≤ Z} = ⌊Z⌋₊ ≤ Z`.
+    * `tsum_measure_add_one_ne_top` — the finiteness corollary that feeds the
+      first Borel–Cantelli lemma.
+
   Verified: 0 sorry, 0 axiom (only `propext`/`Classical.choice`/`Quot.sound`).
 -/
 import Mathlib
@@ -504,5 +516,86 @@ theorem ae_tendsto_sum_of_indep_of_variance_bdd [IsProbabilityMeasure μ]
   exact h12.trans (eLpNorm_two_partialSum_le X hindep hmemLp hmean V hV n)
 
 end Kolmogorov
+
+/-! ## S4b (step 2) — the tail-sum / Borel–Cantelli input
+
+The Marcinkiewicz–Zygmund truncation `Yᵢ = Xᵢ·𝟙{|Xᵢ| ≤ i^{1/p}}` is justified by the
+first Borel–Cantelli lemma: `∑ᵢ P(Xᵢ ≠ Yᵢ) = ∑ᵢ P(|Xᵢ| > i^{1/p}) < ∞`, so a.s.
+`Xᵢ = Yᵢ` eventually and it suffices to prove the law for the truncations.  For
+identically distributed `Xᵢ` and `Z := |X₀|ᵖ ≥ 0`, this reduces to the deterministic
+measure-theoretic fact that the **tail sum** `∑ₙ μ{Z ≥ n+1}` is dominated by the first
+moment `∫⁻ ofReal Z` — the discrete companion of the layer-cake formula.  Mathlib has
+the continuous layer cake (`lintegral_eq_lintegral_meas_le`) but no discrete tail-sum
+bound; we supply it, together with the finiteness corollary that feeds Borel–Cantelli. -/
+
+section TailSum
+
+open MeasureTheory
+open scoped ENNReal
+
+variable {Ω : Type*} {mΩ : MeasurableSpace Ω} {μ : Measure Ω}
+
+/-- **Pointwise tail count is bounded by the value.**  For `z ≥ 0`, the number of
+positive integers `n+1 ≤ z` — counted in `ℝ≥0∞` as `∑ₙ 𝟙{n+1 ≤ z}` — equals `⌊z⌋₊`,
+and hence is at most `z`. -/
+theorem tsum_indicator_add_one_le (z : ℝ) (hz : 0 ≤ z) :
+    ∑' n : ℕ, (if (n : ℝ) + 1 ≤ z then (1 : ℝ≥0∞) else 0) ≤ ENNReal.ofReal z := by
+  have hiff : ∀ n : ℕ, ((n : ℝ) + 1 ≤ z) ↔ n < ⌊z⌋₊ := by
+    intro n
+    rw [show (n : ℝ) + 1 = ((n + 1 : ℕ) : ℝ) by push_cast; ring,
+      ← Nat.le_floor_iff hz, Nat.add_one_le_iff]
+  have hcount : ∑' n : ℕ, (if (n : ℝ) + 1 ≤ z then (1 : ℝ≥0∞) else 0) = (⌊z⌋₊ : ℝ≥0∞) := by
+    have hcongr : ∀ n : ℕ, (if (n : ℝ) + 1 ≤ z then (1 : ℝ≥0∞) else 0)
+        = (if n < ⌊z⌋₊ then (1 : ℝ≥0∞) else 0) := fun n => by simp only [hiff n]
+    simp_rw [hcongr]
+    rw [tsum_eq_sum (s := Finset.range ⌊z⌋₊) fun n hn => if_neg (by simpa using hn),
+      Finset.sum_congr rfl fun n hn => if_pos (Finset.mem_range.mp hn),
+      Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+  rw [hcount, ← ENNReal.ofReal_natCast]
+  exact ENNReal.ofReal_le_ofReal (Nat.floor_le hz)
+
+/-- **Discrete tail-sum bound (discrete layer cake / first-moment estimate).**  For a
+measurable `Z ≥ 0`, the tail sum of super-level measures is dominated by the first
+moment:
+
+    ∑ₙ μ {ω | (n : ℝ) + 1 ≤ Z ω}  ≤  ∫⁻ ω, ENNReal.ofReal (Z ω) ∂μ.
+
+This is the discrete companion of the layer-cake formula and the analytic core of the
+Marcinkiewicz–Zygmund truncation step (step 2): applied to `Z = |X₀|ᵖ` it turns the
+finite `p`-th moment `𝔼|X₀|ᵖ < ∞` into a summable tail `∑ᵢ P(|Xᵢ| > i^{1/p}) < ∞`.
+Proof: write each `μ Aₙ` as the integral of `𝟙_{Aₙ}`, swap sum and integral
+(`lintegral_tsum`), and bound the pointwise tail count `∑ₙ 𝟙{n+1 ≤ Z ω} = ⌊Z ω⌋₊ ≤ Z ω`. -/
+theorem tsum_measure_add_one_le_lintegral {Z : Ω → ℝ}
+    (hZmeas : Measurable Z) (hZnn : 0 ≤ Z) :
+    ∑' n : ℕ, μ {x | (n : ℝ) + 1 ≤ Z x} ≤ ∫⁻ ω, ENNReal.ofReal (Z ω) ∂μ := by
+  have hA : ∀ n : ℕ, MeasurableSet {x | (n : ℝ) + 1 ≤ Z x} := fun n =>
+    measurableSet_le measurable_const hZmeas
+  have hswap : ∑' n : ℕ, μ {x | (n : ℝ) + 1 ≤ Z x}
+      = ∫⁻ ω, ∑' n : ℕ, ({x | (n : ℝ) + 1 ≤ Z x}.indicator 1) ω ∂μ :=
+    calc ∑' n : ℕ, μ {x | (n : ℝ) + 1 ≤ Z x}
+        = ∑' n : ℕ, ∫⁻ ω, ({x | (n : ℝ) + 1 ≤ Z x}.indicator 1) ω ∂μ :=
+          tsum_congr fun n => (lintegral_indicator_one (hA n)).symm
+      _ = ∫⁻ ω, ∑' n : ℕ, ({x | (n : ℝ) + 1 ≤ Z x}.indicator 1) ω ∂μ :=
+          (lintegral_tsum fun n => (measurable_const.indicator (hA n)).aemeasurable).symm
+  rw [hswap]
+  refine lintegral_mono fun ω => ?_
+  have hpt : (∑' n : ℕ, ({x | (n : ℝ) + 1 ≤ Z x}.indicator (1 : Ω → ℝ≥0∞)) ω)
+      = ∑' n : ℕ, (if (n : ℝ) + 1 ≤ Z ω then (1 : ℝ≥0∞) else 0) :=
+    tsum_congr fun n => by rw [Set.indicator_apply]; simp [Set.mem_setOf_eq]
+  rw [hpt]
+  exact tsum_indicator_add_one_le (Z ω) (hZnn ω)
+
+/-- **Summable tail from a finite first moment.**  If `Z ≥ 0` is measurable with finite
+first moment `∫⁻ ofReal Z < ∞`, the super-level tail sum is finite:
+`∑ₙ μ{Z ≥ n+1} ≠ ∞`.  This is exactly the hypothesis consumed by the first
+Borel–Cantelli lemma (`MeasureTheory.measure_limsup_eq_zero`), which then gives
+`Z < n+1` eventually a.s. — i.e. the MZ truncation `|Xᵢ| ≤ i^{1/p}` holds eventually. -/
+theorem tsum_measure_add_one_ne_top {Z : Ω → ℝ}
+    (hZmeas : Measurable Z) (hZnn : 0 ≤ Z)
+    (hZint : ∫⁻ ω, ENNReal.ofReal (Z ω) ∂μ ≠ ∞) :
+    ∑' n : ℕ, μ {x | (n : ℝ) + 1 ≤ Z x} ≠ ∞ :=
+  ((tsum_measure_add_one_le_lintegral hZmeas hZnn).trans_lt hZint.lt_top).ne
+
+end TailSum
 
 end LawsOfLargeNumbers.MZ

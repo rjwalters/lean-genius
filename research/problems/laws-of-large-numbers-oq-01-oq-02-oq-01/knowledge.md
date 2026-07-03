@@ -318,3 +318,58 @@ verified infrastructure, not scaffolding. It does not yet prove Marcinkiewicz–
 remaining **S4b** truncation/moment layer (Borel–Cantelli on `{X_i≠Y_i}`, `∑ Var(Y_i)/i^{2/p}<∞`
 via `p<2`) then feeds S4a into `ae_tendsto_kronecker_average_zero`. Worked in locked
 `/private/tmp/wt-r4-lln`, committed before building (worktree-deletion hazard did not recur).
+
+## S4b step-2 (researcher-14, 2026-07-03) — BUILD: discrete layer-cake tail-sum SHIPPED (verified)
+
+The Borel–Cantelli *input* for the MZ truncation is the summable tail
+`∑ᵢ P(|Xᵢ| > i^{1/p}) < ∞`. For identically distributed `Xᵢ` this is a deterministic
+measure-theoretic fact about `Z = |X₀|ᵖ ≥ 0`: the tail sum `∑ₙ μ{Z ≥ n+1}` is dominated
+by the first moment. Mathlib has the *continuous* layer cake
+(`lintegral_eq_lintegral_meas_le`) but **no discrete companion** (confirmed by repo-wide
+grep). Three theorems added to `Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (§ TailSum),
+**0-sorry / 0-axiom** (`#print axioms` = propext/Classical.choice/Quot.sound on all three
+— no sorryAx, no `Lean.ofReduceBool`). Verified via `LAKE_UNSAFE=1 lake env lean` against
+the pinned prebuilt Mathlib oleans (v4.26.0): 0 errors.
+
+1. **`tsum_indicator_add_one_le (z : ℝ) (hz : 0 ≤ z)`** — pure ENNReal helper:
+   `∑' n, (if (n:ℝ)+1 ≤ z then 1 else 0) ≤ ENNReal.ofReal z`. The tail count equals
+   `⌊z⌋₊`: the summand is `1` iff `n < ⌊z⌋₊` (via `Nat.le_floor_iff hz` + `Nat.add_one_le_iff`
+   after `(n:ℝ)+1 = ((n+1:ℕ):ℝ)`), then `tsum_eq_sum` over `Finset.range ⌊z⌋₊`; finally
+   `⌊z⌋₊ ≤ z` by `Nat.floor_le`.
+2. **`tsum_measure_add_one_le_lintegral {Z} (hZmeas : Measurable Z) (hZnn : 0 ≤ Z)`** —
+   `∑ₙ μ{x | (n:ℝ)+1 ≤ Z x} ≤ ∫⁻ ω, ENNReal.ofReal (Z ω) ∂μ`. Proof: each `μ Aₙ =
+   ∫⁻ 𝟙_{Aₙ}` (`lintegral_indicator_one`, `Aₙ` measurable by `measurableSet_le`), swap
+   sum/integral (`lintegral_tsum`), pointwise bound via (1).
+3. **`tsum_measure_add_one_ne_top {Z} (… ) (hZint : ∫⁻ ofReal Z ≠ ∞)`** — finiteness
+   corollary `∑ₙ μ{Z ≥ n+1} ≠ ∞`, the exact hypothesis of first Borel–Cantelli
+   (`measure_limsup_eq_zero`).
+
+### Reusable Lean gotchas (Mathlib v4.26)
+
+- **`rw [lintegral_tsum h]` FAILS to unify** when the integrand is `s.indicator 1` (the
+  `1 : Ω → ℝ≥0∞` constant-one function): the higher-order matcher can't recover `f i a`
+  from `(s.indicator 1) a`. **Fix:** don't `rw`; use it as a `calc` step
+  `_ = ∫⁻ … := (lintegral_tsum h).symm` — the *expected type* of the calc step pins `f`,
+  so elaboration succeeds. (General lesson: for HO-unification-hostile lemmas, drive with
+  the expected type via `calc`/`exact`, not `rw`.)
+- `measurable_const.indicator (hs : MeasurableSet s) : Measurable (s.indicator (fun _ => c))`
+  unifies `c := 1` against `s.indicator 1` (Pi `1 = fun _ => 1` defeq). `.aemeasurable`
+  gives the `lintegral_tsum` hypothesis.
+- `lintegral_indicator_one (hs : MeasurableSet s) : ∫⁻ a, s.indicator 1 a ∂μ = μ s`.
+- `tsum_eq_sum (s := Finset.range N) (fun n hn => …) : ∑' = ∑ over range` — supply the
+  "zero outside `s`" proof; `simpa using hn` turns `n ∉ range N` into `¬ n < N` for `if_neg`.
+- `ENNReal.ofReal_natCast (n) : ENNReal.ofReal ↑n = ↑n` — use `← ` to turn `(⌊z⌋₊:ℝ≥0∞)`
+  into `ENNReal.ofReal ↑⌊z⌋₊` before `ENNReal.ofReal_le_ofReal (Nat.floor_le hz)`.
+- Avoid shadowing: write the super-level set as `{x | (n:ℝ)+1 ≤ Z x}` (not `{ω | …}`) so
+  the set-builder variable doesn't collide with the `∫⁻ ω` integration variable.
+
+### Honest status
+
+S4b step-2 is a genuine, complete, verified brick — the discrete layer-cake tail-sum and
+its Borel–Cantelli-feeding corollary — reusable well beyond MZ. It does **not** yet prove
+Marcinkiewicz–Zygmund: remaining are S4b step-1 (i.i.d. reduction to apply this to
+`Z=|X₀|ᵖ` + `measure_limsup_eq_zero`), step-3 (centered-truncation control), step-4
+(`∑ Var(Yᵢ)/i^{2/p}<∞`, uses `p<2`), then assembly with S4a + S2 Kronecker lift. Worked in
+a locked `/private/tmp/r14-session-*` worktree off `origin/main`, committed before verifying
+(the worktree-deletion hazard recurred at session start — designated `.loom/worktrees/researcher-14`
+was gone again; the locked /tmp worktree avoids the clobber trap).
