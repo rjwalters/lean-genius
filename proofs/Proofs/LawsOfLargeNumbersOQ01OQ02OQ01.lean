@@ -404,6 +404,100 @@ theorem ae_tendsto_sum_of_indep_of_eLpNorm_bdd [IsProbabilityMeasure μ]
     simp only [Finset.sum_apply]
   exact (tendsto_add_atTop_iff_nat 1).mp hc'
 
+/-! ## S4a — discharging the `L¹` bound from a variance-sum bound
+
+The convergence engine `ae_tendsto_sum_of_indep_of_eLpNorm_bdd` requires a uniform
+`L¹` bound `hbdd` on the partial sums.  On a probability space this is exactly what a
+bound on the variance sums `∑ Var(Xᵢ)` provides, via `‖·‖₁ ≤ ‖·‖₂` and the
+orthogonality identity `Var(∑ Xᵢ) = ∑ Var(Xᵢ)` for independent variables.  The one
+missing link is the mean-zero bridge `‖X‖₂² = eVar[X]` (Mathlib has `evariance` and
+`eLpNorm` but no lemma connecting them), supplied here. -/
+
+/-- **`L²` seminorm squared equals the extended variance, for a mean-zero variable.**
+For `X` with `𝔼[X] = 0`,
+
+    eLpNorm X 2 μ ^ 2 = evariance X μ.
+
+Mathlib defines `evariance X μ = ∫⁻ ‖X - 𝔼[X]‖ₑ²` and `eLpNorm X 2 μ` separately with no
+bridge between them; when `𝔼[X] = 0` the centering is trivial and the two coincide after
+the standard `(∫⁻ ‖X‖ₑ²)^{1/2}` unfolding of the `L²` seminorm.  This is the crux that
+turns a variance bound into the `L¹` hypothesis of the Kolmogorov engine. -/
+theorem eLpNorm_two_sq_eq_evariance {X : Ω → ℝ} (h0 : μ[X] = 0) :
+    eLpNorm X 2 μ ^ 2 = evariance X μ := by
+  rw [eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), evariance]
+  simp only [h0, sub_zero, ENNReal.toReal_ofNat]
+  rw [← ENNReal.rpow_natCast ((∫⁻ x, ‖X x‖ₑ ^ (2 : ℝ) ∂μ) ^ (1 / (2 : ℝ))) 2,
+    ← ENNReal.rpow_mul, show (1 / (2 : ℝ)) * ((2 : ℕ) : ℝ) = 1 by norm_num, ENNReal.rpow_one]
+  simp_rw [ENNReal.rpow_two]
+
+/-- **Uniform `L²` bound on the partial sums from a variance-sum bound.**  For
+independent mean-zero `L²` variables `X i` with `∑_{i≤n} Var(Xᵢ) ≤ V` for all `n`,
+every shifted partial sum satisfies
+
+    eLpNorm (∑_{i≤n} Xᵢ) 2 μ ≤ ENNReal.ofReal (√V).
+
+Proof: `‖Sₙ‖₂² = eVar[Sₙ] = ofReal(Var Sₙ) = ofReal(∑_{i≤n} Var Xᵢ) ≤ ofReal V` using the
+mean-zero bridge `eLpNorm_two_sq_eq_evariance`, `ofReal_variance`, and the independence
+orthogonality identity `IndepFun.variance_sum`; then take square roots by the monotone
+`ℝ≥0∞`-power `·^{1/2}`. -/
+theorem eLpNorm_two_partialSum_le [IsProbabilityMeasure μ]
+    (X : ℕ → Ω → ℝ) (hindep : iIndepFun X μ) (hmemLp : ∀ i, MemLp (X i) 2 μ)
+    (hmean : ∀ i, μ[X i] = 0) (V : ℝ)
+    (hV : ∀ n, ∑ i ∈ range (n + 1), variance (X i) μ ≤ V) (n : ℕ) :
+    eLpNorm (fun ω => ∑ i ∈ range (n + 1), X i ω) 2 μ ≤ ENNReal.ofReal (Real.sqrt V) := by
+  have hint : ∀ i, Integrable (X i) μ := fun i => (hmemLp i).integrable one_le_two
+  have hSpt : (fun ω => ∑ i ∈ range (n + 1), X i ω) = ∑ i ∈ range (n + 1), X i := by
+    funext ω; simp only [Finset.sum_apply]
+  rw [hSpt]
+  set S : Ω → ℝ := ∑ i ∈ range (n + 1), X i with hSdef
+  have hSmemLp : MemLp S 2 μ := memLp_finset_sum' _ (fun i _ => hmemLp i)
+  have hSmean : μ[S] = 0 := by
+    rw [hSdef, integral_finset_sum _ (fun i _ => hint i)]
+    simp only [hmean, Finset.sum_const_zero]
+  have hpair : Set.Pairwise (↑(range (n + 1)) : Set ℕ)
+      (fun i j => IndepFun (X i) (X j) μ) := fun i _ j _ hij => hindep.indepFun hij
+  have hvar : variance S μ = ∑ i ∈ range (n + 1), variance (X i) μ := by
+    rw [hSdef]; exact IndepFun.variance_sum (fun i _ => hmemLp i) hpair
+  have hV0 : 0 ≤ V := le_trans (variance_nonneg (X 0) μ) (by simpa using hV 0)
+  have hsq : eLpNorm S 2 μ ^ 2 ≤ ENNReal.ofReal V := by
+    rw [eLpNorm_two_sq_eq_evariance hSmean, ← ofReal_variance hSmemLp, hvar]
+    exact ENNReal.ofReal_le_ofReal (hV n)
+  have hmono := ENNReal.rpow_le_rpow hsq (by norm_num : (0 : ℝ) ≤ 1 / 2)
+  rw [← ENNReal.rpow_natCast (eLpNorm S 2 μ) 2, ← ENNReal.rpow_mul,
+    show ((2 : ℕ) : ℝ) * (1 / (2 : ℝ)) = 1 by norm_num, ENNReal.rpow_one] at hmono
+  rwa [← ENNReal.ofReal_rpow_of_nonneg hV0 (by norm_num), ← Real.sqrt_eq_rpow] at hmono
+
+/-- **Kolmogorov's a.s.-convergence criterion (variance-sum form).**  For independent
+mean-zero `L²` random variables `X i` whose variance partial sums are uniformly bounded,
+`∑_{i≤n} Var(Xᵢ) ≤ V`, the series `∑ i, X i` converges almost surely.
+
+This discharges the deterministic `L¹` hypothesis `hbdd` of
+`ae_tendsto_sum_of_indep_of_eLpNorm_bdd` from the variance-sum bound, via
+`eLpNorm_two_partialSum_le` and `‖·‖₁ ≤ ‖·‖₂` on a probability space
+(`eLpNorm_le_eLpNorm_of_exponent_le`).  It is the clean statement of Kolmogorov's
+convergence theorem; composing it with the a.e. Kronecker lift
+`ae_tendsto_kronecker_average_zero` gives the normalisation step of the
+Marcinkiewicz–Zygmund strong law. -/
+theorem ae_tendsto_sum_of_indep_of_variance_bdd [IsProbabilityMeasure μ]
+    (X : ℕ → Ω → ℝ) (hmeas : ∀ i, StronglyMeasurable (X i))
+    (hindep : iIndepFun X μ) (hmemLp : ∀ i, MemLp (X i) 2 μ)
+    (hmean : ∀ i, μ[X i] = 0) (V : ℝ)
+    (hV : ∀ n, ∑ i ∈ range (n + 1), variance (X i) μ ≤ V) :
+    ∀ᵐ ω ∂μ, ∃ c : ℝ, Tendsto (fun n => ∑ i ∈ range n, X i ω) atTop (𝓝 c) := by
+  have hint : ∀ i, Integrable (X i) μ := fun i => (hmemLp i).integrable one_le_two
+  refine ae_tendsto_sum_of_indep_of_eLpNorm_bdd X hmeas hindep hint hmean
+    (Real.sqrt V).toNNReal (fun n => ?_)
+  have hasm : AEStronglyMeasurable (fun ω => ∑ i ∈ range (n + 1), X i ω) μ := by
+    have hEq : (fun ω => ∑ i ∈ range (n + 1), X i ω) = ∑ i ∈ range (n + 1), X i := by
+      funext ω; simp only [Finset.sum_apply]
+    rw [hEq]; exact (memLp_finset_sum' _ (fun i _ => hmemLp i)).aestronglyMeasurable
+  have h12 : eLpNorm (fun ω => ∑ i ∈ range (n + 1), X i ω) 1 μ
+      ≤ eLpNorm (fun ω => ∑ i ∈ range (n + 1), X i ω) 2 μ :=
+    eLpNorm_le_eLpNorm_of_exponent_le (by norm_num) hasm
+  have hcoe : ((Real.sqrt V).toNNReal : ℝ≥0∞) = ENNReal.ofReal (Real.sqrt V) := rfl
+  rw [hcoe]
+  exact h12.trans (eLpNorm_two_partialSum_le X hindep hmemLp hmean V hV n)
+
 end Kolmogorov
 
 end LawsOfLargeNumbers.MZ
