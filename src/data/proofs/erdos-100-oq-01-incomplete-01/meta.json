@@ -94,5 +94,31 @@
       "relationship": "foundational",
       "description": "The base Erdős #100 framework (integer-distance planar point sets and their diameter). This entry supplies the combinatorial inequality behind the current best diameter lower bound."
     }
+  ],
+  "references": [
+    {
+      "authors": "Thomas F. Bloom (ed.)",
+      "title": "Erdős Problem #100",
+      "year": 2024,
+      "note": "erdosproblems.com/100. States the open integer-distance diameter question and records the known bounds, including the Guth–Katz-based c·n/log n lower bound this bridge feeds."
+    },
+    {
+      "authors": "Larry Guth and Nets Hawk Katz",
+      "title": "On the Erdős distinct distances problem in the plane",
+      "year": 2015,
+      "note": "Annals of Mathematics 181(1), 155–190. Proves any n-point planar set determines ≳ n/log n distinct distances; combined with the bridge here (#distinct ≤ diam) it yields diam ≳ n/log n for integer-distance sets."
+    },
+    {
+      "authors": "Paul Erdős",
+      "title": "On sets of distances of n points",
+      "year": 1946,
+      "note": "American Mathematical Monthly 53, 248–250. Origin of the distinct-distances problem (Erdős #89), the companion whose lower bound the integer-distance bridge converts into a diameter bound."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Finset.card_le_card_of_injOn and Nat.card_Icc",
+      "year": 2024,
+      "note": "The injection-counting lemma and the interval cardinality |Icc 1 m| = m that together give |S| ≤ ⌊D⌋ for a finite set of positive integers bounded by D."
+    }
   ]
 }
