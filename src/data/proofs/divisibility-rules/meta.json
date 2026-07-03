@@ -116,6 +116,99 @@
       "summary": "Part IX exercises every rule on concrete numbers (divisibility by 2, 4, 5, 6, 8, 7, 3, 15, 12, 30), each discharged by rewriting with the corresponding `*_dvd_iff` lemma and `native_decide`; Part X's `rules_verification` master theorem then bundles 11 of these facts into a single conjunction, serving as a machine-checked sanity check for the entire formalization."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "modEq_alternating_digits_sum",
+      "type": "theorem",
+      "statement": "(n : ℤ) ≡ altDigitSum b n [ZMOD d]   (when 0 < d and b % d = d - 1)",
+      "significance": "The general alternating-digit-sum congruence: whenever the base b ≡ -1 (mod d), n is congruent mod d to d₀ - d₁ + d₂ - ⋯. Specializing to b = 10, d = 11 (since 10 ≡ -1 mod 11) yields the classic divisibility-by-11 rule.",
+      "description": "Handles the degenerate bases b < 2 by cases (digits_one / interval_cases), then for b ≥ 2 rewrites n = ofDigits b (digits b n) via Nat.ofDigits_digits and applies ofDigits_modEq_alternatingDigitSum."
+    },
+    {
+      "name": "ofDigits_modEq_alternatingDigitSum",
+      "type": "theorem",
+      "statement": "(ofDigits b l : ℤ) ≡ alternatingDigitSum l [ZMOD d]   (when 0 < d, b % d = d - 1)",
+      "significance": "The inductive core behind the div-by-11 rule: on a raw digit list, ofDigits reduces mod d to the alternating sum because each power of b flips sign (b ≡ -1). Kept general in b and d rather than hardcoding base 10.",
+      "description": "Induction on the digit list; the cons step uses b ≡ -1 (mod d) with Int.ModEq.mul and Int.ModEq.add against the recursion alternatingDigitSum_cons, then push_cast."
+    },
+    {
+      "name": "two_dvd_iff",
+      "type": "theorem",
+      "statement": "2 ∣ n ↔ 2 ∣ (n % 10)",
+      "significance": "The last-digit rule for 2: a number is even iff its final decimal digit is. The simplest divisibility test and the template for the 5 and 10 rules.",
+      "description": "Both directions use n = 10·(n/10) + n%10 (Nat.div_add_mod) and produce explicit witnesses closed by omega / ring. five_dvd_iff and ten_dvd_iff follow the same pattern."
+    },
+    {
+      "name": "four_dvd_iff",
+      "type": "theorem",
+      "statement": "4 ∣ n ↔ 4 ∣ (n % 100)",
+      "significance": "The last-two-digits rule for 4: since 100 = 4·25, only the final two decimal digits matter. twentyfive_dvd_iff is its coprime companion (25 ∣ n iff 25 ∣ last two digits).",
+      "description": "Splits n = 100·(n/100) + n%100 and supplies explicit quotient witnesses; the forward direction uses k % 25, the reverse builds 25·(n/100) + k."
+    },
+    {
+      "name": "eight_dvd_iff",
+      "type": "theorem",
+      "statement": "8 ∣ n ↔ 8 ∣ (n % 1000)",
+      "significance": "The last-three-digits rule for 8: since 1000 = 8·125, divisibility by 8 depends only on the final three decimal digits. onehundredtwentyfive_dvd_iff is the coprime companion for 125.",
+      "description": "Splits n = 1000·(n/1000) + n%1000 with Nat.div_add_mod and gives explicit witnesses (k % 125 forward, 125·(n/1000) + k reverse)."
+    },
+    {
+      "name": "six_dvd_iff",
+      "type": "theorem",
+      "statement": "6 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n",
+      "significance": "The prototypical combined rule: 6 = 2·3 with gcd(2,3)=1, so divisibility by 6 factors into the 2-rule and the 3-rule. twelve/fifteen/eighteen_dvd_iff instantiate the same idea for 12, 15, 18.",
+      "description": "Forward direction is immediate from 6 ∣ n; reverse uses Nat.Coprime.mul_dvd_of_dvd_of_dvd with the native_decide-checked coprimality of 2 and 3."
+    },
+    {
+      "name": "coprime_mul_dvd_iff",
+      "type": "theorem",
+      "statement": "d₁ * d₂ ∣ n ↔ d₁ ∣ n ∧ d₂ ∣ n   (when Nat.Coprime d₁ d₂)",
+      "significance": "The abstraction unifying every combined rule: coprime factors of a modulus test independently. All the 6/12/15/18/30 rules are corollaries of this single statement.",
+      "description": "Forward direction chains dvd_mul_right / dvd_mul_left with dvd_trans; reverse is exactly Coprime.mul_dvd_of_dvd_of_dvd. A pure term-mode proof."
+    },
+    {
+      "name": "thirty_dvd_iff",
+      "type": "theorem",
+      "statement": "30 ∣ n ↔ 2 ∣ n ∧ 3 ∣ n ∧ 5 ∣ n",
+      "significance": "A three-factor combined rule: 30 = 2·3·5, so divisibility splits across three coprime primes. Shows the coprime-factorization method chaining beyond two factors.",
+      "description": "Reverse direction first assembles 6 ∣ n via six_dvd_iff, then combines with 5 using Coprime.mul_dvd_of_dvd_of_dvd (gcd(6,5)=1 by native_decide)."
+    },
+    {
+      "name": "dvd_iff_dvd_digits_sum",
+      "type": "theorem",
+      "statement": "d ∣ n ↔ d ∣ (Nat.digits b n).sum   (when b % d = 1)",
+      "significance": "The general digit-sum rule: whenever the base b ≡ 1 (mod d), d divides n iff it divides the sum of n's base-b digits. This single statement generates the casting-out rules across all bases.",
+      "description": "A one-line consequence of Mathlib's Nat.modEq_digits_sum via Nat.ModEq.dvd_iff. Instantiated by div_by_3, div_by_9, seven_dvd_octal, three_dvd_hex, and others."
+    },
+    {
+      "name": "div_by_3",
+      "type": "theorem",
+      "statement": "3 ∣ n ↔ 3 ∣ (Nat.digits 10 n).sum   (and div_by_9 for 9)",
+      "significance": "The familiar base-10 casting-out-threes (and nines) rule — the extension point of Wiedijk #85 (\"divisibility by 3\") to a full collection. div_by_9 is the mod-9 analogue underlying digital roots.",
+      "description": "Instantiates dvd_iff_dvd_digits_sum at d = 3, b = 10 with 10 % 3 = 1 checked by native_decide; div_by_9 does the same at d = 9."
+    },
+    {
+      "name": "seven_dvd_truncation",
+      "type": "theorem",
+      "statement": "7 ∣ n ↔ (7 : ℤ) ∣ (↑(n / 10) - 2 * ↑(n % 10))",
+      "significance": "The truncation test for 7, which has no simple base-10 digit-sum rule: drop the last digit and subtract twice it from the rest. Rests on 10·(q - 2r) = n - 21r ≡ n (mod 7) plus gcd(7,10)=1.",
+      "description": "Forward uses the identity 10·(n/10 - 2·(n%10)) = n - 21·(n%10) and cancels the factor of 10 by IsCoprime.dvd_of_dvd_mul_left; reverse recombines via Int.dvd_add and sub_add_cancel."
+    },
+    {
+      "name": "digitalRoot_le_9",
+      "type": "theorem",
+      "statement": "digitalRoot n ≤ 9   (digitalRoot n = 9 if 9 ∣ n > 0, else n % 9)",
+      "significance": "The digital root — iterated digit-summing to a single digit — is exactly n mod 9 (with 9 in place of 0 for positive multiples of 9). This ≤ 9 bound plus digitalRoot_zero/nine/one pins down its range and base values.",
+      "description": "Unfolds the if-then-else definition and closes every branch by omega; concrete values (123 → 6, 999 → 9, 100 → 1) verified by native_decide."
+    },
+    {
+      "name": "rules_verification",
+      "type": "theorem",
+      "statement": "(2 ∣ 246) ∧ (5 ∣ 250) ∧ (10 ∣ 250) ∧ (4 ∣ 1024) ∧ (25 ∣ 1025) ∧ (8 ∣ 1000) ∧ (3 ∣ 111) ∧ (9 ∣ 999) ∧ (6 ∣ 252) ∧ (12 ∣ 252) ∧ (15 ∣ 255)",
+      "significance": "A single capstone conjunction exercising every rule family on concrete inputs, confirming the abstract iff-statements agree with direct computation.",
+      "description": "Splits the eleven-way conjunction with refine and discharges each divisibility by native_decide (hence the Lean.ofReduceBool dependency recorded in assumptions)."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "divisibility-rules-oq-01",
