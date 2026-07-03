@@ -36,15 +36,27 @@
     "prerequisites": ["mason_stothers_add", "natDegree_eq_zero_of_derivative_eq_zero", "CharZero"]
   },
   {
-    "id": "mason-oq01-ann-headline-rigidity",
+    "id": "mason-oq01-ann-headline",
     "proofId": "mason-stothers-theorem-oq-01",
-    "range": { "startLine": 101, "endLine": 131 },
+    "range": { "startLine": 101, "endLine": 111 },
     "type": "theorem",
-    "title": "Headline Inequality and Rigidity",
-    "content": "Two corollaries close the file. `natDegree_lt_radical_charZero`: for non-constant c, deg c < deg(rad(a·b·c)) — definitionally the c-component c.natDegree + 1 ≤ deg(rad) of the charZero bound (the polynomial shadow of the abc height inequality). `mason_stothers_rigidity` is the contrapositive: if the product has too few distinct roots (deg(rad(a·b·c)) ≤ deg c), then a, b, c must all be constant. Its proof cases on `mason_stothers_add` — the degree-bound branch yields the impossible c.natDegree + 1 ≤ deg(rad) ≤ c.natDegree (`omega`), so the escape branch holds and every factor is constant.",
-    "mathContext": "$\\deg c < \\deg(\\mathrm{rad}(abc)); \\qquad \\deg(\\mathrm{rad}(abc)) \\le \\deg c \\implies a, b, c\\ \\text{all constant}.$",
+    "title": "The Headline ABC Degree Inequality",
+    "content": "`natDegree_lt_radical_charZero` states the polynomial analogue of the abc height inequality: for a coprime triple a + b = c over a characteristic-zero field with c non-constant, deg c < deg(rad(a·b·c)) — the degree of c is strictly less than the number of distinct roots of the product. The proof is a one-liner: it invokes `mason_stothers_charZero` (feeding the non-constant witness as `Or.inr (Or.inr hcdeg)`) and projects out the c-component `.2.2`, namely c.natDegree + 1 ≤ deg(rad(a·b·c)). Because ℕ subtraction makes n + 1 ≤ m *definitionally* n < m, no arithmetic step is needed — the strict inequality is the same proposition as the bound.",
+    "mathContext": "$\\deg c < \\deg(\\mathrm{rad}(a\\,b\\,c))$, equivalently $\\deg c + 1 \\le \\#\\{\\text{distinct roots of } a\\,b\\,c\\}$.",
     "significance": "key",
-    "relatedConcepts": ["abc inequality", "rigidity", "contrapositive", "distinct roots count"],
-    "prerequisites": ["mason_stothers_charZero", "mason_stothers_add", "omega"]
+    "relatedConcepts": ["abc inequality", "height bound", "distinct roots count", "n + 1 ≤ m ↔ n < m in ℕ"],
+    "prerequisites": ["mason_stothers_charZero", "natDegree of the radical", "ℕ order"]
+  },
+  {
+    "id": "mason-oq01-ann-rigidity",
+    "proofId": "mason-stothers-theorem-oq-01",
+    "range": { "startLine": 113, "endLine": 131 },
+    "type": "theorem",
+    "title": "The Rigidity Corollary (Contrapositive)",
+    "content": "`mason_stothers_rigidity` reads the degree bound backwards: in characteristic zero, if the product a·b·c has *too few* distinct roots (deg(rad(a·b·c)) ≤ deg c), then the relation is forced to be totally degenerate — a, b, c are all constant. The proof cases directly on `mason_stothers_add` rather than the charZero bound, so it needs no non-constant hypothesis: the degree-bound branch gives c.natDegree + 1 ≤ deg(rad) ≤ c.natDegree, which `omega` refutes; hence the escape branch must hold, and `natDegree_eq_zero_of_derivative_eq_zero` turns a' = b' = c' = 0 into the three constancy conclusions. It is the polynomial shadow of 'abc-triples with small radical are rare'.",
+    "mathContext": "$\\deg(\\mathrm{rad}(a\\,b\\,c)) \\le \\deg c \\implies \\deg a = \\deg b = \\deg c = 0.$",
+    "significance": "supporting",
+    "relatedConcepts": ["rigidity", "contrapositive", "case analysis on the ABC dichotomy", "small-radical triples"],
+    "prerequisites": ["mason_stothers_add", "natDegree_eq_zero_of_derivative_eq_zero", "omega"]
   }
 ]
