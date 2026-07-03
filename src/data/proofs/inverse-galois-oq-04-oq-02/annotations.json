@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-imports",
+    "proofId": "inverse-galois-oq-04-oq-02",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "Setup: the two abstract Kummer–Dedekind bricks and the concrete quintic",
+    "content": "The file imports the verified factorization keystone `InverseGaloisA5DedekindMod7` (giving q mod 7 and `cubic7`) and the two abstract bricks `DedekindKummerStep1` and `DedekindKummerToTower`. Both bricks assume a hypothesis `Q ∈ monicFactorsMod θ p`; the whole point of this file is to discharge that hypothesis concretely for θ = α (root of the A₅ quintic), p = 7, Q = cubic7.",
+    "mathContext": "The A₅ quintic is $q = X^5 - 5X^4 + 10X^3 - 10X^2 + 25X - 5$. Its Galois-realizability reduces to $3 \\mid \\mathrm{inertiaDegIn}_{(7)}(\\mathcal{O}_{q.\\mathrm{SplittingField}})$, provable by a Kummer–Dedekind factorization route.",
+    "significance": "context",
+    "relatedConcepts": ["inverse Galois problem", "Kummer–Dedekind theorem", "A₅ realizability", "inertia degree"],
+    "prerequisites": ["algebraic number theory", "Galois theory"]
+  },
+  {
+    "id": "ann-poly-facts",
+    "proofId": "inverse-galois-oq-04-oq-02",
+    "range": { "startLine": 54, "endLine": 69 },
+    "type": "technique",
+    "title": "Self-contained (ZMod 7)[X] facts: monic, divides, nonzero",
+    "content": "`qInt_monic` and `cubic7_monic` are discharged by `monicity!` on the explicit polynomials. `cubic7_dvd` reads the divisibility straight off the verified factorization `q mod 7 = (X−5)(X−6)·cubic7` via `dvd_mul_left`. `qIntMap_ne_zero` uses that a monic polynomial maps to a nonzero polynomial over the nontrivial ring (ZMod 7)[X].",
+    "mathContext": "$q \\bmod 7 = (X-5)(X-6)\\,\\mathrm{cubic7}$ with $\\mathrm{cubic7} = X^3 + 6X^2 + 4X + 1$. Monicity, divisibility, and nonvanishing are the three ingredients `mem_normalizedFactors_iff` will consume.",
+    "significance": "supporting",
+    "relatedConcepts": ["monic polynomial", "polynomial divisibility", "reduction mod p", "monicity! tactic"],
+    "prerequisites": ["polynomials over finite fields"]
+  },
+  {
+    "id": "ann-normalized-factor",
+    "proofId": "inverse-galois-oq-04-oq-02",
+    "range": { "startLine": 71, "endLine": 79 },
+    "type": "insight",
+    "title": "The arithmetic keystone: cubic7 is a normalized factor",
+    "content": "`cubic7_mem_normalizedFactors` is the mathematical crux, stated entirely inside (ZMod 7)[X] with no number field. It applies `Polynomial.mem_normalizedFactors_iff` (for a nonzero polynomial over a field, `p ∈ normalizedFactors q ↔ Irreducible p ∧ p.Monic ∧ p ∣ q`) to the irreducible/monic/divides trio. Monicity is what upgrades 'irreducible factor' to 'normalized factor' — over a field a monic polynomial is already `normalize`-fixed.",
+    "mathContext": "$\\mathrm{cubic7} \\in \\mathrm{normalizedFactors}(q \\bmod 7)$: it is irreducible (a rootless cubic over a field), monic (hence normalized), and divides $q \\bmod 7$.",
+    "significance": "key",
+    "relatedConcepts": ["normalizedFactors", "mem_normalizedFactors_iff", "unique factorization", "irreducible polynomial"],
+    "prerequisites": ["unique factorization domains", "normalization in a field"]
+  },
+  {
+    "id": "ann-monic-factors-mod",
+    "proofId": "inverse-galois-oq-04-oq-02",
+    "range": { "startLine": 81, "endLine": 100 },
+    "type": "insight",
+    "title": "Lifting to the number field: cubic7 ∈ monicFactorsMod α 7",
+    "content": "`cubic7_mem_monicFactorsMod` delivers exactly the hypothesis both bricks assume. `monicFactorsMod α 7` is by definition the `toFinset` of `normalizedFactors ((minpoly ℤ α).map (ZMod 7))`, so membership is `Multiset.mem_toFinset` followed by the rewrite `minpoly ℤ α = qInt`, reducing to the self-contained keystone. `three_dvd_cubic7_natDegree` records `3 ∣ cubic7.natDegree = 3`, the degree slot the bricks need.",
+    "mathContext": "For $\\alpha$ with $\\mathrm{minpoly}_{\\mathbb Z}\\alpha = q_{\\mathbb Z}$: $\\mathrm{cubic7} \\in \\mathrm{monicFactorsMod}\\,\\alpha\\,7$. The number-field statement is one `mem_toFinset` and the substitution away from the pure polynomial fact.",
+    "significance": "key",
+    "relatedConcepts": ["monicFactorsMod", "minimal polynomial", "ring of integers", "algebraic integer"],
+    "prerequisites": ["minimal polynomials", "number fields"]
+  },
+  {
+    "id": "ann-step1-composition",
+    "proofId": "inverse-galois-oq-04-oq-02",
+    "range": { "startLine": 102, "endLine": 111 },
+    "type": "insight",
+    "title": "Composing with Step 1: a prime of inertia degree divisible by 3",
+    "content": "`exists_prime_three_dvd_inertiaDeg` feeds the concrete factor through `DedekindKummerStep1`: given `minpoly ℤ α = qInt` and `7 ∤ exponent α`, it produces a maximal prime P of 𝓞 K over (7) with `3 ∣ inertiaDeg (7) P`. The degree-3 irreducible factor mechanically manufactures a prime whose residue-field extension has degree divisible by 3 — i.e. a Frobenius element of order divisible by 3.",
+    "mathContext": "$\\exists P \\lhd \\mathcal{O}_K$ maximal, $P \\mid (7)$, with $3 \\mid f(P \\mid 7)$. By Kummer–Dedekind (valid since $7 \\nmid \\mathrm{exponent}\\,\\alpha$, i.e. 7 misses the conductor of $\\mathbb{Z}[\\alpha]$), the factorization of $(7)$ mirrors that of $q \\bmod 7$, so the cubic factor gives a degree-3 prime.",
+    "significance": "key",
+    "relatedConcepts": ["inertia degree", "Frobenius element", "conductor of an order", "prime splitting"],
+    "prerequisites": ["Kummer–Dedekind theorem", "inertia and ramification"]
+  },
+  {
+    "id": "ann-tower-composition",
+    "proofId": "inverse-galois-oq-04-oq-02",
+    "range": { "startLine": 113, "endLine": 136 },
+    "type": "insight",
+    "title": "Composing with the tower brick: 3 ∣ inertiaDegIn over the Galois tower",
+    "content": "`three_dvd_inertiaDegIn_of_tower_data` feeds the same factor through `DedekindKummerToTower` over a Galois tower ℤ ⊆ 𝓞 K ⊆ T (with T integral over 𝓞 K and T/ℤ Galois via a finite group G), yielding `3 ∣ Ideal.inertiaDegIn (span {(7:ℤ)}) T`. This is the exact shape the A₅ residual gap needs at K = ℚ(α), T = 𝓞 q.SplittingField, G = q.Gal. The closing `#print axioms` audits show only propext / Classical.choice / Quot.sound.",
+    "mathContext": "Over a Galois tower, inertia degrees are multiplicative and (by Galois uniformity) uniform across primes above (7), so $3 \\mid f(P \\mid 7)$ propagates to $3 \\mid \\mathrm{inertiaDegIn}_{(7)}(T)$ — which forces $3 \\mid |G|$ once the tower is $q.\\mathrm{SplittingField}$.",
+    "significance": "key",
+    "relatedConcepts": ["inertiaDegIn", "Galois tower", "IsGaloisGroup", "inertia multiplicativity"],
+    "prerequisites": ["Galois theory of number fields", "scalar towers", "axiom auditing"]
+  }
+]
