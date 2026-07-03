@@ -74,7 +74,7 @@
     "sorries": 0
   },
   "overview": {
-    "historicalContext": "Euler evaluated the even zeta values ζ(2k) = (rational)·π^{2k} in 1740; ζ(4) = π⁴/90 is the case k = 2. The odd-indexed restriction λ(s) = ∑_{k≥0} 1/(2k+1)^s is the Dirichlet lambda function, related to ζ by λ(s) = (1 - 2^{-s})ζ(s) — it drops the even-indexed terms, which themselves form a 2^{-s}-scaled copy of ζ. At s = 4 this gives λ(4) = (1 - 1/16)ζ(4) = π⁴/96. This entry formalizes that special value, reusing Mathlib's machine-checked ζ(4) = π⁴/90.",
+    "historicalContext": "Euler evaluated the even zeta values ζ(2k) = (rational)·π^{2k} in 1740; ζ(4) = π⁴/90 is the case k = 2. The odd-indexed restriction λ(s) = ∑_{k≥0} 1/(2k+1)^s is the Dirichlet lambda function, related to ζ by λ(s) = (1 - 2^{-s})ζ(s) — it drops the even-indexed terms, which themselves form a 2^{-s}-scaled copy of ζ. At s = 4 this gives λ(4) = (1 - 1/16)ζ(4) = π⁴/96. This entry formalizes that special value, reusing Mathlib's machine-checked ζ(4) = π⁴/90. The Dirichlet lambda function sits inside a small family of closely related Dirichlet series — ζ (all n), λ (odd n only), the Dirichlet eta η(s) = (1 - 2^{1-s})ζ(s) (alternating signs), and the beta function β — all obtainable from ζ by elementary even/odd splits or sign flips of the terms. The identity used here, ζ(s) = 2^{-s}ζ(s) + λ(s), is the simplest of these and is exactly what Mathlib's HasSum.even_add_odd expresses, which is why λ(4) is reachable from ζ(4) with no new analytic input — only a reindexing of the odd terms and one linear solve.",
     "problemStatement": "Formalize, with 0 sorries and 0 axioms, the odd-fourth-power zeta sum\n\n$$\\lambda(4) = \\sum_{k=0}^{\\infty} \\frac{1}{(2k+1)^4} = \\frac{\\pi^4}{96},$$\n\nby specializing Mathlib's `hasSum_zeta_four` (ζ(4) = π⁴/90) through the parity split λ(4) = (1 - 1/16)ζ(4).",
     "text": "The odd-indexed Basel-type sum at exponent 4: λ(4) = π⁴/96, obtained from Mathlib's ζ(4) = π⁴/90 by separating even- and odd-indexed terms.",
     "proofStrategy": "Two HasSum lemmas. (1) hasSum_even_zeta_four: rewrite 1/(2k)⁴ = (1/16)(1/k⁴) and scale ζ(4) by 1/16 (HasSum.mul_left + a `ring` rewrite) to get π⁴/1440. (2) hasSum_odd_zeta_four: the odd subseries is summable (Summable.comp_injective with k ↦ 2k+1), so reassembling ζ(4) = even + odd via HasSum.even_add_odd and applying HasSum.unique against hasSum_zeta_four forces the odd sum to π⁴/90 - π⁴/1440 = π⁴/96. A tsum corollary (tsum_odd_zeta_four) records the ∑' form.",
@@ -111,11 +111,27 @@
     },
     {
       "id": "odd-part",
-      "title": "hasSum_odd_zeta_four / tsum_odd_zeta_four — ∑ 1/(2k+1)⁴ = π⁴/96",
+      "title": "hasSum_odd_zeta_four — ∑ 1/(2k+1)⁴ = π⁴/96",
       "startLine": 48,
+      "endLine": 62,
+      "summary": "Odd subseries summable via Summable.comp_injective with k ↦ 2k+1; reassemble ζ(4) = even + odd through HasSum.even_add_odd, then HasSum.unique against hasSum_zeta_four forces π⁴/1440 + (odd) = π⁴/90, so linarith gives the odd sum = π⁴/96.",
+      "mathContext": "The lambda value λ(4), recovered by uniqueness as ζ(4) minus its even part: π⁴/90 − π⁴/1440 = π⁴/96."
+    },
+    {
+      "id": "tsum-form",
+      "title": "tsum_odd_zeta_four — the ∑' corollary",
+      "startLine": 64,
       "endLine": 69,
-      "summary": "Odd subseries summable via comp_injective; reassemble ζ(4) = even + odd and use HasSum.unique to pin the odd sum to π⁴/96, with a tsum corollary.",
-      "mathContext": "The lambda value λ(4), recovered as ζ(4) minus its even part."
+      "summary": "Records the odd-fourth-power sum in tsum form, ∑' k, 1/(2k+1)⁴ = π⁴/96, as HasSum.tsum_eq applied to hasSum_odd_zeta_four; closes the BaselOddZetaFour namespace.",
+      "mathContext": "∑' k, 1/(2k+1)⁴ = π⁴/96 — the unconditional (tsum) restatement of the HasSum result."
+    },
+    {
+      "id": "summary-table",
+      "title": "Summary table of results",
+      "startLine": 71,
+      "endLine": 85,
+      "summary": "Closing doc comment tabulating the three results (hasSum_even_zeta_four = π⁴/1440, hasSum_odd_zeta_four and tsum_odd_zeta_four = π⁴/96), noting the whole file is built from Mathlib's hasSum_zeta_four and the even/odd split HasSum.even_add_odd, with 0 sorries and 0 axioms.",
+      "mathContext": "Results: ∑ 1/(2k)⁴ = π⁴/1440, ∑ 1/(2k+1)⁴ = π⁴/96 (HasSum and tsum), all from ζ(4) = π⁴/90."
     }
   ],
   "mainTheorems": [
