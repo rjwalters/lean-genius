@@ -280,6 +280,106 @@
       "mathContext": "At a barrier $n\\geq 3$, $\\omega(n-1)=1$ forces $n-1=p^k$ — a sharp structural constraint linking barriers to the distribution of prime powers."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "erdos_413_conjecture",
+      "type": "axiom",
+      "statement": "(barriers omega).Infinite — ω has infinitely many barriers",
+      "significance": "The core open conjecture of Erdős Problem #413: there are infinitely many n that are barriers for ω(n) = #distinct prime factors (i.e. m + ω(m) ≤ n for all m < n). Stated as an axiom because the problem is unsolved; several results in the file are derived from it.",
+      "description": "Declared `axiom` (the sole axiom in the file) per the Axiom Integrity Policy for open conjectures. `epsilon_barriers` and `all_trajectories_meet` are proved as consequences, which reduced the axiom count from 4 to 1."
+    },
+    {
+      "name": "two_pow_omega_le",
+      "type": "theorem",
+      "statement": "2^ω(n) ≤ n for n ≥ 1",
+      "significance": "The fundamental growth bound on ω: since n has at least 2^ω(n) divisors' worth of prime structure, the distinct-prime count is at most logarithmic. This is the quantitative engine behind ω being a slow-growing 'barrier-friendly' function.",
+      "description": "Bounds 2^(#primeFactors) by the product of the prime factors (each ≥ 2) via Finset.prod_le_prod, then by n itself through Nat.prod_primeFactors_dvd and Nat.le_of_dvd."
+    },
+    {
+      "name": "omega_upper_bound",
+      "type": "theorem",
+      "statement": "ω(n) ≤ log₂ n = log n / log 2, for n ≥ 2",
+      "significance": "The real-valued logarithmic ceiling on ω. Because ω grows only like log n while trajectories m ↦ m + ω(m) advance, barriers can persist — this bound is why ω barriers are plausible whereas faster functions have none.",
+      "description": "Takes logs of two_pow_omega_le: rewrites via le_div_iff₀ with log 2 > 0 and monotonicity of Real.log."
+    },
+    {
+      "name": "omega_le_bigOmega",
+      "type": "theorem",
+      "statement": "ω(n) ≤ Ω(n) — distinct primes ≤ primes-with-multiplicity",
+      "significance": "Relates the two prime-counting functions. Because ω ≤ Ω pointwise, any barrier for Ω is automatically a barrier for ω, letting known Ω-barrier data (e.g. Selfridge's 99840) feed the ω question.",
+      "description": "Rewrites both as Finsupp sums over the prime support and applies Finset.sum_le_sum, using that each factorization exponent is ≥ 1."
+    },
+    {
+      "name": "bigOmega_barrier_implies_omega_barrier",
+      "type": "theorem",
+      "statement": "IsBarrier Ω n → IsBarrier ω n",
+      "significance": "Transfers barrier status downward along ω ≤ Ω: every Ω-barrier is an ω-barrier. This is the bridge that makes the more-studied Ω-barrier sequence relevant to Erdős's ω conjecture.",
+      "description": "Immediate from omega_le_bigOmega and the definition of IsBarrier, closed by omega after instantiating the Ω-barrier hypothesis at m."
+    },
+    {
+      "name": "euler_phi_no_barriers",
+      "type": "theorem",
+      "statement": "For n ≥ 4, ¬IsBarrier φ n (Euler totient has no barriers beyond 3)",
+      "significance": "A sharp contrast case: the totient φ grows fast enough (φ(m) ≥ 2 for m ≥ 3) that (n-1) + φ(n-1) > n always, so φ has only finitely many barriers. This isolates why ω's slow growth is essential to the conjecture.",
+      "description": "Instantiates a hypothetical barrier at m = n-1 ≥ 3, invokes totient_ge_two, and derives the contradiction (n-1)+2 > n by omega."
+    },
+    {
+      "name": "sigma1_no_barriers",
+      "type": "theorem",
+      "statement": "For n ≥ 3, ¬IsBarrier σ₁ n (sum-of-divisors has no barriers beyond 2)",
+      "significance": "Another negative benchmark: σ₁(m) ≥ m+1 forces (n-1)+σ₁(n-1) > n, so the divisor-sum function has no large barriers. Together with the φ result it frames barriers as a phenomenon peculiar to sub-linear functions like ω.",
+      "description": "Uses sigma1_ge_succ (σ₁(m) ≥ m+1 for m ≥ 2) at m = n-1 and closes the contradiction by omega."
+    },
+    {
+      "name": "barrier_pred_is_prime_power_or_one",
+      "type": "theorem",
+      "statement": "If n ≥ 2 is an ω-barrier, then n−1 = 1 or n−1 = p^k for a prime p",
+      "significance": "A structural constraint on ω-barriers: the predecessor of any barrier must be 1 or a prime power (ω ≤ 1). This tight arithmetic condition explains the observed OEIS A005236 pattern and constrains where new barriers can appear.",
+      "description": "From omega_pred_le_one_at_barrier (ω(n-1) ≤ 1) and the characterization that ω(m) ≤ 1 iff m ∈ {0,1} or m is a prime power."
+    },
+    {
+      "name": "barrier_gap_two",
+      "type": "theorem",
+      "statement": "If n ≥ 2 and both n and n+2 are ω-barriers, then ω(n) ≤ 1 and ω(n+1) ≤ 1",
+      "significance": "A spacing law: two barriers only two apart force the intervening values to have at most one prime factor. This limits how densely ω-barriers can cluster.",
+      "description": "Applies the n+2 barrier hypothesis at m = n and m = n+1 and simplifies with omega."
+    },
+    {
+      "name": "barrier_no_three_consecutive",
+      "type": "theorem",
+      "statement": "For n ≥ 6, if n, n+1, n+2 are all ω-barriers then ω(n) ≤ 1 and ω(n+1) ≤ 1",
+      "significance": "Strengthens the spacing analysis: three consecutive barriers are essentially impossible except at prime-power-adjacent values, sharpening the combinatorial picture of the barrier set.",
+      "description": "Instantiates the n+1 and n+2 barrier hypotheses at m = n and m = n+1 and closes by omega."
+    },
+    {
+      "name": "isBarrierBool_complete",
+      "type": "theorem",
+      "statement": "isBarrierBool f n = true ↔ IsBarrier f n (sound + complete decision procedure)",
+      "significance": "Provides an executable, verified decision procedure for barrierhood, letting the concrete OEIS A005236 values (1,2,4,6,12,24,30,…) be machine-checked. Bridges the Prop-level definition and native_decide computation.",
+      "description": "isBarrierBool_sound and isBarrierBool_complete together prove the Bool test agrees with IsBarrier by unfolding List.all over the range and rewriting decide_eq_true_eq."
+    },
+    {
+      "name": "orbit_strictly_increasing",
+      "type": "theorem",
+      "statement": "For n ≥ 2, orbit n k < orbit n (k+1) — the trajectory n ↦ n + ω(n) strictly increases",
+      "significance": "Establishes the dynamical setup: iterating n ↦ n + ω(n) produces a strictly increasing orbit (for n ≥ 2, avoiding the ω(0)=ω(1)=0 fixed points). Barriers are exactly the values these orbits cannot leap over.",
+      "description": "Induction on k using iterOmega_strictly_increasing (n < n + ω(n) for n ≥ 2) at each step."
+    },
+    {
+      "name": "barrier_traps_orbit",
+      "type": "theorem",
+      "statement": "If b is an ω-barrier and m < b, then orbit m 1 ≤ b",
+      "significance": "Makes the 'barrier' metaphor precise: any trajectory started below a barrier b cannot overshoot it in one step, so barriers act as synchronization points funneling all orbits together.",
+      "description": "Unfolds orbit/iterOmega to m + ω(m) and applies the barrier hypothesis directly."
+    },
+    {
+      "name": "all_trajectories_meet",
+      "type": "theorem",
+      "statement": "For all a, b ≥ 2, the orbits of a and b under n ↦ n + ω(n) eventually meet",
+      "significance": "A striking consequence of the conjecture: infinitely many barriers are unbounded, so any two orbits both reach a common barrier B and agree forever after. Previously an axiom, now derived — trimming the assumption count.",
+      "description": "Proved from erdos_413_conjecture: infinitude of barriers gives an arbitrarily large barrier B ≥ max orbit values; barrier_traps_orbit then forces coalescence. Requires a,b ≥ 2 to avoid the ω-fixed points at 0,1."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization provides a comprehensive treatment of Erdős Problem #413 on barriers for the ω function. It defines barriers for general arithmetic functions, proves structural constraints (predecessors must be prime powers, φ and σ₁ cannot have large barriers), machine-verifies specific barriers up to 128, establishes a barrier hierarchy F >> ω >> Ω, and connects barriers to the iterated dynamics of n ↦ n + ω(n). The 1100-line file includes 50+ theorems, a decidable barrier-checking framework, and extensive computational verification.",
     "implications": "**Theoretical Significance**: Resolution of the barrier conjecture would illuminate the distribution of prime factors among consecutive integers and clarify the dynamical structure of additive arithmetic iterations.\n\nThe barrier concept bridges additive number theory and discrete dynamics — infinite barriers would imply a kind of 'recurrence' in the prime factorization structure of integers. The ε-variant connects to the fine distribution of smooth numbers and the Erdős-Kac theorem on the normal order of ω.",
