@@ -187,5 +187,42 @@
     "definitionCount": 4,
     "theoremCount": 6
   },
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "isNonCrossingFp_ofSetoid_iff",
+      "type": "theorem",
+      "statement": "IsNonCrossingFp (Finpartition.ofSetoid s) ↔ IsNonCrossing s",
+      "significance": "The agreement theorem, and the technical heart of the entry: it certifies that the new Fintype-bearing Finpartition model of non-crossing partitions describes exactly the same objects as the parent's setoid predicate. Without it the port would be a fresh definition of unknown fidelity; with it, every structural result about the parent's IsNonCrossing transfers, and the count nonCrossingCount is provably a count of the intended objects. The proof is a one-line unfold plus Mathlib's Finpartition.mem_part_ofSetoid_iff_rel, which identifies b ∈ (ofSetoid s).part a with s a b.",
+      "description": "unfold IsNonCrossingFp IsNonCrossing; simp only [Finpartition.mem_part_ofSetoid_iff_rel] — rewrite the same-part membership as the setoid relation, collapsing the two predicates to the same quantified statement."
+    },
+    {
+      "name": "isNonCrossingFp_of_n_le_three",
+      "type": "theorem",
+      "statement": "n ≤ 3 → (P : Finpartition (univ : Finset (Fin n))) → IsNonCrossingFp P",
+      "significance": "A crossing requires four strictly increasing indices a < b < c < d, which cannot exist in Fin n for n ≤ 3. Hence every partition of at most three points is trivially non-crossing. This is the structural reason the non-crossing count agrees with the Bell number below n = 4, and it isolates n = 4 as the first place the two families can differ.",
+      "description": "intro a b c d hab hbc hcd _ _; exfalso; rw [Fin.lt_def] at hab hbc hcd; have hd := d.isLt; omega — the four increasing indices and the bound d < n ≤ 3 are contradictory by linear arithmetic."
+    },
+    {
+      "name": "nonCrossingCount_eq_card_of_n_le_three",
+      "type": "theorem",
+      "statement": "n ≤ 3 → nonCrossingCount n = Fintype.card (Finpartition (univ : Finset (Fin n)))",
+      "significance": "For n ≤ 3 the non-crossing subtype is the whole partition Fintype, so the non-crossing count equals the total partition count — the Bell number Bₙ. This anchors the small-n regime (Bell 0..3 = 1, 1, 2, 5) where non-crossing and unrestricted partitions coincide, against which the n = 4 divergence is measured.",
+      "description": "unfold nonCrossingCount; exact Fintype.card_congr (Equiv.subtypeUnivEquiv (isNonCrossingFp_of_n_le_three hn)) — since the predicate holds universally, the subtype is equivalent to the base Fintype and their cardinalities agree."
+    },
+    {
+      "name": "crossing4_not_isNonCrossing",
+      "type": "theorem",
+      "statement": "¬ IsNonCrossing crossing4",
+      "significance": "The concrete crossing witness at n = 4: the parity partition {{0,2},{1,3}} (kernel of ·%2 on Fin 4) has 0 ~ 2 and 1 ~ 3 but 0 ≁ 1, so the indices 0 < 1 < 2 < 3 interleave. This single explicit partition is what forces the strict drop of the count at n = 4 and realises the catalan 4 = 14 < 15 = Bell 4 gap.",
+      "description": "Apply the non-crossing hypothesis at 0 1 2 3 to force crossing4.r 0 1, i.e. 0 % 2 = 1 % 2, then derive a contradiction by decide on the parity relation."
+    },
+    {
+      "name": "nonCrossingCount_four_lt",
+      "type": "theorem",
+      "statement": "nonCrossingCount 4 < Fintype.card (Finpartition (univ : Finset (Fin 4)))",
+      "significance": "The headline result: n = 4 is the first point at which non-crossing partitions are a STRICT subfamily of all partitions, so the non-crossing count falls below the Bell number. This is the catalan 4 = 14 < 15 = Bell 4 phenomenon rendered as a theorem about the Finpartition model rather than a hand computation, and it is exactly the divergence that makes the sibling counting statement nonCrossingCount n = catalan n non-trivial.",
+      "description": "Fintype.card_subtype_lt (x := crossing4Fp) crossing4Fp_not_isNonCrossingFp — the existence of one partition failing the predicate makes the subtype strictly smaller than the ambient Fintype."
+    }
+  ]
 }
