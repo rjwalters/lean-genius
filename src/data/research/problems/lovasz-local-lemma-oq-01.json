@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: measure-theoretic bridge indepSet_avoidance (iIndepSet A μ ⇒ IndepSet (A i)(⋂_{j∈S}(A j)ᶜ) μ) verified 0-axiom in LovaszLocalLemmaOQ01CondIndep.lean, discharging the standing IndepSet hypothesis of the OQ-01 sequential/subset toolkit. General bounded-dependency-degree LLL remains open.",
+    "progressSummary": "PROGRESS: induction-step RATIO assembled (researcher-4, PR #34169) — cond_le_div joins the verified numerator (≤μ(Aᵢ)) and any denominator lower bound into μ[Aᵢ|N∩C] ≤ μ(Aᵢ)/d, closing to the LLL invariant μ[Aᵢ|N∩C] ≤ xᵢ under μ(Aᵢ)≤xᵢ·d. Remaining open core: the recursion producing d = ∏(1−xⱼ). d=0 base case + numerator + denominator peel + ratio now all verified.",
     "builtItems": [
       "Proofs/LovaszLocalLemmaOQ01.lean: lll_independent_meas_iInter_compl (exact factorization)",
       "Proofs/LovaszLocalLemmaOQ01.lean: lll_independent_avoidance (positive avoidance under mu(A i)<1) - measure-theoretic d=0 symmetric LLL, 0-axiom verified",
@@ -51,14 +51,16 @@
       "Proofs/LovaszLocalLemmaOQ01.lean: compl_measurable_generateFrom (helper)",
       "Proofs/LovaszLocalLemmaOQ01CondIndep.lean: indepSet_avoidance — iIndepSet A μ → i∉S → IndepSet (A i) (⋂_{j∈S}(A j)ᶜ) μ (the bridge discharging the toolkits standing IndepSet hypothesis, 0-axiom verified)",
       "Proofs/LovaszLocalLemmaOQ01CondIndep.lean: indep_avoidance — μ(A i ∩ ⋂_{j∈S}(A j)ᶜ)=μ(A i)·μ(⋂...) via iIndepSet.indep_generateFrom_of_disjoint",
-      "Proofs/LovaszLocalLemmaOQ01CondIndep.lean: cond_avoidance_eq_self / cond_prefix_eq_self — hypothesis-free μ[A i|⋂_{j∈S}(A j)ᶜ]=μ(A i) (discharges DependencySplits cond_failure_eq_measure_of_indep_subset)"
+      "Proofs/LovaszLocalLemmaOQ01CondIndep.lean: cond_avoidance_eq_self / cond_prefix_eq_self — hypothesis-free μ[A i|⋂_{j∈S}(A j)ᶜ]=μ(A i) (discharges DependencySplits cond_failure_eq_measure_of_indep_subset)",
+      "Proofs/LovaszLocalLemmaOQ01InductionStep.lean (gallery lovasz-local-lemma-oq-01-induction-step, PR #34169, 0-sorry/0-axiom): cond_le_div (abstract two-block ratio bound), cond_failure_le_measure_div (LLL step μ[Aᵢ|N∩C] ≤ μ(Aᵢ)/d from any denom lower bound d + non-neighbour independence), cond_failure_le_x (closed invariant μ[Aᵢ|N∩C] ≤ xᵢ under asymmetric LLL hypothesis μ(Aᵢ) ≤ xᵢ·d). Imports only the sibling dependency-split + denominator-step entries."
     ],
     "insights": [
       "The d=0 (mutually independent) base case of the symmetric LLL is fully provable over a real measure space in Mathlib: given iIndepSet A mu and mu(A i)<1 for all i, mu of the intersection of complements = product of (1-mu(A i)) > 0.",
       "Bridge: iIndepSet_iff_iIndep converts event-independence to sigma-algebra independence (iIndep (generateFrom {A i})), after which iIndep.meas_iInter applies to the complements since each (A i) complement is measurable in generateFrom {A i} via measurableSet_generateFrom(mem_singleton).compl.",
       "prob_compl_eq_one_sub (needs IsProbabilityMeasure from hind.isProbabilityMeasure) rewrites mu of complement as 1-mu(A i); ENNReal product positivity via zero_lt_iff + Finset.prod_ne_zero_iff + tsub_pos_iff_lt.",
       "The OQ-01 toolkit (Independence.lean/DependencySplit.lean) assumed IndepSet (A i) (⋂_{j∈S}(A j)ᶜ) μ as an unproven hypothesis; it is derivable from iIndepSet A μ via Mathlibs iIndepSet.indep_generateFrom_of_disjoint (disjoint index sets {i} and S ⇒ independent generated σ-algebras), then indepSet_iff_measure_inter_eq_mul packages it. This closes the gap between family mutual independence and the pairwise/avoidance independence the rest of the program consumes.",
-      "The finite avoidance ⋂_{j∈S}(A j)ᶜ is measurable in generateFrom {A k : k∈S} because it is a finite intersection of complements of generators (Finset.measurableSet_biInter of (measurableSet_generateFrom _).compl) — this is the technical key letting the two-σ-algebra independence apply to it."
+      "The finite avoidance ⋂_{j∈S}(A j)ᶜ is measurable in generateFrom {A k : k∈S} because it is a finite intersection of complements of generators (Finset.measurableSet_biInter of (measurableSet_generateFrom _).compl) — this is the technical key letting the two-σ-algebra independence apply to it.",
+      "Ratio-assembly (researcher-4, 2026-07-03): the Erdős–Lovász induction step is a ratio μ[Aᵢ|N∩C] = μ[Aᵢ∩N|C] / μ[N|C] (N=neighbour survival ⋂_{S₁}Aⱼᶜ, C=non-neighbour survival ⋂_{S₂}Aⱼᶜ). Both halves were verified separately (dependency-split numerator ≤μ(Aᵢ); denominator-step peel building ≥∏(1−xⱼ)) but never DIVIDED. cond_le_div assembles them: num upper bound + denom lower bound (denom≠0) ⟹ μ[A|N∩C] ≤ num/denom, via cond_inter_eq_cond_cond_mul + ENNReal.le_div_iff_mul_le. Denominator finiteness is FREE (any lower bound of a conditional is ≤1<∞, ne_top_of_le_ne_top on cond_ne_top)."
     ],
     "mathlibGaps": [
       "Mathlib has NO complement-independence lemma for iIndepSet directly; must route through iIndepSet_iff_iIndep + generateFrom. A reusable iIndepSet.meas_iInter_compl would be a clean upstream contribution.",
@@ -70,7 +72,8 @@
       "Package lll_independent_meas_iInter_compl as upstream Mathlib PR candidate (iIndepSet.meas_iInter_compl).",
       "Generalise indepSet_avoidance to the dependency-graph setting: hypothesis A i mutually independent of {A j : j∉Γ(i)}, conclusion IndepSet (A i)(⋂_{j∈S}(A j)ᶜ) for S disjoint from Γ(i) — the actual non-neighbour hypothesis of the general LLL.",
       "Combine indepSet_avoidance with DependencySplit numerator bound + DenominatorStep survival peel to prove μ[A i|⋂_{j∈S}(A j)ᶜ] ≤ x_i by induction on |S| (the missing core of bounded-degree LLL).",
-      "Feed indepSet_avoidance into seq_indep_avoidance_eq_prod for a chain-rule derivation of μ(⋂ Aᵢᶜ)=∏(1-μ(Aᵢ)) from iIndepSet, cross-checking the base-case meas_iInter derivation."
+      "Feed indepSet_avoidance into seq_indep_avoidance_eq_prod for a chain-rule derivation of μ(⋂ Aᵢᶜ)=∏(1-μ(Aᵢ)) from iIndepSet, cross-checking the base-case meas_iInter derivation.",
+      "Assemble the denominator lower bound d = ∏_{j∈S₁}(1−xⱼ) ≤ μ[⋂_{S₁}Aⱼᶜ | ⋂_{S₂}Aⱼᶜ] by well-founded recursion on |S₁|, iterating denominator-step mul_one_sub_le_cond_compl and threading cond_failure_le_x per-event bounds at strictly smaller conditioning sets. Feeding it into cond_failure_le_x then closes the full Erdős–Lovász mutual induction."
     ],
     "markdown": "# Knowledge Base: lovasz-local-lemma-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
