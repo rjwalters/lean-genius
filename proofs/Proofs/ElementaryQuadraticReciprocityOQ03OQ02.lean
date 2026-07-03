@@ -208,16 +208,70 @@ theorem kronecker_mul_left (a b n : ℤ) (hab : a * b ≠ 0) :
   · rw [jacobiSym.mul_left, kroneckerNeg1_mul a b ha hb]; ring
   · rw [jacobiSym.mul_left]; ring
 
-/-- The Kronecker symbol is completely multiplicative in the second argument:
-    (a/mn) = (a/m)(a/n), provided m * n ≠ 0 or |a| ≤ 1.
+/-- **Multiplicativity in the second argument, odd positive case.**
+    For odd positive moduli m, n, the Kronecker symbol satisfies
+    (a/mn) = (a/m)(a/n).
 
-    Same edge case as kronecker_mul_left: kroneckerNeg1(0) = 1 causes
-    issues when one of m, n is -1 and the other introduces a 0.
-    Fix: require m * n ≠ 0. -/
-/-- **Quadratic reciprocity for the Kronecker symbol**:
-    For fundamental discriminants d₁, d₂ with gcd(d₁,d₂) = 1:
-    (d₁/|d₂|)(d₂/|d₁|) = (-1)^{((d₁-1)/2)·((d₂-1)/2)}
+    Here both moduli lie in the odd positive range where the Kronecker
+    symbol coincides with the Jacobi symbol, so the result reduces to
+    `jacobiSym.mul_right'`. The fully general statement (even and negative
+    moduli) requires tracking the sign character and the mod-8 factor for
+    powers of 2; that case is left open — see the module note below. -/
+theorem kronecker_mul_right_odd (a : ℤ) (m n : ℕ)
+    (hm : 0 < m) (hn : 0 < n) (hmo : m % 2 = 1) (hno : n % 2 = 1) :
+    kronecker a ((m : ℤ) * n) = kronecker a m * kronecker a n := by
+  have hmn : 0 < m * n := Nat.mul_pos hm hn
+  have hmno : (m * n) % 2 = 1 :=
+    Nat.odd_iff.mp ((Nat.odd_iff.mpr hmo).mul (Nat.odd_iff.mpr hno))
+  have ecast : ((m : ℤ) * (n : ℤ)) = ((m * n : ℕ) : ℤ) := by push_cast; ring
+  rw [ecast, kronecker_eq_jacobi a (m * n) hmn hmno,
+    kronecker_eq_jacobi a m hm hmo, kronecker_eq_jacobi a n hn hno,
+    jacobiSym.mul_right' a (by omega) (by omega)]
 
-    This generalizes Gauss's QR to arbitrary discriminants and
-    is the form used in class field theory. -/
+/-- **Quadratic reciprocity for the Kronecker symbol, odd positive case.**
+    For odd positive m, n:
+    (m/n) = (-1)^{((m-1)/2)·((n-1)/2)} · (n/m).
+
+    For odd positive moduli the Kronecker symbol agrees with the Jacobi
+    symbol, so this is exactly `jacobiSym.quadratic_reciprocity` transported
+    across `kronecker_eq_jacobi`. No coprimality hypothesis is needed: when
+    gcd(m,n) > 1 both sides vanish.
+
+    The general reciprocity law for arbitrary (even/negative) discriminants
+    d₁, d₂ — the form used in class field theory, equivalent to Artin
+    reciprocity for quadratic extensions of ℚ — additionally requires the
+    supplementary laws (2/n) and (-1/n) and is left open here. -/
+theorem kronecker_quadratic_reciprocity (m n : ℕ)
+    (hm : 0 < m) (hn : 0 < n) (hmo : m % 2 = 1) (hno : n % 2 = 1) :
+    kronecker (m : ℤ) n = (-1) ^ (m / 2 * (n / 2)) * kronecker (n : ℤ) m := by
+  rw [kronecker_eq_jacobi (m : ℤ) n hn hno, kronecker_eq_jacobi (n : ℤ) m hm hmo]
+  exact jacobiSym.quadratic_reciprocity (Nat.odd_iff.mpr hmo) (Nat.odd_iff.mpr hno)
+
+/-- **Quadratic reciprocity, congruence form.**
+    If additionally m ≡ 1 (mod 4), the sign factor is trivial and reciprocity
+    becomes a plain equality (m/n) = (n/m). -/
+theorem kronecker_reciprocity_one_mod_four (m n : ℕ)
+    (hm : m % 4 = 1) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (m : ℤ) n = kronecker (n : ℤ) m := by
+  have hmo : m % 2 = 1 := by omega
+  have hmpos : 0 < m := by omega
+  rw [kronecker_eq_jacobi (m : ℤ) n hn hno, kronecker_eq_jacobi (n : ℤ) m hmpos hmo]
+  exact jacobiSym.quadratic_reciprocity_one_mod_four hm (Nat.odd_iff.mpr hno)
+
+/-!
+## Module note: what remains open
+
+The full Kronecker symbol is completely multiplicative in *both* arguments
+over all of ℤ×ℤ, and satisfies a generalized quadratic reciprocity law for
+arbitrary fundamental discriminants. The theorems above establish these
+properties on the odd positive range, where the symbol coincides with the
+Jacobi symbol and the results follow from Mathlib's Jacobi API.
+
+The remaining even/negative cases require the supplementary laws for the
+special moduli — `kronecker2` (the mod-8 pattern for n = 2) and
+`kroneckerNeg1` (the sign character for n = -1) — together with a Gauss-sum
+or induction argument to combine them with the odd part. These are not yet
+in Mathlib and are left as open work.
+-/
+
 end KroneckerSymbol
