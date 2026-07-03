@@ -101,11 +101,19 @@
     },
     {
       "id": "definition-and-extremes",
-      "title": "Definition and the Extreme/Small Partitions",
-      "summary": "IsNonCrossing s on a Setoid (Fin n); the one-block (top) and all-singletons (bot) partitions are non-crossing, and every partition of a <=3-element set is non-crossing.",
+      "title": "Definition and the Extreme Partitions ⊤ and ⊥",
+      "summary": "IsNonCrossing s on a Setoid (Fin n): no four indices a<b<c<d with a~c, b~d in distinct blocks. The one-block partition ⊤ (single block) and the all-singletons partition ⊥ (no related pairs) are both non-crossing — the top and bottom of the partition lattice.",
       "startLine": 69,
+      "endLine": 96,
+      "mathContext": "IsNonCrossing(s): no interleaving a~c, b~d (a<b<c<d) across distinct blocks. isNonCrossing_top and isNonCrossing_bot anchor the count at both lattice extremes."
+    },
+    {
+      "id": "small-partitions",
+      "title": "Crossings Need Four Points (n ≤ 3)",
+      "summary": "isNonCrossing_of_n_le_three: every partition of a ≤3-element set is non-crossing, because a crossing needs four strictly increasing indices a<b<c<d, which cannot exist below four points. This pins the base where the Catalan and Bell counts agree.",
+      "startLine": 97,
       "endLine": 109,
-      "mathContext": "Crossings require four strictly increasing indices a<b<c<d; below four points (n<=3) the configuration is unsatisfiable, so isNonCrossing_of_n_le_three holds. The first crossing appears on Fin 4."
+      "mathContext": "n ≤ 3 ⇒ every Setoid (Fin n) non-crossing (a crossing forces n ≥ 4). Hence Cₙ = Bₙ for n ≤ 3; the first crossing, and the first divergence C₄ = 14 < 15 = B₄, appears on Fin 4."
     },
     {
       "id": "structural-meaning",
