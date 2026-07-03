@@ -105,6 +105,99 @@
       "summary": "Links the r=1 case to Sidon sets. Defines IsSidonSetLocal (all ordered sums a+b with a ≤ b are distinct, matching IsSidonSet from Erdos340Problem.lean) and proves the equivalence isB2r_one_iff_sidon: a set is B₂[1] iff it is Sidon. Also proves singleton sets are both B₂[r] and difference B₂[r] for r ≥ 1 (isB2r_singleton, isDiffB2r_singleton)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "isB2r_one_iff_sidon",
+      "type": "theorem",
+      "statement": "IsB2r A 1 ↔ IsSidonSetLocal A",
+      "significance": "The conceptual heart of the file: a B₂[1] set is exactly a Sidon set (all ordered sums a+b, a ≤ b, distinct). Anchors the r = 1 case c₁ = c'₁ = 1 and connects Erdős #863 to the Sidon-set formalisation of Erdős #340.",
+      "description": "Both directions from Finset.card_le_one: unique representation ⇔ each sum-fibre has ≤ 1 element. Forward exhibits the two witnessing pairs in the same singleton filter; backward reads distinctness off the ≤1 cardinality."
+    },
+    {
+      "name": "isB2r_mono",
+      "type": "theorem",
+      "statement": "IsB2r A r → r ≤ r' → IsB2r A r'",
+      "significance": "The B₂[r] constraint is monotone in the multiplicity bound r: a set with at most r sum-representations trivially has at most r' ≥ r. Underlies the nesting B₂[1] ⊆ B₂[2] ⊆ … of the whole hierarchy.",
+      "description": "Pointwise le_trans (h n) hrr on the per-value representation counts."
+    },
+    {
+      "name": "isDiffB2r_mono",
+      "type": "theorem",
+      "statement": "IsDiffB2r A r → r ≤ r' → IsDiffB2r A r'",
+      "significance": "Difference analogue of isB2r_mono: the difference-B₂[r] property is monotone in r. Keeps the sum and difference hierarchies structurally parallel — the symmetry Erdős's conjecture probes.",
+      "description": "Pointwise le_trans (h n hn) hrr, quantified over nonzero differences n."
+    },
+    {
+      "name": "isB2r_subset",
+      "type": "theorem",
+      "statement": "IsB2r A r → A' ⊆ A → IsB2r A' r",
+      "significance": "The B₂[r] property is hereditary under subsets, so maximal-size B₂[r] sets are well posed and every B₂[r] set sits inside one. Essential for the maxB2rSize supremum to behave.",
+      "description": "calc: sumRepCount A' n ≤ sumRepCount A n (filter of a product-subset) ≤ r, via Finset.card_le_card and product_subset_product."
+    },
+    {
+      "name": "isDiffB2r_subset",
+      "type": "theorem",
+      "statement": "IsDiffB2r A r → A' ⊆ A → IsDiffB2r A' r",
+      "significance": "Difference-set analogue of isB2r_subset: heredity under subsets for difference B₂[r] sets, making maxDiffB2rSize equally well posed.",
+      "description": "Same calc as the sum case applied to diffRepCount over nonzero differences."
+    },
+    {
+      "name": "sumRepCount_le_card_sq",
+      "type": "theorem",
+      "statement": "sumRepCount A n ≤ A.card * A.card",
+      "significance": "A crude but foundational bound: no value has more than |A|² sum-representations, since the representations are a filtered subset of A × A. The trivial ceiling every B₂[r] refinement improves on.",
+      "description": "le_trans Finset.card_filter_le (card_product A A)."
+    },
+    {
+      "name": "diffRepCount_le_card_sq",
+      "type": "theorem",
+      "statement": "diffRepCount A n ≤ A.card * A.card",
+      "significance": "Difference analogue of sumRepCount_le_card_sq: at most |A|² difference-representations of any integer.",
+      "description": "le_trans Finset.card_filter_le (card_product A A)."
+    },
+    {
+      "name": "isB2r_singleton",
+      "type": "theorem",
+      "statement": "r ≥ 1 → IsB2r {a} r",
+      "significance": "Base case witnessing that B₂[r] sets are nonempty: any singleton is B₂[r] for r ≥ 1, so the extremal quantities range over a nontrivial family.",
+      "description": "sumRepCount {a} n ≤ card({a}×{a}) = 1 ≤ r via card_filter_le and product_singleton_singleton."
+    },
+    {
+      "name": "isDiffB2r_singleton",
+      "type": "theorem",
+      "statement": "r ≥ 1 → IsDiffB2r {a} r",
+      "significance": "Difference analogue: any singleton is a difference B₂[r] set for r ≥ 1.",
+      "description": "diffRepCount {a} n ≤ 1 ≤ r by the same singleton-product argument."
+    },
+    {
+      "name": "isB2r_empty",
+      "type": "theorem",
+      "statement": "IsB2r ∅ r",
+      "significance": "The empty set is B₂[r] for every r — the vacuous base of the hierarchy (every value has 0 ≤ r representations).",
+      "description": "simp [sumRepCount]: the empty product filters to the empty set."
+    },
+    {
+      "name": "isDiffB2r_empty",
+      "type": "theorem",
+      "statement": "IsDiffB2r ∅ r",
+      "significance": "The empty set is a difference B₂[r] set for every r.",
+      "description": "simp [diffRepCount] over nonzero differences."
+    },
+    {
+      "name": "inRange_mono",
+      "type": "theorem",
+      "statement": "InRange A N → N ≤ N' → InRange A N'",
+      "significance": "Containment A ⊆ {1,…,N} is monotone in the window N, so enlarging the ambient interval preserves admissibility — needed to compare maxB2rSize across N when taking asymptotics.",
+      "description": "Pointwise: keeps the lower bound 1 ≤ a and relaxes a ≤ N to a ≤ N' by le_trans."
+    },
+    {
+      "name": "inRange_empty",
+      "type": "theorem",
+      "statement": "InRange ∅ N",
+      "significance": "The empty set lies in every window {1,…,N}; together with isB2r_empty it certifies the admissible family filtered by maxB2rSize is never empty.",
+      "description": "Vacuous: Finset.not_mem_empty."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem 863 asks whether B₂[r] sets and difference B₂[r] sets have different asymptotic constants for r ≥ 2. The classical Sidon case (r=1) has equal constants c₁ = c'₁ = 1, but the generalization is wide open. The formalization captures all definitions, the classical baseline, and both the strong and weak forms of the conjecture.",
     "implications": "Resolution would reveal whether additive and subtractive combinatorial structures diverge beyond the Sidon threshold, with implications for the theory of additive bases, representation functions, and the fine structure of B_h sets. The problem connects to questions about additive energy, the Erdős-Turán conjecture on additive bases, and the theory of perfect difference sets.",
