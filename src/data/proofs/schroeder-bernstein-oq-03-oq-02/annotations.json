@@ -93,5 +93,30 @@
       "List.subset_cons_self",
       "List.mem_cons_self"
     ]
+  },
+  {
+    "id": "ann-sb-oq03oq02-witnesses",
+    "proofId": "schroeder-bernstein-oq-03-oq-02",
+    "range": {
+      "startLine": 88,
+      "endLine": 121
+    },
+    "type": "technique",
+    "title": "Witness Selection and the Parity-Free Chain",
+    "content": "The proof body opens with `classical` and extracts two state-valued choosers from the step hypotheses: chD s n := (dstep s n).choose and chR s n := (rstep s n).choose, with choose_spec splitting into the extension facts chD_ext / chR_ext (ext s (chD s n)) and the coverage facts chD_cov / chR_cov (dcov (chD s n) n, resp. rcov). Exists.choose here is the *sole* place Classical.choice enters the whole file — everything else is definitional or first-order. The chain is then a bare primitive recursion, c := fun k => Nat.rec s₀ (fun n s => chR (chD s n) n) k, so that c 0 = s₀ and c (n+1) = chR (chD (c n) n) n hold by rfl. Crucially, stage n+1 covers domain point n and range point n *together* — first chD covers n in the domain, then chR covers n in the range — rather than devoting even stages to the domain and odd stages to the range.",
+    "mathContext": "Because domain point n and range point n are handled at the same stage n+1, first coverage dcov (c (n+1)) n reads its range half straight off chR_cov, while the domain half chD_cov (c n) n must be pushed across the trailing chR step — this is the one and only use of dcov_mono in establishing first coverage (dcov_mono (chR_ext …) (chD_cov …)). rcov_mono is not needed here at all; it is reserved for the persistence step hcov, where hextle lifts stage-(n+1) coverage to every later stage.",
+    "significance": "Pinpoints the single non-constructive step (Classical.choice via Exists.choose) so the axiom accounting is transparent, and shows concretely how the parity-free schedule collapses the textbook even/odd bookkeeping into one monotonicity transport.",
+    "relatedConcepts": [
+      "Exists.choose / Exists.choose_spec",
+      "primitive recursion (Nat.rec) as a chain constructor",
+      "definitional equality (rfl) for recursive unfolding",
+      "parity-free interleaving of coverage steps",
+      "axiom accounting / Classical.choice"
+    ],
+    "prerequisites": [
+      "the axiom of choice in Lean (Classical.choice)",
+      "Nat.rec and definitional unfolding",
+      "monotone predicates under a preorder"
+    ]
   }
 ]
