@@ -9,15 +9,33 @@
     "date": "2026-06-27",
     "status": "verified",
     "proofRepoPath": "Proofs/PythagoreanTriplesOQ02OQ01.lean",
-    "tags": ["number-theory", "gaussian-integers", "pythagorean-triples", "classification", "mathlib-bridge"],
+    "tags": [
+      "number-theory",
+      "gaussian-integers",
+      "pythagorean-triples",
+      "classification",
+      "mathlib-bridge"
+    ],
     "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-06-27",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
-      {"theorem": "PythagoreanTriple.coprime_classification", "description": "Every primitive Pythagorean triple has the Euclidean parametric form (hard direction, via UFD of ℤ[i] / gcd theory)", "module": "Mathlib.NumberTheory.PythagoreanTriples"},
-      {"theorem": "PythagoreanTriple.coprime_classification'", "description": "Sharper standard-form classification for positive triples with odd leg", "module": "Mathlib.NumberTheory.PythagoreanTriples"},
-      {"theorem": "PythagoreanTriple", "description": "Definition x*x + y*y = z*z", "module": "Mathlib.NumberTheory.PythagoreanTriples"}
+      {
+        "theorem": "PythagoreanTriple.coprime_classification",
+        "description": "Every primitive Pythagorean triple has the Euclidean parametric form (hard direction, via UFD of ℤ[i] / gcd theory)",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "PythagoreanTriple.coprime_classification'",
+        "description": "Sharper standard-form classification for positive triples with odd leg",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "PythagoreanTriple",
+        "description": "Definition x*x + y*y = z*z",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      }
     ],
     "originalContributions": [
       "Named Gaussian-square parametrization map paramTriple (m,n) ↦ (m²-n², 2mn, m²+n²), exhibiting the legs as Re/Im of (m+ni)² and the hypotenuse as the norm N(m+ni)",
@@ -43,12 +61,37 @@
       "**Why opposite parity and coprimality give primitivity**: these are exactly the conditions under which m+ni is (up to units) not divisible by 1+i, keeping the square primitive.",
       "**The hard direction needs ℤ[i] UFD**: that every primitive triple comes from a single Gaussian square is unique factorization in disguise — supplied by Mathlib."
     ],
-    "prerequisites": ["Gaussian integers and their norm", "Pythagorean triples", "gcd / coprimality over ℤ"]
+    "prerequisites": [
+      "Gaussian integers and their norm",
+      "Pythagorean triples",
+      "gcd / coprimality over ℤ"
+    ]
   },
   "sections": [
-    {"id": "header", "title": "Module Documentation", "startLine": 1, "endLine": 38, "summary": "Statement of OQ-01, the Gaussian-square narrative, and the honest bridge framing.", "mathContext": "Mathematical content: the Gaussian-integer explanation of the parametrization."},
-    {"id": "param", "title": "The Gaussian-Square Parametrization", "startLine": 40, "endLine": 64, "summary": "paramTriple map, the always-a-triple identity, and primitivity for coprime opposite-parity inputs.", "mathContext": "Mathematical content: forward (constructive) direction."},
-    {"id": "classification", "title": "The Complete Classification", "startLine": 66, "endLine": 101, "summary": "Full biconditional classification (bridge), the positive standard form, and the hypotenuse sum-of-squares corollary.", "mathContext": "Mathematical content: the classification packaged in Gaussian language."}
+    {
+      "id": "header",
+      "title": "Module Documentation",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Statement of OQ-01, the Gaussian-square narrative, and the honest bridge framing.",
+      "mathContext": "Mathematical content: the Gaussian-integer explanation of the parametrization."
+    },
+    {
+      "id": "param",
+      "title": "The Gaussian-Square Parametrization",
+      "startLine": 40,
+      "endLine": 64,
+      "summary": "paramTriple map, the always-a-triple identity, and primitivity for coprime opposite-parity inputs.",
+      "mathContext": "Mathematical content: forward (constructive) direction."
+    },
+    {
+      "id": "classification",
+      "title": "The Complete Classification",
+      "startLine": 66,
+      "endLine": 101,
+      "summary": "Full biconditional classification (bridge), the positive standard form, and the hypotenuse sum-of-squares corollary.",
+      "mathContext": "Mathematical content: the classification packaged in Gaussian language."
+    }
   ],
   "conclusion": {
     "summary": "We formalize the classification of primitive Pythagorean triples requested in OQ-01, bridging Mathlib's PythagoreanTriple.coprime_classification into the Gaussian-parametrization language. The forward direction (parametrization yields primitive triples) is proved directly; the deep converse is imported. Five theorems, 0 sorries, 0 axioms.",
@@ -59,15 +102,55 @@
     ]
   },
   "crossReferences": [
-    {"relationship": "parent", "description": "Answers OQ-01 of pythagorean-triples-oq-02, which develops the Gaussian-integer norm and squaring map.", "targetId": "pythagorean-triples-oq-02"},
-    {"relationship": "related", "description": "The base Pythagorean-triples entry and its parametric formula.", "targetId": "pythagorean-triples"}
+    {
+      "relationship": "parent",
+      "description": "Answers OQ-01 of pythagorean-triples-oq-02, which develops the Gaussian-integer norm and squaring map.",
+      "targetId": "pythagorean-triples-oq-02"
+    },
+    {
+      "relationship": "related",
+      "description": "The base Pythagorean-triples entry and its parametric formula.",
+      "targetId": "pythagorean-triples"
+    }
   ],
   "references": [
-    {"authors": ["leanprover-community"], "title": "Mathlib4: Mathlib.NumberTheory.PythagoreanTriples", "venue": "Mathlib4 documentation", "year": "2026", "note": "Provides PythagoreanTriple.coprime_classification and coprime_classification', the formal classification of primitive Pythagorean triples used as the bridge target."}
+    {
+      "authors": [
+        "leanprover-community"
+      ],
+      "title": "Mathlib4: Mathlib.NumberTheory.PythagoreanTriples",
+      "venue": "Mathlib4 documentation",
+      "year": "2026",
+      "note": "Provides PythagoreanTriple.coprime_classification and coprime_classification', the formal classification of primitive Pythagorean triples used as the bridge target."
+    },
+    {
+      "authors": [
+        "Hardy, G. H.",
+        "Wright, E. M."
+      ],
+      "title": "An Introduction to the Theory of Numbers",
+      "venue": "6th ed., Oxford University Press",
+      "year": "2008",
+      "note": "§13 develops the Gaussian integers ℤ[i], their norm N(a+bi)=a²+b², unique factorization, and the sum-of-two-squares theorem — the algebraic backbone of the z ↦ z² parametrization and the hypotenuse corollary here."
+    },
+    {
+      "authors": [
+        "Ireland, K.",
+        "Rosen, M."
+      ],
+      "title": "A Classical Introduction to Modern Number Theory",
+      "venue": "2nd ed., Graduate Texts in Mathematics 84, Springer",
+      "year": "1990",
+      "note": "Ch. 1 treats ℤ[i] as a Euclidean (hence unique-factorization) domain, the exact structure underlying Mathlib's PythagoreanTriple.coprime_classification imported for the hard direction."
+    }
   ],
   "leanFile": {
-    "imports": ["Mathlib"],
-    "opens": ["Int"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Int"
+    ],
     "namespace": "PythagoreanTriplesOQ02OQ01",
     "lineCount": 101,
     "axiomCount": 0,
