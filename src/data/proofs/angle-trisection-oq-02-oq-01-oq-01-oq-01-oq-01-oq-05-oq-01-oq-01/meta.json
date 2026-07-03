@@ -139,6 +139,13 @@
   ],
   "mainTheorems": [
     {
+      "name": "card_algEquiv_eq_finSepDegree",
+      "type": "theorem",
+      "statement": "For a normal extension K/F: Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K",
+      "significance": "The foundational input to the entire development: for a normal extension the number of F-algebra automorphisms equals the separable degree [K:F]ₛ. Every downstream result — the degree factorisation, divisibility, the inseparable quotient, and the separability boundary — rewrites through this single equality. Normality is essential: without it |Aut_F(K)| can be strictly smaller than the separable degree, since not every embedding into an algebraic closure need land back inside K.",
+      "description": "Reproved in one line as (Nat.card_congr (Normal.algHomEquivAut F (AlgebraicClosure K) K)).symm: the normal extension's equivalence Normal.algHomEquivAut between automorphisms and embeddings, counted on both sides, yields the separable-degree equality. Recalls the parent NormalAutEquality.card_algEquiv_eq_finSepDegree."
+    },
+    {
       "name": "finrank_eq_card_algEquiv_mul_finInsepDegree",
       "type": "theorem",
       "statement": "For a normal extension K/F: Module.finrank F K = Nat.card (K ≃ₐ[F] K) * Field.finInsepDegree F K",
