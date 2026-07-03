@@ -141,10 +141,10 @@
   ],
   "conclusion": {
     "summary": "The second column of Stirling's triangle of the second kind has the closed form S(n,2) = 2^(n-1) − 1 (stirlingSecond_two), obtained by solving the inhomogeneous geometric recurrence that Pascal's rule induces on that column. The shifted form (stirlingSecond_two_add) carries the induction and the existence corollary (stirlingSecond_two_pos) records that the count is always positive. All three are verified with 0 axioms and 0 sorries.",
-    "implications": "Supplies the first nontrivial column value of the Stirling-second-kind triangle as a directly citable closed form, complementing Mathlib's recurrences and boundary columns.",
+    "implications": "Supplies the first nontrivial column value of the Stirling-second-kind triangle as a directly citable closed form, complementing Mathlib's recurrences and boundary columns. Two follow-up entries build on it: stirling-second-kind-oq-01-oq-01 derives the third column S(n,3) by the same method, and stirling-second-kind-oq-01-oq-02 proves the general finite-difference formula that recovers this k = 2 column.",
     "openQuestions": [
-      "Is there a comparably clean closed form for the third column S(n,3) = (3^(n-1) + 1)/2 − 2^(n-1), and can it be derived by the same recurrence-to-geometric-sum method?",
-      "Can the general finite-difference formula S(n,k) = (1/k!)·∑_{j=0}^{k} (−1)^j C(k,j)(k−j)^n be formalized and shown to recover the k = 2 column?"
+      "Derive S(n,2) = 2^(n-1) − 1 analytically from the exponential generating function ∑_{n≥0} S(n,2)·x^n/n! = (e^x − 1)²/2!, giving a route complementary to the recurrence induction used here (the column EGF is (e^x − 1)^k/k! in general).",
+      "Formalize the ordered-partition (surjection) count: the number of surjections [n] ↠ [2] is 2!·S(n,2) = 2^n − 2, and connect this closed form to Mathlib's Fintype cardinality of surjections, giving a labeled-count companion to the unordered result proved here."
     ]
   },
   "leanFile": {
