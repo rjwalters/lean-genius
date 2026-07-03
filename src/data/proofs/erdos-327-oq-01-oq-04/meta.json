@@ -85,6 +85,44 @@
       "summary": "sumDvdProdPairs_unbounded: for any M, ∃ N with M ≤ D(N). Proved by taking N = 6M and using M = 6M/6 ≤ D(6M) from the lower bound."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sumDvdProdPairs_lowerBound",
+      "type": "core",
+      "description": "N / 6 ≤ numSumDvdProdPairs N — the count D(N) of pairs (a,b) with 1 ≤ a < b ≤ N and (a+b)|ab is at least ⌊N/6⌋. Proved by the chain N/6 = |witnessFamily N| ≤ |sumDvdProdPairs N| via Finset.card_le_card on the subset inclusion. Establishes a linear lower bound; axiom-free.",
+      "leanType": "N / 6 ≤ numSumDvdProdPairs N"
+    },
+    {
+      "name": "sumDvdProdPairs_unbounded",
+      "type": "core",
+      "description": "∀ M, ∃ N, M ≤ numSumDvdProdPairs N — the corollary D(N) → ∞. For any target M, taking N = 6M gives M = 6M/6 ≤ numSumDvdProdPairs (6M) by the lower bound. This is the essential qualitative conclusion.",
+      "leanType": "∀ M : ℕ, ∃ N : ℕ, M ≤ numSumDvdProdPairs N"
+    },
+    {
+      "name": "threeK_sixK_dvd",
+      "type": "supporting",
+      "description": "(3k + 6k) ∣ (3k · 6k) for k ≥ 1 — the key divisibility making each witness pair valid: 3k + 6k = 9k divides 3k·6k = 18k² = 9k·(2k), with explicit factor witness 2k.",
+      "leanType": "(3 * k + 6 * k) ∣ (3 * k * (6 * k))"
+    },
+    {
+      "name": "witnessInj",
+      "type": "supporting",
+      "description": "Function.Injective (fun k => (3k, 6k)) — the witness map is injective (the first coordinate 3k already determines k), supplying the injectivity needed for the cardinality count.",
+      "leanType": "Function.Injective (fun k : ℕ => (3 * k, 6 * k))"
+    },
+    {
+      "name": "witnessFamily_subset",
+      "type": "supporting",
+      "description": "witnessFamily N ⊆ sumDvdProdPairs N — every witness pair (3k, 6k) with k ≤ ⌊N/6⌋ is a genuine sum-divides-product pair in range: 1 ≤ 3k < 6k ≤ N (from 6k ≤ 6·⌊N/6⌋ ≤ N) and (3k+6k)|(3k·6k) by threeK_sixK_dvd.",
+      "leanType": "witnessFamily N ⊆ sumDvdProdPairs N"
+    },
+    {
+      "name": "witnessFamily_card",
+      "type": "supporting",
+      "description": "(witnessFamily N).card = N / 6 — the witness family has exactly ⌊N/6⌋ elements, since the injective image of Finset.Icc 1 (N/6) preserves cardinality (Finset.card_image_of_injective).",
+      "leanType": "(witnessFamily N).card = N / 6"
+    }
+  ],
   "conclusion": {
     "summary": "This formalization proves the first quantitative lower bound on the sum-divides-product pair count: $D(N) \\geq \\lfloor N/6 \\rfloor$. The proof is entirely constructive, exhibiting the explicit witness family $\\{(3k, 6k) : 1 \\leq k \\leq \\lfloor N/6 \\rfloor\\}$ and verifying all required properties. The corollary $D(N) \\to \\infty$ follows immediately.",
     "implications": "The linear lower bound shows that sum-divides-product pairs are not sparse — they grow at least linearly. Combined with the conjectured asymptotic $D(N) \\sim C \\cdot N \\log N$, this suggests a rich density structure. The constructive witness approach opens the door to tighter bounds using larger parametric families from the OQ-01 classification.",
