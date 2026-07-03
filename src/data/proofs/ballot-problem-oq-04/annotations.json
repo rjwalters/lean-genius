@@ -28,22 +28,47 @@
     "proofId": "ballot-problem-oq-04",
     "range": {
       "startLine": 72,
-      "endLine": 109
+      "endLine": 96
     },
     "type": "definition",
-    "title": "Non-Crossing Defined, and the Small/Extreme Partitions",
-    "content": "IsNonCrossing s holds for a Setoid (Fin n) when no four indices a<b<c<d have a~c and b~d while lying in distinct blocks (no two blocks 'interleave'). Three first facts: the one-block partition ⊤ and the all-singletons partition ⊥ are both non-crossing (isNonCrossing_top / isNonCrossing_bot — trivially, since one has a single block and the other no pair related), and every partition of a set with at most three elements is non-crossing (isNonCrossing_of_n_le_three) because a crossing needs four points.",
-    "mathContext": "$\\mathrm{IsNonCrossing}(s)$: no $a<b<c<d$ with $a\\sim c$, $b\\sim d$ in different blocks. $\\top,\\bot$ non-crossing; all partitions of $[n]$, $n\\le 3$, non-crossing.",
+    "title": "Non-Crossing Defined, and the Extreme Partitions ⊤ and ⊥",
+    "content": "IsNonCrossing s holds for a Setoid (Fin n) when no four indices a<b<c<d have a~c and b~d while lying in distinct blocks — i.e. no two blocks 'interleave'. Modelling a partition as its 'same-block' equivalence relation (a Setoid) makes the codomain of the OQ-04 bijection a first-class Lean object. Two immediate extremes: the one-block partition ⊤ (everything related) is non-crossing because there is only a single block, so distinctness of blocks can never be witnessed (isNonCrossing_top); and the all-singletons partition ⊥ (the discrete relation) is non-crossing because no two distinct points are ever related, so the a~c / b~d premises are vacuous (isNonCrossing_bot). These two anchor the Catalan count at both extremes of the partition lattice.",
+    "mathContext": "$\\mathrm{IsNonCrossing}(s)$: no $a<b<c<d$ with $a\\sim c$, $b\\sim d$ in different blocks. $\\top$ (single block) and $\\bot$ (all singletons) are both non-crossing — the top and bottom of the partition lattice.",
     "significance": "key",
     "relatedConcepts": [
       "IsNonCrossing",
-      "Setoid ⊤/⊥",
-      "crossing needs four points",
-      "interleaving blocks"
+      "Setoid ⊤/⊥ (partition lattice extremes)",
+      "same-block equivalence relation",
+      "interleaving blocks",
+      "codomain of the Catalan bijection"
     ],
     "prerequisites": [
       "Setoid (Fin n)",
       "the order on Fin n"
+    ]
+  },
+  {
+    "id": "ballot-nc-ann-small",
+    "proofId": "ballot-problem-oq-04",
+    "range": {
+      "startLine": 97,
+      "endLine": 109
+    },
+    "type": "key-step",
+    "title": "Crossings need four points: every partition of [n], n ≤ 3, is non-crossing",
+    "content": "isNonCrossing_of_n_le_three establishes that when n ≤ 3, EVERY Setoid (Fin n) is non-crossing — a crossing requires four strictly-ordered indices a<b<c<d, which simply do not exist below four points. In Lean this is discharged by observing that the crossing hypothesis provides d : Fin n with a<b<c<d, forcing d ≥ 3 hence n ≥ 4, contradicting hn : n ≤ 3. Combinatorially this is exactly why the Catalan and Bell numbers first diverge at n = 4: for n ≤ 3 every partition is non-crossing, so the counts agree (C₀=B₀=1, C₁=B₁=1, C₂=B₂=2, C₃=B₃=5), and the first partition that is NOT non-crossing appears only at n = 4. This lemma pins the base of that agreement and marks where the genuine combinatorics begins.",
+    "mathContext": "n ≤ 3 ⇒ every Setoid (Fin n) is non-crossing (a crossing needs a<b<c<d, i.e. n ≥ 4). Hence Cₙ = Bₙ for n ≤ 3, diverging first at n = 4 (C₄ = 14 < 15 = B₄).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "crossing needs four points",
+      "Catalan vs Bell numbers",
+      "Fin n order bounds",
+      "base cases of the count",
+      "partition enumeration"
+    ],
+    "prerequisites": [
+      "the order on Fin n and Fin.is_lt",
+      "IsNonCrossing definition"
     ]
   },
   {
