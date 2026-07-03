@@ -74,22 +74,47 @@
     "proofId": "lovasz-local-lemma-oq-01-inclusion-exclusion",
     "range": {
       "startLine": 69,
-      "endLine": 93
+      "endLine": 83
     },
     "type": "insight",
-    "title": "Sharp avoidance threshold and union-bound recovery",
-    "content": "```lean\ntheorem two_event_avoidance (hA : MeasurableSet A) (hB : MeasurableSet B)\n    (hlt : μ A + μ B < 1 + μ (A ∩ B)) :\n    0 < μ (Aᶜ ∩ Bᶜ) := by\n  rw [pos_iff_ne_zero]\n  intro h0\n  have hid := two_event_avoidance_add (μ := μ) hA hB\n  rw [h0, zero_add] at hid\n  exact hlt.ne hid\n\ntheorem two_event_avoidance_of_union_lt (hA : MeasurableSet A) (hB : MeasurableSet B)\n    (hlt : μ A + μ B < 1) :\n    0 < μ (Aᶜ ∩ Bᶜ) :=\n  two_event_avoidance hA hB (lt_of_lt_of_le hlt (le_add_right le_rfl))\n```\n\nPositivity is read straight off the exact identity: if $\\mu(A^c \\cap B^c) = 0$ then the identity collapses to $\\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$, contradicting the strict hypothesis $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$; hence $\\mu(A^c \\cap B^c) \\ne 0$ (`pos_iff_ne_zero`). The threshold $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$ is **strictly weaker** than the union-bound condition $\\mu(A) + \\mu(B) < 1$ exactly when $\\mu(A \\cap B) > 0$, i.e. when the events overlap (are positively correlated). The corollary `two_event_avoidance_of_union_lt` recovers the crude union-bound condition by discarding $\\mu(A \\cap B) \\ge 0$ (`le_add_right`), making the improvement explicit.",
-    "mathContext": "$\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$ is the sharp two-event avoidance threshold; it beats the first-moment threshold $\\mu(A) + \\mu(B) < 1$ by the overlap $\\mu(A \\cap B)$ — the elementary germ of the LLL's dependency gain.",
+    "title": "The sharp positive-avoidance threshold",
+    "content": "`two_event_avoidance` reads positivity straight off the exact identity: assume $\\mu(A^c \\cap B^c) = 0$; then `two_event_avoidance_add` collapses to $\\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$, contradicting the strict hypothesis $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$. So $\\mu(A^c \\cap B^c) \\ne 0$, and `pos_iff_ne_zero` upgrades $\\ne 0$ to $> 0$. The whole proof is four lines because the identity has already done the work — no measure estimates, just a strict inequality refuting an equality. The threshold $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$ is the *sharp* condition guaranteeing at least one outcome avoids both bad events, and it is exactly the germ of the LLL's dependency gain: the admissible region grows by the overlap $\\mu(A \\cap B)$.",
+    "mathContext": "two_event_avoidance: μ A + μ B < 1 + μ(A ∩ B) ⇒ 0 < μ(Aᶜ ∩ Bᶜ). Proof: if μ(Aᶜ∩Bᶜ)=0 the exact identity forces μ A + μ B = 1 + μ(A∩B), contradicting the strict hypothesis; pos_iff_ne_zero finishes.",
     "significance": "central",
     "relatedConcepts": [
       "positive correlation",
-      "first-moment method",
+      "sharp avoidance threshold",
       "avoidance probability",
+      "ENNReal pos_iff_ne_zero",
       "Lovász Local Lemma"
     ],
     "prerequisites": [
-      "ENNReal order: pos_iff_ne_zero, le_add_right",
-      "the exact identity two_event_avoidance_add"
+      "the exact identity two_event_avoidance_add",
+      "ENNReal.pos_iff_ne_zero"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-ie-union-recovery",
+    "proofId": "lovasz-local-lemma-oq-01-inclusion-exclusion",
+    "range": {
+      "startLine": 84,
+      "endLine": 93
+    },
+    "type": "key-step",
+    "title": "Union-bound recovery: the overlap is exactly what is thrown away",
+    "content": "`two_event_avoidance_of_union_lt` recovers the crude first-moment condition $\\mu(A) + \\mu(B) < 1$ as a *corollary* of the sharp threshold, by discarding the overlap: since $\\mu(A \\cap B) \\ge 0$, one has $1 \\le 1 + \\mu(A \\cap B)$, so $\\mu(A) + \\mu(B) < 1$ implies $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$ (`lt_of_lt_of_le` with `le_add_right`). Feeding that into `two_event_avoidance` gives positivity. The one-line derivation makes the improvement precise and directional: the sharp threshold is *strictly* weaker than the union-bound threshold exactly when $\\mu(A \\cap B) > 0$ — when the events are positively correlated. This is the two-event shadow of why the LLL beats the union bound in general: dependency (overlap) enlarges the region where global avoidance is still forced.",
+    "mathContext": "two_event_avoidance_of_union_lt: μ A + μ B < 1 ⇒ 0 < μ(Aᶜ ∩ Bᶜ), via lt_of_lt_of_le hlt (le_add_right le_rfl) feeding two_event_avoidance. Strictly weaker gain = μ(A ∩ B).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "union bound / first-moment method",
+      "Bonferroni inequality",
+      "corollary by weakening",
+      "le_add_right, lt_of_lt_of_le",
+      "dependency gain over the union bound"
+    ],
+    "prerequisites": [
+      "two_event_avoidance (the sharp threshold)",
+      "ENNReal order lemmas le_add_right, lt_of_lt_of_le"
     ]
   }
 ]
