@@ -117,6 +117,29 @@
       "description": "Sibling: the general-k threshold (k!·d^(k-1)·ln2)^(1/k) with loose ±(k-1) band; for k=3 it recovers the parent's ±2, which this entry sharpens using the k=3-specific centered cube"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "cubeRoot_cube",
+      "type": "theorem",
+      "statement": "0 ≤ x → (x^3)^((1:ℝ)/3) = x",
+      "significance": "The cube-root identity (x³)^{1/3}=x for x≥0, the elementary rpow fact that lets the threshold analysis pass between the cubic n(n-1)(n-2) and its cube-root leading term.",
+      "description": "Rewrite 1/3 as (3:ℕ)⁻¹ and apply Real.pow_rpow_inv_natCast."
+    },
+    {
+      "name": "birthday_triple_threshold_sharp",
+      "type": "theorem",
+      "statement": "0<d → 2≤n → n*(n-1)*(n-2) = 6*d^2*log 2 → (writing c := (6 d² ln2)^{1/3})  c+1 ≤ n ≤ c+1 + 1/(3c)",
+      "significance": "The sharp k=3 (triple) coincidence threshold for the birthday problem. A solution n of the expected-triple balance sits exactly 1 above the leading term c=(6d²ln2)^{1/3}, up to a remainder ≤ 1/(3c)=O(d^{-2/3}). A strict refinement of the parent's c ≤ n ≤ c+2 band — it pins the lower-order term to the explicit constant 1.",
+      "description": "Center the cubic: m:=n-1 gives the depressed cubic m³-m = c³ (since n(n-1)(n-2)=(n-1)³-(n-1) and c³=L). Lower bound: m³≥c³ ⇒ c≤m ⇒ c+1≤n. Upper bound: the identity (m²+mc+c²)(1-3c(m-c))=(m-c)²≥0 with m²+mc+c²>0 gives 3c(m-c)≤1, i.e. m≤c+1/(3c)."
+    },
+    {
+      "name": "birthday_triple_threshold_const_one",
+      "type": "theorem",
+      "statement": "0<d → 2≤n → n*(n-1)*(n-2) = 6*d^2*log 2 → |n - ((6 d² ln2)^{1/3} + 1)| ≤ 1/(3 (6 d² ln2)^{1/3})",
+      "significance": "The two-sided restatement: the exact asymptotic n = (6 d² ln2)^{1/3} + 1 + o(1). The lower-order constant is exactly 1, with a symmetric error bound O(d^{-2/3}) vanishing as d→∞.",
+      "description": "Combine the two bounds from birthday_triple_threshold_sharp via abs_le; both inequalities close by linarith."
+    }
+  ],
   "references": [
     {
       "authors": [
