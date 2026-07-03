@@ -104,28 +104,32 @@
       "title": "Open Question and Mathematical Context",
       "startLine": 1,
       "endLine": 46,
-      "summary": "Header stating OQ-01: the telescoping product ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n). Explains the per-term collapse, the telescoping mechanism, and the three formalized statements."
+      "summary": "Header stating OQ-01: the telescoping product ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n). Explains the per-term collapse, the telescoping mechanism, and the three formalized statements.",
+      "mathContext": "The two one-sided products $\\prod_{k=2}^{n}\\frac{k-1}{k} = \\frac1n$ and $\\prod_{k=2}^{n}\\frac{k+1}{k} = \\frac{n+1}{2}$ telescope in opposite directions; their product is $\\frac{n+1}{2n}$."
     },
     {
       "id": "factor",
       "title": "Per-Term Collapse",
       "startLine": 48,
       "endLine": 63,
-      "summary": "factor_eq: for k ≥ 2, 1 − 1/k² = (k−1)(k+1)/k². The difference-of-squares factorisation that makes the product telescope; proved by field_simp/ring after k ≠ 0."
+      "summary": "factor_eq: for k ≥ 2, 1 − 1/k² = (k−1)(k+1)/k². The difference-of-squares factorisation that makes the product telescope; proved by field_simp/ring after k ≠ 0.",
+      "mathContext": "$1 - \\frac{1}{k^2} = \\frac{k^2-1}{k^2} = \\frac{(k-1)(k+1)}{k^2}$: the numerator $k-1$ cancels the denominator two steps below, $k+1$ two steps above."
     },
     {
       "id": "main",
       "title": "Main Telescoping Identity",
       "startLine": 65,
       "endLine": 83,
-      "summary": "telescoping_product: ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n) for n ≥ 1. Nat.le_induction with base case the empty product over Icc 2 1, and step peeling the top factor via Finset.prod_Icc_succ_top, closed by field_simp/ring."
+      "summary": "telescoping_product: ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n) for n ≥ 1. Nat.le_induction with base case the empty product over Icc 2 1, and step peeling the top factor via Finset.prod_Icc_succ_top, closed by field_simp/ring.",
+      "mathContext": "Inductive step: $\\frac{m+1}{2m}\\cdot\\left(1-\\frac{1}{(m+1)^2}\\right) = \\frac{m+2}{2(m+1)}$; the base $n=1$ is the empty product $= 1 = \\frac{2}{2}$."
     },
     {
       "id": "limit",
       "title": "Limit of the Closed Form",
       "startLine": 85,
       "endLine": 98,
-      "summary": "tendsto_closed_form: (n+1)/(2n) → 1/2, exhibiting the value of the infinite product. Uses the eventual identity (n+1)/(2n) = 1/2 + (1/2)(1/n) and tendsto_one_div_atTop_nhds_zero_nat."
+      "summary": "tendsto_closed_form: (n+1)/(2n) → 1/2, exhibiting the value of the infinite product. Uses the eventual identity (n+1)/(2n) = 1/2 + (1/2)(1/n) and tendsto_one_div_atTop_nhds_zero_nat.",
+      "mathContext": "$\\frac{n+1}{2n} = \\frac12 + \\frac{1}{2n} \\to \\frac12$ since $\\frac1n \\to 0$, so $\\prod_{k=2}^{\\infty}\\left(1-\\frac{1}{k^2}\\right) = \\frac12$."
     }
   ],
   "conclusion": {
