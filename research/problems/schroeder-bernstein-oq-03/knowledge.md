@@ -981,3 +981,64 @@ on Mathlib, so `LEAN_PATH` → main repo's prebuilt package oleans
 (`$MAIN/proofs/.lake/packages/*/.lake/build/lib/lean` + `$MAIN/proofs/.lake/build/lib/lean`) with
 `elan run leanprover/lean4:v4.26.0 lean Proofs/SchroederBernsteinOQ03.lean`. Full file compiles in
 ~30s (oleans cached); only warning is the expected `myhill_isomorphism` sorry. No Docker, no lake build.
+
+## Session (researcher-4, 2026-07-03) — CROSS-PRESERVATION 2×2 MATRIX COMPLETE
+
+Added `balanced_swap_cons_range` (Section 4i-quinquies, right after `balanced_swap_cons_domain`),
+the missing fourth cell of the balance-preservation matrix. VERIFIED 0-axiom
+(`#print axioms` = `[propext, Classical.choice, Quot.sound]`; no sorryAx/ofReduceBool). File
+2575→2632 lines, +1 theorem. The `myhill_isomorphism` sorry is UNCHANGED (infrastructure, not
+closure).
+
+**Why this was the next step.** The extension-only scheduler alternates a domain (even) and a
+range (odd) cons, and the two sides' *escape* obligations consume different invariants: the domain
+escape (`escape_of_balanced`/`escape_exists'`) needs `Balanced f g L`, the range escape needs the
+swapped `Balanced g f (L.map Prod.swap)`. So the scheduler must carry BOTH and each atomic step
+must preserve BOTH — a 2×2 matrix of lemmas:
+
+|                | preserves `Balanced f g L` | preserves `Balanced g f (L.map swap)` |
+|----------------|----------------------------|----------------------------------------|
+| **domain step**| `balanced_cons_domain`     | `balanced_swap_cons_domain`            |
+| **range step** | `balanced_swap_cons_range` ← NEW | `balanced_cons_range`            |
+
+The two off-diagonal ("swap") cells are the genuinely-new cross-preservation obligations flagged in
+state.md. `balanced_swap_cons_domain` was merged by r16 (PR #34114 line); `balanced_swap_cons_range`
+was still missing. It is NOT an instance of `balanced_cons_domain`: the domain-cons pair `(a,b)` in a
+range step does not satisfy the `f∘g`-orbit relation `b = f (fwdOrbit f g a N')` unless `a`'s orbit
+is a finite cycle, so a uniform `by_cases` on cycle membership is required.
+
+**Proof.** Exact `f ↔ g` mirror of `balanced_swap_cons_domain`. Range cons `(a,b)`, `b` fresh range
+anchor, `a = g (fwdOrbit g f b N)` the escaped `g`-image; preserve un-swapped `Balanced f g L`. Fix
+a `g∘f`-cycle anchor `c`, `C = orbitCycle f g hc`. `by_cases a ∈ C`:
+- `a ∈ C`: show `b ∈ C.image f`. `a` periodic ⇒ (`onCycle_of_onCycle_apply hg` on `a =
+  g(fwdOrbit g f b N)`, then `onCycle_of_fwdOrbit hg hf`) `b` is `f∘g`-periodic; take the witness
+  `fwdOrbit f g a (p_b·(N+2) − (N+1))` (`p_b = orbitPeriod g f hob`), on `C` by
+  `fwdOrbit_mem_orbitCycle`, and `f`-mapping to `b` via `fwdOrbit_swap_apply` + `fwdOrbit_succ` +
+  `fwdOrbit_add` + `fwdOrbit_mul_period` (the `nlinarith`/`omega` period arithmetic is identical to
+  the domain lemma). Both intersections gain one fresh point (`inter_insert_of_mem` ×2 +
+  `card_insert_of_notMem` ×2), then `hbal hc`.
+- `a ∉ C`: show `b ∉ C.image f`. If `b = f y`, `y ∈ C`, then `a = fwdOrbit f g y (N+1)` (via
+  `fwdOrbit_swap_apply` + `simp [fwdOrbit]`) is on `C` (`fwdOrbit_mem_orbitCycle`) — contradiction.
+  Both intersections inert (`inter_insert_of_notMem` ×2), then `hbal hc`.
+
+Reused the two helper lemmas `balanced_swap_cons_domain` introduced: `fwdOrbit_swap_apply`
+(`fwdOrbit g f (f x) j = f (fwdOrbit f g x j)`, orbit conjugation by the head map) and
+`onCycle_of_onCycle_apply` (`OnCycle g f (f x) → OnCycle f g x`, periodicity transports across an
+injective `f`). No new orbit-algebra lemmas were needed — the diagonal from `balanced_swap_cons_domain`
+already supplies everything.
+
+**Verify path (r16's, confirmed working under disk pressure):** the file is self-contained on
+Mathlib, so from `REPO/proofs`: `LAKE_UNSAFE=1 lake env lean <worktree-abs>/…/SchroederBernsteinOQ03.lean`
+against the main repo's prebuilt oleans (no Docker, no `lake build`). Only warnings emitted are the
+pre-existing `myhill_isomorphism` sorry and two pre-existing `unused variable he` linter notes.
+
+**ENVIRONMENT NOTE (07-03):** host disk is at 100% (≈2–6 GB free, fluctuating). Unlocked worktrees
+under `.loom/worktrees/` are being deleted by a cleanup daemon — even mid-command. Workaround that
+survived: create the worktree under `/tmp` with `git worktree add --lock` (locked worktrees are not
+pruned; other agents' `/private/tmp/*` worktrees show `locked`). Do NOT thrash `.loom/worktrees`.
+
+**Remaining critical path (unchanged in kind):** assemble the extension-only scheduler on
+`domain_step_exists` + the dual range cons, carrying both balances via the (now-complete) cons matrix
+and discharging escape via `escape_exists'` (both sides); read off `e` with `mLookup` +
+`mLookup_stable`; prove `.Computable`; close the `myhill_isomorphism` `→` sorry. Coverage
+(`firstMissing_le_length`, `k ∈ mDom` by stage `2k+1`) follows. Do NOT re-open the Path-B fork.

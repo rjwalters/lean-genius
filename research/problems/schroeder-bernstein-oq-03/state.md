@@ -4,18 +4,31 @@
 **Phase**: DEVELOP
 **Path**: full — **extension-only (Path B) chosen; fork RESOLVED 2026-07-03 (r4)**
 **Since**: 2026-07-02
-**Iteration**: 8
+**Iteration**: 9
 
 ## Current Focus
-Escape, same-side preservation (Claim B), AND now **cross-preservation** (the domain step's
-half) are all closed. `balanced_swap_cons_domain` (Section 4i-quinquies, 2026-07-03 r14, VERIFIED
-0-axiom) shows a domain cons preserves the *swapped* balance `Balanced g f (L.map swap)` too —
-uniformly over both the periodic and infinite-orbit cases (single `by_cases` on `b ∈ cycle`, NOT
-reducible to `balanced_cons_range` which needs the periodic-only `a = g(fwdOrbit g f b N')`).
-Remaining critical path is **scheduler assembly** (step 4): the range-step dual of cross-preservation
-(free by `Prod.swap` duality) + the cons-based `stageSeq` carrying both balances + the computable
-read-off. The termination↔stability fork is decided: cons steps suffice, so `mLookup_stable` applies
-directly and no finite-injury stabilization is needed.
+Escape, same-side preservation (Claim B), AND **cross-preservation (BOTH halves)** are now closed.
+The 2×2 balance-preservation matrix is COMPLETE (all VERIFIED 0-axiom):
+
+|                | preserves `Balanced f g L` | preserves `Balanced g f (L.map swap)` |
+|----------------|----------------------------|----------------------------------------|
+| **domain step**| `balanced_cons_domain`     | `balanced_swap_cons_domain` (r16)      |
+| **range step** | `balanced_swap_cons_range` (r4, 2026-07-03) | `balanced_cons_range`     |
+
+`balanced_swap_cons_range` (Section 4i-quinquies, 2026-07-03 r4) is the exact `f↔g` mirror of
+`balanced_swap_cons_domain`: a range cons preserves the *un-swapped* balance `Balanced f g L` too,
+uniformly over periodic/infinite orbits (single `by_cases` on `a ∈ cycle`). It is NOT an instance of
+`balanced_cons_domain` (the range-step pair need not satisfy the `f∘g`-orbit relation unless `a`'s
+orbit is a finite cycle). Remaining critical path is now purely **scheduler assembly** (step 4): the
+cons-based `stageSeq` carrying both balances + the computable read-off. The termination↔stability
+fork is decided: cons steps suffice, so `mLookup_stable` applies directly and no finite-injury
+stabilization is needed.
+
+## ENVIRONMENT (2026-07-03, r4)
+Host disk at 100% (≈2–6 GB free). A cleanup daemon deletes UNLOCKED worktrees under
+`.loom/worktrees/` — even mid-command. Workaround that survived: `git worktree add --lock` under
+`/tmp` (locked worktrees are not pruned; cf. other agents' `/private/tmp/*` `locked` worktrees).
+Do NOT thrash `.loom/worktrees`; do NOT run `lake build` (verify with `lake env lean` on the file).
 
 ## Active Approach
 Stage-wise finite back-and-forth (Rogers §7.4), **extend-only**. Even/odd atomic moves DONE and
@@ -37,22 +50,18 @@ cons supplies an f-edge-like pair) but the *count* is preserved. Path B is viabl
   (`OrbitGEdged`) refuted, replaced by `Balanced`.
 
 ## Blockers
-No strategic blocker remains — the path is decided, Claim B is closed, and the domain-step half of
-**cross-preservation** is now closed too (`balanced_swap_cons_domain`, r14 2026-07-03). The scheduler
-must carry BOTH `Balanced f g L` (domain-side escape via `escape_exists'`) and
-`Balanced g f (L.map Prod.swap)` (range-side escape, swap-dual) across BOTH atomic moves. Status of
-the four preservation obligations:
+No strategic blocker remains — the path is decided, Claim B is closed, and **BOTH halves of
+cross-preservation are now closed**. The scheduler must carry BOTH `Balanced f g L` (domain-side
+escape via `escape_exists'`) and `Balanced g f (L.map Prod.swap)` (range-side escape, swap-dual)
+across BOTH atomic moves. All four preservation obligations are DONE and VERIFIED 0-axiom:
 - domain cons preserves `Balanced f g L` — DONE (`balanced_cons_domain`, r16).
-- domain cons preserves `Balanced g f (L.map swap)` — **DONE (`balanced_swap_cons_domain`, r14).**
+- domain cons preserves `Balanced g f (L.map swap)` — DONE (`balanced_swap_cons_domain`, r16).
 - range cons preserves `Balanced g f (L.map swap)` — DONE (`balanced_cons_range`, r16).
-- range cons preserves `Balanced f g L` — the swap-dual of `balanced_swap_cons_domain`, still to
-  formalize (should be ~free: apply `balanced_swap_cons_domain` to the swapped problem
-  `(g, f, L.map swap)`, mirroring how `balanced_cons_range` reuses `balanced_cons_domain`).
+- range cons preserves `Balanced f g L` — **DONE (`balanced_swap_cons_range`, r4 2026-07-03).**
 Then the remaining step-4 work is pure assembly (cons-based `stageSeq` + read-off + computability).
-**Build environment is NOT hostile** —
-researcher-16 established a reliable verify path (2026-07-03): the file is self-contained on
-Mathlib, so compile the worktree copy with `LEAN_PATH` → the main repo's prebuilt oleans and
-`elan run leanprover/lean4:v4.26.0 lean` (no Docker, no `lake build`). Recorded in knowledge.md.
+Build/verify: file is self-contained on Mathlib; from `REPO/proofs` run
+`LAKE_UNSAFE=1 lake env lean <worktree-abs>/…/SchroederBernsteinOQ03.lean` against the main repo's
+prebuilt oleans (no Docker, no `lake build`). NOTE: host disk 100% full — see ENVIRONMENT section.
 
 ## Next Action (supersedes all prior; scaffold at cycle_balance_scaffold.lean)
 1. ~~Formalize `escape_of_infinite_orbit` FIRST~~ **DONE 2026-07-03 (researcher-16), VERIFIED
@@ -84,9 +93,15 @@ Mathlib, so compile the worktree copy with `LEAN_PATH` → the main repo's prebu
    (two-case Finset argument: `a∈C` both sides +1 via `inter_insert_of_mem`; `a∉C` both inert via
    `inter_insert_of_notMem` + exclusion). `balanced_cons_range` = the free `(g,f,L.map swap)` dual.
    #print axioms = {propext, choice, Quot} for both. PR #34114.
-4. **NEXT (critical path):** Build the extension-only scheduler on `domain_step_exists` + dual
-   range cons, now carrying
-   `Balanced` (via `balanced_cons_*`) and discharging escape via `escape_exists'`; read off `e`
-   with `mLookup` + `mLookup_stable` (values immutable); prove `.Computable`; discharge the
-   `myhill_isomorphism` sorry. **Do NOT re-open the fork — Path B is decided.**
+4. ~~Prove the four balance-preservation obligations (2×2 matrix).~~ **DONE — the matrix is now
+   COMPLETE.** `balanced_swap_cons_range` (r4, 2026-07-03) supplied the last cell (range step
+   preserves the un-swapped `Balanced f g L`), the exact `f↔g` mirror of `balanced_swap_cons_domain`.
+   VERIFIED 0-axiom. Section 4i-quinquies now holds both swap-cross lemmas + their two shared helpers
+   (`fwdOrbit_swap_apply`, `onCycle_of_onCycle_apply`).
+5. **NEXT (critical path, sole remaining piece):** Build the extension-only scheduler on
+   `domain_step_exists` + the dual range cons, carrying BOTH balances (all four cons lemmas now
+   available) and discharging escape via `escape_exists'` on each side; read off `e` with `mLookup` +
+   `mLookup_stable` (values immutable); prove `.Computable`; discharge the `myhill_isomorphism` `→`
+   sorry. Then coverage (`firstMissing_le_length`, `k ∈ mDom` by stage `2k+1`). **Do NOT re-open the
+   fork — Path B is decided.**
 5. Then coverage (`firstMissing_le_length`, `k ∈ mDom` by stage `2k+1`).
