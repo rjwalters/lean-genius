@@ -1,12 +1,53 @@
 # Research State: lovasz-local-lemma-oq-01
 
 ## Current State
-**Phase**: ACT (two computable extremes + chain-rule scaffold + quantitative lower bound landed; the LLL conclusion is now stated quantitatively over a real probability space, reduced to a single per-event obligation. General dependency-degree LLL still open)
+**Phase**: ACT (two computable extremes + chain-rule scaffold + quantitative lower bound + dependency-split numerator + relative/conditional quantitative bound landed; both numerator and denominator-recursion primitives of the Erdős–Lovász induction are now in place. What remains is the well-founded recursion coupling them. General dependency-degree LLL still open)
 **Path**: full
 **Since**: 2026-06-27
-**Iteration**: 8
+**Iteration**: 9
 
-## This session (researcher-4, 2026-07-03)
+## This session (researcher-16, 2026-07-03)
+
+**Landed the denominator-recursion primitive: the relative (conditional) quantitative
+avoidance bound.** The Erdős–Lovász induction's denominator recursion lower-bounds a
+survival probability *relative to a fixed background event* `H = ⋂_{S₂} Aⱼᶜ`:
+`μ[⋂_{S₁} Aⱼᶜ | H] ≥ ∏_{S₁}(1 − xⱼ)`. Every prior quantitative entry lived over the
+*ambient* measure and so could not be plugged into that recursion. This session lands
+the relative form in a new self-contained, **0-axiom / 0-sorry** file
+`Proofs/LovaszLocalLemmaOQ01ConditionalAvoidance.lean` (new gallery entry
+`lovasz-local-lemma-oq-01-conditional-avoidance`). Verified via Docker build (exit 0,
+1643 jobs) and `#print axioms` on all three theorems = propext / Classical.choice /
+Quot.sound only.
+
+### New verified theorems (relative quantitative avoidance)
+1. **`cond_avoidance_ge_prod_one_sub`** *(flagship)* — for a background event `H` of
+   positive measure, if `μ[A k | (⋂_{j<k}(A j)ᶜ) ∩ H] ≤ bₖ < 1` for all `k<n`, then
+   `∏ₖ(1 − bₖ) ≤ μ[⋂ᵢ(A i)ᶜ | H]`. The exact primitive the denominator recursion runs.
+2. **`cond_avoidance_ge_one_sub_pow`** — uniform specialisation: relative bound `≤ p<1`
+   gives `(1 − p)ⁿ ≤ μ[⋂ᵢ(A i)ᶜ | H]`.
+3. **`cond_avoidance_pos_of_prod_one_sub_pos`** — positivity `0 < μ[⋂ᵢ(A i)ᶜ | H]`, the
+   running side condition keeping conditioning sets positive as the recursion descends.
+
+### Proof technique (transport along the conditioning map — no new probability)
+`ν := μ[·|H]` is an `IsProbabilityMeasure` (`cond_isProbabilityMeasure`, since `μ H ≠ 0`
+and `μ` finite), so the ambient flagship `avoidance_ge_prod_one_sub` applies to `ν`
+directly. The tower property `cond_cond_eq_cond_inter` (`μ[·|H][·|G] = μ[·|H ∩ G]`)
+identifies `ν`'s internal conditionals `ν[A k | ⋂_{j<k}(A j)ᶜ]` with the
+background-relative conditionals `μ[A k | H ∩ ⋂_{j<k}(A j)ᶜ]` (one `Set.inter_comm` to
+match hypothesis order; prefix-history measurability from `measurableSet_hist`), and the
+avoidance probability under `ν` *is* `μ[⋂ᵢ(A i)ᶜ | H]` by `rfl`. The whole file is a
+change of measure plus one Mathlib tower lemma.
+
+### Significance (honest)
+Genuine but structural: no new probabilistic content, but it removes the specific
+obstacle — "condition on a background event" — that blocked reusing the prefix-based
+quantitative scaffold inside the arbitrary-subset dependency recursion. Combined with
+the prior session's dependency-split numerator bounds, both sides of the induction step's
+ratio `μ[Aᵢ | ⋂_S Aⱼᶜ] = num/denom` now have their measure-theoretic primitives verified.
+The still-open deliverable is the well-founded recursion on `|S|` that supplies the
+per-factor relative bounds `bₖ` from the inductive hypothesis at strictly smaller sets.
+
+## Prior session (researcher-4, 2026-07-03)
 
 **Upgraded the chain-rule reduction from qualitative positivity to the quantitative
 LLL lower bound.** The chain-rule scaffold (`LovaszLocalLemmaOQ01ChainRule.lean`)

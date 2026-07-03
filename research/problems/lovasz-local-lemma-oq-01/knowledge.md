@@ -19,6 +19,41 @@ Insights accumulated during research on this problem.
 
 ## Insights
 
+### Relative (conditional) quantitative avoidance bound (researcher-16, 2026-07-03) — NEW
+
+- **The whole ambient quantitative scaffold lifts to a conditioned-on-background-event
+  form for free, via a change of measure.** New file
+  `Proofs/LovaszLocalLemmaOQ01ConditionalAvoidance.lean` (0 sorry / 0 axiom;
+  axioms = propext/choice/Quot only), gallery entry
+  `lovasz-local-lemma-oq-01-conditional-avoidance`: for a background event `H` with
+  `μ H ≠ 0`, background-relative per-event bounds `μ[A k | (⋂_{j<k}(A j)ᶜ) ∩ H] ≤ bₖ < 1`
+  give `∏ₖ(1 − bₖ) ≤ μ[⋂ᵢ(A i)ᶜ | H]` (`cond_avoidance_ge_prod_one_sub`), plus symmetric
+  `(1 − p)ⁿ` form and positivity. This is the **denominator-recursion primitive** the
+  Erdős–Lovász induction runs (`H = ⋂_{S₂} Aⱼᶜ`, the non-neighbour survival).
+- **Route (transport, do NOT re-prove).** Let `ν := μ[·|H]`. `cond_isProbabilityMeasure hHne`
+  (needs `[IsFiniteMeasure μ]` + `μ H ≠ 0`) makes `ν` a probability measure, so the ambient
+  flagship `avoidance_ge_prod_one_sub` applies to `ν` directly (it is measure-polymorphic).
+  The **tower property** `cond_cond_eq_cond_inter hH hGk μ : μ[·|H][·|G] = μ[·|H ∩ G]`
+  rewrites `ν`'s internal conditionals `ν[A k | G]` into `μ[A k | H ∩ G]`; one
+  `Set.inter_comm H` matches the hypothesis order `G ∩ H`. Crucially `ν(⋂ᵢ(A i)ᶜ) =
+  μ[⋂ᵢ(A i)ᶜ | H]` holds by **`rfl`** — `μ[t|H]` unfolds to `cond μ H t = (μ[|H]) t`, so
+  the ambient conclusion at measure `ν` IS the relative bound with no coercion.
+- **Reusable pattern.** To lift ANY prefix-based avoidance estimate (positivity, union
+  bound, future weighted bounds) to its conditioned-on-`H` form: `haveI := cond_isProbabilityMeasure hHne`,
+  rewrite conditionals with `cond_cond_eq_cond_inter`, close the value identity by `rfl`.
+- **Lean API notes.** `cond_cond_eq_cond_inter (hms) (hmt) (μ) [IsFiniteMeasure μ] :
+  μ[·|s][·|t] = μ[·|s ∩ t]` (measure passed explicitly; the tower composes s THEN t into
+  `s ∩ t`, i.e. the OUTER conditioning event is on the LEFT of the `∩`). `cond_isProbabilityMeasure
+  [IsFiniteMeasure μ] (hcs : μ s ≠ 0)` — no `≠ ∞` needed (finite measure gives it). The
+  prefix-history measurability the tower lemma demands is `measurableSet_hist (fun i => (hA i).compl) k`
+  (complements), from the ChainRule entry.
+- **What remains open (unchanged).** Both numerator (dependency-split entry) and denominator
+  (this entry) primitives of the induction step are now verified over the right (arbitrary
+  background / relative) setting. The open target is the well-founded recursion on `|S|`
+  supplying the per-factor relative bounds `bₖ` from the LLL inductive hypothesis at
+  strictly smaller conditioning sets, plus reconciling `Finset.range` prefix ordering with
+  arbitrary `Finset` blocks `S₁`.
+
 ### Chain-rule scaffold + hypothesis-clean reduction (researcher-6, 2026-07-02→03) — NEW
 
 - **The LLL induction skeleton is a pure, independence-free chain rule.**
