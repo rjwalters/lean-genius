@@ -44,6 +44,13 @@ measure-theoretic bridge from that per-event bound to the global conclusion.
 * `avoidance_pos_of_failure_cond_lt_one` : if every history has positive measure
   and every conditional failure probability is `< 1`, avoidance is positive —
   the exact shape the LLL induction produces.
+* `hist_pos_of_failure_cond_lt_one` : the positive-history hypothesis above is
+  *automatic* — a conditional failure bound `< 1` alone forces every finite
+  survival history to have positive measure (induction; each step multiplies by
+  the positive survival conditional `1 - failure`).
+* `avoidance_pos_of_failure_cond_lt_one'` : consequently the LLL reduction target
+  is purely the conditional failure bound — if every `μ[A k | ⋂_{j<k} (A j)ᶜ] < 1`
+  then avoidance is positive, with no separate positive-history assumption.
 
 Everything is `Finset.range`-indexed (an explicit total order on the events, as
 the chain rule requires) and lives over an arbitrary `IsProbabilityMeasure`.
@@ -145,6 +152,57 @@ theorem avoidance_pos_of_failure_cond_lt_one (hA : ∀ i, MeasurableSet (A i)) (
   rw [survival_cond_eq_one_sub hA k (hpos k hk)]
   -- `1 - c ≠ 0` for `c < 1` in `ℝ≥0∞`
   rw [Ne, tsub_eq_zero_iff_le, not_le]
+  exact hfail k hk
+
+/-- **History positivity is automatic from the failure bound.**
+The positive-measure-history hypothesis of `avoidance_pos_of_failure_cond_lt_one`
+is not an independent assumption: if every conditional *failure* probability
+`μ[A k | ⋂_{j<k} (A j)ᶜ]` is `< 1`, then every finite survival history
+`⋂_{j<n} (A j)ᶜ` already has positive measure. The empty history is the whole
+space (`μ = 1`), and each step multiplies the previous history's measure by the
+strictly positive survival conditional `1 - failure`, using the chain-rule
+telescoping identity `μ(history ∩ (A n)ᶜ) = μ[(A n)ᶜ | history] · μ(history)`. -/
+theorem hist_pos_of_failure_cond_lt_one (hA : ∀ i, MeasurableSet (A i)) :
+    ∀ n, (∀ k ∈ Finset.range n, μ[A k | ⋂ j ∈ Finset.range k, (A j)ᶜ] < 1) →
+      μ (⋂ j ∈ Finset.range n, (A j)ᶜ) ≠ 0 := by
+  intro n
+  induction n with
+  | zero => intro _; simp
+  | succ n ih =>
+    intro hfail
+    have hsplit : (⋂ i ∈ Finset.range (n + 1), (A i)ᶜ)
+        = (⋂ i ∈ Finset.range n, (A i)ᶜ) ∩ (A n)ᶜ := by
+      rw [Finset.range_add_one, Finset.set_biInter_insert, Set.inter_comm]
+    -- history at `n` is positive by IH (its failure hypotheses are a subset)
+    have hposn : μ (⋂ j ∈ Finset.range n, (A j)ᶜ) ≠ 0 :=
+      ih fun k hk => hfail k (Finset.mem_range.mpr
+        (Nat.lt_succ_of_lt (Finset.mem_range.mp hk)))
+    -- the survival conditional at step `n` is strictly positive since failure `< 1`
+    have hsurv : μ[(A n)ᶜ | ⋂ j ∈ Finset.range n, (A j)ᶜ] ≠ 0 := by
+      rw [survival_cond_eq_one_sub hA n hposn, Ne, tsub_eq_zero_iff_le, not_le]
+      exact hfail n (Finset.self_mem_range_succ n)
+    -- telescope: `μ(history_n ∩ (A n)ᶜ) = μ[(A n)ᶜ | history_n] · μ(history_n) ≠ 0`
+    rw [hsplit, ← cond_mul_eq_inter (measurableSet_hist (fun i => (hA i).compl) n) ((A n)ᶜ) μ]
+    exact mul_ne_zero hsurv hposn
+
+/-- **Avoidance positivity from the conditional failure bound alone.**
+Strengthening `avoidance_pos_of_failure_cond_lt_one` by discharging its
+positive-history hypothesis via `hist_pos_of_failure_cond_lt_one`: if every
+conditional failure probability `μ[A k | ⋂_{j<k} (A j)ᶜ]` is `< 1`, then the
+first `n` events are avoided with strictly positive probability. This is the
+cleanest measure-theoretic statement of the LLL reduction — the *only* thing the
+Lovász Local Lemma induction must certify is that each conditional failure
+probability stays below `1` (in the symmetric regime `≤ 2p < 1` under
+`e·p·(d+1) ≤ 1`); global avoidance positivity is then automatic. -/
+theorem avoidance_pos_of_failure_cond_lt_one' (hA : ∀ i, MeasurableSet (A i)) (n : ℕ)
+    (hfail : ∀ k ∈ Finset.range n, μ[A k | ⋂ j ∈ Finset.range k, (A j)ᶜ] < 1) :
+    0 < μ (⋂ i ∈ Finset.range n, (A i)ᶜ) := by
+  rw [avoidance_pos_iff hA]
+  intro k hk
+  have hposk : μ (⋂ j ∈ Finset.range k, (A j)ᶜ) ≠ 0 :=
+    hist_pos_of_failure_cond_lt_one hA k fun m hm => hfail m (Finset.mem_range.mpr
+      (lt_trans (Finset.mem_range.mp hm) (Finset.mem_range.mp hk)))
+  rw [survival_cond_eq_one_sub hA k hposk, Ne, tsub_eq_zero_iff_le, not_le]
   exact hfail k hk
 
 end LovaszLocalLemmaOQ01ChainRule

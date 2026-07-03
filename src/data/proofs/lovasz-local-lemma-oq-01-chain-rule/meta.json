@@ -2,7 +2,7 @@
   "id": "lovasz-local-lemma-oq-01-chain-rule",
   "title": "Lovász Local Lemma OQ-01: Conditional-Probability Chain Rule for Avoidance",
   "slug": "lovasz-local-lemma-oq-01-chain-rule",
-  "description": "The measure-theoretic skeleton of the Lovász Local Lemma induction. For an arbitrary measurable family of events A : ℕ → Set Ω over a real IsProbabilityMeasure — no independence, no dependency graph, no LLL hypothesis — the probability of a finite intersection factors as the product of conditional probabilities of each event given all earlier ones: μ(⋂ i∈range n, A i) = ∏ k∈range n, μ[A k | ⋂ j∈range k, A j]. Specialised to the complements this gives the survival-product form μ(⋂ i, (A i)ᶜ) = ∏ k, μ[(A k)ᶜ | ⋂ j<k, (A j)ᶜ], and hence the avoidance-positivity criterion: the events can be simultaneously avoided with positive probability iff every conditional survival probability is nonzero. This is precisely the reduction the LLL discharges — the LLL induction's entire job is to certify each conditional failure probability μ[A k | history] bounded below 1, and this entry supplies the measure-theoretic bridge from that per-event bound to the global avoidance conclusion. Complements the two computable extremes already in the gallery (the independent d=0 base case lovasz-local-lemma-oq-01 and the dependency-free union bound lovasz-local-lemma-oq-01-union-bound) by providing the general chain-rule scaffold that any LLL proof, at any dependency degree, must instantiate. Fully machine-verified, 0 sorries, 0 axioms.",
+  "description": "The measure-theoretic skeleton of the Lovász Local Lemma induction. For an arbitrary measurable family of events A : ℕ → Set Ω over a real IsProbabilityMeasure — no independence, no dependency graph, no LLL hypothesis — the probability of a finite intersection factors as the product of conditional probabilities of each event given all earlier ones: μ(⋂ i∈range n, A i) = ∏ k∈range n, μ[A k | ⋂ j∈range k, A j]. Specialised to the complements this gives the survival-product form μ(⋂ i, (A i)ᶜ) = ∏ k, μ[(A k)ᶜ | ⋂ j<k, (A j)ᶜ], and hence the avoidance-positivity criterion: the events can be simultaneously avoided with positive probability iff every conditional survival probability is nonzero. This is precisely the reduction the LLL discharges — the LLL induction's entire job is to certify each conditional failure probability μ[A k | history] bounded below 1, and this entry supplies the measure-theoretic bridge from that per-event bound to the global avoidance conclusion. Complements the two computable extremes already in the gallery (the independent d=0 base case lovasz-local-lemma-oq-01 and the dependency-free union bound lovasz-local-lemma-oq-01-union-bound) by providing the general chain-rule scaffold that any LLL proof, at any dependency degree, must instantiate. A follow-up strengthening (hist_pos_of_failure_cond_lt_one) shows the positive-history side condition is automatic — a conditional failure bound below 1 alone forces every survival history to have positive measure — yielding avoidance_pos_of_failure_cond_lt_one', the cleanest LLL reduction whose only obligation is the per-event failure bound. Fully machine-verified, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-07-02",
@@ -21,9 +21,9 @@
     "sorries": 0,
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
-    "assumptions": "Fully verified: 0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide/decide (only foundational propext/Classical.choice/Quot.sound from the Mathlib lemmas used). IsProbabilityMeasure is an explicit hypothesis. The chain rule cond_chain_avoidance and its complement form avoidance_eq_prod_survival_cond and criterion avoidance_pos_iff are unconditional (no independence, no positive-measure side condition). survival_cond_eq_one_sub and avoidance_pos_of_failure_cond_lt_one carry explicit positive-measure (history nonvanishing) hypotheses — these are supplied by the LLL induction itself and are stated honestly as hypotheses here. Scope: this entry provides the general chain-rule scaffold and the reduction of avoidance-positivity to per-event conditional bounds; it does NOT prove the bounded-dependency-degree symmetric LLL bound (e·p·(d+1) ≤ 1), which remains the open research target and is out of scope. The chain rule is the frame the LLL fills in, not the LLL itself.",
-    "lineCount": 150,
-    "theoremCount": 6,
+    "assumptions": "Fully verified: 0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide/decide (only foundational propext/Classical.choice/Quot.sound from the Mathlib lemmas used). IsProbabilityMeasure is an explicit hypothesis. The chain rule cond_chain_avoidance and its complement form avoidance_eq_prod_survival_cond and criterion avoidance_pos_iff are unconditional (no independence, no positive-measure side condition). survival_cond_eq_one_sub and avoidance_pos_of_failure_cond_lt_one carry explicit positive-measure (history nonvanishing) hypotheses — these are supplied by the LLL induction itself and are stated honestly as hypotheses here. hist_pos_of_failure_cond_lt_one further shows the positive-history hypothesis is in fact DERIVABLE from the conditional failure bound < 1 (not an independent assumption), and avoidance_pos_of_failure_cond_lt_one' is the resulting hypothesis-free criterion: failure conditionals < 1 alone imply avoidance positivity. All new theorems are 0-sorry / 0-axiom (foundational propext/Classical.choice/Quot.sound only). Scope: this entry provides the general chain-rule scaffold and the reduction of avoidance-positivity to per-event conditional bounds; it does NOT prove the bounded-dependency-degree symmetric LLL bound (e·p·(d+1) ≤ 1), which remains the open research target and is out of scope. The chain rule is the frame the LLL fills in, not the LLL itself.",
+    "lineCount": 208,
+    "theoremCount": 8,
     "definitionCount": 0,
     "verified": true,
     "originalContributions": [
@@ -32,7 +32,8 @@
       "avoidance_pos_iff: 0 < μ(⋂ i, (A i)ᶜ) ↔ every conditional survival probability is nonzero. Because the avoidance probability is a finite product of ℝ≥0∞ conditionals, positivity reduces (via zero_lt_iff and Finset.prod_ne_zero_iff) to nonvanishing of each factor — this is the precise target the LLL certifies.",
       "survival_cond_eq_one_sub: on a positive-measure history, μ[(A k)ᶜ | history] = 1 − μ[A k | history] (via cond_isProbabilityMeasure + prob_compl_eq_one_sub), the bridge from the usual LLL bound 'each conditional failure probability < 1' to the survival-positivity form.",
       "avoidance_pos_of_failure_cond_lt_one: if every history has positive measure and every conditional failure probability μ[A k | history] < 1, then avoidance is positive — the exact shape the LLL induction produces (in the symmetric regime the induction certifies μ[A k | history] ≤ 2p < 1 under e·p·(d+1) ≤ 1).",
-      "Framing contribution: the chain rule is the general scaffold common to every LLL proof regardless of dependency degree; making it a verified, standalone, independence-free identity isolates exactly what the LLL induction must add on top of pure measure theory — a lower bound on each conditional survival probability derived from the dependency structure."
+      "Framing contribution: the chain rule is the general scaffold common to every LLL proof regardless of dependency degree; making it a verified, standalone, independence-free identity isolates exactly what the LLL induction must add on top of pure measure theory — a lower bound on each conditional survival probability derived from the dependency structure.",
+      "hist_pos_of_failure_cond_lt_one / avoidance_pos_of_failure_cond_lt_one': the positive-measure-history hypothesis of avoidance_pos_of_failure_cond_lt_one is redundant — a conditional failure bound < 1 alone forces every finite survival history ⋂_{j<n}(A j)ᶜ to have positive measure (induction on n: the empty history is the whole space μ=1, and each step multiplies by the strictly positive survival conditional 1−failure via the same telescoping identity cond_mul_eq_inter). Discharging it yields avoidance_pos_of_failure_cond_lt_one', the cleanest LLL reduction: if every μ[A k | ⋂_{j<k}(A j)ᶜ] < 1 then 0 < μ(⋂ (A i)ᶜ), with NO separate positive-history assumption. The only thing the Lovász Local Lemma induction must certify is the per-event failure bound; history positivity is then automatic."
     ]
   },
   "leanFile": {
@@ -45,10 +46,10 @@
       "Finset"
     ],
     "namespace": "LovaszLocalLemmaOQ01ChainRule",
-    "lineCount": 150,
+    "lineCount": 208,
     "axiomCount": 0,
-    "theoremCount": 6,
-    "substantiveTheoremCount": 5,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 7,
     "duplicateTheorems": 0,
     "definitionCount": 0,
     "path": "Proofs/LovaszLocalLemmaOQ01ChainRule.lean",
@@ -86,6 +87,18 @@
       "type": "corollary",
       "description": "Sufficient LLL avoidance condition: if every history has positive measure and every conditional failure probability μ[A k | history] < 1, then avoidance is positive — the exact shape the LLL induction produces.",
       "leanType": "(hA : ∀ i, MeasurableSet (A i)) → (n : ℕ) → (∀ k ∈ range n, μ (⋂ j ∈ range k, (A j)ᶜ) ≠ 0) → (∀ k ∈ range n, μ[A k | ⋂ j ∈ range k, (A j)ᶜ] < 1) → 0 < μ (⋂ i ∈ Finset.range n, (A i)ᶜ)"
+    },
+    {
+      "name": "hist_pos_of_failure_cond_lt_one",
+      "type": "core",
+      "description": "History positivity is automatic from the failure bound: if every conditional failure probability μ[A k | ⋂_{j<k}(A j)ᶜ] < 1, then every finite survival history ⋂_{j<n}(A j)ᶜ already has positive measure. Proved by induction — the empty history is the whole space (μ=1) and each step multiplies by the strictly positive survival conditional 1−failure via the chain-rule telescope cond_mul_eq_inter. This shows the positive-history side condition of avoidance_pos_of_failure_cond_lt_one is not an independent assumption.",
+      "leanType": "(hA : ∀ i, MeasurableSet (A i)) → ∀ n, (∀ k ∈ Finset.range n, μ[A k | ⋂ j ∈ Finset.range k, (A j)ᶜ] < 1) → μ (⋂ j ∈ Finset.range n, (A j)ᶜ) ≠ 0"
+    },
+    {
+      "name": "avoidance_pos_of_failure_cond_lt_one'",
+      "type": "corollary",
+      "description": "The cleanest measure-theoretic LLL reduction: if every conditional failure probability μ[A k | ⋂_{j<k}(A j)ᶜ] < 1, then the first n events are avoided with strictly positive probability — with NO separate positive-history hypothesis (it is discharged via hist_pos_of_failure_cond_lt_one). The only thing the Lovász Local Lemma induction must certify is that each conditional failure probability stays below 1; global avoidance positivity is then automatic.",
+      "leanType": "(hA : ∀ i, MeasurableSet (A i)) → (n : ℕ) → (∀ k ∈ Finset.range n, μ[A k | ⋂ j ∈ Finset.range k, (A j)ᶜ] < 1) → 0 < μ (⋂ i ∈ Finset.range n, (A i)ᶜ)"
     }
   ],
   "overview": {
@@ -154,9 +167,17 @@
       "id": "sec-bridge",
       "title": "Bridge to the LLL failure-probability bound",
       "startLine": 123,
-      "endLine": 150,
+      "endLine": 163,
       "summary": "survival_cond_eq_one_sub: on a positive-measure history conditioning is a probability measure (cond_isProbabilityMeasure), so μ[(A k)ᶜ | history] = 1 − μ[A k | history] (prob_compl_eq_one_sub). avoidance_pos_of_failure_cond_lt_one: if every history is positive and every failure conditional < 1, avoidance is positive — the exact shape the LLL induction produces.",
       "mathContext": "Connects the survival-positivity criterion to the standard LLL bound 'each conditional failure probability < 1'; the positive-measure hypotheses are what a real LLL induction supplies."
+    },
+    {
+      "id": "sec-clean-criterion",
+      "title": "History positivity is automatic: the clean LLL reduction",
+      "startLine": 164,
+      "endLine": 208,
+      "summary": "hist_pos_of_failure_cond_lt_one: induction on n shows a conditional failure bound < 1 alone forces every survival history to have positive measure (empty history = whole space μ=1; each step multiplies by the positive survival conditional 1−failure via cond_mul_eq_inter). avoidance_pos_of_failure_cond_lt_one': discharging the positive-history side condition yields the cleanest LLL reduction — failure conditionals < 1 imply avoidance positivity, no separate history hypothesis.",
+      "mathContext": "Isolates the LLL induction's sole obligation: bound each conditional failure probability below 1. History positivity, previously a hypothesis, is a consequence."
     }
   ],
   "crossReferences": [
