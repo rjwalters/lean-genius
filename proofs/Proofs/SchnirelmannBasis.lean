@@ -134,6 +134,48 @@ theorem basis_order_two_of_density_ge_half
     ∃ a ∈ A, ∃ b ∈ A, a + b = n :=
   sumset_covers_of_density_add_ge_one hA0 hA0 (by linarith) n
 
+/-- **Terminal step of Schnirelmann's theorem, in additive-basis form.** If
+    `0 ∈ A` and `σ(A) ≥ 1/2`, then `A` is an additive basis of order `2` in the
+    exact `Multiset` shape used by `WeakGoldbach.IsAdditiveBasis`: every `n` is
+    the sum of a multiset of `≤ 2` elements of `A`.
+
+    Where `basis_order_two_of_density_ge_half` produces a bare pair `a + b = n`,
+    this repackages it as the multiset witness `{a, b}` that
+    `schnirelmann_basis_theorem` requires as its conclusion. It is the *final*
+    link of the density-boosting chain: once an iterated sumset `h·A` has been
+    shown to have density `> 1/2` (via Schnirelmann's inequality — the one
+    remaining gap), this lemma discharges the basis property for `h·A`, hence
+    for `A` at order `2h`. -/
+theorem isAdditiveBasis_two_of_density_ge_half
+    (hA0 : 0 ∈ A) (h : 1 / 2 ≤ schnirelmannDensity A) (n : ℕ) :
+    ∃ S : Multiset ℕ, (∀ x ∈ S, x ∈ A) ∧ S.card ≤ 2 ∧ S.sum = n := by
+  obtain ⟨a, ha, b, hb, hab⟩ := basis_order_two_of_density_ge_half hA0 h n
+  refine ⟨{a, b}, ?_, ?_, ?_⟩
+  · intro x hx
+    simp only [Multiset.insert_eq_cons, Multiset.mem_cons, Multiset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact ha
+    · exact hb
+  · simp only [Multiset.insert_eq_cons, Multiset.card_cons, Multiset.card_singleton]
+    omega
+  · simpa [Multiset.insert_eq_cons, Multiset.sum_cons] using hab
+
+/-- **Convergence input for the density-boosting iteration.** If `σ(A) > 0`
+    then the "deficiency" `1 − σ(A)` is `< 1`, so it decays geometrically and
+    some finite power drops below `1/2`: `∃ h, (1 − σ(A))^h < 1/2`.
+
+    This is the analytic half of the iteration. Schnirelmann's inequality gives
+    `1 − σ(h·A) ≤ (1 − σ(A))^h` (the outstanding combinatorial gap); picking the
+    `h` supplied here then yields `σ(h·A) > 1/2`, at which point
+    `isAdditiveBasis_two_of_density_ge_half` closes the argument. Together these
+    two lemmas reduce `schnirelmann_basis_theorem` to exactly the sumset
+    inequality plus the bookkeeping "an element of `h·A` is a sum of `≤ h`
+    elements of `A`". -/
+theorem exists_pow_deficiency_lt_half
+    (hpos : 0 < schnirelmannDensity A) :
+    ∃ h : ℕ, (1 - schnirelmannDensity A) ^ h < 1 / 2 :=
+  exists_pow_lt_of_lt_one (by norm_num) (by linarith)
+
 /-
   ── Remaining gap toward `schnirelmann_basis_theorem` ─────────────────────────
 
@@ -151,8 +193,17 @@ theorem basis_order_two_of_density_ge_half
        density sum > 1, and `sumset_covers_of_density_add_ge_one` finishes:
        every n is a sum of ≤ 2h elements of A, i.e. A is a basis of order 2h.
 
-  Step (1) is the outstanding work; the covering lemma (step 2's engine) is now
-  available for it.
+  Step (2) is now bracketed by two verified lemmas above:
+    * its analytic input — `∃ h, (1 − σ(A))^h < 1/2` — is
+      `exists_pow_deficiency_lt_half`;
+    * its terminal step — `σ ≥ 1/2 ⇒ additive basis of order 2`, in the
+      `Multiset` shape of `IsAdditiveBasis` — is
+      `isAdditiveBasis_two_of_density_ge_half`.
+
+  What remains between them is precisely step (1), Schnirelmann's inequality,
+  together with the bookkeeping that an element of the iterated sumset `h·A` is
+  a sum of at most `h` elements of `A`. The covering lemma (step 2's engine) is
+  already available for it.
 -/
 
 end SchnirelmannBasis
