@@ -494,8 +494,8 @@ theorem not_symmetric_pair_of_prime_dvd {m k p : ℕ} (hp : Nat.Prime p)
     (hpm : p ∣ m) (hk0 : 0 < k) (hpk : p ∣ k) :
     ¬(Nat.Prime (m - k) ∧ Nat.Prime (m + k)) := by
   rintro ⟨h1, h2⟩
-  have hd1 : p ∣ (m - k) := Nat.dvd_sub' hpm hpk
-  have hd2 : p ∣ (m + k) := Nat.dvd_add hpm hpk
+  have hd1 : p ∣ (m - k) := Nat.dvd_sub hpm hpk
+  have hd2 : p ∣ (m + k) := dvd_add hpm hpk
   have e1 : p = m - k := (h1.eq_one_or_self_of_dvd p hd1).resolve_left hp.ne_one
   have e2 : p = m + k := (h2.eq_one_or_self_of_dvd p hd2).resolve_left hp.ne_one
   omega
