@@ -87,6 +87,120 @@
       "Catalan numbers as a special case"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "lgv_lemma_2x2",
+      "type": "theorem",
+      "statement": "Under a₁≤a₂, b₁≤b₂, a₁≤b₁, a₂≤b₂, a₂≤b₁: (niPairCount m (b₁−a₁) (b₂−a₂) a₁ a₂ : ℤ) = lgvDet m a₁ b₁ a₂ b₂",
+      "significance": "The central result: the 2×2 Lindström–Gessel–Viennot lemma. The number of pairs of NON-intersecting monotone lattice paths from sources (a₁,a₂) to targets (b₁,b₂) equals a 2×2 determinant of binomial path counts. The archetypal instance of the determinant-counts-non-intersecting-paths principle.",
+      "description": "Proved fully symbolically (no native_decide): degenerate same-start/same-end cases reduce directly; the generic case subtracts the crossing pairs — counted by lindstrom_involution — from the total path-pair count."
+    },
+    {
+      "name": "lindstrom_involution",
+      "type": "theorem",
+      "statement": "card {non-non-intersecting pairs in pathType m n₁ × pathType m n₂} = card (pathType m n₁' × pathType m n₂')",
+      "significance": "The heart of the LGV proof: the Lindström (Gessel–Viennot) sign-reversing involution. Intersecting path pairs are put in bijection with unconstrained path pairs on the swapped target multiset by exchanging tails at the first crossing — this is what makes the off-diagonal determinant terms cancel.",
+      "description": "Proved by antisymmetry from two injections lindstromForward_injective and lindstromBackward_injective; axiom-free."
+    },
+    {
+      "name": "lindstromForward_injective",
+      "type": "theorem",
+      "statement": "The tail-swap map from crossing pairs to swapped-target pairs is injective",
+      "significance": "One half of the Lindström involution's bijectivity: swapping the tails of a crossing pair at its canonical first shared point is an injective operation. Together with the backward map it forces the two cardinalities to coincide.",
+      "description": "Uses the canonical minimal shared point (canonSharedPoint) and the swap involution's coordinate lemmas; axiom-free."
+    },
+    {
+      "name": "lindstromBackward_injective",
+      "type": "theorem",
+      "statement": "The inverse tail-swap map is injective",
+      "significance": "The complementary injection: every swapped-target path pair, being forced to cross (crossing_always_intersecting), swaps back injectively to a distinct intersecting pair. The second inequality in the card-antisymmetry argument.",
+      "description": "Relies on crossing_always_intersecting to guarantee the reverse swap is well-defined; axiom-free."
+    },
+    {
+      "name": "crossing_lemma",
+      "type": "theorem",
+      "statement": "If paths l₁,l₂ have equal east-length m, north-lengths n₁,n₂, starts y₁<y₂ and ends y₂+n₂ < y₁+n₁, then they are NOT non-intersecting",
+      "significance": "The geometric crossing principle: two monotone lattice paths whose start and end orders are reversed must intersect. This is the combinatorial engine that forces off-diagonal (order-reversing) path pairs to cross.",
+      "description": "Proved by a column-by-column induction on the entry heights (nonIntersecting_entry_order) contradicting the reversed endpoint order; axiom-free."
+    },
+    {
+      "name": "crossing_always_intersecting",
+      "type": "theorem",
+      "statement": "For Q₁ ∈ pathType m n₁', Q₂ ∈ pathType m n₂' with a₁<a₂ and a₂+n₂' < a₁+n₁', Q₁ and Q₂ intersect",
+      "significance": "The pathType-typed form of the crossing lemma used to power the backward injection: on the swapped-target sizes every path pair is forced to cross, so the involution is defined on the whole set.",
+      "description": "Reduces to crossing_lemma via the path-type length/count properties; axiom-free."
+    },
+    {
+      "name": "path_count_eq_choose",
+      "type": "theorem",
+      "statement": "Fintype.card (pathType m n) = Nat.choose (m + n) m",
+      "significance": "The foundational enumeration: the number of monotone lattice paths with m east and n north steps is the binomial coefficient C(m+n, m). Every determinant entry in the LGV lemma is an instance of this count.",
+      "description": "Proved by induction on m via an explicit path-recursion equivalence; axiom-free."
+    },
+    {
+      "name": "vandermonde",
+      "type": "theorem",
+      "statement": "Nat.choose (m + n) r = ∑ k ∈ range (r+1), Nat.choose m k * Nat.choose n (r − k)",
+      "significance": "The Vandermonde convolution identity, the combinatorial cornerstone linking binomial coefficients of a sum to a convolution of products. Underlies the multiplicativity of path counts across a dividing line.",
+      "description": "Derived from Mathlib's Nat.add_choose_eq and the antidiagonal sum reindexing; axiom-free."
+    },
+    {
+      "name": "catalan_formula",
+      "type": "theorem",
+      "statement": "Cn n * (n + 1) = Nat.choose (2 * n) n",
+      "significance": "The closed form for the Catalan numbers Cₙ = C(2n,n)/(n+1), stated multiplicatively to stay within ℕ. Catalan numbers count balanced ballot sequences, Dyck paths, and non-crossing structures — the combinatorial family the whole entry orbits.",
+      "description": "Cn n is defined as C(2n,n) − C(2n,n+1); the identity follows by binomial absorption. Axiom-free."
+    },
+    {
+      "name": "ballot_formula",
+      "type": "theorem",
+      "statement": "q < p, 1≤p, 1≤q → ballotSeqCount p q * (p + q) = (p − q) * Nat.choose (p + q) p",
+      "significance": "Bertrand's Ballot Theorem: the number of ballot sequences in which candidate A (with p votes) stays strictly ahead of B (with q votes) is (p−q)/(p+q) · C(p+q, p). The classical result at the entry's namesake.",
+      "description": "Multiplicative form (avoiding division in ℕ); proved by binomial absorption identities. Axiom-free."
+    },
+    {
+      "name": "ballot_via_path_count",
+      "type": "theorem",
+      "statement": "1≤p, 1≤q, q<p → ballotSeqCount p q = card (pathType q (p−1)) − card (pathType (q−1) p)",
+      "significance": "The reflection-principle derivation of the ballot count as a DIFFERENCE of two lattice-path counts — the combinatorial-bijective route that mirrors the LGV determinant's subtraction of crossing configurations.",
+      "description": "Rewrites both path counts to binomials via path_count_eq_choose and symmetry; axiom-free."
+    },
+    {
+      "name": "catalan_eq_ballot",
+      "type": "theorem",
+      "statement": "Cn n = ballotSeqCount (n + 1) n",
+      "significance": "Identifies the Catalan numbers with a boundary case of the ballot count (p = n+1, q = n): the sequences where A stays ahead with exactly one extra vote are exactly the Dyck/Catalan configurations. Unifies the two combinatorial families of the entry.",
+      "description": "Immediate by unfolding both definitions with arithmetic simplification; axiom-free."
+    },
+    {
+      "name": "lgvDet_nonneg",
+      "type": "theorem",
+      "statement": "Under the LGV ordering hypotheses, 0 ≤ lgvDet m a₁ b₁ a₂ b₂",
+      "significance": "Combinatorial positivity: because the LGV determinant counts an actual (non-negative) number of non-intersecting path pairs, it is non-negative. A clean corollary showing the determinant's structural meaning.",
+      "description": "Rewrites the determinant as niPairCount via lgv_lemma_2x2, then uses non-negativity of a cast natural number; axiom-free."
+    },
+    {
+      "name": "choose_symm_via_paths",
+      "type": "theorem",
+      "statement": "Nat.choose (m + n) m = Nat.choose (m + n) n",
+      "significance": "Binomial symmetry proved bijectively: reflecting a lattice path across the diagonal (pathFlip) swaps its east and north step counts, giving C(m+n,m)=C(m+n,n) by an explicit equivalence rather than algebra.",
+      "description": "Uses path_count_eq_choose on both sides plus the pathFlipEquiv reflection bijection; axiom-free."
+    },
+    {
+      "name": "swapAtPoint_involutive",
+      "type": "theorem",
+      "statement": "swapAtPoint (swapAtPoint (l₁,l₂) at p) at p = (l₁,l₂)",
+      "significance": "The tail-swap operation at a shared lattice point is an involution — swapping tails twice restores the original pair. The self-inverse property that makes the Lindström map a genuine (sign-reversing) involution and not merely a bijection.",
+      "description": "Proved by list-surgery on the path prefixes/suffixes at the split index; axiom-free."
+    },
+    {
+      "name": "total_identity_count",
+      "type": "theorem",
+      "statement": "card (pathType m n₁ × pathType m n₂) counted as Nat.choose (m+n₁) m * Nat.choose (m+n₂) m",
+      "significance": "The total (unconstrained) path-pair count that the LGV subtraction starts from: the product of two binomial path counts, which is exactly the diagonal term of the determinant before the crossing pairs are removed.",
+      "description": "Product of two instances of path_count_eq_choose over the independent path factors; axiom-free."
+    }
+  ],
   "conclusion": {
     "summary": "A complete, axiom-free formalization of the 2×2 LGV Lemma with a novel proof of the Crossing Lemma via column entry order analysis. The Lindström involution is fully constructed and proved to be a sign-reversing bijection on intersecting path pairs. 138 theorems, 0 axioms, 0 sorries across 2922 lines.",
     "implications": "The LGV Lemma is a cornerstone of algebraic combinatorics, used in proofs of the hook-length formula, Schur polynomial identities, and determinantal point processes. This formalization provides Lean 4 infrastructure for lattice path arguments that can be extended to the general LGV lemma (arbitrary path systems) and to applications in representation theory.",
