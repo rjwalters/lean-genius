@@ -1,39 +1,55 @@
 # Current State
 
-**Phase**: ORIENT
-**Since**: 2026-07-02
-**Iteration**: 1 (survey)
+**Phase**: ACT (S3 ready to build)
+**Since**: 2026-07-03
+**Iteration**: 3 (S3 scoping; S2 shipped)
 
 ## Current Focus
 
-S1 survey complete (see `knowledge.md`). Target = Marcinkiewicz–Zygmund SLLN
-(`1 ≤ p < 2`, normalisation `n^{1/p}`). Verdict: **SURVEY → multi-session
-BUILD**, not one-session provable, and should **not** be axiomatised (parent
-chain already carries 1 + 3 axioms).
+**S2 is DONE — do not re-attempt Kronecker.** This leaf's `state.md` previously
+still listed S2 as the next action even though S2 had shipped; that staleness
+caused a duplicate re-derivation of Kronecker on 2026-07-03 (caught before merge
+and discarded). Corrected here.
+
+Kronecker's lemma and the Toeplitz/Silverman weighted-average null step are
+already **verified 0-sorry / 0-axiom** on `main`:
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean`
+  - `LawsOfLargeNumbers.MZ.kronecker_lemma` (L122)
+  - `LawsOfLargeNumbers.MZ.tendsto_weighted_average_zero` (L47)
+
+Current work = **S3 scoping**: the a.s.-convergence-of-independent-`L²`-series
+criterion (Kolmogorov). The 2026-07-02 survey called this a ">300 LOC bottleneck"
+but never checked Mathlib's martingale-convergence machinery. It turns out the
+a.s.-convergence *engine* and every glue lemma already exist in Mathlib (see
+`knowledge.md` §S3); the remaining work is **assembly**, not foundations.
 
 ## Active Approach
 
-None in-flight. Next concrete work item is the S2 sub-target below.
+None in-flight (docs/scoping iteration). Next work item is the S3 assembly
+below — a real Lean build for a future session.
 
 ## Blockers
 
-Two Mathlib dependencies verified **absent** and needed before MZ can be proved:
-1. **Kronecker's lemma** for real series (only `PosSemidef.kronecker` matrix
-   product exists — unrelated).
-2. **Kolmogorov three-series / a.s.-convergence-of-independent-`L²`-series**
-   criterion (only Kolmogorov's 0-1 law is in Mathlib).
+- **S3 (assembly, multi-session):** wire the existing Mathlib pieces into
+  "partial sums of independent mean-zero `L²` variables converge a.s." No
+  foundational gap remains; it is glue + bookkeeping (natural filtration →
+  martingale property via `condExp_indep_eq` → uniform `L¹` bound via
+  `IndepFun.variance_sum` → `Submartingale.exists_ae_tendsto_of_bdd`).
 
 ## Next Action
 
-- **S2 (tractable, ~1 session, 0-axiom):** formalise **Kronecker's lemma**
-  (`aₙ ↑ ∞`, `∑ xₙ/aₙ` converges ⟹ `a_n^{-1} ∑_{i≤n} xᵢ → 0`). Standalone,
-  independently useful, unblocks step 5 of the MZ decomposition.
-- **S3 (multi-session):** build the Kolmogorov a.s.-convergence criterion for
-  independent `L²`-bounded series (the real bottleneck, >300 LOC).
-- **S4:** assemble truncation (steps 1–3 of the decomposition) + conclude MZ.
+- **S3 (next session, real Lean build):** formalise Kolmogorov's a.s.-convergence
+  criterion by assembling the named Mathlib lemmas in `knowledge.md` §S3.
+  Start a `*.lean` file, build the natural filtration of `X`, prove the partial
+  sums form a `Martingale`, bound `eLpNorm S_n 1 μ` uniformly, and apply
+  `Submartingale.exists_ae_tendsto_of_bdd`. Estimated 1–2 sessions now that the
+  engine is located (down from the survey's "multi-session, >300 LOC").
+- **S4:** assemble truncation (steps 1–3 of the MZ decomposition) + Kronecker
+  (S2, done) + Kolmogorov (S3) to conclude MZ.
 
 ## Attempt Counts
 
-- Total attempts: 1 (text-only survey)
-- Current approach attempts: 0
-- Approaches tried: 1 (literature/decomposition + Mathlib API audit)
+- Total attempts: 3 (S1 survey; S2 shipped Kronecker; S3 scoping)
+- Current approach attempts: 0 (S3 assembly not yet started)
+- Approaches tried: 2 (S1 literature/decomposition; S2 Abel+Toeplitz Kronecker)
