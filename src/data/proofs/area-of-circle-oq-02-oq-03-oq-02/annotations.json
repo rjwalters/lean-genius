@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ann-aoc-oq02-oq03-oq02-header",
+    "proofId": "area-of-circle-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 66
+    },
+    "type": "context",
+    "title": "Two Derivations of Sₙ = n·Vₙ: Gamma Recurrence vs. Shell Integration",
+    "content": "The parent entry proved Sₙ = n·Vₙ algebraically, by unfolding the Gamma closed forms Vₙ = π^(n/2)/Γ(n/2+1) and Sₙ = 2π^(n/2)/Γ(n/2) and invoking the functional equation Γ(n/2+1)=(n/2)·Γ(n/2). This file gives the geometric derivation the parent flagged as open: the unit n-ball is the union of spherical shells of radius r∈[0,1], each shell carrying (n−1)-measure Sₙ·rⁿ⁻¹ (the unit sphere scaled by r), so integrating shells gives Vₙ = ∫₀¹ Sₙ rⁿ⁻¹ dr. The definition shellVolume reuses the parent's unitSphereSurface and unitBallVolume unchanged; the novelty is that Vₙ is now realized as an interval integral rather than a Gamma quotient.",
+    "mathContext": "$V_n = \\int_0^1 S_n\\, r^{n-1}\\,dr$; shells of radius $r$ have measure $S_n r^{n-1}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "spherical shell integration",
+      "Cavalieri's principle",
+      "fundamental theorem of calculus"
+    ],
+    "prerequisites": [
+      "interval integration",
+      "spherical coordinates"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq02-oq03-oq02-ftc",
+    "proofId": "area-of-circle-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 82
+    },
+    "type": "technique",
+    "title": "The FTC Core: ∫₀¹ rⁿ⁻¹ dr = 1/n",
+    "content": "integral_r_pow is the single application of the Fundamental Theorem of Calculus on which the whole file rests. Mathlib's integral_pow gives ∫₀¹ rᵏ dr = (1ᵏ⁺¹−0ᵏ⁺¹)/(k+1); with k = n−1 the exponent becomes n−1+1, reconciled to n by Nat.succ_pred_eq_of_pos (n≥1). The numerator 1ⁿ−0ⁿ = 1 (using zero_pow for n≥1), and the real-valued denominator ↑(n−1)+1 is reconciled to ↑n by exact_mod_cast on the Nat identity n−1+1=n. The result 1/n is the antiderivative rⁿ/n evaluated across [0,1].",
+    "mathContext": "$\\int_0^1 r^{n-1}\\,dr = \\left[\\tfrac{r^n}{n}\\right]_0^1 = \\tfrac{1}{n}$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "fundamental theorem of calculus",
+      "monomial integration",
+      "Nat subtraction casts"
+    ],
+    "prerequisites": [
+      "integral_pow",
+      "natural-number casts to ℝ"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq02-oq03-oq02-main",
+    "proofId": "area-of-circle-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 83,
+      "endLine": 116
+    },
+    "type": "key-step",
+    "title": "Sₙ = n·shellVolume n Without the Gamma Recurrence",
+    "content": "shellVolume_eq factors the constant Sₙ out of the integral (intervalIntegral.integral_const_mul) and applies the FTC core to get Sₙ/n. surface_eq_n_mul_shellVolume then reads off Sₙ = n·shellVolume n: the n=0 branch uses Γ(0)=0 (both sides 0), and the n≥1 branch is field_simp. Crucially this proof never touches the Gamma functional equation — the proportionality constant n comes from the antiderivative of rⁿ⁻¹, not from the half-dimension shift Γ(n/2+1)↔Γ(n/2). shellVolume_eq_unitBallVolume then substitutes the parent's own surface_eq_n_mul_volume to prove shellVolume n = Vₙ, reconciling the geometric and analytic routes so that the two independent derivations of Sₙ=n·Vₙ provably agree.",
+    "mathContext": "$S_n = n\\cdot\\mathrm{shellVolume}(n)$ (FTC) and $\\mathrm{shellVolume}(n) = V_n$ (reconciliation with the Gamma form).",
+    "significance": "core",
+    "relatedConcepts": [
+      "constant factor rule",
+      "surface-volume scaling",
+      "divergence theorem"
+    ],
+    "prerequisites": [
+      "intervalIntegral.integral_const_mul",
+      "the parent's surface_eq_n_mul_volume"
+    ]
+  }
+]
