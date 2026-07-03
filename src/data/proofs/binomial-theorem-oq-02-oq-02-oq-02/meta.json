@@ -125,6 +125,43 @@
       "description": "Sibling addressing the first open question (q-Vandermonde base cases via Gaussian binomials)"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "hockeyStick",
+      "type": "theorem",
+      "statement": "∑ i ∈ range (n+1), Nat.choose (r+i) r = Nat.choose (r+n+1) (r+1)",
+      "significance": "The hockey-stick identity in diagonal form: summing a diagonal of Pascal's triangle gives the entry just below the diagonal's end. The combinatorial backbone of the entry, from which every figurate-number formula below is a specialisation.",
+      "description": "Induction on n with Finset.sum_range_succ: peel the top term, apply the IH, and close each step with Pascal's rule Nat.choose_succ_succ."
+    },
+    {
+      "name": "hockeyStick_Icc",
+      "type": "theorem",
+      "statement": "∑ m ∈ Icc r n, Nat.choose m r = Nat.choose (n+1) (r+1)",
+      "significance": "The interval-indexed phrasing of the same identity, matching Mathlib's Nat.sum_Icc_choose. Having both the diagonal (range) and interval (Icc) forms lets downstream results pick whichever indexing is convenient.",
+      "description": "Exactly Nat.sum_Icc_choose n r."
+    },
+    {
+      "name": "sum_Icc_id",
+      "type": "theorem",
+      "statement": "∑ m ∈ Icc 1 n, m = Nat.choose (n+1) 2",
+      "significance": "Gauss's sum 1+2+…+n as a binomial coefficient C(n+1,2) — the triangular numbers are the r=1 diagonal of Pascal's triangle. First concrete payoff of the hockey-stick.",
+      "description": "Rewrite by hockeyStick_Icc at r=1 and use C(m,1)=m (Nat.choose_one_right) termwise."
+    },
+    {
+      "name": "gauss_sum",
+      "type": "theorem",
+      "statement": "∑ m ∈ Icc 1 n, m = n*(n+1)/2",
+      "significance": "The familiar closed form n(n+1)/2 for the triangular numbers, derived from the binomial expression rather than the classical pairing argument.",
+      "description": "From sum_Icc_id, expand C(n+1,2) via Nat.choose_two_right and simplify."
+    },
+    {
+      "name": "sum_Icc_triangular",
+      "type": "theorem",
+      "statement": "∑ m ∈ Icc 2 n, Nat.choose m 2 = Nat.choose (n+1) 3",
+      "significance": "The tetrahedral numbers: partial sums of triangular numbers are C(n+1,3). The r=2 diagonal, showing the hockey-stick generates the whole figurate hierarchy (triangular → tetrahedral → …).",
+      "description": "Nat.sum_Icc_choose n 2."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
