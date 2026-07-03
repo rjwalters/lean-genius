@@ -156,6 +156,64 @@
       "summary": "Five `example` statements verifying 3, 7, 11, 19, 23 are primes = 3 (mod 4), each by `decide`/`Nat.prime_three`, plus #check exports of the main results."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "mul_mod_four_one",
+      "type": "lemma",
+      "statement": "a % 4 = 1 → b % 4 = 1 → (a * b) % 4 = 1",
+      "significance": "The arithmetic engine of the whole proof: residues ≡ 1 (mod 4) are closed under multiplication. This is why a number ≡ 3 (mod 4) cannot be built solely from prime factors ≡ 1 (mod 4).",
+      "description": "Elementary: pushes the product through Nat.mul_mod, substitutes the two residues, and reduces (1·1) % 4 = 1 by norm_num."
+    },
+    {
+      "name": "prime_mod_four",
+      "type": "lemma",
+      "statement": "Nat.Prime p → p ≠ 2 → p % 4 = 1 ∨ p % 4 = 3",
+      "significance": "Establishes the dichotomy of odd primes modulo 4: every odd prime is either ≡ 1 or ≡ 3 (mod 4). This is the classification that the counting argument partitions primes by.",
+      "description": "Uses hp.odd_of_ne_two to write p = 2k+1, then splits on the parity of k: k even gives p = 4m+1 ≡ 1, k odd gives p = 4m+3 ≡ 3, each closed by omega."
+    },
+    {
+      "name": "factors_determine_mod_four",
+      "type": "lemma",
+      "statement": "n ≥ 1 → (∀ p, Nat.Prime p → p ∣ n → p = 2 ∨ p % 4 = 1) → n % 4 ≠ 3",
+      "significance": "The contrapositive core of the argument: if all of n's prime factors are 2 or ≡ 1 (mod 4), then n itself cannot be ≡ 3 (mod 4). This is what forces the existence of a 3-mod-4 prime factor.",
+      "description": "Strong induction on n. Extracts a prime factor via Nat.exists_prime_and_dvd; the factor 2 contradicts n odd, while a factor ≡ 1 (mod 4) is peeled off using mul_mod_four_one and the induction hypothesis applied to the cofactor."
+    },
+    {
+      "name": "has_prime_factor_3_mod_4",
+      "type": "lemma",
+      "statement": "n ≥ 3 → n % 4 = 3 → ∃ p, Nat.Prime p ∧ p ∣ n ∧ p % 4 = 3",
+      "significance": "The existence statement extracted from the previous lemma: any n ≡ 3 (mod 4) must have at least one prime factor ≡ 3 (mod 4). This is the step that produces the new prime in the Euclid-style construction.",
+      "description": "By contradiction: if no prime factor is ≡ 3 (mod 4), then prime_mod_four forces every factor to be 2 or ≡ 1 (mod 4), and factors_determine_mod_four yields n % 4 ≠ 3, contradicting the hypothesis."
+    },
+    {
+      "name": "infinitely_many_primes_3_mod_4",
+      "type": "theorem",
+      "statement": "∀ n : ℕ, ∃ p, Nat.Prime p ∧ p > n ∧ p % 4 = 3",
+      "significance": "THE MAIN THEOREM. For every n there is a prime p > n with p ≡ 3 (mod 4), hence infinitely many such primes. A fully elementary (Euclid-style) special case of Dirichlet's theorem requiring no analytic number theory.",
+      "description": "Euclid's construction with N = 4·(n+1)! − 1: then N ≡ 3 (mod 4) and N ≥ 3, so has_prime_factor_3_mod_4 gives a prime p ≡ 3 (mod 4) dividing N; p > n because p ∣ (n+1)! would force p ∣ 1."
+    },
+    {
+      "name": "infinitely_many_primes_3_mod_4_bounded",
+      "type": "theorem",
+      "statement": "∀ n, ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 4 * (n + 1)! - 1 ∧ p % 4 = 3",
+      "significance": "A quantitative strengthening: the witnessing prime ≡ 3 (mod 4) can always be found inside the explicit interval (n, 4·(n+1)! − 1]. This bounded form feeds the factorial-tower gap analysis of the OQ-01 follow-up.",
+      "description": "Same construction as the main theorem but retains the upper bound p ≤ N = 4·(n+1)! − 1 coming directly from p ∣ N."
+    },
+    {
+      "name": "primes_3_mod_4_infinite",
+      "type": "theorem",
+      "statement": "Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 3}",
+      "significance": "Repackages the main result in Mathlib's Set.Infinite vocabulary: the set of primes ≡ 3 (mod 4) is infinite. This is the form most convenient for downstream use in the library.",
+      "description": "Assumes the set finite; then it has a maximum n, but infinitely_many_primes_3_mod_4 produces a member p > n, contradicting the bound Set.Finite gives."
+    },
+    {
+      "name": "no_largest_prime_3_mod_4",
+      "type": "theorem",
+      "statement": "¬∃ p, Nat.Prime p ∧ p % 4 = 3 ∧ ∀ q, Nat.Prime q → q % 4 = 3 → q ≤ p",
+      "significance": "The 'no largest prime' phrasing: there is no maximal prime ≡ 3 (mod 4). Equivalent to infinitude but stated as the negation of a maximum, matching the classical Euclidean formulation.",
+      "description": "Given a putative largest such prime p, apply infinitely_many_primes_3_mod_4 at p to obtain q > p with q ≡ 3 (mod 4), contradicting maximality."
+    }
+  ],
   "sorries": 0,
   "references": [
     {
