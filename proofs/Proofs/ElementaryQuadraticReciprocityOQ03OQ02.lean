@@ -170,24 +170,22 @@ private theorem kroneckerNeg1_mul (a b : ℤ) (ha : a ≠ 0) (hb : b ≠ 0) :
     Uses: |a·b| = 1 iff |a| = 1 ∧ |b| = 1 (units in ℤ). -/
 private theorem kronecker0_mul (a b : ℤ) (hab : a * b ≠ 0) :
     kronecker0 (a * b) = kronecker0 a * kronecker0 b := by
-  simp only [kronecker0]
-  by_cases hab1 : a * b = 1 ∨ a * b = -1
-  · -- |a*b| = 1 implies |a| = 1 and |b| = 1
-    have ha1 : a = 1 ∨ a = -1 := by
-      rcases hab1 with h | h
-      · exact Int.isUnit_eq_one_or.mp (isUnit_of_mul_eq_one _ _ h)
-      · have := Int.isUnit_eq_one_or.mp (isUnit_of_mul_eq_one _ _ (neg_eq_iff_eq_neg.mpr h ▸
-          show a * b * -1 = 1 from by linarith))
-        rcases this with h1 | h1 <;> [right; left] <;> linarith
-    have hb1 : b = 1 ∨ b = -1 := by
-      rcases ha1 with rfl | rfl <;> simp_all
-    simp [ha1, hb1]
-  · -- |a*b| ≠ 1
-    simp [hab1]
-    by_cases ha1 : a = 1 ∨ a = -1
-    · -- |a| = 1 but |a*b| ≠ 1, so |b| ≠ 1
-      rcases ha1 with rfl | rfl <;> simp_all
-    · simp [ha1]
+  by_cases ha : a = 1 ∨ a = -1
+  · by_cases hb : b = 1 ∨ b = -1
+    · -- both a and b are units ⇒ a*b = ±1
+      rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;> decide
+    · -- a is a unit, b is not ⇒ a*b is not a unit
+      have hnu : ¬(a * b = 1 ∨ a * b = -1) := by
+        rcases ha with rfl | rfl
+        · simpa using hb
+        · push_neg at hb ⊢; omega
+      simp only [kronecker0, if_neg hnu, if_neg hb, mul_zero]
+  · -- a is not a unit ⇒ a*b is not a unit
+    have hnu : ¬(a * b = 1 ∨ a * b = -1) := by
+      rintro (h | h)
+      · exact ha (Int.isUnit_iff.mp (isUnit_of_mul_eq_one a b h))
+      · exact ha (Int.isUnit_iff.mp (isUnit_of_mul_eq_one a (-b) (by rw [mul_neg, h]; norm_num)))
+    simp only [kronecker0, if_neg hnu, if_neg ha, zero_mul]
 
 /-- The Kronecker symbol is completely multiplicative in the first argument:
     (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
