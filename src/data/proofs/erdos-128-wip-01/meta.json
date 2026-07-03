@@ -54,7 +54,8 @@
       "The induced adjacency entails the ambient adjacency, so every induced substructure (triangle, edge) lifts to the ambient graph.",
       "Triangle-freeness is hereditary: it is the property 'no induced subgraph has a triangle', which is exactly why the C5-blow-up extremal examples remain triangle-free at every scale.",
       "Edge count is monotone under induction, the structural basis for the density hypothesis denseSubgraphs comparing subgraph edge counts to n^2/50.",
-      "These monotonicities are scaffold-level facts every partial-result proof uses implicitly; making them explicit and machine-checked is the foundation for any formal attack."
+      "These monotonicities are scaffold-level facts every partial-result proof uses implicitly; making them explicit and machine-checked is the foundation for any formal attack.",
+      "The two monotonicities pull in opposite directions, and that tension is the heart of the problem: edgeCount_induce_le says passing to an induced subgraph can only LOSE edges, yet the hypothesis demands EVERY induced subgraph on ≥ ⌊n/2⌋ vertices keep more than n²/50 of them. The question is whether a uniform density floor that survives this monotone erosion is strong enough to force a triangle — the C₅-blow-up shows density alone (≈1/5) does not, so the ⌊n/2⌋ size threshold and the exact 1/50 constant are what carry the weight."
     ]
   },
   "sections": [
@@ -89,6 +90,16 @@
       "targetId": "erdos-128",
       "relationship": "parent",
       "description": "The base Erdős #128 scaffold (Graph, edgeCount, induce, hasTriangle, triangleFree, denseSubgraphs and the prose partial results). This entry re-declares its objects (the scaffold fails to build) and proves their first structural theorems: hereditary triangle-freeness and monotone edge count."
+    },
+    {
+      "targetId": "erdos-128-wip-01-oq-01",
+      "relationship": "child",
+      "description": "Direct continuation: it proves the sharper fact underlying the heredity established here — triangle-freeness pulls back along ARBITRARY graph homomorphisms (not just induced-subgraph inclusions), and derives that every C₅-blow-up is triangle-free, formalizing exactly why the conjectured-optimal extremal witnesses for #128 evade the triangle while staying dense."
+    },
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "related",
+      "description": "The classical precursor. Mantel's theorem (1907, the r=2 Turán case) says a triangle-free graph on n vertices has at most ⌊n²/4⌋ edges — a GLOBAL density ceiling forced by triangle-freeness. Erdős #128 turns this around: instead of asking how dense a triangle-free graph can be, it asks whether a LOCAL density floor on every large induced subgraph forces a triangle. The edge-count monotonicity and hereditary triangle-freeness proved here are the induced-subgraph bookkeeping that separates the two regimes."
     }
   ]
 }
