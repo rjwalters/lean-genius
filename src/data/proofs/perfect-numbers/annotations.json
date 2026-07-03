@@ -15,6 +15,11 @@
       "sum of divisors",
       "Mersenne primes",
       "Euclid's Elements"
+    ],
+    "prerequisites": [
+      "divisors of a natural number",
+      "the sum-of-divisors function σ",
+      "prime numbers"
     ]
   },
   {
@@ -33,6 +38,11 @@
       "Euclid's Elements",
       "Euler's contributions",
       "unsolved problems"
+    ],
+    "prerequisites": [
+      "Euclid's Elements and classical number theory",
+      "even vs. odd perfect numbers",
+      "the history of unsolved problems"
     ]
   },
   {
@@ -51,6 +61,11 @@
       "sum of divisors",
       "proper divisors",
       "number theory"
+    ],
+    "prerequisites": [
+      "the sum-of-divisors function σ(n)",
+      "proper vs. improper divisors",
+      "the identity σ(n) = 2n for perfect numbers"
     ]
   },
   {
@@ -69,6 +84,11 @@
       "Mersenne primes",
       "GIMPS",
       "prime search"
+    ],
+    "prerequisites": [
+      "exponentiation of 2 and 2^p − 1",
+      "primality of an integer",
+      "Mersenne primes"
     ]
   },
   {
@@ -87,6 +107,11 @@
       "geometric series",
       "divisor function",
       "powers of 2"
+    ],
+    "prerequisites": [
+      "geometric series 1 + 2 + … + 2^k",
+      "divisors of a prime power",
+      "the formula 2^{k+1} − 1"
     ]
   },
   {
@@ -170,6 +195,11 @@
       "concrete examples",
       "native_decide",
       "verification"
+    ],
+    "prerequisites": [
+      "Euclid's construction 2^{p-1}(2^p − 1)",
+      "primality checking (native_decide)",
+      "verifying σ(n) = 2n"
     ]
   },
   {
@@ -187,6 +217,11 @@
     "relatedConcepts": [
       "concrete examples",
       "verification"
+    ],
+    "prerequisites": [
+      "Euclid's perfect-number construction",
+      "listing and summing proper divisors",
+      "Mersenne primes"
     ]
   },
   {
@@ -204,6 +239,11 @@
     "relatedConcepts": [
       "Greek mathematics",
       "Nicomachus"
+    ],
+    "prerequisites": [
+      "Euclid's perfect-number construction",
+      "Mersenne prime 2^5 − 1 = 31",
+      "early Greek number theory"
     ]
   },
   {
@@ -221,6 +261,11 @@
     "relatedConcepts": [
       "mathematical history",
       "Renaissance mathematics"
+    ],
+    "prerequisites": [
+      "Euclid's perfect-number construction",
+      "Mersenne prime 2^7 − 1 = 127",
+      "the history of perfect numbers"
     ]
   },
   {
@@ -239,6 +284,11 @@
       "multiplicative functions",
       "arithmetic functions",
       "coprimality"
+    ],
+    "prerequisites": [
+      "multiplicativity of σ on coprime arguments",
+      "coprimality and gcd",
+      "σ of a prime and of a prime power"
     ]
   },
   {
@@ -257,6 +307,11 @@
       "unsolved problems",
       "number theory",
       "computational search"
+    ],
+    "prerequisites": [
+      "odd perfect numbers",
+      "lower bounds and prime-factor constraints",
+      "open problems in number theory"
     ]
   }
 ]
