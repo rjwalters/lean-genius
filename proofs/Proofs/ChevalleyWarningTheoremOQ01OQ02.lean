@@ -131,8 +131,8 @@ theorem egz_zmod (p : ℕ) [Fact p.Prime] (a : Fin (2 * p - 1) → ZMod p) :
     (ZMod.natCast_eq_zero_iff _ _).mp hcastcard
   -- Evaluate `f₁` at `x`: it is the sum of the `a i` over the support.
   have hev1 : eval x (f 1) = ∑ i, a i * (x i) ^ (p - 1) := by
-    rw [hf]; simp only [Matrix.cons_val_one, Matrix.head_cons, eval_sum, eval_mul, eval_pow,
-      eval_X, eval_C]
+    rw [hf]; simp only [Matrix.cons_val_one, Matrix.cons_val_zero, Matrix.head_cons,
+      eval_sum, eval_mul, eval_pow, eval_X, eval_C]
   have hsum0 : ∑ i ∈ Finset.univ.filter (fun i => x i ≠ 0), a i = 0 := by
     have hcalc : ∑ i, a i * (x i) ^ (p - 1)
         = ∑ i ∈ Finset.univ.filter (fun i => x i ≠ 0), a i := by
