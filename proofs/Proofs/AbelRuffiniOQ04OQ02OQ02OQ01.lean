@@ -1,19 +1,19 @@
 import Mathlib
 
 /-
-# The explicit composition series of A₄: `A₄ ⊵ V₄ ⊵ {e}` with identified factors
+# The explicit chief series of A₄: `A₄ ⊵ V₄ ⊵ {e}` with identified factors
 
 Open Question from `abel-ruffini-oq-04-oq-02-oq-02`
 (*Alternating Groups: Aₙ Solvable iff n ≤ 4*):
 
-> Can the composition series for `A₄` (`A₄ ⊵ V₄ ⊵ {e}`) be exhibited explicitly in Lean with
+> Can the chief series for `A₄` (`A₄ ⊵ V₄ ⊵ {e}`) be exhibited explicitly in Lean with
 > the quotient group isomorphisms `A₄/V₄ ≅ ℤ/3ℤ` and `V₄ ≅ (ℤ/2ℤ)²` identified?
 
 ## Answer: YES.
 
 The parent entry proves `A₄` solvable indirectly (as a subgroup of the solvable `S₄`, or by
 collapsing its second derived subgroup with `native_decide`). This entry instead exhibits the
-*classical composition series* of `A₄` explicitly and identifies both composition factors with
+*classical chief (solvable) series* of `A₄` explicitly and identifies both chief factors with
 their standard models:
 
 * the **normal Klein four-group** `V₄ ◁ A₄` — Mathlib's `alternatingGroup.kleinFour (Fin 4)`,
@@ -25,8 +25,10 @@ Both factors are abelian (indeed of prime power order), so the series
 
   `A₄  ⊵  V₄  ⊵  {e}`
 
-is a genuine composition series with abelian factors, re-proving the solvability of `A₄`
-*constructively*, by displaying the abelian layers rather than by an oracle.
+is a chief (solvable) series with abelian factors, re-proving the solvability of `A₄`
+*constructively*, by displaying the abelian layers rather than by an oracle. It is **not** a
+composition series: the bottom factor `V₄ ≅ (ℤ/2ℤ)²` is abelian but not simple, so it refines
+further (`V₄ ▷ C₂ ▷ 1`) to reach the genuine composition series `A₄ ▷ V₄ ▷ C₂ ▷ 1`.
 
 ## Method
 
@@ -97,7 +99,7 @@ theorem v4_isKleinFour : IsKleinFour (alternatingGroup.kleinFour (Fin 4)) :=
 theorem card_mult_zmod3 : Nat.card (Multiplicative (ZMod 3)) = 3 := by
   simp only [Nat.card_eq_fintype_card, Fintype.card_multiplicative, ZMod.card]
 
-/-- **The top composition factor, identified: `A₄ / V₄ ≅ ℤ/3ℤ`.**
+/-- **The top chief factor, identified: `A₄ / V₄ ≅ ℤ/3ℤ`.**
 The quotient has prime order `3`, so it is cyclic and isomorphic to `Multiplicative (ZMod 3)`. -/
 theorem quotient_iso_zmod3 :
     Nonempty ((alternatingGroup (Fin 4) ⧸ alternatingGroup.kleinFour (Fin 4))
@@ -106,14 +108,14 @@ theorem quotient_iso_zmod3 :
   haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
   exact ⟨mulEquivOfPrimeCardEq card_quotient card_mult_zmod3⟩
 
-/-- **The bottom composition factor, identified: `V₄ ≅ (ℤ/2ℤ)²`.**
+/-- **The bottom chief factor, identified: `V₄ ≅ (ℤ/2ℤ)²`.**
 Both sides are Klein four-groups, and any two Klein four-groups are isomorphic. -/
 theorem v4_iso_zmod2_sq :
     Nonempty (alternatingGroup.kleinFour (Fin 4) ≃* Multiplicative (ZMod 2 × ZMod 2)) := by
   haveI := v4_isKleinFour
   exact IsKleinFour.nonempty_mulEquiv
 
-/-- **The explicit composition series `A₄ ⊵ V₄ ⊵ {e}` with both factors identified.**
+/-- **The explicit chief series `A₄ ⊵ V₄ ⊵ {e}` with both factors identified.**
 
 Packages the full answer to the open question:
 * `V₄` is normal in `A₄`;
@@ -121,8 +123,9 @@ Packages the full answer to the open question:
 * `A₄ / V₄ ≅ ℤ/3ℤ` (top factor, cyclic of prime order);
 * `V₄ ≅ (ℤ/2ℤ)²` (bottom factor, Klein four).
 
-Both factors are abelian, so this is a composition series with abelian factors and `A₄` is
-solvable — re-derived constructively from the displayed layers. -/
+Both factors are abelian, so this is a chief (solvable) series with abelian factors and `A₄` is
+solvable — re-derived constructively from the displayed layers. (It is not a composition series:
+`V₄ ≅ (ℤ/2ℤ)²` is not simple; the true composition series refines it to `A₄ ▷ V₄ ▷ C₂ ▷ 1`.) -/
 theorem composition_series_A4 :
     (alternatingGroup.kleinFour (Fin 4)).Normal ∧
       Nat.card (alternatingGroup (Fin 4) ⧸ alternatingGroup.kleinFour (Fin 4)) = 3 ∧
