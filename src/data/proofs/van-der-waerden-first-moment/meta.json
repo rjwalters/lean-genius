@@ -100,6 +100,43 @@
       "summary": "vdw_two_coloring_exists instantiates the Property B engine on the AP-hypergraph; vdw_lower_bound combines it with the n² bound to conclude that n² < 2^(k-1) forces a 2-colouring of [n] with no monochromatic length-k AP."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "vdw_lower_bound",
+      "type": "theorem",
+      "statement": "n * n < 2 ^ (k - 1) → ∃ c : Fin n → Bool, ∀ a d : ℕ, 1 ≤ d → a + (k - 1) * d < n → ¬ Mono (vdwAP n a d k) c",
+      "significance": "Headline result: the first-moment lower bound on van der Waerden numbers. If n² < 2^(k-1) then [n] admits a 2-colouring with no monochromatic length-k arithmetic progression, i.e. W(k) > n. Recovers the classic W(k) ≳ 2^(k/2) probabilistic bound in AP form.",
+      "description": "Combines card_vdwFamily_le with the hypergraph form vdw_two_coloring_exists, then re-membership-checks that an arbitrary fitting AP lies in vdwFamily."
+    },
+    {
+      "name": "vdw_two_coloring_exists",
+      "type": "theorem",
+      "statement": "1 ≤ k → (vdwFamily n k).card < 2 ^ (k - 1) → ∃ c : Fin n → Bool, ∀ e ∈ vdwFamily n k, ¬ Mono e c",
+      "significance": "The Property-B (hypergraph 2-colourability) core: if fewer than 2^(k-1) length-k APs fit in [n], the AP-hypergraph is 2-colourable with no monochromatic edge. Instantiates Erdős' first-moment Property B for the AP-hypergraph.",
+      "description": "Direct application of property_b_two_colorable to the uniform k-edge family vdwFamily, using vdwFamily_uniform for the uniformity hypothesis."
+    },
+    {
+      "name": "card_vdwFamily_le",
+      "type": "theorem",
+      "statement": "(vdwFamily n k).card ≤ n * n",
+      "significance": "The counting input to the first moment: at most n² length-k APs fit in [n], since each is determined by a pair (first term, step) from {0,…,n-1} × {1,…,n}. This n² beats 2^(k-1) exactly when the colouring exists.",
+      "description": "card_image_le then card_filter_le, evaluating card_product = n·n via card_range and Nat.card_Icc."
+    },
+    {
+      "name": "vdwFamily_uniform",
+      "type": "theorem",
+      "statement": "∀ e ∈ vdwFamily n k, e.card = k",
+      "significance": "Uniformity: every member of the AP family is a genuine k-element set, so vdwFamily is a k-uniform hypergraph — the hypothesis Property B requires.",
+      "description": "Unfolds the image membership to a fitting (a,d) pair and applies card_vdwAP."
+    },
+    {
+      "name": "card_vdwAP",
+      "type": "theorem",
+      "statement": "1 ≤ d → a + (k - 1) * d < n → (vdwAP n a d k).card = k",
+      "significance": "The building block: a length-k AP with positive step whose top term fits below n has exactly k distinct points in Fin n. Ensures APs don't collapse under the Fin n cast.",
+      "description": "card_image_of_injOn: the index map i ↦ a + i·d is injective on range k because all values stay below n, so Fin.val_cast_of_lt recovers the naturals and Nat.eq_of_mul_eq_mul_right cancels d."
+    }
+  ],
   "conclusion": {
     "summary": "5 theorems, 2 definitions, 0 sorries, 0 axioms, no native_decide. The first-moment lower bound for van der Waerden numbers is proved by exhibiting the monochromatic-AP question as Property B for the hypergraph of length-k AP-subsets and instantiating the gallery's verified Erdős-1963 Property B engine. When fewer than 2^(k-1) length-k APs fit in [n] — in particular when n² < 2^(k-1) — there is a 2-colouring of [n] with no monochromatic length-k AP, so W(k) > n.",
     "implications": "Provides a verified, machine-checked instance of the elementary probabilistic lower bound for van der Waerden numbers, which the gallery otherwise only axiomatizes (erdos-138). It also demonstrates reuse of the Property B first-moment engine across problems (Property B, Ramsey, now van der Waerden), reinforcing the AP/clique/edge-set-as-hypergraph pattern at the heart of the probabilistic method.",
