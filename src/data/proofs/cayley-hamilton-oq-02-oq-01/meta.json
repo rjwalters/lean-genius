@@ -35,10 +35,10 @@
   "leanFile": {
     "namespace": "PutzerMatrixExp",
     "path": "Proofs/CayleyHamiltonOQ02OQ01.lean",
-    "lineCount": 125,
+    "lineCount": 167,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 1
   },
   "overview": {
@@ -97,7 +97,7 @@
     }
   ],
   "conclusion": {
-    "summary": "9 lemmas, 1 definition, 125 lines, 0 axioms, 0 sorries. A verified formalization of the algebraic core of Putzer's algorithm: the ordered partial product ρₖ, its commutation with A, the telescoping identity A·ρₖ = ρ_{k+1} + λₖ·ρₖ, and the Cayley–Hamilton truncation ρₙ = 0. Holds over any commutative ring R. This is the exact algebraic scaffolding that the derivative computation Ṁ = A·M rests on in the full proof of e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}.",
+    "summary": "9 lemmas, 1 definition, 167 lines, 0 axioms, 0 sorries. A verified formalization of the algebraic core of Putzer's algorithm: the ordered partial product ρₖ, its commutation with A, the telescoping identity A·ρₖ = ρ_{k+1} + λₖ·ρₖ, and the Cayley–Hamilton truncation ρₙ = 0. Holds over any commutative ring R. This is the exact algebraic scaffolding that the derivative computation Ṁ = A·M rests on in the full proof of e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}.",
     "implications": "The telescoping identity and the truncation ρₙ = 0 are the two facts that make Putzer's construction work: the first re-expresses each term's derivative as a multiple of A so the sum closes on itself, and the second both truncates the sum to n terms and kills the boundary term produced by the index shift. With these in hand, the remaining work is analytic: constructing the scalar coefficients Pₖ as the solutions of the triangular ODE system, differentiating the finite matrix sum term-by-term, and invoking uniqueness of the matrix-valued linear ODE Ṁ = A·M, M(0) = I against Mathlib's NormedSpace.exp.",
     "openQuestions": [
       "Construct the ODE coefficients Pₖ : ℝ → ℂ with HasDerivAt (P₁) (λ₁·P₁ t) t, P₁(0)=1 and HasDerivAt (Pₖ) (λₖ·Pₖ t + P_{k-1} t) t, Pₖ(0)=0, e.g. as iterated convolutions of exponentials, and prove their derivative relations.",
