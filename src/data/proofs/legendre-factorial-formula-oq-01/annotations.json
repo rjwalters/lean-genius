@@ -12,16 +12,28 @@
     "prerequisites": ["prime factorization", "floor function", "base-p expansions"]
   },
   {
-    "id": "legendre-fact-oq01-ann-floor-digit",
+    "id": "legendre-fact-oq01-ann-floor",
     "proofId": "legendre-factorial-formula-oq-01",
-    "range": { "startLine": 32, "endLine": 45 },
+    "range": { "startLine": 32, "endLine": 38 },
     "type": "theorem",
-    "title": "Floor-Sum and Digit-Sum Forms",
-    "content": "`padicValNat_factorial_eq_sum` re-exports Mathlib's `padicValNat_factorial`: for any truncation bound b strictly above log_p n, vₚ(n!) equals the finite sum ∑_{i∈[1,b)} ⌊n/pⁱ⌋ (finite because ⌊n/pⁱ⌋ = 0 once pⁱ > n). `sub_one_mul_padicValNat_factorial_eq` re-exports the digit-sum identity (p−1)·vₚ(n!) = n − Sₚ(n). Both are thin wrappers presenting the two classical statements side by side as a self-contained Legendre package.",
-    "mathContext": "$v_p(n!) = \\sum_{i \\in [1,b)} \\lfloor n/p^i \\rfloor \\quad (\\log_p n < b); \\qquad (p-1)\\,v_p(n!) = n - S_p(n).$",
+    "title": "Floor-Sum Form",
+    "content": "`padicValNat_factorial_eq_sum` re-exports Mathlib's `padicValNat_factorial`: for any truncation bound b strictly above log_p n, vₚ(n!) equals the finite sum ∑_{i∈[1,b)} ⌊n/pⁱ⌋. The count is finite because ⌊n/pⁱ⌋ = 0 once pⁱ > n, so any b with log_p n < b already captures every nonzero term. Conceptually each level i contributes the number of multiples of pⁱ among 1,…,n, and summing over i tallies each factor of p exactly as many times as it divides n! — the classical Legendre counting argument.",
+    "mathContext": "$v_p(n!) = \\sum_{i \\in [1,b)} \\left\\lfloor \\tfrac{n}{p^i} \\right\\rfloor \\qquad (\\log_p n < b).$",
     "significance": "supporting",
-    "relatedConcepts": ["floor sum", "digit sum", "truncation bound", "Mathlib re-export"],
-    "prerequisites": ["padicValNat_factorial", "Nat.log"]
+    "relatedConcepts": ["floor sum", "truncation bound", "counting multiples", "Mathlib re-export"],
+    "prerequisites": ["padicValNat_factorial", "Nat.log", "floor function"]
+  },
+  {
+    "id": "legendre-fact-oq01-ann-digit",
+    "proofId": "legendre-factorial-formula-oq-01",
+    "range": { "startLine": 40, "endLine": 45 },
+    "type": "theorem",
+    "title": "Digit-Sum Form",
+    "content": "`sub_one_mul_padicValNat_factorial_eq` re-exports the digit-sum identity (p−1)·vₚ(n!) = n − Sₚ(n), where Sₚ(n) is the sum of the base-p digits of n. This is the arithmetic dual of the floor-sum form: it trades the tower of quotients for a single subtraction, and it is the identity behind Kummer's theorem, which reads the same valuation off the carries when n is written in base p. The result is stated for the (p−1)-multiple because that form stays inside ℕ without a division; the exact quotient is isolated in the next theorem.",
+    "mathContext": "$(p-1)\\,v_p(n!) = n - S_p(n), \\qquad S_p(n) = \\textstyle\\sum_k d_k \\ \\text{ for } \\ n = \\sum_k d_k\\,p^k.$",
+    "significance": "supporting",
+    "relatedConcepts": ["digit sum", "base-p expansion", "Kummer's theorem", "Mathlib re-export"],
+    "prerequisites": ["sub_one_mul_padicValNat_factorial", "base-p digits", "Nat.digits"]
   },
   {
     "id": "legendre-fact-oq01-ann-solved",
