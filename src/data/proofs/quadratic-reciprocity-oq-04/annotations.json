@@ -38,13 +38,25 @@
   {
     "id": "ann-qr-oq04-counterexample",
     "proofId": "quadratic-reciprocity-oq-04",
-    "range": { "startLine": 69, "endLine": 86 },
-    "type": "concept",
-    "title": "Converse Fails; One-Way Test Survives",
-    "content": "jacobi_one_not_isSquare_of_composite packages the witness a = 2, b = 15 into the statement that there is an odd composite b with J(a | b) = 1 yet a not a square mod b — so Mathlib's prime-only isSquare_of_jacobiSym_eq_one is sharp. jacobiSym_neg_one_imp_nonsquare re-exports the surviving direction (J = -1 ⟹ non-square, valid for all b), framing exactly what detection remains. These J=1 non-squares are the Euler liars of the Solovay–Strassen test.",
-    "mathContext": "∃ a b, ¬Prime b ∧ Odd b ∧ J(a|b)=1 ∧ ¬IsSquare (a : ZMod b); and J(a|b)=-1 ⇒ ¬IsSquare.",
+    "range": { "startLine": 69, "endLine": 76 },
+    "type": "theorem",
+    "title": "The Converse Fails for Composite Moduli (an Euler Liar)",
+    "content": "jacobi_one_not_isSquare_of_composite packages the witness a = 2, b = 15 into an existential: there is an odd composite b with J(a | b) = 1 yet a not a square mod b. The proof supplies ⟨2, 15, …⟩ and discharges the four conjuncts — ¬Prime 15 and Odd 15 by decide, J(2|15) = 1 by the earlier jacobiSym_two_fifteen, and ¬IsSquare via a push_cast bridge (2 : ℤ) : ZMod 15 = (2 : ZMod 15) into two_nonsquare_mod_fifteen. This proves Mathlib's prime-only isSquare_of_jacobiSym_eq_one is sharp: the primality hypothesis cannot be dropped. Such J=1 non-squares are exactly the Euler liars that make the Solovay–Strassen primality test probabilistic.",
+    "mathContext": "∃ a b, ¬Prime b ∧ Odd b ∧ J(a|b)=1 ∧ ¬IsSquare (a : ZMod b), witnessed by a=2, b=15.",
     "significance": "key",
-    "relatedConcepts": ["Euler liars", "Solovay–Strassen", "primality testing"],
+    "relatedConcepts": ["Euler liars", "Solovay–Strassen", "primality testing", "sharpness of a hypothesis"],
+    "prerequisites": ["jacobiSym_two_fifteen", "two_nonsquare_mod_fifteen"]
+  },
+  {
+    "id": "ann-qr-oq04-surviving-direction",
+    "proofId": "quadratic-reciprocity-oq-04",
+    "range": { "startLine": 78, "endLine": 86 },
+    "type": "theorem",
+    "title": "The One-Way Test That Survives for All b",
+    "content": "jacobiSym_neg_one_imp_nonsquare re-exports Mathlib's ZMod.nonsquare_of_jacobiSym_eq_neg_one: whenever J(a | b) = -1 — for any b, prime or composite — a is not a square mod b. Paired with the previous theorem, this pins down exactly what the Jacobi symbol can and cannot detect: J = -1 is a rock-solid non-square certificate for every modulus, while J = 1 certifies nothing beyond the prime case. This asymmetry is precisely why Solovay–Strassen can only ever declare 'composite' with certainty and 'probably prime' otherwise.",
+    "mathContext": "J(a|b) = -1 ⇒ ¬IsSquare (a : ZMod b), valid for all b (no primality hypothesis).",
+    "significance": "supporting",
+    "relatedConcepts": ["one-sided certificate", "non-residue detection", "Solovay–Strassen asymmetry"],
     "prerequisites": ["ZMod.nonsquare_of_jacobiSym_eq_neg_one"]
   }
 ]
