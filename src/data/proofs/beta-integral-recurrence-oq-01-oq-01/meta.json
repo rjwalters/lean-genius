@@ -87,36 +87,52 @@
   },
   "sections": [
     {
-      "id": "docstring",
-      "title": "Module Docstring: Diagonal Beta Value and Central Binomials",
-      "startLine": 4,
+      "id": "header-docstring",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
       "endLine": 35,
-      "summary": "States the diagonal collapse B(n+1,n+1) = (n!)²/(2n+1)! = 1/((2n+1)·C(2n,n)) as the normalization of the symmetric Beta(n+1,n+1) density, identifies the analytic input as the parent's integer closed form, and announces the new combinatorial ingredient factorial_two_mul_succ.",
+      "summary": "Imports the parent Proofs.BetaIntegralRecurrence (for the integer closed form betaIntegral_nat_nat) and Mathlib.Tactic. The module docstring states the diagonal collapse B(n+1,n+1) = (n!)²/(2n+1)! = 1/((2n+1)·C(2n,n)) as the normalization of the symmetric Beta(n+1,n+1) density, identifies the analytic input as the parent's integer closed form, and announces the new combinatorial ingredient factorial_two_mul_succ.",
       "mathContext": "$B(n+1,n+1) = \\frac{(n!)^2}{(2n+1)!} = \\frac{1}{(2n+1)\\binom{2n}{n}}$."
     },
     {
       "id": "factorization",
       "title": "The Factorial Factorization",
-      "startLine": 37,
-      "endLine": 60,
-      "summary": "factorial_two_mul_succ proves (2n+1)! = (2n+1)·C(2n,n)·(n!·n!) from Nat.choose_mul_factorial_mul_factorial (C(2n,n)·n!·n! = (2n)!) and one Nat.factorial_succ step, the bridge between the factorial and central-binomial forms.",
+      "startLine": 36,
+      "endLine": 55,
+      "summary": "Enters namespace BetaCentralBinomial, opens Complex, and proves factorial_two_mul_succ: (2n+1)! = (2n+1)·C(2n,n)·(n!·n!), from Nat.choose_mul_factorial_mul_factorial (C(2n,n)·n!·n! = (2n)!) and one Nat.factorial_succ step — the multiplicative bridge between the factorial and central-binomial forms.",
       "mathContext": "$(2n+1)! = (2n+1)\\,\\binom{2n}{n}\\,(n!)^2$."
     },
     {
       "id": "diagonal-value",
       "title": "The Central Binomial Reciprocal",
-      "startLine": 61,
-      "endLine": 80,
-      "summary": "betaIntegral_diag_central_binom equates the parent's diagonal value (n!)²/(2n+1)! with 1/((2n+1)·C(2n,n)) via div_eq_div_iff (both denominators positive) reduced to the natural-number identity from the factorization; betaIntegral_diag_centralBinom restates it with Nat.centralBinom.",
+      "startLine": 56,
+      "endLine": 76,
+      "summary": "betaIntegral_diag_central_binom equates the parent's diagonal value (n!)²/(2n+1)! with 1/((2n+1)·C(2n,n)): after rewriting with the parent's betaIntegral_nat_nat, div_eq_div_iff (both denominators positive by Nat.factorial_pos / Nat.choose_pos) reduces the goal to the natural-number identity n!·n!·((2n+1)·C(2n,n)) = (2n+1)! supplied by the factorization.",
       "mathContext": "$B(n+1,n+1) = \\dfrac{1}{(2n+1)\\binom{2n}{n}}$."
     },
     {
-      "id": "instances",
-      "title": "Numerical Instances",
-      "startLine": 81,
+      "id": "centralBinom-form",
+      "title": "Mathlib centralBinom Restatement",
+      "startLine": 77,
+      "endLine": 83,
+      "summary": "betaIntegral_diag_centralBinom restates the diagonal value using Mathlib's Nat.centralBinom, B(n+1,n+1) = 1/((2n+1)·centralBinom n), proved from the previous theorem by rfl (Nat.centralBinom n is definitionally (2n).choose n).",
+      "mathContext": "$B(n+1,n+1) = \\dfrac{1}{(2n+1)\\,\\mathrm{centralBinom}(n)}$."
+    },
+    {
+      "id": "instance-b11",
+      "title": "Instance B(1,1) = 1",
+      "startLine": 84,
+      "endLine": 90,
+      "summary": "betaIntegral_one_one_central reads the central-binomial form at n = 0, where (2·0+1)·C(0,0) = 1, recovering B(1,1) = 1 (consistent with the parent entry's B(1,1) = 1).",
+      "mathContext": "$B(1,1) = \\dfrac{1}{1\\cdot\\binom{0}{0}} = 1$."
+    },
+    {
+      "id": "instance-b22",
+      "title": "Instance B(2,2) = 1/6",
+      "startLine": 91,
       "endLine": 98,
-      "summary": "betaIntegral_one_one_central (B(1,1) = 1, n = 0) and betaIntegral_two_two (B(2,2) = 1/6, n = 1) read the central-binomial form at small n, consistent with the parent entry's B(1,1) = 1 and B(3,3) = 1/30.",
-      "mathContext": "$B(1,1) = 1,\\ B(2,2) = 1/6$."
+      "summary": "betaIntegral_two_two reads the central-binomial form at n = 1, where (2·1+1)·C(2,1) = 3·2 = 6, recovering B(2,2) = 1/6, and closes namespace BetaCentralBinomial.",
+      "mathContext": "$B(2,2) = \\dfrac{1}{3\\cdot\\binom{2}{1}} = \\dfrac{1}{6}$."
     }
   ],
   "openQuestions": [
