@@ -303,5 +303,105 @@
       "year": 2024,
       "note": "Provides the simple-graph, independent-set, and coloring infrastructure over which the unit-distance bounds are formalized."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hadwiger_nelson_bounds",
+      "type": "theorem",
+      "statement": "(∀ c : Plane → Fin 4, ∃ p q, dist p q = 1 ∧ c p = c q) ∧ (∃ c : Plane → Fin 7, ∀ p q, dist p q = 1 → c p ≠ c q)",
+      "significance": "The flagship statement packaging the classical Hadwiger–Nelson sandwich 5 ≤ χ(ℝ²) ≤ 7 (here in its 4-vs-7 form): no 4-coloring of the plane avoids monochromatic unit-distance pairs, yet a 7-coloring does. The chromatic number of the plane lies strictly between.",
+      "description": "A conjunction pairing hadwiger_nelson_lower_bound (the axiomatized lower half) with hadwiger_nelson_upper_bound (the explicit 7-coloring)."
+    },
+    {
+      "name": "hadwiger_nelson_lower_bound",
+      "type": "axiom",
+      "statement": "∀ c : Plane → Fin 4, ∃ p q : Plane, dist p q = 1 ∧ c p = c q",
+      "significance": "The single assumption of the file (status: axiomatized, axiomCount 1): every 4-coloring of the plane has a monochromatic unit-distance pair, i.e. χ(ℝ²) ≥ 5. This is the deep combinatorial-geometry input (Moser spindle / de Grey), taken as given here.",
+      "description": "Stated as an axiom over the plane's 4-colorings; the full geometric proof (a finite unit-distance graph with chromatic number 5) is outside the formalization's scope."
+    },
+    {
+      "name": "hadwiger_nelson_upper_bound",
+      "type": "theorem",
+      "statement": "∃ c : Plane → Fin 7, ∀ p q : Plane, dist p q = 1 → c p ≠ c q",
+      "significance": "The constructive upper half: a proper 7-coloring of the plane exists (the classical hexagonal-tiling coloring), so χ(ℝ²) ≤ 7. Unlike the lower bound this is fully proved, from an explicit coloring.",
+      "description": "Delegates to hadwiger_nelson_7coloring in the companion UnitDistanceHN7 file, which builds and verifies the hexagon-tiling 7-coloring."
+    },
+    {
+      "name": "unit_indep_iff_no_unit_dist",
+      "type": "theorem",
+      "statement": "IsIndepFinset (unitDistGraph S) I ↔ ∀ p q ∈ I, p ≠ q → dist p q ≠ 1",
+      "significance": "The bridge between the geometric and graph-theoretic pictures: an independent set in the unit-distance graph is precisely a subset of the plane with no two points at distance 1. Makes α(S) a geometric quantity.",
+      "description": "Unfolds IsIndepFinset for unitDistGraph, whose adjacency is dist = 1, reducing independence to the pairwise distance-≠-1 condition."
+    },
+    {
+      "name": "alpha_chi_ge_card",
+      "type": "theorem",
+      "statement": "IsProperColoring G c (c : V → Fin k), k>0 ⟹ k · α(G) ≥ |V|",
+      "significance": "The fundamental α–χ inequality: chromatic number times independence number bounds the vertex count. It is exactly what converts a coloring upper bound into an independence lower bound (and vice versa) for unit-distance graphs.",
+      "description": "A proper k-coloring partitions V into k independent color classes, one of which has ≥ |V|/k vertices; that class certifies α(G) ≥ |V|/k, i.e. k·α ≥ |V|."
+    },
+    {
+      "name": "greedy_bound",
+      "type": "theorem",
+      "statement": "α(G) ≥ |V| / (Δ(G) + 1)",
+      "significance": "The greedy/Turán-type independence bound: any graph has an independent set of size at least |V|/(Δ+1). For unit-distance graphs of bounded local degree this gives concrete independent sets.",
+      "description": "Extracts a maximal independent set (exists_maximal_indep) and uses maximal_indep_covering_bound: a maximal independent set together with its neighborhoods covers V, so |I|·(Δ+1) ≥ |V|."
+    },
+    {
+      "name": "maximal_indep_covering_bound",
+      "type": "theorem",
+      "statement": "IsMaximalIndep G I ⟹ |V| ≤ |I| · (Δ(G) + 1)",
+      "significance": "The covering principle behind the greedy bound: a maximal independent set dominates the graph, so its closed neighborhoods (each of size ≤ Δ+1) cover all vertices.",
+      "description": "Every vertex is either in I or adjacent to some vertex of I (maximality); summing closed-neighborhood sizes over I bounds |V| by |I|·(Δ+1)."
+    },
+    {
+      "name": "exists_large_color_class",
+      "type": "theorem",
+      "statement": "k>0, c : V → Fin k ⟹ ∃ i, |{v : c v = i}| ≥ |V| / k",
+      "significance": "The pigeonhole step: among k color classes one must contain at least a 1/k fraction of the vertices. This large class is the seed for independence lower bounds under proper colorings.",
+      "description": "Averaging/pigeonhole over the k fibers of c: the classes partition V, so the largest has cardinality ≥ ⌊|V|/k⌋."
+    },
+    {
+      "name": "proper_coloring_gives_independent_partition",
+      "type": "theorem",
+      "statement": "IsProperColoring G c ⟹ each color class {v : c v = i} is an independent set",
+      "significance": "The defining link between colorings and independence: color classes of a proper coloring are exactly independent sets. This is why χ and α are dual invariants.",
+      "description": "Two same-colored vertices cannot be adjacent under a proper coloring, so each filtered color class satisfies IsIndepFinset."
+    },
+    {
+      "name": "unit_distance_independence_from_chromatic",
+      "type": "theorem",
+      "statement": "S ⊆ Plane nonempty ⟹ ∃ independent I ⊆ S with |I| ≥ |S| / 7",
+      "significance": "A concrete geometric payoff: any finite planar point set contains a unit-distance-free subset of at least a seventh of its size, obtained by pushing the 7-coloring of the plane through the α–χ inequality.",
+      "description": "Restricts the plane's 7-coloring to S, applies exists_large_color_class to get a class of size ≥ |S|/7, which is independent in unitDistGraph S."
+    },
+    {
+      "name": "color_class_independent",
+      "type": "theorem",
+      "statement": "IsProperColoring G c, (∀ v ∈ S, c v = i) ⟹ IsIndepFinset G S",
+      "significance": "A local form of the coloring/independence correspondence: any monochromatic vertex subset is independent — the workhorse used to manufacture independent sets from colorings.",
+      "description": "Direct from the proper-coloring condition: distinct adjacent vertices get distinct colors, so a same-colored set has no internal edges."
+    },
+    {
+      "name": "sum_degrees_eq_twice_edges",
+      "type": "theorem",
+      "statement": "∑ v, degree G v = 2 · |E(G)|",
+      "significance": "The handshake lemma in the file's own degree API, the backbone of every counting bound (edge counts, average degree, regularity) used to control independence numbers.",
+      "description": "Rewrites the local degree definition to Mathlib's degree (degree_eq_mathlib_degree) and invokes SimpleGraph.sum_degrees_eq_twice_card_edges."
+    },
+    {
+      "name": "indep_iff_compl_clique",
+      "type": "theorem",
+      "statement": "IsIndepFinset G S ↔ ∀ u v ∈ S, u ≠ v → ¬ G.Adj u v",
+      "significance": "Records the independence/clique duality (an independent set in G is a clique in the complement Gᶜ), the structural symmetry underlying many of the file's equivalences.",
+      "description": "Holds definitionally (Iff.rfl): IsIndepFinset already unfolds to the pairwise non-adjacency condition characterizing complement-cliques."
+    },
+    {
+      "name": "indep_card_le_alpha",
+      "type": "theorem",
+      "statement": "IsIndepFinset G S ⟹ |S| ≤ α(G)",
+      "significance": "The defining extremal property of the independence number: it dominates the size of every independent set, so exhibiting one independent set lower-bounds α.",
+      "description": "independenceNumber is the supremum of independent-set cardinalities, so any particular independent S satisfies |S| ≤ α(G)."
+    }
   ]
 }
