@@ -26,14 +26,26 @@
   {
     "id": "ann-bezoutoq010101oq02-product",
     "proofId": "bezout-identity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 94, "endLine": 126 },
+    "range": { "startLine": 94, "endLine": 118 },
     "type": "insight",
-    "title": "The accumulated product Rₖ: unimodular, and it folds the steps",
-    "content": "Rprod [q_k, …, q_1] = Q(q_k) · ⋯ · Q(q_1) is defined by list recursion (Rprod_nil, Rprod_cons are the definitional simp lemmas). det_Rprod proves det (Rprod qs) = (−1)^(qs.length) by induction, using multiplicativity of the determinant (Matrix.det_mul) and det_Q — so every accumulated transformation is unimodular. This det = ±1 is exactly what lets HGCD splice a partial transformation matrix into a recursive call. Rprod_mulVec then proves the full invariant (Rprod qs).mulVec v = qs.foldr euclidStep v: applying the accumulated product to the initial remainder pair reproduces the composition of the individual Euclidean steps, threaded through Matrix.mulVec_mulVec and Q_mulVec.",
-    "mathContext": "$\\det R_k = \\prod_{i} \\det Q(q_i) = (-1)^k$; and $R_k \\cdot \\mathbf{v} = (\\text{step}_{q_k} \\circ \\cdots \\circ \\text{step}_{q_1})(\\mathbf{v})$.",
+    "title": "The accumulated product Rₖ and its unimodularity (det = (−1)ᵏ)",
+    "content": "Rprod [q_k, …, q_1] = Q(q_k) · ⋯ · Q(q_1) is defined by list recursion (Rprod_nil, Rprod_cons are the definitional simp lemmas), accumulating all k quotient matrices into one transformation. det_Rprod proves det (Rprod qs) = (−1)^(qs.length) by induction, using multiplicativity of the determinant (Matrix.det_mul) and det_Q. So every accumulated Euclidean transformation is unimodular (det = ±1) — hence invertible over ℤ, so the whole Euclidean descent is reversible without leaving the integers. This is precisely the property HGCD (half-GCD) relies on to splice a partial transformation matrix into a recursive call.",
+    "mathContext": "$\\det R_k = \\prod_{i} \\det Q(q_i) = (-1)^k \\in \\{+1,-1\\}$, so $R_k \\in \\mathrm{GL}_2(\\mathbb{Z})$ and $R_k^{-1}$ again has integer entries.",
     "significance": "critical",
-    "relatedConcepts": ["Matrix.det_mul", "Matrix.mulVec_mulVec", "List.foldr", "unimodularity", "induction"],
+    "relatedConcepts": ["Matrix.det_mul", "det_Q", "unimodularity", "GL(2,ℤ)", "induction"],
     "prerequisites": ["determinant multiplicativity", "list recursion", "induction"]
+  },
+  {
+    "id": "ann-bezoutoq010101oq02-fold",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 120, "endLine": 126 },
+    "type": "insight",
+    "title": "The matrix–Euclidean fold invariant: one apply replays the whole descent",
+    "content": "Rprod_mulVec proves the central invariant of the entry: (Rprod qs).mulVec v = qs.foldr euclidStep v. Applying the single accumulated matrix Rₖ to the initial remainder pair v = (r₀, r₁)ᵀ reproduces exactly the right-to-left composition of the individual Euclidean steps, landing on (r_k, r_{k+1})ᵀ. The induction threads through Matrix.mulVec_mulVec (a matrix product acts as composition on vectors) and Q_mulVec (one matrix = one Euclidean step), so the entire k-step run collapses to a single matrix–vector product. Combined with the unimodularity above, this is what makes the 2×2 integer matrix a faithful, invertible encoding of a Euclidean run — the algebraic foundation of the HGCD speedup.",
+    "mathContext": "$R_k \\cdot \\mathbf{v} = (\\text{step}_{q_k} \\circ \\cdots \\circ \\text{step}_{q_1})(\\mathbf{v})$, i.e. $R_k\\,(r_0,r_1)^\\top = (r_k, r_{k+1})^\\top$.",
+    "significance": "critical",
+    "relatedConcepts": ["Matrix.mulVec_mulVec", "List.foldr", "Q_mulVec", "matrix as linear map", "induction"],
+    "prerequisites": ["matrix–vector product as composition", "list folds", "induction"]
   },
   {
     "id": "ann-bezoutoq010101oq02-examples",
