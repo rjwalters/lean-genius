@@ -51,12 +51,12 @@
     "proofId": "sperner-mathlib4-oq-02-oq-04",
     "range": {
       "startLine": 103,
-      "endLine": 128
+      "endLine": 118
     },
     "type": "theorem",
-    "title": "The hemisphere sign-degree is odd; the full ring is even",
-    "content": "arcSignChanges counts the edges of the fundamental-domain arc v₀ → v₁ → v₂ → v₃ across which the sign bit flips. arc_sign_changes_odd proves this hemisphere sign-degree is ODD for every antipodal labelling — verified by kernel decide over all 4³ = 64 free boundary labellings (the centre label does not affect the boundary). Mathematically this is the one-dimensional Tucker lemma applied to the sign-reduced labelling: a ZMod-2 path with distinct endpoints has an odd number of sign changes by a telescoping (discrete-FTC) argument, since the changes sum to sgn v₃ − sgn v₀ = 1 mod 2. This is the first POSITIVE odd boundary seed for the hexagon. fullSignChanges counts sign flips around the whole ring, and full_sign_changes_even proves it is always EVEN: the loop returns to its starting sign, so the oddness is a fundamental-domain phenomenon — read off half the loop, not the whole circle.",
-    "mathContext": "$\\sum_{i=0}^{2} (\\mathrm{sgn}\\,v_{i+1} - \\mathrm{sgn}\\,v_i) = \\mathrm{sgn}\\,v_3 - \\mathrm{sgn}\\,v_0 = 1$ in $\\mathbb{Z}/2$, so the number of sign changes on the arc is odd; the analogous full-ring sum telescopes to $0$, so its count is even.",
+    "title": "The hemisphere sign-degree is odd",
+    "content": "arcSignChanges counts the edges of the fundamental-domain arc v₀ → v₁ → v₂ → v₃ (three consecutive boundary edges, v₃ = −v₀) across which the sign bit flips. arc_sign_changes_odd proves this hemisphere sign-degree is ODD for every antipodal labelling — verified by kernel decide over all 4³ = 64 free boundary labellings (the centre label does not affect the boundary). Mathematically this is the one-dimensional Tucker lemma applied to the sign-reduced labelling: a ZMod-2 path whose endpoints differ (sgn v₀ and sgn v₃ = sgn v₀ + 1 by sgn_negL) has an odd number of sign changes by a telescoping (discrete-FTC) argument, since the changes sum to sgn v₃ − sgn v₀ = 1 mod 2. This is the first POSITIVE odd boundary seed the path-following engine needs.",
+    "mathContext": "$\\sum_{i=0}^{2} (\\mathrm{sgn}\\,v_{i+1} - \\mathrm{sgn}\\,v_i) = \\mathrm{sgn}\\,v_3 - \\mathrm{sgn}\\,v_0 = 1$ in $\\mathbb{Z}/2$, so the number of sign changes on the antipodal arc is odd.",
     "significance": "critical",
     "relatedConcepts": [
       "sign-degree",
@@ -68,6 +68,29 @@
     "prerequisites": [
       "parity of sums in ZMod 2",
       "finite case analysis"
+    ]
+  },
+  {
+    "id": "ann-fulleven-sperner-oq02-oq04",
+    "proofId": "sperner-mathlib4-oq-02-oq-04",
+    "range": {
+      "startLine": 119,
+      "endLine": 128
+    },
+    "type": "theorem",
+    "title": "The full ring is even — oddness is a fundamental-domain phenomenon",
+    "content": "fullSignChanges counts sign flips around the WHOLE boundary ring v₀ → v₁ → ⋯ → v₅ → v₀ (all six edges via List.finRange 6), and full_sign_changes_even proves this count is always EVEN, again by kernel decide. The contrast with arc_sign_changes_odd is the conceptual crux: the loop returns to its starting sign, so its telescoping sum is 0 mod 2 and the total is even, whereas the odd seed lives only on the antipodal fundamental domain (a hemisphere half-arc). This is the discrete analogue of reading a topological degree off half the loop — the oddness that drives Tucker's lemma is invisible on the full circle and appears only when you restrict to the fundamental domain.",
+    "mathContext": "$\\sum_{i=0}^{5}(\\mathrm{sgn}\\,v_{i+1} - \\mathrm{sgn}\\,v_i) = 0$ in $\\mathbb{Z}/2$ (closed loop), so the full-ring sign-change count is even — the odd count exists only on the hemisphere arc.",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed-loop telescoping",
+      "fundamental domain vs full circle",
+      "degree off half the loop",
+      "kernel decide"
+    ],
+    "prerequisites": [
+      "parity of sums in ZMod 2",
+      "the hemisphere arc odd count (above)"
     ]
   },
   {
