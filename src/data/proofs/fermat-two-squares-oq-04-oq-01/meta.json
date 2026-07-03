@@ -1,0 +1,107 @@
+{
+  "id": "fermat-two-squares-oq-04-oq-01",
+  "title": "Jacobi's Two-Square Count: the Geometric Side r₂(n) and its Positivity Bridge to δ",
+  "slug": "fermat-two-squares-oq-04-oq-01",
+  "description": "Jacobi's theorem counts representations as r₂(n) = 4 ∑_{d∣n} χ₄(d). The parent entry (fermat-two-squares-oq-04) verified the arithmetic right-hand side δ(n) = ∑_{d∣n} χ₄(d). This entry opens the geometric left-hand side: it defines the honest representation count r₂(n) = #{(a,b) ∈ ℤ² : a²+b² = n} as a Finset.card (finiteness packaged via an explicit bounding box [-n,n]²) and connects it back to the parent by matching the two sides at the level of positivity — 0 < r₂(n) ⇔ n is a sum of two squares ⇔ 0 < δ(n) — the qualitative shadow of Jacobi's identity, now established across both sides. As a corollary it recovers Fermat's criterion geometrically: for a prime p, 0 < r₂(p) ⇔ p ≢ 3 (mod 4). The full quantitative identity r₂ = 4δ (the exact count via Gaussian-integer prime splitting) remains open. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Jacobi (1834) (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sum_of_two_squares_theorem",
+    "date": "1834",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "sum-of-two-squares",
+      "dirichlet-character",
+      "gaussian-integers",
+      "lattice-points",
+      "jacobi",
+      "representation-count",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FermatTwoSquaresOQ04OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.eq_sq_add_sq_iff",
+        "description": "n is a sum of two squares iff every prime q ≡ 3 (mod 4) divides n to an even power (reached via the parent's δ bridge)",
+        "module": "Mathlib.NumberTheory.SumTwoSquares"
+      },
+      {
+        "theorem": "Int.natCast_natAbs",
+        "description": "(↑a.natAbs : ℤ) = |a|, used to convert integer representations to natural-number ones",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "sq_abs",
+        "description": "|a|² = a², bridging signed integer squares with natural-number squares",
+        "module": "Mathlib.Algebra.Order.AbsoluteValue"
+      },
+      {
+        "theorem": "Finset.card_pos",
+        "description": "0 < s.card ↔ s.Nonempty, turning the representation count's positivity into existence of a solution",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "parentDependencies": [
+      {
+        "theorem": "FermatTwoSquaresOQ04.jacobiSum",
+        "description": "The Jacobi divisor-character sum δ(n) = ∑_{d∣n} χ₄(d), the arithmetic right-hand side reused verbatim"
+      },
+      {
+        "theorem": "FermatTwoSquaresOQ04.jacobiSum_pos_iff_sq_add_sq",
+        "description": "0 < δ(n) ⇔ ∃ x y, n = x² + y² — the parent's qualitative bridge, composed here with the geometric count"
+      },
+      {
+        "theorem": "FermatTwoSquaresOQ04.jacobiSum_nonneg",
+        "description": "0 ≤ δ(n) for all n, used for the vanishing form"
+      },
+      {
+        "theorem": "FermatTwoSquaresOQ04.jacobiSum_prime_pow_pos_iff",
+        "description": "0 < δ(p^k) ⇔ (p % 4 = 3 → Even k), specialized at k = 1 for the geometric Fermat criterion"
+      }
+    ],
+    "originalContributions": [
+      "sols / r2: the geometric representation count r₂(n) = #{(a,b) ∈ ℤ² : a²+b² = n}, defined as an honest Finset.card with finiteness packaged into the definition via an explicit σ-invariant bounding box [-n,n]² (not available in Mathlib)",
+      "mem_sols: the bounding box is automatic — every solution satisfies |a|,|b| ≤ n — so membership in sols n is exactly a²+b² = n",
+      "r2_pos_iff_exists_int / exists_int_iff_exists_nat: r₂(n) > 0 ⇔ ∃ integer (a,b), and integer representability agrees with the natural-number predicate used by the parent",
+      "r2_pos_iff_jacobiSum_pos: the positivity bridge 0 < r₂(n) ⇔ 0 < δ(n) — the first rigorous connection between the geometric (lattice-point) and arithmetic (divisor-character) sides of Jacobi's theorem in the gallery",
+      "r2_eq_zero_iff_jacobiSum_eq_zero: complementary vanishing form, no lattice point ⇔ δ(n) = 0",
+      "r2_prime_pos_iff: the geometric Fermat criterion — for a prime p, 0 < r₂(p) ⇔ p ≢ 3 (mod 4), recovered from the representation count"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "FermatTwoSquaresOQ04OQ01",
+    "lineCount": 160,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/FermatTwoSquaresOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "C. G. J. Jacobi",
+      "title": "Fundamenta Nova Theoriae Functionum Ellipticarum",
+      "year": "1829",
+      "venue": "Königsberg",
+      "note": "Source of the two-square counting theorem r₂(n) = 4 ∑_{d∣n} χ₄(d) via theta-function identities"
+    },
+    {
+      "authors": "G. H. Hardy, E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th edition",
+      "note": "Chapter 16 (arithmetic functions) and Chapter 20 (sums of squares), including r₂(n) and the χ₄ divisor sum"
+    },
+    {
+      "authors": "K. F. Gauss",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig",
+      "note": "Sums of two squares and the arithmetic of Z[i] underlying the count; the factor 4 = #{±1,±i} is the unit group"
+    }
+  ],
+  "sorries": 0
+}

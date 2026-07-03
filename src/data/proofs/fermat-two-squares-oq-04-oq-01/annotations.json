@@ -1,0 +1,77 @@
+[
+  {
+    "id": "ann-r2-definition",
+    "proofId": "fermat-two-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "r₂(n) as an Honest Finset Count",
+    "content": "The representation count r₂(n) = #{(a,b) ∈ ℤ² : a²+b² = n} is defined as `(sols n).card`, where `sols n` filters the bounding box [-n,n]² by the equation a²+b² = n. Realizing r₂ as a `Finset.card` (rather than a `Set.ncard` needing a separate finiteness proof) packages well-definedness into the definition itself: the box is finite, so the filtered set is a genuine finset. Mathlib has ℤ[i] as a Euclidean domain but no packaged 'number of representations' function, so this count is new. The box [-n,n]² is also invariant under the rotation (a,b) ↦ (-b,a), which is what makes the factor-of-4 structure visible later.",
+    "mathContext": "$r_2(n) := \\#\\{(a,b)\\in\\mathbb{Z}^2 : a^2+b^2 = n\\}$, the number of lattice points on the circle of radius $\\sqrt n$.",
+    "significance": "key",
+    "relatedConcepts": ["lattice points", "sum of two squares", "Finset cardinality", "representation count"],
+    "prerequisites": ["Finset.filter", "Finset.card", "integer bounding box"]
+  },
+  {
+    "id": "ann-bounding-box",
+    "proofId": "fermat-two-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 88
+    },
+    "type": "tactic",
+    "title": "The Bounding Box is Automatic",
+    "content": "`mem_Icc_of_sq_le` shows that any integer with a² ≤ n lies in [-n, n]: for a ≥ 1 one has a ≤ a² ≤ n (the integer inequality t ≤ t² for t ≥ 1, discharged by `nlinarith`), and the negative and zero cases are linear. Since a solution of a²+b² = n has a² ≤ n and b² ≤ n, `mem_sols` proves membership in `sols n` reduces to just the equation a²+b² = n — the box constraint carries no information and can be discharged automatically. This is what lets every later lemma reason with the clean predicate a²+b² = n rather than the box.",
+    "mathContext": "$a^2 \\le n \\implies |a| \\le n$ for integers, since $|a| \\le a^2$ once $|a| \\ge 1$; hence solutions of $a^2+b^2=n$ automatically lie in $[-n,n]^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["integer inequalities", "nlinarith", "bounding argument"],
+    "prerequisites": ["Finset.mem_Icc", "Finset.mem_filter", "nlinarith"]
+  },
+  {
+    "id": "ann-int-nat-agree",
+    "proofId": "fermat-two-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 114
+    },
+    "type": "tactic",
+    "title": "Signed and Unsigned Representability Agree",
+    "content": "`exists_int_iff_exists_nat` bridges the signed count (∃ a b : ℤ) used by r₂ with the natural-number predicate (∃ x y : ℕ, n = x²+y²) that the parent's δ bridge speaks about. Forward: given integers a,b, take absolute values — `sq_abs` gives |a|² = a², so a²+b² = |a|²+|b|² = (a.natAbs)² + (b.natAbs)², and `exact_mod_cast` transports the equation to ℕ. Backward: cast the naturals into ℤ. This tiny lemma is the hinge that lets the geometric count talk to the arithmetic side.",
+    "mathContext": "$(\\exists a,b\\in\\mathbb{Z},\\, a^2+b^2=n) \\iff (\\exists x,y\\in\\mathbb{N},\\, n=x^2+y^2)$ via $|a|^2 = a^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.natAbs", "sq_abs", "cast lemmas"],
+    "prerequisites": ["exact_mod_cast", "push_cast", "Int.natAbs"]
+  },
+  {
+    "id": "ann-positivity-bridge",
+    "proofId": "fermat-two-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 120,
+      "endLine": 145
+    },
+    "type": "concept",
+    "title": "The Positivity Bridge: Geometry Meets Arithmetic",
+    "content": "`r2_pos_iff_jacobiSum_pos` is the headline: 0 < r₂(n) ⇔ 0 < δ(n). Its proof is a three-step rewrite chain — r₂(n) > 0 ⇔ ∃ integer solution ⇔ ∃ natural solution ⇔ 0 < δ(n) — the last step reusing the parent's `jacobiSum_pos_iff_sq_add_sq` verbatim. This is the qualitative shadow of Jacobi's full identity r₂ = 4δ: without computing either count, the geometric lattice-point count on the circle of radius √n is positive exactly when the arithmetic divisor-character sum is. `r2_eq_zero_iff_jacobiSum_eq_zero` is the complementary vanishing form, using δ ≥ 0 to convert positivity to a genuine zero/nonzero dichotomy.",
+    "mathContext": "$0 < r_2(n) \\iff 0 < \\delta(n)$, where $\\delta(n) = \\sum_{d\\mid n}\\chi_4(d)$; both sides equal '$n$ is a sum of two squares'.",
+    "significance": "key",
+    "relatedConcepts": ["Jacobi two-square theorem", "divisor-character sum", "qualitative bridge", "representability"],
+    "prerequisites": ["parent jacobiSum API", "iff rewriting"]
+  },
+  {
+    "id": "ann-geometric-fermat",
+    "proofId": "fermat-two-squares-oq-04-oq-01",
+    "range": {
+      "startLine": 147,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Fermat's Criterion, Recovered Geometrically",
+    "content": "`r2_prime_pos_iff` specializes the bridge to a prime p: 0 < r₂(p) ⇔ p ≢ 3 (mod 4). The proof feeds the positivity bridge into the parent's prime-power dichotomy `jacobiSum_prime_pow_pos_iff` at k = 1, where the condition (p % 4 = 3 → Even 1) collapses (Even 1 is false) to exactly p % 4 ≠ 3. This is Fermat's two-squares criterion — a prime is a sum of two squares iff it is not ≡ 3 (mod 4) — now phrased as the existence of a lattice point on the circle of radius √p and derived through the count rather than through a direct existence argument.",
+    "mathContext": "For a prime $p$: $0 < r_2(p) \\iff p \\not\\equiv 3 \\pmod 4$, i.e. $p = 2$ or $p \\equiv 1 \\pmod 4$.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat two-squares theorem", "primes mod 4", "prime-power dichotomy"],
+    "prerequisites": ["Nat.Prime", "parent prime-power values"]
+  }
+]
