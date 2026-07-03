@@ -1,7 +1,7 @@
 {
   "slug": "weak-goldbach-oq-01",
   "title": "Strong Goldbach Conjecture: Every Even n > 2 is Sum of Two Primes",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-22T13:03:46.384Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS (open problem): axiom-free symmetric/midpoint reformulation of Strong Goldbach verified and added to gallery (PR #33936). Conjecture itself remains open.",
+    "builtItems": [
+      "sumTwoPrimes_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:73 (per-n equivalence, 0-axiom)",
+      "strong_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:98 (conjecture-level equivalence)",
+      "decidableHasSymmetricPrimePair in Proofs/StrongGoldbachSymmetric.lean:118 (kernel-decide instance, axiom-free)",
+      "Gallery entry src/data/proofs/strong-goldbach-symmetric (meta+annotations), verified/original, PR #33936"
+    ],
+    "insights": [
+      "Strong Goldbach for even n=2m is equivalent to existence of a symmetric prime pair (m-k, m+k) with k<m — every Goldbach partition sits symmetrically about the midpoint n/2 (Goldbach comet).",
+      "The midpoint-symmetry equivalence needs no lower bound on m: for m=0 both sides are false since primes are >=2, so it quantifies cleanly over all m in N.",
+      "Strong Goldbach and its symmetric form are logically identical (strong_iff_symmetric); the reformulation halves the search space to one bounded parameter k<n/2."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize a lower bound on the number of symmetric prime pairs (partial Goldbach comet asymptotic) — would give Strong Goldbach for almost all m if pushed.",
+      "Investigate the minimal offset k(m) for which (m-k,m+k) are both prime; relate to prime-gap bounds."
+    ]
   },
   "tags": [
     "number-theory",
@@ -51,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.384Z",
-  "lastUpdate": "2026-04-22T13:03:46.384Z",
+  "lastUpdate": "2026-07-02",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [
