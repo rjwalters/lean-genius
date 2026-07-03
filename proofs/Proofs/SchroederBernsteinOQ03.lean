@@ -2527,6 +2527,78 @@ theorem stageSeq_covers_ran (k : ℕ) :
   rw [hdiv] at h
   exact h
 
+/-!
+## Section 5·entry: The entry-stage threshold for the limit read-off
+
+Assembling the stage-wise matchings into a single permutation `σ : ℕ ≃ ℕ` requires knowing,
+for each point `n`, a stage index from which `n` is *permanently* available. The domain and
+range coverage lemmas above (`stageSeq_covers_dom` / `stageSeq_covers_ran`) give existence;
+monotonicity (`stageSeq_mDom_mono` / `stageSeq_mRan_mono`) gives permanence. Together they make
+the **least** covering stage well-defined — the discrete "time of first appearance" `entryStage`.
+
+The characterization `n ∈ dom (stageSeq s) ↔ entryStageDom n ≤ s` compresses the entire
+domain-growth history of a point into a single threshold, and dually on the range side. This is
+the totality/surjectivity skeleton of the limit permutation: every `n` enters the domain (so `σ`
+is total) and every `n` enters the range (so `σ` is surjective), each at a computable-in-principle
+stage index.
+
+**Scope caveat (recorded for the open direction).** These thresholds are *membership*-level only.
+The read-off *value* `mLookup (stageSeq s) n` is **not** stable past `entryStageDom n`: the
+domain-augmentation step (`augment_domain_step`) splices `L' = augPath ++ keptL`, deleting the
+stale `g`-edges it re-labels, so a previously covered domain point can have its partner reassigned
+at a later stage. Hence the limit `σ n` is *not* the naive pointwise stage-limit of `mLookup`; a
+finite-injury bound (each point is re-labelled only finitely often) is the genuine outstanding
+obligation of `myhill_isomorphism`. The entry-stage layer below is deliberately confined to the
+membership facts that *do* hold unconditionally.
+-/
+
+/-- **Entry stage (domain).** The least stage index at which the domain point `n` is covered.
+    Well-defined: `stageSeq_covers_dom` guarantees coverage by stage `2n+1`, and
+    `stageSeq_mDom_mono` guarantees `n` stays covered thereafter. So `entryStageDom n` is the
+    exact threshold past which `n` is permanently in the domain. -/
+noncomputable def entryStageDom (n : ℕ) : ℕ :=
+  Nat.find (⟨2 * n + 1, stageSeq_covers_dom hfpq hgpq hf hg n⟩ :
+    ∃ s, n ∈ mDom (stageSeq hfpq hgpq hf hg s).1)
+
+/-- The domain point `n` is covered at its own entry stage. -/
+theorem mem_mDom_entryStageDom (n : ℕ) :
+    n ∈ mDom (stageSeq hfpq hgpq hf hg (entryStageDom hfpq hgpq hf hg n)).1 :=
+  Nat.find_spec (⟨2 * n + 1, stageSeq_covers_dom hfpq hgpq hf hg n⟩ :
+    ∃ s, n ∈ mDom (stageSeq hfpq hgpq hf hg s).1)
+
+/-- **Domain membership is governed by the entry stage.** `n` is covered at stage `s` iff `s`
+    has reached the entry stage (`→` by minimality of `Nat.find`; `←` by domain monotonicity).
+    This packages the sequence's domain growth as a single per-point threshold. -/
+theorem mem_mDom_stageSeq_iff_entryStageDom_le (s n : ℕ) :
+    n ∈ mDom (stageSeq hfpq hgpq hf hg s).1 ↔ entryStageDom hfpq hgpq hf hg n ≤ s := by
+  constructor
+  · intro h
+    exact Nat.find_le h
+  · intro h
+    exact stageSeq_mDom_mono hfpq hgpq hf hg h (mem_mDom_entryStageDom hfpq hgpq hf hg n)
+
+/-- **Entry stage (range).** The least stage index at which the range point `n` is covered.
+    Dual to `entryStageDom`, via `stageSeq_covers_ran` (coverage by stage `2n+2`) and
+    `stageSeq_mRan_mono` (permanence). Underlies surjectivity of the limit permutation. -/
+noncomputable def entryStageRan (n : ℕ) : ℕ :=
+  Nat.find (⟨2 * n + 2, stageSeq_covers_ran hfpq hgpq hf hg n⟩ :
+    ∃ s, n ∈ mRan (stageSeq hfpq hgpq hf hg s).1)
+
+/-- The range point `n` is covered at its own entry stage. -/
+theorem mem_mRan_entryStageRan (n : ℕ) :
+    n ∈ mRan (stageSeq hfpq hgpq hf hg (entryStageRan hfpq hgpq hf hg n)).1 :=
+  Nat.find_spec (⟨2 * n + 2, stageSeq_covers_ran hfpq hgpq hf hg n⟩ :
+    ∃ s, n ∈ mRan (stageSeq hfpq hgpq hf hg s).1)
+
+/-- **Range membership is governed by the entry stage** (dual of the domain version). -/
+theorem mem_mRan_stageSeq_iff_entryStageRan_le (s n : ℕ) :
+    n ∈ mRan (stageSeq hfpq hgpq hf hg s).1 ↔ entryStageRan hfpq hgpq hf hg n ≤ s := by
+  constructor
+  · intro h
+    exact Nat.find_le h
+  · intro h
+    exact stageSeq_mRan_mono hfpq hgpq hf hg h (mem_mRan_entryStageRan hfpq hgpq hf hg n)
+
 end StageSeqLemmas
 
 /-!
