@@ -66,7 +66,8 @@
       "Averaging over the fundamental domain converts a global volume inequality into a pointwise multiplicity statement: the mean number of translates covering a point of F is exactly μs / μF, so exceeding k forces some point to be covered more than k times.",
       "Working with the abstract IsAddFundamentalDomain API (rather than a concrete ℝⁿ lattice) makes the theorem apply to any countable subgroup with an invariant measure, and collapses to Mathlib's k = 1 lemma with no extra hypotheses.",
       "The finite-extraction step is purely order-theoretic: an ℝ≥0∞ tsum of {0,1}-terms exceeding k, written as a supremum of finite partial sums, must already exceed k on some finite set, whose nonzero part has cardinality > k.",
-      "The parent's blichfeldt_statement carries convexity, symmetry, and a 2ⁿ factor and concludes with k+1 LATTICE POINTS — that is van der Corput's theorem. True Blichfeldt needs none of these and concludes with congruent points of s; conflating the two is a common textbook error that this entry avoids."
+      "The parent's blichfeldt_statement carries convexity, symmetry, and a 2ⁿ factor and concludes with k+1 LATTICE POINTS — that is van der Corput's theorem. True Blichfeldt needs none of these and concludes with congruent points of s; conflating the two is a common textbook error that this entry avoids.",
+      "The classical boundedness hypothesis on s is unnecessary: s is only assumed null-measurable, and the single inequality k • μF < μs drives everything. Even μs = ∞ is admissible — a uniform bound g ≤ k would force μs ≤ k·μF < ∞, so the pigeonhole still fires — and the finite-extraction lemma pulls a finite over-covering family of size > k out of a possibly-infinite covering tsum. The measure-theoretic averaging thus strictly generalizes the bounded-set statement without any compactness input."
     ]
   },
   "sections": [
