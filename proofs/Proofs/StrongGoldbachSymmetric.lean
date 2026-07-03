@@ -673,4 +673,111 @@ example : symmetricPairCount 15 ≤ Nat.totient 15 :=
 -- removing the multiples of `3` alone.
 example : Nat.totient 15 < 15 - 15 / 3 := by decide
 
+/-! ## Sharper Ceiling at Odd Midpoints: Half the Totient
+
+For an **odd** midpoint `m` the two independent structural constraints on a
+contributing offset `k` — coprimality to `m` (`symmetric_pair_offset_coprime`) and
+opposite parity to `m`, i.e. `k` **even** (`symmetric_pair_offset_parity`) — combine
+into a genuine strengthening, because coprimality to an *odd* modulus says nothing
+about parity.  A contributing offset is therefore an **even totative** of `m`.  The
+involution `k ↦ m - k` maps the even totatives of `m` bijectively onto the odd ones:
+it preserves coprimality (`Nat.coprime_self_sub_right`) and flips parity because `m`
+is odd.  Hence exactly `φ(m) / 2` of the `φ(m)` totatives are even, giving for odd
+composite `m`
+
+    symmetricPairCount m ≤ φ(m) / 2,
+
+a factor-of-two improvement over `symmetricPairCount_le_totient_of_not_prime` and the
+sharpest closed-form ceiling in this file at odd midpoints.  No such gain exists for
+*even* `m`: coprimality to an even `m` already forces the offset odd, so the parity
+constraint is redundant there and `φ(m)` remains the right count. -/
+
+/-- **Even and odd totatives of an odd modulus are equinumerous.**  For odd `m > 1`,
+the involution `k ↦ m - k` is a bijection between the even totatives of `m` and the
+odd ones: it preserves coprimality (`Nat.coprime_self_sub_right`) and, since `m` is
+odd, sends an even `k` to an odd `m - k` and vice versa. -/
+theorem card_even_totatives_eq_card_odd_totatives {m : ℕ} (hm : Odd m) (h1 : 1 < m) :
+    ((Finset.range m).filter (fun k => m.Coprime k ∧ Even k)).card
+      = ((Finset.range m).filter (fun k => m.Coprime k ∧ ¬ Even k)).card := by
+  obtain ⟨j, hj⟩ := hm
+  apply le_antisymm
+  · apply Finset.card_le_card_of_injOn (fun k => m - k)
+    · intro k hk
+      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range, Nat.even_iff] at hk ⊢
+      obtain ⟨hkm, hcop, hev⟩ := hk
+      have hk0 : 0 < k := by
+        rcases Nat.eq_zero_or_pos k with h | h
+        · subst h; rw [Nat.coprime_zero_right] at hcop; omega
+        · exact h
+      exact ⟨by omega, (Nat.coprime_self_sub_right hkm.le).mpr hcop, by omega⟩
+    · intro a ha b hb hab
+      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at ha hb
+      obtain ⟨ha1, _⟩ := ha; obtain ⟨hb1, _⟩ := hb
+      simp only at hab; omega
+  · apply Finset.card_le_card_of_injOn (fun k => m - k)
+    · intro k hk
+      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range, Nat.even_iff] at hk ⊢
+      obtain ⟨hkm, hcop, hodd⟩ := hk
+      have hk0 : 0 < k := by
+        rcases Nat.eq_zero_or_pos k with h | h
+        · subst h; rw [Nat.coprime_zero_right] at hcop; omega
+        · exact h
+      exact ⟨by omega, (Nat.coprime_self_sub_right hkm.le).mpr hcop, by omega⟩
+    · intro a ha b hb hab
+      simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at ha hb
+      obtain ⟨ha1, _⟩ := ha; obtain ⟨hb1, _⟩ := hb
+      simp only at hab; omega
+
+/-- **Exactly half of the totatives of an odd modulus are even.**  For odd `m > 1`,
+`#{k < m : gcd(k, m) = 1 ∧ Even k} = φ(m) / 2`.  Splitting the `φ(m)` totatives by
+parity and applying `card_even_totatives_eq_card_odd_totatives` gives two equal halves,
+so `2 · (even totatives) = φ(m)`. -/
+theorem card_even_totatives_eq_totient_div_two {m : ℕ} (hm : Odd m) (h1 : 1 < m) :
+    ((Finset.range m).filter (fun k => m.Coprime k ∧ Even k)).card
+      = Nat.totient m / 2 := by
+  have hsplit :
+      ((Finset.range m).filter (fun k => m.Coprime k ∧ Even k)).card
+        + ((Finset.range m).filter (fun k => m.Coprime k ∧ ¬ Even k)).card
+        = Nat.totient m := by
+    rw [Nat.totient_eq_card_coprime, ← Finset.filter_filter, ← Finset.filter_filter]
+    exact Finset.filter_card_add_filter_neg_card_eq_card _
+  have heq := card_even_totatives_eq_card_odd_totatives hm h1
+  omega
+
+/-- **Half-totient ceiling at odd composite midpoints.**  For odd `m > 1` that is not
+prime,
+
+    symmetricPairCount m ≤ φ(m) / 2.
+
+Every contributing offset `k` is a nonzero totative of `m` (coprimality:
+`symmetric_pair_offset_coprime`; nonzero because `m - 0 = m` is composite) and is even
+(opposite parity to the odd `m`: `symmetric_pair_offset_parity`), so the comet support
+embeds into the `φ(m) / 2` even totatives of `m`.  This halves the totient ceiling
+`symmetricPairCount_le_totient_of_not_prime` at odd midpoints. -/
+theorem symmetricPairCount_le_half_totient_of_odd_not_prime {m : ℕ}
+    (hm : Odd m) (h1 : 1 < m) (hcomp : ¬ Nat.Prime m) :
+    symmetricPairCount m ≤ Nat.totient m / 2 := by
+  obtain ⟨j, hj⟩ := hm
+  rw [← card_even_totatives_eq_totient_div_two ⟨j, hj⟩ h1, symmetricPairCount]
+  apply Finset.card_le_card
+  intro k hk
+  simp only [Finset.mem_filter, Finset.mem_range, Nat.even_iff] at hk ⊢
+  obtain ⟨hkm, hp1, hp2⟩ := hk
+  have hk0 : 0 < k := by
+    rcases Nat.eq_zero_or_pos k with h | h
+    · subst h; rw [Nat.sub_zero] at hp1; exact absurd hp1 hcomp
+    · exact h
+  have hpar := symmetric_pair_offset_parity (by omega) hkm hp1 hp2
+  exact ⟨hkm, (symmetric_pair_offset_coprime hk0 hp1 hp2).symm, by omega⟩
+
+-- Concrete half-totient ceiling: `m = 9 = 3²` is odd composite, `φ(9) = 6`, so the
+-- comet height of `18` is at most `φ(9)/2 = 3`.  (Actual height: `18 = 5 + 13 = 7 + 11`,
+-- so `2 ≤ 3`.)  The full totient bound only gives `≤ 6`.
+example : symmetricPairCount 9 ≤ Nat.totient 9 / 2 :=
+  symmetricPairCount_le_half_totient_of_odd_not_prime (by decide) (by norm_num) (by decide)
+
+-- The half-totient ceiling is strictly sharper than the totient ceiling at odd
+-- composite midpoints: `φ(15)/2 = 4 < 8 = φ(15)`.
+example : Nat.totient 15 / 2 < Nat.totient 15 := by decide
+
 end StrongGoldbach

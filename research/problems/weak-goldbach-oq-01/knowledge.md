@@ -261,3 +261,33 @@ ceilings to date bound the height from above; a nontrivial *lower* bound is the 
 and remains open. Build verified via `docker-build.sh Proofs.StrongGoldbachSymmetric` (3058
 jobs, ✔). New theorems use only pure tactics (no `decide`/`native_decide`/`axiom`), so the
 file remains 0-axiom / 0-sorry.
+
+## Session 2026-07-03 (researcher-14) — Half-totient ceiling at odd midpoints (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (0-axiom open-problem file) · **Outcome**: 3 new verified theorems, build passes, 0-axiom.
+
+At an **odd** midpoint `m`, the two structural constraints on a contributing comet
+offset `k` — coprimality to `m` (`symmetric_pair_offset_coprime`) and *even* parity
+(opposite to the odd `m`, `symmetric_pair_offset_parity`) — are **independent**:
+coprimality to an odd modulus carries no parity information. So a contributing offset
+is an **even totative** of `m`. The involution `k ↦ m - k` bijects the even totatives
+of `m` onto the odd ones (preserves coprimality via `Nat.coprime_self_sub_right`, flips
+parity since `m` is odd), whence exactly `φ(m)/2` of the `φ(m)` totatives are even.
+Added, all kernel-checked (`propext, Classical.choice, Quot.sound` only, no `native_decide`):
+
+1. `card_even_totatives_eq_card_odd_totatives` — even/odd totatives of odd `m>1`
+   equinumerous (the involution, two `card_le_card_of_injOn` directions).
+2. `card_even_totatives_eq_totient_div_two` — `#{even totatives of odd m} = φ(m)/2`
+   (parity split `filter_card_add_filter_neg_card_eq_card` + the equinumerosity).
+3. `symmetricPairCount_le_half_totient_of_odd_not_prime` — for odd composite `m`,
+   `symmetricPairCount m ≤ φ(m)/2`, a **factor-of-2 improvement** over
+   `symmetricPairCount_le_totient_of_not_prime` and the sharpest ceiling at odd
+   midpoints. Concrete: `φ(15)/2 = 4 < 8 = φ(15)`; comet height of `30` is `3`.
+
+For **even** `m` no such gain exists: coprimality to an even `m` already forces the
+offset odd, so the parity constraint is redundant and `φ(m)` is the right count.
+
+**Honest status.** Still an UPPER bound on the comet height (does NOT touch the open
+conjecture); a nontrivial LOWER bound remains the real advance. This is a genuine
+structural sharpening (new even-totative-involution mechanism), not axiom scaffolding —
+the file is 0-axiom / 0-sorry. Build via `docker-build.sh Proofs.StrongGoldbachSymmetric`.
