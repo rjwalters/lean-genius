@@ -96,5 +96,31 @@
       "relationship": "parent",
       "description": "The main Erdős #1023 union-free families file (isUnionFree, middleLayer, the lower bound unionFreeMax_ge_middle, and the axiomatized Erdős-Kleitman optimality and Stirling asymptotic). It establishes F(n) = C(n, floor(n/2)); this sibling supplies the elementary, 0-axiom growth brackets 2^n/(n+1) ≤ F(n) ≤ 2^n and divergence that the parent only obtains through its Stirling axiom."
     }
+  ],
+  "references": [
+    {
+      "authors": "Thomas F. Bloom (ed.)",
+      "title": "Erdős Problem #1023",
+      "year": 2024,
+      "note": "erdosproblems.com/1023. Catalogues the union-free maximum problem, Erdős's conjecture F(n) ~ c·2ⁿ/√n, and its resolution via the central binomial coefficient."
+    },
+    {
+      "authors": "Jacobus H. van Lint and Richard M. Wilson",
+      "title": "A Course in Combinatorics (2nd ed.)",
+      "year": 2001,
+      "note": "Cambridge University Press. The binomial identity ∑_{m≤n} C(n,m) = 2ⁿ and the central column C(n, ⌊n/2⌋) as the maximum entry of Pascal's row n — the two facts the growth brackets average against."
+    },
+    {
+      "authors": "Ian Anderson",
+      "title": "Combinatorics of Finite Sets",
+      "year": 1987,
+      "note": "Oxford University Press. Sperner-type extremal set theory, antichains, and the maximality of the middle layer of the subset lattice — the structural background to why the ⌊n/2⌋-layer is union-free and extremal."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Nat.Choose bounds and central binomial infrastructure",
+      "year": 2024,
+      "note": "Nat.choose_le_middle (central column is maximal), Nat.choose_le_two_pow (each column ≤ 2ⁿ), and Nat.choose_le_centralBinom, the finite-binomial lemmas driving the elementary brackets and divergence."
+    }
   ]
 }
