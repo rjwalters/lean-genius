@@ -686,4 +686,112 @@ theorem ae_tendsto_average_zero_of_variance_weighted_bdd [IsProbabilityMeasure �
 
 end KolmogorovKronecker
 
+/-! ## S4b (step 1) — i.i.d. truncation reduction via first Borel–Cantelli
+
+The Marcinkiewicz–Zygmund proof replaces `Xᵢ` by the truncation
+`Yᵢ = Xᵢ·𝟙{|Xᵢ| ≤ i^{1/p}}`.  The replacement is justified by the **first
+Borel–Cantelli lemma**: if the tail sum `∑ᵢ P(|Xᵢ| > i^{1/p})` is finite then a.s.
+`Xᵢ = Yᵢ` for all large `i`, so it suffices to prove the law for the truncations.
+
+For identically distributed `Xᵢ` the tail probability transfers to `X₀`:
+
+    P(|Xᵢ| > i^{1/p}) = P(|X₀| > i^{1/p}) = P(|X₀|ᵖ > i),
+
+using `IdentDistrib.measure_mem_eq` and the elementary equivalence
+`i^{1/p} < |x| ↔ i < |x|ᵖ` (for `i ≥ 0`, `p > 0`).  The resulting sum
+`∑ᵢ P(|X₀|ᵖ > i)` is then bounded by the first moment `𝔼|X₀|ᵖ < ∞` via the discrete
+layer cake of § TailSum (step 2).  Feeding the finiteness into
+`MeasureTheory.ae_eventually_notMem` yields the a.s. eventual truncation
+`∀ᵐ ω, ∀ᶠ i, |Xᵢ ω| ≤ i^{1/p}`, the Borel–Cantelli conclusion that step 1 needs. -/
+
+section TruncationReduction
+
+open MeasureTheory ProbabilityTheory
+open scoped ENNReal
+
+variable {Ω : Type*} {mΩ : MeasurableSpace Ω} {μ : Measure Ω}
+
+/-- **Power/root reindexing of a truncation threshold.**  For `0 < p` and `0 ≤ a`,
+`0 ≤ b`, the root inequality `a^{1/p} < b` is equivalent to the power inequality
+`a < bᵖ`.  Applied to `a = i` and `b = |Xᵢ ω|` this turns the truncation event
+`{|Xᵢ| > i^{1/p}}` into the moment event `{|Xᵢ|ᵖ > i}`. -/
+theorem rpow_inv_lt_iff_lt_rpow {p : ℝ} (hp : 0 < p) {a b : ℝ} (ha : 0 ≤ a)
+    (hb : 0 ≤ b) : a ^ (1 / p) < b ↔ a < b ^ p := by
+  have key := Real.rpow_lt_rpow_iff (x := a ^ (1 / p)) (y := b) (z := p)
+    (Real.rpow_nonneg ha _) hb hp
+  rw [one_div, Real.rpow_inv_rpow ha hp.ne'] at key
+  rw [one_div]
+  exact key.symm
+
+/-- **Tail-sum finiteness for i.i.d. variables with a finite `p`-th moment.**  If the
+`Xᵢ` are identically distributed to `X₀` and `𝔼|X₀|ᵖ < ∞` (encoded as the finite
+lintegral `∫⁻ ofReal |X₀|ᵖ`), then the Marcinkiewicz–Zygmund truncation tail sum is
+finite:
+
+    ∑ᵢ μ {ω | i^{1/p} < |Xᵢ ω|}  ≠  ∞.
+
+Proof: transfer each tail measure to `X₀` (`IdentDistrib.measure_mem_eq`), reindex the
+threshold to the power event `{i < |X₀|ᵖ}` (`rpow_inv_lt_iff_lt_rpow`), split off the
+`i = 0` term (bounded by `1` on a probability space), and dominate the rest by the
+discrete layer-cake bound `tsum_measure_add_one_ne_top` applied to `Z = |X₀|ᵖ`. -/
+theorem tsum_measure_truncation_ne_top_of_identDistrib [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} {p : ℝ} (hp : 0 < p) (hmeas : ∀ i, Measurable (X i))
+    (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ)
+    (hmom : ∫⁻ ω, ENNReal.ofReal (|X 0 ω| ^ p) ∂μ ≠ ∞) :
+    ∑' i : ℕ, μ {ω | (i : ℝ) ^ (1 / p) < |X i ω|} ≠ ∞ := by
+  have hX0 : Measurable (X 0) := hmeas 0
+  have hZmeas : Measurable (fun ω => |X 0 ω| ^ p) := by fun_prop
+  have hZnn : (0 : Ω → ℝ) ≤ fun ω => |X 0 ω| ^ p :=
+    fun ω => Real.rpow_nonneg (abs_nonneg _) p
+  -- The threshold set `{y | i^{1/p} < |y|}` is measurable and used to transfer via i.i.d.
+  have hthr : ∀ i : ℕ, MeasurableSet {y : ℝ | (i : ℝ) ^ (1 / p) < |y|} := fun i =>
+    measurableSet_lt measurable_const _root_.continuous_abs.measurable
+  -- Transfer + reindex: each tail measure equals `μ {ω | i < |X₀ ω|ᵖ}`.
+  have hstep : ∀ i : ℕ,
+      μ {ω | (i : ℝ) ^ (1 / p) < |X i ω|} = μ {ω | (i : ℝ) < |X 0 ω| ^ p} := by
+    intro i
+    have hpre_i : {ω | (i : ℝ) ^ (1 / p) < |X i ω|}
+        = (X i) ⁻¹' {y : ℝ | (i : ℝ) ^ (1 / p) < |y|} := rfl
+    have hpre_0 : {ω | (i : ℝ) < |X 0 ω| ^ p}
+        = (X 0) ⁻¹' {y : ℝ | (i : ℝ) ^ (1 / p) < |y|} := by
+      ext ω
+      simp only [Set.mem_setOf_eq, Set.mem_preimage]
+      exact (rpow_inv_lt_iff_lt_rpow hp (Nat.cast_nonneg i) (abs_nonneg _)).symm
+    rw [hpre_i, hpre_0]
+    exact (hident i).measure_mem_eq (hthr i)
+  simp_rw [hstep]
+  -- Split off the `i = 0` term and dominate the tail by the discrete layer cake.
+  -- (`tsum_eq_zero_add'` is the ENNReal-robust peel; the `Summable.tsum_eq_zero_add`
+  -- dot form triggers a `whnf` blow-up on the measure-of-set summand.)
+  rw [tsum_eq_zero_add' ENNReal.summable]
+  refine ENNReal.add_ne_top.mpr ⟨measure_ne_top μ _, ?_⟩
+  have hbig : ∑' n : ℕ, μ {x | (n : ℝ) + 1 ≤ |X 0 x| ^ p} ≠ ∞ :=
+    tsum_measure_add_one_ne_top hZmeas hZnn hmom
+  have hle : ∑' b : ℕ, μ {ω | ((b + 1 : ℕ) : ℝ) < |X 0 ω| ^ p}
+      ≤ ∑' n : ℕ, μ {x | (n : ℝ) + 1 ≤ |X 0 x| ^ p} := by
+    refine ENNReal.tsum_le_tsum fun b => measure_mono fun ω hω => ?_
+    simp only [Set.mem_setOf_eq] at hω ⊢
+    push_cast at hω
+    linarith
+  exact (lt_of_le_of_lt hle hbig.lt_top).ne
+
+/-- **Almost-sure eventual truncation (first Borel–Cantelli, MZ step 1).**  For i.i.d.
+`Xᵢ` with a finite `p`-th moment (`𝔼|X₀|ᵖ < ∞`), almost surely `|Xᵢ| ≤ i^{1/p}` holds
+for all large `i` — hence the truncation `Yᵢ = Xᵢ·𝟙{|Xᵢ| ≤ i^{1/p}}` agrees with `Xᵢ`
+eventually a.s.  This is the Borel–Cantelli output that reduces the Marcinkiewicz–Zygmund
+strong law to its truncated version.  Combines the tail-sum finiteness
+`tsum_measure_truncation_ne_top_of_identDistrib` with `MeasureTheory.ae_eventually_notMem`. -/
+theorem ae_eventually_abs_le_rpow_of_identDistrib [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} {p : ℝ} (hp : 0 < p) (hmeas : ∀ i, Measurable (X i))
+    (hident : ∀ i, IdentDistrib (X i) (X 0) μ μ)
+    (hmom : ∫⁻ ω, ENNReal.ofReal (|X 0 ω| ^ p) ∂μ ≠ ∞) :
+    ∀ᵐ ω ∂μ, ∀ᶠ i in atTop, |X i ω| ≤ (i : ℝ) ^ (1 / p) := by
+  have h := MeasureTheory.ae_eventually_notMem
+    (tsum_measure_truncation_ne_top_of_identDistrib hp hmeas hident hmom)
+  filter_upwards [h] with ω hω
+  filter_upwards [hω] with i hi
+  simpa only [Set.mem_setOf_eq, not_lt] using hi
+
+end TruncationReduction
+
 end LawsOfLargeNumbers.MZ

@@ -373,3 +373,67 @@ Marcinkiewicz–Zygmund: remaining are S4b step-1 (i.i.d. reduction to apply thi
 a locked `/private/tmp/r14-session-*` worktree off `origin/main`, committed before verifying
 (the worktree-deletion hazard recurred at session start — designated `.loom/worktrees/researcher-14`
 was gone again; the locked /tmp worktree avoids the clobber trap).
+
+---
+
+## S4b step-1 (researcher-14, 2026-07-03) — BUILD: i.i.d. Borel–Cantelli truncation reduction SHIPPED (verified)
+
+**Mode**: FRESH (RICH knowledge, depth-first) · **Outcome**: progress (0-axiom brick shipped)
+
+### What I did
+
+Completed **S4b step-1**, connecting the step-2 discrete-layer-cake tail bound to the
+actual Marcinkiewicz–Zygmund truncation event. Three theorems added to
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (§ TruncationReduction), all
+**0-sorry / 0-axiom** (`#print axioms` = `propext`/`Classical.choice`/`Quot.sound` on
+all three — no `sorryAx`, no `Lean.ofReduceBool`). Verified via `LAKE_UNSAFE=1 lake env
+lean` against the pinned prebuilt Mathlib v4.26.0 oleans: 0 errors, 0 warnings.
+
+1. **`rpow_inv_lt_iff_lt_rpow {p} (hp:0<p) {a b} (ha:0≤a) (hb:0≤b) : a^(1/p) < b ↔ a < b^p`**
+   — the elementary threshold reindex. Proof: `Real.rpow_lt_rpow_iff` (strict mono of
+   `·^p` on nonneg, `0<p`) rewritten by `Real.rpow_inv_rpow ha hp.ne'`
+   (`(a^p⁻¹)^p = a`); `one_div` bridges `1/p ↔ p⁻¹`.
+2. **`tsum_measure_truncation_ne_top_of_identDistrib`** — for i.i.d. `Xᵢ` (each
+   `IdentDistrib (Xᵢ) (X₀)`) with `𝔼|X₀|ᵖ < ∞` (finite `∫⁻ ofReal |X₀|ᵖ`), the truncation
+   tail `∑ᵢ μ{i^{1/p} < |Xᵢ|} ≠ ∞`. Proof chain: (a) each tail measure `= μ{i < |X₀|ᵖ}` —
+   `{ω | i^{1/p}<|Xᵢ ω|}` is `Xᵢ ⁻¹' {y | i^{1/p}<|y|}` (`rfl`), transfer by
+   `IdentDistrib.measure_mem_eq` on that measurable set, reindex the `X₀` side pointwise
+   by `rpow_inv_lt_iff_lt_rpow`; (b) peel `i=0` (`tsum_eq_zero_add'`, term `≤ 1` by
+   `measure_ne_top`); (c) dominate the `i≥1` tail by `tsum_measure_add_one_ne_top`
+   (step 2) with `Z=|X₀|ᵖ`, via `{(b+1:ℝ) < Z} ⊆ {(b:ℝ)+1 ≤ Z}` (`ENNReal.tsum_le_tsum` +
+   `measure_mono` + `push_cast`/`linarith`).
+3. **`ae_eventually_abs_le_rpow_of_identDistrib`** — feeds (2) into
+   `MeasureTheory.ae_eventually_notMem` (first Borel–Cantelli) ⟹
+   `∀ᵐ ω, ∀ᶠ i, |Xᵢ ω| ≤ i^{1/p}`. This is the truncation reduction: a.s. `Xᵢ = Yᵢ`
+   eventually where `Yᵢ = Xᵢ·𝟙{|Xᵢ| ≤ i^{1/p}}`.
+
+### Key finding / reusable gotcha (Mathlib v4.26)
+
+- **`Summable.tsum_eq_zero_add` (dot form) is `whnf`-pathological** and must be avoided
+  for the ENNReal tsum peel. `rw [Summable.tsum_eq_zero_add ENNReal.summable]` blows past
+  **1 000 000 heartbeats at `whnf`** — and this reproduces *even on a fully abstract
+  `g : ℕ → ℝ≥0∞`* (`example (g) : ∑' i, g i = g 0 + ∑' n, g (n+1) := ENNReal.summable.tsum_eq_zero_add`
+  times out) and even when the split is stated as a fully-typed `have`. The fix is the
+  **primed, non-dot idiom `rw [tsum_eq_zero_add' ENNReal.summable]`** — exactly how
+  Mathlib's own `Topology/Instances/ENNReal/Lemmas.lean` peels ENNReal tsums. Compiles
+  instantly. Bisected via stubbed-dependency scratch files (`ScratchMZ.lean`).
+
+### Provenance note
+
+Salvaged a prior interrupted researcher-14 draft (the section text was correct but never
+compiled — the session died on the worktree-deletion hazard before verification). Its base
+was a stale `origin/main` predating S4a/S5, so it was transplanted onto current
+`origin/main` in a **locked** `/Users/rwalters/lg-wt/` worktree (the worktree-deletion
+hazard recurred twice this session; `--lock` is mandatory).
+
+### Files modified
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (+108 lines, § TruncationReduction)
+- `research/problems/.../state.md`, `.../knowledge.md`, problem JSON knowledge
+
+### Next steps
+
+S4b step-3 (centered-truncation control `∑ᵢ 𝔼Yᵢ/n^{1/p} → 0`) and step-4
+(`∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`, uses `p<2`), then final assembly via S5
+`ae_tendsto_average_zero_of_variance_weighted_bdd` on the centered truncations plus this
+step's a.s. eventual `Xᵢ = Yᵢ`.
