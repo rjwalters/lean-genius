@@ -1,21 +1,44 @@
 [
   {
-    "id": "ann-imports-definition",
+    "id": "ann-header",
     "proofId": "stirling-formula-oq-03",
     "range": {
       "startLine": 1,
-      "endLine": 35
+      "endLine": 30
     },
     "type": "concept",
-    "title": "The Classical Wallis Partial Product",
-    "content": "The file isolates Wallis' 1656 infinite product for π in its standard textbook form. wallisProduct n is defined as ∏_{i ∈ range n} 4(i+1)²/(4(i+1)²−1), i.e. the partial product ∏_{k=1}^{n} 4k²/(4k²−1) with the substitution k = i+1 so the index runs over range n. This is exactly the product 4/3 · 16/15 · 36/35 · …, whose limit is π/2. The Stirling entries in the gallery use Wallis' product only as an internal step; here it is a named definition.",
-    "mathContext": "$\\prod_{k=1}^{n} \\frac{4k^2}{4k^2-1} = \\frac{2\\cdot2}{1\\cdot3}\\cdot\\frac{4\\cdot4}{3\\cdot5}\\cdots\\frac{(2n)(2n)}{(2n-1)(2n+1)}$, the $n$-th partial product of Wallis' formula.",
-    "significance": "supporting",
+    "title": "Isolating Wallis' 1656 Product from the Stirling Machinery",
+    "content": "The header frames the entry. The gallery's Stirling entries (StirlingFormula, StirlingExpansion, …) use the Wallis product only INTERNALLY — as the engine that pins the Stirling constant to √(2π) — but none states Wallis' product in its own classical textbook form. Mathlib likewise proves the limit only in a shifted, index-from-zero form (Real.tendsto_prod_pi_div_two). This file isolates the standalone classical statement ∏_{k=1}^{n} 4k²/(4k²−1) → π/2 (John Wallis, Arithmetica Infinitorum, 1656 — the historical ancestor of the Stirling-constant computation) via three results: the factor identity, the termwise reindexing to Mathlib's shifted product, and the limit itself. Verified, 0 axioms, 0 sorries.",
+    "mathContext": "$\\prod_{k=1}^{n} \\frac{4k^2}{4k^2-1} \\longrightarrow \\frac{\\pi}{2}$ (Wallis 1656), stated standalone rather than as an internal Stirling step.",
+    "significance": "context",
     "relatedConcepts": [
       "Wallis product",
+      "Stirling's constant √(2π)",
+      "Real.tendsto_prod_pi_div_two",
+      "history of π formulas"
+    ],
+    "prerequisites": [
       "infinite products",
+      "convergence to π/2"
+    ]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "stirling-formula-oq-03",
+    "range": {
+      "startLine": 32,
+      "endLine": 35
+    },
+    "type": "definition",
+    "title": "The Classical Wallis Partial Product",
+    "content": "wallisProduct n is defined as ∏_{i ∈ range n} 4(i+1)²/(4(i+1)²−1), i.e. the partial product ∏_{k=1}^{n} 4k²/(4k²−1) with the substitution k = i+1 so the index runs over range n (Lean's range n = {0,…,n−1}, hence the +1 shift). This is exactly the product 4/3 · 16/15 · 36/35 · …, whose limit is π/2. It is the central object of the file — the standalone classical Wallis partial product that the three theorems relate to Mathlib's shifted form and show converges.",
+    "mathContext": "$\\mathtt{wallisProduct}\\,n = \\prod_{k=1}^{n} \\frac{4k^2}{4k^2-1} = \\frac{2\\cdot2}{1\\cdot3}\\cdot\\frac{4\\cdot4}{3\\cdot5}\\cdots\\frac{(2n)(2n)}{(2n-1)(2n+1)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Wallis product",
       "Finset.prod",
-      "partial products"
+      "partial products",
+      "index shift k = i+1"
     ],
     "prerequisites": [
       "finite products over Finset",
