@@ -161,3 +161,37 @@ Insights accumulated during research on this problem.
   `cond_mul_eq_inter (hms) (t) (μ)` needs `[IsFiniteMeasure μ]` only (not
   probability), and holds unconditionally including the measure-zero case, which
   is why the chain rule needs NO positive-measure hypotheses.
+
+### Quantitative lower bound (researcher-4, 2026-07-03) — NEW
+
+- **The chain-rule reduction upgrades from positivity to the quantitative LLL
+  bound with one order-theoretic step.** New file
+  `Proofs/LovaszLocalLemmaOQ01Quantitative.lean` (0 sorry / 0 axiom), gallery entry
+  `lovasz-local-lemma-oq-01-quantitative`: if `μ[A k | ⋂_{j<k}(A j)ᶜ] ≤ bₖ < 1`
+  for all `k < n`, then `∏ₖ (1 − bₖ) ≤ μ(⋂ᵢ (A i)ᶜ)` (`avoidance_ge_prod_one_sub`).
+  This is the honest measure-theoretic form of `μ(⋂ Aᵢᶜ) ≥ ∏(1 − xᵢ)`: the parent
+  proof's rational surrogate `∏(1 − xᵢ)` is a *verified lower bound on the real
+  avoidance probability*, not just an analogue.
+- **Route (reuses the chain-rule scaffold, no new probability).** `rw
+  [avoidance_eq_prod_survival_cond hA]` turns the RHS into `∏ₖ μ[(A k)ᶜ | history]`;
+  `Finset.prod_le_prod'` (finite-product monotonicity in a canonically ordered
+  comm monoid — works directly for ℝ≥0∞) reduces to the factorwise bound; on each
+  history (positive via `hist_pos_of_failure_cond_lt_one`, since `bₖ < 1` ⇒
+  `μ[A k|history] < 1`) `survival_cond_eq_one_sub` gives `survival = 1 − failure`,
+  and `tsub_le_tsub_left (hfail k hk) 1` gives `1 − bₖ ≤ 1 − μ[A k|history]`.
+- **Symmetric form.** `avoidance_ge_one_sub_pow`: constant `bₖ = p` collapses via
+  `Finset.prod_const` + `Finset.card_range` to `(1 − p)ⁿ ≤ μ(⋂ (A i)ᶜ)` — the
+  multiplicative counterpart of the union-bound extreme's additive `1 − np`.
+- **Positivity subsumed.** `avoidance_pos_of_prod_one_sub_pos` re-derives the
+  chain-rule entry's `avoidance_pos_of_failure_cond_lt_one'` from the strictly
+  stronger quantitative bound (`∏(1 − bₖ) > 0` via `zero_lt_iff` +
+  `Finset.prod_ne_zero_iff` + `tsub_eq_zero_iff_le`).
+- **Key API note.** `Finset.prod_le_prod'` (the multiplicative/`OrderedCommMonoid`
+  lemma) applies to ℝ≥0∞ products of the form `∏ f ≤ ∏ g` given `∀ i ∈ s, f i ≤ g i`
+  — no nonnegativity side goals, unlike the ordered-semiring `Finset.prod_le_prod`.
+  Membership propagation `m < k < n ⟹ m ∈ range n` needs `lt_trans` on the two
+  `Finset.mem_range` facts.
+- **What remains open (unchanged).** The per-event bounds `bₖ` are hypotheses;
+  deriving them from a measure-theoretic dependency structure (`bₖ = 2p` under
+  `e·p·(d+1) ≤ 1`) is the open target. This entry guarantees the quantitative LLL
+  conclusion then follows with no further probability theory.
