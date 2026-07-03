@@ -134,6 +134,11 @@
       "targetId": "gamma-reflection-formula-oq-01",
       "relationship": "related",
       "description": "Both entries evaluate Gamma/Beta at rational arguments using Mathlib's Analysis.SpecialFunctions.Gamma theory. The reflection formula gives Γ(s)Γ(1−s) = π/sin(πs) (whose s = 1/2 case is Γ(1/2)² = π); here the Beta–Gamma relation turns that same squared Gauss value into B(1/2,1/2) = π."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-03-oq-02",
+      "relationship": "related",
+      "description": "The reverse-direction companion on the same identity. That entry proves Γ(1/2)² = π independently of the Gaussian integral, by computing B(1/2,1/2) = ∫₀¹ x^(−1/2)(1−x)^(−1/2) dx = π from scratch via the fundamental theorem of calculus (antiderivative arcsin(2x−1)) and then reading off Γ(1/2)² = Γ(1)·B(1/2,1/2). This entry runs the implication the other way — it takes Mathlib's Gauss value Γ(1/2) = √π as given and derives B(1/2,1/2) = π from it — so together the two close the loop B(1/2,1/2) = π ⇔ Γ(1/2)² = π from both sides (integration and the Beta–Gamma relation)."
     }
   ],
   "references": [
