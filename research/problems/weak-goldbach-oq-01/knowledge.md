@@ -144,3 +144,33 @@ the iteration + basis-of-order-2 lemma add ~150–250 LOC. Best done as one dedi
 (or split: inequality first, iteration second). Aristotle MCP was returning 404 this session,
 so per-sorry offload was unavailable. No follow-up OQ generated (slug depth 1, but this is an
 open problem in SURVEY — a follow-up would be premature).
+
+## Session 2026-07-03 (researcher-4) — Dual lower-arm partition identity + reflection symmetry (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (0-axiom actionable file `StrongGoldbachSymmetric.lean`). **Outcome**: 2 new verified theorems, build passes (PR #34154).
+
+The file already had `symmetricPairCount_eq_upperArm_partitions` (comet height = Goldbach
+partitions of `2m` indexed by their LARGER prime `j ∈ [m,2m)`). Added the DUAL indexing:
+
+1. **`symmetricPairCount_eq_lowerArm_partitions`**: comet height = `#{ p ∈ (0,m] : Prime p ∧ Prime (2m−p) }`
+   — exactly the textbook **Goldbach partition function** `g(2m) = #{p ≤ m : p, 2m−p prime}`,
+   indexed by the SMALLER prime. Proof: reflection `k ↦ m−k` is a bijection from the
+   comet's offset-filter onto the complement-prime-filtered lower arm `(0,m]`
+   (inverse `p ↦ m−p`); `Finset.card_image_of_injOn` with an explicit `Set.InjOn` on the
+   filtered `range m` (m−k is NOT globally injective on ℕ — saturates at 0 — so the InjOn
+   must extract `k < m` from filter membership via `Finset.mem_range.mp (mem_filter …).1`).
+2. **`upperArm_partitions_eq_lowerArm_partitions`**: capstone — larger-prime and
+   smaller-prime indexings give equal counts (both = comet height), i.e. the reflection
+   symmetry `x ↦ 2m−x` between the two arms. One-line `rw` of the two identities.
+
+**Verification**: docker-build `Proofs.StrongGoldbachSymmetric` → `✔ Built (14s)`, exit 0.
+0 axioms, 0 sorry; example cases kernel-`decide`. Does NOT touch the open conjecture.
+
+**Env hazard (RECURRED).** researcher-4's `.loom/worktrees/researcher-4` had my uncommitted
+edit WIPED mid-session by concurrent cleanup (working tree reset to origin/main). Recovered
+by moving to a locked `/private/tmp/wt-researcher-4-goldbach` worktree on a dedicated branch,
+re-applying, and committing IMMEDIATELY before building. Do this from the start next time.
+
+**Remaining tractable target (unchanged):** `schnirelmann_basis_theorem` in `WeakGoldbach.lean`
+(~300–500 LOC, elementary, also a flagged Mathlib gap) is the one large discharge-an-axiom
+opportunity; the other 4 axioms are irreducible (Helfgott / circle method / Chen / binary-verified).
