@@ -88,6 +88,120 @@
       "Complex numbers (representation of geometric transformations)"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "feuerbach_incircle_distance_proved",
+      "type": "theorem",
+      "statement": "dist(ninePointCenter, incenter) = |ninePointRadius − inradius|",
+      "significance": "Feuerbach's Theorem itself (1822): the nine-point circle is INTERNALLY tangent to the incircle, expressed as the exact distance dist(N, I) = |R/2 − r|. Because the distance equals the difference of radii, the two circles touch at a single point — the Feuerbach point.",
+      "description": "From feuerbach_NI_sq (|NI|² = (R/2 − r)²) via √(x²) = |x|; fully verified, axiom-free."
+    },
+    {
+      "name": "feuerbach_excircle_a_distance_proved",
+      "type": "theorem",
+      "statement": "dist(ninePointCenter, excenter_a) = ninePointRadius + exradius_a",
+      "significance": "The excircle half of Feuerbach's theorem for the A-excircle: the nine-point circle is EXTERNALLY tangent to it, dist(N, I_a) = R/2 + r_a. Distance equal to the SUM of radii means external tangency at one point.",
+      "description": "From feuerbach_NIa_sq via √(x²) with both radii nonneg; fully verified, axiom-free."
+    },
+    {
+      "name": "feuerbach_excircle_b_distance_proved",
+      "type": "theorem",
+      "statement": "dist(ninePointCenter, excenter_b) = ninePointRadius + exradius_b",
+      "significance": "External tangency of the nine-point circle to the B-excircle: dist(N, I_b) = R/2 + r_b. Second of the three excircle tangencies that, with the incircle case, complete Feuerbach's theorem.",
+      "description": "From feuerbach_NIb_sq; fully verified, axiom-free."
+    },
+    {
+      "name": "feuerbach_excircle_c_distance_proved",
+      "type": "theorem",
+      "statement": "dist(ninePointCenter, excenter_c) = ninePointRadius + exradius_c",
+      "significance": "External tangency of the nine-point circle to the C-excircle: dist(N, I_c) = R/2 + r_c. The third excircle tangency; together the four results state the full Feuerbach theorem — the nine-point circle touches all four tritangent circles.",
+      "description": "From feuerbach_NIc_sq; fully verified, axiom-free."
+    },
+    {
+      "name": "foot_a_on_ninePointCircle_proved",
+      "type": "theorem",
+      "statement": "dist(ninePointCenter, foot_a) = ninePointRadius",
+      "significance": "Certifies part of the nine-point circle's defining property: the foot of the altitude from A lies on it. One of the nine special points (three altitude feet, three edge midpoints, three Euler-segment midpoints) confirmed to be equidistant from the center.",
+      "description": "Squares both sides and reduces to a coordinate polynomial identity; fully verified, axiom-free."
+    },
+    {
+      "name": "foot_b_on_ninePointCircle_proved",
+      "type": "theorem",
+      "statement": "dist(ninePointCenter, foot_b) = ninePointRadius",
+      "significance": "The altitude foot from B lies on the nine-point circle — second of the three altitude-foot incidences underpinning the circle's construction.",
+      "description": "Coordinate polynomial identity after squaring; fully verified, axiom-free."
+    },
+    {
+      "name": "foot_c_on_ninePointCircle_proved",
+      "type": "theorem",
+      "statement": "dist(ninePointCenter, foot_c) = ninePointRadius",
+      "significance": "The altitude foot from C lies on the nine-point circle — completing the three altitude-foot incidences that justify the 'nine-point' name.",
+      "description": "Coordinate polynomial identity after squaring; fully verified, axiom-free."
+    },
+    {
+      "name": "feuerbach_NI_sq",
+      "type": "theorem",
+      "statement": "dist2_sq(ninePointCenter, incenter) = (ninePointRadius − inradius)²",
+      "significance": "The squared-distance form of Feuerbach's incircle theorem — the exact algebraic statement |NI|² = (R/2 − r)² from which the tangency (distance = |R/2 − r|) follows by taking square roots. The heart of the whole file.",
+      "description": "Divides the key identity four_s_sq_NI_sq_eq by 4s² and field-simplifies; fully verified, axiom-free."
+    },
+    {
+      "name": "four_s_sq_NI_sq_eq",
+      "type": "theorem",
+      "statement": "4·s²·dist2_sq(ninePointCenter, incenter) = (R·s − 2·Area)²",
+      "significance": "The central geometric–algebraic identity: 4s²|NI|² = (Rs − 2·Area)². Clearing the semiperimeter denominator turns Feuerbach's theorem into a polynomial identity, avoiding division and square roots until the final step.",
+      "description": "Expands |NI|² bilinearly (four_s_sq_NI_sq_bilinear) and applies feuerbach_algebraic_chain; fully verified, axiom-free."
+    },
+    {
+      "name": "feuerbach_algebraic_core",
+      "type": "theorem",
+      "statement": "a·b·c = 4R·Area → R²s² − σ = (R·s − 2·Area)²   (σ the sigma expression)",
+      "significance": "The pure-algebra kernel of Feuerbach: given the extended law of sines, the symmetric expression R²s² − σ is a perfect square (Rs − 2·Area)². Isolates the one nonlinear identity the whole geometric result rests on.",
+      "description": "Substitutes the extended law of sines and closes by `ring`; fully verified, axiom-free."
+    },
+    {
+      "name": "extended_law_of_sines",
+      "type": "theorem",
+      "statement": "side_a · side_b · side_c = 4 · circumradius · Area",
+      "significance": "The extended law of sines in product form abc = 4R·Area, equivalent to a/sin A = 2R. A classical triangle identity and one of the three pillars (with Heron and the sigma identity) supporting the Feuerbach algebra.",
+      "description": "Positive square root of extended_law_of_sines_sq (the squared polynomial form); fully verified, axiom-free."
+    },
+    {
+      "name": "herons_formula_sq",
+      "type": "theorem",
+      "statement": "16·Area² = 2a²b² + 2b²c² + 2c²a² − a⁴ − b⁴ − c⁴",
+      "significance": "Heron's formula in expanded squared form, giving the area purely from the side lengths. Feeds area_sq_eq_heron and eliminates the s(s−a)(s−b)(s−c) factor in the Feuerbach identity.",
+      "description": "Coordinate polynomial identity for the signed area; fully verified, axiom-free."
+    },
+    {
+      "name": "area_sq_eq_heron",
+      "type": "theorem",
+      "statement": "Area² = s·(s − a)·(s − b)·(s − c)",
+      "significance": "The classical factored Heron formula relating area to the semiperimeter and side deficits. The bridge from the coordinate area to the symmetric-function world in which Feuerbach's identity is proved.",
+      "description": "Rearranges herons_formula_sq into the product form via `nlinarith`; fully verified, axiom-free."
+    },
+    {
+      "name": "sigma_identity",
+      "type": "theorem",
+      "statement": "(s−a)(s−b)c² + (s−a)(s−c)b² + (s−b)(s−c)a² = abcs − 4s(s−a)(s−b)(s−c)",
+      "significance": "The symmetric-function identity that reduces the bilinear expansion of |NI|² to the compact form abcs − 4·Area². A polynomial identity doing the algebraic bookkeeping at the core of the tangency proof.",
+      "description": "A ring identity in a, b, c; fully verified, axiom-free."
+    },
+    {
+      "name": "equilateral_R_eq_2r_proved",
+      "type": "theorem",
+      "statement": "For the equilateral triangle of side s: circumradius = 2 · inradius",
+      "significance": "The equality case of Euler's inequality R ≥ 2r: for an equilateral triangle R = 2r exactly, so the incircle and nine-point circle (radius R/2 = r) coincide and the Feuerbach distance |R/2 − r| collapses to 0. A sanity check on the general formula at the most symmetric triangle.",
+      "description": "Direct coordinate computation on the explicit equilateral triangle; fully verified, axiom-free."
+    },
+    {
+      "name": "extended_law_of_sines_sq",
+      "type": "theorem",
+      "statement": "side_a² · side_b² · side_c² = 16 · circumradius² · Area²",
+      "significance": "The squared, sqrt-free form of the extended law of sines — the actual polynomial identity in the six vertex coordinates that, after clearing the circumcenter denominator, proves abc = 4R·Area. The computational backbone of the whole file.",
+      "description": "Large coordinate polynomial identity (elevated maxHeartbeats); fully verified, axiom-free."
+    }
+  ],
   "sections": [
     {
       "id": "header",
