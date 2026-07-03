@@ -53,24 +53,46 @@
     "proofId": "sperner-mathlib4-oq-02-oq-05",
     "range": {
       "startLine": 103,
-      "endLine": 134
+      "endLine": 123
     },
     "type": "theorem",
     "title": "The antipodal sign-degree is odd, dimension-free and alphabet-free",
-    "content": "signDegree sgn μ N is the sign-change count of the reduced path sgn ∘ μ. antipodal_signDegree_odd is the main result: for ANY label type α with an antipodal map neg and an antipodal sign map sgn : α → ZMod 2 (sgn (neg x) = sgn x + 1), and ANY vertex path μ : ℕ → α with antipodal endpoints (μ N = neg (μ 0)), the sign-degree is ODD. The reduced path sgn ∘ μ has distinct endpoints — sgn (μ N) = sgn (neg (μ 0)) = sgn (μ 0) + 1 ≠ sgn (μ 0) — so odd_changes_iff fires. There is no dimension bound and no decide over the alphabet or the count. loop_signDegree_even is the companion: when the sign path is closed (sgn (μ N) = sgn (μ 0)), changes_cast gives endpoint difference 0, so the sign-degree is EVEN in every dimension — the odd seed lives on the antipodal fundamental domain (a hemisphere arc), not the whole boundary loop.",
-    "mathContext": "If $\\mathrm{sgn}(\\mathrm{neg}\\,x) = \\mathrm{sgn}\\,x + 1$ and $\\mu_N = \\mathrm{neg}\\,\\mu_0$, then $\\mathrm{sgn}(\\mu_N) = \\mathrm{sgn}(\\mu_0)+1 \\neq \\mathrm{sgn}(\\mu_0)$, so the reduced path has distinct endpoints and its sign-degree is odd; if instead $\\mathrm{sgn}(\\mu_N)=\\mathrm{sgn}(\\mu_0)$ the difference is $0$ and the count is even.",
+    "content": "signDegree sgn μ N is the sign-change count of the reduced path sgn ∘ μ over the first N edges. antipodal_signDegree_odd is the main result: for ANY label type α with an antipodal map neg and an antipodal sign map sgn : α → ZMod 2 (sgn (neg x) = sgn x + 1), and ANY vertex path μ : ℕ → α with antipodal endpoints (μ N = neg (μ 0)), the sign-degree is ODD. The proof unfolds signDegree, applies odd_changes_iff, and reduces the goal to sgn (μ N) ≠ sgn (μ 0); rewriting with hbdry and hsgn gives sgn (μ N) = sgn (μ 0) + 1, closed by add_one_ne. Crucially there is NO dimension bound and NO decide over the alphabet or the count — this is the abstract engine that the earlier oq-04 verified only by finite enumeration.",
+    "mathContext": "If $\\mathrm{sgn}(\\mathrm{neg}\\,x) = \\mathrm{sgn}\\,x + 1$ and $\\mu_N = \\mathrm{neg}\\,\\mu_0$, then $\\mathrm{sgn}(\\mu_N) = \\mathrm{sgn}(\\mu_0)+1 \\neq \\mathrm{sgn}(\\mu_0)$, so the reduced path has distinct endpoints and its sign-degree is odd.",
     "significance": "critical",
     "relatedConcepts": [
       "sign-degree",
       "antipodal sign map",
       "dimension-free reduction",
-      "fundamental domain",
       "one-dimensional Tucker lemma"
     ],
     "prerequisites": [
       "involutions",
       "modular arithmetic",
-      "parity"
+      "odd_changes_iff"
+    ]
+  },
+  {
+    "id": "ann-loopeven-sperner-oq02-oq05",
+    "proofId": "sperner-mathlib4-oq-02-oq-05",
+    "range": {
+      "startLine": 125,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "The closed-loop sign-degree is even (dimension-free)",
+    "content": "loop_signDegree_even is the companion to the antipodal-odd result and, together, they localise the oddness. When the sign path is CLOSED (sgn (μ N) = sgn (μ 0)) the sign-degree is EVEN, in every dimension and over every alphabet. The proof unfolds signDegree, rewrites via ZMod.natCast_eq_zero_iff_even and changes_cast so that evenness becomes the endpoint difference sgn (μ N) − sgn (μ 0) = 0, which hloop and sub_self discharge. The moral: the odd seed lives on the antipodal fundamental domain (a hemisphere arc), not on the whole boundary loop — a closed loop always returns to its starting sign, so its parity is trivial. This is the abstract version of oq-04's full_sign_changes_even, proved by the engine rather than by decide.",
+    "mathContext": "If $\\mathrm{sgn}(\\mu_N) = \\mathrm{sgn}(\\mu_0)$ then $\\mathrm{sgn}(\\mu_N) - \\mathrm{sgn}(\\mu_0) = 0$, so the sign-degree is even.",
+    "significance": "key",
+    "relatedConcepts": [
+      "closed-loop parity",
+      "fundamental domain vs full loop",
+      "changes_cast",
+      "dimension-free reduction"
+    ],
+    "prerequisites": [
+      "ZMod.natCast_eq_zero_iff_even",
+      "the antipodal-odd result (above)"
     ]
   },
   {
