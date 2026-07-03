@@ -4,6 +4,38 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Why LLL beats the union bound — quantified (researcher-4, 2026-07-03)
+
+`RamseyR4kExtensionsOQ03.lean` now has **PART V**, two axiom-free unconditional
+results (`#print axioms` = only `propext, Classical.choice, Quot.sound`):
+
+- **`cliqueDependency_total_identity`** (`2 ≤ k`):
+  `C(n,2) · cliqueDependencyBound n k = C(k,2)² · C(n,k)`.
+  Proof = double-counting `(k-clique, edge-inside-it)` incidences via Mathlib's
+  subset-of-a-subset identity `Nat.choose_mul (s := 2)`
+  (`n.choose k * k.choose 2 = n.choose 2 * (n-2).choose (k-2)`), then two `ring`
+  steps around a single `rw [← h]`. Equivalently `d/C(n,k) = C(k,2)²/C(n,2)`: the
+  LLL dependency degree is a `Θ(k⁴/n²)` fraction of the total number of bad
+  events. This is the *exact quantitative reason* the local LLL test succeeds
+  where the global union bound fails.
+- **`cliqueDependencyBound_le_total`** (`2 ≤ k`, `2 ≤ n`, `C(k,2)² ≤ C(n,2)`):
+  `cliqueDependencyBound n k ≤ C(n,k)`. Cancel `C(n,2) > 0` off the identity via
+  `le_of_mul_le_mul_left … (Nat.choose_pos hn)`; the `≤` side is `gcongr` on
+  `hreg`. The hypothesis `C(k,2)² ≤ C(n,2)` (n at least quadratic in k) holds with
+  enormous room once `n ≈ 2^{k/2}`.
+
+**Gotcha**: `Nat.choose_mul` lives in `Mathlib/Data/Nat/Choose/Basic.lean:160`,
+signature `{n k s} (hsk : s ≤ k) : n.choose k * k.choose s = n.choose s * (n-s).choose (k-s)`;
+instantiate `(s := 2)` and feed `hk : 2 ≤ k`. `ring` works over ℕ here because the
+`n-2`, `k-2` are opaque atoms (no subtraction is unfolded).
+
+**Remaining gap unchanged**: the only non-Mathlib ingredient is the
+measure-theoretic step inside `SymmetricLLLForRamsey` (positive avoidance
+probability ⇒ existence of a good colouring). Everything *numeric/combinatorial*
+is now discharged. See sibling `lovasz-local-lemma-oq-01`.
+
+---
+
 ## Problem Understanding
 
 [Initial observations about the problem will be recorded here]
