@@ -26,7 +26,7 @@
   {
     "id": "ann-catalan-instance",
     "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
-    "range": { "startLine": 66, "endLine": 87 },
+    "range": { "startLine": 66, "endLine": 80 },
     "type": "key-step",
     "title": "Applying the principle to the Catalan numbers",
     "content": "catalan_recip_logConcave instantiates the principle over ℚ. The three positivity hypotheses 0 < Cₙ, Cₙ₊₁, Cₙ₊₂ come from casting Nat.catalan_pos, and the Turán hypothesis y² < x·z is the parent's catalan_turan cast to ℚ (exact_mod_cast). Feeding these to recip_sq_gt_of_sq_lt yields (1/Cₙ)(1/Cₙ₊₂) < (1/Cₙ₊₁)² for every n — no new combinatorics, just the parent inequality read through reciprocation.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-standard-indexing",
     "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
-    "range": { "startLine": 89, "endLine": 96 },
+    "range": { "startLine": 82, "endLine": 96 },
     "type": "key-step",
     "title": "Restating in the standard log-concavity indexing (n ≥ 1)",
     "content": "catalan_recip_logConcave_shift converts catalan_recip_logConcave from the offset form (indexed at n, n+1, n+2) into the textbook shape aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1, with aₙ = 1/Cₙ. The reindexing is purely mechanical: Nat.exists_eq_add_of_lt writes n = m+1 (legal because n ≥ 1), after which n−1 = m and n+1 = m+2 collapse the shifted statement onto the base lemma via simp/simpa. This is the form a reader recognizes as 'strict log-concavity', so it is the theorem worth citing downstream even though it carries no new mathematical content beyond catalan_recip_logConcave.",

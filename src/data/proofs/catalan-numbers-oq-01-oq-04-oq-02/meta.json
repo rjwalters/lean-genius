@@ -80,13 +80,13 @@
       "id": "catalan-instance",
       "title": "Strict log-concavity of the reciprocal Catalan sequence",
       "startLine": 66,
-      "endLine": 87,
+      "endLine": 80,
       "summary": "catalan_recip_logConcave: (1/Cₙ)(1/Cₙ₊₂) < (1/Cₙ₊₁)² over ℚ for every n. Casts catalan_pos for positivity and the parent's catalan_turan for the Turán hypothesis, then applies the reciprocation principle."
     },
     {
       "id": "standard-indexing",
       "title": "Standard indexing and the refuted candidate",
-      "startLine": 89,
+      "startLine": 82,
       "endLine": 108,
       "summary": "catalan_recip_logConcave_shift restates the inequality as aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1 (reindexing at n = m+1); catalanOverSucc_not_logConcave_at_one refutes the suggested candidate Cₙ/(n+1) by evaluating at n=1 (1/4 < 2/3 via norm_num)."
     }
