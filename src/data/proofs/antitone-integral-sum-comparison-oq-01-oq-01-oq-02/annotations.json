@@ -9,7 +9,7 @@
     "mathContext": "\\sum_{i<m} \\frac{1}{(N+1+i)^p} \\;\\le\\; \\int_N^{N+m} x^{-p}\\,dx \\;\\le\\; \\frac{N^{1-p}}{p-1}",
     "significance": "key",
     "relatedConcepts": ["integral test", "Riemann sums", "antitone functions", "integral_rpow"],
-    "prerequisites": []
+    "prerequisites": ["Riemann-sum / integral comparison for monotone functions", "improper integrals of power functions x^{-p}", "antitone functions on a closed interval"]
   },
   {
     "id": "ann-isc-oq010102-tail-tsum",
@@ -21,7 +21,7 @@
     "mathContext": "\\sum_{i=0}^{\\infty} \\frac{1}{(N+1+i)^p} \\;\\le\\; \\frac{N^{1-p}}{p-1}",
     "significance": "supporting",
     "relatedConcepts": ["tsum", "infinite series", "monotone convergence"],
-    "prerequisites": []
+    "prerequisites": ["tsum of a nonnegative real series", "passing a uniform partial-sum bound to the limit", "monotone limits of bounded sequences"]
   },
   {
     "id": "ann-isc-oq010102-remainder",
@@ -33,7 +33,7 @@
     "mathContext": "\\Big(\\sum_{n=0}^{\\infty}\\tfrac{1}{n^p}\\Big) - \\Big(\\sum_{n=0}^{N}\\tfrac{1}{n^p}\\Big) \\;\\le\\; \\frac{N^{1-p}}{p-1}",
     "significance": "key",
     "relatedConcepts": ["truncation error", "series remainder", "tail decomposition", "summability"],
-    "prerequisites": []
+    "prerequisites": ["summability of the p-series for p > 1", "splitting a series into head plus shifted tail", "series remainder as a truncation error"]
   },
   {
     "id": "ann-isc-oq010102-explicit",
@@ -45,6 +45,6 @@
     "mathContext": "\\sum_{n>N}\\frac{1}{n^p} \\le \\frac{1}{(p-1)\\,N^{p-1}}, \\qquad \\sum_{n>N}\\frac{1}{n^2} \\le \\frac{1}{N}",
     "significance": "supporting",
     "relatedConcepts": ["rate of convergence", "rpow", "Basel problem", "zeta function"],
-    "prerequisites": []
+    "prerequisites": ["the real power function rpow and Real.rpow_neg", "asymptotic decay O(N^{1-p})", "the Basel problem ζ(2) = π²/6"]
   }
 ]
