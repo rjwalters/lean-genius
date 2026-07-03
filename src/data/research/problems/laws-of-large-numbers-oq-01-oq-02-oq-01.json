@@ -31,10 +31,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S3 scoping, researcher-16, 2026-07-03): S2 Kronecker+Toeplitz already SHIPPED verified 0-axiom on main (LawsOfLargeNumbersOQ01OQ02OQ01.lean). S3 (Kolmogorov a.s.-convergence of independent mean-zero L2 series) re-scoped from vague >300 LOC bottleneck to a concrete assembly of named Mathlib lemmas: the a.s.-convergence engine (Submartingale.exists_ae_tendsto_of_bdd) and every glue piece (Filtration.natural, condExp_indep_eq, IndepFun.variance_sum) already exist. Estimated 1-2 sessions. Corrected stale state.md/knowledge.md that had caused a duplicate Kronecker re-derivation.",
+    "progressSummary": "PROGRESS (S3-glue, researcher-4, 2026-07-03): a.e. Kronecker lift SHIPPED 0-axiom — the deterministic S3→S4 passage from a.s. series convergence to the M-Z normalisation is complete. Remaining gap: the probabilistic Kolmogorov convergence criterion itself (martingale route scoped in #34161).",
     "builtItems": [
       "Kronecker: theorem kronecker_lemma in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:122 — a_n>0 nondecreasing, a_n→∞, ∑x_n/a_n conv ⟹ (∑_{i<n}x_i)/a_n→0. Verified, 0-axiom.",
-      "Toeplitz core: theorem tendsto_weighted_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:47 — nonneg weights dominated by A_n→∞ kill any null sequence in the weighted average. Reusable, 0-axiom."
+      "Toeplitz core: theorem tendsto_weighted_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:47 — nonneg weights dominated by A_n→∞ kill any null sequence in the weighted average. Reusable, 0-axiom.",
+      "ae_tendsto_kronecker_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:266 — a.e. lift of kronecker_lemma: (∀ᵐ ω, ∑ x_i ω/a_i converges) ⟹ (∀ᵐ ω, (∑_{i<n} x_i ω)/a_n → 0). The S3→S4 glue. Verified 0-axiom (filter_upwards + kronecker_lemma)."
     ],
     "insights": [
       "Formal target pinned: MZ-SLLN for 1<=p<2, E|X|^p<inf implies (sum(Xi-EX))/n^(1/p) -> 0 a.s.; p=1 is Etemadi/Kolmogorov SLLN, content is the faster n^(1/p) rate for p>1.",
@@ -46,7 +47,8 @@
       "Kronecker mechanics: monotonicity of a_n is used in exactly one place — making Abel weights c_i=a_{i+1}-a_i nonnegative for the ε/2 tail bound; index-shift to m+1 avoids the classical n-1 in sum_range_by_parts.",
       "S3 is ASSEMBLY not a foundation gap (researcher-16 2026-07-03): Mathlibs a.s. martingale convergence theorem Submartingale.exists_ae_tendsto_of_bdd (Probability/Martingale/Convergence.lean:191) is the a.s.-convergence engine; partial sums of independent mean-zero L2 vars are an L2-bounded (hence L1-bounded) martingale, so it applies directly.",
       "S3 glue lemmas all present in Mathlib v4.26.0: Filtration.natural (natural filtration), condExp_indep_eq (martingale increment: E[X_n|F_n]=E[X_n]=0 by independence; template usage in Probability/BorelCantelli.lean:54), IndepFun.variance_sum (Var of independent sum = sum Var, gives the uniform L1 bound via eLpNorm 1 <= eLpNorm 2 = sqrt(Var) on a probability measure).",
-      "PROCESS: the S2 session updated the .json but not state.md/knowledge.md, so the markdown still said S2-next and a later session duplicated Kronecker. Always update state.md AND knowledge.md in the commit that ships Lean."
+      "PROCESS: the S2 session updated the .json but not state.md/knowledge.md, so the markdown still said S2-next and a later session duplicated Kronecker. Always update state.md AND knowledge.md in the commit that ships Lean.",
+      "S3→S4 passage is now deterministic/axiom-free: ae_tendsto_kronecker_average_zero converts Kolmogorov criterion output (a.s. convergence of ∑ Y_i/a_i) directly into the M-Z normalisation ((∑_{i<n}Y_i)/a_n→0 a.s.). Only the probabilistic criterion (S3, martingale route per PR #34161) remains to reach the full M-Z SLLN."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -76,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.191Z",
-  "lastUpdate": "2026-05-29T19:14:09.191Z",
+  "lastUpdate": "2026-07-03",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
