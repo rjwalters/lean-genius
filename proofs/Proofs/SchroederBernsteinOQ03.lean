@@ -1407,15 +1407,338 @@ theorem fwdOrbit_injOn_range_period {f g : ℕ → ℕ}
       have hax : (fun x => g (f x))^[d] a = a := (hT.iterate j) hij
       exact orbitPeriod_min h hd (by omega) (by rw [hiter d]; exact hax)
 
-/-- **The cycle through `a` has exactly `orbitPeriod` points.** `(Finset.range period).image
-    (fwdOrbit f g a)` is the finite `g∘f`-cycle of `a`, and injectivity of the period prefix
-    gives its cardinality `= orbitPeriod`. This is the cardinal the `Balanced` counting argument
-    (scaffold step 3/4) compares against `mDom`/`mRan` occupancy. -/
+/-- **The finite `g∘f`-cycle through a periodic anchor `a`.** The image of the least-period
+    prefix under the forward orbit: `{a, g(f a), (g∘f)² a, …, (g∘f)^{period-1} a}`. This is the
+    ready-made `Finset` the `Balanced` invariant counts occupancy over — no bespoke cycle-set
+    machinery, and its cardinality is proven below (`orbitCycle_card`). -/
+def orbitCycle (f g : ℕ → ℕ) {a : ℕ} (h : OnCycle f g a) : Finset ℕ :=
+  (Finset.range (orbitPeriod f g h)).image (fwdOrbit f g a)
+
+/-- The anchor lies on its own cycle (stage `0`). -/
+theorem self_mem_orbitCycle {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) :
+    a ∈ orbitCycle f g h := by
+  refine Finset.mem_image.mpr ⟨0, Finset.mem_range.mpr (orbitPeriod_pos h), rfl⟩
+
+/-- Membership in the cycle is exactly "reached within one period". -/
+theorem mem_orbitCycle_iff {f g : ℕ → ℕ} {a x : ℕ} (h : OnCycle f g a) :
+    x ∈ orbitCycle f g h ↔ ∃ k, k < orbitPeriod f g h ∧ fwdOrbit f g a k = x := by
+  simp only [orbitCycle, Finset.mem_image, Finset.mem_range]
+
+/-- **The cycle through `a` has exactly `orbitPeriod` points.** Injectivity of the period
+    prefix (`fwdOrbit_injOn_range_period`) gives its cardinality `= orbitPeriod`. This is the
+    cardinal the `Balanced` counting argument (scaffold step 3/4) compares against `mDom`/`mRan`
+    occupancy. -/
 theorem orbitCycle_card {f g : ℕ → ℕ}
     (hf : Function.Injective f) (hg : Function.Injective g)
     {a : ℕ} (h : OnCycle f g a) :
-    ((Finset.range (orbitPeriod f g h)).image (fwdOrbit f g a)).card = orbitPeriod f g h := by
-  rw [Finset.card_image_of_injOn (fwdOrbit_injOn_range_period hf hg h), Finset.card_range]
+    (orbitCycle f g h).card = orbitPeriod f g h := by
+  rw [orbitCycle, Finset.card_image_of_injOn (fwdOrbit_injOn_range_period hf hg h),
+    Finset.card_range]
+
+/-!
+### Section 4i-ter: The cycle-balance invariant and the periodic (`OnCycle`) escape arm
+
+The extension-only scheduler carries the **cons-preserved balance invariant** in place of
+`BuiltFrom`: on every `g∘f`-cycle the recorded domain occupancy equals the recorded range
+occupancy of the cycle's `f`-image. This section defines `Balanced`, proves the base case
+`balanced_nil`, and closes the **periodic escape arm** `escape_of_balanced` — the second half
+of the `BuiltFrom`-free escape dichotomy. Combined with `escape_of_infinite_orbit` (Section
+4i-bis) it yields `escape_exists'`, the drop-in `Balanced`-hypothesised replacement for
+`escape_exists`. The invariant-preservation lemmas (`balanced_cons_domain`/`_range`) that let
+the scheduler *maintain* `Balanced` are the remaining piece, left for the assembly session.
+-/
+
+/-- **The cycle-balance invariant.** For every `g∘f`-cycle `C` (indexed by any periodic anchor
+    `a`), the number of cycle points already recorded in the domain equals the number of
+    `f`-images of cycle points already recorded in the range:
+    `(C ∩ mDom L).card = (f '' C ∩ mRan L).card`. Faithfully encoded over the ready-made
+    `orbitCycle`. This is the conserved quantity of the extension-only back-and-forth: each cons
+    adds exactly one fresh domain point and one fresh range point on the affected cycle. -/
+def Balanced (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) : Prop :=
+  ∀ {a : ℕ} (h : OnCycle f g a),
+    ((orbitCycle f g h) ∩ (mDom L).toFinset).card
+      = ((orbitCycle f g h).image f ∩ (mRan L).toFinset).card
+
+/-- **Base case.** The empty matching is balanced: both intersections are empty (nothing is
+    recorded), so both cardinalities are `0` on every cycle. -/
+theorem balanced_nil (f g : ℕ → ℕ) : Balanced f g [] := by
+  intro a h
+  simp only [mDom, mRan, List.map_nil, List.toFinset_nil, Finset.inter_empty, Finset.card_empty]
+
+/-- **Periodic escape (`Balanced`).** If the anchor `a` is `g∘f`-periodic and `L` is balanced,
+    then a fresh domain anchor `a ∉ mDom L` still escapes: some forward-orbit stage
+    `N ≤ (mRan L).length` has a green image `f (fwdOrbit f g a N)` outside `mRan L`.
+
+    *Why.* Let `C` be `a`'s cycle, of size `m = period`. Since `a ∈ C` but `a ∉ mDom L`,
+    `(C ∩ mDom L).card ≤ m - 1`. Balance transports this: `(f '' C ∩ mRan L).card ≤ m - 1 < m =
+    |f '' C|` (the last equality by injectivity of `f` on `C`). So `f '' C ⊄ mRan L`: some cycle
+    point's `f`-image is fresh. Taking the *least* escaping stage `N` and using injectivity of
+    `f ∘ fwdOrbit` on `{0,…,N}` (all inside one period), the `N` earlier collisions are distinct
+    range points, giving `N ≤ (mRan L).length`. -/
+theorem escape_of_balanced {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced f g L)
+    {a : ℕ} (hac : OnCycle f g a) (ha : a ∉ mDom L) :
+    ∃ N, N ≤ (mRan L).length ∧ f (fwdOrbit f g a N) ∉ mRan L := by
+  classical
+  have hbalance := hbal hac
+  set m := orbitPeriod f g hac with hm
+  set C := orbitCycle f g hac with hCdef
+  have hmpos : 1 ≤ m := orbitPeriod_pos hac
+  have hCcard : C.card = m := orbitCycle_card hf hg hac
+  -- `f` is injective on `C`, so its image has the full `m` points.
+  have hImgCard : (C.image f).card = m := by
+    rw [Finset.card_image_of_injOn (hf.injOn), hCcard]
+  -- the anchor is on its cycle but not in the recorded domain
+  have haC : a ∈ C := self_mem_orbitCycle hac
+  have haDom : a ∉ (mDom L).toFinset := by simpa [List.mem_toFinset] using ha
+  -- domain occupancy of the cycle misses `a`, so is at most `m - 1`
+  have hInterDom : (C ∩ (mDom L).toFinset).card ≤ m - 1 := by
+    have hsub : C ∩ (mDom L).toFinset ⊆ C.erase a := by
+      intro x hx
+      rw [Finset.mem_inter] at hx
+      rw [Finset.mem_erase]
+      exact ⟨fun hxa => haDom (hxa ▸ hx.2), hx.1⟩
+    calc (C ∩ (mDom L).toFinset).card
+        ≤ (C.erase a).card := Finset.card_le_card hsub
+      _ = C.card - 1 := Finset.card_erase_of_mem haC
+      _ = m - 1 := by rw [hCcard]
+  -- balance transports the domain bound to the range side
+  have hRanBound : (C.image f ∩ (mRan L).toFinset).card ≤ m - 1 := by
+    rw [← hbalance]; exact hInterDom
+  -- so the `f`-image is not fully occupied: strictly fewer than its `m` points are in range
+  have hlt : (C.image f ∩ (mRan L).toFinset).card < (C.image f).card := by
+    rw [hImgCard]; omega
+  have hnsub : ¬ (C.image f ⊆ (mRan L).toFinset) := by
+    intro hsub
+    rw [Finset.inter_eq_left.mpr hsub] at hlt
+    exact lt_irrefl _ hlt
+  obtain ⟨y, hyImg, hyRan⟩ := Finset.not_subset.mp hnsub
+  -- unpack the fresh `f`-image `y = f (fwdOrbit f g a k)` with `k < m`
+  rw [Finset.mem_image] at hyImg
+  obtain ⟨x, hxC, hxy⟩ := hyImg
+  rw [hCdef, mem_orbitCycle_iff] at hxC
+  obtain ⟨k, hk, hkx⟩ := hxC
+  rw [← hm] at hk
+  have hk_fresh : f (fwdOrbit f g a k) ∉ mRan L := by
+    rw [hkx, hxy]
+    exact fun hy => hyRan (List.mem_toFinset.mpr hy)
+  have hex : ∃ N, f (fwdOrbit f g a N) ∉ mRan L := ⟨k, hk_fresh⟩
+  -- take the least escaping stage
+  set N := Nat.find hex with hN
+  have hNspec : f (fwdOrbit f g a N) ∉ mRan L := Nat.find_spec hex
+  have hNle_k : N ≤ k := Nat.find_min' hex hk_fresh
+  have hN_lt_m : N < m := lt_of_le_of_lt hNle_k hk
+  -- every earlier stage is a collision (in range)
+  have hcoll : ∀ j, j < N → f (fwdOrbit f g a j) ∈ mRan L := by
+    intro j hj
+    have := Nat.find_min hex hj
+    exact not_not.mp this
+  -- the earlier collisions are distinct range points ⇒ `N ≤ length`
+  have hInjOn : Set.InjOn (fun j => f (fwdOrbit f g a j)) ↑(Finset.range N) := by
+    intro i hi j hj hij
+    simp only [Finset.coe_range, Set.mem_Iio] at hi hj
+    exact fwdOrbit_injOn_range_period hf hg hac
+      (by simp only [Finset.coe_range, Set.mem_Iio]; omega)
+      (by simp only [Finset.coe_range, Set.mem_Iio]; omega) (hf hij)
+  have hmaps : ∀ j ∈ Finset.range N,
+      (fun j => f (fwdOrbit f g a j)) j ∈ (mRan L).toFinset := by
+    intro j hj
+    rw [Finset.mem_range] at hj
+    exact List.mem_toFinset.mpr (hcoll j hj)
+  have hcard : (Finset.range N).card ≤ (mRan L).toFinset.card :=
+    Finset.card_le_card_of_injOn _ hmaps hInjOn
+  rw [Finset.card_range] at hcard
+  exact ⟨N, le_trans hcard (List.toFinset_card_le (mRan L)), hNspec⟩
+
+/-- **`BuiltFrom`-free escape, by dichotomy on `OnCycle`.** For a fresh domain anchor `a` in a
+    balanced matching, some forward-orbit stage has a green image outside `mRan L` — regardless
+    of whether `a`'s orbit is a finite cycle (`escape_of_balanced`) or infinite
+    (`escape_of_infinite_orbit`). This is the drop-in replacement for the `BuiltFrom`-hypothesised
+    `escape_exists`: the extension-only scheduler carries `Balanced` (cons-preserved) instead. -/
+theorem escape_exists' {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced f g L) {a : ℕ} (ha : a ∉ mDom L) :
+    ∃ N, f (fwdOrbit f g a N) ∉ mRan L := by
+  by_cases hac : OnCycle f g a
+  · obtain ⟨N, _, hN⟩ := escape_of_balanced hf hg hbal hac ha
+    exact ⟨N, hN⟩
+  · obtain ⟨N, _, hN⟩ := escape_of_infinite_orbit hf hg hac (L := L)
+    exact ⟨N, hN⟩
+
+/-!
+### Section 4i-quater: Cons-preservation of `Balanced` (Claim B)
+
+The scheduler *maintains* `Balanced` across a domain (even) step that prepends `(a, b)` with
+`a` a fresh domain anchor and `b = f (fwdOrbit f g a N)` the escaped green image. On the cycle
+through `a`, the cons adds exactly one fresh domain point (`a`) and one fresh range point (`b`,
+which lands in that same cycle's `f`-image because the forward orbit stays on the cycle); on
+every *other* cycle both intersections are inert (`b` cannot land in a foreign cycle's image,
+by injectivity and the no-tails property of an injective `g ∘ f`). Both facts rest on a short
+tower of orbit-algebra lemmas proved first: additivity of `fwdOrbit`, period wrap-around, and
+the "reach / back / closure" membership characterisations of `orbitCycle`. -/
+
+/-- **Additivity of the forward orbit.** Running `i + j` steps from `a` equals running `i` steps
+    from the `j`-step point. Immediate from `fwdOrbit_eq_iterate` and `Function.iterate_add_apply`. -/
+theorem fwdOrbit_add (f g : ℕ → ℕ) (a i j : ℕ) :
+    fwdOrbit f g a (i + j) = fwdOrbit f g (fwdOrbit f g a j) i := by
+  simp only [fwdOrbit_eq_iterate, Function.iterate_add_apply]
+
+/-- Adding a full period to the step count leaves the forward orbit unchanged. -/
+theorem fwdOrbit_add_period {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) (m : ℕ) :
+    fwdOrbit f g a (m + orbitPeriod f g h) = fwdOrbit f g a m := by
+  rw [fwdOrbit_add, fwdOrbit_orbitPeriod]
+
+/-- Adding any multiple of the period leaves the forward orbit unchanged. -/
+theorem fwdOrbit_add_mul_period {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) (m t : ℕ) :
+    fwdOrbit f g a (m + orbitPeriod f g h * t) = fwdOrbit f g a m := by
+  induction t with
+  | zero => simp
+  | succ t ih =>
+      have hstep : m + orbitPeriod f g h * (t + 1)
+          = (m + orbitPeriod f g h * t) + orbitPeriod f g h := by ring
+      rw [hstep, fwdOrbit_add_period, ih]
+
+/-- A pure multiple of the period returns the orbit to the anchor. -/
+theorem fwdOrbit_mul_period {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) (t : ℕ) :
+    fwdOrbit f g a (orbitPeriod f g h * t) = a := by
+  have := fwdOrbit_add_mul_period h 0 t
+  simpa using this
+
+/-- Reducing the step count modulo the period leaves the forward orbit unchanged. -/
+theorem fwdOrbit_mod_period {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) (m : ℕ) :
+    fwdOrbit f g a (m % orbitPeriod f g h) = fwdOrbit f g a m := by
+  conv_rhs => rw [← Nat.mod_add_div m (orbitPeriod f g h), fwdOrbit_add_mul_period]
+
+/-- **Reach ⟹ membership.** Any point forward-reachable from the anchor `a` lies on `a`'s cycle
+    (wrap the reaching step count modulo the period into the `< period` window). -/
+theorem mem_orbitCycle_of_reach {f g : ℕ → ℕ} {a x : ℕ} (h : OnCycle f g a)
+    (k : ℕ) (hk : fwdOrbit f g a k = x) : x ∈ orbitCycle f g h := by
+  rw [mem_orbitCycle_iff]
+  exact ⟨k % orbitPeriod f g h, Nat.mod_lt _ (orbitPeriod_pos h), by
+    rw [fwdOrbit_mod_period]; exact hk⟩
+
+/-- **Every cycle point is periodic.** A point reached within one period of a periodic anchor is
+    itself `g∘f`-periodic (return to it after a full period). -/
+theorem onCycle_of_mem_orbitCycle {f g : ℕ → ℕ} {a x : ℕ} (h : OnCycle f g a)
+    (hx : x ∈ orbitCycle f g h) : OnCycle f g x := by
+  rw [mem_orbitCycle_iff] at hx
+  obtain ⟨k, _, hkx⟩ := hx
+  refine ⟨orbitPeriod f g h, orbitPeriod_pos h, ?_⟩
+  rw [← hkx, ← fwdOrbit_add, add_comm, fwdOrbit_add_period]
+
+/-- **Cycles are closed under the forward orbit.** Stepping forward from any cycle point stays on
+    the cycle. -/
+theorem fwdOrbit_mem_orbitCycle {f g : ℕ → ℕ} {a x : ℕ} (h : OnCycle f g a)
+    (hx : x ∈ orbitCycle f g h) (N : ℕ) : fwdOrbit f g x N ∈ orbitCycle f g h := by
+  rw [mem_orbitCycle_iff] at hx
+  obtain ⟨k, _, hkx⟩ := hx
+  apply mem_orbitCycle_of_reach h (N + k)
+  rw [fwdOrbit_add, hkx]
+
+/-- **No tails (injectivity).** If a forward-orbit point `fwdOrbit f g a N` is `g∘f`-periodic then
+    so is its base `a`: cancel the shared injective prefix `(g∘f)^[N]`. This is exactly why an
+    injective `g ∘ f` has no ρ-shaped orbits — a tail cannot merge into a cycle. -/
+theorem onCycle_of_fwdOrbit {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {a N : ℕ} (h : OnCycle f g (fwdOrbit f g a N)) : OnCycle f g a := by
+  obtain ⟨q, hq1, hq⟩ := h
+  have hT : Function.Injective (fun x => g (f x)) := fun x y hxy => hf (hg hxy)
+  refine ⟨q, hq1, ?_⟩
+  rw [← fwdOrbit_add] at hq
+  simp only [fwdOrbit_eq_iterate] at hq ⊢
+  rw [Nat.add_comm, Function.iterate_add_apply] at hq
+  exact hT.iterate N hq
+
+/-- **Back to the anchor.** From any cycle point one reaches the anchor again in `period - k`
+    steps. -/
+theorem exists_fwdOrbit_eq_anchor {f g : ℕ → ℕ} {a x : ℕ} (h : OnCycle f g a)
+    (hx : x ∈ orbitCycle f g h) : ∃ j, fwdOrbit f g x j = a := by
+  rw [mem_orbitCycle_iff] at hx
+  obtain ⟨k, hk, hkx⟩ := hx
+  refine ⟨orbitPeriod f g h - k, ?_⟩
+  rw [← hkx, ← fwdOrbit_add]
+  have hkk : orbitPeriod f g h - k + k = orbitPeriod f g h := by omega
+  rw [hkk, fwdOrbit_orbitPeriod]
+
+/-- **Foreign-cycle exclusion.** If a forward-orbit point of a periodic base `a` lands on a cycle
+    `C_c`, then `a` itself is on `C_c`. (Reach `c` from `a`, then close the loop back to `a` using
+    `a`'s own period.) This forces the escaped image to land only on `a`'s own cycle. -/
+theorem mem_orbitCycle_of_fwdOrbit_mem {f g : ℕ → ℕ} {c a : ℕ} (hc : OnCycle f g c)
+    (ha : OnCycle f g a) {N : ℕ} (hmem : fwdOrbit f g a N ∈ orbitCycle f g hc) :
+    a ∈ orbitCycle f g hc := by
+  obtain ⟨j, hj⟩ := exists_fwdOrbit_eq_anchor hc hmem
+  rw [← fwdOrbit_add] at hj      -- hj : fwdOrbit f g a (j + N) = c
+  set m := j + N with hmdef
+  have hpapos : 0 < orbitPeriod f g ha := orbitPeriod_pos ha
+  have key : (orbitPeriod f g ha - m % orbitPeriod f g ha) + m
+      = orbitPeriod f g ha * (m / orbitPeriod f g ha + 1) := by
+    have h1 : orbitPeriod f g ha * (m / orbitPeriod f g ha) + m % orbitPeriod f g ha = m :=
+      Nat.div_add_mod m (orbitPeriod f g ha)
+    have h2 : m % orbitPeriod f g ha < orbitPeriod f g ha := Nat.mod_lt m hpapos
+    rw [Nat.mul_add, Nat.mul_one]
+    omega
+  apply mem_orbitCycle_of_reach hc (orbitPeriod f g ha - m % orbitPeriod f g ha)
+  rw [← hj, ← fwdOrbit_add, key, fwdOrbit_mul_period]
+
+/-- **Cons-preservation of `Balanced` (domain step).** Prepending a fresh domain anchor `a` paired
+    with its escaped green image `b = f (fwdOrbit f g a N)` preserves the cycle-balance invariant.
+    On `a`'s own cycle both sides gain exactly one fresh point; every other cycle is inert because
+    `b` cannot land in a foreign cycle's `f`-image. This is the hard half of the invariant that lets
+    the extension-only scheduler carry `Balanced` and discharge escape via `escape_exists'`. -/
+theorem balanced_cons_domain {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced f g L) {a b : ℕ}
+    (ha : a ∉ mDom L) (hb : b ∉ mRan L) {N : ℕ} (hbN : b = f (fwdOrbit f g a N)) :
+    Balanced f g ((a, b) :: L) := by
+  intro c hc
+  have hdom : (mDom ((a, b) :: L)).toFinset = insert a (mDom L).toFinset := by
+    simp [mDom, List.toFinset_cons]
+  have hran : (mRan ((a, b) :: L)).toFinset = insert b (mRan L).toFinset := by
+    simp [mRan, List.toFinset_cons]
+  have haF : a ∉ (mDom L).toFinset := fun h => ha (List.mem_toFinset.mp h)
+  have hbF : b ∉ (mRan L).toFinset := fun h => hb (List.mem_toFinset.mp h)
+  rw [hdom, hran]
+  by_cases haC : a ∈ orbitCycle f g hc
+  · -- `a` is on `c`'s cycle: both intersections gain one fresh point.
+    have hfN : fwdOrbit f g a N ∈ orbitCycle f g hc := fwdOrbit_mem_orbitCycle hc haC N
+    have hbImg : b ∈ (orbitCycle f g hc).image f := by
+      rw [hbN]; exact Finset.mem_image.mpr ⟨fwdOrbit f g a N, hfN, rfl⟩
+    rw [Finset.inter_insert_of_mem haC, Finset.inter_insert_of_mem hbImg,
+      Finset.card_insert_of_notMem (fun h => haF (Finset.mem_inter.mp h).2),
+      Finset.card_insert_of_notMem (fun h => hbF (Finset.mem_inter.mp h).2),
+      hbal hc]
+  · -- `a` is not on `c`'s cycle: `b` cannot land in `c`'s image, so both sides are inert.
+    have hbnImg : b ∉ (orbitCycle f g hc).image f := by
+      rw [hbN]
+      intro hmem
+      rw [Finset.mem_image] at hmem
+      obtain ⟨x, hxC, hxeq⟩ := hmem
+      have hxN : x = fwdOrbit f g a N := hf hxeq
+      rw [hxN] at hxC
+      have hoc : OnCycle f g (fwdOrbit f g a N) := onCycle_of_mem_orbitCycle hc hxC
+      have hoa : OnCycle f g a := onCycle_of_fwdOrbit hf hg hoc
+      exact haC (mem_orbitCycle_of_fwdOrbit_mem hc hoa hxC)
+    rw [Finset.inter_insert_of_notMem haC, Finset.inter_insert_of_notMem hbnImg]
+    exact hbal hc
+
+/-- **Cons-preservation of `Balanced` (range step), by coordinate-swap duality.** The odd-stage
+    range step prepends `(a, b)` with `b` a fresh range anchor and `a = g (fwdOrbit g f b N)` its
+    escaped `g`-image (the swapped-problem chase target). It preserves the swapped balance invariant
+    `Balanced g f (L.map Prod.swap)` — exactly `balanced_cons_domain` applied to the swapped problem
+    `(g, f, L.map Prod.swap)`, mirroring how Section 4l obtains the whole range step for free from
+    the domain step (Section 4e duality). The `f∘g` cycles of the swapped dynamics are the reverse
+    orbits of the original `g∘f` cycles, so no new orbit algebra is needed. -/
+theorem balanced_cons_range {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced g f (L.map Prod.swap)) {a b : ℕ}
+    (ha : a ∉ mDom L) (hb : b ∉ mRan L) {N : ℕ} (haN : a = g (fwdOrbit g f b N)) :
+    Balanced g f (((a, b) :: L).map Prod.swap) := by
+  simp only [List.map_cons, Prod.swap_prod_mk]
+  exact balanced_cons_domain hg hf hbal
+    (by rw [mDom_map_swap]; exact hb)
+    (by rw [mRan_map_swap]; exact ha)
+    haN
 
 /-- **Escape existence (bounded).** For a fresh domain anchor `a ∉ mDom L` in a matching `L`
     satisfying the construction invariant, some forward-orbit stage `N ≤ (mDom L).length` has a

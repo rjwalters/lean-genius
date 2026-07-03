@@ -4,11 +4,14 @@
 **Phase**: DEVELOP
 **Path**: full — **extension-only (Path B) chosen; fork RESOLVED 2026-07-03 (r4)**
 **Since**: 2026-07-02
-**Iteration**: 6
+**Iteration**: 7
 
 ## Current Focus
-Formalize the **cons-preserved cycle-balance invariant** that discharges `escape_exists`
-without `BuiltFrom`, then assemble the extension-only scheduler. The termination↔stability
+The `BuiltFrom`-free **escape** side AND the invariant *preservation* (Claim B) are now both
+closed (2026-07-03, r16): `Balanced` over `orbitCycle`, `balanced_nil`, `escape_of_balanced`,
+`escape_exists'` (Section 4i-ter) plus `balanced_cons_domain` / `balanced_cons_range` (Section
+4i-quater) all VERIFIED 0-axiom. Remaining critical path is **scheduler assembly** (step 4) and
+its one genuinely-new obligation, *cross-preservation* (see Blockers). The termination↔stability
 fork is decided: cons steps suffice, so `mLookup_stable` applies directly and no finite-injury
 stabilization is needed.
 
@@ -32,9 +35,16 @@ cons supplies an f-edge-like pair) but the *count* is preserved. Path B is viabl
   (`OrbitGEdged`) refuted, replaced by `Balanced`.
 
 ## Blockers
-No strategic blocker remains — the path is decided. Remaining risk is purely the Lean **encoding
-of "cycle" and its cardinality** (`Balanced`, scaffold step 3): likely a `Finset`-of-orbit cut by
-`Nat.find` of the period, or a cycle-free reformulation. **Build environment is NOT hostile** —
+No strategic blocker remains — the path is decided and Claim B is closed. The one genuinely-new
+step-4 obligation surfaced while proving the cons lemmas: **cross-preservation**. The scheduler
+must carry BOTH `Balanced f g L` (domain-side escape via `escape_exists'`) and
+`Balanced g f (L.map Prod.swap)` (range-side escape, swap-dual). `balanced_cons_domain` preserves
+the former under a domain cons; `balanced_cons_range` preserves the latter under a range cons.
+Still to prove: the domain step *also* preserves the swapped balance, and the range step *also*
+preserves `Balanced f g L` (each step touches at most one cycle on each side; the untouched side's
+balance is inert because the added pair's foreign coordinate lands off every foreign cycle —
+same foreign-cycle-exclusion argument as `mem_orbitCycle_of_fwdOrbit_mem`, applied on the other
+dynamics). Not hard, but not yet formalized. **Build environment is NOT hostile** —
 researcher-16 established a reliable verify path (2026-07-03): the file is self-contained on
 Mathlib, so compile the worktree copy with `LEAN_PATH` → the main repo's prebuilt oleans and
 `elan run leanprover/lean4:v4.26.0 lean` (no Docker, no `lake build`). Recorded in knowledge.md.
@@ -47,13 +57,31 @@ Mathlib, so compile the worktree copy with `LEAN_PATH` → the main repo's prebu
    **Also DONE (same session):** cycle-period substrate — `orbitPeriod` (=`Nat.find`, computable),
    `orbitPeriod_pos/min`, `fwdOrbit_orbitPeriod`, `fwdOrbit_injOn_range_period`, `orbitCycle_card`
    (`((range period).image (fwdOrbit f g a)).card = period`). All VERIFIED. PR #34114.
-2. **NEXT (critical path):** Encode `Balanced` over the READY-MADE cycle
-   `orbitCycle a := (Finset.range (orbitPeriod h)).image (fwdOrbit f g a)` (recommended — avoids
-   bespoke cycle-set machinery; card already proven). Prove `balanced_nil`, `balanced_cons_domain`
-   / `balanced_cons_range` (Claim B).
-3. Prove `escape_of_balanced` (Claim A, cycle case); merge into `escape_exists'` by `OnCycle`
-   dichotomy.
-4. Build the extension-only scheduler on `domain_step_exists` + dual range cons; read off `e`
+2. ~~Encode `Balanced` + `balanced_nil` + `escape_of_balanced` + `escape_exists'`~~
+   **DONE 2026-07-03 (researcher-16), VERIFIED 0-axiom.** Section 4i-ter now has:
+   - `orbitCycle` (named def), `self_mem_orbitCycle`, `mem_orbitCycle_iff` (substrate).
+   - `Balanced f g L := ∀ {a} (h : OnCycle f g a), (orbitCycle ∩ (mDom L).toFinset).card =
+     (orbitCycle.image f ∩ (mRan L).toFinset).card` — concrete over `orbitCycle`.
+   - `balanced_nil` (both sides `∅`).
+   - `escape_of_balanced` (Claim A, periodic arm): `a∈C, a∉mDom ⟹ (C∩mDom).card ≤ m-1`;
+     balance ⟹ `(f''C ∩ mRan).card ≤ m-1 < m = |f''C|` ⟹ `f''C ⊄ mRan` ⟹ fresh image; least
+     escaping stage `N<m` + `f∘fwdOrbit` inj-on-period ⟹ `N ≤ (mRan L).length`.
+   - `escape_exists'` (`Balanced` hyp, `BuiltFrom`-free): `by_cases OnCycle` merging both arms.
+   PR #34114. **The entire escape side of the extension-only scheduler is now closed** modulo
+   the invariant-*preservation* lemmas (step 3).
+3. ~~Prove `balanced_cons_domain` / `balanced_cons_range` (Claim B) — the cons-preservation of
+   `Balanced`.~~ **DONE 2026-07-03 (researcher-16), VERIFIED 0-axiom.** Section 4i-quater now has
+   the full orbit-algebra tower (`fwdOrbit_add`, `fwdOrbit_add_period`, `fwdOrbit_add_mul_period`,
+   `fwdOrbit_mul_period`, `fwdOrbit_mod_period`) + membership characterisations
+   (`mem_orbitCycle_of_reach`, `onCycle_of_mem_orbitCycle`, `fwdOrbit_mem_orbitCycle`,
+   `onCycle_of_fwdOrbit` [no-tails], `exists_fwdOrbit_eq_anchor`, `mem_orbitCycle_of_fwdOrbit_mem`
+   [foreign-cycle exclusion]) and the two cons lemmas. `balanced_cons_domain` proven DIRECTLY
+   (two-case Finset argument: `a∈C` both sides +1 via `inter_insert_of_mem`; `a∉C` both inert via
+   `inter_insert_of_notMem` + exclusion). `balanced_cons_range` = the free `(g,f,L.map swap)` dual.
+   #print axioms = {propext, choice, Quot} for both. PR #34114.
+4. **NEXT (critical path):** Build the extension-only scheduler on `domain_step_exists` + dual
+   range cons, now carrying
+   `Balanced` (via `balanced_cons_*`) and discharging escape via `escape_exists'`; read off `e`
    with `mLookup` + `mLookup_stable` (values immutable); prove `.Computable`; discharge the
    `myhill_isomorphism` sorry. **Do NOT re-open the fork — Path B is decided.**
 5. Then coverage (`firstMissing_le_length`, `k ∈ mDom` by stage `2k+1`).

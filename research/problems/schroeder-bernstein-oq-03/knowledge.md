@@ -803,3 +803,119 @@ ready-made finite cycle with known card. **This is the recommended encoding for 
 avoids inventing new cycle-set machinery. Next: state `Balanced` over `orbitCycle a := (range
 (orbitPeriod h)).image (fwdOrbit f g a)` (needs a total `OnCycle`-or-not case split, or phrase
 `Balanced` per-anchor guarded by `OnCycle`), then `balanced_cons_*`.
+
+### Addendum (same session, researcher-16) — Balanced invariant + full escape dichotomy CLOSED
+
+Section **4i-ter** added (same PR #34114), all VERIFIED 0-axiom ({propext, Classical.choice,
+Quot.sound}; NO sorryAx, NO Lean.ofReduceBool). Host `elan run leanprover/lean4:v4.26.0 lean`
+with LEAN_PATH→main oleans, EXIT 0, only pre-existing warnings (myhill sorry + 2 unused `he` far
+below the edit region).
+
+- `def orbitCycle f g (h : OnCycle f g a) : Finset ℕ := (range (orbitPeriod f g h)).image
+  (fwdOrbit f g a)` — named the recommended cycle encoding.
+- `self_mem_orbitCycle` (`a ∈ orbitCycle`, stage 0), `mem_orbitCycle_iff`
+  (`x ∈ orbitCycle ↔ ∃ k < period, fwdOrbit a k = x`). `orbitCycle_card` restated over the def.
+- `def Balanced f g L := ∀ {a} (h : OnCycle f g a), (orbitCycle f g h ∩ (mDom L).toFinset).card =
+  ((orbitCycle f g h).image f ∩ (mRan L).toFinset).card`. **Per-anchor, guarded by `OnCycle`** —
+  the anchor is an IMPLICIT arg; supply the `OnCycle` proof to instantiate. No total case-split
+  needed; the ¬OnCycle escape arm never consults `Balanced`.
+- `balanced_nil` — `mDom []=mRan []=[]`, both `.toFinset=∅`, `inter_empty`, `card_empty`. Trivial.
+- `escape_of_balanced` (Claim A, periodic arm) — the crux. Structure:
+  1. `hInterDom`: `a∈C ∧ a∉mDom ⟹ C∩(mDom).toFinset ⊆ C.erase a ⟹ card ≤ C.card-1 = m-1`
+     (`Finset.card_erase_of_mem`, `card_le_card`).
+  2. balance (`hbal hac`) transports: `(C.image f ∩ (mRan).toFinset).card = (C∩mDom).card ≤ m-1`.
+  3. `(C.image f).card = m` via `card_image_of_injOn (hf.injOn)` (f GLOBALLY inj ⟹ injOn C).
+  4. `card(inter) ≤ m-1 < m = card(image) ⟹ ¬(image ⊆ mRan.toFinset)` (else `inter_eq_left`
+     collapses to `image`, contradicting the strict `<`). `Finset.not_subset` gives fresh
+     `y ∈ image, y ∉ mRan.toFinset`; unpack `y = f (fwdOrbit a k)`, `k<m` via `mem_orbitCycle_iff`.
+  5. Least escaping stage `N := Nat.find hex` (`hex : ∃ N, f(fwdOrbit a N) ∉ mRan L`).
+     `Nat.find_min'` ⟹ `N ≤ k < m`; `Nat.find_min` ⟹ earlier stages collide (∈ mRan).
+     `f ∘ fwdOrbit` inj on `range N ⊆ range m` (via `fwdOrbit_injOn_range_period` + `hf`) ⟹
+     `card_le_card_of_injOn` ⟹ `N ≤ (mRan).toFinset.card ≤ (mRan L).length`. Same pigeonhole
+     tail as `escape_of_infinite_orbit`.
+- `escape_exists'` — `by_cases OnCycle f g a`: OnCycle→`escape_of_balanced`, ¬OnCycle→
+  `escape_of_infinite_orbit`. `BuiltFrom`-free, `Balanced`-hypothesised. **Drop-in for
+  `escape_exists`**; the extension-only scheduler carries `Balanced` instead of `BuiltFrom`.
+
+GOTCHAS worth recording (v4.26):
+- Introduce `have hbalance := hbal hac` BEFORE the `set m`/`set C` folds, so `set` rewrites its
+  `orbitCycle`/`orbitPeriod` occurrences to `C`/`m` (else `rw [← hbalance]` fails to unify with C).
+- `mem_orbitCycle_iff` yields `k < orbitPeriod f g hac`; `rw [← hm] at hk` folds it back to `m`
+  (set doesn't touch hyps created after it).
+- `omega` closes the `i < m` membership subgoals for `fwdOrbit_injOn_range_period` using the
+  in-context `hm : m = orbitPeriod …` equality between the two nat atoms.
+
+**Remaining (scaffold step 3+):** `balanced_cons_domain`/`balanced_cons_range` (Claim B, cons-
+preservation — the HARDEST piece: affected cycle both counts +1, other cycles inert via
+injectivity/no-tails; key sub-lemma `b=f(fwdOrbit a N) ⟹ b∈f''C_a ∧ b∉f''C'` for other cycles);
+then scheduler assembly on `domain_step_exists` carrying `Balanced` via `balanced_cons_*` and
+discharging escape via `escape_exists'`; read-off; `.Computable`; close `myhill_isomorphism`.
+Do NOT re-open the fork — Path B decided.
+
+### Proof plan for `balanced_cons_domain` (Claim B) — worked out, NOT yet formalized (r16)
+
+Goal: `Balanced f g L → a∉mDom L → b∉mRan L → (∃ N, b = f(fwdOrbit f g a N)) → Balanced f g ((a,b)::L)`.
+Fix an arbitrary cycle anchor `c` (`h : OnCycle f g c`), let `C = orbitCycle f g h`. Note
+`mDom ((a,b)::L)).toFinset = insert a (mDom L).toFinset`, likewise `insert b` on the range side.
+Two cases on `a ∈ C`:
+
+- **Case a∈C (the affected cycle).** `a∉(mDom L).toFinset` (fresh) ⟹
+  `C ∩ insert a (mDom).toFinset = insert a (C ∩ (mDom).toFinset)`, card `= 1 + (C∩mDom).card`
+  (`Finset.card_insert_of_not_mem`, `a∉C∩mDom`). Symmetrically `b∈C.image f` (KEY sub-lemma:
+  `a∈C ⟹ fwdOrbit f g a N ∈ C`, i.e. the cycle is closed under the forward orbit — because
+  `a∈C` makes `a` periodic and `C=C_a`, and `fwdOrbit a N` stays on `a`'s cycle) and `b∉mRan L`
+  (fresh) ⟹ RHS card `= 1 + (C.image f ∩ mRan).card`. hbal for `c` equates the two `+1`-shifted
+  cards.
+- **Case a∉C (inert cycle).** LHS unchanged (`a∉C ⟹ C∩insert a … = C∩…`). RHS also unchanged,
+  needs `b∉C.image f`: if `b=f(fwdOrbit a N)∈C.image f` then (f inj) `fwdOrbit a N∈C`, which is
+  periodic, forcing (KEY sub-lemma, no-tails: `(g∘f)^[N] a` periodic ⟹ `a` periodic via
+  injectivity of `(g∘f)^[N]`) `a` periodic with `C_a=C` (cycles sharing a point are equal),
+  i.e. `a∈C` — contradiction. So `b∉C.image f`, RHS unchanged. Both sides unchanged ⟹ hbal.
+
+Supporting lemmas to prove first:
+1. `orbitCycle_closed_fwd`: `a∈orbitCycle f g h → fwdOrbit f g a N ∈ orbitCycle f g h`. (a on the
+   cycle ⟹ periodic; forward orbit cycles back within one period; `fwdOrbit_add`/mod-period.)
+2. `onCycle_of_fwdOrbit_onCycle` (no-tails): `OnCycle f g (fwdOrbit f g a N) → OnCycle f g a`.
+   From `(g∘f)^[N+p] a = (g∘f)^[N] a` and `Function.Injective.iterate hT N` ⟹ `(g∘f)^[p] a = a`.
+3. `orbitCycle_eq_of_mem` (disjoint-or-equal): `a∈orbitCycle f g h₁ (for c₁)` and same point on
+   `c₂`'s cycle ⟹ the two `Finset`s are equal — OR phrase Case 2 purely via lemma 2 to avoid it.
+`balanced_cons_range` is the `Prod.swap`/`(q,p,g,f)` dual. Both are pure Finset+orbit algebra,
+0-axiom-friendly; no new sorries anticipated.
+
+### CLAIM B CLOSED (r16, 2026-07-03) — `balanced_cons_domain`/`_range` VERIFIED 0-axiom
+
+Section 4i-quater added (~150 lines). `balanced_cons_domain` proven **directly** (not via the
+disjoint-or-equal lemma 3, which was avoided per the plan's "OR phrase Case 2 via lemma 2"). The
+foreign-cycle-exclusion `mem_orbitCycle_of_fwdOrbit_mem` replaced lemma 3: from
+`fwdOrbit a N ∈ C_c` and `OnCycle a`, reach `c` from `a` (`exists_fwdOrbit_eq_anchor` +
+`fwdOrbit_add`), then close back `a` from `c` at step `p_a·(m/p_a+1) − m` via `fwdOrbit_mul_period`,
+so `a ∈ C_c`. Orbit-algebra tower proved first: `fwdOrbit_add` (= `iterate_add_apply`),
+`fwdOrbit_add_period`, `fwdOrbit_add_mul_period` (induction), `fwdOrbit_mul_period`,
+`fwdOrbit_mod_period` (`Nat.mod_add_div` + add_mul_period). Membership: `mem_orbitCycle_of_reach`
+(wrap mod period), `onCycle_of_mem_orbitCycle`, `fwdOrbit_mem_orbitCycle` (closure),
+`onCycle_of_fwdOrbit` (no-tails via `hT.iterate N`).
+
+Card argument: `mDom((a,b)::L)).toFinset = insert a (mDom L).toFinset` (`List.toFinset_cons`).
+Case `a∈C`: `Finset.inter_insert_of_mem` twice (needs `a∈C` and `b∈C.image f` from
+`fwdOrbit a N ∈ C`), `card_insert_of_notMem` twice (freshness), then `hbal hc`. Case `a∉C`:
+`Finset.inter_insert_of_notMem` twice (needs `a∉C` and `b∉C.image f`; the latter is the exclusion
+contrapositive), then `hbal hc`. GOTCHAS: `Finset.inter_insert_of_mem (h : a∈s₁) : s₁∩insert a s₂
+= insert a (s₁∩s₂)` — membership is about the LEFT set; `card_insert_of_not_mem` is DEPRECATED →
+use `card_insert_of_notMem`; `inter_insert_of_notMem` (camelCase) is current, `_not_mem` deprecated.
+
+`balanced_cons_range` = `balanced_cons_domain hg hf` on the swapped problem `(g, f, L.map swap)`,
+preserving `Balanced g f (L.map Prod.swap)` after `simp only [List.map_cons, Prod.swap_prod_mk]`;
+freshness via `mDom_map_swap`/`mRan_map_swap`. Truly free — the `f∘g` cycles are the reverse orbits.
+
+`#print axioms balanced_cons_domain` = `#print axioms balanced_cons_range` =
+`[propext, Classical.choice, Quot.sound]` (no sorryAx/ofReduceBool). Verified via
+`cd REPO/proofs && LAKE_UNSAFE=1 lake env lean <worktree abs path>/...SchroederBernsteinOQ03.lean`
+(~17s warm), and a temp copy appending `open MyhillIsomorphism in #print axioms ...`.
+
+**Remaining step-4 obligation surfaced: CROSS-PRESERVATION.** The scheduler must carry BOTH
+`Balanced f g L` and `Balanced g f (L.map swap)` (each gives one direction's escape via
+`escape_exists'`). `balanced_cons_domain` preserves the FORMER under a domain cons; the domain step
+must ALSO preserve the swapped balance (and dually for the range step). Each is the same
+foreign-cycle-exclusion argument applied on the OTHER dynamics: a domain cons `(a, f(fwdOrbit f g a
+N))` adds `a` to mDom and `b` to mRan; for the `g∘f`-*reverse* (`f∘g`) cycles counted by the
+swapped balance, `a` lands on some `f∘g`-cycle iff `b` does — provable but not yet formalized.
