@@ -107,6 +107,78 @@
       "summary": "Summary table of all 10 results. Classification examples: groups of order pq (n_q = 1 since n_q ≡ 1 mod q and n_q | p), groups of order p² (abelian), simple group tests. Ends with #check verification of all theorems."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sylow_existence",
+      "type": "theorem",
+      "statement": "For a finite group G and prime p: Nonempty (Sylow p G)",
+      "significance": "The First Sylow Theorem (Existence). Guarantees that every finite group possesses a Sylow p-subgroup for each prime p, i.e. a subgroup whose order is the full p-power p^k dividing |G|. This is the existence backbone that Cauchy's theorem and the classification arguments rely on.",
+      "description": "Wraps Mathlib's Sylow.nonempty in classical notation. The underlying Mathlib proof proceeds by induction on |G| via the class equation, exhibiting a subgroup of order p^k where p^k is the largest power of p dividing |G|."
+    },
+    {
+      "name": "sylow_card",
+      "type": "theorem",
+      "statement": "For P : Sylow p G in a finite group: Nat.card P = p ^ (Nat.card G).factorization p",
+      "significance": "Pins down the defining cardinality property of a Sylow p-subgroup: its order is exactly p raised to the multiplicity of p in |G|. This is what distinguishes a Sylow p-subgroup from an arbitrary p-subgroup — it is a p-subgroup of maximal possible order.",
+      "description": "Wraps P.card_eq_multiplicity from Mathlib, expressing the order in terms of the prime factorization exponent (Nat.card G).factorization p = k where |G| = p^k · m with p ∤ m."
+    },
+    {
+      "name": "sylow_conjugacy",
+      "type": "theorem",
+      "statement": "For P Q : Sylow p G with Finite (Sylow p G): ∃ g : G, g • P = Q",
+      "significance": "The Second Sylow Theorem (Conjugacy). Any two Sylow p-subgroups are related by conjugation, so all Sylow p-subgroups are 'the same' up to an inner automorphism of G. This uniqueness-up-to-conjugacy is what makes a unique Sylow subgroup automatically normal.",
+      "description": "Wraps MulAction.exists_smul_eq for the transitive conjugation action of G on Sylow p G. The classical proof lets P act on the cosets G/Q by left multiplication and applies an orbit–stabilizer / fixed-point argument."
+    },
+    {
+      "name": "sylow_isomorphic",
+      "type": "theorem",
+      "statement": "For P Q : Sylow p G with Finite (Sylow p G): Nonempty ((↑P : Subgroup G) ≃* (↑Q : Subgroup G))",
+      "significance": "A structural consequence of conjugacy: because conjugation by g is a group isomorphism, all Sylow p-subgroups are isomorphic as abstract groups, not merely equal in order. This upgrades the Second Sylow Theorem from a statement about G-conjugacy to one about intrinsic group structure.",
+      "description": "Constructs the multiplicative equivalence via Sylow.equiv P Q, packaging the conjugating isomorphism guaranteed by sylow_conjugacy into a MulEquiv between the underlying subgroups."
+    },
+    {
+      "name": "sylow_count_mod_p",
+      "type": "theorem",
+      "statement": "For a group with Finite (Sylow p G): Nat.card (Sylow p G) ≡ 1 [MOD p]",
+      "significance": "The congruence half of the Third Sylow Theorem: the number n_p of Sylow p-subgroups is congruent to 1 modulo p. Combined with the divisibility constraint, this frequently forces n_p = 1 and hence a normal Sylow subgroup — the workhorse of small-order classification.",
+      "description": "Wraps Mathlib's card_sylow_modEq_one. The classical proof analyzes the conjugation action of a fixed Sylow p-subgroup P on the set of all Sylow p-subgroups: the only fixed point is P itself, and every other orbit has size divisible by p."
+    },
+    {
+      "name": "sylow_count_dvd_index",
+      "type": "theorem",
+      "statement": "For P : Sylow p G with Finite (Sylow p G): Nat.card (Sylow p G) ∣ (↑P : Subgroup G).index",
+      "significance": "The divisibility half of the Third Sylow Theorem: n_p divides the index [G : P] = m = |G|/p^k. Together with n_p ≡ 1 (mod p), this restricts n_p to divisors of m that are ≡ 1 mod p, often leaving only n_p = 1.",
+      "description": "Wraps Mathlib's card_sylow_dvd_index, phrased with the subgroup index (↑P).index. Since a Sylow p-subgroup has order p^k, its index equals the p-free part m of |G|."
+    },
+    {
+      "name": "sylow_normal_of_eq",
+      "type": "theorem",
+      "statement": "For P : Sylow p G: (∀ g : G, g • P = P) → (↑P : Subgroup G).Normal",
+      "significance": "The bridge from conjugation-invariance to normality: if a Sylow p-subgroup is fixed by every conjugation, it is a normal subgroup. This is the key lemma that turns 'unique Sylow subgroup' into 'normal Sylow subgroup'.",
+      "description": "Proved directly (not a Mathlib wrapper): rewrites normality as normalizer = ⊤, then uses Sylow.smul_eq_iff_mem_normalizer to convert the hypothesis g • P = P into membership g ∈ normalizer P for every g."
+    },
+    {
+      "name": "sylow_normal_of_unique",
+      "type": "theorem",
+      "statement": "For P : Sylow p G with Subsingleton (Sylow p G): (↑P : Subgroup G).Normal",
+      "significance": "The classic corollary used throughout classification: when there is exactly one Sylow p-subgroup (n_p = 1), it is automatically normal. This is how Sylow counting arguments produce normal subgroups and prove groups are non-simple or decompose as direct products.",
+      "description": "Derived from sylow_normal_of_eq: under Subsingleton (Sylow p G) any two Sylow p-subgroups are equal, so g • P = P for all g by Subsingleton.elim, and normality follows."
+    },
+    {
+      "name": "cauchy_from_sylow",
+      "type": "theorem",
+      "statement": "For a finite group with p ∣ Fintype.card G: ∃ g : G, orderOf g = p",
+      "significance": "Cauchy's Theorem recovered as a corollary of Sylow existence: if a prime p divides |G|, then G contains an element of order exactly p. Historically Cauchy's 1845 result is the special case p^1 that the Sylow theorems generalize to arbitrary prime powers.",
+      "description": "Wraps exists_prime_orderOf_dvd_card. Conceptually: a Sylow p-subgroup has order p^k ≥ p, so it contains a non-identity element of p-power order; raising it to a suitable power yields an element of order exactly p."
+    },
+    {
+      "name": "group_of_prime_order_cyclic",
+      "type": "theorem",
+      "statement": "For a finite group with (Fintype.card G).Prime: IsCyclic G",
+      "significance": "A prototypical application: any group of prime order is cyclic. This is the base case of finite-group classification and shows how order constraints alone can determine group structure completely.",
+      "description": "Proved via isCyclic_of_prime_card after supplying the Fact instance for primality of |G|. A group of prime order p has no nontrivial proper subgroups by Lagrange, so any non-identity element generates the whole group."
+    }
+  ],
   "conclusion": {
     "summary": "All three Sylow theorems are formalized as verified Lean 4 theorems with zero sorries and zero axioms, alongside normality criteria, a uniqueness-normality equivalence, and Cauchy's theorem as a corollary. The proof delegates the hard combinatorial work to Mathlib while contributing original pedagogical wrappers.",
     "implications": "The Sylow theorems are the foundation for classifying finite groups: they rule out simplicity for groups of many orders, show groups of order $pq$ (with $p < q$, $p \\nmid q-1$) are cyclic, prove groups of order $p^2$ are abelian, and underlie the full classification of groups of small order up to isomorphism. Every finite group theory textbook builds on these results. Having them in a formal gallery enables downstream formalizations: group classifications, the Burnside lemma, Schur-Zassenhaus theorem, and ultimately the classification of finite simple groups.",
