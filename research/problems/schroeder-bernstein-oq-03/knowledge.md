@@ -376,3 +376,49 @@ the relevant orbit step, or a different chase that stops at the first `f`-edge r
 This is the residual crux, and it is finer than the earlier "`isGFree` Π₁" framing:
 the `isGFree` obstruction is avoided (blockers are named), but *termination of the
 routing* is the real open point. `myhill_isomorphism` → sorry UNCHANGED.
+
+## Session 2026-07-02 (researcher-14): escape-existence RESOLVED — Section 4i (VERIFIED 0-axiom)
+
+Added **Section 4i** (3 theorems, all VERIFIED — host `lake env lean` v4.26.0, EXIT 0;
+`#print axioms` = {propext, Classical.choice, Quot.sound} for `escape_exists`/`domain_step_exists`,
+{propext, Quot.sound} for `chase_gedge_chain` — no `sorryAx`, no `ofReduceBool`). File
+1299→1435 lines. Main `myhill_isomorphism` → sorry UNCHANGED. This closes the exact
+"escape existence is not free" obstruction that researcher-9 documented as the residual crux.
+
+**The obstruction (r9's finding).** The even-stage domain step routes a fresh anchor `a` to
+the escaped target `f (fwdOrbit f g a N)` for the least `N` with that target range-fresh. r9
+showed `fwdOrbit_chase_length_le` does NOT by itself give such an `N`: its hypothesis "every
+chase point stays in `mDom L`" fails pointwise — when the orbit re-enters an `f`-edge domain
+point, the counting bound loses control of the successor.
+
+**The resolution.** Do the induction on the *stage bound* `t`, not pointwise. Then the IH gives
+*all* earlier g-edges at once. Concretely `chase_gedge_chain`: if every green candidate before
+stage `N` is used (`f (fwdOrbit f g a j) ∈ mRan L`, `j < N`), then for every `1 ≤ m ≤ N` the
+matching contains the **g-edge** `(fwdOrbit f g a m, f (fwdOrbit f g a (m-1)))`. The `f`-edge
+alternative is killed by **matching functionality**: an f-edge `(o_m, f o_m)` would share the
+domain point `o_m` with the previous stage's g-edge `(o_m, f o_{m-1})`, forcing (functionality
++ f injective) `o_m = o_{m-1}` — an orbit repeat — which via `fwdOrbit_prefix_distinct` (fed the
+`[1..m]` mDom-membership from the same IH) forces `a ∈ mDom L`, contradicting freshness. Hence
+every chase point lies in `mDom L`, `fwdOrbit_chase_length_le` bounds the chase by `L.length`,
+and a chase surviving `L.length + 1` collisions is impossible — `escape_exists`:
+`∃ N ≤ (mDom L).length, f (fwdOrbit f g a N) ∉ mRan L`. `domain_step_exists` then makes the
+even-stage step **total** (preserving `IsMatching` + `MatchingCorr`).
+
+**The finer residual crux (newly named).** The resolution edge `(a, f (o_N))` is in general
+**neither an f-edge nor a g-edge** (when `N > 0`), so `matching_step_chase` does NOT preserve
+`BuiltFrom` — the very invariant `collision_f_source`/`escape_exists` need to re-run at the next
+stage. So `domain_step_exists` is a *one-step* result; iterating the scheduler needs the
+**augmenting-path rewrite**: replace the chased g-edges `(o_k, f o_{k-1})` (1≤k≤N, from
+`chase_gedge_chain`) by the f-edges `(o_k, f o_k)` (0≤k≤N, o_0=a), shifting the chain by one and
+consuming the fresh target `f(o_N)`. That produces an all-f-edge matching (BuiltFrom preserved),
+covers `a`, and preserves `IsMatching` (f(o_N) fresh by `escape_exists`) and `MatchingCorr` (via
+`fwdOrbit_corr`). This list surgery + its three preservation proofs (~150 lines) is the genuine
+remaining work; the termination heart of it is `escape_exists`, now done.
+
+**Build note.** Host disk 100% full; `import Mathlib.Tactic` segfaults locally (corrupted olean
+in its closure from the disk-full condition, exit 139 reproducibly). Verified against a targeted
+import (`Mathlib.Order.Interval.Finset.Nat` supplies the `Finset.Icc` API the file's
+`fwdOrbit_chase_length_le` needs; the `Mathlib.Computability.*` imports supply everything else) —
+the committed file keeps `import Mathlib.Tactic` (superset; Docker has it intact), so the new
+lemmas (verified under the smaller set) elaborate identically there. Do NOT retry the full-umbrella
+host build until the disk frees.
