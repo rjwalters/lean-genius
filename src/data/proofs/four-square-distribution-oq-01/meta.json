@@ -88,6 +88,127 @@
       "**σ*-multiplicativity at (2, n) for n odd** (PART 9, S4 — this session): For every odd n > 0, σ*(2n) = 3·σ(n) and σ*(4n) = 3·σ(n) — same factor of 3 regardless of which power of 2 ≥ 2 multiplies the odd part. Proof via Finset partition of (2n).divisors into n.divisors ⊔ image(·*2)(n.divisors), and a 3-piece partition of (4n).divisors into n.divisors ⊔ image(·*2) ⊔ image(·*4). Combined with PART 8's `sigmaStar_prime_pow_of_odd_prime`, this gives a complete reduction of σ*(2^k · m) for k ∈ {0, 1, 2} and m a power of an odd prime — a non-trivial shrinkage of the open-target 'modular form q-expansion' surface."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "jacobi_r4_formula",
+      "type": "axiom",
+      "statement": "∀ n, 0 < n → r4Count n = jacobiR4 n   (i.e. r₄(n) = 8·σ*(n))",
+      "significance": "Jacobi's Four-Square Theorem (Jacobi, 1834): the number of representations of n as an ordered sum of four signed integer squares equals 8 times the sum of divisors of n not divisible by 4. This is the central result of the entry, axiomatized here because its classical proof needs modular-form machinery (the q-expansion of θ⁴ as the weight-2 Eisenstein combination 1 + 8(E₂(τ) − 4·E₂(4τ))) that Mathlib does not yet provide.",
+      "description": "Stated as an `axiom`; numerically confirmed for n = 1..10 by native_decide below and reduced to three independently attackable elementary legs by jacobi_r4_formula_from_atomic_via_jacobiR4."
+    },
+    {
+      "name": "jacobi_holds_1 … jacobi_holds_10",
+      "type": "theorem",
+      "statement": "r4Count k = jacobiR4 k  for each k = 1..10",
+      "significance": "Direct machine verification of Jacobi's formula on the base cases: a brute-force count of integer 4-tuples (a,b,c,d) with a²+b²+c²+d² = k is checked equal to 8·σ*(k). Grounds the axiomatized general statement in concrete, kernel-checked evidence.",
+      "description": "Each discharged by `native_decide` over the finite tuple box [−k,k]⁴, contributing the Lean.ofReduceBool dependency counted in meta.axiomCount."
+    },
+    {
+      "name": "sigmaStar_add_sigmaFourDvd",
+      "type": "theorem",
+      "statement": "∀ n, sigmaStar n + sigmaFourDvd n = sigmaOne n",
+      "significance": "The clean bookkeeping identity σ*(n) + σ₄(n) = σ(n) splitting the ordinary divisor sum into the part from divisors not divisible by 4 and the part from those divisible by 4. The axiom-free foundation for every structural reduction of σ* to the standard divisor function.",
+      "description": "Proved by rewriting the summand indicator and Finset.sum_add_distrib; completely elementary and axiom-free."
+    },
+    {
+      "name": "sigmaStar_mul_of_coprime",
+      "type": "theorem",
+      "statement": "Coprime m n → 0 < m → 0 < n → sigmaStar (m*n) = sigmaStar m * sigmaStar n",
+      "significance": "σ* is multiplicative on coprime arguments — the arithmetic backbone that lets the whole formula be reconstructed from its values on prime powers. Mirrors the classical multiplicativity of σ but must track the extra 4∤d constraint.",
+      "description": "Case-split on 4 ∣ m using coprimality to force the odd/even structure; reduces to multiplicativity of σ (sigmaOne_mul_of_coprime). Axiom-free."
+    },
+    {
+      "name": "sigmaStar_two_pow",
+      "type": "theorem",
+      "statement": "1 ≤ k → sigmaStar (2 ^ k) = 3",
+      "significance": "The 2-adic atom: σ*(2^k) = 3 for every k ≥ 1, independent of k. Divisors of 2^k not divisible by 4 are exactly {1, 2}, summing to 3. This constant (and the resulting prefactor 24 = 8·3 on even n) is the source of the even/odd dichotomy in the closed form.",
+      "description": "Uses sigmaStar_add_sigmaFourDvd together with σ(2^k) = 2^{k+1} − 1. Axiom-free."
+    },
+    {
+      "name": "sigmaStar_prime_pow_of_odd_prime",
+      "type": "theorem",
+      "statement": "p.Prime → p ≠ 2 → sigmaStar (p ^ k) = sigmaOne (p ^ k)",
+      "significance": "On powers of an odd prime, no divisor is divisible by 4, so σ* coincides with the ordinary σ. Combined with sigmaStar_two_pow and multiplicativity, this pins σ* on every prime power and hence everywhere.",
+      "description": "Immediate from sigmaStar_eq_sigmaOne_of_not_four_dvd via not_four_dvd_prime_pow_of_ne_two. Axiom-free."
+    },
+    {
+      "name": "sigmaStar_factorization_form",
+      "type": "theorem",
+      "statement": "0 < n → sigmaStar n = (if 2 ∣ n then 3 else 1) * sigmaOne (ord_compl[2] n)",
+      "significance": "The canonical n-keyed closed form for σ*: strip the 2-part of n, take σ of the odd part, and multiply by 3 (even n) or 1 (odd n). Turns σ* into an explicit, computable function of the 2-adic valuation and the odd radical.",
+      "description": "Derived from sigmaStar_decomp via the ord_proj/ord_compl 2-adic factorization of n. Axiom-free."
+    },
+    {
+      "name": "jacobiR4_factorization_form",
+      "type": "theorem",
+      "statement": "0 < n → jacobiR4 n = (if 2 ∣ n then 24 else 8) * sigmaOne (ord_compl[2] n)",
+      "significance": "The σ*-side of Jacobi's formula in fully explicit Eisenstein-coefficient form: 8·σ*(n) written as 24·σ(odd part) for even n and 8·σ(odd part) for odd n. This is exactly the n-th Fourier coefficient of 1 + 8(E₂(τ) − 4·E₂(4τ)).",
+      "description": "8× of sigmaStar_factorization_form; the prefactor 24 packages the −4·E₂(4τ) contribution for even n. Axiom-free."
+    },
+    {
+      "name": "r4Count_factorization_form",
+      "type": "theorem",
+      "statement": "0 < n → r4Count n = (if 2 ∣ n then 24 else 8) * sigmaOne (ord_compl[2] n)",
+      "significance": "The representation count itself in closed Eisenstein-coefficient form. This is the exact shape a future Mathlib q-expansion proof would produce, so it reduces closing the open conjecture to matching q-coefficients of θ⁴ against the Eisenstein series.",
+      "description": "Chains the axiom jacobi_r4_formula with jacobiR4_factorization_form; depends on jacobi_r4_formula."
+    },
+    {
+      "name": "eight_dvd_r4Count",
+      "type": "theorem",
+      "statement": "0 < n → 8 ∣ r4Count n",
+      "significance": "The number of four-square representations of any positive n is divisible by 8 — the coarse symmetry fingerprint of Jacobi's formula. Sign-flip symmetry on one nonzero coordinate gives a factor of 2; the full wreath-product action of signs and permutations accounts for the 8.",
+      "description": "From jacobi_r4_formula and eight_dvd_jacobiR4 (jacobiR4 = 8·σ* is manifestly a multiple of 8); depends on jacobi_r4_formula."
+    },
+    {
+      "name": "r4Count_pos",
+      "type": "theorem",
+      "statement": "0 < n → 0 < r4Count n",
+      "significance": "The Jacobi-corollary form of Lagrange's four-square theorem: every positive integer is a sum of four squares. Recovered here as a quantitative consequence of the (stronger) counting formula rather than proved independently.",
+      "description": "From jacobi_r4_formula and jacobiR4_pos (jacobiR4 n ≥ 8 > 0). Depends on jacobi_r4_formula."
+    },
+    {
+      "name": "jacobiR4_eq_eight_sigmaOne_of_odd",
+      "type": "theorem",
+      "statement": "¬ 2 ∣ n → jacobiR4 n = 8 * sigmaOne n",
+      "significance": "On the odd subdomain σ* collapses to σ, so Jacobi's prediction becomes simply r₄(n) = 8·σ(n). Isolating the odd case (the (Hodd) leg) is one of the three elementary hypotheses whose independent proof would discharge the open conjecture.",
+      "description": "Immediate from sigmaStar_eq_sigmaOne_of_odd; axiom-free. Its r4Count-side twin r4Count_eq_eight_sigmaOne_of_odd routes through the axiom."
+    },
+    {
+      "name": "jacobiR4_uniqueness_from_atomic_hypotheses",
+      "type": "theorem",
+      "statement": "For f : ℕ→ℕ satisfying (Hodd) f n = 8σ(n) on odd n, (HtwoPow) f(2^k)=24, and (Hmul) 8·f(mn)=f(m)f(n) on coprime m,n: ∀ n>0, f n = jacobiR4 n",
+      "significance": "A rigidity theorem: the three atomic hypotheses uniquely determine jacobiR4. Any arithmetic function meeting them must equal 8·σ*. This is the engine that converts elementary facts about r₄ into the full formula.",
+      "description": "Proved by reducing an arbitrary n to its 2-adic factorization and applying the three hypotheses; axiom-free. jacobiR4_satisfies_atomic_hypotheses checks jacobiR4 itself qualifies."
+    },
+    {
+      "name": "jacobi_r4_formula_from_atomic_via_jacobiR4",
+      "type": "theorem",
+      "statement": "Given r4Count-side (Hodd), (HtwoPow), (Hmul): ∀ n>0, r4Count n = jacobiR4 n",
+      "significance": "The reduction that makes the open conjecture attackable in pieces: axiom-free proofs of all three r₄-side legs (odd values, pure 2-powers, coprime multiplicativity) TOGETHER discharge jacobi_r4_formula without assuming it. Splits Jacobi's 1834 modular-form proof into three independent elementary targets.",
+      "description": "Specialization of jacobiR4_uniqueness_from_atomic_hypotheses at f := r4Count; axiom-free relative to the three supplied hypotheses."
+    },
+    {
+      "name": "sigmaStar_uniqueness_from_canonical_hypotheses",
+      "type": "theorem",
+      "statement": "For g : ℕ→ℕ with g n = σ(n) on odd n, g(2^k)=3, and g multiplicative on coprimes: ∀ n>0, g n = sigmaStar n",
+      "significance": "The σ*-side rigidity companion: σ* is the unique arithmetic function odd-equal to σ, valued 3 on 2-powers, and coprime-multiplicative. Gives the abstract characterization underlying the whole bootstrap.",
+      "description": "Same 2-adic reduction as the jacobiR4 version; axiom-free. sigmaStar_satisfies_canonical_hypotheses verifies σ* qualifies."
+    },
+    {
+      "name": "signFlipStabilizer_card",
+      "type": "lemma",
+      "statement": "Fintype.card { s : SignFlip // applyFlip s v = v } = 2 ^ (#{ i | v i = 0 })",
+      "significance": "The orbit–stabilizer input to the factor of 8: the sign-flip group (ℤ/2)⁴ fixes a tuple v exactly on its zero coordinates, so the stabilizer has size 2^(number of zeros) and the sign orbit has size 2^(number of nonzeros). Quantifies the sign-symmetry half of Jacobi's 8.",
+      "description": "Proved by an explicit equivalence between the stabilizer and Bool-valued functions on the zero coordinates. Axiom-free."
+    },
+    {
+      "name": "permStabilizer_card",
+      "type": "lemma",
+      "statement": "Fintype.card { σ : Perm (Fin 4) // applyPerm σ v = v } = ∏ i ∈ image v, (#{ j | v j = i })!",
+      "significance": "The permutation-symmetry counterpart: the coordinate-permutation stabilizer of v is the product of factorials of the multiplicities of its values. Together with the sign-flip count this realizes the full signed-permutation wreath-product symmetry that geometrically explains why 8 ∣ r₄(n).",
+      "description": "Bridged to Mathlib's v ∘ g = v convention via the σ ↔ σ.symm involution and a multiplicity-partition equivalence. Axiom-free."
+    }
+  ],
   "sections": [
     {
       "id": "sigma-star",
