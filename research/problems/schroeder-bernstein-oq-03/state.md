@@ -1,10 +1,23 @@
 # Research State: schroeder-bernstein-oq-03
 
 ## Current State
-**Phase**: DEVELOP
-**Path**: full — **extension-only (Path B) chosen; fork RESOLVED 2026-07-03 (r4)**
+**Phase**: DEVELOP — **Path B ASSEMBLED (r11, 2026-07-03): cons scheduler + limit bijection
+VERIFIED; only COMPUTABILITY remains**
+**Path**: full — extension-only (Path B); fork RESOLVED 2026-07-03 (r4), scheduler built r11
 **Since**: 2026-07-02
-**Iteration**: 9
+**Iteration**: 10
+
+## Next Action (supersedes all below — 2026-07-03 r11)
+Section 5·B now builds the cons scheduler `stageSeqB` (pair-monotone) and reads off
+`sigmaEquivB : ℕ ≃ ℕ` with `sigmaEquivB_corr : ∀ n, p n ↔ q (sigmaEquivB n)`, all VERIFIED
+0-axiom. The bijection + correspondence (the *mathematics* of Myhill's hard direction) are DONE.
+The **sole** remaining gap is `e.Computable`: `stageSeqB` is `noncomputable` (`Classical.choose`).
+Residual work (no new math, ~150–250 lines): (1) replace the escape `.choose N` with the bounded
+`Nat.rfind` search licensed by `escape_exists'` (`N ≤ (mRan L).length`); (2) build a computable
+parallel `stageSeqBComp` (explicit cons recursion) and prove `Computable (fun n => mLookup
+(stageSeqBComp (entryStageDomB n)) n)` via `mLookup_computable` + `chaseTarget_computable`;
+(3) the inverse is the range-side `mLookup` on the swapped list — discharge `myhill_isomorphism`.
+See knowledge.md r11 entry. Do NOT re-open the Path-B fork or the splicing `stageSeq`.
 
 ## Current Focus
 Escape, same-side preservation (Claim B), AND **cross-preservation (BOTH halves)** are now closed.

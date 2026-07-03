@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1435,
+    "lineCount": 2980,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -60,8 +60,8 @@
     "openProblems": [
       "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
     ],
-    "theoremCount": 75,
-    "definitionCount": 15,
+    "theoremCount": 152,
+    "definitionCount": 31,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
     ]
@@ -250,10 +250,10 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 1811,
+    "lineCount": 2980,
     "axiomCount": 0,
-    "theoremCount": 84,
-    "definitionCount": 16,
+    "theoremCount": 152,
+    "definitionCount": 31,
     "sorries": 1,
     "path": "Proofs/SchroederBernsteinOQ03.lean",
     "additionalFiles": [

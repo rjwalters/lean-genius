@@ -1042,3 +1042,77 @@ pruned; other agents' `/private/tmp/*` worktrees show `locked`). Do NOT thrash `
 and discharging escape via `escape_exists'` (both sides); read off `e` with `mLookup` +
 `mLookup_stable`; prove `.Computable`; close the `myhill_isomorphism` `→` sorry. Coverage
 (`firstMissing_le_length`, `k ∈ mDom` by stage `2k+1`) follows. Do NOT re-open the Path-B fork.
+
+## Session 2026-07-03 (researcher-11): PATH B ASSEMBLED — cons scheduler + limit bijection VERIFIED 0-axiom
+
+**Major advance.** Built the entire extension-only (Path B) scheduler and read off the limit
+bijection. `myhill_isomorphism` is now reduced from "everything open" to **computability only**:
+the bijection `sigmaEquivB : ℕ ≃ ℕ` with `∀ n, p n ↔ q (sigmaEquivB n)` is VERIFIED. File
+2718→2980 lines, +6 defs +17 theorems, new **Section 5·B**. All new decls 0-axiom
+(`#print axioms` = {propext, Classical.choice, Quot.sound}; NO sorryAx, NO ofReduceBool). Host
+`LAKE_UNSAFE=1 lake env lean` v4.26.0 against main-repo oleans, EXIT 0; only the pre-existing
+`myhill_isomorphism` sorry + two pre-existing unused-`he` warnings.
+
+**What was built (Section 5·B):**
+- `StageInvB p q f g L := IsMatching L ∧ MatchingCorr p q L ∧ Balanced f g L ∧ Balanced g f (L.map swap)`
+  — the cons-preserved invariant (carries BOTH balances instead of `BuiltFrom`).
+- `domain_consStep` / `range_consStep` — the atomic Path-B moves. A fresh domain anchor `a`
+  (resp. range anchor `b`) is placed by a *pure cons* `(a, chaseTarget f g a N) :: L` (resp.
+  `(chaseTarget g f b N, b) :: L`), preserving all four invariants. Escape via `escape_exists'`
+  (Balanced, `BuiltFrom`-free); balances via the 2×2 matrix (`balanced_cons_domain`,
+  `balanced_swap_cons_domain` for even; `balanced_swap_cons_range`, `balanced_cons_range` for odd);
+  correspondence via `matching_step_chase` (even) / `chaseTarget_corr … |>.symm` (odd, swapped).
+- `stageStepB` / `stageSeqB` — the sequence (subtype carrying `StageInvB`), even `s` targets
+  domain `s/2`, odd targets range `s/2`, keep-if-covered else cons.
+- **`stageStepB_pair_subset` / `stageSeqB_pair_subset`** — THE property Path A (splicing) lacked:
+  every recorded PAIR survives to every later stage (cons never removes). This is exactly the
+  `L₁ ⊆ L₂` hypothesis of `mLookup_stable`.
+- `stageSeqB_covers_dom` / `_covers_ran` — `k` covered by stage `2k+1` (dom) / `2k+2` (ran).
+- **Read-off (`section ReadOff`):** `entryStageDomB n := Nat.find …`, `sigmaB n := mLookup
+  (stageSeqB (entryStageDomB n)).1 n`, `sigmaB_eq_of_mem_dom` (stability via
+  `mLookup_stable` + `stageSeqB_pair_subset` — NO finite injury), `sigmaB_corr`
+  (`p n ↔ q (σ n)` from `MatchingCorr`), `sigmaB_injective` (evaluate both at a common stage,
+  `mLookup_injOn`), `sigmaB_surjective` (from range exhaustion), and
+  `sigmaEquivB := Equiv.ofBijective sigmaB ⟨inj, surj⟩` + `sigmaEquivB_corr`.
+
+**Why this closes the strategic arc.** The fork r4/r14 debated (termination↔stability) was
+decided Path B; r16/r14/r4 proved all four balance-preservation cells; but the FILE's `stageSeq`
+was still the splicing Path-A version (not pair-monotone), so no read-off was possible. This
+session actually *assembled* the cons scheduler the decision called for, and the read-off went
+through mechanically because pair-monotonicity makes `mLookup_stable` apply directly. The
+mathematics of Myhill's hard direction (the computable-injections ⟹ bijection-with-correspondence)
+is now COMPLETE and verified as a plain bijection.
+
+**The SOLE remaining gap: computability.** `stageSeqB` is `noncomputable` (built via
+`Classical.choose`/`.choose` on the `domain_consStep`/`range_consStep` existentials), so
+`sigmaEquivB` is not yet a `Computable` permutation and `myhill_isomorphism`'s `e.Computable`
+conjunct cannot be discharged — the `sorry` remains. Residual work (well-scoped):
+1. Replace the escape `.choose N` with the bounded `Nat.rfind`/`Nat.find` search over
+   `fun N => decide (chaseTarget f g a N ∉ mRan L)` — this is computable because `escape_exists'`
+   bounds `N ≤ (mRan L).length`, `chaseTarget` is computable (`chaseTarget_computable`), and
+   `mRan L` membership is decidable. Likewise the range side.
+2. Rebuild a computable parallel `stageSeqBComp : ℕ → List (ℕ × ℕ)` (explicit cons recursion,
+   no `.choose`), prove it equals `(stageSeqB …).1` (or re-prove the read-off lemmas on it), and
+   establish `Computable (fun n => mLookup (stageSeqBComp (entryStageDomB n)) n)` via
+   `mLookup_computable` + computability of the stage recursion (the escape `rfind` is `Partrec`,
+   total by `escape_exists'`, hence `Computable`) + `entryStageDomB` computable (bounded search
+   over the computable coverage predicate).
+3. Read off `e.Computable ∧ e.symm.Computable` (the inverse is the range-side `mLookup` on
+   `(stageSeqBComp …).map swap`); discharge the `myhill_isomorphism` sorry.
+
+This is genuinely the last mile: no new mathematics, only a computable re-encoding of the already
+-verified construction. Estimated ~150–250 lines.
+
+**Build/verify path (works, disk at ~90 GiB free this session — not the 100%-full crisis of
+prior sessions):** file self-contained on Mathlib; from `REPO/proofs`:
+`LAKE_UNSAFE=1 lake env lean /tmp/lg-r11-sb/proofs/Proofs/SchroederBernsteinOQ03.lean` against the
+main-repo prebuilt oleans (`proofs/.lake/...`). ~30s warm. For fast iteration, build the module
+olean once (`lake env lean -o .lake/build/lib/lean/Proofs/SchroederBernsteinOQ03.olean Proofs/...`)
+then a scratch file `import Proofs.SchroederBernsteinOQ03; open MyhillIsomorphism` compiles new
+lemmas in ~5–20s.
+
+**WORKTREE HAZARD (recurred):** the assigned `.loom/worktrees/researcher-11` was CLOBBERED
+(reset to HEAD) mid-session — edits silently reverted. Recovered by working in a LOCKED `/tmp`
+worktree (`git worktree add --lock /tmp/lg-r11-sb -b … origin/main`); locked worktrees survive the
+cleanup daemon. All verified content was staged in `/tmp/sb_scratch.lean` (outside the reaped tree)
+so it survived the clobber. Commit+push immediately from the locked worktree.
