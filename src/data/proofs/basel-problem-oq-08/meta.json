@@ -59,7 +59,8 @@
     "keyInsights": [
       "**Even zeta values are rational multiples of powers of π.** ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!); at k = 2, B₄ = −1/30 yields ζ(4) = π⁴/90.",
       "**The ratio ζ(4)/ζ(2)² is π-free.** Dividing the two even-zeta values cancels π entirely, leaving the rational 2/5 — a structural fact about the Bernoulli numbers, not about π.",
-      "**Mathlib already carries the hard analysis.** The Hurwitz-zeta even-argument formula is formalized upstream; this entry is the routine specialisation requested by the open question."
+      "**Mathlib already carries the hard analysis.** The Hurwitz-zeta even-argument formula is formalized upstream; this entry is the routine specialisation requested by the open question.",
+      "**Even and odd zeta values could not be more different.** The Bernoulli formula ζ(2k) = (−1)^{k+1}B_{2k}(2π)^{2k}/(2(2k)!) makes *every* even value a rational multiple of a power of π (hence provably transcendental). No analogous closed form is known for a single odd value: ζ(3) is only known to be irrational (Apéry, 1978), and the irrationality of ζ(5) remains open. This entry sits on the fully-understood even side of that divide."
     ],
     "prerequisites": [
       "Infinite sums / tsum and HasSum in Mathlib",
@@ -103,6 +104,11 @@
       "targetId": "basel-problem-oq-05",
       "relationship": "related",
       "description": "OQ-05 formalizes Euler's Weierstrass-product route to ζ(2); the same product method generalizes to every even ζ(2k), of which ζ(4) is the next case"
+    },
+    {
+      "proofId": "basel-problem-oq-01",
+      "relationship": "Related",
+      "description": "“Is ζ(5) Irrational? (Open Question).” The odd-argument counterpart to this even value: where ζ(4) = π⁴/90 is a transcendental rational-times-π⁴, no closed form or even a full irrationality proof is known for ζ(5), sharpening the even/odd contrast highlighted in this entry's key insights."
     }
   ],
   "conclusion": {
