@@ -57,20 +57,40 @@
   {
     "id": "power-and-divergence",
     "proofId": "binomial-theorem-oq-05",
-    "range": { "startLine": 73, "endLine": 109 },
+    "range": { "startLine": 71, "endLine": 79 },
     "type": "theorem",
-    "title": "Tangent-Line Form and Divergence of Powers",
-    "content": "bernoulli_pow restates Bernoulli for aⁿ: 1 + n·(a-1) ≤ aⁿ for a ≥ -1, the tangent line to t ↦ tⁿ at t = 1. one_add_pow_tendsto_atTop deduces (1+a)ⁿ → ∞ for a > 0 from tendsto_pow_atTop_atTop_of_one_lt, with the explicit linear rate 1 + n·a recorded by one_add_pow_ge_one_add_nmul. Three numeric witnesses close the file, including the strict 1 + 5 < 2⁵ and a negative-base instance.",
-    "mathContext": "The form $1 + n(a-1) \\le a^n$ exhibits $t^n$ lying above its tangent at $t=1$. For $a>0$, $1+a>1$ so the power diverges; Bernoulli quantifies the divergence as at-least-linear, $1 + na \\le (1+a)^n$.",
+    "title": "Tangent-Line Form: t ↦ tⁿ Lies Above Its Tangent at t = 1",
+    "content": "bernoulli_pow restates Bernoulli for aⁿ: 1 + n·(a-1) ≤ aⁿ for a ≥ -1 (a thin wrapper over Mathlib's one_add_mul_sub_le_pow). Substituting a ↦ a-1 in the (1+a)ⁿ form, this says the curve t ↦ tⁿ lies above its tangent line at t = 1 — the geometric content of convexity. pow_ge_linear_of_one_le records the same bound under the stronger hypothesis a ≥ 1, the form used when reasoning about at-least-linear growth of powers of a base exceeding one.",
+    "mathContext": "The form $1 + n(a-1) \\le a^n$ exhibits $t^n$ lying above its tangent at $t=1$: writing $f(t)=t^n$, $f(1)=1$ and $f'(1)=n$, so the tangent is $1 + n(t-1)$ and convexity gives $f(t) \\ge 1 + n(t-1)$.",
     "significance": "supporting",
     "relatedConcepts": [
       "one_add_mul_sub_le_pow",
+      "tangent lines / convexity",
+      "at-least-linear growth"
+    ],
+    "prerequisites": [
+      "tangent lines / convexity",
+      "Bernoulli's inequality"
+    ]
+  },
+  {
+    "id": "divergence-and-witnesses",
+    "proofId": "binomial-theorem-oq-05",
+    "range": { "startLine": 81, "endLine": 109 },
+    "type": "theorem",
+    "title": "Divergence of Powers and Numeric Witnesses",
+    "content": "one_add_pow_tendsto_atTop deduces (1+a)ⁿ → ∞ for a > 0, delegating to Mathlib's tendsto_pow_atTop_atTop_of_one_lt — a genuinely asymptotic statement (a Filter.Tendsto atTop limit) rather than a pointwise inequality. Bernoulli makes the divergence quantitative: one_add_pow_ge_one_add_nmul records the explicit linear lower bound 1 + n·a ≤ (1+a)ⁿ that already forces the limit. Three numeric witnesses then close the file — (3/2)¹⁰ ≥ 6 (a lower bound without evaluating the tenth power), the strict 1 + 5 < 2⁵ = 32, and a negative-base instance at a = -3/2 — each discharged directly by the theorems above.",
+    "mathContext": "For $a>0$, $1+a>1$ so $(1+a)^n \\to \\infty$; Bernoulli quantifies the rate as at-least-linear, $1 + na \\le (1+a)^n$. Witness: $(1+\\tfrac12)^{10} \\ge 1 + 10\\cdot\\tfrac12 = 6$ (true value $\\approx 57.67$).",
+    "significance": "supporting",
+    "relatedConcepts": [
       "tendsto_pow_atTop_atTop_of_one_lt",
-      "geometric progressions"
+      "Filter.Tendsto atTop",
+      "geometric progressions",
+      "numeric witness"
     ],
     "prerequisites": [
       "Filter.Tendsto and atTop",
-      "tangent lines / convexity"
+      "geometric growth"
     ]
   }
 ]
