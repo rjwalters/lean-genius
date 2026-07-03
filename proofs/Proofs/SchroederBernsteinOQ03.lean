@@ -2750,6 +2750,45 @@ theorem escapeDepth_le {f g : ℕ → ℕ}
   obtain ⟨N, hNle, hN⟩ := escape_exists_bounded hf hg hbal ha
   exact le_trans (Nat.find_min' _ hN) hNle
 
+/-- **Bounded escape search (plain, proof-free).** A `List.findIdx` over the *finite* window
+    `List.range ((mRan L).length + 1)` for the first stage whose green image escapes `mRan L`.
+    Unlike `escapeDepth` (which is `Nat.find` and carries the escape-existence proof `hex` as an
+    argument), `firstEscapeB` is an honest total function `List (ℕ × ℕ) → ℕ → ℕ` with **no** proof
+    argument and **no** `Classical.choose` — it is amenable to Mathlib's `Computable` typeclass.
+    By `firstEscapeB_eq_escapeDepth` it computes the *same* value as `escapeDepth` whenever escape is
+    guaranteed within the window (`escapeDepth_le`), so a scheduler may replace the choice-carrying
+    `escapeDepth` by `firstEscapeB` without changing the pairing. This is the computability keystone
+    the module docstring flags: relocating the unbounded `Nat.find` into a bounded, plainly
+    executable scan licensed by `escape_exists'`'s `N ≤ (mRan L).length` bound. -/
+def firstEscapeB (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) (a : ℕ) : ℕ :=
+  (List.range ((mRan L).length + 1)).findIdx
+    (fun N => decide (f (fwdOrbit f g a N) ∉ mRan L))
+
+/-- **The bounded search equals the canonical escape depth.** Under the balance invariant that
+    licenses escape (`escape_exists'`), the least escaping stage `escapeDepth = Nat.find` lies in the
+    window `[0, (mRan L).length]` (`escapeDepth_le`); hence the bounded `List.findIdx` over
+    `List.range ((mRan L).length + 1)` returns exactly that least stage. The proof is
+    `List.findIdx_eq` at the index `escapeDepth`: the predicate is `true` there
+    (`escapeDepth_spec`, the escape) and `false` at every earlier stage (`escapeDepth_min`, the
+    collisions), and `List.getElem_range` identifies `(range _)[j] = j`. This is the flagged
+    correctness keystone: it certifies that the *plain, choice-free, computable* `firstEscapeB`
+    reproduces the *least-depth* pairing of the classical construction, not merely *some* pairing. -/
+theorem firstEscapeB_eq_escapeDepth {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced f g L) {a : ℕ} (ha : a ∉ mDom L) :
+    firstEscapeB f g L a = escapeDepth f g L a (escape_exists' hf hg hbal ha) := by
+  have hle : escapeDepth f g L a (escape_exists' hf hg hbal ha) ≤ (mRan L).length :=
+    escapeDepth_le hf hg hbal ha
+  have hlen : escapeDepth f g L a (escape_exists' hf hg hbal ha)
+      < (List.range ((mRan L).length + 1)).length := by
+    rw [List.length_range]; omega
+  rw [firstEscapeB, List.findIdx_eq hlen]
+  refine ⟨?_, fun j hji => ?_⟩
+  · simp only [List.getElem_range, decide_eq_true_eq]
+    exact escapeDepth_spec f g L a _
+  · simp only [List.getElem_range, decide_eq_false_iff_not, not_not]
+    exact escapeDepth_min f g L a _ hji
+
 /-- **Choice-free domain cons step.** Prepends the concrete escaping pair
     `(a, chaseTarget f g a (escapeDepth …))` — the least-depth green image, located by the
     decidable `Nat.find` above rather than `Classical.choose` — and preserves all four
