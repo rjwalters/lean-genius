@@ -147,6 +147,11 @@
       "targetId": "geometric-series",
       "relationship": "related",
       "description": "The divergence (1+a)ⁿ → ∞ for a > 0 is the geometric-progression growth that Bernoulli quantifies with an explicit linear rate"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The arithmetic–geometric mean inequality, which this entry names as a downstream consequence of Bernoulli: applying 1 + n·a ≤ (1+a)ⁿ termwise (equivalently the tangent-line form 1 + n(a−1) ≤ aⁿ) yields the weighted AM–GM inequality. This entry's open question asks whether that first-order-truncation viewpoint gives a clean Lean proof of AM–GM; the amgm-inequality entry is the target such a derivation would land."
     }
   ],
   "mainTheorems": [
