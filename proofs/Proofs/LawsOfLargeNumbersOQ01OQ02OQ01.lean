@@ -452,8 +452,10 @@ theorem eLpNorm_two_partialSum_le [IsProbabilityMeasure μ]
   set S : Ω → ℝ := ∑ i ∈ range (n + 1), X i with hSdef
   have hSmemLp : MemLp S 2 μ := memLp_finset_sum' _ (fun i _ => hmemLp i)
   have hSmean : μ[S] = 0 := by
-    rw [hSdef, integral_finset_sum _ (fun i _ => hint i)]
-    simp only [hmean, Finset.sum_const_zero]
+    have h1 : μ[S] = ∑ i ∈ range (n + 1), μ[X i] := by
+      simp_rw [hSdef, Finset.sum_apply]
+      exact integral_finset_sum _ (fun i _ => hint i)
+    rw [h1]; simp only [hmean, Finset.sum_const_zero]
   have hpair : Set.Pairwise (↑(range (n + 1)) : Set ℕ)
       (fun i j => IndepFun (X i) (X j) μ) := fun i _ j _ hij => hindep.indepFun hij
   have hvar : variance S μ = ∑ i ∈ range (n + 1), variance (X i) μ := by
@@ -465,7 +467,10 @@ theorem eLpNorm_two_partialSum_le [IsProbabilityMeasure μ]
   have hmono := ENNReal.rpow_le_rpow hsq (by norm_num : (0 : ℝ) ≤ 1 / 2)
   rw [← ENNReal.rpow_natCast (eLpNorm S 2 μ) 2, ← ENNReal.rpow_mul,
     show ((2 : ℕ) : ℝ) * (1 / (2 : ℝ)) = 1 by norm_num, ENNReal.rpow_one] at hmono
-  rwa [← ENNReal.ofReal_rpow_of_nonneg hV0 (by norm_num), ← Real.sqrt_eq_rpow] at hmono
+  -- rewrite the `L²` bound `(ofReal V)^{1/2}` as `ofReal √V`
+  have hrw : ENNReal.ofReal V ^ (1 / 2 : ℝ) = ENNReal.ofReal (Real.sqrt V) := by
+    rw [Real.sqrt_eq_rpow, ENNReal.ofReal_rpow_of_nonneg hV0 (by norm_num)]
+  exact hmono.trans_eq hrw
 
 /-- **Kolmogorov's a.s.-convergence criterion (variance-sum form).**  For independent
 mean-zero `L²` random variables `X i` whose variance partial sums are uniformly bounded,
