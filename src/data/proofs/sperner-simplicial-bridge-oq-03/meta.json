@@ -43,33 +43,39 @@
   },
   "sections": [
     {
-      "id": "sec-overview",
+      "id": "overview",
       "title": "Overview: from finite Sperner to an infinite tower via compactness",
       "startLine": 1,
       "endLine": 79,
-      "summary": "License header, imports of the parent SpernerSimplicialBridge and Mathlib's Order.KonigLemma, the module docstring, and namespace/open setup. Frames the open question: does finite panchromatic-cell existence extend to an infinite limit statement via a compactness (Kőnig / inverse-limit) argument?",
-      "mathContext": "The finite bridge is inherently finite — its door-counting parity is a counting argument over a finite door graph. To pass to the infinite, an infinite simplicial object is modelled as an ℕ-indexed tower of finite pseudomanifold complexes topCells n, all coloured by a single c, each with its own odd-boundary hypothesis. The finite theorem makes the set of panchromatic cells nonempty at each level; that set is finite because it is a subtype of the finite cell type. These are precisely the two hypotheses (level-0 finiteness, per-level nonemptiness) of Mathlib's inverse-system Kőnig lemma exists_seq_forall_proj_of_forall_finite, which then yields a coherent thread of panchromatic cells through the whole tower."
+      "summary": "The docstring poses the parent's infinite/limit open question: finite Sperner is a finite parity count, so the passage to the limit needs a separate compactness principle — here Kőnig's infinity lemma over an ℕ-indexed tower of finite pseudomanifold complexes sharing one colouring."
     },
     {
       "id": "pancell",
       "title": "Panchromatic-cell type and its finiteness",
       "startLine": 80,
       "endLine": 105,
-      "summary": "levelVertex packages the parent bridge's vertexEnum labelling as a function of the tower level n. PanCell n is the subtype of level-n cells that are panchromatic under the decidable IsPanchromatic predicate. instFinitePanCell derives Finite (PanCell n) from the finiteness of the cell type {s // s ∈ topCells n} — the finiteness input Kőnig consumes."
+      "summary": "levelVertex packages the bridge's vertex labelling per level; PanCell n is the subtype of cells cut out by the decidable IsPanchromatic; instFinitePanCell makes it Finite — one of Kőnig's two inputs."
     },
     {
       "id": "nonempty-level",
       "title": "Each tower level has a panchromatic cell",
       "startLine": 106,
       "endLine": 130,
-      "summary": "nonempty_panCell: for each level n, the finite bridge exists_panchromatic applied to topCells n (with its purity, pseudomanifold, and odd-boundary hypotheses) produces a panchromatic cell, establishing Nonempty (PanCell n). This is the per-level nonemptiness input to the compactness argument."
+      "summary": "nonempty_panCell: the imported finite bridge exists_panchromatic applied per level (with purity, pseudomanifold, colouring, odd-boundary hypotheses) gives Nonempty (PanCell n) — Kőnig's second input."
     },
     {
       "id": "konig-thread",
       "title": "Kőnig's infinity lemma: a coherent thread through the tower",
       "startLine": 131,
+      "endLine": 160,
+      "summary": "exists_coherent_panchromatic_thread applies exists_seq_forall_proj_of_forall_finite: finite levels + nonemptiness + functorial π (refl, trans) + finite fibers (Set.toFinite) yield a coherent thread f with π hij (f j) = f i. No surjectivity of π needed."
+    },
+    {
+      "id": "cells-exposed",
+      "title": "Panchromaticity exposed: the user-facing statement",
+      "startLine": 161,
       "endLine": 188,
-      "summary": "exists_coherent_panchromatic_thread applies Mathlib's exists_seq_forall_proj_of_forall_finite: with each PanCell n finite and nonempty and functorial restriction maps π, Kőnig produces a coherent thread f : (n : ℕ) → PanCell n satisfying π hij (f j) = f i. exists_coherent_panchromatic_cells repackages this to expose the panchromaticity of each (f n).1 alongside the coherence — the honest infinite analogue of the finite existence theorem."
+      "summary": "exists_coherent_panchromatic_cells repackages the thread so each selected cell's panchromaticity is explicit via (f n).2, returning ⟨f, fun n => (f n).2, hf⟩ — a coherent selection of genuinely panchromatic cells across all levels."
     }
   ],
   "overview": {
