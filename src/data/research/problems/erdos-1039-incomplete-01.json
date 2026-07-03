@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1039-incomplete-01",
   "title": "Complete polynomial lemniscate disc radius proof",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T16:34:54.972Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS (BUILD-PENDING): wrote full proofs of all 3 elementary sorries; 5 deep axioms unchanged; Docker/disk outage blocked confirming build.",
+    "builtItems": [
+      "Proved area_implies_disc_bound, degree_one_optimal, clustered_implies_large_disc in Proofs/Erdos1039Problem.lean (was 3 sorries, now 0).",
+      "Added helpers: inscribed_ball_subset, inscribed_radius_le, sublevelSet_subset_ball, bddAbove_inscribed_radii, sublevelSet_degree_zero.",
+      "Branch research/erdos-1039-complete-sorries, PR #33815 (BUILD-PENDING)."
+    ],
+    "insights": [
+      "Erdos1039Problem.lean's 3 sorries are elementary geometry (NOT the open EHP conjecture): area>=pi*rho^2, deg1=>rho=1, clustered roots=>rho>=1-eps. All provable.",
+      "rho(f)=sSup of inscribed-disc radii; key shared lemma inscribed_radius_le: open ball subset open ball => radius bound, proved via a boundary point c+t*u along the unit direction from z0.",
+      "sublevelSet bounded for deg>0: |z|>=2 => each |z-zi|>=1 => |f(z)|>=1; gives finite Lebesgue area (Bornology.IsBounded.measure_lt_top) and BddAbove for the radius sSup.",
+      "Complex.volume_ball a r = ENNReal.ofReal r ^2 * NNReal.pi; toReal = pi*r^2 for r>=0 (needs open scoped ENNReal for the R>=0 infty notation)."
+    ],
+    "mathlibGaps": [
+      "No ball_subset_ball_iff for open balls (necessary direction); had to prove inscribed_radius_le by hand."
+    ],
+    "nextSteps": [
+      "VERIFY: run docker-build.sh Proofs.Erdos1039Problem once Docker/disk recovered; final elaboration crashed on SIGBUS (infra), not a Lean error, so unconfirmed.",
+      "If build fails, likely culprits: field_simp closing pi*(A/pi)=A; nlinarith in hsq; the (NNReal.pi:ENNReal) coercion matching Complex.volume_ball."
+    ]
   },
   "tags": [
     "seeker-selected",
