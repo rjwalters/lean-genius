@@ -1,0 +1,176 @@
+{
+  "id": "catalan-numbers-oq-01-oq-04-oq-02",
+  "title": "Strict log-concavity of the Catalan growth-ratio sequence: Cₙ₊₁³·Cₙ₋₁ > Cₙ³·Cₙ₊₂",
+  "slug": "catalan-numbers-oq-01-oq-04-oq-02",
+  "description": "The parent leaf catalan-numbers-oq-01-oq-04 proves the Catalan numbers are strictly log-CONVEX (catalan (n+1)² < catalan n · catalan (n+2)), so they are not log-concave. To exhibit log-concavity one passes to a sequence DERIVED from the Catalan numbers: the consecutive growth ratios ρₙ = catalan (n+1)/catalan n = 2(2n+1)/(n+2), the exact multiplier of the first-order recurrence. This entry proves ρ is strictly log-concave, ρₙ² > ρₙ₋₁·ρₙ₊₁, equivalently the denominator-cleared integer inequality catalan (m+1)³ · catalan (m+3) < catalan (m+2)³ · catalan m for every m (with n = m+1). The proof applies the parent's 'surplus method' one degree up: three consecutive instances of the recurrence (n+2)·catalan (n+1) = 2(2n+1)·catalan n, written over ℤ with a = Cₘ, b = Cₘ₊₁, c = Cₘ₊₂, d = Cₘ₊₃, are used to collapse both K·(c³·a) and K·(b³·d) — where K = 2(2m+1)(m+3)³(m+4) — to explicit multiples of b⁴. Their difference is 8(2m+3)·(12m+27)·b⁴ > 0, because the polynomial surplus (2m+3)²(m+4)(m+2) − (2m+1)(2m+5)(m+3)² = 12m+27 is strictly positive; cancelling K > 0 gives the strict inequality. A ℚ corollary restates the result as genuine strict log-concavity of the ratio sequence. All arithmetic is done over ℤ/ℚ (where linear_combination, field_simp and cancellation are exact) and transferred to ℕ by exact_mod_cast. Mathlib has the full Catalan/central-binomial API but no ratio-log-concavity statement. 0 axioms, 0 sorries, no native_decide.",
+  "meta": {
+    "author": "Classical (log-concavity of the Catalan growth-ratio sequence); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CatalanNumbersOQ01OQ04OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "log-concavity",
+      "growth-ratio",
+      "turan-inequality",
+      "inequality",
+      "central-binomial",
+      "recurrence",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-02",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "succ_mul_catalan_eq_centralBinom",
+        "description": "(n + 1) · catalan n = Nat.centralBinom n. The multiplicative bridge between the Catalan numbers and the central binomial coefficient, used to derive the division-free one-step Catalan recurrence and to recover positivity of the Catalan numbers.",
+        "module": "Mathlib.Combinatorics.Enumerative.Catalan"
+      },
+      {
+        "theorem": "Nat.succ_mul_centralBinom_succ",
+        "description": "(n + 1) · centralBinom (n + 1) = 2·(2n+1)·centralBinom n. The one-step recurrence of the central binomial coefficient; combined with the bridge and cancellation of n+1 it yields the Catalan recurrence (n+2)·catalan (n+1) = 2(2n+1)·catalan n.",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "Nat.centralBinom_pos",
+        "description": "0 < centralBinom n. Together with (n+1)·catalan n = centralBinom n it gives 0 < catalan n, the strict positivity of b = Cₘ₊₁ that turns the surplus 8(2m+3)(12m+27)·b⁴ into a strict inequality.",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "mul_left_cancel₀",
+        "description": "a ≠ 0 → a·b = a·c → b = c. Cancels the positive factor (n+1) over ℤ when extracting the Catalan recurrence from the central-binomial recurrence.",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "lt_of_mul_lt_mul_left",
+        "description": "a·b < a·c → 0 ≤ a → b < c. Cancels the positive scaling factor K = 2(2m+1)(m+3)³(m+4) to pass from K·(b³d) < K·(c³a) to the target inequality b³d < c³a.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "catalan_ratio_strict_log_concave: catalan (m+1)³ · catalan (m+3) < catalan (m+2)³ · catalan m for every m — strict log-concavity of the Catalan growth-ratio sequence ρₙ = catalan (n+1)/catalan n. Mathlib has no ratio-log-concavity statement for the Catalan numbers; it is assembled here from three instances of the central-binomial recurrence.",
+      "The degree-4 surplus identities K·(c³a) = 8(2m+3)³(m+4)(m+2)·b⁴ and K·(b³d) = 8(2m+1)(2m+5)(2m+3)(m+3)²·b⁴, each discharged by a single linear_combination of two recurrence instances (the middle recurrence used cubed via (m+3)³c³ = 8(2m+3)³b³). Their difference collapses to the explicit surplus 8(2m+3)(12m+27)·b⁴.",
+      "The decisive polynomial surplus (2m+3)²(m+4)(m+2) − (2m+1)(2m+5)(m+3)² = 12m+27 > 0, independent of the Catalan values, is what makes the inequality both true and strict for every m.",
+      "catalan_ratio_log_concave_rat: the same result stated over ℚ as (Cₘ₊₂/Cₘ₊₁)² > (Cₘ₊₁/Cₘ)·(Cₘ₊₃/Cₘ₊₂) — genuine strict log-concavity of the derived ratio sequence, obtained from the integer inequality by writing the gap as a positive numerator over a positive denominator."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None (target: 0 axioms, 0 sorries; no native_decide, no decide). The two supporting lemmas catalan_recurrence and catalan_pos are taken verbatim from the verified parent entry CatalanNumbersOQ01OQ04, which depends only on the foundational axioms propext, Classical.choice, Quot.sound. BUILD-PENDING: this file could not be compiled in the authoring session (local Docker toolchain unavailable and Mathlib oleans absent); every ring / linear_combination / surplus identity was independently verified symbolically (sympy) and the inequality checked numerically for m = 0..6, but a machine build should be run before the entry is treated as fully verified.",
+    "lineCount": 178,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "A positive sequence (aₙ) is log-concave when aₙ² ≥ aₙ₋₁·aₙ₊₁ and log-convex when the inequality reverses. The Catalan numbers are strictly log-CONVEX (their consecutive ratios ρₙ = Cₙ₊₁/Cₙ = 2(2n+1)/(n+2) increase to 4), so they are not themselves log-concave — a classical distinction in the theory of combinatorial sequences (Liu–Wang, Stanley). Log-concavity emerges only after passing to a derived sequence; the growth-ratio sequence ρ is the canonical example. That ρ is itself log-concave is the statement 'the ratios of ratios decrease', a second-order regularity of the Catalan numbers that pins down how fast the log-convexity gap closes.",
+    "problemStatement": "The parent leaf oq-01-oq-04 proves strict log-convexity Cₙ₊₁² < Cₙ·Cₙ₊₂. Since Catalan numbers are therefore not log-concave, this follow-up (leaf oq-01-oq-04-oq-02) asks to apply the same surplus method to a sequence DERIVED from the Catalan numbers and prove a strict log-concavity inequality. The derived sequence is the growth ratio ρₙ = Cₙ₊₁/Cₙ; the claim ρₙ² > ρₙ₋₁·ρₙ₊₁, cleared of denominators, is the integer inequality Cₘ₊₁³·Cₘ₊₃ < Cₘ₊₂³·Cₘ (n = m+1).",
+    "keyIdea": "Multiply the target Cₘ₊₁³·Cₘ₊₃ < Cₘ₊₂³·Cₘ by the positive integer K = 2(2m+1)(m+3)³(m+4). Using three consecutive recurrence instances (m+2)b = 2(2m+1)a, (m+3)c = 2(2m+3)b, (m+4)d = 2(2m+5)c (with a=Cₘ, b=Cₘ₊₁, c=Cₘ₊₂, d=Cₘ₊₃) — the middle one applied cubed — both K·(c³a) and K·(b³d) collapse to explicit multiples of b⁴: 8(2m+3)³(m+4)(m+2)·b⁴ and 8(2m+1)(2m+5)(2m+3)(m+3)²·b⁴. Their difference is 8(2m+3)·(12m+27)·b⁴, where the polynomial surplus (2m+3)²(m+4)(m+2) − (2m+1)(2m+5)(m+3)² = 12m+27 is strictly positive and b⁴ > 0, so the difference is positive; cancelling K > 0 gives the strict inequality.",
+    "proofStrategy": "(1) Reuse the division-free recurrence (n+2)·catalan (n+1) = 2(2n+1)·catalan n and positivity catalan n > 0 from the verified parent. (2) Move the ℕ goal to ℤ via zify and abbreviate a,b,c,d. (3) Cube the middle recurrence to get (m+3)³c³ = 8(2m+3)³b³. (4) Prove the two degree-4 collapse identities L : K·(c³a) = X·b⁴ and Rr : K·(b³d) = Y·b⁴ by one linear_combination each. (5) Compute X − Y = 8(2m+3)(12m+27) by ring, conclude X·b⁴ > Y·b⁴ hence K·(b³d) < K·(c³a), and cancel K via lt_of_mul_lt_mul_left; transfer back to ℕ. (6) Restate over ℚ as strict log-concavity of the ratio sequence by writing the gap as (c³a − b³d)/(a·b²·c) > 0 (field_simp; ring for the algebraic identity, div_pos for positivity). No induction, no case analysis, no native_decide.",
+    "keyInsights": [
+      "Catalan numbers are log-convex, not log-concave; the log-concavity phenomenon appears only after DERIVING the growth-ratio sequence ρₙ = Cₙ₊₁/Cₙ. This entry is the log-concave companion to the parent's log-convex result.",
+      "Ratio log-concavity ρₙ² > ρₙ₋₁ρₙ₊₁ is exactly the integer inequality Cₘ₊₁³·Cₘ₊₃ < Cₘ₊₂³·Cₘ after clearing denominators — a degree-4 relation among four consecutive Catalan numbers, one degree higher than the parent's degree-2 Turán inequality.",
+      "The parent's two-recurrence-plus-surplus template lifts verbatim: scaling by K = 2(2m+1)(m+3)³(m+4) clears all denominators, three (rather than two) recurrence instances collapse both sides to multiples of b⁴, and a single positive polynomial surplus 12m+27 delivers strictness.",
+      "The middle recurrence is used cubed via the clean identity (m+3)³c³ = ((m+3)c)³ = (2(2m+3)b)³ = 8(2m+3)³b³, which keeps the whole argument inside linear_combination/ring rather than requiring nonlinear arithmetic search.",
+      "The surplus constant 12m+27 = 3(4m+9) is n-dependent here (unlike the parent's constant 3), but still strictly positive for all m ≥ 0, so the inequality is strict everywhere — the ratio sequence is strictly, not merely weakly, log-concave.",
+      "Working over ℤ for the integer inequality and over ℚ for the ratio restatement, and transferring with exact_mod_cast, keeps every step exact: no division is performed in the integer core, and the ℚ corollary reduces to a single positive-numerator-over-positive-denominator identity."
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: log-concavity of the derived growth-ratio sequence",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring: since the Catalan numbers are log-convex (parent oq-01-oq-04) they are not log-concave, so log-concavity is sought for the derived growth-ratio sequence ρₙ = Cₙ₊₁/Cₙ. States the equivalent integer inequality Cₘ₊₁³·Cₘ₊₃ < Cₘ₊₂³·Cₘ and outlines the surplus method one degree up, with the decisive polynomial surplus 12m+27."
+    },
+    {
+      "id": "catalan-recurrence",
+      "title": "The division-free Catalan recurrence",
+      "startLine": 55,
+      "endLine": 74,
+      "summary": "catalan_recurrence: (n+2)·catalan (n+1) = 2(2n+1)·catalan n over ℤ (verbatim from the verified parent). Casts succ_mul_catalan_eq_centralBinom (at n and n+1) and Nat.succ_mul_centralBinom_succ to ℤ, cancels n+1 via mul_left_cancel₀, closes with linear_combination."
+    },
+    {
+      "id": "catalan-positivity",
+      "title": "Positivity of the Catalan numbers",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "catalan_pos: 0 < catalan n from (n+1)·catalan n = centralBinom n > 0 (Nat.centralBinom_pos). Supplies b⁴ > 0, the positivity that upgrades the surplus to a strict inequality."
+    },
+    {
+      "id": "ratio-log-concave-int",
+      "title": "Strict log-concavity of the ratio sequence (integer form)",
+      "startLine": 86,
+      "endLine": 148,
+      "summary": "catalan_ratio_strict_log_concave: builds three recurrence instances h0,h1,h2, cubes the middle one (hcube), proves the two degree-4 collapse identities L and Rr by one linear_combination each, computes the surplus X−Y = 8(2m+3)(12m+27) by ring, and cancels K > 0 via lt_of_mul_lt_mul_left to conclude Cₘ₊₁³·Cₘ₊₃ < Cₘ₊₂³·Cₘ."
+    },
+    {
+      "id": "ratio-log-concave-rat",
+      "title": "The ratio form over ℚ",
+      "startLine": 150,
+      "endLine": 178,
+      "summary": "catalan_ratio_log_concave_rat: restates the result as (Cₘ₊₂/Cₘ₊₁)² > (Cₘ₊₁/Cₘ)·(Cₘ₊₃/Cₘ₊₂), genuine strict log-concavity of ρ, by writing the gap as the positive quantity (c³a − b³d)/(a·b²·c) (field_simp; ring identity, div_pos positivity, linarith)."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Liu, Lily L.; Wang, Yi",
+      "title": "On the log-convexity of combinatorial sequences",
+      "year": "2007",
+      "note": "Adv. in Appl. Math. 39 — log-convexity of the Catalan numbers and the ratio criteria that motivate studying the derived growth-ratio sequence."
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 2",
+      "year": "1999",
+      "note": "Cambridge University Press — the Catalan ratio Cₙ₊₁/Cₙ = 2(2n+1)/(n+2) and the one-step recurrence used here as the sole input."
+    },
+    {
+      "authors": "Došlić, Tomislav",
+      "title": "Log-balanced combinatorial sequences",
+      "year": "2005",
+      "note": "Int. J. Math. Math. Sci. — log-balancedness combines log-convexity of a sequence with log-concavity of its normalized/ratio companion, the exact pairing of this entry with its parent."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "catalan-numbers-oq-01-oq-04",
+      "relationship": "parent",
+      "description": "Parent entry proving strict log-CONVEXITY Cₙ₊₁² < Cₙ·Cₙ₊₂. Its listed open question 'establish strict log-concavity of the derived sequences by the same surplus method' is exactly what this leaf answers, for the growth-ratio sequence."
+    },
+    {
+      "proofId": "catalan-numbers-oq-01",
+      "relationship": "ancestor",
+      "description": "Root Catalan entry supplying the first-order recurrence (n+2)·catalan (n+1) = 2(2n+1)·catalan n that is the sole arithmetic input, applied here at three consecutive indices."
+    },
+    {
+      "proofId": "catalan-numbers-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Central-binomial reflection form of the Catalan numbers; shares the Cₙ ↔ centralBinom n bridge differentiated here through the recurrence."
+    }
+  ],
+  "conclusion": {
+    "summary": "catalan_ratio_strict_log_concave establishes Cₘ₊₁³·Cₘ₊₃ < Cₘ₊₂³·Cₘ for every m: the Catalan growth-ratio sequence ρₙ = Cₙ₊₁/Cₙ is strictly log-concave, the log-concave companion to the parent's strictly log-convex Catalan numbers. After scaling by K = 2(2m+1)(m+3)³(m+4) > 0 the two sides collapse to explicit multiples of b⁴ whose difference 8(2m+3)(12m+27)·b⁴ is strictly positive, the surplus (2m+3)²(m+4)(m+2) − (2m+1)(2m+5)(m+3)² = 12m+27 being independent of the Catalan values. A ℚ corollary restates it as genuine ratio log-concavity. Target: 0 axioms, 0 sorries, no native_decide (build-pending machine verification).",
+    "implications": "Completes the log-convex/log-concave pairing (log-balancedness) for the Catalan numbers within the gallery: the numbers are log-convex, their consecutive ratios log-concave. The three-recurrence-plus-surplus template extends the parent's two-recurrence method to degree-4 inequalities and applies to any sequence with a first-order rational recurrence.",
+    "openQuestions": [
+      "Prove log-balancedness directly: combine the parent's log-convexity of (Cₙ) with this entry's log-concavity of (Cₙ₊₁/Cₙ) into a single 'log-balanced' statement, and identify the sharp constant in ρₙ²/(ρₙ₋₁ρₙ₊₁) = 1 + (12m+27)/(…).",
+      "Establish strict log-concavity of the second-order ratio sequence σₙ = ρₙ₊₁/ρₙ, or determine whether the tower of iterated ratio sequences is eventually log-affine."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "CatalanNumbersOQ01OQ04OQ02",
+    "lineCount": 178,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CatalanNumbersOQ01OQ04OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

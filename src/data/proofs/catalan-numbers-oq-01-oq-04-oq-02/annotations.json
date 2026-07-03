@@ -1,0 +1,91 @@
+[
+  {
+    "id": "ann-catalan-ratio-overview",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "Log-concavity of a derived sequence, not of the Catalan numbers themselves",
+    "content": "The Catalan numbers are strictly log-convex (Cₙ₊₁² < Cₙ·Cₙ₊₂, parent entry oq-01-oq-04), so they are NOT log-concave. Log-concavity appears only after passing to a sequence derived from them. The natural derived sequence is the consecutive growth ratio ρₙ = Cₙ₊₁/Cₙ = 2(2n+1)/(n+2), the exact multiplier of the one-step recurrence. This entry proves ρ is strictly log-concave, ρₙ² > ρₙ₋₁·ρₙ₊₁, which after clearing denominators is the integer inequality Cₘ₊₁³·Cₘ₊₃ < Cₘ₊₂³·Cₘ.",
+    "mathContext": "Ratio log-concavity $\\rho_{m+1}^2 > \\rho_m\\,\\rho_{m+2}$ with $\\rho_n = C_{n+1}/C_n$ is, cleared of denominators, $C_{m+1}^3 C_{m+3} < C_{m+2}^3 C_m$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "log-concavity",
+      "log-convexity",
+      "growth ratio",
+      "Catalan numbers",
+      "log-balancedness"
+    ],
+    "prerequisites": [
+      "Catalan recurrence",
+      "log-concavity definition"
+    ]
+  },
+  {
+    "id": "ann-catalan-ratio-recurrence",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 55,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "The division-free recurrence and positivity (reused from the parent)",
+    "content": "catalan_recurrence gives (n+2)·catalan (n+1) = 2(2n+1)·catalan n over ℤ, derived from Mathlib's central-binomial API by cancelling the positive factor n+1; catalan_pos gives 0 < catalan n. Both are verbatim from the verified parent entry. They are the sole arithmetic inputs, here instantiated at three consecutive indices m, m+1, m+2.",
+    "mathContext": "$(n+2)C_{n+1} = 2(2n+1)C_n$ and $C_n > 0$, from $\\mathrm{succ\\_mul\\_catalan\\_eq\\_centralBinom}$ and $\\mathrm{Nat.succ\\_mul\\_centralBinom\\_succ}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "recurrence",
+      "cancellation"
+    ],
+    "prerequisites": [
+      "central-binomial identities"
+    ]
+  },
+  {
+    "id": "ann-catalan-ratio-surplus",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 86,
+      "endLine": 148
+    },
+    "type": "technique",
+    "title": "The surplus method one degree up",
+    "content": "Scaling the target by K = 2(2m+1)(m+3)³(m+4) and substituting the three recurrence instances (the middle one cubed via (m+3)³c³ = 8(2m+3)³b³) collapses both K·(c³a) and K·(b³d) to explicit multiples of b⁴. Their difference is 8(2m+3)·(12m+27)·b⁴, where the polynomial surplus (2m+3)²(m+4)(m+2) − (2m+1)(2m+5)(m+3)² = 12m+27 > 0 is independent of the Catalan values. Cancelling K > 0 gives the strict inequality. Each collapse identity is one linear_combination; the surplus is one ring call.",
+    "mathContext": "$K(c^3a) = 8(2m+3)^3(m+4)(m+2)\\,b^4$, $K(b^3d) = 8(2m+1)(2m+5)(2m+3)(m+3)^2\\,b^4$, difference $= 8(2m+3)(12m+27)b^4 > 0$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "surplus method",
+      "linear_combination",
+      "log-concavity",
+      "polynomial identity"
+    ],
+    "prerequisites": [
+      "linear_combination tactic",
+      "ordered ring cancellation"
+    ]
+  },
+  {
+    "id": "ann-catalan-ratio-rational",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": {
+      "startLine": 150,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "Restatement as genuine ratio log-concavity over ℚ",
+    "content": "catalan_ratio_log_concave_rat restates the integer inequality as (Cₘ₊₂/Cₘ₊₁)² > (Cₘ₊₁/Cₘ)·(Cₘ₊₃/Cₘ₊₂), the literal strict log-concavity of the ratio sequence ρ. It is obtained by writing the gap between the two sides as the single positive quantity (c³a − b³d)/(a·b²·c): the numerator is positive by the integer theorem and the denominator by positivity of the Catalan numbers.",
+    "mathContext": "$\\left(\\tfrac{C_{m+2}}{C_{m+1}}\\right)^2 - \\tfrac{C_{m+1}}{C_m}\\cdot\\tfrac{C_{m+3}}{C_{m+2}} = \\tfrac{C_{m+2}^3 C_m - C_{m+1}^3 C_{m+3}}{C_m\\,C_{m+1}^2\\,C_{m+2}} > 0.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "log-concavity",
+      "growth ratio",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "rational arithmetic"
+    ]
+  }
+]
