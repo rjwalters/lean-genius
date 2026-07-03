@@ -122,6 +122,21 @@
       "targetId": "stirling-formula",
       "relationship": "related",
       "description": "Shares the Stirling name but concerns a distinct object: Stirling numbers (combinatorial) versus Stirling's asymptotic factorial formula (analytic)"
+    },
+    {
+      "targetId": "stirling-second-kind-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Direct follow-up answering this entry's first open question: the three-block column S(n,3) = (3ⁿ⁻¹ + 1)/2 − 2ⁿ⁻¹, obtained by the same recurrence-to-geometric-sum method one column further right."
+    },
+    {
+      "targetId": "stirling-second-kind-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Direct follow-up answering this entry's second open question: the general finite-difference closed form k!·S(n,k) = ∑ⱼ (−1)ʲ C(k,j)(k−j)ⁿ, which specializes to S(n,2) = 2ⁿ⁻¹ − 1 at k = 2."
+    },
+    {
+      "targetId": "stirling-first-kind-oq-01",
+      "relationship": "related",
+      "description": "The dual triangle: first-kind numbers c(n,k) count permutations by cycles and are the connection coefficients from falling factorials back to powers, inverse to the second-kind numbers here (powers to falling factorials). That entry proves the first-kind row sum ∑ₖ c(n,k) = n!."
     }
   ],
   "conclusion": {
