@@ -17,7 +17,11 @@
       "prime numbers",
       "sublinear growth"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subsets of {1,…,n}",
+      "perfect squares and products",
+      "multiplicative structure"
+    ]
   },
   {
     "id": "ann-e888-sqprod",
@@ -36,7 +40,11 @@
       "IsSquare",
       "multiplicative constraint"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the predicate IsSquare",
+      "products of four elements",
+      "the relation ad = bc"
+    ]
   },
   {
     "id": "ann-e888-required",
@@ -55,7 +63,11 @@
       "universal quantifier",
       "set comprehension"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Finset.Ioc index ranges",
+      "universal quantifiers over quadruples",
+      "the square-product condition"
+    ]
   },
   {
     "id": "ann-e888-maxsize",
@@ -74,7 +86,11 @@
       "axiomatization",
       "Nat.findGreatest"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "existence of a valid set of size k",
+      "supremum / Nat.findGreatest",
+      "axiomatized extremal quantities"
+    ]
   },
   {
     "id": "ann-e888-sarkozy",
@@ -93,7 +109,11 @@
       "sublinear growth",
       "multiplicative number theory"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "little-o notation",
+      "the extremal function maxValidSize(n)",
+      "multiplicative number theory"
+    ]
   },
   {
     "id": "ann-e888-primes",
@@ -112,7 +132,11 @@
       "unique factorization",
       "Prime Number Theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "prime numbers",
+      "unique factorization",
+      "the required condition"
+    ]
   },
   {
     "id": "ann-e888-lower-bound",
@@ -131,7 +155,11 @@
       "Prime Number Theorem",
       "asymptotic analysis"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the prime counting function π(n)",
+      "the Prime Number Theorem",
+      "lower bounds on maxValidSize"
+    ]
   },
   {
     "id": "ann-e888-empty",
@@ -150,7 +178,11 @@
       "empty set",
       "base case"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the required condition",
+      "vacuous truth",
+      "the empty set as a base case"
+    ]
   },
   {
     "id": "ann-e888-singleton",
@@ -169,7 +201,11 @@
       "trivial case",
       "ring tactic"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "singleton sets",
+      "the required condition",
+      "the ring tactic"
+    ]
   },
   {
     "id": "ann-e888-variants",
@@ -188,6 +224,10 @@
       "weakening conditions",
       "problem variants"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the square-product condition",
+      "squarefree numbers",
+      "weakening a hypothesis"
+    ]
   }
 ]
