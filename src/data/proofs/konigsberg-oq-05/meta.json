@@ -32,7 +32,8 @@
       "Mathlib's `even_degree_iff` phrases the criterion as a guarded implication `Even (G.degree x) ↔ (u ≠ v → x ≠ u ∧ x ≠ v)`; supplying the hypothesis u ≠ v is exactly what turns it into the clean endpoint biconditional.",
       "The genuinely new half is the converse endpoint ⟹ odd: the sibling file KonigsbergOQ01 only established non-endpoint ⟹ even, one direction short of 'exactly the endpoints'.",
       "The exact count = 2 is a strict sharpening of Mathlib's `card_odd_degree` (0 ∨ 2): the endpoint u is a concrete odd-degree witness, so the count cannot be 0 for an open trail.",
-      "The open/closed dichotomy is unified: distinct endpoints ⟹ odd-degree set = {u, v} (count 2); a circuit ⟹ odd-degree set = ∅ (count 0), the two vacuous/nonvacuous branches of the same guarded implication."
+      "The open/closed dichotomy is unified: distinct endpoints ⟹ odd-degree set = {u, v} (count 2); a circuit ⟹ odd-degree set = ∅ (count 0), the two vacuous/nonvacuous branches of the same guarded implication.",
+      "The 0-or-2 parity is the handshaking lemma in disguise: since Σ_w deg(w) = 2|E| is even, the number of odd-degree vertices is always even, so for an Eulerian trail it can only be 0 or 2. This entry pins down *which* vertices realize that parity — an open trail leaves one unmatched incidence at each of its two distinct endpoints (making them odd) and an even count at every interior vertex, while a circuit returns to its start and leaves every degree even."
     ],
     "prerequisites": [
       "Eulerian trails and circuits (SimpleGraph.Walk.IsEulerian)",
@@ -111,6 +112,15 @@
       "year": 2008,
       "venue": "Graduate Texts in Mathematics 244, Springer",
       "note": "Eulerian trails: the two odd-degree vertices are the endpoints of the trail."
+    },
+    {
+      "authors": [
+        "Carl Hierholzer"
+      ],
+      "title": "Über die Möglichkeit, einen Linienzug ohne Wiederholung und ohne Unterbrechung zu umfahren",
+      "year": 1873,
+      "venue": "Mathematische Annalen 6, 30–42",
+      "note": "The constructive proof of sufficiency: a connected graph with every vertex of even degree admits an Eulerian circuit — the converse direction posed in the open questions."
     }
   ]
 }
