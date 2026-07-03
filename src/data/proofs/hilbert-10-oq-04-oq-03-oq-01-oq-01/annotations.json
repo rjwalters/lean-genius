@@ -63,6 +63,27 @@
     ]
   },
   {
+    "id": "ann-transport",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
+    "range": { "startLine": 80, "endLine": 86 },
+    "type": "technique",
+    "title": "Verbatim Reuse: Transport Through the Bridge",
+    "content": "The entire payoff of the bridge lives in this one-line term-mode proof. `solvable_of_finset_gcd_dvd` does **not** re-derive the extended-Euclidean witness — it hands the parent's constructive `exists_vec_combo n a c` a proof of `vecGcd n a ∣ c`, obtained from the abstract hypothesis `Finset.univ.gcd a ∣ c` by a single `rw [vecGcd_eq_finset_gcd]`. Because the bridge is a genuine **equality** rather than an associate relation, this is a plain rewrite (no `Associated`-transport, no unit-juggling), and the parent's Bézout solver runs unchanged. This is precisely what 'discharged verbatim' means: the abstract divisibility criterion is converted to the concrete one by one equation, and every line of the parent's witness construction is reused with zero modification.",
+    "mathContext": "`exists_vec_combo n a c (by rw [vecGcd_eq_finset_gcd]; exact h)`: the hypothesis $\\mathrm{Finset.univ.gcd}\\,a \\mid c$ is rewritten to $\\mathrm{vecGcd}\\,n\\,a \\mid c$, the exact input the constructive solver expects.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proof transport along an equality",
+      "term-mode proof",
+      "constructive solver reuse",
+      "equality vs. associatedness"
+    ],
+    "prerequisites": [
+      "the bridge vecGcd = Finset.gcd",
+      "term-mode Lean proofs",
+      "the parent's exists_vec_combo"
+    ]
+  },
+  {
     "id": "ann-sanity",
     "proofId": "hilbert-10-oq-04-oq-03-oq-01-oq-01",
     "range": { "startLine": 103, "endLine": 111 },
