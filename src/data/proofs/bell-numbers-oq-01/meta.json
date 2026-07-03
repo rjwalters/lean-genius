@@ -24,6 +24,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: two unconnected Mathlib definitions",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Docstring motivating the identity Bₙ = Σ_{k=0}^{n} S(n,k): Mathlib carries Nat.bell (binomial recurrence) and Nat.stirlingSecond (triangular recurrence) with boundary values but never connects them. States the two main results — the horizontal Stirling recurrence stirlingSecond_horizontal and bell_eq_sum_stirlingSecond — then the imports (Stirling, Bell, Tactic), the namespace, and open Finset.",
+      "mathContext": "$B_n = \\sum_{k=0}^n S(n,k),\\qquad S(n+1,k+1) = \\sum_{j=0}^{n} \\binom{n}{j} S(j,k).$"
+    },
+    {
       "id": "horizontal-recurrence",
       "title": "Section I: The Horizontal Stirling Recurrence",
       "startLine": 38,
@@ -71,6 +79,21 @@
       "proofId": "uniformbell-multinomial-oq-01",
       "relationship": "Related Bell-number result",
       "description": "Companion formalization studying uniform Bell numbers and the multinomial structure of equal-block partitions; shares the set-partition setting and Mathlib's Nat.bell."
+    },
+    {
+      "proofId": "bell-numbers-oq-01-oq-01",
+      "relationship": "Extended by",
+      "description": "“The Exponential Generating Function of the Bell Numbers.” Builds on the row-sum identity proved here, packaging the Bell sequence into its EGF Σ Bₙ xⁿ/n! = exp(eˣ − 1)."
+    },
+    {
+      "proofId": "bell-numbers-oq-01-oq-02",
+      "relationship": "Extended by",
+      "description": "“Dobiński's Formula for the Bell Numbers,” Bₙ = (1/e) Σ_{k≥0} kⁿ/k! — the analytic counterpart to the finite Stirling row-sum identity established here."
+    },
+    {
+      "proofId": "stirling-second-kind-oq-01",
+      "relationship": "Related",
+      "description": "“Stirling Numbers of the Second Kind: the two-block column S(n,2) = 2ⁿ⁻¹ − 1.” Studies a single column of the same S(n,k) triangle whose full rows are summed here to recover the Bell numbers."
     }
   ],
   "leanFile": {
