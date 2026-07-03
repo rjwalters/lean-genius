@@ -305,6 +305,73 @@ example :
     ((Finset.Ico 5 10).filter (fun j => Nat.Prime j ∧ Nat.Prime (10 - j))).card = 2 := by
   decide
 
+/-! ## Dual Identity: Comet Height = the Textbook Goldbach Partition Function `g(2m)`
+
+`symmetricPairCount_eq_upperArm_partitions` indexes each Goldbach partition of `2 * m`
+by its **larger** prime `j ∈ [m, 2 * m)`. The dual indexing is by the **smaller** prime
+`p ∈ (0, m]`, and this is exactly the textbook **Goldbach partition function**
+
+    g(2m) = #{ p ≤ m : p and 2m − p both prime },
+
+the object plotted as the Goldbach comet in the literature. The reflection `k ↦ m − k`
+(inverse `p ↦ m − p`) matches each symmetric pair `(m − k, m + k)` about `m` with its
+smaller summand `p = m − k`, so the comet height equals this standard count as well.
+Composing the two identities exhibits the reflection symmetry `x ↦ 2 * m − x` between the
+lower arm `(0, m]` and the upper arm `[m, 2 * m)`. -/
+
+/-- **The comet count is the Goldbach partition function `g(2m)`.** The number of
+symmetric prime pairs about `m` equals the number of primes `p ∈ (0, m]` whose
+complement `2 * m − p` is also prime — the standard count of Goldbach partitions of
+`2 * m` indexed by their smaller summand `p ≤ m`. Dual to
+`symmetricPairCount_eq_upperArm_partitions`, via the reflection `k ↦ m − k` sending each
+pair to its smaller prime. -/
+theorem symmetricPairCount_eq_lowerArm_partitions (m : ℕ) :
+    symmetricPairCount m
+      = ((Finset.Ioc 0 m).filter
+          (fun p => Nat.Prime p ∧ Nat.Prime (2 * m - p))).card := by
+  have hinj : Set.InjOn (fun k => m - k)
+      ↑((Finset.range m).filter
+        (fun k => Nat.Prime (m - k) ∧ Nat.Prime (m + k))) := by
+    intro a ha b hb hab
+    have hA : a < m := Finset.mem_range.mp (Finset.mem_filter.mp (Finset.mem_coe.mp ha)).1
+    have hB : b < m := Finset.mem_range.mp (Finset.mem_filter.mp (Finset.mem_coe.mp hb)).1
+    simp only at hab
+    omega
+  rw [symmetricPairCount, ← Finset.card_image_of_injOn hinj]
+  congr 1
+  ext p
+  simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_range, Finset.mem_Ioc]
+  constructor
+  · rintro ⟨k, ⟨hkm, hpmk, hpmpk⟩, rfl⟩
+    refine ⟨⟨by omega, by omega⟩, hpmk, ?_⟩
+    have h : 2 * m - (m - k) = m + k := by omega
+    rw [h]; exact hpmpk
+  · rintro ⟨⟨hp0, hpm⟩, hpp, hp2mp⟩
+    refine ⟨m - p, ⟨by omega, ?_, ?_⟩, by omega⟩
+    · have h : m - (m - p) = p := by omega
+      rw [h]; exact hpp
+    · have h : m + (m - p) = 2 * m - p := by omega
+      rw [h]; exact hp2mp
+
+/-- **Reflection symmetry of the two arm-indexings.** Indexing the Goldbach partitions
+of `2 * m` by their larger prime (in `[m, 2 * m)`) or by their smaller prime (in
+`(0, m]`) yields the same count — both equal the comet height `symmetricPairCount m`.
+The underlying bijection is the reflection `x ↦ 2 * m − x` swapping the two arms. -/
+theorem upperArm_partitions_eq_lowerArm_partitions (m : ℕ) :
+    ((Finset.Ico m (2 * m)).filter
+        (fun j => Nat.Prime j ∧ Nat.Prime (2 * m - j))).card
+      = ((Finset.Ioc 0 m).filter
+          (fun p => Nat.Prime p ∧ Nat.Prime (2 * m - p))).card := by
+  rw [← symmetricPairCount_eq_upperArm_partitions,
+    ← symmetricPairCount_eq_lowerArm_partitions]
+
+-- The dual identity, checked against the concrete comet height `symmetricPairCount 5 = 2`.
+-- `2 * 5 = 10`: smaller-summand primes in `(0, 5]` with prime complement are
+-- `3 (= 3 + 7)` and `5 (= 5 + 5)`, matching the two upper-arm primes `7, 5`.
+example :
+    ((Finset.Ioc 0 5).filter (fun p => Nat.Prime p ∧ Nat.Prime (10 - p))).card = 2 := by
+  decide
+
 /-! ## Offset-Side Ceiling: the Comet is Bounded by Half the Offsets
 
 The bounds above are all *prime-side*: they count admissible larger primes in the
