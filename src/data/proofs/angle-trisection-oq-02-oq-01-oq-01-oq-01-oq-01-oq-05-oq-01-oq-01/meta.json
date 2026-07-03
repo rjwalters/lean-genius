@@ -101,28 +101,42 @@
       "title": "File Header — From Separable Degree to Full Degree",
       "startLine": 1,
       "endLine": 51,
-      "summary": "Recalls the parent equality |Aut_F(K)| = [K:F]_s, states that combining it with Mathlib's degree multiplicativity finSepDegree · finInsepDegree = finrank yields the factorisation [K:F] = |Aut_F(K)| · [K:F]_i, and previews the three consequences (divisibility, the inseparable-degree quotient, the separability boundary)."
+      "summary": "The module docstring recalls the parent equality |Aut_F(K)| = [K:F]_s, states that combining it with Mathlib's degree multiplicativity finSepDegree · finInsepDegree = finrank yields the factorisation [K:F] = |Aut_F(K)| · [K:F]_i, and previews the consequences (divisibility, the inseparable-degree quotient, positivity, and the separability boundary recovering the Galois fact)."
     },
     {
-      "id": "parent-equality",
-      "title": "The Parent Equality, Recalled",
+      "id": "setup-parent-equality",
+      "title": "Setup and the Parent Equality, Recalled",
       "startLine": 52,
-      "endLine": 77,
-      "summary": "card_algEquiv_eq_finSepDegree: reproves in one line that Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K for normal K/F, via Nat.card_congr of Normal.algHomEquivAut, keeping the file self-contained."
+      "endLine": 69,
+      "summary": "Imports (Normal.Defs, SeparableDegree, PurelyInseparable.Basic), opens Field and Module, fixes the extension data variable (F K : Type*) [Field F] [Field K] [Algebra F K], enters namespace NormalAutDegreeFormula, and reproves card_algEquiv_eq_finSepDegree in one line — Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K for normal K/F via Nat.card_congr of Normal.algHomEquivAut — keeping the file self-contained."
     },
     {
-      "id": "factorisation",
+      "id": "factorisation-divisibility",
       "title": "The Degree Factorisation and Divisibility",
-      "startLine": 78,
-      "endLine": 94,
-      "summary": "finrank_eq_card_algEquiv_mul_finInsepDegree (the headline factorisation [K:F] = |Aut_F(K)| · [K:F]_i for any normal extension) and card_algEquiv_dvd_finrank (|Aut_F(K)| ∣ [K:F] with the inseparable degree as cofactor)."
+      "startLine": 70,
+      "endLine": 91,
+      "summary": "finrank_eq_card_algEquiv_mul_finInsepDegree is the headline factorisation [K:F] = |Aut_F(K)| · [K:F]_i for any normal extension (no finiteness needed — the infinite case reads 0 = 0), obtained by feeding the parent equality into Field.finSepDegree_mul_finInsepDegree. card_algEquiv_dvd_finrank then reads off |Aut_F(K)| ∣ [K:F] with the inseparable degree as the explicit cofactor."
     },
     {
-      "id": "quotient-and-boundary",
-      "title": "The Inseparable Degree as Quotient, and the Separability Boundary",
-      "startLine": 95,
+      "id": "positivity-quotient",
+      "title": "Positivity and the Inseparable Degree as a Quotient",
+      "startLine": 92,
+      "endLine": 110,
+      "summary": "card_algEquiv_pos: for a finite normal extension 0 < Nat.card (K ≃ₐ[F] K), since it equals the (nonzero) separable degree. This positivity licenses card cancellation in finInsepDegree_eq_finrank_div_card, which expresses [K:F]_i = [K:F] / |Aut_F(K)| — the inseparable degree is exactly the part of the degree the automorphism group fails to see."
+    },
+    {
+      "id": "separability-boundary",
+      "title": "The Separability Boundary via the Factorisation",
+      "startLine": 111,
+      "endLine": 137,
+      "summary": "card_algEquiv_eq_finrank_iff_finInsepDegree_eq_one reads the factorisation as a cancellation: with |Aut_F(K)| > 0, |Aut_F(K)| = [K:F] ⟺ the inseparable cofactor [K:F]_i = 1. card_algEquiv_eq_finrank_iff_isSeparable then converts this to the intrinsic form via isSeparable_iff_finInsepDegree_eq_one: a finite normal extension has full automorphism count iff it is separable, i.e. Galois."
+    },
+    {
+      "id": "galois-corollary",
+      "title": "The Galois Corollary",
+      "startLine": 138,
       "endLine": 147,
-      "summary": "card_algEquiv_pos, finInsepDegree_eq_finrank_div_card ([K:F]_i = [K:F] / |Aut_F(K)|), card_algEquiv_eq_finrank_iff_finInsepDegree_eq_one and card_algEquiv_eq_finrank_iff_isSeparable (the separability boundary read through the factorisation), and the Galois corollary card_algEquiv_eq_finrank_of_isSeparable."
+      "summary": "card_algEquiv_eq_finrank_of_isSeparable: a finite normal separable (= Galois) extension has exactly Nat.card (K ≃ₐ[F] K) = finrank F K automorphisms, dropping out of the factorisation once the inseparable degree is 1 — recovering Mathlib's IsGalois.card_aut_eq_finrank and closing namespace NormalAutDegreeFormula."
     }
   ],
   "crossReferences": [
