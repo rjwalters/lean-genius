@@ -64,20 +64,41 @@
   {
     "id": "ann-aoc0705oq02-fullline",
     "proofId": "area-of-circle-oq-07-oq-05-oq-02",
-    "range": { "startLine": 116, "endLine": 130 },
+    "range": { "startLine": 116, "endLine": 124 },
     "type": "theorem",
     "title": "gaussian_second_moment_eq_gamma — Full-Line Moment = Γ(3/2)",
-    "content": "The parent value as a Gamma value: $\\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\Gamma(\\tfrac32)$, obtained by rewriting the parent's $\\tfrac{\\sqrt\\pi}{2}$ (`AreaOfCircleOQ07OQ05.gaussian_second_moment`) against `gamma_three_half`. The companion `gaussian_second_moment_Ioi_eq` records the explicit half-line value $\\int_0^\\infty x^2 e^{-x^2} = \\tfrac{\\sqrt\\pi}{4} = \\tfrac12\\Gamma(\\tfrac32)$.",
-    "mathContext": "Two routes to $\\tfrac{\\sqrt\\pi}{2}$ cross-check each other: the parent reaches it by integration by parts on the whole line, this entry as the special value $\\Gamma(\\tfrac32)$. Their agreement links an elementary analytic computation to a special-function evaluation, and confirms the half-line/full-line factor of two.",
+    "content": "The parent value re-expressed as a Gamma value: $\\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\Gamma(\\tfrac32)$. The parent entry (`AreaOfCircleOQ07OQ05.gaussian_second_moment`) already evaluated this integral to $\\tfrac{\\sqrt\\pi}{2}$ by integration by parts; here that closed value is simply rewritten against `gamma_three_half` ($\\Gamma(\\tfrac32) = \\tfrac{\\sqrt\\pi}{2}$), turning an elementary analytic result into a special-function identity. The point is not a new computation but a *reinterpretation*: the second moment of the standard Gaussian weight is a value of the Gamma function, exposing why the moments of $e^{-x^2}$ are governed by half-integer Gamma values.",
+    "mathContext": "∫_{-∞}^{∞} x²e^{-x²} dx = Γ(3/2) = √π/2. Obtained by rewriting the parent's √π/2 against gamma_three_half — an identification, not a re-derivation.",
     "significance": "key",
     "relatedConcepts": [
-      "even symmetry",
-      "special-function value",
-      "consistency cross-check"
+      "Gaussian second moment",
+      "half-integer Gamma values",
+      "moments as special-function values",
+      "reinterpretation of a closed form"
     ],
     "prerequisites": [
       "parent's full-line second moment √π/2",
-      "Γ(3/2) = √π/2"
+      "Γ(3/2) = √π/2 (gamma_three_half)"
+    ]
+  },
+  {
+    "id": "ann-aoc0705oq02-consistency",
+    "proofId": "area-of-circle-oq-07-oq-05-oq-02",
+    "range": { "startLine": 125, "endLine": 131 },
+    "type": "key-step",
+    "title": "gaussian_second_moment_Ioi_eq — the half-line/full-line factor of two",
+    "content": "The consistency corollary records the explicit half-line value $\\int_0^\\infty x^2 e^{-x^2}\\,dx = \\tfrac{\\sqrt\\pi}{4} = \\tfrac12\\Gamma(\\tfrac32)$. Because the integrand $x^2 e^{-x^2}$ is even, the half-line integral is exactly half the full-line one, so this pins the factor of two between the substitution route (which naturally produces the $(0,\\infty)$ integral $\\Gamma(\\tfrac32) = \\int_{u>0} e^{-u} u^{1/2}$ of Part II) and the parent's whole-line moment. Having both the $(0,\\infty)$ form $\\tfrac{\\sqrt\\pi}{4}$ and the $(-\\infty,\\infty)$ form $\\tfrac{\\sqrt\\pi}{2}$ verified against the same $\\Gamma(\\tfrac32)$ closes the cross-check: the elementary integration-by-parts computation and the Gamma-substitution computation agree on the nose.",
+    "mathContext": "∫_0^∞ x²e^{-x²} dx = √π/4 = ½·Γ(3/2); by even symmetry this is half the full-line moment √π/2, fixing the half-line/full-line factor of two.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "even symmetry of x²e^{-x²}",
+      "half-line vs full-line integral",
+      "consistency cross-check",
+      "factor of two"
+    ],
+    "prerequisites": [
+      "gaussian_second_moment_eq_gamma",
+      "even-function integral symmetry"
     ]
   }
 ]

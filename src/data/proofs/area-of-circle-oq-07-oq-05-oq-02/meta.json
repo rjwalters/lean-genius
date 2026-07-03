@@ -123,9 +123,17 @@
       "id": "full-line",
       "title": "Part III: The Full-Line Moment is Γ(3/2)",
       "startLine": 116,
-      "endLine": 130,
-      "summary": "theorem gaussian_second_moment_eq_gamma: ∫_ℝ x² e^{-x²} = Γ(3/2), rewriting the parent's value √π/2 (AreaOfCircleOQ07OQ05.gaussian_second_moment) against gamma_three_half. theorem gaussian_second_moment_Ioi_eq: the explicit half-line value ∫_{x>0} x² e^{-x²} = √π/4, i.e. ½·Γ(3/2).",
-      "mathContext": "$\\int_{-\\infty}^{\\infty} x^2 e^{-x^2} = \\Gamma\\!\\left(\\tfrac32\\right),\\quad \\int_0^\\infty x^2 e^{-x^2} = \\tfrac{\\sqrt\\pi}{4}$"
+      "endLine": 124,
+      "summary": "theorem gaussian_second_moment_eq_gamma: ∫_ℝ x² e^{-x²} = Γ(3/2), rewriting the parent's value √π/2 (AreaOfCircleOQ07OQ05.gaussian_second_moment) against gamma_three_half — an identification of the Gaussian second moment with a half-integer Gamma value, not a fresh computation.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x^2 e^{-x^2} = \\Gamma\\!\\left(\\tfrac32\\right) = \\tfrac{\\sqrt\\pi}{2}$"
+    },
+    {
+      "id": "consistency",
+      "title": "Part IV: Half-Line Consistency Check (½·Γ(3/2))",
+      "startLine": 125,
+      "endLine": 131,
+      "summary": "theorem gaussian_second_moment_Ioi_eq: the explicit half-line value ∫_{x>0} x² e^{-x²} = √π/4 = ½·Γ(3/2). By even symmetry of x²e^{-x²} this is half the full-line moment, pinning the factor of two between the substitution route's (0,∞) integral and the parent's whole-line result.",
+      "mathContext": "$\\int_0^\\infty x^2 e^{-x^2} = \\tfrac{\\sqrt\\pi}{4} = \\tfrac12\\,\\Gamma\\!\\left(\\tfrac32\\right)$ — half the full-line moment by even symmetry."
     }
   ],
   "mainTheorems": [
