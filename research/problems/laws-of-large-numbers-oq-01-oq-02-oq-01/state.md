@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S4 ready — variance L¹-bound + truncation remain)
+**Phase**: ACT (S4a variance L¹-bound SHIPPED — S4b truncation remains)
 **Since**: 2026-07-03
-**Iteration**: 4 (S3 martingale assembly SHIPPED; S2 Kronecker shipped; S1 survey)
+**Iteration**: 5 (S4a Kolmogorov-from-variance-sum SHIPPED; S3 martingale; S2 Kronecker; S1 survey)
 
 ## Current Focus
 
@@ -47,15 +47,18 @@ None in-flight. Next work item is S4 below.
 
 ## Next Action
 
-- **S4a (next session, self-contained Lean build):** prove
-  `kolmogorov_convergence` (no `hbdd` hypothesis) by discharging the L¹ bound
-  from `∑ Var < ∞` using the named lemmas above. This is the single cleanest
-  remaining increment and needs no new foundations.
-- **S4b:** the truncation moment-estimate layer, then final M–Z assembly.
+- **S4a — DONE (iteration 5, PR pending).** `ae_tendsto_sum_of_indep_of_variance_bdd`
+  discharges the `hbdd` L¹ bound from `∑_{i≤n} Var(Xᵢ) ≤ V`, plus the two supporting
+  lemmas `eLpNorm_two_sq_eq_evariance` (the mean-zero `‖X‖₂² = eVar[X]` bridge — Mathlib
+  gap) and `eLpNorm_two_partialSum_le` (uniform L² bound). All 0-axiom, build ✔ 7743 jobs.
+- **S4b (next):** the truncation moment-estimate layer — `Y_i = X_i·1{|X_i| ≤ i^{1/p}}`,
+  `∑ P(X_i≠Y_i)<∞` (Borel–Cantelli), centered-truncation control, variance-sum estimate
+  `∑ Var(Y_i)/i^{2/p} < ∞` (uses `p < 2`). Then feed S4a into the Kronecker lift
+  `ae_tendsto_kronecker_average_zero` for the final M–Z normalisation.
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue)
-- Current approach attempts: 0 (S4a variance bound not yet started)
-- Approaches tried: 3 (S1 literature/decomposition; S2 Abel+Toeplitz;
-  S3 natural-filtration martingale + upcrossing engine)
+- Total attempts: 5 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound)
+- Current approach attempts: 1 (S4a variance bound — landed on 2nd build)
+- Approaches tried: 4 (S1 literature/decomposition; S2 Abel+Toeplitz;
+  S3 natural-filtration martingale + upcrossing engine; S4a orthogonality + eLpNorm bridge)
