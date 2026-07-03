@@ -82,16 +82,16 @@
       "title": "Infinitely Many Odd Abundant Numbers",
       "startLine": 52,
       "endLine": 68,
-      "summary": "`infinitely_many_odd_abundant : {n | Odd n ∧ n.Abundant}.Infinite` via `Set.infinite_of_injective_forall_mem` applied to the injective family odd_mul_succ_injective and the membership proof odd_abundant_945_mul. Complements `infinitely_many_abundant` (even family 12·(k+1)); no diagonal argument or cardinality bookkeeping.",
-      "mathContext": "An injective ℕ-indexed family of in-set witnesses forces the set to be infinite: Set.infinite_of_injective_forall_mem : Injective f → (∀ a, f a ∈ s) → s.Infinite."
+      "summary": "`infinitely_many_odd_abundant : {n | Odd n ∧ n.Abundant}.Infinite` via `Set.infinite_of_injective_forall_mem` applied to the injective family `odd_mul_succ_injective` and the membership proof `odd_abundant_945_mul`. Complements `infinitely_many_abundant` (even family 12·(k+1)); here oddness is preserved precisely because every multiplier 2k+1 is odd and the seed 945 — the smallest odd abundant number — is odd.",
+      "mathContext": "An injective ℕ-indexed family of in-set witnesses forces the set to be infinite: `Set.infinite_of_injective_forall_mem` packages exactly 'injective index map + every image lies in the set ⟹ set infinite'."
     },
     {
       "id": "axiom-audit",
       "title": "Axiom Audit",
       "startLine": 70,
       "endLine": 75,
-      "summary": "`#print axioms infinitely_many_odd_abundant` confirms the result depends only on the foundational propext / Classical.choice / Quot.sound — no Lean.ofReduceBool (which native_decide would introduce) and no sorryAx. The proof is genuinely axiom-free, inheriting the kernel-decide abundant_945 without recomputation.",
-      "mathContext": "Axiom footprint = that of the two imported dependencies; kernel decide (not native_decide) keeps Lean.ofReduceBool absent, so the entry qualifies as verified / 0-axiom."
+      "summary": "`#print axioms infinitely_many_odd_abundant` confirms the result depends only on the standard foundational axioms (propext, Classical.choice, Quot.sound) and NOT on `Lean.ofReduceBool` (which `native_decide` would introduce) or `sorryAx` — substantiating the entry's axiom-free, 0-sorry status. The namespace then closes.",
+      "mathContext": "The kernel-reducible seed `abundant_945` is verified by `decide`/`norm_num` (not `native_decide`), so it introduces no `Lean.ofReduceBool`; per the project's axiom-integrity policy the ordinary foundational axioms do not count against an axiom-free claim."
     }
   ],
   "mainTheorems": [
