@@ -114,12 +114,12 @@
     {
       "targetId": "mason-stothers-theorem-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Follow-up entry that develops this one: “Mason–Stothers via distinct roots: deg(rad p) = #{distinct roots of p} over an algebraically closed field”. The parent entry (mason-stothers-theorem-oq-01) proves the polynomial ABC inequality deg c < deg(rad(a·b·c)), leaving the radical rad(p) — the product of the distinct monic irreducible factors of p — as an al…"
+      "description": "“Mason–Stothers via distinct roots: deg(rad p) = #{distinct roots of p} over an algebraically closed field.” Answers the first open question of this entry: it opens the radical black box by proving (radical p).natDegree = p.roots.toFinset.card, so over an algebraically closed field the ABC degree bound deg c < deg(rad(a·b·c)) becomes a literal count of the distinct roots of the product a·b·c."
     },
     {
       "targetId": "mason-stothers-theorem-oq-01-oq-02",
       "relationship": "extends",
-      "description": "Follow-up entry that develops this one: “Davenport's inequality as a 0-axiom corollary of Mason–Stothers (characteristic zero)”. Davenport's inequality bounds how small the degree of f³ − g² can be relative to f: for coprime polynomials f, g over a characteristic-zero field with f non-constant and f³ ≠ g², deg f + 2 ≤ 2·deg(f³ − g²), i.e."
+      "description": "“Davenport's inequality as a 0-axiom corollary of Mason–Stothers (characteristic zero).” Answers the second open question of this entry: it derives Davenport's bound deg f + 2 ≤ 2·deg(f³ − g²) (for coprime f, g with f non-constant and f³ ≠ g²) by applying mason_stothers_charZero to the triple f³ + (−g²) = f³ − g². It is the polynomial shadow of Hall's conjecture on the size of |x³ − y²| for integers."
     }
   ],
   "sections": [
