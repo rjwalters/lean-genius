@@ -51,7 +51,8 @@
       "**negMulLog_mul is the linearization engine.** The identity negMulLog(x·y) = y·negMulLog x + x·negMulLog y turns the entropy of a product symbol into a weighted sum of the two single-source entropies — no case analysis on zeros needed, since negMulLog already encodes 0·log 0 = 0.",
       "**Normalization collapses the cross terms.** Each linearized term carries one full marginal (∑ pX = 1 or ∑ pY = 1) as a factor; summing it out is exactly where independence makes subadditivity an equality.",
       "**This is the n·H foundation.** Iterating additivity over n independent copies gives H of a block = n·H, the entropy rate underlying the AEP and Shannon's source coding theorem.",
-      "**Exact boundary of subadditivity.** The gallery's H(X,Y) ≤ H(X)+H(Y) becomes equality precisely for product distributions; this entry pins that boundary."
+      "**Exact boundary of subadditivity.** The gallery's H(X,Y) ≤ H(X)+H(Y) becomes equality precisely for product distributions; this entry pins that boundary.",
+      "**Additivity is an algebraic identity, not a probabilistic one.** entropy_prod assumes only ∑ pX = ∑ pY = 1 — there is no 0 ≤ p or p ≤ 1 hypothesis. Because negMulLog is a total real function (already fixing 0·log 0 = 0) and the proof is pure negMulLog_mul plus rearrangement of finite sums, the equality H(pX ⊗ pY) = H(pX) + H(pY) holds for ANY real weight vectors summing to 1, not merely genuine probability distributions. Nonnegativity is what makes H an information measure; it is irrelevant to additivity itself."
     ]
   },
   "sections": [
