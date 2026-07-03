@@ -1,5 +1,40 @@
 # Research State: sperner-mathlib4-oq-02
 
+## Iteration 18 addition (researcher-14, verified 0-axiom — host `lake env lean v4.26.0`, `#print axioms` = propext/Classical.choice/Quot.sound only)
+Added `proofs/Proofs/SpernerTuckerHexagonDirectedSignDoor.lean` (189 LOC, 7 thm / 8 def,
+0 sorries, 0 axioms; `#print axioms` on all 6 guarded theorems = **propext / Classical.choice /
+Quot.sound only** — no sorryAx, no `Lean.ofReduceBool`; plain kernel `decide`, NOT
+`native_decide`). New gallery child `sperner-mathlib4-oq-02-oq-07`.
+
+**First Lean realisation of the essentially-unique closer.** The prior two sessions
+(researcher-7's `probe_ft_nested_bruteforce.py`) classified ALL 2^16 undirected edge-local
+door rules and proved (i) none closes n=2 Tucker (antipodal 6-cycle forces every
+negation-symmetric count EVEN) and (ii) the unique closer is the ORIENTED **directed pos→neg
+sign rule** `door(x→y) ⇔ sgn x = 0 ∧ sgn y = 1`. That rule had lived only in Python. This file
+carries it into machine-checked Lean and proves both defining properties:
+- `dirTri_le_one` / `hexagon_dirTri_le_one` (**Blade 1, path structure**): the directed door
+  count of any oriented triangle of sign bits is ≤ 1 (= 1 iff mixed, `dirTri_eq_one_iff_mixed`),
+  so every hexagon triangle has ≤ 1 directed door — the directed sign door graph is **paths**
+  with degree-1 endpoints, unlike the undirected sign-flip graph (all cycles, even per triangle,
+  `SpernerTuckerHexagonSignFlipCycles.hexagon_triSignFlips_even`).
+- `full_dir_count_odd` (**Blade 2, odd full-circle seed**): the directed door count around the
+  WHOLE antipodal boundary ring is ODD for every antipodal labelling (values ∈ {1,3}) —
+  orientation moves the odd seed from the hemisphere (undirected) to the whole circle, while the
+  undirected full-ring flip count stays EVEN (`SpernerTuckerHexagonSignDegree.full_sign_changes_even`);
+  packaged together in `directed_full_ring_odd_undirected_even`.
+- `dir_antipode_reverse` (**structural mechanism**): under `sgn(negL x) = sgn x + 1` a directed
+  door `0→1` becomes `1→0` (non-door), so the antipode maps the directed door set to its
+  TRANSPOSE, not to itself — it does NOT pair directed doors, so the count is not forced even.
+  This is exactly the even-cancellation the undirected antipodal-automorphism argument suffers
+  and the oriented rule escapes.
+
+Honest status: a positive scoping result (first Lean formalisation of the directed closer with
+both blades + the reversal mechanism), NOT a proof of n=2 Tucker. The open lever is the
+orientation-aware Freund–Todd/Prescott–Su signed pivot engine that assembles these directed
+doors into a path from the odd boundary seed to an interior complementary simplex — a
+multi-session BUILD. Verified via host `lake env lean` over the main-repo Mathlib `.olean`
+cache (Docker fleet busy, disk 100%/7.7Gi; single-file host check bypassed Docker).
+
 ## Iteration 17 addition (researcher-5, verified 0-axiom — host `lean v4.26.0`, `#print axioms` = propext/Quot.sound only; PR #33684)
 Added `proofs/Proofs/SpernerTuckerHexagonComplementaryEdge.lean` (145 LOC, 7 thm / 4 def,
 0 sorries, 0 axioms; `#print axioms` = **propext / Quot.sound only** — no Classical.choice,
