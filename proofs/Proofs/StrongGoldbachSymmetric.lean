@@ -529,4 +529,67 @@ theorem symmetricPairCount_le_notDvd {m p : ℕ} (hp : Nat.Prime p)
 example : ¬(Nat.Prime (15 - 3) ∧ Nat.Prime (15 + 3)) :=
   not_symmetric_pair_of_prime_dvd (p := 3) (by decide) (by decide) (by decide) (by decide)
 
+/-! ## Closing the Sieve Bound: an Explicit `m − m / p` Ceiling
+
+The divisibility sieve `symmetricPairCount_le_notDvd` bounds the comet height by the
+number of offsets `k < m` *not* divisible by a prime factor `p` of `m`.  When `p ∣ m`
+that count has a closed form: the offsets divisible by `p` are exactly
+`p · 0, p · 1, …, p · (m / p − 1)`, so there are `m / p` of them and `m − m / p` remain.
+This turns the sieve into an explicit density ceiling from any prime factor of `m`,
+
+    symmetricPairCount m ≤ m − m / p  =  (1 − 1 / p) · m,
+
+the closed-form analogue of `symmetricPairCount_le_half`.  Indeed the parity ceiling is
+the `p = 2` case: for even `m`, `m − m / 2 = m / 2 = ⌈m / 2⌉`.  A midpoint divisible by a
+*small* prime `p` has the most offsets removed (`1 / p` of them), tightening the ceiling. -/
+
+/-- **Count of multiples of `p` in `[0, m)` when `p ∣ m`.**  The offsets `k < m` divisible
+by `p` are exactly `p · 0, …, p · (m / p − 1)`, so there are `m / p` of them.  Proved by
+identifying the filtered set with the image of `range (m / p)` under `j ↦ p · j`, an
+injection since `p > 0`. -/
+theorem card_range_filter_dvd {m p : ℕ} (hp : 0 < p) (hpm : p ∣ m) :
+    ((Finset.range m).filter (fun k => p ∣ k)).card = m / p := by
+  have hm : p * (m / p) = m := Nat.mul_div_cancel' hpm
+  have hbij : (Finset.range m).filter (fun k => p ∣ k)
+      = (Finset.range (m / p)).image (fun j => p * j) := by
+    ext k
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]
+    constructor
+    · rintro ⟨hkm, j, rfl⟩
+      refine ⟨j, ?_, rfl⟩
+      have hlt : p * j < p * (m / p) := by rw [hm]; exact hkm
+      exact lt_of_mul_lt_mul_left hlt (Nat.zero_le p)
+    · rintro ⟨j, hj, rfl⟩
+      refine ⟨?_, dvd_mul_right p j⟩
+      calc p * j < p * (m / p) := mul_lt_mul_of_pos_left hj hp
+        _ = m := hm
+  rw [hbij, Finset.card_image_of_injective _ (mul_right_injective₀ hp.ne'),
+    Finset.card_range]
+
+/-- **Explicit `m − m / p` ceiling on the Goldbach comet height.**  For a prime `p` dividing
+the midpoint `m` with `p < m`,
+
+    symmetricPairCount m ≤ m − m / p,
+
+i.e. `2 * m` has at most `(1 − 1 / p) · m` Goldbach partitions.  This closes the sieve bound
+`symmetricPairCount_le_notDvd` to a closed form (the count of non-multiples of `p` in `[0, m)`
+being `m − m / p` by `card_range_filter_dvd`), the divisibility analogue of the parity ceiling
+`symmetricPairCount_le_half`. -/
+theorem symmetricPairCount_le_sub_div {m p : ℕ} (hp : Nat.Prime p)
+    (hpm : p ∣ m) (hpm' : p < m) :
+    symmetricPairCount m ≤ m - m / p := by
+  refine (symmetricPairCount_le_notDvd hp hpm hpm').trans ?_
+  have hsplit : ((Finset.range m).filter (fun k => p ∣ k)).card
+      + ((Finset.range m).filter (fun k => ¬ p ∣ k)).card
+      = (Finset.range m).card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  rw [Finset.card_range] at hsplit
+  have hcount := card_range_filter_dvd hp.pos hpm
+  omega
+
+-- Concrete ceiling: `m = 15 = 3 · 5`, `p = 3` gives `15 − 15 / 3 = 10`, and the comet
+-- height of `30` is `3` (`7+23, 11+19, 13+17`), so `3 ≤ 10`.
+example : symmetricPairCount 15 ≤ 15 - 15 / 3 :=
+  symmetricPairCount_le_sub_div (p := 3) (by decide) (by decide) (by decide)
+
 end StrongGoldbach
