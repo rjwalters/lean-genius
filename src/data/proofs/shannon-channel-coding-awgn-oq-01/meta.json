@@ -1,0 +1,171 @@
+{
+  "id": "shannon-channel-coding-awgn-oq-01",
+  "slug": "shannon-channel-coding-awgn-oq-01",
+  "title": "AWGN Mutual-Information Chain Rule I(X;Y) = h(Y) − h(Z) via Translation Invariance of Differential Entropy",
+  "description": "Supplies the operational mutual-information layer the parent AWGN capacity proof left open. For the additive channel Y = X + Z with independent noise Z of density p_Z, the conditional density of Y given X = x is p_Z translated by x, so the conditional differential entropy h(Y | X = x) = h(Z) for every input value — the mathematical heart is the translation invariance of differential entropy (MeasureTheory.integral_sub_right_eq_self). Averaging over any normalised input density gives h(Y | X) = h(Z), and the entropy chain rule I(X;Y) := h(Y) − h(Y | X) collapses to I(X;Y) = h(Y) − h(Z). Specialising to a Gaussian output of power P + N and Gaussian noise of power N recovers the operational capacity I(X;Y) = ½ log(1 + P/N) for any normalised input. 133 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries.",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ShannonChannelCodingAWGN"
+    ],
+    "opens": [
+      "DifferentialEntropy",
+      "MeasureTheory",
+      "Real"
+    ],
+    "namespace": "ShannonAWGNMutualInfo",
+    "lineCount": 133,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/ShannonChannelCodingAWGNOQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ShannonChannelCodingAWGNOQ01.lean",
+    "tags": [
+      "information-theory",
+      "entropy",
+      "differential-entropy",
+      "mutual-information",
+      "chain-rule",
+      "translation-invariance",
+      "awgn",
+      "shannon",
+      "channel-capacity",
+      "measure-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 133,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "differentialEntropy_translation: h(f(· − a)) = h(f) — the mathematical heart. Differential entropy is invariant under translation of its density because the Lebesgue integral is translation invariant (MeasureTheory.integral_sub_right_eq_self applied to the integrand u ↦ f(u)·log f(u)). This single fact is what makes an additive channel's conditional entropy independent of the input value.",
+      "condEntropy_additive: h(Y | X = x) = h(Z) for the additive channel — the conditional density of Y given X = x is the noise density shifted by x, p_{Y|X=x}(y) = p_Z(y − x), so its differential entropy is h(Z) for every input value x. Immediate from translation invariance.",
+      "avgCondEntropy_additive: h(Y | X) = h(Z) — the input-averaged conditional differential entropy ∫ p_X(x)·h(Y | X = x) dx collapses to h(Z) whenever the input density is normalised (∫ p_X = 1), since every fibre entropy already equals the constant h(Z) (integral_mul_const then ∫ p_X = 1).",
+      "mutualInformationAdditive: the operational mutual information of the additive channel defined via the entropy chain rule I(X;Y) := h(Y) − h(Y | X), with h(Y | X) the input-averaged conditional differential entropy — the definition named by the open question.",
+      "mutualInformation_chain_rule: I(X;Y) = h(Y) − h(Z) — with a normalised input the operational mutual information collapses to the entropy difference. This is the chain-rule decomposition the parent AWGN entry took as informal justification, now a theorem for a general additive independent-noise channel.",
+      "awgn_mutualInformation_eq_capacity: I(X;Y) = ½ log(1 + P/N) — specialising the output to a Gaussian of power P + N and the noise to a Gaussian of power N, and invoking the parent's awgn_capacity_achieved, the operational mutual information equals the AWGN capacity for ANY normalised input density. This upgrades the parent's entropy-difference assembly to a statement about the operationally defined mutual information.",
+      "mutualInformation_add_noiseEntropy: I(X;Y) + h(Z) = h(Y) — the chain rule rearranged, exhibiting mutual information as the differential entropy the output gains over the noise."
+    ],
+    "prerequisites": [
+      "Translation invariance of the Lebesgue integral: MeasureTheory.integral_sub_right_eq_self (∫ x, f(x − a) = ∫ x, f x, for a right-invariant measure such as volume on ℝ)",
+      "Pulling a constant out of an integral: MeasureTheory.integral_mul_const (∫ x, f x · r = (∫ x, f x) · r)",
+      "Differential entropy h(f) = −∫ f(x) log f(x) dx and the Gaussian differential entropy / max-entropy facts (ShannonEntropyOQ01)",
+      "Parent: shannon-channel-coding-awgn (the AWGN capacity C = ½ log(1 + P/N) and its entropy-difference assembly awgn_capacity_achieved)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.integral_sub_right_eq_self",
+        "description": "For a right-translation-invariant measure (volume on ℝ), the integral is unchanged by translating the argument: ∫ x, f(x − a) = ∫ x, f x. Applied to the integrand u ↦ f(u)·log f(u), this is exactly the translation invariance of differential entropy — the substantive input of the entry.",
+        "module": "Mathlib.MeasureTheory.Group.Integral"
+      },
+      {
+        "theorem": "MeasureTheory.integral_mul_const",
+        "description": "Linearity: a constant factor can be pulled out of a Bochner integral, ∫ x, f x · r = (∫ x, f x) · r. Used to reduce the input-averaged conditional entropy ∫ p_X(x)·h(Z) dx to h(Z)·∫ p_X = h(Z) once the input density is normalised.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Shannon's capacity for the additive white Gaussian noise channel, C = ½ log(1 + P/N), is derived from the continuous-alphabet mutual information I(X;Y) = h(Y) − h(Y | X), where for an additive channel Y = X + Z with independent noise the conditional entropy h(Y | X) equals the noise entropy h(Z), giving the chain rule I(X;Y) = h(Y) − h(Z). The parent formalization assembled the capacity value from the two differential entropies h(Y) and h(Z) but took the chain-rule identity itself as informal. The reason h(Y | X) = h(Z) is a single structural fact: given the input X = x, the output Y = x + Z has the noise density merely shifted by x, and differential entropy — unlike ordinary (discrete) entropy trivially, but here as a genuine consequence of the translation invariance of Lebesgue measure — does not change under translation of the density.",
+    "problemStatement": "Formalize the operational continuous-alphabet mutual information for the additive channel Y = X + Z and prove the chain-rule decomposition I(X;Y) = h(Y) − h(Z), upgrading the entropy-difference assembly of the parent AWGN capacity entry to a statement about the operationally defined mutual information. Scope: the mutual information is taken in its entropy-decomposition form I(X;Y) = h(Y) − h(Y | X) with h(Y | X) the input-averaged conditional differential entropy — the chain-rule form named in the question — not the joint-density double-integral (KL) form.",
+    "proofStrategy": "Three steps compose. (1) Translation invariance of differential entropy: h(f(· − a)) = h(f), proved by applying MeasureTheory.integral_sub_right_eq_self to the integrand u ↦ f(u)·log f(u). (2) The conditional entropy of the additive channel: the conditional density of Y given X = x is p_Z(· − x), so h(Y | X = x) = h(p_Z(· − x)) = h(Z) for every x (condEntropy_additive), and averaging over a normalised input density p_X gives h(Y | X) = ∫ p_X(x)·h(Z) dx = h(Z) (avgCondEntropy_additive, via integral_mul_const and ∫ p_X = 1). (3) The chain rule: defining I(X;Y) := h(Y) − h(Y | X) (mutualInformationAdditive), the collapse of the conditional entropy yields I(X;Y) = h(Y) − h(Z) (mutualInformation_chain_rule). Specialising the output to a Gaussian of power P + N and the noise to a Gaussian of power N and invoking the parent's awgn_capacity_achieved gives I(X;Y) = ½ log(1 + P/N) for any normalised input (awgn_mutualInformation_eq_capacity).",
+    "keyInsights": [
+      "Translation invariance of differential entropy is the whole point. For the additive channel the only thing that changes between the conditional law p_{Y|X=x} and the noise law p_Z is a shift by x; differential entropy is blind to that shift because the Lebesgue integral is (integral_sub_right_eq_self). This is what makes h(Y | X = x) independent of x and equal to h(Z).",
+      "The averaging is trivial once the fibres are constant. Because h(Y | X = x) = h(Z) for every x, the conditional entropy h(Y | X) = ∫ p_X(x)·h(Z) dx is just h(Z) times the total input mass; normalisation ∫ p_X = 1 finishes it. No properties of the input distribution beyond normalisation are used.",
+      "The chain rule holds for the whole additive family, not just Gaussians. mutualInformation_chain_rule takes arbitrary densities for input, noise and output; Gaussianity enters only in the final specialisation that identifies the entropy difference with ½ log(1 + P/N).",
+      "The capacity theorem now speaks about mutual information. The parent proved a statement about a difference of two differential entropies; awgn_mutualInformation_eq_capacity restates it as I(X;Y) = ½ log(1 + P/N) with I defined operationally by the chain rule, closing the gap the parent flagged as open.",
+      "Honest scope and 'mathlib' badge. Mutual information is defined here in its entropy-decomposition form I = h(Y) − h(Y | X), not reconstructed from the joint-density double integral ∫∫ p(x,y) log(p(x,y)/(p(x)p(y))); the equivalence of the two forms is standard but not formalized here. The substantive Mathlib input is the translation invariance of the integral (integral_sub_right_eq_self); the proof is 0-axiom (propext / Classical.choice / Quot.sound only)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Open Question, Heart, and Scope",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "States the open question — define the operational mutual information for Y = X + Z and prove I(X;Y) = h(Y) − h(Z) — and the answer: the conditional density is the noise density shifted by the input, so translation invariance of differential entropy forces h(Y | X = x) = h(Z). Records the scope note that I is taken in its entropy-decomposition form, not the joint-density KL form, and that the file is axiom-free.",
+      "mathContext": "$I(X;Y) = h(Y) - h(Y\\mid X) = h(Y) - h(Z)$"
+    },
+    {
+      "id": "translation-invariance",
+      "title": "Part I: Translation Invariance of Differential Entropy",
+      "startLine": 53,
+      "endLine": 62,
+      "summary": "theorem differentialEntropy_translation: h(f(· − a)) = h(f). Unfolds differential entropy, and applies MeasureTheory.integral_sub_right_eq_self to the integrand u ↦ f(u)·log f(u). This is the mathematical heart: the entropy of a shifted density equals the entropy of the original.",
+      "mathContext": "$h(f(\\cdot - a)) = h(f)$"
+    },
+    {
+      "id": "conditional-entropy",
+      "title": "Part II: Conditional Entropy of the Additive Channel",
+      "startLine": 64,
+      "endLine": 85,
+      "summary": "theorem condEntropy_additive: h(Y | X = x) = h(Z), since the conditional density of Y given X = x is the noise density shifted by x. theorem avgCondEntropy_additive: the input-averaged conditional entropy ∫ p_X(x)·h(Y | X = x) dx = h(Z) for a normalised input, via integral_mul_const and ∫ p_X = 1.",
+      "mathContext": "$h(Y\\mid X) = \\int p_X(x)\\, h(Y\\mid X=x)\\,dx = h(Z)$"
+    },
+    {
+      "id": "chain-rule",
+      "title": "Part III: Operational Mutual Information and the Chain Rule",
+      "startLine": 87,
+      "endLine": 105,
+      "summary": "def mutualInformationAdditive: I(X;Y) := h(Y) − h(Y | X) with h(Y | X) the input-averaged conditional differential entropy. theorem mutualInformation_chain_rule: with a normalised input, I(X;Y) = h(Y) − h(Z) — the chain-rule decomposition of the open question.",
+      "mathContext": "$I(X;Y) = h(Y) - h(Z)$"
+    },
+    {
+      "id": "operational-capacity",
+      "title": "Part IV: The Operational AWGN Capacity Theorem",
+      "startLine": 107,
+      "endLine": 133,
+      "summary": "theorem awgn_mutualInformation_eq_capacity: for any normalised input, Gaussian output of power P + N and Gaussian noise of power N, I(X;Y) = ½ log(1 + P/N), by the chain rule and the parent's awgn_capacity_achieved. theorem mutualInformation_add_noiseEntropy: I(X;Y) + h(Z) = h(Y), the chain rule rearranged.",
+      "mathContext": "$I(X;Y) = \\tfrac12\\log\\!\\left(1 + \\tfrac{P}{N}\\right)$"
+    }
+  ],
+  "conclusion": {
+    "summary": "The operational mutual information of the additive channel Y = X + Z is defined via the entropy chain rule I(X;Y) = h(Y) − h(Y | X), and the decomposition I(X;Y) = h(Y) − h(Z) is proved from a single structural fact: differential entropy is invariant under translation of its density (differentialEntropy_translation, via MeasureTheory.integral_sub_right_eq_self), so the conditional density p_Z(· − x) has entropy h(Z) for every input x and the input-average collapses to h(Z). Specialising to Gaussian output/noise recovers I(X;Y) = ½ log(1 + P/N) for any normalised input. 133 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This closes the operational layer the parent AWGN capacity proof explicitly left open: the parent assembled the capacity value from the two differential entropies and treated I(X;Y) = h(Y) − h(Z) as informal; here it is a theorem for a general additive independent-noise channel, and the capacity statement is restated in terms of the operationally defined mutual information. The reusable core — translation invariance of differential entropy and the resulting conditional-entropy collapse — applies to any additive-noise channel, not only the Gaussian one.",
+    "openQuestions": [
+      "Reconstruct the joint-density (KL) form of mutual information I(X;Y) = ∫∫ p(x,y) log(p(x,y)/(p(x)p(y))) dx dy for the additive channel and prove it equals the entropy-decomposition form h(Y) − h(Y | X) used here, verifying the two definitions of mutual information agree.",
+      "Prove the data-processing / non-negativity inequality I(X;Y) ≥ 0 in this operational setting, i.e. h(Y) ≥ h(Y | X), exhibiting mutual information as a genuine information gain rather than an arbitrary entropy difference."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "shannon-channel-coding-awgn",
+      "relationship": "extends",
+      "description": "Parent. Its scope note flags the operational mutual-information layer — defining I(X;Y) and proving the chain rule I(X;Y) = h(Y) − h(Z) — as what remains open; this entry supplies exactly that layer and reuses the parent's awgn_capacity_achieved to obtain I(X;Y) = ½ log(1 + P/N)."
+    },
+    {
+      "targetId": "shannon-channel-coding-awgn-oq-02",
+      "relationship": "related",
+      "description": "Sibling. That entry discharges the parent's output-power hypothesis E[Y²] = P + N from Mathlib's variance/independence API; together the two entries remove the parent's two informal ingredients (the output-power relation and the mutual-information chain rule)."
+    },
+    {
+      "targetId": "shannon-entropy-oq-01",
+      "relationship": "depends",
+      "description": "Grounds the differential entropy h(f) = −∫ f log f, the Gaussian differential entropy and the max-entropy theorem that the parent AWGN entry and this file build on."
+    }
+  ],
+  "references": [
+    {
+      "title": "Elements of Information Theory",
+      "author": "Thomas M. Cover and Joy A. Thomas",
+      "year": "2006",
+      "venue": "Wiley-Interscience",
+      "description": "Standard reference for continuous-alphabet mutual information I(X;Y) = h(Y) − h(Y | X), the additive-channel identity h(Y | X) = h(Z), and the AWGN capacity C = ½ log(1 + P/N) (Chapters 8–9)."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Group.Integral",
+      "author": "Mathlib Community",
+      "year": "2026",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_sub_right_eq_self (translation invariance of the integral under a right-invariant measure), the substantive input to the translation invariance of differential entropy."
+    }
+  ],
+  "sorries": 0
+}

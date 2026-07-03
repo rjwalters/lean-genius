@@ -1,0 +1,119 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "shannon-channel-coding-awgn-oq-01",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "concept",
+    "title": "The Open Operational Layer of AWGN Capacity",
+    "content": "The docstring states OQ-01. The parent ShannonChannelCodingAWGN proves the AWGN capacity $C(P,N)=\\tfrac12\\log(1+P/N)$ by assembling it from the two differential entropies $h(Y)$ and $h(Z)$, but treats the identity $I(X;Y)=h(Y)-h(Z)$ as informal justification. This file supplies that operational layer for a general additive channel $Y=X+Z$ with independent noise $Z$ of density $p_Z$. The key observation: given the input $X=x$, the output $Y=x+Z$ has conditional density $p_{Y\\mid X=x}(y)=p_Z(y-x)$ — the noise density merely translated by $x$. Since differential entropy is translation invariant, $h(Y\\mid X=x)=h(Z)$ for every $x$, and the chain rule $I(X;Y):=h(Y)-h(Y\\mid X)$ collapses to $h(Y)-h(Z)$.",
+    "mathContext": "$I(X;Y)=h(Y)-h(Y\\mid X)=h(Y)-h(Z)$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "AWGN channel",
+      "mutual information",
+      "differential entropy",
+      "conditional entropy",
+      "chain rule"
+    ],
+    "prerequisites": [
+      "information theory basics",
+      "measure-theoretic integration"
+    ]
+  },
+  {
+    "id": "ann-translation-invariance",
+    "proofId": "shannon-channel-coding-awgn-oq-01",
+    "range": { "startLine": 53, "endLine": 62 },
+    "type": "technique",
+    "title": "Translation Invariance of Differential Entropy",
+    "content": "The mathematical heart. `differentialEntropy_translation` proves $h(f(\\cdot-a))=h(f)$: shifting a density by a constant leaves its differential entropy unchanged. With $h(f)=-\\int f(x)\\log f(x)\\,dx$, the integrand of the shifted density is $u\\mapsto f(u-a)\\log f(u-a)$, i.e. the original integrand $g(u)=f(u)\\log f(u)$ evaluated at $u-a$. Mathlib's `integral_sub_right_eq_self` says the Lebesgue integral is invariant under such a shift ($\\int g(x-a)=\\int g(x)$, valid because `volume` on $\\mathbb{R}$ is right-translation invariant), so the two entropies agree. This one fact is what makes an additive channel's conditional entropy independent of the input value.",
+    "mathContext": "$h(f(\\cdot-a))=-\\int f(x-a)\\log f(x-a)\\,dx=-\\int f(x)\\log f(x)\\,dx=h(f)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "differential entropy",
+      "translation invariance",
+      "Lebesgue measure",
+      "Haar measure"
+    ],
+    "prerequisites": [
+      "Bochner integral",
+      "translation-invariant measures"
+    ]
+  },
+  {
+    "id": "ann-cond-entropy",
+    "proofId": "shannon-channel-coding-awgn-oq-01",
+    "range": { "startLine": 64, "endLine": 75 },
+    "type": "concept",
+    "title": "Conditional Entropy Equals Noise Entropy",
+    "content": "`condEntropy_additive` records the consequence for the channel: for $Y=X+Z$, the conditional density of the output given $X=x$ is $p_Z(\\cdot-x)$, so $h(Y\\mid X=x)=h(p_Z(\\cdot-x))=h(Z)$ for every input value $x$ — a direct instance of translation invariance with $a=x$. The additive structure of the channel is exactly what turns 'condition on the input' into 'translate the noise density', which the entropy cannot see.",
+    "mathContext": "$p_{Y\\mid X=x}(y)=p_Z(y-x)\\ \\Rightarrow\\ h(Y\\mid X=x)=h(Z)$",
+    "significance": "important",
+    "relatedConcepts": [
+      "conditional differential entropy",
+      "additive noise channel",
+      "translation invariance"
+    ],
+    "prerequisites": [
+      "conditional entropy"
+    ]
+  },
+  {
+    "id": "ann-avg-cond-entropy",
+    "proofId": "shannon-channel-coding-awgn-oq-01",
+    "range": { "startLine": 76, "endLine": 85 },
+    "type": "proof-step",
+    "title": "Averaging the Conditional Entropy",
+    "content": "`avgCondEntropy_additive` averages over the input: $h(Y\\mid X)=\\int p_X(x)\\,h(Y\\mid X=x)\\,dx$. Because every fibre entropy equals the constant $h(Z)$ (previous step), the integrand is $p_X(x)\\cdot h(Z)$; `integral_mul_const` pulls the constant out, leaving $h(Z)\\cdot\\int p_X$, and the normalisation hypothesis $\\int p_X=1$ finishes it. No property of the input distribution beyond normalisation is used — the collapse is purely a consequence of the fibres being constant.",
+    "mathContext": "$h(Y\\mid X)=\\int p_X(x)\\,h(Z)\\,dx=h(Z)\\int p_X=h(Z)$",
+    "significance": "important",
+    "relatedConcepts": [
+      "conditional entropy",
+      "linearity of the integral",
+      "normalisation"
+    ],
+    "prerequisites": [
+      "probability density",
+      "Bochner integral"
+    ]
+  },
+  {
+    "id": "ann-chain-rule",
+    "proofId": "shannon-channel-coding-awgn-oq-01",
+    "range": { "startLine": 87, "endLine": 105 },
+    "type": "key-insight",
+    "title": "The Mutual-Information Chain Rule",
+    "content": "`mutualInformationAdditive` defines the operational mutual information via the entropy chain rule $I(X;Y):=h(Y)-h(Y\\mid X)$, with $h(Y\\mid X)$ the input-averaged conditional differential entropy just computed. `mutualInformation_chain_rule` then substitutes $h(Y\\mid X)=h(Z)$ to obtain $I(X;Y)=h(Y)-h(Z)$ for a normalised input — the chain-rule decomposition named by the open question, valid for arbitrary input, noise and output densities (no Gaussian assumption). Scope note: mutual information is taken in this entropy-decomposition form, not reconstructed from the joint-density double integral $\\iint p(x,y)\\log\\frac{p(x,y)}{p(x)p(y)}$.",
+    "mathContext": "$I(X;Y):=h(Y)-h(Y\\mid X)=h(Y)-h(Z)$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "mutual information",
+      "chain rule",
+      "differential entropy"
+    ],
+    "prerequisites": [
+      "mutual information",
+      "conditional entropy"
+    ]
+  },
+  {
+    "id": "ann-operational-capacity",
+    "proofId": "shannon-channel-coding-awgn-oq-01",
+    "range": { "startLine": 107, "endLine": 133 },
+    "type": "concept",
+    "title": "The Operational AWGN Capacity Theorem",
+    "content": "`awgn_mutualInformation_eq_capacity` specialises the chain rule: with a normalised input, a Gaussian output of power $P+N$ and Gaussian noise of power $N$, the parent's `awgn_capacity_achieved` identifies the entropy difference $h(Y)-h(Z)$ with $\\tfrac12\\log(1+P/N)$, so $I(X;Y)=\\tfrac12\\log(1+P/N)$ for ANY normalised input density. This upgrades the parent's entropy-difference assembly to a statement about the operationally defined mutual information. `mutualInformation_add_noiseEntropy` records the rearrangement $I(X;Y)+h(Z)=h(Y)$, exhibiting mutual information as the differential entropy the output gains over the noise.",
+    "mathContext": "$I(X;Y)=\\tfrac12\\log\\!\\left(1+\\tfrac{P}{N}\\right)$",
+    "significance": "important",
+    "relatedConcepts": [
+      "AWGN capacity",
+      "Gaussian channel",
+      "mutual information",
+      "Shannon capacity formula"
+    ],
+    "prerequisites": [
+      "Gaussian differential entropy",
+      "AWGN channel capacity"
+    ]
+  }
+]
