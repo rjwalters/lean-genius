@@ -75,11 +75,11 @@
     "proofId": "ballot-problem-oq-02-oq-02-oq-05",
     "range": {
       "startLine": 153,
-      "endLine": 204
+      "endLine": 194
     },
     "type": "insight",
     "title": "ℱ T-Measurability and the Stopping-Time Property",
-    "content": "measurableSet_maxEvent reads measurability off the countable identity: each set {ω | a − 1/(k+1) < W q ω} is the preimage of an open ray under the single time-slice W q, which is ℱ q-measurable by adaptedness and hence ℱ T-measurable since ℱ q ≤ ℱ T for q ≤ T (Filtration.mono); a countable union (over ℚ ∩ [0,T], via MeasurableSet.biUnion) of countable intersections is ℱ T-measurable. firstPassage_measurableSet transports this to the first-passage event {ω | firstPassageTime bm a ω ≤ T} through the sibling's fpt_le_set_eq_maxEvent, under the nonemptiness hypothesis that makes τ ≤ T equivalent to hitting (sInf ∅ = 0 otherwise makes the inequality degenerate). maxEvent_mono records that the events increase in the horizon T — the monotone family whose ℱ T-measurability is the stopping-time property.",
+    "content": "measurableSet_maxEvent reads measurability off the countable identity: each set {ω | a − 1/(k+1) < W q ω} is the preimage of an open ray under the single time-slice W q, which is ℱ q-measurable by adaptedness and hence ℱ T-measurable since ℱ q ≤ ℱ T for q ≤ T (Filtration.mono); a countable union (over ℚ ∩ [0,T], via MeasurableSet.biUnion) of countable intersections is ℱ T-measurable. firstPassage_measurableSet transports this to the first-passage event {ω | firstPassageTime bm a ω ≤ T} through the sibling's fpt_le_set_eq_maxEvent, under the nonemptiness hypothesis that makes τ ≤ T equivalent to hitting (sInf ∅ = 0 otherwise makes the inequality degenerate).",
     "mathContext": "$\\{\\omega:\\mathrm{firstPassageTime}\\ bm\\ a\\ \\omega\\le T\\}\\in\\mathcal F_T$ for $T>0$.",
     "significance": "critical",
     "relatedConcepts": [
@@ -92,6 +92,29 @@
       "MeasurableSet.biUnion",
       "Filtration.mono",
       "measurability of open-ray preimages"
+    ]
+  },
+  {
+    "id": "ann-ballot-oq020205-monotone",
+    "proofId": "ballot-problem-oq-02-oq-02-oq-05",
+    "range": {
+      "startLine": 196,
+      "endLine": 204
+    },
+    "type": "insight",
+    "title": "The Hitting Event Increases with the Horizon",
+    "content": "maxEvent_mono proves maxEvent bm a T₁ ⊆ maxEvent bm a T₂ for T₁ ≤ T₂: a hitting witness s ∈ [0,T₁] with W s ω ≥ a still lies in the longer window [0,T₂], so 'reaches level a by time T' can only become easier as T grows — the proof is a one-line reindexing of the existential witness. Conceptually this exhibits T ↦ maxEvent bm a T as an INCREASING family of events; a stopping time is exactly characterised by its sub-level events {τ ≤ T} forming such an ℱ T-adapted increasing family, so this monotonicity is the structural counterpart of the measurability results — together they say {τ ≤ T} is an adapted, increasing, ℱ T-measurable family, i.e. τ is a stopping time.",
+    "mathContext": "Monotone horizon: $T_1 \\le T_2 \\Rightarrow \\{\\tau \\le T_1\\} \\subseteq \\{\\tau \\le T_2\\}$. Increasing sub-level events + ℱ T-measurability + $\\tau \\ge 0$ is the definition of a stopping time.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotone family of events",
+      "stopping time characterisation",
+      "first passage time",
+      "adapted increasing process"
+    ],
+    "prerequisites": [
+      "the definition of maxEvent",
+      "stopping times as increasing adapted families"
     ]
   }
 ]
