@@ -4,6 +4,62 @@ Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engi
 
 ---
 
+## Session 2026-07-03 (researcher-4) — BUILD: the concrete-graph API instantiated end-to-end (Insight 10)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
+`proofs/Proofs/SpernerTuckerDoorGraphTower.lean` (~130 LOC, 8 thm + 3 def/abbrev, 0 sorries,
+0 `axiom` decls, dimension-free — no `decide`/`native_decide`).
+
+**Verification**: host `lake env lean Proofs/SpernerTuckerDoorGraphTower.lean` in the
+researcher-4 worktree over its Mathlib+Proofs `.olean` cache — **exit 0, 0 errors**. All three
+`#print axioms` guards (`matching_degree`, `card_boundaryEndpoints_matching`,
+`matchingTower_exists_interior`) report **`[propext, Classical.choice, Quot.sound]` only** — no
+`sorryAx`, no `Lean.ofReduceBool`, no `decide`.
+
+### What it proves (Insight 10)
+`SpernerTuckerInductiveTower.lean` exposes the door-counting recursion's **concrete-graph API**:
+`TuckerTower.ofGraphs` assembles a tower from a family of max-degree-`≤2` door graphs (auto-discharging
+`step`), and `exists_interior_of_graph_tower` runs the recursion to extract a degree-1 *interior*
+vertex in every dimension. That API is the interface the eventual cross-polytope door graphs must
+plug into — but **every tower exhibited so far (`trivialTower`, `growingTower`) lived at the bare-`ℕ`
+count level** (`boundary, interior : ℕ → ℕ`); none was realized by an actual `SimpleGraph`, so the
+graph-level hypotheses (`Fintype`, `DecidableRel (G n).Adj`, degree bound, endpoint-count `bridge`)
+had never been discharged *simultaneously* by a genuine graph.
+
+This session closes that gap with two pieces:
+- **Reusable 1-regular endpoint lemmas.** In a perfect matching (every vertex degree exactly `1`)
+  the degree condition of `boundaryEndpoints`/`interiorEndpoints` is vacuous, so they collapse:
+  `boundaryEndpoints_of_oneRegular : boundaryEndpoints G B = univ.filter B` and
+  `interiorEndpoints_of_oneRegular : interiorEndpoints G B = univ.filter (¬ B ·)`. These are
+  dimension-free and directly relevant: the **equator boundary doors**
+  (`SpernerTuckerCrossPolytopeEquator.equatorFlip`) form a free-involution perfect matching, so an
+  eventual cross-polytope bridge count runs through exactly this collapse.
+- **A growing perfect-matching family + the tower on it.** `matchingGraph m` on `Fin m × Bool`
+  (`m` disjoint edges, `(i,a)—(i,!a)`) is 1-regular (`matching_degree`), boundary/interior counts
+  both `m` (`card_{boundary,interior}Endpoints_matching`). Taking level `n = matchingGraph (2n+1)`
+  with boundary predicate `p.2 = true`, `matchingTower_exists_interior` feeds it through
+  `exists_interior_of_graph_tower` and recovers, in **every dimension**, an interior degree-1 vertex
+  on a genuine `SimpleGraph` whose vertex count `2·(2n+1)` grows without bound — the first
+  concrete-graph witness that the abstract API fires end-to-end.
+
+### Honest status
+**Infrastructure + validation, NOT new Tucker geometry.** Part (1) is a small reusable lemma pair;
+part (2) exercises the previously-uninstantiated concrete-graph API on a real growing graph family,
+catching the `Fintype`/`DecidableRel`/degree/`bridge` hypotheses at once and providing the exact
+template the cross-polytope door graphs will follow. It does **not** build the asymmetric
+almost-complementary labelling carrying the odd interior seed — the geometric `bridge` remains the
+open frontier, exactly as every prior session flagged.
+
+### Next steps (frontier unchanged)
+- Apply `boundaryEndpoints_of_oneRegular` to the actual `equatorFlip` matching to state the
+  cross-polytope boundary-door count in `boundaryEndpoints` form.
+- Build the **asymmetric** Tucker labelling on ∂◊^{n+1} whose hemisphere half carries the ODD
+  interior seed; feed the resulting max-degree-≤2 door graphs into `exists_interior_of_graph_tower`
+  via the template `matchingTower_exists_interior` now provides.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+---
+
 ## Session 2026-07-02 (researcher-5) — BUILD: the hemisphere ↔ lower-dimension GRAPH ISOMORPHISM (Insight 9)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
