@@ -73,9 +73,9 @@
         "relationship": "The squarefree density $6/\\pi^2 = 1/\\zeta(2)$ connects directly to the Basel problem $\\sum 1/k^2 = \\pi^2/6$"
       }
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 3713,
-    "assumptions": "2 axioms: konyagin_lower_2004, konyagin_upper_2004. 0 sorries.",
+    "assumptions": "3 assumptions: (1) konyagin_lower_2004 and (2) konyagin_upper_2004 (literal `axiom` declarations importing Konyagin's 2004 analytic lower/upper bounds on f(N)); (3) Lean.ofReduceBool — the credited concrete results (the explicit squarefree-sumset constructions pair_1_5/triple/.../dodeca, the lower bounds f_ge_two..f_ge_twelve, f_lower_bound_chain, f_complete_bounds, and the residue-image / density bounds mod_9_residue_image_le_4, general_residue_image_le, mod_900/44100/5336100 bounds, density_improvement_chain) are discharged with `native_decide` (185 occurrences across ~20 theorems), which trusts the Lean compiler kernel reduction and adds `Lean.ofReduceBool` to `#print axioms`. Per the project native_decide policy these substantive credited theorems are counted, so meta.axiomCount = 3 (leanFile.axiomCount remains 2, counting only the literal axioms). The foundational axioms propext / Classical.choice / Quot.sound are not counted. 0 sorries.",
     "theoremCount": 151,
     "definitionCount": 8
   },
@@ -98,6 +98,120 @@
       "Additive combinatorics (sumsets, density)"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "konyagin_lower_2004",
+      "type": "axiom",
+      "statement": "N ≥ 16 → ∃ C > 0, f(N) ≥ C · log log N · (log N)²",
+      "significance": "Konyagin's 2004 lower bound on f(N) — the maximum size of a set A ⊆ [1,N] whose sumset A+A consists entirely of squarefree numbers. Substantially improves the earlier log N bound. Axiomatized as one of two analytic inputs (its proof uses sieve/analytic number theory beyond the file).",
+      "description": "Stated as an `axiom`; one of the entry's two literal assumptions."
+    },
+    {
+      "name": "konyagin_upper_2004",
+      "type": "axiom",
+      "statement": "N ≥ 2 → ∀ ε > 0, ∃ C > 0, f(N) ≤ C · N^(11/15 + ε)",
+      "significance": "Konyagin's 2004 upper bound f(N) ≪ N^(11/15+o(1)), improving the exponent 3/4 to 11/15 ≈ 0.733. The companion analytic input bounding how large a squarefree-sumset set can be.",
+      "description": "Stated as an `axiom`; the second of the entry's two literal assumptions."
+    },
+    {
+      "name": "current_bounds",
+      "type": "theorem",
+      "statement": "N ≥ 16 → (loglog·log² lower bound) ∧ (N^(11/15+ε) upper bound)",
+      "significance": "Packages the current state of knowledge on f(N): the best published lower and upper bounds together, framing the still-wide gap that Erdős Problem 1109 asks to close.",
+      "description": "Conjunction of konyagin_lower_2004 and konyagin_upper_2004; depends on both axioms."
+    },
+    {
+      "name": "all_odd",
+      "type": "theorem",
+      "statement": "hasSquarefreeSumset A → a ∈ A → a % 2 = 1",
+      "significance": "The first structural constraint: every element of a squarefree-sumset set is odd. If a were even then 2a = a+a would be divisible by 4, so not squarefree — contradiction. The seed of all the modular obstructions.",
+      "description": "By contradiction using squarefreeness of the diagonal sum a+a; axiom-free."
+    },
+    {
+      "name": "element_squarefree",
+      "type": "theorem",
+      "statement": "hasSquarefreeSumset A → a ∈ A → a ≥ 1 → isSquarefree a",
+      "significance": "Each element itself must be squarefree (since 2a squarefree forces a squarefree away from the prime 2). Establishes that A lives inside the squarefree integers, tightening the search space.",
+      "description": "Uses element_not_div_prime_sq for each prime and the no-prime-square characterization; axiom-free."
+    },
+    {
+      "name": "mod_4_single_class",
+      "type": "theorem",
+      "statement": "hasSquarefreeSumset A → all elements share the same residue mod 4 (necessarily 1 or 3)",
+      "significance": "A sharp local constraint at the prime 2: all elements of A collapse into a single class mod 4. Combined with the odd constraint this already forces strong sparsity and drives the upper-bound density estimates.",
+      "description": "From residue_mod_4 (each element ≡ 1 or 3 mod 4) and same_residue_mod_4 (no two elements differ); axiom-free."
+    },
+    {
+      "name": "mod_9_residue_image_le_4",
+      "type": "theorem",
+      "statement": "hasSquarefreeSumset A → (A.image (· % 9)).card ≤ 4",
+      "significance": "The prime-3 obstruction: the residues of A mod 9 avoid class 0 and never contain a complementary pair {r, 9−r}, so at most 4 of the 8 nonzero classes appear. A prototype of the residue-image bounds that yield the sublinear upper bound.",
+      "description": "Excludes class 0 and each complementary pair via the sum-avoidance constraints; uses `native_decide` for the finite residue case checks (contributes Lean.ofReduceBool)."
+    },
+    {
+      "name": "general_residue_image_le",
+      "type": "theorem",
+      "statement": "A general bound on the size of the residue image of A modulo a prime-power / composite modulus",
+      "significance": "The uniform residue-image machinery: for each modulus the sum-avoidance constraints cap how many residue classes A can occupy. Iterating over primes 2,3,5,… and combining by CRT produces the density that beats the trivial bound.",
+      "description": "Finite case analysis on residue classes; discharged with `native_decide` (contributes Lean.ofReduceBool)."
+    },
+    {
+      "name": "crt_residue_injective",
+      "type": "theorem",
+      "statement": "p ≠ q primes → the joint residue map mod p², q² is injective on residues mod p²q²",
+      "significance": "The Chinese Remainder Theorem bridge that lets the independent per-prime residue-image bounds be multiplied together into a bound modulo the product, converting local constraints into a global density.",
+      "description": "CRT injectivity for coprime squared moduli; axiom-free."
+    },
+    {
+      "name": "f_sublinear",
+      "type": "theorem",
+      "statement": "hasSquarefreeSumset A, A ⊆ [1,N] → A.card ≤ N/77 + 69120",
+      "significance": "The concrete sublinear upper bound the file proves unconditionally: any squarefree-sumset subset of [1,N] has at most N/77 + O(1) elements. A fully elementary (non-analytic) density bound obtained by combining the residue-image constraints modulo 5336100.",
+      "description": "Chains f_upper_5336100 with arithmetic on the density factor 69120/5336100 ≤ 1/77; axiom-free (its inputs use native_decide, so it inherits Lean.ofReduceBool)."
+    },
+    {
+      "name": "dodeca_squarefree_sumset",
+      "type": "theorem",
+      "statement": "hasSquarefreeSumset {1, 5, 21, 37, 41, 65, 73, 101, 137, 165, 181, 217}",
+      "significance": "The explicit 12-element witness set whose pairwise sums are all squarefree — the concrete construction certifying the record lower bound f(217) ≥ 12 in this formalization.",
+      "description": "All 78 pairwise-sum squarefreeness checks discharged by `native_decide` (contributes Lean.ofReduceBool)."
+    },
+    {
+      "name": "f_ge_twelve",
+      "type": "theorem",
+      "statement": "N ≥ 217 → f N ≥ 12",
+      "significance": "The strongest explicit lower bound in the file: for N ≥ 217 there is a 12-element squarefree-sumset set. The top of the f_ge_two … f_ge_twelve ladder of concrete constructions.",
+      "description": "Exhibits dodeca_squarefree_sumset as a card-12 member of the defining set; relies on native_decide (Lean.ofReduceBool)."
+    },
+    {
+      "name": "f_lower_bound_chain",
+      "type": "theorem",
+      "statement": "f 1 ≥ 1 ∧ f 5 ≥ 2 ∧ … ∧ f 181 ≥ 11 ∧ f 217 ≥ 12",
+      "significance": "The full staircase of certified lower bounds, pinning the exact threshold N at which each new element can first be added to a squarefree-sumset set. A complete concrete record of small-N behavior.",
+      "description": "Conjunction of f_ge_one … f_ge_twelve; each rung relies on a native_decide construction (Lean.ofReduceBool)."
+    },
+    {
+      "name": "f_complete_bounds",
+      "type": "theorem",
+      "statement": "N ≥ 5322240 → 12 ≤ f N ∧ (∀ squarefree-sumset A ⊆ [1,N], A.card ≤ N/77 + 69120)",
+      "significance": "The file's headline unconditional sandwich: for large N, f(N) is trapped between the explicit constant 12 and the sublinear N/77 + O(1). Frames both the lower construction and the upper density bound in one statement.",
+      "description": "Pairs f_ge_twelve with f_sublinear; inherits Lean.ofReduceBool through both."
+    },
+    {
+      "name": "density_improvement_chain",
+      "type": "theorem",
+      "statement": "Iterated residue-density refinement across successive prime-power moduli",
+      "significance": "The engine of the sublinear bound: successively incorporating the moduli 4, 9, 25, 36, 900, 44100, 5336100 shrinks the admissible residue density of A, each step improving the upper-bound constant.",
+      "description": "Multi-modulus residue-image accounting; heavily uses native_decide for the per-modulus case checks (contributes Lean.ofReduceBool)."
+    },
+    {
+      "name": "pair_1_3_not_squarefree_sumset",
+      "type": "theorem",
+      "statement": "¬ hasSquarefreeSumset {1, 3}",
+      "significance": "A minimal obstruction certificate: {1,3} fails because 1+3 = 4 = 2² is not squarefree. Illustrates why the odd/mod-4 constraints are necessary and why constructions must be chosen carefully (contrast pair_1_5, which succeeds).",
+      "description": "Direct computation exhibiting the non-squarefree sum; uses native_decide (Lean.ofReduceBool)."
+    }
+  ],
   "sections": [
     {
       "id": "header-context",
