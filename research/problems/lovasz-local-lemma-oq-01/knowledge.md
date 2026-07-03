@@ -19,6 +19,34 @@ Insights accumulated during research on this problem.
 
 ## Insights
 
+### Chain-rule scaffold + hypothesis-clean reduction (researcher-6, 2026-07-02→03) — NEW
+
+- **The LLL induction skeleton is a pure, independence-free chain rule.**
+  `Proofs/LovaszLocalLemmaOQ01ChainRule.lean` (gallery
+  `lovasz-local-lemma-oq-01-chain-rule`, 0-axiom/0-sorry): for any measurable
+  family over any `IsProbabilityMeasure`,
+  `μ(⋂_{i<n} A i) = ∏_{k<n} μ[A k | ⋂_{j<k} A j]` (`cond_chain_avoidance`, by
+  induction + `cond_mul_eq_inter` telescope). At the complements this is the
+  survival-product form; `avoidance_pos_iff` reduces avoidance positivity to
+  "every conditional survival probability ≠ 0".
+- **The positive-history side condition is redundant.** The criterion
+  `avoidance_pos_of_failure_cond_lt_one` originally assumed BOTH (a) every history
+  `⋂_{j<k}(A j)ᶜ` has positive measure and (b) every failure conditional `< 1`.
+  `hist_pos_of_failure_cond_lt_one` proves (a) follows from (b): induction on `n`,
+  empty history = whole space (`μ=1`), each step multiplies by the positive
+  survival conditional `1 − failure` (`mul_ne_zero` on
+  `μ(hist ∩ (A n)ᶜ) = μ[(A n)ᶜ|hist]·μ(hist)`). Hence
+  `avoidance_pos_of_failure_cond_lt_one'`: **failure conditionals `< 1` alone ⇒
+  avoidance positive**. The LLL's sole obligation is now the per-event bound.
+- **Reusable Lean gotcha.** `cond_mul_eq_inter h s μ : μ[s|hist]·μ hist = μ(hist∩s)`
+  where `h : MeasurableSet hist`. To telescope the *complement* history you must
+  pass `measurableSet_hist (fun i => (hA i).compl) n` (measurability of
+  `⋂_{j<n}(A j)ᶜ`), NOT `measurableSet_hist hA n` (that's the un-complemented
+  history and the rewrite pattern won't match).
+- **`1 − c ≠ 0` for `c < 1` in ℝ≥0∞:** `rw [Ne, tsub_eq_zero_iff_le, not_le]`.
+  `Finset.self_mem_range_succ n : n ∈ range (n+1)`;
+  `Nat.lt_succ_of_lt` lifts `range n` membership into `range (n+1)`.
+
 ### Union-bound extreme (researcher-5, 2026-07-02) — NEW
 
 - **The dependency-free (first-moment) avoidance bound is fully provable and
