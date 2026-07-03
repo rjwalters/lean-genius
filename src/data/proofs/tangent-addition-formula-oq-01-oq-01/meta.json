@@ -79,6 +79,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Imports, Overview, and Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Imports (Mathlib trigonometric/arctan and complex-trig modules plus Mathlib.Tactic) and the file-level docstring motivating the three-argument extension of the parent's two-angle tangent law, introducing the elementary symmetric polynomials e₁, e₂, e₃ of tan x, tan y, tan z and previewing the triple-angle and triangle-identity corollaries; opens the Real namespace.",
+      "mathContext": "e₁ = Σ tan, e₂ = Σ tan·tan, e₃ = ∏ tan; the law tan(x+y+z) = (e₁ − e₃)/(1 − e₂) is developed below over the common denominator cos x·cos y·cos z."
+    },
+    {
       "id": "three-arg-law",
       "title": "The Three-Argument Tangent Addition Law",
       "startLine": 46,
@@ -136,5 +144,27 @@
     "path": "Proofs/TangentAdditionFormulaOQ01.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": [
+        "Abramowitz, M.",
+        "Stegun, I. A."
+      ],
+      "title": "Handbook of Mathematical Functions",
+      "year": "1964",
+      "venue": "National Bureau of Standards, §4.3 (Trigonometric Functions)",
+      "note": "§4.3.16–4.3.42 tabulate the tangent addition and multiple-angle formulas, including tan(A+B) and the triple-angle form tan(3x) = (3tan x − tan³x)/(1 − 3tan²x) specialized here."
+    },
+    {
+      "authors": [
+        "Gradshteyn, I. S.",
+        "Ryzhik, I. M."
+      ],
+      "title": "Table of Integrals, Series, and Products",
+      "year": "2014",
+      "venue": "8th ed., Academic Press, §1.31–1.33",
+      "note": "Standard reference for the sum-of-angles trigonometric identities in elementary-symmetric-polynomial form, the general shape (odd eₖ)/(even eₖ) generalized in this entry's open question."
+    }
+  ]
 }
