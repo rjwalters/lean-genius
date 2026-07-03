@@ -74,23 +74,45 @@
     "proofId": "sperner-mathlib4-oq-02-oq-06",
     "range": {
       "startLine": 124,
-      "endLine": 145
+      "endLine": 129
     },
     "type": "theorem",
     "title": "Tucker's lemma for the hexagon disk, and its 2-dimensionality",
-    "content": "tucker_hexagon decides spokeCompl a b c d ∨ boundaryCompl a b c over all 4⁴ = 256 antipodal labellings — the conclusion of Tucker's lemma at n = 2: a complementary edge always exists. exists_complementary_edge restates it with the two endpoint labels unpacked. The result is then shown to be genuinely two-dimensional: boundary_ring_insufficient decides that some antipodal boundary labelling has NO complementary boundary edge (24 of the 64 boundary labellings), so the already-verified 1-D (S¹) Tucker does not by itself produce the edge; and interior_spoke_rescues decides that whenever the boundary ring has no complementary edge, a spoke to the centre is complementary for EVERY centre label d — the concrete n = 1 → n = 2 cone step. All four #print axioms report propext / Quot.sound only.",
-    "mathContext": "$\\forall\\,a,b,c,d \\in \\mathrm{Fin}\\,4,\\ (\\exists i,\\ d = \\mathrm{negL}(v_i)) \\lor (\\exists i,\\ v_{i+1} = \\mathrm{negL}(v_i))$; and $\\neg(\\exists i,\\ v_{i+1} = \\mathrm{negL}(v_i)) \\Rightarrow \\exists i,\\ d = \\mathrm{negL}(v_i)$ for every $d$. The interior cone repairs the boundary's failure.",
+    "content": "tucker_hexagon decides spokeCompl a b c d ∨ boundaryCompl a b c over all 4⁴ = 256 antipodal labellings — the conclusion of Tucker's lemma at n = 2: a complementary edge always exists. exists_complementary_edge restates it with the two endpoint labels unpacked. The result is then shown to be genuinely two-dimensional by boundary_ring_insufficient: it decides that some antipodal boundary labelling has NO complementary boundary edge (24 of the 64 boundary labellings), so the already-verified 1-D (S¹) Tucker does not by itself produce the edge — the interior is essential. All #print axioms report propext / Quot.sound only (plain kernel decide, no Lean.ofReduceBool).",
+    "mathContext": "$\\forall\\,a,b,c,d,\\ (\\exists i,\\ d = \\mathrm{negL}(v_i)) \\lor (\\exists i,\\ v_{i+1} = \\mathrm{negL}(v_i))$; yet $\\exists a,b,c,\\ \\neg(\\exists i,\\ v_{i+1} = \\mathrm{negL}(v_i))$ — the boundary ring alone can fail.",
     "significance": "critical",
     "relatedConcepts": [
       "Tucker's lemma conclusion",
       "complementary edge existence",
       "essential interior vertex",
-      "cone construction",
       "kernel decide"
     ],
     "prerequisites": [
       "exhaustive finite verification",
       "Tucker's lemma"
+    ]
+  },
+  {
+    "id": "ann-rescue-sperner-oq02-oq06",
+    "proofId": "sperner-mathlib4-oq-02-oq-06",
+    "range": {
+      "startLine": 131,
+      "endLine": 145
+    },
+    "type": "theorem",
+    "title": "The interior spoke rescues the boundary (the n = 1 → n = 2 step)",
+    "content": "interior_spoke_rescues is the constructive heart of the entry: whenever the boundary ring carries no complementary edge (¬ boundaryCompl a b c), some spoke centre–vᵢ is complementary — for EVERY centre label d. The proof reverts all four labels and closes by a single decide over the finite Fin-4 alphabet. Conceptually this is the concrete n = 1 → n = 2 cone step of Tucker's lemma: the boundary is an n = 1 Tucker instance on the antipodal ring, and when it fails, the interior cone over it repairs the failure, guaranteeing a complementary edge regardless of the centre label. Paired with boundary_ring_insufficient, it pinpoints exactly why the hexagon disk is not reducible to its boundary circle. The closing #print axioms confirm all four results rest only on propext / Quot.sound.",
+    "mathContext": "$\\neg(\\exists i,\\ v_{i+1} = \\mathrm{negL}(v_i)) \\Rightarrow \\forall d,\\ \\exists i,\\ d = \\mathrm{negL}(v_i)$: the interior cone repairs the boundary's failure for every centre label.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "cone construction",
+      "n = 1 → n = 2 step",
+      "boundary vs interior",
+      "kernel decide"
+    ],
+    "prerequisites": [
+      "boundary_ring_insufficient",
+      "cone over a triangulated boundary"
     ]
   }
 ]
