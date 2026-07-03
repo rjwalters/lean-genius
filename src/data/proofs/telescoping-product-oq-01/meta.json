@@ -97,7 +97,8 @@
       "Choosing the base point n = 1 (the empty product) rather than n = 2 keeps the closed form (n+1)/(2n) valid at the boundary, where it reads 2/2 = 1.",
       "The limit is cleanest after the eventual rewrite (n+1)/(2n) = 1/2 + (1/2)(1/n), reducing convergence to the standard fact 1/n → 0 rather than a quotient limit.",
       "The single factor (1 − 1/k²) hides two one-sided telescopes running in opposite directions: ∏(k−1)/k = 1/n collapses from the bottom and ∏(k+1)/k = (n+1)/2 collapses from the top, and (n+1)/(2n) is simply their product — the induction just tracks both endpoint contributions at once.",
-      "Convergence is proved by Tendsto.congr' rather than by simplifying the quotient: since a limit at atTop depends only on the tail, the sequence need only be eventually equal (for n ≥ 1) to 1/2 + (1/2)(1/n), which sidesteps any quotient-limit lemma."
+      "Convergence is proved by Tendsto.congr' rather than by simplifying the quotient: since a limit at atTop depends only on the tail, the sequence need only be eventually equal (for n ≥ 1) to 1/2 + (1/2)(1/n), which sidesteps any quotient-limit lemma.",
+      "That the infinite product converges to a nonzero value (1/2) rather than collapsing to 0 is not automatic: an infinite product ∏(1 − aₖ) with 0 ≤ aₖ < 1 converges to a nonzero limit iff ∑ aₖ converges. Here aₖ = 1/k² is summable (Basel), so the product survives; by contrast the superficially similar ∏(1 − 1/k) has aₖ = 1/k non-summable and telescopes to 1/n → 0. The (n+1)/n top endpoint is exactly what rescues the product from vanishing."
     ]
   },
   "sections": [
