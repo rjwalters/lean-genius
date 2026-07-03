@@ -54,7 +54,9 @@
       "The induced adjacency entails the ambient adjacency, so every induced substructure (triangle, edge) lifts to the ambient graph.",
       "Triangle-freeness is hereditary: it is the property 'no induced subgraph has a triangle', which is exactly why the C5-blow-up extremal examples remain triangle-free at every scale.",
       "Edge count is monotone under induction, the structural basis for the density hypothesis denseSubgraphs comparing subgraph edge counts to n^2/50.",
-      "These monotonicities are scaffold-level facts every partial-result proof uses implicitly; making them explicit and machine-checked is the foundation for any formal attack."
+      "These monotonicities are scaffold-level facts every partial-result proof uses implicitly; making them explicit and machine-checked is the foundation for any formal attack.",
+      "A local refinement of Mantel's theorem: Mantel forces a triangle from a global density above n²/4, whereas #128 asks how much weaker a local hypothesis — more than n²/50 edges on every induced subgraph of ≥ ⌊n/2⌋ vertices — still suffices. The gap between the global n²/4 and the conjectured local n²/50 is exactly the Ramsey–Turán phenomenon this problem probes.",
+      "Heredity is what certifies the extremal witnesses: because triangle-freeness is hereditary (triangleFree_induce), a single triangle-free seed such as C₅ or the Petersen graph yields triangle-free induced subgraphs at every scale. The C₅-blow-up then reaches local density ≈ 1/5 ≫ 1/50 while remaining triangle-free, evidence that the constant cannot be pushed far below 1/50."
     ]
   },
   "sections": [
@@ -89,6 +91,21 @@
       "targetId": "erdos-128",
       "relationship": "parent",
       "description": "The base Erdős #128 scaffold (Graph, edgeCount, induce, hasTriangle, triangleFree, denseSubgraphs and the prose partial results). This entry re-declares its objects (the scaffold fails to build) and proves their first structural theorems: hereditary triangle-freeness and monotone edge count."
+    },
+    {
+      "targetId": "erdos-128-wip-01-oq-01",
+      "relationship": "child",
+      "description": "Extends this entry's heredity result: triangle-freeness pulls back along graph homomorphisms, and every C₅-blow-up is triangle-free — the extremal construction witnessing that the 1/50 constant cannot be substantially lowered."
+    },
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "related",
+      "description": "Mantel's theorem (max edges in a triangle-free n-vertex graph is ⌊n²/4⌋) is the global density threshold that forces a triangle; Erdős #128 is the local-density refinement, replacing the global count by a condition on every large induced subgraph."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Erdős #128 is a Ramsey–Turán-type question interpolating between Turán/Mantel extremal density and Ramsey theory; Ramsey's theorem supplies the unavoidable-substructure backdrop for the triangle-forcing phenomenon."
     }
   ],
   "references": [
