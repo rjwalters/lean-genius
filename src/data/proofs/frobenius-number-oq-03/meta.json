@@ -10,14 +10,14 @@
     ],
     "opens": [],
     "namespace": "FrobeniusOQ03",
-    "lineCount": 559,
+    "lineCount": 743,
     "axiomCount": 0,
-    "theoremCount": 33,
+    "theoremCount": 39,
     "definitionCount": 2,
     "path": "Proofs/FrobeniusNumberOQ03.lean",
     "sorries": 0
   },
-  "description": "Three-generator Frobenius number foundation: defines $\\text{Representable3}\\;a\\;b\\;c\\;n := \\exists x, y, z \\in \\mathbb{N}.\\; n = ax + by + cz$ and develops a layered structural API. S2 establishes seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c). S3a defines $\\text{frobeniusNumber3}\\;a\\;b\\;c := \\sup\\{n \\mid \\neg\\,\\text{Representable3}\\;a\\;b\\;c\\;n\\}$ with structural API (bounded-above suprema, abstract upper bound from $\\subseteq \\text{Iio}\\,K$, sSup-attainment). S3b lifts the 2-generator Sylvester bound to 3 generators via the bridge `large_representable3_via_two_gen` (witness with $z = 0$). S3c combines S3a + S3b to give the concrete loose Sylvester bound $\\text{frobeniusNumber3}\\,a\\,b\\,c \\le (a-1)(b-1)$ for coprime $a, b$. S4 derives finiteness of the non-representable set. S4a tightens S3c to $\\le (a-1)(b-1) - 1$, matching the classical Sylvester identity $g(a, b) = ab - a - b$. S5 specializes the S3b bridge to the three-consecutive family $(n, n+1, n+2)$ via `Nat.coprime_self_add_right`: every $m \\ge (n-1)\\cdot n$ is `Representable3 n (n+1) (n+2) m` (loose vs Roberts' tight $\\approx n^2/2$). S7 PROVES Roberts' tight d=1 closed form `frobenius_three_consecutive`: for every n ≥ 1, frobeniusNumber3 n (n+1) (n+2) = ⌊(n-2)/2⌋·n + (n-1) (≈ n²/2), via the interval criterion (non-representability of the witness g = (⌊(n-2)/2⌋+1)·n − 1 from not_representable3_roberts, plus representability of everything above it from representable3_above_roberts), with concrete instances g(3,4,5)=2, g(4,5,6)=7, g(5,6,7)=9. 33 theorems, 2 definitions, 0 sorries, 0 axioms.",
+  "description": "Three-generator Frobenius number foundation: defines $\\text{Representable3}\\;a\\;b\\;c\\;n := \\exists x, y, z \\in \\mathbb{N}.\\; n = ax + by + cz$ and develops a layered structural API. S2 establishes seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c). S3a defines $\\text{frobeniusNumber3}\\;a\\;b\\;c := \\sup\\{n \\mid \\neg\\,\\text{Representable3}\\;a\\;b\\;c\\;n\\}$ with structural API (bounded-above suprema, abstract upper bound from $\\subseteq \\text{Iio}\\,K$, sSup-attainment). S3b lifts the 2-generator Sylvester bound to 3 generators via the bridge `large_representable3_via_two_gen` (witness with $z = 0$). S3c combines S3a + S3b to give the concrete loose Sylvester bound $\\text{frobeniusNumber3}\\,a\\,b\\,c \\le (a-1)(b-1)$ for coprime $a, b$. S4 derives finiteness of the non-representable set. S4a tightens S3c to $\\le (a-1)(b-1) - 1$, matching the classical Sylvester identity $g(a, b) = ab - a - b$. S5 specializes the S3b bridge to the three-consecutive family $(n, n+1, n+2)$ via `Nat.coprime_self_add_right`: every $m \\ge (n-1)\\cdot n$ is `Representable3 n (n+1) (n+2) m` (loose vs Roberts' tight $\\approx n^2/2$). S7 PROVES Roberts' tight d=1 closed form `frobenius_three_consecutive`: for every n ≥ 1, frobeniusNumber3 n (n+1) (n+2) = ⌊(n-2)/2⌋·n + (n-1) (≈ n²/2), via the interval criterion (non-representability of the witness g = (⌊(n-2)/2⌋+1)·n − 1 from not_representable3_roberts, plus representability of everything above it from representable3_above_roberts), with concrete instances g(3,4,5)=2, g(4,5,6)=7, g(5,6,7)=9. S8 (researcher-11) PROVES the full three-term arithmetic-progression generalization `frobenius_three_ap`: for a ≥ 2, d ≥ 1, gcd(a,d)=1, frobeniusNumber3 a (a+d) (a+2d) = ⌊(a-2)/2⌋·a + (a-1)·d, recovering S7's d=1 case as the specialization d=1. Supported by the AP interval/divisibility criterion representable3_ap_iff (Representable3 a (a+d) (a+2d) m ↔ ∃ s t, m = a·s + d·t ∧ t ≤ 2s), witness maximality not_representable3_ap_roberts (via the coprimality-forced residue t ≡ a−1 [MOD a], using Nat.ModEq.cancel_left_of_coprime), and representability-above representable3_above_ap_roberts (mod-a reduction of a two-generator representation obtained from the parent Sylvester bound), with concrete instances g(3,5,7)=4, g(4,7,10)=13. 39 theorems, 2 definitions, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -34,10 +34,10 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 559,
-    "theoremCount": 33,
+    "lineCount": 743,
+    "theoremCount": 39,
     "definitionCount": 2,
-    "assumptions": "None at this stage. The file establishes the Representable3 predicate, the frobeniusNumber3 definition (as sSup of the non-representable set), seven closure lemmas (S2), structural API for the supremum (S3a), the 2→3 generator bridge under Nat.Coprime a b with 1 ≤ a, 1 ≤ b (S3b), the loose Sylvester upper bound (a-1)(b-1) (S3c), finiteness of the non-representable set under the same coprimality (S4), the tight Sylvester upper bound (a-1)(b-1) - 1 (S4a, matching the classical 2-generator identity g(a,b) = ab - a - b), the three-consecutive specialization large_representable3_three_consecutive: every m ≥ (n-1)·n is Representable3 n (n+1) (n+2) m for 1 ≤ n (S5), the pair-symmetric (a,c)/(b,c) Sylvester bounds and finiteness variants plus the pair-min bound (S6 pair-symmetric), and the EXACT two-sided representability criterion representable3_consecutive_iff: Representable3 n (n+1) (n+2) m ↔ ∃ s, n·s ≤ m ∧ m ≤ (n+2)·s (S6, this revision — the structural key reducing Roberts' closed form to interval-covering on ℕ). The exact Roberts-1956 closed form g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for three consecutive integers (Roberts d=1 tight form, ≈ n²/2) is now PROVED in S7 (frobenius_three_consecutive, unconditional for n ≥ 1); the general Roberts 3-AP formula for arbitrary common difference d remains deferred.",
+    "assumptions": "None at this stage. The file establishes the Representable3 predicate, the frobeniusNumber3 definition (as sSup of the non-representable set), seven closure lemmas (S2), structural API for the supremum (S3a), the 2→3 generator bridge under Nat.Coprime a b with 1 ≤ a, 1 ≤ b (S3b), the loose Sylvester upper bound (a-1)(b-1) (S3c), finiteness of the non-representable set under the same coprimality (S4), the tight Sylvester upper bound (a-1)(b-1) - 1 (S4a, matching the classical 2-generator identity g(a,b) = ab - a - b), the three-consecutive specialization large_representable3_three_consecutive: every m ≥ (n-1)·n is Representable3 n (n+1) (n+2) m for 1 ≤ n (S5), the pair-symmetric (a,c)/(b,c) Sylvester bounds and finiteness variants plus the pair-min bound (S6 pair-symmetric), and the EXACT two-sided representability criterion representable3_consecutive_iff: Representable3 n (n+1) (n+2) m ↔ ∃ s, n·s ≤ m ∧ m ≤ (n+2)·s (S6, this revision — the structural key reducing Roberts' closed form to interval-covering on ℕ). The exact Roberts-1956 closed form for three consecutive integers g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) (Roberts d=1 tight form, ≈ n²/2) is PROVED in S7 (frobenius_three_consecutive, unconditional for n ≥ 1), and the FULL Roberts three-term arithmetic-progression formula g(a, a+d, a+2d) = ⌊(a-2)/2⌋·a + (a-1)·d for arbitrary common difference d with gcd(a,d)=1, a ≥ 2, d ≥ 1 is PROVED in S8 (frobenius_three_ap). Both are unconditional theorems (no hypotheses beyond the stated coprimality/size bounds) with 0 axioms. Remaining open directions on this slug: Fibonacci and Mersenne generator triples, and the general (s+1)-term Roberts formula.",
     "dateAdded": "2026-05-13",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -152,6 +152,30 @@
       "endLine": 440,
       "summary": "representable3_consecutive_iff: a two-sided characterization for the consecutive family (n, n+1, n+2). Since n·x+(n+1)·y+(n+2)·z = n·s + (y+2z) with s = x+y+z and the remainder y+2z ranging over [0,2s], m is representable iff n·s ≤ m ≤ (n+2)·s for some s. This interval-covering reformulation is the structural key to Roberts' tight d=1 closed form.",
       "mathContext": "$\\mathrm{Representable3}\\,n\\,(n{+}1)\\,(n{+}2)\\,m \\iff \\exists s,\\ n s \\le m \\le (n{+}2)s$, where $s$ is the total generator count $x+y+z$."
+    },
+    {
+      "id": "s8-ap-criterion",
+      "title": "S8 — Exact Representability Criterion for Arithmetic-Progression Triples",
+      "startLine": 570,
+      "endLine": 625,
+      "summary": "representable3_ap_iff generalizes S6's consecutive criterion to the full AP triple (a, a+d, a+2d): every combination a·x+(a+d)·y+(a+2d)·z collapses to a·s + d·t with s = x+y+z the total generator count and t = y+2z the excess in [0, 2s]. Hence m is representable iff m = a·s + d·t for some s, t with t ≤ 2s. The extra divisibility structure (the d·t term) is what distinguishes the general case from the d=1 interval criterion.",
+      "mathContext": "$\\mathrm{Representable3}\\,a\\,(a{+}d)\\,(a{+}2d)\\,m \\iff \\exists s\\,t,\\ m = a s + d t \\ \\wedge\\ t \\le 2 s$."
+    },
+    {
+      "id": "s8-roberts-ap",
+      "title": "S8 — Roberts' Closed Form for Three-Term Arithmetic Progressions",
+      "startLine": 626,
+      "endLine": 730,
+      "summary": "frobenius_three_ap proves the full Roberts (1956) formula g(a, a+d, a+2d) = ⌊(a-2)/2⌋·a + (a-1)·d for a ≥ 2, d ≥ 1, gcd(a,d)=1 — the genuine three-parameter generalization of S7's d=1 case. not_representable3_ap_roberts shows the witness is non-representable: a representation forces (via Nat.ModEq.cancel_left_of_coprime) t ≡ a−1 [MOD a], so t = a·k + (a−1), whence s ≤ ⌊(a-2)/2⌋ and t ≥ a−1 > 2s. representable3_above_ap_roberts shows everything larger is representable by reducing a two-generator representation (from the parent Sylvester bound on the coprime pair (a,d)) modulo a. Antisymmetry over the finite non-representable set (coprime pair (a, a+d)) pins the value.",
+      "mathContext": "$g(a, a{+}d, a{+}2d) = \\left\\lfloor \\tfrac{a-2}{2} \\right\\rfloor a + (a-1) d$, for $a \\ge 2,\\ d \\ge 1,\\ \\gcd(a,d)=1$."
+    },
+    {
+      "id": "s8a-ap-instances",
+      "title": "S8a — Concrete Instances of the 3-AP Closed Form",
+      "startLine": 731,
+      "endLine": 742,
+      "summary": "Numerical corollaries of frobenius_three_ap: g(3,5,7) = 4 (common difference d=2) and g(4,7,10) = 13 (d=3), each discharged by specializing the closed form and evaluating.",
+      "mathContext": "$g(3,5,7)=4,\\quad g(4,7,10)=13$."
     }
   ],
   "conclusion": {

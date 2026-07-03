@@ -45,7 +45,18 @@
           (via the bridge + cofiniteness of the 2-generator non-rep set).
     S4 — `large_representable3` for the three-consecutive family.
     S5 — `frobenius_three_consecutive` (Roberts d=1 closed form).
-    S6+ — Roberts 3-AP, Fibonacci triples, Mersenne triples.
+    S6 — `representable3_consecutive_iff` (interval criterion, d=1).
+    S7 — Roberts d=1 closed form + concrete instances.
+    S8 (researcher-11, 2026-07-02) — Roberts' closed form for the full
+        three-term arithmetic progression `(a, a+d, a+2d)` with `gcd(a,d)=1`:
+        `frobenius_three_ap : frobeniusNumber3 a (a+d) (a+2*d)
+           = (a-2)/2*a + (a-1)*d`, generalizing S7's `d = 1` case. Supported
+        by `representable3_ap_iff` (AP interval/divisibility criterion),
+        `not_representable3_ap_roberts` (witness maximality via residue
+        `t ≡ a-1 [MOD a]`), and `representable3_above_ap_roberts`
+        (mod-`a` reduction of a two-generator representation). Concrete
+        instances `g(3,5,7)=4`, `g(4,7,10)=13`.
+    Remaining: Fibonacci / Mersenne triples, general `s`-term Roberts.
 
   0 sorries, 0 axioms.
 -/
@@ -554,6 +565,179 @@ theorem frobenius_4_5_6 : frobeniusNumber3 4 5 6 = 7 := by
 /-- `g(5,6,7) = 9`. -/
 theorem frobenius_5_6_7 : frobeniusNumber3 5 6 7 = 9 := by
   have h := frobenius_three_consecutive 5 (by norm_num)
+  norm_num at h; exact h
+
+/-! ### S8 — Roberts' closed form for three-term arithmetic progressions
+
+Roberts (1956): for `a ≥ 2`, `d ≥ 1`, and `gcd(a, d) = 1`, the Frobenius number
+of the arithmetic-progression triple `(a, a + d, a + 2·d)` is
+
+  `g(a, a + d, a + 2·d) = ⌊(a - 2)/2⌋ · a + (a - 1) · d`.
+
+This is the genuine three-parameter generalization of the `d = 1` consecutive
+case `frobenius_three_consecutive` (S7): setting `d = 1` recovers
+`⌊(a - 2)/2⌋ · a + (a - 1)`. Every three-generator combination
+`a·x + (a+d)·y + (a+2d)·z` collapses to `a·s + d·t` with `s = x + y + z` the
+total generator count and `t = y + 2·z ∈ [0, 2·s]` the "excess" carried by the
+two larger generators; representability of `m` is therefore equivalent to
+writing `m = a·s + d·t` with `t ≤ 2·s` (`representable3_ap_iff`, generalizing
+S6's `representable3_consecutive_iff`). Coprimality of `a, d` pins the residue
+`t mod a`, which is exactly what makes the Roberts witness maximal. Finiteness
+of the non-representable set comes from the S3b/S4 two-generator Sylvester bridge
+applied to the coprime pair `(a, a + d)` (since `gcd(a, a+d) = gcd(a, d) = 1`). -/
+
+/-- **Exact representability criterion for AP triples.** `m` is
+    `Representable3 a (a + d) (a + 2·d)` iff `m = a·s + d·t` for some `s t : ℕ`
+    with `t ≤ 2·s`. (Generalizes `representable3_consecutive_iff`, the `d = 1`
+    case where the `d·t` term collapses to `t`.) -/
+theorem representable3_ap_iff (a d m : ℕ) :
+    Representable3 a (a + d) (a + 2 * d) m
+      ↔ ∃ s t : ℕ, m = a * s + d * t ∧ t ≤ 2 * s := by
+  constructor
+  · rintro ⟨x, y, z, rfl⟩
+    exact ⟨x + y + z, y + 2 * z, by ring, by omega⟩
+  · rintro ⟨s, t, hm, ht⟩
+    rcases le_or_lt t s with hts | hts
+    · -- excess `t ≤ s`: use `x = s - t, y = t, z = 0`.
+      obtain ⟨u, hu⟩ : ∃ u, s = u + t := ⟨s - t, by omega⟩
+      refine ⟨u, t, 0, ?_⟩
+      have e2 : (a + d) * t = a * t + d * t := by ring
+      have e3 : a * s = a * u + a * t := by rw [hu]; ring
+      simp only [Nat.mul_zero, Nat.add_zero]
+      omega
+    · -- excess `s < t ≤ 2·s`: use `x = 0, y = 2·s - t, z = t - s`.
+      obtain ⟨v, hv⟩ : ∃ v, t = s + v := ⟨t - s, by omega⟩
+      obtain ⟨w, hw⟩ : ∃ w, s = w + v := ⟨s - v, by omega⟩
+      refine ⟨0, w, v, ?_⟩
+      have e4 : (a + d) * w = a * w + d * w := by ring
+      have e5 : (a + 2 * d) * v = a * v + d * v + d * v := by ring
+      have e6 : a * s = a * w + a * v := by rw [hw]; ring
+      have e7 : d * s = d * w + d * v := by rw [hw]; ring
+      have e8 : d * t = d * s + d * v := by rw [hv]; ring
+      simp only [Nat.mul_zero, Nat.zero_add]
+      omega
+
+/-- The Roberts witness `g = ⌊(a-2)/2⌋·a + (a-1)·d` is **not** representable by
+    the AP triple `(a, a + d, a + 2·d)` when `gcd(a, d) = 1` and `a ≥ 2`. A
+    representation `g = a·s + d·t` with `t ≤ 2·s` would force (via coprimality)
+    `t ≡ a - 1 [MOD a]`, hence `t = a·k + (a-1)` for some `k`, whence
+    `s + d·k = ⌊(a-2)/2⌋` so `s ≤ ⌊(a-2)/2⌋`; but then
+    `t ≥ a - 1 > 2·⌊(a-2)/2⌋ ≥ 2·s`, contradicting `t ≤ 2·s`. -/
+theorem not_representable3_ap_roberts {a d : ℕ} (ha : 2 ≤ a) (hd : 1 ≤ d)
+    (hcop : Nat.Coprime a d) :
+    ¬ Representable3 a (a + d) (a + 2 * d) ((a - 2) / 2 * a + (a - 1) * d) := by
+  rw [representable3_ap_iff]
+  rintro ⟨s, t, hm, ht⟩
+  -- Rearrange to the canonical form and reduce modulo `a`.
+  have hkey : a * s + d * t = a * ((a - 2) / 2) + d * (a - 1) := by
+    have c1 : (a - 2) / 2 * a = a * ((a - 2) / 2) := Nat.mul_comm _ _
+    have c2 : (a - 1) * d = d * (a - 1) := Nat.mul_comm _ _
+    omega
+  have hmod : d * t ≡ d * (a - 1) [MOD a] := by
+    unfold Nat.ModEq
+    have l1 : (a * s + d * t) % a = d * t % a := Nat.mul_add_mod a s (d * t)
+    have l2 : (a * ((a - 2) / 2) + d * (a - 1)) % a = d * (a - 1) % a :=
+      Nat.mul_add_mod a ((a - 2) / 2) (d * (a - 1))
+    rw [← l1, ← l2, hkey]
+  have htmod : t ≡ (a - 1) [MOD a] := Nat.ModEq.cancel_left_of_coprime hcop hmod
+  -- The residue of the excess is `a - 1`.
+  have htm : t % a = a - 1 := by
+    have h := htmod
+    unfold Nat.ModEq at h
+    rwa [Nat.mod_eq_of_lt (by omega : a - 1 < a)] at h
+  have hdm : a * (t / a) + (a - 1) = t := by
+    have := Nat.div_add_mod t a; rw [htm] at this; exact this
+  -- From `hkey`, cancelling `d·(a-1)`: `a·s + d·(a·(t/a)) = a·⌊(a-2)/2⌋`.
+  have expand : d * t = d * (a * (t / a)) + d * (a - 1) := by
+    rw [← Nat.mul_add, hdm]
+  have hsk : a * s + d * (a * (t / a)) = a * ((a - 2) / 2) := by omega
+  have hs_le : a * s ≤ a * ((a - 2) / 2) := by omega
+  have hsq : s ≤ (a - 2) / 2 := Nat.le_of_mul_le_mul_left hs_le (by omega)
+  have hdml : (a - 2) / 2 * 2 ≤ a - 2 := Nat.div_mul_le_self (a - 2) 2
+  omega
+
+/-- Every value strictly above the Roberts witness is representable by the AP
+    triple `(a, a + d, a + 2·d)` (for `gcd(a, d) = 1`, `a ≥ 2`, `d ≥ 1`). Take
+    any two-generator representation `m = a·s₀ + d·t₀` (available by the Sylvester
+    bound for the coprime pair `(a, d)`), then reduce the excess modulo `a`:
+    `t' := t₀ % a`, `s' := s₀ + (t₀ / a)·d`. Then `m = a·s' + d·t'` still holds,
+    with `t' < a`; and `t' ≤ 2·s'`, else `s' ≤ ⌊(a-2)/2⌋` and `t' ≤ a - 1` give
+    `m ≤ ⌊(a-2)/2⌋·a + (a-1)·d`, contradicting `m` being above the witness. -/
+theorem representable3_above_ap_roberts {a d m : ℕ} (ha : 2 ≤ a) (hd : 1 ≤ d)
+    (hcop : Nat.Coprime a d)
+    (hm : (a - 2) / 2 * a + (a - 1) * d < m) :
+    Representable3 a (a + d) (a + 2 * d) m := by
+  rw [representable3_ap_iff]
+  -- A two-generator representation of `m` by the coprime pair `(a, d)`.
+  have hbig : (a - 1) * (d - 1) ≤ m := by
+    have hb1 : (a - 1) * (d - 1) ≤ (a - 1) * d :=
+      Nat.mul_le_mul (le_refl (a - 1)) (Nat.sub_le d 1)
+    omega
+  obtain ⟨s₀, t₀, hst⟩ :=
+    FrobeniusNumber.large_representable hcop (by omega) (by omega) m hbig
+  have hdm : a * (t₀ / a) + t₀ % a = t₀ := Nat.div_add_mod t₀ a
+  refine ⟨s₀ + (t₀ / a) * d, t₀ % a, ?_, ?_⟩
+  · calc m = a * s₀ + d * t₀ := hst
+      _ = a * s₀ + d * (a * (t₀ / a) + t₀ % a) := by rw [hdm]
+      _ = a * (s₀ + (t₀ / a) * d) + d * (t₀ % a) := by ring
+  · by_contra hcon
+    push_neg at hcon
+    have hmodlt : t₀ % a < a := Nat.mod_lt _ (by omega)
+    have hsq : s₀ + (t₀ / a) * d ≤ (a - 2) / 2 := by
+      apply (Nat.le_div_iff_mul_le (by norm_num : 0 < 2)).mpr
+      omega
+    have hb1 : a * (s₀ + (t₀ / a) * d) ≤ a * ((a - 2) / 2) :=
+      Nat.mul_le_mul (le_refl a) hsq
+    have hb2 : d * (t₀ % a) ≤ d * (a - 1) :=
+      Nat.mul_le_mul (le_refl d) (by omega)
+    have hmeq : m = a * (s₀ + (t₀ / a) * d) + d * (t₀ % a) := by
+      calc m = a * s₀ + d * t₀ := hst
+        _ = a * s₀ + d * (a * (t₀ / a) + t₀ % a) := by rw [hdm]
+        _ = a * (s₀ + (t₀ / a) * d) + d * (t₀ % a) := by ring
+    have c1 : a * ((a - 2) / 2) = (a - 2) / 2 * a := Nat.mul_comm _ _
+    have c2 : d * (a - 1) = (a - 1) * d := Nat.mul_comm _ _
+    omega
+
+/-- **Roberts' closed form (three-term arithmetic progression).** For `a ≥ 2`,
+    `d ≥ 1`, and `gcd(a, d) = 1`,
+    `g(a, a + d, a + 2·d) = ⌊(a - 2)/2⌋ · a + (a - 1) · d`.
+
+    Proof: `not_representable3_ap_roberts` places the witness in the
+    non-representable set (`⇒ ≤ sSup`, using finiteness of that set via the
+    coprime pair `(a, a+d)`), while `representable3_above_ap_roberts` shows
+    everything strictly larger is representable (`⇒ sSup ≤`). Antisymmetry pins
+    the value. The `d = 1` case recovers `frobenius_three_consecutive`. -/
+theorem frobenius_three_ap {a d : ℕ} (ha : 2 ≤ a) (hd : 1 ≤ d)
+    (hcop : Nat.Coprime a d) :
+    frobeniusNumber3 a (a + d) (a + 2 * d) = (a - 2) / 2 * a + (a - 1) * d := by
+  have hcop' : Nat.Coprime a (a + d) := by
+    rw [Nat.add_comm]; exact Nat.coprime_add_self_right.mpr hcop
+  have hfin : { n : ℕ | ¬ Representable3 a (a + d) (a + 2 * d) n }.Finite :=
+    set_non_representable3_finite_of_coprime_ab hcop' (by omega) (by omega)
+  have hbdd : BddAbove { n : ℕ | ¬ Representable3 a (a + d) (a + 2 * d) n } :=
+    hfin.bddAbove
+  apply le_antisymm
+  · rw [frobeniusNumber3_def]
+    by_cases hne : ({ n : ℕ | ¬ Representable3 a (a + d) (a + 2 * d) n }).Nonempty
+    · refine csSup_le hne (fun mm hmm => ?_)
+      by_contra hgt
+      push_neg at hgt
+      exact hmm (representable3_above_ap_roberts ha hd hcop hgt)
+    · rw [Set.not_nonempty_iff_eq_empty.mp hne, csSup_empty]
+      exact Nat.zero_le _
+  · rw [frobeniusNumber3_def]
+    exact le_csSup hbdd (not_representable3_ap_roberts ha hd hcop)
+
+/-! ### S8a — concrete instances of the 3-AP closed form -/
+
+/-- `g(3, 5, 7) = 4` (common difference `d = 2`). -/
+theorem frobenius_3_5_7 : frobeniusNumber3 3 5 7 = 4 := by
+  have h := frobenius_three_ap (a := 3) (d := 2) (by norm_num) (by norm_num) (by decide)
+  norm_num at h; exact h
+
+/-- `g(4, 7, 10) = 13` (common difference `d = 3`). -/
+theorem frobenius_4_7_10 : frobeniusNumber3 4 7 10 = 13 := by
+  have h := frobenius_three_ap (a := 4) (d := 3) (by norm_num) (by norm_num) (by decide)
   norm_num at h; exact h
 
 end FrobeniusOQ03
