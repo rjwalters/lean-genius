@@ -95,6 +95,48 @@
       "Finite products in an ordered commutative monoid: Finset.prod_le_prod', Finset.prod_ne_zero_iff, Finset.prod_const, Finset.card_range"
     ]
   },
+  "sections": [
+    {
+      "id": "framing",
+      "title": "Framing: From Positivity to a Quantitative Bound",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "The module docstring positions the file against its chain-rule parent: that scaffold reduced the measure-theoretic LLL to a per-event conditional bound and proved only the qualitative half (avoidance_pos_of_failure_cond_lt_one'). This file lands the quantitative conclusion ∏ₖ (1 − bₖ) ≤ μ(⋂ᵢ Aᵢᶜ) — the honest measure-theoretic analogue of the parent proof's ℚ-valued surrogate ∏(1 − xᵢ) > 0 — and lists the three results: the general bound, the symmetric (1 − p)ⁿ specialisation, and the positivity corollary.",
+      "mathContext": "The LLL conclusion is μ(⋂ Aᵢᶜ) ≥ ∏(1 − xᵢ); positivity is only its coarsest corollary. No independence hypothesis is used — everything is Finset.range-indexed over an arbitrary IsProbabilityMeasure."
+    },
+    {
+      "id": "setup",
+      "title": "Imports and Ambient Assumptions",
+      "startLine": 42,
+      "endLine": 51,
+      "summary": "Imports the chain-rule file, opens MeasureTheory / ProbabilityTheory / Finset and the ENNReal scope, and fixes the ambient data: a measurable space Ω, a measure μ with the [IsProbabilityMeasure μ] instance, and a family A : ℕ → Set Ω of bad events. These are the only standing hypotheses; the conditional failure bounds are supplied per-theorem.",
+      "mathContext": "IsProbabilityMeasure is an explicit typeclass instance (μ Ω = 1), needed so that conditional probabilities μ[· | ·] are well-behaved and the survival product identity from the chain-rule entry applies."
+    },
+    {
+      "id": "quantitative-bound",
+      "title": "The Quantitative Lower Bound",
+      "startLine": 53,
+      "endLine": 84,
+      "summary": "avoidance_ge_prod_one_sub: from per-event bounds μ[A k | ⋂_{j<k}(A j)ᶜ] ≤ bₖ < 1 it derives ∏ₖ (1 − bₖ) ≤ μ(⋂ᵢ (A i)ᶜ). The proof rewrites the avoidance probability by the survival-product identity avoidance_eq_prod_survival_cond, then bounds each ℝ≥0∞ factor below by 1 − bₖ via Finset.prod_le_prod'. Per factor: history positivity is automatic from the failure bounds (hist_pos_of_failure_cond_lt_one), so survival_cond_eq_one_sub rewrites the survival factor as 1 − μ[A k | history], and tsub_le_tsub_left transports μ[A k | history] ≤ bₖ across truncated subtraction.",
+      "mathContext": "The one substantive step beyond the chain-rule reduction is factorwise: 1 − bₖ ≤ 1 − μ[A k | history] by antitonicity of ℝ≥0∞ truncated subtraction (tsub_le_tsub_left). Membership propagation lifts the hypotheses at index k to all earlier indices m < k needed for history positivity."
+    },
+    {
+      "id": "symmetric-corollary",
+      "title": "Symmetric Specialisation (1 − p)ⁿ",
+      "startLine": 86,
+      "endLine": 96,
+      "summary": "avoidance_ge_one_sub_pow: a single uniform bound μ[A k | history] ≤ p < 1 yields (1 − p)ⁿ ≤ μ(⋂ᵢ (A i)ᶜ). Obtained by instantiating avoidance_ge_prod_one_sub with the constant budget b ≡ p and collapsing the product with Finset.prod_const and Finset.card_range.",
+      "mathContext": "This is the quantitative shape the symmetric LLL delivers: under e·p·(d+1) ≤ 1 the induction certifies each conditional failure ≤ p, giving an exponential-in-n avoidance lower bound (1 − p)ⁿ."
+    },
+    {
+      "id": "positivity-corollary",
+      "title": "Positivity Recovered as a Corollary",
+      "startLine": 98,
+      "endLine": 114,
+      "summary": "avoidance_pos_of_prod_one_sub_pos: since every bₖ < 1 makes each survival budget 1 − bₖ strictly positive, the product lower bound ∏(1 − bₖ) is itself positive, so 0 < μ(⋂ᵢ (A i)ᶜ) follows from avoidance_ge_prod_one_sub. This re-derives the chain-rule entry's qualitative positivity as the quantitative bound read at its coarsest resolution.",
+      "mathContext": "Positivity of the ℝ≥0∞ product uses zero_lt_iff with Finset.prod_ne_zero_iff, reducing to 1 − bₖ ≠ 0 for each factor, which is tsub_eq_zero_iff_le / not_le applied to bₖ < 1."
+    }
+  ],
   "conclusion": {
     "summary": "The quantitative measure-theoretic Lovász Local Lemma lower bound is fully machine-verified over a real probability space: per-event conditional failure bounds μ[A k | ⋂_{j<k}(A j)ᶜ] ≤ bₖ < 1 propagate to ∏ₖ (1 − bₖ) ≤ μ(⋂ᵢ (A i)ᶜ), with the symmetric specialisation (1 − p)ⁿ ≤ μ(⋂ (A i)ᶜ) and qualitative positivity recovered as a corollary. No independence hypothesis; history positivity is derived, not assumed. 0 sorries, 0 axioms.",
     "implications": "**Closes the qualitative-to-quantitative gap in the OQ-01 landscape.** The chain-rule entry reduced the LLL to per-event conditional bounds and proved avoidance *positivity*; this entry upgrades that to the quantitative *lower bound* ∏(1 − bₖ) the Lovász Local Lemma actually asserts, over a genuine probability measure. Together with the independent base case (lovasz-local-lemma-oq-01), the union-bound extreme (lovasz-local-lemma-oq-01-union-bound), and the chain-rule scaffold (lovasz-local-lemma-oq-01-chain-rule), the gallery now states every part of the LLL conclusion except the derivation of the conditional bounds from a dependency structure.\n\n**Honest scope**: the conditional failure bounds bₖ are hypotheses here; deriving them (bₖ = 2p under e·p·(d+1) ≤ 1) from a measure-theoretic dependency graph remains the open research target. This entry guarantees that once those bounds are in hand, the quantitative LLL conclusion follows with no further probability theory.",
