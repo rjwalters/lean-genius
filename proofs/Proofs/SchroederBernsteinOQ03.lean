@@ -2747,6 +2747,46 @@ theorem domain_consStepC {p q : ℕ → Prop} {f g : ℕ → ℕ}
     balanced_cons_domain hf hg hinv.2.2.1 ha hbRan hbN,
     balanced_swap_cons_domain hf hg hinv.2.2.2 ha hbRan hbN⟩
 
+/-- **Choice-free range cons step.** The `Prod.swap` dual of `domain_consStepC`: prepends the
+    concrete escaping pair `(chaseTarget g f b (escapeDepth …), b)` — the least-depth `g`-image of
+    the fresh range anchor `b`, located by the decidable `Nat.find` (`escapeDepth`) applied to the
+    *swapped* list `L.map Prod.swap` rather than `Classical.choose` — and preserves all four
+    `StageInvB` invariants. Escape is licensed by `escape_exists' hg hf` on the swapped balance
+    `Balanced g f (L.map Prod.swap)` (carried as `hinv.2.2.2`). Because the partner is a definite
+    computable term, a scheduler built on `domain_consStepC` + this range twin needs no
+    `noncomputable` marker: together they are the `Classical.choose`-free replacement for the
+    existential `domain_consStep` / `range_consStep` pair. The direct hypothesis is
+    `hb' : b ∉ mDom (L.map Prod.swap)` (defeq to `b ∉ mRan L`), parallel to `domain_consStepC`'s
+    `a ∉ mDom L`, so the `escapeDepth` argument in the conclusion is a literal term. -/
+theorem range_consStepC {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hinv : StageInvB p q f g L)
+    {b : ℕ} (hb' : b ∉ mDom (L.map Prod.swap)) :
+    StageInvB p q f g
+      ((chaseTarget g f b
+            (escapeDepth g f (L.map Prod.swap) b
+              (escape_exists' hg hf hinv.2.2.2 hb')), b) :: L) := by
+  have hb : b ∉ mRan L := by rw [← mDom_map_swap]; exact hb'
+  have haRan :
+      chaseTarget g f b
+          (escapeDepth g f (L.map Prod.swap) b (escape_exists' hg hf hinv.2.2.2 hb'))
+        ∉ mRan (L.map Prod.swap) :=
+    chaseTarget_escapeDepth_notMem g f (L.map Prod.swap) b _
+  have ha :
+      chaseTarget g f b
+          (escapeDepth g f (L.map Prod.swap) b (escape_exists' hg hf hinv.2.2.2 hb'))
+        ∉ mDom L := by rw [← mRan_map_swap]; exact haRan
+  have haN :
+      chaseTarget g f b
+          (escapeDepth g f (L.map Prod.swap) b (escape_exists' hg hf hinv.2.2.2 hb'))
+        = g (fwdOrbit g f b
+            (escapeDepth g f (L.map Prod.swap) b (escape_exists' hg hf hinv.2.2.2 hb'))) := rfl
+  exact ⟨isMatching_cons hinv.1 ha hb,
+    matchingCorr_cons hinv.2.1 (chaseTarget_corr hgpq hfpq b _).symm,
+    balanced_swap_cons_range hf hg hinv.2.2.1 ha hb haN,
+    balanced_cons_range hf hg hinv.2.2.2 ha hb haN⟩
+
 /-- One stage of the extension-only scheduler, carrying `StageInvB` in a subtype. Even `s`
     targets domain element `s/2`; odd `s` targets range element `s/2`. If already covered the
     matching is returned unchanged; otherwise the matching *grows by one cons* (nothing removed). -/

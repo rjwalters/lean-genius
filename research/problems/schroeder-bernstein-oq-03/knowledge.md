@@ -1157,3 +1157,46 @@ checked out `chore/sync-data-…` on the main repo and clobbered the uncommitted
 passed. Verified-correct content was re-applied byte-identically in a fresh `/tmp` worktree off
 `origin/main` and committed there. Lesson: always edit inside your OWN worktree path, never the
 shared main-repo checkout.
+
+## Session 2026-07-03 (researcher-14): RANGE cons twin `range_consStepC` — Section 5·B-comp completed for BOTH sides [VERIFIED 0-axiom]
+
+**One more cell of the computability rebuild filled.** r11 built the choice-free domain step
+`domain_consStepC`; this session adds its `Prod.swap` mirror `range_consStepC`, so both atomic cons
+twins are now `Classical.choose`-free. Verified against the main repo's prebuilt oleans
+(`LAKE_UNSAFE=1 lake env lean …SchroederBernsteinOQ03.lean`, 0 errors; only the pre-existing
+`myhill_isomorphism` sorry + two `unused variable he` warnings remain). `#print axioms
+range_consStepC = [propext, Classical.choice, Quot.sound]` → 0-axiom by project policy (no `sorryAx`,
+no `Lean.ofReduceBool`).
+
+- **`range_consStepC`** (statement, mirroring `domain_consStepC`): given `hinv : StageInvB p q f g L`
+  and the direct hypothesis `hb' : b ∉ mDom (L.map Prod.swap)` (defeq to `b ∉ mRan L`, chosen to
+  keep the `escapeDepth` argument a literal term in the conclusion, exactly as `domain_consStepC`
+  takes `a ∉ mDom L`), it returns
+  `StageInvB p q f g ((chaseTarget g f b (escapeDepth g f (L.map Prod.swap) b
+  (escape_exists' hg hf hinv.2.2.2 hb')), b) :: L)`.
+- **Proof** is the swapped-coordinate dual of `range_consStep`'s existential proof, now with the
+  concrete `escapeDepth` partner instead of `.choose`:
+  - `hb : b ∉ mRan L` via `← mDom_map_swap`.
+  - `haRan := chaseTarget_escapeDepth_notMem g f (L.map Prod.swap) b _` gives the swapped-range
+    freshness; `ha : chaseTarget … ∉ mDom L` via `← mRan_map_swap`.
+  - `haN : chaseTarget g f b (escapeDepth …) = g (fwdOrbit g f b (escapeDepth …))` by `rfl`
+    (`chaseTarget g f b k` unfolds to `g (fwdOrbit g f b k)`).
+  - 4-tuple: `isMatching_cons hinv.1 ha hb`, `matchingCorr_cons hinv.2.1
+    (chaseTarget_corr hgpq hfpq b _).symm`, `balanced_swap_cons_range hf hg hinv.2.2.1 ha hb haN`
+    (→ `Balanced f g`), `balanced_cons_range hf hg hinv.2.2.2 ha hb haN` (→ `Balanced g f swap`).
+- **Design note.** As with `domain_consStepC`, escapeDepth's existence witness is proof-irrelevant,
+  so any proof of `b ∉ mDom (L.map swap)` yields the *same* (defeq) `Nat.find` value — the caller
+  (future `stageSeqBComp`) may supply its own decidability-derived proof and still match.
+
+**NEXT (the last real piece):** build the computable parallel scheduler `stageSeqBComp` as a plain
+`def` (NOT `noncomputable`) — explicit cons recursion `if s%2=0 then if h : s/2 ∈ mDom prev then prev
+else ⟨(s/2, chaseTarget f g (s/2) (escapeDepth …)) :: prev.1, domain_consStepC …⟩ else … range_consStepC …`
+using the two choice-free twins — then prove `Computable (fun n => mLookup (stageSeqBComp
+(entryStageDomB n)) n)` via `mLookup_computable` + `chaseTarget_computable` + `fwdOrbit_computable`,
+and discharge the `myhill_isomorphism` `→` sorry. The mathematics is entirely done; only this
+computability plumbing remains. Do NOT re-open the Path-B fork or the splicing `stageSeq`.
+
+**Process note (repeat of r11's).** The `.loom/worktrees/researcher-14` worktree was again pruned by
+the cleanup daemon mid-session, and the first Edit accidentally landed on the shared main-repo
+checkout (then on a deployer's `chore/sync-data-…` branch) where it was clobbered. Re-applied
+byte-identically and committed in a fresh **locked** `/tmp/r14-myhill` worktree off `origin/main`.
