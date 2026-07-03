@@ -91,6 +91,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Documentation and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Imports the parent CramersRuleOQ04OQ01OQ01 (whose cramer_solution supplies xᵢ = det(Aᵢ)/det A over a field with det A ≠ 0) and Mathlib.Tactic, states OQ-01 — specialize the formula to the 2×2 and 3×3 cases and verify against det_fin_two / det_fin_three — lists the main results, and opens the working namespace. Frames the whole file as the bookkeeping of column replacement, with no new determinant theory assumed.",
+      "mathContext": "$A_i = A.\\mathrm{updateCol}\\,i\\,b$ and $x_i = \\det(A_i)/\\det A$ (parent `cramer_solution`); this file expands both $\\det(A_i)$ and $\\det A$ for $n = 2, 3$ via $\\det_{\\mathrm{fin\\,two}}$ / $\\det_{\\mathrm{fin\\,three}}$ and $\\mathrm{updateCol\\_self}/\\mathrm{updateCol\\_ne}$."
+    },
+    {
       "id": "two-by-two",
       "title": "Section I: The 2×2 Closed Forms",
       "startLine": 44,
@@ -139,6 +147,11 @@
       "targetId": "cramers-rule-oq-04-oq-01-oq-01",
       "relationship": "extends",
       "description": "Parent: proved the general scalar formula xᵢ = det(Aᵢ)/det A over a field. This entry answers its OQ-01 by specializing to the 2×2 and 3×3 cases and expanding the determinants into closed form."
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "Root of the chain: Cramer's rule via the adjugate, x = A⁻¹b with A⁻¹ = adj(A)/det A. The present entry is the leaf that makes the abstract quotient concrete — its 2×2 / 3×3 closed forms are exactly the adjugate entries of the root divided by det A, written out in the matrix entries."
     }
   ],
   "references": [
