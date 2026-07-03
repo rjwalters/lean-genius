@@ -56,9 +56,16 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Docstring recalling the parent's Vieta ascent sequence rooted at (1,1,1) and its ascent map ascent (a,b,c) = (b, c, 3bc − a), and stating the quantitative refinement proved here (each step at least doubles the top coordinate, giving 2ⁿ ≤ (seq n).top). Then imports Mathlib and the parent leaf Proofs.MarkovEquationOQ06, opens both namespaces, so seq, seq_spec and seq_zero are reused directly — this file adds only the growth estimate on top of the parent's infrastructure."
+    },
+    {
       "id": "sec-doubling",
       "title": "The Doubling Step",
-      "startLine": 55,
+      "startLine": 47,
       "endLine": 72,
       "summary": "two_mul_top_le_succ proves that one ascent step at least doubles the top coordinate: 2·(seq n).2.2 ≤ (seq (n+1)).2.2. Using the parent's seq_spec to get a sorted Markov triple 1 ≤ a ≤ b ≤ c, the successor's top coordinate 3bc − a (obtained by rfl) satisfies 3bc − a − 2c ≥ 3c(b − 1) ≥ 0, discharged by nlinarith with the nonnegative product c·(b − 1)."
     },
