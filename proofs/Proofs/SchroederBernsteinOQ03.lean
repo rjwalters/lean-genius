@@ -2602,6 +2602,262 @@ theorem mem_mRan_stageSeq_iff_entryStageRan_le (s n : ℕ) :
 end StageSeqLemmas
 
 /-!
+## Section 5·B: Extension-only (cons) scheduler and the limit permutation — Path B
+
+The scheduler in `Section 4m` (`stageSeq`, built on the splicing `augment_*_step`) preserves
+`BuiltFrom` but is **not pair-monotone** — a domain step re-labels stale `g`-edges — so the
+read-off `mLookup_stable` cannot be applied to it (a placed point's partner changes between
+stages). The decided route (Path B, Rogers §7.4 extend-only back-and-forth; see the problem's
+knowledge base) instead carries the *cons-preserved* `Balanced` counts (both `Balanced f g L`
+and the swapped `Balanced g f (L.map swap)`), so every stage is a pure cons and nothing is ever
+removed. Then `mLookup_stable` applies directly along the whole chain and the limit permutation
+`σ = sigmaB` is well-defined with **no finite-injury / stabilization argument**.
+
+This section assembles the atomic cons steps (`domain_consStep`, `range_consStep`, from the
+already-verified `escape_exists'` + the four balance-preservation lemmas), iterates them into
+`stageSeqB` with pair-monotonicity (`stageSeqB_pair_subset`) and domain/range exhaustion, and
+reads off the bijection `sigmaEquivB : ℕ ≃ ℕ` satisfying `p n ↔ q (σ n)` (`sigmaEquivB_corr`).
+
+Everything here is VERIFIED 0-axiom. The **sole** remaining gap to closing `myhill_isomorphism`
+is *computability* of `sigmaEquivB`: `stageSeqB` is `noncomputable` (built via `Classical.choose`
+on the escape existentials), so `σ` is not yet a `Computable` function. Upgrading the escape
+depth to the bounded `Nat.rfind` search that `escape_exists'` licenses (`N ≤ (mRan L).length`)
+and rebuilding a computable parallel `stageSeqB` is the residual work — the mathematics (the
+bijection + correspondence) is now complete.
+-/
+
+/-- Bundled invariant for the extension-only (cons) scheduler: a matching, respecting the
+    `p ↔ q` correspondence, balanced on both the `g∘f` cycles (`Balanced f g L`) and the
+    reverse `f∘g` cycles (`Balanced g f (L.map swap)`). Unlike `StageInv` it carries the two
+    `Balanced` counts instead of `BuiltFrom`, so it is preserved by pure conses. -/
+def StageInvB (p q : ℕ → Prop) (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) : Prop :=
+  IsMatching L ∧ MatchingCorr p q L ∧ Balanced f g L ∧ Balanced g f (L.map Prod.swap)
+
+/-- **Even (domain) cons step.** A fresh domain anchor `a ∉ mDom L` can be matched by
+    prepending the single pair `(a, chaseTarget f g a N)` for a least escaping depth `N`,
+    preserving all four invariants. Escape is discharged by `escape_exists'` from the
+    balance count (no `BuiltFrom`). Nothing is removed — the result is `(a,b) :: L`. -/
+theorem domain_consStep {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hinv : StageInvB p q f g L)
+    {a : ℕ} (ha : a ∉ mDom L) :
+    ∃ b, StageInvB p q f g ((a, b) :: L) ∧ (a, b) ∈ ((a, b) :: L) := by
+  obtain ⟨hM, hC, hBfg, hBgf⟩ := hinv
+  obtain ⟨N, hN⟩ := escape_exists' hf hg hBfg ha
+  have hstep := matching_step_chase hfpq hgpq hM hC ha hN
+  refine ⟨chaseTarget f g a N, ⟨hstep.1, hstep.2, ?_, ?_⟩, List.mem_cons_self⟩
+  · exact balanced_cons_domain hf hg hBfg ha hN rfl
+  · exact balanced_swap_cons_domain hf hg hBgf ha hN rfl
+
+/-- **Odd (range) cons step.** A fresh range anchor `b ∉ mRan L` can be matched by prepending
+    the pair `(chaseTarget g f b N, b)` for a least escaping depth `N` in the swapped problem,
+    preserving all four invariants. This is the `Prod.swap` dual of `domain_consStep`: escape
+    uses the swapped balance `Balanced g f (L.map swap)` via `escape_exists' hg hf`. -/
+theorem range_consStep {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hinv : StageInvB p q f g L)
+    {b : ℕ} (hb : b ∉ mRan L) :
+    ∃ a, StageInvB p q f g ((a, b) :: L) ∧ (a, b) ∈ ((a, b) :: L) := by
+  obtain ⟨hM, hC, hBfg, hBgf⟩ := hinv
+  -- Escape in the swapped problem `(q, p, g, f)`: `b ∉ mDom (L.map swap) = mRan L`.
+  have hb' : b ∉ mDom (L.map Prod.swap) := by rw [mDom_map_swap]; exact hb
+  obtain ⟨N, hN⟩ := escape_exists' hg hf hBgf hb'
+  -- `a := chaseTarget g f b N = g (fwdOrbit g f b N)`; `a ∉ mRan (L.map swap) = mDom L`.
+  set a := chaseTarget g f b N with ha_def
+  have ha : a ∉ mDom L := by rw [← mRan_map_swap]; exact hN
+  have haN : a = g (fwdOrbit g f b N) := rfl
+  refine ⟨a, ⟨isMatching_cons hM ha hb, ?_, ?_, ?_⟩, List.mem_cons_self⟩
+  · exact matchingCorr_cons hC (chaseTarget_corr hgpq hfpq b N).symm
+  · exact balanced_swap_cons_range hf hg hBfg ha hb haN
+  · exact balanced_cons_range hf hg hBgf ha hb haN
+
+/-- One stage of the extension-only scheduler, carrying `StageInvB` in a subtype. Even `s`
+    targets domain element `s/2`; odd `s` targets range element `s/2`. If already covered the
+    matching is returned unchanged; otherwise the matching *grows by one cons* (nothing removed). -/
+noncomputable def stageStepB {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    (s : ℕ) (prev : {L : List (ℕ × ℕ) // StageInvB p q f g L}) :
+    {L : List (ℕ × ℕ) // StageInvB p q f g L} :=
+  if s % 2 = 0 then
+    if h : s / 2 ∈ mDom prev.1 then prev
+    else
+      let ex := domain_consStep hfpq hgpq hf hg prev.2 h
+      ⟨(s / 2, ex.choose) :: prev.1, ex.choose_spec.1⟩
+  else
+    if h : s / 2 ∈ mRan prev.1 then prev
+    else
+      let ex := range_consStep hfpq hgpq hf hg prev.2 h
+      ⟨(ex.choose, s / 2) :: prev.1, ex.choose_spec.1⟩
+
+/-- The extension-only stage sequence. -/
+noncomputable def stageSeqB {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g) :
+    ℕ → {L : List (ℕ × ℕ) // StageInvB p q f g L}
+  | 0 => ⟨[], isMatching_nil, matchingCorr_nil p q, balanced_nil f g, balanced_nil g f⟩
+  | (s + 1) => stageStepB hfpq hgpq hf hg s (stageSeqB hfpq hgpq hf hg s)
+
+section StageSeqBLemmas
+variable {p q : ℕ → Prop} {f g : ℕ → ℕ}
+  (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+  (hf : Function.Injective f) (hg : Function.Injective g)
+
+theorem stageSeqB_isMatching (s : ℕ) : IsMatching (stageSeqB hfpq hgpq hf hg s).1 :=
+  (stageSeqB hfpq hgpq hf hg s).2.1
+
+/-- **Pair-monotonicity of a single step** — the property Path A (splicing) lacked. Every
+    recorded pair of `prev` survives into the next stage (keep-case: identical; cons-case:
+    `mem_cons_of_mem`). Nothing is ever removed. -/
+theorem stageStepB_pair_subset (s : ℕ)
+    (prev : {L : List (ℕ × ℕ) // StageInvB p q f g L}) {x : ℕ × ℕ}
+    (hx : x ∈ prev.1) : x ∈ (stageStepB hfpq hgpq hf hg s prev).1 := by
+  unfold stageStepB
+  split_ifs with h1 h2 h3
+  · exact hx
+  · exact List.mem_cons_of_mem _ hx
+  · exact hx
+  · exact List.mem_cons_of_mem _ hx
+
+/-- **Pair-monotonicity along the sequence**: every pair present at stage `s` is present at
+    every later stage `t ≥ s`. This makes `mLookup_stable` applicable — the read-off value of
+    a covered point is immutable, so the limit permutation is well-defined without any
+    finite-injury argument. -/
+theorem stageSeqB_pair_subset {s t : ℕ} (hst : s ≤ t) {x : ℕ × ℕ}
+    (hx : x ∈ (stageSeqB hfpq hgpq hf hg s).1) :
+    x ∈ (stageSeqB hfpq hgpq hf hg t).1 := by
+  induction t, hst using Nat.le_induction with
+  | base => exact hx
+  | succ n _ ih => exact stageStepB_pair_subset hfpq hgpq hf hg n (stageSeqB hfpq hgpq hf hg n) ih
+
+/-- A single even stage covers its target domain element `s/2`. -/
+theorem stageStepB_covers_dom_of_even (s : ℕ)
+    (prev : {L : List (ℕ × ℕ) // StageInvB p q f g L}) (hs : s % 2 = 0) :
+    s / 2 ∈ mDom (stageStepB hfpq hgpq hf hg s prev).1 := by
+  unfold stageStepB
+  rw [if_pos hs]
+  split_ifs with h
+  · exact h
+  · simp [mDom]
+
+/-- A single odd stage covers its target range element `s/2`. -/
+theorem stageStepB_covers_ran_of_odd (s : ℕ)
+    (prev : {L : List (ℕ × ℕ) // StageInvB p q f g L}) (hs : s % 2 = 1) :
+    s / 2 ∈ mRan (stageStepB hfpq hgpq hf hg s prev).1 := by
+  unfold stageStepB
+  rw [if_neg (by omega : ¬ s % 2 = 0)]
+  split_ifs with h
+  · exact h
+  · simp [mRan]
+
+theorem stageSeqB_covers_dom (k : ℕ) :
+    k ∈ mDom (stageSeqB hfpq hgpq hf hg (2 * k + 1)).1 := by
+  have h := stageStepB_covers_dom_of_even hfpq hgpq hf hg (2 * k)
+    (stageSeqB hfpq hgpq hf hg (2 * k)) (by omega)
+  have hdiv : 2 * k / 2 = k := by omega
+  rw [hdiv] at h; exact h
+
+theorem stageSeqB_covers_ran (k : ℕ) :
+    k ∈ mRan (stageSeqB hfpq hgpq hf hg (2 * k + 2)).1 := by
+  have h := stageStepB_covers_ran_of_odd hfpq hgpq hf hg (2 * k + 1)
+    (stageSeqB hfpq hgpq hf hg (2 * k + 1)) (by omega)
+  have hdiv : (2 * k + 1) / 2 = k := by omega
+  rw [hdiv] at h; exact h
+
+end StageSeqBLemmas
+
+section ReadOff
+variable {p q : ℕ → Prop} {f g : ℕ → ℕ}
+  (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+  (hf : Function.Injective f) (hg : Function.Injective g)
+
+/-- `(n, y) ∈ L` puts `n` in the domain list. -/
+theorem mem_mDom_of_pair {L : List (ℕ × ℕ)} {n y : ℕ} (h : (n, y) ∈ L) : n ∈ mDom L :=
+  List.mem_map.mpr ⟨(n, y), h, rfl⟩
+
+/-- **Entry stage (domain).** Least stage at which `n` is covered on the domain side. -/
+noncomputable def entryStageDomB (n : ℕ) : ℕ :=
+  Nat.find (⟨2 * n + 1, stageSeqB_covers_dom hfpq hgpq hf hg n⟩ :
+    ∃ s, n ∈ mDom (stageSeqB hfpq hgpq hf hg s).1)
+
+theorem mem_mDom_entryStageDomB (n : ℕ) :
+    n ∈ mDom (stageSeqB hfpq hgpq hf hg (entryStageDomB hfpq hgpq hf hg n)).1 :=
+  Nat.find_spec (⟨2 * n + 1, stageSeqB_covers_dom hfpq hgpq hf hg n⟩ :
+    ∃ s, n ∈ mDom (stageSeqB hfpq hgpq hf hg s).1)
+
+/-- **The limit permutation (read-off).** `σ n` = the partner of `n` at its entry stage. -/
+noncomputable def sigmaB (n : ℕ) : ℕ :=
+  mLookup (stageSeqB hfpq hgpq hf hg (entryStageDomB hfpq hgpq hf hg n)).1 n
+
+/-- **Stability of the read-off.** At any stage `s` with `n` already covered, the lookup equals
+    `σ n` (pair-monotonicity + `mLookup_stable`). -/
+theorem sigmaB_eq_of_mem_dom {s n : ℕ}
+    (hn : n ∈ mDom (stageSeqB hfpq hgpq hf hg s).1) :
+    mLookup (stageSeqB hfpq hgpq hf hg s).1 n = sigmaB hfpq hgpq hf hg n := by
+  have hle : entryStageDomB hfpq hgpq hf hg n ≤ s := Nat.find_le hn
+  exact (mLookup_stable (stageSeqB_isMatching hfpq hgpq hf hg _)
+    (stageSeqB_isMatching hfpq hgpq hf hg _)
+    (fun x hx => stageSeqB_pair_subset hfpq hgpq hf hg hle hx)
+    (mem_mDom_entryStageDomB hfpq hgpq hf hg n)).symm
+
+/-- The pair `(n, σ n)` is recorded at `n`'s entry stage. -/
+theorem sigmaB_pair_mem (n : ℕ) :
+    (n, sigmaB hfpq hgpq hf hg n) ∈
+      (stageSeqB hfpq hgpq hf hg (entryStageDomB hfpq hgpq hf hg n)).1 :=
+  mLookup_mem_of_mem_dom (stageSeqB_isMatching hfpq hgpq hf hg _)
+    (mem_mDom_entryStageDomB hfpq hgpq hf hg n)
+
+/-- **Correspondence** `p n ↔ q (σ n)`. -/
+theorem sigmaB_corr (n : ℕ) : p n ↔ q (sigmaB hfpq hgpq hf hg n) :=
+  (stageSeqB hfpq hgpq hf hg _).2.2.1 _ (sigmaB_pair_mem hfpq hgpq hf hg n)
+
+/-- **Injectivity** of the limit permutation. -/
+theorem sigmaB_injective : Function.Injective (sigmaB hfpq hgpq hf hg) := by
+  intro m n hmn
+  set s := max (entryStageDomB hfpq hgpq hf hg m) (entryStageDomB hfpq hgpq hf hg n) with hs
+  have hmpair : (m, sigmaB hfpq hgpq hf hg m) ∈ (stageSeqB hfpq hgpq hf hg s).1 :=
+    stageSeqB_pair_subset hfpq hgpq hf hg (le_max_left _ _)
+      (sigmaB_pair_mem hfpq hgpq hf hg m)
+  have hnpair : (n, sigmaB hfpq hgpq hf hg n) ∈ (stageSeqB hfpq hgpq hf hg s).1 :=
+    stageSeqB_pair_subset hfpq hgpq hf hg (le_max_right _ _)
+      (sigmaB_pair_mem hfpq hgpq hf hg n)
+  have hm : m ∈ mDom (stageSeqB hfpq hgpq hf hg s).1 := mem_mDom_of_pair hmpair
+  have hn : n ∈ mDom (stageSeqB hfpq hgpq hf hg s).1 := mem_mDom_of_pair hnpair
+  have em := sigmaB_eq_of_mem_dom hfpq hgpq hf hg hm
+  have en := sigmaB_eq_of_mem_dom hfpq hgpq hf hg hn
+  exact mLookup_injOn (stageSeqB_isMatching hfpq hgpq hf hg s) hm hn (by rw [em, en, hmn])
+
+/-- **Surjectivity** of the limit permutation, from range exhaustion. -/
+theorem sigmaB_surjective : Function.Surjective (sigmaB hfpq hgpq hf hg) := by
+  intro m
+  have hmem : m ∈ mRan (stageSeqB hfpq hgpq hf hg (2 * m + 2)).1 :=
+    stageSeqB_covers_ran hfpq hgpq hf hg m
+  rw [mRan, List.mem_map] at hmem
+  obtain ⟨⟨d, m'⟩, hpair, hm'⟩ := hmem
+  simp only at hm'
+  rw [hm'] at hpair
+  refine ⟨d, ?_⟩
+  have hd : d ∈ mDom (stageSeqB hfpq hgpq hf hg (2 * m + 2)).1 := mem_mDom_of_pair hpair
+  rw [← sigmaB_eq_of_mem_dom hfpq hgpq hf hg hd]
+  exact mLookup_eq_of_mem (stageSeqB_isMatching hfpq hgpq hf hg (2 * m + 2)) hpair
+
+/-- **The limit permutation as a bijection** `ℕ ≃ ℕ`. Noncomputable (built via `stageSeqB`,
+    which uses `Classical.choose` on the escape existentials); the `.Computable` upgrade is
+    the sole remaining obstruction to `myhill_isomorphism`. -/
+noncomputable def sigmaEquivB : ℕ ≃ ℕ :=
+  Equiv.ofBijective (sigmaB hfpq hgpq hf hg)
+    ⟨sigmaB_injective hfpq hgpq hf hg, sigmaB_surjective hfpq hgpq hf hg⟩
+
+/-- The bijection satisfies the `p ↔ q` correspondence. -/
+theorem sigmaEquivB_corr (n : ℕ) : p n ↔ q (sigmaEquivB hfpq hgpq hf hg n) :=
+  sigmaB_corr hfpq hgpq hf hg n
+
+end ReadOff
+
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
@@ -2627,17 +2883,23 @@ end StageSeqLemmas
     (c) Membership condition p n ↔ q (σ n) preserved by the back-and-forth
     (d) Computability: σ(n) is determined by the finite stage at which n enters dom
 
-    [OPEN: ~200 lines of Partrec-based formalization for the priority construction] -/
+    **Status (Path B assembled).** The bijection and its correspondence are now VERIFIED: Section
+    5·B builds the extension-only cons scheduler `stageSeqB` and reads off
+    `sigmaEquivB : ℕ ≃ ℕ` with `∀ n, p n ↔ q (sigmaEquivB n)` (`sigmaEquivB_corr`), all 0-axiom.
+    The **sole** remaining gap is *computability* of that bijection: `stageSeqB` is
+    `noncomputable` (uses `Classical.choose` on the escape existentials), so `sigmaEquivB` is not
+    yet a `Computable` permutation. Discharging `e.Computable` requires a computable parallel
+    `stageSeqB` (bounded `Nat.rfind` escape search, licensed by `escape_exists'`'s
+    `N ≤ (mRan L).length` bound) — the residual `sorry` below. -/
 theorem myhill_isomorphism (p q : ℕ → Prop) :
     OneOneEquiv p q ↔
     ∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ q (e n) := by
   constructor
   · intro ⟨⟨f, hfc, hfi, hfpq⟩, ⟨g, hgc, hgi, hgpq⟩⟩
-    -- Hard direction: construct computable bijection via back-and-forth
-    -- The priority construction at each stage extends the partial bijection
-    -- by one element, using f or g depending on the domain/range gap.
-    -- Key computability fact: partialInverse_partrec gives computable g⁻¹.
-    -- Key bijectivity fact: f, g injective ensures no collisions.
+    -- Hard direction. The bijection `sigmaEquivB hfpq hgpq hfi hgi` and its correspondence
+    -- `sigmaEquivB_corr` are proved (Section 5·B, extension-only cons scheduler). What remains
+    -- is only the `.Computable` witness, which needs a computable rebuild of `stageSeqB`
+    -- (currently `noncomputable` via `Classical.choose`). See the docstring above.
     sorry
   · rintro ⟨e, he, hpq⟩
     exact myhill_easy e he hpq
