@@ -61,7 +61,9 @@
       "Mathlib.NumberTheory.ZetaValues",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real"],
+    "opens": [
+      "Real"
+    ],
     "namespace": "BaselEtaFour",
     "path": "Proofs/BaselProblemOQ13OQ01.lean",
     "lineCount": 110,
@@ -121,6 +123,36 @@
       "endLine": 100,
       "summary": "Recombines the even and odd subseries via HasSum.even_add_odd with f n = (-1)^(n+1)/n⁴, evaluates (-π⁴/1440) + π⁴/96 = 7π⁴/720 by `ring`, and records the tsum form.",
       "mathContext": "The Dirichlet eta value η(4), assembled from its signed parity halves."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hasSum_eta_four_even",
+      "type": "theorem",
+      "statement": "HasSum (fun k : ℕ => (-1) ^ (2 * k + 1) / ((2 * k : ℕ) : ℝ) ^ 4) (-(π ^ 4 / 1440))",
+      "significance": "The even-index contribution to η(4): the alternating sign at even indices is (−1)^(2k+1) = −1, so these terms sum to the negative of the even fourth-power sum, −π⁴/1440. One of the two halves of the parity split.",
+      "description": "Rewrites the sign factor (−1)^(2k+1) = −1 (pow_succ/pow_mul + norm_num), reducing the series to the negation of the parent BaselOddZetaFour.hasSum_even_zeta_four, then applies HasSum.neg."
+    },
+    {
+      "name": "hasSum_eta_four_odd",
+      "type": "theorem",
+      "statement": "HasSum (fun k : ℕ => (-1) ^ (2 * k + 1 + 1) / ((2 * k + 1 : ℕ) : ℝ) ^ 4) (π ^ 4 / 96)",
+      "significance": "The odd-index contribution to η(4): the alternating sign at odd indices is (−1)^(2k+2) = +1, so these terms reproduce the odd fourth-power sum λ(4) = π⁴/96. The complementary half of the parity split.",
+      "description": "Rewrites the sign factor (−1)^(2k+2) = 1 (two pow_succ + pow_mul + norm_num), reducing the series directly to the parent BaselOddZetaFour.hasSum_odd_zeta_four."
+    },
+    {
+      "name": "hasSum_eta_four",
+      "type": "theorem",
+      "statement": "HasSum (fun n : ℕ => (-1) ^ (n + 1) / (n : ℝ) ^ 4) (7 * π ^ 4 / 720)",
+      "significance": "The headline result: the Dirichlet eta value η(4) = ∑ (−1)^(n+1)/n⁴ = 7π⁴/720, the alternating analogue of ζ(4). It equals (1 − 2^(1−4))·ζ(4), the standard η/ζ relation, here obtained concretely by the parity split.",
+      "description": "Combines the even part (−π⁴/1440) and odd part (π⁴/96) via HasSum.even_add_odd, then a ring step: −π⁴/1440 + π⁴/96 = 7π⁴/720. The n = 0 term (−1)^1/0^4 = 0 contributes nothing."
+    },
+    {
+      "name": "tsum_eta_four",
+      "type": "theorem",
+      "statement": "∑' n : ℕ, (-1) ^ (n + 1) / (n : ℝ) ^ 4 = 7 * π ^ 4 / 720",
+      "significance": "The eta value packaged as an unconditional tsum equation, the convenient closed-form for downstream use.",
+      "description": "A one-line corollary: HasSum.tsum_eq applied to hasSum_eta_four."
     }
   ],
   "conclusion": {
