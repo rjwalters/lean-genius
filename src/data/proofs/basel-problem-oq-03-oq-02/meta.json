@@ -126,6 +126,120 @@
       "mathContext": "ζ(12) = 691·π¹²/638512875; P/ζ(12) acquires 691 in its denominator, the fingerprint of the irregular prime."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "zeta_six_sq",
+      "type": "theorem",
+      "statement": "(∑' n, 1/n^6)^2 = (715/691) * ∑' n, 1/n^12",
+      "significance": "Headline of the weight-12 story: ζ(6)² = (715/691)·ζ(12). The numerator 715 = 5·11·13 is tidy, but 691 appears in the DENOMINATOR — the first visible degradation of the 'product of even zetas is a simple multiple of one zeta' heuristic, a direct fingerprint of the irregular prime 691 in B₁₂.",
+      "description": "rw [tsum_zeta_six, tsum_zeta_twelve]; ring — a rational identity once both closed forms are substituted."
+    },
+    {
+      "name": "zeta_two_mul_ten",
+      "type": "theorem",
+      "statement": "(∑' n, 1/n^2) * (∑' n, 1/n^10) = (2275/1382) * ∑' n, 1/n^12",
+      "significance": "ζ(2)·ζ(10) = (2275/1382)·ζ(12), with 1382 = 2·691 — again the irregular prime 691 contaminates the reduction coefficient's denominator.",
+      "description": "rw the three closed forms then ring."
+    },
+    {
+      "name": "zeta_four_mul_eight",
+      "type": "theorem",
+      "statement": "(∑' n, 1/n^4) * (∑' n, 1/n^8) = (3003/2764) * ∑' n, 1/n^12",
+      "significance": "ζ(4)·ζ(8) = (3003/2764)·ζ(12), with 2764 = 4·691. Completes the weight-12 reductions, all carrying 691.",
+      "description": "rw the three closed forms then ring."
+    },
+    {
+      "name": "zeta_two_mul_eight",
+      "type": "theorem",
+      "statement": "(∑' n, 1/n^2) * (∑' n, 1/n^8) = (33/20) * ∑' n, 1/n^10",
+      "significance": "Weight-10 reduction ζ(2)·ζ(8) = (33/20)·ζ(10). At weight 10 the coefficients stay small tidy fractions — the contrast the weight-12 identities break.",
+      "description": "rw [tsum_zeta_two, tsum_zeta_eight, tsum_zeta_ten]; ring."
+    },
+    {
+      "name": "zeta_four_mul_six",
+      "type": "theorem",
+      "statement": "(∑' n, 1/n^4) * (∑' n, 1/n^6) = (11/10) * ∑' n, 1/n^10",
+      "significance": "Weight-10 reduction ζ(4)·ζ(6) = (11/10)·ζ(10).",
+      "description": "rw the three closed forms then ring."
+    },
+    {
+      "name": "zeta_two_sq_mul_six",
+      "type": "theorem",
+      "statement": "(∑' n, 1/n^2)^2 * (∑' n, 1/n^6) = (11/4) * ∑' n, 1/n^10",
+      "significance": "Weight-10 reduction ζ(2)²·ζ(6) = (11/4)·ζ(10).",
+      "description": "rw the closed forms then ring."
+    },
+    {
+      "name": "zeta_two_mul_four_sq",
+      "type": "theorem",
+      "statement": "(∑' n, 1/n^2) * (∑' n, 1/n^4)^2 = (77/40) * ∑' n, 1/n^10",
+      "significance": "Weight-10 reduction ζ(2)·ζ(4)² = (77/40)·ζ(10).",
+      "description": "rw the closed forms then ring."
+    },
+    {
+      "name": "zeta_two_pow_five",
+      "type": "theorem",
+      "statement": "(∑' n, 1/n^2)^5 = (385/32) * ∑' n, 1/n^10",
+      "significance": "Weight-10 reduction ζ(2)⁵ = (385/32)·ζ(10) — every weight-10 monomial in even zetas collapses to a rational multiple of ζ(10).",
+      "description": "rw [tsum_zeta_two, tsum_zeta_ten]; ring."
+    },
+    {
+      "name": "tsum_zeta_twelve",
+      "type": "theorem",
+      "statement": "∑' n : ℕ, (1 : ℝ) / (n : ℝ) ^ 12 = 691 * π ^ 12 / 638512875",
+      "significance": "Closed form ζ(12) = 691·π¹²/638512875. The 691 in the numerator (inherited from B₁₂ = -691/2730) is the arithmetic source of every 691 that later infects the weight-12 reduction coefficients.",
+      "description": "hasSum_zeta_twelve.tsum_eq."
+    },
+    {
+      "name": "tsum_zeta_ten",
+      "type": "theorem",
+      "statement": "∑' n : ℕ, (1 : ℝ) / (n : ℝ) ^ 10 = π ^ 10 / 93555",
+      "significance": "Closed form ζ(10) = π¹⁰/93555, the target of all weight-10 reductions.",
+      "description": "hasSum_zeta_ten.tsum_eq."
+    },
+    {
+      "name": "tsum_zeta_eight",
+      "type": "theorem",
+      "statement": "∑' n : ℕ, (1 : ℝ) / (n : ℝ) ^ 8 = π ^ 8 / 9450",
+      "significance": "Closed form ζ(8) = π⁸/9450.",
+      "description": "hasSum_zeta_eight.tsum_eq."
+    },
+    {
+      "name": "tsum_zeta_six",
+      "type": "theorem",
+      "statement": "∑' n : ℕ, (1 : ℝ) / (n : ℝ) ^ 6 = π ^ 6 / 945",
+      "significance": "Closed form ζ(6) = π⁶/945.",
+      "description": "hasSum_zeta_six.tsum_eq."
+    },
+    {
+      "name": "tsum_zeta_four",
+      "type": "theorem",
+      "statement": "∑' n : ℕ, (1 : ℝ) / (n : ℝ) ^ 4 = π ^ 4 / 90",
+      "significance": "Closed form ζ(4) = π⁴/90.",
+      "description": "hasSum_zeta_four.tsum_eq (from Mathlib)."
+    },
+    {
+      "name": "tsum_zeta_two",
+      "type": "theorem",
+      "statement": "∑' n : ℕ, (1 : ℝ) / (n : ℝ) ^ 2 = π ^ 2 / 6",
+      "significance": "The Basel value ζ(2) = π²/6, the seed of the whole even-zeta hierarchy.",
+      "description": "hasSum_zeta_two.tsum_eq (from Mathlib)."
+    },
+    {
+      "name": "hasSum_zeta_twelve",
+      "type": "theorem",
+      "statement": "HasSum (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ 12) (691 * π ^ 12 / 638512875)",
+      "significance": "Summability + value for ζ(12), specialising Mathlib's hasSum_zeta_nat at k = 6. Representative of the hasSum_zeta_{six,eight,ten,twelve} family that upgrades to the tsum closed forms.",
+      "description": "hasSum_zeta_nat (k := 6) rewritten through bernoulli_twelve and the (2k)! / factorial normalisation."
+    },
+    {
+      "name": "bernoulli_twelve",
+      "type": "theorem",
+      "statement": "bernoulli 12 = -691 / 2730",
+      "significance": "The arithmetic origin of everything: B₁₂ = -691/2730 introduces the irregular prime 691 that propagates into ζ(12) and thence into the weight-12 reduction coefficients. Representative of the bernoulli/bernoulli' evaluation family (indices 5–12).",
+      "description": "bernoulli_eq_bernoulli'_of_ne_one then bernoulli'_twelve, itself a norm_num expansion of the recurrence."
+    }
+  ],
   "conclusion": {
     "summary": "A fully verified (0 axioms, 0 sorries, no native_decide) extension of the even-zeta product-reduction pattern to weights 10 and 12: ζ(10) = π¹⁰/93555, ζ(12) = 691·π¹²/638512875, five tidy weight-10 relations, and three weight-12 relations whose coefficients (715/691, 2275/1382, 3003/2764) all carry the irregular prime 691.",
     "implications": "The product-reduction phenomenon — a consequence of the one-dimensionality of the ring of even zeta values in each weight — never fails, but its coefficients encode the arithmetic of the Bernoulli numbers. Weight 12 is the first place this arithmetic becomes visible: the irregular prime 691, coprime to the rest of ζ(12), refuses to cancel and stamps itself on every reduction coefficient. This gives a concrete, machine-checked instance of how the 'elementary' even zeta values quietly carry the same deep arithmetic (irregular primes, Kummer's criterion, Ramanujan's τ congruence) that governs the odd/critical values, and marks the boundary of the tidy small-fraction regime the parent entry lived in.",
