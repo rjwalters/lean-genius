@@ -117,6 +117,11 @@
       "targetId": "newton-power-sum-identities-oq-01-oq-01",
       "relationship": "extends",
       "description": "Follow-up entry that develops this one: “Newton's Identities in Degrees 4 and 5: Explicit Power-Sum Closed Forms”. Newton's identities express the power sums pₖ = ∑ᵢ Xᵢᵏ of finitely many variables in terms of the elementary symmetric polynomials eⱼ."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02",
+      "relationship": "related",
+      "description": "“Maclaurin's Inequalities via Elementary Symmetric Polynomials.” The companion inequality-theoretic side of the elementary symmetric polynomials eₖ: where this entry gives Newton's exact identities relating the eₖ to the power sums, that entry proves the Newton–Maclaurin chain of inequalities among the normalized means Mₖ = eₖ/C(n,k). Together they cover the two classical bodies of results — equalities and inequalities — built on the eₖ."
     }
   ],
   "conclusion": {
@@ -156,6 +161,13 @@
       "year": "1992",
       "venue": "The American Mathematical Monthly 99(8), 749–751",
       "note": "Modern exposition and proofs of the Newton–Girard formulae"
+    },
+    {
+      "authors": "Macdonald, I. G.",
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "Oxford Mathematical Monographs, 2nd ed., Oxford University Press",
+      "note": "Standard reference for the ring of symmetric functions; Chapter I develops Newton's identities and the change of basis between the power sums pₖ and the elementary symmetric functions eₖ"
     }
   ],
   "sorries": 0
