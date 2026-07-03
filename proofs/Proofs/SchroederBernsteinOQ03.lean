@@ -2673,6 +2673,80 @@ theorem range_consStep {p q : ℕ → Prop} {f g : ℕ → ℕ}
   · exact balanced_swap_cons_range hf hg hBfg ha hb haN
   · exact balanced_cons_range hf hg hBgf ha hb haN
 
+/-!
+### Section 5·B-comp: The computable escape-depth core (`Classical.choose`-free)
+
+`stageStepB` is `noncomputable` for exactly one reason: it reads its fresh partner off the
+existential `domain_consStep`/`range_consStep` via `.choose`, and those rest on
+`escape_exists'`'s `Classical.choose`. This block removes that dependency for the domain
+(even) step.
+
+The pivot is that the escape predicate `fun N => f (fwdOrbit f g a N) ∉ mRan L` is **decidable**
+(list membership over `ℕ`), and escape is *guaranteed* (`escape_exists'`). Hence the least
+escaping depth is a genuine `Nat.find`, and — crucially — `Nat.find` is **computable even when
+its existence witness is a `noncomputable` proof**, because that witness is a `Prop` and is
+*erased* at runtime; only the decidable 0,1,2,… search actually runs. This is precisely the
+"re-parameterise to the bounded search that `escape_exists'` licenses" step the module docstring
+flags as the sole remaining gap: the concrete target `chaseTarget f g a (escapeDepth …)` is
+computable, and `domain_consStepC` supplies its `StageInvB`-preservation proof with **no**
+`Classical.choose` anywhere in the computational content. -/
+
+/-- **Computable least escape depth.** The smallest forward-orbit stage `N` at which the green
+    image `f (fwdOrbit f g a N)` escapes `mRan L`. Decidable predicate + guaranteed escape
+    (`escape_exists'`) ⇒ a genuine `Nat.find`; the existence witness `hex` is a `Prop` and is
+    erased at runtime, so this reduces by a real bounded search and is computable regardless of
+    how `hex` was proved. This is the `Classical.choose`-free core of the domain step. -/
+def escapeDepth (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) (a : ℕ)
+    (hex : ∃ N, f (fwdOrbit f g a N) ∉ mRan L) : ℕ :=
+  Nat.find hex
+
+/-- The escape depth genuinely escapes: its green image lies outside `mRan L`. -/
+theorem escapeDepth_spec (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) (a : ℕ)
+    (hex : ∃ N, f (fwdOrbit f g a N) ∉ mRan L) :
+    f (fwdOrbit f g a (escapeDepth f g L a hex)) ∉ mRan L :=
+  Nat.find_spec hex
+
+/-- **Minimality** of the escape depth: every earlier stage still collides (stays in `mRan L`).
+    This is the bound the scheduler uses to match the *least*-depth semantics of the classical
+    construction, so the computable rebuild yields the *same* pairing, not merely *a* pairing. -/
+theorem escapeDepth_min (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) (a : ℕ)
+    (hex : ∃ N, f (fwdOrbit f g a N) ∉ mRan L) {j : ℕ}
+    (hj : j < escapeDepth f g L a hex) :
+    f (fwdOrbit f g a j) ∈ mRan L :=
+  not_not.mp (Nat.find_min hex hj)
+
+/-- The chase target at the escape depth is the concrete fresh green partner
+    (`chaseTarget` unfolds to `f ∘ fwdOrbit`), packaged for the cons step. -/
+theorem chaseTarget_escapeDepth_notMem (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) (a : ℕ)
+    (hex : ∃ N, f (fwdOrbit f g a N) ∉ mRan L) :
+    chaseTarget f g a (escapeDepth f g L a hex) ∉ mRan L :=
+  escapeDepth_spec f g L a hex
+
+/-- **Choice-free domain cons step.** Prepends the concrete escaping pair
+    `(a, chaseTarget f g a (escapeDepth …))` — the least-depth green image, located by the
+    decidable `Nat.find` above rather than `Classical.choose` — and preserves all four
+    `StageInvB` invariants. This is the computable-ready twin of `domain_consStep`: same result
+    list, but the partner is a *definite computable term* instead of an `.choose` read-off, so a
+    scheduler built on it needs no `noncomputable` marker. -/
+theorem domain_consStepC {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hinv : StageInvB p q f g L)
+    {a : ℕ} (ha : a ∉ mDom L) :
+    StageInvB p q f g
+      ((a, chaseTarget f g a
+            (escapeDepth f g L a (escape_exists' hf hg hinv.2.2.1 ha))) :: L) := by
+  have hbRan :
+      chaseTarget f g a (escapeDepth f g L a (escape_exists' hf hg hinv.2.2.1 ha)) ∉ mRan L :=
+    chaseTarget_escapeDepth_notMem f g L a _
+  have hbN :
+      chaseTarget f g a (escapeDepth f g L a (escape_exists' hf hg hinv.2.2.1 ha))
+        = f (fwdOrbit f g a (escapeDepth f g L a (escape_exists' hf hg hinv.2.2.1 ha))) := rfl
+  have hstep := matching_step_chase hfpq hgpq hinv.1 hinv.2.1 ha hbRan
+  exact ⟨hstep.1, hstep.2,
+    balanced_cons_domain hf hg hinv.2.2.1 ha hbRan hbN,
+    balanced_swap_cons_domain hf hg hinv.2.2.2 ha hbRan hbN⟩
+
 /-- One stage of the extension-only scheduler, carrying `StageInvB` in a subtype. Even `s`
     targets domain element `s/2`; odd `s` targets range element `s/2`. If already covered the
     matching is returned unchanged; otherwise the matching *grows by one cons* (nothing removed). -/
