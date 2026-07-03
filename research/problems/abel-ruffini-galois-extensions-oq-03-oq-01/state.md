@@ -1,35 +1,34 @@
 # Research State: abel-ruffini-galois-extensions-oq-03-oq-01
 
 ## Current State
-**Phase**: REDUCE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-07-02T20:00:00-07:00
-**Iteration**: 2
+**Since**: 2026-07-03T21:15:00-07:00
+**Iteration**: 3
 
 ## Current Focus
-The single remaining `sorry`: `isThreeCycle_of_min_support` (`#support ≥ 4`
-branch) — the strict-support-decrease commutator kernel. All surrounding
-scaffolding is proved and machine-checked.
+SOLVED. `isSimpleGroup_alternating` (in
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ03OQ01.lean`) is a complete,
+machine-checked proof of unconditional simplicity of `Aₙ` for every finite `α`
+with `5 ≤ card α`, generalizing Mathlib's `Fin 5`-only `isSimpleGroup_five`.
+0 sorry, 0 axiom (`#print axioms` → `propext, Classical.choice, Quot.sound`).
 
 ## Active Approach
-Jordan's minimal-support / commutator argument. Reduced to: for a minimal-support
-even `σ` with `#support ≥ 4`, exhibit a 3-cycle `τ ⊆ σ.support` with `[τ,σ] ≠ 1`
-fixing a point σ moves. `support_commutator_subset` + `commutator_mem_of_normal`
-+ minimality then close the contradiction.
+Jordan minimal-support / commutator argument, fully formalized:
+- Two strict-support-decrease engines: `exists_smaller_commutator_of_five_points`
+  (Case A, cycle of length ≥3) and `exists_smaller_commutator_of_involution`
+  (Case B, product of disjoint transpositions).
+- Crux `isThreeCycle_of_min_support`: `by_cases σ²=1` → Case B; else Case A with
+  sub-split `#support ≥ 5` (engine A) vs `#support = 4` (σ is a 4-cycle, odd via
+  `IsCycle.sign`, contradiction).
 
 ## Attempt Count
-- Total attempts: 2
-- Current approach attempts: 1
-- Approaches tried: 1 (minimal-support/commutator decomposition)
+- Total attempts: 4 sessions
+- Approaches tried: 1 (minimal-support/commutator — succeeded)
 
 ## Blockers
-- Aristotle MCP down (`Resource not found`), so the classical kernel cannot be
-  delegated remotely.
-- Mathlib olean cache churns across worktrees (concurrent `lake update`s);
-  single-file elaboration works against whichever sibling worktree is warm.
+None. (Aristotle MCP was down all sessions; the proof was completed by hand.)
 
 ## Next Action
-Discharge the crux: supply the adapted-3-cycle existence and the "fixes a moved
-point" property, split on cycle type (Case A: cycle length ≥ 3; Case B: ≥ 2
-disjoint transpositions). Then promote to a verified gallery entry + candidate
-Mathlib PR.
+Promote to a verified gallery entry (Seeker/Enricher) and prepare a candidate
+Mathlib PR: general `alternatingGroup.isSimpleGroup` for `5 ≤ card α`.

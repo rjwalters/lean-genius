@@ -2,13 +2,13 @@
   "slug": "abel-ruffini-galois-extensions-oq-03-oq-01",
   "title": "Every nontrivial normal subgroup of Aₙ (n≥5) contains a 3-cycle → unconditional Aₙ simplicity",
   "path": "full",
-  "phase": "ORIENT",
+  "phase": "COMPLETED",
   "status": "in-progress",
   "tier": "A",
   "significance": 7,
   "tractability": 6,
   "started": "2026-07-02",
-  "lastUpdate": "2026-07-02",
+  "lastUpdate": "2026-07-03",
   "tags": [
     "seeker-selected",
     "galois-theory",
@@ -17,17 +17,14 @@
     "simple-groups"
   ],
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-07-02",
-    "iteration": 1,
-    "focus": "Isolated the single classical lemma and stated the unconditional-simplicity assembly; documented the minimal-support/commutator proof plan.",
-    "blockers": [
-      "Aristotle MCP service returning 'Resource not found' (down) — cannot delegate the HARD lemma remotely this session.",
-      "Local Docker build corrupted (containerd metadata I/O error, lingering from a prior disk-full episode) — cannot run docker-build.sh."
-    ],
-    "nextAction": "When Aristotle is back up, submit exists_mem_isThreeCycle_of_normal async; otherwise formalize the minimal-support/commutator argument (steps 4A/4B) by hand with a working single-file build loop.",
+    "phase": "COMPLETED",
+    "since": "2026-07-03",
+    "iteration": 2,
+    "focus": "VERIFIED (0 sorry, 0 axiom): isSimpleGroup_alternating proves unconditional simplicity of Aₙ for every finite α with 5≤card α, generalizing Mathlib isSimpleGroup_five (Fin 5). Full Jordan minimal-support/commutator argument formalized: both strict-decrease engines (Case A cycle-≥3, Case B involution) plus the combinatorial extraction and the support-4 parity contradiction (4-cycle is odd via IsCycle.sign). #print axioms → propext, Classical.choice, Quot.sound only.",
+    "blockers": [],
+    "nextAction": "Promote to a verified gallery entry (Seeker/Enricher) and prepare a candidate Mathlib PR (general alternatingGroup.isSimpleGroup for 5≤card α). No open sub-goals remain.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
