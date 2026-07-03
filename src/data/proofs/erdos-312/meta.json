@@ -234,5 +234,105 @@
       "description": "Related Erdős problem sharing themes: number-theory, unit-fractions"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "subset_near_one",
+      "type": "theorem",
+      "statement": "m ≤ aᵢ (all i), reciprocalSum a > 1 ⟹ ∃ S, 1 − 1/m < Σ_{i∈S} 1/aᵢ ≤ 1",
+      "significance": "The central unconditional achievement: whenever the total reciprocal sum exceeds 1 and all denominators are ≥ m, a subset exists whose reciprocal sum lands in (1 − 1/m, 1]. A greedy/maximal-feasible proof of near-1 subset sums — the concrete progress toward Erdős #312.",
+      "description": "Takes a maximal feasible subset S (sum ≤ 1 but no element can be added); any omitted element j has 1/aⱼ ≤ 1/m, and maximality forces the sum above 1 − 1/aⱼ ≥ 1 − 1/m."
+    },
+    {
+      "name": "erdos_graham_polynomial",
+      "type": "axiom",
+      "statement": "∃ c > 0, ∀ K > 1, for large enough A with Σ 1/n > K, ∃ S ⊆ A with 1 − c/K² < Σ_{S} 1/n ≤ 1",
+      "significance": "The one assumption (status: axiomatized, axiomCount 1): the known Erdős–Graham theorem giving polynomial precision c/K² for subset reciprocal sums. Erdős #312 asks whether this can be improved to exponential precision exp(−cK); that stronger conjecture remains OPEN.",
+      "description": "Stated as an axiom encoding the published Erdős–Graham [ErGr80] result; the file studies what the exponential strengthening would entail rather than proving the polynomial bound from scratch."
+    },
+    {
+      "name": "exponential_stronger_than_polynomial",
+      "type": "theorem",
+      "statement": "∀ c,c' > 0, ∃ K₀, ∀ K > K₀, exp(−cK) < c'/K²",
+      "significance": "Justifies calling Erdős #312 a strengthening: the conjectured exponential precision exp(−cK) is eventually smaller than any polynomial precision c'/K², so a positive answer would sharpen the Erdős–Graham bound.",
+      "description": "For fixed c, c' the ratio exp(−cK)·K²/c' → 0 as K → ∞, so exp(−cK) < c'/K² beyond some threshold K₀."
+    },
+    {
+      "name": "conjecture_implies_known",
+      "type": "theorem",
+      "statement": "mainConjecture ⟹ ∃ c > 0, (the Erdős–Graham polynomial-precision statement)",
+      "significance": "Consistency check: the open exponential conjecture would imply the known polynomial result, confirming the formalization's conjecture is genuinely at least as strong as established theory.",
+      "description": "Instantiates the exponential precision from mainConjecture and uses exponential_implies_polynomial_pointwise to descend to the polynomial bound."
+    },
+    {
+      "name": "exponential_implies_polynomial_pointwise",
+      "type": "theorem",
+      "statement": "exp(−cK) < c'/K² ⟹ hasExponentialPrecision ⟹ hasPolynomialPrecision",
+      "significance": "The pointwise engine behind conjecture_implies_known: at any instance where the exponential gap undercuts the polynomial gap, exponential precision yields polynomial precision. Cleanly separates the analytic comparison from the combinatorics.",
+      "description": "Monotonicity of the near-1 window: a subset sum within exp(−cK) of 1 is a fortiori within c'/K² of 1 when exp(−cK) < c'/K²."
+    },
+    {
+      "name": "exponential_gap_sandwich",
+      "type": "theorem",
+      "statement": "c,K > 0 ⟹ cK/(1+cK) ≤ 1 − exp(−cK) ≤ cK",
+      "significance": "Two-sided control of the exponential gap 1 − exp(−cK), the quantity measuring how close to 1 the conjecture demands. Bounds it between a rational function and the linear cK, making the target precision explicit.",
+      "description": "Combines the concrete lower bound (from exp(−x) ≤ 1/(1+x)) with the upper bound (from exp(−x) ≥ 1 − x)."
+    },
+    {
+      "name": "harmonic_unbounded",
+      "type": "theorem",
+      "statement": "∀ K, ∃ n, harmonicNumber n > K",
+      "significance": "The hypothesis-enabler: since harmonic numbers grow without bound, multisets with reciprocal sum exceeding any K genuinely exist, so the theorem's premise Σ 1/n > K is never vacuous.",
+      "description": "From divergence of the harmonic series (tendsto_sum_range_one_div_nat_succ_atTop), the partial sums exceed any prescribed K."
+    },
+    {
+      "name": "maximal_feasible_exists",
+      "type": "theorem",
+      "statement": "∀ a, ∃ feasible S (Σ_S ≤ 1) maximal: no j ∉ S can be added keeping feasibility",
+      "significance": "The greedy existence lemma at the heart of subset_near_one: among all subsets with reciprocal sum ≤ 1, a maximal one exists. Maximality is exactly what forces the sum close to 1.",
+      "description": "The feasible subsets form a nonempty finite family (∅ is feasible); pick one of maximum cardinality/sum, which admits no feasibility-preserving extension."
+    },
+    {
+      "name": "maximalFeasible_gap_bound",
+      "type": "theorem",
+      "statement": "S maximal feasible, j ∉ S ⟹ 1 − 1/aⱼ < Σ_S 1/aᵢ",
+      "significance": "Quantifies maximality: any element that cannot be added must overshoot 1, so removing its contribution 1/aⱼ leaves the current sum above 1 − 1/aⱼ. The precise gap estimate powering the near-1 conclusion.",
+      "description": "If adding j breaks feasibility then Σ_S + 1/aⱼ > 1, i.e. Σ_S > 1 − 1/aⱼ."
+    },
+    {
+      "name": "sieve_and_greedy",
+      "type": "theorem",
+      "statement": "large-element reciprocal sum > 1 ⟹ ∃ S ⊆ largeElements with subset sum near and ≤ 1",
+      "significance": "The sieve-plus-greedy strategy: restrict to elements ≥ m (the 'large' ones), then run the greedy argument there. Isolates the well-controlled part of the multiset where the 1/m gap bound is meaningful.",
+      "description": "Applies restricted_subset_near_one to the sieved set largeElements n a m, combining the reciprocal-sum splitting with the restricted maximal-feasible construction."
+    },
+    {
+      "name": "restricted_subset_near_one",
+      "type": "theorem",
+      "statement": "m ≤ aᵢ on T, subset sum over T > 1 ⟹ ∃ S ⊆ T, 1 − 1/m < Σ_S ≤ 1",
+      "significance": "The relativized form of subset_near_one, working inside an arbitrary index set T. This flexibility lets the sieve confine attention to large elements without losing the near-1 guarantee.",
+      "description": "Runs the maximal-feasible argument (restricted_maximal_feasible_exists, restricted_gap_bound) within T rather than the full index set."
+    },
+    {
+      "name": "reciprocalSum_le_of_ge",
+      "type": "theorem",
+      "statement": "m ≤ aᵢ (all i) ⟹ reciprocalSum a ≤ n/m",
+      "significance": "A basic density bound linking the number of elements, their minimum size m, and the reciprocal sum. Forces multisets with large reciprocal sum to have many elements — the counting input to the greedy method.",
+      "description": "Each term 1/aᵢ ≤ 1/m, and there are n of them, so the sum is at most n/m."
+    },
+    {
+      "name": "subsetReciprocalSum_insert",
+      "type": "theorem",
+      "statement": "i ∉ S ⟹ Σ_{insert i S} 1/a = Σ_S 1/a + 1/aᵢ",
+      "significance": "The incremental identity underlying every greedy step: adding one element increases the subset reciprocal sum by exactly that element's contribution. The engine of the maximal-feasible induction.",
+      "description": "Finset.sum over insert splits off the new term when i ∉ S."
+    },
+    {
+      "name": "subsetReciprocalSum_disjoint_union",
+      "type": "theorem",
+      "statement": "Disjoint S T ⟹ Σ_{S∪T} 1/a = Σ_S 1/a + Σ_T 1/a",
+      "significance": "Additivity over disjoint subsets, the structural property that makes reciprocal sums behave like a measure and enables the sieve decomposition into large and small elements.",
+      "description": "Finset.sum_union for disjoint S, T applied to the reciprocal-sum functional."
+    }
+  ]
 }
