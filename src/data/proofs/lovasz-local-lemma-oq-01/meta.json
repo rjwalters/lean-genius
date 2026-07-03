@@ -100,6 +100,14 @@
   },
   "sections": [
     {
+      "id": "sec-overview",
+      "title": "Overview: measure-theoretic LLL and the d = 0 base case",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring contrasting the gallery's ℚ-surrogate LLL with the genuine measure-theoretic OQ-01 goal μ(⋂ Aᵢᶜ) > 0, and scoping this file to the fully verified, axiom-free d = 0 (mutually independent) base case. Imports Mathlib.Probability.Independence.Basic and fixes a Fintype-indexed measurable family A : ι → Set Ω.",
+      "mathContext": "Every LLL induction bottoms out at the independent case, so the d = 0 factorization proved here is the measure-theoretic anchor of the OQ-01 program."
+    },
+    {
       "id": "sec-bridge",
       "title": "Bridge: complements measurable in generated σ-algebras",
       "startLine": 42,
