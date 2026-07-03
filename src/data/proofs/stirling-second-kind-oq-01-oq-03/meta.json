@@ -79,36 +79,39 @@
   },
   "sections": [
     {
-      "id": "imports-docstring",
+      "id": "overview",
       "title": "Overview and Strategy",
       "startLine": 1,
       "endLine": 45,
-      "summary": "File docstring stating the second-subdiagonal identity S(m+2,m) = C(m+2,3)+3·C(m+2,4), its set-partition interpretation (one triple, or two doubletons), and the induction plan resting on the Pascal recurrence, the first subdiagonal, and a single absorption identity.",
-      "mathContext": "S(n,n−2) = C(n,3) + 3·C(n,4): partitions of an n-set into n−2 blocks split into one-triple and two-doubleton shapes."
+      "summary": "Mathlib stops at the first subdiagonal S(n+1,n)=C(n+1,2); this file proves the second, S(n,n−2)=C(n,3)+3·C(n,4), reflecting the one-triple vs two-doubleton partition shapes. Proof is one induction on m for S(m+2,m)."
     },
     {
       "id": "absorption",
       "title": "The Absorption Identity",
-      "startLine": 53,
+      "startLine": 51,
       "endLine": 65,
-      "summary": "absorption: m·C(m+2,2) = 3·C(m+2,3), the single non-omega arithmetic fact behind the induction step. It is the n=m+2, k=2 instance of Nat.choose_succ_right_eq (with Nat.add_sub_cancel collapsing (m+2)−2 to m), reoriented by commutativity.",
-      "mathContext": "$m\\binom{m+2}{2} = 3\\binom{m+2}{3}$, an instance of $\\binom{n}{k+1}(k+1) = \\binom{n}{k}(n-k)$."
+      "summary": "absorption: m·C(m+2,2) = 3·C(m+2,3), the only non-omega arithmetic fact, from Nat.choose_succ_right_eq with (m+2)−2 = m. Named separately so the main step closes by omega after substitution."
     },
     {
       "id": "main-theorem",
       "title": "The Second Subdiagonal S(m+2,m) = C(m+2,3) + 3·C(m+2,4)",
       "startLine": 67,
       "endLine": 86,
-      "summary": "stirlingSecond_sub_two: induction on m. Base m=0 by decide. Step applies Nat.stirlingSecond_succ_succ once, rewrites the first subdiagonal term via Nat.stirlingSecond_succ_self_left and the rest via the induction hypothesis, expands the target binomials with two instances of Nat.choose_succ_succ', splits the leading coefficient with add_one_mul, substitutes absorption, and closes by omega.",
-      "mathContext": "$S(m+2,m) = \\binom{m+2}{3} + 3\\binom{m+2}{4}$ for all $m$."
+      "summary": "stirlingSecond_sub_two by induction on m: one Pascal recurrence Nat.stirlingSecond_succ_succ, rewrite the first subdiagonal and the IH, expand C(m+3,3)/C(m+3,4) by Pascal's rule, substitute absorption, close by omega."
     },
     {
       "id": "shifted-form",
-      "title": "Index-Shifted Form and Sanity Checks",
-      "startLine": 88,
-      "endLine": 98,
-      "summary": "stirlingSecond_sub_two': re-indexes to S(n,n−2) = C(n,3)+3·C(n,4) for n ≥ 2 via Nat.exists_eq_add_of_le and n−2 = m. Five decide-checked examples confirm the formula against directly computed values S(2,0)=0, S(3,1)=1, S(4,2)=7, S(5,3)=25, S(6,4)=65.",
-      "mathContext": "$S(n,n-2) = \\binom{n}{3} + 3\\binom{n}{4}$ for $n \\ge 2$; numeric checks through $n=6$."
+      "title": "Index-Shifted Form",
+      "startLine": 87,
+      "endLine": 92,
+      "summary": "stirlingSecond_sub_two': the symmetric statement S(n,n−2)=C(n,3)+3·C(n,4) for n ≥ 2, via n = m+2 (Nat.exists_eq_add_of_le) to tame the natural-number subtraction."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity Checks",
+      "startLine": 93,
+      "endLine": 100,
+      "summary": "Five decide-checked values (S(2,0)=0 … S(6,4)=65) confirm the formula; kernel-reduction decide keeps the file free of Lean.ofReduceBool, preserving verified/axiom-free status."
     }
   ],
   "references": [
