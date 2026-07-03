@@ -27,11 +27,34 @@
     "proofId": "stirling-first-kind-oq-02",
     "range": {
       "startLine": 48,
-      "endLine": 81
+      "endLine": 59
     },
     "type": "theorem",
     "title": "c(n,k) is the Xᵏ-Coefficient of the Rising Factorial",
-    "content": "stirlingFirst_eq_ascPochhammer_coeff proves c(n,k) = [Xᵏ] ascPochhammer ℤ n by induction on n (generalizing k). The base case uses ascPochhammer ℤ 0 = 1, whose coefficients (1 at k=0, else 0) match c(0,k). The step rewrites ascPochhammer ℤ (n+1) = ascPochhammer ℤ n · (X + C n) and takes the Xᵏ-coefficient: Polynomial.coeff_mul_X handles the X factor by shifting the index (yielding c(n,k−1)) and Polynomial.coeff_mul_C handles the constant n (yielding n·c(n,k)). Their sum is exactly the Pascal recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k); the k=0 case gives 0 = c(n+1,0), since coeff (p·X) 0 = 0 and n·c(n,0) = 0.",
+    "content": "stirlingFirst_eq_ascPochhammer_coeff states the structural identity at the heart of the entry: the unsigned Stirling number c(n,k) equals the coefficient of Xᵏ in the rising factorial X(X+1)⋯(X+n−1) = ascPochhammer ℤ n. This is the generating-polynomial characterization of the first-kind Stirling numbers — it turns a combinatorial cycle-count into an algebraic coefficient, and is exactly what makes the generating-function proof of the row sum (next theorem) possible. Mathlib has the ascPochhammer polynomial and its recurrence but does not record this coefficient identity.",
+    "mathContext": "$c(n,k) = [X^k]\\, \\mathrm{ascPochhammer}\\ \\mathbb{Z}\\ n = [X^k]\\, X(X+1)\\cdots(X+n-1)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "rising factorial / ascPochhammer",
+      "generating polynomial",
+      "Stirling numbers as coefficients",
+      "combinatorial ↔ algebraic bridge"
+    ],
+    "prerequisites": [
+      "the ascPochhammer polynomial",
+      "polynomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-generating-proof",
+    "proofId": "stirling-first-kind-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 81
+    },
+    "type": "technique",
+    "title": "The Pascal Recurrence from Coefficient Extraction",
+    "content": "The identity is proved by induction on n (generalizing k). The base case uses ascPochhammer ℤ 0 = 1, whose coefficients (1 at k=0, else 0) match c(0,k). The inductive step rewrites ascPochhammer ℤ (n+1) = ascPochhammer ℤ n · (X + C n) (ascPochhammer_succ_right) and takes the Xᵏ-coefficient: Polynomial.coeff_mul_X handles the X factor by shifting the index (yielding c(n,k−1)) and Polynomial.coeff_mul_C handles the constant n (yielding n·c(n,k)). Their sum is exactly the Pascal recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) (Nat.stirlingFirst_succ_succ), closed by push_cast; ring; the k=0 case gives 0 = c(n+1,0), since coeff (p·X) 0 = 0 and n·c(n,0) = 0. So polynomial coefficient extraction mechanically reproduces the combinatorial recurrence.",
     "mathContext": "Extracting the coefficient of $X^k$ from the factor $(X+n)$ reproduces the recurrence $c(n+1,k+1) = n\\,c(n,k+1) + c(n,k)$.",
     "significance": "key",
     "relatedConcepts": [
@@ -42,7 +65,7 @@
     ],
     "prerequisites": [
       "polynomial coefficient lemmas",
-      "the rising-factorial recurrence in Mathlib"
+      "induction generalizing k"
     ]
   },
   {
