@@ -128,6 +128,99 @@
       "mathContext": "Recap of the entry: existence of a four-square representation is guaranteed (Lagrange), and this file adds the computable greedy witness together with simultaneous component bounds (each ≤ √n) and the Legendre excluded-form characterization."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "component_bound",
+      "type": "theorem",
+      "statement": "a² + b² + c² + d² = n → a ≤ Nat.sqrt n",
+      "significance": "The bound that makes four-square search feasible: since a² ≤ a²+b²+c²+d² = n, every component is at most √n. Consequently the naive search space has size (√n+1)⁴ = O(n²).",
+      "description": "rw [Nat.le_sqrt] reduces to a² ≤ n, closed by nlinarith using the nonnegativity of b², c², d²."
+    },
+    {
+      "name": "all_components_bounded",
+      "type": "theorem",
+      "statement": "a² + b² + c² + d² = n → a ≤ Nat.sqrt n ∧ b ≤ Nat.sqrt n ∧ c ≤ Nat.sqrt n ∧ d ≤ Nat.sqrt n",
+      "significance": "Packages the four symmetric component bounds into a single simultaneous statement — the exact form consumed downstream by four_square_exists_bounded to attach √n bounds to Lagrange's existence result.",
+      "description": "Conjunction of component_bound and its b/c/d analogues, assembled with an anonymous constructor."
+    },
+    {
+      "name": "find_7_val",
+      "type": "theorem",
+      "statement": "findFourSquares 7 = (2, 1, 1, 1)",
+      "significance": "Concrete output of the greedy algorithm on 7 = 2²+1²+1²+1², the smallest number requiring all four squares nonzero. Illustrates that the computable witness matches the mathematical decomposition.",
+      "description": "native_decide: the compiled greedy function is evaluated and compared to the literal tuple."
+    },
+    {
+      "name": "check_all_100",
+      "type": "theorem",
+      "statement": "checkAllUpTo 100 = true",
+      "significance": "Batch correctness certificate: a single tactic verifies that the greedy algorithm produces a valid four-square decomposition for every n ≤ 100. Demonstrates Lean's native evaluation certifying 101 algorithm instances at once.",
+      "description": "native_decide compiles checkAllUpTo (a List.range fold of checkFourSquares) to native code and reduces it to true; depends on Lean.ofReduceBool."
+    },
+    {
+      "name": "sorted_100",
+      "type": "theorem",
+      "statement": "checkSortedUpTo 100 = true",
+      "significance": "Confirms the greedy algorithm's output is always descending (a ≥ b ≥ c ≥ d) for n ≤ 100, so it returns canonical sorted representations rather than arbitrary orderings.",
+      "description": "native_decide over the batch predicate isSorted ∘ findFourSquares."
+    },
+    {
+      "name": "unique_rep_7",
+      "type": "theorem",
+      "statement": "countRepresentations 7 = 1",
+      "significance": "7 has a unique sorted four-square representation. Part of the uniqueness census (1,2,3,5,6,7,8 are unique) computed by exhaustively enumerating the bounded search space via the list monad.",
+      "description": "native_decide evaluating countRepresentations, which enumerates sorted tuples with nested List.range and a guard filter."
+    },
+    {
+      "name": "four_reps_36",
+      "type": "theorem",
+      "statement": "countRepresentations 36 = 4",
+      "significance": "36 is the first number with four distinct sorted four-square representations — the leading edge of representation multiplicity, connected to Jacobi's formula r₄(n) = 8·Σ_{4∤d, d∣n} d.",
+      "description": "native_decide on the exhaustive countRepresentations enumeration."
+    },
+    {
+      "name": "largest_component_bounds",
+      "type": "theorem",
+      "statement": "a² + b² + c² + d² = n ∧ a ≥ b ∧ a ≥ c ∧ a ≥ d → a² ≤ n ∧ n ≤ 4·a²",
+      "significance": "Two-sided bound on the largest component of a sorted representation: √(n/4) ≤ a ≤ √n. The lower bound sharpens the search, showing the leading component cannot be too small.",
+      "description": "Lower bound by nlinarith from nonnegativity; upper bound from sum_sq_le_four_max_sq (n ≤ 4a² since b²,c²,d² ≤ a²)."
+    },
+    {
+      "name": "four_square_exists_bounded",
+      "type": "theorem",
+      "statement": "∀ n, ∃ a b c d, a² + b² + c² + d² = n ∧ a ≤ Nat.sqrt n ∧ b ≤ Nat.sqrt n ∧ c ≤ Nat.sqrt n ∧ d ≤ Nat.sqrt n",
+      "significance": "Lagrange's four-square theorem restated with explicit component bounds — the core existence result of the entry, coupling guaranteed representability with the √n search-space bound in one statement.",
+      "description": "Obtains a decomposition from Mathlib's Nat.sum_four_squares, then attaches the bounds via all_components_bounded."
+    },
+    {
+      "name": "perfect_square_trivial",
+      "type": "theorem",
+      "statement": "∀ k, k² + 0² + 0² + 0² = k²",
+      "significance": "Perfect squares admit the trivial one-nonzero-square representation (k,0,0,0); the base of the hierarchy of numbers needing 1, 2, 3, or 4 nonzero squares.",
+      "description": "Closed by ring."
+    },
+    {
+      "name": "seven_needs_four",
+      "type": "theorem",
+      "statement": "minSquares 7 = 4",
+      "significance": "7 requires all four squares nonzero — the smallest witness that four squares are genuinely necessary (three do not suffice). These maximal-difficulty inputs are exactly Legendre's excluded form.",
+      "description": "native_decide evaluating minSquares, which counts nonzero components of the greedy output."
+    },
+    {
+      "name": "excluded_form_check_50",
+      "type": "theorem",
+      "statement": "checkExcludedFormUpTo 50 = true",
+      "significance": "Verifies Legendre's criterion up to 50: every n of the form 4^a(8b+7) (detected by isExcludedForm) indeed needs all four nonzero squares. Ties the arithmetic classification to the algorithmic notion of a 'hard' instance.",
+      "description": "native_decide over the batch predicate: isExcludedForm n → minSquares n = 4 for all n ≤ 50."
+    },
+    {
+      "name": "excluded_7",
+      "type": "theorem",
+      "statement": "isExcludedForm 7 = true",
+      "significance": "Direct check that the excluded-form detector recognizes 7 = 4⁰(8·0+7). The detector strips factors of 4 (up to eight times) and tests the residue mod 8, implementing Legendre's three-square exclusion.",
+      "description": "native_decide on the unrolled division-by-4 detector."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "lagrange-four-squares",
