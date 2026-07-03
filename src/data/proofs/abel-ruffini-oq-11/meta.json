@@ -95,7 +95,8 @@
       "The finite-product closure is the conceptual payoff: solvability of Galois groups is closed under multiplication of polynomials (gal_mul_isSolvable), so 'anything assembled from radical equations stays solvable'. Mathlib had only the single-equation case and an abstract multiset product; the indexed Finset product proved here is the form a user actually reaches for.",
       "Stating the closure by `Finset.cons_induction` (rather than over multisets) gives a clean two-case proof — empty product is the solvable unit, cons glues one factor — and keeps the result polymorphic in the index type ι.",
       "Putting both faces in one theorem (abel_ruffini_two_faces) dramatizes that the entire theory of solvability by radicals lives in the gap between 'pure radical equations are always solvable' and 'S₅ is not solvable': the general quintic's Galois group is Sₙ, which escapes the radical-solvable closure exactly at n = 5.",
-      "The whole positive side is 0-axiom and rests only on Mathlib's existing solvable-group and Galois-group API — no new axioms, no native_decide — showing the constructive complement was a packaging gap rather than a missing hard theorem."
+      "The whole positive side is 0-axiom and rests only on Mathlib's existing solvable-group and Galois-group API — no new axioms, no native_decide — showing the constructive complement was a packaging gap rather than a missing hard theorem.",
+      "The closure works because of *why* gal_mul_isSolvable holds, a mechanism the two-line proof hides: the splitting field of a product p·q is the compositum of the splitting fields of p and q, and the Galois group of a compositum embeds (by restriction) as a subgroup of the direct product Gal(p) × Gal(q). Solvable groups are closed under both subgroups and finite direct products, so a subgroup of a product of solvable groups is solvable — hence the product's group is. Read this way the finite-product closure is really the statement that solvability is preserved under taking composita of radical extensions, which is exactly the field-theoretic content behind 'anything assembled from radicals stays solvable'."
     ],
     "prerequisites": [
       "Galois theory: the Galois group of a polynomial and Galois' solvability criterion",
@@ -125,6 +126,16 @@
       "targetId": "abel-ruffini-oq-07",
       "relationship": "related",
       "description": "Sibling giving the concrete obstruction X⁵ − X − 1 with Galois group S₅; the explicit unsolvable instance against which this entry's radical-solvable closure is the counterpart."
+    },
+    {
+      "targetId": "abel-ruffini-obstruction-oq-06",
+      "relationship": "related",
+      "description": "The negative-face counterpart proved in full: Sₙ is unsolvable for n ≥ 5 and a non-solvable Galois group blocks solvability by radicals. That entry establishes the ¬IsSolvable(Sₘ) half that this entry's abel_ruffini_two_faces cites; together they realize the two directions of Galois' criterion — solvable group ⇒ radicals succeed (here), non-solvable group ⇒ radicals fail (there)."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-11",
+      "relationship": "related",
+      "description": "Constructive Galois-theory sibling (Noether's problem for Sₙ: the invariant ring is always a polynomial ring). Both work the positive/constructive direction of the Sₙ story rather than the obstruction, complementing this entry's radical-solvable closure with the rationality of the Sₙ-invariants."
     }
   ],
   "references": [
