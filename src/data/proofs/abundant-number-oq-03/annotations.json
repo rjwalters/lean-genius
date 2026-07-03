@@ -80,5 +80,25 @@
       "rarity vs finiteness",
       "kernel decide vs native_decide"
     ]
+  },
+  {
+    "id": "abundant03-ann-reuse",
+    "proofId": "abundant-number-oq-03",
+    "range": { "startLine": 29, "endLine": 35 },
+    "type": "context",
+    "title": "Reuse: Composition Without New Computation",
+    "content": "The entire result is a *composition* of two facts imported from sibling entries, with no new divisor-sum computation performed here. `import Proofs.AbundantNumberOQ02` brings `abundant_945` — the fact that $945$ is abundant, itself proved axiom-free by kernel `decide` over a kernel-reducible $\\sigma$ (the reducibility is what makes that `decide` feasible without `native_decide`). `import Proofs.AbundantMultiplesOQ01` brings `abundant_mul_right` — a purely arithmetic closure lemma. The `open AbundantNumberOQ02 AbundantMultiplesOQ01` then exposes both by short name. Because $945$'s abundance is inherited rather than recomputed, this file introduces *zero* computational content and its axiom footprint is exactly that of its two dependencies (the foundational three), never touching `Lean.ofReduceBool`.",
+    "mathContext": "abundant_945 : Nat.Abundant 945 (kernel-decide, oq-02); abundant_mul_right : a.Abundant → 0 < t → (a*t).Abundant (oq-01). This entry adds only the odd-multiplier restriction and the injectivity/assembly.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean imports and `open` namespaces",
+      "kernel `decide` vs `native_decide` and their axiom footprints",
+      "abundant_945 (oq-02) and abundant_mul_right (oq-01)"
+    ],
+    "relatedConcepts": [
+      "proof reuse / composition",
+      "axiom footprint of dependencies",
+      "kernel-reducible σ"
+    ]
   }
 ]

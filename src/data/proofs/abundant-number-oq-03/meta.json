@@ -81,9 +81,17 @@
       "id": "infinitude",
       "title": "Infinitely Many Odd Abundant Numbers",
       "startLine": 52,
+      "endLine": 68,
+      "summary": "`infinitely_many_odd_abundant : {n | Odd n ∧ n.Abundant}.Infinite` via `Set.infinite_of_injective_forall_mem` applied to the injective family odd_mul_succ_injective and the membership proof odd_abundant_945_mul. Complements `infinitely_many_abundant` (even family 12·(k+1)); no diagonal argument or cardinality bookkeeping.",
+      "mathContext": "An injective ℕ-indexed family of in-set witnesses forces the set to be infinite: Set.infinite_of_injective_forall_mem : Injective f → (∀ a, f a ∈ s) → s.Infinite."
+    },
+    {
+      "id": "axiom-audit",
+      "title": "Axiom Audit",
+      "startLine": 70,
       "endLine": 75,
-      "summary": "`infinitely_many_odd_abundant : {n | Odd n ∧ n.Abundant}.Infinite` via `Set.infinite_of_injective_forall_mem` applied to the injective family and the membership proof, followed by `#print axioms` confirming the result is axiom-free. Complements `infinitely_many_abundant` (even family 12·(k+1)); the proof is elementary and axiom-free.",
-      "mathContext": "An injective ℕ-indexed family of in-set witnesses forces the set to be infinite."
+      "summary": "`#print axioms infinitely_many_odd_abundant` confirms the result depends only on the foundational propext / Classical.choice / Quot.sound — no Lean.ofReduceBool (which native_decide would introduce) and no sorryAx. The proof is genuinely axiom-free, inheriting the kernel-decide abundant_945 without recomputation.",
+      "mathContext": "Axiom footprint = that of the two imported dependencies; kernel decide (not native_decide) keeps Lean.ofReduceBool absent, so the entry qualifies as verified / 0-axiom."
     }
   ],
   "mainTheorems": [
