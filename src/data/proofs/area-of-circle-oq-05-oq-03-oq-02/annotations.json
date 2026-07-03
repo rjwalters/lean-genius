@@ -17,6 +17,11 @@
       "heat kernel",
       "central limit theorem",
       "characteristic function"
+    ],
+    "prerequisites": [
+      "convolution of functions / probability densities",
+      "the normal (Gaussian) density and its variance",
+      "Lebesgue integration over ℝ"
     ]
   },
   {
@@ -35,6 +40,11 @@
       "completing the square",
       "Gaussian integral",
       "field_simp"
+    ],
+    "prerequisites": [
+      "completing the square in a quadratic",
+      "the Gaussian integral ∫ e^{-Au²} du = √(π/A)",
+      "algebraic normalization (field_simp, ring)"
     ]
   },
   {
@@ -53,6 +63,11 @@
       "translation invariance",
       "Bochner integral",
       "Gaussian integral"
+    ],
+    "prerequisites": [
+      "translation invariance of Lebesgue measure",
+      "pulling constants out of an integral",
+      "the Gaussian integral ∫ e^{-Au²} du = √(π/A)"
     ]
   },
   {
@@ -71,6 +86,11 @@
       "characteristic function",
       "convolution theorem",
       "probability density"
+    ],
+    "prerequisites": [
+      "characteristic functions / Fourier transform",
+      "the convolution theorem (transform of a convolution is a product)",
+      "probability densities integrate to 1"
     ]
   }
 ]
