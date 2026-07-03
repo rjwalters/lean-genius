@@ -141,6 +141,11 @@
       "targetId": "abundant-number-oq-01",
       "relationship": "extends",
       "description": "The oq-01 entry establishes abundant_mul_right (closure of abundant numbers under positive multiples) and infinitely_many_abundant via the even family 12·(k+1). This entry reuses that same closure engine but restricts the multiplier to odd 2k+1 over the odd seed 945, giving the odd-case complement to infinitely_many_abundant."
+    },
+    {
+      "targetId": "abundant-number-oq-01-oq-04",
+      "relationship": "related",
+      "description": "The oq-01-oq-04 entry proves there are infinitely many *primitive* abundant numbers (abundant with all proper divisors deficient) via the 2^k·p construction and Bertrand's postulate. It directly addresses this entry's open question of whether infinitely many odd abundant numbers are primitive: the 945·(2k+1) witnesses here are non-primitive (each is a multiple of the abundant 945), so strengthening infinitude to the primitive odd case needs the sharper machinery of oq-01-oq-04 rather than a fixed abundant seed."
     }
   ],
   "sorries": 0,
