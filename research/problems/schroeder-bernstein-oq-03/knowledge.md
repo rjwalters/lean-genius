@@ -632,3 +632,110 @@ the pair witnessing it is the g-edge `(orbit_{k+1}, f(orbit_k))`") and check (a)
 `domain_step_exists` cons of `(a, chaseTarget f g a N)`. If (b) fails with a concrete counterexample,
 that is the proof that finite injury is unavoidable — record it and commit to Path A. Either outcome
 resolves the strategic fork that has been open across the last several sessions.
+
+## Session 2026-07-03 (researcher-4): FORK RESOLVED — the extension-only (cons) scheduler IS viable; `escape_exists` follows from a cons-preserved **cycle-balance** invariant, no finite injury [ANALYSIS; build env hostile — verification deferred]
+
+No verified Lean this session (worktrees deleted within seconds in both `.loom/worktrees`
+and `/tmp`; host default toolchain elan `v4.31.0` ≠ project `v4.26.0`; a foreign
+`lean-build-*` container was already running against a 2.5 GiB-free disk). Contribution is a
+**decision** on the strategic fork that r14 left explicitly open ("the decisive open question,
+now sharp: can `escape_exists` be reproved from an invariant that a `(a,b)::L` cons
+preserves?"). The answer is **yes**, and the cons-preserved invariant is *not* r14's
+`OrbitGEdged` (which fails preservation — see below) but a global **cycle-count balance**.
+
+### The clean dynamical picture (why the trap cannot form)
+
+`g∘f : ℕ→ℕ` is injective (f, g inj). An injective self-map of ℕ has **no ρ-shaped orbits**:
+if a tail `a, g f a, …, (gf)^{k}a = c` entered a cycle `C` at `c` (minimal `k≥1`, `a∉C`),
+then `c` would have two distinct `gf`-preimages — the tail point `(gf)^{k-1}a ∉ C` and the
+cycle predecessor of `c` in `C` — contradicting injectivity. Hence **every forward orbit is
+either (i) all-distinct (infinite) or (ii) a pure cycle containing its anchor** (a repeat
+`orbit_i = orbit_j`, `i<j`, forces `a = orbit_{j-i}` by injectivity of `(gf)^i`, so `a` is on
+the cycle — no tail).
+
+### The cons-preserved invariant
+
+For a finite `g∘f`-cycle `C` (so `f↾C` is injective onto `f(C)`, `|f(C)| = |C|`), define
+
+    Balanced L  :≡  ∀ cycle C,  (C ∩ mDom L).card  =  (f(C) ∩ mRan L).card.
+
+**Claim A (Balanced ⟹ escape, BuiltFrom-free).** Let `a ∉ mDom L` be a fresh domain anchor.
+- If `a`'s forward orbit is **infinite**: the values `f(orbit_k)` are pairwise distinct
+  (f inj + orbit distinct), so among any `|mRan L|+1` of them one lies outside the finite set
+  `mRan L` — the chase escapes in `≤ |mRan L|+1` steps. *(This case never touches `Balanced`.)*
+- If `a` lies on a **cycle** `C` (`|C| = m`): since `a ∉ mDom L`, `(C ∩ mDom L).card ≤ m-1`,
+  so by `Balanced`, `(f(C) ∩ mRan L).card ≤ m-1 < m = |f(C)|`. Hence some `f(orbit_k) ∈ f(C)`
+  is **not** in `mRan L` — the chase escapes. ∎
+
+This *replaces* the `BuiltFrom` hypothesis of `escape_exists` with `Balanced`. It is exactly
+the "no trapped cycle" content that `BuiltFrom` supplied via `chase_gedge_chain` +
+`fwdOrbit_chase_length_le`, but stated as a **counting** fact rather than an edge-labelling
+fact — and counting is what survives a cons.
+
+**Claim B (Balanced is preserved by BOTH cons steps).** Fix a cycle `C`, `|C| = m`.
+- **Domain step** `domain_step_exists`: conses `(a, chaseTarget f g a N) = (a, f(orbit^a_N))`.
+  - If `a ∈ C`: `orbit^a_N ∈ C` (cycle is `gf`-closed), and the escape target `f(orbit^a_N)`
+    is **fresh** (`∉ mRan L`, from escape) while `a` is **fresh** (`∉ mDom L`). So both
+    `(C ∩ mDom)` and `(f(C) ∩ mRan)` gain exactly one new element ⟹ balance preserved.
+  - If `a ∉ C`: `a`'s orbit is a *different* component, so `orbit^a_N ∉ C` ⟹ (f inj)
+    `f(orbit^a_N) ∉ f(C)`, and `a ∉ C`. Neither side of `C`'s balance changes. *(Uses
+    `f(orbit^a_N) ∈ f(C) ⟹ orbit^a_N ∈ C ⟹ a ∈ C`, valid because cycles are gf-invariant
+    both ways under injectivity — no tails.)*
+- **Range step** (dual, `augment_range_step`'s cons analogue): conses `(g c, c)` for a fresh
+  range target `c`. If `c = f(o_j) ∈ f(C)`: adds `c` to `mRan` (`f(C)`-side +1) and
+  `g c = g(f o_j) = o_{j+1} ∈ C` to `mDom` (`C`-side +1) ⟹ balance preserved. If `c ∉ f(C)`:
+  `g c ∈ C ⟺ c ∈ f(C)` (g inj), so neither side changes. ∎
+
+**Corollary (fork resolved).** A scheduler that uses *only* conses — even domain step
+(`domain_step_exists`, already in the file, returns a cons `(a,b)::L`) and odd range step (its
+dual) — maintains `Balanced` from `Balanced []` (vacuous), so every stage's `escape_exists`
+obligation is discharged **without `BuiltFrom`**. Because nothing is ever removed,
+`mLookup_stable` (Section 4f-bis, needs `L₁ ⊆ L₂`) applies **directly** along the whole chain:
+each placed point's partner is immutable ⟹ the limit `e n = mLookup (stage s) n` is eventually
+constant *for free*. **No finite-injury / stabilization argument is needed.** This is the
+"short path" (Path B / Rogers §7.4 extend-only back-and-forth) the last several sessions hoped
+for; the obstruction the r14 analysis identified (cons destroys `BuiltFrom` needed by
+`escape_exists`) dissolves because `escape_exists` never needed `BuiltFrom` — only the weaker,
+cons-stable `Balanced`.
+
+### Why r14's `OrbitGEdged` failed preservation but `Balanced` does not
+
+`OrbitGEdged` demanded that *the pair witnessing* each occupied `f(orbit_k)` be the **g-edge**
+`(orbit_{k+1}, f(orbit_k))`. A cons of the anchor pair `(a, f(orbit^a_N))` adds a range point
+`f(orbit^a_N)` whose witnessing pair is `(a, f(orbit^a_N))` — an **f-edge-like anchor pair,
+not a g-edge** — so if a later fresh anchor's orbit reaches `orbit^a_N`, `OrbitGEdged` is
+violated at `L'`. `Balanced` sidesteps this entirely: it never asks *which* pair occupies a
+range point, only *how many* cycle points/images are occupied. The anchor pair `(a, ·)` still
+contributes `+1` to both sides (a enters `mDom`, `f(orbit^a_N)` enters `f(C)∩mRan`), so the
+*count* stays balanced even though no g-edge is present. **Balance is the right abstraction;
+edge-identity is too rigid.**
+
+### Lean-ready decomposition (for the next build-capable session)
+
+A ready-to-paste scaffold is saved at
+`research/problems/schroeder-bernstein-oq-03/cycle_balance_scaffold.lean`. Target lemmas:
+
+1. `def OnCycle (f g : ℕ→ℕ) (a : ℕ) : Prop := ∃ m, 1 ≤ m ∧ fwdOrbit f g a m = a`  (a is gf-periodic).
+2. `theorem escape_of_infinite_orbit` — pigeonhole; the `¬OnCycle` case; no invariant. *(Easiest;
+   reuses `fwdOrbit_prefix_distinct`-style injectivity + `List.length` pigeonhole. Do this first.)*
+3. `def Balanced` via a `Finset` of a cycle, OR — to dodge cycle-set machinery — the **local
+   surrogate** `BalancedLocal L :≡ ∀ y ∈ mRan L, (∃ x ∈ mDom L, y = f x) ∨ y is an f-edge target`
+   … (the cleanest Lean encoding is still open; the counting proof above is the spec).
+4. `theorem escape_of_balanced` — Claim A, cycle case, from `Balanced` + `a ∉ mDom L`.
+5. `theorem balanced_cons_domain` / `balanced_cons_range` — Claim B.
+6. Re-derive `escape_exists` as `escape_of_infinite_orbit`/`escape_of_balanced` dichotomy; drop
+   `BuiltFrom` from the scheduler; assemble the extension-only stage function; read off via
+   `mLookup` + `mLookup_stable`; prove `.Computable`; discharge the `myhill_isomorphism` sorry.
+
+**Honest status:** this is a *paper* resolution of the strategic fork, not machine-checked. The
+counting argument is elementary and I am confident in it, but the Lean encoding of "cycle" and
+its cardinality (step 3) is the one place that could bite — a `Finset`-of-orbit-with-`Nat.find`-
+period is likely needed, or a reformulation avoiding explicit cycles. The `myhill_isomorphism`
+sorry is UNCHANGED this session (0→0 sorries closed); the deliverable is the decision + scaffold.
+
+### Next Steps (supersede all prior)
+1. Formalize `escape_of_infinite_orbit` first (self-contained pigeonhole, no `Balanced`).
+2. Choose the Lean encoding of `Balanced`; prove `balanced_cons_domain/range` (Claim B).
+3. Prove `escape_of_balanced` (Claim A, cycle case); merge into a `BuiltFrom`-free `escape_exists'`.
+4. Build the extension-only scheduler on `domain_step_exists` + dual; read off with
+   `mLookup_stable`; close the theorem. **Do NOT re-open the fork — it is decided (Path B).**

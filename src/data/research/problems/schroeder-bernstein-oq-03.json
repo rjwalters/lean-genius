@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: both stage moves now expose pair-level edge preservation (VERIFIED 0-ax). Sharpened the remaining crux from vague \"read off via mLookup\" to a concrete finite-injury stabilization obligation (mLookup_stable is too weak because the rerouting splice does not preserve pairs). Main myhill_isomorphism sorry UNCHANGED.",
+    "progressSummary": "FORK RESOLVED (Path B / extension-only chosen). escape_exists is derivable from a cons-preserved cycle-balance invariant instead of BuiltFrom, so mLookup_stable applies directly and no finite-injury argument is needed. myhill_isomorphism sorry UNCHANGED (0 closed this session; build env hostile). Next: formalize escape_of_infinite_orbit (pigeonhole) then Balanced + cons-preservation, then assemble the extension-only scheduler. Scaffold + full proof in knowledge.md r4 entry.",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
@@ -62,7 +62,8 @@
       "augPath + mem_augPath_iff/mDom_augPath/mRan_augPath + augPath_builtFrom + augPath_matchingCorr + augPath_isMatching + augPath_isMatching_of_chase in SchroederBernsteinOQ03.lean Section 4j (8 decls, all VERIFIED 0-axiom)",
       "augment_domain_step (SchroederBernsteinOQ03.lean:1466): BuiltFrom-preserving TOTAL even-stage domain step. Fresh anchor a not in mDom L implies exists Lprime with IsMatching, MatchingCorr, BuiltFrom, a in mDom Lprime, and mDom/mRan monotone. VERIFIED, axioms = {propext, Classical.choice, Quot.sound}.",
       "augment_domain_step f-edge preservation conjunct (Section 4k), SchroederBernsteinOQ03.lean",
-      "augment_range_step g-edge preservation conjunct (Section 4l), SchroederBernsteinOQ03.lean"
+      "augment_range_step g-edge preservation conjunct (Section 4l), SchroederBernsteinOQ03.lean",
+      "cycle_balance_scaffold.lean (knowledge dir): paste-ready Lean decomposition — OnCycle, Balanced, escape_of_infinite_orbit, escape_of_balanced, escape_exists, balanced_cons_domain/range/nil (all sorry; NOT built)."
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -84,7 +85,12 @@
       "The augmenting-path splice is TOTAL and preserves ALL THREE invariants plus two-sided monotonicity: mDom L subset mDom Lprime, mRan L subset mRan Lprime. Monotonicity holds because every removed g-edge endpoint (domains o_1..o_N, ranges f o_0..f o_(N-1)) is re-added by augPath ({o_0..o_N} on the domain, {f o_0..f o_N} on the range).",
       "Range-disjointness of the spliced matching is the delicate part: for aug index k<N, f o_k is the unique range value of the removed g-edge (o_(k+1), f o_k) by matching_cofunctional, so no kept pair can carry it; for k=N it is the escape point f o_N not in mRan L (escape_exists).",
       "r14 (07-03): strengthened augment_domain_step / augment_range_step with pair-level edge preservation (f-edges survive domain steps; g-edges survive range steps), VERIFIED 0-axiom [propext,Classical.choice,Quot.sound].",
-      "SHARPENED OBSTRUCTION: the limit read-off is NOT mechanical. mLookup_stable needs full pair-preservation, but the rerouting augment step removes stale g-edges and re-adds f-edges, so a domain point partner CHANGES across stages. Real crux = finite-injury stabilization (each point rerouted finitely often), or an extension-only reformulation of the scheduler."
+      "SHARPENED OBSTRUCTION: the limit read-off is NOT mechanical. mLookup_stable needs full pair-preservation, but the rerouting augment step removes stale g-edges and re-adds f-edges, so a domain point partner CHANGES across stages. Real crux = finite-injury stabilization (each point rerouted finitely often), or an extension-only reformulation of the scheduler.",
+      "FORK RESOLVED (r4, 2026-07-03): escape_exists needs NOT BuiltFrom but the weaker cons-preserved invariant Balanced L := (for every g∘f-cycle C, #(C∩mDom L) = #(f(C)∩mRan L)). Extension-only (cons) scheduler is viable; no finite injury needed.",
+      "Balanced ⟹ escape (BuiltFrom-free): infinite forward orbit ⇒ pigeonhole on f-images; cycle C with fresh anchor a∉mDom ⇒ #(f(C)∩mRan)=#(C∩mDom)≤|C|-1<|C| ⇒ a fresh f-image exists.",
+      "Balanced is cons-preserved by both domain step (a,f(orbit_N)) and dual range step (g c,c): each adds one fresh dom + one fresh ran point on the affected cycle; injective g∘f has no ρ-tails so other cycles are inert.",
+      "r14 OrbitGEdged failed cons-preservation because it fixed the witnessing pair as a g-edge; the anchor cons supplies an f-edge-like pair. The COUNT (Balanced) survives where edge-identity does not — counting is the right abstraction.",
+      "Injective g∘f ⇒ every forward orbit is either all-distinct (infinite) or a pure cycle containing its anchor (no tails-into-cycles: injectivity forbids the two distinct preimages a ρ-shape needs)."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
