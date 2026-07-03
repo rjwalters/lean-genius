@@ -92,35 +92,39 @@
   },
   "sections": [
     {
-      "id": "header-imports",
+      "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 43,
-      "summary": "Imports, expository docstring contrasting the strictly convex equality case with the inner-product version, and namespace setup."
+      "endLine": 38,
+      "summary": "States the theme: strict convexity makes the triangle-inequality equality case rigid (SameRay for vectors, betweenness for points). Sets up the strictly convex normed space E and normed torsor P."
     },
     {
-      "id": "vectorial-form",
+      "id": "vectorial",
       "title": "Part I: Vectorial Form — Equality ⇔ Same Ray",
-      "startLine": 45,
-      "endLine": 70,
-      "summary": "norm_add_eq_iff_sameRay, the strict inequality norm_add_lt_iff_not_sameRay, and the equal-norm rigidity corollary eq_of_norm_eq_of_norm_add_eq.",
-      "mathContext": "$\\lVert x+y\\rVert = \\lVert x\\rVert + \\lVert y\\rVert \\iff \\operatorname{SameRay}_{\\mathbb{R}}(x,y)$"
+      "startLine": 39,
+      "endLine": 51,
+      "summary": "norm_add_eq_iff_sameRay (‖x+y‖ = ‖x‖+‖y‖ ↔ SameRay ℝ x y) and its strict complement norm_add_lt_iff_not_sameRay: strict convexity makes distinct unit directions give a strict triangle inequality."
     },
     {
-      "id": "metric-form",
+      "id": "rigidity",
+      "title": "Rigidity: Equal Norms Saturating the Bound",
+      "startLine": 52,
+      "endLine": 62,
+      "summary": "eq_of_norm_eq_of_norm_add_eq: equal-norm vectors that saturate the triangle inequality are equal — the analytic core of metric-projection uniqueness in strictly convex spaces."
+    },
+    {
+      "id": "metric",
       "title": "Part II: Metric Form — Equality ⇔ Betweenness",
-      "startLine": 72,
-      "endLine": 88,
-      "summary": "dist_add_dist_eq_iff_wbtw for points of a strictly convex metric torsor and the segment-membership form dist_add_dist_eq_iff_mem_segment inside the vector space.",
-      "mathContext": "$\\operatorname{dist}(a,b) + \\operatorname{dist}(b,c) = \\operatorname{dist}(a,c) \\iff \\operatorname{Wbtw}_{\\mathbb{R}}(a,b,c)$"
+      "startLine": 63,
+      "endLine": 81,
+      "summary": "dist_add_dist_eq_iff_wbtw (degenerate triangle ↔ Wbtw ℝ a b c) and dist_add_dist_eq_iff_mem_segment (b ∈ segment ℝ a c), transporting the SameRay statement through torsor subtraction to Menger betweenness."
     },
     {
-      "id": "concrete-instances",
+      "id": "concrete",
       "title": "Part III: Concrete Instances",
-      "startLine": 90,
+      "startLine": 82,
       "endLine": 101,
-      "summary": "The real line and the Euclidean plane are strictly convex via their inner product; the equality case, betweenness form, and unit-vector strictness are instantiated there.",
-      "mathContext": "$\\mathbb{R}$ and $\\mathrm{EuclideanSpace}\\ \\mathbb{R}\\ (\\mathrm{Fin}\\ 2)$"
+      "summary": "ℝ and EuclideanSpace ℝ (Fin 2) are strictly convex by typeclass inference (inner-product ⇒ strictly convex): same-sign characterisation on ℝ, betweenness in the plane, and distinct unit vectors never saturating the bound."
     }
   ],
   "crossReferences": [
