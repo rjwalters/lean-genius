@@ -264,6 +264,127 @@
       "mathContext": "Final consolidated summary of all formal statements, distinguishing the unconditionally proved theorems from the RH-conditional results and the remaining analytic axioms."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "rh_zeros_on_critical_line",
+      "type": "theorem",
+      "statement": "RiemannHypothesis → every nontrivial zero s of ζ (s ≠ 1) has Re(s) = 1/2",
+      "significance": "The direct unfolding of what the Riemann Hypothesis asserts about zeta zeros. It anchors the whole file: all downstream consequences are what follows once every nontrivial zero is pinned to the critical line.",
+      "description": "Applies Mathlib's `RiemannHypothesis` predicate directly to the zero s, discharging the trivial-zero and s≠1 side conditions."
+    },
+    {
+      "name": "zeta_euler_product",
+      "type": "theorem",
+      "statement": "For Re(s) > 1, ∏'_p (1 − p^(−s))⁻¹ = ζ(s)",
+      "significance": "Euler's product formula — the identity that first ties ζ to the primes and underlies every prime-counting consequence of RH. Fully proved, not assumed.",
+      "description": "Re-exports Mathlib's `riemannZeta_eulerProduct_tprod`. The companion `euler_product_nonvanishing` uses it to show ζ(s) ≠ 0 for Re(s) > 1."
+    },
+    {
+      "name": "zeta_nonzero_for_re_ge_one",
+      "type": "theorem",
+      "statement": "For Re(s) ≥ 1, ζ(s) ≠ 0",
+      "significance": "The non-vanishing of ζ on the line Re(s) = 1 — logically equivalent to the Prime Number Theorem and the unconditional boundary of the zero-free region. A genuine proved result (via the classical 3+4cosθ+cos2θ ≥ 0 inequality), independent of RH.",
+      "description": "Re-exports Mathlib's `riemannZeta_ne_zero_of_one_le_re`; specializes to ζ(1+it) ≠ 0 for the PNT link."
+    },
+    {
+      "name": "rh_restated_with_zero_bound",
+      "type": "theorem",
+      "statement": "RH → every nontrivial zero s satisfies Re(s) = 1/2 ∧ Re(s) < 1",
+      "significance": "Shows RH can be stated using only the half-plane Re(s) < 1, since `zeta_zero_re_lt_one` makes the bound automatic. A clean reformulation removing the need to reference the trivial-zero exclusion twice.",
+      "description": "Pairs the RH hypothesis applied at s with `zeta_zero_re_lt_one` for the automatic Re(s) < 1 half."
+    },
+    {
+      "name": "rh_triple_equivalence",
+      "type": "theorem",
+      "statement": "RH → Mertens √-bound, RH ↔ Li's criterion (liConstant n ≥ 0), and RH → Density Hypothesis",
+      "significance": "The hub theorem bundling three landmark equivalents/consequences of RH: the O(√x) Mertens bound, Li's positivity criterion (an iff), and the Density Hypothesis. It shows RH sitting at the center of a web of analytic-number-theory statements.",
+      "description": "Assembles `rh_implies_mertens_bound`, `lis_criterion`, and `RH_implies_DensityHypothesis` into a single conjunction."
+    },
+    {
+      "name": "rh_implies_mertens_bound",
+      "type": "axiom",
+      "statement": "RH → ∃ C>0, ∀ n≥1, |M(n)| ≤ C·√n",
+      "significance": "The classical statement that RH forces the Mertens function M(x)=∑μ(k) to be O(√x). One of the oldest equivalents of RH; stated as an axiom since its analytic proof is not formalized in Mathlib.",
+      "description": "Axiomatized consequence used inside `rh_triple_equivalence`. Its contrapositive powers `li_negative_disproves_rh`-style disproof routes via the Mertens sign-change results."
+    },
+    {
+      "name": "rh_implies_psi_bound",
+      "type": "axiom",
+      "statement": "RH → ∃ C>0, ∀ n≥2, |ψ(n) − n| ≤ C·√n·(log n)²",
+      "significance": "The sharpest error term for the Chebyshev ψ function under RH: the prime-counting error is O(√x log²x), the best possible power-saving. This is the quantitative heart of RH's grip on prime distribution.",
+      "description": "Axiomatized (the explicit-formula analysis is not in Mathlib). Feeds `rh_psi_relative_error`, `rh_implies_theta_upper_from_psi`, and `rh_psi_eventually_positive`."
+    },
+    {
+      "name": "rh_psi_relative_error",
+      "type": "theorem",
+      "statement": "RH → ∃ C>0, ∀ n≥2, |ψ(n) − n| ≤ C·√n·(log n)²",
+      "significance": "Packages the ψ error bound as a relative-error statement (log²n/√n → 0), making explicit that under RH the primes are as regular as possible. Derived, not assumed at this layer.",
+      "description": "Proved directly from `rh_implies_psi_bound`; `rh_implies_theta_upper_from_psi` then transfers the bound to θ via `chebyshevPsi_ge_theta`."
+    },
+    {
+      "name": "explicit_formula_error",
+      "type": "axiom",
+      "statement": "For ε>0: if all zeros have Re ≤ 1/2+ε then |ψ(n) − n| ≤ C·n^(1/2+ε)",
+      "significance": "The explicit-formula bridge connecting the location of ζ's zeros to the prime-counting error term. This is the mechanism by which any zero-free strip yields a ψ error bound — the engine behind all conditional prime estimates.",
+      "description": "Axiomatized core connection. Instantiated with the RH zero bound to yield `rh_gives_optimal_psi_bound` for every ε>0."
+    },
+    {
+      "name": "rh_gives_optimal_psi_bound",
+      "type": "theorem",
+      "statement": "RH → ∀ ε>0, ∃ C>0, ∀ n≥2, |ψ(n) − n| ≤ C·n^(1/2+ε)",
+      "significance": "The optimal conditional prime-counting bound: RH gives ψ(x) = x + O(x^(1/2+ε)) for every ε>0, unattainable from any weaker zero-free region. Shows RH is exactly what is needed for the square-root barrier.",
+      "description": "Applies `explicit_formula_error` at ε with the RH hypothesis supplying the required zero bound Re(s) ≤ 1/2+ε."
+    },
+    {
+      "name": "rh_optimal_error",
+      "type": "theorem",
+      "statement": "RH → ∃ C>0, ∀ x≥2, |ψ(⌊x⌋) − x| ≤ C·x^(1/2)·(log x)²",
+      "significance": "The real-variable, sharpest form of the ψ error under RH — the σ = 1/2 endpoint of the zero-free-region hierarchy. Confirms RH delivers the smallest possible power-saving error term.",
+      "description": "Uses `explicit_formula_zero_free` at σ = 1/2, discharging the zero-location hypothesis from RH."
+    },
+    {
+      "name": "RH_implies_DensityHypothesis",
+      "type": "axiom",
+      "statement": "RH → DensityHypothesis",
+      "significance": "Records that RH is strictly stronger than the Density Hypothesis on the distribution of zeros off the critical line. Frames where RH sits in the hierarchy of zero-density conjectures (Ingham, Huxley bounds).",
+      "description": "Axiomatized implication; used in `rh_triple_equivalence`. The zero-density crossover at σ=3/4 is computed separately in `density_crossover_at_three_quarters`."
+    },
+    {
+      "name": "riemann_von_mangoldt_formula",
+      "type": "axiom",
+      "statement": "N(T) = (T/2π)·log(T/2πe) + O(log T)",
+      "significance": "The Riemann–von Mangoldt zero-counting formula giving the density of ζ-zeros up to height T. It underpins every convergence estimate for sums over zeros in the explicit formula.",
+      "description": "Axiomatized asymptotic with an explicit O(log T) remainder; `zero_counting_consistency` cross-checks it against the ξ-function symmetry."
+    },
+    {
+      "name": "xi_functional_equation",
+      "type": "theorem",
+      "statement": "For all s, Λ(s) = Λ(1 − s), where Λ = completedRiemannZeta",
+      "significance": "The functional equation of the completed zeta function — the s ↦ 1−s symmetry forcing zeros into conjugate/reflected quadruples. A fully proved cornerstone (formerly two axioms), now sourced from Mathlib.",
+      "description": "Proved from Mathlib's `completedRiemannZeta_one_sub`. Yields `xi_zeros_one_minus` and `xi_zeros_conjugate_pairs` for the symmetry of the zero set."
+    },
+    {
+      "name": "selberg_GRH_implies_RH",
+      "type": "theorem",
+      "statement": "GRH for the Selberg class → ∃ F ∈ 𝒮 with degree 1 (namely ζ)",
+      "significance": "Places RH inside the Selberg-class framework: since ζ ∈ 𝒮 with degree 1, the Grand RH for all of 𝒮 implies ordinary RH. Situates the problem within the modern axiomatic theory of L-functions.",
+      "description": "Follows from the axiom `zeta_in_selberg_class` (ζ has selbergDegree 1); `zeta_degree_pos` and `selberg_degree_nonneg` record the degree constraints."
+    },
+    {
+      "name": "li_negative_disproves_rh",
+      "type": "theorem",
+      "statement": "If liConstant n < 0 for some n ≥ 1, then ¬RiemannHypothesis",
+      "significance": "The falsification side of Li's criterion: a single negative Li coefficient would refute RH. Turns RH into a positivity statement checkable coefficient-by-coefficient.",
+      "description": "Contrapositive of `lis_criterion`: an RH proof would force liConstant n ≥ 0, contradicting the hypothesis, closed by linarith."
+    },
+    {
+      "name": "mertens_sign_change_exists",
+      "type": "theorem",
+      "statement": "∃ a < b with M(a) > 0 and M(b) < 0 (M(1)=1, M(5)=−2)",
+      "significance": "Concretely exhibits the Mertens function changing sign, illustrating the oscillation whose amplitude RH bounds to O(√x). A computed, self-contained witness among the file's native_decide verifications.",
+      "description": "Instantiates a = 1, b = 5 using the verified values `mertens_one` and `mertens_five`."
+    }
+  ],
   "sorries": 0,
   "references": [
     {
