@@ -14,6 +14,11 @@
       "Mathlib",
       "Lean 4",
       "formalization"
+    ],
+    "prerequisites": [
+      "the statement of Fermat's Last Theorem",
+      "Mathlib's FLT modules (FLT.Basic, FLT.Four)",
+      "basic ring theory of the integers"
     ]
   },
   {
@@ -32,6 +37,11 @@
       "history of mathematics",
       "number theory",
       "elliptic curves"
+    ],
+    "prerequisites": [
+      "Fermat's Last Theorem and its exponents",
+      "infinite descent for the n = 4 case",
+      "the elliptic-curve / modularity machinery"
     ]
   },
   {
@@ -50,6 +60,11 @@
       "Diophantine equations",
       "integer solutions",
       "Fermat"
+    ],
+    "prerequisites": [
+      "Diophantine equations aⁿ + bⁿ = cⁿ",
+      "nonzero integer solutions",
+      "the definition FermatLastTheoremFor n"
     ]
   },
   {
@@ -69,6 +84,11 @@
       "Frey",
       "algebraic geometry",
       "conductor"
+    ],
+    "prerequisites": [
+      "elliptic curves over ℚ",
+      "the Frey construction y² = x(x − aᵖ)(x + bᵖ)",
+      "conductor and arithmetic invariants"
     ]
   },
   {
@@ -109,6 +129,11 @@
       "L-functions",
       "Taniyama-Shimura-Weil",
       "Langlands program"
+    ],
+    "prerequisites": [
+      "modular forms of weight 2",
+      "L-functions of elliptic curves",
+      "the modularity (Taniyama–Shimura–Weil) theorem"
     ]
   },
   {
@@ -170,6 +195,11 @@
       "infinite descent",
       "Pythagorean triples",
       "Fermat"
+    ],
+    "prerequisites": [
+      "infinite descent",
+      "Pythagorean triples",
+      "the n = 4 case"
     ]
   },
   {
@@ -188,6 +218,11 @@
       "Eisenstein integers",
       "unique factorization",
       "algebraic integers"
+    ],
+    "prerequisites": [
+      "the Eisenstein integers ℤ[ω]",
+      "unique factorization domains",
+      "descent in a ring of algebraic integers"
     ]
   },
   {
@@ -206,6 +241,11 @@
       "reduction",
       "prime factorization",
       "exponentiation"
+    ],
+    "prerequisites": [
+      "exponent laws for powers",
+      "reduction of FLT to prime exponents",
+      "prime factorization of n"
     ]
   },
   {
