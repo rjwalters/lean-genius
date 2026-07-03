@@ -386,4 +386,94 @@ theorem unionBound_beats_lll_at_7 :
   rw [ramseyLLLCondition_iff]
   decide
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VIII: THE REAL LLL CONSTANT `e < 3` JUSTIFIES THE INTEGER SURROGATE
+-- ═══════════════════════════════════════════════════════════════════
+
+/-  `RamseyLLLCondition` uses the rational surrogate `e ≤ 3` in place of the true
+    symmetric-LLL constant `e`.  Everything above is finite rational/combinatorial
+    arithmetic; the one genuinely analytic ingredient needed to connect that
+    surrogate to the *real* symmetric LLL is that the avoidance factor
+    `(d/(d+1))^d` never drops below `1/3`.  This part supplies exactly that, and
+    then derives the per-event symmetric-LLL hypothesis in the shape consumed by
+    the general measure-theoretic LLL (`LovaszLocalLemmaOQ01StrongInduction.avoidance_pos`):
+    `p ≤ x · (1-x)^d` with `x = 1/(d+1)`.  It does **not** discharge
+    `SymmetricLLLForRamsey` — the probability-space construction and the
+    independence hypothesis remain open — but it closes the numeric gap between the
+    file's rational test and the real LLL, which is the arithmetic half of that
+    reduction. -/
+
+/-- **The symmetric avoidance factor stays above `1/3`.**  For every dependency
+    degree `d`, `(d/(d+1))^d ≥ 1/3`.
+
+    This is the quantitative fact behind the surrogate `e ≤ 3` used in
+    `RamseyLLLCondition`: the true symmetric-LLL inequality `p ≤ x·(1-x)^d` at the
+    optimal `x = 1/(d+1)` needs the factor `(1-x)^d = (d/(d+1))^d`, and this factor
+    is `≥ 1/e > 1/3` because `(1 + 1/d)^d ≤ e < 3`.  The proof raises Mathlib's
+    `Real.add_one_le_exp` (`1 + 1/d ≤ exp(1/d)`) to the `d`-th power to get
+    `(1+1/d)^d ≤ exp 1`, invokes `Real.exp_one_lt_d9` (`exp 1 < 2.7182818286 < 3`),
+    and inverts. -/
+theorem symmetric_avoidance_factor_ge_third (d : ℕ) :
+    (1 : ℝ) / 3 ≤ ((d : ℝ) / (d + 1)) ^ d := by
+  rcases Nat.eq_zero_or_pos d with hd | hd
+  · subst hd; norm_num
+  · have htpos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
+    -- (1 + 1/d) ≤ exp (1/d)
+    have hstep : (1 : ℝ) + 1 / d ≤ Real.exp (1 / d) := by
+      have h := Real.add_one_le_exp (1 / (d : ℝ)); linarith
+    have hbase_nonneg : (0 : ℝ) ≤ 1 + 1 / (d : ℝ) := by positivity
+    -- raise to the d-th power
+    have hpow : (1 + 1 / (d : ℝ)) ^ d ≤ Real.exp (1 / d) ^ d :=
+      pow_le_pow_left₀ hbase_nonneg hstep d
+    -- exp(1/d)^d = exp(d · (1/d)) = exp 1
+    have hexp : Real.exp (1 / (d : ℝ)) ^ d = Real.exp 1 := by
+      rw [← Real.exp_nat_mul]; congr 1; field_simp
+    -- combine: (1 + 1/d)^d ≤ exp 1 < 3
+    have hlt3 : (1 + 1 / (d : ℝ)) ^ d < 3 := by
+      calc (1 + 1 / (d : ℝ)) ^ d ≤ Real.exp 1 := by rw [← hexp]; exact hpow
+        _ < 2.7182818286 := Real.exp_one_lt_d9
+        _ < 3 := by norm_num
+    -- 1 + 1/d = (d+1)/d
+    have hid : (1 : ℝ) + 1 / d = ((d : ℝ) + 1) / d := by field_simp
+    have hXpos : (0 : ℝ) < (((d : ℝ) + 1) / d) ^ d := by positivity
+    have hXle : (((d : ℝ) + 1) / d) ^ d ≤ 3 := by rw [← hid]; exact hlt3.le
+    -- invert: 1/3 ≤ 1/X = (d/(d+1))^d
+    have hinv := one_div_le_one_div_of_le hXpos hXle
+    rw [show ((d : ℝ) / (d + 1)) ^ d = 1 / (((d : ℝ) + 1) / d) ^ d by
+          rw [one_div, ← inv_pow, inv_div]]
+    exact hinv
+
+/-- **The rational LLL test implies the real symmetric-LLL per-event hypothesis.**
+    Writing `D = cliqueDependencyBound n k` and `x = 1/(D+1)`, the numeric condition
+    `RamseyLLLCondition n k` (i.e. `3·p·(D+1) ≤ 1`) implies the inequality the
+    measure-theoretic LLL actually consumes,
+    `p ≤ x · (D/(D+1))^D = x · (1-x)^D`.
+
+    Proof: `RamseyLLLCondition` gives `p ≤ 1/(3(D+1))`; multiply the factor bound
+    `(D/(D+1))^D ≥ 1/3` (`symmetric_avoidance_factor_ge_third`) by `x = 1/(D+1) ≥ 0`
+    to get `x·(D/(D+1))^D ≥ 1/(3(D+1)) ≥ p`.  Since every factor `1-x = D/(D+1) < 1`,
+    for any dependency set `S₁` with `|S₁| ≤ D` we also have
+    `∏_{j∈S₁}(1-x) ≥ (D/(D+1))^D`, so this is exactly the `hlll` premise of
+    `avoidance_pos` in the symmetric case. -/
+theorem cliqueMonoProb_le_symmetric_lll_rhs {n k : ℕ} (hcond : RamseyLLLCondition n k) :
+    (cliqueMonoProb k : ℝ)
+      ≤ (1 / ((cliqueDependencyBound n k : ℝ) + 1))
+          * ((cliqueDependencyBound n k : ℝ) / ((cliqueDependencyBound n k : ℝ) + 1))
+              ^ (cliqueDependencyBound n k) := by
+  set D := cliqueDependencyBound n k with hDdef
+  have hne : ((D : ℝ) + 1) ≠ 0 := by positivity
+  -- unfold the rational condition and cast to ℝ
+  have hq : 3 * cliqueMonoProb k * ((D : ℚ) + 1) ≤ 1 := hcond
+  have hqr : 3 * (cliqueMonoProb k : ℝ) * ((D : ℝ) + 1) ≤ 1 := by exact_mod_cast hq
+  -- p ≤ 1/(3(D+1))
+  have hpbound : (cliqueMonoProb k : ℝ) ≤ 1 / (3 * ((D : ℝ) + 1)) := by
+    rw [le_div_iff₀ (by positivity)]; nlinarith [hqr]
+  -- the real avoidance factor is ≥ 1/3
+  have hfac := symmetric_avoidance_factor_ge_third D
+  calc (cliqueMonoProb k : ℝ)
+      ≤ 1 / (3 * ((D : ℝ) + 1)) := hpbound
+    _ = (1 / ((D : ℝ) + 1)) * (1 / 3) := by field_simp; ring
+    _ ≤ (1 / ((D : ℝ) + 1)) * (((D : ℝ) / ((D : ℝ) + 1)) ^ D) :=
+        mul_le_mul_of_nonneg_left hfac (by positivity)
+
 end RamseyLLL
