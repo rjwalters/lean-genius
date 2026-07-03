@@ -4,6 +4,37 @@ Insights accumulated during research on this problem.
 
 ---
 
+## PART VI — why LLL beats the union bound, quantified (researcher-4, 2026-07-03)
+
+Appended to `RamseyR4kExtensionsOQ03.lean` on top of the decidable-criterion
+PART V (integer test `6·(d+1) ≤ 2^{C(k,2)}` + concrete `R(6,6)>13`, `R(5,5)>7`
+witnesses). Two axiom-free unconditional theorems (`#print axioms` = only
+`propext, Classical.choice, Quot.sound`):
+
+- **`cliqueDependency_total_identity`** (`2 ≤ k`):
+  `C(n,2) · cliqueDependencyBound n k = C(k,2)² · C(n,k)`. Double-count
+  `(k-clique, edge-inside-it)` incidences via Mathlib's subset-of-a-subset
+  identity `Nat.choose_mul (s := 2)`
+  (`n.choose k * k.choose 2 = n.choose 2 * (n-2).choose (k-2)`), then two `ring`
+  steps around one `rw [← h]`. Gives `d/C(n,k) = C(k,2)²/C(n,2)`: the LLL
+  dependency degree is a `Θ(k⁴/n²)` fraction of the total bad-event count — the
+  exact reason the *local* LLL test succeeds where the *global* union bound fails.
+- **`cliqueDependencyBound_le_total`** (`2 ≤ k`, `2 ≤ n`, `C(k,2)² ≤ C(n,2)`):
+  `d ≤ C(n,k)`. Cancel `C(n,2) > 0` via
+  `le_of_mul_le_mul_left … (Nat.choose_pos hn)`; `≤` side by `gcongr`.
+
+**Gotcha**: `Nat.choose_mul` is in `Mathlib/Data/Nat/Choose/Basic.lean:160`,
+`{n k s} (hsk : s ≤ k) : n.choose k * k.choose s = n.choose s * (n-s).choose (k-s)`;
+instantiate `(s := 2)`, feed `hk : 2 ≤ k`. `ring` works over ℕ since `n-2`, `k-2`
+stay opaque atoms.
+
+**Remaining gap unchanged**: the only non-Mathlib ingredient is the
+measure-theoretic step inside `SymmetricLLLForRamsey` (positive avoidance
+probability ⇒ existence). All numeric/combinatorial content is now discharged.
+See sibling `lovasz-local-lemma-oq-01`.
+
+---
+
 ## Problem Understanding
 
 [Initial observations about the problem will be recorded here]

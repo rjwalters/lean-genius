@@ -270,4 +270,43 @@ theorem ramseyLLLCondition_13_6 : RamseyLLLCondition 13 6 :=
 theorem ramseyLLLCondition_7_5 : RamseyLLLCondition 7 5 :=
   (ramseyLLLCondition_iff 7 5).mpr (by decide)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VI: WHY LLL BEATS THE UNION BOUND (dependency-vs-total identity)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Exact dependency-to-total identity.**  Counting incidences
+    `(k-clique, edge inside it)` two ways gives
+    `C(n,2)·d = C(k,2)²·C(n,k)`, where `d = cliqueDependencyBound n k` is the LLL
+    dependency degree and `C(n,k)` is the total number of bad events (the k-cliques
+    of `K_n`).  Equivalently `d / C(n,k) = C(k,2)² / C(n,2)`: the dependency degree
+    is only a `Θ(k⁴/n²)` fraction of all events, which is exactly why the *local*
+    LLL test controls the process where the *global* union bound cannot.  Pure
+    finite counting via the subset-of-a-subset identity `Nat.choose_mul`. -/
+theorem cliqueDependency_total_identity {n k : ℕ} (hk : 2 ≤ k) :
+    n.choose 2 * cliqueDependencyBound n k = (k.choose 2) ^ 2 * n.choose k := by
+  unfold cliqueDependencyBound
+  have h : n.choose k * k.choose 2 = n.choose 2 * (n - 2).choose (k - 2) :=
+    Nat.choose_mul (n := n) (k := k) (s := 2) hk
+  calc n.choose 2 * (k.choose 2 * (n - 2).choose (k - 2))
+      = k.choose 2 * (n.choose 2 * (n - 2).choose (k - 2)) := by ring
+    _ = k.choose 2 * (n.choose k * k.choose 2) := by rw [← h]
+    _ = (k.choose 2) ^ 2 * n.choose k := by ring
+
+/-- **In the Ramsey regime the dependency degree is dominated by the total event
+    count.**  Whenever `C(k,2)² ≤ C(n,2)` (i.e. `n` is at least quadratic in `k`,
+    which holds with enormous room to spare once `n ≈ 2^{k/2}`), the LLL dependency
+    degree `d` is at most the number `C(n,k)` of monochromatic-clique events.  This
+    is the precise sense in which the symmetric LLL's *local* condition
+    `e·p·(d+1) ≤ 1` is weaker — hence satisfiable for larger `n` — than the
+    first-moment/union-bound condition, which must control all `C(n,k)` events at
+    once. -/
+theorem cliqueDependencyBound_le_total {n k : ℕ} (hk : 2 ≤ k) (hn : 2 ≤ n)
+    (hreg : (k.choose 2) ^ 2 ≤ n.choose 2) :
+    cliqueDependencyBound n k ≤ n.choose k := by
+  have hpos : 0 < n.choose 2 := Nat.choose_pos hn
+  have key : n.choose 2 * cliqueDependencyBound n k ≤ n.choose 2 * n.choose k := by
+    rw [cliqueDependency_total_identity hk]
+    gcongr
+  exact le_of_mul_le_mul_left key hpos
+
 end RamseyLLL
