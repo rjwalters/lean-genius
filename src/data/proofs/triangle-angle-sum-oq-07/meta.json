@@ -90,6 +90,29 @@
       "summary": "angle_sum_self computes the angle sum when all three vertices coincide: Mathlib's convention ∠AAA = π/2 gives 3π/2, showing the degenerate angle sum is not universally π."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "angle_sum_of_angle_eq_pi",
+      "type": "theorem",
+      "statement": "∠ A B C = Real.pi → ∠ A B C + ∠ B C A + ∠ C A B = Real.pi",
+      "significance": "The abstract core of the degenerate case: whenever the middle angle is the straight angle π, the two end angles collapse to 0 and the classical triangle angle-sum identity survives unchanged. It shows the identity extends continuously to the strictly-between collinear configuration.",
+      "description": "From ∠ A B C = π, the two end angles vanish by EuclideanGeometry.angle_eq_zero_of_angle_eq_pi_left (applied through angle_comm to reorient the vertices), reducing the sum to π + 0 + 0 = π by ring. Works for the unoriented angle ∠ valued in [0, π]."
+    },
+    {
+      "name": "Sbtw.angle_sum_eq_pi",
+      "type": "theorem",
+      "statement": "Sbtw ℝ A B C → ∠ A B C + ∠ B C A + ∠ C A B = Real.pi",
+      "significance": "The geometric statement of the result: for a collinear \"triangle\" with B strictly between A and C, the interior angle sum still equals π. This is the precise answer to the parent entry's open question about degenerate (collinear) angle sums.",
+      "description": "A one-line corollary of angle_sum_of_angle_eq_pi via Sbtw.angle₁₂₃_eq_pi, which turns strict betweenness into the straight-angle hypothesis ∠ A B C = π (equivalent by angle_eq_pi_iff_sbtw)."
+    },
+    {
+      "name": "angle_sum_self",
+      "type": "theorem",
+      "statement": "∠ A A A + ∠ A A A + ∠ A A A = 3 * (Real.pi / 2)",
+      "significance": "The boundary counterexample: when all three vertices coincide, Mathlib's convention ∠ A A A = π/2 makes the sum 3π/2 ≠ π. It proves the degenerate angle sum is NOT universally π — the value π is special to the strictly-between collinear case.",
+      "description": "Immediate from EuclideanGeometry.angle_self_left (∠ p₀ p₀ p = π/2) and ring. Exhibits how the convention for the wholly-undefined coincident angle propagates to the sum."
+    }
+  ],
   "conclusion": {
     "summary": "The behaviour of Mathlib's unoriented angle on degenerate triangles is settled, sorry-free and axiom-free: the interior angle sum is π when one vertex is strictly between the other two (collinear), and 3π/2 when all three vertices coincide. The first result extends the classical Euclidean identity continuously through the strictly-between degeneration; the second locates exactly where it fails.",
     "implications": "Together with the parent entry's non-degenerate theorem, this gives a complete picture of the triangle angle sum across both genuine and degenerate configurations under Mathlib's angle conventions, answering the parent's open question on collinear vertices.",
