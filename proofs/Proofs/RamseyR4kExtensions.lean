@@ -18,6 +18,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
+import Proofs.ErdosRamseyLowerBound
 
 namespace RamseyR4k
 
@@ -48,8 +49,12 @@ For k ≥ 3, this gives R(k,k) > 2^(k/2).
     R(k,k) > 2^(k/2) for k ≥ 3.
     Proof: Color edges of K_n randomly. Expected number of monochromatic
     k-cliques is C(n,k) · 2^(1-C(k,2)). If n = ⌊2^(k/2)⌋, this is < 1,
-    so a good coloring exists. -/
-axiom erdos_probabilistic_lower_bound (k : ℕ) (hk : k ≥ 3) :
+    so a good coloring exists.
+
+    Previously an `axiom`; now discharged by the fully-proved, axiom-free
+    first-moment formalization `ErdosRamsey.erdos_probabilistic_lower_bound`
+    (`Proofs/ErdosRamseyLowerBound.lean`), whose statement is identical. -/
+theorem erdos_probabilistic_lower_bound (k : ℕ) (hk : k ≥ 3) :
     ∀ n : ℕ, n ≤ 2^(k/2) →
     ∃ (color : Fin n → Fin n → Bool),
       (∀ x y, color x y = color y x) ∧
@@ -57,7 +62,8 @@ axiom erdos_probabilistic_lower_bound (k : ℕ) (hk : k ≥ 3) :
       (∀ (s : Finset (Fin n)), s.card = k →
         ¬(∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = true)) ∧
       (∀ (s : Finset (Fin n)), s.card = k →
-        ¬(∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = false))
+        ¬(∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = false)) :=
+  ErdosRamsey.erdos_probabilistic_lower_bound k hk
 
 /-
 ## Part II: Off-Diagonal Bounds
@@ -968,9 +974,11 @@ This extension file contains:
 - **NEW** `ramseyUpperBound_diag_lt_four_pow`: R(k,k) < 4^k (cleaner statement)
 - **NEW** `ramseyUpperBound_le_two_pow`: R(r,s) ≤ 2^(r+s-2) (general bound)
 - **NEW** 4 verification theorems for exponential bounds
+- **NEW (de-axiomatized)** `erdos_probabilistic_lower_bound`: R(k,k) > 2^(k/2) —
+  previously an axiom, now a proved theorem discharged by the axiom-free
+  first-moment formalization `ErdosRamsey.erdos_probabilistic_lower_bound`
 
-**Axioms (7 total - deep probabilistic/asymptotic results):**
-- `erdos_probabilistic_lower_bound`: R(k,k) > 2^(k/2)
+**Axioms (6 total - deep probabilistic/asymptotic results):**
 - `aks_r3k_upper_bound`: R(3,k) = O(k²/log k)
 - `kim_r3k_lower_bound`: R(3,k) = Ω(k²/log k)
 - `r4k_upper_bound`: R(4,k) = O(k³/(log k)²)
@@ -1045,7 +1053,7 @@ theorem cgms_exponentially_better :
         C * (4 - ε) ^ k < 4 ^ k := by
   intro ε hε hε4 C hC
   -- Key: (4-ε)/4 < 1 and ≥ 0, so ((4-ε)/4)^k → 0
-  have hr_nn : (0 : ℝ) ≤ (4 - ε) / 4 := by positivity
+  have hr_nn : (0 : ℝ) ≤ (4 - ε) / 4 := div_nonneg (by linarith) (by norm_num)
   have hr_lt : (4 - ε) / 4 < 1 := by linarith
   -- Find k₀ such that ((4-ε)/4)^k₀ < 1/C
   obtain ⟨k₀, hk₀⟩ := exists_pow_lt_of_lt_one (by positivity : (0 : ℝ) < 1 / C) hr_lt
@@ -1058,7 +1066,7 @@ theorem cgms_exponentially_better :
     rw [div_pow] at hrk_bound
     -- (4-ε)^k / 4^k < 1/C, multiply through
     have h4k_pos : (0 : ℝ) < (4 : ℝ) ^ k := by positivity
-    rw [div_lt_div_iff h4k_pos hC, one_mul, mul_comm] at hrk_bound
+    rw [div_lt_div_iff₀ h4k_pos hC, one_mul, mul_comm] at hrk_bound
     exact hrk_bound⟩
 
 /- ═══════════════════════════════════════════════════════════════════════════════
@@ -1119,7 +1127,11 @@ axiom ramsey_multiplicity :
 /-- **PROVED: R(s,t) is symmetric.** -/
 theorem ramsey_symmetric' (s t : ℕ) :
     ramseyUpperBound s t = ramseyUpperBound t s := by
-  exact ramsey_symmetry s t
+  rcases Nat.eq_zero_or_pos s with hs | hs
+  · subst hs; simp [ramseyUpperBound]
+  rcases Nat.eq_zero_or_pos t with ht | ht
+  · subst ht; simp [ramseyUpperBound]
+  exact ramseyUpperBound_symm s t hs ht
 
 -- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS (Parts X-XI)
