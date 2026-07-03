@@ -98,6 +98,38 @@
       "summary": "Algebraic elements over ℚ and over a finite field ZMod p are countable (one-line instances of the general theorem); the elements of ℂ algebraic over ℝ are uncountable, the concrete cautionary example standing in for the p-adic case with no p-adic imports."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "countable_algebraic_iff",
+      "type": "core",
+      "description": "The sharp characterization: for a field extension L/K, the set of elements of L algebraic over K is countable ↔ the base field K is countable. Only the base field's cardinality matters — the ambient field L's size is irrelevant. Assembled from the two directions.",
+      "leanType": "Set.Countable {x : L | IsAlgebraic K x} ↔ Countable K"
+    },
+    {
+      "name": "not_countable_algebraic_of_uncountable_base",
+      "type": "core",
+      "description": "The p-adic obstruction in general form: if the base field K is uncountable, the algebraic elements over K are uncountable (K alone already supplies uncountably many). Explains why 'algebraic p-adic numbers' are uncountable — ℚ_p is uncountable. Contrapositive of the necessary direction.",
+      "leanType": "¬ Countable K → ¬ Set.Countable {x : L | IsAlgebraic K x}"
+    },
+    {
+      "name": "algebraic_setOf_countable",
+      "type": "supporting",
+      "description": "Sufficient direction (the parent's 'yes'): when the base field K is countable, the set of elements of any extension L algebraic over K is countable. Mathlib's Algebraic.countable specialized to fields; L plays no role.",
+      "leanType": "[Countable K] → Set.Countable {x : L | IsAlgebraic K x}"
+    },
+    {
+      "name": "countable_of_algebraic_setOf_countable",
+      "type": "supporting",
+      "description": "Necessary direction: if the algebraic set is countable then K is countable. The injection k ↦ algebraMap K L k embeds K into the countable algebraic set (algebraMap is injective since K is a field and L nontrivial), so K inherits countability.",
+      "leanType": "Set.Countable {x : L | IsAlgebraic K x} → Countable K"
+    },
+    {
+      "name": "algebraMap_mem_algebraic",
+      "type": "supporting",
+      "description": "Every element of the base field is algebraic over it: algebraMap K L k is a root of the linear polynomial X - k. Provides the embedding K ↪ {x | IsAlgebraic K x} used in the necessary direction.",
+      "leanType": "algebraMap K L k ∈ {x : L | IsAlgebraic K x}"
+    }
+  ],
   "conclusion": {
     "summary": "5 theorems, 0 sorries, 0 axioms. For a field extension L/K, the set of elements of L algebraic over K is countable if and only if the base field K is countable — a sharp biconditional. The sufficient direction is Mathlib's Algebraic.countable; the necessary direction embeds K into its algebraic set via the injective algebraMap. Worked instances confirm countability over ℚ and ZMod p and uncountability over ℝ.",
     "implications": "The result replaces a tempting but false unconditional generalization with the exact condition, and pinpoints why the open question's 'algebraic p-adic numbers' example fails: countability is a property of the BASE field, and ℚ_p is uncountable. The proof pattern — a Mathlib upper bound for the easy direction, plus a base-field embedding for the converse — is the reusable idiom for turning a one-directional cardinality fact into a sharp characterization. It also cleanly separates 'algebraic over ℚ' (always countable, inside any extension) from 'algebraic over an uncountable field' (always uncountable).",
