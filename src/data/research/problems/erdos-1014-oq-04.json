@@ -1,39 +1,72 @@
 {
   "slug": "erdos-1014-oq-04",
   "title": "Ramsey Ratio Convergence via Mattheus-Verstraete Bounds",
-  "phase": "NEW",
+  "phase": "FORMALIZATION",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in graph theory: Ramsey Ratio Convergence via Mattheus-Verstraete Bounds.",
-    "whyMatters": []
+    "formal": "For k = 4: \\forall \\varepsilon > 0, \\exists L_0, \\forall l > L_0, |R(4,l+1)/R(4,l) - 1| < \\varepsilon. Uses the Ramsey recurrence R(4,l+1) \\le R(4,l) + R(3,l+1), the AKS upper bound R(3,l) \\le C l^2/\\log l, and the Mattheus-Verstraete (Annals 2024) lower bound R(4,l) \\ge c l^3/(\\log l)^4.",
+    "plain": "Resolve the k=4 case of Erdos #1014 (R(k,l+1)/R(k,l) -> 1) by combining the Ramsey recurrence with the Mattheus-Verstraete lower bound R(4,l) = Omega(l^3/log^4 l) and the AKS upper bound R(3,l) = O(l^2/log l). The increment R(4,l+1)-R(4,l) <= R(3,l+1) = O(l^2/log l) is negligible against the size R(4,l), giving ratio -> 1 with rate O((log l)^3 / l).",
+    "whyMatters": [
+      "Extends the k=3 resolution (OQ-01/OQ-02) to k=4, showing a uniform 'increment vs size' mechanism",
+      "Demonstrates that the Mattheus-Verstraete 2024 breakthrough lower bound is exactly what unlocks the k=4 case",
+      "Provides an explicit convergence rate O((log l)^3 / l), the natural analogue of the k=3 rate O(log l / l)"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "increment_bound_k4: R(4,l+1) <= R(4,l) + R(3,l+1) (from Ramsey recurrence at k=4)",
+      "log_cubed_le_mul: (log l)^3 = o(l), quantitative form",
+      "R4_ratio_convergence: R(4,l+1)/R(4,l) -> 1 as l -> infinity",
+      "R4_rate_of_convergence: |R(4,l+1)/R(4,l) - 1| <= (4C/c)(log l)^3 / l"
+    ],
+    "open": [
+      "Unconditional k=4 (formalize Mattheus-Verstraete construction in Lean)",
+      "General k given R(k,l) = Omega(l^{k-1}/polylog) lower bounds"
+    ],
+    "goal": "Prove R(4,l+1)/R(4,l) -> 1 conditional on the Mattheus-Verstraete and AKS bounds."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T22:19:31.121Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "FORMALIZATION",
+    "since": "2026-07-02T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Lean formalization of the k=4 ratio convergence drafted (Proofs/Erdos1014OQ04.lean, 4 theorems, 1 own axiom, 0 sorries).",
+    "blockers": [
+      "Local Lean build verification blocked: Docker containerd store corrupted + data volume 100% full at authoring time. File authored against the exact lemma signatures the sibling Erdos1014OQ02.lean compiled with (Mathlib 4.26.0); must be built before merge."
+    ],
+    "nextAction": "Build Proofs.Erdos1014OQ04 via docker-build.sh once disk/Docker are healthy; fix any residual tactic errors; then mark verified/axiomatized.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Drafted a complete Lean formalization of the k=4 case of Erdos #1014 in Proofs/Erdos1014OQ04.lean (4 theorems, 1 own axiom R4_lower_MV, 0 sorries), modeled on the verified sibling Erdos1014OQ02.lean. Core argument: |R(4,l+1)/R(4,l) - 1| = (R(4,l+1)-R(4,l))/R(4,l) <= R(3,l+1)/R(4,l) <= (4C/c)(log l)^3/l -> 0. Uses the Ramsey recurrence (increment_bound_k4), the AKS upper bound R3_upper for the increment, and a new axiom R4_lower_MV for the Mattheus-Verstraete lower bound R(4,l) >= c l^3/(log l)^4. Gallery entry (meta.json + annotations.json) created. NOT yet machine-verified: build infra (Docker + disk) was down at authoring time.",
+    "builtItems": [
+      "increment_bound_k4",
+      "log_cubed_le_mul",
+      "R4_ratio_convergence",
+      "R4_rate_of_convergence",
+      "axiom R4_lower_MV (Mattheus-Verstraete lower bound)"
+    ],
+    "insights": [
+      "The k=4 case reduces to the identical 'small increment vs large size' mechanism as k=3; the only new deep input needed is a lower bound R(4,l) = Omega(l^3/polylog).",
+      "The Mattheus-Verstraete (Annals 2024) bound R(4,t) = Theta(t^3/log^4 t) supplies exactly this: increment/size = (l^2/log l)/(l^3/(log l)^4) = (log l)^3/l -> 0.",
+      "The polylog gap between the O(l^3/log^2 l) upper and Omega(l^3/log^4 l) lower bounds for R(4,l) is irrelevant to the ratio argument — only matching order in l matters.",
+      "Rate pattern: k=3 gives O(log l / l), k=4 gives O((log l)^3 / l); each Ramsey index adds two powers of log.",
+      "Cubing an inequality robustly: prefer an explicit mul_le_mul chain over pow_le_pow_left (renamed to pow_le_pow_left0 in recent Mathlib)."
+    ],
+    "mathlibGaps": [
+      "Mattheus-Verstraete lower bound R(4,t) = Omega(t^3/log^4 t) is not in Mathlib (axiomatized as R4_lower_MV).",
+      "The Ramsey number itself and its recurrence/monotonicity/AKS bounds are axiomatized in the parent Erdos1014Problem.lean."
+    ],
+    "nextSteps": [
+      "Run ./proofs/scripts/docker-build.sh Proofs.Erdos1014OQ04 once infra is healthy.",
+      "Fix any residual tactic mismatches (candidate risk points: rpow_natCast/rpow_mul exponent normalization, field_simp on compound fractions, div_le_div_of_nonneg_left/right names).",
+      "Once verified, update meta.json status if appropriate (remains axiomatized due to R4_lower_MV + inherited framework)."
+    ]
   },
   "tags": [
     "seeker-selected",

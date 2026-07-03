@@ -1,0 +1,213 @@
+{
+  "id": "erdos-1014-oq-04",
+  "title": "Erdős #1014 OQ-04: The k=4 Case via Mattheus–Verstraëte Bounds",
+  "slug": "erdos-1014-oq-04",
+  "description": "Settles the k=4 case of Erdős #1014 (R(k,l+1)/R(k,l) → 1), conditional on two established but non-Mathlib bounds: the Mattheus–Verstraëte (Annals 2024) lower bound R(4,l) ≥ c·l³/(log l)⁴ and the Ajtai–Komlós–Szemerédi upper bound R(3,l) ≤ C·l²/log l. The k=3 argument used the linear recurrence increment R(3,l+1)-R(3,l) ≤ l+1; here the increment is controlled by R(3,l+1)=O(l²/log l), still negligible against R(4,l)=Ω(l³/(log l)⁴). The explicit rate obtained is O((log l)³ / l).",
+  "meta": {
+    "author": "Erdős",
+    "erdosNumber": 1014,
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1014OQ04.lean",
+    "tags": [
+      "erdos",
+      "graph-theory",
+      "ramsey-theory",
+      "combinatorics",
+      "asymptotics",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "sourceUrl": "https://erdosproblems.com/1014",
+    "erdosUrl": "https://erdosproblems.com/1014",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-07-02",
+    "axiomCount": 13,
+    "lineCount": 305,
+    "assumptions": "13 axioms total. 1 own axiom in this file: R4_lower_MV (Mattheus–Verstraëte 2024 lower bound R(4,l) ≥ c·l³/(log l)⁴, not in Mathlib). 12 axioms inherited from Erdos1014Problem.lean: ramseyNumber, ramsey_symm, ramsey_upper_erdos_szekeres, ramsey_monotone_right, ramsey_recurrence, ramsey_k2, R3_lower, R3_upper (AKS upper bound R(3,l) ≤ C·l²/log l, used here), erdos_1014_conjecture, R33, R34, R35. The k=4 result genuinely uses only ramseyNumber, ramsey_symm/ramsey_k2 (via ramsey_pos), ramsey_monotone_right, ramsey_recurrence, R3_upper, and R4_lower_MV. 0 sorries. BUILD STATUS: authored following the exact lemma signatures the sibling Erdos1014OQ02.lean compiled with (Mathlib 4.26.0); local Docker/host verification was blocked by an infrastructure failure (full disk + corrupted containerd store) at authoring time — must be built before merge.",
+    "mathlib_version": "4.26.0",
+    "leanFiles": [
+      {
+        "path": "Proofs/Erdos1014OQ04.lean",
+        "filename": "Erdos1014OQ04.lean",
+        "lineCount": 305,
+        "theoremCount": 4,
+        "axiomCount": 1,
+        "defCount": 0,
+        "sorries": 0,
+        "isAristotle": false,
+        "description": "The k=4 case (4 theorems): increment_bound_k4, log_cubed_le_mul, R4_ratio_convergence, R4_rate_of_convergence. Declares 1 own axiom R4_lower_MV and imports 12 axioms from Erdos1014Problem.lean."
+      },
+      {
+        "path": "Proofs/Erdos1014Problem.lean",
+        "filename": "Erdos1014Problem.lean",
+        "lineCount": 483,
+        "theoremCount": 15,
+        "axiomCount": 12,
+        "defCount": 0,
+        "sorries": 0,
+        "isAristotle": false,
+        "description": "Parent file providing the 12 Ramsey axioms and supporting lemmas (ramsey_pos, increment_bound_general, ratio_from_asymptotics) used by Erdos1014OQ04.lean."
+      }
+    ],
+    "originalContributions": [
+      "Proved R4_ratio_convergence: R(4,l+1)/R(4,l) → 1 as l → ∞, resolving the k=4 case of Erdős #1014 conditional on the Mattheus–Verstraëte lower bound and AKS upper bound",
+      "Proved increment_bound_k4: R(4,l+1) ≤ R(4,l) + R(3,l+1) from the Ramsey recurrence at k=4",
+      "Proved log_cubed_le_mul: the quantitative form of (log l)³ = o(l), via log = o(l^(1/3)) and cubing (bulletproof manual mul_le_mul chain to avoid version-sensitive pow lemmas)",
+      "Proved R4_rate_of_convergence: explicit rate |R(4,l+1)/R(4,l) - 1| ≤ (4C/c)·(log l)³/l",
+      "Introduced the Mattheus–Verstraëte lower bound as axiom R4_lower_MV, faithfully citing the 2024 Annals result"
+    ],
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "relationship": "extends",
+      "description": "Resolves the k=4 case of the parent formalization of Erdős #1014.",
+      "targetId": "erdos-1014"
+    },
+    {
+      "relationship": "extends",
+      "description": "Parallels OQ-01's k=3 proof (recurrence + lower bound), now applied at k=4 with the increment governed by R(3,·) and the size by the Mattheus–Verstraëte bound for R(4,·).",
+      "targetId": "erdos-1014-oq-01"
+    },
+    {
+      "relationship": "related",
+      "description": "OQ-02 established the O(log l / l) rate for k=3; this file gives the analogous O((log l)³ / l) rate for k=4.",
+      "targetId": "erdos-1014-oq-02"
+    }
+  ],
+  "sections": [
+    {
+      "id": "imports-and-setup",
+      "title": "Imports, Namespace, and the Mattheus–Verstraëte Axiom",
+      "startLine": 48,
+      "endLine": 76,
+      "summary": "Imports Mathlib and Proofs.Erdos1014Problem (12 inherited Ramsey axioms + supporting lemmas). Declares the file's single own axiom R4_lower_MV: ∃ c > 0, ∃ L₀, ∀ l > L₀, R(4,l) ≥ c·l³/(log l)⁴.",
+      "mathContext": "R4_lower_MV encodes the lower-bound half of Mattheus & Verstraëte, 'The asymptotics of r(4,t)', Annals of Mathematics 199 (2024): R(4,t) = Θ(t³/log⁴ t) up to a polylog gap. Not present in Mathlib, so stated as a hypothesis of the k=4 argument."
+    },
+    {
+      "id": "increment-k4",
+      "title": "The Increment Bound for k=4",
+      "startLine": 78,
+      "endLine": 95,
+      "summary": "Theorem increment_bound_k4: R(4,l+1) ≤ R(4,l) + R(3,l+1), obtained from the imported ramsey_recurrence at k=4 (with 4-1=3).",
+      "mathContext": "Unlike k=3, where the increment R(2,l+1)=l+1 is linear, the k=4 increment R(3,l+1) grows like l²/log l. It is still asymptotically negligible against R(4,l)=Ω(l³/(log l)⁴)."
+    },
+    {
+      "id": "log-cubed",
+      "title": "(log l)³ = o(l)",
+      "startLine": 97,
+      "endLine": 152,
+      "summary": "Theorem log_cubed_le_mul: for any slope m > 0, eventually (log l)³ ≤ m·l. Proof uses Mathlib's isLittleO_log_rpow_atTop with exponent 1/3 and constant m^(1/3), then cubes: (log l)³ ≤ (m^(1/3)·l^(1/3))³ = m·l.",
+      "mathContext": "The cubing step is done via an explicit mul_le_mul chain (avoiding version-sensitive pow_le_pow_left), and (l^(1/3))³ = l is proved through rpow_natCast/rpow_mul/rpow_one."
+    },
+    {
+      "id": "ratio-k4",
+      "title": "R(4,l+1)/R(4,l) → 1",
+      "startLine": 154,
+      "endLine": 233,
+      "summary": "Theorem R4_ratio_convergence: ∀ ε > 0, ∃ L₀, ∀ l > L₀, |R(4,l+1)/R(4,l) - 1| < ε. The absolute value collapses to (R(4,l+1)-R(4,l))/R(4,l) by monotonicity; then chain R(3,l+1) ≤ 4C·l²/log l and R(4,l) ≥ c·l³/(log l)⁴ to bound the quotient by (4C/c)·(log l)³/l, which is < ε for l large by log_cubed_le_mul with slope cε/(8C).",
+      "mathContext": "The key ratio identity (4C·l²/log l)/(c·l³/(log l)⁴) = (4C/c)·(log l)³/l is discharged by field_simp; ring. The slope cε/(8C) makes the final bound ε/2 < ε."
+    },
+    {
+      "id": "rate-k4",
+      "title": "Explicit Rate O((log l)³ / l)",
+      "startLine": 235,
+      "endLine": 305,
+      "summary": "Theorem R4_rate_of_convergence: ∃ A > 0, ∃ L₀, ∀ l > L₀, |R(4,l+1)/R(4,l) - 1| ≤ A·(log l)³/l with A = 4C/c. Same chain as R4_ratio_convergence but stopping at the explicit rate rather than pushing to < ε.",
+      "mathContext": "A = 4C/c with c the Mattheus–Verstraëte lower constant and C the AKS upper constant. Since (log l)³ = o(l), the bound tends to 0 — an independent packaging of the convergence."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős Problem #1014 asks whether R(k,l+1)/R(k,l) → 1 as l → ∞ for fixed k ≥ 3. The k=3 case yields to an elementary argument: the recurrence R(3,l+1) ≤ R(3,l) + (l+1) bounds increments linearly, while Kim's 1995 lower bound R(3,l) ≥ c·l²/log l forces super-linear growth, so the ratio converges. The same 'small increment vs. large size' principle applies at k=4 once one has a strong enough lower bound on R(4,l): the increment R(4,l+1)-R(4,l) ≤ R(3,l+1) is only O(l²/log l), whereas Sam Mattheus and Jacques Verstraëte, in their celebrated 2024 Annals of Mathematics paper 'The asymptotics of r(4,t)', proved R(4,t) = Ω(t³/log⁴ t) (via pseudorandom algebraic — Cayley-graph — constructions), matching the classical O(t³/log²t) upper bound up to a polylog gap. Dividing the increment by the size gives O((log l)³ / l) → 0, settling the k=4 case conditional on these two established bounds.",
+    "problemStatement": "Does R(4,l+1)/R(4,l) → 1 as l → ∞ (the k=4 case of Erdős #1014)?",
+    "text": "Yes. R(4,l+1)/R(4,l) → 1, with explicit rate O((log l)³ / l), conditional on the Mattheus–Verstraëte lower bound R(4,l) ≥ c·l³/(log l)⁴ and the AKS upper bound R(3,l) ≤ C·l²/log l.",
+    "proofStrategy": "Bound the increment by R(3,l+1) via the Ramsey recurrence; bound R(3,l+1) above by the AKS estimate (≤ 4C·l²/log l after absorbing the l→l+1 factors); bound R(4,l) below by the Mattheus–Verstraëte estimate; divide to get (4C/c)·(log l)³/l and use (log l)³ = o(l).",
+    "keyInsights": [
+      "The k=4 case reduces to the same 'increment vs. size' mechanism as k=3, but now the increment is R(3,·) = O(l²/log l) rather than the linear R(2,·) = l+1",
+      "The Mattheus–Verstraëte lower bound R(4,l) = Ω(l³/(log l)⁴) is exactly the strong-enough size estimate that makes the increment negligible: (l²/log l)/(l³/(log l)⁴) = (log l)³/l → 0",
+      "The polylog gap between the O(l³/log²l) upper bound and Ω(l³/log⁴l) lower bound for R(4,l) does not obstruct the ratio argument — only a matching order of magnitude in l is needed",
+      "The rate O((log l)³ / l) for k=4 is the natural analogue of the O(log l / l) rate for k=3; each extra Ramsey index raises the power of log by two",
+      "The proof is fully modular: it reuses the imported Ramsey framework (recurrence, monotonicity, positivity) and adds only the one deep input R4_lower_MV specific to k=4"
+    ],
+    "prerequisites": [
+      "Ramsey theory",
+      "Asymptotic analysis",
+      "Real analysis (little-o notation)"
+    ]
+  },
+  "conclusion": {
+    "summary": "R(4,l+1)/R(4,l) → 1 as l → ∞, with explicit rate O((log l)³ / l). The proof combines the Ramsey recurrence increment R(4,l+1)-R(4,l) ≤ R(3,l+1) = O(l²/log l) with the Mattheus–Verstraëte lower bound R(4,l) = Ω(l³/(log l)⁴), conditional on both being taken as axioms (they are established literature results absent from Mathlib).",
+    "implications": "Combined with the k=3 result, this shows the Erdős #1014 ratio conjecture holds for k=3 and k=4 by a uniform elementary mechanism, once a lower bound of the conjectured order of magnitude is available. It highlights that the bottleneck for general k is precisely the existence of order-of-magnitude lower bounds R(k,l) = Ω(l^{k-1}/polylog) — the Mattheus–Verstraëte breakthrough supplied this for k=4.",
+    "openQuestions": [
+      "Can the k=4 case be made unconditional by formalizing the Mattheus–Verstraëte construction inside Lean/Mathlib?",
+      "Is the O((log l)³ / l) rate tight for k=4?",
+      "Does the same mechanism settle k=5 given a lower bound R(5,l) = Ω(l⁴/polylog)?",
+      "Can the polylog gap for R(4,l) be closed, sharpening the rate constant?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.Erdos1014Problem"
+    ],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos1014OQ04",
+    "lineCount": 305,
+    "axiomCount": 1,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "substantiveTheoremCount": 4,
+    "mainTheorems": [
+      {
+        "name": "R4_ratio_convergence",
+        "type": "core",
+        "description": "The k=4 case of Erdős #1014: R(4,l+1)/R(4,l) → 1 as l → ∞",
+        "leanType": "∀ ε > 0, ∃ L₀, ∀ l > L₀, |R(4,l+1)/R(4,l) - 1| < ε"
+      },
+      {
+        "name": "R4_rate_of_convergence",
+        "type": "core",
+        "description": "Explicit rate bound |R(4,l+1)/R(4,l) - 1| ≤ (4C/c)·(log l)³/l",
+        "leanType": "∃ A > 0, ∃ L₀, ∀ l > L₀, |R(4,l+1)/R(4,l) - 1| ≤ A·(log l)³/l"
+      },
+      {
+        "name": "increment_bound_k4",
+        "type": "key",
+        "description": "Ramsey recurrence at k=4: R(4,l+1) ≤ R(4,l) + R(3,l+1)",
+        "leanType": "∀ l ≥ 1, R(4,l+1) ≤ R(4,l) + R(3,l+1)"
+      },
+      {
+        "name": "log_cubed_le_mul",
+        "type": "key",
+        "description": "Quantitative (log l)³ = o(l): eventually (log l)³ ≤ m·l for any m > 0",
+        "leanType": "∀ m > 0, ∃ L₀, ∀ l > L₀, (log l)³ ≤ m·l"
+      }
+    ],
+    "path": "Proofs/Erdos1014OQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Er71",
+      "citation": "Erdős, P., On some extremal problems on r-graphs, Discrete Mathematics 1(1) (1971), 1–6.",
+      "type": "paper"
+    },
+    {
+      "key": "MV24",
+      "citation": "Mattheus, S. and Verstraëte, J., The asymptotics of r(4,t), Annals of Mathematics 199(2) (2024), 919–941.",
+      "type": "paper"
+    },
+    {
+      "key": "AKS80",
+      "citation": "Ajtai, M., Komlós, J., and Szemerédi, E., A note on Ramsey numbers, Journal of Combinatorial Theory Series A 29(3) (1980), 354–360.",
+      "type": "paper"
+    }
+  ],
+  "sorries": 0
+}

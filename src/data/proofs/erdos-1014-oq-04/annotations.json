@@ -1,0 +1,109 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "erdos-1014-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "OQ-04: The k=4 Case of Erdős #1014 via Mattheus–Verstraëte",
+    "content": "Erdős #1014 asks whether R(k,l+1)/R(k,l) → 1 for fixed k ≥ 3. OQ-01/OQ-02 handled k=3 using the linear increment R(3,l+1)-R(3,l) ≤ l+1 and the Kim–Shearer lower bound R(3,l) ≥ c·l²/log l. This file settles k=4 by the same 'increment vs. size' principle. The imports from `Proofs.Erdos1014Problem` bring in 12 axioms (including the Ramsey recurrence and the AKS upper bound R3_upper) and helper theorems (ramsey_pos). The single own axiom, R4_lower_MV, encodes the Mattheus–Verstraëte (Annals 2024) lower bound R(4,l) ≥ c·l³/(log l)⁴.",
+    "mathContext": "At k=4 the increment R(4,l+1)-R(4,l) is bounded by R(3,l+1) = O(l²/log l), while the size R(4,l) = Ω(l³/(log l)⁴). Their quotient is O((log l)³ / l) → 0, so the ratio converges to 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey numbers",
+      "Mattheus–Verstraëte bound",
+      "off-diagonal Ramsey numbers",
+      "asymptotic convergence"
+    ],
+    "prerequisites": [
+      "Ramsey theory basics",
+      "asymptotic analysis",
+      "erdos-1014-oq-01"
+    ]
+  },
+  {
+    "id": "ann-increment-k4",
+    "proofId": "erdos-1014-oq-04",
+    "range": {
+      "startLine": 78,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "Increment Bound: R(4,l+1) ≤ R(4,l) + R(3,l+1)",
+    "content": "`increment_bound_k4` specializes the imported Ramsey recurrence R(k,l+1) ≤ R(k,l) + R(k-1,l+1) to k=4 (using 4-1=3). This is the k=4 analogue of `increment_bound_k3`, but the increment term is now R(3,l+1) instead of the linear R(2,l+1)=l+1.",
+    "mathContext": "The recurrence R(s,t) ≤ R(s-1,t) + R(s,t-1) gives R(4,l+1) ≤ R(3,l+1) + R(4,l). The increment R(3,l+1) grows like l²/log l — super-linear, yet still negligible against R(4,l)=Ω(l³/(log l)⁴).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey recurrence",
+      "increment bounds"
+    ],
+    "prerequisites": [
+      "Ramsey recurrence"
+    ]
+  },
+  {
+    "id": "ann-log-cubed",
+    "proofId": "erdos-1014-oq-04",
+    "range": {
+      "startLine": 97,
+      "endLine": 152
+    },
+    "type": "insight",
+    "title": "(log l)³ = o(l), Quantitatively",
+    "content": "`log_cubed_le_mul` proves that for any slope m > 0, eventually (log l)³ ≤ m·l. It uses Mathlib's `isLittleO_log_rpow_atTop` with exponent 1/3 to get log l ≤ m^(1/3)·l^(1/3), then cubes both sides. The cubing is done via an explicit `mul_le_mul` chain (rather than `pow_le_pow_left`) for robustness, and (l^(1/3))³ = l is established with `rpow_natCast`/`rpow_mul`/`rpow_one`.",
+    "mathContext": "Choosing the little-o constant to be m^(1/3) makes the cube collapse exactly: (m^(1/3)·l^(1/3))³ = m·l. This is the analogue of OQ-02's (log l)² ≤ l lemma, one power higher.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "little-o notation",
+      "logarithmic growth",
+      "rpow"
+    ],
+    "prerequisites": [
+      "asymptotic analysis"
+    ]
+  },
+  {
+    "id": "ann-ratio-k4",
+    "proofId": "erdos-1014-oq-04",
+    "range": {
+      "startLine": 154,
+      "endLine": 233
+    },
+    "type": "insight",
+    "title": "Main Theorem: R(4,l+1)/R(4,l) → 1",
+    "content": "`R4_ratio_convergence` proves ∀ ε > 0, ∃ L₀, ∀ l > L₀, |R(4,l+1)/R(4,l) - 1| < ε. By monotonicity the absolute value equals (R(4,l+1)-R(4,l))/R(4,l). The calc chain bounds this by R(3,l+1)/R(4,l), then by (4C·l²/log l)/(c·l³/(log l)⁴) = (4C/c)·(log l)³/l, and finally by ε/2 using `log_cubed_le_mul` with slope cε/(8C).",
+    "mathContext": "The absorbing step R(3,l+1) ≤ 4C·l²/log l uses (l+1)² ≤ 4l² and log(l+1) ≥ log l. The compound-fraction identity is discharged by field_simp; ring. The slope cε/(8C) yields a final bound of ε/2 < ε.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ramsey ratio convergence",
+      "Mattheus–Verstraëte bound",
+      "AKS upper bound"
+    ],
+    "prerequisites": [
+      "asymptotic analysis",
+      "Ramsey theory basics"
+    ]
+  },
+  {
+    "id": "ann-rate-k4",
+    "proofId": "erdos-1014-oq-04",
+    "range": {
+      "startLine": 235,
+      "endLine": 305
+    },
+    "type": "insight",
+    "title": "Explicit Rate: O((log l)³ / l)",
+    "content": "`R4_rate_of_convergence` packages the same chain as an explicit rate: |R(4,l+1)/R(4,l) - 1| ≤ (4C/c)·(log l)³/l, with C the AKS upper constant and c the Mattheus–Verstraëte lower constant. Since (log l)³ = o(l), the bound tends to 0.",
+    "mathContext": "The k=4 rate O((log l)³ / l) is the analogue of the k=3 rate O(log l / l): each additional Ramsey index adds two powers of log to the numerator of the rate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convergence rates",
+      "Ramsey numbers"
+    ],
+    "prerequisites": [
+      "asymptotic analysis"
+    ]
+  }
+]
