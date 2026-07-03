@@ -16,7 +16,11 @@
       "Extremal set theory",
       "Additive combinatorics"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "subset sums",
+      "asymptotic notation (~, √N)",
+      "extremal set problems"
+    ]
   },
   {
     "id": "ann-e874-sumset",
@@ -34,7 +38,11 @@
       "Combinatorics"
     ],
     "mathContext": "See annotation content for formal details of sum set s_r",
-    "prerequisites": []
+    "prerequisites": [
+      "subsets of a finite set",
+      "sums of selected elements",
+      "set-builder notation"
+    ]
   },
   {
     "id": "ann-e874-disjoint",
@@ -52,7 +60,11 @@
       "Unique decomposition"
     ],
     "mathContext": "See annotation content for formal details of disjoint sums property",
-    "prerequisites": []
+    "prerequisites": [
+      "set intersection and disjointness",
+      "the sum set S_r",
+      "unique decomposition of an integer as a sum"
+    ]
   },
   {
     "id": "ann-e874-admissible",
@@ -70,7 +82,10 @@
       "Unique sums"
     ],
     "mathContext": "See annotation content for formal details of admissible sets",
-    "prerequisites": []
+    "prerequisites": [
+      "the disjoint sums property",
+      "Straus's terminology"
+    ]
   },
   {
     "id": "ann-e874-bounded",
@@ -110,7 +125,11 @@
       "Maximum"
     ],
     "mathContext": "See annotation content for formal details of the function k(n)",
-    "prerequisites": []
+    "prerequisites": [
+      "admissible sets",
+      "supremum / maximum of a set size",
+      "subsets of {1,…,N}"
+    ]
   },
   {
     "id": "ann-e874-straus-construction",
@@ -128,7 +147,11 @@
       "Interval construction",
       "Lower bound"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "admissible sets",
+      "integer intervals (N-k, N]",
+      "the threshold m²+m"
+    ]
   },
   {
     "id": "ann-e874-straus-bounds",
@@ -148,7 +171,11 @@
       "limsup"
     ],
     "mathContext": "See annotation content for formal details of straus bounds (1966)",
-    "prerequisites": []
+    "prerequisites": [
+      "liminf and limsup",
+      "the extremal function k(N)",
+      "Straus's interval construction"
+    ]
   },
   {
     "id": "ann-e874-ens",
@@ -165,7 +192,10 @@
       "Erdős-Nicolas-Sárközy"
     ],
     "mathContext": "See annotation content for formal details of ens improvement (1991)",
-    "prerequisites": []
+    "prerequisites": [
+      "Straus's upper bound 4/√3",
+      "the Erdős–Nicolas–Sárközy refinement"
+    ]
   },
   {
     "id": "ann-e874-df-main",
@@ -183,7 +213,11 @@
       "Main theorem",
       "Resolution"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the extremal function k(N)",
+      "ε–N (asymptotic) statements",
+      "the Deshouillers–Freiman analysis"
+    ]
   },
   {
     "id": "ann-e874-limit",
@@ -201,7 +235,11 @@
       "Convergence"
     ],
     "mathContext": "See annotation content for formal details of the limit is 2",
-    "prerequisites": []
+    "prerequisites": [
+      "Filter.Tendsto in Mathlib",
+      "limits of sequences",
+      "the ε–N form of the main theorem"
+    ]
   },
   {
     "id": "ann-e874-optimal-interval",
@@ -218,7 +256,11 @@
       "Interval optimality"
     ],
     "mathContext": "See annotation content for formal details of optimal sets are often intervals",
-    "prerequisites": []
+    "prerequisites": [
+      "admissible sets",
+      "integer intervals as extremal sets",
+      "infinitely-many-N statements"
+    ]
   },
   {
     "id": "ann-e874-examples",
@@ -236,7 +278,11 @@
       "Lean 4 formalization",
       "mathematical proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the disjoint sums property",
+      "the sum sets S₁, S₂",
+      "the ~2√N heuristic"
+    ]
   },
   {
     "id": "ann-e874-properties",
@@ -254,6 +300,10 @@
       "Sum ranges"
     ],
     "mathContext": "See annotation content for formal details of sum set properties",
-    "prerequisites": []
+    "prerequisites": [
+      "binomial coefficients C(|A|,r)",
+      "ranges of r-element sums",
+      "cardinality bounds"
+    ]
   }
 ]
