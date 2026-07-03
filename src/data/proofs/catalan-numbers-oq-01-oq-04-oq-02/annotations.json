@@ -36,15 +36,27 @@
     "prerequisites": ["Catalan numbers", "rational number casts", "Turán inequality"]
   },
   {
+    "id": "ann-standard-indexing",
+    "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
+    "range": { "startLine": 89, "endLine": 96 },
+    "type": "key-step",
+    "title": "Restating in the standard log-concavity indexing (n ≥ 1)",
+    "content": "catalan_recip_logConcave_shift converts catalan_recip_logConcave from the offset form (indexed at n, n+1, n+2) into the textbook shape aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1, with aₙ = 1/Cₙ. The reindexing is purely mechanical: Nat.exists_eq_add_of_lt writes n = m+1 (legal because n ≥ 1), after which n−1 = m and n+1 = m+2 collapse the shifted statement onto the base lemma via simp/simpa. This is the form a reader recognizes as 'strict log-concavity', so it is the theorem worth citing downstream even though it carries no new mathematical content beyond catalan_recip_logConcave.",
+    "mathContext": "For $a_n = 1/C_n$ and $n \\ge 1$: $a_{n-1}\\,a_{n+1} < a_n^2$ — the defining strict log-concavity inequality.",
+    "significance": "supporting",
+    "relatedConcepts": ["reindexing", "Nat.exists_eq_add_of_lt", "standard log-concavity form", "strict log-concavity"],
+    "prerequisites": ["Catalan numbers", "natural-number reindexing", "log-concavity"]
+  },
+  {
     "id": "ann-refutation",
     "proofId": "catalan-numbers-oq-01-oq-04-oq-02",
-    "range": { "startLine": 89, "endLine": 108 },
+    "range": { "startLine": 98, "endLine": 108 },
     "type": "insight",
-    "title": "Standard indexing and refutation of the Cₙ/(n+1) candidate",
-    "content": "catalan_recip_logConcave_shift reindexes at n = m+1 to give the defining strict log-concavity aₙ² > aₙ₋₁·aₙ₊₁ for n ≥ 1. catalanOverSucc_not_logConcave_at_one then refutes the open question's suggested candidate aₙ = Cₙ/(n+1): at n = 1, a₁² = (C₁/2)² = 1/4 while a₀·a₂ = (C₀/1)(C₂/3) = 2/3, so a₁² > a₀·a₂ FAILS. Evaluating catalan 0,1,2 and closing with norm_num makes the counterexample fully explicit — this is why the reciprocal, not Cₙ/(n+1), is the correct derived sequence.",
-    "mathContext": "$a_1^2 = \\tfrac14 < \\tfrac23 = a_0 a_2$ for $a_n = C_n/(n+1)$ — log-concavity fails.",
+    "title": "Refuting the suggested candidate Cₙ/(n+1)",
+    "content": "catalanOverSucc_not_logConcave_at_one refutes the open question's proposed example aₙ = Cₙ/(n+1) by an explicit small counterexample. At n = 1, a₁² = (C₁/2)² = (1/2)² = 1/4, while a₀·a₂ = (C₀/1)(C₂/3) = 1·(2/3) = 2/3, so the required a₁² > a₀·a₂ FAILS (1/4 < 2/3). The proof rewrites catalan 0,1,2 to their literal values (catalan_zero/one/two) and closes with norm_num, making the failure fully machine-checked. Structurally the candidate is doomed because the Catalan numbers are strictly log-CONVEX and dividing by the slowly-growing n+1 cannot reverse that — which is exactly why the reciprocal 1/Cₙ, not Cₙ/(n+1), is the correct log-concave derived sequence.",
+    "mathContext": "$a_1^2 = \\tfrac14 < \\tfrac23 = a_0 a_2$ for $a_n = C_n/(n+1)$ — log-concavity fails at the very first interior index.",
     "significance": "supporting",
-    "relatedConcepts": ["counterexample", "reindexing", "norm_num", "log-concavity failure"],
+    "relatedConcepts": ["counterexample", "norm_num", "log-concavity failure", "honest correction"],
     "prerequisites": ["Catalan numbers", "explicit computation", "log-concavity"]
   }
 ]
