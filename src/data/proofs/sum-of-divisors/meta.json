@@ -203,6 +203,99 @@
       "summary": "Proves not_abundant_lt_12 (∀ 0<n<12, ¬IsAbundant n) by interval_cases + native_decide, then twelve_smallest_abundant combining this with twelve_is_abundant."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sigma_prime",
+      "type": "theorem",
+      "statement": "sigma 1 p = p + 1  (for p prime)",
+      "significance": "The base case of the whole theory: a prime has exactly two divisors, 1 and itself, so σ(p) = 1 + p. Every prime is therefore just barely deficient, and this is what forces perfect and abundant numbers to be composite.",
+      "description": "Instantiates Mathlib's sigma_apply_prime_pow at k = 1, rewrites p^1 = p, expands the two-term range sum with Finset.sum_range_succ, and closes with linarith. General over all primes, not native_decide."
+    },
+    {
+      "name": "sigma_prime_pow",
+      "type": "theorem",
+      "statement": "sigma 1 (p ^ k) = ∑ i ∈ Finset.range (k + 1), p ^ i  (for p prime)",
+      "significance": "The fundamental prime-power formula σ(p^k) = 1 + p + p² + ⋯ + p^k. Together with multiplicativity this is exactly what lets σ(n) be read off the prime factorization of n.",
+      "description": "Rewrites with Mathlib's sigma_apply_prime_pow and matches the summand p^(i·1) = p^i by congr + ring. Specialized corollaries sigma_prime_pow_one/two/three give the closed k = 1, 2, 3 forms."
+    },
+    {
+      "name": "sigma_mul_coprime",
+      "type": "theorem",
+      "statement": "sigma 1 (m * n) = sigma 1 m * sigma 1 n  (when Nat.Coprime m n)",
+      "significance": "Multiplicativity on coprime arguments — the key algebraic property of σ. Reduces computing σ on any n to computing it on the prime powers in its factorization.",
+      "description": "Direct application of Mathlib's isMultiplicative_sigma.map_mul_of_coprime. Illustrated by sigma_six_mult, sigma_twelve_mult, sigma_thirty_mult on concrete coprime splits."
+    },
+    {
+      "name": "sigma_multiplicative",
+      "type": "theorem",
+      "statement": "ArithmeticFunction.IsMultiplicative (sigma k)",
+      "significance": "States the structural fact that every divisor-power sum σ_k is a multiplicative arithmetic function, packaging σ(1) = 1 and the coprime product rule into a single reusable object.",
+      "description": "Names Mathlib's isMultiplicative_sigma. From it sigma_one_from_mult (σ(1) = 1) and sigma_mul_coprime follow by the IsMultiplicative interface."
+    },
+    {
+      "name": "sigma_ge_self",
+      "type": "theorem",
+      "statement": "sigma 1 n ≥ n  (for 0 < n)",
+      "significance": "The elementary lower bound: n itself is always a divisor of n, so σ(n) is at least n. The floor beneath the deficient/perfect/abundant scale.",
+      "description": "Membership n ∈ n.divisors plus Finset.single_le_sum picks out the single term n from the divisor sum; a calc chain in σ(n) = Σ_{d|n} d^1 finishes it."
+    },
+    {
+      "name": "sigma_gt_self",
+      "type": "theorem",
+      "statement": "sigma 1 n > n  (for n > 1)",
+      "significance": "Strengthens the bound: for n > 1 both 1 and n are distinct divisors, so σ(n) ≥ 1 + n > n. Explains why only n = 1 sits at the extreme deficient end.",
+      "description": "Uses the two-element subset {1, n} ⊆ n.divisors and Finset.sum_le_sum_of_subset_of_nonneg to bound σ(n) below by 1^1 + n^1, then omega."
+    },
+    {
+      "name": "classification_exhaustive",
+      "type": "theorem",
+      "statement": "IsDeficient n ∨ IsPerfect n ∨ IsAbundant n",
+      "significance": "Every positive integer is deficient, perfect, or abundant — the trichotomy of σ(n) versus 2n is complete. Paired with deficient_not_perfect, deficient_not_abundant, perfect_not_abundant it is exhaustive and mutually exclusive.",
+      "description": "Unfolds the three predicates (σ(n) < 2n, σ(n) = 2n, σ(n) > 2n) and closes by omega, which sees the total order on ℕ."
+    },
+    {
+      "name": "prime_is_deficient",
+      "type": "theorem",
+      "statement": "IsDeficient p  (for p prime)",
+      "significance": "Every prime is deficient: σ(p) = p + 1 < 2p once p ≥ 2. Confirms perfect and abundant numbers must be composite.",
+      "description": "Combines sigma_prime (σ(p) = p + 1) with hp.two_le and discharges the inequality by omega."
+    },
+    {
+      "name": "perfect_iff_abundancy_two",
+      "type": "theorem",
+      "statement": "IsPerfect n ↔ abundancy n = 2  (for 0 < n)",
+      "significance": "Recasts perfection in terms of the abundancy index σ(n)/n: n is perfect exactly when its abundancy equals 2. Gives the rational-valued restatement used to compare divisor richness across n.",
+      "description": "Unfolds abundancy = σ(n)/n over ℚ; forward direction by field_simp and push_cast, reverse by div_eq_iff and an exact_mod_cast to ℤ closed with omega."
+    },
+    {
+      "name": "six_is_perfect",
+      "type": "theorem",
+      "statement": "IsPerfect 6   (σ(6) = 12 = 2·6; also twentyeight_is_perfect, fourhundredninetysix_is_perfect)",
+      "significance": "6 is the first perfect number (known to Euclid); 28 and 496 are the next two. These are the canonical witnesses that the perfect class is nonempty and rare.",
+      "description": "Each unfolds IsPerfect and verifies σ(n) = 2n by native_decide (hence the Lean.ofReduceBool dependency recorded in assumptions)."
+    },
+    {
+      "name": "amicable_220_284",
+      "type": "theorem",
+      "statement": "AreAmicable 220 284   (s(220) = 284 and s(284) = 220; also amicable_1184_1210)",
+      "significance": "(220, 284) is the smallest amicable pair, known to the Pythagoreans: each number equals the sum of the other's proper divisors. (1184, 1210), found by 16-year-old Paganini in 1866, is the second.",
+      "description": "From native_decide-verified σ(220) = σ(284) = 504 (and σ(1184) = σ(1210) = 2394), the proper-divisor identities s(m) = σ(m) − m follow by omega against the AreAmicable definition."
+    },
+    {
+      "name": "twelve_smallest_abundant",
+      "type": "theorem",
+      "statement": "IsAbundant 12 ∧ ∀ n, 0 < n → n < 12 → ¬IsAbundant n",
+      "significance": "12 is the smallest abundant number: σ(12) = 28 > 24, and no 1 ≤ n < 11 exceeds 2n. A genuine minimality statement, not just a single computed value.",
+      "description": "Pairs twelve_is_abundant with not_abundant_lt_12, which does interval_cases n over 1..11 and closes each case by native_decide."
+    },
+    {
+      "name": "sigma_twelve_via_factorization",
+      "type": "theorem",
+      "statement": "sigma 1 12 = (1 + 2 + 2^2) * (1 + 3)",
+      "significance": "Demonstrates the full computation pipeline: factor 12 = 2²·3, apply multiplicativity, then the prime-power formula, giving σ(12) = 7·4 = 28 without ever enumerating divisors. sigma_thirty_via_factorization does the same for 30 = 2·3·5.",
+      "description": "Rewrites 12 = 2²·3, applies sigma_mul_coprime on the coprime factors, then sigma_prime_pow_two and sigma_prime; simp finishes. Structural, not native_decide."
+    }
+  ],
   "sorries": 0,
   "references": [
     {
