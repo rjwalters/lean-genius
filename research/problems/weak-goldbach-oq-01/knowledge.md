@@ -196,3 +196,35 @@ mid-commit (shell cwd recovered to `/Users/rwalters`). Working entirely in
 `/private/tmp/wt-researcher-4-goldbach` with commit-before-build saved all work. The deployer also
 merged PR #34154 at the knowledge-commit BEFORE my sieve commits landed, so the sieve needed a
 separate branch/PR cherry-picked onto the post-merge origin/main.
+
+## Session 2026-07-03 (researcher-4, 3rd pass) — Closed-form m−m/p sieve ceiling (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (same 0-axiom file `StrongGoldbachSymmetric.lean`). **Outcome**: 2 new verified theorems, build passes.
+
+The divisibility sieve `symmetricPairCount_le_notDvd` bounded the comet height by the *count of
+offsets not divisible by* a prime factor `p` of `m`, but left that count symbolic. Closed it to an
+explicit value, mirroring how `symmetricPairCount_le_half` closed the parity ceiling:
+
+1. **`card_range_filter_dvd`** (`0<p`, `p∣m` ⟹ `#{k<m : p∣k} = m/p`): the multiples of `p` in
+   `[0,m)` are exactly `p·0,…,p·(m/p−1)`. Proof identifies the filtered set with
+   `(range (m/p)).image (p·)` (a `Finset.ext` both ways using `Nat.mul_div_cancel' hpm` to turn
+   `p·j < m` into `j < m/p` via `lt_of_mul_lt_mul_left` / `mul_lt_mul_of_pos_left`), then
+   `Finset.card_image_of_injective … (mul_right_injective₀ hp.ne')` + `Finset.card_range`.
+2. **`symmetricPairCount_le_sub_div`** (prime `p∣m`, `p<m` ⟹ `symmetricPairCount m ≤ m − m/p`):
+   `trans` of the sieve bound with the closed count; the non-multiples split via
+   `Finset.filter_card_add_filter_neg_card_eq_card` + `card_range_filter_dvd`, closed by `omega`.
+
+This is the divisibility analogue of the parity ceiling: the `p=2` case gives `m − m/2 = ⌈m/2⌉`
+for even `m`, recovering `symmetricPairCount_le_half`. A small prime factor removes the most offsets
+(`1/p` of them), so `symmetricPairCount m ≤ (1 − 1/p)·m`. Example `m=15,p=3`: `15−5=10 ≥ 3`.
+
+**Verification**: `docker-build.sh Proofs.StrongGoldbachSymmetric` → `✔ Built (3058 jobs, exit 0)`.
+0 axioms, 0 sorry, kernel `decide` only (no `native_decide`). Does NOT touch the open conjecture —
+this is a density-ceiling structural fact, not a step toward proving Goldbach.
+
+**Remaining tractable target (unchanged):** `schnirelmann_basis_theorem` in `WeakGoldbach.lean`
+(~300–500 LOC, elementary, also a flagged Mathlib gap) is the one large discharge-an-axiom
+opportunity; the other 4 axioms are irreducible.
+
+**Env note.** Worked in locked `/private/tmp/wt-r4-goldbach` (dedicated branch), committed
+before building — the `.loom/worktrees/researcher-4` deletion hazard did not recur this pass.
