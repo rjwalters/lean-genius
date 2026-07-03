@@ -1268,6 +1268,155 @@ theorem chase_gedge_chain {f g : ℕ → ℕ} (hf : Function.Injective f)
         rw [hu] at hmem
         exact hmem
 
+/-!
+## Section 4i-bis: `BuiltFrom`-free escape via the orbit dichotomy
+
+`escape_exists` (below) discharges the domain step's termination obligation from the
+`BuiltFrom` construction invariant — the hypothesis that every recorded pair is an
+`f`-edge `(x, f x)` or a `g`-edge `(g y, y)`. Carrying `BuiltFrom` forces the
+augmenting-path list surgery (Section 4j) at every stage. The extension-only (cons)
+scheduler resolved in the 2026-07-03 fork replaces `BuiltFrom` by the cons-preserved
+**cycle-balance** invariant, and its escape obligation splits by the dichotomy on
+whether the anchor's forward orbit is periodic (`OnCycle`) or infinite.
+
+This section proves the **infinite-orbit half** — the `BuiltFrom`-free, `Balanced`-free
+pigeonhole that is self-contained: if `a` is not `g∘f`-periodic then the forward-orbit
+map is globally injective, so `f (fwdOrbit f g a ·)` is injective and cannot embed the
+`(mRan L).length + 1` stages `0, …, (mRan L).length` into the smaller occupied range
+`mRan L`. The periodic half (`escape_of_balanced`) needs the balance invariant and is
+left for the scheduler-assembly session; combined they give `escape_exists'`.
+-/
+
+/-- `a` is periodic under `g ∘ f`: its forward orbit returns to the anchor. Under injective
+    `g ∘ f` this is the exact complement of an all-distinct (infinite) forward orbit — there
+    are no ρ-shaped orbits, since injectivity forbids a tail merging into a cycle. -/
+def OnCycle (f g : ℕ → ℕ) (a : ℕ) : Prop := ∃ m, 1 ≤ m ∧ fwdOrbit f g a m = a
+
+/-- **Non-periodic ⟹ globally injective forward orbit.** If `a` is not `g∘f`-periodic then
+    `fwdOrbit f g a` is injective on all of `ℕ`. A collision `fwdOrbit a i = fwdOrbit a j`
+    with `i < j` would, cancelling the shared injective prefix `(g∘f)^[i]`, force
+    `a = (g∘f)^[j-i] a = fwdOrbit a (j-i)` with `1 ≤ j-i`, i.e. `OnCycle f g a`. -/
+theorem fwdOrbit_injective_of_not_onCycle {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {a : ℕ} (hac : ¬ OnCycle f g a) :
+    Function.Injective (fwdOrbit f g a) := by
+  have hT : Function.Injective (fun x => g (f x)) := fun x y h => hf (hg h)
+  have hiter : ∀ k, fwdOrbit f g a k = (fun x => g (f x))^[k] a :=
+    fun k => fwdOrbit_eq_iterate f g a k
+  intro i j hij
+  rcases le_total i j with hle | hle
+  · obtain ⟨d, rfl⟩ := Nat.le.dest hle
+    rcases Nat.eq_zero_or_pos d with hd | hd
+    · omega
+    · exfalso
+      rw [hiter i, hiter (i + d), Function.iterate_add_apply] at hij
+      have hax : a = (fun x => g (f x))^[d] a := (hT.iterate i) hij
+      exact hac ⟨d, hd, by rw [hiter d]; exact hax.symm⟩
+  · obtain ⟨d, rfl⟩ := Nat.le.dest hle
+    rcases Nat.eq_zero_or_pos d with hd | hd
+    · omega
+    · exfalso
+      rw [hiter (j + d), hiter j, Function.iterate_add_apply] at hij
+      have hax : (fun x => g (f x))^[d] a = a := (hT.iterate j) hij
+      exact hac ⟨d, hd, by rw [hiter d]; exact hax⟩
+
+/-- **Infinite-orbit escape (`BuiltFrom`-free).** If the anchor `a` is not `g∘f`-periodic,
+    then within the first `(mRan L).length + 1` forward-orbit stages some green image
+    `f (fwdOrbit f g a N)` escapes the occupied range `mRan L`. This is the easy half of the
+    extension-only scheduler's escape obligation: no construction invariant is needed, only
+    that the orbit is genuinely infinite (injective). Were every stage `N ≤ (mRan L).length`
+    a collision, `f ∘ fwdOrbit f g a` would inject the `(mRan L).length + 1` stages into the
+    `≤ (mRan L).length`-element finset `(mRan L).toFinset` — a pigeonhole contradiction. -/
+theorem escape_of_infinite_orbit {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} {a : ℕ} (hac : ¬ OnCycle f g a) :
+    ∃ N, N ≤ (mRan L).length ∧ f (fwdOrbit f g a N) ∉ mRan L := by
+  by_contra hcon
+  push_neg at hcon
+  have horb : Function.Injective (fwdOrbit f g a) :=
+    fwdOrbit_injective_of_not_onCycle hf hg hac
+  have hmap : Function.Injective (fun k => f (fwdOrbit f g a k)) := hf.comp horb
+  have hInj : Set.InjOn (fun k => f (fwdOrbit f g a k))
+      ↑(Finset.range ((mRan L).length + 1)) := fun i _ j _ hij => hmap hij
+  have hmaps : ∀ k ∈ Finset.range ((mRan L).length + 1),
+      (fun k => f (fwdOrbit f g a k)) k ∈ (mRan L).toFinset := by
+    intro k hk
+    simp only [Finset.mem_range] at hk
+    exact List.mem_toFinset.mpr (hcon k (by omega))
+  have hcard : (Finset.range ((mRan L).length + 1)).card ≤ (mRan L).toFinset.card :=
+    Finset.card_le_card_of_injOn _ hmaps hInj
+  rw [Finset.card_range] at hcard
+  have hle := le_trans hcard (List.toFinset_card_le (mRan L))
+  omega
+
+/-!
+### Cycle-period infrastructure for the periodic (`OnCycle`) arm
+
+The periodic half `escape_of_balanced` (scaffold step 4) counts points on the finite
+`g∘f`-cycle through `a`. Whatever Lean encoding of "cycle" the `Balanced` invariant
+eventually uses, it rests on the **least positive period** `orbitPeriod` and the fact
+that the first `period` orbit points are *distinct* — so the cycle is exactly the image
+`(Finset.range orbitPeriod).image (fwdOrbit f g a)`, of cardinality `orbitPeriod`. These
+lemmas are built here, independent of the (still-open) `Balanced` encoding choice, so the
+step-4 session can pick an encoding on top of a verified period/cardinality substrate.
+-/
+
+/-- The least positive period of a `g∘f`-periodic anchor. Well-defined and computable:
+    `OnCycle f g a = ∃ m, 1 ≤ m ∧ fwdOrbit f g a m = a` is a decidable predicate over `ℕ`
+    (`≤` and `Nat` equality are decidable), so `Nat.find` applies. -/
+def orbitPeriod (f g : ℕ → ℕ) {a : ℕ} (h : OnCycle f g a) : ℕ := Nat.find h
+
+theorem orbitPeriod_pos {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) :
+    1 ≤ orbitPeriod f g h := (Nat.find_spec h).1
+
+theorem fwdOrbit_orbitPeriod {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) :
+    fwdOrbit f g a (orbitPeriod f g h) = a := (Nat.find_spec h).2
+
+/-- Minimality of the period: no positive `m` below `orbitPeriod` returns the orbit to `a`. -/
+theorem orbitPeriod_min {f g : ℕ → ℕ} {a : ℕ} (h : OnCycle f g a) {m : ℕ}
+    (hm : 1 ≤ m) (hlt : m < orbitPeriod f g h) : fwdOrbit f g a m ≠ a := by
+  intro heq
+  exact Nat.find_min h hlt ⟨hm, heq⟩
+
+/-- **The period prefix is injective.** The first `orbitPeriod` forward-orbit points
+    `fwdOrbit f g a 0, …, fwdOrbit f g a (orbitPeriod-1)` are pairwise distinct: a repeat
+    at `i < j < period` would cancel the shared injective prefix `(g∘f)^[i]` to give
+    `fwdOrbit f g a (j-i) = a` with `1 ≤ j-i < period`, contradicting minimality. -/
+theorem fwdOrbit_injOn_range_period {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {a : ℕ} (h : OnCycle f g a) :
+    Set.InjOn (fwdOrbit f g a) ↑(Finset.range (orbitPeriod f g h)) := by
+  have hT : Function.Injective (fun x => g (f x)) := fun x y hxy => hf (hg hxy)
+  have hiter : ∀ k, fwdOrbit f g a k = (fun x => g (f x))^[k] a :=
+    fun k => fwdOrbit_eq_iterate f g a k
+  intro i hi j hj hij
+  simp only [Finset.coe_range, Set.mem_Iio] at hi hj
+  rcases le_total i j with hle | hle
+  · obtain ⟨d, rfl⟩ := Nat.le.dest hle
+    rcases Nat.eq_zero_or_pos d with hd | hd
+    · omega
+    · exfalso
+      rw [hiter i, hiter (i + d), Function.iterate_add_apply] at hij
+      have hax : a = (fun x => g (f x))^[d] a := (hT.iterate i) hij
+      exact orbitPeriod_min h hd (by omega) (by rw [hiter d]; exact hax.symm)
+  · obtain ⟨d, rfl⟩ := Nat.le.dest hle
+    rcases Nat.eq_zero_or_pos d with hd | hd
+    · omega
+    · exfalso
+      rw [hiter (j + d), hiter j, Function.iterate_add_apply] at hij
+      have hax : (fun x => g (f x))^[d] a = a := (hT.iterate j) hij
+      exact orbitPeriod_min h hd (by omega) (by rw [hiter d]; exact hax)
+
+/-- **The cycle through `a` has exactly `orbitPeriod` points.** `(Finset.range period).image
+    (fwdOrbit f g a)` is the finite `g∘f`-cycle of `a`, and injectivity of the period prefix
+    gives its cardinality `= orbitPeriod`. This is the cardinal the `Balanced` counting argument
+    (scaffold step 3/4) compares against `mDom`/`mRan` occupancy. -/
+theorem orbitCycle_card {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {a : ℕ} (h : OnCycle f g a) :
+    ((Finset.range (orbitPeriod f g h)).image (fwdOrbit f g a)).card = orbitPeriod f g h := by
+  rw [Finset.card_image_of_injOn (fwdOrbit_injOn_range_period hf hg h), Finset.card_range]
+
 /-- **Escape existence (bounded).** For a fresh domain anchor `a ∉ mDom L` in a matching `L`
     satisfying the construction invariant, some forward-orbit stage `N ≤ (mDom L).length` has a
     green image `f (fwdOrbit f g a N)` that is *fresh* in the range. Equivalently the collision

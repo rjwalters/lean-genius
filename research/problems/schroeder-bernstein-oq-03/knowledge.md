@@ -739,3 +739,67 @@ sorry is UNCHANGED this session (0→0 sorries closed); the deliverable is the d
 3. Prove `escape_of_balanced` (Claim A, cycle case); merge into a `BuiltFrom`-free `escape_exists'`.
 4. Build the extension-only scheduler on `domain_step_exists` + dual; read off with
    `mLookup_stable`; close the theorem. **Do NOT re-open the fork — it is decided (Path B).**
+
+## Session 2026-07-03 (researcher-16) — scaffold step 1 DONE: `escape_of_infinite_orbit` VERIFIED
+
+Discharged the FIRST scaffold item (the easy, `Balanced`-free, `BuiltFrom`-free half of the
+extension-only scheduler's escape obligation). Added to `SchroederBernsteinOQ03.lean` a new
+**Section 4i-bis** (before `escape_exists`), all machine-checked against v4.26.0:
+
+- `def OnCycle f g a := ∃ m, 1 ≤ m ∧ fwdOrbit f g a m = a` — anchor is `g∘f`-periodic. Under
+  injective `g∘f` this is the exact complement of an infinite (injective) forward orbit (no
+  ρ-tails).
+- `fwdOrbit_injective_of_not_onCycle` — **VERIFIED 0-axiom** (`#print axioms` = {propext,
+  Quot.sound}; no sorryAx/ofReduceBool). `¬OnCycle f g a → Injective (fwdOrbit f g a)`. Proof:
+  a repeat `fwdOrbit a i = fwdOrbit a j` (`i<j`) cancels the shared injective prefix
+  `(g∘f)^[i]` (via `Function.Injective.iterate` on `hT := fun x y h => hf (hg h)`) to give
+  `a = (g∘f)^[j-i] a = fwdOrbit a (j-i)`, `1 ≤ j-i` — i.e. exactly `OnCycle`, contradiction.
+  Mirrors the local `fwdOrbit_prefix_distinct` but is GLOBAL (all of ℕ, no chase predicate `D`).
+- `escape_of_infinite_orbit` — **VERIFIED 0-axiom** (`#print axioms` = {propext, Classical.choice,
+  Quot.sound}). `¬OnCycle f g a → ∃ N ≤ (mRan L).length, f (fwdOrbit f g a N) ∉ mRan L`. Proof:
+  `by_contra`+`push_neg` ⟹ all `(mRan L).length+1` stages `f(fwdOrbit a N)` land in `mRan L`;
+  `hf.comp horb` makes `f ∘ fwdOrbit f g a` injective, so `Finset.card_le_card_of_injOn` embeds
+  `Finset.range ((mRan L).length+1)` into `(mRan L).toFinset` (card `≤ (mRan L).length` via
+  `List.toFinset_card_le`) ⟹ `len+1 ≤ len`, `omega`. Same pigeonhole shape as the existing
+  `fwdOrbit_chase_length_le`.
+
+Signatures match the scaffold `cycle_balance_scaffold.lean` exactly (drop-in). File 1811→1892
+lines, +2 theorems +1 def, ZERO new sorries/warnings; the only sorry remains `myhill_isomorphism`
+(line 1805, shifted +81). Baseline compiled clean before the edit to confirm the environment.
+
+**Build note (works, contra prior "hostile env" sessions):** self-contained (Mathlib-only imports).
+Compile the worktree copy with the MAIN repo's prebuilt oleans:
+`LEAN_PATH=<main>/proofs/.lake/build/lib/lean:<each pkg>/.lake/build/lib/lean \
+   elan run leanprover/lean4:v4.26.0 lean proofs/Proofs/SchroederBernsteinOQ03.lean`
+(mathlib oleans live under `proofs/.lake/packages/mathlib/.lake/build/lib/lean/`). NO Docker,
+NO `lake build`. This is a reliable verify path for this self-contained file.
+
+**Remaining (scaffold steps 2–6, UNCHANGED):** the periodic half `escape_of_balanced` needs the
+`Balanced` encoding (still the open modelling choice — `Finset`-of-cycle via `Nat.find` period, or
+a cycle-free surrogate); then `balanced_cons_domain/range` (Claim B), `escape_exists'` by the
+`OnCycle` dichotomy (my `escape_of_infinite_orbit` is the `¬OnCycle` arm, ready to plug in),
+scheduler assembly on `domain_step_exists`, read-off via `mLookup_stable`, `.Computable`, close
+the `myhill_isomorphism` sorry. Do NOT re-open the fork — Path B decided.
+
+### Addendum (same session, researcher-16) — cycle-period infrastructure for the OnCycle arm
+
+Also added (same PR, all VERIFIED; `orbitPeriod_pos`/`fwdOrbit_orbitPeriod`/`orbitPeriod_min`
+depend on NO axioms; `fwdOrbit_injOn_range_period`/`orbitCycle_card` on {propext, Classical.choice,
+Quot.sound}):
+
+- `def orbitPeriod f g (h : OnCycle f g a) : ℕ := Nat.find h` — least positive period; COMPUTABLE
+  (OnCycle's predicate `1 ≤ m ∧ fwdOrbit a m = a` is DecidablePred: `≤` + Nat `DecidableEq`).
+- `orbitPeriod_pos` (`1 ≤ period`), `fwdOrbit_orbitPeriod` (`fwdOrbit a period = a`),
+  `orbitPeriod_min` (`1 ≤ m < period → fwdOrbit a m ≠ a`) — the `Nat.find` spec/min repackaged.
+- `fwdOrbit_injOn_range_period` — the first `period` orbit points are pairwise distinct (same
+  prefix-cancel argument as `fwdOrbit_injective_of_not_onCycle`, but bounded, using minimality
+  instead of `¬OnCycle`).
+- `orbitCycle_card` — `((range period).image (fwdOrbit f g a)).card = period`. This IS the cycle
+  cardinal the `Balanced` counting compares against `mDom`/`mRan` occupancy.
+
+So scaffold step 3's `Balanced` encoding now has a verified period/cardinality substrate:
+whichever "cycle" encoding is chosen, `(Finset.range (orbitPeriod …)).image (fwdOrbit f g a)` is a
+ready-made finite cycle with known card. **This is the recommended encoding for `Balanced`** —
+avoids inventing new cycle-set machinery. Next: state `Balanced` over `orbitCycle a := (range
+(orbitPeriod h)).image (fwdOrbit f g a)` (needs a total `OnCycle`-or-not case split, or phrase
+`Balanced` per-anchor guarded by `OnCycle`), then `balanced_cons_*`.
