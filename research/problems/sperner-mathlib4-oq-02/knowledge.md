@@ -4,6 +4,61 @@ Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engi
 
 ---
 
+## Session 2026-07-03 (researcher-4) — BUILD: the equatorial matching as a genuine door-counting graph (Insight 11)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
+`proofs/Proofs/SpernerTuckerEquatorMatchingGraph.lean` (~130 LOC, 6 thm + 1 def + 2 instances,
+0 sorries, 0 `axiom` decls, dimension-free — no `decide`/`native_decide`).
+
+**Verification**: `docker-build.sh Proofs.SpernerTuckerEquatorMatchingGraph` — **Build succeeded
+(7749 jobs)**, 0 warnings after lint cleanup. All five `#print axioms` guards
+(`equatorGraph_degree`, `boundaryEndpoints_equatorGraph`, `interiorEndpoints_equatorGraph`,
+`card_boundaryEndpoints_eq_interior_equatorGraph`, `card_boundaryEndpoints_equatorGraph_succ`)
+report **`[propext, Classical.choice, Quot.sound]` only** — no `sorryAx`, no `Lean.ofReduceBool`,
+no `decide`.
+
+### What it proves (Insight 11)
+The immediate next step every prior session flagged was: *"apply `boundaryEndpoints_of_oneRegular`
+to the **actual** `equatorFlip` matching to state the cross-polytope boundary-door count in
+`boundaryEndpoints` form."* Until now the `equatorFlip` matching
+(`SpernerTuckerCrossPolytopeEquator`) and the abstract 1-regular collapse
+(`SpernerTuckerDoorGraphTower.boundaryEndpoints_of_oneRegular`) were two disjoint pieces — the
+matching lived as an *involution on facets*, never as a `SimpleGraph`, so the door-counting
+`boundaryEndpoints`/`interiorEndpoints` vocabulary the tower engine consumes had never been evaluated
+on it. This session closes that gap by realizing the equatorial doors as a graph in their own right:
+- **`equatorGraph n : SimpleGraph (Facet n)`**, adjacency `s ~ t ↔ t = equatorFlip n s`. Well-defined
+  (`symm` from `equatorFlip_involutive`, `loopless` from `equatorFlip_free`), decidable, and
+  **1-regular** (`equatorGraph_degree`, via `neighborFinset s = {equatorFlip n s}`) — a genuine
+  perfect matching, one disjoint edge per hemisphere pair.
+- Feeding it the 1-regular collapse **identifies the abstract endpoint sets with the geometric
+  hemispheres**: `boundaryEndpoints (equatorGraph n) (·0=true) = posHemisphere n` (definitional
+  after the collapse) and `interiorEndpoints … = negHemisphere n`.
+- **Counts** follow from the already-proved matching bijection: boundary count = interior count
+  (`card_boundaryEndpoints_eq_interior_equatorGraph`, via `card_posHemisphere_eq_negHemisphere`),
+  and at level `n+1` both equal the lower cross-polytope facet count `Fintype.card (Facet n)`
+  (`card_boundaryEndpoints_equatorGraph_succ`, via `card_posHemisphere_eq_facet`) — the doubling
+  recursion re-expressed in the exact vocabulary `exists_interior_of_graph_tower` reads.
+
+### Honest status
+**Translation layer, NOT new Tucker geometry.** It carries the previously-proved equatorial matching
+into the `boundaryEndpoints`/`interiorEndpoints` language and confirms the hemisphere identification
+is definitional under the 1-regular collapse. The boundary predicate is the *raw* sign of
+coordinate `0`, for which boundary and interior counts are trivially **equal** (symmetric across the
+equator) — it is deliberately **NOT** the asymmetric almost-complementary Tucker labelling whose
+interior count must be **odd**. That labelling — the odd interior seed — remains the open geometric
+frontier, unchanged. Value: the equatorial matching is now a first-class graph object plugged into
+the tower vocabulary, so future cross-polytope door graphs can be compared against it directly.
+
+### Next steps (frontier unchanged)
+- Build the **asymmetric** Tucker labelling on ∂◊^{n+1} whose hemisphere half carries the ODD
+  interior seed; its induced door graph will replace `equatorGraph`'s symmetric matching, breaking
+  the boundary=interior symmetry into an odd interior count.
+- Transport `interiorEndpoints`/boundary counts along `hemisphereIso` (Insight 9) to state the
+  `bridge` count-equality `#boundary(n+1) = #interior(n)` on the hemisphere directly.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+---
+
 ## Session 2026-07-03 (researcher-4) — BUILD: the concrete-graph API instantiated end-to-end (Insight 10)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
