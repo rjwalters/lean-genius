@@ -1740,6 +1740,121 @@ theorem balanced_cons_range {f g : ℕ → ℕ}
     (by rw [mRan_map_swap]; exact ha)
     haN
 
+/-!
+### Section 4i-quinquies: Cross-preservation of `Balanced` — the domain step preserves the
+    *swapped* balance too
+
+The extension-only scheduler alternates a domain (even) step and a range (odd) step, and each
+step's *escape* obligation is discharged on a different side: the domain step's escape
+(`escape_exists'`) needs `Balanced f g L`, while the range step's escape needs the swapped
+`Balanced g f (L.map Prod.swap)`. So the scheduler must carry **both** balances at once, and each
+atomic move must preserve **both**.
+
+`balanced_cons_domain` already shows a domain cons preserves `Balanced f g L`; the missing
+"cross" half is that a domain cons *also* preserves `Balanced g f (L.map Prod.swap)`. Note this is
+**not** an instance of `balanced_cons_range`: that lemma needs the placed pair `(a, b)` to satisfy
+`a = g (fwdOrbit g f b N')` (an `f∘g`-orbit relation), which holds only when `a`'s orbit is a
+*finite* cycle. When `a`'s `g∘f`-orbit is infinite no such `N'` exists, yet the swapped balance is
+still preserved (both intersections are inert on every `f∘g`-cycle). `balanced_swap_cons_domain`
+covers both cases uniformly, via a single `by_cases` on whether the escaped image `b` lies on the
+cycle `c` in question.
+
+The proof rests on two small orbit-algebra facts proved first:
+  * `fwdOrbit_swap_apply` — conjugation of the forward orbit by the head map: running the *swapped*
+    dynamics from `f x` equals `f ∘ (running the original dynamics from x)`. This is what lets the
+    escaped image `b = f (fwdOrbit f g a N)` be relocated onto the swapped `f∘g`-orbit.
+  * `onCycle_of_onCycle_apply` — if `f x` is `f∘g`-periodic then `x` is `g∘f`-periodic (cancel the
+    shared injective `f`). This transports periodicity of `b` back to periodicity of `a`.
+-/
+
+/-- **Conjugation of the forward orbit.** Running the swapped dynamics `g, f` from the point `f x`
+    is the `f`-image of running the original dynamics `f, g` from `x`:
+    `fwdOrbit g f (f x) j = f (fwdOrbit f g x j)`. (The `g∘f` and `f∘g` iterations are conjugate by
+    `f`.) The engine that moves the escaped green image between the two dynamics. -/
+theorem fwdOrbit_swap_apply (f g : ℕ → ℕ) (x j : ℕ) :
+    fwdOrbit g f (f x) j = f (fwdOrbit f g x j) := by
+  induction j with
+  | zero => rfl
+  | succ j ih => simp only [fwdOrbit, ih]
+
+/-- **Periodicity transports across `f`.** If `f x` is `f∘g`-periodic (`OnCycle g f (f x)`) then `x`
+    is `g∘f`-periodic (`OnCycle f g x`): the same positive period works after cancelling the shared
+    injective `f`. -/
+theorem onCycle_of_onCycle_apply {f g : ℕ → ℕ} (hf : Function.Injective f)
+    {x : ℕ} (h : OnCycle g f (f x)) : OnCycle f g x := by
+  obtain ⟨m, hm, hmeq⟩ := h
+  refine ⟨m, hm, ?_⟩
+  rw [fwdOrbit_swap_apply] at hmeq
+  exact hf hmeq
+
+/-- **Cross-preservation of `Balanced` (domain step preserves the swapped balance).** A domain cons
+    that prepends `(a, b)` with fresh domain anchor `a` and escaped green image
+    `b = f (fwdOrbit f g a N)` preserves the *swapped* cycle-balance `Balanced g f (L.map Prod.swap)`
+    — the invariant the odd-stage range escape (`escape_exists'` on the swapped problem) consumes.
+
+    Together with `balanced_cons_domain` (which preserves `Balanced f g L`) this discharges the
+    scheduler's obligation to carry both balances across a domain step; the range step is handled by
+    the coordinate-swap dual. On the `f∘g`-cycle `C` through any anchor `c`: if the escaped image
+    `b ∈ C` then `a` lands in `C.image g` (both sides gain one point); if `b ∉ C` then `a ∉ C.image g`
+    (both sides inert). The dichotomy is uniform — no separate periodic/infinite split at the top
+    level — because the "`a ∈ C.image g`" side is controlled entirely by whether `b ∈ C`. -/
+theorem balanced_swap_cons_domain {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced g f (L.map Prod.swap)) {a b : ℕ}
+    (ha : a ∉ mDom L) (hb : b ∉ mRan L) {N : ℕ} (hbN : b = f (fwdOrbit f g a N)) :
+    Balanced g f (((a, b) :: L).map Prod.swap) := by
+  simp only [List.map_cons, Prod.swap_prod_mk]
+  intro c hc
+  have hdom : (mDom ((b, a) :: L.map Prod.swap)).toFinset = insert b (mRan L).toFinset := by
+    rw [mDom_cons, List.toFinset_cons, mDom_map_swap]
+  have hran : (mRan ((b, a) :: L.map Prod.swap)).toFinset = insert a (mDom L).toFinset := by
+    rw [mRan_cons, List.toFinset_cons, mRan_map_swap]
+  rw [hdom, hran]
+  have hbF : b ∉ (mRan L).toFinset := fun h => hb (List.mem_toFinset.mp h)
+  have haF : a ∉ (mDom L).toFinset := fun h => ha (List.mem_toFinset.mp h)
+  have hbalc := hbal hc
+  rw [mDom_map_swap, mRan_map_swap] at hbalc
+  by_cases hbC : b ∈ orbitCycle g f hc
+  · -- `b` on `c`'s `f∘g`-cycle ⟹ `a ∈ (cycle).image g`; both sides gain one fresh point.
+    have haImg : a ∈ (orbitCycle g f hc).image g := by
+      -- `b` periodic ⟹ `f (fwdOrbit f g a N)` periodic ⟹ `a` is `g∘f`-periodic.
+      have hocb : OnCycle g f b := onCycle_of_mem_orbitCycle hc hbC
+      rw [hbN] at hocb
+      have hoc_oN : OnCycle f g (fwdOrbit f g a N) := onCycle_of_onCycle_apply hf hocb
+      have hoa : OnCycle f g a := onCycle_of_fwdOrbit hf hg hoc_oN
+      have hmpos : 1 ≤ orbitPeriod f g hoa := orbitPeriod_pos hoa
+      refine Finset.mem_image.mpr
+        ⟨fwdOrbit g f b (orbitPeriod f g hoa * (N + 2) - (N + 1)), ?_, ?_⟩
+      · exact fwdOrbit_mem_orbitCycle hc hbC _
+      · -- `g (fwdOrbit g f b j) = fwdOrbit f g a (N + j + 1) = a` for the chosen `j`.
+        rw [hbN, fwdOrbit_swap_apply,
+          ← fwdOrbit_succ f g (fwdOrbit f g a N) (orbitPeriod f g hoa * (N + 2) - (N + 1)),
+          ← fwdOrbit_add f g a (orbitPeriod f g hoa * (N + 2) - (N + 1) + 1) N]
+        have hge : N + 1 ≤ orbitPeriod f g hoa * (N + 2) := by nlinarith [hmpos]
+        have harith :
+            orbitPeriod f g hoa * (N + 2) - (N + 1) + 1 + N = orbitPeriod f g hoa * (N + 2) := by
+          omega
+        rw [harith, fwdOrbit_mul_period hoa (N + 2)]
+    rw [Finset.inter_insert_of_mem hbC, Finset.inter_insert_of_mem haImg,
+      Finset.card_insert_of_notMem (fun h => hbF (Finset.mem_inter.mp h).2),
+      Finset.card_insert_of_notMem (fun h => haF (Finset.mem_inter.mp h).2),
+      hbalc]
+  · -- `b` off `c`'s cycle ⟹ `a ∉ (cycle).image g`; both intersections are inert.
+    have hanImg : a ∉ (orbitCycle g f hc).image g := by
+      intro hmem
+      rw [Finset.mem_image] at hmem
+      obtain ⟨y, hyC, hya⟩ := hmem
+      -- if `a = g y` with `y` on the cycle then `b = fwdOrbit g f y (N+1)` is on it too.
+      apply hbC
+      have hby : b = fwdOrbit g f y (N + 1) := by
+        have hconj : fwdOrbit f g (g y) N = g (fwdOrbit g f y N) := fwdOrbit_swap_apply g f y N
+        rw [hbN, ← hya, hconj]
+        simp only [fwdOrbit]
+      rw [hby]
+      exact fwdOrbit_mem_orbitCycle hc hyC (N + 1)
+    rw [Finset.inter_insert_of_notMem hbC, Finset.inter_insert_of_notMem hanImg]
+    exact hbalc
+
 /-- **Escape existence (bounded).** For a fresh domain anchor `a ∉ mDom L` in a matching `L`
     satisfying the construction invariant, some forward-orbit stage `N ≤ (mDom L).length` has a
     green image `f (fwdOrbit f g a N)` that is *fresh* in the range. Equivalently the collision

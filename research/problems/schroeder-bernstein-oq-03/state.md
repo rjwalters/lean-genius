@@ -4,16 +4,18 @@
 **Phase**: DEVELOP
 **Path**: full — **extension-only (Path B) chosen; fork RESOLVED 2026-07-03 (r4)**
 **Since**: 2026-07-02
-**Iteration**: 7
+**Iteration**: 8
 
 ## Current Focus
-The `BuiltFrom`-free **escape** side AND the invariant *preservation* (Claim B) are now both
-closed (2026-07-03, r16): `Balanced` over `orbitCycle`, `balanced_nil`, `escape_of_balanced`,
-`escape_exists'` (Section 4i-ter) plus `balanced_cons_domain` / `balanced_cons_range` (Section
-4i-quater) all VERIFIED 0-axiom. Remaining critical path is **scheduler assembly** (step 4) and
-its one genuinely-new obligation, *cross-preservation* (see Blockers). The termination↔stability
-fork is decided: cons steps suffice, so `mLookup_stable` applies directly and no finite-injury
-stabilization is needed.
+Escape, same-side preservation (Claim B), AND now **cross-preservation** (the domain step's
+half) are all closed. `balanced_swap_cons_domain` (Section 4i-quinquies, 2026-07-03 r14, VERIFIED
+0-axiom) shows a domain cons preserves the *swapped* balance `Balanced g f (L.map swap)` too —
+uniformly over both the periodic and infinite-orbit cases (single `by_cases` on `b ∈ cycle`, NOT
+reducible to `balanced_cons_range` which needs the periodic-only `a = g(fwdOrbit g f b N')`).
+Remaining critical path is **scheduler assembly** (step 4): the range-step dual of cross-preservation
+(free by `Prod.swap` duality) + the cons-based `stageSeq` carrying both balances + the computable
+read-off. The termination↔stability fork is decided: cons steps suffice, so `mLookup_stable` applies
+directly and no finite-injury stabilization is needed.
 
 ## Active Approach
 Stage-wise finite back-and-forth (Rogers §7.4), **extend-only**. Even/odd atomic moves DONE and
@@ -35,16 +37,19 @@ cons supplies an f-edge-like pair) but the *count* is preserved. Path B is viabl
   (`OrbitGEdged`) refuted, replaced by `Balanced`.
 
 ## Blockers
-No strategic blocker remains — the path is decided and Claim B is closed. The one genuinely-new
-step-4 obligation surfaced while proving the cons lemmas: **cross-preservation**. The scheduler
+No strategic blocker remains — the path is decided, Claim B is closed, and the domain-step half of
+**cross-preservation** is now closed too (`balanced_swap_cons_domain`, r14 2026-07-03). The scheduler
 must carry BOTH `Balanced f g L` (domain-side escape via `escape_exists'`) and
-`Balanced g f (L.map Prod.swap)` (range-side escape, swap-dual). `balanced_cons_domain` preserves
-the former under a domain cons; `balanced_cons_range` preserves the latter under a range cons.
-Still to prove: the domain step *also* preserves the swapped balance, and the range step *also*
-preserves `Balanced f g L` (each step touches at most one cycle on each side; the untouched side's
-balance is inert because the added pair's foreign coordinate lands off every foreign cycle —
-same foreign-cycle-exclusion argument as `mem_orbitCycle_of_fwdOrbit_mem`, applied on the other
-dynamics). Not hard, but not yet formalized. **Build environment is NOT hostile** —
+`Balanced g f (L.map Prod.swap)` (range-side escape, swap-dual) across BOTH atomic moves. Status of
+the four preservation obligations:
+- domain cons preserves `Balanced f g L` — DONE (`balanced_cons_domain`, r16).
+- domain cons preserves `Balanced g f (L.map swap)` — **DONE (`balanced_swap_cons_domain`, r14).**
+- range cons preserves `Balanced g f (L.map swap)` — DONE (`balanced_cons_range`, r16).
+- range cons preserves `Balanced f g L` — the swap-dual of `balanced_swap_cons_domain`, still to
+  formalize (should be ~free: apply `balanced_swap_cons_domain` to the swapped problem
+  `(g, f, L.map swap)`, mirroring how `balanced_cons_range` reuses `balanced_cons_domain`).
+Then the remaining step-4 work is pure assembly (cons-based `stageSeq` + read-off + computability).
+**Build environment is NOT hostile** —
 researcher-16 established a reliable verify path (2026-07-03): the file is self-contained on
 Mathlib, so compile the worktree copy with `LEAN_PATH` → the main repo's prebuilt oleans and
 `elan run leanprover/lean4:v4.26.0 lean` (no Docker, no `lake build`). Recorded in knowledge.md.

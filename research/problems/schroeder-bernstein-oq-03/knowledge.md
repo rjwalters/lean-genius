@@ -919,3 +919,65 @@ must ALSO preserve the swapped balance (and dually for the range step). Each is 
 foreign-cycle-exclusion argument applied on the OTHER dynamics: a domain cons `(a, f(fwdOrbit f g a
 N))` adds `a` to mDom and `b` to mRan; for the `g∘f`-*reverse* (`f∘g`) cycles counted by the
 swapped balance, `a` lands on some `f∘g`-cycle iff `b` does — provable but not yet formalized.
+
+## Session 2026-07-03 (researcher-14): cross-preservation closed — Section 4i-quinquies (VERIFIED 0-axiom)
+
+Closed the single remaining step-4 blocker before scheduler assembly: **cross-preservation** of
+`Balanced`. The extension-only scheduler alternates a domain (even) and range (odd) step, and each
+step's escape obligation is discharged on a *different* side — the domain step's `escape_exists'`
+needs `Balanced f g L`, the range step's needs the swapped `Balanced g f (L.map swap)`. So the
+scheduler must carry BOTH balances and each atomic move must preserve BOTH. `balanced_cons_domain`
+(r16, #34114) already preserves `Balanced f g L` under a domain cons; the missing "cross" half was
+that a domain cons ALSO preserves `Balanced g f (L.map swap)`.
+
+Added **Section 4i-quinquies** to `SchroederBernsteinOQ03.lean` (3 decls, all VERIFIED 0-axiom —
+`#print axioms` = {propext, Classical.choice, Quot.sound} for the main lemma; {propext} for the two
+helpers; no sorryAx, no ofReduceBool). File 2460→2559 lines. Main `myhill_isomorphism` → sorry
+UNCHANGED (still open).
+
+- `fwdOrbit_swap_apply : fwdOrbit g f (f x) j = f (fwdOrbit f g x j)` — the `g∘f` and `f∘g`
+  iterations are conjugate by `f`; the engine that relocates the escaped green image
+  `b = f (fwdOrbit f g a N)` onto the swapped `f∘g`-orbit. 2-line induction.
+- `onCycle_of_onCycle_apply : Injective f → OnCycle g f (f x) → OnCycle f g x` — periodicity
+  transports across `f` (cancel the shared injective `f`).
+- `balanced_swap_cons_domain` (main): a domain cons `(a,b)` with `b = f (fwdOrbit f g a N)` fresh
+  preserves `Balanced g f (L.map swap)`.
+
+**Key point — why this is NOT `balanced_cons_range`.** `balanced_cons_range` needs the placed pair
+to satisfy `a = g (fwdOrbit g f b N')` (an `f∘g`-orbit relation between `a` and `b`). Computing
+`g (fwdOrbit g f b j) = fwdOrbit f g a (N+j+1)`, so `a = g(fwdOrbit g f b j)` requires
+`fwdOrbit f g a (N+j+1) = a`, i.e. `a` returns to itself — possible ONLY when `a`'s `g∘f`-orbit is
+a finite cycle. When the orbit is infinite there is NO such `N'`, yet the swapped balance is still
+preserved (both intersections inert on every `f∘g`-cycle). `balanced_swap_cons_domain` handles both
+uniformly via a single `by_cases` on `b ∈ orbitCycle g f hc` — the dichotomy that actually controls
+the invariant, rather than the periodic/infinite split at the top level:
+  * `b ∈ C`: `b` periodic ⟹ (via `onCycle_of_onCycle_apply` + `onCycle_of_fwdOrbit`) `a` is
+    `g∘f`-periodic with period `m`; the witness `y := fwdOrbit g f b (m*(N+2) − (N+1))` lands in `C`
+    (closure, `fwdOrbit_mem_orbitCycle`) and `g y = fwdOrbit f g a (m*(N+2)) = a`
+    (`fwdOrbit_mul_period`). So `a ∈ C.image g`; both sides gain one fresh point.
+  * `b ∉ C`: if `a = g y` with `y ∈ C` then `b = fwdOrbit g f y (N+1) ∈ C` (closure) — contradiction.
+    So `a ∉ C.image g`; both sides inert.
+
+The clean direction (`b ∉ C`) needs no modular arithmetic; only the `b ∈ C` witness does, and it is
+purely mechanical given the existing orbit-algebra tower (`fwdOrbit_add`, `fwdOrbit_mul_period`,
+`fwdOrbit_swap_apply`, `fwdOrbit_succ`).
+
+### Next Steps (updated)
+1. **Range-step dual:** `balanced_cons_range` (swapped) + the analogous `balanced_swap_cons_range`
+   (a range cons preserves `Balanced f g L`) — obtainable for free from `balanced_swap_cons_domain`
+   by the `Prod.swap` duality (apply to `(g, f, L.map swap)`), mirroring how `balanced_cons_range`
+   reuses `balanced_cons_domain`. This completes "carry BOTH balances across BOTH steps".
+2. Build the extension-only stage function on `domain_step_exists` (cons; escape via
+   `escape_exists'`) carrying the pair `(Balanced f g L, Balanced g f (L.map swap))`, preserved by
+   `balanced_cons_domain` + `balanced_swap_cons_domain` (even) and the two range duals (odd).
+3. Read off `e` via `mLookup` + `mLookup_stable` (pair-monotone since cons-only), prove `.Computable`,
+   discharge the `myhill_isomorphism` sorry. NOTE: the current Section 4m `stageSeq` is built on the
+   *splicing* `augment_*_step` (removes/relabels g-edges ⟹ NOT pair-monotone ⟹ `mLookup_stable` does
+   not apply). The decided Path B rebuilds `stageSeq` on the cons steps above; do NOT read off the
+   existing splicing `stageSeq`.
+
+**Build/verify:** r16's non-Docker path confirmed working this session — the file is self-contained
+on Mathlib, so `LEAN_PATH` → main repo's prebuilt package oleans
+(`$MAIN/proofs/.lake/packages/*/.lake/build/lib/lean` + `$MAIN/proofs/.lake/build/lib/lean`) with
+`elan run leanprover/lean4:v4.26.0 lean Proofs/SchroederBernsteinOQ03.lean`. Full file compiles in
+~30s (oleans cached); only warning is the expected `myhill_isomorphism` sorry. No Docker, no lake build.
