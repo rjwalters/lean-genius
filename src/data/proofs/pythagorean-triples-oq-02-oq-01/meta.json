@@ -112,6 +112,11 @@
       "relationship": "related",
       "description": "The base Pythagorean-triples entry and its parametric formula.",
       "targetId": "pythagorean-triples"
+    },
+    {
+      "relationship": "related",
+      "description": "The hypotenuse corollary here — every positive primitive triple has z = m²+n² = N(m+ni), a sum of two squares — is the Pythagorean shadow of Fermat's two-squares theorem. Both rest on the same arithmetic of ℤ[i]: this entry exhibits sums of two squares as Gaussian norms of squares z², while that entry characterizes exactly which primes (and integers) are sums of two squares. Named in open question 1.",
+      "targetId": "fermat-two-squares"
     }
   ],
   "references": [
