@@ -59,7 +59,8 @@
       "**Legs = Re/Im of a Gaussian square**: (m²-n², 2mn) are exactly the components of (m+ni)², so the parametrization is 'square a Gaussian integer'.",
       "**Hypotenuse = Gaussian norm**: m²+n² = N(m+ni), and N(z²)=N(z)² is precisely the Pythagorean relation.",
       "**Why opposite parity and coprimality give primitivity**: these are exactly the conditions under which m+ni is (up to units) not divisible by 1+i, keeping the square primitive.",
-      "**The hard direction needs ℤ[i] UFD**: that every primitive triple comes from a single Gaussian square is unique factorization in disguise — supplied by Mathlib."
+      "**The hard direction needs ℤ[i] UFD**: that every primitive triple comes from a single Gaussian square is unique factorization in disguise — supplied by Mathlib.",
+      "**Existence, not yet a bijection**: the formalized classification asserts every primitive triple *arises from some* coprime opposite-parity (m,n), but only up to swapping the legs and the sign of z. It is an existence statement, not an explicit parametrizing bijection; pinning down a unique generator requires normalizing to m > n > 0 (with x the odd leg, z > 0) and proving injectivity there — the content of open question 3. The `±` and leg-swap in the biconditional are exactly the residual ambiguity that normalization removes."
     ],
     "prerequisites": [
       "Gaussian integers and their norm",
