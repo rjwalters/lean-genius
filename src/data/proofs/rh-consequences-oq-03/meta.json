@@ -54,7 +54,13 @@
   },
   "conclusion": {
     "summary": "A focused formalization of Littlewood's equivalence RH ⟺ M(x) = O(x^{1/2+ε}). The Mertens function and the Littlewood growth predicate are defined from Mathlib primitives, the forward implication is proved outright from the classical √x bound, and only the deep analytic converse is axiomatized. The biconditional is derived from these two pieces rather than assumed.",
-    "implications": "This entry isolates the precise logical content of Littlewood's theorem, separating the elementary forward direction (a genuine machine-checked derivation) from the single deep analytic input on the reverse side. It complements the broader rh-consequences entry, which states the √x bound but only comments on the equivalence. Discharging littlewood_bound_implies_rh would require formalizing partial summation against the Dirichlet series of 1/ζ, a natural target once that machinery reaches Mathlib."
+    "implications": "This entry isolates the precise logical content of Littlewood's theorem, separating the elementary forward direction (a genuine machine-checked derivation) from the single deep analytic input on the reverse side. It complements the broader rh-consequences entry, which states the √x bound but only comments on the equivalence. Discharging littlewood_bound_implies_rh would require formalizing partial summation against the Dirichlet series of 1/ζ, a natural target once that machinery reaches Mathlib.",
+    "openQuestions": [
+      "Can the axiomatized reverse direction (littlewood_bound_implies_rh) be discharged in Lean? A proof needs partial summation against the Dirichlet series 1/ζ(s) = Σ μ(n) n^{-s}, showing that the ε-bound M(x)=O(x^{1/2+ε}) forces convergence for Re(s) > 1/2, hence no zeros there — machinery not yet in Mathlib.",
+      "Is M(x) = O(√x)? The Mertens conjecture |M(x)| < √x is false (Odlyzko–te Riele, 1985), but whether M(x)/√x is bounded remains open; only the strictly weaker ε-bound is known to be RH-equivalent.",
+      "Can the Odlyzko–te Riele disproof be formalized, at least the qualitative statement that limsup M(x)/√x > 1? This would give a machine-checked witness that the honest RH-equivalent bound cannot be sharpened to the naive √x conjecture.",
+      "Does the forward √x bound used here follow from a formalized statement of RH itself, rather than being imported as a classical input? Closing that loop would connect this entry to the broader rh-consequences entry and reduce its two axioms toward one."
+    ]
   },
   "leanFile": {
     "namespace": "RHConsequencesOQ03",
