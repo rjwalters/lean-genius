@@ -26,14 +26,26 @@
   {
     "id": "ann-main-rule",
     "proofId": "lhopital-oq-04",
-    "range": { "startLine": 55, "endLine": 78 },
+    "range": { "startLine": 55, "endLine": 67 },
     "type": "insight",
     "title": "Dividing Leading Terms — No Mean Value Theorem",
-    "content": "lhopital_zero_taylor takes the two leading-order limits f(x)/(x−a) → f′(a) and g(x)/(x−a) → g′(a) and divides them (Filter.Tendsto.div, valid since g′(a) ≠ 0). The bridge back to f(x)/g(x) is the identity f(x)/g(x) = (f(x)/(x−a))/(g(x)/(x−a)) for x ≠ a — the shared (x−a) Taylor factor cancels (div_div_div_cancel_right₀) — transported by Tendsto.congr'. The Cauchy Mean Value Theorem the parent uses never appears. lhopital_zero_taylor_coeff repackages the limit as the ratio of first Taylor coefficients f′(a)/1! and g′(a)/1!, making the order-1 reading explicit.",
-    "mathContext": "$\\dfrac{f(x)}{g(x)} = \\dfrac{f(x)/(x-a)}{g(x)/(x-a)} \\xrightarrow[x\\to a]{} \\dfrac{f'(a)}{g'(a)} = \\dfrac{f'(a)/1!}{g'(a)/1!}.$",
+    "content": "lhopital_zero_taylor takes the two leading-order limits f(x)/(x−a) → f′(a) and g(x)/(x−a) → g′(a) and divides them (Filter.Tendsto.div, valid since g′(a) ≠ 0). The bridge back to f(x)/g(x) is the identity f(x)/g(x) = (f(x)/(x−a))/(g(x)/(x−a)) for x ≠ a — the shared (x−a) Taylor factor cancels (div_div_div_cancel_right₀) — transported by Tendsto.congr'. The Cauchy Mean Value Theorem the parent uses never appears; the entire content is the derivative-as-slope engine plus one algebraic cancellation.",
+    "mathContext": "$\\dfrac{f(x)}{g(x)} = \\dfrac{f(x)/(x-a)}{g(x)/(x-a)} \\xrightarrow[x\\to a]{} \\dfrac{f'(a)}{g'(a)}.$",
     "significance": "key",
-    "relatedConcepts": ["L'Hôpital's rule", "quotient of limits", "Taylor coefficients", "Cauchy Mean Value Theorem"],
+    "relatedConcepts": ["L'Hôpital's rule", "quotient of limits", "Filter.Tendsto.div", "Cauchy Mean Value Theorem"],
     "prerequisites": ["limit arithmetic", "L'Hôpital 0/0 form"]
+  },
+  {
+    "id": "ann-taylor-coeff",
+    "proofId": "lhopital-oq-04",
+    "range": { "startLine": 69, "endLine": 78 },
+    "type": "insight",
+    "title": "Naming the Limit as a Ratio of First Taylor Coefficients",
+    "content": "lhopital_zero_taylor_coeff restates the rule so the limit is written `(f′(a)/1!)/(g′(a)/1!)` instead of the reduced `f′(a)/g′(a)`. Mathematically the two are equal — `1! = 1` — but the unreduced form is the point of the whole entry: it exhibits order-1 L'Hôpital as *the ratio of the first Taylor coefficients* of f and g, `c₁ = f^{(1)}(a)/1!`. This makes the `n`-th order generalisation legible: the higher-order rule divides the first non-vanishing Taylor coefficients `f^{(k)}(a)/k!` and `g^{(k)}(a)/k!`. The proof is a one-liner — `simpa` collapses the `/1!` factors and reuses lhopital_zero_taylor verbatim, so the repackaging costs nothing.",
+    "mathContext": "Taylor coefficient $c_k = \\dfrac{f^{(k)}(a)}{k!}$. Order-1 L'Hôpital is $\\dfrac{f(x)}{g(x)} \\to \\dfrac{f'(a)/1!}{g'(a)/1!} = \\dfrac{c_1[f]}{c_1[g]}$, the anticipated shape of the order-$k$ rule $\\dfrac{f^{(k)}(a)/k!}{g^{(k)}(a)/k!}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Taylor coefficients", "factorial normalisation", "higher-order L'Hôpital", "order-k generalisation"],
+    "prerequisites": ["Taylor coefficient c_k = f^{(k)}(a)/k!", "lhopital_zero_taylor"]
   },
   {
     "id": "ann-examples",
