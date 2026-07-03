@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Constructed and VERIFIED the augmenting-path object augPath (Section 4j, 8 decls, 0-axiom) — the BuiltFrom-restoring block that prior sessions named as the missing piece. Termination side (escape_exists/domain_step_exists) was already done; this supplies the object the BuiltFrom-preserving domain step re-labels into. Remaining: splice augPath into the matching (list surgery removing the stale g-edges), then the stage recursion. Main myhill_isomorphism → sorry UNCHANGED (still open).",
+    "progressSummary": "PROGRESS: augment_domain_step (Section 4k) is the augmenting-path SPLICE that r4 named as the remaining list-surgery, now DONE and VERIFIED (0-axiom): the even-stage domain move is total, BuiltFrom-preserving, and iterable (monotone both sides, covers the fresh anchor). Every atomic per-stage obligation of the Myhill scheduler is now proved; only the outer stage recursion + computable read-off remain. Main myhill_isomorphism still sorry (open).",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
@@ -59,7 +59,8 @@
       "chase_gedge_chain (SchroederBernsteinOQ03.lean Section 4i, VERIFIED 0-axiom): ∀ t≤N, ∀ 1≤m≤t, (fwdOrbit f g a m, f(fwdOrbit f g a (m-1))) ∈ L, under injective f,g + IsMatching + BuiltFrom + a∉mDom L + all-collide-before-N.",
       "escape_exists (Section 4i, VERIFIED 0-axiom): ∃ N ≤ (mDom L).length, f(fwdOrbit f g a N) ∉ mRan L — the bounded termination certificate for the even-stage collision chase.",
       "domain_step_exists (Section 4i, VERIFIED 0-axiom): the even-stage domain step is TOTAL — any fresh a can be placed as (a, chaseTarget f g a N) preserving IsMatching and MatchingCorr (does NOT preserve BuiltFrom; see next steps).",
-      "augPath + mem_augPath_iff/mDom_augPath/mRan_augPath + augPath_builtFrom + augPath_matchingCorr + augPath_isMatching + augPath_isMatching_of_chase in SchroederBernsteinOQ03.lean Section 4j (8 decls, all VERIFIED 0-axiom)"
+      "augPath + mem_augPath_iff/mDom_augPath/mRan_augPath + augPath_builtFrom + augPath_matchingCorr + augPath_isMatching + augPath_isMatching_of_chase in SchroederBernsteinOQ03.lean Section 4j (8 decls, all VERIFIED 0-axiom)",
+      "augment_domain_step (SchroederBernsteinOQ03.lean:1466): BuiltFrom-preserving TOTAL even-stage domain step. Fresh anchor a not in mDom L implies exists Lprime with IsMatching, MatchingCorr, BuiltFrom, a in mDom Lprime, and mDom/mRan monotone. VERIFIED, axioms = {propext, Classical.choice, Quot.sound}."
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -76,14 +77,18 @@
       "Escape existence IS provable (resolves the r9 obstruction): a persistent collision forces the g-edge (o_{k+1}, f o_k) at every chase stage. The f-edge alternative (o_k, f o_k) is excluded by matching functionality — it would share domain point o_k with the previous stage g-edge, forcing f(o_k)=f(o_{k-1}), hence (f inj) an orbit repeat o_k=o_{k-1}, hence (fwdOrbit_prefix_distinct) a ∈ mDom L, contradicting freshness.",
       "The naive pointwise induction (keep colliding ⟹ stay in mDom L) fails exactly as r9 found, but induction on the STAGE BOUND t (giving all earlier g-edges at once as IH) recovers it — the IH supplies both the prior g-edge for functionality and the [1..t] mDom-membership for prefix_distinct.",
       "REAL residual difficulty (finer than escape): the resolution edge (a, f(o_N)) placed by matching_step_chase is in general NEITHER an f-edge NOR a g-edge (N>0), so it BREAKS BuiltFrom. Iterating the scheduler (which needs BuiltFrom to re-run collision_f_source) requires the augmenting-path rewrite: re-label the chased g-edges (o_k, f o_{k-1}) as f-edges (o_k, f o_k), shifting the chain by one and freeing the fresh target. That list surgery + its IsMatching/MatchingCorr/BuiltFrom preservation is the remaining ~150-line piece.",
-      "augPath f g a N (the augmenting path: f-edges (oₖ, f oₖ) for k=0..N, oₖ=fwdOrbit f g a k) is the object that RESTORES BuiltFrom after a collision chase — domain_step_exists preserves IsMatching+MatchingCorr but its single anchor pair (a, f(oₙ)) is neither an f-edge nor g-edge for N>0. Re-labelling the whole chased chain into f-edges fixes this. VERIFIED 0-axiom (propext/Classical.choice/Quot.sound only)."
+      "augPath f g a N (the augmenting path: f-edges (oₖ, f oₖ) for k=0..N, oₖ=fwdOrbit f g a k) is the object that RESTORES BuiltFrom after a collision chase — domain_step_exists preserves IsMatching+MatchingCorr but its single anchor pair (a, f(oₙ)) is neither an f-edge nor g-edge for N>0. Re-labelling the whole chased chain into f-edges fixes this. VERIFIED 0-axiom (propext/Classical.choice/Quot.sound only).",
+      "Only the f-reduction (p n iff q (f n)) is needed for the even-stage augmenting-path move; hgpq is unnecessary because every augmenting edge (o_k, f o_k) is an f-edge, so MatchingCorr of the block follows from hfpq alone (augment_domain_step, Section 4k).",
+      "The augmenting-path splice is TOTAL and preserves ALL THREE invariants plus two-sided monotonicity: mDom L subset mDom Lprime, mRan L subset mRan Lprime. Monotonicity holds because every removed g-edge endpoint (domains o_1..o_N, ranges f o_0..f o_(N-1)) is re-added by augPath ({o_0..o_N} on the domain, {f o_0..f o_N} on the range).",
+      "Range-disjointness of the spliced matching is the delicate part: for aug index k<N, f o_k is the unique range value of the removed g-edge (o_(k+1), f o_k) by matching_cofunctional, so no kept pair can carry it; for k=N it is the escape point f o_N not in mRan L (escape_exists)."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
     ],
     "nextSteps": [
-      "Splice augPath into the matching: define keptL = L with the N re-labelled g-edges (oₖ, f o_{k-1}) removed (filter by domain ∉ {o_1..o_N}), then prove IsMatching (augPath ++ keptL) via List.Nodup.append — needs (a) minimal escape depth via Nat.find so all stages <N collide (giving the g-edges present by collision_f_source), (b) domain disjointness (a∉mDom L, o_k removed), (c) range disjointness (f o_k for k<N are the removed g-edge ranges by cofunctionality; f o_N is the escape ∉ mRan L). This closes the BuiltFrom-preserving domain step.",
-      "Then the stage recursion producing an increasing chain of BuiltFrom matchings + coverage (firstMissing) + read off computable ℕ≃ℕ."
+      "Derive the range-stage dual augment_range_step from augment_domain_step via the Section 4e swap duality (isMatching_map_swap / matchingCorr_map_swap / builtFrom_map_swap).",
+      "Define the alternating stage recursion sigma : Nat -> List(NatxNat) anchoring at firstMissing (mDom sigma_s) / firstMissing (mRan sigma_s); prove coverage (k in mDom by stage 2k+1) from monotonicity + firstMissing progress.",
+      "Read off e : Nat equiv Nat via mLookup, prove Computable, and discharge myhill_isomorphism."
     ],
     "markdown": "# Knowledge Base: schroeder-bernstein-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

@@ -467,3 +467,59 @@ so compile a worktree file with
 (~30s warm). GOTCHA: `lake env lean Proofs/...` from `REPO_ROOT/proofs` compiles the
 MAIN-repo file, NOT the worktree — pass the absolute worktree path. `List.nodup_range`
 takes `n` IMPLICIT (`List.nodup_range.map_on`, not `(List.nodup_range (N+1))`).
+
+## Session 2026-07-02 (researcher-9): augmenting-path splice — the BuiltFrom-preserving domain step is now TOTAL and iterable [VERIFIED, 0-axiom]
+
+Added **Section 4k** `augment_domain_step` (1 theorem, ~180 lines; host `lake env lean`
+v4.26.0, EXIT 0; `#print axioms` = `[propext, Classical.choice, Quot.sound]` — no `sorryAx`,
+no `ofReduceBool`). File 1539→1718 lines. This closes the exact "list-surgery splice" that r4
+named as the genuine remaining work: it turns the augmenting-path *object* (Section 4j) into an
+actual **invariant-preserving, iterable even-stage move**.
+
+**Statement.** For a fresh anchor `a ∉ mDom L` in a matching `L` with `IsMatching`,
+`MatchingCorr p q`, `BuiltFrom f g`, there is `L'` with all three invariants preserved, `a ∈
+mDom L'`, and *monotone* on both sides: `∀ x ∈ mDom L, x ∈ mDom L'` and `∀ y ∈ mRan L, y ∈ mRan
+L'`. (Only the `f`-reduction `hfpq` is needed — `hgpq` dropped; the augmenting edges are all
+`f`-edges.)
+
+**Construction.** `L' := augPath f g a N ++ keptL` where `N` is the *minimal* escape depth
+(`Nat.find` on `f (fwdOrbit f g a N) ∉ mRan L`, so `∀ j<N, f oⱼ ∈ mRan L`) and
+`keptL := L.filter (·.1 ∉ mDom (augPath f g a N))` drops exactly the pairs whose domain point
+lies on the re-labelled orbit prefix.
+
+**The four invariant proofs (all discharged):**
+- `BuiltFrom` / `MatchingCorr`: `augPath` supplies them (all `f`-edges; `augPath_builtFrom`,
+  `augPath_matchingCorr`), `keptL ⊆ L` inherits (`hmemKept.1` into `hB`/`hC`).
+- `IsMatching` **domain Nodup**: `mDom augPath` distinct (`augPath_isMatching_of_chase` via
+  `chase_gedge_chain`→`hchase`), `mDom keptL` a `Sublist`-inherited Nodup, and disjoint *by the
+  filter itself* — a kept pair has `.1 ∉ mDom augPath`.
+- `IsMatching` **range Nodup**: `mRan augPath = {f o_0..f o_N}` distinct; disjoint from `mRan
+  keptL` by cases on the aug index `k`: for `k<N`, `f oₖ` is the range value of the removed
+  `g`-edge `(o_{k+1}, f oₖ)` (from `hgedges`), so any kept pair sharing it would, by
+  `matching_cofunctional`, have domain `o_{k+1} ∈ mDom augPath` — contradicting the filter; for
+  `k=N`, `f o_N ∉ mRan L` (`escape_exists`).
+- **monotonicity**: every removed `g`-edge endpoint is re-added by `augPath` — domains
+  `o_1..o_N ⊆ {o_0..o_N}`, ranges `f o_0..f o_{N-1} ⊆ {f o_0..f o_N}`; and functionality pins a
+  kept pair with domain `oₖ (k≥1)` to range `f o_{k-1} ∈ mRan augPath` (`k=0` ⇒ `a ∈ mDom L`,
+  impossible).
+
+**Significance (honest).** This is the crux structural step, not the whole theorem. `main
+myhill_isomorphism → sorry UNCHANGED`. What remains is genuinely the *outer* recursion: iterate
+`augment_domain_step` and its `Prod.swap` dual (odd/range stage, Section 4e) over stages
+`0,1,2,…`, using `firstMissing` to pick the anchor at each stage, take the union/limit matching,
+and read off the computable `ℕ ≃ ℕ` via `mLookup` (proving totality on both sides from
+monotonicity + coverage, injectivity from `mLookup_injOn`/`mLookup_stable`, and computability of
+the stage function). Every atomic ingredient the recursion consumes now exists and is verified;
+the assembly (well-founded stage function + its computability + the bijection read-off) is the
+remaining work.
+
+**GOTCHAS (v4.26.0 / this file):**
+- The `<+` Sublist notation did NOT parse here (tokenised as `<` then `+`); use explicit
+  `List.Sublist a b`. Sublist→Nodup transfer is `hNodup.sublist hSub` (`List.Nodup.sublist`).
+- `List.nodup_append` yields the **pairwise** third component `∀ a∈l₁, ∀ b∈l₂, a ≠ b`, NOT
+  `List.Disjoint` — `rw [List.disjoint_left]` fails; `intro a ha b hb hne` directly.
+- `List.filter_sublist` takes p,l **implicit** (`exact List.filter_sublist`, not `… L`).
+- `fwdOrbit f g a 0 = a` is NOT closed by `rw`'s trailing rfl (fwdOrbit is a plain def, not
+  reducible); use `exact`-at-defeq (`rw [hk0] at hk; exact hk`) or an explicit `rfl` tactic.
+- Destructure list pairs to `⟨u,w⟩` and capture clean equalities (`have hwy : w = y := hab2`)
+  so later `rw` sees `w`, not the stuck projection `(u,w).2`.
