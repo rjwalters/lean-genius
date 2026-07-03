@@ -133,7 +133,21 @@
     "type": "insight",
     "title": "The PET Differencing Engine: Strict Degree Descent",
     "content": "The van der Corput finite-difference operator Δ_h p = p(·+h) − p(·) is realized on polynomials as taylor h p − p (fdiff). Because the Taylor shift preserves both degree and leading coefficient (degree_taylor, leadingCoeff_taylor), the top-degree terms cancel under subtraction, so fdiff_degree_lt proves Δ_h strictly lowers the degree of any nonzero polynomial. Iterating this well-founded descent, fdiff_iterate_eq_zero shows deg p + 1 differencings annihilate p entirely — this is exactly the termination that makes PET (Polynomial Exhaustion Technique) induction work, the engine of the Bergelson–Leibman proof. The worked ladders Δ_h X = h, Δ_h X² = 2hX+h², Δ_h² X² = 2h² make the descent concrete for the Sárközy polynomial.",
-    "summary": "Δ_h strictly lowers degree; deg+1 differencings annihilate any polynomial — the PET termination engine."
+    "summary": "Δ_h strictly lowers degree; deg+1 differencings annihilate any polynomial — the PET termination engine.",
+    "mathContext": "$\\Delta_h p := \\mathrm{taylor}\\,h\\,p - p$ realizes $(\\Delta_h p)(n) = p(n+h) - p(n)$. Since $\\deg(\\mathrm{taylor}\\,h\\,p) = \\deg p$ and $\\mathrm{leadingCoeff}(\\mathrm{taylor}\\,h\\,p) = \\mathrm{leadingCoeff}\\,p$, the top terms cancel: $\\deg(\\Delta_h p) < \\deg p$ for $p \\neq 0$ (fdiff_degree_lt). Hence $(\\Delta_h)^{\\deg p + 1} p = 0$ (fdiff_iterate_natDegree_succ). Worked ladder: $\\Delta_h X = h$, $\\Delta_h X^2 = 2hX + h^2$, $\\Delta_h^2 X^2 = 2h^2$, so $(\\Delta_h)^3 X^2 = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "van der Corput finite-difference operator",
+      "Taylor shift (degree- and leading-coefficient-preserving)",
+      "PET (Polynomial Exhaustion Technique) induction",
+      "well-founded degree descent",
+      "Bergelson–Leibman polynomial Szemerédi theorem"
+    ],
+    "prerequisites": [
+      "polynomial degree and leading coefficient (degree_taylor, leadingCoeff_taylor, degree_sub_lt)",
+      "Taylor expansion / shift of polynomials over a commutative ring",
+      "well-founded / strong induction on natDegree"
+    ]
   },
   {
     "id": "ann-furst-oq03-statement",
