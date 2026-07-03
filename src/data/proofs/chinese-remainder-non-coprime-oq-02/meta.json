@@ -152,5 +152,105 @@
       "summary": "pid_span_sup_principal: in a PID, span{m} ⊔ span{n} is principal (= ⟨gcd⟩). pid_noncoprime_crt_iff: element solvability ↔ (a-b) ∈ span{m} ⊔ span{n}. pid_noncoprime_crt_unique: uniqueness mod span{m} ⊓ span{n} (= ⟨lcm⟩). pid_noncoprime_crt_full: combined existence + uniqueness. Covers ℤ, k[X], ℤ[i] and all PIDs."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "ed_crt_iff",
+      "type": "theorem",
+      "statement": "(∃ x, m ∣ (x−a) ∧ n ∣ (x−b)) ↔ gcd(m,n) ∣ (a−b)   (in any Euclidean domain)",
+      "significance": "The flagship non-coprime CRT for Euclidean domains: a simultaneous congruence system is solvable iff gcd(m,n) divides the difference of residues. Generalizes the classical ℤ criterion to every Euclidean domain in one biconditional.",
+      "description": "Packages ed_crt_necessary and ed_crt_sufficient; sufficiency builds a solution from the extended-GCD (Bézout) representation of gcd(m,n)."
+    },
+    {
+      "name": "ed_crt_necessary",
+      "type": "theorem",
+      "statement": "(∃ x, m ∣ (x−a) ∧ n ∣ (x−b)) ⟹ gcd(m,n) ∣ (a−b)",
+      "significance": "The obstruction direction: any common solution forces the compatibility condition gcd(m,n) ∣ (a−b). This is the non-coprime generalization of the coprime CRT's always-solvable case.",
+      "description": "From m ∣ (x−a) and n ∣ (x−b), gcd(m,n) divides both x−a and x−b, hence their difference (a−b) up to sign."
+    },
+    {
+      "name": "ed_crt_sufficient",
+      "type": "theorem",
+      "statement": "gcd(m,n) ∣ (a−b) ⟹ ∃ x, m ∣ (x−a) ∧ n ∣ (x−b)",
+      "significance": "The constructive converse: whenever the compatibility condition holds, an explicit simultaneous solution exists — recovering the full solvability criterion in a Euclidean domain.",
+      "description": "Uses the extended Euclidean algorithm: writes gcd(m,n) = s·m + t·n, scales the Bézout coefficients by (a−b)/gcd, and assembles x solving both congruences."
+    },
+    {
+      "name": "ed_crt_unique",
+      "type": "theorem",
+      "statement": "two solutions x, y of the same congruence pair satisfy lcm(m,n) ∣ (x − y)",
+      "significance": "Uniqueness modulo the lcm: the solution set of a solvable non-coprime system is a single residue class mod lcm(m,n), the exact analogue of uniqueness mod mn in the coprime case.",
+      "description": "Both m and n divide x − y (subtracting the two congruences), and in a Euclidean domain lcm(m,n) is the least common multiple, so lcm(m,n) ∣ (x − y)."
+    },
+    {
+      "name": "linear_factors_coprime",
+      "type": "theorem",
+      "statement": "a ≠ b ⟹ IsCoprime (X − C a) (X − C b) in k[X]",
+      "significance": "The polynomial-ring input that turns CRT into Lagrange interpolation: distinct linear factors over a field are coprime, so evaluation at distinct points behaves like independent moduli.",
+      "description": "Exhibits explicit Bézout coefficients C(b−a)⁻¹ and −C(b−a)⁻¹ witnessing (X−C a)·u + (X−C b)·v = 1."
+    },
+    {
+      "name": "polynomial_crt_two_points",
+      "type": "theorem",
+      "statement": "a ≠ b ⟹ ∃ p : k[X], p(a) = c ∧ p(b) = d",
+      "significance": "Two-point Lagrange interpolation realized as a CRT instance: prescribed values at two distinct points are always achievable, the polynomial-ring specialization of coprime CRT.",
+      "description": "Solves the coprime system modulo (X−C a) and (X−C b) using linear_factors_coprime, reading off a polynomial with the prescribed evaluations."
+    },
+    {
+      "name": "polynomial_crt_uniqueness_mod",
+      "type": "theorem",
+      "statement": "a₁ ≠ a₂, p(a₁)=q(a₁), p(a₂)=q(a₂) ⟹ (X−C a₁)(X−C a₂) ∣ (p − q)",
+      "significance": "Interpolation uniqueness: two polynomials agreeing at distinct points differ by a multiple of the product of linear factors — the k[X] form of uniqueness modulo lcm.",
+      "description": "Each root a_i divides p − q by the factor theorem (dvd_sub_C_eval); coprimality of the linear factors lets their product divide p − q."
+    },
+    {
+      "name": "poly_crt_extend",
+      "type": "theorem",
+      "statement": "IsCoprime m (X − C a), p₀ ⟹ ∃ q, m ∣ (q − p₀) ∧ q(a) = b",
+      "significance": "The inductive step for multi-point interpolation: extend a solution modulo m by one further coprime linear condition, the recursion behind interpolating at many points.",
+      "description": "Applies coprime CRT between m and (X − C a), correcting p₀ by a multiple of m to hit the value b at a."
+    },
+    {
+      "name": "isCoprime_iff_span_sup_eq_top",
+      "type": "theorem",
+      "statement": "IsCoprime a b ↔ span{a} ⊔ span{b} = ⊤",
+      "significance": "The ideal bridge: element-level coprimality is exactly the ideal-theoretic condition that the principal ideals sum to the whole ring. Connects the Bézout picture to the lattice-of-ideals picture used for the general CRT.",
+      "description": "Rewrites ⊤ as the ideal containing 1 (Ideal.eq_top_iff_one) and matches the Bézout witness s·a + t·b = 1 with membership 1 ∈ span{a} ⊔ span{b}."
+    },
+    {
+      "name": "ideal_crt_iff",
+      "type": "theorem",
+      "statement": "(∃ x, (x−a) ∈ I ∧ (x−b) ∈ J) ↔ (a−b) ∈ I ⊔ J",
+      "significance": "The fully general, coordinate-free CRT: solvability of a two-ideal congruence system is equivalent to the difference lying in the ideal sum I ⊔ J. Subsumes the element and Euclidean-domain versions.",
+      "description": "Packages ideal_crt_necessary and ideal_crt_sufficient; the sum I ⊔ J plays the role gcd(m,n) played in the Euclidean-domain statement."
+    },
+    {
+      "name": "pid_crt_coprime_solvable",
+      "type": "theorem",
+      "statement": "IsCoprime m n ⟹ ∃ x, m ∣ (x−a) ∧ n ∣ (x−b)   (in a PID)",
+      "significance": "The classical coprime CRT recovered in any principal ideal domain: coprime moduli always admit a simultaneous solution, the special case that underlies ring-of-integers and polynomial applications.",
+      "description": "Extracts a Bézout identity s·m + t·n = 1 from coprimality and constructs x = a·t·n + b·s·m solving both congruences."
+    },
+    {
+      "name": "pid_noncoprime_crt_iff",
+      "type": "theorem",
+      "statement": "(∃ x, m ∣ (x−a) ∧ n ∣ (x−b)) ↔ (a−b) ∈ span{m} ⊔ span{n}   (in a PID)",
+      "significance": "The full non-coprime CRT criterion in a PID, phrased through ideals: solvability holds exactly when the residue difference lies in the sum of the modulus ideals — the ideal-theoretic gcd condition.",
+      "description": "Specializes ideal_crt_iff to the principal ideals span{m}, span{n}, identifying I ⊔ J with the gcd ideal."
+    },
+    {
+      "name": "pid_noncoprime_crt_full",
+      "type": "theorem",
+      "statement": "(a−b) ∈ span{m} ⊔ span{n} ⟹ solvability AND uniqueness modulo lcm(m,n)",
+      "significance": "The capstone combining existence and uniqueness for non-coprime PID systems in one statement: the compatibility condition delivers both a solution and its uniqueness class, completing the CRT picture.",
+      "description": "Conjoins pid_noncoprime_crt_iff (existence) with pid_noncoprime_crt_unique (any two solutions differ by a multiple of lcm)."
+    },
+    {
+      "name": "element_coprime_crt_from_ideal",
+      "type": "theorem",
+      "statement": "IsCoprime m n ⟹ ∃ x, m ∣ (x−a) ∧ n ∣ (x−b)",
+      "significance": "Derives the concrete element-level coprime CRT from the abstract ideal CRT, demonstrating that the ideal formulation genuinely specializes back to the familiar divisibility statement.",
+      "description": "Turns coprimality into span{m} ⊔ span{n} = ⊤ (isCoprime_iff_span_sup_eq_top), so any a−b lies in the sum and ideal_crt_sufficient applies."
+    }
+  ]
 }
