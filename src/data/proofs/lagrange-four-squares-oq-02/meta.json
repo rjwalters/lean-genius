@@ -238,5 +238,98 @@
       "summary": "Tabulated recap of all results (0 sorries; computational results via `native_decide`, which depends on `Lean.ofReduceBool`) and key insights: per-family constant contributions, the contribution value set, orbit-stabilizer structure, and the 24:1 symmetry ratio."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "trivialType_contribution",
+      "type": "theorem",
+      "statement": "∀ k > 0, (trivialType k).contribution = 8",
+      "significance": "The (k,0,0,0) family — a single nonzero coordinate — always contributes exactly 8, uniformly in k. This is the smallest nonzero contribution and the base of the whole classification: pattern [3,1] gives 4 orderings and sign factor 2¹ = 2, so 4·2 = 8.",
+      "description": "Proved for ALL k > 0 (not just checked at k = 1) by reducing (trivialType k).permutations to (trivialType 1).permutations via a dedup/count computation, then transporting the native_decide-verified base case k = 1."
+    },
+    {
+      "name": "allEqualType_contribution",
+      "type": "theorem",
+      "statement": "∀ k > 0, (allEqualType k).contribution = 16",
+      "significance": "The maximally symmetric nonzero type (k,k,k,k): one ordering but all 2⁴ = 16 sign choices, giving contribution 16 for every k. The general-k proof shows the value is a genuine invariant of the type family, not an accident of small n.",
+      "description": "signFactor = 16 (all four entries nonzero) and a single permutation; the k → 1 permutation reduction transports the native_decide base case (allEqualType 1).contribution = 16."
+    },
+    {
+      "name": "threeEqualType_contribution",
+      "type": "theorem",
+      "statement": "∀ k > 0, (threeEqualType k).contribution = 32",
+      "significance": "The (0,k,k,k) family contributes 32 for all k: 4 orderings of the [3,1] multiplicity pattern times sign factor 2³ = 8. Confirms the contribution depends only on the multiplicity/zero pattern, not on the magnitude k.",
+      "description": "nonzeroCount = 3 forces signFactor = 8; the permutation multiset of (0,k,k,k) matches that of (0,1,1,1) for every k > 0, transporting the native_decide base case."
+    },
+    {
+      "name": "twoPairType_contribution",
+      "type": "theorem",
+      "statement": "∀ a b, 0 < a < b → (twoPairType a b).contribution = 96",
+      "significance": "The (a,a,b,b) two-pair family contributes 96 for every valid a < b: the [2,2] pattern has 6 orderings and all four entries nonzero (sign factor 16), so 6·16 = 96. A two-parameter family proved uniformly.",
+      "description": "signFactor = 16; the permutation multiset of (a,a,b,b) equals that of (1,2,1,2)'s canonical form for all 0 < a < b (using a ≠ b), transporting the native_decide base case at (1,2)."
+    },
+    {
+      "name": "twoEqualType_contribution",
+      "type": "theorem",
+      "statement": "∀ k > 0, (twoEqualType k).contribution = 24",
+      "significance": "The (0,0,k,k) family contributes 24 for all k: the [2,2] pattern gives 6 orderings but only two nonzero entries, so sign factor 2² = 4 and 6·4 = 24. Same permutation count as two-pair, smaller sign factor — isolating the role of zeros.",
+      "description": "nonzeroCount = 2 ⇒ signFactor = 4; permutation reduction to (0,0,1,1) transports the native_decide base case (twoEqualType 1).contribution = 24."
+    },
+    {
+      "name": "twoNonzeroDistinct_contribution",
+      "type": "theorem",
+      "statement": "∀ a b, 0 < a < b → (twoNonzeroDistinct a b).contribution = 48",
+      "significance": "The (0,0,a,b) family with a < b contributes 48 uniformly: the [2,1,1] pattern gives 12 orderings and two nonzero entries (sign factor 4), so 12·4 = 48. Completes the six general contribution theorems that anchor the classification.",
+      "description": "signFactor = 4; the permutation multiset of (0,0,a,b) reduces to (0,0,1,2)'s for all 0 < a < b (using a, b nonzero and distinct), transporting the native_decide base case at (1,2)."
+    },
+    {
+      "name": "allDistinctType_contribution",
+      "type": "theorem",
+      "statement": "allDistinctType.contribution = 384",
+      "significance": "The fully generic type (1,2,3,4) achieves the maximum contribution 384 = 24 × 16 = |S₄| · 2⁴ — all 24 orderings and all 16 sign choices distinct. This is the top of the contribution value set and the full symmetry-group order.",
+      "description": "Discharged by native_decide (depends on Lean.ofReduceBool): the model type n = 30 with entries 1,2,3,4 realizes every distinct signed ordering."
+    },
+    {
+      "name": "symmetry_ratio_eq_factorial",
+      "type": "theorem",
+      "statement": "384 / 16 = Nat.factorial 4",
+      "significance": "The ratio between the maximum contribution (384, all-distinct) and the all-equal contribution (16) is exactly 4! = 24 = |S₄|. Makes the orbit-stabilizer bookkeeping explicit: the extra factor is precisely the number of coordinate permutations.",
+      "description": "A pure arithmetic identity (norm_num) pinning the 24:1 symmetry ratio to the order of the symmetric group S₄."
+    },
+    {
+      "name": "signFactor_ge_two_of_n_pos",
+      "type": "theorem",
+      "statement": "∀ n > 0, ∀ t : RepType n, 2 ≤ t.signFactor",
+      "significance": "A structural lower bound: any representation of a positive n has at least one nonzero coordinate, so its sign factor 2^(nonzeroCount) is at least 2. Rules out the trivial sign factor 1 (reserved for n = 0) and underpins the contribution-value classification.",
+      "description": "Combines nonzeroCount_pos_of_n_pos with monotonicity of 2^(·): 2 = 2¹ ≤ 2^(nonzeroCount) whenever the nonzero count is positive."
+    },
+    {
+      "name": "nonzeroCount_pos_of_n_pos",
+      "type": "theorem",
+      "statement": "∀ n > 0, ∀ t : RepType n, 0 < t.nonzeroCount",
+      "significance": "Every representation of a positive integer uses at least one nonzero square. Elementary but load-bearing: it is what forbids the empty (all-zero) pattern for n > 0 and drives the sign-factor and contribution lower bounds.",
+      "description": "Follows from a₄_pos_of_n_pos (the largest sorted entry is positive) by a case split on which coordinates vanish."
+    },
+    {
+      "name": "a₄_pos_of_n_pos",
+      "type": "theorem",
+      "statement": "∀ n > 0, ∀ t : RepType n, 0 < t.a₄",
+      "significance": "In any sorted representation of n > 0 the largest coordinate a₄ is strictly positive — otherwise all four sorted entries would be zero and n would be 0. The seed fact for all positivity and lower-bound results in the file.",
+      "description": "By contradiction: if a₄ = 0 then the sortedness constraint forces a₁ = a₂ = a₃ = 0, and the sum constraint gives n = 0, contradicting n > 0."
+    },
+    {
+      "name": "orbit_stabilizer_allEqual",
+      "type": "theorem",
+      "statement": "∀ k > 0, 384 / (allEqualType k).contribution = 24",
+      "significance": "Recasts each contribution as an index in the full symmetry group of order 384: the all-equal type has stabilizer of size 24 = 4!, since permuting its four equal coordinates fixes it. One of six orbit-stabilizer identities that read the contribution table group-theoretically (contribution = 384 / |stabilizer|).",
+      "description": "Immediate from allEqualType_contribution (= 16) and 384 / 16 = 24 by rewriting."
+    },
+    {
+      "name": "contribution_one_is_zero",
+      "type": "theorem",
+      "statement": "(0,0,0,0 : RepType 0).contribution = 1",
+      "significance": "The degenerate base case: n = 0 has the single all-zero representation with no sign freedom, contributing 1 — the smallest value in the set {1, 8, 16, 24, 32, 48, 64, 96, 192, 384} and the only one below 8. Fixes the bottom of the contribution lattice.",
+      "description": "Discharged by native_decide (depends on Lean.ofReduceBool) on the unique RepType 0 element."
+    }
+  ],
   "sorries": 0
 }
