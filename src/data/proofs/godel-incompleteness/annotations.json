@@ -15,6 +15,11 @@
       "Hilbert's Program",
       "formal systems",
       "metamathematics"
+    ],
+    "prerequisites": [
+      "formal systems and axioms",
+      "consistency and completeness",
+      "Hilbert's Program"
     ]
   },
   {
@@ -33,6 +38,11 @@
       "formal syntax",
       "first-order logic",
       "Peano Arithmetic"
+    ],
+    "prerequisites": [
+      "well-formed formulas and formal syntax",
+      "first-order logic",
+      "Peano / first-order arithmetic"
     ]
   },
   {
@@ -51,6 +61,11 @@
       "proof",
       "derivation",
       "syntactic consequence"
+    ],
+    "prerequisites": [
+      "formal proofs and inference rules",
+      "the provability predicate ⊢φ",
+      "syntactic vs. semantic consequence"
     ]
   },
   {
@@ -69,6 +84,11 @@
       "encoding",
       "arithmetization",
       "metamathematics"
+    ],
+    "prerequisites": [
+      "encoding syntax as natural numbers",
+      "arithmetitization of metamathematics",
+      "a system reasoning about its own syntax"
     ]
   },
   {
@@ -149,6 +169,11 @@
       "fixed point",
       "Liar's Paradox",
       "diagonalization"
+    ],
+    "prerequisites": [
+      "self-reference and fixed points",
+      "the diagonal (fixed-point) lemma",
+      "expressible properties and Gödel codes"
     ]
   },
   {
@@ -250,6 +275,11 @@
       "Hilbert",
       "formalism",
       "finitism"
+    ],
+    "prerequisites": [
+      "Hilbert's formalism and finitism",
+      "completeness and consistency of a system",
+      "the First and Second Incompleteness Theorems"
     ]
   },
   {
@@ -268,6 +298,11 @@
       "axiom extension",
       "ordinal analysis",
       "transfinite hierarchy"
+    ],
+    "prerequisites": [
+      "undecidable sentences (the Gödel sentence G)",
+      "extending a theory by new axioms",
+      "transfinite/ordinal hierarchies of theories"
     ]
   },
   {
@@ -286,6 +321,11 @@
       "mechanism",
       "Lucas-Penrose argument",
       "philosophy of mind"
+    ],
+    "prerequisites": [
+      "the Gödel sentence and its truth",
+      "the Lucas–Penrose argument",
+      "philosophy of mind (mechanism)"
     ]
   }
 ]
