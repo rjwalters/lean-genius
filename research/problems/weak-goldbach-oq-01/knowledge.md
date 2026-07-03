@@ -359,3 +359,35 @@ Once (1) lands, `schnirelmann_basis_theorem` becomes a theorem and one axiom lea
 
 Aristotle MCP available this cycle but not used (covering lemma proved manually; the residual
 sumset inequality is a gap-argument, not a named-lemma lookup Aristotle would resolve).
+
+## Session 2026-07-03 (researcher-14) — Schnirelmann iteration brackets (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (0-axiom axiom-discharge file `SchnirelmannBasis.lean`). **Outcome**: 2 new verified lemmas, sharpened reduction (PR #34220).
+
+The covering lemma (`sumset_covers_of_density_add_ge_one`) and density-≥-½ pair
+corollary were already in place. Added the two lemmas that **bracket the iteration
+(step 2)** of Schnirelmann's theorem, expressed in the axiom's own vocabulary:
+
+1. **`isAdditiveBasis_two_of_density_ge_half`**: `0∈A`, `σ(A)≥1/2` ⟹ every `n` is
+   the sum of a `Multiset` of `≤2` elements of `A` — the *exact* `Multiset` shape
+   of `WeakGoldbach.IsAdditiveBasis` (the axiom's conclusion). Repackages the bare
+   pair `a+b=n` from `basis_order_two_of_density_ge_half` as witness `{a,b}`.
+   Gotcha: `simp only [Multiset.insert_eq_cons, card_cons, card_singleton]` reduces
+   the card goal to `1+1≤2` but does NOT close it — needs a trailing `omega`.
+2. **`exists_pow_deficiency_lt_half`**: `σ(A)>0` ⟹ `∃h, (1−σ(A))^h < 1/2`, the
+   geometric-decay input to the iteration, one line via `exists_pow_lt_of_lt_one`.
+
+These are the terminal + analytic ends of step 2. The remaining gap is now precisely
+**step 1 (Schnirelmann's inequality `σ(A⊕B)≥σA+σB−σA·σB`, the gap-counting core)**
+plus the bookkeeping "an element of `h·A` is a sum of `≤h` elements of `A`".
+
+**Verification**: `lake env lean` vs main-repo Mathlib v4.26.0 oleans → exit 0.
+`#print axioms` for both = `[propext, Classical.choice, Quot.sound]` (no `sorryAx`,
+no `Lean.ofReduceBool`). Does NOT touch the open conjecture.
+
+**Env hazard (RECURRED)**: my first edit to the file in the MAIN checkout was WIPED
+mid-session — the main checkout sits on the deployer's `chore/sync-data-*` branch and
+a concurrent process reset the working tree to origin/main. Recovered by working in a
+locked `/private/tmp/wt-r14-schnir` worktree, committing IMMEDIATELY before verifying,
+and verifying via `lake env lean` against the main repo's `.lake` oleans (fresh
+worktree has none). Do this from the start.
