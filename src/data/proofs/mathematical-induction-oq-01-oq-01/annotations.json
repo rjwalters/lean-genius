@@ -36,15 +36,27 @@
     "prerequisites": ["Ordinal.log and mod", "well-founded recursion"]
   },
   {
-    "id": "mathind-oq0101-ann-structure",
+    "id": "mathind-oq0101-ann-exponent",
     "proofId": "mathematical-induction-oq-01-oq-01",
-    "range": { "startLine": 78, "endLine": 88 },
+    "range": { "startLine": 78, "endLine": 83 },
     "type": "theorem",
-    "title": "Leading exponent and base case",
-    "content": "cnf_exponent_le_log bounds every exponent in CNF omega o by log omega o (Ordinal.CNF.fst_le_log), so the leading exponent equals log omega o — the base-omega analogue of the degree of a polynomial. cantor_normal_form_zero gives the base case CNF omega 0 = [] (Ordinal.CNF.zero_right), the empty sum at which the recursion bottoms out.",
-    "mathContext": "$p \\in \\mathrm{CNF}\\,\\omega\\,o \\Rightarrow p_1 \\le \\log_\\omega o;\\qquad \\mathrm{CNF}\\,\\omega\\,0 = [\\,].$",
+    "title": "The leading exponent is log omega o",
+    "content": "cnf_exponent_le_log bounds every exponent appearing in CNF omega o by log omega o (Ordinal.CNF.fst_le_log). Since the CNF list is sorted with strictly decreasing exponents, the bound is attained by the first entry, so the leading exponent equals log omega o exactly — the base-omega analogue of the degree of a polynomial. This is why log omega o is the natural descent parameter: the recursion peels off the omega^(log omega o) term identified here, connecting the exponent bound to the descent measure of the previous annotation.",
+    "mathContext": "$p \\in \\mathrm{CNF}\\,\\omega\\,o \\Rightarrow p_1 \\le \\log_\\omega o,$ with equality at the leading term.",
     "significance": "supporting",
-    "relatedConcepts": ["Ordinal.CNF.fst_le_log", "Ordinal.CNF.zero_right", "Ordinal.log"],
+    "relatedConcepts": ["Ordinal.CNF.fst_le_log", "Ordinal.log", "degree analogy", "leading term"],
+    "prerequisites": ["Ordinal.CNF API", "Ordinal.log"]
+  },
+  {
+    "id": "mathind-oq0101-ann-basecase",
+    "proofId": "mathematical-induction-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "theorem",
+    "title": "The recursion base case: CNF of zero is empty",
+    "content": "cantor_normal_form_zero records the base case CNF omega 0 = [] (Ordinal.CNF.zero_right): the Cantor normal form of the ordinal 0 is the empty list, whose foldr reconstruction is the empty sum 0. This is the terminating case of the transfinite recursion — the descent measure cnf_recursion_decreases keeps shrinking o until it reaches 0, at which point this base case halts the construction. Together with the existence theorem it closes the recursion loop: nonzero ordinals recurse via the strictly smaller tail, and 0 stops here.",
+    "mathContext": "$\\mathrm{CNF}\\,\\omega\\,0 = [\\,],$ the empty sum reconstructing $0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ordinal.CNF.zero_right", "base case", "transfinite recursion", "empty sum"],
     "prerequisites": ["Ordinal.CNF API"]
   }
 ]
