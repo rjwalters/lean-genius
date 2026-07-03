@@ -16,7 +16,11 @@
       "Density",
       "Rationals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "density of a set in an interval",
+      "consecutive integers"
+    ]
   },
   {
     "id": "ann-e964-tau",
@@ -34,7 +38,11 @@
       "Arithmetic functions"
     ],
     "mathContext": "See annotation content for formal details of divisor function",
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer",
+      "Finset cardinality",
+      "Nat.divisors in Mathlib"
+    ]
   },
   {
     "id": "ann-e964-properties",
@@ -52,7 +60,11 @@
       "Prime powers"
     ],
     "mathContext": "See annotation content for formal details of basic properties of tau",
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "multiplicative arithmetic functions",
+      "prime powers"
+    ]
   },
   {
     "id": "ann-e964-ratio",
@@ -70,7 +82,11 @@
       "Ratios"
     ],
     "mathContext": "See annotation content for formal details of divisor ratio",
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "ratios of reals",
+      "consecutive integers n and n+1"
+    ]
   },
   {
     "id": "ann-e964-ratioset",
@@ -133,7 +149,10 @@
       "Density conjectures"
     ],
     "mathContext": "See annotation content for formal details of the erdos conjecture",
-    "prerequisites": []
+    "prerequisites": [
+      "the ratio set {τ(n+1)/τ(n)}",
+      "density in (0,∞)"
+    ]
   },
   {
     "id": "ann-e964-eberhard",
@@ -152,7 +171,11 @@
       "2025",
       "Rationals"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor ratio τ(n+1)/τ(n)",
+      "positive rationals",
+      "Eberhard's 2025 theorem"
+    ]
   },
   {
     "id": "ann-e964-true",
@@ -170,7 +193,11 @@
       "Proof"
     ],
     "mathContext": "See annotation content for formal details of the conjecture is true",
-    "prerequisites": []
+    "prerequisites": [
+      "Eberhard's theorem",
+      "density from a dense subset of rationals",
+      "the ratio set"
+    ]
   },
   {
     "id": "ann-e964-examples",
@@ -188,7 +215,10 @@
       "Small cases"
     ],
     "mathContext": "See annotation content for formal details of examples",
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor function τ(n)",
+      "computing τ on small integers"
+    ]
   },
   {
     "id": "ann-e964-extreme",
@@ -206,7 +236,10 @@
       "Unbounded"
     ],
     "mathContext": "See annotation content for formal details of extreme ratios",
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor ratio τ(n+1)/τ(n)",
+      "unbounded / arbitrarily small sequences"
+    ]
   },
   {
     "id": "ann-e964-ktuple",
@@ -224,7 +257,11 @@
       "Twin primes",
       "Hardy-Littlewood"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "admissible prime tuples",
+      "the Hardy–Littlewood k-tuple conjecture",
+      "twin primes"
+    ]
   },
   {
     "id": "ann-e964-allrationals",
@@ -242,7 +279,11 @@
       "Exact values"
     ],
     "mathContext": "See annotation content for formal details of all rationals appear",
-    "prerequisites": []
+    "prerequisites": [
+      "positive rationals p/q",
+      "exact values of τ(n+1)/τ(n)",
+      "surjectivity onto ℚ₊"
+    ]
   },
   {
     "id": "ann-e964-average",
@@ -260,7 +301,11 @@
       "Asymptotics"
     ],
     "mathContext": "See annotation content for formal details of average ratio",
-    "prerequisites": []
+    "prerequisites": [
+      "averages of a sequence",
+      "Filter.Tendsto and atTop",
+      "the divisor ratio"
+    ]
   },
   {
     "id": "ann-e964-summary",
@@ -278,6 +323,10 @@
       "Solved problems"
     ],
     "mathContext": "See annotation content for formal details of summary",
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor ratio problem",
+      "Eberhard's resolution",
+      "density in (0,∞)"
+    ]
   }
 ]
