@@ -1,5 +1,37 @@
 # Research State: sperner-mathlib4-oq-02
 
+## Iteration 19 addition (researcher-5, VERIFIED 0-axiom — host `lake env lean v4.26.0`, `#print axioms` = propext/Classical.choice/Quot.sound only)
+Added `proofs/Proofs/SpernerTuckerCrossPolytopeEquator.lean` (245 LOC, 18 thm / 3 def,
+0 sorries, 0 axioms; `#print axioms` on all guarded theorems = **propext / Classical.choice /
+Quot.sound only** — no `sorryAx`, no `Lean.ofReduceBool`, and **no** `decide` / `native_decide`).
+
+**Makes the hemisphere door-split GLOBAL and STRUCTURAL.** Iterations building the cross-polytope
+substrate (`SpernerTuckerCrossPolytopeBoundary` — the antipodally symmetric `∂◊^{n+1}` with
+facet-adjacency the `(n+1)`-cube `crossGraph n`; `SpernerTuckerCrossPolytopeHemisphere` — the
+coordinate-`0` drop bijection and *per-facet* "one boundary door, `n+1` interior doors" split)
+stated the door split one facet at a time. This file promotes it to a single global object:
+
+- `equatorFlip s := flipAt n s 0` — flip the sign of coordinate `0` — is a **fixed-point-free
+  involution** (`equatorFlip_involutive`, `equatorFlip_free`) AND a **graph automorphism** of the
+  whole cube (`equatorFlip_aut`), and is a genuine cube edge at every facet (`equatorFlip_adj`).
+- `boundary_door_unique` — among a facet's `n+1` cube neighbours, **exactly one** crosses the
+  equator (changes coordinate `0`), namely `equatorFlip s`; `interior_door_count` — the other `n`
+  stay. This is the global (all-facets-at-once) form of the hemisphere file's per-facet split.
+- `card_posHemisphere_eq_negHemisphere` — `equatorFlip` is a **perfect matching** between the two
+  hemispheres (`Finset.card_bij`); `hemispheres_partition` — they partition all facets; hence
+  `card_facet_succ`: **`card (Facet (n+1)) = 2 · card (Facet n)`**, the **doubling recursion**
+  proved *from the geometric matching*, not from `2^{n+1}` arithmetic.
+
+This is exactly the hypercube **prism decomposition** `Q_{n+2} = Q_{n+1} □ K₂`: two copies of the
+lower cross-polytope graph joined by the equatorial boundary-door matching — the global form of the
+door-count recursion `#interior = n`, `#boundary = 1` that the open `TuckerTower.bridge` runs the
+dimension induction on. Honest status: geometric infrastructure for `bridge`, **not** a proof of
+`bridge`; it does not install the Tucker labelling turning cube edges into *complementary* doors
+(that is `SpernerTuckerCrossPolytopeLabelling`), and the asymmetric almost-complementary structure
+carrying the odd seed remains the open frontier. Verified via host `lake env lean` over the
+main-repo Mathlib `.olean` cache (single-file check; no `lake build`). No new gallery child — this
+is substrate infrastructure for the parent, in the vein of the Boundary/Hemisphere/Connected files.
+
 ## Iteration 18 addition (researcher-14, verified 0-axiom — host `lake env lean v4.26.0`, `#print axioms` = propext/Classical.choice/Quot.sound only)
 Added `proofs/Proofs/SpernerTuckerHexagonDirectedSignDoor.lean` (189 LOC, 7 thm / 8 def,
 0 sorries, 0 axioms; `#print axioms` on all 6 guarded theorems = **propext / Classical.choice /
