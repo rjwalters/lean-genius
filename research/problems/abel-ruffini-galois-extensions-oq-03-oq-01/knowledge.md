@@ -68,3 +68,58 @@ Insights accumulated during research on this problem.
   transpositions), reducing support to 3.
 - On completion: promote to a verified gallery entry + consider a Mathlib PR
   (general `alternatingGroup.isSimpleGroup`).
+
+---
+
+## Session 2026-07-02 (Session 2, researcher-14) — Decompose the crux; discharge the scaffolding
+
+**Mode**: CONTINUE (on #33855) · **Outcome**: progress (REDUCE) · **PR**: (this session)
+
+### What I did
+- Took researcher-4's monolithic `sorry` (the whole 3-cycle containment lemma) and
+  **decomposed + discharged the entire surrounding argument**, leaving a *single*
+  sharply-focused `sorry` (the strict-support-decrease commutator step for
+  `#support ≥ 4`).
+- **Proved (0 sorry, machine-checked)** four reusable lemmas:
+  - `three_le_card_support_of_mem` — a nontrivial *even* perm moves ≥ 3 points
+    (support ≠ 0 via `support_eq_empty_iff`; ≠ 1 via `card_support_ne_one`; ≠ 2
+    because `card_support_eq_two → IsSwap → sign = -1`, contradicting evenness).
+  - `commutator_mem_of_normal` — `τ σ τ⁻¹ σ⁻¹ ∈ H` for `H ⊴ Aₙ`, `σ ∈ H`
+    (`Normal.conj_mem` + `inv_mem`).
+  - `exists_min_support_ne_one` — minimal-support nonidentity element exists
+    (`Finset.exists_min_image` over `univ.filter (· ∈ H ∧ · ≠ 1)`).
+  - `support_commutator_subset` — **the containment half of the crux**: if
+    `τ.support ⊆ σ.support` then `(τστ⁻¹σ⁻¹).support ⊆ σ.support`
+    (`τ` maps `σ.support` into itself; `support_mul_le` + `support_conj` +
+    `support_inv`).
+- Reassembled `isThreeCycle_of_min_support` (the crux) with its `3 ≤ #support` and
+  `#support = 3 ⇒ 3-cycle` branches proved in-line; `exists_mem_isThreeCycle_of_normal`
+  and `isSimpleGroup_alternating` now compile (0 sorry beyond the crux).
+- **Verified**: single-file `lake env lean` against Mathlib v4.26.0 → EXIT 0, exactly
+  one `sorry` warning; 1 code-level `sorry` (line ~233). md5-checked the worktree file.
+
+### Key findings
+- The remaining kernel is exactly: *for a minimal-support even σ with `#support ≥ 4`,
+  produce a 3-cycle `τ ⊆ σ.support` whose commutator `[τ,σ]` is `≠ 1` and fixes at
+  least one point that σ moves.* Given that, `support_commutator_subset` +
+  `commutator_mem_of_normal` + minimality + `card` monotonicity finish it (the
+  commutator lands strictly inside `σ.support`, contradicting minimality).
+- Two Lean gotchas fixed: `simp [Subtype.ext_iff]` and `simp [Finset.mem_filter]`
+  both hit `maximum recursion depth` on nested-subgroup membership — replaced with
+  `OneMemClass.coe_eq_one` and explicit `Finset.mem_filter.mp/.mpr`.
+
+### Blockers (environment, not mathematical)
+- Aristotle MCP still down all session (`Resource not found` / 404).
+- Main-repo Mathlib olean cache intermittently corrupted by concurrent builds
+  (`*.olean.private invalid header`); elaborated against a *sibling worktree's*
+  warm cache (`lg-r13-oq03/proofs`) instead. Cache location churns as other agents
+  run `lake update`.
+
+### Next steps
+- The sole remaining `sorry` (`isThreeCycle_of_min_support`, `#support ≥ 4`): supply
+  the existence of the adapted 3-cycle `τ` and the "fixes a moved point" property.
+  Split on cycle type (Case A: a cycle of length ≥ 3; Case B: ≥ 2 disjoint
+  transpositions). This is the ~300–800-line kernel; best via Aristotle (down) or a
+  focused session.
+- On completion: verified gallery entry + candidate Mathlib PR (general
+  `alternatingGroup.isSimpleGroup`).
