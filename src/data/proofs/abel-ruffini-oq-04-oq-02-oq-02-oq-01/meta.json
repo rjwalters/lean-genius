@@ -18,11 +18,20 @@
       "research",
       "extension"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
     "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      "alternatingGroup.normal_kleinFour (V₄ ◁ A₄ normal)",
+      "alternatingGroup.kleinFour_eq_commutator (V₄ = [A₄,A₄])",
+      "alternatingGroup.card_of_card_eq_four (|A₄|=12), alternatingGroup.kleinFour_card_of_card_eq_four (|V₄|=4)",
+      "alternatingGroup.kleinFour_isKleinFour (V₄ is a Klein four-group)",
+      "mulEquivOfPrimeCardEq (prime-order quotient ≅ Multiplicative (ZMod 3))",
+      "IsKleinFour.nonempty_mulEquiv (V₄ ≅ Multiplicative (ZMod 2 × ZMod 2))",
+      "Subgroup.card_eq_card_quotient_mul_card_subgroup (Lagrange, for |A₄/V₄|=3)"
+    ],
     "assumptions": "None. 0 axiom declarations, 0 sorries, no native_decide. #print axioms on composition_series_A4, quotient_iso_zmod3, and v4_iso_zmod2_sq returns only propext, Classical.choice, Quot.sound (the three foundational axioms). Verified with lake env lean against Mathlib 4.26.0.",
     "lineCount": 136,
     "theoremCount": 11,
