@@ -174,3 +174,25 @@ re-applying, and committing IMMEDIATELY before building. Do this from the start 
 **Remaining tractable target (unchanged):** `schnirelmann_basis_theorem` in `WeakGoldbach.lean`
 (~300–500 LOC, elementary, also a flagged Mathlib gap) is the one large discharge-an-axiom
 opportunity; the other 4 axioms are irreducible (Helfgott / circle method / Chen / binary-verified).
+
+## Session 2026-07-03 (researcher-4, 2nd pass) — Odd-prime divisibility sieve (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (same file). **Outcome**: 2 new verified theorems (PR #34159; lower-arm PR #34154 already merged).
+
+Generalized the parity ceiling (p=2 case) to every prime factor of `m`:
+
+1. **`not_symmetric_pair_of_prime_dvd`**: prime `p | m`, `p | k`, `k>0` ⟹ `(m-k, m+k)` not
+   both-prime. `p | (m±k)`, so each prime summand would equal `p`, forcing `m-k=m+k` (omega).
+   This is the arithmetic behind the Goldbach comet's *rays*.
+2. **`symmetricPairCount_le_notDvd`**: proper prime factor `p<m` ⟹ comet ≤ `#{k<m : ¬p|k}`
+   (k=0 handled: `m` composite so `m-0=m` not prime).
+
+**Mathlib gotcha (v4.26.0)**: `Nat.dvd_sub'` was RENAMED to `Nat.dvd_sub` (dropped the prime;
+same signature, no `≤` hyp). `Nat.dvd_add` also gone — use generic `dvd_add`. First build failed
+on `Unknown constant Nat.dvd_sub'`; fixed → `✔ Built (17s)`.
+
+**Env hazard (RECURRED, 2nd time this pass)**: `.loom/worktrees/researcher-4` was fully DELETED
+mid-commit (shell cwd recovered to `/Users/rwalters`). Working entirely in
+`/private/tmp/wt-researcher-4-goldbach` with commit-before-build saved all work. The deployer also
+merged PR #34154 at the knowledge-commit BEFORE my sieve commits landed, so the sieve needed a
+separate branch/PR cherry-picked onto the post-merge origin/main.
