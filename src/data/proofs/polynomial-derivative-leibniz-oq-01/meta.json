@@ -158,6 +158,11 @@
       "targetId": "leibniz-pi",
       "relationship": "related",
       "description": "Shares Leibniz's name only: leibniz-pi is his infinite SERIES for π, this entry is his PRODUCT RULE for polynomial derivatives."
+    },
+    {
+      "targetId": "vandermonde-interpolation-oq-01",
+      "relationship": "related",
+      "description": "Lagrange-interpolation companion. This entry evaluates the split-polynomial derivative at a node to obtain p'(rᵢ₀) = ∏_{j≠i₀}(rᵢ₀ − rⱼ) — precisely the Lagrange denominator whose reciprocal weights the interpolation basis. That entry proves Vandermonde nonvanishing and the resulting existence/uniqueness of polynomial interpolation through the same distinct nodes rᵢ; the nonvanishing of the denominator here (eval_derivative_prod_X_sub_C_ne_zero over a domain with distinct roots) is the local, derivative-side counterpart of the global Vandermonde nonvanishing there."
     }
   ],
   "references": [
