@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-header-sperner-oq02-oq09",
+    "proofId": "sperner-mathlib4-oq-02-oq-09",
+    "range": {
+      "startLine": 1,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Sign door vs. genuine Tucker witness: quantifying the gap",
+    "content": "The directed pos→neg sign door rule of oq-02-oq-08 reads only signs (sgn : Fin 4 → ZMod 2, {+1,+2}↦0, {−1,−2}↦1) and fires on any oriented +→− side. A genuine Tucker witness is stronger: a side whose two labels are exactly antipodal, Compl x y := x = negL y (+1/−1 or +2/−2, not the merely opposite-sign +1/−2). The sibling entry forced exactly three interior degree-1 disc rooms under the sign rule; this entry asks how many of those three carry a GENUINE complementary door, and finds the answer can be zero. The seed count 3 therefore over-states the interior Tucker witnesses: no Tucker conclusion follows from the directed interior seed alone. All statements are decided by kernel decide over the 4⁴ = 256 antipodal labellings (a,b,c,d), so the axiom profile is propext / Classical.choice / Quot.sound only — no sorryAx, no Lean.ofReduceBool."
+  },
+  {
+    "id": "ann-compl-sign-sperner-oq02-oq09",
+    "proofId": "sperner-mathlib4-oq-02-oq-09",
+    "range": {
+      "startLine": 101,
+      "endLine": 111
+    },
+    "type": "insight",
+    "title": "Complementarity forces opposite signs (necessary, not sufficient)",
+    "content": "Compl x y := x = negL y is exact antipodality on the four labels; compl_imp_opposite_sign proves Compl x y ⇒ sgn x = sgn y + 1 over all Fin 4 × Fin 4 by decide. So every genuine witness is in particular a sign edge — the sign door graph never fails to see a witness ON SIGN. The gap is entirely elsewhere: an opposite-sign side need not be antipodal (+1→−2), and, because Compl is symmetric while dir counts only the +→− orientation, a complementary spoke oriented −→+ is not a door at all. The sign bit is a necessary but insufficient shadow of the Tucker-witness relation."
+  },
+  {
+    "id": "ann-subcount-sperner-oq02-oq09",
+    "proofId": "sperner-mathlib4-oq-02-oq-09",
+    "range": {
+      "startLine": 143,
+      "endLine": 157
+    },
+    "type": "insight",
+    "title": "The genuine interior witnesses are a sub-count of the three seed rooms",
+    "content": "intDoorCompl a b c d i tests whether room i's single interior directed door (on spoke d→vᵢ or v_{i+1}→d) sits on an actually-complementary pair; interiorComplDoor counts the interior degree-1 rooms with that test true. interiorComplDoor_le_interiorDeg1 decides interiorComplDoor ≤ interiorDeg1 (= 3) over all 256 labellings: whatever true interior witnesses exist are among the three seed rooms. The seed therefore contains the interior witnesses it finds — but, as the separation below shows, it may find none."
+  },
+  {
+    "id": "ann-witnessfree-sperner-oq02-oq09",
+    "proofId": "sperner-mathlib4-oq-02-oq-09",
+    "range": {
+      "startLine": 170,
+      "endLine": 187
+    },
+    "type": "theorem",
+    "title": "The interior seed can be entirely witness-free — yet Tucker holds on the boundary",
+    "content": "interior_seed_can_be_witness_free decides that at a = b = c = +1 (= 0), centre d = +2 (= 1) the directed rule still fires interiorDeg1 = 3 interior degree-1 rooms, yet interiorComplDoor = 0: none of the three doors is genuinely complementary. The mechanism is exact — every boundary vertex is ±1, so the centre label +2 has its antipode −2 absent from the whole boundary, and no interior spoke can be antipodal to the centre; all three seed doors are opposite-sign-but-not-antipodal. tucker_witness_is_on_boundary_there then decides that Tucker nonetheless holds at that labelling, its complementary edge being the BOUNDARY edge v₂–v₃ = (+1,−1) = Compl (V 0 0 0 2) (V 0 0 0 (rot 2)). The true witness lives exactly where the interior seed cannot see it — the sharp reason the pivot-terminal identification needs more than the sign-door count."
+  },
+  {
+    "id": "ann-notconstant-sperner-oq02-oq09",
+    "proofId": "sperner-mathlib4-oq-02-oq-09",
+    "range": {
+      "startLine": 189,
+      "endLine": 202
+    },
+    "type": "insight",
+    "title": "The complementary count is a genuine function of the labelling, and orientation blindness is explicit",
+    "content": "interiorComplDoor_not_constant decides interiorComplDoor = 0 at (+1,+1,+1,+2) and = 3 at (+1,+1,+1,+1): the genuine interior witness count ranges over the labellings even though interiorDeg1 is the constant 3, so no fixed fraction of the seed is witness. orientation_blind_witness exhibits the concrete under-count cause: at a = b = c = d = +1 the interior spoke v₃ → d = (−1) → (+1) is genuinely complementary (Compl (V 0 0 0 3) 0, since negL 0 = 2 = V 0 0 0 3) but its directed door is 0 — the +→− rule does not count the −→+ orientation. Over- and under-counting together sever the sign-door count from the true complementary count."
+  }
+]
