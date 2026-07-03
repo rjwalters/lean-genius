@@ -4,6 +4,53 @@ Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engi
 
 ---
 
+## Session 2026-07-02 (researcher-5) — BUILD: the canonical signed labelling + naive-labelling no-go (Insight 8)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
+`proofs/Proofs/SpernerTuckerCrossPolytopeLabelling.lean` (~150 LOC, 10 thm + 3 def, 0 sorries,
+0 `axiom` decls, dimension-free — no `decide`/`native_decide`).
+
+**Verification**: the shared `.lake` cache had `SpernerTuckerCrossPolytopeBoundary.olean` evicted
+and a concurrent hour-long `lean-build` container was running on the shared cache (load ~49), so a
+full Docker build was skipped to avoid the config-lock corruption prior sessions hit. Instead the
+NEW content was verified via a **self-contained scratch** (`/tmp/labelling_scratch.lean`): the
+minimal cross-polytope pieces (`Facet`, `antipode`, `CrossAdj`, `crossGraph`, `flipAt`,
+`mem_neighbor_iff`) copied verbatim from `CrossPolytopeBoundary`, plus every new labelling
+definition/theorem with its exact proof, typechecked `lake env lean` **exit 0**. All `#print axioms`
+guards report only foundational axioms — `negLabel_free`/`coordLabel_antipode` = *no axioms*,
+`coordLabel_flipAt_self`/`_of_ne`/`_succ_zero` = `[propext]`, `compAdj_iff_adj` =
+`[propext, Classical.choice, Quot.sound]` — no `sorryAx`, no `Lean.ofReduceBool`, no `decide`.
+`canonicalLabelling_not_tucker_level` is a one-line application of the already-verified
+`crossPolytope_not_tucker_level`. Full-file Docker build against the project oleans still pending
+(rebuild once the build fleet quiets).
+
+### What it proves (see Insight 8)
+Installs the **labelling layer** every prior session named as missing. Generalises the hexagon's
+signed alphabet (`Fin 4 = {±1,±2}`, `negL`, `V_antipodal`) to all dimensions: `SignedLabel n =
+Bool × Fin (n+1)` with `negLabel` a free involution (`negLabel_free`); the canonical per-coordinate
+labelling `coordLabel s i = (s i, i)` is **antipodal** (`coordLabel_antipode`: `λ(-s) = -λ(s)`), and
+flipping coordinate `i` **negates exactly the `i`-label** (`coordLabel_flipAt_self`) while fixing all
+others (`coordLabel_flipAt_of_ne`) — so every cube edge is a complementary door at its flip
+coordinate. Payoff (`compAdj_iff_adj`): the complementary-door graph of this labelling **equals the
+whole symmetric cube** `crossGraph n`, whence the no-go `canonicalLabelling_not_tucker_level` — the
+naive labelling has EVEN interior endpoints and can never carry Tucker's odd seed.
+
+### Honest status
+The labelling *layer* + a sharp **negative/scoping** result: the naive per-coordinate labelling is
+fully complementary hence symmetric hence NOT a Tucker certificate, in **every** dimension (lifting
+the n=2 hexagon `spoke_graph_empty_yet_complementary` obstruction to the canonical octahedral model).
+It does **not** build the symmetry-broken almost-complementary structure carrying the odd seed — the
+open `bridge` frontier is unchanged. `coordLabel_flipAt_succ_zero` records the hemisphere-pinned
+coordinate-`0` label the symmetry break must exploit.
+
+### Next steps (frontier unchanged)
+- Build the **asymmetric** Tucker labelling on ∂◊^{n+1} whose hemisphere half carries the ODD
+  interior seed (the naive one provably can't — this session). Connect to
+  `AntipodalParity.bridge_of_card_eq` / `InductiveTower.TuckerTower.bridge`.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+---
+
 ## Session 2026-07-02 (researcher-6) — BUILD: the hemisphere ↔ lower-dimension recursion (Insight 7)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
@@ -204,6 +251,24 @@ in the lower cross-polytope graph`. Shipped as `SpernerTuckerCrossPolytopeHemisp
 (0 sorries / 0 axioms, host-verified 0-axiom per session log). It is the geometric substrate of
 `bridge`; it does **not** yet carry the Tucker labelling (the still-open almost-complementary
 structure).
+
+### Insight 8 — the canonical per-coordinate labelling is fully complementary, hence not a Tucker certificate (BUILD, verified)
+The geometric substrate of `bridge` (Insights 6–7) finally carries a **labelling**. The signed
+alphabet `SignedLabel n = Bool × Fin (n+1)` (`{±1,…,±(n+1)}`, `negLabel` = flip sign, a free
+involution) generalises the hexagon `Fin 4`/`negL` to all `n`. The canonical per-coordinate labelling
+`coordLabel s i = (s i, i)` is antipodal (`coordLabel_antipode`, the `λ(-s)=-λ(s)` of a Tucker
+labelling) and flipping coordinate `i` negates exactly the `i`-label (`coordLabel_flipAt_self`),
+fixing the others (`coordLabel_flipAt_of_ne`). Hence **every** cube edge is a complementary door at
+its flip coordinate, and the complementary-door graph of this labelling is the *entire* symmetric
+cube `crossGraph n` (`compAdj_iff_adj`) — not a symmetry-broken subgraph. Consequence
+(`canonicalLabelling_not_tucker_level`): the program's own no-go `crossPolytope_not_tucker_level`
+applies verbatim, so this labelling has an EVEN interior-endpoint count and can NEVER be a Tucker
+certificate, in every dimension. This lifts the n=2 hexagon door-choice obstruction
+(`spoke_graph_empty_yet_complementary`) to the canonical octahedral model: the correct Tucker
+labelling must **break the antipodal symmetry** (the hemisphere pin, `coordLabel_flipAt_succ_zero`).
+Shipped as `SpernerTuckerCrossPolytopeLabelling.lean` (0 sorries / 0 axioms; new content
+scratch-verified 0-axiom per session log). Labelling layer + no-go, NOT the open `bridge`.
+
 ## Dead Ends
 
 - **"Adapt `door_count_parity` to complementary edges and show the boundary count
