@@ -348,6 +348,33 @@ merge_prs() {
     # Try to rebase conflicting PRs
     for pr in $(echo "$eligible_prs" | jq -r '.[] | select(.mergeable == "CONFLICTING") | .number'); do
         local branch=$(gh pr view "$pr" --json headRefName --jq '.headRefName')
+
+        # Reap superseded PRs before wasting a rebase on them (fix A).
+        # A CONFLICTING research PR whose new proof file already exists on main is
+        # an add/add duplicate of an already-formalized result — the loser of a
+        # same-problem race between two agents. No rebase can ever land it; close
+        # it so the backlog drains instead of accumulating dead duplicates.
+        if [[ -x "$REPO_ROOT/scripts/research/check-superseded.sh" ]]; then
+            git fetch origin "$branch" --quiet 2>/dev/null || true
+            local sup_verdict
+            sup_verdict=$("$REPO_ROOT/scripts/research/check-superseded.sh" \
+                --ref FETCH_HEAD --base origin/main --quiet 2>/dev/null | tail -1 || echo "")
+            if [[ "$sup_verdict" == "SUPERSEDED" ]]; then
+                if $DRY_RUN; then
+                    echo "  Would close #$pr as superseded (proof file already on main)"
+                else
+                    print_warning "Closing #$pr as superseded — proof file already on main (add/add duplicate)"
+                    gh pr close "$pr" --delete-branch --comment "Closing as **superseded** — automated race-condition cleanup by the deployer.
+
+Every new proof file this PR adds already exists on \`main\` (landed via a competing PR that won the merge race). This branch is an unmergeable add/add duplicate of an already-formalized result, so no rebase can land it.
+
+If you believe this version carries unique content main lacks, reopen and rebase onto main. See the pre-submission guard (\`scripts/research/check-superseded.sh\`) that now prevents most of these." 2>/dev/null \
+                        && print_success "Closed superseded #$pr" || print_warning "Could not close #$pr"
+                fi
+                continue
+            fi
+        fi
+
         print_info "Attempting rebase for PR #$pr ($branch)..."
 
         if $DRY_RUN; then

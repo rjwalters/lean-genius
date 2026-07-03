@@ -49,10 +49,21 @@ while true:
     2. Claim a problem from the candidate pool
     3. Run one research iteration (following the research skill)
     4. Commit meaningful progress
-    5. Create a PR with findings
+    5. Create a PR with findings (run the Supersession Guard first — Step 5.5)
     6. Update problem status and knowledge
     7. Release claim
     8. Repeat
+```
+
+**Heartbeat your claim during long sessions.** A single iteration (Docker builds,
+Mathlib-drift repair, Aristotle round-trips) can run well over an hour. If your
+claim expires mid-session the Seeker re-serves the problem and a second agent
+duplicates your work — the loser's PR then rots as an unmergeable add/add
+duplicate. So whenever a step takes a while (after each build cycle, or roughly
+every ~30 min), refresh the claim:
+
+```bash
+$REPO_ROOT/scripts/research/claim-problem.sh heartbeat $PROBLEM_ID
 ```
 
 ### Checking Signals
@@ -534,6 +545,31 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 EOF
 )"
 git push -u origin $(git branch --show-current)
+```
+
+## Step 5.5: Supersession Guard (MANDATORY before every PR)
+
+Concurrent agents sometimes work the **same** problem — a claim expires mid-session
+and a second agent re-claims it, or two agents pick overlapping OQ extensions. Both
+create a proof file at the same `proofs/Proofs/*.lean` path. Whoever merges first
+wins; the loser becomes an unmergeable add/add duplicate that rots as a DIRTY PR.
+That is wasted effort. **Do not open such a PR.**
+
+Run the guard before creating the PR:
+
+```bash
+verdict=$("$REPO_ROOT/scripts/research/check-superseded.sh" --base origin/main --quiet | tail -1)
+if [[ "$verdict" == "SUPERSEDED" ]]; then
+  echo "$(date +%H:%M): ABORT — $PROBLEM_ID already formalized on main (add/add). Not opening PR." \
+    >> "$REPO_ROOT/.loom/logs/$RESEARCHER_ID.actions.log"
+  # Your proof file already exists on main. Do NOT open a duplicate PR.
+  # Instead: either (a) release the claim and pick a genuinely open problem, or
+  # (b) if your version proves strictly MORE than main's, rebase onto origin/main
+  #     and reconcile into main's existing file so the PR is a real superset.
+  $REPO_ROOT/scripts/research/claim-problem.sh release $PROBLEM_ID
+  exit 0
+fi
+# verdict is NOT_SUPERSEDED or NO_PROOF_FILES → safe to proceed.
 ```
 
 ## Step 6: Create Pull Request

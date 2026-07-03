@@ -12,7 +12,7 @@
 #
 # Environment:
 #   RESEARCHER_ID - Agent identifier (default: researcher-PID)
-#   CLAIM_TTL     - Claim time-to-live in minutes (default: 90)
+#   CLAIM_TTL     - Claim time-to-live in minutes (default: 180)
 
 set -euo pipefail
 shopt -s nullglob
@@ -54,7 +54,12 @@ LOCKS_DIR="$REPO_ROOT/.loom/locks"
 POOL_LOCK_FILE="$LOCKS_DIR/candidate-pool.lock"
 
 # Defaults
-TTL_MINUTES="${CLAIM_TTL:-90}"
+# TTL raised 90 -> 180 (fix C): research sessions with Docker builds + Mathlib-drift
+# repair routinely exceed 90 min. When a claim expired mid-session, the Seeker
+# re-served the problem and a second agent duplicated the work — the dominant cause
+# of add/add PR races. Healthy agents also push this forward via `heartbeat` below,
+# so a live long session holds its claim while a truly dead one still frees in 180.
+TTL_MINUTES="${CLAIM_TTL:-180}"
 AGENT_ID="${RESEARCHER_ID:-researcher-$$}"
 LOCK_TIMEOUT="${POOL_LOCK_TIMEOUT:-30}"  # Max seconds to wait for lock
 
@@ -557,9 +562,13 @@ case "${1:-help}" in
         fi
         update_problem_status "$2" "$3"
         ;;
-    extend)
+    extend|heartbeat)
+        # `heartbeat` is the intended name for long research sessions: call it
+        # periodically (e.g. after each build cycle) to push expires_at forward so
+        # a healthy long-running claim is never re-served to a second agent while
+        # you are still working it. `extend` is kept as a synonym.
         if [[ -z "${2:-}" ]]; then
-            echo "Usage: $0 extend <problem-id>" >&2
+            echo "Usage: $0 ${1} <problem-id>" >&2
             exit 1
         fi
         extend_claim "$2"
@@ -588,7 +597,7 @@ Commands:
 
 Environment Variables:
   RESEARCHER_ID    Agent identifier (default: researcher-PID)
-  CLAIM_TTL        Claim time-to-live in minutes (default: 90)
+  CLAIM_TTL        Claim time-to-live in minutes (default: 180)
   FORCE_COMPLETE   Set to 1 to bypass graduation quality gate
 
 Knowledge Tiers (DEPTH OVER BREADTH - higher = higher priority):
