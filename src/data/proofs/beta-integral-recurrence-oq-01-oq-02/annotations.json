@@ -24,34 +24,57 @@
     ]
   },
   {
-    "id": "betahalf2-ann-gausssq",
+    "id": "betahalf2-ann-cpow-recomb",
     "proofId": "beta-integral-recurrence-oq-01-oq-02",
     "range": {
-      "startLine": 54,
-      "endLine": 68
+      "startLine": 55,
+      "endLine": 65
     },
     "type": "tactic",
-    "title": "The Squared Gauss Value Γ(1/2)² = π",
-    "content": "Builds the key recombination. piC_ne_zero records (π:ℂ) ≠ 0 (the base nonvanishing needed to combine cpow powers), and piC_half_sq proves π^(1/2)·π^(1/2) = π via Complex.cpow_add and cpow_one (½+½ = 1). gamma_half_sq then substitutes the Gauss value Γ(1/2) = π^(1/2) into Γ(1/2)·Γ(1/2) and recombines the two half-powers to π. This squared value is exactly what the Beta–Gamma relation needs at u = v = 1/2.",
-    "mathContext": "$\\pi^{1/2}\\cdot\\pi^{1/2} = \\pi^{1/2+1/2} = \\pi$, so $\\Gamma(\\tfrac12)^2 = \\pi$.",
-    "significance": "key",
+    "title": "The cpow Recombination Technique: π^(1/2)·π^(1/2) = π",
+    "content": "The reusable arithmetic core, kept separate from any Gamma-specific claim so it can be cited on its own. Over ℂ, x^a·x^b = x^(a+b) (Complex.cpow_add) holds only when the base is nonzero, so piC_ne_zero first records (π:ℂ) ≠ 0. With that in hand, piC_half_sq collapses the two half-powers: π^(1/2)·π^(1/2) = π^(1/2+1/2) = π^1 = π, using cpow_add then cpow_one. This is the mechanism by which every √π-valued Gamma quantity in the file is folded back into a plain power of π; both gamma_half_sq below and the B(3/2,3/2) computation reuse it verbatim.",
+    "mathContext": "$\\pi^{1/2}\\cdot\\pi^{1/2} = \\pi^{1/2+1/2} = \\pi^{1} = \\pi$. The step $x^a x^b = x^{a+b}$ over $\\mathbb{C}$ requires $x \\ne 0$ (branch-cut of the complex power), supplied here by $(\\pi:\\mathbb{C}) \\ne 0$.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Complex.cpow_add",
-      "Gauss value",
+      "Complex.cpow_one",
       "nonvanishing base",
       "half-power recombination"
     ],
     "prerequisites": [
-      "cpow arithmetic",
-      "Γ(1/2)=π^(1/2)"
+      "complex powers (cpow)",
+      "branch cut / nonzero base condition"
+    ]
+  },
+  {
+    "id": "betahalf2-ann-gausssq",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 70
+    },
+    "type": "insight",
+    "title": "The Squared Gauss Value Γ(1/2)² = π",
+    "content": "gamma_half_sq substitutes the Gauss value Γ(1/2) = π^(1/2) (Complex.Gamma_one_half_eq) into the product Γ(1/2)·Γ(1/2) and applies the cpow recombination above to land on π. This squared value is the analytic heart of the headline evaluation: it is exactly what the Beta–Gamma relation delivers at u = v = 1/2 once the denominator Γ(1) = 1 is removed. It is also the s = 1/2 case of the Gamma reflection formula Γ(s)Γ(1−s) = π/sin(πs).",
+    "mathContext": "$\\Gamma(\\tfrac12)^2 = (\\pi^{1/2})^2 = \\pi$, equivalently the reflection value $\\Gamma(\\tfrac12)\\Gamma(1-\\tfrac12) = \\pi/\\sin(\\pi/2) = \\pi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.Gamma_one_half_eq",
+      "Gauss value",
+      "Gamma reflection formula",
+      "cpow recombination"
+    ],
+    "prerequisites": [
+      "Γ(1/2)=π^(1/2)",
+      "the cpow recombination technique"
     ]
   },
   {
     "id": "betahalf2-ann-headline",
     "proofId": "beta-integral-recurrence-oq-01-oq-02",
     "range": {
-      "startLine": 69,
-      "endLine": 75
+      "startLine": 71,
+      "endLine": 76
     },
     "type": "insight",
     "title": "The Headline Value B(1/2,1/2) = π",
@@ -73,7 +96,7 @@
     "id": "betahalf2-ann-recurrence",
     "proofId": "beta-integral-recurrence-oq-01-oq-02",
     "range": {
-      "startLine": 76,
+      "startLine": 77,
       "endLine": 99
     },
     "type": "insight",
