@@ -305,6 +305,120 @@
       "mathContext": "Brahmagupta–Fibonacci identities (brahmagupta_fibonacci, triple_composition, compose examples, hypotenuse_65_two_triples) and the straddling-pair analysis (circleNorm, straddlingOE, circle_norm_gap, discrepancy_from_straddling, parity_from_straddling_vanishes) closing the boundary discrepancy argument."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "parametric_triple",
+      "type": "theorem",
+      "statement": "PythagoreanTriple (m²-n²) (2mn) (m²+n²) for all integers m, n",
+      "significance": "The Euclid parametrization: every pair (m,n) yields a Pythagorean triple. This is the generative half of the classical bijection between integer pairs and Pythagorean triples that the entire density argument rests on.",
+      "description": "Unfolds Mathlib's PythagoreanTriple predicate and closes by ring — the identity (m²-n²)²+(2mn)²=(m²+n²)² is purely algebraic."
+    },
+    {
+      "name": "triple_classified",
+      "type": "theorem",
+      "statement": "Every PythagoreanTriple x y z is classified (h.IsClassified)",
+      "significance": "The converse direction: not only does the parametrization produce triples, every triple is captured by it (up to the primitive/scaled distinction). Together with parametric_triple this pins down the exact set being counted.",
+      "description": "Delegates to Mathlib's PythagoreanTriple.classified. The coprime refinement coprime_triple_classified upgrades this to IsPrimitiveClassified via isPrimitiveClassified_of_coprime."
+    },
+    {
+      "name": "density_decomposition",
+      "type": "theorem",
+      "statement": "tripleDensityConstant = (π/8)·(6/π²)·(2/3) = 1/(2π)",
+      "significance": "Factorizes the target density constant 1/(2π) into its three number-theoretic sources: the Gauss-circle octant (π/8), the coprimality (Euler product) density (6/π²), and the opposite-parity fraction (2/3). This is the arithmetic skeleton of the whole result.",
+      "description": "Unfolds the constant and rewrites via density_factors_product; the closed identity is verified separately by triple_count_from_r2_connection with field_simp; ring."
+    },
+    {
+      "name": "sector_lattice_point_density",
+      "type": "axiom",
+      "statement": "sectorPointCount(N)/N → π/8 as N → ∞",
+      "significance": "First of the three core analytic inputs: the count of lattice points in the sector {0<n<m, m²+n²≤N} grows like πN/8, one octant of the Gauss circle problem. This supplies the π/8 factor.",
+      "description": "Stated as an axiom — the quantitative Gauss circle lattice-point estimate is not yet formalized in Mathlib. Contributes the geometric density factor to the telescoping product."
+    },
+    {
+      "name": "coprime_fraction_in_sector",
+      "type": "axiom",
+      "statement": "coprimeInSectorCount(N)/sectorPointCount(N) → 6/π²",
+      "significance": "Second core input: among sector lattice points the fraction with gcd(m,n)=1 tends to 6/π² = 1/ζ(2), the classical coprimality density from the Euler product ∑ 1/k²=π²/6. Supplies the 6/π² factor.",
+      "description": "Axiomatized: the Möbius/Euler-product coprime-density limit specialized to this sector is not available in Mathlib. Multiplied into the telescoping product in primitiveTripleCount_density."
+    },
+    {
+      "name": "bothOdd_fraction_in_coprime_sector",
+      "type": "axiom",
+      "statement": "bothOddCoprimeCount(N)/coprimeInSectorCount(N) → 1/3",
+      "significance": "Third core input: among coprime sector points, the both-odd pairs (which fail the primitive condition) have limiting density 1/3, leaving 2/3 with opposite parity. This is the only independent parity assumption; the equidistribution results in Parts XI–XVIII reduce toward it.",
+      "description": "Axiomatized here because coprimeOddOddCount is defined later; it is equivalent to parity_class_equidistribution via bothOdd_eq_oo. By parity_axiom_equivalent it immediately yields the 2/3 primitive fraction."
+    },
+    {
+      "name": "parity_fraction_in_coprime_sector",
+      "type": "theorem",
+      "statement": "primitiveTripleCount(N)/coprimeInSectorCount(N) → 2/3",
+      "significance": "Converts the both-odd axiom into the primitive-fraction limit actually used by the main theorem: 2/3 of coprime sector pairs have opposite parity and hence generate primitive triples.",
+      "description": "Proved from bothOdd_fraction_in_coprime_sector by applying parity_axiom_equivalent, which reduces the 2/3 claim to the 1/3 both-odd claim."
+    },
+    {
+      "name": "primitiveTripleCount_density",
+      "type": "theorem",
+      "statement": "primitiveTripleCount(N)/N → 1/(2π) as N → ∞",
+      "significance": "The main density theorem: primitive Pythagorean triples with hypotenuse ≤ N have density 1/(2π) ≈ 0.159. This is the headline quantitative result the entry formalizes.",
+      "description": "Telescopes count/N = (count/coprime)·(coprime/sector)·(sector/N), whose three factors converge to 2/3, 6/π², π/8 via parity_fraction_in_coprime_sector, coprime_fraction_in_sector, and sector_lattice_point_density; a filter_upwards past N≥5 with field_simp collapses the product to count(N)/N."
+    },
+    {
+      "name": "primitiveTripleCount_asymptotic",
+      "type": "theorem",
+      "statement": "primitiveTripleCount(N)/(N/(2π)) → 1 as N → ∞",
+      "significance": "The asymptotic-equivalence restatement: count(N) ~ N/(2π). Expresses the density result in the ratio-to-one form standard in analytic number theory.",
+      "description": "Rewrites count/(N/(2π)) = (count/N)·(2π) and multiplies primitiveTripleCount_density by the constant 2π so the limit becomes (1/(2π))·(2π)=1."
+    },
+    {
+      "name": "triple_count_from_r2_connection",
+      "type": "theorem",
+      "statement": "(π/8)·(6/π²)·(2/3) = 1/(2π)",
+      "significance": "The exact algebraic identity binding the three density factors to the final constant, with the 1/8 traced to restricting the full disk (πN lattice points) to one octant under the 8-fold symmetry of ℤ².",
+      "description": "Pure field identity closed by field_simp; ring after recording π>0 and π²≠0."
+    },
+    {
+      "name": "r2_average_order",
+      "type": "axiom",
+      "statement": "(1/N)·∑_{n≤N} r₂(n) → π, where r₂(n)=#{(a,b): a²+b²=n}",
+      "significance": "Supplementary input linking the sum-of-two-squares representation function to the Gauss circle problem: the average order of r₂ is π, i.e. lattice points in x²+y²≤N number πN+O(N^{1/2+ε}).",
+      "description": "Axiomatized average-order statement (Gauss circle) supporting the r₂ perspective on the density; r2_pos_iff, by contrast, is now proved from Mathlib's Nat.eq_sq_add_sq_iff."
+    },
+    {
+      "name": "landau_two_squares",
+      "type": "axiom",
+      "statement": "∃ C>0: sumOfTwoSquaresCount(N)·√(log N)/N → C (Landau–Ramanujan)",
+      "significance": "Landau's theorem that integers ≤ N expressible as a sum of two squares number ~ C·N/√(log N), with C the Landau–Ramanujan constant ≈ 0.7642 — context distinguishing 'which n are hypotenuses' from 'how many triples'.",
+      "description": "Axiomatized existence-of-constant limit; the Landau–Ramanujan constant is not formalized in Mathlib. Included to situate the density result within the sum-of-two-squares landscape."
+    },
+    {
+      "name": "primitive_by_leg_density",
+      "type": "axiom",
+      "statement": "primitiveByLeg(N)/N → 1/π",
+      "significance": "Counting primitive triples by shorter leg a ≤ N gives density 1/π, exactly twice the hypotenuse density 1/(2π) — reflecting that a = m²-n² < c = m²+n² in the parametrization.",
+      "description": "Axiomatized companion density for the leg-based count primitiveByLeg, complementing the hypotenuse-based primitiveTripleCount_density."
+    },
+    {
+      "name": "gaussian_square_pythagorean",
+      "type": "theorem",
+      "statement": "For z = m+ni, (Re z²)² + (Im z²)² = (m²+n²)²",
+      "significance": "Recasts the parametrization through the Gaussian integers ℤ[i]: squaring z=m+ni produces the triple (m²-n², 2mn, m²+n²) with norm (m²+n²)², explaining WHY the parametrization works via the multiplicative norm on ℤ[i].",
+      "description": "Unfolds the GaussianInt.mul definition and closes by ring; gaussian_square_components separately identifies Re z²=m²-n² and Im z²=2mn."
+    },
+    {
+      "name": "brahmagupta_fibonacci",
+      "type": "theorem",
+      "statement": "(a²+b²)(c²+d²) = (ac-bd)² + (ad+bc)²",
+      "significance": "The Brahmagupta–Fibonacci identity: sums of two squares are closed under multiplication. It is the concrete content behind norm-multiplicativity N(zw)=N(z)N(w) in ℤ[i] and drives composition of Pythagorean triples.",
+      "description": "Closed by ring. The conjugate form brahmagupta_fibonacci' gives (ac+bd)²+(ad-bc)², corresponding to (a+bi)(c-di)."
+    },
+    {
+      "name": "triple_composition",
+      "type": "theorem",
+      "statement": "If a²+b²=c² and d²+e²=f², then (ac-be)²+(ae+bd)² = (cf)²",
+      "significance": "Pythagorean triples possess a multiplicative structure: composing (a,b,c) and (d,e,f) yields a new triple with hypotenuse cf, mirroring multiplication z·w of the associated Gaussian integers.",
+      "description": "Algebraic consequence of the Brahmagupta–Fibonacci identity, discharged by ring from the two hypotheses."
+    }
+  ],
   "conclusion": {
     "summary": "A thorough formalization of the primitive Pythagorean triple density theorem, establishing $\\text{primitiveTripleCount}(N)/N \\to 1/(2\\pi)$ via a clean three-factor decomposition. The proof comprises 118 theorems, 6 axioms (encoding deep analytic number theory), and 0 sorries. The axioms isolate analytic content (Gauss circle problem, Möbius inversion, parity equidistribution, Landau two-squares counting) that would require sieve methods or complex analysis to prove formally.",
     "implications": "**Theoretical Significance**: **Significance**\n\n1. **First mechanized proof**: This appears to be the first formal verification of the $N/(2\\pi)$ density result for primitive Pythagorean triples in any proof assistant.\n2. **Modular architecture**: The three-factor decomposition into geometry ($\\pi/8$), number theory ($6/\\pi^2$), and combinatorics ($2/3$) makes each component independently verifiable and replaceable.\n**3. Bijective technique**: The parity involution $(m,n) \\mapsto (m, m-n)$ is a general technique applicable to any coprime-parity counting problem, not just Pythagorean triples.\n4. **Computational confidence**: Verification of counting functions for $N = 0, 4, 5, 13, 25, 50, 100$ via native_decide confirms the formalized definitions match the intended mathematical objects.\n5. **Connection to $\\zeta(2)$**: The coprime density factor $6/\\pi^2 = 1/\\zeta(2)$ links this result to the Basel problem, demonstrating how the Riemann zeta function controls the distribution of coprime pairs.",
