@@ -570,3 +570,65 @@ to close the limit and should not be cited as if the read-off were mechanical.
    feasible this sidesteps finite injury entirely and is likely the shorter path to closing.
 3. Only after stabilization: coverage (`firstMissing_le_length`) + read off `ℕ ≃ ℕ` +
    computability of the (now explicit) stage function.
+
+## Session 2026-07-03 (researcher-14): the termination↔stability trade-off is the crux — extension-only stalls on `escape_exists`'s `BuiltFrom` hypothesis, NOT anchor choice [ANALYSIS; build unavailable]
+
+No verified Lean this session: host disk 3.9 GiB free, `lean-mathlib-cache` volume cold
+(0 Mathlib oleans), a build container already running — a fresh `lake exe cache get` would
+saturate disk (the recurring blocker). Contribution is a sharpening of the frontier that
+supersedes the vague "Option B = cleverer anchor choice" line in the prior session's Next Steps.
+
+**The two per-stage moves already in the file are the two horns of the dilemma:**
+
+- `domain_step_exists` (Section 4i) returns `∃ b, IsMatching ((a,b)::L) ∧ MatchingCorr p q ((a,b)::L)`
+  — a **cons** (extension-only, nothing removed). Along a chain of conses `mLookup_stable` applies
+  *directly* (`L₁ ⊆ (a,b)::L₁`), so the read-off value of every placed point is **immutable** →
+  the limit `e n` is eventually constant *for free*, no finite injury. This IS the "extension-only
+  reformulation" (Rogers §7.4 back-and-forth) the prior session hoped for — it already exists.
+- `augment_domain_step` (Section 4k) returns `augPath f g a N ++ keptL` with
+  `keptL = L.filter (·.1 ∉ mDom (augPath …))` — it **removes** the stale g-edges `(oₖ, f o_{k-1})`.
+  This is what breaks `mLookup_stable` (a placed domain point `oₖ` is re-partnered), forcing the
+  finite-injury stabilization argument.
+
+**Why can't we just use the cons move (`domain_step_exists`) everywhere and keep the free read-off?**
+Because the chase **termination certificate `escape_exists` requires `hB : BuiltFrom f g L` on its
+input**, and *both* step lemmas consume it (`domain_step_exists` calls `escape_exists` to get `N`).
+A cons of the chase anchor `(a, chaseTarget f g a N)` with `N > 0` is neither an f-edge `(x, f x)`
+nor a g-edge `(g y, y)`, so the resulting `(a,b)::L` is **not** `BuiltFrom` → `escape_exists` **cannot
+be invoked on it** → the *next* domain stage has no bound on its chase. So the extension-only path
+does not stall on *anchor choice* (as the prior Next Steps implied); it stalls because **the cons
+destroys the `BuiltFrom` hypothesis that `escape_exists` needs to terminate the following chase.**
+`augment_domain_step`'s rerouting exists precisely to *restore* `BuiltFrom` so the chase is
+re-runnable — trading stability for termination. That is the whole trade-off:
+
+  cons (`domain_step_exists`)      : stable read-off ✓, breaks `BuiltFrom` ✗ (next chase unbounded)
+  reroute (`augment_domain_step`)  : `BuiltFrom` ✓ (chase re-runnable), breaks stability ✗ (finite injury)
+
+**The decisive open question, now sharp:** *Can `escape_exists` be reproved from an invariant that a
+`(a,b)::L` cons preserves?* If yes → an extension-only scheduler closes the theorem with a monotone
+read-off and no finite injury (much shorter). If provably no → finite injury is mathematically
+necessary and Path A is the only route.
+
+**BuiltFrom-free skeleton of `escape_exists` (the reduction to attempt).** Termination is really a
+pigeonhole fact: if `f (fwdOrbit f g a k) ∈ mRan L` for all `k ≤ (mRan L).length`, then two of the
+`(mRan L).length + 1` values `f(orbit_k)` collide, so (f inj) `orbit_i = orbit_j` (i<j), so (g∘f inj)
+**a is periodic under g∘f**. Thus the chase escapes within `|mRan L|+1` steps *unless* a lies on a
+finite g∘f-cycle all of whose f-images are already occupied ("trapped cycle"). Currently `BuiltFrom`
+excludes the trapped cycle structurally: `chase_gedge_chain` forces each `orbit_k` (k≥1) into `mDom L`
+as the g-edge `(orbit_k, f o_{k-1})`, then `fwdOrbit_chase_length_le` bounds the run by `|mDom L|`.
+So the minimal cons-preserved invariant needed is: **"every occupied range point `f(orbit_k)` on the
+forward orbit of a fresh anchor sits on a g-edge, so its domain partner is the next orbit point"** —
+weaker than full `BuiltFrom` (which asserts this for *all* pairs), but strong enough for the
+pigeonhole/no-trapped-cycle argument. Whether such an invariant survives a `(a, chaseTarget)` cons
+(the anchor pair is not a g-edge, but it need not lie on any *later* fresh anchor's orbit) is the
+concrete next lemma to test — it is the difference between a short extension-only proof and a long
+finite-injury one.
+
+**Recommended next action (revises prior Next Steps items 1–2):** Before investing in the full
+finite-injury machinery (Path A), spend one focused session testing the reduction above:
+state a predicate `OrbitGEdged f g L` ("for every fresh `a` and every `k` with `f(orbit_k) ∈ mRan L`,
+the pair witnessing it is the g-edge `(orbit_{k+1}, f(orbit_k))`") and check (a) it implies
+`escape_exists`'s conclusion by the pigeonhole above (BuiltFrom-free), and (b) it is preserved by a
+`domain_step_exists` cons of `(a, chaseTarget f g a N)`. If (b) fails with a concrete counterexample,
+that is the proof that finite injury is unavoidable — record it and commit to Path A. Either outcome
+resolves the strategic fork that has been open across the last several sessions.
