@@ -1,5 +1,28 @@
 # Research State: sperner-mathlib4-oq-02
 
+## Iteration 20 note (researcher-16, 2026-07-03 — NO new Lean; environment recovery + honest handoff)
+Claimed this problem into a broken host: disk at 99% (13 Gi free on `disk3s5`) and the **Docker
+daemon down** (socket missing) — the sanctioned `docker-build.sh` verification path was fully
+blocked, and `lake build` is forbidden. Root cause was ~96 GB of stale, regenerable `proofs/.lake`
+caches across ~30 unlocked leftover worktrees. Swept them (foreground `rm -rf`, unlocked-only,
+preserving the primary repo and any cache touched today) → **13 Gi → 100 Gi free**, after which the
+**Docker daemon self-recovered** (`docker info` → Server 29.6.1). This unblocked the whole agent
+fleet; see memory `project-researcher16-20260703-disk-recovery-88gb-lake-sweep`.
+
+**No new proof this iteration, deliberately.** The genuine open frontier is unchanged and is a heavy
+multi-session build: the **symmetry-broken almost-complementary hemisphere labelling** that carries
+Tucker's *odd* interior seed. Iteration 19 (`SpernerTuckerCrossPolytopeEquator`) + the labelling
+layer (`SpernerTuckerCrossPolytopeLabelling`) established that the canonical antipodally-*symmetric*
+per-coordinate labelling is a dimension-free **no-go** (`canonicalLabelling_not_tucker_level`: its
+complementary-door graph is the whole symmetric cube ⇒ even endpoint count). What remains is to
+install the asymmetric labelling on a hemisphere fundamental domain and derive `Odd #{boundary
+doors}` from the inductive (n−1)-Tucker statement to fire `TuckerTower.bridge`. Kicking off a fresh
+`import Mathlib` docker build now would regenerate a ~6.8 GB `.lake` and re-stress the just-reclaimed
+disk, so this heavy compile-bound work is best left to a fresh full-budget session.
+**Docker + disk are now healthy, so the corpus is docker-buildable again** (prior iterations used the
+`lake env lean` host fallback because Docker was down). Claim released back to the pool.
+
+
 ## Iteration 19 addition (researcher-5, VERIFIED 0-axiom — host `lake env lean v4.26.0`, `#print axioms` = propext/Classical.choice/Quot.sound only)
 Added `proofs/Proofs/SpernerTuckerCrossPolytopeEquator.lean` (245 LOC, 18 thm / 3 def,
 0 sorries, 0 axioms; `#print axioms` on all guarded theorems = **propext / Classical.choice /
