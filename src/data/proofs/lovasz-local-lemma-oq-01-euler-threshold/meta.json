@@ -181,6 +181,16 @@
       "targetId": "lovasz-local-lemma-oq-01-chain-rule",
       "relationship": "related",
       "description": "The chain-rule scaffold that reduces the measure-theoretic LLL to per-event conditional bounds under the symmetric regime e·p·(d+1) ≤ 1. This entry certifies that the Euler condition invoked there is implied by the tight threshold of the parent proof."
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-01",
+      "relationship": "related",
+      "description": "The measure-theoretic base case of OQ-01: the d = 0 (mutually independent) symmetric LLL over a real IsProbabilityMeasure. That entry opens the genuine probability-space front the Euler condition is meant to feed; this bridge supplies the arithmetic showing e·p·(d+1) ≤ 1 is a legitimate sufficient hypothesis for it."
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-01-union-bound",
+      "relationship": "related",
+      "description": "The complementary dependency-free extreme of OQ-01: the crude first-moment / union (Bonferroni) avoidance bound over a real probability space, requiring no bounded-dependency hypothesis. Together with the independent base case it brackets the two regimes between which the bounded-degree LLL (governed by the Euler/tight threshold bridged here) interpolates."
     }
   ],
   "references": [
@@ -195,6 +205,18 @@
       "title": "The Probabilistic Method",
       "year": "2016",
       "note": "States both the tight threshold and the memorable e·p·(d+1) ≤ 1 condition for the symmetric LLL, noting the tight form is slightly stronger — the implication this entry formalizes."
+    },
+    {
+      "authors": "Shearer",
+      "title": "On a problem of Spencer",
+      "year": "1985",
+      "note": "Determines the exact sharp threshold for the symmetric LLL on a dependency graph — the extremal value below which avoidance is always possible and above which it can fail. Puts the tight threshold T(d) = dᵈ/(d+1)^{d+1} and the conservative Euler budget 1/(e(d+1)) bridged here into their sharpest context."
+    },
+    {
+      "authors": "Moser, Tardos",
+      "title": "A Constructive Proof of the General Lovász Local Lemma",
+      "year": "2010",
+      "note": "The algorithmic LLL: a randomized resampling algorithm that constructively finds a point avoiding all bad events under the same symmetric hypothesis e·p·(d+1) ≤ 1, replacing the original nonconstructive compactness argument. The Euler condition certified here is exactly the sufficient hypothesis their algorithm assumes."
     }
   ]
 }
