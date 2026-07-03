@@ -577,20 +577,27 @@ The best current bound is due to Mattheus-Verstraëte (2023):
     R(4,k) ≥ c · k^2.5 / (log k)^2
 -/
 
-/-- The quadratic lower bound for R(4,k):
-    For all k ≥ 3, R(4,k) ≥ c · k² for some constant c > 0.
-    This follows from probabilistic or algebraic constructions.
+/-- Existence of a red-K₄-free 2-coloring for every `n ≤ k²`.
 
-    This axiom captures the consequence of the deeper r4k_lower_bound
-    in a cleaner form focused on the quadratic growth. -/
-axiom r4k_quadratic_lower (k : ℕ) (hk : k ≥ 3) :
+    HONESTY NOTE: despite the historical name, the proposition below is **not** a
+    genuine R(4,k) lower bound. It only requires the absence of a *red*
+    (all-`true`) K₄ and says nothing about blue cliques, so it is satisfied by
+    the constant all-`false` coloring for every `n` — hence trivially true and
+    now **proved** rather than assumed as an `axiom`. The genuine two-colour
+    R(4,k) lower bound (forbidding a red K₄ *and* a blue K_k) is stated
+    separately as the axiom `r4k_lower_bound`. -/
+theorem r4k_quadratic_lower (k : ℕ) (_hk : k ≥ 3) :
     ∃ C : ℕ, C > 0 ∧
     ∀ n : ℕ, n ≤ k^2 →
     ∃ (color : Fin n → Fin n → Bool),
       (∀ x y, color x y = color y x) ∧
       (∀ x, color x x = false) ∧
       (∀ (s : Finset (Fin n)), s.card = 4 →
-        ¬(∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = true))
+        ¬(∀ x y, x ∈ s → y ∈ s → x ≠ y → color x y = true)) := by
+  refine ⟨1, Nat.one_pos, fun n _ => ⟨fun _ _ => false, fun _ _ => rfl, fun _ => rfl, ?_⟩⟩
+  intro s hs hall
+  obtain ⟨x, hx, y, hy, hxy⟩ := Finset.one_lt_card.mp (by omega : 1 < s.card)
+  simpa using hall x y hx hy hxy
 
 /-- For small n < 4, the trivial all-blue coloring has no red K_4.
     This is immediate since there aren't enough vertices. -/
@@ -1037,13 +1044,18 @@ theorem cgms_improves_erdos_szekeres :
 /-- The "book algorithm" approach: Campos et al. use an algorithmic proof.
     Instead of random colorings, they construct a deterministic process
     that either finds a large clique or independent set, or certifies
-    a better bound. Key innovation: "absorbing" step. -/
-axiom book_algorithm_structure :
+    a better bound. Key innovation: "absorbing" step.
+
+    NOTE: documentation placeholder only. The proposition below is the trivial
+    `True`; the CGMS book algorithm is **not** formalized here. It is recorded as
+    a proved (vacuous) statement rather than an `axiom` so that it adds no
+    unverified assumption to the file. -/
+theorem book_algorithm_structure :
     -- The proof proceeds by:
     -- 1. Define a "book" of vertex subsets
     -- 2. At each step, either find the target structure or "absorb" vertices
     -- 3. The absorption gives a better recurrence than Erdős-Szekeres
-    True
+    True := trivial
 
 /-- **PROVED: The CGMS bound is strictly better than 4^k for all large k.**
     Since (4-ε)^k / 4^k = ((4-ε)/4)^k → 0, the improvement is exponential. -/
@@ -1079,10 +1091,16 @@ theory. The Conlon-Fox-Sudakov survey gives the state of the art.
 
 /-- For fixed s ≥ 3, R(s,t) grows as a polynomial in t:
     t^{(s+1)/2 - 1 - o(1)} ≤ R(s,t) ≤ t^{s-1} / (log t)^{s-2}
-    The exponent gap is a major open problem. -/
-axiom off_diagonal_ramsey_bounds (s : ℕ) (hs : s ≥ 3) :
+    The exponent gap is a major open problem.
+
+    NOTE: the proposition below only asserts the existence of two positive real
+    constants `c, C`; it does **not** encode the polynomial off-diagonal bounds
+    described above (that quantitative statement is not formalized here). It is
+    trivially true, so it is proved rather than assumed as an `axiom`. -/
+theorem off_diagonal_ramsey_bounds (s : ℕ) (_hs : s ≥ 3) :
     -- c · t^{(s-1)/2} ≤ R(s,t) ≤ C · t^{s-1} / (log t)^{s-2}
-    ∃ c C : ℝ, 0 < c ∧ 0 < C
+    ∃ c C : ℝ, 0 < c ∧ 0 < C :=
+  ⟨1, 1, one_pos, one_pos⟩
 
 /-- Ajtai-Komlós-Szemerédi (1980): R(3,t) ≤ C · t² / log t.
     This was a breakthrough using the probabilistic method. -/
@@ -1109,20 +1127,31 @@ def graphRamsey (nG nH : ℕ) : ℕ :=
   nG + nH  -- placeholder upper bound
 
 /-- Burr-Erdős conjecture (proved by Lee, 2017): for bounded-degree graphs,
-    R(G, G) is linear in |V(G)|. -/
-axiom burr_erdos_conjecture :
+    R(G, G) is linear in |V(G)|.
+
+    NOTE: the proposition below only asserts that for each degree bound `d ≥ 1`
+    there is a positive constant `c` (with trivial payload `True`); the linear
+    bound `R(G,G) ≤ c·n` is **not** formalized here. Trivially true, hence proved
+    rather than assumed as an `axiom`. -/
+theorem burr_erdos_conjecture :
     ∀ d : ℕ, d ≥ 1 → ∃ c > 0,
       -- For any graph G with max degree d and n vertices,
       -- R(G, G) ≤ c · n
-      True
+      True :=
+  fun _ _ => ⟨1, by norm_num, trivial⟩
 
 /-- The Ramsey multiplicity problem: among the C(n,k) k-cliques in K_n,
-    how many are monochromatic? -/
-axiom ramsey_multiplicity :
+    how many are monochromatic?
+
+    NOTE: documentation placeholder — the proposition is the trivial `True`;
+    Goodman's theorem and Thomason's disproof are **not** formalized here. Proved
+    rather than assumed as an `axiom`, so it contributes no unverified
+    assumption. -/
+theorem ramsey_multiplicity :
     -- Goodman (1959): In any 2-coloring of K_n, the number of monochromatic
     -- triangles is at least C(n,3)/4, with equality for the random coloring.
     -- This was disproved for larger cliques by Thomason (1989).
-    True
+    True := trivial
 
 /-- **PROVED: R(s,t) is symmetric.** -/
 theorem ramsey_symmetric' (s t : ℕ) :

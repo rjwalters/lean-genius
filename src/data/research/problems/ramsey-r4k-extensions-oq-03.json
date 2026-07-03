@@ -22,9 +22,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-02T22:00:00-07:00",
+    "since": "2026-07-03T13:20:00-07:00",
     "iteration": 3,
-    "focus": "Added Proofs/RamseyR4kExtensionsOQ03.lean: axiom-free combinatorial core of the symmetric-LLL Ramsey application. Proved the LLL dependency-degree bound cliqueNeighbors_card_le (#{other k-cliques sharing an edge with a fixed clique} ≤ C(k,2)·C(n-2,k-2)) and a hypothesis-clean reduction SymmetricLLLForRamsey ⇒ R(k,k)>n, plus antitonicity of the LLL threshold in n. The symmetric LLL avoidance principle itself remains the sole (clearly-labelled) hypothesis.",
+    "focus": "Axiom hygiene: de-axiomatized 5 trivially-true placeholder axioms in RamseyR4kExtensions (14->9). r4k_quadratic_lower, off_diagonal_ramsey_bounds, book_algorithm_structure, burr_erdos_conjecture, ramsey_multiplicity were all trivially satisfiable (three literally `True`; r4k_quadratic_lower only forbids a red K4 so all-false coloring works; off_diagonal only asserts two positive constants). Now proved theorems with honest docstrings flagging the gap to the named deep result. The symmetric LLL proper remains an open multi-session BUILD.",
     "blockers": [
       "General symmetric LLL needs a conditional-probability induction (Spencer's argument) over a probability space — Mathlib has no LLL and the induction is delicate; estimated a multi-session BUILD."
     ],
@@ -36,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-4, PART VII): added the sharp/optimized union-bound test firstMomentCondition and the exact proportionality lll_core_eq_firstMoment_core (C(n,2)·6d=3·C(k,2)²·2·C(n,k)), yielding the finite crossover criterion 3·C(k,2)² vs C(n,2). Honest witnesses unionBound_beats_lll_at_6/_at_7 correct the entry framing: against the SHARP union bound the LLL of this file is worse at k=6,7 (R>17,>27 vs >13,>22); its Θ(k) gain is asymptotic. Still 0 sorries, 0 axioms; builds Mathlib 4.26. Sole open piece remains the symmetric-LLL avoidance principle (SymmetricLLLForRamsey).",
+    "progressSummary": "PROGRESS: axiom hygiene on RamseyR4kExtensions.lean, axiomCount 14->9. Converted 5 vacuous placeholder axioms to proved theorems (verified: docker build clean, 0 sorry). Remaining 9 axioms are all genuine deep literature results. Symmetric LLL itself still an open BUILD.",
     "builtItems": [
       "RamseyR4kExtensionsOQ03.lean (231 lines, 7 thms, 5 defs, 0 sorry, 0 axiom): cliqueMonoProb, cliqueDependencyBound, RamseyLLLCondition; PROVED cliqueNeighbors_card_le (dependency degree ≤ C(k,2)·C(n-2,k-2) via covering by the C(k,2) pairs of S, each in ≤ C(n-2,k-2) k-cliques — containing_card_le by the injection T↦T\\e); SymmetricLLLForRamsey principle + ramsey_lll_lower_bound reduction; RamseyLLLCondition_antitone (threshold monotone in n); cliqueMonoProb_pos/le_one.",
       "RamseyR4kExtensions.lean: converted `axiom erdos_probabilistic_lower_bound` into a proved `theorem`, discharged by `ErdosRamsey.erdos_probabilistic_lower_bound k hk` (defeq statements); added `import Proofs.ErdosRamseyLowerBound`. File axiomCount 15→14.",
@@ -44,7 +44,8 @@
       "Updated gallery meta (ramsey-r4k-extensions): axiomCount 15→14, theoremCount 74→75, lineCount→1154, assumptions/summary/openQuestions revised to reflect the de-axiomatization.",
       "cliqueDependency_total_identity in Proofs/RamseyR4kExtensionsOQ03.lean (PART VI) — C(n,2)·cliqueDependencyBound n k = C(k,2)²·C(n,k), 2≤k; axiom-free, builds under Mathlib 4.26",
       "cliqueDependencyBound_le_total in Proofs/RamseyR4kExtensionsOQ03.lean (PART VI) — d ≤ C(n,k) when C(k,2)²≤C(n,2); axiom-free",
-      "PART VII (researcher-4) in RamseyR4kExtensionsOQ03.lean: firstMomentCondition (optimized union-bound test 2·C(n,k)<2^C(k,2), decidable); lll_core_eq_firstMoment_core (C(n,2)·6d = 3·C(k,2)²·(2·C(n,k)) — exact proportionality of the two tests core terms); lll_core_le_firstMoment_core (large-n regime 3·C(k,2)²≤C(n,2) ⇒ LLL core ≤ union-bound core); unionBound_beats_lll_at_6 / _at_7 (honest witnesses: union bound R(6,6)>17, R(7,7)>27 while LLL fails there). Axiom-free, builds Mathlib 4.26."
+      "PART VII (researcher-4) in RamseyR4kExtensionsOQ03.lean: firstMomentCondition (optimized union-bound test 2·C(n,k)<2^C(k,2), decidable); lll_core_eq_firstMoment_core (C(n,2)·6d = 3·C(k,2)²·(2·C(n,k)) — exact proportionality of the two tests core terms); lll_core_le_firstMoment_core (large-n regime 3·C(k,2)²≤C(n,2) ⇒ LLL core ≤ union-bound core); unionBound_beats_lll_at_6 / _at_7 (honest witnesses: union bound R(6,6)>17, R(7,7)>27 while LLL fails there). Axiom-free, builds Mathlib 4.26.",
+      "Session 2026-07-03: de-axiomatized 5 trivially-true placeholder axioms in RamseyR4kExtensions.lean -> proved theorems (axiomCount 14->9, theoremCount 75->80): (1) r4k_quadratic_lower via the constant all-false coloring + Finset.one_lt_card (its stated proposition only forbids a red K4, so it is NOT a genuine R(4,k) bound; docstring now says so and points to the real axiom r4k_lower_bound); (2) off_diagonal_ramsey_bounds := <1,1,one_pos,one_pos> (only asserts two positive constants); (3) book_algorithm_structure, (4) ramsey_multiplicity := trivial (both literal `True`); (5) burr_erdos_conjecture := fun _ _ => <1, by norm_num, trivial> (`... -> True`). Each docstring now states explicitly that the deep theorem the name references is NOT formalized here. Docker build clean (0 warnings), 0 sorries. Updated gallery meta + annotations."
     ],
     "insights": [
       "The dependency-degree bound C(k,2)·C(n-2,k-2) — stated but unproved in the RamseyR4kExtensions prose (its line ~549) — is a clean covering count: neighbours of S are covered by the C(k,2) pairs e⊆S, and each pair lies in ≤ C(n-2,k-2) k-cliques via the injection T↦T\\e into (k-2)-subsets of the other n-2 vertices. Fully axiom-free with card_biUnion_le_card_mul + card_le_card_of_injOn + card_powersetCard.",
@@ -57,7 +58,8 @@
       "PART VI (researcher-4): exact dependency-to-total identity C(n,2)·d = C(k,2)²·C(n,k) via Nat.choose_mul (subset-of-a-subset, s=2). Equivalently d/C(n,k)=C(k,2)²/C(n,2) — the LLL dependency degree is a Θ(k⁴/n²) fraction of all bad events; the exact quantitative reason the LOCAL LLL test beats the GLOBAL union bound. cliqueDependency_total_identity, axiom-free (propext/Classical.choice/Quot.sound).",
       "Corollary cliqueDependencyBound_le_total (researcher-4): d ≤ C(n,k) once C(k,2)²≤C(n,2) (n at least quadratic in k; vast room at n≈2^{k/2}). Proof cancels C(n,2)>0 via le_of_mul_le_mul_left + gcongr on the identity.",
       "HONESTY CORRECTION (researcher-4): the entry claimed the LLL beats the first moment via R(6,6)>13 vs R(6,6)>8, but 8=2^{⌊6/2⌋} is the WEAKENED closed-form first moment. Against the sharp optimized union bound (2·C(n,k)<2^C(k,2)) the union bound reaches R(6,6)>17 and R(7,7)>27 — strictly BEATING the LLL region (13, 22). So the symmetric-LLL setup here does not improve on the honest union bound at small k; the factor-Θ(k) LLL gain is asymptotic.",
-      "Exact finite crossover criterion (researcher-4): rescaling the dependency identity by 6 gives C(n,2)·(6d)=3·C(k,2)²·(2·C(n,k)); since both tests compare their core to the same budget 2^C(k,2), the ratio 3·C(k,2)²/C(n,2) decides which test is more permissive. LLL wins iff 3·C(k,2)²<C(n,2) (n at least ~quadratic in k, the n≈2^{k/2} regime); union bound wins for smaller n. Numerically 3·C(6,2)²=675>136=C(17,2), matching that the union bound wins at k=6."
+      "Exact finite crossover criterion (researcher-4): rescaling the dependency identity by 6 gives C(n,2)·(6d)=3·C(k,2)²·(2·C(n,k)); since both tests compare their core to the same budget 2^C(k,2), the ratio 3·C(k,2)²/C(n,2) decides which test is more permissive. LLL wins iff 3·C(k,2)²<C(n,2) (n at least ~quadratic in k, the n≈2^{k/2} regime); union bound wins for smaller n. Numerically 3·C(6,2)²=675>136=C(17,2), matching that the union bound wins at k=6.",
+      "Several axioms in this file were vacuous placeholders that INFLATED the assumption count without asserting the mathematics their names/docstrings claimed. In particular the single-colour lower-bound statements (only forbidding a red/all-true clique) are trivially satisfied by the constant all-false coloring and encode NO Ramsey lower bound; the genuine bounds must forbid BOTH a red small clique and a blue large clique (as r4k_lower_bound and spencer_diagonal_lower_bound correctly do). De-axiomatizing the placeholders with honest docstrings is a real integrity improvement, not just a metric tweak."
     ],
     "mathlibGaps": [
       "Mathlib has no symmetric/general Lovász Local Lemma.",
@@ -88,14 +90,14 @@
     "mathlib": []
   },
   "started": "2026-07-02T18:04:16.809Z",
-  "lastUpdate": "2026-07-03T00:00:00-07:00",
+  "lastUpdate": "2026-07-03T13:20:00-07:00",
   "leanFiles": [
     {
       "path": "Proofs/RamseyR4kExtensions.lean",
       "filename": "RamseyR4kExtensions.lean",
-      "lineCount": 1154,
-      "theoremCount": 75,
-      "axiomCount": 14,
+      "lineCount": 1183,
+      "theoremCount": 80,
+      "axiomCount": 9,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,

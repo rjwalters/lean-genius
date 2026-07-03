@@ -2,7 +2,7 @@
   "id": "ramsey-r4k-extensions",
   "title": "Ramsey R(4,k) Bounds: Probabilistic Method Extensions",
   "slug": "ramsey-r4k-extensions",
-  "description": "Formalizes Ramsey theory bounds for R(4,k) via the probabilistic method. Proves the Erdős 1947 lower bound R(k,k) ≥ 2^(k/2) (now fully axiom-free), the Spencer improvement, the Conlon-Fox-Sudakov upper bound, and the R(4,k) quadratic lower bound R(4,k) ≥ Ω(k²/log k). 75 theorems, 14 axioms for the deep analytic bounds.",
+  "description": "Formalizes Ramsey theory bounds for R(4,k) via the probabilistic method. Proves the Erdős 1947 lower bound R(k,k) ≥ 2^(k/2) (now fully axiom-free), explicit small-Ramsey constructions, and the binomial upper bounds. 80 theorems, 9 axioms for the deep analytic bounds (AKS/Kim R(3,k), Mattheus-Verstraete R(4,k), Spencer diagonal LLL, CGMS, Bohman-Keevash).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
@@ -18,10 +18,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 14,
-    "assumptions": "14 axioms covering: aks_r3k_upper_bound and kim_r3k_lower_bound (R(3,k) bounds), r4k_upper_bound and r4k_lower_bound (R(4,k) bounds), spencer_diagonal_lower_bound (Spencer's improvement), r4k_quadratic_lower (Ω(k²/log k) lower bound), cgms_diagonal_upper_bound and cgms_epsilon_estimate (Conlon-Fox-Sudakov 2009), book_algorithm_structure, and several supporting analytic bounds. The Erdős first-moment lower bound erdos_probabilistic_lower_bound (R(k,k)≥2^(k/2)) is no longer an axiom — it is now a proved theorem discharged by the axiom-free formalization ErdosRamsey.erdos_probabilistic_lower_bound (Proofs/ErdosRamseyLowerBound.lean). The remaining axioms represent the state of the art in Ramsey theory, proofs of which require probabilistic method machinery not yet in Mathlib.",
-    "lineCount": 1154,
-    "theoremCount": 75,
+    "axiomCount": 9,
+    "assumptions": "9 axioms, each a genuine deep result from the Ramsey-theory literature whose proof needs machinery not in Mathlib: aks_r3k_upper_bound and kim_r3k_lower_bound (R(3,k)=Θ(k²/log k)), r4k_upper_bound and r4k_lower_bound (two-colour R(4,k) bounds), spencer_diagonal_lower_bound (Spencer's LLL improvement), cgms_diagonal_upper_bound and cgms_epsilon_estimate (CGMS (4-ε)^k breakthrough), bohman_keevash_r3t and mattheus_verstraete_r4t. The Erdős first-moment lower bound erdos_probabilistic_lower_bound (R(k,k)≥2^(k/2)) is a proved theorem discharged by ErdosRamsey.erdos_probabilistic_lower_bound (Proofs/ErdosRamseyLowerBound.lean). Five former placeholder axioms were de-axiomatized this session: r4k_quadratic_lower, off_diagonal_ramsey_bounds, book_algorithm_structure, burr_erdos_conjecture and ramsey_multiplicity were all trivially-true propositions (three were literally `True`; r4k_quadratic_lower only forbade a red K₄, so the all-false coloring satisfies it; off_diagonal_ramsey_bounds only asserted two positive constants exist) — they are now proved theorems with honest docstrings noting the stated proposition does NOT encode the deep result its name references.",
+    "lineCount": 1183,
+    "theoremCount": 80,
     "definitionCount": 13,
     "originalContributions": [
       "IsRamseyColoring: 2-coloring of K_n edges avoiding monochromatic K_r or K_s",
@@ -56,7 +56,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Ramsey number bounds are formalized with 14 axioms covering the deep probabilistic and analytic results. The Erdős 1947 first-moment lower bound R(k,k)≥2^(k/2), previously axiomatized, is now fully proved (axiom-free). The elementary bounds (Pascal triangle, first moment setup) are fully proved. 75 theorems, 1150 lines documenting the state of the art in Ramsey theory.",
+    "summary": "Ramsey number bounds are formalized with 9 axioms, each a genuine deep result (AKS/Kim R(3,k), two-colour R(4,k), Spencer's LLL diagonal bound, CGMS, Bohman-Keevash, Mattheus-Verstraete). The Erdős 1947 first-moment lower bound R(k,k)≥2^(k/2), previously axiomatized, is now fully proved (axiom-free). Five former placeholder axioms — all trivially-true propositions that did not actually encode the deep results their names referenced — were de-axiomatized into proved theorems with honest docstrings. The elementary bounds (Pascal triangle, first-moment setup, explicit small colorings) are fully proved. 80 theorems, ~1180 lines documenting the state of the art in Ramsey theory.",
     "implications": "The probabilistic method established by Erdős is one of the most powerful tools in combinatorics. Formalizing even its setup (IsRamseyColoring, first moment framework) creates infrastructure for future Lean 4 probabilistic combinatorics. The R(4,k) problem remains one of the most actively studied in extremal combinatorics.",
     "openQuestions": [
       "Strengthen the proved bound via the symmetric Lovász Local Lemma: R(k,k) ≥ (1+o(1))·(k/e)·2^(k/2), a factor-k improvement over the first-moment bound",
@@ -66,9 +66,9 @@
   },
   "leanFile": {
     "namespace": "RamseyR4kExtensions",
-    "lineCount": 1154,
-    "axiomCount": 14,
-    "theoremCount": 75,
+    "lineCount": 1183,
+    "axiomCount": 9,
+    "theoremCount": 80,
     "definitionCount": 13,
     "path": "Proofs/RamseyR4kExtensions.lean",
     "sorries": 0
@@ -210,7 +210,7 @@
       "startLine": 564,
       "endLine": 606,
       "mathContext": "Framework for the $R(4,k)=\\Omega(k^{5/2})$-type quadratic-and-beyond lower bounds.",
-      "summary": "Part VIII. The quadratic lower-bound framework for $R(4,k)$, stated as the axiom `r4k_quadratic_lower`, together with small-graph helper lemmas."
+      "summary": "Part VIII. The quadratic lower-bound framework for $R(4,k)$. `r4k_quadratic_lower` is now a proved theorem (not an axiom): as literally stated it only forbids a red $K_4$, so it is satisfied by the all-false coloring — its docstring flags that it does NOT encode the genuine two-colour $R(4,k)$ bound (that is the axiom `r4k_lower_bound`). Includes small-graph helper lemmas."
     },
     {
       "id": "r34-k8-construction",
@@ -265,8 +265,8 @@
       "title": "Part IX: Summary of Extensions and Frontier Results",
       "startLine": 951,
       "endLine": 1142,
-      "mathContext": "Frontier axioms: CGMS $R(k,k)\\le(4-\\varepsilon)^k$, Bohman-Keevash, Mattheus-Verstraete $R(4,t)$, Burr-Erdős, multiplicity.",
-      "summary": "Part IX. Summary of extensions and recent frontier results stated as axioms: the Campos-Griffiths-Morris-Sahasrabudhe (CGMS) exponential improvement $R(k,k)\\le(4-\\varepsilon)^k$ with its $\\varepsilon$ estimate and book-algorithm structure, off-diagonal bounds, Bohman-Keevash $R(3,t)$, Mattheus-Verstraete $R(4,t)$, the Burr-Erdős conjecture, and Ramsey multiplicity."
+      "mathContext": "Frontier results: genuine axioms CGMS $R(k,k)\\le(4-\\varepsilon)^k$, Bohman-Keevash, Mattheus-Verstraete $R(4,t)$; plus documentation-only placeholders (Burr-Erdős, multiplicity, book algorithm) now proved as trivial `True`.",
+      "summary": "Part IX. Summary of extensions and recent frontier results. Genuine axioms: the Campos-Griffiths-Morris-Sahasrabudhe (CGMS) exponential improvement $R(k,k)\\le(4-\\varepsilon)^k$ with its $\\varepsilon$ estimate, Bohman-Keevash $R(3,t)$, and Mattheus-Verstraete $R(4,t)$. The book-algorithm structure, off-diagonal bounds, the Burr-Erdős conjecture, and Ramsey multiplicity are now proved theorems rather than axioms — their Lean propositions are trivially true (`True` or bare existence of positive constants) and their docstrings state explicitly that the underlying deep theorems are NOT formalized here."
     }
   ],
   "sorries": 0,
