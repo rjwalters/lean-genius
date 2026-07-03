@@ -4,99 +4,78 @@
     "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
     "range": { "startLine": 4, "endLine": 47 },
     "type": "concept",
-    "title": "The Diagonal Beta Sequence as Power-Series Coefficients",
-    "content": "The parent entries evaluate the Euler Beta integral on the integer lattice (B(m+1,n+1) = m!·n!/(m+n+1)!) and on its diagonal (B(n+1,n+1) = 1/((2n+1)·C(2n,n))). This file turns the diagonal into a sequence b(n) = B(n+1,n+1) = (n!)²/(2n+1)! and studies it as the coefficients of a power series. The goal is the arithmetic structure that fixes the ordinary generating function y(x) = Σₙ b(n)xⁿ. The headline is the contiguous recurrence (4n+6)·b(n+1) = (n+1)·b(n); with b(0) = 1 it determines the whole sequence, and translating it coefficient-by-coefficient yields the ODE x(4−x)y' + (2−x)y = 2, y(0) = 1, whose closed-form solution is y(x) = 4·arcsin(√x/2)/√(x(4−x)) (value π/2 at x = 2). This entry supplies the verified arithmetic backbone; the analytic proof of the closed form is the stated sequel.",
-    "mathContext": "$\\sum_{n\\ge0} B(n{+}1,n{+}1)\\,x^n = \\dfrac{4\\,\\arcsin(\\sqrt{x}/2)}{\\sqrt{x(4-x)}},\\quad 0<x<4.$",
-    "significance": "key",
+    "title": "From a Sequence to its Generating Function",
+    "content": "The diagonal Beta sequence b(n) = B(n+1,n+1) = (n!)²/(2n+1)! = 1/((2n+1)·C(2n,n)) is the total mass of the symmetric Beta(n+1,n+1) density on [0,1]. This entry treats it as the coefficient sequence of a power series and determines the closed form of its ordinary generating function y(x) = Σₙ b(n)xⁿ = 4·arcsin(√x/2)/√(x(4-x)) on 0 < x < 4 (value π/2 at x=2). Two ingredients are proved: the arithmetic backbone — the contiguous recurrence (4n+6)b(n+1) = (n+1)b(n) that characterizes y as the solution of the ODE x(4-x)y'+(2-x)y=2 — and the analytic core, the closed-form value of the kernel integral the sum reduces to.",
+    "mathContext": "$\\sum_n b(n)x^n = \\dfrac{4\\arcsin(\\sqrt x/2)}{\\sqrt{x(4-x)}},\\ 0<x<4.$",
+    "significance": "foundational",
     "relatedConcepts": [
       "ordinary generating function",
-      "contiguous recurrence",
+      "reciprocal central binomial coefficient",
       "Euler Beta integral",
-      "central binomial coefficient",
-      "arcsine series"
+      "arcsine closed form"
     ],
     "prerequisites": [
-      "the sibling diagonal Beta value B(n+1,n+1) = 1/((2n+1)·C(2n,n))",
-      "generating functions and linear recurrences"
-    ]
-  },
-  {
-    "id": "ann-definition-base",
-    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
-    "range": { "startLine": 54, "endLine": 79 },
-    "type": "definition",
-    "title": "The Sequence and its Base Values",
-    "content": "centralBeta n = (n!·n!)/(2n+1)! defines b(n) over ℝ, the natural home for a power-series coefficient sequence. The first values are computed directly by norm_num on the factorials: b(0) = 1, b(1) = 1/6, b(2) = 1/30, matching the sibling entry's independently derived B(1,1) = 1, B(2,2) = 1/6, B(3,3) = 1/30. centralBeta_pos records that every term is strictly positive (positive numerator and denominator), which is what makes the reciprocal form and the division steps of the recurrence legitimate.",
-    "mathContext": "$b(n) = \\dfrac{(n!)^2}{(2n+1)!};\\quad b(0)=1,\\ b(1)=\\tfrac16,\\ b(2)=\\tfrac1{30}.$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "factorials",
-      "Beta distribution normalization",
-      "sequence positivity"
-    ],
-    "prerequisites": [
-      "factorial arithmetic",
-      "norm_num"
-    ]
-  },
-  {
-    "id": "ann-reciprocal-bridge",
-    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
-    "range": { "startLine": 82, "endLine": 106 },
-    "type": "tactic",
-    "title": "Reciprocal Form and the Bridge to the Gallery Beta Value",
-    "content": "centralBeta_eq_reciprocal shows b(n) = 1/((2n+1)·C(2n,n)) by rewriting the denominator with the sibling entry's factorization (2n+1)! = (2n+1)·C(2n,n)·(n!)² and clearing the common (n!)² factor via field_simp (both denominators positive). centralBeta_eq_betaIntegral then casts this reciprocal form to ℂ and matches it against betaIntegral_diag_central_binom, proving ((b(n):ℝ):ℂ) = betaIntegral (n+1) (n+1). This bridge is what makes the study literally about the generating function of the Euler Beta values Σₙ B(n+1,n+1)xⁿ, not merely of an abstract rational sequence.",
-    "mathContext": "$b(n) = \\dfrac{1}{(2n+1)\\binom{2n}{n}},\\qquad (b(n):\\mathbb{C}) = B(n{+}1,n{+}1).$",
-    "significance": "key",
-    "relatedConcepts": [
-      "central binomial reciprocal",
-      "cast from ℝ to ℂ",
-      "Euler Beta integral"
-    ],
-    "prerequisites": [
-      "sibling factorization factorial_two_mul_succ",
-      "betaIntegral_diag_central_binom",
-      "field_simp / push_cast"
-    ]
-  },
-  {
-    "id": "ann-factorial-identity",
-    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
-    "range": { "startLine": 108, "endLine": 121 },
-    "type": "tactic",
-    "title": "The Exact Factorial Identity",
-    "content": "centralBeta_factorial_identity is the natural-number heart of the recurrence: (4n+6)·(n+1)!²·(2n+1)! = (n+1)·n!²·(2(n+1)+1)!. The proof expands (n+1)! = (n+1)·n! and (2n+3)! = (2n+3)·(2n+2)·(2n+1)! through repeated Nat.factorial_succ, after which both sides equal (4n+6)(n+1)²·n!²·(2n+1)! and ring closes the goal. Casting this integer identity to ℝ is exactly what the real recurrence needs after the denominators are cleared.",
-    "mathContext": "$(4n+6)\\,((n{+}1)!)^2\\,(2n+1)! = (n+1)\\,(n!)^2\\,(2n+3)!.$",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "factorial recurrence",
-      "Nat.factorial_succ",
-      "ring normalization"
-    ],
-    "prerequisites": [
-      "Nat.factorial_succ"
+      "the diagonal Beta value b(n) = 1/((2n+1)·C(2n,n))",
+      "power series and generating functions"
     ]
   },
   {
     "id": "ann-recurrence",
     "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
-    "range": { "startLine": 123, "endLine": 138 },
-    "type": "key-step",
-    "title": "The Contiguous Recurrence — the OGF's Arithmetic Engine",
-    "content": "centralBeta_recurrence proves (4n+6)·b(n+1) = (n+1)·b(n). After unfolding the definition, the two factorial denominators are cleared with div_eq_div_iff (both nonzero by Nat.factorial_pos) and the goal becomes the real cast of centralBeta_factorial_identity, discharged by linear_combination. The successive ratio b(n+1)/b(n) = (n+1)/(2(2n+3)) is a rational function of n of degree (1,1) — the hallmark of a hypergeometric-type sequence — and this recurrence is precisely the coefficient form of the first-order linear ODE x(4−x)y'(x) + (2−x)y(x) = 2 satisfied by y(x) = Σₙ b(n)xⁿ. Together with b(0) = 1 it characterizes the generating function, whose closed form is 4·arcsin(√x/2)/√(x(4−x)).",
-    "mathContext": "$(4n+6)\\,b(n{+}1) = (n+1)\\,b(n)\\ \\Longleftrightarrow\\ x(4-x)y' + (2-x)y = 2,\\ y(0)=1.$",
-    "significance": "key",
+    "range": { "startLine": 108, "endLine": 140 },
+    "type": "technique",
+    "title": "The Recurrence as the ODE in Disguise",
+    "content": "centralBeta_recurrence proves (4n+6)·b(n+1) = (n+1)·b(n). The whole content is one factorial identity, centralBeta_factorial_identity: (4n+6)(n+1)!²(2n+1)! = (n+1)n!²(2(n+1)+1)!, which expands both sides via Nat.factorial_succ and finishes by ring; transporting it over ℝ (div_eq_div_iff, linear_combination) gives the recurrence for b(n) = (n!)²/(2n+1)!. Reading it coefficient-by-coefficient, this is exactly the linear ODE x(4-x)y'(x) + (2-x)y(x) = 2 satisfied by the generating function y(x) = Σ b(n)xⁿ — so the recurrence and the closed form 4·arcsin(√x/2)/√(x(4-x)) are two faces of the same object.",
+    "mathContext": "$(4n+6)b(n+1)=(n+1)b(n)\\ \\Longleftrightarrow\\ x(4-x)y'+(2-x)y=2.$",
+    "significance": "important",
     "relatedConcepts": [
       "contiguous recurrence",
-      "generating-function ODE",
-      "hypergeometric sequence",
-      "div_eq_div_iff",
-      "linear_combination"
+      "holonomic sequence",
+      "linear ODE for the generating function"
     ],
     "prerequisites": [
-      "centralBeta_factorial_identity",
-      "Nat.factorial_pos",
-      "field arithmetic over ℝ"
+      "Nat.factorial_succ",
+      "the sequence b(n) = (n!)²/(2n+1)!"
+    ]
+  },
+  {
+    "id": "ann-trig-bridge",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 170, "endLine": 206 },
+    "type": "technique",
+    "title": "Matching Tangents: arctan(x/√(x(4-x))) = arcsin(√x/2)",
+    "content": "arctan_div_sqrt_eq_arcsin turns the arctangent that the fundamental theorem of calculus produces into the arcsine that appears in the closed form. The strategy is to match tangents on the branch (-π/2, π/2). Writing s = √x/2 (which lies in [0,1) for 0<x<4), Real.tan_arcsin gives tan(arcsin s) = s/√(1-s²) = (√x/2)/(√(4-x)/2) = √x/√(4-x) = x/√(x(4-x)). Since arcsin s ∈ (-π/2, π/2) (arcsin_lt_pi_div_two with s<1, and neg_pi_div_two_lt_arcsin), Real.arctan_tan identifies arctan of that tangent with arcsin s itself. The only analytic subtlety is the square-root bookkeeping √(1-s²) = √(4-x)/2, handled with Real.sqrt_mul and Real.sqrt_sq.",
+    "mathContext": "$\\tan\\!\\big(\\arcsin\\tfrac{\\sqrt x}{2}\\big)=\\dfrac{\\sqrt x}{\\sqrt{4-x}}=\\dfrac{x}{\\sqrt{x(4-x)}}.$",
+    "significance": "important",
+    "relatedConcepts": [
+      "half-angle identity",
+      "inverse trigonometric functions",
+      "principal branch of arctan"
+    ],
+    "prerequisites": [
+      "Real.tan_arcsin, Real.arctan_tan",
+      "arcsin range on (-π/2, π/2)"
+    ]
+  },
+  {
+    "id": "ann-kernel-integral",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 208, "endLine": 267 },
+    "type": "key-step",
+    "title": "The Kernel Integral by the Fundamental Theorem of Calculus",
+    "content": "centralBeta_ogf_kernel_integral is the analytic heart: ∫₀¹ dt/(1 - x·t(1-t)) = 4·arcsin(√x/2)/√(x(4-x)) for 0 < x < 4. This is the integral Σₙ b(n)xⁿ reduces to after b(n) = ∫₀¹ (t(1-t))ⁿ dt and summing the geometric series 1/(1 - x·t(1-t)). The proof is FTC with antiderivative F(t) = (2/k)·arctan((2xt-x)/k), k = √(x(4-x)). Three facts drive it: (1) the denominator is positive on [0,1] because x·t(1-t) ≤ x/4 < 1 (from (2t-1)² ≥ 0 and x<4), giving continuity and interval-integrability; (2) F' equals the kernel exactly, because the algebraic identity k² + (2xt-x)² = 4x(1 - x·t(1-t)) collapses the arctan derivative (Real.hasDerivAt_arctan composed with the affine argument) to 1/(1 - x·t(1-t)); (3) the boundary values are antisymmetric, F(1) - F(0) = (4/k)·arctan(x/k), and the trigonometric bridge rewrites arctan(x/k) as arcsin(√x/2).",
+    "mathContext": "$\\int_0^1\\frac{dt}{1-x\\,t(1-t)}=\\frac{4\\arcsin(\\sqrt x/2)}{\\sqrt{x(4-x)}},\\quad k^2+(2xt-x)^2=4x\\big(1-x\\,t(1-t)\\big).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "fundamental theorem of calculus",
+      "completing the square",
+      "antiderivative of a rational function",
+      "reciprocal central-binomial generating function"
+    ],
+    "prerequisites": [
+      "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+      "Real.hasDerivAt_arctan and HasDerivAt.comp",
+      "denominator positivity on [0,1]"
     ]
   }
 ]

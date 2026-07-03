@@ -139,4 +139,130 @@ theorem centralBeta_recurrence (n : ℕ) :
   rw [← mul_div_assoc, ← mul_div_assoc, div_eq_div_iff h2 h1]
   linear_combination hkeyR
 
+/-!
+## The closed-form generating function
+
+We now discharge the analytic result that the arithmetic backbone above was built
+to support: the **closed form of the ordinary generating function**
+`y(x) = Σₙ b(n) xⁿ`. Interchanging the sum with the Beta integral
+`b(n) = ∫₀¹ (t(1-t))ⁿ dt` and summing the geometric series gives
+
+  `y(x) = ∫₀¹ dt / (1 - x·t(1-t))`,
+
+and this kernel integral has the closed form
+
+  **`centralBeta_ogf_kernel_integral`**:
+    `∫₀¹ dt/(1 - x·t(1-t)) = 4·arcsin(√x/2) / √(x(4-x))`   for `0 < x < 4`.
+
+The evaluation is a clean application of the fundamental theorem of calculus with
+antiderivative `F(t) = (2/√(x(4-x)))·arctan((2xt - x)/√(x(4-x)))`, whose derivative
+is exactly the kernel `1/(1 - x·t(1-t))` (the identity
+`√(x(4-x))² + (2xt-x)² = 4x(1 - x·t(1-t))` collapses the `arctan` derivative to the
+kernel), and the boundary evaluation `F(1) - F(0) = (4/√(x(4-x)))·arctan(x/√(x(4-x)))`
+followed by the trigonometric bridge `arctan(x/√(x(4-x))) = arcsin(√x/2)`.
+-/
+
+/-- **Trigonometric bridge.**  For `0 < x < 4`,
+`arctan(x / √(x(4-x))) = arcsin(√x / 2)`.
+
+Both sides lie in `(-π/2, π/2)`, and their tangents agree: writing `s = √x/2`,
+`tan(arcsin s) = s/√(1 - s²) = (√x/2)/(√(4-x)/2) = √x/√(4-x) = x/√(x(4-x))`. -/
+theorem arctan_div_sqrt_eq_arcsin {x : ℝ} (hx0 : 0 < x) (hx4 : x < 4) :
+    Real.arctan (x / Real.sqrt (x * (4 - x))) = Real.arcsin (Real.sqrt x / 2) := by
+  have h4x : (0 : ℝ) < 4 - x := by linarith
+  have hsxpos : 0 < Real.sqrt x := Real.sqrt_pos.mpr hx0
+  have hsx4pos : 0 < Real.sqrt (4 - x) := Real.sqrt_pos.mpr h4x
+  have hxx : Real.sqrt x * Real.sqrt x = x := Real.mul_self_sqrt hx0.le
+  have hprod : Real.sqrt (x * (4 - x)) = Real.sqrt x * Real.sqrt (4 - x) :=
+    Real.sqrt_mul hx0.le _
+  set s := Real.sqrt x / 2 with hs
+  have hs_nonneg : 0 ≤ s := by positivity
+  have hs_lt1 : s < 1 := by
+    rw [hs, div_lt_one (by norm_num)]
+    have hlt : Real.sqrt x < Real.sqrt 4 := Real.sqrt_lt_sqrt hx0.le hx4
+    rwa [show Real.sqrt 4 = 2 by
+      rw [show (4 : ℝ) = 2 ^ 2 by norm_num]; exact Real.sqrt_sq (by norm_num)] at hlt
+  -- `√(1 - s²) = √(4-x)/2`
+  have hs2 : (1 : ℝ) - s ^ 2 = (4 - x) / 4 := by
+    rw [hs, div_pow, hxx]; ring
+  have hsqrt_half : Real.sqrt (1 - s ^ 2) = Real.sqrt (4 - x) / 2 := by
+    rw [hs2, show (4 - x) / 4 = (4 - x) * (1 / 4) by ring, Real.sqrt_mul h4x.le,
+      show (1 : ℝ) / 4 = (1 / 2) ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]
+    ring
+  -- the two tangents agree
+  have hkey : x / Real.sqrt (x * (4 - x)) = Real.tan (Real.arcsin s) := by
+    rw [Real.tan_arcsin, hsqrt_half, hprod, hs, div_div_div_cancel_right₀,
+      div_eq_div_iff (by positivity) (by positivity)]
+    nlinarith [hxx, hsxpos, hsx4pos]
+  rw [hkey, Real.arctan_tan]
+  · exact Real.neg_pi_div_two_lt_arcsin.mpr (by linarith)
+  · exact Real.arcsin_lt_pi_div_two.mpr hs_lt1
+
+/-- **Closed-form OGF kernel integral (new).**  For `0 < x < 4`,
+
+  `∫₀¹ dt / (1 - x·t(1-t)) = 4·arcsin(√x/2) / √(x(4-x))`.
+
+This is the definite integral obtained after interchanging `Σₙ b(n) xⁿ` with the
+Beta integral `b(n) = ∫₀¹ (t(1-t))ⁿ dt` and summing the geometric series; it is the
+closed form of the ordinary generating function of the central Beta sequence. -/
+theorem centralBeta_ogf_kernel_integral {x : ℝ} (hx0 : 0 < x) (hx4 : x < 4) :
+    ∫ t in (0 : ℝ)..1, (1 - x * t * (1 - t))⁻¹
+      = 4 * Real.arcsin (Real.sqrt x / 2) / Real.sqrt (x * (4 - x)) := by
+  have hxpos : 0 < x * (4 - x) := mul_pos hx0 (by linarith)
+  set k := Real.sqrt (x * (4 - x)) with hk
+  have hkpos : 0 < k := Real.sqrt_pos.mpr hxpos
+  have hkne : k ≠ 0 := ne_of_gt hkpos
+  have hk2 : k ^ 2 = x * (4 - x) := Real.sq_sqrt hxpos.le
+  -- denominator positive on the interval
+  have hden : ∀ t ∈ Set.uIcc (0 : ℝ) 1, 0 < 1 - x * t * (1 - t) := by
+    intro t ht
+    rw [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1)] at ht
+    obtain ⟨h0, h1⟩ := ht
+    nlinarith [mul_nonneg hx0.le (sq_nonneg (2 * t - 1)), hx4]
+  -- the antiderivative has the kernel as derivative
+  have hderiv : ∀ t ∈ Set.uIcc (0 : ℝ) 1,
+      HasDerivAt (fun t => (2 / k) * Real.arctan ((2 * x * t - x) / k))
+        ((1 - x * t * (1 - t))⁻¹) t := by
+    intro t ht
+    have hden_t : 0 < 1 - x * t * (1 - t) := hden t ht
+    have hg : HasDerivAt (fun t : ℝ => (2 * x * t - x) / k) (2 * x / k) t := by
+      have h0 : HasDerivAt (fun t : ℝ => 2 * x * t - x) (2 * x) t := by
+        simpa using ((hasDerivAt_id t).const_mul (2 * x)).sub_const x
+      simpa using h0.div_const k
+    have harc : HasDerivAt (fun t => Real.arctan ((2 * x * t - x) / k))
+        ((1 / (1 + ((2 * x * t - x) / k) ^ 2)) * (2 * x / k)) t :=
+      (Real.hasDerivAt_arctan ((2 * x * t - x) / k)).comp t hg
+    have hF' : HasDerivAt (fun t => (2 / k) * Real.arctan ((2 * x * t - x) / k))
+        ((2 / k) * ((1 / (1 + ((2 * x * t - x) / k) ^ 2)) * (2 * x / k))) t :=
+      harc.const_mul (2 / k)
+    have hg2 : (1 : ℝ) + ((2 * x * t - x) / k) ^ 2
+        = (k ^ 2 + (2 * x * t - x) ^ 2) / k ^ 2 := by
+      rw [div_pow, add_div, div_self (pow_ne_zero 2 hkne)]
+    have hPne : k ^ 2 + (2 * x * t - x) ^ 2 ≠ 0 := by positivity
+    have hRHS : (2 / k) * ((1 / (1 + ((2 * x * t - x) / k) ^ 2)) * (2 * x / k))
+        = 4 * x / (k ^ 2 + (2 * x * t - x) ^ 2) := by
+      rw [hg2, one_div_div]; field_simp; ring
+    have hP : k ^ 2 + (2 * x * t - x) ^ 2 = 4 * x * (1 - x * t * (1 - t)) := by
+      rw [hk2]; ring
+    have hPpos : 0 < 4 * x * (1 - x * t * (1 - t)) :=
+      mul_pos (mul_pos (by norm_num) hx0) hden_t
+    have hw : (1 - x * t * (1 - t)) ≠ 0 := ne_of_gt hden_t
+    have hval : (1 - x * t * (1 - t))⁻¹
+        = (2 / k) * ((1 / (1 + ((2 * x * t - x) / k) ^ 2)) * (2 * x / k)) := by
+      rw [hRHS, hP, inv_eq_one_div, div_eq_div_iff hw (ne_of_gt hPpos)]; ring
+    rw [hval]; exact hF'
+  -- integrability of the kernel on the interval
+  have hcont : ContinuousOn (fun t => (1 - x * t * (1 - t))⁻¹) (Set.uIcc (0 : ℝ) 1) := by
+    apply ContinuousOn.inv₀
+    · fun_prop
+    · intro t ht; exact (hden t ht).ne'
+  have hint : IntervalIntegrable (fun t => (1 - x * t * (1 - t))⁻¹)
+      MeasureTheory.volume 0 1 := hcont.intervalIntegrable
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hint]
+  -- boundary evaluation
+  simp only []
+  rw [show (2 * x * 1 - x) = x by ring, show (2 * x * 0 - x) = -x by ring,
+      neg_div, Real.arctan_neg, hk, arctan_div_sqrt_eq_arcsin hx0 hx4]
+  ring
+
 end BetaCentralBinomialOGF
