@@ -128,6 +128,92 @@
       "summary": "Bundles the five champions into the parent's `PackingDensity` structure (`dimNPacking`, supplying `nonneg`/`le_one` from the positivity and less-than-one lemmas), proves `exists_dimension_8_optimal` (a PackingDensity realising the proven optimum π⁴/384), and the final aggregation `best_known_density_hierarchy_4_to_8` collecting all genuineness and monotonicity facts."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "density_strictly_decreasing_4_to_8",
+      "type": "theorem",
+      "statement": "dim5Density < dim4Density ∧ dim6Density < dim5Density ∧ dim7Density < dim6Density ∧ dim8Density < dim7Density",
+      "significance": "Headline result. The best-known lattice packing densities strictly decrease across dimensions 4-8: Δ₄ > Δ₅ > Δ₆ > Δ₇ > Δ₈. Quantifies the principle that even the densest known sphere arrangements thin out as dimension grows.",
+      "description": "Bundles the four pairwise comparisons. Each step cancels the common power of π and is separated by the disjoint rational brackets Δₙ₊₁ < qₙ₊₁ < qₙ < Δₙ."
+    },
+    {
+      "name": "best_known_density_hierarchy_4_to_8",
+      "type": "theorem",
+      "statement": "(0 < dim4Density ∧ dim4Density < 1) ∧ … ∧ (0 < dim8Density ∧ dim8Density < 1) ∧ dim5Density < dim4Density ∧ dim6Density < dim5Density ∧ dim7Density < dim6Density ∧ dim8Density < dim7Density",
+      "significance": "Final aggregation: all five champions Δ₄…Δ₈ are genuine densities (0 < Δₙ < 1) and they strictly decrease across dimensions 4-8. The single statement capturing everything the file establishes.",
+      "description": "Conjunction of the ten genuine-density facts and the four strict inequalities, assembled from the per-dimension positivity, upper-bound, and comparison lemmas."
+    },
+    {
+      "name": "exists_dimension_8_optimal",
+      "type": "theorem",
+      "statement": "∃ p : PackingDensity, p.density = π ^ 4 / 384 ∧ 0 < p.density ∧ p.density < 1",
+      "significance": "Existence corollary realising the only proven-optimal density in the band as an inhabitant of the parent's PackingDensity structure: the E₈ density π⁴/384 (Viazovska 2016). Links the survey to the parent kepler-conjecture formalisation.",
+      "description": "Witnessed by dim8Packing, the E₈ champion bundled with its positivity and sub-unit proofs; p.density = π⁴/384 holds by rfl."
+    },
+    {
+      "name": "dim4_gt_dim5",
+      "type": "theorem",
+      "statement": "dim5Density < dim4Density",
+      "significance": "Δ₄ > Δ₅: the D₄ champion (π²/16) beats the D₅ champion (π²√2/30).",
+      "description": "Separated by the brackets Δ₅ < 0.4653 < 0.6168 < Δ₄; closed by linarith from the two rational-bracket lemmas."
+    },
+    {
+      "name": "dim5_gt_dim6",
+      "type": "theorem",
+      "statement": "dim6Density < dim5Density",
+      "significance": "Δ₅ > Δ₆: the D₅ champion (π²√2/30) beats the E₆ champion (π³√3/144).",
+      "description": "Separated by the brackets Δ₆ < 0.3730 < 0.4652 < Δ₅."
+    },
+    {
+      "name": "dim6_gt_dim7",
+      "type": "theorem",
+      "statement": "dim7Density < dim6Density",
+      "significance": "Δ₆ > Δ₇: the E₆ champion (π³√3/144) beats the E₇ champion (π³/105).",
+      "description": "Separated by the brackets Δ₇ < 0.2954 < 0.3729 < Δ₆."
+    },
+    {
+      "name": "dim7_gt_dim8",
+      "type": "theorem",
+      "statement": "dim8Density < dim7Density",
+      "significance": "Δ₇ > Δ₈: the E₇ champion (π³/105) beats the E₈ champion (π⁴/384).",
+      "description": "Separated by the brackets Δ₈ < 0.2537 < 0.2952 < Δ₇."
+    },
+    {
+      "name": "dim4Density_bounds",
+      "type": "theorem",
+      "statement": "0.6168 < dim4Density ∧ dim4Density < 0.6169",
+      "significance": "Explicit rational bracket for the D₄ density Δ₄ = π²/16 ≈ 0.61685. One of five per-champion brackets (Δ₅∈(0.4652,0.4653), Δ₆∈(0.3729,0.3730), Δ₇∈(0.2952,0.2954), Δ₈∈(0.2536,0.2537)) that drive every comparison.",
+      "description": "Follows from pi_sq_bounds by linarith; the surd-carrying dimensions additionally use sqrt2_bounds / sqrt3_bounds via nlinarith."
+    },
+    {
+      "name": "dim4Density_lt_one",
+      "type": "theorem",
+      "statement": "dim4Density < 1",
+      "significance": "Δ₄ is a genuine (sub-unit) density. Representative of the five upper-bound lemmas dim4..dim8 Density_lt_one establishing 0 < Δₙ < 1 for all champions.",
+      "description": "Discharged from pi_sq_bounds; the E₈ case uses pi_quart_bounds, and surd cases add the corresponding √-brackets."
+    },
+    {
+      "name": "dim4Density_pos",
+      "type": "theorem",
+      "statement": "0 < dim4Density",
+      "significance": "Δ₄ is strictly positive. Representative of the five positivity lemmas dim4..dim8 Density_pos; every champion is a positive real by positivity from π > 0 (and √2, √3 > 0).",
+      "description": "Closed by positivity after unfolding; surd cases first supply Real.sqrt_pos."
+    },
+    {
+      "name": "pi_sq_bounds",
+      "type": "lemma",
+      "statement": "9.8695 < π ^ 2 ∧ π ^ 2 < 9.8697",
+      "significance": "Numeric infrastructure: a two-sided rational bracket for π² (true value ≈ 9.8696044). Base of the tower pi_cube_bounds (π³∈(31.006,31.008)) and pi_quart_bounds (π⁴∈(97.40,97.42)) that make every density bound decidable.",
+      "description": "Proved by nlinarith from Mathlib's Real.pi_gt_d6 / Real.pi_lt_d6 six-digit bounds and π > 0."
+    },
+    {
+      "name": "sqrt2_bounds",
+      "type": "lemma",
+      "statement": "1.41421 < Real.sqrt 2 ∧ Real.sqrt 2 < 1.41422",
+      "significance": "Numeric infrastructure: rational bracket for √2, needed for the D₅ density π²√2/30. Companion sqrt3_bounds (√3∈(1.73205,1.73206)) serves the E₆ density π³√3/144.",
+      "description": "Proved by nlinarith from Real.sq_sqrt (√2² = 2) and positivity of √2."
+    }
+  ],
   "conclusion": {
     "summary": "OQ-01 extends the gallery's Kepler cluster from ℝ³ into the open 4–23 band by formalising the best-known lattice packing densities in dimensions 4–8 (D₄, D₅, E₆, E₇, E₈) as explicit reals and proving, axiom-free, that they strictly decrease: Δ₄ ≈ 0.6169 > Δ₅ ≈ 0.4653 > Δ₆ ≈ 0.3730 > Δ₇ ≈ 0.2953 > Δ₈ ≈ 0.2537. Each is shown to be a genuine density (0 < Δₙ < 1) and bracketed in a rational interval; the five are bundled into the parent's `PackingDensity` type, with the dimension-8 case witnessing the Viazovska (2016) proven optimum. The monotone-decrease theorem quantifies the principle that motivates the entire open problem — sphere packing becomes sparser in higher dimensions — while the honesty caveat is explicit: these constants are best-known constructions (lower bounds on the true optimum), so the entry organises and certifies the known data rather than resolving the open question for 4 ≤ n ≤ 23.",
     "implications": "Beyond cataloguing five constants, the entry establishes a reusable verified-mathematics template: closed-form real quantities (here packing densities, but equally volumes, special values, or physical constants) can be rigorously ordered in Lean by bracketing each in a disjoint rational interval and chaining linarith — sidestepping the brittleness of direct high-degree nlinarith comparisons. Mathematically it sharpens the 'curse of dimensionality' for sphere packing into machine-checked numbers and seats the proven E₈ optimum (Viazovska 2016) inside the gallery's Kepler structure, making the solved n = 8 case a concrete inhabitant of the same type that organises the still-open dimensions. Because the densities are explicit lower bounds on the true optima, the file also provides a verified baseline against which any future improved construction or upper bound can be compared.",
