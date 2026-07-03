@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ann-lll-oq01-denomrec-overview",
+    "proofId": "lovasz-local-lemma-oq-01-denominator-recursion",
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
+    "type": "context",
+    "title": "The neighbour peel was proved — but never iterated into a product",
+    "content": "The hard half of the Lovász Local Lemma induction step is a lower bound on the neighbour-block survival probability $\\mu[\\bigcap_{j\\in S_1} A_j^c \\mid C] \\ge \\prod_{j\\in S_1}(1-x_j)$. The sibling **denominator-step** entry proved the SINGLE move behind it: $(1-x)\\cdot l \\le \\mu[A^c \\cap B \\mid C]$ from $l \\le \\mu[B\\mid C]$ and $\\mu[A \\mid B\\cap C] \\le x$ — peeling one neighbour $A = A_k$ deflates the running survival bound $l$ by a factor $(1-x_k)$. Its docstring explicitly deferred the rest: *'a well-founded recursion on $|S_1|$, still to be assembled'*. This entry assembles it. `cond_iInter_compl_ge_prod` is a `Finset.induction` over the neighbour block $S$ that iterates the peel — one insertion, one peel — accumulating the product $\\prod_{j\\in S}(1-x_j)$. The capstone `cond_failure_le_x_prod` then feeds the assembled product into the induction-step entry's abstract invariant, turning its abstract denominator $d$ into the concrete $\\prod(1-x_j)$.",
+    "mathContext": "∏_{j∈S}(1 − xⱼ) ≤ μ[⋂_{j∈S} Aⱼᶜ | C], by induction on S iterating (1 − xₖ)·l ≤ μ[Aₖᶜ ∩ B | C].",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "Erdős–Lovász induction",
+      "neighbour-survival lower bound",
+      "conditional-probability peel",
+      "well-founded recursion on a finite block"
+    ],
+    "prerequisites": [
+      "lovasz-local-lemma-oq-01-denominator-step (single-neighbour peel)",
+      "lovasz-local-lemma-oq-01-induction-step (abstract ratio invariant)"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-denomrec-recursion",
+    "proofId": "lovasz-local-lemma-oq-01-denominator-recursion",
+    "range": {
+      "startLine": 57,
+      "endLine": 104
+    },
+    "type": "technique",
+    "title": "The recursion is a Finset.induction, one peel per insertion",
+    "content": "`cond_iInter_compl_ge_prod` proves $\\prod_{j\\in S}(1-x_j) \\le \\mu[\\bigcap_{j\\in S} A_j^c \\mid C]$ by `Finset.induction_on S`. The two side conditions the peel needs — positivity of every partial history $\\mu[(\\bigcap_{j\\in T} A_j^c)\\cap C] \\ne 0$ and a per-event bound $\\mu[A_k \\mid (\\bigcap_{j\\in T} A_j^c)\\cap C] \\le x_k$ — are quantified over **all** sub-blocks $T \\subseteq S$, so the induction hypothesis inherits exactly the bounds it needs at the smaller block. **Base** $S=\\varnothing$: $\\bigcap_{j\\in\\varnothing} A_j^c = \\text{univ}$, so `cond_apply` + `Set.inter_univ` + `ENNReal.inv_mul_cancel` give $\\mu[\\text{univ}\\mid C]=1$ (using $\\mu C \\ne 0$ from the empty-block positivity), matching the empty product $\\prod_\\varnothing = 1$. **Step** `insert a s` ($a \\notin s$): `Finset.prod_insert` factors the product as $(1-x_a)\\cdot\\prod_s$, `Finset.set_biInter_insert` factors the survival set as $A_a^c \\cap \\bigcap_{s} A_j^c$, and a single `mul_one_sub_le_cond_compl` — fed the induction hypothesis $\\prod_s(1-x_j) \\le \\mu[\\bigcap_s A_j^c \\mid C]$ — closes the goal. The identity $A_a^c \\cap \\bigcap_s A_j^c = \\bigcap_{\\text{insert } a\\, s} A_j^c$ is precisely why one peel advances the block by one element.",
+    "mathContext": "Base: μ[univ | C] = 1 = ∏_∅. Step: (1 − xₐ)·∏_s ≤ μ[(A a)ᶜ ∩ ⋂_s Aⱼᶜ | C] = μ[⋂_{insert a s} Aⱼᶜ | C].",
+    "significance": "core",
+    "relatedConcepts": [
+      "Finset.induction_on",
+      "Finset.set_biInter_insert",
+      "Finset.prod_insert",
+      "sub-block quantification of side conditions",
+      "empty product / univ base case"
+    ],
+    "prerequisites": [
+      "mul_one_sub_le_cond_compl (the single peel)",
+      "cond_apply, ENNReal.inv_mul_cancel"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-denomrec-capstone",
+    "proofId": "lovasz-local-lemma-oq-01-denominator-recursion",
+    "range": {
+      "startLine": 106,
+      "endLine": 136
+    },
+    "type": "key-step",
+    "title": "Threading the product into the invariant: the abstract d becomes ∏(1 − xⱼ)",
+    "content": "`cond_failure_le_x_prod` is the payoff. The induction-step entry proved the invariant $\\mu[A_i \\mid N\\cap C] \\le x_i$ closes *once a denominator lower bound $d \\le \\mu[N\\mid C]$ is supplied*, but left $d$ abstract. Here $d$ becomes concrete: set $C = \\bigcap_{j\\in S_2} A_j^c$ (measurable via `Finset.measurableSet_biInter`), obtain $\\prod_{j\\in S_1}(1-x_j) \\le \\mu[\\bigcap_{j\\in S_1} A_j^c \\mid \\bigcap_{j\\in S_2} A_j^c]$ from `cond_iInter_compl_ge_prod`, and hand it to `cond_failure_le_x` as the denominator bound. Under the asymmetric LLL budget $\\mu(A_i) \\le x_i\\cdot\\prod_{j\\in S_1}(1-x_j)$ and the non-neighbour independence $\\text{IndepSet}\\,A_i\\,(\\bigcap_{S_2} A_j^c)\\,\\mu$, the result is $\\mu[A_i \\mid (\\bigcap_{S_1} A_j^c)\\cap(\\bigcap_{S_2} A_j^c)] \\le x_i$ — the maintained invariant, now with the denominator equal to the actual product the textbook proof threads. **Honest scope:** the per-event bounds this consumes are themselves instances of the same invariant at smaller conditioning sets; the two directions form the Erdős–Lovász mutual recursion, and closing that mutual loop into an unconditional LLL is the remaining open OQ-01 target.",
+    "mathContext": "cond_failure_le_x with d := ∏_{S₁}(1 − xⱼ) supplied by the recursion ⇒ μ[Aᵢ | (⋂_{S₁} Aⱼᶜ) ∩ (⋂_{S₂} Aⱼᶜ)] ≤ xᵢ.",
+    "significance": "core",
+    "relatedConcepts": [
+      "induction invariant μ[Aᵢ | history] ≤ xᵢ",
+      "abstract vs concrete denominator",
+      "Erdős–Lovász mutual recursion",
+      "dependency-graph independence"
+    ],
+    "prerequisites": [
+      "cond_failure_le_x (abstract invariant)",
+      "cond_iInter_compl_ge_prod (this entry's recursion)"
+    ]
+  }
+]
