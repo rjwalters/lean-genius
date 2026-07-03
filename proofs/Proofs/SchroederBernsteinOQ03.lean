@@ -1423,6 +1423,185 @@ theorem augPath_isMatching_of_chase {f g : ℕ → ℕ} (hf : Function.Injective
   augPath_isMatching hf (fwdOrbit_prefix_distinct hf hg (D := fun n => n ∈ mDom L) ha hchase)
 
 /-!
+## Section 4k: Splicing the augmenting path — the `BuiltFrom`-preserving domain step
+
+Sections 4i/4j supplied the two halves of the even-stage domain step: `escape_exists`
+(the collision chase terminates at a range-fresh target) and `augPath`/`augPath_*` (the
+re-labelled `f`-edge block that restores `BuiltFrom`). What remained — named across several
+prior sessions as the genuine outstanding list-surgery — is to *splice* that block into the
+current matching, deleting the stale `g`-edges it re-labels, and verify the result is again a
+`BuiltFrom` matching respecting the correspondence.
+
+`augment_domain_step` does exactly that. Given a fresh anchor `a ∉ mDom L`, let `N` be the
+*minimal* escape depth (`Nat.find` on `f (fwdOrbit f g a N) ∉ mRan L`), so every earlier stage
+collides: `f (fwdOrbit f g a j) ∈ mRan L` for `j < N`. By `chase_gedge_chain` the matching then
+contains the `N` stale `g`-edges `(oₖ, f oₖ₋₁)` (`1 ≤ k ≤ N`, `oₖ = fwdOrbit f g a k`). Splicing
+`augPath f g a N` — the `f`-edges `(oₖ, f oₖ)` for `0 ≤ k ≤ N` — in place of those `g`-edges
+yields `L' := augPath f g a N ++ keptL`, where `keptL` drops exactly the pairs whose domain
+point lies on the re-labelled orbit prefix. The result:
+
+* **is a matching** — domains: `mDom (augPath …)` is the distinct orbit prefix, and `keptL`'s
+  domains are, by the filter, disjoint from it; ranges: `augPath`'s range values `f oₖ` for
+  `k < N` are the *removed* `g`-edges' range values (unique by co-functionality), while `f o_N`
+  is the escaped fresh point, so they avoid `mRan keptL`;
+* **respects the correspondence** — `augPath` does (each `f`-edge via `hfpq`), `keptL ⊆ L` does;
+* **preserves `BuiltFrom`** — `augPath` is all `f`-edges, `keptL ⊆ L`;
+* **covers the anchor** `a = o₀ ∈ mDom L'` and is **monotone** on both sides
+  (`mDom L ⊆ mDom L'`, `mRan L ⊆ mRan L'`): the removed `g`-edges' endpoints are all re-added by
+  the augmenting path.
+
+This is the total, invariant-preserving even-stage move the priority scheduler iterates; the
+odd (range) stage is its `Prod.swap` dual (Section 4e). Only the outer stage recursion +
+coverage read-off of `myhill_isomorphism` remains after this.
+-/
+
+/-- **The augmenting-path domain step.** For a fresh domain anchor `a ∉ mDom L` in a matching
+    `L` satisfying `BuiltFrom` and the correspondence, there is an extended matching `L'` that
+    still satisfies all three invariants, *covers* `a` (`a ∈ mDom L'`), and is monotone on both
+    domain and range (`mDom L ⊆ mDom L'`, `mRan L ⊆ mRan L'`). `L'` is obtained by splicing the
+    augmenting path `augPath f g a N` (for the minimal escape depth `N`) in place of the stale
+    `g`-edges it re-labels. Unlike `domain_step_exists`, this preserves `BuiltFrom`, so the next
+    stage's collision analysis (`collision_f_source`, `escape_exists`) still applies — making it
+    the move the scheduler can actually iterate. -/
+theorem augment_domain_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hL : IsMatching L) (hC : MatchingCorr p q L) (hB : BuiltFrom f g L)
+    {a : ℕ} (ha : a ∉ mDom L) :
+    ∃ L', IsMatching L' ∧ MatchingCorr p q L' ∧ BuiltFrom f g L' ∧
+      a ∈ mDom L' ∧ (∀ x ∈ mDom L, x ∈ mDom L') ∧ (∀ y ∈ mRan L, y ∈ mRan L') := by
+  -- Elementwise membership descriptions of `mDom`/`mRan` and their append behaviour.
+  have mem_mDom : ∀ (l : List (ℕ × ℕ)) (x : ℕ), x ∈ mDom l ↔ ∃ ab, ab ∈ l ∧ ab.1 = x := by
+    intro l x; simp only [mDom, List.mem_map]
+  have mem_mRan : ∀ (l : List (ℕ × ℕ)) (y : ℕ), y ∈ mRan l ↔ ∃ ab, ab ∈ l ∧ ab.2 = y := by
+    intro l y; simp only [mRan, List.mem_map]
+  have mDom_append : ∀ (l₁ l₂ : List (ℕ × ℕ)), mDom (l₁ ++ l₂) = mDom l₁ ++ mDom l₂ := by
+    intro l₁ l₂; simp only [mDom, List.map_append]
+  have mRan_append : ∀ (l₁ l₂ : List (ℕ × ℕ)), mRan (l₁ ++ l₂) = mRan l₁ ++ mRan l₂ := by
+    intro l₁ l₂; simp only [mRan, List.map_append]
+  -- Minimal escape depth: first orbit stage whose green image is range-fresh; all earlier
+  -- stages collide.
+  obtain ⟨N, hN, hcoll⟩ :
+      ∃ N, f (fwdOrbit f g a N) ∉ mRan L ∧ ∀ j, j < N → f (fwdOrbit f g a j) ∈ mRan L := by
+    have hEsc : ∃ M, f (fwdOrbit f g a M) ∉ mRan L := by
+      obtain ⟨M, _, hM⟩ := escape_exists hf hg hL hB ha; exact ⟨M, hM⟩
+    refine ⟨Nat.find hEsc, Nat.find_spec hEsc, ?_⟩
+    intro j hj
+    exact not_not.mp (Nat.find_min hEsc hj)
+  -- The stale `g`-edges the chase runs over, and hence each chased orbit point is occupied.
+  have hgedges : ∀ m, 1 ≤ m → m ≤ N →
+      (fwdOrbit f g a m, f (fwdOrbit f g a (m - 1))) ∈ L :=
+    fun m hm1 hmN => chase_gedge_chain hf hg hL hB ha hcoll N (le_refl N) m hm1 hmN
+  have hchase : ∀ k, 1 ≤ k → k ≤ N → fwdOrbit f g a k ∈ mDom L := by
+    intro k hk1 hkN
+    exact (mem_mDom L _).mpr ⟨_, hgedges k hk1 hkN, rfl⟩
+  -- Membership descriptions of the augmenting path's domain and range.
+  have hDomA : ∀ x, x ∈ mDom (augPath f g a N) ↔ ∃ k, k ≤ N ∧ x = fwdOrbit f g a k := by
+    intro x
+    rw [mDom_augPath, List.mem_map]
+    constructor
+    · rintro ⟨k, hk, rfl⟩; exact ⟨k, Nat.lt_succ_iff.mp (List.mem_range.mp hk), rfl⟩
+    · rintro ⟨k, hk, rfl⟩; exact ⟨k, List.mem_range.mpr (Nat.lt_succ_iff.mpr hk), rfl⟩
+  have hRanA : ∀ y, y ∈ mRan (augPath f g a N) ↔ ∃ k, k ≤ N ∧ y = f (fwdOrbit f g a k) := by
+    intro y
+    rw [mRan_augPath, List.mem_map]
+    constructor
+    · rintro ⟨k, hk, rfl⟩; exact ⟨k, Nat.lt_succ_iff.mp (List.mem_range.mp hk), rfl⟩
+    · rintro ⟨k, hk, rfl⟩; exact ⟨k, List.mem_range.mpr (Nat.lt_succ_iff.mpr hk), rfl⟩
+  -- The kept part of `L`: pairs whose domain point is not re-labelled by the aug path.
+  set keptL := L.filter (fun ab => decide (ab.1 ∉ mDom (augPath f g a N))) with hkeptL
+  have hmemKept : ∀ ab, ab ∈ keptL ↔ ab ∈ L ∧ ab.1 ∉ mDom (augPath f g a N) := by
+    intro ab
+    simp only [hkeptL, List.mem_filter, decide_eq_true_eq]
+  have hApathM : IsMatching (augPath f g a N) := augPath_isMatching_of_chase hf hg ha hchase
+  have hkeptSub : List.Sublist keptL L := by rw [hkeptL]; exact List.filter_sublist
+  have hDomKeptNodup : (mDom keptL).Nodup := by
+    have hs : List.Sublist (mDom keptL) (mDom L) := hkeptSub.map Prod.fst
+    exact hL.1.sublist hs
+  have hRanKeptNodup : (mRan keptL).Nodup := by
+    have hs : List.Sublist (mRan keptL) (mRan L) := hkeptSub.map Prod.snd
+    exact hL.2.sublist hs
+  refine ⟨augPath f g a N ++ keptL, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · -- IsMatching
+    refine ⟨?_, ?_⟩
+    · -- domain side
+      rw [mDom_append, List.nodup_append]
+      refine ⟨hApathM.1, hDomKeptNodup, ?_⟩
+      intro x hxA x' hx'K hne
+      obtain ⟨ab, habK, hab1⟩ := (mem_mDom keptL x').mp hx'K
+      apply ((hmemKept ab).mp habK).2
+      rw [hab1, ← hne]
+      exact hxA
+    · -- range side
+      rw [mRan_append, List.nodup_append]
+      refine ⟨hApathM.2, hRanKeptNodup, ?_⟩
+      intro y hyA y' hy'K hne
+      obtain ⟨k, hkN, hyk⟩ := (hRanA y).mp hyA
+      obtain ⟨⟨u, w⟩, habK, hab2⟩ := (mem_mRan keptL y').mp hy'K
+      have hwy : w = y' := hab2
+      have habL : (u, w) ∈ L := ((hmemKept (u, w)).mp habK).1
+      have habD : u ∉ mDom (augPath f g a N) := ((hmemKept (u, w)).mp habK).2
+      have hwfok : w = f (fwdOrbit f g a k) := by rw [hwy, ← hne, hyk]
+      rcases Nat.lt_or_ge k N with hklt | hkge
+      · -- k < N: the removed `g`-edge (o_{k+1}, f o_k) shares the range value `f o_k` with
+        -- (u, w); co-functionality forces u = o_{k+1} ∈ mDom (augPath), contradiction.
+        have hgedge := hgedges (k + 1) (by omega) (by omega)
+        rw [show (k + 1) - 1 = k from by omega] at hgedge
+        have hval : (u, f (fwdOrbit f g a k)) ∈ L := by rw [← hwfok]; exact habL
+        have hueq : u = fwdOrbit f g a (k + 1) := matching_cofunctional hL hval hgedge
+        exact habD ((hDomA u).mpr ⟨k + 1, by omega, hueq⟩)
+      · -- k = N: `w = f o_N ∉ mRan L`, contradicting (u, w) ∈ L.
+        have hkeqN : k = N := by omega
+        refine hN ((mem_mRan L (f (fwdOrbit f g a N))).mpr ⟨(u, w), habL, ?_⟩)
+        rw [hkeqN] at hwfok
+        exact hwfok
+  · -- MatchingCorr
+    intro ab hab
+    rw [List.mem_append] at hab
+    rcases hab with hA | hK
+    · exact augPath_matchingCorr hfpq a N ab hA
+    · exact hC ab ((hmemKept ab).mp hK).1
+  · -- BuiltFrom
+    intro ab hab
+    rw [List.mem_append] at hab
+    rcases hab with hA | hK
+    · exact augPath_builtFrom f g a N ab hA
+    · exact hB ab ((hmemKept ab).mp hK).1
+  · -- a ∈ mDom L'
+    rw [mDom_append, List.mem_append]
+    exact Or.inl ((hDomA a).mpr ⟨0, Nat.zero_le N, rfl⟩)
+  · -- domain monotone
+    intro x hx
+    rw [mDom_append, List.mem_append]
+    by_cases hxA : x ∈ mDom (augPath f g a N)
+    · exact Or.inl hxA
+    · right
+      obtain ⟨ab, habL, hab1⟩ := (mem_mDom L x).mp hx
+      refine (mem_mDom keptL x).mpr ⟨ab, ?_, hab1⟩
+      exact (hmemKept ab).mpr ⟨habL, by rw [hab1]; exact hxA⟩
+  · -- range monotone
+    intro y hy
+    rw [mRan_append, List.mem_append]
+    obtain ⟨⟨u, w⟩, habL, hab2⟩ := (mem_mRan L y).mp hy
+    have hwy : w = y := hab2
+    by_cases hu : u ∈ mDom (augPath f g a N)
+    · -- u = o_k on the orbit prefix; k ≥ 1 (else u = a ∈ mDom L), and functionality gives
+      -- w = f o_{k-1} ∈ mRan (augPath).
+      obtain ⟨k, hkN, hk⟩ := (hDomA u).mp hu
+      rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+      · have hua : u = a := by rw [hk0] at hk; exact hk
+        exact absurd ((mem_mDom L a).mpr ⟨(u, w), habL, hua⟩) ha
+      · left
+        have hgedge : (fwdOrbit f g a k, f (fwdOrbit f g a (k - 1))) ∈ L :=
+          hgedges k hkpos hkN
+        have hgedge' : (u, f (fwdOrbit f g a (k - 1))) ∈ L := by rw [hk]; exact hgedge
+        have hval : w = f (fwdOrbit f g a (k - 1)) := matching_functional hL habL hgedge'
+        rw [← hwy, hval]
+        exact (hRanA (f (fwdOrbit f g a (k - 1)))).mpr ⟨k - 1, by omega, rfl⟩
+    · right
+      exact (mem_mRan keptL y).mpr ⟨(u, w), (hmemKept (u, w)).mpr ⟨habL, hu⟩, hwy⟩
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
