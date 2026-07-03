@@ -195,11 +195,19 @@
       "mathContext": "A finite type embeds into another exactly when its cardinality is no larger, so the structural descent of §1 is precisely cardinality monotonicity once an embedding is produced."
     },
     {
+      "id": "route-agreement",
+      "title": "§3 Route agreement",
+      "startLine": 93,
+      "endLine": 104,
+      "summary": "mono_routes_agree re-derives the monotone implication arithmetically: rewrite hypothesis and goal through the parent threshold perm_solvable_iff_card, leaving card β ≤ 4 → card α ≤ 4 under card α ≤ card β, closed by omega. The structural descent of §1–2 and this arithmetic prove the same implication.",
+      "mathContext": "The abstract subgroup-descent route explains why solvability is monotone; the arithmetic route, consuming the parent threshold as a black box, pins the boundary — the two agree by mono_routes_agree."
+    },
+    {
       "id": "downset",
-      "title": "§3 Route agreement and the down-set packaging",
-      "startLine": 96,
+      "title": "§4 The down-set packaging",
+      "startLine": 105,
       "endLine": 127,
-      "summary": "mono_routes_agree re-derives the monotone implication arithmetically from perm_solvable_iff_card + omega, matching §2; solvable_perm_card_eq_le_four, solvable_perm_card_isDownSet, and four_is_max_solvable_card present {n | solvable (Perm (Fin n))} = {0,1,2,3,4} as a bounded down-set.",
+      "summary": "solvable_perm_card_eq_le_four (IsSolvable (Perm (Fin n)) ↔ n ≤ 4), solvable_perm_card_isDownSet (downward closure on ℕ), and four_is_max_solvable_card (4 is the maximum, with witness Perm (Fin 4) solvable) present {n | solvable (Perm (Fin n))} = {0,1,2,3,4} as a bounded down-set.",
       "mathContext": "The threshold n ≤ 4 is downward closed and bounded by 4, so it is the down-set with maximum 4 — the order-theoretic shadow of S₅ being the minimal non-solvable symmetric group."
     }
   ],

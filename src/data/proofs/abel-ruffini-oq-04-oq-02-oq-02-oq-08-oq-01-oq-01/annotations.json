@@ -63,22 +63,42 @@
     ]
   },
   {
-    "id": "ann-routes-agree-downset",
+    "id": "ann-routes-agree",
     "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01",
-    "range": { "startLine": 96, "endLine": 127 },
+    "range": { "startLine": 93, "endLine": 104 },
     "type": "insight",
-    "title": "Two proofs of the same down-closedness",
-    "content": "`mono_routes_agree` re-proves the monotone implication a second way: rewrite both `IsSolvable (Perm β)` and the goal through the parent threshold `perm_solvable_iff_card`, leaving the pure arithmetic goal $|\\beta| \\le 4 \\to |\\alpha| \\le 4$ under $|\\alpha| \\le |\\beta|$, closed by `omega`. That the abstract subgroup-descent of §1 and this arithmetic both establish the same implication is the precise sense in which 'subgroup descent' and 'the down-closedness of $n \\le 4$' are one statement. The remaining lemmas package the consequence: `solvable_perm_card_isDownSet` (the solvable cardinalities are closed downward) and `four_is_max_solvable_card` ($4$ is the maximum solvable cardinality — the order-theoretic shadow of $S_5$ being the minimal non-solvable symmetric group).",
-    "mathContext": "A bounded down-set of ℕ with maximum 4 is exactly {0,1,2,3,4}; 5 is its minimal exclusion, which is the seed of Abel–Ruffini.",
+    "title": "Two proofs of the same implication",
+    "content": "`mono_routes_agree` re-proves the monotone implication a second way: rewrite both `IsSolvable (Perm β)` and the goal through the parent threshold `perm_solvable_iff_card`, leaving the pure arithmetic goal $|\\beta| \\le 4 \\to |\\alpha| \\le 4$ under $|\\alpha| \\le |\\beta|$, closed by `omega`. That the abstract subgroup-descent of §1 and this arithmetic *both* establish the same implication is the precise sense in which 'solvability descends along injections' and 'the down-closedness of $n \\le 4$' are one statement viewed two ways — the structural route explains *why*, the arithmetic route pins the *boundary*.",
+    "mathContext": "The arithmetic route consumes the parent threshold as a black box; it neither reproves subgroup-closure nor recomputes the value 4 — under card α ≤ card β the whole content collapses to omega on ℕ.",
+    "significance": "key",
+    "relatedConcepts": [
+      "route agreement",
+      "arithmetic vs structural proof",
+      "omega",
+      "parent cardinality threshold"
+    ],
+    "prerequisites": [
+      "the parent cardinality threshold",
+      "linear arithmetic (omega)"
+    ]
+  },
+  {
+    "id": "ann-downset-packaging",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-08-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 127 },
+    "type": "insight",
+    "title": "Packaging the down-set {0,1,2,3,4}",
+    "content": "Three lemmas turn the threshold into an explicit order-theoretic object. `solvable_perm_card_eq_le_four` rewrites `IsSolvable (Perm (Fin n)) ↔ n ≤ 4` (via `perm_solvable_iff_card` and `Fintype.card_fin`); `solvable_perm_card_isDownSet` reads off downward closure `m ≤ n → solvable (Fin n) → solvable (Fin m)` — the monotonicity of §2 restated on ℕ, discharged by `omega`; and `four_is_max_solvable_card` conjoins the witness `IsSolvable (Perm (Fin 4))` with the bound `∀ n, solvable (Fin n) → n ≤ 4`, exhibiting 4 as the maximum. Together they present {n | IsSolvable (Perm (Fin n))} = {0,1,2,3,4} as a bounded down-set.",
+    "mathContext": "A bounded down-set of ℕ with maximum 4 is exactly {0,1,2,3,4}; 5 is its minimal exclusion — the order-theoretic shadow of $S_5$ being the minimal non-solvable symmetric group, and the seed of Abel–Ruffini.",
     "significance": "key",
     "relatedConcepts": [
       "down-set with maximum",
       "minimal non-solvable group",
       "S₅",
-      "omega"
+      "Fintype.card_fin"
     ],
     "prerequisites": [
-      "order theory",
+      "order theory (down-sets)",
       "the parent cardinality threshold"
     ]
   }
