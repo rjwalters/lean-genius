@@ -88,7 +88,9 @@
       "**Uniqueness is a two-step squeeze, not a search.** Ordering a < b < c turns the equation into successive reciprocal bounds: the smallest denominator is pinned to 2, then the middle to 3, leaving the largest determined algebraically. No unbounded search or decidability over ℚ is required.",
       "**inv_inj cleanly closes the last step.** Rather than clearing denominators, rewriting 1/c = 1/6 to c⁻¹ = 6⁻¹ and applying injectivity of inversion extracts c = 6 without field_simp fragility.",
       "**Interval-free but interval-relevant.** The {2,3,6} solution has denominators spanning width 6 − 2 = 4 < (e − 1)·3 ≈ 5.15, so it already lies in a short interval in the parent's sense — a concrete witness at the k = 3 threshold.",
-      "**Rigid at k = 3, branching at k = 4.** Uniqueness is a threshold phenomenon: k = 3 admits the single triple {2,3,6}, but k = 4 already admits at least six distinct representations. Four of them — {2,3,7,42}, {2,3,8,24}, {2,3,9,18}, {2,3,10,15} — are obtained from {2,3,6} by splitting its largest term 1/6 into two distinct unit fractions (1/6 = 1/7+1/42 = 1/8+1/24 = 1/9+1/18 = 1/10+1/15), so the unique k = 3 seed literally generates most of the next level; the remaining two ({2,4,5,20}, {2,4,6,12}) come from the a = 2, b = 4 branch that k = 3 forbids."
+      "**Rigid at k = 3, branching at k = 4.** Uniqueness is a threshold phenomenon: k = 3 admits the single triple {2,3,6}, but k = 4 already admits at least six distinct representations. Four of them — {2,3,7,42}, {2,3,8,24}, {2,3,9,18}, {2,3,10,15} — are obtained from {2,3,6} by splitting its largest term 1/6 into two distinct unit fractions (1/6 = 1/7+1/42 = 1/8+1/24 = 1/9+1/18 = 1/10+1/15), so the unique k = 3 seed literally generates most of the next level; the remaining two ({2,4,5,20}, {2,4,6,12}) come from the a = 2, b = 4 branch that k = 3 forbids.",
+      "**{2,3,6} is the fingerprint of the perfect number 6.** The divisors of 6 are {1,2,3,6}, and because 6 is perfect ($\\sigma(6) = 12 = 2\\cdot 6$) the reciprocals of *all* its divisors sum to $\\sigma(6)/6 = 2$; dropping the $1/1$ term leaves exactly $\\tfrac12 + \\tfrac13 + \\tfrac16 = 1$. The unique 3-term representation is thus not a coincidence — it is the statement that the reciprocals of the proper divisors (> 1) of the smallest perfect number sum to 1.",
+      "**It shares its opening with Sylvester's sequence, then terminates.** After $\\tfrac12 + \\tfrac13 = 1 - \\tfrac16$ the remainder is exactly $1/(2\\cdot 3) = 1/6$; taking that term closes the sum and yields {2,3,6}. Sylvester's greedy expansion instead takes $1/(2\\cdot 3 + 1) = 1/7$ to stay strictly below 1, generating 2, 3, 7, 43, … — so {2,3,6} is the unique *terminating* 3-term expansion branching off the shared $\\tfrac12 + \\tfrac13$ start."
     ],
     "prerequisites": [
       "Egyptian fractions and unit-fraction representations of 1",
@@ -138,6 +140,16 @@
       "targetId": "erdos-286-oq-02",
       "relationship": "related",
       "description": "Sibling child of Erdős #286 that discharges the parent's monotonicity axiom via the splitting identity 1/m = 1/(m+1) + 1/(m(m+1)). That identity is the exact mechanism connecting this entry's threshold to the next level: applying it (and its variants) to the largest term 1/6 of the unique k = 3 solution {2,3,6} produces the k = 4 representations {2,3,7,42}, {2,3,8,24}, {2,3,9,18}, {2,3,10,15} — so oq-02's splitting is the inductive step that grows the base case classified here."
+    },
+    {
+      "targetId": "perfect-numbers",
+      "relationship": "related",
+      "description": "The unique 3-term solution {2,3,6} encodes the perfect number 6: since σ(6) = 2·6, the reciprocals of the divisors of 6 sum to 2, and dropping 1/1 leaves 1/2 + 1/3 + 1/6 = 1. The Perfect Number Theorem (Euclid–Euler) classifies exactly the numbers with this abundancy."
+    },
+    {
+      "targetId": "sylvester-sequence-oq-01",
+      "relationship": "related",
+      "description": "Sylvester's sequence 2, 3, 7, 43, … is the greedy (non-terminating) Egyptian expansion of 1 sharing the 1/2 + 1/3 opening; {2,3,6} is the unique terminating 3-term expansion that instead closes the 1/6 remainder directly."
     }
   ],
   "conclusion": {
