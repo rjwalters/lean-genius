@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (07-03 r11): Section 4m assembles the atomic augment steps (4k/4l) into the actual back-and-forth stageSeq and proves domain/range EXHAUSTION (stageSeq_covers_dom/ran) + monotonicity, all VERIFIED 0-axiom (+3 defs/13 thms, 1960->2137 lines). The one myhill_isomorphism sorry is UNCHANGED. Remaining: (1) limit read-off well-definedness under g-edge rewiring, (2) a computable scheduler for the .Computable half.",
+    "progressSummary": "PROGRESS (07-03 r4): Cross-preservation 2x2 matrix COMPLETE. Added balanced_swap_cons_range (dual of the already-merged balanced_swap_cons_domain), so both atomic steps now provably preserve BOTH the un-swapped Balanced f g L and the swapped Balanced g f (L.map swap) that the two-sided escape (escape_exists) consumes. VERIFIED 0-axiom, file 2575->2632 lines. The one myhill_isomorphism sorry UNCHANGED. Remaining critical path: assemble the extension-only scheduler (carry both balances via the cons lemmas, discharge escape via escape_exists, read off e with mLookup/mLookup_stable, prove .Computable).",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
@@ -66,7 +66,8 @@
       "cycle_balance_scaffold.lean (knowledge dir): paste-ready Lean decomposition — OnCycle, Balanced, escape_of_infinite_orbit, escape_of_balanced, escape_exists, balanced_cons_domain/range/nil (all sorry; NOT built).",
       "Section 4m stageSeq: invariant-carrying back-and-forth stage sequence in SchroederBernsteinOQ03.lean (StageInv/stageStep/stageSeq, +13 thms, VERIFIED 0-axiom)",
       "stageSeq_covers_dom / stageSeq_covers_ran: domain exhaustion (k covered by stage 2k+1) and range exhaustion (k by stage 2k+2)",
-      "stageSeq_mDom_mono / stageSeq_mRan_mono: coverage is monotone along stages via Nat.le_induction"
+      "stageSeq_mDom_mono / stageSeq_mRan_mono: coverage is monotone along stages via Nat.le_induction",
+      "balanced_swap_cons_range (SchroederBernsteinOQ03.lean, Section 4i-quinquies): the range step (cons (a,b), a=g(fwdOrbit g f b N)) preserves the un-swapped Balanced f g L. Exact f<->g mirror of balanced_swap_cons_domain. VERIFIED 0-axiom (propext/choice/Quot only)."
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -96,7 +97,8 @@
       "Injective g∘f ⇒ every forward orbit is either all-distinct (infinite) or a pure cycle containing its anchor (no tails-into-cycles: injectivity forbids the two distinct preimages a ρ-shape needs).",
       "The atomic augment steps preserve only f-edges (not full pair-nesting) — the augmenting path can rewire g-edges, so mLookup_stable does not apply verbatim across stages; limit read-off well-definedness must route through BuiltFrom/f-edge structure or switch to an extension-only scheduler.",
       "stageSeq is Classical.choose-noncomputable; closing myhill_isomorphism still needs a genuinely computable stage step (Primrec/Computable scheduler) — the read-off primitives mLookup_computable/fwdOrbit_computable are already in place, the scheduler is not.",
-      "split_ifs prunes the outer parity if when the s%2 hypothesis is in context; collapse it with if_pos/if_neg before split_ifs to keep goal count predictable."
+      "split_ifs prunes the outer parity if when the s%2 hypothesis is in context; collapse it with if_pos/if_neg before split_ifs to keep goal count predictable.",
+      "The scheduler must carry BOTH balances (Balanced f g L and Balanced g f (L.map swap)); each atomic step must preserve BOTH. The 2x2 preservation matrix is now complete: balanced_cons_domain + balanced_swap_cons_range (domain/range step preserving un-swapped Balanced f g) and balanced_cons_range + balanced_swap_cons_domain (preserving swapped Balanced g f)."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
