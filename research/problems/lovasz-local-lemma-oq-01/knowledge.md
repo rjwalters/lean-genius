@@ -236,3 +236,48 @@ Insights accumulated during research on this problem.
   lean <file>` against MAIN's cached mathlib oleans. Under heavy concurrent load (70+
   lean procs) expect transient `invalid header` / `configuration is invalid` errors —
   retry with backoff; a clean pass confirms.
+
+### Dependency-graph induction step over ARBITRARY subset histories (researcher-4, 2026-07-03) — NEW
+
+- **The whole prefix-history scaffold cannot reach the real LLL — and here is why + the fix.**
+  Every prior OQ-01 measure-theoretic file (chain-rule, quantitative, union-bound,
+  base case, and the concurrent Independence file) conditions on the *prefix* history
+  `⋂_{j<k} Aⱼᶜ` because the chain rule needs a total order. But the Erdős–Lovász
+  induction bounds `Pr[Aᵢ | ⋂_{j∈S} Aⱼᶜ]` for an **arbitrary** subset `S`, split into
+  neighbours `S₁` and non-neighbours `S₂` of `Aᵢ` — unstructured sets, never prefixes.
+  New file `Proofs/LovaszLocalLemmaOQ01DependencySplit.lean` (0 sorry / 0 axiom;
+  axioms = propext/choice/Quot only), gallery entry
+  `lovasz-local-lemma-oq-01-dependency-split`, supplies the two per-event moves of that
+  step over arbitrary finite subset histories.
+- **`cond_mono_num` — conditional prob is monotone in the numerator, and Mathlib has NO
+  such lemma.** `E ⊆ F → μ[E | H] ≤ μ[F | H]` for any measurable `H`. Two `cond_apply`
+  rewrites to `(μ H)⁻¹ · μ(H ∩ ·)`, then a single `gcongr` (via `measure_mono` +
+  `Set.inter_subset_inter`). Natural upstream Mathlib contribution. Corollary
+  `cond_inter_le : μ[E ∩ F | H] ≤ μ[E | H]` is the neighbour-factor drop.
+- **`cond_failure_eq_measure_of_indep_subset` — the non-neighbour collapse over an
+  ARBITRARY subset.** `IndepSet Aᵢ (⋂_{j∈S} Aⱼᶜ) μ` + positive history ⇒
+  `μ[Aᵢ | ⋂_{j∈S} Aⱼᶜ] = μ(Aᵢ)`. Same proof as the concurrent Independence file's
+  prefix version (`cond_apply`, `IndepSet.measure_inter_eq_mul`, `ENNReal.inv_mul_cancel`)
+  but over a `Finset` `S` instead of `range n` — the version the dependency-graph
+  induction genuinely needs. The only missing ingredient the prefix version lacked was
+  general biInter measurability: `measurableSet_survival` (= `Finset.measurableSet_biInter`
+  on the complements). This proves the prefix restriction was incidental to the scaffold,
+  not intrinsic.
+- **`cond_failure_le_measure_of_indep_num`** combines the two: drop the neighbour factor
+  `T` from the numerator (`cond_inter_le`), then collapse the independent sub-history
+  (`cond_failure_eq_measure_of_indep_subset`) ⇒
+  `μ[Aᵢ ∩ (⋂_{j∈T} Aⱼᶜ) | ⋂_{j∈S₂} Aⱼᶜ] ≤ μ(Aᵢ)`. This is the LLL induction step's
+  **numerator** bound.
+- **Honest scope / still open.** The remaining hard piece is the recursive **denominator**
+  lower bound `μ[⋂_{S₁} Aⱼᶜ | ⋂_{S₂} Aⱼᶜ] ≥ ∏_{j∈S₁}(1 − xⱼ)`, obtained by well-founded
+  recursion on `|S₁|`, where the dependency-degree hypothesis enters. This file isolates
+  exactly the unconditional / local-independence parts of the induction step so the open
+  target is now sharply the denominator recursion.
+- **Lean gotchas.** `IndepSet` and `IndepSet.measure_inter_eq_mul` live in
+  `Mathlib.Probability.Independence.Basic` — ChainRule only imports
+  `Mathlib.Probability.ConditionalProbability`, so add the Independence.Basic import or
+  `IndepSet` gets auto-bound as an unknown implicit. `mul_le_mul_left'` is deprecated
+  (→ use `gcongr`). `cond_apply (hms) (μ) (t) : μ[t|s] = (μ s)⁻¹ * μ (s ∩ t)` (three
+  explicit args). Shared-repo build under 60+ concurrent lean procs: expect frequent
+  exit-139 crashes + `invalid header` — retry; two clean `EXIT=0` empty-output passes
+  confirm.
