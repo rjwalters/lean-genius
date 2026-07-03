@@ -144,6 +144,134 @@
       "mathContext": "`one_step_reduction`: $J(a,n) = (-1)^{(a-1)/2 \\cdot (n-1)/2} \\cdot J(n \\bmod a, a)$ — one reciprocity swap plus reduction mod $a$. `one_step_decreasing`: $n \\bmod a < a$ for $a > 0$ (`Nat.mod_lt`). Together these constitute the certified recursive structure: correctness by `one_step_reduction`, termination by `one_step_decreasing` on the strictly decreasing bottom argument."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "reduce_step",
+      "type": "theorem",
+      "statement": "For a : ℤ, n : ℕ, jacobiSym a n = jacobiSym (a % n) n.",
+      "significance": "The top-argument reduction of the Euclidean Jacobi algorithm: the numerator can always be taken mod n, keeping it bounded. This is the analogue of the mod step in the GCD algorithm.",
+      "description": "The symmetric form of Mathlib's jacobiSym.mod_left."
+    },
+    {
+      "name": "extract_two_step",
+      "type": "theorem",
+      "statement": "jacobiSym (2·a) n = jacobiSym 2 n · jacobiSym a n.",
+      "significance": "Multiplicativity in the top argument, used to strip factors of 2 from the numerator so the odd part can be handled by reciprocity.",
+      "description": "A direct instance of Mathlib's jacobiSym.mul_left with the factor 2."
+    },
+    {
+      "name": "reciprocity_step",
+      "type": "theorem",
+      "statement": "For odd a, n : ℕ, jacobiSym a n = (-1)^((a/2)·(n/2)) · jacobiSym n a.",
+      "significance": "The general quadratic-reciprocity swap for Jacobi symbols — the step that exchanges numerator and denominator (with a sign), letting the Euclidean algorithm shrink the larger argument.",
+      "description": "Wraps Mathlib's jacobiSym.quadratic_reciprocity."
+    },
+    {
+      "name": "reciprocity_one_mod_four",
+      "type": "theorem",
+      "statement": "For a ≡ 1 (mod 4) and odd n, jacobiSym a n = jacobiSym n a (no sign change).",
+      "significance": "The sign-free special case of reciprocity when a ≡ 1 mod 4 — the common fast path avoiding the (-1)-power bookkeeping.",
+      "description": "Wraps Mathlib's jacobiSym.quadratic_reciprocity_one_mod_four."
+    },
+    {
+      "name": "reciprocity_three_mod_four",
+      "type": "theorem",
+      "statement": "For a ≡ 3 (mod 4) and n ≡ 3 (mod 4), jacobiSym a n = −jacobiSym n a (sign flip).",
+      "significance": "The sign-flip special case of reciprocity when both arguments are ≡ 3 mod 4 — the one configuration that introduces a minus sign on swapping.",
+      "description": "Wraps Mathlib's jacobiSym.quadratic_reciprocity_three_mod_four."
+    },
+    {
+      "name": "base_one",
+      "type": "theorem",
+      "statement": "jacobiSym 1 n = 1.",
+      "significance": "The recursion's terminating base case: once the numerator reduces to 1 the symbol is 1.",
+      "description": "Mathlib's jacobiSym.one_left."
+    },
+    {
+      "name": "base_zero",
+      "type": "theorem",
+      "statement": "For n > 1, jacobiSym 0 n = 0.",
+      "significance": "The other base case: a zero numerator gives 0 (for non-unit n), signalling a common factor.",
+      "description": "Unfolds jacobiSym and simplifies using 1 < n (simp)."
+    },
+    {
+      "name": "two_supplement",
+      "type": "theorem",
+      "statement": "For odd n, jacobiSym 2 n = χ₈ n.",
+      "significance": "The second supplementary law: J(2, n) is the mod-8 character χ₈(n), giving a direct evaluation of the factor-of-2 contributions with no further recursion.",
+      "description": "Wraps Mathlib's jacobiSym.at_two."
+    },
+    {
+      "name": "certified_J_7_13",
+      "type": "theorem",
+      "statement": "jacobiSym 7 13 = −1.",
+      "significance": "A fully certified worked computation exhibiting the Euclidean chain: reciprocity (7≡3, 13≡1 mod 4, no sign) → reduce 13 mod 7 = 6 → split J(6,7)=J(2,7)·J(3,7). Demonstrates the reduction lemmas compose into an end-to-end certified evaluation.",
+      "description": "Rewrites with reciprocity_one_mod_four, reduce_step, and jacobiSym.mul_left; the two smallest factors are closed by native_decide (hence the entry's Lean.ofReduceBool disclosure)."
+    },
+    {
+      "name": "certified_J_1001_9907",
+      "type": "theorem",
+      "statement": "jacobiSym 1001 9907 = −1.",
+      "significance": "A larger certified instance using factorization 1001 = 7·11·13 and multiplicativity, showing the algorithm scales beyond tiny inputs.",
+      "description": "Rewrites 1001 = 7·(11·13), applies jacobiSym.mul_left twice, then native_decide on the factors."
+    },
+    {
+      "name": "certified_J_219_383",
+      "type": "theorem",
+      "statement": "jacobiSym 219 383 = 1.",
+      "significance": "A certified evaluation whose full hand-derivation (219 = 3·73, 383 prime, mixing both reciprocity sign cases and the χ₈ supplement) is documented in the source; the machine check confirms the result.",
+      "description": "Closed by native_decide (contributing the entry's Lean.ofReduceBool axiom); the intermediate reciprocity/reduction steps are given as separate certified lemmas below."
+    },
+    {
+      "name": "step_219_factor",
+      "type": "theorem",
+      "statement": "(219 : ℤ) = 3 · 73.",
+      "significance": "Records the factorization underlying the J(219,383) computation, making the multiplicative split explicit and auditable.",
+      "description": "norm_num."
+    },
+    {
+      "name": "step_J3_383",
+      "type": "theorem",
+      "statement": "jacobiSym 3 383 = 1.",
+      "significance": "The J(3, 383) factor of the 219 computation (3≡3, 383≡3 mod 4 → sign flip → −J(383,3) = −J(2,3) = 1), certified independently.",
+      "description": "native_decide."
+    },
+    {
+      "name": "step_J73_383",
+      "type": "theorem",
+      "statement": "jacobiSym 73 383 = 1.",
+      "significance": "The J(73, 383) factor (73≡1 mod 4 → no sign; reduces to χ₈(73) = 1), certified independently.",
+      "description": "native_decide."
+    },
+    {
+      "name": "step_chain_219_383",
+      "type": "theorem",
+      "statement": "jacobiSym 219 383 = jacobiSym 3 383 · jacobiSym 73 383.",
+      "significance": "The multiplicative decomposition tying the two certified factors back to J(219,383), completing the auditable chain without native_decide on the top-level product.",
+      "description": "Rewrites 219 = 3·73 and applies jacobiSym.mul_left."
+    },
+    {
+      "name": "recipSign_eq",
+      "type": "theorem",
+      "statement": "For odd a, n, recipSign a n = (-1)^((a/2)·(n/2)).",
+      "significance": "Confirms the helper function recipSign computes exactly the reciprocity sign, so the algorithmic sign bookkeeping matches the reciprocity theorem.",
+      "description": "Holds by rfl — recipSign is defined as that power."
+    },
+    {
+      "name": "one_step_reduction",
+      "type": "theorem",
+      "statement": "For odd a, n, jacobiSym a n = recipSign a n · jacobiSym (n % a) a.",
+      "significance": "The heart of the certified recursion: one combined reciprocity+reduction step rewrites J(a,n) in terms of J(n mod a, a), with the bottom argument now a < n. Composed repeatedly this is the whole algorithm.",
+      "description": "Chains reciprocity_step and reduce_step, then reconciles the casts with congr and norm_cast."
+    },
+    {
+      "name": "one_step_decreasing",
+      "type": "theorem",
+      "statement": "For 0 < a < n, n % a < a.",
+      "significance": "The termination certificate: each reciprocity step strictly decreases the bottom argument, guaranteeing the recursion halts (mirroring Euclid's algorithm).",
+      "description": "Nat.mod_lt with the positivity hypothesis."
+    }
+  ],
   "conclusion": {
     "summary": "The Euclidean Jacobi symbol algorithm is fully certified in Lean: 8 step lemmas, 3 certified computation examples, 2 helper definitions, and the one-step reduction+termination theorem. Every computation is machine-verified as a formal proof chain.",
     "implications": "The certified computation approach demonstrates that algorithmic proofs and computation certificates are not in tension — each step in the algorithm is both an efficient computation and a formal mathematical theorem. This template can be applied to other algorithms (e.g., extended GCD, Chinese Remainder Theorem, Miller-Rabin primality) to produce certified implementations in Lean.",
