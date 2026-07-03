@@ -139,5 +139,98 @@
     "definitionCount": 1,
     "theoremCount": 56
   },
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "dvd_iff_dvd_mod",
+      "type": "theorem",
+      "statement": "d ∣ n ↔ d ∣ (n % M)   (whenever d ∣ M)",
+      "significance": "The single unifying engine behind every 'last k digits' rule. Because a divisor of M cannot see anything above the M-block, testing n reduces to testing n % M. Instantiating M = 10, 100, 1000, … recovers the classic rules for 2, 4, 8, 5, 25, 125 as one-line corollaries.",
+      "description": "Forward: from d ∣ M and d ∣ n, reduce n % M mod d to 0. Backward: write n = M·(n/M) + n%M and add the two divisibilities. Fully axiom-free — no native_decide."
+    },
+    {
+      "name": "digitSum_dvd_iff",
+      "type": "theorem",
+      "statement": "d ∣ n ↔ d ∣ (Nat.digits b n).sum   (whenever b % d = 1)",
+      "significance": "The general digit-sum test: in any base b with b ≡ 1 (mod d), a number is divisible by d iff its digit sum is. Base 10 with d = 3, 9 gives the schoolbook rules; base 100 gives divisibility by 99, base 1000 the rule for 37.",
+      "description": "A direct consequence of Nat.modEq_digits_sum together with Nat.ModEq.dvd_iff. The general theorem is axiom-free; only its concrete instances (e.g. thirtyseven_dvd_base1000) discharge b % d = 1 by native_decide."
+    },
+    {
+      "name": "pow2_dvd_last_k",
+      "type": "theorem",
+      "statement": "2 ^ k ∣ n ↔ 2 ^ k ∣ (n % 10 ^ k)",
+      "significance": "Generalizes the 2/4/8/16-rule to every power of two simultaneously: 2^k is decided by the last k decimal digits, because 2^k ∣ 10^k.",
+      "description": "Instantiates dvd_iff_dvd_mod at M = 10^k using pow2_dvd_pow10 (2^k ∣ 10^k), proved by monotonicity of divisibility under powers."
+    },
+    {
+      "name": "pow5_dvd_last_k",
+      "type": "theorem",
+      "statement": "5 ^ k ∣ n ↔ 5 ^ k ∣ (n % 10 ^ k)",
+      "significance": "The mirror image for powers of five: 5, 25, 125, … are each decided by the last k digits, unified through 5^k ∣ 10^k. Together with pow2_dvd_last_k this exhausts the divisors of 10^k.",
+      "description": "Instantiates dvd_iff_dvd_mod at M = 10^k using pow5_dvd_pow10 (5^k ∣ 10^k)."
+    },
+    {
+      "name": "thirteen_dvd_truncation",
+      "type": "theorem",
+      "statement": "13 ∣ n ↔ (13 : ℤ) ∣ (n/10 + 4·(n%10))",
+      "significance": "A worked truncation (Chika-style) rule for 13, chopping the last digit and folding it back with multiplier +4. Illustrates the +4 companion to the −2 rule for 7, both derived from 10·x ≡ (something)·(n%10) mod d.",
+      "description": "From 10·(n/10 + 4·(n%10)) = n + 39·(n%10) and 13 ∣ 39, transfer divisibility across the coprime factor 10 in ℤ. Axiom-free."
+    },
+    {
+      "name": "seven_dvd_truncation",
+      "type": "theorem",
+      "statement": "7 ∣ n ↔ (7 : ℤ) ∣ (n/10 − 2·(n%10))",
+      "significance": "The classic 'double the last digit and subtract' test for 7, formalized. The multiplier −2 arises because 21 = 3·7 is the nearest multiple of 7 to 10·2.",
+      "description": "From 10·(n/10 − 2·(n%10)) = n − 21·(n%10) and 7 ∣ 21, cancel the factor 10 (coprime to 7) over ℤ. Axiom-free."
+    },
+    {
+      "name": "eleven_dvd_truncation",
+      "type": "theorem",
+      "statement": "11 ∣ n ↔ (11 : ℤ) ∣ (n/10 − (n%10))",
+      "significance": "A one-step truncation form of the divisibility-by-11 test, complementing the alternating-digit-sum characterization: subtract the last digit from the remaining head.",
+      "description": "From 10·(n/10 − n%10) = n − 11·(n%10) and 11 ∣ 11·(n%10), transfer across the factor 10. Axiom-free."
+    },
+    {
+      "name": "thirtyseven_dvd_base1000",
+      "type": "theorem",
+      "statement": "37 ∣ n ↔ 37 ∣ (Nat.digits 1000 n).sum",
+      "significance": "Three-digit grouping: since 1000 ≡ 1 (mod 37), a number is divisible by 37 iff the sum of its base-1000 digit blocks is — the same mechanism that gives the 999 = 27·37 repunit factorization its arithmetic teeth.",
+      "description": "A concrete instance of digitSum_dvd_iff at b = 1000, d = 37; the hypothesis 1000 % 37 = 1 is discharged by native_decide (hence the Lean.ofReduceBool dependency)."
+    },
+    {
+      "name": "casting_out_nines",
+      "type": "theorem",
+      "statement": "n ≡ (Nat.digits 10 n).sum [MOD 9]",
+      "significance": "The arithmetic backbone of the ancient 'casting out nines' checksum: every number is congruent mod 9 to its digit sum, so digit sums furnish a fast (though non-injective) verification of additions and multiplications.",
+      "description": "Nat.modEq_digits_sum 9 10 applied with 10 % 9 = 1 (native_decide). The companion casting_out_nines_add / _mul lift the congruence across + and ×."
+    },
+    {
+      "name": "digitalRoot_eq_9_iff",
+      "type": "theorem",
+      "statement": "0 < n → (digitalRoot n = 9 ↔ 9 ∣ n)",
+      "significance": "Pins down exactly when the iterated digit sum collapses to 9: precisely the positive multiples of 9. This is the defining property that makes the digital root a mod-9 invariant on the positive integers.",
+      "description": "Unfolds the digitalRoot definition (0 ↦ 0, else 9 if 9 ∣ n else n % 9) and reasons by cases on n % 9 = 0, using Nat.dvd_iff_mod_eq_zero."
+    },
+    {
+      "name": "three_dvd_iff_three_dvd_digitalRoot",
+      "type": "theorem",
+      "statement": "3 ∣ n ↔ 3 ∣ digitalRoot n",
+      "significance": "Shows the digital root faithfully carries divisibility-by-3 information (via digitalRoot_mod3: digitalRoot n ≡ n mod 3), linking the base-9 collapse to the base-3 world.",
+      "description": "Rewrites both sides through Nat.dvd_iff_mod_eq_zero and the lemma digitalRoot_mod3 (digitalRoot n % 3 = n % 3), proved by case analysis on the digitalRoot branches. Axiom-free."
+    },
+    {
+      "name": "coprime_mul_dvd_iff",
+      "type": "theorem",
+      "statement": "Coprime d₁ d₂ → (d₁·d₂ ∣ n ↔ d₁ ∣ n ∧ d₂ ∣ n)",
+      "significance": "The factorization principle underlying all composite rules: divisibility by a product of coprimes splits into independent tests. It reduces 6, 12, 15, 18, 36, 45, 60, 90 to simultaneous checks against their coprime factors.",
+      "description": "Forward is trivial via dvd_mul_right/left; backward is Nat.Coprime.mul_dvd_of_dvd_of_dvd. Powers the eight composite corollaries six_dvd_iff … ninety_dvd_iff."
+    },
+    {
+      "name": "divisibility_rules_summary",
+      "type": "theorem",
+      "statement": "Conjunction packaging the digit-sum rules (3, 9, 37, 99), the last-k-digit rules (2, 4, 8, 5, 25), and the power generalizations (2^k, 5^k)",
+      "significance": "A single capstone theorem asserting the whole toolkit at once, demonstrating that every rule in the file is a live, machine-checked statement rather than isolated lemmas — a formal 'table of divisibility rules'.",
+      "description": "Assembled by refine ⟨…⟩ discharging each conjunct with the corresponding named theorem; the base-congruence side conditions for 3 and 9 use native_decide, so this capstone carries the Lean.ofReduceBool dependency."
+    }
+  ]
 }
