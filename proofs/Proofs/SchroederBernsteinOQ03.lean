@@ -2167,6 +2167,183 @@ theorem augment_range_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
     exact List.mem_map.mpr ⟨(w, u), hMmem, rfl⟩
 
 /-!
+## Section 4m: The stage sequence — iterating the atomic steps into a back-and-forth
+
+Sections 4k/4l provide the two atomic moves as existence statements: `augment_domain_step`
+(cover a fresh domain anchor) and `augment_range_step` (cover a fresh range anchor). Each
+preserves the three invariants `IsMatching`, `MatchingCorr`, `BuiltFrom` and is monotone on
+`mDom`/`mRan`. This section iterates them into a single sequence `stageSeq s`: the finite
+matching after `s` stages, alternating domain (even `s`) and range (odd `s`) coverage of the
+element `s / 2`.
+
+The invariants travel *with* the value in a subtype so each step can feed `augment_*_step`
+exactly the hypotheses it needs. We then read off:
+  * `stageSeq_isMatching` / `_matchingCorr` / `_builtFrom` — the three invariants hold at
+    every stage;
+  * `stageSeq_mDom_mono` / `_mRan_mono` — coverage grows monotonically along `s ≤ t`;
+  * `stageSeq_covers_dom` / `_covers_ran` — element `k` is covered by stage `2k+1` (domain)
+    resp. `2k+2` (range). These are the domain/range exhaustion facts the limit read-off
+    consumes.
+
+`stageSeq` is built with `Classical.choose` on the (existential) atomic steps, so it is
+noncomputable. Upgrading it to a genuinely computable stage function — required for the
+`.Computable` half of `myhill_isomorphism` — is the remaining obstruction, tracked at the
+main theorem below.
+-/
+
+/-- The three back-and-forth invariants bundled: `L` is a matching, respects the `p ↔ q`
+    correspondence, and is built only from `f`/`g` edges. Carried in a subtype by `stageSeq`
+    so each atomic step can consume the hypotheses `augment_*_step` requires. -/
+def StageInv (p q : ℕ → Prop) (f g : ℕ → ℕ) (L : List (ℕ × ℕ)) : Prop :=
+  IsMatching L ∧ MatchingCorr p q L ∧ BuiltFrom f g L
+
+/-- One stage of the back-and-forth. Stage index `s` targets element `s / 2` on the domain
+    side when `s` is even and on the range side when `s` is odd. If the target is already
+    covered the matching is returned unchanged; otherwise the corresponding atomic step
+    (`augment_domain_step` / `augment_range_step`) extends it, and the new invariants come
+    from that step's specification. -/
+noncomputable def stageStep {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    (s : ℕ) (prev : {L : List (ℕ × ℕ) // StageInv p q f g L}) :
+    {L : List (ℕ × ℕ) // StageInv p q f g L} :=
+  if s % 2 = 0 then
+    if h : s / 2 ∈ mDom prev.1 then prev
+    else
+      let ex := augment_domain_step hfpq hf hg prev.2.1 prev.2.2.1 prev.2.2.2 h
+      ⟨ex.choose, ex.choose_spec.1, ex.choose_spec.2.1, ex.choose_spec.2.2.1⟩
+  else
+    if h : s / 2 ∈ mRan prev.1 then prev
+    else
+      let ex := augment_range_step hgpq hf hg prev.2.1 prev.2.2.1 prev.2.2.2 h
+      ⟨ex.choose, ex.choose_spec.1, ex.choose_spec.2.1, ex.choose_spec.2.2.1⟩
+
+/-- The stage sequence: `stageSeq 0 = []`, and each successive stage applies `stageStep`. -/
+noncomputable def stageSeq {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g) :
+    ℕ → {L : List (ℕ × ℕ) // StageInv p q f g L}
+  | 0 => ⟨[], isMatching_nil, matchingCorr_nil p q, builtFrom_nil f g⟩
+  | (s + 1) => stageStep hfpq hgpq hf hg s (stageSeq hfpq hgpq hf hg s)
+
+section StageSeqLemmas
+
+variable {p q : ℕ → Prop} {f g : ℕ → ℕ}
+  (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+  (hf : Function.Injective f) (hg : Function.Injective g)
+
+/-- Every stage is a matching. -/
+theorem stageSeq_isMatching (s : ℕ) : IsMatching (stageSeq hfpq hgpq hf hg s).1 :=
+  (stageSeq hfpq hgpq hf hg s).2.1
+
+/-- Every stage respects the `p ↔ q` correspondence. -/
+theorem stageSeq_matchingCorr (s : ℕ) : MatchingCorr p q (stageSeq hfpq hgpq hf hg s).1 :=
+  (stageSeq hfpq hgpq hf hg s).2.2.1
+
+/-- Every stage is built only from `f`/`g` edges. -/
+theorem stageSeq_builtFrom (s : ℕ) : BuiltFrom f g (stageSeq hfpq hgpq hf hg s).1 :=
+  (stageSeq hfpq hgpq hf hg s).2.2.2
+
+/-- A single stage only grows the covered domain. -/
+theorem stageStep_mDom_subset (s : ℕ)
+    (prev : {L : List (ℕ × ℕ) // StageInv p q f g L}) {x : ℕ}
+    (hx : x ∈ mDom prev.1) : x ∈ mDom (stageStep hfpq hgpq hf hg s prev).1 := by
+  unfold stageStep
+  split_ifs with h1 h2 h3
+  · exact hx
+  · exact (augment_domain_step hfpq hf hg prev.2.1 prev.2.2.1 prev.2.2.2
+      h2).choose_spec.2.2.2.2.1 x hx
+  · exact hx
+  · exact (augment_range_step hgpq hf hg prev.2.1 prev.2.2.1 prev.2.2.2
+      h3).choose_spec.2.2.2.2.1 x hx
+
+/-- A single stage only grows the covered range. -/
+theorem stageStep_mRan_subset (s : ℕ)
+    (prev : {L : List (ℕ × ℕ) // StageInv p q f g L}) {y : ℕ}
+    (hy : y ∈ mRan prev.1) : y ∈ mRan (stageStep hfpq hgpq hf hg s prev).1 := by
+  unfold stageStep
+  split_ifs with h1 h2 h3
+  · exact hy
+  · exact (augment_domain_step hfpq hf hg prev.2.1 prev.2.2.1 prev.2.2.2
+      h2).choose_spec.2.2.2.2.2.1 y hy
+  · exact hy
+  · exact (augment_range_step hgpq hf hg prev.2.1 prev.2.2.1 prev.2.2.2
+      h3).choose_spec.2.2.2.2.2.1 y hy
+
+/-- One stage of the sequence only grows the covered domain. -/
+theorem stageSeq_mDom_step (s : ℕ) {x : ℕ}
+    (hx : x ∈ mDom (stageSeq hfpq hgpq hf hg s).1) :
+    x ∈ mDom (stageSeq hfpq hgpq hf hg (s + 1)).1 :=
+  stageStep_mDom_subset hfpq hgpq hf hg s (stageSeq hfpq hgpq hf hg s) hx
+
+/-- One stage of the sequence only grows the covered range. -/
+theorem stageSeq_mRan_step (s : ℕ) {y : ℕ}
+    (hy : y ∈ mRan (stageSeq hfpq hgpq hf hg s).1) :
+    y ∈ mRan (stageSeq hfpq hgpq hf hg (s + 1)).1 :=
+  stageStep_mRan_subset hfpq hgpq hf hg s (stageSeq hfpq hgpq hf hg s) hy
+
+/-- Domain coverage is monotone along the sequence: once `x` is covered at stage `s` it
+    stays covered at every later stage `t ≥ s`. -/
+theorem stageSeq_mDom_mono {s t : ℕ} (hst : s ≤ t) {x : ℕ}
+    (hx : x ∈ mDom (stageSeq hfpq hgpq hf hg s).1) :
+    x ∈ mDom (stageSeq hfpq hgpq hf hg t).1 := by
+  induction t, hst using Nat.le_induction with
+  | base => exact hx
+  | succ n _ ih => exact stageSeq_mDom_step hfpq hgpq hf hg n ih
+
+/-- Range coverage is monotone along the sequence. -/
+theorem stageSeq_mRan_mono {s t : ℕ} (hst : s ≤ t) {y : ℕ}
+    (hy : y ∈ mRan (stageSeq hfpq hgpq hf hg s).1) :
+    y ∈ mRan (stageSeq hfpq hgpq hf hg t).1 := by
+  induction t, hst using Nat.le_induction with
+  | base => exact hy
+  | succ n _ ih => exact stageSeq_mRan_step hfpq hgpq hf hg n ih
+
+/-- A single even stage covers its target domain element `s / 2`. -/
+theorem stageStep_covers_dom_of_even (s : ℕ)
+    (prev : {L : List (ℕ × ℕ) // StageInv p q f g L}) (hs : s % 2 = 0) :
+    s / 2 ∈ mDom (stageStep hfpq hgpq hf hg s prev).1 := by
+  unfold stageStep
+  rw [if_pos hs]
+  split_ifs with h
+  · exact h
+  · exact (augment_domain_step hfpq hf hg prev.2.1 prev.2.2.1 prev.2.2.2
+      h).choose_spec.2.2.2.1
+
+/-- A single odd stage covers its target range element `s / 2`. -/
+theorem stageStep_covers_ran_of_odd (s : ℕ)
+    (prev : {L : List (ℕ × ℕ) // StageInv p q f g L}) (hs : s % 2 = 1) :
+    s / 2 ∈ mRan (stageStep hfpq hgpq hf hg s prev).1 := by
+  unfold stageStep
+  rw [if_neg (by omega : ¬ s % 2 = 0)]
+  split_ifs with h
+  · exact h
+  · exact (augment_range_step hgpq hf hg prev.2.1 prev.2.2.1 prev.2.2.2
+      h).choose_spec.2.2.2.1
+
+/-- **Domain exhaustion.** The even stage `2k` targets domain element `k`, so `k` is in the
+    domain of the matching from stage `2k+1` onward. -/
+theorem stageSeq_covers_dom (k : ℕ) :
+    k ∈ mDom (stageSeq hfpq hgpq hf hg (2 * k + 1)).1 := by
+  have h := stageStep_covers_dom_of_even hfpq hgpq hf hg (2 * k)
+    (stageSeq hfpq hgpq hf hg (2 * k)) (by omega)
+  have hdiv : 2 * k / 2 = k := by omega
+  rw [hdiv] at h
+  exact h
+
+/-- **Range exhaustion.** The odd stage `2k+1` targets range element `k`, so `k` is in the
+    range of the matching from stage `2k+2` onward. -/
+theorem stageSeq_covers_ran (k : ℕ) :
+    k ∈ mRan (stageSeq hfpq hgpq hf hg (2 * k + 2)).1 := by
+  have h := stageStep_covers_ran_of_odd hfpq hgpq hf hg (2 * k + 1)
+    (stageSeq hfpq hgpq hf hg (2 * k + 1)) (by omega)
+  have hdiv : (2 * k + 1) / 2 = k := by omega
+  rw [hdiv] at h
+  exact h
+
+end StageSeqLemmas
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
