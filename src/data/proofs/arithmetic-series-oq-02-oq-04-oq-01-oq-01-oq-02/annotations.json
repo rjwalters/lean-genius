@@ -94,5 +94,28 @@
       "Nat.ascFactorial",
       "Nat.choose"
     ]
+  },
+  {
+    "id": "ann-asoq010102-binomial-type",
+    "proofId": "arithmetic-series-oq-02-oq-04-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 204,
+      "endLine": 220
+    },
+    "type": "concept",
+    "title": "Rising Factorials Form a Sequence of Binomial Type",
+    "content": "The closing summary names what the file has established: the rising-factorial polynomials p_k(x) = x^{(k)} = (ascPochhammer S k).eval x are a SEQUENCE OF BINOMIAL TYPE. A polynomial sequence {p_k} is of binomial type when it satisfies the umbral binomial theorem p_k(x+y) = ∑_m C(k,m) p_m(x) p_{k-m}(y) — exactly Part I's ascPochhammer_eval_add. The ordinary monomials p_k(x)=x^k are the prototypical example (Commute.add_pow); rising and falling factorials are the two other classical instances, central to umbral calculus and the theory of Sheffer/Appell sequences. The headline is therefore the ADDITIVE (Chu–Vandermonde) companion to Mathlib's MULTIPLICATIVE composition law ascPochhammer_mul, and it discharges open questions #2 and #3 of the parent multiset-coefficient entry.",
+    "mathContext": "Binomial type: $p_k(x+y)=\\sum_{m=0}^{k}\\binom{k}{m}p_m(x)\\,p_{k-m}(y)$, with $p_k(x)=x^{\\overline k}$ here; the multiplicative sibling is $x^{\\overline{m+n}} = x^{\\overline m}\\,(x+m)^{\\overline n}$ (ascPochhammer_mul).",
+    "significance": "key",
+    "relatedConcepts": [
+      "sequence of binomial type",
+      "umbral / Appell calculus",
+      "Chu–Vandermonde identity",
+      "ascPochhammer_mul (multiplicative companion)"
+    ],
+    "prerequisites": [
+      "the binomial theorem for monomials",
+      "ascPochhammer / rising factorials"
+    ]
   }
 ]
