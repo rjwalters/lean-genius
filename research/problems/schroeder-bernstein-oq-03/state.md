@@ -7,7 +7,36 @@ VERIFIED; only COMPUTABILITY remains**
 **Since**: 2026-07-02
 **Iteration**: 10
 
-## Next Action (supersedes all below — 2026-07-03 r14)
+## Next Action (supersedes all below — 2026-07-03 r8)
+**r8 landed the two definitional keystones for computability (VERIFIED 0-axiom, PR pending):**
+- `escape_exists_bounded` — merged dichotomy KEEPING the `N ≤ (mRan L).length` bound that
+  `escape_exists'` discarded (both arms `escape_of_balanced` / `escape_of_infinite_orbit` already
+  prove it).
+- `escapeDepth_le` — the canonical least escape depth `escapeDepth f g L a (Nat.find)` satisfies
+  `escapeDepth ≤ (mRan L).length`. So the canonical domain-cons partner
+  `chaseTarget f g a (escapeDepth …)` is locatable by a *plain bounded scan* of stages
+  `0 … (mRan L).length` — no `Nat.find`, no existence-proof argument.
+- `sigmaB_eq_bound` — `σ n = mLookup (stageSeqB (2n+1)).1 n`; the read-off is a lookup at the
+  FIXED computable index `2n+1`, eliminating the noncomputable `entryStageDomB` search.
+
+**REMAINING (concrete, next session):**
+1. Define plain total computable `firstEscapeB f g L a := (List.range ((mRan L).length + 1)).findIdx
+   (fun N => decide (f (fwdOrbit f g a N) ∉ mRan L))`. Prove `firstEscapeB = escapeDepth` under
+   `escapeDepth_le` (least satisfying index within the range = global least; needs core
+   `List.findIdx`/`range` lemmas). Prove `Computable` jointly via `Primrec.list_findIdx`
+   (Mathlib.Computability.Primrec:1007) + `fwdOrbit_computable` + `mRan` primrec.
+2. Build a computable subtype scheduler `stageSeqBComp` from `domain_consStepC`/`range_consStepC`
+   (canonical `escapeDepth` data, using `firstEscapeB` in the plain list twin `stageListComp`),
+   prove `stageListComp s = (stageSeqBComp s).1` and `Computable stageListComp` via
+   `Computable.nat_rec`.
+3. Re-prove read-off (inject/surject/corr — copy from `sigmaB_*`) for the comp scheduler; then
+   `sigmaCompEquiv.Computable` via `mLookup_computable ∘ stageListComp_comp ∘ (2n+1)` for `σ` and
+   the swapped list for `σ.symm`. Discharge `myhill_isomorphism` with `sigmaCompEquiv` (NOT
+   `sigmaEquivB` — the choice-based `stageSeqB` list is not canonically computable).
+   NOTE: `firstEscapeB = escapeDepth` bridge is the only real risk (core `findIdx` lemma hunt);
+   everything else is mechanical assembly.
+
+## Next Action (superseded — 2026-07-03 r14)
 Section 5·B builds the cons scheduler `stageSeqB` (pair-monotone) and reads off
 `sigmaEquivB : ℕ ≃ ℕ` with `sigmaEquivB_corr : ∀ n, p n ↔ q (sigmaEquivB n)`, all VERIFIED
 0-axiom. The bijection + correspondence (the *mathematics* of Myhill's hard direction) are DONE.
