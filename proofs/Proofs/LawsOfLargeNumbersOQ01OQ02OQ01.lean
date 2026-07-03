@@ -245,4 +245,42 @@ theorem kronecker_lemma
   rw [hsplitnum]
   field_simp
 
+/-! ## Almost-everywhere Kronecker lift (S3 → S4 glue)
+
+The Marcinkiewicz–Zygmund strong law is assembled from two pieces:
+
+* **Kolmogorov's convergence criterion** (probabilistic, still to build): for
+  independent mean-zero `L²` variables `Yᵢ` with `∑ Var(Yᵢ)/aᵢ² < ∞`, the series
+  `∑ Yᵢ / aᵢ` converges *almost surely*.
+* **Kronecker's lemma** (`kronecker_lemma`, deterministic, above): pointwise,
+  convergence of `∑ xᵢ / aᵢ` forces `(∑_{i<n} xᵢ) / aₙ → 0`.
+
+The lemma below is the deterministic *glue* between them: it lifts
+`kronecker_lemma` across the sample space, turning the criterion's a.s.-
+convergence output directly into the M–Z normalisation conclusion. With this in
+place, the only remaining gap for the full M–Z SLLN is the probabilistic
+criterion itself; the analytic passage to the conclusion is complete and
+axiom-free. -/
+
+open MeasureTheory in
+/-- **A.e. Kronecker lift.** Fix a positive, nondecreasing weight sequence `a`
+with `a n → ∞`. If, for almost every sample point `ω`, the real series
+`∑ x i ω / a i` converges, then for almost every `ω` the Kronecker average
+`(∑_{i<n} x i ω) / a n → 0`. This is the pointwise lift of `kronecker_lemma`
+that connects Kolmogorov's a.s.-convergence criterion to the
+Marcinkiewicz–Zygmund conclusion. -/
+theorem ae_tendsto_kronecker_average_zero
+    {Ω : Type*} {_ : MeasurableSpace Ω} {μ : Measure Ω}
+    (a : ℕ → ℝ) (x : ℕ → Ω → ℝ)
+    (ha_pos : ∀ n, 0 < a n)
+    (ha_mono : Monotone a)
+    (ha_top : Tendsto a atTop atTop)
+    (hconv : ∀ᵐ ω ∂μ,
+      ∃ s : ℝ, Tendsto (fun n => ∑ i ∈ range n, x i ω / a i) atTop (𝓝 s)) :
+    ∀ᵐ ω ∂μ,
+      Tendsto (fun n => (∑ i ∈ range n, x i ω) / a n) atTop (𝓝 0) := by
+  filter_upwards [hconv] with ω hω
+  obtain ⟨s, hs⟩ := hω
+  exact kronecker_lemma a (fun i => x i ω) s ha_pos ha_mono ha_top hs
+
 end LawsOfLargeNumbers.MZ
