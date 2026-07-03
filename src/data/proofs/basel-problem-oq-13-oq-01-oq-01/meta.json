@@ -113,33 +113,49 @@
       "id": "preamble",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 56,
-      "summary": "States the open question (package η(s) = (1 − 2^{1−s})ζ(s) uniformly and specialize to even integers) and the parity derivation; imports Mathlib's ZetaValues (for hasSum_zeta_nat/two/four) and Tactic, opening Real and scoped Nat (factorial notation).",
+      "endLine": 50,
+      "summary": "The module docstring states the open question (package η(s) = (1 − 2^{1−s})ζ(s) uniformly and specialize to even integers) and the parity derivation; imports Mathlib's ZetaValues (for hasSum_zeta_nat/two/four) and Tactic, opens Real and scoped Nat, and enters namespace BaselEtaUniform.",
       "mathContext": "The Dirichlet eta function as the alternating companion of ζ, and its closed relation to ζ at general exponents."
     },
     {
       "id": "bridge",
       "title": "hasSum_eta_of_hasSum_zeta — the eta–zeta bridge for any exponent",
-      "startLine": 47,
-      "endLine": 112,
+      "startLine": 51,
+      "endLine": 109,
       "summary": "For any m and Z with ζ(m) = Z, proves η(m) = (1 − 2/2ᵐ)·Z. Builds the plain even part (1/2ᵐ)·Z (rescale of h), the summable odd part B (Summable.comp_injective on k ↦ 2k+1), pins (1/2ᵐ)·Z + B = Z by HasSum.unique, then negates the even part and reassembles the alternating series, finishing with a single linear_combination.",
       "mathContext": "The exponent-independent heart of η(s) = (1 − 2^{1−s})ζ(s), from parity alone."
     },
     {
       "id": "even-values",
       "title": "hasSum_eta_two_mul_nat / eta_factor_eq — uniform even eta values",
-      "startLine": 114,
+      "startLine": 110,
       "endLine": 130,
-      "summary": "Feeds Mathlib's Bernoulli closed form hasSum_zeta_nat into the bridge to get η(2k) = (1 − 2/2^{2k})·ζ(2k) for every k ≥ 1, and proves the factor identity 1 − 2/2^{2k} = 1 − 2^{1−2k} (zpow_sub₀ / zpow_natCast).",
-      "mathContext": "The full even eta family, with the classical source-form factor 2^{1−2k}."
+      "summary": "Feeds Mathlib's Bernoulli closed form hasSum_zeta_nat into the bridge to get η(2k) = (1 − 2/2^{2k})·ζ(2k) for every k ≥ 1 (hasSum_eta_two_mul_nat), and proves the factor identity 1 − 2/2^{2k} = 1 − 2^{1−2k} (eta_factor_eq, via zpow_sub₀ / zpow_natCast).",
+      "mathContext": "The full even eta family, with the classical source-form factor $2^{1-2k}$."
     },
     {
       "id": "specific-values",
       "title": "hasSum_eta_two / hasSum_eta_four — π²/12 and 7π⁴/720",
-      "startLine": 132,
-      "endLine": 155,
-      "summary": "Specializes the bridge with hasSum_zeta_two and hasSum_zeta_four, simplifying the rational factor by ring, to recover η(2) = π²/12 and η(4) = 7π⁴/720 (reproving the sibling entry from the uniform statement); tsum corollaries record the ∑' forms.",
-      "mathContext": "The two lowest even eta values as one-line instances of the bridge."
+      "startLine": 131,
+      "endLine": 146,
+      "summary": "Specializes the bridge with hasSum_zeta_two and hasSum_zeta_four, simplifying the rational factor by ring, to recover η(2) = π²/12 (hasSum_eta_two) and η(4) = 7π⁴/720 (hasSum_eta_four), reproving the sibling entry from the uniform statement.",
+      "mathContext": "The two lowest even eta values as one-line instances of the bridge: $\\eta(2)=\\pi^2/12$, $\\eta(4)=7\\pi^4/720$."
+    },
+    {
+      "id": "tsum-forms",
+      "title": "tsum_eta_two / tsum_eta_four — the tsum restatements",
+      "startLine": 147,
+      "endLine": 157,
+      "summary": "tsum_eta_two and tsum_eta_four record the ∑'-forms of the two specific values via HasSum.tsum_eq, and close namespace BaselEtaUniform.",
+      "mathContext": "$\\sum_{n} (-1)^{n+1}/n^2 = \\pi^2/12$ and $\\sum_{n} (-1)^{n+1}/n^4 = 7\\pi^4/720$."
+    },
+    {
+      "id": "summary-block",
+      "title": "Summary Comment Block",
+      "startLine": 158,
+      "endLine": 177,
+      "summary": "A trailing comment block summarising the uniform eta–zeta bridge, the even-value specialisation, and the recovered η(2)/η(4), and recording that the file is verified with 0 sorries and 0 axioms.",
+      "mathContext": "Documentation only; no new mathematical content."
     }
   ],
   "conclusion": {
