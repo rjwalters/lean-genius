@@ -228,4 +228,46 @@ lemma RamseyLLLCondition_antitone {n m k : ℕ} (h : n ≤ m)
         linarith
     _ ≤ 1 := hm
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART V: A CHECKABLE INTEGER CRITERION AND A CONCRETE IMPROVEMENT
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Integer form of the LLL feasibility test.**  Clearing the denominator
+    `2^{C(k,2)}` of `p = cliqueMonoProb k` and the surrogate `e ≤ 3`, the
+    symmetric-LLL condition `3 · (2 / 2^{C(k,2)}) · (d + 1) ≤ 1` is *exactly* the
+    integer inequality `6 · (d + 1) ≤ 2^{C(k,2)}` with `d = cliqueDependencyBound n k`.
+    This turns the rational test into a decidable `ℕ` inequality, so any concrete
+    `(n, k)` can be settled by `decide`. -/
+theorem ramseyLLLCondition_iff (n k : ℕ) :
+    RamseyLLLCondition n k ↔
+      6 * (cliqueDependencyBound n k + 1) ≤ 2 ^ (k.choose 2) := by
+  unfold RamseyLLLCondition cliqueMonoProb
+  rw [show (3 : ℚ) * (2 / 2 ^ (k.choose 2)) * ((cliqueDependencyBound n k : ℚ) + 1)
+        = 6 * ((cliqueDependencyBound n k : ℚ) + 1) / 2 ^ (k.choose 2) by ring,
+      div_le_one (by positivity)]
+  constructor
+  · intro h; exact_mod_cast h
+  · intro h; exact_mod_cast h
+
+/-- The LLL feasibility condition is decidable — via the integer criterion
+    `ramseyLLLCondition_iff` it reduces to a `ℕ` inequality. -/
+instance (n k : ℕ) : Decidable (RamseyLLLCondition n k) :=
+  decidable_of_iff _ (ramseyLLLCondition_iff n k).symm
+
+/-- **The LLL condition is satisfiable exactly in the regime where it beats the
+    first moment.**  At `k = 6` the feasibility test holds all the way up to
+    `n = 13`: `6·(C(6,2)·C(11,4)+1) = 29706 ≤ 32768 = 2^{15}`.  Combined with
+    `ramsey_lll_lower_bound` (given the symmetric-LLL principle) this yields
+    `R(6,6) > 13`, strictly better than the first-moment bound
+    `R(6,6) > 2^{⌊6/2⌋} = 8`.  So the extra factor supplied by the LLL is not
+    vacuous. -/
+theorem ramseyLLLCondition_13_6 : RamseyLLLCondition 13 6 :=
+  (ramseyLLLCondition_iff 13 6).mpr (by decide)
+
+/-- Likewise at `k = 5` the test holds up to `n = 7` (`6·(C(5,2)·C(5,3)+1) = 606 ≤
+    1024 = 2^{10}`), giving `R(5,5) > 7` under the LLL principle — again beating the
+    first-moment bound `R(5,5) > 2^{⌊5/2⌋} = 4`. -/
+theorem ramseyLLLCondition_7_5 : RamseyLLLCondition 7 5 :=
+  (ramseyLLLCondition_iff 7 5).mpr (by decide)
+
 end RamseyLLL
