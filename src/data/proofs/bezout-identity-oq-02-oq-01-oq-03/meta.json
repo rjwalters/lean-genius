@@ -75,6 +75,134 @@
       "summary": "Two Bézout pairs for (3,5): (2,−1) and (−3,2), differing by the single lattice step k = −1; and the full one-parameter family 3·(2 + k·5) + 5·(−1 − k·3) = 1, all closed by norm_num / ring."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "bezout_identity",
+      "type": "theorem",
+      "statement": "For a,b : ℕ, (gcd a b : ℤ) = a·gcdA a b + b·gcdB a b.",
+      "significance": "The existence half of Bézout's identity, realized constructively via Mathlib's extended Euclidean coefficients gcdA/gcdB. It provides one concrete coefficient pair, the starting point the rest of the file classifies.",
+      "description": "A direct restatement of Mathlib's Nat.gcd_eq_gcd_ab."
+    },
+    {
+      "name": "coprime_homogeneous",
+      "type": "theorem",
+      "statement": "For coprime a,b : ℤ with b ≠ 0, every solution of a·u + b·v = 0 has the form u = k·b, v = −(k·a) for some k : ℤ.",
+      "significance": "The core structural lemma: the homogeneous solution set is exactly the rank-one lattice ℤ·(b, −a). Every uniqueness and classification result in the file is a corollary of this.",
+      "description": "From a·u + b·v = 0, b ∣ a·u, so coprimality gives b ∣ u; writing u = k·b and cancelling the nonzero b forces v = −(k·a) via linear_combination."
+    },
+    {
+      "name": "coprime_bezout_unique",
+      "type": "theorem",
+      "statement": "For coprime a,b with b ≠ 0, any two solutions of a·x + b·y = c differ by one lattice step: ∃ k, x₂−x₁ = k·b ∧ y₂−y₁ = −(k·a).",
+      "significance": "Uniqueness modulo the lattice: the solutions of a linear Diophantine equation form a single coset of ℤ·(b, −a). This is the converse to the well-known non-uniqueness of Bézout coefficients.",
+      "description": "Subtracts the two solution equations to get a homogeneous equation and applies coprime_homogeneous."
+    },
+    {
+      "name": "coprime_bezout_param",
+      "type": "theorem",
+      "statement": "a·(x + k·b) + b·(y − k·a) = a·x + b·y.",
+      "significance": "The converse to uniqueness: every lattice step from a solution is again a solution, confirming the coset is exactly the full solution set (no more, no fewer).",
+      "description": "A polynomial identity closed by ring."
+    },
+    {
+      "name": "gcdA_gcdB_unique",
+      "type": "theorem",
+      "statement": "For coprime naturals a,b with b ≠ 0, any (x,y) with a·x + b·y = 1 satisfies x − gcdA a b = k·b ∧ y − gcdB a b = −(k·a) for some k.",
+      "significance": "Specializes uniqueness to Mathlib's own extended-Euclid output: (gcdA, gcdB) is the canonical representative, and all other Bézout pairs are lattice translates of it.",
+      "description": "Casts Nat.Coprime to IsCoprime, obtains the gcdA/gcdB identity (=1 via gcd_eq_one), and applies coprime_bezout_unique."
+    },
+    {
+      "name": "ex35_a",
+      "type": "theorem",
+      "statement": "3·2 + 5·(−1) = 1.",
+      "significance": "A concrete Bézout pair (2, −1) for the coprime pair (3, 5), grounding the abstract theory in an explicit worked instance.",
+      "description": "norm_num."
+    },
+    {
+      "name": "ex35_b",
+      "type": "theorem",
+      "statement": "3·(−3) + 5·2 = 1.",
+      "significance": "A second Bézout pair (−3, 2) for (3, 5), exhibiting the non-uniqueness that the classification explains.",
+      "description": "norm_num."
+    },
+    {
+      "name": "ex35_step",
+      "type": "theorem",
+      "statement": "(−3 = 2 + (−1)·5) ∧ (2 = −1 − (−1)·3).",
+      "significance": "Verifies the two example pairs differ by exactly one lattice step (k = −1), a concrete check of coprime_bezout_unique.",
+      "description": "Splits the conjunction; each side by norm_num."
+    },
+    {
+      "name": "ex35_family",
+      "type": "theorem",
+      "statement": "For all k : ℤ, 3·(2 + k·5) + 5·(−1 − k·3) = 1.",
+      "significance": "The complete one-parameter family of solutions for (3, 5): every integer k yields a valid Bézout pair, the concrete image of coprime_bezout_param.",
+      "description": "ring."
+    },
+    {
+      "name": "general_homogeneous",
+      "type": "theorem",
+      "statement": "With a = g·a', b = g·b', a',b' coprime, g ≠ 0, b' ≠ 0: every solution of a·u + b·v = 0 is u = k·b', v = −(k·a') = a lattice multiple of (b/g, −a/g).",
+      "significance": "Lifts the homogeneous classification to arbitrary (non-coprime) a, b: the reduced pair (b/g, −a/g) generates the solution lattice. This is the general-case engine behind the file's headline claim.",
+      "description": "Factors out g (a·u + b·v = g·(a'·u + b'·v)), cancels the nonzero g, and applies coprime_homogeneous to the reduced equation."
+    },
+    {
+      "name": "general_bezout_unique",
+      "type": "theorem",
+      "statement": "With a = g·a', b = g·b', a',b' coprime, g ≠ 0, b' ≠ 0: any two solutions of a·x + b·y = c differ by k·(b/g, −a/g).",
+      "significance": "General uniqueness: for arbitrary a, b the solution set of a·x + b·y = c is one coset of the reduced lattice ℤ·(b/g, −a/g) — the full classification's uniqueness half.",
+      "description": "Subtracts the two solutions to a homogeneous equation and applies general_homogeneous."
+    },
+    {
+      "name": "general_bezout_param",
+      "type": "theorem",
+      "statement": "(g·a')·(x + k·b') + (g·b')·(y − k·a') = (g·a')·x + (g·b')·y.",
+      "significance": "General converse: every reduced-lattice step is again a solution, closing the classification (solution set = exactly one coset of ℤ·(b/g, −a/g)).",
+      "description": "A polynomial identity closed by ring."
+    },
+    {
+      "name": "general_solvable",
+      "type": "theorem",
+      "statement": "With a = g·a', b = g·b', a',b' coprime, and c = g·c': the equation a·x + b·y = c has a solution (namely (c'·s, c'·t) for a coprime Bézout pair a'·s + b'·t = 1).",
+      "significance": "General existence: a·x + b·y = c is solvable exactly when g ∣ c. Together with general_bezout_unique this yields the complete classification — solvable iff g ∣ c, solution set one coset of the reduced lattice.",
+      "description": "Extracts a coprime Bézout pair (s, t) from IsCoprime a' b', scales by c', substitutes c = g·c', and closes with linear_combination."
+    },
+    {
+      "name": "ex69_a",
+      "type": "theorem",
+      "statement": "6·(−1) + 9·1 = 3.",
+      "significance": "A concrete solution (−1, 1) of the non-coprime example 6x + 9y = 3 (g = 3), illustrating the general theory.",
+      "description": "norm_num."
+    },
+    {
+      "name": "ex69_step",
+      "type": "theorem",
+      "statement": "6·(−1 + 1·3) + 9·(1 − 1·2) = 3.",
+      "significance": "One reduced-lattice step (lattice (b/g, −a/g) = (3, −2), k = 1) yields another solution, a concrete check of the general classification.",
+      "description": "norm_num."
+    },
+    {
+      "name": "ex69_family",
+      "type": "theorem",
+      "statement": "For all k : ℤ, 6·(−1 + k·3) + 9·(1 − k·2) = 3.",
+      "significance": "The full solution family for the non-coprime equation 6x + 9y = 3, the concrete image of general_bezout_param.",
+      "description": "ring."
+    },
+    {
+      "name": "coprime_bezout_canonical",
+      "type": "theorem",
+      "statement": "For coprime a,b with b > 0 and a solution (x₀,y₀) of a·x + b·y = c, there is a UNIQUE solution whose x-coordinate satisfies 0 ≤ x < b.",
+      "significance": "Answers the entry's second open question: the solution coset has a distinguished minimal representative, the x-coordinate reduced mod b (the modular-inverse data c·a⁻¹ mod b when c = 1). This picks a canonical Bézout pair out of the infinite family.",
+      "description": "Existence: reduce x₀ to x₀ % b (Int.emod nonneg/lt bounds), adjusting y. Uniqueness: any two reduced x differ by a multiple of b (coprime_bezout_unique) yet both lie in [0, b), so Int.add_mul_emod_self_left and Int.emod_eq_of_lt force equality."
+    },
+    {
+      "name": "ex35_canonical",
+      "type": "theorem",
+      "statement": "0 ≤ 2 ∧ 2 < 5 ∧ 3·2 + 5·(−1) = 1.",
+      "significance": "Exhibits x = 2 as the canonical (reduced-mod-5) Bézout x-coordinate for (3, 5) with c = 1 — the concrete instance of coprime_bezout_canonical.",
+      "description": "Splits into three goals, each by norm_num."
+    }
+  ],
   "conclusion": {
     "summary": "For coprime integers a, b the solution set of the Bézout equation a·x + b·y = c is exactly one coset of the rank-1 lattice ℤ·(b, −a): the homogeneous lemma classifies a·u + b·v = 0, uniqueness follows by differencing, and the converse parametrization is a ring identity. Specialized to Mathlib's extended Euclidean coefficients, the pair (gcdA a b, gcdB a b) is therefore determined up to the single free parameter k. Fully machine-checked, 0 axioms.",
     "implications": "This pins down precisely how non-unique 'the' Bézout coefficients are: a one-parameter family and nothing more. It is the missing classification behind the parent line's Bézout → Euclid's Lemma → FTA development, and supplies a reusable homogeneous-solution lemma for linear Diophantine reasoning over ℤ.",
