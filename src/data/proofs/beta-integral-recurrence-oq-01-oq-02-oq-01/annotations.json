@@ -74,22 +74,45 @@
     "proofId": "beta-integral-recurrence-oq-01-oq-02-oq-01",
     "range": {
       "startLine": 139,
-      "endLine": 172
+      "endLine": 159
     },
     "type": "insight",
     "title": "Central Binomial Form and the Mirror to the Integer Diagonal",
-    "content": "betaIntegral_diag_half_centralBinom rewrites (2n)!/(n!)² = C(2n,n) (via Nat.choose_mul_factorial_mul_factorial and Nat.centralBinom_eq_two_mul_choose) to present the value as π·C(2n,n)/4^(2n). Placed beside the gallery's integer diagonal B(n+1,n+1) = 1/((2n+1)·C(2n,n)), the symmetry is exact: one and the same central binomial coefficient controls both diagonals, rationally in the denominator on the integers and transcendentally in the numerator (times π) on the half-integers. The two sanity theorems specialize n=0 and n=1 to recover the sibling entry's B(1/2,1/2)=π (C(0,0)=1) and B(3/2,3/2)=π/8 (C(2,1)=2, 4²=16), confirming the general formula subsumes both.",
+    "content": "betaIntegral_diag_half_centralBinom rewrites (2n)! = C(2n,n)·(n!)² (via Nat.choose_mul_factorial_mul_factorial and Nat.centralBinom_eq_two_mul_choose, then field_simp) to present the value as π·C(2n,n)/4^(2n). Placed beside the gallery's integer diagonal B(n+1,n+1) = 1/((2n+1)·C(2n,n)), the symmetry is exact: one and the same central binomial coefficient controls both diagonals, rationally in the denominator on the integers and transcendentally in the numerator (times π) on the half-integers. This is the entry's headline identity in its most combinatorial form — the shape that connects directly to n-ball volumes and Wallis-type products.",
     "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) = \\dfrac{\\pi\\binom{2n}{n}}{4^{2n}}$ vs. $B(n+1,n+1) = \\dfrac{1}{(2n+1)\\binom{2n}{n}}$.",
     "significance": "key",
     "relatedConcepts": [
       "central binomial coefficient",
       "integer vs half-integer Beta diagonal",
       "Nat.choose_mul_factorial_mul_factorial",
-      "specialization to known values"
+      "Nat.centralBinom_eq_two_mul_choose"
     ],
     "prerequisites": [
       "the central binomial coefficient",
       "the integer diagonal Beta value"
+    ]
+  },
+  {
+    "id": "betadiag-ann-sanity",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 160,
+      "endLine": 172
+    },
+    "type": "insight",
+    "title": "Sanity Checks: the General Formula Subsumes the Sibling's Values",
+    "content": "The two closing theorems specialize the general diagonal formula and confirm it recovers the sibling entry's hand-computed values, guarding against an off-by-a-constant error in the induction. betaIntegral_half_half instantiates n=0: C(0,0)=1 and 4^0=1 give B(1/2,1/2)=π. betaIntegral_three_half_three_half instantiates n=1: C(2,1)=2 and 4²=16 give B(3/2,3/2)=2π/16=π/8. Both are one-line corollaries of betaIntegral_diag_half_centralBinom via norm_num on the central binomial, demonstrating that the single induction strictly subsumes the sibling's two case-by-case proofs.",
+    "mathContext": "$n{=}0:\\ \\dfrac{\\pi\\binom{0}{0}}{4^0}=\\pi$; $\\quad n{=}1:\\ \\dfrac{\\pi\\binom{2}{1}}{4^2}=\\dfrac{2\\pi}{16}=\\dfrac{\\pi}{8}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specialization to known values",
+      "regression/sanity check",
+      "central binomial coefficient",
+      "sibling entry B(1/2,1/2)=π, B(3/2,3/2)=π/8"
+    ],
+    "prerequisites": [
+      "the general diagonal formula",
+      "evaluating C(2n,n) at small n"
     ]
   }
 ]
