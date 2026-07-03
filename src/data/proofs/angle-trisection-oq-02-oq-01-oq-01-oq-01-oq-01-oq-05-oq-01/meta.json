@@ -93,27 +93,34 @@
       "id": "file-header",
       "title": "File Header — The Two Open Questions",
       "startLine": 1,
-      "endLine": 55,
+      "endLine": 53,
       "summary": "States the parent's two open questions, explains that Normal.algHomEquivAut packages exactly the needed equivalence with the parent's toEmb as its inverse, and emphasises that the equality needs only normality (not separability), distinguishing it from the Galois fact."
     },
     {
       "id": "toemb-as-inverse",
-      "title": "The Parent's Injection as Half of an Equivalence",
-      "startLine": 56,
-      "endLine": 83,
-      "summary": "Reproduces toEmb, shows toEmb_eq_symm_algHomEquivAut (it is rfl-equal to the inverse of Normal.algHomEquivAut), packages the embEquivAlgEquiv equivalence, and concludes toEmb_bijective for normal extensions — answering open question 2."
+      "title": "The Parent's Injection as the Inverse of Normal.algHomEquivAut",
+      "startLine": 54,
+      "endLine": 66,
+      "summary": "Reproduces the parent's post-composition map toEmb and proves toEmb_eq_symm_algHomEquivAut: it is rfl-equal to the inverse function of Normal.algHomEquivAut, identifying the hand-built injection as one half of an existing Mathlib equivalence with no glue lemma required."
+    },
+    {
+      "id": "embedding-automorphism-equivalence",
+      "title": "The Embedding–Automorphism Equivalence (Open Question 2)",
+      "startLine": 67,
+      "endLine": 81,
+      "summary": "Packages embEquivAlgEquiv (Field.Emb F K ≃ (K ≃ₐ[F] K) for normal K/F) and concludes toEmb_bijective via (…).symm.bijective, answering open question 2 — normality is exactly what forces every F-embedding into the algebraic closure to restrict back to an automorphism."
     },
     {
       "id": "main-equality",
-      "title": "The Separable-Degree Equality",
-      "startLine": 84,
-      "endLine": 103,
-      "summary": "finSepDegree_eq_card_algEquiv (the headline equality [K:F]_s = |Aut_F(K)| for normal K/F via Nat.card_congr) and its symmetric form card_algEquiv_eq_finSepDegree — answering open question 1."
+      "title": "The Separable-Degree Equality (Open Question 1)",
+      "startLine": 82,
+      "endLine": 99,
+      "summary": "finSepDegree_eq_card_algEquiv (the headline equality [K:F]_s = |Aut_F(K)| for normal K/F via Nat.card_congr, needing no finiteness) and its symmetric form card_algEquiv_eq_finSepDegree — answering open question 1."
     },
     {
       "id": "separability-boundary",
       "title": "Separability Boundary and the Galois Corollary",
-      "startLine": 104,
+      "startLine": 100,
       "endLine": 120,
       "summary": "card_algEquiv_eq_finrank_iff_isSeparable (among finite normal extensions, |Aut| = [K:F] iff separable) and card_algEquiv_eq_finrank_of_normal_isSeparable (recovers IsGalois.card_aut_eq_finrank for finite Galois extensions)."
     }
