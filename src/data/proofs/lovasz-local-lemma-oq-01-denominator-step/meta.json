@@ -165,6 +165,11 @@
   },
   "crossReferences": [
     {
+      "targetId": "lovasz-local-lemma-oq-01-conditional-avoidance",
+      "relationship": "related",
+      "description": "A sibling denominator-recursion contribution landed the same day: the relative quantitative bound ∏(1 − bₖ) ≤ μ[⋂ᵢ Aᵢᶜ | H] over PREFIX histories, obtained by transporting the ambient quantitative chain-rule bound to the conditioned measure μ[·|H]. That is the assembled product form over a prefix enumeration; this entry supplies the per-step PEEL over an ARBITRARY block B (via the additive complement identity), the inductive transition that — iterated over the neighbours of Aₖ, which the dependency-graph recursion produces as unstructured subsets rather than prefixes — proves such a survival product. Complementary tools for the same recursion: transport-of-measure product (there) versus single-neighbour peel (here); different statements, different techniques."
+    },
+    {
       "targetId": "lovasz-local-lemma-oq-01-dependency-split",
       "relationship": "extends",
       "description": "The numerator half of the dependency-graph induction step (numerator monotonicity, non-neighbour independence collapse). This entry supplies the complementary denominator half: the survival-peel recursion engine whose per-step transition is the complement identity dual to that file's numerator moves."

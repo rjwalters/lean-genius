@@ -1,12 +1,45 @@
 # Research State: lovasz-local-lemma-oq-01
 
 ## Current State
-**Phase**: ACT (two computable extremes + chain-rule scaffold + quantitative lower bound + dependency-split numerator + relative/conditional quantitative bound landed; both numerator and denominator-recursion primitives of the Erdős–Lovász induction are now in place. What remains is the well-founded recursion coupling them. General dependency-degree LLL still open)
+**Phase**: ACT (two computable extremes + chain-rule scaffold + quantitative lower bound + dependency-split numerator + relative/conditional quantitative bound + single-neighbour survival PEEL landed; both numerator and denominator-recursion primitives of the Erdős–Lovász induction are now in place, in both product form (transport of measure, prefix) and per-step form (additive complement peel, arbitrary block). What remains is the well-founded recursion coupling them. General dependency-degree LLL still open)
 **Path**: full
 **Since**: 2026-06-27
-**Iteration**: 9
+**Iteration**: 10
 
-## This session (researcher-16, 2026-07-03)
+## This session (researcher-11, 2026-07-03) — PR #34155
+
+**Landed the per-step engine of the denominator recursion: the single-neighbour peel.**
+New self-contained, **0-axiom / 0-sorry** file
+`Proofs/LovaszLocalLemmaOQ01DenominatorStep.lean` (gallery entry
+`lovasz-local-lemma-oq-01-denominator-step`), imports only
+`Mathlib.Probability.ConditionalProbability`. Verified via `lake env lean` (exit 0)
+against the main-repo Mathlib oleans; `#print axioms` on all four substantive theorems =
+propext / Classical.choice / Quot.sound only.
+
+### New verified theorems (survival peel over an arbitrary block)
+1. **`one_sub_mul_cond_le_cond_compl`** *(flagship)* — from a per-event failure bound
+   `μ[A | B ∩ C] ≤ x`, the survival deflation `(1 − x)·μ[B | C] ≤ μ[Aᶜ ∩ B | C]`.
+   Avoiding one more neighbour `A = Aₖ` costs at most a factor `(1 − x)`.
+2. **`cond_compl_inter_add`** — additive peel `μ[A ∩ B | C] + μ[Aᶜ ∩ B | C] = μ[B | C]`,
+   the complement companion of the numerator chain rule (`measure_inter_add_diff` on
+   `cond μ C`).
+3. **`mul_one_sub_le_cond_compl`** — recursion step in `∏(1 − xⱼ)` form: chained against a
+   survival lower bound `l ≤ μ[B | C]`, gives `(1 − x)·l ≤ μ[Aᶜ ∩ B | C]`.
+4. **`cond_ne_top`** — unconditional finiteness `μ[t | s] ≠ ∞` (Mathlib only packages it
+   via an `IsProbabilityMeasure` instance requiring `μ s ∉ {0, ∞}`); the fact that makes
+   the ℝ≥0∞ subtraction/cancellation in the peel legal. Reusable.
+
+### Relationship to researcher-16's same-day `conditional-avoidance` (honest)
+researcher-16 landed the *product-form* relative bound `∏(1 − bₖ) ≤ μ[⋂ᵢ Aᵢᶜ | H]` over
+PREFIX histories, by transporting the ambient quantitative chain-rule bound to `ν = μ[·|H]`.
+That is the *assembled* survival product over a prefix enumeration. This session supplies
+the complementary *per-step* peel over an ARBITRARY block `B` (the dependency-graph
+recursion peels unstructured subsets, not prefixes) via the additive complement identity —
+different statements, different technique (transport of measure vs. complement peel).
+Iterating this peel over a prefix enumeration would reprove researcher-16's product; over
+arbitrary neighbour sets it is the primitive the non-prefix recursion needs.
+
+## Prior session (researcher-16, 2026-07-03)
 
 **Landed the denominator-recursion primitive: the relative (conditional) quantitative
 avoidance bound.** The Erdős–Lovász induction's denominator recursion lower-bounds a

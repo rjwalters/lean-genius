@@ -19,6 +19,44 @@ Insights accumulated during research on this problem.
 
 ## Insights
 
+### Single-neighbour survival PEEL — per-step denominator engine (researcher-11, 2026-07-03) — NEW
+
+- **The denominator survival lower bound `μ[⋂_{S₁} Aⱼᶜ | C] ≥ ∏(1 − xⱼ)` has a clean
+  per-step engine: a single-neighbour peel, dual to the numerator chain rule.** New file
+  `Proofs/LovaszLocalLemmaOQ01DenominatorStep.lean` (gallery
+  `lovasz-local-lemma-oq-01-denominator-step`, PR #34155, 0-axiom/0-sorry, imports only
+  `Mathlib.Probability.ConditionalProbability`). Abstract over events `A B C` on any
+  `IsProbabilityMeasure`.
+- **Additive peel (`cond_compl_inter_add`):** `μ[A ∩ B | C] + μ[Aᶜ ∩ B | C] = μ[B | C]`,
+  by `measure_inter_add_diff (μ := cond μ C) B hA` with `B \ A = Aᶜ ∩ B`
+  (`Set.diff_eq`+`Set.inter_comm`). No probability-measure hypothesis (`omit` the instance).
+  This is the *complement* companion of the chain rule `μ[(A∩B)|C]=μ[A|B∩C]·μ[B|C]`.
+- **Multiplicative peel (`one_sub_mul_cond_le_cond_compl`, flagship):** from
+  `μ[A|B∩C] ≤ x`, `(1 − x)·μ[B|C] ≤ μ[Aᶜ∩B|C]`. Route: additive peel + chain-rule
+  factoring give `μ[Aᶜ∩B|C] = μ[B|C] − μ[A|B∩C]·μ[B|C]` (`ENNReal.eq_sub_of_add_eq`,
+  finiteness from `cond_ne_top`); then `(1−x)·a = a − x·a` (`ENNReal.sub_mul (fun _ _ =>
+  ha_ne)`, `one_mul`) and `tsub_le_tsub_left (mul_le_mul_right' hx _)`. No `x ≤ 1` needed
+  (the `sub_mul` hypothesis is vacuous for `x ≥ 1`). Chained with `l ≤ μ[B|C]` gives
+  `mul_one_sub_le_cond_compl`: `(1 − x)·l ≤ μ[Aᶜ∩B|C]` — the `∏(1 − xⱼ)`-shaped step.
+- **Reusable Lean gotchas.** `cond_ne_top` (`μ[t|s] ≠ ∞` for measurable `s`, case-split on
+  `μ s = 0`) is genuinely missing from Mathlib for a general conditioning set and is what
+  makes the ℝ≥0∞ truncated-subtraction / non-cancellative-addition steps legal. `omit
+  [IsProbabilityMeasure μ] in` must go **before** the docstring, not between docstring and
+  theorem (else `unexpected token 'omit'`). `ENNReal.sub_mul (h : 0<b → b<a → c ≠ ∞)`,
+  `ENNReal.eq_sub_of_add_eq (hc : c ≠ ∞)`, `le_tsub_of_add_le_right` needs
+  `AddLECancellable` on ℝ≥0∞ (use the `ENNReal.` variants).
+- **Relationship to researcher-16's same-day `conditional-avoidance` (honest).** That entry
+  gives the *product-form* relative bound `∏(1 − bₖ) ≤ μ[⋂ Aᵢᶜ | H]` over **prefix**
+  histories by transporting the ambient quantitative bound to `ν = μ[·|H]`. This peel is the
+  complementary *per-step* transition over an **arbitrary** block `B` (the dependency-graph
+  recursion peels unstructured subsets, not prefixes). Different statements, different
+  technique. Iterating the peel over a prefix enumeration would reprove the product; over
+  arbitrary neighbour sets it is the primitive the non-prefix recursion consumes.
+- **Sharpest remaining open piece (unchanged):** the well-founded recursion on `|S₁|` that
+  threads this peel (or transports the product) to assemble the survival lower bound, and
+  supplying the per-event bounds `xₖ = μ[Aₖ | history] ≤` (e.g. `2p`) from a
+  measure-theoretic dependency structure under `e·p·(d+1) ≤ 1`.
+
 ### Relative (conditional) quantitative avoidance bound (researcher-16, 2026-07-03) — NEW
 
 - **The whole ambient quantitative scaffold lifts to a conditioned-on-background-event
