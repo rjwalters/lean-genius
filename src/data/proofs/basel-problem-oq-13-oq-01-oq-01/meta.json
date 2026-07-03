@@ -77,7 +77,10 @@
       "Mathlib.NumberTheory.ZetaValues",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real", "Nat"],
+    "opens": [
+      "Real",
+      "Nat"
+    ],
     "namespace": "BaselEtaUniform",
     "path": "Proofs/BaselProblemOQ13OQ01OQ01.lean",
     "lineCount": 177,
@@ -163,6 +166,57 @@
       "targetId": "basel-problem-oq-08",
       "relationship": "related",
       "description": "ζ(4) = π⁴/90; η(4) = (1 − 2^{−3})ζ(4) = 7π⁴/720 is its alternating restriction, an instance of the uniform factor 1 − 2^{1−2k}."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hasSum_eta_of_hasSum_zeta",
+      "type": "theorem",
+      "statement": "HasSum (fun n => 1/(n:ℝ)^m) Z → HasSum (fun n => (-1)^(n+1)/(n:ℝ)^m) ((1 - 2/(2:ℝ)^m) * Z)",
+      "significance": "The analytic-free heart of the file: for any natural exponent m, if the p-series ∑ 1/nᵐ converges to Z (= ζ(m)) then the alternating series ∑ (-1)^{n+1}/nᵐ converges to (1 − 2/2ᵐ)·Z. This is the finite-combinatorial content of the identity η(s) = (1 − 2^{1−s})·ζ(s), proved from the parity decomposition alone — no special-function analysis of the exponent is used, so it holds uniformly for every convergent p-series. Every downstream eta value is a one-line specialisation of this bridge.",
+      "description": "Split both series by parity. The plain even part is (1/2ᵐ)·Z (factor 2ᵐ out of (2k)ᵐ); the odd tail B is summable via the injection k↦2k+1, and even_add_odd + HasSum uniqueness pin (1/2ᵐ)·Z + B = Z. For the alternating series the even part flips sign to −(1/2ᵐ)·Z while the odd part keeps sign +1 = B; reassemble and rewrite (1 − 2/2ᵐ)·Z = −(1/2ᵐ)·Z + B by linear_combination."
+    },
+    {
+      "name": "hasSum_eta_two_mul_nat",
+      "type": "theorem",
+      "statement": "k ≠ 0 → HasSum (fun n => (-1)^(n+1)/(n:ℝ)^(2k)) ((1 - 2/(2:ℝ)^(2k)) * ((-1)^(k+1) * (2:ℝ)^(2k-1) * π^(2k) * bernoulli (2k) / (2k)!))",
+      "significance": "The uniform even-index eta formula: η(2k) = (1 − 2/2^{2k})·ζ(2k) for all k ≥ 1, with ζ(2k) in Mathlib's Bernoulli closed form hasSum_zeta_nat. A single statement covering the entire even spectrum η(2), η(4), η(6), … — the general theorem of which the named constants below are instances.",
+      "description": "Feed Mathlib's hasSum_zeta_nat hk (the Bernoulli closed form for ζ(2k)) straight into the bridge hasSum_eta_of_hasSum_zeta. One line."
+    },
+    {
+      "name": "eta_factor_eq",
+      "type": "theorem",
+      "statement": "(1:ℝ) - 2/(2:ℝ)^(2k) = 1 - (2:ℝ)^((1:ℤ) - 2*(k:ℤ))",
+      "significance": "Reconciles the two spellings of the eta/zeta prefactor: the source's computational form 1 − 2/2^{2k} versus the textbook form 1 − 2^{1−2k}. Since 1 − 2k ≤ 0 the textbook exponent is negative, forcing an integer (zpow) exponent — the lemma certifies the natural-power arithmetic and the negative-integer-power notation denote the same real.",
+      "description": "Rewrite the zpow via zpow_sub₀ and zpow_one, convert the natural power (2)^{2k} through zpow_natCast, and close by norm_cast — showing 2^{1−2k} = 2 / 2^{2k}."
+    },
+    {
+      "name": "hasSum_eta_two",
+      "type": "theorem",
+      "statement": "HasSum (fun n => (-1)^(n+1)/(n:ℝ)^2) (π^2 / 12)",
+      "significance": "η(2) = π²/12, the alternating analogue of the Basel value ζ(2) = π²/6 — the alternating sum is exactly half of Basel, the m=2 case of the (1 − 2^{1−s}) factor evaluating to 1/2. Recovered as a one-line specialisation of the bridge at Mathlib's hasSum_zeta_two.",
+      "description": "Apply the bridge to hasSum_zeta_two and simplify the prefactor: (1 − 2/2²)·(π²/6) = π²/12 by ring."
+    },
+    {
+      "name": "hasSum_eta_four",
+      "type": "theorem",
+      "statement": "HasSum (fun n => (-1)^(n+1)/(n:ℝ)^4) (7 * π^4 / 720)",
+      "significance": "η(4) = 7π⁴/720, the alternating analogue of ζ(4) = π⁴/90 (factor 1 − 2/2⁴ = 7/8). Matches the sibling file BaselProblemOQ13OQ01, but obtained here for free as a specialisation of the uniform theorem rather than by a bespoke proof — illustrating the payoff of the analytic-free bridge.",
+      "description": "Apply the bridge to hasSum_zeta_four and simplify: (1 − 2/2⁴)·(π⁴/90) = 7π⁴/720 by ring."
+    },
+    {
+      "name": "tsum_eta_two",
+      "type": "theorem",
+      "statement": "∑' n, (-1)^(n+1)/(n:ℝ)^2 = π^2 / 12",
+      "significance": "The η(2) value restated as an unconditional tsum equality — the reader-facing closed form ∑ (-1)^{n+1}/n² = π²/12, no HasSum witness required.",
+      "description": "hasSum_eta_two.tsum_eq."
+    },
+    {
+      "name": "tsum_eta_four",
+      "type": "theorem",
+      "statement": "∑' n, (-1)^(n+1)/(n:ℝ)^4 = 7 * π^4 / 720",
+      "significance": "The η(4) value as an unconditional tsum equality: ∑ (-1)^{n+1}/n⁴ = 7π⁴/720.",
+      "description": "hasSum_eta_four.tsum_eq."
     }
   ],
   "references": [
