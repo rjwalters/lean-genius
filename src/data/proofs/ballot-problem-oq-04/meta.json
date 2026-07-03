@@ -109,11 +109,19 @@
     },
     {
       "id": "structural-meaning",
-      "title": "The Structural Meaning of Non-Crossing",
-      "summary": "all_related: a crossing configuration forces all four indices into one block; outer_related: the whole interval [a,d] collapses; isNonCrossing_iff: the 'no genuine crossing' reformulation.",
+      "title": "The Structural Meaning: Interleaving Forces One Block",
+      "summary": "all_related: a crossing configuration a<b<c<d with a~c, b~d forces all four indices into one block; outer_related: the endpoints a~d are related, so the whole interval [a,d] collapses into a single block.",
       "startLine": 110,
-      "endLine": 153,
+      "endLine": 137,
       "mathContext": "Using symmetry and transitivity of the equivalence relation, s a c and s b d with a<b<c<d and the non-crossing forcing s a b yield s a b, s b c, s c d — two blocks interleave only by coinciding."
+    },
+    {
+      "id": "no-genuine-crossing",
+      "title": "The 'No Genuine Crossing' Reformulation",
+      "summary": "isNonCrossing_iff: a partition is non-crossing iff there is no a<b<c<d with a~c, b~d and ¬a~b. This is the standard existential-negation form; the first violating partition {{0,2},{1,3}} on Fin 4 is exactly the C₄ = 14 = B₄ − 1 discrepancy between Catalan and Bell numbers.",
+      "startLine": 139,
+      "endLine": 153,
+      "mathContext": "IsNonCrossing s ↔ ¬∃ a b c d, a<b ∧ b<c ∧ c<d ∧ s a c ∧ s b d ∧ ¬ s a b."
     },
     {
       "id": "dyck-side",

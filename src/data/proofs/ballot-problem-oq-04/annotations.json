@@ -51,22 +51,45 @@
     "proofId": "ballot-problem-oq-04",
     "range": {
       "startLine": 113,
-      "endLine": 153
+      "endLine": 137
     },
     "type": "insight",
-    "title": "The Structural Meaning of Non-Crossing",
-    "content": "The core lemmas. all_related: in a non-crossing partition, an interleaving configuration (a~c and b~d with a<b<c<d) forces ALL four indices into one block — so two distinct blocks can only 'meet' by coinciding. outer_related is the corollary that the two endpoints a~d are related, collapsing the whole interval. isNonCrossing_iff gives the standard 'no genuine crossing' reformulation: there is no pair of distinct blocks with interleaving representatives. The first genuine crossing is {{0,2},{1,3}} on Fin 4 — which is exactly why C₄ = 14 = Bell B₄ (15) minus that single crossing partition.",
-    "mathContext": "Non-crossing $\\Rightarrow$ an interleaving $a\\sim c,\\ b\\sim d$ ($a<b<c<d$) forces $a\\sim b\\sim c\\sim d$; first crossing $\\{\\{0,2\\},\\{1,3\\}\\}$ on $[4]$, $C_4=14=B_4-1$.",
+    "title": "The Structural Meaning: Interleaving Forces a Single Block",
+    "content": "The core structural lemmas. all_related: in a non-crossing partition, an interleaving configuration (a~c and b~d with a<b<c<d) forces ALL four indices into one block (a~b, b~c, c~d) — so two distinct blocks can only 'meet' by coinciding. The proof is a short transitivity chain: the definition gives a~b directly, then b~a~c gives b~c, and c~b~d gives c~d. outer_related is the corollary that the two endpoints a~d are related, collapsing the whole interval [a,d] into one block. This is the precise algebraic content of non-crossing-ness that any bijection proof must exploit.",
+    "mathContext": "Non-crossing $\\Rightarrow$ an interleaving $a\\sim c,\\ b\\sim d$ ($a<b<c<d$) forces $a\\sim b\\sim c\\sim d$, hence $a\\sim d$ (outer_related).",
     "significance": "key",
     "relatedConcepts": [
       "all_related lemma",
       "blocks meet only by coinciding",
-      "no-genuine-crossing reformulation",
-      "Catalan vs Bell numbers"
+      "transitivity chain",
+      "outer_related corollary"
     ],
     "prerequisites": [
       "the IsNonCrossing definition",
-      "transitivity of the block relation"
+      "transitivity/symmetry of the block relation (Setoid)"
+    ]
+  },
+  {
+    "id": "ballot-nc-ann-iff",
+    "proofId": "ballot-problem-oq-04",
+    "range": {
+      "startLine": 139,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "The 'No Genuine Crossing' Reformulation",
+    "content": "isNonCrossing_iff recasts the forcing definition into the form the combinatorics literature actually uses: IsNonCrossing s holds iff there is NO quadruple a<b<c<d with a~c, b~d but ¬a~b — i.e. no two genuinely distinct blocks with interleaving representatives. The forward direction applies the definition to the witness and contradicts ¬a~b; the reverse uses by_contra to manufacture exactly such a forbidden witness. This negative/existential form is what makes the count tractable: the first genuine crossing is {{0,2},{1,3}} on Fin 4, which is exactly why C₄ = 14 = Bell B₄ (15) minus that single crossing partition — the first place the Catalan and Bell numbers diverge.",
+    "mathContext": "$\\mathrm{IsNonCrossing}(s) \\iff \\neg\\exists\\, a<b<c<d,\\ a\\sim c \\wedge b\\sim d \\wedge \\neg(a\\sim b)$; first crossing $\\{\\{0,2\\},\\{1,3\\}\\}$ on $[4]$, $C_4=14=B_4-1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "no-genuine-crossing reformulation",
+      "Catalan vs Bell numbers",
+      "existential negation",
+      "by_contra"
+    ],
+    "prerequisites": [
+      "the IsNonCrossing definition",
+      "classical negation of an existential"
     ]
   },
   {
