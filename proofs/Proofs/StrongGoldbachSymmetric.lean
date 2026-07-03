@@ -673,6 +673,48 @@ example : symmetricPairCount 15 ≤ Nat.totient 15 :=
 -- removing the multiples of `3` alone.
 example : Nat.totient 15 < 15 - 15 / 3 := by decide
 
+/-- **The totient ceiling dominates every single-prime sieve ceiling.**  For any prime
+`p ∣ m`,
+
+    φ(m) ≤ m − m / p.
+
+Every totative of `m` is coprime to `m`, hence — since `p ∣ m` — not divisible by `p`;
+so the `φ(m)` totatives inject into the `m − m / p` residues of `[0, m)` that are not
+multiples of `p` (counted by `card_range_filter_dvd`).  Combined with
+`symmetricPairCount_le_totient_of_not_prime` this proves *in general* what the numeric
+`example` above only checks at `m = 15`: the full-totient ceiling
+`symmetricPairCount_le_totient_of_not_prime` is at least as sharp as the single-prime
+ceiling `symmetricPairCount_le_sub_div` for **every** prime factor `p` of `m`.  (This is
+the Lean form of `φ(m) = m · ∏_{q ∣ m}(1 − 1/q) ≤ m · (1 − 1/p) = m − m/p`, but proved
+directly by the coprime-avoids-multiples inclusion rather than via the product formula.) -/
+theorem totient_le_sub_div {m p : ℕ} (hp : Nat.Prime p) (hpm : p ∣ m) :
+    Nat.totient m ≤ m - m / p := by
+  rw [Nat.totient_eq_card_coprime]
+  -- A totative of `m` is coprime to `m`, hence not divisible by the factor `p`.
+  have hsub : ((Finset.range m).filter (fun k => m.Coprime k))
+      ⊆ (Finset.range m).filter (fun k => ¬ p ∣ k) := by
+    intro k hk
+    simp only [Finset.mem_filter, Finset.mem_range] at hk ⊢
+    obtain ⟨hkm, hcop⟩ := hk
+    refine ⟨hkm, fun hpk => ?_⟩
+    have hcop' : Nat.gcd m k = 1 := hcop
+    have hd : p ∣ 1 := by rw [← hcop']; exact Nat.dvd_gcd hpm hpk
+    have hle := Nat.le_of_dvd Nat.one_pos hd
+    have := hp.two_le
+    omega
+  refine (Finset.card_le_card hsub).trans ?_
+  -- The non-multiples of `p` in `[0, m)` number `m − m / p`.
+  have hsplit : ((Finset.range m).filter (fun k => p ∣ k)).card
+      + ((Finset.range m).filter (fun k => ¬ p ∣ k)).card
+      = (Finset.range m).card :=
+    Finset.filter_card_add_filter_neg_card_eq_card _
+  rw [Finset.card_range] at hsplit
+  have hcount := card_range_filter_dvd hp.pos hpm
+  omega
+
+-- The general dominance, at `m = 15, p = 3`: `φ(15) = 8 ≤ 10 = 15 − 15/3`.
+example : Nat.totient 15 ≤ 15 - 15 / 3 := totient_le_sub_div (p := 3) (by decide) (by decide)
+
 /-! ## Sharper Ceiling at Odd Midpoints: Half the Totient
 
 For an **odd** midpoint `m` the two independent structural constraints on a
