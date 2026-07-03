@@ -57,7 +57,8 @@
       "The suggested candidate Cₙ/(n+1) is NOT log-concave: it fails already at n = 1, where a₁² = 1/4 but a₀·a₂ = 2/3. Dividing a strictly log-convex sequence by the slowly growing factor n+1 does not reverse convexity — the counterexample is explicit and small.",
       "The correct derived sequence is the reciprocal 1/Cₙ: for any strictly positive strictly log-convex sequence the pointwise reciprocal is strictly log-concave, because reciprocation reverses order while preserving products on the positive cone.",
       "The whole result is the parent's strict Turán inequality Cₙ₊₁² < Cₙ·Cₙ₊₂ read through x ↦ 1/x; no additional combinatorial input is needed, only the general field-level reciprocation principle.",
-      "recip_sq_gt_of_sq_lt is stated at the level of an arbitrary LinearOrderedField, so it is reusable for the reciprocal of any log-convex positive sequence (central binomial coefficients, factorials, Bell numbers), not just the Catalan numbers."
+      "recip_sq_gt_of_sq_lt is stated at the level of an arbitrary LinearOrderedField, so it is reusable for the reciprocal of any log-convex positive sequence (central binomial coefficients, factorials, Bell numbers), not just the Catalan numbers.",
+      "The strict log-concavity margin is explicit: (1/Cₙ₊₁)² / ((1/Cₙ)(1/Cₙ₊₂)) = Cₙ·Cₙ₊₂/Cₙ₊₁² = (2n²+7n+6)/(2n²+7n+3), using Cₙ₊₁/Cₙ = 2(2n+1)/(n+2). This ratio exceeds 1 for every n (so log-concavity is strict) but tends to 1 as n → ∞, meaning 1/Cₙ is asymptotically log-linear — the concavity is genuine yet vanishing in the tail."
     ]
   },
   "sections": [
