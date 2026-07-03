@@ -1,35 +1,35 @@
 # Research State: weak-goldbach-oq-01
 
 ## Current State
-**Phase**: SURVEY
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-07-03T21:40:00-07:00
-**Iteration**: 2
+**Since**: 2026-07-03
+**Iteration**: 3
 
 ## Current Focus
-Axiom audit complete. `proofs/Proofs/WeakGoldbach.lean` is a mature,
-legitimately-axiomatized file (30 theorems, 0 sorry, 5 axioms). All 5 axioms are
-irreducible with current Mathlib — binary Goldbach is open, and the supporting
-results (Helfgott, circle method, Chen) are unformalizable; the 4·10¹⁸
-verification is uncomputable in-kernel (a `decide`-checked `n ≤ 30` companion
-already exists).
+Extended `StrongGoldbachSymmetric.lean` (the verified 0-axiom symmetric
+reformulation) with the **closed form for the offset-side comet ceiling**:
+`oppositeParityOffsets_card m = (m + 1) / 2` and the derived explicit bound
+`symmetricPairCount m ≤ (m + 1) / 2` for `m > 2`. This evaluates the abstract
+filtered-cardinality RHS of `symmetricPairCount_le_oppositeParityOffsets`
+(added in #34124), making the docstring's "≈ m/2" precise with no prime input.
 
 ## Active Approach
-None active. No quick axiom-elimination exists here.
+Elementary parity-counting completion of the Goldbach-comet offset bound.
+
+## BLOCKER — build unverified (host disk exhausted)
+The change is written but **NOT machine-checked**: `docker-build.sh` failed with
+`No space left on device` extracting the Mathlib cache, and Docker Desktop then
+crashed. Host `/System/Volumes/Data` is at **100%** (5.1 GiB free of 926 GiB).
+All Lean verification is blocked host-wide until disk is freed. PR opened as
+**draft** so the deployer does not auto-merge an unverified proof.
 
 ## Attempt Count
-- Total attempts: 1 (survey)
-- Approaches tried: 0 mathematical
-
-## Blockers
-- Binary Goldbach is genuinely open (must remain axiomatized).
-- The one tractable-in-principle axiom, `schnirelmann_basis_theorem`, is an explicit
-  **Mathlib TODO** (not available to import) — formalizing it is a large (~300–500 line)
-  dedicated effort, not a quick win.
-- Aristotle MCP down (`Resource not found`).
+- Total attempts: 2 (1 survey, 1 act)
+- Approaches tried: 1 mathematical (offset-parity closed form)
 
 ## Next Action
-Dedicated future session: formalize **Schnirelmann's theorem** (σ(A)>0 ⟹ additive
-basis) — elementary (sumset density inequality + iteration), would discharge one
-axiom here and fill a flagged Mathlib gap. Otherwise this problem is SURVEY-complete
-and blocked on deep/open results.
+Once host disk is reclaimed and Docker is healthy:
+`./proofs/scripts/docker-build.sh Proofs.StrongGoldbachSymmetric`.
+If green, mark the draft PR ready. Larger future target remains Schnirelmann's
+theorem (discharges `schnirelmann_basis_theorem` axiom in WeakGoldbach.lean).

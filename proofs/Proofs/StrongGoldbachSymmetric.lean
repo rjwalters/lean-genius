@@ -348,4 +348,61 @@ theorem symmetricPairCount_le_oppositeParityOffsets {m : ℕ} (hm : 2 < m) :
   obtain ⟨hkm, hp1, hp2⟩ := hk
   exact ⟨hkm, symmetric_pair_offset_parity hm hkm hp1 hp2⟩
 
+/-! ## Closed Form for the Offset-Side Ceiling
+
+`symmetricPairCount_le_oppositeParityOffsets` bounds the comet height by the number
+of offsets `k < m` of parity opposite to `m`, but leaves that number as an
+unevaluated filtered cardinality — the docstring only says "≈ m/2".  Here we
+evaluate it exactly: precisely `⌈m/2⌉ = (m + 1) / 2` of the offsets `{0, …, m - 1}`
+have parity opposite to `m`.  Substituting turns the abstract bound into an explicit
+closed-form `(m + 1) / 2` ceiling on the Goldbach comet height, still using no
+prime-counting input. -/
+
+/-- The number of `k < m` whose parity is opposite to a fixed `c` is `(m + c % 2) / 2`.
+
+Proved by induction on `m`: passing from `range m` to `range (m + 1)` adjoins the
+element `m`, which is counted exactly when `m` has parity opposite to `c`. -/
+private lemma card_range_filter_ne_parity (c : ℕ) :
+    ∀ m : ℕ, ((Finset.range m).filter (fun k => c % 2 ≠ k % 2)).card = (m + c % 2) / 2 := by
+  intro m
+  induction m with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.range_succ, Finset.filter_insert]
+    by_cases h : c % 2 ≠ n % 2
+    · rw [if_pos h, Finset.card_insert_of_not_mem (by simp), ih]
+      omega
+    · rw [if_neg h, ih]
+      omega
+
+/-- **The offset-side ceiling in closed form.**  Exactly `⌈m/2⌉ = (m + 1) / 2` of the
+offsets `k < m` have parity opposite to `m`.  This evaluates the right-hand side of
+`symmetricPairCount_le_oppositeParityOffsets`. -/
+theorem oppositeParityOffsets_card (m : ℕ) :
+    ((Finset.range m).filter (fun k => m % 2 ≠ k % 2)).card = (m + 1) / 2 := by
+  rw [card_range_filter_ne_parity m m]
+  omega
+
+/-- **Explicit closed-form ceiling on the Goldbach comet height.**  For `m > 2` the
+comet count is at most `⌈m/2⌉ = (m + 1) / 2`.  This is the offset-side bound
+`symmetricPairCount_le_oppositeParityOffsets` with its right-hand side evaluated via
+`oppositeParityOffsets_card`: an elementary half-of-the-offsets ceiling that needs no
+prime-counting input, orthogonal to the prime-arm identity
+`symmetricPairCount_eq_upperArm_partitions`. -/
+theorem symmetricPairCount_le_ceilHalf {m : ℕ} (hm : 2 < m) :
+    symmetricPairCount m ≤ (m + 1) / 2 :=
+  (symmetricPairCount_le_oppositeParityOffsets hm).trans
+    (oppositeParityOffsets_card m).le
+
+-- The closed-form offset count, checked against small midpoints.
+-- `m = 5` (odd): opposite-parity offsets are the evens `0, 2, 4`, so `⌈5/2⌉ = 3`.
+example : ((Finset.range 5).filter (fun k => 5 % 2 ≠ k % 2)).card = 3 := by decide
+-- `m = 6` (even): opposite-parity offsets are the odds `1, 3, 5`, so `⌈6/2⌉ = 3`.
+example : ((Finset.range 6).filter (fun k => 6 % 2 ≠ k % 2)).card = 3 := by decide
+
+-- The closed-form comet ceiling, checked against the concrete heights above:
+-- `symmetricPairCount 5 = 2 ≤ 3` and `symmetricPairCount 6 = 1 ≤ 3`.
+example : symmetricPairCount 5 ≤ (5 + 1) / 2 := symmetricPairCount_le_ceilHalf (by norm_num)
+example : symmetricPairCount 6 ≤ (6 + 1) / 2 := symmetricPairCount_le_ceilHalf (by norm_num)
+
 end StrongGoldbach

@@ -105,3 +105,30 @@ about the comet count `symmetricPairCount m` (all kernel-checked, no `native_dec
 Neither touches the open conjecture; both are genuine theory-level facts (a sufficient
 condition and a density ceiling), not axiom scaffolding. Build verified via
 `docker-build.sh Proofs.StrongGoldbachSymmetric`.
+
+## Session 2026-07-03 (researcher-11) — Comet offset ceiling closed form (ACT, UNVERIFIED)
+
+**Mode**: ACT · **Outcome**: code written, **build blocked by host disk exhaustion**
+
+Extended `StrongGoldbachSymmetric.lean` (verified 0-axiom symmetric reformulation).
+The most recent theorem there, `symmetricPairCount_le_oppositeParityOffsets` (#34124),
+bounds the Goldbach comet height by the number of offsets `k < m` of parity opposite
+to `m`, but leaves that as an unevaluated `Finset.filter` cardinality. Added:
+
+- `card_range_filter_ne_parity (c m)`: `|{k < m : c%2 ≠ k%2}| = (m + c%2)/2`
+  (induction on `m`; each step adjoins `m`, counted iff `m` opposite-parity to `c`).
+- `oppositeParityOffsets_card m`: `|{k < m : m%2 ≠ k%2}| = (m+1)/2` (= ⌈m/2⌉).
+- `symmetricPairCount_le_ceilHalf (m > 2)`: `symmetricPairCount m ≤ (m+1)/2` — the
+  explicit closed-form elementary ceiling, no prime-counting input.
+- Four concrete `decide`/example checks (m = 5, 6).
+
+**Math confidence high** (elementary parity count), but **NOT machine-checked**:
+`docker-build.sh` failed `No space left on device` extracting Mathlib cache and
+Docker Desktop crashed. Host `/System/Volumes/Data` = **100% full** (5.1 GiB free /
+926 GiB). This blocks ALL Lean verification host-wide, not just this problem.
+
+**Unverified lemma-name risks to re-check on rebuild**: `Finset.filter_insert`,
+`Finset.card_insert_of_not_mem`, `Finset.range_succ`, and whether `omega` discharges
+the `/2` / `%2` goals (expected yes — omega handles div/mod by literal 2).
+
+PR opened as **draft** to prevent the deployer auto-merging an unverified proof.
