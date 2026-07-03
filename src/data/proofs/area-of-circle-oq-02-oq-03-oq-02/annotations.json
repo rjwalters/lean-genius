@@ -4,7 +4,7 @@
     "proofId": "area-of-circle-oq-02-oq-03-oq-02",
     "range": {
       "startLine": 1,
-      "endLine": 66
+      "endLine": 57
     },
     "type": "context",
     "title": "Two Derivations of Sₙ = n·Vₙ: Gamma Recurrence vs. Shell Integration",
@@ -19,6 +19,30 @@
     "prerequisites": [
       "interval integration",
       "spherical coordinates"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq02-oq03-oq02-shelldef",
+    "proofId": "area-of-circle-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "shellVolume: the n-ball assembled from radial shells",
+    "content": "`shellVolume n` defines the unit n-ball volume as the radial integral $\\int_0^1 S_n\\, r^{n-1}\\,dr$, where $S_n$ is the parent's `unitSphereSurface n`. The integrand $S_n r^{n-1}$ is the $(n-1)$-dimensional measure of the sphere of radius $r$: scaling the unit sphere by $r$ scales its surface by $r^{n-1}$. Reusing the parent's `unitSphereSurface` (rather than re-deriving it) is deliberate — it keeps this file's contribution isolated to the *geometric* realization of $V_n$ as an integral, so the eventual identity `shellVolume n = unitBallVolume n` genuinely reconciles two independent constructions rather than restating one. The definition sits inside a `noncomputable section` because the interval integral and the underlying Gamma-valued surface are noncomputable reals.",
+    "mathContext": "shellVolume(n) := ∫₀¹ (unitSphereSurface n)·r^{n-1} dr; the shell at radius r contributes S_n·r^{n-1} because scaling the unit sphere by r scales its (n−1)-measure by r^{n-1}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "radial shell decomposition",
+      "surface scaling r^{n-1}",
+      "interval integral",
+      "noncomputable real definitions",
+      "reuse of parent unitSphereSurface"
+    ],
+    "prerequisites": [
+      "the parent's unitSphereSurface definition",
+      "MeasureTheory interval integrals"
     ]
   },
   {
@@ -62,6 +86,30 @@
     ],
     "prerequisites": [
       "intervalIntegral.integral_const_mul",
+      "the parent's surface_eq_n_mul_volume"
+    ]
+  },
+  {
+    "id": "ann-aoc-oq02-oq03-oq02-agrees",
+    "proofId": "area-of-circle-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 117,
+      "endLine": 125
+    },
+    "type": "key-step",
+    "title": "The two routes provably agree: shell-FTC = Gamma recurrence",
+    "content": "`shell_surface_agrees` is the capstone equality certifying that the two *independent* derivations of the surface–volume proportionality land on the same value: the FTC route `surface_eq_n_mul_shellVolume` (constant $n$ from the antiderivative of $r^{n-1}$) and the parent's Gamma route `surface_eq_n_mul_volume` (constant $n$ from the functional-equation shift $\\Gamma(n/2+1) = (n/2)\\Gamma(n/2)$) both give $S_n = n\\cdot V_n$. Because `shellVolume_eq_unitBallVolume` already identified $\\text{shellVolume}\\,n = V_n$, the two right-hand sides are definitionally equal and the theorem closes by rewriting one into the other. The mathematical point is a cross-check: an analytic identity (half-integer Gamma recurrence) and a geometric one (integrate spherical shells) are forced to coincide, so neither derivation is an artifact of its method. Together with the earlier `shellVolume_two = π` and `shellVolume_three = 4π/3` sanity values, this closes the geometric-derivation open question the parent flagged.",
+    "mathContext": "shell_surface_agrees: n·shellVolume n = n·unitBallVolume n = S_n, so the FTC-derived and Gamma-derived forms of S_n = n·V_n coincide (via shellVolume n = V_n).",
+    "significance": "key",
+    "relatedConcepts": [
+      "cross-validation of two proofs",
+      "analytic vs geometric derivation",
+      "Gamma functional equation route",
+      "FTC route",
+      "surface–volume identity Sₙ = n·Vₙ"
+    ],
+    "prerequisites": [
+      "shellVolume_eq_unitBallVolume",
       "the parent's surface_eq_n_mul_volume"
     ]
   }
