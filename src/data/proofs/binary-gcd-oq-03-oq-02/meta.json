@@ -90,6 +90,120 @@
       "The recursive size-reduction bound is FALSE as an unconditional statement (counterexample (5, 130, 89)); a conditional version requires quotient stability under a well-behaved-input precondition: showing that the Euclidean quotients computed from the top-half approximation (a/2^s, b/2^s) match those from the full-precision (a,b) for the relevant number of steps. This is proved in Stehlé–Zimmermann (2004) but requires ≈200 lines of new Lean infrastructure."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "hgcdMatrixOf_preserves_gcd",
+      "type": "theorem",
+      "statement": "gcd(α·a + β·b, γ·a + δ·b) = gcd(a, b) for the top-level HGCD matrix of (a,b)",
+      "significance": "The correctness theorem for Schönhage's recursive half-GCD: the cofactor matrix it returns, applied to (a,b), preserves the gcd exactly. This is the property that makes HGCD a valid acceleration of the Euclidean algorithm.",
+      "description": "Instance of hgcdMatrix_preserves_gcd; axiom-free."
+    },
+    {
+      "name": "hgcdMatrix_preserves_gcd",
+      "type": "theorem",
+      "statement": "gcd((hgcdMatrix fuel a b) applied to (a,b)) = Nat.gcd a b",
+      "significance": "The fuel-indexed correctness invariant: at every level of the recursion the accumulated cofactor matrix preserves the gcd of the current pair. The inductive backbone of HGCD correctness.",
+      "description": "Follows from det-unit (unimodular ⇒ gcd-preserving) via cofactor_apply_gcd; axiom-free."
+    },
+    {
+      "name": "hgcdMatrixOf_det_unit",
+      "type": "theorem",
+      "statement": "(hgcdMatrixOf a b).det = 1 ∨ = −1",
+      "significance": "Unimodularity of the HGCD cofactor matrix: its determinant is ±1, so it is invertible over ℤ. Unimodularity is exactly why the transformation is gcd-preserving and reversible — the algebraic heart of correctness.",
+      "description": "Instance of hgcdMatrix_det_unit; axiom-free."
+    },
+    {
+      "name": "hgcdMatrix_det_unit",
+      "type": "theorem",
+      "statement": "(hgcdMatrix fuel a b).det = 1 ∨ = −1",
+      "significance": "The determinant invariant maintained through the whole recursion: composing Lehmer cofactor steps (each unimodular) keeps the product unimodular. The invariant from which gcd-preservation is derived.",
+      "description": "Induction on fuel; base case is the identity (det 1), recursive step multiplies two unimodular matrices; axiom-free."
+    },
+    {
+      "name": "cofactor_mul_apply",
+      "type": "theorem",
+      "statement": "(M.mul N).apply a b = M.apply (N.apply a b).1 (N.apply a b).2",
+      "significance": "The composition law tying matrix multiplication to the action on integer pairs: applying a product of cofactor matrices equals applying them in sequence. The functoriality that lets the recursion compose local reductions into a global transformation.",
+      "description": "Unfolds mul/apply and closes by `ring`; axiom-free."
+    },
+    {
+      "name": "hgcdMatrix_pattern_det_correlated",
+      "type": "theorem",
+      "statement": "(EvenPattern M ∧ det = 1) ∨ (OddPattern M ∧ det = −1) for M = hgcdMatrix fuel a b",
+      "significance": "The sharp sign–pattern invariant: the parity pattern of the cofactor matrix entries is rigidly correlated with its determinant. This correlation is what pins down the exact signs of the entries and drives the entry-magnitude bounds.",
+      "description": "Induction on fuel using cofactor_mul_pattern_det_correlated for the recursive multiply; axiom-free."
+    },
+    {
+      "name": "hgcdMatrix_has_pattern",
+      "type": "theorem",
+      "statement": "EvenPattern (hgcdMatrix fuel a b) ∨ OddPattern (hgcdMatrix fuel a b)",
+      "significance": "Every HGCD matrix has one of the two admissible sign patterns (even or odd). The structural dichotomy underlying the more refined pattern-determinant correlation and the entry bounds.",
+      "description": "Induction on fuel with the even↔odd transitions of a single Lehmer step; axiom-free."
+    },
+    {
+      "name": "hgcdMatrix_entry_bound",
+      "type": "theorem",
+      "statement": "Under the row-vector invariant with residues ahat', bhat', the HGCD matrix entries are bounded in magnitude",
+      "significance": "The entry-magnitude bound: the cofactors stay controlled in size relative to the reduced residues. Size control is the whole point of HGCD — it is what yields the sub-quadratic (Schönhage) complexity of the GCD.",
+      "description": "Combines the pattern-determinant correlation with Cramer's rule (row_vec_cramer); axiom-free."
+    },
+    {
+      "name": "lehmerCofactors_invariant",
+      "type": "theorem",
+      "statement": "If M satisfies the row-vector invariant for (a₀,b₀), so does lehmerCofactors fuel ahat bhat M",
+      "significance": "The Lehmer inner-loop invariant: accumulating single-word Lehmer cofactor steps preserves the row-vector relation between the original pair (a₀,b₀) and the current residues. This is what lets the fast inner loop stand in for many Euclidean steps.",
+      "description": "Induction on the Lehmer fuel, threading the invariant through each step; axiom-free."
+    },
+    {
+      "name": "row_vec_cramer",
+      "type": "theorem",
+      "statement": "Given a₀·α + b₀·γ = ahat and a₀·β + b₀·δ = bhat: a₀·det = ahat·δ − bhat·γ and b₀·det = bhat·α − ahat·β",
+      "significance": "Cramer's rule for the 2×2 cofactor system: it inverts the row-vector relation to recover the original pair from the residues via the determinant. The algebraic tool that both proves reversibility and bounds the entries.",
+      "description": "Two `linear_combination` calls on the hypotheses; axiom-free."
+    },
+    {
+      "name": "cofactor_apply_err_bound",
+      "type": "theorem",
+      "statement": "|M.α|,|M.β| ≤ C and |ea|,|eb| ≤ B → |(M.apply ea eb).1| ≤ 2·C·B",
+      "significance": "The error-propagation bound central to Schönhage's truncation strategy: applying a cofactor matrix to bounded truncation errors keeps the resulting error bounded by 2CB. This is what justifies computing HGCD on high-order bits only.",
+      "description": "Triangle inequality on the linear form via cofactor_apply_natAbs_le; axiom-free."
+    },
+    {
+      "name": "hgcdMatrix_small",
+      "type": "theorem",
+      "statement": "max a b < hgcdThreshold → hgcdMatrix (fuel+1) a b = lehmerCofactors hgcdThreshold a b CofactorMatrix.id",
+      "significance": "The base case of the recursion: below the threshold, HGCD collapses to a single Lehmer cofactor accumulation from the identity. Defines where the fast recursion bottoms out into direct computation.",
+      "description": "Unfolds hgcdMatrix_succ under the small-case branch; axiom-free."
+    },
+    {
+      "name": "hgcdMatrix_row_invariant_counterexample",
+      "type": "theorem",
+      "statement": "¬ ∃ ahat' bhat' : ℕ satisfying both row-vector equations at (fuel,a,b) = (5,130,89)",
+      "significance": "A key negative result (S17): the naive 'row-vector invariant with natural-number residues' does NOT hold for all inputs — it fails concretely at (130, 89), where the β-row product is negative (−2287). Corrects a plausible but false strengthening of the invariant.",
+      "description": "Refutation via native_decide-checked values (hgcdMatrix_130_89_row_beta_negative etc.); contributes Lean.ofReduceBool."
+    },
+    {
+      "name": "hgcdMatrix_column_invariant_counterexample",
+      "type": "theorem",
+      "statement": "¬ (|((hgcdMatrix 5 130 89).apply 130 89).1| ≤ max ∧ |·.2| ≤ max)",
+      "significance": "The companion refutation showing the alternative column convention also fails at (130,89): the second output component exceeds max(130,89). Demonstrates that neither naive magnitude invariant survives, sharpening the correct formulation.",
+      "description": "native_decide-checked contradiction via hgcdMatrix_col_snd_exceeds_max; contributes Lean.ofReduceBool."
+    },
+    {
+      "name": "cofactor_mul_pattern",
+      "type": "theorem",
+      "statement": "The sign pattern of M.mul N is determined by the patterns of M and N (even/odd composition rules)",
+      "significance": "The multiplication law for sign patterns: even∘even and odd∘odd give even, mixed give odd — mirroring parity arithmetic. The lemma that propagates the pattern invariant through the recursive matrix product.",
+      "description": "Case analysis over the four even/odd combinations (cofactor_mul_even_even etc.); axiom-free."
+    },
+    {
+      "name": "hgcdMatrixOf_pattern_det_correlated",
+      "type": "theorem",
+      "statement": "Top-level HGCD matrix satisfies the joint pattern–determinant invariant",
+      "significance": "The top-level form of the pattern–determinant correlation, packaging the recursion's invariant for external use. Confirms the returned matrix's sign structure is fully determined by its (±1) determinant.",
+      "description": "Instance of hgcdMatrix_pattern_det_correlated; axiom-free."
+    }
+  ],
   "sections": [
     {
       "id": "module-header",
