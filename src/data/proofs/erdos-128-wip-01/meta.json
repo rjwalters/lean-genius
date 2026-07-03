@@ -90,5 +90,41 @@
       "relationship": "parent",
       "description": "The base Erdős #128 scaffold (Graph, edgeCount, induce, hasTriangle, triangleFree, denseSubgraphs and the prose partial results). This entry re-declares its objects (the scaffold fails to build) and proves their first structural theorems: hereditary triangle-freeness and monotone edge count."
     }
+  ],
+  "references": [
+    {
+      "authors": "Erdős Problems",
+      "title": "Problem #128",
+      "venue": "erdosproblems.com/128",
+      "note": "Canonical statement of the $250 open problem and the running record of partial results toward the conjectured optimal constant 1/50."
+    },
+    {
+      "authors": "P. Erdős, R. J. Faudree, C. C. Rousseau, R. H. Schelp",
+      "title": "A local density condition for triangles",
+      "year": 1994,
+      "venue": "Discrete Mathematics",
+      "note": "Early bound on the local-density threshold forcing a triangle (the 1/16 constant referenced in the historical context)."
+    },
+    {
+      "authors": "M. Krivelevich",
+      "title": "On the edge distribution in triangle-free graphs",
+      "year": 1995,
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "note": "Edge-distribution results for triangle-free graphs bearing on the local-density question."
+    },
+    {
+      "authors": "A. A. Razborov",
+      "title": "Flag algebras",
+      "year": 2007,
+      "venue": "Journal of Symbolic Logic",
+      "note": "The flag-algebra method later applied to push the local-density constant toward 27/1024."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP",
+      "note": "Supplies Finset.filter / Finset.card_le_card and the graph/Finset API underlying edgeCount and its monotonicity."
+    }
   ]
 }
