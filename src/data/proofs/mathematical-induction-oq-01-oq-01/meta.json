@@ -119,6 +119,29 @@
       "mathContext": "$p \\in \\mathrm{CNF}\\,\\omega\\,o \\Rightarrow p_1 \\le \\log_\\omega o;\\qquad \\mathrm{CNF}\\,\\omega\\,0 = [\\,].$"
     }
   ],
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Beiträge zur Begründung der transfiniten Mengenlehre",
+      "year": "1897",
+      "venue": "Mathematische Annalen 49, 207–246",
+      "note": "Original source: Cantor introduces the normal form of ordinals in base ω as part of his theory of transfinite numbers"
+    },
+    {
+      "authors": "Sierpiński, Wacław",
+      "title": "Cardinal and Ordinal Numbers",
+      "year": "1958",
+      "venue": "Monografie Matematyczne 34, PWN, Warsaw",
+      "note": "Classical treatment of ordinal arithmetic; develops the Cantor normal form and its uniqueness"
+    },
+    {
+      "authors": "Jech, Thomas",
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "3rd millennium ed., Springer Monographs in Mathematics",
+      "note": "Standard modern reference; Chapter 2 proves existence and uniqueness of the Cantor normal form by transfinite induction on ordinals"
+    }
+  ],
   "conclusion": {
     "summary": "The parent entry's first open question is answered affirmatively and machine-checked: every ordinal has a base-omega Cantor normal form, witnessed by Mathlib's Ordinal.CNF omega o, with reconstruction, strictly decreasing exponents, and finite positive coefficients. The recursive construction is exhibited as a genuine transfinite induction by recording its strictly-decreasing descent measure o % omega^(log omega o) < o, and the leading exponent is identified with log omega o.",
     "implications": "Cantor normal form is the structural backbone of computable ordinal arithmetic (ordinal notations, the Veblen hierarchy, proof-theoretic ordinal analysis up to epsilon_0 and beyond). Casting its existence explicitly as an instance of the parent's transfinite-induction principle — with log/div supplying the digits and mod supplying the descent — makes concrete how well-founded recursion on ordinals yields a positional representation, closing the gap between the abstract induction principle and a canonical constructive normal form.",
