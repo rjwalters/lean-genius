@@ -118,6 +118,11 @@
       "proofId": "newton-power-sum-identities-oq-01",
       "relation": "parent",
       "description": "Parent entry deriving the degree-1,2,3 Newton identities by the same unrolling of MvPolynomial.psum_eq_mul_esymm_sub_sum; this entry continues to degrees 4 and 5."
+    },
+    {
+      "proofId": "amgm-inequality-oq-02",
+      "relation": "related",
+      "description": "“Maclaurin's Inequalities via Elementary Symmetric Polynomials.” The inequality-theoretic companion to these exact power-sum identities: both bodies of results are built on the elementary symmetric polynomials eₖ, one giving Newton's equalities relating them to the power sums, the other the Newton–Maclaurin chain of inequalities among the means eₖ/C(n,k)."
     }
   ],
   "conclusion": {
@@ -157,6 +162,13 @@
       "year": "1992",
       "venue": "The American Mathematical Monthly 99(8), 749–751",
       "note": "Modern exposition and proofs of the Newton–Girard formulae"
+    },
+    {
+      "authors": "Macdonald, I. G.",
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "Oxford Mathematical Monographs, 2nd ed., Oxford University Press",
+      "note": "Standard reference for the ring of symmetric functions; Chapter I develops Newton's identities and the change of basis between power sums pₖ and elementary symmetric functions eₖ to all degrees"
     }
   ],
   "sorries": 0
