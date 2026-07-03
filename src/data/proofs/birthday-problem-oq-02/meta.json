@@ -163,6 +163,134 @@
       "mathContext": "$P(\\text{all distinct}, k+1, d) = P(\\text{all distinct}, k, d) \\cdot (1 - k/d) \\leq P(\\text{all distinct}, k, d)$ since $1 - k/d \\leq 1$ for $k \\leq d$."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "one_sub_le_exp_neg",
+      "type": "lemma",
+      "statement": "For all x : ℝ, 1 − x ≤ exp(−x).",
+      "significance": "The single analytic inequality that powers the entire exponential approximation: applied factor-by-factor it turns the product formula for P(all distinct) into a clean exponential bound. Tight at x = 0.",
+      "description": "Immediate from Mathlib's add_one_le_exp (1 + t ≤ exp t) with t = −x, closed by linarith."
+    },
+    {
+      "name": "factor_nonneg_of_lt",
+      "type": "lemma",
+      "statement": "For i < d with 0 < d, 0 ≤ 1 − i/d.",
+      "significance": "Non-negativity of each birthday factor (1 − i/d), the hypothesis required to apply Finset.prod_le_prod when bounding the product.",
+      "description": "Rewrites sub_nonneg and div_le_one, then casts i ≤ d−1 from the hypothesis."
+    },
+    {
+      "name": "factor_le_one",
+      "type": "lemma",
+      "statement": "For 0 < d, 1 − i/d ≤ 1.",
+      "significance": "Each factor is at most 1 — used both for the ≤ 1 bound on P(all distinct) and for the antitonicity (adding a person multiplies by a factor ≤ 1).",
+      "description": "From 0 ≤ i/d (positivity) by linarith."
+    },
+    {
+      "name": "probAllDistinct_le_exp_sum",
+      "type": "theorem",
+      "statement": "For k ≤ d and 0 < d, probAllDistinct k d ≤ exp(−∑_{i<k} i/d).",
+      "significance": "The product-to-exponential bound in sum form: the whole product ∏(1 − i/d) is dominated by a single exponential of the summed exponents. This is the key structural step before the Gauss sum collapses it to closed form.",
+      "description": "Bounds each factor by exp(−i/d) via one_sub_le_exp_neg and Finset.prod_le_prod (using factor_nonneg_of_lt), then collapses the product of exponentials with Real.exp_sum and Finset.sum_neg_distrib."
+    },
+    {
+      "name": "gauss_sum_real",
+      "type": "lemma",
+      "statement": "∑_{i<k} (i : ℝ) = k(k−1)/2.",
+      "significance": "The real-valued Gauss triangular-number identity, which converts the summed exponents into the familiar k(k−1)/2 appearing in the birthday exponent.",
+      "description": "Induction on k with Finset.sum_range_succ, push_cast, and ring."
+    },
+    {
+      "name": "gauss_sum_div",
+      "type": "lemma",
+      "statement": "For 0 < d, ∑_{i<k} i/d = k(k−1)/(2d).",
+      "significance": "Divides the Gauss sum by d to produce exactly the exponent −k(k−1)/(2d) of the closed-form bound.",
+      "description": "Factors the division out with Finset.sum_div, applies gauss_sum_real, and finishes by ring."
+    },
+    {
+      "name": "probAllDistinct_le_exp",
+      "type": "theorem",
+      "statement": "For k ≤ d and 0 < d, probAllDistinct k d ≤ exp(−k(k−1)/(2d)).",
+      "significance": "The main closed-form asymptotic bound of the file: the probability that all k birthdays are distinct decays at least as fast as exp(−k(k−1)/(2d)). This is the rigorous one-sided version of the classical birthday approximation.",
+      "description": "Substitutes gauss_sum_div into the sum-form bound probAllDistinct_le_exp_sum."
+    },
+    {
+      "name": "probCollision_ge",
+      "type": "theorem",
+      "statement": "For k ≤ d and 0 < d, probCollision k d ≥ 1 − exp(−k(k−1)/(2d)).",
+      "significance": "The collision lower bound: the exact collision probability is always at least what the exponential approximation predicts — the direction that matters for birthday-attack security guarantees in cryptography.",
+      "description": "Unfolds probCollision = 1 − probAllDistinct and applies probAllDistinct_le_exp with linarith."
+    },
+    {
+      "name": "probAllDistinct_zero",
+      "type": "theorem",
+      "statement": "probAllDistinct 0 d = 1.",
+      "significance": "Trivial base case: with no people all birthdays are vacuously distinct (empty product = 1).",
+      "description": "Unfolds the definition; the empty product simplifies via simp."
+    },
+    {
+      "name": "probAllDistinct_one",
+      "type": "theorem",
+      "statement": "probAllDistinct 1 d = 1.",
+      "significance": "With one person there is nothing to collide, so distinctness is certain.",
+      "description": "Unfolds the definition; the singleton product (factor 1 − 0/d) simplifies via simp."
+    },
+    {
+      "name": "probCollision_zero",
+      "type": "theorem",
+      "statement": "probCollision 0 d = 0.",
+      "significance": "No collision is possible with zero people — a sanity boundary of the collision probability.",
+      "description": "Unfolds probCollision, rewrites probAllDistinct_zero, and closes by ring."
+    },
+    {
+      "name": "probCollision_one",
+      "type": "theorem",
+      "statement": "probCollision 1 d = 0.",
+      "significance": "No collision with a single person — the second trivial boundary.",
+      "description": "Unfolds probCollision, rewrites probAllDistinct_one, and closes by ring."
+    },
+    {
+      "name": "probAllDistinct_nonneg",
+      "type": "theorem",
+      "statement": "For k ≤ d and 0 < d, 0 ≤ probAllDistinct k d.",
+      "significance": "The probability is genuinely non-negative — needed so that probCollision ≤ 1 and the quantity behaves like a probability.",
+      "description": "Finset.prod_nonneg over the non-negative factors (factor_nonneg_of_lt)."
+    },
+    {
+      "name": "probAllDistinct_le_one",
+      "type": "theorem",
+      "statement": "For k ≤ d and 0 < d, probAllDistinct k d ≤ 1.",
+      "significance": "The probability never exceeds 1, the complementary bound that pins P(all distinct) — and hence P(collision) — inside [0, 1].",
+      "description": "Dominates the product by ∏ 1 via Finset.prod_le_prod (factors ≤ 1 by factor_le_one, non-negative by factor_nonneg_of_lt), then simp."
+    },
+    {
+      "name": "probCollision_in_unit",
+      "type": "theorem",
+      "statement": "For k ≤ d and 0 < d, 0 ≤ probCollision k d ∧ probCollision k d ≤ 1.",
+      "significance": "Confirms the collision probability is a bona-fide probability in [0, 1], packaging the two one-sided bounds.",
+      "description": "Both parts follow from probAllDistinct_le_one and probAllDistinct_nonneg by linarith on 1 − probAllDistinct."
+    },
+    {
+      "name": "collision_exceeds_target",
+      "type": "theorem",
+      "statement": "If p < 1, 0 ≤ p, k ≤ d, 0 < d, and k(k−1)/(2d) > log(1/(1−p)), then probCollision k d > p.",
+      "significance": "The threshold characterization that explains the '23 people' phenomenon: for d = 365 and p = 1/2, the condition becomes k(k−1) > 730·ln2 ≈ 506, and 23·22 = 506 crosses it. This is the quantitative heart of the birthday paradox.",
+      "description": "Rewrites log(1/(1−p)) = −log(1−p), turns the hypothesis into −k(k−1)/(2d) < log(1−p), exponentiates with Real.exp_lt_exp and Real.exp_log to get exp(−…) < 1−p, then combines with probCollision_ge via linarith."
+    },
+    {
+      "name": "consistent_with_parent",
+      "type": "theorem",
+      "statement": "probAllDistinct k 365 = ∏_{i<k} (1 − i/365).",
+      "significance": "Verifies this generalized d-day formulation specializes definitionally to the classic 365-day birthday problem of the parent entry.",
+      "description": "Holds by rfl — the general definition reduces to the 365 case on unfolding."
+    },
+    {
+      "name": "probAllDistinct_antitone",
+      "type": "theorem",
+      "statement": "For k+1 ≤ d and 0 < d, probAllDistinct (k+1) d ≤ probAllDistinct k d.",
+      "significance": "Monotonicity: each additional person can only reduce the probability that all birthdays are distinct, matching the intuition that collisions become more likely as the group grows.",
+      "description": "Peels the last factor with Finset.prod_range_succ; since that factor is ≤ 1 and the remaining product is non-negative, mul_le_mul_of_nonneg_left gives the bound (calc)."
+    }
+  ],
   "conclusion": {
     "summary": "Provides a complete formal proof of the birthday collision asymptotics with 0 axioms and 0 sorries. The formalization covers the exponential product bound, collision lower bound, threshold characterization, monotonicity, and probability validity, all built from three key Mathlib results: add_one_le_exp, Finset.prod_le_prod, and Real.exp_sum.",
     "implications": "**Theoretical Significance**: This bound underpins the security analysis of cryptographic hash functions: a hash with $n$-bit output requires only $O(2^{n/2})$ evaluations to find a collision (the birthday attack).\n\nThe formalization makes this reasoning machine-checkable, supporting verified cryptographic proofs. The threshold characterization also provides the exact constant for practical security parameter selection.",
