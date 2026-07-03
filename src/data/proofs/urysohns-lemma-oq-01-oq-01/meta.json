@@ -33,36 +33,39 @@
   },
   "sections": [
     {
-      "id": "restriction-helper",
+      "id": "overview",
+      "title": "Tietze from Urysohn: Strategy and Imports",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring: the parent derived Urysohn from Tietze (easy); this file does the harder classical direction, Tietze from Urysohn, exposing the one-step approximation engine in elementary set form (not Mathlib's bundled →ᵇ form). No sorry, no extra axioms."
+    },
+    {
+      "id": "restrict",
       "title": "Restricting a Global Function to a Closed Set",
       "startLine": 39,
       "endLine": 46,
-      "summary": "restrictToClosed packages the restriction of a global continuous function g : C(X, ℝ) to the subtype s as a continuous function on s, by composing with the continuous inclusion. restrictToClosed_apply records that it evaluates as g at the underlying point. This is the bookkeeping that lets the iteration treat the residual f − g|_s as a genuine continuous function on s.",
-      "mathContext": "$g\\in C(X,\\mathbb{R}),\\ s\\subseteq X\\ \\Rightarrow\\ g|_s\\in C(s,\\mathbb{R}),\\ (g|_s)(x)=g(x)$."
+      "summary": "restrictToClosed s g composes a global continuous g : C(X,ℝ) with the inclusion s ↪ X; restrictToClosed_apply records (g|_s)(x) = g(↑x), letting the iteration treat the residual f − g|_s as a continuous function on s."
     },
     {
-      "id": "approximation-step",
+      "id": "approx-step",
       "title": "The One-Step Urysohn Approximation Lemma",
       "startLine": 47,
       "endLine": 116,
-      "summary": "urysohn_approx_step — the engine. For a closed s in a normal X and f : C(s, ℝ) with |f| ≤ M, Urysohn's lemma (exists_bounded_mem_Icc_of_closed_of_le) applied to the closed disjoint sublevel sets {f ≤ −M/3} and {f ≥ M/3} (pushed to X along the closed inclusion) yields a global continuous g with |g| ≤ M/3 and |f − g| ≤ (2/3)·M on s. The bound is verified by a three-way case split on the value of f x.",
-      "mathContext": "Normal $X$, closed $s$, $|f|\\le M$ on $s$ $\\Rightarrow\\ \\exists g\\in C(X,\\mathbb{R}),\\ |g|\\le M/3,\\ |f-g|\\le \\tfrac23 M$ on $s$."
+      "summary": "urysohn_approx_step: from |f| ≤ M on closed s, Urysohn's lemma (exists_bounded_mem_Icc_of_closed_of_le) gives global g with |g| ≤ M/3 and |f − g| ≤ (2/3)M on s, via two closed sublevel sets pushed to X and a three-way case split. A fresh derivation, not a wrapper of tietze_extension_step."
     },
     {
-      "id": "geometric-iteration",
+      "id": "iterate",
       "title": "Quantitative Iteration: Geometric Error Decay",
       "startLine": 118,
       "endLine": 147,
-      "summary": "urysohn_approx_iterate iterates the step. By induction on n, there is a global continuous g with sup-error |f − g| ≤ (2/3)ⁿ·M on s. The base case takes g = 0 (error ≤ M); the inductive step applies urysohn_approx_step to the residual f − gₙ|_s and adds the correction, contracting the error by a further factor 2/3. This is the explicit reason the construction converges to an extension.",
-      "mathContext": "$\\forall n,\\ \\exists g\\in C(X,\\mathbb{R}),\\ |f-g|\\le (2/3)^n M$ on $s$."
+      "summary": "urysohn_approx_iterate: induction on n gives a global continuous g with |f − g| ≤ (2/3)ⁿ·M on s; each step corrects the residual by the one-step lemma. The explicit geometric decay is the standalone convergence statement Mathlib folds into its limit."
     },
     {
-      "id": "tietze-extension",
+      "id": "tietze-limit",
       "title": "The Tietze Extension Theorem as the Limit",
       "startLine": 149,
       "endLine": 169,
-      "summary": "tietze_extension_Icc_of_urysohn: an [a,b]-valued continuous function on a closed set extends to an [a,b]-valued continuous function on X (exists_restrict_eq_forall_mem_of_closed, Icc OrdConnected). tietze_extension_of_urysohn: the plain real-valued extension (ContinuousMap.exists_restrict_eq). These are the uniform limit of the approximants above; Mathlib's TietzeExtension machinery performs exactly the Urysohn iteration to assemble the limit.",
-      "mathContext": "$f\\in C(s,\\mathbb{R}),\\ f(s)\\subseteq[a,b]\\ \\Rightarrow\\ \\exists g\\in C(X,\\mathbb{R}),\\ g(X)\\subseteq[a,b],\\ g|_s=f$."
+      "summary": "tietze_extension_of_urysohn (real-valued extension g|_s = f) and tietze_extension_Icc_of_urysohn (range-constrained [a,b]-valued form via OrdConnected Icc): the uniform limit of the approximants, with the analytic assembly delegated to Mathlib's TietzeExtension machinery — precisely the Urysohn iteration exposed above."
     }
   ],
   "conclusion": {
