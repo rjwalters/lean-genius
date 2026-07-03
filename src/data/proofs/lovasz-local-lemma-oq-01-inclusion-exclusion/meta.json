@@ -81,7 +81,8 @@
       "The two-event case is where the union bound first becomes non-tight. The union bound μ(Aᶜ ∩ Bᶜ) ≥ 1 − μ A − μ B is exactly the inclusion–exclusion identity with the +μ(A ∩ B) term dropped; keeping it makes the two-event statement an exact equality, not a bound.",
       "Stating the identity additively — μ(Aᶜ ∩ Bᶜ) + μ A + μ B = 1 + μ(A ∩ B) rather than with a subtraction — sidesteps ℝ≥0∞ truncated subtraction entirely: the proof is a chain of additions using measure_add_measure_compl and measure_union_add_inter, with no finiteness hypotheses needed even though the probability measure makes everything finite anyway.",
       "The sharp avoidance threshold μ A + μ B < 1 + μ(A ∩ B) is strictly weaker than the union-bound threshold μ A + μ B < 1 exactly when μ(A ∩ B) > 0, i.e. when the two events are positively correlated. This is the first quantitative instance of the LLL's guiding principle: dependency structure among bad events can only help avoid them all.",
-      "The identity is a two-set special case of the general inclusion–exclusion formula μ(⋂ A_iᶜ) = ∑_{S ⊆ ι} (−1)^{|S|} μ(⋂_{i ∈ S} A_i). The n-event version — and the Bonferroni truncations that bound it — is the natural next increment toward controlling avoidance by low-order joint masses, en route to the bounded-dependency-degree LLL."
+      "The identity is a two-set special case of the general inclusion–exclusion formula μ(⋂ A_iᶜ) = ∑_{S ⊆ ι} (−1)^{|S|} μ(⋂_{i ∈ S} A_i). The n-event version — and the Bonferroni truncations that bound it — is the natural next increment toward controlling avoidance by low-order joint masses, en route to the bounded-dependency-degree LLL.",
+      "Positivity is obtained by refuting an equality, not by estimating a measure. Because the exact identity pins μ(Aᶜ ∩ Bᶜ) to a single value 1 + μ(A ∩ B) − μ A − μ B, the strict hypothesis μ A + μ B < 1 + μ(A ∩ B) makes μ(Aᶜ ∩ Bᶜ) = 0 self-contradictory, so pos_iff_ne_zero yields strict positivity in four lines with no lower-bound computation. This is the structural payoff of proving an exact identity first: every threshold result downstream is a one-step consequence, and the union-bound corollary follows merely by weakening the hypothesis with μ(A ∩ B) ≥ 0."
     ],
     "prerequisites": [
       "Measure-theoretic probability: IsProbabilityMeasure, measure_add_measure_compl, measure_univ",
@@ -104,9 +105,17 @@
       "id": "sec-overview",
       "title": "Overview: the first correction to the union bound",
       "startLine": 1,
-      "endLine": 44,
+      "endLine": 35,
       "summary": "Module docstring positioning this file as the exact two-event inclusion–exclusion refinement of the union bound, the first step past first-moment in the OQ-01 program. States μ(Aᶜ ∩ Bᶜ) + μ A + μ B = 1 + μ(A ∩ B) and the sharpened avoidance threshold μ A + μ B < 1 + μ(A ∩ B).",
       "mathContext": "The pairwise overlap μ(A ∩ B) is the exact correction the two-event union bound discards; it is nonzero precisely when the events are dependent (positively correlated)."
+    },
+    {
+      "id": "sec-setup",
+      "title": "Imports, namespace, and the ambient probability measure",
+      "startLine": 36,
+      "endLine": 44,
+      "summary": "Opens MeasureTheory, enters the LovaszLocalLemmaOQ01InclusionExclusion namespace, and fixes an ambient IsProbabilityMeasure μ over a measurable space with two measurable events A, B. No independence typeclass is assumed — the identity and threshold hold for arbitrary (possibly dependent) events.",
+      "mathContext": "Ambient: measurable space Ω, μ an IsProbabilityMeasure (μ Set.univ = 1), events A B : Set Ω with MeasurableSet hypotheses supplied per-theorem. No IndepSet / iIndepSet assumption."
     },
     {
       "id": "sec-identity",
@@ -118,11 +127,19 @@
     },
     {
       "id": "sec-avoidance",
-      "title": "Sharp positive avoidance and union-bound recovery",
+      "title": "Sharp positive avoidance",
       "startLine": 69,
+      "endLine": 83,
+      "summary": "two_event_avoidance: from the exact identity, μ(Aᶜ ∩ Bᶜ) = 0 would force μ A + μ B = 1 + μ(A ∩ B), contradicting the strict threshold; hence positive avoidance under μ A + μ B < 1 + μ(A ∩ B). Four-line proof: pos_iff_ne_zero, then refute the equality with the strict hypothesis.",
+      "mathContext": "μ A + μ B < 1 + μ(A ∩ B) ⇒ 0 < μ(Aᶜ ∩ Bᶜ). The sharp threshold: the exact condition guaranteeing at least one outcome avoids both events."
+    },
+    {
+      "id": "sec-union-recovery",
+      "title": "Union-bound recovery as a corollary",
+      "startLine": 84,
       "endLine": 93,
-      "summary": "two_event_avoidance: from the exact identity, μ(Aᶜ ∩ Bᶜ) = 0 would force μ A + μ B = 1 + μ(A ∩ B), contradicting the strict threshold; hence positive avoidance under μ A + μ B < 1 + μ(A ∩ B). two_event_avoidance_of_union_lt: the coarse condition μ A + μ B < 1 follows by discarding μ(A ∩ B) ≥ 0.",
-      "mathContext": "The sharp threshold beats the union bound exactly by the overlap μ(A ∩ B): the first quantitative sign that dependency helps avoidance."
+      "summary": "two_event_avoidance_of_union_lt: the coarse first-moment condition μ A + μ B < 1 follows from the sharp threshold by discarding μ(A ∩ B) ≥ 0 (le_add_right), then applying two_event_avoidance. Makes the improvement directional: the sharp threshold is strictly weaker exactly when the overlap μ(A ∩ B) > 0.",
+      "mathContext": "μ A + μ B < 1 ⇒ 0 < μ(Aᶜ ∩ Bᶜ), via lt_of_lt_of_le hlt (le_add_right le_rfl). The gain over the union bound is exactly μ(A ∩ B) — the first quantitative sign that dependency helps avoidance."
     }
   ],
   "crossReferences": [
