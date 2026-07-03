@@ -2,41 +2,49 @@
 
 ## Current State
 **Phase**: DEVELOP
-**Path**: full
+**Path**: full — **extension-only (Path B) chosen; fork RESOLVED 2026-07-03 (r4)**
 **Since**: 2026-07-02
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
-Resolve the **termination↔stability fork** before assembling the outer scheduler. Both atomic
-moves exist (`domain_step_exists` cons; `augment_domain_step`/`augment_range_step` reroute), but
-they trade the two properties the limit read-off needs against each other.
+Formalize the **cons-preserved cycle-balance invariant** that discharges `escape_exists`
+without `BuiltFrom`, then assemble the extension-only scheduler. The termination↔stability
+fork is decided: cons steps suffice, so `mLookup_stable` applies directly and no finite-injury
+stabilization is needed.
 
 ## Active Approach
-Stage-wise finite back-and-forth (Rogers §7.4). Even/odd moves DONE and VERIFIED 0-axiom
-(`augment_domain_step` Section 4k, `augment_range_step` Section 4l, both with pair-level edge
-preservation). The blocker is no longer atomic — it is which move to iterate:
+Stage-wise finite back-and-forth (Rogers §7.4), **extend-only**. Even/odd atomic moves DONE and
+VERIFIED 0-axiom (`domain_step_exists` cons; dual range cons). The read-off is monotone because
+nothing is ever removed. The remaining work is the balance invariant + scheduler assembly.
 
-- **cons** (`domain_step_exists`): stable read-off (`mLookup_stable` applies directly to a cons)
-  but the anchor pair is not `BuiltFrom`, so `escape_exists` cannot bound the *next* chase.
-- **reroute** (`augment_domain_step`): restores `BuiltFrom` (chase re-runnable) but removes pairs,
-  breaking `mLookup_stable` → forces a finite-injury stabilization argument for the read-off.
+## Fork resolution (2026-07-03, researcher-4) — see knowledge.md r4 entry + cycle_balance_scaffold.lean
+`escape_exists` does NOT need `BuiltFrom`. It follows from the **cons-preserved** invariant
+`Balanced L :≡ ∀ g∘f-cycle C, (C ∩ mDom L).card = (f(C) ∩ mRan L).card`:
+- **Balanced ⟹ escape** (BuiltFrom-free): infinite orbit ⇒ pigeonhole; cycle `C` with fresh
+  anchor ⇒ `(f(C)∩mRan).card = (C∩mDom).card ≤ |C|-1 < |C|` ⇒ a fresh f-image exists.
+- **Balanced is cons-preserved** (both domain and range steps add one fresh dom + one fresh ran
+  point on the affected cycle; injectivity of `g∘f` gives no ρ-tails so other cycles are inert).
+This is why r14's `OrbitGEdged` failed (it fixed the *witnessing pair* as a g-edge; the anchor
+cons supplies an f-edge-like pair) but the *count* is preserved. Path B is viable; no finite injury.
 
 ## Attempt Count
-- Approaches tried: 1 (stage-wise back-and-forth), advancing across sessions.
+- Approaches tried: 1 (stage-wise back-and-forth). Fork within it resolved; 1 dead sub-approach
+  (`OrbitGEdged`) refuted, replaced by `Balanced`.
 
 ## Blockers
-Strategic fork, not a missing atomic lemma. The read-off cannot cite `mLookup_stable` mechanically
-under the rerouting move. Deciding between the two moves = deciding whether `escape_exists`
-(chase termination) can be reproved from a **cons-preserved** invariant weaker than `BuiltFrom`.
+No strategic blocker remains — the path is decided. Remaining risk is purely the Lean **encoding
+of "cycle" and its cardinality** (`Balanced`, scaffold step 3): likely a `Finset`-of-orbit cut by
+`Nat.find` of the period, or a cycle-free reformulation. Build environment was hostile this session
+(worktrees deleted repeatedly; host toolchain 4.31 ≠ project 4.26) so nothing was machine-checked.
 
-## Next Action (revises prior 1–4; see knowledge.md 2026-07-03 r14 for the full reduction)
-1. **Test the fork first.** State `OrbitGEdged f g L` ("every occupied range point on a fresh
-   anchor's forward orbit sits on a g-edge") and check (a) it implies `escape_exists`'s conclusion
-   by pigeonhole on `(mRan L).length` (BuiltFrom-free: else two `f(orbit_k)` collide ⟹ a periodic
-   under g∘f), and (b) it survives a `domain_step_exists` cons of `(a, chaseTarget f g a N)`.
-2. If (b) holds → build the **extension-only** scheduler on `domain_step_exists`; read off `e` with
-   `mLookup` + `mLookup_stable` (values immutable); prove `.Computable`; discharge the sorry. Short path.
-3. If (b) fails (concrete counterexample) → finite injury is unavoidable; commit to the rerouting
-   scheduler and build the stabilization lemma (bound f↔g flips per point via the edge-preservation
-   conjuncts). Long path. Record the counterexample either way.
-4. Then coverage (`firstMissing_le_length`, `k ∈ mDom` by stage `2k+1`) + computable read-off.
+## Next Action (supersedes all prior; scaffold at cycle_balance_scaffold.lean)
+1. Formalize `escape_of_infinite_orbit` FIRST — self-contained pigeonhole, no `Balanced`,
+   reuses `fwdOrbit_prefix_distinct`-style injectivity. Verify against v4.26.0.
+2. Pick the Lean encoding of `Balanced`; prove `balanced_cons_domain` / `balanced_cons_range`
+   and `balanced_nil` (Claim B).
+3. Prove `escape_of_balanced` (Claim A, cycle case); merge into `escape_exists'` by `OnCycle`
+   dichotomy.
+4. Build the extension-only scheduler on `domain_step_exists` + dual range cons; read off `e`
+   with `mLookup` + `mLookup_stable` (values immutable); prove `.Computable`; discharge the
+   `myhill_isomorphism` sorry. **Do NOT re-open the fork — Path B is decided.**
+5. Then coverage (`firstMissing_le_length`, `k ∈ mDom` by stage `2k+1`).
