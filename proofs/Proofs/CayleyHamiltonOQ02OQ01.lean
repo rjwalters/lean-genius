@@ -46,7 +46,11 @@ matrix-valued ODE-uniqueness step) is deferred to a companion development.
 
 ## Status
 - [x] Algebraic core: complete, no sorries
-- [ ] Analytic layer (P_k construction, Ṁ = A·M, ODE uniqueness): future work
+- [x] Algebraic form of `Ṁ = A·M` (`A_mul_putzer_sum` / `A_mul_putzer_sum_charpoly`): the ODE
+      identity reduced to pure algebra, with the Cayley–Hamilton truncation discharging the
+      boundary term — no analysis
+- [ ] Analytic layer (P_k construction as ODE solutions, term-by-term differentiation of the
+      finite sum, matrix-valued ODE uniqueness against `NormedSpace.exp`): future work
 
 ## Mathlib dependencies
 - `Matrix.aeval_self_charpoly` : Cayley–Hamilton (χ_A(A) = 0)
@@ -163,5 +167,78 @@ lemma A_mul_sum_rho (A : Matrix n n R) (lam : ℕ → R) (a : ℕ → R) (m : �
   rw [Finset.mul_sum]
   refine Finset.sum_congr rfl (fun k _ => ?_)
   rw [mul_smul_comm, A_mul_rho]
+
+/-! ## The algebraic form of `Ṁ = A · M` (the analytic bridge)
+
+The Putzer solution is `M(t) = ∑_{k<n} P_k(t) • ρ_k`, where the scalar coefficients satisfy the
+triangular ODE system `Ṗ_k = λ_k P_k + P_{k-1}` (with the convention `P_{-1} ≡ 0`).  Differentiating
+term-by-term gives `Ṁ = ∑_{k<n} (λ_k P_k + P_{k-1}) • ρ_k`.  The claim that Putzer's formula solves
+`Ṁ = A · M` is therefore, *before any analysis is invoked*, the purely algebraic identity
+
+  `A · ∑_{k<n} P_k • ρ_k = ∑_{k<n} (λ_k P_k + P_{k-1}) • ρ_k`.
+
+The two lemmas below isolate exactly this identity and show that it holds **precisely because the
+Cayley–Hamilton truncation `ρ_n = 0` kills the boundary term** `P_{n-1} • ρ_n`.  The `P_{k-1}`
+convention (`P_{-1} = 0`) is encoded cleanly, without `ℕ`-subtraction, by a second coefficient
+family `Pprev` with `Pprev 0 = 0` and `Pprev (k+1) = P k`. -/
+
+/-- Re-indexing the shifted Putzer sum.  With `Pprev 0 = 0` and `Pprev (k+1) = P k` (so `Pprev`
+plays the role of `k ↦ P_{k-1}`), the sum of `P_k • ρ_{k+1}` over `k < m` equals the sum of
+`Pprev_k • ρ_k` over `k < m + 1`.  Pure book-keeping via `Finset.sum_range_succ'`. -/
+lemma sum_P_rho_succ (A : Matrix n n R) (lam P Pprev : ℕ → R)
+    (h0 : Pprev 0 = 0) (hsucc : ∀ k, Pprev (k + 1) = P k) (m : ℕ) :
+    ∑ k ∈ Finset.range m, P k • rho A lam (k + 1)
+      = ∑ k ∈ Finset.range (m + 1), Pprev k • rho A lam k := by
+  rw [Finset.sum_range_succ']
+  simp only [hsucc, h0, zero_smul, add_zero]
+
+/-- **Algebraic `Ṁ = A · M`.**  For the Putzer sum `M = ∑_{k<m} P_k • ρ_k`, multiplication by `A`
+reproduces the derivative coefficients `λ_k P_k + P_{k-1}` **as soon as the boundary product
+`ρ_m = 0` vanishes**:
+
+  `A · ∑_{k<m} P_k • ρ_k = ∑_{k<m} (λ_k P_k + Pprev_k) • ρ_k`.
+
+Here `Pprev` encodes `k ↦ P_{k-1}` (with `Pprev 0 = 0`).  The single hypothesis `hbdry : ρ_m = 0`
+is what makes the identity close: it deletes the otherwise-leftover term `P_{m-1} • ρ_m`.  This is
+the purely algebraic heart of Putzer's ODE argument — no analysis, over any `CommRing`. -/
+lemma A_mul_putzer_sum (A : Matrix n n R) (lam P Pprev : ℕ → R)
+    (h0 : Pprev 0 = 0) (hsucc : ∀ k, Pprev (k + 1) = P k) (m : ℕ)
+    (hbdry : rho A lam m = 0) :
+    A * ∑ k ∈ Finset.range m, P k • rho A lam k
+      = ∑ k ∈ Finset.range m, (lam k * P k + Pprev k) • rho A lam k := by
+  have hshift : ∑ k ∈ Finset.range m, P k • rho A lam (k + 1)
+      = ∑ k ∈ Finset.range m, Pprev k • rho A lam k := by
+    rw [sum_P_rho_succ A lam P Pprev h0 hsucc, Finset.sum_range_succ, hbdry, smul_zero,
+      add_zero]
+  calc A * ∑ k ∈ Finset.range m, P k • rho A lam k
+      = ∑ k ∈ Finset.range m, P k • (rho A lam (k + 1) + lam k • rho A lam k) :=
+        A_mul_sum_rho A lam P m
+    _ = ∑ k ∈ Finset.range m, (P k • rho A lam (k + 1) + (lam k * P k) • rho A lam k) := by
+        refine Finset.sum_congr rfl (fun k _ => ?_)
+        rw [smul_add, smul_smul, mul_comm (P k) (lam k)]
+    _ = (∑ k ∈ Finset.range m, P k • rho A lam (k + 1))
+          + ∑ k ∈ Finset.range m, (lam k * P k) • rho A lam k := Finset.sum_add_distrib
+    _ = (∑ k ∈ Finset.range m, (lam k * P k) • rho A lam k)
+          + ∑ k ∈ Finset.range m, Pprev k • rho A lam k := by rw [hshift, add_comm]
+    _ = ∑ k ∈ Finset.range m, ((lam k * P k) • rho A lam k + Pprev k • rho A lam k) :=
+        Finset.sum_add_distrib.symm
+    _ = ∑ k ∈ Finset.range m, (lam k * P k + Pprev k) • rho A lam k := by
+        refine Finset.sum_congr rfl (fun k _ => ?_); rw [add_smul]
+
+/-- **Putzer `Ṁ = A · M`, boundary supplied by Cayley–Hamilton.**  When `χ_A = ∏ i, (X - λ_i)`,
+the truncation `ρ_n = 0` (`rho_card`) automatically discharges the boundary term, so the algebraic
+`Ṁ = A · M` identity holds at the full length `n` with no side condition beyond the eigenvalue
+factorization:
+
+  `A · ∑_{k<n} P_k • ρ_k = ∑_{k<n} (λ_k P_k + P_{k-1}) • ρ_k`.
+
+This is the exact statement the deferred analytic layer will differentiate against: once `P_k` are
+the ODE coefficients, the left side is `A · M(t)` and the right side is `Ṁ(t)`. -/
+lemma A_mul_putzer_sum_charpoly {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (lam P Pprev : ℕ → R)
+    (h0 : Pprev 0 = 0) (hsucc : ∀ k, Pprev (k + 1) = P k)
+    (hlam : A.charpoly = ∏ i : Fin n, (X - C (lam i))) :
+    A * ∑ k ∈ Finset.range n, P k • rho A lam k
+      = ∑ k ∈ Finset.range n, (lam k * P k + Pprev k) • rho A lam k :=
+  A_mul_putzer_sum A lam P Pprev h0 hsucc n (rho_card A lam hlam)
 
 end PutzerMatrixExp

@@ -6,7 +6,7 @@
   "problemStatement": "Formalize Putzer's algorithm: given eigenvalues λ₁,…,λₙ of A, prove e^{tA} = ∑ₖ Pₖ(t)ρₖ where ρₖ = ∏_{i<k}(A-λᵢI) and Ṗₖ = λₖPₖ + Pₖ₋₁. This entry contributes the verified algebraic core; the analytic completion remains open.",
   "meta": {
     "author": "Lean Genius (researcher-15)",
-    "date": "2026-07-02",
+    "date": "2026-07-03",
     "dateAdded": "2026-07-02",
     "status": "verified",
     "badge": "verified",
@@ -20,8 +20,8 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 125,
-    "theoremCount": 9,
+    "lineCount": 244,
+    "theoremCount": 14,
     "definitionCount": 1,
     "assumptions": "Derives from Mathlib's Cayley–Hamilton theorem (Matrix.aeval_self_charpoly). All results are fully machine-checked over an arbitrary CommRing R (0 sorries, 0 axiom declarations, no structure-encoded assumptions). SCOPE: this file proves only the ALGEBRAIC core of Putzer's algorithm — the telescoping identity and ρₙ = 0. It does NOT prove the full analytic identity e^{tA} = ∑ₖ Pₖ(t)ρ_{k-1}; the ODE-coefficient construction and the matrix-valued ODE-uniqueness step are deferred future work, so the parent's open question is only partially answered.",
     "originalContributions": [
@@ -29,8 +29,12 @@
       "commute_A_rho: A commutes with every partial product ρₖ (each factor is a polynomial in A)",
       "A_mul_rho: the key telescoping identity A·ρₖ = ρ_{k+1} + λₖ•ρₖ — the algebraic engine that lets the derivative Ṁ collapse to A·M",
       "rho_eq_aeval_prod: ρₖ = aeval A (∏_{i<k}(X - C λᵢ)), bridging the ordered matrix product to the commutative polynomial product",
-      "rho_card: Cayley–Hamilton truncation ρₙ = 0 when χ_A = ∏(X - λᵢ), making Putzer's sum finite and killing the boundary term Pₙρₙ"
-    ]
+      "rho_card: Cayley–Hamilton truncation ρₙ = 0 when χ_A = ∏(X - λᵢ), making Putzer's sum finite and killing the boundary term Pₙρₙ",
+      "A_mul_putzer_sum: the algebraic form of Ṁ = A·M — A·∑_{k<m} P_k•ρ_k = ∑_{k<m} (λ_k P_k + P_{k-1})•ρ_k, holding precisely when the boundary product ρ_m = 0; the P_{-1}=0 convention is encoded by a shifted family Pprev (Pprev 0 = 0, Pprev(k+1)=P k) avoiding ℕ-subtraction",
+      "A_mul_putzer_sum_charpoly: the Ṁ = A·M identity at full length n with the boundary discharged automatically by Cayley–Hamilton truncation (rho_card), giving the exact statement the deferred analytic layer differentiates against",
+      "sum_P_rho_succ: reindexing lemma ∑_{k<m} P_k•ρ_{k+1} = ∑_{k<m+1} Pprev_k•ρ_k bridging the shifted coefficient family to the partial-product shift"
+    ],
+    "dateModified": "2026-07-03"
   },
   "leanFile": {
     "namespace": "PutzerMatrixExp",
