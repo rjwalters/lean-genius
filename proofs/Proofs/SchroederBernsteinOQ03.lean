@@ -1319,6 +1319,110 @@ theorem domain_step_exists {p q : ℕ → Prop} {f g : ℕ → ℕ}
   exact ⟨chaseTarget f g a N, matching_step_chase hfpq hgpq hL hC ha hN⟩
 
 /-!
+## Section 4j: The augmenting path — a `BuiltFrom`-preserving domain step
+
+`domain_step_exists` places a fresh anchor `a` at the escaped chase target
+`chaseTarget f g a N = f (fwdOrbit f g a N)`, preserving `IsMatching` and
+`MatchingCorr` — but **not** `BuiltFrom`: for `N > 0` the pair
+`(a, f (fwdOrbit f g a N))` is neither an `f`-edge `(x, f x)` nor a `g`-edge
+`(g y, y)`, so the collision analysis (`collision_f_source`, `escape_exists`) that
+the *next* stage rests on would no longer apply. The fix is the classical
+back-and-forth **augmenting path**: rather than record the single anchor pair, the
+scheduler re-labels the whole chased chain into `f`-edges.
+
+Concretely, writing `oₖ = fwdOrbit f g a k`, the chase from a fresh anchor `a = o₀`
+walks `o₀, o₁, …, o_N`, where each `oₖ` (`1 ≤ k ≤ N`) is currently occupied by the
+stale `g`-edge `(oₖ, f o_{k-1})` and `f o_N` is the escaped (fresh) range point.
+The augmenting path replaces those `N` `g`-edges with the `N+1` `f`-edges
+`(oₖ, f oₖ)` for `k = 0, …, N`. Every replacement pair is an `f`-edge, so the
+result satisfies `BuiltFrom`; the anchor `a = o₀` gains a partner; and only the
+fresh range point `f o_N` is newly occupied.
+
+This section builds the augmenting-path block `augPath f g a N` and establishes its
+three structural invariants (`BuiltFrom`, `MatchingCorr`, `IsMatching`) in isolation.
+Splicing the block into the existing matching (deleting the re-labelled `g`-edges) is
+the remaining list-surgery step; the block itself — the object prior sessions never
+constructed — is provided here.
+-/
+
+/-- **The augmenting path** for a fresh anchor `a` whose collision chase escapes at
+    forward-orbit depth `N`: the list of `f`-edges `(oₖ, f oₖ)` for `k = 0, …, N`, where
+    `oₖ = fwdOrbit f g a k`. Stage `0` is the anchor edge `(a, f a)`; each later stage
+    re-labels the stale `g`-edge `(oₖ, f o_{k-1})` as the `f`-edge `(oₖ, f oₖ)`. -/
+def augPath (f g : ℕ → ℕ) (a N : ℕ) : List (ℕ × ℕ) :=
+  (List.range (N + 1)).map (fun k => (fwdOrbit f g a k, f (fwdOrbit f g a k)))
+
+/-- Membership in the augmenting path: its pairs are exactly `(oₖ, f oₖ)` for `k ≤ N`. -/
+theorem mem_augPath_iff {f g : ℕ → ℕ} {a N : ℕ} {ab : ℕ × ℕ} :
+    ab ∈ augPath f g a N ↔ ∃ k ≤ N, ab = (fwdOrbit f g a k, f (fwdOrbit f g a k)) := by
+  simp only [augPath, List.mem_map, List.mem_range]
+  constructor
+  · rintro ⟨k, hk, hkab⟩
+    exact ⟨k, Nat.lt_succ_iff.mp hk, hkab.symm⟩
+  · rintro ⟨k, hk, rfl⟩
+    exact ⟨k, Nat.lt_succ_iff.mpr hk, rfl⟩
+
+/-- The domain of the augmenting path is the forward-orbit prefix `o₀, …, o_N`. -/
+theorem mDom_augPath (f g : ℕ → ℕ) (a N : ℕ) :
+    mDom (augPath f g a N) = (List.range (N + 1)).map (fwdOrbit f g a) := by
+  simp only [mDom, augPath, List.map_map, Function.comp_def]
+
+/-- The range of the augmenting path is `f o₀, …, f o_N`. -/
+theorem mRan_augPath (f g : ℕ → ℕ) (a N : ℕ) :
+    mRan (augPath f g a N) = (List.range (N + 1)).map (fun k => f (fwdOrbit f g a k)) := by
+  simp only [mRan, augPath, List.map_map, Function.comp_def]
+
+/-- **The augmenting path satisfies `BuiltFrom`.** Every pair `(oₖ, f oₖ)` is an `f`-edge,
+    so the whole block preserves the construction invariant — this is the point of the
+    re-labelling that `domain_step_exists` alone cannot achieve. -/
+theorem augPath_builtFrom (f g : ℕ → ℕ) (a N : ℕ) : BuiltFrom f g (augPath f g a N) := by
+  intro ab hmem
+  rw [mem_augPath_iff] at hmem
+  obtain ⟨k, _, rfl⟩ := hmem
+  exact Or.inl rfl
+
+/-- **The augmenting path respects the correspondence.** Each `f`-edge `(oₖ, f oₖ)`
+    corresponds directly by the `f`-reduction `p oₖ ↔ q (f oₖ)` — no appeal to the anchor
+    or to the non-computable `isGFree` is needed. -/
+theorem augPath_matchingCorr {p q : ℕ → Prop} {f g : ℕ → ℕ} (hfpq : ∀ n, p n ↔ q (f n))
+    (a N : ℕ) : MatchingCorr p q (augPath f g a N) := by
+  intro ab hmem
+  rw [mem_augPath_iff] at hmem
+  obtain ⟨k, _, rfl⟩ := hmem
+  exact hfpq (fwdOrbit f g a k)
+
+/-- **The augmenting path is a matching**, provided the forward-orbit prefix
+    `o₀, …, o_N` is injective (distinct points). Both `Nodup` sides follow: the domain is
+    the orbit prefix itself, and the range is its image under the injective `f`. -/
+theorem augPath_isMatching {f g : ℕ → ℕ} (hf : Function.Injective f) {a N : ℕ}
+    (hdist : ∀ ⦃i⦄, i ≤ N → ∀ ⦃j⦄, j ≤ N →
+      fwdOrbit f g a i = fwdOrbit f g a j → i = j) :
+    IsMatching (augPath f g a N) := by
+  refine ⟨?_, ?_⟩
+  · rw [mDom_augPath]
+    refine List.nodup_range.map_on ?_
+    intro i hi j hj hij
+    rw [List.mem_range] at hi hj
+    exact hdist (Nat.lt_succ_iff.mp hi) (Nat.lt_succ_iff.mp hj) hij
+  · rw [mRan_augPath]
+    refine List.nodup_range.map_on ?_
+    intro i hi j hj hij
+    rw [List.mem_range] at hi hj
+    exact hdist (Nat.lt_succ_iff.mp hi) (Nat.lt_succ_iff.mp hj) (hf hij)
+
+/-- **The augmenting path is a matching, in the scheduler's collision context.** When the
+    anchor `a` is fresh (`a ∉ mDom L`) and every chased orbit point `oₖ` (`1 ≤ k ≤ N`) is
+    already occupied (`oₖ ∈ mDom L`) — exactly the situation the collision chase produces —
+    the orbit prefix is automatically distinct (`fwdOrbit_prefix_distinct`), so the
+    augmenting path built for that anchor is a valid matching. This is the form
+    `augPath_isMatching` takes when invoked by the priority scheduler. -/
+theorem augPath_isMatching_of_chase {f g : ℕ → ℕ} (hf : Function.Injective f)
+    (hg : Function.Injective g) {L : List (ℕ × ℕ)} {a N : ℕ} (ha : a ∉ mDom L)
+    (hchase : ∀ k, 1 ≤ k → k ≤ N → fwdOrbit f g a k ∈ mDom L) :
+    IsMatching (augPath f g a N) :=
+  augPath_isMatching hf (fwdOrbit_prefix_distinct hf hg (D := fun n => n ∈ mDom L) ha hchase)
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
