@@ -33,7 +33,7 @@
       "Subgroup.card_eq_card_quotient_mul_card_subgroup (Lagrange, for |A₄/V₄|=3)"
     ],
     "assumptions": "None. 0 axiom declarations, 0 sorries, no native_decide. #print axioms on composition_series_A4, quotient_iso_zmod3, and v4_iso_zmod2_sq returns only propext, Classical.choice, Quot.sound (the three foundational axioms). Verified with lake env lean against Mathlib 4.26.0.",
-    "lineCount": 136,
+    "lineCount": 135,
     "theoremCount": 11,
     "definitionCount": 0,
     "originalContributions": [
@@ -66,7 +66,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The classical composition series of A₄ is exhibited explicitly: A₄ ▷ V₄ ▷ 1 with V₄ ◁ A₄ normal (= the commutator subgroup), the top factor A₄/V₄ ≅ ℤ/3ℤ, and the bottom factor V₄ ≅ (ℤ/2ℤ)². Both factors abelian, so A₄ is solvable, constructively. 11 theorems, 136 lines, 0 axioms.",
+    "summary": "The classical composition series of A₄ is exhibited explicitly: A₄ ▷ V₄ ▷ 1 with V₄ ◁ A₄ normal (= the commutator subgroup), the top factor A₄/V₄ ≅ ℤ/3ℤ, and the bottom factor V₄ ≅ (ℤ/2ℤ)². Both factors abelian, so A₄ is solvable, constructively. 11 theorems, 135 lines, 0 axioms.",
     "implications": "This turns the parent's indirect solvability proof into the textbook composition series with named abelian layers, and shows the derived series and the composition series of A₄ coincide (V₄ = [A₄, A₄]). It provides a reusable pattern for identifying small quotient/subgroup factors with standard models (prime-order ⟹ cyclic via mulEquivOfPrimeCardEq; order-4 exponent-2 ⟹ Klein four via IsKleinFour).",
     "openQuestions": [
       "Assemble the data into Mathlib's CompositionSeries structure and prove the factors are the simple groups ℤ/3ℤ, ℤ/2ℤ, ℤ/2ℤ (refining V₄ ▷ ⟨t⟩ ▷ 1).",
@@ -76,7 +76,7 @@
   },
   "leanFile": {
     "namespace": "AbelRuffiniA4CompositionSeries",
-    "lineCount": 136,
+    "lineCount": 135,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 0,
@@ -153,7 +153,7 @@
     {
       "title": "The bottom factor and the packaged series",
       "startLine": 109,
-      "endLine": 136,
+      "endLine": 135,
       "summary": "v4_iso_zmod2_sq: V₄ ≅ Multiplicative (ZMod 2 × ZMod 2) via IsKleinFour.nonempty_mulEquiv; composition_series_A4 bundles normality, both factor orders, and both factor isomorphisms as the full answer."
     }
   ],
