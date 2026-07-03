@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "FORK RESOLVED (Path B / extension-only chosen). escape_exists is derivable from a cons-preserved cycle-balance invariant instead of BuiltFrom, so mLookup_stable applies directly and no finite-injury argument is needed. myhill_isomorphism sorry UNCHANGED (0 closed this session; build env hostile). Next: formalize escape_of_infinite_orbit (pigeonhole) then Balanced + cons-preservation, then assemble the extension-only scheduler. Scaffold + full proof in knowledge.md r4 entry.",
+    "progressSummary": "PROGRESS (07-03 r11): Section 4m assembles the atomic augment steps (4k/4l) into the actual back-and-forth stageSeq and proves domain/range EXHAUSTION (stageSeq_covers_dom/ran) + monotonicity, all VERIFIED 0-axiom (+3 defs/13 thms, 1960->2137 lines). The one myhill_isomorphism sorry is UNCHANGED. Remaining: (1) limit read-off well-definedness under g-edge rewiring, (2) a computable scheduler for the .Computable half.",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
@@ -63,7 +63,10 @@
       "augment_domain_step (SchroederBernsteinOQ03.lean:1466): BuiltFrom-preserving TOTAL even-stage domain step. Fresh anchor a not in mDom L implies exists Lprime with IsMatching, MatchingCorr, BuiltFrom, a in mDom Lprime, and mDom/mRan monotone. VERIFIED, axioms = {propext, Classical.choice, Quot.sound}.",
       "augment_domain_step f-edge preservation conjunct (Section 4k), SchroederBernsteinOQ03.lean",
       "augment_range_step g-edge preservation conjunct (Section 4l), SchroederBernsteinOQ03.lean",
-      "cycle_balance_scaffold.lean (knowledge dir): paste-ready Lean decomposition — OnCycle, Balanced, escape_of_infinite_orbit, escape_of_balanced, escape_exists, balanced_cons_domain/range/nil (all sorry; NOT built)."
+      "cycle_balance_scaffold.lean (knowledge dir): paste-ready Lean decomposition — OnCycle, Balanced, escape_of_infinite_orbit, escape_of_balanced, escape_exists, balanced_cons_domain/range/nil (all sorry; NOT built).",
+      "Section 4m stageSeq: invariant-carrying back-and-forth stage sequence in SchroederBernsteinOQ03.lean (StageInv/stageStep/stageSeq, +13 thms, VERIFIED 0-axiom)",
+      "stageSeq_covers_dom / stageSeq_covers_ran: domain exhaustion (k covered by stage 2k+1) and range exhaustion (k by stage 2k+2)",
+      "stageSeq_mDom_mono / stageSeq_mRan_mono: coverage is monotone along stages via Nat.le_induction"
     ],
     "insights": [
       "Mathlib has OneOneReducible/OneOneEquiv/ManyOneEquiv (Computability.Reduce) but NOT Myhill's isomorphism theorem — genuine gap.",
@@ -90,7 +93,10 @@
       "Balanced ⟹ escape (BuiltFrom-free): infinite forward orbit ⇒ pigeonhole on f-images; cycle C with fresh anchor a∉mDom ⇒ #(f(C)∩mRan)=#(C∩mDom)≤|C|-1<|C| ⇒ a fresh f-image exists.",
       "Balanced is cons-preserved by both domain step (a,f(orbit_N)) and dual range step (g c,c): each adds one fresh dom + one fresh ran point on the affected cycle; injective g∘f has no ρ-tails so other cycles are inert.",
       "r14 OrbitGEdged failed cons-preservation because it fixed the witnessing pair as a g-edge; the anchor cons supplies an f-edge-like pair. The COUNT (Balanced) survives where edge-identity does not — counting is the right abstraction.",
-      "Injective g∘f ⇒ every forward orbit is either all-distinct (infinite) or a pure cycle containing its anchor (no tails-into-cycles: injectivity forbids the two distinct preimages a ρ-shape needs)."
+      "Injective g∘f ⇒ every forward orbit is either all-distinct (infinite) or a pure cycle containing its anchor (no tails-into-cycles: injectivity forbids the two distinct preimages a ρ-shape needs).",
+      "The atomic augment steps preserve only f-edges (not full pair-nesting) — the augmenting path can rewire g-edges, so mLookup_stable does not apply verbatim across stages; limit read-off well-definedness must route through BuiltFrom/f-edge structure or switch to an extension-only scheduler.",
+      "stageSeq is Classical.choose-noncomputable; closing myhill_isomorphism still needs a genuinely computable stage step (Primrec/Computable scheduler) — the read-off primitives mLookup_computable/fwdOrbit_computable are already in place, the scheduler is not.",
+      "split_ifs prunes the outer parity if when the s%2 hypothesis is in context; collapse it with if_pos/if_neg before split_ifs to keep goal count predictable."
     ],
     "mathlibGaps": [
       "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
