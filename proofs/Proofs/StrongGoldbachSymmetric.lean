@@ -136,4 +136,77 @@ example : ¬HasSymmetricPrimePair 1 := by decide
 example : IsSumOfTwoPrimes 10 :=
   (sumTwoPrimes_iff_symmetric 5).mpr (by decide)
 
+/-! ## The Goldbach Comet Counting Function
+
+Turning the existential predicate into a *quantitative* object: the number of
+symmetric prime pairs about the midpoint `m`. This counts the offsets `k < m`
+for which both `m - k` and `m + k` are prime — equivalently the number of
+(ordered-by-size) Goldbach partitions of `2 * m`. Plotting this count against
+`2 * m` produces the well-known **Goldbach comet**. The Strong Goldbach
+Conjecture is exactly the statement that this count is *positive* for every
+`m ≥ 2`. -/
+
+/-- The **Goldbach comet count** at midpoint `m`: the number of offsets `k < m`
+with both `m - k` and `m + k` prime. This equals the number of Goldbach
+partitions `2 * m = p + q` with `p ≤ q` (via `p = m - k`, `q = m + k`). -/
+def symmetricPairCount (m : ℕ) : ℕ :=
+  ((Finset.range m).filter (fun k => Nat.Prime (m - k) ∧ Nat.Prime (m + k))).card
+
+/-- The symmetric predicate holds iff the comet count is positive: existence of a
+Goldbach partition is the same as the count being nonzero. -/
+theorem hasSymmetricPrimePair_iff_count_pos (m : ℕ) :
+    HasSymmetricPrimePair m ↔ 0 < symmetricPairCount m := by
+  rw [symmetricPairCount, Finset.card_pos]
+  constructor
+  · rintro ⟨k, hk, hp1, hp2⟩
+    exact ⟨k, Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hk, hp1, hp2⟩⟩
+  · rintro ⟨k, hk⟩
+    rw [Finset.mem_filter, Finset.mem_range] at hk
+    exact ⟨k, hk.1, hk.2.1, hk.2.2⟩
+
+/-- **Strong Goldbach as a positivity statement about the comet.** The conjecture
+is equivalent to: the Goldbach comet count is positive for every `m ≥ 2`. -/
+theorem symmetricGoldbach_iff_count :
+    SymmetricGoldbachConjecture ↔ ∀ m : ℕ, 2 ≤ m → 0 < symmetricPairCount m := by
+  unfold SymmetricGoldbachConjecture
+  exact forall_congr' fun m => imp_congr_right fun _ => hasSymmetricPrimePair_iff_count_pos m
+
+/-! ## Structural Constraint: Both Summands Are Odd for `2 * m > 4`
+
+Every Goldbach partition of an even number `> 4` consists of two **odd** primes.
+In the symmetric picture, once `m > 2` the smaller prime `m - k` cannot be `2`:
+if it were, the larger prime would be `m + k = 2 * (m - 1)`, which is even and
+`> 2`, hence not prime. So `2` never participates, and both summands are odd. -/
+
+/-- For `m > 2`, the smaller summand `m - k` of a symmetric prime pair is odd. -/
+theorem symmetric_pair_odd {m k : ℕ} (hm : 2 < m) (hk : k < m)
+    (hp1 : Nat.Prime (m - k)) (hp2 : Nat.Prime (m + k)) :
+    Odd (m - k) := by
+  rcases hp1.eq_two_or_odd' with h2 | hodd
+  · -- If `m - k = 2`, then `m + k = 2 * (m - 1)` is an even prime `> 2`: impossible.
+    exfalso
+    have heven : Even (m + k) := ⟨m - 1, by omega⟩
+    have : m + k = 2 := (Nat.Prime.even_iff hp2).mp heven
+    omega
+  · exact hodd
+
+/-- For `m > 2`, **both** summands `m - k` and `m + k` of a symmetric prime pair
+are odd primes. -/
+theorem symmetric_pair_both_odd {m k : ℕ} (hm : 2 < m) (hk : k < m)
+    (hp1 : Nat.Prime (m - k)) (hp2 : Nat.Prime (m + k)) :
+    Odd (m - k) ∧ Odd (m + k) := by
+  refine ⟨symmetric_pair_odd hm hk hp1 hp2, ?_⟩
+  obtain ⟨j, hj⟩ := symmetric_pair_odd hm hk hp1 hp2
+  exact ⟨j + k, by omega⟩
+
+-- Concrete comet heights, verified by kernel `decide` (axiom-free).
+-- `2 * 5 = 10 = 3 + 7 = 5 + 5`, so two symmetric pairs (`k = 0, 2`).
+example : symmetricPairCount 5 = 2 := by decide
+-- `2 * 6 = 12 = 5 + 7`, a single symmetric pair (`k = 1`).
+example : symmetricPairCount 6 = 1 := by decide
+
+-- Positivity of the comet at a few midpoints, routed through the equivalence.
+example : 0 < symmetricPairCount 9 :=
+  (hasSymmetricPrimePair_iff_count_pos 9).mp (by decide)
+
 end StrongGoldbach
