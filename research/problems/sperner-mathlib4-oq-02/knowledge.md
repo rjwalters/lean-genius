@@ -1382,3 +1382,61 @@ construct the labelling-broken almost-complementary door graph (the open `bridge
 - The labelling-broken almost-complementary door graph → `TuckerTower.bridge`
   (`boundary (n+1) = interior n`): the real ≈hundreds-of-LOC geometric construction.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+---
+
+## Session 2026-07-03 (researcher-16) — SURVEY / knowledge correction: the count-equality frontier is DONE (Equator `#33926`), never recorded here
+
+**Mode**: REVISIT (RICH). **Outcome**: knowledge-propagation correction — no new Lean.
+Confirmed a completed, merged, VERIFIED result that this knowledge base had **zero**
+references to, and re-pointed the frontier accordingly.
+
+### The finding
+The "Next steps" of Insights 7 and 9 both list, as an open target, *"transport the
+boundary/interior door counts along `hemisphereIso` to state the `bridge` count-equality
+`#boundary(n+1) = #interior(n)` directly."* That target is **already fully realised** by
+`proofs/Proofs/SpernerTuckerCrossPolytopeEquator.lean` (merged `#33926`, `[VERIFIED,
+0-axiom]`) — which was never mentioned in this file (`grep -c Equator knowledge.md == 0`).
+What Equator already proves, dimension-free and 0-axiom:
+
+- `boundary_door_count`: **exactly 1** boundary door per facet — the equatorial coord-`0`
+  flip `equatorFlip s = flipAt s 0` is the unique neighbour changing the sign of coord `0`
+  (`boundary_door_unique`).
+- `interior_door_count`: **exactly `n`** interior doors per facet (the neighbours agreeing
+  with `s` in coord `0`), splitting the cube degree `n+1 = n + 1`.
+- `equatorFlip_maps_pos_neg` / `equatorFlip_maps_neg_pos` +
+  `card_posHemisphere_eq_negHemisphere`: the equatorial flip restricts to a **perfect
+  matching** of the positive hemisphere onto the negative hemisphere — the count-equality
+  in its cleanest structural form.
+- `hemispheres_partition` + `card_facet_succ`: the **structural doubling recursion**
+  `Fintype.card (Facet (n+1)) = 2 * Fintype.card (Facet n)`, proved from the matching (not
+  by arithmetic on `2^k`). `card_posHemisphere_eq_facet` links a hemisphere to the lower
+  cross-polytope via the coord-`0` drop.
+
+### Corrected frontier (the count/graph infrastructure is now ALL complete)
+Both halves of the dimension recursion are done: the **count-equality** (Equator `#33926`)
+and the **graph isomorphism** carrying connectivity + `(n+1)`-regularity into one hemisphere
+(`hemisphereIso`, Insight 9). The single remaining open frontier is unchanged and genuinely
+creative — **not** another transport/count lemma:
+
+> Build the **asymmetric Tucker labelling** on `∂◊^{n+1}` whose hemisphere half (a known
+> connected `(n+1)`-regular copy of `∂◊^{n}`) carries the **odd** interior seed, then wire it
+> to `AntipodalParity.bridge_of_card_eq` / `InductiveTower.TuckerTower.bridge`.
+
+The naive per-coordinate labelling provably **cannot** do this (Insight 8,
+`canonicalLabelling_not_tucker_level`: it is fully complementary ⇒ symmetric ⇒ even seed).
+Future sessions should **stop adding count/graph infrastructure** and attack the labelling.
+
+### Why no new Lean this session (honest)
+Session constraints: 100% session-usage budget, host disk at 99% (~9 GB free), the shared
+`.lake` olean cache in the mixed/partial state prior sessions flagged (the `HemisphereIso`
+olean absent from the standard `lib/Proofs/` path; deps split across `lib/Proofs` and
+`lib/lean/Proofs`), and this worktree deleted mid-session. That regime cannot support a
+reliable verify cycle for the ~hundreds-of-LOC labelling construction, and the only *bounded*
+count-lemma target was already complete (above). Per the honesty policy, did not manufacture
+a duplicate/low-value PR just to produce output.
+
+### Next Steps (frontier: the labelling; all count/graph infra now DONE)
+- The asymmetric Tucker labelling carrying the odd seed — the real creative construction.
+  Needs a fresh session with budget + a clean olean cache.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
