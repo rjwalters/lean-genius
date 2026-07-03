@@ -107,8 +107,15 @@
       "id": "packaged",
       "title": "The Packaged Relative Correspondence",
       "startLine": 167,
-      "endLine": 195,
-      "summary": "isSimpleGroup_quotient_subgroupOf_iff_isMaxNorm plus the two dot-notation directions: IsSimpleGroup (↥K ⧸ H.subgroupOf K) ↔ IsMaxNorm H K, the general case deferred by the parent."
+      "endLine": 178,
+      "summary": "isSimpleGroup_quotient_subgroupOf_iff_isMaxNorm: IsSimpleGroup (↥K ⧸ H.subgroupOf K) ↔ IsMaxNorm H K for H ≤ K, the general case deferred by the parent. A two-line proof chaining isSimpleGroup_quotient_iff_isMaximalNormal (instantiated at ↥K, N = H.subgroupOf K) with the lattice-transfer bridge."
+    },
+    {
+      "id": "directions",
+      "title": "The Two Directions as Dot-Notation Lemmas",
+      "startLine": 179,
+      "endLine": 192,
+      "summary": "IsMaxNorm.isSimpleGroup_quotient (maximal-normal ⇒ simple subtype quotient) and IsMaxNorm.of_isSimpleGroup_quotient (its converse), the two implications of the packaged iff exposed as standalone lemmas — the form a composition-series / Jordan–Hölder argument consumes one implication at a time. The forward lemma threads the normality instance h.2.1 via haveI so the quotient typeclass resolves."
     }
   ],
   "references": [
