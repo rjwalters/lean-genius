@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-popcount-def",
+    "proofId": "erdos-10-wip-01-oq-02",
+    "range": { "startLine": 39, "endLine": 40 },
+    "type": "definition",
+    "title": "Popcount as the Length of bitIndices",
+    "content": "popcount n is (Nat.bitIndices n).length — the number of 1-bits in the binary expansion of n. Nat.bitIndices n is the sorted list of positions where n has a set bit, so its length is exactly the Hamming weight. Matching the parent thread's convention keeps the two popcount recursions popcount(2n)=popcount n and popcount(2n+1)=popcount n+1 immediate from the Mathlib recursion bitIndices_two_mul / bitIndices_two_mul_add_one.",
+    "mathContext": "$\\mathrm{popcount}(n) = |\\{\\,i : \\text{bit } i \\text{ of } n = 1\\}|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hamming weight", "Nat.bitIndices", "binary representation"],
+    "prerequisites": ["binary expansion of a natural number", "Nat.bitIndices"]
+  },
+  {
+    "id": "ann-and-recursions",
+    "proofId": "erdos-10-wip-01-oq-02",
+    "range": { "startLine": 53, "endLine": 77 },
+    "type": "technique",
+    "title": "Bitwise-AND Parity Recursions via testBit Extensionality",
+    "content": "The three lemmas (2a)&&&(2b)=2(a&&&b), (2a+1)&&&(2b)=2(a&&&b) and (2a+1)&&&(2b+1)=2(a&&&b)+1 are proved by Nat.eq_of_testBit_eq: two naturals are equal iff they agree on every bit. Bit 0 is handled directly (testBit_zero); higher bits reduce via testBit_succ (testBit m (i+1) = testBit (m/2) i) after distributing testBit over &&& with testBit_and. The key is the order — apply testBit_and before testBit_succ so the AND is split into per-operand bits before the shift. The odd/odd case is the important one: it makes a shared low bit visible as the +1, i.e. an odd value of a&&&b.",
+    "mathContext": "$(2a{+}1)\\mathbin{\\&} (2b{+}1) = 2(a\\mathbin{\\&} b)+1$: both operands share bit 0, so the result keeps it.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.testBit", "bit extensionality", "bitwise AND", "binary recursion"],
+    "prerequisites": ["Nat.testBit and its recursion", "bitwise operations on ℕ"]
+  },
+  {
+    "id": "ann-eq-iff",
+    "proofId": "erdos-10-wip-01-oq-02",
+    "range": { "startLine": 130, "endLine": 190 },
+    "type": "theorem",
+    "title": "Equality Characterization: No Carries ⟺ Disjoint Supports",
+    "content": "popcount_add_eq_iff: popcount(a+b) = popcount(a)+popcount(b) ↔ a &&& b = 0. Proved by binary parity strong induction on a+b. In the even/even, even/odd and odd/even cases the sum halves and a&&&b halves (staying a multiple of 2), so 2·x=0 ↔ x=0 reduces the goal to the inductive hypothesis. In the odd/odd case a carry is born: a&&&b = 2(a'&&&b')+1 is odd, hence nonzero, and popcount strictly drops (via subadditivity on the halved sum), so both sides of the iff are false. Equality therefore holds exactly when a and b never share a 1-bit — the no-carry condition.",
+    "mathContext": "A carry is born only at a position where both operands have a 1-bit; so no carries anywhere ⟺ $a \\mathbin{\\&} b = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["carry propagation", "disjoint binary supports", "subadditivity equality case", "strong induction"],
+    "prerequisites": ["binary addition and carries", "strong induction on ℕ"]
+  },
+  {
+    "id": "ann-strict",
+    "proofId": "erdos-10-wip-01-oq-02",
+    "range": { "startLine": 192, "endLine": 195 },
+    "type": "theorem",
+    "title": "Strict Drop When Supports Overlap",
+    "content": "popcount_add_lt: a &&& b ≠ 0 ⇒ popcount(a+b) < popcount(a)+popcount(b). Immediate from subadditivity popcount_add_le together with the equality characterization: if the bound were tight, popcount_add_eq_iff would force a&&&b=0, contradicting the hypothesis. This is the quantitative sharpening — any shared 1-bit costs at least one bit of popcount under addition.",
+    "mathContext": "$a \\mathbin{\\&} b \\neq 0 \\Rightarrow \\mathrm{popcount}(a+b) < \\mathrm{popcount}(a)+\\mathrm{popcount}(b)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["strict subadditivity", "carry annihilation"],
+    "prerequisites": ["popcount subadditivity", "the equality characterization"]
+  }
+]

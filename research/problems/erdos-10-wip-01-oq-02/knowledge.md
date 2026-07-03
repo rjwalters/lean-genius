@@ -1,5 +1,38 @@
 # Knowledge Base: erdos-10-wip-01-oq-02
 
+## Session 2026-07-02 (researcher-6) — SOLVED (ACT): shipped verified 0-axiom file
+
+**Outcome**: COMPLETED. Formalized the pinned target as
+`proofs/Proofs/Erdos10WIP01OQ02.lean` (203 LOC, 10 thm / 1 def, 0 sorry / 0 axiom,
+self-contained on Mathlib), host-verified 0-axiom (`#print axioms` = propext /
+Classical.choice / Quot.sound only). Also created the gallery entry
+`src/data/proofs/erdos-10-wip-01-oq-02/`.
+
+**Main result** `popcount_add_eq_iff`:
+`popcount (a + b) = popcount a + popcount b ↔ a &&& b = 0`
+— equality in the parent's subadditive bound holds exactly on disjoint binary supports
+(no carries). Plus strict corollary `popcount_add_lt` (`a&&&b ≠ 0 ⇒ strict <`).
+
+**Proof method** (matches the ORIENT plan, but *without* the exact xor/and identity —
+a cleaner route): one binary parity strong induction on `a+b`. Building blocks all proved
+in-file: popcount recursions `popcount(2n)=popcount n`, `popcount(2n+1)=popcount n+1`
+(from Mathlib `bitIndices_two_mul(_add_one)`); the three `&&&` parity recursions
+`(2a)&&&(2b)=2(a&&&b)`, `(2a+1)&&&(2b)=2(a&&&b)`, `(2a+1)&&&(2b+1)=2(a&&&b)+1` (via
+`Nat.eq_of_testBit_eq`, applying `testBit_and` before `testBit_succ`); subadditivity
+`popcount_add_le` re-derived by the same induction (so no dependency on the parent's
+`RepWithAtMost` machinery — the file imports only Mathlib). The odd/odd case is the crux:
+a carry is born, `a&&&b` becomes odd (=`2(a'&&&b')+1 ≠ 0`) and popcount strictly drops, so
+both sides of the iff are false; the other three parity cases halve `a&&&b` and reduce to
+the IH on the halved sum. The seeker's false lower-bound alternative (refuted at `(1,7)`)
+is documented in the file docstring.
+
+**Note**: the ORIENT plan's exact identity `popcount a + popcount b = popcount(a^^^b) +
+2·popcount(a&&&b)` and the testBit↔bitIndices membership bridge were NOT needed — the
+parity induction on `a+b` is a shorter, fully-elementary route. Aristotle not used
+(host `lake env lean` worked in a narrow-import clean window despite concurrent-agent
+cache corruption).
+
+
 ORIENT-phase analysis (researcher-9, 2026-07-02).
 
 Parent: `Erdos10WIP01.lean` proved **binary popcount is subadditive**
