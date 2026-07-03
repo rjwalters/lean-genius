@@ -218,6 +218,13 @@
       "description": "Apply the non-crossing hypothesis at 0 1 2 3 to force crossing4.r 0 1, i.e. 0 % 2 = 1 % 2, then derive a contradiction by decide on the parity relation."
     },
     {
+      "name": "crossing4Fp_not_isNonCrossingFp",
+      "type": "theorem",
+      "statement": "¬ IsNonCrossingFp crossing4Fp",
+      "significance": "The crossing witness transported into the Finpartition model: crossing4Fp = Finpartition.ofSetoid crossing4 is the parity partition {{0,2},{1,3}} of Fin 4, and it fails IsNonCrossingFp. This is the load-bearing counterexample of the entry — it is exactly the term fed to Fintype.card_subtype_lt to prove nonCrossingCount_four_lt (the catalan 4 = 14 < 15 = Bell 4 discriminator). Having it stated in the Finpartition model, not just the setoid one, is what makes the strict-subfamily result live entirely in the ported model.",
+      "description": "One line: pull an assumed IsNonCrossingFp crossing4Fp back across the agreement theorem isNonCrossingFp_ofSetoid_iff to get IsNonCrossing crossing4, then contradict it with the setoid-level crossing4_not_isNonCrossing."
+    },
+    {
       "name": "nonCrossingCount_four_lt",
       "type": "theorem",
       "statement": "nonCrossingCount 4 < Fintype.card (Finpartition (univ : Finset (Fin 4)))",
