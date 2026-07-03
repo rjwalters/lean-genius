@@ -31,11 +31,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S3-glue, researcher-4, 2026-07-03): a.e. Kronecker lift SHIPPED 0-axiom — the deterministic S3→S4 passage from a.s. series convergence to the M-Z normalisation is complete. Remaining gap: the probabilistic Kolmogorov convergence criterion itself (martingale route scoped in #34161).",
+    "progressSummary": "PROGRESS (S4b step-1, researcher-14, 2026-07-03): i.i.d. Borel-Cantelli truncation reduction SHIPPED 0-axiom — a.s. |Xi|<=i^{1/p} eventually, reducing MZ to its truncated version. Remaining: analytic step-3 (centering) and step-4 (variance sum, uses p<2), then S5 assembly.",
     "builtItems": [
       "Kronecker: theorem kronecker_lemma in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:122 — a_n>0 nondecreasing, a_n→∞, ∑x_n/a_n conv ⟹ (∑_{i<n}x_i)/a_n→0. Verified, 0-axiom.",
       "Toeplitz core: theorem tendsto_weighted_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:47 — nonneg weights dominated by A_n→∞ kill any null sequence in the weighted average. Reusable, 0-axiom.",
-      "ae_tendsto_kronecker_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:266 — a.e. lift of kronecker_lemma: (∀ᵐ ω, ∑ x_i ω/a_i converges) ⟹ (∀ᵐ ω, (∑_{i<n} x_i ω)/a_n → 0). The S3→S4 glue. Verified 0-axiom (filter_upwards + kronecker_lemma)."
+      "ae_tendsto_kronecker_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:266 — a.e. lift of kronecker_lemma: (∀ᵐ ω, ∑ x_i ω/a_i converges) ⟹ (∀ᵐ ω, (∑_{i<n} x_i ω)/a_n → 0). The S3→S4 glue. Verified 0-axiom (filter_upwards + kronecker_lemma).",
+      "rpow_inv_lt_iff_lt_rpow (LawsOfLargeNumbersOQ01OQ02OQ01.lean, section TruncationReduction) — elementary threshold reindex a^{1/p}<b iff a<b^p (0<p,0<=a,0<=b), 0-axiom",
+      "tsum_measure_truncation_ne_top_of_identDistrib — for i.i.d. Xi with E|X0|^p<inf, truncation tail sum over i of mu{i^{1/p}<|Xi|} is finite (IdentDistrib.measure_mem_eq transfer + rpow reindex + tsum_eq_zero_add prime peel + step-2 tail-sum), 0-axiom",
+      "ae_eventually_abs_le_rpow_of_identDistrib — first Borel-Cantelli (ae_eventually_notMem) gives ae omega, eventually i, |Xi omega| <= i^{1/p}; MZ truncation reduction complete, 0-axiom"
     ],
     "insights": [
       "Formal target pinned: MZ-SLLN for 1<=p<2, E|X|^p<inf implies (sum(Xi-EX))/n^(1/p) -> 0 a.s.; p=1 is Etemadi/Kolmogorov SLLN, content is the faster n^(1/p) rate for p>1.",
@@ -48,13 +51,15 @@
       "S3 is ASSEMBLY not a foundation gap (researcher-16 2026-07-03): Mathlibs a.s. martingale convergence theorem Submartingale.exists_ae_tendsto_of_bdd (Probability/Martingale/Convergence.lean:191) is the a.s.-convergence engine; partial sums of independent mean-zero L2 vars are an L2-bounded (hence L1-bounded) martingale, so it applies directly.",
       "S3 glue lemmas all present in Mathlib v4.26.0: Filtration.natural (natural filtration), condExp_indep_eq (martingale increment: E[X_n|F_n]=E[X_n]=0 by independence; template usage in Probability/BorelCantelli.lean:54), IndepFun.variance_sum (Var of independent sum = sum Var, gives the uniform L1 bound via eLpNorm 1 <= eLpNorm 2 = sqrt(Var) on a probability measure).",
       "PROCESS: the S2 session updated the .json but not state.md/knowledge.md, so the markdown still said S2-next and a later session duplicated Kronecker. Always update state.md AND knowledge.md in the commit that ships Lean.",
-      "S3→S4 passage is now deterministic/axiom-free: ae_tendsto_kronecker_average_zero converts Kolmogorov criterion output (a.s. convergence of ∑ Y_i/a_i) directly into the M-Z normalisation ((∑_{i<n}Y_i)/a_n→0 a.s.). Only the probabilistic criterion (S3, martingale route per PR #34161) remains to reach the full M-Z SLLN."
+      "S3→S4 passage is now deterministic/axiom-free: ae_tendsto_kronecker_average_zero converts Kolmogorov criterion output (a.s. convergence of ∑ Y_i/a_i) directly into the M-Z normalisation ((∑_{i<n}Y_i)/a_n→0 a.s.). Only the probabilistic criterion (S3, martingale route per PR #34161) remains to reach the full M-Z SLLN.",
+      "S4b step-1 (i.i.d. truncation reduction) SHIPPED 0-axiom (iter 7): the Borel-Cantelli passage from the step-2 discrete-layer-cake tail bound to the a.s. eventual truncation |Xi|<=i^{1/p} is complete. Remaining MZ gaps are the two analytic estimates step-3 (centering: sum of E Yi / n^{1/p} -> 0) and step-4 (sum of Var(Yi)/i^{2/p} < inf, uses p<2), then final assembly via S5.",
+      "Mathlib gotcha (v4.26): Summable.tsum_eq_zero_add (dot form) is whnf-pathological on mu{setOf}-valued summands — rw blows past 1e6 heartbeats even on abstract g:Nat->ENNReal and even as a fully-typed have. Fix: use the primed non-dot idiom tsum_eq_zero_add' ENNReal.summable (Mathlib's own ENNReal peel idiom)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S3 (real Lean build, 1-2 sessions): assemble Kolmogorov a.s.-convergence criterion from named Mathlib lemmas (Filtration.natural -> Martingale via condExp_indep_eq -> uniform eLpNorm-1 bound via IndepFun.variance_sum -> Submartingale.exists_ae_tendsto_of_bdd). See knowledge.md S3 for the full reduction.",
-      "S4: assemble full M-Z SLLN (truncation + Borel-Cantelli tail + Kolmogorov S3 + kronecker_lemma S2).",
-      "Optional: generalize tendsto_weighted_average_zero to the full Silverman-Toeplitz regular-matrix summability theorem as a Mathlib contribution."
+      "S4b step-3: centered-truncation control sum of E Yi / n^{1/p} -> 0 via EX=0 + moment/rpow estimate on truncated means (Kronecker-style)",
+      "S4b step-4: variance-sum estimate sum of Var(Yi)/i^{2/p} < inf (uses p<2 essentially), then feed ae_tendsto_sum_of_indep_of_variance_bdd (S4a) + Kronecker lift (S2)",
+      "Final assembly: ae_tendsto_average_zero_of_variance_weighted_bdd (S5) on centered truncations Yi - E Yi, combined with step-1 a.s. eventual Xi=Yi"
     ]
   },
   "tags": [
