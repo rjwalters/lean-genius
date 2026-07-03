@@ -89,6 +89,99 @@
       "summary": "Extends the three-moduli set to four channels. two_pow_mod_three_of_odd/even fix 2ⁿ mod 3 (= 2 odd, = 1 even). For odd n, {2ⁿ−1, 2ⁿ, 2ⁿ+1, 2^(n+1)+1} is pairwise coprime (fourModuli_pairwise_coprime_odd / fourModuliBaseOdd); 2^(n+1)−1 instead fails (not_coprime_high_extMersenne_odd, gcd 3). For even n the roles swap: {…, 2^(n+1)−1} works (fourModuli_pairwise_coprime_even / fourModuliBaseEven) while 2^(n+1)+1 fails (not_coprime_lowMersenne_extHigh_even). The obstruction is always divisibility by 3. Capstone fourModuli_base_exists: every n ≥ 2 admits a valid 4-channel base. Cross-checked at n = 2 ({3,4,5,7} ✓, {3,4,5,9} ✗), n = 3 ({7,8,9,17} ✓, {7,8,9,15} ✗), n = 4 ({15,16,17,31} ✓)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "coprime_consecutive",
+      "type": "theorem",
+      "statement": "Nat.Coprime a (a + 1)",
+      "significance": "The elementary seed of the whole three-moduli argument: consecutive integers are coprime. Directly gives the low–mid and mid–high channel coprimalities.",
+      "description": "gcd(a, a+1) divides the difference (a+1) - a = 1 via Nat.dvd_sub of the two gcd-divisibilities, then Nat.dvd_one."
+    },
+    {
+      "name": "coprime_low_high",
+      "type": "theorem",
+      "statement": "Nat.Coprime (2^n - 1) (2^n + 1)   (for n ≥ 1)",
+      "significance": "The non-trivial coprimality of the three-moduli set: the outer channels differ by 2, so any common divisor divides 2 — but both ends are odd for n ≥ 1, forcing gcd = 1. This is what the consecutive-integer argument cannot reach.",
+      "description": "gcd divides (2^n+1) - (2^n-1) = 2; since 2 ∤ 2^n - 1, the prime-divisor-of-2 case analysis (Nat.dvd_prime) rules out 2, leaving 1."
+    },
+    {
+      "name": "threeModuli_pairwise_coprime",
+      "type": "theorem",
+      "statement": "[2^n - 1, 2^n, 2^n + 1].Pairwise Nat.Coprime   (for n ≥ 1)",
+      "significance": "The central validity fact: the balanced three-moduli RNS set {2^n-1, 2^n, 2^n+1} is pairwise coprime, so the Chinese Remainder Theorem applies and residues reconstruct uniquely across the 3n-bit dynamic range.",
+      "description": "Assembles the list Pairwise from coprime_low_mid, coprime_low_high, and coprime_mid_high by unfolding List.Pairwise.cons and membership."
+    },
+    {
+      "name": "dynamicRange_formula",
+      "type": "theorem",
+      "statement": "(2^n - 1) · 2^n · (2^n + 1) = 2^(3n) - 2^n",
+      "significance": "The exact dynamic range of the three channels: the product telescopes to 2^(3n) - 2^n, i.e. one 2^n short of a full 3n-bit word. The identity a(a-1)(a+1) = a³ - a with a = 2^n, handled entirely over ℕ.",
+      "description": "Writes 2^n = k + 1 to tame natural subtraction, reduces 2^(3n) = (2^n)^3, and closes with the ring identity k(k+1)(k+2) + (k+1) = (k+1)^3 via Nat.eq_sub_of_add_eq."
+    },
+    {
+      "name": "threeModuliBase_dynamicRange",
+      "type": "theorem",
+      "statement": "(threeModuliBase n hn).dynamicRange = 2^(3n) - 2^n   (for n ≥ 2)",
+      "significance": "Ties the abstract RNSBase structure to the concrete range: the genuine RNS base built from the three moduli realizes exactly the 2^(3n) - 2^n dynamic range, with channels = 3.",
+      "description": "Unfolds the base's product of moduli (List.prod_cons) and reduces to dynamicRange_formula after reassociating with mul_assoc."
+    },
+    {
+      "name": "threeModuli_balanced",
+      "type": "theorem",
+      "statement": "2^n + 1 ≤ 2 · (2^n - 1)   (for n ≥ 2)",
+      "significance": "The balance property that makes this base 'efficient' in hardware: the widest channel is less than twice the narrowest, so the critical-path channel width is nearly minimal for the given dynamic range.",
+      "description": "From 4 ≤ 2^n (monotonicity of the power) the inequality is immediate by omega."
+    },
+    {
+      "name": "threeModuli_crt_step",
+      "type": "theorem",
+      "statement": "Nat.Coprime ((2^n - 1) · 2^n) (2^n + 1)   (for n ≥ 1)",
+      "significance": "The reconstruction hinge: the product of the first two channels is coprime to the third, exactly the hypothesis for folding {2^n-1, 2^n} into one residue mod (2^n-1)·2^n and finishing with two-modulus CRT against 2^n+1.",
+      "description": "Nat.Coprime.mul_left applied to coprime_low_high and coprime_mid_high."
+    },
+    {
+      "name": "two_pow_mod_three_of_odd",
+      "type": "theorem",
+      "statement": "2^n % 3 = 2 for odd n   (and 2^n % 3 = 1 for even n)",
+      "significance": "The arithmetic switch driving the four-moduli parity dichotomy: 2 ≡ -1 (mod 3), so 2^n alternates 2, 1, 2, 1, … by parity. This single fact decides which extended modulus avoids the factor 3.",
+      "description": "Writes n = 2m (+1), uses (2²) ≡ 1 (mod 3) raised to the m-th power, and computes the residue by Nat.mul_mod. two_pow_mod_three_of_even is the companion."
+    },
+    {
+      "name": "fourModuli_pairwise_coprime_odd",
+      "type": "theorem",
+      "statement": "[2^n-1, 2^n, 2^n+1, 2^(n+1)+1].Pairwise Nat.Coprime   (for odd n)",
+      "significance": "For odd n the three-moduli set extends to four pairwise-coprime channels by appending 2^(n+1)+1 (packaged as the RNS base fourModuliBaseOdd), adding an (n+1)-bit channel to the dynamic range.",
+      "description": "Extends threeModuli_pairwise_coprime with coprime_lowMersenne_extHigh_odd, coprime_mid_extHigh, and coprime_high_extHigh, assembled through List.Pairwise.cons."
+    },
+    {
+      "name": "fourModuli_pairwise_coprime_even",
+      "type": "theorem",
+      "statement": "[2^n-1, 2^n, 2^n+1, 2^(n+1)-1].Pairwise Nat.Coprime   (for even n ≥ 1)",
+      "significance": "For even n the admissible fourth channel flips to the extended-Mersenne modulus 2^(n+1)-1 (base fourModuliBaseEven) — the opposite choice from the odd case, mirroring the mod-3 parity.",
+      "description": "Extends the three-moduli coprimality with coprime_lowMersenne_extMersenne, coprime_mid_extMersenne, and coprime_high_extMersenne_even."
+    },
+    {
+      "name": "not_coprime_high_extMersenne_odd",
+      "type": "theorem",
+      "statement": "¬ Nat.Coprime (2^n + 1) (2^(n+1) - 1)   (for odd n)",
+      "significance": "The sharp boundary showing the parity dichotomy is forced, not merely convenient: for odd n the extended-Mersenne modulus shares the factor 3 with 2^n+1, so it cannot be the fourth channel. not_coprime_lowMersenne_extHigh_even is the even-n mirror.",
+      "description": "For odd n, 3 ∣ 2^n+1 (2^n ≡ 2 mod 3) and 3 ∣ 2^(n+1)-1 (2^(n+1) ≡ 1 mod 3), so 3 ∣ gcd, contradicting coprimality via Nat.dvd_gcd."
+    },
+    {
+      "name": "fourModuli_base_exists",
+      "type": "theorem",
+      "statement": "∃ b : RNSBase, b.channels = 4   (for all n ≥ 2)",
+      "significance": "The capstone of the parity dichotomy: every n ≥ 2 admits some valid four-channel extension of the three-moduli base — pick 2^(n+1)+1 for odd n and 2^(n+1)-1 for even n. Constructive existence, not just non-obstruction.",
+      "description": "Case-splits on Nat.even_or_odd n and returns fourModuliBaseEven or fourModuliBaseOdd with its channels = 4 proof."
+    },
+    {
+      "name": "example_n3_bad_mersenne_choice",
+      "type": "theorem",
+      "statement": "¬ [7, 8, 9, 15].Pairwise Nat.Coprime   (n = 3, gcd(9,15) = 3)",
+      "significance": "A concrete witness that the wrong parity choice really fails: at n = 3 (odd) the set {7,8,9,17} works but {7,8,9,15} does not, because gcd(9,15) = 3. Grounds the abstract dichotomy in a checkable instance.",
+      "description": "Closed by kernel decide on the concrete list (paired with example_n3_four_odd showing the correct choice succeeds)."
+    }
+  ],
   "conclusion": {
     "summary": "The canonical efficient RNS base for computer arithmetic — the balanced three-moduli set {2ⁿ−1, 2ⁿ, 2ⁿ+1} — is fully formalized: pairwise coprime for n ≥ 1, with exact dynamic range 2^(3n) − 2ⁿ, realized as a genuine 3-channel RNS base, balanced (2ⁿ+1 ≤ 2·(2ⁿ−1)), and equipped with the precise coprimality fact gcd((2ⁿ−1)·2ⁿ, 2ⁿ+1) = 1 that drives iterated two-modulus CRT reconstruction. Two of the three coprimality obligations are free (consecutive integers); only the odd–odd pair needs the prime-2 argument.",
     "implications": "This pins down, with machine-checkable proofs, why the textbook three-moduli base is valid (CRT applies) and balanced (near-minimal critical-path channel width per unit of dynamic range) — the two properties hardware designers rely on when choosing 2ⁿ−1, 2ⁿ, 2ⁿ+1 for its bit-mask and Mersenne-wrap reductions. The dynamic-range identity 2^(3n) − 2ⁿ quantifies the (small) shortfall from a full 3n-bit word.",
