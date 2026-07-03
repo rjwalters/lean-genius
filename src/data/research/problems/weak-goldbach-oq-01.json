@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (open problem): symmetric/comet reformulation extended with two structural facts — prime-midpoint sufficient condition (k=0 diagonal) and an upper bound on comet height by primes in [m,2m). All 0-axiom, 0-sorry; build verified. Conjecture remains open.",
+    "progressSummary": "PROGRESS (BUILD + repair): fixed a pre-existing build breakage in StrongGoldbachSymmetric.lean (symmetricPairCount_le_primesInUpperArm failed against pinned Mathlib — card_le_card_of_injOn gives Set-coerced membership) and added symmetricPairCount_eq_upperArm_partitions, the EXACT identity comet-height = #{Goldbach partitions of 2m indexed by larger prime}, upgrading the prior upper bound to an equality. Both 0-axiom, 0-sorry. WeakGoldbach.lean axioms remain irreducible (surveyed earlier); conjecture open.",
     "builtItems": [
       "sumTwoPrimes_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:73 (per-n equivalence, 0-axiom)",
       "strong_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:98 (conjecture-level equivalence)",
@@ -37,14 +37,17 @@
       "Gallery entry src/data/proofs/strong-goldbach-symmetric (meta+annotations), verified/original, PR #33936",
       "hasSymmetricPrimePair_of_prime in Proofs/StrongGoldbachSymmetric.lean (prime midpoint sufficient condition, 0-axiom)",
       "symmetricPairCount_pos_of_prime in Proofs/StrongGoldbachSymmetric.lean (comet positive at prime midpoints)",
-      "symmetricPairCount_le_primesInUpperArm in Proofs/StrongGoldbachSymmetric.lean (comet height <= primes in [m,2m), via k -> m+k injection)"
+      "symmetricPairCount_le_primesInUpperArm in Proofs/StrongGoldbachSymmetric.lean (comet height <= primes in [m,2m), via k -> m+k injection)",
+      "StrongGoldbachSymmetric.lean: FIXED symmetricPairCount_le_primesInUpperArm (Finset.mem_coe for card_le_card_of_injOn Set-membership)",
+      "StrongGoldbachSymmetric.lean: symmetricPairCount_eq_upperArm_partitions — exact comet-height = Goldbach-partition-count-of-2m identity, VERIFIED 0-axiom"
     ],
     "insights": [
       "Strong Goldbach for even n=2m is equivalent to existence of a symmetric prime pair (m-k, m+k) with k<m — every Goldbach partition sits symmetrically about the midpoint n/2 (Goldbach comet).",
       "The midpoint-symmetry equivalence needs no lower bound on m: for m=0 both sides are false since primes are >=2, so it quantifies cleanly over all m in N.",
       "Strong Goldbach and its symmetric form are logically identical (strong_iff_symmetric); the reformulation halves the search space to one bounded parameter k<n/2.",
       "Prime midpoints are trivial: if m is prime then k=0 gives the diagonal Goldbach partition 2m = m + m, so Strong Goldbach holds unconditionally at every prime m and the Goldbach comet has no zero at prime abscissae.",
-      "The comet height symmetricPairCount m is bounded above by the number of primes in the upper-arm interval [m, 2m) (each pair injects to its larger prime m+k), i.e. by the prime-counting increment pi(2m) - pi(m)."
+      "The comet height symmetricPairCount m is bounded above by the number of primes in the upper-arm interval [m, 2m) (each pair injects to its larger prime m+k), i.e. by the prime-counting increment pi(2m) - pi(m).",
+      "Researcher-4 (07-03, second visit): StrongGoldbachSymmetric.lean symmetricPairCount_le_primesInUpperArm was BROKEN on origin/main — merged unbuilt. Finset.card_le_card_of_injOn (f)(MapsTo)(InjOn) yields Set-coerced membership (a ∈ ↑s), so rw [Finset.mem_filter] on it fails; fix = add Finset.mem_coe to the simp/rw. Repaired. Then proved symmetricPairCount_eq_upperArm_partitions: comet count = #{primes j in [m,2m) with 2m-j prime} EXACTLY (bijection k↦m+k with inverse j↦j-m), realizing the docstring claim comet height = Goldbach partition count of 2m, upgrading the prior ≤ bound to =."
     ],
     "mathlibGaps": [],
     "nextSteps": [

@@ -252,11 +252,57 @@ theorem symmetricPairCount_le_primesInUpperArm (m : ℕ) :
   rw [symmetricPairCount]
   apply Finset.card_le_card_of_injOn (fun k => m + k)
   · intro k hk
-    rw [Finset.mem_filter, Finset.mem_range] at hk
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at hk
     obtain ⟨hkm, _, hpk⟩ := hk
-    rw [Finset.mem_filter, Finset.mem_Ico]
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_Ico]
     exact ⟨⟨Nat.le_add_right m k, by omega⟩, hpk⟩
   · intro a _ b _ hab
     simpa using hab
+
+/-! ## Exact Identity: Comet Height = Goldbach Partition Count of `2 * m`
+
+The upper bound above only injects each symmetric pair into the primes of the
+upper arm `[m, 2 * m)`.  Keeping the *both-prime* condition on the image turns
+that injection into a **bijection**: `k ↦ m + k` matches each symmetric pair
+`(m - k, m + k)` about `m` with the prime `j = m + k ∈ [m, 2 * m)` whose complement
+`2 * m - j = m - k` is *also* prime.  Its inverse is `j ↦ j - m`.  This makes the
+docstring claim precise — the comet height is **exactly** the number of Goldbach
+partitions `2 * m = j + (2 * m - j)` indexed by their larger prime `j`, not merely
+bounded by the primes in the arm. -/
+
+/-- **The comet count is an exact Goldbach-partition count.**  The number of
+symmetric prime pairs about `m` equals the number of primes `j ∈ [m, 2 * m)` whose
+complement `2 * m - j` is also prime — i.e. the number of Goldbach partitions of
+`2 * m` indexed by their larger summand.  Refines
+`symmetricPairCount_le_primesInUpperArm` from a bound to an equality by keeping the
+complementary-prime condition on the image. -/
+theorem symmetricPairCount_eq_upperArm_partitions (m : ℕ) :
+    symmetricPairCount m
+      = ((Finset.Ico m (2 * m)).filter
+          (fun j => Nat.Prime j ∧ Nat.Prime (2 * m - j))).card := by
+  have hinj : ∀ s : Finset ℕ, Set.InjOn (fun k => m + k) ↑s :=
+    fun s a _ b _ hab => by simpa using hab
+  rw [symmetricPairCount, ← Finset.card_image_of_injOn (hinj _)]
+  congr 1
+  ext j
+  simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]
+  constructor
+  · rintro ⟨k, ⟨hkm, hpmk, hpmpk⟩, rfl⟩
+    refine ⟨⟨Nat.le_add_right m k, by omega⟩, hpmpk, ?_⟩
+    have h : 2 * m - (m + k) = m - k := by omega
+    rw [h]; exact hpmk
+  · rintro ⟨⟨hjm, hj2m⟩, hpj, hp2mj⟩
+    refine ⟨j - m, ⟨by omega, ?_, ?_⟩, by omega⟩
+    · have h : m - (j - m) = 2 * m - j := by omega
+      rw [h]; exact hp2mj
+    · have h : m + (j - m) = j := by omega
+      rw [h]; exact hpj
+
+-- The exact identity, checked against the concrete comet heights above.
+-- `2 * 5 = 10`: larger-summand primes in `[5, 10)` with prime complement are
+-- `5 (= 5 + 5)` and `7 (= 3 + 7)`, matching `symmetricPairCount 5 = 2`.
+example :
+    ((Finset.Ico 5 10).filter (fun j => Nat.Prime j ∧ Nat.Prime (10 - j))).card = 2 := by
+  decide
 
 end StrongGoldbach
