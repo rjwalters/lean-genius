@@ -1,7 +1,7 @@
 {
   "slug": "laws-of-large-numbers-oq-01-oq-02-oq-01",
   "title": "Marcinkiewicz-Zygmund SLLN in Lean 4",
-  "phase": "NEW",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -31,9 +31,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "SURVEY (S1, researcher-14, 2026-07-02): OBSERVE/ORIENT text-only. Pinned formal MZ-SLLN target (1<=p<2, n^(1/p) normalisation), mapped exact Mathlib SLLN API (strong_law_ae/strong_law_Lp give only the n^-1/p=1 and Lp cases), and VERIFIED the two blocking gaps are absent from Mathlib: Kronecker lemma (series) and Kolmogorov three-series/convergence theorem. Verdict: SURVEY -> multi-session BUILD, NOT one-session provable; do NOT axiomatise (parent chain already carries 1+3 axioms). Recommended increment: S2 = standalone Kronecker lemma (tractable, 0-axiom, independently useful), then S3 = Kolmogorov convergence criterion (>300 LOC bottleneck), then S4 = assemble.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "Formal target pinned: MZ-SLLN for 1<=p<2, E|X|^p<inf implies (sum(Xi-EX))/n^(1/p) -> 0 a.s.; p=1 is Etemadi/Kolmogorov SLLN, content is the faster n^(1/p) rate for p>1.",
+      "Mathlib API map (Mathlib/Probability/StrongLaw.lean): strong_law_ae (L790, Etemadi p=1 a.s. law, Banach-valued), strong_law_Lp (L834, Lp convergence), strong_law_aux1..7 (truncation internals) all hard-coded to n^-1 normalisation; NO n^(1/p) a.s. law, NO Marcinkiewicz statement (0 grep hits).",
+      "Blocking Mathlib gaps VERIFIED absent: Kronecker lemma for series (only unrelated PosSemidef.kronecker matrix product exists) and Kolmogorov three-series / a.s.-convergence-of-independent-L2-series criterion (only Kolmogorov 0-1 law present).",
+      "Proof decomposition (MZ 1937): truncate Yi=Xi*1{|Xi|<=i^(1/p)} then Borel-Cantelli tail; centre; sum Var(Yi)/i^(2/p)<inf (uses p<2 so 2/p>1, essential); Kolmogorov convergence; Kronecker gives conclusion.",
+      "p<2 hypothesis is essential exactly at the variance-sum step (2/p>1 needed for sum Var/i^(2/p) < inf)."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
