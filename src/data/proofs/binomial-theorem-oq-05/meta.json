@@ -149,6 +149,57 @@
       "description": "The divergence (1+a)ⁿ → ∞ for a > 0 is the geometric-progression growth that Bernoulli quantifies with an explicit linear rate"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "bernoulli",
+      "type": "theorem",
+      "statement": "-2 ≤ a → 1 + n*a ≤ (1+a)^n",
+      "significance": "Bernoulli's inequality: the first-order truncation of the binomial expansion of (1+a)ⁿ is a lower bound, valid on the full range a ≥ -2. The headline result and the tangent-line-at-1 estimate underlying much of elementary analysis.",
+      "description": "Mathlib's one_add_mul_le_pow ha n."
+    },
+    {
+      "name": "bernoulli_nonneg",
+      "type": "theorem",
+      "statement": "0 ≤ a → 1 + n*a ≤ (1+a)^n",
+      "significance": "The classical textbook form for a ≥ 0, where the a ≥ -2 hypothesis is automatic.",
+      "description": "one_add_mul_le_pow with -2 ≤ a discharged by linarith."
+    },
+    {
+      "name": "bernoulli_strict",
+      "type": "theorem",
+      "statement": "0 < a → 2 ≤ n → 1 + n*a < (1+a)^n",
+      "significance": "The strict Bernoulli inequality for a>0 and n≥2: the gap is the discarded quadratic term C(n,2)a² of the binomial expansion. Mathlib provides only an rpow strict version; this ℕ-power statement is proved here directly by induction.",
+      "description": "Nat.le_induction on n. Base n=2: (1+a)²=1+2a+a² with a²>0 (nlinarith). Step: (1+a)^{m+1}=(1+a)(1+a)^m > (1+a)(1+ma) ≥ 1+(m+1)a since the extra ma² ≥ 0 (nlinarith)."
+    },
+    {
+      "name": "bernoulli_pow",
+      "type": "theorem",
+      "statement": "-1 ≤ a → 1 + n*(a-1) ≤ a^n",
+      "significance": "Bernoulli's inequality in aⁿ form: the tangent line to t↦tⁿ at t=1 lies below the curve. The change of variables a↦a-1 recasts the estimate around the base 1.",
+      "description": "Mathlib's one_add_mul_sub_le_pow ha n."
+    },
+    {
+      "name": "pow_ge_linear_of_one_le",
+      "type": "theorem",
+      "statement": "1 ≤ a → 1 + n*(a-1) ≤ a^n",
+      "significance": "Powers of a base ≥ 1 grow at least linearly — the a≥1 specialisation, the form used to prove divergence of geometric powers.",
+      "description": "one_add_mul_sub_le_pow with -1 ≤ a from linarith."
+    },
+    {
+      "name": "one_add_pow_tendsto_atTop",
+      "type": "theorem",
+      "statement": "0 < a → Tendsto (fun n => (1+a)^n) atTop atTop",
+      "significance": "Divergence of geometric powers: (1+a)ⁿ → ∞ for a>0. Bernoulli makes this quantitative via the explicit linear lower bound 1+na, which alone forces divergence.",
+      "description": "tendsto_pow_atTop_atTop_of_one_lt with 1 < 1+a from linarith."
+    },
+    {
+      "name": "one_add_pow_ge_one_add_nmul",
+      "type": "theorem",
+      "statement": "0 ≤ a → 1 + n*a ≤ (1+a)^n",
+      "significance": "The explicit linear lower bound underlying the divergence result, stated separately for reuse.",
+      "description": "bernoulli_nonneg ha n."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
