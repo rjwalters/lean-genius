@@ -80,9 +80,18 @@
     {
       "id": "concrete-checks",
       "title": "Part IV: Concrete Verification",
-      "summary": "Three decide checks (no native_decide): a=b=1,k=2 (=6); a=2,b=1,k=2 (=12); a=1,b=2,k=3 (=60).",
+      "summary": "Three decide checks (no native_decide): a=b=1,k=2 (=6); a=2,b=1,k=2 (=12); a=1,b=2,k=3 (=60). Kernel decide keeps the entry axiom-free (no Lean.ofReduceBool from native_decide).",
       "startLine": 182,
-      "endLine": 220
+      "endLine": 203,
+      "mathContext": "(2)^{(2)} = 2·3 = 6; (3)^{(2)} = 3·4 = 12; (3)^{(3)} = 3·4·5 = 60 — each matched against the Vandermonde convolution's RHS by ordinary kernel reduction."
+    },
+    {
+      "id": "binomial-type-summary",
+      "title": "Summary: Rising Factorials Are of Binomial Type",
+      "summary": "The closing doc block recaps the four parts and states the headline: the rising-factorial polynomials x^{(k)} form a sequence of binomial type, so the additive Chu–Vandermonde law is the additive companion to Mathlib's multiplicative ascPochhammer_mul, answering open questions #2 and #3 of the parent multiset-coefficient entry. 0 axioms / 0 sorries / no native_decide.",
+      "startLine": 204,
+      "endLine": 220,
+      "mathContext": "A polynomial sequence {p_k} is of binomial type when p_k(x+y) = ∑_m C(k,m) p_m(x) p_{k-m}(y); here p_k = ascPochhammer(k), the umbral/Appell analogue of the ordinary binomial theorem (p_k(x)=x^k)."
     }
   ],
   "references": [
