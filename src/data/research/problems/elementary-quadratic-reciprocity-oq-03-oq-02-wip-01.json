@@ -1,7 +1,7 @@
 {
   "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
   "title": "Kronecker Symbol WIP Completion",
-  "phase": "NEW",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -11,29 +11,54 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "kronecker_mul_right_odd: (a/mn)=(a/m)(a/n) for odd positive m,n (via jacobiSym.mul_right')",
+      "kronecker_quadratic_reciprocity: (m/n)=(-1)^((m/2)(n/2))*(n/m) for odd positive m,n (via jacobiSym.quadratic_reciprocity)",
+      "kronecker_reciprocity_one_mod_four: (m/n)=(n/m) when m%4=1 (via jacobiSym.quadratic_reciprocity_one_mod_four)"
+    ],
+    "open": [
+      "Multiplicativity in the second argument for general (even/negative) moduli",
+      "Generalized quadratic reciprocity for arbitrary fundamental discriminants (needs supplementary laws (2/n),(-1/n) + Gauss sums)"
+    ],
+    "goal": "Fill the two Section-6 stubs (mul in n, QR) with proven theorems; keep hard general cases honestly open."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-05T06:55:50.081Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "PROGRESS",
+    "since": "2026-07-03T01:14:09Z",
+    "iteration": 2,
+    "focus": "Odd-positive-modulus case completed by reduction to Mathlib's Jacobi API; also repaired pre-existing kronecker0_mul bit-rot (Int.isUnit_eq_one_or no longer an iff).",
+    "blockers": [
+      "Docker Lean build unavailable: containerd 'meta.db: input/output error' (daemon flapping); changes source-reviewed against Mathlib signatures but NOT machine-verified."
+    ],
+    "nextAction": "Run docker-build.sh Proofs.ElementaryQuadraticReciprocityOQ03OQ02 once Docker is repaired; if green, mark PR #33901 ready.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Section 6 had two dangling docstrings (parse error) for mul-in-n and generalized QR. Replaced with three proven theorems on the odd-positive-modulus range where kronecker = jacobiSym, each a direct transport of a Mathlib Jacobi lemma across the file's kronecker_eq_jacobi. Separately fixed a pre-existing build break in kronecker0_mul. PR #33901 (draft, build-blocked).",
+    "builtItems": [
+      "kronecker_mul_right_odd",
+      "kronecker_quadratic_reciprocity",
+      "kronecker_reciprocity_one_mod_four",
+      "kronecker0_mul (repaired)"
+    ],
+    "insights": [
+      "For odd positive moduli the Kronecker symbol IS the Jacobi symbol (kronecker_eq_jacobi), so mul-in-n and QR come for free from jacobiSym.mul_right' and jacobiSym.quadratic_reciprocity.",
+      "No coprimality hypothesis is needed for the odd-positive QR: when gcd(m,n)>1 both sides vanish.",
+      "The general even/negative case genuinely needs the supplementary laws (2/n) and (-1/n) plus a Gauss-sum/induction combination not yet in Mathlib.",
+      "kronecker0_mul had bit-rotted: Int.isUnit_eq_one_or is now IsUnit u -> (u=1 v u=-1), not an iff; use Int.isUnit_iff instead."
+    ],
+    "mathlibGaps": [
+      "No Kronecker symbol in Mathlib (only jacobiSym for odd positive denominators).",
+      "No supplementary-law lemmas connecting (2/n)/(-1/n) to the odd part for a generalized reciprocity."
+    ],
+    "nextSteps": [
+      "Machine-verify via docker-build once infra is restored.",
+      "Attempt general mul-in-n by factoring n into 2-adic valuation + odd part and combining kronecker2/kroneckerNeg1 with the odd part."
+    ]
   },
   "tags": [
     "seeker-selected",
