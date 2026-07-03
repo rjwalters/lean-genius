@@ -138,6 +138,43 @@
       "description": "Sibling answering the parent's oq-02: where that entry evaluates the half-integer diagonal B(1/2,1/2) = π (π-driven), this entry evaluates the integer diagonal B(n+1,n+1) = 1/((2n+1)·C(2n,n)) (purely rational/combinatorial). Together they describe the full diagonal of the Beta function on the integer and half-integer lattices."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "factorial_two_mul_succ",
+      "type": "theorem",
+      "statement": "Nat.factorial (2*n+1) = (2*n+1) * (2*n).choose n * (n! * n!)",
+      "significance": "The multiplicative bridge that makes the whole entry work: it rewrites (2n+1)! as (2n+1)·C(2n,n)·(n!)², linking the factorial form (n!)²/(2n+1)! of the diagonal Beta value to the central-binomial form 1/((2n+1)·C(2n,n)). Purely a natural-number factorial identity, it isolates all the arithmetic so the downstream Beta computation is a clean cast-and-cancel.",
+      "description": "Specialise Mathlib's Nat.choose_mul_factorial_mul_factorial (with 2n−n = n) to get C(2n,n)·n!·n! = (2n)!, apply one Nat.factorial_succ step to (2n+1)!, and close by ring."
+    },
+    {
+      "name": "betaIntegral_diag_central_binom",
+      "type": "theorem",
+      "statement": "betaIntegral ((n:ℂ)+1) ((n:ℂ)+1) = 1 / (((2*n+1) * (2*n).choose n : ℕ) : ℂ)",
+      "significance": "The headline result: the total mass of the symmetric Beta(n+1,n+1) density on [0,1] equals the central-binomial reciprocal 1/((2n+1)·C(2n,n)). Converts the parent's factorial recurrence for B(n+1,n+1) into a closed form in terms of the central binomial coefficient — a clean combinatorial reading of a continuous integral.",
+      "description": "Start from the parent's betaIntegral_nat_nat n n giving (n!)²/(2n+1)!, rewrite n+n+1 = 2n+1, cross-multiply via div_eq_div_iff (both denominators nonzero: factorials and the binomial product are positive), and cancel using the key identity n!·n!·((2n+1)·C(2n,n)) = (2n+1)! from factorial_two_mul_succ."
+    },
+    {
+      "name": "betaIntegral_diag_centralBinom",
+      "type": "theorem",
+      "statement": "betaIntegral ((n:ℂ)+1) ((n:ℂ)+1) = 1 / (((2*n+1) * Nat.centralBinom n : ℕ) : ℂ)",
+      "significance": "The same closed form restated with Mathlib's canonical Nat.centralBinom n (= C(2n,n)), connecting the result to the library's central-binomial API so downstream users get the idiomatic spelling.",
+      "description": "rw [betaIntegral_diag_central_binom]; rfl — Nat.centralBinom n is definitionally (2*n).choose n."
+    },
+    {
+      "name": "betaIntegral_one_one_central",
+      "type": "theorem",
+      "statement": "betaIntegral 1 1 = 1",
+      "significance": "The n=0 base case as a sanity check: (2·0+1)·C(0,0) = 1, so B(1,1) = 1 — the uniform density on [0,1] integrates to 1. Confirms the closed form reproduces the trivial value.",
+      "description": "Specialise betaIntegral_diag_central_binom at n=0 and simplify with norm_num."
+    },
+    {
+      "name": "betaIntegral_two_two",
+      "type": "theorem",
+      "statement": "betaIntegral 2 2 = 1 / 6",
+      "significance": "The n=1 instance: (2·1+1)·C(2,1) = 3·2 = 6, so B(2,2) = 1/6 — a concrete nontrivial evaluation demonstrating the formula beyond the base case.",
+      "description": "Specialise betaIntegral_diag_central_binom at n=1 and evaluate the binomial with norm_num [Nat.choose]."
+    }
+  ],
   "references": [
     {
       "title": "Mathlib4: Data.Nat.Choose.Factorization and Analysis.SpecialFunctions.Gamma.Beta",
