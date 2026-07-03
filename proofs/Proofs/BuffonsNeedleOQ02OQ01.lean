@@ -227,16 +227,12 @@ theorem crossingFactor_strict_dec (n : ℕ) (hn : 2 ≤ n) :
 -- ============================================================
 
 /-- Helper: √2 < 3/2 (since 2 < 9/4). -/
-private lemma sqrt_two_lt : Real.sqrt 2 < 3 / 2 := by
-  rw [show (3 : ℝ) / 2 = Real.sqrt (9 / 4) from by
-    rw [Real.sqrt_eq_iff_sq_eq (by norm_num) (by norm_num)]; norm_num]
-  exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+private lemma sqrt_two_lt : Real.sqrt 2 < 3 / 2 :=
+  (Real.sqrt_lt' (by norm_num)).mpr (by norm_num)
 
 /-- Helper: √3 < 2 (since 3 < 4). -/
-private lemma sqrt_three_lt : Real.sqrt 3 < 2 := by
-  rw [show (2 : ℝ) = Real.sqrt 4 from by
-    rw [Real.sqrt_eq_iff_sq_eq (by norm_num) (by norm_num)]; norm_num]
-  exact Real.sqrt_lt_sqrt (by norm_num) (by norm_num)
+private lemma sqrt_three_lt : Real.sqrt 3 < 2 :=
+  (Real.sqrt_lt' (by norm_num)).mpr (by norm_num)
 
 /-- αₙ ≤ 1/√n for all n ≥ 2. Proved by strong induction using the recurrence.
     Base cases: 2/π ≤ 1/√2 (from 2√2 < 3 < π) and 1/2 ≤ 1/√3 (from √3 < 2).
@@ -247,18 +243,16 @@ theorem crossingFactor_le_inv_sqrt : ∀ n : ℕ, 2 ≤ n →
   | 1, h => absurd h (by omega)
   | 2, _ => by
     simp only [crossingFactor_two]
-    rw [div_le_div_iff (by positivity) (Real.sqrt_pos.mpr (by positivity))]
-    -- Need: 2 · √2 ≤ π · 1 = π
-    rw [mul_one]
-    calc 2 * Real.sqrt 2 < 2 * (3 / 2) := by nlinarith [sqrt_two_lt]
-      _ = 3 := by ring
-      _ < π := pi_gt_three
+    rw [div_le_div_iff₀ (by positivity) (Real.sqrt_pos.mpr (by positivity))]
+    -- goal: 2 · √↑2 ≤ 1 · π; normalize ↑2 to 2, then 2√2 < 3 < π
+    norm_num
+    nlinarith [sqrt_two_lt, pi_gt_three, Real.sqrt_nonneg (2 : ℝ)]
   | 3, _ => by
     simp only [crossingFactor_three]
-    rw [div_le_div_iff (by norm_num : (0 : ℝ) < 2) (Real.sqrt_pos.mpr (by positivity))]
-    -- Need: 1 · √3 ≤ 2 · 1 = 2, i.e., √3 ≤ 2
-    simp only [one_mul, mul_one]
-    exact le_of_lt sqrt_three_lt
+    rw [div_le_div_iff₀ (by norm_num : (0 : ℝ) < 2) (Real.sqrt_pos.mpr (by positivity))]
+    -- goal: 1 · √↑3 ≤ 1 · 2; normalize ↑3 to 3, then √3 < 2
+    norm_num
+    nlinarith [sqrt_three_lt, Real.sqrt_nonneg (3 : ℝ)]
   | (n + 4), _ => by
     -- α(n+4) = ((n+2)/(n+3)) · α(n+2) by recurrence
     simp only [crossingFactor_succ_succ]
@@ -267,8 +261,8 @@ theorem crossingFactor_le_inv_sqrt : ∀ n : ℕ, 2 ≤ n →
     have hn2_pos : (0 : ℝ) < n + 2 := by exact_mod_cast (show 0 < n + 2 by omega)
     have hn3_pos : (0 : ℝ) < n + 3 := by exact_mod_cast (show 0 < n + 3 by omega)
     have hn4_pos : (0 : ℝ) < n + 4 := by exact_mod_cast (show 0 < n + 4 by omega)
-    have hsqrt_n2_pos : 0 < Real.sqrt (↑(n + 2)) := Real.sqrt_pos.mpr hn2_pos
-    have hsqrt_n4_pos : 0 < Real.sqrt (↑(n + 4)) := Real.sqrt_pos.mpr hn4_pos
+    have hsqrt_n2_pos : 0 < Real.sqrt (↑(n + 2)) := Real.sqrt_pos.mpr (by positivity)
+    have hsqrt_n4_pos : 0 < Real.sqrt (↑(n + 4)) := Real.sqrt_pos.mpr (by positivity)
     -- Bound: ((n+2)/(n+3)) · (1/√(n+2)) ≤ 1/√(n+4)
     -- Equivalent to: (n+2) · √(n+4) ≤ (n+3) · √(n+2)
     -- Squaring: (n+2)² · (n+4) ≤ (n+3)² · (n+2) ↔ (n+2)(n+4) ≤ (n+3)²
@@ -277,9 +271,9 @@ theorem crossingFactor_le_inv_sqrt : ∀ n : ℕ, 2 ≤ n →
         ≤ ((n + 2) / (n + 3)) * (1 / Real.sqrt (↑(n + 2))) := by
           apply mul_le_mul_of_nonneg_left ih
           exact div_nonneg (le_of_lt hn2_pos) (le_of_lt hn3_pos)
-      _ = (n + 2) / ((n + 3) * Real.sqrt (↑(n + 2))) := by ring
+      _ = (n + 2) / ((n + 3) * Real.sqrt (↑(n + 2))) := by rw [mul_one_div, div_div]
       _ ≤ 1 / Real.sqrt (↑(n + 4)) := by
-          rw [div_le_div_iff (mul_pos hn3_pos hsqrt_n2_pos) hsqrt_n4_pos]
+          rw [div_le_div_iff₀ (mul_pos hn3_pos hsqrt_n2_pos) hsqrt_n4_pos]
           -- Need: (n+2) · √(n+4) ≤ 1 · (n+3) · √(n+2)
           rw [one_mul]
           -- Square both sides (both positive)
@@ -298,12 +292,12 @@ theorem crossingFactor_tendsto_zero :
   apply squeeze_zero
   · intro n; exact le_of_lt (crossingFactor_pos (n + 2) (by omega))
   · intro n; exact crossingFactor_le_inv_sqrt (n + 2) (by omega)
-  · -- 1/√(n+2) → 0 as n → ∞
-    have : Filter.Tendsto (fun n : ℕ => (1 : ℝ) / Real.sqrt (↑(n + 2))) Filter.atTop (nhds 0) := by
-      apply Filter.Tendsto.div tendsto_const_nhds _ (Or.inl rfl)
-      apply Filter.Tendsto.comp Real.tendsto_sqrt_atTop
-      apply Filter.Tendsto.atTop_add (Filter.tendsto_natCast_atTop_atTop)
-      exact tendsto_const_nhds
-    exact this
+  · -- 1/√(n+2) → 0 as n → ∞ because √(n+2) → ∞
+    have hsqrtAT : Filter.Tendsto Real.sqrt Filter.atTop Filter.atTop :=
+      (tendsto_rpow_atTop (by norm_num : (0 : ℝ) < 1 / 2)).congr
+        (fun x => (Real.sqrt_eq_rpow x).symm)
+    have hsqrt : Filter.Tendsto (fun n : ℕ => Real.sqrt (↑(n + 2))) Filter.atTop Filter.atTop :=
+      hsqrtAT.comp (tendsto_natCast_atTop_atTop.comp (Filter.tendsto_add_atTop_nat 2))
+    simpa only [one_div, Pi.inv_apply] using hsqrt.inv_tendsto_atTop
 
 end BuffonsNeedleOQ02OQ01
