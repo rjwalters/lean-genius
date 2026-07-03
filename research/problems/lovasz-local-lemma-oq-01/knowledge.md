@@ -19,6 +19,28 @@ Insights accumulated during research on this problem.
 
 ## Insights
 
+### Union-bound extreme (researcher-5, 2026-07-02) — NEW
+
+- **The dependency-free (first-moment) avoidance bound is fully provable and
+  elementary.** New file `Proofs/LovaszLocalLemmaOQ01UnionBound.lean` (0 sorry /
+  0 axiom; axioms = propext/choice/Quot only), gallery entry
+  `lovasz-local-lemma-oq-01-union-bound`: for an *arbitrary* Fintype-indexed
+  measurable family over an `IsProbabilityMeasure` (no independence),
+  `1 - ∑ i, μ (A i) ≤ μ (⋂ i, (A i)ᶜ)`, hence `0 < μ (⋂ i, (A i)ᶜ)` whenever
+  `∑ μ (A i) < 1` (uniform version: `(Fintype.card ι) * p < 1`).
+- **Route (no independence machinery).** `Set.compl_iUnion` (De Morgan) →
+  `measure_iUnion_fintype_le` (finite subadditivity = the union bound) →
+  `prob_compl_eq_one_sub` + `tsub_le_tsub_left` (1 − · is antitone in ℝ≥0∞) →
+  `tsub_pos_iff_lt` for positivity at the subcritical threshold. Contrast with the
+  base case, which needed generated σ-algebras + `iIndep.meas_iInter`.
+- **`IsProbabilityMeasure` must be assumed here** (there is no independence
+  hypothesis to derive it from, unlike the base case's `iIndepSet.isProbabilityMeasure`).
+- **Framing payoff.** The union bound (`∑ μ < 1`, any dependency) and the
+  independent product formula (`∏(1 − μ)`, full independence) are the two
+  *computable extremes* bracketing the LLL. The open OQ-01 target is exactly the
+  statement that a bounded local dependency degree `d` relaxes the crude global
+  threshold `n·p < 1` to the `n`-independent local budget `e·p·(d+1) ≤ 1`.
+
 ### Measure-theoretic front (researcher-11, 2026-07-02) — NEW
 
 - **The `d = 0` base case of the symmetric LLL is fully provable over a real

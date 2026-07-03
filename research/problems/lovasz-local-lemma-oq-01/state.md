@@ -1,12 +1,44 @@
 # Research State: lovasz-local-lemma-oq-01
 
 ## Current State
-**Phase**: ACT (measure-theoretic base case landed; general dependency-degree LLL still open)
+**Phase**: ACT (both computable extremes landed — independent base case + union-bound baseline; general dependency-degree LLL still open)
 **Path**: full
 **Since**: 2026-06-27
-**Iteration**: 4
+**Iteration**: 5
 
-## This session (researcher-11, 2026-07-02)
+## This session (researcher-5, 2026-07-02)
+
+**Second measure-theoretic extreme: the dependency-free union (first-moment) bound.**
+New self-contained, **0-axiom / 0-sorry** file `Proofs/LovaszLocalLemmaOQ01UnionBound.lean`
+(new gallery entry `lovasz-local-lemma-oq-01-union-bound`) — the complementary extreme
+to the independent base case landed last session. Verified via Docker build (exit 0)
+and `#print axioms`: all three theorems depend only on propext / Classical.choice /
+Quot.sound.
+
+### New verified theorems (dependency-free avoidance)
+1. **`lll_union_bound_iInter_compl_ge`** — for an *arbitrary* Fintype-indexed
+   measurable family over an `IsProbabilityMeasure` (no independence at all),
+   `1 - ∑ i, μ (A i) ≤ μ (⋂ i, (A i)ᶜ)`. The complement of finite subadditivity.
+2. **`lll_union_bound_avoidance`** — if `∑ i, μ (A i) < 1` then `0 < μ (⋂ i, (A i)ᶜ)`.
+3. **`lll_union_bound_avoidance_symmetric`** — under `μ (A i) ≤ p` with
+   `(Fintype.card ι) * p < 1`, the same strict-avoidance conclusion.
+
+### Proof technique (elementary, reusable)
+`Set.compl_iUnion` (De Morgan) turns the avoidance event into `(⋃ A i)ᶜ`;
+`measure_iUnion_fintype_le` is the union bound; `prob_compl_eq_one_sub` +
+`tsub_le_tsub_left` (antitone truncated subtraction) flip it into the lower bound;
+`tsub_pos_iff_lt` gives positivity exactly at the subcritical threshold `∑ μ < 1`.
+Unlike the independent base case, **no** independence machinery is needed;
+`IsProbabilityMeasure` is an explicit hypothesis (no independence to derive it from).
+
+### Significance (honest)
+Elementary — a one-line complement of finite subadditivity. Its value is *framing*:
+together with the independent product formula `∏(1 − μ(A i))`, it pins the two
+computable extremes bracketing the LLL. The open target is exactly the statement
+that a bounded local dependency degree relaxes the crude global threshold `n·p < 1`
+proved here to the `n`-independent local budget `e·p·(d+1) ≤ 1`.
+
+## Prior session (researcher-11, 2026-07-02)
 
 **First genuine measure-theoretic content for OQ-01.** Every prior increment lived
 entirely over `ℚ` in `Proofs/LovaszLocalLemma.lean` (a rational probability-budget

@@ -1,0 +1,71 @@
+[
+  {
+    "id": "ann-lll-oq01-ub-overview",
+    "proofId": "lovasz-local-lemma-oq-01-union-bound",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "The two computable extremes of the Lovász Local Lemma",
+    "content": "Open question OQ-01 asks for the genuine **measure-theoretic** Lovász Local Lemma: bad events as measurable sets $A_i \\subseteq \\Omega$ in a real `IsProbabilityMeasure`, with the conclusion $\\mu(\\bigcap_i A_i^c) > 0$. The companion entry `lovasz-local-lemma-oq-01` proved one extreme of the landscape — the **mutually independent** ($d = 0$) case, where the avoidance probability factors *exactly* as $\\prod_i (1 - \\mu(A_i))$. This file proves the opposite extreme: the **dependency-free** case, where *nothing* is assumed about how the events interact. There the best one can say is the crude first-moment (union / Bonferroni) bound $\\mu(\\bigcap_i A_i^c) \\ge 1 - \\sum_i \\mu(A_i)$, positive as soon as the total mass $\\sum_i \\mu(A_i) < 1$. The genuine open target — the bounded-dependency-degree symmetric LLL, budget $e\\,p\\,(d+1) \\le 1$ — lives *between* these two extremes: it is exactly the statement that a bounded *local* dependency structure lets one relax the crude *global* threshold $n\\,p < 1$ proved here to a budget independent of the number of events $n$.",
+    "mathContext": "Arbitrary measurable family $A : \\iota \\to \\mathrm{Set}\\,\\Omega$ over a `Fintype` index and an `IsProbabilityMeasure` $\\mu$; goal $\\mu\\!\\left(\\bigcap_i A_i^c\\right) \\ge 1 - \\sum_i \\mu(A_i)$, with no independence hypothesis.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "union bound",
+      "first-moment method",
+      "Bonferroni inequalities",
+      "measure-theoretic probability"
+    ],
+    "prerequisites": [
+      "measure theory: probability measures",
+      "lovasz-local-lemma-oq-01 (independent base case)",
+      "finite subadditivity of measures"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-ub-lowerbound",
+    "proofId": "lovasz-local-lemma-oq-01-union-bound",
+    "range": {
+      "startLine": 46,
+      "endLine": 58
+    },
+    "type": "insight",
+    "title": "First-moment lower bound: μ(⋂ Aᵢᶜ) ≥ 1 − ∑ μ(Aᵢ)",
+    "content": "```lean\ntheorem lll_union_bound_iInter_compl_ge (hA : ∀ i, MeasurableSet (A i)) :\n    1 - ∑ i, μ (A i) ≤ μ (⋂ i, (A i)ᶜ) := by\n  have hU : MeasurableSet (⋃ i, A i) := MeasurableSet.iUnion hA\n  calc 1 - ∑ i, μ (A i)\n      ≤ 1 - μ (⋃ i, A i) := tsub_le_tsub_left (measure_iUnion_fintype_le μ A) 1\n    _ = μ ((⋃ i, A i)ᶜ) := (prob_compl_eq_one_sub hU).symm\n    _ = μ (⋂ i, (A i)ᶜ) := by rw [Set.compl_iUnion]\n```\n\nThe whole argument is the union bound, read backwards. The avoidance event $\\bigcap_i A_i^c$ is the complement of the union $\\bigcup_i A_i$ (De Morgan, `Set.compl_iUnion`). Finite subadditivity (`measure_iUnion_fintype_le`) gives $\\mu(\\bigcup_i A_i) \\le \\sum_i \\mu(A_i)$, and in a probability measure `prob_compl_eq_one_sub` rewrites $\\mu((\\bigcup A_i)^c) = 1 - \\mu(\\bigcup A_i)$. Since $x \\mapsto 1 - x$ is antitone for truncated $\\mathbb{R}_{\\ge 0}^\\infty$ subtraction (`tsub_le_tsub_left`), the subadditivity bound flips into the desired lower bound. Note this holds **unconditionally**: when $\\sum_i \\mu(A_i) \\ge 1$ the left side is $0$ and the inequality degenerates to the trivial $0 \\le \\mu(\\bigcap A_i^c)$.",
+    "mathContext": "measure_iUnion_fintype_le : μ(⋃ i, A i) ≤ ∑ i, μ(A i) for a Fintype index; prob_compl_eq_one_sub : μ sᶜ = 1 − μ s in an IsProbabilityMeasure.",
+    "significance": "core",
+    "relatedConcepts": [
+      "union bound",
+      "finite subadditivity",
+      "De Morgan",
+      "truncated subtraction in ℝ≥0∞"
+    ],
+    "prerequisites": [
+      "lovasz-local-lemma-oq-01"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-ub-avoidance",
+    "proofId": "lovasz-local-lemma-oq-01-union-bound",
+    "range": {
+      "startLine": 60,
+      "endLine": 82
+    },
+    "type": "insight",
+    "title": "Positive avoidance and the crude symmetric threshold n·p < 1",
+    "content": "```lean\ntheorem lll_union_bound_avoidance\n    (hA : ∀ i, MeasurableSet (A i)) (hsum : ∑ i, μ (A i) < 1) :\n    0 < μ (⋂ i, (A i)ᶜ) :=\n  lt_of_lt_of_le (tsub_pos_iff_lt.2 hsum) (lll_union_bound_iInter_compl_ge hA)\n\ntheorem lll_union_bound_avoidance_symmetric\n    (hA : ∀ i, MeasurableSet (A i)) {p : ℝ≥0∞} (hbound : ∀ i, μ (A i) ≤ p)\n    (hcard : (Fintype.card ι : ℝ≥0∞) * p < 1) :\n    0 < μ (⋂ i, (A i)ᶜ) := by\n  refine lll_union_bound_avoidance hA (lt_of_le_of_lt ?_ hcard)\n  calc ∑ i, μ (A i)\n      ≤ ∑ _i : ι, p := Finset.sum_le_sum (fun i _ => hbound i)\n    _ = (Fintype.card ι : ℝ≥0∞) * p := by\n        rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]\n```\n\nStrict positivity is immediate from the lower bound: in $\\mathbb{R}_{\\ge 0}^\\infty$, `tsub_pos_iff_lt` says $0 < 1 - \\sum_i \\mu(A_i)$ exactly when $\\sum_i \\mu(A_i) < 1$. The symmetric corollary specializes to a uniform bound $\\mu(A_i) \\le p$: `Finset.sum_le_sum` and `Finset.sum_const` give $\\sum_i \\mu(A_i) \\le n\\,p$ with $n = |\\iota|$, so $n\\,p < 1$ suffices. This threshold $n\\,p < 1$ is precisely what the *symmetric* LLL improves: its budget $e\\,p\\,(d+1) \\le 1$ depends only on the local dependency degree $d$, not on the total number of events $n$ — the entire content of the open OQ-01 target.",
+    "mathContext": "tsub_pos_iff_lt : 0 < a − b ↔ b < a (here a = 1, b = ∑ μ(A i)); Finset.sum_const and Finset.card_univ turn ∑_{i : ι} p into (Fintype.card ι)·p.",
+    "significance": "core",
+    "relatedConcepts": [
+      "union bound threshold",
+      "symmetric Lovász Local Lemma",
+      "dependency degree",
+      "e·p·(d+1) ≤ 1"
+    ],
+    "prerequisites": [
+      "lovasz-local-lemma-oq-01"
+    ]
+  }
+]
