@@ -89,28 +89,42 @@
       "title": "Module Docstring: Weighted LGV, Algebraic vs Combinatorial Halves, Scope",
       "startLine": 1,
       "endLine": 51,
-      "summary": "States the open question (weighted/generating-function LGV), the full theorem det[Σ w] = Σ_{non-intersecting} ∏ w, the split into the algebraic core (proved here) and the combinatorial involution (open), and the explicit scope: no axiom, no sorry, nothing depends on the unproved conjecture."
+      "summary": "The module docstring states the open question (weighted/generating-function LGV), the full theorem det[Σ w] = Σ_{non-intersecting} ∏ w, the split into the algebraic core (proved here) and the combinatorial Gessel–Viennot involution (open), and the explicit scope: no axiom, no sorry, nothing depends on the unproved conjecture. `import Mathlib` follows the docstring."
     },
     {
-      "id": "weighted-lgv-structure",
-      "title": "WeightedLGV: Abstract Weighted-Path Configuration",
+      "id": "setup-structure",
+      "title": "Setup and the WeightedLGV Configuration Structure",
       "startLine": 52,
-      "endLine": 100,
-      "summary": "The WeightedLGV structure (finite path types Path i j with R-weights), the generating-function matrix H i j = Σ_p w(p), σ-path families Family σ = ∀ i, Path i (σ i), and their multiplicative weight familyWeight = ∏ᵢ w(fᵢ)."
+      "endLine": 73,
+      "summary": "Enters namespace BallotOQ03OQ02OQ03, opens BigOperators and Equiv.Perm, fixes variable {R : Type*} [CommRing R] {r : ℕ}, and defines the structure WeightedLGV: for every source i and target j a finite type Path i j of lattice paths (registered as a Fintype instance) together with a weight Path i j → R. This is the generating-function abstraction of a concrete LGVConfig, with weight a monomial recording each path's steps."
+    },
+    {
+      "id": "generating-function-data",
+      "title": "Generating-Function Matrix and Path Families",
+      "startLine": 74,
+      "endLine": 92,
+      "summary": "Inside namespace WeightedLGV: the generating-function matrix H i j = Σ_{p : Path i j} w(p) (matrix), σ-path families Family σ := ∀ i, Path i (σ i) with their derived Fintype instance, and the multiplicative family weight familyWeight f := ∏ᵢ w i (σ i) (f i)."
     },
     {
       "id": "algebraic-core",
       "title": "Algebraic Core: Determinant = Signed Generating Function of Path Families",
-      "startLine": 101,
+      "startLine": 93,
+      "endLine": 111,
+      "summary": "det_matrix_eq_signed_family_sum, the unconditional algebraic half: det H = Σ_σ sign(σ) • Σ_{f:Family σ} familyWeight f, proved by the column Leibniz expansion (det_transpose + det_apply) and turning a product of sums into a sum over the pi-type Family σ via Fintype.prod_sum. The remaining combinatorial collapse to non-intersecting families is the Gessel–Viennot involution, left open."
+    },
+    {
+      "id": "unit-weight-and-predicate",
+      "title": "Unit-Weight Specialisation and the Non-Intersecting Predicate",
+      "startLine": 112,
       "endLine": 138,
-      "summary": "det_matrix_eq_signed_family_sum: det H = Σ_σ sign(σ) • Σ_{f:Family σ} familyWeight f, via det_transpose + det_apply + Fintype.prod_sum. det_matrix_eq_signed_card_sum: the weight-1 specialisation recovering the unweighted counting determinant expansion. IsNonIntersecting: abstract placeholder predicate for family non-intersection."
+      "summary": "det_matrix_eq_signed_card_sum specialises every weight to 1, reducing the algebraic core to the unweighted counting determinant expansion det H = Σ_σ sign(σ) • #(σ-families), showing the weighted statement genuinely generalises the parent's unweighted one. IsNonIntersecting is the abstract placeholder predicate (:= True) for a σ-family having no two paths sharing a lattice point, to be supplied by a concrete geometric instance."
     },
     {
       "id": "open-goal",
       "title": "WeightedLGVConjecture: The Full Weighted LGV Lemma (Open Goal)",
       "startLine": 139,
       "endLine": 163,
-      "summary": "The full statement det H = Σ_{non-intersecting identity families} ∏ w, recorded as a def : Prop for downstream work. Reduced by the algebraic core to weight-invariance of the Gessel–Viennot involution; neither proved nor assumed here."
+      "summary": "Closes namespace WeightedLGV and, under open Classical, records WeightedLGVConjecture : Prop — det H = Σ_{f : Family 1, non-intersecting} ∏ᵢ w(fᵢ) — as a def for downstream work. Reduced by the algebraic core to weight-invariance of the Gessel–Viennot sign-reversing (tail-swap) involution proved unweighted in BallotProblemOQ03OQ02.lean; neither proved nor assumed here, and nothing in the file depends on it."
     }
   ],
   "conclusion": {
