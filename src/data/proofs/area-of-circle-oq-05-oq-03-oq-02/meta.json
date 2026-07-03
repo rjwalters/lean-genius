@@ -72,12 +72,20 @@
       "mathContext": "The main result: the centred normal family is a convolution semigroup with additive variances — the Gaussian / heat-kernel semigroup in explicit density form."
     },
     {
-      "id": "corollaries",
-      "title": "Part III: Mass Preservation and the Fourier Shadow",
+      "id": "mass-preservation",
+      "title": "Part III.a: Mass Preservation",
       "startLine": 183,
+      "endLine": 196,
+      "summary": "gaussian_density_integral_eq_one proves ∫_ℝ φ_σ(x) dx = 1: each centred Gaussian density is a probability density, so the convolution semigroup law (★) sends probability densities to probability densities. The proof pulls out the leading reciprocal, evaluates the bare Gaussian integral with integral_gaussian, and cancels via √(π/(1/2σ²)) = σ√(2π).",
+      "mathContext": "$\\int_{\\mathbb R}\\varphi_\\sigma = 1$ is the total-mass invariant of (★): convolution of probability densities is a probability density. It follows from $\\int e^{-x^2/(2\\sigma^2)}dx = \\sigma\\sqrt{2\\pi}$."
+    },
+    {
+      "id": "fourier-shadow",
+      "title": "Part III.b: The Fourier Shadow",
+      "startLine": 198,
       "endLine": 216,
-      "summary": "gaussian_density_integral_eq_one (∫ φ_σ = 1, so convolution preserves total mass), the characteristic function χ_σ(t)=e^{−σ²t²/2}, charFun_mul (χ_{σ₁}·χ_{σ₂}=χ_{√(σ₁²+σ₂²)}), and charFun_zero.",
-      "mathContext": "The convolution lands among probability densities, and on the Fourier side becomes multiplication of characteristic functions — the dual of the density-side law."
+      "summary": "The characteristic function χ_σ(t) = e^{−σ²t²/2} (the Fourier-side value from the parent entries), charFun_mul proving χ_{σ₁}(t)·χ_{σ₂}(t) = χ_{√(σ₁²+σ₂²)}(t) — 'Fourier turns convolution into multiplication' specialised to Gaussians, dual to gaussian_convolution — and the normalisation charFun_zero (χ_σ(0) = 1).",
+      "mathContext": "$e^{-\\sigma_1^2 t^2/2}\\,e^{-\\sigma_2^2 t^2/2} = e^{-(\\sigma_1^2+\\sigma_2^2)t^2/2}$: multiplying characteristic functions adds variances, the dual of the density-side convolution law."
     }
   ],
   "conclusion": {
