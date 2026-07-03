@@ -45,7 +45,8 @@
       "The entire trichotomy is one fact — sign(a² + b² - c²) = sign(cos C) — because 2ab > 0",
       "cos is strictly antitone on [0, π], so its sign relative to cos(π/2) = 0 pins the angle relative to π/2 in both directions",
       "The right-angle case is Pythagoras, recovered as the boundary cos C = 0 via injectivity of cos on [0, π]",
-      "Extracting cos C > 0 from 2ab·cos C > 0 (and the negative analogue) is handled by nlinarith multiplying the positivity of 2ab against the negated goal"
+      "Extracting cos C > 0 from 2ab·cos C > 0 (and the negative analogue) is handled by nlinarith multiplying the positivity of 2ab against the negated goal",
+      "The restriction C ∈ [0, π] — exactly the range of a triangle's interior angle — is load-bearing for the biconditionals: cos is injective only on [0, π], so it is this domain that upgrades each comparison from a one-way implication to an iff. On any larger interval cos is even and non-injective, and c² < a² + b² would pin down only |C| < π/2, not the angle itself; the geometry of a triangle supplies precisely the domain that makes the classification complete and reversible."
     ],
     "prerequisites": [
       "Real.cos_pos_of_mem_Ioo, Real.cos_nonpos_of_pi_div_two_le_of_le, Real.cos_neg_of_pi_div_two_lt_of_lt",
@@ -90,6 +91,11 @@
       "targetId": "pythagorean-theorem",
       "relationship": "related",
       "description": "The right-angle case C = π/2 (angle_right_iff) is exactly the Pythagorean theorem and its converse — the boundary cos C = 0 where the deficit a² + b² - c² vanishes."
+    },
+    {
+      "targetId": "law-of-cosines-oq-08",
+      "relationship": "related",
+      "description": "Sibling that derives the triangle inequality from the same Law of Cosines relation. The two entries read complementary information out of the term 2ab·cos C in c² = a² + b² - 2ab·cos C: this trichotomy uses the SIGN of cos C (positive/zero/negative) to classify the angle, while oq-08 uses its RANGE (cos C > −1) to bound c and recover a + b > c. Together they show how much Euclidean geometry the single cosine relation encodes."
     }
   ],
   "references": [
