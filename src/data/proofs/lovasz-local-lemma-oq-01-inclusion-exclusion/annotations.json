@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ann-lll-oq01-ie-overview",
+    "proofId": "lovasz-local-lemma-oq-01-inclusion-exclusion",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "The first correction to the union bound",
+    "content": "Open question OQ-01 asks for the genuine **measure-theoretic** Lovász Local Lemma over a real `IsProbabilityMeasure`. Two companion entries pin down the computable extremes: `lovasz-local-lemma-oq-01` handles **mutual independence** (avoidance factors exactly as $\\prod_i (1 - \\mu(A_i))$), and `lovasz-local-lemma-oq-01-union-bound` handles the **dependency-free** case (only the first-moment bound $\\mu(\\bigcap_i A_i^c) \\ge 1 - \\sum_i \\mu(A_i)$). Both merely *bound* the avoidance probability once dependence is allowed. This file computes the **exact** value in the smallest genuinely dependent regime — two events — by inclusion–exclusion: $\\mu(A^c \\cap B^c) + \\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$, i.e. $\\mu(A^c \\cap B^c) = 1 - \\mu(A) - \\mu(B) + \\mu(A \\cap B)$. The overlap $\\mu(A \\cap B)$ is *exactly* the term the two-event union bound throws away, and it is nonzero precisely when the events are positively correlated — the first quantitative sign that dependency helps avoid all bad events.",
+    "mathContext": "Two measurable events $A, B$ over an `IsProbabilityMeasure` $\\mu$; exact identity $\\mu(A^c \\cap B^c) = 1 - \\mu(A) - \\mu(B) + \\mu(A \\cap B)$, no independence hypothesis.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lovász Local Lemma",
+      "inclusion–exclusion",
+      "Bonferroni inequalities",
+      "union bound",
+      "measure-theoretic probability"
+    ],
+    "prerequisites": [
+      "measure theory: probability measures",
+      "lovasz-local-lemma-oq-01-union-bound (first-moment bound)",
+      "two-set inclusion–exclusion"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-ie-setup",
+    "proofId": "lovasz-local-lemma-oq-01-inclusion-exclusion",
+    "range": {
+      "startLine": 36,
+      "endLine": 44
+    },
+    "type": "context",
+    "title": "The probability-space frame",
+    "content": "```lean\nimport Mathlib.Probability.Independence.Basic\nopen MeasureTheory\nopen scoped ENNReal\nnamespace LovaszLocalLemmaOQ01InclusionExclusion\nvariable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]\nvariable {A B : Set Ω}\n```\n\nUnlike the independent base case, which derives `IsProbabilityMeasure` from mutual independence, here there is no independence hypothesis, so `[IsProbabilityMeasure μ]` is assumed outright — it is what supplies $\\mu(\\Omega) = 1$ and hence the complementation identity $\\mu(s^c) + \\mu(s) = 1$. Only two events are needed, so the index is not a `Fintype` family but a bare pair $A, B : \\mathrm{Set}\\,\\Omega$. All measures live in $\\mathbb{R}_{\\ge 0}^\\infty$; the identity is stated **additively** ($\\mu(A^c \\cap B^c) + \\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$) precisely so the proof never invokes truncated subtraction.",
+    "mathContext": "`IsProbabilityMeasure μ` gives $\\mu(\\Omega) = 1$ and $\\mu(s^c) + \\mu(s) = 1$; the additive statement keeps all arithmetic inside $\\mathbb{R}_{\\ge 0}^\\infty$ addition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "probability measure",
+      "extended non-negative reals ℝ≥0∞",
+      "measurable space"
+    ],
+    "prerequisites": [
+      "measure theory: probability measures"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-ie-identity",
+    "proofId": "lovasz-local-lemma-oq-01-inclusion-exclusion",
+    "range": {
+      "startLine": 46,
+      "endLine": 67
+    },
+    "type": "insight",
+    "title": "Exact identity: μ(Aᶜ ∩ Bᶜ) + μA + μB = 1 + μ(A ∩ B)",
+    "content": "```lean\ntheorem two_event_avoidance_add (hA : MeasurableSet A) (hB : MeasurableSet B) :\n    μ (Aᶜ ∩ Bᶜ) + μ A + μ B = 1 + μ (A ∩ B) := by\n  have hAB : MeasurableSet (A ∪ B) := hA.union hB\n  have hcompl : Aᶜ ∩ Bᶜ = (A ∪ B)ᶜ := (Set.compl_union A B).symm\n  have h1 : μ (Aᶜ ∩ Bᶜ) + μ (A ∪ B) = 1 := by\n    rw [hcompl, add_comm, measure_add_measure_compl hAB, measure_univ]\n  have h2 : μ (A ∪ B) + μ (A ∩ B) = μ A + μ B := measure_union_add_inter A hB\n  calc μ (Aᶜ ∩ Bᶜ) + μ A + μ B\n      = μ (Aᶜ ∩ Bᶜ) + (μ A + μ B) := by rw [add_assoc]\n    _ = μ (Aᶜ ∩ Bᶜ) + (μ (A ∪ B) + μ (A ∩ B)) := by rw [h2]\n    _ = (μ (Aᶜ ∩ Bᶜ) + μ (A ∪ B)) + μ (A ∩ B) := by rw [add_assoc]\n    _ = 1 + μ (A ∩ B) := by rw [h1]\n```\n\nTwo Mathlib facts do all the work. **Complementation**: $A^c \\cap B^c = (A \\cup B)^c$ (De Morgan, `Set.compl_union`), and in a probability measure `measure_add_measure_compl` gives $\\mu(A^c \\cap B^c) + \\mu(A \\cup B) = \\mu(\\Omega) = 1$. **Two-set inclusion–exclusion**: `measure_union_add_inter` gives the subtraction-free identity $\\mu(A \\cup B) + \\mu(A \\cap B) = \\mu(A) + \\mu(B)$. Substituting the second into the goal and regrouping, the union term $\\mu(A \\cup B)$ cancels against the complementation identity, leaving $1 + \\mu(A \\cap B)$. Every line is an $\\mathbb{R}_{\\ge 0}^\\infty$ addition — no finiteness or truncation side-conditions ever appear, even though the probability measure makes all quantities finite.",
+    "mathContext": "Equivalent to $\\mu(A^c \\cap B^c) = 1 - \\mu(A) - \\mu(B) + \\mu(A \\cap B)$, the order-two (exact) case of inclusion–exclusion $\\mu(\\bigcap A_i^c) = \\sum_S (-1)^{|S|} \\mu(\\bigcap_{i\\in S} A_i)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "inclusion–exclusion principle",
+      "De Morgan's law",
+      "measure_union_add_inter",
+      "complement of an event"
+    ],
+    "prerequisites": [
+      "Set.compl_union",
+      "measure_add_measure_compl",
+      "measure_union_add_inter"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-ie-avoidance",
+    "proofId": "lovasz-local-lemma-oq-01-inclusion-exclusion",
+    "range": {
+      "startLine": 69,
+      "endLine": 93
+    },
+    "type": "insight",
+    "title": "Sharp avoidance threshold and union-bound recovery",
+    "content": "```lean\ntheorem two_event_avoidance (hA : MeasurableSet A) (hB : MeasurableSet B)\n    (hlt : μ A + μ B < 1 + μ (A ∩ B)) :\n    0 < μ (Aᶜ ∩ Bᶜ) := by\n  rw [pos_iff_ne_zero]\n  intro h0\n  have hid := two_event_avoidance_add (μ := μ) hA hB\n  rw [h0, zero_add] at hid\n  exact hlt.ne hid\n\ntheorem two_event_avoidance_of_union_lt (hA : MeasurableSet A) (hB : MeasurableSet B)\n    (hlt : μ A + μ B < 1) :\n    0 < μ (Aᶜ ∩ Bᶜ) :=\n  two_event_avoidance hA hB (lt_of_lt_of_le hlt (le_add_right le_rfl))\n```\n\nPositivity is read straight off the exact identity: if $\\mu(A^c \\cap B^c) = 0$ then the identity collapses to $\\mu(A) + \\mu(B) = 1 + \\mu(A \\cap B)$, contradicting the strict hypothesis $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$; hence $\\mu(A^c \\cap B^c) \\ne 0$ (`pos_iff_ne_zero`). The threshold $\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$ is **strictly weaker** than the union-bound condition $\\mu(A) + \\mu(B) < 1$ exactly when $\\mu(A \\cap B) > 0$, i.e. when the events overlap (are positively correlated). The corollary `two_event_avoidance_of_union_lt` recovers the crude union-bound condition by discarding $\\mu(A \\cap B) \\ge 0$ (`le_add_right`), making the improvement explicit.",
+    "mathContext": "$\\mu(A) + \\mu(B) < 1 + \\mu(A \\cap B)$ is the sharp two-event avoidance threshold; it beats the first-moment threshold $\\mu(A) + \\mu(B) < 1$ by the overlap $\\mu(A \\cap B)$ — the elementary germ of the LLL's dependency gain.",
+    "significance": "central",
+    "relatedConcepts": [
+      "positive correlation",
+      "first-moment method",
+      "avoidance probability",
+      "Lovász Local Lemma"
+    ],
+    "prerequisites": [
+      "ENNReal order: pos_iff_ne_zero, le_add_right",
+      "the exact identity two_event_avoidance_add"
+    ]
+  }
+]
