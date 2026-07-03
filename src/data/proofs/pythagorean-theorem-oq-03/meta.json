@@ -300,6 +300,113 @@
       "summary": "PART XXV. The capstone comparison of the four metric forms: `euclideanForm = x²+y²` versus `minkowskiForm = t²−x²`, with `euclideanForm_nonneg`, `minkowski_form_indefinite`, `euclidean_ge_minkowski`, and the difference identity, contrasting definite (curved/flat) against indefinite (Lorentzian) signatures."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "hyperbolic_pythagorean",
+      "type": "theorem",
+      "statement": "∀ right triangle T in hyperbolic space, cosh T.c = cosh T.a * cosh T.b",
+      "significance": "The hyperbolic Pythagorean theorem: in the curvature −1 plane the hypotenuse relation is multiplicative in cosh, cosh c = cosh a · cosh b. Replaces the Euclidean sum of squares and is the central identity of the entry.",
+      "description": "Read off directly from the `HyperbolicRightTriangle.law` field packaging the defining relation into the structure."
+    },
+    {
+      "name": "spherical_pythagorean",
+      "type": "theorem",
+      "statement": "∀ right triangle T on the unit sphere, cos T.c = cos T.a * cos T.b",
+      "significance": "The spherical Pythagorean theorem: on the curvature +1 sphere the relation is multiplicative in cosine, cos c = cos a · cos b. The exact dual of the hyperbolic law under cos ↔ cosh, exhibiting the two constant-curvature geometries side by side.",
+      "description": "Extracted from the `SphericalRightTriangle.law` field."
+    },
+    {
+      "name": "spherical_pythagorean_R",
+      "type": "theorem",
+      "statement": "∀ right triangle T on a sphere of radius R, cos(T.c/R) = cos(T.a/R) * cos(T.b/R)",
+      "significance": "The radius-R spherical law, with sides rescaled by 1/R. Making the curvature scale explicit is what lets the flat (R → ∞) limit recover the Euclidean theorem and connects to the unified curvature framework.",
+      "description": "From the `SphericalRightTriangleR.law` field with the sides divided by the radius R."
+    },
+    {
+      "name": "positive_curvature_is_spherical",
+      "type": "theorem",
+      "statement": "κ > 0 → (GeneralizedPythagorean κ a b c ↔ cos(√κ·c) = cos(√κ·a)·cos(√κ·b))",
+      "significance": "One half of the unified curvature framework: for any positive curvature κ the generalized Pythagorean relation is exactly the spherical law with sides scaled by √κ. Curvature, not geometry, is the single governing parameter.",
+      "description": "Unfolds `GeneralizedPythagorean`/`generalizedCos` and simplifies under the hypothesis κ > 0."
+    },
+    {
+      "name": "negative_curvature_is_hyperbolic",
+      "type": "theorem",
+      "statement": "κ < 0 → (GeneralizedPythagorean κ a b c ↔ cosh(√(−κ)·c) = cosh(√(−κ)·a)·cosh(√(−κ)·b))",
+      "significance": "The companion half: for any negative curvature κ the same generalized relation becomes the hyperbolic law with sides scaled by √(−κ). Together with the spherical case it shows one formula continuously interpolates between the geometries.",
+      "description": "Unfolds the generalized definitions and simplifies using κ < 0 (so κ is not positive)."
+    },
+    {
+      "name": "flat_case_trivial",
+      "type": "theorem",
+      "statement": "∀ a b c, GeneralizedPythagorean 0 a b c",
+      "significance": "The zero-curvature seam of the framework: at κ = 0 the generalized relation holds identically, matching the Euclidean case a² + b² = c² that the curved laws degenerate to. Confirms the interpolation passes smoothly through flat space.",
+      "description": "At κ = 0 the `generalizedCos` definition collapses and `simp` closes the goal."
+    },
+    {
+      "name": "cosh_product_ge_approx",
+      "type": "theorem",
+      "statement": "∀ a b, cosh a * cosh b ≥ 1 + (a^2 + b^2)/2",
+      "significance": "The second-order flat limit: expanding the hyperbolic law cosh c = cosh a·cosh b to quadratic order reproduces 1 + (a²+b²)/2, i.e. the Euclidean c² ≈ a² + b². Makes precise how the Euclidean Pythagorean theorem emerges as the small-side approximation.",
+      "description": "Combines the tangent-parabola bounds cosh x ≥ 1 + x²/2 and cosh x ≥ 1 for both legs."
+    },
+    {
+      "name": "hyperbolic_pythagorean_correction",
+      "type": "theorem",
+      "statement": "(1 + a^2/2)(1 + b^2/2) = 1 + (a^2 + b^2)/2 + a^2 b^2/4",
+      "significance": "Isolates the curvature correction term a²b²/4 by which the hyperbolic product exceeds the Euclidean sum of squares. Quantifies exactly how the multiplicative curved law deviates from the additive flat one.",
+      "description": "A polynomial identity discharged by `ring`."
+    },
+    {
+      "name": "hyperbolic_hypotenuse_strictly_longer",
+      "type": "theorem",
+      "statement": "∀ hyperbolic right triangle T, cosh T.c > cosh T.a",
+      "significance": "The hypotenuse is strictly the longest side, even in negatively curved space: cosh c > cosh a because cosh b > 1 for a genuine leg. A qualitative sanity check that the hyperbolic law still orders the sides as expected.",
+      "description": "Rewrites with the law and uses cosh b > 1 for a nondegenerate leg to strictly increase the product."
+    },
+    {
+      "name": "hyperbolic_right_triangle_area_eq",
+      "type": "theorem",
+      "statement": "hyperbolicTriangleArea α β (π/2) = π/2 - α - β",
+      "significance": "Gauss–Bonnet for a hyperbolic right triangle: the area equals the angular defect π − (α + β + π/2) = π/2 − α − β. Ties the metric Pythagorean data to the intrinsic curvature via the angle sum, a feature absent in flat geometry.",
+      "description": "Unfolds the area definition (angle defect) at the right angle γ = π/2 and simplifies by `ring`."
+    },
+    {
+      "name": "intervalSq_factor",
+      "type": "theorem",
+      "statement": "∀ t x, intervalSq t x = (t - x)(t + x)",
+      "significance": "The Minkowski (anti-)Pythagorean form: the spacetime interval τ² = t² − x² factors as (t−x)(t+x), the indefinite analogue of a² + b². The sign flip on the spatial term is the fourth Pythagorean-type relation in the entry's unifying quartet.",
+      "description": "Unfolds `intervalSq` and factors the difference of squares by `ring`."
+    },
+    {
+      "name": "lorentz_boost_preserves_interval",
+      "type": "theorem",
+      "statement": "∀ t x φ, intervalSq (lorentzBoostRapidity t x φ) = intervalSq t x",
+      "significance": "Lorentz boosts (hyperbolic rotations by rapidity φ) preserve the spacetime interval — the exact analogue of Euclidean rotations preserving distance. This invariance is what makes τ² the correct 'Pythagorean' quantity in Minkowski space.",
+      "description": "Substitutes the cosh/sinh boost formulas and applies the identity cosh²φ − sinh²φ = 1."
+    },
+    {
+      "name": "time_dilation",
+      "type": "theorem",
+      "statement": "∀ t x, x ≠ 0 → intervalSq t x < t^2",
+      "significance": "Any spatial motion (x ≠ 0) strictly shortens the proper-time interval below the coordinate time t: τ² = t² − x² < t². The relativistic time-dilation inequality expressed directly through the Minkowski Pythagorean form.",
+      "description": "From τ² = t² − x² and x² > 0 by linear arithmetic."
+    },
+    {
+      "name": "reversed_triangle_timelike",
+      "type": "theorem",
+      "statement": "t₁ > |x₁| and t₂ > |x₂| → intervalSq (t₁+t₂) (x₁+x₂) ≥ intervalSq t₁ x₁ + intervalSq t₂ x₂",
+      "significance": "The reversed triangle inequality for timelike vectors: in Minkowski geometry the 'straight' worldline is the longest, opposite to the Euclidean triangle inequality. The signature-driven inversion of ordinary Pythagorean intuition.",
+      "description": "Reduces to `reversed_triangle_weak` using the timelike product condition guaranteed by t_i > |x_i|."
+    },
+    {
+      "name": "euclidean_ge_minkowski",
+      "type": "theorem",
+      "statement": "∀ a b, euclideanForm a b ≥ minkowskiForm a b",
+      "significance": "Directly compares the two quadratic forms of the quartet: the positive-definite Euclidean form always dominates the indefinite Minkowski form, the gap being exactly 2b² (a spatial-signature term). Crystallizes how signature alone separates Euclidean from Lorentzian Pythagoras.",
+      "description": "Unfolds both forms; the difference is 2b² ≥ 0 by `sq_nonneg`."
+    }
+  ],
   "conclusion": {
     "summary": "This formalization establishes the Pythagorean theorem across four geometries: spherical, Euclidean, hyperbolic, and Minkowski spacetime. With 105 fully proved theorems (zero sorries, zero axioms), it demonstrates the deep structural unity of metric geometry.\n\nThe key insight is that all Pythagorean-type theorems encode the metric: f(c) = f(a)·f(b) for curved geometries (cos/cosh), c² = a² + b² for flat, and τ² = t² − x² for Minkowski. The Minkowski extension reveals that changing the metric signature (rather than curvature) reverses the triangle inequality and produces time dilation.",
     "implications": "**Theoretical Significance**: The Pythagorean theorems across geometries are foundational in:\n\n1. **General Relativity**: Spacetime geometry near massive objects is non-Euclidean; the Minkowski interval is the local flat-space limit.\n2. **Special Relativity**: Time dilation, length contraction, and the twin paradox all follow from τ² = t² − x².\n**3. Navigation**: Spherical trigonometry governs great-circle distances on Earth.\n4. **Cosmology**: The large-scale geometry depends on curvature (spherical/flat/hyperbolic) while local physics uses Minkowski.\n5. **Network Science**: Hyperbolic geometry provides natural embeddings for hierarchical and scale-free networks.",
