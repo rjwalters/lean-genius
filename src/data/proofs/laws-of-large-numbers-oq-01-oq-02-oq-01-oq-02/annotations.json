@@ -90,5 +90,28 @@
       "Cesàro averages",
       "1/n → 0"
     ]
+  },
+  {
+    "id": "subsumes-nonnegative-step",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 57
+    },
+    "type": "context",
+    "title": "Subsuming the Nonnegative-Weight Toeplitz Step",
+    "content": "The theorem's docstring pins the exact relationship to the companion Kronecker entry. That entry's step tendsto_weighted_average_zero used a nonnegative normaliser matrix A n k = c k / A_norm n with c ≥ 0 and ∑_{k<n} c k ≤ A_norm n; its row absolute sums are automatically ≤ 1 and its columns c k / A_norm n → 0. So it is precisely the C = 1, nonnegative instance of tendsto_toeplitz_zero here. The generalization is twofold: the row bound C is now an arbitrary constant rather than 1, and the weights may carry any sign — the null-step proof never uses positivity, only the absolute-sum bound ∑|A n k| ≤ C in the triangle-inequality tail estimate. This is what lets a single theorem cover the Kronecker weights, signed averaging matrices, and Mathlib's Cesàro mean at once.",
+    "mathContext": "Only two of the three Toeplitz conditions — (bnd) $\\sum_{k<n}|A_{n,k}| \\le C$ and (col) $A_{\\cdot,k}\\to 0$ — enter the null step; the row-sum condition (row) is reserved for fixing the limit in the regular form. Dropping the sign constraint costs nothing because the tail is controlled through $|A_{n,k}|$, not $A_{n,k}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "generalization by absolute-sum bound",
+      "nonnegative normaliser matrices",
+      "signed summability weights",
+      "special-case instantiation"
+    ],
+    "prerequisites": [
+      "the Kronecker-lemma weighted average step",
+      "absolute value and the triangle inequality"
+    ]
   }
 ]
