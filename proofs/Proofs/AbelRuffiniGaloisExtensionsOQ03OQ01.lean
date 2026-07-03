@@ -40,10 +40,20 @@
   * `exists_min_support_ne_one` — **PROVED (0 sorry).** A nontrivial (in
     particular, any nontrivial normal) subgroup contains a nonidentity element of
     minimal support cardinality.
+  * `support_commutator_subset` — **PROVED (0 sorry).** If `τ.support ⊆ σ.support`
+    then the commutator `τ σ τ⁻¹ σ⁻¹` is supported within `σ.support`.
+  * `exists_smaller_commutator_of_five_points` — **PROVED (0 sorry).** The
+    strict-support-decrease *engine* for the cycle-of-length-`≥3` case: from five
+    distinct points `a,b,c,d,e` (with `b,c,d,e` moved and `σ a = b`, `σ b = c`),
+    the commutator with the 3-cycle `(c d e)` is a nonidentity element of `H` of
+    strictly smaller support.  This discharges the hard *quantitative* half of the
+    `#support ≥ 4` branch; what remains for the crux is the purely *combinatorial*
+    extraction of such a configuration (Case A) and the involution case (Case B).
   * `isThreeCycle_of_min_support` — the **isolated crux**, and now the *only*
     `sorry`.  Its `3 ≤ #support` and `#support = 3 ⇒ 3-cycle` branches are
-    **proved in-line**; the single remaining `sorry` is the classical
-    strict-support-decrease commutator step for `#support ≥ 4`.
+    **proved in-line**; the single remaining `sorry` is the `#support ≥ 4` branch,
+    now reduced (given the engine above) to producing the five-point configuration
+    or handling the disjoint-transposition (involution) case.
   * `exists_mem_isThreeCycle_of_normal` — **PROVED (0 sorry) modulo the crux**:
     assembled from `exists_min_support_ne_one` and `isThreeCycle_of_min_support`.
   * `isSimpleGroup_alternating` — the unconditional simplicity theorem for all
@@ -204,6 +214,106 @@ theorem support_commutator_subset {σ τ : Perm α} (hτσ : τ.support ⊆ σ.s
     exact hmap x hx
   · exact hy2
 
+/-- **Case A engine (0 sorry).** The strict-support-decrease step of Jordan's
+argument, in the exact form the crux consumes for a permutation with a cycle of
+length `≥ 3`.  Given five *distinct* points `a, b, c, d, e` with `b, c, d, e` all
+moved by `σ` and `σ a = b`, `σ b = c` (so `a, b, c` lie on a common cycle of length
+`≥ 3`), the commutator of `σ` with the 3-cycle `τ = (c d e)` is a nonidentity
+element of `H` whose support is *strictly smaller* than that of `σ`.
+
+Mechanism: `ρ = τ σ τ⁻¹ σ⁻¹ ∈ H` by normality (`commutator_mem_of_normal`); it is
+supported inside `σ.support` (`support_commutator_subset`, as
+`τ.support ⊆ {c,d,e} ⊆ σ.support`); `ρ c = e ≠ c` so `ρ ≠ 1`; and `ρ b = b` while
+`b ∈ σ.support`, so the support drops by at least one point. -/
+theorem exists_smaller_commutator_of_five_points
+    {H : Subgroup (alternatingGroup α)} (hHn : H.Normal)
+    {σ : alternatingGroup α} (hσH : σ ∈ H)
+    {a b c d e : α}
+    (_hab : a ≠ b) (hac : a ≠ c) (had : a ≠ d) (hae : a ≠ e)
+    (hbc : b ≠ c) (hbd : b ≠ d) (hbe : b ≠ e)
+    (hcd : c ≠ d) (hce : c ≠ e) (hde : d ≠ e)
+    (hbsupp : b ∈ (σ : Perm α).support)
+    (hc : c ∈ (σ : Perm α).support) (hd : d ∈ (σ : Perm α).support)
+    (he : e ∈ (σ : Perm α).support)
+    (hσab : (σ : Perm α) a = b) (hσbc : (σ : Perm α) b = c) :
+    ∃ ρ : alternatingGroup α, ρ ∈ H ∧ ρ ≠ 1 ∧
+      (ρ : Perm α).support.card < (σ : Perm α).support.card := by
+  classical
+  set sp : Perm α := (σ : Perm α) with hsp
+  -- The 3-cycle τ = (c d e), as an element of the alternating group.
+  set τp : Perm α := Equiv.swap c d * Equiv.swap c e with hτp
+  have hτ3 : τp.IsThreeCycle := isThreeCycle_swap_mul_swap_same hcd hce hde
+  have hτmem : τp ∈ alternatingGroup α := hτ3.mem_alternatingGroup
+  set τ : alternatingGroup α := ⟨τp, hτmem⟩ with hτ
+  -- `τ.support ⊆ {c, d, e}`.
+  have hτsub : τp.support ⊆ ({c, d, e} : Finset α) := by
+    intro x hx
+    rw [hτp] at hx
+    have hx2 := support_mul_le (Equiv.swap c d) (Equiv.swap c e) hx
+    rw [Finset.sup_eq_union, support_swap hcd, support_swap hce] at hx2
+    simp only [Finset.mem_union, Finset.mem_insert, Finset.mem_singleton] at hx2 ⊢
+    tauto
+  have hcde_sub : ({c, d, e} : Finset α) ⊆ sp.support := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl
+    · exact hc
+    · exact hd
+    · exact he
+  have hτσ : τp.support ⊆ sp.support := hτsub.trans hcde_sub
+  -- `a, b ∉ τ.support`.
+  have hbτ : b ∉ τp.support := by
+    intro h; have := hτsub h
+    simp only [Finset.mem_insert, Finset.mem_singleton] at this
+    rcases this with h | h | h
+    · exact hbc h
+    · exact hbd h
+    · exact hbe h
+  have haτ : a ∉ τp.support := by
+    intro h; have := hτsub h
+    simp only [Finset.mem_insert, Finset.mem_singleton] at this
+    rcases this with h | h | h
+    · exact hac h
+    · exact had h
+    · exact hae h
+  -- Basic pointwise values of `τ` and `τ⁻¹`.
+  have hτpb : τp b = b := notMem_support.mp hbτ
+  have hτpinvb : τp⁻¹ b = b := notMem_support.mp (by rw [support_inv]; exact hbτ)
+  have hτpinva : τp⁻¹ a = a := notMem_support.mp (by rw [support_inv]; exact haτ)
+  have hτpc : τp c = e := by
+    rw [hτp, Equiv.Perm.mul_apply, Equiv.swap_apply_left,
+      Equiv.swap_apply_of_ne_of_ne (Ne.symm hce) (Ne.symm hde)]
+  -- `sp⁻¹ c = b` and `sp⁻¹ b = a` from the cycle relations.
+  have hspc : sp⁻¹ c = b := by rw [← hσbc]; exact Equiv.symm_apply_apply _ _
+  have hspb : sp⁻¹ b = a := by rw [← hσab]; exact Equiv.symm_apply_apply _ _
+  -- The commutator element and its underlying permutation.
+  set ρ : alternatingGroup α := τ * σ * τ⁻¹ * σ⁻¹ with hρ
+  have hρcoe : (ρ : Perm α) = τp * sp * τp⁻¹ * sp⁻¹ := by
+    rw [hρ]
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv, hτ, hsp]
+  refine ⟨ρ, ?_, ?_, ?_⟩
+  · rw [hρ]; exact commutator_mem_of_normal hHn hσH τ
+  · -- `ρ ≠ 1`, since its underlying permutation sends `c` to `e ≠ c`.
+    have hρc : (ρ : Perm α) c = e := by
+      rw [hρcoe]
+      simp only [Equiv.Perm.mul_apply]
+      rw [hspc, hτpinvb, hσbc, hτpc]
+    intro hρ1
+    have hc1 : (ρ : Perm α) c = c := by rw [hρ1, Subgroup.coe_one, Equiv.Perm.one_apply]
+    rw [hρc] at hc1
+    exact hce hc1.symm
+  · -- Support strictly smaller: `ρ` fixes `b ∈ σ.support` but is supported in it.
+    have hsub : (ρ : Perm α).support ⊆ sp.support := by
+      rw [hρcoe]; exact support_commutator_subset hτσ
+    have hρb : (ρ : Perm α) b = b := by
+      rw [hρcoe]
+      simp only [Equiv.Perm.mul_apply]
+      rw [hspb, hτpinva, hσab, hτpb]
+    have hbnotρ : b ∉ (ρ : Perm α).support := notMem_support.mpr hρb
+    have hss : (ρ : Perm α).support ⊂ sp.support :=
+      (Finset.ssubset_iff_of_subset hsub).mpr ⟨b, hbsupp, hbnotρ⟩
+    exact Finset.card_lt_card hss
+
 /-! ### The classical combinatorial crux (the sole remaining `sorry`) -/
 
 /-- **Crux (KNOWN result; single remaining `sorry`).** A nonidentity element `σ`
@@ -211,8 +321,12 @@ of a normal subgroup `H ⊴ Aₙ` (`n ≥ 5`) whose support is *minimal* among t
 nonidentity elements of `H` is a 3-cycle.
 
 The `3 ≤ #support` and `#support = 3 ⇒ 3-cycle` branches are discharged here; the
-remaining `sorry` is exactly the classical strict-support-decrease commutator step
-handling `#support ≥ 4` (see the file header for the proof plan). -/
+remaining `sorry` is the `#support ≥ 4` branch.  Its quantitative core — that a
+suitable commutator strictly shrinks the support — is now the **proved** lemma
+`exists_smaller_commutator_of_five_points`; the residual `sorry` is the
+combinatorial extraction of a five-point configuration `a,b,c,d,e` with `σ a = b`,
+`σ b = c` (available whenever `σ² ≠ 1` and `#support ≥ 5`) together with the
+disjoint-transposition (`σ² = 1`) case. -/
 theorem isThreeCycle_of_min_support
     (h5 : 5 ≤ Fintype.card α)
     {H : Subgroup (alternatingGroup α)} (hHn : H.Normal)

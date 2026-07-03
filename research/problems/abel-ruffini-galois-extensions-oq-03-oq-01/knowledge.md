@@ -123,3 +123,53 @@ Insights accumulated during research on this problem.
   focused session.
 - On completion: verified gallery entry + candidate Mathlib PR (general
   `alternatingGroup.isSimpleGroup`).
+
+## Session 2026-07-03 (Session 3, researcher-16) — Prove the Case A strict-decrease engine
+
+**Mode**: DEEP DIVE (continues #33855 isolate → #33912 four-lemma decomposition)
+**Outcome**: progress (1 new 0-sorry lemma; still 1 crux sorry) · **PR**: (this session)
+
+### What I did
+- Aristotle MCP still down (`Resource not found`/404) — manual formalization only.
+  Elaborated via `lake env lean <abs worktree path>` against main's prebuilt
+  Mathlib oleans (durable worktree `/Users/rwalters/lg-r16-abelruffini`; the
+  `.loom/worktrees/researcher-16` copy was reaped mid-session, as usual).
+- Proved **`exists_smaller_commutator_of_five_points`** (0 sorry): the quantitative
+  *engine* of the `#support ≥ 4` crux branch for the cycle-of-length-≥3 case.
+  Given five distinct points `a,b,c,d,e` with `b,c,d,e ∈ supp σ`, `σ a = b`,
+  `σ b = c`, the commutator `ρ = τ σ τ⁻¹ σ⁻¹` with the 3-cycle
+  `τ = swap c d * swap c e = (c d e)` is a nonidentity element of `H` with
+  `#supp ρ < #supp σ`.
+- Re-elaborated whole file: EXIT 0, exactly one `sorry` (crux `#support ≥ 4`
+  branch), 10 theorems.
+
+### Key findings (the exact working construction)
+- Take `τ = swap c d * swap c e` (`isThreeCycle_swap_mul_swap_same hcd hce hde`
+  gives `IsThreeCycle`, hence `mem_alternatingGroup`). `τ.support ⊆ {c,d,e}` via
+  `support_mul_le` + `support_swap` (no need for the *exact* support set).
+- **ρ ≠ 1**: compute `ρ c = τ(σ(τ⁻¹(σ⁻¹ c))) = τ(σ(τ⁻¹ b)) = τ(σ b) = τ c = e ≠ c`.
+  Uses `σ⁻¹ c = b` (from `σ b = c`, `Equiv.symm_apply_apply`), `τ⁻¹ b = b` and
+  `τ b = b` (as `b ∉ τ.support`), `τ c = e` (`mul_apply`+`swap_apply_left`+
+  `swap_apply_of_ne_of_ne`).
+- **strict decrease**: `ρ b = τ(σ(τ⁻¹(σ⁻¹ b))) = τ(σ(τ⁻¹ a)) = τ(σ a) = τ b = b`,
+  so `b ∉ ρ.support`; with `ρ.support ⊆ σ.support` (the already-proved
+  `support_commutator_subset`) and `b ∈ σ.support` this gives a *strict* subset
+  (`Finset.ssubset_iff_of_subset` + `Finset.card_lt_card`).
+- Note: the a,b,c hypothesis `σ a = b, σ b = c` are exactly what `σ² ≠ 1` yields
+  (set `a` with `σ² a ≠ a`, `b = σ a`, `c = σ² a`; all three are moved & distinct).
+- `Equiv.Perm.inv_apply_self` is DEPRECATED → use `Equiv.symm_apply_apply` (works
+  on `sp⁻¹` by defeq `sp⁻¹ = sp.symm`).
+
+### What remains for the crux (`#support ≥ 4` branch)
+1. **Case A extraction**: when `σ² ≠ 1`, produce `a,b,c` (above) plus two more
+   moved points `d,e` — needs `#supp σ ≥ 5`. Ruling out `#supp σ = 4` in this case
+   needs the parity fact "even + `σ² ≠ 1` ⇒ not a single 4-cycle" (cycleType).
+   Then `exists_smaller_commutator_of_five_points` closes it against minimality.
+2. **Case B (`σ² = 1`, disjoint transpositions, ≥2 of them)**: needs its OWN engine
+   — `σ = (a b)(c d)…`, pick a 5th point `e` (n ≥ 5), `τ = (c d e)`; then
+   `[τ,σ]` is a 3-cycle on `{c,d,e}` (support 3 < 4), NOT ⊆ supp σ. A second
+   engine lemma with a general `#supp([τ,σ]) < #supp σ` count is required.
+
+### Blockers (environment, not mathematical)
+- Aristotle MCP down all session (404). Docker build not attempted (single-file
+  `lake env lean` sufficed and is faster with warm oleans).
