@@ -1,0 +1,102 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 4, "endLine": 47 },
+    "type": "concept",
+    "title": "The Diagonal Beta Sequence as Power-Series Coefficients",
+    "content": "The parent entries evaluate the Euler Beta integral on the integer lattice (B(m+1,n+1) = m!·n!/(m+n+1)!) and on its diagonal (B(n+1,n+1) = 1/((2n+1)·C(2n,n))). This file turns the diagonal into a sequence b(n) = B(n+1,n+1) = (n!)²/(2n+1)! and studies it as the coefficients of a power series. The goal is the arithmetic structure that fixes the ordinary generating function y(x) = Σₙ b(n)xⁿ. The headline is the contiguous recurrence (4n+6)·b(n+1) = (n+1)·b(n); with b(0) = 1 it determines the whole sequence, and translating it coefficient-by-coefficient yields the ODE x(4−x)y' + (2−x)y = 2, y(0) = 1, whose closed-form solution is y(x) = 4·arcsin(√x/2)/√(x(4−x)) (value π/2 at x = 2). This entry supplies the verified arithmetic backbone; the analytic proof of the closed form is the stated sequel.",
+    "mathContext": "$\\sum_{n\\ge0} B(n{+}1,n{+}1)\\,x^n = \\dfrac{4\\,\\arcsin(\\sqrt{x}/2)}{\\sqrt{x(4-x)}},\\quad 0<x<4.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ordinary generating function",
+      "contiguous recurrence",
+      "Euler Beta integral",
+      "central binomial coefficient",
+      "arcsine series"
+    ],
+    "prerequisites": [
+      "the sibling diagonal Beta value B(n+1,n+1) = 1/((2n+1)·C(2n,n))",
+      "generating functions and linear recurrences"
+    ]
+  },
+  {
+    "id": "ann-definition-base",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 54, "endLine": 79 },
+    "type": "definition",
+    "title": "The Sequence and its Base Values",
+    "content": "centralBeta n = (n!·n!)/(2n+1)! defines b(n) over ℝ, the natural home for a power-series coefficient sequence. The first values are computed directly by norm_num on the factorials: b(0) = 1, b(1) = 1/6, b(2) = 1/30, matching the sibling entry's independently derived B(1,1) = 1, B(2,2) = 1/6, B(3,3) = 1/30. centralBeta_pos records that every term is strictly positive (positive numerator and denominator), which is what makes the reciprocal form and the division steps of the recurrence legitimate.",
+    "mathContext": "$b(n) = \\dfrac{(n!)^2}{(2n+1)!};\\quad b(0)=1,\\ b(1)=\\tfrac16,\\ b(2)=\\tfrac1{30}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorials",
+      "Beta distribution normalization",
+      "sequence positivity"
+    ],
+    "prerequisites": [
+      "factorial arithmetic",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-reciprocal-bridge",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 82, "endLine": 106 },
+    "type": "tactic",
+    "title": "Reciprocal Form and the Bridge to the Gallery Beta Value",
+    "content": "centralBeta_eq_reciprocal shows b(n) = 1/((2n+1)·C(2n,n)) by rewriting the denominator with the sibling entry's factorization (2n+1)! = (2n+1)·C(2n,n)·(n!)² and clearing the common (n!)² factor via field_simp (both denominators positive). centralBeta_eq_betaIntegral then casts this reciprocal form to ℂ and matches it against betaIntegral_diag_central_binom, proving ((b(n):ℝ):ℂ) = betaIntegral (n+1) (n+1). This bridge is what makes the study literally about the generating function of the Euler Beta values Σₙ B(n+1,n+1)xⁿ, not merely of an abstract rational sequence.",
+    "mathContext": "$b(n) = \\dfrac{1}{(2n+1)\\binom{2n}{n}},\\qquad (b(n):\\mathbb{C}) = B(n{+}1,n{+}1).$",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial reciprocal",
+      "cast from ℝ to ℂ",
+      "Euler Beta integral"
+    ],
+    "prerequisites": [
+      "sibling factorization factorial_two_mul_succ",
+      "betaIntegral_diag_central_binom",
+      "field_simp / push_cast"
+    ]
+  },
+  {
+    "id": "ann-factorial-identity",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 108, "endLine": 121 },
+    "type": "tactic",
+    "title": "The Exact Factorial Identity",
+    "content": "centralBeta_factorial_identity is the natural-number heart of the recurrence: (4n+6)·(n+1)!²·(2n+1)! = (n+1)·n!²·(2(n+1)+1)!. The proof expands (n+1)! = (n+1)·n! and (2n+3)! = (2n+3)·(2n+2)·(2n+1)! through repeated Nat.factorial_succ, after which both sides equal (4n+6)(n+1)²·n!²·(2n+1)! and ring closes the goal. Casting this integer identity to ℝ is exactly what the real recurrence needs after the denominators are cleared.",
+    "mathContext": "$(4n+6)\\,((n{+}1)!)^2\\,(2n+1)! = (n+1)\\,(n!)^2\\,(2n+3)!.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "factorial recurrence",
+      "Nat.factorial_succ",
+      "ring normalization"
+    ],
+    "prerequisites": [
+      "Nat.factorial_succ"
+    ]
+  },
+  {
+    "id": "ann-recurrence",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-02",
+    "range": { "startLine": 123, "endLine": 138 },
+    "type": "key-step",
+    "title": "The Contiguous Recurrence — the OGF's Arithmetic Engine",
+    "content": "centralBeta_recurrence proves (4n+6)·b(n+1) = (n+1)·b(n). After unfolding the definition, the two factorial denominators are cleared with div_eq_div_iff (both nonzero by Nat.factorial_pos) and the goal becomes the real cast of centralBeta_factorial_identity, discharged by linear_combination. The successive ratio b(n+1)/b(n) = (n+1)/(2(2n+3)) is a rational function of n of degree (1,1) — the hallmark of a hypergeometric-type sequence — and this recurrence is precisely the coefficient form of the first-order linear ODE x(4−x)y'(x) + (2−x)y(x) = 2 satisfied by y(x) = Σₙ b(n)xⁿ. Together with b(0) = 1 it characterizes the generating function, whose closed form is 4·arcsin(√x/2)/√(x(4−x)).",
+    "mathContext": "$(4n+6)\\,b(n{+}1) = (n+1)\\,b(n)\\ \\Longleftrightarrow\\ x(4-x)y' + (2-x)y = 2,\\ y(0)=1.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "contiguous recurrence",
+      "generating-function ODE",
+      "hypergeometric sequence",
+      "div_eq_div_iff",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "centralBeta_factorial_identity",
+      "Nat.factorial_pos",
+      "field arithmetic over ℝ"
+    ]
+  }
+]
