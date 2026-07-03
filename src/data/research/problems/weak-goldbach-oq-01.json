@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-22T13:03:46.384Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Initial exploration of the problem.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
@@ -29,22 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (open problem): axiom-free symmetric/midpoint reformulation of Strong Goldbach verified and added to gallery (PR #33936). Conjecture itself remains open.",
+    "progressSummary": "PROGRESS (open problem): symmetric reformulation (PR #33936) extended with two structural refinements — offset-parity constraint (search space halved a second time to one residue class mod 2) and prime-midpoint sufficient condition (k=0 balanced partition). All axiom-free. Conjecture itself remains open.",
     "builtItems": [
       "sumTwoPrimes_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:73 (per-n equivalence, 0-axiom)",
       "strong_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:98 (conjecture-level equivalence)",
       "decidableHasSymmetricPrimePair in Proofs/StrongGoldbachSymmetric.lean:118 (kernel-decide instance, axiom-free)",
-      "Gallery entry src/data/proofs/strong-goldbach-symmetric (meta+annotations), verified/original, PR #33936"
+      "Gallery entry src/data/proofs/strong-goldbach-symmetric (meta+annotations), verified/original, PR #33936",
+      "symmetric_pair_offset_parity in Proofs/StrongGoldbachSymmetric.lean:224 (offset must have opposite parity to midpoint for m>2; axiom-free)",
+      "symmetricPairCount_eq_oppositeParity in Proofs/StrongGoldbachSymmetric.lean:235 (comet count = count over single residue class mod 2; second halving of search space)",
+      "hasSymmetricPrimePair_of_prime in Proofs/StrongGoldbachSymmetric.lean:264 (prime midpoint => balanced partition 2m=m+m via k=0)",
+      "symmetricPairCount_pos_of_prime in Proofs/StrongGoldbachSymmetric.lean:269 (prime midpoint has positive comet count)"
     ],
     "insights": [
       "Strong Goldbach for even n=2m is equivalent to existence of a symmetric prime pair (m-k, m+k) with k<m — every Goldbach partition sits symmetrically about the midpoint n/2 (Goldbach comet).",
       "The midpoint-symmetry equivalence needs no lower bound on m: for m=0 both sides are false since primes are >=2, so it quantifies cleanly over all m in N.",
-      "Strong Goldbach and its symmetric form are logically identical (strong_iff_symmetric); the reformulation halves the search space to one bounded parameter k<n/2."
+      "Strong Goldbach and its symmetric form are logically identical (strong_iff_symmetric); the reformulation halves the search space to one bounded parameter k<n/2.",
+      "For m>2 every symmetric-pair offset k has parity OPPOSITE to m: m-k and m+k differ by 2k (same parity) and are both odd, forcing m%2 != k%2. This restricts the offset scan to one residue class mod 2 — a second 2x reduction on top of k<m.",
+      "Every prime is a Goldbach midpoint: k=0 gives the balanced partition 2m=m+m, so Prime m => HasSymmetricPrimePair m unconditionally. The comet count includes k=0 exactly when m is prime."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize a lower bound on the number of symmetric prime pairs (partial Goldbach comet asymptotic) — would give Strong Goldbach for almost all m if pushed.",
-      "Investigate the minimal offset k(m) for which (m-k,m+k) are both prime; relate to prime-gap bounds."
+      "Formalize a lower bound on symmetricPairCount (partial Goldbach comet asymptotic) — genuinely hard analytic NT, likely not axiom-free.",
+      "Combine offset-parity with the k<m bound to give an explicit reduced offset range (ceil((m-1)/2) candidates) and a faster decidable search.",
+      "Relate minimal offset k(m) to prime-gap bounds."
     ]
   },
   "tags": [
@@ -63,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.384Z",
-  "lastUpdate": "2026-07-02",
+  "lastUpdate": "2026-07-03",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [

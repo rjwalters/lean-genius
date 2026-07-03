@@ -209,4 +209,65 @@ example : symmetricPairCount 6 = 1 := by decide
 example : 0 < symmetricPairCount 9 :=
   (hasSymmetricPrimePair_iff_count_pos 9).mp (by decide)
 
+/-! ## Offset Parity: A Second Halving of the Search Space
+
+For `m > 2` both summands of a symmetric prime pair are odd
+(`symmetric_pair_both_odd`). Since `m - k` and `m + k` differ by `2 * k` they
+share a parity, so their being odd forces the offset `k` to have the *opposite*
+parity to the midpoint `m`. Concretely: when `m` is even only odd offsets can
+work, and when `m` is odd only even offsets can. This restricts the offset scan
+to one residue class mod `2`, halving the search space a second time on top of
+the `k < m` bound. -/
+
+/-- For `m > 2`, any symmetric-prime-pair offset `k` has parity opposite to the
+midpoint `m` (equivalently `m + k` is odd, so `m` and `k` cannot share a parity). -/
+theorem symmetric_pair_offset_parity {m k : ℕ} (hm : 2 < m) (hk : k < m)
+    (hp1 : Nat.Prime (m - k)) (hp2 : Nat.Prime (m + k)) :
+    m % 2 ≠ k % 2 := by
+  obtain ⟨-, hodd2⟩ := symmetric_pair_both_odd hm hk hp1 hp2
+  obtain ⟨j, hj⟩ := hodd2
+  omega
+
+/-- **The comet count is supported on offsets of opposite parity to `m`.** For
+`m > 2` the parity conjunct `m % 2 ≠ k % 2` is automatic on the counted set, so
+adding it changes nothing — but it exhibits `symmetricPairCount` as a count over
+a single residue class mod `2`. -/
+theorem symmetricPairCount_eq_oppositeParity (m : ℕ) (hm : 2 < m) :
+    symmetricPairCount m =
+      ((Finset.range m).filter
+        (fun k => Nat.Prime (m - k) ∧ Nat.Prime (m + k) ∧ m % 2 ≠ k % 2)).card := by
+  rw [symmetricPairCount]
+  refine congrArg Finset.card (Finset.filter_congr ?_)
+  intro k hk
+  rw [Finset.mem_range] at hk
+  constructor
+  · rintro ⟨h1, h2⟩
+    exact ⟨h1, h2, symmetric_pair_offset_parity hm hk h1 h2⟩
+  · rintro ⟨h1, h2, -⟩
+    exact ⟨h1, h2⟩
+
+-- `m = 6` is even, so only the odd offset `k = 1` (giving `12 = 5 + 7`) survives.
+example :
+    ((Finset.range 6).filter
+      (fun k => Nat.Prime (6 - k) ∧ Nat.Prime (6 + k) ∧ 6 % 2 ≠ k % 2)).card = 1 := by decide
+
+/-! ## Prime Midpoints: A Trivial Sufficient Condition
+
+If the midpoint `m` is itself prime then the balanced partition `2 * m = m + m`
+is a Goldbach partition, realised by the zero offset `k = 0`. So every prime is a
+Goldbach midpoint — a cost-free family of confirmed cases of the symmetric
+conjecture, and the reason the comet count includes `k = 0` exactly when `m` is
+prime. -/
+
+/-- If the midpoint `m` is prime, it has a symmetric prime pair via `k = 0`
+(the balanced partition `2 * m = m + m`). -/
+theorem hasSymmetricPrimePair_of_prime {m : ℕ} (hm : Nat.Prime m) :
+    HasSymmetricPrimePair m :=
+  ⟨0, hm.pos, by simpa using hm, by simpa using hm⟩
+
+/-- Consequently every prime midpoint has positive comet count. -/
+theorem symmetricPairCount_pos_of_prime {m : ℕ} (hm : Nat.Prime m) :
+    0 < symmetricPairCount m :=
+  (hasSymmetricPrimePair_iff_count_pos m).mp (hasSymmetricPrimePair_of_prime hm)
+
 end StrongGoldbach

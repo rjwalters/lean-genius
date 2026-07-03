@@ -100,8 +100,22 @@
       "id": "sec-parity-constraint",
       "title": "Structural Constraint: Both Summands Are Odd for 2m > 4",
       "startLine": 174,
-      "endLine": 212,
+      "endLine": 210,
       "summary": "symmetric_pair_odd: for m > 2, the smaller prime m−k of a symmetric pair is odd — if it were 2 then m+k = 2(m−1) would be an even prime > 2, impossible (proved via Nat.Prime.even_iff and omega). symmetric_pair_both_odd extends this to both summands. This is the formal statement that the prime 2 never participates in a Goldbach partition of an even number greater than 4."
+    },
+    {
+      "id": "sec-offset-parity",
+      "title": "Offset Parity: A Second Halving of the Search Space",
+      "startLine": 212,
+      "endLine": 252,
+      "summary": "symmetric_pair_offset_parity: for m > 2, any valid offset k must have parity opposite to the midpoint m (m % 2 ≠ k % 2), a direct consequence of both summands being odd (m−k and m+k differ by 2k so share a parity). symmetricPairCount_eq_oppositeParity makes this concrete: the comet count is unchanged if the offset scan is restricted to the single residue class k ≢ m (mod 2), halving the search space a second time on top of the k < m bound. Both proofs are axiom-free (omega + Finset.filter_congr)."
+    },
+    {
+      "id": "sec-prime-midpoints",
+      "title": "Prime Midpoints: A Trivial Sufficient Condition",
+      "startLine": 254,
+      "endLine": 271,
+      "summary": "hasSymmetricPrimePair_of_prime: if the midpoint m is itself prime, the balanced partition 2m = m + m (offset k = 0) is a Goldbach partition, so every prime is a Goldbach midpoint — a cost-free confirmed family for the symmetric conjecture. symmetricPairCount_pos_of_prime routes this through the count-positivity equivalence. Axiom-free (k = 0 witness + simp)."
     }
   ],
   "conclusion": {
@@ -115,9 +129,9 @@
   },
   "leanFile": {
     "namespace": "StrongGoldbach",
-    "lineCount": 212,
+    "lineCount": 273,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 10,
     "definitionCount": 5,
     "path": "Proofs/StrongGoldbachSymmetric.lean",
     "sorries": 0
