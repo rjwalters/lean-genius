@@ -53,7 +53,8 @@
       "Integer pairwise distances confine the distinct distances to {1, ..., floor(diam)}, a set of size at most the diameter.",
       "The bound is a pure counting injection: each distinct integer distance is a distinct point of a length-floor(D) range.",
       "This single inequality is what upgrades a distinct-distances lower bound (Guth-Katz, c n/log n) into a diameter lower bound for integer-distance sets.",
-      "The bridge is entirely independent of the hard explicit-construction sorry (Piepmeyer's 9-point witness) in the scaffold."
+      "The bridge is entirely independent of the hard explicit-construction sorry (Piepmeyer's 9-point witness) in the scaffold.",
+      "The cap #distinct ≤ diam is special to integer distances: for an arbitrary planar set the number of distinct distances is not constrained by the diameter (Guth-Katz shows it can grow like ~n/√(log n), far exceeding a fixed diameter). Integrality is exactly what forces the distances into {1, ..., floor(diam)}, which is why Erdős #100 admits a diameter lower bound while the general distinct-distances problem does not translate into one."
     ]
   },
   "sections": [
