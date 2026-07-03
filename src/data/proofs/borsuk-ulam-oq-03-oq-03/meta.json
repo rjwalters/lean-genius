@@ -348,5 +348,119 @@
       "description": "Equivariant Borsuk-Ulam for general group actions — while this entry proves BU constructively for ℤ/2 (antipodal) via Tucker, the equivariant version extends to ℤ/p and compact Lie group actions"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "borsuk_ulam_2d_corrected",
+      "type": "theorem",
+      "statement": "∀ continuous f : S² → ℝ², ∃ x ∈ S², f x = f (−x)",
+      "significance": "The headline result: the exact 2-dimensional Borsuk–Ulam theorem, obtained constructively through Tucker's combinatorial lemma rather than the usual algebraic-topology machinery (degree theory / cohomology). Answers the open question in the affirmative.",
+      "description": "Minimizes d(x) = dist(f x, f(−x)) over the compact sphere S²; the approximate version forces the minimum to 0, and antipodal continuity upgrades the infimum to an attained exact coincidence."
+    },
+    {
+      "name": "approx_borsuk_ulam_2d_corrected",
+      "type": "theorem",
+      "statement": "∀ continuous f : S² → ℝ², ∀ ε>0, ∃ x ∈ S², dist (f x) (f (−x)) < ε",
+      "significance": "The quantitative heart of the proof: for every tolerance ε there is a nearly-antipodal-coincident point. This is what Tucker's lemma delivers directly; the exact theorem is its compactness limit.",
+      "description": "Transfers tucker_disk_approx_zero_proved from the disk to the sphere via the diskToSphere parametrization, using that g = antisymmetricDiff3 f is odd and continuous on S²."
+    },
+    {
+      "name": "tucker_disk_approx_zero_proved",
+      "type": "theorem",
+      "statement": "g continuous with odd boundary on D² ⟹ ∀ δ>0, ∃ w ∈ D², dist (g w) 0 < δ",
+      "significance": "The Part-XXIII capstone assembling the whole pipeline on the disk: an odd-on-the-boundary continuous field must come arbitrarily close to zero somewhere. This is where the Tucker axiom is actually consumed.",
+      "description": "Chains tucker_2d_grid (complementary edge exists) → complementary_edge_approx_dominant (edge ⟹ g small) → mesh_refinement_principle (refine the grid) → radial extension, letting the grid mesh → 0."
+    },
+    {
+      "name": "tucker_2d_grid",
+      "type": "axiom",
+      "statement": "For a signed labeling L of the (2N+1)×(2N+1) grid that is antipodal on the boundary, ∃ a complementary edge (u,v) ∈ gridEdgesTriFin N",
+      "significance": "The single assumption of the development: Tucker's lemma specialized to the triangulated square grid. Everything else in the file is proved from Mathlib; this combinatorial fixed-point statement is the one axiom (status: axiomatized, axiomCount 1).",
+      "description": "Stated after the triangulated-grid infrastructure (gridEdgesTriFin, gridBoundaryFin, gridAntipodalFin). The intended proof is the standard door-counting / parity argument on triangle boundaries, sketched informally in Part XXIII."
+    },
+    {
+      "name": "tucker_1d",
+      "type": "theorem",
+      "statement": "L : Fin(2N+1) → Bool with L 0 ≠ L (last) ⟹ ∃ i, L i.castSucc ≠ L i.succ",
+      "significance": "The one-dimensional Tucker lemma: an antipodally-labeled line must contain a sign-changing (complementary) edge. It is the base case and conceptual template for the 2D grid axiom.",
+      "description": "An immediate corollary of discrete_ivt applied to the boolean labeling on a path of 2N+1 vertices."
+    },
+    {
+      "name": "discrete_ivt",
+      "type": "theorem",
+      "statement": "f : Fin(n+1) → Bool with f 0 ≠ f (last) ⟹ ∃ i, f i.castSucc ≠ f i.succ",
+      "significance": "A discrete intermediate value theorem: a boolean sequence with differing endpoints must flip somewhere. This combinatorial IVT is the discrete analogue that replaces continuity arguments in the Tucker approach.",
+      "description": "By contradiction: if no adjacent pair differs, induction propagates f 0 to f (last), contradicting the endpoint hypothesis."
+    },
+    {
+      "name": "dominantComponentLabel_antipodal",
+      "type": "theorem",
+      "statement": "v ≠ 0 ⟹ dominantComponentLabel(−v) = ⟨(label v).1, ¬(label v).2⟩",
+      "significance": "The labeling scheme is antipodal: negating a vector keeps the dominant coordinate but flips its sign bit. This is exactly the boundary-antipodal condition Tucker's lemma requires, linking the geometric odd field to the combinatorial labeling.",
+      "description": "Unfolds dominantComponentLabel (dominant coordinate = larger |component|, sign = its sign) and uses abs_neg to see the magnitude comparison is invariant while the sign flips."
+    },
+    {
+      "name": "complementary_edge_approx_dominant",
+      "type": "theorem",
+      "statement": "g continuous, edge (u,v) with opposite dominant signs in coordinate k ⟹ g is small near the edge",
+      "significance": "Bridges combinatorics back to analysis: a Tucker complementary edge (labels +k and −k) forces the k-th component of g to change sign, so by the intermediate value theorem g is nearly zero along the edge.",
+      "description": "Applies the intermediate value theorem on the segment between u and v to the sign-changing coordinate (ivt_segment_fst/snd), then bounds the non-dominant coordinate via continuity."
+    },
+    {
+      "name": "mesh_refinement_principle",
+      "type": "theorem",
+      "statement": "g continuous on D², ε>0 ⟹ ∃ δ>0, close disk points have g-values within ε",
+      "significance": "Uniform continuity on the compact disk: refining the triangulation mesh below δ makes the approximate zeros genuinely small. This is what lets the sequence of ε-approximate coincidences converge to an exact one.",
+      "description": "Uniform continuity of g on the compact closed disk (closedDisk_isCompact + continuous ⟹ uniformly continuous) extracts the modulus δ for the given ε."
+    },
+    {
+      "name": "radialExtend_zero_gives_disk_zero",
+      "type": "theorem",
+      "statement": "dist (radialExtend g x) 0 < δ ⟹ ∃ w ∈ D², dist (g w) 0 < δ",
+      "significance": "Justifies the radial extension from the disk D² to the square [−1,1]²: a near-zero of the extended field yields a near-zero of the original field on the disk, so working on the square grid loses nothing.",
+      "description": "Case split on whether x lies inside the disk; outside, radialExtend projects x radially onto the boundary circle, and the boundary value coincides with a genuine disk value."
+    },
+    {
+      "name": "mesh_refinement_square",
+      "type": "theorem",
+      "statement": "h continuous on [−1,1]², ε>0 ⟹ ∃ δ>0, close square points have h-values within ε",
+      "significance": "The square-grid analogue of the disk mesh-refinement principle, needed because the Tucker grid lives on [−1,1]² rather than the disk. Ensures grid refinement controls the field on the square domain.",
+      "description": "Uniform continuity of h on the compact closed square [−1,1]² (closedSquare_isCompact) supplies the modulus δ."
+    },
+    {
+      "name": "gridAntipodalFin_involution",
+      "type": "theorem",
+      "statement": "gridAntipodalFin N (gridAntipodalFin N v) = v",
+      "significance": "The discrete antipodal map on the (2N+1)² grid is an involution — the combinatorial counterpart of x ↦ −x squaring to the identity. A structural prerequisite for a well-posed antipodal labeling.",
+      "description": "Both coordinates use Fin.rev; the identity is Fin.rev_rev (double reversal is the identity)."
+    },
+    {
+      "name": "gridAntipodalFin_maps_boundary",
+      "type": "theorem",
+      "statement": "v ∈ gridBoundaryFin N ⟹ gridAntipodalFin N v ∈ gridBoundaryFin N",
+      "significance": "The grid antipodal map preserves the boundary, so the boundary-antipodal hypothesis of Tucker's lemma is meaningful and self-consistent on the triangulated grid.",
+      "description": "A boundary vertex has a coordinate equal to 0 or 2N; reversing (val ↦ 2N − val) sends 0 ↔ 2N, keeping the vertex on the boundary."
+    },
+    {
+      "name": "antisymmetricDiff3_odd",
+      "type": "theorem",
+      "statement": "antisymmetricDiff3 f (neg3 x) = −(antisymmetricDiff3 f x)",
+      "significance": "The reduction that starts the whole proof: g(x) = f(x) − f(−x) is an odd field on S³ ⊂ ℝ³, converting the coincidence problem f(x)=f(−x) into finding a zero of an odd map — precisely Tucker's setting.",
+      "description": "Direct computation unfolding antisymmetricDiff3 and neg3 with neg3_neg3, then ext/ring on each component."
+    },
+    {
+      "name": "antisymmetricDiff_eq_zero_iff",
+      "type": "theorem",
+      "statement": "antisymmetricDiff f x = (0,0) ↔ f x = f (−x)",
+      "significance": "Pins the equivalence exploited throughout: a zero of the odd difference field is exactly an antipodal coincidence point of f. Reduces Borsuk–Ulam to a zero-finding problem.",
+      "description": "Unfolds antisymmetricDiff and rearranges the componentwise equalities f x − f(−x) = 0 into f x = f(−x)."
+    },
+    {
+      "name": "diskToSphere_on_sphere",
+      "type": "theorem",
+      "statement": "p ∈ D² ⟹ diskToSphere p lands on S² (sum of squared coords = 1)",
+      "significance": "The explicit disk→hemisphere parametrization used to pull the sphere problem down to the planar disk where the grid/Tucker machinery lives, sending the disk onto the unit sphere.",
+      "description": "Computes the third coordinate as √(1 − p.1² − p.2²) and verifies p.1² + p.2² + (√…)² = 1 via Real.sq_sqrt on the nonnegative radicand."
+    }
+  ]
 }
