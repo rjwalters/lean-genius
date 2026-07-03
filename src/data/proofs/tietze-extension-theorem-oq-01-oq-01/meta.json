@@ -37,32 +37,35 @@
       "title": "The Tietze Extension Property and the Forward Direction",
       "startLine": 46,
       "endLine": 58,
-      "summary": "HasTietzeExtensionProperty X packages the conclusion of the Tietze theorem as a property: every continuous real function on a closed set extends to all of X. hasTietzeExtensionProperty_of_normalSpace records the forward direction — every NormalSpace has this property — as a thin wrapper around Mathlib's ContinuousMap.exists_restrict_eq, so the converse below completes a genuine equivalence.",
-      "mathContext": "$\\mathrm{TietzeProp}(X):\\ \\forall\\,s\\ \\text{closed},\\ \\forall f\\in C(s,\\mathbb{R}),\\ \\exists g\\in C(X,\\mathbb{R}),\\ g|_s=f$; and $\\mathrm{Normal}\\Rightarrow\\mathrm{TietzeProp}$."
+      "summary": "HasTietzeExtensionProperty X abstracts 'every f ∈ C(s,ℝ) on a closed s extends to C(X,ℝ)'; hasTietzeExtensionProperty_of_normalSpace is the forward direction (Mathlib's ContinuousMap.exists_restrict_eq repackaged)."
     },
     {
       "id": "clopen-lemma",
       "title": "The Clopen Boundary Lemma",
       "startLine": 60,
       "endLine": 82,
-      "summary": "isClopen_subtype_of_disjoint_closed: for disjoint closed A, B, the part of the subspace s = A ∪ B lying over B is clopen. Closed as the preimage of B under the continuous inclusion; open because its complement in s is exactly the part over A (each point of s is in A or B and not both), again a preimage of a closed set. This is the geometric engine of the whole argument.",
-      "mathContext": "Inside $s=A\\cup B$, the set $\\{x : x\\in B\\}$ is clopen: closed (preimage of $B$) and open (complement is $\\{x:x\\in A\\}$, by $A\\cap B=\\varnothing$)."
+      "summary": "isClopen_subtype_of_disjoint_closed: inside s = A ∪ B (A,B disjoint closed), the part over B is clopen — closed as a preimage of B, open since its complement is the part over A. The geometric heart of the converse."
     },
     {
-      "id": "converse",
+      "id": "converse-main",
       "title": "The Converse: Tietze Property Implies Normal",
       "startLine": 84,
       "endLine": 141,
-      "summary": "normalSpace_of_hasTietzeExtensionProperty: the main result. The clopen set has empty frontier, so x ↦ (if x ∈ B then 1 else 0) is continuous on s by Continuous.if; the Tietze property extends it to F : X → ℝ with F = 0 on A, F = 1 on B; then F⁻¹(Iio ½) and F⁻¹(Ioi ½) are disjoint open neighbourhoods of A and B. No separation axiom on X is used.",
-      "mathContext": "Disjoint closed $A,B$: extend the $\\{0,1\\}$ boundary function on $A\\cup B$ to $F:X\\to\\mathbb{R}$; then $F^{-1}(-\\infty,\\tfrac12)\\supseteq A$ and $F^{-1}(\\tfrac12,\\infty)\\supseteq B$ are disjoint opens."
+      "summary": "normalSpace_of_hasTietzeExtensionProperty: the clopen boundary makes the {0,1} boundary function continuous (Continuous.if, empty frontier); extend it to F, then F⁻¹(Iio ½) ⊇ A and F⁻¹(Ioi ½) ⊇ B are disjoint opens. No separation axiom on X is used."
     },
     {
-      "id": "corollaries",
-      "title": "The T1 Statement and the Equivalence",
+      "id": "t1-statement",
+      "title": "The T1 (Textbook) Statement",
       "startLine": 143,
-      "endLine": 156,
-      "summary": "t1Space_normalSpace_of_hasTietzeExtensionProperty restates the result under the classical T1 hypothesis (which is not actually used). normalSpace_iff_hasTietzeExtensionProperty pairs the converse with the forward direction into the full equivalence normal ⟺ Tietze extension property.",
-      "mathContext": "$\\mathrm{T1}+\\mathrm{TietzeProp}\\Rightarrow\\mathrm{Normal}$; and $\\mathrm{Normal}\\iff\\mathrm{TietzeProp}$."
+      "endLine": 150,
+      "summary": "t1Space_normalSpace_of_hasTietzeExtensionProperty: the classical T1 phrasing, with the entry making explicit that the T1 hypothesis is redundant — the bare Tietze property already forces normality."
+    },
+    {
+      "id": "equivalence",
+      "title": "The Full Equivalence: Normal ⟺ Tietze",
+      "startLine": 151,
+      "endLine": 158,
+      "summary": "normalSpace_iff_hasTietzeExtensionProperty pairs converse with forward into the biconditional normal ⟺ Tietze extension property — the arrow absent from Mathlib, closing the loop normal ⟺ Tietze ⟺ Urysohn."
     }
   ],
   "meta": {
