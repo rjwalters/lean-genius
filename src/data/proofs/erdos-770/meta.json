@@ -147,6 +147,120 @@
       "Natural density of subsets of the natural numbers"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "erdos_770_q1",
+      "type": "axiom",
+      "statement": "∀ prime p, the natural density of {n | hMinK n = p} exists",
+      "significance": "Question 1 of Erdős Problem 770 (OPEN): for each prime p the set of n with h(n) = p has a well-defined natural density δₚ. Axiomatized because proving density existence for this multiplicative-type function is beyond current techniques.",
+      "description": "Stated as an `axiom`; one of the entry's two open-problem assumptions."
+    },
+    {
+      "name": "erdos_770_q3",
+      "type": "axiom",
+      "statement": "∃ N₀, ∀ n ≥ N₀: if p is the largest prime with (p−1)∣n then hMinK n = p",
+      "significance": "Question 3 of Erdős Problem 770 (OPEN): for large n, h(n) is governed by the dominant prime p whose predecessor p−1 divides n. Captures the conjectured exact characterization of h(n); no proof exists in the literature.",
+      "description": "Stated as an `axiom`; the second open-problem assumption."
+    },
+    {
+      "name": "hMinK_unbounded",
+      "type": "theorem",
+      "statement": "∀ M, ∃ n, M < hMinK n",
+      "significance": "The resolved half of Question 2: the function h(n) is unbounded. For any bound M, choosing a prime p > M gives h(p−1) = p > M. The one part of Erdős 770 provable by elementary means.",
+      "description": "From hMinK_prime_minus_one and the infinitude of primes; axiom-free."
+    },
+    {
+      "name": "hMinK_prime_minus_one",
+      "type": "theorem",
+      "statement": "p prime → hMinK (p − 1) = p",
+      "significance": "The key exact formula: h(p−1) = p for every prime p. Fermat's little theorem makes p divide every term k^{p−1}−1 for k < p (so the gcd stays > 1), while at k = p the gcd drops to 1. The engine behind unboundedness and the conjectured characterization.",
+      "description": "Antisymmetry: upper bound from gcdPowerSeq_at_succ_eq_one, lower bound from the Fermat non-vanishing gcdPowerSeq_ne_one_of_large_prime; axiom-free."
+    },
+    {
+      "name": "hMinK_succ_of_prime",
+      "type": "theorem",
+      "statement": "Nat.Prime (n + 1) → hMinK n = n + 1",
+      "significance": "Corollary pinning h(n) exactly when n+1 is prime: h(n) = n+1. Identifies an infinite explicit family where the maximal value h(n) = n+1 is attained.",
+      "description": "Reindexing of hMinK_prime_minus_one at p = n+1; axiom-free."
+    },
+    {
+      "name": "hMinK_spec",
+      "type": "theorem",
+      "statement": "0 < n → gcdPowerSeq n (hMinK n) = 1",
+      "significance": "Well-definedness of h(n): at k = h(n) the gcd of {2^n−1, …, k^n−1} really does equal 1. Confirms hMinK is a genuine minimizer of the coprimality threshold.",
+      "description": "Nat.find_spec against the witness gcdPowerSeq_at_succ_eq_one; axiom-free."
+    },
+    {
+      "name": "hMinK_le_succ",
+      "type": "theorem",
+      "statement": "0 < n → hMinK n ≤ n + 1",
+      "significance": "The universal upper bound h(n) ≤ n+1: the coprimality threshold never exceeds n+1. Follows from the structural fact that the gcd already collapses to 1 by k = n+1.",
+      "description": "Nat.find_le with gcdPowerSeq_at_succ_eq_one; axiom-free."
+    },
+    {
+      "name": "hMinK_is_min",
+      "type": "theorem",
+      "statement": "0 < n, k < hMinK n → gcdPowerSeq n k ≠ 1",
+      "significance": "Minimality of h(n): below the threshold the gcd is genuinely > 1. Certifies that h(n) is the least k achieving coprimality, not merely some k.",
+      "description": "Nat.find_min; axiom-free."
+    },
+    {
+      "name": "gcdPowerSeq_at_succ_eq_one",
+      "type": "theorem",
+      "statement": "0 < n → gcdPowerSeq n (n + 1) = 1",
+      "significance": "The central structural bound guaranteeing h(n) is finite: the gcd of 2^n−1, …, (n+1)^n−1 is always 1. Any prime q ≤ n+1 divides q^n hence cannot divide q^n−1; any prime q > n+1 would need n+1 distinct roots of x^n−1 in 𝔽_q, impossible for a degree-n polynomial.",
+      "description": "Case split on a prime divisor q of the gcd (q ≤ n+1 vs q > n+1), each contradictory; axiom-free."
+    },
+    {
+      "name": "prime_dvd_pow_sub_one",
+      "type": "theorem",
+      "statement": "p prime, (p−1) ∣ n, p ∤ a → p ∣ (a^n − 1)",
+      "significance": "Fermat's little theorem in the form powering the whole analysis: when (p−1)∣n, every a coprime to p satisfies a^n ≡ 1 (mod p). This is why p divides many terms of the sequence at once, keeping the gcd large.",
+      "description": "Via ZMod.pow_card_sub_one_eq_one lifted through the divisibility (p−1)∣n; axiom-free."
+    },
+    {
+      "name": "prime_not_dvd_self_pow_sub_one",
+      "type": "theorem",
+      "statement": "p prime, 0 < n → ¬ (p ∣ p^n − 1)",
+      "significance": "The complementary fact that breaks the divisibility: p never divides p^n−1 (else p ∣ 1). This is precisely what lets the gcd drop to 1 once k reaches p, terminating the coprimality search.",
+      "description": "p ∣ p^n and p ∣ (p^n−1) would give p ∣ 1; axiom-free."
+    },
+    {
+      "name": "gcdPowerSeq_fermat_transition",
+      "type": "theorem",
+      "statement": "p prime, 0 < n, (p−1) ∣ n → p ∣ gcdPowerSeq n (p−1) ∧ ¬ p ∣ gcdPowerSeq n p",
+      "significance": "The sharp transition at k = p: the prime p divides the gcd up through k = p−1 but not at k = p. This single-step drop is the mechanism determining the exact value of h(n).",
+      "description": "Combines prime_dvd_gcdPowerSeq (up to p−1) with prime_not_dvd_gcdPowerSeq_self (at p); axiom-free."
+    },
+    {
+      "name": "gcdPowerSeq_dvd_of_le",
+      "type": "theorem",
+      "statement": "j ≤ k → gcdPowerSeq n k ∣ gcdPowerSeq n j",
+      "significance": "Monotone divisibility: extending the range of the gcd can only shrink it (in the divisibility order). Guarantees the sequence of gcds is nonincreasing, so once it hits 1 the search is over.",
+      "description": "The gcd over a larger Icc divides that over a smaller one; axiom-free."
+    },
+    {
+      "name": "gcdPowerSeq_stable",
+      "type": "theorem",
+      "statement": "gcdPowerSeq n k = 1, k ≤ j → gcdPowerSeq n j = 1",
+      "significance": "Stability of coprimality: once the gcd reaches 1 at some k it stays 1 for all larger j. Confirms h(n) is a genuine threshold rather than a transient dip.",
+      "description": "From gcdPowerSeq_dvd_of_le and 1 having only the divisor 1; axiom-free."
+    },
+    {
+      "name": "h_val_12",
+      "type": "theorem",
+      "statement": "gcdPowerSeq 12 2 ≠ 1 ∧ gcdPowerSeq 12 3 ≠ 1 ∧ … (the h(12) verification chain)",
+      "significance": "A representative concrete verification pinning the value of h(n) for a specific n (n = 12), part of the h_val_1..h_val_12 table that anchors the abstract theory in explicit computed thresholds.",
+      "description": "Chains the gcdPowerSeq_12_* literal-value theorems, each discharged by `native_decide` (contributes Lean.ofReduceBool)."
+    },
+    {
+      "name": "fermat_13_divides",
+      "type": "theorem",
+      "statement": "13 ∣ (2^12 − 1) ∧ 13 ∣ (3^12 − 1)",
+      "significance": "A concrete instance of the Fermat mechanism (p = 13): the prime divides a^{p−1}−1 for bases coprime to it, illustrated numerically. Grounds prime_dvd_pow_sub_one and the fermat_p_breaks companions in explicit arithmetic.",
+      "description": "Direct computation; part of the fermat_* verification block discharged by `native_decide` (contributes Lean.ofReduceBool)."
+    }
+  ],
   "conclusion": {
     "summary": "Erdős Problem #770 is formalized with 0 sorries and 3 axioms: the two OPEN questions Q1/Q3 (erdos_770_q1, erdos_770_q3) plus `Lean.ofReduceBool` (the concrete h(n) computations for n = 1..12 are dispatched by native_decide, which trusts the compiler's kernel reduction). Contains Fermat-based structural theorems, gcd monotonicity, a polynomial root-counting argument for h(n) ≤ n+1 (all axiom-free apart from Mathlib), and the formal definition hMinK with its properties. New: hMinK_prime_minus_one proves h(p-1) = p for all primes p; hMinK_unbounded proves that h is unbounded (resolving Q2's upper half) without native_decide.",
     "implications": "**Theoretical Significance**: Understanding h(n) would illuminate the arithmetic structure of exponential sequences modulo primes.\n\nThe density question connects to the distribution of smooth numbers and Fermat quotients. The largest-prime characterization would link h(n) to the factorization of n+1, bridging analytic and algebraic number theory.",
