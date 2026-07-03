@@ -97,6 +97,48 @@
       "ℝ≥0∞ truncated subtraction and finite products: tsub_eq_zero_iff_le, Finset.prod_ne_zero_iff, Finset.prod_const, Finset.card_range"
     ]
   },
+  "sections": [
+    {
+      "id": "framing",
+      "title": "Framing: The Denominator Recursion's Relative Primitive",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "The module docstring explains why the ambient quantitative bound is not enough: the Erdős–Lovász induction's denominator recursion lower-bounds survival of one block of events conditioned on the survival of another (μ[⋂_{S₁} Aⱼᶜ | ⋂_{S₂} Aⱼᶜ] ≥ ∏(1 − xⱼ)). This file supplies the relative analogue of avoidance_ge_prod_one_sub — every probability taken relative to a fixed background event H — and lists the three results (relative bound, symmetric (1 − p)ⁿ, positivity).",
+      "mathContext": "The proof transports the flagship unconditional bound along the conditioning map: μ[·|H] is a genuine probability measure (cond_isProbabilityMeasure) and the tower property identifies its internal conditionals with the H-relative ones. No new probabilistic content."
+    },
+    {
+      "id": "setup",
+      "title": "Imports and Ambient Assumptions",
+      "startLine": 51,
+      "endLine": 61,
+      "summary": "Imports the ambient quantitative entry (for avoidance_ge_prod_one_sub) and the chain-rule entry; opens MeasureTheory / ProbabilityTheory / Finset and the ENNReal scope; fixes Ω a measurable space, μ an IsProbabilityMeasure, and A : ℕ → Set Ω. The background event H is supplied per-theorem, not as a standing assumption.",
+      "mathContext": "Everything is Finset.range-indexed over an arbitrary IsProbabilityMeasure, relative to an arbitrary positive-measure background event H."
+    },
+    {
+      "id": "relative-bound",
+      "title": "The Relative Quantitative Bound",
+      "startLine": 63,
+      "endLine": 104,
+      "summary": "cond_avoidance_ge_prod_one_sub: from background-relative bounds μ[A k | (⋂_{j<k}(A j)ᶜ) ∩ H] ≤ bₖ < 1 it derives ∏ₖ (1 − bₖ) ≤ μ[⋂ᵢ (A i)ᶜ | H]. The proof makes μ[·|H] a probability measure (cond_isProbabilityMeasure), rewrites each internal conditional of μ[·|H] as the H-relative conditional via the tower property cond_cond_eq_cond_inter (with Set.inter_comm), so the hypotheses of avoidance_ge_prod_one_sub applied to μ[·|H] are exactly the relative bounds; its conclusion is the claim by rfl.",
+      "mathContext": "μ[·|H][Aₖ | ⋂_{j<k} Aⱼᶜ] = μ[Aₖ | H ∩ ⋂_{j<k} Aⱼᶜ] (tower property), and μ[·|H](⋂ Aᵢᶜ) = μ[⋂ Aᵢᶜ | H] definitionally — so the whole result is a change-of-measure transport, not a new estimate."
+    },
+    {
+      "id": "symmetric",
+      "title": "Symmetric Specialisation (1 − p)ⁿ",
+      "startLine": 106,
+      "endLine": 120,
+      "summary": "cond_avoidance_ge_one_sub_pow: a single uniform background-relative bound μ[A k | (⋂_{j<k}(A j)ᶜ) ∩ H] ≤ p < 1 gives (1 − p)ⁿ ≤ μ[⋂ᵢ (A i)ᶜ | H]. Obtained from the relative bound with the constant budget b ≡ p, collapsing the product via Finset.prod_const and Finset.card_range.",
+      "mathContext": "The shape the symmetric LLL produces inside the denominator recursion — each relative conditional bounded by 2p under e·p·(d+1) ≤ 1."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity of the Relative Avoidance Probability",
+      "startLine": 122,
+      "endLine": 140,
+      "summary": "cond_avoidance_pos_of_prod_one_sub_pos: since every bₖ < 1 makes 1 − bₖ strictly positive, the product lower bound is positive, so 0 < μ[⋂ᵢ (A i)ᶜ | H]. This is the conditional analogue of avoidance_pos_of_prod_one_sub_pos, and it is exactly what the denominator recursion needs to keep every conditioning set of positive measure as it descends.",
+      "mathContext": "Positivity of the ℝ≥0∞ product via zero_lt_iff + Finset.prod_ne_zero_iff, reducing to 1 − bₖ ≠ 0 (tsub_eq_zero_iff_le / not_le on bₖ < 1)."
+    }
+  ],
   "conclusion": {
     "summary": "The relative quantitative measure-theoretic Lovász Local Lemma bound is fully machine-verified: for any background event H of positive measure, background-relative per-event conditional failure bounds μ[A k | (⋂_{j<k}(A j)ᶜ) ∩ H] ≤ bₖ < 1 propagate to ∏ₖ (1 − bₖ) ≤ μ[⋂ᵢ (A i)ᶜ | H], with symmetric specialisation (1 − p)ⁿ ≤ μ[⋂ Aᵢᶜ | H] and positivity 0 < μ[⋂ Aᵢᶜ | H]. Proved by transporting the ambient quantitative bound to the conditioned measure μ[·|H] via the tower property. 0 sorries, 0 axioms.",
     "implications": "**Removes the last structural obstacle between the gallery's quantitative scaffold and the Erdős–Lovász induction.** The quantitative entry proved the avoidance lower bound over the ambient measure; the dependency-split entry proved the numerator moves over arbitrary subset histories. But the LLL induction's denominator recursion lower-bounds survival probabilities RELATIVE to a background non-neighbour-survival event, and no ambient bound could be used there. This entry supplies the relative bound for free, showing the whole quantitative scaffold lifts to the conditioned measure via a change of measure plus the tower property.\n\n**Honest scope**: the background-relative conditional bounds bₖ are hypotheses here; the well-founded recursion that supplies them (each conditioning set strictly smaller, so the LLL inductive hypothesis applies, giving bₖ = 2p under e·p·(d+1) ≤ 1) remains the open research target. Numerator and denominator primitives are now both in place; what remains is to close the recursion.",
