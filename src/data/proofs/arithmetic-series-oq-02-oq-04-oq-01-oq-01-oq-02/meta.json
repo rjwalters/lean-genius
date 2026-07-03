@@ -133,6 +133,36 @@
       "description": "The C(k,m)·k!-normalized shadow of this rising-factorial convolution is the ordinary Vandermonde identity Σ C(a,m)·C(b,k-m) = C(a+b,k) on binomial coefficients."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "ascPochhammer_eval_add",
+      "type": "theorem",
+      "statement": "(ascPochhammer S k).eval (x + y) = ∑ m ∈ range (k + 1), (ascPochhammer S m).eval x * (ascPochhammer S (k - m)).eval y * (k.choose m : S)",
+      "significance": "The headline result: over any commutative semiring S, the rising-factorial polynomial sequence x^(k) = (ascPochhammer S k).eval x is of binomial type, satisfying the additive (Chu-Vandermonde) convolution (x+y)^(k) = Σ C(k,m) x^(m) y^(k-m). This is the additive companion to Mathlib's multiplicative composition law ascPochhammer_mul, and is not present in Mathlib.",
+      "description": "Induction on k mirroring the binomial theorem Commute.add_pow. The recurrence ascPochhammer_succ_eval plays the role of pow_succ; the index-dependent shift (z + n) is absorbed by a Pascal-rule step (Nat.choose_succ_succ') with a single case split (h_middle), with boundary summand values (h_first, h_last) handling the endpoints, and the induction closed by sum manipulation lemmas (sum_range_succ, sum_range_succ', sum_add_distrib) and ring."
+    },
+    {
+      "name": "ascFactorial_add_vandermonde",
+      "type": "theorem",
+      "statement": "(a + b).ascFactorial k = ∑ m ∈ range (k + 1), a.ascFactorial m * b.ascFactorial (k - m) * k.choose m",
+      "significance": "The ℕ specialization stated with Mathlib's Nat.ascFactorial: the multiset / Chu-Vandermonde identity for rising factorials, which is the concrete form of the recorded open question. It exhibits Nat.ascFactorial as a binomial-type sequence over the naturals.",
+      "description": "Obtained as the S = ℕ, x = a, y = b instance of ascPochhammer_eval_add, transported through ascPochhammer_nat_eq_ascFactorial and Nat.cast_id via simpa."
+    },
+    {
+      "name": "ascFactorial_add_vandermonde_prod",
+      "type": "theorem",
+      "statement": "(a + b).ascFactorial k = ∑ m ∈ range (k + 1), (∏ i ∈ range m, (a + i)) * (∏ i ∈ range (k - m), (b + i)) * k.choose m",
+      "significance": "The same convolution written with explicit rising products n^(j) = ∏_{i<j} (n+i), making the combinatorial content fully elementary and independent of the ascFactorial/ascPochhammer abstractions.",
+      "description": "Rewrites ascFactorial_add_vandermonde and expands each Nat.ascFactorial into its product form via Nat.ascFactorial_eq_prod_range under a Finset.sum_congr."
+    },
+    {
+      "name": "ascFactorial_add_vandermonde_symm",
+      "type": "theorem",
+      "statement": "(∑ m ∈ range (k + 1), a.ascFactorial m * b.ascFactorial (k - m) * k.choose m) = ∑ m ∈ range (k + 1), b.ascFactorial m * a.ascFactorial (k - m) * k.choose m",
+      "significance": "A structural corollary recording the a ↔ b symmetry of the convolution: since (a+b) = (b+a), swapping the two arguments reindexes the sum m ↦ k-m without changing its value. It confirms the identity respects commutativity of addition.",
+      "description": "Rewrites both sides back to (a+b).ascFactorial k and (b+a).ascFactorial k via ascFactorial_add_vandermonde in each direction, then closes with Nat.add_comm."
+    }
+  ],
   "mathlibDependencies": [
     {
       "theorem": "ascPochhammer_succ_eval",
