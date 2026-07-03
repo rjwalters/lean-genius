@@ -144,6 +144,134 @@
       "mathContext": "The defect π-(A+B+C) equals the hyperbolic area (Gauss-Bonnet, curvature -1)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sin_A_pos",
+      "type": "theorem",
+      "statement": "For a hyperbolic triangle t, 0 < sin t.A (and symmetrically sin_B_pos, sin_C_pos).",
+      "significance": "Each angle lies strictly in (0, π), so its sine is positive. This is the non-vanishing that licenses dividing by sin A · sin B when inverting the second law of cosines — every later formula depends on it.",
+      "description": "Immediate from Real.sin_pos_of_pos_of_lt_pi applied to the structure's angle-bound fields hA and hA_lt."
+    },
+    {
+      "name": "sin_B_pos",
+      "type": "theorem",
+      "statement": "For a hyperbolic triangle t, 0 < sin t.B.",
+      "significance": "Companion positivity for angle B, needed to invert the laws of cosines at vertices touching B.",
+      "description": "Real.sin_pos_of_pos_of_lt_pi applied to hB and hB_lt."
+    },
+    {
+      "name": "sin_C_pos",
+      "type": "theorem",
+      "statement": "For a hyperbolic triangle t, 0 < sin t.C.",
+      "significance": "Companion positivity for angle C; together the three guarantee every sine-product denominator is nonzero.",
+      "description": "Real.sin_pos_of_pos_of_lt_pi applied to hC and hC_lt."
+    },
+    {
+      "name": "cosh_c_eq",
+      "type": "theorem",
+      "statement": "cosh t.c = (cos t.C + cos t.A · cos t.B) / (sin t.A · sin t.B).",
+      "significance": "The central inversion: the second law of cosines is solved for cosh c, expressing the side purely in terms of the three angles. This is the equation that makes hyperbolic AAA congruence possible.",
+      "description": "Clears the nonzero denominator sin A · sin B (via sin_A_pos, sin_B_pos) with eq_div_iff, then closes by linear_combination against the structure field lawC."
+    },
+    {
+      "name": "cosh_a_eq",
+      "type": "theorem",
+      "statement": "cosh t.a = (cos t.A + cos t.B · cos t.C) / (sin t.B · sin t.C).",
+      "significance": "Side a expressed from the angles alone, the cyclic partner of cosh_c_eq. All three side formulas together show the angles determine the full metric of the triangle.",
+      "description": "eq_div_iff on the nonzero sin B · sin C, then linear_combination against lawA."
+    },
+    {
+      "name": "cosh_b_eq",
+      "type": "theorem",
+      "statement": "cosh t.b = (cos t.B + cos t.A · cos t.C) / (sin t.A · sin t.C).",
+      "significance": "Side b from the angles, completing the cyclic trio of inversions.",
+      "description": "eq_div_iff on the nonzero sin A · sin C, then linear_combination against lawB."
+    },
+    {
+      "name": "angle_formula_gt_one",
+      "type": "theorem",
+      "statement": "1 < (cos t.C + cos t.A · cos t.B) / (sin t.A · sin t.B).",
+      "significance": "Shows the angle-only formula for cosh c genuinely exceeds 1 — a necessary condition for a real side to exist — and pinpoints WHY: the angular defect A + B + C < π. The defect is exactly what makes the hyperbolic side valid, tying area to geometry.",
+      "description": "Reduces via lt_div_iff₀ to sin A · sin B < cos C + cos A · cos B. From the defect, A + B < π − C, so strict antitonicity of cos on [0, π] (Real.cos_lt_cos_of_nonneg_of_le_pi) gives cos(π − C) < cos(A + B); expanding cos_pi_sub and cos_add and using linarith closes it."
+    },
+    {
+      "name": "cosh_c_gt_one",
+      "type": "theorem",
+      "statement": "1 < cosh t.c.",
+      "significance": "The hyperbolic side is genuine (cosh c > 1, consistent with c > 0), and — notably — this is re-derived from the angles alone rather than from the side's positivity, confirming internal consistency of the angle description.",
+      "description": "Rewrites with cosh_c_eq and applies angle_formula_gt_one."
+    },
+    {
+      "name": "cosh_c_determined",
+      "type": "theorem",
+      "statement": "If t₁ and t₂ have equal angles (A, B, C), then cosh t₁.c = cosh t₂.c.",
+      "significance": "First step of AAA congruence: equal angles force equal cosh of the corresponding side, since the side formula depends only on the angles.",
+      "description": "Rewrites both sides with cosh_c_eq and substitutes the angle equalities."
+    },
+    {
+      "name": "cosh_a_determined",
+      "type": "theorem",
+      "statement": "Equal angles imply cosh t₁.a = cosh t₂.a.",
+      "significance": "Cyclic partner establishing that side a's cosh is angle-determined.",
+      "description": "cosh_a_eq on both triangles followed by the angle substitutions."
+    },
+    {
+      "name": "cosh_b_determined",
+      "type": "theorem",
+      "statement": "Equal angles imply cosh t₁.b = cosh t₂.b.",
+      "significance": "Cyclic partner for side b, completing the cosh-level determination.",
+      "description": "cosh_b_eq on both triangles followed by the angle substitutions."
+    },
+    {
+      "name": "c_determined",
+      "type": "theorem",
+      "statement": "Equal angles imply t₁.c = t₂.c (the side itself, not just its cosh).",
+      "significance": "Upgrades cosh-equality to side-equality using injectivity of cosh on [0, ∞). This is where positivity of side lengths (hc) is spent to remove the ± ambiguity of cosh.",
+      "description": "Applies Real.cosh_strictMonoOn.injOn on Ici 0 (membership from t₁.hc, t₂.hc) to cosh_c_determined."
+    },
+    {
+      "name": "a_determined",
+      "type": "theorem",
+      "statement": "Equal angles imply t₁.a = t₂.a.",
+      "significance": "Side-level determination for a, via cosh injectivity.",
+      "description": "Real.cosh_strictMonoOn.injOn applied to cosh_a_determined with ha positivity."
+    },
+    {
+      "name": "b_determined",
+      "type": "theorem",
+      "statement": "Equal angles imply t₁.b = t₂.b.",
+      "significance": "Side-level determination for b, via cosh injectivity.",
+      "description": "Real.cosh_strictMonoOn.injOn applied to cosh_b_determined with hb positivity."
+    },
+    {
+      "name": "aaa_congruence",
+      "type": "theorem",
+      "statement": "Two hyperbolic triangles with equal angles A, B, C have equal sides: t₁.a = t₂.a ∧ t₁.b = t₂.b ∧ t₁.c = t₂.c.",
+      "significance": "The headline result: hyperbolic AAA congruence. Unlike Euclidean geometry, similar triangles are automatically congruent — angles determine size. This is the qualitative signature of negative curvature.",
+      "description": "Bundles a_determined, b_determined, and c_determined into a triple conjunction."
+    },
+    {
+      "name": "equilateral_cosh",
+      "type": "theorem",
+      "statement": "If all three angles equal a common θ (= C), then cosh t.c = cos θ / (1 − cos θ).",
+      "significance": "A clean closed form for the equilateral hyperbolic triangle: the side grows unboundedly as θ → 0 (large thin triangles) and shrinks to 0 as θ → π/3 (the Euclidean limit where the defect vanishes).",
+      "description": "From cosh_c_eq with A = B = C, rewrites sin²C = (1 − cos C)(1 + cos C) (from sin_sq_add_cos_sq, nlinarith), establishes 1 − cos C ≠ 0, then clears denominators with div_eq_div_iff and finishes by ring."
+    },
+    {
+      "name": "angle_sum_lt_pi",
+      "type": "theorem",
+      "statement": "t.A + t.B + t.C < π.",
+      "significance": "Re-exports the defining hyperbolic angle-sum inequality as a named fact for downstream use.",
+      "description": "Directly returns the structure field defect."
+    },
+    {
+      "name": "area_positive",
+      "type": "theorem",
+      "statement": "0 < π − (t.A + t.B + t.C).",
+      "significance": "The angular defect — equal to the hyperbolic area by the Gauss-Bonnet theorem — is strictly positive, the quantitative meaning of 'the angle sum falls short of π'.",
+      "description": "linarith from the defect field."
+    }
+  ],
   "references": [
     {
       "authors": [
