@@ -14,6 +14,11 @@
     "relatedConcepts": [
       "abs_add",
       "metric axioms"
+    ],
+    "prerequisites": [
+      "absolute value on ℝ",
+      "case analysis on signs",
+      "order properties of ℝ"
     ]
   },
   {
@@ -31,6 +36,11 @@
     "relatedConcepts": [
       "Lipschitz continuity",
       "abs_abs_sub_abs_le_abs_sub"
+    ],
+    "prerequisites": [
+      "the triangle inequality |x+y| ≤ |x|+|y|",
+      "absolute value",
+      "subtraction and rearrangement"
     ]
   },
   {
@@ -48,6 +58,11 @@
     "relatedConcepts": [
       "SeminormedAddCommGroup",
       "norm_add_le"
+    ],
+    "prerequisites": [
+      "normed vector spaces",
+      "the norm axioms",
+      "seminormed additive groups"
     ]
   },
   {
@@ -65,6 +80,11 @@
     "relatedConcepts": [
       "PseudoMetricSpace",
       "dist_triangle"
+    ],
+    "prerequisites": [
+      "metric spaces",
+      "the distance function d(x,y)",
+      "the metric axioms"
     ]
   },
   {
@@ -82,6 +102,10 @@
     "relatedConcepts": [
       "path length",
       "iterated inequality"
+    ],
+    "prerequisites": [
+      "the triangle inequality for three points",
+      "iterating an inequality"
     ]
   },
   {
@@ -99,6 +123,11 @@
     "relatedConcepts": [
       "collinearity",
       "degenerate triangle"
+    ],
+    "prerequisites": [
+      "the triangle inequality",
+      "strict vs non-strict order",
+      "sign analysis"
     ]
   },
   {
@@ -116,6 +145,11 @@
     "relatedConcepts": [
       "Lipschitz continuity",
       "uniform continuity"
+    ],
+    "prerequisites": [
+      "the reverse triangle inequality",
+      "Lipschitz continuity",
+      "the definition of a Lipschitz constant"
     ]
   },
   {
@@ -133,6 +167,11 @@
     "relatedConcepts": [
       "functional analysis",
       "continuous functions"
+    ],
+    "prerequisites": [
+      "norms and the reverse triangle inequality in normed spaces",
+      "Lipschitz continuity",
+      "continuity of the norm"
     ]
   },
   {
@@ -150,6 +189,11 @@
     "relatedConcepts": [
       "series convergence",
       "error bounds"
+    ],
+    "prerequisites": [
+      "the triangle inequality in a normed space",
+      "induction over a finite index set",
+      "Finset sums"
     ]
   }
 ]
