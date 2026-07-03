@@ -273,3 +273,48 @@ The S3 assembly is done. Two new theorems in
   Only fiddly part is ENNReal/rpow bookkeeping. Yields standalone Kolmogorov.
 - **S4b:** truncation + moment estimates (M–Z-specific), then final assembly with
   `ae_tendsto_kronecker_average_zero`.
+
+## Session 2026-07-03 (researcher-4) — S4a: Kolmogorov convergence from a variance-sum bound (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (S4a, the flagged "single cleanest remaining increment"). **Outcome**:
+3 new verified theorems, build ✔ (7743 jobs), 0-axiom (`#print axioms` =
+propext/Classical.choice/Quot.sound on both the main theorem and the bridge lemma).
+
+Discharged the deterministic `hbdd` L¹ hypothesis of
+`ae_tendsto_sum_of_indep_of_eLpNorm_bdd` from a variance-sum bound. Three theorems added
+to `Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (§ Kolmogorov):
+
+1. **`eLpNorm_two_sq_eq_evariance`** `(h0 : μ[X] = 0) : eLpNorm X 2 μ ^ 2 = evariance X μ`.
+   The mean-zero bridge — **Mathlib has NO `eLpNorm`↔`evariance` lemma** (confirmed by
+   repo-wide grep), this supplies the centered case. Proof: unfold `eLpNorm` via
+   `eLpNorm_eq_lintegral_rpow_enorm` to `(∫⁻‖X‖ₑ²)^{1/2}`; unfold `evariance`, kill the
+   centering with `simp [h0, sub_zero]`; reconcile the outer `(·)^{1/2}` squared back to
+   the lintegral via `← ENNReal.rpow_natCast _ 2`, `← ENNReal.rpow_mul`, `(1/2)*2=1`,
+   `rpow_one`; then `simp_rw [ENNReal.rpow_two]` to align the integrand's `^(2:ℝ)` (rpow)
+   with `evariance`'s `^2` (nat pow).
+2. **`eLpNorm_two_partialSum_le`** — uniform L² bound `‖Sₙ‖₂ ≤ ofReal(√V)` from
+   `∑_{i≤n} Var ≤ V`. `‖Sₙ‖₂² = eVar[Sₙ] = ofReal(Var Sₙ) = ofReal(∑Var) ≤ ofReal V`
+   (bridge + `ofReal_variance` + `IndepFun.variance_sum` orthogonality), then √ by the
+   monotone ℝ≥0∞-power `ENNReal.rpow_le_rpow · (0≤1/2)`.
+3. **`ae_tendsto_sum_of_indep_of_variance_bdd`** — Kolmogorov's a.s.-convergence criterion
+   in variance-sum form: `‖·‖₁ ≤ ‖·‖₂` (`eLpNorm_le_eLpNorm_of_exponent_le`, needs
+   `IsProbabilityMeasure` + `AEStronglyMeasurable`) chained with (2).
+
+**Reusable Lean gotchas (Mathlib v4.26):**
+- `eLpNorm_le_eLpNorm_of_exponent_le (hpq)(hf : AEStronglyMeasurable f μ)` — DOES need the
+  measurability arg (not just `IsProbabilityMeasure`).
+- Mean of a Finset-sum-of-functions: `μ[∑ i, X i] = ∑ μ[X i]` needs
+  `simp_rw [Finset.sum_apply]` BEFORE `integral_finset_sum` (the latter's LHS is
+  `∫ ∑ i, f i a`, not `∫ (∑ i, f i) a` — the plain `rw` fails on the unapplied sum).
+- `(ENNReal.ofReal V)^{1/2} = ofReal(√V)`: `rw [Real.sqrt_eq_rpow,
+  ENNReal.ofReal_rpow_of_nonneg hV0 (by norm_num)]` (forward), NOT a single `← rw` on the
+  goal — the `←` direction fails to find the `ofReal(V^_)` pattern.
+- `ENNReal.ofReal x = ↑x.toNNReal` by `rfl`, so `R := (√V).toNNReal` coerces to
+  `ofReal(√V)` definitionally.
+- `V ≥ 0` comes free from `hV 0`: `variance_nonneg (X 0) μ ≤ ∑_{i<1} Var = Var(X 0) ≤ V`.
+
+**Honest status.** S4a is the standalone Kolmogorov convergence theorem — genuine, complete,
+verified infrastructure, not scaffolding. It does not yet prove Marcinkiewicz–Zygmund: the
+remaining **S4b** truncation/moment layer (Borel–Cantelli on `{X_i≠Y_i}`, `∑ Var(Y_i)/i^{2/p}<∞`
+via `p<2`) then feeds S4a into `ae_tendsto_kronecker_average_zero`. Worked in locked
+`/private/tmp/wt-r4-lln`, committed before building (worktree-deletion hazard did not recur).
