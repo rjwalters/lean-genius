@@ -156,9 +156,17 @@
       "id": "measurability",
       "title": "Measurability under a Filtration",
       "startLine": 153,
+      "endLine": 194,
+      "summary": "measurableSet_maxEvent reads ℱ T-measurability of the hitting event off the countable identity: the iInter is a countable intersection, the union over ℚ∩[0,T] is countable (Set.to_countable), and each summand is an open-ray preimage of the ℱ q-measurable slice W q, pushed up to ℱ T by adaptedness and Filtration.mono (ℱ q ≤ ℱ T for q ≤ T). firstPassage_measurableSet then transports it to the first-passage event {ω | τ ≤ T} via the sibling's characterization fpt_le_set_eq_maxEvent, giving the stopping-time property in continuous time.",
+      "mathContext": "$\\{\\omega:\\tau\\le T\\}\\in\\mathcal F_T$ for $T>0$ under nonemptiness; the countable structure (⋂_k ⋃_{q∈ℚ}) is exactly what makes the uncountable-index hitting event measurable."
+    },
+    {
+      "id": "monotone-horizon",
+      "title": "Monotonicity in the Horizon",
+      "startLine": 196,
       "endLine": 204,
-      "summary": "measurableSet_maxEvent reads ℱ T-measurability of the hitting event off the countable identity using adaptedness and Filtration.mono. firstPassage_measurableSet transports it to the first-passage event via the sibling's characterization; maxEvent_mono records the increasing family.",
-      "mathContext": "$\\{\\omega:\\tau\\le T\\}\\in\\mathcal F_T$ for $T>0$ under nonemptiness."
+      "summary": "maxEvent_mono records that the hitting event is increasing in the horizon T: maxEvent bm a T₁ ⊆ maxEvent bm a T₂ whenever T₁ ≤ T₂ — more time can only help the path reach level a. This exhibits T ↦ maxEvent bm a T as the increasing family of events whose ℱ T-measurability is precisely the stopping-time property, a structural companion to the measurability results.",
+      "mathContext": "A witness s ∈ [0,T₁] with W s ω ≥ a also lies in [0,T₂] when T₁ ≤ T₂, so the hitting event only grows; monotone ⟺ {τ ≤ ·} is an increasing family, the hallmark of a stopping-time indicator."
     }
   ],
   "sorries": 0,
