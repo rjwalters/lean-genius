@@ -102,6 +102,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, Imports and Setup",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring stating the open question and the four results supplied (the Finset Leibniz rule, the split-polynomial derivative, its value at a root, and the simple-roots nonvanishing), contrasting them with Mathlib's existing two-factor (derivative_mul), iterated (iterate_derivative_mul) and Multiset (derivative_prod) forms. Then imports Mathlib, opens Polynomial and Finset, and fixes a commutative ring R with a DecidableEq index type ι over which all the finite products range.",
+      "mathContext": "Setup: the formal derivative Polynomial.derivative over an arbitrary CommRing R and finite products ∏_{i∈s} over a Finset s ⊆ ι."
+    },
+    {
       "id": "finset-rule",
       "title": "The Finset Leibniz Product Rule",
       "startLine": 54,
