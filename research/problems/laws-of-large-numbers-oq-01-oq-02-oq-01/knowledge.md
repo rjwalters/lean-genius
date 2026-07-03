@@ -132,3 +132,96 @@ Low duplication risk for a Kronecker-lemma S2.
 - Durrett, *Probability: Theory and Examples* (5e), Thm 2.5.8 (MZ) + Kronecker.
 - Etemadi (1981) — pairwise-independent SLLN, the `p=1` base (Mathlib's
   `strong_law_ae`).
+
+---
+
+## S2 (researcher-16, 2026-07-03) — BUILD: Kronecker's lemma SHIPPED (verified)
+
+Kronecker's lemma (step 5 of the MZ decomposition) and its Toeplitz/Silverman
+core were formalised, **0-sorry / 0-axiom**, in
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean`:
+
+- `LawsOfLargeNumbers.MZ.tendsto_weighted_average_zero` (L47) — Toeplitz null
+  step: nonnegative weights `c i` with partial sums dominated by a normaliser
+  `A n → ∞`, applied to a null sequence `e i → 0`, give
+  `(∑_{i<n} c i · e i) / A n → 0`. Reusable core (ε/2 head–tail split).
+- `LawsOfLargeNumbers.MZ.kronecker_lemma` (L122) — `a` positive, monotone,
+  `a n → ∞`, `∑ x i / a i` converges ⟹ `(∑_{i<n} x i) / a n → 0`. Via Abel
+  summation (`Finset.sum_range_by_parts`) reduced to the weighted-average step;
+  index-shifted to `m+1` to avoid the `n−1` that `sum_range_by_parts` produces.
+
+This closed the **first** of the two blocking Mathlib gaps from S1.
+
+> **Process note (2026-07-03):** the S2 session updated `.json` but left
+> `state.md` / `knowledge.md` saying "S2 next", which caused a *duplicate*
+> Kronecker re-derivation (an independent `field_simp` + `IsLittleO.sum_range`
+> proof — also correct, but redundant). It was discarded before merge. Lesson:
+> update `state.md` **and** `knowledge.md` in the same commit that ships Lean.
+
+---
+
+## S3 (researcher-16, 2026-07-03) — ORIENT: Kolmogorov criterion is ASSEMBLY, not a foundation gap
+
+The S1 survey called the second gap — a.s. convergence of an independent
+mean-zero `L²` series (Kolmogorov's convergence / three-series criterion) — the
+"real bottleneck, >300 LOC". That estimate predates checking Mathlib's
+**martingale-convergence** machinery. Re-audit of the pinned Mathlib (v4.26.0):
+the a.s.-convergence *engine* and **every** glue lemma already exist. What
+remains is assembly, not new foundations.
+
+### Target statement (S3)
+
+`X : ℕ → Ω → ℝ` independent (`iIndepFun`), each `MemLp (X i) 2 μ`,
+`μ[X i] = 0`, and `∑ i, Var[X i] < ∞`  ⟹  the partial sums
+`S n = ∑ i ∈ range n, X i` converge a.s.:
+`∀ᵐ ω ∂μ, ∃ c, Tendsto (fun n => S n ω) atTop (𝓝 c)`.
+
+### Concrete reduction path — named Mathlib lemmas (all present)
+
+1. **Natural filtration.** `MeasureTheory.Filtration.natural X hX_meas`
+   (`Mathlib/Probability/Process/Filtration.lean:255`) — smallest filtration
+   making `X` adapted; then `S` is adapted.
+2. **Martingale property.** Show `μ[S (n+1) | ℱ n] = S n` a.e. Reduces to
+   `μ[X n | ℱ n] = μ[X n] = 0` a.e. because `X n` is independent of the past
+   σ-algebra `ℱ n`. The lemma is
+   `MeasureTheory.condExp_indep_eq`
+   (`Mathlib/Probability/ConditionalExpectation.lean:42`): independent σ-algebras
+   ⟹ `μ[f | m₂] = μ[f]`. **Template already in Mathlib:**
+   `Mathlib/Probability/BorelCantelli.lean:54` uses exactly this to build a
+   martingale from a sequence — follow its filtration/`condExp_indep_eq` pattern.
+3. **Uniform `L¹` bound.** `Var[S n] = ∑ i ∈ range n, Var[X i] ≤ ∑ i, Var[X i]`
+   by orthogonality of independent mean-zero increments:
+   `ProbabilityTheory.IndepFun.variance_sum`
+   (`Mathlib/Probability/Moments/Variance.lean:403`). Then on a probability
+   measure `eLpNorm (S n) 1 μ ≤ eLpNorm (S n) 2 μ = sqrt (Var[S n]) ≤
+   sqrt (∑ i, Var[X i]) =: R` (Lyapunov / `eLpNorm` monotonicity in `p`;
+   `MemLp`/`eLpNorm_le_eLpNorm...` on finite measure). Mean-zero ⟹ the `L²`
+   norm equals the standard deviation.
+4. **Apply the engine.** A martingale is a submartingale, so
+   `MeasureTheory.Submartingale.exists_ae_tendsto_of_bdd`
+   (`Mathlib/Probability/Martingale/Convergence.lean:191`), with `hbdd n :
+   eLpNorm (S n) 1 μ ≤ R`, yields exactly the a.s. limit
+   `∀ᵐ ω, ∃ c, Tendsto (S · ω) (𝓝 c)`.
+
+### Honest revised verdict
+
+- **Not a >300 LOC foundational build.** Every hard theorem (upcrossing
+  inequality, a.e. martingale convergence, variance orthogonality, condexp
+  under independence) is already in Mathlib. S3 is **glue**: build the
+  filtration, discharge the martingale identity via `condExp_indep_eq`, chain
+  the `eLpNorm` monotonicity for the `L¹` bound, invoke the engine.
+- **Estimate: 1–2 sessions.** The main friction is bookkeeping — measurability
+  side-goals, `SigmaFinite (μ.trim …)` instances for `condExp_indep_eq`, and
+  the `eLpNorm 1 ≤ eLpNorm 2` step on a probability measure.
+- This does **not** need any new axiom; keep the leaf on the 0-axiom track.
+
+### S3 bibliography / API cross-refs
+
+- `Mathlib/Probability/Martingale/Convergence.lean` — `exists_ae_tendsto_of_bdd`,
+  `ae_tendsto_limitProcess` (the a.e. martingale convergence theorem).
+- `Mathlib/Probability/ConditionalExpectation.lean` — `condExp_indep_eq`.
+- `Mathlib/Probability/Moments/Variance.lean` — `IndepFun.variance_add/_sum`.
+- `Mathlib/Probability/BorelCantelli.lean` — worked example of building a
+  martingale from a sequence via `condExp_indep_eq` (imitate its structure).
+- Durrett, *PTE* (5e), Thm 2.5.6 (Kolmogorov's convergence theorem via the
+  martingale route) — matches this reduction.
