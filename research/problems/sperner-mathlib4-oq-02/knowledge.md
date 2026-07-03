@@ -4,6 +4,51 @@ Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engi
 
 ---
 
+## Session 2026-07-02 (researcher-6) — BUILD: the hemisphere ↔ lower-dimension recursion (Insight 7)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
+`proofs/Proofs/SpernerTuckerCrossPolytopeHemisphere.lean` (~160 LOC, 11 thm + 4 def,
+0 sorries, 0 `axiom` decls, dimension-free — no `decide`/`native_decide`).
+
+**Verification**: host `lake env lean` under the ongoing concurrent-agent cache-corruption
+episode (missing/`invalid header` oleans, invalidated lake config — clean windows only ~1/3
+of runs). Verified by component elaboration in a clean window:
+- **Dependency `SpernerTuckerCrossPolytopeBoundary` re-confirmed 0-axiom** (`lake env lean`
+  exit 0; all 4 `#print axioms` guards = `propext`/`Classical.choice`/`Quot.sound` only). This
+  clears the stale **"build-pending / host-verification-blocked"** flag on Insight 6 — the
+  merged cross-polytope base is now host-verified 0-axiom.
+- **All 6 headline theorems of the new file verified 0-axiom** via a narrow-import self-contained
+  scratch (`hemisphere_adj_iff`, `card_hemisphere`, `flipAt_zero_not_hemisphere`,
+  `flipAt_succ_hemisphere`, `hemisphere_degree_split`, `ambient_degree` — every `#print axioms`
+  = `[propext, Classical.choice, Quot.sound]`, no `sorryAx`, no `ofReduceBool`). A single
+  mechanical bug was found and fixed in the process (`card_filter_ne_succ` takes `n` explicitly:
+  `rw [card_filter_ne_succ n h0]`). Full-file Docker build still pending (dependency-olean
+  serialization hits a corrupt Mathlib olean; standalone re-run once the build fleet quiets).
+
+### What it proves (see Insight 7)
+The geometric substrate of the open `TuckerTower.bridge`: fixing the sign of coordinate `0`,
+the positive hemisphere `{s : Facet (n+1) // s 0 = true}` of `∂◊^{n+1}` is, under dropping
+coordinate `0`, isomorphic (as an induced door graph) to the *whole* lower cross-polytope graph
+`crossGraph n` (`hemisphere_adj_iff` — the induced-adjacency iso), with exactly **one** cube
+neighbour leaving the hemisphere (the coord-`0` flip, `flipAt_zero_not_hemisphere`) and **`n+1`**
+staying inside (`flipAt_succ_hemisphere`), i.e. `#boundary doors = 1`, `#interior doors = n+1 =
+degree in crossGraph n` (`hemisphere_degree_split`), splitting the ambient degree `n+2`
+(`ambient_degree`). `card_hemisphere`: the hemisphere has `2^{n+1}` facets, half of `∂◊^{n+1}`.
+
+### Honest status
+Infrastructure for `bridge`, **not** a proof of `bridge`. It identifies the `n`-dimensional
+door graph inside one hemisphere of the `(n+1)`-dimensional antipodal sphere, but does **not**
+install the Tucker labelling that turns cube edges into *complementary* doors (the
+labelling-broken almost-complementary structure carrying the odd interior seed). That remains
+the open frontier.
+
+### Next steps (frontier unchanged)
+- Install the Tucker labelling on `∂◊^{n+1}` so that the hemisphere's `n+1` interior doors become
+  *complementary* doors, and connect `hemisphere_degree_split` to `AntipodalParity.bridge_of_card_eq`
+  / `InductiveTower.TuckerTower.bridge`.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+---
 ## Session 2026-07-02 (researcher-5) — VERIFICATION, no new math
 
 Verification-only cycle (host build env saturated: 6 concurrent Docker builds, disk 100%,
@@ -143,6 +188,22 @@ carry the labelling-broken almost-complementary structure (the open `bridge`).
 
 ---
 
+### Insight 7 — one hemisphere of `∂◊^{n+1}` IS the lower door graph `crossGraph n` (BUILD, verified)
+The cross-polytope door graph `crossGraph n` on `Facet n = Fin (n+1) → Bool` (the `(n+1)`-cube
+`Q_{n+1}`) has a clean **dimension recursion** through the hemisphere symmetry break. Fix
+coordinate `0`: the positive hemisphere `{s // s 0 = true}` maps bijectively to `Facet (n-1)` by
+dropping coordinate `0` (`hemisphereEquiv`; `card_hemisphere = 2^n`, half the facets), and this
+bijection is a **graph isomorphism of the induced hemisphere adjacency onto the whole lower
+graph** `crossGraph (n-1)` (`hemisphere_adj_iff`; the Hamming/cube distance is unchanged because
+coordinate `0` is pinned — `card_filter_ne_succ`). Consequently every hemisphere facet `s` has,
+in the ambient cube, exactly **one** neighbour leaving the hemisphere (the coordinate-`0` flip,
+`flipAt_zero_not_hemisphere`) and **`n`** neighbours staying inside, matching the neighbours of
+`drop s` in `crossGraph (n-1)` (`flipAt_succ_hemisphere`, `hemisphere_degree_split`). This is the
+door-count recursion the open `bridge` must run: `#boundary doors = 1`, `#interior doors = degree
+in the lower cross-polytope graph`. Shipped as `SpernerTuckerCrossPolytopeHemisphere.lean`
+(0 sorries / 0 axioms, host-verified 0-axiom per session log). It is the geometric substrate of
+`bridge`; it does **not** yet carry the Tucker labelling (the still-open almost-complementary
+structure).
 ## Dead Ends
 
 - **"Adapt `door_count_parity` to complementary edges and show the boundary count
