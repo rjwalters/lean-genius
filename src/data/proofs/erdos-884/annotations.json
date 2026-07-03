@@ -17,7 +17,11 @@
       "harmonic sums",
       "Problem #144"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of an integer",
+      "gaps between consecutive divisors",
+      "sums of reciprocals"
+    ]
   },
   {
     "id": "ann-e884-divisor-list",
@@ -36,7 +40,11 @@
       "sorted list",
       "divisor function τ"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Nat.divisors in Mathlib",
+      "sorting a list",
+      "the divisor function τ(n)"
+    ]
   },
   {
     "id": "ann-e884-gaps",
@@ -55,7 +63,11 @@
       "telescoping",
       "positivity"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sorted divisor list",
+      "differences of consecutive terms",
+      "positivity of gaps"
+    ]
   },
   {
     "id": "ann-e884-allpairs",
@@ -74,7 +86,11 @@
       "pair counting",
       "harmonic sums"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "nested Finset.sum",
+      "Finset.Ioo index ranges",
+      "reciprocals of divisor gaps"
+    ]
   },
   {
     "id": "ann-e884-consecutive",
@@ -93,7 +109,11 @@
       "linear sum",
       "comparison baseline"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "adjacent divisor gaps",
+      "summing over τ(n)−1 terms",
+      "reciprocal sums"
+    ]
   },
   {
     "id": "ann-e884-conjecture",
@@ -112,7 +132,11 @@
       "absolute constant",
       "divisor gap inequality"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the all-pairs and consecutive-pairs sums",
+      "existence of an absolute constant C",
+      "axiomatized open statements"
+    ]
   },
   {
     "id": "ann-e884-properties",
@@ -131,7 +155,11 @@
       "term counting",
       "simp"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "non-negativity of sums",
+      "counting summation terms",
+      "the simp tactic"
+    ]
   },
   {
     "id": "ann-e884-examples",
@@ -150,7 +178,11 @@
       "verification",
       "divisors of 6"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "divisors of primes and of 6",
+      "evaluating the two sums",
+      "the constant C = 1 case"
+    ]
   },
   {
     "id": "ann-e884-structural",
@@ -169,7 +201,11 @@
       "multiplicativity",
       "plausibility argument"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "sorted divisors",
+      "lower bounds on general vs consecutive gaps",
+      "plausibility of the conjecture"
+    ]
   },
   {
     "id": "ann-e884-connections",
@@ -188,6 +224,10 @@
       "definitional equality",
       "rfl proof"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the divisor harmonic sum σ₋₁(n)",
+      "definitional equality",
+      "rfl proofs"
+    ]
   }
 ]
