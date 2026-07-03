@@ -33,6 +33,9 @@ derivative computation Ṁ = A·M.  Note that `ρ_k` is an *ordered* product of 
 * `commute_A_rho`: A commutes with every ρ_k (each factor is a polynomial in A)
 * `A_mul_rho`    : A · ρ_k = ρ_{k+1} + λ_k • ρ_k               — the *key telescoping identity*
 * `rho_card`     : ρ_n = 0  when χ_A splits as ∏ (X - λ_i)     (Cayley–Hamilton truncation)
+* `rho_succ_left`: ρ_{k+1} = (A - λ_k • 1) · ρ_k              (factor pulled to the left)
+* `rho_mul_A`    : ρ_k · A = ρ_{k+1} + λ_k • ρ_k             (right telescoping identity)
+* `A_mul_sum_rho`: A · ∑_k a_k • ρ_k = ∑_k a_k • (ρ_{k+1} + λ_k • ρ_k)   (sum-level telescoping)
 
 `A_mul_rho` is precisely what converts the term-by-term derivative
 d/dt (P_k ρ_{k-1}) = Ṗ_k ρ_{k-1} into a multiple of A, and `rho_card` is what makes
@@ -121,5 +124,44 @@ lemma rho_card {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (lam : ℕ → R)
     rho A lam n = 0 := by
   rw [rho_eq_aeval_prod, ← Fin.prod_univ_eq_prod_range (fun i => X - C (lam i)) n, ← hlam,
       Matrix.aeval_self_charpoly]
+
+/-! ## Two-sided factor structure and the sum-level telescoping
+
+The identities above suffice to run the derivative computation `Ṁ = A · M` purely
+algebraically.  The factors `A - λ_i • 1` are polynomials in `A`, hence commute with
+every `ρ_k`, so each factor may be pulled to *either* side; and multiplication of the whole
+Putzer sum `∑_k a_k • ρ_k` by `A` telescopes term-by-term via `A_mul_rho`. -/
+
+/-- The defining factor may be pulled to the **left**: `ρ_{k+1} = (A - λ_k • 1) · ρ_k`.
+The complement of `rho_succ` (which multiplies on the right); the two agree because each
+factor commutes with `ρ_k`. -/
+lemma rho_succ_left (A : Matrix n n R) (lam : ℕ → R) (k : ℕ) :
+    rho A lam (k + 1) = (A - lam k • (1 : Matrix n n R)) * rho A lam k := by
+  have hcomm : Commute (rho A lam k) (A - lam k • (1 : Matrix n n R)) :=
+    ((commute_A_rho A lam k).symm).sub_right
+      ((Commute.one_right (rho A lam k)).smul_right (lam k))
+  rw [rho_succ]; exact hcomm.eq
+
+/-- **Right telescoping identity.** `ρ_k · A = ρ_{k+1} + λ_k • ρ_k`.
+The mirror of `A_mul_rho`; identical because `A` commutes with `ρ_k`. -/
+lemma rho_mul_A (A : Matrix n n R) (lam : ℕ → R) (k : ℕ) :
+    rho A lam k * A = rho A lam (k + 1) + lam k • rho A lam k := by
+  rw [← A_comm_rho, A_mul_rho]
+
+/-- **Sum-level telescoping.** Multiplying the finite Putzer sum `∑_{k<m} a_k • ρ_k` by `A`
+distributes into the term-by-term telescoped form
+
+  `A · ∑_{k<m} a_k • ρ_k = ∑_{k<m} a_k • (ρ_{k+1} + λ_k • ρ_k)`.
+
+This is exactly the algebraic content of the derivative computation `Ṁ = A · M` for
+`M = ∑_k P_k • ρ_{k-1}`: it converts left-multiplication by `A` into a shift `ρ_k ↦ ρ_{k+1}`
+plus a diagonal `λ_k` term, with no analysis involved.  Holds for arbitrary coefficients
+`a : ℕ → R` over any `CommRing`. -/
+lemma A_mul_sum_rho (A : Matrix n n R) (lam : ℕ → R) (a : ℕ → R) (m : ℕ) :
+    A * ∑ k ∈ Finset.range m, a k • rho A lam k
+      = ∑ k ∈ Finset.range m, a k • (rho A lam (k + 1) + lam k • rho A lam k) := by
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun k _ => ?_)
+  rw [mul_smul_comm, A_mul_rho]
 
 end PutzerMatrixExp
