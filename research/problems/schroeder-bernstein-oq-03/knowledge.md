@@ -1116,3 +1116,44 @@ lemmas in ~5–20s.
 worktree (`git worktree add --lock /tmp/lg-r11-sb -b … origin/main`); locked worktrees survive the
 cleanup daemon. All verified content was staged in `/tmp/sb_scratch.lean` (outside the reaped tree)
 so it survived the clobber. Commit+push immediately from the locked worktree.
+
+## Session 2026-07-03 (researcher-11): COMPUTABLE ESCAPE-DEPTH CORE — Section 5·B-comp [VERIFIED 0-axiom]
+
+**Advance on the sole remaining gap (computability of `sigmaEquivB`).** The Path-B scheduler's
+non-computability traces to a single choke point: `stageStepB` reads its fresh partner off the
+existential `domain_consStep`/`range_consStep` via `.choose`, and those rest on `escape_exists'`'s
+`Classical.choose`. Section 5·B-comp removes that dependency for the **domain (even) step**, all
+VERIFIED (docker build `Proofs.SchroederBernsteinOQ03`, 0 errors; only the pre-existing
+`myhill_isomorphism` sorry + two `unused variable he` warnings remain):
+
+- **`escapeDepth f g L a (hex : ∃ N, f (fwdOrbit f g a N) ∉ mRan L) : ℕ := Nat.find hex`.**
+  The KEY realisation: the escape predicate is **decidable** (list membership over `ℕ`), so this is
+  a genuine `Nat.find`. And `Nat.find` is **computable even though `hex` comes from the
+  noncomputable `escape_exists'`**, because `hex : Prop` is *erased at runtime* — only the decidable
+  0,1,2,… search runs. This is exactly the "re-parameterise to the bounded `Nat.rfind` search that
+  `escape_exists'` licenses" step the module docstring names as the last mile. No `Classical.choose`
+  survives in the *computational content*; the classical proof rides along erased.
+- **`escapeDepth_spec`** (`= Nat.find_spec`), **`escapeDepth_min`** (`not_not.mp (Nat.find_min …)`
+  — every earlier stage still collides, so the rebuild reproduces the *least*-depth pairing, not
+  merely *a* pairing), **`chaseTarget_escapeDepth_notMem`** (spec restated through `chaseTarget`,
+  which unfolds by `rfl` to `f ∘ fwdOrbit`).
+- **`domain_consStepC`** — the `Classical.choose`-free twin of `domain_consStep`. Instead of
+  `∃ b, StageInvB ((a,b)::L) ∧ …`, it returns `StageInvB ((a, chaseTarget f g a (escapeDepth …)) :: L)`
+  for the **concrete computable** partner, reusing `matching_step_chase` + `balanced_cons_domain` +
+  `balanced_swap_cons_domain` verbatim (all four `StageInvB` invariants preserved). Proof is a
+  4-tuple assembly; the `escapeDepth` existence arg is threaded via `hinv.2.2.1` (proof-irrelevant).
+
+**NEXT (unchanged plan, one cell filled):** (1-range) `range_consStepC` — the `Prod.swap` mirror
+using `escape_exists' hg hf hinv.2.2.2 hb'` and `escapeDepth g f (L.map Prod.swap) b` (the swapped
+problem); `a := chaseTarget g f b (escapeDepth …)`, `a ∉ mDom L` via `← mRan_map_swap`. Then (2)
+build the computable `stageStepBComp`/`stageSeqBComp` on `domain_consStepC`/`range_consStepC` (plain
+`if s%2=0 then if h: s/2 ∈ mDom … else ⟨(s/2, chaseTarget …) :: prev, domain_consStepC …⟩ …` — no
+`noncomputable` needed) and prove it `Computable` via `mLookup_computable` + `chaseTarget_computable`
++ `fwdOrbit_computable`; (3) discharge `myhill_isomorphism`. Do NOT re-open the Path-B fork.
+
+**Process note:** my Read/Edit/docker-build accidentally targeted the **main-repo absolute path**
+(`/Users/rwalters/GitHub/lean-genius/proofs/…`) not the worktree; a concurrent **deployer** agent
+checked out `chore/sync-data-…` on the main repo and clobbered the uncommitted edit AFTER the build
+passed. Verified-correct content was re-applied byte-identically in a fresh `/tmp` worktree off
+`origin/main` and committed there. Lesson: always edit inside your OWN worktree path, never the
+shared main-repo checkout.
