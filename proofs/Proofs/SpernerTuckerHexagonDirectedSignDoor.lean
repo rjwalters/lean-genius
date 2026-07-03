@@ -179,11 +179,64 @@ theorem directed_full_ring_odd_undirected_even :
   refine ⟨full_dir_count_odd, ?_⟩
   exact ⟨0, 0, 0, by decide⟩
 
+/-! ## Cycle balance: ascents equal descents (unifying the two blades)
+
+The full-ring sign-change count is even (`full_sign_changes_even`) while the directed
+`+ → −` door count is odd (`full_dir_count_odd`).  These two facts are reconciled by the
+elementary **cycle balance** law: around any cycle of sign bits the number of oriented
+`0 → 1` edges equals the number of oriented `1 → 0` edges — a discrete cycle has as many
+rises as falls.  So the even total sign-change count splits into two *equal* directed
+halves, each necessarily odd. -/
+
+/-- **Ascents equal descents around a 6-cycle.**  For any assignment of sign bits to the six
+boundary vertices, the number of oriented edges `0 → 1` (directed doors) equals the number
+of oriented edges `1 → 0` (their reverses).  Reusable and labelling-independent: proved over
+all `2⁶` bit assignments `f : Fin 6 → ZMod 2`.  This is the abstract cycle law behind the
+antipodal ring being balanced. -/
+theorem cycle_ascent_eq_descent (f : Fin 6 → ZMod 2) :
+    ((List.finRange 6).filter (fun i => decide (f i = 0 ∧ f (i + 1) = 1))).length
+      = ((List.finRange 6).filter (fun i => decide (f i = 1 ∧ f (i + 1) = 0))).length := by
+  revert f; decide
+
+/-- Reverse directed door count around the ring: oriented edges `vᵢ → vᵢ₊₁` running
+`− → +` (`sgn = 1` then `sgn = 0`), the transpose of `fullDirCount`. -/
+def fullRevDirCount (a b c : Fin 4) : ℕ :=
+  ((List.finRange 6).filter
+    (fun i => decide (sgn (V a b c i) = 1 ∧ sgn (V a b c (rot i)) = 0))).length
+
+/-- **The antipodal boundary ring is balanced**: the directed `+ → −` door count equals the
+directed `− → +` count.  This is the sign-labelling instance of `cycle_ascent_eq_descent`
+(with `rot i = i + 1`). -/
+theorem fullRevDirCount_eq_fullDirCount (a b c : Fin 4) :
+    fullRevDirCount a b c = fullDirCount a b c := by
+  revert a b c; decide
+
+/-- The reverse directed door count is therefore **also odd** on the full antipodal ring:
+balance transports the odd seed of `full_dir_count_odd` to the transpose count. -/
+theorem full_rev_dir_count_odd (a b c : Fin 4) : Odd (fullRevDirCount a b c) := by
+  rw [fullRevDirCount_eq_fullDirCount]; exact full_dir_count_odd a b c
+
+/-- **The two odd directed halves sum to the even total.**  The full-ring sign-change
+(undirected flip) count equals `fullDirCount + fullRevDirCount = 2 · fullDirCount`, hence
+even — reproving `full_sign_changes_even` from the oriented decomposition and exhibiting the
+two odd halves (`full_dir_count_odd`, `full_rev_dir_count_odd`) whose sum is the even whole.
+The parity mismatch between the directed seed (odd) and the undirected seed (even) is exactly
+this factor of two. -/
+theorem full_sign_changes_eq_two_mul (a b c : Fin 4) :
+    ((List.finRange 6).filter
+      (fun i => decide (sgn (V a b c (rot i)) ≠ sgn (V a b c i)))).length
+      = 2 * fullDirCount a b c := by
+  revert a b c; decide
+
 #print axioms dirTri_le_one
 #print axioms dirTri_eq_one_iff_mixed
 #print axioms dir_antipode_reverse
 #print axioms hexagon_dirTri_le_one
 #print axioms full_dir_count_odd
 #print axioms directed_full_ring_odd_undirected_even
+#print axioms cycle_ascent_eq_descent
+#print axioms fullRevDirCount_eq_fullDirCount
+#print axioms full_rev_dir_count_odd
+#print axioms full_sign_changes_eq_two_mul
 
 end SpernerTuckerHexagonDirectedSignDoor
