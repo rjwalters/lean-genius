@@ -274,5 +274,105 @@
       "description": "The 4D Euler relation V - E + F - C = 0 is verified for all 6 regular 4-polytopes, generalizing the 3D formula V - E + F = 2."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "regular_4polytope_classification",
+      "type": "theorem",
+      "statement": "validTriples4D.card = 6 ∧ (all valid ⊆ candidates) ∧ (each satisfies the Schläfli determinant test)",
+      "significance": "The 4-dimensional analogue of the Platonic-solids classification: there are exactly six regular 4-polytopes — {3,3,3}, {4,3,3}, {3,3,4}, {3,4,3}, {5,3,3}, {3,3,5}. Extends Wiedijk #50 one dimension up, where the exceptional 24-cell and 120/600-cells appear.",
+      "description": "Combines valid4D_count (card = 6, native_decide) with the subset and determinant-positivity checks; the count is verified by exact Coxeter–Schläfli determinant arithmetic in ℤ[√5]."
+    },
+    {
+      "name": "regular_5polytope_classification",
+      "type": "theorem",
+      "statement": "validQuads5D.card = 3 ∧ (each valid quad has positive Schläfli determinant)",
+      "significance": "In 5 dimensions (and, by stabilization, all n ≥ 5) only three regular polytopes survive: the simplex {3,3,3,3}, the hypercube {4,3,3,3}, and the cross-polytope {3,3,3,4}. The exotic families die out above dimension 4.",
+      "description": "Pairs valid5D_count (card = 3, native_decide) with valid5D_det_positive; the determinant test eliminates every dodecahedral/icosahedral Schläfli extension."
+    },
+    {
+      "name": "valid4D_count",
+      "type": "theorem",
+      "statement": "validTriples4D.card = 6",
+      "significance": "The exact count 6 of admissible 4D Schläfli symbols {p,q,r}, the numeric heart of the 4-polytope classification.",
+      "description": "Discharged by native_decide over the finite candidate set, evaluating the Coxeter–Schläfli sign test for each triple (depends on Lean.ofReduceBool)."
+    },
+    {
+      "name": "valid5D_count",
+      "type": "theorem",
+      "statement": "validQuads5D.card = 3",
+      "significance": "The exact count 3 of admissible 5D symbols, establishing that the regular-polytope families collapse to simplex/hypercube/cross-polytope from dimension 5 onward.",
+      "description": "native_decide over the finite candidate quadruples using the exact determinant arithmetic (Lean.ofReduceBool)."
+    },
+    {
+      "name": "valid4D_det_positive",
+      "type": "theorem",
+      "statement": "∀ t ∈ validTriples4D, schlaefli4Positive t = true",
+      "significance": "Confirms the geometric admissibility criterion: every valid 4-polytope symbol has a positive Coxeter–Schläfli determinant Δ = sin²(π/p)·sin²(π/r) − cos²(π/q) > 0, the angle-defect condition for a genuine convex polytope.",
+      "description": "native_decide evaluating the determinant sign in ℤ[√5] for each of the six valid triples."
+    },
+    {
+      "name": "invalid4D_det_nonpositive",
+      "type": "theorem",
+      "statement": "candidate 4D symbols outside validTriples4D have Schläfli determinant ≤ 0",
+      "significance": "The converse half of the criterion: every rejected candidate fails the positivity test, so the six-fold classification is exactly the determinant-positive set — no symbol is dropped by accident.",
+      "description": "native_decide checking that each non-valid candidate triple yields a nonpositive determinant."
+    },
+    {
+      "name": "stabilization_from_5D",
+      "type": "theorem",
+      "statement": "schlaefli5Positive holds exactly for {3,3,3,3}, {4,3,3,3}, {3,3,3,4}",
+      "significance": "Pinpoints why only three families persist: among all 5D Schläfli symbols only the simplex, hypercube, and cross-polytope keep a positive determinant. This stabilization propagates to every higher dimension.",
+      "description": "native_decide over the 5D candidate symbols, isolating the three with positive Coxeter–Schläfli determinant."
+    },
+    {
+      "name": "all_4polytopes_euler",
+      "type": "theorem",
+      "statement": "V − E + F − C = 0 for all six regular 4-polytopes",
+      "significance": "Verifies the 4-dimensional Euler–Poincaré relation (alternating sum of face counts = 0) for every regular 4-polytope, e.g. 5 − 10 + 10 − 5 = 0 for the 5-cell and 600 − 1200 + 720 − 120 = 0 for the 120-cell.",
+      "description": "A conjunction of six exact integer identities on the tabulated (V, E, F, C) counts, closed by decide/native arithmetic."
+    },
+    {
+      "name": "twentyFourCell_self_dual",
+      "type": "theorem",
+      "statement": "dual4D (3,4,3) = (3,4,3)",
+      "significance": "The 24-cell {3,4,3} is self-dual — a regular polytope with no analogue in any other dimension, the most striking exceptional object of 4D geometry.",
+      "description": "Reversing the Schläfli symbol fixes {3,4,3}; holds by rfl on the dual4D reversal map."
+    },
+    {
+      "name": "twentyFourCell_is_4D_only",
+      "type": "theorem",
+      "statement": "(3,4,3) ∈ validTriples4D",
+      "significance": "Certifies membership of the exceptional 24-cell in the 4D classification, the polytope with no simplex/hypercube/cross-polytope counterpart and no higher-dimensional generalization.",
+      "description": "native_decide verifying {3,4,3} passes the Coxeter–Schläfli determinant test."
+    },
+    {
+      "name": "eightCell_sixteenCell_dual",
+      "type": "theorem",
+      "statement": "dual4D (4,3,3) = (3,3,4)  (and dual4D (5,3,3) = (3,3,5))",
+      "significance": "Records the duality pairing of the 4-polytopes: the tesseract {4,3,3} and 16-cell {3,3,4} are duals, as are the 120-cell and 600-cell — the 4D analogue of cube↔octahedron duality.",
+      "description": "Symbol reversal swaps each dual pair; verified by rfl on dual4D."
+    },
+    {
+      "name": "dual4D_preserves_validity",
+      "type": "theorem",
+      "statement": "∀ t ∈ validTriples4D, dual4D t ∈ validTriples4D",
+      "significance": "The classification is closed under duality: the dual of any regular 4-polytope is again regular. Confirms the six-element set is an orbit under the symbol-reversal involution.",
+      "description": "native_decide checking each of the six valid triples maps to a valid triple under dual4D."
+    },
+    {
+      "name": "platonic_connection",
+      "type": "theorem",
+      "statement": "validPairs3D = {(3,3),(4,3),(3,4),(5,3),(3,5)}",
+      "significance": "Anchors the higher-dimensional theory to Wiedijk #50: the five valid 3D Schläfli symbols are exactly the Platonic solids (tetrahedron, cube, octahedron, dodecahedron, icosahedron), the base case of the dimensional recursion.",
+      "description": "Holds by rfl: the 3D validity predicate enumerates precisely the five Platonic symbols."
+    },
+    {
+      "name": "dimension_count_pattern",
+      "type": "theorem",
+      "statement": "validPairs3D.card = 5 ∧ validTriples4D.card = 6 ∧ validQuads5D.card = 3",
+      "significance": "Displays the full count sequence 5 → 6 → 3 across dimensions 3, 4, 5 — the surprising non-monotonic bump at dimension 4 (where the extra 24-cell and star-related polytopes live) before permanent stabilization at 3.",
+      "description": "Conjoins the three cardinality theorems, each closed by native_decide over its candidate set."
+    }
+  ]
 }
