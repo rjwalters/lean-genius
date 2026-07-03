@@ -127,6 +127,32 @@
       "description": "Great-grandparent entry stating the Inverse Galois Problem; OQ-04 is its fourth open question"
     }
   ],
+  "references": [
+    {
+      "authors": "Serre, Jean-Pierre",
+      "title": "Topics in Galois Theory",
+      "year": "1992",
+      "note": "Jones & Bartlett (2nd ed. A K Peters, 2008). The standard reference on the Inverse Galois Problem, including the realizability of the alternating and symmetric groups over ℚ and the use of specialization and Frobenius/inertia data to control the Galois group — the strategy this entry mechanizes for A₅."
+    },
+    {
+      "authors": "Neukirch, Jürgen",
+      "title": "Algebraic Number Theory",
+      "year": "1999",
+      "note": "Springer Grundlehren 322. Chapter I develops the Kummer–Dedekind theorem (factorization of a rational prime read off from a defining polynomial mod p, valid away from the conductor), residue/inertia degrees, and the behavior of primes in towers — exactly the classical inputs packaged as the two bricks composed here."
+    },
+    {
+      "authors": "Malle, Gunter; Matzat, B. Heinrich",
+      "title": "Inverse Galois Theory",
+      "year": "1999",
+      "note": "Springer Monographs in Mathematics (2nd ed. 2018). Comprehensive monograph on realizing finite groups as Galois groups over ℚ and other fields; situates the A₅ realization and the reduction of a divisibility of |Gal| to inertia-degree data at an unramified prime within the broader program."
+    },
+    {
+      "authors": "Atiyah, Michael F.; Macdonald, Ian G.",
+      "title": "Introduction to Commutative Algebra",
+      "year": "1969",
+      "note": "Addison–Wesley. Chapter 5 proves the going-up theorem for integral extensions (a prime of the base lies below a prime of an integral extension) — the sole new ingredient this composition adds, supplied in Lean by Ideal.exists_maximal_ideal_liesOver_of_isIntegral."
+    }
+  ],
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/DedekindKummerToTower.lean",
