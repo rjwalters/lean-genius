@@ -93,6 +93,21 @@
       "targetId": "abel-ruffini-oq-04-oq-01",
       "relationship": "related",
       "description": "Grandparent entry computes Gal(x⁵ − 4x + 2) ≅ S₅; this non-solvability obstruction is the abstract reason that computation implies unsolvability by radicals."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "related",
+      "description": "The complementary boundary case below the p ≥ 5 threshold: S₂, S₃, S₄ ARE solvable (that entry's complete classification), which is exactly why degrees ≤ 4 admit radical formulas. Together they pin the sharp cutoff — solvable for n ≤ 4, unsolvable from n = 5 — that this entry's cardinality hypothesis 5 ≤ #α encodes."
+    },
+    {
+      "targetId": "abel-ruffini-obstruction-oq-06",
+      "relationship": "related",
+      "description": "A parallel formalization of the same Abel–Ruffini obstruction: Sₙ is unsolvable for n ≥ 5. That entry states the non-solvability of the full symmetric group directly; this one derives it for a transitive subgroup with a transposition (which the Key Lemma forces to be all of S_p), the form needed for concrete Galois-group arguments."
+    },
+    {
+      "targetId": "abel-ruffini-oq-07-discriminant",
+      "relationship": "related",
+      "description": "An alternate route to a concrete unsolvable quintic: that entry proves Gal(X⁵ − X − 1) ≅ S₅ via the discriminant and a Jordan-type argument, whereas this obstruction (transitive + transposition ⟹ S_p ⟹ unsolvable) is the group-theoretic template both routes feed into."
     }
   ],
   "leanFile": {
