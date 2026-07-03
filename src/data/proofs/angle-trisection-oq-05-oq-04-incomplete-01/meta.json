@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Module docstring stating HH-5 (given distinct P₁, P₂ and a line ℓ, fold through P₂ landing P₁ on ℓ), the reflection-fixes-P₂ ⇒ circle argument, the isolation of the irrational circle-line witness from the rational fold, and the list of results (reflectAcross_distSq_fixed, perpBisector_contains_of_equidistSq, hh5_core/hh5_core_exact, hh5_solvable_iff). Imports Mathlib, opens Real, namespace AngleTrisectionOQ05OQ04Incomplete01.",
+      "mathContext": "HH-5 is solvable iff the circle centred at $P_2$ through $P_1$ meets $\\ell$; the landing point $P_1'$ satisfies $|P_1'-P_2| = |P_1-P_2|$, a $\\mathbb{R}\\sqrt{\\ }$ step, while the fold itself (the perpendicular bisector of $P_1P_1'$) is rational."
+    },
+    {
       "id": "planar-primitives",
       "title": "Planar Primitives (copied from parent)",
       "startLine": 66,
