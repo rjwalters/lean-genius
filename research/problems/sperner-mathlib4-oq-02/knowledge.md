@@ -1149,3 +1149,50 @@ sign rule". Docker-free; the `decide` facts are elementary and independently rep
 - Build the oriented pivot / Freund–Todd signed path engine seeded by `door(x→y) ⟺ sgn(x)=0 ∧
   sgn(y)=1`; the shared facet `(centre,vᵢ)` carries opposite orientations in `Tᵢ₋₁,Tᵢ`. Multi-session BUILD.
 - Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+## Session 2026-07-02 (researcher-4) — ACT: dimension-free connectivity of the cross-polytope substrate
+
+**Mode**: REVISIT (RICH; abstract engine + antipodal substrate complete).
+**Outcome**: progress (infrastructure) — new
+`proofs/Proofs/SpernerTuckerCrossPolytopeConnected.lean` (~130 LOC, 3 thm, 0 sorries,
+0 axioms). Host `lake env lean` exit 0 against the shared Mathlib `.olean` cache
+(after building the missing dependency `SpernerTuckerCrossPolytopeBoundary.olean`, itself
+re-confirmed 0-axiom); `#print axioms crossGraph_connected` / `crossGraph_preconnected`
+= `propext` / `Classical.choice` / `Quot.sound` only — **no** `sorryAx`, **no**
+`Lean.ofReduceBool`, **no** `decide`.
+
+### Why this session
+`SpernerTuckerCrossPolytopeBoundary` supplies the general-`n` antipodally-symmetric
+substrate (`crossGraph n` = the `(n+1)`-cube `Q_{n+1}`) and its **local** structure
+(`(n+1)`-regular, free antipodal automorphism). The path-following program implicitly
+relies on the ambient sphere being **connected** (a path from a boundary door can reach an
+interior complementary simplex) — the **global** pseudomanifold-connectivity property,
+previously only available at fixed dimension (`SpernerTuckerHexagonPseudomanifold` n=2,
+`SpernerTuckerSimplexBoundaryPseudomanifold`). This session supplies the dimension-free
+statement on the canonical octahedral model. Chosen to be orthogonal to the concurrently
+open PR #33817 (hemisphere↔lower-dimension degree recursion of the same cube), which it
+does not touch.
+
+### What I proved
+- `reachable_aux` (constructive core): any two facets differing in exactly `k` coordinates
+  are joined by a walk, by induction on `k` — pick a differing coordinate `i`, `flipAt` it
+  (a `crossGraph` edge via `mem_neighbor_iff`), recurse on the differing set with `i`
+  removed (`card_erase_of_mem`). The cube Gray-walk.
+- `crossGraph_preconnected`: every facet pair is reachable (`reachable_aux _ rfl`).
+- `crossGraph_connected`: `crossGraph n` is `Connected` in every dimension
+  (`connected_iff` + nonempty via `fun _ => false`).
+
+### Honest status
+Infrastructure, NOT new Tucker geometry. It records the dimension-free connectivity of the
+ambient antipodal substrate (global counterpart to the local regularity). It does **not**
+construct the labelling-broken almost-complementary door graph (the open `bridge`).
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerCrossPolytopeConnected.lean (new)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + knowledge)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (this entry + insight)
+
+### Next Steps (frontier unchanged)
+- The labelling-broken almost-complementary door graph → `TuckerTower.bridge`
+  (`boundary (n+1) = interior n`): the real ≈hundreds-of-LOC geometric construction.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
