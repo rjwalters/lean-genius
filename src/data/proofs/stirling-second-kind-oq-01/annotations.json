@@ -4,12 +4,12 @@
     "proofId": "stirling-second-kind-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 39
+      "endLine": 18
     },
     "type": "concept",
-    "title": "Stirling Numbers of the Second Kind",
-    "content": "Nat.stirlingSecond n k counts the partitions of an n-element set into exactly k nonempty, unlabeled blocks. Mathlib develops the Pascal-style recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k) together with the boundary columns S(n,1) = 1, S(n,n) = 1, and S(n,n-1) = C(n,2). The one column it omits is k = 2, the first with a genuinely nontrivial closed form, 2^(n-1) − 1. This file supplies it. The header records both the algebraic route (solving the recurrence) and the combinatorial meaning of the count.",
-    "mathContext": "$S(n,k)$ = number of partitions of an $n$-set into $k$ nonempty blocks; $S(n,2) = 2^{n-1}-1$ for $n \\ge 2$.",
+    "title": "Stirling Numbers of the Second Kind: the Missing k = 2 Column",
+    "content": "Nat.stirlingSecond n k counts the partitions of an n-element set into exactly k nonempty, unlabeled blocks. Mathlib develops the Pascal-style recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k) together with the boundary columns S(n,1) = 1 (stirlingSecond_one_right), S(n,n) = 1 (stirlingSecond_self), and S(n+1,n) = C(n+1,2) (stirlingSecond_succ_self_left). The one column it omits is k = 2 — the first with a genuinely nontrivial closed form, S(n,2) = 2^(n-1) − 1 for n ≥ 2. This file supplies exactly that gap.",
+    "mathContext": "$S(n,k)$ = number of partitions of an $n$-set into $k$ nonempty blocks; the missing closed form is $S(n,2) = 2^{n-1}-1$ for $n \\ge 2$.",
     "significance": "supporting",
     "relatedConcepts": [
       "Stirling numbers of the second kind",
@@ -20,6 +20,29 @@
     "prerequisites": [
       "natural-number recursion",
       "finite set partitions"
+    ]
+  },
+  {
+    "id": "ann-combinatorial-meaning",
+    "proofId": "stirling-second-kind-oq-01",
+    "range": {
+      "startLine": 20,
+      "endLine": 39
+    },
+    "type": "insight",
+    "title": "The Combinatorial Meaning: (2ⁿ − 2)/2",
+    "content": "The header records the bijective reason S(n,2) = 2^(n-1) − 1, distinct from the recurrence proof the Lean file actually runs. An unordered split of an n-set into two nonempty parts is obtained from one of the 2^n subsets by (i) discarding the two improper subsets ∅ and the whole set, leaving 2^n − 2 ordered choices, then (ii) identifying each part with its complement (the split {A, Aᶜ} is counted twice), giving (2^n − 2)/2 = 2^(n-1) − 1. The formal proof instead uses the specialized recurrence S(n+1,2) = 2·S(n,2) + S(n,1) = 2·S(n,2) + 1 — the inhomogeneous geometric recursion a(n+1) = 2a(n) + 1 solved by 2^(n-1) − 1 — so the combinatorial count and the algebraic recursion give two independent routes to the same closed form.",
+    "mathContext": "$S(n,2) = \\frac{2^n - 2}{2} = 2^{n-1} - 1$: subtract the two improper subsets, then pair each block with its complement. Algebraically, $S(n+1,2) = 2\\,S(n,2) + 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bijective counting",
+      "subset–complement pairing",
+      "inhomogeneous geometric recursion",
+      "combinatorial vs algebraic proof"
+    ],
+    "prerequisites": [
+      "counting subsets (2ⁿ)",
+      "solving a(n+1) = 2a(n) + 1"
     ]
   },
   {
