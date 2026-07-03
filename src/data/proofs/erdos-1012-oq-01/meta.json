@@ -151,5 +151,91 @@
       "summary": "Analyzes the k=0 and k=1 special cases: threshold simplifications, threshold_at_boundary_pos. Shows the Ore (C(n-1,2)+2) and Bondy (C(n-2,2)+4) thresholds and why they work for all n≥1."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "f (exact values: f_zero, f_one, f_ge_two)",
+      "type": "definition",
+      "statement": "f 0 = 1,  f 1 = 1,  f (k + 2) = 2·(k+2) + 3   (i.e. f(k) = 2k+3 for k ≥ 2)",
+      "significance": "The answer to Erdős #1012 OQ-01: the minimum threshold f(k) is 1 for k = 0, 1 (Ore, Bondy) and exactly 2k+3 for k ≥ 2 (Woodall). The whole file organizes around establishing and analyzing this closed form.",
+      "description": "f is defined by cases on k; f_zero, f_one, f_ge_two are rfl, and f_ge_two_alt rewrites 2(k+2)+3 = 2k+7 by omega."
+    },
+    {
+      "name": "woodall_theorem",
+      "type": "axiom",
+      "statement": "hasLongCycle n k   (for n ≥ 2k + 3)",
+      "significance": "Woodall's 1972 theorem, the upper-bound engine: any graph on n ≥ 2k+3 vertices meeting the edge threshold contains an (n-k)-cycle. Stated as an axiom (one of four deep external results this file assumes) — hence status axiomatized.",
+      "description": "Assumed. Consumed by f_is_upper_bound in the k ≥ 2 branch; ore_theorem and bondy_theorem are the analogous k = 0, 1 axioms."
+    },
+    {
+      "name": "woodall_lower_bound",
+      "type": "axiom",
+      "statement": "¬ hasLongCycle (2k + 2) k   (for k ≥ 2)",
+      "significance": "The matching lower bound making 2k+3 tight: at n = 2k+2 an extremal graph has enough edges but no (k+2)-cycle. Together with woodall_theorem it pins f(k) = 2k+3 exactly for k ≥ 2. One of the four assumed axioms.",
+      "description": "Assumed. Consumed by f_tight to show the long-cycle property fails at n = f(k) - 1."
+    },
+    {
+      "name": "f_is_upper_bound",
+      "type": "theorem",
+      "statement": "∀ n ≥ f k, hasLongCycle n k",
+      "significance": "The upper-bound half of correctness: above the threshold f(k), long cycles are guaranteed for every k. Unifies the Ore, Bondy, and Woodall cases into one statement about f.",
+      "description": "match on k dispatching to ore_theorem (k=0), bondy_theorem (k=1), and woodall_theorem (k≥2), each after reducing the hypothesis n ≥ f k by simp [f] and omega."
+    },
+    {
+      "name": "f_tight",
+      "type": "theorem",
+      "statement": "¬ hasLongCycle (f k - 1) k   (for k ≥ 2)",
+      "significance": "The lower-bound half: the threshold cannot be lowered — the property already fails one step below f(k). Combined with f_is_upper_bound this makes f(k) the exact minimum.",
+      "description": "Writes k = j + 2, rewrites f(j+2) - 1 = 2(j+2) + 2 by omega, and applies woodall_lower_bound."
+    },
+    {
+      "name": "f_strict_mono",
+      "type": "theorem",
+      "statement": "f k < f (k + 1)   (for k ≥ 1)",
+      "significance": "f is strictly increasing past the anomalous k = 0, 1 region, confirming the threshold genuinely grows with the number of omitted vertices. f_mono gives the non-strict version.",
+      "description": "match on k: the k = 1 step (f 1 < f 2, i.e. 1 < 7) by decide, the k ≥ 2 step by omega on the linear forms."
+    },
+    {
+      "name": "f_le_linear",
+      "type": "theorem",
+      "statement": "f k ≤ 2k + 3   (for all k)",
+      "significance": "A uniform linear ceiling on f valid even at the anomalous small cases — the 2k+3 bound never over-counts. Pairs with f_linear_growth's lower bound k ≤ f k.",
+      "description": "match on k with simp [f] closing each of the three definitional cases."
+    },
+    {
+      "name": "cycle_length_at_boundary",
+      "type": "theorem",
+      "statement": "f k - k = k + 3   (for k ≥ 2)",
+      "significance": "At the exact threshold n = f(k), the guaranteed cycle length n - k is k + 3 — a clean structural readout of what Woodall's bound delivers at its boundary.",
+      "description": "Writes k = j + 2 and finishes with simp [f]; omega."
+    },
+    {
+      "name": "threshold_symmetric",
+      "type": "theorem",
+      "statement": "edgeThreshold (2k + 3) k = 2 · C(k+2, 2) + 1",
+      "significance": "At the Woodall boundary n = 2k+3 the two binomial terms of the edge threshold coincide, exposing a symmetry: the threshold is twice a single binomial plus one. A structural hallmark of the extremal point.",
+      "description": "Unfolds edgeThreshold, simplifies the first argument 2k+3 - k - 1 = k + 2 by omega, then ring."
+    },
+    {
+      "name": "threshold_diff",
+      "type": "theorem",
+      "statement": "edgeThreshold (2k+3) k - edgeThreshold (2k+2) k = C(k+2, 2) - C(k+1, 2)",
+      "significance": "Quantifies exactly how many edges separate the extremal non-example (n = 2k+2) from the Woodall boundary (n = 2k+3): a single successive-binomial gap. Makes the tightness of 2k+3 concrete.",
+      "description": "Rewrites both thresholds via threshold_symmetric and threshold_at_extremal, then omega."
+    },
+    {
+      "name": "consecutive_diff",
+      "type": "theorem",
+      "statement": "f (k + 1) - f k = 2   (for k ≥ 2)",
+      "significance": "In the linear regime f increases in steps of exactly 2 — the discrete slope of the 2k+3 law. Contrasts with the anomalous jump largest_jump: f 2 - f 1 = 6.",
+      "description": "Writes k = j + 2 and reduces 2(j+3)+3 - (2(j+2)+3) = 2 by omega."
+    },
+    {
+      "name": "f_linear_growth",
+      "type": "theorem",
+      "statement": "k ≤ f k ∧ f k ≤ 2k + 3   (for k ≥ 2)",
+      "significance": "Brackets f between k and 2k+3, certifying strictly linear growth in the k ≥ 2 regime and summarizing the two-sided control the exact formula provides.",
+      "description": "Left inequality by writing k = j + 2 and simp [f]; omega; right inequality is exactly f_le_linear."
+    }
+  ],
   "sorries": 0
 }
