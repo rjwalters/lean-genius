@@ -85,11 +85,12 @@
     }
   ],
   "conclusion": {
-    "text": "The subadditive bound popcount(a+b) ≤ popcount(a)+popcount(b) is tight exactly on disjoint binary supports: popcount(a+b)=popcount(a)+popcount(b) ↔ a&&&b=0, with a strict drop whenever a&&&b≠0. This is the sharp equality theory of the parent's subadditivity, and it corrects the seeker's false lower-bound alternative.",
-    "significance": "Completes the additive-structure layer of the Erdős #10 popcount thread with the sharp equality case, fully machine-checked and 0-axiom.",
-    "futureDirections": [
-      "Kummer-style refinement: relate popcount(a)+popcount(b)−popcount(a+b) to the number of carries when adding a and b in base 2.",
-      "Generalize the disjoint-support equality to the list/finset sum popcount(∑ aᵢ) = ∑ popcount(aᵢ) ↔ pairwise disjoint supports."
+    "summary": "The subadditive bound popcount(a+b) ≤ popcount(a)+popcount(b) is tight exactly on disjoint binary supports: popcount(a+b) = popcount(a)+popcount(b) ↔ a &&& b = 0, with a strict drop whenever a &&& b ≠ 0 (popcount_add_lt). This is the sharp equality theory of the parent's subadditivity, and it also corrects the seeker's proposed lower bound popcount(a+b) ≥ |popcount(a)−popcount(b)|, refuted at a=1, b=7 where popcount(8)=1 < 2. Fully machine-checked, 0 axioms, 0 sorries, self-contained on Mathlib.",
+    "implications": "Completes the additive-structure layer of the Erdős #10 popcount thread with the sharp equality case. The characterization 'equality ⟺ no carries ⟺ disjoint binary supports' is the base-2 shadow of Kummer's theorem (which counts carries when adding in base p), and the &&& parity recursions provide a reusable, representation-independent handle on carry propagation that the rest of the powers-of-two thread can build on. Because equality forces disjoint supports, it pins down exactly which sums a+b preserve the full 'number of powers of two' — the quantity the #10 program is trying to bound.",
+    "openQuestions": [
+      "Kummer-style refinement: relate the defect popcount(a)+popcount(b)−popcount(a+b) to the exact number of carries generated when adding a and b in base 2 (the p=2 case of Kummer's theorem).",
+      "Generalize the disjoint-support equality to finite sums: popcount(∑ aᵢ) = ∑ popcount(aᵢ) ↔ the binary supports of the aᵢ are pairwise disjoint.",
+      "Identify the sharp lower bound that replaces the refuted |popcount(a)−popcount(b)|: what is the largest f(a,b) with popcount(a+b) ≥ f(a,b) in general (e.g. in terms of the length of the longest carry chain)?"
     ]
   },
   "references": [
