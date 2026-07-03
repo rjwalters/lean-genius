@@ -74,7 +74,7 @@
     "proofId": "lovasz-local-lemma-oq-01-induction-step",
     "range": {
       "startLine": 130,
-      "endLine": 149
+      "endLine": 145
     },
     "type": "insight",
     "title": "Closing the loop: the maintained induction invariant μ[Aᵢ | history] ≤ xᵢ",
@@ -90,6 +90,31 @@
     "prerequisites": [
       "cond_failure_le_measure_div",
       "ENNReal.div_le_iff_le_mul, ne_top_of_le_ne_top, cond_ne_top"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-step-ennreal-discipline",
+    "proofId": "lovasz-local-lemma-oq-01-induction-step",
+    "range": {
+      "startLine": 75,
+      "endLine": 88
+    },
+    "type": "warning",
+    "title": "The ℝ≥0∞ finiteness discipline that makes every division legal",
+    "content": "A theme running through all three theorems: working in the extended non-negative reals $\\mathbb{R}_{\\ge 0}^\\infty$, dividing or moving a factor across $\\le$ is only valid once the divisor is proven both nonzero and finite. Here the divisor is always a conditional-probability *lower bound* $d$ (or $\\text{denom}$), and its finiteness is never assumed — it is derived: any lower bound of a conditional probability is $\\le \\mu[\\,\\cdot\\mid\\cdot\\,] \\le 1 < \\infty$, so `ne_top_of_le_ne_top` applied to `cond_ne_top` (conditionals of a probability measure are finite) discharges $d \\ne \\infty$ for free. Nonzero-ness ($d\\ne 0$) is the single genuine hypothesis threaded through `cond_le_div → cond_failure_le_measure_div → cond_failure_le_x`. This is also why the family `A : ℕ → Set Ω` and the survival blocks carry `measurableSet_survival` witnesses everywhere — `cond_inter_eq_cond_cond_mul` and `cond_ne_top` both require the conditioning sets to be measurable. The lemma is stated over `A : ℕ → Set ℕ`-indexed events precisely so these blocks are finite intersections and stay measurable.",
+    "mathContext": "For a probability measure, μ[s | t] ≤ 1 < ∞, so any lower bound d ≤ μ[s|t] satisfies d ≠ ∞ via ne_top_of_le_ne_top ∘ cond_ne_top; only d ≠ 0 must be hypothesised to divide in ℝ≥0∞.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "extended non-negative reals ℝ≥0∞",
+      "finiteness of conditional probability",
+      "cond_ne_top",
+      "measurability of survival blocks",
+      "division in ENNReal"
+    ],
+    "prerequisites": [
+      "arithmetic and order on ℝ≥0∞",
+      "cond_ne_top, ne_top_of_le_ne_top",
+      "measurableSet_survival"
     ]
   }
 ]
