@@ -45,14 +45,29 @@ independent of the (unformalized) measure-theoretic LLL machinery:
 
 ## Dead Ends / Repair Needed
 
-- **`Proofs/RamseyR4kExtensionsOQ03.lean` (Key Lemma 3) does NOT build under
-  Mathlib 4.26 as of 2026-07-03** — it was left as untracked WIP by an earlier
-  researcher and never merged. Multiple API-drift failures in
-  `edge_containing_cliques_card_le`: `Finset.card_le_card_of_injOn` now hands the
-  "maps into" hypothesis with `∈ ↑s` (Set coercion), so `rw [Finset.mem_filter,
-  Finset.mem_powersetCard] at hT` fails (pattern `_ ∈ filter _ _` not found — need
-  `Finset.mem_coe` first); `Finset.card_sdiff (Finset.subset_univ e)` reports
-  "function expected"; and the final injectivity step needs `heq` beta-reduced
-  (`have hsdiff : T1 \ e = T2 \ e := heq` works, plain `rw [heq]` does not).
-  Key Lemma 2 was shipped standalone precisely because it is self-contained and
-  verified; repairing Key Lemma 3 is the next incremental step.
+- **RESOLVED (researcher-4, 2026-07-03): Key Lemma 3 repaired, builds, and
+  SHIPPED to the gallery as `ramsey-r4k-extensions-oq-03`.** The tracked
+  `Proofs/RamseyR4kExtensionsOQ03.lean` (231 lines) now builds clean under
+  Mathlib 4.26 and is 0-axiom / 0-sorry: `#print axioms` on
+  `cliqueNeighbors_card_le`, `containing_card_le`, `ramsey_lll_lower_bound`,
+  `RamseyLLLCondition_antitone`, `cliqueMonoProb_le_one` = only
+  `[propext, Classical.choice, Quot.sound]`. The API-drift fixes that landed:
+  the per-edge count is now `containing_card_le` using
+  `Finset.card_le_card_of_injOn _ hmaps hinj` with a `Set.MapsTo` built after
+  `rw [Finset.mem_coe, mem_filter, mem_powersetCard] at hT` (the `Finset.mem_coe`
+  first is the fix for the `∈ ↑s` Set-coercion), `card_sdiff_of_subset` (NOT
+  `card_sdiff`) for `|T\e| = k-2` and for `|univ\e| = n-2`, and the injectivity
+  reconstruction `T = (T\e) ∪ e` via `sdiff_union_of_subset` with the beta-reduced
+  `have heq' : T \ e = T' \ e := heq`. `cliqueNeighbors_card_le` covers the
+  dependency set by `S.powersetCard 2` (the C(k,2) edges) with
+  `card_biUnion_le_card_mul` + `exists_subset_card_eq`.
+- The gallery entry (`src/data/proofs/ramsey-r4k-extensions-oq-03/`
+  meta.json + annotations.json) is `verified` / badge `original`. Status is honest:
+  the dependency bound, probability bounds and threshold monotonicity are
+  UNCONDITIONAL; the Ramsey application `ramsey_lll_lower_bound` is a genuine
+  conditional theorem taking `hLLL : SymmetricLLLForRamsey` as an EXPLICIT Prop
+  argument (not an axiom).
+- **Next incremental step**: discharge `SymmetricLLLForRamsey` itself — the
+  abstract symmetric LLL induction. See sibling problem
+  `lovasz-local-lemma-oq-01` (commit e65f91f8464, "conditioning-quotient bound —
+  LLL induction-step engine") for the induction-step machinery to build on.
