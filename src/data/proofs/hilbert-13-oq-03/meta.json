@@ -2,7 +2,7 @@
   "id": "hilbert-13-oq-03",
   "title": "Hilbert's 13th, OQ-03: Point Separation Is Necessary for the Inner Functions",
   "slug": "hilbert-13-oq-03",
-  "description": "Isolates and fully verifies the unconditional necessary core of 'what are the minimal requirements on the inner functions' in the Kolmogorov–Arnold superposition f(x) = Σ_q Φ_q(Σ_p coeff_{p,q} φ_p(x_p)). Bundling the inner data into a feature map Ψ, the outer functions see x only through Ψ(x); so if a fixed inner family represents every continuous function, Ψ must be injective (point-separating), and each inner φ_p must itself be injective. Explicitly does NOT resolve sufficiency (Sternfeld's stronger uniform-separation criterion). 6 theorems, 2 definitions, 0 axioms, 0 sorries.",
+  "description": "Isolates and fully verifies the unconditional necessary core of 'what are the minimal requirements on the inner functions' in the Kolmogorov–Arnold superposition f(x) = Σ_q Φ_q(Σ_p coeff_{p,q} φ_p(x_p)). Bundling the inner data into a feature map Ψ, the outer functions see x only through Ψ(x); so if a fixed inner family represents every continuous function, Ψ must be injective (point-separating), and each inner φ_p must itself be injective. Explicitly does NOT resolve sufficiency (Sternfeld's stronger uniform-separation criterion). 8 theorems, 2 definitions, 0 axioms, 0 sorries.",
   "meta": {
     "proofRepoPath": "Proofs/Hilbert13OQ03.lean",
     "author": "Lean Genius",
@@ -111,7 +111,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The necessary core of Hilbert 13 / OQ-03 is machine-verified with 0 axioms and 0 sorries: any inner family that yields a Kolmogorov–Arnold superposition for every continuous function must separate points, and each inner function φ_p must be injective. 6 theorems, 2 definitions, 182 lines.",
+    "summary": "The necessary core of Hilbert 13 / OQ-03 is machine-verified with 0 axioms and 0 sorries: any inner family that yields a Kolmogorov–Arnold superposition for every continuous function must separate points, and each inner function φ_p must be injective. 8 theorems, 2 definitions, 213 lines.",
     "implications": "The feature-map abstraction cleanly localizes the representational burden to the inner data and gives a reusable, dimension-agnostic necessary condition. It clarifies the floor of admissibility for the inner functions while leaving the exact threshold — Sternfeld's uniform (measure-)separation criterion — as the deeper open target.",
     "openQuestions": [
       "Formalize Sternfeld's uniform separation criterion and prove it is the exact admissibility threshold (sufficiency)",
@@ -125,9 +125,9 @@
     ],
     "opens": [],
     "namespace": "Hilbert13OQ03",
-    "lineCount": 182,
+    "lineCount": 213,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 2,
     "path": "Proofs/Hilbert13OQ03.lean",
     "sorries": 0
@@ -151,6 +151,12 @@
       "type": "core",
       "description": "Under the same universality hypothesis, the bundled inner feature map must be injective — the inner family must separate the points of the cube",
       "leanType": "(∀ f, Continuous f → OuterRepresentable (kaFeature φ coeff) f) → Function.Injective (kaFeature φ coeff)"
+    },
+    {
+      "name": "representable_separates_iff_feature_ne",
+      "type": "core",
+      "description": "Exact characterization sharpening the necessity result: the representable functions separate two domain points if and only if the feature map does. The fibers of Ψ are precisely the classes of points no Kolmogorov–Arnold superposition can distinguish — point separation is exactly what the outer layer cannot recover.",
+      "leanType": "∀ {X : Type*} {Q : ℕ} (Ψ : X → Fin Q → ℝ) (x y : X), (∃ f, OuterRepresentable Ψ f ∧ f x ≠ f y) ↔ Ψ x ≠ Ψ y"
     }
   ],
   "references": [
