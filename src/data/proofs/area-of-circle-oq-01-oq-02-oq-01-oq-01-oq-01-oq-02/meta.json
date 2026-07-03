@@ -68,7 +68,7 @@
     "definitionCount": 1
   },
   "overview": {
-    "historicalContext": "The unit n-ball volume ω_n = π^(n/2)/Γ(n/2+1) shrinks to 0 in high dimensions — the 'curse of dimensionality'. The ancestor entry proved only ω_n → 0. The sharper question is the exact rate. Stirling's formula resolves it: ω_n decays super-exponentially like (2πe/n)^(n/2) with a polynomial prefactor 1/√(πn). This file pins the exact even-subsequence asymptotic rigorously from Mathlib's Stirling lemma.",
+    "historicalContext": "The unit n-ball volume ω_n = π^(n/2)/Γ(n/2+1) shrinks to 0 in high dimensions — the 'curse of dimensionality'. The ancestor entry proved only ω_n → 0. The sharper question is the exact rate. Stirling's formula resolves it: ω_n decays super-exponentially like (2πe/n)^(n/2) with a polynomial prefactor 1/√(πn). This file pins the exact even-subsequence asymptotic rigorously from Mathlib's Stirling lemma. The phenomenon is a recurring surprise in geometry and probability: although the ball of radius 1 sits inside the cube [−1,1]^n, its volume is a vanishing fraction of the cube's 2^n as n grows, and in fact ω_n peaks around dimension 5 before collapsing to 0. The even subsequence n = 2m is the natural one to analyze because there Γ(n/2+1) = m! is an honest factorial, so Stirling's factorial asymptotic m! ~ √(2πm)(m/e)^m applies directly without half-integer Gamma bookkeeping — the same reason the classical closed form ω_{2m} = π^m/m! is cleanest at even dimensions.",
     "problemStatement": "**Question** (as posed): prove ω_n ~ √(2π/n)·(2πe/n)^(n/2) from Stirling.\n\n**Result**: For the even subsequence, ω_{2k} ~[atTop] (πe/k)^k/√(2πk). Equivalently, in terms of n = 2k, ω_n ~ (2πe/n)^(n/2)/√(πn). The correct universal constant is 1/√(πn); the posed √(2π/n) is off by a factor √2·π.",
     "text": "The even unit-ball volumes satisfy the exact Stirling asymptotic ω_{2k} ~ (πe/k)^k/√(2πk), sharpening ω_n → 0 to its precise decay rate.",
     "proofStrategy": "1. **Self-contained infrastructure**: define ω_n = π^(n/2)/Γ(n/2+1); prove ω_0 = 1, the recurrence ω_{n+2} = (2π/(n+2))·ω_n (drift-corrected for Mathlib v4.26), and by induction the even closed form ω_{2k} = π^k/k!.\n\n2. **Transport Stirling**: ω_{2k} = π^k·(k!)⁻¹. From k! ~ √(2πk)(k/e)^k (Stirling), IsEquivalent.inv gives (k!)⁻¹ ~ (√(2πk)(k/e)^k)⁻¹; multiply by the common factor π^k (IsEquivalent.mul with refl).\n\n3. **Clean closed form**: pointwise (for k ≥ 1) the transported RHS equals (πe/k)^k/√(2πk), via inv_pow/inv_div/mul_pow algebra; transport through IsEquivalent.congr_right.\n\n4. **Ratio form**: isEquivalent_iff_tendsto_one converts to ω_{2k}/((πe/k)^k/√(2πk)) → 1.",
@@ -95,20 +95,36 @@
       "mathContext": "$\\omega_{2k} \\sim (\\pi e/k)^k/\\sqrt{2\\pi k}$; constant $1/\\sqrt{\\pi n}$ vs posed $\\sqrt{2\\pi/n}$ (off by $\\sqrt2\\,\\pi$)."
     },
     {
-      "id": "infrastructure",
-      "title": "Ball-Volume Infrastructure",
+      "id": "infrastructure-def-recurrence",
+      "title": "Ball-Volume Infrastructure: Definition and Recurrence",
       "startLine": 53,
-      "endLine": 92,
-      "summary": "ω (definition π^(n/2)/Γ(n/2+1)), omega_zero (ω_0 = 1), gamma_half_pos (positivity), omega_recurrence (drift-corrected ω_{n+2} = (2π/(n+2))·ω_n), and omega_even_formula (the exact even closed form ω_{2k} = π^k/k! by induction).",
-      "mathContext": "$\\omega_{n+2} = \\tfrac{2\\pi}{n+2}\\omega_n \\Rightarrow \\omega_{2k} = \\pi^k/k!$ (exact)."
+      "endLine": 76,
+      "summary": "ω (definition π^(n/2)/Γ(n/2+1)), omega_zero (ω_0 = 1), gamma_half_pos (positivity of the Gamma denominator), and omega_recurrence — the drift-corrected two-step recurrence ω_{n+2} = (2π/(n+2))·ω_n, from the Gamma functional equation Γ(s+1) = s·Γ(s) at half-integer argument.",
+      "mathContext": "$\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$, $\\omega_0 = 1$, $\\omega_{n+2} = \\tfrac{2\\pi}{n+2}\\,\\omega_n$."
     },
     {
-      "id": "asymptotic",
-      "title": "The Exact Stirling Asymptotic",
+      "id": "infrastructure-even-formula",
+      "title": "The Exact Even Closed Form ω_{2k} = π^k/k!",
+      "startLine": 78,
+      "endLine": 92,
+      "summary": "omega_even_formula: iterating the two-step recurrence over the even subsequence gives the exact closed form ω_{2k} = π^k/k!, proved by induction on k. At even dimensions Γ(k+1) = k! is an honest factorial, so no half-integer Gamma values appear — this is the form Stirling attacks.",
+      "mathContext": "$\\omega_{2k} = \\pi^k/k!$ (exact, by induction from the recurrence; Γ(k+1) = k!)."
+    },
+    {
+      "id": "asymptotic-isequivalent",
+      "title": "The Stirling Asymptotic ω_{2k} ~ (πe/k)^k/√(2πk)",
       "startLine": 94,
+      "endLine": 128,
+      "summary": "omega_even_isEquivalent: transports Mathlib's Stirling equivalence k! ~ √(2πk)(k/e)^k through the closed form ω_{2k} = π^k·(k!)⁻¹, via inv/mul/congr_right on Asymptotics.IsEquivalent, to ω_{2k} ~ (πe/k)^k/√(2πk).",
+      "mathContext": "$\\omega_{2k} = \\pi^k(k!)^{-1} \\sim \\pi^k\\big(\\sqrt{2\\pi k}(k/e)^k\\big)^{-1} = (\\pi e/k)^k/\\sqrt{2\\pi k}$."
+    },
+    {
+      "id": "asymptotic-ratio",
+      "title": "The Normalized-Ratio Limit → 1",
+      "startLine": 130,
       "endLine": 147,
-      "summary": "omega_even_isEquivalent (ω_{2k} ~ (πe/k)^k/√(2πk), proved by transporting Stirling for k! through inv/mul/congr_right) and omega_even_ratio_tendsto_one (the same as a normalized-ratio limit → 1 via isEquivalent_iff_tendsto_one).",
-      "mathContext": "$\\omega_{2k} = \\pi^k(k!)^{-1} \\sim (\\pi e/k)^k/\\sqrt{2\\pi k}$; ratio $\\to 1$."
+      "summary": "omega_even_ratio_tendsto_one: restates the IsEquivalent asymptotic as a limit of the normalized ratio ω_{2k} / ((πe/k)^k/√(2πk)) → 1, via Asymptotics.isEquivalent_iff_tendsto_one (the reference function is eventually nonzero).",
+      "mathContext": "$\\omega_{2k}\\big/\\big((\\pi e/k)^k/\\sqrt{2\\pi k}\\big) \\to 1$ as $k \\to \\infty$."
     }
   ],
   "crossReferences": [
