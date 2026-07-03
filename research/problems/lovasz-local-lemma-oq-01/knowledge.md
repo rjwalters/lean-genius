@@ -94,3 +94,42 @@ Insights accumulated during research on this problem.
   multiple sessions. (Update 2026-07-02: the *independent* `d = 0` base case is
   now done and verified; only the bounded-dependency-degree inductive step
   remains open.)
+
+### Chain-rule scaffold (researcher-6, 2026-07-02) — NEW
+
+- **The conditional-probability chain rule is the independence-free skeleton of
+  the LLL induction, and it is fully provable now.** New file
+  `Proofs/LovaszLocalLemmaOQ01ChainRule.lean` (0 sorry / 0 axiom), gallery entry
+  `lovasz-local-lemma-oq-01-chain-rule`: for an arbitrary measurable family
+  `A : ℕ → Set Ω` over any `IsProbabilityMeasure`,
+  `μ (⋂ i∈range n, A i) = ∏ k∈range n, μ[A k | ⋂ j∈range k, A j]`
+  (`cond_chain_avoidance`). No independence, no dependency graph, no LLL bound.
+- **Route (pure telescoping, no positivity side conditions).** Induction on `n`;
+  the history at `n+1` splits off the newest event via `Finset.range_add_one` +
+  `Finset.set_biInter_insert` + `Set.inter_comm`; the one-step multiplication
+  rule `cond_mul_eq_inter : μ[t|s]·μ s = μ(s∩t)` (holds even when `μ s = 0`)
+  extends the product, and `Finset.prod_range_succ` absorbs the new factor. Base
+  case `μ univ = 1 = ∏∅`. Histories are measurable via
+  `Finset.measurableSet_biInter`.
+- **Survival/avoidance form + criterion.** Instantiating at the complements
+  (`avoidance_eq_prod_survival_cond`) gives
+  `μ(⋂ (A i)ᶜ) = ∏ k, μ[(A k)ᶜ | ⋂_{j<k}(A j)ᶜ]` — the honest measure-theoretic
+  analogue of the rational surrogate `∏(1 − xᵢ)`. Then `avoidance_pos_iff`:
+  `0 < μ(⋂ (A i)ᶜ) ↔ ∀ k, μ[(A k)ᶜ | history] ≠ 0` (finite ℝ≥0∞ product positive
+  iff no factor vanishes, via `zero_lt_iff` + `Finset.prod_ne_zero_iff`). This is
+  the exact reduction the LLL discharges.
+- **Bridge to the standard LLL bound.** `survival_cond_eq_one_sub`: on a
+  positive-measure history, `cond_isProbabilityMeasure` makes conditioning a prob
+  measure, so `μ[(A k)ᶜ | history] = 1 − μ[A k | history]` (`prob_compl_eq_one_sub`).
+  `avoidance_pos_of_failure_cond_lt_one`: history positive ∧ each failure
+  conditional `< 1` ⇒ avoidance positive — the exact shape the LLL induction
+  produces (symmetric regime: `μ[A k|history] ≤ 2p < 1` under `e·p·(d+1) ≤ 1`).
+- **What remains open, sharpened.** The scaffold isolates precisely the missing
+  ingredient: a strong-induction bound `μ[A i | ⋂_{j∈S} A_jᶜ] ≤ 2p` (equivalently
+  each conditional survival `≥ 1 − 2p > 0`) for all `i, S`, under a
+  measure-theoretic dependency (conditional independence of `A i` from
+  non-neighbours). Plug that into `avoidance_pos_of_failure_cond_lt_one`.
+- **Key API note.** `Finset.range_succ` is deprecated → use `Finset.range_add_one`.
+  `cond_mul_eq_inter (hms) (t) (μ)` needs `[IsFiniteMeasure μ]` only (not
+  probability), and holds unconditionally including the measure-zero case, which
+  is why the chain rule needs NO positive-measure hypotheses.
