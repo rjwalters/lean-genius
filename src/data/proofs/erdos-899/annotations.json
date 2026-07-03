@@ -16,7 +16,11 @@
       "filters",
       "limits"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Mathlib pointwise set operations",
+      "filters and limits",
+      "Set operations on ℤ"
+    ]
   },
   {
     "id": "ann-e899-counting",
@@ -35,7 +39,11 @@
       "cardinality",
       "counting"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "cardinality of a finite set",
+      "counting elements up to N",
+      "natural density"
+    ]
   },
   {
     "id": "ann-e899-diffset",
@@ -54,7 +62,11 @@
       "sumsets",
       "structure"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "pointwise set difference A − A",
+      "integers ℤ",
+      "additive combinatorics"
+    ]
   },
   {
     "id": "ann-e899-zero-density",
@@ -73,7 +85,11 @@
       "sparse sets",
       "asymptotic density"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the counting function |A ∩ {1,…,N}|",
+      "limits of ratios as N→∞",
+      "sparse sets"
+    ]
   },
   {
     "id": "ann-e899-zero-mem",
@@ -91,7 +107,11 @@
       "symmetry",
       "difference sets"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the difference set A − A",
+      "nonempty sets",
+      "a − a = 0"
+    ]
   },
   {
     "id": "ann-e899-powers-of-two",
@@ -109,7 +129,11 @@
       "exponential growth",
       "sparse sequences"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "zero-density sets",
+      "exponential growth",
+      "counting powers of 2 up to N"
+    ]
   },
   {
     "id": "ann-e899-diff-examples",
@@ -127,7 +151,11 @@
       "existential proofs",
       "computation"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the difference set of a set",
+      "existential statements",
+      "direct computation"
+    ]
   },
   {
     "id": "ann-e899-axiom",
@@ -146,7 +174,11 @@
       "additive combinatorics",
       "structure theorems"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Ruzsa's 1978 theorem",
+      "zero-density infinite sets",
+      "axiomatized results"
+    ]
   },
   {
     "id": "ann-e899-main-theorem",
@@ -165,7 +197,11 @@
       "difference sets",
       "growth rates"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "difference sets and their size",
+      "limsup of a ratio",
+      "zero-density sets"
+    ]
   },
   {
     "id": "ann-e899-sumset",
@@ -184,6 +220,10 @@
       "additive combinatorics",
       "Problem 245"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "the sumset A + A",
+      "additive combinatorics",
+      "growth of |A+A| vs |A|"
+    ]
   }
 ]
