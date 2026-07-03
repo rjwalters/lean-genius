@@ -75,6 +75,35 @@ theorem eq_of_feature_eq {X : Type*} {Q : ℕ} {Ψ : X → (Fin Q → ℝ)} {f :
     _ = ∑ q, Φ q (Ψ y q) := by rw [h]
     _ = f y := (hΦ y).symm
 
+/-- **Converse: the feature map is the *only* obstruction.**
+    If the feature map already distinguishes `x` and `y`, then some representable function does
+    too — namely the feature coordinate `q` on which they differ, realised by the outer family
+    `Φ_q = id`, `Φ_{q'} = 0` for `q' ≠ q`. So the outer layer *can* recover any separation the
+    inner layer provides; it is powerless only against merges. -/
+theorem exists_representable_of_feature_ne {X : Type*} {Q : ℕ} (Ψ : X → (Fin Q → ℝ))
+    {x y : X} (h : Ψ x ≠ Ψ y) :
+    ∃ f : X → ℝ, OuterRepresentable Ψ f ∧ f x ≠ f y := by
+  obtain ⟨q, hq⟩ := Function.ne_iff.mp h
+  refine ⟨fun z => Ψ z q, ⟨fun q' => if q' = q then id else 0, fun z => ?_⟩, hq⟩
+  rw [Finset.sum_eq_single_of_mem q (Finset.mem_univ q)]
+  · simp
+  · intro q' _ hq'; simp [hq']
+
+/-- **Fibers of the feature map = indistinguishability classes.**
+    The representable functions separate `x` and `y` *iff* the feature map does. Combining the
+    collapse lemma (`eq_of_feature_eq`) with its converse, the equivalence relation "every
+    representable function agrees on `x` and `y`" is *exactly* `Ψ x = Ψ y`: the feature map's
+    fibers are precisely the classes of points no Kolmogorov–Arnold superposition can tell apart.
+    This sharpens "point separation is necessary" into "point separation is exactly what the
+    outer layer cannot recover". -/
+theorem representable_separates_iff_feature_ne {X : Type*} {Q : ℕ} (Ψ : X → (Fin Q → ℝ))
+    (x y : X) :
+    (∃ f : X → ℝ, OuterRepresentable Ψ f ∧ f x ≠ f y) ↔ Ψ x ≠ Ψ y := by
+  constructor
+  · rintro ⟨f, hf, hfxy⟩ h
+    exact hfxy (eq_of_feature_eq hf h)
+  · exact fun h => exists_representable_of_feature_ne Ψ h
+
 /-- **Necessity of point separation.**
     Suppose every function that *some* continuous function distinguishes is representable through
     `Ψ` (the "universal inner family" situation), and that continuous functions separate the
@@ -174,6 +203,8 @@ which we do not formalise here.
 -/
 
 #check @eq_of_feature_eq
+#check @exists_representable_of_feature_ne
+#check @representable_separates_iff_feature_ne
 #check @feature_injective_of_universal
 #check @inner_injective_of_feature_injective
 #check @inner_functions_must_be_injective
