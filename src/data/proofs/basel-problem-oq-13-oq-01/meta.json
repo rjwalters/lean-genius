@@ -103,26 +103,42 @@
     {
       "id": "even-part",
       "title": "hasSum_eta_four_even — ∑ (-1)^(2k+1)/(2k)⁴ = -π⁴/1440",
-      "startLine": 46,
-      "endLine": 62,
-      "summary": "Reduces the even-indexed alternating sign (-1)^(2k+1) to -1, then applies HasSum.neg to the parent's even-fourth-power sum.",
-      "mathContext": "The even-indexed terms of the alternating series carry a negative sign and contribute -π⁴/1440."
+      "startLine": 45,
+      "endLine": 57,
+      "summary": "Reduces the even-indexed alternating sign (-1)^(2k+1) to -1 by pow_succ/pow_mul, rewrites the summand as -(1/(2k)⁴), then applies HasSum.neg to the parent's even-fourth-power sum hasSum_even_zeta_four.",
+      "mathContext": "The even-indexed terms of the alternating series carry a negative sign and contribute $-\\pi^4/1440$."
     },
     {
       "id": "odd-part",
       "title": "hasSum_eta_four_odd — ∑ (-1)^(2k+2)/(2k+1)⁴ = π⁴/96",
-      "startLine": 64,
-      "endLine": 79,
-      "summary": "Reduces the odd-indexed alternating sign (-1)^(2k+2) to +1, recovering the parent's lambda value λ(4) directly.",
-      "mathContext": "The odd-indexed terms keep a positive sign and contribute +π⁴/96."
+      "startLine": 58,
+      "endLine": 71,
+      "summary": "Reduces the odd-indexed alternating sign (-1)^(2k+1+1) to +1, rewrites the summand as 1/(2k+1)⁴, and recovers the parent's lambda value λ(4) = π⁴/96 directly from hasSum_odd_zeta_four.",
+      "mathContext": "The odd-indexed terms keep a positive sign and contribute $+\\pi^4/96$, the Dirichlet lambda value $\\lambda(4)$."
     },
     {
-      "id": "eta-value",
-      "title": "hasSum_eta_four / tsum_eta_four — η(4) = 7π⁴/720",
-      "startLine": 81,
-      "endLine": 100,
-      "summary": "Recombines the even and odd subseries via HasSum.even_add_odd with f n = (-1)^(n+1)/n⁴, evaluates (-π⁴/1440) + π⁴/96 = 7π⁴/720 by `ring`, and records the tsum form.",
-      "mathContext": "The Dirichlet eta value η(4), assembled from its signed parity halves."
+      "id": "assembly",
+      "title": "hasSum_eta_four — η(4) = 7π⁴/720 (HasSum form)",
+      "startLine": 72,
+      "endLine": 85,
+      "summary": "Recombines the even and odd subseries via HasSum.even_add_odd with f n = (-1)^(n+1)/n⁴, then evaluates (-π⁴/1440) + π⁴/96 = 7π⁴/720 by `ring`. The n = 0 term is (-1)^1/0⁴ = 0 (division by zero) so it contributes nothing.",
+      "mathContext": "$\\eta(4) = -\\tfrac{\\pi^4}{1440} + \\tfrac{\\pi^4}{96} = \\tfrac{7\\pi^4}{720}$, assembled from its signed parity halves."
+    },
+    {
+      "id": "tsum-form",
+      "title": "tsum_eta_four — the tsum restatement",
+      "startLine": 86,
+      "endLine": 92,
+      "summary": "tsum_eta_four restates the result in ∑'-form, ∑' n, (-1)^(n+1)/n⁴ = 7π⁴/720, obtained from hasSum_eta_four.tsum_eq, and closes namespace BaselEtaFour.",
+      "mathContext": "$\\sum_{n=1}^{\\infty} \\frac{(-1)^{n+1}}{n^4} = \\frac{7\\pi^4}{720}$."
+    },
+    {
+      "id": "summary-table",
+      "title": "Summary Table",
+      "startLine": 93,
+      "endLine": 110,
+      "summary": "A trailing comment block tabulating the four results (hasSum_eta_four_even, hasSum_eta_four_odd, hasSum_eta_four, tsum_eta_four), noting the whole entry is built from the parent BaselProblemOQ13's even/odd fourth-power sums plus HasSum.even_add_odd, with 0 sorries and 0 axioms.",
+      "mathContext": "Documentation only; records that η(4) follows from λ(4) and the even-fourth-power sum with no new assumptions."
     }
   ],
   "mainTheorems": [
