@@ -267,4 +267,93 @@ theorem moserSpindle_fractionalChromaticNumber_ge :
   fractionalChromaticNumber_ge_of_seven_indep_two moserSpindle
     moserSpindle_card moserSpindle_independenceNumber
 
+/-! ## Isomorphism-invariance and transport to any realisation
+
+The bound `χ_f ≥ 3.5` depends only on the *combinatorial type* of the Moser
+spindle: it holds for **every** graph isomorphic to `moserSpindle`.  This gives
+the clean coordinate-free bridge to the plane.  Concretely, once the spindle is
+realised as a unit-distance graph — i.e. once one exhibits a graph isomorphism
+
+    `moserSpindle ≃g unitDistGraph S`
+
+for a suitable 7-point set `S ⊆ Plane` — the planar fractional-chromatic bound
+`χ_f(unitDistGraph S) ≥ 3.5` follows immediately, with no further analysis of
+the LP.  We prove the two invariances (`α` and the vertex count) and package
+the resulting transport theorem.  All of this is axiom-free graph theory; the
+only remaining ingredient for the full ℝ² claim is the explicit embedding
+(eleven unit distances + ten non-unit distances), recorded in the knowledge
+base as the open engineering step. -/
+
+/-- A graph isomorphism carries independent finsets to independent finsets
+(under the image map `S ↦ e '' S`), preserving cardinality. -/
+theorem isIndepFinset_image_of_iso {V W : Type*} [DecidableEq W]
+    {G : SimpleGraph V} {H : SimpleGraph W} (e : G ≃g H)
+    {S : Finset V} (hS : IsIndepFinset G S) :
+    IsIndepFinset H (S.image e) := by
+  intro a ha b hb hab
+  rw [Finset.mem_image] at ha hb
+  obtain ⟨u, hu, rfl⟩ := ha
+  obtain ⟨v, hv, rfl⟩ := hb
+  have huv : u ≠ v := fun h => hab (by rw [h])
+  rw [e.map_adj_iff]
+  exact hS u hu v hv huv
+
+/-- Every finite graph has an independent set whose cardinality attains the
+independence number (the defining `sup` is realised, the empty set witnessing
+nonemptiness of the family of independent sets). -/
+theorem exists_indep_card_eq_independenceNumber
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    ∃ S : Finset V, IsIndepFinset G S ∧ S.card = independenceNumber G := by
+  have hne : (Finset.univ.powerset.filter (fun S : Finset V =>
+      ∀ u ∈ S, ∀ v ∈ S, u ≠ v → ¬ G.Adj u v)).Nonempty := by
+    refine ⟨∅, ?_⟩
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨Finset.empty_subset _, by simp⟩
+  obtain ⟨S, hSmem, hSsup⟩ := Finset.exists_mem_eq_sup _ hne Finset.card
+  rw [Finset.mem_filter, Finset.mem_powerset] at hSmem
+  exact ⟨S, hSmem.2, by rw [independenceNumber]; exact hSsup.symm⟩
+
+/-- One `≤` direction of independence-number invariance: an isomorphism `G ≃g H`
+gives `α(G) ≤ α(H)` (map an `α`-attaining independent set of `G` into `H`). -/
+theorem independenceNumber_le_of_iso {W : Type*} [Fintype W] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (H : SimpleGraph W) [DecidableRel H.Adj] (e : G ≃g H) :
+    independenceNumber G ≤ independenceNumber H := by
+  obtain ⟨S, hS, hcard⟩ := exists_indep_card_eq_independenceNumber G
+  have himg : IsIndepFinset H (S.image e) := isIndepFinset_image_of_iso e hS
+  have hle : (S.image e).card ≤ independenceNumber H := indep_card_le_alpha H _ himg
+  rw [Finset.card_image_of_injective S (EquivLike.injective e)] at hle
+  omega
+
+/-- **Independence number is a graph invariant.** A graph isomorphism preserves
+the independence number. -/
+theorem independenceNumber_congr {W : Type*} [Fintype W] [DecidableEq W]
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (H : SimpleGraph W) [DecidableRel H.Adj] (e : G ≃g H) :
+    independenceNumber G = independenceNumber H :=
+  le_antisymm (independenceNumber_le_of_iso G H e) (independenceNumber_le_of_iso H G e.symm)
+
+/-- **Transport of the Moser-spindle bound.** Any finite graph isomorphic to the
+Moser spindle has fractional chromatic number `≥ 7/2 = 3.5`. -/
+theorem fractionalChromaticNumber_ge_of_iso_moserSpindle {W : Type*} [Fintype W] [DecidableEq W]
+    (H : SimpleGraph W) [DecidableRel H.Adj] (e : moserSpindle ≃g H) :
+    (7 : ℝ) / 2 ≤ fractionalChromaticNumber H := by
+  have hcard : Fintype.card W = 7 := by
+    have h1 := Fintype.card_congr e.toEquiv
+    rw [moserSpindle_card] at h1
+    exact h1.symm
+  have hindep : independenceNumber H = 2 := by
+    rw [← independenceNumber_congr moserSpindle H e]
+    exact moserSpindle_independenceNumber
+  exact fractionalChromaticNumber_ge_of_seven_indep_two H hcard hindep
+
+/-- Decimal restatement of the transport theorem: `χ_f ≥ 3.5` for any realisation
+of the Moser spindle. -/
+theorem fractionalChromaticNumber_ge_of_iso_moserSpindle' {W : Type*} [Fintype W] [DecidableEq W]
+    (H : SimpleGraph W) [DecidableRel H.Adj] (e : moserSpindle ≃g H) :
+    (3.5 : ℝ) ≤ fractionalChromaticNumber H := by
+  have h := fractionalChromaticNumber_ge_of_iso_moserSpindle H e
+  norm_num at h ⊢
+  linarith [h]
+
 end UnitDistanceIndependence.FractionalChromatic

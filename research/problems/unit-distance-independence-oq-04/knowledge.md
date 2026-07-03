@@ -72,3 +72,46 @@ via a graph isomorphism `moserSpindle ≃g unitDistGraph S`.
 ### Next steps
 - Explicit ℝ² embedding of the spindle (11 unit distances + 10 non-unit) and a
   graph iso to `unitDistGraph`, transporting χ_f ≥ 3.5 to χ_f(ℝ²) ≥ 3.5.
+
+---
+
+## Session 2026-07-03 (Session 3, researcher-14) — coordinate-free transport bridge
+
+**Mode**: CONTINUE (built on PR #34199) · **Outcome**: progress (axiom-free)
+
+### What I did
+Built the **isomorphism-transport bridge** that reduces the remaining open step
+from "embed + re-derive the LP bound in the plane" to *purely exhibiting an
+embedding iso*. All coordinate-free graph theory, 0 axioms / 0 sorries:
+
+- `isIndepFinset_image_of_iso` — a graph iso `e : G ≃g H` carries independent
+  finsets to independent finsets via the image map `S ↦ e '' S`, using
+  `SimpleGraph.Iso.map_adj_iff`.
+- `exists_indep_card_eq_independenceNumber` — the defining `sup` for `α` is
+  attained by an actual independent set (`Finset.exists_mem_eq_sup`, empty set
+  witnesses nonemptiness).
+- `independenceNumber_le_of_iso` / **`independenceNumber_congr`** — the
+  independence number is a **graph invariant**: `G ≃g H ⇒ α(G) = α(H)`
+  (antisymmetry from the two `≤` directions via `e` and `e.symm`).
+- **`fractionalChromaticNumber_ge_of_iso_moserSpindle`** (and `'` decimal form)
+  — the payoff: *any* finite graph `H` with `moserSpindle ≃g H` satisfies
+  `χ_f(H) ≥ 7/2 = 3.5`. Vertex count transported by `Fintype.card_congr`, `α = 2`
+  by `independenceNumber_congr`, then the existing
+  `fractionalChromaticNumber_ge_of_seven_indep_two`.
+
+**Consequence**: to finish `χ_f(ℝ²) ≥ 3.5` it now suffices to produce a single
+term `moserSpindle ≃g unitDistGraph S` for a 7-point `S ⊆ Plane`; no further LP
+or independence-number reasoning in the plane is needed. The bound then follows
+by `fractionalChromaticNumber_ge_of_iso_moserSpindle (unitDistGraph S) e`.
+
+### Files
+- `proofs/Proofs/UnitDistanceIndependenceOQ04.lean` (359 lines, +6 theorems,
+  0 sorries, 0 axioms; docker build ✔)
+
+### Insight for next session
+Building `moserSpindle ≃g unitDistGraph S` still needs the 21 exact distance
+facts (11 `dist = 1`, 10 `dist ≠ 1`); but they now feed a *single* `≃g`
+constructor (`RelIso.mk` with `map_adj_iff`) rather than a bespoke α computation
+in the plane. In `EuclideanSpace ℝ (Fin 2)`, reduce each to a squared-distance
+polynomial identity/inequality in √3, √11, √33 (`EuclideanSpace.dist_eq`,
+`Real.sq_sqrt`, then `nlinarith`/`norm_num`) — good `prove()` targets.
