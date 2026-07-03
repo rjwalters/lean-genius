@@ -39,18 +39,36 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring placing the file in the concrete-quintic branch of Abel–Ruffini (parent Key Lemma → non-solvability payoff via the Galois correspondence, sources Ruffini 1799 / Abel 1824 / Galois 1831). Imports Mathlib, opens Equiv / Equiv.Perm / Subgroup / MulAction, and fixes an abstract finite type α with DecidableEq so the results hold for S_α ≅ S_p on any p-element set.",
+      "mathContext": "Galois's criterion: $f$ is solvable by radicals $\\iff \\mathrm{Gal}(f)$ is solvable. Working over an abstract $\\alpha$ with $|\\alpha|=p$ gives $S_\\alpha \\cong S_p$."
+    },
+    {
       "id": "key-lemma",
       "title": "The Key Group Theory Lemma (re-proved)",
       "startLine": 44,
       "endLine": 81,
-      "summary": "eq_top_of_isPretransitive_of_mem_isSwap: a transitive G ≤ S_p (p prime) containing a transposition equals ⊤, via orbit–stabilizer, Cauchy, p-cycle structure, and closure_prime_cycle_swap."
+      "summary": "eq_top_of_isPretransitive_of_mem_isSwap: a transitive G ≤ S_p (p prime) containing a transposition equals ⊤, via orbit–stabilizer, Cauchy, p-cycle structure, and closure_prime_cycle_swap.",
+      "mathContext": "For prime $p$, a transitive $G \\le S_p$ containing a transposition is all of $S_p$: orbit–stabilizer gives $p \\mid |G|$, Cauchy an order-$p$ element (a full $p$-cycle), and a $p$-cycle + transposition generate $S_p$."
+    },
+    {
+      "id": "not-solvable-top",
+      "title": "Non-Solvability of the Top Subgroup (p ≥ 5)",
+      "startLine": 83,
+      "endLine": 100,
+      "summary": "not_isSolvable_top: S_α is not solvable for 5 ≤ card α. A solvable ⊤ would make Perm α solvable via solvable_of_surjective across Subgroup.topEquiv : ⊤ ≃* Perm α, contradicting Equiv.Perm.not_solvable.",
+      "mathContext": "$S_n$ is unsolvable for $n \\ge 5$; solvability is preserved by surjections, so transporting across $\\top \\cong \\mathrm{Perm}(\\alpha)$ is valid. The threshold $|\\alpha| \\ge 5$ is exactly the degree bound of Abel–Ruffini."
     },
     {
       "id": "obstruction",
-      "title": "The Non-Solvability Obstruction (p ≥ 5)",
-      "startLine": 83,
+      "title": "The Abel–Ruffini Obstruction (p ≥ 5)",
+      "startLine": 102,
       "endLine": 116,
-      "summary": "not_isSolvable_top: S_α is not solvable for 5 ≤ card α (transported across Subgroup.topEquiv from Equiv.Perm.not_solvable). not_isSolvable_of_isPretransitive_of_mem_isSwap: a transitive subgroup of S_p with a transposition and p ≥ 5 is not solvable."
+      "summary": "not_isSolvable_of_isPretransitive_of_mem_isSwap: a transitive subgroup of S_p (p prime, p ≥ 5) with a transposition is not solvable — the Key Lemma forces G = ⊤, then not_isSolvable_top applies.",
+      "mathContext": "Transitive $G \\le S_p$ ($p \\ge 5$ prime) with a transposition $\\Rightarrow G = S_p \\Rightarrow G$ unsolvable — the group-theoretic heart of Abel–Ruffini; the transposition typically comes from complex conjugation on an irreducible quintic with two non-real roots."
     }
   ],
   "references": [
