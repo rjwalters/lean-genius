@@ -1602,6 +1602,61 @@ theorem augment_domain_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
       exact (mem_mRan keptL y).mpr ⟨(u, w), (hmemKept (u, w)).mpr ⟨habL, hu⟩, hwy⟩
 
 /-!
+## Section 4l: The dual range step — odd-stage coverage by `Prod.swap` duality
+
+`augment_domain_step` (Section 4k) is the even-stage move: it makes a fresh *domain* anchor
+`a` covered while preserving all three invariants (`IsMatching`, `MatchingCorr`, `BuiltFrom`)
+and both monotonicities. The scheduler also needs the odd-stage move: make a fresh *range*
+anchor `c` covered. Rather than re-run the entire collision-chase argument on the range side,
+we obtain it *for free* from the coordinate-swap duality of Section 4e.
+
+The range step on the problem `(p, q, f, g)` is exactly the domain step on the swapped
+problem `(q, p, g, f)` with the swapped matching `L.map Prod.swap`: swapping exchanges
+`mDom ↔ mRan` (`mDom_map_swap`/`mRan_map_swap`), turns a matching into a matching
+(`isMatching_map_swap`), a `p ↔ q` correspondence into a `q ↔ p` one
+(`matchingCorr_map_swap`), and — crucially — carries the construction invariant across with
+`f`, `g` exchanged (`builtFrom_map_swap`). So we push the fresh range anchor `c` through
+`augment_domain_step` in the swapped world and swap the resulting matching back. This
+discharges the odd stage with no new list surgery, leaving only the outer stage recursion +
+computable read-off of `myhill_isomorphism`.
+-/
+
+/-- **The augmenting-path range step** (dual of `augment_domain_step`). For a fresh *range*
+    anchor `c ∉ mRan L` in a matching `L` satisfying `BuiltFrom` and the correspondence, there
+    is an extended matching `L'` still satisfying all three invariants, *covering* `c`
+    (`c ∈ mRan L'`), and monotone on both domain and range (`mDom L ⊆ mDom L'`,
+    `mRan L ⊆ mRan L'`). It is obtained by applying `augment_domain_step` to the
+    coordinate-swapped problem `(q, p, g, f)` with matching `L.map Prod.swap` (Section 4e
+    duality) and swapping the result back. This is the odd-stage move the priority scheduler
+    iterates, complementing the even-stage `augment_domain_step`. -/
+theorem augment_range_step {p q : ℕ → Prop} {f g : ℕ → ℕ}
+    (hgpq : ∀ n, q n ↔ p (g n))
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hL : IsMatching L) (hC : MatchingCorr p q L) (hB : BuiltFrom f g L)
+    {c : ℕ} (hc : c ∉ mRan L) :
+    ∃ L', IsMatching L' ∧ MatchingCorr p q L' ∧ BuiltFrom f g L' ∧
+      c ∈ mRan L' ∧ (∀ x ∈ mDom L, x ∈ mDom L') ∧ (∀ y ∈ mRan L, y ∈ mRan L') := by
+  -- Move to the swapped problem `(q, p, g, f)` with matching `L.map Prod.swap`; the fresh
+  -- range anchor `c` becomes a fresh *domain* anchor there.
+  have hc' : c ∉ mDom (L.map Prod.swap) := by rw [mDom_map_swap]; exact hc
+  obtain ⟨M, hMmatch, hMcorr, hMbuilt, hcM, hdomMono, hranMono⟩ :=
+    augment_domain_step (p := q) (q := p) (f := g) (g := f) hgpq hg hf
+      (isMatching_map_swap hL) (matchingCorr_map_swap hC) (builtFrom_map_swap hB) hc'
+  -- Swap the witness back: `L' := M.map Prod.swap`.
+  refine ⟨M.map Prod.swap, isMatching_map_swap hMmatch, matchingCorr_map_swap hMcorr,
+    builtFrom_map_swap hMbuilt, ?_, ?_, ?_⟩
+  · -- `c ∈ mRan (M.map swap) = mDom M`
+    rw [mRan_map_swap]; exact hcM
+  · -- domain monotone: `mDom L ⊆ mDom (M.map swap) = mRan M`
+    intro x hx
+    rw [mDom_map_swap]
+    exact hranMono x (by rw [mRan_map_swap]; exact hx)
+  · -- range monotone: `mRan L ⊆ mRan (M.map swap) = mDom M`
+    intro y hy
+    rw [mRan_map_swap]
+    exact hdomMono y (by rw [mDom_map_swap]; exact hy)
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
