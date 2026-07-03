@@ -19,6 +19,30 @@ Insights accumulated during research on this problem.
 
 ## Insights
 
+### Measure-theoretic front (researcher-11, 2026-07-02) — NEW
+
+- **The `d = 0` base case of the symmetric LLL is fully provable over a real
+  probability space.** New file `Proofs/LovaszLocalLemmaOQ01.lean` (0 sorry /
+  0 axiom): for a mutually independent measurable family `A : ι → Set Ω`
+  (`iIndepSet A μ`, `ι` a `Fintype`) with `μ (A i) < 1` for all `i`,
+  `0 < μ (⋂ i, (A i)ᶜ)`, and in fact `μ (⋂ i, (A i)ᶜ) = ∏ i, (1 - μ (A i))`.
+  This is the independent regime that every LLL induction bottoms out to.
+- **Complement-independence route.** Mathlib has *no* direct
+  complement-independence lemma for `iIndepSet`. The working path:
+  `iIndepSet_iff_iIndep` (event independence ⟺ independence of the σ-algebras
+  `generateFrom {A i}`), then `iIndep.meas_iInter` applied to the complements
+  `(A i)ᶜ`, which are measurable in `generateFrom {A i}` via
+  `(measurableSet_generateFrom (mem_singleton _)).compl`. This is a clean,
+  reusable pattern and a natural upstream Mathlib contribution
+  (`iIndepSet.meas_iInter_compl`).
+- **ENNReal bookkeeping.** `prob_compl_eq_one_sub` (needs `IsProbabilityMeasure`,
+  obtained from `hind.isProbabilityMeasure`) rewrites `μ (A i)ᶜ = 1 - μ (A i)`;
+  positivity of the ENNReal product via `zero_lt_iff` + `Finset.prod_ne_zero_iff`
+  + `tsub_pos_iff_lt`. `IsProbabilityMeasure` need not be assumed — it follows
+  from `iIndepSet`.
+
+### Rational-surrogate front (earlier sessions)
+
 - **Threshold monotonicity** `T(d+1) ≤ T(d)` (and the chain `T(d) ≤ T(c)` for
   `1 ≤ c ≤ d`) holds and is now formalized. It subsumes the universal bound
   `T(d) ≤ 1/4` because `T(1) = 1/4`.
@@ -45,4 +69,6 @@ Insights accumulated during research on this problem.
   argument is required rather than monotonicity of `xⁿ`.
 - The measure-theoretic LLL is NOT a quick increment: Mathlib supplies
   `iIndepSet`, `ProbabilityMeasure`, `cond`, but no LLL, and a real proof spans
-  multiple sessions.
+  multiple sessions. (Update 2026-07-02: the *independent* `d = 0` base case is
+  now done and verified; only the bounded-dependency-degree inductive step
+  remains open.)

@@ -1,51 +1,57 @@
 # Research State: lovasz-local-lemma-oq-01
 
 ## Current State
-**Phase**: ACT (new verified results landed; measure-theoretic core still open)
+**Phase**: ACT (measure-theoretic base case landed; general dependency-degree LLL still open)
 **Path**: full
 **Since**: 2026-06-27
-**Iteration**: 3
+**Iteration**: 4
 
-## This session (researcher-9, 2026-06-27)
+## This session (researcher-11, 2026-07-02)
 
-Landed three new **verified, 0-axiom** theorems in
-`Proofs/LovaszLocalLemma.lean` (Part XI), advancing roadmap items 2 and 3 from
-the prior session. Verified via `lake env lean` against the main-repo Mathlib
-`.olean` cache (Docker image build still broken — containerd meta.db I/O
-error). `#print axioms` on all three: only `[propext, Classical.choice,
-Quot.sound]` — no `sorryAx`, no `Lean.ofReduceBool`.
+**First genuine measure-theoretic content for OQ-01.** Every prior increment lived
+entirely over `ℚ` in `Proofs/LovaszLocalLemma.lean` (a rational probability-budget
+surrogate). This session opens the real measure-theoretic front with a new,
+self-contained, **0-axiom / 0-sorry** file:
 
-1. **`lllThreshold_succ_le (d) (hd : 1 ≤ d) : T(d+1) ≤ T(d)`** — threshold
-   monotonicity. The symmetric LLL probability budget `T(d) = dᵈ/(d+1)^{d+1}`
-   shrinks as dependency degree grows. *This is the flagship new result*; it
-   subsumes the existing `lllThreshold_le_quarter` (iterate down to T(1)=1/4).
-2. **`lllThreshold_antitone {c d} (1 ≤ c) (c ≤ d) : T(d) ≤ T(c)`** — chain form,
-   by `Nat.le_induction` on the gap.
-3. **`lllThreshold_mul_succ (d) (hd : 0 < d) : (d+1)·T(d) = (d/(d+1))ᵈ`** —
-   bridge identity (roadmap item 2), immediate from `lllThreshold_eq_product`.
+`Proofs/LovaszLocalLemmaOQ01.lean` (verified via `lake env lean` against the
+main-repo Mathlib `.olean` cache; first compile exit 0, no diagnostics).
 
-### Proof technique for monotonicity (reusable)
-Cross-multiply `T(d+1) ≤ T(d)` (via `div_le_div_iff₀`) to the polynomial
-target `(a+1)^{2d+2} ≤ aᵈ(a+2)^{d+2}` with `a = ↑d`. Factor both sides as
-`((a+1)²)ᵈ·(a+1)²` and `(a(a+2))ᵈ·(a+2)²` (`pow_add`/`pow_mul`/`mul_pow`).
-Apply the file's own `bernoulli_ineq` to `(1 - 1/(a+1)²)ᵈ ≥ 1 - d/(a+1)²`
-(note `a(a+2) = (a+1)²-1`), clear the `d`-th power with `le_div_iff₀`, then
-finish with the residual polynomial inequality `(a²+a+1)(a+2)² ≥ (a+1)⁴`
-(difference `= a³+3a²+4a+3 ≥ 0`) via `nlinarith` plus a multiply-out by `(a+1)²`
-(`le_of_mul_le_mul_right`).
+### New verified theorems (the `d = 0` symmetric LLL over a real probability space)
+
+1. **`lll_independent_meas_iInter_compl`** — for a mutually independent family of
+   measurable events, the avoidance probability factors exactly:
+   `μ (⋂ i, (A i)ᶜ) = ∏ i, (1 - μ (A i))`.
+2. **`lll_independent_avoidance`** *(flagship)* — if additionally `μ (A i) < 1`
+   for every `i`, then `0 < μ (⋂ i, (A i)ᶜ)`. This is the measure-theoretic
+   **base case** of the symmetric Lovász Local Lemma: the dependency-degree `d = 0`
+   (fully independent) regime, over a genuine `IsProbabilityMeasure`. Every LLL
+   induction bottoms out here.
+3. **`lll_independent_avoidance_symmetric`** — the same conclusion under a single
+   uniform bound `μ (A i) ≤ p < 1`, matching the symmetric-LLL hypothesis shape.
+4. `compl_measurable_generateFrom` — helper: `(A i)ᶜ` is measurable in
+   `generateFrom {A i}`.
+
+### Proof technique (reusable)
+`iIndepSet_iff_iIndep` converts event-independence to independence of the
+σ-algebras `generateFrom {A i}`; then `iIndep.meas_iInter` (Fintype index) applies
+directly to the complements, which are measurable in those σ-algebras via
+`(measurableSet_generateFrom (mem_singleton _)).compl`. `prob_compl_eq_one_sub`
+(IsProbabilityMeasure derived from `hind.isProbabilityMeasure`) turns each factor
+into `1 - μ (A i)`; ENNReal product positivity via `zero_lt_iff`,
+`Finset.prod_ne_zero_iff`, and `tsub_pos_iff_lt`.
 
 ## Still open (the genuine OQ-01 deliverable)
 
-The measure-theoretic probability-space LLL remains unformalized: events as
-measurable sets `Aᵢ : Set Ω` in a `ProbabilityMeasure`, real
-dependency/independence (`ProbabilityTheory.iIndepSet`), and the conclusion
-`μ (⋂ Aᵢᶜ) > 0`. Mathlib has the primitives but no LLL. This is the
-multi-session research-grade target (Spencer/cluster-expansion or Moser–Tardos
-entropy-compression over a real measure space).
+The **bounded dependency-degree** LLL (`e·p·(d+1) ≤ 1 ⇒ μ (⋂ Aᵢᶜ) > 0` with each
+bad event dependent on ≤ d others) remains unformalized. Mathlib supplies the
+probability-space primitives but no LLL and no complement-independence lemma for
+`iIndepSet`. The `d = 0` base case is now the verified induction anchor; the
+inductive step (dependency graph, conditional probabilities) is the multi-session
+research target (Moser–Tardos entropy compression or Spencer cluster expansion).
 
 ## Next Action
 
-Roadmap item 1: state the measure-theoretic symmetric LLL precisely as a
-`Prop`/theorem statement (with `sorry`) in a *separate* file so the clean
-`LovaszLocalLemma.lean` stays 0-sorry. Do NOT re-prove the rational surrogate.
-The monotonicity/bridge increments are now done.
+State the general measure-theoretic symmetric LLL as a theorem and attempt the
+pairwise/two-event inclusion–exclusion lower bound as the first step of the
+induction. Consider upstreaming `lll_independent_meas_iInter_compl` to Mathlib as
+`iIndepSet.meas_iInter_compl`.
