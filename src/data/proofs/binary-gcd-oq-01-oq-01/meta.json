@@ -122,6 +122,11 @@
       "targetId": "binary-gcd-oq-01-oq-04-oq-02",
       "relationship": "related",
       "description": "Sibling analysis of the same binaryGcdSteps count (its symmetry and axis slices). That work refines the unit-cost step count; this work lifts it to a bit-operation cost."
+    },
+    {
+      "targetId": "bezout-identity-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "An independent formalization of the same classical result — the O(log² n) bit-operation complexity of Stein's Binary GCD — reached in a different gallery subtree by the same two-part strategy: bound the step count by 2·(log₂ a + log₂ b) + 2 (a Lamé-style bound), then multiply by a per-step bit cost. This entry supplies the explicit total-cost model binaryGcdCost (charging each step Nat.size a + Nat.size b) and the quadratic bound; that entry states the O(log²) conclusion and is itself the parent of the HGCD matrix-invariant work extending the analysis toward Schönhage's half-GCD."
     }
   ],
   "conclusion": {
