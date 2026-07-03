@@ -135,6 +135,36 @@
       "description": "C(n+k-1,k) is the multiset coefficient; multiplying by k! counts ordered selections with repetition allowed in symbol type."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "multichoose_factorial",
+      "type": "theorem",
+      "statement": "Nat.choose (n + k - 1) k * k.factorial = ∏ i ∈ range k, (n + i)",
+      "significance": "The headline identity: 'n multichoose k' times k! equals the rising factorial n(n+1)···(n+k-1). This is the multiset-coefficient analogue of the descending-factorial identity from the parent entry, answering its open question about generalizing to multiset coefficients. It reduces to two Mathlib lemmas (ascFactorial_eq_factorial_mul_choose' and ascFactorial_eq_prod_range), exposing the combinatorial content — ordered selection with repetition — behind the rising product.",
+      "description": "rw [Nat.mul_comm, ← Nat.ascFactorial_eq_factorial_mul_choose', Nat.ascFactorial_eq_prod_range] — commute the product, rewrite the multiset coefficient into the ascending factorial, then unfold it as a range product."
+    },
+    {
+      "name": "multichoose_eq_ascFactorial",
+      "type": "theorem",
+      "statement": "Nat.choose (n + k - 1) k * k.factorial = n.ascFactorial k",
+      "significance": "The same identity packaged directly against Mathlib's Nat.ascFactorial rather than an explicit range product. Provides the closed-form bridge that lets downstream users invoke the result without re-deriving the product-to-ascFactorial translation.",
+      "description": "rw [Nat.mul_comm, ← Nat.ascFactorial_eq_factorial_mul_choose'] — one rewrite short of the range-product form, stopping at Mathlib's packaged ascending factorial."
+    },
+    {
+      "name": "factorial_dvd_rising_product",
+      "type": "theorem",
+      "statement": "k.factorial ∣ ∏ i ∈ range k, (n + i)",
+      "significance": "Divisibility corollary: k! divides the rising product n(n+1)···(n+k-1), equivalently the multiset coefficient C(n+k-1,k) = (∏(n+i))/k! is an integer. This is the integrality statement underlying why 'multichoose' counts something — the quotient of the rising product by k! is always a nonnegative integer count of multisets.",
+      "description": "Witness the divisibility by C(n+k-1,k): ⟨Nat.choose (n+k-1) k, by rw [← multichoose_factorial]; exact Nat.mul_comm _ _⟩."
+    },
+    {
+      "name": "multiset_ascending_duality",
+      "type": "theorem",
+      "statement": "(Nat.choose (n+k-1) k * k.factorial = ∏ i ∈ range k, (n+i)) ∧ (simplicial k n * k.factorial = ∏ i ∈ range k, (n+1+i))",
+      "significance": "Places the multiset form beside the grandparent's ascending (simplicial) form to expose their structural duality: both count the same ordered selections, but the multiset product starts its index at n while the simplicial product starts at n+1. The two identities are one combinatorial fact read off two adjacent index origins, unifying this entry with the ascending-factorial lineage it descends from.",
+      "description": "Conjunction of multichoose_factorial n k and the parent's simplicial_product k n: ⟨multichoose_factorial n k, ArithmeticSeriesOQ02OQ04.simplicial_product k n⟩."
+    }
+  ],
   "mathlibDependencies": [
     {
       "theorem": "Nat.ascFactorial_eq_factorial_mul_choose'",
