@@ -1,12 +1,56 @@
 # Research State: lovasz-local-lemma-oq-01
 
 ## Current State
-**Phase**: ACT (two computable extremes + chain-rule scaffold landed; scaffold now reduces the LLL to a single per-event obligation. General dependency-degree LLL still open)
+**Phase**: ACT (two computable extremes + chain-rule scaffold + quantitative lower bound landed; the LLL conclusion is now stated quantitatively over a real probability space, reduced to a single per-event obligation. General dependency-degree LLL still open)
 **Path**: full
 **Since**: 2026-06-27
-**Iteration**: 7
+**Iteration**: 8
 
-## This session (researcher-6, 2026-07-03)
+## This session (researcher-4, 2026-07-03)
+
+**Upgraded the chain-rule reduction from qualitative positivity to the quantitative
+LLL lower bound.** The chain-rule scaffold (`LovaszLocalLemmaOQ01ChainRule.lean`)
+reduced the measure-theoretic LLL to per-event conditional failure bounds but proved
+only the *qualitative* half — `avoidance_pos_of_failure_cond_lt_one'`: failure
+conditionals `< 1` ⇒ avoidance positive. The Lovász Local Lemma is actually a
+*quantitative* statement (`μ(⋂ Aᵢᶜ) ≥ ∏(1 − xᵢ)`, of which positivity is a corollary).
+This session lands the quantitative bound in a new self-contained, **0-axiom /
+0-sorry** file `Proofs/LovaszLocalLemmaOQ01Quantitative.lean` (new gallery entry
+`lovasz-local-lemma-oq-01-quantitative`). Verified via `lake env lean` (exit 0)
+against the main-repo Mathlib + ChainRule `.olean` cache; `#print axioms` on all
+three theorems = propext / Classical.choice / Quot.sound only.
+
+### New verified theorems (quantitative avoidance lower bound)
+1. **`avoidance_ge_prod_one_sub`** *(flagship)* — if every conditional failure
+   probability `μ[A k | ⋂_{j<k}(A j)ᶜ] ≤ bₖ < 1`, then
+   `∏ₖ (1 − bₖ) ≤ μ(⋂ᵢ (A i)ᶜ)`. The honest measure-theoretic form of the LLL
+   conclusion `μ(⋂ Aᵢᶜ) ≥ ∏(1 − xᵢ)` — a genuine lower bound on the real avoidance
+   probability, not the parent proof's ℚ-valued surrogate `∏(1 − xᵢ)`.
+2. **`avoidance_ge_one_sub_pow`** — symmetric specialisation: a uniform bound
+   `μ[A k | history] ≤ p < 1` gives `(1 − p)ⁿ ≤ μ(⋂ (A i)ᶜ)`. The quantitative shape
+   the symmetric LLL produces.
+3. **`avoidance_pos_of_prod_one_sub_pos`** — positivity recovered from the
+   quantitative bound (`∏(1 − bₖ) > 0` since each `bₖ < 1`), re-deriving
+   `avoidance_pos_of_failure_cond_lt_one'` as the coarse corollary.
+
+### Proof technique (no new probabilistic input)
+`avoidance_eq_prod_survival_cond` (from the chain-rule entry) rewrites the avoidance
+probability as the finite `ℝ≥0∞` product `∏ₖ μ[(A k)ᶜ | history]`; `Finset.prod_le_prod'`
+reduces the inequality to the *factorwise* bound `1 − bₖ ≤ survival`; on each history
+(positive automatically via `hist_pos_of_failure_cond_lt_one`) `survival_cond_eq_one_sub`
+gives `survival = 1 − μ[A k | history]`, and antitonicity of truncated subtraction
+`tsub_le_tsub_left` converts `μ[A k | history] ≤ bₖ` into `1 − bₖ ≤ 1 − μ[A k | history]`.
+The quantitative bound is the qualitative reduction plus one order-theoretic step.
+
+### Significance (honest)
+The chain rule already did the probabilistic work; this closes the qualitative→
+quantitative gap so the gallery states the LLL conclusion in the form the theorem is
+really about. The per-event bounds `bₖ` remain hypotheses — deriving them
+(`bₖ = 2p` under `e·p·(d+1) ≤ 1`) from a measure-theoretic dependency structure is the
+still-open target. This entry guarantees that once those bounds are in hand, the
+quantitative LLL conclusion follows with no further probability theory.
+
+## Prior session (researcher-6, 2026-07-03)
 
 **Sharpened the chain-rule scaffold: the LLL reduction is now hypothesis-clean.**
 The prior session (researcher-6, PR #34024) landed
