@@ -1,0 +1,104 @@
+{
+  "slug": "unit-distance-independence-oq-04",
+  "title": "Prove the fractional chromatic number χ_f(ℝ²) ≥ 3",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-12T23:37:36Z",
+    "iteration": 2,
+    "focus": "Built axiom-free fractional chromatic number for finite graphs + LP lower bound χ_f(G) ≥ |V|/α(G); instantiated a concrete Moser spindle (Fin 7, α=2 by decide) giving χ_f ≥ 7/2 = 3.5 at the graph level.",
+    "blockers": [],
+    "nextAction": "Realise moserSpindle by explicit unit-distance coordinates in Plane = EuclideanSpace R (Fin 2): verify the 11 edges have distance 1 and the 10 non-edges have distance != 1, then transport χ_f >= 3.5 to the unit-distance graph on R^2.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: axiom-free χ_f infrastructure + graph-level χ_f(MoserSpindle) ≥ 3.5 proved. Remaining: explicit ℝ² unit-distance embedding of the spindle.",
+    "builtItems": [
+      "fractionalChromaticNumber (finite-graph fractional set-cover LP inf) in UnitDistanceIndependenceOQ04.lean",
+      "card_div_indep_le_fractionalChromaticNumber: χ_f(G) ≥ |V|/α(G) (axiom-free LP averaging bound), OQ04.lean",
+      "sum_coverage_eq: double-counting identity ∑_v cover(v) = ∑_I |I|·w(I), OQ04.lean",
+      "moserSpindle : SimpleGraph (Fin 7) with independenceNumber = 2 (by decide), OQ04.lean",
+      "moserSpindle_fractionalChromaticNumber_ge: χ_f(moserSpindle) ≥ 7/2 = 3.5 (0 axioms), OQ04.lean"
+    ],
+    "insights": [
+      "χ_f(G) ≥ |V|/α(G) holds for ALL finite graphs (not only vertex-transitive): one-line averaging over the fractional-cover LP. This converts any independence-ratio certificate into a χ_f lower bound.",
+      "Moser spindle (7 vertices, α=2) already attains the Frankl–Wilson value 7/2 = 3.5; no larger construction is needed for the 3.5 bound.",
+      "independenceNumber of a small explicit Fin n graph is provable by kernel `decide` (axiom-free), avoiding native_decide and its Lean.ofReduceBool axiom.",
+      "Derived spindle adjacency from the two-rhombi construction: shared acute apex 0; rhombus-1 {1,2 obtuse, 3 far apex}; rhombus-2 {4,5 obtuse, 6 far apex}; spindle edge 3–6. 11 edges total."
+    ],
+    "mathlibGaps": [
+      "Mathlib has NO fractional chromatic number (no SimpleGraph.fractionalChromaticNumber); built a minimal one locally (~80 lines).",
+      "Remaining gap for full ℝ² claim: explicit Moser-spindle coordinates need irrational entries (√3, spindle-rotation angle); verifying 11 unit distances + 10 non-unit distances in EuclideanSpace ℝ (Fin 2) is the open engineering step."
+    ],
+    "nextSteps": [
+      "Give 7 explicit points in EuclideanSpace ℝ (Fin 2) realising moserSpindle; prove dist = 1 on the 11 edges and dist ≠ 1 on the 10 non-edges (submit distance lemmas to Aristotle if tedious).",
+      "Build a graph iso moserSpindle ≃g unitDistGraph S transporting independenceNumber and hence χ_f ≥ 3.5 to the plane.",
+      "Optionally generalise fractionalChromaticNumber_ge_of_seven_indep_two to χ_f ≥ n/α for arbitrary certified (n, α)."
+    ],
+    "markdown": "# Knowledge Base: unit-distance-independence-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n(Initial observations from OBSERVE phase will be recorded here.)\n\n---\n\n## Insights\n\n(Insights from research attempts will be accumulated here.)\n\n---\n\n## Mathlib Coverage Audit\n\n(After ORIENT phase: list of relevant Mathlib lemmas / APIs and their applicability.)\n\n---\n\n## Anti-Goals\n\n(Things explicitly NOT to attempt — discovered duplicates, scope creep risks, etc.)\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "unit-distance-independence",
+    "unit-distance-independence-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-03T06:52:01.409Z",
+  "lastUpdate": "2026-07-03T12:30:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/UnitDistanceIndependence.lean",
+      "filename": "UnitDistanceIndependence.lean",
+      "lineCount": 960,
+      "theoremCount": 66,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceIndependence.lean"
+    },
+    {
+      "path": "Proofs/UnitDistanceIndependenceOQ01.lean",
+      "filename": "UnitDistanceIndependenceOQ01.lean",
+      "lineCount": 301,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceIndependenceOQ01.lean"
+    },
+    {
+      "path": "Proofs/UnitDistanceIndependenceOQ04.lean",
+      "filename": "UnitDistanceIndependenceOQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/UnitDistanceIndependenceOQ04.lean"
+    }
+  ]
+}
