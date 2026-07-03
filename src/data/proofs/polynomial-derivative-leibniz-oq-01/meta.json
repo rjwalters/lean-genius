@@ -192,6 +192,43 @@
       "description": "The discriminant of a split polynomial is ∏_{i<j}(rᵢ−rⱼ)², built from the same node differences that p'(rᵢ₀)=∏_{j≠i₀}(rᵢ₀−rⱼ) collects; that entry uses the discriminant to detect the Galois group, this one computes the derivative-at-a-root factor behind it (open question 1)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "derivative_finset_prod",
+      "type": "theorem",
+      "statement": "derivative (∏ i ∈ s, f i) = ∑ i ∈ s, (derivative (f i) * ∏ j ∈ s.erase i, f j)",
+      "significance": "The headline result: the Leibniz product rule in its clean Finset form, `d/dX ∏_{i∈s} fᵢ = ∑_{i∈s} fᵢ' · ∏_{j∈s∖{i}} fⱼ`. Mathlib ships the two-factor rule (`Polynomial.derivative_mul`) and the Multiset version (`Polynomial.derivative_prod`) but not this indexed-Finset counterpart, which is the form actually used in interpolation, discriminant, and resultant arguments. Everything downstream in the entry specializes this identity.",
+      "description": "Proved by `Finset.induction` on `s`: the empty case is `simp`; the insert step expands `prod_insert`, applies `derivative_mul` and the inductive hypothesis, then reconciles the two `erase` bookkeeping terms with `erase_insert` / `erase_insert_of_ne` and closes by `ring`."
+    },
+    {
+      "name": "derivative_prod_pair",
+      "type": "theorem",
+      "statement": "a ≠ b → derivative (∏ i ∈ ({a, b} : Finset ι), f i) = derivative (f a) * f b + f a * derivative (f b)",
+      "significance": "A consistency check that the general Finset rule specializes correctly: the `s = {a, b}` case recovers the classical two-factor product rule `derivative (f·g) = f'·g + f·g'` (Mathlib's `Polynomial.derivative_mul`). It confirms the indexed statement is a faithful generalization rather than a divergent formulation.",
+      "description": "Instantiate `derivative_finset_prod` at the pair, split the sum with `Finset.sum_pair`, evaluate the two singleton residual products via `erase_insert` and `pair_comm`, and finish with `simp [prod_singleton, mul_comm]`."
+    },
+    {
+      "name": "derivative_prod_X_sub_C",
+      "type": "theorem",
+      "statement": "derivative (∏ i ∈ s, (X - C (r i))) = ∑ i ∈ s, ∏ j ∈ s.erase i, (X - C (r j))",
+      "significance": "The specialization that matters in practice: the derivative of a split polynomial `∏_{i∈s}(X − rᵢ)`. Because each linear factor `X − C rᵢ` has derivative `1`, the general Leibniz sum collapses to a sum of leave-one-out products — the exact structure underlying Lagrange interpolation and the discriminant of a split polynomial.",
+      "description": "Rewrite with `derivative_finset_prod`, then `sum_congr` over the factors, using `derivative_sub`, `derivative_X`, `derivative_C` to reduce each factor's derivative to `1` so the `fᵢ'` weight disappears."
+    },
+    {
+      "name": "eval_derivative_prod_X_sub_C",
+      "type": "theorem",
+      "statement": "i₀ ∈ s → (derivative (∏ i ∈ s, (X - C (r i)))).eval (r i₀) = ∏ j ∈ s.erase i₀, (r i₀ - r j)",
+      "significance": "Evaluates the split-polynomial derivative at one of its roots and gives the Lagrange-interpolation denominator `∏_{j≠i₀}(rᵢ₀ − rⱼ)`. Notably this identity needs no injectivity of `r`: every summand except `i = i₀` already carries the factor `(rᵢ₀ − rᵢ₀) = 0` and vanishes. It is the arithmetic core of the discriminant and of barycentric interpolation weights.",
+      "description": "Rewrite with `derivative_prod_X_sub_C`, push `eval` through the sum with `eval_finset_sum`, and isolate the surviving term via `Finset.sum_eq_single i₀`: off-diagonal summands vanish because their product includes the `j = i₀` factor `(rᵢ₀ − rᵢ₀) = 0` (`Finset.prod_eq_zero`)."
+    },
+    {
+      "name": "eval_derivative_prod_X_sub_C_ne_zero",
+      "type": "theorem",
+      "statement": "[IsDomain R] → Set.InjOn r s → i₀ ∈ s → (derivative (∏ i ∈ s, (X - C (r i)))).eval (r i₀) ≠ 0",
+      "significance": "The qualitative payoff: over an integral domain, if the roots `rᵢ` are pairwise distinct then the derivative does not vanish at any root — every root of a split polynomial with distinct roots is a *simple* root. This is the derivative test for multiplicity, the precise sense in which distinct roots and nonvanishing derivative coincide.",
+      "description": "From `eval_derivative_prod_X_sub_C`, a product is nonzero iff each factor is (`Finset.prod_ne_zero_iff`); each factor `rᵢ₀ − rⱼ` with `j ≠ i₀` is nonzero by `sub_ne_zero`, since equality `r j = r i₀` would force `j = i₀` through the injectivity hypothesis `hinj`."
+    }
+  ],
   "references": [
     {
       "key": "Lang2002",
