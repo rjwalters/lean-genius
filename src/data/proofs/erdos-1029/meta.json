@@ -50,52 +50,60 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Setup",
+      "summary": "Module docstring stating problem #1029 (prove R(k)/(k·2^{k/2}) → ∞), the Erdős–Szekeres bounds, the probabilistic-method lower bound and Spencer's constant, and the $100/$1000 prize. Imports Mathlib and Proofs.RamseysTheorem, opens Nat and Filter.",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "$(1+o(1))\\cdot\\frac{k}{e}\\cdot 2^{k/2} \\le R(k) \\le \\binom{2k-2}{k-1} \\approx 4^k/\\sqrt{k}$; the open question is whether $R(k)/(k\\cdot 2^{k/2}) \\to \\infty$."
+    },
+    {
       "id": "ramsey-numbers",
       "title": "Ramsey Numbers",
-      "summary": "EdgeColoring, IsMonochromatic, HasMonochromaticClique, ramsey_exists axiom, R definition, R_spec",
-      "startLine": 39,
-      "endLine": 69,
-      "mathContext": "The diagonal Ramsey number $R(k)$ is the minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic $K_k$. Defined via `R := Nat.find (ramsey_exists k)` where `ramsey_exists` asserts the finite case of Ramsey's theorem. `EdgeColoring G c` assigns each edge of `SimpleGraph G` a color in `Fin 2`."
+      "summary": "EdgeColoring, IsMonochromatic, HasMonochromaticClique (definitions); ramsey_exists (theorem, the finite Ramsey existence, from the imported Proofs.RamseysTheorem); the noncomputable R definition via Nat.find; and R_spec.",
+      "startLine": 40,
+      "endLine": 113,
+      "mathContext": "The diagonal Ramsey number $R(k)$ is the minimum $n$ such that every 2-coloring of $K_n$ contains a monochromatic $K_k$. Defined via `R k := Nat.find (ramsey_exists k)`, where `ramsey_exists` is a proved theorem (not an axiom) giving the finite case of Ramsey's theorem. `EdgeColoring V := Sym2 V → Bool`."
     },
     {
       "id": "bounds",
-      "title": "Known Bounds",
-      "summary": "Erdős-Szekeres upper/lower bounds, Spencer's improvement",
-      "startLine": 70,
-      "endLine": 92,
-      "mathContext": "Erdős-Szekeres (1935): $R(k) \\leq \\binom{2k-2}{k-1} \\leq 4^k/\\sqrt{k}$. Erdős (1947, probabilistic method): $R(k) \\geq (\\sqrt{2}/e) \\cdot k \\cdot 2^{k/2}$. Spencer (1975) improved the constant. The gap between $2^{k/2}$ and $4^k = 2^{2k}$ is exponential; closing it is one of the central problems in combinatorics."
+      "title": "Known Bounds (axioms)",
+      "summary": "erdos_szekeres_upper and spencer_lower_bound — the two literature bounds, stated as axioms (not re-proved here): 2 of the entry's 4 axioms.",
+      "startLine": 114,
+      "endLine": 123,
+      "mathContext": "Erdős–Szekeres (1935): $R(k) \\leq \\binom{2k-2}{k-1} \\leq 4^k/\\sqrt{k}$. Erdős (1947, probabilistic method) / Spencer (1975): $R(k) \\geq (\\sqrt{2}/e)\\cdot k\\cdot 2^{k/2}$. Both are taken as axioms; the gap between $2^{k/2}$ and $4^k = 2^{2k}$ is exponential."
     },
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "summary": "ramseyRatio, erdos1029Conjecture, equivalence proof",
-      "startLine": 93,
-      "endLine": 123,
-      "mathContext": "The `ramseyRatio k := R(k) / (k · 2^{k/2})`. Erdős's conjecture: `ramseyRatio k → ∞` as $k \\to \\infty$. Equivalently, $R(k) = \\omega(k \\cdot 2^{k/2})$. This would show the probabilistic lower bound is not tight. Proved equivalent to: for every $C$, $R(k) > C \\cdot k \\cdot 2^{k/2}$ for large $k$."
+      "summary": "ramseyRatio (the normalized ratio R(k)/(k·2^{k/2})), erdos1029Conjecture (Tendsto ramseyRatio atTop atTop), the alternative ε-form erdos1029ConjectureAlt, and conjecture_equiv proving the two formulations equivalent.",
+      "startLine": 125,
+      "endLine": 154,
+      "mathContext": "`ramseyRatio k := R(k) / (k · 2^{k/2})`. Erdős's conjecture: `ramseyRatio k → ∞`, i.e. $R(k) = \\omega(k\\cdot 2^{k/2})$. `conjecture_equiv` proves this equivalent to: for every $M$, eventually $\\mathrm{ramseyRatio}\\,k > M$."
     },
     {
       "id": "lower-bound",
-      "title": "Lower Bound Analysis",
-      "summary": "ratio_bounded_below, conjectureNegation, negation_equiv axiom",
-      "startLine": 124,
-      "endLine": 140,
-      "mathContext": "The ratio is bounded below by $\\sqrt{2}/e \\approx 0.520$ (from the Erdős lower bound). The conjecture asks whether this ratio grows without bound. The negation ($\\exists C,\\, R(k) \\leq C \\cdot k \\cdot 2^{k/2}$ infinitely often) would mean the probabilistic bound is essentially tight — Erdős offered $\\$1000$ for this."
+      "title": "Lower Bound Is Not Tight",
+      "summary": "conjectureNegation — the negation as a definition (∃ M, ∀ k, ramseyRatio k ≤ M): if the conjecture fails the ratio is bounded.",
+      "startLine": 156,
+      "endLine": 166,
+      "mathContext": "The ratio is bounded below by $\\sqrt{2}/e \\approx 0.520$. `conjectureNegation` states $\\exists M,\\ \\forall k,\\ \\mathrm{ramseyRatio}\\,k \\le M$ — the probabilistic bound being essentially tight, for which Erdős offered $\\$1000$."
     },
     {
       "id": "small-values",
-      "title": "Known Values",
-      "summary": "R(1)=1, R(2)=2, R(3)=6, R(4)=18, R(5) bounds",
-      "startLine": 141,
-      "endLine": 161,
-      "mathContext": "Known exact values: $R(1) = 1$, $R(2) = 2$, $R(3) = 6$, $R(4) = 18$. $R(5)$ is unknown: $43 \\leq R(5) \\leq 48$. The small-value computations are verified by `native_decide` or `decide`. $R(3) = 6$ is the party problem: among 6 people, there must be 3 mutual friends or 3 mutual strangers."
+      "title": "Known Values (R_3, R_4 as axioms)",
+      "summary": "R_3 : R 3 = 6 and R_4 : R 4 = 18 — the two known nontrivial exact diagonal Ramsey values, asserted as axioms (from the literature: R(4)=18 is Greenwood–Gleason 1955), NOT computed by decide. These are the other 2 of the entry's 4 axioms.",
+      "startLine": 168,
+      "endLine": 182,
+      "mathContext": "Known exact values $R(1)=1$, $R(2)=2$, $R(3)=6$, $R(4)=18$; $R(5)$ is unknown ($43 \\le R(5) \\le 48$). $R(3)=6$ is the party problem. $R_3$ and $R_4$ are stated as axioms citing classical results, not verified by kernel computation."
     },
     {
       "id": "ratio-values",
-      "title": "Ratio Computations",
-      "summary": "Ratio at k=3 and k=4, prize problem",
-      "startLine": 162,
-      "endLine": 190,
-      "mathContext": "Ratio at $k=3$: $R(3)/(3 \\cdot 2^{3/2}) = 6/(3 \\cdot 2\\sqrt{2}) \\approx 0.707$. At $k=4$: $R(4)/(4 \\cdot 2^2) = 18/16 = 1.125$. The growth from $0.707$ to $1.125$ is suggestive but not proof of divergence. Erdős offered $\\$100$ for proof and $\\$1000$ for disproof."
+      "title": "Ratio Computations and the Prize Problem",
+      "summary": "ratio_3 and ratio_4 evaluate ramseyRatio at k=3,4 (proved by simp+ring from the R_3/R_4 axioms); erdos1029OpenProblem records the main conjecture as the prize target.",
+      "startLine": 183,
+      "endLine": 211,
+      "mathContext": "$\\mathrm{ramseyRatio}(3) = 6/(3\\cdot 2^{3/2}) \\approx 0.707$; $\\mathrm{ramseyRatio}(4) = 18/16 = 1.125$. The increase is suggestive but not a proof of divergence. Erdős: $\\$100$ proof / $\\$1000$ disproof."
     }
   ],
   "conclusion": {
