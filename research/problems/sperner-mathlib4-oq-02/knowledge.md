@@ -4,6 +4,66 @@ Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engi
 
 ---
 
+## Session 2026-07-02 (researcher-5) — BUILD: the hemisphere ↔ lower-dimension GRAPH ISOMORPHISM (Insight 9)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
+`proofs/Proofs/SpernerTuckerCrossPolytopeHemisphereIso.lean` (~110 LOC, 3 thm + 1 def + 1 `@[simp]`,
+0 sorries, 0 `axiom` decls, dimension-free — no `decide`/`native_decide`).
+
+**Verification**: host `lake env lean` over the main-repo Mathlib `.olean` cache, **exit 0, 0
+errors**. First rebuilt the missing dependency olean
+`SpernerTuckerCrossPolytopeConnected.olean` (single-file elaboration, re-confirmed 0-axiom =
+`[propext, Classical.choice, Quot.sound]`), then elaborated the new file: all four
+`#print axioms` guards report **`[propext, Classical.choice, Quot.sound]` only** — no `sorryAx`,
+no `Lean.ofReduceBool`, no `decide`. (Single-file `lake env lean` used, not `lake build`, for
+memory safety per the repo policy.)
+
+### What it proves (Insight 9)
+The two prior cross-polytope sessions proved the hemisphere ↔ lower-dimension recursion only
+**pointwise**: `SpernerTuckerCrossPolytopeHemisphere.hemisphere_adj_iff` is a bare adjacency-iff
+`(crossGraph (n+1)).Adj s t ↔ (crossGraph n).Adj (drop s) (drop t)` on the positive hemisphere,
+and `hemisphere_degree_split` gave `#interior doors = n+1` as a numeric fact. Neither packaged the
+recursion as a first-class object one can transport *global* graph properties along.
+
+This session installs the **graph isomorphism**
+`hemisphereIso : (crossGraph (n+1)).induce {s | s 0 = true} ≃g crossGraph n` — the induced subgraph
+on the positive hemisphere mapped isomorphically onto the *entire* lower cross-polytope graph
+`crossGraph n`, via the coordinate-`0` drop `hemisphereEquiv`. The `≃g` is built directly from
+`hemisphere_adj_iff` (the `map_rel_iff'` field is `(hemisphere_adj_iff n a.2 b.2).symm` after a
+`change` exposing the `induce`/`comap` defeq). With the iso in hand, two level-`n` facts transport
+into a single hemisphere of the level-`(n+1)` sphere:
+- `hemisphere_induce_connected` — the induced hemisphere door graph is **connected** in every
+  dimension (`(hemisphereIso n).connected_iff.mpr (crossGraph_connected n)`). This is the
+  path-following pseudomanifold-connectivity *localised to one hemisphere fundamental domain* — the
+  symmetry-broken half on which the odd seed lives — the counterpart inside the half of the ambient
+  `SpernerTuckerCrossPolytopeConnected.crossGraph_connected`.
+- `hemisphere_induce_degree` / `hemisphere_induce_regular` — the induced hemisphere door graph is
+  **`(n+1)`-regular** (`facet_degree` transported along `(hemisphereIso n).mapNeighborSet` +
+  `card_neighborSet_eq_degree`). The graph-level upgrade of `hemisphere_degree_split`'s numeric
+  `#interior = n+1`.
+
+Net: one hemisphere of `∂◊^{n+1}` carries an `(n+1)`-regular **connected** graph isomorphic to the
+full lower cross-polytope `∂◊^{n}` — the precise "the level-`n` interior door graph lives inside a
+level-`(n+1)` hemisphere" statement `bridge` runs its induction on, now a `≃g` rather than a
+pointwise adjacency-iff, so future work can transport endpoint counts and connectivity for free.
+
+### Honest status
+Graph-theoretic infrastructure for `bridge`, **not** a proof of `bridge`. Still no Tucker
+*labelling* turning the cube edges into *complementary* doors; the labelling-broken
+almost-complementary structure carrying the odd interior seed remains the open frontier. Value is
+that the recursion is now a transportable graph iso, and hemisphere connectivity (needed by
+path-following) is established as a corollary.
+
+### Next steps (frontier unchanged)
+- Build the **asymmetric** Tucker labelling on ∂◊^{n+1} whose hemisphere half (now known to be a
+  connected `(n+1)`-regular copy of ∂◊^{n}) carries the ODD interior seed. Connect to
+  `AntipodalParity.bridge_of_card_eq` / `InductiveTower.TuckerTower.bridge`.
+- Transport `interiorEndpoints`/boundary-door **counts** along `hemisphereIso` to state the
+  `bridge` count-equality `#boundary(n+1) = #interior(n)` on the hemisphere directly.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+---
+
 ## Session 2026-07-02 (researcher-5) — BUILD: the canonical signed labelling + naive-labelling no-go (Insight 8)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
