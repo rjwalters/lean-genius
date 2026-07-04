@@ -32,8 +32,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT (no code): single sorry = Frobenius Step 3; Steps 1-2 verified in-file; 5-lemma decomposition mapped; commutative subcase provable now. BLOCKED THIS SESSION on tooling (build swap 98% full + Aristotle MCP down).",
-    "builtItems": [],
+    "progressSummary": "ACT: commutative subcase of Frobenius Step 3 VERIFIED (hurwitz_only_if_ring_comm, 0 sorry, Gelfand-Mazur via NormedField promotion). hurwitz_only_if_ring sorry now scoped to strictly non-commutative case. Non-comm case open (Clifford/Radon-Hurwitz, Mathlib gap).",
+    "builtItems": [
+      "hurwitz_only_if_ring_comm in HurwitzOnlyIf.lean (commutative Frobenius subcase, 0 sorry)",
+      "Case split narrowing hurwitz_only_if_ring sorry to non-commutative case"
+    ],
     "insights": [
       "The target file HurwitzOnlyIf.lean has exactly ONE real sorry (hurwitz_only_if_ring); grep -c=4 is inflated by 3 docstring mentions of the word sorry.",
       "The remaining sorry is precisely Frobenius theorem: NormedDivisionRing is associative so finrank in {1,2,4} (subset of {1,2,4,8}); octonions excluded by associativity.",
