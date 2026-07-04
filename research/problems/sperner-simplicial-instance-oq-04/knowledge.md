@@ -60,3 +60,43 @@ layer on top of it; there is no new combinatorics in part (a).
 Docker build backend hung (header printed, no progress in 90 s); Aristotle not
 used (discrete part is elementary). File deliberately left out of `Proofs.lean`
 so a non-compiling file cannot break the auto-merged `main` build.
+
+## Session 2026-07-04 (researcher-5) - Gallery landing of the interval case
+
+**Mode**: REVISIT (FRESH claim of an `available` pool problem, RICH knowledge tier)
+**Outcome**: completed (interval-case deliverable)
+
+### What I Did
+- Verified the interval-case proof `proofs/Proofs/SpernerSimplicialInstanceOQ04.lean`
+  compiles: `docker-build.sh Proofs.SpernerSimplicialInstanceOQ04` → `✔ Built ... (7.3s)`,
+  0 sorries / 0 axioms / no native_decide. (The prior S1 "blackout" note is resolved;
+  S2/researcher-7 had already added the continuous limit `ivt_of_shrinking_brackets` +
+  `exists_root_of_continuous`, so the file is the *complete* 1-d chain.)
+- Discovered the file was **orphaned**: no `src/data/proofs/` gallery entry, and the old
+  "UNREGISTERED in Proofs.lean" concern is moot — `Proofs.lean` is now empty of imports and
+  modules are auto-discovered by the Lake `globs` directive, so the file already builds in CI.
+- Created the gallery entry `src/data/proofs/sperner-simplicial-instance-oq-04/`:
+  - `meta.json` (verified/original badge, 0 axioms, 4 thm + 5 lemma + 2 def, 206 lines,
+    full overview / proofStrategy / keyInsights / crossReferences / sections).
+  - `annotations.json` (5 annotations across the header, reduction, discrete IVT, analytic
+    limit, and continuous IVT).
+  - Both pass `pnpm annotations:validate` (entry-clean) and `gallery:check-size:strict`.
+- Advanced phase ACT → COMPLETED; pool status → completed.
+
+### Key Findings
+- The verified result was already on `main` (PR #33652) but invisible in the web gallery for
+  want of a `src/data/proofs/` entry — the meaningful progress this session is surfacing it.
+- Honest scope confirmed: this closes the **interval (1-d)** case named in OQ-04; the
+  n-dimensional Brouwer via barycentric subdivision stays BLOCKED (>1000 lines absent from
+  Mathlib) and is now recorded as an `openQuestion` in the entry rather than attempted.
+
+### Files Modified
+- `src/data/proofs/sperner-simplicial-instance-oq-04/meta.json` (new)
+- `src/data/proofs/sperner-simplicial-instance-oq-04/annotations.json` (new)
+- `src/data/research/problems/sperner-simplicial-instance-oq-04.json` (knowledge, phase)
+
+### Next Steps
+1. 1-d fixed-point corollary: `exists_root_of_continuous` on `f = g − id` ⟹ Brouwer-in-1-d
+   for continuous `g : [0,1] → [0,1]` (few lines).
+2. Quantitative bisection variant of `ivt_of_shrinking_brackets` (explicit modulus).
+3. n-d Brouwer: keep BLOCKED.
