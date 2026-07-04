@@ -24,27 +24,51 @@
     ]
   },
   {
-    "id": "ann-engine-sperner-oq02-oq03",
+    "id": "ann-even-not-fixed",
     "proofId": "sperner-mathlib4-oq-02-oq-03",
     "range": {
       "startLine": 87,
-      "endLine": 135
+      "endLine": 119
     },
     "type": "technique",
-    "title": "The abstract fixed-point parity engine",
-    "content": "Three lemmas. even_card_not_fixed: on the subtype {a // ¬ σ a = a} the involution σ is fixed-point free, so that subtype has even cardinality (via SpernerTuckerAntipodalSymmetry.even_card_of_free_involution), and transporting along Fintype.card_subtype gives Even #{a | ¬ σ a = a}. odd_card_iff_odd_fixed: partition α into fixed and non-fixed points with Finset.filter_card_add_filter_neg_card_eq_card; since the non-fixed part is even, all parity lives on the fixed points, and omega on the residues mod 2 yields Odd (Fintype.card α) ↔ Odd #{a | σ a = a}. odd_card_of_unique_fixed: an involution with exactly one fixed point has odd cardinality — the cleanest odd seed.",
-    "mathContext": "$\\#\\{a \\mid \\sigma a = a\\} + \\#\\{a \\mid \\sigma a \\neq a\\} = \\mathrm{card}\\,\\alpha$ with the second summand even, so $\\mathrm{card}\\,\\alpha \\equiv \\#\\{a \\mid \\sigma a = a\\} \\pmod 2$; if $\\#\\{a \\mid \\sigma a = a\\} = 1$ then $\\mathrm{card}\\,\\alpha$ is odd.",
+    "title": "Non-Fixed Points of an Involution Pair Up (Even Count)",
+    "content": "The base fact of the parity engine: even_card_not_fixed shows #{a | σ a ≠ a} is even. Restricting σ to the subtype {a // ¬ σ a = a} makes it a fixed-point-free involution there, so that subtype has even cardinality by SpernerTuckerAntipodalSymmetry.even_card_of_free_involution; transporting along Fintype.card_subtype gives the count over the ambient type. This is the involution analogue of the handshaking lemma — non-fixed points split into free antipodal 2-orbits — and the exact dual of the fixed-point-free 'even cardinality' fact.",
+    "mathContext": "$\\#\\{a \\mid \\sigma a \\neq a\\}$ is even: the non-fixed points split into free 2-orbits $\\{a, \\sigma a\\}$.",
     "significance": "key",
     "relatedConcepts": [
       "involution",
-      "fixed points",
-      "even cardinality",
+      "fixed-point-free action",
       "handshaking lemma",
-      "Fintype.card_subtype"
+      "2-orbits",
+      "parity"
     ],
     "prerequisites": [
-      "group actions on finite sets",
-      "finite combinatorics"
+      "involutions",
+      "finite cardinality"
+    ]
+  },
+  {
+    "id": "ann-parity-on-fixed",
+    "proofId": "sperner-mathlib4-oq-02-oq-03",
+    "range": {
+      "startLine": 120,
+      "endLine": 135
+    },
+    "type": "technique",
+    "title": "All Parity Lives on the Fixed Points",
+    "content": "odd_card_iff_odd_fixed partitions α into fixed and non-fixed points via Finset.filter_card_add_filter_neg_card_eq_card; since the non-fixed part is even (even_card_not_fixed), an omega on residues mod 2 gives Odd (Fintype.card α) ↔ Odd #{a | σ a = a} — the whole type's parity is carried entirely by the fixed points. odd_card_of_unique_fixed is the usable corollary: an involution with exactly one fixed point forces odd cardinality, the cleanest way to manufacture the odd count that drives Tucker's lemma.",
+    "mathContext": "$\\mathrm{Odd}\\,|\\alpha| \\iff \\mathrm{Odd}\\,\\#\\{a \\mid \\sigma a = a\\}$; one fixed point $\\Rightarrow$ $|\\alpha|$ odd.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fixed points",
+      "parity",
+      "Tucker's lemma",
+      "involution",
+      "Burnside-type counting"
+    ],
+    "prerequisites": [
+      "involutions",
+      "parity arguments"
     ]
   },
   {
