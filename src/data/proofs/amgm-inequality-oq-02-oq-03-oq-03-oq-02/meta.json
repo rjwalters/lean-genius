@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-07-02",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ03OQ03OQ02.lean",
     "tags": [
       "combinatorics",
@@ -16,14 +16,14 @@
       "nnreal",
       "am-gm"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
     "lineCount": 132,
     "theoremCount": 5,
     "definitionCount": 2,
-    "assumptions": "0 axioms, 0 sorries. The NNReal chain is proved without routing through the parent AmgmInequalityOQ02OQ03OQ03.maclaurin_full_chain (which sits on the maclaurin_step axiom); instead the real chain is rebuilt in-file (maclaurin_full_chain_proved) by gap-induction on the de-axiomatized AmgmInequalityOQ02OQ03.maclaurin_step_proved — proved from first principles (Newton log-concavity via Cauchy-Schwarz) in AmgmInequalityOQ02OQ02.lean — and then transferred to ℝ≥0. #print axioms lists only the foundational propext / Classical.choice / Quot.sound.",
+    "assumptions": "PENDING VERIFICATION — the Lean source Proofs/AmgmInequalityOQ02OQ03OQ03OQ02.lean is NOT yet present on the canonical `main` branch (it exists only in an unmerged draft commit whose docker build was blocked by a full disk), so the machine-check below has not been confirmed on main. Downgraded from verified to formalized pending recovery of the source and a successful docker build + #print axioms. Draft claim to re-confirm: 0 axioms, 0 sorries. The NNReal chain is proved without routing through the parent AmgmInequalityOQ02OQ03OQ03.maclaurin_full_chain (which sits on the maclaurin_step axiom); instead the real chain is rebuilt in-file (maclaurin_full_chain_proved) by gap-induction on the de-axiomatized AmgmInequalityOQ02OQ03.maclaurin_step_proved — proved from first principles (Newton log-concavity via Cauchy-Schwarz) in AmgmInequalityOQ02OQ02.lean — and then transferred to ℝ≥0. #print axioms lists only the foundational propext / Classical.choice / Quot.sound.",
     "originalContributions": [
       "Answers the open question affirmatively for NNReal: the Maclaurin chain M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ extends verbatim to ℝ≥0, and the extension is axiom-free",
       "Defines the NNReal elementary symmetric polynomial elemSymmNN and Maclaurin mean maclaurinMeanNN = (elemSymmNN k x / C(n,k))^{1/k} using NNReal division and NNReal.rpow",
