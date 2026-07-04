@@ -164,6 +164,221 @@ theorem required_bound_implies_conjecture :
   -- gap documented at `StrongRequiredBound`.
   sorry
 
+/- ## Constructive reduction at the `(log N)^{1+δ}` threshold
+
+   `RequiredBound` (the `o(N/log N)` threshold) is not known to imply the
+   conjecture (see the `StrongRequiredBound` docstring for the counterexample
+   profile). The strictly stronger `StrongRequiredBound` threshold
+   `r_k(N) = O(N/(log N)^{1+δ})`, however, *does* imply it, via an honest
+   dyadic-blocking + p-series argument. We prove that reduction below as a
+   fully machine-checked, 0-axiom conditional theorem. It isolates exactly the
+   analytic strength Erdős #3 is missing: the gap between `o(N/log N)` and
+   `O(N/(log N)^{1+δ})`. -/
+
+/-- Monotonicity of `ContainsAP` in the length: containing an `m`-term progression
+    implies containing every shorter `k`-term progression (`k ≤ m`), since the
+    first `k` terms of that progression already lie in `A`. -/
+theorem containsAP_of_le {A : Set ℕ} {k m : ℕ} (hkm : k ≤ m)
+    (h : ContainsAP A m) : ContainsAP A k := by
+  obtain ⟨a, d, hd, hsub⟩ := h
+  refine ⟨a, d, hd, subset_trans ?_ hsub⟩
+  rw [Finset.coe_subset]
+  apply Finset.image_subset_image
+  intro x hx
+  rw [Finset.mem_range] at hx ⊢
+  omega
+
+/-- **Analytic core of the reduction.**
+    If the counting function of `A` obeys `f_A(N) ≤ C · N / (log N)^{1+δ}` for all
+    large `N` (`δ > 0`), then `∑_{a ∈ A} 1/a` converges. Proof by dyadic blocking:
+    the reciprocal mass of the block `A ∩ [2^j, 2^{j+1})` is at most
+    `f_A(2^{j+1}) / 2^j ≤ 2C / ((j+1)·log 2)^{1+δ}`, the general term of a convergent
+    `p`-series (`p = 1 + δ > 1`). -/
+theorem summable_of_strongBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 0 < C)
+    (hbound : ∀ᶠ N in atTop,
+      (countingFunction A N : ℝ) ≤ C * (N : ℝ) / (Real.log N) ^ (1 + δ)) :
+    Summable (fun n : A => (1 : ℝ) / (n : ℝ)) := by
+  classical
+  set F : ℕ → ℝ := fun n => (1 : ℝ) / (n : ℝ) with hF
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  set K : ℝ := 2 * C / (Real.log 2) ^ (1 + δ) with hKdef
+  have hKpos : 0 < K := by rw [hKdef]; positivity
+  set g : ℕ → ℝ := fun j => K / ((j : ℝ) + 1) ^ (1 + δ) with hgdef
+  have hg_nonneg : ∀ j, 0 ≤ g j := by intro j; rw [hgdef]; positivity
+  -- g is summable: it is a constant multiple of a p-series with p = 1 + δ > 1.
+  have hg_summable : Summable g := by
+    have hp : (1 : ℝ) < 1 + δ := by linarith
+    have h1 : Summable (fun n : ℕ => (1 : ℝ) / (n : ℝ) ^ (1 + δ)) :=
+      Real.summable_one_div_nat_rpow.mpr hp
+    have h2 : Summable (fun n : ℕ => (1 : ℝ) / ((n : ℝ) + 1) ^ (1 + δ)) := by
+      have h1' := (summable_nat_add_iff 1).mpr h1
+      simpa using h1'
+    rw [hgdef]
+    simpa [mul_one_div] using h2.mul_left K
+  -- Threshold beyond which the counting bound holds.
+  obtain ⟨N0, hN0⟩ := eventually_atTop.1 hbound
+  -- Dyadic block masses.
+  set block : ℕ → ℝ := fun j => ∑ i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)), A.indicator F i
+    with hblockdef
+  -- Every term of block j is ≤ 1/2^j (since 2^j ≤ i).
+  have hterm_le : ∀ j, ∀ i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)),
+      A.indicator F i ≤ 1 / (2 : ℝ) ^ j := by
+    intro j i hi
+    rw [Finset.mem_Ico] at hi
+    have h2j : (2 : ℝ) ^ j ≤ (i : ℝ) := by exact_mod_cast hi.1
+    by_cases hmem : i ∈ A
+    · rw [Set.indicator_of_mem hmem, hF]
+      exact one_div_le_one_div_of_le (by positivity) h2j
+    · rw [Set.indicator_of_not_mem hmem]; positivity
+  -- Crude bound: every block has mass ≤ 1.
+  have hcrude : ∀ j, block j ≤ 1 := by
+    intro j
+    simp only [hblockdef]
+    calc ∑ i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)), A.indicator F i
+        ≤ ∑ _i ∈ Finset.Ico (2 ^ j) (2 ^ (j + 1)), (1 / (2 : ℝ) ^ j) :=
+          Finset.sum_le_sum (hterm_le j)
+      _ = (Finset.Ico (2 ^ j) (2 ^ (j + 1))).card • (1 / (2 : ℝ) ^ j) := by
+          rw [Finset.sum_const]
+      _ = 1 := by
+          rw [Nat.card_Ico, nsmul_eq_mul]
+          have hsub : 2 ^ (j + 1) - 2 ^ j = 2 ^ j := by rw [pow_succ]; omega
+          rw [hsub, Nat.cast_pow, Nat.cast_ofNat, mul_one_div,
+            div_self (by positivity)]
+  -- Strong bound: for j ≥ N0, block mass ≤ g j.
+  have hstrong : ∀ j, N0 ≤ j → block j ≤ g j := by
+    intro j hj
+    have hbe : block j
+        = ∑ i ∈ (Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A), F i := by
+      simp only [hblockdef, Set.indicator_apply]
+      rw [← Finset.sum_filter]
+    have hN0le : N0 ≤ 2 ^ (j + 1) :=
+      le_trans hj (le_trans (Nat.le_succ j) (Nat.le_of_lt Nat.lt_two_pow_self))
+    have hcb := hN0 (2 ^ (j + 1)) hN0le
+    have hcard : ((Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A)).card
+        ≤ countingFunction A (2 ^ (j + 1)) := by
+      rw [countingFunction]
+      apply Finset.card_le_card
+      intro x hx
+      rw [Finset.mem_filter, Finset.mem_Ico] at hx
+      rw [Finset.mem_filter, Finset.mem_range]
+      exact ⟨by omega, hx.2⟩
+    have hlogval : Real.log ((2 ^ (j + 1) : ℕ) : ℝ) = ((j : ℝ) + 1) * Real.log 2 := by
+      rw [Nat.cast_pow, Nat.cast_ofNat, Real.log_pow]; push_cast; ring
+    have hden : (Real.log ((2 ^ (j + 1) : ℕ) : ℝ)) ^ (1 + δ)
+        = ((j : ℝ) + 1) ^ (1 + δ) * (Real.log 2) ^ (1 + δ) := by
+      rw [hlogval, Real.mul_rpow (by positivity) (le_of_lt hlog2)]
+    have hnum : ((2 ^ (j + 1) : ℕ) : ℝ) = (2 : ℝ) ^ j * 2 := by
+      rw [Nat.cast_pow, Nat.cast_ofNat, pow_succ]
+    rw [hbe]
+    calc ∑ i ∈ (Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A), F i
+        ≤ ∑ _i ∈ (Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A), (1 / (2 : ℝ) ^ j) := by
+          apply Finset.sum_le_sum
+          intro i hi
+          rw [Finset.mem_filter, Finset.mem_Ico] at hi
+          rw [hF]
+          exact one_div_le_one_div_of_le (by positivity) (by exact_mod_cast hi.1.1)
+      _ = (((Finset.Ico (2 ^ j) (2 ^ (j + 1))).filter (· ∈ A)).card : ℝ) * (1 / (2 : ℝ) ^ j) := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+      _ ≤ (countingFunction A (2 ^ (j + 1)) : ℝ) * (1 / (2 : ℝ) ^ j) := by
+          apply mul_le_mul_of_nonneg_right _ (by positivity)
+          exact_mod_cast hcard
+      _ ≤ (C * ((2 ^ (j + 1) : ℕ) : ℝ) / (Real.log ((2 ^ (j + 1) : ℕ) : ℝ)) ^ (1 + δ))
+            * (1 / (2 : ℝ) ^ j) := by
+          apply mul_le_mul_of_nonneg_right _ (by positivity)
+          exact hcb
+      _ = g j := by
+          simp only [hgdef, hKdef]
+          rw [hden, hnum]
+          have ha : (2 : ℝ) ^ j ≠ 0 := by positivity
+          have hb : ((j : ℝ) + 1) ^ (1 + δ) ≠ 0 := by positivity
+          have hc : (Real.log 2) ^ (1 + δ) ≠ 0 := by positivity
+          field_simp
+  -- Combine into a uniform partial-sum bound and conclude summability.
+  have hcombine : ∀ j, block j ≤ (if j < N0 then (1 : ℝ) else 0) + g j := by
+    intro j
+    by_cases hjN0 : j < N0
+    · simp only [hjN0, if_true]
+      linarith [hcrude j, hg_nonneg j]
+    · simp only [hjN0, if_false, zero_add]
+      exact hstrong j (Nat.le_of_not_lt hjN0)
+  have hind0 : A.indicator F 0 = 0 := by simp [Set.indicator_apply, hF]
+  have hdyadic : ∀ J : ℕ, ∑ i ∈ Finset.Ico 1 (2 ^ J), A.indicator F i
+      = ∑ j ∈ Finset.range J, block j := by
+    intro J
+    induction J with
+    | zero => simp
+    | succ J ih =>
+      rw [Finset.sum_range_succ, ← ih]
+      simp only [hblockdef]
+      exact (Finset.sum_Ico_consecutive (A.indicator F)
+        (Nat.one_le_pow J 2 (by norm_num))
+        (Nat.pow_le_pow_right (by norm_num) (Nat.le_succ J))).symm
+  suffices hind : Summable (A.indicator F) by
+    exact summable_subtype_iff_indicator.mpr hind
+  apply summable_of_sum_range_le (c := (N0 : ℝ) + ∑' j, g j)
+  · intro n
+    exact Set.indicator_nonneg (fun i _ => by rw [hF]; positivity) n
+  · intro M
+    have hsubM : Finset.range M ⊆ Finset.range (2 ^ M) := by
+      intro x hx
+      rw [Finset.mem_range] at hx ⊢
+      exact lt_of_lt_of_le hx (Nat.le_of_lt Nat.lt_two_pow_self)
+    have hle1 : ∑ i ∈ Finset.range M, A.indicator F i
+        ≤ ∑ i ∈ Finset.range (2 ^ M), A.indicator F i := by
+      apply Finset.sum_le_sum_of_subset_of_nonneg hsubM
+      intro i _ _
+      exact Set.indicator_nonneg (fun a _ => by rw [hF]; positivity) i
+    have hsplit : ∑ i ∈ Finset.range (2 ^ M), A.indicator F i
+        = ∑ i ∈ Finset.Ico 1 (2 ^ M), A.indicator F i := by
+      rw [Finset.range_eq_Ico,
+        ← Finset.sum_Ico_consecutive (A.indicator F) (Nat.zero_le 1)
+          (Nat.one_le_pow M 2 (by norm_num)),
+        ← Finset.range_eq_Ico, Finset.sum_range_one, hind0, zero_add]
+    calc ∑ i ∈ Finset.range M, A.indicator F i
+        ≤ ∑ j ∈ Finset.range M, block j := by rw [← hdyadic M, ← hsplit]; exact hle1
+      _ ≤ ∑ j ∈ Finset.range M, ((if j < N0 then (1 : ℝ) else 0) + g j) :=
+          Finset.sum_le_sum (fun j _ => hcombine j)
+      _ = (∑ j ∈ Finset.range M, (if j < N0 then (1 : ℝ) else 0))
+            + ∑ j ∈ Finset.range M, g j := by rw [Finset.sum_add_distrib]
+      _ ≤ (N0 : ℝ) + ∑' j, g j := by
+          apply _root_.add_le_add
+          · rw [Finset.sum_boole]
+            have hsub2 : (Finset.range M).filter (· < N0) ⊆ Finset.range N0 := by
+              intro x hx
+              rw [Finset.mem_filter] at hx
+              exact Finset.mem_range.2 hx.2
+            calc (((Finset.range M).filter (· < N0)).card : ℝ)
+                ≤ ((Finset.range N0).card : ℝ) := by exact_mod_cast Finset.card_le_card hsub2
+              _ = (N0 : ℝ) := by rw [Finset.card_range]
+          · exact Summable.sum_le_tsum _ (fun j _ => hg_nonneg j) hg_summable
+
+/-- **The reduction actually goes through at the `(log N)^{1+δ}` threshold.**
+    If `r_k(N) = O(N / (log N)^{1+δ})` for some `δ > 0` and every `k ≥ 3`
+    (`StrongRequiredBound`), then Erdős #3 holds: every set with divergent
+    reciprocal sum contains arbitrarily long arithmetic progressions.
+
+    This is a fully machine-checked, `sorry`-free, axiom-free conditional theorem.
+    The proof: a length-`m` AP-free set has counting function bounded by `r_m(N)`
+    (`countingFunction_le_rothNumber`), hence `= O(N/(log N)^{1+δ})`, hence has a
+    *convergent* reciprocal sum (`summable_of_strongBound`) — contradicting
+    divergence. Contrast `required_bound_implies_conjecture`, whose `o(N/log N)`
+    hypothesis is *not* known to suffice: the gap between the two thresholds is
+    exactly the open content of Erdős #3. -/
+theorem strong_required_bound_implies_conjecture :
+    (∀ k : ℕ, k ≥ 3 → StrongRequiredBound k) → Erdos3Conjecture := by
+  intro hbound A hdiv k
+  apply containsAP_of_le (le_max_left k 3)
+  by_contra hAPfree
+  have hApf : IsAPFree A (max k 3) := hAPfree
+  obtain ⟨δ, hδ, C, hC, hev⟩ := hbound (max k 3) (le_max_right k 3)
+  have hcount : ∀ᶠ N in atTop,
+      (countingFunction A N : ℝ) ≤ C * (N : ℝ) / (Real.log N) ^ (1 + δ) := by
+    filter_upwards [hev] with N hN
+    calc (countingFunction A N : ℝ) ≤ (rothNumber (max k 3) N : ℝ) := by
+          exact_mod_cast countingFunction_le_rothNumber A (max k 3) N hApf
+      _ ≤ C * (N : ℝ) / (Real.log N) ^ (1 + δ) := hN
+  exact hdiv (summable_of_strongBound hδ hC hcount)
+
 /- ## Equivalent Formulations -/
 
 /- **Equivalent to Behrend-type bounds**: The conjecture asks whether
