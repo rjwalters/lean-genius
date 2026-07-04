@@ -355,6 +355,54 @@ theorem deletion_no_mono_K7 :
   rw [h] at hRcard
   exact ⟨c, R, hRcard, hR⟩
 
+/-- **The sharp union bound caps at `n = 42` for `k = 8`.**  The first-moment test
+    `2·C(n,8) < 2^{C(8,2)} = 2^{28} = 268435456` holds at `n = 42`
+    (`2·118030185 = 236060370 < 268435456`) but fails at `n = 43`
+    (`2·145008513 = 290017026 ≥ 268435456`).  So the union bound alone certifies a
+    monochromatic-`K₈`-free colouring only up to 42 vertices, i.e. `R(8,8) > 42`.
+
+    As at `k = 7`, the binomials `C(42,8), C(43,8)` are ≈ `10⁸`, far past the naive
+    `decide`-on-`Nat.choose` range, so we route through the single-recursion identity
+    `Nat.choose n k = n.descFactorial k / k !`
+    (`Nat.choose_eq_descFactorial_div_factorial`), which needs only `k` kernel
+    multiplications and stays axiom-free (`of_decide_eq_true`, no `Lean.ofReduceBool`). -/
+theorem unionBound_caps_at_42_for_K8 :
+    2 * (42 : ℕ).choose 8 < 2 ^ ((8 : ℕ).choose 2) ∧
+      ¬ (2 * (43 : ℕ).choose 8 < 2 ^ ((8 : ℕ).choose 2)) := by
+  have h42 : (42 : ℕ).choose 8 = 118030185 := by
+    rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+  have h43 : (43 : ℕ).choose 8 = 145008513 := by
+    rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+  rw [h42, h43]
+  decide
+
+/-- **Deletion reaches a 45-vertex monochromatic-`K₈`-free set.**  Applying the deletion
+    method at `n = 46, k = 8` gives
+    `deletionBound 46 8 = 46 − ⌊2·C(46,8)/2^{28}⌋ = 46 − ⌊521865630/268435456⌋ = 46 − 1 = 45`:
+    a 2-colouring of `K₄₆` and a set `R` of at least 45 vertices with no monochromatic
+    `K₈`.  This **strictly beats** the sharp union bound (`unionBound_caps_at_42_for_K8`,
+    which stops at 42), so the deletion method certifies `R(8,8) > 45` — a `+3` strict
+    improvement over the union bound, continuing the `+1` (`k = 6`) and `+2` (`k = 7`)
+    gains of the two witnesses above.
+
+    `n = 46` is the top of the `M = 1` deletion window for `k = 8`
+    (`2^{28} ≤ 2·C(46,8) = 521865630 < 2·2^{28} = 536870912`, and `C(47,8)` already forces
+    `M = 2`), so this is the largest bound the `ramsey_deletion_one_past` mechanism yields
+    at `k = 8`.  As with the `k = 7` witness, `C(46,8) = 260932815` is evaluated via the
+    `descFactorial` route rather than by `decide` on `Nat.choose`. -/
+theorem deletion_no_mono_K8 :
+    ∃ (c : Coloring 46) (R : Finset (Fin 46)),
+      45 ≤ R.card ∧ ∀ K : Finset (Fin 46), K ⊆ R → K.card = 8 → ¬ Mono c K := by
+  obtain ⟨c, R, hRcard, hR⟩ :=
+    ramsey_deletion_bound (n := 46) (k := 8) (by norm_num) (by norm_num)
+  have h : deletionBound 46 8 = 45 := by
+    have h46 : (46 : ℕ).choose 8 = 260932815 := by
+      rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+    show 46 - (2 * (46 : ℕ).choose 8) / 2 ^ ((8 : ℕ).choose 2) = 45
+    rw [h46]; decide
+  rw [h] at hRcard
+  exact ⟨c, R, hRcard, hR⟩
+
 #check @ramsey_deletion
 #check @ramsey_deletion_generalizes_first_moment
 #check @ramsey_deletion_bound
@@ -362,6 +410,8 @@ theorem deletion_no_mono_K7 :
 #check @deletion_no_mono_K6
 #check @unionBound_caps_at_27_for_K7
 #check @deletion_no_mono_K7
+#check @unionBound_caps_at_42_for_K8
+#check @deletion_no_mono_K8
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`.  The concrete `k = 6` and
@@ -375,5 +425,7 @@ theorem deletion_no_mono_K7 :
 #print axioms deletion_no_mono_K6
 #print axioms unionBound_caps_at_27_for_K7
 #print axioms deletion_no_mono_K7
+#print axioms unionBound_caps_at_42_for_K8
+#print axioms deletion_no_mono_K8
 
 end ProbMethod.RamseyDeletion

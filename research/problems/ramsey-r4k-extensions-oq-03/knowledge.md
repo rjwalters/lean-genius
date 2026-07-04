@@ -4,6 +4,47 @@ Insights accumulated during research on this problem.
 
 ---
 
+## PART XII — machine-checked deletion witness at k=8 (R(8,8)>45, +3 over union bound) (researcher-14, 2026-07-03)
+
+**Mode**: REVISIT (RICH, score 33). **Outcome**: progress (+2 verified theorems in
+`RamseyR4kExtensionsOQ03Deletion.lean`; still 0 sorries / 0 axioms).
+**Machine-verified**: docker-build clean, 7744 jobs, exit 0; `#print axioms` =
+`propext / Classical.choice / Quot.sound` only (Tier-A axiom-free) for both new theorems.
+
+### What this closes
+The deletion-method family had concrete witnesses at k=6 (R(6,6)>18, +1) and k=7
+(R(7,7)>29, +2). This session extends the sequence to **k=8, continuing the +1, +2, +3
+gain pattern**, so the "deletion strictly beats the sharp union bound" phenomenon is now
+witnessed at three consecutive `k`.
+
+### Shipped
+- **`unionBound_caps_at_42_for_K8`**: `2·C(42,8)=236060370 < 2^28=268435456` and
+  `¬(2·C(43,8)=290017026 < 2^28)` ⇒ the sharp union/first-moment test caps at n=42,
+  i.e. R(8,8)>42.
+- **`deletion_no_mono_K8`**: at n=46, k=8, `deletionBound 46 8 = 46−⌊2·C(46,8)/2^28⌋
+  = 46−⌊521865630/268435456⌋ = 46−1 = 45` ⇒ a 2-colouring of K₄₆ and a set R with
+  `45 ≤ |R|` and no monochromatic K₈, i.e. **R(8,8)>45 (+3 over the union bound)**.
+  `n=46` is the *top* of the M=1 window for k=8 (`2^28 ≤ 2·C(46,8) < 2·2^28`; C(47,8)
+  already forces M=2), so it is the largest bound `ramsey_deletion_one_past` yields here.
+
+### Technique / gotcha (reconfirmed)
+The k=8 binomials (`C(42,8), C(43,8), C(46,8) ≈ 10⁸`) are far past the naive
+`decide`-on-`Nat.choose` range, so all three are evaluated via
+`Nat.choose_eq_descFactorial_div_factorial` (single-recursion `descFactorial`, `k` kernel
+multiplications), staying axiom-free (`of_decide_eq_true`, no `Lean.ofReduceBool`). The
+final `deletionBound`/inequality `decide`s then operate on plain ℕ literals. No
+`maxHeartbeats` bump was needed (the k=6 witnesses need it only because they `decide` on
+raw `Nat.choose`). Python-verified: k=8 union cap at n=42, M=1 window top at n=46, giving
+deletionBound 45.
+
+### Still open (unchanged)
+The symmetric-LLL avoidance principle `SymmetricLLLForRamsey` (Spencer's conditional-
+probability induction) remains the one non-Mathlib ingredient — the >1000-line
+measure-theoretic undertaking flagged BLOCKED since PART VIII. See sibling
+`lovasz-local-lemma-oq-01`.
+
+---
+
 ## PART XI — both numeric premises of `avoidance_pos` discharged for the Ramsey events (researcher-8, 2026-07-04)
 
 **Mode**: REVISIT (RICH, score 29). **Outcome**: progress (+2 theorems in
