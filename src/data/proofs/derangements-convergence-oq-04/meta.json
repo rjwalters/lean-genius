@@ -145,6 +145,12 @@
       "type": "core",
       "description": "For all n, n divides D(n) − (−1)^n, i.e. D(n) ≡ (−1)^n (mod n).",
       "leanType": "(n : ℕ) → (n : ℤ) ∣ ((numDerangements n : ℤ) - (-1) ^ n)"
+    },
+    {
+      "name": "numDerangements_zmod_eq",
+      "type": "corollary",
+      "description": "The companion congruence restated as a ring equality in ℤ/nℤ: (D(n) : ZMod n) = (−1)^n. The sharpest form of the statement — an identity of ring elements with no ∣ predicate — obtained from numDerangements_congr_neg_one_pow via ZMod.intCast_zmod_eq_zero_iff_dvd.",
+      "leanType": "(n : ℕ) → (numDerangements n : ZMod n) = (-1) ^ n"
     }
   ],
   "sorries": 0,
