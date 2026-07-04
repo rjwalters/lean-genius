@@ -359,6 +359,49 @@ theorem deletionBound_mono_of_unionFeasible (hk : 2 ≤ k) (hkn : k ≤ n)
     deletionBound n k ≤ deletionBound (n + 1) k :=
   deletionBound_mono_of_pred_subthreshold hk hkn (by omega)
 
+/-- **The deletion bound is monotone across the entire `(k−1)` sub-threshold window.**
+    `deletionBound_mono_of_pred_subthreshold` shows a *single* step `n → n+1` never
+    decreases the deletion bound while `2·C(n,k−1) < 2^C(k,2)`.  Chaining that step by
+    induction gives the *global* statement its docstring only asserts: if the `(k−1)`
+    first moment stays subthreshold throughout the interval `[n, N)`, i.e.
+
+        `∀ m ∈ [n, N),  2·C(m,k−1) < 2^C(k,2)`,
+
+    then `deletionBound n k ≤ deletionBound N k` for the whole run.  In particular the
+    deletion optimum is attained no earlier than the *top* of the `(k−1)`-window
+    `2·C(·,k−1) < 2^C(k,2)`, which strictly contains the union window
+    `2·C(·,k) < 2^C(k,2)` (since `C(m,k−1) ≤ C(m,k)` on the increasing arm).  This is the
+    general, `decide`-free source of the alteration method's advantage over the sharp
+    union bound: the union bound stalls at the top of the `k`-window, the deletion bound
+    keeps climbing to the top of the wider `(k−1)`-window.  Axiom-free. -/
+theorem deletionBound_mono_window (hk : 2 ≤ k) {n : ℕ} (hkn : k ≤ n) :
+    ∀ N, n ≤ N → (∀ m, n ≤ m → m < N → 2 * m.choose (k - 1) < 2 ^ (k.choose 2)) →
+      deletionBound n k ≤ deletionBound N k := by
+  intro N hnN
+  induction N, hnN using Nat.le_induction with
+  | base => intro _; exact le_refl _
+  | succ N hnN ih =>
+      intro hsub
+      exact le_trans (ih (fun m hm hmN => hsub m hm (Nat.lt_succ_of_lt hmN)))
+        (deletionBound_mono_of_pred_subthreshold hk (le_trans hkn hnN)
+          (hsub N hnN (Nat.lt_succ_self N)))
+
+/-- **Ramsey form: the guaranteed mono-free set never shrinks across the `(k−1)`-window.**
+    For any host size `N` reachable from `n` without the `(k−1)` first moment crossing
+    threshold, the deletion method on `K_N` certifies a monochromatic-`Kₖ`-free set at
+    least as large as the one it certifies at `n`.  Combined with the strict window-width
+    gap this is exactly the mechanism behind the concrete `+1/+2/+3/+4` witnesses at
+    `k = 6,7,8,9`: each sits at the top of its `(k−1)`-window, strictly past the union
+    cap.  Immediate from `deletionBound_mono_window` and `ramsey_deletion_bound`. -/
+theorem deletion_noloss_across_window (hk : 2 ≤ k) {n N : ℕ} (hkn : k ≤ n) (hnN : n ≤ N)
+    (hsub : ∀ m, n ≤ m → m < N → 2 * m.choose (k - 1) < 2 ^ (k.choose 2)) :
+    ∃ (c : Coloring N) (R : Finset (Fin N)),
+      deletionBound n k ≤ R.card ∧
+      ∀ K : Finset (Fin N), K ⊆ R → K.card = k → ¬ Mono c K := by
+  obtain ⟨c, R, hRcard, hR⟩ :=
+    ramsey_deletion_bound (n := N) (k := k) hk (le_trans hkn hnN)
+  exact ⟨c, R, le_trans (deletionBound_mono_window hk hkn N hnN hsub) hRcard, hR⟩
+
 set_option maxHeartbeats 800000 in
 /-- **The sharp union bound caps at `n = 17` for `k = 6`.**  The first-moment test
     `2·C(n,6) < 2^{C(6,2)} = 2^{15}` holds at `n = 17` (`2·12376 = 24752 < 32768`) but
@@ -535,6 +578,8 @@ theorem deletion_no_mono_K9 :
 #check @ramsey_deletion_one_past
 #check @deletionBound_mono_of_pred_subthreshold
 #check @deletionBound_mono_of_unionFeasible
+#check @deletionBound_mono_window
+#check @deletion_noloss_across_window
 #check @deletion_no_mono_K6
 #check @unionBound_caps_at_27_for_K7
 #check @deletion_no_mono_K7
@@ -555,6 +600,8 @@ theorem deletion_no_mono_K9 :
 #print axioms ramsey_deletion_one_past
 #print axioms deletionBound_mono_of_pred_subthreshold
 #print axioms deletionBound_mono_of_unionFeasible
+#print axioms deletionBound_mono_window
+#print axioms deletion_noloss_across_window
 #print axioms deletion_no_mono_K6
 #print axioms unionBound_caps_at_27_for_K7
 #print axioms deletion_no_mono_K7
