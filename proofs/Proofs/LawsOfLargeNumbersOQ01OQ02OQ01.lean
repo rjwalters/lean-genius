@@ -1094,15 +1094,77 @@ theorem integral_tail_abs_le_tail_moment
     _ = t ^ (1 - p) * ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω| ^ p) ω ∂μ :=
         integral_const_mul _ _
 
+/-- **Sharp centered truncation-mean bound (MZ step 3, centering — vanishing form).**  For an
+integrable, mean-zero `X` (`∫ X = 0`) with finite `p`-th absolute moment (`1 ≤ p`) and a
+threshold `0 < t`, the mean of the truncation `Y = 𝟙{|X| ≤ t}·X` is controlled by the
+**tail-restricted** `p`-th moment:
+
+    |∫ 𝟙{|X| ≤ t}·X| = |∫ 𝟙{t < |X|}·X| ≤ ∫ 𝟙{t < |X|}·|X| ≤ t^{1-p} · ∫ 𝟙{t < |X|}·|X|ᵖ.
+
+The first equality is `∫ X = 0` split over the complementary events `{|X| ≤ t}` and
+`{t < |X|}` (the truncation mean is the negative of the discarded tail mean); the middle
+step is `|∫ f| ≤ ∫ |f|` with the indicator commuting through `|·|`; the last is the sharp
+`integral_tail_abs_le_tail_moment`.
+
+Unlike `abs_integral_trunc_le_of_centered` (which bounds by the *full* moment
+`t^{1-p}·∫|X|ᵖ`), the right-hand integrand here is the tail moment
+`eₜ = ∫ 𝟙{t<|X|}·|X|ᵖ`, which **vanishes** as `t → ∞`
+(`tendsto_integral_tail_rpow_zero`).  With `t = aᵢ = (i+1)^{1/p}` this is exactly the
+`tendsto_weighted_average_zero` null-sequence input `|𝔼Yᵢ| ≤ aᵢ^{1-p}·eᵢ` behind the MZ
+centering control `(∑ᵢ 𝔼Yᵢ)/aₙ → 0`; the full-moment bound `aᵢ^{1-p}·M` alone gives a
+divergent Cesàro weight, so the tail restriction is essential. -/
+theorem abs_integral_trunc_le_tail_moment_of_centered
+    (X : Ω → ℝ) {p t : ℝ} (hp : 1 ≤ p) (ht : 0 < t)
+    (hmeas : Measurable X) (hXint : Integrable X μ) (hmean : ∫ ω, X ω ∂μ = 0)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    |∫ ω, {ω | |X ω| ≤ t}.indicator X ω ∂μ|
+      ≤ t ^ (1 - p) * ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω| ^ p) ω ∂μ := by
+  -- the truncation set and its complement (the tail) are measurable
+  have hSle : MeasurableSet {ω | |X ω| ≤ t} := measurableSet_le hmeas.abs measurable_const
+  have hSlt : MeasurableSet {ω | t < |X ω|} := measurableSet_lt measurable_const hmeas.abs
+  have hInt_le : Integrable ({ω | |X ω| ≤ t}.indicator X) μ := hXint.indicator hSle
+  have hInt_lt : Integrable ({ω | t < |X ω|}.indicator X) μ := hXint.indicator hSlt
+  -- `𝟙{|X| ≤ t}·X + 𝟙{t < |X|}·X = X` pointwise (complementary events)
+  have hsplit : (fun ω => {ω | |X ω| ≤ t}.indicator X ω
+      + {ω | t < |X ω|}.indicator X ω) = X := by
+    funext ω
+    rcases le_or_lt (|X ω|) t with h | h
+    · rw [Set.indicator_of_mem (by exact h), Set.indicator_of_not_mem (by exact not_lt.mpr h)]
+      exact add_zero (X ω)
+    · rw [Set.indicator_of_not_mem (by exact not_le.mpr h), Set.indicator_of_mem (by exact h)]
+      exact zero_add (X ω)
+  -- hence `∫ 𝟙{|X| ≤ t}·X = -∫ 𝟙{t < |X|}·X`, since `∫ X = 0`
+  have hsum : ∫ ω, {ω | |X ω| ≤ t}.indicator X ω ∂μ
+      + ∫ ω, {ω | t < |X ω|}.indicator X ω ∂μ = 0 := by
+    rw [← integral_add hInt_le hInt_lt,
+      show (fun ω => {ω | |X ω| ≤ t}.indicator X ω + {ω | t < |X ω|}.indicator X ω) = X
+        from hsplit]
+    exact hmean
+  have hneg : ∫ ω, {ω | |X ω| ≤ t}.indicator X ω ∂μ
+      = -∫ ω, {ω | t < |X ω|}.indicator X ω ∂μ := by linarith [hsum]
+  -- bound the tail integral by its absolute integrand, then by the sharp tail moment
+  rw [hneg, abs_neg]
+  calc |∫ ω, {ω | t < |X ω|}.indicator X ω ∂μ|
+      ≤ ∫ ω, |{ω | t < |X ω|}.indicator X ω| ∂μ := abs_integral_le_integral_abs
+    _ = ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω|) ω ∂μ := by
+        refine integral_congr_ae (ae_of_all _ (fun ω => ?_))
+        by_cases h : t < |X ω|
+        · simp only [Set.indicator_apply, Set.mem_setOf_eq, if_pos h]
+        · simp only [Set.indicator_apply, Set.mem_setOf_eq, if_neg h, abs_zero]
+    _ ≤ t ^ (1 - p) * ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω| ^ p) ω ∂μ :=
+        integral_tail_abs_le_tail_moment X hmeas hp ht hint
+
 #check @integral_trunc_sq_le
 #check @integral_tail_abs_le
 #check @integral_tail_abs_le_tail_moment
+#check @abs_integral_trunc_le_tail_moment_of_centered
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
 #print axioms integral_trunc_sq_le
 #print axioms integral_tail_abs_le
 #print axioms integral_tail_abs_le_tail_moment
+#print axioms abs_integral_trunc_le_tail_moment_of_centered
 
 end TruncationIntegralLifts
 
