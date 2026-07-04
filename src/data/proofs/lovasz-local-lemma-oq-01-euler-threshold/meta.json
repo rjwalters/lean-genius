@@ -60,30 +60,40 @@
     {
       "name": "euler_condition_implies_lllThreshold",
       "type": "core",
+      "statement": "If the memorable symmetric LLL condition e·p·(d+1) ≤ 1 holds for a per-event probability p and dependency degree d ≥ 1, then p is at most the tight threshold T(d) = dᵈ/(d+1)^{d+1}.",
+      "significance": "The eponymous result of the entry. It certifies that the Euler condition used throughout the LLL literature is a genuine (slightly conservative) consequence of the parent proof's exact maximum, so the tight-threshold symmetric LLL (LovaszLocalLemma.symmetric_lll) applies verbatim to any family whose event probabilities satisfy e·p·(d+1) ≤ 1, unifying the memorable and tight formulations.",
       "description": "The Euler symmetric condition implies the tight threshold: if e·p·(d+1) ≤ 1 (the memorable symmetric LLL condition), then p ≤ (lllThreshold d : ℝ), the tight threshold dᵈ/(d+1)^{d+1} of the parent gallery proof. Hence the tight-threshold symmetric LLL applies verbatim to any family whose event probabilities satisfy the Euler condition.",
       "leanType": "(d : ℕ) → (hd : 1 ≤ d) → (p : ℝ) → (Real.exp 1 * p * ((d : ℝ) + 1) ≤ 1) → p ≤ (lllThreshold d : ℝ)"
     },
     {
       "name": "one_add_inv_pow_le_exp_one",
       "type": "core",
+      "statement": "For every d ≥ 1, (1 + 1/d)ᵈ ≤ e, the classic Euler bound.",
+      "significance": "The elementary analytic engine of the file: every downstream inequality reduces to this single bound, itself a one-line consequence of 1 + x ≤ exp x at x = 1/d raised to the d-th power. It is where the constant e in the memorable symmetric condition originates.",
       "description": "The classic Euler bound (1 + 1/d)ᵈ ≤ e for d ≥ 1. Proved from Real.add_one_le_exp (1 + x ≤ exp x) at x = 1/d, raised to the d-th power, using exp(1/d)ᵈ = exp(d·(1/d)) = exp 1.",
       "leanType": "(d : ℕ) → (hd : 1 ≤ d) → (1 + 1 / (d : ℝ)) ^ d ≤ Real.exp 1"
     },
     {
       "name": "succ_pow_le_exp_mul",
       "type": "lemma",
+      "statement": "For every d ≥ 1, (d+1)ᵈ ≤ e·dᵈ — the multiplicative, denominator-cleared form of the Euler bound.",
+      "significance": "A fraction-free restatement of the Euler bound obtained by clearing denominators in (1 + 1/d)ᵈ ≤ e. This is the exact form consumed by the threshold comparison inv_exp_mul_le_lllThreshold.",
       "description": "Multiplicative form of the Euler bound: (d+1)ᵈ ≤ e·dᵈ. Obtained from one_add_inv_pow_le_exp_one by clearing denominators.",
       "leanType": "(d : ℕ) → (hd : 1 ≤ d) → ((d : ℝ) + 1) ^ d ≤ Real.exp 1 * (d : ℝ) ^ d"
     },
     {
       "name": "inv_exp_mul_le_lllThreshold",
       "type": "lemma",
+      "statement": "For every d ≥ 1, the reciprocal Euler budget 1/(e·(d+1)) is at most the tight threshold T(d).",
+      "significance": "The quantitative core of the bridge: placing the Euler budget below the exact maximum means any p within the budget lies under the threshold. After casting T(d) to ℝ and cancelling a (d+1) factor it is precisely the multiplicative Euler bound succ_pow_le_exp_mul.",
       "description": "The Euler budget lies below the tight threshold: 1/(e·(d+1)) ≤ (lllThreshold d : ℝ). Reduces to (d+1)ᵈ ≤ e·dᵈ after cancelling the (d+1) factor.",
       "leanType": "(d : ℕ) → (hd : 1 ≤ d) → (1 : ℝ) / (Real.exp 1 * ((d : ℝ) + 1)) ≤ (lllThreshold d : ℝ)"
     },
     {
       "name": "lllThreshold_cast",
       "type": "lemma",
+      "statement": "For every d ≥ 1, the parent proof's ℚ-valued threshold lllThreshold d, cast to ℝ, equals dᵈ/(d+1)^{d+1}.",
+      "significance": "The type-bridging lemma that lets the real-analysis inequalities of this file reference the parent gallery proof's rational threshold, unfolding the d = 0 guard and pushing the ℚ→ℝ cast through.",
       "description": "Real-cast of the tight symmetric threshold for d ≥ 1: (lllThreshold d : ℝ) = dᵈ/(d+1)^{d+1}, bridging the parent proof's ℚ-valued threshold to the real-analysis inequalities.",
       "leanType": "(d : ℕ) → (hd : 1 ≤ d) → (lllThreshold d : ℝ) = (d : ℝ) ^ d / ((d : ℝ) + 1) ^ (d + 1)"
     }
