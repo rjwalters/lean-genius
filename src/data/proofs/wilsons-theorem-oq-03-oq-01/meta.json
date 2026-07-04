@@ -21,7 +21,7 @@
       "intermediate"
     ],
     "proofRepoPath": "Proofs/WilsonsTheoremOQ03OQ01.lean",
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None beyond Mathlib's foundational axioms. Every theorem (padicValNat_prod_factorial, legendre_add, padicValNat_factorial_sum_eq, padicValNat_multinomial, sub_one_mul_padicValNat_multinomial, prime_not_dvd_multinomial_iff, sub_one_mul_padicValNat_multinomial_two) is fully machine-checked. `#print axioms` on the main results reports only propext, Classical.choice, and Quot.sound — no `axiom` declarations, no structure-encoded hypotheses, no `sorry`, and no `native_decide` (hence no Lean.ofReduceBool). leanFile.axiomCount = 0.",
