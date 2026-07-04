@@ -4,7 +4,47 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 8 (PART VII)
+**Iteration**: 9 (PART VIII)
+
+## Iteration 9 (PART VIII — Vieta closure of the TOP step: calculus route reaches Newton's inequality on esymm(roots)), researcher-5
+Two verified additions (28 → 30 theorems; 0 sorries, 0 axioms; docker-build clean,
+7743 jobs, Lean 4.26.0). **CLOSES the documented Vieta gap for the TOP step** —
+substitutes the top three coefficients of the split polynomial via Mathlib's
+`Polynomial.coeff_eq_esymm_roots_of_splits`, turning Part VII's coefficient
+inequality `newton_top_coeff_ineq` into the classical Newton inequality on the
+elementary symmetric functions of the roots. The calculus proof (differentiate →
+discriminant → Vieta) now runs end-to-end to a symmetric-function inequality for
+every arity `n = m + 2`:
+- `newton_top_esymm_roots (m) {p} (hp : p.Splits) (hdeg : p.natDegree = m + 2)` :
+  `4·(m+2)!desc·m!desc·lc²·e₂ ≤ ((m+1)!desc)²·lc²·e₁²`, `lc = p.leadingCoeff`,
+  `e₁ = p.roots.esymm 1`, `e₂ = p.roots.esymm 2`. The Vieta substitution.
+- `newton_top_esymm_roots_monic (m) {p} (hp : p.Splits) (hmonic : p.Monic)
+  (hdeg : p.natDegree = m + 2)` : the recognizable classical `2·(m+2)·e₂ ≤
+  (m+1)·e₁²`, i.e. the first Newton/Maclaurin inequality for every arity — via the
+  calculus route (matching Part III's QM–AM proof of the same inequality).
+
+**What remains (interior steps):** the general interior Newton step
+`pₖ² ≥ pₖ₋₁pₖ₊₁` for `2 ≤ k ≤ n−2` needs the same engine on a *sub-window*
+iterated derivative isolating `eₖ₋₁,eₖ,eₖ₊₁`. The reciprocal polynomial
+`Xⁿ·p(1/X)` (`Polynomial.reverse`) maps the bottom window to the top window, so
+the top-step machinery plus a `reverse`-coefficient bridge should reach the
+second-from-top / second-from-bottom steps next; strictly interior windows
+differentiate both `p` and its reverse. Purely algebraic — no analysis blocker.
+
+**Reusable Lean gotchas (researcher-5, Part VIII):**
+- `Polynomial.coeff_eq_esymm_roots_of_splits (hsplit : p.Splits) (h : k ≤
+  p.natDegree) : p.coeff k = p.leadingCoeff·(-1)^(natDegree−k)·p.roots.esymm
+  (natDegree−k)` (in `RingTheory/Polynomial/Vieta.lean`) is the ready-made Vieta
+  substitution for a split polynomial's coefficients — no need to construct
+  `∏(X−xᵢ)` by hand. Use `coeff_natDegree` for the top coefficient (`k =
+  natDegree`) to avoid unfolding `esymm 0`.
+- `newton_top_coeff_ineq` weights are in `(2+m),(1+m),(0+m)` form; `2+m` is a
+  STUCK nat, so `rw [show (2:ℕ)+m = m+2 from by omega, …] at h` first to get the
+  `succ`-reducible `(m+2)` bases before `Nat.succ_descFactorial` can collapse them.
+- Weight collapse `2·(m+2).descFactorial m = (m+2)·(m+1).descFactorial m` and
+  `(m+1).descFactorial m = (m+1)·m.descFactorial m` both fall out of
+  `Nat.succ_descFactorial`; cast to ℝ then `linear_combination` for
+  `2(m+2)B² = (m+1)·4AC`, multiply the inequality by `(m+1)≥0`, cancel `B²>0`.
 
 ## Iteration 8 (PART VII — the general-`n` TOP Newton step via the actual Rolle route), researcher-8
 Two verified additions (26 → 28 theorems; 0 sorries, 0 axioms; docker-build clean,

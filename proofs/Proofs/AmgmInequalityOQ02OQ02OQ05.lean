@@ -616,4 +616,119 @@ theorem newton_first_general_normalized (n : ℕ) (hn : 2 ≤ n) (x : ℕ → �
   rw [div_le_div_iff₀ hCpos hn2pos]
   nlinarith [h, hnpos]
 
+/-!  ## Part VIII — Vieta closure of the TOP step: the calculus route reaches
+Newton's inequality on the elementary symmetric functions of the roots
+
+Part VII proved `newton_top_coeff_ineq`, the honest calculus/Rolle discriminant
+inequality on the top three *coefficients* `p.coeff (m+2), p.coeff (m+1),
+p.coeff m` of an arbitrary real-rooted (`Splits`) polynomial `p`.  The single
+remaining increment documented in `state.md` was purely algebraic: **substitute
+the top coefficients via Vieta** — for a split polynomial
+`p.coeff k = leadingCoeff · (-1)^{n-k} · eₙ₋ₖ(roots)` — to turn that coefficient
+inequality into the classical Newton log-concavity statement on the elementary
+symmetric functions of the roots.
+
+Mathlib's `Polynomial.coeff_eq_esymm_roots_of_splits` supplies exactly this Vieta
+substitution.  Reading the top three coefficients of a split degree-`(m+2)`
+polynomial as `leadingCoeff`, `-leadingCoeff · e₁(roots)`, `leadingCoeff ·
+e₂(roots)` (with `e₁ = p.roots.esymm 1`, `e₂ = p.roots.esymm 2`) turns
+`newton_top_coeff_ineq` into a discriminant inequality in `e₁, e₂`, and the
+`descFactorial` weights collapse — via `Nat.succ_descFactorial` — to the
+recognizable classical constants, giving in the monic case
+
+    `2 (m+2) · e₂ ≤ (m+1) · e₁²`,
+
+i.e. the first Newton/Maclaurin inequality `e₁² ≥ (2n/(n-1)) e₂` for every arity
+`n = m+2`, now as the END PRODUCT of the genuine Rolle/discriminant engine the
+entry asks for (the same inequality Part III obtained independently by QM–AM).
+This closes the "coefficient bookkeeping" gap for the top step: the classical
+calculus proof now runs end-to-end, on one split polynomial of arbitrary degree,
+all the way to a symmetric-function inequality in the roots. -/
+
+/-- **Vieta substitution into the top Newton step (`coeff` → `esymm` of roots).**
+For any `p : ℝ[X]` that splits over `ℝ` with `natDegree = m + 2`, the
+top-coefficient Newton inequality `newton_top_coeff_ineq` becomes a log-concavity
+inequality in the first two elementary symmetric functions
+`e₁ = p.roots.esymm 1`, `e₂ = p.roots.esymm 2` of the roots:
+`4 · (m+2)!desc · m!desc · lc² · e₂ ≤ ((m+1)!desc)² · lc² · e₁²`, with
+`lc = p.leadingCoeff` and the `descFactorial` weights `(m+2).descFactorial m`,
+`m.descFactorial m`, `(m+1).descFactorial m`.  Proof: `p.coeff (m+2) = lc`
+(`coeff_natDegree`), and `p.coeff (m+1) = -lc · e₁`, `p.coeff m = lc · e₂` by
+`coeff_eq_esymm_roots_of_splits`, substituted into `newton_top_coeff_ineq`. -/
+theorem newton_top_esymm_roots (m : ℕ) {p : ℝ[X]}
+    (hp : p.Splits) (hdeg : p.natDegree = m + 2) :
+    4 * ((m + 2).descFactorial m : ℝ) * ((m).descFactorial m : ℝ)
+        * p.leadingCoeff ^ 2 * p.roots.esymm 2
+      ≤ ((m + 1).descFactorial m : ℝ) ^ 2 * p.leadingCoeff ^ 2
+        * p.roots.esymm 1 ^ 2 := by
+  have h := newton_top_coeff_ineq m hp hdeg
+  rw [show (2 : ℕ) + m = m + 2 from by omega, show (1 : ℕ) + m = m + 1 from by omega,
+    show (0 : ℕ) + m = m from by omega] at h
+  have hc2 : p.coeff (m + 2) = p.leadingCoeff := by rw [← coeff_natDegree, hdeg]
+  have hc1 : p.coeff (m + 1) = -(p.leadingCoeff * p.roots.esymm 1) := by
+    rw [coeff_eq_esymm_roots_of_splits hp (show m + 1 ≤ p.natDegree from by omega),
+      show p.natDegree - (m + 1) = 1 from by omega]
+    ring
+  have hc0 : p.coeff m = p.leadingCoeff * p.roots.esymm 2 := by
+    rw [coeff_eq_esymm_roots_of_splits hp (show m ≤ p.natDegree from by omega),
+      show p.natDegree - m = 2 from by omega]
+    ring
+  rw [hc2, hc1, hc0] at h
+  nlinarith [h]
+
+/-- **The classical TOP Newton inequality for a monic real-rooted polynomial,
+via the calculus route.**  If `p : ℝ[X]` is monic, splits over `ℝ`, and has
+`natDegree = m + 2`, then its roots' first two elementary symmetric functions
+satisfy Newton's first log-concavity inequality
+    `2 (m+2) · e₂ ≤ (m+1) · e₁²`,   `e₁ = p.roots.esymm 1`, `e₂ = p.roots.esymm 2`.
+This is `newton_top_esymm_roots` with `leadingCoeff = 1`, after collapsing the
+`descFactorial` weights with the two identities `2·(m+2).descFactorial m =
+(m+2)·(m+1).descFactorial m` and `(m+1).descFactorial m = (m+1)·m.descFactorial m`
+(both from `Nat.succ_descFactorial`).  It is the honest end product of the
+Rolle/discriminant engine — the same first Newton inequality Part III proves by
+QM–AM, here reached through the calculus route the entry asks for. -/
+theorem newton_top_esymm_roots_monic (m : ℕ) {p : ℝ[X]}
+    (hp : p.Splits) (hmonic : p.Monic) (hdeg : p.natDegree = m + 2) :
+    2 * ((m : ℝ) + 2) * p.roots.esymm 2 ≤ ((m : ℝ) + 1) * p.roots.esymm 1 ^ 2 := by
+  have hlc : p.leadingCoeff = 1 := hmonic.leadingCoeff
+  have h := newton_top_esymm_roots m hp hdeg
+  simp only [hlc, one_pow, mul_one] at h
+  -- the two `descFactorial` collapse identities (over ℕ, then cast to ℝ)
+  have id1 : 2 * (m + 2).descFactorial m = (m + 2) * (m + 1).descFactorial m := by
+    have e := Nat.succ_descFactorial (m + 1) m
+    rw [show m + 1 + 1 - m = 2 from by omega] at e
+    exact e
+  have id2 : (m + 1).descFactorial m = (m + 1) * m.descFactorial m := by
+    have e := Nat.succ_descFactorial m m
+    rw [show m + 1 - m = 1 from by omega, one_mul] at e
+    exact e
+  have id1R : 2 * ((m + 2).descFactorial m : ℝ) = ((m : ℝ) + 2) * ((m + 1).descFactorial m : ℝ) := by
+    exact_mod_cast id1
+  have id2R : ((m + 1).descFactorial m : ℝ) = ((m : ℝ) + 1) * (m.descFactorial m : ℝ) := by
+    exact_mod_cast id2
+  set A : ℝ := ((m + 2).descFactorial m : ℝ) with hA
+  set B : ℝ := ((m + 1).descFactorial m : ℝ) with hB
+  set C : ℝ := (m.descFactorial m : ℝ) with hC
+  set e1 : ℝ := p.roots.esymm 1 with he1
+  set e2 : ℝ := p.roots.esymm 2 with he2
+  -- h : 4 * A * C * e2 ≤ B ^ 2 * e1 ^ 2
+  have hm1 : (0 : ℝ) ≤ (m : ℝ) + 1 := by positivity
+  have hBpos : (0 : ℝ) < B := by
+    rw [hB]; exact_mod_cast Nat.descFactorial_pos.mpr (by omega)
+  -- the key weight collapse: `2 (m+2) B² = (m+1) · 4 A C`
+  have hident : 2 * ((m : ℝ) + 2) * B ^ 2 = ((m : ℝ) + 1) * (4 * A * C) := by
+    linear_combination (-2 * B) * id1R + (4 * A) * id2R
+  -- multiply the coefficient inequality by `(m+1) ≥ 0`
+  have hmul : ((m : ℝ) + 1) * (4 * A * C * e2) ≤ ((m : ℝ) + 1) * (B ^ 2 * e1 ^ 2) :=
+    mul_le_mul_of_nonneg_left h hm1
+  -- assemble the `B²`-scaled target, then cancel `B² > 0`
+  have key : 2 * ((m : ℝ) + 2) * e2 * B ^ 2 ≤ ((m : ℝ) + 1) * e1 ^ 2 * B ^ 2 := by
+    have eL : 2 * ((m : ℝ) + 2) * e2 * B ^ 2 = ((m : ℝ) + 1) * (4 * A * C * e2) := by
+      rw [show 2 * ((m : ℝ) + 2) * e2 * B ^ 2
+            = e2 * (2 * ((m : ℝ) + 2) * B ^ 2) from by ring, hident]; ring
+    have eR : ((m : ℝ) + 1) * e1 ^ 2 * B ^ 2 = ((m : ℝ) + 1) * (B ^ 2 * e1 ^ 2) := by ring
+    rw [eL, eR]; exact hmul
+  have hBsq : (0 : ℝ) < B ^ 2 := by positivity
+  exact le_of_mul_le_mul_right key hBsq
+
 end NewtonRealRooted
