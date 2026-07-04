@@ -28,13 +28,18 @@ import Mathlib
 
 open Set Filter Nat Finset
 
+open scoped Classical
+
 namespace Erdos3
 
 /- ## Core Definitions -/
 
-/-- A k-term arithmetic progression starting at a with common difference d -/
+/-- A k-term arithmetic progression starting at a with common difference d.
+    Defined via `Finset.image`, which needs no injectivity hypothesis on the
+    generating map (the map `i ↦ a + i·d` collapses when `d = 0`; callers that
+    care about genuine progressions require `d > 0`). -/
 def ArithProg (a d k : ℕ) : Finset ℕ :=
-  (Finset.range k).map ⟨fun i => a + i * d, fun _ _ h => by omega⟩
+  (Finset.range k).image (fun i => a + i * d)
 
 /-- A set contains a k-term AP if some (a, d) with d > 0 gives a subset -/
 def ContainsAP (A : Set ℕ) (k : ℕ) : Prop :=
@@ -61,11 +66,12 @@ def HasDivergentSum (A : Set ℕ) : Prop :=
 /-- r_k(N) = maximum size of subset of {1,...,N} avoiding k-term APs -/
 noncomputable def rothNumber (k N : ℕ) : ℕ :=
   Finset.sup
-    ((Finset.range (N + 1)).powerset.filter (fun S => IsAPFree (↑S : Set ℕ) k))
+    ((Finset.range (N + 1)).powerset.filter
+      (fun S : Finset ℕ => IsAPFree (↑S : Set ℕ) k))
     Finset.card
 
 /-- The counting function for A up to N -/
-def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   ((Finset.range (N + 1)).filter (· ∈ A)).card
 
 /- ## Key Threshold -/
@@ -83,7 +89,7 @@ def Erdos3Conjecture : Prop :=
 
 /- ## The Gap -/
 
-/-- **The Critical Gap**: Why the conjecture remains open.
+/- **The Critical Gap**: Why the conjecture remains open.
     For Erdős' conjecture, we need r_k(N) = o(N / log N).
     But current bounds only give r_k(N) = o(N / exp((log log N)^c)).
     Since exp((log log N)^c) grows slower than log N, there's a gap. -/
@@ -114,7 +120,7 @@ theorem countingFunction_le_rothNumber (A : Set ℕ) (k N : ℕ)
   -- The slice is a member of the family `rothNumber` sups over.
   have hmem : ((Finset.range (N + 1)).filter (· ∈ A)) ∈
       ((Finset.range (N + 1)).powerset.filter
-        (fun S => IsAPFree (↑S : Set ℕ) k)) := by
+        (fun S : Finset ℕ => IsAPFree (↑S : Set ℕ) k)) := by
     rw [Finset.mem_filter, Finset.mem_powerset]
     refine ⟨Finset.filter_subset _ _, ?_⟩
     intro hAP
@@ -160,7 +166,7 @@ theorem required_bound_implies_conjecture :
 
 /- ## Equivalent Formulations -/
 
-/-- **Equivalent to Behrend-type bounds**: The conjecture asks whether
+/- **Equivalent to Behrend-type bounds**: The conjecture asks whether
     Behrend's construction cannot be improved to achieve N / log N density. -/
 
 /- ## Green-Tao Connection -/
@@ -183,8 +189,8 @@ example : ArithProg 1 2 3 = {1, 3, 5} := by decide
 /-- 4-term AP: {a, a+d, a+2d, a+3d} -/
 example : ArithProg 2 3 4 = {2, 5, 8, 11} := by decide
 
-/-- The set {1, 2, 4, 5, 10, 11, 13, 14} is 3-AP-free (Roth's example) -/
--- This is a classic construction avoiding 3-term APs
+/- The set {1, 2, 4, 5, 10, 11, 13, 14} is 3-AP-free (Roth's example);
+   this is a classic construction avoiding 3-term APs. -/
 
 /- ## Problem Status -/
 
