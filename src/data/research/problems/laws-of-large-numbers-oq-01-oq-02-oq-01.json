@@ -19,19 +19,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-03T11:45:00.000Z",
-    "iteration": 3,
-    "focus": "S2 (Kronecker + Toeplitz) shipped & verified. S3 (Kolmogorov a.s.-convergence criterion) re-scoped: engine + all glue lemmas already in Mathlib; remaining work is assembly, not foundations.",
+    "since": "2026-07-04T00:10:00.000Z",
+    "iteration": 12,
+    "focus": "S4b step-4 pointwise Tonelli integrand tsum_weight_trunc_sq_le SHIPPED & verified (0-axiom, 7743 jobs). Remaining: the ∑'ᵢ–∫ interchange itself, then integrate RHS to C·(𝔼|X|ᵖ+1), then step-3 centering + final MZ combination.",
     "blockers": [],
-    "nextAction": "S3 assembly (1-2 sessions): build natural filtration of X, prove partial sums are a Martingale via condExp_indep_eq, bound eLpNorm(S_n,1) uniformly via IndepFun.variance_sum, apply Submartingale.exists_ae_tendsto_of_bdd.",
+    "nextAction": "Tonelli interchange via MeasureTheory.integral_tsum: ∑'ᵢ ∫ i^{-s}·Yᵢ² dμ = ∫ ∑'ᵢ i^{-s}·Yᵢ² dμ (per-term integrability + ∑'∫|·|<∞); the inner ∑'ᵢ is literally tsum_weight_trunc_sq_le at x=X(ω), dominating the integrand by (max 1 |X|ᵖ)^{1-2/p}·s/(s-1)·X². Integrate RHS: |X|≥1 branch → 𝔼|X|ᵖ, |X|<1 branch → const·𝔼X². Yields ∑ᵢ Var(Yᵢ)/i^{2/p}<∞ for ae_tendsto_average_zero_of_variance_weighted_bdd (S5); then step-3 centering and final MZ combination.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 0,
-      "approachesTried": 2
+      "total": 12,
+      "currentApproach": 1,
+      "approachesTried": 7
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (iter 11, researcher-8): added tsum_indicator_ge_rpow_neg_le — the pointwise inner-tail bound ∑_{i:y≤i}i^{-s}≤(max 1 y)^{1-s}·s/(s-1) that the MZ variance-sum Tonelli interchange consumes at y=|X|ᵖ, s=2/p. Built on the inclusive tail leaf tsum_ge_rpow_neg_le via a ceiling reindex (Nat.ceil_le + Summable.sum_add_tsum_nat_add) and rpow antitonicity, with the y≤0 edge case peeled. 0-axiom, build 7743 jobs. Remaining: the ∑ᵢ–𝔼 Tonelli interchange itself (lintegral_tsum, nonneg) turning ∑ᵢi^{-2/p}𝔼[X²𝟙{|X|≤i^{1/p}}] into 𝔼[X²·(inner tail)] and integrating this pointwise bound to C·𝔼|X|ᵖ; then step-3 centering and the final MZ combination.",
+    "progressSummary": "PROGRESS (iter 12, researcher-14): added tsum_weight_trunc_sq_le — the pointwise Tonelli integrand for the MZ variance sum. For 1<s, 0<p, any x: ∑'ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-s}·x²) ≤ (max 1 |x|ᵖ)^{1-s}·s/(s-1)·x². With x=X(ω), s=2/p this is exactly ∑ᵢ i^{-s}·Yᵢ(ω)² for the step-4 truncation Yᵢ=𝟙{|X|≤i^{1/p}}·X (region matches integral_trunc_sq_le's t=i^{1/p}). Bridges the abstract iter-11 {i|y≤i} bound (tsum_indicator_ge_rpow_neg_le) to the concrete root-form summand the interchange integrates, doing the root↔power region rewrite once. 0-axiom, build 7743 jobs exit 0. Remaining: the ∑'ᵢ–∫ Tonelli interchange itself (MeasureTheory.integral_tsum, integrability side-goals) moving ∑'ᵢ∫ i^{-s}Yᵢ² = ∫∑'ᵢ i^{-s}Yᵢ² and dominating the integrand by this leaf, then integrating the RHS to C·(𝔼|X|ᵖ+1); then step-3 centering and the final MZ combination.",
     "builtItems": [
       "Kronecker: theorem kronecker_lemma in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:122 — a_n>0 nondecreasing, a_n→∞, ∑x_n/a_n conv ⟹ (∑_{i<n}x_i)/a_n→0. Verified, 0-axiom.",
       "Toeplitz core: theorem tendsto_weighted_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:47 — nonneg weights dominated by A_n→∞ kill any null sequence in the weighted average. Reusable, 0-axiom.",
@@ -44,7 +44,8 @@
       "sum_range_shift_rpow_neg_le in LawsOfLargeNumbersOQ01OQ02OQ01.lean (§TailPSeries): integral-comparison block bound ∑_{k<K}(k+N+1)^{-s} ≤ N^{1-s}/(s-1) for s>1, N≥1, uniform in K (via AntitoneOn.sum_le_integral_Ico + integral_rpow), 0-axiom VERIFIED",
       "tsum_shift_rpow_neg_le in LawsOfLargeNumbersOQ01OQ02OQ01.lean (§TailPSeries): tail p-series bound ∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1) (s>1), via Real.tsum_le_of_sum_range_le, 0-axiom VERIFIED — the deterministic backbone of the MZ variance sum",
       "tsum_ge_rpow_neg_le (inclusive-from-N p-series tail bound ∑_{j≥N}j^{-s}≤N^{1-s}·s/(s-1)) in LawsOfLargeNumbersOQ01OQ02OQ01.lean; docker build 7743 jobs, 0-axiom (propext/Classical.choice/Quot.sound only).",
-      "LawsOfLargeNumbers.MZ.tsum_indicator_ge_rpow_neg_le in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean — pointwise inner-tail bound ∑_{i:y≤i} i^{-s} ≤ (max 1 y)^{1-s}·s/(s-1) (Tonelli integrand for the MZ variance sum), 0-axiom"
+      "LawsOfLargeNumbers.MZ.tsum_indicator_ge_rpow_neg_le in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean — pointwise inner-tail bound ∑_{i:y≤i} i^{-s} ≤ (max 1 y)^{1-s}·s/(s-1) (Tonelli integrand for the MZ variance sum), 0-axiom",
+      "LawsOfLargeNumbers.MZ.tsum_weight_trunc_sq_le in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean (§TailPSeries) — pointwise Tonelli integrand for the MZ variance sum: for 1<s, 0<p, any x, ∑'ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-s}·x²) ≤ (max 1 |x|ᵖ)^{1-s}·s/(s-1)·x². The exact per-ω summand of the variance series (x=X(ω), s=2/p); root-form region {i||x|≤i^{1/p}} bridged to power-form {i||x|ᵖ≤i} via not_lt on rpow_inv_lt_iff_lt_rpow, x² pulled out (tsum_mul_right), closed by tsum_indicator_ge_rpow_neg_le. docker build 7743 jobs, 0-axiom."
     ],
     "insights": [
       "Formal target pinned: MZ-SLLN for 1<=p<2, E|X|^p<inf implies (sum(Xi-EX))/n^(1/p) -> 0 a.s.; p=1 is Etemadi/Kolmogorov SLLN, content is the faster n^(1/p) rate for p>1.",
