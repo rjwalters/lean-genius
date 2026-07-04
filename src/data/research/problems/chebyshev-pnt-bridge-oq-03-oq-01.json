@@ -2,7 +2,7 @@
   "slug": "chebyshev-pnt-bridge-oq-03-oq-01",
   "title": "Formalize the full Prime Number Theorem π(x)·log x / x → 1",
   "status": "blocked",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "path": "full",
   "tier": "EMPTY",
   "started": "2026-07-02T00:00:00.000Z",
@@ -57,11 +57,14 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "OBSERVE (S1, researcher-7): survey only, classified BLOCKED. The full PNT limit π(x)·log x / x → 1 is NOT in the pinned Mathlib (v4.26.0): PrimeCounting.lean gives only monotonicity, surjectivity, and Tendsto π atTop atTop, and Chebyshev.lean gives Θ-order bounds — neither yields the sharp asymptotic. Both classical routes are absent from Mathlib and each is a multi-thousand-line formalization: (A) Wiener–Ikehara Tauberian theorem applied to −ζ'/ζ, which requires the analytic continuation and non-vanishing of ζ on Re(s)=1 plus a Tauberian argument (heavy complex analysis / contour integration); (B) Selberg's elementary method (Selberg symmetry Σ_{p≤x} log²p + Σ_{pq≤x} log p log q = 2x log x + O(x), then the Erdős–Selberg dichotomy). The leanprover-community PrimeNumberTheoremAnd project proves PNT but has not been upstreamed into this pinned Mathlib. Recommend keeping BLOCKED: the Θ-order-to-asymptotic gap is exactly the irreducible analytic content of PNT and cannot be closed on top of the gallery's existing Chebyshev bounds without importing one of the two heavy machineries. A tractable intermediate BUILD target, if pursued, is the equivalence ψ(x) ~ x ⟺ π(x) ~ x/log x (Abel summation / partial-summation bridge), which is elementary and would at least reduce PNT-for-π to PNT-for-ψ.",
+    "progressSummary": "PROGRESS (S2, researcher-5): verified the elementary θ↔π reduction (two-sided sandwich, 0 axioms/0 sorries) as gallery entry chebyshev-pnt-bridge-oq-03-oq-01, modularizing PNT-for-π into PNT-for-θ. The deep PNT limit itself stays BLOCKED (Wiener–Ikehara/Selberg).",
     "insights": [
       "The gap is irreducible: Chebyshev's Θ(x/log x) bounds (already in the gallery) provably CANNOT be sharpened to the limit 1 by elementary manipulation — closing the constant to exactly 1 is the whole difficulty of PNT and needs either ζ non-vanishing on Re(s)=1 (route A) or the Selberg symmetry formula (route B).",
       "Mathlib's π support stops at qualitative facts (monotone, surjective, → ∞); there is no rate, so any PNT statement must be built essentially from scratch relative to this pinned toolchain.",
-      "The one genuinely elementary sub-step is the ψ↔π transfer: ψ(x) ~ x ⟺ θ(x) ~ x ⟺ π(x) ~ x/log x via Abel/partial summation. This is a legitimate standalone BUILD that would modularize the problem, leaving only PNT-for-ψ (still deep) as the blocker."
+      "The one genuinely elementary sub-step is the ψ↔π transfer: ψ(x) ~ x ⟺ θ(x) ~ x ⟺ π(x) ~ x/log x via Abel/partial summation. This is a legitimate standalone BUILD that would modularize the problem, leaving only PNT-for-ψ (still deep) as the blocker.",
+      "The θ↔π transfer is fully ELEMENTARY: for 2≤y≤n, θ(n)≤π(n)·log n and π(n)≤y+θ(n)/log y, proved from only monotonicity of log and a nonnegative sub-sum bound — NO Abel/partial summation needed. This is the de-risking BUILD the S1 survey recommended.",
+      "π(n) is literally the cardinality of the θ(n) summation index set (both range over filter Prime (range (n+1))), so θ(n)≤π(n)·log n needs no separate counting argument (Nat.count_eq_card_filter_range).",
+      "The free threshold parameter y trades the two error sources: only the ≤y small primes escape the log y tail bound and only they are dropped from π·log; y≈n/(log n)² makes both losses o(n), collapsing the sandwich to θ(x)~x ⟺ π(x)~x/log x."
     ],
     "mathlibGaps": [
       "No PNT limit / asymptotic for primeCounting (only Tendsto π atTop atTop).",
@@ -71,10 +74,15 @@
       "The PrimeNumberTheoremAnd project is not upstreamed into this pinned Mathlib."
     ],
     "nextSteps": [
-      "Keep BLOCKED for direct attack: PNT needs >1000 lines of either analytic (Wiener–Ikehara) or elementary (Selberg) machinery absent from this Mathlib.",
-      "Optional standalone BUILD to de-risk: formalize the Abel-summation equivalence ψ(x) ~ x ⟺ π(x) ~ x/log x, reducing the goal to PNT-for-ψ without touching the deep analysis.",
-      "Re-evaluate if/when the PrimeNumberTheoremAnd results are upstreamed into the pinned Mathlib, at which point this becomes a (possibly thin) wrapper and should be reframed or retired."
+      "Assemble the sandwich into the explicit Tendsto equivalence θ(n)/n→1 ⟺ π(n)·log n/n→1, discharging the y≈n/(log n)² choice and the o(1) bookkeeping (elementary but fiddly Filter work).",
+      "Formalize the ψ↔θ transfer ψ(x)−θ(x)=O(√x log²x), completing ψ~x ⟺ θ~x ⟺ π~x/log x.",
+      "The deep PNT limit π(x)·log x/x→1 itself remains BLOCKED: needs Wiener–Ikehara (ζ non-vanishing on Re s=1) or Selberg symmetry, neither in pinned Mathlib (>1000 lines)."
     ],
-    "builtItems": []
+    "builtItems": [
+      "chebyshevTheta_le_primeCounting_mul_log — θ(n)≤π(n)·log n (ChebyshevPNTBridgeOQ03OQ01.lean:65), verified 0-axiom",
+      "primeCounting_le_add_chebyshevTheta_div_log — π(n)≤y+θ(n)/log y for 2≤y≤n (ChebyshevPNTBridgeOQ03OQ01.lean:104), verified 0-axiom",
+      "tail_sum_le_chebyshevTheta — ∑_{y<p≤n} log p ≤ θ(n) (ChebyshevPNTBridgeOQ03OQ01.lean:85)",
+      "chebyshev_theta_primeCounting_sandwich — the packaged two-sided reduction (ChebyshevPNTBridgeOQ03OQ01.lean:148); gallery entry chebyshev-pnt-bridge-oq-03-oq-01"
+    ]
   }
 }
