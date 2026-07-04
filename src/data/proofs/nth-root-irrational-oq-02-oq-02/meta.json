@@ -54,7 +54,8 @@
       "The exact valuation v_p(m) = e is pinned by a two-sided divisibility window p^e ∣ m ∧ ¬p^(e+1) ∣ m, both halves size-independent decides — no factorization of the literal is required.",
       "Taking e = 1 recovers the parent's exponent-1 corollary, so the generalization loses nothing while covering every mixed-exponent radicand.",
       "The same radicand can be blocked by different primes depending on n: 72 = 2³·3² is blocked by the prime 2 for square roots (v_2 = 3 odd) and by the prime 3 for cube roots (v_3 = 2, not a multiple of 3). The exponent-1 lemma cannot express this.",
-      "The existential form matches the problem's formal statement exactly and makes the honest, complete irrationality test — fire on any non-perfect-power radicand — a one-liner."
+      "The existential form matches the problem's formal statement exactly and makes the honest, complete irrationality test — fire on any non-perfect-power radicand — a one-liner.",
+      "The blocking prime need not be the smallest: 500 = 2²·5³ has a benign smallest prime (v_2 = 2, even) and is blocked only by 5 (v_5 = 3), so a naive 'check the smallest prime' heuristic fails — the criterion needs one prime with the wrong exponent, wherever it sits."
     ],
     "prerequisites": [
       "Number theory (unique prime factorization, p-adic valuation / Nat.factorization)",
