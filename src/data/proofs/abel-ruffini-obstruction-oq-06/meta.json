@@ -85,6 +85,72 @@
       "summary": "not_solvableByRad_of_not_solvable_gal: a root of an irreducible q with non-solvable Galois group is not solvable by radicals — the contrapositive of Mathlib's solvableByRad.isSolvable'. solvable_gal_of_solvableByRad re-exposes the forward direction. Together they are the Galois bridge from the symmetric-group obstruction to actual polynomial equations."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "symmetricGroup_not_solvable",
+      "type": "core",
+      "description": "**The sharp symmetric-group obstruction** — Sₙ is not solvable for every n ≥ 5, generalizing Mathlib's Equiv.Perm.fin_5_not_solvable (stated only for Fin 5). Any such permutation group contains a copy of S₅, whose derived series never reaches the trivial subgroup because A₅ is a perfect nonabelian simple group. This is the group-theoretic heart of Abel–Ruffini.",
+      "leanType": "{n : ℕ} (hn : 5 ≤ n) : ¬ IsSolvable (Equiv.Perm (Fin n))",
+      "line": 55,
+      "endLine": 59
+    },
+    {
+      "name": "not_solvableByRad_of_not_solvable_gal",
+      "type": "core",
+      "description": "**Abel–Ruffini criterion (Galois form)** — if α is a root of an irreducible q ∈ F[X] whose Galois group is not solvable, then α is not solvable by radicals over F. The contrapositive of Mathlib's solvableByRad.isSolvable', this is the exact tool that turns the group obstruction into unsolvable quintics.",
+      "leanType": "{α : E} {q : F[X]} (q_irred : Irreducible q) (q_aeval : aeval α q = 0) (hq : ¬ IsSolvable q.Gal) : ¬ IsSolvableByRad F α",
+      "line": 197,
+      "endLine": 200
+    },
+    {
+      "name": "symmetric_threshold_full",
+      "type": "key",
+      "description": "**The full threshold Sₙ solvable ⟺ n ≤ 4**, all small cases discharged: S₂, S₃, S₄ are each solvable while Sₙ is not solvable for any n ≥ 5. This is the sharp dividing line behind Abel–Ruffini — degrees ≤ 4 have radical formulas (quadratic, Cardano, Ferrari) exactly because S₂, S₃, S₄ are solvable.",
+      "leanType": "IsSolvable (Equiv.Perm (Fin 2)) ∧ IsSolvable (Equiv.Perm (Fin 3)) ∧ IsSolvable (Equiv.Perm (Fin 4)) ∧ (∀ n : ℕ, 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n)))",
+      "line": 170,
+      "endLine": 176
+    },
+    {
+      "name": "perm_fin_four_solvable",
+      "type": "key",
+      "description": "**S₄ is solvable** — the top of the solvable range. The sign sequence 1 → A₄ → S₄ →^sign ℤˣ → 1 has solvable kernel A₄ and abelian image ℤˣ, so solvable_of_ker_le_range applies. S₄ being the largest solvable symmetric group is why the general quartic has a radical formula but the quintic does not.",
+      "leanType": "IsSolvable (Equiv.Perm (Fin 4))",
+      "line": 137,
+      "endLine": 143
+    },
+    {
+      "name": "alt_fin_four_solvable",
+      "type": "key",
+      "description": "**A₄ is solvable** — the crucial non-abelian-but-solvable case. Solvable via the one-step extension 1 → V₄ → A₄ → A₄/V₄ → 1, where the normal Klein four-subgroup V₄ has exponent two (abelian) and the quotient has prime order 3 (cyclic). This is exactly the derived series A₄ ⊳ V₄ ⊳ 1 that makes the general quartic solvable (Ferrari's resolvent cubic).",
+      "leanType": "IsSolvable (alternatingGroup (Fin 4))",
+      "line": 103,
+      "endLine": 126
+    },
+    {
+      "name": "perm_fin_three_solvable",
+      "type": "key",
+      "description": "**S₃ is solvable** — A₃ = ker(sign) has prime order 3 (cyclic, abelian) and the quotient S₃/A₃ ↪ ℤˣ is abelian, so solvable_of_ker_le_range gives solvability of the extension.",
+      "leanType": "IsSolvable (Equiv.Perm (Fin 3))",
+      "line": 79,
+      "endLine": 89
+    },
+    {
+      "name": "perm_fin_two_solvable",
+      "type": "key",
+      "description": "**S₂ is solvable** — cyclic of order two, hence abelian, hence solvable. The low end of the threshold Sₙ solvable ⟺ n ≤ 4 (S₀, S₁ trivial).",
+      "leanType": "IsSolvable (Equiv.Perm (Fin 2))",
+      "line": 68,
+      "endLine": 69
+    },
+    {
+      "name": "solvable_gal_of_solvableByRad",
+      "type": "key",
+      "description": "**Converse restatement** — a root that is solvable by radicals must come from an irreducible polynomial with solvable Galois group. Definitionally Mathlib's solvableByRad.isSolvable', re-exposed locally so the criterion and its converse sit side by side.",
+      "leanType": "{α : E} {q : F[X]} (q_irred : Irreducible q) (q_aeval : aeval α q = 0) (hα : IsSolvableByRad F α) : IsSolvable q.Gal",
+      "line": 210,
+      "endLine": 213
+    }
+  ],
   "references": [
     {
       "authors": [
