@@ -98,9 +98,9 @@
     {
       "id": "header",
       "title": "Problem and Strategy",
-      "startLine": 5,
+      "startLine": 1,
       "endLine": 35,
-      "summary": "States the open question (the second moment ∫ x² e^{-x²}), the answer √π/2, and the integration-by-parts strategy that reduces it to half the parent zeroth moment √π. Notes the equivalent Gamma form Γ(3/2).",
+      "summary": "Imports, then the module docstring stating the second-moment problem ∫ x² e^{-x²} and the integration-by-parts strategy on the whole line.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\tfrac{\\sqrt\\pi}{2} = \\Gamma(3/2)$."
     },
     {
