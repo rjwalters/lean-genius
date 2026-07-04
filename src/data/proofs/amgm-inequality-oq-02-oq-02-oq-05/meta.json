@@ -12,7 +12,36 @@
     "newton_two_vars"
   ],
   "sorries": [],
-  "sections": [],
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Program overview: the real-rootedness route",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring situating this file against the two sibling proofs. It states the classical calculus strategy — differentiate the real-rooted splitting polynomial prod (X - x_i) down to degree two (Rolle), whose nonnegative discriminant IS Newton's inequality — and scopes this entry to the self-contained per-derivative atom plus the n = 2 base case, honestly retaining the general iterated-Rolle step as open."
+    },
+    {
+      "id": "discriminant-atom",
+      "title": "The discriminant atom",
+      "startLine": 52,
+      "endLine": 63,
+      "summary": "discrim_nonneg_of_root: a real quadratic a x^2 + b x + c with a real root has 0 <= discrim a b c. Proved in two lines by rewriting with Mathlib's discrim_eq_sq_of_quadratic_eq_zero (which packages the completed-square identity discrim a b c = (2 a x + b)^2) and closing with sq_nonneg. This is the reusable 'real-rooted => log-concave coefficients' building block."
+    },
+    {
+      "id": "polynomial-api",
+      "title": "Phrasing through the Polynomial API",
+      "startLine": 65,
+      "endLine": 94,
+      "summary": "Restates the atom in genuine real-rootedness terms: monic_quadratic_discrim_nonneg (via Polynomial.IsRoot on X^2 + C b X + C c), discrim_nonneg_of_roots_nonempty (assuming only that the roots multiset is nonempty, extracting a member with mem_roots'), and realRooted_quadratic_coeff_ineq reading off the coefficient inequality 4 c <= b^2."
+    },
+    {
+      "id": "splitting-newton-n2",
+      "title": "The splitting polynomial and Newton at n = 2",
+      "startLine": 96,
+      "endLine": 128,
+      "summary": "Vieta for two roots (prod_two_linear_eq: (X - x)(X - y) = X^2 - (x+y) X + x y), the fact that x is a root (root_of_prod_two_linear), then newton_two_vars: x y <= ((x+y)/2)^2 for ALL real x, y via the discriminant, and its normalized restatement newton_two_vars_normalized emphasizing the p_1^2 >= p_0 p_2 shape."
+    }
+  ],
   "crossReferences": [
     "amgm-inequality-oq-02-oq-02",
     "amgm-inequality-oq-02-oq-03-oq-03-oq-01",
@@ -32,7 +61,9 @@
   "leanFile": {
     "path": "Proofs/AmgmInequalityOQ02OQ02OQ05.lean",
     "namespace": "NewtonRealRooted",
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "additionalFiles": [],
     "lineCount": 128,
     "theoremCount": 8,
