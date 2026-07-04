@@ -472,8 +472,71 @@ theorem cliqueMonoProb_le_symmetric_lll_rhs {n k : ℕ} (hcond : RamseyLLLCondit
   have hfac := symmetric_avoidance_factor_ge_third D
   calc (cliqueMonoProb k : ℝ)
       ≤ 1 / (3 * ((D : ℝ) + 1)) := hpbound
-    _ = (1 / ((D : ℝ) + 1)) * (1 / 3) := by field_simp; ring
+    _ = (1 / ((D : ℝ) + 1)) * (1 / 3) := by field_simp
     _ ≤ (1 / ((D : ℝ) + 1)) * (((D : ℝ) / ((D : ℝ) + 1)) ^ D) :=
         mul_le_mul_of_nonneg_left hfac (by positivity)
+
+/-- **The symmetric reserved value satisfies the `hx1` premise of `avoidance_pos`.**
+    In the symmetric instantiation of the general asymmetric Lovász Local Lemma
+    (`LovaszLocalLemmaOQ01StrongInduction.avoidance_pos`) every reserved value is the
+    common `x = 1/(D+1)` with `D = cliqueDependencyBound n k`.  The LLL induction
+    requires each `xᵢ < 1`; that holds here because the dependency degree is at least
+    `1` whenever `2 ≤ k ≤ n` (both `k.choose 2` and `(n-2).choose (k-2)` are positive),
+    so `D + 1 ≥ 2 > 1`. -/
+theorem symmetric_reserved_lt_one {n k : ℕ} (hk : 2 ≤ k) (hkn : k ≤ n) :
+    (1 : ℝ) / ((cliqueDependencyBound n k : ℝ) + 1) < 1 := by
+  have h1 : 0 < k.choose 2 := Nat.choose_pos hk
+  have h2 : 0 < (n - 2).choose (k - 2) := Nat.choose_pos (by omega)
+  have hDpos : 0 < cliqueDependencyBound n k := by
+    unfold cliqueDependencyBound; exact Nat.mul_pos h1 h2
+  have hD1n : 1 ≤ cliqueDependencyBound n k := hDpos
+  have hD1 : (1 : ℝ) ≤ (cliqueDependencyBound n k : ℝ) := by exact_mod_cast hD1n
+  rw [div_lt_one (by positivity)]
+  linarith
+
+/-- **Block form of the symmetric-LLL numeric premise.**  Generalises
+    `cliqueMonoProb_le_symmetric_lll_rhs` from the full-neighbourhood exponent `D` to an
+    arbitrary dependency sub-block `S₁` with `|S₁| ≤ D`.  This is the exact shape of the
+    `hlll` hypothesis consumed by the general asymmetric Lovász Local Lemma
+    `LovaszLocalLemmaOQ01StrongInduction.avoidance_pos`, in the symmetric instantiation
+    `xⱼ ≡ 1/(D+1)` (so `1 - xⱼ = D/(D+1)`):
+
+      `p ≤ xᵢ · ∏_{j∈S₁} (1 - xⱼ) = (1/(D+1)) · (D/(D+1))^{|S₁|}`.
+
+    Proof: the base `D/(D+1)` lies in `[0,1]`, so shrinking the exponent from `D` to
+    `|S₁| ≤ D` only increases the power (`pow_le_pow_of_le_one`); chain with the
+    full-neighbourhood bound `cliqueMonoProb_le_symmetric_lll_rhs`.  Together with
+    `symmetric_reserved_lt_one` (the `hx1` premise) this discharges *both* numeric inputs
+    of `avoidance_pos` for the monochromatic-clique bad events; only the probability-space
+    construction and the mutual-independence hypothesis remain open. -/
+theorem cliqueMonoProb_le_symmetric_lll_block {n k : ℕ} (hcond : RamseyLLLCondition n k)
+    (S₁ : Finset ℕ) (hcard : S₁.card ≤ cliqueDependencyBound n k) :
+    (cliqueMonoProb k : ℝ)
+      ≤ (1 / ((cliqueDependencyBound n k : ℝ) + 1))
+          * ∏ _j ∈ S₁, (1 - 1 / ((cliqueDependencyBound n k : ℝ) + 1)) := by
+  set D := cliqueDependencyBound n k with hDdef
+  have hne : ((D : ℝ) + 1) ≠ 0 := by positivity
+  -- `1 - 1/(D+1) = D/(D+1)`
+  have hfactor : (1 : ℝ) - 1 / ((D : ℝ) + 1) = (D : ℝ) / ((D : ℝ) + 1) := by
+    rw [one_sub_div hne]; ring
+  -- the constant product over `S₁` is a power of the base
+  have hprod : (∏ _j ∈ S₁, (1 - 1 / ((D : ℝ) + 1)))
+      = ((D : ℝ) / ((D : ℝ) + 1)) ^ S₁.card := by
+    rw [hfactor, Finset.prod_const]
+  rw [hprod]
+  -- the base `D/(D+1)` lies in `[0,1]`
+  have hb0 : (0 : ℝ) ≤ (D : ℝ) / ((D : ℝ) + 1) := by positivity
+  have hb1 : (D : ℝ) / ((D : ℝ) + 1) ≤ 1 := by
+    rw [div_le_one (by positivity)]; linarith
+  -- shrinking the exponent from `D` to `|S₁| ≤ D` only increases the (`≤ 1`) power
+  have hpow : ((D : ℝ) / ((D : ℝ) + 1)) ^ D
+      ≤ ((D : ℝ) / ((D : ℝ) + 1)) ^ S₁.card :=
+    pow_le_pow_of_le_one hb0 hb1 hcard
+  have hxnn : (0 : ℝ) ≤ 1 / ((D : ℝ) + 1) := by positivity
+  calc (cliqueMonoProb k : ℝ)
+      ≤ (1 / ((D : ℝ) + 1)) * (((D : ℝ) / ((D : ℝ) + 1)) ^ D) :=
+        cliqueMonoProb_le_symmetric_lll_rhs hcond
+    _ ≤ (1 / ((D : ℝ) + 1)) * (((D : ℝ) / ((D : ℝ) + 1)) ^ S₁.card) :=
+        mul_le_mul_of_nonneg_left hpow hxnn
 
 end RamseyLLL
