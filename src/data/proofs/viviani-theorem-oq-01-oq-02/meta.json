@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: One Principle Behind Every Viviani Theorem",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module docstring: all Viviani-type theorems — triangle, regular n-gon, regular simplex in any dimension — are instances of a single fact. If the outward unit facet-normals of a body sum to zero, the sum of signed distances from any interior point to the facets is constant. This entry proves that abstract principle once (Part A) and then instantiates it to get the sharp constants n·apothem for the regular polygon (Part B) and (n+1)·inradius for the regular simplex (Part C).",
+      "mathContext": "$\\sum_i u_i = 0 \\implies \\sum_i(c_i-\\langle u_i,P\\rangle)$ is independent of $P$."
+    },
+    {
       "id": "part-a-principle",
       "title": "Part A: The General Viviani Principle",
       "startLine": 58,
@@ -76,11 +84,20 @@
       "summary": "sum_signedDist_eq: in any real inner-product space, if the outward unit facet normals sum to zero then ∑ᵢ (cᵢ − ⟪uᵢ,P⟫) = ∑ᵢ cᵢ, independent of P; sum_signedDist_const restates this as equality of the distance sums at any two points. This is the single identity behind every Viviani-type theorem."
     },
     {
-      "id": "part-b-polygon",
-      "title": "Part B: The Regular Polygon (Sharp Constant n · apothem)",
+      "id": "part-b-setup",
+      "title": "Part B(i): The Plane as ℂ — Roots of Unity and Unit Normals",
       "startLine": 82,
+      "endLine": 117,
+      "summary": "Models the plane as ℂ with the real inner product rdot, additive over sums via rdot_sum. sum_primitiveRoot_pow_eq_zero proves ∑ₖ ζ^k = 0 for n ≥ 2 from geom_sum_eq together with ζ^n = 1 and ζ ≠ 1 — the vanishing that makes the outward normals of a regular n-gon sum to zero — and primitiveRoot_pow_norm confirms those normals ζ^k are genuine unit vectors.",
+      "mathContext": "$\\sum_{k=0}^{n-1}\\zeta^k=0$ and $|\\zeta^k|=1$ for $\\zeta=e^{2\\pi i/n}$, $n\\ge2$."
+    },
+    {
+      "id": "part-b-polygon",
+      "title": "Part B(ii): regularPolygon_viviani — the Sharp Constant n · apothem",
+      "startLine": 118,
       "endLine": 145,
-      "summary": "The plane is modeled as ℂ with the real inner product rdot (additive over sums via rdot_sum). sum_primitiveRoot_pow_eq_zero proves ∑ₖ ζ^k = 0 for n ≥ 2 from geom_sum_eq, ζ^n = 1 and ζ ≠ 1; primitiveRoot_pow_norm shows the normals are unit vectors. regularPolygon_viviani concludes the perpendicular-distance sum equals n·a, with regularPolygon_viviani_exists realizing it by the exp(2πik/n) roots and regularPolygon_viviani_const giving the point-independence."
+      "summary": "regularPolygon_viviani concludes the perpendicular-distance sum from any interior point of a regular n-gon equals n·a (a = apothem), with regularPolygon_viviani_exists realizing the normals by the exp(2πik/n) roots of unity and regularPolygon_viviani_const giving point-independence — the general principle of Part A applied to the roots-of-unity normals of Part B(i).",
+      "mathContext": "$\\sum_i d_i(P)=n\\,a$ for every interior $P$ of the regular $n$-gon."
     },
     {
       "id": "part-c-simplex",
