@@ -52,6 +52,18 @@
       "type": "main",
       "description": "Gerretsen's inequality: for any nondegenerate triangle, s² ≤ 4R² + 4Rr + 3r².",
       "leanType": "semiperimeter a b c ^ 2 ≤ 4 * circumradius a b c ^ 2 + 4 * (circumradius a b c * inradius a b c) + 3 * inradius a b c ^ 2"
+    },
+    {
+      "name": "circumradius_sq",
+      "type": "supporting",
+      "description": "Area-free rewrite of R²: R² = (abc)²/(16·Area²), with Area² = heronProduct (Part II)",
+      "leanType": "circumradius a b c ^ 2 = (a*b*c)^2 / (16 * heronProduct a b c)"
+    },
+    {
+      "name": "inradius_sq",
+      "type": "supporting",
+      "description": "Area-free rewrite of r²: r² = Area²/s² = heronProduct/s² (Part II)",
+      "leanType": "inradius a b c ^ 2 = heronProduct a b c / semiperimeter a b c ^ 2"
     }
   ],
   "sections": [
