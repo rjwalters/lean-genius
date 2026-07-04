@@ -114,6 +114,48 @@
       "mathContext": "The Hermitian Bauer–Fike a-posteriori estimate: a small residual certifies a nearby true eigenvalue; a large spectral gap forces a large residual."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "dist_to_spectrum_le_residual",
+      "type": "core",
+      "description": "**Residual (a-posteriori) eigenvalue bound.** For T presented by an orthonormal eigenbasis b with real eigenvalues μ, every unit vector x and scalar λ have some eigenvalue μ k within the residual ‖T x − λ·x‖ of λ: ∃ k, |μ k − λ| ≤ ‖T x − λ·x‖. Certifies an approximately-computed eigenpair — the Bauer–Fike / converse direction to Weyl's perturbation bound. Proof: Parseval expansion + pick the index minimising (μᵢ − λ)².",
+      "leanType": "(T : E →L[𝕜] E) (b : OrthonormalBasis (Fin n) 𝕜 E) (μ : Fin n → ℝ) (hbT : ∀ i, T (b i) = (μ i : 𝕜) • b i) (x : E) (hx : ‖x‖ = 1) (lam : ℝ) : ∃ k, |μ k - lam| ≤ ‖T x - (lam : 𝕜) • x‖",
+      "line": 103,
+      "endLine": 151
+    },
+    {
+      "name": "residual_eigenvalue_bound",
+      "type": "key",
+      "description": "**a-posteriori bound with an explicit residual estimate** — if the residual is known only up to an upper bound ε (the typical computed situation), some eigenvalue still lies within ε of λ. The usable form of the residual bound.",
+      "leanType": "... (hx : ‖x‖ = 1) (lam ε : ℝ) (hres : ‖T x - (lam : 𝕜) • x‖ ≤ ε) : ∃ k, |μ k - lam| ≤ ε",
+      "line": 156,
+      "endLine": 163
+    },
+    {
+      "name": "residual_gt_of_spectral_gap",
+      "type": "key",
+      "description": "**Spectral-gap lower bound on the residual** — if λ is strictly more than ε from every eigenvalue, no unit vector can have residual ≤ ε: the residual is bounded below by the distance from λ to the spectrum. The contrapositive of residual_eigenvalue_bound.",
+      "leanType": "... (hx : ‖x‖ = 1) (lam ε : ℝ) (hgap : ∀ i, ε < |μ i - lam|) : ε < ‖T x - (lam : 𝕜) • x‖",
+      "line": 171,
+      "endLine": 180
+    },
+    {
+      "name": "parseval",
+      "type": "supporting",
+      "description": "**Parseval's identity** — for an orthonormal basis b of a finite-dimensional inner product space, ‖v‖² = ∑ᵢ ‖⟪bᵢ, v⟫‖². Immediate from b.repr being a linear isometry onto EuclideanSpace. The engine that turns the coordinate identity into a norm equality.",
+      "leanType": "{n : ℕ} (b : OrthonormalBasis (Fin n) 𝕜 E) (v : E) : ‖v‖ ^ 2 = ∑ i, ‖@inner 𝕜 E _ (b i) v‖ ^ 2",
+      "line": 61,
+      "endLine": 64
+    },
+    {
+      "name": "inner_eigen",
+      "type": "supporting",
+      "description": "**Eigen-coordinate identity** — if T (b i) = μ i · b i for an orthonormal basis, then ⟪bᵢ, T x⟫ = μᵢ · ⟪bᵢ, x⟫ for every x. Proved by expanding x in the eigenbasis; no adjoint or self-adjointness needed, only linearity and orthonormality.",
+      "leanType": "(T : E →L[𝕜] E) (b : OrthonormalBasis (Fin n) 𝕜 E) (μ : Fin n → ℝ) (hbT : ∀ i, T (b i) = (μ i : 𝕜) • b i) (x : E) (i : Fin n) : @inner 𝕜 E _ (b i) (T x) = (μ i : 𝕜) * @inner 𝕜 E _ (b i) x",
+      "line": 72,
+      "endLine": 89
+    }
+  ],
   "conclusion": {
     "summary": "A machine-checked Lean 4 proof of the residual (a-posteriori) eigenvalue bound ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖ for a Hermitian operator presented by an orthonormal eigenbasis, together with its practical ε-form and the contrapositive spectral-gap lower bound on the residual. The file is 0-axiom, 0-sorry (#print axioms: propext, Classical.choice, Quot.sound only). It answers the lead open question of cauchy-interlacing-theorem-oq-03-oq-01.",
     "implications": "Adds the a-posteriori counterpart to the Cauchy-interlacing family's eigenvalue-perturbation layer: alongside the parent's a-priori Weyl stability |λ_k(A) − λ_k(B)| ≤ ‖A − B‖, the residual bound certifies a single computed eigenpair from the residual alone — the Hermitian Bauer–Fike theorem and the basis of stopping criteria for iterative eigensolvers. The proof reuses only linearity and orthonormality, so it applies verbatim to any orthonormally diagonalisable operator with real spectrum.",
