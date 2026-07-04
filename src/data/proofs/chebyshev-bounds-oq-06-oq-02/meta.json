@@ -134,6 +134,45 @@
     {
       "title": "Primorial (Wikipedia)",
       "url": "https://en.wikipedia.org/wiki/Primorial"
+    },
+    {
+      "authors": "Nair, M.",
+      "title": "On Chebyshev-Type Inequalities for Primes",
+      "year": "1982",
+      "venue": "American Mathematical Monthly 89(2), 126–129",
+      "note": "The canonical elementary derivation of the upper bound θ(n) ≤ n·log 4 from the primorial / central-binomial estimate n# ≤ 4ⁿ — exactly the argument this entry formalizes."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "chebyshevTheta_le",
+      "type": "core",
+      "description": "**Upper Chebyshev bound.** For every n, the first Chebyshev function is bounded by θ(n) ≤ n·log 4. Proved by rewriting θ(n) = log(n#) and applying Real.log_le_log to Mathlib’s primorial bound n# ≤ 4ⁿ, then Real.log_pow to evaluate log(4ⁿ) = n·log 4.",
+      "leanType": "(n : ℕ) → chebyshevTheta n ≤ n * Real.log 4"
+    },
+    {
+      "name": "chebyshevTheta_eq_log_primorial",
+      "type": "core",
+      "description": "**Bridge identity.** θ(n) = log(n#): the exponential of the prime-log sum is exactly the primorial. Cast the ℕ-product to ℝ (Nat.cast_prod) and apply Real.log_prod (each prime factor is nonzero). This is what lets a bound on the primorial act on the log-sum.",
+      "leanType": "(n : ℕ) → chebyshevTheta n = Real.log (primorial n)"
+    },
+    {
+      "name": "chebyshevTheta_le_two_mul",
+      "type": "supporting",
+      "description": "Equivalent form θ(n) ≤ 2n·log 2, via log 4 = 2·log 2.",
+      "leanType": "(n : ℕ) → chebyshevTheta n ≤ 2 * n * Real.log 2"
+    },
+    {
+      "name": "chebyshevTheta_nonneg",
+      "type": "supporting",
+      "description": "θ(n) ≥ 0: every summand log p ≥ 0 since a prime p ≥ 2 > 1.",
+      "leanType": "(n : ℕ) → 0 ≤ chebyshevTheta n"
+    },
+    {
+      "name": "chebyshevTheta_mono",
+      "type": "supporting",
+      "description": "θ is monotone: m ≤ n adjoins only nonnegative terms (nested prime filters range(m+1) ⊆ range(n+1)).",
+      "leanType": "{m n : ℕ} → m ≤ n → chebyshevTheta m ≤ chebyshevTheta n"
     }
   ]
 }
