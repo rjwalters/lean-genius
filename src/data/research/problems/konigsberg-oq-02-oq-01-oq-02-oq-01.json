@@ -29,12 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Hierholzer sufficiency ingredients A (maximal trail closed), B-parity + B-full deleteEdges (#34714), and C splice (#34731) all VERIFIED 0-axiom. Remaining: the strong-induction assembly (Sub-lemma D) into undirected_euler_circuit_sufficient.",
+    "progressSummary": "PROGRESS: Hierholzer sufficiency ingredients A (maximal trail closed), B-parity + B-full deleteEdges (#34714), C splice (#34731), and now the connectivity BRIDGE (boundary edge) all VERIFIED 0-axiom. exists_boundary_edge_of_missing: a closed trail c that misses an edge of connected G must have an unused edge incident to c.support (the splice attachment vertex). Remaining: wire A+B+C+bridge into the strong-induction assembly (Sub-lemma D) for undirected_euler_circuit_sufficient.",
     "builtItems": [
       "proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01.lean: stated undirected_euler_circuit_sufficient (sufficiency, 1 sorry) and undirected_euler_circuit_iff (full characterization). The iff necessity half is fully PROVED; only sufficiency delegates to the sorry. Builds cleanly (import Connectivity.Connected added; only the expected sorry warning).",
       "VERIFIED base case of undirected Hierholzer induction: theorem euler_circuit_of_edgeSet_empty in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (connected + G.edgeSet = ∅ ⇒ ∃ Eulerian circuit, via nil walk; vacuous count condition). Compiles clean, 0 sorries.",
       "exists_unused_incident_edge_at_endpoint + eq_of_isTrail_edgeMaximal (Sub-lemma A: a maximal trail is closed) — VERIFIED 0 sorries in KonigsbergOQ02OQ01OQ02OQ01Dev.lean",
-      "Sub-lemma C (splice) VERIFIED in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Splice.lean (0 sorry, 0 axiom, 3 thms): isTrail_append (construction converse Mathlib omits), exists_isTrail_splice (insert closed trail d rooted at w∈c.support into closed trail c, edge set = c∪d, witness (c.takeUntil w).append (d.append (c.dropUntil w))), exists_isTrail_splice_of_mem_support (residual circuit rooted anywhere; rotate to w then splice)"
+      "Sub-lemma C (splice) VERIFIED in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Splice.lean (0 sorry, 0 axiom, 3 thms): isTrail_append (construction converse Mathlib omits), exists_isTrail_splice (insert closed trail d rooted at w∈c.support into closed trail c, edge set = c∪d, witness (c.takeUntil w).append (d.append (c.dropUntil w))), exists_isTrail_splice_of_mem_support (residual circuit rooted anywhere; rotate to w then splice)",
+      "Bridge lemma VERIFIED in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Boundary.lean (0 sorry, 0 axiom, 3 thms): forall_walk_of_adjClosed + forall_of_adjClosed (nonempty adjacency-closed vertex predicate in a connected graph holds everywhere, via walk structural recursion + Connected.preconnected) and exists_boundary_edge_of_missing (a closed trail c missing an edge of connected G has an unused edge s(w,x) with w on c.support — the attach point for exists_isTrail_splice_of_mem_support). Note: mem_edgeSet is Iff.rfl so s(a,b)∈G.edgeSet is defeq G.Adj a b; snd_mem_support_of_mem_edges gives edge-endpoint∈support."
     ],
     "insights": [
       "Target is undirected Hierholzer SUFFICIENCY: connected + all-even-degree implies an Eulerian circuit exists. Necessity is already proved in KonigsbergOQ02OQ01OQ02.lean (eulerian_circuit_forall_even).",
@@ -48,12 +49,14 @@
       "Sub-lemma A reduces to Mathlib IsTrail.even_countP_edges_iff: p-edges incident to a non-start vertex v number ODD, total incident = degree is EVEN, so an unused incident edge always exists (proper-subset parity argument).",
       "Mathlib has only the DECOMPOSITION direction for trails under append (IsTrail.of_append_left/of_append_right); the CONSTRUCTION direction (disjoint-edge trails concatenate to a trail) and the splice are absent and were built natively.",
       "Splice needs [DecidableEq V] because takeUntil/dropUntil/rotate require it; isTrail_append does not.",
-      "rotate_edges gives (d.rotate h).edges ~r d.edges (List.IsRotated), so .mem_iff transports edge membership — lets a residual circuit rooted anywhere be re-based at the shared vertex without changing its edge set."
+      "rotate_edges gives (d.rotate h).edges ~r d.edges (List.IsRotated), so .mem_iff transports edge membership — lets a residual circuit rooted anywhere be re-based at the shared vertex without changing its edge set.",
+      "Connectivity glue for Hierholzer: if a closed trail's support were closed under adjacency (every incident edge used), connectivity forces support=V, so any missing edge would be incident and hence used — contradiction. Formalized as exists_boundary_edge_of_missing. Generic helper forall_of_adjClosed (adjacency-closed predicate + connected + witness ⟹ holds everywhere) is reusable."
     ],
     "mathlibGaps": [
       "Mathlib provides Eulerian degree bookkeeping (SimpleGraph.Walk.IsEulerian.even_degree_iff, .card_odd_degree) but NO existence/sufficiency (Hierholzer construction) for undirected graphs. Confirmed by parent file docstring: sufficiency remains the open direction."
     ],
     "nextSteps": [
+      "Sub-lemma D assembly is now unblocked on ingredients: A + B(#34714) + C(#34731) + bridge(exists_boundary_edge_of_missing). Wire strong induction on G.edgeFinset.card: base euler_circuit_of_edgeSet_empty; step grows maximal closed trail c (A), if not Eulerian use exists_boundary_edge_of_missing to get boundary vertex w∈c.support, apply IH to G.deleteEdges c.edges (smaller by B) rooted near w to get residual circuit d through w, splice via exists_isTrail_splice_of_mem_support; edge-set union closes induction.",
       "Port the directed sub-lemma structure to undirected: (1) from an all-even-degree graph, any MAXIMAL trail from a vertex is closed (current endpoint always has an unused incident edge by a parity/handshake count); (2) removing the edges of a closed trail preserves all-even-degree; (3) splice a residual closed trail through a shared vertex (exists by connectivity) into the main circuit; induct on edge count.",
       "Aristotle submission of the sorry file failed with MCP error Resource not found (likely worktree/lake-project resolution). Re-submit from the main repo via research/scripts/aristotle-submit.sh once the PR merges, as a KNOWN classical result.",
       "Consider building an undirected splice + edgeRemoval operation mirroring KonigsbergOQ02OQ01.lean removeArcList; estimate 600-1000 lines. This is the main effort and may warrant Aristotle or a dedicated multi-session build.",
@@ -91,7 +94,7 @@
     "mathlib": []
   },
   "started": "2026-07-02T23:38:28.291Z",
-  "lastUpdate": "2026-07-02T23:38:28.334Z",
+  "lastUpdate": "2026-07-04T22:50:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
