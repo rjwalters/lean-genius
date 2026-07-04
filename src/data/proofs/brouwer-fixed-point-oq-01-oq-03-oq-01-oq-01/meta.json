@@ -120,11 +120,19 @@
     },
     {
       "id": "ham-sandwich-on-sphere",
-      "title": "The Ham Sandwich Chain with On-Sphere Continuity",
-      "summary": "ham_sandwich_reduction_on, ham_sandwich_of_discrepancy_on, ham_sandwich_of_scalar_continuity_on, and the headline ham_sandwich_standard_of_scalar_continuity_on — the parent's Ham Sandwich reduction re-derived with ContinuousOn (Sphere n) continuity in place of global Continuous.",
+      "title": "The Ham Sandwich Reduction Chain (On-Sphere)",
+      "summary": "The abstract links of the parent's Ham Sandwich reduction re-derived with ContinuousOn (Sphere n) in place of global Continuous: ham_sandwich_reduction_on (topological core), ham_sandwich_of_discrepancy_on (from a continuous-on-sphere discrepancy map), and ham_sandwich_of_scalar_continuity_on (from scalar slice-volume continuity assembled into a vector discrepancy).",
       "startLine": 197,
+      "endLine": 276,
+      "mathContext": "Oddness via WithLp.ofLp_injective + discrepancy_odd_of_swap; the n scalar maps assemble into a ContinuousOn (Sphere n) discrepancy via (EuclideanSpace.equiv (Fin n) R).symm, feeding borsuk_ulam_antipodal_collapse_on."
+    },
+    {
+      "id": "ham-sandwich-headline",
+      "title": "Headline: Standard Linear Cut, and Significance",
+      "summary": "ham_sandwich_standard_of_scalar_continuity_on — the headline result and honest counterpart of the parent's ham_sandwich_standard_of_scalar_continuity: under the standard linear half-space assignment stdPos/stdNeg the antipodal-swap and finiteness side conditions become theorems, leaving only finite volume and on-sphere scalar continuity as hypotheses. The closing Significance block records how the radial extension closes the honest-hypothesis gap.",
+      "startLine": 277,
       "endLine": 333,
-      "mathContext": "Oddness via WithLp.ofLp_injective + discrepancy_odd_of_swap; the scalar maps assemble into a ContinuousOn (Sphere n) discrepancy via (EuclideanSpace.equiv (Fin n) R).symm; the standard-cut side conditions are discharged from stdPos_neg, stdNeg_neg, volume_inter_ne_top."
+      "mathContext": "The standard-cut side conditions are discharged from stdPos_neg, stdNeg_neg, and volume_inter_ne_top n (bodies i) _ (hbody i); the only remaining analytic input is ContinuousOn (Sphere n) of a single real slice-volume map — exactly the form the parent's Part 9 proved faithful."
     }
   ],
   "conclusion": {
