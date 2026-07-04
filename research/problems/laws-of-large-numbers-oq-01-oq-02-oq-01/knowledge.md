@@ -6,6 +6,43 @@
 
 ---
 
+## Session 2026-07-04 (researcher-8) — S4b tail leaf: inclusive-from-N p-series bound (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress — new leaf `tsum_ge_rpow_neg_le` appended to
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (0 sorries, 0 `axiom`; docker build
+**succeeded, 7743 jobs**; `#print axioms` = `propext / Classical.choice / Quot.sound` only).
+
+### What it adds
+The Tonelli interchange behind the MZ variance sum `∑ᵢ Var(Yᵢ)/i^{2/p}` (`s := 2/p > 1`) keeps
+the truncated moment `𝔼[X²·𝟙{|X|ᵖ ≤ i}]` intact and sums the weight `i^{-s}` against it. After
+replacing the real threshold `|X|ᵖ` by `⌈|X|ᵖ⌉ =: N`, the inner deterministic factor is the tail
+`∑_{j ≥ N} j^{-s}` — starting **at** `N` (inclusive), not one past it. The existing backbone
+`tsum_shift_rpow_neg_le` bounds only the *exclusive* tail `∑_{j > N} j^{-s} ≤ N^{1-s}/(s-1)`.
+
+`tsum_ge_rpow_neg_le` supplies the inclusive companion:
+`∑ₖ (k+N)^{-s} = ∑_{j ≥ N} j^{-s} ≤ N^{1-s}·s/(s-1)` for `1 < s`, `N ≥ 1`. Proof: split off the
+`j = N` term (`N^{-s} ≤ N^{1-s}` by `rpow_le_rpow_of_exponent_le`, since `N ≥ 1` and `-s ≤ 1-s`)
+and add the exclusive tail `N^{1-s}/(s-1)`; the two combine to the constant `s/(s-1)`. The partial
+sums are bounded uniformly (via `Real.tsum_le_of_sum_range_le`, reusing `sum_range_shift_rpow_neg_le`).
+
+### Honest status
+A small, correct, reusable **arithmetic leaf**, NOT the variance-sum assembly itself. It is exactly
+the shape the Tonelli step consumes (inclusive tail at the ceiling threshold), removing an off-by-one
+gap between the existing exclusive backbone and the interchange. The substantive open work — the
+`∑'ᵢ`–`∫` Tonelli interchange assembling `∑ᵢ Var(Yᵢ)/i^{2/p} ≤ C·𝔼|X|ᵖ`, then step-3 centering and
+the final MZ combination via `ae_tendsto_average_zero_of_variance_weighted_bdd` — remains.
+
+### Next steps (unchanged frontier)
+- Tonelli interchange: `∑ᵢ i^{-s}·𝔼[X²·𝟙{|X|ᵖ ≤ i}] = 𝔼[X²·∑_{i ≥ |X|ᵖ} i^{-s}]`; bound the inner
+  tail with `tsum_ge_rpow_neg_le` at `N = ⌈|X|ᵖ⌉`, giving `≤ C·𝔼[X²·|X|^{p-2}] = C·𝔼|X|ᵖ`.
+- Step-3 centering (`integral_tail_abs_le` at `t = i^{1/p}`) → null sequence via dominated convergence.
+- Final MZ combination.
+
+---
+
+
+---
+
 ## S1 (researcher-14, 2026-07-02) — OBSERVE/ORIENT survey (text-only)
 
 Goal of this session: pin down the *exact* formal target, map what Mathlib
