@@ -6,6 +6,85 @@
 
 ---
 
+## Session 2026-07-04 (researcher-8, iter 13) — S4b step-4 **Tonelli interchange** SHIPPED & VERIFIED
+
+**Mode**: REVISIT (RICH, score 42). **Outcome**: progress — new theorem
+`tsum_integral_weight_trunc_sq_le` appended to
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (§ TonelliInterchange), 0 sorries,
+0 `axiom`; docker build **succeeded, 7743 jobs, exit 0**; `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` only (no `sorryAx`, no `Lean.ofReduceBool`).
+
+### What it adds — the measure-theoretic interchange itself
+This is the `∑'ᵢ`–`∫` swap the last several iterations built toward. Iter 12
+(`tsum_weight_trunc_sq_le`) gave the **pointwise** per-`ω` variance-sum integrand bound;
+this iteration lifts it across the sample space:
+
+    tsum_integral_weight_trunc_sq_le
+      {X : Ω → ℝ} {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (hX : Measurable X)
+      (hg : Integrable (fun ω => (max 1 (|X ω|^p))^(1-s) * s/(s-1) * X ω^2) μ) :
+      ∑' i, ∫ ω, (i:ℝ)^(-s) * ({ω | |X ω| ≤ (i:ℝ)^(1/p)}.indicator X ω)^2 ∂μ
+        ≤ ∫ ω, (max 1 (|X ω|^p))^(1-s) * s/(s-1) * X ω^2 ∂μ
+
+With `s = 2/p (> 1 ⟺ p < 2)` the LHS is exactly the truncated variance sum
+`∑ᵢ 𝔼[Yᵢ²]/i^{2/p}` (`Yᵢ = 𝟙{|X|≤i^{1/p}}·X`), and the RHS is the dominating integral
+whose evaluation to `C·𝔼|X|ᵖ` (splitting `|X|≥1` / `|X|<1`) is the **only remaining
+step-4 brick**. The dominating function `g` is left as an integrability *hypothesis* —
+that is the honest factoring, since integrating `g` needs `s = 2/p` and `MemLp X 2`.
+
+### Technique (reusable)
+`MeasureTheory.integral_tsum (hf : ∀ i, AEStronglyMeasurable (f i) μ) (hf' : ∑'ᵢ ∫⁻‖fᵢ‖ₑ ≠ ∞)`
+moves `∑'ᵢ` inside the Bochner integral. Three moving parts:
+1. **Pointwise domination** `∑'ᵢ fᵢ(ω) ≤ g ω` is `tsum_weight_trunc_sq_le` after rewriting
+   the summand `fᵢ(ω) = i^{-s}·(𝟙{|X ω|≤i^{1/p}}·X ω)²` into the *index-indicator* form
+   `{i | |X ω|≤i^{1/p}}.indicator (fun i => i^{-s}·(X ω)²) i` (`Set.indicator_apply`+`ring`;
+   the two indicators — one over `ω`, one over `i` — agree because `ω∈{ω|…}` ⟺ the same
+   inequality ⟺ `i∈{i|…}`).
+2. **Finiteness side-goal** `hf'`: push `∑'ᵢ ∫⁻ ofReal(fᵢ)` through `lintegral_tsum`
+   (nonneg measurable → interchange, no integrability needed) and
+   `ENNReal.ofReal_tsum_of_nonneg` (needs pointwise `Summable (fᵢ·ω)` — from
+   `Real.summable_nat_rpow.mpr (-s<-1)` `.mul_right` `.indicator`) to reach
+   `∫⁻ ofReal(∑'ᵢ fᵢ) ≤ ∫⁻ ‖g‖ₑ < ∞` (the last `< ∞` is `hg.hasFiniteIntegral` via
+   `hasFiniteIntegral_iff_enorm`).
+3. **Final domination** `∫ ∑'ᵢ fᵢ ≤ ∫ g` by `integral_mono_of_nonneg` (needs integrability
+   only of the dominating `g`).
+
+### Reusable Lean gotchas (Mathlib v4.26)
+- **`enorm_eq_ofReal` / `enorm_eq_ofReal_abs` live in namespace `Real`** — write
+  `Real.enorm_eq_ofReal (h : 0 ≤ r) : ‖r‖ₑ = ENNReal.ofReal r` and
+  `Real.enorm_eq_ofReal_abs (r) : ‖r‖ₑ = ENNReal.ofReal |r|` (bare names are unknown
+  identifiers even though the source `theorem` line shows no `Real.` prefix — it's inside
+  `namespace Real`).
+- `‖r‖ₑ` for real `r` is the **enorm** (`ENNReal.ofReal ‖r‖`); `integral_tsum`'s finiteness
+  hypothesis is stated with `‖·‖ₑ`, and `HasFiniteIntegral` unfolds to `∫⁻ ‖·‖ₑ < ∞`
+  (`hasFiniteIntegral_iff_enorm`).
+- `Measurable.ennreal_ofReal : Measurable f → Measurable (fun x => ENNReal.ofReal (f x))`;
+  `.aemeasurable` feeds `lintegral_tsum`.
+- `Set.indicator` used with `set f := …` keeps `f` an opaque local — `simp only [hf]`
+  (which beta-reduces) is needed to unfold `f i ω` before `positivity`/`measurability`/`ring`
+  side-goals; `exact` alone will not see through the `set` binding.
+
+### Honest status
+A genuine, complete, verified brick — the actual `∑'`–`∫` Tonelli interchange flagged as
+"the substantive open work" for the last four iterations. It does **not** yet prove
+Marcinkiewicz–Zygmund. Remaining step-4 work: **integrate the RHS `g` to `C·𝔼|X|ᵖ`**
+(instantiate `s = 2/p`; `|X|≥1` branch `(max 1 |X|ᵖ)^{1-2/p}·X² = |X|ᵖ → 𝔼|X|ᵖ`, `|X|<1`
+branch `const·X² → const·𝔼X²` finite on a probability space), and bound
+`variance(Yᵢ) ≤ 𝔼[Yᵢ²]` to feed `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5);
+then step-3 centering and the final MZ combination with the step-1 truncation reduction.
+
+### Next steps
+- **Integrate the dominating `g`** at `s = 2/p`: prove
+  `∫ (max 1 |X|ᵖ)^{1-2/p}·s/(s-1)·X² ≤ C·(𝔼|X|ᵖ + 𝔼X²)` (or `≤ C·𝔼|X|ᵖ` on a probability
+  space via `MemLp X 2`), discharging `tsum_integral_weight_trunc_sq_le`'s `hg` hypothesis
+  and turning the interchange into a concrete `∑ᵢ 𝔼[Yᵢ²]/i^{2/p} ≤ C·𝔼|X|ᵖ`.
+- Bridge `variance(Yᵢ)/aᵢ² ≤ 𝔼[Yᵢ²]/i^{2/p}` and assemble via S5.
+- Step-3 centering, final combination.
+
+**Depth guard**: slug is at depth 3 (`-oq-01-oq-02-oq-01`) → generate **0** follow-up
+questions (would exceed the OQ-chain cap).
+
+---
+
 ## Session 2026-07-04 (researcher-14, iter 12) — S4b step-4 pointwise Tonelli integrand SHIPPED (verified)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress — new leaf `tsum_weight_trunc_sq_le` appended to

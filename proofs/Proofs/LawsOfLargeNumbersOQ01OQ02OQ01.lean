@@ -1233,4 +1233,114 @@ theorem tsum_weight_trunc_sq_le {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (x : ℝ) 
 
 end TailPSeries
 
+/-! ## S4b (step 4) — the Tonelli interchange for the MZ variance sum
+
+The pointwise integrand bound `tsum_weight_trunc_sq_le` is lifted across the
+sample space by a **Tonelli interchange** (`MeasureTheory.integral_tsum`): the
+`i^{-s}`-weighted truncated second moments may be summed *inside* the integral,
+
+    ∑ᵢ ∫ i^{-s}·Yᵢ²  =  ∫ ∑ᵢ i^{-s}·Yᵢ²  ≤  ∫ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²,
+
+with `Yᵢ = 𝟙{|X| ≤ i^{1/p}}·X`.  The middle equality is the interchange; the final
+inequality is `tsum_weight_trunc_sq_le` applied pointwise at `x = X ω`.  The
+dominating function on the right is hypothesised integrable — its evaluation to
+`C·(𝔼|X|ᵖ + 1)` at `s = 2/p` is the next brick.
+
+The interchange's finiteness side-goal `∑ᵢ ∫⁻‖fᵢ‖ₑ ≠ ∞` is discharged by the same
+domination: `lintegral_tsum` + `ENNReal.ofReal_tsum_of_nonneg` turn it into
+`∫⁻ ofReal(∑ᵢ fᵢ) ≤ ∫⁻ ‖g‖ₑ < ∞`.  No independence, identical distribution, or
+`s = 2/p` is used — this is pure measure theory over any `μ`. -/
+section TonelliInterchange
+
+open MeasureTheory
+open scoped ENNReal
+
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
+/-- **Tonelli interchange for the Marcinkiewicz–Zygmund variance sum.**  For a
+measurable `X`, `1 < s`, `0 < p`, and a dominating function
+`g ω = (max 1 |X ω|ᵖ)^{1-s}·s/(s-1)·(X ω)²` assumed integrable, the `i^{-s}`-weighted
+truncated second moments sum inside the integral and are bounded:
+
+    ∑ᵢ ∫ i^{-s}·(𝟙{|X| ≤ i^{1/p}}·X)²  ≤  ∫ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X².
+
+This is the measure-theoretic lift of `tsum_weight_trunc_sq_le`: `integral_tsum`
+moves `∑ᵢ` inside the integral, the pointwise integrand bound dominates the inner
+sum, and the integral of the dominating `g` closes it.  With `s = 2/p` the left
+side is the truncated variance sum `∑ᵢ 𝔼[Yᵢ²]/i^{2/p}` feeding Kolmogorov's
+criterion; integrating `g` (the next brick) turns the right side into `C·𝔼|X|ᵖ`. -/
+theorem tsum_integral_weight_trunc_sq_le
+    {X : Ω → ℝ} {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (hX : Measurable X)
+    (hg : Integrable
+      (fun ω => (max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * X ω ^ 2) μ) :
+    ∑' i : ℕ, ∫ ω, (i : ℝ) ^ (-s)
+          * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2 ∂μ
+      ≤ ∫ ω, (max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * X ω ^ 2 ∂μ := by
+  set f : ℕ → Ω → ℝ := fun i ω =>
+    (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2 with hf
+  set g : Ω → ℝ := fun ω =>
+    (max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * X ω ^ 2 with hg'
+  -- each truncation set is measurable, hence each summand `f i` is measurable and nonneg
+  have hSmeas : ∀ i : ℕ, MeasurableSet {ω | |X ω| ≤ (i : ℝ) ^ (1 / p)} := fun i =>
+    measurableSet_le hX.abs measurable_const
+  have hf_meas : ∀ i, Measurable (f i) := fun i => by
+    simp only [hf]
+    exact measurable_const.mul ((hX.indicator (hSmeas i)).pow_const 2)
+  have hf_nonneg : ∀ i ω, 0 ≤ f i ω := fun i ω => by
+    simp only [hf]
+    exact mul_nonneg (Real.rpow_nonneg (Nat.cast_nonneg i) _) (sq_nonneg _)
+  -- rewrite `f · ω` as an indicator over the *index*, matching `tsum_weight_trunc_sq_le`
+  have hfω : ∀ ω, (fun i : ℕ => f i ω)
+      = fun i => {i : ℕ | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator
+          (fun i => (i : ℝ) ^ (-s) * X ω ^ 2) i := by
+    intro ω; funext i
+    simp only [hf, Set.indicator_apply, Set.mem_setOf_eq]
+    split_ifs <;> ring
+  -- pointwise: the inner series is dominated by `g ω`
+  have hpt : ∀ ω, ∑' i, f i ω ≤ g ω := by
+    intro ω
+    rw [hfω ω]; simp only [hg']
+    exact tsum_weight_trunc_sq_le hs hp (X ω)
+  -- pointwise summability of `f · ω`
+  have hsummable : ∀ ω, Summable (fun i => f i ω) := by
+    intro ω
+    rw [hfω ω]
+    exact ((Real.summable_nat_rpow.mpr (by linarith : -s < -1)).mul_right (X ω ^ 2)).indicator _
+  -- discharge the interchange finiteness side-goal `∑ᵢ ∫⁻ ‖fᵢ‖ₑ ≠ ∞`
+  have hfin : ∑' i, ∫⁻ ω, ‖f i ω‖ₑ ∂μ ≠ ∞ := by
+    have henorm : ∀ i ω, ‖f i ω‖ₑ = ENNReal.ofReal (f i ω) := fun i ω =>
+      Real.enorm_eq_ofReal (hf_nonneg i ω)
+    have hswap : ∑' i, ∫⁻ ω, ‖f i ω‖ₑ ∂μ
+        = ∫⁻ ω, ENNReal.ofReal (∑' i, f i ω) ∂μ := by
+      simp_rw [henorm]
+      rw [← lintegral_tsum (fun i => ((hf_meas i).ennreal_ofReal).aemeasurable)]
+      refine lintegral_congr (fun ω => ?_)
+      rw [ENNReal.ofReal_tsum_of_nonneg (fun i => hf_nonneg i ω) (hsummable ω)]
+    rw [hswap]
+    apply ne_of_lt
+    calc ∫⁻ ω, ENNReal.ofReal (∑' i, f i ω) ∂μ
+        ≤ ∫⁻ ω, ‖g ω‖ₑ ∂μ := by
+          refine lintegral_mono (fun ω => ?_)
+          rw [Real.enorm_eq_ofReal_abs]
+          exact ENNReal.ofReal_le_ofReal ((hpt ω).trans (le_abs_self _))
+      _ < ∞ := hasFiniteIntegral_iff_enorm.mp hg.hasFiniteIntegral
+  -- the interchange, then domination by the integrable `g`
+  have key : ∑' i, ∫ ω, f i ω ∂μ ≤ ∫ ω, g ω ∂μ :=
+    calc ∑' i, ∫ ω, f i ω ∂μ
+        = ∫ ω, ∑' i, f i ω ∂μ :=
+          (integral_tsum (fun i => (hf_meas i).aestronglyMeasurable) hfin).symm
+      _ ≤ ∫ ω, g ω ∂μ :=
+          integral_mono_of_nonneg
+            (ae_of_all _ fun ω => tsum_nonneg fun i => hf_nonneg i ω) hg
+            (ae_of_all _ hpt)
+  simpa only [hf, hg'] using key
+
+#check @tsum_integral_weight_trunc_sq_le
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms tsum_integral_weight_trunc_sq_le
+
+end TonelliInterchange
+
 end LawsOfLargeNumbers.MZ
