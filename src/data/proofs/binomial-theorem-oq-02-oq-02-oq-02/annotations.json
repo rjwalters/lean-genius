@@ -36,7 +36,14 @@
     "relatedConcepts": [
       "induction",
       "Pascal's rule",
-      "sum_range_succ"
+      "sum_range_succ",
+      "Nat.choose_succ_succ",
+      "telescoping sums"
+    ],
+    "prerequisites": [
+      "induction on ℕ",
+      "Finset.sum_range_succ (peeling the top term)",
+      "Pascal's rule C(n+1,k+1) = C(n,k) + C(n,k+1)"
     ]
   },
   {
@@ -52,7 +59,14 @@
     "mathContext": "The interval [r, n] version of the hockey-stick sum.",
     "significance": "supporting",
     "relatedConcepts": [
-      "interval sum"
+      "interval sum",
+      "Nat.sum_Icc_choose",
+      "Finset.Icc",
+      "reindexing range vs Icc"
+    ],
+    "prerequisites": [
+      "the diagonal form hockeyStick",
+      "Finset.Icc and interval-indexed sums"
     ]
   },
   {
@@ -69,7 +83,14 @@
     "significance": "key",
     "relatedConcepts": [
       "Gauss sum",
-      "triangular numbers"
+      "triangular numbers",
+      "Nat.choose_one_right",
+      "Nat.choose_two_right",
+      "arithmetic series"
+    ],
+    "prerequisites": [
+      "the interval form hockeyStick_Icc",
+      "C(m,1) = m and C(n+1,2) = n(n+1)/2"
     ]
   },
   {
@@ -86,7 +107,13 @@
     "significance": "supporting",
     "relatedConcepts": [
       "tetrahedral numbers",
-      "figurate numbers"
+      "figurate numbers",
+      "simplicial numbers",
+      "r-simplex numbers C(n+1,r+1)"
+    ],
+    "prerequisites": [
+      "the interval form hockeyStick_Icc at r=2",
+      "triangular numbers C(m,2)"
     ]
   }
 ]
