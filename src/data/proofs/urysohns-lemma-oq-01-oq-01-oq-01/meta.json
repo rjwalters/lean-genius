@@ -188,5 +188,37 @@
   "status": "verified",
   "badge": "original",
   "axiomCount": 0,
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "tietze_extension_via_tsum",
+      "type": "main",
+      "description": "Tietze extension theorem as an explicit series: for closed s ⊆ X (X normal) and continuous f : s → ℝ with |f| ≤ M, the function G = ∑' n, gₙ (each gₙ the bounded-continuous Urysohn correction to the running residual) is a bounded continuous extension of f to all of X with the same sup-bound |G| ≤ M. Uses none of Mathlib's TietzeExtension API.",
+      "leanType": "∃ G : BoundedContinuousFunction X ℝ, (∀ x : s, G (x : X) = f x) ∧ G = ∑' n, gbcf hs f hM hf n ∧ (∀ y, |G y| ≤ M)"
+    },
+    {
+      "name": "summable_gbcf",
+      "type": "supporting",
+      "description": "The correction series converges in the Banach space of bounded continuous functions — the summability underlying the tsum, obtained from absolute convergence via `of_norm`.",
+      "leanType": "Summable (gbcf hs f hM hf)"
+    },
+    {
+      "name": "summable_norm_gbcf",
+      "type": "supporting",
+      "description": "Absolute convergence of the correction series, by comparison with the geometric series ∑ (2/3)ⁿ·(M/3).",
+      "leanType": "Summable (fun n => ‖gbcf hs f hM hf n‖)"
+    },
+    {
+      "name": "gbcf_norm_le",
+      "type": "supporting",
+      "description": "Geometric sup-norm bound on the n-th correction packaged in the Banach space — the engine of summability.",
+      "leanType": "‖gbcf hs f hM hf n‖ ≤ (2 / 3 : ℝ) ^ n * (M / 3)"
+    },
+    {
+      "name": "gcorr_bound",
+      "type": "supporting",
+      "description": "Pointwise bound on the raw n-th Urysohn correction, |gₙ(y)| ≤ (2/3)ⁿ·(M/3) for all y ∈ X, from the one-step Urysohn approximation applied to the running residual.",
+      "leanType": "|gcorr hs f hM hf n y| ≤ (2 / 3 : ℝ) ^ n * (M / 3)"
+    }
+  ]
 }
