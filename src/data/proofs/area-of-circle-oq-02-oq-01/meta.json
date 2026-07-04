@@ -39,22 +39,31 @@
   },
   "references": [
     {
-      "authors": "Ball, Keith",
-      "title": "An Elementary Introduction to Modern Convex Geometry",
-      "year": "1997",
-      "venue": "Flavors of Geometry, MSRI Publications 31, Cambridge University Press, 1–58"
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
+    },
+    {
+      "authors": "Artin, Emil",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
     },
     {
       "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
       "title": "How Small Is a Unit Ball?",
       "year": "1989",
-      "venue": "Mathematics Magazine 62(2), 101–107"
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
     },
     {
       "authors": "The mathlib Community",
-      "title": "EuclideanSpace.volume_ball — Lebesgue volume of Euclidean balls; MeasureTheory.Measure.Lebesgue",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
       "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+      "venue": "Mathlib4"
     }
   ],
   "overview": {
@@ -132,35 +141,6 @@
       "Is there a single unified Lean theorem for all n ≥ 0 that avoids the 0^0 = 1 vs vol(∅) = 0 conflict?"
     ]
   },
-  "references": [
-    {
-      "authors": "Folland, Gerald B.",
-      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
-      "year": "1999",
-      "venue": "Wiley",
-      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
-    },
-    {
-      "authors": "Artin, Emil",
-      "title": "The Gamma Function",
-      "year": "1964",
-      "venue": "Holt, Rinehart and Winston",
-      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
-    },
-    {
-      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
-      "title": "How Small Is a Unit Ball?",
-      "year": "1989",
-      "venue": "Mathematics Magazine 62(2), 101–107",
-      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
-      "year": "2024",
-      "venue": "Mathlib4"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Proofs.AreaOfCircleOQ02"
@@ -173,5 +153,31 @@
     "path": "Proofs/AreaOfCircleOQ02OQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "nball_volume_scaling_theorem",
+      "type": "core",
+      "description": "Radial scaling law for the n-ball volume: Vol(B_r^n) = rⁿ · Vol(B_1^n) for n > 0, r ≥ 0, with the unit-ball volume π^(n/2)/Γ(n/2+1). The general theorem behind the classical area/volume formulas.",
+      "leanType": "(n : ℕ) → 0 < n → (r : ℝ) → 0 ≤ r → volume (ball (0 : EuclideanSpace ℝ (Fin n)) r) = ENNReal.ofReal (r ^ n * unitBallVolume n)"
+    },
+    {
+      "name": "area_2ball_scaling",
+      "type": "core",
+      "description": "2D instance (disk): Vol(B_r²) = π·r², recovering the area-of-circle formula A = πr² as a verified special case of the scaling law.",
+      "leanType": "(r : ℝ) → 0 ≤ r → volume (ball (0 : EuclideanSpace ℝ (Fin 2)) r) = ENNReal.ofReal (π * r ^ 2)"
+    },
+    {
+      "name": "vol_3ball_scaling",
+      "type": "core",
+      "description": "3D instance (solid sphere): Vol(B_r³) = (4π/3)·r³.",
+      "leanType": "(r : ℝ) → 0 ≤ r → volume (ball (0 : EuclideanSpace ℝ (Fin 3)) r) = ENNReal.ofReal (4 * π / 3 * r ^ 3)"
+    },
+    {
+      "name": "sqrt_pi_pow_eq",
+      "type": "technical",
+      "description": "Bridge identity (√π)ⁿ = π^(n/2), converting the Mathlib n-ball volume constant into the closed form used here.",
+      "leanType": "(n : ℕ) → (Real.sqrt π) ^ n = π ^ ((n : ℝ) / 2)"
+    }
+  ],
   "sorries": 0
 }
