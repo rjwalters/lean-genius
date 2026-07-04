@@ -70,12 +70,20 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Module Header and Definitions",
+      "id": "docstring",
+      "title": "Module Docstring: The Self-Intersecting Area Question",
       "startLine": 1,
-      "endLine": 70,
-      "summary": "Docstring posing the parent's self-intersecting open question and the signed-area strategy, followed by the imports and the core definitions: Point = ℝ × ℝ, the componentwise midpoint2 (matching the parent), the 2-D cross product `cross`, vector difference `sub2`, the shoelace `signedArea` of a quadrilateral, and `varignonArea` (signedArea of the four side midpoints).",
+      "endLine": 38,
+      "summary": "Poses the parent's open question — does Varignon's half-area law survive for self-intersecting (crossed) quadrilaterals? — and lays out the signed-area strategy: replace the unsigned area, which is not a polynomial and misbehaves under crossing, by the shoelace signed area, whose sign records orientation. This makes the half-area law an algebraic identity valid for every quadrilateral, convex or crossed.",
       "mathContext": "$\\operatorname{cross}(U,V)=U_xV_y-U_yV_x$; $\\operatorname{signedArea}(A,B,C,D)=\\tfrac12\\sum_{\\text{edges}}\\operatorname{cross}$."
+    },
+    {
+      "id": "definitions",
+      "title": "Core Definitions: Cross Product, Shoelace Area, Varignon Area",
+      "startLine": 44,
+      "endLine": 70,
+      "summary": "The imports and six core definitions: Point = ℝ × ℝ; the componentwise midpoint2 (matching the parent); the 2-D cross product cross U V = Uₓ·V_y − U_y·Vₓ (the wedge / signed parallelogram area); the vector difference sub2; the shoelace signedArea A B C D = ½·Σ_edges cross, a polynomial in the coordinates and hence uniform across convex, concave, and self-intersecting cases; and varignonArea, the signedArea of the four side midpoints P,Q,R,S.",
+      "mathContext": "$\\operatorname{cross}(U,V)=U_xV_y-U_yV_x$; $\\operatorname{signedArea}=\\tfrac12\\sum_{\\text{edges}}\\operatorname{cross}$; $\\operatorname{varignonArea}=\\operatorname{signedArea}(P,Q,R,S)$."
     },
     {
       "id": "diagonal-forms",
