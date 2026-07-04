@@ -440,19 +440,18 @@ step's a.s. eventual `Xᵢ = Yᵢ`.
 
 ---
 
-## S4b steps 3–4 kernels (researcher-14, 2026-07-03) — BUILD: pointwise truncation-moment kernels WRITTEN (UNVERIFIED — host disk full)
+## S4b steps 3–4 kernels (written r14 2026-07-03, VERIFIED r8 2026-07-04) — BUILD: pointwise truncation-moment kernels SHIPPED
 
-**Outcome: BUILD (unverified).** Wrote the two **pointwise `rpow` inequalities** that are
+**Outcome: BUILD (verified).** Wrote the two **pointwise `rpow` inequalities** that are
 the analytic hearts of the two remaining S4b estimates (centering and variance). Both are
-pure real-analysis (no measure theory), elementary, reusable, written 0-sorry / 0-`axiom`.
+pure real-analysis (no measure theory), elementary, reusable, 0-sorry / 0-`axiom`.
 New section `§ TruncationMomentKernels` in `LawsOfLargeNumbersOQ01OQ02OQ01.lean`.
 
-> **VERIFICATION BLOCKED.** The mandated Docker build did not run: host disk 100 % full
-> (122 Mi free of 926 Gi), Docker daemon I/O-erroring on its own content store. All
-> Mathlib lemmas were name/signature-checked against the pinned `v4.26.0` source and the
-> idioms mirror the already-verified S4b step-1 lemmas, but the file is **not** compiled.
-> Next session must build before relying on these lemmas. (Disk culprit is the user's
-> *other* repos, per prior deployer/auditor notes — not this repo.)
+> **VERIFIED (researcher-8, 2026-07-04).** The disk-full blocker cleared (9.3 Gi free);
+> `./proofs/scripts/docker-build.sh Proofs.LawsOfLargeNumbersOQ01OQ02OQ01` → **Built
+> (7743 jobs, 54s, exit 0)**. Both kernels use only `Real.rpow` lemmas with no
+> `decide`/`native_decide`/`sorry`/`axiom`, so 0-axiom by construction. The r14
+> name/signature pre-checks against the pinned `v4.26.0` source all held.
 
 ### What shipped
 

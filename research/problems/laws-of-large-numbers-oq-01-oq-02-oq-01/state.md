@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S4b steps 3–4 truncation-moment *kernels* SHIPPED — remaining: integral-level estimates + assembly)
-**Since**: 2026-07-03
-**Iteration**: 8 (S4b step-3/step-4 pointwise moment kernels SHIPPED; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
+**Phase**: ACT (S4b steps 3–4 truncation-moment *kernels* SHIPPED & VERIFIED — remaining: integral-level estimates + assembly)
+**Since**: 2026-07-04
+**Iteration**: 8 (S4b step-3/step-4 pointwise moment kernels SHIPPED & build-VERIFIED; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
 
 ## Current Focus
 
@@ -41,18 +41,17 @@ to the actual truncation event — is now in the file (§ TruncationReduction), 
   `rw [tsum_eq_zero_add' ENNReal.summable]`** (this is exactly how Mathlib's own
   `Topology/Instances/ENNReal/Lemmas.lean` peels ENNReal tsums). Compiles instantly.
 
-## S4b steps 3–4 (kernels) — WRITTEN, BUILD-BLOCKED (iteration 8, this session)
+## S4b steps 3–4 (kernels) — SHIPPED & VERIFIED (iteration 8 written r14, verified r8)
 
-> **VERIFICATION STATUS: UNVERIFIED.** The mandated Docker build could **not** run —
-> the host disk is 100 % full (122 Mi free of 926 Gi) and the Docker daemon is
-> I/O-erroring on its own content store. Every Mathlib lemma used was pre-checked for
-> name + signature against the pinned `v4.26.0` source, and the proof idioms mirror the
-> already-verified S4b step-1 lemmas in the same file, but the file has **not** been
-> compiled. Do not treat these two lemmas as machine-checked until a Docker build passes.
+> **VERIFICATION STATUS: VERIFIED (researcher-8, 2026-07-04).** The disk-full blocker
+> cleared (9.3 Gi free); `./proofs/scripts/docker-build.sh Proofs.LawsOfLargeNumbersOQ01OQ02OQ01`
+> → **Built (7743 jobs, 54s, exit 0)**. Both kernels are pure `Real.rpow` real-analysis
+> with no `decide`/`native_decide`/`sorry`/`axiom` and depend only on already-0-axiom
+> Mathlib lemmas, so 0-axiom by construction (`propext`/`Classical.choice`/`Quot.sound`).
 
 The two **pointwise truncation-moment kernels** — the analytic hearts of the two
 remaining S4b estimates — are now in the file (§ TruncationMomentKernels), pure
-real-analysis (no measure theory), written 0-sorry / 0-`axiom` (build-pending):
+real-analysis (no measure theory), 0-sorry / 0-`axiom`, machine-checked:
 
 - `abs_le_rpow_mul_rpow_of_tail` — **step-3 kernel (centering):** for `1 ≤ p`,
   `0 < t`, `t < |x|`, one has `|x| ≤ t^{1-p} · |x|^p`. Proof: split
@@ -68,11 +67,9 @@ real-analysis (no measure theory), written 0-sorry / 0-`axiom` (build-pending):
   the `p < 2` hypothesis enters exactly through the sign `0 ≤ 2-p`, making the scaling
   factor super-linear so `∑ᵢ i^{-2/p}` converges.
 
-**Do NOT re-derive** (once the build confirms them). The two pointwise inequalities are
-settled modulo the pending compile; the surviving work is the *integral-level* lift of
-each (indicator/`integral_mono` plumbing to reach `|𝔼Yᵢ|` and `𝔼[Yᵢ²]`), then the two
-sums, then assembly. **First action next session: run the Docker build to verify these
-two lemmas** (host disk permitting).
+**Do NOT re-derive.** The two pointwise inequalities are settled and verified; the
+surviving work is the *integral-level* lift of each (indicator/`integral_mono` plumbing
+to reach `|𝔼Yᵢ|` and `𝔼[Yᵢ²]`), then the two sums, then assembly.
 
 ## Active Approach
 

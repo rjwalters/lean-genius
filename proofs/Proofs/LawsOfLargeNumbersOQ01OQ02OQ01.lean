@@ -62,11 +62,11 @@
       running Kolmogorov's criterion on the rescaled `Xᵢ = aᵢ⁻¹·Yᵢ` and feeding
       its a.s.-convergence output through the a.e. Kronecker lift.
 
-  Verified: 0 sorry, 0 axiom (only `propext`/`Classical.choice`/`Quot.sound`) through
-  § TruncationReduction. The trailing § TruncationMomentKernels (the two S4b step-3/4
-  pointwise `rpow` kernels) is written 0-sorry/0-`axiom` but its build is PENDING — it was
-  added while the host disk was 100 % full and the mandated Docker build could not run;
-  compile it before treating those two lemmas as machine-checked.
+  Verified: 0 sorry, 0 axiom (only `propext`/`Classical.choice`/`Quot.sound`).
+  The trailing § TruncationMomentKernels (the two S4b step-3/4 pointwise `rpow`
+  kernels) is now machine-checked: `docker-build.sh Proofs.LawsOfLargeNumbersOQ01OQ02OQ01`
+  → Built (7743 jobs, exit 0). Pure `Real.rpow` real-analysis, no
+  `decide`/`native_decide`/`sorry`/`axiom`, so 0-axiom by construction.
 -/
 import Mathlib
 
