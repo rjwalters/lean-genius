@@ -1,0 +1,84 @@
+{
+  "slug": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+  "title": "Newton's Inequality, First Rung (n = 3): S₂² ≥ S₁S₃",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a b c : ℝ, with e₁ = a+b+c, e₂ = ab+bc+ca, e₃ = abc, and S₁ = e₁/3, S₂ = e₂/3, S₃ = e₃: S₂² ≥ S₁·S₃, equivalently e₂² ≥ 3·e₁·e₃.",
+    "plain": "Prove the next Maclaurin/Newton rung after the base step S₁² ≥ S₂, namely S₂² ≥ S₁S₃ (log-concavity of the elementary symmetric means), for n = 3.",
+    "whyMatters": [
+      "First rung of the Maclaurin/Newton chain that carries genuine content beyond Cauchy-Schwarz.",
+      "Newton's inequalities hold for all reals (not just nonnegative), unlike Maclaurin's chain."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "e₂² − 3e₁e₃ = ½[(ab−bc)² + (bc−ca)² + (ca−ab)²] (SOS identity, n=3)",
+      "e₂² ≥ 3e₁e₃ for all reals",
+      "Averaged form S₂² ≥ S₁S₃",
+      "Equality iff ab = bc = ca"
+    ],
+    "open": [
+      "General-n cleared form 2(n−2)e₂² ≥ 3(n−1)e₁e₃ (needs Rolle/discriminant reduction)",
+      "Full Newton chain S_k² ≥ S_{k-1}S_{k+1} for all k"
+    ],
+    "goal": "Formalize S₂² ≥ S₁S₃ (Newton's k=2 inequality) with a machine-checked Lean proof."
+  },
+  "currentState": {
+    "phase": "DONE",
+    "since": "2026-07-04T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "All theorems proved — 0 sorries, 0 axioms; Docker build green (7743 jobs) on Mathlib v4.26.0",
+    "blockers": [],
+    "nextAction": "None — proof complete; general-n rung left as forward open question",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+  },
+  "knowledge": {
+    "progressSummary": "Created AmgmInequalityOQ02OQ01OQ05OQ01.lean: 5 theorems, 3 definitions, 0 sorries, 0 axioms, 142 lines. Resolves the n=3 case of Newton's k=2 inequality S₂²≥S₁S₃ via an explicit sum-of-squares certificate e₂²−3e₁e₃ = ½[(ab−bc)²+(bc−ca)²+(ca−ab)²], including the cleared form, the averaged symmetric-means form, and the equality characterization ab=bc=ca. Docker build green: ✔ [7743/7743] Built Proofs.AmgmInequalityOQ02OQ01OQ05OQ01 on Mathlib v4.26.0.",
+    "builtItems": [
+      "newton_sos_identity: e₂² − 3e₁e₃ = ½[(ab−bc)² + (bc−ca)² + (ca−ab)²] (pure ring identity)",
+      "newton_cleared: e₂² ≥ 3·e₁·e₃ for all reals (nlinarith on the SOS certificate)",
+      "newton_base_step: averaged form S₂² ≥ S₁S₃ with S₁=e₁/3, S₂=e₂/3, S₃=e₃ (div_nonneg reduction)",
+      "newton_eq_of_all_eq: a=b=c ⇒ e₂² = 3e₁e₃ (equality, forward direction)",
+      "newton_products_eq_of_eq: e₂² = 3e₁e₃ ⇒ ab=bc=ca (equality, converse via pow_eq_zero_iff)"
+    ],
+    "insights": [
+      "At n=3 Newton's inequality is literally a three-term sum of squares, so no Rolle's theorem / discriminant machinery is needed — the whole proof stays inside real-closed-field arithmetic (ring + nlinarith).",
+      "This rung is strictly beyond Cauchy-Schwarz: the base rung S₁²≥S₂ reduces to the power-mean bound n·p₂≥e₁², but S₂²≥S₁S₃ has no such reduction; its content is the fresh SOS certificate.",
+      "No nonnegativity hypothesis is required — the SOS certificate is sign-agnostic, so S₂²≥S₁S₃ holds for all real a,b,c (nonnegativity only matters at Maclaurin rungs that extract real roots).",
+      "The equality locus is exactly ab=bc=ca (⇒ a=b=c for nonzero variables), read directly off the vanishing of the three squared pairwise-product differences.",
+      "The general-n cleared form is 2(n−2)e₂² ≥ 3(n−1)e₁e₃, reducing to e₂²≥3e₁e₃ at n=3; its general proof needs the Rolle/derivative real-rootedness argument."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "General-n k=2 Newton inequality via Rolle's theorem on ∏(x−xᵢ) and its derivatives.",
+      "Higher n=4 rungs (S₂²≥S₁S₃, S₃²≥S₂S₄) via explicit SOS to test the elementary approach's reach."
+    ]
+  },
+  "tags": ["algebra", "inequalities", "symmetric-functions", "newton-inequality", "sum-of-squares"],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-04",
+    "amgm-inequality-oq-02-oq-01-oq-05"
+  ],
+  "references": { "papers": [], "urls": [], "mathlib": ["sq_nonneg", "div_nonneg", "pow_eq_zero_iff"] },
+  "started": "2026-07-04T14:06:40.531Z",
+  "lastUpdate": "2026-07-04T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ01OQ05OQ01.lean",
+      "filename": "AmgmInequalityOQ02OQ01OQ05OQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ01OQ05OQ01.lean"
+    }
+  ]
+}
