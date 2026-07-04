@@ -150,5 +150,39 @@
       "description": "Related Erdős problem sharing themes: additive-combinatorics, combinatorics, density"
     }
   ],
+  "references": [
+    {
+      "key": "Ruzsa78",
+      "authors": [
+        "I. Z. Ruzsa"
+      ],
+      "title": "On the cardinality of A+A and A−A",
+      "venue": "Combinatorics (Keszthely, 1976), Colloquia Mathematica Societatis János Bolyai, vol. 18, North-Holland",
+      "year": "1978",
+      "pages": "933–938",
+      "note": "Proves the affirmative answer: for a zero-density set A, |A−A| grows unboundedly faster than |A|."
+    },
+    {
+      "key": "TV06",
+      "authors": [
+        "T. Tao",
+        "V. H. Vu"
+      ],
+      "title": "Additive Combinatorics",
+      "venue": "Cambridge Studies in Advanced Mathematics 105, Cambridge University Press",
+      "year": "2006",
+      "note": "Standard reference for sumset/difference-set estimates, the Plünnecke–Ruzsa inequalities, and Freiman's theorem."
+    },
+    {
+      "key": "erdosproblems899",
+      "authors": [
+        "Thomas Bloom (ed.)"
+      ],
+      "title": "Erdős Problem 899",
+      "venue": "erdosproblems.com",
+      "year": "2024",
+      "note": "Curated statement and status of the problem: https://erdosproblems.com/899"
+    }
+  ],
   "sorries": 0
 }
