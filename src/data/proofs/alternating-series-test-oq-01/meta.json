@@ -97,6 +97,40 @@
       "mathContext": "$\\left|\\sum_{i<N}\\frac{(-1)^i}{i+1} - l\\right| \\le \\frac{1}{N+1}$."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "abs_partialSum_sub_limit_le",
+      "type": "core",
+      "description": "**Two-sided remainder bound for the alternating series test** — if f is antitone with f → 0 and S_N = ∑_{i<N} (-1)^i f i → l, then |S_N − l| ≤ f N. Mathlib has the one-directional bracketing (even sums underestimate, odd sums overestimate) but not this symmetric remainder estimate; the proof splits on the parity of N and combines both brackets with the one-step recurrence.",
+      "leanType": "(hfa : Antitone f) (hf0 : Tendsto f atTop (𝓝 0)) (hl : Tendsto (fun n => ∑ i ∈ range n, (-1) ^ i * f i) atTop (𝓝 l)) (N : ℕ) : |(∑ i ∈ range N, (-1) ^ i * f i) - l| ≤ f N",
+      "line": 40,
+      "endLine": 67
+    },
+    {
+      "name": "abs_alternatingHarmonic_sub_limit_le",
+      "type": "core",
+      "description": "**Alternating harmonic series with error bound** — the capstone: ∑ (-1)^i/(i+1) converges to a limit l (namely log 2), and its N-th partial sum approximates l with error at most 1/(N+1). Specialises the general remainder bound to f i = 1/(i+1); the limit value log 2 is never needed for the estimate.",
+      "leanType": "∃ l : ℝ, Tendsto (fun n => ∑ i ∈ range n, (-1) ^ i * (1 / ((i : ℝ) + 1))) atTop (𝓝 l) ∧ ∀ N : ℕ, |(∑ i ∈ range N, (-1) ^ i * (1 / ((i : ℝ) + 1))) - l| ≤ 1 / ((N : ℝ) + 1)",
+      "line": 79,
+      "endLine": 86
+    },
+    {
+      "name": "partialSum_succ",
+      "type": "supporting",
+      "description": "The one-step recurrence for alternating partial sums: S_{n+1} = S_n + (-1)^n f n (a direct Finset.sum_range_succ). This is the engine that lets the parity split relate consecutive brackets.",
+      "leanType": "(n : ℕ) : (∑ i ∈ range (n + 1), (-1) ^ i * f i) = (∑ i ∈ range n, (-1) ^ i * f i) + (-1) ^ n * f n",
+      "line": 31,
+      "endLine": 34
+    },
+    {
+      "name": "antitone_one_div_succ",
+      "type": "supporting",
+      "description": "The alternating harmonic coefficients f i = 1/(i+1) are antitone — the monotonicity hypothesis needed to apply the general test to the harmonic capstone.",
+      "leanType": "Antitone (fun i : ℕ => 1 / ((i : ℝ) + 1))",
+      "line": 70,
+      "endLine": 74
+    }
+  ],
   "references": [
     {
       "authors": "Leibniz, G. W.",
