@@ -150,12 +150,20 @@
       "mathContext": "The matrix satisfies its characteristic polynomial; the minimal polynomial divides it."
     },
     {
-      "id": "cramer",
-      "title": "Section III: Cramer's Rule from the Same Adjugate",
-      "startLine": 60,
+      "id": "second-adjugate",
+      "title": "Section III: The Second Adjugate Identity A·adj(A) = (det A)·I",
+      "startLine": 58,
+      "endLine": 61,
+      "summary": "mul_adjugate_eq records the companion form of the universal identity, A·adjugate A = (det A)·I (Mathlib's mul_adjugate). Where Section I used adj(B)·B on the characteristic matrix, this is the same cofactor identity on the scalar matrix A — the source from which Cramer's rule flows.",
+      "mathContext": "$A\\,\\mathrm{adj}(A) = (\\det A)\\,I$, the scalar-matrix face of $\\mathrm{adj}(B)B=(\\det B)I$."
+    },
+    {
+      "id": "cramer-solve",
+      "title": "Section IV: Cramer's Rule as the Adjugate Applied to a Vector",
+      "startLine": 63,
       "endLine": 69,
-      "summary": "mul_adjugate_eq (A·adj A = (det A)·I) and adjugate_mulVec_solve (A·(adj A · b) = (det A)·b) — the determinant form of Cramer's rule, from the same adjugate identity.",
-      "mathContext": "The adjugate solves Ax = b up to det A; dividing by det A (when invertible) is Cramer's rule."
+      "summary": "adjugate_mulVec_solve applies the second identity to a vector: A·(adj A · b) = (det A)·b, via mulVec_mulVec associativity, mul_adjugate, smul_mulVec_assoc, and one_mulVec. When det A is a unit, dividing gives the classical Cramer solution x = (det A)⁻¹·adj A·b — exhibiting Cramer's rule and Cayley–Hamilton as two specializations of one identity.",
+      "mathContext": "$A\\,(\\mathrm{adj}(A)\\,b) = (\\det A)\\,b$; $\\det A$ a unit $\\Rightarrow x = (\\det A)^{-1}\\mathrm{adj}(A)\\,b$."
     }
   ],
   "conclusion": {
