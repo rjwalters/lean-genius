@@ -73,6 +73,31 @@
     ]
   },
   {
+    "id": "ann-level-set-separation",
+    "proofId": "tietze-extension-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 137,
+      "endLine": 172
+    },
+    "type": "theorem",
+    "title": "Level Sets of the Extension Separate A and B",
+    "content": "Once the bounded hypothesis supplies an extension F of the {0,1} indicator, normality follows from an Urysohn-style level-set argument. The pointwise identity F = f on s (obtained by ContinuousMap.congr_fun on the extension equation) forces F = 0 on A and F = 1 on B. Then the preimages F⁻¹(Iio ½) and F⁻¹(Ioi ½) are open (F continuous), disjoint (½ separates the two intervals), and contain A and B respectively — exactly the data of normality. Notably the argument uses only the *existence* of a real extension, not any bound on its range, so the [0,1] output constraint in the hypothesis is never invoked; the value ½ is an arbitrary separating threshold.",
+    "mathContext": "$F=0$ on $A$, $F=1$ on $B$; $A\\subseteq F^{-1}(-\\infty,\\tfrac12)$, $B\\subseteq F^{-1}(\\tfrac12,\\infty)$, disjoint opens $\\Rightarrow$ $X$ normal.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Urysohn's lemma",
+      "normal space",
+      "level set / preimage",
+      "separation by continuous functions",
+      "clopen set"
+    ],
+    "prerequisites": [
+      "ContinuousMap.congr_fun",
+      "preimage of an open set under a continuous map",
+      "definition of NormalSpace"
+    ]
+  },
+  {
     "id": "ann-equivalence-tfae",
     "proofId": "tietze-extension-theorem-oq-01-oq-01-oq-01",
     "range": {

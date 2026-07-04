@@ -51,11 +51,18 @@
     },
     {
       "id": "converse",
-      "title": "The Main Result: Bounded Property Implies Normal",
+      "title": "The Main Result (I): Building the {0,1} Extension",
       "startLine": 113,
+      "endLine": 136,
+      "summary": "normalSpace_of_hasBoundedTietzeExtensionProperty, first half. For disjoint closed A, B, the part over B in s = A ∪ B is clopen (parent lemma), so the {0,1} indicator f is continuous on s (its frontier is empty, so Continuous.if applies) and has range in [0,1]. Applying the bounded hypothesis with a = 0, b = 1 extends f to F : X → ℝ.",
+      "mathContext": "$s=A\\cup B$; $B$ clopen in $s$ $\\Rightarrow$ the $\\{0,1\\}$ indicator $f$ is continuous and $[0,1]$-valued; bounded hypothesis gives $F:X\\to\\mathbb R$ extending $f$."
+    },
+    {
+      "id": "converse-separate",
+      "title": "The Main Result (II): Separating A and B by Level Sets",
+      "startLine": 137,
       "endLine": 172,
-      "summary": "normalSpace_of_hasBoundedTietzeExtensionProperty: the new content. For disjoint closed A, B the part over B in s = A ∪ B is clopen (parent lemma), so the {0,1} indicator is continuous on s and has range in [0,1]. The bounded hypothesis with a=0, b=1 extends it to F : X → ℝ with F = 0 on A, F = 1 on B; the disjoint open level sets F⁻¹(Iio ½), F⁻¹(Ioi ½) separate A and B. No separation axiom on X is assumed, and the output range constraint is not even used.",
-      "mathContext": "Disjoint closed $A,B$: the $\\{0,1\\}$ boundary function on $A\\cup B$ is $[0,1]$-valued; the bounded hypothesis extends it to $F$, and $F^{-1}(-\\infty,\\tfrac12)\\supseteq A$, $F^{-1}(\\tfrac12,\\infty)\\supseteq B$ are disjoint opens."
+      "summary": "Second half of the theorem: the pointwise description of F (via congr_fun on the extension identity) gives F = 0 on A and F = 1 on B, and the disjoint open level sets F⁻¹(Iio ½) ⊇ A and F⁻¹(Ioi ½) ⊇ B witness normality. No separation axiom on X is assumed, and the output range constraint is never used."
     },
     {
       "id": "equivalence-tfae",
