@@ -35,6 +35,8 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `isBhSet_empty`          : the empty set is B_h for every h
 - `isBhSet_singleton`      : every singleton is B_h for every h
 - `isBhSet_smul`           : dilation invariance — c·A is B_h whenever A is (c ≥ 1)
+- `isBhSet_add`            : translation invariance — A+t is B_h whenever A is
+- `isBhSet_affine`         : affine invariance — {c·a+t} is B_h whenever A is (c ≥ 1)
 -/
 import Mathlib
 
@@ -318,5 +320,76 @@ theorem isBhSet_smul {h c : ℕ} {A : Finset ℕ} (hc : 0 < c)
   -- `B_h` upstairs forces `s₀ = t₀`; re-dilating both sides gives `s = t`.
   have h0 : s₀ = t₀ := H s₀ t₀ hsA htA hcs₀ hct₀ hsum₀
   rw [← hs_rec, ← ht_rec, h0]
+
+/-- **Translation invariance.** If `A` is a `B_h` set, then the translate
+`A + t = {a+t : a ∈ A}` (here `A.image (· + t)`) is again a `B_h` set.  The
+companion to `isBhSet_smul`: where dilation scales every `h`-fold sum by `c`,
+translation shifts every `h`-fold sum by the *constant* `h·t` (each of the `h`
+summands gains `t`).  That shift cancels between two competing size-`h` sums, so
+equal sums downstairs pull back to equal sums upstairs, where the `B_h` property
+of `A` closes the gap and re-translating transports the equality back down.
+Unlike the nesting lemmas this needs no nonemptiness hypothesis. -/
+theorem isBhSet_add {h t : ℕ} {A : Finset ℕ}
+    (H : IsBhSet h A) : IsBhSet h (A.image (fun a => a + t)) := by
+  -- `Multiset.sum` shifts by `card · t` under an elementwise `+ t`.
+  have hshift : ∀ m : Multiset ℕ,
+      (m.map (fun x => x + t)).sum = m.sum + Multiset.card m * t := by
+    intro m
+    refine Multiset.induction_on m ?_ ?_
+    · simp
+    · intro a m ih
+      simp only [Multiset.map_cons, Multiset.sum_cons, Multiset.card_cons, ih,
+        Nat.add_mul, Nat.one_mul]
+      ring
+  -- subtracting `t` inverts the translation on elements of the translated set:
+  -- re-translating the pulled-back multiset recovers it, and its elements lie in `A`.
+  have hinv : ∀ m : Multiset ℕ, (∀ x ∈ m, x ∈ A.image (fun a => a + t)) →
+      (m.map (fun x => x - t)).map (fun x => x + t) = m ∧
+      (∀ y ∈ m.map (fun x => x - t), y ∈ A) := by
+    intro m hm
+    refine ⟨?_, ?_⟩
+    · rw [Multiset.map_map]
+      conv_rhs => rw [← Multiset.map_id' m]
+      apply Multiset.map_congr rfl
+      intro x hx
+      obtain ⟨a, _, rfl⟩ := Finset.mem_image.mp (hm x hx)
+      show a + t - t + t = a + t
+      omega
+    · intro y hy
+      obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hy
+      obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp (hm x hx)
+      have : a + t - t = a := by omega
+      rw [this]; exact ha
+  intro s u hs hu hcs hcu hsum
+  obtain ⟨hs_rec, hsA⟩ := hinv s hs
+  obtain ⟨hu_rec, huA⟩ := hinv u hu
+  set s₀ : Multiset ℕ := s.map (fun x => x - t) with hs₀
+  set u₀ : Multiset ℕ := u.map (fun x => x - t) with hu₀
+  -- the pulled-back multisets keep size `h`
+  have hcs₀ : Multiset.card s₀ = h := by rw [hs₀, Multiset.card_map]; exact hcs
+  have hcu₀ : Multiset.card u₀ = h := by rw [hu₀, Multiset.card_map]; exact hcu
+  -- and share a sum, after cancelling the common shift `h·t`
+  have hsum₀ : s₀.sum = u₀.sum := by
+    have es : s.sum = s₀.sum + Multiset.card s₀ * t := by rw [← hs_rec, hshift]
+    have eu : u.sum = u₀.sum + Multiset.card u₀ * t := by rw [← hu_rec, hshift]
+    rw [hcs₀] at es; rw [hcu₀] at eu; omega
+  -- `B_h` upstairs forces `s₀ = u₀`; re-translating both sides gives `s = u`.
+  have h0 : s₀ = u₀ := H s₀ u₀ hsA huA hcs₀ hcu₀ hsum₀
+  rw [← hs_rec, ← hu_rec, h0]
+
+/-- **Affine invariance.** If `A` is a `B_h` set and `c ≥ 1`, then the affine image
+`{c·a + t : a ∈ A}` (here `A.image (fun a => c·a + t)`) is again a `B_h` set.  This is
+the structural payoff of Section V: the class of `B_h` sets is closed under every
+order-preserving affine map `a ↦ c·a + t`, so "being a `B_h` set" depends only on the
+*affine geometry* of `A`, not its position (`t`) or scale (`c`).  Proved by composing
+dilation (`isBhSet_smul`) with translation (`isBhSet_add`), since
+`a ↦ c·a + t = (· + t) ∘ (c · ·)`. -/
+theorem isBhSet_affine {h c t : ℕ} {A : Finset ℕ} (hc : 0 < c)
+    (H : IsBhSet h A) : IsBhSet h (A.image (fun a => c * a + t)) := by
+  have himg : (A.image (fun a => c * a)).image (fun x => x + t)
+            = A.image (fun a => c * a + t) := by
+    rw [Finset.image_image]; rfl
+  rw [← himg]
+  exact isBhSet_add (isBhSet_smul hc H)
 
 end Erdos153OQ03
