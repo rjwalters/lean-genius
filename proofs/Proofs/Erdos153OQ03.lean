@@ -31,6 +31,10 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `isBhSet_antitone`       : B_h ⟹ B_k for k ≤ h  (full downward closure)
 - `isSidon_of_isBhSet_two` : the B₂ property yields the gallery's `IsSidon`
 - `isSidon_of_isBhSet`     : every B_h set (h ≥ 2, nonempty) is Sidon
+- `isBhSet_two_iff_isSidon`: B₂ is *exactly* the gallery's Sidon condition
+- `isBhSet_empty`          : the empty set is B_h for every h
+- `isBhSet_singleton`      : every singleton is B_h for every h
+- `isBhSet_smul`           : dilation invariance — c·A is B_h whenever A is (c ≥ 1)
 -/
 import Mathlib
 
@@ -224,5 +228,95 @@ gallery's ordered Sidon condition. Combines `isSidon_of_isBhSet_two` with its co
 `isBhSet_two_of_isSidon`. -/
 theorem isBhSet_two_iff_isSidon {A : Finset ℕ} : IsBhSet 2 A ↔ IsSidon A :=
   ⟨isSidon_of_isBhSet_two, isBhSet_two_of_isSidon⟩
+
+/-!
+## Section V: Base cases and dilation invariance
+
+Two more base cases — the empty set and singletons are `B_h` for *every* `h` — and
+a genuine structural symmetry: the class of `B_h` sets is closed under dilation
+`a ↦ c·a` (`c ≥ 1`).  Together with translation, dilation invariance makes
+"being a `B_h` set" a property of the *affine structure* of `A`, independent of
+its position and scale; this is the invariance underlying the standard reduction
+of `B_h`-set problems to sets normalised to start at `0`.
+-/
+
+/-- **The empty set is `B_h`** for every `h`: there is no element to draw from `∅`,
+so the only multiset with all elements in `∅` is `0`, and the injectivity
+condition is vacuous.  Needs no nonemptiness — indeed `∅` is exactly the set for
+which the nesting lemmas' hypothesis fails. -/
+theorem isBhSet_empty (h : ℕ) : IsBhSet h (∅ : Finset ℕ) := by
+  intro s t hs ht _ _ _
+  have hs0 : s = 0 := by
+    by_contra hne
+    obtain ⟨x, hx⟩ := Multiset.exists_mem_of_ne_zero hne
+    exact Finset.notMem_empty x (hs x hx)
+  have ht0 : t = 0 := by
+    by_contra hne
+    obtain ⟨x, hx⟩ := Multiset.exists_mem_of_ne_zero hne
+    exact Finset.notMem_empty x (ht x hx)
+  rw [hs0, ht0]
+
+/-- **Singletons are `B_h`** for every `h`: the only size-`h` multiset all of whose
+elements equal `a` is `Multiset.replicate h a`, so any two competing size-`h`
+multisets drawn from `{a}` already coincide before the sum is consulted.  Like
+`isBhSet_empty` this needs no nonemptiness hypothesis. -/
+theorem isBhSet_singleton (h a : ℕ) : IsBhSet h ({a} : Finset ℕ) := by
+  intro s t hs ht hcs hct _
+  have hs' : s = Multiset.replicate h a :=
+    Multiset.eq_replicate.mpr ⟨hcs, fun b hb => Finset.mem_singleton.mp (hs b hb)⟩
+  have ht' : t = Multiset.replicate h a :=
+    Multiset.eq_replicate.mpr ⟨hct, fun b hb => Finset.mem_singleton.mp (ht b hb)⟩
+  rw [hs', ht']
+
+/-- **Dilation invariance.** If `A` is a `B_h` set and `c ≥ 1`, then the dilated set
+`c · A = {c·a : a ∈ A}` (here `A.image (c * ·)`) is again a `B_h` set.  A size-`h`
+multiset drawn from `c · A` is `c` times (elementwise) a size-`h` multiset drawn
+from `A`; `Multiset.sum` scales by the factor `c`, and since `c` is cancellable,
+equal sums downstairs pull back to equal sums upstairs, where the `B_h` property of
+`A` closes the gap and re-dilating transports the equality back down. -/
+theorem isBhSet_smul {h c : ℕ} {A : Finset ℕ} (hc : 0 < c)
+    (H : IsBhSet h A) : IsBhSet h (A.image (fun a => c * a)) := by
+  -- `Multiset.sum` scales linearly under elementwise multiplication by `c`.
+  have hscale : ∀ m : Multiset ℕ, (m.map (fun x => c * x)).sum = c * m.sum := by
+    intro m
+    refine Multiset.induction_on m ?_ ?_
+    · simp
+    · intro a m ih
+      simp [Multiset.map_cons, Multiset.sum_cons, ih, mul_add]
+  -- division by `c` inverts multiplication by `c` on elements of the dilated set:
+  -- re-dilating the pulled-back multiset recovers it, and its elements lie in `A`.
+  have hinv : ∀ m : Multiset ℕ, (∀ x ∈ m, x ∈ A.image (fun a => c * a)) →
+      (m.map (fun x => x / c)).map (fun x => c * x) = m ∧
+      (∀ y ∈ m.map (fun x => x / c), y ∈ A) := by
+    intro m hm
+    refine ⟨?_, ?_⟩
+    · rw [Multiset.map_map]
+      conv_rhs => rw [← Multiset.map_id' m]
+      apply Multiset.map_congr rfl
+      intro x hx
+      obtain ⟨a, _, rfl⟩ := Finset.mem_image.mp (hm x hx)
+      show c * (c * a / c) = c * a
+      rw [Nat.mul_div_cancel_left a hc]
+    · intro y hy
+      obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hy
+      obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp (hm x hx)
+      rw [Nat.mul_div_cancel_left a hc]
+      exact ha
+  intro s t hs ht hcs hct hsum
+  obtain ⟨hs_rec, hsA⟩ := hinv s hs
+  obtain ⟨ht_rec, htA⟩ := hinv t ht
+  set s₀ : Multiset ℕ := s.map (fun x => x / c) with hs₀
+  set t₀ : Multiset ℕ := t.map (fun x => x / c) with ht₀
+  -- the pulled-back multisets keep size `h`
+  have hcs₀ : Multiset.card s₀ = h := by rw [hs₀, Multiset.card_map]; exact hcs
+  have hct₀ : Multiset.card t₀ = h := by rw [ht₀, Multiset.card_map]; exact hct
+  -- and share a sum, after cancelling the common factor `c`
+  have hsum₀ : s₀.sum = t₀.sum := by
+    apply Nat.eq_of_mul_eq_mul_left hc
+    rw [← hscale s₀, ← hscale t₀, hs_rec, ht_rec]
+    exact hsum
+  -- `B_h` upstairs forces `s₀ = t₀`; re-dilating both sides gives `s = t`.
+  have h0 : s₀ = t₀ := H s₀ t₀ hsA htA hcs₀ hct₀ hsum₀
+  rw [← hs_rec, ← ht_rec, h0]
 
 end Erdos153OQ03
