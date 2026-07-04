@@ -1382,4 +1382,60 @@ theorem trunc_rpow_weight_sq_le_rpow {p x : ℝ} (hp : 0 < p) (hp2 : p < 2) :
 
 end VarianceMajorant
 
+/-! ## Master finiteness bound for the MZ variance sum (interchange ∘ domination)
+
+Chaining the Tonelli interchange `lintegral_tsum_trunc_sq_weight_le` (at `s = 2/p`) with the
+pointwise domination `trunc_rpow_weight_sq_le_rpow` and a constant pull-out collapses the whole
+`i^{-2/p}`-weighted truncated-second-moment sum to a single multiple of the `p`-th moment:
+
+    ∑'ᵢ ∫⁻ ω, i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)²  ≤  ofReal((2/p)/(2/p-1)) · ∫⁻ ω, |X|ᵖ.
+
+This is the quantitative `∑ᵢ Var(Yᵢ)/aᵢ² ≤ C·𝔼|X|ᵖ` (in `ℝ≥0∞`, `aᵢ = i^{1/p}`): with
+`𝔼|X|ᵖ < ∞` the RHS is finite, so the variance sum is finite — the summability hypothesis of the
+Kolmogorov criterion `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5).  0-sorry / 0-`axiom`. -/
+section MasterVarianceBound
+
+open MeasureTheory
+open scoped ENNReal
+
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
+/-- **Master variance-sum bound (MZ step 4).**  For a measurable `X` and `0 < p < 2`, the
+`i^{-2/p}`-weighted truncated second moments sum to at most a constant multiple of the `p`-th
+absolute moment (all in `ℝ≥0∞`):
+
+    ∑'ᵢ ∫⁻ ω, i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)²  ≤  ofReal((2/p)/(2/p-1)) · ∫⁻ ω, |X|ᵖ.
+
+Proof: `lintegral_tsum_trunc_sq_weight_le` at `s = 2/p` bounds the LHS by the integral of the
+interchange majorant; `lintegral_const_mul'` pulls the constant out of the target; then
+`lintegral_mono` + `trunc_rpow_weight_sq_le_rpow` dominate the integrand pointwise by
+`(2/p)/(2/p-1)·|X ω|ᵖ`. -/
+theorem lintegral_tsum_trunc_sq_weight_le_moment
+    (X : Ω → ℝ) (hX : Measurable X) {p : ℝ} (hp : 0 < p) (hp2 : p < 2) :
+    ∑' i : ℕ, ∫⁻ ω, ENNReal.ofReal
+        ((i : ℝ) ^ (-(2 / p)) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) ∂μ
+      ≤ ENNReal.ofReal ((2 / p) / (2 / p - 1)) * ∫⁻ ω, ENNReal.ofReal (|X ω| ^ p) ∂μ := by
+  have hs : (1 : ℝ) < 2 / p := by rw [lt_div_iff₀ hp]; linarith
+  have hc : (0 : ℝ) ≤ (2 / p) / (2 / p - 1) := div_nonneg (by positivity) (by linarith)
+  refine (lintegral_tsum_trunc_sq_weight_le X hX hs hp).trans ?_
+  rw [← lintegral_const_mul' (ENNReal.ofReal ((2 / p) / (2 / p - 1)))
+        (fun ω => ENNReal.ofReal (|X ω| ^ p)) ENNReal.ofReal_ne_top]
+  apply lintegral_mono
+  intro ω
+  dsimp only
+  rw [← ENNReal.ofReal_mul hc]
+  apply ENNReal.ofReal_le_ofReal
+  calc (max 1 (|X ω| ^ p)) ^ (1 - 2 / p) * (2 / p) / (2 / p - 1) * (X ω) ^ 2
+      = (2 / p) / (2 / p - 1) * ((max 1 (|X ω| ^ p)) ^ (1 - 2 / p) * (X ω) ^ 2) := by ring
+    _ ≤ (2 / p) / (2 / p - 1) * |X ω| ^ p :=
+        mul_le_mul_of_nonneg_left (trunc_rpow_weight_sq_le_rpow hp hp2) hc
+
+#check @lintegral_tsum_trunc_sq_weight_le_moment
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms lintegral_tsum_trunc_sq_weight_le_moment
+
+end MasterVarianceBound
+
 end LawsOfLargeNumbers.MZ

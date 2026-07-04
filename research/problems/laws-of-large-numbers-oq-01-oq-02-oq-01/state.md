@@ -124,13 +124,19 @@ interchange**: keep the truncated moment `𝔼[X²·𝟙{|X| ≤ i^{1/p}}]` inta
   `|x|ᵖ`: `|x|≥1` gives equality `(|x|ᵖ)^{1-2/p}·|x|²=|x|^{(p-2)+2}=|x|ᵖ` (`Real.rpow_mul`+
   `rpow_add`, exponent `p·(1-2/p)+2=p` by `field_simp;ring`); `|x|<1` splits `|x|²=|x|ᵖ·|x|^{2-p}`
   (`Real.rpow_add_of_nonneg`) with `|x|^{2-p}≤1` (`Real.rpow_le_one`). **Do not re-derive.**
-- **Next: RHS integrability + `∫⁻` finiteness.** Multiply `trunc_rpow_weight_sq_le_rpow` by the
-  nonneg constant `s/(s-1)` (`s=2/p`) ⟹ the full interchange RHS integrand `≤ s/(s-1)·|X|ᵖ`
-  pointwise; then `Integrable (fun ω => |X ω|ᵖ)` ⟹ `∫⁻ ω, ofReal(RHS integrand) < ∞` (via
-  `lintegral_ofReal_le_lintegral_ofReal`/`integrable.lintegral_lt_top` + `ofReal_ne_top`).
-  Chained with `lintegral_tsum_trunc_sq_weight_le` this gives the ℝ≥0∞ variance sum finite;
-  convert to real `∑ᵢ 𝔼[Yᵢ²]·i^{-2/p} < ∞`, feeding
-  `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5). Watch weight positivity
+- **Master variance-sum bound is now DONE (iteration 15):** `lintegral_tsum_trunc_sq_weight_le_moment`
+  collapses the whole weighted sum to a constant times the `p`-th moment (in ℝ≥0∞):
+  `∑'ᵢ ∫⁻ i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)² ≤ ofReal((2/p)/(2/p-1)) · ∫⁻ |X|ᵖ`. Proof: chain
+  `lintegral_tsum_trunc_sq_weight_le` at `s=2/p` (`hs: 1<2/p` via `lt_div_iff₀`), `lintegral_const_mul'`
+  (const pull, needs only `ofReal_ne_top` — no measurability), `lintegral_mono` + `ENNReal.ofReal_mul`
+  + `trunc_rpow_weight_sq_le_rpow`. **This is the quantitative `∑ᵢ Var(Yᵢ)/aᵢ² ≤ C·𝔼|X|ᵖ`.**
+  **Do not re-derive.**
+- **Next: extract real finiteness + feed S5.** From `Integrable (fun ω => |X ω|ᵖ)` (⟹
+  `∫⁻ ofReal(|X|ᵖ) < ∞` via `Integrable.lintegral_lt_top`/`hasFiniteIntegral` + `ofReal`/`nnnorm`
+  bridge on the nonneg `|X|ᵖ`), the master bound RHS `ofReal(C)·(finite)` is `< ∞`
+  (`ENNReal.mul_lt_top`), so the ℝ≥0∞ variance sum is finite. Convert to a real
+  `∑ᵢ 𝔼[Yᵢ²]·i^{-2/p} < ∞` (each summand = `(∫⁻ …).toReal` via `lintegral_ofReal`/`ofReal_toReal`),
+  feeding `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5). Watch weight positivity
   (use `aᵢ=(i+1)^{1/p}` or `max 1 i^{1/p}`).
 - **Then: step-3 centering** (via `integral_tail_abs_le` + `tendsto_weighted_average_zero`) and
   the final combination with the step-1 truncation reduction into the MZ statement.
