@@ -77,12 +77,16 @@
       "mathContext": "n < 4 implies fourPointLineCount Q = 0 for all candidates (fourPointLineCount_lt_four), so maxCountAtSize n < 1 (via maxCountAtSize_lt_of_forall, threshold 1), hence = 0."
     },
     {
-      "id": "explicit-witness",
-      "title": "The Explicit Witness at Size 4",
-      "summary": "witness (four x-axis points), witness_card (= 4), witness_noFive (vacuous no-five-collinear), witness_all_collinear (all on y = 0), and witness_fourPointLineCount: the configuration realises exactly one four-point line, computed directly from the definition.",
+      "title": "The explicit witness at size 4",
       "startLine": 58,
+      "endLine": 98,
+      "summary": "The witness PlanarPointSet: the four x-axis points (0,0),(1,0),(2,0),(3,0). witness_card shows they are pairwise distinct (cardinality 4), witness_noFive is vacuous (only four points, via noFiveCollinear_small), and witness_all_collinear checks every point lies on y=0, hence is collinear with the anchors (0,0),(1,0) by a one-line ring computation of the collinearity predicate."
+    },
+    {
+      "title": "The witness realises exactly one four-point line",
+      "startLine": 99,
       "endLine": 122,
-      "mathContext": "The only cardinality-4 subset of a four-element set is the set itself (Finset.eq_of_subset_of_card_le); it satisfies the collinearity predicate with anchors (0,0),(1,0) since every point has y = 0, so the counted family is the singleton {witness.points}."
+      "summary": "witness_fourPointLineCount: fourPointLineCount witness = 1. The only cardinality-4 subset of a four-element set is the set itself (Finset.eq_of_subset_of_card_le), and it satisfies the collinearity predicate, so the filtered family collapses to the singleton {witness.points} and its card is 1 — the lower-bound half of the size-4 value."
     },
     {
       "id": "size-four-value",
