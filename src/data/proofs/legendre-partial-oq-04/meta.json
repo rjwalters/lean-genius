@@ -37,10 +37,10 @@
     ],
     "dateAdded": "2026-06-27",
     "axiomCount": 2,
-    "lineCount": 179,
+    "lineCount": 301,
     "assumptions": "2 assumptions. (1) `oppermann_conjecture : OppermannConjecture` — the OPEN Oppermann conjecture, stated as an axiom; results downstream of it (e.g. `legendre_of_oppermann`) inherit it. (2) `Lean.ofReduceBool` — the n = 2..20 verifications use `native_decide`, which trusts the Lean compiler's kernel reduction. The four structural theorems (`oppermann_at_implies_legendre_at`, `oppermann_at_two_primes`, `oppermann_implies_legendre`, `oppermann_implies_two_primes`) are fully machine-checked with NO assumptions: #print axioms reports only propext, Classical.choice, Quot.sound.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25,
+    "theoremCount": 31,
     "definitionCount": 2,
     "parentId": "legendre-partial"
   },
@@ -151,9 +151,9 @@
       "Finset"
     ],
     "namespace": "Legendre.Oppermann",
-    "lineCount": 179,
+    "lineCount": 301,
     "axiomCount": 1,
-    "theoremCount": 25,
+    "theoremCount": 31,
     "definitionCount": 2,
     "path": "Proofs/LegendrePartialOQ04.lean",
     "sorries": 0
@@ -203,6 +203,12 @@
       "type": "core",
       "description": "VERIFIED (0-axiom): Oppermann at n implies Legendre at n via the lower-half prime.",
       "leanType": "OppermannAt n -> Legendre.LegendreAt n"
+    },
+    {
+      "name": "oppermann_at_iff_pi",
+      "type": "core",
+      "description": "VERIFIED (0-axiom): π-counting form. For n ≥ 2, OppermannAt n is equivalent to π(n²+n) − π(n²) ≥ 1 and π((n+1)²) − π(n²+n) ≥ 1, using Mathlib's Nat.primeCounting. The composite endpoints n²+n and (n+1)² make the half-open π-difference count exactly the open-interval primes. Rests on the reusable bridge card_primes_Ioc: #{primes in (a,b]} = π(b) − π(a).",
+      "leanType": "2 ≤ n -> (OppermannAt n <-> 1 ≤ primeCounting (n^2+n) - primeCounting (n^2) ∧ 1 ≤ primeCounting ((n+1)^2) - primeCounting (n^2+n))"
     }
   ],
   "sorries": 0
