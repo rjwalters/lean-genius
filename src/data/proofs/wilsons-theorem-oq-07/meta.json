@@ -99,18 +99,36 @@
   },
   "sections": [
     {
-      "id": "header-and-reflection-lemma",
-      "title": "Module Overview and the Reflection Refinement",
+      "id": "overview",
+      "title": "Module Overview: From Wilson to an Explicit √(−1)",
       "startLine": 1,
-      "endLine": 82,
-      "summary": "Module docstring stating the reflection identity (p−1)! ≡ (−1)^m·(m!)² and its p mod 4 specializations. The core lemma `neg_one_pow_mul_factorial_sq`: for odd prime p with m = (p−1)/2, (−1)^m·(m!)² = −1 in ZMod p, proved by splitting Ico 1 p at the midpoint, identifying the lower half with m!, reflecting the upper half via Finset.prod_Ico_reflect with ↑(p−j) = −↑j and Finset.prod_neg, recombining with Finset.prod_Ico_consecutive, and applying ZMod.prod_Ico_one_prime."
+      "endLine": 30,
+      "summary": "Module docstring stating the reflection identity (p−1)! ≡ (−1)^m·(m!)² for an odd prime p with m = (p−1)/2, and its p mod 4 specializations: for p ≡ 1 the half-factorial ((p−1)/2)! is an explicit square root of −1, and for p ≡ 3 it squares to +1. This refines Wilson's (p−1)! ≡ −1 into a constructive quadratic-residue statement that names the witness Mathlib only proves to exist.",
+      "mathContext": "$(p-1)!\\equiv(-1)^m(m!)^2\\pmod p$ with $m=(p-1)/2$."
     },
     {
-      "id": "explicit-square-root",
-      "title": "The Explicit Square Root and Companion Case",
+      "id": "reflection-lemma",
+      "title": "neg_one_pow_mul_factorial_sq: The Reflection Refinement",
+      "startLine": 32,
+      "endLine": 82,
+      "summary": "The core lemma: for an odd prime p with m = (p−1)/2, (−1)^m·(m!)² = −1 in ZMod p. Proof splits Ico 1 p at the midpoint, identifies the lower half with m!, reflects the upper half via Finset.prod_Ico_reflect using ↑(p−j) = −↑j and Finset.prod_neg (extracting the sign (−1)^m), recombines with Finset.prod_Ico_consecutive, and closes with ZMod.prod_Ico_one_prime (Wilson's product = −1).",
+      "mathContext": "$(-1)^m\\,(m!)^2=-1$ in $\\mathbb{Z}/p$ for $m=(p-1)/2$."
+    },
+    {
+      "id": "explicit-square-roots",
+      "title": "The Two mod-4 Square Roots (factorial_half_sq_eq_neg_one / _eq_one)",
       "startLine": 84,
+      "endLine": 101,
+      "summary": "factorial_half_sq_eq_neg_one: for p ≡ 1 (mod 4), m = (p−1)/2 is even so (−1)^m = 1 and (m!)² = −1 — the explicit square root. factorial_half_sq_eq_one: for p ≡ 3 (mod 4), m is odd so (−1)^m = −1 and (m!)² = 1 — the half-factorial is ±1, never a root of −1. Both specialize the reflection lemma by the parity of m, fixed by p mod 4.",
+      "mathContext": "$p\\equiv1\\!\\pmod4\\Rightarrow(m!)^2=-1$; $p\\equiv3\\!\\pmod4\\Rightarrow(m!)^2=1$."
+    },
+    {
+      "id": "constructive-recovery",
+      "title": "exists_sq_eq_neg_one_of_one_mod_four: Constructive Recovery of Mathlib",
+      "startLine": 103,
       "endLine": 110,
-      "summary": "`factorial_half_sq_eq_neg_one`: for p ≡ 1 (mod 4), (((p−1)/2)!)² = −1 (m even ⟹ (−1)^m = 1). `factorial_half_sq_eq_one`: for p ≡ 3 (mod 4), (((p−1)/2)!)² = 1 (m odd ⟹ (−1)^m = −1). `exists_sq_eq_neg_one_of_one_mod_four`: packages the explicit witness into the existential, recovering the forward direction of ZMod.exists_sq_eq_neg_one_iff."
+      "summary": "Packages the explicit witness ((p−1)/2)! into the existential ∃ y, y² = −1, recovering the forward direction of ZMod.exists_sq_eq_neg_one_iff constructively — where Mathlib proves −1 is a square via χ₄, this hands back a concrete root read off Wilson's factorial.",
+      "mathContext": "$p\\equiv1\\!\\pmod4\\Rightarrow\\exists y,\\;y^2=-1$, witnessed by $((p-1)/2)!$."
     },
     {
       "id": "numeric-instances",
