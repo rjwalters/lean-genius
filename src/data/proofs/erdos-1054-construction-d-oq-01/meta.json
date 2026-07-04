@@ -71,7 +71,8 @@
       "**Representability of σ(m) is automatic, not a coincidence.** Every concrete check in the parent file is an instance of one structural fact — σ(m) is the final cumulative sum of the increasing divisor sequence — so the whole image of the σ function lands inside the representable set.",
       "**Eliminating native_decide is a genuine axiom strengthening.** The parent's native_decide witnesses depend on Lean.ofReduceBool; this file proves strictly more (an infinite family, uniformly) with only propext / Classical.choice / Quot.sound, so the results are honestly axiom-free.",
       "**Generalizing the fold accumulator is the technical crux.** The naive foldl (+) 0 L = L.sum does not strengthen the induction hypothesis, because the recursive call threads a non-zero accumulator; foldl_add_acc with a free accumulator a closes the induction.",
-      "**One theorem, two classical families.** The prime-power corollary ∑_{i=0}^k p^i unifies the parent's prime-square witnesses (k = 2) and the entire Mersenne family (p = 2), each previously checked individually, into a single statement valid for all primes and all exponents."
+      "**One theorem, two classical families.** The prime-power corollary ∑_{i=0}^k p^i unifies the parent's prime-square witnesses (k = 2) and the entire Mersenne family (p = 2), each previously checked individually, into a single statement valid for all primes and all exponents.",
+      "**The witness is the running total of sorted divisors, not a decided fact.** σ(m) appears as the last entry of the scanl-cumulative-sum list partialDivisorSums m, so representability is exhibited by an explicit structural witness; foldl_add_acc identifies that final entry with the divisor sum, and the corollaries for σ(p^k) and Mersenne numbers 2^{k+1}−1 are just instances at m = p^k."
     ],
     "prerequisites": [
       "Divisors of a natural number and the sum-of-divisors function σ (Mathlib.NumberTheory.Divisors)",
