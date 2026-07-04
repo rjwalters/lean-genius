@@ -45,6 +45,36 @@
       "Sharpness of the METHOD constant is weaker than sharpness of the HÖLDER-class constant k(α). Pure modes are smooth and do not saturate the Hölder inequality ‖f(x)−f(x+h)‖ ≤ C·h^α (which carries the remaining slack); the Hölder extremals are the asymptotic piecewise-linear sawtooths, whose exact coefficient computation is not attempted here. This boundary is stated explicitly to avoid overclaiming."
     ]
   },
+  "sections": [
+    {
+      "id": "part-0-infrastructure",
+      "title": "Part 0 — Half-Period Infrastructure",
+      "startLine": 74,
+      "endLine": 128,
+      "summary": "Self-contained re-derivation of the half-period toolkit (mirroring FourierSeriesOQ02, which currently fails to build): the definitions circleTranslate and halfPeriod, the sign-flip identity fourier_translate_halfperiod_neg for the conjugate mode, and the exact difference formula 2·ĉ_n(f) = ∫(f(x)−f(x+T/(2n)))·e_{-n}(x)dx via Haar translation invariance."
+    },
+    {
+      "id": "part-1-method-bound",
+      "title": "Part I — The Half-Period Method Bound",
+      "startLine": 130,
+      "endLine": 162,
+      "summary": "fourierCoeff_le_half_uniformDiff: a uniform half-period difference bound M yields ‖ĉ_n(f)‖ ≤ M/2. This isolates the source of every 1/2 in the Hölder decay theory; specializing M = C·(T/(2|n|))^α recovers the parent's fourierCoeff_holder_decay."
+    },
+    {
+      "id": "part-2-pure-mode-saturates",
+      "title": "Part II — The Pure Mode Saturates the Method",
+      "startLine": 164,
+      "endLine": 202,
+      "summary": "fourier_translate_halfperiod_pos negates the positive mode; fourier_halfperiod_diff_eq_two shows its half-period difference equals exactly 2 at every point; fourierCoeff_fourier_self computes ĉ_n(fourier n) = 1 by diagonal orthonormality, with norm 1."
+    },
+    {
+      "id": "part-3-sharpness",
+      "title": "Part III — Sharpness of the Constant 1/2",
+      "startLine": 204,
+      "endLine": 237,
+      "summary": "halfPeriod_constant_sharp exhibits equality (M = 2, ‖ĉ_n‖ = 2/2 = 1). method_constant_ge_half proves any universally valid constant k satisfies 1/2 ≤ k, so 1/2 is the least admissible constant of the half-period method, with the pure mode as extremal witness."
+    }
+  ],
   "conclusion": {
     "summary": "This entry connects the abstract 1/2 of the parent to actual Fourier coefficients and proves it is the least admissible constant in the half-period translation method, with the pure mode fourier n as an exact extremal witness (uniform half-period difference 2, coefficient norm 1 = 2/2). The parent's Hölder decay bound is re-derived as a corollary of the uniform-difference method bound. All eight theorems are machine-checked with no sorries and no axioms beyond Lean's foundational three.",
     "openQuestions": [
