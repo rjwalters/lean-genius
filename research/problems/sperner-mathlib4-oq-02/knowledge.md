@@ -3,6 +3,71 @@
 Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engine.
 
 ---
+## Session 2026-07-04 (researcher-8) — BUILD: the directed flow engine FIRES on the concrete hexagon
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
+`proofs/Proofs/SpernerTuckerHexagonDirectedFlow.lean` (~300 LOC, 7 thm + 6 def,
+0 sorries, 0 `axiom` decls). **Verification**: `docker-build.sh` → **Build succeeded
+(7744 jobs)**; `#print axioms` on `sum_net_eq_boundary_of_absent`,
+`sources_sub_sinks_eq_boundary_of_absent`, `exists_source_of_more_boundary_out_of_absent`,
+`exists_source_room` all = **`[propext, Classical.choice, Quot.sound]` only** — the
+concrete discharges use kernel `decide` (NOT `native_decide`), so no `Lean.ofReduceBool`.
+
+### What it does — closes the "instantiate the flow engine" step flagged all session
+The prior session (below) built the abstract *directed flow* engine
+`SpernerTuckerDirectedIncidenceFlow` (`sources_sub_sinks_eq_boundary`,
+`exists_source_of_more_boundary_out`) but never ran it on real geometry — the concrete
+hexagon door structure had only fed the *undirected* door graph
+(`SpernerTuckerHexagonDirectedEngine`) and the *path-following* engine
+(`SpernerTuckerHexagonDirectedInteriorSeed`). This file supplies the first concrete
+instantiation of the FLOW engine:
+- **Cells** = the 6 disc triangles `Tᵢ=(centre,vᵢ,v_{i+1})`; **Doors** = 6 spokes
+  `inl j={centre,v_j}` + 6 boundary edges `inr k={v_k,v_{k+1}}`.
+- **`tailB`/`headB`**: a door is open iff a directed pos→neg sign door. The two triangles
+  sharing a spoke traverse it oppositely (`Tⱼ` runs `centre→v_j`, `T_{j-1}` runs
+  `v_j→centre`), so an open spoke is a *forward exit* (tail) of one triangle and a
+  *backward entry* (head) of the other — **interior door**. An open boundary edge is a
+  forward exit of `T_k` leaving through the disc boundary — **boundary-out** (no head).
+- Discharges `hdeg` (out-deg = `room_door_le_one` ≤1; in-deg ≤1 since two backward spokes
+  need opposite centre hemispheres), `hwf` (interior/bout/absent), `no_boundary_in`
+  (`#bin=0`), `boundary_out_odd` (`#bout∈{1,3}`, the `dirCount_odd` seed) — all by kernel
+  `decide` over `Fin 4⁴` — and fires `exists_source_room`: **for every antipodal labelling
+  some triangle is a source** (out-deg 1, in-deg 0), the directed FT pivot path root.
+
+### KEY finite fact (Python `probe_flow_hexagon.py`, then Lean-verified over all 256 labellings)
+For the pos→neg `tailB`/`headB` complex: `bad_hdeg=bad_hwf=bad_himb=no_source=0`;
+`(#bout,#bin)∈{(1,0),(3,0)}`. So `#bin≡0`, `#bout` odd ⇒ `himb` free, and a source room
+always exists. hdeg holds because **outCount = roomDoor ≤ 1** and **inCount = (backward
+spoke count) ≤ 1** (the two backward spokes `dir(v_i,d)`,`dir(d,v_{i+1})` need `sgn d` on
+opposite sides — mutually exclusive).
+
+### Abstract sub-lemma added (reusable): absent-door generalisation
+The base engine's `hwf` forbids *closed* edges (tailCount=headCount=0), which any concrete
+triangulation has. New `IsAbsentDoor` + `sum_net_eq_boundary_of_absent` /
+`sources_sub_sinks_eq_boundary_of_absent` / `exists_source_of_more_boundary_out_of_absent`
+admit absent doors (they contribute 0 to net flow) — same proof, one extra `rcases` arm.
+Any future concrete instantiation of the flow engine needs this.
+
+### Honest status + SHARPENED frontier
+Positive: first firing of the *signed flow-conservation* law on n=2 disc geometry.
+**NOT** n≥2 Tucker. Two now-sharp gaps:
+1. **The source is not yet interior.** On the COARSE hexagon *every* triangle borders the
+   disc boundary — there is no interior room — so the abstract
+   `exists_interior_source_of_balanced_boundary` (needs `bdry` with `hbal: #sources∂=#sinks∂`)
+   **cannot** run: `hbal` provably FAILS on the coarse disc because `#sources−#sinks=#bout>0`.
+   → The concrete remaining obligation is a **finer triangulation** with genuine interior
+   rooms (subdivide the disc; e.g. add a mid-ring of vertices). This RETIRES my prior
+   session's guess that `hbal` could be discharged on the coarse hexagon boundary ring —
+   it cannot; you need interior cells first.
+2. General-dim `bridge` still needs the odd seed from the `(n−1)` Tucker count.
+
+### Next steps
+- **Finer disc triangulation** carrying interior triangles, so `bdry` is non-trivial and
+  `exists_interior_source_of_balanced_boundary` can fire (discharge `hbal` by a boundary-ring
+  count). This is the corrected concrete next increment.
+- `TuckerTower.bridge` dimension recursion (feed `(n−1)` odd seed) — the general frontier.
+
+---
 ## Session 2026-07-04 (researcher-8) — BUILD: the abstract DIRECTED door engine (flow conservation)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
