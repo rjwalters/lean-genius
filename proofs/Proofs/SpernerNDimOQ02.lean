@@ -2996,4 +2996,89 @@ theorem zeroPivotCell_shares_facet_zero (s : GridSimplex d N) (hd1 : 0 < d)
       gridFacet (zeroPivotCell s hd1 hfeas) (Fin.last d) = gridFacet s 0 :=
   ⟨zeroPivotCell_ne s hd1 hfeas, zeroPivotCell_gridFacet_last s hd1 hfeas⟩
 
+/-- **`s`'s facet-`0` apex is absent from the partner cell.**  The vertex
+`gridVertices s 0` deleted from `s` to form the shared facet does not reappear
+anywhere among the facet-`0` partner's Kuhn vertices.  The partner's chain is
+`s.verts 1, …, verts d, zeroPivotTop`: chain injectivity rules out the reused
+lower vertices `s.verts (j+1)` (they cannot equal `s.verts 0`), and
+`zeroPivotTop_not_mem_chain` rules out the new apex.  So `s`'s apex lies strictly
+on `s`'s side of the gluing. -/
+theorem gridVertices_zero_not_mem_zeroPivotCell_image (s : GridSimplex d N)
+    (hd1 : 0 < d) (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    gridVertices s 0
+      ∉ Finset.univ.image (gridVertices (zeroPivotCell s hd1 hfeas)) := by
+  simp only [Finset.mem_image, Finset.mem_univ, true_and]
+  rintro ⟨j, hj⟩
+  -- `hj : gridVertices (zeroPivotCell ..) j = gridVertices s 0`
+  have hj' : (zeroPivotCell s hd1 hfeas).verts j = s.verts 0 := toVertex_injective hj
+  by_cases hlt : j.val < d
+  · rw [zeroPivotCell_verts_of_lt s hd1 hfeas j hlt] at hj'
+    have heq := s.verts_injective hj'
+    have : j.val + 1 = 0 := congrArg Fin.val heq
+    omega
+  · have hjlast : j = Fin.last d :=
+      Fin.ext (by have := j.isLt; simp only [Fin.val_last]; omega)
+    rw [hjlast, zeroPivotCell_verts_last] at hj'
+    exact zeroPivotTop_not_mem_chain s hd1 hfeas 0 hj'
+
+/-- **The partner's apex is genuinely new.**  The partner cell's top vertex
+`gridVertices (zeroPivotCell) (Fin.last d)` (the Kuhn image of `zeroPivotTop`)
+appears nowhere in `s`'s vertex set — `zeroPivotTop_not_mem_chain` shows it
+coincides with no vertex of `s`'s chain.  So the partner's apex lies strictly on
+the partner's side of the gluing. -/
+theorem zeroPivotCell_apex_not_mem_s_image (s : GridSimplex d N)
+    (hd1 : 0 < d) (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    gridVertices (zeroPivotCell s hd1 hfeas) (Fin.last d)
+      ∉ Finset.univ.image (gridVertices s) := by
+  simp only [Finset.mem_image, Finset.mem_univ, true_and]
+  rintro ⟨i, hi⟩
+  -- `hi : gridVertices s i = gridVertices (zeroPivotCell ..) (Fin.last d)`
+  have hi' : s.verts i = (zeroPivotCell s hd1 hfeas).verts (Fin.last d) :=
+    toVertex_injective hi
+  rw [zeroPivotCell_verts_last] at hi'
+  exact zeroPivotTop_not_mem_chain s hd1 hfeas i hi'.symm
+
+/-- **The cell and its facet-`0` partner meet in exactly the shared facet.**
+`s` and its cross-chain partner `zeroPivotCell` share precisely the facet
+`gridFacet s 0` (equivalently the partner's top facet `Fin.last d`,
+`zeroPivotCell_gridFacet_last`) and nothing more: their full Kuhn vertex sets
+intersect in exactly that facet.  Each cell contributes one apex *off* the shared
+facet — `gridVertices s 0` for `s` and the image of `zeroPivotTop` for the
+partner (`gridVertices_zero_not_mem_zeroPivotCell_image`,
+`zeroPivotCell_apex_not_mem_s_image`) — so the two distinct cells
+(`zeroPivotCell_ne`) glue precisely along the common facet.  This is the defining
+local condition of a simplicial pseudomanifold — two cells meet along a common
+facet — now established for the facet-`0` gluing site that the within-chain
+`gridNeighbor` leaves unpaired (`gridNeighbor_zero_none_not_boundary_face`). -/
+theorem zeroPivotCell_meet_eq_gridFacet_zero (s : GridSimplex d N)
+    (hd1 : 0 < d) (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (Finset.univ.image (gridVertices s))
+        ∩ (Finset.univ.image (gridVertices (zeroPivotCell s hd1 hfeas)))
+      = gridFacet s 0 := by
+  apply Finset.Subset.antisymm
+  · -- intersection ⊆ facet `0`
+    intro v hv
+    rw [Finset.mem_inter] at hv
+    obtain ⟨hvs, hvp⟩ := hv
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hvs
+    obtain ⟨i, hi⟩ := hvs
+    rw [mem_gridFacet_iff]
+    refine ⟨i, ?_, hi⟩
+    rintro rfl
+    -- then `v = gridVertices s 0`, but `v` also lies in the partner's image
+    rw [← hi] at hvp
+    exact gridVertices_zero_not_mem_zeroPivotCell_image s hd1 hfeas hvp
+  · -- facet `0` ⊆ intersection
+    intro v hv
+    rw [Finset.mem_inter]
+    have hvs : v ∈ Finset.univ.image (gridVertices s) := by
+      rw [mem_gridFacet_iff] at hv
+      obtain ⟨j, _, hj⟩ := hv
+      exact Finset.mem_image.mpr ⟨j, Finset.mem_univ j, hj⟩
+    refine ⟨hvs, ?_⟩
+    -- `gridFacet s 0 = gridFacet (zeroPivotCell) (Fin.last d) ⊆ partner image`
+    rw [(zeroPivotCell_gridFacet_last s hd1 hfeas).symm, mem_gridFacet_iff] at hv
+    obtain ⟨j, _, hj⟩ := hv
+    exact Finset.mem_image.mpr ⟨j, Finset.mem_univ j, hj⟩
+
 end SpernerNDimOQ02
