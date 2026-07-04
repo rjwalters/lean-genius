@@ -50,11 +50,12 @@
       "chebyshevTheta_le_primeCounting_mul_log: the upper half θ(n) ≤ π(n)·log n, proved by bounding each of the π(n) summands log p (p ≤ n) by log n and collapsing the constant sum to π(n)·log n via the identity π(n) = |filter Prime (range (n+1))|",
       "primeCounting_le_add_chebyshevTheta_div_log: the threshold lower half π(n) ≤ y + θ(n)/log y for 2 ≤ y ≤ n — the tail primes y < p ≤ n each contribute ≥ log y to θ(n), so their count π(n) − π(y) is ≤ θ(n)/log y, and the remaining π(y) ≤ y primes are absorbed into the +y term",
       "tail_sum_le_chebyshevTheta: the tail sum ∑_{y<p≤n} log p ≤ θ(n) as a sub-sum of nonnegative log-terms, the key monotonicity step of the lower half",
-      "chebyshev_theta_primeCounting_sandwich: the packaged two-sided statement θ(n) ≤ π(n)·log n ∧ π(n) ≤ y + θ(n)/log y for 2 ≤ y ≤ n — the analysis-free reduction underlying θ(x) ~ x ⟺ π(x) ~ x/log x, the natural drop-in for a PNT-for-ψ ⟹ PNT-for-π transfer"
+      "chebyshev_theta_primeCounting_sandwich: the packaged two-sided statement θ(n) ≤ π(n)·log n ∧ π(n) ≤ y + θ(n)/log y for 2 ≤ y ≤ n — the analysis-free reduction underlying θ(x) ~ x ⟺ π(x) ~ x/log x, the natural drop-in for a PNT-for-ψ ⟹ PNT-for-π transfer",
+      "primeCounting_mul_log_div_sandwich: the limit-ready ratio form — dividing the sandwich by n squeezes the normalized count π(n)·log n/n between θ(n)/n and θ(n)/n·(log n/log y) + y·log n/n, the exact shape the PNT limit consumes (choose y ≈ n/(log n)² so y/n → 0 and log n/log y → 1, reducing π(n)·log n/n → 1 to θ(n)/n → 1); isolates the remaining elementary o(1) bookkeeping from the deep θ(n)/n → 1 input"
     ],
     "axiomCount": 0,
-    "lineCount": 155,
-    "theoremCount": 5,
+    "lineCount": 189,
+    "theoremCount": 6,
     "definitionCount": 1,
     "assumptions": "None — fully verified from Mathlib and the parent bridge files (ChebyshevThetaFourPow, ChebyshevPNTBridge, ChebyshevPNTBridgeOQ05) with 0 axioms (only propext / Classical.choice / Quot.sound, confirmed by #print axioms) and 0 sorries; no native_decide, no decide. This entry proves ONLY the elementary reduction: the two-sided θ ↔ π·log sandwich. The full PNT asymptotic π(x)·log x / x → 1 (equivalently θ(x)/x → 1) is NOT proved here — it is the irreducible deep content of the Prime Number Theorem and remains an open question, requiring either the Wiener–Ikehara Tauberian theorem (ζ non-vanishing on Re s = 1) or Selberg's symmetry formula, neither present in the pinned Mathlib.",
     "mathlib_version": "4.26.0"
@@ -161,9 +162,9 @@
       "ChebyshevThetaBound"
     ],
     "namespace": "ChebyshevPNTBridgeOQ03OQ01",
-    "lineCount": 155,
+    "lineCount": 189,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 1,
     "path": "Proofs/ChebyshevPNTBridgeOQ03OQ01.lean",
     "sorries": 0

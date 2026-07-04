@@ -152,4 +152,38 @@ theorem chebyshev_theta_primeCounting_sandwich
   ⟨chebyshevTheta_le_primeCounting_mul_log n,
    primeCounting_le_add_chebyshevTheta_div_log y n hy hyn⟩
 
+/-- **Limit-ready ratio form of the θ ↔ π sandwich.**  Dividing the two inequalities of
+`chebyshev_theta_primeCounting_sandwich` by `n` puts the reduction in exactly the shape the
+prime-number-theorem limit consumes: the normalized prime count `π(n)·log n / n` is squeezed
+between `θ(n)/n` and `θ(n)/n · (log n / log y) + y·log n / n`.
+
+Choosing `y = y(n)` with `y/n → 0` and `log n / log y → 1` (e.g. `y ≈ n/(log n)²`) then
+forces `π(n)·log n / n → 1 ⟺ θ(n)/n → 1`; only that elementary `o(1)` bookkeeping remains,
+the deep input `θ(n)/n → 1` being Wiener–Ikehara-level (and blocked in the pinned Mathlib). -/
+theorem primeCounting_mul_log_div_sandwich
+    (y n : ℕ) (hy : 2 ≤ y) (hyn : y ≤ n) :
+    chebyshevTheta n / (n : ℝ) ≤ (Nat.primeCounting n : ℝ) * Real.log n / (n : ℝ)
+      ∧ (Nat.primeCounting n : ℝ) * Real.log n / (n : ℝ)
+          ≤ chebyshevTheta n / (n : ℝ) * (Real.log n / Real.log y)
+            + (y : ℝ) * Real.log n / (n : ℝ) := by
+  obtain ⟨hlo, hhi⟩ := chebyshev_theta_primeCounting_sandwich y n hy hyn
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
+  have hn_ne : (n : ℝ) ≠ 0 := ne_of_gt hn_pos
+  have hlogy_pos : 0 < Real.log y := Real.log_pos (by exact_mod_cast hy)
+  have hlogy_ne : Real.log y ≠ 0 := ne_of_gt hlogy_pos
+  have hlogn_pos : 0 < Real.log n := Real.log_pos (by exact_mod_cast (show 1 < n by omega))
+  refine ⟨by gcongr, ?_⟩
+  -- multiply the upper bound `π(n) ≤ y + θ(n)/log y` by the nonnegative factor `log n / n`
+  have hfac : (0 : ℝ) ≤ Real.log n / (n : ℝ) := by positivity
+  have key := mul_le_mul_of_nonneg_right hhi hfac
+  have eL : (Nat.primeCounting n : ℝ) * (Real.log n / (n : ℝ))
+      = (Nat.primeCounting n : ℝ) * Real.log n / (n : ℝ) := by ring
+  have eR : ((y : ℝ) + chebyshevTheta n / Real.log y) * (Real.log n / (n : ℝ))
+      = chebyshevTheta n / (n : ℝ) * (Real.log n / Real.log y)
+        + (y : ℝ) * Real.log n / (n : ℝ) := by
+    field_simp
+    ring
+  rw [eL, eR] at key
+  exact key
+
 end ChebyshevPNTBridgeOQ03OQ01
