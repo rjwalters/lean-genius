@@ -171,5 +171,40 @@
       "description": "Related Erdős problem sharing themes: gaps, number-theory, squarefree"
     }
   ],
+  "references": [
+    {
+      "key": "Erdos66",
+      "authors": [
+        "P. Erdős"
+      ],
+      "title": "On the difference of consecutive terms of sequences defined by divisibility properties",
+      "venue": "Acta Arithmetica",
+      "year": "1966",
+      "volume": "12",
+      "pages": "175–182",
+      "note": "Foundational paper on gaps in B-free (A-free) sequences; source of the problem and the squarefree-case moment estimates."
+    },
+    {
+      "key": "Chan23",
+      "authors": [
+        "T. H. Chan"
+      ],
+      "title": "On moments of gaps between consecutive squarefree numbers",
+      "venue": "Moscow Journal of Combinatorics and Number Theory",
+      "year": "2023",
+      "volume": "12",
+      "note": "Asymptotics Σ (s_{k+1}−s_k)^γ ∼ B(γ)x for 0 ≤ γ < 3.75, covering the second moment (γ=2) of the solved squarefree case."
+    },
+    {
+      "key": "erdosproblems489",
+      "authors": [
+        "Thomas Bloom (ed.)"
+      ],
+      "title": "Erdős Problem 489",
+      "venue": "erdosproblems.com",
+      "year": "2024",
+      "note": "Curated statement and status of the problem: https://erdosproblems.com/489"
+    }
+  ],
   "sorries": 0
 }
