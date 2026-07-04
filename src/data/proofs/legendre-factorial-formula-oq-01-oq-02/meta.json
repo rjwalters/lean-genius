@@ -124,5 +124,43 @@
       "note": "Standard reference for Legendre's formula and base-p digit-sum identities (§6)."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "trailingZeros_isGreatest",
+      "type": "main",
+      "description": "The five-adic valuation v₅(n!) is the greatest k with 10ᵏ ∣ n! — i.e. the number of trailing zeros of n! in base ten. Membership uses 10^{v₅} = 2^{v₅}·5^{v₅} (the 2-power divides since v₅ ≤ v₂) with the two prime powers coprime; the upper bound is 5ᵏ ∣ 10ᵏ ∣ n! ⟹ k ≤ v₅.",
+      "leanType": "IsGreatest {k | 10 ^ k ∣ (n !)} (padicValNat 5 (n !))"
+    },
+    {
+      "name": "trailingZeros_eq_digit_form",
+      "type": "key",
+      "description": "Closed digit-sum form: the trailing-zero count of n! equals (n − S₅(n))/4, where S₅(n) is the base-5 digit sum of n (via Legendre's factorial identity for p=5).",
+      "leanType": "min (padicValNat 2 (n !)) (padicValNat 5 (n !)) = (n - (Nat.digits 5 n).sum) / 4"
+    },
+    {
+      "name": "padicValNat_five_le_two",
+      "type": "key",
+      "description": "The two-adic valuation of n! dominates the five-adic one: termwise ⌊n/5ⁱ⌋ ≤ ⌊n/2ⁱ⌋ since 2ⁱ ≤ 5ⁱ. This is why 5 is the limiting prime for trailing zeros.",
+      "leanType": "padicValNat 5 (n !) ≤ padicValNat 2 (n !)"
+    },
+    {
+      "name": "trailingZeros_eq_min",
+      "type": "supporting",
+      "description": "The trailing-zero count as a minimum of valuations: min(v₂(n!), v₅(n!)) = v₅(n!), since the five-adic valuation is the smaller.",
+      "leanType": "min (padicValNat 2 (n !)) (padicValNat 5 (n !)) = padicValNat 5 (n !)"
+    },
+    {
+      "name": "ten_pow_v5_dvd_factorial",
+      "type": "supporting",
+      "description": "10^{v₅(n!)} divides n! — there are at least v₅(n!) trailing zeros (the lower half of the IsGreatest claim).",
+      "leanType": "10 ^ (padicValNat 5 (n !)) ∣ (n !)"
+    },
+    {
+      "name": "not_ten_pow_succ_dvd_factorial",
+      "type": "supporting",
+      "description": "10^{v₅(n!)+1} does not divide n! — there are no more than v₅(n!) trailing zeros (the sharpness half).",
+      "leanType": "¬ (10 ^ (padicValNat 5 (n !) + 1) ∣ (n !))"
+    }
+  ]
 }
