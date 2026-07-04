@@ -159,5 +159,22 @@
       "venue": "CPP",
       "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sum_cube_weighted_sq_reduce",
+      "statement": "∑_{k=0}^{m+1} k³·C(m+1,k)² = (m+1)²·∑_{j=0}^{m} (j+1)·C(m,j)²",
+      "description": "Absorption + index-shift reduction: squaring the absorption identity k·C(m+1,k) = (m+1)·C(m,k−1) demotes the cubically-weighted square of C(m+1,·) to a linearly-weighted square of C(m,·) one order down. The vanishing k=0 term is peeled and the shift k↦k+1 turns weight k into k+1."
+    },
+    {
+      "name": "two_mul_sum_cube_weighted_sq",
+      "statement": "2·∑_{k=0}^{m+1} k³·C(m+1,k)² = (m+1)²·(m+2)·C(2m,m)",
+      "description": "The cubically-weighted central-binomial sum of squares in subtraction-free form. The reduction splits the linear sum into first + zeroth moments at level m, then closes with the first moment (OQ-07-OQ-03) and the zeroth moment (parent OQ-07 diagonal identity). The factor 2 absorbs the first-moment doubling."
+    },
+    {
+      "name": "two_mul_sum_cube_weighted_sq'",
+      "statement": "1 ≤ n → 2·∑_{k=0}^{n} k³·C(n,k)² = n²·(n+1)·C(2n−2,n−1)",
+      "description": "The third moment in classical form, recovered from the subtraction-free version by peeling n = m+1 and simplifying the natural-number subtractions. The headline result of the entry."
+    }
   ]
 }

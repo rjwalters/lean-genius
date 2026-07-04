@@ -94,5 +94,28 @@
       "two_mul_sum_cube_weighted_sq (m-form)",
       "Nat.choose evaluation by decide"
     ]
+  },
+  {
+    "id": "numeric-verification",
+    "proofId": "combinations-formula-oq-07-oq-06",
+    "range": {
+      "startLine": 139,
+      "endLine": 143
+    },
+    "type": "insight",
+    "title": "Kernel-Checked Numeric Instance",
+    "content": "Two decide checks pin the closed form at n = 3: ∑_{k=0}^{3} k³·C(3,k)² = 0·1 + 1·9 + 8·9 + 27·1 = 0 + 9 + 72 + 27 = 108, and doubling gives 2·108 = 216 = 3²·4·C(4,2) = 9·4·6, matching n²·(n+1)·C(2n−2,n−1) with n = 3. Both use kernel decide (not native_decide), so the 0-axiom footprint is preserved.",
+    "mathContext": "$\\sum_{k=0}^{3} k^3\\binom{3}{k}^2 = 0+9+72+27 = 108,\\quad 2\\cdot 108 = 216 = 3^2\\cdot 4\\cdot\\binom{4}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "third moment",
+      "central binomial coefficient",
+      "kernel reduction"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "finite sums",
+      "Lean decide tactic"
+    ]
   }
 ]
