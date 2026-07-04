@@ -81,6 +81,7 @@ variable {K V : Type*} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensiona
 noncomputable def nullity (N : Module.End K V) (k : ℕ) : ℕ :=
   finrank K (LinearMap.ker (N ^ k))
 
+omit [FiniteDimensional K V] in
 /-- The kernels of the powers of `N` form an increasing chain. -/
 theorem ker_pow_mono (N : Module.End K V) {a b : ℕ} (h : a ≤ b) :
     LinearMap.ker (N ^ a) ≤ LinearMap.ker (N ^ b) := by
@@ -94,8 +95,12 @@ theorem nullity_mono (N : Module.End K V) {a b : ℕ} (h : a ≤ b) :
     nullity N a ≤ nullity N b :=
   Submodule.finrank_mono (ker_pow_mono N h)
 
+omit [FiniteDimensional K V] in
 @[simp] theorem nullity_zero (N : Module.End K V) : nullity N 0 = 0 := by
-  simp only [nullity, pow_zero, Module.End.one_eq_id, LinearMap.ker_id, finrank_bot]
+  have hbot : LinearMap.ker (N ^ 0) = ⊥ := by
+    rw [pow_zero, Module.End.one_eq_id, LinearMap.ker_id]
+  show finrank K (LinearMap.ker (N ^ 0)) = 0
+  rw [hbot, finrank_bot]
 
 /-! ### The block-count submodule and rank–nullity across one level -/
 
@@ -113,22 +118,26 @@ noncomputable def jordanImage (N : Module.End K V) (k : ℕ) : Submodule K V :=
     rank–nullity on the finite-dimensional space `ker N^{k+1}`. -/
 theorem nullity_succ (N : Module.End K V) (k : ℕ) :
     nullity N (k + 1) = finrank K (jordanImage N k) + nullity N k := by
-  set W := LinearMap.ker (N ^ (k + 1)) with hW
-  -- the kernel of the restricted map has the nullity of level `k`
+  -- the kernel of the restricted map `N^k : ker N^{k+1} → V` has the nullity of level `k`
   have hkerfin :
-      finrank K (LinearMap.ker ((N ^ k).domRestrict W)) = nullity N k := by
-    have hcomp : (N ^ k).domRestrict W = (N ^ k).comp W.subtype := rfl
-    rw [hcomp, LinearMap.ker_comp, ← Submodule.finrank_map_subtype_eq W,
+      finrank K (LinearMap.ker ((N ^ k).domRestrict (LinearMap.ker (N ^ (k + 1)))))
+        = finrank K (LinearMap.ker (N ^ k)) := by
+    have hcomp : (N ^ k).domRestrict (LinearMap.ker (N ^ (k + 1)))
+        = (N ^ k).comp (LinearMap.ker (N ^ (k + 1))).subtype := rfl
+    rw [hcomp, LinearMap.ker_comp,
+      ← Submodule.finrank_map_subtype_eq (LinearMap.ker (N ^ (k + 1))),
       Submodule.map_comap_subtype,
-      inf_of_le_right (hW ▸ ker_pow_mono N (Nat.le_succ k))]
-  -- rank–nullity for the restricted map `N^k : ↥W → V`
-  have hkey := LinearMap.finrank_range_add_finrank_ker ((N ^ k).domRestrict W)
+      inf_of_le_right (ker_pow_mono N (Nat.le_succ k))]
+  -- rank–nullity for the restricted map `N^k : ↥(ker N^{k+1}) → V`
+  have hkey := LinearMap.finrank_range_add_finrank_ker
+      ((N ^ k).domRestrict (LinearMap.ker (N ^ (k + 1))))
   rw [LinearMap.range_domRestrict, hkerfin] at hkey
-  simp only [nullity, jordanImage] at hkey ⊢
+  unfold nullity jordanImage
   omega
 
 /-! ### Concavity of the tower -/
 
+omit [FiniteDimensional K V] in
 /-- `N` maps `jordanImage N (k+1)` into `jordanImage N k`: the block-count
     submodules are antitone.  This is the heart of the concavity proof. -/
 theorem jordanImage_antitone (N : Module.End K V) (k : ℕ) :
@@ -139,10 +148,10 @@ theorem jordanImage_antitone (N : Module.End K V) (k : ℕ) :
   refine ⟨N x, ?_, ?_⟩
   · -- `N^{k+1} (N x) = N^{k+2} x = 0`
     have h2 : (N ^ (k + 1)) (N x) = (N ^ (k + 1 + 1)) x := by
-      rw [pow_succ, Module.End.mul_apply]
+      rw [← Module.End.mul_apply, ← pow_succ]
     rw [h2]; exact hx
   · -- `N^k (N x) = N^{k+1} x`
-    rw [pow_succ, Module.End.mul_apply]
+    rw [← Module.End.mul_apply, ← pow_succ]
 
 /-- **Concavity of the nullity tower.**  `d_{k+2} + d_k ≤ 2 d_{k+1}`.
 
@@ -195,12 +204,15 @@ theorem sum_blocksAtLeast (N : Module.End K V) (m : ℕ) :
     have h := nullity_succ N n
     omega
 
+omit [FiniteDimensional K V] in
 /-- The total number of Jordan blocks (for the eigenvalue implicit in `N`) equals the
     geometric multiplicity `dim ker N` — recovered as "blocks of size ≥ 1". -/
 theorem blocksAtLeast_one (N : Module.End K V) :
     blocksAtLeast N 1 = finrank K (LinearMap.ker N) := by
-  rw [show (1 : ℕ) = 0 + 1 from rfl, blocksAtLeast_succ]
-  simp only [jordanImage, pow_one, pow_zero, Module.End.one_eq_id, Submodule.map_id]
+  show nullity N 1 - nullity N (1 - 1) = finrank K (LinearMap.ker N)
+  rw [show (1 : ℕ) - 1 = 0 from rfl, nullity_zero, Nat.sub_zero]
+  show finrank K (LinearMap.ker (N ^ 1)) = finrank K (LinearMap.ker N)
+  rw [pow_one]
 
 /-- Blocks of exact size `k+1` as a genuine (non-truncated) difference of the
     "size ≥" counts: `#{size = k+1} + dim(jordanImage N (k+1)) = dim(jordanImage N k)`. -/
@@ -229,32 +241,43 @@ section Eigenvalues
 
 variable (f : Module.End K V) (μ : K)
 
+omit [FiniteDimensional K V] in
 /-- The nullity tower of `f - μ • 1` **is** the generalized-eigenspace dimension
     tower: `nullity (f - μ•1) k = dim (genEigenspace f μ k) = d_k(μ)`. -/
 theorem nullity_sub_eq_finrank_genEigenspace (k : ℕ) :
-    nullity (f - μ • 1) k = finrank K (f.genEigenspace μ k) := by
-  simp only [nullity, Module.End.genEigenspace_nat]
+    nullity (f - μ • 1) k = finrank K (f.genEigenspace μ (k : ℕ∞)) := by
+  unfold nullity
+  rw [(Module.End.genEigenspace_nat : f.genEigenspace μ (k : ℕ∞) = _)]
 
+omit [FiniteDimensional K V] in
 /-- Blocks of size ≥ `k+1` for eigenvalue `μ`, in dimension-tower coordinates. -/
 theorem eigenvalue_blocksAtLeast (k : ℕ) :
     blocksAtLeast (f - μ • 1) (k + 1)
-      = finrank K (f.genEigenspace μ (k + 1)) - finrank K (f.genEigenspace μ k) := by
-  simp only [blocksAtLeast, Nat.add_sub_cancel, nullity_sub_eq_finrank_genEigenspace]
+      = finrank K (f.genEigenspace μ ((k + 1 : ℕ) : ℕ∞))
+        - finrank K (f.genEigenspace μ (k : ℕ∞)) := by
+  simp only [blocksAtLeast, Nat.add_sub_cancel]
+  rw [nullity_sub_eq_finrank_genEigenspace, nullity_sub_eq_finrank_genEigenspace]
 
+omit [FiniteDimensional K V] in
 /-- Total number of Jordan blocks at eigenvalue `μ` equals the geometric
     multiplicity `dim (genEigenspace f μ 1) = dim (eigenspace f μ)`. -/
 theorem eigenvalue_blocks_total :
-    blocksAtLeast (f - μ • 1) 1 = finrank K (f.genEigenspace μ 1) := by
-  rw [blocksAtLeast_one, Module.End.genEigenspace_nat, pow_one]
+    blocksAtLeast (f - μ • 1) 1 = finrank K (f.genEigenspace μ (1 : ℕ∞)) := by
+  have h1 : nullity (f - μ • 1) 1 = finrank K (f.genEigenspace μ (1 : ℕ∞)) := by
+    have h := nullity_sub_eq_finrank_genEigenspace f μ 1
+    rwa [Nat.cast_one] at h
+  simp only [blocksAtLeast, show (1 : ℕ) - 1 = 0 from rfl, nullity_zero, Nat.sub_zero]
+  exact h1
 
 /-- Concavity of the generalized-eigenspace dimension tower for eigenvalue `μ`:
     `d_{k+2}(μ) + d_k(μ) ≤ 2 d_{k+1}(μ)`. -/
 theorem genEigenspace_finrank_concave (k : ℕ) :
-    finrank K (f.genEigenspace μ (k + 2)) + finrank K (f.genEigenspace μ k)
-      ≤ 2 * finrank K (f.genEigenspace μ (k + 1)) := by
-  have := nullity_concave (f - μ • 1) k
-  rwa [nullity_sub_eq_finrank_genEigenspace, nullity_sub_eq_finrank_genEigenspace,
-    nullity_sub_eq_finrank_genEigenspace] at this
+    finrank K (f.genEigenspace μ ((k + 2 : ℕ) : ℕ∞)) + finrank K (f.genEigenspace μ (k : ℕ∞))
+      ≤ 2 * finrank K (f.genEigenspace μ ((k + 1 : ℕ) : ℕ∞)) := by
+  have h := nullity_concave (f - μ • 1) k
+  rw [nullity_sub_eq_finrank_genEigenspace, nullity_sub_eq_finrank_genEigenspace,
+    nullity_sub_eq_finrank_genEigenspace] at h
+  exact h
 
 end Eigenvalues
 
