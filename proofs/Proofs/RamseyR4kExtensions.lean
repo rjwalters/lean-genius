@@ -1163,6 +1163,113 @@ theorem ramsey_symmetric' (s t : ℕ) :
   exact ramseyUpperBound_symm s t hs ht
 
 -- ═════════════════════════════════════════════════════════════════════════
+-- Part XII: The Symmetric Lovász Local Lemma — Analytic Core
+-- ═════════════════════════════════════════════════════════════════════════
+
+/-
+### The symmetric-to-asymmetric bridge of the Lovász Local Lemma
+
+The **symmetric Lovász Local Lemma** states: if every bad event `Aᵢ` has
+`Pr[Aᵢ] ≤ p`, each `Aᵢ` is mutually independent of all but at most `d` of the
+others, and
+
+  `e · p · (d + 1) ≤ 1`,
+
+then `Pr[⋂ᵢ ¬Aᵢ] > 0`, so a configuration avoiding every bad event exists.
+
+The textbook derivation obtains the symmetric form from the *asymmetric*
+(general) LLL by choosing the uniform weights `xᵢ = 1/(d+1)`.  The asymmetric
+hypothesis then reads
+
+  `p ≤ xᵢ · (1 - xᵢ)^d = (1/(d+1)) · (1 - 1/(d+1))^d`,
+
+and the whole reduction turns on the elementary analytic inequality
+
+  `(1 - 1/(d+1))^d ≥ 1/e`.
+
+Mathlib currently packages neither the LLL nor this bridge.  We formalize the
+inequality (`lll_exp_weight_bound`) and the resulting symmetric→asymmetric
+reduction (`lll_symmetric_condition`) here, axiom-free.  These are exactly the
+pieces a future measure-theoretic LLL proof would consume; the probability-space
+(conditional-probability) induction itself remains a separate, larger
+formalization tracked as the open part of this problem.
+-/
+
+/-- **Analytic core of the symmetric LLL.**  For every `d`,
+    `e⁻¹ ≤ (1 - 1/(d+1))^d`.  Equivalently `(1 - 1/(d+1))^d ≥ 1/e`.  This is the
+    inequality that lets the symmetric LLL hypothesis `e·p·(d+1) ≤ 1` be met by
+    the uniform asymmetric weights `xᵢ = 1/(d+1)`. -/
+theorem lll_exp_weight_bound (d : ℕ) :
+    Real.exp (-1) ≤ (1 - 1 / (d + 1 : ℝ)) ^ d := by
+  rcases Nat.eq_zero_or_pos d with hd | hd
+  · -- d = 0: RHS = (1 - 1)^0 = 1 and e⁻¹ ≤ 1.
+    subst hd
+    simp only [pow_zero]
+    have : Real.exp (-1) ≤ Real.exp 0 := Real.exp_le_exp.mpr (by norm_num)
+    simpa using this
+  · -- d ≥ 1.
+    have hdpos : (0 : ℝ) < d := by exact_mod_cast hd
+    have hdne : (d : ℝ) ≠ 0 := ne_of_gt hdpos
+    set b : ℝ := 1 - 1 / (d + 1 : ℝ) with hb
+    have hbeq : b = d / (d + 1) := by rw [hb]; field_simp; ring
+    have hbpos : 0 < b := by rw [hbeq]; positivity
+    -- log((d+1)/d) ≤ 1/d  (from  log x ≤ x - 1)
+    have hlog : Real.log ((d + 1) / d) ≤ 1 / d := by
+      have h := Real.log_le_sub_one_of_pos (show (0 : ℝ) < ((d : ℝ) + 1) / d by positivity)
+      have he : ((d : ℝ) + 1) / d - 1 = 1 / d := by field_simp; ring
+      linarith [h, he]
+    -- log b = -log((d+1)/d) ≥ -1/d
+    have hlb : Real.log b = -Real.log ((d + 1) / d) := by
+      rw [hbeq, ← Real.log_inv, inv_div]
+    have hlogb : -(1 / d) ≤ Real.log b := by rw [hlb]; linarith [hlog]
+    -- d · log b ≥ -1
+    have hdlogb : (-1 : ℝ) ≤ (d : ℝ) * Real.log b := by
+      have hmul := mul_le_mul_of_nonneg_left hlogb (le_of_lt hdpos)
+      have hcancel : (d : ℝ) * -(1 / d) = -1 := by
+        rw [mul_neg, mul_one_div, div_self hdne]
+      linarith [hmul, hcancel]
+    -- exponentiate: e⁻¹ ≤ b^d
+    have hbd : (0 : ℝ) < b ^ d := pow_pos hbpos d
+    calc Real.exp (-1)
+        ≤ Real.exp ((d : ℝ) * Real.log b) := Real.exp_le_exp.mpr hdlogb
+      _ = Real.exp (Real.log (b ^ d)) := by rw [Real.log_pow]
+      _ = b ^ d := Real.exp_log hbd
+
+/-- **Symmetric → asymmetric bridge for the LLL.**  If `p ≥ 0` and the symmetric
+    LLL hypothesis `e·p·(d+1) ≤ 1` holds, then the asymmetric LLL weight
+    inequality is satisfied by the uniform choice `xᵢ = 1/(d+1)`:
+
+      `p ≤ (1/(d+1)) · (1 - 1/(d+1))^d`.
+
+    Consequently the symmetric hypothesis really does supply the input the general
+    LLL requires; only the probability-space induction of the general LLL is left
+    to close the full symmetric statement. -/
+theorem lll_symmetric_condition (p : ℝ) (hp : 0 ≤ p) (d : ℕ)
+    (hsym : Real.exp 1 * p * (d + 1) ≤ 1) :
+    p ≤ (1 / (d + 1 : ℝ)) * (1 - 1 / (d + 1 : ℝ)) ^ d := by
+  have hene : Real.exp 1 ≠ 0 := ne_of_gt (Real.exp_pos 1)
+  have hd1pos : (0 : ℝ) < (d + 1 : ℝ) := by positivity
+  have hexp := lll_exp_weight_bound d
+  have hinv : Real.exp (-1) = (Real.exp 1)⁻¹ := by rw [Real.exp_neg]
+  -- p·(d+1) ≤ e⁻¹  (rearrange the symmetric hypothesis)
+  have h1 : p * ((d : ℝ) + 1) ≤ (Real.exp 1)⁻¹ := by
+    have hh : Real.exp 1 * (p * ((d : ℝ) + 1)) ≤ 1 := by nlinarith [hsym]
+    calc p * ((d : ℝ) + 1)
+        = (Real.exp 1)⁻¹ * (Real.exp 1 * (p * ((d : ℝ) + 1))) := by
+          rw [← mul_assoc, inv_mul_cancel₀ hene, one_mul]
+      _ ≤ (Real.exp 1)⁻¹ * 1 := by
+          apply mul_le_mul_of_nonneg_left hh; positivity
+      _ = (Real.exp 1)⁻¹ := by ring
+  -- combine with e⁻¹ ≤ (1-1/(d+1))^d
+  have h2 : (Real.exp 1)⁻¹ ≤ (1 - 1 / ((d : ℝ) + 1)) ^ d := by rw [← hinv]; exact hexp
+  have key : p * ((d : ℝ) + 1) ≤ (1 - 1 / ((d : ℝ) + 1)) ^ d := h1.trans h2
+  -- divide through by (d+1) > 0
+  have hstep : p ≤ (1 - 1 / ((d : ℝ) + 1)) ^ d / ((d : ℝ) + 1) :=
+    (le_div_iff₀ hd1pos).mpr key
+  calc p ≤ (1 - 1 / ((d : ℝ) + 1)) ^ d / ((d : ℝ) + 1) := hstep
+    _ = (1 / ((d : ℝ) + 1)) * (1 - 1 / ((d : ℝ) + 1)) ^ d := by ring
+
+-- ═════════════════════════════════════════════════════════════════════════
 -- VERIFICATION CHECKS (Parts X-XI)
 -- ═════════════════════════════════════════════════════════════════════════
 
@@ -1179,5 +1286,9 @@ theorem ramsey_symmetric' (s t : ℕ) :
 #check burr_erdos_conjecture
 #check ramsey_multiplicity
 #check ramsey_symmetric'
+
+-- Part XII: Symmetric Lovász Local Lemma — analytic core
+#check lll_exp_weight_bound
+#check lll_symmetric_condition
 
 end RamseyR4k
