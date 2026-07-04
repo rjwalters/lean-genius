@@ -18,22 +18,37 @@
     "id": "ann-independence",
     "proofId": "hilbert-14-oq-02-oq-01",
     "range": {
-      "startLine": 47,
-      "endLine": 86
+      "startLine": 46,
+      "endLine": 59
     },
     "type": "insight",
-    "title": "The Two Parent Facts the Lower Bound Rests On",
-    "content": "The sharpness argument needs exactly two inputs from the parent, re-proved here so the entry is self-contained. esymm_algebraicIndependent shows e₁,…,eₙ are algebraically independent over R: aeval (e₁,…,eₙ) factors as the injective subalgebra inclusion composed with the injective esymmAlgHom (Fundamental Theorem of Symmetric Polynomials), and algebraicIndependent_iff_injective_aeval converts that to algebraic independence. esymm_isHomogeneous shows eₖ is homogeneous of degree k, computing the multidegree of each squarefree monomial of eₖ via Finsupp.degree of a k-subset indicator = k. Independence drives the sharpness; homogeneity pins the exact degrees for the capstone.",
-    "mathContext": "$e_1,\\dots,e_n$ algebraically independent over $R$ $\\iff$ $\\mathrm{aeval}(e_1,\\dots,e_n)$ injective; $e_k$ is homogeneous of degree $k$ ($e_k = \\sum_{|T|=k}\\prod_{i\\in T} x_i$).",
+    "title": "Parent Fact I — e₁,…,eₙ Are Algebraically Independent",
+    "content": "The first of the two inputs the sharpness argument borrows from the parent, re-proved here so the entry is self-contained. esymm_algebraicIndependent shows the elementary symmetric polynomials e₁,…,eₙ are algebraically independent over R when |σ| = n. The proof routes through algebraicIndependent_iff_injective_aeval: it suffices that aeval (e₁,…,eₙ) is injective. That map factors as the injective subalgebra inclusion (symmetricSubalgebra σ R).val composed with the injective esymmAlgHom σ R n (the algebra isomorphism onto the symmetric subalgebra supplied by the Fundamental Theorem of Symmetric Polynomials), and a composite of injections is injective. This algebraic independence is what powers the transcendence step that follows.",
+    "mathContext": "$e_1,\\dots,e_n$ algebraically independent over $R$ $\\iff$ $\\mathrm{aeval}(e_1,\\dots,e_n)$ injective; here $\\mathrm{aeval} = \\iota \\circ \\mathrm{esymmAlgHom}$ with both factors injective.",
     "significance": "supporting",
-    "relatedConcepts": ["algebraic independence", "elementary symmetric polynomials", "esymmAlgHom injectivity", "homogeneous polynomial", "total degree"],
-    "prerequisites": ["Fundamental Theorem of Symmetric Polynomials", "algebra homomorphisms", "multidegree of monomials"]
+    "relatedConcepts": ["algebraic independence", "elementary symmetric polynomials", "esymmAlgHom injectivity", "Fundamental Theorem of Symmetric Polynomials", "algebra homomorphisms"],
+    "prerequisites": ["Fundamental Theorem of Symmetric Polynomials", "algebra homomorphisms", "injective aeval"]
+  },
+  {
+    "id": "ann-homogeneous",
+    "proofId": "hilbert-14-oq-02-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 73
+    },
+    "type": "insight",
+    "title": "Parent Fact II — Each eₖ Is Homogeneous of Degree k",
+    "content": "The second input, re-proved self-contained. esymm_isHomogeneous shows eₖ is homogeneous of degree k. Writing eₖ = ∑_{|T|=k} ∏_{i∈T} xᵢ (esymm_eq_sum_monomial), it suffices that every summand is a homogeneous degree-k monomial (IsHomogeneous.sum + isHomogeneous_monomial). Each summand is the squarefree monomial indexed by a k-element subset T, whose multidegree is ∑_{i∈T} single i 1; its Finsupp.degree equals |T| = k (Finsupp.degree_single and mem_powersetCard). Homogeneity is what later pins the EXACT degrees: the lower generators sit in degrees ≤ n-1 while eₙ sits in degree exactly n.",
+    "mathContext": "$e_k = \\sum_{|T|=k}\\prod_{i\\in T} x_i$ is homogeneous of degree $k$; each squarefree monomial has multidegree $\\sum_{i\\in T}\\mathbf{1}_i$ of total degree $|T|=k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["homogeneous polynomial", "total degree", "elementary symmetric polynomials", "squarefree monomial", "multidegree of monomials"],
+    "prerequisites": ["homogeneous polynomials", "multidegree of monomials", "powerset cardinality"]
   },
   {
     "id": "ann-sharpness",
     "proofId": "hilbert-14-oq-02-oq-01",
     "range": {
-      "startLine": 88,
+      "startLine": 74,
       "endLine": 120
     },
     "type": "insight",
