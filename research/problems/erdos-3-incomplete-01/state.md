@@ -1,16 +1,38 @@
 # State: erdos-3-incomplete-01
 
-**Phase**: ACT (Roth-number lower bound landed)
+**Phase**: ACT (low-length regime landed)
 **Since**: 2026-07-04
-**Attempts**: 3
+**Attempts**: 4
 **Status**: progress
 
 ## Current Focus
 
-Structural lower bound on the Roth number, bracketing it with the existing
-upper bound. Formalizes the "trivial regime" of Erdős #3.
+Elementary boundary results delineating where Erdős #3 is genuinely open
+(`k ≥ 3`) from where its conclusion is a triviality (`k ≤ 2`).
 
-## Result this iteration (attempt 3)
+## Result this iteration (attempt 4)
+
+Four axiom-free, `sorry`-free lemmas added (build: 7743 jobs, verified) — the
+**unconditional low-length regime** `k ≤ 2`:
+
+1. **`infinite_of_hasDivergentSum`** — `HasDivergentSum A → A.Infinite`
+   (contrapositive: a finite set has a `Fintype`-summable reciprocal sum via
+   `hasSum_fintype`). This is the *hypothesis-side* companion explicitly promised
+   in the `infinite_of_containsArbitrarilyLongAP` docstring but previously absent.
+2. **`containsAP_two_of_lt`** — `a,b ∈ A`, `a < b` ⟹ `ContainsAP A 2`
+   (`{a,b} = ArithProg a (b-a) 2`, common difference `b-a > 0`).
+3. **`containsAP_two_of_infinite`** — an infinite `A ⊆ ℕ` has two distinct
+   elements (`h.diff (finite_singleton a)` nonempty), hence a genuine 2-AP.
+4. **`hasDivergentSum_containsAP_le_two`** — the payoff: `HasDivergentSum A →
+   ∀ k ≤ 2, ContainsAP A k` (via `containsAP_of_le`). This is Erdős #3 proved
+   *verbatim and unconditionally* on the low-length regime — no Roth bound. The
+   entire open content of the conjecture lives at `k ≥ 3`, matching the Roth
+   floor `k-1` (`rothNumber_ge_min`): below length 3 there is no arithmetic
+   content on either side of the implication.
+
+## Result attempt 3
+
+Two axiom-free, `sorry`-free lemmas added (build: 7743 jobs, verified):
 
 Two axiom-free, `sorry`-free lemmas added (build: 7743 jobs, verified):
 
@@ -41,10 +63,13 @@ Two axiom-free, `sorry`-free lemmas added (build: 7743 jobs, verified):
 
 ## Next Action
 
-Leave the threshold-critical sorry documented. Remaining shallow follow-ups
-(optional): expose `summable_of_strongBound` as a reusable density→convergence
-lemma elsewhere, or a small-`k` triviality (`ContainsAP A 0` always;
-`ContainsAP A 1 ↔ A.Nonempty`). The environment recipe (external worktree,
+Leave the threshold-critical sorry documented. The elementary bracketing is now
+complete on both axes: Roth number (`rothNumber_ge_min`/`_le_window`) and AP
+length (`hasDivergentSum_containsAP_le_two` for `k ≤ 2`). Only remaining shallow
+follow-up: expose `summable_of_strongBound` as a reusable density→convergence
+lemma elsewhere. The environment recipe (external `/tmp` worktree — the managed
+`.loom/worktrees/researcher-5` was hard-reset AND deleted mid-session by the
+daemon; commit in `/tmp` immediately —
 `LEAN_MEMORY_LIMIT=16384 LEAN_SKIP_CACHE=true`) is proven to work for this file.
 
 ## Attempts
@@ -54,3 +79,6 @@ lemma elsewhere, or a small-`k` triviality (`ContainsAP A 0` always;
   (0-axiom, 7743 jobs); memory bump to 16 GB needed (transient SIGBUS at 8 GB).
 - 3: added `isAPFree_of_card_lt` + `rothNumber_ge_min` (trivial Roth lower
   bound, brackets `rothNumber_le_window`); 0-axiom, 0-sorry, 7743 jobs verified.
+- 4: added the low-length regime `k ≤ 2` (`infinite_of_hasDivergentSum`,
+  `containsAP_two_of_lt`, `containsAP_two_of_infinite`,
+  `hasDivergentSum_containsAP_le_two`); 0-axiom, 0-sorry, 7743 jobs verified.
