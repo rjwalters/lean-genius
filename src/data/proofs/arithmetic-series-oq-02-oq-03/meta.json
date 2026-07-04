@@ -163,5 +163,67 @@
       "Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "faceCount_zero",
+      "type": "technical",
+      "description": "Vertex count of the standard k-simplex: f₀(Δᵏ) = C(k+1,1) = k+1.",
+      "leanType": "(k : ℕ) → faceCount k 0 = k + 1"
+    },
+    {
+      "name": "faceCount_top",
+      "type": "technical",
+      "description": "Top-face count: Δᵏ has exactly one k-face (itself), f_k(Δᵏ) = C(k+1,k+1) = 1.",
+      "leanType": "(k : ℕ) → faceCount k k = 1"
+    },
+    {
+      "name": "faceCount_one",
+      "type": "supporting",
+      "description": "Edge count: f₁(Δᵏ) = C(k+1,2) = (k+1)k/2, the (k)-th triangular number.",
+      "leanType": "(k : ℕ) → faceCount k 1 = (k + 1) * k / 2"
+    },
+    {
+      "name": "faceCount_gt",
+      "type": "technical",
+      "description": "Vanishing above the top dimension: for j > k the simplex Δᵏ has no j-faces.",
+      "leanType": "(k j : ℕ) → k < j → faceCount k j = 0"
+    },
+    {
+      "name": "faceCount_eq_simplicial",
+      "type": "core",
+      "description": "Main theorem: the number of j-faces of Δᵏ equals the simplicial number, f_j(Δᵏ) = C(k+1,j+1) = simplicial (j+1) (k-j), connecting f-vectors of simplicial complexes to the higher arithmetic-series generalization.",
+      "leanType": "(k j : ℕ) → j ≤ k → faceCount k j = simplicial (j + 1) (k - j)"
+    },
+    {
+      "name": "simplicial_eq_faceCount",
+      "type": "core",
+      "description": "Converse reformulation: every simplicial number counts faces of a simplex, simplicial m n = f_{m-1}(Δ^{n+m-1}) for m ≥ 1.",
+      "leanType": "(m n : ℕ) → 1 ≤ m → simplicial m n = faceCount (n + m - 1) (m - 1)"
+    },
+    {
+      "name": "total_faces",
+      "type": "core",
+      "description": "Total proper face count: Σ_{j=0}^k f_j(Δᵏ) = 2^{k+1} - 1, from the full binomial sum ∑ C(k+1,i) = 2^{k+1} minus the empty face.",
+      "leanType": "(k : ℕ) → ∑ j ∈ range (k + 1), faceCount k j = 2 ^ (k + 1) - 1"
+    },
+    {
+      "name": "euler_characteristic",
+      "type": "core",
+      "description": "Euler characteristic χ(Δᵏ) = Σ (-1)^j f_j = 1 (simplices are contractible), from the alternating binomial identity ∑ (-1)^i C(k+1,i) = 0.",
+      "leanType": "(k : ℕ) → ∑ j ∈ range (k + 1), (-1 : ℤ) ^ j * (faceCount k j : ℤ) = 1"
+    },
+    {
+      "name": "triangular_counts_edges",
+      "type": "supporting",
+      "description": "Triangular numbers count simplex edges: simplicial 2 n = f₁(Δ^{n+1}) = C(n+2,2).",
+      "leanType": "(n : ℕ) → simplicial 2 n = faceCount (n + 1) 1"
+    },
+    {
+      "name": "tetrahedral_counts_faces",
+      "type": "supporting",
+      "description": "Tetrahedral numbers count triangular faces: simplicial 3 n = f₂(Δ^{n+2}) = C(n+3,3).",
+      "leanType": "(n : ℕ) → simplicial 3 n = faceCount (n + 2) 2"
+    }
+  ],
   "sorries": 0
 }
