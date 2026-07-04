@@ -173,5 +173,23 @@
       "description": "Recovers the Mersenne family (∑ 2^i = 2^{k+1}-1 = σ(2^k)) without native_decide.",
       "significance": "The infinite Mersenne family of representable numbers, axiom-free."
     }
+  ],
+  "references": [
+    {
+      "title": "Erdős Problem #1054 (erdosproblems.com) — representability via partial sums of the sorted divisor list ('Construction D')",
+      "url": "https://www.erdosproblems.com/1054"
+    },
+    {
+      "title": "OEIS A000203 — σ(n), the sum of divisors of n, the arithmetic function shown always representable here",
+      "url": "https://oeis.org/A000203"
+    },
+    {
+      "title": "G. H. Hardy, E. M. Wright — An Introduction to the Theory of Numbers, 6th ed., Oxford (2008), §16.7–16.8 (σ(n), perfect numbers, Mersenne numbers 2^{k+1}−1 = σ(2^k))",
+      "url": "https://global.oup.com/academic/product/an-introduction-to-the-theory-of-numbers-9780199219865"
+    },
+    {
+      "title": "Mathlib — NumberTheory.Divisors (Nat.divisors, Nat.sigma / ∑_{d∣n} d) underlying the sorted-divisor-list formalization",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Divisors.html"
+    }
   ]
 }
