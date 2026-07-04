@@ -386,6 +386,57 @@ theorem unionBound_beats_lll_at_7 :
   rw [ramseyLLLCondition_iff]
   decide
 
+/-- **Crossover, small-`n` (strict converse) side.**  The exact dual of
+    `lll_core_le_firstMoment_core`.  When `C(n,2) < 3·C(k,2)²` — `n` is *small*
+    relative to `k²`, the pre-asymptotic regime of `unionBound_beats_lll_at_6/7` —
+    the union-bound core `2·C(n,k)` is *strictly* smaller than the LLL core `6·d`,
+    so the honest first moment is the more permissive of the two tests.  Together
+    with `lll_core_le_firstMoment_core` this pins the crossover to the single
+    scalar comparison `C(n,2) ⋛ 3·C(k,2)²`.
+
+    Proof: cancel the positive common factor `2·C(n,k) > 0` (needs `k ≤ n`) out of
+    the exact identity `C(n,2)·(6d) = 3·C(k,2)²·(2·C(n,k))`
+    (`lll_core_eq_firstMoment_core`); the strict hypothesis on `C(n,2)` then
+    transfers directly. -/
+theorem firstMoment_core_lt_lll_core {n k : ℕ} (hk : 2 ≤ k) (hkn : k ≤ n)
+    (hreg : n.choose 2 < 3 * (k.choose 2) ^ 2) :
+    2 * n.choose k < 6 * cliqueDependencyBound n k := by
+  have hpos : 0 < 2 * n.choose k := by
+    have := Nat.choose_pos hkn; positivity
+  have hid := lll_core_eq_firstMoment_core (n := n) (k := k) hk
+  have hlt : n.choose 2 * (2 * n.choose k)
+      < n.choose 2 * (6 * cliqueDependencyBound n k) := by
+    rw [hid]
+    exact mul_lt_mul_of_pos_right hreg hpos
+  exact lt_of_mul_lt_mul_left hlt (Nat.zero_le _)
+
+/-- **Sharp crossover characterization.**  Combining the large-`n` bound
+    `lll_core_le_firstMoment_core` (contrapositive) with its strict small-`n`
+    converse `firstMoment_core_lt_lll_core` shows the crossover between the
+    symmetric-LLL feasibility core `6·(d+1)` and the sharp union-bound core
+    `2·C(n,k)` is governed *exactly* by the sign of `C(n,2) − 3·C(k,2)²`:
+
+      `2·C(n,k) < 6·d  ↔  C(n,2) < 3·C(k,2)²`.
+
+    Reading `6·d` as the dominant part of the LLL budget requirement `6·(d+1)` and
+    `2·C(n,k)` as the union-bound budget requirement (both compared against the same
+    `2^{C(k,2)}`, cf. `ramseyLLLCondition_iff` and `firstMomentCondition`), this is
+    the finite, axiom-free statement that the two feasibility tests of this file
+    trade places precisely at `C(n,2) = 3·C(k,2)²`.  It subsumes the numeric
+    witnesses `unionBound_beats_lll_at_6/7` (small-`n` side) and the asymptotic
+    `lll_core_le_firstMoment_core` (large-`n` side) as the two halves of one
+    equivalence. -/
+theorem lll_core_gt_firstMoment_core_iff {n k : ℕ} (hk : 2 ≤ k) (hkn : k ≤ n)
+    (hn : 2 ≤ n) :
+    2 * n.choose k < 6 * cliqueDependencyBound n k
+      ↔ n.choose 2 < 3 * (k.choose 2) ^ 2 := by
+  constructor
+  · intro h
+    by_contra hcon
+    push_neg at hcon
+    exact absurd (lll_core_le_firstMoment_core hk hn hcon) (by omega)
+  · exact firstMoment_core_lt_lll_core hk hkn
+
 -- ═══════════════════════════════════════════════════════════════════
 -- PART VIII: THE REAL LLL CONSTANT `e < 3` JUSTIFIES THE INTEGER SURROGATE
 -- ═══════════════════════════════════════════════════════════════════

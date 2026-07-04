@@ -115,6 +115,13 @@
       "startLine": 204,
       "endLine": 231,
       "summary": "cliqueDependencyBound_mono shows the dependency degree is monotone in the number of vertices, and RamseyLLLCondition_antitone concludes the feasibility test is a genuine threshold: holding at m vertices implies holding at every n ≤ m."
+    },
+    {
+      "id": "sharp-crossover-characterization",
+      "title": "Sharp LLL-vs-union-bound crossover characterization",
+      "startLine": 389,
+      "endLine": 432,
+      "summary": "firstMoment_core_lt_lll_core is the strict small-n converse of lll_core_le_firstMoment_core: when C(n,2) < 3·C(k,2)² the union-bound core 2·C(n,k) is strictly below the LLL core 6·d, obtained by cancelling the positive factor 2·C(n,k) out of the exact identity C(n,2)·6d = 3·C(k,2)²·2·C(n,k). Combining both directions, lll_core_gt_firstMoment_core_iff proves the equivalence 2·C(n,k) < 6·d ↔ C(n,2) < 3·C(k,2)², pinning the crossover between the symmetric-LLL feasibility core and the sharp union bound to the single scalar comparison C(n,2) ⋛ 3·C(k,2)². This subsumes the numeric witnesses unionBound_beats_lll_at_6/7 (small-n side) and the asymptotic lll_core_le_firstMoment_core (large-n side) as the two halves of one iff."
     }
   ],
   "conclusion": {
@@ -163,9 +170,9 @@
   "leanFile": {
     "path": "Proofs/RamseyR4kExtensionsOQ03.lean",
     "axiomCount": 0,
-    "theoremCount": 18,
+    "theoremCount": 22,
     "definitionCount": 6,
-    "lineCount": 479,
+    "lineCount": 593,
     "sorries": 0
   }
 }
