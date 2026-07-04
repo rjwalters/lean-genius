@@ -31,12 +31,12 @@
     "id": "ann-bgcost-2",
     "proofId": "binary-gcd-oq-01-oq-01",
     "range": {
-      "startLine": 59,
-      "endLine": 89
+      "startLine": 60,
+      "endLine": 81
     },
     "type": "definition",
     "title": "The Cost Recursion: Bit-Length per Step",
-    "content": "**The cost model.** $\\mathtt{binaryGcdCost}$ mirrors the five-branch recursion of $\\mathtt{binaryGcdSteps}$ *exactly* — even/even halves both, even/odd halves one, odd/odd subtracts the smaller from the larger and halves the difference — but instead of adding $1$ per step it adds $\\mathtt{Nat.size}(a) + \\mathtt{Nat.size}(b)$, the combined bit-length of the operands *at that step*. It is well-founded on $a+b$ (each branch strictly shrinks the sum, discharged by `decreasing_by omega`), with a finished computation ($a=0$ or $b=0$) costing $0$ (the two `@[simp]` boundary lemmas).",
+    "content": "**The cost model.** $\\mathtt{binaryGcdCost}$ mirrors the five-branch recursion of $\\mathtt{binaryGcdSteps}$ *exactly* — even/even halves both, even/odd halves one, odd/odd subtracts the smaller from the larger and halves the difference — but instead of adding $1$ per step it adds $\\mathtt{Nat.size}(a) + \\mathtt{Nat.size}(b)$, the combined bit-length of the operands *at that step*. It is well-founded on $a+b$: each branch strictly shrinks the sum (division by $2$ and truncated subtraction both decrease $a+b$ on positive operands), and the obligations are discharged uniformly by `termination_by a + b` / `decreasing_by all_goals omega`.",
     "mathContext": "Charging bit-length per step is faithful because every Stein primitive — a right shift, a subtraction, or a parity/comparison test — is $\\Theta(\\text{bit-length})$ bit operations.",
     "significance": "critical",
     "relatedConcepts": [
@@ -52,6 +52,33 @@
       "definition",
       "cost-model",
       "recursion"
+    ]
+  },
+  {
+    "id": "ann-bgcost-2b",
+    "proofId": "binary-gcd-oq-01-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Boundary Lemmas: Zero Cost at a Finished Computation",
+    "content": "**The base cases, made definitional.** Two `@[simp]` lemmas pin the recursion's boundary: $\\mathtt{binaryGcdCost}\\,0\\,b = 0$ and $\\mathtt{binaryGcdCost}\\,a\\,0 = 0$. They say the honest statement that *once an operand is zero the GCD is already known, so no further bit operations are charged*. The left case is the first defining equation ($\\mathtt{binaryGcdCost.eq\\_1}$) directly; the right case needs a `cases a` because the `match` lists `0, _` before `_, 0`, so `a = 0` falls through the first equation and `a = a'+1` through the second ($\\mathtt{binaryGcdCost.eq\\_2}$). Marking both `@[simp]` lets the later induction close its $a=0$ and $b=0$ leaves by `simp` alone.",
+    "mathContext": "These are the recursion's fixed points: $\\mathtt{binaryGcdCost}$ accumulates $\\mathtt{Nat.size}\\,a + \\mathtt{Nat.size}\\,b$ strictly *before* recursing, so a terminal pair contributes nothing — matching $\\mathtt{binaryGcdSteps}\\,0\\,b = 0$ step-for-step and keeping the two recursions aligned at the base.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Base cases of a well-founded recursion",
+      "Match-arm ordering and generated equation lemmas (eq_1, eq_2)",
+      "@[simp] normal forms feeding a later induction"
+    ],
+    "prerequisites": [
+      "How Lean compiles a multi-argument match into equation lemmas",
+      "Case analysis on a Nat successor"
+    ],
+    "tags": [
+      "proof-step",
+      "base-case",
+      "simp-lemma"
     ]
   },
   {
