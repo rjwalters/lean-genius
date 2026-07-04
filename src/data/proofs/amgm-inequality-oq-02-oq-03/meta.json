@@ -146,6 +146,50 @@
     "path": "Proofs/AmgmInequalityOQ02OQ03.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "normElemSymm_zero",
+      "type": "technical",
+      "description": "The normalized elementary symmetric polynomial a₀ = e₀/C(n,0) equals 1, anchoring the Maclaurin chain at k = 0.",
+      "leanType": "{n : ℕ} → (x : Fin n → ℝ) → normElemSymm 0 x = 1"
+    },
+    {
+      "name": "normElemSymm_nonneg",
+      "type": "technical",
+      "description": "For non-negative inputs, every normalized elementary symmetric polynomial aₖ = eₖ/C(n,k) is non-negative.",
+      "leanType": "{n : ℕ} → (k : ℕ) → (x : Fin n → ℝ) → (∀ i, 0 ≤ x i) → 0 ≤ normElemSymm k x"
+    },
+    {
+      "name": "normElemSymm_zero_succ",
+      "type": "technical",
+      "description": "Zero propagation: for non-negative inputs, if aₘ = 0 then aₘ₊₁ = 0, since every (m+1)-subset contains an m-subset whose product already vanishes. Needed to handle the degenerate branch of the power inequality.",
+      "leanType": "{n : ℕ} → (m : ℕ) → (x : Fin n → ℝ) → (∀ i, 0 ≤ x i) → m ≤ n → normElemSymm m x = 0 → normElemSymm (m + 1) x = 0"
+    },
+    {
+      "name": "newton_lc",
+      "type": "core",
+      "description": "Newton's log-concavity in normalized form: aₖ² ≥ aₖ₋₁·aₖ₊₁ for 1 ≤ k, k+1 ≤ n. Delegates to the axiom-free, 0-sorry `NewtonLogConcavity.newton_log_concavity_proved`, so the whole chain is unconditional.",
+      "leanType": "{n : ℕ} → (k : ℕ) → 1 ≤ k → k + 1 ≤ n → (x : Fin n → ℝ) → (∀ i, 0 ≤ x i) → normElemSymm k x ^ 2 ≥ normElemSymm (k - 1) x * normElemSymm (k + 1) x"
+    },
+    {
+      "name": "power_inequality",
+      "type": "core",
+      "description": "The engine of the Maclaurin chain: aₖ^{k+1} ≥ aₖ₊₁^k for 0 ≤ k < n, proved by induction — raise log-concavity to the k-th power, combine with the inductive hypothesis, and cancel aₖ^{k-1} (with a separate zero branch).",
+      "leanType": "{n : ℕ} → (k : ℕ) → k + 1 ≤ n → (x : Fin n → ℝ) → (∀ i, 0 ≤ x i) → normElemSymm k x ^ (k + 1) ≥ normElemSymm (k + 1) x ^ k"
+    },
+    {
+      "name": "maclaurin_step_from_newton",
+      "type": "core",
+      "description": "Main theorem: the Maclaurin step Mₖ ≥ Mₖ₊₁ for non-negative inputs, obtained by taking the 1/(k(k+1))-th rpow of the power inequality so exponents collapse to aₖ^{1/k} ≥ aₖ₊₁^{1/(k+1)}.",
+      "leanType": "{n : ℕ} → (k : ℕ) → 0 < k → k + 1 ≤ n → (x : Fin n → ℝ) → (∀ i, 0 ≤ x i) → maclaurinMean k x ≥ maclaurinMean (k + 1) x"
+    },
+    {
+      "name": "maclaurin_step_proved",
+      "type": "core",
+      "description": "Headline restatement: the Maclaurin step is now a theorem rather than an axiom, eliminating the `maclaurin_step` axiom of AmgmInequalityOQ02.lean by deriving it from Newton's log-concavity.",
+      "leanType": "{n : ℕ} → (k : ℕ) → 0 < k → k + 1 ≤ n → (x : Fin n → ℝ) → (∀ i, 0 ≤ x i) → maclaurinMean k x ≥ maclaurinMean (k + 1) x"
+    }
+  ],
   "references": [
     {
       "authors": [
