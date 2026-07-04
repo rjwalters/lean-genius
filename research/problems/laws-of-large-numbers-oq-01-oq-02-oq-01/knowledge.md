@@ -841,3 +841,33 @@ plugs this bound into `𝔼[X²·(inner tail)]` and integrates to `C·𝔼|X|ᵖ
 centering and the final combination. Worked in external home-dir worktree `/Users/rwalters/lg-r8-mz-tonelli`
 (build FROM the worktree with `LEAN_SKIP_CACHE=true`, hardlinked `proofs/.lake/packages`), committed
 before building.
+
+## Iteration 21 — step-3 null sequence `tendsto_integral_tail_rpow_zero` (§ TailMomentNull)
+
+The MZ centering estimate `(∑_{i<n} 𝔼Yᵢ)/aₙ → 0` is a `tendsto_weighted_average_zero`
+(Toeplitz) argument. Its NULL SEQUENCE is the tail p-th moment
+`eᵢ = 𝔼[|X|ᵖ·𝟙{|X|>aᵢ}] = ∫ 𝟙{aᵢ<|X|}·|X|ᵖ`. This iteration proves `eᵢ → 0` for ANY
+threshold `t i → ∞` (measurable `X`, `Integrable |X|ᵖ`), by **dominated convergence**.
+
+Why the *tail*-restricted moment (not the full `M = 𝔼|X|ᵖ`): the kernel
+`abs_le_rpow_mul_rpow_of_tail` bounds `|𝔼Yᵢ| ≤ 𝔼[|X|𝟙{|X|>aᵢ}] ≤ aᵢ^{1-p}·eᵢ`. Using the
+full moment `integral_tail_abs_le` gives `aᵢ^{1-p}·M` — Cesàro weight `cᵢ=aᵢ^{1-p}=(i+1)^{1/p-1}`
+sums like `∑(i+1)^{1/p-1} ~ p·n^{1/p} ~ aₙ`, so `aᵢ^{1-p}·M / aₙ` does NOT vanish. Only the
+vanishing tail factor `eᵢ→0` makes the weighted average → 0.
+
+### Reusable gotchas (Mathlib v4.26)
+
+- **`MeasureTheory.tendsto_integral_of_dominated_convergence` argument order** is
+  `(bound) (hF_meas) (bound_integrable) (h_bound) (h_lim)` — the integrability of the bound
+  comes BEFORE the per-index norm bound `h_bound`. Passing `h_bound` before the integrable
+  argument gives "expected Integrable, got ∀ i, ∀ᵐ ω, ‖·‖ ≤ bound".
+- **Eventually-zero ⟹ tendsto 0**: `(tendsto_congr' hev).mpr tendsto_const_nhds` where
+  `hev : f =ᶠ[atTop] (fun _ => 0)`. Build `hev` from `ht.eventually_gt_atTop c`
+  (`Tendsto t atTop atTop → ∀ᶠ i, c < t i`) + `Set.indicator_apply`/`split_ifs`.
+- Indicator norm bound: `rw [Real.norm_eq_abs, Set.indicator_apply]; split_ifs`; the
+  `∈`-branch closes by `abs_of_nonneg (Real.rpow_nonneg …)`, the `∉`-branch by `abs_zero`.
+
+Verified: 0-sorry / 0-axiom (propext/Classical.choice/Quot.sound), docker build 7743 jobs
+exit 0. Built on the S5 centering-bridge branch (PR #34551). Remaining step-3 work: the
+tail-restricted mean bound `|𝔼Yᵢ| ≤ aᵢ^{1-p}·eᵢ` and the weight partial-sum bound
+`∑_{i<n}(i+1)^{1/p-1} ≤ Aₙ`, then the Toeplitz assembly.
