@@ -91,3 +91,33 @@ See PART I above.
 ## Dead Ends
 
 None yet.
+
+## PART II — Newton at n=3 via SOS discriminant certificates (researcher-5, 2026-07-04)
+
+**Mode**: ACT (MODERATE, score 13). **Outcome**: progress (+5 verified theorems, axiom-free).
+docker-build clean, 7743 jobs, foundational axioms only; no `decide`/`native_decide`, 0 sorries.
+
+### What this adds
+Extends the PART-I real-rooted/discriminant route from the `n = 2` base case to the first
+nontrivial arity `n = 3` — both Newton log-concavity steps, for SIGNED reals:
+- `newton_three_first`: `3(xy+yz+zx) ≤ (x+y+z)²` (`e₁² ≥ 3e₂`); SOS `½[(x−y)²+(y−z)²+(z−x)²]`.
+- `newton_three_second`: `3(x+y+z)·xyz ≤ (xy+yz+zx)²` (`e₂² ≥ 3e₁e₃`);
+  SOS `½[(xy−yz)²+(yz−zx)²+(zx−xy)²]`.
+- `discrim_deriv_cubic_first` / `discrim_recip_deriv_cubic_second`: same two facts as the
+  nonneg discriminants of `P' = 3X²−2e₁X+e₂` and `−3e₃X²+2e₂X−e₁`.
+- `newton_three_normalized`: both steps in normalized p-mean form.
+
+### Technique
+Each `nlinarith [sq_nonneg …]` closes the Newton inequality directly; the discriminant-form
+theorems are then `rw [discrim]; nlinarith [newton_three_*]`. The Rolle/derivative picture
+(cubic real-rooted ⇒ derivative quadratic real-rooted ⇒ discriminant ≥ 0) is the *motivation*;
+the SOS certificate is the *proof*, so no iterated-Rolle machinery is needed and no sign
+hypothesis is required (only real roots).
+
+SOS derivation of the second: `e₂² − 3e₁e₃ = x²y²+y²z²+z²x² − xyz(x+y+z) = ½Σ(xy−yz)²`.
+
+### Still open (unchanged)
+The GENERAL (arbitrary-`n`) Newton still needs "differentiation preserves full
+real-rootedness counting multiplicity" (iterated Rolle) — not in Mathlib, multi-week
+(`problem.md`). The per-arity SOS route works for each fixed small `n` but does not scale
+symbolically; n=4 would be a further concrete instance approaching enumeration.

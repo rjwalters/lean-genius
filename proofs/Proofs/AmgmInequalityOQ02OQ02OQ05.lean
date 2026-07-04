@@ -125,4 +125,66 @@ theorem newton_two_vars_normalized (x y : ℝ) :
     (1 : ℝ) * (x * y) ≤ ((x + y) / 2) ^ 2 := by
   simpa using newton_two_vars x y
 
+/-!  ## Newton at `n = 3`, via the real-rooted derivative quadratics
+
+For three real roots `x, y, z` the splitting cubic is
+`(X - x)(X - y)(X - z) = X³ - e₁ X² + e₂ X - e₃`, with
+`e₁ = x+y+z`, `e₂ = xy+yz+zx`, `e₃ = xyz`.  The two Newton inequalities are the
+nonnegative discriminants of the two degree-two polynomials Rolle produces:
+
+* differentiate once:  `P' = 3X² - 2e₁X + e₂`  (real-rooted ⇒ `4e₁² - 12e₂ ≥ 0`),
+  giving the first step `e₁² ≥ 3e₂`;
+* pass to the reciprocal cubic and differentiate:
+  `-3e₃X² + 2e₂X - e₁`  (real-rooted ⇒ `4e₂² - 12e₁e₃ ≥ 0`), giving the second
+  step `e₂² ≥ 3e₁e₃`.
+
+Each derivative quadratic's discriminant is established here *directly* as a sum
+of squares — which **is** the real-rootedness of that quadratic — so the `n = 3`
+case needs neither the general Rolle-iteration lemma (the multi-week crux flagged
+in `problem.md`) nor any sign hypothesis.  The Rolle picture is the motivation;
+the SOS certificate is the proof. -/
+
+/-- **Newton's first inequality at `n = 3`** (`p₁² ≥ p₀ p₂`), for arbitrary real
+`x, y, z`: in elementary-symmetric form `e₁² ≥ 3 e₂`, i.e.
+`3(xy+yz+zx) ≤ (x+y+z)²`.  This is the nonnegativity of the discriminant of the
+once-differentiated splitting cubic `P' = 3X² - 2e₁X + e₂`; the SOS certificate
+is `½[(x−y)² + (y−z)² + (z−x)²] ≥ 0`.  No sign hypothesis. -/
+theorem newton_three_first (x y z : ℝ) :
+    3 * (x * y + y * z + z * x) ≤ (x + y + z) ^ 2 := by
+  nlinarith [sq_nonneg (x - y), sq_nonneg (y - z), sq_nonneg (z - x)]
+
+/-- The once-differentiated splitting cubic `P' = 3X² - 2e₁X + e₂` has
+nonnegative discriminant — the discriminant phrasing of `newton_three_first`, and
+the `n = 3` instance of "a derivative of a real-rooted polynomial is real-rooted
+(discriminant `≥ 0`)". -/
+theorem discrim_deriv_cubic_first (x y z : ℝ) :
+    0 ≤ discrim 3 (-2 * (x + y + z)) (x * y + y * z + z * x) := by
+  rw [discrim]; nlinarith [newton_three_first x y z]
+
+/-- **Newton's second inequality at `n = 3`** (`p₂² ≥ p₁ p₃`), for arbitrary real
+`x, y, z`: in elementary-symmetric form `e₂² ≥ 3 e₁ e₃`, i.e.
+`3(x+y+z)·xyz ≤ (xy+yz+zx)²`.  This is the nonnegativity of the discriminant of
+the differentiated *reciprocal* cubic `-3e₃X² + 2e₂X - e₁`; the SOS certificate is
+`½[(xy−yz)² + (yz−zx)² + (zx−xy)²] ≥ 0`.  Holds for all signed reals. -/
+theorem newton_three_second (x y z : ℝ) :
+    3 * (x + y + z) * (x * y * z) ≤ (x * y + y * z + z * x) ^ 2 := by
+  nlinarith [sq_nonneg (x * y - y * z), sq_nonneg (y * z - z * x),
+    sq_nonneg (z * x - x * y)]
+
+/-- The differentiated reciprocal cubic `-3e₃X² + 2e₂X - e₁` has nonnegative
+discriminant — the discriminant phrasing of `newton_three_second`. -/
+theorem discrim_recip_deriv_cubic_second (x y z : ℝ) :
+    0 ≤ discrim (-3 * (x * y * z)) (2 * (x * y + y * z + z * x)) (-(x + y + z)) := by
+  rw [discrim]; nlinarith [newton_three_second x y z]
+
+/-- **Newton at `n = 3` in normalized (`p`) form.**  With `p₀ = 1`,
+`p₁ = e₁/3 = (x+y+z)/3`, `p₂ = e₂/3 = (xy+yz+zx)/3`, `p₃ = e₃ = xyz`, both
+log-concavity steps `p₁² ≥ p₀·p₂` and `p₂² ≥ p₁·p₃` hold for all signed reals. -/
+theorem newton_three_normalized (x y z : ℝ) :
+    (1 : ℝ) * ((x * y + y * z + z * x) / 3) ≤ ((x + y + z) / 3) ^ 2 ∧
+      ((x + y + z) / 3) * (x * y * z) ≤ ((x * y + y * z + z * x) / 3) ^ 2 := by
+  refine ⟨?_, ?_⟩
+  · nlinarith [newton_three_first x y z]
+  · nlinarith [newton_three_second x y z]
+
 end NewtonRealRooted
