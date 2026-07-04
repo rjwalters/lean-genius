@@ -188,6 +188,18 @@
       "type": "supporting",
       "description": "[ℚ(p^{1/p^k}):ℚ] = p^k — the general X^{p^k} − p case named by OQ-02.",
       "leanType": "{p : ℕ} → p.Prime → (k : ℕ) → Module.finrank ℚ ℚ⟮(p : ℝ) ^ ((1 : ℝ) / ((p ^ k : ℕ) : ℝ))⟯ = p ^ k"
+    },
+    {
+      "name": "finrank_adjoin_two_pow_k",
+      "type": "supporting",
+      "description": "[ℚ(2^{1/2^k}):ℚ] = 2^k — the even/prime-power exponent 2^k, precisely the case Mathlib's Kummer API cannot reach (it requires p ≠ 2 or odd exponent); Eisenstein at 2 is exponent-agnostic and handles it uniformly. The k=2 instance recovers ⁴√2.",
+      "leanType": "(k : ℕ) → Module.finrank ℚ ℚ⟮((2 : ℕ) : ℝ) ^ ((1 : ℝ) / ((2 ^ k : ℕ) : ℝ))⟯ = 2 ^ k"
+    },
+    {
+      "name": "finrank_adjoin_fourthRoot_two",
+      "type": "headline",
+      "description": "[ℚ(2^{1/4}):ℚ] = 4 — the eponymous result: 2^{1/4} = ⁴√2 has algebraic degree exactly 4 over ℚ (strictly stronger than irrationality). The k=2 instance of finrank_adjoin_two_pow_k, recovering the parent entry's finrank_adjoin_fr2.",
+      "leanType": "Module.finrank ℚ ℚ⟮((2 : ℕ) : ℝ) ^ ((1 : ℝ) / ((4 : ℕ) : ℝ))⟯ = 4"
     }
   ],
   "references": [
