@@ -1217,11 +1217,78 @@ theorem tsum_weight_trunc_sq_le {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (x : ℝ) 
   rw [hSeq]
   exact mul_le_mul_of_nonneg_right (tsum_indicator_ge_rpow_neg_le hs (|x| ^ p)) (sq_nonneg x)
 
+/-- **The variance-integrand weight is dominated by an integrable function.**
+For `0 < p < 2` and any real `x`, the pointwise weight produced by
+`tsum_weight_trunc_sq_le` at `s = 2/p` — namely `(max 1 |x|ᵖ)^{1 - 2/p} · x²` — is
+bounded by `|x|ᵖ + 1`:
+
+    (max 1 |x|ᵖ)^{1 - 2/p} · x²  ≤  |x|ᵖ + 1.
+
+On `|x| ≥ 1` the maximum is `|x|ᵖ` and the exponent arithmetic collapses the product
+to `|x|ᵖ` **exactly**: `|x|^{p(1 - 2/p)} · x² = |x|^{p - 2} · |x|² = |x|^{(p-2)+2} = |x|ᵖ`
+(this is the sole place `s = 2/p` is used — `p·(1 - 2/p) + 2 = p`). On `|x| < 1` the
+maximum is `1`, so the left side is just `x² ≤ 1 ≤ |x|ᵖ + 1`.
+
+Since `|x|ᵖ + 1` integrates to `𝔼|X|ᵖ + 1 < ∞` on a probability space, this is the
+integrable dominating function the Tonelli interchange behind `∑ᵢ Var(Yᵢ)/i^{2/p}`
+consumes; see `variance_integrand_le_moment`. -/
+theorem weight_bound_le_moment_add_one {p : ℝ} (hp0 : 0 < p) (hp2 : p < 2) (x : ℝ) :
+    (max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2 ≤ |x| ^ p + 1 := by
+  have hpne : p ≠ 0 := ne_of_gt hp0
+  have hax : (0 : ℝ) ≤ |x| := abs_nonneg x
+  rcases le_or_lt 1 |x| with hx1 | hx1
+  · -- `|x| ≥ 1`: `max = |x|ᵖ`, and the left side collapses to `|x|ᵖ` exactly
+    have hpos : (0 : ℝ) < |x| := lt_of_lt_of_le one_pos hx1
+    have hxp1 : (1 : ℝ) ≤ |x| ^ p := by
+      rw [← Real.one_rpow p]; exact Real.rpow_le_rpow (by norm_num) hx1 (le_of_lt hp0)
+    rw [max_eq_right hxp1]
+    have hexp : (|x| ^ p) ^ (1 - 2 / p) = |x| ^ (p - 2) := by
+      rw [← Real.rpow_mul hax]; congr 1; field_simp
+    have hx2 : x ^ 2 = |x| ^ (2 : ℝ) := by
+      rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, sq_abs]
+    rw [hexp, hx2, ← Real.rpow_add hpos, show p - 2 + 2 = p by ring]
+    linarith
+  · -- `|x| < 1`: `max = 1`, so the left side is `x² ≤ 1 ≤ |x|ᵖ + 1`
+    have hxp1 : |x| ^ p ≤ 1 := Real.rpow_le_one hax (le_of_lt hx1) (le_of_lt hp0)
+    rw [max_eq_left hxp1, Real.one_rpow, one_mul]
+    have hx2le : x ^ 2 ≤ 1 := by nlinarith [sq_abs x, abs_nonneg x, hx1]
+    have hxpnn : (0 : ℝ) ≤ |x| ^ p := Real.rpow_nonneg hax p
+    linarith
+
+/-- **Pointwise variance-sum integrand ≤ an integrable dominating function.**  For
+`0 < p < 2` and any real `x`, the `i^{-2/p}`-weighted truncated-square sum over the
+root-form region `{i | |x| ≤ i^{1/p}}` — exactly `∑ᵢ i^{-2/p}·(𝟙{|x| ≤ i^{1/p}}·x)²`,
+the per-`ω` summand of `∑ᵢ Var(Yᵢ)/i^{2/p}` at `x = X(ω)` — is bounded by a fixed
+constant times `|x|ᵖ + 1`:
+
+    ∑'_i 𝟙{|x| ≤ i^{1/p}}·(i^{-2/p}·x²)  ≤  (2/p)/(2/p − 1) · (|x|ᵖ + 1).
+
+This composes the deterministic tail bound `tsum_weight_trunc_sq_le` (at `s = 2/p`)
+with `weight_bound_le_moment_add_one`.  The right side is integrable on a probability
+space (it integrates to `(2/p)/(2/p−1)·(𝔼|X|ᵖ + 1)`), so this is the dominating
+function `MeasureTheory.integral_tsum`/`lintegral_tsum` needs to justify the
+`∑'ᵢ`–`∫` interchange and then bound the variance sum by `C·𝔼|X|ᵖ`. -/
+theorem variance_integrand_le_moment {p : ℝ} (hp0 : 0 < p) (hp2 : p < 2) (x : ℝ) :
+    ∑' i : ℕ, {i : ℕ | |x| ≤ (i : ℝ) ^ (1 / p)}.indicator
+        (fun i => (i : ℝ) ^ (-(2 / p)) * x ^ 2) i
+      ≤ 2 / p / (2 / p - 1) * (|x| ^ p + 1) := by
+  have hs : (1 : ℝ) < 2 / p := (one_lt_div hp0).mpr hp2
+  have hCnn : (0 : ℝ) ≤ 2 / p / (2 / p - 1) := div_nonneg (by positivity) (by linarith)
+  calc ∑' i : ℕ, {i : ℕ | |x| ≤ (i : ℝ) ^ (1 / p)}.indicator
+          (fun i => (i : ℝ) ^ (-(2 / p)) * x ^ 2) i
+      ≤ (max 1 (|x| ^ p)) ^ (1 - 2 / p) * (2 / p) / (2 / p - 1) * x ^ 2 :=
+        tsum_weight_trunc_sq_le hs hp0 x
+    _ = 2 / p / (2 / p - 1) * ((max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2) := by ring
+    _ ≤ 2 / p / (2 / p - 1) * (|x| ^ p + 1) :=
+        mul_le_mul_of_nonneg_left (weight_bound_le_moment_add_one hp0 hp2 x) hCnn
+
 #check @sum_range_shift_rpow_neg_le
 #check @tsum_shift_rpow_neg_le
 #check @tsum_ge_rpow_neg_le
 #check @tsum_indicator_ge_rpow_neg_le
 #check @tsum_weight_trunc_sq_le
+#check @weight_bound_le_moment_add_one
+#check @variance_integrand_le_moment
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
@@ -1230,6 +1297,8 @@ theorem tsum_weight_trunc_sq_le {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (x : ℝ) 
 #print axioms tsum_ge_rpow_neg_le
 #print axioms tsum_indicator_ge_rpow_neg_le
 #print axioms tsum_weight_trunc_sq_le
+#print axioms weight_bound_le_moment_add_one
+#print axioms variance_integrand_le_moment
 
 end TailPSeries
 
