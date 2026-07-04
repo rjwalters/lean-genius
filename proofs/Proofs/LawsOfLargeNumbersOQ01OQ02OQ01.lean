@@ -1327,4 +1327,59 @@ theorem lintegral_tsum_trunc_sq_weight_le
 
 end TonelliInterchange
 
+/-! ## Pointwise domination of the interchange RHS integrand (MZ step-4 finiteness core)
+
+The Tonelli interchange `lintegral_tsum_trunc_sq_weight_le` bounds the variance sum by
+`∫⁻ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²` with `s = 2/p`.  At *exactly* that exponent the integrand
+core `(max 1 |X|ᵖ)^{1-2/p}·X²` is dominated **pointwise** by `|X|ᵖ`, which makes the RHS
+integral finite whenever `𝔼|X|ᵖ < ∞`.  The two regions both land under `|x|ᵖ`:
+
+* `|x| ≥ 1`: `max = |x|ᵖ`, and `(|x|ᵖ)^{1-2/p}·|x|² = |x|^{(p-2)+2} = |x|ᵖ` (equality);
+* `|x| < 1`: `max = 1`, so the core is `x² = |x|² = |x|ᵖ·|x|^{2-p} ≤ |x|ᵖ` (`|x|^{2-p} ≤ 1`
+  since `0 ≤ 2-p` and `|x| ≤ 1`).
+
+0-sorry / 0-`axiom`. -/
+section VarianceMajorant
+
+/-- **RHS-integrand domination (MZ step-4 finiteness core).**  For `0 < p < 2` and any real
+`x`, the interchange integrand core at `s = 2/p` is dominated by `|x|ᵖ`:
+
+    (max 1 |x|ᵖ)^{1 - 2/p} · x²  ≤  |x|ᵖ.
+
+Multiplying by the nonnegative constant `s/(s-1)` (`s = 2/p`) dominates the full interchange
+RHS integrand by `s/(s-1)·|X|ᵖ`, giving `∫⁻ (…) < ∞` from `𝔼|X|ᵖ < ∞` — the next leaf. -/
+theorem trunc_rpow_weight_sq_le_rpow {p x : ℝ} (hp : 0 < p) (hp2 : p < 2) :
+    (max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2 ≤ |x| ^ p := by
+  have hx2 : x ^ 2 = |x| ^ (2 : ℝ) := by
+    rw [← sq_abs x, ← Real.rpow_natCast (|x|) 2]; norm_num
+  rcases le_or_gt (|x|) 1 with hle | hgt
+  · -- |x| ≤ 1 : max = 1, split |x|² = |x|ᵖ·|x|^{2-p} with |x|^{2-p} ≤ 1
+    have hap : |x| ^ p ≤ 1 := Real.rpow_le_one (abs_nonneg x) hle hp.le
+    rw [max_eq_left hap, Real.one_rpow, one_mul, hx2]
+    have hsplit : |x| ^ (2 : ℝ) = |x| ^ p * |x| ^ (2 - p) := by
+      rw [← Real.rpow_add_of_nonneg (abs_nonneg x) hp.le (by linarith),
+          show p + (2 - p) = (2 : ℝ) from by ring]
+    rw [hsplit]
+    have h1 : |x| ^ (2 - p) ≤ 1 := Real.rpow_le_one (abs_nonneg x) hle (by linarith)
+    calc |x| ^ p * |x| ^ (2 - p)
+        ≤ |x| ^ p * 1 := mul_le_mul_of_nonneg_left h1 (Real.rpow_nonneg (abs_nonneg x) p)
+      _ = |x| ^ p := mul_one _
+  · -- 1 < |x| : max = |x|ᵖ, exact equality
+    have hxpos : (0 : ℝ) < |x| := lt_trans one_pos hgt
+    have hap : 1 ≤ |x| ^ p := by
+      calc (1 : ℝ) = (1 : ℝ) ^ p := (Real.one_rpow p).symm
+        _ ≤ |x| ^ p := Real.rpow_le_rpow zero_le_one hgt.le hp.le
+    have hexp : p * (1 - 2 / p) + 2 = p := by field_simp; ring
+    have hval : (max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2 = |x| ^ p := by
+      rw [max_eq_right hap, hx2, ← Real.rpow_mul (abs_nonneg x), ← Real.rpow_add hxpos, hexp]
+    exact le_of_eq hval
+
+#check @trunc_rpow_weight_sq_le_rpow
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms trunc_rpow_weight_sq_le_rpow
+
+end VarianceMajorant
+
 end LawsOfLargeNumbers.MZ

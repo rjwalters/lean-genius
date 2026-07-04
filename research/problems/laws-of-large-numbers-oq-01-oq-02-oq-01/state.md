@@ -118,14 +118,19 @@ interchange**: keep the truncated moment `𝔼[X²·𝟙{|X| ≤ i^{1/p}}]` inta
   `∑'ᵢ` by iter-12 `tsum_weight_trunc_sq_le` at `x=X ω`, pulling `ENNReal.ofReal` through the real
   tsum via `ENNReal.ofReal_tsum_of_nonneg` (per-`ω` summand summable: an indicator of the `i^{-s}`
   `p`-series scaled by `X ω ^ 2`). **Do not re-derive.**
-- **Next: RHS-integrand finiteness extraction.** With `s = 2/p (>1 ⟺ p<2)`, bound the master RHS
-  integrand `(max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²` and show it is *integrable* (⟹ the `∫⁻` RHS is `< ∞`,
-  ⟹ the ℝ≥0∞ variance sum is finite): `|X|≥1` branch `(max 1 |X|ᵖ)^{1-2/p}=|X|^{p-2}` so the
-  integrand `= s/(s-1)·|X|^p → s/(s-1)·𝔼|X|ᵖ`; `|X|<1` branch `max = 1`, integrand `= s/(s-1)·X²`
-  bounded by `s/(s-1)` on a probability space. Uniform majorant `s/(s-1)·max(X²,|X|ᵖ) ≤
-  s/(s-1)·(1+|X|ᵖ)`, integrable via `𝔼|X|ᵖ<∞` + `IsProbabilityMeasure`. Convert the finite `∫⁻`
-  RHS back to a real `∑ᵢ 𝔼[Yᵢ²]·i^{-2/p} < ∞` (via `lintegral_ofReal`/`ofReal_ne_top` bridges),
-  feeding `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5). Watch weight positivity
+- **RHS-integrand pointwise domination core is now DONE (iteration 14):**
+  `trunc_rpow_weight_sq_le_rpow` — for `0<p<2`, any `x`, the interchange integrand core at
+  `s=2/p` is dominated by `|x|ᵖ`: `(max 1 |x|ᵖ)^{1-2/p}·x² ≤ |x|ᵖ`. Two branches, both under
+  `|x|ᵖ`: `|x|≥1` gives equality `(|x|ᵖ)^{1-2/p}·|x|²=|x|^{(p-2)+2}=|x|ᵖ` (`Real.rpow_mul`+
+  `rpow_add`, exponent `p·(1-2/p)+2=p` by `field_simp;ring`); `|x|<1` splits `|x|²=|x|ᵖ·|x|^{2-p}`
+  (`Real.rpow_add_of_nonneg`) with `|x|^{2-p}≤1` (`Real.rpow_le_one`). **Do not re-derive.**
+- **Next: RHS integrability + `∫⁻` finiteness.** Multiply `trunc_rpow_weight_sq_le_rpow` by the
+  nonneg constant `s/(s-1)` (`s=2/p`) ⟹ the full interchange RHS integrand `≤ s/(s-1)·|X|ᵖ`
+  pointwise; then `Integrable (fun ω => |X ω|ᵖ)` ⟹ `∫⁻ ω, ofReal(RHS integrand) < ∞` (via
+  `lintegral_ofReal_le_lintegral_ofReal`/`integrable.lintegral_lt_top` + `ofReal_ne_top`).
+  Chained with `lintegral_tsum_trunc_sq_weight_le` this gives the ℝ≥0∞ variance sum finite;
+  convert to real `∑ᵢ 𝔼[Yᵢ²]·i^{-2/p} < ∞`, feeding
+  `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5). Watch weight positivity
   (use `aᵢ=(i+1)^{1/p}` or `max 1 i^{1/p}`).
 - **Then: step-3 centering** (via `integral_tail_abs_le` + `tendsto_weighted_average_zero`) and
   the final combination with the step-1 truncation reduction into the MZ statement.
