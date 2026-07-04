@@ -192,5 +192,35 @@
     "definitionCount": 1,
     "lineCount": 256,
     "sorries": 0
-  }
+  },
+  "references": [
+    {
+      "authors": "G. Cantor",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": 1891,
+      "venue": "Jahresbericht der Deutschen Mathematiker-Vereinigung 1, 75–78",
+      "note": "Cantor's diagonal argument establishing |X| < |𝒫(X)|, the theorem whose iteration produces the strictly increasing beth hierarchy formalized here."
+    },
+    {
+      "authors": "T. Jech",
+      "title": "Set Theory",
+      "year": 2003,
+      "venue": "Springer (3rd millennium ed.), Ch. 3 & 5",
+      "note": "Standard reference for cardinal arithmetic, the beth numbers ℶ_α, and the continuum ℶ₁ = 2^{ℵ₀} used throughout."
+    },
+    {
+      "authors": "K. Kunen",
+      "title": "Set Theory: An Introduction to Independence Proofs",
+      "year": 1980,
+      "venue": "North-Holland",
+      "note": "Careful development of ZFC cardinal exponentiation and the independence of statements relating the beth and aleph hierarchies (GCH)."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP 2020",
+      "note": "Provides Cardinal.mk, Cardinal.beth, Cardinal.cantor (|α| < 2^|α|), and the power-set cardinality API underlying this formalization."
+    }
+  ]
 }
