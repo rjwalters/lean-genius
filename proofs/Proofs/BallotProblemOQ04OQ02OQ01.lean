@@ -417,6 +417,127 @@ def glueFp {n : ℕ} (m : ℕ) (hm : m ≤ n)
       glueLabel m hm P₁ P₂ a = glueLabel m hm P₁ P₂ b :=
   Finpartition.mem_part_ofSetoid_iff_rel
 
+/-! ### The left restriction's top block recovers `0`'s block (forward-map side) -/
+
+/-- **The left restriction's top block recovers the block of `0` (0 `sorry`).** Let
+`m = firstBlockMax P` be the cut of a non-crossing `P`, assume the left window is nonempty
+(`0 < m`), and let `e = offsetEmb 1 : Fin m → Fin (n+1)` place the window `[1, m]`. Writing
+`Q = restrictFp e P` for the left restriction and `tm : Fin m` (`tm = m - 1`, so `e tm = m`) for its
+top index, an index `t` lies in `Q`'s *top block* `Q.part tm` **iff** `e t` shares `P`'s block with
+`0`:  `t ∈ Q.part tm ↔ e t ∈ P.part 0`.
+
+This is the linchpin of the first-return *inverse* (gluing) map's well-definedness and of the
+forward map's injectivity. The forward map `firstReturnForward` records only `m` and the two
+window restrictions `Q, R`; it drops `0` itself (which lies in *neither* window `[1, m]` nor
+`[m+1, n]`), so a priori it forgets *which* points of `[1, m]` share `0`'s block. This lemma shows
+that information is **not** lost: those points are exactly the top block `Q.part tm` of the left
+restriction (the block whose top index maps to the cut `m`, which shares `P`'s block with `0`).
+Hence `0`'s block is reconstructible from `Q` alone — glue `0` onto `Q`'s top block — so two
+non-crossing partitions with the same `(m, Q, R)` must coincide. It is the exact forward-side
+counterpart of `mem_part_zero_glueFp_left` below (the gluing side): read together they show the
+round-trip `glue ∘ forward` restores `0`'s block.
+
+Proof: unfold restriction membership to `P.part (e tm) = P.part (e t)`; since `e tm = m` and
+`m ∈ P.part 0` gives `P.part m = P.part 0`, this is `P.part 0 = P.part (e t)`, i.e. `e t ∈ P.part 0`
+by `mem_part_iff_part_eq_part`. -/
+theorem restrict_top_recovers_part_zero {n : ℕ}
+    (P : Finpartition (univ : Finset (Fin (n + 1))))
+    (m : ℕ) (hm0 : 0 < m) (hL : 1 + m ≤ n + 1)
+    (hmeq : (firstBlockMax P).val = m) (t : Fin m) :
+    t ∈ (restrictFp (offsetEmb 1 hL) P).part ⟨m - 1, by omega⟩
+      ↔ offsetEmb 1 hL t ∈ P.part 0 := by
+  rw [mem_part_restrictFp]
+  -- `e tm = firstBlockMax P` because `1 + (m - 1) = m = (firstBlockMax P).val`.
+  have he_tm : offsetEmb 1 hL (⟨m - 1, by omega⟩ : Fin m) = firstBlockMax P := by
+    apply Fin.ext
+    show 1 + (m - 1) = (firstBlockMax P).val
+    omega
+  rw [he_tm]
+  -- `P.part (firstBlockMax P) = P.part 0` since `firstBlockMax P ∈ P.part 0`.
+  have hpm0 : P.part (firstBlockMax P) = P.part 0 :=
+    (P.mem_part_iff_part_eq_part (mem_univ _) (mem_univ 0)).mp (firstBlockMax_mem_part P)
+  rw [hpm0]
+  -- Goal: `P.part 0 = P.part (e t) ↔ e t ∈ P.part 0`.
+  constructor
+  · intro h
+    exact (P.mem_part_iff_part_eq_part (mem_univ _) (mem_univ 0)).mpr h.symm
+  · intro h
+    exact ((P.mem_part_iff_part_eq_part (mem_univ _) (mem_univ 0)).mp h).symm
+
+/-! ### Evaluation lemmas for `glueLabel` (the gluing map's computational API)
+
+`glueLabel` is defined by a three-way `dite` on `x.val` (`= 0` / `≤ m` / `> m`). The round-trip
+laws for the first-return bijection reason about it only at the three *canonical* inputs — the
+distinguished point `0`, a left-window point `offsetEmb 1 a` (`a : Fin m`), and a right-window
+point `offsetEmb (m+1) b` (`b : Fin (n-m)`). These three equations collapse the `dite` at each,
+turning `glueLabel` into clean `Sum.inl`/`Sum.inr` values. They play, for `glueFp`, exactly the
+role `mem_part_restrictFp` plays for `restrictFp`: the reusable bridge every downstream membership
+argument passes through. All three are `0 sorry` and free of `firstBlockMax`/`max'` unfolding. -/
+
+/-- `glueLabel` at the distinguished point `0`, when the left window is nonempty (`0 < m`): the
+label is `P₁`'s *top* block `P₁.part ⟨m-1⟩` — i.e. `0` is glued onto that block. -/
+theorem glueLabel_zero_of_pos {n : ℕ} (m : ℕ) (hm : m ≤ n) (hm0 : 0 < m)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) :
+    glueLabel m hm P₁ P₂ 0 = Sum.inl (some (P₁.part ⟨m - 1, by omega⟩)) := by
+  unfold glueLabel
+  rw [dif_pos (by rfl), dif_neg (by omega)]
+
+/-- `glueLabel` at a left-window point `offsetEmb 1 a` (`a : Fin m`): the label is `P₁`'s block of
+`a`. So the left window carries `P₁` faithfully. -/
+theorem glueLabel_offsetEmb_left {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m))))
+    (hL : 1 + m ≤ n + 1) (a : Fin m) :
+    glueLabel m hm P₁ P₂ (offsetEmb 1 hL a) = Sum.inl (some (P₁.part a)) := by
+  have hv : (offsetEmb 1 hL a).val = 1 + a.val := rfl
+  have hidx : (offsetEmb 1 hL a).val - 1 = a.val := by rw [hv]; omega
+  unfold glueLabel
+  rw [dif_neg (by rw [hv]; omega), dif_pos (by rw [hv]; have := a.isLt; omega)]
+  congr 1
+  exact congrArg (fun i => some (P₁.part i)) (Fin.ext hidx)
+
+/-- `glueLabel` at a right-window point `offsetEmb (m+1) b` (`b : Fin (n-m)`): the label is `P₂`'s
+block of `b`. So the right window carries `P₂` faithfully, in a distinct `Sum.inr` sector from the
+left window and `0` — the two windows never share a glued block. -/
+theorem glueLabel_offsetEmb_right {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m))))
+    (hR : (m + 1) + (n - m) ≤ n + 1) (b : Fin (n - m)) :
+    glueLabel m hm P₁ P₂ (offsetEmb (m + 1) hR b) = Sum.inr (P₂.part b) := by
+  have hv : (offsetEmb (m + 1) hR b).val = (m + 1) + b.val := rfl
+  have hidx : (offsetEmb (m + 1) hR b).val - (m + 1) = b.val := by rw [hv]; omega
+  unfold glueLabel
+  rw [dif_neg (by rw [hv]; omega), dif_neg (by rw [hv]; omega)]
+  congr 1
+  exact congrArg P₂.part (Fin.ext hidx)
+
+/-- **The glued partition recovers `0`'s block on the left window (glue-side 0-block recovery,
+0 `sorry`).** For the gluing of `(P₁, P₂)` with nonempty left window (`0 < m`), a left-window point
+`offsetEmb 1 a` shares the glued block of `0` **iff** `a` lies in `P₁`'s top block `P₁.part ⟨m-1⟩`.
+
+This is the exact mirror, on the gluing (inverse) side, of `restrict_top_recovers_part_zero` (which
+recovers `0`'s block from the *restriction* of a non-crossing `P`). Read together the two say: the
+forward map's left restriction `Q` has top block `Q.part ⟨m-1⟩ = {a : offsetEmb 1 a ∈ P.part 0}`,
+and re-gluing attaches `0` to precisely that block. Hence the round-trip `glue ∘ forward` restores
+`0`'s block exactly — the step where the forward map's dropping of `0` is undone. Proof: rewrite the
+glued membership (`mem_part_glueFp`) with the two evaluation lemmas `glueLabel_zero_of_pos` and
+`glueLabel_offsetEmb_left`, reducing (via `Sum`/`Option` injectivity) to `P₁.part ⟨m-1⟩ = P₁.part a`,
+i.e. `a ∈ P₁.part ⟨m-1⟩`. -/
+theorem mem_part_zero_glueFp_left {n : ℕ} (m : ℕ) (hm : m ≤ n) (hm0 : 0 < m)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m))))
+    (hL : 1 + m ≤ n + 1) (a : Fin m) :
+    offsetEmb 1 hL a ∈ (glueFp m hm P₁ P₂).part 0
+      ↔ a ∈ P₁.part ⟨m - 1, by omega⟩ := by
+  rw [mem_part_glueFp, glueLabel_zero_of_pos m hm hm0, glueLabel_offsetEmb_left m hm,
+    Sum.inl.injEq, Option.some.injEq]
+  constructor
+  · intro h
+    exact (P₁.mem_part_iff_part_eq_part (mem_univ _) (mem_univ _)).mpr h.symm
+  · intro h
+    exact ((P₁.mem_part_iff_part_eq_part (mem_univ _) (mem_univ _)).mp h).symm
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
@@ -535,6 +656,11 @@ theorem nonCrossingCount_eq_catalan_of_le_three {n : ℕ} (hn : n ≤ 3) :
 #check @nonCrossingCount_zero
 #check @not_mem_part_across_firstBlockMax
 #check @part_side_of_firstBlockMax
+#check @restrict_top_recovers_part_zero
+#check @glueLabel_zero_of_pos
+#check @glueLabel_offsetEmb_left
+#check @glueLabel_offsetEmb_right
+#check @mem_part_zero_glueFp_left
 #check @nonCrossingCount_eq_catalan
 #check @nonCrossingCount_eq_catalan_of_le_three
 
