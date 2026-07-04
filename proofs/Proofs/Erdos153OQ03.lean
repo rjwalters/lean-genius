@@ -37,6 +37,9 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `isBhSet_smul`           : dilation invariance — c·A is B_h whenever A is (c ≥ 1)
 - `isBhSet_add`            : translation invariance — A+t is B_h whenever A is
 - `isBhSet_affine`         : affine invariance — {c·a+t} is B_h whenever A is (c ≥ 1)
+- `hSumset`                : the h-fold sumset {a₁+⋯+a_h : aᵢ ∈ A}
+- `isBhSet_iff_injOn`      : B_h ⟺ Multiset.sum is injective on `A.sym h`
+- `card_hSumset_of_isBhSet`: sharp count — |h-fold sumset| = |A.sym h| = C(|A|+h−1, h)
 -/
 import Mathlib
 
@@ -391,5 +394,64 @@ theorem isBhSet_affine {h c t : ℕ} {A : Finset ℕ} (hc : 0 < c)
     rw [Finset.image_image]; rfl
   rw [← himg]
   exact isBhSet_add (isBhSet_smul hc H)
+
+/-!
+## Section VI: The sharp counting identity
+
+The defining property of a `B_h` set is that its `h`-fold sums are *pairwise
+distinct*.  Restated quantitatively: the `h`-fold sumset
+
+    hΣ A  :=  { a₁ + ⋯ + a_h : aᵢ ∈ A }     (repetition allowed, order irrelevant)
+
+attains the **maximum possible** cardinality — the number of size-`h` multisets
+drawable from `A`, i.e. the multiset coefficient `C(|A| + h − 1, h)`.  We realise
+`hΣ A` as the image of `A.sym h` (the finset of size-`h` multisets with entries in
+`A`) under `Multiset.sum`, read the `B_h` property off as *injectivity* of that
+image map, and conclude the cardinality identity.  This is the exact quantitative
+face of "all `h`-fold sums distinct": a `B_h` set is precisely one whose `h`-fold
+sumset is as large as the pigeonhole bound allows.
+-/
+
+/-- The `h`-fold sumset of `A`: the finite set of all sums of size-`h` multisets
+drawn from `A` (repetition allowed, order irrelevant).  Built as the image of the
+finset `A.sym h` of size-`h` multisets from `A` under `Multiset.sum`. -/
+def hSumset (h : ℕ) (A : Finset ℕ) : Finset ℕ :=
+  (A.sym h).image (fun s : Sym ℕ h => (s : Multiset ℕ).sum)
+
+/-- **`B_h` = injectivity of the sum map on `A.sym h`.**  The abstract `IsBhSet`
+condition is exactly the statement that `Multiset.sum` is injective on the finset
+`A.sym h` of size-`h` multisets drawn from `A`.  This is the `Sym`-packaged form of
+the definition, and the engine behind the counting identity below. -/
+theorem isBhSet_iff_injOn (h : ℕ) (A : Finset ℕ) :
+    IsBhSet h A ↔
+      Set.InjOn (fun s : Sym ℕ h => (s : Multiset ℕ).sum) (A.sym h) := by
+  constructor
+  · -- injectivity from the multiset definition
+    intro H s hs t ht hsum
+    apply Sym.coe_injective
+    refine H _ _ ?_ ?_ ?_ ?_ hsum
+    · intro x hx; exact (Finset.mem_sym_iff.mp hs) x (Sym.mem_coe.mp hx)
+    · intro x hx; exact (Finset.mem_sym_iff.mp ht) x (Sym.mem_coe.mp hx)
+    · exact s.2
+    · exact t.2
+  · -- the multiset definition from injectivity
+    intro H s t hs ht hcs hct hsum
+    have hsS : (⟨s, hcs⟩ : Sym ℕ h) ∈ A.sym h :=
+      Finset.mem_sym_iff.mpr (fun a ha => hs a ha)
+    have htS : (⟨t, hct⟩ : Sym ℕ h) ∈ A.sym h :=
+      Finset.mem_sym_iff.mpr (fun a ha => ht a ha)
+    have heq : (⟨s, hcs⟩ : Sym ℕ h) = ⟨t, hct⟩ := H hsS htS (by simpa using hsum)
+    exact Subtype.ext_iff.mp heq
+
+/-- **The sharp cardinality identity.**  For a `B_h` set `A`, the `h`-fold sumset
+`hSumset h A` has cardinality exactly `(A.sym h).card` — every one of the size-`h`
+multisets drawn from `A` yields a *distinct* sum, so no collisions shrink the image.
+Since `(A.sym h).card` is the multiset coefficient `C(|A| + h − 1, h)` (the total
+number of size-`h` multisets on `|A|` symbols), this says a `B_h` set is precisely
+one whose `h`-fold sumset *saturates* that pigeonhole maximum — the quantitative
+restatement of "all `h`-fold sums distinct". -/
+theorem card_hSumset_of_isBhSet {h : ℕ} {A : Finset ℕ} (H : IsBhSet h A) :
+    (hSumset h A).card = (A.sym h).card :=
+  Finset.card_image_of_injOn ((isBhSet_iff_injOn h A).mp H)
 
 end Erdos153OQ03
