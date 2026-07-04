@@ -122,6 +122,80 @@
       }
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "multi_candidate_ballot",
+      "type": "core",
+      "description": "Multi-candidate ballot theorem: with m ≥ 2 candidates where candidate 0 gets a votes and all others combined get b votes (a > b), the probability candidate 0 leads all opponents combined throughout equals (a-b)/(a+b).",
+      "leanType": "(m : ℕ) (hm : 2 ≤ m) (a b : ℕ) (hab : b < a) : ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b) (multiStaysPositive m (by omega)) = (↑a - ↑b) / (↑a + ↑b)"
+    },
+    {
+      "name": "uniformOn_fiber_transfer",
+      "type": "core",
+      "description": "Conditional-probability transfer: the multi-candidate uniform probability of staying positive equals the classical 2-candidate ballot probability, proved via a cross-multiplication bijection on uniform fibers.",
+      "leanType": "(m : ℕ) (hm : 2 ≤ m) (a b : ℕ) (hab : b < a) : ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b) (multiStaysPositive m (by omega)) = ProbabilityTheory.uniformOn (Ballot.countedSequence a b) Ballot.staysPositive"
+    },
+    {
+      "name": "fiber_card_uniform",
+      "type": "supporting",
+      "description": "For m ≥ 2 candidates, every projection fiber over a target in countedSequence a b has the same cardinality, proved via the fiberSwap bijection (previously axiomatized).",
+      "leanType": "(m : ℕ) (hm : 2 ≤ m) (a b : ℕ) (t1 t2 : List ℤ) (h1 : t1 ∈ Ballot.countedSequence a b) (h2 : t2 ∈ Ballot.countedSequence a b) : Set.ncard (multiProjectionFiber m (by omega) a b t1) = Set.ncard (multiProjectionFiber m (by omega) a b t2)"
+    },
+    {
+      "name": "project_sum_eq",
+      "type": "supporting",
+      "description": "The sum of the projected ±1 sequence equals twice the leader vote count minus the total length.",
+      "leanType": "(leader : α) (s : List α) : (project leader s).sum = 2 * ↑(s.count leader) - ↑s.length"
+    },
+    {
+      "name": "prefixSum_eq",
+      "type": "supporting",
+      "description": "The prefix sum of the projection at position i equals twice the leader votes in the prefix minus the prefix length.",
+      "leanType": "(leader : α) (s : List α) (i : ℕ) (hi : i ≤ s.length) : prefixSum leader s i = 2 * ↑((s.take i).count leader) - ↑i"
+    },
+    {
+      "name": "leadsAllThroughout_iff",
+      "type": "supporting",
+      "description": "Leading all opponents combined throughout is equivalent to the leader holding strictly more than half the votes counted at each nonempty prefix.",
+      "leanType": "(leader : α) (s : List α) : leadsAllThroughout leader s ↔ ∀ i, 0 < i → i ≤ s.length → 2 * (s.take i).count leader > i"
+    },
+    {
+      "name": "leadsAllThroughout_of_same_projection",
+      "type": "supporting",
+      "description": "Two multi-candidate sequences with identical ±1 projections share the same leads-throughout property; the property is invariant under opponent relabeling.",
+      "leanType": "(leader_a : α) (leader_b : β) (s : List α) (t : List β) (hproj : project leader_a s = project leader_b t) : leadsAllThroughout leader_a s ↔ leadsAllThroughout leader_b t"
+    },
+    {
+      "name": "project_mem_countedSequence",
+      "type": "supporting",
+      "description": "The ±1 projection of a multi-candidate sequence with a leader votes and length a+b lands in Mathlib's countedSequence a b, bridging to the classical ballot setting.",
+      "leanType": "{α : Type*} [DecidableEq α] (leader : α) (s : List α) (hcount : s.count leader = a) (hlen : s.length = a + b) : project leader s ∈ Ballot.countedSequence a b"
+    },
+    {
+      "name": "positive_fiber_dichotomy",
+      "type": "supporting",
+      "description": "All-or-nothing dichotomy: over a target, the positive fiber equals the whole fiber if the target stays positive, and is empty otherwise.",
+      "leanType": "{m : ℕ} (hm : m ≥ 1) (a b : ℕ) (target : List ℤ) : (target ∈ Ballot.staysPositive → multiPositiveFiber m hm a b target = multiProjectionFiber m hm a b target) ∧ (target ∉ Ballot.staysPositive → multiPositiveFiber m hm a b target = ∅)"
+    },
+    {
+      "name": "fiberSwap_mem_multiProjectionFiber",
+      "type": "supporting",
+      "description": "The fiberSwap map sends the multi-candidate projection fiber over t1 into the fiber over t2, the key structural lemma enabling axiom elimination.",
+      "leanType": "{m : ℕ} (hm1 : m ≥ 1) {a b : ℕ} {t1 t2 : List ℤ} (ht1 : t1 ∈ Ballot.countedSequence a b) (ht2 : t2 ∈ Ballot.countedSequence a b) {s : FinSequence m} (hs : s ∈ multiProjectionFiber m hm1 a b t1) : fiberSwap m hm1 t1 t2 s ∈ multiProjectionFiber m hm1 a b t2"
+    },
+    {
+      "name": "fiberSwap_cancel",
+      "type": "supporting",
+      "description": "The fiberSwap map is involutive on fiber members: swapping t1→t2 then t2→t1 recovers the original sequence, establishing the fiber bijection.",
+      "leanType": "{m : ℕ} (hm : m ≥ 1) (t1 t2 : List ℤ) (s : List (Fin m)) (hproj : project (leader m hm) s = t1) (ht2 : ∀ x ∈ t2, x = (1 : ℤ) ∨ x = -1) (hcount : t1.count (-1) = t2.count (-1)) : fiberSwap m hm t2 t1 (fiberSwap m hm t1 t2 s) = s"
+    },
+    {
+      "name": "reconstruct_extract_cancel",
+      "type": "supporting",
+      "description": "Reconstructing a sequence from its extracted opponent values using the same target recovers the original sequence, the cancellation underlying the fiber bijection.",
+      "leanType": "{m : ℕ} (hm : m ≥ 1) : ∀ (s : List (Fin m)) (target : List ℤ), project (leader m hm) s = target → reconstructSeq m hm target (extractOpponents s target) = s"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "ballot-problem",
