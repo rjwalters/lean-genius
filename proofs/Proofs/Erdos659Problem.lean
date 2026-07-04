@@ -243,6 +243,48 @@ The representable integers are exactly those whose prime factorization has
 all primes ≡ 5, 7 (mod 8) appearing to even powers.
 -/
 
+/-! ### Multiplicative structure of the norm form `x² + 2y²`
+
+The set of integers represented by `x² + 2y²` is exactly the set of norms
+`N(x + y√-2) = x² + 2y²` of elements of the ring of integers `ℤ[√-2]` of `ℚ(√-2)`.
+Because this norm is multiplicative, the representable set is closed under
+multiplication — this is the algebraic reason behind the arithmetic
+characterization cited above (a number is representable iff every prime
+`≡ 5, 7 (mod 8)` divides it to an even power). The lemmas below verify the
+Brahmagupta–Fibonacci-type composition identity for discriminant `-8` and its
+consequence, fully (no axioms, no sorries). They are elementary but capture a
+genuine structural fact underlying the deep analytic input `moreeOsburnWorks`. -/
+
+/-- **Composition identity for the form `x² + 2y²`** (multiplicativity of the norm
+    on `ℤ[√-2]`): the product of two values of the form is again a value of the form.
+    This is the discriminant `-8` analogue of the Brahmagupta–Fibonacci identity. -/
+theorem repr_mul_identity (a b c d : ℤ) :
+    (a ^ 2 + 2 * b ^ 2) * (c ^ 2 + 2 * d ^ 2)
+      = (a * c + 2 * b * d) ^ 2 + 2 * (a * d - b * c) ^ 2 := by
+  ring
+
+/-- The set of integers representable as `x² + 2y²` is **closed under multiplication**.
+    Combined with `one_representable`/`two_representable` this shows, e.g., every power
+    of `2` is representable. This is the norm-multiplicativity of `ℤ[√-2]`. -/
+theorem representable_mul {m n : ℕ} (hm : m ∈ representable_x2_2y2)
+    (hn : n ∈ representable_x2_2y2) : m * n ∈ representable_x2_2y2 := by
+  simp only [representable_x2_2y2, Set.mem_setOf_eq] at hm hn ⊢
+  obtain ⟨a, b, hab⟩ := hm
+  obtain ⟨c, d, hcd⟩ := hn
+  refine ⟨a * c + 2 * b * d, a * d - b * c, ?_⟩
+  have hmn : ((m * n : ℕ) : ℤ) = (a ^ 2 + 2 * b ^ 2) * (c ^ 2 + 2 * d ^ 2) := by
+    push_cast; rw [hab, hcd]
+  rw [hmn, repr_mul_identity]
+
+/-- `1 = 1² + 2·0²` is representable (the norm of a unit). -/
+theorem one_representable : 1 ∈ representable_x2_2y2 := ⟨1, 0, by norm_num⟩
+
+/-- `2 = 0² + 2·1²` is representable (the ramified prime `√-2` has norm `2`). -/
+theorem two_representable : 2 ∈ representable_x2_2y2 := ⟨0, 1, by norm_num⟩
+
+/-- `3 = 1² + 2·1²` is representable (`3 ≡ 3 (mod 8)` splits in `ℤ[√-2]`). -/
+theorem three_representable : 3 ∈ representable_x2_2y2 := ⟨1, 1, by norm_num⟩
+
 /-- The 4-point property follows from avoiding all six two-distance configurations,
     **together with** the geometric lower bound that no 4-point subset collapses to
     fewer than two distinct distances.
