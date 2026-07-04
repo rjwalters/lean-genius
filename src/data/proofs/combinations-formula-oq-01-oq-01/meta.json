@@ -46,7 +46,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "That the shallow (or 'rising') diagonals of Pascal's triangle sum to Fibonacci numbers is a classical observation, often attributed to Lucas. Mathlib proves the equivalent antidiagonal form Nat.fib_succ_eq_sum_choose, F(n+1) = ∑_{p ∈ antidiagonal n} C(p.1, p.2). The parent gallery entry (combinations-formula-oq-01) collected several binomial identities but recorded the Fibonacci diagonal sum only as native_decide-checked numeric examples, posing the general proof as its first open question.",
+    "historicalContext": "That the shallow (or 'rising') diagonals of Pascal's triangle sum to Fibonacci numbers is a classical observation, often attributed to Lucas. Mathlib proves the equivalent antidiagonal form Nat.fib_succ_eq_sum_choose, F(n+1) = ∑_{p ∈ antidiagonal n} C(p.1, p.2). The parent gallery entry (combinations-formula-oq-01) collected several binomial identities but recorded the Fibonacci diagonal sum only as native_decide-checked numeric examples, posing the general proof as its first open question. The identity also has a clean combinatorial reading: F(n+1) counts the tilings of a 1×n strip by squares and dominoes, and grouping those tilings by their number j of dominoes gives exactly C(n−j, j) ways to place j dominoes among n−j pieces, so summing over j reproduces the shallow-diagonal sum (see Benjamin and Quinn, Proofs That Really Count, 2003).",
     "problemStatement": "Prove the Fibonacci diagonal sum ∑_j C(n−j, j) = F(n+1) for all n, without native_decide.",
     "text": "We index the shallow diagonal by j, so the summand is C(n−j, j) (nonzero exactly when 2j ≤ n). Mathlib's antidiagonal sum, rewritten as a range sum via Finset.Nat.sum_antidiagonal_eq_sum_range_succ, gives the mirror form ∑_{k ∈ range (n+1)} C(k, n−k) = F(n+1) (fib_shallow_diagonal_alt). Reflecting the index k ↦ n − k (Finset.sum_range_reflect) and simplifying the resulting natural-number subtractions (n+1−1−j = n−j and n−(n−j) = j for j ≤ n) turns this into the diagonal form ∑_{j ∈ range (n+1)} C(n−j, j) = F(n+1) (fib_shallow_diagonal).",
     "proofStrategy": "Reduce to Mathlib's antidiagonal Fibonacci sum, convert antidiagonal → range, then reflect the summation index and discharge the subtraction bookkeeping with omega.",
@@ -112,11 +112,19 @@
     },
     {
       "id": "diagonal-form",
-      "title": "The diagonal form by index reflection",
+      "title": "The diagonal form: reduction by index reflection",
       "startLine": 39,
+      "endLine": 43,
+      "summary": "fib_shallow_diagonal: ∑_{j} C(n−j, j) = F(n+1). The proof rewrites the goal against the mirror form and applies Finset.sum_range_reflect to replace the summation index k by its reflection n−k on range (n+1), reducing the identity to a termwise comparison of the reflected summand with C(n−j, j).",
+      "mathContext": "Reflection $j \\mapsto n-j$ on $\\mathrm{range}(n+1)$: $\\sum_{k} f(k) = \\sum_{j} f(n-j)$, applied to $f(k) = \\binom{k}{n-k}$, leaving a per-term goal."
+    },
+    {
+      "id": "index-arithmetic",
+      "title": "Termwise index arithmetic",
+      "startLine": 44,
       "endLine": 50,
-      "summary": "fib_shallow_diagonal: ∑_{j} C(n−j, j) = F(n+1), obtained from the mirror form via Finset.sum_range_reflect and omega-discharged subtraction identities.",
-      "mathContext": "Reflection $j \\mapsto n-j$ on $\\mathrm{range}(n+1)$ sends $\\binom{k}{n-k}$ to $\\binom{n-j}{\\,n-(n-j)\\,} = \\binom{n-j}{j}$, using $n+1-1-j = n-j$ and $n-(n-j)=j$ for $j \\le n$."
+      "summary": "The remaining Finset.sum_congr goal is discharged termwise: under the range hypothesis j ≤ n, the two Nat-subtraction identities n+1−1−j = n−j and n−(n−j) = j (both proved by omega) rewrite the reflected summand C(n+1−1−j, n−(n+1−1−j)) into C(n−j, j), matching the diagonal form. This is where truncated natural-number subtraction, which would otherwise obstruct the reflection, is tamed.",
+      "mathContext": "For $j \\le n$: $\\,n+1-1-j = n-j\\,$ and $\\,n-(n-j) = j$, so $\\binom{n-j}{\\,n-(n-j)\\,} = \\binom{n-j}{j}$; omega discharges the truncated-subtraction facts."
     }
   ],
   "references": [
