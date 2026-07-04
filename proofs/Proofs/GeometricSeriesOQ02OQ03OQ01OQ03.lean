@@ -51,11 +51,11 @@ variable {R : Type*} [NormedRing R] [HasSummableGeomSeries R]
 -- Part I: The factorization `x − t = x · (1 − x⁻¹ t)`
 -- ============================================================================
 
+omit [HasSummableGeomSeries R] in
 /-- **Factoring out the unit.** For a unit `x` and any `t`,
 `x − t = x · (1 − x⁻¹ t)`.  This is the algebraic engine of the whole file: it
 turns a perturbation of `x` into a perturbation of `1`, ready for the Neumann
 series. -/
-omit [HasSummableGeomSeries R] in
 theorem factor_sub (x : Rˣ) (t : R) :
     (x : R) - t = ↑x * (1 - (↑x⁻¹ : R) * t) := by
   rw [mul_sub, mul_one, ← mul_assoc, Units.mul_inv, one_mul]
