@@ -193,6 +193,31 @@ theorem containsAP_of_le {A : Set ℕ} {k m : ℕ} (hkm : k ≤ m)
   rw [Finset.mem_range] at hx ⊢
   omega
 
+/-- **AP-freeness is upward-closed in the progression length.**
+    If `A` avoids `k`-term progressions and `k ≤ m`, then `A` also avoids `m`-term
+    progressions: an `m`-AP inside `A` would contain a `k`-AP (its first `k` terms) by
+    `containsAP_of_le`, contradicting `k`-AP-freeness. Dual to `containsAP_of_le`, and the
+    structural fact underlying monotonicity of the Roth number in `k`. -/
+theorem isAPFree_of_le {A : Set ℕ} {k m : ℕ} (hkm : k ≤ m)
+    (h : IsAPFree A k) : IsAPFree A m :=
+  fun hm => h (containsAP_of_le hkm hm)
+
+/-- **The Roth number is monotone in the progression length.**
+    `r_k(N) ≤ r_m(N)` whenever `k ≤ m`. Avoiding a *longer* progression is an easier
+    constraint (`isAPFree_of_le`: every `k`-AP-free set is `m`-AP-free), so the family of
+    sets `r_m` maximises over contains the family `r_k` maximises over, and the supremum
+    only grows. This is the structural fact the `max k 3` device in
+    `strong_required_bound_implies_conjecture` relies on but never states; it also makes the
+    threshold hypotheses downward-closed in `k` (see `strongRequiredBound_mono`).
+    Fully machine-checked, axiom-free. -/
+theorem rothNumber_mono {k m N : ℕ} (hkm : k ≤ m) :
+    rothNumber k N ≤ rothNumber m N := by
+  unfold rothNumber
+  apply Finset.sup_mono
+  intro S hS
+  rw [Finset.mem_filter] at hS ⊢
+  exact ⟨hS.1, isAPFree_of_le hkm hS.2⟩
+
 /-- **A genuine `k`-term AP has exactly `k` elements.**
     When the common difference `d` is positive, the generating map `i ↦ a + i·d`
     is injective on `range k`, so `ArithProg a d k` has cardinality `k`.  (This is
@@ -422,6 +447,24 @@ theorem strong_required_bound_implies_conjecture :
       _ ≤ C * (N : ℝ) / (Real.log N) ^ (1 + δ) := hN
   exact hdiv (summable_of_strongBound hδ hC hcount)
 
+/-- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
+    The contrapositive of `summable_of_strongBound`, packaged as a positive density
+    statement: if `∑_{a∈A} 1/a = ∞` then for every `C, δ > 0` the counting function
+    exceeds `C·N/(log N)^{1+δ}` for infinitely many `N`. In words, a divergent-reciprocal
+    set can never have counting function that is `O(N/(log N)^{1+δ})`. This is the exact
+    density lower bound Erdős #3 must exploit, and is reusable wherever one needs to turn
+    `HasDivergentSum` into a quantitative growth statement. Axiom-free. -/
+theorem countingFunction_frequently_gt_of_divergent {A : Set ℕ} {C δ : ℝ}
+    (hδ : 0 < δ) (hC : 0 < C) (hdiv : HasDivergentSum A) :
+    ∃ᶠ N : ℕ in atTop,
+      C * (N : ℝ) / (Real.log N) ^ (1 + δ) < (countingFunction A N : ℝ) := by
+  by_contra h
+  rw [Filter.not_frequently] at h
+  apply hdiv
+  apply summable_of_strongBound hδ hC
+  filter_upwards [h] with N hN
+  exact not_lt.mp hN
+
 /-- **The strong threshold dominates the weak one.**
     `StrongRequiredBound k` (`r_k(N) = O(N/(log N)^{1+δ})` for some `δ > 0`) implies the
     weaker `RequiredBound k` (`r_k(N) = o(N/log N)`). Writing the strong bound as
@@ -466,6 +509,27 @@ theorem strongRequiredBound_implies_requiredBound {k : ℕ}
   have hfac : 0 ≤ (N : ℝ) * L * (c * L ^ δ - C) :=
     mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL.le) (by linarith)
   nlinarith [hfac]
+
+/-- **The strong threshold hypothesis is downward-closed in the length.**
+    `StrongRequiredBound m` implies `StrongRequiredBound k` for every `k ≤ m`: the same
+    witnesses `δ, C` work because `r_k(N) ≤ r_m(N) ≤ C·N/(log N)^{1+δ}` by `rothNumber_mono`.
+    So `∀ k ≥ 3, StrongRequiredBound k` is equivalent to the bound holding for all
+    *sufficiently large* `k` — the content is at large lengths, not small ones. Axiom-free. -/
+theorem strongRequiredBound_mono {k m : ℕ} (hkm : k ≤ m)
+    (h : StrongRequiredBound m) : StrongRequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  refine ⟨δ, hδ, C, hC, ?_⟩
+  filter_upwards [hev] with N hN
+  exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
+
+/-- **The weak threshold hypothesis is downward-closed in the length.**
+    `RequiredBound m` implies `RequiredBound k` for every `k ≤ m`, again by `rothNumber_mono`
+    (for each `c > 0`, `r_k(N) ≤ r_m(N) ≤ c·N/log N`). Axiom-free. -/
+theorem requiredBound_mono {k m : ℕ} (hkm : k ≤ m)
+    (h : RequiredBound m) : RequiredBound k := by
+  intro c hc
+  filter_upwards [h c hc] with N hN
+  exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
 
 /-- **The two `o(N/log N)` formulations in this file coincide.**
     `RequiredBound k` (a non-strict `r_k(N) ≤ c·N/log N` for every `c > 0`) is
