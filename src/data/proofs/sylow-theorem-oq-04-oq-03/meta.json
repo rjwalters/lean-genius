@@ -31,6 +31,38 @@
       "card_unipotent_range: the image has cardinality exactly p, identifying it as the order-p Sylow subgroup of SL(2, p)"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "card_unipotent_range",
+      "type": "core",
+      "description": "The unipotent subgroup has cardinality exactly p, identifying it as the order-p Sylow-p subgroup of SL(2, p). Proved by transporting the cardinality of ZMod p through the injection unipotentUpper with Equiv.ofInjective, then Nat.card_congr and ZMod.card. Since |SL(2, p)| = p(p−1)(p+1) has p-part exactly p, U is a full Sylow p-subgroup.",
+      "leanType": "Nat.card (Set.range (unipotentUpper (p := p))) = p"
+    },
+    {
+      "name": "unipotentHom",
+      "type": "core",
+      "description": "The unipotent one-parameter subgroup packaged as a group homomorphism from the additive group (ZMod p, +) — written multiplicatively via Multiplicative (ZMod p) — into SL(2, ZMod p). map_one' is unipotentUpper_zero and map_mul' is the additivity identity unipotentUpper_mul. This is the abelian normal subgroup of the Borel stabilizer required by Iwasawa's simplicity criterion for PSL(2, p).",
+      "leanType": "Multiplicative (ZMod p) →* Matrix.SpecialLinearGroup (Fin 2) (ZMod p)"
+    },
+    {
+      "name": "unipotentUpper_mul",
+      "type": "lemma",
+      "description": "Additivity of the embedding: [[1,s],[0,1]]·[[1,t],[0,1]] = [[1,s+t],[0,1]]. Proved entrywise by fin_cases over the four 2×2 positions plus Matrix.mul_apply / Fin.sum_univ_two. Exhibits U as a homomorphic image of (ZMod p, +) and, with add_comm, as abelian (unipotentUpper_comm).",
+      "leanType": "(s t : ZMod p) → unipotentUpper s * unipotentUpper t = unipotentUpper (s + t)"
+    },
+    {
+      "name": "unipotentUpper_injective",
+      "type": "lemma",
+      "description": "The unipotent embedding t ↦ [[1,t],[0,1]] is injective, read off the top-right matrix entry (which is exactly t). Upgrades to unipotentHom_injective, so the range is a subgroup of SL(2, ZMod p) isomorphic to (ZMod p, +).",
+      "leanType": "Function.Injective (unipotentUpper (p := p))"
+    },
+    {
+      "name": "unipotentUpper",
+      "type": "definition",
+      "description": "The upper unipotent matrix [[1,t],[0,1]] packaged as a determinant-1 element of SL(2, ZMod p); the SpecialLinearGroup membership det = 1 = 1·1 − t·0 is discharged by Matrix.det_fin_two_of.",
+      "leanType": "(t : ZMod p) → Matrix.SpecialLinearGroup (Fin 2) (ZMod p)"
+    }
+  ],
   "overview": {
     "historicalContext": "The projective special linear groups PSL(2, p) form the first infinite family of finite non-abelian simple groups, with PSL(2, 5) ≅ A₅ the smallest. Their simplicity for p ≥ 5 was known to Évariste Galois (1832), who studied the exceptional behaviour at p = 5, 7, 11. Camille Jordan established the simplicity systematically in his Traité (1870). The modern textbook route is not a raw Sylow count but Iwasawa's simplicity criterion (Iwasawa 1941; see Dixon & Mortimer, Permutation Groups §3.3), applied to the natural action of PSL(2, p) on the projective line P¹(𝔽_p). That criterion requires exhibiting an abelian normal subgroup of a point stabiliser (the Borel subgroup) whose conjugates generate the whole group. The upper-unipotent subgroup U constructed here is exactly that abelian normal subgroup — and simultaneously the order-p Sylow subgroup of SL(2, p), since |SL(2, p)| = p(p−1)(p+1) has p-part exactly p.",
     "problemStatement": "**Open question (parent):** PSL(2, p) is simple for every prime p ≥ 5.\n\n**This entry (verified fragment):** Construct the upper-unipotent one-parameter subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} ⊆ SL(2, 𝔽_p) and prove that t ↦ [[1,t],[0,1]] is an injective group homomorphism from (ℤ/p, +), so that U is abelian, isomorphic to ℤ/p, and has cardinality exactly p.",
@@ -95,6 +127,38 @@
       "targetId": "abel-ruffini",
       "relationship": "foundational",
       "description": "PSL(2,5) ≅ A₅ is the composition factor whose non-abelian simplicity underlies Abel-Ruffini. This entry starts the program of proving simplicity for the entire PSL(2, p) family, of which A₅ is the smallest member."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Galois, Évariste",
+      "title": "Lettre à Auguste Chevalier (and posthumous works)",
+      "year": "1832",
+      "note": "Identified the simplicity of PSL(2, p) for p ≥ 5 and the exceptional behaviour at p = 5, 7, 11 — the origin of the study of this family."
+    },
+    {
+      "authors": "Jordan, Camille",
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "note": "Systematic proof of the simplicity of the PSL(2, p) family, establishing them as an infinite family of finite simple groups."
+    },
+    {
+      "authors": "Iwasawa, Kenkichi",
+      "title": "Über die Einfachheit der speziellen projektiven Gruppen",
+      "year": "1941",
+      "note": "Iwasawa's simplicity criterion: a primitive group with an abelian normal subgroup of a point stabiliser whose conjugates generate a perfect group is simple. The modern route to PSL(2, p) simplicity, and the reason the unipotent subgroup constructed here is the key object."
+    },
+    {
+      "authors": "Dixon, John D.; Mortimer, Brian",
+      "title": "Permutation Groups",
+      "year": "1996",
+      "note": "Graduate Texts in Mathematics 163. §3.3 states and proves Iwasawa's lemma; §2.8 covers the action of PSL(2, p) on the projective line. The textbook reference for the intended assembly."
+    },
+    {
+      "authors": "Rotman, Joseph J.",
+      "title": "An Introduction to the Theory of Groups (4th ed.)",
+      "year": "1995",
+      "note": "Graduate Texts in Mathematics 148. §9 develops SL(2, p), PSL(2, p), and their simplicity — the source cited in the Lean module docstring."
     }
   ],
   "leanFile": {
