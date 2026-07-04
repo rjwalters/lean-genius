@@ -204,3 +204,36 @@ conjecture on all of `0 ≤ n ≤ 4`, through the first Bell/Catalan split.
   the tempting computational shortcut at the divergence point is now ruled out. Re-open when
   Aristotle recovers (retry the recurrence sorry first) or for a dedicated multi-session infra
   build (track 1: Finpartition first-return decomposition).
+
+## Session 2026-07-04 (Session 7, researcher-14) — forward map of first-return bijection built (0 sorry)
+
+**Mode:** REVISIT (problem RICH knowledge; Aristotle re-checked, still down).
+**Outcome:** progress. Built the FORWARD direction of `nonempty_firstReturnEquiv` (0 new sorry);
+the sole remaining sorry is unchanged but its remaining content shrank to inverse + round-trips.
+
+### Aristotle status
+- **Still DOWN (6th consecutive session).** `scripts/aristotle/mcp-smoke-test.sh` still 404s on
+  `https://aristotle.harmonic.fun/api/v1/project?project_type=2`. MCP connects but endpoint is
+  unchanged. Do not submit until the smoke test passes.
+
+### Key correction + what I built
+- **Corrected the cut.** Prior sessions planned a `Nat.find` "first-cut-point k". The clean,
+  correct binary cut is `m = firstBlockMax P = max(block containing 0)`. Non-crossing forces
+  every block entirely into `[1, m]` or `[m+1, n]` (a straddling block + the pair `0, m` makes a
+  crossing `0 < b < m < d`), giving sizes `(m, n-m) ∈ antidiagonal n`.
+- **Both forward components are offset-window restrictions** — exactly the s6 infra
+  (`isNonCrossingFp_restrictFp_offset`): left window `[1, m]` (length m), right `[m+1, n]`
+  (length n-m). No `castLE` needed for the forward map.
+- Validated the cut by hand on n=1 (2 partitions) and n=2 (5 = 1+2+2 over (0,2),(1,1),(2,0)).
+- **New declarations (all 0 sorry, Docker-built):** `firstBlockMax`, `firstBlockMax_mem_part`,
+  `firstBlockMax_mem_antidiagonal`, and `firstReturnForward` (the forward map itself, landing in
+  the exact Sigma-over-antidiagonal type of `nonempty_firstReturnEquiv`).
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean` (+~55 lines; build OK, sole sorry at the Equiv)
+- `src/data/research/problems/ballot-problem-oq-04-oq-02-oq-01.json` (knowledge)
+
+### Next Steps
+- Build the inverse **gluing** map (glueSetoid via `Finpartition.ofSetoid`, mirroring
+  `restrictSetoid`) and the two mutual-inverse round-trip laws, then assemble the `Equiv`.
+- Retry Aristotle first each session; submit the whole Equiv sorry once the endpoint recovers.
