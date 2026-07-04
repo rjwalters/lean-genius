@@ -169,4 +169,60 @@ theorem isSidon_of_isBhSet {h : ℕ} {A : Finset ℕ} (hA : A.Nonempty)
     (hh : 2 ≤ h) (H : IsBhSet h A) : IsSidon A :=
   isSidon_of_isBhSet_two (isBhSet_antitone hA hh H)
 
+/-!
+## Section IV: Further structural facts
+
+Two hereditary/base companions to the nesting results of Section II, and the converse
+of the Sidon bridge (upgrading `isSidon_of_isBhSet_two` to a characterization).
+-/
+
+/-- **B₀ is trivial.** Every finite set is a B₀ set: the only multiset of card `0` is
+the empty multiset, so the injectivity condition is vacuous. Complements `isBhSet_one`.
+Unlike the nesting lemmas this needs no nonemptiness hypothesis. -/
+theorem isBhSet_zero (A : Finset ℕ) : IsBhSet 0 A := by
+  intro s t _ _ hcs hct _
+  rw [Multiset.card_eq_zero.mp hcs, Multiset.card_eq_zero.mp hct]
+
+/-- **B_h is hereditary (monotone in the ground set).** Every subset of a B_h set is a
+B_h set: the injectivity of `Multiset.sum` on the size-`h` multisets drawn from the
+larger set restricts to those drawn from the subset. This is the ground-set analog of
+`isBhSet_antitone` (which is monotone in the order `h`), and — unlike the nesting
+lemmas — needs no nonemptiness hypothesis. -/
+theorem isBhSet_subset {h : ℕ} {A B : Finset ℕ} (hBA : B ⊆ A)
+    (H : IsBhSet h A) : IsBhSet h B := by
+  intro s t hs ht hcs hct hsum
+  exact H s t (fun x hx => hBA (hs x hx)) (fun x hx => hBA (ht x hx)) hcs hct hsum
+
+/-- **The gallery's ordered Sidon condition implies the B₂ property** — the converse of
+`isSidon_of_isBhSet_two`. Two size-2 multisets from `A` with equal sum are each an
+unordered pair `{x, y}` (`Multiset.card_eq_two`); sorting each pair and applying
+`IsSidon` pins the two components down, so the multisets coincide. -/
+theorem isBhSet_two_of_isSidon {A : Finset ℕ} (H : IsSidon A) : IsBhSet 2 A := by
+  intro s t hs ht hcs hct hsum
+  obtain ⟨a, b, rfl⟩ := Multiset.card_eq_two.mp hcs
+  obtain ⟨c, d, rfl⟩ := Multiset.card_eq_two.mp hct
+  have ha : a ∈ A := hs a (by simp)
+  have hb : b ∈ A := hs b (by simp)
+  have hc : c ∈ A := ht c (by simp)
+  have hd : d ∈ A := ht d (by simp)
+  simp only [Multiset.insert_eq_cons, Multiset.sum_cons, Multiset.sum_singleton] at hsum
+  -- `hsum : a + b = c + d`; split on the two orderings and apply `IsSidon`.
+  rcases le_total a b with hab | hba
+  · rcases le_total c d with hcd | hdc
+    · obtain ⟨rfl, rfl⟩ := H a ha b hb c hc d hd hab hcd hsum
+      first | rfl | exact Multiset.cons_swap _ _ _
+    · obtain ⟨rfl, rfl⟩ := H a ha b hb d hd c hc hab hdc (by omega)
+      first | rfl | exact Multiset.cons_swap _ _ _
+  · rcases le_total c d with hcd | hdc
+    · obtain ⟨rfl, rfl⟩ := H b hb a ha c hc d hd hba hcd (by omega)
+      first | rfl | exact Multiset.cons_swap _ _ _
+    · obtain ⟨rfl, rfl⟩ := H b hb a ha d hd c hc hba hdc (by omega)
+      first | rfl | exact Multiset.cons_swap _ _ _
+
+/-- **Characterization of B₂ sets.** The multiset `B₂` property is *exactly* the
+gallery's ordered Sidon condition. Combines `isSidon_of_isBhSet_two` with its converse
+`isBhSet_two_of_isSidon`. -/
+theorem isBhSet_two_iff_isSidon {A : Finset ℕ} : IsBhSet 2 A ↔ IsSidon A :=
+  ⟨isSidon_of_isBhSet_two, isBhSet_two_of_isSidon⟩
+
 end Erdos153OQ03
