@@ -91,9 +91,16 @@
     {
       "id": "const-one",
       "title": "The Exact Lower-Order Constant",
-      "summary": "birthday_triple_threshold_const_one: |n − (c + 1)| ≤ 1/(3c), exhibiting the exact constant term 1 and the vanishing remainder O(d^(-2/3))",
+      "summary": "birthday_triple_threshold_const_one: |n − (c + 1)| ≤ 1/(3c), exhibiting the exact constant term 1 and the vanishing remainder O(d^(-2/3)). Obtained from the two one-sided bounds of birthday_triple_threshold_sharp via abs_le, both branches closing by linarith.",
       "startLine": 118,
       "endLine": 140
+    },
+    {
+      "id": "summary-and-axioms",
+      "title": "Summary and Axiom Verification",
+      "summary": "Closing docstring recapping the three results and the centered-cube mechanism, followed by #print axioms on both main theorems. The audit reports only propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx), substantiating the entry's 0-axiom / 0-sorry claim.",
+      "startLine": 141,
+      "endLine": 162
     }
   ],
   "conclusion": {
@@ -158,6 +165,16 @@
       "year": "2005",
       "venue": "Journal of Statistical Planning and Inference 130, 377–389",
       "note": "Asymptotics of k-fold birthday coincidences"
+    },
+    {
+      "authors": [
+        "Persi Diaconis",
+        "Frederick Mosteller"
+      ],
+      "title": "Methods for Studying Coincidences",
+      "year": "1989",
+      "venue": "Journal of the American Statistical Association 84, 853–861",
+      "note": "Standard reference for the multiple-coincidence birthday asymptotic: the k-fold threshold n ≈ (k!·d^(k-1)·ln 2)^(1/k), which specializes at k=3 to the (6d²ln2)^(1/3) leading term this entry sharpens."
     }
   ],
   "leanFile": {
