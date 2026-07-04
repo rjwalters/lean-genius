@@ -156,5 +156,27 @@
       "venue": "CPP",
       "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sum_weighted_sq_reflect",
+      "statement": "∑_{k=0}^{n} k·C(n,k)² = ∑_{k=0}^{n} (n−k)·C(n,k)²",
+      "description": "Reflection symmetry: the substitution k ↦ n−k combined with C(n,n−k) = C(n,k) shows the k-weighted and (n−k)-weighted sums of squares coincide. The pivot on which the closed form rests, proved via Finset.sum_range_reflect and Nat.choose_symm."
+    },
+    {
+      "name": "two_mul_sum_weighted_sq",
+      "statement": "2·∑_{k=0}^{n} k·C(n,k)² = n·C(2n,n)",
+      "description": "The weighted central-binomial sum of squares, stated with a factor of 2 to package the reflection symmetry and avoid natural-number subtraction. Adding the sum to its reflection gives n·∑ C(n,k)², which equals n·C(2n,n) by the parent's diagonal identity."
+    },
+    {
+      "name": "central_binom_two_mul_pred",
+      "statement": "1 ≤ n → C(2n,n) = 2·C(2n−1,n−1)",
+      "description": "Halving the central binomial coefficient: Pascal's rule splits C(2n,n) into the two symmetric halves C(2n−1,n−1) = C(2n−1,n). Proved by peeling n = m+1 and applying Nat.choose_succ_succ with the symmetry C(2m+1,m+1) = C(2m+1,m)."
+    },
+    {
+      "name": "sum_weighted_sq",
+      "statement": "1 ≤ n → ∑_{k=0}^{n} k·C(n,k)² = n·C(2n−1,n−1)",
+      "description": "The classical closed form, obtained by combining the factor-of-2 identity with the halving lemma and cancelling the 2 via Nat.eq_of_mul_eq_mul_left. The headline result of the entry."
+    }
   ]
 }

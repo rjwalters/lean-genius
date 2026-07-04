@@ -95,5 +95,28 @@
       "binomial symmetry",
       "cancellation in ℕ"
     ]
+  },
+  {
+    "id": "numeric-verification",
+    "proofId": "combinations-formula-oq-07-oq-03",
+    "range": {
+      "startLine": 131,
+      "endLine": 135
+    },
+    "type": "insight",
+    "title": "Kernel-Checked Numeric Instance",
+    "content": "Two decide checks pin the closed form at n = 3: ∑_{k=0}^{3} k·C(3,k)² = 0·1 + 1·9 + 2·9 + 3·1 = 0 + 9 + 18 + 3 = 30, and the same sum equals 3·C(5,2) = 3·10 = 30, matching n·C(2n−1,n−1) with n = 3. Both use kernel decide (not native_decide), so the 0-axiom footprint is preserved.",
+    "mathContext": "$\\sum_{k=0}^{3} k\\binom{3}{k}^2 = 0+9+18+3 = 30 = 3\\binom{5}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "weighted binomial sums",
+      "kernel reduction"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "finite sums",
+      "Lean decide tactic"
+    ]
   }
 ]
