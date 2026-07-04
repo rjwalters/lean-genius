@@ -118,6 +118,74 @@
     "path": "Proofs/Erdos33Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "IsAdditiveComplementOfSquares",
+      "type": "core",
+      "description": "Defines a set A ⊆ ℕ as an additive complement of the squares when every natural number can be written as a + n² for some a ∈ A and n ≥ 0.",
+      "leanType": "(A : Set ℕ) : Prop"
+    },
+    {
+      "name": "countingFunction",
+      "type": "supporting",
+      "description": "The counting function giving the number of elements of A in the interval {1, ..., N}.",
+      "leanType": "(A : Set ℕ) (N : ℕ) : ℕ"
+    },
+    {
+      "name": "normalizedDensity",
+      "type": "supporting",
+      "description": "The normalized density |A ∩ {1,...,N}| / √N whose limsup and liminf govern Problem 33.",
+      "leanType": "(A : Set ℕ) (N : ℕ) : ℝ"
+    },
+    {
+      "name": "cilleruelo_habsieger_lower_bound",
+      "type": "axiom",
+      "description": "The best known lower bound (Cilleruelo, Habsieger, Balasubramanian-Ramana) asserting liminf of the normalized density is at least 4/π for any additive complement of squares.",
+      "leanType": "(A : Set ℕ)\n    (hA : IsAdditiveComplementOfSquares A) :\n  (4 / π : ℝ) ≤ liminf (fun N => normalizedDensity A N) atTop"
+    },
+    {
+      "name": "four_over_pi_approx",
+      "type": "supporting",
+      "description": "Establishes that the lower-bound constant 4/π exceeds 1.27, using Mathlib's bound π < 3.15.",
+      "leanType": ": (4 / π : ℝ) > 1.27"
+    },
+    {
+      "name": "goldenRatio",
+      "type": "supporting",
+      "description": "The golden ratio φ = (1 + √5) / 2, which appears in Van Doorn's upper-bound constant.",
+      "leanType": ": ℝ"
+    },
+    {
+      "name": "goldenRatio_squared",
+      "type": "supporting",
+      "description": "Proves the defining identity φ² = φ + 1 for the golden ratio.",
+      "leanType": ": goldenRatio^2 = goldenRatio + 1"
+    },
+    {
+      "name": "vanDoornConstant",
+      "type": "supporting",
+      "description": "The Van Doorn upper-bound constant 2φ^(5/2) ≈ 6.66 on the limsup of the normalized density.",
+      "leanType": ": ℝ"
+    },
+    {
+      "name": "liminfStrictlyGreaterThanOne",
+      "type": "core",
+      "description": "Formalizes open question 2: whether the liminf of the normalized density is strictly greater than 1 for every additive complement of squares.",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "four_over_pi_gt_one",
+      "type": "supporting",
+      "description": "Proves 4/π > 1 from the bound π < 4.",
+      "leanType": ": (4 / π : ℝ) > 1"
+    },
+    {
+      "name": "liminf_gt_one_from_bounds",
+      "type": "core",
+      "description": "Derives that the liminf of the normalized density exceeds 1 for any additive complement of squares, by combining the 4/π lower bound with 4/π > 1.",
+      "leanType": "(A : Set ℕ)\n    (hA : IsAdditiveComplementOfSquares A) :\n    (1 : ℝ) < liminf (fun N => normalizedDensity A N) atTop"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-31",
