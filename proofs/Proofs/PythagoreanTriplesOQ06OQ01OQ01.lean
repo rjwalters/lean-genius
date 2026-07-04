@@ -97,6 +97,66 @@ theorem sixty_dvd_prod_of_pythagoreanTriple {x y z : ℤ} (h : PythagoreanTriple
     (60 : ℤ) ∣ x * y * z :=
   sixty_dvd_prod (by have := h.eq; ring_nf; ring_nf at this; linarith)
 
+/-! ### Locating the factor `3`: it never divides the hypotenuse of a primitive triple
+
+The package `sixty_dvd_prod` only says *that* each prime factor is present in the product; it
+does not say *which* side carries it.  For the factor `3` the location is pinned down completely
+by primitivity: if the legs `x, y` are coprime then `3 ∤ z`, so the `3` must fall on a **leg**.
+
+This is genuinely special to `3` (and to `4`).  The factor `5` can land on the hypotenuse — e.g.
+`(3, 4, 5)` has `5 ∣ z` — so no analogous "`5 ∤ z`" statement holds. -/
+
+/-- For a **primitive** triple (coprime legs), `3` never divides the hypotenuse.  If it did, then
+`x² + y² ≡ 0 (mod 3)` would force `3 ∣ x` and `3 ∣ y`, contradicting `IsCoprime x y`. -/
+theorem three_not_dvd_hyp_of_coprime {x y z : ℤ} (hcop : IsCoprime x y)
+    (h : x ^ 2 + y ^ 2 = z ^ 2) : ¬ (3 : ℤ) ∣ z := by
+  intro hz
+  -- Over `ZMod 3` the only solution of `a² + b² = 0` is `a = b = 0`.
+  have key : ∀ a b : ZMod 3, a ^ 2 + b ^ 2 = 0 → a = 0 ∧ b = 0 := by decide
+  have hzz : (z : ZMod 3) = 0 := by
+    rw [ZMod.intCast_zmod_eq_zero_iff_dvd]; exact_mod_cast hz
+  have hrel : (x : ZMod 3) ^ 2 + (y : ZMod 3) ^ 2 = 0 := by
+    have := zmod_rel 3 h; rw [hzz] at this; simpa using this
+  obtain ⟨hx0, hy0⟩ := key _ _ hrel
+  have hx : (3 : ℤ) ∣ x := by
+    have := (ZMod.intCast_zmod_eq_zero_iff_dvd x 3).1 hx0; exact_mod_cast this
+  have hy : (3 : ℤ) ∣ y := by
+    have := (ZMod.intCast_zmod_eq_zero_iff_dvd y 3).1 hy0; exact_mod_cast this
+  have hunit : IsUnit (3 : ℤ) := hcop.isUnit_of_dvd' hx hy
+  rw [Int.isUnit_iff] at hunit; omega
+
+/-- **Locating the factor `3`.**  In every primitive Pythagorean triple, `3` divides one of the
+two **legs** `x`, `y` (never the hypotenuse `z`).  Combined with `three_not_dvd_hyp_of_coprime`
+this fully pins the position of the factor `3`. -/
+theorem three_dvd_leg_of_coprime {x y z : ℤ} (hcop : IsCoprime x y)
+    (h : x ^ 2 + y ^ 2 = z ^ 2) : (3 : ℤ) ∣ x ∨ (3 : ℤ) ∣ y := by
+  have hprod := three_dvd_prod h
+  have hznot := three_not_dvd_hyp_of_coprime hcop h
+  rcases (Int.prime_three.dvd_mul.1 hprod) with hxy | hz
+  · exact Int.prime_three.dvd_mul.1 hxy
+  · exact absurd hz hznot
+
+/-! ### Sharpness: `60` is *exactly* the universal divisor
+
+`sixty_dvd_prod` shows `60` divides every Pythagorean product `xyz`.  The instance `(3, 4, 5)`
+with `xyz = 60` shows this is the best possible constant: any integer that divides the product of
+*every* triple must already divide `60`.  The two facts combine into a clean characterization. -/
+
+/-- **Sharpness (upper bound).**  If `d` divides `x·y·z` for *every* Pythagorean triple, then
+`d ∣ 60`.  Proof: specialize to `(3, 4, 5)`, whose product is exactly `60`. -/
+theorem sixty_greatest_universal_divisor (d : ℤ)
+    (hd : ∀ x y z : ℤ, x ^ 2 + y ^ 2 = z ^ 2 → d ∣ x * y * z) : d ∣ 60 := by
+  have := hd 3 4 5 (by norm_num); norm_num at this; exact this
+
+/-- **The universal-divisor characterization.**  An integer `d` divides the product of the sides
+of every Pythagorean triple **iff** `d ∣ 60`.  This is the sharp form of the package: `60` is the
+greatest common divisor of `{ x·y·z : x² + y² = z² }`. -/
+theorem dvd_all_prod_iff_dvd_sixty (d : ℤ) :
+    (∀ x y z : ℤ, x ^ 2 + y ^ 2 = z ^ 2 → d ∣ x * y * z) ↔ d ∣ 60 := by
+  constructor
+  · exact sixty_greatest_universal_divisor d
+  · intro hd x y z h; exact hd.trans (sixty_dvd_prod h)
+
 /-! ### Concrete instances -/
 
 /-- `(3,4,5)`: the product `60` is exactly divisible by `60`. -/

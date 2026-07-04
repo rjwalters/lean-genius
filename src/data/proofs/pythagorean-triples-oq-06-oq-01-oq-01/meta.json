@@ -16,11 +16,11 @@
     ]
   },
   "conclusion": {
-    "summary": "A complete 0-axiom Lean 4 formalization that 60 ∣ x·y·z for every Pythagorean triple, with the three prime-power components 3 ∣ xyz, 4 ∣ xyz, 5 ∣ xyz proved as finite congruence obstructions over ZMod 3, ZMod 8 → ZMod 4, and ZMod 5, assembled by coprimality. Includes a PythagoreanTriple-structure wrapper and four concrete instances.",
+    "summary": "A complete 0-axiom Lean 4 formalization that 60 ∣ x·y·z for every Pythagorean triple, with the three prime-power components 3 ∣ xyz, 4 ∣ xyz, 5 ∣ xyz proved as finite congruence obstructions over ZMod 3, ZMod 8 → ZMod 4, and ZMod 5, assembled by coprimality. Includes a PythagoreanTriple-structure wrapper and four concrete instances. Extended with the factor-3 location theorems (three_not_dvd_hyp_of_coprime, three_dvd_leg_of_coprime — 3 falls on a leg of any primitive triple) and the sharpness characterization dvd_all_prod_iff_dvd_sixty (d divides every Pythagorean product iff d ∣ 60).",
     "implications": "Supplies the headline divisibility package missing from Mathlib's Pythagorean-triple library, without any primitivity hypothesis. The proof exemplifies the 'finite congruence obstruction' technique — reducing a Diophantine divisibility to a decidable check over a finite ring — including the subtlety that the 2-adic factor 4 must be read off modulo 8. The reusable lemma dvd_prod_of_zmod can certify other congruence obstructions on quadratic relations.",
     "openQuestions": [
-      "Refine the package structurally for primitive triples: prove that 3 and 5 never divide the hypotenuse z (so the obstruction always falls on a leg), and that the even leg is divisible by 4 — pinning the location of each prime factor rather than only its presence in the product.",
-      "Identify the largest constant C such that C ∣ xyz for every Pythagorean triple, and prove 60 is sharp by exhibiting a triple whose product is divisible by no prime power beyond those in 60 (e.g. (3,4,5) with xyz = 60)."
+      "Pin the even-leg structure for primitive triples: prove which leg is even and that the even leg is divisible by 4 (the factor-3 location and the sharpness of 60 are now resolved in this file — see three_dvd_leg_of_coprime and dvd_all_prod_iff_dvd_sixty).",
+      "Extend the location analysis to 5: characterize exactly when 5 divides a leg versus the hypotenuse (unlike 3, the factor 5 can fall on z, e.g. (3,4,5))."
     ]
   },
   "sections": [
@@ -101,26 +101,30 @@
   "openQuestions": [
     {
       "id": "pythagorean-triples-oq-06-oq-01-oq-01-oq-01",
-      "question": "Refine the package structurally for primitive triples: prove that 3 and 5 never divide the hypotenuse z (so the obstruction always falls on a leg), and that the even leg is divisible by 4 — pinning the location of each prime factor rather than only its presence in the product.",
-      "significance": "medium"
+      "question": "Refine the package structurally for primitive triples. RESOLVED for the factor 3: `three_not_dvd_hyp_of_coprime` / `three_dvd_leg_of_coprime` prove that for coprime legs 3 never divides the hypotenuse, so the factor 3 always lands on a leg. NOTE: the original hope that '5 never divides z' is FALSE — 5 can divide the hypotenuse, e.g. (3,4,5) has 5∣z — so only a presence statement (five_dvd_prod) is available for 5. REMAINING: pin the even leg's divisibility by 4 for primitive triples (which leg is even, and that it is a multiple of 4).",
+      "significance": "medium",
+      "status": "partially-resolved"
     },
     {
       "id": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
-      "question": "Identify the largest constant C such that C ∣ xyz for every Pythagorean triple, and prove 60 is sharp by exhibiting a triple whose product is not divisible by any prime power beyond those in 60 (e.g. (3,4,5) with xyz = 60).",
-      "significance": "low"
+      "question": "RESOLVED: `dvd_all_prod_iff_dvd_sixty` proves that d divides the product xyz of every Pythagorean triple iff d ∣ 60, so 60 is exactly the greatest universal divisor; sharpness is witnessed by (3,4,5) whose product is 60 (`sixty_greatest_universal_divisor`).",
+      "significance": "low",
+      "status": "resolved"
     }
   ],
   "sorries": 0,
   "leanFile": {
     "axiomCount": 0,
     "definitionCount": 0,
-    "imports": ["Mathlib"],
-    "lineCount": 115,
+    "imports": [
+      "Mathlib"
+    ],
+    "lineCount": 175,
     "namespace": "PythagoreanTriples60",
     "opens": [],
     "path": "Proofs/PythagoreanTriplesOQ06OQ01OQ01.lean",
     "sorries": 0,
-    "theoremCount": 11
+    "theoremCount": 15
   },
   "meta": {
     "author": "Lean Genius Research",
@@ -138,8 +142,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 115,
-    "theoremCount": 11,
+    "lineCount": 175,
+    "theoremCount": 15,
     "definitionCount": 0,
     "dateAdded": "2026-06-24",
     "mathlibDependencies": [
@@ -169,7 +173,9 @@
       "four_dvd_prod: 4 ∣ xyz proved via the ZMod 8 → ZMod 4 lift, correctly handling the fact that the factor 4 is invisible modulo 4 alone",
       "three_dvd_prod / five_dvd_prod: the 3- and 5-obstructions as finite ZMod checks via the reusable dvd_prod_of_zmod packaging",
       "dvd_prod_of_zmod: a reusable lemma converting a decidable congruence obstruction over ZMod n into an integer divisibility of the product",
-      "Concrete instances (3,4,5), (5,12,13), (8,15,17), (20,21,29) exercising the general theorem"
+      "Concrete instances (3,4,5), (5,12,13), (8,15,17), (20,21,29) exercising the general theorem",
+      "three_not_dvd_hyp_of_coprime / three_dvd_leg_of_coprime: for a PRIMITIVE triple (coprime legs) the factor 3 never divides the hypotenuse and therefore falls on a leg — locating the factor 3, not merely asserting its presence in the product",
+      "sixty_greatest_universal_divisor / dvd_all_prod_iff_dvd_sixty: an integer d divides x·y·z for EVERY Pythagorean triple iff d ∣ 60 — the sharp form proving 60 is exactly the universal divisor (upper bound witnessed by (3,4,5) with product 60)"
     ],
     "prerequisites": [
       "Pythagorean triples (integer solutions of x² + y² = z²)",
