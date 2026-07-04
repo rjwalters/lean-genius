@@ -116,6 +116,62 @@
     "path": "Proofs/Erdos38Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "schnirelmannDensity",
+      "type": "core",
+      "description": "Defines the Schnirelmann density of a set A ⊆ ℕ as the infimum of |A ∩ {1,...,N}| / N over all N ≥ 1.",
+      "leanType": "(A : Set ℕ) : ℝ"
+    },
+    {
+      "name": "countingFunction",
+      "type": "supporting",
+      "description": "Counts the number of elements of A in the initial segment {1,...,N}, i.e. |A ∩ {1,...,N}|.",
+      "leanType": "(A : Set ℕ) (N : ℕ) : ℕ"
+    },
+    {
+      "name": "IsAdditiveBasisOfOrder",
+      "type": "supporting",
+      "description": "States that B is an additive basis of order k, meaning every natural number is a sum of at most k elements of B.",
+      "leanType": "(B : Set ℕ) (k : ℕ) : Prop"
+    },
+    {
+      "name": "IsAdditiveBasis",
+      "type": "supporting",
+      "description": "States that B is an additive basis of some finite order.",
+      "leanType": "(B : Set ℕ) : Prop"
+    },
+    {
+      "name": "translate",
+      "type": "supporting",
+      "description": "Defines the translate A + {b} = {a + b : a ∈ A} of a set A by a natural number b.",
+      "leanType": "(A : Set ℕ) (b : ℕ) : Set ℕ"
+    },
+    {
+      "name": "boostsCount",
+      "type": "supporting",
+      "description": "States that some b ∈ B makes the counting function of A ∪ (A + b) on {1,...,N} at least (α + f(α))·N, where α is the Schnirelmann density of A.",
+      "leanType": "(B : Set ℕ) (A : Set ℕ) (N : ℕ) (f : ℝ → ℝ) : Prop"
+    },
+    {
+      "name": "HasDensityBoostProperty",
+      "type": "core",
+      "description": "States that B has the density-boosting property for every set A and every N ≥ 1 with respect to the boost function f.",
+      "leanType": "(B : Set ℕ) (f : ℝ → ℝ) : Prop"
+    },
+    {
+      "name": "Erdos38Problem",
+      "type": "core",
+      "description": "Formalizes Erdős Problem #38: existence of a set B that is not an additive basis yet has the density-boost property for some f positive on (0,1).",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "erdos_38_conjecture",
+      "type": "core",
+      "description": "Records the (classically trivial) decidability that Erdős Problem #38 either holds or fails, marking the underlying question as open.",
+      "leanType": ": Erdos38Problem ∨ ¬Erdos38Problem"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-37",
