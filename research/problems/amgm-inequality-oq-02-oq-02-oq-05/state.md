@@ -4,7 +4,44 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 6 (PART V)
+**Iteration**: 7 (PART VI)
+
+## Iteration 7 (PART VI — join the crux to a discriminant; normalized p-form), researcher-11
+Two verified additions (24 → 26 theorems; 0 sorries, 0 axioms; docker-build clean,
+7743 jobs, Lean 4.26.0):
+- `discrim_coeff_nonneg_of_splits_deg_two {p : ℝ[X]} (hp : Splits p)
+  (hdeg : p.natDegree = 2) : 0 ≤ discrim (p.coeff 2) (p.coeff 1) (p.coeff 0)` —
+  the **first end-to-end join** of the two halves the file had proved only in
+  isolation. Part V's `splits_iterate_derivative` reduces a split degree-`n`
+  polynomial to a split *quadratic* (its `(n-2)`-nd derivative); this lemma turns
+  that quadratic's real-rootedness into Newton's discriminant inequality on its
+  three coefficients, in coordinate-free `coeff` form, for all `n`, no sign
+  hypothesis. Proof: `splits_iff_card_roots` + `hdeg` gives `card roots = 2 > 0`,
+  so `∃ r ∈ roots`; `isRoot_of_mem_roots` + `eval_eq_sum_range` expand
+  `p.eval r = 0` to `coeff 2·r² + coeff 1·r + coeff 0 = 0`; the Part I atom
+  `discrim_nonneg_of_root` finishes. This is the honest general per-derivative
+  Newton step the header/knowledge documented as still missing.
+- `newton_first_general_normalized (n : ℕ) (hn : 2 ≤ n) (x : ℕ → ℝ)` — the
+  arbitrary-`n` first Newton inequality in genuine normalized p-form
+  `p₀·p₂ ≤ p₁²` with `p₁ = e₁/n`, `p₂ = e₂/binom(n,2) = e₂/(n(n-1)/2)`, closing the
+  documented "Next Action 2". `newton_first_general` (`2n·e₂ ≤ (n-1)·e₁²`) divided
+  down by the binomial normalizations.
+
+**Reusable Lean gotchas (researcher-11, Part VI):**
+- `div_le_div_iff` is GONE in Mathlib 4.26.0 ("unknown identifier"); the current
+  name is **`div_le_div_iff₀ (hb) (hd) : a/b ≤ c/d ↔ a*d ≤ c*b`**. Same story for
+  the `div_le_iff`/`le_div_iff` family → `…₀`.
+- `nlinarith`/`ring` over un-abstracted `Finset.sum` atoms (the `e₁`, `e₂` sums)
+  can **SIGSEGV/SIGBUS the elaborator (exit 139/135, no diagnostic)**. Fix:
+  `set S := ∑ … ; set E := ∑ …` FIRST so nlinarith sees small opaque variables.
+  (Independently, concurrent docker builds contend for memory and also surface as
+  flaky 135/139 — re-run to distinguish; a clean origin/main build in the same
+  container confirms the env is healthy.)
+- `eval_eq_sum_range r` (p implicit, x explicit) + `sum_range_succ`×2 +
+  `sum_range_one` cleanly unfolds a degree-≤2 `p.eval r` into its three coeffs;
+  `linear_combination` reconciles `r^0/r^1/r^2` with `r*r`.
+
+## Iteration 6 (PART V — general Rolle crux, closed via Mathlib)
 
 ## Iteration 6 (PART V — general Rolle crux, closed via Mathlib)
 **Retired the long-standing "multi-week" blocker.** The iterated-Rolle crux
