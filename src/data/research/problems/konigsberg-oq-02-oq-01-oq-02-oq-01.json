@@ -1,7 +1,7 @@
 {
   "slug": "konigsberg-oq-02-oq-01-oq-02-oq-01",
   "title": "Hierholzer undirected sufficiency — even-degree connected graph has an Eulerian circuit",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "blocked",
   "tier": "B",
   "path": "full",
@@ -29,11 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Hierholzer base case + continuation invariant + Sub-lemma A (maximal trail is closed) all VERIFIED; remaining: edge-removal preserves even-degree (B), splice+induction (C).",
+    "progressSummary": "PROGRESS: Hierholzer sufficiency ingredients A (maximal trail closed), B-parity + B-full deleteEdges (#34714), and C splice (#34731) all VERIFIED 0-axiom. Remaining: the strong-induction assembly (Sub-lemma D) into undirected_euler_circuit_sufficient.",
     "builtItems": [
       "proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01.lean: stated undirected_euler_circuit_sufficient (sufficiency, 1 sorry) and undirected_euler_circuit_iff (full characterization). The iff necessity half is fully PROVED; only sufficiency delegates to the sorry. Builds cleanly (import Connectivity.Connected added; only the expected sorry warning).",
       "VERIFIED base case of undirected Hierholzer induction: theorem euler_circuit_of_edgeSet_empty in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (connected + G.edgeSet = ∅ ⇒ ∃ Eulerian circuit, via nil walk; vacuous count condition). Compiles clean, 0 sorries.",
-      "exists_unused_incident_edge_at_endpoint + eq_of_isTrail_edgeMaximal (Sub-lemma A: a maximal trail is closed) — VERIFIED 0 sorries in KonigsbergOQ02OQ01OQ02OQ01Dev.lean"
+      "exists_unused_incident_edge_at_endpoint + eq_of_isTrail_edgeMaximal (Sub-lemma A: a maximal trail is closed) — VERIFIED 0 sorries in KonigsbergOQ02OQ01OQ02OQ01Dev.lean",
+      "Sub-lemma C (splice) VERIFIED in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Splice.lean (0 sorry, 0 axiom, 3 thms): isTrail_append (construction converse Mathlib omits), exists_isTrail_splice (insert closed trail d rooted at w∈c.support into closed trail c, edge set = c∪d, witness (c.takeUntil w).append (d.append (c.dropUntil w))), exists_isTrail_splice_of_mem_support (residual circuit rooted anywhere; rotate to w then splice)"
     ],
     "insights": [
       "Target is undirected Hierholzer SUFFICIENCY: connected + all-even-degree implies an Eulerian circuit exists. Necessity is already proved in KonigsbergOQ02OQ01OQ02.lean (eulerian_circuit_forall_even).",
@@ -44,7 +45,10 @@
       "Confirmed (web search + local check): Mathlib4 Trails module has only the necessity/property lemmas (IsEulerian.even_degree_iff, IsEulerian.card_odd_degree). No Eulerian existence/Hierholzer construction exists upstream, so sufficiency must be built natively.",
       "The directed Digraph proof in KonigsbergOQ02OQ01.lean is NOT reusable: it is built on a bespoke Digraph structure with its own Walk/splice/removeArcList/arcCount — none are SimpleGraph.Walk objects. A native SimpleGraph mirror is required.",
       "Aristotle backend returned Resource not found for prove, prove_file, and a trivial inline (1+1=2) prove this session — full backend outage, delegation unavailable. Resubmit the single sorry when backend recovers (known classical result, ideal Aristotle target).",
-      "Sub-lemma A reduces to Mathlib IsTrail.even_countP_edges_iff: p-edges incident to a non-start vertex v number ODD, total incident = degree is EVEN, so an unused incident edge always exists (proper-subset parity argument)."
+      "Sub-lemma A reduces to Mathlib IsTrail.even_countP_edges_iff: p-edges incident to a non-start vertex v number ODD, total incident = degree is EVEN, so an unused incident edge always exists (proper-subset parity argument).",
+      "Mathlib has only the DECOMPOSITION direction for trails under append (IsTrail.of_append_left/of_append_right); the CONSTRUCTION direction (disjoint-edge trails concatenate to a trail) and the splice are absent and were built natively.",
+      "Splice needs [DecidableEq V] because takeUntil/dropUntil/rotate require it; isTrail_append does not.",
+      "rotate_edges gives (d.rotate h).edges ~r d.edges (List.IsRotated), so .mem_iff transports edge membership — lets a residual circuit rooted anywhere be re-based at the shared vertex without changing its edge set."
     ],
     "mathlibGaps": [
       "Mathlib provides Eulerian degree bookkeeping (SimpleGraph.Walk.IsEulerian.even_degree_iff, .card_odd_degree) but NO existence/sufficiency (Hierholzer construction) for undirected graphs. Confirmed by parent file docstring: sufficiency remains the open direction."
@@ -55,7 +59,9 @@
       "Consider building an undirected splice + edgeRemoval operation mirroring KonigsbergOQ02OQ01.lean removeArcList; estimate 600-1000 lines. This is the main effort and may warrant Aristotle or a dedicated multi-session build.",
       "Prove inductive step sub-lemma A: in an all-even-degree graph with ≥1 edge, a maximal trail from any positive-degree vertex is CLOSED (parity/handshake: current endpoint always has an unused incident edge unless back at start).",
       "Prove sub-lemma B: deleting the edges of a closed trail (G.deleteEdges on the trail edge set) preserves ∀ v, Even (degree v) — each vertex loses an even number of incident trail-edges.",
-      "Prove sub-lemma C (splice): a residual closed trail sharing a vertex with the main circuit can be spliced in, maintaining the per-edge count=1 invariant; combine with strong induction on G.edgeFinset.card using the verified base case."
+      "Prove sub-lemma C (splice): a residual closed trail sharing a vertex with the main circuit can be spliced in, maintaining the per-edge count=1 invariant; combine with strong induction on G.edgeFinset.card using the verified base case.",
+      "Sub-lemma D / assembly: strong induction on G.edgeFinset.card wiring A (maximal trail closed) + B (deleteEdges preserves even degree, #34714) + C (splice, #34731). Grow a maximal closed trail c; if it misses an edge, connectivity gives a shared vertex w on c.support incident to the residual graph; the IH on the smaller residual graph yields a closed Eulerian sub-circuit d through w; exists_isTrail_splice_of_mem_support fuses them; the edge-set union closes the induction.",
+      "Need: a bridge lemma that the residual circuit d has edges disjoint from c (immediate: d lives in G.deleteEdges c.edges) and that if a maximal trail is not Eulerian, connectivity supplies a support vertex incident to an unused edge."
     ],
     "markdown": "# Knowledge Base: konigsberg-oq-02-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
