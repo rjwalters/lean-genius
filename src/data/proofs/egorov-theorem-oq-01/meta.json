@@ -153,12 +153,20 @@
       "mathContext": "For $0 \\le x < 1$, $x^n \\to 0$; the only exceptional point is $x=1$ with $\\mathrm{vol}\\{1\\}=0$. Hence the a.e. hypothesis holds and Egorov applies on the unit-measure interval."
     },
     {
-      "id": "sharpness",
-      "title": "Sharpness: the Convergence Is Genuinely Non-Uniform",
+      "id": "sharpness-obstruction",
+      "title": "Sharpness I: The IVT Obstruction xᴺ ≥ 1/2",
       "startLine": 113,
+      "endLine": 133,
+      "summary": "exists_pow_ge_half: for every exponent N there is x ∈ [0,1) with xᴺ ≥ 1/2. Since x ↦ xᴺ is continuous on [0,1] with endpoint values 0 and 1, the intermediate value theorem (intermediate_value_Icc) attains 1/2 at some x, and a case split pushes that point into the half-open [0,1). This is the pointwise obstruction that blocks uniform convergence.",
+      "mathContext": "$\\forall N\\ \\exists x\\in[0,1),\\ x^N \\ge 1/2$ — the sup of $x^N$ over $[0,1)$ stays $\\ge 1/2$ for all $N$."
+    },
+    {
+      "id": "sharpness-nonuniform",
+      "title": "Sharpness II: Non-Uniformity on [0,1)",
+      "startLine": 135,
       "endLine": 152,
-      "summary": "exists_pow_ge_half: for every N there is x ∈ [0,1) with xᴺ ≥ 1/2, via the intermediate value theorem on x ↦ xᴺ (from 0 to 1). pow_not_tendstoUniformlyOn_Ico: xⁿ does NOT converge uniformly to 0 on [0,1) — assuming it does, the ε = 1/2 definition at a bad point gives 1/2 ≤ xᴺ < 1/2, a contradiction. So Egorov's exceptional set cannot be omitted.",
-      "mathContext": "$\\sup_{x \\in [0,1)} x^N \\ge 1/2$ for every $N$, so uniform convergence (which would force $\\sup \\to 0$) fails — pointwise-everywhere convergence does not upgrade to uniform."
+      "summary": "pow_not_tendstoUniformlyOn_Ico refutes uniform convergence of xⁿ → 0 on [0,1): unfolding Metric.tendstoUniformlyOn_iff at ε = 1/2 yields an index N past which dist(0, xᴺ) < 1/2 for all x ∈ [0,1); instantiating at the bad point from exists_pow_ge_half gives 1/2 ≤ xᴺ < 1/2, a contradiction. So convergence at every point of [0,1) does NOT upgrade to uniform convergence — Egorov's removed set is unavoidable.",
+      "mathContext": "$x^n \\to 0$ everywhere on $[0,1)$ yet not uniformly; the exceptional set Egorov removes cannot be omitted."
     }
   ],
   "sorries": 0,
