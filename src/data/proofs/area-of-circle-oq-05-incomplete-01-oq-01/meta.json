@@ -63,14 +63,20 @@
   "sections": [
     {
       "title": "The standard normal as gaussianReal 0 1",
-      "description": "`stdNormal := gaussianReal 0 1`, with its IsProbabilityMeasure instance inherited from Mathlib."
+      "startLine": 1,
+      "endLine": 47,
+      "description": "Module docstring, imports, and namespace, then `stdNormal := gaussianReal 0 1` (line 44) with its IsProbabilityMeasure instance inherited from Mathlib (line 46)."
     },
     {
       "title": "Mean, variance, and second moment",
+      "startLine": 49,
+      "endLine": 68,
       "description": "`stdNormal_mean` (= 0) and `stdNormal_variance` (= 1) are library specializations. `stdNormal_second_moment` derives E[X²] = 1 from `variance_eq_integral` and the vanishing mean."
     },
     {
       "title": "Concrete density form and the MGF",
+      "startLine": 70,
+      "endLine": 105,
       "description": "`gaussianPDFReal_std` matches Mathlib's density to (1/√(2π))·exp(-x²/2); `stdNormal_second_moment_concrete` transports E[X²] = 1 to that idiom via `integral_gaussianReal_eq_integral_smul`. `stdNormal_mgf` records M_X(t) = exp(t²/2)."
     }
   ],
