@@ -121,6 +121,32 @@
       "description": "Sister entry realizing A₅ over ℚ, anchored on the same InverseGaloisA5 development"
     }
   ],
+  "references": [
+    {
+      "text": "The Inverse Galois Problem: does every finite group occur as Gal(K/ℚ)? The alternating group A₅ (the smallest non-solvable group) is realizable over ℚ; this brick works toward an axiom-free A₅ formalization.",
+      "url": "https://en.wikipedia.org/wiki/Inverse_Galois_problem"
+    },
+    {
+      "text": "Serre, J.-P. Topics in Galois Theory (2nd ed., A K Peters/CRC, 2008). Rigidity methods and the realization of groups such as A₅ and S₅ as Galois groups over ℚ.",
+      "url": "https://en.wikipedia.org/wiki/Inverse_Galois_problem"
+    },
+    {
+      "text": "Malle, G. & Matzat, B. H. Inverse Galois Theory (2nd ed., Springer Monographs in Mathematics, 2018). Comprehensive treatment of realizing finite groups as Galois groups.",
+      "url": "https://en.wikipedia.org/wiki/Inverse_Galois_problem"
+    },
+    {
+      "text": "Neukirch, J. Algebraic Number Theory (Springer Grundlehren 322, 1999), Ch. I §§8–9. Decomposition of primes in extensions, ramification index e and inertia (residue) degree f, and the fundamental identity ∑ eᵢfᵢ = n underlying tower-multiplicativity of inertiaDeg.",
+      "url": "https://en.wikipedia.org/wiki/Splitting_of_prime_ideals_in_Galois_extensions"
+    },
+    {
+      "text": "Marcus, D. A. Number Fields (2nd ed., Springer Universitext, 2018), Ch. 3. The Kummer–Dedekind factorization theorem: at an unramified prime, the splitting of (p) mirrors the factorization of the minimal polynomial mod p — the source of the residual input 3 ∣ inertiaDeg (7) P.",
+      "url": "https://en.wikipedia.org/wiki/Splitting_of_prime_ideals_in_Galois_extensions"
+    },
+    {
+      "text": "Mathlib4: NumberTheory.RamificationInertia — Ideal.inertiaDeg, inertiaDeg_algebra_tower (tower-multiplicativity, no Galois hypothesis on the middle ring) and inertiaDegIn_eq_inertiaDeg (Galois uniformity), the two facts this two-line brick assembles.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/DedekindInertiaTower.lean",
