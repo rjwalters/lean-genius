@@ -98,7 +98,8 @@
       "**No Legendre machinery needed for squarefree arguments.** Because each prime occurs to the first power, the whole computation is the single criterion 'a prime divides n! iff it is ≤ n' (Nat.Prime.dvd_factorial), used forward for the upper bound and backward for the lower bound — a marked simplification over the prime-power case, which required the full p-adic valuation of factorials.",
       "**Coprimality is the only assembly tool.** The two single-prime divisibilities p ∣ (max p q)! and q ∣ (max p q)! combine into p·q ∣ (max p q)! solely because distinct primes are coprime; this is the squarefree shadow of the CRT-style combination that assembles S on a general n.",
       "**S(p·q) = max(p, q) = max(S(p), S(q)).** The semiprime value is exactly the maximum of the per-prime Kempner values, confirming the 'maximum over prime powers' law in its first genuinely multi-prime instance.",
-      "**The drop is exact, not just qualitative.** The grandparent threshold theorem guarantees only S(n) < n for composite n ≠ 4; here for n = p·q the value of the drop is pinned precisely: S(p·q) = max(p, q), with deficit p·q − max(p, q) = max(p,q)·(min(p,q) − 1)."
+      "**The drop is exact, not just qualitative.** The grandparent threshold theorem guarantees only S(n) < n for composite n ≠ 4; here for n = p·q the value of the drop is pinned precisely: S(p·q) = max(p, q), with deficit p·q − max(p, q) = max(p,q)·(min(p,q) − 1).",
+      "**The semiprime case is the template for every squarefree n.** For any squarefree n = p₁···p_r the identical coprime-assembly argument yields S(n) = maxᵢ pᵢ, the largest prime factor: each prime divides (max pᵢ)! and coprimality combines them into n ∣ (max pᵢ)!, while no smaller m works because the top prime must itself appear. The two-prime theorem here is exactly that argument in its smallest nontrivial instance, S(p·q) = max(p,q)."
     ],
     "prerequisites": [
       "The Kempner–Smarandache function S(n) = min{m : n ∣ m!}",
@@ -132,10 +133,19 @@
     },
     {
       "id": "semiprime-value",
-      "title": "The Squarefree Semiprime Value",
+      "title": "The Squarefree Semiprime Value S(p·q) = max(p, q)",
       "startLine": 69,
+      "endLine": 98,
+      "summary": "semiprime_dvd_factorial_max proves p·q ∣ (max p q)! by combining the two single-prime divisibilities via coprimality (upper bound S(p·q) ≤ max p q). S_semiprime then pins the exact value S(p·q) = max p q by antisymmetry, the lower bound coming from the fact that the larger prime must appear in any m! divisible by p·q.",
+      "mathContext": "$S(p\\cdot q)=\\max(p,q)$ for distinct primes $p,q$."
+    },
+    {
+      "id": "kempner-drop",
+      "title": "The Exact Kempner Drop and Symmetry",
+      "startLine": 100,
       "endLine": 110,
-      "summary": "semiprime_dvd_factorial_max (p·q ∣ (max p q)! via coprimality), S_semiprime (S(p·q) = max p q by antisymmetry), S_semiprime_lt_self (the explicit drop S(p·q) < p·q), and S_semiprime_comm (symmetry in the two primes)."
+      "summary": "S_semiprime_lt_self makes the composite drop explicit: S(p·q) = max p q is strictly below p·q, where the grandparent threshold theorem only guaranteed S(n) < n for composite n ≠ 4. S_semiprime_comm records that S sees only the product, so the value is symmetric in p and q. The deficit is exactly p·q − max(p,q) = max(p,q)·(min(p,q) − 1).",
+      "mathContext": "$S(p\\cdot q)<p\\cdot q$, deficit $\\max(p,q)\\,(\\min(p,q)-1)$."
     },
     {
       "id": "sanity-checks",
