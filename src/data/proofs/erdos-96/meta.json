@@ -156,6 +156,62 @@
     "path": "Proofs/Erdos96Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "IsConvexPolygon",
+      "type": "core",
+      "description": "A finite set of points forms a convex polygon when it has at least three points and lies in convex position.",
+      "leanType": "(A : Finset Point) : Prop"
+    },
+    {
+      "name": "unitDistanceCount",
+      "type": "core",
+      "description": "The number of unordered pairs of distinct points at Euclidean distance exactly 1.",
+      "leanType": "(A : Finset Point) : ℕ"
+    },
+    {
+      "name": "ErdosMoserConjecture",
+      "type": "core",
+      "description": "The Erdős-Moser conjecture that a convex n-gon has O(n) unit distance pairs.",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "ErdosFishburnConjecture",
+      "type": "supporting",
+      "description": "The stronger Erdős-Fishburn conjecture bounding unit distance pairs in a convex n-gon by exactly 2n.",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "furedi_bound",
+      "type": "axiom",
+      "description": "Füredi's 1990 O(n log n) upper bound on unit distance pairs in a convex n-gon, taken as an axiom.",
+      "leanType": ": ∃ C : ℝ, C > 0 ∧ ∀ A : Finset Point, IsConvexPolygon A → A.card ≥ 3 → (unitDistanceCount A : ℝ) ≤ C * A.card * Real.log A.card"
+    },
+    {
+      "name": "edelsbrunner_hajnal_construction",
+      "type": "axiom",
+      "description": "The Edelsbrunner-Hajnal 1991 construction of convex n-gons achieving 2n - 7 unit distance pairs, taken as an axiom.",
+      "leanType": ": ∀ n : ℕ, n ≥ 7 → ∃ A : Finset Point, IsConvexPolygon A ∧ A.card = n ∧ unitDistanceCount A = 2 * n - 7"
+    },
+    {
+      "name": "cyclicOrder",
+      "type": "axiom",
+      "description": "An axiom providing a cyclic ordering of the vertices of a convex polygon around its boundary.",
+      "leanType": "(A : Finset Point) (hA : IsConvexPolygon A) : Fin A.card → Point"
+    },
+    {
+      "name": "lower_bound",
+      "type": "core",
+      "description": "For every n ≥ 7 there is a convex n-gon with at least 2n - 7 unit distance pairs.",
+      "leanType": ": ∀ n : ℕ, n ≥ 7 → ∃ A : Finset Point, IsConvexPolygon A ∧ A.card = n ∧ unitDistanceCount A ≥ 2 * n - 7"
+    },
+    {
+      "name": "erdos_96_summary",
+      "type": "core",
+      "description": "Summary theorem combining the O(n log n) upper bound with the 2n - 7 lower bound for unit distances in convex polygons.",
+      "leanType": ": (∃ C : ℝ, C > 0 ∧ ∀ A : Finset Point, IsConvexPolygon A → A.card ≥ 3 → (unitDistanceCount A : ℝ) ≤ C * A.card * Real.log A.card) ∧ (∀ n : ℕ, n ≥ 7 → ∃ A : Finset Point, IsConvexPolygon A ∧ A.card = n ∧ unitDistanceCount A ≥ 2 * n - 7)"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-1084",
