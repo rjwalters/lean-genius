@@ -396,3 +396,55 @@ finding that the parent entry `RamseyR4kExtensions.lean` also silently failed to
 The symmetric-LLL avoidance principle `SymmetricLLLForRamsey` (Spencer's conditional-
 probability induction) remains the one non-Mathlib ingredient — a >1000-line measure-theoretic
 undertaking (BLOCKED). See sibling `lovasz-local-lemma-oq-01`.
+
+## PART XIV — quantifying the deletion window: monotonicity via Pascal's rule (researcher-14, 2026-07-04)
+
+**Mode**: ACT (RICH, score 36). **Outcome**: progress (+2 verified theorems, axiom-free).
+Machine-verified: docker-build clean, 7744 jobs, foundational axioms only
+(`propext / Classical.choice / Quot.sound`); no `decide`, no `native_decide`.
+
+### What this closes
+The prior state left one genuinely-mathematical (non-enumeration) increment open: *quantify
+how the deletion window width grows*, which "needs binomial-ratio estimates rather than
+`decide`." This session supplies the exact binomial-ratio step — **Pascal's rule** — and
+turns it into a monotonicity theorem for the deletion bound
+`deletionBound n k = n − ⌊2·C(n,k)/2^C(k,2)⌋`.
+
+- **`deletionBound_mono_of_pred_subthreshold`** (`2 ≤ k`, `k ≤ n`,
+  `2·C(n,k−1) < 2^C(k,2)`): `deletionBound n k ≤ deletionBound (n+1) k`. The deletion
+  bound is *nondecreasing* in `n` exactly while the `(k−1)`-clique first moment stays below
+  one quantum `q = 2^C(k,2)`.
+- **`deletionBound_mono_of_unionFeasible`** (`2 ≤ k`, `k ≤ n`, `2·C(n,k) < 2^C(k,2)`,
+  `C(n,k−1) ≤ C(n,k)`): same conclusion. Corollary: everywhere the sharp union bound is
+  still feasible, the deletion bound is still improving — so the deletion optimum lies **at
+  least as far out** as the union optimum. Since the `(k−1)`-window `2·C(n,k−1) < q` is
+  strictly wider than the `k`-window `2·C(n,k) < q` (the binomials are on their increasing
+  arm, `C(n,k−1) < C(n,k)` for `k−1 < n/2`, `Nat.choose_le_succ_of_lt_half_left`), the
+  deletion optimum sits **strictly beyond** it — the structural source of the alteration
+  method's `≈ k` gain over the union bound.
+
+### Technique (reusable ℕ-floor monotonicity idiom)
+The whole proof is an elementary `Nat`-division argument, no probability and no large
+`decide`:
+- **Pascal in the needed form**: `2·C(n+1,k) = 2·C(n,k) + 2·C(n,k−1)`. Get
+  `C(n+1,k) = C(n,k) + C(n,k−1)` by `obtain ⟨m, rfl⟩ : ∃ m, k = m+1` (from `2 ≤ k`), then
+  `simp only [Nat.choose_succ_succ, Nat.add_sub_cancel]; ring`; lift by `2·` with `omega`.
+- **Floor jumps by ≤ 1 per step**: with `a = 2·C(n,k)`, `b = 2·C(n,k−1) < q`,
+  `c = 2·C(n+1,k) = a+b`, the added mass `b` is below one quantum, so
+  `⌊c/q⌋ ≤ ⌊a/q⌋ + 1`. Proved by `c/q ≤ (a+q)/q` (`Nat.div_le_div_right` on `c ≤ a+q`,
+  which is `omega` from `b < q`) `= a/q + 1` (`Nat.add_div_right a hq`, `hq : 0 < q`).
+- **Close with `omega`** after `simp only [deletionBound]` and `set q/a/b/c`: given
+  `⌊a/q⌋ ≤ ⌊c/q⌋ ≤ ⌊a/q⌋+1`, `omega` proves `n − ⌊a/q⌋ ≤ (n+1) − ⌊c/q⌋` (it handles the
+  ℕ truncated subtraction and treats `a/q`, `c/q` as opaque atoms bounded by the two
+  hypotheses). Key: `set` before `omega` so the divisor `q` is a variable atom, not a
+  literal — `omega` then uses only the supplied inequalities, not built-in div lemmas.
+
+**Gotcha**: `pow_pos (by norm_num) _ : 0 < 2 ^ (k.choose 2)` is the robust positivity lemma
+(avoid the deprecated `Nat.pos_pow_of_pos`). `Nat.add_div_right a hq : (a + q)/q = a/q + 1`
+needs `hq : 0 < q` and the summand `q` on the *right*.
+
+### Still open (unchanged)
+The symmetric-LLL avoidance principle `SymmetricLLLForRamsey` (>1000-line measure-theoretic
+construction: probability space + mutual-independence `hindep`) remains the one non-Mathlib
+ingredient (BLOCKED). See sibling `lovasz-local-lemma-oq-01`. All finite/combinatorial and
+now the window-monotonicity content is discharged axiom-free.
