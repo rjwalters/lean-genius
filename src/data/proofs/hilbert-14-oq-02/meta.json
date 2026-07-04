@@ -155,6 +155,38 @@
     "path": "Proofs/Hilbert14OQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "symmetric_eq_aeval_esymm",
+      "type": "core",
+      "description": "Fundamental theorem of symmetric polynomials: when |σ| ≤ n, every symmetric polynomial is a polynomial in the elementary symmetric polynomials e₁,…,eₙ.",
+      "leanType": "(hn : Fintype.card σ ≤ n) → (p : MvPolynomial σ R) → p.IsSymmetric → ∃ q : MvPolynomial (Fin n) R, p = aeval (fun i : Fin n => esymm σ R (i + 1)) q"
+    },
+    {
+      "name": "symmetric_algEquiv_polynomial",
+      "type": "core",
+      "description": "The symmetric subalgebra is isomorphic (as an R-algebra) to a polynomial ring in n free variables, exhibiting the ring of symmetric polynomials as finitely generated and free.",
+      "leanType": "(hn : Fintype.card σ = n) → Nonempty (MvPolynomial (Fin n) R ≃ₐ[R] symmetricSubalgebra σ R)"
+    },
+    {
+      "name": "esymm_algebraicIndependent",
+      "type": "core",
+      "description": "The n elementary symmetric polynomials e₁,…,eₙ are algebraically independent over R when |σ| = n — the counterpart to their generating the symmetric subalgebra.",
+      "leanType": "(hn : Fintype.card σ = n) → AlgebraicIndependent R (fun i : Fin n => esymm σ R (i + 1))"
+    },
+    {
+      "name": "esymm_isHomogeneous",
+      "type": "supporting",
+      "description": "The k-th elementary symmetric polynomial is homogeneous of degree k.",
+      "leanType": "(k : ℕ) → (esymm σ R k).IsHomogeneous k"
+    },
+    {
+      "name": "esymm_totalDegree_le",
+      "type": "technical",
+      "description": "Each generator eᵢ₊₁ has total degree at most n, a degree bound used in the algebraic-independence argument.",
+      "leanType": "(i : Fin n) → (esymm σ R (i + 1)).totalDegree ≤ n"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "hilbert-14",
