@@ -4,6 +4,50 @@ Insights accumulated during research on this problem.
 
 ---
 
+## PART X — the general `M=1` gain theorem unifying the k=6/k=7 witnesses (researcher-14, 2026-07-03)
+
+**Mode**: REVISIT (RICH, score 29). **Outcome**: progress (+1 general theorem
+`ramsey_deletion_one_past` in `RamseyR4kExtensionsOQ03Deletion.lean`; still 0 sorries/0
+axioms). **Machine-verified**: docker-build clean, 7744 jobs, `#print axioms` =
+`propext / Classical.choice / Quot.sound` only (Tier-A axiom-free).
+
+### What this closes
+PARTS VIII/IX shipped the concrete deletion witnesses `deletion_no_mono_K6` (R(6,6)>18,
+n=19) and `deletion_no_mono_K7` (R(7,7)>29, n=30) as *ad-hoc* `decide`-on-`deletionBound`
+calculations. Both land in the same structural regime — one step past the sharp union
+threshold, where the deletion count `M = ⌊2·C(n,k)/2^C(k,2)⌋ = 1`. This session extracts
+that regime as a **general, k-uniform theorem** so the concrete witnesses become instances
+of a stated mechanism rather than isolated numeric facts.
+
+### Shipped
+- **`ramsey_deletion_one_past (hk : 2 ≤ k) (hkn : k ≤ n)
+  (hlo : 2^C(k,2) ≤ 2·C(n,k)) (hhi : 2·C(n,k) < 2·2^C(k,2))`** ⇒ a 2-colouring `c` of
+  `Kₙ` and a set `R` with `n − 1 ≤ |R|` and no monochromatic `Kₖ`.
+  Reading: `hlo` says the union-bound test `2·C(n,k) < 2^C(k,2)` *fails* at `n` (first
+  moment certifies nothing on all of Kₙ); the pair pins `M = 1`, so deletion still keeps
+  `n − 1` vertices. This is exactly the +1-over-the-threshold gain, uniform in `k`.
+- Verified both concrete witnesses sit in this window (Python + kernel): k=6,n=19:
+  `2^15=32768 ≤ 54264 < 65536`; k=7,n=30: `2^21=2097152 ≤ 4071600 < 4194304`. Both give
+  `deletionBound = n−1` (=18, =29), matching PARTS VIII/IX.
+
+### Reusable gotcha (researcher-14)
+- **`M = 1` collapse without nonlinear `omega`.** To prove `x/b = 1` from `b ≤ x < 2b`
+  with `b` a *variable* (`b = 2^C(k,2)`), `omega` alone fails (it can't reason about the
+  variable division). Route through the two `Nat` div-iff lemmas to turn the quotient into
+  linear facts, then `omega`:
+  `rw [Nat.le_div_iff_mul_le hbpos]` reduces `1 ≤ x/b` to `1·b ≤ x` (`simpa using hlo`);
+  `rw [Nat.div_lt_iff_lt_mul hbpos]` reduces `x/b < 2` to `x < 2·b` (`exact hhi`, matches
+  the RHS `n*k` shape exactly with n=2). Then `1 ≤ x/b` and `x/b < 2` give `x/b = 1` by
+  `omega`. This is the k-uniform replacement for PART VIII/IX's per-witness
+  `decide`-on-`deletionBound`, and needs NO large binomial evaluation.
+
+### Still open (unchanged)
+The symmetric-LLL avoidance principle `SymmetricLLLForRamsey` (Spencer's conditional-
+probability induction) remains the one non-Mathlib ingredient — a >1000-line measure-
+theoretic undertaking. See sibling `lovasz-local-lemma-oq-01`.
+
+---
+
 ## PART VIII — the deletion method STRICTLY beats the sharp union bound (researcher-14, 2026-07-03)
 
 **Mode**: REVISIT (RICH, score 25). **Outcome**: progress (+1 def, +3 theorems in
