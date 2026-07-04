@@ -49,22 +49,45 @@
     "proofId": "legendre-factorial-formula-oq-01-oq-02",
     "range": {
       "startLine": 53,
-      "endLine": 91
+      "endLine": 78
     },
     "type": "theorem",
-    "title": "v₅(n!) is the Greatest k with 10ᵏ | n!",
-    "content": "`trailingZeros_isGreatest` is the main result: v₅(n!) is the greatest element of {k | 10ᵏ | n!}, the faithful order-theoretic statement of the trailing-zero count. Membership rewrites 10^{v₅} = 2^{v₅}·5^{v₅} (mul_pow) and supplies both prime-power divisors of n! — 5^{v₅} | n! from pow_padicValNat_dvd, 2^{v₅} | n! from v₅ ≤ v₂ via padicValNat_dvd_iff_le — combined with Nat.Coprime.mul_dvd_of_dvd_of_dvd since 2^{v₅}, 5^{v₅} are coprime. The upper bound sends 10ᵏ | n! to 5ᵏ | 10ᵏ | n! (pow_dvd_pow_of_dvd) and reads off k ≤ v₅. The corollaries `ten_pow_v5_dvd_factorial` (10^{v₅} | n!) and `not_ten_pow_succ_dvd_factorial` (¬ 10^{v₅+1} | n!) record the two defining properties.",
-    "mathContext": "$10^{v_5(n!)} \\mid n! \\quad\\text{and}\\quad 10^{v_5(n!)+1} \\nmid n!.$",
+    "title": "v₅(n!) is the Greatest k with 10ᵏ | n! (IsGreatest)",
+    "content": "`trailingZeros_isGreatest` is the main result: v₅(n!) is the greatest element of {k | 10ᵏ | n!}, the faithful order-theoretic statement of the trailing-zero count. It has two halves. Membership (10^{v₅} | n!) rewrites 10^{v₅} = 2^{v₅}·5^{v₅} (mul_pow) and supplies both prime-power divisors of n!: 5^{v₅} | n! from pow_padicValNat_dvd and 2^{v₅} | n! from v₅ ≤ v₂ (padicValNat_dvd_iff_le), combined via coprime divisibility (Nat.Coprime.mul_dvd_of_dvd_of_dvd). Upper bound: any k with 10ᵏ | n! forces 5ᵏ | n!, so k ≤ v₅(n!) by maximality of the valuation. Packaging both directions as IsGreatest is what makes the trailing-zero count canonical rather than a mere one-sided estimate.",
+    "mathContext": "$\\mathrm{IsGreatest}\\ \\{k : 10^k \\mid n!\\}\\ (v_5(n!))$: membership $10^{v_5}\\mid n!$ and $k \\le v_5(n!)$ for every $k$ with $10^k\\mid n!$.",
     "significance": "key",
     "relatedConcepts": [
       "IsGreatest",
       "coprime divisibility",
-      "p-adic valuation"
+      "p-adic valuation",
+      "order-theoretic maximum"
     ],
     "prerequisites": [
       "pow_padicValNat_dvd",
       "padicValNat_dvd_iff_le",
       "Nat.Coprime.mul_dvd_of_dvd_of_dvd"
+    ]
+  },
+  {
+    "id": "legendre-fact-oq01-oq02-ann-sharp-corollaries",
+    "proofId": "legendre-factorial-formula-oq-01-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "The Two Sharp Corollaries: 10^{v₅} | n! but 10^{v₅+1} ∤ n!",
+    "content": "The two extremal consequences read straight off the IsGreatest statement. `ten_pow_v5_dvd_factorial` is the existence half — 10^{v₅(n!)} | n! (the .1 membership projection of IsGreatest) — so n! has AT LEAST v₅(n!) trailing zeros. `not_ten_pow_succ_dvd_factorial` is the maximality half — 10^{v₅(n!)+1} ∤ n! (from the .2 upper-bound projection: if it divided, v₅+1 would exceed the greatest element, a contradiction) — so n! has NO MORE THAN v₅(n!) trailing zeros. Together they pin the trailing-zero count to exactly v₅(n!): the sharp two-sided bound that the single IsGreatest statement compresses.",
+    "mathContext": "$10^{v_5(n!)} \\mid n! \\quad\\text{and}\\quad 10^{v_5(n!)+1} \\nmid n!$",
+    "significance": "key",
+    "relatedConcepts": [
+      "sharp divisibility bound",
+      "IsGreatest projections",
+      "trailing zeros"
+    ],
+    "prerequisites": [
+      "trailingZeros_isGreatest",
+      "IsGreatest .1/.2 projections"
     ]
   },
   {
