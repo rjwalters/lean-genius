@@ -84,6 +84,56 @@
     "theoremCount": 6,
     "definitionCount": 3
   },
+  "mainTheorems": [
+    {
+      "name": "even_not_unconstrainedSzemeredi",
+      "type": "core",
+      "statement": "The even integers E do NOT satisfy the constant-term-allowed pattern property: there is a finite family of integer polynomials (constant terms allowed) that E realizes for no nonzero common difference d.",
+      "significance": "The eponymous necessity result. Bergelson–Leibman's polynomial Szemerédi theorem is stated under the standing hypothesis NoConstantTerm p; this theorem certifies that the hypothesis cannot simply be dropped, because the density-1/2 set of even integers is a genuine counterexample to the unconstrained conclusion. Together with even_count_range (density 1/2) it rules out the failure being a smallness artefact.",
+      "description": "Witnessed by badFamily: since even_avoids_badConfig shows its configuration {x, x + 2d + 1} never lies in E, E cannot have the UnconstrainedSzemerediProperty.",
+      "leanType": "¬ UnconstrainedSzemerediProperty E"
+    },
+    {
+      "name": "even_avoids_badConfig",
+      "type": "key",
+      "statement": "For every base point x and common difference d, the two configuration points of badFamily — namely x and x + (2d + 1) — cannot both be even.",
+      "significance": "The single parity congruence at the heart of the obstruction: x and x + (2d + 1) always have opposite parity, so no translate of the constant-term pattern fits inside the even integers. This one lemma drives the necessity result even_not_unconstrainedSzemeredi.",
+      "description": "Proved by reducing the two even-membership witnesses to an omega contradiction on the parity of x and x + 2d + 1.",
+      "leanType": "(x d : ℤ) → ¬ (configPoint badFamily x d 0 ∈ E ∧ configPoint badFamily x d 1 ∈ E)"
+    },
+    {
+      "name": "squareFamily_realized_in_even",
+      "type": "key",
+      "statement": "The no-constant-term square family {x, x + d²} does realize a nontrivial configuration inside E: taking x = 0, d = 2 gives {0, 4} ⊆ E.",
+      "significance": "Isolates the constant term as the *sole* obstruction. E is not inherently hostile to polynomial configurations — the admissible (NoConstantTerm) square family lands inside it — so the failure in even_not_unconstrainedSzemeredi is caused precisely by allowing a nonzero constant term, exactly the hypothesis Bergelson–Leibman impose.",
+      "description": "Existence witness x = 0, d = 2, discharged by fin_cases over the two family indices and decide on the even-membership of 0 and 4.",
+      "leanType": "∃ x d : ℤ, d ≠ 0 ∧ ∀ i, configPoint squareFamily x d i ∈ E"
+    },
+    {
+      "name": "even_count_range",
+      "type": "key",
+      "statement": "Exactly N of the naturals below 2N are even, so E has asymptotic density 1/2.",
+      "significance": "Quantifies that the pattern-avoiding set is large. Combined with even_not_unconstrainedSzemeredi it shows the counterexample to the unconstrained property is not a smallness artefact — a positive-density set already breaks the constant-term-allowed conclusion.",
+      "description": "The filtered set equals the image of range N under m ↦ 2m; injectivity of doubling and card_range give the count N.",
+      "leanType": "(N : ℕ) → ((Finset.range (2 * N)).filter (fun n => Even n)).card = N"
+    },
+    {
+      "name": "configPoint_badFamily",
+      "type": "supporting",
+      "statement": "The two configuration points of badFamily are exactly x (index 0) and x + (2d + 1) (index 1).",
+      "significance": "Computes the concrete configuration of the counterexample family, turning the abstract configPoint into the explicit pair whose parity is then obstructed in even_avoids_badConfig.",
+      "description": "Both components unfold configPoint and badFamily by simp.",
+      "leanType": "(x d : ℤ) → configPoint badFamily x d 0 = x ∧ configPoint badFamily x d 1 = x + (2 * d + 1)"
+    },
+    {
+      "name": "badFamily_hasConstantTerm",
+      "type": "supporting",
+      "statement": "The family badFamily = ![0, 2X + 1] violates NoConstantTerm, because its second polynomial evaluates to 1 at 0.",
+      "significance": "Certifies that the counterexample family genuinely lies outside the scope of Bergelson–Leibman's theorem — so exhibiting its failure inside E is a fair test of whether the NoConstantTerm hypothesis can be dropped, not a violation of the theorem's actual claims.",
+      "description": "Assuming NoConstantTerm at index 1 gives (2X + 1).eval 0 = 0, contradicted by simp.",
+      "leanType": "¬ NoConstantTerm badFamily"
+    }
+  ],
   "overview": {
     "historicalContext": "The polynomial Szemerédi theorem of Bergelson and Leibman (1996) extends Szemerédi's theorem: if A ⊆ ℤ has positive upper Banach density and p₁, …, p_k ∈ ℤ[X] satisfy pᵢ(0)=0, then A contains a configuration x + p₁(d), …, x + p_k(d) with d ≠ 0. The hypothesis pᵢ(0)=0 ('no constant term') is standing throughout the theorem, and the parent gallery entry (`furstenberg-correspondence-oq-03`) formalizes the statement and its structural backbone under exactly this hypothesis.\n\nA natural question the parent leaves open is whether the hypothesis is merely convenient or genuinely necessary. It is necessary: with a nonzero constant term the pattern can be blocked by a congruence, and a density-1/2 set already suffices to block it. This entry makes that precise.",
     "problemStatement": "**Open Question (OQ-03.1)**: is the `NoConstantTerm` hypothesis of Bergelson–Leibman necessary, or can it be weakened?\n\n**Answer**: It is necessary. Let E = { n : ℤ | Even n } (density 1/2) and take the constant-term family badFamily = ![0, 2X + 1]. Its configuration points are x and x + (2d + 1); one is even and the other odd, so no configuration lies in E for any d. Hence E fails the property once the hypothesis pᵢ(0)=0 is dropped — even though E is large (density 1/2) and even though the no-constant-term square family ![0, X²] does realize a configuration {0, 4} ⊆ E. The obstruction is a single parity congruence, exactly the kind ruled out by pᵢ(0)=0 (which forces d ∣ pᵢ(d), a fact proved in the parent).",
