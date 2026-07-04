@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-cyc-oq0402-header",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-02",
+    "range": { "startLine": 4, "endLine": 44 },
+    "type": "concept",
+    "title": "Climbing the Primary-Decomposition Ladder: from Irreducible to Prime-Power μ",
+    "content": "The module docstring frames the research step. The parent proved that an irreducible minimal polynomial of full degree n makes every nonzero vector cyclic, and the sibling -oq-01 turned that into 'cyclic ⟺ v ≠ 0'. This file handles the next rung: μ = qᵏ, a prime power. Now 'every nonzero vector is cyclic' genuinely fails — vectors lying in ker qᵏ⁻¹(M) are non-cyclic even though nonzero. The correct criterion is that v is cyclic iff qᵏ⁻¹(M) v ≠ 0. Conceptually Kⁿ becomes the local K[X]-module K[X]/(qᵏ), whose generators are exactly the elements outside its unique maximal submodule q·K[X]/(qᵏ), i.e. the elements qᵏ⁻¹ does not kill. Setting k = 1 recovers the irreducible case verbatim.",
+    "mathContext": "Parent/-oq-01: $\\mu$ irreducible $\\Rightarrow$ cyclic $\\iff v \\ne 0$. Here $\\mu = q^k$: cyclic $\\iff q^{k-1}(M)\\,v \\ne 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclic vector", "prime-power minimal polynomial", "primary decomposition", "local module K[X]/(qᵏ)"],
+    "prerequisites": ["the irreducible-case characterization", "minimal polynomial of a matrix", "K[X]-module structure of Kⁿ"]
+  },
+  {
+    "id": "ann-cyc-oq0402-hard",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-02",
+    "range": { "startLine": 52, "endLine": 91 },
+    "type": "insight",
+    "title": "Hard direction: Bézout + the divisor structure of a prime power",
+    "content": "cyclic_of_qkm1_ne_zero is the substantive theorem. Suppose $q^{k-1}(M)\\,v \\ne 0$, yet some nonzero $p$ with $\\deg p < n$ annihilates $v$. Two mechanisms combine. First, the parent's Bézout lemma gcd_aeval_mulVec_eq_zero pushes the annihilation down to the gcd: $d = \\gcd(p,\\mu)$ satisfies $d(M)\\,v = 0$. Second, because $q$ is prime and $d \\mid q^k$, dvd_prime_pow forces $d$ to be associated to $q^j$ for some $j \\le k$. The exponent cannot be maximal: $j = k$ would give $\\mu = q^k \\mid p$, impossible for a nonzero $p$ of degree $< \\deg\\mu$ (natDegree_le_of_dvd). Hence $j \\le k-1$, so $d \\mid q^{k-1}$; writing $q^{k-1} = e\\cdot d$ and reordering the commuting evaluations $e(M), d(M)$ yields $q^{k-1}(M)\\,v = e(M)\\,(d(M)\\,v) = 0$ — contradicting the hypothesis. So no such $p$ exists and $v$ is cyclic.",
+    "mathContext": "$d=\\gcd(p,q^k)\\sim q^j$, $j\\le k-1 \\Rightarrow d \\mid q^{k-1} \\Rightarrow q^{k-1}(M)\\,v = e(M)(d(M)\\,v)=0$.",
+    "significance": "key",
+    "relatedConcepts": ["Bézout identity", "gcd of polynomials", "prime power divisors", "associated elements", "commuting matrix polynomials"],
+    "prerequisites": ["gcd_aeval_mulVec_eq_zero (parent)", "dvd_prime_pow", "Irreducible.prime", "natDegree_le_of_dvd", "Matrix.mulVec_mulVec"]
+  },
+  {
+    "id": "ann-cyc-oq0402-easy",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-02",
+    "range": { "startLine": 93, "endLine": 114 },
+    "type": "concept",
+    "title": "Easy direction: a degree count on qᵏ⁻¹",
+    "content": "qkm1_ne_zero_of_cyclic is the converse and is purely a degree argument. The polynomial $q^{k-1}$ is nonzero (a power of the nonzero irreducible $q$) and has natDegree $(k-1)\\cdot\\deg q$. Since $q$ is irreducible its degree is positive (Irreducible.natDegree_pos), so $(k-1)\\cdot\\deg q < k\\cdot\\deg q = \\deg\\mu = n$. A cyclic vector admits no nonzero annihilating polynomial of degree $< n$; therefore if $q^{k-1}(M)\\,v = 0$ the cyclic condition would force $q^{k-1} = 0$, which is false. Hence $q^{k-1}(M)\\,v \\ne 0$.",
+    "mathContext": "$\\deg(q^{k-1}) = (k-1)\\deg q < k\\deg q = n$, and $q^{k-1}\\ne 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["natDegree of a power", "irreducible polynomial has positive degree", "cyclic vector"],
+    "prerequisites": ["IsCyclicVector", "Polynomial.natDegree_pow", "Irreducible.natDegree_pos", "pow_ne_zero"]
+  },
+  {
+    "id": "ann-cyc-oq0402-iff",
+    "proofId": "cayley-hamilton-minpoly-oq-04-backward-incomplete-01-oq-02",
+    "range": { "startLine": 116, "endLine": 128 },
+    "type": "insight",
+    "title": "The sharp iff and its collapse to the irreducible case",
+    "content": "cyclic_iff_qkm1_ne_zero assembles the two directions into IsCyclicVector M v ↔ (aeval M (qᵏ⁻¹)).mulVec v ≠ 0. This is the exact prime-power analogue of the sibling's cyclic ⟺ v ≠ 0, and specializes to it: when k = 1 the test polynomial is q⁰ = 1, so qᵏ⁻¹(M) v = v and the criterion reads v ≠ 0. Geometrically the cyclic locus is the punctured space {0}ᶜ with the proper subspace ker qᵏ⁻¹(M) removed — strictly smaller than in the irreducible case, matching the intuition that a prime-power block K[X]/(qᵏ) has 'fewer' generators than a field K[X]/(q).",
+    "mathContext": "$\\mathrm{IsCyclicVector}\\,M\\,v \\iff q^{k-1}(M)\\,v \\ne 0$; at $k=1$, $q^{k-1}=1$ gives $v \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": ["characterization theorem", "specialization to irreducible case", "cyclic locus", "kernel of qᵏ⁻¹(M)"],
+    "prerequisites": ["the two directional theorems above"]
+  }
+]
