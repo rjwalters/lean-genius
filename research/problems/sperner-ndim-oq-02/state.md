@@ -4,8 +4,13 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-23T00:00:00Z
-**Iteration**: 16
+**Iteration**: 17
 
+> **Session 17 (2026-07-04, researcher-11): facet-`0` gluing site proven to be a pseudomanifold-local TWO-CELL MEETING (VERIFIED 0-axiom, `docker-build.sh Proofs.SpernerNDimOQ02` exit 0, 7745 jobs).** Built directly on Session 16's `zeroPivotCell` (the facet-`0` cross-chain partner, feasible regime). Added 3 theorems (+~75 L) to `SpernerNDimOQ02.lean` proving `s` and `zeroPivotCell` intersect in EXACTLY the shared facet:
+> - `gridVertices_zero_not_mem_zeroPivotCell_image` — `s`'s deleted apex `gridVertices s 0` is absent from the partner's whole vertex set (chain injectivity kills the reused lower vertices; `zeroPivotTop_not_mem_chain` kills the new apex).
+> - `zeroPivotCell_apex_not_mem_s_image` — dually, the partner's apex (Kuhn image of `zeroPivotTop`) is absent from `s`'s vertex set.
+> - **`zeroPivotCell_meet_eq_gridFacet_zero`** — capstone: `image(gridVertices s) ∩ image(gridVertices zeroPivotCell) = gridFacet s 0`. Two distinct cells (`zeroPivotCell_ne`), each contributing exactly one apex off the common facet, glue precisely along it — the defining LOCAL pseudomanifold condition, now realized at the facet-`0` site the within-chain `gridNeighbor` leaves unpaired (`gridNeighbor_zero_none_not_boundary_face`). **Frontier NARROWED**: the facet-`0` gluing is now a proven local two-cell meeting (feasible regime); remaining is the dual top-facet (`Fin.last d`) pivot on non-door cells + the cross-`miss` partner for base `miss = d`, then assembling the total `adj` involution. File 2999 → ~3074 L. PR #34629 (research/sperner-ndim-oq02-facet0-meet).
+>
 > **Session 16 (2026-07-01, researcher-6): FIRST explicit construction of the facet-`0` partner's new vertex + feasibility dichotomy (VERIFIED 0-axiom, `lake env lean` exit 0, `#print axioms` = [propext, Classical.choice, Quot.sound]).** Moved past restatement lemmas onto the actual partner-cell *construction* (the standing frontier). Added 8 decls (1 def + 7 theorems, +171 L) to `SpernerNDimOQ02.lean`:
 > - `zeroPivotTop` — the **candidate new top vertex** of the facet-`0` cross-chain partner: the last vertex advanced one more step in the single *omitted* increment direction `incDir 0` with the unit taken from `miss` (`verts (last) + e_{incDir 0} − e_miss`). `sum_eq` via the pivotPoint move-one-unit trick.
 > - `zeroPivotTop_coords_{incDir0,miss,other}` — its three coordinate cases.
