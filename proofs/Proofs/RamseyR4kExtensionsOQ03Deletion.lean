@@ -571,6 +571,56 @@ theorem deletion_no_mono_K9 :
   rw [h] at hRcard
   exact ⟨c, R, hRcard, hR⟩
 
+/-- **The sharp union bound caps at `n = 100` for `k = 10`.**  The first-moment test
+    `2·C(n,10) < 2^{C(10,2)} = 2^{45} = 35184372088832` holds at `n = 100`
+    (`2·17310309456440 = 34620618912880 < 35184372088832`) but fails at `n = 101`
+    (`2·19212541264840 = 38425082529680 ≥ 35184372088832`).  So the union bound alone
+    certifies a monochromatic-`K₁₀`-free colouring only up to 100 vertices, i.e.
+    `R(10,10) > 100`.
+
+    As at `k = 7, 8, 9`, the binomials `C(100,10), C(101,10)` are ≈ `10¹³`, far past the
+    naive `decide`-on-`Nat.choose` range, so we route through the single-recursion identity
+    `Nat.choose n k = n.descFactorial k / k !`
+    (`Nat.choose_eq_descFactorial_div_factorial`), which needs only `k` kernel
+    multiplications and stays axiom-free (`of_decide_eq_true`, no `Lean.ofReduceBool`). -/
+theorem unionBound_caps_at_100_for_K10 :
+    2 * (100 : ℕ).choose 10 < 2 ^ ((10 : ℕ).choose 2) ∧
+      ¬ (2 * (101 : ℕ).choose 10 < 2 ^ ((10 : ℕ).choose 2)) := by
+  have h100 : (100 : ℕ).choose 10 = 17310309456440 := by
+    rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+  have h101 : (101 : ℕ).choose 10 = 19212541264840 := by
+    rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+  rw [h100, h101]
+  decide
+
+/-- **Deletion reaches a 106-vertex monochromatic-`K₁₀`-free set.**  Applying the deletion
+    method at `n = 107, k = 10` gives
+    `deletionBound 107 10 = 107 − ⌊2·C(107,10)/2^{45}⌋ = 107 − ⌊70274746011470/35184372088832⌋
+    = 107 − 1 = 106`: a 2-colouring of `K₁₀₇` and a set `R` of at least 106 vertices with no
+    monochromatic `K₁₀`.  This **strictly beats** the sharp union bound
+    (`unionBound_caps_at_100_for_K10`, which stops at 100), so the deletion method certifies
+    `R(10,10) > 106` — a `+6` strict improvement over the union bound, continuing the `+1`
+    (`k = 6`), `+2` (`k = 7`), `+3` (`k = 8`) and `+4` (`k = 9`) gains of the witnesses above.
+
+    `n = 107` is the top of the `M = 1` deletion window for `k = 10`
+    (`2^{45} ≤ 2·C(107,10) = 70274746011470 < 2·2^{45} = 70368744177664`, and `C(108,10)`
+    already forces `M = 2`), so this is the largest bound the `ramsey_deletion_one_past`
+    mechanism yields at `k = 10`.  As with the `k = 7, 8, 9` witnesses,
+    `C(107,10) = 35137373005735` is evaluated via the `descFactorial` route rather than by
+    `decide` on `Nat.choose`. -/
+theorem deletion_no_mono_K10 :
+    ∃ (c : Coloring 107) (R : Finset (Fin 107)),
+      106 ≤ R.card ∧ ∀ K : Finset (Fin 107), K ⊆ R → K.card = 10 → ¬ Mono c K := by
+  obtain ⟨c, R, hRcard, hR⟩ :=
+    ramsey_deletion_bound (n := 107) (k := 10) (by norm_num) (by norm_num)
+  have h : deletionBound 107 10 = 106 := by
+    have h107 : (107 : ℕ).choose 10 = 35137373005735 := by
+      rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+    show 107 - (2 * (107 : ℕ).choose 10) / 2 ^ ((10 : ℕ).choose 2) = 106
+    rw [h107]; decide
+  rw [h] at hRcard
+  exact ⟨c, R, hRcard, hR⟩
+
 #check @ramsey_deletion
 #check @ramsey_deletion_window
 #check @ramsey_deletion_generalizes_first_moment
@@ -587,6 +637,8 @@ theorem deletion_no_mono_K9 :
 #check @deletion_no_mono_K8
 #check @unionBound_caps_at_65_for_K9
 #check @deletion_no_mono_K9
+#check @unionBound_caps_at_100_for_K10
+#check @deletion_no_mono_K10
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`.  The concrete `k = 6` and
@@ -609,5 +661,7 @@ theorem deletion_no_mono_K9 :
 #print axioms deletion_no_mono_K8
 #print axioms unionBound_caps_at_65_for_K9
 #print axioms deletion_no_mono_K9
+#print axioms unionBound_caps_at_100_for_K10
+#print axioms deletion_no_mono_K10
 
 end ProbMethod.RamseyDeletion
