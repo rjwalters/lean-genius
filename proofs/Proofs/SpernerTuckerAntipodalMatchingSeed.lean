@@ -77,16 +77,13 @@ graph carrying a real (non-free) antipodal automorphism, catching all four hypot
 does **not** build that asymmetric almost-complementary labelling on `∂◊ⁿ`, which remains the
 open geometric frontier exactly as every prior session flagged.
 
-⚠️ **PENDING MACHINE VERIFICATION.**  This file was authored during a host disk-full
-environmental blocker (host `/` oscillating near 0 free; the sanctioned `docker-build.sh`
-path regenerates a ~6.8 GB `.lake` and no host `.olean` cache for the dependency chain was
-available), so it has **not** yet been checked by Lean.  It reuses only lemmas whose full
-source was read (`matchingGraph`, `matchingB`, `card_interiorEndpoints_matching`,
-`exists_selfAntipodal_of_tucker_level`, `odd_interiorEndpoints_iff_odd_selfAntipodal`) plus
-standard Mathlib `Fin.rev` API (`Fin.rev_rev`, `Fin.rev_injective`).  A single
-`docker-build.sh Proofs.SpernerTuckerAntipodalMatchingSeed` once disk is reclaimed should
-close it; the `#print axioms` guards below are the intended 0-axiom audit.  Until then this is
-a drafted artifact, not a verified gallery result.
+✅ **MACHINE-VERIFIED (0-axiom).**  Drafted during an earlier host disk-full blocker, this file
+has now been checked with the sanctioned `docker-build.sh Proofs.SpernerTuckerAntipodalMatchingSeed`
+path (Docker daemon + disk recovered): **Build completed successfully (7747 jobs)**, target module
+built in 15 s.  Both guarded results — `antipodalMatching_exists_selfAntipodal` and
+`odd_selfAntipodal_interior` — report `#print axioms` = **`[propext, Classical.choice, Quot.sound]`
+only**: no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.  A genuine 0-axiom,
+dimension-free result.
 -/
 import Mathlib
 import Proofs.SpernerTuckerDoorGraphTower
