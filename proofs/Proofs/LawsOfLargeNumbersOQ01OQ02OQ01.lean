@@ -1049,13 +1049,60 @@ theorem integral_tail_abs_le
           (ae_of_all _ hpt)
     _ = t ^ (1 - p) * ∫ ω, |X ω| ^ p ∂μ := integral_const_mul _ _
 
+/-- **Tail-restricted absolute-moment integral lift (MZ step 3, centering — sharp form).**
+The same integration of the pointwise kernel `abs_le_rpow_mul_rpow_of_tail` as
+`integral_tail_abs_le`, but bounding by the **tail-restricted** `p`-th moment rather than
+the full moment: for `1 ≤ p`, a threshold `0 < t`, a measurable `X` with finite `p`-th
+absolute moment,
+
+    ∫ 𝟙{t < |X|}·|X| ≤ t^{1-p} · ∫ 𝟙{t < |X|}·|X|ᵖ.
+
+The right-hand integrand is the tail moment `eₜ = ∫ 𝟙{t<|X|}·|X|ᵖ`, which — unlike the full
+moment `M = ∫|X|ᵖ` used by `integral_tail_abs_le` — **vanishes** as `t → ∞`
+(`tendsto_integral_tail_rpow_zero`).  With `t = aᵢ = (i+1)^{1/p}` this is precisely the
+`tendsto_weighted_average_zero` null-sequence input `|𝔼Yᵢ| ≤ aᵢ^{1-p}·eᵢ` behind the MZ
+centering control `(∑ᵢ 𝔼Yᵢ)/aₙ → 0`; the full-moment bound `aᵢ^{1-p}·M` alone gives a
+divergent Cesàro weight, so the tail restriction is essential.
+
+Proof: the pointwise kernel already lives on the tail `{t < |X|}`, so restricting *both*
+sides to that set preserves the inequality — on the tail it is the kernel verbatim, off the
+tail both indicators are `0`.  The tail moment `𝟙{t<|X|}·|X|ᵖ` is integrable as an indicator
+of the integrable `|X|ᵖ` over the measurable set `{t < |X|}`. -/
+theorem integral_tail_abs_le_tail_moment
+    (X : Ω → ℝ) (hX : Measurable X) {p t : ℝ} (hp : 1 ≤ p) (ht : 0 < t)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω|) ω ∂μ
+      ≤ t ^ (1 - p) * ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω| ^ p) ω ∂μ := by
+  have hset : MeasurableSet {ω | t < |X ω|} := measurableSet_lt measurable_const hX.abs
+  have hintTail : Integrable
+      (fun ω => {ω | t < |X ω|}.indicator (fun ω => |X ω| ^ p) ω) μ :=
+    hint.indicator hset
+  have hpt : ∀ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω|) ω
+      ≤ t ^ (1 - p) * {ω | t < |X ω|}.indicator (fun ω => |X ω| ^ p) ω := by
+    intro ω
+    rw [Set.indicator_apply, Set.indicator_apply]
+    split_ifs with h
+    · rw [Set.mem_setOf_eq] at h
+      exact abs_le_rpow_mul_rpow_of_tail hp ht h
+    · simp
+  calc ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω|) ω ∂μ
+      ≤ ∫ ω, t ^ (1 - p) * {ω | t < |X ω|}.indicator (fun ω => |X ω| ^ p) ω ∂μ :=
+        integral_mono_of_nonneg
+          (ae_of_all _ (fun ω => Set.indicator_nonneg (fun _ _ => abs_nonneg _) ω))
+          (hintTail.const_mul _)
+          (ae_of_all _ hpt)
+    _ = t ^ (1 - p) * ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω| ^ p) ω ∂μ :=
+        integral_const_mul _ _
+
 #check @integral_trunc_sq_le
 #check @integral_tail_abs_le
+#check @integral_tail_abs_le_tail_moment
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
 #print axioms integral_trunc_sq_le
 #print axioms integral_tail_abs_le
+#print axioms integral_tail_abs_le_tail_moment
 
 end TruncationIntegralLifts
 
