@@ -1233,4 +1233,98 @@ theorem tsum_weight_trunc_sq_le {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (x : ℝ) 
 
 end TailPSeries
 
+/-! ## Tonelli interchange for the MZ variance sum (measure-theoretic lift of step 4)
+
+The variance series `∑ᵢ Var(Yᵢ)/aᵢ^{2}` with `aᵢ = i^{1/p}` and truncations
+`Yᵢ = 𝟙{|X| ≤ i^{1/p}}·X` is finite **not** term-by-term (that diverges — see the
+`TailPSeries` note) but by a **Tonelli interchange** of `∑ᵢ` and `∫`.  For nonnegative
+integrands the interchange is *unconditional*: `MeasureTheory.lintegral_tsum` pushes `∑'ᵢ`
+through the lower integral needing only a per-term measurability side goal, sidestepping the
+Bochner `integral_tsum` whose `∑'ᵢ ∫‖·‖ < ∞` hypothesis is *exactly* the finiteness we are
+trying to establish.  The pointwise integrand is then dominated by the deterministic bound
+`tsum_weight_trunc_sq_le` at `x = X ω`.
+
+This yields the master estimate (in `ℝ≥0∞`, `s = 2/p`)
+
+    ∑'ᵢ ∫⁻ i^{-s}·(𝟙{|X|≤i^{1/p}}·X)²  ≤  ∫⁻ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²,
+
+the lower-integral form of `∑ᵢ 𝔼[Yᵢ²]·i^{-2/p} ≤ 𝔼[(max 1 |X|ᵖ)^{1-2/p}·(2/p)/(2/p-1)·X²]`.
+With `s = 2/p > 1` the RHS integrand is dominated by `s/(s-1)·max(X², |X|ᵖ)`, integrable on a
+probability space with `𝔼|X|ᵖ < ∞`; so the whole variance sum is finite (that finiteness
+extraction is the next leaf).  0-sorry / 0-`axiom`. -/
+section TonelliInterchange
+
+open MeasureTheory
+open scoped ENNReal
+
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
+/-- **Tonelli interchange bound for the MZ variance series.**  For a measurable `X`, `1 < s`
+and `0 < p`, the `i^{-s}`-weighted truncated second moments, summed in `ℝ≥0∞`, are bounded by
+the integral of the deterministic pointwise majorant of `tsum_weight_trunc_sq_le`:
+
+    ∑'ᵢ ∫⁻ ω, i^{-s}·(𝟙{|X|≤i^{1/p}}·X)²  ≤  ∫⁻ ω, (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X².
+
+Proof: `lintegral_tsum` (nonneg summand, per-term measurable) pushes `∑'ᵢ` inside the lower
+integral; then `lintegral_mono` dominates the pointwise `∑'ᵢ` by `tsum_weight_trunc_sq_le` at
+`x = X ω`, pulling `ENNReal.ofReal` through the real tsum via `ENNReal.ofReal_tsum_of_nonneg`
+(the per-`ω` summand is summable: an indicator of the `p`-series `i^{-s}` scaled by `X ω ^ 2`). -/
+theorem lintegral_tsum_trunc_sq_weight_le
+    (X : Ω → ℝ) (hX : Measurable X) {s p : ℝ} (hs : 1 < s) (hp : 0 < p) :
+    ∑' i : ℕ, ∫⁻ ω, ENNReal.ofReal
+        ((i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) ∂μ
+      ≤ ∫⁻ ω, ENNReal.ofReal
+        ((max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * (X ω) ^ 2) ∂μ := by
+  -- per-term measurability of `ω ↦ ofReal (i^{-s}·(𝟙{|X|≤i^{1/p}}·X)²)`
+  have hmeas : ∀ i : ℕ, AEMeasurable
+      (fun ω => ENNReal.ofReal
+        ((i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2)) μ := by
+    intro i
+    refine (ENNReal.measurable_ofReal.comp ?_).aemeasurable
+    exact ((hX.indicator (measurableSet_le hX.abs measurable_const)).pow_const 2).const_mul _
+  -- push `∑'ᵢ` inside the lower integral (unconditional for nonneg summands)
+  rw [← lintegral_tsum hmeas]
+  -- dominate pointwise by `tsum_weight_trunc_sq_le` at `x = X ω`
+  apply lintegral_mono
+  intro ω
+  -- the real summand equals the root-form indicator summand of `tsum_weight_trunc_sq_le`
+  have hri : ∀ i : ℕ,
+      (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2
+        = {j : ℕ | |X ω| ≤ (j : ℝ) ^ (1 / p)}.indicator
+            (fun j => (j : ℝ) ^ (-s) * (X ω) ^ 2) i := by
+    intro i
+    simp only [Set.indicator_apply, Set.mem_setOf_eq]
+    split_ifs <;> ring
+  have hr_nonneg : ∀ i : ℕ,
+      0 ≤ (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2 :=
+    fun i => mul_nonneg (Real.rpow_nonneg (Nat.cast_nonneg i) _) (sq_nonneg _)
+  have hclean_summ : Summable
+      ({j : ℕ | |X ω| ≤ (j : ℝ) ^ (1 / p)}.indicator
+        (fun j => (j : ℝ) ^ (-s) * (X ω) ^ 2)) :=
+    ((Real.summable_nat_rpow.mpr (by linarith : -s < -1)).mul_right ((X ω) ^ 2)).indicator _
+  have hr_summ : Summable
+      (fun i : ℕ => (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) :=
+    hclean_summ.congr (fun i => (hri i).symm)
+  calc ∑' i : ℕ, ENNReal.ofReal
+          ((i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2)
+      = ENNReal.ofReal (∑' i : ℕ,
+          (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) :=
+        (ENNReal.ofReal_tsum_of_nonneg hr_nonneg hr_summ).symm
+    _ ≤ ENNReal.ofReal ((max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * (X ω) ^ 2) := by
+        apply ENNReal.ofReal_le_ofReal
+        calc ∑' i : ℕ,
+              (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2
+            = ∑' i : ℕ, {j : ℕ | |X ω| ≤ (j : ℝ) ^ (1 / p)}.indicator
+                (fun j => (j : ℝ) ^ (-s) * (X ω) ^ 2) i := tsum_congr hri
+          _ ≤ (max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * (X ω) ^ 2 :=
+              tsum_weight_trunc_sq_le hs hp (X ω)
+
+#check @lintegral_tsum_trunc_sq_weight_le
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms lintegral_tsum_trunc_sq_weight_le
+
+end TonelliInterchange
+
 end LawsOfLargeNumbers.MZ
