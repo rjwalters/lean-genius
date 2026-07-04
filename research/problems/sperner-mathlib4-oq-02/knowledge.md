@@ -3,6 +3,63 @@
 Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engine.
 
 ---
+## Session 2026-07-04 (researcher-8) — BUILD: the abstract DIRECTED door engine (flow conservation)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new
+`proofs/Proofs/SpernerTuckerDirectedIncidenceFlow.lean` (~305 LOC, 8 thm + 9 def + 5 instances,
+0 sorries, 0 `axiom` decls, dimension-free — no `decide`/`native_decide`).
+
+**Verification**: `docker-build.sh Proofs.SpernerTuckerDirectedIncidenceFlow` — **Build succeeded
+(7743 jobs)**. All six `#print axioms` guards (`sum_net_eq_sum_net_door`, `sum_net_eq_boundary`,
+`sum_net_eq_sources_sub_sinks`, `sources_sub_sinks_eq_boundary`, `exists_source_of_more_boundary_out`,
+`card_source_eq_card_sink_of_interior`) report **`[propext, Classical.choice, Quot.sound]` only** —
+no `sorryAx`, no `Lean.ofReduceBool`, no `decide`.
+
+### What it proves (the directed analogue of `DoorIncidenceParity`)
+The abstract engine had an **undirected** incidence law only
+(`SpernerTuckerDoorIncidenceParity`: `#{odd-door cells} ≡ #{boundary doors} (mod 2)`). But
+`SpernerTuckerBoundaryParity` proved the crux obstruction — the *undirected* antipodal boundary
+count is **always even**, so the odd seed the engine needs can never come from an undirected
+handshake — and `SpernerTuckerDirectedRingOdd` supplied the resolution: an **odd directed**
+boundary seed (`dirCount_odd`). What was missing was the abstract engine that *consumes* an
+oriented seed. This session builds it.
+
+A **directed door complex** is two incidences `tail head : Cell → Door → Bool` (source/target
+ends). Per cell `outCount`/`inCount`; per door `tailCount`/`headCount`. A well-formed door is
+interior (`tailCount=headCount=1`), boundary-out (`1,0`) or boundary-in (`0,1`). Results:
+- **`sum_net_eq_sum_net_door`** — unconditional net-flow identity `∑_c (out−in) = ∑_d (tail−head)`
+  over `ℤ` (double counting via `Finset.sum_comm`, exactly the technique of the undirected file).
+- **`sum_net_eq_boundary`** — interior doors cancel; `∑_c (out−in) = #boundary-out − #boundary-in`.
+- **`sum_net_eq_sources_sub_sinks`** — under out,in ≤ 1 (Freund–Todd path non-degeneracy),
+  `∑_c (out−in) = #sources − #sinks`.
+- **`sources_sub_sinks_eq_boundary`** — the master directed flow-conservation law
+  **`#sources − #sinks = #boundary-out − #boundary-in`**. The *signed* refinement whose mod-2
+  shadow is the undirected parity bridge; the odd directed boundary seed drives the interior path
+  structure through this integer identity, not merely its parity.
+- **`exists_source_of_more_boundary_out`** — an out-heavy (e.g. odd, `#boundary-in=0`) directed
+  boundary forces a **source** cell — a directed path root.
+- **`card_source_eq_card_sink_of_interior`** — pure-interior directed handshake `#sources=#sinks`,
+  the directed analogue of the undirected `even_card_odd_doorCount_of_all_interior`.
+
+### Honest status
+**Abstract directed infrastructure, NOT a proof of n ≥ 2 Tucker.** It is the oriented engine
+`BoundaryParity` showed the undirected one cannot be, turning an odd directed boundary seed
+(`DirectedRingOdd`) into a source/path-root cell — closing the conceptual gap between the odd
+*directed* boundary seed and the *undirected*-only abstract engine. What it does **not** do:
+`exists_source_of_more_boundary_out` yields a source among **all** cells; isolating it in the
+**interior** still needs the boundary-cell accounting (the asymmetric odd-seed Tucker labelling) —
+the open geometric frontier every prior session named.
+
+### Next steps (frontier unchanged)
+- Instantiate the directed complex on the concrete disc (hexagon) door structure and discharge
+  the out,in ≤ 1 and well-formed hypotheses, connecting `dirCount_odd`'s odd `#boundary-out` to
+  `exists_source_of_more_boundary_out`.
+- Add boundary-cell accounting so the forced source lands in the **interior** (the asymmetric
+  labelling): the genuine remaining geometric obligation.
+- Continuous n ≥ 2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
+
+---
+
 
 ## Session 2026-07-03 (researcher-4) — BUILD: the equatorial matching as a genuine door-counting graph (Insight 11)
 
