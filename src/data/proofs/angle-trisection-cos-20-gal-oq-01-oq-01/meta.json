@@ -112,6 +112,62 @@
     "path": "Proofs/AngleTrisectionCos20GalOQ01OQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "trisection_gal_order_3",
+      "type": "core",
+      "description": "Unified Galois group theorem: for Eisenstein prime p in {3, 7}, the Galois group of the corresponding trisection polynomial has order 3. Unifies the cos(20°) and cos(π/7) cases.",
+      "leanType": "(p : ℕ) (hp : p = 3 ∨ p = 7) : Fintype.card (trisectionPoly p).Gal = 3"
+    },
+    {
+      "name": "trisection_poly_irreducible",
+      "type": "core",
+      "description": "Unified irreducibility theorem: for Eisenstein prime p in {3, 7}, the trisection polynomial is irreducible over ℚ.",
+      "leanType": "(p : ℕ) (hp : p = 3 ∨ p = 7) : Irreducible (trisectionPoly p)"
+    },
+    {
+      "name": "trisection_splitting_degree",
+      "type": "supporting",
+      "description": "The splitting field of both trisection polynomials has degree 3 over ℚ.",
+      "leanType": "(p : ℕ) (hp : p = 3 ∨ p = 7) : Module.finrank ℚ (trisectionPoly p).SplittingField = 3"
+    },
+    {
+      "name": "trisection_cyclic_cubic_data",
+      "type": "core",
+      "description": "Both trisection polynomials (parameterized by p in {3, 7}) admit the CyclicCubicData structure, certifying irreducibility, degree-3 splitting field, and order-3 Galois group.",
+      "leanType": "(p : ℕ) (hp : p = 3 ∨ p = 7) : CyclicCubicData (trisectionPoly p)"
+    },
+    {
+      "name": "eisensteinCubic_coeff_pattern",
+      "type": "supporting",
+      "description": "The Eisenstein cubics r_p each have a constant term divisible by p but not by p², confirming the Eisenstein criterion at the prime p.",
+      "leanType": "(p : ℕ) (hp : p = 3 ∨ p = 7) : (p : ℚ) ∣ (eisensteinCubic p).coeff 0 ∧ ¬ ((p : ℚ) ^ 2 ∣ (eisensteinCubic p).coeff 0)"
+    },
+    {
+      "name": "eisenstein_cubic_to_trisection",
+      "type": "core",
+      "description": "The substitution connecting each Eisenstein cubic to its trisection polynomial: r₃(2X+1) = trisectionPoly 3 and r₇(2X+2) = trisectionPoly 7.",
+      "leanType": "(p : ℕ) (hp : p = 3 ∨ p = 7) : let shift : ℕ := if p = 3 then 1 else 2 (eisensteinCubic p).comp (2 * X + C (shift : ℚ)) = trisectionPoly p"
+    },
+    {
+      "name": "both_trisection_gal_order_3",
+      "type": "core",
+      "description": "Main summary: both cos(20°) and cos(π/7) trisection polynomials are irreducible over ℚ and have cyclic Galois groups of order 3, via Eisenstein cubics at primes 3 and 7 respectively.",
+      "leanType": "Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3 ∧ Fintype.card (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + C 1 : ℚ[X]).Gal = 3 ∧ Irreducible (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]) ∧ Irreducible (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + C 1 : ℚ[X])"
+    },
+    {
+      "name": "cos20Data",
+      "type": "supporting",
+      "description": "The cos(20°) polynomial 8X³ - 6X - 1 admits CyclicCubicData, bundling its irreducibility, degree-3 splitting field, and order-3 Galois group.",
+      "leanType": "CyclicCubicData (8 * X ^ 3 - 6 * X - C 1 : ℚ[X])"
+    },
+    {
+      "name": "cosPi7Data",
+      "type": "supporting",
+      "description": "The cos(π/7) polynomial 8X³ - 4X² - 4X + 1 admits CyclicCubicData, bundling its irreducibility, degree-3 splitting field, and order-3 Galois group.",
+      "leanType": "CyclicCubicData (8 * X ^ 3 - 4 * X ^ 2 - 4 * X + C 1 : ℚ[X])"
+    }
+  ],
   "sorries": 0,
   "crossReferences": [
     {
