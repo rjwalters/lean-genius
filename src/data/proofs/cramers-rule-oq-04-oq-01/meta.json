@@ -74,6 +74,38 @@
       }
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "adjugate_charmatrix_mul",
+      "type": "core",
+      "description": "The adjugate-reflexive identity and the algebraic heart of Cayley–Hamilton: over R[X], the adjugate of the characteristic matrix xI − A times the characteristic matrix equals the characteristic polynomial times the identity, adj(xI − A)·(xI − A) = χ_A(x)·I. Instantiates Mathlib's general adjugate_mul at B = charmatrix M.",
+      "leanType": "(M : Matrix n n R) → adjugate (charmatrix M) * charmatrix M = M.charpoly • 1"
+    },
+    {
+      "name": "cayley_hamilton",
+      "type": "core",
+      "description": "The Cayley–Hamilton theorem: every matrix satisfies its own characteristic polynomial, χ_A(A) = 0. Obtained from the adjugate-reflexive identity by passing to Polynomial (Matrix n n R) and evaluating at A (Mathlib: aeval_self_charpoly).",
+      "leanType": "(M : Matrix n n R) → aeval M M.charpoly = 0"
+    },
+    {
+      "name": "adjugate_mulVec_solve",
+      "type": "core",
+      "description": "The determinant form of Cramer's rule: the adjugate solves A x = b up to the determinant, A·(adj A · b) = (det A)·b. When det A is a unit this yields the explicit solution x = (det A)⁻¹ · adj A · b. Rests on the same adjugate identity A·adj A = (det A)·I that drives Cayley–Hamilton.",
+      "leanType": "(A : Matrix n n R) → (b : n → R) → A *ᵥ (adjugate A *ᵥ b) = A.det • b"
+    },
+    {
+      "name": "mul_adjugate_eq",
+      "type": "supporting",
+      "description": "The scalar adjugate identity A·adj(A) = (det A)·I — the common source of both Cramer's rule (B = A) and Cayley–Hamilton (B = xI − A). Instantiates Mathlib's mul_adjugate.",
+      "leanType": "(A : Matrix n n R) → A * adjugate A = A.det • 1"
+    },
+    {
+      "name": "minpoly_dvd_charpoly",
+      "type": "supporting",
+      "description": "Over a field, the minimal polynomial of A divides its characteristic polynomial — a direct consequence of Cayley–Hamilton (χ_A annihilates A, so minpoly ∣ χ_A).",
+      "leanType": "{K : Type*} → [Field K] → (M : Matrix n n K) → minpoly K M ∣ M.charpoly"
+    }
+  ],
   "overview": {
     "historicalContext": "The adjugate (classical adjoint) of a square matrix A is the transpose of its cofactor matrix, and it satisfies the fundamental identity adj(A)·A = A·adj(A) = (det A)·I. This single identity underlies two cornerstones of linear algebra. **Cramer's rule** applies it to A itself: when det A is invertible, A⁻¹ = (det A)⁻¹·adj(A), so the system Ax = b has the explicit solution x = (det A)⁻¹·adj(A)·b. The **Cayley–Hamilton theorem** applies it to the characteristic matrix B = xI − A over the polynomial ring R[X]: since det(xI − A) = χ_A(x), the identity reads adj(xI − A)·(xI − A) = χ_A(x)·I, and passing to Polynomial (Matrix n n R) and evaluating at A telescopes the right factor to zero, yielding χ_A(A) = 0.\n\nMathlib formalizes the adjugate identity (adjugate_mul, mul_adjugate) and proves Cayley–Hamilton exactly via this route (aeval_self_charpoly, whose proof opens with adjugate (charmatrix M) * charmatrix M = M.charpoly • 1). This entry answers the parent's OQ-04-OQ-01 by exposing the adjugate-reflexive identity as a named lemma, restating Cayley–Hamilton and its minpoly consequence, and recording the determinant form of Cramer's rule — making explicit that both theorems flow from the same adjugate identity.",
     "problemStatement": "Formalize the algebraic Cayley–Hamilton theorem via the adjugate-reflexive identity adj(xI − A)·(xI − A) = χ_A(x)·I, and tie it to Cramer's rule through their shared adjugate identity adj(B)·B = (det B)·I. Record Cayley–Hamilton, minpoly ∣ charpoly, and the determinant form of Cramer's rule.",
