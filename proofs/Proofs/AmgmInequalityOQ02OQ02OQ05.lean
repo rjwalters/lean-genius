@@ -348,4 +348,104 @@ theorem newton_four_normalized (a b c d : ℝ) :
   · nlinarith [newton_four_second a b c d]
   · nlinarith [newton_four_third a b c d]
 
+/-!  ## Part V — the general Rolle crux: differentiation preserves real-rootedness
+
+Parts I–IV give per-arity certificates (`n = 2, 3, 4`) and the general `k = 1`
+step.  The recurring *blocker* documented across every prior iteration was the
+GENERAL, arbitrary-`n` engine: the classical statement
+
+  "each derivative of a fully-real-rooted polynomial is again fully real-rooted
+   (counting multiplicity)"
+
+— iterated Rolle on `∏(X - xᵢ)` — which `problem.md` estimated at multi-week
+formalization difficulty and knowledge.md recorded as "not in Mathlib".
+
+It turns out Mathlib DOES supply the hard half:
+`Polynomial.card_roots_le_derivative` (in `Mathlib/Analysis/Calculus/LocalExtr/
+Polynomial.lean`), the multiplicity-counted bound
+`card p.roots ≤ card (derivative p).roots + 1`.  Combined with the two elementary
+degree facts `card q.roots ≤ q.natDegree` (`card_roots'`) and
+`(derivative p).natDegree < p.natDegree` (`natDegree_derivative_lt`), a full
+real-rooted `p` (`card p.roots = p.natDegree`) is squeezed to EQUALITY for its
+derivative:
+
+  `natDegree p - 1 ≤ card (derivative p).roots ≤ (derivative p).natDegree
+                   ≤ natDegree p - 1`,
+
+so `card (derivative p).roots = (derivative p).natDegree` — the derivative splits.
+This packages the flagged crux as a short, general, reusable lemma (all `n`, all
+`k`), and it is the honest general engine the per-arity SOS certificates were
+standing in for.
+
+What this Part does NOT yet do: turn the crux into the general Newton *coefficient*
+inequality `pₖ² ≥ pₖ₋₁ pₖ₊₁` for `k ≥ 2`.  That final reduction still needs the
+coefficient bookkeeping "the appropriate iterated derivative of the (reversed)
+splitting polynomial is the quadratic `a eₖ₋₁ X² - b eₖ X + c eₖ₊₁`", whose
+real-rootedness (now supplied by `derivative_roots_card_eq` / `splits_derivative`)
+gives `discrim ≥ 0` via the Part I atom `discrim_nonneg_of_roots_nonempty`.  That
+Vieta-coefficient step is the remaining honest gap; the real-rootedness half of
+the classical proof is closed here. -/
+
+open Set in
+/-- **Rolle's theorem for polynomials.**  Between two roots `a < b` of a real
+polynomial `p` lies a root of its derivative.  This is the single per-gap step of
+the classical Newton/Rolle argument, packaged directly for the `Polynomial` API
+(Mathlib has Rolle `exists_hasDerivAt_eq_zero` and `Polynomial.hasDerivAt`, but
+not this bridge as a named lemma). -/
+theorem exists_isRoot_derivative_Ioo {p : ℝ[X]} {a b : ℝ} (hab : a < b)
+    (ha : p.IsRoot a) (hb : p.IsRoot b) :
+    ∃ c ∈ Ioo a b, (derivative p).IsRoot c := by
+  have ha' : p.eval a = 0 := ha
+  have hb' : p.eval b = 0 := hb
+  have hfI : p.eval a = p.eval b := by rw [ha', hb']
+  obtain ⟨c, hc, hc0⟩ :=
+    exists_hasDerivAt_eq_zero hab p.continuousOn hfI (fun x _ => p.hasDerivAt x)
+  exact ⟨c, hc, hc0⟩
+
+/-- **Differentiation preserves full real-rootedness (counting multiplicity).**
+If a real polynomial `p` has as many roots with multiplicity as its degree —
+`card p.roots = p.natDegree`, i.e. `p` splits over `ℝ` — then its derivative does
+too: `card (derivative p).roots = (derivative p).natDegree`.
+
+This is the long-flagged general crux of the real-rootedness route to Newton's
+inequalities.  Proof: the Mathlib bound `card_roots_le_derivative`
+(`card p.roots ≤ card (derivative p).roots + 1`) together with
+`card_roots' : card q.roots ≤ q.natDegree` and
+`natDegree_derivative_lt : (derivative p).natDegree < p.natDegree`
+sandwich `card (derivative p).roots` between `natDegree p - 1` and itself; `omega`
+closes the arithmetic.  The constant case `natDegree p = 0` is separate
+(`derivative (C a) = 0`). -/
+theorem derivative_roots_card_eq {p : ℝ[X]}
+    (hp : Multiset.card p.roots = p.natDegree) :
+    Multiset.card (derivative p).roots = (derivative p).natDegree := by
+  rcases eq_or_ne p.natDegree 0 with h0 | h0
+  · obtain ⟨a, rfl⟩ := natDegree_eq_zero.mp h0
+    simp [derivative_C]
+  · have h1 : Multiset.card (derivative p).roots ≤ (derivative p).natDegree :=
+      card_roots' _
+    have h2 : Multiset.card p.roots ≤ Multiset.card (derivative p).roots + 1 :=
+      card_roots_le_derivative p
+    have h3 : (derivative p).natDegree < p.natDegree := natDegree_derivative_lt h0
+    omega
+
+/-- **`Splits`-level phrasing of the crux.**  If `p : ℝ[X]` splits over `ℝ`
+(factors into real linear factors), so does its derivative. -/
+theorem splits_derivative {p : ℝ[X]} (hp : Splits p) : Splits (derivative p) := by
+  rw [splits_iff_card_roots] at hp ⊢
+  exact derivative_roots_card_eq hp
+
+/-- **Every derivative of a split real polynomial splits.**  Iterating
+`splits_derivative`: the full conclusion of the classical Newton/Rolle program —
+all `k` successive derivatives of a real-rooted `∏(X - xᵢ)` are again real-rooted.
+Combined with the Part I discriminant atom this reduces Newton's inequalities to
+the (still open) coefficient identification of the `(n-k-1)`-th derivative as the
+quadratic in `eₖ₋₁, eₖ, eₖ₊₁`. -/
+theorem splits_iterate_derivative {p : ℝ[X]} (hp : Splits p) (k : ℕ) :
+    Splits (derivative^[k] p) := by
+  induction k with
+  | zero => simpa using hp
+  | succ k ih =>
+      rw [Function.iterate_succ', Function.comp_apply]
+      exact splits_derivative ih
+
 end NewtonRealRooted
