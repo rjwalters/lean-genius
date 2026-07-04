@@ -113,6 +113,21 @@
       "targetId": "ptolemys-theorem",
       "relationship": "related",
       "description": "Another classical identity relating distances among the vertices of a cyclic quadrilateral; like the British Flag theorem it constrains the four corner-to-point distances, but multiplicatively rather than as a sum of squares"
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "The Parallelogram Defect Identity — the sharp generalization to an arbitrary parallelogram in any real inner product space. It drops the right angle entirely and proves the defect PA² + PC² − PB² − PD² = 2⟪u, v⟫ (independent of P and A); the rectangle case u ⊥ v makes the defect vanish and recovers this theorem in arbitrary dimension"
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-02",
+      "relationship": "extended-by",
+      "description": "British Flag Defect Identity for Orthotopes in n Dimensions — the direct answer to this entry's open question on the rectangular-box generalization. Splitting the 2ⁿ box vertices by the parity of the far-value coordinate set, the alternating sum ∑_t (−1)^{|t|} sqDist(P, V_t) vanishes for every n ≥ 2, so the even-parity and odd-parity squared-distance sums agree; n = 2 is exactly the classical British Flag theorem"
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-03",
+      "relationship": "complementary",
+      "description": "The Leibniz / parallel-axis identity ∑ᵢ‖P − Aᵢ‖² = ∑ᵢ‖G − Aᵢ‖² + n‖P − G‖² for the total (unsigned) squared-distance sum. It is the complementary companion to the British Flag branch: unlike the alternating combination studied here, the total sum is not observer-independent — it carries a clean dependence on P through the centroid G"
     }
   ],
   "references": [
@@ -129,7 +144,7 @@
     "implications": "The identity exposes the British Flag theorem as a metric restatement of perpendicularity. The same coordinate method handles the higher-dimensional analogue (a box in ℝⁿ) and the converse direction, where the equality of squared-distance sums forces the right angle.",
     "openQuestions": [
       "Formalize the converse in Lean: the same 2(u ⬝ v) identity shows that requiring PA² + PC² = PB² + PD² for all P forces the parallelogram closure (from the P-linear terms) and then the right angle (from the constant term), so the equality characterizes rectangles among all quadrilaterals — only the forward implication is currently machine-checked.",
-      "What is the sharp n-dimensional generalization for a rectangular box and its space diagonal corners?"
+      "The n-dimensional generalization is now formalized in the gallery: the orthotope entry (british-flag-theorem-oq-01-oq-02) proves the alternating even/odd-parity squared-distance sums over the 2ⁿ box vertices agree for all n ≥ 2, and the parallelogram-defect entry (british-flag-theorem-oq-01-oq-01) gives the sharp defect 2⟪u, v⟫ in any inner product space. What remains open is the fully skew, higher-moment picture — how far the even-moment vanishing thresholds (2m < n) are sharp, and whether an analogous clean identity governs the odd moments."
     ]
   }
 }
