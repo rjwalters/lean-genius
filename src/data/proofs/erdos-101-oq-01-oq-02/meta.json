@@ -113,5 +113,23 @@
       "relationship": "foundational",
       "description": "The base Erdős #101 framework (PlanarPointSet, collinear, NoFiveCollinear, fourPointLineCount, noFiveCollinear_small, fourPointLineCount_lt_four) and its sorry-free elementary packing bound improved_upper_bound (fourPointLineCount P <= n(n-1)/12), on which the upper bound maxCountAtSize 4 <= 1 rests."
     }
+  ],
+  "references": [
+    {
+      "title": "Erdős Problem #101 (erdosproblems.com) — max lines with exactly four points, no five collinear; the $100 o(n^2) conjecture",
+      "url": "https://www.erdosproblems.com/101"
+    },
+    {
+      "title": "J. Solymosi, M. Stojaković — Many collinear k-tuples with no k+1 collinear points, Discrete Comput. Geom. 50 (2013), 811–820 (the n^{2-O(1/√log n)} lower-bound construction disproving the Θ(n^{3/2}) guess)",
+      "url": "https://arxiv.org/abs/1107.0327"
+    },
+    {
+      "title": "E. Szemerédi, W. T. Trotter — Extremal problems in discrete geometry, Combinatorica 3 (1983), 381–392 (incidence bound underlying the trivial O(n^2) upper bound on four-point lines)",
+      "url": "https://en.wikipedia.org/wiki/Szemer%C3%A9di%E2%80%93Trotter_theorem"
+    },
+    {
+      "title": "P. Brass, W. Moser, J. Pach — Research Problems in Discrete Geometry, Springer (2005), §7 (lines determined by point sets and exactly-k-point-line problems)",
+      "url": "https://link.springer.com/book/10.1007/0-387-29929-7"
+    }
   ]
 }
