@@ -363,6 +363,86 @@
     "path": "Proofs/AngleTrisectionOQ02OQ03.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "gauss_wantzel_theorem",
+      "type": "core",
+      "description": "The Gauss-Wantzel theorem: a regular n-gon (n ≥ 3) is constructible by compass and straightedge if and only if Euler's totient φ(n) is a power of 2 (equivalently, n = 2^k times distinct Fermat primes).",
+      "leanType": "(n : ℕ) (hn : 3 ≤ n) : IsConstructibleNgon n ↔ TotientIsPow2 n"
+    },
+    {
+      "name": "minpoly_cos_natDegree_eq",
+      "type": "core",
+      "description": "The minimal polynomial of cos(2π/n) over ℚ has degree exactly φ(n)/2, proved via the cyclotomic tower law [ℚ(ζ):ℚ] = [ℚ(ζ):ℚ(cos)]·[ℚ(cos):ℚ] = 2·deg(minpoly).",
+      "leanType": "(n : ℕ) (hn : 3 ≤ n) : (minpoly ℚ (Real.cos (2 * Real.pi / ↑n))).natDegree = Nat.totient n / 2"
+    },
+    {
+      "name": "galois_conjugate_count",
+      "type": "supporting",
+      "description": "The number of distinct Galois conjugates of cos(2π/n), namely the distinct values cos(2kπ/n) over k coprime to n, equals φ(n)/2 because conjugates pair as k and n−k.",
+      "leanType": "(n : ℕ) (hn : 3 ≤ n) : Finset.card (Finset.image (fun k => Real.cos (2 * ↑k * Real.pi / ↑n)) (Finset.filter (fun k => Nat.Coprime k n) (Finset.range n))) = Nat.totient n / 2"
+    },
+    {
+      "name": "cos_2pi_div_n_isIntegral",
+      "type": "supporting",
+      "description": "cos(2π/n) is integral (algebraic) over ℚ for n ≥ 1, since it is a root of the nonzero polynomial T_n − 1 where T_n is the nth Chebyshev polynomial.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) : IsIntegral ℚ (Real.cos (2 * Real.pi / ↑n))"
+    },
+    {
+      "name": "zeta_quadratic",
+      "type": "supporting",
+      "description": "The primitive nth root of unity ζ_n = exp(2πi/n) satisfies the quadratic X² − 2cos(2π/n)X + 1 = 0 over ℚ(cos(2π/n)), the source of the degree-2 tower step.",
+      "leanType": "(n : ℕ) : zeta n ^ 2 - 2 * ↑(Real.cos (2 * Real.pi / ↑n)) * zeta n + 1 = 0"
+    },
+    {
+      "name": "minpoly_zeta_natDegree",
+      "type": "supporting",
+      "description": "The minimal polynomial of ζ_n over ℚ has degree φ(n), since it equals the (irreducible) cyclotomic polynomial Φ_n.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) : (minpoly ℚ (zeta n)).natDegree = Nat.totient n"
+    },
+    {
+      "name": "finrank_adjoin_zeta",
+      "type": "supporting",
+      "description": "The degree of the cyclotomic field ℚ(ζ_n) over ℚ equals φ(n).",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) : Module.finrank ℚ ↥(IntermediateField.adjoin ℚ ({zeta n} : Set ℂ)) = Nat.totient n"
+    },
+    {
+      "name": "units_zmod_is_2group_iff",
+      "type": "supporting",
+      "description": "The unit group (ℤ/nℤ)* (isomorphic to the Galois group of Φ_n) is a 2-group if and only if φ(n) is a power of 2, bridging Galois theory and the totient criterion.",
+      "leanType": "(n : ℕ) [NeZero n] : IsPGroup 2 (ZMod n)ˣ ↔ TotientIsPow2 n"
+    },
+    {
+      "name": "totient_div2_pow2_iff",
+      "type": "supporting",
+      "description": "For n ≥ 3, φ(n)/2 is a power of 2 if and only if φ(n) itself is a power of 2, using that φ(n) is even.",
+      "leanType": "{n : ℕ} (hn : 3 ≤ n) : (∃ k : ℕ, Nat.totient n / 2 = 2 ^ k) ↔ TotientIsPow2 n"
+    },
+    {
+      "name": "fermat_prime_totient_pow2",
+      "type": "supporting",
+      "description": "Every Fermat prime p has totient φ(p) = p − 1 = 2^(2^k), a power of 2, so a regular p-gon is constructible.",
+      "leanType": "(p : ℕ) (hp : IsFermatPrime p) : TotientIsPow2 p"
+    },
+    {
+      "name": "chebyshev_T_sub_one_roots",
+      "type": "supporting",
+      "description": "Every real root of T_n − 1 (with |x| ≤ 1) has the form cos(2kπ/n) for some k < n, characterizing the roots relevant to the minimal polynomial of the cosine.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) (x : ℝ) (hx : |x| ≤ 1) (h_root : Polynomial.aeval x (Chebyshev.T ℝ n - 1) = 0) : ∃ k : ℕ, k < n ∧ x = Real.cos (2 * ↑k * Real.pi / ↑n)"
+    },
+    {
+      "name": "zeta_isPrimitiveRoot",
+      "type": "supporting",
+      "description": "The concrete root of unity ζ_n = exp(2πi/n) is a primitive nth root of unity, connecting the file's constructions to Mathlib's cyclotomic infrastructure.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) : IsPrimitiveRoot (zeta n) n"
+    },
+    {
+      "name": "heptadecagon_constructible",
+      "type": "supporting",
+      "description": "Gauss's 1796 discovery: the regular 17-gon is constructible because φ(17) = 16 = 2⁴; the first new polygon construction since antiquity.",
+      "leanType": ": IsConstructibleNgon 17"
+    }
+  ],
   "references": [
     {
       "authors": "Gauss, Carl Friedrich",
