@@ -231,6 +231,59 @@ theorem infinite_of_containsArbitrarilyLongAP {A : Set ℕ}
   rw [arithProg_card a d _ hd] at hcard
   omega
 
+/-- **Divergent reciprocal sum forces infinitude.**
+    If `∑_{a ∈ A} 1/a` diverges then `A` is infinite. Contrapositive: a *finite* set
+    is a `Fintype`, over which every real-valued family is summable (`hasSum_fintype`),
+    so its reciprocal sum converges.
+
+    This is the hypothesis-side companion to `infinite_of_containsArbitrarilyLongAP`
+    (the conclusion side): *both* sides of Erdős #3 can only be nontrivial on infinite
+    sets. Elementary, `sorry`-free and axiom-free. -/
+theorem infinite_of_hasDivergentSum {A : Set ℕ} (h : HasDivergentSum A) :
+    A.Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  haveI : Fintype ↥A := hfin.fintype
+  exact h (hasSum_fintype (fun n : A => (1 : ℝ) / n)).summable
+
+/-- **Two elements make a 2-term AP.**
+    Any `a < b` both lying in `A` give the 2-term progression `{a, b}` (common
+    difference `b - a > 0`), so `A` contains a 2-term AP. -/
+theorem containsAP_two_of_lt {A : Set ℕ} {a b : ℕ} (ha : a ∈ A) (hb : b ∈ A)
+    (hab : a < b) : ContainsAP A 2 := by
+  refine ⟨a, b - a, by omega, ?_⟩
+  intro z hz
+  simp only [Finset.mem_coe, ArithProg, Finset.mem_image, Finset.mem_range] at hz
+  obtain ⟨i, hi, rfl⟩ := hz
+  interval_cases i
+  · simpa using ha
+  · show a + 1 * (b - a) ∈ A
+    have hb' : a + 1 * (b - a) = b := by omega
+    rw [hb']; exact hb
+
+/-- **Every infinite set contains a 2-term AP.**
+    An infinite set of naturals is nontrivial, so it has two distinct elements, which
+    form a 2-term arithmetic progression (`containsAP_two_of_lt`). -/
+theorem containsAP_two_of_infinite {A : Set ℕ} (h : A.Infinite) : ContainsAP A 2 := by
+  obtain ⟨x, hx, y, hy, hxy⟩ := h.nontrivial
+  rcases lt_or_gt_of_ne hxy with hlt | hlt
+  · exact containsAP_two_of_lt hx hy hlt
+  · exact containsAP_two_of_lt hy hx hlt
+
+/-- **Unconditional base cases of Erdős #3 (lengths `k ≤ 2`).**
+    For progressions of length at most `2`, Erdős #3 holds *without any Roth-type
+    threshold hypothesis*: a set with divergent reciprocal sum is infinite
+    (`infinite_of_hasDivergentSum`), hence already contains a `2`-term — and by length
+    monotonicity (`containsAP_of_le`) every `k ≤ 2`-term — arithmetic progression.
+
+    This isolates exactly where the difficulty of Erdős #3 begins: the `k ≤ 2` slice is
+    elementary and unconditional, whereas the `k ≥ 3` content needs the analytic
+    strength recorded in `strong_required_bound_implies_conjecture`. `sorry`-free and
+    axiom-free. -/
+theorem erdos3_holds_length_le_two {A : Set ℕ} (h : HasDivergentSum A) {k : ℕ}
+    (hk : k ≤ 2) : ContainsAP A k :=
+  containsAP_of_le hk (containsAP_two_of_infinite (infinite_of_hasDivergentSum h))
+
 /-- **Analytic core of the reduction.**
     If the counting function of `A` obeys `f_A(N) ≤ C · N / (log N)^{1+δ}` for all
     large `N` (`δ > 0`), then `∑_{a ∈ A} 1/a` converges. Proof by dyadic blocking:

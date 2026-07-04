@@ -107,10 +107,35 @@ the reduction at the correct `(log N)^{1+δ}` threshold, machine-verified in
 Lean 4 / Mathlib 4.26. The original `o(N/log N)` sorry is correctly retained as
 threshold-critical (as hard as Erdős #3).
 
+## Update (2026-07-04, attempt 3): unconditional base cases k ≤ 2 PROVEN
+
+Followed the first shallow follow-up below. Added, machine-checked (7743 jobs),
+0-axiom and sorry-free:
+- `infinite_of_hasDivergentSum : HasDivergentSum A → A.Infinite`. Proof: finite
+  `A` is a `Fintype`, over which `hasSum_fintype` gives summability, contradicting
+  divergence. This is the hypothesis-side twin of the existing conclusion-side
+  `infinite_of_containsArbitrarilyLongAP` — both sides of Erdős #3 only bite on
+  infinite sets.
+- `containsAP_two_of_lt {a b} (ha : a∈A) (hb : b∈A) (hab : a<b) : ContainsAP A 2`,
+  witness `(a, b-a)`: `ArithProg a (b-a) 2 = {a, b} ⊆ A`.
+- `containsAP_two_of_infinite : A.Infinite → ContainsAP A 2` via
+  `Set.Infinite.nontrivial`.
+- `erdos3_holds_length_le_two : HasDivergentSum A → k ≤ 2 → ContainsAP A k`,
+  combining the above with `containsAP_of_le` length-monotonicity. The honest
+  **unconditional** slice of Erdős #3 (no Roth threshold needed): the difficulty
+  is entirely in k ≥ 3.
+
+Gotcha noted for reuse: in `containsAP_two_of_lt`, the `i = 1` `interval_cases`
+branch has goal `a + 1*(b-a) ∈ A`; `simpa [h]` fails because `one_mul` fires
+before the rewrite `h : a + 1*(b-a) = b` can match. Use `show a + 1*(b-a) ∈ A;
+rw [h]; exact hb` to pin the pre-simp form.
+
+Gallery `meta.json` synced (lineCount 163/486→614, theoremCount 3/10→16).
+
 ## Next steps
 
 - The remaining `sorry` should NOT be attacked directly — it is as hard as
   Erdős #3. Leave it documented.
-- Possible follow-ups (shallow, optional): a `k ≤ 2` corollary that any infinite
-  set trivially contains 2-APs; or expose `summable_of_strongBound` as a reusable
-  density→convergence lemma for other reciprocal-sum problems.
+- The `k ≤ 2` corollary is now DONE. Remaining shallow option: expose
+  `summable_of_strongBound` as a reusable density→convergence lemma for other
+  reciprocal-sum problems.
