@@ -84,9 +84,9 @@
     {
       "id": "half-line-value",
       "title": "The half-line Gaussian value",
-      "startLine": 34,
+      "startLine": 1,
       "endLine": 38,
-      "summary": "half_gaussian_integral: ∫_{(0,∞)} e^{-b x²} = √(π/b)/2 for every real b, stated directly from Mathlib's integral_gaussian_Ioi (which also returns 0 for b ≤ 0, where the integrand is not integrable)."
+      "summary": "Imports, module docstring, and `open Real MeasureTheory`, then `half_gaussian_integral`: for every real b, ∫_{0}^{∞} exp(-b·x²) — the half-line Gaussian value used as the building block."
     },
     {
       "id": "symmetry-bridge",
