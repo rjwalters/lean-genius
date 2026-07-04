@@ -4,6 +4,50 @@ Insights accumulated during research on this problem.
 
 ---
 
+## PART XIII — general deletion-window theorem unifying the M=0/M=1 special cases (researcher-14, 2026-07-04)
+
+**Mode**: REVISIT (RICH, score 33). **Outcome**: progress (+1 general theorem
+`ramsey_deletion_window` in `RamseyR4kExtensionsOQ03Deletion.lean`; two existing
+theorems refactored into one-line corollaries; still 0 sorries / 0 axioms).
+**Machine-verified**: docker-build clean, 7744 jobs, exit 0; `#print axioms
+ramsey_deletion_window` = `propext / Classical.choice / Quot.sound` only (Tier-A
+axiom-free).
+
+### What this closes
+PART X extracted the `M=1` regime as `ramsey_deletion_one_past`, and
+`ramsey_deletion_generalizes_first_moment` handled `M=0`, but the two lived as
+separate ad-hoc theorems keyed to specific floor values. This session states the
+**one** general mechanism they are both instances of.
+
+### Shipped
+- **`ramsey_deletion_window (hk : 2 ≤ k) (hkn : k ≤ n) (M : ℕ)
+  (hlo : M·2^C(k,2) ≤ 2·C(n,k)) (hhi : 2·C(n,k) < (M+1)·2^C(k,2))`** ⇒ a 2-colouring
+  `c` of `Kₙ` and a set `R` with `n − M ≤ |R|` and no monochromatic `Kₖ`, i.e.
+  `R(k,k) > n − M`. The window pair pins `⌊2·C(n,k)/2^C(k,2)⌋ = M` exactly
+  (`Nat.le_div_iff_mul_le` + `Nat.div_lt_iff_lt_mul` + `omega`), then chains
+  `ramsey_deletion`. Stated by window index instead of the raw floor.
+- **Refactor**: `ramsey_deletion_generalizes_first_moment` is now the `M=0` corollary
+  (`(by simp) (by simpa using hbound)`), `ramsey_deletion_one_past` the `M=1` corollary
+  (`ramsey_deletion_window hk hkn 1 (by simpa using hlo) (by simpa using hhi)`). Both
+  keep their **exact original signatures**; the concrete k=6/7/8 witnesses are untouched.
+
+### Gotcha (reconfirmed, important)
+The `.loom/worktrees/researcher-14` "worktree" is NOT an isolated git worktree — its
+`show-toplevel` is the main repo and a background deployer runs `git reset --hard
+origin/main` on that shared checkout on a short cycle, silently wiping uncommitted edits
+mid-session (reflog shows repeated `reset: moving to origin/main`). Edits + a full docker
+build were destroyed once this way. Fix that worked: `git worktree add -b <branch>
+/Users/rwalters/lg-wt/<name> origin/main` (a *genuine* external worktree under
+`/Users/rwalters/lg-wt`, NOT `/tmp` — macOS cleans `/private/tmp` and removed the first
+attempt), edit + build + commit + push entirely there.
+
+### Still open (unchanged)
+`SymmetricLLLForRamsey` (Spencer's conditional-probability induction + the probability-
+space construction and mutual-independence `hindep`) remains the >1000-line measure-theory
+undertaking flagged BLOCKED since PART VIII. See sibling `lovasz-local-lemma-oq-01`.
+
+---
+
 ## PART XII — machine-checked deletion witness at k=8 (R(8,8)>45, +3 over union bound) (researcher-14, 2026-07-03)
 
 **Mode**: REVISIT (RICH, score 33). **Outcome**: progress (+2 verified theorems in
