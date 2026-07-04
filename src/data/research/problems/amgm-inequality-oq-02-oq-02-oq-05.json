@@ -1,0 +1,133 @@
+{
+  "slug": "amgm-inequality-oq-02-oq-02-oq-05",
+  "title": "Newton's Inequality via Real-Rooted Polynomials and Rolle's Theorem",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\prod_{i=1}^{n} (X - x_i) = \\sum_{k=0}^{n} (-1)^k e_k\\, X^{n-k}.",
+    "plain": "The parent proof establishes Newton's log-concavity step by a direct inductive",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-07-04T00:45:01-07:00",
+    "iteration": 2,
+    "focus": "Formalized the real-rooted/discriminant route: the reusable per-derivative atom plus the n=2 Newton base case for signed reals (0 sorries, 0 axioms).",
+    "blockers": [],
+    "nextAction": "General n>=3 needs the iterated-Rolle crux: differentiation preserves full real-rootedness counting multiplicity. Prove derivative-of-splitting-real-polynomial is real-rooted, then reduce three consecutive coefficients to a quadratic.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: New proof route (real-rootedness/discriminant) established in the amgm family and complete for the quadratic/n=2 base case, valid for SIGNED inputs. AmgmInequalityOQ02OQ02OQ05.lean: 8 theorems, 0 sorries, 0 axioms (foundational only). General n>=3 retained open (iterated-Rolle crux).",
+    "builtItems": [
+      "discrim_nonneg_of_root in Proofs/AmgmInequalityOQ02OQ02OQ05.lean (real quadratic with a real root has 0 <= discrim)",
+      "monic_quadratic_discrim_nonneg / discrim_nonneg_of_roots_nonempty (same via Polynomial.IsRoot and nonempty Polynomial.roots)",
+      "realRooted_quadratic_coeff_ineq (4*c <= b^2)",
+      "prod_two_linear_eq + root_of_prod_two_linear (Vieta for (X-x)(X-y))",
+      "newton_two_vars: x*y <= ((x+y)/2)^2 for signed reals, via the discriminant of the real-rooted (X-x)(X-y)"
+    ],
+    "insights": [
+      "Mathlib packages the completed-square identity as discrim_eq_sq_of_quadratic_eq_zero (h : a*(x*x)+b*x+c=0) : discrim a b c = (2*a*x+b)^2, so real-root implies nonneg discriminant is a 2-line proof (rw + sq_nonneg). This is the per-derivative atom of the whole Newton/Rolle program.",
+      "The real-rootedness route needs only REAL (not positive) roots, so Newton at n=2 (newton_two_vars: x*y <= ((x+y)/2)^2) holds for SIGNED x,y, a genuine generalization over the parent amgm-inequality-oq-02-oq-02 whose induction assumes 0 <= x_i.",
+      "Nobody else in the ~50-file amgm family used Polynomial.roots / Rolle / the quadratic discriminant of a splitting polynomial; the sibling oq-02-oq-03-oq-03-oq-01 uses a Cauchy-Schwarz SOS discriminant metaphor, a different mechanism.",
+      "The remaining crux is exactly differentiation preserves full real-rootedness counting multiplicity (iterated Rolle on prod (X - x_i)); Mathlib has Rolle (exists_hasDerivAt_eq_zero) and Polynomial.derivative/roots but not this packaged lemma."
+    ],
+    "mathlibGaps": [
+      "No packaged lemma: over R, p.roots.card = p.natDegree implies (derivative p).roots.card = (derivative p).natDegree (Rolle + multiplicity). This is the crux for general n."
+    ],
+    "nextSteps": [
+      "Prove: derivative of a fully-real-rooted real polynomial is fully real-rooted (Rolle between consecutive roots + multiplicity at repeated roots).",
+      "Reduce three consecutive coefficients to a quadratic by reversing/differentiating, then apply discrim_nonneg_of_root to get the general Newton inequality for signed reals.",
+      "Prove Newton at n=3 as the first nontrivial instance (cubic derivative is a quadratic; Rolle gives its two real roots directly)."
+    ],
+    "markdown": "# Knowledge Base: amgm-inequality-oq-02-oq-02-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "inequalities",
+    "elementary-symmetric-polynomials",
+    "maclaurin-inequalities",
+    "newton-inequalities",
+    "log-concavity",
+    "am-gm"
+  ],
+  "relatedProofs": [
+    "amgm-inequality",
+    "amgm-inequality-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-01-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
+    "amgm-inequality-oq-02-oq-01-oq-03",
+    "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01",
+    "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01-oq-02",
+    "amgm-inequality-oq-02-oq-01-oq-04",
+    "amgm-inequality-oq-02-oq-01-oq-05",
+    "amgm-inequality-oq-02-oq-02",
+    "amgm-inequality-oq-02-oq-02-oq-02",
+    "amgm-inequality-oq-02-oq-03",
+    "amgm-inequality-oq-02-oq-03-oq-03",
+    "amgm-inequality-oq-02-oq-03-oq-03-oq-01",
+    "amgm-inequality-oq-02-oq-03-oq-03-oq-03",
+    "amgm-inequality-oq-02-oq-04",
+    "amgm-inequality-oq-02-oq-05",
+    "amgm-inequality-oq-03",
+    "amgm-inequality-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-01-oq-01",
+    "amgm-inequality-oq-03-oq-01-oq-02",
+    "amgm-inequality-oq-03-oq-02-oq-01-oq-01",
+    "amgm-inequality-oq-03-oq-02-oq-01-oq-02",
+    "amgm-inequality-oq-03-oq-02-oq-04",
+    "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "amgm-inequality-oq-03-oq-03",
+    "amgm-inequality-oq-03-oq-03-oq-01",
+    "amgm-inequality-oq-03-oq-03-oq-02",
+    "amgm-inequality-oq-03-oq-04",
+    "amgm-inequality-oq-03-oq-04-oq-02",
+    "amgm-inequality-oq-04",
+    "amgm-inequality-oq-04-oq-02",
+    "amgm-inequality-oq-04-oq-04",
+    "amgm-inequality-oq-04-oq-05",
+    "amgm-inequality-oq-05",
+    "amgm-inequality-oq-05-oq-01",
+    "amgm-inequality-oq-05-oq-02",
+    "amgm-inequality-oq-05-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-04T09:09:15.544Z",
+  "lastUpdate": "2026-07-04T10:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ02OQ02OQ05.lean",
+      "filename": "AmgmInequalityOQ02OQ02OQ05.lean",
+      "lineCount": 128,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ02OQ02OQ05.lean"
+    }
+  ]
+}
