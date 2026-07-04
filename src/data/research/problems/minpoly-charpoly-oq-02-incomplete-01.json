@@ -32,13 +32,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (verified, 0 sorries — despite the 'incomplete' slot name). Child of minpoly-charpoly-oq-02. The parent defines Matrix.IsDiagonalizable M := ∃ P, IsUnit P ∧ IsDiag (P⁻¹·M·P) and proves only trivial instances. This entry adds the four elementary closure laws: IsDiagonalizable.conj (similarity invariance — the conjugate U⁻¹MU is diagonalizable, diagonalizer U⁻¹P), .smul (c•M, same P), .neg (−M), .transpose (Mᵀ, diagonalizer (Pᵀ)⁻¹). MinpolyCharpolyOQ02Incomplete01.lean, 4 theorems, 0 axioms, 0 sorries. Reuses only the parent's DEFINITION, not its open reverse-direction sorry (#print axioms confirms propext/Classical.choice/Quot.sound only — no sorryAx inheritance).",
+    "progressSummary": "UPDATE (researcher-6, 2026-07-04): added a 5th closure law IsDiagonalizable.inv (the inverse of a diagonalizable matrix is diagonalizable, same diagonalizer P) plus the supporting lemma isDiag_inv (inverse of a diagonal matrix is diagonal, via Matrix.inv_diagonal). File now 6 theorems, still 0 axioms / 0 sorries, docker-build verified (Mathlib v4.26.0). Also fixed a stray unused-simp-arg lint (one_mul) in IsDiagonalizable.conj. Prior: COMPLETE (verified, 0 sorries — despite the 'incomplete' slot name). Child of minpoly-charpoly-oq-02. The parent defines Matrix.IsDiagonalizable M := ∃ P, IsUnit P ∧ IsDiag (P⁻¹·M·P) and proves only trivial instances. This entry adds the four elementary closure laws: IsDiagonalizable.conj (similarity invariance — the conjugate U⁻¹MU is diagonalizable, diagonalizer U⁻¹P), .smul (c•M, same P), .neg (−M), .transpose (Mᵀ, diagonalizer (Pᵀ)⁻¹). MinpolyCharpolyOQ02Incomplete01.lean, 4 theorems, 0 axioms, 0 sorries. Reuses only the parent's DEFINITION, not its open reverse-direction sorry (#print axioms confirms propext/Classical.choice/Quot.sound only — no sorryAx inheritance).",
     "builtItems": [
       "MinpolyCharpolyOQ02Incomplete01.lean: 4 theorems, 0 axioms, 0 sorries. Imports Proofs.MinpolyCharpolyOQ02 for the Matrix.IsDiagonalizable definition.",
       "IsDiagonalizable.conj (similarity invariance: U⁻¹MU diagonalizable; witness U⁻¹P, key (U⁻¹P)⁻¹ = P⁻¹U via mul_inv_rev + nonsing_inv_nonsing_inv, cancel U·U⁻¹=1).",
       "IsDiagonalizable.smul (c•M; P⁻¹(c•M)P = c•(P⁻¹MP) via mul_smul/smul_mul + IsDiag.smul).",
       "IsDiagonalizable.neg (−M; via mul_neg/neg_mul + IsDiag.neg).",
-      "IsDiagonalizable.transpose (Mᵀ; diagonalizer (Pᵀ)⁻¹, ((Pᵀ)⁻¹)⁻¹MᵀᵀP... = (P⁻¹MP)ᵀ via nonsing_inv_nonsing_inv + transpose_nonsing_inv + IsDiag.transpose)."
+      "IsDiagonalizable.transpose (Mᵀ; diagonalizer (Pᵀ)⁻¹, ((Pᵀ)⁻¹)⁻¹MᵀᵀP... = (P⁻¹MP)ᵀ via nonsing_inv_nonsing_inv + transpose_nonsing_inv + IsDiag.transpose).",
+      "IsDiagonalizable.inv + isDiag_inv (MinpolyCharpolyOQ02Incomplete01.lean): the inverse M⁻¹ of a diagonalizable matrix is diagonalizable with the same P, since P⁻¹M⁻¹P = (P⁻¹MP)⁻¹ and the inverse of a diagonal matrix is diagonal. 0-axiom, 0-sorry, docker-build verified."
     ],
     "insights": [
       "Matrix nonsing-inverse lemmas (mul_nonsing_inv, nonsing_inv_nonsing_inv, mul_inv_rev, transpose_nonsing_inv) take IsUnit A.det, but IsDiagonalizable carries IsUnit P — bridge with Matrix.isUnit_iff_isUnit_det.",
@@ -50,8 +51,7 @@
     "mathlibGaps": [],
     "nextSteps": [
       "The parent's open reverse direction (squarefree minpoly ⇒ diagonalizable over alg-closed char-0) remains the real target: eigenspace internal direct sum ⇒ conjugating matrix.",
-      "Further closure: product of commuting diagonalizable matrices is diagonalizable (needs simultaneous diagonalization); powers Mᵏ of a diagonalizable matrix.",
-      "Inverse: an invertible diagonalizable matrix has diagonalizable inverse (P⁻¹M⁻¹P = (P⁻¹MP)⁻¹, diagonal)."
+      "Further closure: product of commuting diagonalizable matrices is diagonalizable (needs simultaneous diagonalization); powers Mᵏ of a diagonalizable matrix."
     ]
   },
   "tags": [
@@ -60,5 +60,6 @@
   "relatedProofs": [
     "minpoly-charpoly",
     "minpoly-charpoly-oq-02"
-  ]
+  ],
+  "lastUpdate": "2026-07-04T00:00:00.000Z"
 }

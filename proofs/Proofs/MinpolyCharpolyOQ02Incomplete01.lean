@@ -24,8 +24,11 @@ the definition but which the parent omits:
   * `IsDiagonalizable.neg`       — `-M` stays diagonalizable.
   * `IsDiagonalizable.transpose` — the transpose `Mᵀ` is diagonalizable, with
     diagonalizer `(Pᵀ)⁻¹` (eigenvalues are preserved under transpose).
+  * `IsDiagonalizable.inv`       — the inverse `M⁻¹` is diagonalizable (same `P`),
+    because `P⁻¹ M⁻¹ P = (P⁻¹ M P)⁻¹` and the inverse of a diagonal matrix is
+    diagonal (`isDiag_inv`).
 
-All four are fully machine-checked (0 axioms, 0 sorries) and reuse only the
+All five are fully machine-checked (0 axioms, 0 sorries) and reuse only the
 parent's *definition* (not its open reverse-direction obligation).
 
 Reference: Axler, *Linear Algebra Done Right* §5–8; Dummit–Foote §12.
@@ -58,7 +61,7 @@ theorem IsDiagonalizable.conj {M : Matrix n n K} (hM : M.IsDiagonalizable)
     rw [hQinv]
     calc P⁻¹ * U * (U⁻¹ * M * U) * (U⁻¹ * P)
         = P⁻¹ * (U * U⁻¹) * M * (U * U⁻¹) * P := by simp only [mul_assoc]
-      _ = P⁻¹ * M * P := by rw [hUU]; simp only [mul_one, one_mul]
+      _ = P⁻¹ * M * P := by rw [hUU]; simp only [mul_one]
   rw [hsimp]
   exact hD
 
@@ -99,5 +102,29 @@ theorem IsDiagonalizable.transpose {M : Matrix n n K} (hM : M.IsDiagonalizable) 
     simp only [Matrix.transpose_mul, mul_assoc]
   rw [heq]
   exact hD.transpose
+
+/-- **The inverse of a diagonal matrix is diagonal.**  Writing `A = diagonal (diag A)`
+    (valid because `A` is diagonal), `Matrix.inv_diagonal` gives
+    `A⁻¹ = diagonal (Ring.inverse (diag A))`, which is again diagonal. -/
+theorem isDiag_inv {A : Matrix n n K} (h : A.IsDiag) : A⁻¹.IsDiag := by
+  rw [show A⁻¹ = (diagonal (diag A))⁻¹ by rw [h.diagonal_diag], Matrix.inv_diagonal]
+  exact Matrix.isDiag_diagonal _
+
+/-- **The inverse of a diagonalizable matrix is diagonalizable.**  The *same* `P`
+    diagonalizes `M⁻¹`: since `P⁻¹ M⁻¹ P = (P⁻¹ M P)⁻¹` and the inverse of a diagonal
+    matrix is diagonal (`isDiag_inv`), `P⁻¹ M⁻¹ P` is diagonal.  (No invertibility
+    hypothesis on `M` is needed: if `M` is singular then `M⁻¹` is the junk value `0`,
+    which is trivially diagonalizable, and the identity `P⁻¹ M⁻¹ P = (P⁻¹ M P)⁻¹`
+    still holds for Mathlib's `nonsing_inv`.) -/
+theorem IsDiagonalizable.inv {M : Matrix n n K} (hM : M.IsDiagonalizable) :
+    M⁻¹.IsDiagonalizable := by
+  obtain ⟨P, hP, hD⟩ := hM
+  refine ⟨P, hP, ?_⟩
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have key : (P⁻¹ * M * P)⁻¹ = P⁻¹ * M⁻¹ * P := by
+    rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hPdet,
+      ← mul_assoc]
+  rw [← key]
+  exact isDiag_inv hD
 
 end MinpolyCharpolyOQ02Incomplete01
