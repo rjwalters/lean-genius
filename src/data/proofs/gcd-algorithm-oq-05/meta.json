@@ -60,6 +60,44 @@
     "theoremCount": 9,
     "definitionCount": 2
   },
+  "mainTheorems": [
+    {
+      "name": "gaussKuzmin_tsum",
+      "type": "core",
+      "description": "Normalization — the headline result: ∑' P(k) = 1. The infinite sum of the Gauss–Kuzmin weights is exactly 1, which together with gaussKuzmin_pos establishes that they form a genuine probability distribution. Proved by uniqueness of limits from the summability and the partial-sum limit.",
+      "leanType": "∑' (n : ℕ), gaussKuzmin n = 1"
+    },
+    {
+      "name": "gaussKuzmin_pos",
+      "type": "core",
+      "description": "Positivity — every weight is strictly positive: P(k) > 0. Since 1 + 1/((n+1)(n+3)) > 1 and the base 2 > 1, the logarithm logb 2 of it is positive (Real.logb_pos). This is the second half of \"probability distribution.\"",
+      "leanType": "(n : ℕ) → 0 < gaussKuzmin n"
+    },
+    {
+      "name": "gaussKuzmin_eq_sub",
+      "type": "supporting",
+      "description": "The telescoping identity P(n) = G(n) − G(n+1) with G(n) = log₂((n+2)/(n+1)). It rests on the algebraic factorization 1 + 1/((n+1)(n+3)) = (n+2)²/((n+1)(n+3)) together with logb_div; this is the structural key that collapses the series.",
+      "leanType": "(n : ℕ) → gaussKuzmin n = G n - G (n + 1)"
+    },
+    {
+      "name": "gaussKuzmin_partial",
+      "type": "supporting",
+      "description": "Closed form of the partial sums: ∑_{n<N} P(n) = G(0) − G(N) = 1 − log₂((N+2)/(N+1)). Follows immediately from the telescoping identity via Finset.sum_range_sub', and makes both the normalization and the rate of convergence explicit.",
+      "leanType": "(N : ℕ) → ∑ n ∈ Finset.range N, gaussKuzmin n = G 0 - G N"
+    },
+    {
+      "name": "gaussKuzmin_partial_tendsto_one",
+      "type": "supporting",
+      "description": "The partial sums converge to 1. Since (n+2)/(n+1) = 1 + 1/(n+1) → 1 and log₂ is continuous at 1, the antiderivative G(N) → 0, so 1 − G(N) → 1. This is the analytic step feeding gaussKuzmin_tsum.",
+      "leanType": "Tendsto (fun N : ℕ => ∑ n ∈ Finset.range N, gaussKuzmin n) atTop (𝓝 1)"
+    },
+    {
+      "name": "gaussKuzmin_summable",
+      "type": "supporting",
+      "description": "Summability of the weight family. The terms are nonnegative (gaussKuzmin_pos) and every partial sum 1 − G(N) is bounded above by 1 (G_nonneg), so summable_of_sum_range_le applies. Summability is what licenses the tsum manipulation in the normalization proof.",
+      "leanType": "Summable gaussKuzmin"
+    }
+  ],
   "overview": {
     "historicalContext": "The Euclidean algorithm's quotient sequence qᵢ = ⌊r_{i-1}/rᵢ⌋ is precisely the continued-fraction expansion of r₀/r₁. Gauss observed (1812, in a letter to Laplace) and Kuzmin (1928) and Lévy (1929) proved that for a 'random' real number the partial quotients follow the limiting law P(k) = log₂(1 + 1/(k(k+2))) — the Gauss–Kuzmin distribution. The parent gallery entry's open question OQ-05 (echoing the Knuth–Yao–Dixon analysis of the Euclidean algorithm) asks whether the algorithm's quotients are Gauss–Kuzmin distributed and what a formal proof would require. This entry supplies the foundational prerequisite and a concrete first answer.",
     "problemStatement": "The Knuth–Yao–Dixon analysis gives the distribution of quotients qᵢ = ⌊r_{i-1}/rᵢ⌋ — are these Gauss–Kuzmin distributed? What does a formal proof require?",
