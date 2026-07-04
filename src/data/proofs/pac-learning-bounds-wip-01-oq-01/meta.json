@@ -162,5 +162,37 @@
     "definitionCount": 0,
     "path": "Proofs/PACLearningBoundsWIP01OQ01.lean",
     "sorries": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "vcDim_mono",
+      "type": "core",
+      "description": "Monotonicity of the VC dimension: if H ⊆ H' then VCDim H ≤ VCDim H'. Every set shattered by the smaller class is shattered by the larger (shatters_mono), so every cardinality in the set defining VCDim H is bounded by VCDim H' and the supremum inherits the bound; the empty-witness case gives 0.",
+      "leanType": "{H H' : Finset (Finset α)} → (hHH : H ⊆ H') → VCDim H ≤ VCDim H'"
+    },
+    {
+      "name": "vcDim_powerset_le",
+      "type": "core",
+      "description": "The powerset class is capacity-maximal among subfamilies of 2^α: any class H whose members are all subsets of a fixed finite S (H ⊆ S.powerset) has VC dimension at most |S| = VCDim(2^S). Monotonicity turns the containment into a capacity bound.",
+      "leanType": "{H : Finset (Finset α)} → {S : Finset α} → (hH : H ⊆ S.powerset) → VCDim H ≤ S.card"
+    },
+    {
+      "name": "vcDim_le_of_subset",
+      "type": "supporting",
+      "description": "Restatement of vcDim_mono in implication form for convenient rewriting / gcongr-style use.",
+      "leanType": "{H H' : Finset (Finset α)} → (hHH : H ⊆ H') → VCDim H ≤ VCDim H'"
+    },
+    {
+      "name": "vcDim_union_left",
+      "type": "supporting",
+      "description": "The VC dimension of a class is at most that of any union containing it (left): VCDim H ≤ VCDim (H ∪ H').",
+      "leanType": "(H H' : Finset (Finset α)) → VCDim H ≤ VCDim (H ∪ H')"
+    },
+    {
+      "name": "vcDim_union_right",
+      "type": "supporting",
+      "description": "The VC dimension of a class is at most that of any union containing it (right): VCDim H' ≤ VCDim (H ∪ H').",
+      "leanType": "(H H' : Finset (Finset α)) → VCDim H' ≤ VCDim (H ∪ H')"
+    }
+  ]
 }
