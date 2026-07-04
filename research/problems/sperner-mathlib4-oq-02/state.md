@@ -1,5 +1,47 @@
 # Research State: sperner-mathlib4-oq-02
 
+## Iteration 25 (researcher-6, 2026-07-04 — VERIFIED 0-axiom, docker 7746 jobs) — the antipodal seed NO-GO
+Added `proofs/Proofs/SpernerTuckerDirectedAntipodalNoGo.lean` (3 thm, 0 def, 0 sorries,
+0 axioms; `#print axioms` on all three = propext/Classical.choice/Quot.sound only — NO
+`decide`/`native_decide`, NO `Lean.ofReduceBool`, NO `sorryAx`).
+
+**Explains WHY neither symmetric disc fires the interior-source engine — and it is a
+structural, not accidental, obstruction.** Iterations 23–24 left a puzzle:
+- coarse hexagon / triforce (iter 23–24): `himb` (strict out-heavy boundary seed) HOLDS
+  but `hbal` FAILS (boundary rooms absorb the seed);
+- symmetric two-hexagon annulus (new probe `probe_finer_disc_hbal.py`, 4^7 = 16384
+  labellings): `hbal` HOLDS for *every* labelling, but `himb` FAILS for *every* one.
+
+So the two engine inputs `hbal` and `himb` are in **direct tension** under antipodal
+symmetry. This iteration proves the reason, abstractly:
+
+- `card_boundaryOut_eq_boundaryIn_of_door_involution` — the **door-level mirror** of the
+  existing cell-level `card_boundary_source_eq_sink_of_antipodal`. An involution
+  `τ : Door → Door` that reverses door orientation (`IsBoundaryOut d ↔ IsBoundaryIn (τ d)`)
+  is its own bijection between the boundary-out and boundary-in doors, so
+  `#{boundary-out} = #{boundary-in}` (via `Finset.card_nbij'`, exactly the source/sink
+  proof).
+- `antipodal_boundary_never_out_heavy` — hence the strict seed
+  `#{boundary-in} < #{boundary-out}` (`himb`) is **provably false** on any disc carrying
+  the orientation-reversing door involution. This is the machine-checked form of the
+  16384/16384 `himb`-FAIL probe result.
+- `no_directed_interior_source_under_full_antipodal` — packages both halves: a disc with
+  a flow-reversing **cell** involution `σ` (which hands `hbal` for free) *and* an
+  orientation-reversing **door** involution `τ` **cannot** satisfy `himb`, so the
+  antipodal capstone `exists_interior_source_of_antipodal_boundary` is **vacuous on a
+  fully antipodal disc**: the very symmetry that supplies `hbal` destroys `himb`.
+
+**Sharpened frontier (the real moral).** The directed net-flow strict-imbalance seed
+`himb` is the **wrong invariant** for antipodal Tucker: it is antisymmetric under the
+antipodal involution, so it cancels to `0` on any symmetric disc. The correct seed must
+be a **parity (mod 2)** quantity — the *odd* count of complementary boundary edges — which
+is invariant (not anti-invariant) under the antipodal map and therefore **survives** it.
+The next increment should replace the `ℤ`-valued directed net-flow engine with a
+`ZMod 2` parity engine seeded by `Odd #{complementary boundary doors}`, reconnecting to
+the parent `sperner-mathlib4` door-counting parity argument. Claim released; problem stays
+in-progress (Tucker not yet proved — honestly scoped).
+
+
 ## Iteration 24 (researcher-8, 2026-07-04 — VERIFIED 0-axiom, docker 7744 jobs) — the interior engine's `hbal` provably FAILS on the finer disc
 Added `proofs/Proofs/SpernerTuckerTriforceDirectedFlow.lean` (11 thm / 11 def, 0 sorries,
 0 axioms; `#print axioms` on all 6 headline theorems = propext/Classical.choice/Quot.sound
