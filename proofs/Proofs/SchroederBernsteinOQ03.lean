@@ -3049,6 +3049,385 @@ end ReadOff
 
 
 /-!
+## Section 5·C: The computable extension-only scheduler
+
+`stageSeqB` (Section 5·B) is `noncomputable` for exactly one reason: `stageStepB` reads its
+fresh partner off the existential `domain_consStep` / `range_consStep` via `.choose`, and those
+rest on `escape_exists'`'s `Classical.choose`. This section rebuilds the *identical* extension-only
+construction as a **plain `def`** `stageListC`, whose fresh partner is the concrete
+`chaseTarget … (firstEscapeB …)` — `firstEscapeB` being the bounded, decidable, hypothesis-free
+escape search of Section 5·B-comp, certified by `firstEscapeB_eq_escapeDepth` to reproduce the
+least-depth pairing. Because nothing here uses `Classical.choose`, `stageListC` is a genuine
+computable function, and the read-off `sigmaC n := mLookup (stageListC (2n+1)) n` is a *computable*
+bijection with `p n ↔ q (sigmaC n)`. This discharges the entire mathematical content of
+`myhill_isomorphism`'s hard direction; the sole residual obligation is the standalone
+computability lemma `sigmaC_computable`.
+-/
+
+/-- **Bounded escape scan as a manifestly computable `Nat.rec`.** The escape depth of Section
+    5·B-comp is `escapeDepth = Nat.find hex`, whose `hex : ∃ …` argument makes it awkward to feed
+    a hypothesis-free scheduler `def`, and `firstEscapeB` (a `List.findIdx`) is not computable at the
+    `Computable` level in Mathlib (only `Primrec.list_findIdx` exists, and its scan predicate here
+    calls the `Computable`-not-`Primrec` `chaseTarget`). `escScan` searches the same window
+    `0,1,…,(mRan prev).length` for the least stage whose green chase image `chaseTarget f g a t`
+    escapes `mRan prev`, returning the sentinel `(mRan prev).length + 1` if none — as a plain
+    `Nat.rec`, hence computable with the available `Computable.nat_rec` / `Computable.cond`. -/
+def escScan (f g : ℕ → ℕ) (prev : List (ℕ × ℕ)) (a : ℕ) : ℕ :=
+  Nat.rec (motive := fun _ => ℕ)
+    ((mRan prev).length + 1)
+    (fun t st => if st ≤ (mRan prev).length then st
+                 else if chaseTarget f g a t ∈ mRan prev then (mRan prev).length + 1 else t)
+    ((mRan prev).length + 1)
+
+/-- List membership as a computable `Bool` (via `List.idxOf`, primitive recursive). -/
+theorem computable_mem_bool : Computable₂ (fun (y : ℕ) (l : List ℕ) => decide (y ∈ l)) := by
+  have hltC : Computable₂ (fun a b : ℕ => decide (a < b)) := Primrec.nat_lt.decide.to_comp
+  have hidx : Computable (fun p : ℕ × List ℕ => List.idxOf p.1 p.2) :=
+    Primrec.list_idxOf.to_comp.comp Computable.fst Computable.snd
+  have hlen : Computable (fun p : ℕ × List ℕ => p.2.length) :=
+    Primrec.list_length.to_comp.comp Computable.snd
+  exact (hltC.comp hidx hlen).of_eq
+    (fun p => by rw [decide_eq_decide]; exact List.idxOf_lt_length_iff)
+
+/-- **`escScan` is computable** in `(prev, a)`: a `Nat.rec` whose step is built from a `≤` test,
+    a membership test (`computable_mem_bool`), and the computable `chaseTarget` — all assembled by
+    `Computable.nat_rec` + `Computable.cond`. -/
+theorem escScan_computable {f g : ℕ → ℕ} (hfc : Computable f) (hgc : Computable g) :
+    Computable (fun p : List (ℕ × ℕ) × ℕ => escScan f g p.1 p.2) := by
+  have hmRan : Computable (fun L : List (ℕ × ℕ) => mRan L) := by
+    have h : Primrec (fun L : List (ℕ × ℕ) => L.map Prod.snd) :=
+      Primrec.list_map Primrec.id (Primrec.snd.comp Primrec.snd)
+    exact h.to_comp
+  have hbound : Computable (fun pa : List (ℕ × ℕ) × ℕ => (mRan pa.1).length + 1) :=
+    Computable.succ.comp (Primrec.list_length.to_comp.comp (hmRan.comp Computable.fst))
+  have hleC : Computable₂ (fun a b : ℕ => decide (a ≤ b)) := Primrec.nat_le.decide.to_comp
+  have hstep : Computable₂ (fun (pa : List (ℕ × ℕ) × ℕ) (tst : ℕ × ℕ) =>
+      if tst.2 ≤ (mRan pa.1).length then tst.2
+      else if chaseTarget f g pa.2 tst.1 ∈ mRan pa.1 then (mRan pa.1).length + 1 else tst.1) := by
+    have hmRanX : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) => mRan x.1.1) :=
+      hmRan.comp (Computable.fst.comp Computable.fst)
+    have hbX : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) => (mRan x.1.1).length) :=
+      Primrec.list_length.to_comp.comp hmRanX
+    have hstX : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) => x.2.2) :=
+      Computable.snd.comp Computable.snd
+    have htX : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) => x.2.1) :=
+      Computable.fst.comp Computable.snd
+    have haX : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) => x.1.2) :=
+      Computable.snd.comp Computable.fst
+    have hc1 : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) =>
+        decide (x.2.2 ≤ (mRan x.1.1).length)) := hleC.comp hstX hbX
+    have hct : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) =>
+        chaseTarget f g x.1.2 x.2.1) := (chaseTarget_computable hfc hgc).comp haX htX
+    have hc2 : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) =>
+        decide (chaseTarget f g x.1.2 x.2.1 ∈ mRan x.1.1)) := computable_mem_bool.comp hct hmRanX
+    have hsent : Computable (fun x : (List (ℕ × ℕ) × ℕ) × (ℕ × ℕ) => (mRan x.1.1).length + 1) :=
+      Computable.succ.comp hbX
+    exact (Computable.cond hc1 hstX (Computable.cond hc2 hsent htX)).of_eq
+      (fun x => by
+        rcases Decidable.em (x.2.2 ≤ (mRan x.1.1).length) with h1 | h1 <;>
+        rcases Decidable.em (chaseTarget f g x.1.2 x.2.1 ∈ mRan x.1.1) with h2 | h2 <;>
+        simp [h1, h2])
+  exact (Computable.nat_rec (α := List (ℕ × ℕ) × ℕ) (σ := ℕ) hbound hbound hstep).of_eq
+    (fun pa => rfl)
+
+/-- **Correctness of `escScan`**: if `m ≤ (mRan prev).length` is the least escaping stage (escapes
+    at `m`, collides below `m`), then `escScan` returns `m`. A three-part induction on the `Nat.rec`
+    depth: sentinel below `m`, value `m` at `m+1`, and value `m` maintained thereafter. -/
+theorem escScan_eq_of_least {f g : ℕ → ℕ} {prev : List (ℕ × ℕ)} {a m : ℕ}
+    (hmb : m ≤ (mRan prev).length)
+    (hesc : chaseTarget f g a m ∉ mRan prev)
+    (hmin : ∀ k < m, chaseTarget f g a k ∈ mRan prev) :
+    escScan f g prev a = m := by
+  set b := (mRan prev).length with hb
+  set step : ℕ → ℕ → ℕ := fun t st =>
+    if st ≤ b then st else if chaseTarget f g a t ∈ mRan prev then b + 1 else t with hstep
+  set R : ℕ → ℕ := fun d => Nat.rec (motive := fun _ => ℕ) (b + 1) step d with hR
+  have hlow : ∀ d, d ≤ m → R d = b + 1 := by
+    intro d
+    induction d with
+    | zero => intro _; rfl
+    | succ n ih =>
+      intro hn
+      have hRn : R n = b + 1 := ih (by omega)
+      have hchase : chaseTarget f g a n ∈ mRan prev := hmin n (by omega)
+      have hstepval : R (n + 1) = step n (R n) := rfl
+      rw [hstepval, hRn]
+      show (if (b : ℕ) + 1 ≤ b then b + 1
+            else if chaseTarget f g a n ∈ mRan prev then b + 1 else n) = b + 1
+      rw [if_neg (by omega : ¬ ((b : ℕ) + 1 ≤ b)), if_pos hchase]
+  have hm1 : R (m + 1) = m := by
+    have hRm : R m = b + 1 := hlow m le_rfl
+    have hstepval : R (m + 1) = step m (R m) := rfl
+    rw [hstepval, hRm]
+    show (if (b : ℕ) + 1 ≤ b then b + 1
+          else if chaseTarget f g a m ∈ mRan prev then b + 1 else m) = m
+    rw [if_neg (by omega : ¬ ((b : ℕ) + 1 ≤ b)), if_neg hesc]
+  have hhigh : ∀ d, m + 1 ≤ d → R d = m := by
+    intro d hd
+    induction d, hd using Nat.le_induction with
+    | base => exact hm1
+    | succ n _ ih =>
+      have hstepval : R (n + 1) = step n (R n) := rfl
+      rw [hstepval, ih]
+      show (if m ≤ b then m
+            else if chaseTarget f g a n ∈ mRan prev then b + 1 else n) = m
+      rw [if_pos hmb]
+  show R (b + 1) = m
+  exact hhigh (b + 1) (by omega)
+
+/-- `escScan` reproduces the least-depth `escapeDepth` pairing, under the balance invariant that
+    licenses escape within the window (`escape_exists'` + the `escapeDepth_le` bound). Drop-in
+    replacement for `firstEscapeB_eq_escapeDepth`. -/
+theorem escScan_eq_escapeDepth {f g : ℕ → ℕ}
+    (hf : Function.Injective f) (hg : Function.Injective g)
+    {L : List (ℕ × ℕ)} (hbal : Balanced f g L) {a : ℕ} (ha : a ∉ mDom L) :
+    escScan f g L a = escapeDepth f g L a (escape_exists' hf hg hbal ha) := by
+  refine escScan_eq_of_least (escapeDepth_le hf hg hbal ha) ?_ ?_
+  · exact chaseTarget_escapeDepth_notMem f g L a _
+  · intro k hk
+    exact escapeDepth_min f g L a (escape_exists' hf hg hbal ha) hk
+
+/-- One computable stage of the extension-only scheduler. Even `s` targets domain element `s/2`;
+    odd `s` targets range element `s/2`. If already covered the matching is returned unchanged;
+    otherwise it grows by a single cons whose partner is the concrete least-depth chase target
+    (`escScan`, no `Classical.choose`). This is the choice-free twin of `stageStepB`. -/
+def stageStepC (f g : ℕ → ℕ) (s : ℕ) (prev : List (ℕ × ℕ)) : List (ℕ × ℕ) :=
+  if s % 2 = 0 then
+    if s / 2 ∈ mDom prev then prev
+    else (s / 2, chaseTarget f g (s / 2) (escScan f g prev (s / 2))) :: prev
+  else
+    if s / 2 ∈ mRan prev then prev
+    else (chaseTarget g f (s / 2) (escScan g f (prev.map Prod.swap) (s / 2)), s / 2) :: prev
+
+/-- The computable stage list (extension-only, `Classical.choose`-free). -/
+def stageListC (f g : ℕ → ℕ) : ℕ → List (ℕ × ℕ)
+  | 0 => []
+  | (s + 1) => stageStepC f g s (stageListC f g s)
+
+/-- **Pair-monotonicity of one step** — every recorded pair survives (keep-case: identical;
+    cons-case: `mem_cons_of_mem`). Nothing is ever removed. -/
+theorem stageStepC_pair_subset {f g : ℕ → ℕ} (s : ℕ) (prev : List (ℕ × ℕ))
+    {x : ℕ × ℕ} (hx : x ∈ prev) : x ∈ stageStepC f g s prev := by
+  unfold stageStepC
+  split_ifs
+  · exact hx
+  · exact List.mem_cons_of_mem _ hx
+  · exact hx
+  · exact List.mem_cons_of_mem _ hx
+
+/-- **Pair-monotonicity along the sequence**: every pair present at stage `s` is present at every
+    later stage `t ≥ s`. This is exactly the `L₁ ⊆ L₂` hypothesis of `mLookup_stable`, making the
+    read-off immutable (no finite injury). -/
+theorem stageListC_pair_subset {f g : ℕ → ℕ} {s t : ℕ} (hst : s ≤ t)
+    {x : ℕ × ℕ} (hx : x ∈ stageListC f g s) : x ∈ stageListC f g t := by
+  induction t, hst using Nat.le_induction with
+  | base => exact hx
+  | succ n _ ih => exact stageStepC_pair_subset n _ ih
+
+/-- A single even stage covers its target domain element `s/2`. -/
+theorem stageStepC_covers_dom_of_even (f g : ℕ → ℕ) (s : ℕ) (prev : List (ℕ × ℕ))
+    (hs : s % 2 = 0) : s / 2 ∈ mDom (stageStepC f g s prev) := by
+  unfold stageStepC
+  rw [if_pos hs]
+  split_ifs with h
+  · exact h
+  · simp [mDom]
+
+/-- A single odd stage covers its target range element `s/2`. -/
+theorem stageStepC_covers_ran_of_odd (f g : ℕ → ℕ) (s : ℕ) (prev : List (ℕ × ℕ))
+    (hs : s % 2 = 1) : s / 2 ∈ mRan (stageStepC f g s prev) := by
+  unfold stageStepC
+  rw [if_neg (by omega : ¬ s % 2 = 0)]
+  split_ifs with h
+  · exact h
+  · simp [mRan]
+
+/-- Domain exhaustion: `k` is covered on the domain side by stage `2k+1`. -/
+theorem stageListC_covers_dom (f g : ℕ → ℕ) (k : ℕ) :
+    k ∈ mDom (stageListC f g (2 * k + 1)) := by
+  have h := stageStepC_covers_dom_of_even f g (2 * k) (stageListC f g (2 * k)) (by omega)
+  rw [show (2 : ℕ) * k / 2 = k from by omega] at h
+  exact h
+
+/-- Range exhaustion: `k` is covered on the range side by stage `2k+2`. -/
+theorem stageListC_covers_ran (f g : ℕ → ℕ) (k : ℕ) :
+    k ∈ mRan (stageListC f g (2 * k + 2)) := by
+  have h := stageStepC_covers_ran_of_odd f g (2 * k + 1) (stageListC f g (2 * k + 1)) (by omega)
+  rw [show (2 * k + 1) / 2 = k from by omega] at h
+  exact h
+
+/-- **The limit permutation (computable read-off).** `σ n` is the partner of `n` at the *fixed,
+    computable* stage index `2n+1` (where `n` is guaranteed covered on the domain side by
+    `stageListC_covers_dom`). Because the read-off is stable along the pair-monotone chain
+    (`sigmaC_eq_at`), this fixed-stage value equals the limit; and because the stage index is a
+    concrete `2n+1` (not a `Nat.find` entry stage), `σ` is a plain lookup into a computable list. -/
+def sigmaC (f g : ℕ → ℕ) (n : ℕ) : ℕ := mLookup (stageListC f g (2 * n + 1)) n
+
+section SigmaC
+variable {p q : ℕ → Prop} {f g : ℕ → ℕ}
+  (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+  (hf : Function.Injective f) (hg : Function.Injective g)
+
+include hfpq hgpq hf hg
+
+/-- Every computable stage carries the four-fold invariant `StageInvB`. The bridge from the
+    hypothesis-free `firstEscapeB` to the choice-carrying `escapeDepth` is
+    `firstEscapeB_eq_escapeDepth` (valid because each stage's `Balanced` invariant licenses escape);
+    the invariant is then preserved by the choice-free `domain_consStepC` / `range_consStepC`. -/
+theorem stageListC_inv (s : ℕ) : StageInvB p q f g (stageListC f g s) := by
+  induction s with
+  | zero => exact ⟨isMatching_nil, matchingCorr_nil p q, balanced_nil f g, balanced_nil g f⟩
+  | succ n ih =>
+    rw [stageListC]
+    unfold stageStepC
+    split_ifs with h1 h2 h3
+    · exact ih
+    · have ha : n / 2 ∉ mDom (stageListC f g n) := h2
+      rw [escScan_eq_escapeDepth hf hg ih.2.2.1 ha]
+      exact domain_consStepC hfpq hgpq hf hg ih ha
+    · exact ih
+    · have hb : n / 2 ∉ mRan (stageListC f g n) := h3
+      have hb' : n / 2 ∉ mDom ((stageListC f g n).map Prod.swap) := by
+        rw [mDom_map_swap]; exact hb
+      rw [escScan_eq_escapeDepth hg hf ih.2.2.2 hb']
+      exact range_consStepC hfpq hgpq hf hg ih hb'
+
+/-- **Stability of the read-off.** At any stage `s` at or past `2n+1` (where `n` is covered), the
+    lookup equals `σ n` — pair-monotonicity + `mLookup_stable`. -/
+theorem sigmaC_eq_at (n s : ℕ) (hs : 2 * n + 1 ≤ s) :
+    mLookup (stageListC f g s) n = sigmaC f g n :=
+  (mLookup_stable (stageListC_inv hfpq hgpq hf hg (2 * n + 1)).1
+    (stageListC_inv hfpq hgpq hf hg s).1
+    (fun _ hx => stageListC_pair_subset hs hx)
+    (stageListC_covers_dom f g n)).symm
+
+/-- **Correspondence** `p n ↔ q (σ n)`, read off `MatchingCorr` at stage `2n+1`. -/
+theorem sigmaC_corr (n : ℕ) : p n ↔ q (sigmaC f g n) := by
+  have hinv := stageListC_inv hfpq hgpq hf hg (2 * n + 1)
+  exact hinv.2.1 _ (mLookup_mem_of_mem_dom hinv.1 (stageListC_covers_dom f g n))
+
+/-- **Injectivity** of the limit permutation (evaluate both points at a common stage). -/
+theorem sigmaC_injective : Function.Injective (sigmaC f g) := by
+  intro m n hmn
+  set s := max (2 * m + 1) (2 * n + 1) with hs
+  have hpm : (m, sigmaC f g m) ∈ stageListC f g (2 * m + 1) :=
+    mLookup_mem_of_mem_dom (stageListC_inv hfpq hgpq hf hg (2 * m + 1)).1
+      (stageListC_covers_dom f g m)
+  have hpn : (n, sigmaC f g n) ∈ stageListC f g (2 * n + 1) :=
+    mLookup_mem_of_mem_dom (stageListC_inv hfpq hgpq hf hg (2 * n + 1)).1
+      (stageListC_covers_dom f g n)
+  have hmdom : m ∈ mDom (stageListC f g s) :=
+    mem_mDom_of_pair (stageListC_pair_subset (le_max_left _ _) hpm)
+  have hndom : n ∈ mDom (stageListC f g s) :=
+    mem_mDom_of_pair (stageListC_pair_subset (le_max_right _ _) hpn)
+  have em := sigmaC_eq_at hfpq hgpq hf hg m s (le_max_left _ _)
+  have en := sigmaC_eq_at hfpq hgpq hf hg n s (le_max_right _ _)
+  exact mLookup_injOn (stageListC_inv hfpq hgpq hf hg s).1 hmdom hndom (by rw [em, en, hmn])
+
+/-- **Surjectivity** of the limit permutation, from range exhaustion. -/
+theorem sigmaC_surjective : Function.Surjective (sigmaC f g) := by
+  intro m
+  have hcov : m ∈ mRan (stageListC f g (2 * m + 2)) := stageListC_covers_ran f g m
+  rw [mRan, List.mem_map] at hcov
+  obtain ⟨⟨d, m'⟩, hpair, hm'⟩ := hcov
+  simp only at hm'
+  subst m'
+  refine ⟨d, ?_⟩
+  set s := max (2 * d + 1) (2 * m + 2) with hs
+  have hpair' : (d, m) ∈ stageListC f g s := stageListC_pair_subset (le_max_right _ _) hpair
+  have hval : mLookup (stageListC f g s) d = m :=
+    mLookup_eq_of_mem (stageListC_inv hfpq hgpq hf hg s).1 hpair'
+  have hed := sigmaC_eq_at hfpq hgpq hf hg d s (le_max_left _ _)
+  rw [← hed]; exact hval
+
+end SigmaC
+
+set_option maxHeartbeats 1000000 in
+/-- **The stage step is computable** as a function of `(s, prev)`: a two-level `cond` over the
+    (primitive recursive) parity and membership tests, whose fresh-partner branch is the computable
+    `chaseTarget … (escScan …)`. -/
+theorem stageStepC_computable {f g : ℕ → ℕ} (hfc : Computable f) (hgc : Computable g) :
+    Computable (fun x : ℕ × List (ℕ × ℕ) => stageStepC f g x.1 x.2) := by
+  have hmDom : Computable (fun L : List (ℕ × ℕ) => mDom L) := by
+    have h : Primrec (fun L : List (ℕ × ℕ) => L.map Prod.fst) :=
+      Primrec.list_map Primrec.id (Primrec.fst.comp Primrec.snd)
+    exact h.to_comp
+  have hmRan : Computable (fun L : List (ℕ × ℕ) => mRan L) := by
+    have h : Primrec (fun L : List (ℕ × ℕ) => L.map Prod.snd) :=
+      Primrec.list_map Primrec.id (Primrec.snd.comp Primrec.snd)
+    exact h.to_comp
+  have hsw : Computable (fun L : List (ℕ × ℕ) => L.map Prod.swap) := by
+    have hswap : Primrec₂ (fun (_ : List (ℕ × ℕ)) (elt : ℕ × ℕ) => Prod.swap elt) :=
+      (Primrec.pair (Primrec.snd.comp Primrec.snd) (Primrec.fst.comp Primrec.snd))
+    have h : Primrec (fun L : List (ℕ × ℕ) => L.map Prod.swap) :=
+      Primrec.list_map Primrec.id hswap
+    exact h.to_comp
+  have hs2 : Computable (fun x : ℕ × List (ℕ × ℕ) => x.1 / 2) :=
+    (Primrec.nat_div.comp Primrec.fst (Primrec.const 2)).to_comp
+  have hprev : Computable (fun x : ℕ × List (ℕ × ℕ) => x.2) := Computable.snd
+  have hmDomX : Computable (fun x : ℕ × List (ℕ × ℕ) => mDom x.2) := hmDom.comp hprev
+  have hmRanX : Computable (fun x : ℕ × List (ℕ × ℕ) => mRan x.2) := hmRan.comp hprev
+  have hswX : Computable (fun x : ℕ × List (ℕ × ℕ) => x.2.map Prod.swap) := hsw.comp hprev
+  have heqC : Computable₂ (fun a b : ℕ => decide (a = b)) := Primrec.eq.decide.to_comp
+  have hmod2 : Computable (fun x : ℕ × List (ℕ × ℕ) => x.1 % 2) :=
+    (Primrec.nat_mod.comp Primrec.fst (Primrec.const 2)).to_comp
+  have hc0 : Computable (fun x : ℕ × List (ℕ × ℕ) => decide (x.1 % 2 = 0)) :=
+    heqC.comp hmod2 (Computable.const 0)
+  have hcD : Computable (fun x : ℕ × List (ℕ × ℕ) => decide (x.1 / 2 ∈ mDom x.2)) :=
+    computable_mem_bool.comp hs2 hmDomX
+  have hcR : Computable (fun x : ℕ × List (ℕ × ℕ) => decide (x.1 / 2 ∈ mRan x.2)) :=
+    computable_mem_bool.comp hs2 hmRanX
+  have hescD : Computable (fun x : ℕ × List (ℕ × ℕ) => escScan f g x.2 (x.1 / 2)) :=
+    (escScan_computable hfc hgc).comp (hprev.pair hs2)
+  have hchaseD : Computable (fun x : ℕ × List (ℕ × ℕ) =>
+      chaseTarget f g (x.1 / 2) (escScan f g x.2 (x.1 / 2))) :=
+    (chaseTarget_computable hfc hgc).comp hs2 hescD
+  have hconsD : Computable (fun x : ℕ × List (ℕ × ℕ) =>
+      (x.1 / 2, chaseTarget f g (x.1 / 2) (escScan f g x.2 (x.1 / 2))) :: x.2) :=
+    Computable.list_cons.comp (hs2.pair hchaseD) hprev
+  have hescR : Computable (fun x : ℕ × List (ℕ × ℕ) => escScan g f (x.2.map Prod.swap) (x.1 / 2)) :=
+    (escScan_computable hgc hfc).comp (hswX.pair hs2)
+  have hchaseR : Computable (fun x : ℕ × List (ℕ × ℕ) =>
+      chaseTarget g f (x.1 / 2) (escScan g f (x.2.map Prod.swap) (x.1 / 2))) :=
+    (chaseTarget_computable hgc hfc).comp hs2 hescR
+  have hconsR : Computable (fun x : ℕ × List (ℕ × ℕ) =>
+      (chaseTarget g f (x.1 / 2) (escScan g f (x.2.map Prod.swap) (x.1 / 2)), x.1 / 2) :: x.2) :=
+    Computable.list_cons.comp (hchaseR.pair hs2) hprev
+  exact (Computable.cond hc0 (Computable.cond hcD hprev hconsD)
+      (Computable.cond hcR hprev hconsR)).of_eq
+    (fun x => by
+      rcases Decidable.em (x.1 % 2 = 0) with h0 | h0 <;>
+      rcases Decidable.em (x.1 / 2 ∈ mDom x.2) with hD | hD <;>
+      rcases Decidable.em (x.1 / 2 ∈ mRan x.2) with hR | hR <;>
+      simp [stageStepC, h0, hD, hR])
+
+/-- **The stage list is computable** as a function of the stage index, via `Computable.nat_rec`
+    with the computable step `stageStepC`. -/
+theorem stageListC_computable {f g : ℕ → ℕ} (hfc : Computable f) (hgc : Computable g) :
+    Computable (fun s => stageListC f g s) := by
+  have hstep := stageStepC_computable hfc hgc
+  have key : ∀ s, stageListC f g s
+      = Nat.rec (motive := fun _ => List (ℕ × ℕ)) [] (fun s' ih => stageStepC f g s' ih) s := by
+    intro s; induction s with
+    | zero => rfl
+    | succ n ih => rw [stageListC, ih]
+  have hrec := Computable.nat_rec (α := ℕ) (σ := List (ℕ × ℕ))
+    (f := fun s => s) (g := fun _ => ([] : List (ℕ × ℕ)))
+    (h := fun (_ : ℕ) (p : ℕ × List (ℕ × ℕ)) => stageStepC f g p.1 p.2)
+    Computable.id (Computable.const []) (hstep.comp Computable.snd)
+  exact hrec.of_eq (fun s => (key s).symm)
+
+/-- **Computability of the read-off** — the last obligation of `myhill_isomorphism`. Since
+    `sigmaC f g n = mLookup (stageListC f g (2n+1)) n`, this is `mLookup_computable` composed with
+    the computable stage list (`stageListC_computable`) at the *fixed, computable* index `2n+1`. -/
+theorem sigmaC_computable {f g : ℕ → ℕ} (hfc : Computable f) (hgc : Computable g) :
+    Computable (sigmaC f g) := by
+  have h2n1 : Computable (fun n : ℕ => 2 * n + 1) :=
+    (Primrec.succ.comp (Primrec.nat_mul.comp (Primrec.const 2) Primrec.id)).to_comp
+  exact mLookup_computable.comp ((stageListC_computable hfc hgc).comp h2n1) Computable.id
+
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
@@ -3087,11 +3466,16 @@ theorem myhill_isomorphism (p q : ℕ → Prop) :
     ∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ q (e n) := by
   constructor
   · intro ⟨⟨f, hfc, hfi, hfpq⟩, ⟨g, hgc, hgi, hgpq⟩⟩
-    -- Hard direction. The bijection `sigmaEquivB hfpq hgpq hfi hgi` and its correspondence
-    -- `sigmaEquivB_corr` are proved (Section 5·B, extension-only cons scheduler). What remains
-    -- is only the `.Computable` witness, which needs a computable rebuild of `stageSeqB`
-    -- (currently `noncomputable` via `Classical.choose`). See the docstring above.
-    sorry
+    -- Hard direction, via the computable extension-only scheduler (Section 5·C). The read-off
+    -- `sigmaC f g` is a bijection (`sigmaC_injective` / `sigmaC_surjective`) with the correspondence
+    -- `sigmaC_corr`; it is computable (`sigmaC_computable`), so the permutation
+    -- `Equiv.ofBijective (sigmaC f g)` is a computable permutation
+    -- (`computable_bijection_isComputablePerm`).
+    have hbij : Function.Bijective (sigmaC f g) :=
+      ⟨sigmaC_injective hfpq hgpq hfi hgi, sigmaC_surjective hfpq hgpq hfi hgi⟩
+    exact ⟨Equiv.ofBijective (sigmaC f g) hbij,
+      computable_bijection_isComputablePerm (sigmaC_computable hfc hgc) hbij,
+      fun n => sigmaC_corr hfpq hgpq hfi hgi n⟩
   · rintro ⟨e, he, hpq⟩
     exact myhill_easy e he hpq
 
