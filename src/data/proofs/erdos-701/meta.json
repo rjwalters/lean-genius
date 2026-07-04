@@ -146,5 +146,73 @@
     "definitionCount": 8,
     "theoremCount": 7
   },
+  "mainTheorems": [
+    {
+      "name": "ChvatalConjecture",
+      "type": "core",
+      "description": "Chvátal's Conjecture: for any hereditary family F there exists an element x such that every intersecting subfamily F' has cardinality at most that of the star at x.",
+      "leanType": "{α : Type*} [Fintype α] (F : Set (Set α)) : Prop"
+    },
+    {
+      "name": "IsHereditary",
+      "type": "supporting",
+      "description": "A family F is hereditary (downward closed) if every subset B of a member A of F is also in F.",
+      "leanType": "{α : Type*} (F : Set (Set α)) : Prop"
+    },
+    {
+      "name": "IsIntersecting",
+      "type": "supporting",
+      "description": "A family F is intersecting if every two of its sets have non-empty intersection.",
+      "leanType": "{α : Type*} (F : Set (Set α)) : Prop"
+    },
+    {
+      "name": "Star",
+      "type": "supporting",
+      "description": "The star of F at x is the subfamily of all sets in F that contain x.",
+      "leanType": "{α : Type*} (F : Set (Set α)) (x : α) : Set (Set α)"
+    },
+    {
+      "name": "star_intersecting",
+      "type": "supporting",
+      "description": "Every star is an intersecting family, since all its members share the element x.",
+      "leanType": "{α : Type*} (F : Set (Set α)) (x : α) :\n    IsIntersecting (Star F x)"
+    },
+    {
+      "name": "star_subset",
+      "type": "supporting",
+      "description": "The star of F at x is a subfamily of F.",
+      "leanType": "{α : Type*} (F : Set (Set α)) (x : α) :\n    Star F x ⊆ F"
+    },
+    {
+      "name": "powerset_hereditary",
+      "type": "supporting",
+      "description": "The power set of any set X is a hereditary family.",
+      "leanType": "{α : Type*} (X : Set α) :\n    IsHereditary (𝒫 X)"
+    },
+    {
+      "name": "CoveringNumber",
+      "type": "supporting",
+      "description": "The covering number of F is the minimum size of a finite set of elements that meets every non-empty member of F.",
+      "leanType": "{α : Type*} (F : Set (Set α)) : ℕ"
+    },
+    {
+      "name": "SterboulConditions",
+      "type": "supporting",
+      "description": "Sterboul's conditions under which the conjecture is known: maximal sets have equal size, pairwise intersections have size at most one, and at least two maximal sets intersect.",
+      "leanType": "{α : Type*} [DecidableEq α] [Fintype α]\n    (F : Set (Set α)) : Prop"
+    },
+    {
+      "name": "WeightedChvatalConjecture",
+      "type": "supporting",
+      "description": "Borg's weighted generalization asserting a fixed element x whose star maximizes total weight over all intersecting subfamilies.",
+      "leanType": "{α : Type*} [Fintype α]\n    (F : Set (Set α)) (w : Set α → ℝ) : Prop"
+    },
+    {
+      "name": "uniform_not_hereditary",
+      "type": "supporting",
+      "description": "The uniform family of all k-subsets (for k ≥ 2) is not hereditary, illustrating why Chvátal's conjecture concerns hereditary rather than uniform families.",
+      "leanType": "{α : Type*} [Fintype α] [DecidableEq α]\n    (k : ℕ) (hk : k ≥ 2) (X : Set α) (hX : X.ncard = k) (hXfin : X.Finite) :\n    ¬IsHereditary (UniformFamily (α := α) k)"
+    }
+  ],
   "sorries": 0
 }
