@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-strategy-docstring",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "Strategy: Newton's inequality as a sum of squares",
+    "content": "The docstring frames the target: the next Maclaurin/Newton rung after the base step $S_1^2 \\ge S_2$, namely $S_2^2 \\ge S_1 S_3$ (log-concavity of the elementary symmetric means), resolved for $n = 3$. Unlike the base rung — which collapses to Cauchy-Schwarz — this rung rests on an explicit sum-of-squares certificate $e_2^2 - 3e_1 e_3 = \\tfrac12[(ab-bc)^2 + (bc-ca)^2 + (ca-ab)^2]$. Because the certificate is sign-agnostic, the inequality holds for ALL reals, not just nonnegative ones. The general-$n$ cleared form $2(n-2)e_2^2 \\ge 3(n-1)e_1 e_3$ is documented; its proof needs Rolle's theorem and is left as the forward open question.",
+    "mathContext": "$S_1 = e_1/3,\\ S_2 = e_2/3,\\ S_3 = e_3;\\quad S_2^2 \\ge S_1 S_3 \\iff e_2^2 \\ge 3\\,e_1 e_3.$",
+    "significance": "key",
+    "relatedConcepts": ["Newton's inequality", "Maclaurin's inequality", "log-concavity", "sum-of-squares certificate"],
+    "prerequisites": ["elementary symmetric polynomials", "symmetric means"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+    "range": { "startLine": 44, "endLine": 55 },
+    "type": "definition",
+    "title": "The three elementary symmetric polynomials e₁, e₂, e₃",
+    "content": "Over reals $a, b, c$ the file defines the three elementary symmetric polynomials directly: $e_1 = a+b+c$, $e_2 = ab+bc+ca$, $e_3 = abc$. Working with concrete three-variable polynomials (rather than a Finset-indexed family) is exactly what lets the inequality be discharged by `ring` and `nlinarith` — the whole proof stays inside decidable real-closed-field arithmetic.",
+    "mathContext": "$e_1 = a+b+c,\\quad e_2 = ab+bc+ca,\\quad e_3 = abc.$",
+    "significance": "supporting",
+    "relatedConcepts": ["elementary symmetric polynomial", "Vieta's formulas"],
+    "prerequisites": ["polynomials in three variables"]
+  },
+  {
+    "id": "ann-sos-identity",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+    "range": { "startLine": 57, "endLine": 75 },
+    "type": "insight",
+    "title": "The sum-of-squares certificate (the engine)",
+    "content": "`newton_sos_identity` is the heart of the entry: it is the pure ring identity $e_2^2 - 3e_1 e_3 = \\tfrac12[(ab-bc)^2 + (bc-ca)^2 + (ca-ab)^2]$. After `simp only [e1, e2, e3]` unfolds the definitions, `ring` verifies the polynomial equality. This exposes the Newton defect as literally half a sum of three squares — the algebraic reason the inequality is true, and simultaneously the reason equality forces $ab = bc = ca$.",
+    "mathContext": "$e_2^2 - 3e_1 e_3 = \\tfrac12\\big[(ab-bc)^2 + (bc-ca)^2 + (ca-ab)^2\\big].$",
+    "significance": "key",
+    "relatedConcepts": ["sum-of-squares", "Positivstellensatz", "polynomial identity"],
+    "prerequisites": ["ring tactic", "expanding symmetric polynomials"]
+  },
+  {
+    "id": "ann-cleared",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+    "range": { "startLine": 77, "endLine": 88 },
+    "type": "insight",
+    "title": "Cleared form e₂² ≥ 3e₁e₃ for all reals",
+    "content": "`newton_cleared` reads the inequality straight off the certificate: since the right-hand side of `newton_sos_identity` is a sum of three squares (each `sq_nonneg`), `nlinarith` — fed the identity plus the three `sq_nonneg` facts — closes $e_2^2 \\ge 3e_1 e_3$. Crucially there is no hypothesis on the signs of $a, b, c$: Newton's inequality is sign-agnostic, in contrast to Maclaurin's chain which needs nonnegativity to extract real roots at higher rungs.",
+    "mathContext": "$\\forall a,b,c \\in \\mathbb{R}: \\ e_2^2 \\ge 3\\,e_1 e_3.$",
+    "significance": "key",
+    "relatedConcepts": ["nlinarith", "sign-agnostic inequality", "Cauchy-Schwarz (contrast)"],
+    "prerequisites": ["sq_nonneg", "nlinarith with SOS hints"]
+  },
+  {
+    "id": "ann-base-step",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+    "range": { "startLine": 90, "endLine": 109 },
+    "type": "insight",
+    "title": "Averaged form S₂² ≥ S₁S₃",
+    "content": "`newton_base_step` lifts the cleared inequality to the symmetric-means statement $S_2^2 \\ge S_1 S_3$ with $S_1 = e_1/3$, $S_2 = e_2/3$, $S_3 = e_3/1$. The averaged defect $(e_2/3)^2 - (e_1/3)(e_3/1)$ equals $(e_2^2 - 3e_1 e_3)/9$ by `ring`; the numerator is $\\ge 0$ by `newton_cleared` and the denominator $9 > 0$, so `div_nonneg` and `linarith` finish. Because the denominators $\\binom{3}{k}$ are constants, no positivity side-conditions on the variables are needed.",
+    "mathContext": "$\\Big(\\tfrac{e_2}{3}\\Big)^2 - \\tfrac{e_1}{3}\\cdot e_3 = \\tfrac{e_2^2 - 3e_1 e_3}{9} \\ge 0.$",
+    "significance": "supporting",
+    "relatedConcepts": ["symmetric means", "div_nonneg", "clearing constant denominators"],
+    "prerequisites": ["division in an ordered field"]
+  },
+  {
+    "id": "ann-equality-case",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+    "range": { "startLine": 111, "endLine": 140 },
+    "type": "insight",
+    "title": "The equality locus: ab = bc = ca",
+    "content": "Two theorems pin down when $S_2^2 = S_1 S_3$. `newton_eq_of_all_eq` shows $a = b = c$ forces equality (a direct `ring` computation after substitution). `newton_products_eq_of_eq` proves the converse content: if equality holds, the sum of squares in the certificate must vanish, so each square is zero (via `sq_nonneg` bounding and `linarith`), and `pow_eq_zero_iff` extracts $ab = bc$ and $bc = ca$. Together they characterize the extremal configuration — the products $ab, bc, ca$ all coincide, i.e. $a = b = c$ for nonzero variables.",
+    "mathContext": "$e_2^2 = 3e_1 e_3 \\iff ab = bc = ca.$",
+    "significance": "supporting",
+    "relatedConcepts": ["equality case", "extremal configuration", "pow_eq_zero_iff"],
+    "prerequisites": ["vanishing sum of squares", "x² = 0 ⇒ x = 0"]
+  }
+]

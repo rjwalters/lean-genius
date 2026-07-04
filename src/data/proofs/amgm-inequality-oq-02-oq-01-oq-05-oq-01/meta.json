@@ -1,0 +1,91 @@
+{
+  "id": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+  "title": "Newton's Inequality, First Rung (n = 3): S₂² ≥ S₁S₃",
+  "slug": "amgm-inequality-oq-02-oq-01-oq-05-oq-01",
+  "description": "Resolves the concrete case n = 3 of the open question 'prove the next Maclaurin/Newton rung S₂² ≥ S₁S₃', the log-concavity of the elementary symmetric means and the first rung that requires genuinely more than Cauchy-Schwarz. For reals a,b,c with e₁ = a+b+c, e₂ = ab+bc+ca, e₃ = abc, the symmetric means S₁ = e₁/3, S₂ = e₂/3, S₃ = e₃ satisfy S₂² ≥ S₁S₃, equivalently the cleared form e₂² ≥ 3·e₁·e₃. The engine is an explicit sum-of-squares certificate e₂² − 3e₁e₃ = ½[(ab−bc)² + (bc−ca)² + (ca−ab)²], a pure ring identity, giving the inequality for ALL reals (no nonnegativity, unlike Maclaurin), together with the equality characterization ab = bc = ca. 5 theorems, 3 definitions, 0 axioms.",
+  "leanFile": {
+    "namespace": "AmgmInequalityOQ02OQ01OQ05OQ01",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 3,
+    "path": "Proofs/AmgmInequalityOQ02OQ01OQ05OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-07-04",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ02OQ01OQ05OQ01.lean",
+    "tags": [
+      "inequalities",
+      "symmetric-polynomials",
+      "newton-inequality",
+      "maclaurin",
+      "log-concavity",
+      "sum-of-squares",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-07-04",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries, fully machine-checked. Every theorem is closed by ring / nlinarith with an explicit SOS certificate / div_nonneg / pow_eq_zero_iff — no axioms, no sorries, no native_decide (so no Lean.ofReduceBool). BUILD CONFIRMED GREEN via Docker (proofs/scripts/docker-build.sh) on Mathlib v4.26.0: `✔ [7743/7743] Built Proofs.AmgmInequalityOQ02OQ01OQ05OQ01`. The file does `import Mathlib` (pinned v4.26.0 in lakefile.toml). Mathlib lemmas used: sq_nonneg, div_nonneg, pow_eq_zero_iff (all stable across versions).",
+    "lineCount": 142,
+    "theoremCount": 5,
+    "definitionCount": 3,
+    "originalContributions": [
+      "newton_cleared: Newton's inequality at k = 2 for n = 3 in cleared form e₂² ≥ 3·e₁·e₃, valid for all reals — the first rung of the Maclaurin/Newton chain that carries genuine content beyond Cauchy-Schwarz",
+      "newton_sos_identity: the exact sum-of-squares certificate e₂² − 3e₁e₃ = ½[(ab−bc)² + (bc−ca)² + (ca−ab)²], a pure ring identity that is the engine of the inequality",
+      "newton_base_step: the averaged (symmetric-means) form S₂² ≥ S₁S₃ with S₁ = e₁/3, S₂ = e₂/3, S₃ = e₃, obtained from the cleared form via a constant-denominator ring reduction (no positivity side-conditions)",
+      "newton_products_eq_of_eq + newton_eq_of_all_eq: the equality characterization — S₂² = S₁S₃ holds iff the three pairwise products ab, bc, ca coincide (equivalently a = b = c for nonzero variables), read off directly from the vanishing of the SOS certificate",
+      "Identifies that at n = 3 Newton's inequality is exactly a three-term sum of squares, so the k = 2 rung needs none of the Rolle/derivative machinery required for general n — a self-contained elementary proof"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Isaac Newton observed that the elementary symmetric means S_k = e_k / C(n,k) of n real numbers are log-concave: S_k² ≥ S_{k-1}·S_{k+1} for 1 ≤ k ≤ n−1. These Newton inequalities refine and interpolate the Maclaurin chain S₁ ≥ √S₂ ≥ ∛S₃ ≥ ⋯, whose two ends recover AM ≥ GM. Unlike Maclaurin's inequalities, Newton's inequalities hold for ALL real tuples (not only nonnegative ones), because their classical proof runs through Rolle's theorem: the derivative of a real-rooted polynomial is again real-rooted, and iterating down to a quadratic reduces log-concavity to the nonnegativity of a discriminant. The parent entry (amgm-inequality-oq-02-oq-01-oq-05) formalized the base rung S₁² ≥ S₂, which collapses to Cauchy-Schwarz; its open-questions list asks for the next rung S₂² ≥ S₁S₃, the first that is genuinely stronger. This entry answers it for n = 3 by an elementary sum-of-squares certificate, sidestepping the Rolle machinery.",
+    "problemStatement": "For reals $a,b,c$ let $e_1 = a+b+c$, $e_2 = ab+bc+ca$, $e_3 = abc$, and the symmetric means $S_1 = e_1/3$, $S_2 = e_2/3$, $S_3 = e_3$. Then $S_2^2 \\ge S_1 S_3$, equivalently the cleared form $e_2^2 \\ge 3\\,e_1 e_3$.",
+    "text": "The proof rests on a single algebraic identity: the Newton defect equals half a sum of three squares, e₂² − 3e₁e₃ = ½[(ab−bc)² + (bc−ca)² + (ca−ab)²]. Nonnegativity of the right-hand side (three squares) immediately gives the cleared inequality e₂² ≥ 3e₁e₃ for all reals. The averaged form S₂² ≥ S₁S₃ follows by dividing through by the positive constant 9 (the denominators C(3,k) are constants, so no positivity hypotheses on a,b,c are needed). The SOS certificate also reads off the equality case: equality holds iff all three pairwise products ab, bc, ca are equal.",
+    "proofStrategy": "Three moves. (1) newton_sos_identity: expand e₂² − 3e₁e₃ and match it term-by-term to ½[(ab−bc)² + (bc−ca)² + (ca−ab)²] — a pure `ring` identity after unfolding the definitions. (2) newton_cleared: since the right-hand side of the identity is a sum of squares, `nlinarith` with the three `sq_nonneg` hints (and the identity) closes e₂² ≥ 3e₁e₃. (3) newton_base_step: the averaged defect (e₂/3)² − (e₁/3)·(e₃/1) equals (e₂² − 3e₁e₃)/9 by `ring`, and the numerator is ≥ 0 by step (2), so `div_nonneg` + `linarith` finish. The equality direction newton_eq_of_all_eq (a=b=c ⇒ equality) is a direct `ring` computation; the converse newton_products_eq_of_eq extracts ab=bc=ca from the vanishing sum of squares via `pow_eq_zero_iff`.",
+    "keyInsights": [
+      "At n = 3, Newton's inequality is literally a three-term sum of squares. The defect e₂² − 3e₁e₃ equals ½[(ab−bc)² + (bc−ca)² + (ca−ab)²], so the inequality is an SOS certificate — no Rolle's theorem, no discriminants, no real-rootedness argument is needed at this size.",
+      "This rung is strictly beyond Cauchy-Schwarz. The base rung S₁² ≥ S₂ reduces to the power-mean bound n·p₂ ≥ e₁² (Cauchy-Schwarz). The k = 2 rung has no such reduction; its content is the genuinely new SOS above, which is why the parent's open-question flagged it as the first rung requiring more than Cauchy-Schwarz.",
+      "No nonnegativity is required. Although Maclaurin's chain assumes nonnegative reals, S₂² ≥ S₁S₃ holds for all real a,b,c because the SOS certificate is sign-agnostic. The nonnegativity hypothesis only becomes essential at Maclaurin rungs where one extracts real roots (√S₂, ∛S₃, …).",
+      "The equality locus is exactly ab = bc = ca. Because the defect is a sum of squares of the pairwise differences of the products, equality forces those products to coincide — recovering a = b = c for nonzero variables, the expected extremal configuration.",
+      "The general n statement is documented but not proved here: cleared of binomial denominators, Newton's k = 2 inequality reads 2(n−2)·e₂² ≥ 3(n−1)·e₁e₃, reducing to e₂² ≥ 3e₁e₃ at n = 3. Its general proof needs the Rolle/derivative reduction; formalizing that is the forward open question."
+    ],
+    "prerequisites": [
+      "Elementary symmetric polynomials e₁, e₂, e₃ of three reals",
+      "Symmetric means S_k = e_k / C(n,k) and Newton's log-concavity S_k² ≥ S_{k-1}S_{k+1}",
+      "Sum-of-squares (SOS) certificates for polynomial nonnegativity",
+      "That x² = 0 ⇒ x = 0 over a field (pow_eq_zero_iff) for the equality characterization"
+    ]
+  },
+  "conclusion": {
+    "summary": "Newton's inequality at k = 2 for n = 3, S₂² ≥ S₁S₃ (equivalently e₂² ≥ 3e₁e₃), proved for all reals from the explicit sum-of-squares certificate e₂² − 3e₁e₃ = ½[(ab−bc)² + (bc−ca)² + (ca−ab)²], with the equality case ab = bc = ca characterized. 5 theorems, 3 definitions, 0 axioms, 142 lines. Machine-checked green on Mathlib v4.26.0.",
+    "implications": "Answers the parent entry's open question 'prove the next Maclaurin rung S₂² ≥ S₁S₃' in the concrete case n = 3, and makes explicit that at this rung the content is a single sum of squares — the first place in the Maclaurin/Newton chain where new inequality content (beyond Cauchy-Schwarz) enters. The SOS identity newton_sos_identity is reusable as a standalone algebraic fact, and the cleared lemma newton_cleared is an integer-polynomial inequality independent of the averaging. The remaining gap is the general-n rung 2(n−2)e₂² ≥ 3(n−1)e₁e₃, whose classical proof goes through Rolle's theorem.",
+    "openQuestions": [
+      "Prove the general-n k = 2 Newton inequality 2(n−2)·e₂² ≥ 3(n−1)·e₁e₃ for all reals (n ≥ 3), via the Rolle/derivative reduction: derivatives of a real-rooted polynomial are real-rooted, reducing to a quadratic discriminant. This requires formalizing that ∏(x − xᵢ)' is real-rooted.",
+      "Prove the full Newton chain S_k² ≥ S_{k-1}S_{k+1} for all 1 ≤ k ≤ n−1 and all reals, obtaining Maclaurin's inequality for nonnegative reals as a corollary by chaining the log-concavity bounds.",
+      "Formalize the higher n = 4 concrete rungs (S₂² ≥ S₁S₃ and S₃² ≥ S₂S₄) via explicit SOS certificates, testing how far the elementary SOS approach reaches before Rolle's theorem becomes unavoidable."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-05",
+      "relationship": "parent-problem",
+      "description": "The base rung S₁² ≥ S₂, whose open-questions list explicitly asks to 'prove the next Maclaurin rung S₂² ≥ S₁S₃ (Newton's inequality / log-concavity), the first rung requiring genuinely more than Cauchy-Schwarz.' This entry resolves that question for n = 3."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01",
+      "relationship": "ancestor",
+      "description": "The Newton-Girard square-of-sum identity e₁² = p₂ + 2e₂ that underlies the base rung. The present entry is the natural successor: where the base rung used Newton-Girard + Cauchy-Schwarz, this rung uses a fresh sum-of-squares certificate."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-04",
+      "relationship": "complementary",
+      "description": "The general arbitrary-k Newton-Girard recurrence (identities). Newton's inequalities are the order-theoretic counterpart of those identities; this entry supplies the first inequality rung beyond the base step."
+    }
+  ]
+}
