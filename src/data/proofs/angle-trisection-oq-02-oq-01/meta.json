@@ -302,5 +302,31 @@
     "path": "Proofs/AngleTrisectionOQ02OQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "natDegree_dvd_card_gal",
+      "type": "core",
+      "description": "For any irreducible polynomial over a characteristic-zero field, the natural degree of the polynomial divides the cardinality of its Galois group. This generalizes Mathlib's prime_degree_dvd_card from prime degrees to all degrees, via the tower law on F ⊂ F⟮α⟯ ⊂ SplittingField(p).",
+      "leanType": "{F : Type*} [Field F] [CharZero F] {p : F[X]} (p_irr : Irreducible p) : p.natDegree ∣ Nat.card p.Gal"
+    },
+    {
+      "name": "galois_2group_implies_degree_pow2",
+      "type": "core",
+      "description": "If the Galois group of the minimal polynomial of α over ℚ is a 2-group, then the natural degree of that minimal polynomial divides 2^n for some n. This eliminates the axiom galois_2group_implies_degree_pow2 from OQ02.",
+      "leanType": "(α : ℝ) (hα : IsIntegral ℚ α) (hGal : IsPGroup 2 (minpoly ℚ α).Gal) : ∃ n : ℕ, (minpoly ℚ α).natDegree ∣ 2 ^ n"
+    },
+    {
+      "name": "galois_2group_implies_degree_is_pow2",
+      "type": "core",
+      "description": "Strengthening: if the Galois group of the minimal polynomial of α over ℚ is a 2-group, then the natural degree of that minimal polynomial is exactly a power of 2. Uses dvd_pow_two_is_pow_two from OQ01.",
+      "leanType": "(α : ℝ) (hα : IsIntegral ℚ α) (hGal : IsPGroup 2 (minpoly ℚ α).Gal) : ∃ k : ℕ, (minpoly ℚ α).natDegree = 2 ^ k"
+    },
+    {
+      "name": "galois_criterion_implies_degree_criterion",
+      "type": "supporting",
+      "description": "Connects the Galois criterion (2-group Galois group) to the degree criterion (degree a power of 2), tying OQ02 back to OQ01 for constructibility.",
+      "leanType": "(α : ℝ) (hα : IsIntegral ℚ α) (hGal : IsPGroup 2 (minpoly ℚ α).Gal) : ∃ k : ℕ, (minpoly ℚ α).natDegree = 2 ^ k"
+    }
+  ],
   "sorries": 0
 }
