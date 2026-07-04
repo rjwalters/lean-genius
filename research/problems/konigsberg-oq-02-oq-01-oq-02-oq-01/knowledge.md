@@ -85,3 +85,56 @@ Insights accumulated during research on this problem.
 - Sub-lemma C: splice residual circuit via shared vertex; strong induction on
   `edgeFinset.card` using the verified base case.
 - Resubmit the single sorry to Aristotle once the backend recovers.
+
+## Session 2026-07-04 (Session 3) — Sub-lemma A VERIFIED (maximal trail is closed)
+
+**Mode**: REVISIT (depth line) | **Outcome**: progress (2 lemmas VERIFIED, 0 sorries)
+
+### What I Did
+- Wrote the parity core of **Sub-lemma A** ("a maximal trail is closed") natively in
+  the `SimpleGraph.Walk` API, leveraging Mathlib's necessity-direction engine
+  `SimpleGraph.Walk.IsTrail.even_countP_edges_iff` (the same lemma behind
+  `IsEulerian.even_degree_iff`). Two new lemmas in the Dev file:
+  - `exists_unused_incident_edge_at_endpoint` — a trail `p : G.Walk u v` with `u ≠ v`
+    and `Even (G.degree v)` always has an edge incident to `v` that it has NOT used.
+  - `eq_of_isTrail_edgeMaximal` — contrapositive: a trail that is edge-maximal at `v`
+    (every incident edge used) in an even-degree graph must be closed (`u = v`).
+- Verified Aristotle is STILL down (7th consecutive session): inline `2+2=4` returns
+  `Resource not found`.
+
+### Proof idea (machine-checked, docker build clean)
+- `IsTrail.even_countP_edges_iff` at `x = v` gives: the number of `p`-edges incident
+  to `v` is EVEN iff `(u ≠ v → v ≠ u ∧ v ≠ v)`. Since `v ≠ v` is false, with `u ≠ v`
+  the count is ODD.
+- `G.card_incidenceFinset_eq_degree` + `heven` gives EVEN total incident edges.
+- Used-incident edges (nodup, via `IsTrail.edges_nodup`) form a subFinset of
+  `G.incidenceFinset v`; odd `<` even ⇒ proper subset ⇒ a witness incident edge is
+  unused. `Finset.ssubset_iff_subset_ne` + `Finset.exists_of_ssubset`.
+
+### Environmental turbulence overcome (recorded for future sessions)
+- Host disk hit **100% full** (3.3Gi free) mid-build → Docker daemon crashed with
+  containerd metadata I/O errors. Space recovered to ~30-38Gi on its own after the
+  aborted-build temp data was cleaned up.
+- The shared `lean-mathlib-packages` docker volume threw `could not resolve 'HEAD'`
+  — a **concurrency race** (my read collided with another agent's re-resolve write on
+  the shared volume), NOT permanent corruption. Do NOT force-remove the volume; just
+  WAIT until `docker ps` shows no `lean-build*` container, then rebuild. Worked.
+- Lemma-name fixes applied during verification: `Nat.odd_iff_not_even` →
+  `Nat.not_even_iff_odd`; `List.countP_eq_length_filter` takes implicit args (no
+  `_ _`). All other guessed names (`IsTrail.edges_nodup`, `List.Nodup.filter`,
+  `List.toFinset_card_of_nodup`, `SimpleGraph.mem_incidenceFinset`,
+  `card_incidenceFinset_eq_degree`, `Finset.ssubset_iff_subset_ne`,
+  `Finset.exists_of_ssubset`) were CORRECT.
+- Net: the 2 new lemmas BUILD CLEAN (0 sorries). One pre-existing cosmetic
+  linter warning on `two_le_degree_of_even_of_connected` (unused `[DecidableEq V]`)
+  remains — harmless, from Session 2.
+
+### Files Modified
+- proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (2 lemmas added — VERIFIED)
+- research/problems/konigsberg-oq-02-oq-01-oq-02-oq-01/knowledge.md
+
+### Next Steps
+- Sub-lemma B: `G.deleteEdges (closed-trail edges)` preserves `∀ v, Even (degree v)`.
+- Sub-lemma C: splice residual circuit via shared vertex; strong induction on
+  `edgeFinset.card` off the verified base case.
+- Resubmit the single main-theorem sorry to Aristotle once the backend recovers.
