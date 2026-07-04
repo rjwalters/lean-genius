@@ -132,6 +132,68 @@
     "path": "Proofs/Erdos198Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "IsSidonSet",
+      "type": "supporting",
+      "description": "Defines a Sidon set as a set of naturals in which every pairwise sum a + b (with a ≤ b) is distinct.",
+      "leanType": "(A : Set ℕ) : Prop"
+    },
+    {
+      "name": "IsInfiniteAP",
+      "type": "supporting",
+      "description": "Defines an infinite arithmetic progression as a set equal to arithmeticProg a d for some first term a and positive common difference d.",
+      "leanType": "(Y : Set ℕ) : Prop"
+    },
+    {
+      "name": "IntersectsAllAPs",
+      "type": "supporting",
+      "description": "Defines when a set has nonempty intersection with every infinite arithmetic progression.",
+      "leanType": "(A : Set ℕ) : Prop"
+    },
+    {
+      "name": "Erdos198_Question",
+      "type": "core",
+      "description": "States Erdős Problem #198: whether every Sidon set has a complement containing an infinite arithmetic progression.",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "factorialSidon",
+      "type": "supporting",
+      "description": "The factorial construction giving the counterexample set A = {n! + n : n ≥ 0}.",
+      "leanType": ": Set ℕ"
+    },
+    {
+      "name": "factorialSidon_is_sidon",
+      "type": "axiom",
+      "description": "Asserts that the factorial construction {n! + n : n ≥ 0} is a Sidon set.",
+      "leanType": ": IsSidonSet factorialSidon"
+    },
+    {
+      "name": "factorialSidon_intersects_all_APs",
+      "type": "axiom",
+      "description": "Asserts that the factorial construction {n! + n : n ≥ 0} intersects every infinite arithmetic progression.",
+      "leanType": ": IntersectsAllAPs factorialSidon"
+    },
+    {
+      "name": "factorial_counterexample",
+      "type": "core",
+      "description": "Shows the factorial construction is simultaneously a Sidon set and intersects all infinite APs, providing the counterexample answering Erdős #198 negatively.",
+      "leanType": ":\n    IsSidonSet factorialSidon ∧ IntersectsAllAPs factorialSidon"
+    },
+    {
+      "name": "IsLacunary",
+      "type": "supporting",
+      "description": "Defines a lacunary set as the range of a strictly monotone sequence f with f(n+1) > 2·f(n) for all n.",
+      "leanType": "(A : Set ℕ) : Prop"
+    },
+    {
+      "name": "first_elements_in_factorialSidon",
+      "type": "supporting",
+      "description": "Verifies that 1, 2, 4, 9, and 28 all belong to the factorial Sidon set.",
+      "leanType": ":\n    1 ∈ factorialSidon ∧ 2 ∈ factorialSidon ∧ 4 ∈ factorialSidon ∧\n    9 ∈ factorialSidon ∧ 28 ∈ factorialSidon"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-847",
