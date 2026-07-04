@@ -138,7 +138,7 @@
       "id": "part-vii-asymptotic",
       "title": "Part VII: Asymptotic Behavior",
       "startLine": 224,
-      "endLine": 309,
+      "endLine": 303,
       "summary": "Proves that αₙ → 0 as n → ∞: in high dimensions, the expected projection of a random unit vector onto any fixed axis vanishes. Uses a squeeze argument with 1/√n bound.",
       "mathContext": "$\\alpha_n \\to 0$ as $n \\to \\infty$. Squeeze: $0 < \\alpha_n \\le \\frac{1}{\\sqrt{n}}$. Asymptotically $\\alpha_n \\sim \\sqrt{\\frac{2}{\\pi n}}$ (concentration of measure on $S^{n-1}$)."
     }

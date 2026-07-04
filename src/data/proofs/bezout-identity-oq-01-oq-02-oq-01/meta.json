@@ -169,7 +169,7 @@
       "id": "sec-examples",
       "title": "Concrete Sanity Checks",
       "startLine": 171,
-      "endLine": 189,
+      "endLine": 188,
       "summary": "Examples verify (12,8) ↦ (gcd = 4, 0), the coprime pair (7,5) ↦ (1,0), and the quotient list euclidQuots 12 8 = [1,2] (so euclidProd 12 8 = E 2 · E 1), all discharged by norm_num without native_decide."
     }
   ],
