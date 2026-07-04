@@ -20,8 +20,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-04T00:10:00.000Z",
-    "iteration": 21,
-    "focus": "Step-3 null sequence tendsto_integral_tail_rpow_zero SHIPPED (0-axiom, 7743 jobs): for Integrable |X|^p and any threshold t i->infty, the tail p-moments integral 1{t i<|X|}*|X|^p -> 0 by dominated convergence. This is the tendsto_weighted_average_zero null sequence e_i=E[|X|^p 1{|X|>a_i}]->0 for MZ step-3 centering (sum E Y_i)/a_n->0. Remaining: tail-restricted mean bound |E Y_i|<=a_i^{1-p}*e_i, weight partial-sum bound, then Toeplitz assembly; then final combination with step-1 truncation.",
+    "iteration": 22,
+    "focus": "Step-3 tail-restricted integral lift integral_tail_abs_le_tail_moment SHIPPED (0-axiom, 7743 jobs): for measurable X, 1<=p, 0<t, Integrable |X|^p, the tail absolute integral is bounded by t^{1-p} times the TAIL-restricted p-moment: integral 1{t<|X|}*|X| <= t^{1-p} * integral 1{t<|X|}*|X|^p. Sharp form of integral_tail_abs_le (which uses the full/constant moment M): the RHS integrand is exactly e_t=integral 1{t<|X|}*|X|^p, the vanishing null sequence (tendsto_integral_tail_rpow_zero), giving the tendsto_weighted_average_zero input |E Y_i| <= a_i^{1-p}*e_i for MZ step-3 centering. Remaining: (i)(b) centering identity E X=0 => E Y_i=-E[X 1{|X|>a_i}], weight partial-sum bound, then Toeplitz assembly; then final combination with step-1 truncation.",
     "blockers": [],
     "nextAction": "Tonelli interchange via MeasureTheory.integral_tsum: ∑'ᵢ ∫ i^{-s}·Yᵢ² dμ = ∫ ∑'ᵢ i^{-s}·Yᵢ² dμ (per-term integrability + ∑'∫|·|<∞); the inner ∑'ᵢ is literally tsum_weight_trunc_sq_le at x=X(ω), dominating the integrand by (max 1 |X|ᵖ)^{1-2/p}·s/(s-1)·X². Integrate RHS: |X|≥1 branch → 𝔼|X|ᵖ, |X|<1 branch → const·𝔼X². Yields ∑ᵢ Var(Yᵢ)/i^{2/p}<∞ for ae_tendsto_average_zero_of_variance_weighted_bdd (S5); then step-3 centering and final MZ combination.",
     "attemptCounts": {

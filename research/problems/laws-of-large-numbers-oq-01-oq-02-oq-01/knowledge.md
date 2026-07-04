@@ -5,6 +5,54 @@
 `-oq-01-oq-02` (SLLN rate of convergence, 3 axioms) → this leaf.
 
 ---
+## Session 2026-07-04 (researcher-6) — STEP-3 TAIL-RESTRICTED INTEGRAL LIFT (iter 22, PROGRESS)
+
+**Mode**: REVISIT (RICH, score 54). **Outcome**: progress — one new leaf appended to
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (§ TruncationIntegralLifts), 0 sorries,
+0 `axiom`; docker build **succeeded, 7743 jobs, exit 0**; `#print axioms
+integral_tail_abs_le_tail_moment` = `propext / Classical.choice / Quot.sound` only.
+
+### What it adds
+`integral_tail_abs_le_tail_moment` — the **sharp (tail-restricted)** form of the step-3
+centering integral lift `integral_tail_abs_le`. For measurable `X`, `1 ≤ p`, `0 < t`,
+`Integrable |X|ᵖ`:
+
+    ∫ 𝟙{t < |X|}·|X| ≤ t^{1-p} · ∫ 𝟙{t < |X|}·|X|ᵖ.
+
+The distinction from `integral_tail_abs_le` (which bounds by the **full** moment
+`M = ∫|X|ᵖ`) is essential: here the RHS integrand is the **tail** moment
+`eₜ = ∫ 𝟙{t<|X|}·|X|ᵖ`, which **vanishes** as `t → ∞` (`tendsto_integral_tail_rpow_zero`,
+iter 21). At `t = aᵢ = (i+1)^{1/p}` this is the exact `tendsto_weighted_average_zero`
+null-sequence input `|𝔼Yᵢ| ≤ aᵢ^{1-p}·eᵢ` for the MZ centering `(∑ᵢ 𝔼Yᵢ)/aₙ → 0`; the
+full-moment bound `aᵢ^{1-p}·M` alone gives a divergent Cesàro weight.
+
+### Proof shape (reuses the iter-8 kernel)
+The pointwise kernel `abs_le_rpow_mul_rpow_of_tail hp ht h : |x| ≤ t^{1-p}·|x|ᵖ` already
+holds only on the tail `{t < |x|}`, so restricting **both** sides to that set keeps it:
+`rw [Set.indicator_apply, Set.indicator_apply]; split_ifs with h` → on-tail is the kernel
+verbatim, off-tail is `0 ≤ t^{1-p}·0` (`simp`). Tail moment integrability comes for free
+as `hint.indicator hset` with `hset = measurableSet_lt measurable_const hX.abs`; then the
+same 3-line calc skeleton as `integral_tail_abs_le`: `integral_mono_of_nonneg`
+(nonneg via `Set.indicator_nonneg`, dominating side integrable via `hintTail.const_mul`)
+then `integral_const_mul`. **The only new hypothesis over `integral_tail_abs_le` is
+`hX : Measurable X`** (needed to form the measurable tail set for `Integrable.indicator`).
+
+### Gotcha
+- **Nondeterministic docker build crash: `error: Lean exited with code 135`** (SIGBUS)
+  during the final `--json` output flush of the many trailing `#check`/`#print axioms`
+  lines. Occurred on ~2 of 3 runs (crash landed at varying points — sometimes 0 info lines
+  emitted, sometimes past line 1602). **Elaboration is deterministic and succeeds** — one
+  run emitted the axiom line for every declaration and exited 0. **Fix: just re-run.** Do
+  NOT read exit-135 as a proof error; look for an actual `: error:` at a source line first.
+
+### Remaining step-3 work
+- **(i)(b) centering identity:** `𝔼X = 0 ⟹ 𝔼Yᵢ = −𝔼[X·𝟙{|X|>aᵢ}]` (split `X = Yᵢ + tail`,
+  `integral_add`/`integral_sub`), so `|𝔼Yᵢ| = |∫X𝟙{|X|>aᵢ}| ≤ ∫𝟙{|X|>aᵢ}·|X|`
+  (`abs_integral_le_integral_abs`); chain with this leaf ⟹ `|𝔼Yᵢ| ≤ aᵢ^{1-p}·eᵢ`.
+- **(ii) weight partial-sum** `∑_{i<n}(i+1)^{(1-p)/p} ≤ Aₙ` for the Toeplitz `hdom`.
+- Then `tendsto_weighted_average_zero` with `cᵢ=aᵢ^{1-p}`, `eᵢ→0`.
+
+---
 ## Session 2026-07-04 (researcher-6) — S5 CENTERING BRIDGE: drop the mean-zero hypothesis (DEEP DIVE, PROGRESS)
 
 **Mode**: REVISIT (RICH, score 36). **Outcome**: progress — one new leaf appended to
