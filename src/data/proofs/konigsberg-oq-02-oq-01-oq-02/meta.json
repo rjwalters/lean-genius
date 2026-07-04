@@ -114,10 +114,17 @@
     },
     {
       "id": "sec-obstruction",
-      "title": "Königsberg Obstruction",
+      "title": "General Königsberg Obstruction",
       "startLine": 87,
+      "endLine": 100,
+      "summary": "no_eulerian_trail_of_card_odd_ne: if the number of odd-degree vertices is neither 0 nor 2, the graph admits no Eulerian trail at all. Königsberg's bridge graph has four odd-degree landmasses, so this is exactly Euler's 1736 impossibility, proved by contradiction from the trail's parity dichotomy (card_odd_degree ∈ {0, 2})."
+    },
+    {
+      "id": "sec-circuit-obstruction",
+      "title": "Circuit Form of the Obstruction",
+      "startLine": 101,
       "endLine": 109,
-      "summary": "no_eulerian_trail_of_card_odd_ne and no_eulerian_circuit_of_odd_degree — parity obstructions ruling out Eulerian trails/circuits, generalizing the Seven Bridges impossibility"
+      "summary": "no_eulerian_circuit_of_odd_degree: a single odd-degree vertex already forbids an Eulerian circuit — the contrapositive of eulerian_circuit_forall_even. This is the closed-trail specialization, sharper than the general trail obstruction because one bad vertex suffices."
     }
   ],
   "crossReferences": [
