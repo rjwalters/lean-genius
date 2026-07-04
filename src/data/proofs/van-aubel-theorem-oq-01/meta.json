@@ -72,7 +72,8 @@
       "**Everything reduces to one identity.** The full geometric statement (equal length AND perpendicular) is equivalent to the single complex equation R - P = i·(S - Q). Once this is established the two named consequences are one-line corollaries.",
       "**Multiplication by i encodes the 90° rotation twice.** It appears once in the definition of squareCenter (erecting the square outward) and once in the key identity (rotating one diagonal onto the other). The same operation that builds the squares relates the diagonals.",
       "**Length-preservation and orthogonality are the real and modular content of i.** |i| = 1 gives |PR| = |QS|; the fact that i·(real) is purely imaginary gives the perpendicularity. No trigonometry, no coordinates beyond ℂ, no case analysis on the quadrilateral's shape.",
-      "**The proof needs exactly one non-ring fact: i² = -1.** linear_combination isolates precisely this, with the rest handled by the commutative-ring normaliser."
+      "**The proof needs exactly one non-ring fact: i² = -1.** linear_combination isolates precisely this, with the rest handled by the commutative-ring normaliser.",
+      "**The identity is unconditional in the vertices.** Because vanAubel_key is a polynomial identity in the complex coordinates a, b, c, d, it holds for every quadrilateral whatsoever — convex, concave, self-intersecting, or degenerate with collinear or coincident vertices — with no general-position hypothesis. The algebra carries all shapes at once, so van Aubel's theorem needs no case analysis on the configuration."
     ],
     "prerequisites": [
       "Complex numbers as the Euclidean plane (addition = translation, multiplication by i = 90° rotation)",
@@ -81,6 +82,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "docstring-overview",
+      "title": "Module Docstring: van Aubel via a Single Complex Identity",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Sets up van Aubel's theorem over ℂ: on each directed side of an arbitrary quadrilateral a,b,c,d erect a square externally and take its center P,Q,R,S. The claim that the diagonals PR and QS are equal in length and perpendicular collapses to the single algebraic identity R − P = i·(S − Q) (vanAubel_key). Multiplication by i is a length-preserving 90° rotation, so this one identity yields both consequences; it is a pure ring computation once Complex.I_sq : I² = −1 is supplied, giving an axiom-free, sorry-free proof.",
+      "mathContext": "$R - P = i\\,(S - Q)$, whence $\\|PR\\|=\\|QS\\|$ and $\\operatorname{Re}((R-P)\\overline{(S-Q)})=0$."
+    },
     {
       "id": "square-center",
       "title": "Square Center Definition",
