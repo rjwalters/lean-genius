@@ -2,14 +2,27 @@
   {
     "id": "ann-cmoq0503-header",
     "proofId": "herons-formula-oq-05-oq-03",
-    "range": { "startLine": 1, "endLine": 44 },
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
     "type": "concept",
     "title": "Certifying an asserted-but-unproven claim",
     "content": "The parent entry (`CayleyMengerHeronOQ05`) defines the Cayley–Menger *polynomials* cmDet3 (triangle) and cmDet4 (tetrahedron) as hand-expanded polynomials in the squared edge lengths, and proves they equal −16·Area² and 288·V². Their docstrings *assert* that these polynomials are the determinants of the bordered squared-distance matrices (the border-of-ones layout shown in the header), but the parent never **certifies** that — the polynomials are just typed in by hand. This file closes the parent's open question oq-03: it builds the bordered matrices as honest `Matrix (Fin 4) (Fin 4) ℝ` and `Matrix (Fin 5) (Fin 5) ℝ` objects and proves by Laplace cofactor expansion that `Matrix.det` of each literally equals the parent polynomial — upgrading an asserted identity to a machine-checked one. The polynomial and geometric-scalar definitions are reproduced verbatim from the parent so the file machine-checks standalone.",
     "mathContext": "Bordered squared-distance (Cayley–Menger) matrix $\\det\\begin{psmallmatrix}0&1&1&1\\\\1&0&d_{01}&d_{02}\\\\1&d_{01}&0&d_{12}\\\\1&d_{02}&d_{12}&0\\end{psmallmatrix} = -16\\,\\mathrm{Area}^2$, and the $5\\times5$ analogue $=288\\,V^2$. Mathlib has `det_fin_three` but no `det_fin_four`/`det_fin_five`, so these come from the general Laplace expansion `Matrix.det_succ_row_zero` down to the $3\\times3$ base.",
     "significance": "supporting",
-    "relatedConcepts": ["Cayley–Menger determinant", "Laplace cofactor expansion", "bordered matrix", "Heron's formula", "certifying an assertion"],
-    "prerequisites": ["determinants of small matrices", "Matrix.det in Mathlib", "Heron / Cayley–Menger background"]
+    "relatedConcepts": [
+      "Cayley–Menger determinant",
+      "Laplace cofactor expansion",
+      "bordered matrix",
+      "Heron's formula",
+      "certifying an assertion"
+    ],
+    "prerequisites": [
+      "determinants of small matrices",
+      "Matrix.det in Mathlib",
+      "Heron / Cayley–Menger background"
+    ]
   },
   {
     "id": "ann-det-fin-four",
@@ -65,33 +78,51 @@
     ]
   },
   {
-    "id": "ann-tetrahedron",
+    "id": "ann-tetrahedron-setup",
     "proofId": "herons-formula-oq-05-oq-03",
     "range": {
       "startLine": 122,
-      "endLine": 189
+      "endLine": 159
     },
-    "type": "theorem",
-    "title": "The Tetrahedron Polynomial Is the 5×5 Determinant",
-    "content": "`cmMatrix4` is the bordered 5×5 squared-distance matrix of a tetrahedron. `cmDet4_eq_det` proves `Matrix.det (cmMatrix4 …) = cmDet4 …`, the parent's 22-term polynomial, by a single cofactor expansion along row 0 (`Fin.sum_univ_five`) followed by `det_fin_four` on each of the five 4×4 minors — proving the generic `det_fin_four` first keeps this from exploding into a deep recursive `simp`. `det_cmMatrix4_eq_vol` composes with the parent identity `cmDet4 = 8·(6·V)²` to give the tetrahedron volume law in determinantal form, `det = 288·V²`, and `det_cmMatrix4_nonneg` reads realizability (`det ≥ 0`) directly off the bordered matrix via `positivity`. Together with the triangle case this certifies that the Cayley–Menger *polynomials* really are the Cayley–Menger *determinants*.",
-    "mathContext": "$\\det(\\text{bordered }5\\times5) = \\mathrm{cmDet4} = 288\\,V^2 \\geq 0,$ with $V = |\\mathrm{vol6}|/6$.",
-    "significance": "critical",
+    "type": "definition",
+    "title": "The Tetrahedron Cayley–Menger Data: Matrix, Polynomial, Volume",
+    "content": "The tetrahedron ($n=3$) case is built from four pieces. `sqDist3` is the squared Euclidean distance between two points of `Point3`; `vol6` is $6V$, six times the signed tetrahedron volume, expressed through the scalar triple product of the edge vectors from $P_0$. `cmDet4` is the parent entry's explicit **22-term** Cayley–Menger polynomial in the six squared edge lengths $d_{01},\\dots,d_{23}$. `cmMatrix4` is the **bordered $5\\times5$** squared-distance matrix: a leading $0$ and a border of $1$'s around the symmetric $4\\times4$ block of pairwise squared distances. Separating the *data* (these definitions) from the *identities* proved about them makes the determinant expansion below a statement about fixed objects rather than an unfolding of definitions.",
+    "mathContext": "$\\text{cmMatrix4} = \\begin{pmatrix} 0 & \\mathbf 1^{\\mathsf T} \\\\ \\mathbf 1 & (d_{ij}) \\end{pmatrix} \\in \\mathbb R^{5\\times5}$; $\\text{vol6} = 6V$ via the triple product; $\\text{cmDet4}$ is the 22-term expansion of that determinant.",
+    "significance": "supporting",
     "relatedConcepts": [
       "Cayley–Menger determinant",
-      "tetrahedron volume",
-      "realizability",
-      "distance geometry"
+      "bordered matrix",
+      "scalar triple product",
+      "squared-distance matrix"
     ],
     "prerequisites": [
-      "determinants",
+      "tetrahedron volume via triple product",
+      "matrices over ℝ",
+      "Euclidean squared distance"
+    ]
+  },
+  {
+    "id": "ann-tetrahedron",
+    "proofId": "herons-formula-oq-05-oq-03",
+    "range": {
+      "startLine": 160,
+      "endLine": 189
+    },
+    "type": "insight",
+    "title": "The Tetrahedron Polynomial Is the 5×5 Determinant",
+    "content": "`cmDet4_eq_det` proves `Matrix.det (cmMatrix4 …) = cmDet4 …` — the parent's 22-term polynomial equals the actual determinant — by a single cofactor expansion along row 0 (`Fin.sum_univ_five`) followed by `det_fin_four` on each of the five $4\\times4$ minors; proving the generic `det_fin_four` first keeps this from exploding into a deep recursive `simp`. `det_cmMatrix4_eq_vol` composes with the parent identity $\\text{cmDet4} = 8\\,(6V)^2$ to give the volume law in determinantal form, $\\det = 288\\,V^2$. `det_cmMatrix4_nonneg` reads realizability ($\\det \\ge 0$) directly off the bordered matrix via `positivity`. Together with the triangle case this certifies that the Cayley–Menger *polynomials* really are the Cayley–Menger *determinants*.",
+    "mathContext": "$\\det(\\text{cmMatrix4}) = \\text{cmDet4} = 8(6V)^2 = 288\\,V^2 \\ge 0$; the last inequality is realizability of the tetrahedron.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cayley–Menger determinant",
       "cofactor expansion",
-      "coordinate geometry"
+      "det_fin_four",
+      "positivity"
     ],
-    "crossReferences": [
-      {
-        "proofId": "herons-formula-oq-05",
-        "relationship": "parent"
-      }
+    "prerequisites": [
+      "determinant cofactor expansion",
+      "the parent's 288·V² identity",
+      "positivity tactic"
     ]
   }
 ]
