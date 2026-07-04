@@ -5,6 +5,58 @@
 `-oq-01-oq-02` (SLLN rate of convergence, 3 axioms) → this leaf.
 
 ---
+## Session 2026-07-04 (researcher-8) — S5 HAND-OFF: variance≤2nd-moment + weighted partial-sum bound (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress — two new leaves appended to
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (§ WeightedVariancePartialSum), 0 sorries,
+0 `axiom`; docker build **succeeded, 7743 jobs, exit 0** (SKIP_CACHE, 16 GB); `#print axioms` on
+both = `propext / Classical.choice / Quot.sound` only — no `sorryAx`, no `ofReduceBool`.
+
+### What it adds
+The § RealVarianceSummable backbone (iter 17) proved the real `Summable` of the weighted truncated
+second moments `i ↦ i^{-2/p}·∫(𝟙{|X|≤i^{1/p}}·X)²`. But the Kolmogorov criterion
+`ae_tendsto_average_zero_of_variance_weighted_bdd` (S5) consumes the weighted **variance** partial
+sums `∀ n, ∑_{i≤n} Var(Yᵢ)/aᵢ² ≤ V`, not the second-moment tsum. These two leaves are the missing
+deterministic bridge (the (a)/(b) gaps state.md flagged as "Next: feed S5"):
+- **`variance_trunc_le_integral_sq`** (the (a) brick): on a probability space, for measurable `X`
+  and any threshold `t`, `Var(𝟙{|X|≤t}·X) ≤ ∫(𝟙{|X|≤t}·X)²`. One line: Mathlib
+  `variance_le_expectation_sq` on the truncation's `AEStronglyMeasurable`. (`variance X μ ≤ μ[X^2]`
+  unifies with `∫ (Y ω)^2 ∂μ` by defeq — `exact` closes it, no `Pi.pow_apply` massage needed.)
+- **`weighted_variance_partial_sum_le_tsum`** (the (b) brick): for ANY sequence `a : ℕ → ℝ` and
+  summability of `i ↦ (aᵢ²)⁻¹·∫(𝟙{|X|≤aᵢ}·X)²`, the weighted-variance partial sums are bounded by
+  the total, `∀ n, ∑_{i≤n} Var(Yᵢ)/aᵢ² ≤ ∑'ᵢ (aᵢ²)⁻¹·∫Yᵢ²`. Proof: per-term
+  `Var(Yᵢ)/aᵢ² = (aᵢ²)⁻¹·Var(Yᵢ) ≤ (aᵢ²)⁻¹·∫Yᵢ²` (`div_eq_mul_inv`+`mul_comm`+
+  `mul_le_mul_of_nonneg_left` on the (a) brick), then `Finset.sum_le_sum` + `Summable.sum_le_tsum`
+  (nonneg summand). **`a` positivity is NOT needed here** — division-by-zero-is-zero makes the bound
+  hold even at `aᵢ=0`, so the leaf is abstract in `a`; positivity enters only at S5 assembly.
+
+### Technique / design (reusable)
+The MZ normaliser `aᵢ = i^{1/p}` **doubles as the truncation threshold** `{|X|≤aᵢ}` and as the
+weight `aᵢ⁻²`, so a *single* abstract sequence `a` parametrises the whole partial-sum leaf — this
+removes the `i^{1/p}` (threshold) vs `i^{-2/p}` (weight) rpow reconciliation from the leaf entirely
+(it becomes the one identity `((i+1)^{1/p})⁻² = (i+1)^{-2/p}`, discharged at assembly). `Summable`
+dot-form is `hsum.sum_le_tsum (Finset.range (n+1)) (fun i _ => hnn i)` (arg order: finset, then
+`∀ i ∉ s, 0 ≤ f i`).
+
+### Honest status
+Two correct, reusable **deterministic hand-off leaves**, NOT the S5 assembly. They convert the
+iter-17 second-moment `Summable` into exactly the weighted-variance `hV` shape S5 wants, modulo two
+mechanical assembly steps: (i) instantiate `a i = (i+1)^{1/p}` (positive/monotone/→∞) and (ii) supply
+the shifted summability `Summable (fun i => ((i+1)^{1/p})⁻²·∫(𝟙{|X|≤(i+1)^{1/p}}·X)²)` from
+`summable_trunc_sq_weight_of_integrable` via `(summable_nat_add_iff 1).2` + the `((i+1)^{1/p})⁻² =
+(i+1)^{-2/p}` rewrite. The substantive open work is unchanged below.
+
+### Next steps (frontier)
+- **S5 assembly of the variance sum**: instantiate `weighted_variance_partial_sum_le_tsum` at
+  `a i = (i+1)^{1/p}` with the shifted summability, obtaining S5's `hV` for the centered truncations
+  `Yᵢ − 𝔼Yᵢ` (variance is translation-invariant: `Var(Yᵢ−𝔼Yᵢ)=Var(Yᵢ)`, so the same bound feeds S5).
+  Still need the other S5 hypotheses: `iIndepFun`, `MemLp 2`, mean-zero (of the centered vars),
+  `a` positivity/monotone/`Tendsto atTop`.
+- **Step-3 centering**: `|𝔼Yᵢ| ≤ i^{(1-p)/p}·𝔼|X|ᵖ` (`abs_le_rpow_mul_rpow_of_tail` kernel already
+  in file) ⟹ `∑_{i<n}𝔼Yᵢ/n^{1/p} → 0` via `tendsto_weighted_average_zero`.
+- **Final MZ combination** with the step-1 a.s. eventual `Xᵢ=Yᵢ` truncation reduction.
+
+---
 ## Session 2026-07-04 (researcher-8) — S4b: variance integrand dominated by an INTEGRABLE function (DEEP DIVE, PROGRESS)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress — two new deterministic leaves appended to
