@@ -883,4 +883,102 @@ theorem sq_le_rpow_mul_rpow_of_trunc {p t x : ℝ} (hp : p < 2) (ht : 0 < t)
 
 end TruncationMomentKernels
 
+/-! ## S4b (steps 3–4) — the integral lifts of the two truncation-moment kernels
+
+The two pointwise `rpow` kernels of the previous section are lifted here to the
+integral (expectation) level by monotonicity of the Bochner integral
+(`integral_mono_of_nonneg`, which needs integrability only of the dominating
+side).  For a measurable `X` whose `p`-th absolute moment `∫ |X|ᵖ` is finite, and a
+threshold `t > 0`:
+
+* **step 4 (variance).**  `∫ (𝟙{|X| ≤ t}·X)² ≤ t^{2-p}·∫|X|ᵖ`
+  (`integral_trunc_sq_le`, `p < 2`).  With `t = i^{1/p}` this is the truncated
+  second-moment estimate `𝔼[Yᵢ²] ≤ i^{(2-p)/p}·𝔼|X|ᵖ`; summed against `i^{-2/p}` it
+  gives the finite variance sum Kolmogorov's criterion consumes.
+* **step 3 (centering).**  `∫ 𝟙{t < |X|}·|X| ≤ t^{1-p}·∫|X|ᵖ`
+  (`integral_tail_abs_le`, `1 ≤ p`).  With `t = i^{1/p}` this bounds the centering
+  tail `𝔼[|X|·𝟙{|X| > i^{1/p}}] ≤ i^{(1-p)/p}·𝔼|X|ᵖ`, the null sequence feeding
+  `tendsto_weighted_average_zero`.
+
+Both are pure measure theory over an arbitrary measure `μ` — no probability,
+independence, or finiteness of `μ` is used (the truncated integrand may itself be
+non-integrable when `μ` is infinite, which `integral_mono_of_nonneg` absorbs by
+returning `0` for the undefined integral, still `≤` the finite bound). -/
+
+section TruncationIntegralLifts
+
+open MeasureTheory
+
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
+/-- **Truncated second-moment integral lift (MZ step 4, variance).**  Integrating the
+pointwise kernel `sq_le_rpow_mul_rpow_of_trunc` over any measure `μ`: for `p < 2`, a
+threshold `0 < t`, and `X` with finite `p`-th absolute moment, the truncation
+`Y = 𝟙{|X| ≤ t}·X` satisfies
+
+    ∫ Y² ≤ t^{2-p} · ∫ |X|ᵖ.
+
+With `t = i^{1/p}` (so `t^{2-p} = i^{(2-p)/p}`) this is the second-moment estimate
+`𝔼[Yᵢ²] ≤ i^{(2-p)/p}·𝔼|X|ᵖ` behind the variance sum `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`. -/
+theorem integral_trunc_sq_le
+    (X : Ω → ℝ) {p t : ℝ} (hp : p < 2) (ht : 0 < t)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    ∫ ω, ({ω | |X ω| ≤ t}.indicator X ω) ^ 2 ∂μ
+      ≤ t ^ (2 - p) * ∫ ω, |X ω| ^ p ∂μ := by
+  have hpt : ∀ ω, ({ω | |X ω| ≤ t}.indicator X ω) ^ 2 ≤ t ^ (2 - p) * |X ω| ^ p := by
+    intro ω
+    rw [Set.indicator_apply]
+    split_ifs with h
+    · rw [Set.mem_setOf_eq] at h
+      exact sq_le_rpow_mul_rpow_of_trunc hp ht h
+    · rw [show ((0 : ℝ)) ^ 2 = 0 by norm_num]
+      exact mul_nonneg (Real.rpow_nonneg ht.le _) (Real.rpow_nonneg (abs_nonneg _) _)
+  calc ∫ ω, ({ω | |X ω| ≤ t}.indicator X ω) ^ 2 ∂μ
+      ≤ ∫ ω, t ^ (2 - p) * |X ω| ^ p ∂μ :=
+        integral_mono_of_nonneg
+          (ae_of_all _ (fun ω => sq_nonneg _))
+          (hint.const_mul _)
+          (ae_of_all _ hpt)
+    _ = t ^ (2 - p) * ∫ ω, |X ω| ^ p ∂μ := integral_const_mul _ _
+
+/-- **Tail absolute-moment integral lift (MZ step 3, centering).**  Integrating the
+pointwise kernel `abs_le_rpow_mul_rpow_of_tail` over any measure `μ`: for `1 ≤ p`, a
+threshold `0 < t`, and `X` with finite `p`-th absolute moment,
+
+    ∫ 𝟙{t < |X|}·|X| ≤ t^{1-p} · ∫ |X|ᵖ.
+
+With `t = i^{1/p}` (so `t^{1-p} = i^{(1-p)/p}`) this bounds the centering tail
+`𝔼[|X|·𝟙{|X| > i^{1/p}}] ≤ i^{(1-p)/p}·𝔼|X|ᵖ`, the `tendsto_weighted_average_zero`
+null sequence. -/
+theorem integral_tail_abs_le
+    (X : Ω → ℝ) {p t : ℝ} (hp : 1 ≤ p) (ht : 0 < t)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω|) ω ∂μ
+      ≤ t ^ (1 - p) * ∫ ω, |X ω| ^ p ∂μ := by
+  have hpt : ∀ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω|) ω
+      ≤ t ^ (1 - p) * |X ω| ^ p := by
+    intro ω
+    rw [Set.indicator_apply]
+    split_ifs with h
+    · rw [Set.mem_setOf_eq] at h
+      exact abs_le_rpow_mul_rpow_of_tail hp ht h
+    · exact mul_nonneg (Real.rpow_nonneg ht.le _) (Real.rpow_nonneg (abs_nonneg _) _)
+  calc ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω|) ω ∂μ
+      ≤ ∫ ω, t ^ (1 - p) * |X ω| ^ p ∂μ :=
+        integral_mono_of_nonneg
+          (ae_of_all _ (fun ω => Set.indicator_nonneg (fun _ _ => abs_nonneg _) ω))
+          (hint.const_mul _)
+          (ae_of_all _ hpt)
+    _ = t ^ (1 - p) * ∫ ω, |X ω| ^ p ∂μ := integral_const_mul _ _
+
+#check @integral_trunc_sq_le
+#check @integral_tail_abs_le
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms integral_trunc_sq_le
+#print axioms integral_tail_abs_le
+
+end TruncationIntegralLifts
+
 end LawsOfLargeNumbers.MZ

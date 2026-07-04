@@ -509,3 +509,47 @@ weight partial-sum asymptotic `∑_{i<n} i^{1/p-1} ~ p·n^{1/p} → ∞` for
 
 - `proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (+~90 lines, § TruncationMomentKernels)
 - `research/problems/.../state.md`, `.../knowledge.md`, problem JSON knowledge
+
+## Session 2026-07-03 (researcher-8) — S4b integral lifts: kernels → expectations (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (RICH, score 29). **Outcome**: progress (DEEP DIVE) — new
+`§ TruncationIntegralLifts` in `proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean`
+(2 theorems, 0 sorry, 0 axiom). **VERIFIED**: `docker-build.sh
+Proofs.LawsOfLargeNumbersOQ01OQ02OQ01` → Built (7743 jobs, 42s, exit 0);
+`#print axioms` on both = `[propext, Classical.choice, Quot.sound]` only — no
+`sorryAx`, no `Lean.ofReduceBool`, no `decide`.
+
+### What this session did
+Lifted the two verified pointwise `rpow` kernels (`sq_le_rpow_mul_rpow_of_trunc`,
+`abs_le_rpow_mul_rpow_of_tail`) from the previous session to the expectation level —
+exactly the top-priority `nextSteps` items ("integral lift ... do first,
+self-contained"):
+
+- **`integral_trunc_sq_le`** (step 4, variance, `p < 2`):
+  `∫ (𝟙{|X| ≤ t}·X)² ∂μ ≤ t^{2-p} · ∫ |X|^p ∂μ`.
+- **`integral_tail_abs_le`** (step 3, centering, `1 ≤ p`):
+  `∫ 𝟙{t < |X|}·|X| ∂μ ≤ t^{1-p} · ∫ |X|^p ∂μ`.
+
+### Technique (reusable)
+Both go through `MeasureTheory.integral_mono_of_nonneg`, whose key virtue is it
+needs integrability **only of the dominating side** (`hint.const_mul _`, i.e.
+`t^k · |X|^p` integrable from the `E|X|^p < ∞` hypothesis). The truncated integrand
+on the LHS may itself be non-integrable when `μ` is infinite; `integral_mono_of_nonneg`
+absorbs that by returning `0` for the undefined integral, still `≤` the finite bound.
+Pointwise bound: `Set.indicator_apply` + `split_ifs`; the on-set branch is the kernel
+verbatim, the off-set branch is `0 ≤ t^k·|X|^p` (`mul_nonneg (Real.rpow_nonneg …) …`).
+Then `integral_const_mul` pulls the `t^k` constant out. **No probability,
+independence, or finiteness of `μ` is used** — pure measure theory over arbitrary `μ`.
+
+### Honest status
+Genuine progress on the critical path, but NOT the full SLLN. What remains (updated
+`nextSteps`): instantiate `t = i^{1/p}` in each lift, do the `rpow` exponent
+arithmetic `(i^{1/p})^{2-p} = i^{(2-p)/p}`, and (step 4) sum against `i^{-2/p}` via
+`Real.summable_one_div_nat_rpow` (converges iff `2/p > 1`, i.e. `p < 2`) to get the
+finite variance sum; (step 3) feed the null sequence to `tendsto_weighted_average_zero`;
+then S5 assembly through `ae_tendsto_average_zero_of_variance_weighted_bdd`.
+
+### Files Modified
+- proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean (new § TruncationIntegralLifts)
+- src/data/research/problems/laws-of-large-numbers-oq-01-oq-02-oq-01.json (leanFiles + knowledge)
+- research/problems/laws-of-large-numbers-oq-01-oq-02-oq-01/knowledge.md (this entry)
