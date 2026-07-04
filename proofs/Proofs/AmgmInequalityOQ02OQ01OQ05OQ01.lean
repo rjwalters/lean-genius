@@ -31,13 +31,26 @@
   of the Maclaurin chain only becomes essential at rungs where one extracts real
   roots).  Equality holds iff ab = bc = ca, i.e. (for nonzero variables) a = b = c.
 
-  General n (documented; proved here only for n = 3).
-  The general k = 2 Newton inequality, cleared of the binomial denominators, reads
-    2(n − 2)·e₂² ≥ 3(n − 1)·e₁·e₃,
-  which reduces to the above at n = 3.  Its general proof goes through Rolle's
-  theorem on the real-rooted polynomial ∏(x − xᵢ) and its derivatives (the
-  discriminant of a real-rooted quadratic is nonnegative); formalizing that is the
-  forward open question.  The n = 3 case below needs none of that machinery.
+  Relation to existing gallery work (important).
+  The *general-n, all-k* Newton log-concavity is ALREADY formalized, for NONNEGATIVE
+  reals, in `AmgmInequalityOQ02OQ02.lean`:
+    • `elemSymm_log_concave`      : eₖ² ≥ eₖ₋₁·eₖ₊₁            (unnormalized)
+    • `newton_log_concavity_proved`: (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1))
+  both under the hypothesis `hx : ∀ i, 0 ≤ x i`, by induction on n.
+
+  This file is therefore NOT a first proof of S₂² ≥ S₁S₃.  Its complementary value
+  is threefold, all specific to n = 3:
+    (1) SIGN-AGNOSTIC.  The n = 3 rung holds for ALL reals, with NO nonnegativity
+        hypothesis — strictly more general than the existing nonnegative-only result
+        at this size.  (Newton's inequalities are classically sign-agnostic; the
+        gallery's inductive proof happens to carry the nonnegativity assumption.)
+    (2) EXPLICIT SOS CERTIFICATE.  The one-line identity above exhibits the exact
+        sum-of-squares witness, which the inductive proof does not surface.
+    (3) EQUALITY LOCUS.  ab = bc = ca is read directly off the vanishing certificate.
+
+  The general-n *sign-agnostic* statement 2(n − 2)·e₂² ≥ 3(n − 1)·e₁·e₃ (dropping
+  nonnegativity for all n) remains the forward open question; its classical proof
+  runs through Rolle's theorem on ∏(x − xᵢ) and its derivatives.
 -/
 import Mathlib
 
