@@ -182,3 +182,42 @@ What remains is purely the **coefficient bookkeeping**: identifying the
 `discrim_nonneg_of_roots_nonempty` to yield `pₖ² ≥ pₖ₋₁ pₖ₊₁` for general `k`.
 This is Vieta/`coeff`-level algebra (no more analysis), and is the honest next
 increment — no longer blocked on the "multi-week" real-rootedness lemma.
+
+## PART VII — the general-`n` TOP step, end-to-end via the Rolle route (researcher-8, 2026-07-04)
+
+**Mode**: ACT (MODERATE, score 13). **Outcome**: progress — closes the
+"coefficient bookkeeping" gap for the TOP Newton step at arbitrary arity.
+**+2 verified theorems (26 → 28), 0 sorries, 0 axioms** (foundational only).
+docker-build clean, 7743 jobs.
+
+### What this adds
+Parts V–VI proved the two engine halves but only ever applied the discriminant
+join to an *abstract* degree-2 polynomial. Part VII runs the WHOLE program on one
+split polynomial of arbitrary degree — the first genuine end-to-end use:
+- **`discrim_iterate_derivative_top (m) {p} (hp : Splits p)
+  (hdeg : p.natDegree = m + 2)`** :
+  `0 ≤ discrim ((2+m).descFactorial m • p.coeff (2+m))
+  ((1+m).descFactorial m • p.coeff (1+m)) ((0+m).descFactorial m • p.coeff (0+m))`.
+  Differentiate `m` times (Part V `splits_iterate_derivative` keeps it split) down
+  to a quadratic, apply Part VI `discrim_coeff_nonneg_of_splits_deg_two`, then read
+  the three coefficients back on `p` via `Polynomial.coeff_iterate_derivative`.
+  No sign hypothesis (real-rootedness suffices).
+- **`newton_top_coeff_ineq (m) {p} …`** : the recognizable `b² ≥ 4ac` form
+  `4·(2+m)!desc·m!desc·p.coeff(m+2)·p.coeff m ≤ ((1+m)!desc)²·p.coeff(m+1)²`.
+
+### Key Lean facts (Mathlib API confirmed)
+- `Polynomial.coeff_iterate_derivative {k} (p) (m) :
+  ((⇑derivative)^[k] p).coeff m = (m + k).descFactorial k • p.coeff (m + k)` —
+  THE bridge from the reduced quadratic's coefficients back to `p`'s. Rewriting
+  leaves the index as `m + k` (e.g. `0 + m`), so state targets in `(i + m)` form.
+- `Polynomial.natDegree_iterate_derivative` gives only `≤ natDegree p − k`; get
+  equality by pairing with `le_natDegree_of_ne_zero` on the (nonzero) top coeff.
+- `Nat.descFactorial_pos : 0 < n.descFactorial k ↔ k ≤ n`;
+  `Nat.descFactorial_self : n.descFactorial n = n !`.
+
+### Still open (narrowed to Vieta)
+The ONLY remaining piece for the general TOP step is the Vieta substitution
+`p = ∏(X−xᵢ)` ⇒ `p.coeff (n−k) = (−1)^k eₖ`, turning `newton_top_coeff_ineq` into
+`pₙ₋₁² ≥ pₙ₋₂ pₙ`. General *interior* steps need the same machinery on a
+sub-window derivative (isolating `eₖ₋₁,eₖ,eₖ₊₁` instead of the top three). Both
+are purely algebraic — no analysis blocker remains.

@@ -500,6 +500,90 @@ theorem discrim_coeff_nonneg_of_splits_deg_two {p : ℝ[X]}
     linear_combination key
   exact discrim_nonneg_of_root (p.coeff 2) (p.coeff 1) (p.coeff 0) r hquad
 
+/-!  ## Part VII — the general-`n` TOP Newton step via the actual Rolle route
+
+Parts V–VI closed the two engine halves at the `Polynomial` level but only ever
+applied `discrim_coeff_nonneg_of_splits_deg_two` to an *abstract* degree-two
+polynomial.  The genuinely missing bridge (flagged as the remaining "coefficient
+bookkeeping" in `state.md`/`knowledge.md`) is to run the whole program on ONE
+split polynomial of arbitrary degree: differentiate a split degree-`(m+2)`
+polynomial `m` times down to a split *quadratic*, then read the discriminant
+inequality back on `p`'s own top three coefficients via
+`Polynomial.coeff_iterate_derivative`.  That is exactly what the two theorems
+below do — for the first time joining Part V's `splits_iterate_derivative`, Part
+VI's `discrim_coeff_nonneg_of_splits_deg_two`, and Mathlib's coefficient formula
+for iterated derivatives into a single arbitrary-`n` Newton-type inequality on
+`p.coeff (m+2), p.coeff (m+1), p.coeff m`, with NO sign hypothesis (only that `p`
+splits, i.e. is real-rooted).
+
+Specialising to the monic splitting polynomial `p = ∏ (X - xᵢ)` — whose top
+coefficients are, by Vieta, `±` the elementary symmetric functions
+`e₀ = 1, e₁, e₂` reading down from the top — turns this into the classical TOP
+Newton log-concavity step `pₙ₋₁² ≥ pₙ₋₂ pₙ` for every arity `n = m + 2` at once,
+by the honest calculus proof the entry asks for (the Vieta substitution is the
+one remaining, purely algebraic, increment). -/
+
+/-- **The `m`-th derivative of a split degree-`(m+2)` polynomial is a split
+quadratic whose discriminant is nonnegative** — read directly on `p`'s top three
+coefficients.
+
+If `p : ℝ[X]` splits (is real-rooted over `ℝ`) and has `natDegree = m + 2`, then
+its `m`-fold derivative is a genuine quadratic (degree exactly two, since its
+leading coefficient `(m+2).descFactorial m · leadingCoeff p ≠ 0`) that again
+splits (Part V), so Part VI gives `0 ≤ discrim` of its three coefficients.  By
+`Polynomial.coeff_iterate_derivative` those coefficients are the
+`descFactorial`-weighted top three coefficients of `p`, giving Newton's
+discriminant inequality for consecutive coefficients of an arbitrary real-rooted
+polynomial. -/
+theorem discrim_iterate_derivative_top (m : ℕ) {p : ℝ[X]}
+    (hp : Splits p) (hdeg : p.natDegree = m + 2) :
+    0 ≤ discrim
+        ((2 + m).descFactorial m • p.coeff (2 + m))
+        ((1 + m).descFactorial m • p.coeff (1 + m))
+        ((0 + m).descFactorial m • p.coeff (0 + m)) := by
+  -- `p` has positive degree, so it is nonzero
+  have hpne : p ≠ 0 := by
+    intro h
+    rw [h, natDegree_zero] at hdeg
+    omega
+  -- the leading coefficient of the `m`-th derivative (its `coeff 2`) is nonzero
+  have hc2ne : (derivative^[m] p).coeff 2 ≠ 0 := by
+    simp only [coeff_iterate_derivative, nsmul_eq_mul]
+    apply mul_ne_zero
+    · exact_mod_cast (Nat.descFactorial_pos.mpr (by omega)).ne'
+    · have h2m : 2 + m = p.natDegree := by rw [hdeg]; omega
+      rw [h2m]
+      exact leadingCoeff_ne_zero.mpr hpne
+  -- hence the `m`-th derivative is a genuine quadratic (degree exactly two)
+  have hdeg2 : (derivative^[m] p).natDegree = 2 := by
+    have hle := natDegree_iterate_derivative p m
+    rw [hdeg] at hle
+    have hge : 2 ≤ (derivative^[m] p).natDegree := le_natDegree_of_ne_zero hc2ne
+    omega
+  -- it still splits (Part V), so its discriminant is nonnegative (Part VI)
+  have hq := discrim_coeff_nonneg_of_splits_deg_two (splits_iterate_derivative hp m) hdeg2
+  -- read the three coefficients back on `p` via Mathlib's iterated-derivative formula
+  rwa [coeff_iterate_derivative, coeff_iterate_derivative, coeff_iterate_derivative] at hq
+
+/-- **General-`n` top Newton inequality on the coefficients of a real-rooted
+polynomial.** For any `p : ℝ[X]` that splits with `natDegree = m + 2`, the three
+top coefficients satisfy
+`4 · (m+2)!/2! · m! · p.coeff (m+2) · p.coeff m ≤ ((m+1)!)² · p.coeff (m+1)²`
+(the `descFactorial` weights are `(2+m).descFactorial m`, `m.descFactorial m`,
+`(1+m).descFactorial m`).  This is the discriminant inequality
+`discrim_iterate_derivative_top` written as the recognizable Newton/log-concavity
+inequality `b² ≥ 4ac` on consecutive coefficients — the honest calculus proof of
+Newton's TOP step, valid for every arity and all signed inputs. -/
+theorem newton_top_coeff_ineq (m : ℕ) {p : ℝ[X]}
+    (hp : Splits p) (hdeg : p.natDegree = m + 2) :
+    4 * ((2 + m).descFactorial m : ℝ) * ((0 + m).descFactorial m : ℝ)
+        * p.coeff (2 + m) * p.coeff (0 + m)
+      ≤ ((1 + m).descFactorial m : ℝ) ^ 2 * p.coeff (1 + m) ^ 2 := by
+  have h := discrim_iterate_derivative_top m hp hdeg
+  rw [discrim] at h
+  simp only [nsmul_eq_mul] at h
+  nlinarith [h]
+
 /-!  ## Part III, in explicit normalized (`p`) form
 
 `newton_first_general` states the first Newton inequality in cleared-denominator
