@@ -95,11 +95,20 @@
       "summary": "catalan_eq_centralBinom_sub: rewrites C(2n,n) = (n+1)·catalan n (bridge) and C(2n,n+1) = n·catalan n (workhorse lemma), turning the goal into (n+1)·c − n·c = c; Nat.add_one_mul and Nat.add_sub_cancel_left finish it. No appeal to b ≤ a is needed — the truncated subtraction resolves algebraically."
     },
     {
-      "id": "centralbinom-restatement-and-checks",
-      "title": "centralBinom restatement and numerical sanity checks",
+      "id": "centralbinom-restatement",
+      "title": "centralBinom restatement of the difference identity",
       "startLine": 76,
+      "endLine": 81,
+      "summary": "catalan_eq_centralBinom_sub' restates catalan n = C(2n,n) − C(2n,n+1) through Nat.centralBinom (Mathlib's preferred spelling of the central coefficient), obtained by rewriting with Nat.centralBinom_eq_two_mul_choose and delegating to the choose-form theorem.",
+      "mathContext": "$\\mathrm{catalan}\\,n = \\mathrm{centralBinom}\\,n - \\binom{2n}{n+1}$, with $\\mathrm{centralBinom}\\,n = \\binom{2n}{n}$ by definition — a pure renaming that aligns the result with Mathlib's API."
+    },
+    {
+      "id": "numerical-checks",
+      "title": "Numerical sanity checks against the first Catalan numbers",
+      "startLine": 83,
       "endLine": 91,
-      "summary": "catalan_eq_centralBinom_sub' restates the identity through Nat.centralBinom (Mathlib's preferred spelling), and five examples confirm it against the first Catalan numbers 1, 1, 2, 5, 14 at n = 0..4."
+      "summary": "Five example lemmas evaluate both sides of catalan_eq_centralBinom_sub at n = 0..4, confirming the first Catalan numbers 1, 1, 2, 5, 14 as C(2n,n) − C(2n,n+1).",
+      "mathContext": "$C_0,\\dots,C_4 = 1,1,2,5,14$; e.g. at $n=4$, $\\binom{8}{4}-\\binom{8}{5} = 70-56 = 14 = C_4$."
     }
   ],
   "references": [
