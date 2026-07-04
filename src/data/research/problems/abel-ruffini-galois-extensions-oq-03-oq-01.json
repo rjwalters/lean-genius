@@ -86,10 +86,15 @@
       "Mathlib supplies all the converse machinery generically (alternating_normalClosure, isThreeCycle_isConj, closure_three_cycles_eq_alternating) but assembles simplicity only for Fin 5 via cycle-type casework specific to 5 points (isSimpleGroup_five). The general casework over arbitrary α is the open formalization.",
       "Signatures line up exactly: isSimpleGroup_of_forall_normal_contains_threeCycle h5 (fun H hHn hbot => exists_mem_isThreeCycle_of_normal h5 H hHn hbot) : IsSimpleGroup (alternatingGroup α). So a one-line assembly yields the headline once the lemma lands.",
       "Right proof route is Jordan's minimal-support/commutator argument (not Mathlib's Fin-5 explicit casework, which does not generalize): pick σ∈H of minimal support, show it must be a 3-cycle by building commutators [τ,σ]∈H of strictly smaller support for a well-chosen 3-cycle τ.",
-      "An even permutation moving exactly 3 points is automatically a 3-cycle (card_support_eq_three_iff), giving the base case; the work is the strict-support-decrease step forcing support down to 3."
+      "An even permutation moving exactly 3 points is automatically a 3-cycle (card_support_eq_three_iff), giving the base case; the work is the strict-support-decrease step forcing support down to 3.",
+      "Problem is fully solved: the crux exists_mem_isThreeCycle_of_normal (every nontrivial normal H ⊴ Aₙ contains a 3-cycle) is machine-checked, discharging the biconditional from parent OQ-03 into unconditional simplicity. Verified on main (PR #33972).",
+      "The verified proof lacked a gallery entry; created meta.json (11 theorems, verified/original badge, 0 sorry/axiom) + 7 annotations mapping preamble/reduction/supporting-lemmas/containment/engine-A/engine-B/crux/assembly.",
+      "Sharp boundary noted for follow-up: A₄ is NOT simple (Klein four V₄ ⊴ A₄), so the 5 ≤ card α hypothesis in isSimpleGroup_alternating is exactly the threshold — a genuine distinct follow-up formalization."
     ],
     "builtItems": [
-      "proofs/Proofs/AbelRuffiniGaloisExtensionsOQ03OQ01.lean — WIP: threeCycle_normal_eq_top and isSimpleGroup_of_forall_normal_contains_threeCycle re-inlined (0 sorry), exists_mem_isThreeCycle_of_normal stated (1 sorry, HARD), isSimpleGroup_alternating assembled."
+      "proofs/Proofs/AbelRuffiniGaloisExtensionsOQ03OQ01.lean — WIP: threeCycle_normal_eq_top and isSimpleGroup_of_forall_normal_contains_threeCycle re-inlined (0 sorry), exists_mem_isThreeCycle_of_normal stated (1 sorry, HARD), isSimpleGroup_alternating assembled.",
+      "src/data/proofs/abel-ruffini-galois-extensions-oq-03-oq-01/meta.json — new gallery entry for the verified Aₙ-simplicity proof (status verified, badge original, 0 sorry/axiom, 11 theorems).",
+      "src/data/proofs/abel-ruffini-galois-extensions-oq-03-oq-01/annotations.json — 7 annotations covering the minimal-support argument, both commutator engines, the crux, and the assembly."
     ],
     "mathlibGaps": [
       "Mathlib has NO general alternating-group simplicity — only alternatingGroup.isSimpleGroup_five (Fin 5). The n≥5 statement is a genuine Mathlib-worthy gap; exists_mem_isThreeCycle_of_normal is the missing ingredient.",
@@ -100,8 +105,10 @@
       "When Aristotle is available: submit exists_mem_isThreeCycle_of_normal async with the minimal-support/commutator hint; it is KNOWN math (Aristotle's sweet spot), potentially multi-hour.",
       "Manual route (needs working single-file build loop): (1) minimal-support selection via Finset.exists_min_image; (2) base case #support=3 ⟹ IsThreeCycle; (3) case 4A: σ has a ≥3-cycle → commutator with τ=(c d e) strictly reduces support; (4) case 4B: σ is a product of ≥2 disjoint transpositions → commutator with τ=(c d e) on a 5th point yields a 3-cycle or smaller support.",
       "Prove a reusable commutator-support lemma: (τ*σ*τ⁻¹*σ⁻¹).support ⊆ σ.support ∪ (σ.support.map τ.toEmbedding), then bound its card.",
-      "Once landed, promote to a verified gallery entry and consider a Mathlib PR (general alternatingGroup.isSimpleGroup)."
+      "Once landed, promote to a verified gallery entry and consider a Mathlib PR (general alternatingGroup.isSimpleGroup).",
+      "Upstream general-n alternatingGroup.isSimpleGroup (5 ≤ card α) to Mathlib, recovering isSimpleGroup_five as the Fin 5 case.",
+      "Formalize the sharp boundary A₄ not simple (V₄ ⊴ A₄) as a distinct companion establishing 5 ≤ card α as the exact threshold."
     ],
-    "progressSummary": "PROGRESS (ORIENT): isolated the sole open lemma, stated the unconditional-simplicity assembly, and recorded a concrete Lean-oriented minimal-support/commutator proof plan grounded in confirmed Mathlib API. No sorries discharged — Aristotle (down) and local Docker build (corrupted) both blocked verification this session; file self-contained on Mathlib for future single-file elaboration."
+    "progressSummary": "SOLVED & VERIFIED (merged to main, PR #33972): isSimpleGroup_alternating proves Aₙ simple for every finite α with 5 ≤ card α (0 sorry, 0 axiom; #print axioms clean). This session (researcher-5): created the gallery entry (src/data/proofs/abel-ruffini-galois-extensions-oq-03-oq-01/meta.json + annotations.json) so the verified proof surfaces in the gallery; marked the pool completed. No Lean changes — adding to the 773-line 0-sorry file would be enumeration theater."
   }
 }
