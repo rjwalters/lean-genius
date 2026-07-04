@@ -386,9 +386,17 @@ theorem strong_required_bound_implies_conjecture :
 
 /- ## Green-Tao Connection -/
 
-/-- The primes have divergent reciprocal sum (Euler, 1737) -/
-axiom euler_prime_sum_diverges :
-  HasDivergentSum { p : ℕ | Nat.Prime p }
+/-- The primes have divergent reciprocal sum (Euler, 1737).
+
+    Previously an `axiom`; now discharged from Mathlib's
+    `not_summable_one_div_on_primes` (`∑ 1/p` over primes diverges). The set-subtype
+    form `HasDivergentSum {p | p.Prime}` matches Mathlib's `Set.indicator` form via
+    `summable_subtype_iff_indicator`, so this is a fully machine-checked, 0-axiom
+    theorem — one fewer assumption in the file. -/
+theorem euler_prime_sum_diverges :
+    HasDivergentSum { p : ℕ | Nat.Prime p } := by
+  have h := not_summable_one_div_on_primes
+  rwa [← summable_subtype_iff_indicator] at h
 
 /-- If Erdős #3 were true, Green-Tao would be a corollary -/
 theorem erdos3_implies_green_tao :
