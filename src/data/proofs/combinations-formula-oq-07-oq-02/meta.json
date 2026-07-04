@@ -142,5 +142,32 @@
       "venue": "CPP",
       "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "add_choose_eq_sum_range",
+      "statement": "C(m+n,k) = ∑_{i=0}^{k} C(m,i)·C(n,k−i)",
+      "description": "Vandermonde's convolution in range form, obtained from Mathlib's antidiagonal statement Nat.add_choose_eq by reindexing the antidiagonal over Finset.range (k+1). The base identity the rest of the file specializes."
+    },
+    {
+      "name": "sum_choose_mul_choose_shift",
+      "statement": "r ≤ n → C(m+n, n−r) = ∑_{i=0}^{n−r} C(m,i)·C(n,i+r)",
+      "description": "The off-diagonal convolution. The range i ≤ n−r keeps i+r ≤ n so the symmetry C(n,(n−r)−i) = C(n,i+r) applies term-by-term (via Nat.choose_symm and an omega subtraction fact), giving a tail-free sum with no vanishing terms."
+    },
+    {
+      "name": "sum_choose_mul_choose",
+      "statement": "C(m+n, n) = ∑_{i=0}^{n} C(m,i)·C(n,i)",
+      "description": "The mixed-product sum, the r = 0 slice: pairing each i-subset of the first block with an i-subset of the second. Recovered by specializing the shift theorem at r = 0."
+    },
+    {
+      "name": "central_sum_sq_shift",
+      "statement": "r ≤ n → C(2n, n−r) = ∑_{i=0}^{n−r} C(n,i)·C(n,i+r)",
+      "description": "The central (m = n) off-diagonal case, a shifted sum of products of equal-row binomials, obtained by setting m = n and rewriting 2n = n + n."
+    },
+    {
+      "name": "central_binom_eq_sum_sq",
+      "statement": "C(2n, n) = ∑_{i=0}^{n} C(n,i)²",
+      "description": "The parent's diagonal sum-of-squares identity recovered as the m = n, r = 0 corner of the off-diagonal convolution, closing the loop with CombinationsFormulaOQ07.central_binom_eq_sum_sq."
+    }
   ]
 }
