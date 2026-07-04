@@ -246,6 +246,93 @@ theorem iterations_before_contradiction (delta : ℝ) (hdelta : 0 < delta) (k : 
 -- decay rate (e.g., M ≥ N^{2/3} in Roth's analysis).
 
 -- ═══════════════════════════════════════════════════════════════════
+-- PART II.B: SUPERMULTIPLICATIVITY OF r₃ ON COPRIME MODULI (CRT)
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- The Chinese Remainder ring isomorphism `ZMod (M*N) ≃+* ZMod M × ZMod N`
+    carries AP-free sets to AP-free sets: if `A ⊆ ZMod M` and `B ⊆ ZMod N`
+    are AP-free, then the preimage of the product `A ×ˢ B` under the
+    isomorphism is AP-free in `ZMod (M*N)`.
+
+    Reason: a 3-term progression `x, x+d, x+2d` (with `d ≠ 0`) maps
+    componentwise to progressions in each factor. Since the isomorphism is
+    injective, `d ≠ 0` forces a nonzero step in at least one component,
+    which that component's AP-free hypothesis forbids. -/
+theorem apFree_crt_product {M N : ℕ} (h : Nat.Coprime M N)
+    {A : Finset (ZMod M)} {B : Finset (ZMod N)} (hA : APFree A) (hB : APFree B) :
+    APFree ((A ×ˢ B).image (ZMod.chineseRemainder h).symm) := by
+  set e := ZMod.chineseRemainder h with he
+  -- Membership through the isomorphism: `x ∈ image ↔ e x ∈ A ×ˢ B`.
+  have mem_iff : ∀ x : ZMod (M * N),
+      x ∈ (A ×ˢ B).image e.symm ↔ e x ∈ A ×ˢ B := by
+    intro x
+    rw [Finset.mem_image]
+    constructor
+    · rintro ⟨p, hp, rfl⟩
+      rwa [RingEquiv.apply_symm_apply]
+    · intro hx
+      exact ⟨e x, hx, RingEquiv.symm_apply_apply e x⟩
+  intro a d hd ha had
+  rw [mem_iff] at ha had
+  rw [mem_iff]
+  intro hmem
+  -- `e` is injective, so `d ≠ 0` gives `e d ≠ 0`.
+  have hed : e d ≠ 0 := by
+    intro hh
+    apply hd
+    have := congrArg e.symm hh
+    rwa [RingEquiv.symm_apply_apply, map_zero] at this
+  -- Expand the three progression terms componentwise.
+  rw [map_add] at had
+  rw [show a + 2 * d = a + d + d by ring, map_add, map_add] at hmem
+  rw [Finset.mem_product] at ha had hmem
+  simp only [Prod.fst_add, Prod.snd_add] at had hmem
+  -- Nonzero step in at least one coordinate.
+  have hcoord : (e d).1 ≠ 0 ∨ (e d).2 ≠ 0 := by
+    by_contra hcon
+    push_neg at hcon
+    exact hed (Prod.ext (by simp [hcon.1]) (by simp [hcon.2]))
+  rcases hcoord with hp | hq
+  · -- Progression `a₁, a₁+p, a₁+2p` lies in `A` with step `p ≠ 0`.
+    refine (hA (e a).1 (e d).1 hp ha.1 had.1) ?_
+    rw [two_mul, ← add_assoc]; exact hmem.1
+  · -- Progression `a₂, a₂+q, a₂+2q` lies in `B` with step `q ≠ 0`.
+    refine (hB (e a).2 (e d).2 hq ha.2 had.2) ?_
+    rw [two_mul, ← add_assoc]; exact hmem.2
+
+/-- **Supermultiplicativity of the Roth number on coprime moduli.**
+
+    For coprime `M, N`, `r₃(M)·r₃(N) ≤ r₃(M·N)`: the product of a maximal
+    AP-free set in `ZMod M` with one in `ZMod N` is, via the Chinese
+    Remainder isomorphism, an AP-free set in `ZMod (M·N)` of size
+    `r₃(M)·r₃(N)`.
+
+    This is a genuine structural lower-bound tool: iterating it over the
+    distinct prime factors of `N` yields explicit growth of `r₃`, entirely
+    elementarily (no Fourier analysis or density increment). It is weaker
+    than Behrend's bound but self-contained and axiom-free. -/
+theorem rothNumber_mul_coprime {M N : ℕ} [NeZero M] [NeZero N] (h : Nat.Coprime M N) :
+    rothNumber M * rothNumber N ≤ rothNumber (M * N) := by
+  haveI : NeZero (M * N) := ⟨mul_ne_zero (NeZero.ne M) (NeZero.ne N)⟩
+  obtain ⟨A, hA, hAcard⟩ := rothNumber_achieved (N := M)
+  obtain ⟨B, hB, hBcard⟩ := rothNumber_achieved (N := N)
+  set e := ZMod.chineseRemainder h with he
+  have hfree := apFree_crt_product h hA hB
+  have hcard : ((A ×ˢ B).image e.symm).card = rothNumber M * rothNumber N := by
+    rw [Finset.card_image_of_injective _ e.symm.injective, Finset.card_product,
+      hAcard, hBcard]
+  calc rothNumber M * rothNumber N
+      = ((A ×ˢ B).image e.symm).card := hcard.symm
+    _ ≤ rothNumber (M * N) := card_le_rothNumber _ hfree
+
+/-- Explicit growth from supermultiplicativity: for `N` coprime to 3,
+    `2·r₃(N) ≤ r₃(3N)`, using `r₃(3) = 2`. -/
+theorem two_mul_rothNumber_le {N : ℕ} [NeZero N] (h : Nat.Coprime 3 N) :
+    2 * rothNumber N ≤ rothNumber (3 * N) := by
+  have hmul := rothNumber_mul_coprime (M := 3) (N := N) h
+  rwa [rothNumber_three] at hmul
+
+-- ═══════════════════════════════════════════════════════════════════
 -- PART III: QUANTITATIVE BOUNDS (STATEMENTS)
 -- ═══════════════════════════════════════════════════════════════════
 
