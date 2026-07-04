@@ -2,7 +2,7 @@
   "id": "harmonic-divergence-oq-01-oq-02",
   "title": "The Euler-Mascheroni Constant as a Gamma-Function Derivative: γ = -Γ'(1)",
   "slug": "harmonic-divergence-oq-01-oq-02",
-  "description": "A fully machine-verified formalization of the identity γ = -Γ'(1) connecting the Euler-Mascheroni constant to the derivative of the Gamma function, discharging the second open question of the parent Euler-Mascheroni entry. Includes the general integer formula Γ'(n+1) = n!(-γ + H_n), concrete values Γ'(1) = -γ, Γ'(2) = 1 - γ, Γ'(3) = 3 - 2γ, the sign change Γ'(1) < 0 < Γ'(2) that locates the minimum of Γ between 1 and 2, a sharp enclosure -2/3 < Γ'(1) < -1/2 from the parent's bounds, and the half-integer derivative Γ'(1/2) = -√π(γ + 2 log 2).",
+  "description": "A machine-verified account of the identity γ = -Γ'(1) connecting the Euler-Mascheroni constant to the derivative of the Gamma function, discharging the second open question of the parent Euler-Mascheroni entry. The flagship identity is derived directly from Mathlib's Gamma-derivative library (Mathlib.NumberTheory.Harmonic.GammaDeriv); this entry adds the concrete evaluations, sign analysis, and bound transfer on top. Includes the general integer formula Γ'(n+1) = n!(-γ + H_n), concrete values Γ'(1) = -γ, Γ'(2) = 1 - γ, Γ'(3) = 3 - 2γ, the sign change Γ'(1) < 0 < Γ'(2) that locates the minimum of Γ between 1 and 2, a sharp enclosure -2/3 < Γ'(1) < -1/2 from the parent's bounds, and the half-integer derivative Γ'(1/2) = -√π(γ + 2 log 2).",
   "references": [
     {
       "authors": "Leonhard Euler",
@@ -42,16 +42,48 @@
       "special-functions",
       "digamma"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-07-01",
     "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified; depends only on the foundational axioms propext, Classical.choice, and Quot.sound (confirmed via #print axioms).",
+    "assumptions": "0 axioms, 0 sorries (core result via Mathlib bridge). The flagship identity γ = -Γ'(1) and the integer/half-integer derivative formulas are obtained by directly delegating to Mathlib's Mathlib.NumberTheory.Harmonic.GammaDeriv (Real.eulerMascheroniConstant_eq_neg_deriv, Real.deriv_Gamma_nat, Real.hasDerivAt_Gamma_one, Real.hasDerivAt_Gamma_one_half); this entry contributes the concrete small-integer evaluations, the sign analysis, and the enclosure transferred from the parent's 1/2 < γ < 2/3 bound. #print axioms reports only the foundational axioms propext, Classical.choice, and Quot.sound (no native_decide, hence no Lean.ofReduceBool).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.eulerMascheroniConstant_eq_neg_deriv",
+        "description": "γ = -Γ'(1): the flagship identity of this entry is a direct one-line delegation to this Mathlib theorem",
+        "module": "Mathlib.NumberTheory.Harmonic.GammaDeriv"
+      },
+      {
+        "theorem": "Real.deriv_Gamma_nat",
+        "description": "Γ'(n+1) = n!(-γ + H_n): the general integer-argument derivative formula, wrapped directly as deriv_Gamma_nat / hasDerivAt_Gamma_nat",
+        "module": "Mathlib.NumberTheory.Harmonic.GammaDeriv"
+      },
+      {
+        "theorem": "Real.hasDerivAt_Gamma_one",
+        "description": "HasDerivAt Gamma (-γ) 1, wrapped as hasDerivAt_Gamma_one and used to extract deriv Gamma 1 = -γ",
+        "module": "Mathlib.NumberTheory.Harmonic.GammaDeriv"
+      },
+      {
+        "theorem": "Real.hasDerivAt_Gamma_one_half",
+        "description": "Γ'(1/2) = -√π(γ + 2 log 2), wrapped as hasDerivAt_Gamma_one_half / deriv_Gamma_one_half",
+        "module": "Mathlib.NumberTheory.Harmonic.GammaDeriv"
+      },
+      {
+        "theorem": "Real.one_half_lt_eulerMascheroniConstant",
+        "description": "1/2 < γ (parent bound); combined via linarith for the sign analysis and the enclosure of Γ'(1)",
+        "module": "Mathlib.NumberTheory.Harmonic.EulerMascheroni"
+      },
+      {
+        "theorem": "Real.eulerMascheroniConstant_lt_two_thirds",
+        "description": "γ < 2/3 (parent bound); gives Γ'(2) > 0 and the upper enclosure Γ'(1) < -1/2",
+        "module": "Mathlib.NumberTheory.Harmonic.EulerMascheroni"
+      }
+    ],
     "lineCount": 152,
     "theoremCount": 14,
     "definitionCount": 1,
     "originalContributions": [
-      "Machine-verified formalization of γ = -Γ'(1) (gamma_eq_neg_deriv_Gamma_one), discharging the parent entry's second open question — previously documented only as a comment",
+      "Machine-verified derivation of γ = -Γ'(1) (gamma_eq_neg_deriv_Gamma_one) from Mathlib's Real.eulerMascheroniConstant_eq_neg_deriv, discharging the parent entry's second open question — previously documented only as a comment",
       "HasDerivAt Γ (-γ) 1 and deriv Gamma 1 = -γ wrappers",
       "General integer formula Γ'(n+1) = n!(-γ + H_n) as both deriv and HasDerivAt statements",
       "Concrete evaluations Γ'(2) = 1 - γ and Γ'(3) = 3 - 2γ",
