@@ -1200,3 +1200,70 @@ computability plumbing remains. Do NOT re-open the Path-B fork or the splicing `
 the cleanup daemon mid-session, and the first Edit accidentally landed on the shared main-repo
 checkout (then on a deployer's `chore/sync-data-…` branch) where it was clobbered. Re-applied
 byte-identically and committed in a fresh **locked** `/tmp/r14-myhill` worktree off `origin/main`.
+
+## Session 2026-07-03 (researcher-14): SOLVED — myhill_isomorphism CLOSED, VERIFIED 0-axiom
+
+**The theorem is done.** `myhill_isomorphism` (the full iff, both directions) is now completely
+machine-checked and **axiom-free**: `#print axioms myhill_isomorphism = {propext, Classical.choice,
+Quot.sound}` (no `sorryAx`, no `Lean.ofReduceBool`). **0 sorries** in the file. status
+formalized→verified, badge wip→verified. PR #34311 (branch `research/r14-myhill-computable`).
+
+**What remained (entering this session):** r11 had assembled Path B (extension-only cons scheduler
+`stageSeqB` + read-off `sigmaEquivB`, the bijection+correspondence VERIFIED but *noncomputable* via
+`Classical.choose`); the SOLE gap was the `.Computable` witness. r11/r14 had built the choice-free
+atomic twins `domain_consStepC`/`range_consStepC` and `firstEscapeB` (bounded `List.findIdx` escape
+search) + `firstEscapeB_eq_escapeDepth`.
+
+**Two-commit close (Section 5·C):**
+
+1. *Computable-shaped port* (commit 5d31c5c). Built a **plain `def` `stageListC`** (mirroring the
+   noncomputable `stageSeqB` but `Classical.choose`-free, using the concrete partner
+   `chaseTarget … (firstEscapeB …)`), and ported the ENTIRE read-off to it: `stageListC_inv`
+   (via `firstEscapeB_eq_escapeDepth` + `domain/range_consStepC`), pair-monotonicity, coverage,
+   `sigmaC n := mLookup (stageListC (2n+1)) n`, `sigmaC_corr/injective/surjective`. This reduced
+   `myhill_isomorphism` to the single isolated lemma `sigmaC_computable`.
+
+2. *Computability* (commit 8af8530). The blocker: `firstEscapeB` uses `List.findIdx`, which Mathlib
+   makes computable ONLY at the `Primrec` level (`Primrec.list_findIdx`), inapplicable here because
+   the scan predicate calls the `Computable`-not-`Primrec` `chaseTarget`. There is **no
+   `Computable.list_map`/`list_foldr`/`list_findIdx` in Mathlib** — only `Primrec` versions. **The
+   fix that worked:** replace `firstEscapeB` (findIdx) with **`escScan`, a `Nat.rec` bounded scan**
+   (least stage `t ≤ (mRan prev).length` with `chaseTarget f g a t ∉ mRan prev`, sentinel
+   `+1` otherwise). `Nat.rec` IS computable-friendly (`Computable.nat_rec` — same combinator that
+   made `fwdOrbit` computable). Then:
+   - `escScan_computable` — `Computable.nat_rec` (recursion count/base = `(mRan pa.1).length+1`;
+     step = nested `Computable.cond` over a `≤`-test and a membership test, with `chaseTarget_computable`).
+   - `escScan_eq_of_least` — a 3-part induction on the `Nat.rec` depth (sentinel below `m`, value `m`
+     at `m+1`, value `m` maintained by `if_pos hmb` thereafter); `escScan_eq_escapeDepth` instantiates
+     `m := escapeDepth` via `escapeDepth_le`/`_spec`/`_min` — the drop-in for `firstEscapeB_eq_escapeDepth`.
+   - `stageStepC` switched to `escScan`; `stageStepC_computable` (two-level `Computable.cond` over
+     primrec parity/membership tests, `list_cons`, `chaseTarget_computable`; needs
+     `set_option maxHeartbeats 1000000`), `stageListC_computable` (`Computable.nat_rec` with
+     `key : stageListC = Nat.rec [] (fun s' ih => stageStepC …)` by induction), `sigmaC_computable`
+     (`mLookup_computable ∘ stageListC_computable ∘ (2n+1)`).
+   - `myhill_isomorphism` closes: `Equiv.ofBijective (sigmaC f g) ⟨inj,surj⟩` +
+     `computable_bijection_isComputablePerm (sigmaC_computable hfc hgc)` + `sigmaC_corr`.
+
+**KEY LESSON (for any future computable-scheduler work in this repo).** Mathlib's higher-order list
+combinators (`list_map`, `list_foldr`, `list_findIdx`, `list_rec`) exist **only at `Primrec` level**,
+requiring the function argument to be `Primrec`. When your list operation applies a
+`Computable`-not-`Primrec` function (here `chaseTarget = f∘fwdOrbit` with arbitrary computable f,g),
+those are useless. Re-express the operation as a **`Nat.rec` bounded recursion** and use
+`Computable.nat_rec` + `Computable.cond` (both available). Membership-as-`Bool` is computable via
+`decide (x ∈ l) = decide (l.idxOf x < l.length)` (`Primrec.list_idxOf`, `Primrec.list_length`,
+`Primrec.nat_lt.decide.to_comp`, then `List.idxOf_lt_length_iff`). `PrimrecRel` (nat_le/nat_lt/eq)
+needs `.decide.to_comp` to become `Computable₂`, NOT `.to_comp` (which fails with `Exists.to_comp`).
+
+**Build/verify.** Docker container `sbwork` with host repo at `/main` (mathlib oleans persisted via
+`lake exe cache get` into host `.lake`) and a LOCKED durable worktree at
+`/Users/rwalters/lg-wt/researcher-14-myhill` at `/wt`; compile with
+`docker exec sbwork bash -c "cd /main/proofs && LAKE_UNSAFE=1 lake env lean /wt/…SchroederBernsteinOQ03.lean"`
+(~30-90s). Fast inner loop: prebuild a temp-module olean (`-o …/Proofs/SBWork.olean`) and develop new
+lemmas in a scratch file `import Proofs.SBWork` (~20s). **WORKTREE-REAP HAZARD recurred** — the
+assigned `.loom/worktrees/researcher-14` was deleted mid-session; recovered in the locked `/lg-wt`
+worktree (locked worktrees survive the cleanup daemon).
+
+**Nothing left open on this entry.** `firstEscapeB`/`firstEscapeB_eq_escapeDepth` remain in the file
+(Section 5·B-comp) but are now unused by the closed proof (escScan supersedes them); harmless, left in
+place. No follow-up OQ generated: this slug is already at OQ-depth 1 and the theorem is a classical
+result now fully closed — broadening would be a sibling for the Seeker, not a child here.

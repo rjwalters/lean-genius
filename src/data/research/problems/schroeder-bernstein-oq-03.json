@@ -2,7 +2,7 @@
   "slug": "schroeder-bernstein-oq-03",
   "title": "Myhill Isomorphism Theorem (Computable Schroeder-Bernstein)",
   "phase": "ACT",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (07-03 r4): Cross-preservation 2x2 matrix COMPLETE. Added balanced_swap_cons_range (dual of the already-merged balanced_swap_cons_domain), so both atomic steps now provably preserve BOTH the un-swapped Balanced f g L and the swapped Balanced g f (L.map swap) that the two-sided escape (escape_exists) consumes. VERIFIED 0-axiom, file 2575->2632 lines. The one myhill_isomorphism sorry UNCHANGED. Remaining critical path: assemble the extension-only scheduler (carry both balances via the cons lemmas, discharge escape via escape_exists, read off e with mLookup/mLookup_stable, prove .Computable).",
+    "progressSummary": "SOLVED (07-03 r14): myhill_isomorphism CLOSED — full Myhill Isomorphism Theorem (computable Schroeder-Bernstein) machine-checked and axiom-free (#print axioms = {propext, Classical.choice, Quot.sound}; no sorryAx/ofReduceBool). 0 sorries; status verified. The last-mile computability was closed by replacing the noncomputable escapeDepth/firstEscapeB(List.findIdx) with escScan, a Nat.rec bounded escape search that IS Computable.nat_rec-friendly; escScan_computable + escScan_eq_escapeDepth + stageStepC_computable + stageListC_computable + sigmaC_computable, then Equiv.ofBijective + computable_bijection_isComputablePerm. PR #34311.",
     "builtItems": [
       "partialInverse_unique in Proofs/SchroederBernsteinOQ03.lean (single-valued partial inverse)",
       "fwdOrbit_eq_iterate in Proofs/SchroederBernsteinOQ03.lean (orbit = Function.iterate of g∘f)",
@@ -98,10 +98,12 @@
       "The atomic augment steps preserve only f-edges (not full pair-nesting) — the augmenting path can rewire g-edges, so mLookup_stable does not apply verbatim across stages; limit read-off well-definedness must route through BuiltFrom/f-edge structure or switch to an extension-only scheduler.",
       "stageSeq is Classical.choose-noncomputable; closing myhill_isomorphism still needs a genuinely computable stage step (Primrec/Computable scheduler) — the read-off primitives mLookup_computable/fwdOrbit_computable are already in place, the scheduler is not.",
       "split_ifs prunes the outer parity if when the s%2 hypothesis is in context; collapse it with if_pos/if_neg before split_ifs to keep goal count predictable.",
-      "The scheduler must carry BOTH balances (Balanced f g L and Balanced g f (L.map swap)); each atomic step must preserve BOTH. The 2x2 preservation matrix is now complete: balanced_cons_domain + balanced_swap_cons_range (domain/range step preserving un-swapped Balanced f g) and balanced_cons_range + balanced_swap_cons_domain (preserving swapped Balanced g f)."
+      "The scheduler must carry BOTH balances (Balanced f g L and Balanced g f (L.map swap)); each atomic step must preserve BOTH. The 2x2 preservation matrix is now complete: balanced_cons_domain + balanced_swap_cons_range (domain/range step preserving un-swapped Balanced f g) and balanced_cons_range + balanced_swap_cons_domain (preserving swapped Balanced g f).",
+      "SOLVED (r14 07-03): full theorem VERIFIED 0-axiom. Last mile = replace List.findIdx escape search (no Computable.list_findIdx in Mathlib) with a Nat.rec bounded scan escScan (Computable.nat_rec-friendly). Membership-Bool computable via decide(idxOf<length); PrimrecRel needs .decide.to_comp not .to_comp."
     ],
     "mathlibGaps": [
-      "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation)."
+      "Mathlib lacks Myhill isomorphism theorem (OneOneEquiv → computable permutation).",
+      "Mathlib has NO Computable-level list_map/list_foldr/list_findIdx (only Primrec versions requiring a Primrec function arg) — re-express as Nat.rec + Computable.nat_rec when the function is Computable-not-Primrec."
     ],
     "nextSteps": [
       "Derive the range-stage dual augment_range_step from augment_domain_step via the Section 4e swap duality (isMatching_map_swap / matchingCorr_map_swap / builtFrom_map_swap).",
