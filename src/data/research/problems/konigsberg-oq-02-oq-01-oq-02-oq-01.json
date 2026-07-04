@@ -29,15 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT/ACT: undirected Hierholzer sufficiency stated + iff-necessity proved (compiles, 1 sorry). Directed template identified; naive doubling reduction shown to fail. Sufficiency construction (~600-1000 lines) is the remaining work; delegate to Aristotle or build natively.",
+    "progressSummary": "ACT: base case of undirected Hierholzer induction VERIFIED (euler_circuit_of_edgeSet_empty, 0 sorries, in ...Dev.lean). Corrected key fact: IsEulerian = (∀ e ∈ edgeSet, count e = 1), trail derived. Directed Digraph template confirmed NON-reusable. Mathlib confirmed lacking sufficiency. Aristotle backend down this session. Remaining: inductive step (sub-lemmas A maximal-trail-closed, B edge-removal-preserves-even, C splice) — the ~600-1000 line core.",
     "builtItems": [
-      "proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01.lean: stated undirected_euler_circuit_sufficient (sufficiency, 1 sorry) and undirected_euler_circuit_iff (full characterization). The iff necessity half is fully PROVED; only sufficiency delegates to the sorry. Builds cleanly (import Connectivity.Connected added; only the expected sorry warning)."
+      "proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01.lean: stated undirected_euler_circuit_sufficient (sufficiency, 1 sorry) and undirected_euler_circuit_iff (full characterization). The iff necessity half is fully PROVED; only sufficiency delegates to the sorry. Builds cleanly (import Connectivity.Connected added; only the expected sorry warning).",
+      "VERIFIED base case of undirected Hierholzer induction: theorem euler_circuit_of_edgeSet_empty in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (connected + G.edgeSet = ∅ ⇒ ∃ Eulerian circuit, via nil walk; vacuous count condition). Compiles clean, 0 sorries."
     ],
     "insights": [
       "Target is undirected Hierholzer SUFFICIENCY: connected + all-even-degree implies an Eulerian circuit exists. Necessity is already proved in KonigsbergOQ02OQ01OQ02.lean (eulerian_circuit_forall_even).",
       "A fully-proved DIRECTED analogue exists in KonigsbergOQ02OQ01.lean (directed_euler_circuit_sufficient_corrected, 0 sorries, ~900 lines) with reusable machinery: splice constructor, removeArcList (arc removal preserving balance), and maximal_balanced_trail_is_circuit. This is a strong structural template for the undirected argument.",
       "KEY INSIGHT (reduction failure): the naive reduction replacing each undirected edge {u,v} with two directed arcs (u,v),(v,u) yields a balanced strongly-connected digraph, so the directed theorem gives a directed Eulerian circuit -- but that circuit traverses each undirected edge TWICE (once per direction). It is therefore NOT an undirected Eulerian circuit. A native undirected Hierholzer argument is required.",
-      "The undirected parity invariant is Even (G.degree v) (from Mathlib IsEulerian.even_degree_iff / card_odd_degree) rather than the directed inDegree=outDegree balance, because undirected incidence is symmetric."
+      "The undirected parity invariant is Even (G.degree v) (from Mathlib IsEulerian.even_degree_iff / card_odd_degree) rather than the directed inDegree=outDegree balance, because undirected incidence is symmetric.",
+      "IsEulerian is defined in Mathlib as (∀ e ∈ G.edgeSet, p.edges.count e = 1) — NOT (IsTrail ∧ covers all edges). Trail-ness is a DERIVED consequence (IsEulerian.isTrail). The construction invariant to maintain is therefore the per-edge count=1 condition; this corrects the earlier plan framing.",
+      "Confirmed (web search + local check): Mathlib4 Trails module has only the necessity/property lemmas (IsEulerian.even_degree_iff, IsEulerian.card_odd_degree). No Eulerian existence/Hierholzer construction exists upstream, so sufficiency must be built natively.",
+      "The directed Digraph proof in KonigsbergOQ02OQ01.lean is NOT reusable: it is built on a bespoke Digraph structure with its own Walk/splice/removeArcList/arcCount — none are SimpleGraph.Walk objects. A native SimpleGraph mirror is required.",
+      "Aristotle backend returned Resource not found for prove, prove_file, and a trivial inline (1+1=2) prove this session — full backend outage, delegation unavailable. Resubmit the single sorry when backend recovers (known classical result, ideal Aristotle target)."
     ],
     "mathlibGaps": [
       "Mathlib provides Eulerian degree bookkeeping (SimpleGraph.Walk.IsEulerian.even_degree_iff, .card_odd_degree) but NO existence/sufficiency (Hierholzer construction) for undirected graphs. Confirmed by parent file docstring: sufficiency remains the open direction."
@@ -45,7 +50,10 @@
     "nextSteps": [
       "Port the directed sub-lemma structure to undirected: (1) from an all-even-degree graph, any MAXIMAL trail from a vertex is closed (current endpoint always has an unused incident edge by a parity/handshake count); (2) removing the edges of a closed trail preserves all-even-degree; (3) splice a residual closed trail through a shared vertex (exists by connectivity) into the main circuit; induct on edge count.",
       "Aristotle submission of the sorry file failed with MCP error Resource not found (likely worktree/lake-project resolution). Re-submit from the main repo via research/scripts/aristotle-submit.sh once the PR merges, as a KNOWN classical result.",
-      "Consider building an undirected splice + edgeRemoval operation mirroring KonigsbergOQ02OQ01.lean removeArcList; estimate 600-1000 lines. This is the main effort and may warrant Aristotle or a dedicated multi-session build."
+      "Consider building an undirected splice + edgeRemoval operation mirroring KonigsbergOQ02OQ01.lean removeArcList; estimate 600-1000 lines. This is the main effort and may warrant Aristotle or a dedicated multi-session build.",
+      "Prove inductive step sub-lemma A: in an all-even-degree graph with ≥1 edge, a maximal trail from any positive-degree vertex is CLOSED (parity/handshake: current endpoint always has an unused incident edge unless back at start).",
+      "Prove sub-lemma B: deleting the edges of a closed trail (G.deleteEdges on the trail edge set) preserves ∀ v, Even (degree v) — each vertex loses an even number of incident trail-edges.",
+      "Prove sub-lemma C (splice): a residual closed trail sharing a vertex with the main circuit can be spliced in, maintaining the per-edge count=1 invariant; combine with strong induction on G.edgeFinset.card using the verified base case."
     ],
     "markdown": "# Knowledge Base: konigsberg-oq-02-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

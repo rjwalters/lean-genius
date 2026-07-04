@@ -52,3 +52,36 @@ Insights accumulated during research on this problem.
   edge removal preserves even degree → splice via shared vertex → induct on edges).
 - Re-submit the sorry file to Aristotle from the main repo (MCP "Resource not
   found" from the worktree) as a KNOWN result.
+
+## Session 2026-07-04 (Session 2) — Base case verified; plan corrected
+
+**Mode**: REVISIT (depth line) | **Outcome**: progress (1 verified lemma)
+
+### What I Did
+- Confirmed via web search + local check that Mathlib4 still has NO undirected
+  Eulerian existence/Hierholzer construction (only `even_degree_iff`,
+  `card_odd_degree`).
+- Confirmed the directed `Digraph` proof is NOT reusable: it is built on a bespoke
+  `Digraph` type (own Walk/splice/removeArcList/arcCount), not `SimpleGraph.Walk`.
+- Wrote and **verified** the induction base case in a new dev file:
+  `euler_circuit_of_edgeSet_empty` (connected + `G.edgeSet = ∅` ⇒ Eulerian circuit
+  via the `nil` walk). Compiles clean, 0 sorries.
+- Aristotle backend was fully DOWN (`Resource not found` even for inline `1+1=2`),
+  so the known-result delegation could not run this session.
+
+### Key Findings
+- **Definition correction**: Mathlib's `IsEulerian p := ∀ e ∈ G.edgeSet,
+  p.edges.count e = 1` — a per-edge count condition, NOT `IsTrail ∧ covers-all`.
+  Trail-ness is derived (`IsEulerian.isTrail`). The construction invariant is the
+  count=1 condition. `IsEulerian` needs `[DecidableEq V]`.
+
+### Files Modified
+- proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (new — base case, verified)
+- src/data/research/problems/konigsberg-oq-02-oq-01-oq-02-oq-01.json (knowledge)
+
+### Next Steps
+- Sub-lemma A: maximal trail in an all-even graph is closed (parity/handshake).
+- Sub-lemma B: `G.deleteEdges (closed trail edges)` preserves `∀ v, Even (degree v)`.
+- Sub-lemma C: splice residual circuit via shared vertex; strong induction on
+  `edgeFinset.card` using the verified base case.
+- Resubmit the single sorry to Aristotle once the backend recovers.
