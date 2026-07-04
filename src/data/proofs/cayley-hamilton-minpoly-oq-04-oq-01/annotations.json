@@ -38,13 +38,25 @@
   {
     "id": "ann-chminpolyoq04oq01-minpoly",
     "proofId": "cayley-hamilton-minpoly-oq-04-oq-01",
-    "range": { "startLine": 175, "endLine": 238 },
-    "type": "insight",
-    "title": "Minimal polynomial = Xⁿ, and the iff characterization",
-    "content": "minpoly_eq_X_pow_of_maximal_nilpotent: Nⁿ = 0 gives aeval N (Xⁿ) = 0, so minpoly K N ∣ Xⁿ; since X is prime (prime_X), dvd_prime_pow gives minpoly associated to Xⁱ, and eq_of_monic_of_associated (both monic) makes minpoly = Xⁱ; then Nⁱ = 0, so i ≥ n (else Nⁿ⁻¹ = Nⁿ⁻¹⁻ⁱ·Nⁱ = 0), forcing i = n. The converse maximal_nilpotent_of_minpoly_eq_X_pow reads Nⁿ = 0 off aeval, and rules out Nⁿ⁻¹ = 0 by a degree comparison (minpoly would divide Xⁿ⁻¹). Together they give the iff and natDegree(minpoly) = n, linking the construction to the parent's degree-based nonderogatory characterization.",
+    "range": { "startLine": 175, "endLine": 204 },
+    "type": "theorem",
+    "title": "Minimal polynomial = Xⁿ (forward direction)",
+    "content": "minpoly_eq_X_pow_of_maximal_nilpotent: Nⁿ = 0 gives aeval N (Xⁿ) = 0, so minpoly K N ∣ Xⁿ; since X is prime (prime_X), dvd_prime_pow gives minpoly associated to Xⁱ, and eq_of_monic_of_associated (both monic) makes minpoly = Xⁱ; then Nⁱ = 0, so i ≥ n (else Nⁿ⁻¹ = Nⁿ⁻¹⁻ⁱ·Nⁱ = 0), forcing i = n. natDegree_minpoly_eq_of_maximal_nilpotent then reads off natDegree(minpoly) = n, the nonderogatory condition at the level of the minimal polynomial, linking the construction to the parent's degree-based characterization.",
     "mathContext": "$\\mu\\mid X^n$, $X$ prime $\\Rightarrow \\mu = X^i$; $N^{n-1}\\ne 0\\Rightarrow i=n$, so $\\mu = X^n$ and $\\deg\\mu = n$.",
     "significance": "key",
     "relatedConcepts": ["minimal polynomial", "prime element X", "dvd_prime_pow", "associated polynomials", "natDegree"],
     "prerequisites": ["divisibility in polynomial rings", "prime elements", "monic polynomials"]
+  },
+  {
+    "id": "ann-chminpolyoq04oq01-converse",
+    "proofId": "cayley-hamilton-minpoly-oq-04-oq-01",
+    "range": { "startLine": 208, "endLine": 238 },
+    "type": "theorem",
+    "title": "The converse, the iff, and cyclic-vector existence",
+    "content": "maximal_nilpotent_of_minpoly_eq_X_pow is the converse: minpoly K N = Xⁿ reads Nⁿ = 0 directly off aeval, and rules out Nⁿ⁻¹ = 0 by a degree comparison — if Nⁿ⁻¹ = 0 the minimal polynomial would divide Xⁿ⁻¹ and have degree ≤ n−1, contradicting minpoly = Xⁿ. minpoly_eq_X_pow_iff_maximal_nilpotent packages the two directions as an iff, and has_cyclic_vector_of_minpoly_eq_X_pow feeds minpoly = Xⁿ back into Part I to produce an explicit cyclic vector — closing the equivalence between the algebraic (minimal polynomial) and geometric (cyclic vector) descriptions of maximal nilpotency.",
+    "mathContext": "$\\mu = X^n \\Rightarrow N^n = 0$; and $N^{n-1} = 0$ would force $\\deg\\mu \\le n-1$, contradiction — hence the iff, and a cyclic vector exists.",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "degree comparison", "iff characterization", "cyclic vector", "maximal nilpotency"],
+    "prerequisites": ["minimal polynomial degree bounds", "the forward direction", "Part I cyclic-vector construction"]
   }
 ]

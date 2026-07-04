@@ -197,12 +197,20 @@
       "mathContext": "For a single Jordan block at 0, any vector not killed by Nⁿ⁻¹ generates the whole space under N; this works over any field with no genericity argument."
     },
     {
-      "id": "characterization",
-      "title": "Part II: Arithmetic characterisation via the minimal polynomial",
+      "id": "characterization-forward",
+      "title": "Part II: Minimal polynomial = Xⁿ (forward direction)",
       "startLine": 175,
+      "endLine": 204,
+      "summary": "minpoly_eq_X_pow_of_maximal_nilpotent: for a maximal-nilpotent matrix minpoly = Xⁿ (Nⁿ = 0 gives minpoly ∣ Xⁿ; X prime ⟹ minpoly = Xⁱ; Nⁿ⁻¹ ≠ 0 ⟹ i = n). natDegree_minpoly_eq_of_maximal_nilpotent reads off natDegree(minpoly) = n, the nonderogatory condition at the minimal-polynomial level.",
+      "mathContext": "$\\mu \\mid X^n$ and $X$ prime give $\\mu = X^i$; $N^{n-1} \\neq 0$ forces $i = n$, so $\\mu = X^n$ and $\\deg\\mu = n$."
+    },
+    {
+      "id": "characterization-converse",
+      "title": "Part II: The converse and the iff characterisation",
+      "startLine": 205,
       "endLine": 238,
-      "summary": "minpoly = Xⁿ for maximal nilpotent (divides Xⁿ; X prime ⟹ minpoly = Xⁱ; Nⁿ⁻¹≠0 ⟹ i=n); natDegree = n; converse minpoly=Xⁿ ⟹ maximal nilpotent; the iff; and cyclic-vector existence from minpoly=Xⁿ.",
-      "mathContext": "The minimal polynomial of a single nilpotent Jordan block of size n is Xⁿ; conversely minpoly = Xⁿ forces Nⁿ = 0 with Nⁿ⁻¹ ≠ 0 (else minpoly would divide Xⁿ⁻¹ and have degree < n)."
+      "summary": "maximal_nilpotent_of_minpoly_eq_X_pow: minpoly = Xⁿ recovers Nⁿ = 0 ∧ Nⁿ⁻¹ ≠ 0 (the latter by a degree comparison — Nⁿ⁻¹ = 0 would make minpoly divide Xⁿ⁻¹). minpoly_eq_X_pow_iff_maximal_nilpotent packages both directions as an iff; has_cyclic_vector_of_minpoly_eq_X_pow derives cyclic-vector existence from minpoly = Xⁿ.",
+      "mathContext": "minpoly = Xⁿ ⟹ Nⁿ = 0; and Nⁿ⁻¹ = 0 would force deg(minpoly) ≤ n−1, contradicting minpoly = Xⁿ — giving the equivalence and cyclic-vector existence."
     }
   ]
 }
