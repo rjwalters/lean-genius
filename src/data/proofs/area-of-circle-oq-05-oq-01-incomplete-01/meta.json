@@ -81,7 +81,7 @@
     {
       "id": "sec-fubini-scaled",
       "title": "Section I: Fubini — Square of the Scaled Gaussian as a Double Integral",
-      "startLine": 44,
+      "startLine": 1,
       "endLine": 60,
       "summary": "Proves gaussian_sq_eq_double_integral_scaled: (∫ e^{-a x²})² = ∫∫ e^{-a(x²+y²)}. Uses integrable_exp_neg_mul_sq ha, Integrable.mul_prod, integral_prod, and integral_mul_left/right after factoring exp(-a(x²+y²)) = exp(-a x²)·exp(-a y²). Compiles with 0 sorries.",
       "mathContext": "$(\\int e^{-a x^2} dx)^2 = \\int\\int e^{-a(x^2+y^2)} dx\\, dy$ by Fubini, factoring the exponential."
