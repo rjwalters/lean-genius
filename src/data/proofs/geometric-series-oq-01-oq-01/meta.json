@@ -160,6 +160,12 @@
       "type": "key",
       "description": "∑ (−1)ⁿ xⁿ = 1/(1+x) for |x| < 1 (geometric series, ratio −x)",
       "leanType": "{x : ℝ} → |x| < 1 → ∑' n : ℕ, (-1)^n * x^n = (1 + x)⁻¹"
+    },
+    {
+      "name": "grandi_abel_value",
+      "type": "core",
+      "description": "Grandi's series is Abel summable to 1/2 — the named headline export, restating grandi_abel_tendsto and matching the Cesàro value",
+      "leanType": "Tendsto (fun x : ℝ => ∑' n : ℕ, (-1)^n * x^n) (𝓝[<] 1) (𝓝 (1/2))"
     }
   ],
   "references": [
