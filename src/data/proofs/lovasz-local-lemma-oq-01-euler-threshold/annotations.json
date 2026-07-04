@@ -20,6 +20,26 @@
     ]
   },
   {
+    "id": "ann-lll-oq01-euler-setup",
+    "proofId": "lovasz-local-lemma-oq-01-euler-threshold",
+    "range": { "startLine": 37, "endLine": 41 },
+    "type": "context",
+    "title": "Building on the parent proof: imports and open namespaces",
+    "content": "The file imports only `Proofs.LovaszLocalLemma` — the parent gallery proof — rather than re-deriving the threshold. This is a deliberate architectural choice: the tight threshold `lllThreshold d = d^d/(d+1)^{d+1}` (defined over $\\mathbb{Q}$) and the tight-threshold symmetric statement `symmetric_lll` already live there, so this entry references *the same* threshold the parent formalized instead of introducing a real-valued surrogate. `open Real` brings `Real.exp`, `Real.add_one_le_exp`, and `Real.exp_nat_mul` into scope for the $e$-bound; `open ProbMethod.LovaszLocal` exposes `lllThreshold` unqualified. No new `def` is introduced anywhere in the file — it is entirely five theorems over $\\mathbb{R}$ — which is why `definitionCount = 0` and the only cross-namespace surface is the single `lllThreshold_cast` plumbing lemma that reconciles the parent's $\\mathbb{Q}$ value with these real inequalities.",
+    "mathContext": "Depends on the parent proof `lovasz-local-lemma` for `lllThreshold` (over $\\mathbb{Q}$) and `symmetric_lll`; `open Real` supplies `exp`, `add_one_le_exp`, `exp_nat_mul`.",
+    "significance": "context",
+    "relatedConcepts": [
+      "proof reuse via import",
+      "ProbMethod.LovaszLocal namespace",
+      "ℚ-valued lllThreshold",
+      "separation of hypothesis choice from combinatorial core"
+    ],
+    "prerequisites": [
+      "Proofs.LovaszLocalLemma (parent proof providing lllThreshold, symmetric_lll)",
+      "Lean namespaces and the open command"
+    ]
+  },
+  {
     "id": "ann-lll-oq01-euler-e-bound",
     "proofId": "lovasz-local-lemma-oq-01-euler-threshold",
     "range": { "startLine": 43, "endLine": 58 },
