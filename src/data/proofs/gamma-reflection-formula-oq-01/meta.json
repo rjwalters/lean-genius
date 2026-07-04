@@ -109,6 +109,56 @@
       "description": "Euler's reflection formula Γ(s)Γ(1−s) = π/sin(πs) links the Gamma function to the sine and underlies its non-vanishing and the 1/Γ entire-function picture."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "gamma_reflection",
+      "type": "core",
+      "description": "Euler's reflection formula for the real Gamma function: Γ(s)·Γ(1−s) = π/sin(πs). The headline identity itself is delegated to Mathlib's Real.Gamma_mul_Gamma_one_sub (hence the mathlib badge); it is re-exported here under a stable name to anchor the derived results.",
+      "leanType": "(s : ℝ) → Gamma s * Gamma (1 - s) = π / sin (π * s)"
+    },
+    {
+      "name": "gamma_reflection_complex",
+      "type": "supporting",
+      "description": "The complex-analytic form of the reflection formula, Γ(z)·Γ(1−z) = π/sin(πz) for z ∈ ℂ, re-exported from Complex.Gamma_mul_Gamma_one_sub.",
+      "leanType": "(z : ℂ) → Complex.Gamma z * Complex.Gamma (1 - z) = (π : ℂ) / Complex.sin ((π : ℂ) * z)"
+    },
+    {
+      "name": "gamma_half_sq",
+      "type": "core",
+      "description": "Γ(1/2)² = π, recovered from reflection at s = 1/2 where sin(π/2) = 1. This is the squared form of the classical Γ(1/2) = √π, obtained here purely from the reflection identity without invoking the Gaussian integral.",
+      "leanType": "Gamma (1 / 2) ^ 2 = π"
+    },
+    {
+      "name": "gamma_quarter_mul",
+      "type": "core",
+      "description": "Γ(1/4)·Γ(3/4) = π√2, from reflection at s = 1/4 with sin(π/4) = √2/2. Although Γ(1/4) is not elementary, the reflection product evaluates exactly. Not in Mathlib.",
+      "leanType": "Gamma (1 / 4) * Gamma (3 / 4) = π * Real.sqrt 2"
+    },
+    {
+      "name": "gamma_third_mul",
+      "type": "core",
+      "description": "Γ(1/3)·Γ(2/3) = 2π/√3, from reflection at s = 1/3 with sin(π/3) = √3/2. A concrete special-value product absent from Mathlib.",
+      "leanType": "Gamma (1 / 3) * Gamma (2 / 3) = 2 * π / Real.sqrt 3"
+    },
+    {
+      "name": "gamma_sixth_mul",
+      "type": "core",
+      "description": "Γ(1/6)·Γ(5/6) = 2π, from reflection at s = 1/6 with sin(π/6) = 1/2 — the cleanest of the rational special-value products, collapsing to an integer multiple of π.",
+      "leanType": "Gamma (1 / 6) * Gamma (5 / 6) = 2 * π"
+    },
+    {
+      "name": "gamma_ne_zero_of_sin_ne_zero",
+      "type": "supporting",
+      "description": "Non-vanishing via reflection: if sin(πs) ≠ 0 then Γ(s) ≠ 0. If Γ(s) were 0 the reflection product Γ(s)·Γ(1−s) would be 0, contradicting its equality to the nonzero π/sin(πs).",
+      "leanType": "{s : ℝ} → sin (π * s) ≠ 0 → Gamma s ≠ 0"
+    },
+    {
+      "name": "gamma_ne_zero_of_not_int",
+      "type": "supporting",
+      "description": "The Gamma function does not vanish at any non-integer real argument. A zero of sin(πs) forces s ∈ ℤ (Real.sin_eq_zero_iff), so a non-integer s has sin(πs) ≠ 0, hence Γ(s) ≠ 0 by the previous corollary.",
+      "leanType": "{s : ℝ} → (∀ n : ℤ, (n : ℝ) ≠ s) → Gamma s ≠ 0"
+    }
+  ],
   "overview": {
     "historicalContext": "Euler's reflection formula, $\\Gamma(s)\\,\\Gamma(1-s) = \\pi/\\sin(\\pi s)$, is one of the most beautiful identities in classical analysis, tying the Gamma function — the continuous interpolation of the factorial — to the elementary sine. Euler discovered it in the 1770s; it is equivalent to the Weierstrass product $\\sin(\\pi s) = \\pi s \\prod_{n\\ge1}(1 - s^2/n^2)$ and to the partial-fraction expansion of the cotangent. The formula immediately yields the celebrated $\\Gamma(1/2) = \\sqrt\\pi$ (so $\\Gamma(1/2)^2 = \\pi$), and more strikingly it shows that although individual values like $\\Gamma(1/4)$ or $\\Gamma(1/3)$ are transcendental and not expressible in elementary closed form, the *products* $\\Gamma(1/4)\\Gamma(3/4)$ and $\\Gamma(1/3)\\Gamma(2/3)$ collapse to elementary multiples of $\\pi$. Reflection also underlies the fact that $\\Gamma$ has no zeros and that $1/\\Gamma$ is entire (its only singularities being the simple poles of $\\Gamma$ at the non-positive integers). Mathlib proves the reflection identity itself; this entry re-exports it (hence the `mathlib` badge) and supplies the concrete special-value products and the sine-based non-vanishing argument, which Mathlib does not record.",
     "problemStatement": "Euler's reflection formula for the real and complex Gamma function: $\\Gamma(s)\\,\\Gamma(1-s) = \\pi/\\sin(\\pi s)$. The entry re-exports this and derives, by specializing at rational $s$ and evaluating $\\sin$ at the corresponding special angle, four concrete product evaluations — $\\Gamma(1/2)^2 = \\pi$, $\\Gamma(1/4)\\Gamma(3/4) = \\pi\\sqrt2$, $\\Gamma(1/3)\\Gamma(2/3) = 2\\pi/\\sqrt3$, $\\Gamma(1/6)\\Gamma(5/6) = 2\\pi$ — together with the non-vanishing corollaries that $\\Gamma(s) \\ne 0$ whenever $\\sin(\\pi s) \\ne 0$, in particular at every non-integer real $s$.",
