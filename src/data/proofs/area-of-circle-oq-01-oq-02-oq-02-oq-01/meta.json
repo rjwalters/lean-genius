@@ -79,7 +79,7 @@
     {
       "id": "part-i",
       "title": "Part I: Fourier Decomposition",
-      "startLine": 51,
+      "startLine": 1,
       "endLine": 90,
       "summary": "FourierDecomp structure packaging real Fourier coefficients with Parseval identities for f and f’. Axiom: every 2π-periodic C¹ function admits such a decomposition.",
       "mathContext": "Fourier decomposition: $\\int f^2 = \\sum c_n^2$, $\\int (f')^2 = \\sum n^2 c_n^2$, $c_0 = \\frac{1}{\\sqrt{2\\pi}}\\int f$."
@@ -120,7 +120,7 @@
       "id": "part-vii",
       "title": "Part VII: The Full Isoperimetric Inequality",
       "startLine": 308,
-      "endLine": 395,
+      "endLine": 419,
       "summary": "Full isoperimetric theorem C² ≥ 4πA via reparametrization (axiom) + Wirtinger chain + arithmetic kernel. Five analytical axioms.",
       "mathContext": "For smooth closed $\\gamma$ with $C > 0$: reparametrize to constant speed $c = C/(2\\pi)$ with zero mean, apply Wirtinger + Cauchy–Schwarz, feed into arithmetic kernel to get $4\\pi A \\leq C^2$."
     }

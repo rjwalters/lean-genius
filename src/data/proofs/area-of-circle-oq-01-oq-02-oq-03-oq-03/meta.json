@@ -115,7 +115,7 @@
       "id": "sec-special-cases",
       "title": "Part V: Special Cases and the Surface-to-Volume Ratio",
       "startLine": 236,
-      "endLine": 285,
+      "endLine": 302,
       "summary": "Explicit theorems for n=2 (d/dr[πr²] = 2πr, the classical circumference = dA/dr) and n=3 (d/dr[(4π/3)r³] = 4πr², the sphere surface area = dV/dr). The ratio S_n(r)/V_n(r) = n/r is the n-dimensional generalization of C/A = 2/r.",
       "mathContext": "For n=2: $\\omega_2 = \\pi$, so $V_2(r) = \\pi r^2$, $S_2(r) = 2\\pi r$. For n=3: $\\omega_3 = 4\\pi/3$, so $V_3(r) = \\frac{4\\pi}{3}r^3$, $S_3(r) = 4\\pi r^2$. Ratio: $\\frac{S_n(r)}{V_n(r)} = \\frac{n\\omega_n r^{n-1}}{\\omega_n r^n} = \\frac{n}{r}$."
     }

@@ -117,7 +117,7 @@
       "id": "ratios",
       "title": "Antitone Volume Ratios",
       "startLine": 147,
-      "endLine": 156,
+      "endLine": 160,
       "summary": "Proves omega_ratio_antitone: ω_{n+2}/ω_{n+1} ≤ ω_{n+1}/ω_n — the ratio reformulation of log-concavity.",
       "mathContext": "Cross-multiplying with div_le_div_iff₀ (each ω_n > 0) reduces the ratio inequality to ω_n·ω_{n+2} ≤ ω_{n+1}², closed by nlinarith from omega_log_concave and positivity."
     }

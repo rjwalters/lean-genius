@@ -97,7 +97,7 @@
     {
       "id": "product-fubini",
       "title": "The product–Fubini step (arbitrary dimension)",
-      "startLine": 46,
+      "startLine": 1,
       "endLine": 60,
       "summary": "gaussian_pow_eq_integral_pi: ∫_{ℝⁿ} e^{-b∑xᵢ²} = (∫_ℝ e^{-b t²})ⁿ. The separable integrand factors via Real.exp_sum + Finset.mul_sum into ∏ᵢ e^{-b xᵢ²}, and integral_fintype_prod_volume_eq_pow collapses the product integral to a power. Holds for every real b."
     },
@@ -119,7 +119,7 @@
       "id": "unit-case",
       "title": "The b = 1 form π^{n/2}",
       "startLine": 78,
-      "endLine": 83,
+      "endLine": 85,
       "summary": "integral_pi_gaussian_eq_pi: specializing b = 1 gives ∫_{ℝⁿ} e^{-‖x‖²} = π^{n/2}, the radial Gaussian mass over ℝⁿ and the multivariate-normal normalization constant."
     }
   ],

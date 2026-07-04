@@ -102,7 +102,7 @@
     {
       "id": "sec-polynomial",
       "title": "Part I: Polynomial Identity",
-      "startLine": 41,
+      "startLine": 1,
       "endLine": 65,
       "summary": "Proves x⁸(1-x)⁸ = (1+x²)·Q(x) + 16 by `ring`. The remainder +16 (vs -4 for n=1) is the key difference that flips the bound direction."
     },
@@ -138,7 +138,7 @@
       "id": "sec-sandwich",
       "title": "Part VI: Two-Sided Rational Sandwich",
       "startLine": 215,
-      "endLine": 250,
+      "endLine": 254,
       "summary": "Combines n=1 (π < 22/7) and n=2 (π > 47171/15015) bounds to give 47171/15015 < π < 22/7."
     }
   ],

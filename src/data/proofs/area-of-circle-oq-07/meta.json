@@ -36,7 +36,7 @@
     {
       "id": "overview",
       "title": "Overview: the Gaussian integral and the circle-area link",
-      "startLine": 4,
+      "startLine": 1,
       "endLine": 29,
       "summary": "Header docstring stating the open question ∫_{-∞}^{∞} e^{-x²} dx = √π and its answer: the b = 1 specialization of Mathlib's integral_gaussian b = √(π/b). It also recalls the classical evaluation — square the integral and pass to polar coordinates, where the circle-area Jacobian of the parent entry area-of-circle appears — which the squared corollary records algebraically.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} e^{-x^2}\\,dx = \\sqrt{\\pi}$, the $b=1$ case of $\\int e^{-bx^2} = \\sqrt{\\pi/b}$."
