@@ -4,7 +4,52 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 7 (PART VI)
+**Iteration**: 8 (PART VII)
+
+## Iteration 8 (PART VII — the general-`n` TOP Newton step via the actual Rolle route), researcher-8
+Two verified additions (26 → 28 theorems; 0 sorries, 0 axioms; docker-build clean,
+7743 jobs, Lean 4.26.0). **Closes the documented "coefficient bookkeeping" gap for
+the TOP step at arbitrary arity** — the first time the three engine pieces are run
+end-to-end on ONE split polynomial of arbitrary degree:
+- `discrim_iterate_derivative_top (m) {p} (hp : Splits p) (hdeg : p.natDegree = m+2)`
+  : `0 ≤ discrim ((2+m).descFactorial m • p.coeff (2+m)) ((1+m).descFactorial m •
+  p.coeff (1+m)) ((0+m).descFactorial m • p.coeff (0+m))`. Differentiate a split
+  degree-`(m+2)` polynomial `m` times → a split *quadratic* (Part V
+  `splits_iterate_derivative`), whose discriminant is `≥ 0` (Part VI
+  `discrim_coeff_nonneg_of_splits_deg_two`), then read the three coefficients back
+  on `p` itself via Mathlib's `Polynomial.coeff_iterate_derivative`. NO sign
+  hypothesis (only real-rootedness). The `natDegree = 2` side condition is
+  discharged by sandwiching `natDegree_iterate_derivative` (`≤ (m+2)-m = 2`)
+  against `le_natDegree_of_ne_zero` on `coeff 2 = (2+m).descFactorial m •
+  leadingCoeff p ≠ 0`.
+- `newton_top_coeff_ineq (m) {p} …` : the same as the recognizable log-concavity
+  inequality `4·(2+m)!desc·m!desc·p.coeff(m+2)·p.coeff m ≤ ((1+m)!desc)²·p.coeff(m+1)²`
+  (i.e. `b² ≥ 4ac` on consecutive coefficients), via `rw [discrim]; simp
+  [nsmul_eq_mul]; nlinarith`.
+
+**What remains (narrowed to pure Vieta):** specialise `p = ∏(X−xᵢ)` (monic,
+`Splits` automatic) and substitute the top coefficients `p.coeff (n−k) = (−1)^k eₖ`
+(Vieta / `Polynomial.coeff_prod_X_sub_C` / `Multiset.esymm`) to turn
+`newton_top_coeff_ineq` into the classical `pₙ₋₁² ≥ pₙ₋₂ pₙ` for all `n`. This is
+now the ONLY missing piece for the general top step and is purely algebraic (no
+analysis). The general *interior* steps (`k` strictly between) need the reversed /
+sub-window derivative (differentiate to isolate `eₖ₋₁,eₖ,eₖ₊₁` rather than the top
+three) — same machinery, different coefficient window.
+
+**Reusable Lean gotchas (researcher-8, Part VII):**
+- `Polynomial.coeff_iterate_derivative {k} (p) (m) : ((⇑derivative)^[k] p).coeff m
+  = (m + k).descFactorial k • p.coeff (m + k)` — the coefficient of an iterated
+  derivative is a `descFactorial`-weighted shifted coefficient. Rewriting produces
+  the index in the form `m + k` (e.g. `2 + m`, `0 + m` — NOT normalized to `m`),
+  so state the target with `(i + m)` to `rwa` cleanly.
+- `Polynomial.natDegree_iterate_derivative (p) (k)` gives only `≤ natDegree p − k`;
+  pin equality by pairing it with `le_natDegree_of_ne_zero` on the top coefficient.
+- `Nat.descFactorial_pos : 0 < n.descFactorial k ↔ k ≤ n` (use `.mpr (by omega) |>.ne'`
+  then `exact_mod_cast` into `ℝ`); `Nat.descFactorial_self : n.descFactorial n = n!`.
+- `rw [discrim]` unfolds `discrim a b c = b^2 - 4*a*c` directly (equation lemma),
+  then `simp only [nsmul_eq_mul]` + `nlinarith` reconciles the `•` scalars.
+
+## Iteration 7 (PART VI — join the crux to a discriminant; normalized p-form), researcher-11
 
 ## Iteration 7 (PART VI — join the crux to a discriminant; normalized p-form), researcher-11
 Two verified additions (24 → 26 theorems; 0 sorries, 0 axioms; docker-build clean,
