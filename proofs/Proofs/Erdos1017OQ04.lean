@@ -35,6 +35,12 @@ different quantities, and the *direction* that always holds is
 - `coverNum_le_partitionNum` : **cc(G) <= cp(G)** for every finite graph.
 - `partitionNum_le_edgeCliquesCard`, `coverNum_le_edgeCliquesCard` : both numbers
   are at most the number of two-element cliques (each edge as its own clique).
+- `EdgeCliquePartition.edge_unique_clique` : the edge-disjointness core of a
+  partition (an edge lies in a unique partition clique) -- the keystone every
+  partition-number lower bound is built on, and the structural reason `cp` can
+  exceed `cc`. See Part VI.
+- `coverNum_pos_of_edge`, `partitionNum_pos_of_edge` : both numbers are >= 1 once
+  `G` has an edge (the base case of the lower-bound ladder toward the strict gap).
 
 ## Relation to OQ-01
 The companion file `Erdos1017OQ01.lean` defines a structure it calls
@@ -225,7 +231,75 @@ theorem coverNum_le_edgeCliquesCard (G : SimpleGraph V) [DecidableRel G.Adj] :
 
 /-
 ====================================================================
-PART VI: VERIFICATION
+PART VI: TOWARD THE STRICT GAP  cc(G) < cp(G)
+
+The always-true direction `cc(G) <= cp(G)` is Part IV.  The genuinely open
+content of OQ-04 is that this inequality can be *strict*: converting a minimum
+cover into a partition can force strictly more cliques.  The intended witness is
+the book graph `K_4` minus an edge (`cc = 2 < 3 = cp`).
+
+The results below are the reusable keystones for that lower-bound program, stated
+for arbitrary graphs (no concrete witness yet):
+
+* `EdgeCliquePartition.edge_unique_clique` : the *edge-disjointness* core of a
+  partition -- an edge lies in a UNIQUE partition clique, so two partition
+  cliques sharing an edge coincide.  This is exactly the property a cover lacks,
+  and the structural reason `cp` can exceed `cc`.  It is the hypothesis every
+  partition-number lower bound (including the counting identity
+  `sum_{C} C(|C|,2) = |E|`) is built on.
+* `coverNum_pos_of_edge` / `partitionNum_pos_of_edge` : both numbers are at least
+  one once `G` has an edge (an edge cannot be covered by zero cliques) -- the base
+  case of any lower-bound ladder.
+==================================================================== -/
+
+omit [Fintype V] [DecidableEq V] in
+/-- **An edge determines its partition clique uniquely.**  In an edge clique
+    *partition*, if an edge `{v, w}` (with `G.Adj v w`) lies in two listed cliques
+    `S` and `T`, then `S = T`.  This is the edge-disjointness that distinguishes a
+    partition from a cover: distinct partition cliques share no edge.  It is the
+    structural obstruction behind a strict gap `cc(G) < cp(G)` and the keystone for
+    every partition-number lower bound (e.g. the counting identity
+    `sum_{C in P} C(|C|,2) = |E(G)|`). -/
+theorem EdgeCliquePartition.edge_unique_clique (P : EdgeCliquePartition G)
+    {v w : V} (hvw : G.Adj v w) {S T : Finset V}
+    (hSmem : S ∈ P.cliques) (hvS : v ∈ S) (hwS : w ∈ S)
+    (hTmem : T ∈ P.cliques) (hvT : v ∈ T) (hwT : w ∈ T) : S = T := by
+  obtain ⟨_, _, huniq⟩ := P.partitions hvw
+  rw [huniq S ⟨hSmem, hvS, hwS⟩, huniq T ⟨hTmem, hvT, hwT⟩]
+
+/-- **`cc(G) >= 1` whenever `G` has an edge.**  An edge must be covered by at
+    least one clique, so the empty cover is invalid and the cover number is
+    positive.  Base case of the cover-number lower-bound ladder. -/
+theorem coverNum_pos_of_edge {v w : V} (h : G.Adj v w) : 0 < coverNum G := by
+  have hne : {m | ∃ C : EdgeCliqueCover G, C.cliques.card = m}.Nonempty :=
+    ⟨_, (trivialPartition G).toCover, rfl⟩
+  obtain ⟨C, hC⟩ := Nat.sInf_mem hne
+  have hC' : C.cliques.card = coverNum G := hC
+  rcases Nat.eq_zero_or_pos (coverNum G) with h0 | hpos
+  · exfalso
+    rw [h0, Finset.card_eq_zero] at hC'
+    obtain ⟨S, hS, _, _⟩ := C.covers h
+    rw [hC'] at hS
+    exact Finset.notMem_empty S hS
+  · exact hpos
+
+/-- **`cp(G) >= 1` whenever `G` has an edge.**  An edge must lie in some clique of
+    any partition, so the empty partition is invalid and the partition number is
+    positive.  Base case of the partition-number lower-bound ladder. -/
+theorem partitionNum_pos_of_edge {v w : V} (h : G.Adj v w) : 0 < partitionNum G := by
+  obtain ⟨P, hP⟩ := Nat.sInf_mem (partitionNum_set_nonempty G)
+  have hP' : P.cliques.card = partitionNum G := hP
+  rcases Nat.eq_zero_or_pos (partitionNum G) with h0 | hpos
+  · exfalso
+    rw [h0, Finset.card_eq_zero] at hP'
+    obtain ⟨S, ⟨hS, _, _⟩, _⟩ := P.partitions h
+    rw [hP'] at hS
+    exact Finset.notMem_empty S hS
+  · exact hpos
+
+/-
+====================================================================
+PART VII: VERIFICATION
 ==================================================================== -/
 
 #check @EdgeCliqueCover
@@ -237,5 +311,8 @@ PART VI: VERIFICATION
 #check @coverNum_le_partitionNum
 #check @partitionNum_le_edgeCliquesCard
 #check @coverNum_le_edgeCliquesCard
+#check @EdgeCliquePartition.edge_unique_clique
+#check @coverNum_pos_of_edge
+#check @partitionNum_pos_of_edge
 
 end Erdos1017OQ04
