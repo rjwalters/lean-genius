@@ -142,6 +142,44 @@
     "path": "Proofs/AmgmInequalityOQ02OQ01OQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "offDiag_eq_upper_union_lower",
+      "type": "supporting",
+      "description": "Decomposes the off-diagonal set of ordered pairs into its strictly-upper-triangular part {(i,j) | i < j} and strictly-lower-triangular part {(i,j) | j < i}, via a linear order trichotomy on distinct indices.",
+      "leanType": "{ι : Type*} → [DecidableEq ι] → [LinearOrder ι] → (s : Finset ι) → s.offDiag = s.offDiag.filter (fun p => p.1 < p.2) ∪ s.offDiag.filter (fun p => p.2 < p.1)"
+    },
+    {
+      "name": "upper_lower_disjoint",
+      "type": "technical",
+      "description": "The strictly-upper-triangular and strictly-lower-triangular parts of the off-diagonal are disjoint, since no pair can satisfy both i < j and j < i.",
+      "leanType": "{ι : Type*} → [DecidableEq ι] → [LinearOrder ι] → (s : Finset ι) → Disjoint (s.offDiag.filter (fun p => p.1 < p.2)) (s.offDiag.filter (fun p => p.2 < p.1))"
+    },
+    {
+      "name": "image_swap_lower_eq_upper",
+      "type": "supporting",
+      "description": "Coordinate swap Prod.swap maps the lower-triangular part bijectively onto the upper-triangular part, establishing the pairing (i,j) ↔ (j,i) between the two halves.",
+      "leanType": "{ι : Type*} → [DecidableEq ι] → [LinearOrder ι] → (s : Finset ι) → (s.offDiag.filter (fun p => p.2 < p.1)).image Prod.swap = s.offDiag.filter (fun p => p.1 < p.2)"
+    },
+    {
+      "name": "sum_lower_eq_sum_upper",
+      "type": "core",
+      "description": "For any symmetric function f(i,j) = f(j,i), the sum over the lower-triangular part equals the sum over the upper-triangular part, proved by rewriting through Prod.swap and Finset.sum_image.",
+      "leanType": "{R : Type*} → [CommRing R] → {ι : Type*} → [DecidableEq ι] → [LinearOrder ι] → (s : Finset ι) → (f : ι × ι → R) → (∀ i j, f (i, j) = f (j, i)) → ∑ p ∈ s.offDiag.filter (fun p => p.2 < p.1), f p = ∑ p ∈ s.offDiag.filter (fun p => p.1 < p.2), f p"
+    },
+    {
+      "name": "sum_offDiag_eq_two_mul_sum_upper",
+      "type": "core",
+      "description": "Main theorem — off-diagonal symmetry: for a symmetric function f, the full off-diagonal sum equals twice the upper-triangular sum, Σ_{i≠j} f(i,j) = 2·Σ_{i<j} f(i,j). Combines the union decomposition, disjointness, and lower=upper symmetry.",
+      "leanType": "{R : Type*} → [CommRing R] → {ι : Type*} → [DecidableEq ι] → [LinearOrder ι] → (s : Finset ι) → (f : ι × ι → R) → (∀ i j, f (i, j) = f (j, i)) → ∑ p ∈ s.offDiag, f p = 2 * ∑ p ∈ s.offDiag.filter (fun p => p.1 < p.2), f p"
+    },
+    {
+      "name": "offDiag_prod_eq_two_mul_e2",
+      "type": "core",
+      "description": "Specialization to products xᵢ·xⱼ: Σ_{(i,j)∈offDiag} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ = 2·e₂, identifying the off-diagonal sum with twice the second elementary symmetric polynomial in the Newton–Girard decomposition.",
+      "leanType": "{R : Type*} → [CommRing R] → {ι : Type*} → [DecidableEq ι] → [LinearOrder ι] → (s : Finset ι) → (x : ι → R) → ∑ p ∈ s.offDiag, x p.1 * x p.2 = 2 * ∑ p ∈ s.offDiag.filter (fun p => p.1 < p.2), x p.1 * x p.2"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01",
