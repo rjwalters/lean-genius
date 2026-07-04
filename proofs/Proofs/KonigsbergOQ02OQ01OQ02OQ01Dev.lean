@@ -1,5 +1,5 @@
 /-
-# Undirected Hierholzer — development scaffolding (base case)
+# Undirected Hierholzer — development scaffolding
 
 Companion development file for `KonigsbergOQ02OQ01OQ02OQ01.lean`, whose main
 theorem `undirected_euler_circuit_sufficient` (the undirected Hierholzer
@@ -14,10 +14,23 @@ here: it is built on a bespoke `Digraph` structure with its own `Walk`, `splice`
 `removeArcList` and `arcCount`, none of which are `SimpleGraph.Walk` objects.
 
 The standard proof is strong induction on `G.edgeFinset.card`. This file discharges
-the **base case** natively (0 edges ⇒ the trivial `nil` walk is Eulerian); the
-remaining inductive core (a maximal trail is closed, edge-removal preserves the
-all-even-degree invariant, and connectivity lets residual circuits splice in) is the
-~600–1000 line classical construction still to be built or delegated.
+the following pieces natively (0 sorries):
+
+* **Base case** (`euler_circuit_of_edgeSet_empty`): 0 edges ⇒ the trivial `nil`
+  walk is Eulerian.
+* **Continuation invariant** (`two_le_degree_of_even_of_connected`): in a nontrivial
+  connected even-degree graph every vertex has degree ≥ 2.
+* **Sub-lemma A** (`exists_unused_incident_edge_at_endpoint`,
+  `eq_of_isTrail_edgeMaximal`): a maximal trail is closed — a trail can only get
+  stuck back at its start vertex.
+* **Sub-lemma B parity core** (`even_countP_incident_of_closed_trail`): a *closed*
+  trail uses an even number of the edges incident to every vertex. This is the fact
+  that makes edge-removal preserve the all-even-degree invariant (even total minus
+  even used = even residual).
+
+Still to build/delegate: the full Sub-lemma B degree bookkeeping
+(`(G.deleteEdges ↑p.edges.toFinset).degree w` is even for a closed trail `p`), the
+splice through a shared vertex, and the strong induction assembling these.
 -/
 import Mathlib.Combinatorics.SimpleGraph.Trails
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
@@ -43,5 +56,118 @@ theorem euler_circuit_of_edgeSet_empty
   intro e he
   rw [hE] at he
   exact absurd he (Set.notMem_empty e)
+
+/-- **Hierholzer's continuation invariant.**
+In a *nontrivial* connected simple graph in which every vertex has even degree, every
+vertex has degree at least `2`.
+
+This is the structural fact underpinning the "a maximal trail is closed" step of the
+undirected Hierholzer induction. When a trail arrives at a vertex `v ≠ start` it has
+used an *odd* number of `v`'s incident edges (one on each earlier visit plus the edge
+just traversed); since `G.degree v` is even there is always an unused incident edge to
+continue along, so a trail can only get *stuck* — become maximal — back at its start
+vertex, i.e. it is closed. The `2 ≤ G.degree v` bound below is the base quantitative
+form of that parity slack: a positive even number is at least `2`.
+
+`Nontrivial V` is necessary: the one-vertex connected graph has `G.degree v = 0`. In
+the induction this hypothesis holds in exactly the inductive (edge-containing) case;
+the edgeless base case is handled by `euler_circuit_of_edgeSet_empty` above. -/
+theorem two_le_degree_of_even_of_connected
+    [Fintype V] [DecidableRel G.Adj] [Nontrivial V]
+    (hconn : G.Connected) (heven : ∀ v, Even (G.degree v)) (v : V) :
+    2 ≤ G.degree v := by
+  have hpos : 0 < G.degree v := hconn.preconnected.degree_pos_of_nontrivial v
+  obtain ⟨k, hk⟩ := heven v
+  omega
+
+/-- **A trail into an even-degree vertex, from a different start, has an unused
+incident edge.**
+Let `p : G.Walk u v` be a trail with `u ≠ v` and `Even (G.degree v)`. Then some edge
+incident to `v` is *not* used by `p`. This is the quantitative heart of Hierholzer's
+"a maximal trail is closed" step: while a trail sits at a non-start vertex `v`, it has
+consumed an **odd** number of `v`'s incident edges (`IsTrail.even_countP_edges_iff`),
+but `v` has an **even** number in total, so an unused one always remains to extend
+along. -/
+theorem exists_unused_incident_edge_at_endpoint
+    [Fintype V] [DecidableRel G.Adj]
+    {u v : V} {p : G.Walk u v} (hp : p.IsTrail) (hne : u ≠ v)
+    (heven : Even (G.degree v)) :
+    ∃ e ∈ G.incidenceFinset v, e ∉ p.edges := by
+  classical
+  -- The walk-edges incident to `v`, as a nodup list.
+  set L : List (Sym2 V) := p.edges.filter (fun e => v ∈ e) with hLdef
+  have hpnodup : p.edges.Nodup := hp.edges_nodup
+  have hLnodup : L.Nodup := hpnodup.filter _
+  -- Their number is odd, by the trail parity invariant applied at `x = v`.
+  have hcountodd : Odd (p.edges.countP (fun e => v ∈ e)) := by
+    rw [← Nat.not_even_iff_odd, hp.even_countP_edges_iff]
+    intro h
+    exact (h hne).2 rfl
+  have hLlen : L.length = p.edges.countP (fun e => v ∈ e) := by
+    rw [hLdef]; exact List.countP_eq_length_filter.symm
+  have hLcard : L.toFinset.card = L.length := List.toFinset_card_of_nodup hLnodup
+  have hLcardodd : Odd L.toFinset.card := by rw [hLcard, hLlen]; exact hcountodd
+  -- Used incident edges sit inside the incidence finset of `v`.
+  have hsub : L.toFinset ⊆ G.incidenceFinset v := by
+    intro e he
+    rw [List.mem_toFinset, hLdef, List.mem_filter] at he
+    obtain ⟨hmem, hv⟩ := he
+    have hv' : v ∈ e := by simpa using hv
+    rw [SimpleGraph.mem_incidenceFinset]
+    exact ⟨p.edges_subset_edgeSet hmem, hv'⟩
+  -- Total incident edges = degree, which is even.
+  have hAcard : (G.incidenceFinset v).card = G.degree v := G.card_incidenceFinset_eq_degree v
+  have hAeven : Even (G.incidenceFinset v).card := by rw [hAcard]; exact heven
+  -- Different parities ⇒ the used set is a *proper* subset.
+  have hne_sets : L.toFinset ≠ G.incidenceFinset v := by
+    intro hEq
+    rw [hEq] at hLcardodd
+    exact (Nat.not_even_iff_odd.mpr hLcardodd) hAeven
+  have hss : L.toFinset ⊂ G.incidenceFinset v :=
+    (Finset.ssubset_iff_subset_ne).mpr ⟨hsub, hne_sets⟩
+  obtain ⟨e, heIn, heOut⟩ := Finset.exists_of_ssubset hss
+  refine ⟨e, heIn, ?_⟩
+  -- If `e` were used, it would be a used incident edge, i.e. in `L.toFinset`.
+  intro hused
+  apply heOut
+  have hv : v ∈ e := by
+    rw [SimpleGraph.mem_incidenceFinset] at heIn
+    exact heIn.2
+  rw [List.mem_toFinset, hLdef, List.mem_filter]
+  exact ⟨hused, by simpa using hv⟩
+
+/-- **A maximal trail is closed (undirected Hierholzer core).**
+If `p : G.Walk u v` is a trail, every vertex has even degree, and `v` is *edge-maximal*
+— every edge incident to `v` is already used by `p` — then `p` is closed: `u = v`.
+Contrapositive of `exists_unused_incident_edge_at_endpoint`: a trail can only get stuck
+back at its start. This is the step that turns "grow a trail greedily" into "obtain a
+closed circuit," the inductive engine of Hierholzer's construction. -/
+theorem eq_of_isTrail_edgeMaximal
+    [Fintype V] [DecidableRel G.Adj]
+    {u v : V} {p : G.Walk u v} (hp : p.IsTrail)
+    (heven : Even (G.degree v))
+    (hmax : ∀ e ∈ G.incidenceFinset v, e ∈ p.edges) :
+    u = v := by
+  by_contra hne
+  obtain ⟨e, hmem, hnot⟩ := exists_unused_incident_edge_at_endpoint hp hne heven
+  exact hnot (hmax e hmem)
+
+/-- **Sub-lemma B parity core — a closed trail uses an even number of incident edges.**
+For a *closed* trail `p : G.Walk u u` and any vertex `x`, the number of edges of `p`
+incident to `x` is even.
+
+This is the parity fact that makes edge-removal preserve the all-even-degree
+invariant in Hierholzer's induction: deleting a closed trail's edges drops each
+vertex's degree by this even count, and `even − even = even`. It is the closed-walk
+counterpart of the odd count in `exists_unused_incident_edge_at_endpoint` (there the
+start and end differ, forcing an odd number; here they coincide, forcing an even
+number). Both come from Mathlib's `IsTrail.even_countP_edges_iff`, whose right-hand
+side is trivially satisfied when the trail's endpoints are equal. -/
+theorem even_countP_incident_of_closed_trail
+    {u : V} {p : G.Walk u u} (hp : p.IsTrail) (x : V) :
+    Even (p.edges.countP (fun e => x ∈ e)) := by
+  rw [hp.even_countP_edges_iff]
+  -- The right-hand side relates `u = x` to `u = x` (start = end), so it is trivial.
+  tauto
 
 end UndirectedEulerDev

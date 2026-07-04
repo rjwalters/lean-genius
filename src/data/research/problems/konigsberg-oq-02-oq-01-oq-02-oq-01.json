@@ -29,10 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: base case of undirected Hierholzer induction VERIFIED (euler_circuit_of_edgeSet_empty, 0 sorries, in ...Dev.lean). Corrected key fact: IsEulerian = (∀ e ∈ edgeSet, count e = 1), trail derived. Directed Digraph template confirmed NON-reusable. Mathlib confirmed lacking sufficiency. Aristotle backend down this session. Remaining: inductive step (sub-lemmas A maximal-trail-closed, B edge-removal-preserves-even, C splice) — the ~600-1000 line core.",
+    "progressSummary": "PROGRESS: Dev file now carries 5 verified lemmas (0 sorries): base case, degree>=2 invariant, Sub-lemma A (maximal trail is closed, 2 lemmas), and Sub-lemma B parity core (closed trail uses even incident-edge count). Main sufficiency theorem still 1 sorry. Remaining: deleteEdges degree bookkeeping, splice, strong induction.",
     "builtItems": [
       "proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01.lean: stated undirected_euler_circuit_sufficient (sufficiency, 1 sorry) and undirected_euler_circuit_iff (full characterization). The iff necessity half is fully PROVED; only sufficiency delegates to the sorry. Builds cleanly (import Connectivity.Connected added; only the expected sorry warning).",
-      "VERIFIED base case of undirected Hierholzer induction: theorem euler_circuit_of_edgeSet_empty in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (connected + G.edgeSet = ∅ ⇒ ∃ Eulerian circuit, via nil walk; vacuous count condition). Compiles clean, 0 sorries."
+      "VERIFIED base case of undirected Hierholzer induction: theorem euler_circuit_of_edgeSet_empty in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (connected + G.edgeSet = ∅ ⇒ ∃ Eulerian circuit, via nil walk; vacuous count condition). Compiles clean, 0 sorries.",
+      "exists_unused_incident_edge_at_endpoint, eq_of_isTrail_edgeMaximal (Sub-lemma A) in KonigsbergOQ02OQ01OQ02OQ01Dev.lean",
+      "even_countP_incident_of_closed_trail (Sub-lemma B parity core) in KonigsbergOQ02OQ01OQ02OQ01Dev.lean",
+      "two_le_degree_of_even_of_connected (continuation invariant) in KonigsbergOQ02OQ01OQ02OQ01Dev.lean"
     ],
     "insights": [
       "Target is undirected Hierholzer SUFFICIENCY: connected + all-even-degree implies an Eulerian circuit exists. Necessity is already proved in KonigsbergOQ02OQ01OQ02.lean (eulerian_circuit_forall_even).",
@@ -42,7 +45,9 @@
       "IsEulerian is defined in Mathlib as (∀ e ∈ G.edgeSet, p.edges.count e = 1) — NOT (IsTrail ∧ covers all edges). Trail-ness is a DERIVED consequence (IsEulerian.isTrail). The construction invariant to maintain is therefore the per-edge count=1 condition; this corrects the earlier plan framing.",
       "Confirmed (web search + local check): Mathlib4 Trails module has only the necessity/property lemmas (IsEulerian.even_degree_iff, IsEulerian.card_odd_degree). No Eulerian existence/Hierholzer construction exists upstream, so sufficiency must be built natively.",
       "The directed Digraph proof in KonigsbergOQ02OQ01.lean is NOT reusable: it is built on a bespoke Digraph structure with its own Walk/splice/removeArcList/arcCount — none are SimpleGraph.Walk objects. A native SimpleGraph mirror is required.",
-      "Aristotle backend returned Resource not found for prove, prove_file, and a trivial inline (1+1=2) prove this session — full backend outage, delegation unavailable. Resubmit the single sorry when backend recovers (known classical result, ideal Aristotle target)."
+      "Aristotle backend returned Resource not found for prove, prove_file, and a trivial inline (1+1=2) prove this session — full backend outage, delegation unavailable. Resubmit the single sorry when backend recovers (known classical result, ideal Aristotle target).",
+      "Session 4: Recovered Sub-lemma A (maximal trail is closed) that PR #34697 had verified but the deployer auto-closed as false-superseded (file-level race cleanup dropped new lemmas added to an existing-on-main file).",
+      "Session 4: Proved even_countP_incident_of_closed_trail — a closed trail uses an even number of edges incident to each vertex (parity core of Sub-lemma B), via IsTrail.even_countP_edges_iff with start=end trivial RHS."
     ],
     "mathlibGaps": [
       "Mathlib provides Eulerian degree bookkeeping (SimpleGraph.Walk.IsEulerian.even_degree_iff, .card_odd_degree) but NO existence/sufficiency (Hierholzer construction) for undirected graphs. Confirmed by parent file docstring: sufficiency remains the open direction."

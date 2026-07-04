@@ -85,3 +85,46 @@ Insights accumulated during research on this problem.
 - Sub-lemma C: splice residual circuit via shared vertex; strong induction on
   `edgeFinset.card` using the verified base case.
 - Resubmit the single sorry to Aristotle once the backend recovers.
+
+## Session 2026-07-04 (Session 4) — Recovered Sub-lemma A + new Sub-lemma B parity core
+
+**Mode**: REVISIT (depth line) | **Outcome**: progress (5 lemmas VERIFIED, 0 sorries)
+
+### What I Did
+- Found that PR #34697 (Session 3's verified Sub-lemma A) was **auto-closed as a false
+  "superseded"** by the deployer's file-level race cleanup: the deployer saw the Dev
+  file already exists on `main` (base case only, from #34679) and discarded the whole
+  branch, silently dropping the extra verified lemmas. Confirmed
+  `exists_unused_incident_edge_at_endpoint` was NOT on `main`.
+- **Recovered** the three wrongly-discarded verified lemmas into the Dev file:
+  `two_le_degree_of_even_of_connected`, `exists_unused_incident_edge_at_endpoint`,
+  `eq_of_isTrail_edgeMaximal` (Sub-lemma A: a maximal trail is closed).
+- **Proved a new lemma** advancing Sub-lemma B: `even_countP_incident_of_closed_trail`
+  — for a *closed* trail `p : G.Walk u u` and any vertex `x`, `Even (p.edges.countP
+  (x ∈ ·))`. This is the parity fact that makes edge-removal preserve the
+  all-even-degree invariant. Proof: `IsTrail.even_countP_edges_iff` whose RHS is
+  trivial when start = end (closed by `tauto`).
+- Docker build clean: `⚠ Built Proofs.KonigsbergOQ02OQ01OQ02OQ01Dev` — 0 sorries, only
+  a harmless unused-`[DecidableEq V]` linter warning on `two_le_degree_...`.
+- This branch is a **strict superset** of main's Dev file (a MODIFY, not add/add), so
+  it should not trip the file-level supersession auto-close that killed #34697.
+
+### Key Findings
+- The deployer's supersession cleanup is **file-existence based, not content based** —
+  a branch that *adds new lemmas to an existing file* can be wrongly closed if that
+  file's path already exists on main. Future depth-line work on this file must land as
+  a MODIFY of main's version (branch from origin/main), not re-add the file.
+- Sub-lemma B now factors into: (parity core — DONE) + the `deleteEdges` degree
+  bookkeeping `(G.deleteEdges ↑p.edges.toFinset).degree w = G.degree w −
+  p.edges.countP (w ∈ ·)`, which is the remaining mechanical step.
+
+### Files Modified
+- proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (base case → +4 verified lemmas)
+- src/data/research/problems/konigsberg-oq-02-oq-01-oq-02-oq-01.json (knowledge)
+
+### Next Steps
+- Sub-lemma B finish: relate `(G.deleteEdges E).degree w` to `G.degree w` minus the
+  incident-edge count, then combine with `even_countP_incident_of_closed_trail` to get
+  `∀ w, Even ((G.deleteEdges ↑p.edges.toFinset).degree w)`.
+- Sub-lemma C: splice residual closed trail via a shared vertex (connectivity).
+- Strong induction on `G.edgeFinset.card` assembling base case + A + B + C.
