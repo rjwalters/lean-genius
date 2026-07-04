@@ -42,20 +42,39 @@
   {
     "id": "ann-lll-oq01-euler-mul-form",
     "proofId": "lovasz-local-lemma-oq-01-euler-threshold",
-    "range": { "startLine": 60, "endLine": 75 },
+    "range": { "startLine": 60, "endLine": 67 },
     "type": "insight",
-    "title": "Multiplicative form and the real-cast of the threshold",
-    "content": "`succ_pow_le_exp_mul` clears the denominator in the Euler bound: writing $1 + 1/d = (d+1)/d$ and using `div_pow`, `div_le_iff₀` turns $(1+1/d)^d \\le e$ into $(d+1)^d \\le e\\cdot d^d$. Alongside it, `lllThreshold_cast` bridges the parent proof's $\\mathbb{Q}$-valued threshold to $\\mathbb{R}$: for $d \\ge 1$, $(\\texttt{lllThreshold}\\,d : \\mathbb{R}) = d^d/(d+1)^{d+1}$ (unfold the $d \\ne 0$ branch, then `push_cast; ring`). These two plumbing lemmas set up the threshold comparison.",
-    "mathContext": "$(d+1)^d \\le e\\cdot d^d$; and $(\\texttt{lllThreshold}\\,d : \\mathbb{R}) = d^d/(d+1)^{d+1}$ for $d \\ge 1$.",
+    "title": "Multiplicative form of the Euler bound",
+    "content": "`succ_pow_le_exp_mul` clears the denominator in the Euler bound: writing $1 + 1/d = (d+1)/d$ (`field_simp`) and using `div_pow`, `div_le_iff₀` turns $(1+1/d)^d \\le e$ into $(d+1)^d \\le e\\cdot d^d$. This polynomial-vs-exponential form is exactly what the threshold comparison needs — it trades the fraction $(1+1/d)^d$ for the two integer powers $(d+1)^d$ and $d^d$ that appear in $T(d) = d^d/(d+1)^{d+1}$.",
+    "mathContext": "$(d+1)^d \\le e\\cdot d^d$ for $d \\ge 1$, the denominator-cleared form of $(1+1/d)^d \\le e$.",
     "significance": "supporting",
     "relatedConcepts": [
       "div_pow",
       "div_le_iff₀",
-      "Rat.cast / push_cast"
+      "polynomial vs exponential growth"
     ],
     "prerequisites": [
       "one_add_inv_pow_le_exp_one",
-      "lllThreshold d = dᵈ/(d+1)^{d+1} (parent proof)"
+      "field_simp / div_le_iff₀ manipulation"
+    ]
+  },
+  {
+    "id": "ann-lll-oq01-euler-cast",
+    "proofId": "lovasz-local-lemma-oq-01-euler-threshold",
+    "range": { "startLine": 69, "endLine": 75 },
+    "type": "technique",
+    "title": "Real-cast of the ℚ-valued threshold",
+    "content": "`lllThreshold_cast` bridges the parent proof's $\\mathbb{Q}$-valued threshold to $\\mathbb{R}$: for $d \\ge 1$, $(\\texttt{lllThreshold}\\,d : \\mathbb{R}) = d^d/(d+1)^{d+1}$. The parent `lllThreshold` is defined by cases with a guard at $d = 0$; unfolding the $d \\ne 0$ branch (`simp only [lllThreshold, if_neg …]`) and then `push_cast; ring` commutes the rational-to-real cast through the powers and division. This plumbing lemma is what lets the real-analysis inequalities about $e$ and powers talk about the *same* threshold the parent proof formalized over $\\mathbb{Q}$, rather than a re-derived real surrogate.",
+    "mathContext": "$(\\texttt{lllThreshold}\\,d : \\mathbb{R}) = d^d/(d+1)^{d+1}$ for $d \\ge 1$, casting $\\mathbb{Q} \\to \\mathbb{R}$ through the definition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Rat.cast / push_cast",
+      "cast commutes with ring operations",
+      "definitional guard at d = 0"
+    ],
+    "prerequisites": [
+      "lllThreshold d = dᵈ/(d+1)^{d+1} (parent proof, ℚ-valued)",
+      "push_cast; ring"
     ]
   },
   {
