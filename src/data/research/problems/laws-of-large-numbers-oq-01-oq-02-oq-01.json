@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-8, S5 hand-off): the iter-17 real Summable of weighted truncated 2nd moments is now bridged to the weighted-VARIANCE partial-sum bound the Kolmogorov criterion S5 consumes. Two new 0-axiom leaves in LawsOfLargeNumbersOQ01OQ02OQ01.lean WeightedVariancePartialSum section (docker build 7743 jobs exit 0, print axioms = propext/Classical.choice/Quot.sound): variance_trunc_le_integral_sq (the (a) brick via variance_le_expectation_sq) and weighted_variance_partial_sum_le_tsum (forall n, sum_{i<=n} Var(Y_i)/a_i^2 <= tsum for ANY a, via Summable.sum_le_tsum, the (b) brick = S5 hV shape). a_i=i^{1/p} doubles as threshold+weight so the leaf is abstract in a and needs no a-positivity. Remaining: S5 assembly (instantiate a=(i+1)^{1/p} + shifted summability), step-3 centering, final MZ combination.",
+    "progressSummary": "PROGRESS (researcher-6, iter 20): shipped the S5 CENTERING BRIDGE ae_tendsto_centered_average_zero_of_variance_weighted_bdd — S5 with the mean-zero hypothesis removed by internal centering Zᵢ=Yᵢ−𝔼Yᵢ, crux Var(Zᵢ)=Var(Yᵢ) via Mathlib variance_sub_const (which already exists — corrects prior 'brick to build' framing). 0-axiom, 7743 jobs. Remaining for full MZ SLLN: step-3 centering control (∑𝔼Yᵢ)/aₙ→0 (kernel abs_le_rpow_mul_rpow_of_tail in file) + final combination with step-1 truncation reduction.",
     "builtItems": [
       "Kronecker: theorem kronecker_lemma in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:122 — a_n>0 nondecreasing, a_n→∞, ∑x_n/a_n conv ⟹ (∑_{i<n}x_i)/a_n→0. Verified, 0-axiom.",
       "Toeplitz core: theorem tendsto_weighted_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:47 — nonneg weights dominated by A_n→∞ kill any null sequence in the weighted average. Reusable, 0-axiom.",
@@ -49,7 +49,8 @@
       "weight_bound_le_moment_add_one (LawsOfLargeNumbersOQ01OQ02OQ01.lean, 0-axiom): for 0<p<2, (max 1 |x|ᵖ)^{1-2/p}·x² ≤ |x|ᵖ+1. The integrable dominating bound for the MZ variance integrand.",
       "variance_integrand_le_moment (LawsOfLargeNumbersOQ01OQ02OQ01.lean, 0-axiom): for 0<p<2, ∑ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-2/p}·x²) ≤ (2/p)/(2/p-1)·(|x|ᵖ+1). Composes tsum_weight_trunc_sq_le with weight_bound_le_moment_add_one; the pointwise integrand ≤ constant × (|x|ᵖ+1).",
       "variance_trunc_le_integral_sq (LawsOfLargeNumbersOQ01OQ02OQ01.lean, WeightedVariancePartialSum section): Var(indicator{|X|<=t}*X) <= integral(indicator{|X|<=t}*X)^2 via variance_le_expectation_sq — the S5 (a) brick, 0-axiom",
-      "weighted_variance_partial_sum_le_tsum (same section): forall n, sum_{i<=n} Var(Y_i)/a_i^2 <= tsum_i (a_i^2)^{-1} integral Y_i^2 for any a, via Summable.sum_le_tsum + Finset.sum_le_sum — the S5 (b) brick (hV shape), 0-axiom"
+      "weighted_variance_partial_sum_le_tsum (same section): forall n, sum_{i<=n} Var(Y_i)/a_i^2 <= tsum_i (a_i^2)^{-1} integral Y_i^2 for any a, via Summable.sum_le_tsum + Finset.sum_le_sum — the S5 (b) brick (hV shape), 0-axiom",
+      "ae_tendsto_centered_average_zero_of_variance_weighted_bdd (§ Centering, LawsOfLargeNumbersOQ01OQ02OQ01.lean) — S5 WITHOUT the mean-zero hypothesis: for indep L² Y (not mean-zero), pos/mono/→∞ weight a, and ∑Var(Yᵢ)/aᵢ²≤V, gives a.s. (∑_{i<n}(Yᵢ−𝔼Yᵢ))/aₙ→0. Applies S5 to Zᵢ=Yᵢ−𝔼Yᵢ; measurability/L²/indep transfer by const-subtraction, 𝔼Zᵢ=0 by linearity, Var(Zᵢ)=Var(Yᵢ) by variance_sub_const so hV feeds verbatim. 0-axiom (propext/Classical.choice/Quot.sound), docker build 7743 jobs exit 0."
     ],
     "insights": [
       "Formal target pinned: MZ-SLLN for 1<=p<2, E|X|^p<inf implies (sum(Xi-EX))/n^(1/p) -> 0 a.s.; p=1 is Etemadi/Kolmogorov SLLN, content is the faster n^(1/p) rate for p>1.",
@@ -79,7 +80,8 @@
       "Reusable Lean technique (r8): to prove (b^p)^{1-2/p}·x²=b^p for b=|x|: rw [← Real.rpow_mul (abs_nonneg x)] then congr 1; field_simp (field_simp alone closes p*(1-2/p)=p-2 — a trailing ring errors No goals); convert x^2 to |x|^(2:ℝ) via rw [show (2:ℝ)=((2:ℕ):ℝ) by norm_num, Real.rpow_natCast, sq_abs]; recombine with ← Real.rpow_add (abs_pos).",
       "The MZ normaliser a_i=i^{1/p} doubles as truncation threshold {|X|<=a_i} AND weight a_i^{-2}, so a single abstract sequence a parametrises the weighted-variance partial-sum leaf — removing the threshold-vs-weight rpow reconciliation from the leaf (deferred to one identity ((i+1)^{1/p})^{-2}=(i+1)^{-2/p} at assembly).",
       "weighted_variance_partial_sum_le_tsum needs NO positivity of a: division-by-zero-is-zero makes sum Var/a_i^2 <= sum (a_i^2)^{-1} integral Y_i^2 hold even at a_i=0; a-positivity enters only at S5 assembly (ha_pos), so the leaf stays maximally reusable.",
-      "variance_le_expectation_sq gives Var X mu <= mu[X^2]; mu[Y^2] unifies with integral (Y w)^2 by defeq so exact closes variance_trunc_le_integral_sq with no Pi.pow_apply massage."
+      "variance_le_expectation_sq gives Var X mu <= mu[X^2]; mu[Y^2] unifies with integral (Y w)^2 by defeq so exact closes variance_trunc_le_integral_sq with no Pi.pow_apply massage.",
+      "variance_sub_const ALREADY EXISTS in Mathlib v4.26 (Var[fun ω=>X ω-c;μ]=Var[X;μ] under AEStronglyMeasurable X, IsProbabilityMeasure) — the Var(Zᵢ)=Var(Yᵢ) translation-invariance brick prior notes flagged as 'still to build' is a one-line call, so centering is pure bookkeeping over the existing S5 engine."
     ],
     "mathlibGaps": [
       "No quantitative p-series tail bound ∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1) in Mathlib (only summability). Supplied locally as tsum_shift_rpow_neg_le."
@@ -88,7 +90,9 @@
       "S5 assembly: instantiate weighted_variance_partial_sum_le_tsum at a i=(i+1)^{1/p} with the shifted summability ((summable_nat_add_iff 1).2 of summable_trunc_sq_weight_of_integrable + ((i+1)^{1/p})^{-2}=(i+1)^{-2/p} rewrite), yielding S5 hV for the centered truncations Y_i - E Y_i.",
       "Supply remaining S5 hypotheses: iIndepFun, MemLp 2, mean-zero of centered vars, a positivity/monotone/Tendsto atTop.",
       "Step-3 centering: |E Y_i| <= i^{(1-p)/p}*E|X|^p (abs_le_rpow_mul_rpow_of_tail kernel in file) implies sum_{i<n} E Y_i / n^{1/p} -> 0 via tendsto_weighted_average_zero.",
-      "Final MZ combination with step-1 a.s. eventual X_i=Y_i truncation reduction."
+      "Final MZ combination with step-1 a.s. eventual X_i=Y_i truncation reduction.",
+      "Step-3 centering: lift abs_le_rpow_mul_rpow_of_tail to |𝔼Yᵢ|≤i^{(1-p)/p}·𝔼|X|ᵖ, then (∑_{i<n}𝔼Yᵢ)/aₙ→0 via tendsto_weighted_average_zero.",
+      "Final MZ assembly: combine ae_tendsto_centered_average_zero_of_variance_weighted_bdd (centred average →0) with step-3 centering control + step-1 a.s. eventual Xᵢ=Yᵢ into the raw MZ SLLN statement."
     ]
   },
   "tags": [
@@ -112,7 +116,7 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.191Z",
-  "lastUpdate": "2026-07-04T07:00:53Z",
+  "lastUpdate": "2026-07-04",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
