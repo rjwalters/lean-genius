@@ -72,11 +72,11 @@
     "proofId": "derangements-convergence-oq-04",
     "range": {
       "startLine": 57,
-      "endLine": 92
+      "endLine": 73
     },
     "type": "insight",
     "title": "Companion Congruence: D(n) ≡ (−1)^n (mod n)",
-    "content": "numDerangements_congr_neg_one_pow proves (n : ℤ) ∣ (D(n) − (−1)^n) for all n. The n = 0 case is 0 ∣ 0 (simp). For n = k + 1, the witness is D(k); substituting numDerangements_succ (D(k+1) = (k+1)·D(k) − (−1)^k) and expanding (−1)^{k+1} = (−1)^k·(−1) via pow_succ, the identity D(k+1) − (−1)^{k+1} = (k+1)·D(k) is closed by push_cast and ring. The follow-on numDerangements_zmod_eq restates this in ZMod n as (D(n) : ZMod n) = (−1)^n, bridging via ZMod.intCast_zmod_eq_zero_iff_dvd. Three closing examples sanity-check the main divisibility on n = 2, 4, 5.",
+    "content": "numDerangements_congr_neg_one_pow proves (n : ℤ) ∣ (D(n) − (−1)^n) for all n. The n = 0 case is 0 ∣ 0 (simp). For n = k + 1, the witness is D(k); substituting numDerangements_succ (D(k+1) = (k+1)·D(k) − (−1)^k) and expanding (−1)^{k+1} = (−1)^k·(−1) via pow_succ, the identity D(k+1) − (−1)^{k+1} = (k+1)·D(k) is closed by push_cast and ring. The alternating term is exactly what makes the recurrence telescope into a clean divisibility: subtracting (−1)^{k+1} cancels the residual −(−1)^k, leaving a pure multiple of k+1.",
     "mathContext": "$D(n+1) - (-1)^{n+1} = (n+1)D(n)$ because $(-1)^{n+1} = -(-1)^n$, so the $-(-1)^n$ in the recurrence cancels the $-(-1)^{n+1}$. Hence $n \\mid D(n) - (-1)^n$, equivalently $D(n) \\equiv (-1)^n \\pmod n$. This holds for every $n$, including the degenerate $n = 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -89,6 +89,31 @@
       "numDerangements_succ: (D(n+1) : ℤ) = (n+1)·D(n) − (−1)^n",
       "(−1)^{n+1} = −(−1)^n",
       "The ZMod ↔ integer-divisibility correspondence"
+    ]
+  },
+  {
+    "id": "ann-dcoq04-zmod",
+    "proofId": "derangements-convergence-oq-04",
+    "range": {
+      "startLine": 75,
+      "endLine": 92
+    },
+    "type": "insight",
+    "title": "The Congruence as a ZMod Equality, and Sanity Checks",
+    "content": "numDerangements_zmod_eq repackages the integer-divisibility congruence as an equation in the ring ℤ/nℤ: (D(n) : ZMod n) = (−1)^n. This is the sharpest form of the statement — no ambient subtraction, no ∣ predicate, just an identity of ring elements — and it is the form most convenient for downstream algebraic use. The bridge is ZMod.intCast_zmod_eq_zero_iff_dvd, which turns the proved divisibility n ∣ (D(n) − (−1)^n) into (↑(D(n) − (−1)^n) : ZMod n) = 0; push_cast distributes the cast over the subtraction and power, and linear_combination discharges the resulting ring identity. Note the degenerate case is automatic: ZMod 0 is ℤ itself, so the n = 0 instance reads D(0) = 1 = (−1)^0 in ℤ. The file closes with concrete examples verifying (n−1) ∣ D(n) at n = 2, 4, 5 and the evaluations D(4) = 9, D(5) = 44 = 4·11 by decide, grounding the abstract divisibility in computable instances.",
+    "mathContext": "In $\\mathbb{Z}/n\\mathbb{Z}$: $\\overline{D(n)} = (-1)^n$. Equivalent to $n \\mid D(n) - (-1)^n$ via $\\mathbb{Z}/n\\mathbb{Z}$-cast-is-zero $\\Leftrightarrow$ $n \\mid \\cdot$. Since $\\mathbb{Z}/0\\mathbb{Z} \\cong \\mathbb{Z}$, the $n=0$ case is the literal integer identity $D(0)=1=(-1)^0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZMod n",
+      "ring congruence",
+      "ZMod.intCast_zmod_eq_zero_iff_dvd",
+      "linear_combination",
+      "decide"
+    ],
+    "prerequisites": [
+      "The proved congruence numDerangements_congr_neg_one_pow",
+      "ZMod n as the quotient ring ℤ/nℤ (with ZMod 0 ≅ ℤ)",
+      "Cast lemmas linking ℤ-divisibility to vanishing in ZMod n"
     ]
   }
 ]
