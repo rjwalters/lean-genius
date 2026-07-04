@@ -110,5 +110,43 @@
     "path": "Proofs/CayleyMengerHeronOQ0503.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "det_cmMatrix4_eq_vol",
+      "type": "core",
+      "description": "3D Cayley–Menger identity: the 5×5 Cayley–Menger determinant of four points in space equals 288·(V)², where V = |vol6|/6 is the tetrahedron volume. The volumetric generalization of Heron's formula.",
+      "leanType": "(P₀ P₁ P₂ P₃ : Point3) → (cmMatrix4 (sqDist3 P₀ P₁) (sqDist3 P₀ P₂) (sqDist3 P₀ P₃) (sqDist3 P₁ P₂) (sqDist3 P₁ P₃) (sqDist3 P₂ P₃)).det = 288 * (|vol6 P₀ P₁ P₂ P₃| / 6) ^ 2"
+    },
+    {
+      "name": "det_cmMatrix3_eq_area",
+      "type": "core",
+      "description": "2D Cayley–Menger identity (Heron in determinant form): the 4×4 Cayley–Menger determinant of three planar points equals −16·(area)², recovering Heron's formula for the triangle area from squared side lengths.",
+      "leanType": "(P₀ P₁ P₂ : Point2) → (cmMatrix3 (sqDist2 P₀ P₁) (sqDist2 P₀ P₂) (sqDist2 P₁ P₂)).det = -16 * (|area2 P₀ P₁ P₂| / 2) ^ 2"
+    },
+    {
+      "name": "det_cmMatrix4_nonneg",
+      "type": "core",
+      "description": "Nonnegativity of the 3D Cayley–Menger determinant (equivalently 288·V² ≥ 0), obtained directly from the volume identity.",
+      "leanType": "(P₀ P₁ P₂ P₃ : Point3) → 0 ≤ (cmMatrix4 (sqDist3 P₀ P₁) (sqDist3 P₀ P₂) (sqDist3 P₀ P₃) (sqDist3 P₁ P₂) (sqDist3 P₁ P₃) (sqDist3 P₂ P₃)).det"
+    },
+    {
+      "name": "cmDet3_eq_det",
+      "type": "supporting",
+      "description": "Evaluates the 4×4 Cayley–Menger matrix determinant to the explicit degree-2 polynomial cmDet3 in the three squared distances.",
+      "leanType": "(d01 d02 d12 : ℝ) → (cmMatrix3 d01 d02 d12).det = cmDet3 d01 d02 d12"
+    },
+    {
+      "name": "cmDet4_eq_det",
+      "type": "supporting",
+      "description": "Evaluates the 5×5 Cayley–Menger matrix determinant to the explicit polynomial cmDet4 in the six squared distances.",
+      "leanType": "(d01 d02 d03 d12 d13 d23 : ℝ) → (cmMatrix4 d01 d02 d03 d12 d13 d23).det = cmDet4 d01 d02 d03 d12 d13 d23"
+    },
+    {
+      "name": "det_fin_four",
+      "type": "technical",
+      "description": "Closed-form cofactor expansion of a general 4×4 determinant over any commutative ring, the algebraic engine used to evaluate the Cayley–Menger matrices.",
+      "leanType": "{R : Type*} → [CommRing R] → (M : Matrix (Fin 4) (Fin 4) R) → M.det = M 0 0 * (M 1 1 * (M 2 2 * M 3 3 - M 2 3 * M 3 2) - …) - …"
+    }
+  ],
   "sorries": 0
 }
