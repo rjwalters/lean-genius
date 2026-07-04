@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S4b steps 3–4 truncation-moment *kernels* SHIPPED & VERIFIED — remaining: integral-level estimates + assembly)
+**Phase**: ACT (S4b step-4 *arithmetic backbone* — tail p-series bound SHIPPED & VERIFIED — remaining: Tonelli interchange + assembly)
 **Since**: 2026-07-04
-**Iteration**: 8 (S4b step-3/step-4 pointwise moment kernels SHIPPED & build-VERIFIED; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
+**Iteration**: 9 (S4b step-4 tail p-series bound `∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1)` SHIPPED & build-VERIFIED; step-3/4 kernels; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
 
 ## Current Focus
 
@@ -96,16 +96,35 @@ L¹-bound** (`ae_tendsto_sum_of_indep_of_variance_bdd` + `eLpNorm_two_sq_eq_evar
 `eLpNorm_two_partialSum_le`) · **S4b step-2 tail-sum** · **S4b step-1 i.i.d. truncation**
 · **S4b step-3/step-4 pointwise moment kernels** (this iteration). All 0-axiom.
 
+## ⚠️ Correction to the previous plan (iteration 9)
+
+The prior "Next Action" claimed `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞` needs only `integral_mono` + a
+Mathlib `∑ i^{-2/p}` convergence lemma applied **per-term**. **That route diverges.** The
+step-4 kernel gives `𝔼[Yᵢ²] ≤ (i^{1/p})^{2-p}·M = i^{(2-p)/p}·M`; dividing by `aᵢ² = i^{2/p}`
+leaves `M·i^{(2-p)/p − 2/p} = M·i^{-1}`, and `∑ i^{-1}` **diverges**. So `integral_trunc_sq_le`
+alone is NOT summable term-by-term. The classical argument instead does a **Tonelli
+interchange**: keep the truncated moment `𝔼[X²·𝟙{|X| ≤ i^{1/p}}]` intact and sum the *weight*
+`i^{-2/p}` against the indicator, giving
+`∑ᵢ i^{-2/p} 𝔼[X²𝟙{|X|≤i^{1/p}}] = 𝔼[X² ∑_{i ≥ |X|ᵖ} i^{-2/p}] ≤ C·𝔼[X²·|X|^{p-2}] = C·M`.
+
 ## Next Action
 
-- **S4b step-4 integral lift (next):** it is more self-contained than step-3 (no weight
-  asymptotics needed — just `integral_mono` + a Mathlib `∑ i^{-2/p}` convergence lemma),
-  so prove `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞` first, then return to step-3's centering control.
+- **S4b step-4, the arithmetic backbone is now DONE (iteration 9):** `tsum_shift_rpow_neg_le`
+  supplies `∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1)` (`s>1`) — exactly the tail estimate the interchange
+  needs with `s = 2/p`, `N ≈ |X|ᵖ`. **Do not re-derive it.**
+- **Next: assemble the variance sum via Tonelli.** Use `MeasureTheory.lintegral_tsum` /
+  `∑'`-`∫` interchange (nonneg) to turn `∑ᵢ i^{-2/p}·𝔼[X²𝟙{|X|≤i^{1/p}}]` into
+  `𝔼[X²·∑_{i≥|X|ᵖ} i^{-2/p}]`, bound the inner tail with `tsum_shift_rpow_neg_le`
+  (note `∑_{i≥|X|ᵖ} i^{-2/p} ≤ C·(|X|ᵖ)^{1-2/p} = C·|X|^{p-2}` for `|X|≥1`; handle `|X|<1` by
+  the full `ζ(2/p)` constant), then integrate to `C·𝔼|X|ᵖ`. This yields
+  `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`, feeding `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5).
+- **Then: step-3 centering** (via `integral_tail_abs_le` + `tendsto_weighted_average_zero`) and
+  the final combination with the step-1 truncation reduction into the MZ statement.
 
 ## Attempt Counts
 
-- Total attempts: 8 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation; S4b step-3/4 moment kernels)
-- Current approach attempts: 1 (S4b step-3/4 kernels — elementary `rpow_add` split + signed-exponent monotonicity, landed clean; worktree recreated as locked after concurrent cleanup nuked the unlocked one)
+- Total attempts: 9 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation; S4b step-3/4 moment kernels; S4b step-4 tail p-series bound)
+- Current approach attempts: 1 (S4b step-4 tail p-series bound — `AntitoneOn.sum_le_integral_Ico` + `integral_rpow` + `Real.tsum_le_of_sum_range_le`, landed clean on first build; corrected the flawed per-term variance-sum plan → Tonelli interchange)
 - Approaches tried: 7 (S1 literature/decomposition; S2 Abel+Toeplitz;
   S3 natural-filtration martingale + upcrossing engine; S4a orthogonality + eLpNorm bridge;
   S4b step-2 discrete layer cake via lintegral_tsum + floor count;
