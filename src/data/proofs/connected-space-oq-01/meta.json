@@ -71,7 +71,8 @@
       "The sharp form is 'bark and tree': any set t with s ⊆ t ⊆ closure s inherits preconnectedness — closing all the way is just the special case t = closure s.",
       "A dense connected subset upgrades to a connected whole space, because its closure is everything and the closure of a connected set is connected.",
       "Reducing global connectedness (ConnectedSpace) to connectedness of a dense part is a standard and reusable technique, e.g. for proving spaces built from connected dense skeletons are connected.",
-      "Working at the level of IsPreconnected / IsConnected on Set α (not just on the whole space) keeps the statements maximally reusable for subsets."
+      "Working at the level of IsPreconnected / IsConnected on Set α (not just on the whole space) keeps the statements maximally reusable for subsets.",
+      "The preconnected and connected forms of the density corollary are not interchangeable: ConnectedSpace requires nonemptiness while PreconnectedSpace does not, so the preconnected version holds even for the empty space and needs no nonemptiness witness — a distinction worth keeping explicit for downstream reuse."
     ],
     "prerequisites": [
       "Open sets, closure, and dense subsets",
@@ -109,9 +110,17 @@
       "id": "dense-corollary",
       "title": "Section III: Dense Connected ⟹ Connected Space",
       "startLine": 64,
-      "endLine": 73,
-      "summary": "connectedSpace_of_dense_connected and preconnectedSpace_of_dense_preconnected: a dense (pre)connected subset makes the whole space (pre)connected, via closure = univ and the closure result.",
+      "endLine": 67,
+      "summary": "connectedSpace_of_dense_connected: a dense connected subset makes the whole space connected, via connectedSpace_iff_univ, Dense.closure_eq (closure s = univ) and IsConnected.closure. The connected subset's nonemptiness supplies the nonemptiness ConnectedSpace requires.",
       "mathContext": "Reducing global connectedness to a dense part — a standard proof technique."
+    },
+    {
+      "id": "dense-corollary-preconnected",
+      "title": "Section IV: Dense Preconnected ⟹ Preconnected Space",
+      "startLine": 69,
+      "endLine": 73,
+      "summary": "preconnectedSpace_of_dense_preconnected: the preconnected analogue, which is strictly weaker because PreconnectedSpace drops the nonemptiness obligation carried by ConnectedSpace (the empty space is preconnected but not connected). Same reduction via preconnectedSpace_iff_univ, Dense.closure_eq and IsPreconnected.closure, applicable even without a nonemptiness witness.",
+      "mathContext": "$\\text{PreconnectedSpace} \\iff \\text{IsPreconnected}(\\mathrm{univ})$; no nonemptiness required, unlike the connected case."
     }
   ],
   "conclusion": {
