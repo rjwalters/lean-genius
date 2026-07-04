@@ -873,7 +873,9 @@ theorem localization_existence
           (ENNReal.ofReal ‖φ‖) ^ q.toReal := fun n => by
         have heq : ∫⁻ a in spanningSets μ n, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ =
             ∫⁻ a, (‖g_seq n a‖₊ : ℝ≥0∞) ^ q.toReal ∂(μ.restrict (spanningSets μ n)) := by
-          rw [lintegral_restrict_univ]
+          -- `∫⁻ a in s, f a ∂μ` is *notation* for `∫⁻ a, f a ∂(μ.restrict s)`, so both
+          -- sides are already lintegrals over the identical measure `μ.restrict Sₙ`;
+          -- only the integrand differs (`g` vs `g_seq n`), discharged by `hg_eq_n`.
           apply lintegral_congr_ae
           filter_upwards [hg_eq_n n] with a ha
           simp [ha]
