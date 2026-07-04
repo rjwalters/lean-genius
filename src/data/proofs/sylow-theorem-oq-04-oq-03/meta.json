@@ -1,8 +1,8 @@
 {
   "id": "sylow-theorem-oq-04-oq-03",
-  "title": "The Unipotent Sylow-p Subgroup of SL(2, p)",
+  "title": "The Unipotent Sylow-p Subgroup and Split Torus of SL(2, p)",
   "slug": "sylow-theorem-oq-04-oq-03",
-  "description": "A fully verified, axiom-free construction of the upper-unipotent one-parameter subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} of SL(2, 𝔽_p). U is embedded as an injective group homomorphism from the additive group (ℤ/p, +), proving it is abelian, isomorphic to ℤ/p, and of cardinality exactly p — the order-p Sylow subgroup of SL(2, p) and the abelian normal subgroup of the Borel that Iwasawa's criterion requires for the simplicity of PSL(2, p). One clean piece of infrastructure toward the open question that PSL(2, p) is simple for every prime p ≥ 5.",
+  "description": "A fully verified, axiom-free construction of two of the ingredients Iwasawa's criterion needs for the simplicity of PSL(2, p): (1) the upper-unipotent one-parameter subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} of SL(2, 𝔽_p), embedded as an injective homomorphism from (ℤ/p, +), hence abelian, ≅ ℤ/p, and of cardinality exactly p (the order-p Sylow subgroup); and (2) the split diagonal torus T = {[[a,0],[0,a⁻¹]] : a ∈ 𝔽_pˣ}, embedded as an injective homomorphism from 𝔽_pˣ, of cardinality exactly p−1. The centrepiece is the normalizer relation diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]], proving that T normalizes U with the torus acting through the square map a ↦ a² — precisely the U ⊴ B = U⋊T normality that makes the Borel the point stabiliser Iwasawa's criterion requires. Clean, reusable infrastructure toward the open question that PSL(2, p) is simple for every prime p ≥ 5.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-07-04",
@@ -14,24 +14,54 @@
       "special-linear-group",
       "PSL",
       "unipotent",
-      "iwasawa"
+      "iwasawa",
+      "borel",
+      "torus",
+      "normalizer"
     ],
     "badge": "original",
     "sorries": 0,
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
-    "assumptions": "No assumptions: 0 `axiom` declarations, 0 sorries, 0 structure-encoded hypotheses, no `native_decide` (so no `Lean.ofReduceBool`). Every result is machine-checked from Mathlib over the ordinary foundational axioms only. The parent simplicity theorem for PSL(2, p) remains open; this entry proves only the verified unipotent-subgroup infrastructure and makes no claim about the open question itself.",
-    "lineCount": 122,
-    "theoremCount": 8,
-    "definitionCount": 2,
+    "assumptions": "No assumptions: 0 `axiom` declarations, 0 sorries, 0 structure-encoded hypotheses, no `native_decide` (so no `Lean.ofReduceBool`). `#print axioms` for `torusHom_conj_unipotent` and `card_torus_range` reports only the ordinary foundational axioms `propext`, `Classical.choice`, `Quot.sound`. Every result is machine-checked from Mathlib. The parent simplicity theorem for PSL(2, p) remains open; this entry proves only the verified unipotent-subgroup and split-torus infrastructure and makes no claim about the open question itself.",
+    "lineCount": 265,
+    "theoremCount": 17,
+    "definitionCount": 4,
     "originalContributions": [
       "unipotentUpper: the matrix [[1,t],[0,1]] packaged as a determinant-1 element of SL(2, ZMod p)",
       "unipotentUpper_mul: additivity [[1,s],[0,1]]·[[1,t],[0,1]] = [[1,s+t],[0,1]], giving an abelian one-parameter subgroup",
-      "unipotentHom: the injective group homomorphism Multiplicative(ZMod p) →* SL(2, ZMod p) whose image is the unipotent subgroup",
-      "card_unipotent_range: the image has cardinality exactly p, identifying it as the order-p Sylow subgroup of SL(2, p)"
+      "unipotentHom / card_unipotent_range: the injective homomorphism Multiplicative(ZMod p) →* SL(2, ZMod p) whose image is the order-p unipotent Sylow subgroup",
+      "torusDiag / torusHom: the split diagonal torus [[a,0],[0,a⁻¹]] packaged as an injective homomorphism (ZMod p)ˣ →* SL(2, ZMod p)",
+      "card_torus_range: the torus image has cardinality exactly p−1 (via ZMod.card_units)",
+      "torusHom_conj_unipotent: the normalizer relation diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]], proving T normalizes U by conjugation through the square map a ↦ a²",
+      "torus_normalizes_unipotent: each T-conjugate of a unipotent element stays in U (U ⊴ B)"
     ]
   },
   "mainTheorems": [
+    {
+      "name": "torusHom_conj_unipotent",
+      "type": "core",
+      "description": "The split torus normalizes the unipotent subgroup, acting by squares: diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]] for every unit a and every t. Rewriting (torusHom a)⁻¹ = torusHom a⁻¹ via map_inv exposes diag(a)⁻¹ = [[a⁻¹,0],[0,a]]; the triple matrix product is computed entrywise, the diagonal entries collapsing through a·a⁻¹ = 1 and the top-right entry being a·t·a = a²·t by ring. This is the U ⊴ B normality that makes the Borel B = U ⋊ T the point stabiliser Iwasawa's criterion requires.",
+      "leanType": "(a : (ZMod p)ˣ) → (t : ZMod p) → torusHom a * unipotentUpper t * (torusHom a)⁻¹ = unipotentUpper ((a : ZMod p) ^ 2 * t)"
+    },
+    {
+      "name": "card_torus_range",
+      "type": "core",
+      "description": "The split diagonal torus has cardinality exactly p−1: the maximal split torus T, the p′-part complement of the unipotent radical U inside the Borel B = U ⋊ T. Proved by transporting the cardinality of (ZMod p)ˣ through the injection torusDiag with Equiv.ofInjective, then Nat.card_congr and ZMod.card_units.",
+      "leanType": "Nat.card (Set.range (torusDiag (p := p))) = p - 1"
+    },
+    {
+      "name": "torusHom",
+      "type": "core",
+      "description": "The split torus packaged as a group homomorphism (ZMod p)ˣ →* SL(2, ZMod p), a ↦ [[a,0],[0,a⁻¹]]. map_one' is torusDiag_one and map_mul' is torusDiag_mul (which handles (ab)⁻¹ via mul_inv and Units.val_mul). Injective by torusDiag_injective, read off the top-left entry.",
+      "leanType": "(ZMod p)ˣ →* Matrix.SpecialLinearGroup (Fin 2) (ZMod p)"
+    },
+    {
+      "name": "torusDiag",
+      "type": "definition",
+      "description": "The split diagonal matrix [[a,0],[0,a⁻¹]] for a unit a ∈ (ZMod p)ˣ, packaged as a determinant-1 element of SL(2, ZMod p); the membership det = a·a⁻¹ = 1 is discharged by Matrix.det_fin_two_of and Units.mul_inv.",
+      "leanType": "(a : (ZMod p)ˣ) → Matrix.SpecialLinearGroup (Fin 2) (ZMod p)"
+    },
     {
       "name": "card_unipotent_range",
       "type": "core",
@@ -65,12 +95,13 @@
   ],
   "overview": {
     "historicalContext": "The projective special linear groups PSL(2, p) form the first infinite family of finite non-abelian simple groups, with PSL(2, 5) ≅ A₅ the smallest. Their simplicity for p ≥ 5 was known to Évariste Galois (1832), who studied the exceptional behaviour at p = 5, 7, 11. Camille Jordan established the simplicity systematically in his Traité (1870). The modern textbook route is not a raw Sylow count but Iwasawa's simplicity criterion (Iwasawa 1941; see Dixon & Mortimer, Permutation Groups §3.3), applied to the natural action of PSL(2, p) on the projective line P¹(𝔽_p). That criterion requires exhibiting an abelian normal subgroup of a point stabiliser (the Borel subgroup) whose conjugates generate the whole group. The upper-unipotent subgroup U constructed here is exactly that abelian normal subgroup — and simultaneously the order-p Sylow subgroup of SL(2, p), since |SL(2, p)| = p(p−1)(p+1) has p-part exactly p.",
-    "problemStatement": "**Open question (parent):** PSL(2, p) is simple for every prime p ≥ 5.\n\n**This entry (verified fragment):** Construct the upper-unipotent one-parameter subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} ⊆ SL(2, 𝔽_p) and prove that t ↦ [[1,t],[0,1]] is an injective group homomorphism from (ℤ/p, +), so that U is abelian, isomorphic to ℤ/p, and has cardinality exactly p.",
-    "proofStrategy": "The matrix [[1,t],[0,1]] has determinant 1·1 − t·0 = 1, so `unipotentUpper t` lands in SL(2, ZMod p) (`Matrix.det_fin_two_of`). Matrix multiplication gives [[1,s],[0,1]]·[[1,t],[0,1]] = [[1,s+t],[0,1]] (`unipotentUpper_mul`, proved entrywise by `fin_cases` + `ring`), and [[1,0],[0,1]] = 1 (`unipotentUpper_zero`). These package into a monoid homomorphism `unipotentHom` from Multiplicative(ZMod p): map_one from unipotentUpper_zero, map_mul from unipotentUpper_mul. Injectivity is read off the top-right entry (`unipotentUpper_injective`). Finally `Equiv.ofInjective` transports the cardinality of ZMod p through the injection, and `ZMod.card` gives |U| = p (`card_unipotent_range`).",
+    "problemStatement": "**Open question (parent):** PSL(2, p) is simple for every prime p ≥ 5.\n\n**This entry (verified fragment):** (1) Construct the upper-unipotent one-parameter subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} ⊆ SL(2, 𝔽_p) as an injective homomorphism from (ℤ/p, +), so U is abelian, ≅ ℤ/p, of cardinality p. (2) Construct the split diagonal torus T = {[[a,0],[0,a⁻¹]] : a ∈ 𝔽_pˣ} as an injective homomorphism from 𝔽_pˣ, of cardinality p−1. (3) Prove the normalizer relation diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]], so T normalizes U (U ⊴ B = U⋊T), the point-stabiliser normality Iwasawa's criterion requires.",
+    "proofStrategy": "**Unipotent U.** The matrix [[1,t],[0,1]] has determinant 1, so `unipotentUpper t` lands in SL(2, ZMod p). Matrix multiplication gives [[1,s],[0,1]]·[[1,t],[0,1]] = [[1,s+t],[0,1]] (`unipotentUpper_mul`, entrywise `fin_cases`), packaged into `unipotentHom : Multiplicative (ZMod p) →* SL(2, ZMod p)`; injectivity from the top-right entry and `Equiv.ofInjective` + `ZMod.card` give |U| = p. **Torus T.** The diagonal [[a,0],[0,a⁻¹]] has determinant a·a⁻¹ = 1 (`Units.mul_inv`), so `torusDiag a ∈ SL(2, ZMod p)`. Multiplicativity `torusDiag a · torusDiag b = torusDiag (a·b)` uses `mul_inv`/`Units.val_mul` to handle (ab)⁻¹, packaged into `torusHom : (ZMod p)ˣ →* SL(2, ZMod p)`; injectivity from the top-left entry and `ZMod.card_units` give |T| = p−1. **Normalizer.** Rewriting (torusHom a)⁻¹ = torusHom a⁻¹ via `map_inv`, the triple matrix product diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ is computed entrywise: the two diagonal entries collapse via a·a⁻¹ = 1 (`Units.mul_inv`, `Units.inv_mul`) and the top-right entry is a·t·a = a²·t by `ring`, yielding [[1,a²t],[0,1]] (`torusHom_conj_unipotent`). A one-line corollary places every conjugate back in the range of U (`torus_normalizes_unipotent`). Throughout, unit coercions are frozen with `set` before the entrywise `simp` so the matrix arithmetic stays in a plain commutative ring.",
     "keyInsights": [
-      "The unipotent subgroup is simultaneously (a) the abelian normal subgroup of the Borel required by Iwasawa's criterion and (b) the order-p Sylow subgroup of SL(2, p) — the same object plays both roles.",
-      "Writing the additive group (ℤ/p, +) multiplicatively via `Multiplicative (ZMod p)` lets the one-parameter subgroup be a genuine `MonoidHom`, so that `map_mul` is literally the additivity identity [[1,s],[0,1]]·[[1,t],[0,1]] = [[1,s+t],[0,1]].",
-      "Injectivity is immediate from a single matrix entry (the top-right coordinate is t), so the subgroup structure and its cardinality p follow with no counting argument.",
+      "The unipotent subgroup is simultaneously (a) the abelian normal subgroup of the Borel required by Iwasawa's criterion and (b) the order-p Sylow subgroup of SL(2, p) — the same object plays both roles; the split torus T is its complement in the Borel factorisation B = U ⋊ T.",
+      "The normalizer relation diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]] is the algebraic core of the semidirect product: it shows T normalizes U and that the torus acts on the root group U through the square map a ↦ a², the action that governs the whole SL(2) structure theory.",
+      "Injectivity of both embeddings is immediate from a single matrix entry (top-right coordinate t for U, top-left coordinate a for T), so the subgroup structure and the cardinalities p and p−1 follow with no counting argument.",
+      "Formalisation detail: `simp`'s entrywise matrix computation loops on the unit coercions ↑a, ↑a⁻¹ unless they are frozen as opaque locals with `set` first — after which the arithmetic reduces exactly as in the plain-ring unipotent case.",
       "This is the honest boundary between what is verified and what is open: the deep simplicity theorem is genuinely blocked on the PSL(2, p) action on P¹, its 2-transitivity, and perfectness — none of which are claimed here."
     ],
     "prerequisites": [
@@ -85,29 +116,36 @@
       "id": "sec-sylow-oq04oq03-header",
       "title": "Header and Motivation",
       "startLine": 1,
-      "endLine": 52,
-      "description": "Module docstring framing the open question (simplicity of PSL(2, p) for p ≥ 5), explaining why the standard route is Iwasawa's criterion rather than a raw Sylow count, and stating precisely which verified fragment this file delivers: the upper-unipotent subgroup U as the abelian normal subgroup of the Borel and the order-p Sylow subgroup. References Rotman §9 and Dixon & Mortimer §3.3, §2.8."
+      "endLine": 59,
+      "description": "Module docstring framing the open question (simplicity of PSL(2, p) for p ≥ 5), explaining why the standard route is Iwasawa's criterion rather than a raw Sylow count, and stating precisely which verified fragments this file delivers: the upper-unipotent subgroup U (abelian normal subgroup of the Borel and order-p Sylow subgroup), the split torus T, and the normalizer relation making B = U ⋊ T. References Rotman §9 and Dixon & Mortimer §3.3, §2.8."
     },
     {
       "id": "sec-sylow-oq04oq03-def",
       "title": "The Unipotent Matrix and Its Group Law",
-      "startLine": 54,
-      "endLine": 89,
-      "description": "Defines `unipotentUpper t = [[1,t],[0,1]]` as an element of SL(2, ZMod p) (determinant 1 via `Matrix.det_fin_two_of`), with the simp lemma `val_unipotentUpper`. Proves additivity `unipotentUpper_mul` (entrywise `fin_cases`/`ring`), identity `unipotentUpper_zero`, commutativity `unipotentUpper_comm`, and injectivity `unipotentUpper_injective` (from the top-right entry)."
+      "startLine": 76,
+      "endLine": 111,
+      "description": "Defines `unipotentUpper t = [[1,t],[0,1]]` as an element of SL(2, ZMod p) (determinant 1 via `Matrix.det_fin_two_of`), with the simp lemma `val_unipotentUpper`. Proves additivity `unipotentUpper_mul` (entrywise `fin_cases`), identity `unipotentUpper_zero`, commutativity `unipotentUpper_comm`, and injectivity `unipotentUpper_injective` (from the top-right entry)."
     },
     {
       "id": "sec-sylow-oq04oq03-hom",
-      "title": "The One-Parameter Subgroup as a Homomorphism and Its Cardinality",
-      "startLine": 90,
-      "endLine": 122,
-      "description": "Packages the embedding as `unipotentHom : Multiplicative (ZMod p) →* SL(2, ZMod p)` (map_one from `unipotentUpper_zero`, map_mul from `unipotentUpper_mul`), proves it injective (`unipotentHom_injective`), and computes the cardinality of the image as exactly p (`card_unipotent_range`) via `Equiv.ofInjective` and `ZMod.card` — identifying U as the order-p Sylow subgroup of SL(2, p)."
+      "title": "The Unipotent Subgroup as a Homomorphism and Its Cardinality",
+      "startLine": 113,
+      "endLine": 142,
+      "description": "Packages the embedding as `unipotentHom : Multiplicative (ZMod p) →* SL(2, ZMod p)`, proves it injective (`unipotentHom_injective`), and computes the cardinality of the image as exactly p (`card_unipotent_range`) via `Equiv.ofInjective` and `ZMod.card` — identifying U as the order-p Sylow subgroup of SL(2, p)."
+    },
+    {
+      "id": "sec-sylow-oq04oq03-torus",
+      "title": "The Split Torus and Its Normalizing Action on U",
+      "startLine": 144,
+      "endLine": 264,
+      "description": "Defines the split diagonal torus `torusDiag a = [[a,0],[0,a⁻¹]]` in SL(2, ZMod p) (determinant a·a⁻¹ = 1 via `Units.mul_inv`), proves multiplicativity `torusDiag_mul` and identity `torusDiag_one`, packages them as `torusHom : (ZMod p)ˣ →* SL(2, ZMod p)`, and shows injectivity (`torusDiag_injective`, from the top-left entry) and cardinality p−1 (`card_torus_range`, via `ZMod.card_units`). The centrepiece `torusHom_conj_unipotent` proves the normalizer relation diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]] (using `map_inv` to expose diag(a)⁻¹ = diag(a⁻¹) and an entrywise computation with a·a⁻¹ = 1), and `torus_normalizes_unipotent` records that every T-conjugate of a unipotent element stays in U."
     }
   ],
   "conclusion": {
-    "summary": "The upper-unipotent one-parameter subgroup of SL(2, 𝔽_p) is constructed and verified, axiom-free, as an injective homomorphic image of (ℤ/p, +): abelian, isomorphic to ℤ/p, of cardinality exactly p. This is the abelian normal subgroup of the Borel that Iwasawa's criterion needs and the order-p Sylow subgroup of SL(2, p).",
-    "implications": "This isolates and machine-verifies one reusable building block of the standard Iwasawa-criterion route to the simplicity of PSL(2, p) for primes p ≥ 5, the first infinite family of finite simple groups. The remaining ingredients — the action on P¹(𝔽_p), 2-transitivity, perfectness, and the assembly via Iwasawa's lemma — remain open in Mathlib.",
+    "summary": "Two verified, axiom-free ingredients of the Iwasawa-criterion route to the simplicity of PSL(2, p) are constructed: the upper-unipotent subgroup U ≅ (ℤ/p, +) of SL(2, 𝔽_p), abelian and of cardinality p (the order-p Sylow subgroup), and the split diagonal torus T ≅ 𝔽_pˣ of cardinality p−1. The normalizer relation diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]] proves that T normalizes U by the square-map action a ↦ a², establishing the U ⊴ B = U ⋊ T normality that makes the Borel the point stabiliser Iwasawa's criterion requires.",
+    "implications": "This machine-verifies two reusable building blocks — and the semidirect-product relation binding them — of the standard route to the simplicity of PSL(2, p) for primes p ≥ 5, the first infinite family of finite simple groups. The remaining ingredients — the action on P¹(𝔽_p), 2-transitivity, perfectness, and the assembly via Iwasawa's lemma — remain open in Mathlib.",
     "openQuestions": [
-      "Formalize the action of PSL(2, p) on the projective line P¹(𝔽_p) and its 2-transitivity.",
+      "Formalize the action of PSL(2, p) on the projective line P¹(𝔽_p) and its 2-transitivity, with the Borel B = U ⋊ T as the stabiliser of ∞.",
       "Prove that the conjugates of the unipotent subgroup U generate SL(2, p) (perfectness for p ≥ 5).",
       "Assemble the pieces via Iwasawa's simplicity criterion to prove PSL(2, p) simple for every prime p ≥ 5."
     ]
@@ -162,12 +200,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 122,
+    "lineCount": 265,
     "path": "Proofs/SylowTheoremOQ04OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 2,
-    "theoremCount": 8
+    "definitionCount": 4,
+    "theoremCount": 17
   },
   "sorries": 0
 }
