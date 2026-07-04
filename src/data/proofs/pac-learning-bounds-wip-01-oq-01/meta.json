@@ -145,6 +145,34 @@
       "year": "1971",
       "venue": "Theory Probab. Appl.",
       "note": "Origin of VC dimension and shattering"
+    },
+    {
+      "authors": "L. G. Valiant",
+      "title": "A theory of the learnable",
+      "year": "1984",
+      "venue": "Communications of the ACM 27(11)",
+      "note": "Introduces the PAC (probably approximately correct) learning framework that VC dimension quantifies"
+    },
+    {
+      "authors": "A. Blumer, A. Ehrenfeucht, D. Haussler, M. K. Warmuth",
+      "title": "Learnability and the Vapnik-Chervonenkis dimension",
+      "year": "1989",
+      "venue": "Journal of the ACM 36(4)",
+      "note": "Establishes finite VC dimension as the characterization of PAC-learnability; source of the VC-dimension sample-complexity bounds"
+    },
+    {
+      "authors": "N. Sauer",
+      "title": "On the density of families of sets",
+      "year": "1972",
+      "venue": "Journal of Combinatorial Theory, Series A 13",
+      "note": "Sauer-Shelah lemma: the growth function of a class is polynomial of degree its VC dimension — the combinatorial core behind VC bounds"
+    },
+    {
+      "authors": "S. Shalev-Shwartz, S. Ben-David",
+      "title": "Understanding Machine Learning: From Theory to Algorithms",
+      "year": "2014",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference where VC-dimension monotonicity under hypothesis-class inclusion appears as a basic structural fact"
     }
   ],
   "sorries": [],
