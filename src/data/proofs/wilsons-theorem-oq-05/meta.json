@@ -94,7 +94,8 @@
       "**'-1 mod n' is the natural number n-1.** The lemma `natCast_pred_eq_neg_one` makes this precise: ((n-1 : ℕ) : ZMod n) = (n : ZMod n) - 1 = 0 - 1 = -1. This is the only arithmetic needed to translate between the ZMod and ℕ formulations.",
       "**The ℕ congruence is the textbook statement.** Wilson's theorem is classically '(n-1)! ≡ -1 (mod n)' as an integer congruence — `prime_iff_factorial_modEq` is exactly that, whereas Mathlib's ZMod form, while equivalent, hides the residue inside a quotient type.",
       "**It is an elementary primality test.** `prime_iff_factorial_mod` reduces primality of n to a single equation (n-1)! % n = n-1 in ℕ — a (slow but) genuine decision procedure that needs no factorization, only a factorial and one division.",
-      "**Sharper than non-divisibility.** Sibling oq-03 proves p ∤ (p-1)! (valuation 0); this entry gives the exact remainder (p-1)! % p = p-1, which is strictly more information than 'remainder ≠ 0'."
+      "**Sharper than non-divisibility.** Sibling oq-03 proves p ∤ (p-1)! (valuation 0); this entry gives the exact remainder (p-1)! % p = p-1, which is strictly more information than 'remainder ≠ 0'.",
+      "**One biconditional, two usable directions.** Because the criterion is an *iff*, the same computation of (n−1)! % n yields both a primality certificate and a compositeness witness: factorial_pred_mod_of_prime reads off the exact remainder n−1 for a prime, while not_prime_of_factorial_mod_ne is the contrapositive — any deviation from n−1 certifies n composite without ever exhibiting a divisor."
     ],
     "prerequisites": [
       "Wilson's theorem (ZMod form) and `Nat.prime_iff_fac_equiv_neg_one`",
@@ -128,11 +129,25 @@
       "summary": "`natCast_pred_eq_neg_one` (`((n-1 : ℕ) : ZMod n) = -1` for n ≥ 1): rewrite the cast of the subtraction via `Nat.cast_sub` to (n : ZMod n) - 1, then `ZMod.natCast_self` collapses (n : ZMod n) to 0, giving -1. The arithmetic hinge between the ZMod and ℕ formulations."
     },
     {
-      "id": "congruence-forms",
-      "title": "Wilson's Theorem as ℕ Congruence and Primality Test",
+      "id": "congruence-form",
+      "title": "prime_iff_factorial_modEq: The Classical ℕ Congruence Form",
       "startLine": 54,
+      "endLine": 60,
+      "summary": "prime_iff_factorial_modEq states, for n ≥ 2, n.Prime ↔ (n−1)! ≡ n−1 [MOD n] — the textbook integer-congruence form of Wilson's theorem. It is derived from Mathlib's ZMod-valued Wilson biconditional (Nat.prime_iff_fac_equiv_neg_one) by rewriting with the bridge lemma natCast_pred_eq_neg_one and ZMod.natCast_eq_natCast_iff, which converts equality in ZMod n into a ℕ congruence. This is where the residue −1 becomes the concrete natural number n−1."
+    },
+    {
+      "id": "primality-criterion",
+      "title": "prime_iff_factorial_mod: The ZMod-Free Remainder Criterion",
+      "startLine": 61,
+      "endLine": 72,
+      "summary": "prime_iff_factorial_mod turns the congruence into a decision procedure entirely in ℕ: n ≥ 2 → (n.Prime ↔ (n−1)! % n = n−1), proved by unfolding Nat.ModEq and applying Nat.mod_eq_of_lt (since n−1 < n). The forward corollary factorial_pred_mod_of_prime then reads off the exact remainder (n−1)! % n = n−1 for any prime n — a genuine primality test needing only a factorial and one division, no factorization."
+    },
+    {
+      "id": "compositeness-witness",
+      "title": "not_prime_of_factorial_mod_ne: The Contrapositive Compositeness Witness",
+      "startLine": 73,
       "endLine": 80,
-      "summary": "`prime_iff_factorial_modEq` (n ≥ 2 → (n.Prime ↔ (n-1)! ≡ n-1 [MOD n])) via the Mathlib Wilson biconditional + bridge lemma + `ZMod.natCast_eq_natCast_iff`; `prime_iff_factorial_mod` (the ZMod-free remainder criterion, by unfolding `Nat.ModEq` and `Nat.mod_eq_of_lt`); and the corollaries `factorial_pred_mod_of_prime` and `not_prime_of_factorial_mod_ne`."
+      "summary": "not_prime_of_factorial_mod_ne is the contrapositive of the forward remainder identity: if (n−1)! % n ≠ n−1 then n is not prime. It packages the iff as a certificate — any deviation of the factorial remainder from n−1 certifies compositeness of n without exhibiting a factor, complementing the primality direction from the same single computation."
     }
   ],
   "crossReferences": [
