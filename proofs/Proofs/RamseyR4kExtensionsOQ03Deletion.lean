@@ -248,16 +248,17 @@ theorem ramsey_deletion_bound (hk : 2 ≤ k) (hkn : k ≤ n) :
       ∀ K : Finset (Fin n), K ⊆ R → K.card = k → ¬ Mono c K :=
   ramsey_deletion hk hkn
 
+set_option maxHeartbeats 800000 in
 /-- **The sharp union bound caps at `n = 17` for `k = 6`.**  The first-moment test
     `2·C(n,6) < 2^{C(6,2)} = 2^{15}` holds at `n = 17` (`2·12376 = 24752 < 32768`) but
     fails at `n = 18` (`2·18564 = 37128 ≥ 32768`).  So the union bound alone certifies
     a monochromatic-`K₆`-free colouring only up to 17 vertices, i.e. `R(6,6) > 17`. -/
-set_option maxHeartbeats 800000 in
 theorem unionBound_caps_at_17_for_K6 :
     2 * (17 : ℕ).choose 6 < 2 ^ ((6 : ℕ).choose 2) ∧
       ¬ (2 * (18 : ℕ).choose 6 < 2 ^ ((6 : ℕ).choose 2)) := by
   decide
 
+set_option maxHeartbeats 800000 in
 /-- **Deletion reaches an 18-vertex monochromatic-`K₆`-free set.**  Applying the
     deletion method at `n = 19, k = 6` gives `deletionBound 19 6 = 19 − ⌊2·C(19,6)/2^{15}⌋
     = 19 − ⌊54264/32768⌋ = 19 − 1 = 18`: a 2-colouring of `K₁₉` and a set `R` of at
@@ -265,7 +266,6 @@ theorem unionBound_caps_at_17_for_K6 :
     union bound (`unionBound_caps_at_17_for_K6`, which stops at 17), so the deletion
     method certifies `R(6,6) > 18` — a strict improvement the symmetric LLL of the
     sibling file does not achieve at `k = 6`. -/
-set_option maxHeartbeats 800000 in
 theorem deletion_no_mono_K6 :
     ∃ (c : Coloring 19) (R : Finset (Fin 19)),
       18 ≤ R.card ∧ ∀ K : Finset (Fin 19), K ⊆ R → K.card = 6 → ¬ Mono c K := by
@@ -275,17 +275,69 @@ theorem deletion_no_mono_K6 :
   rw [h] at hRcard
   exact ⟨c, R, hRcard, hR⟩
 
+/-- **The sharp union bound caps at `n = 27` for `k = 7`.**  The first-moment test
+    `2·C(n,7) < 2^{C(7,2)} = 2^{21} = 2097152` holds at `n = 27`
+    (`2·888030 = 1776060 < 2097152`) but fails at `n = 28`
+    (`2·1184040 = 2368080 ≥ 2097152`).  So the union bound alone certifies a
+    monochromatic-`K₇`-free colouring only up to 27 vertices, i.e. `R(7,7) > 27`.
+
+    The binomials `C(27,7)` and `C(28,7)` are ≈ `10⁶`, so evaluating `Nat.choose`
+    directly by `decide` is impractical (the two-way `choose` recursion has ≈ `C(n,k)`
+    leaves with no kernel memoisation).  We instead route through the *single*-recursion
+    identity `Nat.choose n k = n.descFactorial k / k !`
+    (`Nat.choose_eq_descFactorial_div_factorial`): `descFactorial` needs only `k`
+    multiplications on kernel-accelerated `Nat` literals, so the reduction is cheap and
+    still axiom-free (`of_decide_eq_true`, no `Lean.ofReduceBool`). -/
+theorem unionBound_caps_at_27_for_K7 :
+    2 * (27 : ℕ).choose 7 < 2 ^ ((7 : ℕ).choose 2) ∧
+      ¬ (2 * (28 : ℕ).choose 7 < 2 ^ ((7 : ℕ).choose 2)) := by
+  have h27 : (27 : ℕ).choose 7 = 888030 := by
+    rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+  have h28 : (28 : ℕ).choose 7 = 1184040 := by
+    rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+  rw [h27, h28]
+  decide
+
+/-- **Deletion reaches a 29-vertex monochromatic-`K₇`-free set.**  Applying the deletion
+    method at `n = 30, k = 7` gives
+    `deletionBound 30 7 = 30 − ⌊2·C(30,7)/2^{21}⌋ = 30 − ⌊4071600/2097152⌋ = 30 − 1 = 29`:
+    a 2-colouring of `K₃₀` and a set `R` of at least 29 vertices with no monochromatic
+    `K₇`.  This **strictly beats** the sharp union bound (`unionBound_caps_at_27_for_K7`,
+    which stops at 27), so the deletion method certifies `R(7,7) > 29` — a `+2` strict
+    improvement over the union bound, matching the `+1` improvement it gives at `k = 6`.
+
+    As with the `k = 6` witness, the large binomial `C(30,7) = 2035800` is evaluated via
+    the `descFactorial` route rather than by `decide` on `Nat.choose`. -/
+theorem deletion_no_mono_K7 :
+    ∃ (c : Coloring 30) (R : Finset (Fin 30)),
+      29 ≤ R.card ∧ ∀ K : Finset (Fin 30), K ⊆ R → K.card = 7 → ¬ Mono c K := by
+  obtain ⟨c, R, hRcard, hR⟩ :=
+    ramsey_deletion_bound (n := 30) (k := 7) (by norm_num) (by norm_num)
+  have h : deletionBound 30 7 = 29 := by
+    have h30 : (30 : ℕ).choose 7 = 2035800 := by
+      rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+    show 30 - (2 * (30 : ℕ).choose 7) / 2 ^ ((7 : ℕ).choose 2) = 29
+    rw [h30]; decide
+  rw [h] at hRcard
+  exact ⟨c, R, hRcard, hR⟩
+
 #check @ramsey_deletion
 #check @ramsey_deletion_generalizes_first_moment
 #check @ramsey_deletion_bound
 #check @deletion_no_mono_K6
+#check @unionBound_caps_at_27_for_K7
+#check @deletion_no_mono_K7
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
--- no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`.  The concrete `k = 6`
--- witnesses use kernel `decide` (`of_decide_eq_true`), which is axiom-free — it does
--- NOT introduce `Lean.ofReduceBool` the way `native_decide` would.
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`.  The concrete `k = 6` and
+-- `k = 7` witnesses use kernel `decide` (`of_decide_eq_true`), which is axiom-free — it
+-- does NOT introduce `Lean.ofReduceBool` the way `native_decide` would.  The `k = 7`
+-- binomials route through `Nat.choose_eq_descFactorial_div_factorial` to keep the kernel
+-- reduction cheap (single-recursion `descFactorial`), also axiom-free.
 #print axioms ramsey_deletion
 #print axioms ramsey_deletion_generalizes_first_moment
 #print axioms deletion_no_mono_K6
+#print axioms unionBound_caps_at_27_for_K7
+#print axioms deletion_no_mono_K7
 
 end ProbMethod.RamseyDeletion
