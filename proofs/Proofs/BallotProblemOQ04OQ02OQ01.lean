@@ -727,6 +727,75 @@ theorem firstBlockMax_glueFp_val {n : ℕ} (m : ℕ) (hm : m ≤ n)
         glueLabel_of_pos_le m hm P₁ P₂ ⟨m, by omega⟩ hmpos (le_refl m)]
     exact Fin.le_def.mp (Finset.le_max' (Q.part 0) ⟨m, by omega⟩ hmmem)
 
+/-! ### Restriction recovers each glued factor (round-trip `right_inv`, factor half)
+
+`firstBlockMax_glueFp_val` recovered the cut index `m` from a glued partition. The forward map
+`firstReturnForward` then restricts to the two offset windows `[1, m]` and `[m+1, n]`. For the
+round-trip `forward ∘ glue = id` (`right_inv`), those two restrictions must return exactly the
+factors `P₁, P₂` that `glue` consumed. `restrictFp_glueFp_left`/`_right` prove precisely that:
+restricting the glued partition to each window recovers the corresponding factor *on the nose*.
+Together with `firstBlockMax_glueFp_val` they discharge the mathematical content of `right_inv`;
+only the `Sigma`/`Subtype` packaging of `firstReturnForward` would then remain. -/
+
+/-- **Finpartition extensionality via the block function.** Two finpartitions of `univ` (over a
+`Fintype`) that assign every point the same block are equal. Every part is `P.part a` for some
+point `a ∈ t` it contains, so equal block functions give equal `parts` finsets. -/
+theorem finpartition_eq_of_part {α : Type*} [Fintype α] [DecidableEq α]
+    {P Q : Finpartition (univ : Finset α)} (h : ∀ a, P.part a = Q.part a) : P = Q := by
+  ext t
+  constructor
+  · intro ht
+    obtain ⟨a, ha⟩ : t.Nonempty :=
+      Finset.nonempty_iff_ne_empty.mpr fun he => P.empty_notMem_parts (he ▸ ht)
+    have hta : P.part a = t := P.part_eq_of_mem ht ha
+    rw [← hta, h a]
+    exact Q.part_mem.2 (mem_univ a)
+  · intro ht
+    obtain ⟨a, ha⟩ : t.Nonempty :=
+      Finset.nonempty_iff_ne_empty.mpr fun he => Q.empty_notMem_parts (he ▸ ht)
+    have hta : Q.part a = t := Q.part_eq_of_mem ht ha
+    rw [← hta, ← h a]
+    exact P.part_mem.2 (mem_univ a)
+
+/-- Two points share a glued block iff they carry the same `glueLabel` — in `part`-equality form
+(the companion of `mem_part_glueFp`, phrased for the block *function* rather than membership). -/
+theorem part_glueFp_eq_iff {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) (x y : Fin (n + 1)) :
+    (glueFp m hm P₁ P₂).part x = (glueFp m hm P₁ P₂).part y ↔
+      glueLabel m hm P₁ P₂ x = glueLabel m hm P₁ P₂ y := by
+  rw [eq_comm, ← (glueFp m hm P₁ P₂).mem_part_iff_part_eq_part (mem_univ y) (mem_univ x),
+      mem_part_glueFp]
+
+/-- **Left restriction recovers `P₁` (round-trip `right_inv`, left factor).** Restricting the glued
+partition `glueFp m hm P₁ P₂` to the left offset window `[1, m]` returns `P₁` exactly. The window
+`[1, m]` carries the shifted `P₁` labels verbatim (`glueLabel_offsetEmb_left`), so its induced block
+structure *is* `P₁`; point `0` (attached to `P₁`'s top block) lies outside the window and is
+dropped, leaving `P₁` untouched. -/
+theorem restrictFp_glueFp_left {n : ℕ} (m : ℕ) (hm : m ≤ n) (hL : 1 + m ≤ n + 1)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) :
+    restrictFp (offsetEmb 1 hL) (glueFp m hm P₁ P₂) = P₁ := by
+  refine finpartition_eq_of_part fun a => Finset.ext fun b => ?_
+  rw [mem_part_restrictFp, part_glueFp_eq_iff,
+      glueLabel_offsetEmb_left m hm P₁ P₂ hL a, glueLabel_offsetEmb_left m hm P₁ P₂ hL b,
+      Sum.inl.injEq, Option.some.injEq, eq_comm]
+  exact (P₁.mem_part_iff_part_eq_part (mem_univ b) (mem_univ a)).symm
+
+/-- **Right restriction recovers `P₂` (round-trip `right_inv`, right factor).** Restricting the
+glued partition `glueFp m hm P₁ P₂` to the right offset window `[m+1, n]` returns `P₂` exactly: the
+window carries the shifted `P₂` labels verbatim (`glueLabel_offsetEmb_right`), so its induced block
+structure is `P₂`. -/
+theorem restrictFp_glueFp_right {n : ℕ} (m : ℕ) (hm : m ≤ n) (hR : (m + 1) + (n - m) ≤ n + 1)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) :
+    restrictFp (offsetEmb (m + 1) hR) (glueFp m hm P₁ P₂) = P₂ := by
+  refine finpartition_eq_of_part fun a => Finset.ext fun b => ?_
+  rw [mem_part_restrictFp, part_glueFp_eq_iff,
+      glueLabel_offsetEmb_right m hm P₁ P₂ hR a, glueLabel_offsetEmb_right m hm P₁ P₂ hR b,
+      Sum.inr.injEq, eq_comm]
+  exact (P₂.mem_part_iff_part_eq_part (mem_univ b) (mem_univ a)).symm
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
@@ -851,6 +920,8 @@ theorem nonCrossingCount_eq_catalan_of_le_three {n : ℕ} (hn : n ≤ 3) :
 #check @glueLabel_offsetEmb_right
 #check @mem_part_zero_glueFp_left
 #check @firstBlockMax_glueFp_val
+#check @restrictFp_glueFp_left
+#check @restrictFp_glueFp_right
 #check @nonCrossingCount_eq_catalan
 #check @nonCrossingCount_eq_catalan_of_le_three
 

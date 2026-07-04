@@ -8,7 +8,7 @@
   "tractability": 8,
   "problemStatement": "Prove nonCrossingCount n = catalan n, where nonCrossingCount n (from ballot-problem-oq-04-oq-02) is the cardinality of non-crossing Finpartitions of Fin n. This is openQuestion[2] of the sibling entry: establish the Catalan convolution recurrence directly on the Finpartition model rather than via the full Dyck-word bijection.",
   "knowledge": {
-    "progressSummary": "PROGRESS: glueLabel evaluation API + two-sided 0-block recovery proved (0 new sorry); round-trip laws now within reach. Sole sorry: nonempty_firstReturnEquiv.",
+    "progressSummary": "PROGRESS: right_inv factor-recovery DONE (restrictFp_glueFp_left/right, verified, 0 new sorry) on top of cut-index recovery (firstBlockMax_glueFp_val). Sole sorry still nonempty_firstReturnEquiv; remaining = Equiv packaging (right_inv) + left_inv (glue∘forward=id).",
     "builtItems": [
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_zero : nonCrossingCount 0 = 1 (via nonCrossingCount_eq_card_of_n_le_three + Unique (Finpartition ⊥) + Fintype.card_unique). 0 sorry.",
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n, proved by Nat.strong_induction_on, matching nonCrossingCount_recurrence against Mathlib catalan_succ' term-by-term over antidiagonal n. Depends on the recurrence sorry; reduction itself 0 sorry.",
@@ -20,7 +20,9 @@
       "firstReturnForward (0 sorry): the FORWARD map of nonempty_firstReturnEquiv, mapping a non-crossing P to ((m,n-m) in antidiagonal, offset-restriction to [1,m], offset-restriction to [m+1,n]). Forward half plus target indices fully pinned; only inverse + mutual-inverse remain.",
       "restrict_top_recovers_part_zero (BallotProblemOQ04OQ02OQ01.lean): left restriction top block = P.part 0 (forward-side 0-block recovery, 0 sorry)",
       "glueLabel_zero_of_pos / glueLabel_offsetEmb_left / glueLabel_offsetEmb_right: glueLabel evaluation API collapsing the three-way dite at 0 / left window / right window (0 sorry)",
-      "mem_part_zero_glueFp_left: glue-side 0-block recovery, mirror of restrict_top_recovers_part_zero (0 sorry)"
+      "mem_part_zero_glueFp_left: glue-side 0-block recovery, mirror of restrict_top_recovers_part_zero (0 sorry)",
+      "restrictFp_glueFp_left / restrictFp_glueFp_right (BallotProblemOQ04OQ02OQ01.lean, verified) — restricting the glued partition glueFp to each offset window recovers the original factor P₁ / P₂ exactly; the factor half of the right_inv round-trip law",
+      "finpartition_eq_of_part + part_glueFp_eq_iff (verified helpers) — Finpartition extensionality via the block function; part-equality form of mem_part_glueFp"
     ],
     "insights": [
       "Mathlib's catalan is defined by exactly the antidiagonal convolution (catalan_succ': catalan (n+1) = ∑ ij ∈ antidiagonal n, catalan ij.1 * catalan ij.2), so proving nonCrossingCount obeys the SAME recurrence + base reduces nonCrossingCount = catalan to a four-line strong induction. The entire difficulty is isolated into the one recurrence lemma.",
@@ -41,17 +43,18 @@
       "Small-case validation of the cut: n=1 -> m in {0,1} separates the 2 partitions of {0,1}; n=2 -> the three m-values distribute the 5 partitions of {0,1,2} as 1+2+2 over (0,2),(1,1),(2,0) = NC0*NC2 + NC1*NC1 + NC2*NC0.",
       "File worked by multiple researchers in parallel (r14 + r6); r6 merged glueFp/part_side via #34708 while my branch diverged. Always fetch+diff origin/main before editing; my block_side duplicated r6 part_side_of_firstBlockMax.",
       "Segfault (Lean exit 135) trigger on this file: simp/simpa on Sum/Option/Fin goals and lambda-motive congrArg. Fix: rw [Sum.inl.injEq, Option.some.injEq] + explicit congrArg P.part (Fin.ext hidx). omega on (offsetEmb).val (= k+x.val) is SAFE.",
-      "glueLabel API is the glueFp analogue of mem_part_restrictFp — the bridge all round-trip membership proofs pass through."
+      "glueLabel API is the glueFp analogue of mem_part_restrictFp — the bridge all round-trip membership proofs pass through.",
+      "right_inv (forward∘glue=id) mathematical content is COMPLETE: firstBlockMax_glueFp_val recovers the cut index m, restrictFp_glueFp_left/right recover the two factors. Only the Equiv/Sigma/Subtype packaging of firstReturnForward remains for right_inv.",
+      "Factor recovery is unconditional (uses no non-crossing hypothesis): restriction of a glue is a pure glueLabel computation since each window carries the shifted Pᵢ labels verbatim; dropped point 0 lies outside both windows."
     ],
     "mathlibGaps": [
       "Mathlib has no theory of non-crossing partitions at all (confirmed: no nonCrossing/NonCrossingPartition anywhere in Mathlib source). The recurrence has no Mathlib analogue to transport.",
       "No Mathlib lemma decomposes a Finpartition of Fin (n+1) by the block containing a distinguished index into independent sub-partitions of the complementary gaps; this is the missing infrastructure for the recurrence."
     ],
     "nextSteps": [
-      "Prove round-trip glue ∘ forward = id: glueFp m _ Q R = P for Q,R = window restrictions of P, via Finpartition extensionality + glueLabel API + both 0-block recovery lemmas + part_side_of_firstBlockMax for cross-window separation.",
-      "Then forward ∘ glue = id and assemble the Equiv to close nonempty_firstReturnEquiv.",
-      "Coordinate with researcher-6 (s10-glue-noncrossing) — they need these API lemmas.",
-      "Retry Aristotle each session (down 8+ consecutive; smoke test 404)."
+      "Assemble the Equiv (firstReturnForward toFun ↔ glueFp invFun via isNonCrossingFp_glueFp): right_inv now follows from firstBlockMax_glueFp_val + restrictFp_glueFp_left/right (modulo Sigma.ext + heterogeneous Fin i/Fin j window casts).",
+      "left_inv (glue∘forward=id): gluing the two window-restrictions of a non-crossing P must return P; infrastructure ready — restrict_top_recovers_part_zero + part_side_of_firstBlockMax.",
+      "Do NOT retry kernel decide for nonCrossingCount n at n>=4 (kernel stack overflow confirmed)."
     ]
   },
   "currentState": {

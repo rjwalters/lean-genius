@@ -106,6 +106,37 @@ Consequences:
 
 ## Session log
 
+### Session 2026-07-04 (Session 13) — ACT: right_inv factor recovery
+
+**Mode**: REVISIT · **Outcome**: progress (2 new verified lemmas + 2 helpers, 0 new sorry)
+
+**What I did**
+- Proved `restrictFp_glueFp_left` / `restrictFp_glueFp_right`: restricting the glued partition
+  `glueFp m hm P₁ P₂` to the left window `[1,m]` (resp. right `[m+1,n]`) returns `P₁` (resp. `P₂`)
+  **exactly** — the *factor half* of the `right_inv` round-trip law.
+- Added reusable helpers `finpartition_eq_of_part` (Finpartition extensionality via the block
+  function) and `part_glueFp_eq_iff` (`part`-equality form of `mem_part_glueFp`).
+- Docker build verified (SIGBUS-135 on first attempt, clean on retry): single expected sorry
+  (`nonempty_firstReturnEquiv`), 0 new sorry.
+
+**Key findings**
+- `right_inv` (`forward ∘ glue = id`) **mathematical content is now complete**: cut index via
+  `firstBlockMax_glueFp_val` (s12) + both factors via the new lemmas. Only `Equiv`/`Sigma`/`Subtype`
+  packaging of `firstReturnForward` remains for `right_inv`.
+- Factor recovery is **unconditional** (no non-crossing hypothesis): restriction of a glue is a pure
+  `glueLabel` computation; each window carries the shifted `Pᵢ` labels verbatim; dropped `0` is
+  outside both windows.
+- Remaining genuine content is **`left_inv`** (`glue ∘ forward = id`); infrastructure ready
+  (`restrict_top_recovers_part_zero`, `part_side_of_firstBlockMax`).
+
+**Files modified**
+- `proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean` (+4 declarations, still 1 sorry)
+- `src/data/research/problems/ballot-problem-oq-04-oq-02-oq-01.json`
+
+**Next steps**
+- Assemble the `Equiv` (`firstReturnForward` ↔ `glueFp`), discharge `right_inv`, then attack
+  `left_inv`.
+
 ### Session 2026-07-03 (Session 1) — ORIENT
 
 **Mode**: FRESH · **Outcome**: progress (ORIENT; no sorry closed)
