@@ -75,6 +75,48 @@
       "mathContext": "An extension of the solvable $\\mathbb Z/2$ by the solvable $\\langle r\\rangle\\cong\\mathbb Z/n$ is solvable. Compared with $S_5$, which is non-solvable: the dihedral family is solvable for all $n$, the symmetric family only for $n\\le4$."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "isSolvable",
+      "type": "core",
+      "description": "**Dihedral groups are solvable** — IsSolvable (DihedralGroup n) for every n (including n = 0, the infinite dihedral group). Dₙ is metabelian: the cyclic rotation subgroup ⟨r⟩ ≅ ℤ/n is normal of index 2 with abelian quotient ℤ/2, so solvable_of_ker_le_range applies. Mathlib had no prior solvability result for DihedralGroup.",
+      "leanType": "IsSolvable (DihedralGroup n)",
+      "line": 104,
+      "endLine": 105
+    },
+    {
+      "name": "S5_not_isSolvable_but_dihedral_is",
+      "type": "core",
+      "description": "**The contrast, packaged** — S₅ is not solvable, yet every DihedralGroup m is. This settles the dihedral half of the parent entry's open question and shows the Abel–Ruffini obstruction is special to the symmetric groups, not a generic feature of infinite families of finite groups.",
+      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5)) ∧ ∀ m : ℕ, IsSolvable (DihedralGroup m)",
+      "line": 109,
+      "endLine": 111
+    },
+    {
+      "name": "parity_ker_eq_rotation_range",
+      "type": "key",
+      "description": "**The metabelian witness** — ker(parity) = range(rotation): both are the rotation subgroup {r i}. This is the index-2 normal abelian subgroup that makes Dₙ metabelian and feeds solvable_of_ker_le_range. Reflections are excluded from the kernel because ofAdd 1 ≠ 1 in Multiplicative (ZMod 2).",
+      "leanType": "(parity (n := n)).ker = (rotation (n := n)).range",
+      "line": 84,
+      "endLine": 99
+    },
+    {
+      "name": "parity",
+      "type": "supporting",
+      "description": "The **parity homomorphism** Dₙ → ℤ/2 sending every rotation r i to 0 and every reflection sr i to the generator. Its kernel is exactly the rotation subgroup; it realizes the abelian index-2 quotient.",
+      "leanType": "DihedralGroup n →* Multiplicative (ZMod 2)",
+      "line": 56,
+      "endLine": 64
+    },
+    {
+      "name": "rotation",
+      "type": "supporting",
+      "description": "The **rotation inclusion** ℤ/n → Dₙ, i ↦ r i, a homomorphism since r i · r j = r (i+j). Its range is the cyclic rotation subgroup — the abelian normal subgroup of the metabelian decomposition.",
+      "leanType": "Multiplicative (ZMod n) →* DihedralGroup n",
+      "line": 68,
+      "endLine": 71
+    }
+  ],
   "conclusion": {
     "summary": "The dihedral half of the parent's fourth open question is answered affirmatively and verified: DihedralGroup n is solvable for every n, including the infinite dihedral group at n = 0. The proof realizes Dₙ as metabelian via a parity homomorphism whose kernel is the abelian rotation subgroup, then invokes Mathlib's solvable_of_ker_le_range. The companion theorem states the contrast with the non-solvable S₅, isolating the Abel–Ruffini obstruction as a feature special to symmetric groups. Mathlib had no prior solvability result for DihedralGroup. The GLₙ(𝔽ₚ) non-solvability half remains open.",
     "implications": "Dihedral groups give an infinite family that, unlike Sₙ, is solvable throughout — concretely, every regular-polygon symmetry group has a radical-solvable associated Galois theory. The reusable pieces (the parity character Dₙ → ℤ/2 and the rotation inclusion) are the standard index-2 normal structure and could seed a Mathlib contribution. The metabelian template — exhibit an abelian normal subgroup as a kernel/range coincidence and apply solvable_of_ker_le_range — transfers verbatim to other split/metacyclic families.",
