@@ -86,5 +86,17 @@
       "scalar multiplication in an algebra",
       "one-parameter subgroups"
     ]
+  },
+  {
+    "id": "ann-h5oq02-inverses",
+    "proofId": "hilbert-5-oq-02",
+    "range": { "startLine": 113, "endLine": 126 },
+    "type": "insight",
+    "title": "The Exponential Image Is an Abelian Subgroup",
+    "content": "The homomorphism law alone makes {exp(tX) : t ∈ ℝ} a homomorphic image of (ℝ, +), but to call it a *subgroup* one needs inverses, and to call it *abelian* one needs internal commutativity. oneParam_neg_mul supplies the first: γ(−t)·γ(t) = γ(−t + t) = γ(0) = 1, so γ(−t) is the inverse of γ(t). oneParam_commute supplies the second: γ(s)·γ(t) = γ(s+t) = γ(t+s) = γ(t)·γ(s), using commutativity of ℝ under addition. Hence the exponential carries the additive line ℝ·X onto an abelian subgroup — the infinitesimal-to-global bridge at the heart of Hilbert's fifth problem, where such one-parameter subgroups reconstruct the Lie group from its Lie algebra.",
+    "mathContext": "$\\gamma(-t)\\gamma(t)=\\gamma(0)=1$; $\\ \\gamma(s)\\gamma(t)=\\gamma(s+t)=\\gamma(t)\\gamma(s)$, so the image is an abelian subgroup.",
+    "significance": "key",
+    "relatedConcepts": ["one-parameter subgroup", "abelian group", "group inverse", "exponential map", "Hilbert's fifth problem"],
+    "prerequisites": ["oneParam_add homomorphism law", "commutativity of ℝ under addition", "definition of subgroup"]
   }
 ]
