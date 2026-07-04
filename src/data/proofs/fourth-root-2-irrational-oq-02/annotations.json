@@ -48,21 +48,44 @@
     "proofId": "fourth-root-2-irrational-oq-02",
     "range": {
       "startLine": 69,
-      "endLine": 104
+      "endLine": 90
     },
     "type": "insight",
-    "title": "Irreducibility ⟹ exact degree, not merely irrationality",
-    "content": "minpoly_primeRoot identifies the minimal polynomial of r = p^{1/n} as EXACTLY Xⁿ − p, via minpoly.eq_of_irreducible_of_monic fed the sibling's irreducible_X_pow_sub_C_prime_rat together with monic-ness and the root fact. Then finrank_adjoin_primeRoot turns [ℚ(r):ℚ] into (minpoly ℚ r).natDegree = n through IntermediateField.adjoin.finrank. This is strictly stronger than irrationality (degree ≥ 2): it pins the algebraic degree at exactly n, with no parity or prime-power restriction. linearIndependent_primeRoot_powers then gives the ℚ-independent power basis {1, r, …, rⁿ⁻¹}, generalizing the parent's Fin 4 statement to Fin n.",
-    "mathContext": "Knowing the full minimal polynomial — not just that one exists of degree ≥ 2 — is what pins the extension degree and produces a basis.",
+    "title": "The minimal polynomial is the full Eisenstein polynomial Xⁿ − p",
+    "content": "`minpoly_primeRoot` identifies the minimal polynomial of the real radical $r = p^{1/n}$ as *exactly* $X^n - p$, via `minpoly.eq_of_irreducible_of_monic` fed three ingredients: the sibling's `irreducible_X_pow_sub_C_prime_rat` (Eisenstein at $p$ + Gauss), the root fact `aeval_primeRoot`, and monic-ness `monic_X_pow_sub_C`. This is the *sharp* statement — the radical's minimal polynomial is the whole Eisenstein polynomial, not a proper factor of it. `minpoly_natDegree_primeRoot` then reads off the degree in one rewrite, `natDegree (Xⁿ − C p) = n` via `natDegree_X_pow_sub_C`. Pinning the minimal polynomial (rather than merely asserting *some* polynomial of degree ≥ 2 vanishes) is precisely what makes the downstream degree and basis computations exact rather than lower bounds.",
+    "mathContext": "$\\mathrm{minpoly}_{\\mathbb Q}(p^{1/n}) = X^n - p$, and $\\deg(X^n - p) = n$. Sharpness: irreducibility forbids a proper factor, so the minimal polynomial is the entire Eisenstein polynomial.",
     "prerequisites": [
       "minpoly.eq_of_irreducible_of_monic",
-      "IntermediateField.adjoin.finrank",
-      "linearIndependent_pow"
+      "Eisenstein's criterion + Gauss's lemma",
+      "natDegree_X_pow_sub_C"
     ],
     "relatedConcepts": [
       "minimal polynomial",
+      "Eisenstein polynomial",
+      "monic polynomials"
+    ],
+    "significance": "key"
+  },
+  {
+    "id": "ann-exact-degree-basis",
+    "proofId": "fourth-root-2-irrational-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 104
+    },
+    "type": "insight",
+    "title": "Exact field degree n and the power basis {1, r, …, rⁿ⁻¹}",
+    "content": "`finrank_adjoin_primeRoot` turns the minimal-polynomial degree into the field degree $[\\mathbb Q(r):\\mathbb Q] = n$ through `IntermediateField.adjoin.finrank` applied to the integral radical. This is strictly stronger than irrationality (which only gives degree $\\ge 2$): it pins the algebraic degree at *exactly* $n$ for every prime $p$ and every $n \\ge 1$, with no parity or prime-power restriction. `linearIndependent_primeRoot_powers` then supplies the $\\mathbb Q$-linearly independent power basis $\\{1, r, \\dots, r^{n-1}\\}$: `linearIndependent_pow` gives independence of powers below the minimal-polynomial degree, and rewriting that degree to $n$ finishes. This `Fin n` statement generalizes the parent entry's `Fin 4` power basis for $\\sqrt[4]{2}$.",
+    "mathContext": "$[\\mathbb Q(p^{1/n}):\\mathbb Q] = \\deg\\,\\mathrm{minpoly} = n$; the powers $1, r, \\dots, r^{n-1}$ are $\\mathbb Q$-independent, forming a basis of the degree-$n$ extension.",
+    "prerequisites": [
+      "IntermediateField.adjoin.finrank",
+      "linearIndependent_pow",
+      "power basis of a simple extension"
+    ],
+    "relatedConcepts": [
       "field degree",
-      "power basis"
+      "power basis",
+      "simple algebraic extension"
     ],
     "significance": "key"
   },
