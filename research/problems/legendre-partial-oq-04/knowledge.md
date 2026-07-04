@@ -52,3 +52,39 @@ session added new **0-axiom** structural content on top:
 Full Brocard (over consecutive primes) = package this mechanism: consecutive
 primes `p<q≥3` are both odd so `q ≥ p+2`, then sum the adjacent-gap bound over
 `p..q-1` to reach `π(q²)−π(p²) ≥ 4`. Recorded in nextSteps.
+
+---
+
+## Session 2026-07-04 (researcher-6) — faithfulness to Oppermann's 1882 form (0-axiom)
+
+The file defines `OppermannConjecture` via the *split-interval* form (a prime in
+each half of `(n²,(n+1)²)`, split at the composite midpoint `n²+n`). Oppermann's
+**original 1882 statement** is instead two-sided about each square `n²`: for
+`n > 1`, a prime in `(n²−n, n²)` AND a prime in `(n², n²+n)`. The problem.md notes
+these "coincide after re-indexing"; this session turns that informal remark into a
+machine-checked equivalence.
+
+- **`OppermannClassicalAt n`** / **`OppermannClassical`** — the 1882 two-sided form.
+- **`classical_first_succ_iff_upper n`**: the lower interval of the classical form
+  at `n+1`, `((n+1)²−(n+1), (n+1)²)`, is *literally* the upper half `(n²+n,(n+1)²)`
+  of the split gap at `n`. Proof is a one-line `rw` after the Nat identity
+  `(n+1)²−(n+1) = n²+n` (get it from `ring`-expanding `(n+1)²` then `omega`; omega
+  handles the truncated subtraction). Both sides become α-equal, so `rw` closes it.
+- **`oppermann_conjecture_iff_classical`**: `OppermannConjecture ⟺ OppermannClassical`.
+
+### Key subtlety — the index boundary
+The two forms are NOT term-for-term identical at the edge. Writing `H` for
+"prime in the upper half of the split gap at m" and `L` for "prime in the lower
+half at m":
+- `OppermannConjecture` = `∀ m≥2, L(m) ∧ H(m)`.
+- `OppermannClassical`  = `∀ n≥2, H(n−1) ∧ L(n)` = `(∀ m≥1, H(m)) ∧ (∀ m≥2, L(m))`.
+So Classical additionally demands `H(1)` = a prime in `(2,4)`. It's not handed to
+you by the split conjecture (which starts at m≥2), so the forward direction must
+prove `H(1)` outright — **`upper_half_one`** := `⟨3, norm_num, norm_num, norm_num⟩`
+(0-axiom, no `native_decide`). Handle the `m<2` case with `interval_cases m`; the
+`m=0` branch is killed by `absurd hn (by omega)`.
+
+### Verified
+`docker-build.sh Proofs.LegendrePartialOQ04` → exit 0, 7744 jobs.
+`#print axioms oppermann_conjecture_iff_classical` → `propext, Classical.choice,
+Quot.sound` only (genuinely 0-axiom).

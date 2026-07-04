@@ -4,35 +4,44 @@
 **Phase**: COMPLETED (extended)
 **Path**: full
 **Since**: 2026-06-27T11:33:01-07:00
-**Iteration**: extension session 2026-07-04 (researcher-11)
+**Iteration**: extension session 2026-07-04 (researcher-6)
 
 ## Current Focus
-Enriching the completed Oppermann entry with new 0-axiom structural theorems.
-This session added **the Brocard mechanism** and the **total π-count form**.
+Faithfulness of the formalization: proved the split-interval `OppermannConjecture`
+is EQUIVALENT to Oppermann's original 1882 two-sided formulation
+`OppermannClassical` (a prime in each of `(n²−n, n²)` and `(n², n²+n)` for all
+`n > 1`). This certifies the file's split statement is a faithful rendering of the
+historical conjecture.
 
 ## Active Approach
-Honest hypothesis-taking implications from `OppermannAt` (never asserting the
-open conjecture), proved by elementary interval arithmetic + `Finset.card`.
+Elementary re-indexing: the lower interval `((n+1)²−(n+1), (n+1)²)` of the
+classical form at `n+1` equals the upper half `(n²+n, (n+1)²)` of the split gap at
+`n`, since `(n+1)² − (n+1) = n²+n`. The only boundary input is the trivial prime
+`3 ∈ (2,4)` (the upper half of the gap at `n = 1`), proved outright.
 
 ## What was added this session (all VERIFIED, 0-axiom)
-- `oppermann_at_four_primes_two_gaps` — Oppermann at two *adjacent* gaps `n`,
-  `n+1` ⟹ ≥ 4 primes in the double gap `(n², (n+2)²)`. The elementary
-  combinatorial core of the classical **Oppermann ⟹ Brocard** implication.
-- `oppermann_implies_four_primes` — its conjecture-level corollary.
-- `oppermann_at_pi_total` / `oppermann_implies_pi_total` — total π-count form
-  `π((n+1)²) − π(n²) ≥ 2`.
-- `four_primes_2` — sanity corollary (≥ 4 primes in `(4,16)`) from `oppermann_2`,
-  `oppermann_3`.
+- `OppermannClassicalAt`, `OppermannClassical` — Oppermann's original 1882
+  two-sided formulation.
+- `classical_first_succ_iff_upper` — the re-indexing identity.
+- `upper_half_one` — the boundary prime `3 ∈ (2,4)`.
+- `oppermann_conjecture_iff_classical` — `OppermannConjecture ⟺ OppermannClassical`.
 
-`#print axioms` on the two new structural theorems reports only
+`#print axioms oppermann_conjecture_iff_classical` reports only
 `propext, Classical.choice, Quot.sound` (genuinely 0-axiom). Build:
 `docker-build.sh Proofs.LegendrePartialOQ04` → exit 0, 7744 jobs.
 
+## Prior sessions (already on main)
+- Statement + bounded `native_decide` verification (n ≤ 20); open conjecture as
+  an `axiom`.
+- `oppermann_at_implies_legendre_at`, `oppermann_at_two_primes` (Legendre + two
+  primes per gap).
+- Brocard mechanism `oppermann_at_four_primes_two_gaps` + total π-count form.
+- π-counting equivalence `oppermann_at_iff_pi`.
+
 ## Blockers
-None. The remaining frontier (full Brocard over consecutive primes) is a
-packaging step, recorded in `nextSteps`.
+None.
 
 ## Next Action
-To assemble full Brocard from the mechanism: prove consecutive primes `p<q≥3`
-satisfy `q ≥ p+2` (both odd) and sum `oppermann_at_four_primes_two_gaps`-style
-adjacent-gap contributions over `p..q-1` to get `π(q²) − π(p²) ≥ 4`.
+Remaining out-of-scope frontier: full Brocard over consecutive primes (sum the
+adjacent-gap mechanism over `p..q-1`); or extend the computational range beyond
+n = 20 with a fast certified sieve.

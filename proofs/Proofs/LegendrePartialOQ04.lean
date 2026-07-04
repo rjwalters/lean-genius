@@ -39,6 +39,12 @@ New content here:
     implication.  VERIFIED, 0-axiom.
   * `oppermann_implies_four_primes` — its conjecture-level corollary.  VERIFIED,
     0-axiom.
+  * `OppermannClassicalAt`, `OppermannClassical` — Oppermann's *original* 1882
+    two-sided formulation (a prime in each of `(n²−n, n²)` and `(n², n²+n)`).
+  * `oppermann_conjecture_iff_classical` — **faithfulness**: the split-interval
+    `OppermannConjecture` is EQUIVALENT to the historical two-sided
+    `OppermannClassical`, via the re-indexing `(n+1)² − (n+1) = n²+n`.  VERIFIED,
+    0-axiom (the only boundary input, the prime `3 ∈ (2, 4)`, is proved outright).
   * `card_primes_Ioc` — the number of primes in `(a, b]` equals `π(b) − π(a)` for
     Mathlib's `Nat.primeCounting`.  VERIFIED, 0-axiom.
   * `oppermann_at_pi_total`, `oppermann_implies_pi_total` — the total π-count
@@ -79,6 +85,19 @@ def OppermannAt (n : ℕ) : Prop :=
 `n = 1` the lower half `(1, 2)` is empty, so the conjecture is stated for
 `n > 1`.) -/
 def OppermannConjecture : Prop := ∀ n : ℕ, 2 ≤ n → OppermannAt n
+
+/-- **Oppermann's original (1882) two-sided formulation at `n`.** Oppermann's
+1882 statement is customarily phrased about the *two* intervals flanking `n²`:
+for `n > 1` there is a prime in `(n²−n, n²)` (just below `n²`) and a prime in
+`(n², n²+n)` (just above `n²`).  This is the historical form; the split-interval
+`OppermannAt` reorganises the same primes around each square-gap. -/
+def OppermannClassicalAt (n : ℕ) : Prop :=
+  (∃ p, Nat.Prime p ∧ n ^ 2 - n < p ∧ p < n ^ 2) ∧
+  (∃ q, Nat.Prime q ∧ n ^ 2 < q ∧ q < n ^ 2 + n)
+
+/-- **Oppermann's conjecture, original two-sided form.** `OppermannClassicalAt n`
+holds for every `n ≥ 2`. -/
+def OppermannClassical : Prop := ∀ n : ℕ, 2 ≤ n → OppermannClassicalAt n
 
 /-! ## Structural theorems (VERIFIED, 0-axiom)
 
@@ -189,6 +208,59 @@ theorem oppermann_implies_four_primes (h : OppermannConjecture) :
     ∀ n : ℕ, 2 ≤ n →
       4 ≤ ((Finset.Ioo (n ^ 2) ((n + 2) ^ 2)).filter Nat.Prime).card :=
   fun n hn => oppermann_at_four_primes_two_gaps (h n hn) (h (n + 1) (by omega))
+
+/-! ## Faithfulness: split form ⟺ Oppermann's original 1882 two-sided form
+(VERIFIED, 0-axiom)
+
+The definition `OppermannAt` splits the square-gap `(n², (n+1)²)` at its midpoint
+`n²+n`; Oppermann's own 1882 statement instead flanks each square `n²` with the
+two intervals `(n²−n, n²)` and `(n², n²+n)` (`OppermannClassicalAt`).  The two are
+re-indexings of the same family of half-intervals: the interval `(n²−n, n²)` just
+below `n²` is exactly the *upper* half `((n−1)²+(n−1), n²)` of the square-gap at
+`n−1`, since `(n−1)² + (n−1) = n² − n`.  This section proves the two conjecture
+forms are *equivalent*, certifying that the split-interval formalisation is
+faithful to the historical statement — the only boundary input is the trivial
+prime `3 ∈ (2, 4)` (the upper half of the gap at `n = 1`). -/
+
+/-- **Re-indexing identity.** The lower interval `((n+1)²−(n+1), (n+1)²)` of the
+original form at `n+1` is *literally* the upper half `(n²+n, (n+1)²)` of the
+square-gap at `n`, because `(n+1)² − (n+1) = n²+n`. -/
+theorem classical_first_succ_iff_upper (n : ℕ) :
+    (∃ p, Nat.Prime p ∧ (n + 1) ^ 2 - (n + 1) < p ∧ p < (n + 1) ^ 2) ↔
+    (∃ q, Nat.Prime q ∧ n ^ 2 + n < q ∧ q < (n + 1) ^ 2) := by
+  have h : (n + 1) ^ 2 - (n + 1) = n ^ 2 + n := by
+    have : (n + 1) ^ 2 = n ^ 2 + 2 * n + 1 := by ring
+    omega
+  rw [h]
+
+/-- **Boundary input.** The upper half of the gap at `n = 1`, `(2, 4)`, contains
+the prime `3`.  This is the one instance the split form does not carry but the
+original two-sided form (starting at `n = 2`) requires. -/
+theorem upper_half_one :
+    ∃ q, Nat.Prime q ∧ 1 ^ 2 + 1 < q ∧ q < (1 + 1) ^ 2 :=
+  ⟨3, by norm_num, by norm_num, by norm_num⟩
+
+/-- **The split form and Oppermann's original 1882 form are equivalent.** For
+every `n ≥ 2`, `OppermannClassicalAt n` (prime in each of `(n²−n, n²)` and
+`(n², n²+n)`) matches the half-intervals of the split form: the second component
+is the *lower* half of the gap at `n`, and the first component is the *upper* half
+of the gap at `n−1`.  Hence `OppermannConjecture ⟺ OppermannClassical`.  VERIFIED,
+0-axiom (the sole boundary fact `upper_half_one` is proved outright). -/
+theorem oppermann_conjecture_iff_classical :
+    OppermannConjecture ↔ OppermannClassical := by
+  constructor
+  · intro h n hn
+    obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
+    have hupper : ∃ q, Nat.Prime q ∧ m ^ 2 + m < q ∧ q < (m + 1) ^ 2 := by
+      rcases Nat.lt_or_ge m 2 with hm | hm
+      · interval_cases m
+        · exact absurd hn (by omega)
+        · exact upper_half_one
+      · exact (h m hm).2
+    exact ⟨(classical_first_succ_iff_upper m).mpr hupper, (h (m + 1) hn).1⟩
+  · intro h m hm
+    exact ⟨(h m hm).2,
+      (classical_first_succ_iff_upper m).mp (h (m + 1) (by omega)).1⟩
 
 /-! ## π-counting form (VERIFIED, 0-axiom)
 
