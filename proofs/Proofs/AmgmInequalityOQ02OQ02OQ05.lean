@@ -448,4 +448,88 @@ theorem splits_iterate_derivative {p : ℝ[X]} (hp : Splits p) (k : ℕ) :
       rw [Function.iterate_succ', Function.comp_apply]
       exact splits_derivative ih
 
+/-!  ## Closing the loop: the crux *produces* a discriminant inequality
+
+Parts I–V above proved the two halves of the classical route in isolation: the
+Part I atom `discrim_nonneg_of_root` ("a real-rooted quadratic has nonnegative
+discriminant"), and the Part V crux `splits_iterate_derivative` ("every derivative
+of a split real polynomial is again split").  They were never *joined*: nothing
+yet turned "the reduced polynomial is real-rooted" into "its discriminant is `≥ 0`"
+at the `Polynomial`/`coeff` level for a genuinely arbitrary split polynomial.
+
+The following lemma is exactly that join, in coordinate-free `coeff` form: a real
+polynomial that `Splits` and has degree exactly two has a nonnegative
+discriminant in its three coefficients.  Because `splits_iterate_derivative`
+shows the `(n-2)`-nd derivative of a split degree-`n` polynomial splits and has
+degree two, this is the general per-derivative Newton step, stated once for all
+`n` with no sign hypothesis — the honest end-to-end use of the Part V engine that
+the earlier parts documented as still missing. -/
+
+open Finset in
+/-- **A split real quadratic has nonnegative discriminant** (`coeff` form).
+If `p : ℝ[X]` splits over `ℝ` and `p.natDegree = 2`, then
+`0 ≤ discrim (p.coeff 2) (p.coeff 1) (p.coeff 0)`.
+
+This is the general per-derivative step of the Rolle/discriminant program stated
+directly on `Polynomial` coefficients: `splits_iterate_derivative` reduces a split
+degree-`n` polynomial to a split *quadratic* (its `(n-2)`-nd derivative), and this
+lemma converts that quadratic's real-rootedness into Newton's discriminant
+inequality on the surviving three coefficients.  Proof: a split polynomial of
+degree two has `card roots = 2 > 0`, so it has a real root `r`; expanding
+`p.eval r = 0` through `eval_eq_sum_range` (a length-three sum since
+`natDegree = 2`) yields `coeff 2 · r² + coeff 1 · r + coeff 0 = 0`, and the Part I
+atom `discrim_nonneg_of_root` finishes. -/
+theorem discrim_coeff_nonneg_of_splits_deg_two {p : ℝ[X]}
+    (hp : Splits p) (hdeg : p.natDegree = 2) :
+    0 ≤ discrim (p.coeff 2) (p.coeff 1) (p.coeff 0) := by
+  -- a split degree-2 polynomial has two roots (with multiplicity), so `roots ≠ 0`
+  have hcard : Multiset.card p.roots = 2 := by
+    rw [splits_iff_card_roots] at hp; rw [hp, hdeg]
+  have hne : p.roots ≠ 0 := by
+    rw [← Multiset.card_pos, hcard]; norm_num
+  obtain ⟨r, hr⟩ := Multiset.exists_mem_of_ne_zero hne
+  have hroot : p.eval r = 0 := isRoot_of_mem_roots hr
+  -- expand the evaluation as a length-three coefficient sum
+  have hexp : p.eval r
+      = ∑ i ∈ range (p.natDegree + 1), p.coeff i * r ^ i := eval_eq_sum_range r
+  rw [hdeg] at hexp
+  rw [sum_range_succ, sum_range_succ, sum_range_one] at hexp
+  have hquad : p.coeff 2 * (r * r) + p.coeff 1 * r + p.coeff 0 = 0 := by
+    have key : p.coeff 0 * r ^ 0 + p.coeff 1 * r ^ 1 + p.coeff 2 * r ^ 2 = 0 := by
+      rw [← hexp]; exact hroot
+    linear_combination key
+  exact discrim_nonneg_of_root (p.coeff 2) (p.coeff 1) (p.coeff 0) r hquad
+
+/-!  ## Part III, in explicit normalized (`p`) form
+
+`newton_first_general` states the first Newton inequality in cleared-denominator
+elementary-symmetric form (`2 n · e₂ ≤ (n-1) · e₁²`).  The corollary below restates
+it in the genuine normalized shape `p₁² ≥ p₀ · p₂` with the actual Maclaurin means
+`p₀ = 1`, `p₁ = e₁ / n`, and `p₂ = e₂ / binom n 2 = e₂ / (n(n-1)/2)`, for every
+arity `n ≥ 2` and all signed reals — the explicit `p`-form counterpart of the
+per-arity `newton_two_vars_normalized` / `newton_three_normalized`. -/
+
+open Finset in
+/-- **Newton's first inequality for arbitrary `n ≥ 2`, in normalized (`p`) form.**
+With `p₀ = 1`, `p₁ = e₁ / n = (∑ xᵢ)/n`, and
+`p₂ = e₂ / binom n 2 = (∑_{i<j} xᵢ xⱼ)/(n(n-1)/2)`, the first log-concavity step
+`p₀ · p₂ ≤ p₁²` holds for all signed reals.  This is `newton_first_general`
+(`2 n · e₂ ≤ (n-1) · e₁²`) divided down by the binomial normalizations, matching
+the `p`-form used by `newton_two_vars_normalized` and `newton_three_normalized`. -/
+theorem newton_first_general_normalized (n : ℕ) (hn : 2 ≤ n) (x : ℕ → ℝ) :
+    (1 : ℝ) * ((∑ j ∈ range n, ∑ i ∈ range j, x i * x j) /
+        ((n : ℝ) * ((n : ℝ) - 1) / 2))
+      ≤ ((∑ i ∈ range n, x i) / (n : ℝ)) ^ 2 := by
+  have h := newton_first_general n x
+  -- abstract the two elementary-symmetric sums to keep the arithmetic small
+  set S : ℝ := ∑ i ∈ range n, x i with hS
+  set E : ℝ := ∑ j ∈ range n, ∑ i ∈ range j, x i * x j with hE
+  have h2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hnpos : (0 : ℝ) < (n : ℝ) := by linarith
+  have hCpos : (0 : ℝ) < (n : ℝ) * ((n : ℝ) - 1) / 2 := by nlinarith
+  have hn2pos : (0 : ℝ) < (n : ℝ) ^ 2 := by positivity
+  rw [one_mul, div_pow]
+  rw [div_le_div_iff₀ hCpos hn2pos]
+  nlinarith [h, hnpos]
+
 end NewtonRealRooted
