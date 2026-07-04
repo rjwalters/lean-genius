@@ -56,7 +56,7 @@
     "definitionCount": 3
   },
   "overview": {
-    "historicalContext": "Erdős Problem #124 (the weak Burr–Erdős–Graham–Li version) asks whether bases d₁,…,d_k ≥ 2 with ∑ 1/(dᵢ−1) ≥ 1 make every natural number a sum of numbers each having only 0/1 digits in its base. It was solved and formally verified by Harmonic's AI 'Aristotle' in November 2025 via Brown's criterion (see the parent entry). The reciprocal condition is a closed half-line ∑ 1/(dᵢ−1) ≥ 1, and its extreme face is equality. This follow-up studies that boundary.",
+    "historicalContext": "Erdős Problem #124 (the weak Burr–Erdős–Graham–Li version) asks whether bases d₁,…,d_k ≥ 2 with ∑ 1/(dᵢ−1) ≥ 1 make every natural number a sum of numbers each having only 0/1 digits in its base. It was solved and formally verified by Harmonic's AI 'Aristotle' in November 2025 via Brown's criterion (see the parent entry). The reciprocal condition is a closed half-line ∑ 1/(dᵢ−1) ≥ 1, and its extreme face is equality. This follow-up studies that boundary. Under the substitution eᵢ = dᵢ − 1 the boundary face reciSum d = 1 becomes exactly a unit-fraction (Egyptian) decomposition of 1, so the extremal configurations are precisely the finite Egyptian fractions summing to 1 — a subject going back to the Rhind papyrus, Fibonacci's greedy algorithm, and Sylvester's sequence 2, 3, 7, 43, … whose reciprocals telescope to 1. This entry proves boundary configs exist for every length k (via the Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1))) and that base 2 is rigid (d = 2 already contributes the whole unit 1/1, forcing a singleton).",
     "problemStatement": "**OQ-02:** what techniques are needed at the exact boundary ∑ 1/(dᵢ−1) = 1?\n\n**Answer:** none beyond the parent theorem — the boundary is contained in the closed region the parent already covers. The genuinely new content is structural: writing eᵢ = dᵢ − 1 ≥ 1, the boundary condition becomes\n$$\\sum 1/e_i = 1,$$\nso the Erdős-124 boundary configurations are *exactly the Egyptian-fraction decompositions of 1*. The relevant 'technique' is therefore the arithmetic of unit fractions / the Sylvester splitting.",
     "text": "The boundary ∑ 1/(dᵢ−1) = 1 of Erdős 124 is exactly an Egyptian-fraction decomposition of 1 (set eᵢ = dᵢ − 1). Boundary configurations exist with any number of bases (Sylvester splitting), and any boundary configuration containing the base d = 2 is the singleton [2] (binary).",
     "proofStrategy": "Work with egyptSum e = ∑ 1/eᵢ and reciSum d = ∑ 1/(dᵢ−1) as list-map-sums over ℚ.\n1. reciSum_eq_egyptSum: list induction; the cons step needs ((a−1:ℕ):ℚ) = (a:ℚ)−1 (Nat.cast_sub, a ≥ 1).\n2. egyptSum_split: field_simp clears denominators in 1/(e+1)+1/(e(e+1)) = 1/e for e ≥ 1.\n3. sylvester k: recursively split the head unit fraction (e ↦ e+1, e(e+1)); induction proves the sum stays 1, length is k+1, and denominators stay ≥ 1.\n4. exists_boundary_config: map the Sylvester denominators by (+1) to get k bases ≥ 2 with reciSum = 1.\n5. egypt_one_forces_singleton: if the unit 1 occurs, its term is 1/1 = 1, so egyptSum ≥ 1 (egyptSum_ge_one_of_mem_one) with all other terms positive forces the rest empty; base_two_forces_singleton transports this through the bridge.",
@@ -64,7 +64,8 @@
       "**The boundary is Egyptian fractions.** The single substitution eᵢ = dᵢ − 1 turns the opaque reciprocal-sum boundary ∑ 1/(dᵢ−1) = 1 into ∑ 1/eᵢ = 1, a classical unit-fraction decomposition of 1. This is the whole point: the 'hard technique at the boundary' is just the arithmetic of Egyptian fractions.",
       "**Boundary configs exist for every k.** The Sylvester splitting 1/e = 1/(e+1) + 1/(e(e+1)) lets one trade a unit fraction for two, so a boundary configuration of length k can be grown to length k+1; the parameter k (number of bases) is completely unconstrained.",
       "**Binary is rigid.** The base d = 2 contributes the full unit fraction 1/1 = 1, leaving zero budget for any other base — so the only boundary configuration using d = 2 is the singleton [2], which is ordinary base-2 representation. This isolates exactly when the boundary degenerates.",
-      "**No new completeness machinery is needed.** Equality is a face of the closed condition ∑ ≥ 1 the parent already proves complete, so the boundary inherits completeness for free; what the boundary adds is combinatorial structure, not a harder analytic theorem."
+      "**No new completeness machinery is needed.** Equality is a face of the closed condition ∑ ≥ 1 the parent already proves complete, so the boundary inherits completeness for free; what the boundary adds is combinatorial structure, not a harder analytic theorem.",
+      "**The splitting identity is the whole engine.** egyptSum_split (1/e = 1/(e+1) + 1/(e·(e+1))) applied to the head term turns one boundary Egyptian fraction into a longer one, so iterating it from [1] yields the Sylvester family whose egyptSum is provably 1 at every length — giving boundary configurations of every size k with no extra completeness machinery."
     ],
     "prerequisites": [
       "Egyptian / unit fractions and decompositions of 1",
@@ -75,12 +76,16 @@
   },
   "sections": [
     {
-      "id": "definitions",
       "title": "Egyptian and reciprocal sums",
-      "startLine": 60,
+      "startLine": 55,
+      "endLine": 96,
+      "summary": "egyptSum (∑ 1/eᵢ) and reciSum (∑ 1/(dᵢ−1)) as list-map-sums over ℚ, with cons/nil simp rules, the bridge reciSum_eq_egyptSum (under eᵢ = dᵢ − 1 the Erdős-124 reciprocal sum is an Egyptian-fraction sum, so reciSum d = 1 is a unit-fraction decomposition of 1), and egyptSum_nonneg."
+    },
+    {
+      "title": "The Sylvester splitting identity",
+      "startLine": 97,
       "endLine": 110,
-      "summary": "egyptSum (∑ 1/eᵢ) and reciSum (∑ 1/(dᵢ−1)) as list-map-sums over ℚ, with cons/nil simp rules and the bridge reciSum_eq_egyptSum showing the Erdős-124 reciprocal sum is an Egyptian-fraction sum under eᵢ = dᵢ − 1.",
-      "mathContext": "Reframing the boundary face ∑ 1/(dᵢ−1) = 1 as a unit-fraction decomposition of 1."
+      "summary": "egyptSum_split: 1/e = 1/(e+1) + 1/(e·(e+1)) for e ≥ 1, proved by field_simp. Splitting the head unit fraction of a boundary Egyptian decomposition produces a longer one — the engine behind the length-k boundary configurations built next."
     },
     {
       "id": "sylvester",
