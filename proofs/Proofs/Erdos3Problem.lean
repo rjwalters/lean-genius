@@ -188,6 +188,44 @@ theorem containsAP_of_le {A : Set ℕ} {k m : ℕ} (hkm : k ≤ m)
   rw [Finset.mem_range] at hx ⊢
   omega
 
+/-- **A genuine `k`-term AP has exactly `k` elements.**
+    When the common difference `d` is positive, the generating map `i ↦ a + i·d`
+    is injective on `range k`, so `ArithProg a d k` has cardinality `k`.  (This is
+    exactly why `ContainsAP` insists on `d > 0`: without it the progression can
+    collapse to a single point.)  A reusable counting fact for turning
+    AP-containment into cardinality lower bounds. -/
+theorem arithProg_card (a d k : ℕ) (hd : 0 < d) :
+    (ArithProg a d k).card = k := by
+  have hinj : Function.Injective (fun i => a + i * d) := by
+    intro i j hij
+    dsimp only at hij
+    exact Nat.eq_of_mul_eq_mul_right hd (Nat.add_left_cancel hij)
+  unfold ArithProg
+  rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
+
+/-- **Only infinite sets contain arbitrarily long APs.**
+    If `A` contains a `k`-term arithmetic progression (with positive common
+    difference) for every `k`, then `A` is infinite.  Indeed, were `A` finite with
+    `n = |A|` elements, the `(n+1)`-term AP it must contain would be an
+    `(n+1)`-element subset of `A` (`arithProg_card`), contradicting `|A| = n`.
+
+    A basic sanity check on the *conclusion* of Erdős #3: the property
+    `ContainsArbitrarilyLongAP` can only hold for infinite sets, matching the
+    hypothesis side (`HasDivergentSum` likewise forces infinitude).  Elementary,
+    `sorry`-free and axiom-free. -/
+theorem infinite_of_containsArbitrarilyLongAP {A : Set ℕ}
+    (h : ContainsArbitrarilyLongAP A) : A.Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  obtain ⟨a, d, hd, hsub⟩ := h (hfin.toFinset.card + 1)
+  have hsubF : ArithProg a d (hfin.toFinset.card + 1) ⊆ hfin.toFinset := by
+    intro x hx
+    rw [Set.Finite.mem_toFinset]
+    exact hsub (Finset.mem_coe.mpr hx)
+  have hcard := Finset.card_le_card hsubF
+  rw [arithProg_card a d _ hd] at hcard
+  omega
+
 /-- **Analytic core of the reduction.**
     If the counting function of `A` obeys `f_A(N) ≤ C · N / (log N)^{1+δ}` for all
     large `N` (`δ > 0`), then `∑_{a ∈ A} 1/a` converges. Proof by dyadic blocking:

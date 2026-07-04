@@ -46,7 +46,9 @@
       "Axiomatization of major results (Szemeredi, Gowers, Kelley-Meka, Leng-Sah-Sawhney)",
       "Connection to Green-Tao theorem on primes",
       "Behrend and Elkin constructions axiomatized",
-      "Formal proof that Erdos #3 implies Green-Tao"
+      "Formal proof that Erdos #3 implies Green-Tao",
+      "arithProg_card: a genuine k-term AP (d > 0) has exactly k elements, via injectivity of i ↦ a + i·d on range k — a reusable counting fact turning AP-containment into cardinality lower bounds",
+      "infinite_of_containsArbitrarilyLongAP: only infinite sets contain arbitrarily long APs (a finite set of size n cannot contain the (n+1)-element AP it would need), a sorry-free axiom-free sanity check on the conjecture's conclusion side"
     ],
     "axiomCount": 0,
     "lineCount": 163,
@@ -233,9 +235,9 @@
       "Finset"
     ],
     "namespace": "Erdos3",
-    "lineCount": 448,
+    "lineCount": 486,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 12,
     "path": "Proofs/Erdos3Problem.lean",
     "sorries": 1
