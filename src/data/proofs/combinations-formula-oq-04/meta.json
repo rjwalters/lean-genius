@@ -95,6 +95,32 @@
       "endLine": 114
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "choose_mul_choose_le_sq",
+      "type": "core",
+      "description": "**Log-concavity of a Pascal row** — C(n,k) · C(n,k+2) ≤ C(n,k+1)² for all n, k. The row's fundamental inequality (the sibling family records only identities), and the structural reason it is unimodal. Mathlib has the unimodal maximum choose_le_middle and the ratio choose_succ_right_eq, but not this log-concavity.",
+      "leanType": "(n k : ℕ) : n.choose k * n.choose (k + 2) ≤ (n.choose (k + 1)) ^ 2",
+      "line": 56,
+      "endLine": 79
+    },
+    {
+      "name": "choose_mul_choose_lt_sq",
+      "type": "key",
+      "description": "**Strict log-concavity in the interior** — for k + 2 ≤ n, C(n,k) · C(n,k+2) < C(n,k+1)². The binomial case of Newton's inequalities. Same cancellation as the ≤ form but using b = C(n,k+1) > 0 in the interior.",
+      "leanType": "(n k : ℕ) (h : k + 2 ≤ n) : n.choose k * n.choose (k + 2) < (n.choose (k + 1)) ^ 2",
+      "line": 84,
+      "endLine": 105
+    },
+    {
+      "name": "choose_mul_choose_le_sq'",
+      "type": "supporting",
+      "description": "**Centered restatement** — rewriting k = j − 1, the row is log-concave at the interior index j: C(n,j−1) · C(n,j+1) ≤ C(n,j)² for 1 ≤ j. The symmetric form more convenient for downstream use.",
+      "leanType": "(n j : ℕ) (hj : 1 ≤ j) : n.choose (j - 1) * n.choose (j + 1) ≤ (n.choose j) ^ 2",
+      "line": 109,
+      "endLine": 112
+    }
+  ],
   "conclusion": {
     "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; imports only Mathlib): every Pascal row is log-concave, C(n,k)·C(n,k+2) ≤ C(n,k+1)², strictly in the interior. Proof by clearing denominators with Mathlib's adjacent-ratio relation and cancelling a manifestly positive factor.",
     "implications": "Supplies the row's fundamental inequality, complementing the sibling family's identities and Mathlib's unimodal-maximum lemma. Log-concavity implies unimodality and no internal zeros, and is the entry point to deeper properties (real-rootedness of the row polynomial, the binomial case of Newton's inequalities, and ultra-log-concavity).",
