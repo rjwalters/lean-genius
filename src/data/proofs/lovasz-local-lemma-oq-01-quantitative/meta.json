@@ -124,6 +124,11 @@
       "targetId": "lovasz-local-lemma",
       "relationship": "related",
       "description": "Parent gallery proof of the symmetric LLL over ℚ, whose general_lll records only ∏(1 − xᵢ) > 0 as a probability-budget surrogate. This entry shows that surrogate product is a genuine lower bound on the real avoidance probability over a probability space when the weights are read as conditional failure bounds."
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-01-euler-threshold",
+      "relationship": "related",
+      "description": "Certifies the memorable symmetric hypothesis this entry's open target invokes: the Euler condition e·p·(d+1) ≤ 1 — under which the per-event conditional bounds bₖ = 2p are to be derived — is proved to imply the tight threshold p ≤ T(d) = dᵈ/(d+1)^{d+1} of the parent proof. So the symmetric regime named in the honest-scope note and the first open question is machine-checked to be a legitimate, slightly conservative consequence of the tight threshold; it does not itself supply the bₖ derivation, which remains open."
     }
   ],
   "references": [
