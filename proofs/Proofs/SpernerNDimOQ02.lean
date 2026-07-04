@@ -3147,4 +3147,41 @@ theorem zeroPivotCell_feasible_iff_base_miss_ge (s : GridSimplex d N) (hd1 : 0 <
   have hge := s.base_miss_ge_d
   omega
 
+/-- **Exact top-`miss` height of the facet-`0` partner.**  Sharpens the iff-form
+`zeroPivotCell_feasible_iff_base_miss_ge` to an exact value: the partner cell's
+top vertex sits exactly `d + 1` below `s`'s base vertex in the shared `miss`
+direction.  Its top vertex is `zeroPivotTop`, one below the top of `s`'s chain
+(`zeroPivotTop_coords_miss`), and that chain-top is `base_miss − d`
+(`last_coord_miss`); so the new apex is pinned to a definite height.  Together
+with `zeroPivotCell_base_miss` (partner base = `base_miss − 1`) this makes the
+`base_miss` descent fully quantitative rather than merely monotone: the whole
+partner cell is a `miss`-shifted copy of `s`'s upper chain capped one step lower. -/
+theorem zeroPivotCell_top_miss (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    ((zeroPivotCell s hd1 hfeas).verts (Fin.last d)).coords
+        (zeroPivotCell s hd1 hfeas).miss
+      = (s.verts 0).coords s.miss - (d + 1) := by
+  rw [zeroPivotCell_miss, zeroPivotCell_verts_last, zeroPivotTop_coords_miss,
+      s.last_coord_miss]
+  omega
+
+/-- **The facet-`0` pivot chain reaches the boundary door in exactly one more
+step from a `base_miss = d + 1` cell.**  The partner cell `zeroPivotCell s` is
+itself the *extremal* cell of the descent — its own same-`miss` facet-`0` pivot is
+infeasible (top vertex already on the geometric `miss`-face) — exactly when `s`'s
+base `miss` coordinate is `d + 1`, one above the floor `d`.  Combined with
+`zeroPivotCell_base_miss` (each pivot lowers `base_miss` by one) and
+`base_miss_ge_d` (floor `d`), this pins the descent length: from a cell with base
+`miss = m` the same-`miss` facet-`0` pivot fires exactly `m − d` times before
+halting at the extremal cell whose top vertex sits on the `miss`-face — the
+terminal door where the cross-`miss` partner must attach. -/
+theorem zeroPivotCell_extremal_iff_base_miss_eq (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    ¬ (1 ≤ ((zeroPivotCell s hd1 hfeas).verts (Fin.last d)).coords
+              (zeroPivotCell s hd1 hfeas).miss)
+      ↔ (s.verts 0).coords s.miss = d + 1 := by
+  rw [zeroPivotCell_top_miss]
+  have hfe := (zeroPivot_feasible_iff s).mp hfeas
+  omega
+
 end SpernerNDimOQ02
