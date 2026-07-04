@@ -3184,4 +3184,73 @@ theorem zeroPivotCell_extremal_iff_base_miss_eq (s : GridSimplex d N) (hd1 : 0 <
   have hfe := (zeroPivot_feasible_iff s).mp hfeas
   omega
 
+/-- **Reciprocity base identity: the partner recovers `s`'s deleted apex by one
+downward step.**  The facet-`0` pivot builds the partner `t = zeroPivotCell s`
+*upward* — it deletes `s`'s base vertex `s.verts 0` and adds a new apex
+(`zeroPivotTop`) above `s`'s chain.  Dually, `s` is exactly the cell obtained from
+`t` by extending its top facet `{verts 1, …, verts d}` (= `gridFacet t (Fin.last d)`
+= `gridFacet s 0`, by `zeroPivotCell_gridFacet_last`) *downward*: `s`'s apex
+`s.verts 0` is `t`'s base vertex `t.verts 0` (= `s.verts 1`, by
+`zeroPivotCell_verts_of_lt`) moved one lattice step *back* along the omitted
+direction `incDir 0` — decrement the `incDir 0` coordinate, increment the `miss`
+coordinate (the exact inverse of `s`'s step-`0` chain move: `step_inc`/`step_dec`/
+`step_same` at `k = 0`).  This single formula pins the reciprocal downward vertex
+completely and is the coordinate core of the top-facet (`Fin.last d`) pivot that
+must invert the facet-`0` pivot for `adj` to be a partial involution across the
+boundary facets. -/
+theorem zeroPivotCell_base_recover (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) (j : Fin (d + 1)) :
+    (s.verts 0).coords j
+      = if j = s.incDir ⟨0, hd1⟩ then
+          ((zeroPivotCell s hd1 hfeas).verts 0).coords j - 1
+        else if j = s.miss then
+          ((zeroPivotCell s hd1 hfeas).verts 0).coords j + 1
+        else ((zeroPivotCell s hd1 hfeas).verts 0).coords j := by
+  have hcast : (⟨0, hd1⟩ : Fin d).castSucc = (0 : Fin (d + 1)) := by
+    apply Fin.ext; simp [Fin.castSucc, Fin.castAdd, Fin.castLE]
+  have ht : (zeroPivotCell s hd1 hfeas).verts 0 = s.verts (⟨0, hd1⟩ : Fin d).succ := by
+    rw [zeroPivotCell_verts_of_lt s hd1 hfeas 0 hd1]
+    congr 1
+  rw [ht]
+  by_cases hP : j = s.incDir ⟨0, hd1⟩
+  · subst hP
+    rw [if_pos rfl]
+    have hstep := s.step_inc ⟨0, hd1⟩
+    rw [hcast] at hstep
+    omega
+  · rw [if_neg hP]
+    by_cases hQ : j = s.miss
+    · subst hQ
+      rw [if_pos rfl]
+      have hstep := s.step_dec ⟨0, hd1⟩
+      rw [hcast] at hstep
+      omega
+    · rw [if_neg hQ]
+      have hstep := s.step_same ⟨0, hd1⟩ j hP hQ
+      rw [hcast] at hstep
+      omega
+
+/-- **Downward-step coordinate of the recovered apex (`incDir 0` case).**  The
+`incDir 0` coordinate of `s`'s deleted apex is one *below* the partner's base
+vertex — the reciprocal of the pivot's single upward increment at step `0`.
+Specialization of `zeroPivotCell_base_recover` at `j = incDir 0`. -/
+theorem zeroPivotCell_base_incDir0 (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (s.verts 0).coords (s.incDir ⟨0, hd1⟩)
+      = ((zeroPivotCell s hd1 hfeas).verts 0).coords (s.incDir ⟨0, hd1⟩) - 1 := by
+  have h := zeroPivotCell_base_recover s hd1 hfeas (s.incDir ⟨0, hd1⟩)
+  rwa [if_pos rfl] at h
+
+/-- **Downward-step coordinate of the recovered apex (`miss` case).**  The `miss`
+coordinate of `s`'s deleted apex is one *above* the partner's base vertex: moving
+down along the omitted direction restores the unit of `miss` the pivot spent going
+up.  Specialization of `zeroPivotCell_base_recover` at `j = miss`. -/
+theorem zeroPivotCell_base_miss_recover (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    (s.verts 0).coords s.miss
+      = ((zeroPivotCell s hd1 hfeas).verts 0).coords s.miss + 1 := by
+  have h := zeroPivotCell_base_recover s hd1 hfeas s.miss
+  rw [if_neg (fun hh => s.miss_ne_inc ⟨0, hd1⟩ hh.symm), if_pos rfl] at h
+  exact h
+
 end SpernerNDimOQ02
