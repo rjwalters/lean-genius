@@ -39,54 +39,72 @@
     {
       "name": "galoisGroupEquivZMod2_conjAe",
       "type": "core",
+      "statement": "The explicit isomorphism sends complex conjugation to the nontrivial element: galoisGroupEquivZMod2(Complex.conjAe) = Multiplicative.ofAdd 1.",
+      "significance": "The eponymous answer to the parent's open question. It labels the generator of the abstractly-cyclic Gal(ℂ/ℝ) concretely as complex conjugation, upgrading 'cyclic of order 2' to a fully named isomorphism.",
       "description": "The iso sends complex conjugation to the nontrivial element: galoisGroupEquivZMod2 Complex.conjAe = Multiplicative.ofAdd 1. This is the explicit answer to the parent's open question — the generator of the abstractly-cyclic Gal(ℂ/ℝ) is named as complex conjugation. Proved by if_neg conjAe_ne_one.",
       "leanType": "galoisGroupEquivZMod2 Complex.conjAe = Multiplicative.ofAdd 1"
     },
     {
       "name": "galoisGroupEquivZMod2_symm_ofAdd_one",
       "type": "core",
+      "statement": "The inverse isomorphism sends the nontrivial element back to complex conjugation: galoisGroupEquivZMod2.symm(ofAdd 1) = Complex.conjAe.",
+      "significance": "Certifies the correspondence is a genuine two-sided identification, not just a one-way labelling — the nontrivial class of Multiplicative (ZMod 2) is realized by exactly one automorphism, conjugation.",
       "description": "Conversely, the nontrivial element of Multiplicative (ZMod 2) is realized by complex conjugation: galoisGroupEquivZMod2.symm (ofAdd 1) = Complex.conjAe. The inverse direction of the labelled correspondence.",
       "leanType": "galoisGroupEquivZMod2.symm (Multiplicative.ofAdd 1) = Complex.conjAe"
     },
     {
       "name": "eq_one_or_conjAe",
       "type": "core",
+      "statement": "Every ℝ-algebra automorphism of ℂ is either the identity or complex conjugation.",
+      "significance": "The structural heart of the entry: it pins the abstract order-2 group down to two explicitly named elements. A third distinct automorphism would put {1, conjAe, g} into a group of order 2, a contradiction.",
       "description": "Structure of Gal(ℂ/ℝ): the only ℝ-automorphisms of ℂ are the identity and complex conjugation. Proof by counting — a third distinct automorphism g would put three elements {1, conjAe, g} into a group of order 2, contradicting Fintype.card = 2. The mathematical heart that pins the abstract cyclic group to two named elements.",
       "leanType": "(g : ℂ ≃ₐ[ℝ] ℂ) → g = 1 ∨ g = Complex.conjAe"
     },
     {
       "name": "card_galoisGroup_eq_two",
       "type": "core",
+      "statement": "The Galois group Gal(ℂ/ℝ) has exactly 2 elements: Nat.card (ℂ ≃ₐ[ℝ] ℂ) = 2.",
+      "significance": "Fixes the size of the group, the counting input that forces the two-element structure. Combines IsGalois.card_aut_eq_finrank with [ℂ:ℝ] = 2 (Complex.finrank_real_complex).",
       "description": "|Gal(ℂ/ℝ)| = 2: for a Galois extension the automorphism group has order equal to the degree, and [ℂ:ℝ] = 2 (IsGalois.card_aut_eq_finrank composed with Complex.finrank_real_complex).",
       "leanType": "Nat.card (ℂ ≃ₐ[ℝ] ℂ) = 2"
     },
     {
       "name": "conjAe_ne_one",
       "type": "lemma",
+      "statement": "Complex conjugation is a nontrivial automorphism: conjAe ≠ 1.",
+      "significance": "Provides the second, distinct element of the group. Without it the two-element count would not yield two *named* generators; it is the nontriviality that makes conjugation the generator.",
       "description": "Complex conjugation is a nontrivial automorphism: conjAe ≠ 1, because it sends I to -I, and -I = I would force I = 0.",
       "leanType": "(Complex.conjAe : ℂ ≃ₐ[ℝ] ℂ) ≠ 1"
     },
     {
       "name": "conjAe_mul_self",
       "type": "lemma",
+      "statement": "Complex conjugation is an involution: conjAe * conjAe = 1.",
+      "significance": "The group law on the domain side. This involution property is what makes the map to Multiplicative (ZMod 2) (where ofAdd 1 squares to 1) respect multiplication.",
       "description": "Complex conjugation is an involution: conjAe * conjAe = 1 (from Complex.conj_conj), the group multiplication needed for the map_mul law of the isomorphism.",
       "leanType": "(Complex.conjAe : ℂ ≃ₐ[ℝ] ℂ) * Complex.conjAe = 1"
     },
     {
       "name": "zmod2_eq_one_or",
       "type": "lemma",
+      "statement": "Multiplicative (ZMod 2) has exactly two elements: every x equals 1 or ofAdd 1.",
+      "significance": "The target-side case split, mirroring eq_one_or_conjAe on the codomain. Needed to verify the inverse map and multiplicativity by exhausting both classes.",
       "description": "Multiplicative (ZMod 2) has exactly the two elements 1 and ofAdd 1 (by decide), the target-side case split for the inverse and multiplicativity laws.",
       "leanType": "(x : Multiplicative (ZMod 2)) → x = 1 ∨ x = Multiplicative.ofAdd 1"
     },
     {
       "name": "ofAdd_one_ne_one",
       "type": "lemma",
+      "statement": "The nontrivial element ofAdd 1 of Multiplicative (ZMod 2) is not the unit.",
+      "significance": "The codomain counterpart of conjAe_ne_one, ensuring the two target elements are genuinely distinct so the isomorphism is well-defined and injective.",
       "description": "The nontrivial element ofAdd 1 of Multiplicative (ZMod 2) is not the unit (by decide).",
       "leanType": "(Multiplicative.ofAdd (1 : ZMod 2)) ≠ 1"
     },
     {
       "name": "galoisGroupEquivZMod2_one",
       "type": "lemma",
+      "statement": "The isomorphism sends the identity automorphism to the unit: galoisGroupEquivZMod2(1) = 1.",
+      "significance": "The second row of the isomorphism's value table. Together with galoisGroupEquivZMod2_conjAe it fully tabulates the explicit map on both group elements.",
       "description": "The iso sends the identity to the unit: galoisGroupEquivZMod2 1 = 1 (map_one). Together with galoisGroupEquivZMod2_conjAe this fully tabulates the labelled isomorphism galoisGroupEquivZMod2 : (ℂ ≃ₐ[ℝ] ℂ) ≃* Multiplicative (ZMod 2).",
       "leanType": "galoisGroupEquivZMod2 1 = 1"
     }
