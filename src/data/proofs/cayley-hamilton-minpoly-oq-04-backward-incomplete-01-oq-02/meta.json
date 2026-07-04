@@ -65,7 +65,35 @@
       "Polynomial.natDegree_pow, Polynomial.natDegree_le_of_dvd; Matrix.mulVec_mulVec, map_mul for aeval"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "cyclic_iff_qkm1_ne_zero",
+      "type": "core",
+      "description": "The sharp characterization for a prime-power minimal polynomial μ = qᵏ (q irreducible, deg μ = n, k ≥ 1): a vector is cyclic iff qᵏ⁻¹(M) does not annihilate it. For k = 1 this collapses to the sibling's irreducible-case result cyclic ↔ v ≠ 0. Assembles the two directions.",
+      "leanType": "[DecidableEq K[X]] → (M : Matrix (Fin n) (Fin n) K) → {q : K[X]} → {k : ℕ} → 0 < k → Irreducible q → minpoly K M = q ^ k → (minpoly K M).natDegree = n → (v : Fin n → K) → (IsCyclicVector M v ↔ (aeval M (q ^ (k - 1))).mulVec v ≠ 0)"
+    },
+    {
+      "name": "cyclic_of_qkm1_ne_zero",
+      "type": "core",
+      "description": "Hard direction: any vector not annihilated by qᵏ⁻¹(M) is cyclic. Proof reduces an arbitrary annihilator p (deg < n) to d = gcd(p, μ) via the parent's Bézout lemma, forces d ~ qʲ with j ≤ k−1 by the prime-power divisor structure (j = k would give μ ∣ p, impossible by degree), hence d ∣ qᵏ⁻¹ and qᵏ⁻¹(M) v = 0 — a contradiction.",
+      "leanType": "[DecidableEq K[X]] → (M : Matrix (Fin n) (Fin n) K) → {q : K[X]} → {k : ℕ} → 0 < k → Irreducible q → minpoly K M = q ^ k → (minpoly K M).natDegree = n → {v : Fin n → K} → (aeval M (q ^ (k - 1))).mulVec v ≠ 0 → IsCyclicVector M v"
+    },
+    {
+      "name": "qkm1_ne_zero_of_cyclic",
+      "type": "core",
+      "description": "Easy direction: a cyclic vector is never annihilated by qᵏ⁻¹(M). Since qᵏ⁻¹ is a nonzero polynomial of natDegree (k−1)·deg q < k·deg q = n, the cyclic condition would otherwise force qᵏ⁻¹ = 0.",
+      "leanType": "[DecidableEq K[X]] → (M : Matrix (Fin n) (Fin n) K) → {q : K[X]} → {k : ℕ} → 0 < k → Irreducible q → minpoly K M = q ^ k → (minpoly K M).natDegree = n → {v : Fin n → K} → IsCyclicVector M v → (aeval M (q ^ (k - 1))).mulVec v ≠ 0"
+    }
+  ],
   "sections": [
+    {
+      "id": "setup",
+      "title": "Docstring, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports the parent (source of IsCyclicVector and the Bézout lemma gcd_aeval_mulVec_eq_zero) and Mathlib.Tactic. Module docstring situating the entry as the prime-power rung μ = qᵏ of the primary-decomposition ladder above the irreducible base case, and sketching the hard-direction argument (Bézout → gcd → prime-power divisors). Opens Matrix and Polynomial, enters the namespace, and fixes the field K, size n, and the K[X]-module viewpoint via variable declarations.",
+      "mathContext": "Kⁿ as a K[X]-module via X ↦ M; μ = qᵏ gives the local module K[X]/(qᵏ)."
+    },
     {
       "id": "hard",
       "title": "Hard Direction: qᵏ⁻¹(M) v ≠ 0 ⟹ cyclic",
