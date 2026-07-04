@@ -41,7 +41,7 @@
     "parentDependencies": []
   },
   "overview": {
-    "historicalContext": "Erdős Problem #10 asks whether a fixed k makes every large integer a prime plus at most k powers of 2. The gallery's Erdős #10 powers-of-two thread reduced representability to the binary popcount and, in the parent Erdos10WIP01, proved popcount is subadditive under addition, popcount(a+b) ≤ popcount(a)+popcount(b) — carries only merge bits (2^a+2^a=2^{a+1}), never create them. A subadditive bound invites its equality case: when is no bit lost?",
+    "historicalContext": "Erdős Problem #10 asks whether a fixed k makes every large integer a prime plus at most k powers of 2. The gallery's Erdős #10 powers-of-two thread reduced representability to the binary popcount and, in the parent Erdos10WIP01, proved popcount is subadditive under addition, popcount(a+b) ≤ popcount(a)+popcount(b) — carries only merge bits (2^a+2^a=2^{a+1}), never create them. A subadditive bound invites its equality case: when is no bit lost? This entry answers that: equality popcount(a+b)=popcount(a)+popcount(b) holds exactly when a and b have disjoint binary supports (a &&& b = 0, i.e. no carries occur), and any shared 1-bit forces a strict drop — pinning down precisely when the subadditive bound of Erdős #10's powers-of-two thread is tight.",
     "problemStatement": "Determine exactly when popcount(a+b) = popcount(a)+popcount(b), and settle the seeker's proposed matching lower bound popcount(a+b) ≥ |popcount(a)−popcount(b)|.",
     "text": "A 203-line, fully verified (0 sorries, 0 axioms, no native_decide) self-contained file. It refutes the lower-bound alternative (a=1,b=7: popcount(8)=1 < |1−3|=2) and proves the correct well-posed result popcount_add_eq_iff: popcount(a+b) = popcount(a)+popcount(b) ↔ a &&& b = 0 — equality iff a and b have disjoint binary supports (no carries). The strict corollary popcount_add_lt records that overlapping supports force a strict drop.",
     "proofStrategy": "Everything runs off a single binary parity strong induction on a+b. Two popcount recursions (popcount(2n)=popcount n, popcount(2n+1)=popcount n+1) come directly from the Mathlib recursion of Nat.bitIndices. Three &&& recursions ((2a)&&&(2b)=2(a&&&b), (2a+1)&&&(2b)=2(a&&&b), (2a+1)&&&(2b+1)=2(a&&&b)+1) are proved by Nat.testBit extensionality. Subadditivity popcount_add_le is then a clean induction (the odd/odd case uses the bound on the halved sum). The main characterization is the same induction: in the odd/odd case a carry is born, so a&&&b=2(·)+1 is odd hence nonzero, and popcount strictly drops — both sides of the iff are false; the other three parity cases halve a&&&b and reduce to the inductive hypothesis on a+b halved.",
@@ -60,28 +60,34 @@
   },
   "sections": [
     {
-      "id": "popcount-recursions",
-      "title": "Popcount and Bitwise-AND Recursions",
-      "startLine": 40,
-      "endLine": 77,
-      "summary": "popcount def; popcount(2n)=popcount n and popcount(2n+1)=popcount n+1 from the Nat.bitIndices recursion; the three &&& parity recursions via testBit extensionality.",
-      "mathContext": "Splitting a and b by the parity of their low bit reduces addition and bitwise-AND to their halves, exposing shared low bits as odd values of a&&&b."
+      "title": "Popcount definition and parity recursions",
+      "startLine": 39,
+      "endLine": 50,
+      "summary": "popcount n = (Nat.bitIndices n).length counts 1-bits. The base facts popcount_zero, popcount_one and the two parity recursions popcount(2n)=popcount n, popcount(2n+1)=popcount n+1 fall directly out of the Nat.bitIndices recursion — the engine every later induction runs on."
     },
     {
-      "id": "subadditivity",
-      "title": "Subadditivity (Self-Contained)",
+      "title": "Bitwise-AND parity recursions",
+      "startLine": 51,
+      "endLine": 77,
+      "summary": "The three &&& parity recursions — and_two_mul ((2a)&&&(2b)=2(a&&&b)), and_two_mul_add_one_left, and_two_mul_add_one_both — proved by testBit extensionality. They let the equality proof track the shared-support predicate a&&&b=0 through the same parity case-split that drives popcount."
+    },
+    {
+      "title": "Subadditivity (self-contained)",
       "startLine": 79,
       "endLine": 128,
-      "summary": "popcount_add_le: popcount(a+b) ≤ popcount(a)+popcount(b), re-derived by parity strong induction rather than through the parent's representation machinery.",
-      "mathContext": "Carries only merge bits; the odd/odd case bounds popcount of the halved sum via the inductive hypothesis."
+      "summary": "popcount_add_le: popcount(a+b) ≤ popcount(a)+popcount(b), re-derived here by parity strong induction rather than through the parent Erdos10WIP01's representation machinery — carries only ever merge bits (2^a+2^a=2^{a+1}), never create them."
     },
     {
-      "id": "equality-characterization",
-      "title": "The Equality Characterization",
-      "startLine": 130,
+      "title": "The equality characterization",
+      "startLine": 128,
+      "endLine": 189,
+      "summary": "popcount_add_eq_iff: popcount(a+b)=popcount(a)+popcount(b) ↔ a&&&b=0. Equality holds exactly when the binary supports are disjoint, so addition performs no carries and loses no bits; proved by the same parity strong induction, threading the &&& recursions of the previous section."
+    },
+    {
+      "title": "Strict subadditivity and axiom audit",
+      "startLine": 190,
       "endLine": 203,
-      "summary": "popcount_add_eq_iff: popcount(a+b)=popcount(a)+popcount(b) ↔ a&&&b=0. popcount_add_lt: overlapping supports force a strict drop.",
-      "mathContext": "Equality ⟺ no carries ⟺ disjoint binary supports; the odd/odd case (a carry is born) makes both sides false."
+      "summary": "popcount_add_lt: if a and b share a 1-bit (a&&&b≠0) the popcount strictly drops under addition, obtained as lt_of_le_of_ne from popcount_add_le and the equality characterization. A closing #print axioms audit confirms the three headline results rest only on the foundational axioms."
     }
   ],
   "conclusion": {
