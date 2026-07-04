@@ -46,6 +46,8 @@ by choosing an orthonormal basis and transporting multiplication through coordin
 - `exists_real_shift_sq_scalar`, `eq_smul_one_of_sq_eq_nonneg_smul`: proved (0 sorries) —
   Frobenius Step 2 (completing the square; nonnegative square ⟹ real, so the imaginary
   part squares to a *negative* scalar)
+- `anticommutator_real_affine`: proved (0 sorries) — Frobenius Step 3 preparation
+  (`x*y + y*x ∈ span_ℝ {x, y, 1}` for all `x, y`, via polarisation of the Step-1 quadratics)
 - `hurwitz_only_if_ring`: 1 sorry — the remaining global structure argument (Step 3:
   `Im A` is a subspace with a positive-definite bilinear form / Clifford structure)
 -/
@@ -185,6 +187,32 @@ theorem eq_smul_one_of_sq_eq_nonneg_smul (A : Type*) [NormedDivisionRing A]
   rcases mul_eq_zero.mp factored with h | h
   · exact ⟨s, by linear_combination (norm := module) h⟩
   · exact ⟨-s, by linear_combination (norm := module) h⟩
+
+/-! ### Frobenius Step 3 preparation: the anticommutator is real-affine
+
+The Clifford structure that pins `finrank ℝ (Im A)` down begins with a single algebraic
+constraint on the anticommutator `x*y + y*x`.  The following lemma is the first honest step
+towards it and is fully verified: applying the Step-1 quadratic relation to `x`, `y` and
+`x + y` and polarising (`(x+y)² = x² + (xy+yx) + y²`) expresses the anticommutator as a
+*real-linear* combination of `x`, `y` and `1`.  Equivalently, `x*y + y*x ∈ span_ℝ {x, y, 1}`
+for all `x, y` — no commutativity assumed.  This is exactly the algebra that, once restricted
+to imaginary `x, y` (where the `x` and `y` coefficients drop out by trace-additivity), yields
+the scalar-valued anticommutator `x*y + y*x ∈ ℝ•1` underpinning the Clifford relations. -/
+theorem anticommutator_real_affine (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x y : A) :
+    ∃ c₁ c₂ c₃ : ℝ, x * y + y * x = c₁ • x + c₂ • y + c₃ • (1 : A) := by
+  obtain ⟨px, qx, hx⟩ := exists_quadratic A x
+  obtain ⟨py, qy, hy⟩ := exists_quadratic A y
+  obtain ⟨ps, qs, hs⟩ := exists_quadratic A (x + y)
+  refine ⟨ps - px, ps - py, qs - qx - qy, ?_⟩
+  -- polarisation: (x + y)² = x² + (xy + yx) + y²
+  have hpol : (x + y) ^ 2 = x ^ 2 + (x * y + y * x) + y ^ 2 := by
+    simp only [pow_two]; noncomm_ring
+  -- rewrite each square by its Step-1 quadratic and read off the coefficients
+  have key : x ^ 2 + (x * y + y * x) + y ^ 2 = ps • (x + y) + qs • (1 : A) := by
+    rw [← hpol]; exact hs
+  rw [hx, hy] at key
+  linear_combination (norm := module) key
 
 /-! ### The General (Division Ring) Case -/
 
