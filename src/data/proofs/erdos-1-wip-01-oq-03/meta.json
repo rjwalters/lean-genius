@@ -78,20 +78,38 @@
       "mathContext": "S ⊆ A ⇔ S ∈ A.powerset, and image.card = source.card ⇔ InjOn; combining gives a decidable equivalent of DSS that `decide` can evaluate in O(2ⁿ)."
     },
     {
-      "id": "witnesses",
-      "title": "Part II: Explicit Conway–Guy Witnesses",
+      "id": "witnesses-defs",
+      "title": "Part II(a): The Conway–Guy Witness Sets and Their Sizes",
       "startLine": 102,
-      "endLine": 148,
-      "summary": "Definitions cg4…cg8 (the difference sets {3,5,6,7}, {6,9,11,12,13}, {11,17,20,22,23,24}, {20,31,37,40,42,43,44}, {40,60,71,77,80,82,83,84}) with their cardinalities (cgN_card), distinct-subset-sums certificates (cgN_dss, via the criterion + kernel `decide`), and element bounds cgN_lt : ∀ x ∈ cgN, x < 2^(n-1).",
+      "endLine": 121,
+      "summary": "Definitions cg4…cg8 (the difference sets {3,5,6,7}, {6,9,11,12,13}, {11,17,20,22,23,24}, {20,31,37,40,42,43,44}, {40,60,71,77,80,82,83,84}) together with the cardinality lemmas cgN_card confirming each has exactly n distinct elements.",
+      "mathContext": "cgN is the n-element difference set of the Conway–Guy sequence 0,1,2,4,7,13,24,44,84,…; cgN_card verifies |cgN| = n by `decide`."
+    },
+    {
+      "id": "witnesses-certs",
+      "title": "Part II(b): DSS Certificates and Element Bounds",
+      "startLine": 123,
+      "endLine": 140,
+      "summary": "Distinct-subset-sums certificates cgN_dss (rewrite by hasDistinctSubsetSums_iff_image_card, then kernel `decide` over the 2ⁿ-element powerset image) and the element bounds cgN_lt : ∀ x ∈ cgN, x < 2^(n-1).",
       "mathContext": "Each set is verified DSS by kernel reduction over its powerset image; the largest element is 7,13,24,44,84 against powers-of-two bounds 8,16,32,64,128."
     },
     {
       "id": "not-optimal",
       "title": "Part III: The Powers-of-Two Construction Is Not Optimal",
-      "startLine": 150,
+      "startLine": 142,
       "endLine": 166,
       "summary": "conwayGuy_beats_powers_of_two: for every n ∈ {4,5,6,7,8} there is an n-element set of positive integers with distinct subset sums and every element < 2^(n-1). Proved by fin_cases over the finset, discharging each case with the corresponding cgN lemmas and a `decide` for positivity.",
       "mathContext": "Since {1,2,…,2^(n-1)} attains 2^(n-1), the existence of a DSS set strictly under that bound shows the powers-of-two/superincreasing construction is suboptimal for these n."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "This entry machine-certifies, axiom-free (kernel `decide`, no native_decide, no Lean.ofReduceBool), that the trivial powers-of-two construction for Erdős Problem #1 is not optimal. The engine is a single decidability lemma — hasDistinctSubsetSums_iff_image_card — that reduces the ∀-over-all-finsets definition of distinct subset sums to a finite powerset-image cardinality identity, letting `decide` settle concrete cases in O(2ⁿ) instead of the naive O(4ⁿ) pair scan. Applied to the explicit Conway–Guy difference sets cg4…cg8, it certifies each is DSS with largest element strictly below the powers-of-two bound 2^(n-1) (7<8, 13<16, 24<32, 44<64, 84<128), and packages the five cases into conwayGuy_beats_powers_of_two.",
+    "implications": "The decidable criterion is reusable infrastructure for the whole Erdős #1 family: any concrete DSS claim over a small set is now a one-line `decide`. Verifying the Conway–Guy phenomenon inside the trusted kernel — rather than via native compilation — keeps the entry genuinely axiom-free, illustrating the deliberate tradeoff between feasibility (n ≤ 8) and axiom cleanliness. More broadly, it gives a formal, checkable answer to a natural question about a $500 Erdős problem: superincreasing sets, the 'obvious' distinct-subset-sums construction, are provably beaten for every n from 4 to 8, and the gap 2^(n-1) − max(cgₙ) = 1,3,8,20,44 widens with n.",
+    "openQuestions": [
+      "Does the Conway–Guy difference set have largest element < 2^(n-1) for ALL n ≥ 4? This requires the general recurrence a(n+1) = 2a(n) − a(n−round(√(2n))) and an inductive proof of subset-sum distinctness for which no elementary argument is known.",
+      "Are the Conway–Guy sets optimal, i.e. do they attain f(n)? This is verified computationally only for n ≤ 10 and is open for n ≥ 11.",
+      "Erdős's original question: is f(n) ≥ c·2ⁿ for an absolute constant c? The best known lower bounds (Erdős–Moser type, via the second moment method) fall short of the conjectured constant.",
+      "Can kernel `decide` be pushed past n = 8 without native_decide, e.g. by a smarter reflected decision procedure that avoids materializing the full 2ⁿ-element subset-sum finset?"
+    ]
+  }
 }
