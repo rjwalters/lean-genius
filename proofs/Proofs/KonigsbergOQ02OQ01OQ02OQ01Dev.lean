@@ -44,4 +44,27 @@ theorem euler_circuit_of_edgeSet_empty
   rw [hE] at he
   exact absurd he (Set.notMem_empty e)
 
+/-- **Hierholzer's continuation invariant.**
+In a *nontrivial* connected simple graph in which every vertex has even degree, every
+vertex has degree at least `2`.
+
+This is the structural fact underpinning the "a maximal trail is closed" step of the
+undirected Hierholzer induction. When a trail arrives at a vertex `v ≠ start` it has
+used an *odd* number of `v`'s incident edges (one on each earlier visit plus the edge
+just traversed); since `G.degree v` is even there is always an unused incident edge to
+continue along, so a trail can only get *stuck* — become maximal — back at its start
+vertex, i.e. it is closed. The `2 ≤ G.degree v` bound below is the base quantitative
+form of that parity slack: a positive even number is at least `2`.
+
+`Nontrivial V` is necessary: the one-vertex connected graph has `G.degree v = 0`. In
+the induction this hypothesis holds in exactly the inductive (edge-containing) case;
+the edgeless base case is handled by `euler_circuit_of_edgeSet_empty` above. -/
+theorem two_le_degree_of_even_of_connected
+    [Fintype V] [DecidableRel G.Adj] [Nontrivial V]
+    (hconn : G.Connected) (heven : ∀ v, Even (G.degree v)) (v : V) :
+    2 ≤ G.degree v := by
+  have hpos : 0 < G.degree v := hconn.preconnected.degree_pos_of_nontrivial v
+  obtain ⟨k, hk⟩ := heven v
+  omega
+
 end UndirectedEulerDev
