@@ -1612,10 +1612,46 @@ theorem summable_trunc_sq_weight_of_integrable [IsFiniteMeasure μ]
 
 #check @summable_trunc_sq_weight_of_integrable
 
+/-- **Shifted real summability at the positive normaliser `aᵢ = (i+1)^{1/p}` (S5 input).**
+The Kolmogorov weighted criterion `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5)
+requires a *strictly positive* weight sequence `a` (`ha_pos : ∀ n, 0 < a n`), so the bare
+Marcinkiewicz–Zygmund normaliser `aᵢ = i^{1/p}` — which vanishes at `i = 0` — cannot be fed
+in directly.  Reindexing to `aᵢ = (i+1)^{1/p}` (positive for every `i`) turns the weighted
+second-moment sequence of § RealVarianceSummable into the shift by one of the original, and
+dropping a single leading term preserves summability (`summable_nat_add_iff`):
+
+    Summable (fun i => ((i+1)^{1/p})⁻² · ∫ ω, (𝟙{|X ω| ≤ (i+1)^{1/p}}·X ω)²).
+
+Combined with the (b) brick `weighted_variance_partial_sum_le_tsum` at `a i = (i+1)^{1/p}`,
+this is precisely the finite total `V` bounding the weighted-variance partial sums — the `hV`
+hypothesis of the S5 criterion.  Proof: apply `(summable_nat_add_iff 1).mpr` to
+`summable_trunc_sq_weight_of_integrable`, then identify the shifted term `f (i+1)` with the
+target by `push_cast` on `((i+1 : ℕ) : ℝ) = (i : ℝ) + 1` and the exponent bookkeeping
+`(((i+1)^{1/p})²)⁻¹ = (i+1)^{-2/p}` (`Real.rpow_natCast` / `Real.rpow_mul` / `Real.rpow_neg`). -/
+theorem summable_trunc_sq_weight_shift_of_integrable [IsFiniteMeasure μ]
+    (X : Ω → ℝ) (hX : Measurable X) {p : ℝ} (hp : 0 < p) (hp2 : p < 2)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    Summable (fun i : ℕ => ((((i : ℝ) + 1) ^ (1 / p)) ^ 2)⁻¹ *
+      ∫ ω, ({ω | |X ω| ≤ ((i : ℝ) + 1) ^ (1 / p)}.indicator X ω) ^ 2 ∂μ) := by
+  have hbase := (summable_nat_add_iff 1).mpr
+    (summable_trunc_sq_weight_of_integrable X hX hp hp2 hint)
+  refine hbase.congr (fun i => ?_)
+  have hy : (0 : ℝ) ≤ (i : ℝ) + 1 := by positivity
+  have hcast : ((i + 1 : ℕ) : ℝ) = (i : ℝ) + 1 := by push_cast; ring
+  have hcoeff : ((((i : ℝ) + 1) ^ (1 / p)) ^ 2)⁻¹ = ((i : ℝ) + 1) ^ (-(2 / p)) := by
+    have h1 : (((i : ℝ) + 1) ^ (1 / p)) ^ 2 = ((i : ℝ) + 1) ^ (2 / p) := by
+      rw [← Real.rpow_natCast (((i : ℝ) + 1) ^ (1 / p)) 2, ← Real.rpow_mul hy]
+      congr 1
+      push_cast
+      ring
+    rw [h1, ← Real.rpow_neg hy]
+  simp only [hcast, hcoeff]
+
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
 #print axioms integrable_trunc_sq
 #print axioms summable_trunc_sq_weight_of_integrable
+#print axioms summable_trunc_sq_weight_shift_of_integrable
 
 end RealVarianceSummable
 
@@ -1713,5 +1749,55 @@ theorem weighted_variance_partial_sum_le_tsum [IsProbabilityMeasure μ]
 #print axioms weighted_variance_partial_sum_le_tsum
 
 end WeightedVariancePartialSum
+
+/-! ## Normaliser sequence facts for the MZ SLLN (S5 shape hypotheses)
+
+The Kolmogorov weighted criterion `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5)
+takes a weight sequence `a` subject to three shape hypotheses: `ha_pos : ∀ n, 0 < a n`,
+`ha_mono : Monotone a`, and `ha_top : Tendsto a atTop atTop`.  For the Marcinkiewicz–Zygmund
+normaliser `aᵢ = (i+1)^{1/p}` (the shifted form used by
+`summable_trunc_sq_weight_shift_of_integrable`, positive at every index) all three are pure
+real-analysis facts about `Real.rpow` with a positive exponent `1/p`, discharged here so the
+S5 assembly can consume them directly. -/
+section MZNormaliser
+
+open Filter
+open scoped Topology
+
+/-- The MZ normaliser `aᵢ = (i+1)^{1/p}` is strictly positive (S5 `ha_pos`).  The base
+`(i+1) > 0` makes this hold for every real exponent, so no hypothesis on `p` is needed. -/
+theorem mz_normaliser_pos {p : ℝ} (i : ℕ) :
+    0 < ((i : ℝ) + 1) ^ (1 / p) :=
+  Real.rpow_pos_of_pos (by positivity) _
+
+/-- The MZ normaliser `aᵢ = (i+1)^{1/p}` is monotone (S5 `ha_mono`).  Immediate from
+`Real.rpow_le_rpow` since `i ↦ (i+1)` is monotone and the exponent `1/p ≥ 0`. -/
+theorem mz_normaliser_mono {p : ℝ} (hp : 0 < p) :
+    Monotone (fun i : ℕ => ((i : ℝ) + 1) ^ (1 / p)) := by
+  intro i j hij
+  have hij' : (i : ℝ) + 1 ≤ (j : ℝ) + 1 := by
+    have : (i : ℝ) ≤ (j : ℝ) := by exact_mod_cast hij
+    linarith
+  exact Real.rpow_le_rpow (by positivity) hij' (div_nonneg zero_le_one hp.le)
+
+/-- The MZ normaliser `aᵢ = (i+1)^{1/p} → ∞` (S5 `ha_top`).  `(i+1) → ∞` composed with
+`Real.tendsto_rpow_atTop` at the positive exponent `1/p`. -/
+theorem mz_normaliser_tendsto {p : ℝ} (hp : 0 < p) :
+    Tendsto (fun i : ℕ => ((i : ℝ) + 1) ^ (1 / p)) atTop atTop := by
+  have hg : Tendsto (fun i : ℕ => (i : ℝ) + 1) atTop atTop :=
+    tendsto_atTop_add_const_right atTop 1 tendsto_natCast_atTop_atTop
+  exact (tendsto_rpow_atTop (div_pos one_pos hp)).comp hg
+
+#check @mz_normaliser_pos
+#check @mz_normaliser_mono
+#check @mz_normaliser_tendsto
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms mz_normaliser_pos
+#print axioms mz_normaliser_mono
+#print axioms mz_normaliser_tendsto
+
+end MZNormaliser
 
 end LawsOfLargeNumbers.MZ
