@@ -75,6 +75,13 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Threshold Context and Namespace Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring framing the group-theoretic core of Abel–Ruffini: the dichotomy Sₙ solvable ⇔ n ≤ 4. The non-solvable half (n ≥ 5) lives in AbelRuffiniObstructionOQ06.lean; this file supplies the positive half that Mathlib does not package. Imports Mathlib, opens the AbelRuffiniOQ06 namespace with Equiv, and states the reduction lemma's docstring: Aₙ = ker(sign) is normal in Sₙ with abelian quotient Sₙ/Aₙ ↪ ℤˣ, so solvability of Aₙ lifts to Sₙ via solvable_of_ker_le_range. The characteristic-p / Abhyankar reading of the title is explicitly scoped out."
+    },
+    {
       "id": "reduction",
       "title": "The Aₙ → Sₙ Reduction",
       "startLine": 57,
