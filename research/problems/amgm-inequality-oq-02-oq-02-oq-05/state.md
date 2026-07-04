@@ -4,7 +4,26 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 5 (PART IV)
+**Iteration**: 6 (PART V)
+
+## Iteration 6 (PART V — general Rolle crux, closed via Mathlib)
+**Retired the long-standing "multi-week" blocker.** The iterated-Rolle crux
+"differentiation preserves full real-rootedness counting multiplicity" was
+recorded as "not in Mathlib" — but Mathlib's
+`Polynomial.card_roots_le_derivative`
+(`Analysis/Calculus/LocalExtr/Polynomial.lean`) supplies exactly the hard,
+multiplicity-counted half. Four new theorems (20 → 24; docker-build clean, 7743
+jobs; 0 sorries, 0 axioms):
+- `derivative_roots_card_eq`: `card p.roots = natDegree p ⇒
+  card (derivative p).roots = natDegree (derivative p)` — THE CRUX, all `n`. A
+  4-line `omega` sandwich of `card_roots_le_derivative`, `card_roots'`,
+  `natDegree_derivative_lt`.
+- `splits_derivative` / `splits_iterate_derivative`: `Splits`-level and iterated
+  forms (all `k` derivatives of `∏(X−xᵢ)` split).
+- `exists_isRoot_derivative_Ioo`: the per-gap Rolle atom for the `Polynomial` API.
+The real-rootedness half of the classical Newton proof is now general. Remaining:
+pure coefficient bookkeeping (identify the `(n−k−1)`-th derivative as the quadratic
+in `eₖ₋₁,eₖ,eₖ₊₁`, then feed the Part I discriminant atom).
 
 ## Iteration 5 (PART IV — n = 4 via SOS), PR #34576
 Discharged **ALL THREE** Newton log-concavity steps at `n = 4` for arbitrary
@@ -59,24 +78,27 @@ iterated-Rolle lemma "differentiation preserves full real-rootedness counting
 multiplicity".
 
 ## Attempt Count
-- Total attempts: 3
+- Total attempts: 5
 - Current approach attempts: 1 (QM–AM route)
 - Approaches tried: real-rooted/discriminant atom + n=2 (I); n=3 both steps via
   SOS (II); general-n first step via QM–AM + square-of-sum identity (III)
 
 ## Blockers
-- **MATH**: general (arbitrary-`n`) HIGHER Newton steps (`k ≥ 2`) need the packaged
-  lemma "differentiation preserves full real-rootedness counting multiplicity"
-  (iterated Rolle on `∏(X - xᵢ)`) — not in Mathlib; `problem.md` estimates
-  multi-week. The `k = 1` step is now closed for all `n` (Part III), so this
-  blocker is narrowed to the higher steps only.
+- **RESOLVED (Part V)**: the "differentiation preserves full real-rootedness
+  counting multiplicity" crux — previously flagged multi-week / "not in Mathlib"
+  — is now `derivative_roots_card_eq`, assembled from Mathlib's
+  `card_roots_le_derivative`. No longer a blocker.
+- **REMAINING (algebra, not analysis)**: the coefficient reduction turning the
+  crux into the general `k ≥ 2` Newton *inequality* — identify the `(n−k−1)`-th
+  derivative of the reversed splitting polynomial as `a eₖ₋₁X² − b eₖX + c eₖ₊₁`
+  (Vieta / `Polynomial.coeff` bookkeeping), then apply the Part I discriminant
+  atom. This is `coeff`-level algebra, medium difficulty, no analysis blocker.
 
 ## Next Action
-1. The genuine next general increment: the iterated-Rolle crux
-   (derivative-of-fully-real-rooted is fully-real-rooted), which unlocks `k ≥ 2`
-   at arbitrary `n`. Mathlib has `Rolle` (`exists_hasDerivAt_eq_zero`) and
-   `Polynomial.derivative`/`roots` but not the packaged multiplicity-counting
-   statement.
-2. Alternatively, a general `k = 1` Maclaurin corollary in explicit
-   `p₁ = e₁/n`, `p₂ = e₂/C(n,2)` normalized form (currently stated in the
-   cleared-denominator equivalent).
+1. Prove the coefficient-extraction lemma: `coeff` of the `m`-fold derivative of
+   `∏(X−xᵢ)` in terms of `esymm`, specialised to isolate three consecutive
+   `eₖ₋₁,eₖ,eₖ₊₁` (use `Polynomial.coeff_iterate_derivative` /
+   `Mathlib.RingTheory.Polynomial.Vieta`).
+2. Feed the resulting real-rooted quadratic (real-rooted by
+   `derivative_roots_card_eq`) into `discrim_nonneg_of_roots_nonempty` to close
+   general `k ≥ 2` Newton.

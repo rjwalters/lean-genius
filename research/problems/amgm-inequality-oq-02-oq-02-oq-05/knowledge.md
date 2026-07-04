@@ -121,3 +121,64 @@ The GENERAL (arbitrary-`n`) Newton still needs "differentiation preserves full
 real-rootedness counting multiplicity" (iterated Rolle) — not in Mathlib, multi-week
 (`problem.md`). The per-arity SOS route works for each fixed small `n` but does not scale
 symbolically; n=4 would be a further concrete instance approaching enumeration.
+
+## PART V — the GENERAL Rolle crux, closed via Mathlib (researcher-5, 2026-07-04)
+
+**Mode**: ACT (MODERATE, score 13). **Outcome**: progress — retires the
+long-flagged "multi-week" blocker. **+4 verified theorems (20 → 24), 0 sorries,
+0 axioms** (foundational only; no `decide`/`native_decide`). docker-build clean,
+7743 jobs.
+
+### The key discovery
+The blocker recorded across Parts I–IV — "differentiation preserves full
+real-rootedness counting multiplicity" (iterated Rolle on `∏(X−xᵢ)`), estimated
+multi-week in `problem.md` and "not in Mathlib" in this knowledge base — is
+WRONG about Mathlib. Mathlib supplies the hard half directly:
+
+- **`Polynomial.card_roots_le_derivative (p : ℝ[X]) :
+  Multiset.card p.roots ≤ Multiset.card (derivative p).roots + 1`**
+  in `Mathlib/Analysis/Calculus/LocalExtr/Polynomial.lean` (Benjamin Davidson,
+  Yury Kudryashov) — the multiplicity-counted Rolle bound. Also there:
+  `card_roots_toFinset_le_derivative`, `card_rootSet_le_derivative`.
+
+### Shipped (`Proofs/AmgmInequalityOQ02OQ02OQ05.lean`, Part V)
+- **`derivative_roots_card_eq {p : ℝ[X]}
+  (hp : card p.roots = p.natDegree) : card (derivative p).roots =
+  (derivative p).natDegree`** — THE CRUX, general (all `n`). A full-real-rooted
+  `p` forces its derivative to be full-real-rooted. Proof is a 4-line sandwich:
+  `card_roots_le_derivative` gives `card(p') ≥ natDegree p − 1`;
+  `card_roots'` gives `card(p') ≤ natDegree p'`; `natDegree_derivative_lt` gives
+  `natDegree p' < natDegree p` (so `≤ natDegree p − 1`); `omega` closes. Constant
+  case `natDegree p = 0` handled via `natDegree_eq_zero.mp` + `derivative_C`.
+- **`splits_derivative {p : ℝ[X]} (hp : Splits p) : Splits (derivative p)`** — the
+  `Splits`-level phrasing, via `splits_iff_card_roots` (note: modern Mathlib
+  `Splits` is the single-argument `Polynomial.Splits (f : R[X])` in
+  `Algebra/Polynomial/Factors.lean`, NOT the classical `Splits (i : K →+* L) f`).
+- **`splits_iterate_derivative {p} (hp : Splits p) (k : ℕ) :
+  Splits (derivative^[k] p)`** — trivial induction; the full program output
+  (all k derivatives of `∏(X−xᵢ)` split).
+- **`exists_isRoot_derivative_Ioo {p} (hab : a < b) (ha : p.IsRoot a)
+  (hb : p.IsRoot b) : ∃ c ∈ Ioo a b, (derivative p).IsRoot c`** — the per-gap
+  Rolle atom, packaged for the `Polynomial` API from `exists_hasDerivAt_eq_zero`
+  + `Polynomial.hasDerivAt` + `Polynomial.continuousOn`.
+
+### Reusable Lean gotchas (researcher-5, Part V)
+- `Polynomial.hasDerivAt (x) : HasDerivAt (fun x => p.eval x) ((derivative p).eval x) x`
+  (in `Analysis/Calculus/Deriv/Polynomial.lean`) is the analytic-derivative
+  bridge; feed it to Rolle's `exists_hasDerivAt_eq_zero` as
+  `fun x _ => p.hasDerivAt x`, with `p.continuousOn` for the `ContinuousOn` arg.
+- `IsRoot p a` is DEFEQ to `p.eval a = 0`, so `have h : p.eval a = 0 := ha`
+  coerces directly (no `unfold`); then plain `rw` works.
+- `card_roots'` (NOT `card_roots`, which is the `≠0` degree-eq form) is the
+  unconditional `card q.roots ≤ q.natDegree`.
+- The whole crux is `omega` after three `have`s — the Nat sandwich is linear.
+
+### Still open (narrowed)
+The real-rootedness HALF of the classical Newton proof is now closed for all `n`.
+What remains is purely the **coefficient bookkeeping**: identifying the
+`(n−k−1)`-th derivative of the (reversed) splitting polynomial as the quadratic
+`a eₖ₋₁ X² − b eₖ X + c eₖ₊₁`, so that its real-rootedness
+(`derivative_roots_card_eq`) feeds the Part I discriminant atom
+`discrim_nonneg_of_roots_nonempty` to yield `pₖ² ≥ pₖ₋₁ pₖ₊₁` for general `k`.
+This is Vieta/`coeff`-level algebra (no more analysis), and is the honest next
+increment — no longer blocked on the "multi-week" real-rootedness lemma.
