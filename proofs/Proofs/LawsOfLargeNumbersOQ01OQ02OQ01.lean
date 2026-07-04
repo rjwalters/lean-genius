@@ -1065,13 +1065,55 @@ theorem tsum_shift_rpow_neg_le {s : ℝ} (hs : 1 < s) {N : ℕ} (hN : 1 ≤ N) :
   intro K
   exact sum_range_shift_rpow_neg_le hs hN K
 
+/-- **Inclusive tail bound for the real `p`-series.**  For `1 < s` and `N ≥ 1`,
+`∑_{j ≥ N} j^{-s} = ∑ₖ (k+N)^{-s} ≤ N^{1-s}·s/(s-1)`.  The inclusive-from-`N` companion of
+`tsum_shift_rpow_neg_le` (which starts the tail at `N+1`): splitting off the `j = N` term
+`N^{-s} ≤ N^{1-s}` and adding the shifted tail `N^{1-s}/(s-1)` combines to the constant
+`s/(s-1)`.  This is the shape the Tonelli interchange behind the MZ variance sum consumes after
+replacing the real threshold `|X|ᵖ` by `⌈|X|ᵖ⌉` (the inner tail starts at the ceiling, inclusive,
+not one past it). -/
+theorem tsum_ge_rpow_neg_le {s : ℝ} (hs : 1 < s) {N : ℕ} (hN : 1 ≤ N) :
+    ∑' k : ℕ, ((k + N : ℕ) : ℝ) ^ (-s) ≤ (N : ℝ) ^ (1 - s) * s / (s - 1) := by
+  have hNR : (1 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hs1 : (0 : ℝ) < s - 1 := by linarith
+  refine Real.tsum_le_of_sum_range_le (fun k => Real.rpow_nonneg (by positivity) _) ?_
+  intro K
+  -- Partial sum ≤ the `j = N` term plus the shifted tail (adding the missing `(K+N)`-th term).
+  have hstep : ∑ k ∈ Finset.range K, ((k + N : ℕ) : ℝ) ^ (-s)
+      ≤ (N : ℝ) ^ (-s) + ∑ k ∈ Finset.range K, ((k + N + 1 : ℕ) : ℝ) ^ (-s) := by
+    have hsub : ∑ k ∈ Finset.range K, ((k + N : ℕ) : ℝ) ^ (-s)
+        ≤ ∑ k ∈ Finset.range (K + 1), ((k + N : ℕ) : ℝ) ^ (-s) := by
+      rw [Finset.sum_range_succ]
+      have : (0 : ℝ) ≤ ((K + N : ℕ) : ℝ) ^ (-s) := Real.rpow_nonneg (by positivity) _
+      linarith
+    refine hsub.trans (le_of_eq ?_)
+    rw [Finset.sum_range_succ', add_comm]
+    congr 1
+    · norm_num
+    · refine Finset.sum_congr rfl (fun k _ => ?_)
+      congr 1
+      push_cast; ring
+  refine hstep.trans ?_
+  have htail := sum_range_shift_rpow_neg_le hs hN K
+  have hNs : (N : ℝ) ^ (-s) ≤ (N : ℝ) ^ (1 - s) :=
+    Real.rpow_le_rpow_of_exponent_le hNR (by linarith)
+  have hcomb : (N : ℝ) ^ (1 - s) + (N : ℝ) ^ (1 - s) / (s - 1)
+      = (N : ℝ) ^ (1 - s) * s / (s - 1) := by
+    field_simp
+    ring
+  calc (N : ℝ) ^ (-s) + ∑ k ∈ Finset.range K, ((k + N + 1 : ℕ) : ℝ) ^ (-s)
+      ≤ (N : ℝ) ^ (1 - s) + (N : ℝ) ^ (1 - s) / (s - 1) := add_le_add hNs htail
+    _ = (N : ℝ) ^ (1 - s) * s / (s - 1) := hcomb
+
 #check @sum_range_shift_rpow_neg_le
 #check @tsum_shift_rpow_neg_le
+#check @tsum_ge_rpow_neg_le
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
 #print axioms sum_range_shift_rpow_neg_le
 #print axioms tsum_shift_rpow_neg_le
+#print axioms tsum_ge_rpow_neg_le
 
 end TailPSeries
 
