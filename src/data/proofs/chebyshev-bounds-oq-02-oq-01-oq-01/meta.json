@@ -95,6 +95,32 @@
       "summary": "chebyshevTheta_bounds: pairs the new lower bound with Mathlib's upper bound to give (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ log 4 · m for m ≥ 2 — the explicit θ(m) = Θ(m)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "chebyshevTheta_bounds",
+      "type": "core",
+      "description": "**Two-sided explicit Chebyshev θ bounds** — (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ log 4 · m for m ≥ 2. The elementary θ(m) = Θ(m) with both endpoints explicit. Mathlib supplies only the upper inequality, so the lower bound (descended from this project's ψ bound across the O(√m·log m) gap) is the new content.",
+      "leanType": "{m : ℕ} (hm : 2 ≤ m) : Real.log 2 / 3 * (m : ℝ) - 2 * Real.sqrt m * Real.log m ≤ chebyshevTheta m ∧ chebyshevTheta m ≤ Real.log 4 * (m : ℝ)",
+      "line": 77,
+      "endLine": 80
+    },
+    {
+      "name": "chebyshevTheta_lower",
+      "type": "key",
+      "description": "**Explicit linear lower bound for θ** — (log 2 / 3)·m − 2·√m·log m ≤ θ(m) for m ≥ 2. The genuinely new estimate (Mathlib has no θ or ψ lower bound): θ(m) = ψ(m) − (ψ(m) − θ(m)), combining the project's ψ lower bound with the |ψ − θ| ≤ 2√m·log m closeness estimate.",
+      "leanType": "{m : ℕ} (hm : 2 ≤ m) : Real.log 2 / 3 * (m : ℝ) - 2 * Real.sqrt m * Real.log m ≤ chebyshevTheta m",
+      "line": 46,
+      "endLine": 54
+    },
+    {
+      "name": "chebyshevTheta_upper",
+      "type": "supporting",
+      "description": "**Explicit linear upper bound for θ** — θ(n) ≤ log 4 · n for every n. Mathlib's Chebyshev.theta_le_log4_mul_x transported through the project's bridge chebyshevTheta_eq_mathlib.",
+      "leanType": "(n : ℕ) : chebyshevTheta n ≤ Real.log 4 * (n : ℝ)",
+      "line": 62,
+      "endLine": 65
+    }
+  ],
   "conclusion": {
     "summary": "A fully verified (0 axioms, 0 sorries, no native_decide) explicit two-sided bound (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ (log 4)·m for m ≥ 2 on the first Chebyshev function θ(m) = ∑_{p ≤ m} log p, establishing θ(m) = Θ(m) with explicit constants. The upper bound is Mathlib's; the lower bound — which neither Mathlib nor this project previously had for θ — is the new content, descended from the project's elementary ψ lower bound across the O(√m·log m) gap between ψ and θ.",
     "implications": "This completes the elementary Chebyshev programme for θ in the gallery: combined with the existing ψ bounds and the ψ−θ closeness estimate, it gives explicit linear two-sided control of the first Chebyshev function — the elementary precursor to the prime number theorem θ(m) ∼ m. Such explicit θ bounds are exactly what downstream elementary results (Bertrand's postulate, Mertens' estimates ∑_{p ≤ x} (log p)/p = log x + O(1), bounds on π(x)) consume. Because the lower bound is obtained by transferring the ψ estimate, it inherits ψ's elementary, complex-analysis-free character.",
