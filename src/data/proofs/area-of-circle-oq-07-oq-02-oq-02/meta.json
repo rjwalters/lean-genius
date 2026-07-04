@@ -97,7 +97,7 @@
     {
       "id": "docstring",
       "title": "Module Docstring: The Moment Ladder",
-      "startLine": 4,
+      "startLine": 1,
       "endLine": 37,
       "summary": "States the open question and the two target values, situates them above the parent's zeroth moment √(π/b)/2, and previews the methods: an explicit primitive for the first moment and one integration by parts for the second. Notes the half-normal connection and that no new axioms are introduced.",
       "mathContext": "$\\int_0^\\infty x\\,e^{-bx^2} = \\tfrac{1}{2b}$, $\\ \\int_0^\\infty x^2 e^{-bx^2} = \\tfrac{1}{4b}\\sqrt{\\pi/b}$."
@@ -122,7 +122,7 @@
       "id": "packaging-and-half-normal",
       "title": "Packaged Forms and the Half-Normal Mean",
       "startLine": 144,
-      "endLine": 164,
+      "endLine": 163,
       "summary": "half_line_moments bundles both moments; first_half_moment_one gives the b = 1 value 1/2; half_normal_mean_relation states the half-normal mean 1/√(πb) in cross-multiplied (division-free) form.",
       "mathContext": "Half-normal mean $= \\dfrac{1/(2b)}{\\tfrac12\\sqrt{\\pi/b}} = \\dfrac{1}{\\sqrt{\\pi b}}$."
     }

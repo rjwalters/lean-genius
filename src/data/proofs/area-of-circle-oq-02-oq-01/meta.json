@@ -116,7 +116,7 @@
       "id": "edge-case",
       "title": "Edge Case: Axiom is False at n=0, r=0",
       "startLine": 127,
-      "endLine": 161,
+      "endLine": 163,
       "summary": "Proves the parent axiom nball_volume_scaling is false at n=0, r=0: ball(0,0) = ∅ has measure 0, but ofReal(0^0 · unitBallVolume 0) = 1. Also includes a final summary docstring.",
       "mathContext": "For $n=0, r=0$: $\\text{Vol}(\\emptyset) = 0$ but $r^0 \\cdot \\text{unitBallVolume}(0) = 1 \\cdot 1 = 1$. Bug: $0^0 = 1$ in $\\mathbb{R}$."
     }
