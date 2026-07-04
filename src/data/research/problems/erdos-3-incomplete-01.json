@@ -1,7 +1,7 @@
 {
   "slug": "erdos-3-incomplete-01",
   "title": "Erdős Problem #3: Arithmetic Progressions in Large Sets",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,35 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-03T08:28:28Z",
-    "iteration": 1,
-    "focus": "",
+    "iteration": 2,
+    "focus": "Verified StrongRequiredBound reduction; original o(N/log N) sorry is threshold-critical (open)",
     "blockers": [],
-    "nextAction": "",
+    "nextAction": "Leave threshold-critical sorry documented; optional shallow follow-ups",
     "attemptCounts": {
-      "total": 0,
+      "total": 2,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Repaired non-compiling file (bitrot); proved strong_required_bound_implies_conjecture 0-axiom via dyadic blocking + p-series (machine-verified, 7743 jobs). Original o(N/log N) sorry retained as threshold-critical.",
+    "builtItems": [
+      "containsAP_of_le",
+      "summable_of_strongBound",
+      "strong_required_bound_implies_conjecture (0-axiom)"
+    ],
+    "insights": [
+      "File did not compile on main (enrichment merged without build): ArithProg map/omega injectivity false for d=0, missing Decidable for Set-membership filters, orphaned /-- docstrings.",
+      "The (log N)^{1+δ} threshold DOES imply Erdos #3 (dyadic blocking + convergent p-series); this is now a verified 0-axiom conditional theorem.",
+      "The o(N/log N) threshold does NOT obviously imply it: borderline profile N/(log N loglog N) is o(N/log N) with divergent reciprocal sum. That sorry is as hard as Erdos #3."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Do not attack the threshold-critical sorry directly",
+      "Optional: k<=2 triviality corollary; reuse summable_of_strongBound elsewhere"
+    ],
     "markdown": "# Knowledge: erdos-3-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
   },
   "tags": [],
