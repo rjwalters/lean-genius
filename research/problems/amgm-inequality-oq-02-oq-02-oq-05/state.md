@@ -4,7 +4,41 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 9 (PART VIII)
+**Iteration**: 10 (PART IX)
+
+## Iteration 10 (PART IX — the general-`n` INTERIOR Newton step: an arbitrary coefficient window), researcher-5
+Two verified additions (36 → 38 theorems; 0 sorries, 0 axioms; docker-build clean,
+7743 jobs, Lean 4.26.0). **CLOSES the last documented gap** — the general interior
+Newton step `pₖ² ≥ pₖ₋₁pₖ₊₁` for every window and every arity, via the honest
+calculus route the entry asks for. The engine (differentiate → reverse → discriminant)
+now reaches EVERY consecutive coefficient window of an arbitrary real-rooted
+polynomial, not just the top (Part VII) and bottom (Part VIII) extremes:
+- `discrim_reverse_interior (j m) {p} (hp : Splits p) (hcj : p.coeff j ≠ 0)
+  (hdeg : p.natDegree = j + (m + 2))` : `0 ≤ discrim` of the window
+  `p.coeff j, p.coeff (j+1), p.coeff (j+2)` (each weighted by the two
+  differentiation passes' `descFactorial` factors). Differentiate `p` exactly `j`
+  times (Part V) to drop the window to the bottom of `derivative^[j] p`, reverse
+  (Part VIII) to lift it to the top of a quadratic, then apply the top engine
+  `discrim_iterate_derivative_top`. `j = 0` is definitionally `discrim_reverse_bottom`.
+- `newton_interior_coeff_ineq (j m) {p} …` : the recognizable
+  `4·(weights)·p.coeff j·p.coeff (j+2) ≤ (weight)²·p.coeff (j+1)²`, subsuming both
+  `newton_top_coeff_ineq` and `newton_bottom_coeff_ineq`.
+
+**What remains (Vieta polish only):** substitute
+`p.coeff k = lc·(-1)^(n-k)·eₙ₋ₖ` (`coeff_eq_esymm_roots_of_splits`, exactly as
+Part VIII did for the top step) to restate the interior step directly on the roots'
+elementary symmetric functions `eₖ₋₁, eₖ, eₖ₊₁` (classical `eₖ² ≥ eₖ₋₁eₖ₊₁`).
+Purely algebraic — the calculus engine itself is now complete for all windows.
+
+**Reusable Lean gotchas (researcher-5, Part IX):**
+- `coeff_iterate_derivative` emits indices in `0 + j` (un-normalized) form; add
+  `Nat.zero_add` to the same `rw` chain to unify against a `p.coeff j` hypothesis.
+- Fold nested `ℕ`-scalar weights `a • b • x → (a*b) • x` with `← mul_smul`.
+- The corollary's `nlinarith` SIGBUS-crashes (exit 135) on raw `descFactorial`
+  casts / `coeff` atoms; `simp only [nsmul_eq_mul, Nat.cast_mul]` then `set` each
+  atom to an opaque variable before `nlinarith` (same fix as Part VI).
+- `set q := derivative^[j] p with hq` doesn't fold `derivative^[j] p` in
+  later-generated hypotheses; use `rw [← hq] at …`.
 
 ## Iteration 9 (PART VIII — Vieta closure of the TOP step: calculus route reaches Newton's inequality on esymm(roots)), researcher-5
 Two verified additions (28 → 30 theorems; 0 sorries, 0 axioms; docker-build clean,

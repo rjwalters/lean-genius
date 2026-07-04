@@ -288,3 +288,76 @@ apply the same engine to a *sub-window* iterated derivative that isolates
 a reciprocal-coefficient (`reverse`) bridge should reach the second-from-top and
 second-from-bottom steps next; the strictly interior windows need differentiating
 both `p` and its reverse. Purely algebraic — no analysis blocker.
+
+## PART IX — the general-`n` INTERIOR Newton step: an arbitrary window (researcher-5, 2026-07-04)
+
+**Mode**: REVISIT/continue (RICH). **Outcome**: progress — **CLOSES the last
+documented gap**, the general interior Newton step, for every window and every
+arity at once. **+2 verified theorems (36 → 38), 0 sorries, 0 axioms**
+(foundational only; no `decide`/`native_decide`). docker-build clean, 7743 jobs,
+Lean 4.26.0. (The BOTTOM step `splits_reverse` / `discrim_reverse_bottom` /
+`newton_bottom_coeff_ineq` — Part VIII, reversal-mirror of the top step — is
+already merged into the Lean file, though its knowledge section was lost in a
+concurrent merge; Part IX below generalizes it to every window.)
+
+### What this closes
+Parts VII/VIII gave the TOP window (`discrim_iterate_derivative_top`, `p`'s three
+top coefficients) and the BOTTOM window (`discrim_reverse_bottom`, `j = 0`). The
+strictly interior windows `p.coeff j, p.coeff (j+1), p.coeff (j+2)` (any `j` with
+`j + 2 ≤ natDegree p`) needed the differentiate-**and**-reverse composition the
+prior "Still open" note anticipated. Part IX supplies exactly that, so the honest
+calculus route now reaches Newton's log-concavity inequality on *every*
+consecutive coefficient window of an arbitrary real-rooted polynomial.
+
+### Shipped (`Proofs/AmgmInequalityOQ02OQ02OQ05.lean`, Part IX)
+- **`discrim_reverse_interior (j m) {p} (hp : Splits p) (hcj : p.coeff j ≠ 0)
+  (hdeg : p.natDegree = j + (m + 2))`** : `0 ≤ discrim` of the three consecutive
+  coefficients `p.coeff j, p.coeff (j+1), p.coeff (j+2)`, each weighted by the
+  `descFactorial` factors `(i+m).descFactorial m · (i+j).descFactorial j` of the
+  two differentiation passes. Proof: `q := derivative^[j] p` splits (Part V) and
+  has `q.coeff 0 = j!·p.coeff j ≠ 0` (so `natTrailingDegree q = 0`) and
+  `q.natDegree = m+2`; apply the TOP engine `discrim_iterate_derivative_top` to
+  `reverse q` (splits by Part VIII, degree `m+2`), whose top three coefficients
+  are `q`'s bottom three = `p`'s window (`coeff_reverse` + `revAt_le` +
+  `coeff_iterate_derivative`), then fold the two nested `•` weights with
+  `← mul_smul`. The `j = 0` case is definitionally `discrim_reverse_bottom`.
+- **`newton_interior_coeff_ineq (j m) {p} …`** : the recognizable
+  `4·(weights)·p.coeff j·p.coeff (j+2) ≤ (weight)²·p.coeff (j+1)²` — Newton's
+  log-concavity step on an arbitrary window, subsuming both `newton_top_coeff_ineq`
+  and `newton_bottom_coeff_ineq`.
+
+### Key realization
+Differentiation alone can never reach an interior window: for `q = derivative^[r] p`,
+`coeff_iterate_derivative` sends `q`'s *top* three coefficients back to `p`'s top
+three (always). To slide the window down you must reverse. The clean composition is
+"differentiate `j` times → reverse → apply the top engine": after `j` derivatives
+the window `p.coeff j, j+1, j+2` sits at the *bottom* of `q`, and reversing lifts it
+to the top of a genuine quadratic where the discriminant is read off. This is why a
+single `reverse` (Part VIII, `j = 0`) only reached the very bottom, while general
+`j` needs the derivative pass first.
+
+### Reusable Lean gotchas (researcher-5, Part IX)
+- `coeff_iterate_derivative` emits the base/index in `0 + j` form (NOT normalized
+  to `j`). When the result must unify with a hypothesis stated on `p.coeff j`
+  (here `hcj`), insert `Nat.zero_add` in the same `rw` chain
+  (`rw […, nsmul_eq_mul, Nat.zero_add]`) — one rewrite fixes both the `descFactorial`
+  base and the `coeff` index (rw hits all `0 + j` occurrences of that instantiation).
+- Nested `ℕ`-scalar weights `a • (b • x)` from composing two `coeff_iterate_derivative`
+  / reverse passes fold to `(a * b) • x` with **`← mul_smul`** (`mul_smul : (a*b)•x =
+  a•b•x`); apply once per discriminant slot.
+- The coefficient-inequality corollary's `nlinarith` **SIGBUS-crashes the elaborator
+  (exit 135)** on the raw `↑((i+m).descFactorial m · (i+j).descFactorial j)` casts and
+  `p.coeff` subterms. Fix (same as Part VI): `simp only [nsmul_eq_mul, Nat.cast_mul]`
+  to split the cast product, then `set A := …` each of the six `descFactorial` casts
+  and three coefficients to opaque atoms BEFORE `nlinarith [h]`.
+- `set q := derivative^[j] p with hq` does NOT auto-fold `derivative^[j] p` in
+  hypotheses generated *after* the `set` (e.g. `natDegree_iterate_derivative p j`);
+  fold them manually with `rw [← hq] at hle`.
+
+### Still open (the remaining Vieta polish)
+The interior *coefficient* inequality is closed for all windows. The only remaining
+increment mirrors Part VIII's TOP Vieta closure: substitute
+`p.coeff k = lc·(-1)^(n-k)·eₙ₋ₖ` (`coeff_eq_esymm_roots_of_splits`) into
+`newton_interior_coeff_ineq` to state the interior step directly on the elementary
+symmetric functions `eₖ₋₁, eₖ, eₖ₊₁` of the roots (the classical `eₖ² ≥ eₖ₋₁eₖ₊₁`
+form). Purely algebraic — the calculus engine is complete.

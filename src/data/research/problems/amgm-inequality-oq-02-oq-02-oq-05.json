@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Part VIII, researcher-5): built splits_reverse (Splits p → Splits (reverse p)), the reversal counterpart of Part V that Mathlib lacked, and used it to prove the general-n BOTTOM Newton step (newton_bottom_coeff_ineq / discrim_reverse_bottom) on a real-rooted polynomials three bottom coefficients — genuinely new arbitrary-n content unreachable from Parts III/VII (which only give the first/top step). 33 theorems, 0 sorries, 0 axioms (foundational only), docker-build clean 7743 jobs. Remaining: general interior steps (reverse+derivative) and the Vieta substitution to elementary-symmetric mean form.",
+    "progressSummary": "PROGRESS (Part IX, researcher-5): closed the last documented gap — the general-n INTERIOR Newton step for every coefficient window, via discrim_reverse_interior / newton_interior_coeff_ineq (differentiate j times → reverse → top-step discriminant engine). Subsumes the top (Part VII) and bottom (Part VIII) extremes. 38 theorems, 0 sorries, 0 axioms (foundational only), docker-build clean 7743 jobs, Lean 4.26.0. Remaining: only the Vieta substitution to elementary-symmetric mean form (algebraic polish).",
     "builtItems": [
       "discrim_nonneg_of_root in Proofs/AmgmInequalityOQ02OQ02OQ05.lean (real quadratic with a real root has 0 <= discrim)",
       "monic_quadratic_discrim_nonneg / discrim_nonneg_of_roots_nonempty (same via Polynomial.IsRoot and nonempty Polynomial.roots)",
@@ -40,7 +40,9 @@
       "splits_reverse_prod (s : Multiset ℝ) : Splits (reverse ((s.map (X - C ·)).prod)) — multiset induction using reverse_mul_of_domain",
       "splits_reverse {p} (hp : Splits p) : Splits (reverse p) — THE new infra Mathlib lacks; reversal preserves real-rootedness",
       "discrim_reverse_bottom (m) {p} (hp : Splits p) (h0 : p.coeff 0 ≠ 0) (hdeg : natDegree p = m+2) : 0 ≤ discrim of p bottom three coeffs (descFactorial-weighted) — general-n BOTTOM Newton step via one reversal",
-      "newton_bottom_coeff_ineq (m) {p} … : 4·(2+m)!desc·m!desc·p.coeff 0·p.coeff 2 ≤ ((1+m)!desc)²·p.coeff 1² — readable b²≥4ac bottom step"
+      "newton_bottom_coeff_ineq (m) {p} … : 4·(2+m)!desc·m!desc·p.coeff 0·p.coeff 2 ≤ ((1+m)!desc)²·p.coeff 1² — readable b²≥4ac bottom step",
+      "discrim_reverse_interior (Part IX): 0 ≤ discrim of any consecutive window p.coeff j, j+1, j+2 of a real-rooted p — differentiate j times then reverse then apply the top engine; j=0 recovers discrim_reverse_bottom (AmgmInequalityOQ02OQ02OQ05.lean)",
+      "newton_interior_coeff_ineq (Part IX): Newtons log-concavity 4·(weights)·p.coeff j·p.coeff (j+2) ≤ (weight)²·p.coeff (j+1)² on an arbitrary window, subsuming both top and bottom coeff inequalities (AmgmInequalityOQ02OQ02OQ05.lean)"
     ],
     "insights": [
       "Mathlib packages the completed-square identity as discrim_eq_sq_of_quadratic_eq_zero (h : a*(x*x)+b*x+c=0) : discrim a b c = (2*a*x+b)^2, so real-root implies nonneg discriminant is a 2-line proof (rw + sq_nonneg). This is the per-derivative atom of the whole Newton/Rolle program.",
@@ -49,14 +51,14 @@
       "The remaining crux is exactly differentiation preserves full real-rootedness counting multiplicity (iterated Rolle on prod (X - x_i)); Mathlib has Rolle (exists_hasDerivAt_eq_zero) and Polynomial.derivative/roots but not this packaged lemma.",
       "Reversal preserves splitting over ℝ: reverse (X - C r) has degree ≤1 with leadingCoeff = trailingCoeff(X - C r) ≠ 0 (invertible), so splits via splits_of_natDegree_le_one_of_invertible; distribute reverse over the multiset product (reverse_mul_of_domain) to get splits_reverse: Splits p → Splits (reverse p). Mathlib lacked this; it is the reversal counterpart of Part V splits_derivative.",
       "Part VII TOP step specialised to the monic splitting poly ∏(X-xᵢ) (top coeffs 1,-e₁,e₂) only reproduces the FIRST Newton inequality (already general in Part III). Genuinely new arbitrary-n content lives in the non-top steps, reached by REVERSING p so its bottom coefficients become the top coefficients of reverse p.",
-      "The BOTTOM Newton step (discrim on p.coeff 0,1,2) is obtained by applying the Part VII engine discrim_iterate_derivative_top to reverse p: needs only Splits(reverse p) + natDegree(reverse p)=m+2, the latter from coeff 0 ≠ 0 ⇒ natTrailingDegree = 0 (natTrailingDegree_le_of_ne_zero). coeff_reverse + revAt_le read the three top coeffs of reverse p back as p.coeff 0,1,2."
+      "The BOTTOM Newton step (discrim on p.coeff 0,1,2) is obtained by applying the Part VII engine discrim_iterate_derivative_top to reverse p: needs only Splits(reverse p) + natDegree(reverse p)=m+2, the latter from coeff 0 ≠ 0 ⇒ natTrailingDegree = 0 (natTrailingDegree_le_of_ne_zero). coeff_reverse + revAt_le read the three top coeffs of reverse p back as p.coeff 0,1,2.",
+      "Differentiation alone can never reach an interior coefficient window: coeff_iterate_derivative always maps a derivatives top three coeffs back to p top three. Sliding the window down requires reverse. The general interior step = differentiate j times (window drops to the bottom of derivative^[j] p) → reverse (lifts it to the top of a quadratic) → top-step discriminant engine. A single reverse (Part VIII) only reaches j=0."
     ],
     "mathlibGaps": [
       "No packaged lemma: over R, p.roots.card = p.natDegree implies (derivative p).roots.card = (derivative p).natDegree (Rolle + multiplicity). This is the crux for general n."
     ],
     "nextSteps": [
-      "General INTERIOR steps (2 ≤ k ≤ n-2): compose reverse with iterated derivative — apply discrim_iterate_derivative_top to reverse(derivative^[j] p) to read an interior coefficient triple. Needs a nonvanishing hypothesis on the relevant coefficient (reversal drops degree if leading/constant term vanishes).",
-      "Vieta bridge: specialise splits polynomial p = ∏(X-xᵢ) so p.coeff(n-k) = (-1)^k eₖ (Polynomial.coeff_prod_X_sub_C / Multiset.esymm), turning newton_top_coeff_ineq / newton_bottom_coeff_ineq into the classical eₖ² ≥ eₖ₋₁ eₖ₊₁ mean form."
+      "Vieta polish: substitute p.coeff k = lc·(-1)^(n-k)·e_{n-k} (coeff_eq_esymm_roots_of_splits, as Part VIII did for the top step) into newton_interior_coeff_ineq to state the interior step directly on the roots elementary symmetric functions e_{k-1}, e_k, e_{k+1} (classical e_k² ≥ e_{k-1}e_{k+1}). Purely algebraic; the calculus engine is complete for all windows."
     ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-02-oq-02-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -123,7 +125,7 @@
     "mathlib": []
   },
   "started": "2026-07-04T09:09:15.544Z",
-  "lastUpdate": "2026-07-04T10:00:00.000Z",
+  "lastUpdate": "2026-07-04",
   "leanFiles": [
     {
       "path": "Proofs/AmgmInequalityOQ02OQ02OQ05.lean",
