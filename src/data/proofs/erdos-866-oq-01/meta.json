@@ -44,6 +44,44 @@
       "upperExponent_tendsto_one: the exponents converge to the limiting value 1 as k → ∞."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "oddNumbers_no_ktuple",
+      "type": "core",
+      "description": "The generalization g_k(N) ≥ 1 for every k ≥ 3: no k-tuple of integers can have all of its pairwise sums inside the odd numbers of {1,…,2N}. Proved by restricting an alleged k-tuple to its first three coordinates via Fin.castLE (using 3 ≤ k), which preserves order, so the restricted triple contradicts oddNumbers_no_triple. This promotes the companion file's k = 3 obstruction to the full headline claim.",
+      "leanType": "{k : ℕ} → (hk : 3 ≤ k) → (N : ℕ) → ¬∃ b : Fin k → ℤ, HasAllPairwiseSums (oddNumbers N) b"
+    },
+    {
+      "name": "oddNumbers_no_triple",
+      "type": "core",
+      "description": "Base case (k = 3): no three integers have all of their pairwise sums inside the odd numbers of {1,…,2N}. Among any three integers two share parity, so their sum is even and cannot be odd — a parity pigeonhole discharged by simp/grind. A self-contained re-proof of the parent lemma.",
+      "leanType": "(N : ℕ) → ¬∃ b : Fin 3 → ℤ, HasAllPairwiseSums (oddNumbers N) b"
+    },
+    {
+      "name": "upperExponent_strictMono",
+      "type": "core",
+      "description": "Strict monotonicity of the upper-bound exponent as a full StrictMono (sharpening the parent's consecutive-step version): i < j → 1 − 2^{-i} < 1 − 2^{-j}, because the geometric sequence 2^{-k} is strictly decreasing (pow_lt_pow_right_of_lt_one₀).",
+      "leanType": "StrictMono upperExponent"
+    },
+    {
+      "name": "upperExponent_tendsto_one",
+      "type": "lemma",
+      "description": "The exponents 1 − 2^{-k} converge to the limiting value 1 as k → ∞, since 2^{-k} → 0 (tendsto_pow_atTop_nhds_zero_of_lt_one).",
+      "leanType": "Filter.Tendsto upperExponent Filter.atTop (nhds 1)"
+    },
+    {
+      "name": "upperExponent_lt_one",
+      "type": "lemma",
+      "description": "The exponent 1 − 2^{-k} is strictly below 1 for every k (since 2^{-k} > 0), so the general upper bound g_k(N) ≪ N^{1−2^{-k}} is genuinely sub-linear in N for all k.",
+      "leanType": "(k : ℕ) → upperExponent k < 1"
+    },
+    {
+      "name": "upperExponent_nonneg",
+      "type": "lemma",
+      "description": "The exponent 1 − 2^{-k} is non-negative for every k (since 2^{-k} ≤ 1), bounding it into [0, 1) together with upperExponent_lt_one.",
+      "leanType": "(k : ℕ) → 0 ≤ upperExponent k"
+    }
+  ],
   "overview": {
     "historicalContext": "Erdős Problem #866 asks, for k ≥ 3, for the minimal threshold g_k(N) such that every A ⊆ {1,…,2N} with |A| ≥ N + g_k(N) contains all pairwise sums b_i + b_j (i < j) of some k-tuple. Known values and rates: g_3 = 2, g_4 ≤ 2032, g_5 ≍ log N, g_6 ≍ √N, with a general upper bound g_k(N) ≪ N^{1−2^{-k}}. The basic lower bound g_k(N) ≥ 1 is witnessed by the N odd numbers in {1,…,2N}: among any three integers, two share parity, so their sum is even and cannot be odd.",
     "problemStatement": "The companion file formalizes the parity obstruction only for k = 3 (oddNumbers_no_triple), even though the lower bound g_k(N) ≥ 1 is claimed for all k. This entry closes that gap and records the elementary facts about the upper-bound exponent 1 − 2^{-k}.",
