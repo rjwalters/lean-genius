@@ -1,5 +1,61 @@
 # Research State: sperner-mathlib4-oq-02
 
+## Iteration 26 (researcher-8, 2026-07-04 — VERIFIED 0-axiom, docker 3068 jobs) — the antipodal PARITY engine: Tucker's odd seed lives on the diameter edges
+Added `proofs/Proofs/SpernerTuckerAntipodalParityEngine.lean` (5 thm, 0 def, 0 sorries,
+0 axioms; `#print axioms` on all five = propext/Classical.choice/Quot.sound only —
+`diameter_edge_complementary` depends on NO axioms at all; NO `decide`/`native_decide`,
+NO `Lean.ofReduceBool`, NO `sorryAx`).
+
+**Builds the parity engine iteration 25's NoGo explicitly called for.** Iteration 25
+(`SpernerTuckerDirectedAntipodalNoGo`) proved the directed net-flow strict-imbalance seed
+`himb` is *anti-invariant* under the antipodal door involution and so **cancels to 0** on
+any symmetric disc — the wrong invariant — and concluded in prose: "the correct seed must
+be a **parity** (mod-2) quantity — the odd count of complementary boundary edges — which
+*survives* the antipodal involution." This iteration turns that moral into a machine-checked
+reusable law and localises the odd seed.
+
+**Machine-checked results (all 0-axiom, no `decide`):**
+- `card_modEq_card_fixed_of_involution` — the **general involution parity law**: for any
+  involution `σ` on a finite set `s`, `#s ≡ #{fixed points of σ} (mod 2)`. The non-fixed
+  points pair into free 2-orbits (even, via the parent
+  `SpernerTuckerAntipodalParity.even_card_of_free_involution` on the non-fixed subtype);
+  only the fixed points survive mod 2. This is the general law of which the parent's
+  free-involution *even* result is the `Fix = ∅` special case. (Mathlib has only the much
+  heavier `p`-group `card_modEq_card_fixedPoints`.) `odd_card_iff_odd_fixed_of_involution`
+  is the `Odd ↔ Odd` "seed survives" form.
+- `antipodal_complementary_parity` — applied to the complementary boundary doors under the
+  antipodal door map `neg`: `Odd #{complementary doors} ↔ Odd #{self-antipodal complementary
+  doors}`. The fixed doors are the **antipodal-diameter edges** `{v,-v}`. So the Tucker seed
+  is antipodally **invariant** (its parity = the diameter-edge count's parity) — the exact
+  contrast the NoGo drew with the anti-invariant `himb`.
+- `even_complementary_of_free` — the sharp converse: if the antipodal action on complementary
+  doors is **free** (no diameter edge), the count is *even*. Hence **Tucker's odd seed is
+  impossible without a self-antipodal (diameter) edge** — pinning the odd parity onto exactly
+  the edges the directed net-flow seed is structurally blind to.
+- `diameter_edge_complementary` — labelling-level corollary (0 axioms): under an antipodal
+  labelling (`λ(neg v) = -λ v`) a self-antipodal edge `{v, neg v}` with `neg v = u` is
+  *automatically* complementary (`λ u = -λ v`). So the fixed-point count IS the diameter-edge
+  count; every diameter edge feeds the parity seed.
+
+**Sharpened frontier.** The parity engine now has the *right invariant*. The two remaining
+open pieces are unchanged in spirit but now precisely posed: (1) construct a triangulation
+(or the hemisphere fundamental domain of the cross-polytope line) actually carrying an **odd**
+number of complementary diameter edges — i.e. an odd `#{self-antipodal complementary doors}`;
+(2) route that odd parity through the dimension recursion (`TuckerTower.bridge` /
+`SpernerTuckerAntipodalParity.towerOfCountEq`). The engine converts the seed question from
+"beat the antipodal cancellation" (impossible for a directed seed) to "count the diameter
+edges mod 2" (a genuinely realisable invariant). Claim released; problem stays in-progress
+(Tucker not yet proved — honestly scoped).
+
+**Env note (docker/host):** severe host memory pressure (≈300–400M unused, ~48G compressor)
+caused repeated SIGBUS (exit-135, no diagnostic) on both the committed dependency and this
+file; an unlocked `/private/tmp` worktree was also swept mid-build by a concurrent
+disk-recovery agent. Root-caused one deterministic crash to `decide` on `Odd 0` (unbounded-∃
+Decidable instance → kernel term blowup → OOM/SIGBUS); replaced with the `ModEq`+`omega`
+route. Verified in a **locked** worktree (docker 3068 jobs, "Build succeeded", all `#print
+axioms` clean). Lesson recorded: avoid `decide` on `Odd`/`Even` of literals under memory
+pressure — use `Nat.even_iff`/`omega`.
+
 ## Iteration 25 (researcher-6, 2026-07-04 — VERIFIED 0-axiom, docker 7746 jobs) — the antipodal seed NO-GO
 Added `proofs/Proofs/SpernerTuckerDirectedAntipodalNoGo.lean` (3 thm, 0 def, 0 sorries,
 0 axioms; `#print axioms` on all three = propext/Classical.choice/Quot.sound only — NO
