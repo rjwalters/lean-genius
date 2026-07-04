@@ -1,0 +1,62 @@
+[
+    {
+        "id": "ann-bec-oq03-overview",
+        "proofId": "shannon-channel-coding-bec-oq-03",
+        "range": { "startLine": 1, "endLine": 63 },
+        "type": "concept",
+        "title": "An Axiom-Free Step Toward the BEC Converse",
+        "content": "The base entry proves the binary erasure channel's INFORMATION capacity C(bec p) = (1−p)·log 2 axiom-free, and the sibling oq-02 obtains the OPERATIONAL coding theorem only by invoking the framework's abstract axioms channel_coding_achievability / channel_coding_converse. This file threads a genuinely axiom-free needle between them: it instantiates the gallery's already-PROVED abstract single-letter Fano converse fano_converse_shannon_form — (1 − P_e)·log|α| ≤ channelCapacity ch + h(P_e) — at the concrete channel bec with the uniform Bernoulli(1/2) input. The single channel-specific ingredient is a closed-form computation of the Fano collision-error term P_e, which for the uniform-input BEC collapses to exactly p/2. Because fano_converse_shannon_form and the underlying fano_inequality are THEOREMS (not axioms), the specialisation introduces no assumptions: status 'verified', badge 'original', axiomCount 0. SCOPE (stated honestly in the header): this is the single-letter (one channel use) converse; it does NOT discharge the block-coding axiom channel_coding_converse, which additionally needs the multi-use data-processing bound I(W; Ŷⁿ) ≤ n·C — the open remaining piece.",
+        "mathContext": "$(1 - P_e)\\log|\\alpha| \\le \\mathrm{channelCapacity}\\,\\mathrm{ch} + h(P_e)$ specialised at $\\mathrm{ch} = \\mathrm{bec}\\,p$, uniform input, with $P_e = p/2$ and $C = (1-p)\\log 2$.",
+        "significance": "supporting",
+        "relatedConcepts": ["binary erasure channel", "Fano's inequality", "channel-coding converse", "single-letter vs block converse", "information-theoretic vs operational"],
+        "prerequisites": ["the base BEC capacity entry", "the proved abstract Fano converse fano_converse_shannon_form", "binary entropy function"]
+    },
+    {
+        "id": "ann-bec-oq03-fano-error",
+        "proofId": "shannon-channel-coding-bec-oq-03",
+        "range": { "startLine": 64, "endLine": 138 },
+        "type": "theorem",
+        "title": "The Fano Error Term Equals p/2 (Closed Form)",
+        "content": "bec_uniform_fano_error proves that the Fano collision-error term P_e = 1 − Σ_y Σ_x P(x,y)²/P(y) of the uniform-input binary erasure channel evaluates in closed form to exactly p/2. The proof works directly over the joint distribution P(x,y) = ½·W(x|y). The outer sum over the erasure alphabet Option Bool is split with Fintype.sum_option into an erasure term (y = none) and a sum over un-erased outputs (y = some b). For y = none the output marginal is p and each of the two inputs contributes (½p)²/p = p/4, summing to p/2. For y = some b the marginal is ½(1−p) and only the matching input x = b is nonzero, contributing (½(1−p))²/(½(1−p)) = ½(1−p); the two symbols give 1−p. Hence Σ_y Σ_x P(x,y)²/P(y) = p/2 + (1−p) = 1 − p/2, so P_e = p/2. The per-output kernel values (hjn, hjs) and output marginals (hden_none, hden_some) come from the parent's bec_W_none / bec_W_some / bec_ymarg_none / bec_ymarg_some; the concrete Bool conditions in the un-erased slice are discharged with explicit if_pos / if_neg rewrites before field_simp; ring.",
+        "mathContext": "$P_e = 1 - \\big(\\tfrac{p}{2} + (1-p)\\big) = \\tfrac{p}{2}$; joint $P(x,y) = \\tfrac12 W(x\\mid y)$, marginals $P(\\mathrm{none}) = p$, $P(\\mathrm{some}\\,b) = \\tfrac12(1-p)$.",
+        "significance": "critical",
+        "relatedConcepts": ["Fano error term", "joint distribution", "output marginal", "erasure channel kernel", "closed-form computation"],
+        "prerequisites": ["bec_W_none / bec_W_some", "bec_ymarg_none / bec_ymarg_some", "Fintype.sum_option / Fintype.sum_bool"]
+    },
+    {
+        "id": "ann-bec-oq03-collision-intuition",
+        "proofId": "shannon-channel-coding-bec-oq-03",
+        "range": { "startLine": 64, "endLine": 138 },
+        "type": "insight",
+        "title": "Why the Error Term Halves: Erasure Collides Two Equiprobable Inputs",
+        "content": "The clean value P_e = p/2 is not a coincidence of the algebra — it has a direct operational reading. The Fano collision term Σ_y Σ_x P(x,y)²/P(y) is the probability that two independent draws from the same posterior P(x | y) agree, averaged over the output y; equivalently 1 − P_e is the probability an ideal maximum-a-posteriori decoder guesses the input correctly on a single use. On an un-erased output (probability 1−p) the decoder learns the bit exactly: the posterior is a point mass, its collision probability is 1, and these outputs contribute the full 1−p to the sum with zero error. On an erasure (probability p) the two equiprobable inputs are perfectly confused: the posterior is uniform on {false, true}, its collision probability is only ½, so an erasure contributes p·½ = p/2 of error. Summing, P_e = p·½ = p/2 — the erasure probability halved precisely because a symmetric two-way tie leaves exactly one bit of residual doubt worth ½ in collision terms. This is why the same fano_converse_shannon_form specialisation, applied to the BSC, will instead pick up that channel's own posterior-collision profile rather than a simple halving.",
+        "mathContext": "$1 - P_e = \\sum_y P(y)\\sum_x P(x\\mid y)^2$ (expected posterior collision); erasure posterior uniform $\\Rightarrow \\sum_x P(x\\mid y)^2 = \\tfrac12$, so erasures give $p\\cdot\\tfrac12 = \\tfrac{p}{2}$ error; un-erased posterior a point mass $\\Rightarrow$ collision $1$, zero error.",
+        "significance": "supporting",
+        "relatedConcepts": ["maximum a posteriori decoding", "posterior collision probability", "binary symmetric channel", "residual uncertainty", "erasure symmetry"],
+        "prerequisites": ["Bayes' rule / posterior distribution", "bec_uniform_fano_error", "binary symmetric channel"]
+    },
+    {
+        "id": "ann-bec-oq03-converse",
+        "proofId": "shannon-channel-coding-bec-oq-03",
+        "range": { "startLine": 140, "endLine": 173 },
+        "type": "theorem",
+        "title": "Single-Letter Fano Converse for the BEC (Axiom-Free)",
+        "content": "bec_single_letter_fano_converse instantiates the proved abstract converse fano_converse_shannon_form at ch := bec p with the uniform input, yielding (1 − p/2)·log 2 ≤ (1 − p)·log 2 + h(p/2). Three inputs feed the specialisation: the uniformity hypothesis (each uniformBool.p x = |Bool|⁻¹, checked directly), the cardinality bound |Bool| = 2 ≥ 2, and the non-negativity of the Fano error term (immediate from P_e = p/2 > 0). The abstract converse's error term is then rewritten by bec_uniform_fano_error and its capacity term by the parent's bec_capacity, and Fintype.card_bool collapses log|Bool| to log 2. Every ingredient is a proved theorem, so #print axioms shows only propext / Classical.choice / Quot.sound — none of the channel-coding framework axioms appear. This is the single-letter engine of the channel-coding converse, made operational and axiom-free for the BEC.",
+        "mathContext": "$(1 - p/2)\\log 2 \\le (1-p)\\log 2 + h(p/2)$, from $\\mathrm{fano\\_converse\\_shannon\\_form}$ with $|\\mathrm{Bool}| = 2$, $C = (1-p)\\log 2$, $P_e = p/2$.",
+        "significance": "critical",
+        "relatedConcepts": ["Fano's inequality", "channel-coding converse", "binary entropy", "channel capacity", "axiom-free specialisation"],
+        "prerequisites": ["fano_converse_shannon_form", "bec_capacity", "bec_uniform_fano_error"]
+    },
+    {
+        "id": "ann-bec-oq03-lower-bound",
+        "proofId": "shannon-channel-coding-bec-oq-03",
+        "range": { "startLine": 175, "endLine": 192 },
+        "type": "theorem",
+        "title": "Rearranged Fano Error Lower Bound",
+        "content": "bec_fano_error_lower_bound isolates the residual error term by the algebraic identity (1 − p/2)·log 2 = (1 − p)·log 2 + (p/2)·log 2, turning the converse into (p/2)·log 2 ≤ h(p/2). Intuitively: the binary entropy of the single-use erasure error p/2 cannot be smaller than (p/2)·log 2 — the residual uncertainty a single BEC use leaves about the input is quantitatively bounded below. The proof rewrites the identity into the converse and finishes with linarith.",
+        "mathContext": "$(p/2)\\log 2 \\le h(p/2)$, via $(1 - p/2)\\log 2 = (1-p)\\log 2 + (p/2)\\log 2$.",
+        "significance": "supporting",
+        "relatedConcepts": ["binary entropy lower bound", "Fano error term", "algebraic rearrangement"],
+        "prerequisites": ["bec_single_letter_fano_converse"]
+    }
+]
