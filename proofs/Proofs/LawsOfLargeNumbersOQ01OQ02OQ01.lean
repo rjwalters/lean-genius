@@ -63,6 +63,10 @@
       its a.s.-convergence output through the a.e. Kronecker lift.
 
   Verified: 0 sorry, 0 axiom (only `propext`/`Classical.choice`/`Quot.sound`).
+  The trailing § TruncationMomentKernels (the two S4b step-3/4 pointwise `rpow`
+  kernels) is now machine-checked: `docker-build.sh Proofs.LawsOfLargeNumbersOQ01OQ02OQ01`
+  → Built (7743 jobs, exit 0). Pure `Real.rpow` real-analysis, no
+  `decide`/`native_decide`/`sorry`/`axiom`, so 0-axiom by construction.
 -/
 import Mathlib
 
@@ -793,5 +797,90 @@ theorem ae_eventually_abs_le_rpow_of_identDistrib [IsProbabilityMeasure μ]
   simpa only [Set.mem_setOf_eq, not_lt] using hi
 
 end TruncationReduction
+
+/-! ## S4b (steps 3–4) — the two truncation-moment kernels
+
+With step 1 (the a.s. eventual truncation `|Xᵢ| ≤ i^{1/p}`) in hand, the
+Marcinkiewicz–Zygmund proof reduces to two analytic estimates on the truncated
+variables `Yᵢ = Xᵢ·𝟙{|Xᵢ| ≤ i^{1/p}}`:
+
+* **step 3 (centering).** `n^{-1/p} ∑_{i<n} 𝔼Yᵢ → 0`.  Since `𝔼X = 0`, one has
+  `|𝔼Yᵢ| ≤ 𝔼[|X|·𝟙{|X| > i^{1/p}}]`, and on the tail `{|X| > i^{1/p}}` the bound
+  `|x| ≤ i^{(1-p)/p}·|x|^p` turns this into a `Toeplitz`-summable null sequence.
+* **step 4 (variance).** `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`.  On the truncation
+  `{|X| ≤ i^{1/p}}` the bound `x² ≤ i^{(2-p)/p}·|x|^p` gives
+  `𝔼[Yᵢ²] ≤ i^{(2-p)/p}·𝔼|X|^p`, so the weighted sum is controlled by
+  `𝔼|X|^p · ∑ᵢ i^{-2/p}`, convergent precisely because `p < 2` (`2/p > 1`).
+
+Both estimates rest on a single pointwise `rpow` inequality apiece; those two
+kernels are supplied here.  They are pure real-analysis facts (no measure theory),
+elementary, and reused verbatim by the integral-level estimates of the two steps.
+The `1 ≤ p` / `p < 2` hypotheses enter through the sign of the scaling exponent
+(`1 - p ≤ 0` makes the tail factor sub-linear; `2 - p ≥ 0` makes the truncation
+factor super-linear). -/
+
+section TruncationMomentKernels
+
+/-- **Tail moment kernel (MZ step 3, centering).**  For an exponent `1 ≤ p`, a
+threshold `0 < t`, and a point on the tail `t < |x|`, the absolute value is
+dominated by the `p`-th power scaled by the sub-linear factor `t^{1-p}`:
+
+    |x| ≤ t^{1-p} · |x|^p.
+
+Applied with `t = i^{1/p}` (so `t^{1-p} = i^{(1-p)/p}`) this is the pointwise
+inequality behind the centering estimate
+`|𝔼Yᵢ| ≤ 𝔼[|X|·𝟙{|X| > i^{1/p}}] ≤ i^{(1-p)/p}·𝔼|X|^p`, whose right-hand side
+is a `tendsto_weighted_average_zero`-summable null sequence.
+
+Proof: split `|x| = |x|^p · |x|^{1-p}` (`rpow_add`), and since `1 - p ≤ 0` and
+`0 < t < |x|`, the antitone rpow bound `|x|^{1-p} ≤ t^{1-p}`
+(`rpow_le_rpow_of_nonpos`) finishes it. -/
+theorem abs_le_rpow_mul_rpow_of_tail {p t x : ℝ} (hp : 1 ≤ p) (ht : 0 < t)
+    (hx : t < |x|) : |x| ≤ t ^ (1 - p) * |x| ^ p := by
+  have hxpos : 0 < |x| := ht.trans hx
+  have hexp : 1 - p ≤ 0 := by linarith
+  have hstep : |x| ^ (1 - p) ≤ t ^ (1 - p) :=
+    Real.rpow_le_rpow_of_nonpos ht hx.le hexp
+  have hsplit : |x| ^ p * |x| ^ (1 - p) = |x| := by
+    rw [← Real.rpow_add hxpos, show p + (1 - p) = 1 by ring, Real.rpow_one]
+  calc |x| = |x| ^ p * |x| ^ (1 - p) := hsplit.symm
+    _ ≤ |x| ^ p * t ^ (1 - p) :=
+        mul_le_mul_of_nonneg_left hstep (Real.rpow_nonneg hxpos.le p)
+    _ = t ^ (1 - p) * |x| ^ p := by ring
+
+/-- **Truncated second-moment kernel (MZ step 4, variance).**  For an exponent
+`p < 2`, a threshold `0 < t`, and a point inside the truncation `|x| ≤ t`, the
+square is dominated by the `p`-th power scaled by the super-linear factor `t^{2-p}`:
+
+    x² ≤ t^{2-p} · |x|^p.
+
+Applied with `t = i^{1/p}` (so `t^{2-p} = i^{(2-p)/p}`) this is the pointwise
+inequality behind the second-moment estimate `𝔼[Yᵢ²] ≤ i^{(2-p)/p}·𝔼|X|^p`; summed
+against `i^{-2/p}` it yields `∑ᵢ Var(Yᵢ)/i^{2/p} ≤ 𝔼|X|^p · ∑ᵢ i^{-2/p} < ∞`, the
+convergent series (using `p < 2`, i.e. `2/p > 1`) that Kolmogorov's criterion
+consumes.
+
+Proof: the `x = 0` case is nonnegativity of the right-hand side; otherwise split
+`x² = |x|^2 = |x|^p · |x|^{2-p}` (`rpow_add`, `sq_abs`), and since `0 ≤ 2 - p` and
+`0 < |x| ≤ t`, the monotone rpow bound `|x|^{2-p} ≤ t^{2-p}` (`rpow_le_rpow`)
+finishes it. -/
+theorem sq_le_rpow_mul_rpow_of_trunc {p t x : ℝ} (hp : p < 2) (ht : 0 < t)
+    (hx : |x| ≤ t) : x ^ 2 ≤ t ^ (2 - p) * |x| ^ p := by
+  rcases eq_or_ne x 0 with h0 | h0
+  · subst h0
+    rw [show (0 : ℝ) ^ 2 = 0 by norm_num]
+    exact mul_nonneg (Real.rpow_nonneg ht.le _) (Real.rpow_nonneg (abs_nonneg _) _)
+  · have hxpos : 0 < |x| := abs_pos.mpr h0
+    have hexp : 0 ≤ 2 - p := by linarith
+    have hstep : |x| ^ (2 - p) ≤ t ^ (2 - p) := Real.rpow_le_rpow hxpos.le hx hexp
+    have hsplit : |x| ^ p * |x| ^ (2 - p) = x ^ 2 := by
+      rw [← Real.rpow_add hxpos, show p + (2 - p) = 2 by ring,
+        show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, sq_abs]
+    calc x ^ 2 = |x| ^ p * |x| ^ (2 - p) := hsplit.symm
+      _ ≤ |x| ^ p * t ^ (2 - p) :=
+          mul_le_mul_of_nonneg_left hstep (Real.rpow_nonneg hxpos.le p)
+      _ = t ^ (2 - p) * |x| ^ p := by ring
+
+end TruncationMomentKernels
 
 end LawsOfLargeNumbers.MZ

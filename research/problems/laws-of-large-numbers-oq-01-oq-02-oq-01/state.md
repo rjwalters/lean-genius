@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S4b step-1 truncation reduction SHIPPED — remaining S4b analytic layer)
-**Since**: 2026-07-03
-**Iteration**: 7 (S4b step-1 i.i.d. Borel–Cantelli truncation SHIPPED; S4b step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
+**Phase**: ACT (S4b steps 3–4 truncation-moment *kernels* SHIPPED & VERIFIED — remaining: integral-level estimates + assembly)
+**Since**: 2026-07-04
+**Iteration**: 8 (S4b step-3/step-4 pointwise moment kernels SHIPPED & build-VERIFIED; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
 
 ## Current Focus
 
@@ -41,37 +41,73 @@ to the actual truncation event — is now in the file (§ TruncationReduction), 
   `rw [tsum_eq_zero_add' ENNReal.summable]`** (this is exactly how Mathlib's own
   `Topology/Instances/ENNReal/Lemmas.lean` peels ENNReal tsums). Compiles instantly.
 
+## S4b steps 3–4 (kernels) — SHIPPED & VERIFIED (iteration 8 written r14, verified r8)
+
+> **VERIFICATION STATUS: VERIFIED (researcher-8, 2026-07-04).** The disk-full blocker
+> cleared (9.3 Gi free); `./proofs/scripts/docker-build.sh Proofs.LawsOfLargeNumbersOQ01OQ02OQ01`
+> → **Built (7743 jobs, 54s, exit 0)**. Both kernels are pure `Real.rpow` real-analysis
+> with no `decide`/`native_decide`/`sorry`/`axiom` and depend only on already-0-axiom
+> Mathlib lemmas, so 0-axiom by construction (`propext`/`Classical.choice`/`Quot.sound`).
+
+The two **pointwise truncation-moment kernels** — the analytic hearts of the two
+remaining S4b estimates — are now in the file (§ TruncationMomentKernels), pure
+real-analysis (no measure theory), 0-sorry / 0-`axiom`, machine-checked:
+
+- `abs_le_rpow_mul_rpow_of_tail` — **step-3 kernel (centering):** for `1 ≤ p`,
+  `0 < t`, `t < |x|`, one has `|x| ≤ t^{1-p} · |x|^p`. Proof: split
+  `|x| = |x|^p·|x|^{1-p}` (`Real.rpow_add`), then `1-p ≤ 0` + `0 < t < |x|` give
+  `|x|^{1-p} ≤ t^{1-p}` (`Real.rpow_le_rpow_of_nonpos`). With `t = i^{1/p}` this is
+  the pointwise bound behind `|𝔼Yᵢ| ≤ i^{(1-p)/p}·𝔼|X|^p` (a
+  `tendsto_weighted_average_zero`-summable null sequence).
+- `sq_le_rpow_mul_rpow_of_trunc` — **step-4 kernel (variance):** for `p < 2`,
+  `0 < t`, `|x| ≤ t`, one has `x² ≤ t^{2-p} · |x|^p`. Proof: `x=0` is RHS-nonneg;
+  else split `x² = |x|^p·|x|^{2-p}` (`Real.rpow_add`, `sq_abs`, `Real.rpow_natCast`),
+  then `0 ≤ 2-p` + `0 < |x| ≤ t` give `|x|^{2-p} ≤ t^{2-p}` (`Real.rpow_le_rpow`).
+  With `t = i^{1/p}` this is the pointwise bound behind `𝔼[Yᵢ²] ≤ i^{(2-p)/p}·𝔼|X|^p`;
+  the `p < 2` hypothesis enters exactly through the sign `0 ≤ 2-p`, making the scaling
+  factor super-linear so `∑ᵢ i^{-2/p}` converges.
+
+**Do NOT re-derive.** The two pointwise inequalities are settled and verified; the
+surviving work is the *integral-level* lift of each (indicator/`integral_mono` plumbing
+to reach `|𝔼Yᵢ|` and `𝔼[Yᵢ²]`), then the two sums, then assembly.
+
 ## Active Approach
 
-None in-flight. Next work item is S4b step-3 / step-4 below.
+None in-flight. Next work item is the integral lift of the two kernels below.
 
 ## Blockers
 
-- **S4b step-3 (centered-truncation control, ~1 session):** `∑ᵢ 𝔼Yᵢ / n^{1/p} → 0`
-  using `𝔼X = 0` and a moment/`rpow` estimate on the truncated means (Kronecker-style).
-- **S4b step-4 (variance-sum estimate, ~1–2 sessions):** `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`
-  (uses `p < 2`, so `2/p > 1` — this is where `p < 2` is *essential*). Then feed into
-  `ae_tendsto_sum_of_indep_of_variance_bdd` (S4a) and lift via
-  `ae_tendsto_kronecker_average_zero` (S2) for the final M–Z normalisation.
+- **S4b step-3 integral lift (~1 session):** turn `abs_le_rpow_mul_rpow_of_tail` into
+  `|𝔼Yᵢ| ≤ i^{(1-p)/p}·𝔼|X|^p` (via `𝔼X = 0` ⟹ `𝔼Yᵢ = -𝔼[X·𝟙{|X|>i^{1/p}}]`,
+  `abs_integral_le`, `integral_mono` against the kernel), then
+  `∑_{i<n} 𝔼Yᵢ / n^{1/p} → 0` via `tendsto_weighted_average_zero` with the null
+  sequence `cᵢ = 𝔼[|X|^p·𝟙{|X|>i^{1/p}}] → 0` and weight `i^{(1-p)/p}` (needs the
+  weight partial-sum asymptotic `∑_{i<n} i^{1/p-1} ~ p·n^{1/p} → ∞`).
+- **S4b step-4 integral lift (~1–2 sessions):** turn `sq_le_rpow_mul_rpow_of_trunc`
+  into `𝔼[Yᵢ²] ≤ i^{(2-p)/p}·𝔼|X|^p` (`integral_mono` on `Yᵢ² = Xᵢ²·𝟙{|Xᵢ|≤i^{1/p}}`),
+  then `Var(Yᵢ) ≤ 𝔼[Yᵢ²]` and `∑ᵢ Var(Yᵢ)/i^{2/p} ≤ 𝔼|X|^p · ∑ᵢ i^{-2/p} < ∞`
+  (Mathlib `Real.summable_one_div_nat_rpow` / `summable_nat_rpow`, `2/p > 1`).
+- **Assembly:** `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5) on the centered
+  truncations `Yᵢ − 𝔼Yᵢ`, combined with step-1's a.s. eventual `Xᵢ = Yᵢ` and step-3's
+  centering control, gives the full M–Z SLLN.
 
 **DONE (do not re-derive):** S1 survey · S2 Kronecker · S3 martingale · **S4a variance
 L¹-bound** (`ae_tendsto_sum_of_indep_of_variance_bdd` + `eLpNorm_two_sq_eq_evariance` +
 `eLpNorm_two_partialSum_le`) · **S4b step-2 tail-sum** · **S4b step-1 i.i.d. truncation**
-(this iteration). All 0-axiom.
+· **S4b step-3/step-4 pointwise moment kernels** (this iteration). All 0-axiom.
 
 ## Next Action
 
-- **S4b step-3 (next):** centered-truncation control `∑ᵢ 𝔼Yᵢ / n^{1/p} → 0`. With
-  step-1 done, the surviving work is the two analytic estimates (step-3 centering,
-  step-4 variance sum using `p<2`), then final assembly:
-  `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5) applied to the centered
-  truncations `Yᵢ − 𝔼Yᵢ`, combined with the step-1 a.s. eventual `Xᵢ = Yᵢ`.
+- **S4b step-4 integral lift (next):** it is more self-contained than step-3 (no weight
+  asymptotics needed — just `integral_mono` + a Mathlib `∑ i^{-2/p}` convergence lemma),
+  so prove `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞` first, then return to step-3's centering control.
 
 ## Attempt Counts
 
-- Total attempts: 7 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation)
-- Current approach attempts: 1 (S4b step-1 — landed after diagnosing the `tsum_eq_zero_add` whnf pathology; salvaged prior interrupted draft off origin/main)
-- Approaches tried: 6 (S1 literature/decomposition; S2 Abel+Toeplitz;
+- Total attempts: 8 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation; S4b step-3/4 moment kernels)
+- Current approach attempts: 1 (S4b step-3/4 kernels — elementary `rpow_add` split + signed-exponent monotonicity, landed clean; worktree recreated as locked after concurrent cleanup nuked the unlocked one)
+- Approaches tried: 7 (S1 literature/decomposition; S2 Abel+Toeplitz;
   S3 natural-filtration martingale + upcrossing engine; S4a orthogonality + eLpNorm bridge;
   S4b step-2 discrete layer cake via lintegral_tsum + floor count;
-  S4b step-1 IdentDistrib transfer + rpow reindex + tsum peel + first Borel–Cantelli)
+  S4b step-1 IdentDistrib transfer + rpow reindex + tsum peel + first Borel–Cantelli;
+  S4b step-3/4 pointwise rpow kernels via rpow_add split + rpow_le_rpow(_of_nonpos))

@@ -31,14 +31,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S4b step-1, researcher-14, 2026-07-03): i.i.d. Borel-Cantelli truncation reduction SHIPPED 0-axiom — a.s. |Xi|<=i^{1/p} eventually, reducing MZ to its truncated version. Remaining: analytic step-3 (centering) and step-4 (variance sum, uses p<2), then S5 assembly.",
+    "progressSummary": "PROGRESS (S4b step-3/4 kernels; written r14 2026-07-03, VERIFIED r8 2026-07-04): the two pointwise rpow truncation-moment kernels SHIPPED in § TruncationMomentKernels — abs_le_rpow_mul_rpow_of_tail (step-3 centering: 1<=p,0<t,t<|x| => |x|<=t^(1-p)|x|^p) and sq_le_rpow_mul_rpow_of_trunc (step-4 variance: p<2,0<t,|x|<=t => x^2<=t^(2-p)|x|^p). VERIFIED: docker-build Proofs.LawsOfLargeNumbersOQ01OQ02OQ01 -> Built (7743 jobs, 54s, exit 0); pure Real.rpow, 0-axiom by construction. Remaining: integral lift of each kernel (integral_mono) + the two sums (step-4 uses 2/p>1) + S5 assembly.",
     "builtItems": [
       "Kronecker: theorem kronecker_lemma in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:122 — a_n>0 nondecreasing, a_n→∞, ∑x_n/a_n conv ⟹ (∑_{i<n}x_i)/a_n→0. Verified, 0-axiom.",
       "Toeplitz core: theorem tendsto_weighted_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:47 — nonneg weights dominated by A_n→∞ kill any null sequence in the weighted average. Reusable, 0-axiom.",
       "ae_tendsto_kronecker_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:266 — a.e. lift of kronecker_lemma: (∀ᵐ ω, ∑ x_i ω/a_i converges) ⟹ (∀ᵐ ω, (∑_{i<n} x_i ω)/a_n → 0). The S3→S4 glue. Verified 0-axiom (filter_upwards + kronecker_lemma).",
       "rpow_inv_lt_iff_lt_rpow (LawsOfLargeNumbersOQ01OQ02OQ01.lean, section TruncationReduction) — elementary threshold reindex a^{1/p}<b iff a<b^p (0<p,0<=a,0<=b), 0-axiom",
       "tsum_measure_truncation_ne_top_of_identDistrib — for i.i.d. Xi with E|X0|^p<inf, truncation tail sum over i of mu{i^{1/p}<|Xi|} is finite (IdentDistrib.measure_mem_eq transfer + rpow reindex + tsum_eq_zero_add prime peel + step-2 tail-sum), 0-axiom",
-      "ae_eventually_abs_le_rpow_of_identDistrib — first Borel-Cantelli (ae_eventually_notMem) gives ae omega, eventually i, |Xi omega| <= i^{1/p}; MZ truncation reduction complete, 0-axiom"
+      "ae_eventually_abs_le_rpow_of_identDistrib — first Borel-Cantelli (ae_eventually_notMem) gives ae omega, eventually i, |Xi omega| <= i^{1/p}; MZ truncation reduction complete, 0-axiom",
+      "abs_le_rpow_mul_rpow_of_tail (§ TruncationMomentKernels) — step-3 centering kernel: 1<=p, 0<t, t<|x| => |x| <= t^(1-p)*|x|^p. Proof: rpow_add split |x|=|x|^p*|x|^(1-p) then Real.rpow_le_rpow_of_nonpos (1-p<=0). Verified 0-axiom.",
+      "sq_le_rpow_mul_rpow_of_trunc (§ TruncationMomentKernels) — step-4 variance kernel: p<2, 0<t, |x|<=t => x^2 <= t^(2-p)*|x|^p. Proof: x=0 nonneg; else rpow_add split x^2=|x|^p*|x|^(2-p) (via rpow_natCast+sq_abs) then Real.rpow_le_rpow (0<=2-p). Verified 0-axiom."
     ],
     "insights": [
       "Formal target pinned: MZ-SLLN for 1<=p<2, E|X|^p<inf implies (sum(Xi-EX))/n^(1/p) -> 0 a.s.; p=1 is Etemadi/Kolmogorov SLLN, content is the faster n^(1/p) rate for p>1.",
@@ -53,13 +55,18 @@
       "PROCESS: the S2 session updated the .json but not state.md/knowledge.md, so the markdown still said S2-next and a later session duplicated Kronecker. Always update state.md AND knowledge.md in the commit that ships Lean.",
       "S3→S4 passage is now deterministic/axiom-free: ae_tendsto_kronecker_average_zero converts Kolmogorov criterion output (a.s. convergence of ∑ Y_i/a_i) directly into the M-Z normalisation ((∑_{i<n}Y_i)/a_n→0 a.s.). Only the probabilistic criterion (S3, martingale route per PR #34161) remains to reach the full M-Z SLLN.",
       "S4b step-1 (i.i.d. truncation reduction) SHIPPED 0-axiom (iter 7): the Borel-Cantelli passage from the step-2 discrete-layer-cake tail bound to the a.s. eventual truncation |Xi|<=i^{1/p} is complete. Remaining MZ gaps are the two analytic estimates step-3 (centering: sum of E Yi / n^{1/p} -> 0) and step-4 (sum of Var(Yi)/i^{2/p} < inf, uses p<2), then final assembly via S5.",
-      "Mathlib gotcha (v4.26): Summable.tsum_eq_zero_add (dot form) is whnf-pathological on mu{setOf}-valued summands — rw blows past 1e6 heartbeats even on abstract g:Nat->ENNReal and even as a fully-typed have. Fix: use the primed non-dot idiom tsum_eq_zero_add' ENNReal.summable (Mathlib's own ENNReal peel idiom)."
+      "Mathlib gotcha (v4.26): Summable.tsum_eq_zero_add (dot form) is whnf-pathological on mu{setOf}-valued summands — rw blows past 1e6 heartbeats even on abstract g:Nat->ENNReal and even as a fully-typed have. Fix: use the primed non-dot idiom tsum_eq_zero_add' ENNReal.summable (Mathlib's own ENNReal peel idiom).",
+      "MZ pointwise level: the whole role of 1<=p<2 is two exponent signs — 1-p<=0 (tail factor t^(1-p) sub-linear, step-3, needs antitone Real.rpow_le_rpow_of_nonpos) and 0<=2-p (truncation factor t^(2-p) super-linear + 2/p>1 for variance-sum convergence, step-4, needs monotone Real.rpow_le_rpow).",
+      "Reusable rpow_add split idiom: to bound |x| (or x^2) by |x|^p*(threshold)^exp, write target = |x|^p*|x|^(k-p) via (← Real.rpow_add hxpos) with exponent identity closed by (show ...=k by ring), then bound the second factor by the threshold with the signed-exponent monotonicity lemma. Used verbatim in both kernels.",
+      "x^(2:R)=x^(2:N) cast chain when a square meets rpow: rw [show (2:R)=((2:N):R) by norm_num, Real.rpow_natCast, sq_abs] (sq_abs turns |x|^(2:N) into x^(2:N)).",
+      "ENVIRONMENT: the r14 disk-full blocker (122Mi/926Gi) cleared by r8's session (9.3Gi free); docker-build.sh Proofs.LawsOfLargeNumbersOQ01OQ02OQ01 -> Built (7743 jobs, 54s, exit 0). Both kernels now machine-checked. Reliable r8 build recipe: copy the edited file over main's copy and build against main's populated .lake, then restore main (hardlinked-.lake worktree recipe fails on cache-get permission under Docker FUSE)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S4b step-3: centered-truncation control sum of E Yi / n^{1/p} -> 0 via EX=0 + moment/rpow estimate on truncated means (Kronecker-style)",
-      "S4b step-4: variance-sum estimate sum of Var(Yi)/i^{2/p} < inf (uses p<2 essentially), then feed ae_tendsto_sum_of_indep_of_variance_bdd (S4a) + Kronecker lift (S2)",
-      "Final assembly: ae_tendsto_average_zero_of_variance_weighted_bdd (S5) on centered truncations Yi - E Yi, combined with step-1 a.s. eventual Xi=Yi"
+      "DONE (r8 2026-07-04): the two kernels are build-verified (7743 jobs, exit 0). Next work is the integral lifts below.",
+      "S4b step-4 integral lift (do first, self-contained): integral_mono on Yi^2=Xi^2*indicator using sq_le_rpow_mul_rpow_of_trunc => E[Yi^2]<=i^((2-p)/p)*E|X|^p, then Var(Yi)<=E[Yi^2] and sum Var(Yi)/i^(2/p) <= E|X|^p * sum i^(-2/p) < inf (Real.summable_one_div_nat_rpow, 2/p>1).",
+      "S4b step-3 integral lift: abs_integral_le + integral_mono via abs_le_rpow_mul_rpow_of_tail => |E Yi|<=i^((1-p)/p)*E|X|^p, then tendsto_weighted_average_zero with null seq ci=E[|X|^p*1{|X|>i^{1/p}}]->0 and weight i^(1/p-1) (needs partial-sum asymptotic sum i^(1/p-1) ~ p*n^(1/p)->inf).",
+      "Assembly: ae_tendsto_average_zero_of_variance_weighted_bdd (S5) on centered truncations Yi-E Yi + step-1 a.s. eventual Xi=Yi + step-3 centering => full MZ SLLN."
     ]
   },
   "tags": [
