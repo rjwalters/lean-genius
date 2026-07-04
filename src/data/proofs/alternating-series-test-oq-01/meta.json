@@ -75,23 +75,24 @@
     {
       "id": "recurrence",
       "title": "The Partial-Sum Recurrence",
-      "startLine": 33,
-      "endLine": 39,
+      "startLine": 1,
+      "endLine": 35,
       "summary": "S_{N+1} = S_N + (-1)^N f N, from Finset.sum_range_succ.",
-      "mathContext": "$S_{N+1} = S_N + (-1)^N f_N$."
+      "mathContext": "$S_{N+1} = S_N + (-1)^N f_N$.",
+      "description": "Imports, module docstring, and setup (namespace, `open`, `variable`), then `partialSum_succ`: the one-step recurrence `S_{n+1} = S_n + (-1)^n f n` that drives the parity split."
     },
     {
       "id": "error-bound",
       "title": "The Two-Sided Error Bound",
-      "startLine": 41,
-      "endLine": 76,
+      "startLine": 36,
+      "endLine": 68,
       "summary": "|S_N − l| ≤ f N, by trapping l between S_N and S_{N+1} and splitting on the parity of N.",
       "mathContext": "$|S_N - l| \\le f_N$."
     },
     {
       "id": "alternating-harmonic",
       "title": "Alternating Harmonic Series",
-      "startLine": 78,
+      "startLine": 69,
       "endLine": 88,
       "summary": "f i = 1/(i+1) is antitone and tends to 0, so ∑ (-1)^i/(i+1) converges with partial-sum error at most 1/(N+1).",
       "mathContext": "$\\left|\\sum_{i<N}\\frac{(-1)^i}{i+1} - l\\right| \\le \\frac{1}{N+1}$."
