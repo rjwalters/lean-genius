@@ -24,6 +24,15 @@ SKIP_CACHE="${LEAN_SKIP_CACHE:-false}"
 TARGET="${1:-}"
 IMAGE="lean4-arm64:v4.26.0"
 CACHE_VOLUME="lean-mathlib-cache"
+# Shared Mathlib SOURCE checkout (.lake/packages, ~6.8GB). Without this, every
+# worktree's bind-mounted /workspace accumulates its own 6.8GB copy of the
+# identical pinned Mathlib source on the host — dozens of worktrees × 6.8GB was
+# repeatedly filling the disk to 100% and corrupting Docker's containerd store,
+# taking down all builds. All worktrees branch from main and pin the same
+# mathlib rev, so one shared volume is correct; on a rare mathlib bump `lake`
+# detects the manifest mismatch and re-resolves into the volume (self-healing),
+# exactly as the already-shared CACHE_VOLUME (.lake/build) handles rev changes.
+PACKAGES_VOLUME="lean-mathlib-packages"
 
 detect_host_cpus() {
     local host_cpus
@@ -79,6 +88,12 @@ if ! docker volume inspect "$CACHE_VOLUME" &>/dev/null 2>&1; then
     docker volume create "$CACHE_VOLUME"
 fi
 
+# Create persistent volume for the shared Mathlib source checkout (.lake/packages)
+if ! docker volume inspect "$PACKAGES_VOLUME" &>/dev/null 2>&1; then
+    echo "Creating persistent Mathlib packages volume..."
+    docker volume create "$PACKAGES_VOLUME"
+fi
+
 # Build command - download cache first if not skipped
 if [ "$SKIP_CACHE" = "true" ]; then
     BUILD_CMD="lake build ${TARGET}"
@@ -125,6 +140,7 @@ docker run --rm \
     --cpus="$CPU_LIMIT" \
     -v "${REPO_ROOT}:/workspace:delegated" \
     -v "${CACHE_VOLUME}:/workspace/proofs/.lake/build:delegated" \
+    -v "${PACKAGES_VOLUME}:/workspace/proofs/.lake/packages:delegated" \
     -w /workspace/proofs \
     --name "$CONTAINER_NAME" \
     "$IMAGE" \
