@@ -79,10 +79,11 @@
     {
       "id": "shift-reduction",
       "title": "The Shift Reduction",
-      "startLine": 47,
+      "startLine": 1,
       "endLine": 76,
       "summary": "The tail coefficients g j = f (j+M) are globally antitone and tend to 0, and the partial sums split exactly as S_{n+M} = S_M + (-1)^M T_n.",
-      "mathContext": "$S_{n+M} = S_M + (-1)^M \\sum_{j<n} (-1)^j f(j+M)$."
+      "mathContext": "$S_{n+M} = S_M + (-1)^M \\sum_{j<n} (-1)^j f(j+M)$.",
+      "description": "Imports, module docstring, and setup, then the shifted-tail coefficients `g j = f (j + M)` and the **shift reduction**: an eventually-antitone, eventually-null `f` is handled by applying the parent alternating-series test to the shifted tail `g`."
     },
     {
       "id": "convergence-and-trap",
@@ -96,7 +97,7 @@
       "id": "strictly-weaker-witness",
       "title": "The Hypothesis Is Strictly Weaker",
       "startLine": 150,
-      "endLine": 205,
+      "endLine": 206,
       "summary": "The bumped sequence b 0 = 0, b i = 1/(i+1) is antitone on [1,∞) but not on ℕ; the eventual trap applies to it with M = 1, witnessing genuine generalization beyond the parent.",
       "mathContext": "$b_0 = 0 < \\tfrac12 = b_1$, yet $b$ is antitone on $[1,\\infty)$."
     }
