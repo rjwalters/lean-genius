@@ -106,6 +106,32 @@
       "mathContext": "The superadditive lower bracket of the two-sided Weyl bound, λ_i(A) + λ_j(B) ≤ λ_{i+j−n}(A+B), obtained purely by reflection from the subadditive upper bound."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "weyl_add_ge",
+      "type": "core",
+      "description": "**Dual (upper) Weyl inequality.** For T, U, T+U with descending eigenvalue enumerations μ, ν, ρ, any indices with k + (n−1) ≤ i + j satisfy μ i + ν j ≤ ρ k — the superadditive companion of weyl_add_le completing the two-sided Weyl perturbation bracket. In classical 1-based notation: λ_{i+1}(A) + λ_{j+1}(B) ≤ λ_{i+j+1−(n−1)}(A+B). Proved purely by the negation trick, no new variational fact.",
+      "leanType": "(T U : E →ₗ[𝕜] E) (b : OrthonormalBasis (Fin n) 𝕜 E) (μ : Fin n → ℝ) (hbT : ∀ i, T (b i) = (μ i : 𝕜) • b i) (hμ : Antitone μ) (c ...) (ν ...) (hcU ...) (hν ...) (d ...) (ρ ...) (hdW ...) (hρ ...) (i j k : Fin n) (hk : (k : ℕ) + (n - 1) ≤ (i : ℕ) + (j : ℕ)) : μ i + ν j ≤ ρ k",
+      "line": 84,
+      "endLine": 125
+    },
+    {
+      "name": "neg_reindex_eigen",
+      "type": "supporting",
+      "description": "**The negation-presentation fact** — the single algebraic step behind the negation trick: −T, in the reversed eigenbasis b.reindex Fin.revPerm, is presented by the enumeration t ↦ −μ (Fin.rev t). (−T)(b (rev t)) = (−μ (rev t)) • b (rev t).",
+      "leanType": "(T : E →ₗ[𝕜] E) (b : OrthonormalBasis (Fin n) 𝕜 E) (μ : Fin n → ℝ) (hbT : ∀ i, T (b i) = (μ i : 𝕜) • b i) (t : Fin n) : (-T) ((b.reindex Fin.revPerm) t) = ((-μ (Fin.rev t) : ℝ) : 𝕜) • (b.reindex Fin.revPerm) t",
+      "line": 50,
+      "endLine": 60
+    },
+    {
+      "name": "antitone_neg_rev",
+      "type": "supporting",
+      "description": "A negated, reversed antitone enumeration is again antitone: t ↦ −μ (Fin.rev t) is antitone whenever μ is. Ensures the negated operators still satisfy the descending-order hypothesis of weyl_add_le.",
+      "leanType": "{n : ℕ} {μ : Fin n → ℝ} (hμ : Antitone μ) : Antitone (fun t => -μ (Fin.rev t))",
+      "line": 64,
+      "endLine": 71
+    }
+  ],
   "conclusion": {
     "summary": "A machine-checked Lean 4 proof of the superadditive (dual upper) Weyl eigenvalue inequality μ(i) + ν(j) ≤ ρ(k) for k + (n−1) ≤ i + j, derived entirely from the parent entry's subadditive inequality weyl_add_le by the reflection T ↦ −T applied in reversed eigenbases at reversed indices. The file is 0-axiom, 0-sorry (#print axioms: propext, Classical.choice, Quot.sound only), as are its transitive imports. Together with weyl_add_le it completes the two-sided Weyl perturbation bracket.",
     "implications": "Closes the Weyl-inequality layer of the Cauchy-interlacing family into a full two-sided bracket ρ(k) ∈ [μ(i)+ν(j) : k+(n−1) ≤ i+j] ∪ [· ≤ μ(i)+ν(j) : i+j ≤ k], the spectral interval that localises every eigenvalue of T + U from the spectra of T and U. The bracket is the operator-theoretic foundation of the Lidskii–Wielandt majorisation inequalities and of eigenvalue inclusion regions; having both halves machine-checked from a single keystone confirms, in Lean, Weyl's observation that the lower inequality is the upper one in a mirror.",
