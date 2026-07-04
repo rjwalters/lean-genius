@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (iter 10, researcher-8): added the inclusive-from-N tail leaf tsum_ge_rpow_neg_le (∑_{j≥N}j^{-s}≤N^{1-s}·s/(s-1), 0-axiom, build 7743 jobs), the exact deterministic shape the MZ variance-sum Tonelli interchange consumes at N=⌈|X|ᵖ⌉ — closing the off-by-one gap vs the exclusive backbone tsum_shift_rpow_neg_le. Remaining: the ∑ᵢ–𝔼 Tonelli assembly of ∑ᵢVar(Yᵢ)/i^{2/p}≤C·𝔼|X|ᵖ (bounding the inner tail with this leaf), step-3 centering, and the final MZ combination.",
+    "progressSummary": "PROGRESS (iter 11, researcher-8): added tsum_indicator_ge_rpow_neg_le — the pointwise inner-tail bound ∑_{i:y≤i}i^{-s}≤(max 1 y)^{1-s}·s/(s-1) that the MZ variance-sum Tonelli interchange consumes at y=|X|ᵖ, s=2/p. Built on the inclusive tail leaf tsum_ge_rpow_neg_le via a ceiling reindex (Nat.ceil_le + Summable.sum_add_tsum_nat_add) and rpow antitonicity, with the y≤0 edge case peeled. 0-axiom, build 7743 jobs. Remaining: the ∑ᵢ–𝔼 Tonelli interchange itself (lintegral_tsum, nonneg) turning ∑ᵢi^{-2/p}𝔼[X²𝟙{|X|≤i^{1/p}}] into 𝔼[X²·(inner tail)] and integrating this pointwise bound to C·𝔼|X|ᵖ; then step-3 centering and the final MZ combination.",
     "builtItems": [
       "Kronecker: theorem kronecker_lemma in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:122 — a_n>0 nondecreasing, a_n→∞, ∑x_n/a_n conv ⟹ (∑_{i<n}x_i)/a_n→0. Verified, 0-axiom.",
       "Toeplitz core: theorem tendsto_weighted_average_zero in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean:47 — nonneg weights dominated by A_n→∞ kill any null sequence in the weighted average. Reusable, 0-axiom.",
@@ -43,7 +43,8 @@
       "sq_le_rpow_mul_rpow_of_trunc (§ TruncationMomentKernels) — step-4 variance kernel: p<2, 0<t, |x|<=t => x^2 <= t^(2-p)*|x|^p. Proof: x=0 nonneg; else rpow_add split x^2=|x|^p*|x|^(2-p) (via rpow_natCast+sq_abs) then Real.rpow_le_rpow (0<=2-p). Verified 0-axiom.",
       "sum_range_shift_rpow_neg_le in LawsOfLargeNumbersOQ01OQ02OQ01.lean (§TailPSeries): integral-comparison block bound ∑_{k<K}(k+N+1)^{-s} ≤ N^{1-s}/(s-1) for s>1, N≥1, uniform in K (via AntitoneOn.sum_le_integral_Ico + integral_rpow), 0-axiom VERIFIED",
       "tsum_shift_rpow_neg_le in LawsOfLargeNumbersOQ01OQ02OQ01.lean (§TailPSeries): tail p-series bound ∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1) (s>1), via Real.tsum_le_of_sum_range_le, 0-axiom VERIFIED — the deterministic backbone of the MZ variance sum",
-      "tsum_ge_rpow_neg_le (inclusive-from-N p-series tail bound ∑_{j≥N}j^{-s}≤N^{1-s}·s/(s-1)) in LawsOfLargeNumbersOQ01OQ02OQ01.lean; docker build 7743 jobs, 0-axiom (propext/Classical.choice/Quot.sound only)."
+      "tsum_ge_rpow_neg_le (inclusive-from-N p-series tail bound ∑_{j≥N}j^{-s}≤N^{1-s}·s/(s-1)) in LawsOfLargeNumbersOQ01OQ02OQ01.lean; docker build 7743 jobs, 0-axiom (propext/Classical.choice/Quot.sound only).",
+      "LawsOfLargeNumbers.MZ.tsum_indicator_ge_rpow_neg_le in Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean — pointwise inner-tail bound ∑_{i:y≤i} i^{-s} ≤ (max 1 y)^{1-s}·s/(s-1) (Tonelli integrand for the MZ variance sum), 0-axiom"
     ],
     "insights": [
       "Formal target pinned: MZ-SLLN for 1<=p<2, E|X|^p<inf implies (sum(Xi-EX))/n^(1/p) -> 0 a.s.; p=1 is Etemadi/Kolmogorov SLLN, content is the faster n^(1/p) rate for p>1.",
@@ -67,17 +68,18 @@
       "CORRECTION: the MZ variance sum ∑ᵢ Var(Yᵢ)/i^{2/p} does NOT close by a per-term kernel bound. 𝔼[Yᵢ²] ≤ i^{(2-p)/p}·M divided by aᵢ²=i^{2/p} gives M·i^{-1}, and ∑ i^{-1} diverges. integral_trunc_sq_le is valid but not term-by-term summable.",
       "The correct variance-sum route is a Tonelli interchange: ∑ᵢ i^{-2/p}·𝔼[X²𝟙{|X|≤i^{1/p}}] = 𝔼[X²·∑_{i≥|X|ᵖ} i^{-2/p}] ≤ C·𝔼[X²·|X|^{p-2}] = C·𝔼|X|ᵖ. The inner tail is bounded by tsum_shift_rpow_neg_le with s=2/p.",
       "Mathlib's Analysis/PSeries supplies only summability (summable_nat_rpow_inv), not the quantitative tail ∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1); the latter is built here by integral comparison (AntitoneOn.sum_le_integral_Ico against ∫ x^{-s}=x^{1-s}/(1-s)).",
-      "The Tonelli interchange for ∑ᵢVar(Yᵢ)/i^{2/p} needs the INCLUSIVE tail ∑_{j≥N}j^{-s} at N=⌈|X|ᵖ⌉ (inner sum starts AT the ceiling), but the existing backbone tsum_shift_rpow_neg_le bounds only the EXCLUSIVE tail ∑_{j>N}j^{-s}. tsum_ge_rpow_neg_le closes this off-by-one: ∑ₖ(k+N)^{-s} ≤ N^{1-s}·s/(s-1) for s>1, N≥1, by splitting off the j=N term (N^{-s}≤N^{1-s}) and adding the exclusive tail N^{1-s}/(s-1)."
+      "The Tonelli interchange for ∑ᵢVar(Yᵢ)/i^{2/p} needs the INCLUSIVE tail ∑_{j≥N}j^{-s} at N=⌈|X|ᵖ⌉ (inner sum starts AT the ceiling), but the existing backbone tsum_shift_rpow_neg_le bounds only the EXCLUSIVE tail ∑_{j>N}j^{-s}. tsum_ge_rpow_neg_le closes this off-by-one: ∑ₖ(k+N)^{-s} ≤ N^{1-s}·s/(s-1) for s>1, N≥1, by splitting off the j=N term (N^{-s}≤N^{1-s}) and adding the exclusive tail N^{1-s}/(s-1).",
+      "tsum_indicator_ge_rpow_neg_le (r8, iter 11, 0-axiom, build 7743 jobs): the pointwise inner-tail bound the Tonelli interchange consumes. ∑_{i: y≤i} i^{-s} ≤ (max 1 y)^{1-s}·s/(s-1) for s>1. Region {i|y≤i}={i|⌈y⌉₊≤i} (Nat.ceil_le); reindex indicator tsum to inclusive tail ∑ (k+⌈y⌉₊)^{-s} via Summable.sum_add_tsum_nat_add (head over range ⌈y⌉₊ vanishes), apply tsum_ge_rpow_neg_le, dominate ⌈y⌉₊^{1-s}≤(max 1 y)^{1-s} by rpow antitonicity. y≤0 branch peels vanishing i=0 term via Summable.tsum_eq_zero_add, reuses N=1 tail."
     ],
     "mathlibGaps": [
       "No quantitative p-series tail bound ∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1) in Mathlib (only summability). Supplied locally as tsum_shift_rpow_neg_le."
     ],
     "nextSteps": [
-      "Assemble ∑ᵢ Var(Yᵢ)/i^{2/p} < ∞ via a nonneg ∑'-∫ Tonelli interchange, bounding the inner tail ∑_{i≥|X|ᵖ} i^{-2/p} with tsum_shift_rpow_neg_le (s=2/p), then integrate to C·𝔼|X|ᵖ; feed ae_tendsto_average_zero_of_variance_weighted_bdd.",
-      "DONE (r8 2026-07-03/04): pointwise kernels AND their integral lifts (integral_trunc_sq_le, integral_tail_abs_le) are build-verified, 0-axiom.",
-      "S4b step-4 series: instantiate integral_trunc_sq_le at t=i^(1/p) to get E[Yi²]≤i^((2-p)/p)·E|X|^p, then Var(Yi)≤E[Yi²] and ∑ Var(Yi)/i^(2/p) ≤ E|X|^p·∑ i^(-2/p) < ∞ via Real.summable_one_div_nat_rpow (2/p>1). Needs i^(1/p)>0 and the rpow-exponent arithmetic (i^(1/p))^(2-p)=i^((2-p)/p).",
-      "S4b step-3 series: instantiate integral_tail_abs_le at t=i^(1/p); with E[X]=0, |E Yi|=|E[X·𝟙{|X|>i^(1/p)}]|≤∫𝟙{i^(1/p)<|X|}|X|≤i^((1-p)/p)·E|X|^p, a null sequence (ci=E[|X|^p·𝟙{|X|>i^(1/p)}]→0 by dominated convergence); feed tendsto_weighted_average_zero with weight i^(1/p-1).",
-      "Assembly: ae_tendsto_average_zero_of_variance_weighted_bdd (S5) on centered truncations Yi-E Yi + step-1 a.s. eventual Xi=Yi + step-3 centering ⟹ full MZ SLLN."
+      "DONE (r8 iter 11): tsum_indicator_ge_rpow_neg_le — pointwise inner-tail bound ∑_{i:y≤i}i^{-s}≤(max 1 y)^{1-s}·s/(s-1), the Tonelli integrand bound. 0-axiom, build-verified. Do NOT re-derive.",
+      "NEXT: the ∑ᵢ–𝔼 Tonelli interchange. Use MeasureTheory.lintegral_tsum (nonneg, measurability side-goals) to turn ∑ᵢ i^{-2/p}·𝔼[X²𝟙{|X|≤i^{1/p}}] into 𝔼[X²·∑ᵢ i^{-2/p}𝟙{|X|≤i^{1/p}}]; the inner sum is exactly tsum_indicator_ge_rpow_neg_le with y=|X|ᵖ, s=2/p (via |X|≤i^{1/p} ↔ |X|ᵖ≤i, rpow reindex). Then bound (max 1 |X|ᵖ)^{1-2/p}: |X|≥1 branch = |X|^{p-2} so X²·(bound)=|X|^p; |X|<1 branch = const. Integrate to C·(𝔼|X|ᵖ+1).",
+      "Then: Var(Yi)≤𝔼[Yi²]=𝔼[X²𝟙{|X|≤i^{1/p}}] and ∑ᵢVar(Yi)/i^{2/p}≤C·𝔼|X|ᵖ<∞ feeds ae_tendsto_average_zero_of_variance_weighted_bdd (S5). Note the weight aᵢ must be positive (ha_pos) — use aᵢ=(i+1)^{1/p} or max 1 i^{1/p}, reconcile with the i^{-2/p} weight.",
+      "S4b step-3 centering: instantiate integral_tail_abs_le at t=i^{1/p}; with 𝔼X=0, |𝔼Yi|≤i^{(1-p)/p}·𝔼|X|ᵖ (null sequence), feed tendsto_weighted_average_zero.",
+      "Assembly: ae_tendsto_average_zero_of_variance_weighted_bdd on centered truncations Yi−𝔼Yi + step-1 a.s. eventual Xi=Yi + step-3 centering ⟹ full MZ SLLN."
     ]
   },
   "tags": [
@@ -101,7 +103,7 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.191Z",
-  "lastUpdate": "2026-07-04T06:37:27Z",
+  "lastUpdate": "2026-07-04T07:00:53Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -262,8 +264,8 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean",
       "filename": "LawsOfLargeNumbersOQ01OQ02OQ01.lean",
-      "lineCount": 984,
-      "theoremCount": 19,
+      "lineCount": 1197,
+      "theoremCount": 23,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
