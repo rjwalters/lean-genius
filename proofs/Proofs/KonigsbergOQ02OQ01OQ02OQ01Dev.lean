@@ -139,4 +139,22 @@ theorem eq_of_isTrail_edgeMaximal
   obtain ⟨e, hmem, hnot⟩ := exists_unused_incident_edge_at_endpoint hp hne heven
   exact hnot (hmax e hmem)
 
+/-- **A closed trail uses an even number of edges incident to every vertex.**
+For a *closed* trail `p : G.Walk u u`, the number of edges of `p` incident to any
+vertex `x` is even. This is the parity ingredient of Hierholzer's edge-removal step
+(Sub-lemma B): deleting a closed trail's edges changes each vertex's degree by an even
+amount, so the "every vertex has even degree" invariant survives the induction.
+
+The proof specializes `SimpleGraph.Walk.IsTrail.even_countP_edges_iff` at a closed
+trail: its right-hand side `(u ≠ u → x ≠ u ∧ x ≠ u)` is vacuously true because
+`u ≠ u` is false, so the incident-edge count is even with no hypothesis on `x`.
+Contrast `exists_unused_incident_edge_at_endpoint`, where the *open* case (`u ≠ v`)
+forces the count at `v` to be odd. -/
+theorem even_countP_edges_of_closed
+    {u : V} {p : G.Walk u u} (hp : p.IsTrail) (x : V) :
+    Even (p.edges.countP (fun e => x ∈ e)) := by
+  rw [hp.even_countP_edges_iff]
+  intro huu
+  exact absurd rfl huu
+
 end UndirectedEulerDev
