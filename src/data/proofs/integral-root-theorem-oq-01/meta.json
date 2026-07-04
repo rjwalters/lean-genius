@@ -85,6 +85,21 @@
       "proofId": "eisenstein-criterion-oq-01",
       "relationship": "related",
       "description": "Two complementary tools for integer polynomials: Eisenstein's criterion certifies irreducibility (no factorization), while the rational root theorem constrains and rules out roots (no linear factors). Both feed into Gauss's lemma and the study of irreducibility over ℚ; the X² − 2 example is irreducible by either route."
+    },
+    {
+      "proofId": "gauss-lemma-primitive-oq-01",
+      "relationship": "depends-on",
+      "description": "Gauss's lemma (a primitive integer polynomial is irreducible over ℤ iff over ℚ) is the structural result underlying the rational root theorem: it is what lets root-divisibility over ℚ be read off the ℤ-coefficients, and equivalently expresses that ℤ is integrally closed in ℚ — the exact content of the monic-roots-are-integers corollary here."
+    },
+    {
+      "proofId": "cube-root-2-irrational",
+      "relationship": "related",
+      "description": "The ⁿ√p irrationality template of this entry made concrete: ∛2 is irrational because it is a root of the monic X³ − 2, which has no integer root. Where this file runs the argument for √2 via X² − 2, that entry runs the same monic-roots-are-integers engine one degree up — the generalization flagged in the open questions."
+    },
+    {
+      "proofId": "fourth-root-2-irrational",
+      "relationship": "related",
+      "description": "Pushes the irrationality of ⁴√2 to a full minimal-polynomial statement: X⁴ − 2 is not merely rootless over ℚ but irreducible (via Eisenstein + Gauss), giving [ℚ(⁴√2):ℚ] = 4. It shows where the rational root theorem stops (ruling out linear factors) and irreducibility criteria take over (ruling out all factorizations)."
     }
   ],
   "leanFile": {
