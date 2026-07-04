@@ -70,6 +70,38 @@
     "path": "Proofs/AMGMInequalityOQ02OQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "sq_sum_eq_diag_plus_offdiag",
+      "type": "core",
+      "description": "Newton–Girard square identity: (Σᵢ xᵢ)² = Σᵢ xᵢ² + Σᵢ Σ_{j≠i} xᵢxⱼ over any Finset, splitting a squared sum into diagonal and off-diagonal parts.",
+      "leanType": "{R : Type*} → [CommRing R] → {ι : Type*} → [DecidableEq ι] → (s : Finset ι) → (f : ι → R) → (∑ i ∈ s, f i) ^ 2 = ∑ i ∈ s, f i ^ 2 + ∑ i ∈ s, ∑ j ∈ s.erase i, f i * f j"
+    },
+    {
+      "name": "sq_sum_eq_double_sum",
+      "type": "core",
+      "description": "A squared finite sum equals the full double sum: (Σᵢ xᵢ)² = Σᵢ Σⱼ xᵢxⱼ.",
+      "leanType": "{R : Type*} → [CommRing R] → {ι : Type*} → (s : Finset ι) → (f : ι → R) → (∑ i ∈ s, f i) ^ 2 = ∑ i ∈ s, ∑ j ∈ s, f i * f j"
+    },
+    {
+      "name": "sq_sum_three",
+      "type": "supporting",
+      "description": "Explicit n=3 Newton–Girard case: (a+b+c)² = a²+b²+c² + 2(ab+ac+bc).",
+      "leanType": "{R : Type*} → [CommRing R] → (a b c : R) → (a + b + c) ^ 2 = a ^ 2 + b ^ 2 + c ^ 2 + 2 * (a * b + a * c + b * c)"
+    },
+    {
+      "name": "sq_add_two",
+      "type": "technical",
+      "description": "Two-variable expansion (a+b)² = a²+b²+2ab.",
+      "leanType": "{R : Type*} → [CommRing R] → (a b : R) → (a + b) ^ 2 = a ^ 2 + b ^ 2 + 2 * (a * b)"
+    },
+    {
+      "name": "sq_sub_two",
+      "type": "technical",
+      "description": "Two-variable expansion (a−b)² = a²+b²−2ab, the source of the AM–GM consequence a²+b² ≥ 2ab.",
+      "leanType": "{R : Type*} → [CommRing R] → (a b : R) → (a - b) ^ 2 = a ^ 2 + b ^ 2 - 2 * (a * b)"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "amgm-inequality",
