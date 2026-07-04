@@ -139,5 +139,43 @@
     "path": "Proofs/LagrangeTheoremOQ09.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "center_card_dichotomy",
+      "type": "main",
+      "description": "Center dichotomy for groups of order pq (p ≠ q primes): the center Z(G) has order either 1 or pq — never p or q. The crux behind classifying order-pq groups.",
+      "leanType": "Nat.card G = p*q → Nat.card (center G) = 1 ∨ Nat.card (center G) = p*q"
+    },
+    {
+      "name": "center_eq_bot_or_top",
+      "type": "key",
+      "description": "Subgroup restatement of the dichotomy: for |G| = pq the center is either trivial (⊥) or all of G (⊤).",
+      "leanType": "Nat.card G = p*q → center G = ⊥ ∨ center G = ⊤"
+    },
+    {
+      "name": "center_trivial_of_nonabelian",
+      "type": "key",
+      "description": "A nonabelian group of order pq (distinct primes) has trivial center.",
+      "leanType": "Nat.card G = p*q → (∃ a b, a*b ≠ b*a) → Nat.card (center G) = 1"
+    },
+    {
+      "name": "mul_comm_of_center_index_prime",
+      "type": "supporting",
+      "description": "If the central quotient G ⧸ Z(G) has prime order then G is abelian (packages isCyclic_of_prime_card with commutative_of_cyclic_center_quotient).",
+      "leanType": "(center G).index = r → ∀ a b, a*b = b*a"
+    },
+    {
+      "name": "center_eq_top_of_index_prime",
+      "type": "supporting",
+      "description": "A group whose central quotient has prime order equals its own center: Z(G) = ⊤.",
+      "leanType": "(center G).index = r → center G = ⊤"
+    },
+    {
+      "name": "divisors_of_prime_mul_prime",
+      "type": "supporting",
+      "description": "Number-theoretic input: the only divisors of a product of two distinct primes p·q are 1, p, q, pq (via n = gcd n p · gcd n q).",
+      "leanType": "n ∣ p*q → n = 1 ∨ n = p ∨ n = q ∨ n = p*q"
+    }
+  ]
 }
