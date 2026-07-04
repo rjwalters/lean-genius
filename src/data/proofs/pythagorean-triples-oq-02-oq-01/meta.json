@@ -119,6 +119,11 @@
       "relationship": "related",
       "description": "The hypotenuse corollary here — every positive primitive triple has z = m²+n² = N(m+ni), a sum of two squares — is the Pythagorean shadow of Fermat's two-squares theorem. Both rest on the same arithmetic of ℤ[i]: this entry exhibits sums of two squares as Gaussian norms of squares z², while that entry characterizes exactly which primes (and integers) are sums of two squares. Named in open question 1.",
       "targetId": "fermat-two-squares"
+    },
+    {
+      "relationship": "related",
+      "description": "A sibling classification of the very same theorem — every primitive triple is (m²−n², 2mn, m²+n²) — but framed through the elementary Euclid identity rather than the Gaussian-square narrative used here. Both bridge Mathlib's PythagoreanTriple.coprime_classification; reading the two side by side separates the conceptual content (why ℤ[i] makes the parametrization inevitable) from the bare algebraic statement, and its standard-form theorem mirrors this entry's primitive_classification_pos.",
+      "targetId": "pythagorean-triples-oq-06"
     }
   ],
   "references": [
