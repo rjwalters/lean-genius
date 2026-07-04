@@ -1,0 +1,172 @@
+{
+  "id": "chebyshev-pnt-bridge-oq-03-oq-01",
+  "title": "A Pointwise Elementary Logarithmic Lower Bound on π",
+  "slug": "chebyshev-pnt-bridge-oq-03-oq-01",
+  "description": "Upgrades the parent's powers-of-two bound π(2^k) ≥ k to a bound valid at every natural number: π(n) ≥ ⌊log₂ n⌋, via monotonicity of π and 2^⌊log₂ n⌋ ≤ n. Records the counting-side dual of the already-formalized ceiling on the k-th prime pₖ ≤ 2^(k+1), so both elementary directions of the Bertrand bridge sit together. Deliberately weaker than the gallery's Chebyshev Θ(x/log x) bound — its value is being a clean, pointwise, fully elementary estimate from Bertrand alone. 0 axioms, 0 sorries.",
+  "references": [
+    {
+      "authors": "Joseph Bertrand",
+      "title": "Mémoire sur le nombre de valeurs que peut prendre une fonction (Journal de l'École Royale Polytechnique)",
+      "year": 1845,
+      "note": "Bertrand's postulate: a prime always lies in (n, 2n]."
+    },
+    {
+      "authors": "Paul Erdős",
+      "title": "Beweis eines Satzes von Tschebyschef (Acta Litt. Sci. Szeged 5)",
+      "year": 1932,
+      "note": "Erdős's elementary proof of Bertrand's postulate via central binomial coefficients (the form Mathlib formalizes)."
+    },
+    {
+      "authors": "Martin Aigner and Günter M. Ziegler",
+      "title": "Proofs from THE BOOK (6th ed.)",
+      "year": 2018,
+      "note": "Springer. Bertrand's postulate and its elementary consequences for π and for the size of the n-th prime."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: Nat.pow_log_le_self, Nat.monotone_primeCounting, prime-counting infrastructure",
+      "year": 2024,
+      "note": "Monotonicity of π and 2^⌊log₂ n⌋ ≤ n, the two Mathlib facts that transport the powers-of-two bound to all n."
+    }
+  ],
+  "meta": {
+    "author": "Joseph Bertrand / Pafnuty Chebyshev",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bertrand%27s_postulate",
+    "date": "1852",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "prime-counting",
+      "bertrand-postulate",
+      "chebyshev",
+      "analytic-number-theory",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.pow_log_le_self",
+        "description": "2 ^ ⌊log₂ n⌋ ≤ n for n ≠ 0; the inequality that lets monotonicity transport π(2^k) ≥ k to arbitrary n",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Nat.monotone_primeCounting",
+        "description": "π is monotone; converts 2^⌊log₂ n⌋ ≤ n into π(2^⌊log₂ n⌋) ≤ π(n)",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Nat.log_eq_of_pow_le_of_lt_pow",
+        "description": "⌊log_b n⌋ = m from b^m ≤ n < b^(m+1); used to evaluate ⌊log₂ 8⌋ = 3 and ⌊log₂ 1000⌋ = 9 in the explicit certificates",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Nat.log_pow",
+        "description": "⌊log_b (b^n)⌋ = n; used in log2_nth_prime_le",
+        "module": "Mathlib.Data.Nat.Log"
+      }
+    ],
+    "originalContributions": [
+      "primeCounting_ge_log2: π(n) ≥ ⌊log₂ n⌋ for every natural number n, upgrading the parent's powers-of-two bound π(2^k) ≥ k to a pointwise bound via monotonicity of π and Nat.pow_log_le_self",
+      "log2_nth_prime_le: ⌊log₂ pₖ⌋ ≤ k + 1, a log-scale reading of the k-th-prime ceiling",
+      "Re-exports the counting-side dual pₖ ≤ 2^(k+1) (PrimeGapBounds.nth_prime_le_two_pow_succ) so both elementary directions of the Bertrand bridge are available together",
+      "Explicit elementary certificates: π(8) ≥ 3 and π(1000) ≥ 9 with ⌊log₂⌋ evaluated by Nat.log_eq_of_pow_le_of_lt_pow"
+    ],
+    "axiomCount": 0,
+    "lineCount": 95,
+    "assumptions": "None — fully verified from Mathlib with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries; no native_decide. Honest scope: the bound π(n) ≥ ⌊log₂ n⌋ is intentionally weaker than the gallery's Chebyshev bound π(n) = Θ(n/log n); its value is provenance (fully elementary, pointwise, from Bertrand alone). The full PNT limit π(x)·log x / x → 1 remains out of scope.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Bertrand's postulate — a prime in (n, 2n] for every n — was conjectured by Bertrand (1845), first proved by Chebyshev (1852), and given an elementary binomial-coefficient proof by Erdős (1932). Beyond guaranteeing a prime in each doubling interval, it yields two dual quantitative facts by pure iteration: a lower bound on how many primes lie below x, and an upper bound on how large the n-th prime can be. The parent entry recorded the first at powers of two (π(2^k) ≥ k); this follow-up makes it pointwise and pairs it with the dual.",
+    "problemStatement": "Extend the parent's powers-of-two lower bound π(2^k) ≥ k to a bound valid at every natural number, and connect it to the elementary ceiling on the size of the n-th prime.",
+    "text": "Proves π(n) ≥ ⌊log₂ n⌋ for all n and records the dual pₖ ≤ 2^(k+1).",
+    "proofStrategy": "For any n ≥ 1 set k = ⌊log₂ n⌋. Mathlib's Nat.pow_log_le_self gives 2^k ≤ n, so monotonicity of π yields π(n) ≥ π(2^k), and the parent's primeCounting_two_pow_ge gives π(2^k) ≥ k. Chaining these is the whole proof. The dual direction — the k-th prime is at most 2^(k+1) — is already formalized in PrimeGapBounds via Bertrand's pₖ₊₁ ≤ 2·pₖ, and is re-exported and read in log scale here.",
+    "keyInsights": [
+      "Monotonicity of π plus 2^⌊log₂ n⌋ ≤ n instantly transports a bound known only at powers of two to every natural number — no new number theory is needed",
+      "π(n) ≥ ⌊log₂ n⌋ is the exact counting-side dual of the k-th-prime ceiling pₖ ≤ 2^(k+1): both are one-line iterations of Bertrand from opposite ends",
+      "The bound is honestly weaker than the Chebyshev Θ(n/log n) estimate already in the gallery; its interest is that it is fully elementary and pointwise, with no primorial factorization and no real-analytic error term",
+      "Evaluating ⌊log₂ n⌋ at concrete n (e.g. ⌊log₂ 1000⌋ = 9) via Nat.log_eq_of_pow_le_of_lt_pow turns the bound into explicit prime-count certificates"
+    ],
+    "prerequisites": [
+      "Bertrand's postulate",
+      "the prime-counting function π",
+      "the integer logarithm Nat.log and its monotonicity"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring framing OQ#3.1: upgrade π(2^k) ≥ k to a pointwise bound at all n, with an honest note on its scope relative to the Chebyshev bound."
+    },
+    {
+      "id": "pi-log-bound",
+      "title": "π(n) ≥ ⌊log₂ n⌋ for Every n",
+      "startLine": 46,
+      "endLine": 63,
+      "summary": "Main theorem: monotonicity of π and 2^⌊log₂ n⌋ ≤ n transport the parent's powers-of-two bound to arbitrary n.",
+      "mathContext": "k = ⌊log₂ n⌋ gives 2^k ≤ n, so π(n) ≥ π(2^k) ≥ k."
+    },
+    {
+      "id": "dual",
+      "title": "Counting-Side Dual and Log-Scale Reading",
+      "startLine": 64,
+      "endLine": 77,
+      "summary": "Re-exports pₖ ≤ 2^(k+1) (from PrimeGapBounds) and derives ⌊log₂ pₖ⌋ ≤ k + 1.",
+      "mathContext": "The upper bound on the n-th prime is the iteration of Bertrand pₖ₊₁ ≤ 2·pₖ from the opposite end."
+    },
+    {
+      "id": "examples",
+      "title": "Explicit Certificates",
+      "startLine": 78,
+      "endLine": 95,
+      "summary": "π(8) ≥ 3 and π(1000) ≥ 9, with ⌊log₂⌋ evaluated by Nat.log_eq_of_pow_le_of_lt_pow.",
+      "mathContext": "⌊log₂ 8⌋ = 3 and ⌊log₂ 1000⌋ = 9."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 axioms, 0 sorries, no native_decide) upgrade of the parent's powers-of-two bound to the pointwise estimate π(n) ≥ ⌊log₂ n⌋, paired with the elementary k-th-prime ceiling pₖ ≤ 2^(k+1). Together they bracket the primes from both sides using only Bertrand's postulate.",
+    "implications": "Monotonicity turns a sparse-sequence bound into a bound at every n, giving a clean elementary lower bound on the prime count and, dually, an exponential upper bound on the n-th prime — both far from the sharp PNT asymptotic but fully self-contained.",
+    "openQuestions": [
+      "Sharpen the elementary π(n) ≥ ⌊log₂ n⌋ toward the Chebyshev order π(n) ≥ c·n/log n using the bridge's binomial bounds rather than Bertrand alone.",
+      "Formalize the full PNT limit π(x)·log x / x → 1 (Wiener–Ikehara or Selberg) — the parent's deep open question, out of reach of the pinned Mathlib.",
+      "Combine the two-sided log-scale brackets into an elementary statement about average prime gaps."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-03",
+      "relationship": "parent",
+      "description": "Parent formalizing Bertrand's postulate and π(2^k) ≥ k; this entry answers its first follow-up by making the bound pointwise in n"
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "ancestor",
+      "description": "Root bridge proving π(x) = Θ(x/log x); the strong estimate that dwarfs this file's deliberately elementary bound"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ChebyshevPNTBridgeOQ03",
+      "Proofs.PrimeGapBounds"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "ChebyshevPNTBridgeOQ03OQ01",
+    "lineCount": 95,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/ChebyshevPNTBridgeOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -57,11 +57,14 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "OBSERVE (S1, researcher-7): survey only, classified BLOCKED. The full PNT limit π(x)·log x / x → 1 is NOT in the pinned Mathlib (v4.26.0): PrimeCounting.lean gives only monotonicity, surjectivity, and Tendsto π atTop atTop, and Chebyshev.lean gives Θ-order bounds — neither yields the sharp asymptotic. Both classical routes are absent from Mathlib and each is a multi-thousand-line formalization: (A) Wiener–Ikehara Tauberian theorem applied to −ζ'/ζ, which requires the analytic continuation and non-vanishing of ζ on Re(s)=1 plus a Tauberian argument (heavy complex analysis / contour integration); (B) Selberg's elementary method (Selberg symmetry Σ_{p≤x} log²p + Σ_{pq≤x} log p log q = 2x log x + O(x), then the Erdős–Selberg dichotomy). The leanprover-community PrimeNumberTheoremAnd project proves PNT but has not been upstreamed into this pinned Mathlib. Recommend keeping BLOCKED: the Θ-order-to-asymptotic gap is exactly the irreducible analytic content of PNT and cannot be closed on top of the gallery's existing Chebyshev bounds without importing one of the two heavy machineries. A tractable intermediate BUILD target, if pursued, is the equivalence ψ(x) ~ x ⟺ π(x) ~ x/log x (Abel summation / partial-summation bridge), which is elementary and would at least reduce PNT-for-π to PNT-for-ψ.",
+    "progressSummary": "PROGRESS (S2, researcher-8): The stale \"full PNT\" title on this record remains BLOCKED (needs Wiener–Ikehara or Selberg, >1000 lines absent from pinned Mathlib). But the actual OQ03 follow-up slot has a tractable elementary target that was formalized this session: extended the parent bound π(2^k) ≥ k (powers of two only) to the pointwise π(n) ≥ ⌊log₂ n⌋ for ALL n via monotonicity of π + Nat.pow_log_le_self. Added verified gallery entry ChebyshevPNTBridgeOQ03OQ01.lean (0 axioms, 0 sorries), which also re-exports the counting-side dual pₖ ≤ 2^(k+1) (already in PrimeGapBounds). HONEST: the log₂ bound is strictly weaker than the gallery Chebyshev Θ(n/log n) bound; its value is being fully elementary and pointwise, not its strength.",
     "insights": [
       "The gap is irreducible: Chebyshev's Θ(x/log x) bounds (already in the gallery) provably CANNOT be sharpened to the limit 1 by elementary manipulation — closing the constant to exactly 1 is the whole difficulty of PNT and needs either ζ non-vanishing on Re(s)=1 (route A) or the Selberg symmetry formula (route B).",
       "Mathlib's π support stops at qualitative facts (monotone, surjective, → ∞); there is no rate, so any PNT statement must be built essentially from scratch relative to this pinned toolchain.",
-      "The one genuinely elementary sub-step is the ψ↔π transfer: ψ(x) ~ x ⟺ θ(x) ~ x ⟺ π(x) ~ x/log x via Abel/partial summation. This is a legitimate standalone BUILD that would modularize the problem, leaving only PNT-for-ψ (still deep) as the blocker."
+      "The one genuinely elementary sub-step is the ψ↔π transfer: ψ(x) ~ x ⟺ θ(x) ~ x ⟺ π(x) ~ x/log x via Abel/partial summation. This is a legitimate standalone BUILD that would modularize the problem, leaving only PNT-for-ψ (still deep) as the blocker.",
+      "π(2^k) ≥ k (parent, powers of two only) upgrades for free to π(n) ≥ ⌊log₂ n⌋ at EVERY n: monotonicity of π + 2^⌊log₂ n⌋ ≤ n (Nat.pow_log_le_self) is the entire proof.",
+      "π(n) ≥ ⌊log₂ n⌋ is the exact counting-side dual of the k-th-prime ceiling pₖ ≤ 2^(k+1) (PrimeGapBounds.nth_prime_le_two_pow_succ) — both are one-line iterations of Bertrand from opposite ends.",
+      "This elementary bound is provably weaker than the existing Chebyshev Θ(n/log n) gallery bound; recorded honestly, its interest is provenance (no primorial factorization, no real-analytic error term)."
     ],
     "mathlibGaps": [
       "No PNT limit / asymptotic for primeCounting (only Tendsto π atTop atTop).",
@@ -73,8 +76,14 @@
     "nextSteps": [
       "Keep BLOCKED for direct attack: PNT needs >1000 lines of either analytic (Wiener–Ikehara) or elementary (Selberg) machinery absent from this Mathlib.",
       "Optional standalone BUILD to de-risk: formalize the Abel-summation equivalence ψ(x) ~ x ⟺ π(x) ~ x/log x, reducing the goal to PNT-for-ψ without touching the deep analysis.",
-      "Re-evaluate if/when the PrimeNumberTheoremAnd results are upstreamed into the pinned Mathlib, at which point this becomes a (possibly thin) wrapper and should be reframed or retired."
+      "Re-evaluate if/when the PrimeNumberTheoremAnd results are upstreamed into the pinned Mathlib, at which point this becomes a (possibly thin) wrapper and should be reframed or retired.",
+      "Sharpen π(n) ≥ ⌊log₂ n⌋ toward Chebyshev order π(n) ≥ c·n/log n using the bridge binomial bounds rather than Bertrand alone.",
+      "The full PNT limit π(x)·log x/x → 1 stays BLOCKED on the pinned Mathlib; revisit only if PrimeNumberTheoremAnd is upstreamed."
     ],
-    "builtItems": []
+    "builtItems": [
+      "primeCounting_ge_log2 (ChebyshevPNTBridgeOQ03OQ01.lean:49): π(n) ≥ ⌊log₂ n⌋ for all n, 0 axioms.",
+      "log2_nth_prime_le (ChebyshevPNTBridgeOQ03OQ01.lean:72): ⌊log₂ pₖ⌋ ≤ k+1, log-scale reading of the dual.",
+      "Gallery entry src/data/proofs/chebyshev-pnt-bridge-oq-03-oq-01 (meta.json + annotations.json)."
+    ]
   }
 }

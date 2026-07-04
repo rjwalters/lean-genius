@@ -1,0 +1,85 @@
+[
+  {
+    "id": "ann-module-header",
+    "proofId": "chebyshev-pnt-bridge-oq-03-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "From Powers of Two to Every n",
+    "content": "The parent proves π(2^k) ≥ k, a bound only along the sparse powers of two. This file upgrades it to π(n) ≥ ⌊log₂ n⌋ at every natural number, using only monotonicity of π and 2^⌊log₂ n⌋ ≤ n. It is honestly weaker than the gallery's Chebyshev bound π(n) = Θ(n/log n); its value is being fully elementary and pointwise.",
+    "mathContext": "The upgrade is pure bookkeeping: no new number theory beyond the parent's Bertrand-based bound is required.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bertrand's postulate",
+      "prime-counting function",
+      "integer logarithm"
+    ],
+    "prerequisites": [
+      "primes",
+      "π(x)"
+    ]
+  },
+  {
+    "id": "ann-pi-log-bound",
+    "proofId": "chebyshev-pnt-bridge-oq-03-oq-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 63
+    },
+    "type": "technique",
+    "title": "primeCounting_ge_log2: π(n) ≥ ⌊log₂ n⌋",
+    "content": "For n ≥ 1, set k = ⌊log₂ n⌋. Nat.pow_log_le_self gives 2^k ≤ n, so Nat.monotone_primeCounting gives π(2^k) ≤ π(n), and the parent's primeCounting_two_pow_ge gives k ≤ π(2^k). Chaining yields ⌊log₂ n⌋ ≤ π(n). The n = 0 case is simp.",
+    "mathContext": "Transporting a bound known at 2^k to all n via monotonicity of a monotone counting function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity",
+      "Nat.log"
+    ],
+    "prerequisites": [
+      "Nat.pow_log_le_self",
+      "Nat.monotone_primeCounting"
+    ]
+  },
+  {
+    "id": "ann-dual",
+    "proofId": "chebyshev-pnt-bridge-oq-03-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 77
+    },
+    "type": "concept",
+    "title": "The Dual: pₖ ≤ 2^(k+1)",
+    "content": "The counting bound has a dual bounding the size of the k-th prime, pₖ ≤ 2^(k+1), already formalized in PrimeGapBounds by iterating Bertrand's pₖ₊₁ ≤ 2·pₖ. It is re-exported here and read in log scale as ⌊log₂ pₖ⌋ ≤ k + 1, so both elementary directions of the Bertrand bridge sit side by side.",
+    "mathContext": "Iterating Bertrand from below bounds the count of primes; iterating from p₀ = 2 bounds the primes themselves.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "n-th prime",
+      "prime gaps"
+    ],
+    "prerequisites": [
+      "Nat.nth",
+      "Bertrand's postulate"
+    ]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "chebyshev-pnt-bridge-oq-03-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 95
+    },
+    "type": "example",
+    "title": "Explicit Prime-Count Certificates",
+    "content": "π(8) ≥ 3 and π(1000) ≥ 9, obtained by evaluating ⌊log₂ 8⌋ = 3 and ⌊log₂ 1000⌋ = 9 with Nat.log_eq_of_pow_le_of_lt_pow and feeding them to the main bound — elementary certificates that there are at least 3 primes below 8 and at least 9 below 1000.",
+    "mathContext": "2^9 = 512 ≤ 1000 < 1024 = 2^10, so ⌊log₂ 1000⌋ = 9.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "explicit bounds"
+    ],
+    "prerequisites": [
+      "Nat.log_eq_of_pow_le_of_lt_pow"
+    ]
+  }
+]
