@@ -37,22 +37,31 @@
   },
   "references": [
     {
-      "authors": "Folland, Gerald B.",
-      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "authors": "Bilodeau, Martin and Brenner, David",
+      "title": "Theory of Multivariate Statistics",
       "year": "1999",
-      "venue": "2nd ed., Wiley"
+      "venue": "Springer",
+      "note": "Multivariate Gaussian normalization via orthogonal diagonalization of the quadratic form."
     },
     {
-      "authors": "Bishop, Christopher M.",
-      "title": "Pattern Recognition and Machine Learning",
-      "year": "2006",
-      "venue": "Springer (multivariate Gaussian, §2.3)"
+      "authors": "Stein, Elias M. and Shakarchi, Rami",
+      "title": "Real Analysis: Measure Theory, Integration, and Hilbert Spaces",
+      "year": "2005",
+      "venue": "Princeton University Press",
+      "note": "Gaussian integral via the polar-coordinate (Poisson) trick and Fubini's theorem."
+    },
+    {
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
     },
     {
       "authors": "The mathlib Community",
-      "title": "integral_gaussian, spectral theorem and orthogonal change of variables; Analysis.SpecialFunctions.Gaussian, LinearAlgebra.Matrix.Spectrum",
+      "title": "Interval integration, MeasureTheory.integral_gaussian and change-of-variables lemmas (Mathlib.Analysis.SpecialFunctions.Gaussian / Mathlib.MeasureTheory.Integral)",
       "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+      "venue": "Mathlib4"
     }
   ],
   "overview": {
@@ -136,35 +145,6 @@
       "Can the result be extended to the complex case (Hermitian positive-definite matrices over ℂ)?"
     ]
   },
-  "references": [
-    {
-      "authors": "Bilodeau, Martin and Brenner, David",
-      "title": "Theory of Multivariate Statistics",
-      "year": "1999",
-      "venue": "Springer",
-      "note": "Multivariate Gaussian normalization via orthogonal diagonalization of the quadratic form."
-    },
-    {
-      "authors": "Stein, Elias M. and Shakarchi, Rami",
-      "title": "Real Analysis: Measure Theory, Integration, and Hilbert Spaces",
-      "year": "2005",
-      "venue": "Princeton University Press",
-      "note": "Gaussian integral via the polar-coordinate (Poisson) trick and Fubini's theorem."
-    },
-    {
-      "authors": "Folland, Gerald B.",
-      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
-      "year": "1999",
-      "venue": "Wiley",
-      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Interval integration, MeasureTheory.integral_gaussian and change-of-variables lemmas (Mathlib.Analysis.SpecialFunctions.Gaussian / Mathlib.MeasureTheory.Integral)",
-      "year": "2024",
-      "venue": "Mathlib4"
-    }
-  ],
   "leanFile": {
     "path": "Proofs/AreaOfCircleOQ05OQ02.lean",
     "imports": [
@@ -176,5 +156,25 @@
     "axiomCount": 0,
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "prod_sqrt_eq_sqrt_prod",
+      "type": "technical",
+      "description": "Product of square roots equals the square root of the product for non-negative factors, ∏ᵢ √(fᵢ) = √(∏ᵢ fᵢ), proved by induction on n. Used to collapse the product of scalar Gaussians.",
+      "leanType": "∀ (n : ℕ) (f : Fin n → ℝ), (∀ i, 0 ≤ f i) → ∏ i, Real.sqrt (f i) = Real.sqrt (∏ i, f i)"
+    },
+    {
+      "name": "diagonal_gaussian",
+      "type": "core",
+      "description": "Diagonal Gaussian integral: for positive weights bᵢ, ∫_{ℝⁿ} exp(-∑ bᵢxᵢ²) = √(πⁿ/∏ bᵢ). Factors the integrand via exp_sum, applies Fubini, evaluates each scalar Gaussian ∫ exp(-bᵢxᵢ²) = √(π/bᵢ), then collapses the product.",
+      "leanType": "{n : ℕ} → (b : Fin n → ℝ) → (∀ i, 0 < b i) → ∫ x : Fin n → ℝ, Real.exp (-∑ i, b i * x i ^ 2) = Real.sqrt (Real.pi ^ n / ∏ i, b i)"
+    },
+    {
+      "name": "multivariate_gaussian_integral",
+      "type": "core",
+      "description": "Main theorem — multivariate Gaussian integral: for a positive-definite real symmetric matrix A, ∫_{ℝⁿ} exp(-xᵀAx) = √(πⁿ/det A). Diagonalizes A = U·diag(λ)·Uᵀ by the spectral theorem, uses the orthogonal (measure-preserving, |det Uᵀ| = 1) change of variables y = Uᵀx to reduce to diagonal_gaussian, and identifies det A = ∏ λᵢ.",
+      "leanType": "{n : ℕ} → (A : Matrix (Fin n) (Fin n) ℝ) → A.PosDef → ∫ x : Fin n → ℝ, Real.exp (-(dotProduct x (A.mulVec x))) = Real.sqrt (Real.pi ^ n / A.det)"
+    }
+  ],
   "sorries": 0
 }
