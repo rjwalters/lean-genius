@@ -101,6 +101,56 @@
       "mathContext": "$b_0 = 0 < \\tfrac12 = b_1$, yet $b$ is antitone on $[1,\\infty)$."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "abs_partialSum_sub_limit_trapped_eventually",
+      "type": "core",
+      "description": "**Two-sided two-term error trap, eventually-antitone form.** If f is antitone on [M, ∞), f → 0, and S_N → l, then for every N ≥ M the truncation error is trapped exactly as in the globally-antitone case: f N − f(N+1) ≤ |S_N − l| ≤ f N. Proved by a shift reduction to the parent theorem applied to the tail coefficients g j = f(j+M).",
+      "leanType": "(hfa : AntitoneOn f (Set.Ici M)) (hf0 : Tendsto f atTop (𝓝 0)) (hl : Tendsto (fun n => ∑ i ∈ range n, (-1) ^ i * f i) atTop (𝓝 l)) {N : ℕ} (hN : M ≤ N) : f N - f (N + 1) ≤ |(∑ i ∈ range N, (-1) ^ i * f i) - l| ∧ |(∑ i ∈ range N, (-1) ^ i * f i) - l| ≤ f N",
+      "line": 98,
+      "endLine": 132
+    },
+    {
+      "name": "tendsto_partialSum_of_eventually_antitone",
+      "type": "core",
+      "description": "**Convergence from eventual antitonicity** — eventual antitonicity plus f → 0 already forces S_N to converge, so the limit l need not be hypothesised. The limit is exhibited explicitly as l = S_M + (-1)^M t where t is the Leibniz limit of the shifted series.",
+      "leanType": "(hfa : AntitoneOn f (Set.Ici M)) (hf0 : Tendsto f atTop (𝓝 0)) : ∃ l : ℝ, Tendsto (fun n => ∑ i ∈ range n, (-1) ^ i * f i) atTop (𝓝 l)",
+      "line": 79,
+      "endLine": 87
+    },
+    {
+      "name": "bumped_error_trapped",
+      "type": "core",
+      "description": "**Capstone: the eventually-antitone trap applies to the bumped series.** ∑ (-1)^i bumped i converges to some l and its error is trapped for every N ≥ 1 — even though bumped (0 at the origin, then 1/(i+1)) is not globally antitone, so the parent result does not cover it. Witnesses that the eventual hypothesis is strictly weaker.",
+      "leanType": "∃ l : ℝ, Tendsto (fun n => ∑ i ∈ range n, (-1) ^ i * bumped i) atTop (𝓝 l) ∧ ∀ N : ℕ, 1 ≤ N → bumped N - bumped (N + 1) ≤ |(∑ i ∈ range N, (-1) ^ i * bumped i) - l| ∧ |(∑ i ∈ range N, (-1) ^ i * bumped i) - l| ≤ bumped N",
+      "line": 196,
+      "endLine": 204
+    },
+    {
+      "name": "partialSum_shift",
+      "type": "supporting",
+      "description": "**Shift splitting of partial sums** — S_{n+M} = S_M + (-1)^M · T_n, where T_n is the shifted series ∑_{j<n} (-1)^j f(j+M). This exact splitting is the mechanism of the whole reduction: it makes the tail an ordinary Leibniz series to which the parent trap applies. Proved by induction on n.",
+      "leanType": "(n : ℕ) : (∑ i ∈ range (n + M), (-1) ^ i * f i) = (∑ i ∈ range M, (-1) ^ i * f i) + (-1) ^ M * ∑ j ∈ range n, (-1) ^ j * f (j + M)",
+      "line": 65,
+      "endLine": 74
+    },
+    {
+      "name": "antitoneOn_bumped",
+      "type": "supporting",
+      "description": "The bumped sequence is antitone on [1, ∞): there the if-branch is uniformly i ≠ 0 and the coefficients are the standard decreasing 1/(i+1). The positive half of the strictly-weaker witness.",
+      "leanType": "AntitoneOn bumped (Set.Ici 1)",
+      "line": 165,
+      "endLine": 173
+    },
+    {
+      "name": "not_antitone_bumped",
+      "type": "supporting",
+      "description": "bumped is **not** globally antitone: it rises from b 0 = 0 to b 1 = 1/2. Hence the parent's global hypothesis genuinely fails on it while this file's eventually-antitone trap applies with M = 1 — the negative half of the strictly-weaker witness.",
+      "leanType": "¬ Antitone bumped",
+      "line": 186,
+      "endLine": 190
+    }
+  ],
   "references": [
     {
       "authors": "Leibniz, G. W.",
