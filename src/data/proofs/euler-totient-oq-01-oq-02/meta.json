@@ -107,15 +107,23 @@
     },
     {
       "id": "odd-primes",
-      "title": "Section II: Odd Prime Powers and General Bounds",
+      "title": "Section II: Odd Prime Powers and the λ ∣ φ Bound",
       "startLine": 52,
+      "endLine": 58,
+      "summary": "carmichael_odd_prime_pow records that for an odd prime p the unit group (ℤ/pᵏℤ)ˣ is cyclic, so λ(pᵏ) = φ(pᵏ); carmichael_dvd_totient gives the always-true divisibility λ(n) ∣ φ(n), the formal statement that λ refines Euler's totient exponent.",
+      "mathContext": "For odd prime $p$: $(ℤ/p^kℤ)^\\times$ cyclic $\\Rightarrow \\lambda(p^k)=\\varphi(p^k)$; in general $\\lambda(n)\\mid\\varphi(n)$."
+    },
+    {
+      "id": "universal-exponent",
+      "title": "Section III: The Universal Exponent Property",
+      "startLine": 59,
       "endLine": 66,
-      "summary": "carmichael_odd_prime_pow (λ(pᵏ) = φ(pᵏ) for odd primes, cyclic case), carmichael_dvd_totient (λ ∣ φ), pow_carmichael (a^{λ(n)} = 1).",
-      "mathContext": "Odd prime powers are cyclic, so λ = φ; in general λ ∣ φ and gives the optimal universal exponent."
+      "summary": "pow_carmichael states the defining property of the Carmichael function: every unit a modulo n satisfies a^{λ(n)} = 1. Combined with λ ∣ φ this makes λ(n) the *smallest* universal exponent, strictly sharper than Euler's a^{φ(n)} = 1 whenever λ(n) < φ(n) (e.g. all 2ᵏ, k ≥ 3).",
+      "mathContext": "$\\forall a\\in(ℤ/nℤ)^\\times,\\ a^{\\lambda(n)}=1$, and $\\lambda(n)$ is minimal with this property."
     },
     {
       "id": "concrete",
-      "title": "Section III: Concrete Values",
+      "title": "Section IV: Concrete Values",
       "startLine": 68,
       "endLine": 73,
       "summary": "carmichael_eight (λ(8) = 2) and carmichael_sixteen (λ(16) = 4), instantiating the 2ᵏ formula.",
