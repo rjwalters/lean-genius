@@ -66,52 +66,6 @@
   },
   "sections": [
     {
-      "id": "sec-header",
-      "title": "Header and Imports",
-      "startLine": 1,
-      "endLine": 49,
-      "summary": "Module docstring for Oppermann's conjecture (Legendre-partial OQ-04): both halves of every square-gap (n², (n+1)²), split at the composite point n²+n, contain a prime. Frames the file as honest structural implications from Oppermann plus native_decide spot-checks, with the conjecture itself left as an axiom. Imports Mathlib and the parent LegendrePartial, and works in namespace Legendre.Oppermann."
-    },
-    {
-      "id": "sec-statement",
-      "title": "Statement",
-      "startLine": 51,
-      "endLine": 64,
-      "summary": "OppermannAt n: a prime in the lower half (n², n²+n) and a prime in the upper half (n²+n, (n+1)²). OppermannConjecture: OppermannAt n for every n ≥ 2 (n = 1 excluded since the lower half (1,2) is empty)."
-    },
-    {
-      "id": "sec-structural",
-      "title": "Structural Theorems (0-axiom Implications)",
-      "startLine": 66,
-      "endLine": 115,
-      "summary": "Honest hypothesis-taking implications, none asserting Oppermann is true. oppermann_at_implies_legendre_at: the lower-half prime already witnesses Legendre at n. oppermann_at_two_primes: the distinct lower/upper primes give ≥ 2 primes in (n², (n+1)²), strengthening Legendre. The two conjecture-level forms (oppermann_implies_legendre, oppermann_implies_two_primes) lift these to all n ≥ 2 — all by elementary interval arithmetic (omega)."
-    },
-    {
-      "id": "sec-computational",
-      "title": "Computational Verification (native_decide)",
-      "startLine": 117,
-      "endLine": 166,
-      "summary": "OppermannAt n verified for 2 ≤ n ≤ 20 (oppermann_2 … oppermann_20) by exhibiting an explicit (lower-half prime, upper-half prime) pair and discharging primality/interval bounds with native_decide (which introduces the Lean.ofReduceBool axiom). two_primes_2 combines a verified instance with the 0-axiom structural theorem to conclude two primes in a concrete gap."
-    },
-    {
-      "id": "sec-open",
-      "title": "The Open Conjecture",
-      "startLine": 168,
-      "endLine": 179,
-      "summary": "oppermann_conjecture is stated as an axiom (open since 1882; strictly stronger than both Legendre's and the open Brocard conjecture). legendre_of_oppermann derives Legendre for all n ≥ 2 as a downstream consequence, inheriting the axiom."
-    }
-  ],
-  "conclusion": {
-    "summary": "This entry formalizes Oppermann's conjecture — a prime in both halves of every square-gap — as the natural strengthening of Legendre's conjecture requested by the base entry. It contributes two fully machine-checked (0-axiom) structural theorems: Oppermann implies Legendre, and Oppermann implies at least two primes between every pair of consecutive squares. Oppermann itself is verified computationally for n = 2 to 20 and stated as an axiom for the general case.",
-    "implications": "Locating Oppermann precisely above Legendre in the prime-gap hierarchy (Cramér ⟹ Oppermann ⟹ Legendre ⟺ Andrica ⟹ Bertrand) and supplying the verified Oppermann ⟹ Legendre link turns an informal 'strictly stronger' remark into a checked implication. The two-primes corollary quantifies the strengthening: any proof of Oppermann would immediately yield ≥ 2 primes in each (n², (n+1)²), a statement well beyond what Legendre alone provides.",
-    "openQuestions": [
-      "Is Oppermann's conjecture true for all n ≥ 2? It remains open, strictly between the proved Bertrand postulate and the conjectural Cramér bound.",
-      "Can the computational verification be pushed far beyond n = 20 using certified primality certificates instead of native_decide?",
-      "Does Oppermann's conjecture admit a clean equivalent in terms of the prime-counting function π, formalizable as π(n²+n) − π(n²) ≥ 1 and π((n+1)²) − π(n²+n) ≥ 1?"
-    ]
-  },
-  "sections": [
-    {
       "id": "statement",
       "title": "Statement: OppermannAt and OppermannConjecture",
       "summary": "OppermannAt n asserts a prime in each half of the square-gap (n², (n+1)²) split at n²+n; OppermannConjecture quantifies it over all n ≥ 2",
@@ -144,6 +98,15 @@
       "mathContext": "$\\mathrm{oppermann\\_conjecture}:\\mathrm{OppermannConjecture}$ (declared axiom, the open case); $\\mathrm{legendre\\_of\\_oppermann}:\\forall n\\ge 2,\\ \\mathrm{LegendreAt}(n)$ inherits the assumption."
     }
   ],
+  "conclusion": {
+    "summary": "This entry formalizes Oppermann's conjecture — a prime in both halves of every square-gap — as the natural strengthening of Legendre's conjecture requested by the base entry. It contributes two fully machine-checked (0-axiom) structural theorems: Oppermann implies Legendre, and Oppermann implies at least two primes between every pair of consecutive squares. Oppermann itself is verified computationally for n = 2 to 20 and stated as an axiom for the general case.",
+    "implications": "Locating Oppermann precisely above Legendre in the prime-gap hierarchy (Cramér ⟹ Oppermann ⟹ Legendre ⟺ Andrica ⟹ Bertrand) and supplying the verified Oppermann ⟹ Legendre link turns an informal 'strictly stronger' remark into a checked implication. The two-primes corollary quantifies the strengthening: any proof of Oppermann would immediately yield ≥ 2 primes in each (n², (n+1)²), a statement well beyond what Legendre alone provides.",
+    "openQuestions": [
+      "Is Oppermann's conjecture true for all n ≥ 2? It remains open, strictly between the proved Bertrand postulate and the conjectural Cramér bound.",
+      "Can the computational verification be pushed far beyond n = 20 using certified primality certificates instead of native_decide?",
+      "Does Oppermann's conjecture admit a clean equivalent in terms of the prime-counting function π, formalizable as π(n²+n) − π(n²) ≥ 1 and π((n+1)²) − π(n²+n) ≥ 1?"
+    ]
+  },
   "leanFile": {
     "imports": [
       "Mathlib",
@@ -153,10 +116,10 @@
       "Finset"
     ],
     "namespace": "Legendre.Oppermann",
-    "lineCount": 399,
+    "lineCount": 471,
     "axiomCount": 1,
-    "theoremCount": 36,
-    "definitionCount": 2,
+    "theoremCount": 39,
+    "definitionCount": 4,
     "path": "Proofs/LegendrePartialOQ04.lean",
     "sorries": 0
   },
@@ -217,6 +180,12 @@
       "type": "core",
       "description": "VERIFIED (0-axiom): the Brocard mechanism. If Oppermann holds at both n and n+1, the double gap (n², (n+2)²) contains at least FOUR primes — the two half-interval primes of (n², (n+1)²) and the two of ((n+1)², (n+2)²), kept distinct by the composite separators n²+n, (n+1)², (n+1)²+(n+1). This is the elementary combinatorial core of the classical Oppermann ⟹ Brocard implication (consecutive primes ≥ 3 differ by ≥ 2, so their squares always straddle two adjacent square-gaps).",
       "leanType": "OppermannAt n -> OppermannAt (n+1) -> 4 ≤ ((Finset.Ioo (n^2) ((n+2)^2)).filter Nat.Prime).card"
+    },
+    {
+      "name": "oppermann_conjecture_iff_classical",
+      "type": "core",
+      "description": "VERIFIED (0-axiom): faithfulness of the formalization. The split-interval OppermannConjecture (a prime in each half of every square-gap (n²,(n+1)²)) is EQUIVALENT to Oppermann's original 1882 two-sided formulation OppermannClassical (a prime in each of (n²−n,n²) and (n²,n²+n) for all n>1). The bridge is the re-indexing identity (n+1)²−(n+1) = n²+n, which shows the lower interval of the classical form at n+1 is literally the upper half of the split gap at n; the sole boundary input, the prime 3 ∈ (2,4), is proved outright. This certifies the file's split statement is a faithful rendering of the historical conjecture.",
+      "leanType": "OppermannConjecture ↔ OppermannClassical"
     }
   ],
   "sorries": 0
