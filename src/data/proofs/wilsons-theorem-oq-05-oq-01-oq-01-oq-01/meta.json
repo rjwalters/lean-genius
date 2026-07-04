@@ -106,7 +106,8 @@
       "**S(p^k) is always a multiple of p.** The p-adic valuation v_p(m!) is constant as m runs through a block between consecutive multiples of p and only jumps at multiples of p. The least m with v_p(m!) ≥ k must be exactly such a jump point, so p ∣ S(p^k). This is the precise meaning of 'the largest prime power controls S(n).'",
       "**Legendre at multiples is the whole engine.** The identity v_p((p·n)!) = v_p(n!) + n (Nat.factorization_factorial_mul) both gives the bound v_p((p·k)!) ≥ k (so S(p^k) ≤ p·k) and, run at n = k-1, detects exactly when a smaller multiple already works.",
       "**The closed form p·k holds precisely for k ≤ p.** S(p^k) = p·k iff (k-1)! contributes no factor of p, i.e. k-1 < p. The first failure is k = p+1: then (k-1)! = p! already carries one p, so (p·(k-1))! is divisible by p^k and S(p^k) drops below p·k. Concretely S(2^3) = 4 (not 6), S(3^4) = 9 (not 12).",
-      "**Kempner refines the parent threshold into an exact value.** Where the parent only asserted S(n) < n for composite n ≠ 4, here for n = p^k the value is pinned to the interval [p, p·k] and to an exact multiple of p, with the equality region k ≤ p fully characterized."
+      "**Kempner refines the parent threshold into an exact value.** Where the parent only asserted S(n) < n for composite n ≠ 4, here for n = p^k the value is pinned to the interval [p, p·k] and to an exact multiple of p, with the equality region k ≤ p fully characterized.",
+      "**S(n) is assembled from its prime-power values by a maximum.** The Kempner–Smarandache function satisfies S(n) = max over the maximal prime-power factors p^a ‖ n of S(p^a), because m! is divisible by n exactly when it is divisible by each such factor. Pinning down S(p^k) exactly — trapped in [p, p·k], always a multiple of p, and equal to p·k iff k ≤ p — is therefore the atomic case from which every S(n) is reconstructed."
     ],
     "prerequisites": [
       "The Kempner–Smarandache function S(n) = min{m : n ∣ m!}",
@@ -140,11 +141,20 @@
       "summary": "Defines S m = sInf {n | m ∣ n!}; dvd_factorial_S (m ∣ (S m)! for m ≥ 1, via Nat.sInf_mem and m ∣ m!) and S_le (least-witness property, via Nat.sInf_le)."
     },
     {
-      "id": "legendre-bounds",
-      "title": "Legendre's Formula and the Prime-Power Value",
+      "id": "legendre-formula",
+      "title": "Legendre's Formula and the [p, p·k] Bounds",
       "startLine": 61,
+      "endLine": 91,
+      "summary": "factorization_factorial_succ_split splits a factorial's p-valuation off its top factor multiplicatively; pow_dvd_factorial_iff is Legendre's criterion (p^k ∣ n! iff k ≤ v_p(n!)). From these, prime_pow_dvd_factorial_mul gives p^k ∣ (p·k)! and hence the upper bound S_prime_pow_le : S(p^k) ≤ p·k, while prime_le_S_prime_pow gives the lower bound p ≤ S(p^k) — trapping the value in [p, p·k].",
+      "mathContext": "$p\\le S(p^k)\\le p\\cdot k$ via Legendre's $v_p(n!)$ formula."
+    },
+    {
+      "id": "multiple-of-p",
+      "title": "prime_dvd_S_prime_pow: S(p^k) Is Always a Multiple of p",
+      "startLine": 93,
       "endLine": 120,
-      "summary": "factorization_factorial_succ_split (multiplicative split of the valuation), pow_dvd_factorial_iff (Legendre criterion), prime_pow_dvd_factorial_mul and S_prime_pow_le (upper bound p·k), prime_le_S_prime_pow (lower bound p), and prime_dvd_S_prime_pow (S(p^k) is a multiple of p)."
+      "summary": "prime_dvd_S_prime_pow shows p ∣ S(p^k): the p-valuation v_p(m!) is constant across a block between consecutive multiples of p and jumps only at multiples of p, so the least m with v_p(m!) ≥ k is itself a multiple of p. This sharpens the [p, p·k] interval to the multiples of p within it — the precise sense in which the largest prime power controls S(n).",
+      "mathContext": "$p\\mid S(p^k)$, so $S(p^k)\\in\\{p,2p,\\dots,pk\\}$."
     },
     {
       "id": "exact-value",
