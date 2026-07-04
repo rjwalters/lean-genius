@@ -355,23 +355,33 @@ merge_prs() {
         # same-problem race between two agents. No rebase can ever land it; close
         # it so the backlog drains instead of accumulating dead duplicates.
         if [[ -x "$REPO_ROOT/scripts/research/check-superseded.sh" ]]; then
-            git fetch origin "$branch" --quiet 2>/dev/null || true
-            local sup_verdict
-            sup_verdict=$("$REPO_ROOT/scripts/research/check-superseded.sh" \
-                --ref FETCH_HEAD --base origin/main --quiet 2>/dev/null | tail -1 || echo "")
-            if [[ "$sup_verdict" == "SUPERSEDED" ]]; then
-                if $DRY_RUN; then
-                    echo "  Would close #$pr as superseded (proof file already on main)"
-                else
-                    print_warning "Closing #$pr as superseded — proof file already on main (add/add duplicate)"
-                    gh pr close "$pr" --delete-branch --comment "Closing as **superseded** — automated race-condition cleanup by the deployer.
+            # Fetch the PR head into an explicit ref rather than relying on
+            # FETCH_HEAD (issue #34555): a swallowed fetch failure would otherwise
+            # leave FETCH_HEAD pointing at a *previous* branch, so the check would
+            # silently compare the wrong tree. Only run the reap check when this
+            # fetch actually succeeds; on failure, fall through to the rebase path.
+            local reap_ref="refs/tmp/reap-check-$pr"
+            if git fetch origin "$branch:$reap_ref" --force --quiet 2>/dev/null; then
+                local sup_verdict
+                sup_verdict=$("$REPO_ROOT/scripts/research/check-superseded.sh" \
+                    --ref "$reap_ref" --base origin/main --quiet 2>/dev/null | tail -1 || echo "")
+                git update-ref -d "$reap_ref" 2>/dev/null || true
+                if [[ "$sup_verdict" == "SUPERSEDED" ]]; then
+                    if $DRY_RUN; then
+                        echo "  Would close #$pr as superseded (proof file already on main)"
+                    else
+                        print_warning "Closing #$pr as superseded — proof file already on main (add/add duplicate)"
+                        gh pr close "$pr" --delete-branch --comment "Closing as **superseded** — automated race-condition cleanup by the deployer.
 
 Every new proof file this PR adds already exists on \`main\` (landed via a competing PR that won the merge race). This branch is an unmergeable add/add duplicate of an already-formalized result, so no rebase can land it.
 
-If you believe this version carries unique content main lacks, reopen and rebase onto main. See the pre-submission guard (\`scripts/research/check-superseded.sh\`) that now prevents most of these." 2>/dev/null \
-                        && print_success "Closed superseded #$pr" || print_warning "Could not close #$pr"
+This branch has been deleted. If you believe this version carries unique content \`main\` lacks, re-push the branch and open a fresh PR rebased onto \`main\`. See the pre-submission guard (\`scripts/research/check-superseded.sh\`) that now prevents most of these." 2>/dev/null \
+                            && print_success "Closed superseded #$pr" || print_warning "Could not close #$pr"
+                    fi
+                    continue
                 fi
-                continue
+            else
+                print_warning "  Could not fetch $branch for reap check on #$pr; proceeding to rebase"
             fi
         fi
 

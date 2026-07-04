@@ -558,7 +558,11 @@ That is wasted effort. **Do not open such a PR.**
 Run the guard before creating the PR:
 
 ```bash
-verdict=$("$REPO_ROOT/scripts/research/check-superseded.sh" --base origin/main --quiet | tail -1)
+# The `|| echo ""` guard matters: check-superseded.sh exits non-zero on a
+# SUPERSEDED verdict (exit 3) or a git error, which under `set -o pipefail` +
+# `set -e` would otherwise abort your session here before the `if` runs. The
+# guard ensures $verdict is always assigned so the `if` below does the deciding.
+verdict=$("$REPO_ROOT/scripts/research/check-superseded.sh" --base origin/main --quiet | tail -1 || echo "")
 if [[ "$verdict" == "SUPERSEDED" ]]; then
   echo "$(date +%H:%M): ABORT — $PROBLEM_ID already formalized on main (add/add). Not opening PR." \
     >> "$REPO_ROOT/.loom/logs/$RESEARCHER_ID.actions.log"
