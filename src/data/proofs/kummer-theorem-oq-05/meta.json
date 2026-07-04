@@ -161,5 +161,31 @@
       "relationship": "sibling",
       "description": "Sibling OQ on divisibility patterns in Pascal's triangle via carry counts; the no-carry criterion here is the exact boundary between divisibility and non-divisibility it studies."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sub_one_mul_padicValNat_choose",
+      "type": "main",
+      "description": "Kummer's digit-sum formula (classical form): (p-1)·ν_p C(n,k) = S_p(k)+S_p(n-k)−S_p(n). Equivalently ν_p C(n,k) equals the number of carries when adding k and n−k in base p, since each carry lowers the digit sum by exactly p−1.",
+      "leanType": "(p-1) * padicValNat p (n.choose k) = (p.digits k).sum + (p.digits (n-k)).sum - (p.digits n).sum"
+    },
+    {
+      "name": "not_dvd_choose_iff_digit_sum_add",
+      "type": "key",
+      "description": "Kummer's divisibility criterion (Lucas-type): p ∤ C(n,k) ↔ S_p(k)+S_p(n-k) = S_p(n) — a prime misses C(n,k) exactly when adding k and n−k in base p produces no carries.",
+      "leanType": "¬ p ∣ n.choose k ↔ (p.digits k).sum + (p.digits (n-k)).sum = (p.digits n).sum"
+    },
+    {
+      "name": "digit_sum_padicValNat_choose",
+      "type": "key",
+      "description": "Untruncated master identity: S_p(n) + (p-1)·ν_p C(n,k) = S_p(k)+S_p(n-k). Stated without truncated subtraction, so both Kummer's classical formula and digit-sum subadditivity follow by omega.",
+      "leanType": "(p.digits n).sum + (p-1) * padicValNat p (n.choose k) = (p.digits k).sum + (p.digits (n-k)).sum"
+    },
+    {
+      "name": "digit_sum_add_le",
+      "type": "supporting",
+      "description": "Subadditivity of base-p digit sums across a split: for k ≤ n, S_p(n) ≤ S_p(k)+S_p(n-k). Immediate from the untruncated identity since (p-1)·ν_p C(n,k) ≥ 0.",
+      "leanType": "(p.digits n).sum ≤ (p.digits k).sum + (p.digits (n-k)).sum"
+    }
   ]
 }
