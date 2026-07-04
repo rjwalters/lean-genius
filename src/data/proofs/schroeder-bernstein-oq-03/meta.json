@@ -7,7 +7,7 @@
     "author": "Lean Genius Research",
     "sourceUrl": "",
     "date": "2026-04-21",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SchroederBernsteinOQ03.lean",
     "tags": [
       "computability",
@@ -16,10 +16,10 @@
       "set-theory",
       "open-question"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 3171,
+    "lineCount": 3555,
     "mathlibDependencies": [
       {
         "theorem": "OneOneReducible",
@@ -43,7 +43,8 @@
       }
     ],
     "originalContributions": [
-      "Partial formalization of Myhill's Isomorphism Theorem: easy direction fully proved, hard direction sorry'd (1 sorry)",
+      "Myhill's Isomorphism Theorem hard direction COMPLETED (r14, 2026-07-03): the entire theorem is now machine-checked and axiom-free (#print axioms myhill_isomorphism = {propext, Classical.choice, Quot.sound}; no sorryAx, no Lean.ofReduceBool). Section 5·C builds the computable extension-only scheduler: escScan (a Nat.rec bounded escape search replacing the noncomputable escapeDepth=Nat.find and the Computable-unfriendly firstEscapeB=List.findIdx), escScan_computable (via Computable.nat_rec + Computable.cond + chaseTarget_computable + a list-membership Bool primrec), escScan_eq_escapeDepth (correctness: reproduces the least-depth pairing under the balance invariant), the plain def stageListC + full read-off (stageListC_inv, coverage, sigmaC := mLookup (stageListC (2n+1)) n, correspondence/injectivity/surjectivity), and the computability chain stageStepC_computable → stageListC_computable → sigmaC_computable. myhill_isomorphism closes via Equiv.ofBijective (sigmaC f g) + computable_bijection_isComputablePerm. VERIFIED 0-axiom.",
+      "Full formalization of Myhill's Isomorphism Theorem: BOTH directions proved (easy direction via computable bijection; hard direction via the computable extension-only back-and-forth scheduler, Section 5·C), 0 sorries, axiom-free",
       "Clean proof of the easy direction: computable bijection implies one-one equivalence",
       "Fully proved partial-inverse infrastructure via Nat.rfind: partialInverse_partrec (Partrec), partialInverse_spec (recovers input under injection), partialInverse_dom (defined on range)",
       "Proof that computable isomorphism is an equivalence relation (reflexive, symmetric, transitive)",
@@ -60,11 +61,9 @@
       "Read-off collapse to a computable stage index (r8, 2026-07-03): sigmaB_eq_bound — the limit permutation value σ n equals mLookup (stageSeqB (2n+1)).1 n, i.e. the read-off is a lookup into the stage list at the FIXED computable index 2n+1, eliminating the noncomputable entryStageDomB (Nat.find) search from the read-off formula. Combined with (forthcoming) computability of the stage list and mLookup_computable, this is the final shape from which Computable σ follows. VERIFIED, 0-axiom.",
       "Bounded escape search = canonical escape depth (r8b, 2026-07-03): firstEscapeB f g L a := (List.range ((mRan L).length + 1)).findIdx (fun N => decide (f (fwdOrbit f g a N) ∉ mRan L)) — a plain total function (no Classical.choose, no proof argument, hence Computable-amenable) — and the bridge firstEscapeB_eq_escapeDepth proving firstEscapeB f g L a = escapeDepth f g L a (escape_exists' …) whenever the balance invariant licenses escape. Proof is List.findIdx_eq at index escapeDepth: the escape predicate is true there (escapeDepth_spec) and false at every earlier stage (escapeDepth_min), with escapeDepth_le placing escapeDepth inside the window. This is the flagged correctness keystone — it certifies the choice-free bounded scan reproduces the LEAST-depth pairing of the classical construction, so a scheduler may substitute firstEscapeB for escapeDepth verbatim. The remaining step to Computable σ is now the mechanical Primrec assembly of firstEscapeB (list_findIdx + list_range + fwdOrbit_computable + a list-membership Bool primrec). VERIFIED, 0-axiom."
     ],
-    "openProblems": [
-      "Hard direction of Myhill's theorem: construct computable bijection from computable injections via back-and-forth priority argument (~200 lines of Partrec-based formalization)"
-    ],
-    "theoremCount": 160,
-    "definitionCount": 33,
+    "openProblems": [],
+    "theoremCount": 174,
+    "definitionCount": 37,
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
     ]
@@ -191,7 +190,7 @@
       "note": "Chapter 3 — modern treatment"
     }
   ],
-  "sorries": 1,
+  "sorries": 0,
   "parentId": "schroeder-bernstein",
   "openQuestionId": "oq-03",
   "theorems": [
@@ -253,11 +252,11 @@
       "Computable"
     ],
     "namespace": "MyhillIsomorphism",
-    "lineCount": 3363,
+    "lineCount": 3555,
     "axiomCount": 0,
-    "theoremCount": 168,
-    "definitionCount": 36,
-    "sorries": 1,
+    "theoremCount": 174,
+    "definitionCount": 37,
+    "sorries": 0,
     "path": "Proofs/SchroederBernsteinOQ03.lean",
     "additionalFiles": [
       "Proofs/SchroederBernsteinOQ03Aristotle.lean"
