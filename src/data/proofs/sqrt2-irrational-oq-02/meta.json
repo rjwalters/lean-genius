@@ -40,7 +40,8 @@
       "Transcendence is strictly stronger than irrationality: √2 is irrational but algebraic, whereas Liouville's constant is irrational and transcendental.",
       "A single explicit construction (Liouville's constant) answers the existence question constructively, without invoking Cantor's counting argument.",
       "'Not a root of any polynomial' is exactly Transcendental ℤ x = ¬ IsAlgebraic ℤ x, which Mathlib's Liouville theory provides directly.",
-      "**Approximability is the engine of transcendence**: Liouville's inequality says an algebraic irrational of degree d admits no rational approximation p/q closer than C/q^d. The factorial gaps in ∑ 2^{-k!} make each truncation an astronomically good rational (error ≈ 2^{-(k+1)!} against a denominator of only 2^{k!}), beating every polynomial bound in q at once — so the number can be algebraic of no degree, i.e. transcendental."
+      "**Approximability is the engine of transcendence**: Liouville's inequality says an algebraic irrational of degree d admits no rational approximation p/q closer than C/q^d. The factorial gaps in ∑ 2^{-k!} make each truncation an astronomically good rational (error ≈ 2^{-(k+1)!} against a denominator of only 2^{k!}), beating every polynomial bound in q at once — so the number can be algebraic of no degree, i.e. transcendental.",
+      "**The whole result is assembled from Mathlib's Liouville API.** liouvilleConst, its Liouville property, and transcendental_liouvilleNumber already exist; the entry's contribution is to compose them into the OQ-02 answer and to phrase non-exhaustion via the definitional identity Transcendental ℤ x = ¬ IsAlgebraic ℤ x."
     ],
     "prerequisites": [
       "Irrationality (Irrational) and algebraic/transcendental numbers (IsAlgebraic, Transcendental)",
@@ -132,20 +133,28 @@
       "mathContext": "Transcendental = not algebraic; transcendence is strictly stronger than irrationality."
     },
     {
-      "id": "liouville-const",
-      "title": "Liouville's constant: irrational and transcendental",
+      "title": "Liouville's constant: definition and irrationality",
       "startLine": 31,
-      "endLine": 45,
-      "summary": "liouvilleConst = liouvilleNumber 2, with its Liouville property (liouvilleConst_liouville), irrationality (liouvilleConst_irrational), and transcendence over ℤ (liouvilleConst_transcendental) from Mathlib.",
-      "mathContext": "$L=\\sum_k 2^{-k!}$; super-fast rational approximability forces transcendence."
+      "endLine": 41,
+      "summary": "liouvilleConst = ∑_k 2^{-k!}, the canonical concrete transcendental. liouvilleConst_liouville shows it is a Liouville number (superpolynomially approximable by rationals) and liouvilleConst_irrational reads off irrationality from that approximability, both via Mathlib's Liouville API."
     },
     {
-      "id": "existence",
-      "title": "Existence and non-exhaustion",
+      "title": "Transcendence of Liouville's constant",
+      "startLine": 42,
+      "endLine": 45,
+      "summary": "liouvilleConst_transcendental: the constant is transcendental over ℤ — not a root of any nonzero integer polynomial — obtained from transcendental_liouvilleNumber, the theorem that every Liouville number is transcendental (Liouville's inequality bounds how well algebraic numbers can be approximated)."
+    },
+    {
+      "title": "Existence: an irrational transcendental",
       "startLine": 47,
+      "endLine": 52,
+      "summary": "exists_irrational_transcendental packages the answer to OQ-02: ∃ x : ℝ, Irrational x ∧ Transcendental ℤ x, witnessed by liouvilleConst — an explicit real lying beyond the algebraic irrationals √n of the parent entry."
+    },
+    {
+      "title": "Non-exhaustion: irrationals strictly exceed algebraics",
+      "startLine": 54,
       "endLine": 61,
-      "summary": "exists_irrational_transcendental and not_forall_irrational_isAlgebraic: irrational transcendentals exist, so algebraic irrationals do not exhaust the irrationals.",
-      "mathContext": "$\\exists x,\\ \\text{Irrational }x\\wedge\\neg\\text{IsAlgebraic}_{\\mathbb Z}x$."
+      "summary": "not_forall_irrational_isAlgebraic: ∃ x : ℝ, Irrational x ∧ ¬ IsAlgebraic ℤ x. Since Transcendental ℤ x is by definition ¬ IsAlgebraic ℤ x, this restates the existence result as the sharp statement that the algebraic irrationals do not exhaust all irrationals."
     }
   ],
   "sorries": []
