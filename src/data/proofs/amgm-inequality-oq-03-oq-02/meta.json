@@ -270,6 +270,68 @@
     "path": "Proofs/PowerMeanLimitOQ.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "sum_weighted_rpow_pos",
+      "type": "technical",
+      "description": "Positivity of the weighted power sum: when ∑ wᵢ = 1 with wᵢ ≥ 0 and all zᵢ > 0, the sum ∑ wᵢ zᵢ^r is strictly positive, licensing the logarithm below.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 < z i) → (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i = 1) → (r : ℝ) → 0 < ∑ i ∈ s, w i * z i ^ r"
+    },
+    {
+      "name": "hasDerivAt_sum_weighted_rpow_zero",
+      "type": "supporting",
+      "description": "Term-by-term differentiation: d/dr[∑ wᵢ zᵢ^r] at r = 0 equals ∑ wᵢ log zᵢ, since zᵢ^r = exp(r·log zᵢ) has derivative log zᵢ at 0.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 < z i) → (∀ i ∈ s, 0 ≤ w i) → HasDerivAt (fun (r : ℝ) => ∑ i ∈ s, w i * z i ^ r) (∑ i ∈ s, w i * Real.log (z i)) 0"
+    },
+    {
+      "name": "log_sum_weighted_rpow_zero",
+      "type": "technical",
+      "description": "The log-sum function vanishes at r = 0: log(∑ wᵢ zᵢ^0) = log 1 = 0 when ∑ wᵢ = 1, giving f(0) = 0 for the difference-quotient argument.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 < z i) → (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i = 1) → Real.log (∑ i ∈ s, w i * z i ^ (0 : ℝ)) = 0"
+    },
+    {
+      "name": "hasDerivAt_log_sum_weighted_rpow",
+      "type": "supporting",
+      "description": "Chain rule for f(r) = log(∑ wᵢ zᵢ^r): since f(0) = 1 inside the log, f'(0) = (∑ wᵢ log zᵢ)/1 = ∑ wᵢ log zᵢ.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 < z i) → (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i = 1) → HasDerivAt (fun (r : ℝ) => Real.log (∑ i ∈ s, w i * z i ^ r)) (∑ i ∈ s, w i * Real.log (z i)) 0"
+    },
+    {
+      "name": "tendsto_log_sum_div_rpow",
+      "type": "core",
+      "description": "Key limit: (log ∑ wᵢ zᵢ^r)/r → ∑ wᵢ log zᵢ as r → 0, obtained from the derivative-as-slope characterization since f(0) = 0.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 < z i) → (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i = 1) → Filter.Tendsto (fun r => Real.log (∑ i ∈ s, w i * z i ^ r) / r) (nhdsWithin 0 ({0}ᶜ)) (nhds (∑ i ∈ s, w i * Real.log (z i)))"
+    },
+    {
+      "name": "geomMean_eq_exp_sum_log",
+      "type": "supporting",
+      "description": "Geometric mean in exponential form: ∏ zᵢ^wᵢ = exp(∑ wᵢ log zᵢ), the target of the limit written as exp of the derivative value.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 < z i) → (∀ i ∈ s, 0 ≤ w i) → ∏ i ∈ s, z i ^ w i = Real.exp (∑ i ∈ s, w i * Real.log (z i))"
+    },
+    {
+      "name": "powerMean_one_eq_arithMean",
+      "type": "technical",
+      "description": "Endpoint identity M₁ = AM: at r = 1 the power sum ∑ wᵢ zᵢ^1 equals the weighted arithmetic mean ∑ wᵢ zᵢ.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 ≤ w i) → (∀ i ∈ s, 0 ≤ z i) → (∑ i ∈ s, w i * z i ^ (1 : ℝ)) = ∑ i ∈ s, w i * z i"
+    },
+    {
+      "name": "powerMean_eq_exp_log",
+      "type": "supporting",
+      "description": "Algebraic identity for the power mean: for r ≠ 0, M_r = (∑ wᵢ zᵢ^r)^{1/r} = exp((1/r)·log(∑ wᵢ zᵢ^r)), converting the singular expression into an exp of a slope.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 < z i) → (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i = 1) → {r : ℝ} → (r ≠ 0) → (∑ i ∈ s, w i * z i ^ r) ^ (1 / r) = Real.exp ((1 / r) * Real.log (∑ i ∈ s, w i * z i ^ r))"
+    },
+    {
+      "name": "tendsto_powerMean_zero",
+      "type": "core",
+      "description": "Main theorem — the Power Mean Limit: lim_{r→0} M_r(z,w) = ∏ zᵢ^wᵢ = GM(z,w). Combines the slope limit (log ∑)/r → ∑ wᵢ log zᵢ with continuity of exp, completing the chain HM ≤ M₀ = GM ≤ AM.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i = 1) → (∀ i ∈ s, 0 < z i) → Filter.Tendsto (fun r => (∑ i ∈ s, w i * z i ^ r) ^ (1 / r)) (nhdsWithin 0 ({0}ᶜ)) (nhds (∏ i ∈ s, z i ^ w i))"
+    },
+    {
+      "name": "powerMean_neg1_le_geomMean_le_arithMean",
+      "type": "core",
+      "description": "Places the limit in the mean chain: HM = M₋₁ = (∑ wᵢ/zᵢ)⁻¹ ≤ GM = ∏ zᵢ^wᵢ ≤ AM = ∑ wᵢ zᵢ, via weighted AM-GM applied to the values and their inverses.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (w z : ι → ℝ) → (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i = 1) → (∀ i ∈ s, 0 < z i) → (∑ i ∈ s, w i * (z i)⁻¹)⁻¹ ≤ ∏ i ∈ s, z i ^ w i ∧ ∏ i ∈ s, z i ^ w i ≤ ∑ i ∈ s, w i * z i"
+    }
+  ],
   "references": [
     {
       "authors": [
