@@ -67,7 +67,7 @@
     "range": { "startLine": 64, "endLine": 67 },
     "type": "concept",
     "title": "The Factored Form",
-    "content": "Re-expressing the closed form as $d(d-1)(d^2+d-3)$ exposes its combinatorial skeleton: the factor $d(d-1)$ is the number of ways to place the first pair of people on two ordered distinct days, and $d^2 + d - 3$ corrects for the constrained placement of the remaining two. The proof is a one-liner — rewrite by `birthdayCount3_four` and let `ring` confirm the factorization $d^4 - 4d^2 + 3d = d(d-1)(d^2+d-3)$.",
+    "content": "Re-expressing the closed form as $d(d-1)(d^2+d-3)$ exposes its two forced roots: the polynomial vanishes at $d = 0$ and $d = 1$, because four people cannot be seated two-per-day on fewer than two days. The factor $d(d-1)$ therefore records exactly this degeneracy. The residual quadratic $d^2 + d - 3$ has no clean standalone combinatorial meaning — it is simply what makes the degree-4 count correct — but pulling out $d(d-1)$ makes the small-$d$ behaviour transparent (e.g. $d = 2$ gives $2\\cdot 1\\cdot 3 = 6 = \\binom{4}{2}$, the only two-per-day seatings on two days). The proof is a one-liner — rewrite by `birthdayCount3_four` and let `ring` confirm the factorization $d^4 - 4d^2 + 3d = d(d-1)(d^2+d-3)$.",
     "mathContext": "$d^4 - 4d^2 + 3d = d(d-1)(d^2+d-3)$; the visible roots $d = 0$ and $d = 1$ reflect that $<2$ days cannot seat four people two-per-day with all four placed.",
     "significance": "supporting",
     "relatedConcepts": [
