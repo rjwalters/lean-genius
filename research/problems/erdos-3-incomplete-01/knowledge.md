@@ -3,131 +3,114 @@
 Erdős Problem #3 ($5000, OPEN): if `∑_{a∈A} 1/a = ∞` then `A` contains
 arbitrarily long arithmetic progressions.
 
-The claimed sorry is in `Proofs/Erdos3Problem.lean`:
-
-```lean
-theorem required_bound_implies_conjecture :
-    (∀ k : ℕ, k ≥ 3 → RequiredBound k) → Erdos3Conjecture := sorry
-```
-
-where `RequiredBound k := ∀ c>0, ∀ᶠ N, rothNumber k N ≤ c·N/log N` (i.e.
-`r_k(N) = o(N/log N)`) and `Erdos3Conjecture := ∀ A, HasDivergentSum A →
-∀ k, ContainsAP A k`.
+File: `proofs/Proofs/Erdos3Problem.lean`. Two thresholds appear:
+`RequiredBound k = r_k(N) = o(N/log N)` and the stronger
+`StrongRequiredBound k = r_k(N) = O(N/(log N)^{1+δ})` for some `δ>0`.
 
 ---
 
-## FINDING: the sorry's threshold `o(N/log N)` is INSUFFICIENT for the reduction
+## RESULT (2026-07-04): the strong-threshold reduction is now PROVEN (0-axiom)
 
-The file frames this sorry as a mechanical "logical implication" and claims
-(header, line 12) the conjecture is *equivalent* to `r_k(N) = o(N/log N)`. The
-reverse direction actually written as the sorry is **not** provable by the
-standard reciprocal-sum argument, because `o(N/log N)` is the wrong threshold.
+A prior session designed a provable reduction at the `(log N)^{1+δ}` threshold
+but could not compile it (no Mathlib build was available). This session
+**compiled and verified it**, plus repaired the file, which did not build at all.
 
-**The intended proof.** Fix `k ≥ 3`, take `A` with `HasDivergentSum A`, and
-suppose for contradiction `A` is AP-free of length `k` (`¬ContainsAP A k`). Then
-every subset of `A ∩ [1,N]` is AP-free, so the counting function satisfies
+### The file did not compile on `main` (bitrot)
 
-```
-f_A(N) := |A ∩ [1,N]|  ≤  rothNumber k N.
-```
+The enrichment adding `countingFunction_le_rothNumber` / `StrongRequiredBound`
+was merged **without a build** (math PRs skip rebuild), leaving multiple hard
+errors. All fixed in commit "Repair Erdos3Problem.lean bitrot":
+- `ArithProg` used `Finset.map` with a bogus `by omega` injectivity proof —
+  `i ↦ a + i·d` is not injective (collapses when `d = 0`), and `omega` cannot
+  prove nonlinear injectivity anyway. Switched to `Finset.image` (no injectivity
+  hypothesis). This is mathematically harmless: `ContainsAP` still requires
+  `d > 0`, and only membership/subset facts about `ArithProg` are used.
+- `rothNumber` / `countingFunction` / the bridge lemma filtered over `Set`
+  membership without `Decidable` instances → added `open scoped Classical`,
+  marked `countingFunction` `noncomputable`, annotated the powerset-filter
+  binder as `Finset ℕ`.
+- three orphaned `/-- -/` docstrings (attached to no declaration) → `/- -/`.
 
-Under `RequiredBound k`, `rothNumber k N = o(N/log N)`, hence `f_A(N) = o(N/log N)`.
-The proof wants to conclude `∑_{a∈A} 1/a < ∞`, contradicting `HasDivergentSum A`.
-
-**Why it fails.** `f_A(N) = o(N/log N)` does **not** imply `∑ 1/a` converges.
-By partial summation `∑_{a∈A} 1/a ≍ ∑_n f_A(n)/n²`. Take the borderline profile
-
-```
-f(N) ≍ N / (log N · log log N)      ( = o(N/log N),  since  ·/(N/log N) = 1/loglog N → 0 ),
-```
-
-for which
-
-```
-∑ f(n)/n²  ≍  ∫ dt / (t · log t · log log t)  =  log log log t → ∞.
-```
-
-So a set can have counting function `o(N/log N)` **and** divergent reciprocal
-sum. Whether such a set can also be AP-free is *exactly* the negation of Erdős #3
-(Behrend's AP-free sets have size `N/exp(c√log N)`, far below this, with
-convergent reciprocal sum). Hence the sorry at the `o(N/log N)` threshold is **as
-hard as Erdős #3 itself** — not a tractable logical step. Tractability rated 4/10
-by the seeker is over-optimistic for the statement as written.
-
-## CONSTRUCTIVE FIX: a genuinely provable reduction at the `(log N)^{1+ε}` threshold
-
-Strengthen the hypothesis to the bound that actually powers the reciprocal-sum
-argument. Add a new definition and theorem (leaving the original sorry as the
-open, correctly-labelled hard reduction):
+### The 0-axiom conditional theorem (commit "Prove strong_required_bound…")
 
 ```lean
-/-- The bound that suffices for the reciprocal-sum reduction:
-    r_k(N) = O(N / (log N)^{1+ε}) for some ε > 0. -/
-def StrongBound (k : ℕ) : Prop :=
-  ∃ ε : ℝ, 0 < ε ∧ ∃ C : ℝ, ∀ᶠ N in atTop,
-    (rothNumber k N : ℝ) ≤ C * N / (Real.log N) ^ (1 + ε)
-
-theorem strong_bound_implies_conjecture :
-    (∀ k : ℕ, k ≥ 3 → StrongBound k) → Erdos3Conjecture
+theorem strong_required_bound_implies_conjecture :
+    (∀ k : ℕ, k ≥ 3 → StrongRequiredBound k) → Erdos3Conjecture
 ```
 
-**Proof (dyadic blocking — avoids Abel summation and Bertrand series).** With `A`
-AP-free of length `k`, `f_A(N) ≤ rothNumber k N ≤ C·N/(log N)^{1+ε}` for large `N`.
-Decompose `A` into dyadic blocks `A ∩ (2^j, 2^{j+1}]`:
+Fully machine-checked, `sorry`-free, axiom-free (uses only `classical` + standard
+Mathlib summability/p-series lemmas; does not touch `euler_prime_sum_diverges`).
 
-```
-∑_{a∈A} 1/a  =  Σ_j  Σ_{a ∈ A∩(2^j,2^{j+1}]} 1/a
-             ≤  Σ_j  |A ∩ (2^j,2^{j+1}]| / 2^j
-             ≤  Σ_j  f_A(2^{j+1}) / 2^j
-             ≤  Σ_j  C·2^{j+1} / ( ((j+1)·log 2)^{1+ε} · 2^j )
-             =  (2C / (log 2)^{1+ε}) · Σ_j 1/(j+1)^{1+ε}   <  ∞,
-```
+Supporting lemmas added:
+- `containsAP_of_le : k ≤ m → ContainsAP A m → ContainsAP A k` — monotonicity in
+  the length (first `k` terms of an `m`-AP form a `k`-AP), via
+  `Finset.image_subset_image`. Lets the main proof reduce every `k` to
+  `max k 3 ≥ 3`.
+- `summable_of_strongBound` — the analytic core. If
+  `f_A(N) ≤ C·N/(log N)^{1+δ}` eventually (`δ>0`), then `∑_{a∈A} 1/a` converges.
 
-the last sum being a convergent p-series (`p = 1+ε > 1`). So `∑ 1/a` converges,
-contradicting `HasDivergentSum A`. ∎
+**Proof of the core (dyadic blocking).** Reduce to summability of the
+`ℕ`-indicator `A.indicator (1/·)` via `summable_subtype_iff_indicator`, then to
+bounded partial sums via `summable_of_sum_range_le`. For each `M`,
+`∑_{i<M} ≤ ∑_{i<2^M}`, which regroups (induction, `sum_Ico_consecutive`) into
+dyadic blocks `∑_{j<M} block_j`, `block_j = ∑_{i∈[2^j,2^{j+1})} A.indicator(1/·) i`.
+Two bounds on each block:
+- crude: `block_j ≤ 1` (`|[2^j,2^{j+1})| = 2^j` terms, each `≤ 1/2^j`);
+- strong (`j ≥ N0`): `block_j ≤ |A∩[2^j,2^{j+1})|/2^j ≤ f_A(2^{j+1})/2^j
+  ≤ 2C/((j+1)·log 2)^{1+δ} =: g j`, using `Real.log (2^{j+1}) = (j+1)·log 2`
+  and `Real.mul_rpow`.
+Hence `block_j ≤ 𝟙[j<N0] + g j`, so `∑_{j<M} block_j ≤ N0 + ∑' g`, and `g`
+is a constant multiple of the convergent p-series `∑ 1/(j+1)^{1+δ}`
+(`Real.summable_one_div_nat_rpow`, `p = 1+δ > 1`, reindexed by
+`summable_nat_add_iff`). Bounded partial sums ⟹ summable ⟹ contradiction with
+`HasDivergentSum`.
 
-This is a real 0-axiom conditional theorem: it isolates the *exact* analytic
-strength the reduction needs, and makes explicit that the gap between it and
-`o(N/log N)` is where Erdős #3's difficulty lives.
+The main theorem combines this with the bridge lemma
+`countingFunction_le_rothNumber` (AP-free ⟹ `f_A(N) ≤ r_k(N)`).
 
-**Mathlib API (4.26.0):**
-- p-series: `Real.summable_one_div_nat_rpow : Summable (fun n => 1/n^p) ↔ 1 < p`
-  (or `Real.summable_nat_rpow_inv`); comparison `Summable.of_nonneg_of_le`.
-- reindex reciprocal sum over `A` by dyadic blocks: `tsum` over the subtype `A`
-  regrouped via `Set.Ioc (2^j) (2^(j+1))`; `ENNReal.tsum_biUnion` / `tsum_iUnion`
-  or a `Finset`-exhaustion `HasSum` argument — the fiddly step.
-- `Real.log_pow` / `Real.log_rpow`, `Real.rpow_natCast`, `Real.rpow_le_rpow`.
-- small `k` (`k ≤ 2`): `ContainsAP A k` is trivial for a divergent-sum (hence
-  infinite) `A`; only `k ≥ 3` needs `StrongBound`, matching the hypothesis's `k≥3`.
+---
 
-Estimated ~200–280 lines; the dyadic reindexing of the `tsum` is the main cost.
+## Why the WEAKER `o(N/log N)` threshold is still an honest sorry
 
-## What is BLOCKED
+`required_bound_implies_conjecture` (hypothesis `RequiredBound = o(N/log N)`)
+remains `sorry`. This is **not** laziness: at that threshold the implication is
+as hard as Erdős #3 itself. `f_A(N) = o(N/log N)` does not force `∑1/a < ∞`:
+the borderline profile `f(N) ≍ N/(log N·log log N)` is `o(N/log N)` yet has
+divergent reciprocal sum (`∑ f(n)/n² ≍ ∫ dt/(t·log t·log log t) = log log log t
+→ ∞`). Whether such a set can also be AP-free is exactly the open content of
+Erdős #3. The gap between `o(N/log N)` and `O(N/(log N)^{1+δ})` is precisely
+where the difficulty lives — which is what the new theorem makes explicit.
 
-- The **original** sorry (`o(N/log N)` threshold): as hard as Erdős #3; do not
-  attempt a direct proof. Best action is to (a) add the `StrongBound` reduction
-  above, and (b) re-document the original as "open, threshold-critical," fixing
-  the header's over-strong "equivalent to `o(N/log N)`" claim.
-- Erdős #3 itself: open. Best known Roth-type bounds
-  (Kelley–Meka 2023 `r_3(N) ≪ N/exp((log N)^{1/11})`, Leng–Sah–Sawhney 2024) are
-  far from even `o(N/log N)`, let alone `O(N/(log N)^{1+ε})` — the file header's
-  results list is accurate on this point.
+Best known Roth-type bounds (Kelley–Meka 2023 `r_3(N) ≪ N/exp((log N)^{1/11})`,
+Leng–Sah–Sawhney 2024) are far from even `o(N/log N)`, let alone the
+`(log N)^{1+δ}` threshold.
 
-## Existing file inventory (`Proofs/Erdos3Problem.lean`, 163 lines)
+---
 
-- Defs: `ArithProg`, `ContainsAP`, `IsAPFree`, `reciprocalSum`, `HasDivergentSum`,
-  `rothNumber`, `countingFunction`, `SublogarithmicGrowth`, `Erdos3Conjecture`,
-  `RequiredBound`.
-- `euler_prime_sum_diverges` (axiom), `erdos3_implies_green_tao` (proved),
-  `erdos_3_open` (trivial `em`).
-- Sorry count: 1 (`required_bound_implies_conjecture`).
+## File inventory (`Proofs/Erdos3Problem.lean`, 440 lines, builds: 7743 jobs)
+
+- Defs: `ArithProg` (now `image`), `ContainsAP`, `ContainsArbitrarilyLongAP`,
+  `IsAPFree`, `reciprocalSum`, `HasDivergentSum`, `rothNumber`,
+  `countingFunction`, `SublogarithmicGrowth`, `Erdos3Conjecture`,
+  `RequiredBound`, `StrongRequiredBound`.
+- Proved (0 new axioms): `countingFunction_le_rothNumber`, `containsAP_of_le`,
+  `summable_of_strongBound`, `strong_required_bound_implies_conjecture`,
+  `erdos3_implies_green_tao`, `erdos_3_open`.
+- 1 axiom: `euler_prime_sum_diverges` (Euler 1737; deep, kept).
+- 1 sorry: `required_bound_implies_conjecture` (threshold-critical; open).
 
 ## Status
 
-PARTIAL / IN-PROGRESS. Delivered: (1) a correctness FINDING — the current sorry's
-`o(N/log N)` threshold is insufficient (Abel-summation counterexample) and the
-statement as written is as hard as Erdős #3; (2) a fully designed, 0-axiom
-provable replacement `strong_bound_implies_conjecture` at the `(log N)^{1+ε}`
-threshold via dyadic blocking + p-series, with exact Mathlib API. Verification
-deferred this iteration: no Mathlib olean cache in the environment and disk at
-99%, so no `import Mathlib` build could be run (see state.md).
+PROGRESS. Delivered this session: (1) repaired a non-compiling file (bitrot);
+(2) proved, 0-axiom and sorry-free, `strong_required_bound_implies_conjecture`,
+the reduction at the correct `(log N)^{1+δ}` threshold, machine-verified in
+Lean 4 / Mathlib 4.26. The original `o(N/log N)` sorry is correctly retained as
+threshold-critical (as hard as Erdős #3).
+
+## Next steps
+
+- The remaining `sorry` should NOT be attacked directly — it is as hard as
+  Erdős #3. Leave it documented.
+- Possible follow-ups (shallow, optional): a `k ≤ 2` corollary that any infinite
+  set trivially contains 2-APs; or expose `summable_of_strongBound` as a reusable
+  density→convergence lemma for other reciprocal-sum problems.
