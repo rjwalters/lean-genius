@@ -140,5 +140,67 @@
       "Proofs/Erdos1021OQ01Aristotle.lean"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "weakConjectureK4",
+      "type": "core",
+      "description": "The OQ-01 statement: for every fixed k ≥ 4, the extremal number ex(n, G_k) is o(n^{3/2}).",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "oq01_from_weak",
+      "type": "supporting",
+      "description": "OQ-01 follows from the parent problem's weak conjecture by restricting to k ≥ 4.",
+      "leanType": ": weak_conjecture → weakConjectureK4"
+    },
+    {
+      "name": "oq01_from_strong",
+      "type": "supporting",
+      "description": "OQ-01 follows from the parent problem's strong conjecture via the strong-implies-weak chain.",
+      "leanType": ": erdos_1021_conjecture → weakConjectureK4"
+    },
+    {
+      "name": "big_O_not_implies_little_o",
+      "type": "supporting",
+      "description": "The trivial O(n^{3/2}) bound does not imply the o(n^{3/2}) bound, witnessed by n^{3/2} itself, so OQ-01 is a strictly stronger claim.",
+      "leanType": ": ∃ f : ℕ → ℝ, (∃ C > 0, ∃ N : ℕ, ∀ n ≥ N, f n ≤ C * (n : ℝ) ^ (3/2 : ℝ)) ∧ ¬isLittleO f (fun n => (n : ℝ) ^ (3/2 : ℝ))"
+    },
+    {
+      "name": "kst_trivial_bound",
+      "type": "axiom",
+      "description": "The Kővári-Sós-Turán theorem gives the unconditional trivial upper bound ex(n, G_k) = O(n^{3/2}) for k ≥ 4.",
+      "leanType": "(k : ℕ) (hk : k ≥ 4) : ∃ C > 0, ∀ n : ℕ, exGk k n ≤ C * (n : ℝ) ^ (3/2 : ℝ)"
+    },
+    {
+      "name": "k3_weak_holds",
+      "type": "core",
+      "description": "The settled k = 3 case: ex(n, G_3) = ex(n, C_6) is o(n^{3/2}), by Bondy-Simonovits.",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "ex_not_obviously_monotone_in_k",
+      "type": "supporting",
+      "description": "The extremal numbers ex(n, G_k) are not obviously monotone in k, so OQ-01 for one k does not automatically transfer to another.",
+      "leanType": ": ¬(∀ k₁ k₂ : ℕ, k₁ ≤ k₂ → ∀ n : ℕ, exGk k₁ n ≤ exGk k₂ n)"
+    },
+    {
+      "name": "probabilistic_lower_bound",
+      "type": "axiom",
+      "description": "The probabilistic method gives the lower bound ex(n, G_k) ≥ c·n^{3/2 - 1/(k-1)} for k ≥ 4, showing the trivial bound is nearly tight.",
+      "leanType": "(k : ℕ) (hk : k ≥ 4) : ∃ c > 0, ∃ N : ℕ, ∀ n ≥ N, exGk k n ≥ c * (n : ℝ) ^ (3/2 - 1/(k - 1 : ℝ))"
+    },
+    {
+      "name": "lower_bound_exponent_approach",
+      "type": "supporting",
+      "description": "The lower-bound exponent 3/2 - 1/(k-1) is strictly less than 3/2 for every k ≥ 2.",
+      "leanType": "(k : ℕ) (hk : k ≥ 2) : (3 : ℝ)/2 - 1/(k - 1 : ℝ) < 3/2"
+    },
+    {
+      "name": "lower_bound_exponent_tendsto",
+      "type": "supporting",
+      "description": "As k → ∞ the lower-bound exponent 3/2 - 1/(k-1) tends to 3/2, so the gap to the trivial upper bound shrinks.",
+      "leanType": ": Filter.Tendsto (fun k : ℕ => (3 : ℝ)/2 - 1/((k : ℝ) - 1)) Filter.atTop (nhds (3/2))"
+    }
+  ],
   "sorries": 4
 }
