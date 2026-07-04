@@ -96,12 +96,20 @@
       "mathContext": "Permutations fixing exactly S are, on the complement of S, fixed-point-free — i.e. derangements of a set of size |α| − |S|. Hence the fiber size is D(|α| − |S|)."
     },
     {
-      "id": "sec-convolution",
-      "title": "The convolution identity over a finite type",
+      "id": "sec-convolution-partition",
+      "title": "The convolution identity, Step 1: fiberwise partition of Perm α",
       "startLine": 79,
+      "endLine": 98,
+      "summary": "First half of card_perm_eq_sum_choose_mul_numDerangements: rewrite |α|! = |Perm α| = |univ| (Fintype.card_perm), then partition Perm α by the fixed-point-set map via Finset.card_eq_sum_card_fiberwise over the powerset of univ, and substitute the per-fiber count card_fixedPointFinset_fiber to reach |α|! = Σ_{S ⊆ univ} D(|α| − |S|).",
+      "mathContext": "Double counting Perm α: LHS by Fintype.card_perm, RHS by the fiberwise partition indexed by fixed-point sets S, each fiber of size D(|α| − |S|)."
+    },
+    {
+      "id": "sec-convolution-regroup",
+      "title": "The convolution identity, Step 2: regroup by cardinality",
+      "startLine": 99,
       "endLine": 107,
-      "summary": "Theorem card_perm_eq_sum_choose_mul_numDerangements: |α|! = Σ_{k=0}^{|α|} C(|α|,k)·D(|α|−k). Rewrites |α|! = |Perm α| = |univ|, partitions via Finset.card_eq_sum_card_fiberwise over the powerset by the fixed-point-set map, substitutes the fiber counts, regroups by cardinality with powerset_card_disjiUnion + sum_disjiUnion, and collapses each constant block with sum_const + card_powersetCard.",
-      "mathContext": "Double counting Perm α: LHS by Fintype.card_perm, RHS by summing the D(|α|−k) fibers over the C(|α|,k) subsets of each size k."
+      "summary": "Second half: regroup Σ_{S ⊆ univ} D(|α|−|S|) by |S| = k using powerset_card_disjiUnion + sum_disjiUnion, then collapse each constant block with Finset.sum_const + card_powersetCard (smul_eq_mul) to C(|α|,k)·D(|α|−k), giving |α|! = Σ_k C(|α|,k)·D(|α|−k).",
+      "mathContext": "The powerset splits into cardinality strata: C(|α|,k) subsets per size k, each carrying the constant derangement factor D(|α|−k)."
     },
     {
       "id": "sec-nat",
