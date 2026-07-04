@@ -215,6 +215,11 @@
       "proofId": "derangements-oq-02-oq-02",
       "relationship": "related",
       "description": "Another in-tree application of `sum_card_fixedBy_eq_card_orbits_mul_card_group`, here over `Equiv.Perm (Fin n) ↷ Fin n`. Shares the orbit-counting machinery generalised in this entry."
+    },
+    {
+      "proofId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Child entry that carries the same off-Fintype programme to the orbit-stabiliser identity, lifting it to the instance-free `Nat.card (orbit G x) * Nat.card (stabilizer G x) = Nat.card G`. Directly answers this entry's open question on whether the finiteness-free lift applies verbatim to the orbit-stabiliser theorem."
     }
   ],
   "conclusion": {
