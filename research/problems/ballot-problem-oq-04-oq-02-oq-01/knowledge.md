@@ -205,6 +205,55 @@ conjecture on all of `0 ≤ n ≤ 4`, through the first Bell/Catalan split.
   Aristotle recovers (retry the recurrence sorry first) or for a dedicated multi-session infra
   build (track 1: Finpartition first-return decomposition).
 
+## Session 2026-07-04 (Session 12, researcher-14) — LEFT round-trip law proved (0 new sorry)
+
+**Mode:** ACT (RICH knowledge; building the mutual-inverse laws of the first-return bijection).
+**Outcome:** PROGRESS. Proved `glueFp_restrictFp_eq_self` — the **left round-trip law**
+`glueFp m (restrictFp (offsetEmb 1) P) (restrictFp (offsetEmb (m+1)) P) = P` for
+`m = firstBlockMax P`, i.e. `glue ∘ forward = id` on the `P`-side. Docker-built exit 0, sole
+`sorry` (`nonempty_firstReturnEquiv`) unchanged, **7 new 0-sorry lemmas**. PR #34739.
+
+### What I built (all 0 sorry, Docker-built on origin/main = 4adc53afe93)
+- **`glueFp_restrictFp_eq_self`** — the left round-trip law. Central verification that
+  `firstReturnForward` loses NO information: the dropped point `0` and *which* left-window points
+  share `0`'s block are all recoverable from `(m, Q, R)`. Proof: `finpartition_eq_of_part`
+  (reduce to per-point block equality) then `glueLabel_eq_iff_part_eq` pointwise + `eq_comm`.
+- **`glueLabel_eq_iff_part_eq`** — the heart: `glueLabel a = glueLabel b ↔ P.part a = P.part b`.
+  Three-region case analysis (`0` / left `[1,m]` / right `[m+1,n]`). Same-window pairs reduce via
+  `left_repr`/`right_repr` + `mem_part_restrictFp`; cross-window pairs killed **simultaneously** on
+  both sides — `Sum.inl ≠ Sum.inr` (label) and `not_mem_part_across_firstBlockMax` (P-block).
+- **`left_repr` / `right_repr`** — `glueLabel x` on the lower/upper window as a clean `Sum`-tagged
+  value carrying the correct `P`-block; `left_repr` unifies the `x=0` (→ top index `⟨m-1⟩`) and
+  `0<x≤m` (→ `⟨x-1⟩`) cases, collapsing the downstream case split.
+- **`glueLabel_isLeft_of_le` / `glueLabel_eq_inr_of_gt`** — full `≤m` vs `>m` sector split.
+- **`finpartition_eq_of_part`** (generic, reusable) — a `Finpartition` of `univ` is determined by
+  its block function; reduces any `Finpartition` equality to a pointwise `part` claim. Proof via
+  `ext t` + `nonempty_of_mem_parts`/`part_eq_of_mem`/`part_mem`.
+
+### Reusable gotchas (cost 4 compile errors + host-OOM flakiness this session)
+- **`Finpartition.mem_part_iff_part_eq_part` orientation:** it is `a ∈ P.part b ↔ P.part a = P.part b`
+  (membership subject = equality's FIRST arg). `mem_part_restrictFp` uses the OPPOSITE convention
+  (`b ∈ (restrictFp emb P).part a ↔ P.part (emb a) = P.part (emb b)`). Bridging the two forces an
+  `eq_comm`/`.symm` — all 4 first-build errors were this. When in doubt, drop to an explicit
+  `constructor` + `mpr`/`mp` chain rather than a single `rw … ↔ … .symm`.
+- **Host memory OOM (exit 135/139) is intermittent and environmental**, NOT a proof error: builds
+  that die at <1.5s are host-thrash (competing `lean-build-*` containers, `PhysMem … 200M unused`);
+  a run that fully elaborates takes ~5s and reports real errors. Before trusting a "failure", wait
+  for competing containers to clear (`docker ps | grep lean-build`) and retry.
+- **Worktree loss:** `.loom/worktrees/researcher-14` was DELETED mid-session by concurrent cleanup,
+  losing uncommitted edits. Recovery: work in a **`--lock`ed** worktree under `/Users/rwalters/lg-wt/`,
+  and **commit + push before every Docker build**.
+
+### Next steps (to close the sorry)
+- `IsNonCrossingFp (glueFp m hm P₁ P₂)` — glue preserves non-crossing (needed for the `Equiv`'s invFun).
+- RIGHT round-trip `forward ∘ glue = id`: `(firstBlockMax (glueFp …)).val = m` and
+  `restrictFp (offsetEmb 1) (glueFp …) = P₁`, `restrictFp (offsetEmb (m+1)) (glueFp …) = P₂`.
+- Assemble `nonempty_firstReturnEquiv` from `firstReturnForward` (toFun) + glue (invFun) +
+  `glueFp_restrictFp_eq_self` (left_inv) + right round-trip (right_inv). Closes the sole sorry.
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean` (+7 lemmas, ~180 lines; build OK, sole sorry unchanged)
+
 ## Session 2026-07-04 (Session 7, researcher-14) — forward map of first-return bijection built (0 sorry)
 
 **Mode:** REVISIT (problem RICH knowledge; Aristotle re-checked, still down).
