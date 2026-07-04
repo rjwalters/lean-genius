@@ -20,6 +20,50 @@
     "path": "Proofs/GramLinearIndependenceOQ01OQ01OQ02OQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "matrix_hadamard_inequality_rows",
+      "type": "core",
+      "description": "Hadamard's inequality, row form: the modulus of the determinant is at most the product of the Euclidean norms of the rows. Obtained from the column form via det Aᵀ = det A.",
+      "leanType": "{𝕜 : Type*} → [RCLike 𝕜] → {n : ℕ} → (A : Matrix (Fin n) (Fin n) 𝕜) → ‖A.det‖ ≤ ∏ i, Real.sqrt (∑ j, ‖A i j‖ ^ 2)"
+    },
+    {
+      "name": "matrix_hadamard_bound",
+      "type": "core",
+      "description": "Uniform entry bound: if every entry has modulus ≤ M ≥ 0, then ‖det A‖ ≤ (√n · M)ⁿ = Mⁿ · n^(n/2), the classical bound showing the determinant of a bounded-entry matrix grows no faster than n^(n/2).",
+      "leanType": "{𝕜 : Type*} → [RCLike 𝕜] → {n : ℕ} → (A : Matrix (Fin n) (Fin n) 𝕜) → {M : ℝ} → 0 ≤ M → (∀ i j, ‖A i j‖ ≤ M) → ‖A.det‖ ≤ (Real.sqrt n * M) ^ n"
+    },
+    {
+      "name": "matrix_hadamard_inequality",
+      "type": "core",
+      "description": "Hadamard's inequality, column form: the modulus of the determinant is at most the product of the Euclidean norms of the columns.",
+      "leanType": "{𝕜 : Type*} → [RCLike 𝕜] → {n : ℕ} → (A : Matrix (Fin n) (Fin n) 𝕜) → ‖A.det‖ ≤ ∏ j, Real.sqrt (∑ i, ‖A i j‖ ^ 2)"
+    },
+    {
+      "name": "matrix_hadamard_sq",
+      "type": "supporting",
+      "description": "Squared form of Hadamard's inequality: ‖det A‖² ≤ ∏ⱼ ∑ᵢ ‖A i j‖². The square-root-free inequality from which both the column and row forms are derived.",
+      "leanType": "{𝕜 : Type*} → [RCLike 𝕜] → {n : ℕ} → (A : Matrix (Fin n) (Fin n) 𝕜) → ‖A.det‖ ^ 2 ≤ ∏ j, ∑ i, ‖A i j‖ ^ 2"
+    },
+    {
+      "name": "gram_col_det",
+      "type": "supporting",
+      "description": "The Gramian of the columns equals the squared modulus of the determinant: det(gram 𝕜 (col A)) = ‖det A‖². The identity that converts the positive-semidefinite Gram bound into a determinant bound.",
+      "leanType": "{𝕜 : Type*} → [RCLike 𝕜] → {n : ℕ} → (A : Matrix (Fin n) (Fin n) 𝕜) → (Matrix.gram 𝕜 (col A)).det = ((‖A.det‖ ^ 2 : ℝ) : 𝕜)"
+    },
+    {
+      "name": "gram_col_eq",
+      "type": "supporting",
+      "description": "Bridge to the Gram matrix: the Gram matrix of the columns of A is Aᴴ · A. Connects the geometric column vectors to the algebraic conjugate-transpose product.",
+      "leanType": "{𝕜 : Type*} → [RCLike 𝕜] → {n : ℕ} → (A : Matrix (Fin n) (Fin n) 𝕜) → Matrix.gram 𝕜 (col A) = Aᴴ * A"
+    },
+    {
+      "name": "norm_col_sq",
+      "type": "technical",
+      "description": "The squared Euclidean norm of the j-th column is the sum of the squared moduli of its entries: ‖col A j‖² = ∑ᵢ ‖A i j‖².",
+      "leanType": "{𝕜 : Type*} → [RCLike 𝕜] → {n : ℕ} → (A : Matrix (Fin n) (Fin n) 𝕜) → (j : Fin n) → ‖col A j‖ ^ 2 = ∑ i, ‖A i j‖ ^ 2"
+    }
+  ],
   "title": "Hadamard's Matrix Inequality: Row Form and the Uniform n^(n/2) Determinant Bound",
   "meta": {
     "author": "Lean Genius",
