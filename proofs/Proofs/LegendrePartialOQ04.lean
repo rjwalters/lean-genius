@@ -31,8 +31,18 @@ New content here:
   * `oppermann_implies_legendre`, `oppermann_implies_two_primes` — the
     conjecture-level corollaries.  VERIFIED, 0-axiom (they take the conjecture
     as a hypothesis; they do not assert it).
+  * `oppermann_at_four_primes_two_gaps` — **the Brocard mechanism**: Oppermann at
+    two *adjacent* gaps `n`, `n+1` forces `≥ 4` primes in the double gap
+    `(n², (n+2)²)` (the four half-interval primes are kept distinct by the
+    composite separators `n²+n`, `(n+1)²`, `(n+1)²+(n+1)`).  This is the
+    elementary combinatorial core of the classical **Oppermann ⟹ Brocard**
+    implication.  VERIFIED, 0-axiom.
+  * `oppermann_implies_four_primes` — its conjecture-level corollary.  VERIFIED,
+    0-axiom.
   * `card_primes_Ioc` — the number of primes in `(a, b]` equals `π(b) − π(a)` for
     Mathlib's `Nat.primeCounting`.  VERIFIED, 0-axiom.
+  * `oppermann_at_pi_total`, `oppermann_implies_pi_total` — the total π-count
+    form: Oppermann forces `π((n+1)²) − π(n²) ≥ 2`.  VERIFIED, 0-axiom.
   * `oppermann_at_iff_pi`, `oppermann_conjecture_iff_pi` — Oppermann in
     **π-counting form**: for `n ≥ 2`, `OppermannAt n ⟺ π(n²+n) − π(n²) ≥ 1 ∧
     π((n+1)²) − π(n²+n) ≥ 1` (the composite endpoints `n²+n` and `(n+1)²` make the
@@ -120,6 +130,65 @@ theorem oppermann_implies_two_primes (h : OppermannConjecture) :
     ∀ n : ℕ, 2 ≤ n →
       2 ≤ ((Finset.Ioo (n ^ 2) ((n + 1) ^ 2)).filter Nat.Prime).card :=
   fun n hn => oppermann_at_two_primes (h n hn)
+
+/-! ### The Brocard mechanism (VERIFIED, 0-axiom)
+
+**Brocard's conjecture** (1904, OPEN): between the squares of two consecutive
+primes `p < q` (with `p ≥ 3`) there are at least four primes.  It is a classical
+observation that **Oppermann's conjecture implies Brocard's**, and the argument is
+purely combinatorial: two consecutive primes `≥ 3` are both odd, so `q ≥ p + 2`,
+hence the interval `(p², q²)` contains at least the two *adjacent* square-gaps
+`(p², (p+1)²)` and `((p+1)², (p+2)²)`; Oppermann puts two primes in each, and the
+composite square `(p+1)²` separating them keeps all four distinct.
+
+The theorem below isolates exactly this mechanism at the level of an arbitrary
+pair of adjacent gaps — no consecutive-prime bookkeeping required — and is the
+provable core of the Oppermann ⟹ Brocard implication. -/
+
+/-- **Oppermann ⟹ four primes across two adjacent square-gaps.** If Oppermann
+holds at both `n` and `n+1`, the double gap `(n², (n+2)²)` contains at least FOUR
+primes: the lower/upper-half primes of `(n², (n+1)²)` and those of
+`((n+1)², (n+2)²)`, all four distinct (they are separated by the composite
+points `n²+n`, `(n+1)²`, `(n+1)²+(n+1)`).  This is the elementary combinatorial
+core of **Brocard's conjecture**. VERIFIED, 0-axiom. -/
+theorem oppermann_at_four_primes_two_gaps {n : ℕ}
+    (h₀ : OppermannAt n) (h₁ : OppermannAt (n + 1)) :
+    4 ≤ ((Finset.Ioo (n ^ 2) ((n + 2) ^ 2)).filter Nat.Prime).card := by
+  obtain ⟨⟨p, hp, hplo, hphi⟩, ⟨q, hq, hqlo, hqhi⟩⟩ := h₀
+  obtain ⟨⟨r, hr, hrlo, hrhi⟩, ⟨s, hs, hslo, hshi⟩⟩ := h₁
+  -- polynomial expansions so `omega` can compare the interval endpoints
+  have e1 : (n + 1) ^ 2 = n ^ 2 + 2 * n + 1 := by ring
+  have e2 : (n + 2) ^ 2 = n ^ 2 + 4 * n + 4 := by ring
+  have e2' : (n + 1 + 1) ^ 2 = n ^ 2 + 4 * n + 4 := by ring
+  have hsub : ({p, q, r, s} : Finset ℕ) ⊆
+      (Finset.Ioo (n ^ 2) ((n + 2) ^ 2)).filter Nat.Prime := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rw [Finset.mem_filter, Finset.mem_Ioo]
+    rcases hx with rfl | rfl | rfl | rfl
+    · exact ⟨⟨by omega, by omega⟩, hp⟩
+    · exact ⟨⟨by omega, by omega⟩, hq⟩
+    · exact ⟨⟨by omega, by omega⟩, hr⟩
+    · exact ⟨⟨by omega, by omega⟩, hs⟩
+  have h4 : ({p, q, r, s} : Finset ℕ).card = 4 := by
+    have hpne : p ∉ ({q, r, s} : Finset ℕ) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+    have hqne : q ∉ ({r, s} : Finset ℕ) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+    have hrne : r ∉ ({s} : Finset ℕ) := by
+      simp only [Finset.mem_singleton]; omega
+    rw [Finset.card_insert_of_notMem hpne, Finset.card_insert_of_notMem hqne,
+        Finset.card_insert_of_notMem hrne, Finset.card_singleton]
+  calc 4 = ({p, q, r, s} : Finset ℕ).card := h4.symm
+    _ ≤ _ := Finset.card_le_card hsub
+
+/-- **Oppermann ⟹ four primes per double gap.** Conjecture-level form of
+`oppermann_at_four_primes_two_gaps`: under Oppermann, every double gap
+`(n², (n+2)²)` with `n ≥ 2` contains at least four primes. -/
+theorem oppermann_implies_four_primes (h : OppermannConjecture) :
+    ∀ n : ℕ, 2 ≤ n →
+      4 ≤ ((Finset.Ioo (n ^ 2) ((n + 2) ^ 2)).filter Nat.Prime).card :=
+  fun n hn => oppermann_at_four_primes_two_gaps (h n hn) (h (n + 1) (by omega))
 
 /-! ## π-counting form (VERIFIED, 0-axiom)
 
@@ -228,6 +297,27 @@ theorem oppermann_conjecture_iff_pi :
   · intro h n hn; exact (oppermann_at_iff_pi hn).mp (h n hn)
   · intro h n hn; exact (oppermann_at_iff_pi hn).mpr (h n hn)
 
+/-- **Oppermann ⟹ `π((n+1)²) − π(n²) ≥ 2`, π-counting total form.** The whole
+square-gap contributes at least two to the prime-counting difference: the
+`π`-difference form of `oppermann_at_two_primes`, obtained by folding the
+open-interval two-prime count through the composite right endpoint `(n+1)²`.
+VERIFIED, 0-axiom. -/
+theorem oppermann_at_pi_total {n : ℕ} (hn : 1 ≤ n) (h : OppermannAt n) :
+    2 ≤ primeCounting ((n + 1) ^ 2) - primeCounting (n ^ 2) := by
+  have hcomp2 : ¬ Nat.Prime ((n + 1) ^ 2) := by
+    have hh : (n + 1) ^ 2 = (n + 1) * (n + 1) := by ring
+    rw [hh]; exact Nat.not_prime_mul (by omega) (by omega)
+  have hle : n ^ 2 ≤ (n + 1) ^ 2 := by nlinarith
+  have hcard := oppermann_at_two_primes h
+  rwa [← card_primes_Ioc hle, ← card_primes_Ioo_eq_Ioc hcomp2]
+
+/-- Conjecture-level form of `oppermann_at_pi_total`: under Oppermann,
+`π((n+1)²) − π(n²) ≥ 2` for every `n ≥ 2`. VERIFIED, 0-axiom. -/
+theorem oppermann_implies_pi_total (h : OppermannConjecture) :
+    ∀ n : ℕ, 2 ≤ n →
+      2 ≤ primeCounting ((n + 1) ^ 2) - primeCounting (n ^ 2) :=
+  fun n hn => oppermann_at_pi_total (by omega) (h n hn)
+
 /-! ## Computational verification (axiomatized via `native_decide`)
 
 Each `OppermannAt n` is witnessed by an explicit pair (lower-half prime,
@@ -278,6 +368,14 @@ theorem). -/
 theorem two_primes_2 :
     2 ≤ ((Finset.Ioo (2 ^ 2) (3 ^ 2)).filter Nat.Prime).card :=
   oppermann_at_two_primes oppermann_2
+
+/-- Brocard-mechanism sanity corollary: the double gap `(4, 16) = (2², 4²)`
+contains at least four primes (namely `5, 7, 11, 13`), obtained from the verified
+instances `oppermann_2`, `oppermann_3` through the 0-axiom structural theorem
+`oppermann_at_four_primes_two_gaps`. -/
+theorem four_primes_2 :
+    4 ≤ ((Finset.Ioo (2 ^ 2) ((2 + 2) ^ 2)).filter Nat.Prime).card :=
+  oppermann_at_four_primes_two_gaps oppermann_2 oppermann_3
 
 /-- π-counting sanity corollary at `n = 2`: `π(6) − π(4) ≥ 1` (lower half) and
 `π(9) − π(6) ≥ 1` (upper half), derived from the verified instance `oppermann_2`
