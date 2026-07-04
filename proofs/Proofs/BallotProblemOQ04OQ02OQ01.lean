@@ -357,6 +357,66 @@ theorem part_side_of_firstBlockMax {n : ℕ} (P : Finpartition (univ : Finset (F
   · push_neg at hex
     exact Or.inl hex
 
+/-! ### The inverse (gluing) map of the first-return bijection
+
+`firstReturnForward` restricts a non-crossing `P` to the two offset windows `[1, m]` and
+`[m+1, n]` (`m = firstBlockMax P`), dropping point `0`. The inverse **glues** an independent
+pair `(P₁, P₂)` of non-crossing partitions of `Fin m` and `Fin (n-m)` back into a single
+partition of `Fin (n+1)`:
+
+* window `A = [1, m]` carries `P₁` (index `a ↦ a + 1`);
+* window `B = [m+1, n]` carries `P₂` (index `b ↦ b + (m+1)`);
+* point `0` joins the `P₁`-block containing the top index `m-1` (so `0` and `m` share a block,
+  restoring `firstBlockMax = m`); when `m = 0`, point `0` is a fresh singleton.
+
+The gluing is realized as the kernel setoid of a *label* function `glueLabel`, so the partition
+axioms come free from `Finpartition.ofSetoid` — no manual `SupIndep`/`sup_parts`/`not_bot`. -/
+
+/-- Block **label** of a point under the gluing of `(P₁, P₂)`: window-`A` points (and `0`, when
+`m ≥ 1`) are labelled by their `P₁`-block, window-`B` points by their `P₂`-block, and `0` gets a
+fresh label `Sum.inl none` when `m = 0`. Two points share a glued block iff they share a label. -/
+def glueLabel {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) (x : Fin (n + 1)) :
+    Option (Finset (Fin m)) ⊕ Finset (Fin (n - m)) :=
+  if hx0 : x.val = 0 then
+    if hm0 : m = 0 then Sum.inl none
+    else Sum.inl (some (P₁.part ⟨m - 1, by omega⟩))
+  else if hxA : x.val ≤ m then
+    Sum.inl (some (P₁.part ⟨x.val - 1, by omega⟩))
+  else
+    Sum.inr (P₂.part ⟨x.val - (m + 1), by have := x.isLt; omega⟩)
+
+/-- The **glued setoid**: same-label under `glueLabel`. -/
+def glueSetoid {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) : Setoid (Fin (n + 1)) :=
+  Setoid.ker (glueLabel m hm P₁ P₂)
+
+instance instDecidableGlueRel {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) :
+    DecidableRel (glueSetoid m hm P₁ P₂).r :=
+  fun a b => (inferInstance :
+    Decidable (glueLabel m hm P₁ P₂ a = glueLabel m hm P₁ P₂ b))
+
+/-- **The glued partition** of `Fin (n+1)`, built from an independent pair `(P₁, P₂)` of
+partitions of the two windows. The inverse (up to the round-trip laws, still open) of
+`firstReturnForward`. -/
+def glueFp {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) :
+    Finpartition (univ : Finset (Fin (n + 1))) :=
+  Finpartition.ofSetoid (glueSetoid m hm P₁ P₂)
+
+/-- Membership in a glued block is same-label under `glueLabel`. -/
+@[simp] theorem mem_part_glueFp {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) (a b : Fin (n + 1)) :
+    b ∈ (glueFp m hm P₁ P₂).part a ↔
+      glueLabel m hm P₁ P₂ a = glueLabel m hm P₁ P₂ b :=
+  Finpartition.mem_part_ofSetoid_iff_rel
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
