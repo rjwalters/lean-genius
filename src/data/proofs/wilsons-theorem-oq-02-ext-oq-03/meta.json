@@ -46,11 +46,20 @@
       "summary": "factorial_half_sq: for an odd prime p, with m = p/2, ((m! : ZMod p))² = (-1)^(m+1). The proof casts (2m)! = (p-1)! to a product over Ico 1 (2m+1), splits it at m+1 via prod_Ico_consecutive, identifies the lower half as m!, and reindexes the upper half k ↦ p-k (so each term ↑(m+1+k) becomes -↑(m-k)) via prod_Ico_eq_prod_range, prod_neg, and prod_range_reflect, yielding (-1)^m·m!. Hence (2m)! ≡ (-1)^m·(m!)²; combined with Wilson's (2m)! ≡ -1, solving for (m!)² gives (-1)^{m+1}."
     },
     {
-      "id": "mod-four-corollaries",
-      "title": "Sign by p mod 4",
+      "id": "residue-case",
+      "title": "factorial_half_sq_eq_neg_one: The Explicit Square Root of −1 (p ≡ 1 mod 4)",
       "startLine": 125,
+      "endLine": 134,
+      "summary": "For p ≡ 1 (mod 4), m = p/2 is even, so the bridge identity (m!)² = (−1)^(m+1) evaluates to −1: the half-factorial (p/2)! is an explicit square root of −1 in ZMod p. The proof rewrites via factorial_half_sq and discharges the even case with pow_succ / pow_mul (the odd sub-case is impossible by omega). This is the classical Wilson witness that Mathlib never exhibits.",
+      "mathContext": "$p\\equiv1\\pmod4\\implies((p/2)!)^2=-1$ in $\\mathbb{Z}/p$."
+    },
+    {
+      "id": "nonresidue-case",
+      "title": "factorial_half_sq_eq_one: The Non-Residue Case (p ≡ 3 mod 4)",
+      "startLine": 136,
       "endLine": 143,
-      "summary": "factorial_half_sq_eq_neg_one: p % 4 = 1 ⟹ (m!)² = -1 (m even). factorial_half_sq_eq_one: p % 4 = 3 ⟹ (m!)² = 1 (m odd). Both case on the parity of m = p/2 (forced by p mod 4) and evaluate (-1)^(m+1) accordingly via pow_mul / pow_succ."
+      "summary": "For p ≡ 3 (mod 4), m = p/2 is odd, so (m!)² = (−1)^(m+1) = 1: the half-factorial squares to 1, and −1 is a non-residue. Same rewrite via factorial_half_sq, now discharging the odd case with pow_mul (the even sub-case is impossible by omega). Together with the residue case this reads the quadratic character of −1 straight off the parity of p/2.",
+      "mathContext": "$p\\equiv3\\pmod4\\implies((p/2)!)^2=1$ in $\\mathbb{Z}/p$."
     },
     {
       "id": "legendre-bridge",
@@ -68,7 +77,8 @@
       "A single involution k ↦ p-k applied to Wilson's product is enough to extract the entire quadratic residuosity of -1: the sign (-1)^{m+1} is the value (-1/p), and in the residue case the construction is effective — m! IS a square root of -1, not merely a proof one exists.",
       "The identity (m!)² ≡ (-1)^{m+1} is the missing elementary link in Mathlib between ZMod.wilsons_lemma and the quadratic-residue API: Mathlib proves -1 is a square iff p % 4 ≠ 3 via χ₄ and quadratic_char_neg_one_pow, but never exhibits the classical Wilson witness.",
       "Reindexing the upper half of the factorial as ∏(p-j) ≡ ∏(-j) is exactly where the field structure of ZMod p enters: p ≡ 0 turns p-j into -j, converting a translation of indices into a sign (-1)^m pulled out by Finset.prod_neg.",
-      "The constructive isSquare_neg_one_of_mod_four strengthens the existence statement ZMod.exists_sq_eq_neg_one_iff by naming the witness, which is what allows legendreSym p (-1) = 1 to be read off directly through legendreSym.eq_one_iff without invoking χ₄."
+      "The constructive isSquare_neg_one_of_mod_four strengthens the existence statement ZMod.exists_sq_eq_neg_one_iff by naming the witness, which is what allows legendreSym p (-1) = 1 to be read off directly through legendreSym.eq_one_iff without invoking χ₄.",
+      "The two mod-4 corollaries are a single computation branched on one bit. Both start from the same bridge identity (m!)² = (−1)^(m+1) and differ only in the parity of m = p/2, which p mod 4 fixes: p ≡ 1 forces m even (sign −1), p ≡ 3 forces m odd (sign +1). So the entire quadratic character (−1/p) is extracted by reading a single parity bit off the bridge identity — no separate argument for the two cases."
     ]
   },
   "conclusion": {
