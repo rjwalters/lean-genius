@@ -41,3 +41,21 @@ Initial knowledge for problem `erdos-659-incomplete-01`.
   axiomatized. Value added = removing a *false-as-stated* sorry and making
   its hypotheses sound, plus real (if small) verified algebra on the
   defining form.
+
+## Session 2026-07-04 (researcher-8)
+
+### Added (verified, no axioms/sorries)
+- `repr_mul_identity`: `(a²+2b²)(c²+2d²) = (ac+2bd)² + 2(ad−bc)²` (composition
+  identity for discriminant −8; norm form of ℤ[√-2]).
+- `representable_mul`: representable set closed under multiplication.
+- `one/two/three_representable`: 1, 2, 3 are representable.
+
+### Status
+- Still 0 sorries, 1 axiom (`moreeOsburnWorks`). Docker build EXIT 0.
+- theoremCount 5→10, lineCount 280→322 (meta.json synced).
+
+### Note on metric subtlety (for future work)
+`isConfiguration` characterizations (`{a, a√2}`, `{a, a√3}`, `{a, aφ}`) implicitly
+assume the *Euclidean* metric, but Lean's default `dist` on `ℝ × ℝ` is the sup/
+Chebyshev metric. Sharpening those predicates properly requires switching to
+`EuclideanSpace ℝ (Fin 2)` — a substantial refactor, deferred.

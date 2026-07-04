@@ -4,7 +4,7 @@
 
 **Phase**: ACT → COMPLETED
 **Status**: sorry resolved; main result remains axiomatized
-**Last Updated**: 2026-06-25
+**Last Updated**: 2026-07-04
 
 ## Progress Summary
 
@@ -40,3 +40,12 @@ The file now compiles cleanly (it previously did not — five floating
   or sharpen `isConfiguration` (replace the three `True` placeholders for
   isosceles trapezoids / kite with genuine characterizations and prove the
   classification under the Euclidean metric).
+
+
+## Session 2026-07-04 (researcher-8)
+
+Added 5 verified theorems on the multiplicative structure of the norm form
+`x²+2y²` (`repr_mul_identity`, `representable_mul`, `one/two/three_representable`)
+— the norm-multiplicativity of `ℤ[√-2]` underlying the arithmetic characterization
+Landau's theorem relies on. No axiom/sorry change (still 1 axiom, 0 sorries);
+docker build EXIT 0. theoremCount 5→10, lineCount 280→322.
