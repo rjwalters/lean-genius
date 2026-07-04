@@ -115,5 +115,23 @@
       "description": "Parent problem: descending factorials dividing central binomial coefficients. This OQ sharpens the central binomial recurrence underlying the Catalan divisibility base case."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #396 (erdosproblems.com) — descending-factorial divisibility n(n−1)⋯(n−k) ∣ C(2n,n)",
+      "url": "https://www.erdosproblems.com/396"
+    },
+    {
+      "title": "P. Erdős, R. L. Graham — Old and New Problems and Results in Combinatorial Number Theory, Monographies de L'Enseignement Mathématique 28 (1980) (source of the divisibility questions on central binomial coefficients)",
+      "url": "https://www.renyi.hu/~p_erdos/1980-30.pdf"
+    },
+    {
+      "title": "OEIS A000108 — Catalan numbers, with the two-term recurrence (n+2)·C(n+1) = 2(2n+1)·C(n) reproved here",
+      "url": "https://oeis.org/A000108"
+    },
+    {
+      "title": "Mathlib — Combinatorics.Enumerative.Catalan (catalan, gosperCatalan, succ_mul_catalan_eq_centralBinom) and Combinatorics.Choose.Central (centralBinom, succ_mul_centralBinom_succ, two_dvd_centralBinom_succ)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Enumerative/Catalan.html"
+    }
+  ]
 }
