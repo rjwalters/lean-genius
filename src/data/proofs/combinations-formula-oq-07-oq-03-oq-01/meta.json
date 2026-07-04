@@ -150,5 +150,22 @@
       "venue": "CPP",
       "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "term_absorb",
+      "statement": "(j+1)²·C(m+1,j+1)² = (m+1)²·C(m,j)²",
+      "description": "Single-absorption term identity: squaring the committee-chair absorption (j+1)·C(m+1,j+1) = (m+1)·C(m,j) (Mathlib's Nat.add_one_mul_choose_eq) collapses each j-weighted binomial square into a j-free multiple of C(m,j)². The termwise engine of the moment computation."
+    },
+    {
+      "name": "sum_sq_weighted_sq_succ",
+      "statement": "∑_{k=0}^{m+1} k²·C(m+1,k)² = (m+1)²·C(2m,m)",
+      "description": "The second moment in subtraction-free form (n = m+1). Peeling the vanishing k=0 term and reindexing by j+1 lets term_absorb pull out (m+1)², leaving ∑ C(m,j)² = C(2m,m) by the parent's diagonal identity."
+    },
+    {
+      "name": "sum_sq_weighted_sq",
+      "statement": "1 ≤ n → ∑_{k=0}^{n} k²·C(n,k)² = n²·C(2n−2,n−1)",
+      "description": "The classical closed form for the second moment of squared binomial coefficients, recovered from the subtraction-free version by peeling n = m+1 and simplifying the natural-number subtractions. The headline result."
+    }
   ]
 }

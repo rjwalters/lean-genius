@@ -93,5 +93,28 @@
       "sum_sq_weighted_sq_succ",
       "omega for linear arithmetic over ℕ"
     ]
+  },
+  {
+    "id": "numeric-verification",
+    "proofId": "combinations-formula-oq-07-oq-03-oq-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 121
+    },
+    "type": "insight",
+    "title": "Kernel-Checked Numeric Instance",
+    "content": "Two decide checks pin the closed form at n = 3: ∑_{k=0}^{3} k²·C(3,k)² = 0·1 + 1·9 + 4·9 + 9·1 = 0 + 9 + 36 + 9 = 54, and the same sum equals 3²·C(4,2) = 9·6 = 54, matching n²·C(2n−2,n−1) with n = 3. Both use kernel decide (not native_decide), so the 0-axiom footprint is preserved.",
+    "mathContext": "$\\sum_{k=0}^{3} k^2\\binom{3}{k}^2 = 0+9+36+9 = 54 = 3^2\\binom{4}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "second moment",
+      "central binomial coefficient",
+      "kernel reduction"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "finite sums",
+      "Lean decide tactic"
+    ]
   }
 ]
