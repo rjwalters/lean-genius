@@ -143,5 +143,67 @@
     "path": "Proofs/Erdos181OQ01.lean",
     "definitionCount": 3,
     "theoremCount": 11
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "erdos_181_conjecture_symm",
+      "type": "axiom",
+      "description": "The Burr-Erdős conjecture (OQ-01) stated as an axiom: the symmetric Ramsey number of the n-cube is at most linear in the vertex count, R_sym(Q_n) ≤ C·2^n.",
+      "leanType": ":\n  ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, (ramseyNumberSymm n : ℝ) ≤ C * (2 : ℝ) ^ n"
+    },
+    {
+      "name": "tikhomirov_2022_symm",
+      "type": "axiom",
+      "description": "Tikhomirov's 2022 upper bound stated as an axiom: R_sym(Q_n) ≤ C·2^{(2-c)n} for some c ≈ 0.0366.",
+      "leanType": ":\n  ∃ (c : ℝ), 0 < c ∧ ∃ (C : ℝ), 0 < C ∧\n    ∀ n : ℕ, (ramseyNumberSymm n : ℝ) ≤ C * (2 : ℝ) ^ ((2 - c) * n)"
+    },
+    {
+      "name": "ramseyNumberSymm_one",
+      "type": "core",
+      "description": "The main proved result: the symmetric Ramsey number of the 1-cube (a single edge K_2) is exactly 2, the base case of the conjecture.",
+      "leanType": ": ramseyNumberSymm 1 = 2"
+    },
+    {
+      "name": "ramseyNumberSymm_ge",
+      "type": "core",
+      "description": "The trivial lower bound: if the symmetric Ramsey set for Q_n is non-empty, then R_sym(Q_n) ≥ 2^n.",
+      "leanType": "(n : ℕ) (hne : (symmRamseySet n).Nonempty) :\n    ramseyNumberSymm n ≥ 2 ^ n"
+    },
+    {
+      "name": "ramseyNumberSymm",
+      "type": "supporting",
+      "description": "Definition of the Ramsey number for Q_n under symmetric (undirected) colorings as the infimum of the symmetric Ramsey set.",
+      "leanType": "(n : ℕ) : ℕ"
+    },
+    {
+      "name": "symmRamseySet",
+      "type": "supporting",
+      "description": "Definition of the set of cardinalities N for which every symmetric 2-coloring of Fin N contains a monochromatic embedded copy of the hypercube Q_n.",
+      "leanType": "(n : ℕ) : Set ℕ"
+    },
+    {
+      "name": "hypercubeAdj",
+      "type": "supporting",
+      "description": "Definition of hypercube adjacency: two vertices of Q_n are adjacent iff they differ in exactly one bit position.",
+      "leanType": "(n : ℕ) (x y : Fin (2 ^ n)) : Prop"
+    },
+    {
+      "name": "two_in_symm_ramsey_set",
+      "type": "supporting",
+      "description": "Establishes that 2 belongs to the symmetric Ramsey set for Q_1, providing the upper bound for the base case.",
+      "leanType": ": (2 : ℕ) ∈ symmRamseySet 1"
+    },
+    {
+      "name": "no_small_embedding",
+      "type": "supporting",
+      "description": "Pigeonhole lemma showing no injective map from Fin(2^n) into Fin N exists when N < 2^n.",
+      "leanType": "(n N : ℕ) (hN : N < 2 ^ n)\n    {f : Fin (2 ^ n) → Fin N} (hf : Function.Injective f) : False"
+    },
+    {
+      "name": "conjecture_implies_bounded_ratio",
+      "type": "supporting",
+      "description": "Shows that if the linear-Ramsey conjecture holds, then the ratio R_sym(Q_n)/2^n is bounded.",
+      "leanType": ":\n    (∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, (ramseyNumberSymm n : ℝ) ≤ C * (2 : ℝ) ^ n) →\n    ∃ B : ℝ, 0 < B ∧ ∀ n : ℕ, n ≥ 1 →\n      (ramseyNumberSymm n : ℝ) / (2 : ℝ) ^ n ≤ B"
+    }
+  ]
 }
