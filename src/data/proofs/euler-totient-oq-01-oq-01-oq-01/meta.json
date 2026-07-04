@@ -55,6 +55,56 @@
   "parent": "euler-totient-oq-01-oq-01",
   "openQuestion": "Complete the induction over the prime-power factorization to state λ(n) = lcm_i λ(p_i^{k_i}) as a single theorem.",
   "significance": "Carmichael's function λ(n) is the sharp universal exponent in Euler's theorem: it is the least e with a^e ≡ 1 (mod n) for every a coprime to n, and it divides φ(n). The parent entry proved the keystone multiplicativity λ(m·n)=lcm(λ(m),λ(n)). The literal factorization identity λ(n)=lcm_i λ(p_i^{k_i}) requested by the open question turns out to be already present in Mathlib (carmichael_factorization), so this entry does not reprove it — instead it contributes the parts Mathlib leaves unassembled: (1) the explicit textbook closed form for odd n, λ(n) = lcm_{p|n} p^{k_p-1}(p-1), obtained by collapsing each odd prime-power factor λ(p^k)=φ(p^k) to its closed value; and (2) concrete Carmichael-number evaluations, notably λ(561)=80 for the first Carmichael number 561=3·11·17, together with the Korselt-style divisibility 80 ∣ 560 = 561−1 that explains why 561 is a Fermat pseudoprime to every base coprime to it.",
+  "mainTheorems": [
+    {
+      "name": "carmichael_odd_eq_lcm_explicit",
+      "type": "core",
+      "description": "The explicit Carmichael closed form for odd n: λ(n) = lcm over primes p | n of p^(k_p−1)·(p−1), where k_p = n.factorization p. Assembles Mathlib's carmichael_factorization (which reduces λ(n) to the lcm of per-prime-power values) with the collapse of each odd factor λ(p^k) = φ(p^k) = p^(k−1)(p−1). This single assembled formula — the content the open question asked for — is not stated in Mathlib.",
+      "leanType": "{n : ℕ} → n ≠ 0 → Odd n → Carmichael n = n.primeFactors.lcm (fun p => p ^ (n.factorization p - 1) * (p - 1))"
+    },
+    {
+      "name": "carmichael_561",
+      "type": "core",
+      "description": "The first Carmichael number: 561 = 3·11·17 has λ(561) = lcm(λ(3), λ(11), λ(17)) = lcm(2, 10, 16) = 80. A concrete evaluation absent from Mathlib, exercising the multiplicative law on three distinct odd primes.",
+      "leanType": "Carmichael 561 = 80"
+    },
+    {
+      "name": "carmichael_561_dvd_560",
+      "type": "core",
+      "description": "Korselt's criterion witness for 561: since λ(561) = 80 divides 561 − 1 = 560, every a coprime to 561 satisfies a^560 ≡ 1 (mod 561) — exactly why 561 is a Carmichael number (a Fermat pseudoprime to every coprime base).",
+      "leanType": "Carmichael 561 ∣ 560"
+    },
+    {
+      "name": "carmichael_odd_prime_pow",
+      "type": "supporting",
+      "description": "The textbook per-prime-power value for an odd prime p and k ≥ 1: λ(p^k) = p^(k−1)·(p−1) = φ(p^k). Combines Mathlib's carmichael_pow_of_prime_ne_two with Nat.totient_prime_pow; the per-factor ingredient of the explicit closed form.",
+      "leanType": "{p k : ℕ} → p.Prime → p ≠ 2 → 0 < k → Carmichael (p ^ k) = p ^ (k - 1) * (p - 1)"
+    },
+    {
+      "name": "carmichael_odd_prime",
+      "type": "supporting",
+      "description": "For an odd prime p, λ(p) = p − 1, since the unit group (ℤ/pℤ)ˣ is cyclic of order p − 1. Specialises carmichael_odd_prime_pow at k = 1.",
+      "leanType": "{p : ℕ} → p.Prime → p ≠ 2 → Carmichael p = p - 1"
+    },
+    {
+      "name": "pow_carmichael_eq_one",
+      "type": "supporting",
+      "description": "The universal-exponent property (Mathlib pow_carmichael): every unit a of ℤ/nℤ satisfies a^(λ(n)) = 1 — the sharp form of Euler's theorem a^(φ(n)) ≡ 1, recorded as the headline corollary motivating λ.",
+      "leanType": "{n : ℕ} → (a : (ZMod n)ˣ) → a ^ Carmichael n = 1"
+    },
+    {
+      "name": "carmichael_dvd_totient'",
+      "type": "supporting",
+      "description": "λ(n) ∣ φ(n) (Mathlib carmichael_dvd_totient): the Carmichael exponent divides Euler's totient, so it never exceeds φ(n) and genuinely refines Euler's theorem.",
+      "leanType": "(n : ℕ) → Carmichael n ∣ n.totient"
+    },
+    {
+      "name": "carmichael_15",
+      "type": "supporting",
+      "description": "λ(15) = lcm(λ(3), λ(5)) = lcm(2, 4) = 4, the smallest two-prime evaluation demonstrating the multiplicative law.",
+      "leanType": "Carmichael 15 = 4"
+    }
+  ],
   "overview": {
     "historicalContext": "Robert Daniel Carmichael introduced the function λ(n) in 1910 as the 'reduced totient', the smallest exponent that works uniformly in Euler's congruence a^{φ(n)} ≡ 1 (mod n). It is the exponent of the unit group (ℤ/nℤ)ˣ. By the Chinese Remainder Theorem this group splits over the prime-power factors of n, so λ is determined by its prime-power values through an lcm. For odd prime powers the unit group is cyclic, giving λ(p^k)=φ(p^k)=p^{k-1}(p-1); the prime 2 is the lone exception, where (ℤ/2^kℤ)ˣ ≅ ℤ/2 × ℤ/2^{k-2} for k ≥ 3 and λ(2^k)=2^{k-2}. The function is central to A. Korselt's 1899 criterion for Carmichael numbers — composite n with a^{n-1} ≡ 1 for all a coprime to n — which holds precisely when n is squarefree and λ(n) ∣ n−1. The smallest such number is 561 = 3·11·17, with λ(561)=lcm(2,10,16)=80 dividing 560.",
     "problemStatement": "State the prime-power factorisation law for the Carmichael function λ as a single theorem and assemble the explicit closed form, then evaluate it on concrete inputs including the first Carmichael number 561.",
