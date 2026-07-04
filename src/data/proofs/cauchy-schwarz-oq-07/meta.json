@@ -89,16 +89,24 @@
     },
     {
       "id": "real",
-      "title": "Real Case and Polarization",
-      "startLine": 55,
-      "endLine": 82,
-      "summary": "parallelogram_norm_sq_real proves the law over a real inner-product space directly by expanding ‖x±y‖² and cancelling cross terms; real_inner_eq_norm_sq_diff_div_four derives the dual polarization identity; norm_add_sq_eq_real gives the rearranged law.",
-      "mathContext": "Real expansions $\\|x \\pm y\\|^2 = \\|x\\|^2 \\pm 2\\langle x,y\\rangle + \\|y\\|^2$ give the law by addition and the polarization $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ by subtraction."
+      "title": "Real Parallelogram Law and Polarization",
+      "startLine": 50,
+      "endLine": 64,
+      "summary": "parallelogram_norm_sq_real proves the law over a real inner-product space directly by expanding ‖x±y‖² and cancelling cross terms (addition); real_inner_eq_norm_sq_diff_div_four derives the dual polarization identity (subtraction), recovering the inner product from the norm alone.",
+      "mathContext": "Real expansions $\\|x \\pm y\\|^2 = \\|x\\|^2 \\pm 2\\langle x,y\\rangle + \\|y\\|^2$: adding gives the law, subtracting gives the polarization $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$."
+    },
+    {
+      "id": "rearranged",
+      "title": "Rearranged Parallelogram Law",
+      "startLine": 65,
+      "endLine": 76,
+      "summary": "norm_add_sq_eq_real records the diagonal-from-sides rearrangement of the real parallelogram law: ‖x+y‖² = 2‖x‖² + 2‖y‖² − ‖x−y‖², expressing one diagonal in terms of the sides and the other diagonal.",
+      "mathContext": "$\\|x+y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2 - \\|x-y\\|^2$ — the parallelogram law solved for the sum-diagonal."
     },
     {
       "id": "complex",
       "title": "Complex Case",
-      "startLine": 84,
+      "startLine": 77,
       "endLine": 85,
       "summary": "parallelogram_norm_sq_complex: the ℂ specialization of the RCLike parallelogram law.",
       "mathContext": "$\\|x+y\\|^2 + \\|x-y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2$ over a complex inner-product space."

@@ -33,16 +33,31 @@
     "id": "csoq07-real",
     "proofId": "cauchy-schwarz-oq-07",
     "range": {
-      "startLine": 55,
-      "endLine": 71
+      "startLine": 50,
+      "endLine": 64
     },
     "type": "theorem",
     "title": "Real Case by Cross-Term Cancellation, and Polarization",
-    "content": "`parallelogram_norm_sq_real` proves the law over a real inner-product space by exactly the method named in the open question: expand $\\|x+y\\|^2 = \\|x\\|^2 + 2\\langle x,y\\rangle + \\|y\\|^2$ and $\\|x-y\\|^2 = \\|x\\|^2 - 2\\langle x,y\\rangle + \\|y\\|^2$ (`norm_add_sq_real`, `norm_sub_sq_real`), then add — the cross terms $\\pm 2\\langle x,y\\rangle$ cancel and `ring` closes. Subtracting instead doubles the cross term, giving the dual **polarization identity** $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ (`real_inner_eq_norm_sq_diff_div_four`), which recovers the inner product from the norm alone. `norm_add_sq_eq_real` records the rearranged law.",
+    "content": "`parallelogram_norm_sq_real` proves the law over a real inner-product space by exactly the method named in the open question: expand $\\|x+y\\|^2 = \\|x\\|^2 + 2\\langle x,y\\rangle + \\|y\\|^2$ and $\\|x-y\\|^2 = \\|x\\|^2 - 2\\langle x,y\\rangle + \\|y\\|^2$ (`norm_add_sq_real`, `norm_sub_sq_real`), then add — the cross terms $\\pm 2\\langle x,y\\rangle$ cancel and `ring` closes. Subtracting instead doubles the cross term, giving the dual **polarization identity** $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ (`real_inner_eq_norm_sq_diff_div_four`), which recovers the inner product from the norm alone.",
     "mathContext": "$\\|x\\pm y\\|^2 = \\|x\\|^2 \\pm 2\\langle x,y\\rangle + \\|y\\|^2;\\quad \\text{add} \\Rightarrow \\text{parallelogram law},\\ \\text{subtract} \\Rightarrow \\langle x,y\\rangle = \\tfrac{\\|x+y\\|^2 - \\|x-y\\|^2}{4}.$",
     "significance": "critical",
     "relatedConcepts": ["polarization identity", "norm_add_sq_real", "norm_sub_sq_real", "cross-term cancellation", "recovering the inner product"],
     "prerequisites": ["real inner-product spaces", "bilinearity of ⟪·,·⟫", "the ring tactic"]
+  },
+  {
+    "id": "csoq07-rearranged",
+    "proofId": "cauchy-schwarz-oq-07",
+    "range": {
+      "startLine": 65,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "Rearranged Law: a Diagonal from the Sides",
+    "content": "`norm_add_sq_eq_real` solves the real parallelogram law for one diagonal: $\\|x+y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2 - \\|x-y\\|^2$. It is the same identity as `parallelogram_norm_sq_real` moved into evaluation form, so that the length of the sum-diagonal is determined by the two side lengths and the difference-diagonal — the shape most directly useful when one diagonal and the sides are known and the other diagonal is sought (e.g. median-length and Apollonius-type computations).",
+    "mathContext": "$\\|x+y\\|^2 = 2\\|x\\|^2 + 2\\|y\\|^2 - \\|x-y\\|^2$ — the parallelogram law rearranged to isolate the sum-diagonal.",
+    "significance": "supporting",
+    "relatedConcepts": ["parallelogram law", "median length", "Apollonius' theorem", "diagonal from sides"],
+    "prerequisites": ["the real parallelogram law", "elementary rearrangement"]
   },
   {
     "id": "csoq07-complex",
