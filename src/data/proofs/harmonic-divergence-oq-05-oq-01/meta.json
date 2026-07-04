@@ -65,7 +65,8 @@
       "**Completes the sandwich**: combined with the parent, 1 + n/2 ≤ H_{2ⁿ} ≤ 1 + n. The two bounds straddle H_{2ⁿ} with a gap of exactly n/2, the elementary shadow of H_N ~ ln N at the dyadic sampling points.",
       "**Not a Mathlib lemma**: Mathlib offers only the existence-form divergence (Real.tendsto_sum_range_one_div_nat_succ_atTop) and no closed two-sided bound; both directions are original to this gallery family.",
       "**Reuses parent infrastructure**: the induction reuses the parent's range→range+Ico split H_two_pow_succ verbatim, isolating the only new ingredient as the dual block estimate.",
-      "**Answers the parent's open question**: OQ-05 explicitly asked whether a matching elementary upper bound H_{2ⁿ} ≤ 1 + n could be formalized to sandwich the partial sums; this entry does exactly that."
+      "**Answers the parent's open question**: OQ-05 explicitly asked whether a matching elementary upper bound H_{2ⁿ} ≤ 1 + n could be formalized to sandwich the partial sums; this entry does exactly that.",
+      "**Why the window is valid a posteriori**: the true asymptotic is H_{2ⁿ} = (ln 2)·n + γ + o(1), a line of slope ln 2 ≈ 0.693. The block estimates bracket the slope crudely between 1/2 and 1, and 0.693 lies safely inside [1/2, 1] — so the elementary sandwich must hold, while its width n/2 reflects exactly the looseness of using the block endpoints 1/2ⁿ⁺¹ and 1/2ⁿ instead of the true per-block increment."
     ],
     "prerequisites": [
       "Real analysis (partial sums, series bounds)",
@@ -100,11 +101,19 @@
     },
     {
       "id": "sandwich",
-      "title": "The Two-Sided Sandwich and Its Width",
+      "title": "The Two-Sided Sandwich",
       "startLine": 112,
-      "endLine": 122,
-      "summary": "harmonic_two_pow_sandwich: pairs this entry's upper bound with the parent's harmonic_two_pow_ge to give 1 + n/2 ≤ H_{2ⁿ} ≤ 1 + n. harmonic_two_pow_window: the bounds differ by exactly n/2.",
-      "mathContext": "$1 + n/2 \\le H_{2^n} \\le 1 + n$ with gap $(1+n) - (1+n/2) = n/2$, localising the dyadic partial sums to an interval of length n/2."
+      "endLine": 114,
+      "summary": "harmonic_two_pow_sandwich: pairs this entry's upper bound with the parent's harmonic_two_pow_ge to give 1 + n/2 ≤ H_{2ⁿ} ≤ 1 + n in one statement, answering OQ-05's open question via the anonymous constructor ⟨harmonic_two_pow_ge n, harmonic_two_pow_le n⟩.",
+      "mathContext": "$1 + n/2 \\le H_{2^n} \\le 1 + n$, i.e. $1 + \\tfrac{\\log_2 N}{2} \\le H_N \\le 1 + \\log_2 N$ at $N = 2^n$."
+    },
+    {
+      "id": "window",
+      "title": "Width of the Sandwich",
+      "startLine": 116,
+      "endLine": 120,
+      "summary": "harmonic_two_pow_window: the upper and lower bounds differ by exactly (1+n)−(1+n/2) = n/2 (by ring), localising H_{2ⁿ} to an interval of width n/2 centred at 1 + 3n/4 — the sharpest control obtainable from the pure Oresme block estimates.",
+      "mathContext": "$(1+n) - (1+n/2) = n/2$. The true value $H_{2^n} = (\\ln 2)\\,n + \\gamma + o(1)$ has slope $\\ln 2 \\approx 0.693 \\in [1/2, 1]$, safely inside the window."
     }
   ],
   "references": [

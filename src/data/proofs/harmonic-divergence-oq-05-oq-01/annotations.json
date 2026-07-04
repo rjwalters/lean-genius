@@ -74,22 +74,45 @@
     "proofId": "harmonic-divergence-oq-05-oq-01",
     "range": {
       "startLine": 112,
-      "endLine": 122
+      "endLine": 114
     },
     "type": "concept",
-    "title": "The Two-Sided Sandwich and Its Width",
-    "content": "harmonic_two_pow_sandwich simply pairs this entry's upper bound with the parent's harmonic_two_pow_ge to deliver 1 + n/2 ≤ H_{2ⁿ} ≤ 1 + n in one statement — answering the open question posed verbatim in the parent OQ-05's conclusion. harmonic_two_pow_window records that the gap between the two bounds is exactly (1 + n) − (1 + n/2) = n/2 (by ring), so the dyadic partial sums are localised to an interval of length n/2. This is the elementary, constant-free witness that H_N grows like log N: at N = 2ⁿ the sum sits between 1 + (log₂ N)/2 and 1 + log₂ N.",
-    "mathContext": "$1 + n/2 \\le H_{2^n} \\le 1 + n$, gap $= n/2$. Equivalently $1 + \\tfrac{\\log_2 N}{2} \\le H_N \\le 1 + \\log_2 N$ at the dyadic points $N = 2^n$.",
+    "title": "The Two-Sided Sandwich",
+    "content": "harmonic_two_pow_sandwich simply pairs this entry's upper bound harmonic_two_pow_le with the parent's lower bound harmonic_two_pow_ge to deliver 1 + n/2 ≤ H_{2ⁿ} ≤ 1 + n in one statement — the answer to the open question posed verbatim in the parent OQ-05's conclusion. The proof is an anonymous constructor ⟨harmonic_two_pow_ge n, harmonic_two_pow_le n⟩: the sandwich carries no new mathematical content beyond conjoining two already-proved facts, which is exactly why keeping both bounds phrased over the same H (from the shared parent namespace) matters — the conjunction is only meaningful because both sides speak about the identical partial-sum object. This is the elementary, constant-free witness that H_N grows like log N: at N = 2ⁿ the sum sits between 1 + (log₂ N)/2 and 1 + log₂ N.",
+    "mathContext": "$1 + n/2 \\le H_{2^n} \\le 1 + n$. Equivalently $1 + \\tfrac{\\log_2 N}{2} \\le H_N \\le 1 + \\log_2 N$ at the dyadic points $N = 2^n$.",
     "significance": "key",
     "relatedConcepts": [
       "two-sided bounds",
       "logarithmic growth",
       "harmonic_two_pow_ge",
-      "sandwich theorem"
+      "sandwich theorem",
+      "anonymous constructor"
     ],
     "prerequisites": [
-      "conjunction of inequalities",
-      "ring normalization"
+      "conjunction of inequalities"
+    ]
+  },
+  {
+    "id": "ann-window",
+    "proofId": "harmonic-divergence-oq-05-oq-01",
+    "range": {
+      "startLine": 116,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "Width of the Sandwich: the Gap Is Exactly n/2",
+    "content": "harmonic_two_pow_window records that the two bounds are not merely both correct but quantitatively tight together: their difference is exactly (1 + n) − (1 + n/2) = n/2, discharged by a single ring call. This turns the qualitative sandwich into a localisation statement — the dyadic partial sums H_{2ⁿ} are pinned to an interval of length n/2 (equivalently width (log₂ N)/2 at N = 2ⁿ), centred at 1 + 3n/4. It is the sharpest elementary, constant-free control one gets from the pure Oresme block estimates; closing the gap further, toward the true H_{2ⁿ} = (ln 2)·n + γ + o(1), requires finer, non-elementary input.",
+    "mathContext": "$(1 + n) - (1 + n/2) = n/2$, so $H_{2^n}$ lies in an interval of width $n/2$ centred at $1 + 3n/4$. The true asymptotic is $H_{2^n} = (\\ln 2)\\, n + \\gamma + o(1)$ with $\\ln 2 \\approx 0.693 \\in [1/2, 1]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "localisation width",
+      "ring normalization",
+      "Euler–Mascheroni constant",
+      "logarithmic growth"
+    ],
+    "prerequisites": [
+      "ring normalization",
+      "subtraction of linear bounds"
     ]
   }
 ]
