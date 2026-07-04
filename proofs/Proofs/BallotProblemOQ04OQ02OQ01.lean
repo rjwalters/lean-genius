@@ -77,6 +77,71 @@ theorem nonCrossingCount_zero : nonCrossingCount 0 = 1 := by
   simp only [hbot]
   exact Fintype.card_unique
 
+/-! ## First-return infrastructure: restriction of non-crossing partitions
+
+The outstanding bijection `nonempty_firstReturnEquiv` decomposes a non-crossing partition of
+`Fin (n+1)` into the induced partitions on the two sub-intervals cut out by a distinguished
+block. Building those induced partitions is where the earlier survey estimated "several hundred
+lines" of manual `Finpartition` construction (providing `SupIndep`, `sup_parts`, `not_bot`
+by hand). This section removes that obstacle with a short, reusable construction:
+
+* the *same-part* relation of any `Finpartition (univ : Finset (Fin n))` is exactly
+  `Setoid.ker P.part` (relation `P.part a = P.part b`), by `mem_part_iff_part_eq_part`;
+* pulling it back along an index embedding `emb : Fin i → Fin (n+1)` (`Setoid.comap`) and
+  re-materialising it with `Finpartition.ofSetoid` yields the restricted partition `restrictFp`
+  **without any manual partition-axiom proof** — `ofSetoid` supplies them;
+* and restriction *preserves* non-crossing whenever `emb` is strictly monotone
+  (`isNonCrossingFp_restrictFp`): a crossing in the restriction lifts, through the
+  order-embedding, to a crossing in `P`.
+
+This is the forward (restriction) half of the first-return decomposition, proved with `0`
+`sorry`; the remaining work for the bijection is the gluing (inverse) map and the mutual-inverse
+laws (see the entry's research notes). -/
+
+/-- The *same-part* relation of `P`, pulled back along an index map `emb`, as a `Setoid`.
+Its relation is `P.part (emb a) = P.part (emb b)` (`Setoid.ker P.part` is the same-part relation
+by `Finpartition.mem_part_iff_part_eq_part`). -/
+def restrictSetoid {i n : ℕ} (emb : Fin i → Fin (n + 1))
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) : Setoid (Fin i) :=
+  Setoid.comap emb (Setoid.ker P.part)
+
+instance instDecidableRestrictRel {i n : ℕ} (emb : Fin i → Fin (n + 1))
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) :
+    DecidableRel (restrictSetoid emb P).r :=
+  fun a b => (inferInstance : Decidable (P.part (emb a) = P.part (emb b)))
+
+/-- **Restriction of a finpartition along an index embedding.** The finpartition of `Fin i`
+whose blocks are the `emb`-preimages of the blocks of `P`. Built via `Finpartition.ofSetoid`, so
+the partition axioms come for free. -/
+def restrictFp {i n : ℕ} (emb : Fin i → Fin (n + 1))
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) :
+    Finpartition (univ : Finset (Fin i)) :=
+  Finpartition.ofSetoid (restrictSetoid emb P)
+
+/-- Membership in a block of the restriction is same-block-under-`emb` in `P`. -/
+@[simp] theorem mem_part_restrictFp {i n : ℕ} (emb : Fin i → Fin (n + 1))
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) (a b : Fin i) :
+    b ∈ (restrictFp emb P).part a ↔ P.part (emb a) = P.part (emb b) :=
+  Finpartition.mem_part_ofSetoid_iff_rel
+
+/-- **Restriction preserves non-crossing (forward half of the first-return decomposition).**
+If `emb : Fin i → Fin (n+1)` is strictly monotone (an order-embedding of an index interval) and
+`P` is non-crossing, then the restricted partition `restrictFp emb P` is non-crossing. A crossing
+`a < b < c < d` in the restriction maps, through the order-embedding, to a crossing
+`emb a < emb b < emb c < emb d` in `P`; the same-block hypotheses transport along `emb`, so
+non-crossing of `P` forces `emb a, emb b` into a common block, i.e. `a, b` into a common block of
+the restriction. -/
+theorem isNonCrossingFp_restrictFp {i n : ℕ} (emb : Fin i → Fin (n + 1))
+    (hmono : StrictMono emb) (P : Finpartition (univ : Finset (Fin (n + 1))))
+    (hP : IsNonCrossingFp P) : IsNonCrossingFp (restrictFp emb P) := by
+  intro a b c d hab hbc hcd hca hdb
+  rw [mem_part_restrictFp] at hca hdb ⊢
+  have Hca : emb c ∈ P.part (emb a) := by rw [hca]; exact P.mem_part (mem_univ _)
+  have Hdb : emb d ∈ P.part (emb b) := by rw [hdb]; exact P.mem_part (mem_univ _)
+  have hb_in_a : emb b ∈ P.part (emb a) :=
+    hP (emb a) (emb b) (emb c) (emb d) (hmono hab) (hmono hbc) (hmono hcd) Hca Hdb
+  exact ((P.mem_part_iff_part_eq_part (mem_univ _) (mem_univ _)).mp hb_in_a).symm
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
