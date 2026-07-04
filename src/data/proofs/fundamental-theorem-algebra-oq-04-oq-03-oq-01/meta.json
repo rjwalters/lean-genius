@@ -35,6 +35,62 @@
       "card_galoisGroup_eq_two: |Gal(ℂ/ℝ)| = 2 via IsGalois.card_aut_eq_finrank and [ℂ:ℝ] = 2"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "galoisGroupEquivZMod2_conjAe",
+      "type": "core",
+      "description": "The iso sends complex conjugation to the nontrivial element: galoisGroupEquivZMod2 Complex.conjAe = Multiplicative.ofAdd 1. This is the explicit answer to the parent's open question — the generator of the abstractly-cyclic Gal(ℂ/ℝ) is named as complex conjugation. Proved by if_neg conjAe_ne_one.",
+      "leanType": "galoisGroupEquivZMod2 Complex.conjAe = Multiplicative.ofAdd 1"
+    },
+    {
+      "name": "galoisGroupEquivZMod2_symm_ofAdd_one",
+      "type": "core",
+      "description": "Conversely, the nontrivial element of Multiplicative (ZMod 2) is realized by complex conjugation: galoisGroupEquivZMod2.symm (ofAdd 1) = Complex.conjAe. The inverse direction of the labelled correspondence.",
+      "leanType": "galoisGroupEquivZMod2.symm (Multiplicative.ofAdd 1) = Complex.conjAe"
+    },
+    {
+      "name": "eq_one_or_conjAe",
+      "type": "core",
+      "description": "Structure of Gal(ℂ/ℝ): the only ℝ-automorphisms of ℂ are the identity and complex conjugation. Proof by counting — a third distinct automorphism g would put three elements {1, conjAe, g} into a group of order 2, contradicting Fintype.card = 2. The mathematical heart that pins the abstract cyclic group to two named elements.",
+      "leanType": "(g : ℂ ≃ₐ[ℝ] ℂ) → g = 1 ∨ g = Complex.conjAe"
+    },
+    {
+      "name": "card_galoisGroup_eq_two",
+      "type": "core",
+      "description": "|Gal(ℂ/ℝ)| = 2: for a Galois extension the automorphism group has order equal to the degree, and [ℂ:ℝ] = 2 (IsGalois.card_aut_eq_finrank composed with Complex.finrank_real_complex).",
+      "leanType": "Nat.card (ℂ ≃ₐ[ℝ] ℂ) = 2"
+    },
+    {
+      "name": "conjAe_ne_one",
+      "type": "lemma",
+      "description": "Complex conjugation is a nontrivial automorphism: conjAe ≠ 1, because it sends I to -I, and -I = I would force I = 0.",
+      "leanType": "(Complex.conjAe : ℂ ≃ₐ[ℝ] ℂ) ≠ 1"
+    },
+    {
+      "name": "conjAe_mul_self",
+      "type": "lemma",
+      "description": "Complex conjugation is an involution: conjAe * conjAe = 1 (from Complex.conj_conj), the group multiplication needed for the map_mul law of the isomorphism.",
+      "leanType": "(Complex.conjAe : ℂ ≃ₐ[ℝ] ℂ) * Complex.conjAe = 1"
+    },
+    {
+      "name": "zmod2_eq_one_or",
+      "type": "lemma",
+      "description": "Multiplicative (ZMod 2) has exactly the two elements 1 and ofAdd 1 (by decide), the target-side case split for the inverse and multiplicativity laws.",
+      "leanType": "(x : Multiplicative (ZMod 2)) → x = 1 ∨ x = Multiplicative.ofAdd 1"
+    },
+    {
+      "name": "ofAdd_one_ne_one",
+      "type": "lemma",
+      "description": "The nontrivial element ofAdd 1 of Multiplicative (ZMod 2) is not the unit (by decide).",
+      "leanType": "(Multiplicative.ofAdd (1 : ZMod 2)) ≠ 1"
+    },
+    {
+      "name": "galoisGroupEquivZMod2_one",
+      "type": "lemma",
+      "description": "The iso sends the identity to the unit: galoisGroupEquivZMod2 1 = 1 (map_one). Together with galoisGroupEquivZMod2_conjAe this fully tabulates the labelled isomorphism galoisGroupEquivZMod2 : (ℂ ≃ₐ[ℝ] ℂ) ≃* Multiplicative (ZMod 2).",
+      "leanType": "galoisGroupEquivZMod2 1 = 1"
+    }
+  ],
   "overview": {
     "historicalContext": "The parent entry (fundamental-theorem-algebra-oq-04-oq-03, 'The Galois Correspondence for ℂ/ℝ') proved that Gal(ℂ/ℝ) is cyclic of order 2 — i.e. abstractly isomorphic to ℤ/2ℤ — and used this to recover the no-intermediate-fields theorem. Cyclicity is an existence statement: it does not name which automorphism plays the role of the generator. This entry answers the parent's first open question by building the isomorphism explicitly and pinning the generator to complex conjugation.",
     "problemStatement": "Construct an explicit multiplicative isomorphism Gal(ℂ/ℝ) ≃* Multiplicative (ZMod 2) that sends complex conjugation Complex.conjAe to the nontrivial element ofAdd 1 (and the identity to the unit).",
