@@ -99,6 +99,31 @@ Leng–Sah–Sawhney 2024) are far from even `o(N/log N)`, let alone the
 - 1 axiom: `euler_prime_sum_diverges` (Euler 1737; deep, kept).
 - 1 sorry: `required_bound_implies_conjecture` (threshold-critical; open).
 
+---
+
+## ADDENDUM (2026-07-04, attempt 3): trivial lower bound on the Roth number
+
+The file already had `rothNumber_le_window : r_k(N) ≤ N + 1` (the whole window is
+the crudest AP-free-agnostic ceiling) but **no matching lower bound**. Added two
+axiom-free, `sorry`-free lemmas (verified, 7743 jobs):
+
+- **`isAPFree_of_card_lt {S : Finset ℕ} (h : S.card < k) : IsAPFree ↑S k`** — a
+  set smaller than `k` cannot contain a genuine `k`-AP, since such an AP has
+  exactly `k` distinct elements (`arithProg_card`, needs `d > 0`). Proof:
+  `↑(ArithProg a d k) ⊆ ↑S` ⟹ (via `Finset.coe_subset`, `card_le_card`)
+  `k = (ArithProg a d k).card ≤ S.card < k`, `omega`.
+- **`rothNumber_ge_min : min (k-1) (N+1) ≤ r_k(N)`** — take `S = range (min (k-1)
+  (N+1))`: it fits in `range (N+1)` and has `< k` elements, so it is AP-free
+  (`isAPFree_of_card_lt`) and lies in the family `rothNumber` sups over; then
+  `Finset.le_sup`. `k = 0` handled separately (`min (0-1)(N+1) = 0`, omega).
+
+**Consequence.** `min(k-1, N+1) ≤ r_k(N) ≤ N+1`. For `N ≥ k-1` this is
+`k-1 ≤ r_k(N) ≤ N+1`: the Roth number has a constant floor `k-1` (the AP-freeness
+constraint is vacuous below cardinality `k`), so the entire `o(N/log N)` content
+of Erdős #3 is an asymptotic statement at large `N`. No sub-constant floor exists
+to exploit. This is the natural companion to `rothNumber_le_window` and completes
+the elementary bracketing of `r_k(N)`.
+
 ## Status
 
 PROGRESS. Delivered this session: (1) repaired a non-compiling file (bitrot);

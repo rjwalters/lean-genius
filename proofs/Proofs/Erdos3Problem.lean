@@ -266,6 +266,53 @@ theorem arithProg_card (a d k : ℕ) (hd : 0 < d) :
   unfold ArithProg
   rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
 
+/-- **Sets too small to contain a `k`-AP are vacuously `k`-AP-free.**
+    Any finite set `S` with fewer than `k` elements avoids `k`-term arithmetic
+    progressions: a genuine `k`-AP (positive common difference) has exactly `k`
+    distinct elements (`arithProg_card`), so it cannot fit inside a set of size
+    `< k`. This is the structural fact behind the trivial lower bound on the Roth
+    number (`rothNumber_ge_min`): below cardinality `k` the AP-freeness constraint
+    is empty. Fully machine-checked, axiom-free. -/
+theorem isAPFree_of_card_lt {S : Finset ℕ} {k : ℕ} (h : S.card < k) :
+    IsAPFree (↑S : Set ℕ) k := by
+  intro hAP
+  obtain ⟨a, d, hd, hsub⟩ := hAP
+  rw [Finset.coe_subset] at hsub
+  have hcard := Finset.card_le_card hsub
+  rw [arithProg_card a d k hd] at hcard
+  omega
+
+/-- **The trivial lower bound on the Roth number.**
+    `min (k - 1) (N + 1) ≤ r_k(N)`. The initial segment `{0, …, min(k-1,N+1)-1}`
+    fits inside the window `{0,…,N}` and has fewer than `k` elements, so it is
+    `k`-AP-free (`isAPFree_of_card_lt`) and enters the family `r_k(N)` maximises
+    over. Together with `rothNumber_le_window` (`r_k(N) ≤ N + 1`) this brackets the
+    Roth number as `min(k-1, N+1) ≤ r_k(N) ≤ N + 1`; in particular `r_k(N) ≥ k - 1`
+    once `N ≥ k - 1`, so all of the `o(N/log N)` content of Erdős #3 lives at large
+    `N` — there is never a sub-constant floor to exploit. Fully machine-checked,
+    axiom-free. -/
+theorem rothNumber_ge_min {k N : ℕ} : min (k - 1) (N + 1) ≤ rothNumber k N := by
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · subst hk
+    have hz : min (0 - 1) (N + 1) = 0 := by omega
+    rw [hz]; exact Nat.zero_le _
+  set m := min (k - 1) (N + 1) with hm
+  have hmN : m ≤ N + 1 := min_le_right _ _
+  have hmk : m < k := lt_of_le_of_lt (min_le_left _ _) (by omega)
+  have hsub : Finset.range m ⊆ Finset.range (N + 1) := by
+    intro x hx
+    rw [Finset.mem_range] at hx ⊢
+    omega
+  have hmem : Finset.range m ∈
+      ((Finset.range (N + 1)).powerset.filter
+        (fun S : Finset ℕ => IsAPFree (↑S : Set ℕ) k)) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨hsub, ?_⟩
+    apply isAPFree_of_card_lt
+    rw [Finset.card_range]; exact hmk
+  calc m = (Finset.range m).card := (Finset.card_range m).symm
+    _ ≤ rothNumber k N := by unfold rothNumber; exact Finset.le_sup hmem
+
 /-- **Only infinite sets contain arbitrarily long APs.**
     If `A` contains a `k`-term arithmetic progression (with positive common
     difference) for every `k`, then `A` is infinite.  Indeed, were `A` finite with
