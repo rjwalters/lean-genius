@@ -173,7 +173,7 @@
     {
       "id": "sec-fubini",
       "title": "Section I: Fubini — Square of Gaussian as Double Integral",
-      "startLine": 35,
+      "startLine": 1,
       "endLine": 47,
       "summary": "Proves gaussian_sq_eq_double_integral: (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)}. Uses integral_mul_integral (proved via Integrable instance for exp(-x²)) + simp_rw on exp_add. Compiles with 0 sorries.",
       "mathContext": "$(\\int e^{-x^2} dx)^2 = (\\int e^{-x^2} dx)(\\int e^{-y^2} dy) = \\int\\int e^{-(x^2+y^2)} dx\\, dy$ by Fubini."
@@ -225,6 +225,14 @@
       "endLine": 178,
       "summary": "Explains the geometric meaning: angular factor 2π is the circumference, radial factor 1/2 comes from the exponential substitution, product (1/2)·(2π) = π = area of unit circle.",
       "mathContext": "The Gaussian integral computes $\\iint_{\\mathbb{R}^2} e^{-r^2} r\\, dr\\, d\\theta = (\\int_0^\\infty r e^{-r^2} dr)(\\int_{-\\pi}^\\pi d\\theta) = \\pi$, which is the area of the unit disk."
+    },
+    {
+      "id": "gaussian-via-polar",
+      "title": "Section VIII: Gaussian via Polar Coordinates and the Circumference Connection",
+      "startLine": 179,
+      "endLine": 231,
+      "summary": "The polar-decomposition finale: `gaussian_integral_sq_via_polar` and `gaussian_integral_via_polar` recover ∫ e^{-x²} dx = √π by evaluating the squared integral in polar coordinates, `gaussian_sq_eq_radial_times_angular` exhibits the factorization (∫ e^{-x²})² = (radial 1/2)·(angular 2π), and `angular_integral_is_circumference` identifies the angular factor 2π with the circumference of the unit circle — closing the loop back to the area-of-circle theme.",
+      "mathContext": "$\\left(\\int_{\\mathbb R} e^{-x^2}\\,dx\\right)^2 = \\int_0^\\infty r e^{-r^2}\\,dr \\cdot \\int_0^{2\\pi} d\\theta = \\tfrac12 \\cdot 2\\pi = \\pi$."
     }
   ],
   "conclusion": {

@@ -141,8 +141,8 @@
       "id": "corollaries",
       "title": "Section VII: Corollaries — Interface for the Isoperimetric Proof",
       "startLine": 673,
-      "endLine": 712,
-      "summary": "reparam_circumference_eq (circumference preserved), reparam_speed_is_L_over_2pi (|γ'(t)| = L/(2π) as sqrt form), arcLength_grows_by_L (s(t+2π)-s(t) = L), arcLength_bijection (bijectivity + continuity packaged together).",
+      "endLine": 724,
+      "summary": "reparam_circumference_eq (circumference preserved), reparam_speed_is_L_over_2pi (|γ'(t)| = L/(2π) as sqrt form), arcLength_grows_by_L (s(t+2π)-s(t) = L), arcLength_bijection (bijectivity + continuity packaged together). Includes `arcLength_bijection`: for a regular closed curve the arc-length map ℝ → ℝ is a homeomorphism (continuous, bijective), the interface fact consumed by the isoperimetric reparametrization.",
       "mathContext": "With constant speed $c = L/(2\\pi)$, the Fourier series of $\\gamma'$ satisfies Parseval's equality in a form equivalent to the Wirtinger inequality $\\|f'\\|^2 \\ge \\|f\\|^2$, yielding the isoperimetric inequality $L^2 \\ge 4\\pi A$."
     }
   ],
