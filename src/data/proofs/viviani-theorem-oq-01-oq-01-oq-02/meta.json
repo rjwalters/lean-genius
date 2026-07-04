@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "header-strategy",
+      "title": "Overview: From Abstract Non-Constancy to Constructive Interior Witnesses",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring: the sibling entry proves the distance-sum is non-constant iff the triangle is non-equilateral, but only abstractly. This entry makes the failure constructive by exhibiting explicit interior points — centroid perturbations — at which the perpendicular distance-sum genuinely differs, upgrading \"not constant\" into named witnesses lying strictly inside the triangle.",
+      "mathContext": "For a non-equilateral triangle, explicit interior $P,Q$ with $\\mathrm{sumDist}(P)\\ne\\mathrm{sumDist}(Q)$."
+    },
+    {
       "id": "part1-interior",
       "title": "Part I: The Open-Interior Predicate",
       "startLine": 49,
@@ -77,11 +85,20 @@
       "summary": "IsInterior A B C P captures the open interior of the triangle as the set of strictly-positive barycentric combinations P = α•A+β•B+γ•C with α,β,γ > 0 and α+β+γ = 1 — the region on which the signed distance-sum sumDist coincides with the genuine perpendicular-distance sum, and the domain in which the witnesses are required to lie."
     },
     {
-      "id": "part2-witnesses",
-      "title": "Part II: Interior Witnesses of Non-Constancy",
+      "id": "interior-witnesses",
+      "title": "Part II(a): Reducing to a Non-Orthogonal Gradient",
       "startLine": 56,
+      "endLine": 94,
+      "summary": "viviani_interior_witnesses rewrites non-degeneracy into the (B−A, C−A) basis and derives the gradient g = nA+nB+nC ≠ 0 from non-equilaterality (via viviani_converse and const_iff_normalSum_zero). A 2×2 Cramer argument then shows g cannot be rdot-orthogonal to both edge vectors simultaneously — isolating the direction along which the distance-sum must vary.",
+      "mathContext": "$g=n_A+n_B+n_C\\ne0$ is not orthogonal to both $B-A$ and $C-A$."
+    },
+    {
+      "id": "centroid-perturbation",
+      "title": "Part II(b): The ±1/6 Centroid Perturbation Witnesses",
+      "startLine": 95,
       "endLine": 139,
-      "summary": "viviani_interior_witnesses: rewrite non-degeneracy into the (B−A, C−A) basis (hdm); derive g = nA+nB+nC ≠ 0 from non-equilaterality via viviani_converse and const_iff_normalSum_zero; prove by a 2×2 Cramer argument that g is not rdot-orthogonal to both edges; then in each case exhibit the centroid perturbations (barycentric weights (1/6,1/2,1/3) and (1/2,1/6,1/3)) as interior witnesses and compute the distance-sum gap ⅓·⟪g,edge⟫ ≠ 0 via the parent's sumDist_sub."
+      "summary": "In each non-orthogonal case, the proof exhibits explicit centroid perturbations with barycentric weights (1/6,1/2,1/3) and (1/2,1/6,1/3) — strictly-positive, hence interior — and computes the distance-sum gap ⅓·⟪g, edge⟫ ≠ 0 via the parent's sumDist_sub, certifying non-constancy by a concrete pair of interior points.",
+      "mathContext": "$\\mathrm{sumDist}(P)-\\mathrm{sumDist}(Q)=\\tfrac13\\langle g,\\text{edge}\\rangle\\ne0$."
     },
     {
       "id": "part3-restatement",
