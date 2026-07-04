@@ -248,6 +248,40 @@ theorem ramsey_deletion_bound (hk : 2 ≤ k) (hkn : k ≤ n) :
       ∀ K : Finset (Fin n), K ⊆ R → K.card = k → ¬ Mono c K :=
   ramsey_deletion hk hkn
 
+/-- **The general "one step past the union threshold" gain.**  Suppose `n` sits in the
+    first deletion window past the sharp union bound, i.e.
+
+        `2 ^ C(k,2) ≤ 2·C(n,k) < 2·2 ^ C(k,2)`.
+
+    The left inequality says the union-bound test `2·C(n,k) < 2 ^ C(k,2)` *fails* at `n`
+    (so the first moment certifies nothing on all of `Kₙ`); the two together pin the
+    deletion count `M = ⌊2·C(n,k)/2 ^ C(k,2)⌋ = 1`.  Deleting that single bad-clique
+    representative leaves a monochromatic-`Kₖ`-free set of `n − 1` vertices — a strict
+    improvement over the union bound precisely where the union bound gives out.
+
+    This is the *general* mechanism behind the concrete `k = 6` (`n = 19`) and `k = 7`
+    (`n = 30`) witnesses below: both land in exactly this `M = 1` window, so
+    `deletion_no_mono_K6` and `deletion_no_mono_K7` are instances of this theorem.  No
+    large `decide` is needed here — the `M = 1` collapse is pure `ℕ`-division reasoning,
+    valid for every `k`. -/
+theorem ramsey_deletion_one_past (hk : 2 ≤ k) (hkn : k ≤ n)
+    (hlo : 2 ^ (k.choose 2) ≤ 2 * n.choose k)
+    (hhi : 2 * n.choose k < 2 * 2 ^ (k.choose 2)) :
+    ∃ (c : Coloring n) (R : Finset (Fin n)),
+      n - 1 ≤ R.card ∧
+      ∀ K : Finset (Fin n), K ⊆ R → K.card = k → ¬ Mono c K := by
+  have hbpos : 0 < 2 ^ (k.choose 2) := pow_pos (by norm_num) _
+  -- the two window inequalities force the deletion count `M` to be exactly `1`
+  have hM1 : (2 * n.choose k) / 2 ^ (k.choose 2) = 1 := by
+    have hq1 : 1 ≤ (2 * n.choose k) / 2 ^ (k.choose 2) := by
+      rw [Nat.le_div_iff_mul_le hbpos]; simpa using hlo
+    have hq2 : (2 * n.choose k) / 2 ^ (k.choose 2) < 2 := by
+      rw [Nat.div_lt_iff_lt_mul hbpos]; exact hhi
+    omega
+  obtain ⟨c, R, hRcard, hR⟩ := ramsey_deletion (n := n) (k := k) hk hkn
+  rw [hM1] at hRcard
+  exact ⟨c, R, hRcard, hR⟩
+
 set_option maxHeartbeats 800000 in
 /-- **The sharp union bound caps at `n = 17` for `k = 6`.**  The first-moment test
     `2·C(n,6) < 2^{C(6,2)} = 2^{15}` holds at `n = 17` (`2·12376 = 24752 < 32768`) but
@@ -324,6 +358,7 @@ theorem deletion_no_mono_K7 :
 #check @ramsey_deletion
 #check @ramsey_deletion_generalizes_first_moment
 #check @ramsey_deletion_bound
+#check @ramsey_deletion_one_past
 #check @deletion_no_mono_K6
 #check @unionBound_caps_at_27_for_K7
 #check @deletion_no_mono_K7
@@ -336,6 +371,7 @@ theorem deletion_no_mono_K7 :
 -- reduction cheap (single-recursion `descFactorial`), also axiom-free.
 #print axioms ramsey_deletion
 #print axioms ramsey_deletion_generalizes_first_moment
+#print axioms ramsey_deletion_one_past
 #print axioms deletion_no_mono_K6
 #print axioms unionBound_caps_at_27_for_K7
 #print axioms deletion_no_mono_K7

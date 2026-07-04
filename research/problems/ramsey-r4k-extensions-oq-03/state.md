@@ -4,33 +4,34 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-03
-**Iteration**: 8 (PART VIII)
+**Iteration**: 10 (PART X)
 
 ## Current Focus
-Deletion/alteration method as the elementary probabilistic upgrade that STRICTLY
-beats the sharp union bound at small k (where the symmetric LLL of this entry does
-not). Added `deletionBound`, `ramsey_deletion_bound`, `unionBound_caps_at_17_for_K6`,
-`deletion_no_mono_K6` to `RamseyR4kExtensionsOQ03Deletion.lean`.
+Generalized the ad-hoc k=6/k=7 deletion witnesses into one k-uniform theorem
+`ramsey_deletion_one_past`: whenever `n` is one step past the sharp union threshold
+(`2^C(k,2) ≤ 2·C(n,k) < 2·2^C(k,2)`, i.e. deletion count `M=1`), the deletion method
+keeps a monochromatic-Kₖ-free set of `n−1` vertices. Both concrete witnesses are now
+instances of a stated mechanism.
 
 ## Active Approach
-Concrete crossover witnesses via kernel `decide` on ℕ (axiom-free). k=6 discharged as
-theorem (R(6,6)>18 vs union bound's 17); k=7 (R(7,7)>29 vs 27) kept as prose remark
-because C(30,7)≈2M makes decide impractical.
+Machine-verified general theorem (docker-build clean, 7744 jobs), Tier-A axiom-free
+(`propext / Classical.choice / Quot.sound`). The `M=1` collapse is proved by the two
+`Nat` div-iff lemmas + `omega` (no large binomial `decide`).
 
 ## Attempt Count
-- Total attempts: 8
+- Total attempts: 10
 - Current approach attempts: 1
 - Approaches tried: LLL parameters, dependency-degree bound, LLL vs union bound
-  identity, honest union-bound comparison (PART VII), deletion method (PART VIII)
+  identity, honest union-bound comparison (VII), deletion method (VIII), k=7
+  machine-checked witness + compile repair (IX), general M=1 gain theorem (X)
 
 ## Blockers
-- **ENV**: host disk 100% full; Docker mathlib-cache decompress fails (ENOSPC). This
-  session's additions are Python-verified + hand-audited but NOT machine-built. Needs
-  CI/deployer build (once disk is reset) to confirm green.
 - **MATH**: `SymmetricLLLForRamsey` full formalization (>1000 lines, measure theory) —
-  the sole remaining non-Mathlib ingredient. Left as explicit hypothesis.
+  the sole remaining non-Mathlib ingredient. Left as explicit hypothesis. See sibling
+  `lovasz-local-lemma-oq-01`.
 
 ## Next Action
-Once the disk-full env blocker is cleared, build `Proofs.RamseyR4kExtensionsOQ03Deletion`
-and confirm `deletion_no_mono_K6` / `unionBound_caps_at_17_for_K6` verify with
-`#print axioms` = propext/Classical.choice/Quot.sound only.
+Optional future increments: (a) a general "deletion strictly beats union" corollary
+quantifying the gain as a function of k; (b) k=8 witness via the descFactorial route.
+The core deletion-method programme is now stated at full generality (M=0 recovers first
+moment via `ramsey_deletion_generalizes_first_moment`; M=1 via `ramsey_deletion_one_past`).
