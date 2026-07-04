@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-furst-oq03oq01-setup",
+    "proofId": "furstenberg-correspondence-oq-03-oq-01",
+    "range": {
+      "startLine": 44,
+      "endLine": 62
+    },
+    "type": "definition",
+    "title": "The Setup: A Density-½ Set and a Constant-Term Family",
+    "content": "The counterexample is built from two objects. `E := {n : ℤ | Even n}` is the even integers — a set of density $\\tfrac12$, chosen precisely so the eventual failure cannot be dismissed as a smallness artefact. `badFamily := ![0, 2X + 1]` is a two-polynomial family whose *second* member $p_1 = 2X+1$ has nonzero constant term $p_1(0) = 1$; it is `noncomputable` only because polynomial literals over $\\mathbb Z[X]$ are. `badFamily_hasConstantTerm` records the whole point of the family in one line: it violates `NoConstantTerm` (which demands every $p_i(0) = 0$), placed by evaluating the hypothesis at index $1$ and `simp`-reducing $(2X+1)(0) = 1 \\ne 0$. This certifies that `badFamily` lies **outside** the Bergelson–Leibman polynomial-Szemerédi hypothesis, so any failure it produces is a genuine test of whether that hypothesis is removable — not a violation of the theorem's stated scope.",
+    "mathContext": "$E = \\{n : \\mathbb Z \\mid 2 \\mid n\\}$ (density $\\tfrac12$); $\\text{badFamily} = [\\,0,\\ 2X+1\\,]$ with $p_1(0) = 1 \\ne 0$, so $\\neg\\,\\text{NoConstantTerm}(\\text{badFamily})$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "NoConstantTerm hypothesis",
+      "Bergelson–Leibman polynomial Szemerédi theorem",
+      "natural density",
+      "constant term of a polynomial"
+    ],
+    "prerequisites": [
+      "polynomials over ℤ",
+      "polynomial evaluation p(0)",
+      "sets of integers and density"
+    ]
+  },
+  {
     "id": "ann-furst-oq03oq01-obstruction",
     "proofId": "furstenberg-correspondence-oq-03-oq-01",
     "range": {
