@@ -194,6 +194,62 @@
     "path": "Proofs/ArithmeticSeriesOQ02OQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "simplicial_zero",
+      "type": "technical",
+      "description": "Base value S₀(n) = C(n,0) = 1 of the simplicial numbers Sₖ(n) = C(n+k, k).",
+      "leanType": "(n : ℕ) → simplicial 0 n = 1"
+    },
+    {
+      "name": "simplicial_start",
+      "type": "technical",
+      "description": "Boundary value Sₖ(0) = C(k,k) = 1 of the simplicial numbers.",
+      "leanType": "(k : ℕ) → simplicial k 0 = 1"
+    },
+    {
+      "name": "simplicial_succ",
+      "type": "supporting",
+      "description": "Pascal recurrence for simplicial numbers: S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1), the engine of both inductions below.",
+      "leanType": "(k n : ℕ) → simplicial (k + 1) (n + 1) = simplicial (k + 1) n + simplicial k (n + 1)"
+    },
+    {
+      "name": "hockey_stick",
+      "type": "core",
+      "description": "1D hockey stick identity: Σ_{i=0}^n C(i+k, k) = C(n+k+1, k+1), i.e. Σ Sₖ(i) = S_{k+1}(n), by induction using the simplicial recurrence.",
+      "leanType": "(k n : ℕ) → ∑ i ∈ range (n + 1), simplicial k i = simplicial (k + 1) n"
+    },
+    {
+      "name": "parallel_vandermonde",
+      "type": "core",
+      "description": "Parallel Vandermonde (convolution) identity: Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1, a+b+1), by nested induction on (b, n) via Pascal's recurrence.",
+      "leanType": "(a b n : ℕ) → ∑ i ∈ range (n + 1), simplicial a i * simplicial b (n - i) = simplicial (a + b + 1) n"
+    },
+    {
+      "name": "hockey_stick_2d",
+      "type": "core",
+      "description": "Main theorem — 2D hockey stick identity: Σ_{i+j≤n} C(i+a,a)·C(j+b,b) = C(n+a+b+2, a+b+2), obtained as hockey_stick ∘ parallel_vandermonde.",
+      "leanType": "(a b n : ℕ) → ∑ m ∈ range (n + 1), ∑ i ∈ range (m + 1), simplicial a i * simplicial b (m - i) = simplicial (a + b + 2) n"
+    },
+    {
+      "name": "parallel_vandermonde_left",
+      "type": "supporting",
+      "description": "Specialization at a = 0: the parallel Vandermonde collapses to the 1D hockey stick Σ Sᵦ(n-i) = S_{b+1}(n).",
+      "leanType": "(b n : ℕ) → ∑ i ∈ range (n + 1), simplicial b (n - i) = simplicial (b + 1) n"
+    },
+    {
+      "name": "check_2d_n2",
+      "type": "technical",
+      "description": "Concrete sanity check (via native_decide): S₂(2) = C(4,2) = 6, the six lattice points of the 2D hockey stick at a=b=0, n=2.",
+      "leanType": "simplicial 2 2 = 6"
+    },
+    {
+      "name": "check_pv_a1b1n2",
+      "type": "technical",
+      "description": "Concrete sanity check (via native_decide): S₃(2) = C(5,3) = 10, matching the parallel Vandermonde value for a=b=1, n=2.",
+      "leanType": "simplicial 3 2 = 10"
+    }
+  ],
   "references": [
     {
       "authors": "Vandermonde, Alexandre-Théophile",
