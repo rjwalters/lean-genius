@@ -172,5 +172,61 @@
     "path": "Proofs/HarmonicDivergenceOQ05OQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "Hp_tendsto_atTop",
+      "type": "core",
+      "description": "Divergence of the p-series for 0 < p ≤ 1: the partial sums Hp(p,N) tend to +∞. The 'diverges' half of the p-series dichotomy.",
+      "leanType": "{p : ℝ} → 0 < p → p ≤ 1 → Filter.Tendsto (Hp p) Filter.atTop Filter.atTop"
+    },
+    {
+      "name": "Hp_bddAbove",
+      "type": "core",
+      "description": "Boundedness of the p-series for p > 1: every partial sum is at most 1 + 1/(1 − 2^(1−p)). The 'converges' half of the dichotomy, with an explicit uniform bound.",
+      "leanType": "{p : ℝ} → 1 < p → (N : ℕ) → Hp p N ≤ 1 + 1 / (1 - (2 : ℝ) ^ (1 - p))"
+    },
+    {
+      "name": "Hp_two_pow_ge",
+      "type": "core",
+      "description": "Dyadic lower bound for 0 < p ≤ 1: 1 + n/2 ≤ Hp(p, 2ⁿ), forcing linear-in-n growth of the dyadic partial sums.",
+      "leanType": "{p : ℝ} → 0 < p → p ≤ 1 → (n : ℕ) → 1 + (n : ℝ) / 2 ≤ Hp p (2 ^ n)"
+    },
+    {
+      "name": "Hp_two_pow_le",
+      "type": "core",
+      "description": "Dyadic geometric upper bound for p > 1: Hp(p, 2ⁿ) ≤ 1 + 1/(1 − 2^(1−p)), summing the geometric block bound.",
+      "leanType": "{p : ℝ} → 1 < p → (n : ℕ) → Hp p (2 ^ n) ≤ 1 + 1 / (1 - (2 : ℝ) ^ (1 - p))"
+    },
+    {
+      "name": "Hp_exceeds",
+      "type": "supporting",
+      "description": "Unboundedness for 0 < p ≤ 1: for any M there is an n with M < Hp(p, 2ⁿ). The quantitative engine behind the tendsto statement.",
+      "leanType": "{p : ℝ} → 0 < p → p ≤ 1 → (M : ℝ) → ∃ n : ℕ, M < Hp p (2 ^ n)"
+    },
+    {
+      "name": "block_ge_half",
+      "type": "supporting",
+      "description": "Dyadic block lower bound for 0 < p ≤ 1: each block of 2ⁿ terms sums to at least 1/2 (each term ≥ 1/2ⁿ⁺¹ times 2ⁿ terms).",
+      "leanType": "{p : ℝ} → 0 < p → p ≤ 1 → (n : ℕ) → (1 : ℝ) / 2 ≤ ∑ k ∈ Finset.Ico (2 ^ n : ℕ) (2 ^ (n + 1)), (1 : ℝ) / ((k : ℝ) + 1) ^ p"
+    },
+    {
+      "name": "block_le_geom",
+      "type": "supporting",
+      "description": "Dyadic block upper bound for p ≥ 0: each block is at most (2^(1−p))ⁿ, a geometric ratio that is < 1 exactly when p > 1.",
+      "leanType": "{p : ℝ} → 0 ≤ p → (n : ℕ) → ∑ k ∈ Finset.Ico (2 ^ n : ℕ) (2 ^ (n + 1)), (1 : ℝ) / ((k : ℝ) + 1) ^ p ≤ ((2 : ℝ) ^ (1 - p)) ^ n"
+    },
+    {
+      "name": "Hp_two_pow_succ",
+      "type": "technical",
+      "description": "Dyadic recurrence: Hp(p, 2ⁿ⁺¹) splits as Hp(p, 2ⁿ) plus one dyadic block, the inductive backbone of every bound here.",
+      "leanType": "(p : ℝ) → (n : ℕ) → Hp p (2 ^ (n + 1)) = Hp p (2 ^ n) + ∑ k ∈ Finset.Ico (2 ^ n : ℕ) (2 ^ (n + 1)), (1 : ℝ) / ((k : ℝ) + 1) ^ p"
+    },
+    {
+      "name": "Hp_mono",
+      "type": "technical",
+      "description": "Monotonicity of the partial-sum sequence Hp(p, ·) in N (all summands are nonnegative), used to lift dyadic bounds to arbitrary N.",
+      "leanType": "(p : ℝ) → Monotone (Hp p)"
+    }
+  ],
   "sorries": 0
 }
