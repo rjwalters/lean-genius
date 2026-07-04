@@ -1,0 +1,75 @@
+{
+  "slug": "hurwitz-theorem-oq-03-oq-01-wip-01",
+  "title": "Complete Hurwitz Only-If: Normed Division Algebras via Gelfand-Mazur",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "A \\text{ a normed division algebra over } \\mathbb{R} \\text{ with a multiplicative norm} \\implies \\dim_{\\mathbb{R}} A \\in \\{1, 2, 4, 8\\},\\ A \\cong \\mathbb{R}, \\mathbb{C}, \\mathbb{H}, \\text{ or } \\mathbb{O}.",
+    "plain": "Hurwitz's theorem classifies the real normed division algebras — there are exactly",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": "finrank R A in {1,2,4,8} for finite-dim NormedDivisionRing A over R (Frobenius: actually {1,2,4})."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-07-04T15:07:19-07:00",
+    "iteration": 2,
+    "focus": "Frobenius Step 3 decomposition mapped; execute hurwitz_only_if_ring_comm then anticommutator keystone when tooling returns.",
+    "blockers": [
+      "Local build unsafe: host swap 98% full (SIGBUS-135/host-crash risk)",
+      "Aristotle MCP down: Resource not found on all prove calls"
+    ],
+    "nextAction": "Commit hurwitz_only_if_ring_comm (provable now via Gelfand-Mazur); then keystone anticommutator lemma.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT (no code): single sorry = Frobenius Step 3; Steps 1-2 verified in-file; 5-lemma decomposition mapped; commutative subcase provable now. BLOCKED THIS SESSION on tooling (build swap 98% full + Aristotle MCP down).",
+    "builtItems": [],
+    "insights": [
+      "The target file HurwitzOnlyIf.lean has exactly ONE real sorry (hurwitz_only_if_ring); grep -c=4 is inflated by 3 docstring mentions of the word sorry.",
+      "The remaining sorry is precisely Frobenius theorem: NormedDivisionRing is associative so finrank in {1,2,4} (subset of {1,2,4,8}); octonions excluded by associativity.",
+      "Frobenius Steps 1-2 are already VERIFIED in-file (minpoly_natDegree_le_two, exists_quadratic, exists_real_shift_sq_scalar, eq_smul_one_of_sq_eq_nonneg_smul). Only Step 3 (global structure) remains.",
+      "Step 3 keystone is the anticommutator polarization: for imaginary x,y, x*y+y*x in R*1. This single lemma makes re:A->R linear and ImA a subspace; prove it first.",
+      "Commutative subcase of hurwitz_only_if_ring is provable NOW without Step 3: a commutative NormedDivisionRing is a NormedField, so hurwitz_field_case (Gelfand-Mazur) applies via a letI NormedField instance."
+    ],
+    "mathlibGaps": [
+      "Mathlib (2026-07) has Gelfand-Mazur (Analysis.Normed.Algebra.GelfandMazur) but NOT the classification of finite-dim real division algebras (Frobenius).",
+      "No Clifford-algebra / Radon-Hurwitz-number / positive-definite-quadratic-space machinery to discharge Step 3 directly; must be built locally (~250-450 lines, elementary)."
+    ],
+    "nextSteps": [
+      "First commit (lowest risk, provable now): hurwitz_only_if_ring_comm assuming forall x y, x*y=y*x, via letI NormedField from commutativity + reuse hurwitz_field_case.",
+      "Keystone Step-3 lemma: anticommutator polarization x*y+y*x in R*1 for x,y imaginary, from (x+y)^2 - x^2 - y^2 and cancellation of linear parts.",
+      "Then re:A->R linear, ImA=ker re is subspace, A = R*1 (+) ImA; B(x,y)=-(x*y+y*x)/2 positive-definite symmetric; finrank ImA in {0,1,3}.",
+      "Alternative: submit hurwitz_only_if_ring to Aristotle once MCP is restored, hint=Frobenius theorem, context_files=HurwitzOnlyIf.lean supplying Steps 1-2."
+    ],
+    "markdown": "# Knowledge Base: hurwitz-theorem-oq-03-oq-01-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "algebra",
+    "normed-algebras",
+    "division-algebras",
+    "gelfand-mazur",
+    "hurwitz-theorem"
+  ],
+  "relatedProofs": [
+    "hurwitz-theorem",
+    "hurwitz-theorem-oq-03",
+    "hurwitz-theorem-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-04T22:16:23.695Z",
+  "lastUpdate": "2026-07-04T22:35:00.000Z"
+}
