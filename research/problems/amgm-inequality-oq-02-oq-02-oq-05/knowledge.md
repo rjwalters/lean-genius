@@ -221,3 +221,70 @@ The ONLY remaining piece for the general TOP step is the Vieta substitution
 `pₙ₋₁² ≥ pₙ₋₂ pₙ`. General *interior* steps need the same machinery on a
 sub-window derivative (isolating `eₖ₋₁,eₖ,eₖ₊₁` instead of the top three). Both
 are purely algebraic — no analysis blocker remains.
+
+## PART VIII — Vieta closure of the TOP step: the calculus route reaches Newton's inequality on esymm(roots) (researcher-5, 2026-07-04)
+
+**Mode**: ACT (MODERATE, score 13). **Outcome**: progress — CLOSES the
+"coefficient bookkeeping / Vieta" gap for the TOP Newton step at arbitrary arity.
+**+2 verified theorems (28 → 30), 0 sorries, 0 axioms** (foundational only; no
+`decide`/`native_decide`). docker-build clean, 7743 jobs, Lean 4.26.0.
+
+### What this closes
+Part VII left the top step one purely-algebraic increment short: substitute the
+top coefficients of the split polynomial via Vieta to turn the coefficient
+inequality `newton_top_coeff_ineq` into the classical Newton inequality on the
+elementary symmetric functions of the *roots*. Part VIII does exactly that, so
+the classical calculus proof now runs end-to-end (differentiate → discriminant →
+Vieta) to a symmetric-function inequality for every arity `n = m + 2`:
+
+- **`newton_top_esymm_roots (m) {p} (hp : p.Splits) (hdeg : p.natDegree = m + 2)`** :
+  `4·(m+2)!desc·m!desc·lc²·e₂ ≤ ((m+1)!desc)²·lc²·e₁²`, with `lc = p.leadingCoeff`,
+  `e₁ = p.roots.esymm 1`, `e₂ = p.roots.esymm 2`. The Vieta substitution of
+  `newton_top_coeff_ineq`'s three coefficients.
+- **`newton_top_esymm_roots_monic (m) {p} (hp : p.Splits) (hmonic : p.Monic)
+  (hdeg : p.natDegree = m + 2)`** : the recognizable classical form
+  `2·(m+2)·e₂ ≤ (m+1)·e₁²`, i.e. the first Newton/Maclaurin inequality
+  `e₁² ≥ (2n/(n-1))·e₂` for every `n = m+2` — reached via the calculus route (the
+  same inequality Part III proves independently by QM–AM).
+
+### Key Lean facts (Mathlib API confirmed, Mathlib 4.26.0)
+- **`Polynomial.coeff_eq_esymm_roots_of_splits {F} [Field F] {p : F[X]}
+  (hsplit : p.Splits) {k} (h : k ≤ p.natDegree) : p.coeff k = p.leadingCoeff *
+  (-1)^(p.natDegree - k) * p.roots.esymm (p.natDegree - k)`** (in
+  `RingTheory/Polynomial/Vieta.lean`) — THE Vieta substitution, ready-made for a
+  split polynomial's coefficients. No need to build `∏(X−xᵢ)` by hand.
+- `Polynomial.coeff_natDegree : p.coeff p.natDegree = p.leadingCoeff` — the top
+  coefficient directly (avoid Vieta at `k = natDegree`, where `esymm 0` needs
+  extra unfolding).
+- **`Nat.succ_descFactorial (n) (k) : (n+1-k)*(n+1).descFactorial k =
+  (n+1)*n.descFactorial k`** collapses the three `descFactorial` weights: with
+  `n=m+1,k=m` it gives `2·(m+2).descFactorial m = (m+2)·(m+1).descFactorial m`;
+  with `n=m,k=m` it gives `(m+1).descFactorial m = (m+1)·m.descFactorial m`. These
+  two identities (cast to ℝ) reduce the raw weights to the clean `2(m+2)` / `(m+1)`.
+- `Polynomial.Monic.leadingCoeff : p.Monic → p.leadingCoeff = 1`;
+  `Nat.descFactorial_pos : 0 < n.descFactorial k ↔ k ≤ n` (positivity for the
+  `B²`-cancellation).
+
+### Reusable Lean gotchas (researcher-5, Part VIII)
+- `newton_top_coeff_ineq` states its indices/weights in `(2+m),(1+m),(0+m)` form.
+  `2+m` is a STUCK nat term (add recurses on 2nd arg), so `Nat.succ_descFactorial`
+  can't fire on it. Normalize first: `rw [show (2:ℕ)+m = m+2 from by omega, …] at h`
+  to get the `succ`-reducible `(m+2)` bases. `(m+1)+1` IS defeq `m+2`, so
+  `exact e` closes the cast identities without extra rewriting.
+- The weight collapse `2(m+2)B² = (m+1)·4AC` is one `linear_combination
+  (-2*B)*id1R + (4*A)*id2R` from the two cast identities `id1R : 2A=(m+2)B`,
+  `id2R : B=(m+1)C`. Then multiply the coeff inequality by `(m+1) ≥ 0`
+  (`mul_le_mul_of_nonneg_left`) and cancel `B² > 0`
+  (`le_of_mul_le_mul_right … hBsq`) — no `nlinarith` blowup on the esymm atoms.
+- `set A/B/C/e1/e2` BEFORE the arithmetic so `linear_combination`/`ring` see small
+  opaque variables rather than `((m+2).descFactorial m : ℝ)` / `p.roots.esymm _`.
+
+### Still open (narrowed to interior steps)
+The TOP step is now fully closed via the calculus route for every arity. What
+remains is the GENERAL *interior* Newton step `pₖ² ≥ pₖ₋₁pₖ₊₁` for `2 ≤ k ≤ n−2`:
+apply the same engine to a *sub-window* iterated derivative that isolates
+`eₖ₋₁,eₖ,eₖ₊₁` (rather than the top three). The reciprocal polynomial
+`Xⁿ·p(1/X)` maps the bottom window to a top window, so the top-step machinery plus
+a reciprocal-coefficient (`reverse`) bridge should reach the second-from-top and
+second-from-bottom steps next; the strictly interior windows need differentiating
+both `p` and its reverse. Purely algebraic — no analysis blocker.
