@@ -981,4 +981,98 @@ theorem integral_tail_abs_le
 
 end TruncationIntegralLifts
 
+/-! ## Tail bound for the real `p`-series (arithmetic backbone of the MZ variance sum)
+
+The MZ variance sum `∑ᵢ Var(Yᵢ)/i^{2/p}` (`p < 2`, so `s := 2/p > 1`) is finite **not** by
+the per-term kernel bound `𝔼[Yᵢ²] ≤ i^{(2-p)/p}·𝔼|X|ᵖ`: dividing that by `aᵢ² = i^{2/p}`
+leaves `𝔼|X|ᵖ · i⁻¹`, whose sum **diverges**.  (This corrects the naive per-term plan: the
+step-4 kernel `integral_trunc_sq_le` is a valid bound but is *not* summable term-by-term.)
+The correct route is a Tonelli interchange of `∑ᵢ` and `𝔼`, keeping the truncated moment
+`𝔼[X²·𝟙{|X| ≤ i^{1/p}}]` intact and summing the *weight* `i^{-2/p}` against it; the
+deterministic input is then the tail estimate `∑_{j > N} j^{-s} ≤ N^{1-s}/(s-1)` for `s > 1`.
+
+We prove that tail estimate here by integral comparison
+(`AntitoneOn.sum_le_integral_Ico` against `∫ x^{-s} = x^{1-s}/(1-s)`, `Analysis/PSeries`
+supplies only *summability*, not this quantitative tail); it is the reusable arithmetic
+backbone the interchange consumes.  0-sorry / 0-`axiom`. -/
+section TailPSeries
+
+open MeasureTheory Set
+
+/-- **Integral-comparison block bound.**  For `1 < s`, `N ≥ 1` and any `K`, the shifted block
+`∑_{k < K} (k+N+1)^{-s}` (equivalently `∑_{N < j ≤ N+K} j^{-s}`) is bounded, uniformly in `K`,
+by the tail-integral value `N^{1-s}/(s-1)`.  Proof: `x ↦ x^{-s}` is antitone on `(0,∞)`, so the
+right-endpoint Riemann sum underestimates `∫_N^{N+K} x^{-s} = (N^{1-s} - (N+K)^{1-s})/(s-1)`,
+which is at most `N^{1-s}/(s-1)`. -/
+theorem sum_range_shift_rpow_neg_le {s : ℝ} (hs : 1 < s) {N : ℕ} (hN : 1 ≤ N) (K : ℕ) :
+    ∑ k ∈ Finset.range K, ((k + N + 1 : ℕ) : ℝ) ^ (-s)
+      ≤ (N : ℝ) ^ (1 - s) / (s - 1) := by
+  have hNpos : (0 : ℝ) < N := by exact_mod_cast Nat.lt_of_lt_of_le zero_lt_one hN
+  have hle : (N : ℝ) ≤ ((N + K : ℕ) : ℝ) := by exact_mod_cast Nat.le_add_right N K
+  -- `x ↦ x^{-s}` is antitone on `[N, N+K] ⊆ (0, ∞)`.
+  have hanti : AntitoneOn (fun x : ℝ => x ^ (-s)) (Set.Icc (N : ℝ) ((N + K : ℕ) : ℝ)) :=
+    (Real.antitoneOn_rpow_Ioi_of_exponent_nonpos (by linarith : (-s : ℝ) ≤ 0)).mono
+      (fun x hx => lt_of_lt_of_le hNpos hx.1)
+  -- integral comparison: the `(i+1)`-shifted `Ico` sum ≤ `∫` over `[N, N+K]`.
+  have hcomp := AntitoneOn.sum_le_integral_Ico (f := fun x : ℝ => x ^ (-s))
+    (Nat.le_add_right N K) hanti
+  -- reindex `range K` to the `Ico N (N+K)` shifted sum.
+  have hreindex :
+      ∑ k ∈ Finset.range K, ((k + N + 1 : ℕ) : ℝ) ^ (-s)
+        = ∑ i ∈ Finset.Ico N (N + K), ((i + 1 : ℕ) : ℝ) ^ (-s) := by
+    rw [Finset.sum_Ico_eq_sum_range]
+    have hKK : N + K - N = K := by omega
+    rw [hKK]
+    refine Finset.sum_congr rfl (fun k _ => ?_)
+    congr 1
+    push_cast
+    ring
+  -- evaluate the tail integral.
+  have hne_exp : (-s : ℝ) ≠ -1 := by intro h; linarith
+  have hne : (0 : ℝ) ∉ Set.uIcc (N : ℝ) ((N + K : ℕ) : ℝ) := by
+    rw [Set.uIcc_of_le hle, Set.mem_Icc]
+    rintro ⟨h1, _⟩; linarith
+  have hintval : (∫ x in (N : ℝ)..((N + K : ℕ) : ℝ), x ^ (-s))
+      = (((N + K : ℕ) : ℝ) ^ (-s + 1) - (N : ℝ) ^ (-s + 1)) / (-s + 1) :=
+    integral_rpow (Or.inr ⟨hne_exp, hne⟩)
+  -- chain: `range`-sum = `Ico`-sum ≤ `∫` = value ≤ bound.
+  rw [hreindex]
+  refine hcomp.trans ?_
+  dsimp only
+  rw [hintval]
+  have he : (-s : ℝ) + 1 = 1 - s := by ring
+  rw [he]
+  set A := (N : ℝ) ^ (1 - s) with hAdef
+  set B := ((N + K : ℕ) : ℝ) ^ (1 - s) with hBdef
+  have hB : (0 : ℝ) ≤ B := by rw [hBdef]; exact Real.rpow_nonneg (by positivity) _
+  have h1s : (1 : ℝ) - s ≠ 0 := by linarith
+  have h2s : (s : ℝ) - 1 ≠ 0 := by linarith
+  have hs1 : (0 : ℝ) < s - 1 := by linarith
+  have key : (B - A) / (1 - s) = (A - B) / (s - 1) := by
+    field_simp
+    ring
+  rw [key]
+  exact div_le_div_of_nonneg_right (sub_le_self _ hB) hs1.le
+
+/-- **Tail bound for the real `p`-series.**  For `1 < s` and `N ≥ 1`,
+`∑ₖ (k+N+1)^{-s} = ∑_{j > N} j^{-s} ≤ N^{1-s}/(s-1)`, by integral comparison — the
+deterministic input to the Tonelli interchange behind the MZ variance sum.  Mathlib's
+`Analysis/PSeries` gives only *summability* of the `p`-series (`summable_nat_rpow_inv`),
+not this quantitative tail bound. -/
+theorem tsum_shift_rpow_neg_le {s : ℝ} (hs : 1 < s) {N : ℕ} (hN : 1 ≤ N) :
+    ∑' k : ℕ, ((k + N + 1 : ℕ) : ℝ) ^ (-s) ≤ (N : ℝ) ^ (1 - s) / (s - 1) := by
+  refine Real.tsum_le_of_sum_range_le (fun k => Real.rpow_nonneg (by positivity) _) ?_
+  intro K
+  exact sum_range_shift_rpow_neg_le hs hN K
+
+#check @sum_range_shift_rpow_neg_le
+#check @tsum_shift_rpow_neg_le
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms sum_range_shift_rpow_neg_le
+#print axioms tsum_shift_rpow_neg_le
+
+end TailPSeries
+
 end LawsOfLargeNumbers.MZ
