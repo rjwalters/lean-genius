@@ -6,6 +6,58 @@
 
 ---
 
+## Session 2026-07-04 (researcher-8) — S4b step-4 RHS integrated to `𝔼|X|ᵖ + 1` (verified)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress — new section `VarianceSumRHS` (two leaves
+`rhs_kernel_le`, `integral_variance_sum_rhs_le`) appended to
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (0 sorries, 0 `axiom`; docker build
+**succeeded, 7743 jobs, exit 0**; `#print axioms` = `propext / Classical.choice / Quot.sound` only
+for both — no `sorryAx`, no `Lean.ofReduceBool`).
+
+### What it adds
+The `tsum_weight_trunc_sq_le` integrand (iter 12) dominates the post-Tonelli variance-sum integrand
+by `(max 1 |x|ᵖ)^{1-s}·s/(s-1)·x²`. This session integrates the deterministic part of that bound —
+so the RHS of the (still-open) interchange is now pinned to `𝔼|X|ᵖ + 1`, **without needing the
+interchange itself**:
+
+    rhs_kernel_le {p s x} (hp : 0 < p) (hps : p * s = 2) :
+        (max 1 (|x|^p))^(1-s) * x^2  ≤  |x|^p + 1
+
+    integral_variance_sum_rhs_le [IsProbabilityMeasure μ] (X) {p s}
+        (hp : 0 < p) (hps : p * s = 2) (hint : Integrable (|X|^p) μ) :
+        ∫ (max 1 (|X|^p))^(1-s) * X^2  ≤  ∫ |X|^p + 1
+
+### Technique (reusable)
+The pointwise kernel splits on `|x| ⋛ 1`. **`|x| ≥ 1` branch** (`p·s = 2` is the whole point):
+`max 1 |x|ᵖ = |x|ᵖ` (`max_eq_right` via `1 = 1^p ≤ |x|^p`), then `(|x|ᵖ)^{1-s} = |x|^{p(1-s)}`
+(`← Real.rpow_mul`), and `p(1-s) = p - 2` (`linear_combination -hps`), so `|x|^{p-2}·x² =
+|x|^{p-2}·|x|^{2} = |x|^p` (`x²=|x|^{(2:ℝ)}` via `Real.rpow_natCast`+`sq_abs`, then `← Real.rpow_add`,
+`p-2+2=p`). **`|x| < 1` branch**: `max = 1` (`Real.rpow_le_one`), `1^{1-s}=1`, `x² = |x|² ≤ 1`
+(`← sq_abs` then `pow_le_one₀`). Note `nlinarith` FAILED on the `x²≤1` goal — `pow_le_one₀
+(abs_nonneg x) hx.le` after `rw [← sq_abs]` is the robust route. The integral lift is one
+`integral_mono_of_nonneg` over the kernel (larger side `|X|^p+1` integrable via `hint.add
+integrable_const`) then `integral_add` + `∫ 1 = μ(univ) = 1` (`integral_const`; `simp`). Same shape
+as the existing `integral_trunc_sq_le` / `integral_tail_abs_le` lifts.
+
+### Honest status
+Two correct, reusable **integral leaves**, NOT the interchange or the variance-sum assembly. They
+close the *integrate-the-RHS* half of the remaining frontier: once the interchange
+`∑ᵢ i^{-s}∫Yᵢ² = ∫∑ᵢ i^{-s}Yᵢ²` is in place, its RHS is dominated by `tsum_weight_trunc_sq_le` and
+then integrated to `s/(s-1)·(𝔼|X|ᵖ+1)` by pulling out the constant (`integral_const_mul`) and
+applying `integral_variance_sum_rhs_le`. The substantive open work — the `MeasureTheory.integral_tsum`
+swap with its per-term-integrability and `∑'∫|·|<∞` side-goals, then step-3 centering and the final
+MZ combination via `ae_tendsto_average_zero_of_variance_weighted_bdd` — remains.
+
+### Next steps
+- **The interchange itself** via `integral_tsum`: per-term integrability of `i^{-s}·Yᵢ²` and the
+  summability side-goal `∑'ᵢ ∫|i^{-s}Yᵢ²| < ∞` (dominate by the `tsum_weight_trunc_sq_le` integrand,
+  finite by `integral_variance_sum_rhs_le`).
+- Chain: `∫∑ᵢ i^{-s}Yᵢ² ≤ s/(s-1)·∫(max 1 |X|ᵖ)^{1-s}·X² ≤ s/(s-1)·(𝔼|X|ᵖ+1)`; feed
+  `Var(Yᵢ) ≤ 𝔼[Yᵢ²]` into `ae_tendsto_average_zero_of_variance_weighted_bdd` (`a = i^{1/p}`).
+- Step-3 centering (`integral_tail_abs_le` at `t = i^{1/p}`), then final MZ combination.
+
+---
+
 ## Session 2026-07-04 (researcher-14, iter 12) — S4b step-4 pointwise Tonelli integrand SHIPPED (verified)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress — new leaf `tsum_weight_trunc_sq_le` appended to
