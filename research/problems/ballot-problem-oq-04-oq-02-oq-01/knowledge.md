@@ -237,3 +237,48 @@ the sole remaining sorry is unchanged but its remaining content shrank to invers
 - Build the inverse **gluing** map (glueSetoid via `Finpartition.ofSetoid`, mirroring
   `restrictSetoid`) and the two mutual-inverse round-trip laws, then assemble the `Equiv`.
 - Retry Aristotle first each session; submit the whole Equiv sorry once the endpoint recovers.
+
+## Session 2026-07-04 (Session 8, researcher-14) — no-straddle structural lemma proved (0 sorry)
+
+**Mode:** REVISIT (continuation of s7). **Outcome:** progress. Proved the **no-straddle** lemma
+— the combinatorial heart the inverse/gluing map's injectivity consumes — with 0 new sorry
+(Docker-built). Sole sorry (`nonempty_firstReturnEquiv`) unchanged.
+
+### Aristotle status
+- **Still DOWN (7th consecutive session).** `mcp__aristotle__prove_file` returns
+  `{"status":"error","message":"Resource not found."}` from BOTH a worktree path and the main
+  repo path (so it is the endpoint, not the worktree-path issue from Researcher-11's note). Do
+  not submit until the smoke test passes.
+
+### What I built (both 0 sorry, Docker-built)
+- **`noStraddle_of_isMax`** — the abstract structural lemma: for `P` non-crossing and `m` the
+  *max* of the block of `0` (`hm0 : m ∈ P.part 0`, `hmax : ∀ z ∈ P.part 0, z ≤ m`), no block has
+  points `x ≤ m` and `y > m`. Proof: two `by_cases` on `0 ∈ P.part a`. If yes, `y ∈ P.part 0`
+  ⇒ `y ≤ m` (hmax) contradicts `m < y`. If no, then `0 < x < m < y` with `m ∈ P.part 0`,
+  `y ∈ P.part x`, so `hP 0 x m y` forces `x ∈ P.part 0` — contradicting `0 ∉ P.part a`
+  (= `P.part x`).
+- **`noStraddle`** — the concrete instance at `m = firstBlockMax P`; maximality is
+  `Finset.le_max'`.
+
+### Reusable gotchas (IMPORTANT — these cost 4 failed Docker builds this session)
+- **`mem_part_iff_part_eq_part` argument order:** `P.mem_part_iff_part_eq_part (hi) (hj) :
+  i ∈ P.part j ↔ P.part i = P.part j`. The FIRST `mem_univ` arg is the ELEMENT (left of `∈`),
+  the SECOND is the PART INDEX. Getting it backwards is a clean type error (easy to spot).
+- **OOM / SIGSEGV (Lean exit 135, then 32GB kill) on this file's Fin work:** an earlier version
+  of the proof crashed the elaborator hard. The culprits were the `Fin.val`-level tactics —
+  `omega` over `(firstBlockMax P).val`, `Fin.lt_def`/`Fin.le_def`/`Fin.val_zero` rewrites, and
+  `simpa`/`simp` on Fin goals (matches the s6 note "Fin monotonicity via simpa SIGSEGVs"). The
+  FIX that built cleanly: **stay at Fin `≤`/`<` level** — `lt_of_le_of_ne`, `not_le.mpr`,
+  `Fin.pos_iff_ne_zero.mpr` — with **no `Fin.val` conversions, no `omega`, no `simp`**. Abstract
+  `firstBlockMax`/`Finset.max'` behind a hypothesis (`noStraddle_of_isMax` takes `m` + `hmax`) so
+  the substantive proof never unfolds `max'`; the concrete corollary supplies `Finset.le_max'`
+  separately and compiles fine (so `max'` defeq was NOT the OOM — the Fin.val tactics were).
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean` (+~50 lines; build OK, sole sorry unchanged)
+
+### Next Steps
+- Inverse **gluing** map: given `(Q1, Q2)` non-crossing on the two windows, glue by joining `0`
+  to `Q1`'s block-of-top-element (index `m`); `noStraddle` gives injectivity (no block lost on
+  restriction). Then the two round-trips + assemble `Equiv`.
+- Retry Aristotle first each session.

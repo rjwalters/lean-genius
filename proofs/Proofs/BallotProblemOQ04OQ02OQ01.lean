@@ -245,6 +245,65 @@ def firstReturnForward {n : ℕ}
     ⟨restrictFp (offsetEmb (m + 1) hR) Pnc.1,
       isNonCrossingFp_restrictFp_offset (m + 1) hR Pnc.1 Pnc.2⟩⟩
 
+/-- **No block straddles the cut (the structural heart of the split).** Let `m` be the *maximum*
+of the block containing `0` (`hm0 : m ∈ P.part 0`, `hmax : m` dominates that block). Then in a
+non-crossing partition `P` of `Fin (n+1)`, no block contains points on *both* sides of `m`: there
+are no two points `x, y` of one block with `x ≤ m < y`.
+
+This is exactly what makes `m = firstBlockMax P` the *correct* binary cut, and what a future
+gluing (inverse) map consumes for injectivity: every block lies entirely in the window `[0, m]`
+or entirely in `[m+1, n]`, so restricting `P` to the two offset windows loses no block and the
+pieces recombine uniquely. Stated for an abstract max element `m` (rather than `firstBlockMax P`
+directly) so the proof is a pure order/partition argument, free of `Finset.max'` unfolding.
+
+Proof: if the straddling block is `0`'s block, then `y ≤ m` (maximality) contradicts `m < y`.
+Otherwise `0 < x < m < y` with `m ∈ P.part 0` and `y ∈ P.part x`, so non-crossing forces
+`x ∈ P.part 0` — but then `0` and `x` share a block, contradicting that this block is not
+`0`'s. -/
+theorem noStraddle_of_isMax {n : ℕ} (P : Finpartition (univ : Finset (Fin (n + 1))))
+    (hP : IsNonCrossingFp P) (m : Fin (n + 1)) (hm0 : m ∈ P.part 0)
+    (hmax : ∀ z ∈ P.part 0, z ≤ m) (a x y : Fin (n + 1))
+    (hx : x ∈ P.part a) (hy : y ∈ P.part a) (hxm : x ≤ m) (hmy : m < y) : False := by
+  by_cases hcase : (0 : Fin (n + 1)) ∈ P.part a
+  · -- `a`'s block is `0`'s block: `y ∈ P.part 0`, so `y ≤ m`, contradicting `m < y`.
+    have h0a : P.part a = P.part 0 :=
+      ((P.mem_part_iff_part_eq_part (mem_univ 0) (mem_univ a)).mp hcase).symm
+    have hy0 : y ∈ P.part 0 := h0a ▸ hy
+    exact absurd (hmax y hy0) (not_le.mpr hmy)
+  · -- `0 ∉ P.part a`: build the crossing `0 < x < m < y`.
+    have hpartx : P.part a = P.part x :=
+      ((P.mem_part_iff_part_eq_part (mem_univ x) (mem_univ a)).mp hx).symm
+    -- `0 ∉ P.part x` (else `0 ∈ P.part a`).
+    have zeroNotX : (0 : Fin (n + 1)) ∉ P.part x := by
+      intro h0x
+      have hx0eq : P.part x = P.part 0 :=
+        ((P.mem_part_iff_part_eq_part (mem_univ 0) (mem_univ x)).mp h0x).symm
+      exact hcase (by rw [hpartx, hx0eq]; exact P.mem_part (mem_univ 0))
+    have hxne : x ≠ 0 := fun hh => hcase (hh ▸ hx)
+    -- `x ≠ m`: else `x = m ∈ P.part 0`, forcing `0 ∈ P.part x`.
+    have hxnem : x ≠ m := by
+      intro hh
+      have hxm0 : x ∈ P.part 0 := hh ▸ hm0
+      have heq : P.part 0 = P.part x :=
+        ((P.mem_part_iff_part_eq_part (mem_univ x) (mem_univ 0)).mp hxm0).symm
+      exact zeroNotX (heq ▸ P.mem_part (mem_univ 0))
+    have hyx : y ∈ P.part x := hpartx ▸ hy
+    have hlt1 : (0 : Fin (n + 1)) < x := Fin.pos_iff_ne_zero.mpr hxne
+    have hlt2 : x < m := lt_of_le_of_ne hxm hxnem
+    have hcross : x ∈ P.part 0 := hP 0 x m y hlt1 hlt2 hmy hm0 hyx
+    have hx0eq : P.part 0 = P.part x :=
+      ((P.mem_part_iff_part_eq_part (mem_univ x) (mem_univ 0)).mp hcross).symm
+    exact zeroNotX (hx0eq ▸ P.mem_part (mem_univ 0))
+
+/-- **No block straddles `firstBlockMax P`.** The concrete instance of `noStraddle_of_isMax` at
+the cut index `m = firstBlockMax P`: its maximality over the block of `0` is `Finset.le_max'`. -/
+theorem noStraddle {n : ℕ} (P : Finpartition (univ : Finset (Fin (n + 1))))
+    (hP : IsNonCrossingFp P) (a x y : Fin (n + 1))
+    (hx : x ∈ P.part a) (hy : y ∈ P.part a)
+    (hxm : x ≤ firstBlockMax P) (hmy : firstBlockMax P < y) : False :=
+  noStraddle_of_isMax P hP (firstBlockMax P) (firstBlockMax_mem_part P)
+    (fun z hz => Finset.le_max' _ z hz) a x y hx hy hxm hmy
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
