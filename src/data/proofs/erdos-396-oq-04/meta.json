@@ -36,7 +36,8 @@
       "**The Catalan number is the exact cofactor of 2(2n+1).** Cancelling n+1 from the Mathlib recurrence collapses it to C(2(n+1),n+1) = 2(2n+1)·catalan n — a closed form Mathlib does not state, since it derives integrality via Gosper telescoping instead.",
       "**The odd factor 2n+1 divides the next central binomial coefficient.** This strengthens Mathlib's `two_dvd_centralBinom_succ` (the even factor 2); both factors, and their product 2(2n+1), divide C(2(n+1),n+1).",
       "**An elementary two-term Catalan recurrence falls out for free.** (n+2)·catalan(n+1) = 2(2n+1)·catalan n is the standard computational recurrence for Catalan numbers, obtained here without binomial coefficients once the closed form is in hand.",
-      "**The two natural divisors are coprime.** gcd(n+1, 2n+1) = 1 (peel 2n+1 = n + 1·(n+1) down to gcd(n,1)=1), explaining why the n+1 and 2n+1 divisibilities act independently on consecutive central binomial coefficients."
+      "**The two natural divisors are coprime.** gcd(n+1, 2n+1) = 1 (peel 2n+1 = n + 1·(n+1) down to gcd(n,1)=1), explaining why the n+1 and 2n+1 divisibilities act independently on consecutive central binomial coefficients.",
+      "**Everything is checked against concrete Catalan values.** Worked examples confirm C(2,1)=2, C(6,3)=20=2·5·catalan 2, and the recurrence (n+2)·catalan(n+1)=2(2n+1)·catalan n at n=2 (4·5=20) — each reusing the general theorem, so the closed form and recurrence are validated on nontrivial instances, not just stated."
     ],
     "prerequisites": [
       "Central binomial coefficients and Catalan numbers",
