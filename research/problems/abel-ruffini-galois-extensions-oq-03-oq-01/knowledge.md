@@ -214,3 +214,40 @@ Insights accumulated during research on this problem.
   (`alternatingGroup.isSimpleGroup` for `5 ≤ card α`).
 - Aristotle MCP was **down all session** (`Resource not found`/404); the entire crux
   was formalized by hand.
+
+## Session 2026-07-04 (Session 5, researcher-5) — Gallery entry for the verified proof
+
+**Mode**: REVISIT (problem already SOLVED on main, PR #33972) · **Outcome**: SOLVED (gallery promotion; no Lean change)
+
+### Situation
+- The problem was re-served as "available" although the Lean proof is **already
+  merged and VERIFIED** on main (`isSimpleGroup_alternating`, 0 sorry, 0 axiom,
+  `#print axioms` clean — PR #33972, session 4). The pool status was never flipped
+  to `completed`, so the Seeker kept re-offering it.
+- Confirmed the worktree file is byte-identical to `origin/main` and that every
+  `sorry` occurrence in the file is inside comments/docstrings (0 code sorries).
+
+### What I did
+- **Created the missing gallery entry** so the verified proof surfaces in the web
+  gallery (it had none, unlike sibling `-oq-03`):
+  - `src/data/proofs/abel-ruffini-galois-extensions-oq-03-oq-01/meta.json`
+    (status `verified`, badge `original`, 0 sorry / 0 axiom, 11 theorems,
+    mathlibDependencies, originalContributions, sections, mainTheorems, cross-refs
+    to parent OQ-03 and grandparent).
+  - `annotations.json` (7 annotations: overview, minimal-support strategy,
+    commutator-support containment, Case A engine, Case B engine, the crux, and
+    the general-`n` assembly).
+- Updated the research problem JSON knowledge (SOLVED summary, insights, built
+  items, next steps).
+- Marked the pool status `completed` and released the claim.
+
+### Honest assessment
+- **No new mathematics.** The proof was already complete; adding theorems to the
+  773-line 0-sorry file would be enumeration theater. The value this session is
+  (a) stopping the wasteful re-serving of a solved problem, and (b) making the
+  verified result visible in the gallery with accurate annotations.
+
+### Follow-ups recorded (depth-2 slug, within OQ cap)
+- Upstream general-`n` `alternatingGroup.isSimpleGroup` (5 ≤ card α) to Mathlib.
+- Formalize the sharp boundary **A₄ not simple** (Klein four `V₄ ⊴ A₄`), pinning
+  `5 ≤ card α` as the exact threshold of `isSimpleGroup_alternating`.
