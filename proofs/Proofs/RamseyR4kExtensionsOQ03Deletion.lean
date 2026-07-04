@@ -359,6 +359,36 @@ theorem deletionBound_mono_of_unionFeasible (hk : 2 ≤ k) (hkn : k ≤ n)
     deletionBound n k ≤ deletionBound (n + 1) k :=
   deletionBound_mono_of_pred_subthreshold hk hkn (by omega)
 
+/-- **The increasing-arm inequality `C(n,k−1) ≤ C(n,k)`, discharged from `2k ≤ n`.**
+    Every monotonicity theorem above (`deletionBound_mono_of_unionFeasible`,
+    `deletionBound_mono_window`) needs the fact that the `(k−1)`-window sits above the
+    `k`-window, i.e. `C(n,k−1) ≤ C(n,k)` — the reason the deletion optimum is pushed
+    strictly past the union cap.  So far every part *assumed* this as an explicit
+    hypothesis (`hmid`) or asserted it only in prose ("automatic in the Ramsey regime
+    `k−1 < n/2`").  Here it is proved outright from the clean arithmetic side condition
+    `2k ≤ n`, which is exactly the "increasing arm" regime and is satisfied by every
+    concrete Ramsey witness in this file (`n ≈ 2^{k/2} ≫ 2k`).  The proof is one call to
+    Mathlib's `Nat.choose_le_succ_of_lt_half_left` (`k−1 < n/2` follows from `2k ≤ n` by
+    `omega`), so the assumption is now a *theorem*, not a premise.  Axiom-free. -/
+theorem choose_pred_le_choose_of_two_mul_le (hk : 2 ≤ k) (harm : 2 * k ≤ n) :
+    n.choose (k - 1) ≤ n.choose k := by
+  obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
+  have hm : m < n / 2 := by omega
+  simpa using Nat.choose_le_succ_of_lt_half_left hm
+
+/-- **Union-feasible monotonicity with the binomial hypothesis discharged.**  Combines
+    `deletionBound_mono_of_unionFeasible` with `choose_pred_le_choose_of_two_mul_le`: on
+    the increasing arm `2k ≤ n`, wherever the sharp union bound is still feasible
+    (`2·C(n,k) < 2^C(k,2)`) the deletion bound does not decrease under `n → n+1`.  This
+    is the same conclusion as `deletionBound_mono_of_unionFeasible` but with the assumed
+    inequality `C(n,k−1) ≤ C(n,k)` replaced by the transparent arithmetic condition
+    `2k ≤ n` — no binomial premise is left to the caller.  Axiom-free. -/
+theorem deletionBound_mono_of_arm (hk : 2 ≤ k) (hkn : k ≤ n) (harm : 2 * k ≤ n)
+    (hunion : 2 * n.choose k < 2 ^ (k.choose 2)) :
+    deletionBound n k ≤ deletionBound (n + 1) k :=
+  deletionBound_mono_of_unionFeasible hk hkn hunion
+    (choose_pred_le_choose_of_two_mul_le hk harm)
+
 /-- **Exact one-step growth: the deletion bound gains *precisely one* vertex per step
     when the added `(k−1)`-mass fits inside the current quantum remainder.**
     `deletionBound_mono_of_pred_subthreshold` only shows the bound does not *decrease*
@@ -710,6 +740,8 @@ theorem deletion_no_mono_K10 :
 #print axioms ramsey_deletion_one_past
 #print axioms deletionBound_mono_of_pred_subthreshold
 #print axioms deletionBound_mono_of_unionFeasible
+#print axioms choose_pred_le_choose_of_two_mul_le
+#print axioms deletionBound_mono_of_arm
 #print axioms deletionBound_stepGain
 #print axioms deletionBound_strictMono_of_remainder
 #print axioms deletionBound_mono_window
