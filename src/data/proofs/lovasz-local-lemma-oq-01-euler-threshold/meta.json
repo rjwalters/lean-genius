@@ -106,6 +106,50 @@
       "Monotonicity of powers pow_le_pow_left₀ and the ordered-field division lemmas div_le_iff₀, div_le_div_iff₀, le_div_iff₀"
     ]
   },
+  "sections": [
+    {
+      "id": "module-docstring",
+      "title": "Overview: two forms of the symmetric LLL hypothesis",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring, imports, and namespace. Frames the file as the bridge between the tight symmetric threshold T(d) = dᵈ/(d+1)^{d+1} (from the parent proof lovasz-local-lemma, over ℚ) and the memorable Euler condition e·p·(d+1) ≤ 1 used by the OQ-01 measure-theoretic front. States the standard textbook fact to be formalized — e·p·(d+1) ≤ 1 ⇒ p ≤ T(d) — and names the single inequality (1 + 1/d)ᵈ ≤ e that puts e into the LLL. Imports Proofs.LovaszLocalLemma and opens Real, ProbMethod.LovaszLocal."
+    },
+    {
+      "id": "euler-bound",
+      "title": "The classic Euler bound (1 + 1/d)ᵈ ≤ e",
+      "startLine": 43,
+      "endLine": 58,
+      "summary": "one_add_inv_pow_le_exp_one: the mathematical core. From Real.add_one_le_exp (1 + x ≤ exp x) at x = 1/d, raise both nonnegative sides to the d-th power via pow_le_pow_left₀, then collapse exp(1/d)ᵈ = exp(d·(1/d)) = exp 1 using Real.exp_nat_mul and d·(1/d) = 1 (d ≠ 0). This is the sequence climbing to e from below."
+    },
+    {
+      "id": "multiplicative-form",
+      "title": "Multiplicative form (d+1)ᵈ ≤ e·dᵈ",
+      "startLine": 60,
+      "endLine": 67,
+      "summary": "succ_pow_le_exp_mul: clears the denominator in the Euler bound. Writing 1 + 1/d = (d+1)/d and applying div_pow then div_le_iff₀ turns (1+1/d)ᵈ ≤ e into (d+1)ᵈ ≤ e·dᵈ — the form used to compare against the threshold."
+    },
+    {
+      "id": "threshold-cast",
+      "title": "Real-cast of the tight threshold",
+      "startLine": 69,
+      "endLine": 75,
+      "summary": "lllThreshold_cast: bridges the parent proof's ℚ-valued lllThreshold to ℝ. For d ≥ 1 the d ≠ 0 branch of lllThreshold unfolds and push_cast; ring gives (lllThreshold d : ℝ) = dᵈ/(d+1)^{d+1}, letting the rational threshold participate in the real-analysis inequalities."
+    },
+    {
+      "id": "below-threshold",
+      "title": "The Euler budget sits below the tight threshold",
+      "startLine": 77,
+      "endLine": 89,
+      "summary": "inv_exp_mul_le_lllThreshold: 1/(e·(d+1)) ≤ T(d). After casting the threshold and applying div_le_div_iff₀ and pow_succ, the goal reduces to (d+1)^{d+1} ≤ e·(d+1)·dᵈ — the multiplicative Euler bound times the positive factor (d+1), closed by nlinarith from succ_pow_le_exp_mul. The inequality is strict since (1+1/d)ᵈ < e for finite d, so the memorable form is genuinely conservative."
+    },
+    {
+      "id": "bridge",
+      "title": "The bridge: Euler condition ⇒ tight threshold",
+      "startLine": 91,
+      "endLine": 106,
+      "summary": "euler_condition_implies_lllThreshold: the main result. From e·p·(d+1) ≤ 1, le_div_iff₀ gives p ≤ 1/(e·(d+1)), and le_trans with inv_exp_mul_le_lllThreshold yields p ≤ T(d). No nonnegativity assumption on p is needed (a negative p satisfies both sides trivially since T(d) > 0), so the statement holds in full generality and the tight-threshold symmetric_lll applies verbatim under the Euler hypothesis."
+    }
+  ],
   "conclusion": {
     "summary": "The memorable Euler symmetric LLL condition e·p·(d+1) ≤ 1 is machine-verified to imply the tight threshold p ≤ T(d) = dᵈ/(d+1)^{d+1} used by the parent gallery proof, via the classic Euler inequality (1 + 1/d)ᵈ ≤ e. Elementary real analysis, fully checked: 0 sorries, 0 axioms.",
     "implications": "**Connects the two threshold fronts of the OQ-01 landscape.** The parent proof lovasz-local-lemma develops the tight symmetric threshold T(d) over ℚ; the OQ-01 measure-theoretic entries (lovasz-local-lemma-oq-01, its union-bound, chain-rule, and quantitative refinements) are stated against the Euler condition e·p·(d+1) ≤ 1. This entry is the verified bridge: it shows the Euler hypothesis is a legitimate, slightly conservative consequence of the tight threshold, so results proved under either hypothesis transfer to the other. It also isolates the exact inequality — (1 + 1/d)ᵈ ≤ e — that puts the constant e into the LLL.\n\n**Honest scope**: this is real-analysis bookkeeping about which hypothesis is stronger, not a proof that either hypothesis suffices for avoidance. The measure-theoretic symmetric LLL — that e·p·(d+1) ≤ 1 forces μ(⋂ Aᵢᶜ) > 0 over a real probability space with a bounded-dependency-degree structure — remains the open research target; see the chain-rule and quantitative entries for the reduction that awaits the per-event conditional bounds.",
