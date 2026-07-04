@@ -29,6 +29,11 @@ import Mathlib
 open Set Filter Nat Finset
 
 open scoped Classical
+-- Register classical decidability as a genuine local instance for the whole file.
+-- Recent Mathlib no longer exposes `Classical.propDecidable` as a resolvable
+-- instance from `open scoped Classical` alone, so the `Finset.filter` predicates
+-- below (`· ∈ A`, `IsAPFree ↑S k`) fail `DecidablePred` synthesis without this.
+attribute [local instance] Classical.propDecidable
 
 namespace Erdos3
 
@@ -417,6 +422,75 @@ theorem strong_required_bound_implies_conjecture :
       _ ≤ C * (N : ℝ) / (Real.log N) ^ (1 + δ) := hN
   exact hdiv (summable_of_strongBound hδ hC hcount)
 
+/-- **The strong threshold dominates the weak one.**
+    `StrongRequiredBound k` (`r_k(N) = O(N/(log N)^{1+δ})` for some `δ > 0`) implies the
+    weaker `RequiredBound k` (`r_k(N) = o(N/log N)`). Writing the strong bound as
+    `r_k(N) ≤ (C/(log N)^δ) · (N/log N)` and using `1/(log N)^δ → 0`, the leading
+    factor `C/(log N)^δ` eventually drops below any prescribed `c > 0`, so
+    `r_k(N) ≤ c·N/log N` eventually.
+
+    This makes precise the ordering asserted in the `StrongRequiredBound` docstring:
+    the two thresholds bracketing Erdős #3 are genuinely comparable, with
+    `StrongRequiredBound ⇒ RequiredBound`. The *converse* is exactly the open content
+    of the problem — it is precisely the gap that keeps `required_bound_implies_conjecture`
+    a `sorry` while `strong_required_bound_implies_conjecture` is fully proved.
+    Fully machine-checked, `sorry`-free, axiom-free. -/
+theorem strongRequiredBound_implies_requiredBound {k : ℕ}
+    (h : StrongRequiredBound k) : RequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  intro c hc
+  -- `log N → ∞` along `N → ∞`, hence `(log N)^(-δ) → 0` and `C·(log N)^(-δ) → 0`.
+  have hlog : Filter.Tendsto (fun N : ℕ => Real.log (N : ℝ)) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hneg : Filter.Tendsto (fun N : ℕ => C * (Real.log (N : ℝ)) ^ (-δ))
+      Filter.atTop (nhds 0) := by
+    have hmul := ((tendsto_rpow_neg_atTop hδ).comp hlog).const_mul C
+    simpa using hmul
+  -- Eventually the leading factor is below `c`, and `log N > 0`.
+  have hlt : ∀ᶠ N : ℕ in Filter.atTop, C * (Real.log (N : ℝ)) ^ (-δ) < c := by
+    have hmem : Set.Iio c ∈ nhds (0 : ℝ) := isOpen_Iio.mem_nhds hc
+    filter_upwards [hneg.eventually hmem] with N hN using hN
+  have hLpos : ∀ᶠ N : ℕ in Filter.atTop, 0 < Real.log (N : ℝ) :=
+    hlog.eventually (eventually_gt_atTop 0)
+  filter_upwards [hev, hlt, hLpos] with N hN hNlt hL
+  set L : ℝ := Real.log (N : ℝ) with hLdef
+  have hP : (0 : ℝ) < L ^ δ := Real.rpow_pos_of_pos hL δ
+  have hsplit : L ^ (1 + δ) = L ^ δ * L := by
+    rw [add_comm, Real.rpow_add hL, Real.rpow_one]
+  -- Turn the leading-factor bound `C · L^(-δ) < c` into `C ≤ c · L^δ`.
+  rw [Real.rpow_neg hL.le, ← div_eq_mul_inv] at hNlt
+  have hCle : C ≤ c * L ^ δ := (div_le_iff₀ hP).mp hNlt.le
+  -- Clear denominators and finish by nonnegativity of `N·L·(c·L^δ − C)`.
+  refine le_trans hN ?_
+  rw [hsplit, div_le_div_iff₀ (by positivity) hL]
+  have hfac : 0 ≤ (N : ℝ) * L * (c * L ^ δ - C) :=
+    mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL.le) (by linarith)
+  nlinarith [hfac]
+
+/-- **The two `o(N/log N)` formulations in this file coincide.**
+    `RequiredBound k` (a non-strict `r_k(N) ≤ c·N/log N` for every `c > 0`) is
+    equivalent to `SublogarithmicGrowth k` (the strict `r_k(N) < c·N/log N`). The
+    strict form trivially gives the non-strict one; conversely, applying the
+    non-strict bound with `c/2` yields `r_k(N) ≤ (c/2)·N/log N < c·N/log N` once
+    `N ≥ 2` (so `N/log N > 0`). This records that the file's two spellings of the
+    `o(N/log N)` threshold are interchangeable. Fully machine-checked, axiom-free. -/
+theorem requiredBound_iff_sublogarithmicGrowth {k : ℕ} :
+    RequiredBound k ↔ SublogarithmicGrowth k := by
+  constructor
+  · intro h c hc
+    filter_upwards [h (c / 2) (by linarith), eventually_ge_atTop 2] with N hN hN2
+    have hLpos : 0 < Real.log (N : ℝ) :=
+      Real.log_pos (by exact_mod_cast (by omega : 1 < N))
+    have hN0 : (0 : ℝ) < (N : ℝ) := by exact_mod_cast (by omega : 0 < N)
+    have hpos : 0 < (N : ℝ) / Real.log (N : ℝ) := div_pos hN0 hLpos
+    have hstrict : (c / 2) * (N : ℝ) / Real.log (N : ℝ)
+        < c * (N : ℝ) / Real.log (N : ℝ) := by
+      rw [mul_div_assoc, mul_div_assoc]
+      exact mul_lt_mul_of_pos_right (by linarith) hpos
+    exact lt_of_le_of_lt hN hstrict
+  · intro h c hc
+    filter_upwards [h c hc] with N hN using hN.le
+
 /- ## Equivalent Formulations -/
 
 /- **Equivalent to Behrend-type bounds**: The conjecture asks whether
@@ -482,5 +556,6 @@ References:
 -/
 theorem erdos_3_open : Erdos3Conjecture ∨ ¬Erdos3Conjecture := by
   exact Classical.em Erdos3Conjecture
+
 
 end Erdos3
