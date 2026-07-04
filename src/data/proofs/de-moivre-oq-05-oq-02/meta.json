@@ -66,6 +66,26 @@
     "theoremCount": 3,
     "definitionCount": 0
   },
+  "mainTheorems": [
+    {
+      "name": "sum_primitiveRoots_eq_moebius",
+      "type": "core",
+      "description": "The headline identity: for every n, the sum of the primitive n-th roots of unity in ℂ equals μ(n), the Möbius function value cast into ℂ. Proved by partitioning the n-th roots by their exact order (∑_{d∣n} f(d) = g(n)), evaluating g(k) = [k=1] via a geometric series, and applying Möbius inversion so only the d=1 term survives, leaving μ(n)·1.",
+      "leanType": "(n : ℕ) → ∑ ζ ∈ primitiveRoots n ℂ, ζ = (μ n : ℂ)"
+    },
+    {
+      "name": "sum_nthRootsFinset",
+      "type": "supporting",
+      "description": "Evaluation of g: the sum of ALL n-th roots of unity in ℂ is 1 when n = 1 and 0 otherwise (the parent de-moivre-oq-05 result, restated). For n > 1 the geometric series over ζ^0,…,ζ^{n-1} vanishes (IsPrimitiveRoot.geom_sum_eq_zero); n = 1 gives the single root 1.",
+      "leanType": "{n : ℕ} → (hn : 0 < n) → ∑ x ∈ nthRootsFinset n (1 : ℂ), x = if n = 1 then 1 else 0"
+    },
+    {
+      "name": "nthRootsFinset_eq_image",
+      "type": "supporting",
+      "description": "Enumeration lemma: given a primitive n-th root ζ (n > 0), the finset of n-th roots of unity is exactly the image of range n under i ↦ ζ^i. Turns the abstract root set into an indexed geometric progression so its sum becomes a finite geometric series; uses IsPrimitiveRoot.eq_pow_of_pow_eq_one.",
+      "leanType": "{n : ℕ} → (hn : 0 < n) → {ζ : ℂ} → IsPrimitiveRoot ζ n → nthRootsFinset n (1 : ℂ) = (range n).image (ζ ^ ·)"
+    }
+  ],
   "overview": {
     "historicalContext": "That the sum of the primitive $n$-th roots of unity equals the Möbius function $\\mu(n)$ is a classical bridge between the analytic geometry of the unit circle and multiplicative number theory. The $n$-th roots of unity are the vertices of a regular $n$-gon; grouping them by exact order partitions the circle's roots over the divisors of $n$. The sum of *all* $n$-th roots vanishes for $n>1$ (the second-from-top coefficient of $z^n-1$), and Möbius inversion of this divisor relation isolates the *primitive* contribution as $\\mu(n)$. The identity appears as Theorem 2.7 in Apostol's *Introduction to Analytic Number Theory* and underlies the constant term of the cyclotomic polynomial and Ramanujan-sum evaluations $c_n(1)=\\mu(n)$.",
     "problemStatement": "**Open Question**: Compute the sum of the primitive $n$-th roots of unity in $\\mathbb{C}$.\n\n**Answer**: It equals the Möbius function: $\\displaystyle\\sum_{\\substack{\\zeta^n=1\\\\ \\operatorname{ord}\\zeta=n}}\\zeta=\\mu(n)$. In particular the sum is $0$ exactly when $n$ has a squared prime factor, $+1$ when $n$ is a product of an even number of distinct primes, and $-1$ for an odd number.",
