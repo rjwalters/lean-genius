@@ -158,3 +158,49 @@ unchanged. No scaffolding added.
   the recurrence submission first — or (b) a dedicated multi-session build of the Finpartition
   non-crossing infrastructure is undertaken (track 1 above is the closest to the file's stated
   approach).
+
+## Session 2026-07-04 (researcher-11) — n=4 direct computation ruled out (decide AND native_decide overflow)
+
+**Mode:** REVISIT (problem was `blocked`; Aristotle re-checked and still down).
+**Outcome:** no Lean progress on the crux (unchanged), but a **definitive negative result** that
+closes off the most obvious "next case" idea and saves future sessions two Docker builds.
+
+### What I checked
+- **Aristotle still DOWN.** `scripts/aristotle/mcp-smoke-test.sh` still 404s on
+  `https://aristotle.harmonic.fun/api/v1/project?project_type=2` (4th consecutive session). The
+  MCP server *connects* now but the underlying endpoint is unchanged. Do not submit until the
+  smoke test passes.
+
+### The idea I tried (and why it's dead)
+The prior anchor `nonCrossingCount_eq_catalan_of_le_three` covers `n ≤ 3` (all partitions
+non-crossing → Bell number, kernel `decide`). The natural *strengthening* is the exact value at
+the **first divergence** `n = 4`: prove `nonCrossingCount 4 = 14 = catalan 4` unconditionally
+(the sibling only has the *inequality* `nonCrossingCount_four_lt : nonCrossingCount 4 < 15`,
+proved abstractly via `Fintype.card_subtype_lt` — never the exact value). This would verify the
+conjecture on all of `0 ≤ n ≤ 4`, through the first Bell/Catalan split.
+
+**Both computational routes overflow — confirmed by Docker build, not speculation:**
+- **Kernel `decide`** (even `set_option maxRecDepth 100000`): `Stack overflow detected. Aborting.`
+  (Lean exit 134) after 43s. Kernel cannot reduce the `Fintype (Finpartition (Fin 4))`
+  enumeration.
+- **`native_decide`**: ALSO overflows — `interpreter stacktrace` through
+  `Fintype.card ... nonCrossingCount.spec_0` → `Finset.image._redArg` → `List.dedup` →
+  `List.pwFilter` (exit 134). The `Fintype (Finpartition α)` instance builds the partition set by
+  `image`/`dedup`/`pwFilter` over a huge candidate set and blows the interpreter stack even
+  compiled. So `nonCrossingCount 4` (and even the plain Bell count `Fintype.card (Finpartition
+  (Fin 4)) = 15`) is **not** obtainable by `decide` OR `native_decide`. n≤3 worked only because
+  `Finpartition (Fin 3)` is tiny (Bell 3 = 5).
+
+### Consequence for future sessions
+- **Do NOT retry `decide`/`native_decide` on `nonCrossingCount 4`** (or any `n ≥ 4`) — proven
+  infeasible here. The `n ≤ 3` anchor is the computational ceiling for this Fintype instance.
+- A non-computational `nonCrossingCount 4 = 14` would need either (a) Mathlib Bell-number theory
+  (`Fintype.card (Finpartition (Fin 4)) = 15`, which Mathlib does not provide as a closed value
+  reachable without the same overflow) plus a *uniqueness-of-the-crosser* lemma (crossing4Fp is
+  the only crossing partition of Fin 4), or (b) the general first-return bijection itself. Both
+  are foundational builds, not tactical targets.
+- **Verdict UNCHANGED: BLOCKED.** The crux `nonempty_firstReturnEquiv` still needs the
+  non-crossing-partition / Finpartition interval-restriction infrastructure Mathlib lacks, and
+  the tempting computational shortcut at the divergence point is now ruled out. Re-open when
+  Aristotle recovers (retry the recurrence sorry first) or for a dedicated multi-session infra
+  build (track 1: Finpartition first-return decomposition).
