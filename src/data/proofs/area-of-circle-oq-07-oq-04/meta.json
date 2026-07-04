@@ -36,9 +36,9 @@
     {
       "id": "open-question-context",
       "title": "Open Question & the Two-Dimensional Trick",
-      "startLine": 4,
+      "startLine": 1,
       "endLine": 30,
-      "summary": "The module docstring poses the open question — formalize that the square of the complex Gaussian (∫_ℝ e^{-b x²})² is the clean rational value π/b for 0 < re b — and answers YES. It explains that squaring removes the principal-(1/2)-power branch subtlety and identifies π/b as the complex-parameter form of the classical 2-D trick (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} = π underlying the parent area-of-circle-oq-07."
+      "summary": "Imports and the module docstring introducing the open question and the two-dimensional trick, the setup for squaring the complex Gaussian integral."
     },
     {
       "id": "squared-complex",
@@ -51,7 +51,7 @@
       "id": "parent-recovery",
       "title": "Recovering π as the b = 1 Case",
       "startLine": 47,
-      "endLine": 65,
+      "endLine": 64,
       "summary": "gaussian_integral_sq_eq_pi: the real (∫ e^{-x²})² = π from the complex result at b = 1, via hLcast (integral_complex_ofReal) and div_one, finished by exact_mod_cast."
     }
   ],
