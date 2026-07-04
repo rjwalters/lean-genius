@@ -4,7 +4,7 @@
     "proofId": "binary-gcd-oq-03-oq-02-incomplete-01-oq-01",
     "range": {
       "startLine": 1,
-      "endLine": 78
+      "endLine": 54
     },
     "type": "concept",
     "title": "From Size-Reduction to O(M(n)·log n): the HGCD Recurrence",
@@ -23,6 +23,31 @@
       "recurrence relations",
       "floor division and ⌊log₂ n⌋",
       "binary-gcd-oq-03-oq-02 (parent: recursive HGCD)"
+    ]
+  },
+  {
+    "id": "ann-halving-regular",
+    "proofId": "binary-gcd-oq-03-oq-02-incomplete-01-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "The Regularity Hypothesis and its Super-Additivity Certificate",
+    "content": "The single hypothesis on which the whole bound turns is packaged as the predicate `HalvingRegular M := ∀ n ≥ 2, 2·M(⌊n/2⌋) ≤ M(n)`. In master-theorem language this is the *regularity condition* $a\\,f(n/b) \\le c\\,f(n)$ specialized to the balanced binary split $a=b=2$ with $c=1$: doing the two half-size merges together must cost no more than one full merge. `halvingRegular_of_superadditive` is the usability bridge — rather than verify the halving inequality by hand for each merge cost, one checks the two structural properties **monotone** and **super-additive** ($M(a)+M(b)\\le M(a+b)$), and regularity follows: $2M(\\lfloor n/2\\rfloor)=M(\\lfloor n/2\\rfloor)+M(\\lfloor n/2\\rfloor)\\le M(\\lfloor n/2\\rfloor+\\lfloor n/2\\rfloor)\\le M(n)$, the last step using $2\\lfloor n/2\\rfloor\\le n$ and monotonicity. This certificate is what makes the abstract bound apply to every multiplication regime met in practice.",
+    "mathContext": "Super-additivity covers all realistic merge costs: $M(n)=n^a$ ($a\\ge 1$), $M(n)=n\\log n$ (quasi-linear FFT multiplication), and $M(n)=n\\log n\\log\\log n$ (Schönhage–Strassen) are each monotone and super-additive, hence halving-regular. The proof is a three-line `calc`: `ring` to split $2M(\\lfloor n/2\\rfloor)$, `hsuper` to combine, then `hmono` on $\\lfloor n/2\\rfloor+\\lfloor n/2\\rfloor\\le n$ (`omega`).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "master-theorem regularity condition",
+      "super-additive function",
+      "monotone cost function",
+      "superlinear multiplication M(n)",
+      "floor-division bound 2⌊n/2⌋ ≤ n"
+    ],
+    "prerequisites": [
+      "predicates as Prop-valued definitions in Lean",
+      "monotonicity and super-additivity",
+      "calc proofs with ring / omega"
     ]
   },
   {
