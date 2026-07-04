@@ -97,12 +97,20 @@
       "mathContext": "`Nat.centralBinom n = C(2n,n)`, so the sum-of-squares formula transports verbatim to the `centralBinom` notation used elsewhere in Mathlib."
     },
     {
-      "id": "examples",
-      "title": "Numeric Instances",
-      "summary": "`sum_sq_choose_example` (Σ_{k<4} C(3,k)² = 20) and `central_binomial_three` (C(6,3) = 20), both closed by kernel `decide`, confirm 1²+3²+3²+1² = 20 = C(6,3).",
+      "id": "example-sum-of-squares",
+      "title": "Numeric Instance: the Sum-of-Squares Side",
+      "summary": "`sum_sq_choose_example`: Σ_{k<4} C(3,k)² = 1²+3²+3²+1² = 20, closed by kernel `decide`. Evaluates the right-hand side of the main identity at n = 3.",
       "startLine": 62,
+      "endLine": 65,
+      "mathContext": "Row 3 of Pascal's triangle is $(1,3,3,1)$; its squared $\\ell^2$-norm is $\\sum_{k=0}^{3}\\binom{3}{k}^2 = 1+9+9+1 = 20$."
+    },
+    {
+      "id": "example-consistency-check",
+      "title": "Consistency Check: the Central-Binomial Side",
+      "summary": "`central_binomial_three`: C(6,3) = 20, also by kernel `decide`. Independently evaluates the left-hand side Nat.choose (2·3) 3 of the main identity, confirming both sides of central_binomial_eq_sum_sq agree at n = 3.",
+      "startLine": 67,
       "endLine": 71,
-      "mathContext": "Smallest non-trivial instance $n=3$: $\\binom{6}{3} = 20$ and $\\sum_{k=0}^{3}\\binom{3}{k}^2 = 1+9+9+1 = 20$."
+      "mathContext": "The central entry of row 6 of Pascal's triangle is $\\binom{6}{3} = 20$, matching the sum-of-squares evaluation and giving the smallest non-trivial witness of $\\binom{2n}{n} = \\sum_k \\binom{n}{k}^2$."
     }
   ],
   "conclusion": {
