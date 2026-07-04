@@ -165,6 +165,18 @@
         "type": "key",
         "description": "[ℚ(2^{1/2^k}):ℚ] = 2^k — the even / prime-power exponent case Mathlib's Kummer API cannot reach.",
         "leanType": "(k : ℕ) → Module.finrank ℚ ℚ⟮((2 : ℕ) : ℝ) ^ ((1 : ℝ) / ((2 ^ k : ℕ) : ℝ))⟯ = 2 ^ k"
+      },
+      {
+        "name": "linearIndependent_primeRoot_powers",
+        "type": "core",
+        "description": "The power basis {1, r, r², …, rⁿ⁻¹} of the real radical r = p^{1/n} is ℚ-linearly independent, for every prime p and n ≥ 1 — the basis witnessing the exact degree n. Generalizes the parent's linearIndependent_fr2_powers (the Fin 4 case for ⁴√2) to Fin n.",
+        "leanType": "{p n : ℕ} → p.Prime → 0 < n → LinearIndependent ℚ (fun i : Fin n => ((p : ℝ) ^ ((1 : ℝ) / n)) ^ (i : ℕ))"
+      },
+      {
+        "name": "minpoly_natDegree_primeRoot",
+        "type": "supporting",
+        "description": "The minimal polynomial of p^{1/n} over ℚ has natDegree exactly n — the numerical bridge from minpoly_primeRoot (minpoly = Xⁿ − p) to finrank_adjoin_primeRoot ([ℚ(p^{1/n}):ℚ] = n).",
+        "leanType": "{p n : ℕ} → p.Prime → 0 < n → (minpoly ℚ ((p : ℝ) ^ ((1 : ℝ) / n))).natDegree = n"
       }
     ],
     "path": "Proofs/FourthRoot2IrrationalOQ02.lean",
@@ -200,6 +212,18 @@
       "type": "headline",
       "description": "[ℚ(2^{1/4}):ℚ] = 4 — the eponymous result: 2^{1/4} = ⁴√2 has algebraic degree exactly 4 over ℚ (strictly stronger than irrationality). The k=2 instance of finrank_adjoin_two_pow_k, recovering the parent entry's finrank_adjoin_fr2.",
       "leanType": "Module.finrank ℚ ℚ⟮((2 : ℕ) : ℝ) ^ ((1 : ℝ) / ((4 : ℕ) : ℝ))⟯ = 4"
+    },
+    {
+      "name": "linearIndependent_primeRoot_powers",
+      "type": "core",
+      "description": "The power basis {1, r, r², …, rⁿ⁻¹} of the real radical r = p^{1/n} is ℚ-linearly independent, for every prime p and n ≥ 1 — the basis witnessing the exact degree n. Generalizes the parent's linearIndependent_fr2_powers (the Fin 4 case for ⁴√2) to Fin n.",
+      "leanType": "{p n : ℕ} → p.Prime → 0 < n → LinearIndependent ℚ (fun i : Fin n => ((p : ℝ) ^ ((1 : ℝ) / n)) ^ (i : ℕ))"
+    },
+    {
+      "name": "minpoly_natDegree_primeRoot",
+      "type": "supporting",
+      "description": "The minimal polynomial of p^{1/n} over ℚ has natDegree exactly n — the numerical bridge from minpoly_primeRoot (minpoly = Xⁿ − p) to finrank_adjoin_primeRoot ([ℚ(p^{1/n}):ℚ] = n).",
+      "leanType": "{p n : ℕ} → p.Prime → 0 < n → (minpoly ℚ ((p : ℝ) ^ ((1 : ℝ) / n))).natDegree = n"
     }
   ],
   "references": [
@@ -216,6 +240,20 @@
       "year": "2004",
       "venue": "Wiley, 3rd ed., §13.2 (Algebraic Extensions), §9.4 (Irreducibility)",
       "note": "Degree of a simple algebraic extension equals the degree of the minimal polynomial"
+    },
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Leipzig, Art. 42 (Gauss's Lemma on primitive polynomials)",
+      "note": "Gauss's lemma: the ℤ→ℚ descent used with Eisenstein to lift irreducibility of Xⁿ − p from ℤ[X] to ℚ[X]"
+    },
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer GTM 211, 3rd ed., §V.1 (Algebraic extensions), §VI.9 (radical/Kummer extensions)",
+      "note": "Degree of a simple extension [K(α):K] = deg minpoly, and the theory of pure/radical extensions K(a^{1/n})"
     }
   ],
   "sorries": 0
