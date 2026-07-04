@@ -174,5 +174,55 @@
       "type": "book"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "schurZassenhaus",
+      "type": "core",
+      "description": "Schur–Zassenhaus (existence): a normal subgroup N whose order is coprime to its index [G:N] has a complement K, so the multiplication N × K → G is a bijection.",
+      "leanType": "{N : Subgroup G} → [N.Normal] → (h : Nat.Coprime (Nat.card N) N.index) → ∃ K : Subgroup G, IsComplement' N K"
+    },
+    {
+      "name": "schurZassenhaus_structure",
+      "type": "core",
+      "description": "Schur–Zassenhaus (structure): the complement K realizes an internal semidirect product G = N ⋊ K — N and K are disjoint (N ⊓ K = ⊥), generate G (N ⊔ K = ⊤), and |K| = [G:N].",
+      "leanType": "[Finite G] → {N : Subgroup G} → [N.Normal] → (h : Nat.Coprime (Nat.card N) N.index) → ∃ K : Subgroup G, IsComplement' N K ∧ N ⊓ K = ⊥ ∧ N ⊔ K = ⊤ ∧ Nat.card K = N.index"
+    },
+    {
+      "name": "complement_of_coprime_orders",
+      "type": "core",
+      "description": "Order-factorization phrasing: if |G| = m·n via a normal N of order m and index n with gcd(m,n)=1, then G has a subgroup of order n complementing N — the classical coprime-order splitting.",
+      "leanType": "[Finite G] → {N : Subgroup G} → [N.Normal] → {m n : ℕ} → (Nat.card N = m) → (N.index = n) → (Nat.Coprime m n) → ∃ K : Subgroup G, IsComplement' N K ∧ Nat.card K = n"
+    },
+    {
+      "name": "normalSylow_isComplemented",
+      "type": "core",
+      "description": "Sylow extension of Schur–Zassenhaus: a NORMAL Sylow p-subgroup is always complemented. Sylow subgroups are Hall (card coprime to index), so coprimality is automatic and normality is the only extra hypothesis; the complement gives G = P ⋊ K.",
+      "leanType": "[Finite G] → [Fact p.Prime] → (P : Sylow p G) → [(P : Subgroup G).Normal] → ∃ K : Subgroup G, IsComplement' (P : Subgroup G) K"
+    },
+    {
+      "name": "isComplement'_card_eq_index",
+      "type": "supporting",
+      "description": "The complement of a coprime normal subgroup has order equal to the index [G:N], by cancelling |N| in |N|·|K| = |G| = |N|·[G:N].",
+      "leanType": "[Finite G] → {N K : Subgroup G} → (h : IsComplement' N K) → Nat.card K = N.index"
+    },
+    {
+      "name": "normalSylow_complement_card",
+      "type": "supporting",
+      "description": "The complement of a normal Sylow p-subgroup has order equal to the index [G:P].",
+      "leanType": "[Finite G] → [Fact p.Prime] → (P : Sylow p G) → [(P : Subgroup G).Normal] → {K : Subgroup G} → (IsComplement' (P : Subgroup G) K) → Nat.card K = (P : Subgroup G).index"
+    },
+    {
+      "name": "normalSylow_complement_not_dvd",
+      "type": "supporting",
+      "description": "The complement of a normal Sylow p-subgroup is a Hall p′-subgroup: p does not divide its order, so normality of a Sylow subgroup forces a p-complement.",
+      "leanType": "[Finite G] → [Fact p.Prime] → (P : Sylow p G) → [(P : Subgroup G).Normal] → {K : Subgroup G} → (IsComplement' (P : Subgroup G) K) → ¬ p ∣ Nat.card K"
+    },
+    {
+      "name": "normalSylow_complement_coprime",
+      "type": "supporting",
+      "description": "The complement's order is coprime to that of the Sylow subgroup — exactly the statement that G is the internal semidirect product of the two coprime Hall subgroups P and K.",
+      "leanType": "[Finite G] → [Fact p.Prime] → (P : Sylow p G) → [(P : Subgroup G).Normal] → {K : Subgroup G} → (IsComplement' (P : Subgroup G) K) → Nat.Coprime (Nat.card (P : Subgroup G)) (Nat.card K)"
+    }
+  ]
 }
