@@ -75,6 +75,86 @@
     "path": "Proofs/AngleTrisectionOQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "dvd_pow_two_is_pow_two",
+      "type": "core",
+      "description": "Any positive divisor of a power of 2 is itself a power of 2, proved by strong induction on the divisor via extracting a prime factor forced to equal 2.",
+      "leanType": "∀ d n : ℕ, d > 0 → d ∣ 2^n → ∃ k : ℕ, d = 2^k"
+    },
+    {
+      "name": "dvd_pow_two_iff",
+      "type": "core",
+      "description": "Complete characterization: for a positive d, d divides some power of 2 if and only if d is itself a power of 2.",
+      "leanType": "(d : ℕ) (hd : d > 0) : (∃ n : ℕ, d ∣ 2^n) ↔ (∃ k : ℕ, d = 2^k)"
+    },
+    {
+      "name": "prime_dvd_pow_two_eq_two",
+      "type": "supporting",
+      "description": "Any prime dividing a power of 2 must equal 2.",
+      "leanType": "(p n : ℕ) (hp : Nat.Prime p) (hpn : p ∣ 2^n) : p = 2"
+    },
+    {
+      "name": "odd_prime_dvd_not_dvd_pow_two",
+      "type": "supporting",
+      "description": "A number possessing an odd prime factor cannot divide any power of 2.",
+      "leanType": "(d p : ℕ) (hp : Nat.Prime p) (hodd : p ≠ 2) (hpd : p ∣ d) : ∀ n : ℕ, ¬(d ∣ 2^n)"
+    },
+    {
+      "name": "not_constructible_of_odd_prime_factor",
+      "type": "core",
+      "description": "If the degree d has an odd prime factor, then a number of that minimal-polynomial degree is not constructible by compass and straightedge.",
+      "leanType": "(α : ℝ) (d p : ℕ) (hp : Nat.Prime p) (hodd : p ≠ 2) (hpd : p ∣ d) : ¬ IsConstructible α d"
+    },
+    {
+      "name": "constructible_degree_is_power_of_two",
+      "type": "core",
+      "description": "The minimal-polynomial degree of any constructible number must be a power of 2.",
+      "leanType": "(α : ℝ) (d : ℕ) (hc : IsConstructible α d) : ∃ k : ℕ, d = 2^k"
+    },
+    {
+      "name": "degree_three_not_constructible",
+      "type": "supporting",
+      "description": "Degree 3 is not constructible — the core obstruction underlying the impossibility of angle trisection.",
+      "leanType": "(α : ℝ) : ¬ IsConstructible α 3"
+    },
+    {
+      "name": "non_constructible_complete_criterion",
+      "type": "core",
+      "description": "The complete answer to the open question: for positive d, non-constructibility holds if and only if d is not a power of 2 (equivalently, d has an odd prime factor).",
+      "leanType": "(α : ℝ) (d : ℕ) (hd : d > 0) : (¬ IsConstructible α d) ↔ ¬ (∃ k : ℕ, d = 2^k)"
+    },
+    {
+      "name": "fermat_prime_257",
+      "type": "supporting",
+      "description": "257 = 2^(2^3) + 1 is a Fermat prime, verified with its primality established by native_decide.",
+      "leanType": "IsFermatPrime 257"
+    },
+    {
+      "name": "fermat_prime_65537",
+      "type": "supporting",
+      "description": "65537 = 2^(2^4) + 1 is a Fermat prime, the largest known, with primality via native_decide.",
+      "leanType": "IsFermatPrime 65537"
+    },
+    {
+      "name": "heptadecagon_constructible",
+      "type": "supporting",
+      "description": "The regular 17-gon is constructible since φ(17) = 16 = 2^4, Gauss's celebrated result.",
+      "leanType": "RegularNgonConstructible 17"
+    },
+    {
+      "name": "heptagon_not_constructible",
+      "type": "supporting",
+      "description": "The regular 7-gon is not constructible since φ(7) = 6 has the odd prime factor 3.",
+      "leanType": "¬ RegularNgonConstructible 7"
+    },
+    {
+      "name": "constructible_ngons_3_to_20",
+      "type": "core",
+      "description": "Complete classification of constructibility of regular n-gons for 3 ≤ n ≤ 20, applying the Gauss-Wantzel criterion via Euler's totient.",
+      "leanType": "RegularNgonConstructible 3 ∧ RegularNgonConstructible 4 ∧ RegularNgonConstructible 5 ∧ RegularNgonConstructible 6 ∧ ¬ RegularNgonConstructible 7 ∧ RegularNgonConstructible 8 ∧ ¬ RegularNgonConstructible 9 ∧ RegularNgonConstructible 10 ∧ ¬ RegularNgonConstructible 11 ∧ RegularNgonConstructible 12 ∧ ¬ RegularNgonConstructible 13 ∧ ¬ RegularNgonConstructible 14 ∧ RegularNgonConstructible 15 ∧ RegularNgonConstructible 16 ∧ RegularNgonConstructible 17 ∧ ¬ RegularNgonConstructible 18 ∧ ¬ RegularNgonConstructible 19 ∧ RegularNgonConstructible 20"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "angle-trisection",
