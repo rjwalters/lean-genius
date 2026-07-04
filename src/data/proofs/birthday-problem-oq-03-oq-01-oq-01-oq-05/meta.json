@@ -30,6 +30,44 @@
       "birthdayCount3_four_eq_nat: a clean ℕ identity (birthdayCount3 4 d + 4d² = d⁴ + 3d) valid for d ≥ 1"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "birthdayCount3_four",
+      "type": "core",
+      "description": "The main closed form for n = 4: the number of ways to seat four labelled people on d days with at most two per day is d⁴ − 4d² + 3d, stated over ℤ to avoid truncated-subtraction artefacts. Proved by casing on d ≤ 2 (decide, kernel reduction — no native_decide) and unfolding the recurrence for d ≥ 3 (simp on R_succ/R_one/R_zero, then push_cast and ring).",
+      "leanType": "(d : ℕ) → (birthdayCount3 4 d : ℤ) = d ^ 4 - 4 * d ^ 2 + 3 * d"
+    },
+    {
+      "name": "birthdayCount3_four_factored",
+      "type": "core",
+      "description": "The factored form of the n = 4 count: d(d−1)(d²+d−3) over ℤ, obtained from birthdayCount3_four by ring. Exhibits the d and (d−1) factors (no valid seating uses fewer than the available days trivially) and the quadratic residual.",
+      "leanType": "(d : ℕ) → (birthdayCount3 4 d : ℤ) = d * (d - 1) * (d ^ 2 + d - 3)"
+    },
+    {
+      "name": "birthdayCount3_four_eq_nat",
+      "type": "core",
+      "description": "The closed form as a truncation-safe ℕ identity for d ≥ 1: birthdayCount3 4 d + 4d² = d⁴ + 3d. Moves the subtracted 4d² to the other side so the statement holds in ℕ without truncated subtraction; proved by zify and linarith from birthdayCount3_four.",
+      "leanType": "(d : ℕ) → (hd : 1 ≤ d) → birthdayCount3 4 d + 4 * d ^ 2 = d ^ 4 + 3 * d"
+    },
+    {
+      "name": "R_one",
+      "type": "lemma",
+      "description": "One-step evaluation of the slot recurrence: R 1 e s = e + s, by simp. Base case reused when unfolding the n = 4 recurrence down to depth 1.",
+      "leanType": "(e s : ℕ) → R 1 e s = e + s"
+    },
+    {
+      "name": "R_succ",
+      "type": "lemma",
+      "description": "The defining unfold of the slot recurrence (a @[simp] rfl-lemma): R (n+1) e s = e · R n (e-1) (s+1) + s · R n e (s-1), splitting on whether the next person takes a fresh day (e empty days) or pairs onto a singly-occupied day (s single days).",
+      "leanType": "(n e s : ℕ) → R (n + 1) e s = e * R n (e - 1) (s + 1) + s * R n e (s - 1)"
+    },
+    {
+      "name": "R_zero",
+      "type": "lemma",
+      "description": "Base case of the slot recurrence (a @[simp] rfl-lemma): R 0 e s = 1 — the empty seating is the unique arrangement of zero people.",
+      "leanType": "(e s : ℕ) → R 0 e s = 1"
+    }
+  ],
   "overview": {
     "historicalContext": "The classical birthday problem asks for the probability of a coincidence among n people's birthdays. The 'k=3' (triple-coincidence) variant counts seatings of n people on d days with at most two per day; the parent entry built an O(n²) slot recurrence R(n,e,s) for this count and established closed forms birthdayCount3 1 d = d, birthdayCount3 2 d = d², and birthdayCount3 3 d = d³ − d. The next term in this sequence had not been recorded.",
     "problemStatement": "Determine the exact closed form of birthdayCount3 4 d — the number of ways to seat four labelled people on d days with at most two per day — and prove it without native_decide.",
