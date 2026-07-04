@@ -158,21 +158,28 @@ axiom kostochka_pyber (ε : ℝ) (hε : ε > 0) :
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       isDense G ε → hasSmallK5Subdivision G C
 
+omit [Fintype V] [DecidableEq V] in
+/-- **Bridging lemma (K₅-subdivision ⇒ non-planar subgraph).** A small `K₅`
+    subdivision is, in particular, a small non-planar subgraph: on the same
+    witness set `S`, the `mpr` (reverse) direction of Kuratowski's
+    characterisation turns the `K₅`-subdivision disjunct into non-planarity of
+    the induced subgraph. This factors the sole use of `kuratowski_theorem` out
+    of the main theorem into a reusable, `C`-uniform statement. -/
+theorem smallK5_forces_smallNonPlanar (G : SimpleGraph V) (k : ℕ) :
+    hasSmallK5Subdivision G k → hasSmallNonPlanarSubgraph G k := by
+  rintro ⟨S, hS, hSub⟩
+  exact ⟨S, hS, (kuratowski_theorem (inducedSubgraph G S)).mpr (Or.inl hSub)⟩
+
 /-- The answer is YES: C_ε exists for all ε > 0. -/
 theorem erdos_1018_solved : erdos_1018_question := by
   intro ε
   intro hε
   obtain ⟨C, N, hCN⟩ := kostochka_pyber ε hε
-  use C, N
+  refine ⟨C, N, ?_⟩
   intro V _ _ hn G _ hDense
-  obtain ⟨S, hS, hSub⟩ := hCN V hn G hDense
-  use S
-  constructor
-  · exact hS
-  · -- A K₅ subdivision forces non-planarity: the reverse (`mpr`) direction of
-    -- Kuratowski's characterisation applied to the induced subgraph, taking the
-    -- `K₅`-subdivision disjunct supplied by Kostochka–Pyber.
-    exact (kuratowski_theorem (inducedSubgraph G S)).mpr (Or.inl hSub)
+  -- Kostochka–Pyber supplies a small `K₅` subdivision; the bridging lemma
+  -- upgrades it to a small non-planar subgraph in one step.
+  exact smallK5_forces_smallNonPlanar G C (hCN V hn G hDense)
 
 /-
 ## The Constant C_ε Grows as ε → 0
@@ -297,6 +304,22 @@ axiom kostochka_pyber_explicit (ε : ℝ) (hε : ε > 0) :
     Fintype.card V ≥ N →
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       isDense G ε → hasSmallK5Subdivision G (explicitBound ε)
+
+/-- **Explicit-bound form of the main theorem.** Beyond a threshold `N`, every
+    ε-dense graph has a non-planar subgraph on at most `explicitBound ε = ⌈1/ε²⌉`
+    vertices. This is the quantitative refinement of `erdos_1018_solved`, which
+    only asserts existence of *some* bounding constant `C`; here the constant is
+    the explicit Kostochka–Pyber bound. Obtained by feeding the explicit-bound
+    axiom through the same `smallK5_forces_smallNonPlanar` bridge. -/
+theorem explicit_small_nonplanar (ε : ℝ) (hε : ε > 0) :
+    ∃ N : ℕ, ∀ (V : Type*) [Fintype V] [DecidableEq V],
+      Fintype.card V ≥ N →
+      ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
+        isDense G ε → hasSmallNonPlanarSubgraph G (explicitBound ε) := by
+  obtain ⟨N, hN⟩ := kostochka_pyber_explicit ε hε
+  refine ⟨N, ?_⟩
+  intro V _ _ hcard G _ hDense
+  exact smallK5_forces_smallNonPlanar G (explicitBound ε) (hN V hcard G hDense)
 
 /-
 ## Related Problems
