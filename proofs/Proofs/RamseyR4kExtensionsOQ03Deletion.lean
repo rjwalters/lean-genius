@@ -304,6 +304,61 @@ theorem ramsey_deletion_one_past (hk : 2 ≤ k) (hkn : k ≤ n)
       ∀ K : Finset (Fin n), K ⊆ R → K.card = k → ¬ Mono c K :=
   ramsey_deletion_window hk hkn 1 (by simpa using hlo) (by simpa using hhi)
 
+/-- **The deletion window advances by exactly one vertex per step while the
+    `(k−1)`-clique first moment stays subthreshold.**  Recall the deletion bound is
+    `deletionBound n k = n − ⌊2·C(n,k) / 2^C(k,2)⌋`.  Its increment in `n` is governed by
+    Pascal's rule `C(n+1,k) = C(n,k) + C(n,k−1)`: the deleted-vertex count `⌊2·C(n,k)/q⌋`
+    (where `q = 2^C(k,2)`) can jump by at most one per step precisely when the *added*
+    mass `2·C(n,k−1)` is still below one full quantum `q`.  Hence, as long as
+
+        `2·C(n,k−1) < 2^C(k,2)`,
+
+    we have `deletionBound n k ≤ deletionBound (n+1) k`: adding a vertex never hurts the
+    guaranteed monochromatic-`Kₖ`-free set.
+
+    This is the *quantitative* content of the deletion window.  The sharp union bound
+    stalls at the largest `n` with `2·C(n,k) < q`; this lemma shows the deletion optimum
+    instead runs out to the largest `n` with `2·C(n,k−1) < q`.  Since in the Ramsey regime
+    `C(n,k−1) < C(n,k)` (the binomials are still on their increasing arm,
+    `Nat.choose_le_succ_of_lt_half_left`), that window is strictly wider — this is exactly
+    where the alteration method's extra factor of `≈ k` over the union bound comes from.
+    Pure `ℕ`-division, valid for every `k`; no `decide`. -/
+theorem deletionBound_mono_of_pred_subthreshold (hk : 2 ≤ k) (hkn : k ≤ n)
+    (hpred : 2 * n.choose (k - 1) < 2 ^ (k.choose 2)) :
+    deletionBound n k ≤ deletionBound (n + 1) k := by
+  have hq : 0 < 2 ^ (k.choose 2) := pow_pos (by norm_num) _
+  -- Pascal's rule in the form we need (the exact binomial-ratio step).
+  have hpascal : 2 * (n + 1).choose k = 2 * n.choose k + 2 * n.choose (k - 1) := by
+    have h : (n + 1).choose k = n.choose k + n.choose (k - 1) := by
+      obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
+      simp only [Nat.choose_succ_succ, Nat.add_sub_cancel]
+      ring
+    omega
+  simp only [deletionBound]
+  set q := 2 ^ (k.choose 2) with hq_def
+  set a := 2 * n.choose k with ha_def
+  set c := 2 * (n + 1).choose k with hc_def
+  set b := 2 * n.choose (k - 1) with hb_def
+  -- The floor `⌊c/q⌋` sits between `⌊a/q⌋` and `⌊a/q⌋ + 1` (added mass `b < q`).
+  have hxy : a / q ≤ c / q := Nat.div_le_div_right (by omega)
+  have hyx1 : c / q ≤ a / q + 1 :=
+    calc c / q ≤ (a + q) / q := Nat.div_le_div_right (by omega)
+      _ = a / q + 1 := Nat.add_div_right a hq
+  omega
+
+/-- **Wherever the sharp union bound is still feasible, the deletion bound is still
+    improving.**  If the first-moment test `2·C(n,k) < 2^C(k,2)` holds at `n` and the
+    binomials are on their increasing arm (`C(n,k−1) ≤ C(n,k)`, automatic in the Ramsey
+    regime `k−1 < n/2`), then `deletionBound n k ≤ deletionBound (n+1) k`.  Consequently
+    the deletion optimum lies at least as far out as the union optimum — and, because the
+    `(k−1)`-window `2·C(n,k−1) < 2^C(k,2)` is strictly wider than the `k`-window, strictly
+    beyond it.  A direct corollary of `deletionBound_mono_of_pred_subthreshold`. -/
+theorem deletionBound_mono_of_unionFeasible (hk : 2 ≤ k) (hkn : k ≤ n)
+    (hunion : 2 * n.choose k < 2 ^ (k.choose 2))
+    (hmid : n.choose (k - 1) ≤ n.choose k) :
+    deletionBound n k ≤ deletionBound (n + 1) k :=
+  deletionBound_mono_of_pred_subthreshold hk hkn (by omega)
+
 set_option maxHeartbeats 800000 in
 /-- **The sharp union bound caps at `n = 17` for `k = 6`.**  The first-moment test
     `2·C(n,6) < 2^{C(6,2)} = 2^{15}` holds at `n = 17` (`2·12376 = 24752 < 32768`) but
@@ -430,6 +485,8 @@ theorem deletion_no_mono_K8 :
 #check @ramsey_deletion_generalizes_first_moment
 #check @ramsey_deletion_bound
 #check @ramsey_deletion_one_past
+#check @deletionBound_mono_of_pred_subthreshold
+#check @deletionBound_mono_of_unionFeasible
 #check @deletion_no_mono_K6
 #check @unionBound_caps_at_27_for_K7
 #check @deletion_no_mono_K7
@@ -446,6 +503,8 @@ theorem deletion_no_mono_K8 :
 #print axioms ramsey_deletion_window
 #print axioms ramsey_deletion_generalizes_first_moment
 #print axioms ramsey_deletion_one_past
+#print axioms deletionBound_mono_of_pred_subthreshold
+#print axioms deletionBound_mono_of_unionFeasible
 #print axioms deletion_no_mono_K6
 #print axioms unionBound_caps_at_27_for_K7
 #print axioms deletion_no_mono_K7
