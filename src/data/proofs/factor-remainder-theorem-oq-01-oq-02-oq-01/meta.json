@@ -122,16 +122,24 @@
       "mathContext": "Turns separability (coprimality with p′) into the absence of a square linear factor, in every characteristic."
     },
     {
-      "id": "field-iff",
-      "title": "Section II: Over a Field — Separable Iff No Repeated Linear Factor",
+      "id": "field-multiplicity",
+      "title": "Section II: Over a Field — Multiplicity and the Repeated-Square Criterion",
       "startLine": 92,
+      "endLine": 117,
+      "summary": "sq_dvd_iff_one_lt_rootMultiplicity turns square-divisibility into a multiplicity statement — over a field, (X − a)² ∣ p iff a is a root of multiplicity > 1 — and roots_nodup_iff_forall_not_sq_dvd upgrades it to the global 'all roots distinct iff no (X − a)² divides p'. Together they translate the ring-level divisibility form of Section I into the field-level language of root multiplicity that Mathlib's Separable ultimately measures.",
+      "mathContext": "$(X-a)^2 \\mid p \\iff \\operatorname{rootMult}_a(p) > 1$; and $p.\\text{roots}.\\text{Nodup} \\iff \\forall a,\\ \\neg\\,(X-a)^2 \\mid p$."
+    },
+    {
+      "id": "field-iff",
+      "title": "Section III: Over a Field — Separable Iff No Repeated Linear Factor",
+      "startLine": 118,
       "endLine": 122,
-      "summary": "sq_dvd_iff_one_lt_rootMultiplicity and roots_nodup_iff_forall_not_sq_dvd bridge the divisibility form to root multiplicity and to distinct roots, and separable_iff_forall_not_sq_dvd assembles the headline: a nonzero split polynomial is separable iff no (X − a)² divides it.",
-      "mathContext": "The explicit elementary criterion, combining the original divisibility bridge with Mathlib's split-polynomial separability test."
+      "summary": "separable_iff_forall_not_sq_dvd assembles the headline for a nonzero split polynomial over a field: p is Separable iff no (X − a)² divides it, combining the divisibility bridge of Sections I–II with Mathlib's split-polynomial separability test.",
+      "mathContext": "For nonzero split $p$ over a field: $p\\text{ Separable} \\iff \\forall a,\\ \\neg\\,(X-a)^2 \\mid p$."
     },
     {
       "id": "char-two",
-      "title": "Section III: Characteristic-2 Witnesses",
+      "title": "Section IV: Characteristic-2 Witnesses",
       "startLine": 124,
       "endLine": 152,
       "summary": "separable_X_sq_add_X_zmod_two (derivative = 1, separable) and not_separable_X_sq_zmod_two (derivative = 0, inseparable) compute the ordinary derivative over ZMod 2, confirming the separability criterion is correct even in the characteristic where the parent's hasseDeriv_detects_char_p warns the ordinary derivative is blind at higher multiplicity.",
