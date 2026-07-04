@@ -73,6 +73,38 @@
       "Double counting (the face–edge handshake Σ face sizes = 2E)"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "totalFaceAngle_eq",
+      "type": "core",
+      "description": "Closed form for the total face angle over the multiset of face sizes: totalFaceAngle s = (Σ sizes)·π − 2π·(#faces). Proved by a one-line multiset induction, using that an n-gon contributes (n−2)π. This is the identity that converts the by-vertex defect sum into a tractable by-face quantity.",
+      "leanType": "(s : Multiset ℕ) : totalFaceAngle s = (s.sum : ℝ) * Real.pi - 2 * Real.pi * (s.card : ℝ)"
+    },
+    {
+      "name": "totalDefect_eq_two_pi_euler",
+      "type": "core",
+      "description": "Discrete Gauss–Bonnet. For any polyhedral surface the total angular defect equals 2π·(V−E+F). Proved from the face–edge handshake (Σ face sizes = 2E) ALONE — Euler's formula is not used here — exhibiting the total defect as exactly 2π times the Euler characteristic.",
+      "leanType": "(P : PolyhedralSurface) : totalDefect P = 2 * Real.pi * ((P.V : ℝ) - (P.E : ℝ) + (P.F : ℝ))"
+    },
+    {
+      "name": "descartes",
+      "type": "headline",
+      "description": "Descartes' total angular defect theorem: for a polyhedral surface that is a sphere (V−E+F=2), the total angular defect is exactly 4π. Immediate corollary of the Gauss–Bonnet identity by substituting Euler's characteristic χ=2.",
+      "leanType": "(P : PolyhedralSurface) : totalDefect P = 4 * Real.pi"
+    },
+    {
+      "name": "platonic_defects",
+      "type": "supporting",
+      "description": "All five Platonic solids (tetrahedron, cube, octahedron, dodecahedron, icosahedron), built as PolyhedralSurface instances with a single replicated face size, have total angular defect exactly 4π — each obtained directly from `descartes`.",
+      "leanType": "totalDefect tetrahedron = 4π ∧ totalDefect cube = 4π ∧ totalDefect octahedron = 4π ∧ totalDefect dodecahedron = 4π ∧ totalDefect icosahedron = 4π"
+    },
+    {
+      "name": "cube_defect_direct",
+      "type": "supporting",
+      "description": "A formula-free direct verification for the cube: 8 vertices each with angular defect 2π − 3·(π/2) = π/2, totalling 4π. Cross-checks the general theorem against an explicit per-vertex computation.",
+      "leanType": "totalDefect cube = 4 * Real.pi"
+    }
+  ],
   "sections": [
     {
       "id": "face-angle",
