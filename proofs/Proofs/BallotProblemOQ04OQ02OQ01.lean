@@ -184,6 +184,67 @@ theorem isNonCrossingFp_restrictFp_offset {j n : ℕ} (k : ℕ) (h : k + j ≤ n
     IsNonCrossingFp (restrictFp (offsetEmb k h) P) :=
   isNonCrossingFp_restrictFp _ (strictMono_offsetEmb k h) P hP
 
+/-! ### The forward map of the first-return bijection
+
+With the restriction infrastructure in place, the **forward** direction of
+`nonempty_firstReturnEquiv` is now concrete, and the previously-open "which interval does the cut
+select" question is settled. The **cut index** is `firstBlockMax P := max (block containing 0)`:
+the largest element sharing a block with `0`.
+
+This is the *correct binary* cut. Decomposing the block of `0` into its successive gaps gives the
+wrong, multi-part ("composition") recurrence; the single number `m = max (block 0)` gives the
+Catalan convolution, because non-crossing forces every block to lie entirely within `[1, m]` or
+entirely within `[m+1, n]` — a block with points on both sides of `m` would, together with the
+pair `0, m` of the distinguished block, form a crossing `0 < b < m < d`. Hence `P` restricts
+*independently* to the two offset windows `[1, m]` (length `m`) and `[m+1, n]` (length `n - m`),
+with `(m, n - m) ∈ antidiagonal n`; both restrictions are non-crossing by
+`isNonCrossingFp_restrictFp_offset`. Small-case check: at `n = 1` the cut `m ∈ {0,1}` separates
+the two partitions of `{0,1}`; at `n = 2` the three values of `m` distribute the five partitions
+of `{0,1,2}` as `1 + 2 + 2` over `(m, n-m) = (0,2), (1,1), (2,0)`, matching
+`NC 0·NC 2 + NC 1·NC 1 + NC 2·NC 0 = 5`.
+
+The remaining open content is the *inverse* (gluing) map and the two mutual-inverse laws; the
+forward map `firstReturnForward` and its target indices are pinned down here (0 `sorry`). -/
+
+/-- The distinguished **cut index** of the first-return decomposition: the largest element in the
+block containing `0`. Non-crossing forces every block to sit entirely on one side of it. -/
+def firstBlockMax {n : ℕ} (P : Finpartition (univ : Finset (Fin (n + 1)))) : Fin (n + 1) :=
+  (P.part 0).max' ⟨0, P.mem_part (mem_univ 0)⟩
+
+/-- The cut index shares a block with `0`. -/
+theorem firstBlockMax_mem_part {n : ℕ} (P : Finpartition (univ : Finset (Fin (n + 1)))) :
+    firstBlockMax P ∈ P.part 0 :=
+  (P.part 0).max'_mem _
+
+/-- The cut index and its complement form an `antidiagonal n` pair, so the two restricted
+intervals have exactly the sizes the recurrence's `Σ` ranges over. -/
+theorem firstBlockMax_mem_antidiagonal {n : ℕ}
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) :
+    ((firstBlockMax P).val, n - (firstBlockMax P).val) ∈ antidiagonal n := by
+  rw [mem_antidiagonal]
+  have h : (firstBlockMax P).val ≤ n := Nat.lt_succ_iff.mp (firstBlockMax P).isLt
+  omega
+
+/-- **Forward map of the first-return bijection (0 `sorry`).** A non-crossing partition of
+`Fin (n+1)` maps to its cut index `m = firstBlockMax P` (paired with `n - m` in `antidiagonal n`)
+together with the two non-crossing restrictions to the offset windows `[1, m]` and `[m+1, n]`.
+This realizes the forward half of `nonempty_firstReturnEquiv`; only the inverse (gluing) map and
+the mutual-inverse laws remain. -/
+def firstReturnForward {n : ℕ}
+    (Pnc : {P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P}) :
+    Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
+      {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
+      {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P} :=
+  let m := (firstBlockMax Pnc.1).val
+  have hm : m ≤ n := Nat.lt_succ_iff.mp (firstBlockMax Pnc.1).isLt
+  have hL : 1 + m ≤ n + 1 := by omega
+  have hR : (m + 1) + (n - m) ≤ n + 1 := by omega
+  ⟨⟨(m, n - m), firstBlockMax_mem_antidiagonal Pnc.1⟩,
+    ⟨restrictFp (offsetEmb 1 hL) Pnc.1,
+      isNonCrossingFp_restrictFp_offset 1 hL Pnc.1 Pnc.2⟩,
+    ⟨restrictFp (offsetEmb (m + 1) hR) Pnc.1,
+      isNonCrossingFp_restrictFp_offset (m + 1) hR Pnc.1 Pnc.2⟩⟩
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its

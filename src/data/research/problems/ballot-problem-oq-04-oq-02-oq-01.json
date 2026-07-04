@@ -8,13 +8,16 @@
   "tractability": 8,
   "problemStatement": "Prove nonCrossingCount n = catalan n, where nonCrossingCount n (from ballot-problem-oq-04-oq-02) is the cardinality of non-crossing Finpartitions of Fin n. This is openQuestion[2] of the sibling entry: establish the Catalan convolution recurrence directly on the Finpartition model rather than via the full Dyck-word bijection.",
   "knowledge": {
-    "progressSummary": "PROGRESS: restriction (forward) half verified (0 sorry, committed); Session 5 corrected the decomposition plan (first-cut-point binary split, not block-of-0; new strip-outer-arch sub-lemma). Sole sorry = nonempty_firstReturnEquiv. Aristotle down.",
+    "progressSummary": "PROGRESS: forward map of the first-return bijection built (0 sorry) with corrected cut m=max(block 0); both components are s6 offset restrictions; (m,n-m) in antidiagonal proved. Sole remaining sorry (nonempty_firstReturnEquiv) now needs only the inverse gluing map + mutual-inverse laws.",
     "builtItems": [
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_zero : nonCrossingCount 0 = 1 (via nonCrossingCount_eq_card_of_n_le_three + Unique (Finpartition ⊥) + Fintype.card_unique). 0 sorry.",
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n, proved by Nat.strong_induction_on, matching nonCrossingCount_recurrence against Mathlib catalan_succ' term-by-term over antidiagonal n. Depends on the recurrence sorry; reduction itself 0 sorry.",
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_recurrence (n) : nonCrossingCount (n+1) = ∑ ij ∈ antidiagonal n, nonCrossingCount ij.1 * nonCrossingCount ij.2 — STATED, body is the single outstanding sorry.",
       "strictMono_castLE + isNonCrossingFp_restrictFp_castLE (initial-segment restriction preserves non-crossing) in BallotProblemOQ04OQ02OQ01.lean",
-      "offsetEmb + strictMono_offsetEmb + isNonCrossingFp_restrictFp_offset (offset-window restriction preserves non-crossing) in BallotProblemOQ04OQ02OQ01.lean"
+      "offsetEmb + strictMono_offsetEmb + isNonCrossingFp_restrictFp_offset (offset-window restriction preserves non-crossing) in BallotProblemOQ04OQ02OQ01.lean",
+      "firstBlockMax (BallotProblemOQ04OQ02OQ01.lean): the cut-index def via (P.part 0).max'",
+      "firstBlockMax_mem_part + firstBlockMax_mem_antidiagonal: cut shares a block with 0, and (m,n-m) in antidiagonal n (0 sorry)",
+      "firstReturnForward (0 sorry): the FORWARD map of nonempty_firstReturnEquiv, mapping a non-crossing P to ((m,n-m) in antidiagonal, offset-restriction to [1,m], offset-restriction to [m+1,n]). Forward half plus target indices fully pinned; only inverse + mutual-inverse remain."
     ],
     "insights": [
       "Mathlib's catalan is defined by exactly the antidiagonal convolution (catalan_succ': catalan (n+1) = ∑ ij ∈ antidiagonal n, catalan ij.1 * catalan ij.2), so proving nonCrossingCount obeys the SAME recurrence + base reduces nonCrossingCount = catalan to a four-line strong induction. The entire difficulty is isolated into the one recurrence lemma.",
@@ -29,20 +32,20 @@
       "First-cut-point insight (Session 5): the block-of-0 decomposition gives the MULTI-WAY composition recurrence, NOT the binary antidiagonal C_{n+1}=sum_{i+j=n} C_i C_j. The correct binary split uses k = first cut point (smallest m with {0..m} a union of complete blocks): left {0..k} irreducible -> C_k, right {k+1..n} free -> C_{n-k}, i+j=n. Verified by hand on C_3=5.",
       "The new key sub-lemma is the strip-outer-arch bijection irreducible-NC{0..k} = free-NC{0..k-1} (Finpartition analog of removing a Dyck word outer U..D); this realigns the problem with the Dyck-word transport track since the first-cut split IS the Dyck first-return U w1 D w2.",
       "s6: SIGSEGV (exit 139) when monotonicity of Fin.castLE/offsetEmb proved via simpa/Fin.lt_def-rewrite — simp loop blows native stack; use defeq (fun _ _ h => h) and show+omega instead",
-      "s6: Aristotle MCP prove and prove_file both return Resource not found — service still down as in s1-5"
+      "s6: Aristotle MCP prove and prove_file both return Resource not found — service still down as in s1-5",
+      "CORRECT binary cut is m = firstBlockMax P = max(block containing 0), NOT a Nat.find first-cut-point. Non-crossing forces every block entirely into [1,m] or [m+1,n]: a straddling block with a point b in (0,m) and d in (m,n] together with 0~m gives a crossing 0<b<m<d. Cut sizes (m, n-m) land in antidiagonal n exactly (m + (n-m) = n since m<=n from Fin).",
+      "Both forward components are OFFSET-window restrictions (isNonCrossingFp_restrictFp_offset from s6): left = window [1,m] length m, right = window [m+1,n] length n-m. So the s6 offset infra directly implements the forward map's non-crossing part; castLE is not needed for the forward map after all.",
+      "Small-case validation of the cut: n=1 -> m in {0,1} separates the 2 partitions of {0,1}; n=2 -> the three m-values distribute the 5 partitions of {0,1,2} as 1+2+2 over (0,2),(1,1),(2,0) = NC0*NC2 + NC1*NC1 + NC2*NC0."
     ],
     "mathlibGaps": [
       "Mathlib has no theory of non-crossing partitions at all (confirmed: no nonCrossing/NonCrossingPartition anywhere in Mathlib source). The recurrence has no Mathlib analogue to transport.",
       "No Mathlib lemma decomposes a Finpartition of Fin (n+1) by the block containing a distinguished index into independent sub-partitions of the complementary gaps; this is the missing infrastructure for the recurrence."
     ],
     "nextSteps": [
-      "Define first-cut-point k via Nat.find over is-{0..m}-a-union-of-complete-blocks; use Fin.castLE + shifted embeddings and the verified isNonCrossingFp_restrictFp for the two components",
-      "Prove the strip-outer-arch sub-bijection irreducible-NC{0..k} = free-NC{0..k-1} (new crux)",
-      "Assemble forward+glue+round-trips into the Equiv to close nonempty_firstReturnEquiv; keep each sub-lemma independently buildable",
-      "Retry Aristotle each session (endpoint down sessions 1-5)",
-      "Define the first-return cut point k (first index sharing the top block) and prove blocks strictly inside (k,n) stay confined (confinement lemma) using the offset-window restriction",
-      "Assemble forward map: P non-crossing -> (restrictFp castLE, restrictFp offsetEmb) landing sizes in antidiagonal n",
-      "Build gluing inverse and mutual-inverse laws to complete nonempty_firstReturnEquiv"
+      "Build the INVERSE (gluing) map: given (i,j) in antidiagonal n and NC partitions Q of Fin i, R of Fin j, glue into an NC partition of Fin(n+1) with 0~i (distinguished block spanning [0,i]). Try a glueSetoid via Finpartition.ofSetoid mirroring restrictSetoid to avoid manual partition axioms.",
+      "Prove the round-trips: restrictFp(offset)(glue Q R) = Q and = R, and glue(firstReturnForward P) = P. The strip-outer-arch identification (left window [1,m] recovers the 0-block via its block containing m) is the subtle law.",
+      "Assemble firstReturnForward + gluing + round-trips into the Equiv to close nonempty_firstReturnEquiv.",
+      "Retry Aristotle each session (endpoint 404 down sessions 1-6; submit the whole Equiv sorry once it recovers)."
     ]
   },
   "currentState": {
