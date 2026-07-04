@@ -141,13 +141,13 @@ theorem isSidon_of_isBhSet_two {A : Finset ℕ} (H : IsBhSet 2 A) : IsSidon A :=
       · exact ha
       · rcases Multiset.mem_cons.mp hx with rfl | hx
         · exact hb
-        · exact absurd hx (Multiset.not_mem_zero x)
+        · exact absurd hx (Multiset.notMem_zero x)
     · intro x hx
       rcases Multiset.mem_cons.mp hx with rfl | hx
       · exact hc
       · rcases Multiset.mem_cons.mp hx with rfl | hx
         · exact hd
-        · exact absurd hx (Multiset.not_mem_zero x)
+        · exact absurd hx (Multiset.notMem_zero x)
     · simp
     · simp
     · simp only [Multiset.sum_cons, Multiset.sum_zero, add_zero]; exact hsum
