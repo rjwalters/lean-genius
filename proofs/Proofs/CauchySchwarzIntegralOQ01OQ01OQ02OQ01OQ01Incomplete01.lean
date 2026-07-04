@@ -40,6 +40,22 @@ variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
 namespace RieszSigmaFiniteComplete
 
+/-- Helper: `x ^ (q - 1) * x = x ^ q` for `0 ≤ x` and `q ≠ 0`.
+
+Uses `Real.rpow_add'` (which requires only `0 ≤ x`, plus `y + z ≠ 0`) rather than
+`Real.rpow_add` (which now requires the strictly-positive `0 < x`). This isolates the
+Hölder-extremizer rpow arithmetic `|g_k a| ^ (q-1) * |g_k a| = |g_k a| ^ q` used in the
+localization norm bound, and — unlike a manual `Real.rpow_add` rewrite — needs no
+separate `x = 0` case split (`Real.rpow_add'` already covers the zero base). -/
+theorem rpow_sub_one_mul_self {x : ℝ} (hx : 0 ≤ x) {q : ℝ} (hq : q ≠ 0) :
+    x ^ (q - 1) * x = x ^ q := by
+  have hqe : q - 1 + 1 = q := by ring
+  have hne : q - 1 + 1 ≠ 0 := by rw [hqe]; exact hq
+  calc x ^ (q - 1) * x
+      = x ^ (q - 1) * x ^ (1 : ℝ) := by rw [Real.rpow_one]
+    _ = x ^ (q - 1 + 1) := (Real.rpow_add' hx hne).symm
+    _ = x ^ q := by rw [hqe]
+
 -- ============================================================================
 -- § 0. Helper lemmas
 -- ============================================================================
@@ -488,9 +504,8 @@ theorem gseq_norm_bound
             · simp [Real.sign_of_pos ha, abs_of_pos ha]
           rw [show Real.sign (g_k a) * |g_k a| ^ (q.toReal - 1) * g_k a =
               |g_k a| ^ (q.toReal - 1) * (Real.sign (g_k a) * g_k a) from by ring,
-              hsign, show |g_k a| = |g_k a| ^ (1 : ℝ) from (Real.rpow_one _).symm,
-              ← Real.rpow_add (abs_nonneg _)]
-          norm_num
+              hsign]
+          exact rpow_sub_one_mul_self (abs_nonneg _) hq_pos'.ne'
         simp_rw [hpw2]
         have hpw3 : ∀ a, |g_k a| ^ q.toReal =
             ((‖g_k a‖₊ : ℝ≥0∞) ^ q.toReal).toReal := fun a => by
