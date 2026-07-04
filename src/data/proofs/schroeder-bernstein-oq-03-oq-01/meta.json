@@ -111,7 +111,8 @@
       "**Composition-closure is the reusable core of any effective back-and-forth.** The reason a stage-wise priority construction can adjust the partial bijection finitely often and still yield a *computable* total permutation is exactly that computable permutations are closed under composition and inverse — the subgroup structure abstracts that closure away from the specific construction.",
       "**Transpositions are the computable generators.** A single decidable-equality `ite` makes each swap primitive recursive, and self-inverseness makes the inverse free. From these, closure under the group operations propagates computability to the entire transposition-generated subgroup with no further computability arguments.",
       "**Finitely-supported ⟹ computable, for free.** Because every finitely-supported permutation of ℕ is a finite product of transpositions, `list_prod_swap_mem` gives their computability immediately from the subgroup laws — no separate encoding of the support is needed.",
-      "**Group membership is classical, not decidable.** `recSym` is an ordinary `Subgroup`: `e ∈ recSym` is the *proposition* `e.Computable`. The entry does not (and cannot, in general) claim this membership is decidable — only that the computable permutations are closed under the group operations."
+      "**Group membership is classical, not decidable.** `recSym` is an ordinary `Subgroup`: `e ∈ recSym` is the *proposition* `e.Computable`. The entry does not (and cannot, in general) claim this membership is decidable — only that the computable permutations are closed under the group operations.",
+      "**Computability is closed under the group operations, so recSym is a genuine subgroup.** Identity is computable (Equiv.refl is its own inverse), composition uses (a*b)=b.trans a with Equiv.Computable.trans, and inverse uses a⁻¹=a.symm with Equiv.Computable.symm — the three Subgroup obligations — so the computable permutations of ℕ form the recursive symmetric group, nontrivial since it already contains swap 0 1."
     ],
     "prerequisites": [
       "Computability theory (Computable / Primrec / primitive recursion over ℕ)",
@@ -121,28 +122,34 @@
   },
   "sections": [
     {
-      "id": "swap-computable",
-      "title": "Transpositions are Computable",
+      "title": "Primitive recursiveness of the swap function",
       "startLine": 48,
-      "endLine": 76,
-      "summary": "primrec_swapFun witnesses the swap function x ↦ if x = m then n else if x = n then m else x as primitive recursive; computable_swap_coe transfers it to Equiv.swap via swap_apply_def; swap_computable adds self-inverseness (symm_swap) to get (Equiv.swap m n).Computable.",
-      "mathContext": "The transposition function is an ite-tree over decidable equality tests, hence Primrec, hence Computable; a swap equals its own inverse, so both computability halves of Equiv.Computable coincide."
+      "endLine": 72,
+      "summary": "primrec_swapFun: the underlying function x ↦ if x=m then n else if x=n then m else x of Equiv.swap m n is primitive recursive — an ite-tree over decidable equality tests built from Primrec.ite, Primrec.eq and constants. computable_swap_coe lifts this to Computable of the coerced function via to_comp and Equiv.swap_apply_def."
     },
     {
-      "id": "subgroup",
-      "title": "The Recursive Symmetric Group",
+      "title": "Transpositions are computable permutations",
+      "startLine": 73,
+      "endLine": 76,
+      "summary": "swap_computable: (Equiv.swap m n).Computable. Since a transposition is its own inverse (Equiv.symm_swap), the single computability fact for the forward function suffices for both directions of the permutation-computability predicate."
+    },
+    {
+      "title": "The recursive symmetric group",
       "startLine": 77,
       "endLine": 112,
-      "summary": "recSym : Subgroup (Equiv.Perm ℕ) with carrier {e | e.Computable}; one_mem'/mul_mem'/inv_mem' discharged via Equiv.Perm.one_def / mul_def / inv_def together with Computable.id and Equiv.Computable.trans / .symm. mem_recSym records that membership is definitionally e.Computable.",
-      "mathContext": "Identity id is computable and 1.symm = 1; a * b = b.trans a and composition of computable equivs is computable; a⁻¹ = a.symm and inverse of a computable equiv is computable."
+      "summary": "recSym: the subgroup of Equiv.Perm ℕ of computable permutations (e with both e and e.symm computable). The three closure obligations use identity (Equiv.refl self-inverse), composition ((a*b)=b.trans a with Equiv.Computable.trans) and inverse (a⁻¹=a.symm with Equiv.Computable.symm). mem_recSym records membership = computability by Iff.rfl."
     },
     {
-      "id": "generators",
-      "title": "Generators and Structure",
+      "title": "Transpositions generate inside recSym",
       "startLine": 113,
+      "endLine": 137,
+      "summary": "swap_mem places every transposition in recSym; closure_isSwap_le shows the subgroup generated by all IsSwap permutations is ≤ recSym (via Subgroup.closure_le), and computable_of_mem_closure_isSwap reads off that any permutation in that closure is computable."
+    },
+    {
+      "title": "Finite products of transpositions and nontriviality",
+      "startLine": 138,
       "endLine": 158,
-      "summary": "swap_mem places every transposition in recSym; closure_isSwap_le contains the transposition-generated subgroup in recSym; computable_of_mem_closure_isSwap and list_prod_swap_mem expose computability of arbitrary transposition products (hence all finitely-supported permutations); recSym_ne_bot shows the group is nontrivial.",
-      "mathContext": "The subgroup generated by { σ | σ.IsSwap } lies inside recSym; every finite product of swaps is computable; swap 0 1 ≠ 1 witnesses recSym ≠ ⊥."
+      "summary": "list_prod_swap_mem: any finite product of transpositions lies in recSym (so every finitely-supported permutation of ℕ is computable, being such a product), via recSym.list_prod_mem. recSym_ne_bot: recSym ≠ ⊥ because it contains swap 0 1, which moves 0 and so is not the identity."
     }
   ],
   "references": [
