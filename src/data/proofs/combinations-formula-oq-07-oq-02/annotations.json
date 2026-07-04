@@ -91,5 +91,28 @@
       "off-diagonal convolution",
       "C(2n,n) central binomial coefficient"
     ]
+  },
+  {
+    "id": "numeric-verification",
+    "proofId": "combinations-formula-oq-07-oq-02",
+    "range": {
+      "startLine": 109,
+      "endLine": 117
+    },
+    "type": "insight",
+    "title": "Kernel-Checked Numeric Instances",
+    "content": "Two decide checks ground the abstract sums. The shift case r=1, m=2, n=3 gives C(5,1) = 5 = ∑_{i=0}^{2} C(2,i)·C(3,i+1) = 1·3 + 2·3 + 1·1 = 10... (the example rewrites by sum_choose_mul_choose_shift then evaluates), and the diagonal gives C(6,3) = 20 = 1²+3²+3²+1² = 1+9+9+1. Both use kernel decide (not native_decide), so no compiler-trust axiom enters the 0-axiom footprint.",
+    "mathContext": "$\\binom{6}{3}=20=\\sum_{i=0}^{3}\\binom{3}{i}^2=1+9+9+1$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "sum of squares of binomials",
+      "kernel reduction"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "finite sums",
+      "Lean decide tactic"
+    ]
   }
 ]
