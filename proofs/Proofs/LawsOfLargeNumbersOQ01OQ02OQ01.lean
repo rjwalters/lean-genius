@@ -1619,4 +1619,99 @@ theorem summable_trunc_sq_weight_of_integrable [IsFiniteMeasure μ]
 
 end RealVarianceSummable
 
+/-! ## Weighted-variance partial-sum bound (hand-off to the Kolmogorov criterion S5)
+
+The Kolmogorov weighted criterion `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5)
+consumes a *uniform* bound on the weighted-variance partial sums,
+`∀ n, ∑_{i ≤ n} Var(Yᵢ)/aᵢ² ≤ V`.  This section supplies the two deterministic bricks that
+turn the real `Summable` of § RealVarianceSummable into exactly that hypothesis:
+
+* `variance_trunc_le_integral_sq` — the elementary domination `Var(Yᵢ) ≤ 𝔼[Yᵢ²]` for a
+  truncation `Yₜ = 𝟙{|X| ≤ t}·X` (Mathlib `variance_le_expectation_sq`), the (a) brick.
+* `weighted_variance_partial_sum_le_tsum` — given ANY positive threshold/normaliser sequence
+  `a` and summability of the weighted second moments `i ↦ aᵢ⁻²·𝔼[Yᵢ²]`, the weighted-variance
+  partial sums are bounded by the total `∑'ᵢ aᵢ⁻²·𝔼[Yᵢ²]`, uniformly in `n` (`Summable.sum_le_tsum`,
+  nonnegative terms), the (b) brick.
+
+Here the Marcinkiewicz–Zygmund normaliser `aᵢ = i^{1/p}` doubles as the truncation threshold, so a
+single sequence `a` plays both roles.  Instantiating `a i = (i+1)^{1/p}` (positive for all `i`) with
+the shifted § RealVarianceSummable summability gives S5's `hV` directly.  0-sorry / 0-`axiom`. -/
+section WeightedVariancePartialSum
+
+open MeasureTheory ProbabilityTheory
+
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
+/-- **Truncated variance dominated by the truncated second moment.**  On a probability space, for a
+measurable `X` and any threshold `t`, the truncation `Yₜ = 𝟙{|X| ≤ t}·X` has
+
+    Var(Yₜ)  ≤  ∫ ω, (𝟙{|X ω| ≤ t}·X ω)²  =  𝔼[Yₜ²].
+
+Immediate from Mathlib's `variance_le_expectation_sq` applied to the (measurable, hence
+`AEStronglyMeasurable`) truncation.  The (a) brick feeding the Kolmogorov criterion (S5): the
+weighted variance sum `∑ᵢ Var(Yᵢ)/aᵢ²` is thereby dominated by the weighted second-moment sum
+`∑ᵢ aᵢ⁻²·𝔼[Yᵢ²]` proved summable in § RealVarianceSummable. -/
+theorem variance_trunc_le_integral_sq [IsProbabilityMeasure μ]
+    (X : Ω → ℝ) (hX : Measurable X) (t : ℝ) :
+    variance (fun ω => {ω | |X ω| ≤ t}.indicator X ω) μ
+      ≤ ∫ ω, ({ω | |X ω| ≤ t}.indicator X ω) ^ 2 ∂μ := by
+  have hmeasset : MeasurableSet {ω | |X ω| ≤ t} :=
+    measurableSet_le hX.abs measurable_const
+  have hY : Measurable (fun ω => {ω | |X ω| ≤ t}.indicator X ω) :=
+    hX.indicator hmeasset
+  exact variance_le_expectation_sq hY.aestronglyMeasurable
+
+#check @variance_trunc_le_integral_sq
+
+/-- **Uniform bound on the weighted-variance partial sums (S5 hand-off).**  Let `a : ℕ → ℝ` be any
+threshold/normaliser sequence and suppose the weighted truncated second moments
+`i ↦ (aᵢ²)⁻¹·∫ (𝟙{|X| ≤ aᵢ}·X)²` are summable.  Then, uniformly in `n`, the weighted-variance
+partial sums are bounded by the total:
+
+    ∑_{i ≤ n} Var(𝟙{|X| ≤ aᵢ}·X) / aᵢ²  ≤  ∑'ᵢ (aᵢ²)⁻¹·∫ (𝟙{|X| ≤ aᵢ}·X)².
+
+Proof: per term, `Var(Yᵢ)/aᵢ² = (aᵢ²)⁻¹·Var(Yᵢ) ≤ (aᵢ²)⁻¹·∫ Yᵢ²` by `variance_trunc_le_integral_sq`
+(monotonicity of `(aᵢ²)⁻¹ ≥ 0 ·`); summing over `range (n+1)` (`Finset.sum_le_sum`) and then
+`Summable.sum_le_tsum` (partial ≤ total for the nonnegative summand `(aᵢ²)⁻¹·∫ Yᵢ² ≥ 0`).
+
+This is exactly the `hV` hypothesis of `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5): with
+`a i = (i+1)^{1/p}` (positive, monotone, `→ ∞`) and the shifted § RealVarianceSummable summability
+(where `((i+1)^{1/p})⁻² = (i+1)^{-2/p}`), the total `∑'ᵢ …` is the finite constant `V` the criterion
+needs.  The (b) brick — the last deterministic input before the S5 probabilistic assembly. -/
+theorem weighted_variance_partial_sum_le_tsum [IsProbabilityMeasure μ]
+    (X : Ω → ℝ) (hX : Measurable X) (a : ℕ → ℝ)
+    (hsum : Summable fun i : ℕ =>
+      ((a i) ^ 2)⁻¹ * ∫ ω, ({ω | |X ω| ≤ a i}.indicator X ω) ^ 2 ∂μ) (n : ℕ) :
+    ∑ i ∈ Finset.range (n + 1),
+        variance (fun ω => {ω | |X ω| ≤ a i}.indicator X ω) μ / (a i) ^ 2
+      ≤ ∑' i : ℕ, ((a i) ^ 2)⁻¹ * ∫ ω, ({ω | |X ω| ≤ a i}.indicator X ω) ^ 2 ∂μ := by
+  -- the tsum summand is nonnegative (nonneg weight × nonneg second moment)
+  have hnn : ∀ i : ℕ,
+      0 ≤ ((a i) ^ 2)⁻¹ * ∫ ω, ({ω | |X ω| ≤ a i}.indicator X ω) ^ 2 ∂μ := fun i =>
+    mul_nonneg (inv_nonneg.mpr (sq_nonneg _)) (integral_nonneg fun ω => sq_nonneg _)
+  -- per-term domination: `Var(Yᵢ)/aᵢ² ≤ (aᵢ²)⁻¹·∫ Yᵢ²`
+  have hterm : ∀ i : ℕ,
+      variance (fun ω => {ω | |X ω| ≤ a i}.indicator X ω) μ / (a i) ^ 2
+        ≤ ((a i) ^ 2)⁻¹ * ∫ ω, ({ω | |X ω| ≤ a i}.indicator X ω) ^ 2 ∂μ := by
+    intro i
+    rw [div_eq_mul_inv, mul_comm]
+    exact mul_le_mul_of_nonneg_left (variance_trunc_le_integral_sq X hX (a i))
+      (inv_nonneg.mpr (sq_nonneg _))
+  calc ∑ i ∈ Finset.range (n + 1),
+          variance (fun ω => {ω | |X ω| ≤ a i}.indicator X ω) μ / (a i) ^ 2
+      ≤ ∑ i ∈ Finset.range (n + 1),
+          ((a i) ^ 2)⁻¹ * ∫ ω, ({ω | |X ω| ≤ a i}.indicator X ω) ^ 2 ∂μ :=
+        Finset.sum_le_sum (fun i _ => hterm i)
+    _ ≤ ∑' i : ℕ, ((a i) ^ 2)⁻¹ * ∫ ω, ({ω | |X ω| ≤ a i}.indicator X ω) ^ 2 ∂μ :=
+        hsum.sum_le_tsum (Finset.range (n + 1)) (fun i _ => hnn i)
+
+#check @weighted_variance_partial_sum_le_tsum
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms variance_trunc_le_integral_sq
+#print axioms weighted_variance_partial_sum_le_tsum
+
+end WeightedVariancePartialSum
+
 end LawsOfLargeNumbers.MZ
