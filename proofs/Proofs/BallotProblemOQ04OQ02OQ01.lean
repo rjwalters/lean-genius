@@ -796,6 +796,145 @@ theorem restrictFp_glueFp_right {n : ℕ} (m : ℕ) (hm : m ≤ n) (hR : (m + 1)
       Sum.inr.injEq, eq_comm]
   exact (P₂.mem_part_iff_part_eq_part (mem_univ b) (mem_univ a)).symm
 
+/-! ### Gluing the forward restrictions recovers `P` (round-trip `left_inv`, the core)
+
+`restrictFp_glueFp_left`/`_right` and `firstBlockMax_glueFp_val` discharge the *other* round-trip
+(`forward ∘ glue = id`). The law below is the harder direction — `glue ∘ forward = id` — and the
+one where non-crossing is essential. It says: cutting a non-crossing `P` at `m = firstBlockMax P`,
+restricting to the two windows, and gluing the pieces back reconstructs `P` exactly. -/
+
+/-- **Gluing the forward restrictions recovers `P` (round-trip `left_inv`, the core).** For a
+non-crossing `P` of `Fin (n+1)` with cut `m = firstBlockMax P`, gluing the two window restrictions
+`restrictFp (offsetEmb 1) P` (on `[1, m]`) and `restrictFp (offsetEmb (m+1)) P` (on `[m+1, n]`)
+reconstructs `P` on the nose: `glueFp m hm (restrictFp e₁ P) (restrictFp e₂ P) = P`.
+
+This is the substantive round-trip law `glue ∘ forward = id` (the `left_inv` of
+`nonempty_firstReturnEquiv`), and the hard direction — it is where non-crossing is used. Two points
+share a glued block iff they carry the same `glueLabel`; the proof shows that is equivalent to
+sharing `P`'s block, by three cases on the cut `m`:
+* both in the closed lower window `[0, m]` — labels are `Sum.inl` of the shifted `P₁ = restrict`
+  block, which tracks `P` on `[1, m]`; and point `0` is glued onto the top block `⟨m-1⟩`, whose
+  members are exactly `0`'s `P`-block (`firstBlockMax` shares `P`'s block with `0`), so the label
+  tracks `P.part 0` too;
+* both in the upper window `[m+1, n]` — labels are `Sum.inr` of the shifted `P₂ = restrict` block,
+  tracking `P` verbatim;
+* opposite sides (`a ≤ m < b`) — the labels live in distinct `Sum` sectors, so differ, and
+  `P.part a = P.part b` is impossible: it would straddle the cut (`noStraddle`).
+Combined with `restrictFp_glueFp_left`/`_right` and `firstBlockMax_glueFp_val` (the `right_inv`
+ingredients), only the `Sigma`/`Subtype` packaging remains to assemble the still-open
+`nonempty_firstReturnEquiv`. -/
+theorem glueFp_restrictFp_eq_self {n : ℕ}
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) (hP : IsNonCrossingFp P)
+    (hm : (firstBlockMax P).val ≤ n)
+    (hL : 1 + (firstBlockMax P).val ≤ n + 1)
+    (hR : ((firstBlockMax P).val + 1) + (n - (firstBlockMax P).val) ≤ n + 1) :
+    glueFp (firstBlockMax P).val hm
+      (restrictFp (offsetEmb 1 hL) P)
+      (restrictFp (offsetEmb ((firstBlockMax P).val + 1) hR) P) = P := by
+  set m := (firstBlockMax P).val with hm_def
+  set Q₁ := restrictFp (offsetEmb 1 hL) P with hQ₁def
+  set Q₂ := restrictFp (offsetEmb (m + 1) hR) P with hQ₂def
+  -- Lower-window label evaluation: for `x ≤ m` (`m > 0`), the glued label is `Sum.inl (some ·)`
+  -- of a `Q₁`-block whose lifted `P`-block is `P.part x` (`0` lifts to the cut, sharing `0`'s block).
+  have hlabL : ∀ x : Fin (n + 1), x.val ≤ m → 0 < m →
+      ∃ j : Fin m, glueLabel m hm Q₁ Q₂ x = Sum.inl (some (Q₁.part j))
+        ∧ P.part (offsetEmb 1 hL j) = P.part x := by
+    intro x hx hmpos
+    rcases Nat.eq_zero_or_pos x.val with hx0 | hxpos
+    · refine ⟨⟨m - 1, by omega⟩, glueLabel_of_zero m hm Q₁ Q₂ x hx0 hmpos, ?_⟩
+      have hemb : offsetEmb 1 hL (⟨m - 1, by omega⟩ : Fin m) = firstBlockMax P := by
+        have hv : (offsetEmb 1 hL (⟨m - 1, by omega⟩ : Fin m)).val = 1 + (m - 1) := rfl
+        apply Fin.ext; rw [hv]; omega
+      have hx0' : x = 0 := Fin.ext hx0
+      rw [hemb, hx0']
+      exact (P.mem_part_iff_part_eq_part (mem_univ _) (mem_univ 0)).mp (firstBlockMax_mem_part P)
+    · refine ⟨⟨x.val - 1, by omega⟩, glueLabel_of_pos_le m hm Q₁ Q₂ x hxpos hx, ?_⟩
+      have hv : (offsetEmb 1 hL (⟨x.val - 1, by omega⟩ : Fin m)).val = 1 + (x.val - 1) := rfl
+      have hemb : offsetEmb 1 hL (⟨x.val - 1, by omega⟩ : Fin m) = x := by
+        apply Fin.ext; rw [hv]; omega
+      rw [hemb]
+  -- Upper-window label evaluation: for `x > m`, the glued label is `Sum.inr ·` of a `Q₂`-block
+  -- whose lifted `P`-block is `P.part x`.
+  have hlabR : ∀ x : Fin (n + 1), m < x.val →
+      ∃ k : Fin (n - m), glueLabel m hm Q₁ Q₂ x = Sum.inr (Q₂.part k)
+        ∧ P.part (offsetEmb (m + 1) hR k) = P.part x := by
+    intro x hx
+    refine ⟨⟨x.val - (m + 1), by have := x.isLt; omega⟩, glueLabel_of_gt m hm Q₁ Q₂ x hx, ?_⟩
+    have hv : (offsetEmb (m + 1) hR (⟨x.val - (m + 1), by have := x.isLt; omega⟩ : Fin (n - m))).val
+        = (m + 1) + (x.val - (m + 1)) := rfl
+    have hemb : offsetEmb (m + 1) hR (⟨x.val - (m + 1), by have := x.isLt; omega⟩ : Fin (n - m))
+        = x := by
+      apply Fin.ext; rw [hv]; omega
+    rw [hemb]
+  -- Same-side (lower window) label equality ⟺ same `P`-block.
+  have keyL : ∀ a b : Fin (n + 1), a.val ≤ m → b.val ≤ m →
+      (glueLabel m hm Q₁ Q₂ a = glueLabel m hm Q₁ Q₂ b ↔ P.part a = P.part b) := by
+    intro a b ha hb
+    rcases Nat.eq_zero_or_pos m with hm0 | hmpos
+    · have hab : a = b := Fin.ext (by omega)
+      subst hab; simp
+    · obtain ⟨ja, hlaba, hPa⟩ := hlabL a ha hmpos
+      obtain ⟨jb, hlabb, hPb⟩ := hlabL b hb hmpos
+      rw [hlaba, hlabb, Sum.inl.injEq, Option.some.injEq]
+      have hmem : (jb ∈ Q₁.part ja) ↔
+          (P.part (offsetEmb 1 hL ja) = P.part (offsetEmb 1 hL jb)) := by
+        rw [hQ₁def]; exact mem_part_restrictFp (offsetEmb 1 hL) P ja jb
+      constructor
+      · intro h
+        have hin : jb ∈ Q₁.part ja :=
+          (Q₁.mem_part_iff_part_eq_part (mem_univ jb) (mem_univ ja)).mpr h.symm
+        rw [hmem, hPa, hPb] at hin; exact hin
+      · intro h
+        have hin : jb ∈ Q₁.part ja := by rw [hmem, hPa, hPb]; exact h
+        exact ((Q₁.mem_part_iff_part_eq_part (mem_univ jb) (mem_univ ja)).mp hin).symm
+  -- Same-side (upper window) label equality ⟺ same `P`-block.
+  have keyR : ∀ a b : Fin (n + 1), m < a.val → m < b.val →
+      (glueLabel m hm Q₁ Q₂ a = glueLabel m hm Q₁ Q₂ b ↔ P.part a = P.part b) := by
+    intro a b ha hb
+    obtain ⟨ka, hlaba, hPa⟩ := hlabR a ha
+    obtain ⟨kb, hlabb, hPb⟩ := hlabR b hb
+    rw [hlaba, hlabb, Sum.inr.injEq]
+    have hmem : (kb ∈ Q₂.part ka) ↔
+        (P.part (offsetEmb (m + 1) hR ka) = P.part (offsetEmb (m + 1) hR kb)) := by
+      rw [hQ₂def]; exact mem_part_restrictFp (offsetEmb (m + 1) hR) P ka kb
+    constructor
+    · intro h
+      have hin : kb ∈ Q₂.part ka :=
+        (Q₂.mem_part_iff_part_eq_part (mem_univ kb) (mem_univ ka)).mpr h.symm
+      rw [hmem, hPa, hPb] at hin; exact hin
+    · intro h
+      have hin : kb ∈ Q₂.part ka := by rw [hmem, hPa, hPb]; exact h
+      exact ((Q₂.mem_part_iff_part_eq_part (mem_univ kb) (mem_univ ka)).mp hin).symm
+  -- Opposite sides: labels differ (distinct `Sum` sectors) AND a shared `P`-block would straddle.
+  have keyCross : ∀ a b : Fin (n + 1), a.val ≤ m → m < b.val →
+      (glueLabel m hm Q₁ Q₂ a = glueLabel m hm Q₁ Q₂ b ↔ P.part a = P.part b) := by
+    intro a b ha hb
+    have haleft : (glueLabel m hm Q₁ Q₂ a).isLeft = true := glueLabel_isLeft_of_le m hm Q₁ Q₂ a ha
+    constructor
+    · intro h
+      rw [h, glueLabel_of_gt m hm Q₁ Q₂ b hb] at haleft
+      simp at haleft
+    · intro h
+      have hb_in : b ∈ P.part a := by rw [h]; exact P.mem_part (mem_univ b)
+      exact (noStraddle P hP a a b (P.mem_part (mem_univ a)) hb_in
+        (Fin.le_def.mpr (by omega)) (Fin.lt_def.mpr (by omega))).elim
+  -- Assemble: for every pair, glued-block ⟺ `P`-block.
+  refine finpartition_eq_of_part fun a => Finset.ext fun b => ?_
+  rw [mem_part_glueFp]
+  have hkey : glueLabel m hm Q₁ Q₂ a = glueLabel m hm Q₁ Q₂ b ↔ P.part a = P.part b := by
+    by_cases hAa : a.val ≤ m
+    · by_cases hBb : b.val ≤ m
+      · exact keyL a b hAa hBb
+      · push_neg at hBb; exact keyCross a b hAa hBb
+    · push_neg at hAa
+      by_cases hBb : b.val ≤ m
+      · constructor
+        · intro h; exact ((keyCross b a hBb hAa).mp h.symm).symm
+        · intro h; exact ((keyCross b a hBb hAa).mpr h.symm).symm
+      · push_neg at hBb; exact keyR a b hAa hBb
+  rw [hkey, P.mem_part_iff_part_eq_part (mem_univ b) (mem_univ a)]
+  exact eq_comm
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its

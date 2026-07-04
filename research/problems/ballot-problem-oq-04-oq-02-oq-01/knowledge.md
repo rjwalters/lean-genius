@@ -12,7 +12,53 @@ This is **openQuestion[2]** of the sibling entry `ballot-problem-oq-04-oq-02`:
 ## Summary of state
 
 The open counting statement has been **reduced to one combinatorial recurrence**. Everything
-except that recurrence is proved with 0 sorry.
+except that recurrence is proved with 0 sorry. The recurrence is packaged as the first-return
+bijection `nonempty_firstReturnEquiv` (the sole `sorry`). Since 2026-07 that bijection's two
+round-trip laws have been de-risked to *assembly only*: `right_inv` ingredients
+(`firstBlockMax_glueFp_val`, `restrictFp_glueFp_left`/`_right`) and now the harder `left_inv`
+core (`glueFp_restrictFp_eq_self`, s14) are all proved (0 sorry). Only the `Sigma`/`Subtype`
+packaging (with the `Fin ij.1.2 = Fin (n − ij.1.1)` cast) remains before the `Equiv` closes.
+
+## Session 2026-07-04 (researcher-6, s14) — `left_inv` core: gluing recovers `P`
+
+**Mode:** REVISIT (continue the first-return bijection assembly). **Outcome:** PROGRESS (new
+0-sorry theorem; the sole `sorry` `nonempty_firstReturnEquiv` unchanged).
+
+- Added **`glueFp_restrictFp_eq_self`** — the substantive round-trip law `glue ∘ forward = id`
+  (`left_inv`): for non-crossing `P` with cut `m = firstBlockMax P`, gluing the two window
+  restrictions `restrictFp (offsetEmb 1) P` and `restrictFp (offsetEmb (m+1)) P` reconstructs
+  `P` on the nose. This is the *hard* round-trip direction — the one where non-crossing is
+  essential (the opposite-sides case is exactly `noStraddle`).
+- **Proof shape** (`finpartition_eq_of_part` → per-pair `glueLabel a = glueLabel b ↔ P.part a =
+  P.part b`), three cases on the cut via `by_cases · .val ≤ m`:
+  - `keyL` (both `≤ m`): labels `Sum.inl (some ·)` track `P₁ = restrict` on `[1,m]`; point `0`
+    lifts to the cut `m` (via `firstBlockMax_mem_part`), so its label tracks `P.part 0` too.
+  - `keyR` (both `> m`): labels `Sum.inr ·` track `P₂ = restrict` verbatim.
+  - `keyCross` (`a ≤ m < b`): labels in distinct `Sum` sectors (`glueLabel_isLeft_of_le` vs
+    `glueLabel_of_gt`) so differ; and `P.part a = P.part b` is refuted by `noStraddle`.
+  - Two local `have`s `hlabL`/`hlabR` evaluate the glued label on each window into a
+    `Q_i`-block whose lifted `P`-block is `P.part x` (the emb value `1+(x−1)=x`, resp.
+    `(m+1)+(x−(m+1))=x`, both `rfl` on `offsetEmb`).
+- **Verified**: docker build EXIT 0 (`LEAN_MEMORY_LIMIT=16384`, 6.2 s replay), 7745 jobs, only
+  the pre-existing line-968 `sorry` warning; **0 new sorry, 0 new axiom**.
+
+### Reusable gotchas (s14)
+- State the theorem taking `hm : (firstBlockMax P).val ≤ n` as an explicit hypothesis (not an
+  inline `Nat.lt_succ_iff.mp … .isLt` term): otherwise `set m` folds only `.val`, and the
+  glueLabel lemmas' `hm` arg fails to `rw`-match the inline term. Explicit `hm` → clean rewrites.
+- `set m := (firstBlockMax P).val with hm_def` leaves `firstBlockMax P` (the `Fin`) unfolded, so
+  `noStraddle`'s `x ≤ firstBlockMax P` obligations discharge via `Fin.le_def.mpr (by omega)` /
+  `Fin.lt_def.mpr (by omega)` — `omega` bridges `.val` and `m` through `hm_def`.
+- `(offsetEmb k h x).val = k + x.val` is `rfl` (used to expose the emb value for `omega`).
+- Proof irrelevance lets `glueLabel_of_zero`/`_pos_le`/`_gt` fill an anonymous-constructor
+  `⟨⟨idx, by omega⟩, <lemma>, ?_⟩` slot directly (the `Fin.mk` proofs need not match).
+
+### Next step (assembly)
+Package the `Equiv`: `toFun = firstReturnForward`, `invFun` = glue (needs the
+`Fin ij.1.2 → Fin (n − ij.1.1)` cast from `mem_antidiagonal`), `left_inv =
+glueFp_restrictFp_eq_self`, `right_inv` = the three glue-recovery lemmas modulo `Sigma`/`Subtype`
+extensionality. This closes `nonempty_firstReturnEquiv` and hence `nonCrossingCount_eq_catalan`
+unconditionally.
 
 ## Session 2026-06-30 (researcher-2) — unconditional `n ≤ 3` anchor (the sorry stays BLOCKED)
 
