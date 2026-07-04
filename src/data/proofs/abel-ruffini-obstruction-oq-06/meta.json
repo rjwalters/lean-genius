@@ -71,18 +71,28 @@
   },
   "sections": [
     {
-      "id": "symmetric-obstruction",
-      "title": "The Symmetric-Group Obstruction",
-      "startLine": 44,
-      "endLine": 82,
-      "summary": "symmetricGroup_not_solvable: Sₙ is not solvable for all n ≥ 5, obtained from Equiv.Perm.not_solvable by rewriting the cardinal #(Fin n) = n (Cardinal.mk_fin) and casting 5 ≤ n. perm_fin_two_solvable: S₂ is solvable via isSolvable_of_comm (commutativity by `decide`). symmetric_threshold packages both endpoints."
+      "id": "module-header",
+      "title": "Module Header: The Abel–Ruffini Obstruction",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Docstring framing the file as the characteristic-independent core of Abel–Ruffini: a polynomial is solvable by radicals iff its Galois group is solvable, so the theorem reduces to the group fact that Sₙ is solvable for n ≤ 4 but not for n ≥ 5. Notes the sharp generalization of Mathlib's Fin 5 case to all n ≥ 5, and that positive-characteristic refinements (wild ramification, Abhyankar/Raynaud–Harbater) are out of scope.",
+      "mathContext": "solvable by radicals $\\iff$ $\\mathrm{Gal}$ solvable; $S_n$ solvable $\\iff n \\le 4$."
     },
     {
-      "id": "radical-criterion",
-      "title": "The Radical-Solvability Criterion",
-      "startLine": 84,
-      "endLine": 120,
-      "summary": "not_solvableByRad_of_not_solvable_gal: a root of an irreducible q with non-solvable Galois group is not solvable by radicals — the contrapositive of Mathlib's solvableByRad.isSolvable'. solvable_gal_of_solvableByRad re-exposes the forward direction. Together they are the Galois bridge from the symmetric-group obstruction to actual polynomial equations."
+      "id": "part-i-symmetric-obstruction",
+      "title": "Part I: The Symmetric-Group Obstruction",
+      "startLine": 42,
+      "endLine": 176,
+      "summary": "The full group-theoretic threshold. symmetricGroup_not_solvable: Sₙ is not solvable for every n ≥ 5 (via Equiv.Perm.not_solvable, generalizing Mathlib's Fin 5 case). The solvable side, each built as a one-step extension closed by solvable_of_ker_le_range: perm_fin_two_solvable (S₂ abelian), perm_fin_three_solvable (A₃ cyclic of prime order 3, quotient via sign), alt_fin_four_solvable (A₄ ⊳ V₄ ⊳ 1 with Klein-four kernel of exponent 2 and cyclic order-3 quotient), and perm_fin_four_solvable (S₄ over the sign sequence with A₄ kernel). symmetric_threshold and symmetric_threshold_full package the dividing line Sₙ solvable ⟺ n ≤ 4.",
+      "mathContext": "$A_5$ perfect simple $\\Rightarrow S_n$ unsolvable for $n\\ge5$; $S_2,S_3,S_4$ solvable via derived series $A_4 \\rhd V_4 \\rhd 1$."
+    },
+    {
+      "id": "part-ii-radical-criterion",
+      "title": "Part II: The Radical-Solvability Criterion",
+      "startLine": 178,
+      "endLine": 213,
+      "summary": "The Galois bridge from the group obstruction to polynomials. not_solvableByRad_of_not_solvable_gal: a root α of an irreducible q with non-solvable Galois group is not solvable by radicals — the contrapositive of Mathlib's solvableByRad.isSolvable'. solvable_gal_of_solvableByRad re-exposes the forward direction (radicals ⟹ solvable Gal) under a local name so the criterion and its converse sit side by side. This is the exact tool that turns 'S₅ is not solvable' into 'this quintic has no radical formula'.",
+      "mathContext": "$q$ irreducible, $\\mathrm{aeval}\\,\\alpha\\,q=0$, $\\neg\\,\\mathrm{IsSolvable}\\,q.\\mathrm{Gal} \\Rightarrow \\neg\\,\\mathrm{IsSolvableByRad}\\,F\\,\\alpha$."
     }
   ],
   "mainTheorems": [
