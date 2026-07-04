@@ -71,6 +71,38 @@
       "The ring tactic and exact_mod_cast for the ℕ→ℤ transfer"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "fib_sum_sq",
+      "type": "headline",
+      "description": "Sum of squares of Fibonacci numbers (0-indexed form): ∑_{i ∈ range(n+1)} fib(i)² = fib(n)·fib(n+1). Proved by the textbook one-line induction — Finset.sum_range_succ peels the top square, the hypothesis rewrites the rest, and the recurrence fib(k+2)=fib(k)+fib(k+1) with `ring` closes fib(k)·fib(k+1)+fib(k+1)² = fib(k+1)·fib(k+2). Mathlib records the linear Fibonacci sum but not this square-sum.",
+      "leanType": "(n : ℕ) : ∑ i ∈ Finset.range (n + 1), Nat.fib i ^ 2 = Nat.fib n * Nat.fib (n + 1)"
+    },
+    {
+      "name": "fib_sum_sq_Icc",
+      "type": "supporting",
+      "description": "The classical 1-indexed form ∑_{i=1}^n F_i² = F_n·F_{n+1}. Derived from fib_sum_sq by discarding the i=0 term, which vanishes since fib 0 = 0 (range(n+1) = insert 0 (Icc 1 n)).",
+      "leanType": "(n : ℕ) : ∑ i ∈ Finset.Icc 1 n, Nat.fib i ^ 2 = Nat.fib n * Nat.fib (n + 1)"
+    },
+    {
+      "name": "fib_sum_sq_int",
+      "type": "supporting",
+      "description": "Integer (ℤ) form of the identity, obtained from fib_sum_sq by exact_mod_cast; convenient when the square-sum is combined with subtractive Fibonacci identities downstream.",
+      "leanType": "(n : ℕ) : ∑ i ∈ Finset.range (n + 1), (Nat.fib i : ℤ) ^ 2 = (Nat.fib n : ℤ) * (Nat.fib (n + 1) : ℤ)"
+    },
+    {
+      "name": "fib_sum_sq_succ",
+      "type": "supporting",
+      "description": "Telescoping reading, the inductive step in standalone form: adding the next square advances the running product by one index, (∑_{i ∈ range(n+1)} fib i²) + fib(n+1)² = fib(n+1)·fib(n+2). Exhibits the partial sums as consecutive products fib(n)·fib(n+1).",
+      "leanType": "(n : ℕ) : (∑ i ∈ Finset.range (n + 1), Nat.fib i ^ 2) + Nat.fib (n + 1) ^ 2 = Nat.fib (n + 1) * Nat.fib (n + 2)"
+    },
+    {
+      "name": "fib_sum_sq_isConsecutiveProduct",
+      "type": "supporting",
+      "description": "Oblong / consecutive-product corollary: every partial sum of Fibonacci squares is a product of two consecutive Fibonacci numbers (a Fibonacci oblong number), witnessed by m = n.",
+      "leanType": "(n : ℕ) : ∃ m : ℕ, ∑ i ∈ Finset.range (n + 1), Nat.fib i ^ 2 = Nat.fib m * Nat.fib (m + 1)"
+    }
+  ],
   "sections": [
     {
       "id": "header",
