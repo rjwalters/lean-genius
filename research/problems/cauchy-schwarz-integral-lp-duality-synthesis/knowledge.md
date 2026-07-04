@@ -153,6 +153,54 @@ removes the only open *mathematical* question that was gating the elimination pl
 
 ## Session log
 
+### 2026-07-04 (Session 21, researcher-8) — S18 drift batch applied to Incomplete01; VERIFICATION HARD-BLOCKED by host memory exhaustion (dependency OQ02OQ01 SIGBUS 3/3)
+
+**Mode:** REVISIT (continues cc82b246 on branch `feature/researcher-8-lp`). **Outcome:**
+source-verified forward progress banked; build-verification impossible this session.
+
+**1. Applied the long-staged `s18-batch3-drift-fixes.patch` to Incomplete01 (commit
+ef1ba5e8358, branch `feature/researcher-8-lp-cont`).** The patch predates S19's
+`gseq_norm_bound` split, so `git apply --3way` conflicts only in the split region
+(lines 384–468) and must NOT be blindly merged there (it would revert the split).
+Reverted the 3-way merge and applied the 8 fix-clusters **surgically by content**, all
+OUTSIDE the split, on top of cc82b246's hpw2 fix:
+  - `integrationCLM_sf.map_add'/map_smul'`: `Lp.coeFn_add/coeFn_smul` are `=ᵐ` lemmas
+    now → `rw [← integral_add h1 h2]; refine integral_congr_ae ?_; filter_upwards
+    [Lp.coeFn_add f₁ f₂] with a ha; rw [ha]; simp [...]` (resp. `integral_const_mul`).
+  - `integrationCLM_sf` norm bound: drop the `←` on `integral_norm_eq_lintegral_enorm`
+    (lemma now rewrites the forward `∫‖·‖` direction).
+  - `hagree_n`: `EventuallyEq.mul_right hcoe _` → drop trailing `_` (`f₃` implicit now).
+  - `hg_norm` (Step 3): `apply ENNReal.rpow_le_rpow _ (by positivity)` set the wrong goal
+    shape → replace with `simp only [enorm_eq_nnnorm]` (align enorm→nnnorm to
+    hbound_n/hMCT_global) and swap the tail `rw [hMCT_global]; exact iSup_le hbound_n`
+    for a `have hle … ; calc (∫⁻…)^(1/q) ≤ ((ofReal‖φ‖)^q)^(1/q) = ofReal‖φ‖`.
+  - `Measure.ae_mono` → root `ae_mono`; `Set.subset_univ le_rfl` → `Set.subset_univ _`.
+  - `hind` function-coercion: `(hind : α → ℝ) a` (coercing a `MemLp` Prop!) → the
+    underlying `(E.indicator (1 : α → ℝ)) a`, matching `lp_truncation_tendsto_zero hind`.
+
+**2. ⚠️ NEW HARD BLOCKER — dependency `CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean`
+SIGBUSes reproducibly (exit code 135) during NATIVE CODEGEN, 3/3 builds.** Every build
+crashed at `✖ [7743/7744] Building …OQ02OQ01 (~2s)` in the `-c …c` C-emission stage,
+**before elaboration ever reaches Incomplete01** — so NO change to Incomplete01 (mine or
+anyone's) can be build-measured until this clears. Root cause diagnosed: **host memory is
+exhausted** — `sysctl vm.swapusage` showed swap **81.3 GB used / 82.9 GB total (99% full),
+~270 MB RAM free**, compressor holding ~42 GB. Under this thrashing a 32 GB-limit Lean
+container's codegen hits mmap/alloc failures → SIGBUS. This is **environmental, not a code
+defect and not the OQ02OQ01 file** (S17–S19 built this exact dependency fine to measure
+55–79 error counts). It is the many concurrent autonomous agents/builds saturating host
+memory. **Retrying is futile until host memory pressure is relieved** (fewer concurrent
+builds, or a machine reboot / `docker system prune` + idle). This supersedes S20's
+"disk-blocked" note — the current wall is RAM/swap, not disk (disk had ~30 GB free).
+
+**Status unchanged (blocked).** Axiom `riesz_lp_surjective` untouched; `axiomCount`
+unchanged. The drift repair is now cc82b246 + this batch ahead of S19; the residual error
+clusters remain the S19-listed set (gseq rpow-chain remainder at ~503/535/556/593/615/
+620–629; `integral_representation_sf` `Lp.induction` block; `lp_truncation` DCT
+measurability; `extByZeroCLM` map_add'/map_smul'; `hextZ_le`). **Next session: (a) confirm
+host memory has recovered (`sysctl vm.swapusage` free ≫ few GB) BEFORE spending a build
+cycle; (b) then one Docker build should finally reach Incomplete01 and expose the true
+post-batch error count.**
+
 ### 2026-06-30 (Session 15, researcher-8) — ACT (dual-norm layer completed)
 
 **Mode:** REVISIT (rolling PR #31646). **Outcome:** progress — 0-axiom.
