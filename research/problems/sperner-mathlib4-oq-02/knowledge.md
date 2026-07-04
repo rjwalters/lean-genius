@@ -1644,3 +1644,54 @@ the remaining frontier is a large creative build beyond a responsible single ite
 current multi-build docker contention. Per the anti-scaffolding / no-low-value-PR policy I did not
 manufacture another count/graph lemma just to produce output — the correct action was to fix the
 stale frontier pointer so the next session starts accurately.
+
+---
+
+## Session 2026-07-04 (researcher-6) — BUILD: antipodal symmetry discharges the boundary flow-balance obligation `hbal`
+
+**Mode**: REVISIT (RICH, score 79). **Outcome**: progress — one new VERIFIED 0-axiom file
+(`SpernerTuckerDirectedBoundarySymmetry.lean`, 7745-job docker build) that closes the lone
+*unexplained algebraic* obligation of the directed interior-source engine.
+
+### The gap it closes
+`SpernerTuckerDirectedInteriorSource.exists_interior_source_of_balanced_boundary` produces an
+**interior** source (the classical Tucker/Borsuk–Ulam pivot) from an out-heavy directed boundary
+seed, but only under the bare arithmetic hypothesis **boundary flow balance**
+`hbal : #{c | source c ∧ bdry c} = #{c | sink c ∧ bdry c}`. Every prior session justified `hbal`
+only informally ("the antipodal labelling routes as many directed-path starts as ends through the
+boundary"). This session turns that sentence into a machine-checked lemma.
+
+### What I proved
+- `card_boundary_source_eq_sink_of_antipodal`: an involution `σ : Cell → Cell` that **reverses
+  directed flow** on cells (`IsSource c ↔ IsSink (σ c)`) and **preserves the boundary**
+  (`bdry (σ c) ↔ bdry c`) restricts to a bijection boundary-sources ≃ boundary-sinks, hence
+  `#{source ∧ bdry} = #{sink ∧ bdry}` — discharging `hbal`. Proof via `Finset.card_nbij'` (σ as
+  its own inverse; **no `DecidableEq Cell`** needed — the earlier `Finset.image` route failed to
+  synthesize it). Directed source/sink analogue of
+  `AntipodalParity.even_card_of_free_involution` (free involution ⇒ *even* card): there σ pairs a
+  set with itself; here σ pairs *sources with sinks*.
+- `exists_interior_source_of_antipodal_boundary` (capstone): chains the symmetry into the engine —
+  a flow-reversing, boundary-preserving involution + out-heavy directed boundary (`himb`) ⇒ an
+  **interior** source, with `hbal` now internalised as a symmetry rather than an unproven count.
+
+### Key subtlety (why this is consistent, not vacuous)
+The involution reverses flow on **cells** (source ↔ sink); the odd seed `himb` is out-heaviness on
+**doors** (`#boundary-out > #boundary-in`). The two live on opposite sides of the incidence, so the
+hypotheses never collapse to `#boundary-out = #boundary-in`. `hswap` is a genuine cell-symmetry,
+compatible with an asymmetric *door* boundary.
+
+### Honest status
+Abstract directed infrastructure, **not** a proof of n ≥ 2 Tucker. It removes the last
+*algebraic* hand-wave from the directed engine; the remaining frontier is now purely geometric.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerDirectedBoundarySymmetry.lean (new, VERIFIED 0-axiom)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + knowledge)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md (this entry)
+
+### Next Steps (frontier now purely geometric)
+- Build the concrete antipodally symmetric directed door complex on `∂◊^n` whose cell-antipodal
+  map reverses each door orientation (realising `hswap`) and whose directed boundary carries the
+  odd `dirCount_odd` seed (`himb`). Engine + this file then deliver an interior source with **no**
+  further algebraic obligation — only the labelling remains.
+- Continuous n ≥ 2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
