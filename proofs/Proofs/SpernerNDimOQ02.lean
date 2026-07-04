@@ -3081,4 +3081,70 @@ theorem zeroPivotCell_meet_eq_gridFacet_zero (s : GridSimplex d N)
     obtain ⟨j, _, hj⟩ := hv
     exact Finset.mem_image.mpr ⟨j, Finset.mem_univ j, hj⟩
 
+-- ============================================================
+-- SECTION: Miss-coordinate descent of the facet-`0` pivot chain
+-- ============================================================
+-- The facet-`0` partner reuses `s`'s upper chain, so its base vertex
+-- is `s.verts 1` — one step down the chain in the shared `miss`
+-- direction (`miss_coord_at`).  Hence the partner's base `miss`
+-- coordinate is exactly `base_miss − 1`.  Iterating the pivot walks
+-- `base_miss` strictly downward; since every cell has `base_miss ≥ d`
+-- (`base_miss_ge_d`) and is feasible iff `base_miss ≥ d + 1`
+-- (`zeroPivot_feasible_iff`), the descent halts precisely at the
+-- extremal cell `base_miss = d` — the one whose top vertex already
+-- lies on the geometric `miss`-face, where the pivot must cross to a
+-- different `miss` fibre.  This exhibits the same-`miss` facet-`0`
+-- pivot chain as a finite monotone descent terminating at the
+-- boundary door, the discrete path structure underlying the Phase-2
+-- door-parity induction.  All 0-sorry, 0-axiom.
+
+/-- **Miss-coordinate descent of the facet-`0` pivot.**  The partner cell's base
+vertex sits one step lower in the shared `miss` direction: its `miss` coordinate is
+exactly `base_miss − 1`.  (The partner's base is `s.verts 1` — `zeroPivotVerts_of_lt`
+— and the `miss` coordinate falls by one at each chain step — `miss_coord_at`.) -/
+theorem zeroPivotCell_base_miss (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    ((zeroPivotCell s hd1 hfeas).verts 0).coords (zeroPivotCell s hd1 hfeas).miss
+      = (s.verts 0).coords s.miss - 1 := by
+  rw [zeroPivotCell_miss,
+      show (zeroPivotCell s hd1 hfeas).verts 0 = zeroPivotVerts s hd1 hfeas 0 from rfl,
+      zeroPivotVerts_of_lt s hd1 hfeas 0 hd1, s.miss_coord_at]
+  simp
+
+/-- The facet-`0` partner's base `miss` coordinate is strictly below `s`'s: the
+pivot chain descends. -/
+theorem zeroPivotCell_base_miss_lt (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    ((zeroPivotCell s hd1 hfeas).verts 0).coords (zeroPivotCell s hd1 hfeas).miss
+      < (s.verts 0).coords s.miss := by
+  rw [zeroPivotCell_base_miss]
+  have hge := s.base_miss_ge_d
+  omega
+
+/-- **The facet-`0` pivot chain terminates exactly at the extremal cell.**  A cell
+is *infeasible* for the same-`miss` facet-`0` pivot iff its base `miss` coordinate is
+the minimal value `d` (`base_miss_ge_d` gives `≥ d`; `zeroPivot_feasible_iff` gives
+feasibility `⟺ ≥ d + 1`).  That extremal cell is the one whose top vertex already
+sits on the geometric `miss`-face, where the pivot must cross to a new `miss` fibre. -/
+theorem zeroPivot_infeasible_iff_base_miss_eq_d (s : GridSimplex d N) :
+    ¬ (1 ≤ (s.verts (Fin.last d)).coords s.miss)
+      ↔ (s.verts 0).coords s.miss = d := by
+  rw [zeroPivot_feasible_iff]
+  have hge := s.base_miss_ge_d
+  omega
+
+/-- **One step of the descent, feasibility form.**  The facet-`0` partner is again
+feasible for its *own* same-`miss` facet-`0` pivot exactly when `s`'s base `miss`
+coordinate is at least `d + 2`.  Combined with `zeroPivotCell_base_miss` and
+`zeroPivot_infeasible_iff_base_miss_eq_d`, this shows each pivot lowers `base_miss`
+by one until it reaches `d`, at which point the same-`miss` pivot stops. -/
+theorem zeroPivotCell_feasible_iff_base_miss_ge (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    1 ≤ ((zeroPivotCell s hd1 hfeas).verts (Fin.last d)).coords
+          (zeroPivotCell s hd1 hfeas).miss
+      ↔ d + 2 ≤ (s.verts 0).coords s.miss := by
+  rw [zeroPivot_feasible_iff, zeroPivotCell_base_miss]
+  have hge := s.base_miss_ge_d
+  omega
+
 end SpernerNDimOQ02
