@@ -129,7 +129,7 @@
     {
       "id": "definitions",
       "title": "Core Definitions: circleArea and circumference",
-      "startLine": 41,
+      "startLine": 1,
       "endLine": 50,
       "summary": "Defines circleArea(r) = π·r² and circumference(ρ) = 2π·ρ. These are the antiderivative/integrand pair at the heart of the FTC proof: A'(r) = C(r).",
       "mathContext": "$A(r) = \\pi r^2$, $C(\\rho) = 2\\pi\\rho$, $A'(r) = C(r)$. The circumference is the derivative of the area — the fundamental geometric identity that connects the FTC proof to Archimedes' exhaustion."
