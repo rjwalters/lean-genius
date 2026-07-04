@@ -131,6 +131,16 @@
       "targetId": "lovasz-local-lemma-oq-01-chain-rule",
       "relationship": "related",
       "description": "The chain-rule scaffold that reduces the measure-theoretic LLL to per-event conditional bounds under the symmetric regime e·p·(d+1) ≤ 1. This entry certifies that the Euler condition invoked there is implied by the tight threshold of the parent proof."
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-01-symmetric-step",
+      "relationship": "related",
+      "description": "The symmetric Erdős–Lovász induction step whose hypothesis is exactly the Euler regime this entry validates: a uniform failure bound p and dependency degree d with e·p·(d+1) ≤ 1. That entry consumes the threshold as the safe condition on p; this entry supplies the missing justification that e·p·(d+1) ≤ 1 ⟹ p ≤ T(d) = dᵈ/(d+1)^{d+1}, so the memorable Euler form the symmetric step is stated under is a genuine (slightly conservative) consequence of the tight maximum. It cross-references this entry as the source of that implication."
+    },
+    {
+      "targetId": "lovasz-local-lemma-oq-01-dependency-split",
+      "relationship": "related",
+      "description": "The subset-history toolkit for the dependency-graph induction, where the bounded dependency degree d is the structural parameter controlling how many earlier events an event may depend on. The degree d in that toolkit is the same d whose Euler threshold e·p·(d+1) ≤ 1 this entry relates to the tight bound T(d); dependency-split cross-references this entry, and the link now runs both ways."
     }
   ],
   "references": [
