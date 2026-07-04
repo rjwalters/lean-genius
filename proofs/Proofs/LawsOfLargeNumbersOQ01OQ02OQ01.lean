@@ -1059,6 +1059,92 @@ theorem integral_tail_abs_le
 
 end TruncationIntegralLifts
 
+/-! ## Step-3 null sequence — the tail `p`-th moment vanishes along a diverging threshold
+
+The MZ centering estimate `(∑_{i<n} 𝔼Yᵢ)/aₙ → 0` is a `tendsto_weighted_average_zero`
+(Toeplitz) argument whose *null sequence* is the **tail `p`-th moment**
+
+    eᵢ := 𝔼[|X|ᵖ · 𝟙{|X| > aᵢ}] = ∫ ω, 𝟙{aᵢ < |X ω|}·|X ω|ᵖ ∂μ.
+
+Because the truncation kernel `abs_le_rpow_mul_rpow_of_tail` bounds the mean tail by
+`|𝔼Yᵢ| ≤ 𝔼[|X|·𝟙{|X|>aᵢ}] ≤ aᵢ^{1-p}·eᵢ`, the *tail*-restricted `eᵢ` (not the full moment
+`M = 𝔼|X|ᵖ`, which is constant and non-vanishing) is exactly the factor that must tend to
+`0` for the weighted average to converge — the full-moment bound `aᵢ^{1-p}·M` alone gives a
+divergent Cesàro weight.
+
+This leaf supplies `eᵢ → 0` for any threshold sequence `t i → ∞`, by **dominated
+convergence**: each tail integrand is dominated by the integrable `|X|ᵖ`, and for every fixed
+`ω` the indicator `𝟙{t i < |X ω|}` is *eventually* `0` (once `t i` exceeds the finite value
+`|X ω|`), so the integrands tend pointwise to `0`.  At `t i = (i+1)^{1/p}` (the shifted MZ
+normaliser, `mz_normaliser_tendsto`) this is precisely the null sequence step 3 consumes.
+Pure measure theory, 0-sorry / 0-`axiom`. -/
+section TailMomentNull
+
+open MeasureTheory
+
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
+/-- **The tail `p`-th moment vanishes along any diverging threshold (MZ step-3 null sequence).**
+For a measurable `X` with finite `p`-th absolute moment `∫ |X|ᵖ < ∞` and any threshold sequence
+`t i → ∞`, the tail moments
+
+    ∫ ω, 𝟙{t i < |X ω|}·|X ω|ᵖ ∂μ  ⟶  0.
+
+Proof by dominated convergence: the tail integrand is `≤ |X|ᵖ` (integrable) in norm, and for
+each fixed `ω` it is eventually `0` — once `t i > |X ω|` the indicator vanishes — so it tends
+pointwise to `0`; `tendsto_integral_of_dominated_convergence` then pushes the limit through the
+integral.  With `t i = (i+1)^{1/p}` this is the `tendsto_weighted_average_zero` null sequence
+`eᵢ = 𝔼[|X|ᵖ·𝟙{|X|>aᵢ}] → 0` driving the MZ centering control `(∑ᵢ 𝔼Yᵢ)/aₙ → 0`. -/
+theorem tendsto_integral_tail_rpow_zero
+    (X : Ω → ℝ) (hX : Measurable X) {p : ℝ}
+    (hint : Integrable (fun ω => |X ω| ^ p) μ)
+    (t : ℕ → ℝ) (ht : Tendsto t atTop atTop) :
+    Tendsto (fun i => ∫ ω, {ω | t i < |X ω|}.indicator (fun ω => |X ω| ^ p) ω ∂μ)
+      atTop (𝓝 0) := by
+  have hmeasp : AEStronglyMeasurable (fun ω => |X ω| ^ p) μ := hint.aestronglyMeasurable
+  -- each tail integrand is `AEStronglyMeasurable`
+  have hF_meas : ∀ i, AEStronglyMeasurable
+      (fun ω => {ω | t i < |X ω|}.indicator (fun ω => |X ω| ^ p) ω) μ := by
+    intro i
+    have hset : MeasurableSet {ω | t i < |X ω|} :=
+      measurableSet_lt measurable_const hX.abs
+    exact hmeasp.indicator hset
+  -- domination by the integrable `|X|ᵖ`
+  have h_bound : ∀ i, ∀ᵐ ω ∂μ,
+      ‖{ω | t i < |X ω|}.indicator (fun ω => |X ω| ^ p) ω‖ ≤ |X ω| ^ p := by
+    intro i
+    refine ae_of_all _ (fun ω => ?_)
+    rw [Real.norm_eq_abs, Set.indicator_apply]
+    split_ifs with h
+    · rw [abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]
+    · rw [abs_zero]; exact Real.rpow_nonneg (abs_nonneg _) _
+  -- pointwise limit: for each `ω` the indicator is eventually `0`
+  have h_lim : ∀ᵐ ω ∂μ, Tendsto
+      (fun i => {ω | t i < |X ω|}.indicator (fun ω => |X ω| ^ p) ω) atTop (𝓝 (0 : ℝ)) := by
+    refine ae_of_all _ (fun ω => ?_)
+    have hev : ∀ᶠ i in atTop,
+        {ω | t i < |X ω|}.indicator (fun ω => |X ω| ^ p) ω = 0 := by
+      filter_upwards [ht.eventually_gt_atTop (|X ω|)] with i hi
+      rw [Set.indicator_apply]
+      split_ifs with h
+      · exact absurd h (by simp only [Set.mem_setOf_eq, not_lt]; exact hi.le)
+      · rfl
+    exact (tendsto_congr' hev).mpr tendsto_const_nhds
+  have hconv := MeasureTheory.tendsto_integral_of_dominated_convergence
+      (F := fun i ω => {ω | t i < |X ω|}.indicator (fun ω => |X ω| ^ p) ω)
+      (f := fun _ => (0 : ℝ))
+      (bound := fun ω => |X ω| ^ p)
+      hF_meas hint h_bound h_lim
+  simpa using hconv
+
+#check @tendsto_integral_tail_rpow_zero
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms tendsto_integral_tail_rpow_zero
+
+end TailMomentNull
+
 /-! ## Tail bound for the real `p`-series (arithmetic backbone of the MZ variance sum)
 
 The MZ variance sum `∑ᵢ Var(Yᵢ)/i^{2/p}` (`p < 2`, so `s := 2/p > 1`) is finite **not** by
