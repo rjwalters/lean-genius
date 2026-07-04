@@ -55,6 +55,24 @@
       "summary": "gaussian_integral_eq_sqrt_pi_via_complex derives the real ∫ e^{-x²} = √π from the complex result at b = 1 via two casting lemmas (hLcast through integral_complex_ofReal, hRcast through Complex.ofReal_cpow) and exact_mod_cast."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "gaussian_integral_complex",
+      "type": "core",
+      "description": "**The complex Gaussian integral** — for every complex b with positive real part, ∫_ℝ e^{-b x²} dx = (π/b)^{1/2}. A restatement of Mathlib's integral_gaussian_complex generalizing the real parent (∫ e^{-x²} = √π) to the full complex right half-plane {re b > 0}, the analytic continuation underlying Fresnel-type oscillatory integrals as re b → 0⁺. The value is a complex principal (1/2)-power, not a real square root.",
+      "leanType": "{b : ℂ} (hb : 0 < b.re) : (∫ x : ℝ, Complex.exp (-b * (x : ℂ) ^ 2)) = (↑π / b) ^ (1 / 2 : ℂ)",
+      "line": 36,
+      "endLine": 38
+    },
+    {
+      "name": "gaussian_integral_eq_sqrt_pi_via_complex",
+      "type": "key",
+      "description": "**The b = 1 recovery bridge** — the real parent ∫_ℝ e^{-x²} dx = √π recovered as the b = 1 case of the complex Gaussian. The real-valued integral is pushed through ℂ (integral_complex_ofReal) and the principal power (π/1)^{1/2} is identified with (√π : ℂ) via Complex.ofReal_cpow and Real.sqrt_eq_rpow. Records the specialization explicitly, no new axioms.",
+      "leanType": "(∫ x : ℝ, Real.exp (-x ^ 2)) = Real.sqrt Real.pi",
+      "line": 43,
+      "endLine": 60
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
