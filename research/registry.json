@@ -35249,8 +35249,9 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-03T08:42:59.947Z",
-      "status": "active",
-      "lastUpdate": "2026-07-04T15:20:24-07:00"
+      "status": "graduated",
+      "lastUpdate": "2026-07-04T22:51:07.082Z",
+      "completed": "2026-07-04T22:51:07.082Z"
     },
     {
       "slug": "erdos-1018-oq-03",
@@ -35420,11 +35421,12 @@
     },
     {
       "slug": "erdos-1017-oq-05",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-03T13:17:17.995Z",
-      "status": "active",
-      "lastUpdate": "2026-07-03T13:17:18.014Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-04T22:51:07.082Z",
+      "completed": "2026-07-04T22:51:07.082Z"
     },
     {
       "slug": "hilbert-15-oq-03",
@@ -35533,11 +35535,12 @@
     },
     {
       "slug": "amgm-inequality-oq-02-oq-02-oq-05",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-04T11:49:08.697Z",
-      "status": "active",
-      "lastUpdate": "2026-07-04T11:49:08.717Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-04T22:51:06.870Z",
+      "completed": "2026-07-04T22:51:06.870Z"
     },
     {
       "slug": "abel-ruffini-oq-06-oq-01-oq-03",
@@ -35603,27 +35606,85 @@
     },
     {
       "slug": "szemeredi-regularity-oq-02-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-04T20:03:18.499Z",
-      "status": "active",
-      "lastUpdate": "2026-07-04T20:03:18.517Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-04T22:51:07.104Z",
+      "completed": "2026-07-04T22:51:07.104Z"
     },
     {
       "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03-oq-02",
       "phase": "OBSERVE",
       "path": "full",
       "started": "2026-07-04T20:03:18.499Z",
-      "status": "active",
-      "lastUpdate": "2026-07-04T20:03:18.518Z"
+      "status": "blocked",
+      "lastUpdate": "2026-07-04T22:51:07.105Z"
     },
     {
       "slug": "e-transcendental-oq-02-oq-06",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-04T20:03:18.499Z",
+      "status": "graduated",
+      "lastUpdate": "2026-07-04T22:51:07.105Z",
+      "completed": "2026-07-04T22:51:07.105Z"
+    },
+    {
+      "slug": "erdos-1036-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-07-04T22:51:07.106Z",
       "status": "active",
-      "lastUpdate": "2026-07-04T20:03:18.518Z"
+      "lastUpdate": "2026-07-04T22:51:07.106Z"
+    },
+    {
+      "slug": "erdos-1162-oq-04",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-07-04T22:51:07.106Z",
+      "status": "active",
+      "lastUpdate": "2026-07-04T22:51:07.106Z"
+    },
+    {
+      "slug": "erdos-153-oq-03",
+      "phase": "NEW",
+      "path": "full",
+      "started": "2026-07-04T22:51:07.106Z",
+      "status": "active",
+      "lastUpdate": "2026-07-04T22:51:07.106Z"
+    },
+    {
+      "slug": "borsuk-ulam-oq-02-oq-02-wip-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-04T22:51:07.106Z",
+      "status": "active",
+      "lastUpdate": "2026-07-04T22:51:07.141Z"
+    },
+    {
+      "slug": "fourier-series-oq-02-oq-03-wip-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-04T22:51:07.106Z",
+      "status": "active",
+      "lastUpdate": "2026-07-04T22:51:07.141Z"
+    },
+    {
+      "slug": "hurwitz-theorem-oq-03-oq-01-wip-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-04T22:51:07.106Z",
+      "status": "active",
+      "lastUpdate": "2026-07-04T22:51:07.142Z"
+    },
+    {
+      "slug": "roth-theorem-k3-oq-01-wip-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-04T22:51:07.106Z",
+      "status": "active",
+      "lastUpdate": "2026-07-04T22:51:07.142Z"
     }
   ],
   "config": {
