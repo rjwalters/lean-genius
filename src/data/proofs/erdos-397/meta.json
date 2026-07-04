@@ -131,6 +131,62 @@
     "path": "Proofs/Erdos397Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "CentralBinomSolutions",
+      "type": "core",
+      "description": "The set of solutions to the central binomial product equation, pairs of disjoint finite sets M, N with equal products of central binomial coefficients.",
+      "leanType": ": Set (Finset ℕ × Finset ℕ)"
+    },
+    {
+      "name": "somaniC",
+      "type": "supporting",
+      "description": "Somani's parameter c(a) = 8a² + 8a + 1 used to build the infinite family of solutions.",
+      "leanType": "(a : ℕ) : ℕ"
+    },
+    {
+      "name": "erdos_397_disproved",
+      "type": "axiom",
+      "description": "The headline result disproving Erdős Problem #397: there are infinitely many solutions to the central binomial product equation.",
+      "leanType": ": CentralBinomSolutions.Infinite"
+    },
+    {
+      "name": "somani_identity",
+      "type": "axiom",
+      "description": "Somani's identity: for a ≥ 2 with c = 8a² + 8a + 1, C(a)·C(2a+2)·C(c) = C(a+1)·C(2a)·C(c+1).",
+      "leanType": "(a : ℕ) (ha : a ≥ 2) :\n  C a * C (2*a + 2) * C (somaniC a) = C (a + 1) * C (2*a) * C (somaniC a + 1)"
+    },
+    {
+      "name": "somani_disjoint",
+      "type": "supporting",
+      "description": "For a ≥ 2, the left-hand and right-hand index sets of Somani's family are disjoint.",
+      "leanType": "(a : ℕ) (ha : a ≥ 2) : Disjoint (somaniLHS a) (somaniRHS a)"
+    },
+    {
+      "name": "somani_is_solution",
+      "type": "core",
+      "description": "For each a ≥ 2, the pair (somaniLHS a, somaniRHS a) is a valid member of the solution set, yielding the infinite family.",
+      "leanType": "(a : ℕ) (ha : a ≥ 2) :\n    (somaniLHS a, somaniRHS a) ∈ CentralBinomSolutions"
+    },
+    {
+      "name": "somaniLHS",
+      "type": "supporting",
+      "description": "The left-hand index set {a, 2a+2, c} of Somani's identity.",
+      "leanType": "(a : ℕ) : Finset ℕ"
+    },
+    {
+      "name": "somaniRHS",
+      "type": "supporting",
+      "description": "The right-hand index set {a+1, 2a, c+1} of Somani's identity.",
+      "leanType": "(a : ℕ) : Finset ℕ"
+    },
+    {
+      "name": "somaniC_two",
+      "type": "supporting",
+      "description": "Concrete evaluation showing somaniC 2 = 49, the smallest instance of the family.",
+      "leanType": ": somaniC 2 = 49"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-387",
