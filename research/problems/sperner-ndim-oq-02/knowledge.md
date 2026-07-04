@@ -2390,3 +2390,43 @@ signatures were read from source and match the abstract stand-ins exactly.
    formally eliminated by `zero_facet_not_on_boundary`).
 2. Define total `adj` with geometric none-fibre exactly `{Fin.last d}` on interior cells.
 3. Assemble `SpernerTriangulation`; Phase-2 door oddness induction on `d`.
+
+## Session 2026-07-04 (Session 18, researcher-11) — Facet-0 pivot miss-descent + termination
+
+**Mode**: ACT (CONTINUE Phase-1). **Outcome**: PROGRESS — structural characterization
+of the facet-0 pivot dynamics; does NOT close the frontier. **+4 theorems, +66 L.**
+**0-sorry, 0-axiom**; `docker-build.sh Proofs.SpernerNDimOQ02` → exit 0, 7745 jobs.
+Shipped as **PR #34635** (`research` label). Built on the session-16/17 `zeroPivotCell`
+(facet-0 cross-chain partner, merged #34629).
+
+### What I did
+The same-`miss` facet-0 partner `zeroPivotCell s` reuses `s`'s upper chain
+`verts 1, …, verts d`, so its base vertex is `s.verts 1` — one step down the chain in
+the shared `miss` direction. Proved the pivot is a **finite monotone descent in
+`base_miss` terminating at the geometric boundary door**:
+
+- `zeroPivotCell_base_miss` — partner base `miss` coord = `base_miss − 1` (`miss_coord_at`).
+- `zeroPivotCell_base_miss_lt` — strict descent.
+- `zeroPivot_infeasible_iff_base_miss_eq_d` — same-`miss` pivot infeasible ⟺ `base_miss = d`
+  (minimal value; `base_miss_ge_d` + `zeroPivot_feasible_iff`). The extremal cell's top
+  vertex already sits on the geometric `miss`-face.
+- `zeroPivotCell_feasible_iff_base_miss_ge` — partner re-feasible for its own facet-0
+  pivot ⟺ `base_miss ≥ d + 2`; each pivot lowers `base_miss` by one until it halts at `d`.
+
+### Why this matters
+Exhibits the same-`miss` facet-0 pivot chain as the discrete path structure underlying
+the Phase-2 door-parity induction, and pins down where the chain STOPS (`base_miss = d`),
+which is precisely where the two remaining frontier constructions attach: the terminal
+door needs the cross-`miss` partner, and the dual top-facet pivot inverts the interior
+steps. Modest structural lemma set, not a breakthrough.
+
+### Frontier UNCHANGED (genuine blocker)
+1. Dual top-facet pivot (mirror across facet `Fin.last d`) → prove it inverts the facet-0
+   pivot ⟹ `adj` partial involution.
+2. Infeasible-regime (`base_miss = d`) cross-`miss` facet-0 partner (the terminal door).
+Then assemble `SpernerTriangulation`; Phase-2 door oddness induction on `d`; apply `sperner_ndim`.
+
+### Next steps
+1. **(crux)** Dual top-facet pivot construction + involution reciprocity.
+2. **(crux)** Cross-`miss` terminal partner for `base_miss = d`.
+3. Assemble total `adj`; Phase-2 parity.
