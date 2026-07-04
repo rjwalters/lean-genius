@@ -72,19 +72,42 @@
     "proofId": "catalan-numbers-oq-05",
     "range": {
       "startLine": 76,
-      "endLine": 91
+      "endLine": 81
     },
-    "type": "concept",
-    "title": "centralBinom restatement and numerical checks",
-    "content": "catalan_eq_centralBinom_sub' restates the identity through Nat.centralBinom (Mathlib's preferred spelling), via Nat.centralBinom_eq_two_mul_choose. The five examples evaluate both sides at n = 0..4, confirming the first Catalan numbers 1, 1, 2, 5, 14 as C(2n,n) − C(2n,n+1): e.g. at n = 2, C(4,2) − C(4,3) = 6 − 4 = 2, and at n = 4, C(8,4) − C(8,5) = 70 − 56 = 14.",
-    "mathContext": "$C_0,\\dots,C_4 = 1,1,2,5,14$; e.g. $\\binom{8}{4}-\\binom{8}{5} = 70-56 = 14 = C_4$.",
+    "type": "theorem",
+    "title": "centralBinom restatement of the difference identity",
+    "content": "catalan_eq_centralBinom_sub' restates catalan n = C(2n,n) − C(2n,n+1) through Nat.centralBinom, Mathlib's preferred spelling of the central coefficient. The proof rewrites the leading C(2n,n) as Nat.centralBinom n via Nat.centralBinom_eq_two_mul_choose and delegates to the choose-form theorem catalan_eq_centralBinom_sub — no new mathematical content, only alignment with Mathlib's API so downstream results can consume the identity directly.",
+    "mathContext": "$\\mathrm{catalan}\\,n = \\mathrm{centralBinom}\\,n - \\binom{2n}{n+1}$, where $\\mathrm{centralBinom}\\,n = \\binom{2n}{n}$ definitionally.",
     "significance": "supporting",
     "relatedConcepts": [
       "Nat.centralBinom",
+      "Nat.centralBinom_eq_two_mul_choose",
       "Catalan numbers"
     ],
     "prerequisites": [
-      "binomial coefficient evaluation"
+      "the choose-form difference identity",
+      "Mathlib's centralBinom spelling"
+    ]
+  },
+  {
+    "id": "ann-catalan-sub-checks",
+    "proofId": "catalan-numbers-oq-05",
+    "range": {
+      "startLine": 83,
+      "endLine": 91
+    },
+    "type": "concept",
+    "title": "Numerical sanity checks against the first Catalan numbers",
+    "content": "Five example lemmas instantiate catalan_eq_centralBinom_sub at n = 0..4, confirming the first Catalan numbers 1, 1, 2, 5, 14 as C(2n,n) − C(2n,n+1): e.g. at n = 2, C(4,2) − C(4,3) = 6 − 4 = 2, and at n = 4, C(8,4) − C(8,5) = 70 − 56 = 14. Because each example is proved by the general theorem itself (not by decide), they double as a lightweight regression check that the identity's indices are correct.",
+    "mathContext": "$C_0,\\dots,C_4 = 1,1,2,5,14$; e.g. $\\binom{8}{4}-\\binom{8}{5} = 70-56 = 14 = C_4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Catalan numbers",
+      "binomial coefficient evaluation",
+      "regression sanity check"
+    ],
+    "prerequisites": [
+      "the difference identity catalan_eq_centralBinom_sub"
     ]
   }
 ]
