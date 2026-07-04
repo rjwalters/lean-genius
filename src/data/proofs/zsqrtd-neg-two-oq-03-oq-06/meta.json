@@ -97,7 +97,8 @@
       "**Norm-1 characterises units in any norm-multiplicative domain, but the count is lattice-specific.** The IsUnit ↔ N = 1 step is generic; what is special to ℤ[ω] is that N(a+bω) = a² − ab + b² = 1 has six integer solutions (versus four for the Gaussian norm a² + b²), reflecting the 6-fold symmetry of the Eisenstein lattice.",
       "**The squeeze needs integrality once.** Over the reals 3·im² ≤ 4 only gives |im| ≤ 2/√3 ≈ 1.15; the step to |im| ≤ 1 uses that im² is an integer (1 < im² ⟹ 2 ≤ im²), after which the finite case-check is purely mechanical.",
       "**decide, not native_decide.** The nine-candidate check and the card computation are discharged by kernel `decide`, keeping the proof genuinely axiom-free (no Lean.ofReduceBool), unlike a native_decide shortcut.",
-      "**Reuses the parent's algebra wholesale.** Multiplicativity of the norm and the conjugate-inverse identity z · conj z = ⟨N z, 0⟩ come straight from the parent, so the unit group falls out of already-verified infrastructure."
+      "**Reuses the parent's algebra wholesale.** Multiplicativity of the norm and the conjugate-inverse identity z · conj z = ⟨N z, 0⟩ come straight from the parent, so the unit group falls out of already-verified infrastructure.",
+      "**Three interchangeable faces of one classification.** The unit set is delivered in three equivalent forms — a disjunction of six explicit elements (isUnit_iff), a Finset of cardinality 6 (card_unitsFinset), and a membership predicate (isUnit_iff_mem_unitsFinset). Each is the convenient shape for a different downstream use: the disjunction for case analysis on a unit, the cardinality for the group-order fact |ℤ[ω]ˣ| = 6, and membership for rewriting a unit hypothesis into a decidable finite check."
     ],
     "prerequisites": [
       "Algebraic number theory (rings of integers of imaginary quadratic fields)",
@@ -115,20 +116,36 @@
       "mathContext": "$\\mathrm{IsUnit}(z) \\iff N(z) = 1$; the conjugate supplies the inverse of any norm-1 element."
     },
     {
-      "id": "enumerate",
-      "title": "Enumerating the Six Units",
+      "id": "norm-classification",
+      "title": "norm_eq_one_iff: The Six Norm-1 Coordinates",
       "startLine": 60,
-      "endLine": 103,
-      "summary": "norm_eq_one_iff bounds both coordinates to {-1,0,1} via 4·N = (2re-im)²+3im² plus an integer squeeze, then decides the nine candidates; isUnit_iff composes it with the norm characterisation.",
-      "mathContext": "$N(a+b\\omega)=a^2-ab+b^2=1$ has exactly the six solutions $\\{(1,0),(-1,0),(0,1),(0,-1),(1,1),(-1,-1)\\}$."
+      "endLine": 95,
+      "summary": "norm_eq_one_iff bounds both coordinates of a norm-1 element to {−1,0,1} using the identities 4·N = (2a−b)²+3b² and 4·N = (2b−a)²+3a², an integer squeeze (1 < x² ⟹ 2 ≤ x²) turning the real bound |x| ≤ 2/√3 into |x| ≤ 1, then decides the nine remaining candidates. Exactly six of them have norm 1.",
+      "mathContext": "$N(a+b\\omega)=a^2-ab+b^2=1$ forces $a,b\\in\\{-1,0,1\\}$, leaving the six solutions $\\{(1,0),(-1,0),(0,1),(0,-1),(1,1),(-1,-1)\\}$."
     },
     {
-      "id": "group-size",
-      "title": "The Unit Group has Exactly Six Elements",
+      "id": "isunit-classification",
+      "title": "isUnit_iff: Element-Level Unit Classification",
+      "startLine": 97,
+      "endLine": 103,
+      "summary": "isUnit_iff composes the two prior characterisations — IsUnit ↔ N = 1 (isUnit_iff_norm_eq_one) and N = 1 ↔ one of six elements (norm_eq_one_iff) — into the single statement that z is a unit iff it is one of the six sixth-roots of unity. Pure transitivity of the two biconditionals.",
+      "mathContext": "$\\mathrm{IsUnit}(z)\\iff z\\in\\{\\pm1,\\pm\\omega,\\pm\\omega^2\\}$."
+    },
+    {
+      "id": "units-finset",
+      "title": "unitsFinset and card_unitsFinset: The Unit Group Has Order Six",
       "startLine": 105,
+      "endLine": 116,
+      "summary": "unitsFinset packages the six units {±1, ±ω, ±ω²} as an explicit Finset, and card_unitsFinset proves its cardinality is 6 by kernel decide — the group-order fact |ℤ[ω]ˣ| = 6, matching the sixth roots of unity.",
+      "mathContext": "$|\\mathbb{Z}[\\omega]^\\times| = 6$."
+    },
+    {
+      "id": "membership-form",
+      "title": "isUnit_iff_mem_unitsFinset: The Membership Form",
+      "startLine": 117,
       "endLine": 123,
-      "summary": "unitsFinset lists the six units; card_unitsFinset = 6 (by decide); isUnit_iff_mem_unitsFinset gives the membership form of the classification.",
-      "mathContext": "$|\\mathbb{Z}[\\omega]^\\times| = 6$, the sixth roots of unity."
+      "summary": "isUnit_iff_mem_unitsFinset restates the classification as membership in the Finset: IsUnit z ↔ z ∈ unitsFinset, obtained by rewriting isUnit_iff and simplifying the Finset membership. This is the shape that lets a unit hypothesis be discharged by a finite check.",
+      "mathContext": "$\\mathrm{IsUnit}(z)\\iff z\\in\\text{unitsFinset}$."
     }
   ],
   "references": [
