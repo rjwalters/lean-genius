@@ -1,0 +1,120 @@
+{
+  "id": "binary-gcd-oq-03-oq-02-incomplete-01-oq-01",
+  "title": "Schönhage's HGCD: The Size-Reduction Recurrence and the O(M(n)·log n) Bound",
+  "slug": "binary-gcd-oq-03-oq-02-incomplete-01-oq-01",
+  "description": "The recursive half-GCD entry (binary-gcd-oq-03-oq-02) formalizes Schönhage's algorithm but explicitly DEFERS its headline bit-complexity claim O(M(n)·log n); its sibling companion (binary-gcd-oq-03-oq-02-incomplete-01) proves the unimodular group structure and remarks that 'size-reduction is the only genuinely hard part'. This file closes the complexity strand at the abstract-recurrence level, fully axiom-free. Modelling Schönhage's halving — two recursive calls on operands of at most ⌊n/2⌋ bits plus an O(M(n)) merge — as the divide-and-conquer recurrence T(n) ≤ 2·T(⌊n/2⌋) + M(n), it proves by strong induction that under the standard regularity hypothesis 2·M(⌊n/2⌋) ≤ M(n) (superlinear multiplication) the total cost satisfies T(n) ≤ (⌊log₂ n⌋ + 1)·M(n) = O(M(n)·log n). The recursion depth ⌊log₂ n⌋ + 1 is shown to equal the bit-length Nat.size n, and the linear-merge model M = id yields the clean corollary T(n) ≤ (⌊log₂ n⌋ + 1)·n. 0 sorries, 0 axioms, no native_decide.",
+  "sorries": 0,
+  "meta": {
+    "author": "Schönhage (1971); complexity formalization in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Half-GCD_algorithm",
+    "date": "1971",
+    "status": "verified",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "computational-complexity",
+      "divide-and-conquer",
+      "master-theorem",
+      "recurrence"
+    ],
+    "proofRepoPath": "Proofs/BinaryGcdOQ03OQ02Incomplete01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 161,
+    "dateAdded": "2026-07-04",
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "assumptions": "None. The file is fully machine-checked with no `axiom` declarations, no `sorry`, and no `native_decide` — `#print axioms` for all four headline theorems (`cost_le`, `cost_le_size`, `cost_le_linear`, `depth_eq_size`) lists only the foundational `propext`, `Classical.choice`, and `Quot.sound`, and in particular NOT `Lean.ofReduceBool`. The mathematical content is a conditional (master-theorem) bound: the O(M(n)·log n) conclusion holds for any cost function T satisfying the size-reduction recurrence T(n) ≤ 2·T(⌊n/2⌋) + M(n) with base T(n) ≤ M(n) for n ≤ 1, driven by a merge cost M satisfying the halving-regularity hypothesis 2·M(⌊n/2⌋) ≤ M(n). These are hypotheses of the theorems (as befits an abstract recurrence bound), not global assumptions.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.log_of_one_lt_of_le",
+        "description": "For 1 < b and b ≤ n, log b n = log b (n / b) + 1. Instantiated at b = 2, this is the exact statement that one halving step decreases the floor-log depth by one — the engine of the strong induction in cost_le.",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Nat.log_of_lt",
+        "description": "n < b → log b n = 0; discharges the base case n ≤ 1 where the depth factor collapses to 1.",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Nat.pow_log_le_self / Nat.lt_pow_succ_log_self",
+        "description": "The defining sandwich 2^(log₂ n) ≤ n < 2^(log₂ n + 1); combined with the Nat.size sandwich it proves depth_eq_size.",
+        "module": "Mathlib.Data.Nat.Log"
+      },
+      {
+        "theorem": "Nat.lt_size / Nat.size_le",
+        "description": "m < size n ↔ 2^m ≤ n and size m ≤ n ↔ m < 2^n; the two inequalities pinning Nat.size n between log₂ n + 1, used to identify the recursion depth with the bit-length.",
+        "module": "Mathlib.Data.Nat.Size"
+      },
+      {
+        "theorem": "Nat.strong_induction_on",
+        "description": "Strong induction on n, needed because the recurrence recurses on n / 2 (an arbitrarily smaller argument), not n - 1.",
+        "module": "Mathlib.Init / Nat.Basic"
+      }
+    ],
+    "originalContributions": [
+      "HalvingRegular: the halving-regularity (superlinear-multiplication) hypothesis 2·M(⌊n/2⌋) ≤ M(n) packaged as the master-theorem regularity condition specialized to the b = 2 divide-and-conquer split.",
+      "halvingRegular_of_superadditive: every super-additive monotone cost function is halving-regular, since M(⌊n/2⌋)+M(⌊n/2⌋) ≤ M(2⌊n/2⌋) ≤ M(n); covers n^a (a ≥ 1) and quasi-linear n·log n multiplication.",
+      "cost_le: the master-theorem bound T(n) ≤ (⌊log₂ n⌋ + 1)·M(n) for any T obeying the size-reduction recurrence, by strong induction — the abstract statement that halving ⇒ O(M(n)·log n), which the parent HGCD entry deferred.",
+      "depth_eq_size: the recursion depth ⌊log₂ n⌋ + 1 equals the bit-length Nat.size n, making 'one bit stripped per level' precise.",
+      "cost_le_size: the complexity bound in bit-length form, T(n) ≤ (bit-length of n)·M(n).",
+      "cost_le_linear: the linear-merge specialization T(n) ≤ (⌊log₂ n⌋ + 1)·n = O(n log n)."
+    ],
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Arnold Schönhage (1971) achieved optimal O(M(n)·log n) bit complexity for the GCD by recursively computing a cofactor matrix on the top half of the operand bits, where M(n) is the cost of n-bit multiplication. The correctness of the scheme is the unimodular-group story formalized in the sibling companion (binary-gcd-oq-03-oq-02-incomplete-01); its EFFICIENCY is a separate, purely quantitative claim about the recursion tree. Every level of the recursion halves the operand bit-length (the size-reduction property) and spends O(M(n)) on the multiplications that stitch the two half-solutions together, giving the recurrence T(n) = 2T(n/2) + O(M(n)). Whether this sums to O(M(n)·log n) rather than something larger depends on the regularity of M; for the superlinear multiplication times that occur in practice (schoolbook, Karatsuba, FFT-based) it does. This entry formalizes exactly that quantitative deduction, which the parent HGCD entry explicitly deferred as 'requiring a Mathlib model of the recurrence'.",
+    "problemStatement": "Formalize the half-GCD size-reduction bound establishing that recursive HGCD runs in O(M(n)·log n): model the halving recurrence T(n) ≤ 2·T(⌊n/2⌋) + M(n) abstractly and prove, under the standard superlinear-multiplication hypothesis 2·M(⌊n/2⌋) ≤ M(n), the closed bound T(n) ≤ (⌊log₂ n⌋ + 1)·M(n), with the recursion depth identified as the operand bit-length.",
+    "proofStrategy": "The regularity hypothesis is captured by the predicate HalvingRegular M := ∀ n ≥ 2, 2·M(⌊n/2⌋) ≤ M(n), and halvingRegular_of_superadditive shows every super-additive monotone M qualifies (via M(⌊n/2⌋)+M(⌊n/2⌋) ≤ M(2⌊n/2⌋) ≤ M(n), using 2⌊n/2⌋ ≤ n). The master bound cost_le is proved by strong induction on n: for n ≤ 1 the depth factor Nat.log 2 n is 0 (Nat.log_of_lt) and the bound reduces to the base hypothesis; for n ≥ 2 the recurrence gives T(n) ≤ 2·T(⌊n/2⌋) + M(n), the induction hypothesis at ⌊n/2⌋ < n bounds T(⌊n/2⌋) by (log₂⌊n/2⌋ + 1)·M(⌊n/2⌋), and the key algebraic step (log₂⌊n/2⌋+1)·(2·M(⌊n/2⌋)) ≤ (log₂⌊n/2⌋+1)·M(n) uses halving-regularity, after which Nat.log_of_one_lt_of_le rewrites log₂⌊n/2⌋ + 1 = log₂ n to close the calc. depth_eq_size then pins the depth factor to the bit-length by the two logarithm/size sandwiches, cost_le_size restates the bound with Nat.size n, and cost_le_linear specializes M = id (halving-regular since 2⌊n/2⌋ ≤ n) to the classical O(n log n) shape.",
+    "keyInsights": [
+      "The O(M(n)·log n) claim is a master-theorem instance, independent of the algebra. Once the algorithm is known to halve the operand size and spend O(M(n)) per merge, the complexity is a pure statement about the recurrence T(n) ≤ 2T(⌊n/2⌋) + M(n) — no gcd, matrix, or lattice reasoning appears.",
+      "Superlinearity of multiplication is exactly what makes the levels telescope. The hypothesis 2·M(⌊n/2⌋) ≤ M(n) says the two half-merges together cost no more than one full merge; iterated over the depth this makes every level contribute at most M(n), so the total is depth·M(n). Without it (e.g. sublinear M) the bound fails.",
+      "Depth = bit-length. The factor ⌊log₂ n⌋ + 1 is not a loose asymptotic — it equals Nat.size n exactly (depth_eq_size), formalizing that each halving level strips one bit, so the algorithm terminates after precisely the bit-length many levels.",
+      "Using floor division ⌊n/2⌋ aligns the recurrence depth with Nat.log 2 n via Nat.log_of_one_lt_of_le, giving a clean closed form; the ceiling variant used by the literal algorithm differs by at most one rounding and shares the O(M(n)·log n) asymptotics."
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and the Halving-Regularity Condition",
+      "startLine": 1,
+      "endLine": 78,
+      "summary": "Module docstring situating the entry as the deferred complexity strand of the Schönhage HGCD family and fixing the floor-division normalization of the recurrence. Imports Nat.Log, Nat.Size, and Tactic. Defines HalvingRegular M := ∀ n ≥ 2, 2·M(⌊n/2⌋) ≤ M(n) — the master-theorem regularity (superlinear-multiplication) hypothesis — and proves halvingRegular_of_superadditive: every super-additive monotone M is halving-regular."
+    },
+    {
+      "id": "master-bound",
+      "title": "The Master-Theorem Bound cost_le",
+      "startLine": 79,
+      "endLine": 129,
+      "summary": "cost_le: any cost function T obeying the size-reduction recurrence T(n) ≤ 2·T(⌊n/2⌋) + M(n) with base T(n) ≤ M(n) for n ≤ 1, driven by a halving-regular M, satisfies T(n) ≤ (⌊log₂ n⌋ + 1)·M(n). Proved by strong induction: the base case collapses the log factor via Nat.log_of_lt; the step chains the recurrence, the induction hypothesis at ⌊n/2⌋, the halving-regularity inequality (through gcongr), and the depth recurrence Nat.log_of_one_lt_of_le into a single calc."
+    },
+    {
+      "id": "depth-is-bitlength",
+      "title": "The Recursion Depth is the Bit-Length",
+      "startLine": 130,
+      "endLine": 147,
+      "summary": "depth_eq_size: for n > 0 the depth factor ⌊log₂ n⌋ + 1 equals the bit-length Nat.size n, sandwiching both between 2^(log₂ n) ≤ n < 2^(log₂ n + 1) via Nat.lt_size/Nat.size_le. cost_le_size restates the master bound as T(n) ≤ (bit-length of n)·M(n)."
+    },
+    {
+      "id": "linear-model",
+      "title": "Concrete Model: Linear Merge gives O(n·log n)",
+      "startLine": 148,
+      "endLine": 161,
+      "summary": "halvingRegular_id: the identity merge M = id is halving-regular (2⌊n/2⌋ ≤ n). cost_le_linear: specializing cost_le to M = id yields T(n) ≤ (⌊log₂ n⌋ + 1)·n, the classical Θ(n log n) shape for Schönhage-style GCD with (quasi-)linear multiplication. Closes with a #print axioms audit of the four headline theorems."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "binary-gcd-oq-03-oq-02",
+      "relation": "extends",
+      "description": "The recursive HGCD entry that states the O(M(n)·log n) claim and defers its proof; this file supplies the abstract recurrence bound it deferred."
+    },
+    {
+      "proofId": "binary-gcd-oq-03-oq-02-incomplete-01",
+      "relation": "complements",
+      "description": "The sibling companion proving the unimodular GROUP structure (correctness / GCD preservation); this file proves the complementary EFFICIENCY claim, together completing correctness + complexity of Schönhage HGCD."
+    }
+  ]
+}
