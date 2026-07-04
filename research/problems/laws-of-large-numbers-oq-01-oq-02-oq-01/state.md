@@ -77,12 +77,16 @@ None in-flight. Next work item is the integral lift of the two kernels below.
 
 ## Blockers
 
-- **S4b step-3 integral lift (~1 session):** turn `abs_le_rpow_mul_rpow_of_tail` into
-  `|𝔼Yᵢ| ≤ i^{(1-p)/p}·𝔼|X|^p` (via `𝔼X = 0` ⟹ `𝔼Yᵢ = -𝔼[X·𝟙{|X|>i^{1/p}}]`,
-  `abs_integral_le`, `integral_mono` against the kernel), then
-  `∑_{i<n} 𝔼Yᵢ / n^{1/p} → 0` via `tendsto_weighted_average_zero` with the null
-  sequence `cᵢ = 𝔼[|X|^p·𝟙{|X|>i^{1/p}}] → 0` and weight `i^{(1-p)/p}` (needs the
-  weight partial-sum asymptotic `∑_{i<n} i^{1/p-1} ~ p·n^{1/p} → ∞`).
+- **S4b step-3 integral lift — ✅ DONE (this iteration, `abs_integral_trunc_le_of_centered`):**
+  the truncation-mean bound `|𝔼Yᵢ| = |∫ 𝟙{|X|≤t}·X| ≤ t^{1-p}·𝔼|X|^p` (so `|𝔼Yᵢ| ≤
+  i^{(1-p)/p}·𝔼|X|^p` at `t=i^{1/p}`) is now in the file (§ TruncationIntegralLifts), 0-axiom,
+  build-VERIFIED (7743 jobs, exit 0). Proof: `𝔼X=0` ⟹ `𝔼Yᵢ = -𝔼[X·𝟙{|X|>i^{1/p}}]`
+  (split `∫X` over complementary events), then `|∫f|≤∫|f|` + indicator/`|·|` commute +
+  `integral_tail_abs_le`. **Do NOT re-derive.** Remaining step-3 work is only the
+  *weighted-average → 0* assembly: `∑_{i<n} 𝔼Yᵢ / n^{1/p} → 0` via
+  `tendsto_weighted_average_zero` with null sequence `cᵢ = 𝔼[|X|^p·𝟙{|X|>i^{1/p}}] → 0`
+  and weight `i^{(1-p)/p}` (needs the weight partial-sum asymptotic `∑_{i<n} i^{1/p-1} ~
+  p·n^{1/p} → ∞`).
 - **S4b step-4 integral lift (~1–2 sessions):** turn `sq_le_rpow_mul_rpow_of_trunc`
   into `𝔼[Yᵢ²] ≤ i^{(2-p)/p}·𝔼|X|^p` (`integral_mono` on `Yᵢ² = Xᵢ²·𝟙{|Xᵢ|≤i^{1/p}}`),
   then `Var(Yᵢ) ≤ 𝔼[Yᵢ²]` and `∑ᵢ Var(Yᵢ)/i^{2/p} ≤ 𝔼|X|^p · ∑ᵢ i^{-2/p} < ∞`
@@ -94,7 +98,8 @@ None in-flight. Next work item is the integral lift of the two kernels below.
 **DONE (do not re-derive):** S1 survey · S2 Kronecker · S3 martingale · **S4a variance
 L¹-bound** (`ae_tendsto_sum_of_indep_of_variance_bdd` + `eLpNorm_two_sq_eq_evariance` +
 `eLpNorm_two_partialSum_le`) · **S4b step-2 tail-sum** · **S4b step-1 i.i.d. truncation**
-· **S4b step-3/step-4 pointwise moment kernels** (this iteration). All 0-axiom.
+· **S4b step-3/step-4 pointwise moment kernels** · **S4b step-3 centering integral lift**
+(`abs_integral_trunc_le_of_centered`, this iteration). All 0-axiom.
 
 ## ⚠️ Correction to the previous plan (iteration 9)
 
