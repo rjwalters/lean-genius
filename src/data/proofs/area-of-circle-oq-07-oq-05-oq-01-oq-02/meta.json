@@ -42,7 +42,7 @@
     {
       "id": "header",
       "title": "Scaling the Gaussian Even Moments",
-      "startLine": 5,
+      "startLine": 1,
       "endLine": 37,
       "summary": "Statement of the open question and the strategy: lift the parent's unscaled even moment to all scales a > 0 by the single change of variables x ↦ √a·x, with the dilation rule supplying the scale factor and no further analysis.",
       "mathContext": "$\\int_{\\mathbb R} x^{2n} e^{-a x^2} = (2n-1)!!\\,\\dfrac{\\sqrt{\\pi/a}}{(2a)^n}$"
@@ -67,7 +67,7 @@
       "id": "consistency-checks",
       "title": "Consistency Checks",
       "startLine": 102,
-      "endLine": 117,
+      "endLine": 119,
       "summary": "scaled_gaussian_even_moment_one recovers the parent's a = 1 moment; scaled_gaussian_second_moment gives ∫ x² e^{-a x²} = √(π/a)/(2a), twice the half-line sibling value by even symmetry.",
       "mathContext": "$\\int_{\\mathbb R} x^2 e^{-a x^2} = \\dfrac{\\sqrt{\\pi/a}}{2a}$"
     }

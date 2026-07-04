@@ -97,7 +97,7 @@
     {
       "id": "sec-changeofvars",
       "title": "The Change of Variables: Half-Height Integral",
-      "startLine": 44,
+      "startLine": 1,
       "endLine": 57,
       "summary": "ellipse_halfheight_integral proves ∫ x in −a..a, √(1 − (x/a)²) = a·(π/2). The substitution x ↦ x/a via intervalIntegral.integral_comp_div rescales the limits (−a/a = −1, a/a = 1) and extracts the factor a, reducing to Mathlib's integral_sqrt_one_sub_sq = π/2.",
       "mathContext": "∫_{−a}^{a} √(1 − (x/a)²) dx = a ∫_{−1}^{1} √(1 − u²) du = a · (π/2): the substitution u = x/a turns the ellipse's normalized arc into the unit circle's."

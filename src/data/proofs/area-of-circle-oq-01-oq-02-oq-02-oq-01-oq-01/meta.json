@@ -166,7 +166,7 @@
     {
       "id": "integrands",
       "title": "The Speed and Area Integrands",
-      "startLine": 61,
+      "startLine": 1,
       "endLine": 69,
       "summary": "speedFn x y u = √(x'(u)² + y'(u)²) is the arc-length integrand (its integral over a period is the circumference); areaFn x y u = x(u)·y'(u) − y(u)·x'(u) is the Green's-theorem integrand (its integral over a period is twice the signed area). The two invariance theorems are stated about these."
     },
@@ -195,7 +195,7 @@
       "id": "part-iv",
       "title": "Signed Area Invariance",
       "startLine": 156,
-      "endLine": 194,
+      "endLine": 196,
       "summary": "signed_area_reparam_invariant: the same change of variables, but the φ' factor enters linearly so NO monotonicity hypothesis on φ is needed. Equality of the Green's-theorem integrals over a period yields equality of the signed areas of γ∘φ and γ."
     }
   ]
