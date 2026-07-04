@@ -336,6 +336,74 @@ theorem infinite_of_containsArbitrarilyLongAP {A : Set ℕ}
   rw [arithProg_card a d _ hd] at hcard
   omega
 
+/- ## The unconditional low-length regime (`k ≤ 2`)
+
+   Erdős #3 is only *open* for progressions of length `k ≥ 3`. Its conclusion at
+   lengths `k ≤ 2` is a triviality that holds for *any* set with divergent
+   reciprocal sum, with no Roth-type input whatsoever. The lemmas below make this
+   boundary explicit: a divergent reciprocal sum forces infinitude
+   (`infinite_of_hasDivergentSum` — the hypothesis-side companion promised in the
+   `infinite_of_containsArbitrarilyLongAP` docstring), and an infinite set contains
+   a genuine `2`-term progression (`containsAP_two_of_infinite`). Combining them,
+   `hasDivergentSum_containsAP_le_two` proves Erdős #3 verbatim for every `k ≤ 2`.
+   This pins the difficulty of the conjecture entirely at `k ≥ 3`, matching the
+   Roth-number floor `k - 1` (`rothNumber_ge_min`): below length `3` there is no
+   arithmetic content to exploit on either side of the implication. -/
+
+/-- **Divergent reciprocal sum forces infinitude.**
+    If `∑_{a ∈ A} 1/a` diverges then `A` is infinite: a finite set carries a
+    finite (hence summable) reciprocal sum. This is the hypothesis-side companion
+    to `infinite_of_containsArbitrarilyLongAP`; together they confirm both sides of
+    Erdős #3 can only be nontrivial for infinite `A`. Elementary, `sorry`-free and
+    axiom-free. -/
+theorem infinite_of_hasDivergentSum {A : Set ℕ} (h : HasDivergentSum A) :
+    A.Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  have : Fintype ↥A := hfin.fintype
+  exact h (hasSum_fintype (fun n : A => (1 : ℝ) / n)).summable
+
+/-- **Two ordered elements yield a `2`-term progression.**
+    If `a, b ∈ A` with `a < b`, then `{a, b} = ArithProg a (b - a) 2` is a genuine
+    `2`-AP (common difference `b - a > 0`) inside `A`. The elementary building block
+    of the low-length regime. -/
+theorem containsAP_two_of_lt {A : Set ℕ} {a b : ℕ}
+    (ha : a ∈ A) (hb : b ∈ A) (hab : a < b) : ContainsAP A 2 := by
+  refine ⟨a, b - a, by omega, ?_⟩
+  intro x hx
+  rw [Finset.mem_coe, ArithProg, Finset.mem_image] at hx
+  obtain ⟨i, hi, rfl⟩ := hx
+  rw [Finset.mem_range] at hi
+  interval_cases i
+  · simpa using ha
+  · have hb' : a + 1 * (b - a) = b := by omega
+    rw [hb']; exact hb
+
+/-- **Every infinite set contains a `2`-term progression.**
+    An infinite `A ⊆ ℕ` has two distinct elements; the smaller and larger form a
+    genuine `2`-AP (`containsAP_two_of_lt`). `sorry`-free, axiom-free. -/
+theorem containsAP_two_of_infinite {A : Set ℕ} (h : A.Infinite) :
+    ContainsAP A 2 := by
+  obtain ⟨a, ha⟩ := h.nonempty
+  obtain ⟨b, hb⟩ := (h.diff (Set.finite_singleton a)).nonempty
+  rw [Set.mem_diff, Set.mem_singleton_iff] at hb
+  obtain ⟨hbA, hbne⟩ := hb
+  rcases lt_trichotomy a b with hlt | heq | hgt
+  · exact containsAP_two_of_lt ha hbA hlt
+  · exact absurd heq.symm hbne
+  · exact containsAP_two_of_lt hbA ha hgt
+
+/-- **Erdős #3 holds unconditionally for `k ≤ 2`.**
+    Any set with divergent reciprocal sum contains a `k`-term arithmetic
+    progression for every `k ≤ 2` — no Roth-type bound required. Proof: such a set
+    is infinite (`infinite_of_hasDivergentSum`), hence contains a `2`-AP
+    (`containsAP_two_of_infinite`), which downward-closes to all `k ≤ 2`
+    (`containsAP_of_le`). This is exactly the portion of the conjecture that is not
+    open: the content lives entirely at `k ≥ 3`. `sorry`-free, axiom-free. -/
+theorem hasDivergentSum_containsAP_le_two {A : Set ℕ} (h : HasDivergentSum A)
+    {k : ℕ} (hk : k ≤ 2) : ContainsAP A k :=
+  containsAP_of_le hk (containsAP_two_of_infinite (infinite_of_hasDivergentSum h))
+
 /-- **Analytic core of the reduction.**
     If the counting function of `A` obeys `f_A(N) ≤ C · N / (log N)^{1+δ}` for all
     large `N` (`δ > 0`), then `∑_{a ∈ A} 1/a` converges. Proof by dyadic blocking:

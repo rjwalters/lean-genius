@@ -94,8 +94,12 @@ Leng–Sah–Sawhney 2024) are far from even `o(N/log N)`, let alone the
   `countingFunction`, `SublogarithmicGrowth`, `Erdos3Conjecture`,
   `RequiredBound`, `StrongRequiredBound`.
 - Proved (0 new axioms): `countingFunction_le_rothNumber`, `containsAP_of_le`,
-  `summable_of_strongBound`, `strong_required_bound_implies_conjecture`,
-  `erdos3_implies_green_tao`, `erdos_3_open`.
+  `isAPFree_of_card_lt`, `rothNumber_ge_min`, `arithProg_card`,
+  `infinite_of_containsArbitrarilyLongAP`, `infinite_of_hasDivergentSum`,
+  `containsAP_two_of_lt`, `containsAP_two_of_infinite`,
+  `hasDivergentSum_containsAP_le_two`, `summable_of_strongBound`,
+  `strong_required_bound_implies_conjecture`, `erdos3_implies_green_tao`,
+  `erdos_3_open`.
 - 1 axiom: `euler_prime_sum_diverges` (Euler 1737; deep, kept).
 - 1 sorry: `required_bound_implies_conjecture` (threshold-critical; open).
 
@@ -124,6 +128,35 @@ of Erdős #3 is an asymptotic statement at large `N`. No sub-constant floor exis
 to exploit. This is the natural companion to `rothNumber_le_window` and completes
 the elementary bracketing of `r_k(N)`.
 
+## ADDENDUM (2026-07-04, attempt 4): the unconditional low-length regime (`k ≤ 2`)
+
+The conjecture's *conclusion* is a triviality for progressions of length `k ≤ 2`,
+holding for any divergent-sum set with **no Roth-type input**. Four axiom-free,
+`sorry`-free lemmas added (verified, 7743 jobs):
+
+- **`infinite_of_hasDivergentSum : HasDivergentSum A → A.Infinite`** — a finite
+  `A` gives `Fintype ↥A` (`Set.Finite.fintype`), and `hasSum_fintype` makes the
+  reciprocal sum summable, contradicting divergence. This fills the
+  hypothesis-side gap the `infinite_of_containsArbitrarilyLongAP` docstring
+  already *claimed* ("`HasDivergentSum` likewise forces infinitude") but never
+  proved.
+- **`containsAP_two_of_lt {a b} (ha : a∈A)(hb : b∈A)(hab : a<b) : ContainsAP A 2`**
+  — `{a,b} = ↑(ArithProg a (b-a) 2)` with `b-a > 0`. Proof unfolds the image over
+  `range 2` and does `interval_cases i` (i=0 ↦ a, i=1 ↦ `a+1·(b-a)=b` by omega).
+- **`containsAP_two_of_infinite : A.Infinite → ContainsAP A 2`** — `h.nonempty`
+  gives `a`; `(h.diff (finite_singleton a)).nonempty` gives `b ≠ a`;
+  `lt_trichotomy` + `containsAP_two_of_lt`.
+- **`hasDivergentSum_containsAP_le_two : HasDivergentSum A → ∀ k ≤ 2, ContainsAP A k`**
+  — `containsAP_of_le` downward-closes the 2-AP. **This is Erdős #3 proved
+  verbatim and unconditionally for every `k ≤ 2`.**
+
+**Significance (honest).** Elementary — none of this is close to the open
+content. Its value is *delineation*: it certifies in Lean that the difficulty of
+Erdős #3 lives entirely at `k ≥ 3`, the exact regime where the Roth number first
+acquires nontrivial content (`rothNumber_ge_min`: floor `k-1`). Completes the
+elementary bracketing of the problem on the AP-length axis, complementing the
+Roth-number bracketing of attempt 3.
+
 ## Status
 
 PROGRESS. Delivered this session: (1) repaired a non-compiling file (bitrot);
@@ -136,6 +169,7 @@ threshold-critical (as hard as Erdős #3).
 
 - The remaining `sorry` should NOT be attacked directly — it is as hard as
   Erdős #3. Leave it documented.
-- Possible follow-ups (shallow, optional): a `k ≤ 2` corollary that any infinite
-  set trivially contains 2-APs; or expose `summable_of_strongBound` as a reusable
+- DONE (attempt 4): the `k ≤ 2` corollary — an infinite / divergent-sum set
+  trivially contains 2-APs (`hasDivergentSum_containsAP_le_two`).
+- Only remaining shallow follow-up: expose `summable_of_strongBound` as a reusable
   density→convergence lemma for other reciprocal-sum problems.
