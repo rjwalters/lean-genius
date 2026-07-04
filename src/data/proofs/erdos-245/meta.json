@@ -124,6 +124,74 @@
     "path": "Proofs/Erdos245Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "erdos_245_positive_answer",
+      "type": "core",
+      "description": "The main theorem giving Erdős Problem #245 a positive answer: every infinite zero-density set A has asymptotic sumset growth ratio at least 3.",
+      "leanType": "∀ (A : Set ℕ), A.Infinite → HasZeroDensity A →\n    (3 : EReal) ≤ asymptoticGrowthRatio A"
+    },
+    {
+      "name": "freiman_growth_theorem",
+      "type": "axiom",
+      "description": "Freiman's 1973 sharp bound (stated as an axiom): the asymptotic growth ratio of A+A over A is at least 3 for any infinite zero-density set.",
+      "leanType": "(A : Set ℕ) (hA : A.Infinite) (hd : HasZeroDensity A) :\n    3 ≤ asymptoticGrowthRatio A"
+    },
+    {
+      "name": "mann_growth_bound",
+      "type": "axiom",
+      "description": "Mann's 1960 weaker bound (stated as an axiom): the asymptotic growth ratio of A+A over A is at least 2 for any infinite zero-density set.",
+      "leanType": "(A : Set ℕ) (hA : A.Infinite) (hd : HasZeroDensity A) :\n    2 ≤ asymptoticGrowthRatio A"
+    },
+    {
+      "name": "problem_245_summary",
+      "type": "core",
+      "description": "Summary theorem bundling both the sharp Freiman bound (≥ 3) and Mann's weaker bound (≥ 2) for zero-density sets.",
+      "leanType": "-- Freiman's theorem gives the sharp bound\n    (∀ (A : Set ℕ), A.Infinite → HasZeroDensity A → 3 ≤ asymptoticGrowthRatio A) ∧\n    -- Mann's weaker bound also holds\n    (∀ (A : Set ℕ), A.Infinite → HasZeroDensity A → 2 ≤ asymptoticGrowthRatio A)"
+    },
+    {
+      "name": "HasZeroDensity",
+      "type": "supporting",
+      "description": "Defines that a set has zero density, i.e. |A ∩ {1,...,N}| / N tends to 0 as N → ∞.",
+      "leanType": "(A : Set ℕ) : Prop"
+    },
+    {
+      "name": "countingFunc",
+      "type": "supporting",
+      "description": "The counting function returning the number of elements of A that are at most N.",
+      "leanType": "(A : Set ℕ) (N : ℕ) : ℕ"
+    },
+    {
+      "name": "sumset",
+      "type": "supporting",
+      "description": "The sumset A + A = {a + b : a, b ∈ A}.",
+      "leanType": "(A : Set ℕ) : Set ℕ"
+    },
+    {
+      "name": "growthRatio",
+      "type": "supporting",
+      "description": "The growth ratio |A+A| / |A| up to N, computed in EReal to handle a zero denominator.",
+      "leanType": "(A : Set ℕ) (N : ℕ) : EReal"
+    },
+    {
+      "name": "asymptoticGrowthRatio",
+      "type": "supporting",
+      "description": "The asymptotic growth ratio, defined as the limsup over N of the growth ratio.",
+      "leanType": "(A : Set ℕ) : EReal"
+    },
+    {
+      "name": "powers_of_two_infinite",
+      "type": "supporting",
+      "description": "Proves that the set of powers of 2 is infinite, supporting the optimality example.",
+      "leanType": "{n : ℕ | ∃ k, n = 2^k}.Infinite"
+    },
+    {
+      "name": "powers_sumset_structure",
+      "type": "supporting",
+      "description": "Shows that every 2^a + 2^b lies in the sumset of the powers of 2, illustrating why the constant 3 is sharp.",
+      "leanType": "(a b : ℕ) :\n    2^a + 2^b ∈ sumset powersOfTwo"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-109",
