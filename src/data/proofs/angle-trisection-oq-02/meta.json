@@ -329,6 +329,98 @@
     "path": "Proofs/AngleTrisectionOQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "wantzel_galois_characterization",
+      "type": "axiom",
+      "description": "The Wantzel-Galois theorem: an algebraic real number α is constructible by compass and straightedge from ℚ if and only if the Galois group of its minimal polynomial over ℚ is a 2-group. Axiomatized as the main result.",
+      "leanType": "(α : ℝ) (hα : IsIntegral ℚ α) : IsConstructibleFromQ α ↔ IsPGroup 2 (minpoly ℚ α).Gal"
+    },
+    {
+      "name": "IsConstructibleFromQ",
+      "type": "core",
+      "description": "Definition of constructibility: α ∈ ℝ is constructible from ℚ if it lies in a finite intermediate field K of ℚ ⊆ ℝ whose degree over ℚ is a power of 2 (the tower condition).",
+      "leanType": "(α : ℝ) : Prop := ∃ (K : IntermediateField ℚ ℝ), FiniteDimensional ℚ K ∧ (∃ n : ℕ, Module.finrank ℚ K = 2 ^ n) ∧ α ∈ K"
+    },
+    {
+      "name": "isPGroup_iff_card_pow_two",
+      "type": "supporting",
+      "description": "A finite group is a 2-group if and only if its order is a power of 2.",
+      "leanType": "(G : Type*) [Group G] [Fintype G] : IsPGroup 2 G ↔ ∃ n : ℕ, Nat.card G = 2 ^ n"
+    },
+    {
+      "name": "x_cube_sub_2_gal_order",
+      "type": "supporting",
+      "description": "The Galois group of x³ - 2 over ℚ has order 6 (isomorphic to S₃), imported from InverseGalois.lean.",
+      "leanType": "Fintype.card (X ^ 3 - C 2 : ℚ[X]).Gal = 6"
+    },
+    {
+      "name": "x_cube_sub_2_gal_not_2group",
+      "type": "core",
+      "description": "The Galois group of x³ - 2 (order 6, ≅ S₃) is not a 2-group, hence ∛2 is not constructible.",
+      "leanType": "¬ IsPGroup 2 (X ^ 3 - C 2 : ℚ[X]).Gal"
+    },
+    {
+      "name": "cos20_gal_order",
+      "type": "supporting",
+      "description": "The Galois group of 8x³ - 6x - 1, the minimal polynomial of cos(20°), has order 3, imported from AngleTrisectionCos20Gal.lean.",
+      "leanType": "Fintype.card (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal = 3"
+    },
+    {
+      "name": "cos20_gal_not_2group",
+      "type": "core",
+      "description": "The Galois group of the cos(20°) minimal polynomial (order 3) is not a 2-group, which yields the impossibility of trisecting a 60° angle.",
+      "leanType": "¬ IsPGroup 2 (8 * X ^ 3 - 6 * X - C 1 : ℚ[X]).Gal"
+    },
+    {
+      "name": "x_sq_sub_2_gal_order",
+      "type": "supporting",
+      "description": "The Galois group of x² - 2 over ℚ has order 2, proved via a divisibility squeeze (2 divides |Gal| by prime degree, and |Gal| divides 2! = 2 by embedding into S₂).",
+      "leanType": "Fintype.card (X ^ 2 - C 2 : ℚ[X]).Gal = 2"
+    },
+    {
+      "name": "x_sq_sub_2_gal_is_2group",
+      "type": "core",
+      "description": "The Galois group of x² - 2 is a 2-group (order 2 = 2¹), so √2 is constructible.",
+      "leanType": "IsPGroup 2 (X ^ 2 - C 2 : ℚ[X]).Gal"
+    },
+    {
+      "name": "x_4th_sub_2_gal_order",
+      "type": "supporting",
+      "description": "The Galois group of x⁴ - 2 over ℚ has order 8 (isomorphic to the dihedral group D₄), imported from InverseGaloisD4.lean.",
+      "leanType": "Fintype.card (X ^ 4 - C 2 : ℚ[X]).Gal = 8"
+    },
+    {
+      "name": "x_4th_sub_2_gal_is_2group",
+      "type": "core",
+      "description": "The Galois group of x⁴ - 2 is a 2-group (order 8 = 2³), so 2^(1/4) is constructible.",
+      "leanType": "IsPGroup 2 (X ^ 4 - C 2 : ℚ[X]).Gal"
+    },
+    {
+      "name": "galois_2group_implies_degree_pow2",
+      "type": "core",
+      "description": "If the Galois group of the minimal polynomial of α is a 2-group, then the degree of the minimal polynomial divides a power of 2, connecting the Galois criterion (OQ02) to the degree criterion (OQ01).",
+      "leanType": "(α : ℝ) (hα : IsIntegral ℚ α) (hGal : IsPGroup 2 (minpoly ℚ α).Gal) : ∃ n : ℕ, (minpoly ℚ α).natDegree ∣ 2 ^ n"
+    },
+    {
+      "name": "constructible_implies_degree_dvd_pow2",
+      "type": "supporting",
+      "description": "Constructibility implies the degree criterion: if α is constructible, its minimal polynomial has degree dividing a power of 2.",
+      "leanType": "(α : ℝ) (hα : IsIntegral ℚ α) (hc : IsConstructibleFromQ α) : ∃ n : ℕ, (minpoly ℚ α).natDegree ∣ 2 ^ n"
+    },
+    {
+      "name": "not_constructible_of_not_2group",
+      "type": "core",
+      "description": "Contrapositive of the Wantzel-Galois characterization: if the Galois group of minpoly(ℚ,α) is not a 2-group, then α is not constructible.",
+      "leanType": "(α : ℝ) (hα : IsIntegral ℚ α) (h : ¬ IsPGroup 2 (minpoly ℚ α).Gal) : ¬ IsConstructibleFromQ α"
+    },
+    {
+      "name": "not_constructible_of_degree",
+      "type": "supporting",
+      "description": "If the degree of minpoly(ℚ,α) divides no power of 2, then α is not constructible (degree-based non-constructibility criterion).",
+      "leanType": "(α : ℝ) (hα : IsIntegral ℚ α) (h : ∀ n : ℕ, ¬ (minpoly ℚ α).natDegree ∣ 2 ^ n) : ¬ IsConstructibleFromQ α"
+    }
+  ],
   "references": [
     {
       "authors": "Wantzel, Pierre Laurent",
