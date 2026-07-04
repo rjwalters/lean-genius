@@ -38,13 +38,25 @@
   {
     "id": "ann-eulertot010203-structure",
     "proofId": "euler-totient-oq-01-oq-02-oq-03",
-    "range": { "startLine": 137, "endLine": 165 },
+    "range": { "startLine": 137, "endLine": 155 },
     "type": "insight",
-    "title": "The Internal Direct Product and Carmichael Recovery",
-    "content": "Section III assembles the theorem. card_units computes |(ℤ/2ⁿ⁺³ℤ)ˣ| = φ(2ⁿ⁺³) = 2ⁿ⁺². isComplement'_neg_one_five then feeds the disjointness (the crux) and the order count |⟨−1⟩|·|⟨5⟩| = 2·2ⁿ⁺¹ = 2ⁿ⁺² = |G| to isComplement'_of_card_mul_and_disjoint, yielding the internal direct product (ℤ/2ᵏℤ)ˣ = ⟨−1⟩ × ⟨5⟩ — so every unit is uniquely (−1)ᵃ·5ᵇ. Finally carmichael_two_pow recovers the parent's λ(2ᵏ) = 2ᵏ⁻² as the exponent of the product (lcm of the factor orders), delegating the arithmetic to Mathlib's carmichael_two_pow_of_ne_two.",
-    "mathContext": "Disjoint $+$ $|H|\\cdot|K| = |G|$ $\\Rightarrow$ $\\mathrm{IsComplement}'$; the product's exponent is $\\mathrm{lcm}(2, 2^{n+1}) = 2^{n+1} = 2^{k-2} = \\lambda(2^k)$.",
+    "title": "The Internal Direct Product (ℤ/2ᵏℤ)ˣ = ⟨−1⟩ × ⟨5⟩",
+    "content": "This is the structure theorem itself. card_units first pins the group order: |(ℤ/2ⁿ⁺³ℤ)ˣ| = φ(2ⁿ⁺³) = 2ⁿ⁺², via ZMod.card_units_eq_totient and Nat.totient_prime_pow_succ. isComplement'_neg_one_five then combines two facts — the disjointness ⟨−1⟩ ∩ ⟨5⟩ = {1} from the crux, and the order count |⟨−1⟩|·|⟨5⟩| = 2·2ⁿ⁺¹ = 2ⁿ⁺² = |G| — through isComplement'_of_card_mul_and_disjoint. The conclusion IsComplement' means multiplication ⟨−1⟩ × ⟨5⟩ → (ℤ/2ᵏℤ)ˣ is a bijection, i.e. every unit is UNIQUELY (−1)ᵃ·5ᵇ with a ∈ {0,1}, 0 ≤ b < 2ᵏ⁻². That uniqueness is exactly the classical two-generator decomposition (ℤ/2ᵏℤ)ˣ ≅ ℤ/2 × ℤ/2ᵏ⁻².",
+    "mathContext": "$\\mathrm{Disjoint} \\wedge |H|\\cdot|K| = |G| \\Rightarrow \\mathrm{IsComplement}'$; hence $(\\mathbb{Z}/2^k\\mathbb{Z})^\\times = \\langle -1\\rangle \\times \\langle 5\\rangle \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$.",
     "significance": "key",
-    "relatedConcepts": ["IsComplement'", "isComplement'_of_card_mul_and_disjoint", "exponent of a direct product", "ZMod.card_units_eq_totient"],
+    "relatedConcepts": ["IsComplement'", "isComplement'_of_card_mul_and_disjoint", "internal direct product", "ZMod.card_units_eq_totient"],
     "prerequisites": ["the disjointness lemma", "the order count", "complementary subgroups"]
+  },
+  {
+    "id": "ann-eulertot010203-carmichael",
+    "proofId": "euler-totient-oq-01-oq-02-oq-03",
+    "range": { "startLine": 157, "endLine": 165 },
+    "type": "insight",
+    "title": "Recovering λ(2ᵏ) = 2ᵏ⁻² as the Product's Exponent",
+    "content": "carmichael_two_pow closes the loop back to the parent entry. The Carmichael function λ(m) is the exponent of (ℤ/mℤ)ˣ, and the exponent of a direct product is the lcm of the factor exponents. From the decomposition ⟨−1⟩ × ⟨5⟩ with factor orders 2 and 2ⁿ⁺¹, the exponent is lcm(2, 2ⁿ⁺¹) = 2ⁿ⁺¹ = 2ᵏ⁻² — strictly below the group order φ(2ᵏ) = 2ᵏ⁻¹, the quantitative signature of non-cyclicity. The Lean proof rewrites k = n+3 (so 2ᵏ⁻² becomes the honest power 2ⁿ⁺¹) and delegates the value to Mathlib's carmichael_two_pow_of_ne_two, exhibiting the structure theorem as the true explanation of the parent's recorded value.",
+    "mathContext": "$\\lambda(2^k) = \\exp(\\langle-1\\rangle \\times \\langle5\\rangle) = \\mathrm{lcm}(2, 2^{k-2}) = 2^{k-2} < 2^{k-1} = \\varphi(2^k)$.",
+    "significance": "key",
+    "relatedConcepts": ["Carmichael function", "exponent of a direct product", "lcm of orders", "non-cyclic unit group"],
+    "prerequisites": ["the structure theorem", "carmichael_two_pow_of_ne_two", "group exponent"]
   }
 ]

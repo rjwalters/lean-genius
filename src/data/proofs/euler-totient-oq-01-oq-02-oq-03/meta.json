@@ -115,11 +115,19 @@
     },
     {
       "id": "structure",
-      "title": "Section III: The Structure Theorem and Carmichael Recovery",
+      "title": "Section III: The Internal Direct Product ⟨−1⟩ × ⟨5⟩",
       "startLine": 137,
+      "endLine": 155,
+      "summary": "card_units computes |(ℤ/2ⁿ⁺³ℤ)ˣ| = φ(2ⁿ⁺³) = 2ⁿ⁺² via ZMod.card_units_eq_totient and Nat.totient_prime_pow_succ. isComplement'_neg_one_five then feeds the disjointness (the crux) and the order count |⟨−1⟩|·|⟨5⟩| = 2·2ⁿ⁺¹ = 2ⁿ⁺² = |G| into isComplement'_of_card_mul_and_disjoint, yielding the internal direct product (ℤ/2ᵏℤ)ˣ = ⟨−1⟩ × ⟨5⟩ — every unit uniquely (−1)ᵃ·5ᵇ.",
+      "mathContext": "Disjoint $\\wedge\\ |H|\\cdot|K| = |G|\\ \\Rightarrow\\ \\mathrm{IsComplement}'$; $(\\mathbb{Z}/2^k\\mathbb{Z})^\\times = \\langle -1\\rangle \\times \\langle 5\\rangle$."
+    },
+    {
+      "id": "carmichael",
+      "title": "Section IV: Recovering λ(2ᵏ) = 2ᵏ⁻² from the Structure",
+      "startLine": 157,
       "endLine": 166,
-      "summary": "card_units (|(ℤ/2ⁿ⁺³ℤ)ˣ| = 2ⁿ⁺²), isComplement'_neg_one_five (the internal direct product (ℤ/2ᵏℤ)ˣ = ⟨−1⟩ × ⟨5⟩), and carmichael_two_pow (recovering λ(2ᵏ) = 2ᵏ⁻²).",
-      "mathContext": "Disjointness plus the order count give the IsComplement' decomposition, whose exponent is λ(2ᵏ)."
+      "summary": "carmichael_two_pow recovers the parent's value λ(2ᵏ) = 2ᵏ⁻² as the exponent of the direct product — the lcm of the factor orders lcm(2, 2ⁿ⁺¹) = 2ⁿ⁺¹ — delegating the arithmetic to Mathlib's carmichael_two_pow_of_ne_two after rewriting k = n+3 so the exponent 2ᵏ⁻² is the genuine power 2ⁿ⁺¹.",
+      "mathContext": "$\\lambda(2^k) = \\mathrm{lcm}(2, 2^{k-2}) = 2^{k-2} = 2^{n+1}$, the order of the larger factor $\\langle 5\\rangle$."
     }
   ],
   "conclusion": {
