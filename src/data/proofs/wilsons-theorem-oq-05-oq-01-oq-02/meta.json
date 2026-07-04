@@ -104,7 +104,8 @@
       "**Wilson is really a statement about the unit group.** (p-1)! ≡ -1 (mod p) is exactly ∏_{x ∈ (ℤ/pℤ)ˣ} x = -1. Once phrased this way the prime hypothesis is revealed to be doing two jobs: it makes the ring a field (so x²=1 has ≤ 2 roots) and it makes the unit group cyclic. Only the second job is essential.",
       "**Cyclicity, not the field, is what forces the answer.** For a prime power ℤ/p^kℤ is not a domain, yet (ℤ/p^kℤ)ˣ is still cyclic (Gauss's primitive-root theorem), and in a finite cyclic group of even order x²=1 has exactly two solutions. That is all the inverse-pairing argument needs, so Wilson generalises verbatim to prime powers.",
       "**The product of all elements of a finite cyclic group is its unique involution.** This packaged engine (prod_univ_eq_orderTwo) is the reusable heart of the file: it is the abstract content of Wilson's theorem, stripped of every reference to ℤ/nℤ, and it specialises immediately to both the prime and prime-power cases.",
-      "**The k = 1 slice recovers classical Wilson.** Running the same cyclic engine on the field ℤ/pℤ reproduces ∏_{x ∈ (ℤ/pℤ)ˣ} x = -1, so the prime-power theorem genuinely contains Wilson's theorem rather than sitting beside it."
+      "**The k = 1 slice recovers classical Wilson.** Running the same cyclic engine on the field ℤ/pℤ reproduces ∏_{x ∈ (ℤ/pℤ)ˣ} x = -1, so the prime-power theorem genuinely contains Wilson's theorem rather than sitting beside it.",
+      "**The proof is inverse-pairing made precise.** prod_univ_eq_orderTwo runs Finset.prod_involution on univ.erase t, pairing each remaining element with its inverse: since x² = 1 has only the roots 1 and t, every other x satisfies x⁻¹ ≠ x, so those factors cancel and only the unpaired involution t survives. This is the formal content of the classical \"pair each residue with its multiplicative inverse\" proof of Wilson, now valid in any finite cyclic group rather than only a prime field."
     ],
     "prerequisites": [
       "Wilson's theorem in units-product form, ∏_{x ∈ (ℤ/pℤ)ˣ} x = -1",
@@ -132,11 +133,20 @@
       "summary": "Module docstring framing Gauss's prime-power generalisation of Wilson's theorem: why the field proof (Units.inv_eq_self_iff) stops at primes, why cyclicity of (ℤ/p^kℤ)ˣ is the correct structural reason, and the list of results (engine, prime-power identity, cast form, prime slice, ℤ/9ℤ example). Imports Mathlib, opens Finset."
     },
     {
-      "id": "engine",
-      "title": "The Group-Theoretic Engine",
+      "id": "roots-of-unity",
+      "title": "sq_eq_one_iff_eq_one_or_eq: Two Square Roots of 1 in a Cyclic Group",
       "startLine": 62,
+      "endLine": 85,
+      "summary": "sq_eq_one_iff_eq_one_or_eq shows that in a finite cyclic group a single nontrivial square root t of 1 exhausts the solutions of x² = 1 — the only solutions are 1 and t. The bound on the number of roots comes from IsCyclic.card_pow_eq_one_le (at most 2 solutions of x² = 1), not from any field/domain property. This is the one place cyclicity does the work the field structure did in the prime-only proof.",
+      "mathContext": "In a finite cyclic group, $x^2=1\\iff x=1\\lor x=t$ for the unique order-2 element $t$."
+    },
+    {
+      "id": "product-involution",
+      "title": "prod_univ_eq_orderTwo: Product of All Elements = the Unique Involution",
+      "startLine": 87,
       "endLine": 122,
-      "summary": "sq_eq_one_iff_eq_one_or_eq: in a finite cyclic group a single nontrivial square root t of 1 exhausts the solutions of x²=1 (via IsCyclic.card_pow_eq_one_le bounding the root count by 2). prod_univ_eq_orderTwo: the product of all elements of a finite cyclic group is its unique order-two element t, proved by the inverse-pairing involution Finset.prod_involution on univ.erase t."
+      "summary": "prod_univ_eq_orderTwo proves the product of all elements of a finite cyclic group equals its unique order-two element t, by the inverse-pairing involution Finset.prod_involution on univ.erase t: every x ∉ {1, t} cancels against x⁻¹ ≠ x, leaving only t. This packaged engine is the abstract content of Wilson's theorem, free of any reference to ℤ/nℤ, and specialises to both the prime and prime-power cases.",
+      "mathContext": "$\\prod_{x\\in G} x = t$, the unique involution of the finite cyclic group $G$."
     },
     {
       "id": "gauss-prime-power",
