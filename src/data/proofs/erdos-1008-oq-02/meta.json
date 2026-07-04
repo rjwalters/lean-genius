@@ -70,9 +70,17 @@
       "id": "graph-bound",
       "title": "The Explicit Graph Bound",
       "startLine": 71,
+      "endLine": 88,
+      "summary": "`c4free_edge_bound_explicit`: a $C_4$-free graph on $n=|V|\\ge1$ vertices has $\\le \\tfrac14 n(1+\\sqrt{4n-3})$ edges. Instantiates `reiman_quadratic_solve` at $n=|V|$, $m=\\#E(G)$, $s=\\sqrt{4n-3}$ (so $s^2=4n-3$ by `Real.sq_sqrt`), fed by the parent's axiom-free `Erdos1008.kovari_sos_turan`.",
+      "mathContext": "$\\#E(G) \\le \\tfrac14\\,|V|\\,(1+\\sqrt{4|V|-3})$ for $C_4$-free $G$, $|V|\\ge1$."
+    },
+    {
+      "id": "product-form",
+      "title": "Product Form of the Bound",
+      "startLine": 89,
       "endLine": 99,
-      "summary": "`c4free_edge_bound_explicit`: a $C_4$-free graph on $n=|V|\\ge1$ vertices has $\\le \\tfrac14 n(1+\\sqrt{4n-3})$ edges, via the parent `kovari_sos_turan` and `reiman_quadratic_solve`. `c4free_four_mul_edge_le` restates it in product form $4m \\le n(1+\\sqrt{4n-3})$.",
-      "mathContext": "$\\#E(G) \\le \\tfrac14\\,|V|\\,(1+\\sqrt{4|V|-3})$ for $C_4$-free $G$."
+      "summary": "`c4free_four_mul_edge_le`: the same bound with cleared denominators, $4\\,\\#E(G) \\le |V|\\,(1+\\sqrt{4|V|-3})$ — the form most convenient for downstream algebraic manipulation, avoiding division in ℝ.",
+      "mathContext": "$4\\,\\#E(G) \\le |V|\\,(1+\\sqrt{4|V|-3})$ for $C_4$-free $G$."
     },
     {
       "id": "root-exact",
