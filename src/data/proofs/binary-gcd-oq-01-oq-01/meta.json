@@ -86,9 +86,17 @@
       "id": "cost-definition",
       "title": "The total bit-operation cost model",
       "startLine": 59,
-      "endLine": 89,
-      "summary": "binaryGcdCost a b: mirrors the five-branch recursion of binaryGcdSteps but charges each step Nat.size a + Nat.size b (the combined bit-length of the current operands) instead of 1. Well-founded on a + b. The two boundary simp lemmas binaryGcdCost_zero_left/right record the zero cost of a finished computation.",
+      "endLine": 81,
+      "summary": "binaryGcdCost a b: mirrors the five-branch recursion of binaryGcdSteps but charges each step Nat.size a + Nat.size b (the combined bit-length of the current operands) instead of 1. Well-founded on a + b, with termination_by a + b and decreasing_by all_goals omega discharging every branch (division and truncated subtraction both shrink the sum).",
       "mathContext": "Each Stein reduction — a shift (halving an even operand), a subtraction of the smaller odd operand from the larger, or the parity/comparison test — is linear in the bit-length of the operands, so Nat.size a + Nat.size b is the faithful per-step bit cost. binaryGcdCost is the sum of these costs over the whole reduction sequence."
+    },
+    {
+      "id": "boundary-lemmas",
+      "title": "Boundary lemmas: zero cost at a finished computation",
+      "startLine": 82,
+      "endLine": 89,
+      "summary": "Two @[simp] lemmas fix the recursion's boundary: binaryGcdCost_zero_left (binaryGcdCost 0 b = 0) and binaryGcdCost_zero_right (binaryGcdCost a 0 = 0). The left case is the first generated equation (eq_1); the right needs cases a because the match lists 0,_ before _,0, so a = a'+1 goes through eq_2. Both are marked @[simp] so the later induction closes its a = 0 and b = 0 leaves automatically.",
+      "mathContext": "Once an operand is zero the GCD is already known, so no further bit operations are charged: these are the fixed points of the cost recursion, matching binaryGcdSteps 0 b = 0 step-for-step and keeping the two recursions aligned at the base."
     },
     {
       "id": "per-step-bound",
