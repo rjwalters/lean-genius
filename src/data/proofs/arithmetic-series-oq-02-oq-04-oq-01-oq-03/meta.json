@@ -96,6 +96,20 @@
     "theoremCount": 2,
     "definitionCount": 0
   },
+  "mainTheorems": [
+    {
+      "name": "vandermonde_descFactorial",
+      "type": "core",
+      "description": "Vandermonde's identity in falling factorial form: the falling factorial of m+n at r equals the sum over j of C(r,j) times the falling factorial of m at j times the falling factorial of n at r-j.",
+      "leanType": "(m n r : ℕ) : (m + n).descFactorial r = ∑ j ∈ Finset.range (r + 1), Nat.choose r j * m.descFactorial j * n.descFactorial (r - j)"
+    },
+    {
+      "name": "term_eq",
+      "type": "supporting",
+      "description": "Algebraic core term identity: for j ≤ r, the j-th summand C(r,j)·(j!·C(m,j))·((r-j)!·C(n,r-j)) equals r!·(C(m,j)·C(n,r-j)), reducing via C(r,j)·j!·(r-j)! = r!.",
+      "leanType": "(m n r j : ℕ) (hj : j ≤ r) : Nat.choose r j * (j.factorial * Nat.choose m j) * ((r - j).factorial * Nat.choose n (r - j)) = r.factorial * (Nat.choose m j * Nat.choose n (r - j))"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "arithmetic-series-oq-02-oq-04-oq-01",
