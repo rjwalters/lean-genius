@@ -103,12 +103,20 @@
       "mathContext": "For $f : F \\to F'$ additive with $\\|f x\\| = \\|x\\|$: $\\langle f x, f y\\rangle = \\langle x,y\\rangle$, hence $f x \\perp f y \\iff x \\perp y$ and $f$ is injective."
     },
     {
-      "id": "isometry",
-      "title": "Linear and Bundled-Isometry Corollaries",
+      "id": "linear-map",
+      "title": "ℝ-Linear Norm-Preservation Corollary",
       "startLine": 73,
+      "endLine": 76,
+      "summary": "inner_linearMap_eq specializes the rigidity theorem to an ℝ-linear map f : F →ₗ[ℝ] F' by forgetting linearity down to its additive structure (f.toAddMonoidHom), recovering the defining inner-product-preserving property of a linear isometry.",
+      "mathContext": "A norm-preserving $\\mathbb{R}$-linear map satisfies $\\langle f x, f y\\rangle = \\langle x, y\\rangle$ — via inner_map_eq applied to the underlying additive map."
+    },
+    {
+      "id": "isometry",
+      "title": "Bundled LinearIsometry Corollary",
+      "startLine": 77,
       "endLine": 83,
-      "summary": "inner_linearMap_eq specializes the rigidity theorem to ℝ-linear maps; inner_linearIsometry_eq applies it to a bundled LinearIsometry via its norm_map property.",
-      "mathContext": "A norm-preserving $\\mathbb{R}$-linear map, and in particular a bundled linear isometry $f : F \\to_{\\ell i} F'$, satisfies $\\langle f x, f y\\rangle = \\langle x,y\\rangle$."
+      "summary": "inner_linearIsometry_eq applies the linear result to a bundled LinearIsometry f : F →ₗᵢ[ℝ] F' through its norm_map field, obtaining ⟨f x, f y⟩ = ⟨x, y⟩ without invoking Mathlib's LinearIsometry.inner_map_map — the elementary reason isometries of Hilbert spaces are inner-product-preserving (unitary).",
+      "mathContext": "A bundled linear isometry $f : F \\to_{\\ell i} F'$ satisfies $\\langle f x, f y\\rangle = \\langle x, y\\rangle$; its norm_map field supplies the norm-preservation hypothesis of inner_linearMap_eq."
     }
   ],
   "crossReferences": [
