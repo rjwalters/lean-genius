@@ -185,6 +185,68 @@
     "path": "Proofs/AreaOfCircleOQ03OQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "archimedes_lower_bound",
+      "type": "core",
+      "description": "Archimedes' lower bound (c. 250 BCE): 223/71 < π, via Mathlib's pi_gt_d4 since 223/71 ≈ 3.14085 < 3.1415 < π.",
+      "leanType": "(223 : ℝ) / 71 < Real.pi"
+    },
+    {
+      "name": "archimedes_upper_bound",
+      "type": "core",
+      "description": "Archimedes' upper bound (c. 250 BCE): π < 22/7, via Mathlib's pi_lt_d4 since π < 3.1416 < 22/7 ≈ 3.14286.",
+      "leanType": "Real.pi < (22 : ℝ) / 7"
+    },
+    {
+      "name": "archimedes_bounds",
+      "type": "core",
+      "description": "Combined two-sided estimate 223/71 < π < 22/7, the headline pair of Archimedes' 96-gon bounds.",
+      "leanType": "(223 : ℝ) / 71 < Real.pi ∧ Real.pi < (22 : ℝ) / 7"
+    },
+    {
+      "name": "archimedes_lower_traditional",
+      "type": "supporting",
+      "description": "Traditional mixed-number form of the lower bound: 3 + 10/71 < π.",
+      "leanType": "(3 : ℝ) + 10 / 71 < Real.pi"
+    },
+    {
+      "name": "archimedes_upper_traditional",
+      "type": "supporting",
+      "description": "Traditional mixed-number form of the upper bound: π < 3 + 1/7.",
+      "leanType": "Real.pi < (3 : ℝ) + 1 / 7"
+    },
+    {
+      "name": "archimedes_gap",
+      "type": "technical",
+      "description": "Width of Archimedes' bracket: 22/7 − 223/71 = 1/497.",
+      "leanType": "(22 : ℝ) / 7 - 223 / 71 = 1 / 497"
+    },
+    {
+      "name": "archimedes_error_bound",
+      "type": "supporting",
+      "description": "π lies within 1/497 of each bound: π − 223/71 < 1/497 and 22/7 − π < 1/497.",
+      "leanType": "Real.pi - 223 / 71 < 1 / 497 ∧ (22 : ℝ) / 7 - Real.pi < 1 / 497"
+    },
+    {
+      "name": "twentytwo_over_seven_error",
+      "type": "supporting",
+      "description": "The familiar approximation 22/7 overestimates π by less than 3/1000.",
+      "leanType": "(22 : ℝ) / 7 - Real.pi < 3 / 1000"
+    },
+    {
+      "name": "inscribed_half_perimeter_lt_pi",
+      "type": "core",
+      "description": "General inscribed-polygon bound: for n ≥ 1, the half-perimeter n·sin(π/n) of the inscribed regular n-gon is strictly less than π, from sin x < x. This is the geometric principle behind Archimedes' method.",
+      "leanType": "{n : ℕ} → 1 ≤ n → (n : ℝ) * Real.sin (Real.pi / n) < Real.pi"
+    },
+    {
+      "name": "archimedes_verified",
+      "type": "core",
+      "description": "Summary theorem bundling the verified bounds, the 1/497 gap, and the general inscribed-polygon inequality — the complete Archimedes package, 0 axioms, 0 sorries.",
+      "leanType": "((223 : ℝ) / 71 < Real.pi ∧ Real.pi < 22 / 7) ∧ ((22 : ℝ) / 7 - 223 / 71 = 1 / 497) ∧ (∀ n : ℕ, 1 ≤ n → (n : ℝ) * Real.sin (Real.pi / n) < Real.pi)"
+    }
+  ],
   "references": [
     {
       "authors": "Archimedes",
