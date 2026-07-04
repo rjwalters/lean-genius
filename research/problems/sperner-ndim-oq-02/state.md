@@ -4,8 +4,14 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-23T00:00:00Z
-**Iteration**: 17
+**Iteration**: 19
 
+> **Session 19 (2026-07-04, researcher-11): exact top-`miss` height of the facet-`0` partner + explicit descent length (VERIFIED 0-axiom, `docker-build.sh Proofs.SpernerNDimOQ02` exit 0, 7745 jobs).** Upgraded Session 18's *iff-form* pivot-feasibility lemmas to **exact coordinate formulas**, making the `base_miss` descent quantitative. Added 2 theorems (+43 L) to `SpernerNDimOQ02.lean`:
+> - `zeroPivotCell_top_miss` — the partner cell's top vertex sits *exactly* `d + 1` below `s`'s base in the shared `miss` direction: `top miss = base_miss − (d + 1)`. Sharpens S18's iff-form `zeroPivotCell_feasible_iff_base_miss_ge` to a definite value; the whole partner is a `miss`-shifted copy of `s`'s upper chain capped one step lower.
+> - `zeroPivotCell_extremal_iff_base_miss_eq` — the partner is *itself* the terminal boundary-door cell (own facet-`0` pivot infeasible) ⟺ `base_miss = d + 1`. With `zeroPivotCell_base_miss` (step −1) + `base_miss_ge_d` (floor `d`) this pins the descent length: from base `miss = m` the same-`miss` facet-`0` pivot fires exactly `m − d` times before halting at the extremal cell whose top vertex lies on the geometric `miss`-face — where the cross-`miss` partner (crux 2) must attach. **Frontier UNCHANGED** (dual top-facet pivot involution + cross-`miss` terminal partner). Docker channel RESTORED this session. File 3150 → 3193 L. PR #34636 (research/sperner-ndim-oq02-top-miss-exact, stacked on S18's #34635).
+>
+> **Session 18 (2026-07-04, researcher-11): facet-`0` pivot miss-descent + termination at boundary door (VERIFIED 0-axiom, docker exit 0, 7745 jobs).** 4 theorems characterizing the same-`miss` facet-`0` pivot as a finite monotone `base_miss` descent: `zeroPivotCell_base_miss` (partner base = `base_miss − 1`), `zeroPivotCell_base_miss_lt` (strict), `zeroPivot_infeasible_iff_base_miss_eq_d` (halts ⟺ `base_miss = d`), `zeroPivotCell_feasible_iff_base_miss_ge` (re-feasible ⟺ `base_miss ≥ d+2`). PR #34635 (research/sperner-ndim-oq02-miss-descent).
+>
 > **Session 17 (2026-07-04, researcher-11): facet-`0` gluing site proven to be a pseudomanifold-local TWO-CELL MEETING (VERIFIED 0-axiom, `docker-build.sh Proofs.SpernerNDimOQ02` exit 0, 7745 jobs).** Built directly on Session 16's `zeroPivotCell` (the facet-`0` cross-chain partner, feasible regime). Added 3 theorems (+~75 L) to `SpernerNDimOQ02.lean` proving `s` and `zeroPivotCell` intersect in EXACTLY the shared facet:
 > - `gridVertices_zero_not_mem_zeroPivotCell_image` — `s`'s deleted apex `gridVertices s 0` is absent from the partner's whole vertex set (chain injectivity kills the reused lower vertices; `zeroPivotTop_not_mem_chain` kills the new apex).
 > - `zeroPivotCell_apex_not_mem_s_image` — dually, the partner's apex (Kuhn image of `zeroPivotTop`) is absent from `s`'s vertex set.
