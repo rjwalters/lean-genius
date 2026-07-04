@@ -107,6 +107,68 @@
       "Proofs/AreaOfCircleOQ05OQ01Aristotle.lean"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "gaussian_sq_eq_double_integral",
+      "type": "core",
+      "description": "Fubini step: (∫ e^{-x²})² = ∫_{ℝ²} e^{-(x²+y²)}. Factors the integrand via exp_add and applies Fubini to write the square of the 1D integral as a 2D integral.",
+      "leanType": "(∫ x : ℝ, rexp (-(x ^ 2))) ^ 2 = ∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2))"
+    },
+    {
+      "name": "polar_sum_sq",
+      "type": "technical",
+      "description": "Polar Pythagorean identity (r·cos θ)² + (r·sin θ)² = r², the pointwise fact making the 2D integrand depend only on the radius.",
+      "leanType": "(r θ : ℝ) → (r * Real.cos θ) ^ 2 + (r * Real.sin θ) ^ 2 = r ^ 2"
+    },
+    {
+      "name": "double_integral_eq_polar",
+      "type": "core",
+      "description": "Polar change of variables: ∫_{ℝ²} e^{-(x²+y²)} = ∫_{r>0, θ∈(-π,π)} r·e^{-r²}, via integral_comp_polarCoord_symm and the polar Pythagorean identity.",
+      "leanType": "∫ p : ℝ × ℝ, rexp (-(p.1 ^ 2 + p.2 ^ 2)) = ∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2))"
+    },
+    {
+      "name": "angular_integral",
+      "type": "supporting",
+      "description": "Angular factor: ∫_{-π}^{π} 1 dθ = 2π, the circumference contribution, via set_integral_const and Real.volume_Ioo.",
+      "leanType": "∫ θ in Ioo (-π) π, (1 : ℝ) = 2 * π"
+    },
+    {
+      "name": "radial_integral_eq",
+      "type": "supporting",
+      "description": "Radial factor: ∫_0^∞ r·e^{-r²} dr = 1/2, imported from AreaOfCircleOQ05 (FTC with antiderivative -½·e^{-r²}).",
+      "leanType": "∫ r in Ioi (0 : ℝ), r * rexp (-(r ^ 2)) = 1 / 2"
+    },
+    {
+      "name": "polar_integral_factorization",
+      "type": "core",
+      "description": "Separation of variables: the polar integral factors as radial × angular, since r·e^{-r²} is independent of θ. Uses Measure.restrict_prod_eq_prod_restrict and Fubini.",
+      "leanType": "∫ p in polarCoord.target, p.1 * rexp (-(p.1 ^ 2)) = (∫ r in Ioi (0 : ℝ), r * rexp (-(r ^ 2))) * (∫ θ in Ioo (-π) π, (1 : ℝ))"
+    },
+    {
+      "name": "gaussian_integral_sq_via_polar",
+      "type": "core",
+      "description": "Main theorem (squared form): (∫ e^{-x²})² = π, assembling Fubini → polar change of variables → radial(½) × angular(2π) = π.",
+      "leanType": "(∫ x : ℝ, rexp (-(x ^ 2))) ^ 2 = π"
+    },
+    {
+      "name": "gaussian_integral_via_polar",
+      "type": "core",
+      "description": "Main theorem: ∫ e^{-x²} dx = √π, taking the non-negative square root of the squared identity.",
+      "leanType": "∫ x : ℝ, rexp (-(x ^ 2)) = √π"
+    },
+    {
+      "name": "gaussian_sq_eq_radial_times_angular",
+      "type": "supporting",
+      "description": "Interpretive restatement: (∫ e^{-x²})² equals the radial integral times the angular integral, exhibiting the (½)·2π decomposition before evaluation.",
+      "leanType": "(∫ x : ℝ, rexp (-(x ^ 2))) ^ 2 = (∫ r in Ioi (0 : ℝ), r * rexp (-(r ^ 2))) * (∫ θ in Ioo (-π) π, (1 : ℝ))"
+    },
+    {
+      "name": "angular_integral_is_circumference",
+      "type": "supporting",
+      "description": "Alias emphasizing that the angular factor 2π is the circumference of the unit circle, the geometric source of π in the Gaussian integral.",
+      "leanType": "∫ θ in Ioo (-π) π, (1 : ℝ) = 2 * π"
+    }
+  ],
   "sections": [
     {
       "id": "sec-fubini",
