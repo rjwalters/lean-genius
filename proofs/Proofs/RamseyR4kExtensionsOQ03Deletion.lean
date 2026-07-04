@@ -425,6 +425,54 @@ theorem deletion_no_mono_K8 :
   rw [h] at hRcard
   exact ⟨c, R, hRcard, hR⟩
 
+/-- **The sharp union bound caps at `n = 65` for `k = 9`.**  The first-moment test
+    `2·C(n,9) < 2^{C(9,2)} = 2^{36} = 68719476736` holds at `n = 65`
+    (`2·31966749880 = 63933499760 < 68719476736`) but fails at `n = 66`
+    (`2·37014131440 = 74028262880 ≥ 68719476736`).  So the union bound alone certifies a
+    monochromatic-`K₉`-free colouring only up to 65 vertices, i.e. `R(9,9) > 65`.
+
+    As at `k = 7, 8`, the binomials `C(65,9), C(66,9)` are ≈ `10¹⁰`, far past the naive
+    `decide`-on-`Nat.choose` range, so we route through the single-recursion identity
+    `Nat.choose n k = n.descFactorial k / k !`
+    (`Nat.choose_eq_descFactorial_div_factorial`), which needs only `k` kernel
+    multiplications and stays axiom-free (`of_decide_eq_true`, no `Lean.ofReduceBool`). -/
+theorem unionBound_caps_at_65_for_K9 :
+    2 * (65 : ℕ).choose 9 < 2 ^ ((9 : ℕ).choose 2) ∧
+      ¬ (2 * (66 : ℕ).choose 9 < 2 ^ ((9 : ℕ).choose 2)) := by
+  have h65 : (65 : ℕ).choose 9 = 31966749880 := by
+    rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+  have h66 : (66 : ℕ).choose 9 = 37014131440 := by
+    rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+  rw [h65, h66]
+  decide
+
+/-- **Deletion reaches a 69-vertex monochromatic-`K₉`-free set.**  Applying the deletion
+    method at `n = 70, k = 9` gives
+    `deletionBound 70 9 = 70 − ⌊2·C(70,9)/2^{36}⌋ = 70 − ⌊130067057120/68719476736⌋ = 70 − 1 = 69`:
+    a 2-colouring of `K₇₀` and a set `R` of at least 69 vertices with no monochromatic
+    `K₉`.  This **strictly beats** the sharp union bound (`unionBound_caps_at_65_for_K9`,
+    which stops at 65), so the deletion method certifies `R(9,9) > 69` — a `+4` strict
+    improvement over the union bound, continuing the `+1` (`k = 6`), `+2` (`k = 7`) and
+    `+3` (`k = 8`) gains of the witnesses above.
+
+    `n = 70` is the top of the `M = 1` deletion window for `k = 9`
+    (`2^{36} ≤ 2·C(70,9) = 130067057120 < 2·2^{36} = 137438953472`, and `C(71,9)` already
+    forces `M = 2`), so this is the largest bound the `ramsey_deletion_one_past` mechanism
+    yields at `k = 9`.  As with the `k = 7, 8` witnesses, `C(70,9) = 65033528560` is
+    evaluated via the `descFactorial` route rather than by `decide` on `Nat.choose`. -/
+theorem deletion_no_mono_K9 :
+    ∃ (c : Coloring 70) (R : Finset (Fin 70)),
+      69 ≤ R.card ∧ ∀ K : Finset (Fin 70), K ⊆ R → K.card = 9 → ¬ Mono c K := by
+  obtain ⟨c, R, hRcard, hR⟩ :=
+    ramsey_deletion_bound (n := 70) (k := 9) (by norm_num) (by norm_num)
+  have h : deletionBound 70 9 = 69 := by
+    have h70 : (70 : ℕ).choose 9 = 65033528560 := by
+      rw [Nat.choose_eq_descFactorial_div_factorial]; decide
+    show 70 - (2 * (70 : ℕ).choose 9) / 2 ^ ((9 : ℕ).choose 2) = 69
+    rw [h70]; decide
+  rw [h] at hRcard
+  exact ⟨c, R, hRcard, hR⟩
+
 #check @ramsey_deletion
 #check @ramsey_deletion_window
 #check @ramsey_deletion_generalizes_first_moment
@@ -435,6 +483,8 @@ theorem deletion_no_mono_K8 :
 #check @deletion_no_mono_K7
 #check @unionBound_caps_at_42_for_K8
 #check @deletion_no_mono_K8
+#check @unionBound_caps_at_65_for_K9
+#check @deletion_no_mono_K9
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`.  The concrete `k = 6` and
@@ -451,5 +501,7 @@ theorem deletion_no_mono_K8 :
 #print axioms deletion_no_mono_K7
 #print axioms unionBound_caps_at_42_for_K8
 #print axioms deletion_no_mono_K8
+#print axioms unionBound_caps_at_65_for_K9
+#print axioms deletion_no_mono_K9
 
 end ProbMethod.RamseyDeletion
