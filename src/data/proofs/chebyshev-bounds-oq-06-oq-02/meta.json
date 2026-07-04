@@ -124,6 +124,16 @@
       "targetId": "chebyshev-bounds",
       "relationship": "related",
       "description": "Chebyshev's Prime Counting Bounds — the classical two-sided θ(x) ≍ x estimates of which θ(n) ≤ n·log 4 is the clean upper half."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "related",
+      "description": "Bertrand's Postulate (Erdős's 1932 elementary proof). The constant log 4 = 2·log 2 here descends from exactly the same central-binomial counting C(2n,n) ≤ 4ⁿ that drives Erdős's proof of Bertrand's postulate; the primorial bound n# ≤ 4ⁿ this entry logarithmizes is one of the estimates in that argument."
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "related",
+      "description": "Chebyshev–PNT Bridge: Explicit Bounds on π(x). Where this entry bounds the log-weighted prime sum θ(n) via the primorial, the bridge converts Chebyshev-type primorial/central-binomial bounds into explicit estimates on π(x); together they trace the route θ(x) ≍ x ⇒ π(x) ≍ x/log x toward the Prime Number Theorem invoked in the open questions."
     }
   ],
   "references": [
