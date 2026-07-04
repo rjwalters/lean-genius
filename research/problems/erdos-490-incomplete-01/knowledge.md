@@ -230,3 +230,49 @@ rate. Not worth adding as a lemma; it does not advance the axiom.
 Leave both axioms. `primes_upper_half_lower_bound` is **BLOCKED on central-binomial
 interval-count infrastructure** (the small-prime contribution bound), not a single-session
 sorry. Route above is the entry point for a dedicated multi-session effort.
+
+## Session 2026-07-04 (researcher-11) — gallery-integrity sync + frontier reconfirm
+
+**Mode**: ORIENT + gallery-integrity fix. **Outcome**: no `.lean` change (file already
+0-sorry / 2-axiom and merged on `main` at 588 lines); corrected a stale metadata defect
+and sharpened the runway. Does **not** touch the two deep axioms.
+
+### State reconfirmed (on `main`)
+`Erdos490Problem.lean` = 588 lines, **0 sorries, 2 axioms** (`szemeredi_theorem`,
+`primes_upper_half_lower_bound`), 19 theorems, 15 defs. The 07-04 Bertrand session
+(#34644, researcher-5) is on `main` but was **absent from this knowledge file** — its
+lemmas `optimalB_nonempty` / `optimalB_card_pos` / `primeCounting_half_lt` discharge the
+*qualitative* content of the Chebyshev axiom (there is ≥1 prime in `(N/2,N]` for `N≥2`,
+via Mathlib's `Nat.exists_prime_lt_and_le_two_mul`); the axiom now asserts purely the
+*quantitative* rate `c·N/log N`.
+
+### Gallery-integrity defect fixed (this session)
+Commit #34644's message claimed it synced the gallery meta to 588 lines / 19 theorems,
+but it only updated a *section-summary* block — the **canonical `leanFile` block** in
+`src/data/proofs/erdos-490/meta.json` was left stale at `lineCount 557 / theoremCount 16`.
+Synced it to `588 / 19` (axiomCount 2, definitionCount 15, sorries 0 were already correct).
+Pure metadata; the already-merged `.lean` file is untouched, so no rebuild needed.
+- **Worktree gotcha (recorded):** the `Edit` tool's writes silently did **not** persist to
+  disk in this researcher worktree (git diff stayed empty though Read showed the change) —
+  a `python3`/`Bash` in-place write was needed. Verify writes with `git diff`, not Read,
+  in these worktrees.
+
+### Frontier reconfirmed — quantitative axiom stays BLOCKED (multi-session)
+`primes_upper_half_lower_bound` = the only in-scope elimination target, and it remains
+**blocked on central-binomial interval-count infrastructure** absent from the Mathlib pin,
+exactly as researcher-1's 07-02 ORIENT found. The one correct route (do NOT subtract two
+Chebyshev bounds — that bottoms out at `c=0`) is the **direct central-binomial count on
+`(N/2,N]`**: primes `p∈(m,2m]` (`m=⌊N/2⌋`) divide `centralBinom m` to exactly the first
+power, so `∏_{m<p≤2m} p ∣ centralBinom m`; combine `Nat.four_pow_lt_mul_centralBinom`
+(`4^m < (2m+1)·centralBinom m`) with the **small-prime contribution upper bound** on
+`centralBinom` to get `∏_{N/2<p≤N} p ≳ 4^m/poly(m)`, hence with `p ≤ N` per factor
+`(π(N)−π(N/2))·log N ≳ N`. The crux (and the multi-session cost) is formalizing that
+small-prime contribution bound; `Mathlib.NumberTheory.Bertrand` carries the two
+`centralBinom` inequalities as the stepping stones to mine. `szemeredi_theorem` (the
+N²/log N *upper* bound) is not attackable.
+
+**Recommendation:** leave both axioms; they are correctly isolated and minimal. This
+problem is at a stable frontier — the next genuine advance is a dedicated multi-session
+central-binomial build, not a single-session sorry. `optimalB_card_eq_primeCounting`
+already pins the target to `Nat.primeCounting`, so that build's deliverable is exactly a
+lower bound on `π(N) − π(N/2)`.
