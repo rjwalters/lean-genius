@@ -188,6 +188,23 @@ theorem eq_smul_one_of_sq_eq_nonneg_smul (A : Type*) [NormedDivisionRing A]
 
 /-! ### The General (Division Ring) Case -/
 
+/-- **Hurwitz Only-If, commutative subcase (fully proved, 0 sorries).**
+    A finite-dimensional normed division ring over `ℝ` that is *commutative* has finrank in
+    `{1, 2, 4, 8}` — in fact in `{1, 2}`. A commutative normed division ring is a normed
+    field, so this is exactly `hurwitz_field_case` (Gelfand-Mazur); the only work is
+    promoting the `NormedDivisionRing` instance to a `NormedField` by supplying `mul_comm`
+    (every other field is shared, and the underlying ring data is unchanged, so the ambient
+    `NormedAlgebra ℝ A` still applies).
+
+    This isolates the commutative half of `hurwitz_only_if_ring` as an unconditional theorem:
+    the remaining `sorry` there is entirely the *non-commutative* Frobenius/Clifford content
+    (`finrank ∈ {4}` for the quaternions), never the field case. -/
+theorem hurwitz_only_if_ring_comm (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    (hcomm : ∀ x y : A, x * y = y * x) :
+    Module.finrank ℝ A ∈ admissibleDimensions := by
+  letI : NormedField A := { (inferInstance : NormedDivisionRing A) with mul_comm := hcomm }
+  exact hurwitz_field_case A
+
 /-- **Hurwitz Only-If for Normed Division Rings**:
     A finite-dimensional normed division ring over ℝ has finrank in {1, 2, 4, 8}.
 
