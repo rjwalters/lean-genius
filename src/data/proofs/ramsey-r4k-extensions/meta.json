@@ -2,7 +2,7 @@
   "id": "ramsey-r4k-extensions",
   "title": "Ramsey R(4,k) Bounds: Probabilistic Method Extensions",
   "slug": "ramsey-r4k-extensions",
-  "description": "Formalizes Ramsey theory bounds for R(4,k) via the probabilistic method. Proves the Erdős 1947 lower bound R(k,k) ≥ 2^(k/2) (now fully axiom-free), explicit small-Ramsey constructions, and the binomial upper bounds. 80 theorems, 9 axioms for the deep analytic bounds (AKS/Kim R(3,k), Mattheus-Verstraete R(4,k), Spencer diagonal LLL, CGMS, Bohman-Keevash).",
+  "description": "Formalizes Ramsey theory bounds for R(4,k) via the probabilistic method. Proves the Erdős 1947 lower bound R(k,k) ≥ 2^(k/2) (now fully axiom-free), explicit small-Ramsey constructions, and the binomial upper bounds. Also formalizes the axiom-free analytic core of the symmetric Lovász Local Lemma — the inequality (1−1/(d+1))^d ≥ 1/e and the symmetric→asymmetric bridge e·p·(d+1) ≤ 1 ⇒ p ≤ (1/(d+1))(1−1/(d+1))^d — the piece Mathlib lacks toward an LLL Ramsey lower bound. 82 theorems, 9 axioms for the deep analytic bounds (AKS/Kim R(3,k), Mattheus-Verstraete R(4,k), Spencer diagonal LLL, CGMS, Bohman-Keevash).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
@@ -20,8 +20,8 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 9,
     "assumptions": "9 axioms, each a genuine deep result from the Ramsey-theory literature whose proof needs machinery not in Mathlib: aks_r3k_upper_bound and kim_r3k_lower_bound (R(3,k)=Θ(k²/log k)), r4k_upper_bound and r4k_lower_bound (two-colour R(4,k) bounds), spencer_diagonal_lower_bound (Spencer's LLL improvement), cgms_diagonal_upper_bound and cgms_epsilon_estimate (CGMS (4-ε)^k breakthrough), bohman_keevash_r3t and mattheus_verstraete_r4t. The Erdős first-moment lower bound erdos_probabilistic_lower_bound (R(k,k)≥2^(k/2)) is a proved theorem discharged by ErdosRamsey.erdos_probabilistic_lower_bound (Proofs/ErdosRamseyLowerBound.lean). Five former placeholder axioms were de-axiomatized this session: r4k_quadratic_lower, off_diagonal_ramsey_bounds, book_algorithm_structure, burr_erdos_conjecture and ramsey_multiplicity were all trivially-true propositions (three were literally `True`; r4k_quadratic_lower only forbade a red K₄, so the all-false coloring satisfies it; off_diagonal_ramsey_bounds only asserted two positive constants exist) — they are now proved theorems with honest docstrings noting the stated proposition does NOT encode the deep result its name references.",
-    "lineCount": 1183,
-    "theoremCount": 80,
+    "lineCount": 1294,
+    "theoremCount": 82,
     "definitionCount": 13,
     "originalContributions": [
       "IsRamseyColoring: 2-coloring of K_n edges avoiding monochromatic K_r or K_s",
@@ -30,7 +30,9 @@
       "r_diagonal_first_moment_bound: E[mono K_k] < 1/2 for n = 2^(k/2) (proved)",
       "r4k_interval: R(4,k) ∈ [Ω(k²/log k), O(k³/log k)] (stated)",
       "diagonal_gap: proven gap between Spencer lower and CFS upper bound",
-      "Framework for the probabilistic method: deletion argument, Lovász Local Lemma setup"
+      "Framework for the probabilistic method: deletion argument, Lovász Local Lemma setup",
+      "lll_exp_weight_bound: the elementary analytic inequality e⁻¹ ≤ (1−1/(d+1))^d, proved axiom-free from Real.log_le_sub_one_of_pos — the core estimate underlying the symmetric Lovász Local Lemma (Mathlib has no LLL)",
+      "lll_symmetric_condition: the symmetric→asymmetric LLL bridge — e·p·(d+1) ≤ 1 ⇒ p ≤ (1/(d+1))·(1−1/(d+1))^d, showing the uniform weights xᵢ = 1/(d+1) satisfy the general LLL hypothesis; only the probability-space induction of the general LLL remains open"
     ]
   },
   "overview": {
@@ -46,7 +48,8 @@
       "The probabilistic method revolutionized combinatorics: existence proofs without constructions",
       "**ramseyUpperBound algebra is self-contained**: the symmetry, base case R(2,s)=s, and Pascal recursion are all proved from Mathlib's binomial coefficient lemmas without any Ramsey theory beyond the C(r+s-2,r-1) definition — the formalization is purely combinatorial.",
       "**The 3-regular triangle-free K_8 construction for R(3,4)≥9**: the 12 red edges (degree-3 regular, girth≥4, independence number 3) are hardcoded in `r34Color` and both the no-red-K3 and no-blue-K4 properties are verified by native_decide in under a second — a remarkable feat of computational combinatorics.",
-      "**native_decide closes the gap between lower and upper bounds**: the combination of explicit colorings (C_5, K_8, Paley-17, Paley-13) proved by native_decide with the binomial upper bounds narrows R(3,3)=6, R(3,4)=9, R(4,4)∈{18,19,20} exactly."
+      "**native_decide closes the gap between lower and upper bounds**: the combination of explicit colorings (C_5, K_8, Paley-17, Paley-13) proved by native_decide with the binomial upper bounds narrows R(3,3)=6, R(3,4)=9, R(4,4)∈{18,19,20} exactly.",
+      "**The symmetric LLL reduces to one analytic inequality**: the entire symmetric-to-asymmetric derivation of the Lovász Local Lemma hinges on (1−1/(d+1))^d ≥ 1/e. Taking logs, this is d·log(1−1/(d+1)) ≥ −1, which follows from log x ≤ x−1 applied to x = (d+1)/d. Formalized here as `lll_exp_weight_bound`, it lets the symmetric hypothesis e·p·(d+1) ≤ 1 be met by the uniform weights xᵢ = 1/(d+1) (`lll_symmetric_condition`) — the exact input a future measure-theoretic LLL proof would consume."
     ],
     "prerequisites": [
       "Ramsey theory: monochromatic cliques, Ramsey numbers",
@@ -56,19 +59,19 @@
     ]
   },
   "conclusion": {
-    "summary": "Ramsey number bounds are formalized with 9 axioms, each a genuine deep result (AKS/Kim R(3,k), two-colour R(4,k), Spencer's LLL diagonal bound, CGMS, Bohman-Keevash, Mattheus-Verstraete). The Erdős 1947 first-moment lower bound R(k,k)≥2^(k/2), previously axiomatized, is now fully proved (axiom-free). Five former placeholder axioms — all trivially-true propositions that did not actually encode the deep results their names referenced — were de-axiomatized into proved theorems with honest docstrings. The elementary bounds (Pascal triangle, first-moment setup, explicit small colorings) are fully proved. 80 theorems, ~1180 lines documenting the state of the art in Ramsey theory.",
+    "summary": "Ramsey number bounds are formalized with 9 axioms, each a genuine deep result (AKS/Kim R(3,k), two-colour R(4,k), Spencer's LLL diagonal bound, CGMS, Bohman-Keevash, Mattheus-Verstraete). The Erdős 1947 first-moment lower bound R(k,k)≥2^(k/2), previously axiomatized, is now fully proved (axiom-free). Five former placeholder axioms — all trivially-true propositions that did not actually encode the deep results their names referenced — were de-axiomatized into proved theorems with honest docstrings. The elementary bounds (Pascal triangle, first-moment setup, explicit small colorings) are fully proved. A new Part XII formalizes the axiom-free analytic core of the symmetric Lovász Local Lemma: the inequality (1−1/(d+1))^d ≥ 1/e (`lll_exp_weight_bound`) and the symmetric→asymmetric bridge e·p·(d+1) ≤ 1 ⇒ p ≤ (1/(d+1))(1−1/(d+1))^d (`lll_symmetric_condition`), which Mathlib lacks; only the general LLL's probability-space induction remains open. 82 theorems, ~1290 lines documenting the state of the art in Ramsey theory.",
     "implications": "The probabilistic method established by Erdős is one of the most powerful tools in combinatorics. Formalizing even its setup (IsRamseyColoring, first moment framework) creates infrastructure for future Lean 4 probabilistic combinatorics. The R(4,k) problem remains one of the most actively studied in extremal combinatorics.",
     "openQuestions": [
-      "Strengthen the proved bound via the symmetric Lovász Local Lemma: R(k,k) ≥ (1+o(1))·(k/e)·2^(k/2), a factor-k improvement over the first-moment bound",
-      "Reduce the R(4,k) gap: closing from [k²/log k, k³/log k] to [k², k²] would be a major breakthrough",
-      "Formalize the Lovász Local Lemma and its applications to Ramsey theory"
+      "Complete the symmetric Lovász Local Lemma: its analytic core (`lll_exp_weight_bound`, `lll_symmetric_condition`) is now formalized axiom-free; what remains is the probability-space conditional-probability induction (Spencer's argument) that turns the weight inequality into Pr[⋂ᵢ ¬Aᵢ] > 0",
+      "Apply the completed LLL to the monochromatic-clique bad events to strengthen the proved bound to R(k,k) ≥ (1+o(1))·(k/e)·2^(k/2), a factor-k improvement over the first-moment bound",
+      "Reduce the R(4,k) gap: closing from [k²/log k, k³/log k] to [k², k²] would be a major breakthrough"
     ]
   },
   "leanFile": {
     "namespace": "RamseyR4kExtensions",
-    "lineCount": 1183,
+    "lineCount": 1294,
     "axiomCount": 9,
-    "theoremCount": 80,
+    "theoremCount": 82,
     "definitionCount": 13,
     "path": "Proofs/RamseyR4kExtensions.lean",
     "sorries": 0
@@ -267,6 +270,14 @@
       "endLine": 1142,
       "mathContext": "Frontier results: genuine axioms CGMS $R(k,k)\\le(4-\\varepsilon)^k$, Bohman-Keevash, Mattheus-Verstraete $R(4,t)$; plus documentation-only placeholders (Burr-Erdős, multiplicity, book algorithm) now proved as trivial `True`.",
       "summary": "Part IX. Summary of extensions and recent frontier results. Genuine axioms: the Campos-Griffiths-Morris-Sahasrabudhe (CGMS) exponential improvement $R(k,k)\\le(4-\\varepsilon)^k$ with its $\\varepsilon$ estimate, Bohman-Keevash $R(3,t)$, and Mattheus-Verstraete $R(4,t)$. The book-algorithm structure, off-diagonal bounds, the Burr-Erdős conjecture, and Ramsey multiplicity are now proved theorems rather than axioms — their Lean propositions are trivially true (`True` or bare existence of positive constants) and their docstrings state explicitly that the underlying deep theorems are NOT formalized here."
+    },
+    {
+      "id": "lll-analytic-core",
+      "title": "Part XII: The Symmetric Lovász Local Lemma — Analytic Core",
+      "startLine": 1165,
+      "endLine": 1272,
+      "mathContext": "The symmetric LLL ($e\\,p\\,(d+1)\\le1\\Rightarrow\\Pr[\\bigcap\\overline{A_i}]>0$) reduces to the asymmetric LLL via the inequality $(1-1/(d+1))^d\\ge1/e$.",
+      "summary": "Part XII. The axiom-free analytic core of the symmetric Lovász Local Lemma, which Mathlib lacks. `lll_exp_weight_bound` proves $e^{-1}\\le(1-1/(d+1))^d$ (by taking logs: $d\\log(1-1/(d+1))\\ge-1$ from $\\log x\\le x-1$). `lll_symmetric_condition` uses it for the symmetric→asymmetric bridge: $e\\,p\\,(d+1)\\le1\\Rightarrow p\\le\\tfrac{1}{d+1}(1-\\tfrac{1}{d+1})^d$, i.e. the uniform weights $x_i=1/(d+1)$ satisfy the general LLL hypothesis. Only the general LLL's probability-space induction is left to close the full symmetric statement."
     }
   ],
   "sorries": 0,
