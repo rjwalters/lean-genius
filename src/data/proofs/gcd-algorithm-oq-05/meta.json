@@ -64,36 +64,72 @@
     {
       "name": "gaussKuzmin_tsum",
       "type": "core",
+      "statement": "The Gauss–Kuzmin weights sum to 1: ∑_{n≥0} P(n) = 1.",
+      "significance": "The normalization half of the main result. Together with gaussKuzmin_pos it certifies that the weights P(k) = log₂(1 + 1/(k(k+2))) form a genuine probability distribution — the foundational prerequisite the parent OQ-05 question (are Euclidean-algorithm quotients Gauss–Kuzmin distributed?) rests on.",
       "description": "Normalization — the headline result: ∑' P(k) = 1. The infinite sum of the Gauss–Kuzmin weights is exactly 1, which together with gaussKuzmin_pos establishes that they form a genuine probability distribution. Proved by uniqueness of limits from the summability and the partial-sum limit.",
       "leanType": "∑' (n : ℕ), gaussKuzmin n = 1"
     },
     {
       "name": "gaussKuzmin_pos",
       "type": "core",
+      "statement": "Every Gauss–Kuzmin weight is strictly positive: P(n) > 0 for all n.",
+      "significance": "The positivity half of the main result. A probability distribution needs strictly positive masses; combined with the normalization gaussKuzmin_tsum this establishes the distribution claim.",
       "description": "Positivity — every weight is strictly positive: P(k) > 0. Since 1 + 1/((n+1)(n+3)) > 1 and the base 2 > 1, the logarithm logb 2 of it is positive (Real.logb_pos). This is the second half of \"probability distribution.\"",
       "leanType": "(n : ℕ) → 0 < gaussKuzmin n"
     },
     {
       "name": "gaussKuzmin_eq_sub",
       "type": "supporting",
+      "statement": "Each weight telescopes: P(n) = G(n) − G(n+1), where G(k) = log₂((k+2)/(k+1)).",
+      "significance": "The telescoping identity that drives the entire summation argument. Writing each weight as a difference of consecutive G-values reduces the infinite sum to the boundary values G(0) and lim G(N).",
       "description": "The telescoping identity P(n) = G(n) − G(n+1) with G(n) = log₂((n+2)/(n+1)). It rests on the algebraic factorization 1 + 1/((n+1)(n+3)) = (n+2)²/((n+1)(n+3)) together with logb_div; this is the structural key that collapses the series.",
       "leanType": "(n : ℕ) → gaussKuzmin n = G n - G (n + 1)"
     },
     {
       "name": "gaussKuzmin_partial",
       "type": "supporting",
+      "statement": "The N-th partial sum collapses to G(0) − G(N): ∑_{n<N} P(n) = G(0) − G(N).",
+      "significance": "The finite telescoping step. Summing the difference identity over range N cancels all interior terms, leaving only the two endpoints — the key that makes the limit computable.",
       "description": "Closed form of the partial sums: ∑_{n<N} P(n) = G(0) − G(N) = 1 − log₂((N+2)/(N+1)). Follows immediately from the telescoping identity via Finset.sum_range_sub', and makes both the normalization and the rate of convergence explicit.",
       "leanType": "(N : ℕ) → ∑ n ∈ Finset.range N, gaussKuzmin n = G 0 - G N"
     },
     {
+      "name": "G_zero",
+      "type": "supporting",
+      "statement": "G(0) = log₂(2/1) = 1.",
+      "significance": "Evaluates the lower telescoping endpoint. Substituted into the partial-sum formula it fixes the constant term of the limit, giving ∑_{n<N} P(n) = 1 − G(N).",
+      "description": "G(0) = log₂(2/1) = 1, computed by unfolding G and norm_num.",
+      "leanType": "G 0 = 1"
+    },
+    {
+      "name": "G_nonneg",
+      "type": "supporting",
+      "statement": "G(n) ≥ 0 for every n, since (n+2)/(n+1) ≥ 1 and the base 2 exceeds 1.",
+      "significance": "Bounds the telescoping tail from below. Non-negativity of G(N) yields the uniform bound ∑_{n<N} P(n) = 1 − G(N) ≤ 1 that supplies summability.",
+      "description": "G(n) ≥ 0, since (n+2)/(n+1) ≥ 1 and the logarithm base exceeds 1 (Real.logb_nonneg).",
+      "leanType": "(n : ℕ) → 0 ≤ G n"
+    },
+    {
+      "name": "G_tendsto_zero",
+      "type": "supporting",
+      "statement": "G(n) → 0 as n → ∞, because (n+2)/(n+1) → 1 and log₂ is continuous at 1.",
+      "significance": "Evaluates the upper telescoping endpoint in the limit. As N → ∞ the term G(N) vanishes, so the partial sums 1 − G(N) converge to 1 — the analytic heart of the normalization.",
+      "description": "G(n) → 0 because (n+2)/(n+1) = 1 + 1/(n+1) → 1 and log₂ is continuous at 1, with log₂ 1 = 0.",
+      "leanType": "Tendsto (fun n : ℕ => G n) atTop (𝓝 0)"
+    },
+    {
       "name": "gaussKuzmin_partial_tendsto_one",
       "type": "supporting",
+      "statement": "The partial sums converge to 1: ∑_{n<N} P(n) → 1 as N → ∞.",
+      "significance": "Assembles the endpoints: partial sum 1 − G(N) with G(N) → 0 gives limit 1. This is the sequential form of normalization, upgraded to the tsum statement once summability is known.",
       "description": "The partial sums converge to 1. Since (n+2)/(n+1) = 1 + 1/(n+1) → 1 and log₂ is continuous at 1, the antiderivative G(N) → 0, so 1 − G(N) → 1. This is the analytic step feeding gaussKuzmin_tsum.",
       "leanType": "Tendsto (fun N : ℕ => ∑ n ∈ Finset.range N, gaussKuzmin n) atTop (𝓝 1)"
     },
     {
       "name": "gaussKuzmin_summable",
       "type": "supporting",
+      "statement": "The Gauss–Kuzmin weights are summable.",
+      "significance": "Justifies passing from the sequence of partial sums to the unconditional tsum. Positivity plus the uniform bound ∑_{n<N} P(n) ≤ 1 (from G_nonneg) gives summability, letting gaussKuzmin_tsum identify the value as 1.",
       "description": "Summability of the weight family. The terms are nonnegative (gaussKuzmin_pos) and every partial sum 1 − G(N) is bounded above by 1 (G_nonneg), so summable_of_sum_range_le applies. Summability is what licenses the tsum manipulation in the normalization proof.",
       "leanType": "Summable gaussKuzmin"
     }
