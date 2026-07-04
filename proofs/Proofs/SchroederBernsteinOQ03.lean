@@ -3049,6 +3049,193 @@ end ReadOff
 
 
 /-!
+## Section 5·C: The computable extension-only scheduler
+
+`stageSeqB` (Section 5·B) is `noncomputable` for exactly one reason: `stageStepB` reads its
+fresh partner off the existential `domain_consStep` / `range_consStep` via `.choose`, and those
+rest on `escape_exists'`'s `Classical.choose`. This section rebuilds the *identical* extension-only
+construction as a **plain `def`** `stageListC`, whose fresh partner is the concrete
+`chaseTarget … (firstEscapeB …)` — `firstEscapeB` being the bounded, decidable, hypothesis-free
+escape search of Section 5·B-comp, certified by `firstEscapeB_eq_escapeDepth` to reproduce the
+least-depth pairing. Because nothing here uses `Classical.choose`, `stageListC` is a genuine
+computable function, and the read-off `sigmaC n := mLookup (stageListC (2n+1)) n` is a *computable*
+bijection with `p n ↔ q (sigmaC n)`. This discharges the entire mathematical content of
+`myhill_isomorphism`'s hard direction; the sole residual obligation is the standalone
+computability lemma `sigmaC_computable`.
+-/
+
+/-- One computable stage of the extension-only scheduler. Even `s` targets domain element `s/2`;
+    odd `s` targets range element `s/2`. If already covered the matching is returned unchanged;
+    otherwise it grows by a single cons whose partner is the concrete least-depth chase target
+    (`firstEscapeB`, no `Classical.choose`). This is the choice-free twin of `stageStepB`. -/
+def stageStepC (f g : ℕ → ℕ) (s : ℕ) (prev : List (ℕ × ℕ)) : List (ℕ × ℕ) :=
+  if s % 2 = 0 then
+    if s / 2 ∈ mDom prev then prev
+    else (s / 2, chaseTarget f g (s / 2) (firstEscapeB f g prev (s / 2))) :: prev
+  else
+    if s / 2 ∈ mRan prev then prev
+    else (chaseTarget g f (s / 2) (firstEscapeB g f (prev.map Prod.swap) (s / 2)), s / 2) :: prev
+
+/-- The computable stage list (extension-only, `Classical.choose`-free). -/
+def stageListC (f g : ℕ → ℕ) : ℕ → List (ℕ × ℕ)
+  | 0 => []
+  | (s + 1) => stageStepC f g s (stageListC f g s)
+
+/-- **Pair-monotonicity of one step** — every recorded pair survives (keep-case: identical;
+    cons-case: `mem_cons_of_mem`). Nothing is ever removed. -/
+theorem stageStepC_pair_subset {f g : ℕ → ℕ} (s : ℕ) (prev : List (ℕ × ℕ))
+    {x : ℕ × ℕ} (hx : x ∈ prev) : x ∈ stageStepC f g s prev := by
+  unfold stageStepC
+  split_ifs
+  · exact hx
+  · exact List.mem_cons_of_mem _ hx
+  · exact hx
+  · exact List.mem_cons_of_mem _ hx
+
+/-- **Pair-monotonicity along the sequence**: every pair present at stage `s` is present at every
+    later stage `t ≥ s`. This is exactly the `L₁ ⊆ L₂` hypothesis of `mLookup_stable`, making the
+    read-off immutable (no finite injury). -/
+theorem stageListC_pair_subset {f g : ℕ → ℕ} {s t : ℕ} (hst : s ≤ t)
+    {x : ℕ × ℕ} (hx : x ∈ stageListC f g s) : x ∈ stageListC f g t := by
+  induction t, hst using Nat.le_induction with
+  | base => exact hx
+  | succ n _ ih => exact stageStepC_pair_subset n _ ih
+
+/-- A single even stage covers its target domain element `s/2`. -/
+theorem stageStepC_covers_dom_of_even (f g : ℕ → ℕ) (s : ℕ) (prev : List (ℕ × ℕ))
+    (hs : s % 2 = 0) : s / 2 ∈ mDom (stageStepC f g s prev) := by
+  unfold stageStepC
+  rw [if_pos hs]
+  split_ifs with h
+  · exact h
+  · simp [mDom]
+
+/-- A single odd stage covers its target range element `s/2`. -/
+theorem stageStepC_covers_ran_of_odd (f g : ℕ → ℕ) (s : ℕ) (prev : List (ℕ × ℕ))
+    (hs : s % 2 = 1) : s / 2 ∈ mRan (stageStepC f g s prev) := by
+  unfold stageStepC
+  rw [if_neg (by omega : ¬ s % 2 = 0)]
+  split_ifs with h
+  · exact h
+  · simp [mRan]
+
+/-- Domain exhaustion: `k` is covered on the domain side by stage `2k+1`. -/
+theorem stageListC_covers_dom (f g : ℕ → ℕ) (k : ℕ) :
+    k ∈ mDom (stageListC f g (2 * k + 1)) := by
+  have h := stageStepC_covers_dom_of_even f g (2 * k) (stageListC f g (2 * k)) (by omega)
+  rw [show (2 : ℕ) * k / 2 = k from by omega] at h
+  exact h
+
+/-- Range exhaustion: `k` is covered on the range side by stage `2k+2`. -/
+theorem stageListC_covers_ran (f g : ℕ → ℕ) (k : ℕ) :
+    k ∈ mRan (stageListC f g (2 * k + 2)) := by
+  have h := stageStepC_covers_ran_of_odd f g (2 * k + 1) (stageListC f g (2 * k + 1)) (by omega)
+  rw [show (2 * k + 1) / 2 = k from by omega] at h
+  exact h
+
+/-- **The limit permutation (computable read-off).** `σ n` is the partner of `n` at the *fixed,
+    computable* stage index `2n+1` (where `n` is guaranteed covered on the domain side by
+    `stageListC_covers_dom`). Because the read-off is stable along the pair-monotone chain
+    (`sigmaC_eq_at`), this fixed-stage value equals the limit; and because the stage index is a
+    concrete `2n+1` (not a `Nat.find` entry stage), `σ` is a plain lookup into a computable list. -/
+def sigmaC (f g : ℕ → ℕ) (n : ℕ) : ℕ := mLookup (stageListC f g (2 * n + 1)) n
+
+section SigmaC
+variable {p q : ℕ → Prop} {f g : ℕ → ℕ}
+  (hfpq : ∀ n, p n ↔ q (f n)) (hgpq : ∀ n, q n ↔ p (g n))
+  (hf : Function.Injective f) (hg : Function.Injective g)
+
+include hfpq hgpq hf hg
+
+/-- Every computable stage carries the four-fold invariant `StageInvB`. The bridge from the
+    hypothesis-free `firstEscapeB` to the choice-carrying `escapeDepth` is
+    `firstEscapeB_eq_escapeDepth` (valid because each stage's `Balanced` invariant licenses escape);
+    the invariant is then preserved by the choice-free `domain_consStepC` / `range_consStepC`. -/
+theorem stageListC_inv (s : ℕ) : StageInvB p q f g (stageListC f g s) := by
+  induction s with
+  | zero => exact ⟨isMatching_nil, matchingCorr_nil p q, balanced_nil f g, balanced_nil g f⟩
+  | succ n ih =>
+    rw [stageListC]
+    unfold stageStepC
+    split_ifs with h1 h2 h3
+    · exact ih
+    · have ha : n / 2 ∉ mDom (stageListC f g n) := h2
+      rw [firstEscapeB_eq_escapeDepth hf hg ih.2.2.1 ha]
+      exact domain_consStepC hfpq hgpq hf hg ih ha
+    · exact ih
+    · have hb : n / 2 ∉ mRan (stageListC f g n) := h3
+      have hb' : n / 2 ∉ mDom ((stageListC f g n).map Prod.swap) := by
+        rw [mDom_map_swap]; exact hb
+      rw [firstEscapeB_eq_escapeDepth hg hf ih.2.2.2 hb']
+      exact range_consStepC hfpq hgpq hf hg ih hb'
+
+/-- **Stability of the read-off.** At any stage `s` at or past `2n+1` (where `n` is covered), the
+    lookup equals `σ n` — pair-monotonicity + `mLookup_stable`. -/
+theorem sigmaC_eq_at (n s : ℕ) (hs : 2 * n + 1 ≤ s) :
+    mLookup (stageListC f g s) n = sigmaC f g n :=
+  (mLookup_stable (stageListC_inv hfpq hgpq hf hg (2 * n + 1)).1
+    (stageListC_inv hfpq hgpq hf hg s).1
+    (fun _ hx => stageListC_pair_subset hs hx)
+    (stageListC_covers_dom f g n)).symm
+
+/-- **Correspondence** `p n ↔ q (σ n)`, read off `MatchingCorr` at stage `2n+1`. -/
+theorem sigmaC_corr (n : ℕ) : p n ↔ q (sigmaC f g n) := by
+  have hinv := stageListC_inv hfpq hgpq hf hg (2 * n + 1)
+  exact hinv.2.1 _ (mLookup_mem_of_mem_dom hinv.1 (stageListC_covers_dom f g n))
+
+/-- **Injectivity** of the limit permutation (evaluate both points at a common stage). -/
+theorem sigmaC_injective : Function.Injective (sigmaC f g) := by
+  intro m n hmn
+  set s := max (2 * m + 1) (2 * n + 1) with hs
+  have hpm : (m, sigmaC f g m) ∈ stageListC f g (2 * m + 1) :=
+    mLookup_mem_of_mem_dom (stageListC_inv hfpq hgpq hf hg (2 * m + 1)).1
+      (stageListC_covers_dom f g m)
+  have hpn : (n, sigmaC f g n) ∈ stageListC f g (2 * n + 1) :=
+    mLookup_mem_of_mem_dom (stageListC_inv hfpq hgpq hf hg (2 * n + 1)).1
+      (stageListC_covers_dom f g n)
+  have hmdom : m ∈ mDom (stageListC f g s) :=
+    mem_mDom_of_pair (stageListC_pair_subset (le_max_left _ _) hpm)
+  have hndom : n ∈ mDom (stageListC f g s) :=
+    mem_mDom_of_pair (stageListC_pair_subset (le_max_right _ _) hpn)
+  have em := sigmaC_eq_at hfpq hgpq hf hg m s (le_max_left _ _)
+  have en := sigmaC_eq_at hfpq hgpq hf hg n s (le_max_right _ _)
+  exact mLookup_injOn (stageListC_inv hfpq hgpq hf hg s).1 hmdom hndom (by rw [em, en, hmn])
+
+/-- **Surjectivity** of the limit permutation, from range exhaustion. -/
+theorem sigmaC_surjective : Function.Surjective (sigmaC f g) := by
+  intro m
+  have hcov : m ∈ mRan (stageListC f g (2 * m + 2)) := stageListC_covers_ran f g m
+  rw [mRan, List.mem_map] at hcov
+  obtain ⟨⟨d, m'⟩, hpair, hm'⟩ := hcov
+  simp only at hm'
+  subst m'
+  refine ⟨d, ?_⟩
+  set s := max (2 * d + 1) (2 * m + 2) with hs
+  have hpair' : (d, m) ∈ stageListC f g s := stageListC_pair_subset (le_max_right _ _) hpair
+  have hval : mLookup (stageListC f g s) d = m :=
+    mLookup_eq_of_mem (stageListC_inv hfpq hgpq hf hg s).1 hpair'
+  have hed := sigmaC_eq_at hfpq hgpq hf hg d s (le_max_left _ _)
+  rw [← hed]; exact hval
+
+end SigmaC
+
+/-- **Computability of the read-off** — the sole remaining obligation of `myhill_isomorphism`.
+    `sigmaC f g n = mLookup (stageListC f g (2n+1)) n`. The lookup `mLookup` is computable
+    (`mLookup_computable`), and the stage list is built by a `Nat.rec` recursion (`stageListC`)
+    whose step (`stageStepC`) uses only: parity/`div` tests (primitive recursive), list-membership
+    tests over `mDom`/`mRan` (primitive recursive via `Primrec.list_idxOf` + the primrec `mDom`/`mRan`
+    maps), the bounded escape search `firstEscapeB`, and the computable chase target
+    `chaseTarget f g` (`chaseTarget_computable`). What remains is to assemble these through
+    `Computable.nat_rec` + `Computable.cond`, having first recast `firstEscapeB`'s `List.findIdx`
+    as a `Computable.nat_rec` bounded scan (Mathlib provides `List.findIdx` computability only at the
+    `Primrec` level, which does not apply because the scan predicate calls the `Computable`-not-`Primrec`
+    `chaseTarget`). -/
+theorem sigmaC_computable {f g : ℕ → ℕ} (hfc : Computable f) (hgc : Computable g) :
+    Computable (sigmaC f g) := by
+  sorry
+
+
+/-!
 ## Section 5: The Myhill Isomorphism Theorem
 -/
 
@@ -3087,11 +3274,16 @@ theorem myhill_isomorphism (p q : ℕ → Prop) :
     ∃ e : ℕ ≃ ℕ, e.Computable ∧ ∀ n, p n ↔ q (e n) := by
   constructor
   · intro ⟨⟨f, hfc, hfi, hfpq⟩, ⟨g, hgc, hgi, hgpq⟩⟩
-    -- Hard direction. The bijection `sigmaEquivB hfpq hgpq hfi hgi` and its correspondence
-    -- `sigmaEquivB_corr` are proved (Section 5·B, extension-only cons scheduler). What remains
-    -- is only the `.Computable` witness, which needs a computable rebuild of `stageSeqB`
-    -- (currently `noncomputable` via `Classical.choose`). See the docstring above.
-    sorry
+    -- Hard direction, via the computable extension-only scheduler (Section 5·C). The read-off
+    -- `sigmaC f g` is a bijection (`sigmaC_injective` / `sigmaC_surjective`) with the correspondence
+    -- `sigmaC_corr`; it is computable (`sigmaC_computable`), so the permutation
+    -- `Equiv.ofBijective (sigmaC f g)` is a computable permutation
+    -- (`computable_bijection_isComputablePerm`).
+    have hbij : Function.Bijective (sigmaC f g) :=
+      ⟨sigmaC_injective hfpq hgpq hfi hgi, sigmaC_surjective hfpq hgpq hfi hgi⟩
+    exact ⟨Equiv.ofBijective (sigmaC f g) hbij,
+      computable_bijection_isComputablePerm (sigmaC_computable hfc hgc) hbij,
+      fun n => sigmaC_corr hfpq hgpq hfi hgi n⟩
   · rintro ⟨e, he, hpq⟩
     exact myhill_easy e he hpq
 
