@@ -32,6 +32,7 @@ import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.NumberTheory.Primorial
 import Mathlib.NumberTheory.PrimeCounting
+import Mathlib.NumberTheory.Bertrand
 
 open Finset Real
 open scoped Classical
@@ -222,6 +223,36 @@ theorem optimalB_card_eq_primeCounting (N : ℕ) :
     (s := (Finset.range (N + 1)).filter Nat.Prime) (p := fun p => N / 2 < p)
   rw [Finset.filter_filter, Finset.filter_filter, ← hB, hlow] at hpart
   rw [hπ N, hπ (N / 2)]
+  omega
+
+/-- **Qualitative lower bound (0-axiom, via Bertrand's postulate).** For every `N ≥ 2`
+the half-open interval `(N/2, N]` contains a prime, so the optimal `B` is nonempty.
+Proof: apply Bertrand's postulate `Nat.exists_prime_lt_and_le_two_mul` at `m = ⌊N/2⌋`
+(nonzero since `N ≥ 2`) to get a prime `p` with `N/2 < p ≤ 2·⌊N/2⌋ ≤ N`.
+This discharges the *qualitative* content of `primes_upper_half_lower_bound` (there is at
+least one prime in the upper half) from a genuine Mathlib theorem; what the axiom still
+asserts is purely the *quantitative growth rate* `c · N / log N`. -/
+theorem optimalB_nonempty {N : ℕ} (hN : 2 ≤ N) : (optimalB N).Nonempty := by
+  have hm : N / 2 ≠ 0 := by omega
+  obtain ⟨p, hp, hlt, hle⟩ := Nat.exists_prime_lt_and_le_two_mul (N / 2) hm
+  refine ⟨p, ?_⟩
+  have hpN : p ≤ N := by omega
+  simp only [optimalB, Finset.mem_filter, Finset.mem_range]
+  exact ⟨by omega, hp, hlt, hpN⟩
+
+/-- The optimal `B` has at least one element for `N ≥ 2` (0-axiom, via Bertrand). -/
+theorem optimalB_card_pos {N : ℕ} (hN : 2 ≤ N) : 0 < (optimalB N).card :=
+  Finset.card_pos.mpr (optimalB_nonempty hN)
+
+/-- **Strict prime-counting gap (0-axiom).** For `N ≥ 2`, `π(N/2) < π(N)`: the upper
+half `(N/2, N]` always contributes at least one new prime. This is the qualitative
+(constant `c = 1/N`-strength) shadow of `primes_upper_half_lower_bound`, obtained by
+combining `optimalB_card_pos` (Bertrand) with the counting identity
+`optimalB_card_eq_primeCounting`. -/
+theorem primeCounting_half_lt {N : ℕ} (hN : 2 ≤ N) :
+    (N / 2).primeCounting < N.primeCounting := by
+  have h := optimalB_card_pos hN
+  rw [optimalB_card_eq_primeCounting] at h
   omega
 
 /- The optimal example achieves |A||B| ~ N²/(2 log N). -/
