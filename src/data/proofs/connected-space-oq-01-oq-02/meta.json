@@ -82,6 +82,38 @@
     "theoremCount": 5,
     "definitionCount": 3
   },
+  "mainTheorems": [
+    {
+      "name": "isConnected_topologistSineCurve",
+      "type": "core",
+      "description": "The main result: the topologist's sine curve T = sineCurve ∪ limitSegment is connected. Since sineCurve ⊆ T ⊆ closure sineCurve, the parent's bark-and-tree corollary IsConnected.subset_closure applies directly to the connected graph and its closure.",
+      "leanType": "IsConnected topologistSineCurve"
+    },
+    {
+      "name": "isConnected_sineCurve",
+      "type": "core",
+      "description": "The oscillating graph sineCurve = (fun x => (x, sin x⁻¹)) '' Ioi 0 is connected, being the continuous image (isConnected_Ioi.image) of the connected ray Ioi 0. This is the connected skeleton on which the whole argument rests.",
+      "leanType": "IsConnected sineCurve"
+    },
+    {
+      "name": "limitSegment_subset_closure",
+      "type": "core",
+      "description": "The limit segment {0} × [−1,1] lies in the closure of the graph. For (0,y) with y ∈ [−1,1], the graph points (aₙ⁻¹, sin aₙ) with aₙ = arcsin y + n·2π have second coordinate exactly y (2π-periodicity of sin and sin(arcsin y) = y) and first coordinate aₙ⁻¹ → 0 by an Archimedean choice, so (0,y) is a limit of graph points. This is the key density estimate that makes T ⊆ closure sineCurve.",
+      "leanType": "limitSegment ⊆ closure sineCurve"
+    },
+    {
+      "name": "continuousOn_param",
+      "type": "lemma",
+      "description": "The parametrization x ↦ (x, sin x⁻¹) is continuous on Ioi 0 (away from the singularity of x⁻¹ at 0): ContinuousOn.inv₀ gives continuity of x⁻¹ on Ioi 0, composed with Real.continuous_sin and paired with the identity via ContinuousOn.prodMk. Supplies the continuity hypothesis for isConnected_sineCurve.",
+      "leanType": "ContinuousOn (fun x : ℝ => (x, Real.sin x⁻¹)) (Set.Ioi 0)"
+    },
+    {
+      "name": "isPreconnected_topologistSineCurve",
+      "type": "corollary",
+      "description": "The topologist's sine curve is in particular preconnected, obtained from isConnected_topologistSineCurve via IsConnected.isPreconnected.",
+      "leanType": "IsPreconnected topologistSineCurve"
+    }
+  ],
   "overview": {
     "historicalContext": "The parent entry connected-space-oq-01 formalizes that connectedness survives closure, and, sharper, the 'bark and tree' fact that any set between a connected set and its closure is connected. Its open question asks to deploy that corollary on a concrete space assembled from a dense connected skeleton. The textbook such space is the topologist's sine curve — the standard counterexample showing connected ⇏ path-connected.",
     "problemStatement": "**Open Question (connected-space-oq-01, second question)**: Use the dense-connected / bark-and-tree corollary to prove connectedness of specific spaces built from dense connected skeletons.\n\n**Result**: The topologist's sine curve T = {(x, sin x⁻¹) : x > 0} ∪ ({0} × [−1,1]) is connected. Its oscillating graph is a connected skeleton whose closure contains the limit segment, so T is sandwiched between the graph and its closure and the parent's corollary applies.",
