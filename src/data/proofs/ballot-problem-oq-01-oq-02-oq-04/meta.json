@@ -35,7 +35,7 @@
     "dateAdded": "2026-04-05",
     "axiomCount": 1,
     "lineCount": 311,
-    "assumptions": "Depends on Lean.ofReduceBool: the headline counterexample probability (counterexample_good_count, \"out of 6 orderings exactly 2 are good\" \u2192 actual P = 2/6 = 1/3) is discharged by native_decide, so the entry is not axiom-free. 0 sorries, 0 axiom declarations (leanFile.axiomCount stays 0). norm_num and kernel decide carry no extra axioms.",
+    "assumptions": "Depends on Lean.ofReduceBool: the headline counterexample probability (counterexample_good_count, \"out of 6 orderings exactly 2 are good\" → actual P = 2/6 = 1/3) is discharged by native_decide, so the entry is not axiom-free. 0 sorries, 0 axiom declarations (leanFile.axiomCount stays 0). norm_num and kernel decide carry no extra axioms.",
     "mathlib_version": "4.26.0",
     "theoremCount": 24,
     "definitionCount": 4
@@ -135,6 +135,80 @@
     "path": "Proofs/BallotProblemOQ01OQ02OQ04.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "two_good_iff",
+      "type": "supporting",
+      "description": "A two-element weighted sequence [w₁, w₂] leads throughout (both partial sums positive) exactly when w₁ > 0 and w₁ + w₂ > 0.",
+      "leanType": "(w₁ w₂ : ℚ) : isGoodWeighted [w₁, w₂] ↔ 0 < w₁ ∧ 0 < w₁ + w₂"
+    },
+    {
+      "name": "counterexample_good_count",
+      "type": "supporting",
+      "description": "Among the 6 orderings of the weighted configuration A=[2,1], B=[2], exactly 2 are good, giving actual probability 2/6 = 1/3.",
+      "leanType": "let orderings : List WeightSeq := [[2, 1, -2], [1, 2, -2], [2, -2, 1], [1, -2, 2], [-2, 2, 1], [-2, 1, 2]]; (orderings.filter (fun s => decide (isGoodWeighted s))).length = 2"
+    },
+    {
+      "name": "classical_formula_incorrect",
+      "type": "core",
+      "description": "The classical ballot formula (W_A − W_B)/(W_A + W_B) gives the wrong probability for non-uniform weights: 2/6 = 1/3 but the formula yields (3−2)/(3+2) = 1/5.",
+      "leanType": "(2 : ℚ) / 6 ≠ (3 - 2) / (3 + 2)"
+    },
+    {
+      "name": "projection_ambiguity",
+      "type": "supporting",
+      "description": "The same sign pattern [+, −] can be good or bad depending on weights: [2,-1] is good but [1,-2] is bad.",
+      "leanType": "isGoodWeighted [2, -1] ∧ ¬isGoodWeighted [1, -2]"
+    },
+    {
+      "name": "fiber_argument_fails",
+      "type": "core",
+      "description": "The fiber counting argument fails for non-uniform weights: there exist two sequences with identical ±1 sign patterns where one leads throughout and the other does not.",
+      "leanType": "∃ (s₁ s₂ : WeightSeq), s₁.map (fun w => if (0 : ℚ) < w then (1 : ℤ) else -1) = s₂.map (fun w => if (0 : ℚ) < w then (1 : ℤ) else -1) ∧ isGoodWeighted s₁ ∧ ¬isGoodWeighted s₂"
+    },
+    {
+      "name": "one_each_a_first_good",
+      "type": "supporting",
+      "description": "In the 1-vs-1 case, the ordering [wA, -wB] with wA > wB > 0 leads throughout.",
+      "leanType": "(wA wB : ℚ) (hwA : 0 < wA) (hwB : 0 < wB) (h : wB < wA) : isGoodWeighted [wA, -wB]"
+    },
+    {
+      "name": "one_each_b_first_not_good",
+      "type": "supporting",
+      "description": "In the 1-vs-1 case, the ordering [-wB, wA] with wB > 0 is always bad (B leads first).",
+      "leanType": "(wA wB : ℚ) (hwB : 0 < wB) : ¬isGoodWeighted [-wB, wA]"
+    },
+    {
+      "name": "one_each_exactly_one_good",
+      "type": "supporting",
+      "description": "For 1-vs-1 with wA > wB > 0, exactly one of the two orderings is good, so the actual probability is 1/2.",
+      "leanType": "(wA wB : ℚ) (hwA : 0 < wA) (hwB : 0 < wB) (h : wB < wA) : isGoodWeighted [wA, -wB] ∧ ¬isGoodWeighted [-wB, wA]"
+    },
+    {
+      "name": "one_each_formula_is_half_iff",
+      "type": "supporting",
+      "description": "In the 1-vs-1 case the classical formula (wA−wB)/(wA+wB) equals 1/2 iff wA = 3·wB, so it disagrees with the true probability 1/2 whenever wA ≠ 3·wB.",
+      "leanType": "(wA wB : ℚ) (hwA : 0 < wA) (hwB : 0 < wB) (hwAB : 0 < wA + wB) : (wA - wB) / (wA + wB) = 1 / 2 ↔ wA = 3 * wB"
+    },
+    {
+      "name": "scaled_degenerates",
+      "type": "supporting",
+      "description": "When p = q = 1, the scaled ballot expression (ap−bq)/(ap+bq) degenerates to the classical (a−b)/(a+b).",
+      "leanType": "(a b : ℕ) : scaledBallotFormula a b 1 1 = (a - b : ℚ) / (a + b)"
+    },
+    {
+      "name": "scaled_formula_pos",
+      "type": "supporting",
+      "description": "The scaled ballot expression is positive when A's total weight exceeds B's.",
+      "leanType": "(a b : ℕ) (p q : ℚ) (hp : 0 < p) (hq : 0 < q) (h : b * q < a * p) : 0 < scaledBallotFormula a b p q"
+    },
+    {
+      "name": "scaled_formula_le_one",
+      "type": "supporting",
+      "description": "The scaled ballot expression is at most 1, consistent with being a probability.",
+      "leanType": "(a b : ℕ) (p q : ℚ) (hp : 0 < p) (hq : 0 < q) (h : b * q < a * p) : scaledBallotFormula a b p q ≤ 1"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "ballot-problem-oq-01-oq-02",
