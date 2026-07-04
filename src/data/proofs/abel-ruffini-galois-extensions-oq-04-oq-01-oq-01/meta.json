@@ -55,6 +55,44 @@
     "theoremCount": 6,
     "definitionCount": 2
   },
+  "mainTheorems": [
+    {
+      "name": "isMaximalNormal_subgroupOf_iff_isMaxNorm",
+      "type": "core",
+      "description": "The lattice-transfer bridge and the file's central new result: for H ≤ K, being a maximal normal subgroup of the subtype group ↥K (IsMaximalNormal (H.subgroupOf K)) is exactly the ambient relative predicate IsMaxNorm H K. Relocates the maximality test from the awkward subtype lattice Subgroup ↥K into the concrete interval [H, K] ⊆ Subgroup G, using the order-isomorphic pair N ↦ N.subgroupOf K and M ↦ M.map K.subtype with round trips map_subgroupOf_eq_of_le and comap_map_eq_self_of_injective; properness collapses via subgroupOf_eq_top and subgroupOf_self.",
+      "leanType": "{H K : Subgroup G} → H ≤ K → (IsMaximalNormal (H.subgroupOf K) ↔ IsMaxNorm H K)"
+    },
+    {
+      "name": "isSimpleGroup_quotient_subgroupOf_iff_isMaxNorm",
+      "type": "core",
+      "description": "The packaged general relative correspondence — precisely the case the parent entry deferred. For H ≤ K with H.subgroupOf K normal in ↥K, the subtype quotient ↥K ⧸ H.subgroupOf K is simple iff H is a maximal normal subgroup of K. Proved in two lines by instantiating the absolute correspondence at the group ↥K (N = H.subgroupOf K) and chaining with the lattice-transfer bridge.",
+      "leanType": "{H K : Subgroup G} → (hHK : H ≤ K) → [(H.subgroupOf K).Normal] → (IsSimpleGroup (↥K ⧸ H.subgroupOf K) ↔ IsMaxNorm H K)"
+    },
+    {
+      "name": "isSimpleGroup_quotient_iff_isMaximalNormal",
+      "type": "supporting",
+      "description": "The absolute (K = ⊤) correspondence in packaged form: for a normal N ◁ G, the genuine quotient G ⧸ N is simple iff N is a maximal normal subgroup of G (IsMaximalNormal N). Reproved inline so the file depends only on `import Mathlib`; instantiated at ↥K to drive the relative case.",
+      "leanType": "(N : Subgroup G) → [N.Normal] → (IsSimpleGroup (G ⧸ N) ↔ IsMaximalNormal N)"
+    },
+    {
+      "name": "isSimpleGroup_quotient_iff",
+      "type": "supporting",
+      "description": "The raw absolute correspondence underneath the packaged form: IsSimpleGroup (G ⧸ N) iff N ≠ ⊤ and every normal M with N ≤ M is either N or ⊤. Proved from isSimpleGroup_iff by transporting subgroups across the projection mk' via comap_map_mk' and the correspondence order-iso comapMk'OrderIso.",
+      "leanType": "(N : Subgroup G) → [N.Normal] → (IsSimpleGroup (G ⧸ N) ↔ N ≠ ⊤ ∧ ∀ M : Subgroup G, N ≤ M → M.Normal → M = N ∨ M = ⊤)"
+    },
+    {
+      "name": "IsMaxNorm.isSimpleGroup_quotient",
+      "type": "supporting",
+      "description": "Forward direction as a reusable dot-notation lemma: a maximal normal subgroup of K yields a simple subtype quotient. Threads the relative-normality instance h.2.1 via haveI so the quotient typeclass ↥K ⧸ H.subgroupOf K resolves — the form a composition-series argument consumes one implication at a time.",
+      "leanType": "{H K : Subgroup G} → (hHK : H ≤ K) → (h : IsMaxNorm H K) → IsSimpleGroup (↥K ⧸ H.subgroupOf K)"
+    },
+    {
+      "name": "IsMaxNorm.of_isSimpleGroup_quotient",
+      "type": "supporting",
+      "description": "Converse direction as a standalone lemma: simplicity of the subtype quotient ↥K ⧸ H.subgroupOf K forces H to be a maximal normal subgroup of K. The mpr/mp pair of the packaged iff, exposed for Jordan–Hölder consumption.",
+      "leanType": "{H K : Subgroup G} → (hHK : H ≤ K) → [(H.subgroupOf K).Normal] → IsSimpleGroup (↥K ⧸ H.subgroupOf K) → IsMaxNorm H K"
+    }
+  ],
   "leanFile": {
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ04OQ01OQ01.lean",
     "lineCount": 192,
