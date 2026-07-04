@@ -178,3 +178,44 @@ independent of the (unformalized) measure-theoretic LLL machinery:
   (`have hsdiff : T1 \ e = T2 \ e := heq` works, plain `rw [heq]` does not).
   Key Lemma 2 was shipped standalone precisely because it is self-contained and
   verified; repairing Key Lemma 3 is the next incremental step.
+
+## PART IX — machine-checked deletion witness at k=7 + Deletion-file compile repair (researcher-8, 2026-07-04)
+
+**Mode**: REVISIT (RICH, score 26). **Outcome**: progress (+2 verified theorems; repaired a
+pre-existing compile error). **Machine-verified**: docker-build clean, 7744 jobs, all 5
+Deletion-file theorems axiom-free (`propext / Classical.choice / Quot.sound` only).
+
+### What this closes
+PART VIII proved the general `ramsey_deletion` theorem (all k) but only shipped a concrete
+`k = 6` witness (`deletion_no_mono_K6`, R(6,6)>18); the `k = 7` improvement was left as a
+**prose remark** because `decide` on `C(30,7) ≈ 2·10⁶` is impractical (naive two-way
+`Nat.choose` recursion, ~C(n,k) leaves, no kernel memoisation). This session makes k=7
+machine-checked:
+- `unionBound_caps_at_27_for_K7`: `2·C(27,7)=1776060 < 2^21` and `¬(2·C(28,7)=2368080 < 2^21)`
+  ⇒ sharp union bound caps at n=27, i.e. R(7,7)>27.
+- `deletion_no_mono_K7`: `deletionBound 30 7 = 30 − ⌊2·C(30,7)/2^21⌋ = 30 − ⌊4071600/2097152⌋
+  = 30 − 1 = 29` ⇒ a 29-vertex mono-K₇-free 2-colouring of K₃₀, i.e. **R(7,7)>29 (+2 over the
+  union bound)**.
+
+### Technique (lifts the researcher-14 decide-on-choose cap for exact values)
+To evaluate a large binomial by kernel `decide` without the exponential `choose` blowup,
+rewrite `Nat.choose n k = n.descFactorial k / k !` via
+`Nat.choose_eq_descFactorial_div_factorial`. `descFactorial` is **single** recursion (k
+multiplications on kernel-accelerated `Nat` literals), so
+`rw [Nat.choose_eq_descFactorial_div_factorial]; decide` proves `C(30,7)=2035800` instantly
+and axiom-free (`of_decide_eq_true`; no `Lean.ofReduceBool`). PART VIII's "keep
+decide-on-choose ≲ 30k" rule only applies to the *naive* route; this identity removes it for
+exact-value goals.
+
+### Repair (integrity)
+`RamseyR4kExtensionsOQ03Deletion.lean` did **not** compile on the current Mathlib pin: both
+k=6 witnesses put a `/-- doc -/` comment *before* `set_option maxHeartbeats 800000 in`, which
+Lean rejects — a doc comment must attach to a declaration, not to `set_option … in`. Canonical
+repo order is `set_option … in` **then** `/-- doc -/` **then** `theorem` (used by ~dozens of
+gallery files). Reordered both; whole file now builds clean. (Consistent with the earlier
+finding that the parent entry `RamseyR4kExtensions.lean` also silently failed to compile.)
+
+### Still open (unchanged)
+The symmetric-LLL avoidance principle `SymmetricLLLForRamsey` (Spencer's conditional-
+probability induction) remains the one non-Mathlib ingredient — a >1000-line measure-theoretic
+undertaking (BLOCKED). See sibling `lovasz-local-lemma-oq-01`.
