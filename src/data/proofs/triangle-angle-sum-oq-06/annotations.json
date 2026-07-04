@@ -49,45 +49,47 @@
     "proofId": "triangle-angle-sum-oq-06",
     "range": {
       "startLine": 101,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "The Half-Angle Product Identities (half_angle_sin_sum, half_angle_cos_sum)",
+    "content": "Two identities under the constraint a + b + c = π/2. half_angle_sin_sum proves sin(2a) + sin(2b) + sin(2c) = 4·cos a·cos b·cos c: substituting c = π/2 − (a+b), the term sin(2c) = sin(π − 2(a+b)) becomes sin(2(a+b)) via Real.sin_pi_sub and cos c = cos(π/2 − (a+b)) becomes sin(a+b) via Real.cos_pi_div_two_sub; simp then expands the double- and sum-angle formulas (Real.sin_two_mul, Real.sin_add, Real.cos_add), and a two-term linear_combination against the Pythagorean identity Real.sin_sq_add_cos_sq closes the residual polynomial identity in sin a, cos a, sin b, cos b. half_angle_cos_sum is the analogue giving cos(2a) + cos(2b) + cos(2c) = 1 + 4·sin a·sin b·sin c, with cos(2c) = −cos(2(a+b)) (Real.cos_pi_sub), sin c = cos(a+b) (Real.sin_pi_div_two_sub) and Real.cos_two_mul. THE CLOSING MOVE: both proofs bottom out in linear_combination, which discharges a goal that holds only modulo sin² + cos² = 1 by supplying an explicit certificate — a linear combination of instances of sin²+cos²=1 whose difference from the goal ring-normalises to zero. In half_angle_sin_sum the certificate is (−2·sin a·cos a)·(sin²b + cos²b = 1) + (−2·sin b·cos b)·(sin²a + cos²a = 1); in half_angle_cos_sum it is (2 − 2·cos²b)·(sin²a + cos²a = 1) + (2·sin²a)·(sin²b + cos²b = 1). Because the coefficients are hand-written multiples of the Pythagorean identity, no nonlinear search or decision procedure is invoked and the whole file stays axiom-free (no native_decide / Lean.ofReduceBool).",
+    "mathContext": "For $a+b+c=\\tfrac{\\pi}{2}$: $\\sin 2a + \\sin 2b + \\sin 2c = 4\\cos a\\cos b\\cos c$ and $\\cos 2a + \\cos 2b + \\cos 2c = 1 + 4\\sin a\\sin b\\sin c$, each closed by $\\text{goal} - \\sum_i c_i(\\sin^2+\\cos^2-1) \\equiv 0 \\pmod{\\text{ring}}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "half-angle complementarity",
+      "Pythagorean reduction",
+      "linear_combination tactic",
+      "proof certificates",
+      "ring normalisation"
+    ],
+    "prerequisites": [
+      "The reflection identities Real.sin_pi_sub, Real.cos_pi_sub, Real.sin_pi_div_two_sub, Real.cos_pi_div_two_sub",
+      "Real.sin_two_mul, Real.cos_two_mul, Real.sin_sq_add_cos_sq and how the linear_combination tactic certifies an equality modulo given hypotheses"
+    ]
+  },
+  {
+    "id": "ann-triangle-identities",
+    "proofId": "triangle-angle-sum-oq-06",
+    "range": {
+      "startLine": 141,
       "endLine": 161
     },
     "type": "theorem",
-    "title": "The Triangle Half-Angle Product Identities (half_angle_sin_sum, half_angle_cos_sum, triangle_sin_sum, triangle_cos_sum)",
-    "content": "half_angle_sin_sum proves sin(2a) + sin(2b) + sin(2c) = 4·cos a·cos b·cos c when a + b + c = π/2: substituting c = π/2 − (a+b), the term sin(2c) = sin(π − 2(a+b)) becomes sin(2(a+b)) via Real.sin_pi_sub and cos c = cos(π/2 − (a+b)) becomes sin(a+b) via Real.cos_pi_div_two_sub; simp then expands the double and sum angles (Real.sin_two_mul, Real.sin_add, Real.cos_add) and a two-term linear_combination against Real.sin_sq_add_cos_sq closes the residual polynomial identity in sin a, cos a, sin b, cos b. half_angle_cos_sum is the analogue giving cos(2a) + cos(2b) + cos(2c) = 1 + 4·sin a·sin b·sin c, with cos(2c) = −cos(2(a+b)) (Real.cos_pi_sub), sin c = cos(a+b) (Real.sin_pi_div_two_sub) and the double-angle expansion Real.cos_two_mul. The named corollaries triangle_sin_sum and triangle_cos_sum specialise a = A/2, b = B/2, c = C/2 — so a + b + c = (A+B+C)/2 = π/2 — and rewrite 2·(A/2) = A, recovering for the angles of a triangle sin A + sin B + sin C = 4·cos(A/2)·cos(B/2)·cos(C/2) and cos A + cos B + cos C = 1 + 4·sin(A/2)·sin(B/2)·sin(C/2).",
-    "mathContext": "$\\sin A + \\sin B + \\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$ and $\\cos A + \\cos B + \\cos C = 1 + 4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2}$ for $A + B + C = \\pi$.",
-    "prerequisites": [
-      "The reflection identities Real.sin_pi_sub, Real.cos_pi_sub, Real.sin_pi_div_two_sub, Real.cos_pi_div_two_sub",
-      "Real.sin_two_mul, Real.cos_two_mul, Real.sin_sq_add_cos_sq and the linear_combination tactic"
-    ],
+    "title": "The Triangle Corollaries (triangle_sin_sum, triangle_cos_sum)",
+    "content": "The named corollaries specialise the half-angle identities to the angles of a triangle. Setting a = A/2, b = B/2, c = C/2 turns the constraint a + b + c = π/2 into (A+B+C)/2 = π/2, i.e. exactly A + B + C = π; rewriting 2·(A/2) = A then recovers, for any triangle, triangle_sin_sum: sin A + sin B + sin C = 4·cos(A/2)·cos(B/2)·cos(C/2), and triangle_cos_sum: cos A + cos B + cos C = 1 + 4·sin(A/2)·sin(B/2)·sin(C/2). These are the classical triangle identities — the substitution a = A/2 is the whole reason the half-angle form (constraint = π/2) was the natural lemma to prove first: the triangle angle sum A + B + C = π is precisely twice it. The right-hand products are strictly positive for a genuine (non-degenerate) triangle, which is the analytic seed of inequalities such as cos A + cos B + cos C ≤ 3/2.",
+    "mathContext": "For $A+B+C=\\pi$: $\\sin A + \\sin B + \\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$ and $\\cos A + \\cos B + \\cos C = 1 + 4\\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}\\sin\\tfrac{C}{2}$.",
+    "significance": "key",
     "relatedConcepts": [
       "triangle identities",
-      "half-angle complementarity",
-      "Pythagorean reduction"
+      "angle-sum constraint A+B+C=π",
+      "half-angle substitution",
+      "triangle inequalities"
     ],
-    "significance": "key"
-  },
-  {
-    "id": "ann-linear-combination-technique",
-    "proofId": "triangle-angle-sum-oq-06",
-    "range": {
-      "startLine": 119,
-      "endLine": 139
-    },
-    "type": "tactic",
-    "title": "The Closing Move: linear_combination against the Pythagorean Identity",
-    "content": "Both triangle identities bottom out in the same Lean tactic. After the π-reflections eliminate the constrained variable c and simp expands the double- and sum-angle formulas, the goal is a bare polynomial identity in sin a, cos a, sin b, cos b that holds only modulo sin² + cos² = 1. linear_combination proves it by a certificate: the user supplies an explicit linear combination of hypotheses whose difference from the goal ring-normalises to zero. In half_angle_sin_sum the certificate is (−2·sin a·cos a)·(sin²b + cos²b = 1) + (−2·sin b·cos b)·(sin²a + cos²a = 1); in half_angle_cos_sum it is (2 − 2·cos²b)·(sin²a + cos²a = 1) + (2·sin²a)·(sin²b + cos²b = 1). The coefficients are exactly the multiples of Real.sin_sq_add_cos_sq needed to cancel the non-Pythagorean residue, so no nonlinear search or decision procedure is invoked — the proof is a hand-written algebraic certificate, which is why the whole file stays axiom-free (no native_decide / Lean.ofReduceBool).",
-    "mathContext": "$\\text{goal} - \\sum_i c_i\\,(\\sin^2 + \\cos^2 - 1) \\;\\equiv\\; 0 \\pmod{\\text{ring}}$",
     "prerequisites": [
-      "The Pythagorean identity Real.sin_sq_add_cos_sq",
-      "How the linear_combination tactic certifies an equality modulo given hypotheses"
-    ],
-    "relatedConcepts": [
-      "linear_combination tactic",
-      "proof certificates",
-      "Pythagorean reduction",
-      "ring normalisation"
-    ],
-    "significance": "key"
+      "The half-angle identities half_angle_sin_sum / half_angle_cos_sum",
+      "The triangle angle-sum A + B + C = π"
+    ]
   },
   {
     "id": "ann-worked-instance",

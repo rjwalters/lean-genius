@@ -114,5 +114,55 @@
   "crossReferences": [
     "triangle-angle-sum-oq-04",
     "triangle-angle-sum-oq-07"
+  ],
+  "mainTheorems": [
+    {
+      "name": "triangle_sin_sum",
+      "type": "core",
+      "description": "For the angles of any triangle (A + B + C = π), sin A + sin B + sin C = 4·cos(A/2)·cos(B/2)·cos(C/2). Obtained from half_angle_sin_sum by the substitution a = A/2, b = B/2, c = C/2.",
+      "leanType": "(A B C : ℝ) → (h : A + B + C = π) → sin A + sin B + sin C = 4 * cos (A / 2) * cos (B / 2) * cos (C / 2)"
+    },
+    {
+      "name": "triangle_cos_sum",
+      "type": "core",
+      "description": "For the angles of any triangle (A + B + C = π), cos A + cos B + cos C = 1 + 4·sin(A/2)·sin(B/2)·sin(C/2). The half-angle sine product on the right is strictly positive for a genuine triangle.",
+      "leanType": "(A B C : ℝ) → (h : A + B + C = π) → cos A + cos B + cos C = 1 + 4 * sin (A / 2) * sin (B / 2) * sin (C / 2)"
+    },
+    {
+      "name": "half_angle_sin_sum",
+      "type": "core",
+      "description": "The π/2-constrained half-angle identity underlying triangle_sin_sum: if a + b + c = π/2 then sin 2a + sin 2b + sin 2c = 4·cos a·cos b·cos c. Proved by eliminating c via π-reflection identities and closing with a two-term linear_combination against the Pythagorean identity.",
+      "leanType": "(a b c : ℝ) → (h : a + b + c = π / 2) → sin (2 * a) + sin (2 * b) + sin (2 * c) = 4 * cos a * cos b * cos c"
+    },
+    {
+      "name": "half_angle_cos_sum",
+      "type": "core",
+      "description": "The π/2-constrained half-angle identity underlying triangle_cos_sum: if a + b + c = π/2 then cos 2a + cos 2b + cos 2c = 1 + 4·sin a·sin b·sin c.",
+      "leanType": "(a b c : ℝ) → (h : a + b + c = π / 2) → cos (2 * a) + cos (2 * b) + cos (2 * c) = 1 + 4 * sin a * sin b * sin c"
+    },
+    {
+      "name": "cos_add_cos",
+      "type": "supporting",
+      "description": "Sum-to-product for cosines: cos x + cos y = 2·cos((x+y)/2)·cos((x−y)/2). The prosthaphaeresis identity, proved by writing x, y as (x±y)/2 sums and applying the cosine addition/subtraction formulas.",
+      "leanType": "(x y : ℝ) → cos x + cos y = 2 * cos ((x + y) / 2) * cos ((x - y) / 2)"
+    },
+    {
+      "name": "cos_sub_cos",
+      "type": "supporting",
+      "description": "Sum-to-product for a cosine difference: cos x − cos y = −2·sin((x+y)/2)·sin((x−y)/2).",
+      "leanType": "(x y : ℝ) → cos x - cos y = -2 * sin ((x + y) / 2) * sin ((x - y) / 2)"
+    },
+    {
+      "name": "sin_add_sin",
+      "type": "supporting",
+      "description": "Sum-to-product for sines: sin x + sin y = 2·sin((x+y)/2)·cos((x−y)/2).",
+      "leanType": "(x y : ℝ) → sin x + sin y = 2 * sin ((x + y) / 2) * cos ((x - y) / 2)"
+    },
+    {
+      "name": "sin_sub_sin",
+      "type": "supporting",
+      "description": "Sum-to-product for a sine difference: sin x − sin y = 2·cos((x+y)/2)·sin((x−y)/2).",
+      "leanType": "(x y : ℝ) → sin x - sin y = 2 * cos ((x + y) / 2) * sin ((x - y) / 2)"
+    }
   ]
 }
