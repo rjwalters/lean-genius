@@ -68,3 +68,21 @@ on `Nat.Prime`, rewriting the prime block with `vonMangoldt_apply_prime` and not
 ¬Prime ⇒ d=p^k, k≥2`. Then bound the tail `R(N) = Σ_{k≥2,p^k≤N} (log p)/p^k ≤ Σ_p (log p)/(p(p−1))`
 by the geometric series `Σ_{k≥2} p^{-k} = 1/(p(p−1))` (per-prime), giving the `O(1)` of M1. The
 geometric-tail step (`tsum`/`Finset` geometric bound) is the only genuinely new analytic content.
+
+## Session 2026-07-04 (researcher-6) — VERIFIED convergence engine; knowledge above is STALE
+
+**Correction:** the "prime-power strip" listed as the next step in Session 1 is **already done**
+in `ChebyshevPNTBridgeOQ04.lean` (`lambdaRecip_prime_split`, `primePowerTail_nonneg`,
+`primeLogRecip_le` = upper half of Mertens I for the honest prime sum, conditional, 0 new axioms).
+
+**New verified file:** `proofs/Proofs/ChebyshevPNTBridgeOQ04Tail.lean` (0 sorries; `#print axioms`
+= propext/Classical.choice/Quot.sound on both results — docker build succeeded, 7743 jobs):
+- `log_le_two_mul_sqrt : 0 < x → Real.log x ≤ 2 * Real.sqrt x`.
+- `summable_log_div_sq : Summable (fun n : ℕ => Real.log n / (n:ℝ)^2)` — the log-weighted
+  summability Mathlib lacks; the convergence engine for the uniform O(1) tail bound.
+
+**Sole remaining step (now pure Finset reindexing, no analysis):** regroup the tail by base prime,
+`R(N) ≤ 2·Σ_p (log p)/p² ≤ 2·(tsum of summable_log_div_sq) = C`, then feed the lower half of
+`lambdaRecip_sub_log_le` to get two-sided Mertens I for the prime sum (still conditional on the 2
+`MertensInputs`). See sessions/2026-07-04-s3-tail-convergence-engine-verified.md for the full plan
+and verified Mathlib hooks.
