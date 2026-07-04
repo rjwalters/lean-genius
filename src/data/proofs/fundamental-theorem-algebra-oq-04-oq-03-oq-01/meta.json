@@ -150,12 +150,24 @@
       "targetId": "fundamental-theorem-algebra-oq-04-oq-03",
       "relationship": "parent",
       "description": "Parent entry: the Galois correspondence for ℂ/ℝ, proving Gal(ℂ/ℝ) is cyclic of order 2. This entry answers its first open question by constructing the explicit isomorphism to Multiplicative (ZMod 2) and naming complex conjugation as the generator."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-01",
+      "relationship": "child",
+      "description": "Child entry generalizing this explicit iso: Gal(L/K) ≃* Multiplicative (ZMod 2) for every quadratic Galois extension, abstracting the ℂ/ℝ case to an arbitrary degree-2 extension."
+    },
+    {
+      "targetId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-02",
+      "relationship": "child",
+      "description": "Child entry identifying this hand-built isomorphism with Mathlib's generic zmodCyclicMulEquiv, verifying the named generator agrees with the library's canonical cyclic-group iso."
     }
   ],
   "references": [
     {
       "key": "Artin1942",
-      "authors": ["E. Artin"],
+      "authors": [
+        "E. Artin"
+      ],
       "title": "Galois Theory",
       "venue": "Notre Dame Mathematical Lectures",
       "year": "1942",
@@ -165,8 +177,13 @@
   "leanFile": {
     "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01.lean",
     "filePath": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01.lean",
-    "imports": ["Mathlib"],
-    "opens": ["Complex", "Classical"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Classical"
+    ],
     "namespace": "FTAGaloisIso",
     "lineCount": 164,
     "axiomCount": 0,
