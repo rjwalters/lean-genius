@@ -116,7 +116,7 @@
       "id": "exact-degree",
       "title": "Exact Degree of the Real Subfield (Degree companion)",
       "startLine": 1,
-      "endLine": 267,
+      "endLine": 133,
       "summary": "NthRootIrrationalOQ01OQ01Degree.lean: finrank_adjoin_trace_eq proves 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n) for n ≥ 3 (division-free form of [ℚ(ζ)⁺:ℚ] = φ(n)/2). The maximal real subfield is built explicitly as realField = {z : ℂ | z.im = 0}; the relative degree relfinrank_adjoin_trace_eq_two shows [ℚ(ζ):ℚ(ζ+ζ⁻¹)] = 2 (ζ is a root of X² − (ζ+ζ⁻¹)·X + 1 over the real subfield, and degree 1 is excluded because ζ is non-real for n ≥ 3), then the tower multiplicativity finrank_bot_mul_relfinrank against [ℚ(ζ):ℚ] = φ(n) gives the result. Instance fifthRoot_finrank_adjoin_trace for n = 5.",
       "mathContext": "$2\\cdot[\\mathbb{Q}(\\zeta+\\zeta^{-1}):\\mathbb{Q}]=\\varphi(n)$, i.e. $[\\mathbb{Q}(\\zeta)^+:\\mathbb{Q}]=\\varphi(n)/2$, via $[\\mathbb{Q}(\\zeta):\\mathbb{Q}(\\zeta+\\zeta^{-1})]=2$."
     }

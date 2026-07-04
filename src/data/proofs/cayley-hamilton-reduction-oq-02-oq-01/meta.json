@@ -114,7 +114,7 @@
       "id": "rcf-roadmap",
       "title": "Part 5: Full RCF Roadmap",
       "startLine": 355,
-      "endLine": 396,
+      "endLine": 387,
       "summary": "Documents the ~1800-line gap to a complete Lean formalization of the rational canonical form: SNF (~800), companion (~200), block assembly (~300), uniqueness (~200).",
       "mathContext": "The complete RCF theorem requires: (1) Smith Normal Form for $F[X]$-matrices (Euclidean domain algorithm, ~800 lines); (2) companion block diagonalization from SNF invariant factors (~200 lines); (3) similarity proof assembling the block structure (~300 lines); (4) uniqueness of invariant factors (~200 lines). Completed formalizations exist in Coq (Cano-Dénès 2012) and Isabelle (Divasón-Thiemann 2016)."
     }

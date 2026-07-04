@@ -137,7 +137,7 @@
       "id": "hassum",
       "title": "Egyptian-Fraction Form: HasSum and tsum",
       "startLine": 107,
-      "endLine": 127,
+      "endLine": 123,
       "summary": "syl_recip_nonneg (positivity) records nonnegativity. syl_hasSum_one applies hasSum_iff_tendsto_nat_of_nonneg, reindexing the range-(n+1) limit to range n via tendsto_add_atTop_iff_nat, to obtain HasSum (fun k => 1/aₖ) 1. syl_tsum_one is the immediate tsum corollary ∑' k, 1/aₖ = 1.",
       "mathContext": "$\\sum_{k} 1/a_k = 1$ as a genuine `HasSum`, hence $\\sum'_k 1/a_k = 1.$"
     }

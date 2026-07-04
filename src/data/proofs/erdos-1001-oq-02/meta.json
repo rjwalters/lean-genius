@@ -146,7 +146,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 267,
-      "endLine": 315,
+      "endLine": 308,
       "summary": "A docstring documenting the formalization path (Mertens $\\to$ Abel summation $\\to$ EST measure formula) and the precise Mathlib gap (the totient partial-sum asymptotic $\\sum_{y\\leq N}\\varphi(y)=(3/\\pi^2)N^2+O(N\\log N)$, missing as of v4.26). PROVES `erdos_1001_oq_02_summary` (the headline rate, from `convergence_rate_est`).",
       "mathContext": "Status AXIOMATIZED, blocked on Mathlib totient asymptotic $\\sum_{y\\leq N}\\varphi(y)=(3/\\pi^2)N^2+O(N\\log N)$."
     }

@@ -143,7 +143,7 @@
       "id": "companion-klein-upper",
       "title": "Companion: Klein's Upper Bound (Erdos107OQ01KleinUpperAristotle)",
       "startLine": 1,
-      "endLine": 348,
+      "endLine": 309,
       "summary": "Self-contained, axiom-free proof of klein_upper_bound : 5 ∈ CardSet 4 (Aristotle proof search). Case split on the number of extreme points E of the 5-point convex hull: |E|≥4 gives four points in convex position (extreme_not_in_hull_erase, hasConvexNGon_of_four_extreme); |E|≤2 is impossible (finite Krein–Milman subset_convexHull_extremePoints forces the points collinear, contradicting general position); |E|=3 (triangle) uses a separating linear functional (exists_line_functional, two_same_sign) so two vertices lie on one side of the line through the two interior points, forming a convex quadrilateral (hasConvexNGon_of_pair, hasConvexNGon_caseB).",
       "mathContext": "The genuinely hard convex-geometry half of Klein's theorem, proved from Mathlib's extreme-point / convex-hull API.",
       "file": "Proofs/Erdos107OQ01KleinUpperAristotle.lean"

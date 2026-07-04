@@ -128,7 +128,7 @@
       "id": "closed-invariant",
       "title": "The closed induction invariant",
       "startLine": 130,
-      "endLine": 149,
+      "endLine": 145,
       "summary": "cond_failure_le_x: under the asymmetric LLL hypothesis μ(Aᵢ) ≤ x·d, μ[Aᵢ | (⋂_{S₁} Aⱼᶜ) ∩ (⋂_{S₂} Aⱼᶜ)] ≤ x. d ≠ ∞ from ne_top_of_le_ne_top on cond_ne_top; ENNReal.div_le_iff_le_mul turns μ(Aᵢ) ≤ x·d into μ(Aᵢ)/d ≤ x, chained after cond_failure_le_measure_div by le_trans. The namespace closes at line 149."
     }
   ],
