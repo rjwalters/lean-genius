@@ -2,7 +2,7 @@
   "slug": "weak-goldbach-oq-01",
   "title": "Strong Goldbach Conjecture: Every Even n > 2 is Sum of Two Primes",
   "phase": "ACT",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Toward discharging schnirelmann_basis_theorem: SchnirelmannBasis.lean (0 sorry / 0 axiom) now contains the covering lemma (sumset_covers_of_density_add_ge_one), the density->=1/2 basis-of-order-2 corollary, the analytic iteration input (exists_pow_deficiency_lt_half), and — as of iter 4 (r8) — the complete iteration bookkeeping: IsSumOfAtMost + composition (.add), the h-fold sum-set sumsetPow, and the reduction isAdditiveBasis_of_sumsetPow_density_ge_half (sigma(sumsetPow A h) >= 1/2 => IsAdditiveBasis A (2h)). The SOLE remaining ingredient is Schnirelmann's inequality sigma(A+B) >= sA+sB-sA*sB.",
+    "progressSummary": "COMPLETED (S-r8 2026-07-04): schnirelmann_basis_theorem axiom DISCHARGED — Schnirelmann theorem (σA>0 ⟹ additive basis) fully proved in SchnirelmannTheorem.lean (0-sorry/0-axiom, foundational only). WeakGoldbach axiomCount 5→4. Also repaired pre-existing Mathlib-4.26 bitrot that left WeakGoldbach.lean non-compiling on main. Remaining 4 weak-goldbach axioms (Helfgott/circle-method/Chen/binary-verify) are genuinely deep and stay axiomatized.",
     "builtItems": [
       "sumTwoPrimes_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:73 (per-n equivalence, 0-axiom)",
       "strong_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:98 (conjecture-level equivalence)",
@@ -51,7 +51,11 @@
       "card_even_totatives_eq_card_odd_totatives in StrongGoldbachSymmetric.lean: even/odd totatives of odd m>1 equinumerous (involution k->m-k), 0-axiom",
       "card_even_totatives_eq_totient_div_two in StrongGoldbachSymmetric.lean: #{even totatives of odd m} = phi(m)/2, 0-axiom",
       "symmetricPairCount_le_half_totient_of_odd_not_prime in StrongGoldbachSymmetric.lean: odd composite comet height <= phi(m)/2 (factor-2 sharper than totient bound), 0-axiom",
-      "SchnirelmannBasis.lean iter4 (r8): IsSumOfAtMost, .mono, .add (composition), sumsetPow, zero_mem_sumsetPow, isSumOfAtMost_multiset_sum, isAdditiveBasis_of_sumsetPow_density_ge_half (sigma(sumsetPow A h) >= 1/2 => IsAdditiveBasis A (2h)). 0 sorry / 0 axiom, docker-build 7743 jobs."
+      "SchnirelmannBasis.lean iter4 (r8): IsSumOfAtMost, .mono, .add (composition), sumsetPow, zero_mem_sumsetPow, isSumOfAtMost_multiset_sum, isAdditiveBasis_of_sumsetPow_density_ge_half (sigma(sumsetPow A h) >= 1/2 => IsAdditiveBasis A (2h)). 0 sorry / 0 axiom, docker-build 7743 jobs.",
+      "SchnirelmannTheorem.deficiency_sumsetPow_le (iterated inequality, 0-axiom)",
+      "SchnirelmannTheorem.schnirelmann_basis_of_zero_mem (0∈A case, 0-axiom)",
+      "SchnirelmannTheorem.schnirelmann_basis (full Schnirelmann theorem σA>0 ⟹ additive basis, 0-axiom)",
+      "WeakGoldbach.schnirelmann_basis_theorem: axiom → theorem (axiom eliminated, 5→4)"
     ],
     "insights": [
       "Strong Goldbach for even n=2m is equivalent to existence of a symmetric prime pair (m-k, m+k) with k<m — every Goldbach partition sits symmetrically about the midpoint n/2 (Goldbach comet).",
@@ -63,7 +67,10 @@
       "SCHNIRELMANN STARTER KIT (researcher-4 SURVEY, no code): Mathlib v4.26.0 has the schnirelmannDensity API (mul_le_card_filter, le_schnirelmannDensity_iff counting bridges; eq_one_iff terminal step) but NOT the subadditivity theorem. Missing crux: sigma(A+B) >= sigma A + sigma B - sigma A * sigma B (elementary covering count, Nathanson Thm 7.4, ~120-180 LOC) + iteration to density>1/2 + basis-of-order-2 (~150-250 LOC). Discharges schnirelmann_basis_theorem axiom and fills Mathlib TODO. The ONLY tractable axiom in WeakGoldbach.lean; the other 4 are deep/open.",
       "Closed-form density ceiling from any prime factor: for prime p|m, p<m, the Goldbach comet height satisfies symmetricPairCount m <= m - m/p = (1 - 1/p)*m. The p=2 case recovers the parity ceiling ceil(m/2) for even m.",
       "EULER-TOTIENT CEILING (researcher-14, 07-03): a nonzero comet offset k contributing a symmetric prime pair about m must be coprime to m (any common prime p|gcd(k,m) divides both m-k and m+k, forcing m-k=m+k). Hence symmetricPairCount m <= phi(m)+1, and <= phi(m) for composite m. This UNIFIES and STRICTLY DOMINATES all single-prime sieve bounds symmetricPairCount_le_sub_div, since phi(m)=m*prod(1-1/p) <= m(1-1/p)=m-m/p. Connects comet height to Mathlib Nat.totient. Concrete: phi(15)=8 < 10 = 15-15/3. Still an UPPER bound (a nontrivial lower bound remains the real open advance).",
-      "HALF-TOTIENT CEILING at odd midpoints (researcher-14, 07-03): for ODD m the parity constraint (contributing offset k even) and coprimality (k coprime m) are INDEPENDENT, since coprimality to an odd modulus says nothing about parity. A contributing offset is thus an EVEN totative of m. The involution k->m-k pairs even totatives with odd ones bijectively (preserves coprimality via Nat.coprime_self_sub_right, flips parity since m odd), so exactly phi(m)/2 totatives are even. Hence symmetricPairCount m <= phi(m)/2 for odd composite m — a FACTOR-OF-2 improvement over symmetricPairCount_le_totient_of_not_prime and the sharpest ceiling at odd midpoints. No gain for even m: coprimality to even m already forces k odd, so parity is redundant. Concrete: phi(15)/2=4 < 8=phi(15); comet height of 30 is 3. All 0-axiom (propext/Classical.choice/Quot.sound only)."
+      "HALF-TOTIENT CEILING at odd midpoints (researcher-14, 07-03): for ODD m the parity constraint (contributing offset k even) and coprimality (k coprime m) are INDEPENDENT, since coprimality to an odd modulus says nothing about parity. A contributing offset is thus an EVEN totative of m. The involution k->m-k pairs even totatives with odd ones bijectively (preserves coprimality via Nat.coprime_self_sub_right, flips parity since m odd), so exactly phi(m)/2 totatives are even. Hence symmetricPairCount m <= phi(m)/2 for odd composite m — a FACTOR-OF-2 improvement over symmetricPairCount_le_totient_of_not_prime and the sharpest ceiling at odd midpoints. No gain for even m: coprimality to even m already forces k odd, so parity is redundant. Concrete: phi(15)/2=4 < 8=phi(15); comet height of 30 is 3. All 0-axiom (propext/Classical.choice/Quot.sound only).",
+      "Iterated Schnirelmann inequality: 1 − σ(h·A) ≤ (1 − σA)^h, by induction from schnirelmann_inequality applied to sumsetPow A h ⊕ A ⊆ sumsetPow A (h+1). Base: σ(sumsetPow A 0)=σ{0}=0.",
+      "0∉A case of Schnirelmann reduces to insert 0 A (same density, schnirelmannDensity_insert_zero), then delete zero summands (they lie in {0}) — preserves sum, shrinks multiset.",
+      "WeakGoldbach.lean was bit-rotted on main (did not compile under Mathlib 4.26): exponentialSumOverPrimes needed noncomputable (Real.pi), representationCount_pos_iff broke on Finset.product mem API, vinogradov_from_circle_method positivity needed n>1 for log n>0."
     ],
     "mathlibGaps": [],
     "nextSteps": [

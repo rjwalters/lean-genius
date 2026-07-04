@@ -17,6 +17,7 @@ import Mathlib.Combinatorics.Schnirelmann
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Tactic
+import Proofs.SchnirelmannTheorem
 
 namespace WeakGoldbach
 
@@ -293,7 +294,7 @@ major arcs (near rationals a/q with small q) and minor arcs.
 
 /-- The exponential sum over primes: S(α) = Σ_{p ≤ N} e(pα)
     where e(x) = e^{2πix} -/
-def exponentialSumOverPrimes (N : ℕ) (α : ℝ) : ℂ :=
+noncomputable def exponentialSumOverPrimes (N : ℕ) (α : ℝ) : ℂ :=
   ∑ p ∈ Finset.range (N + 1), if Nat.Prime p then Complex.exp (2 * Real.pi * p * α * Complex.I) else 0
 
 /-- The representation count: r₃(n) = number of ways to write n as sum of 3 primes -/
@@ -306,15 +307,21 @@ def representationCount (n : ℕ) : ℕ :=
 /-- r₃(n) > 0 iff n is a sum of three primes -/
 theorem representationCount_pos_iff (n : ℕ) :
     0 < representationCount n ↔ IsSumOfThreePrimes n := by
+  rw [representationCount, Finset.card_pos]
   constructor
-  · intro h
-    simp [representationCount] at h
-    obtain ⟨⟨p, q, r⟩, hmem, _⟩ := Finset.card_pos.mp h
-    simp at hmem
-    exact ⟨p, q, r, hmem.1.1.2, hmem.1.2.2, hmem.2.2, by omega⟩
-  · intro ⟨p, q, r, hp, hq, hr, heq⟩
-    apply Finset.card_pos.mpr
-    exact ⟨⟨p, q, r⟩, by simp [representationCount]; exact ⟨⟨⟨by omega, hp⟩, ⟨by omega, hq⟩⟩, ⟨by omega, hr⟩, by omega⟩⟩
+  · rintro ⟨⟨p, q, r⟩, hx⟩
+    rw [Finset.mem_filter] at hx
+    obtain ⟨hmem, hsum⟩ := hx
+    simp only [Finset.mem_product, Finset.mem_filter, Finset.mem_range] at hmem
+    exact ⟨p, q, r, hmem.1.2, hmem.2.1.2, hmem.2.2.2, hsum.symm⟩
+  · rintro ⟨p, q, r, hp, hq, hr, hn⟩
+    refine ⟨(p, q, r), ?_⟩
+    rw [Finset.mem_filter]
+    refine ⟨?_, ?_⟩
+    · simp only [Finset.mem_product, Finset.mem_filter, Finset.mem_range]
+      exact ⟨⟨by omega, hp⟩, ⟨by omega, hq⟩, ⟨by omega, hr⟩⟩
+    · show p + q + r = n
+      omega
 
 /-- The singular series: S(n) = Π_p (1 + correction terms).
     S(n) > 0 for all odd n > 5, which is key to the circle method. -/
@@ -358,11 +365,21 @@ theorem vinogradov_from_circle_method :
     ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ → Odd n → IsSumOfThreePrimes n := by
   intro hasymptotic
   obtain ⟨N₀, hN₀⟩ := hasymptotic (1/2 : ℝ) (by norm_num)
-  exact ⟨N₀, fun n hn hodd => by
-    rw [← representationCount_pos_iff]
-    have h := hN₀ n hn hodd
-    -- r₃(n) > n²/(2 log³n) * (1/2) > 0 for large n
-    exact Nat.cast_pos.mp (lt_trans (by positivity) h)⟩
+  -- Enlarge the threshold to `max N₀ 2` so that `n ≥ 3`, hence `log n > 0` and the
+  -- lower bound `n²/(2·log³n)·(1/2)` is strictly positive (`positivity` cannot see
+  -- `log n > 0` without knowing `n > 1`).
+  refine ⟨max N₀ 2, fun n hn hodd => ?_⟩
+  rw [← representationCount_pos_iff]
+  have hnN₀ : n > N₀ := lt_of_le_of_lt (le_max_left N₀ 2) hn
+  have hn2 : 2 < n := lt_of_le_of_lt (le_max_right N₀ 2) hn
+  have h := hN₀ n hnN₀ hodd
+  have hlog : 0 < Real.log n := Real.log_pos (by exact_mod_cast (show 1 < n by omega))
+  have hpos : 0 < (n : ℝ) ^ 2 / ((Real.log n) ^ 3 * 2) * (1 - (1 / 2 : ℝ)) := by
+    have hnpos : 0 < (n : ℝ) := by exact_mod_cast (show 0 < n by omega)
+    have hden : 0 < (Real.log n) ^ 3 * 2 := mul_pos (pow_pos hlog 3) (by norm_num)
+    have hfrac : 0 < (n : ℝ) ^ 2 / ((Real.log n) ^ 3 * 2) := div_pos (pow_pos hnpos 2) hden
+    exact mul_pos hfrac (by norm_num)
+  exact Nat.cast_pos.mp (lt_trans hpos h)
 
 /- ═══════════════════════════════════════════════════════════════════════════════
 PART III: SCHNIRELMANN DENSITY AND ADDITIVE BASES
@@ -388,9 +405,18 @@ noncomputable abbrev schnirelmannDensity (A : Set ℕ) [DecidablePred (· ∈ A)
 def IsAdditiveBasis (A : Set ℕ) (h : ℕ) : Prop :=
   ∀ n : ℕ, ∃ (S : Multiset ℕ), (∀ x ∈ S, x ∈ A) ∧ S.card ≤ h ∧ S.sum = n
 
-/-- Schnirelmann's theorem: if σ(A) > 0, then A is an additive basis -/
-axiom schnirelmann_basis_theorem (A : Set ℕ) [DecidablePred (· ∈ A)] :
-    schnirelmannDensity A > 0 → ∃ h : ℕ, IsAdditiveBasis A h
+/-- Schnirelmann's theorem: if σ(A) > 0, then A is an additive basis.
+
+    Formerly an `axiom`; now proved in `Proofs.SchnirelmannTheorem`
+    (`SchnirelmannTheorem.schnirelmann_basis`), which assembles the machine-checked
+    Schnirelmann inequality (`SchnirelmannCounting.schnirelmann_inequality`) with the
+    covering/representation bookkeeping (`SchnirelmannBasis`). `IsAdditiveBasis A h`
+    unfolds to exactly the `∀ n, ∃ S, …` shape that theorem produces, and the local
+    `schnirelmannDensity` abbrev is definitionally Mathlib's, so the derivation is a
+    direct application. -/
+theorem schnirelmann_basis_theorem (A : Set ℕ) [DecidablePred (· ∈ A)] :
+    schnirelmannDensity A > 0 → ∃ h : ℕ, IsAdditiveBasis A h :=
+  fun hpos => SchnirelmannTheorem.schnirelmann_basis hpos
 
 /-- The primes have Schnirelmann density 0, because `1 ∉ {p | p.Prime}`.
 
