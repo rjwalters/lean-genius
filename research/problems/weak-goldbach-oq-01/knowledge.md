@@ -391,3 +391,58 @@ a concurrent process reset the working tree to origin/main. Recovered by working
 locked `/private/tmp/wt-r14-schnir` worktree, committing IMMEDIATELY before verifying,
 and verifying via `lake env lean` against the main repo's `.lake` oleans (fresh
 worktree has none). Do this from the start.
+
+## Session 2026-07-04 (researcher-8) — Close the iteration bookkeeping; only Schnirelmann's inequality remains (ACT, PROGRESS)
+
+**Mode**: ACT (build) · **Outcome**: 6 new verified lemmas in `SchnirelmannBasis.lean`
+(0 sorry / 0 axiom), reducing `schnirelmann_basis_theorem` to a *single* remaining lemma.
+
+Prior sessions built the **covering** engine (`sumset_covers_of_density_add_ge_one`,
+`basis_order_two_of_density_ge_half`) and *bracketed* the iteration with the analytic
+input `exists_pow_deficiency_lt_half` and the terminal `isAdditiveBasis_two_of_density_ge_half`.
+The stated remaining gaps were (1) Schnirelmann's inequality and (2) the "bookkeeping that an
+element of the iterated sum-set `h·A` is a sum of at most `h` elements of `A`". **This session
+fully closes (2)** — the entire multiset bookkeeping — leaving (1) as the ONLY missing piece.
+
+**Built (`SchnirelmannBasis.lean`, all kernel-checked, pure tactics):**
+- `IsSumOfAtMost A h n` — `n` is a sum of ≤ `h` elements of `A` (the exact `Multiset` shape of
+  `WeakGoldbach.IsAdditiveBasis A h` at a single point).
+- `zero_isSumOfAtMost` — `0` is always such a sum (empty multiset; no `0 ∈ A` needed).
+- `IsSumOfAtMost.mono` — relax the summand budget `h ≤ h'`.
+- `IsSumOfAtMost.add` — **composition**: `IsSumOfAtMost A h₁ m → IsSumOfAtMost A h₂ p →
+  IsSumOfAtMost A (h₁+h₂) (m+p)` (concatenate witnessing multisets; `Multiset.mem_add`,
+  `card_add`, `sum_add`).
+- `sumsetPow A h := {n | IsSumOfAtMost A h n}` + `zero_mem_sumsetPow` (0 is free — supplies the
+  `0 ∈ ·` hypothesis the covering lemma needs).
+- `isSumOfAtMost_multiset_sum` — by `Multiset.induction`: if every entry of `S` lies in
+  `sumsetPow A h`, then `S.sum` is a sum of ≤ `S.card · h` elements of `A`.
+- **`isAdditiveBasis_of_sumsetPow_density_ge_half`** (capstone reduction):
+  `σ(sumsetPow A h) ≥ 1/2 → IsAdditiveBasis A (2h)`. Composes
+  `isAdditiveBasis_two_of_density_ge_half` (density ≥ ½ ⇒ the sum-set is a basis of order 2) with
+  `isSumOfAtMost_multiset_sum` (each sum-set element unpacks to ≤ `h` `A`-elements), giving the
+  order-2h basis in the `IsAdditiveBasis` `Multiset` shape.
+
+**Net effect on the reduction.** The chain to `schnirelmann_basis_theorem` is now:
+`σA>0` → (Schnirelmann's inequality, OPEN) → `σ(sumsetPow A h)>½` for some `h` → (this session's
+reduction, DONE) → `IsAdditiveBasis A (2h)`. **Only Schnirelmann's inequality
+`σ(A⊕B) ≥ σA+σB−σA·σB` remains** — the delicate gap-counting step (Nathanson *Additive Number
+Theory* Thm 7.4 / Ruzsa), est. ~120–180 LOC, still the hard part and an explicit Mathlib TODO.
+
+**Gotcha.** `hsum.mono (by gcongr)` fails with an *unconstrained metavariable* budget `h'`
+("Application type mismatch") — `gcongr` has no target to reduce against. Fix: give the result an
+explicit type `IsSumOfAtMost A (2*h) n` and pass `mul_le_mul_right' hSc h` for `S.card·h ≤ 2·h`.
+
+**Verification**: `docker-build.sh Proofs.SchnirelmannBasis` → **Built (7743 jobs, exit 0)**.
+New lemmas use only `obtain`/`rw`/`simp`/`induction`/`ring`/`exact`/`mul_le_mul_right'` — no
+`decide`/`native_decide`/`sorry`/`axiom` — and depend only on the file's already-0-axiom lemmas,
+so `#print axioms` stays `[propext, Classical.choice, Quot.sound]`. Does NOT touch the open
+binary-Goldbach conjecture (still legitimately axiomatized).
+
+**Env note.** `.loom/worktrees/researcher-8` is orphaned (broken `.git`). Worked in a detached
+`/private/tmp/wt-r8-schnir` worktree off `origin/main`, committed before building. The hardlinked
+`.lake` fought `lake exe cache get` (permission-denied on `.olean.private.hash` overwrites under
+Docker FUSE); verified instead by building the edited file against the MAIN repo's fully-populated
+writable `.lake` (copy-in, build, restore) — clean and reliable.
+
+**Aristotle** MCP was reachable this session but not used: the residual gap (Schnirelmann's
+inequality) is a gap-counting construction, not a named-lemma lookup Aristotle resolves.
