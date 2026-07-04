@@ -130,12 +130,20 @@
       "mathContext": "$g(n)=\\sum_{i<n}\\zeta^i$. For $n=1$ this is $\\zeta^0=1$; for $n>1$ the geometric series telescopes to $0$ since $\\zeta\\neq 1$ but $\\zeta^n=1$."
     },
     {
-      "id": "main-inversion",
-      "title": "Part III: Möbius Inversion Yields μ(n)",
-      "summary": "sum_primitiveRoots_eq_moebius: the partition ∑_{d∣n} f(d) = g(n) (sum_biUnion + disjointness) feeds Möbius inversion; only the divisor d = 1 survives, giving μ(n)·g(1) = μ(n)",
+      "id": "divisor-partition",
+      "title": "Part III: The Divisor Partition ∑_{d∣n} f(d) = g(n)",
+      "summary": "sum_primitiveRoots_eq_moebius, phase 1 (the hpart block): since every n-th root of unity is primitive of a unique order d ∣ n, the root set is the disjoint biUnion of primitiveRoots d over d ∣ n; IsPrimitiveRoot.disjoint gives pairwise disjointness and Finset.sum_biUnion turns it into ∑_{d∣n} f(d) = g(n) for every n > 0.",
       "startLine": 79,
-      "endLine": 123,
-      "mathContext": "$f(n)=\\sum_{ab=n}\\mu(a)g(b)=\\mu(n)g(1)=\\mu(n)$ — the sparse support of $g$ collapses the inverted divisor sum to one term."
+      "endLine": 96,
+      "mathContext": "$\\sum_{d\\mid n} f(d) = g(n)$ via `IsPrimitiveRoot.nthRoots_one_eq_biUnion_primitiveRoots` and `Finset.sum_biUnion` over the pairwise-disjoint primitive-root sets."
+    },
+    {
+      "id": "moebius-inversion",
+      "title": "Part IV: Möbius Inversion Collapses to μ(n)",
+      "summary": "sum_primitiveRoots_eq_moebius, phase 2: ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq inverts the partition to f(n) = ∑_{(a,b):ab=n} μ(a)·g(b); Finset.sum_eq_single picks out (a,b) = (n,1), since g(b) = 0 for every b ≠ 1, leaving μ(n)·g(1) = μ(n). The n = 0 case is dispatched separately (empty sum = 0 = μ(0)).",
+      "startLine": 97,
+      "endLine": 125,
+      "mathContext": "$f(n)=\\sum_{ab=n}\\mu(a)g(b)=\\mu(n)g(1)=\\mu(n)$ — the sparse support of $g$ ($g(b)=[b=1]$) collapses the inverted divisor sum to one term."
     }
   ],
   "conclusion": {
