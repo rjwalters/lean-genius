@@ -50,22 +50,31 @@
   },
   "references": [
     {
-      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
-      "title": "How Small Is a Unit Ball?",
-      "year": "1989",
-      "venue": "Mathematics Magazine 62(2), 101–107"
+      "authors": "Folland, Gerald B.",
+      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
+      "year": "1999",
+      "venue": "Wiley",
+      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
     },
     {
       "authors": "Artin, Emil",
       "title": "The Gamma Function",
       "year": "1964",
-      "venue": "Holt, Rinehart and Winston (English translation by Michael Butler)"
+      "venue": "Holt, Rinehart and Winston",
+      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
+    },
+    {
+      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
+      "title": "How Small Is a Unit Ball?",
+      "year": "1989",
+      "venue": "Mathematics Magazine 62(2), 101–107",
+      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
     },
     {
       "authors": "The mathlib Community",
-      "title": "Real.Gamma_add_one (z·Γ(z)=Γ(z+1)); Analysis.SpecialFunctions.Gamma.Basic",
+      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
       "year": "2024",
-      "venue": "Mathlib4 (leanprover-community/mathlib4)"
+      "venue": "Mathlib4"
     }
   ],
   "overview": {
@@ -146,35 +155,6 @@
       "At which dimension is $\\omega_n$ maximized? ($n = 5$ gives the maximum among integer dimensions)"
     ]
   },
-  "references": [
-    {
-      "authors": "Folland, Gerald B.",
-      "title": "Real Analysis: Modern Techniques and Their Applications (2nd ed.)",
-      "year": "1999",
-      "venue": "Wiley",
-      "note": "Volume of the n-ball via the Gamma function and spherical coordinates."
-    },
-    {
-      "authors": "Artin, Emil",
-      "title": "The Gamma Function",
-      "year": "1964",
-      "venue": "Holt, Rinehart and Winston",
-      "note": "Functional equation Γ(x+1)=x·Γ(x) and log-convexity."
-    },
-    {
-      "authors": "Smith, David J. and Vamanamurthy, Mavina K.",
-      "title": "How Small Is a Unit Ball?",
-      "year": "1989",
-      "venue": "Mathematics Magazine 62(2), 101–107",
-      "note": "Growth-then-decay of unit n-ball volume, the n=5 maximum, and monotonicity/shape properties."
-    },
-    {
-      "authors": "The mathlib Community",
-      "title": "Real.Gamma, EuclideanSpace.volume_ball, and Stirling's formula (Mathlib.Analysis.SpecialFunctions.Gamma / .Stirling)",
-      "year": "2024",
-      "venue": "Mathlib4"
-    }
-  ],
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -190,5 +170,61 @@
     "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "omega_recurrence",
+      "type": "core",
+      "description": "The unit n-ball volume satisfies the two-step recurrence ω_{n+2} = (2π/(n+2))·ω_n for all n, a direct consequence of the Gamma identity Γ(z+1) = z·Γ(z).",
+      "leanType": "(n : ℕ) : ω (n + 2) = 2 * π / (↑n + 2) * ω n"
+    },
+    {
+      "name": "omega_zero",
+      "type": "supporting",
+      "description": "Base case: the volume of the unit 0-ball (a single point) is 1.",
+      "leanType": "ω 0 = 1"
+    },
+    {
+      "name": "omega_one",
+      "type": "supporting",
+      "description": "Base case: the volume of the unit 1-ball (the interval [-1,1]) is 2.",
+      "leanType": "ω 1 = 2"
+    },
+    {
+      "name": "omega_pos",
+      "type": "supporting",
+      "description": "Every unit n-ball volume is strictly positive.",
+      "leanType": "(n : ℕ) : 0 < ω n"
+    },
+    {
+      "name": "gamma_half_pos",
+      "type": "supporting",
+      "description": "The Gamma value Γ(n/2 + 1) is strictly positive for all natural n, used in the recurrence proof.",
+      "leanType": "(n : ℕ) : 0 < Gamma ((n : ℝ) / 2 + 1)"
+    },
+    {
+      "name": "omega_two_via_recurrence",
+      "type": "supporting",
+      "description": "Computes ω_2 = π by applying the recurrence to the base case ω_0 = 1.",
+      "leanType": "ω 2 = π"
+    },
+    {
+      "name": "omega_three_via_recurrence",
+      "type": "supporting",
+      "description": "Computes ω_3 = 4π/3 by applying the recurrence to the base case ω_1 = 2.",
+      "leanType": "ω 3 = 4 * π / 3"
+    },
+    {
+      "name": "omega_four_via_recurrence",
+      "type": "supporting",
+      "description": "Computes ω_4 = π²/2 by applying the recurrence to ω_2 = π.",
+      "leanType": "ω 4 = π ^ 2 / 2"
+    },
+    {
+      "name": "omega_five_via_recurrence",
+      "type": "supporting",
+      "description": "Computes ω_5 = 8π²/15 by applying the recurrence to ω_3 = 4π/3.",
+      "leanType": "ω 5 = 8 * π ^ 2 / 15"
+    }
+  ],
   "sorries": 0
 }
