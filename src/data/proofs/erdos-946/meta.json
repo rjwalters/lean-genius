@@ -130,6 +130,32 @@
     "path": "Proofs/Erdos946Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "erdos_946",
+      "type": "core",
+      "description": "Erdős Problem 946: there are infinitely many n such that τ(n) = τ(n+1), resolved affirmatively by Heath-Brown (1984).",
+      "leanType": ": consecutiveEqualDivisors.Infinite"
+    },
+    {
+      "name": "heathBrown_infinitely_many",
+      "type": "axiom",
+      "description": "Axiom encoding Heath-Brown's 1984 analytic result that the set of n with τ(n) = τ(n+1) is infinite.",
+      "leanType": ": consecutiveEqualDivisors.Infinite"
+    },
+    {
+      "name": "tau",
+      "type": "supporting",
+      "description": "The divisor counting function τ(n), defined as the cardinality of Mathlib's Nat.divisors n.",
+      "leanType": "(n : ℕ) : ℕ"
+    },
+    {
+      "name": "consecutiveEqualDivisors",
+      "type": "supporting",
+      "description": "The set of natural numbers n for which τ(n) equals τ(n+1).",
+      "leanType": ": Set ℕ"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-122",
