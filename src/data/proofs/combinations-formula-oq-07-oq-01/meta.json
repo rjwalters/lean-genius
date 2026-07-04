@@ -149,5 +149,22 @@
       "venue": "CPP",
       "note": "Provides Nat.choose, Nat.fib, and the antidiagonal/binomial API underlying this formalization."
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "choose_mul_choose",
+      "statement": "m ≤ k → k ≤ n → C(n,k)·C(k,m) = C(n,m)·C(n−m,k−m)",
+      "description": "The subset-of-a-subset identity (trinomial revision): choosing a k-committee from n people and then an m-subcommittee equals choosing the m-subcommittee first and then the remaining k−m committee seats from the n−m leftovers. Mathlib's missing multiplicative companion to Vandermonde; proved by multiplying both sides by the shared denominator m!·(k−m)!·(n−k)! and collapsing each to n! via Nat.choose_mul_factorial_mul_factorial, then cancelling the positive denominator."
+    },
+    {
+      "name": "choose_mul_choose_of_le'",
+      "statement": "m ≤ k → k ≤ n → C(n,k)·C(k,m) = C(n,m)·C(n−m,n−k)",
+      "description": "The central-blocks (symmetric) form, obtained from choose_mul_choose by rewriting the leftover block with Nat.choose_symm: C(n−m,k−m) = C(n−m,n−k). Counts the unused seats from the top of the block rather than the bottom."
+    },
+    {
+      "name": "mul_choose_eq",
+      "statement": "1 ≤ k → k ≤ n → k·C(n,k) = n·C(n−1,k−1)",
+      "description": "The absorption / committee-chair corollary, recovered as the m = 1 slice of trinomial revision via Nat.choose_one_right (C(n,1) = n). Not independent mathematics but a one-line specialization; it is the engine behind weighted row sums such as ∑ k·C(n,k) = n·2^{n−1}."
+    }
   ]
 }
