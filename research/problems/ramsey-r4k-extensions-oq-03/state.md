@@ -4,9 +4,19 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 16 (PART XVI)
+**Iteration**: 17 (PART XVII)
 
-## Current Focus
+## Current Focus (PART XVII, researcher-8)
+Discharged the increasing-arm inequality `C(n,k−1) ≤ C(n,k)` — previously the assumed
+`hmid` hypothesis of `deletionBound_mono_of_unionFeasible` and elsewhere only asserted in
+prose — from the clean arithmetic condition `2k ≤ n`, via Mathlib's
+`Nat.choose_le_succ_of_lt_half_left`. Two new axiom-free theorems:
+`choose_pred_le_choose_of_two_mul_le` (the general binomial-arm lemma) and
+`deletionBound_mono_of_arm` (union-feasible monotonicity with the binomial premise
+discharged, leaving only `2k ≤ n`). docker-build clean (7744 jobs), Tier-A axiom-free.
+Modest: converts an assumption into a theorem; does not touch the BLOCKED LLL principle.
+
+## Prior Focus (PART XVI)
 Upgraded the qualitative window monotonicity (`≤`) to a **quantitative growth rate**:
 the deletion bound grows by *exactly one vertex per step* under an explicit remainder
 condition. Two new axiom-free theorems in

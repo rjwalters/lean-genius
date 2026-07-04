@@ -449,6 +449,50 @@ construction: probability space + mutual-independence `hindep`) remains the one 
 ingredient (BLOCKED). See sibling `lovasz-local-lemma-oq-01`. All finite/combinatorial and
 now the window-monotonicity content is discharged axiom-free.
 
+## PART XVII — increasing-arm inequality C(n,k−1) ≤ C(n,k) discharged from 2k ≤ n (researcher-8, 2026-07-04)
+
+**Mode**: REVISIT (RICH, score 38). **Outcome**: progress (+2 axiom-free theorems in
+`RamseyR4kExtensionsOQ03Deletion.lean`; still 0 sorries / 0 axioms).
+**Machine-verified**: docker-build clean, 7744 jobs, exit 0; `#print axioms` for both new
+theorems = `propext / Classical.choice / Quot.sound` only (Tier-A axiom-free).
+
+### What this closes
+Every deletion-window monotonicity theorem (`deletionBound_mono_of_unionFeasible`,
+`deletionBound_mono_window`) rests on the fact that the `(k−1)`-window sits above the
+`k`-window, i.e. `C(n,k−1) ≤ C(n,k)` — the structural reason the deletion optimum is
+pushed strictly past the union cap. Until now that inequality was **assumed** (the `hmid`
+hypothesis of `deletionBound_mono_of_unionFeasible`) or only **asserted in prose**
+("automatic in the Ramsey regime `k−1 < n/2`"). This session proves it outright.
+
+### Shipped
+- **`choose_pred_le_choose_of_two_mul_le (hk : 2 ≤ k) (harm : 2 * k ≤ n)`** ⇒
+  `n.choose (k-1) ≤ n.choose k`. Proof: `obtain ⟨m, rfl⟩ : k = m+1`, then `m < n/2`
+  follows from `2*(m+1) ≤ n` by `omega`, and `Nat.choose_le_succ_of_lt_half_left`
+  (Mathlib, `Mathlib.Data.Nat.Choose.Basic`) gives `n.choose m ≤ n.choose (m+1)`. The
+  side condition `2k ≤ n` is the natural "increasing arm" regime and holds for every
+  concrete witness here (`n ≈ 2^{k/2} ≫ 2k`).
+- **`deletionBound_mono_of_arm (hk)(hkn : k ≤ n)(harm : 2*k ≤ n)(hunion)`** ⇒
+  `deletionBound n k ≤ deletionBound (n+1) k`. Same conclusion as
+  `deletionBound_mono_of_unionFeasible` but with the assumed binomial premise
+  `C(n,k−1) ≤ C(n,k)` replaced by the transparent arithmetic condition `2k ≤ n` — no
+  binomial premise left to the caller. One-line corollary composing the two.
+
+### Note / honest scope
+This is modest: it converts one assumed inequality into a proved lemma and adds a
+hypothesis-clean corollary. It does not advance the genuinely open item
+(`SymmetricLLLForRamsey`, the >1000-line LLL avoidance principle, BLOCKED since PART VIII)
+and does not add a new concrete `k` witness. Mathlib lemma name confirmed via the
+mathlib4 docs before building (`Nat.choose_le_succ_of_lt_half_left {r n} (h : r < n/2)`).
+
+### Gotcha (contra PART XIII)
+The `.loom/worktrees/researcher-8` worktree IS genuinely isolated here — `show-toplevel`
+returns the worktree path and `git-dir` is `.git/worktrees/researcher-8` (checked before
+editing). This differs from researcher-14's PART XIII experience where its "worktree"
+shared the main-repo checkout and a deployer `git reset --hard` wiped edits. Verify with
+`git rev-parse --show-toplevel` before trusting isolation.
+
+---
+
 ## PART XVI — exact growth rate: +1 vertex per step (researcher-5, 2026-07-04)
 
 **Mode**: ACT (RICH, score 36). **Outcome**: progress (+2 verified theorems, axiom-free).
