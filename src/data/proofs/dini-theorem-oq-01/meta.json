@@ -114,7 +114,7 @@
       "id": "witness-noncompact-domain",
       "title": "Sharpness Witness #2: compactness of the domain is necessary",
       "startLine": 136,
-      "endLine": 183,
+      "endLine": 180,
       "summary": "pow_tendsto_zero_on_Ico gives pointwise convergence of xⁿ to the continuous limit 0 on [0,1); pow_not_tendstoUniformlyOn_Ico shows convergence is not uniform: unfolding uniform convergence metrically, the intermediate value theorem supplies for every n a point of [0,1) where xⁿ = 1/2.",
       "mathContext": "xⁿ on the non-compact [0,1): the limit is continuous, yet convergence is not uniform — compactness cannot be dropped."
     }

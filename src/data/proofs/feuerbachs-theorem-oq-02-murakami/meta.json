@@ -102,7 +102,7 @@
       "id": "proof-notes",
       "title": "Proof Notes: Coefficient Discipline and Surd Cancellation",
       "startLine": 101,
-      "endLine": 125,
+      "endLine": 124,
       "summary": "Commentary recording that the build is GREEN (Lean-checked 2026-06-15, 0 sorry / 0 axiom, registered in Proofs.lean) and corroborated by the symbolic certificate verify_grace_proof_certificate.py (15/15 PASS). Explains why the incidence goals are genuine 2σ-cleared identities (not bare (a+b+c)⁻² identities) and why each tangency goal needs field_simp before linear_combination 2*ht.",
       "mathContext": "The even-in-t cancellation (odd-in-t part ≡ 0; the even part forcing the shared pencil constant G = abc/σ) is the structural reason the SAME Θ, R are tangent to both spheres of the D-homothety pair. This mirrors the 2D Feuerbach mechanism where one circle touches both incircle and an excircle."
     }

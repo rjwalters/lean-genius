@@ -121,7 +121,7 @@
       "id": "axiom-audit",
       "title": "Axiom Audit",
       "startLine": 186,
-      "endLine": 191,
+      "endLine": 190,
       "summary": "Closes the namespace and runs #print axioms on the main regularity theorem tendsto_toeplitz, documenting that it depends only on the foundational axioms propext / Classical.choice / Quot.sound — no sorryAx and no Lean.ofReduceBool. This substantiates the entry's 0-sorry, 0-axiom 'verified' status.",
       "mathContext": "The absence of Lean.ofReduceBool confirms no native_decide/decide was used to discharge a substantive step; per the project's axiom-integrity policy the ordinary foundational axioms do not count against a verified badge."
     }

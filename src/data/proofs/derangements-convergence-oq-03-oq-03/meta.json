@@ -110,7 +110,7 @@
       "id": "sec-main",
       "title": "Main Theorem: Second-Order Sandwich",
       "startLine": 144,
-      "endLine": 177,
+      "endLine": 175,
       "summary": "derangements_second_order_sandwich: combines the error identity with the two-sided tail bounds, multiplies by n!, and simplifies the factorial ratios n!/(n+1)! = 1/(n+1), n!/(n+2)! = 1/((n+1)(n+2)) to deliver the sandwich for every n.",
       "mathContext": "Multiplying $1/(n+1)! - 1/(n+2)! \\le A(n+1) \\le 1/(n+1)!$ by $n!$ gives $1/(n+1) - 1/((n+1)(n+2)) \\le |D(n)-n!/e| \\le 1/(n+1)$."
     }

@@ -103,7 +103,7 @@
       "id": "corollary",
       "title": "The Compression Corollary",
       "startLine": 98,
-      "endLine": 139,
+      "endLine": 138,
       "summary": "cauchy_interlacing_compression: pulls the spectral data of T (on V) and of compress T H (on H) from Mathlib's spectral theorem, packages rayleigh_compress_eq as the Rayleigh hypothesis, and applies the parent's cauchy_interlacing to conclude λ(k.succ) ≤ μ(k) ∧ μ(k) ≤ λ(k.castSucc).",
       "mathContext": "The unconditional operator-level Cauchy interlacing theorem: any symmetric operator interlaces its compression to any hyperplane."
     }

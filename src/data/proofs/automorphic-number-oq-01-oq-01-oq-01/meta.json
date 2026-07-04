@@ -169,7 +169,7 @@
       "id": "local-product-mechanism",
       "title": "Part III: The product-of-local-rings mechanism (the open question)",
       "startLine": 174,
-      "endLine": 273,
+      "endLine": 251,
       "summary": "isIdempotentElem_iff_eq_zero_or_one_of_isLocalRing: a local ring has only the idempotents 0 and 1 (via IsLocalRing.isUnit_or_isUnit_one_sub_self and e·(1−e)=0, using IsUnit.mul_right_eq_zero — no NoZeroDivisors, since a local ring like ZMod pᵏ has zero divisors). idempotent_count_local: the idempotent subtype is equivalent to the two-element set {0,1}, so Nat.card_coe_set_eq and Set.ncard_pair give 2. isIdempotentElem_pi_iff: idempotents of a product ring are exactly the coordinatewise idempotents. idempotent_count_pi_local: subtypeEquivRight and subtypePiEquivPi give {idempotents of ∏ Rᵢ} ≃ ∀ i, {idempotents of Rᵢ}, so Nat.card_pi turns the count into a product of 2 over the factors, i.e. 2^(card ι). idempotent_count_of_ringEquiv: transports the count across any ring isomorphism S ≃+* ∏ Rᵢ (idempotents correspond under a ring iso via map_mul and injectivity), the form applicable to ZMod n and 𝒪_K/𝔞 via CRT.",
       "mathContext": "The count is 2^(number of local factors) because each local factor of the CRT decomposition contributes an independent binary idempotent choice."
     }
