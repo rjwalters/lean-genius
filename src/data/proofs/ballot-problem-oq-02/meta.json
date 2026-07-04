@@ -288,5 +288,85 @@
       }
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "BrownianMotion",
+      "type": "supporting",
+      "description": "Axiomatic structure for standard Brownian motion on a probability space, bundling measurability, a.s. zero start, Gaussian marginals, distributional symmetry, positive-probability of positivity, and a.s. continuous sample paths.",
+      "leanType": "structure BrownianMotion (Ω : Type*) [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ] where"
+    },
+    {
+      "name": "prob_pos_eq_prob_neg",
+      "type": "supporting",
+      "description": "Brownian motion is equally likely to be positive or negative at time t: P(W_t > 0) = P(W_t < 0), a consequence of the symmetry of W and -W.",
+      "leanType": "(bm : BrownianMotion Ω μ) (t : ℝ) : μ {ω | bm.W t ω > 0} = μ {ω | bm.W t ω < 0}"
+    },
+    {
+      "name": "positive_and_negative_likely",
+      "type": "supporting",
+      "description": "For t > 0 both P(W_t > 0) and P(W_t < 0) are strictly positive, so both signs occur with positive probability.",
+      "leanType": "(bm : BrownianMotion Ω μ) (t : ℝ) (ht : 0 < t) : 0 < μ {ω | bm.W t ω > 0} ∧ 0 < μ {ω | bm.W t ω < 0}"
+    },
+    {
+      "name": "firstPassageTime",
+      "type": "supporting",
+      "description": "The first passage time to level a: the infimum of times t ≥ 0 at which W_t reaches at least a.",
+      "leanType": "noncomputable def firstPassageTime (bm : BrownianMotion Ω μ) (a : ℝ) : Ω → ℝ := fun ω => sInf {t | 0 ≤ t ∧ bm.W t ω ≥ a}"
+    },
+    {
+      "name": "maxEvent",
+      "type": "supporting",
+      "description": "The event that the maximum of W over the interval [0, T] reaches at least a.",
+      "leanType": "def maxEvent (bm : BrownianMotion Ω μ) (a T : ℝ) : Set Ω := {ω | ∃ s ∈ Set.Icc 0 T, bm.W s ω ≥ a}"
+    },
+    {
+      "name": "firstPassageTime_eq_maxEvent",
+      "type": "axiom",
+      "description": "For continuous-path Brownian motion, the event {τ_a ≤ T} equals the maximum event {max over [0,T] W ≥ a}, using path continuity and closedness of the hitting set.",
+      "leanType": "axiom firstPassageTime_eq_maxEvent {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ] (bm : BrownianMotion Ω μ) (a T : ℝ) (ha : 0 < a) (hT : 0 < T) : {ω | firstPassageTime bm a ω ≤ T} = maxEvent bm a T"
+    },
+    {
+      "name": "reflection_principle",
+      "type": "axiom",
+      "description": "Lévy's reflection principle: for a, T > 0, P(max over [0,T] W ≥ a) = 2·P(W_T ≥ a), reflecting paths at the first hitting time via the strong Markov property.",
+      "leanType": "axiom reflection_principle (bm : BrownianMotion Ω μ) (a T : ℝ) (ha : 0 < a) (hT : 0 < T) : μ (maxEvent bm a T) = 2 * μ {ω | bm.W T ω ≥ a}"
+    },
+    {
+      "name": "first_passage_cdf",
+      "type": "core",
+      "description": "The first passage time CDF: P(τ_a ≤ T) = 2·P(W_T ≥ a), obtained by combining the passage-time/max-event equivalence with the reflection principle.",
+      "leanType": "(bm : BrownianMotion Ω μ) (a T : ℝ) (ha : 0 < a) (hT : 0 < T) : μ {ω | firstPassageTime bm a ω ≤ T} = 2 * μ {ω | bm.W T ω ≥ a}"
+    },
+    {
+      "name": "first_passage_monotone",
+      "type": "supporting",
+      "description": "Passage probabilities are monotone in the level: for b ≤ a the probability of reaching a by time T is at most that of reaching b, since higher levels take at least as long.",
+      "leanType": "(bm : BrownianMotion Ω μ) {a b T : ℝ} (ha : 0 < a) (hb : 0 < b) (hT : 0 < T) (hab : b ≤ a) : μ {ω | firstPassageTime bm a ω ≤ T} ≤ μ {ω | firstPassageTime bm b ω ≤ T}"
+    },
+    {
+      "name": "first_passage_pos",
+      "type": "supporting",
+      "description": "If P(W_T ≥ a) > 0 then the passage probability P(τ_a ≤ T) is strictly positive, following from the CDF formula and Gaussian full support.",
+      "leanType": "(bm : BrownianMotion Ω μ) (a T : ℝ) (ha : 0 < a) (hT : 0 < T) : 0 < μ {ω | bm.W T ω ≥ a} → 0 < μ {ω | firstPassageTime bm a ω ≤ T}"
+    },
+    {
+      "name": "positiveTime",
+      "type": "supporting",
+      "description": "The (real-valued) amount of time within [0, T] during which W is positive, defined via the restricted Lebesgue measure of the positive-value set.",
+      "leanType": "noncomputable def positiveTime (bm : BrownianMotion Ω μ) (T : ℝ) : Ω → ℝ := fun ω => (MeasureTheory.Measure.restrict volume (Set.Icc 0 T)) {s | bm.W s ω > 0} |>.toReal"
+    },
+    {
+      "name": "continuous_ballot_theorem",
+      "type": "core",
+      "description": "The continuous-time ballot theorem package: for a, T > 0 with P(W_T ≥ a) > 0, it bundles the reflection principle, equality of the passage CDF with the max-event measure, and positivity of the passage probability.",
+      "leanType": "(bm : BrownianMotion Ω μ) (a T : ℝ) (ha : 0 < a) (hT : 0 < T) (hGauss : 0 < μ {ω | bm.W T ω ≥ a}) : μ (maxEvent bm a T) = 2 * μ {ω | bm.W T ω ≥ a} ∧ μ {ω | firstPassageTime bm a ω ≤ T} = μ (maxEvent bm a T) ∧ 0 < μ {ω | firstPassageTime bm a ω ≤ T}"
+    },
+    {
+      "name": "discrete_ballot_probability",
+      "type": "core",
+      "description": "The discrete ballot theorem (Bertrand 1887): for p > q the value (p-q)/(p+q) is a valid probability in [0,1], the finite lattice-path analog of the continuous reflection argument.",
+      "leanType": "(p q : ℕ) (h : q < p) : ∃ (r : ℝ), r = ((p : ℝ) - q) / (p + q) ∧ 0 ≤ r ∧ r ≤ 1"
+    }
+  ],
   "sorries": 0
 }
