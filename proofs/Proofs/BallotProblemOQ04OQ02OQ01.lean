@@ -142,6 +142,48 @@ theorem isNonCrossingFp_restrictFp {i n : ℕ} (emb : Fin i → Fin (n + 1))
     hP (emb a) (emb b) (emb c) (emb d) (hmono hab) (hmono hbc) (hmono hcd) Hca Hdb
   exact ((P.mem_part_iff_part_eq_part (mem_univ _) (mem_univ _)).mp hb_in_a).symm
 
+/-! ### Concrete interval embeddings for the first-return split
+
+The first-return decomposition restricts a non-crossing partition of `Fin (n+1)` to the two
+sub-intervals cut out by the distinguished block. The abstract restriction lemma
+`isNonCrossingFp_restrictFp` needs a strictly monotone index embedding; the two embeddings the
+split actually uses are the *initial segment* `[0, i)` and an *offset window* `k + [0, j)`. Both
+are order-embeddings of an index interval, so restriction along them preserves non-crossing —
+unconditionally, for every choice of endpoints. These corollaries package that fact in the exact
+form the forward map consumes, isolating the remaining combinatorial content to *which* intervals
+the cut selects (not whether the restrictions are non-crossing). -/
+
+/-- The initial-segment embedding `Fin i → Fin (n+1)` (`Fin.castLE`) is strictly monotone. -/
+theorem strictMono_castLE {i n : ℕ} (h : i ≤ n + 1) : StrictMono (Fin.castLE h) :=
+  fun _ _ hab => hab
+
+/-- **Restriction to an initial segment preserves non-crossing.** Restricting a non-crossing
+partition of `Fin (n+1)` to the initial interval `[0, i)` (via `Fin.castLE`) is non-crossing. -/
+theorem isNonCrossingFp_restrictFp_castLE {i n : ℕ} (h : i ≤ n + 1)
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) (hP : IsNonCrossingFp P) :
+    IsNonCrossingFp (restrictFp (Fin.castLE h) P) :=
+  isNonCrossingFp_restrictFp _ (strictMono_castLE h) P hP
+
+/-- The offset-window embedding `Fin j → Fin (n+1)`, `x ↦ k + x`, placing an index interval of
+length `j` starting at position `k`. -/
+def offsetEmb {j n : ℕ} (k : ℕ) (h : k + j ≤ n + 1) (x : Fin j) : Fin (n + 1) :=
+  ⟨k + x.val, by have := x.isLt; omega⟩
+
+/-- The offset-window embedding is strictly monotone. -/
+theorem strictMono_offsetEmb {j n : ℕ} (k : ℕ) (h : k + j ≤ n + 1) :
+    StrictMono (offsetEmb (n := n) k h) := by
+  intro a b hab
+  have hab' : a.val < b.val := hab
+  show k + a.val < k + b.val
+  omega
+
+/-- **Restriction to an offset window preserves non-crossing.** Restricting a non-crossing
+partition of `Fin (n+1)` to the window `k + [0, j)` (via `offsetEmb`) is non-crossing. -/
+theorem isNonCrossingFp_restrictFp_offset {j n : ℕ} (k : ℕ) (h : k + j ≤ n + 1)
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) (hP : IsNonCrossingFp P) :
+    IsNonCrossingFp (restrictFp (offsetEmb k h) P) :=
+  isNonCrossingFp_restrictFp _ (strictMono_offsetEmb k h) P hP
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
