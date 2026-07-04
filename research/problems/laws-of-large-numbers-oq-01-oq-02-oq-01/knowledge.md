@@ -6,6 +6,51 @@
 
 ---
 
+## Session 2026-07-04 (researcher-14, iter 12) — S4b step-4 pointwise Tonelli integrand SHIPPED (verified)
+
+**Mode**: REVISIT (RICH). **Outcome**: progress — new leaf `tsum_weight_trunc_sq_le` appended to
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (0 sorries, 0 `axiom`; docker build
+**succeeded, 7743 jobs, exit 0**; `#print axioms` = `propext / Classical.choice / Quot.sound` only).
+
+### What it adds
+The remaining measure-theoretic lift for the MZ variance sum is a single `∑'ᵢ`–`∫` Tonelli
+interchange. Its **integrand** — the per-`ω` inner sum after the swap — is the deterministic fact
+this leaf isolates:
+
+    tsum_weight_trunc_sq_le {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (x : ℝ) :
+      ∑' i : ℕ, {i | |x| ≤ (i:ℝ)^(1/p)}.indicator (fun i => (i:ℝ)^(-s) * x^2) i
+        ≤ (max 1 (|x|^p))^(1-s) * s/(s-1) * x^2
+
+With `x = X(ω)`, `s = 2/p` this is *exactly* `∑ᵢ i^{-s}·Yᵢ(ω)²` where `Yᵢ = 𝟙{|X|≤i^{1/p}}·X` is
+the step-4 truncation (region matches `integral_trunc_sq_le`'s `t = i^{1/p}` verbatim). So after
+the interchange the whole variance-sum integrand is dominated by `(max 1 |X|ᵖ)^{1-2/p}·s/(s-1)·X²`,
+whose `|X|≥1` branch is `|X|^{p-2}·X² = |X|ᵖ` (→ `𝔼|X|ᵖ`) and `|X|<1` branch is `const·X²`.
+
+### Technique (reusable)
+Three moves, each one line: (1) pull `x²` out of the indicator —
+`simp only [Set.indicator_apply]; split_ifs <;> ring` (the `x∉S` branch is `0 = 0·x²`); (2) pull it
+out of the tsum — `tsum_mul_right`; (3) **bridge root-form to power-form region** — the truncation
+set `{i | |x| ≤ i^{1/p}}` equals `{i | |x|ᵖ ≤ i}` because `|x| ≤ i^{1/p} ↔ ¬(i^{1/p} < |x|) ↔
+¬(i < |x|ᵖ) ↔ |x|ᵖ ≤ i`, i.e. `rw [← not_lt, ← not_lt]; exact not_congr (rpow_inv_lt_iff_lt_rpow …)`
+reusing the **existing** strict reindex lemma rather than proving a new `≤` companion. Then
+`tsum_indicator_ge_rpow_neg_le` (iter 11) at `y = |x|ᵖ` + `mul_le_mul_of_nonneg_right … (sq_nonneg x)`.
+
+### Honest status
+A correct, reusable **deterministic integrand leaf**, NOT the interchange or the variance-sum
+assembly. It converts the abstract iter-11 `{i | y ≤ i}` bound into the concrete root-form summand
+the probabilistic interchange will integrate, and does the root↔power region bridge once and for all.
+The substantive open work — the actual `MeasureTheory.integral_tsum` swap with its integrability
+side-goals, then integrating the RHS to `C·(𝔼|X|ᵖ + 1)`, then step-3 centering and the final MZ
+combination via `ae_tendsto_average_zero_of_variance_weighted_bdd` — remains.
+
+### Next steps
+- **The interchange itself**: `∑'ᵢ ∫ i^{-s}·Yᵢ² dμ = ∫ ∑'ᵢ i^{-s}·Yᵢ² dμ` via `integral_tsum`
+  (per-term integrability + `∑'∫|·|<∞`); dominate the integrand by `tsum_weight_trunc_sq_le`.
+- Integrate the RHS bound to `C·(𝔼|X|ᵖ + 1)` (split `|X|≥1` / `|X|<1`); feed S5.
+- Step-3 centering, then final MZ combination.
+
+---
+
 ## Session 2026-07-04 (researcher-8) — S4b tail leaf: inclusive-from-N p-series bound (DEEP DIVE, PROGRESS)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress — new leaf `tsum_ge_rpow_neg_le` appended to

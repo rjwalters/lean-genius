@@ -1180,10 +1180,48 @@ theorem tsum_indicator_ge_rpow_neg_le {s : ℝ} (hs : 1 < s) (y : ℝ) :
       _ ≤ (max 1 y) ^ (1 - s) * (s / (s - 1)) := mul_le_mul_of_nonneg_right hpow hfac
       _ = (max 1 y) ^ (1 - s) * s / (s - 1) := by ring
 
+/-- **Pointwise Tonelli integrand for the MZ variance sum.**  For `1 < s`, `0 < p` and any
+real `x`, the `i^{-s}`-weighted truncated-square sum over the *root-form* truncation region
+`{i | |x| ≤ i^{1/p}}` — exactly `∑ᵢ i^{-s}·(𝟙{|x| ≤ i^{1/p}}·x)²`, the per-`ω` summand of
+the variance series after `t = i^{1/p}` — is bounded by a single power of `max 1 |x|ᵖ`:
+
+    ∑'_i 𝟙{|x| ≤ i^{1/p}}·(i^{-s}·x²)  ≤  (max 1 |x|ᵖ)^{1-s}·s/(s-1) · x².
+
+This is the deterministic integrand the Tonelli interchange behind `∑ᵢ Var(Yᵢ)/i^{2/p}`
+consumes: with `s = 2/p (> 1 ⟺ p < 2)` the `|x| ≥ 1` branch of the bound is `x²·|x|^{p-2} =
+|x|ᵖ`, integrating to `𝔼|X|ᵖ`; the `|x| < 1` branch collapses to `x²·s/(s-1)`, integrable on a
+probability space.
+
+Proof: pull `x²` out of the indicator (`Set.indicator_apply` + `ring`) and out of the tsum
+(`tsum_mul_right`); rewrite the root-form region `{i | |x| ≤ i^{1/p}}` to the power-form region
+`{i | |x|ᵖ ≤ i}` (complement of `rpow_inv_lt_iff_lt_rpow` via `not_lt`); then apply the
+deterministic tail bound `tsum_indicator_ge_rpow_neg_le` at `y = |x|ᵖ` and multiply through by
+`x² ≥ 0`. -/
+theorem tsum_weight_trunc_sq_le {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (x : ℝ) :
+    ∑' i : ℕ, {i : ℕ | |x| ≤ (i : ℝ) ^ (1 / p)}.indicator
+        (fun i => (i : ℝ) ^ (-s) * x ^ 2) i
+      ≤ (max 1 (|x| ^ p)) ^ (1 - s) * s / (s - 1) * x ^ 2 := by
+  set S : Set ℕ := {i : ℕ | |x| ≤ (i : ℝ) ^ (1 / p)} with hS
+  -- pull `x²` out of the indicator, then out of the tsum
+  have hpt : ∀ i : ℕ,
+      S.indicator (fun i => (i : ℝ) ^ (-s) * x ^ 2) i
+        = S.indicator (fun i => (i : ℝ) ^ (-s)) i * x ^ 2 := by
+    intro i; simp only [Set.indicator_apply]; split_ifs <;> ring
+  rw [tsum_congr hpt, tsum_mul_right]
+  -- rewrite the root-form region `{i | |x| ≤ i^{1/p}}` to the power-form `{i | |x|ᵖ ≤ i}`
+  have hSeq : S = {i : ℕ | |x| ^ p ≤ (i : ℝ)} := by
+    rw [hS]; ext i
+    simp only [Set.mem_setOf_eq]
+    rw [← not_lt, ← not_lt]
+    exact not_congr (rpow_inv_lt_iff_lt_rpow hp (Nat.cast_nonneg i) (abs_nonneg x))
+  rw [hSeq]
+  exact mul_le_mul_of_nonneg_right (tsum_indicator_ge_rpow_neg_le hs (|x| ^ p)) (sq_nonneg x)
+
 #check @sum_range_shift_rpow_neg_le
 #check @tsum_shift_rpow_neg_le
 #check @tsum_ge_rpow_neg_le
 #check @tsum_indicator_ge_rpow_neg_le
+#check @tsum_weight_trunc_sq_le
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
@@ -1191,6 +1229,7 @@ theorem tsum_indicator_ge_rpow_neg_le {s : ℝ} (hs : 1 < s) (y : ℝ) :
 #print axioms tsum_shift_rpow_neg_le
 #print axioms tsum_ge_rpow_neg_le
 #print axioms tsum_indicator_ge_rpow_neg_le
+#print axioms tsum_weight_trunc_sq_le
 
 end TailPSeries
 
