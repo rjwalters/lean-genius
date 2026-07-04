@@ -69,7 +69,8 @@
     "keyInsights": [
       "Every Hexagrammum point and line is indexed by an S₆ conjugacy class, so the geometric counts 60/60/20/20/15/15 are shadows of the class sizes 120/120/40/40/15/15 halved (or self-paired) by the S₆ outer automorphism.",
       "A fixed-point-free permutation of six letters has cycle type (6), (4,2), (3,3), or (2,2,2); adding one or two power conditions pins each type exactly, so no cycleType computation is needed.",
-      "The (4,2) class is the subtle exclusion for six-cycles: its elements satisfy σ⁶ = σ² ≠ 1, so demanding σ⁶ = 1 removes them."
+      "The (4,2) class is the subtle exclusion for six-cycles: its elements satisfy σ⁶ = σ² ≠ 1, so demanding σ⁶ = 1 removes them.",
+      "The entry draws a clean line between the *combinatorial* half of the Hexagrammum — the exact S₆ class sizes 120/40/15, certified here — and its *geometric* half, the projective concurrence that would biject each class onto the actual Pascal/Kirkman/Steiner points and lines, which remains the open oq-03 target. Because the class sizes are pure group theory requiring no projective geometry, they can be pinned down and machine-checked first, giving any later geometric proof a fixed target cardinality to match."
     ],
     "prerequisites": [
       "Symmetric group S₆, cycle types, and conjugacy classes.",
