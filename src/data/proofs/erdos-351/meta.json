@@ -135,6 +135,62 @@
     "path": "Proofs/Erdos351Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "imageSet",
+      "type": "core",
+      "description": "Defines the image set {p(n) + 1/n : n ∈ ℕ} of a rational polynomial, the sequence whose strong completeness Erdős Problem #351 concerns.",
+      "leanType": "(P : ℚ[X]) : Set ℚ"
+    },
+    {
+      "name": "IsStronglyComplete",
+      "type": "core",
+      "description": "Defines a set A ⊆ ℚ as strongly complete: for every finite forbidden set B, all sufficiently large integers are finite sums of elements from A \\ B.",
+      "leanType": "(A : Set ℚ) : Prop"
+    },
+    {
+      "name": "HasStronglyCompleteImage",
+      "type": "core",
+      "description": "The predicate asserting that a polynomial P has a strongly complete image set, capturing the exact statement of Erdős Problem #351.",
+      "leanType": "(P : ℚ[X]) : Prop"
+    },
+    {
+      "name": "mem_imageSet_linear",
+      "type": "supporting",
+      "description": "Shows that n + 1/n belongs to the image set of the linear polynomial p(x) = x for every natural number n.",
+      "leanType": "(n : ℕ) : (n : ℚ) + 1 / n ∈ imageSet X"
+    },
+    {
+      "name": "mem_imageSet_quadratic",
+      "type": "supporting",
+      "description": "Shows that n² + 1/n belongs to the image set of the quadratic polynomial p(x) = x² for every natural number n.",
+      "leanType": "(n : ℕ) : (n : ℚ)^2 + 1 / n ∈ imageSet (X ^ 2)"
+    },
+    {
+      "name": "linear_lower_bound",
+      "type": "supporting",
+      "description": "For n ≥ 1, the element n + 1/n of the linear image set is strictly greater than n.",
+      "leanType": "(n : ℕ) (hn : n ≥ 1) :\n    (n : ℚ) < n + 1 / n"
+    },
+    {
+      "name": "linear_upper_bound",
+      "type": "supporting",
+      "description": "For n ≥ 2, the element n + 1/n of the linear image set is strictly less than n+1, pinning it between consecutive integers.",
+      "leanType": "(n : ℕ) (hn : n ≥ 2) :\n    (n : ℚ) + 1 / n < n + 1"
+    },
+    {
+      "name": "linear_n1_special",
+      "type": "supporting",
+      "description": "Records the boundary case 1 + 1/1 = 1 + 1, where the term coincides with an integer sum.",
+      "leanType": ": (1 : ℚ) + 1 / 1 = 1 + 1"
+    },
+    {
+      "name": "example_n2",
+      "type": "supporting",
+      "description": "Concrete evaluation showing the second term of the linear sequence equals 2 + 1/2 = 5/2.",
+      "leanType": ": (2 : ℚ) + 1 / 2 = 5 / 2"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-283",
