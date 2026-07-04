@@ -88,6 +88,57 @@
       "leanType": "(d : ℕ) → (hd : 1 ≤ d) → (lllThreshold d : ℝ) = (d : ℝ) ^ d / ((d : ℝ) + 1) ^ (d + 1)"
     }
   ],
+  "sections": [
+    {
+      "id": "module-docstring",
+      "title": "Overview: two forms of the symmetric hypothesis",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring framing the entry. The parent proof LovaszLocalLemma.lean records the tight symmetric threshold T(d) = dᵈ/(d+1)^{d+1} (the maximum of x(1−x)ᵈ) and proves the symmetric LLL under P[Aᵢ] ≤ T(d); the OQ-01 measure-theoretic front instead uses the memorable Euler condition e·p·(d+1) ≤ 1. This file formalizes the standard textbook remark that the Euler form is the safe consequence of the tight one — e·p·(d+1) ≤ 1 ⟹ p ≤ T(d) — resting on the classic e bound (1 + 1/d)ᵈ ≤ e."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and namespace",
+      "startLine": 37,
+      "endLine": 41,
+      "summary": "Imports the parent gallery proof Proofs.LovaszLocalLemma (source of lllThreshold and symmetric_lll), opens Real and ProbMethod.LovaszLocal, and enters the LovaszLocalLemmaOQ01EulerThreshold namespace. No new definitions are introduced — the entry is five theorems over ℝ built on the ℚ-valued threshold of the parent."
+    },
+    {
+      "id": "euler-bound",
+      "title": "The Euler bound (1 + 1/d)ᵈ ≤ e",
+      "startLine": 43,
+      "endLine": 58,
+      "summary": "one_add_inv_pow_le_exp_one: the classic Euler inequality for d ≥ 1. Real.add_one_le_exp gives 1 + 1/d ≤ exp(1/d); raising both nonnegative sides to the d-th power via pow_le_pow_left₀ and using exp(1/d)ᵈ = exp(d·(1/d)) = exp 1 (Real.exp_nat_mul with d·(1/d) = 1 since d ≠ 0) closes the calc. This single inequality is the source of the constant e in the LLL."
+    },
+    {
+      "id": "multiplicative-form",
+      "title": "Multiplicative form (d+1)ᵈ ≤ e·dᵈ",
+      "startLine": 60,
+      "endLine": 67,
+      "summary": "succ_pow_le_exp_mul: rewrites 1 + 1/d = (d+1)/d, applies div_pow and div_le_iff₀ to clear the denominator dᵈ > 0 from the Euler bound, and finishes with linarith. Converts the fractional Euler inequality into the polynomial form needed to compare against the threshold."
+    },
+    {
+      "id": "threshold-cast",
+      "title": "Real cast of the tight threshold",
+      "startLine": 69,
+      "endLine": 75,
+      "summary": "lllThreshold_cast: for d ≥ 1, (lllThreshold d : ℝ) = dᵈ/(d+1)^{d+1}. Unfolds the parent proof's definition with the d ≠ 0 branch (if_neg), push_cast to move the ℚ→ℝ coercion inward, and ring. Bridges the parent's ℚ-valued threshold to the real-analysis inequalities of this file."
+    },
+    {
+      "id": "budget-below-threshold",
+      "title": "Euler budget sits below the threshold",
+      "startLine": 77,
+      "endLine": 89,
+      "summary": "inv_exp_mul_le_lllThreshold: 1/(e·(d+1)) ≤ T(d). After lllThreshold_cast and div_le_div_iff₀, and expanding (d+1)^{d+1} via pow_succ, the goal reduces to (d+1)^{d+1} ≤ e·(d+1)·dᵈ, i.e. the multiplicative Euler bound scaled by (d+1); mul_le_mul_of_nonneg_right on succ_pow_le_exp_mul plus nlinarith closes it."
+    },
+    {
+      "id": "the-bridge",
+      "title": "The bridge: Euler condition ⟹ tight threshold",
+      "startLine": 91,
+      "endLine": 104,
+      "summary": "euler_condition_implies_lllThreshold: from e·p·(d+1) ≤ 1, le_div_iff₀ gives p ≤ 1/(e·(d+1)) (nlinarith), and le_trans with inv_exp_mul_le_lllThreshold yields p ≤ T(d). No nonnegativity hypothesis on p is needed — a negative p satisfies both sides trivially — so the statement holds in full generality, letting the tight-threshold symmetric_lll apply verbatim under the memorable Euler hypothesis."
+    }
+  ],
   "overview": {
     "historicalContext": "The symmetric Lovász Local Lemma (Erdős–Lovász, 1975) is almost always quoted in the memorable Euler form: if each of n bad events has probability ≤ p, each is mutually independent of all but ≤ d others, and e·p·(d+1) ≤ 1, then the events are simultaneously avoidable with positive probability. The constant e is not accidental — the sharp threshold for the symmetric case is T(d) = dᵈ/(d+1)^{d+1} = max_x x(1−x)ᵈ, attained at x = 1/(d+1), and the Euler form is the clean sufficient condition obtained by bounding this threshold below with 1/(e(d+1)) using (1+1/d)ᵈ ≤ e. Alon and Spencer's The Probabilistic Method states both forms and notes the tight one is 'a bit stronger'; the e·p·(d+1) ≤ 1 version is preferred in applications for its memorability. The parent gallery proof lovasz-local-lemma formalizes the tight threshold T(d) over ℚ (lllThreshold, its value at d = 1,2,3, monotonicity T(d+1) ≤ T(d), and the ≤ 1/4 bound); the OQ-01 measure-theoretic front, meanwhile, targets the Euler-form statement over a real probability space. This entry supplies the elementary but previously-unformalized link between the two hypotheses.",
     "problemStatement": "**Open question OQ-01 (from LovaszLocalLemma.lean)**: formalize the full probabilistic Lovász Local Lemma over measure-theoretic probability spaces, including the symmetric conclusion under e·p·(d+1) ≤ 1.\n\n**This entry (threshold bridge)**: prove that the memorable Euler symmetric condition is implied by the tight threshold the parent proof already uses. For d ≥ 1 and p : ℝ, if e·p·(d+1) ≤ 1 then p ≤ T(d) = (lllThreshold d : ℝ) = dᵈ/(d+1)^{d+1}. The mathematical core is the classic Euler inequality (1 + 1/d)ᵈ ≤ e.",
