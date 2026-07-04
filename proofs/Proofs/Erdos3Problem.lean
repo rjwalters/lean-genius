@@ -218,6 +218,39 @@ theorem rothNumber_mono {k m N : ℕ} (hkm : k ≤ m) :
   rw [Finset.mem_filter] at hS ⊢
   exact ⟨hS.1, isAPFree_of_le hkm hS.2⟩
 
+/-- **The Roth number is monotone in the search window `N`.**
+    `r_k(M) ≤ r_k(N)` whenever `M ≤ N`. Enlarging the interval `{0,…,N}` can only add
+    AP-free subsets to the family the supremum ranges over (every AP-free subset of
+    `{0,…,M}` is still an AP-free subset of `{0,…,N}`), so `r_k` only grows. This is the
+    `N`-analogue of `rothNumber_mono` (monotone in the length `k`), and is exactly the
+    monotonicity used implicitly whenever the Roth number is compared across dyadic scales
+    `2^j ≤ 2^{j+1}` in the summation arguments. Fully machine-checked, axiom-free. -/
+theorem rothNumber_mono_size {k M N : ℕ} (hMN : M ≤ N) :
+    rothNumber k M ≤ rothNumber k N := by
+  unfold rothNumber
+  apply Finset.sup_mono
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS ⊢
+  refine ⟨hS.1.trans ?_, hS.2⟩
+  intro x hx
+  rw [Finset.mem_range] at hx ⊢
+  omega
+
+/-- **The trivial upper bound on the Roth number.**
+    `r_k(N) ≤ N + 1`. Every subset of `{0,…,N}` has at most `N + 1` elements, so in
+    particular every AP-free one does, and the supremum defining `r_k(N)` is bounded by the
+    cardinality `N + 1` of the whole interval. This is the baseline density — the entire
+    window `{0,…,N}` — against which every `o(N/log N)` improvement in the Roth/Szemerédi
+    literature is measured; the open content of Erdős #3 is precisely how far below this
+    baseline `r_k(N)` can be forced. Fully machine-checked, axiom-free. -/
+theorem rothNumber_le_window (k N : ℕ) : rothNumber k N ≤ N + 1 := by
+  unfold rothNumber
+  apply Finset.sup_le
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  calc S.card ≤ (Finset.range (N + 1)).card := Finset.card_le_card hS.1
+    _ = N + 1 := Finset.card_range (N + 1)
+
 /-- **A genuine `k`-term AP has exactly `k` elements.**
     When the common difference `d` is positive, the generating map `i ↦ a + i·d`
     is injective on `range k`, so `ArithProg a d k` has cardinality `k`.  (This is

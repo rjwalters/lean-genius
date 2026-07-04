@@ -18,7 +18,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-03T08:28:28Z",
-    "iteration": 2,
+    "iteration": 3,
     "focus": "Verified StrongRequiredBound reduction; original o(N/log N) sorry is threshold-critical (open)",
     "blockers": [],
     "nextAction": "Leave threshold-critical sorry documented; optional shallow follow-ups",
@@ -29,13 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Structural consolidation: added rothNumber_mono (monotonicity in progression length, previously used implicitly via max k 3 but unstated) + isAPFree_of_le, downward-closure of both threshold hypotheses (strongRequiredBound_mono/requiredBound_mono), and the contrapositive density lower bound countingFunction_frequently_gt_of_divergent. All 5 machine-checked, 0-axiom, 0 new sorry. Threshold-critical o(N/log N) sorry retained.",
+    "progressSummary": "Structural consolidation of the Roth-number monotonicity story. Prior iterations added rothNumber_mono (monotone in progression length k) + isAPFree_of_le, downward-closure of both threshold hypotheses, and the contrapositive density lower bound. This iteration completes the picture with the two structural facts that were still missing: rothNumber_mono_size (monotone in the search window N, the N-analogue of rothNumber_mono used implicitly at dyadic scales) and rothNumber_le_window (the trivial baseline r_k(N) <= N+1 against which all o(N/log N) improvements are measured). All machine-checked, 0-axiom, 0 new sorry. Threshold-critical o(N/log N) sorry retained (as hard as Erdos #3).",
     "builtItems": [
       "containsAP_of_le",
       "summable_of_strongBound",
       "strong_required_bound_implies_conjecture (0-axiom)",
       "isAPFree_of_le (AP-freeness upward-closed in length)",
       "rothNumber_mono (Roth number monotone in progression length k)",
+      "rothNumber_mono_size (Roth number monotone in search window N)",
+      "rothNumber_le_window (trivial baseline r_k(N) <= N+1)",
       "strongRequiredBound_mono / requiredBound_mono (threshold hypotheses downward-closed in k)",
       "countingFunction_frequently_gt_of_divergent (contrapositive density lower bound)"
     ],
@@ -45,11 +47,14 @@
       "The o(N/log N) threshold does NOT obviously imply it: borderline profile N/(log N loglog N) is o(N/log N) with divergent reciprocal sum. That sorry is as hard as Erdos #3.",
       "rothNumber is monotone in k (r_k(N) <= r_m(N) for k<=m): avoiding a longer AP is an easier constraint (isAPFree_of_le), so the sup over the larger AP-free family grows. This is the structural fact the max-k-3 device relies on but never stated.",
       "StrongRequiredBound and RequiredBound are downward-closed in k via rothNumber_mono; requiring the bound for all k>=3 equals requiring it for all sufficiently large k.",
-      "HasDivergentSum A => counting function exceeds C*N/(log N)^{1+delta} infinitely often (contrapositive of summable_of_strongBound), a reusable quantitative density lower bound."
+      "HasDivergentSum A => counting function exceeds C*N/(log N)^{1+delta} infinitely often (contrapositive of summable_of_strongBound), a reusable quantitative density lower bound.",
+      "rothNumber is monotone in the window N as well as in k: r_k(M) <= r_k(N) for M<=N via powerset_mono on the range(M+1) subset range(N+1) inclusion (rothNumber_mono_size). This is the monotonicity used implicitly when comparing r_k across dyadic scales 2^j <= 2^{j+1}.",
+      "Trivial baseline r_k(N) <= N+1 (rothNumber_le_window): the whole window {0..N} caps every AP-free subset's card via Finset.sup_le + card_range. Every published o(N/log N) bound is an improvement below this baseline; Erdos #3's open content is how far below it r_k can be forced."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Do not attack the threshold-critical sorry directly",
+      "Monotonicity story now complete (k-direction + N-direction + baseline bound)",
       "Optional: k<=2 triviality corollary; reuse summable_of_strongBound elsewhere"
     ],
     "markdown": "# Knowledge: erdos-3-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
@@ -64,7 +69,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.083Z",
-  "lastUpdate": "2026-04-03T08:30:19.059Z",
+  "lastUpdate": "2026-07-04T22:30:00.000Z",
   "significance": 8,
   "tractability": 4
 }
