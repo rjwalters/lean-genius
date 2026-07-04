@@ -841,4 +841,120 @@ theorem newton_top_esymm_roots_monic (m : ℕ) {p : ℝ[X]}
   have hBsq : (0 : ℝ) < B ^ 2 := by positivity
   exact le_of_mul_le_mul_right key hBsq
 
+/-!  ## Part IX — the general-`n` INTERIOR Newton step: an arbitrary window
+
+Parts VII/VIII closed the TOP step (`discrim_iterate_derivative_top`, the
+discriminant of `p`'s three *top* coefficients) and the BOTTOM step
+(`discrim_reverse_bottom`, its reversal-mirror on the three *bottom* coefficients).
+The one remaining piece of the classical calculus proof is the general *interior*
+window `p.coeff j, p.coeff (j+1), p.coeff (j+2)` for any `j` with
+`j + 2 ≤ natDegree p`.  It is reached by composing the two engine atoms already
+built:
+
+* differentiate `p` exactly `j` times (Part V: `derivative^[j] p` still splits,
+  and by `coeff_iterate_derivative` its three *bottom* coefficients are the
+  `descFactorial`-weighted `p.coeff j, p.coeff (j+1), p.coeff (j+2)`);
+* then reverse (Part VIII: reversal preserves splitting, and turns that bottom
+  window into the *top* window of a genuine quadratic), and read off the
+  discriminant with the top-step engine `discrim_iterate_derivative_top`.
+
+For `j = 0` this is exactly `discrim_reverse_bottom`; for general `j` it is
+Newton's log-concavity inequality on an *arbitrary* consecutive coefficient
+window of any real-rooted polynomial — closing every interior step of the
+classical calculus proof at once, for all arities.  The only side hypothesis is
+`p.coeff j ≠ 0` (the window's bottom coefficient nonzero, so `derivative^[j] p`
+has nonzero constant term and its reversal keeps degree `m + 2`); for the monic
+splitting polynomial `∏(X - xᵢ)` with all roots nonzero every coefficient is
+`± eₖ ≠ 0`, so this covers every window. -/
+
+/-- **General-`n` interior Newton discriminant inequality.**  For a real-rooted
+`p : ℝ[X]` with `natDegree = j + (m + 2)` and nonzero window-bottom coefficient
+`p.coeff j ≠ 0`, the three consecutive coefficients `p.coeff j, p.coeff (j+1),
+p.coeff (j+2)` (each weighted by the `descFactorial` factors of the two
+differentiation passes) have nonnegative discriminant.  Proof: apply the top-step
+engine `discrim_iterate_derivative_top` to `reverse (derivative^[j] p)`, whose top
+three coefficients are `(derivative^[j] p)`'s bottom three, i.e. `p`'s window
+`j, j+1, j+2` (`coeff_reverse` + `revAt_le` + `coeff_iterate_derivative`).  This
+generalizes `discrim_reverse_bottom` — its `j = 0` case — to every interior
+window. -/
+theorem discrim_reverse_interior (j m : ℕ) {p : ℝ[X]}
+    (hp : Splits p) (hcj : p.coeff j ≠ 0) (hdeg : p.natDegree = j + (m + 2)) :
+    0 ≤ discrim
+        (((2 + m).descFactorial m * (0 + j).descFactorial j) • p.coeff (0 + j))
+        (((1 + m).descFactorial m * (1 + j).descFactorial j) • p.coeff (1 + j))
+        (((0 + m).descFactorial m * (2 + j).descFactorial j) • p.coeff (2 + j)) := by
+  set q := derivative^[j] p with hq
+  have hpne : p ≠ 0 := by
+    intro h; rw [h, natDegree_zero] at hdeg; omega
+  -- `q = derivative^[j] p` splits (Part V)
+  have hqsplit : Splits q := splits_iterate_derivative hp j
+  -- `q` has a nonzero constant term: `q.coeff 0 = j! · p.coeff j`
+  have hq0 : q.coeff 0 ≠ 0 := by
+    rw [hq, coeff_iterate_derivative, nsmul_eq_mul, Nat.zero_add]
+    exact mul_ne_zero
+      (by exact_mod_cast (Nat.descFactorial_pos.mpr (by omega)).ne') hcj
+  have htrail : q.natTrailingDegree = 0 :=
+    Nat.le_zero.mp (natTrailingDegree_le_of_ne_zero hq0)
+  -- `q`'s `coeff (m + 2)` is the weighted leading coefficient of `p`, hence nonzero
+  have hqtop : q.coeff (m + 2) ≠ 0 := by
+    rw [hq, coeff_iterate_derivative, nsmul_eq_mul]
+    apply mul_ne_zero
+    · exact_mod_cast (Nat.descFactorial_pos.mpr (by omega)).ne'
+    · have hidx : (m + 2) + j = p.natDegree := by rw [hdeg]; omega
+      rw [hidx]; exact leadingCoeff_ne_zero.mpr hpne
+  -- so `q` is a genuine degree-`(m+2)` polynomial
+  have hqdeg : q.natDegree = m + 2 := by
+    have hle := natDegree_iterate_derivative p j
+    rw [← hq, hdeg] at hle
+    have hge : m + 2 ≤ q.natDegree := le_natDegree_of_ne_zero hqtop
+    omega
+  -- its reversal splits (Part VIII) and keeps degree `m + 2` (nonzero constant term)
+  have hrdeg : (reverse q).natDegree = m + 2 := by
+    rw [reverse_natDegree, hqdeg, htrail, Nat.sub_zero]
+  have h := discrim_iterate_derivative_top m (splits_reverse hqsplit) hrdeg
+  -- the top three coefficients of `reverse q` are `q`'s bottom three, i.e. `p`'s window
+  have ea : (reverse q).coeff (2 + m) = ((0 + j).descFactorial j) • p.coeff (0 + j) := by
+    rw [coeff_reverse, hqdeg, revAt_le (by omega),
+      show (m + 2) - (2 + m) = 0 from by omega, hq, coeff_iterate_derivative]
+  have eb : (reverse q).coeff (1 + m) = ((1 + j).descFactorial j) • p.coeff (1 + j) := by
+    rw [coeff_reverse, hqdeg, revAt_le (by omega),
+      show (m + 2) - (1 + m) = 1 from by omega, hq, coeff_iterate_derivative]
+  have ec : (reverse q).coeff (0 + m) = ((2 + j).descFactorial j) • p.coeff (2 + j) := by
+    rw [coeff_reverse, hqdeg, revAt_le (by omega),
+      show (m + 2) - (0 + m) = 2 from by omega, hq, coeff_iterate_derivative]
+  rw [ea, eb, ec, ← mul_smul, ← mul_smul, ← mul_smul] at h
+  exact h
+
+/-- **General-`n` interior Newton inequality on the coefficients of a real-rooted
+polynomial.**  For any `p : ℝ[X]` that splits with `natDegree = j + (m + 2)` and
+nonzero window-bottom coefficient `p.coeff j`, three arbitrary consecutive
+coefficients satisfy the log-concavity inequality `b² ≥ 4ac`:
+`4 · (weights) · p.coeff j · p.coeff (j+2) ≤ (weight)² · p.coeff (j+1)²`.
+This is `discrim_reverse_interior` written as Newton's recognizable step, valid for
+every arity, every interior window, and all signed inputs (only the window's bottom
+coefficient must be nonzero).  Generalizes both `newton_top_coeff_ineq` and
+`newton_bottom_coeff_ineq`. -/
+theorem newton_interior_coeff_ineq (j m : ℕ) {p : ℝ[X]}
+    (hp : Splits p) (hcj : p.coeff j ≠ 0) (hdeg : p.natDegree = j + (m + 2)) :
+    4 * ((2 + m).descFactorial m : ℝ) * ((0 + j).descFactorial j : ℝ)
+        * ((0 + m).descFactorial m : ℝ) * ((2 + j).descFactorial j : ℝ)
+        * p.coeff (0 + j) * p.coeff (2 + j)
+      ≤ ((1 + m).descFactorial m : ℝ) ^ 2 * ((1 + j).descFactorial j : ℝ) ^ 2
+        * p.coeff (1 + j) ^ 2 := by
+  have h := discrim_reverse_interior j m hp hcj hdeg
+  rw [discrim] at h
+  simp only [nsmul_eq_mul, Nat.cast_mul] at h
+  -- abstract the six `descFactorial` casts and three coefficients to small opaque
+  -- atoms BEFORE `nlinarith`, so it does not blow up on the cast/`coeff` subterms
+  set A := ((2 + m).descFactorial m : ℝ)
+  set B := ((0 + j).descFactorial j : ℝ)
+  set C := ((0 + m).descFactorial m : ℝ)
+  set D := ((2 + j).descFactorial j : ℝ)
+  set E := ((1 + m).descFactorial m : ℝ)
+  set F := ((1 + j).descFactorial j : ℝ)
+  set c0 := p.coeff (0 + j)
+  set c1 := p.coeff (1 + j)
+  set c2 := p.coeff (2 + j)
+  nlinarith [h]
+
 end NewtonRealRooted
