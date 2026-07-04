@@ -472,7 +472,7 @@ theorem cliqueMonoProb_le_symmetric_lll_rhs {n k : ℕ} (hcond : RamseyLLLCondit
   have hfac := symmetric_avoidance_factor_ge_third D
   calc (cliqueMonoProb k : ℝ)
       ≤ 1 / (3 * ((D : ℝ) + 1)) := hpbound
-    _ = (1 / ((D : ℝ) + 1)) * (1 / 3) := by field_simp; ring
+    _ = (1 / ((D : ℝ) + 1)) * (1 / 3) := by field_simp
     _ ≤ (1 / ((D : ℝ) + 1)) * (((D : ℝ) / ((D : ℝ) + 1)) ^ D) :=
         mul_le_mul_of_nonneg_left hfac (by positivity)
 

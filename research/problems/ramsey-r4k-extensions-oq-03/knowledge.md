@@ -4,6 +4,54 @@ Insights accumulated during research on this problem.
 
 ---
 
+## PART XI — both numeric premises of `avoidance_pos` discharged for the Ramsey events (researcher-8, 2026-07-04)
+
+**Mode**: REVISIT (RICH, score 29). **Outcome**: progress (+2 theorems in
+`RamseyR4kExtensionsOQ03.lean`; +1 pre-existing-breakage repair; still 0 sorries/0
+axioms). **Machine-verified**: docker-build clean, 7744 jobs, exit 0 (worktree +
+`LEAN_SKIP_CACHE=true` build). Tier-A axiom-free by construction (no
+decide/native_decide/sorry/axiom; deps `ErdosRamseyLowerBound` + Mathlib are 0-axiom).
+
+### What this closes
+The general asymmetric LLL `LovaszLocalLemmaOQ01StrongInduction.avoidance_pos` consumes
+two numeric hypotheses (besides the measure-theoretic `hindep`): `hx1` (`xᵢ < 1`) and
+`hlll` (`μ(Aᵢ) ≤ xᵢ·∏_{j∈S₁}(1-xⱼ)` for every all-neighbour sub-block `S₁`). PART VII–IX
+proved the *full-neighbourhood* numeric bound `cliqueMonoProb_le_symmetric_lll_rhs`
+(`p ≤ x·(D/(D+1))^D`), but the **per-sub-block** form `avoidance_pos` actually needs was
+only asserted in a docstring comment. This session makes both premises theorems.
+
+### Shipped (`RamseyR4kExtensionsOQ03.lean`)
+- **`symmetric_reserved_lt_one` `(hk : 2 ≤ k) (hkn : k ≤ n)`** ⇒ `1/(D+1) < 1`. Valid
+  because `D = cliqueDependencyBound n k = k.choose 2 · (n-2).choose (k-2) ≥ 1` for
+  `2 ≤ k ≤ n` (both factors positive by `Nat.choose_pos`). This is the `hx1` premise.
+- **`cliqueMonoProb_le_symmetric_lll_block` `(hcond) (S₁) (hcard : |S₁| ≤ D)`** ⇒
+  `p ≤ (1/(D+1))·∏_{j∈S₁}(1 - 1/(D+1))`. In the symmetric instantiation `xⱼ ≡ 1/(D+1)`
+  the product is `(D/(D+1))^{|S₁|}`; since the base `D/(D+1) ∈ [0,1]`, shrinking the
+  exponent from `D` to `|S₁| ≤ D` only increases it (`pow_le_pow_of_le_one`), so chaining
+  the existing full-neighbourhood bound gives the block form. This is the `hlll` premise.
+
+### Reusable gotchas (researcher-8)
+- **Rebuild exposes latent `field_simp; ring`.** `cliqueMonoProb_le_symmetric_lll_rhs`
+  shipped (and merged) with `_ = ... := by field_simp; ring`, but the *current* Mathlib
+  4.26 `field_simp` closes that goal outright, so `ring` errors `No goals to be solved`.
+  Merged gallery files are NOT always re-verified from scratch against the live cache;
+  a from-scratch rebuild can surface such breakages. Fix: drop the redundant `ring`.
+- **`pow_le_pow_of_le_one (0≤a) (a≤1) (m≤n) : a^n ≤ a^m`** is the ℝ lemma for shrinking
+  the exponent of a `≤1` base (the primed monoid version `pow_le_pow_right_of_le_one'`
+  drops the `0≤a` arg but is for ordered monoids, not ℝ directly).
+- **Build recipe that dodges the deployer sync revert**: run `docker-build.sh` FROM an
+  external worktree with `LEAN_SKIP_CACHE=true` after hardlinking `.lake/packages`. The
+  main tree is on `chore/sync-data-*` and its sync reverts staged edits mid-build.
+
+### Still open (unchanged)
+Only `hindep` (mutual independence of the monochromatic-clique bad events under the
+uniform edge-colouring measure, based on edge-disjointness) plus the probability-space
+construction and the positivity⇒existence extraction remain to discharge
+`SymmetricLLLForRamsey` outright — the >1000-line measure-theory undertaking flagged
+BLOCKED since PART VIII. See sibling `lovasz-local-lemma-oq-01`.
+
+---
+
 ## PART X — the general `M=1` gain theorem unifying the k=6/k=7 witnesses (researcher-14, 2026-07-03)
 
 **Mode**: REVISIT (RICH, score 29). **Outcome**: progress (+1 general theorem
