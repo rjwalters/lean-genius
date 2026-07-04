@@ -17,19 +17,22 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-22T13:03:46.384Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "since": "2026-07-03",
+    "iteration": 4,
+    "focus": "Discharging schnirelmann_basis_theorem in WeakGoldbach.lean. The covering engine and the ENTIRE iteration bookkeeping are now verified in SchnirelmannBasis.lean (0 sorry / 0 axiom). Only Schnirelmann's inequality remains.",
+    "blockers": [
+      "Schnirelmann's inequality sigma(A+B) >= sA+sB-sA*sB is the delicate gap-counting step (Nathanson Thm 7.4 / Ruzsa); an explicit Mathlib TODO, ~120-180 LOC.",
+      "Binary Goldbach itself is genuinely open and must stay axiomatized."
+    ],
+    "nextAction": "Formalize Schnirelmann's inequality sigma(A+B) >= sA+sB-sA*sB (0 in A, 0 in B). Iterating it drives some sigma(sumsetPow A h) above 1/2, and isAdditiveBasis_of_sumsetPow_density_ge_half then discharges the axiom outright.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "OPEN (well-surveyed). Axiom-free symmetric/comet reformulation in gallery. Comet-height structural theory: exact Goldbach-partition identities (upper/lower arm), parity ceiling ceil(m/2), full divisibility sieve, single-prime m-m/p, Euler-totient ceiling phi(m) (composite) / phi(m)+1 (general), and (this pass) the HALF-TOTIENT ceiling phi(m)/2 at ODD composite midpoints — the sharpest ceiling there, via the even-totative involution k->m-k. All 5 WeakGoldbach.lean axioms irreducible in Mathlib v4.26.0; only tractable one = schnirelmann_basis_theorem (~300-500 LOC). Main conjecture untouched (all comet bounds are UPPER bounds; a nontrivial LOWER bound remains the real advance).",
+    "progressSummary": "Toward discharging schnirelmann_basis_theorem: SchnirelmannBasis.lean (0 sorry / 0 axiom) now contains the covering lemma (sumset_covers_of_density_add_ge_one), the density->=1/2 basis-of-order-2 corollary, the analytic iteration input (exists_pow_deficiency_lt_half), and — as of iter 4 (r8) — the complete iteration bookkeeping: IsSumOfAtMost + composition (.add), the h-fold sum-set sumsetPow, and the reduction isAdditiveBasis_of_sumsetPow_density_ge_half (sigma(sumsetPow A h) >= 1/2 => IsAdditiveBasis A (2h)). The SOLE remaining ingredient is Schnirelmann's inequality sigma(A+B) >= sA+sB-sA*sB.",
     "builtItems": [
       "sumTwoPrimes_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:73 (per-n equivalence, 0-axiom)",
       "strong_iff_symmetric in Proofs/StrongGoldbachSymmetric.lean:98 (conjecture-level equivalence)",
@@ -47,7 +50,8 @@
       "symmetricPairCount_le_totient_of_not_prime in StrongGoldbachSymmetric.lean: for composite m, comet height <= phi(m); dominates every single-prime m-m/p bound",
       "card_even_totatives_eq_card_odd_totatives in StrongGoldbachSymmetric.lean: even/odd totatives of odd m>1 equinumerous (involution k->m-k), 0-axiom",
       "card_even_totatives_eq_totient_div_two in StrongGoldbachSymmetric.lean: #{even totatives of odd m} = phi(m)/2, 0-axiom",
-      "symmetricPairCount_le_half_totient_of_odd_not_prime in StrongGoldbachSymmetric.lean: odd composite comet height <= phi(m)/2 (factor-2 sharper than totient bound), 0-axiom"
+      "symmetricPairCount_le_half_totient_of_odd_not_prime in StrongGoldbachSymmetric.lean: odd composite comet height <= phi(m)/2 (factor-2 sharper than totient bound), 0-axiom",
+      "SchnirelmannBasis.lean iter4 (r8): IsSumOfAtMost, .mono, .add (composition), sumsetPow, zero_mem_sumsetPow, isSumOfAtMost_multiset_sum, isAdditiveBasis_of_sumsetPow_density_ge_half (sigma(sumsetPow A h) >= 1/2 => IsAdditiveBasis A (2h)). 0 sorry / 0 axiom, docker-build 7743 jobs."
     ],
     "insights": [
       "Strong Goldbach for even n=2m is equivalent to existence of a symmetric prime pair (m-k, m+k) with k<m — every Goldbach partition sits symmetrically about the midpoint n/2 (Goldbach comet).",
@@ -63,8 +67,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize a lower bound on the number of symmetric prime pairs (partial Goldbach comet asymptotic) — would give Strong Goldbach for almost all m if pushed.",
-      "Investigate the minimal offset k(m) for which (m-k,m+k) are both prime; relate to prime-gap bounds."
+      "Formalize Schnirelmann's inequality sigma(A+B) >= sA+sB-sA*sB (the gap-counting core, Nathanson Thm 7.4) — now the ONLY missing piece; combine with isAdditiveBasis_of_sumsetPow_density_ge_half to discharge schnirelmann_basis_theorem."
     ]
   },
   "tags": [
@@ -83,7 +86,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.384Z",
-  "lastUpdate": "2026-07-02",
+  "lastUpdate": "2026-07-04",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [
@@ -97,6 +100,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WeakGoldbach.lean"
+    },
+    {
+      "path": "Proofs/SchnirelmannBasis.lean",
+      "filename": "SchnirelmannBasis.lean",
+      "lineCount": 322,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchnirelmannBasis.lean"
     }
   ]
 }

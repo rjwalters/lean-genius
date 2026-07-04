@@ -279,7 +279,9 @@ theorem isAdditiveBasis_of_sumsetPow_density_ge_half {A : Set ℕ} {h : ℕ}
   have hsum : IsSumOfAtMost A (S.card * h) n := by
     have := isSumOfAtMost_multiset_sum S hS
     rwa [hSs] at this
-  obtain ⟨T, hT, hTc, hTs⟩ := hsum.mono (by gcongr)
+  have hmono : IsSumOfAtMost A (2 * h) n :=
+    hsum.mono (mul_le_mul_right' hSc h)
+  obtain ⟨T, hT, hTc, hTs⟩ := hmono
   exact ⟨T, hT, hTc, hTs⟩
 
 /-
