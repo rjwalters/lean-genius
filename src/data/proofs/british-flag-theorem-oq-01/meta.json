@@ -55,7 +55,8 @@
       "Encoding 'rectangle' as parallelogram-closure plus a single right angle is enough — the remaining three right angles follow and are not needed for the identity",
       "The whole content reduces to one algebraic fact: (PA² + PC²) − (PB² + PD²) = 2 (u ⬝ v), where u, v are the edge vectors at A",
       "Because the identity is an exact cancellation, the proof needs no square roots and no irrational arithmetic — it is a single ring/linear_combination identity over ℝ",
-      "The arbitrary point P drops out completely: both its quadratic terms and — thanks to the parallelogram closure making the coefficient (A + C) − (B + D) vanish — its linear terms cancel, so despite appearing in all four distances the identity is ultimately a statement about the vertices alone, not about P"
+      "The arbitrary point P drops out completely: both its quadratic terms and — thanks to the parallelogram closure making the coefficient (A + C) − (B + D) vanish — its linear terms cancel, so despite appearing in all four distances the identity is ultimately a statement about the vertices alone, not about P",
+      "The same computation yields a full converse — the identity characterizes rectangles among all quadrilaterals. Requiring PA² + PC² = PB² + PD² for every P forces two things in turn: the P-linear terms vanish only if (A + C) − (B + D) = 0 (the parallelogram closure), and with that closure the remaining constant term is exactly 2(u ⬝ v) = 2((B − A) ⬝ (D − A)), which vanishes only if the edges at A are perpendicular. So 'the squared-distance identity holds for all P' is equivalent to 'ABCD is a rectangle'. This file formalizes the forward direction; the converse is the contrapositive of the very same identity."
     ],
     "prerequisites": [
       "Coordinate geometry of points in the plane",
@@ -127,7 +128,7 @@
     "summary": "The British Flag theorem is formalized by a direct coordinate computation. Encoding the rectangle by a parallelogram closure and a single right angle, the difference of the two squared-distance sums collapses to twice the dot product of the edge vectors, which vanishes by orthogonality. The formalization is fully verified — 0 axioms, 0 sorries — and self-contained over Mathlib.",
     "implications": "The identity exposes the British Flag theorem as a metric restatement of perpendicularity. The same coordinate method handles the higher-dimensional analogue (a box in ℝⁿ) and the converse direction, where the equality of squared-distance sums forces the right angle.",
     "openQuestions": [
-      "Does the squared-distance equality PA² + PC² = PB² + PD² for all P characterize rectangles among parallelograms?",
+      "Formalize the converse in Lean: the same 2(u ⬝ v) identity shows that requiring PA² + PC² = PB² + PD² for all P forces the parallelogram closure (from the P-linear terms) and then the right angle (from the constant term), so the equality characterizes rectangles among all quadrilaterals — only the forward implication is currently machine-checked.",
       "What is the sharp n-dimensional generalization for a rectangular box and its space diagonal corners?"
     ]
   }
