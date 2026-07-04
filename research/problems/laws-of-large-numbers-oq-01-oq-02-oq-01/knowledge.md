@@ -437,3 +437,76 @@ S4b step-3 (centered-truncation control `∑ᵢ 𝔼Yᵢ/n^{1/p} → 0`) and ste
 (`∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`, uses `p<2`), then final assembly via S5
 `ae_tendsto_average_zero_of_variance_weighted_bdd` on the centered truncations plus this
 step's a.s. eventual `Xᵢ = Yᵢ`.
+
+---
+
+## S4b steps 3–4 kernels (researcher-14, 2026-07-03) — BUILD: pointwise truncation-moment kernels WRITTEN (UNVERIFIED — host disk full)
+
+**Outcome: BUILD (unverified).** Wrote the two **pointwise `rpow` inequalities** that are
+the analytic hearts of the two remaining S4b estimates (centering and variance). Both are
+pure real-analysis (no measure theory), elementary, reusable, written 0-sorry / 0-`axiom`.
+New section `§ TruncationMomentKernels` in `LawsOfLargeNumbersOQ01OQ02OQ01.lean`.
+
+> **VERIFICATION BLOCKED.** The mandated Docker build did not run: host disk 100 % full
+> (122 Mi free of 926 Gi), Docker daemon I/O-erroring on its own content store. All
+> Mathlib lemmas were name/signature-checked against the pinned `v4.26.0` source and the
+> idioms mirror the already-verified S4b step-1 lemmas, but the file is **not** compiled.
+> Next session must build before relying on these lemmas. (Disk culprit is the user's
+> *other* repos, per prior deployer/auditor notes — not this repo.)
+
+### What shipped
+
+- `abs_le_rpow_mul_rpow_of_tail` — **step-3 kernel (centering).**
+  `1 ≤ p`, `0 < t`, `t < |x|` ⟹ `|x| ≤ t^{1-p} · |x|^p`.
+  Mechanism: `|x| = |x|^p · |x|^{1-p}` (`Real.rpow_add`, exponent `p+(1-p)=1`), and
+  the **sign of `1-p`** does the work — `1-p ≤ 0` with `0 < t ≤ |x|` gives the
+  *antitone* rpow bound `|x|^{1-p} ≤ t^{1-p}` via `Real.rpow_le_rpow_of_nonpos`
+  `(hx : 0<x) (hxy : x≤y) (hz : z≤0) : y^z ≤ x^z`.
+- `sq_le_rpow_mul_rpow_of_trunc` — **step-4 kernel (variance).**
+  `p < 2`, `0 < t`, `|x| ≤ t` ⟹ `x² ≤ t^{2-p} · |x|^p`.
+  Mechanism: `x=0` case is RHS-nonnegativity; else `x² = |x|^2 = |x|^p · |x|^{2-p}`
+  via `Real.rpow_add` + the cast chain `|x|^{(2:ℝ)} = |x|^{((2:ℕ):ℝ)} = |x|^{(2:ℕ)} = x²`
+  (`Real.rpow_natCast`, `sq_abs`), then `0 ≤ 2-p` with `0 < |x| ≤ t` gives the
+  *monotone* rpow bound `|x|^{2-p} ≤ t^{2-p}` via `Real.rpow_le_rpow`.
+
+### Insights (propagate)
+
+- **The `p`-regime hypotheses enter through one sign each.** `1 ≤ p` ⟺ `1-p ≤ 0`
+  (tail factor `t^{1-p}` sub-linear, step-3); `p < 2` ⟺ `0 ≤ 2-p` (truncation factor
+  `t^{2-p}` super-linear + `2/p > 1` for the variance-sum convergence, step-4). This is
+  the *entire* role of `1 ≤ p < 2` at the pointwise level — everything else is `rpow`
+  bookkeeping.
+- **`rpow_add` split idiom.** To relate `|x|` (or `x²`) to `|x|^p·(threshold)^{exp}`,
+  write the target power as `|x|^p · |x|^{k-p}` (`k=1` tail, `k=2` variance) via
+  `← Real.rpow_add hxpos` with the exponent identity closed by `show … = k by ring`,
+  then bound the *second* factor by the threshold using the appropriate signed-exponent
+  monotonicity lemma. Reused verbatim in both kernels.
+- **`x^(2:ℝ) = x^(2:ℕ)` cast chain** (recurs whenever a square meets rpow): 
+  `rw [show (2:ℝ) = ((2:ℕ):ℝ) by norm_num, Real.rpow_natCast, sq_abs]`. `sq_abs` turns
+  `|x|^(2:ℕ)` into `x^(2:ℕ)` for free.
+- These kernels are **pointwise only** — the surviving work is the *integral lift*:
+  `integral_mono`/`abs_integral_le` against the kernel to reach `|𝔼Yᵢ| ≤ i^{(1-p)/p}𝔼|X|^p`
+  (step-3) and `𝔼[Yᵢ²] ≤ i^{(2-p)/p}𝔼|X|^p` (step-4), plus the two sums.
+
+### Recommended next: step-4 before step-3
+
+Step-4's integral lift is more self-contained (just `integral_mono` on the indicator
+`Yᵢ² = Xᵢ²·𝟙{|Xᵢ|≤i^{1/p}}` + a Mathlib `∑ i^{-2/p}` convergence lemma —
+`Real.summable_one_div_nat_rpow` with `2/p > 1`), whereas step-3 additionally needs the
+weight partial-sum asymptotic `∑_{i<n} i^{1/p-1} ~ p·n^{1/p} → ∞` for
+`tendsto_weighted_average_zero`. Do step-4 first.
+
+### Process / hazard
+
+- **Worktree-deletion hazard recurred (3rd session running).** The unlocked worktree at
+  `.loom/worktrees/researcher-14` was deleted mid-session by a concurrent cleanup, then a
+  `/private/tmp` replacement was *also* deleted. Only **`--lock`ed** worktrees survive
+  (all long-lived worktrees in `git worktree list` show `locked`). Mandatory pattern:
+  `git worktree add --lock /Users/rwalters/lg-wt/<name> <branch>`.
+- The stale `feature/researcher-14` branch is at an *old* main commit with **no** MZ file;
+  the merged MZ work lives on `origin/main`. Always base new MZ work on `origin/main`.
+
+### Files modified
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (+~90 lines, § TruncationMomentKernels)
+- `research/problems/.../state.md`, `.../knowledge.md`, problem JSON knowledge
