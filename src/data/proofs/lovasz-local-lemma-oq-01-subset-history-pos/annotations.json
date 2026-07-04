@@ -4,7 +4,7 @@
     "proofId": "lovasz-local-lemma-oq-01-subset-history-pos",
     "range": {
       "startLine": 1,
-      "endLine": 50
+      "endLine": 29
     },
     "type": "context",
     "title": "The undischarged non-nullness side condition of the LLL strong induction",
@@ -22,6 +22,30 @@
       "lovasz-local-lemma-oq-01-denominator-recursion (consumes hpos)",
       "lovasz-local-lemma-oq-01-chain-rule (prefix-only positivity)",
       "conditional probability μ[t|s]"
+    ]
+  },
+  {
+    "id": "ann-lll-subsethist-strategy",
+    "proofId": "lovasz-local-lemma-oq-01-subset-history-pos",
+    "range": {
+      "startLine": 30,
+      "endLine": 50
+    },
+    "type": "technique",
+    "title": "Proof Strategy: Telescoping the Subset Induction",
+    "content": "The positivity is proved by `Finset.induction` on the history set $S$. **Base:** for $S = \\emptyset$ the intersection $\\bigcap_{j\\in\\emptyset}A_j^c$ is `univ`, so the survival set is just $C$, non-null by hypothesis $\\mu(C)\\ne 0$. **Step** ($\\text{insert }a\\ s$, $a\\notin s$): write $H = (\\bigcap_{j\\in s}A_j^c)\\cap C$; the survival set factors as $(A_a)^c \\cap H$, and the telescoping identity `cond_mul_eq_inter` gives $\\mu((A_a)^c\\cap H) = \\mu[(A_a)^c\\mid H]\\cdot\\mu(H)$. The second factor is nonzero by the induction hypothesis (the sub-block failure bounds restrict from $\\text{insert }a\\ s$ down to $s$); the first is $1 - \\mu[A_a\\mid H]$ (`prob_compl_eq_one_sub`, valid on the positive history $H$), strictly positive because the failure bound at $a$ over sub-block $s$ is $< 1$. The two exported results are `survival_pos_of_failure_lt_one_subset` (the positivity itself) and `survival_pos_subset_forall` (the $\\forall T\\subseteq S$ packaging the denominator recursion consumes as `hpos`).",
+    "mathContext": "$\\mu((A_a)^c\\cap H) = \\underbrace{(1 - \\mu[A_a\\mid H])}_{>0}\\cdot\\underbrace{\\mu(H)}_{\\ne 0\\ (\\text{IH})} \\ne 0$, with $H = (\\bigcap_{j\\in s}A_j^c)\\cap C$; base case $S=\\emptyset$ gives $C$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.induction",
+      "cond_mul_eq_inter (telescoping)",
+      "prob_compl_eq_one_sub",
+      "survival conditional 1 − failure"
+    ],
+    "prerequisites": [
+      "induction over finite sets",
+      "conditional-probability multiplication rule",
+      "monotonicity of sub-block failure bounds"
     ]
   },
   {
