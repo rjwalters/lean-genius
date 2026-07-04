@@ -1233,4 +1233,100 @@ theorem tsum_weight_trunc_sq_le {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (x : ℝ) 
 
 end TailPSeries
 
+/-! ## S4b (step 4) — integrating the variance-sum integrand to `𝔼|X|ᵖ + 1`
+
+The pointwise integrand produced by the Tonelli interchange behind the MZ variance sum
+`∑ᵢ Var(Yᵢ)/i^{2/p}` is, after the swap, dominated (`tsum_weight_trunc_sq_le` at `x = X ω`,
+`s = 2/p`) by
+
+    (max 1 |X ω|ᵖ)^{1-s} · s/(s-1) · (X ω)²,
+
+a single power of `max 1 |X|ᵖ` against `X²`.  This section integrates the deterministic part
+of that bound — dropping the constant `s/(s-1)`, which factors through any integral — over a
+probability measure, closing the "integrate the RHS" half of the variance-sum frontier:
+
+    ∫ (max 1 |X|ᵖ)^{1-s} · X²  ≤  𝔼|X|ᵖ + 1.
+
+The mechanism is the relation `p·s = 2` (i.e. `s = 2/p`), which is exactly what makes the
+`|X| ≥ 1` branch of the pointwise bound collapse to `|X|ᵖ`: there `(|X|ᵖ)^{1-s}·X² =
+|X|^{p-2}·|X|² = |X|ᵖ`, integrating to `𝔼|X|ᵖ`; on `|X| < 1` the `max` is `1` and `X² ≤ 1`,
+integrating to at most `μ(univ) = 1`.  Both are pure integral monotonicity over the pointwise
+kernel `rhs_kernel_le` (no interchange, no independence) — the same `integral_mono_of_nonneg`
+shape as the step-3/4 integral lifts of `TruncationIntegralLifts`.  What remains for the full
+variance sum is the interchange itself (`∑'ᵢ ∫ = ∫ ∑'ᵢ` via `integral_tsum`) and pulling out the
+`s/(s-1)` constant; this leaf supplies the bound the interchange's right-hand side is integrated
+against.  0-sorry / 0-`axiom`. -/
+section VarianceSumRHS
+
+open MeasureTheory
+
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
+/-- **Pointwise RHS kernel for the MZ variance-sum integrand.**  For `0 < p` and `s` tied by
+`p·s = 2` (i.e. `s = 2/p`), the deterministic integrand bound `(max 1 |x|ᵖ)^{1-s}·x²` produced
+by `tsum_weight_trunc_sq_le` is itself dominated by `|x|ᵖ + 1`:
+
+    (max 1 |x|ᵖ)^{1-s} · x²  ≤  |x|ᵖ + 1.
+
+The constraint `p·s = 2` is what collapses the `|x| ≥ 1` branch: there `max 1 |x|ᵖ = |x|ᵖ`,
+`(|x|ᵖ)^{1-s} = |x|^{p(1-s)} = |x|^{p-2}`, and multiplying by `x² = |x|²` gives exactly `|x|ᵖ`.
+On `|x| < 1` the max is `1`, `1^{1-s} = 1`, and `x² = |x|² ≤ 1`, so the left side is `≤ 1`.
+In both branches the bound `≤ |x|ᵖ + 1` follows by nonnegativity of the dropped summand. -/
+theorem rhs_kernel_le {p s x : ℝ} (hp : 0 < p) (hps : p * s = 2) :
+    (max 1 (|x| ^ p)) ^ (1 - s) * x ^ 2 ≤ |x| ^ p + 1 := by
+  have hx2 : x ^ 2 = |x| ^ (2 : ℝ) := by
+    rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
+    exact (sq_abs x).symm
+  rcases le_or_lt 1 |x| with hx | hx
+  · -- `|x| ≥ 1`: the bound collapses to exactly `|x|ᵖ`.
+    have hxpos : (0 : ℝ) < |x| := lt_of_lt_of_le one_pos hx
+    have hxp1 : (1 : ℝ) ≤ |x| ^ p := by
+      calc (1 : ℝ) = (1 : ℝ) ^ p := (Real.one_rpow p).symm
+        _ ≤ |x| ^ p := Real.rpow_le_rpow (by norm_num) hx hp.le
+    have hexp : p * (1 - s) = p - 2 := by linear_combination -hps
+    rw [max_eq_right hxp1, ← Real.rpow_mul (abs_nonneg x) p (1 - s), hexp, hx2,
+      ← Real.rpow_add hxpos, show p - 2 + 2 = p by ring]
+    exact le_add_of_nonneg_right (by norm_num)
+  · -- `|x| < 1`: the max is `1` and `x² ≤ 1`.
+    have hxp1 : |x| ^ p ≤ 1 := Real.rpow_le_one (abs_nonneg x) hx.le hp.le
+    rw [max_eq_left hxp1, Real.one_rpow, one_mul]
+    have hxsq : x ^ 2 ≤ 1 := by
+      rw [← sq_abs]; exact pow_le_one₀ (abs_nonneg x) hx.le
+    exact hxsq.trans (le_add_of_nonneg_left (Real.rpow_nonneg (abs_nonneg x) p))
+
+/-- **Integral lift of the variance-sum RHS bound (MZ step 4).**  Integrating the pointwise
+kernel `rhs_kernel_le` over a probability measure: for `0 < p`, `p·s = 2` and an `X` with
+finite `p`-th absolute moment,
+
+    ∫ (max 1 |X|ᵖ)^{1-s} · X²  ≤  𝔼|X|ᵖ + 1.
+
+This is the deterministic right-hand side the MZ variance-sum interchange integrates against:
+after `∑'ᵢ ∫ i^{-s}·Yᵢ² = ∫ ∑'ᵢ i^{-s}·Yᵢ²` (Tonelli) the integrand is `≤ (max 1 |X|ᵖ)^{1-s}·
+s/(s-1)·X²` by `tsum_weight_trunc_sq_le`, and pulling out the constant `s/(s-1)` leaves exactly
+this integral, `≤ s/(s-1)·(𝔼|X|ᵖ + 1)`.  Pure `integral_mono_of_nonneg` over `rhs_kernel_le`
+plus `∫ 1 = μ(univ) = 1`; no interchange or independence is used here. -/
+theorem integral_variance_sum_rhs_le [IsProbabilityMeasure μ]
+    (X : Ω → ℝ) {p s : ℝ} (hp : 0 < p) (hps : p * s = 2)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    ∫ ω, (max 1 (|X ω| ^ p)) ^ (1 - s) * (X ω) ^ 2 ∂μ
+      ≤ ∫ ω, |X ω| ^ p ∂μ + 1 := by
+  have hnn : ∀ ω, 0 ≤ (max 1 (|X ω| ^ p)) ^ (1 - s) * (X ω) ^ 2 := fun ω =>
+    mul_nonneg (Real.rpow_nonneg (le_trans zero_le_one (le_max_left _ _)) _) (sq_nonneg _)
+  calc ∫ ω, (max 1 (|X ω| ^ p)) ^ (1 - s) * (X ω) ^ 2 ∂μ
+      ≤ ∫ ω, (|X ω| ^ p + 1) ∂μ :=
+        integral_mono_of_nonneg (ae_of_all _ hnn) (hint.add (integrable_const 1))
+          (ae_of_all _ (fun ω => rhs_kernel_le hp hps))
+    _ = ∫ ω, |X ω| ^ p ∂μ + ∫ _ω : Ω, (1 : ℝ) ∂μ := integral_add hint (integrable_const 1)
+    _ = ∫ ω, |X ω| ^ p ∂μ + 1 := by rw [integral_const]; simp
+
+#check @rhs_kernel_le
+#check @integral_variance_sum_rhs_le
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms rhs_kernel_le
+#print axioms integral_variance_sum_rhs_le
+
+end VarianceSumRHS
+
 end LawsOfLargeNumbers.MZ
