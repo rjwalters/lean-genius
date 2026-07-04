@@ -17,6 +17,7 @@ import Mathlib.Combinatorics.Schnirelmann
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Tactic
+import Proofs.SchnirelmannTheorem
 
 namespace WeakGoldbach
 
@@ -388,9 +389,18 @@ noncomputable abbrev schnirelmannDensity (A : Set ℕ) [DecidablePred (· ∈ A)
 def IsAdditiveBasis (A : Set ℕ) (h : ℕ) : Prop :=
   ∀ n : ℕ, ∃ (S : Multiset ℕ), (∀ x ∈ S, x ∈ A) ∧ S.card ≤ h ∧ S.sum = n
 
-/-- Schnirelmann's theorem: if σ(A) > 0, then A is an additive basis -/
-axiom schnirelmann_basis_theorem (A : Set ℕ) [DecidablePred (· ∈ A)] :
-    schnirelmannDensity A > 0 → ∃ h : ℕ, IsAdditiveBasis A h
+/-- Schnirelmann's theorem: if σ(A) > 0, then A is an additive basis.
+
+    Formerly an `axiom`; now proved in `Proofs.SchnirelmannTheorem`
+    (`SchnirelmannTheorem.schnirelmann_basis`), which assembles the machine-checked
+    Schnirelmann inequality (`SchnirelmannCounting.schnirelmann_inequality`) with the
+    covering/representation bookkeeping (`SchnirelmannBasis`). `IsAdditiveBasis A h`
+    unfolds to exactly the `∀ n, ∃ S, …` shape that theorem produces, and the local
+    `schnirelmannDensity` abbrev is definitionally Mathlib's, so the derivation is a
+    direct application. -/
+theorem schnirelmann_basis_theorem (A : Set ℕ) [DecidablePred (· ∈ A)] :
+    schnirelmannDensity A > 0 → ∃ h : ℕ, IsAdditiveBasis A h :=
+  fun hpos => SchnirelmannTheorem.schnirelmann_basis hpos
 
 /-- The primes have Schnirelmann density 0, because `1 ∉ {p | p.Prime}`.
 
