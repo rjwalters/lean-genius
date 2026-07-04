@@ -2,11 +2,11 @@
   "slug": "sylow-theorem-oq-04-oq-03",
   "title": "Simplicity of PSL(2,p) for primes p ≥ 5 by a Sylow counting argument",
   "status": "blocked",
-  "phase": "OBSERVE",
+  "phase": "BUILD",
   "path": "full",
-  "tier": "EMPTY",
+  "tier": "MODERATE",
   "started": "2026-04-05T03:59:25.465Z",
-  "lastUpdate": "2026-07-02T00:00:00.000Z",
+  "lastUpdate": "2026-07-04T00:00:00.000Z",
   "significance": 7,
   "tractability": 2,
   "tags": [
@@ -56,7 +56,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "OBSERVE (S1, researcher-7): survey only, classified BLOCKED. The Sylow 'counting' framing in the parent's open question is a slight red herring: the parent's A₅ argument counts Sylow-5 subgroups, but the standard proof of PSL(2,p) simplicity for the whole family p ≥ 5 is NOT a direct Sylow count — it is the Iwasawa criterion applied to the 2-transitive action of PSL(2,p) on the projective line P¹(𝔽_p) (p+1 points). Mathlib supplies the Iwasawa criterion (IwasawaStructure.isSimpleGroup) and the bare PSL abbreviation, but essentially none of the connective infrastructure. Required and MISSING in Mathlib: (1) the order |SL(2,𝔽_p)| = p(p²−1) and |PSL(2,p)| = p(p²−1)/2 for odd p; (2) the action of PSL(2,p) on P¹(𝔽_p) with 2-transitivity and Borel point-stabilizers; (3) an Iwasawa structure — the unipotent subgroup {[[1,t],[0,1]]} (abelian, normal in the Borel stabilizer) whose conjugates generate PSL(2,p); (4) perfectness of PSL(2,p) for p ≥ 5 (fails for p = 2,3). Each is nontrivial; together this is a >1000-line formalization. Recommend keeping BLOCKED until the SL(2)/P¹ action infrastructure is built (a natural standalone BUILD target), then discharge simplicity via the Iwasawa criterion.",
+    "progressSummary": "BUILD (researcher-6, 2026-07-04): built and verified the first standalone infrastructure fragment — the unipotent Sylow-p subgroup U of SL(2, ZMod p) as an injective additive homomorphism with |U|=p (SylowTheoremOQ04OQ03.lean, 0-axiom/0-sorry, docker-build verified; gallery entry added). This is item (3)'s abelian-normal building block and item (2)'s Sylow-p subgroup from the nextSteps list. STILL BLOCKED on the deep theorem: the PSL(2,p) action on P¹(𝔽_p), 2-transitivity, perfectness for p≥5, and the Iwasawa assembly all remain missing in Mathlib (>1000 lines). Prior: OBSERVE (S1, researcher-7): survey only, classified BLOCKED. The Sylow 'counting' framing in the parent's open question is a slight red herring: the parent's A₅ argument counts Sylow-5 subgroups, but the standard proof of PSL(2,p) simplicity for the whole family p ≥ 5 is NOT a direct Sylow count — it is the Iwasawa criterion applied to the 2-transitive action of PSL(2,p) on the projective line P¹(𝔽_p) (p+1 points). Mathlib supplies the Iwasawa criterion (IwasawaStructure.isSimpleGroup) and the bare PSL abbreviation, but essentially none of the connective infrastructure. Required and MISSING in Mathlib: (1) the order |SL(2,𝔽_p)| = p(p²−1) and |PSL(2,p)| = p(p²−1)/2 for odd p; (2) the action of PSL(2,p) on P¹(𝔽_p) with 2-transitivity and Borel point-stabilizers; (3) an Iwasawa structure — the unipotent subgroup {[[1,t],[0,1]]} (abelian, normal in the Borel stabilizer) whose conjugates generate PSL(2,p); (4) perfectness of PSL(2,p) for p ≥ 5 (fails for p = 2,3). Each is nontrivial; together this is a >1000-line formalization. Recommend keeping BLOCKED until the SL(2)/P¹ action infrastructure is built (a natural standalone BUILD target), then discharge simplicity via the Iwasawa criterion.",
     "insights": [
       "The right tool is Iwasawa's criterion, not raw Sylow counting: PSL(2,p) acts 2-transitively (hence primitively and faithfully) on the p+1 points of P¹(𝔽_p); the unipotent upper-triangular subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} is abelian, normal in the stabilizer of ∞, and its PSL-conjugates generate PSL(2,p); with perfectness for p ≥ 5, IwasawaStructure.isSimpleGroup concludes.",
       "Mathlib's PSL support is a single 39-line abbreviation with no order, no group action, and no simplicity lemmas — so the bottleneck is entirely the missing connective infrastructure, not the final criterion.",
@@ -75,6 +75,8 @@
       "Assemble the Iwasawa structure (U abelian-normal-in-stabilizer, conjugates generate) and prove perfectness for p ≥ 5, then apply IwasawaStructure.isSimpleGroup.",
       "Until the P¹ action infrastructure exists, keep this entry BLOCKED rather than attempting the simplicity theorem directly on top of missing foundations."
     ],
-    "builtItems": []
+    "builtItems": [
+      "SylowTheoremOQ04OQ03.lean (VERIFIED, 0-axiom, 0-sorry, 122 lines): the upper-unipotent one-parameter subgroup U = {[[1,t],[0,1]]} of SL(2, ZMod p). Proves unipotentUpper lands in SL(2) (det=1), unipotentUpper_mul additivity, unipotentUpper_zero/comm, unipotentHom : Multiplicative(ZMod p) →* SL(2,ZMod p) as an injective group hom, and card_unipotent_range: |U| = p. This is the abelian normal subgroup of the Borel required by Iwasawa's criterion and the order-p Sylow subgroup of SL(2,p). Gallery entry added (status verified, badge original)."
+    ]
   }
 }
