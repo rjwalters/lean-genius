@@ -359,6 +359,64 @@ theorem deletionBound_mono_of_unionFeasible (hk : 2 ≤ k) (hkn : k ≤ n)
     deletionBound n k ≤ deletionBound (n + 1) k :=
   deletionBound_mono_of_pred_subthreshold hk hkn (by omega)
 
+/-- **Exact one-step growth: the deletion bound gains *precisely one* vertex per step
+    when the added `(k−1)`-mass fits inside the current quantum remainder.**
+    `deletionBound_mono_of_pred_subthreshold` only shows the bound does not *decrease*
+    (`≤`).  The sharper question is *when it strictly grows*, and by how much.  Write
+    `q = 2^C(k,2)` and `a = 2·C(n,k)`; the deleted-vertex count is the floor `⌊a/q⌋`, so
+    `deletionBound n k = n − ⌊a/q⌋`.  By Pascal's rule the next numerator is
+    `2·C(n+1,k) = a + 2·C(n,k−1)`, i.e. the mass added in one step is `b = 2·C(n,k−1)`.
+    The floor `⌊(a+b)/q⌋` fails to advance — stays equal to `⌊a/q⌋` — exactly when the
+    added mass does not push the current remainder `a mod q` across the next multiple of
+    `q`, i.e. when
+
+        `(2·C(n,k) mod 2^C(k,2)) + 2·C(n,k−1) < 2^C(k,2)`.
+
+    Under that remainder condition the deleted count is unchanged while the host grows by
+    one, so the guaranteed monochromatic-`Kₖ`-free set gains **exactly one vertex**:
+    `deletionBound (n+1) k = deletionBound n k + 1`.  The extra hypothesis
+    `⌊a/q⌋ ≤ n` (the deleted count does not exceed the host — automatic wherever the
+    deletion bound is nonzero) makes the `ℕ` truncated subtraction exact.  This upgrades
+    the qualitative "`≤`" window monotonicity to the quantitative growth *rate* the earlier
+    parts left open — and it is still pure `ℕ`-division (`Nat.add_div`), valid for every
+    `k`, axiom-free. -/
+theorem deletionBound_stepGain (hk : 2 ≤ k) (hkn : k ≤ n)
+    (hrem : (2 * n.choose k) % 2 ^ (k.choose 2) + 2 * n.choose (k - 1) < 2 ^ (k.choose 2))
+    (hlive : (2 * n.choose k) / 2 ^ (k.choose 2) ≤ n) :
+    deletionBound (n + 1) k = deletionBound n k + 1 := by
+  have hq : 0 < 2 ^ (k.choose 2) := pow_pos (by norm_num) _
+  -- Pascal's rule: the mass added in one step is `2·C(n,k−1)`.
+  have hpascal : 2 * (n + 1).choose k = 2 * n.choose k + 2 * n.choose (k - 1) := by
+    have h : (n + 1).choose k = n.choose k + n.choose (k - 1) := by
+      obtain ⟨m, rfl⟩ : ∃ m, k = m + 1 := ⟨k - 1, by omega⟩
+      simp only [Nat.choose_succ_succ, Nat.add_sub_cancel]
+      ring
+    omega
+  simp only [deletionBound]
+  set q := 2 ^ (k.choose 2) with hq_def
+  set a := 2 * n.choose k with ha_def
+  set c := 2 * (n + 1).choose k with hc_def
+  set b := 2 * n.choose (k - 1) with hb_def
+  -- The added mass is below one quantum (a fortiori from the remainder condition).
+  have hbq : b < q := by omega
+  -- Hence the floor does not advance: `⌊(a+b)/q⌋ = ⌊a/q⌋`.
+  have hcq : c / q = a / q := by
+    rw [hpascal, Nat.add_div hq, Nat.mod_eq_of_lt hbq, Nat.div_eq_of_lt hbq]
+    have hnot : ¬ (q ≤ a % q + b) := by omega
+    simp [hnot]
+  omega
+
+/-- **Strict growth corollary.**  Under the same remainder condition, the deletion bound
+    is *strictly* increasing at `n`: `deletionBound n k < deletionBound (n+1) k`.  So the
+    window is not merely nonshrinking — wherever the current remainder has room for the
+    added `(k−1)`-mass, adding a vertex genuinely enlarges the certified
+    monochromatic-`Kₖ`-free set.  Immediate from `deletionBound_stepGain`. -/
+theorem deletionBound_strictMono_of_remainder (hk : 2 ≤ k) (hkn : k ≤ n)
+    (hrem : (2 * n.choose k) % 2 ^ (k.choose 2) + 2 * n.choose (k - 1) < 2 ^ (k.choose 2))
+    (hlive : (2 * n.choose k) / 2 ^ (k.choose 2) ≤ n) :
+    deletionBound n k < deletionBound (n + 1) k := by
+  rw [deletionBound_stepGain hk hkn hrem hlive]; omega
+
 /-- **The deletion bound is monotone across the entire `(k−1)` sub-threshold window.**
     `deletionBound_mono_of_pred_subthreshold` shows a *single* step `n → n+1` never
     decreases the deletion bound while `2·C(n,k−1) < 2^C(k,2)`.  Chaining that step by
@@ -652,6 +710,8 @@ theorem deletion_no_mono_K10 :
 #print axioms ramsey_deletion_one_past
 #print axioms deletionBound_mono_of_pred_subthreshold
 #print axioms deletionBound_mono_of_unionFeasible
+#print axioms deletionBound_stepGain
+#print axioms deletionBound_strictMono_of_remainder
 #print axioms deletionBound_mono_window
 #print axioms deletion_noloss_across_window
 #print axioms deletion_no_mono_K6

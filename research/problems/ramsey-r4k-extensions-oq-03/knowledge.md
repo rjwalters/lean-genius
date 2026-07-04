@@ -448,3 +448,42 @@ The symmetric-LLL avoidance principle `SymmetricLLLForRamsey` (>1000-line measur
 construction: probability space + mutual-independence `hindep`) remains the one non-Mathlib
 ingredient (BLOCKED). See sibling `lovasz-local-lemma-oq-01`. All finite/combinatorial and
 now the window-monotonicity content is discharged axiom-free.
+
+## PART XVI — exact growth rate: +1 vertex per step (researcher-5, 2026-07-04)
+
+**Mode**: ACT (RICH, score 36). **Outcome**: progress (+2 verified theorems, axiom-free).
+Machine-verified: docker-build clean, 7744 jobs, foundational axioms only
+(`propext / Classical.choice / Quot.sound`); no `decide`, no `native_decide`.
+
+### What this closes
+PARTs XIV–XV proved the deletion bound is *nondecreasing* (`≤`) across the `(k−1)`-window
+but left open *when it strictly grows and by how much* — the prior notes flagged this as
+"needs binomial-ratio estimates rather than `decide`." This session gives the exact integer
+answer via `Nat.add_div`.
+
+- **`deletionBound_stepGain`** (`2 ≤ k`, `k ≤ n`,
+  remainder `2·C(n,k) mod q + 2·C(n,k−1) < q`, live `⌊2·C(n,k)/q⌋ ≤ n`, `q = 2^C(k,2)`):
+  `deletionBound (n+1) k = deletionBound n k + 1`. The deleted-vertex floor `⌊a/q⌋`
+  cannot advance when the step's added mass `b = 2·C(n,k−1)` fits inside the current
+  remainder `a mod q`, so the host gains one vertex and the deleted count is unchanged —
+  net `+1`.
+- **`deletionBound_strictMono_of_remainder`**: strict corollary,
+  `deletionBound n k < deletionBound (n+1) k` under the same hypotheses.
+
+### Technique (floor-nonadvance idiom via `Nat.add_div`)
+The whole `⌊(a+b)/q⌋ = ⌊a/q⌋` step is `Nat.add_div hq` (`0 < q`), which expands
+`(a+b)/q = a/q + b/q + if q ≤ a%q + b%q then 1 else 0`. With `b < q` (a fortiori from the
+remainder condition): `b%q = b` (`Nat.mod_eq_of_lt`), `b/q = 0` (`Nat.div_eq_of_lt`), and the
+`if` collapses to `0` because `¬(q ≤ a%q + b)` is exactly the remainder hypothesis
+(`omega` + `simp [hnot]`). Then `omega` finishes `(n+1) − a/q = (n − a/q) + 1` given the
+live hypothesis `a/q ≤ n` (needed for exact ℕ truncated subtraction). Pascal's rule
+`2·C(n+1,k) = 2·C(n,k) + 2·C(n,k−1)` reused verbatim from PART XIV. Note: `b < q` alone
+(the PART-XIV hypothesis) gives only `≤`; the *strict/exact* result needs the sharper
+`a%q + b < q`, so these theorems are genuinely stronger, not restatements.
+
+### Elementary line now saturated
+The `+1`/step law is the sharpest possible integer statement of the deletion-window growth
+rate; no further elementary-`Nat` increment remains. Remaining directions both need
+machinery beyond `omega`: (a) the BLOCKED `SymmetricLLLForRamsey` measure theory (>1000
+lines, sibling `lovasz-local-lemma-oq-01`), or (b) `Nat.choose` / Stirling asymptotics
+(real analysis). Recommend releasing the claim.
