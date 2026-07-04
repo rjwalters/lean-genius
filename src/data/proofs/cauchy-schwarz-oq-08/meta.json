@@ -141,7 +141,8 @@
     "implications": "Norm-rigidity is the reason Hilbert-space isometries are unitary. By isolating the additive hypothesis, the result shows inner-product preservation is forced by norm preservation alone, with no appeal to linearity — a sharpening of the usual linear-isometry statement and the elementary core of `LinearIsometry.inner_map_map`.",
     "openQuestions": [
       "Formalize the complex analogue: a norm-preserving ℝ-additive map that also preserves ‖x ± i·y‖ preserves the full complex inner product (via inner_eq_sum_norm_sq_div_four).",
-      "Derive that a surjective norm-preserving additive map is an inner-product isomorphism (combine injectivity here with surjectivity to get a LinearIsometryEquiv-style statement)."
+      "Derive that a surjective norm-preserving additive map is an inner-product isomorphism (combine injectivity here with surjectivity to get a LinearIsometryEquiv-style statement).",
+      "Drop the additivity hypothesis via Mazur–Ulam: since a surjective norm-preserving map fixing 0 between real normed spaces is automatically ℝ-affine (Mazur–Ulam, 1932), hence additive, formalize that such a map preserves the inner product with NO algebraic hypothesis assumed — turning the additivity in inner_map_eq from a hypothesis into a conclusion for surjective isometries."
     ]
   },
   "leanFile": {
