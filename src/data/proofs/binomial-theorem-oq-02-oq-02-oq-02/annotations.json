@@ -70,27 +70,50 @@
     ]
   },
   {
-    "id": "ann-gauss",
+    "id": "ann-gauss-binom",
     "proofId": "binomial-theorem-oq-02-oq-02-oq-02",
     "range": {
-      "startLine": 65,
-      "endLine": 75
+      "startLine": 63,
+      "endLine": 68
     },
     "type": "theorem",
-    "title": "Gauss's Sum: 1 + 2 + … + n = C(n+1, 2)",
-    "content": "Specializing the hockey-stick to r = 1 with C(m,1) = m gives 1 + 2 + … + n = C(n+1, 2), and `gauss_sum` derives the closed form n(n+1)/2 via C(n+1,2) = (n+1)n/2.",
-    "mathContext": "The triangular numbers are the r=1 diagonal of Pascal's triangle.",
+    "title": "Gauss's Sum as a Binomial Coefficient: 1 + 2 + … + n = C(n+1, 2)",
+    "content": "`sum_Icc_id` specializes the interval hockey-stick to r = 1: since C(m, 1) = m (Nat.choose_one_right), the identity ∑_{m∈Icc 1 n} C(m,1) = C(n+1,2) becomes 1 + 2 + … + n = C(n+1, 2). The triangular numbers are thus exactly the r = 1 diagonal of Pascal's triangle, and this step is a pure reindexing of the general identity — no new induction is needed.",
+    "mathContext": "1 + 2 + \\cdots + n = \\binom{n+1}{2}; the triangular numbers are the r = 1 diagonal of Pascal's triangle.",
     "significance": "key",
     "relatedConcepts": [
       "Gauss sum",
       "triangular numbers",
       "Nat.choose_one_right",
-      "Nat.choose_two_right",
-      "arithmetic series"
+      "hockey-stick specialization"
     ],
     "prerequisites": [
       "the interval form hockeyStick_Icc",
-      "C(m,1) = m and C(n+1,2) = n(n+1)/2"
+      "C(m,1) = m (Nat.choose_one_right)"
+    ]
+  },
+  {
+    "id": "ann-gauss-closed",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-02",
+    "range": {
+      "startLine": 70,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "Gauss's Sum Closed Form: n(n+1)/2",
+    "content": "`gauss_sum` turns the binomial form into the schoolbook closed form 1 + 2 + … + n = n(n+1)/2 by evaluating C(n+1, 2) = (n+1)n/2 with Nat.choose_two_right (and Nat.add_sub_cancel / Nat.mul_comm to normalize). This is the pairing-of-terms formula the young Gauss is famously said to have discovered; here it drops out of the hockey-stick identity purely algebraically, over ℕ with exact division.",
+    "mathContext": "\\binom{n+1}{2} = \\tfrac{(n+1)n}{2}, so 1 + 2 + \\cdots + n = \\tfrac{n(n+1)}{2}.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gauss sum",
+      "triangular numbers",
+      "Nat.choose_two_right",
+      "arithmetic series",
+      "natural-number division"
+    ],
+    "prerequisites": [
+      "the binomial form sum_Icc_id",
+      "C(n+1,2) = n(n+1)/2 (Nat.choose_two_right)"
     ]
   },
   {
