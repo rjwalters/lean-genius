@@ -158,6 +158,7 @@ axiom kostochka_pyber (ε : ℝ) (hε : ε > 0) :
     ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
       isDense G ε → hasSmallK5Subdivision G C
 
+omit [Fintype V] [DecidableEq V] in
 /-- **Bridging lemma (K₅-subdivision ⇒ non-planar subgraph).** A small `K₅`
     subdivision is, in particular, a small non-planar subgraph: on the same
     witness set `S`, the `mpr` (reverse) direction of Kuratowski's
