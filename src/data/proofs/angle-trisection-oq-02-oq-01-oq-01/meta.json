@@ -172,5 +172,13 @@
       "Proofs.AngleTrisectionOQ02OQ01"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "prime_degree_dvd_card_from_general",
+      "type": "core",
+      "description": "Mathlib's prime_degree_dvd_card is recovered as a trivial corollary of the generalized result: for an irreducible polynomial over a characteristic-zero field, its natDegree divides the cardinality of its Galois group, with the prime-degree hypothesis entirely unused.",
+      "leanType": "{F : Type*} [Field F] [CharZero F] {p : F[X]} (p_irr : Irreducible p) (p_deg : p.natDegree.Prime) : p.natDegree ∣ Fintype.card p.Gal"
+    }
+  ],
   "sorries": 0
 }
