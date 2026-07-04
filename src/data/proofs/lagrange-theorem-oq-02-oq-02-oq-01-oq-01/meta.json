@@ -226,5 +226,19 @@
       "Can the bijection-transport recipe be packaged as a reusable tactic or lemma schema, so that any `Fintype`-card identity whose proof factors through a finiteness-free equivalence is generalised to `Nat.card` automatically?"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "sum_card_fixedBy_eq_card_orbits_mul_card_group_of_finite",
+      "type": "main",
+      "description": "Burnside's lemma over Finite: for a Finite group G acting on a Finite set X, ∑ᶠ g, Nat.card (fixedBy X g) = Nat.card (orbits) · Nat.card G. The Fintype-free generalisation of Mathlib's sum_card_fixedBy_eq_card_orbits_mul_card_group, routed through the finiteness-free bijection sigmaFixedByEquivOrbitsProdGroup.",
+      "leanType": "[Finite G] [Finite X] → ∑ᶠ g : G, Nat.card (fixedBy X g) = Nat.card (orbitRel.Quotient G X) * Nat.card G"
+    },
+    {
+      "name": "sum_card_fixedBy_eq_card_orbits_mul_card_group_recovered",
+      "type": "key",
+      "description": "Certifies the generalisation subsumes the original: recovers Mathlib's Fintype-based sum_card_fixedBy_eq_card_orbits_mul_card_group verbatim as a special case, with the Finite X instance derived rather than assumed.",
+      "leanType": "[Fintype G] [∀ g, Fintype (fixedBy X g)] [Fintype (orbits)] → ∑ g, Fintype.card (fixedBy X g) = Fintype.card (orbitRel.Quotient G X) * Fintype.card G"
+    }
+  ]
 }
