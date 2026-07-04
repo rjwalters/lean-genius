@@ -97,6 +97,44 @@
     "path": "Proofs/ArithmeticSeriesOQ02OQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "qHockeyStick",
+      "type": "core",
+      "description": "q-analog of the hockey-stick identity: a q-weighted sum of q-simplicial numbers telescopes to the next q-simplicial number, the q-deformation of Σ C(j+k,k) = C(N+k+1,k+1).",
+      "leanType": "{R : Type*} → [CommRing R] → (q : R) → (k N : ℕ) → ∑ j ∈ range (N + 1), q ^ ((N - j) * (k + 1)) * qSimplicial q k j = qSimplicial q (k + 1) N"
+    },
+    {
+      "name": "qSimplicial_succ_recurrence",
+      "type": "core",
+      "description": "Pascal-type recurrence for q-simplicial numbers: qSimplicial q (k+1) (n+1) = q^(k+1)·qSimplicial q (k+1) n + qSimplicial q k (n+1).",
+      "leanType": "{R : Type*} → [CommRing R] → (q : R) → (k n : ℕ) → qSimplicial q (k + 1) (n + 1) = q ^ (k + 1) * qSimplicial q (k + 1) n + qSimplicial q k (n + 1)"
+    },
+    {
+      "name": "qBinom_one",
+      "type": "core",
+      "description": "Classical specialization at q=1: the q-binomial coefficient reduces to the ordinary binomial coefficient C(n,k).",
+      "leanType": "{n k : ℕ} → k ≤ n → qBinom (1 : ℤ) n k = Nat.choose n k"
+    },
+    {
+      "name": "qBinom_succ_succ",
+      "type": "supporting",
+      "description": "q-Pascal recurrence defining the q-binomial coefficients.",
+      "leanType": "{R : Type*} → [CommRing R] → (q : R) → (n k : ℕ) → qBinom q (n + 1) (k + 1) = q ^ (k + 1) * qBinom q n (k + 1) + qBinom q n k"
+    },
+    {
+      "name": "qBinom_self",
+      "type": "supporting",
+      "description": "Boundary value qBinom q n n = 1.",
+      "leanType": "{R : Type*} → [CommRing R] → (q : R) → (n : ℕ) → qBinom q n n = 1"
+    },
+    {
+      "name": "qBinom_eq_zero_of_lt",
+      "type": "technical",
+      "description": "Vanishing above the diagonal: qBinom q n k = 0 when n < k.",
+      "leanType": "{R : Type*} → [CommRing R] → (q : R) → {n k : ℕ} → n < k → qBinom q n k = 0"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "arithmetic-series-oq-02",
