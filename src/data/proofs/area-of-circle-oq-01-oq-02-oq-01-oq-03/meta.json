@@ -145,8 +145,8 @@
       "id": "thin-shell",
       "title": "Thin Shell Concentration and Summary",
       "startLine": 142,
-      "endLine": 156,
-      "summary": "Proves the thin shell concentration: for $0 < \\varepsilon < 1$, $1 - (1-\\varepsilon)^n \\to 1$ as $n \\to \\infty$. This shows that most volume of a high-dimensional ball lies near its boundary. Concluding summary of all 7 theorems.",
+      "endLine": 195,
+      "summary": "Proves the thin shell concentration: for $0 < \\varepsilon < 1$, $1 - (1-\\varepsilon)^n \\to 1$ as $n \\to \\infty$. This shows that most volume of a high-dimensional ball lies near its boundary. Concluding summary of all 7 theorems. The section closes with `thin_shell_concentration`, the quantitative statement that for large n the ball's mass concentrates in an O(1/√n) shell near the boundary.",
       "mathContext": "$(1-\\varepsilon)^n \\to 0$ since $|1-\\varepsilon| < 1$, so the shell fraction $1 - (1-\\varepsilon)^n \\to 1$."
     }
   ],
