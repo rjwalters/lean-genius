@@ -186,6 +186,68 @@
       }
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "am_ge_gm",
+      "type": "core",
+      "description": "AM ≥ GM for two non-negative reals: (a+b)/2 ≥ √(ab). Proved from ((a+b)/2)² − ab = (a−b)²/4 ≥ 0. This is the pointwise inequality that drives the whole AGM iteration.",
+      "leanType": "(a b : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) : (a + b) / 2 ≥ Real.sqrt (a * b)"
+    },
+    {
+      "name": "agmB_le_agmA",
+      "type": "supporting",
+      "description": "Sandwich invariant: the geometric-mean sequence stays below the arithmetic-mean sequence, bₙ ≤ aₙ for every n. Proved by applying AM ≥ GM at each iteration step.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) : ∀ n, agmB a b n ≤ agmA a b n"
+    },
+    {
+      "name": "agmA_antitone",
+      "type": "supporting",
+      "description": "The arithmetic-mean sequence aₙ is monotonically decreasing.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) : Antitone (agmA a b)"
+    },
+    {
+      "name": "agmB_monotone",
+      "type": "supporting",
+      "description": "The geometric-mean sequence bₙ is monotonically increasing.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) : Monotone (agmB a b)"
+    },
+    {
+      "name": "gap_contracts",
+      "type": "supporting",
+      "description": "Gap contraction: aₙ₊₁ − bₙ₊₁ ≤ (aₙ − bₙ)/2, i.e. the gap at least halves each step.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) (n : ℕ) : agmA a b (n + 1) - agmB a b (n + 1) ≤ (agmA a b n - agmB a b n) / 2"
+    },
+    {
+      "name": "gap_bound",
+      "type": "supporting",
+      "description": "Quantitative gap bound aₙ − bₙ ≤ (a−b)/2ⁿ, giving geometric (in fact quadratic in the AGM's fine analysis) convergence of the two sequences.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) (n : ℕ) : agmA a b n - agmB a b n ≤ (a - b) / 2 ^ n"
+    },
+    {
+      "name": "gap_tendsto_zero",
+      "type": "supporting",
+      "description": "The gap aₙ − bₙ tends to 0, obtained by squeezing between 0 and (a−b)/2ⁿ.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) : Tendsto (fun n => agmA a b n - agmB a b n) atTop (nhds 0)"
+    },
+    {
+      "name": "agm_common_limit",
+      "type": "core",
+      "description": "The two sequences share a limit: ⨅ₙ aₙ = ⨆ₙ bₙ. This common value is the arithmetic–geometric mean M(a,b).",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) : ⨅ n, agmA a b n = ⨆ n, agmB a b n"
+    },
+    {
+      "name": "agm_eq_limit_A",
+      "type": "supporting",
+      "description": "Both sequences converge to agm a b; here the arithmetic-mean sequence tends to the AGM value.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) : Tendsto (agmA a b) atTop (nhds (agm a b))"
+    },
+    {
+      "name": "agm_bounds",
+      "type": "supporting",
+      "description": "The AGM lies between its inputs: b ≤ M(a,b) ≤ a.",
+      "leanType": "(ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) : b ≤ agm a b ∧ agm a b ≤ a"
+    }
+  ],
   "references": [
     {
       "authors": "Borwein, Jonathan M.; Borwein, Peter B.",
