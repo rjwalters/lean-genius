@@ -167,5 +167,37 @@
     "path": "Proofs/PythagoreanTriplesOQ02OQ01.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "paramTriple_isPythagorean",
+      "type": "supporting",
+      "description": "The Gaussian parametrization always yields a Pythagorean triple — the algebraic heart, N(z²)=N(z)² written out. Closed by `ring` after unfolding PythagoreanTriple.",
+      "leanType": "PythagoreanTriple (m ^ 2 - n ^ 2) (2 * m * n) (m ^ 2 + n ^ 2)"
+    },
+    {
+      "name": "paramTriple_isPrimitive",
+      "type": "supporting",
+      "description": "Constructive (easy) direction: a coprime pair (m,n) of opposite parity gives a primitive triple — the two legs m²-n² and 2mn are coprime. Derived from Mathlib's coprime_classification in the Gaussian framing.",
+      "leanType": "Int.gcd m n = 1 → (m % 2 = 0 ∧ n % 2 = 1 ∨ m % 2 = 1 ∧ n % 2 = 0) → Int.gcd (m ^ 2 - n ^ 2) (2 * m * n) = 1"
+    },
+    {
+      "name": "primitive_classification",
+      "type": "main",
+      "description": "Complete classification of primitive Pythagorean triples in Gaussian-parametrization language: (x,y,z) is primitive iff it arises from the parametrization for some coprime, opposite-parity (m,n), up to leg swap and sign of z. Hard direction rests on unique factorization in ℤ[i].",
+      "leanType": "(PythagoreanTriple x y z ∧ Int.gcd x y = 1) ↔ ∃ m n, (x = m ^ 2 - n ^ 2 ∧ y = 2 * m * n ∨ x = 2 * m * n ∧ y = m ^ 2 - n ^ 2) ∧ (z = m ^ 2 + n ^ 2 ∨ z = -(m ^ 2 + n ^ 2)) ∧ Int.gcd m n = 1 ∧ (m % 2 = 0 ∧ n % 2 = 1 ∨ m % 2 = 1 ∧ n % 2 = 0)"
+    },
+    {
+      "name": "primitive_classification_pos",
+      "type": "main",
+      "description": "Sharper textbook standard form with no sign/order ambiguity: for odd leg x>0 and z>0 there exist m≥0, n with exactly x=m²-n², y=2mn, z=m²+n², coprime and opposite parity.",
+      "leanType": "PythagoreanTriple x y z → Int.gcd x y = 1 → x % 2 = 1 → 0 < z → ∃ m n, x = m ^ 2 - n ^ 2 ∧ y = 2 * m * n ∧ z = m ^ 2 + n ^ 2 ∧ Int.gcd m n = 1 ∧ (m % 2 = 0 ∧ n % 2 = 1 ∨ m % 2 = 1 ∧ n % 2 = 0) ∧ 0 ≤ m"
+    },
+    {
+      "name": "hypotenuse_sum_of_squares",
+      "type": "supporting",
+      "description": "Number-theoretic corollary: the hypotenuse of any positive primitive triple (odd leg x) is a sum of two squares, z=m²+n² — the Gaussian fact z=N(m+n·i) made explicit.",
+      "leanType": "PythagoreanTriple x y z → Int.gcd x y = 1 → x % 2 = 1 → 0 < z → ∃ m n, z = m ^ 2 + n ^ 2"
+    }
+  ]
 }
