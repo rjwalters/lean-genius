@@ -590,3 +590,53 @@ then S5 assembly through `ae_tendsto_average_zero_of_variance_weighted_bdd`.
 - proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean (new § TruncationIntegralLifts)
 - src/data/research/problems/laws-of-large-numbers-oq-01-oq-02-oq-01.json (leanFiles + knowledge)
 - research/problems/laws-of-large-numbers-oq-01-oq-02-oq-01/knowledge.md (this entry)
+
+---
+
+## Iter 11 (researcher-8, 2026-07-04) — BUILD: Tonelli integrand bound (pointwise inner-tail) SHIPPED & VERIFIED
+
+The **pointwise inner-tail bound** the MZ variance-sum Tonelli interchange consumes is now in
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (§ TailPSeries), 0-sorry / 0-`axiom`
+(`#print axioms` = propext/Classical.choice/Quot.sound — no `sorryAx`, no `Lean.ofReduceBool`).
+Verified via `docker-build.sh Proofs.LawsOfLargeNumbersOQ01OQ02OQ01` → **Built (7743 jobs, exit 0)**.
+
+- `tsum_indicator_ge_rpow_neg_le {s} (hs : 1 < s) (y : ℝ)` —
+  `∑' i, {i | y ≤ (i:ℝ)}.indicator (fun i => (i:ℝ)^(-s)) i ≤ (max 1 y)^(1-s)·s/(s-1)`.
+  This is the shape produced by the `∑ᵢ`–`𝔼` interchange: after swapping, the inner `∑ᵢ` runs
+  over the truncation region `{i | |X| ≤ i^{1/p}} = {i | |X|ᵖ ≤ i}`, and with `y = |X|ᵖ`,
+  `s = 2/p` it is bounded by `(max 1 |X|ᵖ)^{1-2/p}·s/(s-1)`, whose `|X| ≥ 1` branch is
+  `|X|^{p-2}` — the factor that multiplied by `X²` integrates to `𝔼|X|ᵖ`.
+
+### Proof structure (reusable)
+
+1. The truncation region `{i | y ≤ (i:ℝ)}` equals `{i | ⌈y⌉₊ ≤ i}` by `Nat.ceil_le`.
+2. Reindex the indicator tsum to the **inclusive tail** `∑' k, (k+⌈y⌉₊)^{-s}` via
+   `Summable.sum_add_tsum_nat_add ⌈y⌉₊` — the head `∑_{i<⌈y⌉₊}` of the indicator vanishes
+   (`Set.indicator_of_notMem` below threshold), and the shifted body `indicator (i+N) = (i+N)^{-s}`
+   (`Set.indicator_of_mem`, `N ≤ i+N`). Then apply the iter-10 leaf `tsum_ge_rpow_neg_le`.
+3. Dominate `⌈y⌉₊^{1-s} ≤ (max 1 y)^{1-s}` by `Real.rpow_le_rpow_of_nonpos` (antitone, `1-s ≤ 0`,
+   `max 1 y ≤ ⌈y⌉₊` from `Nat.le_ceil` + `⌈y⌉₊ ≥ 1`).
+4. `⌈y⌉₊ = 0` (⇔ `y ≤ 0`, `Nat.ceil_eq_zero`) branch: `max 1 y = 1`, bound `= s/(s-1)`; peel the
+   vanishing `i=0` term with `Summable.tsum_eq_zero_add` (`0^{-s}=0`, `Real.zero_rpow`) and reuse
+   `tsum_ge_rpow_neg_le` at `N=1`.
+
+### Reusable Lean gotchas (Mathlib v4.26)
+
+- **`Set.indicator_of_not_mem` is deprecated** (2025-05-23) → use `Set.indicator_of_notMem` (camelCase).
+- The additive of `Multipliable.prod_mul_tprod_nat_add` is **`Summable.sum_add_tsum_nat_add k h`**
+  (`(∑ i∈range k, f i) + ∑' i, f(i+k) = ∑' i, f i`) — the clean way to reindex an indicator tsum
+  to a shifted tail without fighting `Function.Injective.tsum_eq` (which does not exist by that name).
+- `Real.summable_nat_rpow.mpr (h : p < -1) : Summable (fun n => (n:ℝ)^p)`; `Summable.indicator _`
+  lifts it to the indicator. `Summable.tsum_eq_zero_add : ∑' b, f b = f 0 + ∑' b, f(b+1)`.
+- `Nat.ceil_le : ⌈a⌉₊ ≤ n ↔ a ≤ n`; `Nat.le_ceil : a ≤ ⌈a⌉₊`; `Nat.ceil_eq_zero : ⌈a⌉₊ = 0 ↔ a ≤ 0`.
+
+### Honest status
+
+A genuine, complete, verified brick — the exact deterministic integrand bound flagged as the
+Tonelli input. It does **not** yet prove Marcinkiewicz–Zygmund: the surviving work is the
+measure-theoretic `∑'`–`∫` interchange itself (`lintegral_tsum`, nonneg + measurability), which
+plugs this bound into `𝔼[X²·(inner tail)]` and integrates to `C·𝔼|X|ᵖ`, yielding
+`∑ᵢ Var(Yᵢ)/i^{2/p} < ∞` for `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5); then step-3
+centering and the final combination. Worked in external home-dir worktree `/Users/rwalters/lg-r8-mz-tonelli`
+(build FROM the worktree with `LEAN_SKIP_CACHE=true`, hardlinked `proofs/.lake/packages`), committed
+before building.

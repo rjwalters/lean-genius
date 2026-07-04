@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S4b step-4 *arithmetic backbone* — tail p-series bound SHIPPED & VERIFIED — remaining: Tonelli interchange + assembly)
+**Phase**: ACT (S4b step-4 *Tonelli integrand bound* — pointwise inner-tail bound SHIPPED & VERIFIED — remaining: the ∑ᵢ–𝔼 interchange itself + assembly)
 **Since**: 2026-07-04
-**Iteration**: 9 (S4b step-4 tail p-series bound `∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1)` SHIPPED & build-VERIFIED; step-3/4 kernels; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
+**Iteration**: 11 (S4b step-4 pointwise inner-tail bound `tsum_indicator_ge_rpow_neg_le` `∑_{i:y≤i}i^{-s}≤(max 1 y)^{1-s}·s/(s-1)` SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs; iter 10 inclusive tail `tsum_ge_rpow_neg_le`; iter 9 exclusive backbone `∑_{j>N}j^{-s}≤N^{1-s}/(s-1)`; step-3/4 kernels; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
 
 ## Current Focus
 
@@ -109,22 +109,26 @@ interchange**: keep the truncated moment `𝔼[X²·𝟙{|X| ≤ i^{1/p}}]` inta
 
 ## Next Action
 
-- **S4b step-4, the arithmetic backbone is now DONE (iteration 9):** `tsum_shift_rpow_neg_le`
-  supplies `∑_{j>N} j^{-s} ≤ N^{1-s}/(s-1)` (`s>1`) — exactly the tail estimate the interchange
-  needs with `s = 2/p`, `N ≈ |X|ᵖ`. **Do not re-derive it.**
-- **Next: assemble the variance sum via Tonelli.** Use `MeasureTheory.lintegral_tsum` /
-  `∑'`-`∫` interchange (nonneg) to turn `∑ᵢ i^{-2/p}·𝔼[X²𝟙{|X|≤i^{1/p}}]` into
-  `𝔼[X²·∑_{i≥|X|ᵖ} i^{-2/p}]`, bound the inner tail with `tsum_shift_rpow_neg_le`
-  (note `∑_{i≥|X|ᵖ} i^{-2/p} ≤ C·(|X|ᵖ)^{1-2/p} = C·|X|^{p-2}` for `|X|≥1`; handle `|X|<1` by
-  the full `ζ(2/p)` constant), then integrate to `C·𝔼|X|ᵖ`. This yields
-  `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`, feeding `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5).
+- **S4b step-4 Tonelli integrand bound is now DONE (iteration 11):** `tsum_indicator_ge_rpow_neg_le`
+  supplies `∑_{i:y≤i} i^{-s} ≤ (max 1 y)^{1-s}·s/(s-1)` (`s>1`) — the inner-tail bound the
+  interchange consumes with `y = |X|ᵖ`, `s = 2/p`. Built on iter-10 `tsum_ge_rpow_neg_le`
+  (inclusive tail) via a ceiling reindex (`Nat.ceil_le` + `Summable.sum_add_tsum_nat_add`) and
+  rpow antitonicity, `y≤0` edge case peeled. **Do not re-derive it.**
+- **Next: the ∑ᵢ–𝔼 Tonelli interchange itself.** Use `MeasureTheory.lintegral_tsum` /
+  `∑'`-`∫` interchange (nonneg, measurability side-goals) to turn `∑ᵢ i^{-2/p}·𝔼[X²𝟙{|X|≤i^{1/p}}]`
+  into `𝔼[X²·∑ᵢ i^{-2/p}𝟙{|X|≤i^{1/p}}]`; the inner sum is **exactly**
+  `tsum_indicator_ge_rpow_neg_le` at `y=|X|ᵖ`, `s=2/p` (via `|X|≤i^{1/p} ↔ |X|ᵖ≤i`, the rpow
+  reindex `rpow_inv_lt_iff_lt_rpow` / a `≤` companion). Then `(max 1 |X|ᵖ)^{1-2/p}`: `|X|≥1`
+  branch `=|X|^{p-2}` so `X²·bound=|X|^p`; `|X|<1` branch `=` const. Integrate to `C·(𝔼|X|ᵖ+1)`.
+  This yields `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`, feeding `ae_tendsto_average_zero_of_variance_weighted_bdd`
+  (S5). Watch the `ha_pos` weight positivity (use `aᵢ=(i+1)^{1/p}` or `max 1 i^{1/p}`).
 - **Then: step-3 centering** (via `integral_tail_abs_le` + `tendsto_weighted_average_zero`) and
   the final combination with the step-1 truncation reduction into the MZ statement.
 
 ## Attempt Counts
 
-- Total attempts: 9 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation; S4b step-3/4 moment kernels; S4b step-4 tail p-series bound)
-- Current approach attempts: 1 (S4b step-4 tail p-series bound — `AntitoneOn.sum_le_integral_Ico` + `integral_rpow` + `Real.tsum_le_of_sum_range_le`, landed clean on first build; corrected the flawed per-term variance-sum plan → Tonelli interchange)
+- Total attempts: 11 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation; S4b step-3/4 moment kernels; S4b step-4 tail p-series backbone; iter-10 inclusive tail; iter-11 pointwise inner-tail bound)
+- Current approach attempts: 1 (S4b step-4 pointwise inner-tail bound `tsum_indicator_ge_rpow_neg_le` — `Nat.ceil_le` region rewrite + `Summable.sum_add_tsum_nat_add` reindex to inclusive tail + `Real.rpow_le_rpow_of_nonpos` antitone dressing + `Summable.tsum_eq_zero_add` for the `y≤0` peel; landed clean on first build)
 - Approaches tried: 7 (S1 literature/decomposition; S2 Abel+Toeplitz;
   S3 natural-filtration martingale + upcrossing engine; S4a orthogonality + eLpNorm bridge;
   S4b step-2 discrete layer cake via lintegral_tsum + floor count;

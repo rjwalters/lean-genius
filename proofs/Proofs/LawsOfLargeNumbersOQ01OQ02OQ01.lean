@@ -1105,15 +1105,92 @@ theorem tsum_ge_rpow_neg_le {s : ℝ} (hs : 1 < s) {N : ℕ} (hN : 1 ≤ N) :
       ≤ (N : ℝ) ^ (1 - s) + (N : ℝ) ^ (1 - s) / (s - 1) := add_le_add hNs htail
     _ = (N : ℝ) ^ (1 - s) * s / (s - 1) := hcomb
 
+/-- **Pointwise inner-tail bound for the MZ variance sum (Tonelli integrand).**  For `1 < s` and
+any real `y`, the weighted tail of `i^{-s}` over the truncation region `{i : ℕ | y ≤ i}` is
+controlled by a single power of `max 1 y`:
+
+    ∑'_{i : y ≤ i} i^{-s} ≤ (max 1 y)^{1-s} · s/(s-1).
+
+This is the deterministic integrand bound the Tonelli interchange behind the MZ variance sum
+consumes.  After swapping `∑ᵢ` and `𝔼`, the inner `∑ᵢ` runs over the truncation region
+`{i | |X| ≤ i^{1/p}} = {i | |X|ᵖ ≤ i}`; with `y = |X|ᵖ`, `s = 2/p (> 1)` this bounds it by
+`(max 1 |X|ᵖ)^{1-2/p}·s/(s-1)`, whose `|X| ≥ 1` branch is `|X|^{p-2}` — exactly the factor that,
+multiplied by `X²`, integrates to `𝔼|X|ᵖ` (the `|X| < 1` branch collapses to the constant
+`s/(s-1)`, integrable on a probability space).
+
+Proof: the region is `{i | ⌈y⌉₊ ≤ i}` (`Nat.ceil_le`); reindex the indicator tsum to the
+inclusive tail `∑' k, (k+⌈y⌉₊)^{-s}` (`Summable.sum_add_tsum_nat_add`, the head over
+`range ⌈y⌉₊` vanishing since the indicator is `0` below the threshold) and apply
+`tsum_ge_rpow_neg_le`, then dominate `⌈y⌉₊^{1-s} ≤ (max 1 y)^{1-s}` by antitonicity of `·^{1-s}`
+(`1 - s ≤ 0`, `max 1 y ≤ ⌈y⌉₊`).  The `⌈y⌉₊ = 0` (i.e. `y ≤ 0`) branch peels the vanishing
+`i = 0` term and reuses the `N = 1` tail. -/
+theorem tsum_indicator_ge_rpow_neg_le {s : ℝ} (hs : 1 < s) (y : ℝ) :
+    ∑' i : ℕ, {i : ℕ | y ≤ (i : ℝ)}.indicator (fun i => (i : ℝ) ^ (-s)) i
+      ≤ (max 1 y) ^ (1 - s) * s / (s - 1) := by
+  have hs1 : (0 : ℝ) < s - 1 := by linarith
+  have hexp : (1 : ℝ) - s ≤ 0 := by linarith
+  have hf_summ : Summable (fun i : ℕ => (i : ℝ) ^ (-s)) :=
+    Real.summable_nat_rpow.mpr (by linarith)
+  set N : ℕ := ⌈y⌉₊ with hN
+  -- rewrite the truncation region `{i | y ≤ i}` as `{i | N ≤ i}`
+  have hset : {i : ℕ | y ≤ (i : ℝ)} = {i : ℕ | N ≤ i} := by
+    ext i; simp only [Set.mem_setOf_eq]; rw [hN]; exact Nat.ceil_le.symm
+  rw [hset]
+  -- reindex the indicator tsum to the inclusive tail `∑' k, (k + N)^{-s}`
+  have hind_summ : Summable ({i : ℕ | N ≤ i}.indicator (fun i : ℕ => (i : ℝ) ^ (-s))) :=
+    hf_summ.indicator _
+  have hhead : ∑ i ∈ Finset.range N,
+      {i : ℕ | N ≤ i}.indicator (fun i : ℕ => (i : ℝ) ^ (-s)) i = 0 := by
+    apply Finset.sum_eq_zero
+    intro i hi
+    rw [Finset.mem_range] at hi
+    exact Set.indicator_of_notMem (by simp only [Set.mem_setOf_eq]; omega) _
+  have hshift := hind_summ.sum_add_tsum_nat_add N
+  rw [hhead, zero_add] at hshift
+  have hreidx : (∑' i, {i : ℕ | N ≤ i}.indicator (fun i : ℕ => (i : ℝ) ^ (-s)) (i + N))
+      = ∑' i : ℕ, ((i + N : ℕ) : ℝ) ^ (-s) := by
+    refine tsum_congr (fun i => ?_)
+    rw [Set.indicator_of_mem (by simp only [Set.mem_setOf_eq]; omega)]
+  rw [hreidx] at hshift
+  rw [← hshift]
+  rcases Nat.eq_zero_or_pos N with hN0 | hNpos
+  · -- `N = 0` : `y ≤ 0`, so `max 1 y = 1` and the bound is `s/(s-1)`
+    have hy0 : y ≤ 0 := Nat.ceil_eq_zero.mp (hN.symm.trans hN0)
+    have hmax : max 1 y = 1 := max_eq_left (by linarith)
+    rw [hmax, Real.one_rpow, one_mul, hN0]
+    have hz0 : ((0 : ℕ) : ℝ) ^ (-s) = 0 := by
+      rw [Nat.cast_zero, Real.zero_rpow (by linarith : -s ≠ 0)]
+    calc ∑' i : ℕ, ((i + 0 : ℕ) : ℝ) ^ (-s)
+        = ∑' i : ℕ, (i : ℝ) ^ (-s) := by norm_num
+      _ = ((0 : ℕ) : ℝ) ^ (-s) + ∑' k : ℕ, ((k + 1 : ℕ) : ℝ) ^ (-s) := hf_summ.tsum_eq_zero_add
+      _ = ∑' k : ℕ, ((k + 1 : ℕ) : ℝ) ^ (-s) := by rw [hz0, zero_add]
+      _ ≤ s / (s - 1) := by
+          have h := tsum_ge_rpow_neg_le hs (le_refl 1)
+          rwa [Nat.cast_one, Real.one_rpow, one_mul] at h
+  · -- `N ≥ 1`
+    refine (tsum_ge_rpow_neg_le hs hNpos).trans ?_
+    have hx : (0 : ℝ) < max 1 y := lt_of_lt_of_le zero_lt_one (le_max_left 1 y)
+    have hxy : max 1 y ≤ (N : ℝ) :=
+      max_le (by exact_mod_cast hNpos) (by rw [hN]; exact Nat.le_ceil y)
+    have hpow : (N : ℝ) ^ (1 - s) ≤ (max 1 y) ^ (1 - s) :=
+      Real.rpow_le_rpow_of_nonpos hx hxy hexp
+    have hfac : (0 : ℝ) ≤ s / (s - 1) := div_nonneg (by linarith) (by linarith)
+    calc (N : ℝ) ^ (1 - s) * s / (s - 1)
+        = (N : ℝ) ^ (1 - s) * (s / (s - 1)) := by ring
+      _ ≤ (max 1 y) ^ (1 - s) * (s / (s - 1)) := mul_le_mul_of_nonneg_right hpow hfac
+      _ = (max 1 y) ^ (1 - s) * s / (s - 1) := by ring
+
 #check @sum_range_shift_rpow_neg_le
 #check @tsum_shift_rpow_neg_le
 #check @tsum_ge_rpow_neg_le
+#check @tsum_indicator_ge_rpow_neg_le
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
 #print axioms sum_range_shift_rpow_neg_le
 #print axioms tsum_shift_rpow_neg_le
 #print axioms tsum_ge_rpow_neg_le
+#print axioms tsum_indicator_ge_rpow_neg_le
 
 end TailPSeries
 
