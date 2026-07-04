@@ -29,16 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Repaired non-compiling file (bitrot); proved strong_required_bound_implies_conjecture 0-axiom via dyadic blocking + p-series (machine-verified, 7743 jobs). Original o(N/log N) sorry retained as threshold-critical.",
+    "progressSummary": "Structural consolidation: added rothNumber_mono (monotonicity in progression length, previously used implicitly via max k 3 but unstated) + isAPFree_of_le, downward-closure of both threshold hypotheses (strongRequiredBound_mono/requiredBound_mono), and the contrapositive density lower bound countingFunction_frequently_gt_of_divergent. All 5 machine-checked, 0-axiom, 0 new sorry. Threshold-critical o(N/log N) sorry retained.",
     "builtItems": [
       "containsAP_of_le",
       "summable_of_strongBound",
-      "strong_required_bound_implies_conjecture (0-axiom)"
+      "strong_required_bound_implies_conjecture (0-axiom)",
+      "isAPFree_of_le (AP-freeness upward-closed in length)",
+      "rothNumber_mono (Roth number monotone in progression length k)",
+      "strongRequiredBound_mono / requiredBound_mono (threshold hypotheses downward-closed in k)",
+      "countingFunction_frequently_gt_of_divergent (contrapositive density lower bound)"
     ],
     "insights": [
       "File did not compile on main (enrichment merged without build): ArithProg map/omega injectivity false for d=0, missing Decidable for Set-membership filters, orphaned /-- docstrings.",
       "The (log N)^{1+δ} threshold DOES imply Erdos #3 (dyadic blocking + convergent p-series); this is now a verified 0-axiom conditional theorem.",
-      "The o(N/log N) threshold does NOT obviously imply it: borderline profile N/(log N loglog N) is o(N/log N) with divergent reciprocal sum. That sorry is as hard as Erdos #3."
+      "The o(N/log N) threshold does NOT obviously imply it: borderline profile N/(log N loglog N) is o(N/log N) with divergent reciprocal sum. That sorry is as hard as Erdos #3.",
+      "rothNumber is monotone in k (r_k(N) <= r_m(N) for k<=m): avoiding a longer AP is an easier constraint (isAPFree_of_le), so the sup over the larger AP-free family grows. This is the structural fact the max-k-3 device relies on but never stated.",
+      "StrongRequiredBound and RequiredBound are downward-closed in k via rothNumber_mono; requiring the bound for all k>=3 equals requiring it for all sufficiently large k.",
+      "HasDivergentSum A => counting function exceeds C*N/(log N)^{1+delta} infinitely often (contrapositive of summable_of_strongBound), a reusable quantitative density lower bound."
     ],
     "mathlibGaps": [],
     "nextSteps": [
