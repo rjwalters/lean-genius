@@ -33,6 +33,8 @@ derivative computation Ṁ = A·M.  Note that `ρ_k` is an *ordered* product of 
 * `commute_A_rho`: A commutes with every ρ_k (each factor is a polynomial in A)
 * `A_mul_rho`    : A · ρ_k = ρ_{k+1} + λ_k • ρ_k               — the *key telescoping identity*
 * `rho_card`     : ρ_n = 0  when χ_A splits as ∏ (X - λ_i)     (Cayley–Hamilton truncation)
+* `rho_add`      : ρ_{j+k} = ρ_j · ρ'_k  (shifted eigenvalues) — the concatenation/semigroup law
+* `rho_dvd_rho_add`: ρ_j left-divides ρ_{j+k}                  (immediate corollary)
 * `rho_succ_left`: ρ_{k+1} = (A - λ_k • 1) · ρ_k              (factor pulled to the left)
 * `rho_mul_A`    : ρ_k · A = ρ_{k+1} + λ_k • ρ_k             (right telescoping identity)
 * `A_mul_sum_rho`: A · ∑_k a_k • ρ_k = ∑_k a_k • (ρ_{k+1} + λ_k • ρ_k)   (sum-level telescoping)
@@ -128,6 +130,31 @@ lemma rho_card {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (lam : ℕ → R)
     rho A lam n = 0 := by
   rw [rho_eq_aeval_prod, ← Fin.prod_univ_eq_prod_range (fun i => X - C (lam i)) n, ← hlam,
       Matrix.aeval_self_charpoly]
+
+/-! ## The concatenation (semigroup) law for partial products
+
+The partial products satisfy a clean multiplicative *concatenation* law: the length-`(j+k)`
+product splits as the length-`j` product times the length-`k` product formed from the
+*shifted* eigenvalue sequence `i ↦ λ_{j+i}`.  This is the matrix analogue of splitting a
+factorial-style product `∏_{i<j+k} = (∏_{i<j}) · (∏_{j≤i<j+k})`, and it holds on the nose
+because `ρ` is built by right-multiplication.  It generalizes `rho_succ` (the `k = 1` case)
+and immediately yields that `ρ_j` left-divides `ρ_{j+k}`. -/
+
+/-- **Concatenation law.** `ρ_{j+k} = ρ_j · ρ'_k`, where `ρ'` uses the shifted eigenvalue
+sequence `i ↦ λ_{j+i}`.  Proved by induction on `k`; the `k = 1` case is `rho_succ`. -/
+lemma rho_add (A : Matrix n n R) (lam : ℕ → R) (j k : ℕ) :
+    rho A lam (j + k) = rho A lam j * rho A (fun i => lam (j + i)) k := by
+  induction k with
+  | zero => simp [rho]
+  | succ k ih =>
+    have hj : j + (k + 1) = (j + k) + 1 := by ring
+    rw [hj, rho_succ, ih, mul_assoc, rho_succ]
+
+/-- `ρ_j` left-divides `ρ_{j+k}`: the length-`j` partial product is a left factor of every
+longer one.  Immediate from the concatenation law `rho_add`. -/
+lemma rho_dvd_rho_add (A : Matrix n n R) (lam : ℕ → R) (j k : ℕ) :
+    ∃ Q : Matrix n n R, rho A lam (j + k) = rho A lam j * Q :=
+  ⟨rho A (fun i => lam (j + i)) k, rho_add A lam j k⟩
 
 /-! ## Two-sided factor structure and the sum-level telescoping
 
