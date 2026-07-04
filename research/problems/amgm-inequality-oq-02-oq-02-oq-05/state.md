@@ -4,53 +4,59 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 3 (PART II)
+**Iteration**: 4 (PART III)
 
 ## Current Focus
-Extended the real-rooted/discriminant route to the first nontrivial arity `n = 3`
-(both log-concavity steps), building on the PART-I `n = 2` base case. Five new
-theorems in `Proofs/AmgmInequalityOQ02OQ02OQ05.lean`, 0 sorries, 0 axioms
-(docker-build clean, 7743 jobs; Tier-A axiom-free):
-- `newton_three_first : 3(xy+yz+zx) ≤ (x+y+z)²`  (`e₁² ≥ 3e₂`, the first Newton
-  step at n=3), for SIGNED reals, SOS `½Σ(x−y)²`.
-- `newton_three_second : 3(x+y+z)·xyz ≤ (xy+yz+zx)²`  (`e₂² ≥ 3e₁e₃`, the second
-  Newton step), SOS `½Σ(xy−yz)²`.
-- `discrim_deriv_cubic_first` / `discrim_recip_deriv_cubic_second`: the same two
-  facts as the nonnegative discriminants of the derivative quadratic
-  `P' = 3X²−2e₁X+e₂` and the reciprocal-derivative quadratic `−3e₃X²+2e₂X−e₁` —
-  the `n = 3` instance of "a derivative of a real-rooted polynomial is
-  real-rooted (discriminant ≥ 0)".
-- `newton_three_normalized`: both steps in normalized `p`-mean form.
+Proved the genuinely **arbitrary-`n`** first Newton (= first Maclaurin)
+inequality `p₁² ≥ p₀ p₂` for SIGNED reals — no enumeration, no appeal to the
+still-open iterated-Rolle crux. Three new theorems in
+`Proofs/AmgmInequalityOQ02OQ02OQ05.lean` (docker-build clean, 7743 jobs,
+`LEAN_SKIP_CACHE=true`; 0 sorries, 0 axioms — foundational only):
 
-The `n = 3` discriminants are proved *directly* by SOS — which IS the
-real-rootedness of those quadratics — so this arity needs neither the general
-Rolle-iteration crux nor any sign hypothesis. Rolle is the motivation; SOS is the
-proof.
+- `sq_sum_eq`: the square-of-sum / elementary-symmetric identity
+  `(∑_{i<n} xᵢ)² = ∑_{i<n} xᵢ² + 2 ∑_{j<n} ∑_{i<j} xᵢ xⱼ`, i.e. `e₁² = p₂ + 2 e₂`,
+  proved by a clean induction on `n` (no triangular reindexing — the `succ` step
+  is `sum_range_succ ×3`, `Finset.sum_mul`, then `linear_combination ih`).
+- `sq_sum_le_nat_mul_sum_sq`: QM–AM `(∑ xᵢ)² ≤ n · ∑ xᵢ²`, specializing Mathlib's
+  Chebyshev lemma `sq_sum_le_card_mul_sum_sq` to `range n` via `card_range`.
+- `newton_first_general`: `2 n · e₂ ≤ (n − 1) · e₁²` for all `n` and all signed
+  reals — the normalized `p₁² ≥ p₀ p₂` after clearing denominators. Proof:
+  substitute `p₂ = e₁² − 2 e₂` into `e₁² ≤ n p₂`.
+
+This closes the `k = 1` (first) Newton inequality for EVERY arity at once,
+subsuming the earlier per-arity `n = 2` (`newton_two_vars`) and `n = 3`
+(`newton_three_first`) first steps. The theorem needed only *real* inputs (QM–AM
+is sign-agnostic), matching the real-rootedness route's signed-input advantage.
 
 ## Active Approach
-Classical calculus route: real-rootedness ⇒ (Rolle) derivative real-rooted ⇒
-reduce to a quadratic ⇒ discriminant ≥ 0 is Newton. n=2 and n=3 arities now
-complete via explicit SOS discriminant certificates; the GENERAL `n` reduction
-(arbitrary arity) still needs the packaged iterated-Rolle lemma.
+Two complementary engines now coexist in the file:
+1. real-rootedness / discriminant (Parts I–II): `n = 2`, `n = 3` per-arity, both
+   log-concavity steps, via SOS discriminant certificates;
+2. QM–AM / square-of-sum identity (Part III): the `k = 1` step for ALL `n`.
+
+The GENERAL higher steps (`k ≥ 2`, arbitrary `n`) still need the packaged
+iterated-Rolle lemma "differentiation preserves full real-rootedness counting
+multiplicity".
 
 ## Attempt Count
-- Total attempts: 2
-- Current approach attempts: 2
-- Approaches tried: real-rooted/discriminant atom + n=2 base case (I);
-  n=3 both steps via SOS discriminant certificates (II)
+- Total attempts: 3
+- Current approach attempts: 1 (QM–AM route)
+- Approaches tried: real-rooted/discriminant atom + n=2 (I); n=3 both steps via
+  SOS (II); general-n first step via QM–AM + square-of-sum identity (III)
 
 ## Blockers
-- **MATH**: general (arbitrary-`n`) Newton needs the packaged lemma
-  "differentiation preserves full real-rootedness counting multiplicity"
+- **MATH**: general (arbitrary-`n`) HIGHER Newton steps (`k ≥ 2`) need the packaged
+  lemma "differentiation preserves full real-rootedness counting multiplicity"
   (iterated Rolle on `∏(X - xᵢ)`) — not in Mathlib; `problem.md` estimates
-  multi-week. Retained open (not stubbed). The per-arity SOS route sidesteps it
-  for fixed small `n` but does not scale symbolically.
+  multi-week. The `k = 1` step is now closed for all `n` (Part III), so this
+  blocker is narrowed to the higher steps only.
 
 ## Next Action
-1. n=4 by the same SOS discriminant route (three Newton steps; degree grows but
-   each reduced quadratic still admits an SOS certificate) — a further concrete
-   instance if desired, though it approaches enumeration.
-2. The genuine general increment: prove derivative-of-fully-real-rooted is
-   fully-real-rooted (Rolle between consecutive roots + multiplicity), then
-   reduce three consecutive coefficients to a quadratic and apply
-   `discrim_nonneg_of_root` for the arbitrary-`n`, signed-input Newton.
+1. The genuine next general increment: the iterated-Rolle crux
+   (derivative-of-fully-real-rooted is fully-real-rooted), which unlocks `k ≥ 2`
+   at arbitrary `n`. Mathlib has `Rolle` (`exists_hasDerivAt_eq_zero`) and
+   `Polynomial.derivative`/`roots` but not the packaged multiplicity-counting
+   statement.
+2. Alternatively, a general `k = 1` Maclaurin corollary in explicit
+   `p₁ = e₁/n`, `p₂ = e₂/C(n,2)` normalized form (currently stated in the
+   cleared-denominator equivalent).

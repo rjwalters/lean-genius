@@ -35,13 +35,20 @@
         is NO sign hypothesis: the roots need only be real, which is exactly the
         advantage of the real-rootedness route the entry highlights (the parent's
         inductive proof needs `0 ≤ x i`).
+  * `newton_three_first` / `newton_three_second`  :  both Newton log-concavity
+        steps at `n = 3`, as nonnegative discriminants of the two derivative
+        quadratics Rolle produces, via explicit SOS certificates.  Signed reals.
+  * `sq_sum_eq`, `sq_sum_le_nat_mul_sum_sq`, `newton_first_general`  :  the
+        genuinely *arbitrary-`n`* first Newton (= first Maclaurin) inequality
+        `p_1² ≥ p_0 p_2`, i.e. `2 n · e₂ ≤ (n - 1) · e₁²`, for signed reals —
+        no enumeration, no appeal to the still-open general Rolle crux (see
+        Part III below).
 
-  The general case (`n ≥ 3`) needs the crux lemma "differentiation preserves
-  full real-rootedness (counting multiplicity)" — Rolle's theorem iterated on
-  `∏ (X - x_i)` — which is the multi-week formalization risk flagged in
-  `problem.md`.  It is honestly retained as open (documented in knowledge.md) and is
-  deliberately NOT stubbed out in this file, which is instead a complete,
-  self-contained, fully machine-checked quadratic/base atom of that program.
+  The general SECOND-and-higher steps (`p_k², k ≥ 2`, arbitrary `n`) need the
+  crux lemma "differentiation preserves full real-rootedness (counting
+  multiplicity)" — Rolle's theorem iterated on `∏ (X - x_i)` — which is the
+  multi-week formalization risk flagged in `problem.md`.  It is honestly retained
+  as open (documented in knowledge.md) and is deliberately NOT stubbed out.
 -/
 import Mathlib
 
@@ -186,5 +193,81 @@ theorem newton_three_normalized (x y z : ℝ) :
   refine ⟨?_, ?_⟩
   · nlinarith [newton_three_first x y z]
   · nlinarith [newton_three_second x y z]
+
+/-!  ## Part III — the general-`n` first Newton inequality (all `n`, signed reals)
+
+The `n = 2` and `n = 3` results above are per-arity SOS certificates.  This part
+gives the genuinely *arbitrary-`n`* first Newton (equivalently first Maclaurin)
+inequality `p₁² ≥ p₀ p₂`, for signed reals, with NO enumeration and NO appeal to
+the (still-open) general iterated-Rolle crux.
+
+Write `e₁ = ∑ xᵢ`, `p₂ = ∑ xᵢ²` (the second power sum) and
+`e₂ = ∑_{i < j} xᵢ xⱼ` (the second elementary symmetric polynomial).  Newton's
+first inequality `p₁² ≥ p₀ p₂` unwinds, with `p₁ = e₁/n`, `p₂ = e₂/binom n 2`,
+`p₀ = 1`, to the polynomial inequality
+
+    `2 n · e₂ ≤ (n - 1) · e₁²`.
+
+Two ingredients suffice:
+* the elementary identity `e₁² = p₂ + 2 e₂`  (`sq_sum_eq`, a clean induction), and
+* the QM–AM / Cauchy–Schwarz bound `e₁² ≤ n · p₂`  (`sq_sum_le_card_mul_sum_sq`).
+
+Substituting `p₂ = e₁² - 2 e₂` into `e₁² ≤ n · p₂` gives exactly
+`2 n · e₂ ≤ (n - 1) · e₁²`.  Because QM–AM needs only *real* inputs, the result
+holds for SIGNED reals — the same generalisation over the parent's `0 ≤ xᵢ`
+induction that the `n = 2` / `n = 3` discriminant route achieves, but now for
+every arity simultaneously.  The higher log-concavity steps (`p_k`, `k ≥ 2`) at
+arbitrary `n` remain the open Rolle-crux part. -/
+
+open Finset in
+/-- **Square-of-sum / elementary-symmetric identity.**  For any real sequence,
+`(∑_{i<n} xᵢ)² = ∑_{i<n} xᵢ² + 2 · ∑_{j<n} ∑_{i<j} xᵢ xⱼ`; that is
+`e₁² = p₂ + 2 e₂`, the expansion of the square of a sum into its diagonal (second
+power sum) and off-diagonal (second elementary symmetric) parts.  Proved by a
+clean induction on `n`, sidestepping any triangular reindexing. -/
+theorem sq_sum_eq (n : ℕ) (x : ℕ → ℝ) :
+    (∑ i ∈ range n, x i) ^ 2
+      = (∑ i ∈ range n, x i ^ 2)
+        + 2 * ∑ j ∈ range n, ∑ i ∈ range j, x i * x j := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [sum_range_succ, sum_range_succ, sum_range_succ]
+    have hmul : ∑ i ∈ range n, x i * x n = (∑ i ∈ range n, x i) * x n := by
+      rw [sum_mul]
+    rw [hmul]
+    linear_combination ih
+
+open Finset in
+/-- **QM–AM for the power sum.**  `(∑_{i<n} xᵢ)² ≤ n · ∑_{i<n} xᵢ²`.  This is the
+`f = g` case of Chebyshev's sum inequality (`sq_sum_le_card_mul_sum_sq`) applied
+on `range n`, using `#(range n) = n`. -/
+theorem sq_sum_le_nat_mul_sum_sq (n : ℕ) (x : ℕ → ℝ) :
+    (∑ i ∈ range n, x i) ^ 2 ≤ (n : ℝ) * ∑ i ∈ range n, x i ^ 2 := by
+  have h : (∑ i ∈ range n, x i) ^ 2 ≤ ((range n).card : ℝ) * ∑ i ∈ range n, x i ^ 2 :=
+    sq_sum_le_card_mul_sum_sq
+  simpa [card_range] using h
+
+open Finset in
+/-- **Newton's first inequality for arbitrary `n`, signed reals.**  With
+`e₁ = ∑_{i<n} xᵢ` and `e₂ = ∑_{j<n} ∑_{i<j} xᵢ xⱼ` the second elementary
+symmetric polynomial,
+    `2 n · e₂ ≤ (n - 1) · e₁²`.
+This is the normalized first Newton/Maclaurin inequality `p₁² ≥ p₀ p₂`
+(`p₁ = e₁/n`, `p₂ = e₂ / binom n 2`, `p₀ = 1`) after clearing denominators.  No
+sign hypothesis: it holds for all real `xᵢ`, generalising the `0 ≤ xᵢ` inductive
+parent to every arity at once.  Proof: substitute the identity `e₁² = p₂ + 2 e₂`
+(`sq_sum_eq`) into the QM–AM bound `e₁² ≤ n · p₂` (`sq_sum_le_nat_mul_sum_sq`). -/
+theorem newton_first_general (n : ℕ) (x : ℕ → ℝ) :
+    2 * (n : ℝ) * (∑ j ∈ range n, ∑ i ∈ range j, x i * x j)
+      ≤ ((n : ℝ) - 1) * (∑ i ∈ range n, x i) ^ 2 := by
+  have hid := sq_sum_eq n x
+  have hqm := sq_sum_le_nat_mul_sum_sq n x
+  -- scale the identity by `n`, so everything is linear in the three sums
+  have hn : (n : ℝ) * (∑ i ∈ range n, x i) ^ 2
+      = (n : ℝ) * (∑ i ∈ range n, x i ^ 2)
+        + 2 * (n : ℝ) * (∑ j ∈ range n, ∑ i ∈ range j, x i * x j) := by
+    rw [hid]; ring
+  nlinarith [hqm, hn]
 
 end NewtonRealRooted
