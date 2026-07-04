@@ -155,6 +155,14 @@
       "startLine": 311,
       "endLine": 329,
       "mathContext": "The bundled result asserts the doubling radical holds for all $n \\ge 1$, $p(6) = 3$, $p(n) < p(2n)$, $p(m) < \\pi$, and $p(m) \\to \\pi$ — Archimedes' method, formalized end to end."
+    },
+    {
+      "id": "two-sided-error-and-summary",
+      "title": "Two-Sided Θ(1/m²) Error and Verified Summary",
+      "startLine": 330,
+      "endLine": 386,
+      "summary": "`pi_sub_halfPerimeter_bounds` packages the upper and lower estimates into the two-sided statement that the doubling-method error `π − p_m` is Θ(1/m²), and `archimedes_doubling_method_verified` is the capstone theorem recording that Archimedes' half-angle doubling method, formalized constructively over the computable nested-radical realization, converges to π with this sharp rate.",
+      "mathContext": "$\\pi - p_m = \\Theta(1/m^2)$ — the inscribed half-perimeter of the $m$-gon under repeated doubling approximates $\\pi$ with error bounded above and below by constant multiples of $1/m^2$."
     }
   ],
   "conclusion": {

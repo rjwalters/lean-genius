@@ -97,6 +97,13 @@
   },
   "sections": [
     {
+      "id": "setup-arcsine-density",
+      "title": "Setup and the Arcsine Density",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports and the module docstring, then `arcsineDensity`, the unnormalised arcsine weight x ↦ x^{-1/2}(1−x)^{-1/2} on [0,1], and `hasDerivAt_arcsin_affine`, which shows arcsin(2x−1) is an antiderivative of (a multiple of) that density on (0,1) — the change-of-variables engine for the Beta/Gamma evaluation that follows."
+    },
+    {
       "id": "antiderivative",
       "title": "The Antiderivative arcsin(2x−1)",
       "startLine": 64,
@@ -128,7 +135,7 @@
       "id": "gamma-square",
       "title": "Γ(1/2)² = π and Γ(1/2) = √π",
       "startLine": 172,
-      "endLine": 185,
+      "endLine": 184,
       "summary": "complex_Gamma_half_sq and real_Gamma_half_sq: Γ(1/2)² = π through Complex.Gamma_mul_Gamma_eq_betaIntegral and Γ(1) = 1; real_Gamma_half recovers Γ(1/2) = √π; arcsine_density_normalised gives ∫₀¹ 1/(π√(x(1−x))) = 1."
     }
   ],
