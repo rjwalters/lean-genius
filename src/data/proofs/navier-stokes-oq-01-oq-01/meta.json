@@ -155,5 +155,25 @@
       "venue": "The Millennium Prize Problems, Clay Mathematics Institute, 57–67",
       "note": "Official statement of the Clay Millennium problem; 3D regularity is open while the 2D case (this inequality) is classical"
     }
+  ],
+  "mainTheorems": [
+    {
+      "name": "ladyzhenskaya_assembly",
+      "type": "core",
+      "description": "Algebraic assembly of Ladyzhenskaya's 2D interpolation inequality: from the integrated pointwise bound n4⁴ ≤ 4ab and the two Cauchy–Schwarz slicing estimates a ≤ n2·d1, b ≤ n2·d2, pure AM–GM gives n4⁴ ≤ 2·n2²·(d1²+d2²) — i.e. ‖u‖₄⁴ ≤ 2‖u‖₂²‖∇u‖₂², the sharp constant C = 2^{1/4}.",
+      "leanType": "(n2 n4 d1 d2 a b : ℝ) → (0 ≤ n2) → (0 ≤ d1) → (0 ≤ b) → (n4^4 ≤ 4*a*b) → (a ≤ n2*d1) → (b ≤ n2*d2) → n4^4 ≤ 2*n2^2*(d1^2 + d2^2)"
+    },
+    {
+      "name": "ladyzhenskaya_sq_form",
+      "type": "core",
+      "description": "Squared-norm form with the explicit sharp constant: from n4⁴ ≤ 2·n2²·ng² one gets n4² ≤ √2·n2·ng, i.e. ‖u‖₄² ≤ √2·‖u‖₂·‖∇u‖₂; a further square root recovers ‖u‖₄ ≤ 2^{1/4}‖u‖₂^{1/2}‖∇u‖₂^{1/2}. Proved by comparing squares and monotonicity of √.",
+      "leanType": "(n2 n4 ng : ℝ) → (0 ≤ n2) → (0 ≤ ng) → (n4^4 ≤ 2*n2^2*ng^2) → n4^2 ≤ Real.sqrt 2 * n2 * ng"
+    },
+    {
+      "name": "cross_le_grad_sq",
+      "type": "supporting",
+      "description": "The sharp AM–GM step that fixes Ladyzhenskaya's constant: d1·d2 ≤ ½(d1²+d2²), equivalently ‖∂₁u‖·‖∂₂u‖ ≤ ½‖∇u‖², with equality when d1 = d2. Discharged by nlinarith from (d1−d2)² ≥ 0.",
+      "leanType": "(d1 d2 : ℝ) → d1 * d2 ≤ (d1^2 + d2^2) / 2"
+    }
   ]
 }
