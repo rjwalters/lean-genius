@@ -40,19 +40,20 @@ reduction in the spirit of "one structural theorem in place of an explicit bijec
 
 ## Status
 
-**Sorry count**: 1 (`nonempty_firstReturnEquiv` — the first-return bijection). The numeric
-recurrence `nonCrossingCount_recurrence` and its counting reduction
-`nonCrossingCount_recurrence_of_equiv` are now **proved (0 `sorry`)**; the open content is
-exactly the existence of the bijection, with all cardinality arithmetic discharged.
+**Sorry count**: 0. The conjecture `nonCrossingCount n = catalan n` is now **fully proved**
+(`nonCrossingCount_eq_catalan`). The first-return bijection `nonempty_firstReturnEquiv` — the
+formerly-open combinatorial heart — is discharged by an equinumerosity count
+(`card_lhs_eq_card_rhs`): the two sides of the decomposition are shown to have equal cardinality
+via antisymmetry of two explicit injections (`fwdMid` / `glMid`), and `Fintype.equivOfCardEq`
+then supplies the (noncomputable) bijection. This sidesteps the dependent-`HEq` casts a *natural*
+equiv would require by routing through the `Fin (n+1)`-indexed intermediate type `MidNc`, whose
+window fibers match `glueFp`'s signature definitionally.
 
-**Axiom count**: 0 literal `axiom` declarations; the proved results use only the foundational
-`propext`/`Classical.choice`/`Quot.sound` (the latter via `.some` on the bijection's
-`Nonempty`). Because a `sorry` remains, the gallery status of this entry is `formalized`, not
-`verified`.
-
-The outstanding bijection is the natural target for proof search: it is *known* mathematics
-(the non-crossing-partition Catalan decomposition) requiring a delicate but standard
-construction, exactly the regime where automated formalization is appropriate.
+**Axiom count**: 0 literal `axiom` declarations and 0 structure-encoded assumptions. The proof
+uses only the foundational `propext`/`Classical.choice`/`Quot.sound` (`Classical.choice` via
+`Fintype.equivOfCardEq` and `.some` on the bijection's `Nonempty`) — no `sorryAx`, no
+`Lean.ofReduceBool` (the `n ≤ 3` corollary uses kernel `decide`, not `native_decide`). The
+gallery status of this entry is therefore `verified`.
 -/
 
 import Mathlib
@@ -935,6 +936,129 @@ theorem glueFp_restrictFp_eq_self {n : ℕ}
   rw [hkey, P.mem_part_iff_part_eq_part (mem_univ b) (mem_univ a)]
   exact eq_comm
 
+/-! ### Assembling the first-return bijection via a cardinality count
+
+The round-trip laws above (`glueFp_restrictFp_eq_self`, `restrictFp_glueFp_left`/`_right`,
+`firstBlockMax_glueFp_val`) are now packaged into the existence of `nonempty_firstReturnEquiv`.
+
+Rather than fight the dependent-`HEq` casts a *natural* `Equiv` between the antidiagonal-indexed
+`Σ`-type and the non-crossing partitions would demand — the forward map's cut index equals the
+target index only *propositionally*, so matching the two dependent fibers needs transport — we route
+through an intermediate type `MidNc n` indexed by `m : Fin (n+1)`, whose right fiber `Fin (n - m)`
+matches `glueFp`'s argument type **definitionally**. Gluing then needs no cast, both round-trips are
+clean, and `card (LhsNc) = card (MidNc)` follows by antisymmetry of two injections
+(`fwdMid` with left inverse `glMid`; `glMid` injective by recovering the cut and both factors).
+A pure `antidiagonal ↔ range` reindexing gives `card (MidNc) = card (Rhs)`, and
+`Fintype.equivOfCardEq` finally produces the (noncomputable) bijection — no cast bookkeeping. -/
+
+/-- Non-crossing partitions of `Fin k`, as a subtype (the fibers of the first-return split). -/
+abbrev NcFp (k : ℕ) := {P : Finpartition (univ : Finset (Fin k)) // IsNonCrossingFp P}
+
+/-- The intermediate `Fin (n+1)`-indexed home of the first-return split: a cut index `m` together
+with non-crossing partitions of the two windows `Fin m` and `Fin (n - m)`. Its right fiber matches
+`glueFp`'s argument type definitionally, so gluing needs no cast. -/
+abbrev MidNc (n : ℕ) := Σ m : Fin (n + 1), NcFp m.val × NcFp (n - m.val)
+
+/-- Forward map into the intermediate type: cut a non-crossing `P` at `m = firstBlockMax P` and
+restrict to the two offset windows `[1, m]` and `[m+1, n]`. -/
+def fwdMid {n : ℕ} (P : NcFp (n + 1)) : MidNc n :=
+  let m := firstBlockMax P.1
+  have hm : m.val ≤ n := Nat.lt_succ_iff.mp m.isLt
+  have hL : 1 + m.val ≤ n + 1 := by omega
+  have hR : (m.val + 1) + (n - m.val) ≤ n + 1 := by omega
+  ⟨m,
+    ⟨restrictFp (offsetEmb 1 hL) P.1, isNonCrossingFp_restrictFp_offset 1 hL P.1 P.2⟩,
+    ⟨restrictFp (offsetEmb (m.val + 1) hR) P.1,
+      isNonCrossingFp_restrictFp_offset (m.val + 1) hR P.1 P.2⟩⟩
+
+/-- Inverse (gluing) map from the intermediate type: glue the two windows back at the cut. -/
+def glMid {n : ℕ} (x : MidNc n) : NcFp (n + 1) :=
+  ⟨glueFp x.1.val (Nat.lt_succ_iff.mp x.1.isLt) x.2.1.1 x.2.2.1,
+    isNonCrossingFp_glueFp x.1.val (Nat.lt_succ_iff.mp x.1.isLt) x.2.1.1 x.2.2.1 x.2.1.2 x.2.2.2⟩
+
+/-- `glMid ∘ fwdMid = id`: gluing the two window restrictions recovers `P` (the `left_inv` core,
+`glueFp_restrictFp_eq_self`). -/
+theorem glMid_fwdMid {n : ℕ} (P : NcFp (n + 1)) : glMid (fwdMid P) = P := by
+  apply Subtype.ext
+  exact glueFp_restrictFp_eq_self P.1 P.2 _ _ _
+
+/-- The forward map is injective (it has a left inverse). -/
+theorem fwdMid_injective {n : ℕ} : Function.Injective (fwdMid (n := n)) :=
+  Function.LeftInverse.injective glMid_fwdMid
+
+/-- The gluing map is injective: from `glMid x = glMid x'` the cut index is recovered by
+`firstBlockMax_glueFp_val` (an `ℕ`-level equality, so no `HEq`), and after substituting it the two
+factors are recovered by `restrictFp_glueFp_left`/`_right`. -/
+theorem glMid_injective {n : ℕ} : Function.Injective (glMid (n := n)) := by
+  rintro ⟨m, ⟨P₁, h₁⟩, ⟨P₂, h₂⟩⟩ ⟨m', ⟨P₁', h₁'⟩, ⟨P₂', h₂'⟩⟩ hEq
+  have hg : glueFp m.val (Nat.lt_succ_iff.mp m.isLt) P₁ P₂
+      = glueFp m'.val (Nat.lt_succ_iff.mp m'.isLt) P₁' P₂' := congrArg Subtype.val hEq
+  have hmm : m.val = m'.val := by
+    have e1 := firstBlockMax_glueFp_val m.val (Nat.lt_succ_iff.mp m.isLt) P₁ P₂
+    have e2 := firstBlockMax_glueFp_val m'.val (Nat.lt_succ_iff.mp m'.isLt) P₁' P₂'
+    rw [hg] at e1
+    exact e1.symm.trans e2
+  have hm_eq : m = m' := Fin.ext hmm
+  subst hm_eq
+  have hL : 1 + m.val ≤ n + 1 := by omega
+  have hR : (m.val + 1) + (n - m.val) ≤ n + 1 := by omega
+  have hP₁ : P₁ = P₁' :=
+    (restrictFp_glueFp_left m.val (Nat.lt_succ_iff.mp m.isLt) hL P₁ P₂).symm.trans
+      (by rw [hg]; exact restrictFp_glueFp_left m.val (Nat.lt_succ_iff.mp m.isLt) hL P₁' P₂')
+  have hP₂ : P₂ = P₂' :=
+    (restrictFp_glueFp_right m.val (Nat.lt_succ_iff.mp m.isLt) hR P₁ P₂).symm.trans
+      (by rw [hg]; exact restrictFp_glueFp_right m.val (Nat.lt_succ_iff.mp m.isLt) hR P₁' P₂')
+  subst hP₁; subst hP₂; rfl
+
+/-- `card (MidNc n)` as an explicit convolution sum over `range (n+1)`. -/
+theorem card_midNc_eq (n : ℕ) :
+    Fintype.card (MidNc n)
+      = ∑ k ∈ Finset.range (n + 1),
+          Fintype.card {P : Finpartition (univ : Finset (Fin k)) // IsNonCrossingFp P}
+        * Fintype.card {P : Finpartition (univ : Finset (Fin (n - k))) // IsNonCrossingFp P} := by
+  show Fintype.card (Σ m : Fin (n + 1),
+      {P : Finpartition (univ : Finset (Fin m.val)) // IsNonCrossingFp P} ×
+      {P : Finpartition (univ : Finset (Fin (n - m.val))) // IsNonCrossingFp P}) = _
+  rw [Fintype.card_sigma]
+  simp only [Fintype.card_prod]
+  rw [Fin.sum_univ_eq_sum_range
+    (fun k => Fintype.card {P : Finpartition (univ : Finset (Fin k)) // IsNonCrossingFp P}
+            * Fintype.card {P : Finpartition (univ : Finset (Fin (n - k))) // IsNonCrossingFp P})
+    (n + 1)]
+
+/-- `card` of the antidiagonal-indexed `Σ`-type as the same convolution sum over `range (n+1)`. -/
+theorem card_rhs_eq (n : ℕ) :
+    Fintype.card (Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
+        {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
+        {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P})
+      = ∑ k ∈ Finset.range (n + 1),
+          Fintype.card {P : Finpartition (univ : Finset (Fin k)) // IsNonCrossingFp P}
+        * Fintype.card {P : Finpartition (univ : Finset (Fin (n - k))) // IsNonCrossingFp P} := by
+  rw [Fintype.card_sigma]
+  simp only [Fintype.card_prod]
+  rw [Finset.sum_coe_sort (antidiagonal n)
+    (fun ij => Fintype.card {P : Finpartition (univ : Finset (Fin ij.1)) // IsNonCrossingFp P}
+             * Fintype.card {P : Finpartition (univ : Finset (Fin ij.2)) // IsNonCrossingFp P})]
+  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk
+    (fun ij => Fintype.card {P : Finpartition (univ : Finset (Fin ij.1)) // IsNonCrossingFp P}
+             * Fintype.card {P : Finpartition (univ : Finset (Fin ij.2)) // IsNonCrossingFp P}) n]
+
+/-- **The two sides of the first-return decomposition are equinumerous.** The non-crossing
+partitions of `Fin (n+1)` and the antidiagonal-indexed pairs of non-crossing partitions of the two
+windows have equal cardinality. Proved by `card LhsNc = card MidNc` (antisymmetry of the two
+injections `fwdMid`/`glMid`) composed with `card MidNc = card Rhs` (the `antidiagonal ↔ range`
+reindexing). -/
+theorem card_lhs_eq_card_rhs (n : ℕ) :
+    Fintype.card {P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P}
+      = Fintype.card (Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
+          {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
+          {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P}) := by
+  have hmid : Fintype.card {P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P}
+      = Fintype.card (MidNc n) :=
+    le_antisymm (Fintype.card_le_of_injective fwdMid fwdMid_injective)
+                (Fintype.card_le_of_injective glMid glMid_injective)
+  rw [hmid, card_midNc_eq, ← card_rhs_eq]
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
@@ -950,22 +1074,24 @@ The recurrence is now split into two parts that separate its *counting* content 
 
 `nonCrossingCount_recurrence` is then a corollary of the two. -/
 
-/-- **First-return bijection (the sole open obligation).** A non-crossing partition of the
-linearly ordered set `Fin (n+1)` decomposes — via the classical "first return" of the block
-structure around a distinguished point — into an independent pair of non-crossing partitions of
-an `i`-element and a `j`-element interval, with `(i, j)` ranging over `antidiagonal n`. We
-record the decomposition as a bijection (existence suffices for the count).
+/-- **First-return bijection (now proved).** A non-crossing partition of the linearly ordered set
+`Fin (n+1)` decomposes — via the classical "first return" of the block structure around a
+distinguished point — into an independent pair of non-crossing partitions of an `i`-element and a
+`j`-element interval, with `(i, j)` ranging over `antidiagonal n`. We record the decomposition as
+a bijection (existence suffices for the count).
 
-This is the genuine combinatorial content of `nonCrossing = Catalan`; the analogous
-decomposition is *not* available in Mathlib in any form (Mathlib has no theory of non-crossing
-partitions, nor of restricting a `Finpartition` of `Fin (n+1)` to the gaps cut out by a
-distinguished block). **Outstanding `sorry`** (HARD, bijection-level). -/
+This is the genuine combinatorial content of `nonCrossing = Catalan`; the analogous decomposition
+is *not* available in Mathlib in any form (Mathlib has no theory of non-crossing partitions, nor of
+restricting a `Finpartition` of `Fin (n+1)` to the gaps cut out by a distinguished block). It is
+discharged here by `card_lhs_eq_card_rhs` (the two sides are equinumerous, by antisymmetry of the
+two injections `fwdMid`/`glMid`) fed to `Fintype.equivOfCardEq` — the existence of the bijection
+without the dependent-`HEq` cast bookkeeping a natural equiv would demand. -/
 theorem nonempty_firstReturnEquiv (n : ℕ) :
     Nonempty ({P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P} ≃
       Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
         {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
-        {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P}) := by
-  sorry
+        {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P}) :=
+  ⟨Fintype.equivOfCardEq (card_lhs_eq_card_rhs n)⟩
 
 /-- **Counting half of the recurrence (proved, 0 `sorry`).** Any first-return bijection
 splitting the non-crossing partitions of `Fin (n+1)` over `antidiagonal n` already forces the
@@ -1061,7 +1187,12 @@ theorem nonCrossingCount_eq_catalan_of_le_three {n : ℕ} (hn : n ≤ 3) :
 #check @firstBlockMax_glueFp_val
 #check @restrictFp_glueFp_left
 #check @restrictFp_glueFp_right
+#check @card_lhs_eq_card_rhs
 #check @nonCrossingCount_eq_catalan
 #check @nonCrossingCount_eq_catalan_of_le_three
+
+-- Axiom audit: the full theorem depends only on the foundational axioms
+-- (`propext`, `Classical.choice`, `Quot.sound`) — no `sorryAx`, no `Lean.ofReduceBool`.
+#print axioms nonCrossingCount_eq_catalan
 
 end BallotProblemOQ04OQ02OQ01

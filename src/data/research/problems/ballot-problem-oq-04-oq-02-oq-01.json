@@ -1,14 +1,14 @@
 {
   "slug": "ballot-problem-oq-04-oq-02-oq-01",
   "title": "Non-Crossing Partitions are Counted by the Catalan Numbers (nonCrossingCount n = catalan n)",
-  "status": "in-progress",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "DONE",
   "tier": "B",
   "significance": 6,
   "tractability": 8,
   "problemStatement": "Prove nonCrossingCount n = catalan n, where nonCrossingCount n (from ballot-problem-oq-04-oq-02) is the cardinality of non-crossing Finpartitions of Fin n. This is openQuestion[2] of the sibling entry: establish the Catalan convolution recurrence directly on the Finpartition model rather than via the full Dyck-word bijection.",
   "knowledge": {
-    "progressSummary": "PROGRESS: right_inv factor-recovery DONE (restrictFp_glueFp_left/right, verified, 0 new sorry) on top of cut-index recovery (firstBlockMax_glueFp_val). Sole sorry still nonempty_firstReturnEquiv; remaining = Equiv packaging (right_inv) + left_inv (glue∘forward=id).",
+    "progressSummary": "COMPLETE (2026-07-04, s15): nonCrossingCount n = catalan n is fully proved — 0 sorries, verified, axioms [propext, Classical.choice, Quot.sound] only (confirmed by #print axioms). The last sorry nonempty_firstReturnEquiv was discharged by an equinumerosity count: card LHS = card RHS via antisymmetry of two injections (fwdMid with left inverse glMid; glMid injective by recovering the cut as an ℕ-equality then both factors) routed through the Fin (n+1)-indexed intermediate type MidNc (fibers match glueFp definitionally, no dependent-HEq casts), then Fintype.equivOfCardEq. Built cleanly under Lean v4.26.0 in Docker.",
     "builtItems": [
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_zero : nonCrossingCount 0 = 1 (via nonCrossingCount_eq_card_of_n_le_three + Unique (Finpartition ⊥) + Fintype.card_unique). 0 sorry.",
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n, proved by Nat.strong_induction_on, matching nonCrossingCount_recurrence against Mathlib catalan_succ' term-by-term over antidiagonal n. Depends on the recurrence sorry; reduction itself 0 sorry.",
@@ -58,18 +58,16 @@
     ]
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-26T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Structural reduction of nonCrossingCount = catalan to the Catalan convolution recurrence on the Finpartition model.",
-    "blockers": [
-      "The combinatorial recurrence nonCrossingCount_recurrence (block decomposition of non-crossing Finpartitions) — HARD, bijection-level, no Mathlib support."
-    ],
-    "nextAction": "Prove nonCrossingCount_recurrence via the first-return block decomposition, or submit to Aristotle when the endpoint recovers.",
+    "phase": "DONE",
+    "since": "2026-07-04T00:00:00.000Z",
+    "iteration": 15,
+    "focus": "COMPLETE — nonCrossingCount n = catalan n fully proved (0 sorry, verified). The first-return decomposition (restrictFp/glueFp, non-crossing preservation both ways, round-trip laws) is built from scratch and packaged into the bijection by an equinumerosity count.",
+    "blockers": [],
+    "nextAction": "None — theorem complete. Optional follow-ups: upstream the non-crossing restriction/gluing calculus to Mathlib; relate to the sibling Dyck-word bijection (oq-04-oq-01).",
     "attemptCounts": {
-      "total": 1,
+      "total": 15,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 3
     }
   },
   "tags": [
@@ -81,7 +79,7 @@
     "research",
     "open-problem"
   ],
-  "lastUpdate": "2026-06-26T00:00:00.000Z",
+  "lastUpdate": "2026-07-04T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
@@ -471,11 +469,11 @@
     {
       "path": "Proofs/BallotProblemOQ04OQ02OQ01.lean",
       "filename": "BallotProblemOQ04OQ02OQ01.lean",
-      "lineCount": 115,
-      "theoremCount": 3,
+      "lineCount": 1198,
+      "theoremCount": 41,
       "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 6,
+      "defCount": 12,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean"
     }

@@ -1,9 +1,11 @@
-# Knowledge: Non-crossing partitions counted by Catalan — recurrence reduction (1 sorry)
+# Knowledge: Non-crossing partitions counted by Catalan — COMPLETE (0 sorry, verified)
 
 **Problem id**: `ballot-problem-oq-04-oq-02-oq-01-incomplete-01`
 **Gallery entry / Lean file**: `ballot-problem-oq-04-oq-02-oq-01` →
 `proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean`
-**Goal**: discharge the single remaining `sorry`, `nonempty_firstReturnEquiv`.
+**Status (2026-07-04, s15): DONE.** `nonCrossingCount n = catalan n` fully proved — 0 sorry,
+`#print axioms` = `[propext, Classical.choice, Quot.sound]` only. The last obligation
+`nonempty_firstReturnEquiv` was discharged by an equinumerosity count (see s15 log below).
 
 ## Summary
 
@@ -105,6 +107,53 @@ Consequences:
   above.
 
 ## Session log
+
+### Session 2026-07-04 (Session 15) — ACT: bijection packaged, theorem COMPLETE
+
+**Mode**: REVISIT · **Outcome**: **DONE** — sole `sorry` discharged, 0 sorry, verified.
+
+**What I did**
+- Discharged `nonempty_firstReturnEquiv` (the last `sorry`) and thereby proved
+  `nonCrossingCount n = catalan n` in full.
+- Key move: instead of building a *natural* `Equiv` between the antidiagonal-indexed `Σ`-type and
+  the non-crossing partitions — which needs dependent-`HEq` transport, because the forward map's cut
+  index `firstBlockMax(glue) = m` holds only *propositionally* — I proved
+  `card LHS = card RHS` and applied `Fintype.equivOfCardEq`.
+- Route: an intermediate type `MidNc n := Σ m : Fin (n+1), NcFp m.val × NcFp (n - m.val)` whose right
+  fiber `Fin (n - m)` matches `glueFp`'s argument type **definitionally** (no cast). Maps `fwdMid`
+  (cut + restrict) and `glMid` (glue). `card LhsNc = card MidNc` by `le_antisymm` of two injections:
+  `fwdMid` injective via its left inverse `glMid` (= `glueFp_restrictFp_eq_self`); `glMid` injective
+  by recovering the cut as an **ℕ-equality** (`firstBlockMax_glueFp_val`, so `subst` dodges `HEq`)
+  then both factors (`restrictFp_glueFp_left/right`). `card MidNc = card Rhs` by a pure
+  `antidiagonal ↔ range` reindexing (`Fin.sum_univ_eq_sum_range` +
+  `Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk`) — no partition casts at all.
+- Docker build **clean on the first try** (7745 jobs, no SIGBUS despite swap at 98%). Axiom audit
+  `#print axioms nonCrossingCount_eq_catalan` = `[propext, Classical.choice, Quot.sound]`.
+- Updated gallery `meta.json` (status → verified, badge → verified, sorries 0, counts, sections,
+  narrative) and the research tracking json (status → completed).
+
+**Key findings**
+- **Equinumerosity beats a natural Equiv** when the forward map's index is *computed* (only
+  propositionally equal to the target). `Fintype.equivOfCardEq` needs no explicit inverse or
+  `Sigma.ext`/`HEq`; the two `card ≤` directions are clean injectivity proofs.
+- **Injectivity of `glMid` dodges `HEq`**: recover the index as `m.val = m'.val : ℕ` first, then
+  `subst` (via `Fin.ext`) so the dependent fibers become defeq *before* comparing the factors.
+  This is the crucial trick that made the packaging tractable without cast bookkeeping.
+- **Definitional-proof-irrelevance carried the round-trips**: `glMid ∘ fwdMid` matched
+  `glueFp_restrictFp_eq_self` up to the `≤` proof arguments with no massaging (`exact` sufficed).
+- A build succeeded despite swap at 98% — the SIGBUS in prior sessions is transient, not
+  deterministic at high swap.
+
+**Files modified**
+- `proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean` (+~150 lines: `NcFp`/`MidNc`, `fwdMid`/`glMid`,
+  `glMid_fwdMid`, `fwdMid_injective`, `glMid_injective`, `card_midNc_eq`, `card_rhs_eq`,
+  `card_lhs_eq_card_rhs`; `nonempty_firstReturnEquiv` sorry → proof; docstrings/status; axiom check)
+- `src/data/proofs/ballot-problem-oq-04-oq-02-oq-01/meta.json` (verified, 0 sorry)
+- `src/data/research/problems/ballot-problem-oq-04-oq-02-oq-01.json` (completed)
+
+**Next steps**
+- None for this theorem. Optional: upstream the non-crossing restriction/gluing calculus to Mathlib;
+  relate to the sibling Dyck-word bijection (`ballot-problem-oq-04-oq-01`).
 
 ### Session 2026-07-04 (Session 13) — ACT: right_inv factor recovery
 
