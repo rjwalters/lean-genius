@@ -1501,9 +1501,40 @@ theorem lintegral_tsum_trunc_sq_weight_le_moment
 
 #check @lintegral_tsum_trunc_sq_weight_le_moment
 
+/-- **Finiteness of the MZ variance sum (ℝ≥0∞).**  For a measurable `X` with finite `p`-th
+absolute moment (`Integrable |X|ᵖ`) and `0 < p < 2`, the `i^{-2/p}`-weighted sum of the truncated
+second moments is finite:
+
+    ∑'ᵢ ∫⁻ ω, i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)²  < ∞.
+
+Proof: bound by the master estimate `lintegral_tsum_trunc_sq_weight_le_moment`
+`= ofReal(C)·∫⁻ ω, |X ω|ᵖ`; the constant factor is `< ∞` (`ENNReal.ofReal_lt_top`) and the moment
+factor is `< ∞` because `Integrable (fun ω => |X ω|ᵖ)` transfers, via
+`hasFiniteIntegral_iff_ofReal` on the nonnegative integrand `|X|ᵖ`, to
+`∫⁻ ω, ofReal(|X ω|ᵖ) < ∞`; then `ENNReal.mul_lt_top`.
+
+This is exactly the summability hypothesis of the Kolmogorov weighted criterion
+`ae_tendsto_average_zero_of_variance_weighted_bdd` (S5) applied to the centered truncations
+`Yᵢ − 𝔼Yᵢ` (`aᵢ = i^{1/p}`), the final analytic input to the Marcinkiewicz–Zygmund SLLN. -/
+theorem tsum_lintegral_trunc_sq_weight_lt_top
+    (X : Ω → ℝ) (hX : Measurable X) {p : ℝ} (hp : 0 < p) (hp2 : p < 2)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    ∑' i : ℕ, ∫⁻ ω, ENNReal.ofReal
+        ((i : ℝ) ^ (-(2 / p)) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) ∂μ
+      < ∞ := by
+  refine (lintegral_tsum_trunc_sq_weight_le_moment X hX hp hp2).trans_lt ?_
+  apply ENNReal.mul_lt_top ENNReal.ofReal_lt_top
+  -- `∫⁻ ω, ofReal(|X ω|ᵖ) < ∞` from `Integrable (fun ω => |X ω|ᵖ)` via the nonneg iff.
+  have hnn : (0 : Ω → ℝ) ≤ᵐ[μ] fun ω => |X ω| ^ p :=
+    ae_of_all _ (fun ω => Real.rpow_nonneg (abs_nonneg _) _)
+  exact (hasFiniteIntegral_iff_ofReal hnn).mp hint.hasFiniteIntegral
+
+#check @tsum_lintegral_trunc_sq_weight_lt_top
+
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
 #print axioms lintegral_tsum_trunc_sq_weight_le_moment
+#print axioms tsum_lintegral_trunc_sq_weight_lt_top
 
 end MasterVarianceBound
 
