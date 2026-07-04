@@ -33,6 +33,8 @@ derivative computation Ṁ = A·M.  Note that `ρ_k` is an *ordered* product of 
 * `commute_A_rho`: A commutes with every ρ_k (each factor is a polynomial in A)
 * `A_mul_rho`    : A · ρ_k = ρ_{k+1} + λ_k • ρ_k               — the *key telescoping identity*
 * `rho_card`     : ρ_n = 0  when χ_A splits as ∏ (X - λ_i)     (Cayley–Hamilton truncation)
+* `rho_add`      : ρ_{j+k} = ρ_j · ρ'_k  (shifted eigenvalues) — the concatenation/semigroup law
+* `rho_dvd_rho_add`: ρ_j left-divides ρ_{j+k}                  (immediate corollary)
 * `rho_succ_left`: ρ_{k+1} = (A - λ_k • 1) · ρ_k              (factor pulled to the left)
 * `rho_mul_A`    : ρ_k · A = ρ_{k+1} + λ_k • ρ_k             (right telescoping identity)
 * `A_mul_sum_rho`: A · ∑_k a_k • ρ_k = ∑_k a_k • (ρ_{k+1} + λ_k • ρ_k)   (sum-level telescoping)
@@ -128,6 +130,31 @@ lemma rho_card {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (lam : ℕ → R)
     rho A lam n = 0 := by
   rw [rho_eq_aeval_prod, ← Fin.prod_univ_eq_prod_range (fun i => X - C (lam i)) n, ← hlam,
       Matrix.aeval_self_charpoly]
+
+/-! ## The concatenation (semigroup) law for partial products
+
+The partial products satisfy a clean multiplicative *concatenation* law: the length-`(j+k)`
+product splits as the length-`j` product times the length-`k` product formed from the
+*shifted* eigenvalue sequence `i ↦ λ_{j+i}`.  This is the matrix analogue of splitting a
+factorial-style product `∏_{i<j+k} = (∏_{i<j}) · (∏_{j≤i<j+k})`, and it holds on the nose
+because `ρ` is built by right-multiplication.  It generalizes `rho_succ` (the `k = 1` case)
+and immediately yields that `ρ_j` left-divides `ρ_{j+k}`. -/
+
+/-- **Concatenation law.** `ρ_{j+k} = ρ_j · ρ'_k`, where `ρ'` uses the shifted eigenvalue
+sequence `i ↦ λ_{j+i}`.  Proved by induction on `k`; the `k = 1` case is `rho_succ`. -/
+lemma rho_add (A : Matrix n n R) (lam : ℕ → R) (j k : ℕ) :
+    rho A lam (j + k) = rho A lam j * rho A (fun i => lam (j + i)) k := by
+  induction k with
+  | zero => simp [rho]
+  | succ k ih =>
+    have hj : j + (k + 1) = (j + k) + 1 := by ring
+    rw [hj, rho_succ, ih, mul_assoc, rho_succ]
+
+/-- `ρ_j` left-divides `ρ_{j+k}`: the length-`j` partial product is a left factor of every
+longer one.  Immediate from the concatenation law `rho_add`. -/
+lemma rho_dvd_rho_add (A : Matrix n n R) (lam : ℕ → R) (j k : ℕ) :
+    ∃ Q : Matrix n n R, rho A lam (j + k) = rho A lam j * Q :=
+  ⟨rho A (fun i => lam (j + i)) k, rho_add A lam j k⟩
 
 /-! ## Two-sided factor structure and the sum-level telescoping
 
@@ -240,5 +267,53 @@ lemma A_mul_putzer_sum_charpoly {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (lam P 
     A * ∑ k ∈ Finset.range n, P k • rho A lam k
       = ∑ k ∈ Finset.range n, (lam k * P k + Pprev k) • rho A lam k :=
   A_mul_putzer_sum A lam P Pprev h0 hsucc n (rho_card A lam hlam)
+
+/-! ## The algebraic initial condition `M(0) = I`
+
+Putzer's solution is `M(t) = ∑_{k<n} P_k(t) • ρ_k` with scalar coefficients satisfying
+`P_0(0) = 1` and `P_k(0) = 0` for `k > 0` (the leading coefficient starts at `1`, all others at
+`0`).  Evaluating the finite sum at `t = 0` collapses to the single `k = 0` term `P_0(0) • ρ_0 =
+1 • 1 = 1`.  This is the second half of the IVP that pins down `e^{tA}`: together with the
+`Ṁ = A · M` identity above, it algebraically characterizes the Putzer sum as *the* solution of
+`Ṁ = A · M`, `M(0) = I` — before any analytic uniqueness statement is invoked.  Like everything
+in this file it is pure `CommRing` book-keeping, holding for arbitrary evaluation coefficients. -/
+
+/-- **Algebraic initial condition `M(0) = I`.**  If a coefficient family `c` has `c 0 = 1` and
+`c k = 0` for every `k > 0`, then the Putzer sum collapses to the identity:
+
+  `∑_{k<m} c_k • ρ_k = 1`   (for any `m ≥ 1`).
+
+Only the `k = 0` term survives, and `ρ_0 = 1`, so the sum is `c_0 • 1 = 1`.  Applied with
+`c k = P_k(0)` this is exactly `M(0) = I`. -/
+lemma putzer_sum_initial (A : Matrix n n R) (lam c : ℕ → R)
+    (h0 : c 0 = 1) (hpos : ∀ k, 0 < k → c k = 0) {m : ℕ} (hm : 0 < m) :
+    ∑ k ∈ Finset.range m, c k • rho A lam k = 1 := by
+  rw [Finset.sum_eq_single 0]
+  · rw [rho_zero, h0, one_smul]
+  · intro k _ hne
+    rw [hpos k (Nat.pos_of_ne_zero hne), zero_smul]
+  · intro h
+    exact absurd (Finset.mem_range.mpr hm) h
+
+/-- **Algebraic Putzer IVP at full length `n`.**  Assembling the two halves: when `χ_A` splits as
+`∏ i, (X - λ_i)` and the coefficient family `P` has Putzer's initial data `P_0 = 1`, `P_k = 0`
+for `k > 0` (with `Pprev` encoding `k ↦ P_{k-1}`), the finite matrix sum `M := ∑_{k<n} P_k • ρ_k`
+satisfies **both** algebraic IVP conditions simultaneously:
+
+  `A · M = ∑_{k<n} (λ_k P_k + P_{k-1}) • ρ_k`   (the `Ṁ = A·M` right-hand side), and   `M = 1`.
+
+For `n ≥ 1` this is the complete algebraic skeleton of Putzer's theorem: once the deferred analytic
+layer supplies coefficient *functions* `P_k(t)` whose values at `t = 0` are this data and whose
+derivatives are `λ_k P_k + P_{k-1}`, the left equation reads `A · M(t) = Ṁ(t)` and the right reads
+`M(0) = I`, so matrix-ODE uniqueness gives `M(t) = e^{tA}`. -/
+lemma putzer_ivp_charpoly {n : ℕ} (A : Matrix (Fin n) (Fin n) R) (lam P Pprev : ℕ → R)
+    (h0 : Pprev 0 = 0) (hsucc : ∀ k, Pprev (k + 1) = P k)
+    (hlam : A.charpoly = ∏ i : Fin n, (X - C (lam i)))
+    (hP0 : P 0 = 1) (hPpos : ∀ k, 0 < k → P k = 0) (hn : 0 < n) :
+    (A * ∑ k ∈ Finset.range n, P k • rho A lam k
+        = ∑ k ∈ Finset.range n, (lam k * P k + Pprev k) • rho A lam k)
+      ∧ (∑ k ∈ Finset.range n, P k • rho A lam k = 1) :=
+  ⟨A_mul_putzer_sum_charpoly A lam P Pprev h0 hsucc hlam,
+   putzer_sum_initial A lam P hP0 hPpos hn⟩
 
 end PutzerMatrixExp
