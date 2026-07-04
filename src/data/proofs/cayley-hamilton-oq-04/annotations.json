@@ -23,6 +23,29 @@
     ]
   },
   {
+    "id": "ann-ch04-cofactor",
+    "proofId": "cayley-hamilton-oq-04",
+    "range": {
+      "startLine": 49,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "The Named 2×2 Cofactor Matrix and Its Bridge to Mathlib's Adjugate",
+    "content": "Working over any commutative ring R, `cofactor A = !![A 1 1, -A 0 1; -A 1 0, A 0 0]` names the classical 2×2 adjugate [[d,-b],[-c,a]] so that the results below read like the textbook formulas rather than as `Matrix.adjugate` unfoldings. The single-line lemma `cofactor_eq_adjugate` proves this hand-written matrix equals Mathlib's general `adjugate A` in the 2×2 case, via `adjugate_fin_two`. This identification is the load-bearing bridge of the whole file: because the explicit products `mul_cofactor`/`cofactor_mul` are stated for `cofactor`, `cofactor_eq_adjugate` is what lets them count as genuine adjugate identities and lets the inverse formula connect to Mathlib's `Matrix.inv_def` (which is phrased in terms of `adjugate`). Keeping the definition entrywise-concrete is also what keeps every downstream proof reducible by `fin_cases`/`ring`.",
+    "mathContext": "$\\operatorname{cofactor} A = \\begin{pmatrix} d & -b \\\\ -c & a \\end{pmatrix} = \\operatorname{adjugate} A$ for $A = \\begin{pmatrix} a & b \\\\ c & d \\end{pmatrix}$ over a commutative ring.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "adjugate matrix",
+      "cofactor matrix",
+      "Matrix.adjugate",
+      "adjugate_fin_two"
+    ],
+    "prerequisites": [
+      "the adjugate (cofactor) matrix",
+      "2×2 matrix notation !![...]"
+    ]
+  },
+  {
     "id": "ann-ch04-cayley-hamilton",
     "proofId": "cayley-hamilton-oq-04",
     "range": {
