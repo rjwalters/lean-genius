@@ -45,18 +45,33 @@
     "prerequisites": ["polarization", "map_add / map_sub", "injective_iff_map_eq_zero"]
   },
   {
-    "id": "csoq08-isometry",
+    "id": "csoq08-linear-map",
     "proofId": "cauchy-schwarz-oq-08",
     "range": {
       "startLine": 70,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "ℝ-Linear Norm-Preservation Corollary",
+    "content": "`inner_linearMap_eq` specializes the additive rigidity theorem `inner_map_eq` to an $\\mathbb{R}$-linear map $f : F \\to_{\\ell} F'$ by forgetting linearity down to its additive structure (`f.toAddMonoidHom`). The upshot is exactly the defining property of a linear isometry — a norm-preserving linear map preserves the inner product, $\\langle f x, f y\\rangle = \\langle x,y\\rangle$ — obtained here from scratch rather than assumed.",
+    "mathContext": "For $f : F \\to_{\\ell}[\\mathbb{R}] F'$ with $\\|f x\\| = \\|x\\|$: $\\langle f x, f y\\rangle = \\langle x, y\\rangle$, via `inner_map_eq` on the underlying additive map.",
+    "significance": "supporting",
+    "relatedConcepts": ["linear isometry", "norm-preserving linear map", "LinearMap.toAddMonoidHom"],
+    "prerequisites": ["inner_map_eq", "LinearMap.toAddMonoidHom"]
+  },
+  {
+    "id": "csoq08-isometry",
+    "proofId": "cauchy-schwarz-oq-08",
+    "range": {
+      "startLine": 77,
       "endLine": 83
     },
     "type": "theorem",
-    "title": "Linear and Bundled-Isometry Corollaries",
-    "content": "`inner_linearMap_eq` specializes the rigidity theorem to an $\\mathbb{R}$-linear map by forgetting linearity down to its additive structure, recovering the defining property of a linear isometry. `inner_linearIsometry_eq` applies this to a bundled `LinearIsometry` through its `norm_map` field — obtaining $\\langle f x, f y\\rangle = \\langle x,y\\rangle$ without invoking Mathlib's bundled `LinearIsometry.inner_map_map`. This is the elementary reason isometries of Hilbert spaces are unitary.",
-    "mathContext": "A linear isometry is in particular a norm-preserving additive map, so `inner_map_eq` applies via `f.toAddMonoidHom` / `f.toLinearMap` and the `norm_map` field; hence $\\langle fx,fy\\rangle=\\langle x,y\\rangle$ — the inner-product-preserving (unitary) property.",
+    "title": "Bundled LinearIsometry Corollary",
+    "content": "`inner_linearIsometry_eq` applies the linear corollary to a bundled `LinearIsometry` $f : F \\to_{\\ell i}[\\mathbb{R}] F'$ through its `norm_map` field, obtaining $\\langle f x, f y\\rangle = \\langle x,y\\rangle$ without invoking Mathlib's bundled `LinearIsometry.inner_map_map`. This is the elementary reason isometries of Hilbert spaces are inner-product-preserving (unitary): norm-rigidity plus the polarization identity already force it.",
+    "mathContext": "A bundled linear isometry supplies its own norm-preservation via the `norm_map` field, so `inner_linearMap_eq` applies and $\\langle fx,fy\\rangle=\\langle x,y\\rangle$ — the inner-product-preserving (unitary) property.",
     "significance": "supporting",
-    "relatedConcepts": ["linear isometry", "LinearIsometry (bundled)", "unitary maps", "Hilbert space isometries"],
-    "prerequisites": ["inner_map_eq", "LinearMap.toAddMonoidHom", "LinearIsometry.norm_map"]
+    "relatedConcepts": ["LinearIsometry (bundled)", "unitary maps", "Hilbert space isometries", "LinearIsometry.norm_map"],
+    "prerequisites": ["inner_linearMap_eq", "LinearIsometry.norm_map"]
   }
 ]
