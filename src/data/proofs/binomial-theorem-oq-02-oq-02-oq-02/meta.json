@@ -204,7 +204,7 @@
       "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
       "year": 2020,
       "venue": "CPP",
-      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+      "note": "Provides the binomial-coefficient API underlying this formalization: Finset.sum_range_succ, Nat.choose_succ_succ (Pascal's rule), Nat.sum_Icc_choose (the interval hockey-stick), and Nat.choose_one_right / Nat.choose_two_right for the figurate specializations."
     }
   ]
 }
