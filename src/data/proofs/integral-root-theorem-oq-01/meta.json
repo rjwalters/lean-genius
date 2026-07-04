@@ -67,7 +67,7 @@
       "id": "sec-divisibility",
       "title": "The Rational Root Theorem over Z ⊂ Q",
       "startLine": 30,
-      "endLine": 47,
+      "endLine": 54,
       "summary": "num_dvd_of_root (numerator of a rational root divides p.coeff 0) and den_dvd_of_root (denominator divides p.leadingCoeff), specializing Mathlib's num_dvd_of_is_root / den_dvd_of_is_root to Z ⊂ Q via IsFractionRing.num/.den. Also isInteger_of_monic_root and monic_root_isInteger: a rational root of a monic integer polynomial is an integer.",
       "mathContext": "$a\\mid p.\\mathrm{coeff}\\,0$, $b\\mid p.\\mathrm{leadingCoeff}$; monic $\\Rightarrow \\exists z\\in\\mathbb{Z},(z:\\mathbb{Q})=r$."
     },
