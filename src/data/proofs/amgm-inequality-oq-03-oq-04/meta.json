@@ -207,5 +207,67 @@
     "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/AmgmInequalityOQ03OQ04.lean"
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "mul_rpow_pred",
+      "type": "technical",
+      "description": "The rpow bridge x·x^(α-1) = x^α for x > 0, the pointwise identity underlying the equality of the Rényi and power-mean sums.",
+      "leanType": "(α : ℝ) → {x : ℝ} → 0 < x → x * x ^ (α - 1) = x ^ α"
+    },
+    {
+      "name": "renyi_sum_eq_powerMean_sum",
+      "type": "core",
+      "description": "Core algebraic identity: for a positive distribution, Σ pᵢ·pᵢ^(α-1) = Σ pᵢ^α, the bridge between the self-power-mean sum and the Rényi sum.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → (α : ℝ) → ∑ i ∈ s, p i * p i ^ (α - 1) = ∑ i ∈ s, p i ^ α"
+    },
+    {
+      "name": "renyi_sum_pos",
+      "type": "technical",
+      "description": "Positivity of the Rényi sum Σ pᵢ^α for a positive distribution on a nonempty finset, licensing the logarithm.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → s.Nonempty → (α : ℝ) → 0 < ∑ i ∈ s, p i ^ α"
+    },
+    {
+      "name": "selfPowerMean_pos",
+      "type": "technical",
+      "description": "The self-power mean M_r(p,p) is strictly positive for a positive distribution on a nonempty finset.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → s.Nonempty → {r : ℝ} → (hr : r ≠ 0) → 0 < selfPowerMean s p r hr"
+    },
+    {
+      "name": "renyi_eq_neg_log_powerMean",
+      "type": "core",
+      "description": "Main identity: H_α(p) = -log(M_{α-1}(p,p)), showing Rényi entropy and the self-power mean are the same quantity in different notation (sign + base change).",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → s.Nonempty → (α : ℝ) → (hα : α ≠ 1) → renyiEntropy s p α hα = -Real.log (selfPowerMean s p (α - 1) (sub_ne_zero.mpr hα))"
+    },
+    {
+      "name": "renyi_decreasing_of_powerMean_increasing",
+      "type": "core",
+      "description": "One direction of the equivalence: if the self-power mean is increasing in r, the Rényi entropy is decreasing in α, via H_α = -log(M_{α-1}) and monotonicity of log.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → s.Nonempty → (∀ r t : ℝ, r ≤ t → (hr : r ≠ 0) → (ht : t ≠ 0) → selfPowerMean s p r hr ≤ selfPowerMean s p t ht) → {α β : ℝ} → α ≤ β → (hα : α ≠ 1) → (hβ : β ≠ 1) → renyiEntropy s p β hβ ≤ renyiEntropy s p α hα"
+    },
+    {
+      "name": "powerMean_increasing_of_renyi_decreasing",
+      "type": "core",
+      "description": "Converse direction: if the Rényi entropy is decreasing in α, the self-power mean is increasing in r, obtained by exponentiating the log inequality H_{t+1} ≤ H_{r+1}.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → s.Nonempty → (∀ α β : ℝ, α ≤ β → (hα : α ≠ 1) → (hβ : β ≠ 1) → renyiEntropy s p β hβ ≤ renyiEntropy s p α hα) → {r t : ℝ} → r ≤ t → (hr : r ≠ 0) → (ht : t ≠ 0) → selfPowerMean s p r hr ≤ selfPowerMean s p t ht"
+    },
+    {
+      "name": "renyi_monotone_iff_powerMean_monotone",
+      "type": "core",
+      "description": "Main theorem — full biconditional: Rényi entropy is decreasing in α ⇔ the self-power mean is increasing in r, unifying the two monotonicity results as dual descriptions.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → s.Nonempty → ((∀ α β : ℝ, α ≤ β → ∀ (hα : α ≠ 1) (hβ : β ≠ 1), renyiEntropy s p β hβ ≤ renyiEntropy s p α hα) ↔ (∀ r t : ℝ, r ≤ t → ∀ (hr : r ≠ 0) (ht : t ≠ 0), selfPowerMean s p r hr ≤ selfPowerMean s p t ht))"
+    },
+    {
+      "name": "renyi_two_eq_neg_log_collision",
+      "type": "supporting",
+      "description": "Special case α = 2: H₂(p) = -log(Σ pᵢ²), the negative log of the collision probability.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → s.Nonempty → renyiEntropy s p 2 (by norm_num) = -Real.log (∑ i ∈ s, p i ^ (2 : ℝ))"
+    },
+    {
+      "name": "renyi_two_eq_neg_log_self_mean",
+      "type": "supporting",
+      "description": "Instance of the main identity at α = 2: H₂(p) = -log(M₁(p,p)), the negative log of the arithmetic self-mean Σ pᵢ².",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (p : ι → ℝ) → (∀ i ∈ s, 0 < p i) → s.Nonempty → renyiEntropy s p 2 (by norm_num) = -Real.log (selfPowerMean s p 1 (by norm_num))"
+    }
+  ]
 }
