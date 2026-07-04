@@ -141,21 +141,25 @@ theorem card_primes_Ioc {a b : ℕ} (hab : a ≤ b) :
     simp only [Nat.primeCounting, Nat.primeCounting']
     rw [Nat.count_eq_card_filter_range]
   rw [key a, key b]
-  have hsub : (Finset.range (a + 1)).filter Nat.Prime ⊆
-      (Finset.range (b + 1)).filter Nat.Prime :=
-    Finset.filter_subset_filter _ (Finset.range_subset.mpr (by omega))
-  rw [← Finset.card_sdiff hsub]
-  congr 1
-  ext x
-  simp only [Finset.mem_sdiff, Finset.mem_filter, Finset.mem_range, Finset.mem_Ioc]
-  constructor
-  · rintro ⟨⟨hxb, hpx⟩, hx⟩
-    have hax : a < x := by
-      by_contra h
-      exact hx ⟨by omega, hpx⟩
-    exact ⟨⟨hax, by omega⟩, hpx⟩
-  · rintro ⟨⟨hax, hxb⟩, hpx⟩
-    exact ⟨⟨by omega, hpx⟩, fun h => absurd h.1 (by omega)⟩
+  have hdisj : Disjoint ((Finset.range (a + 1)).filter Nat.Prime)
+      ((Finset.Ioc a b).filter Nat.Prime) := by
+    apply Finset.disjoint_left.mpr
+    intro x hx hx'
+    simp only [Finset.mem_filter, Finset.mem_range] at hx
+    simp only [Finset.mem_filter, Finset.mem_Ioc] at hx'
+    obtain ⟨hx1, _⟩ := hx
+    obtain ⟨⟨hx2, _⟩, _⟩ := hx'
+    omega
+  have hunion : ((Finset.range (a + 1)).filter Nat.Prime) ∪
+      ((Finset.Ioc a b).filter Nat.Prime) = (Finset.range (b + 1)).filter Nat.Prime := by
+    rw [← Finset.filter_union]
+    congr 1
+    ext x
+    simp only [Finset.mem_union, Finset.mem_range, Finset.mem_Ioc]
+    omega
+  have hcard := Finset.card_union_of_disjoint hdisj
+  rw [hunion] at hcard
+  omega
 
 /-- Removing a **non-prime** right endpoint does not change the prime count:
 `#{primes in (a, b)} = #{primes in (a, b]}` when `b` is composite. -/
