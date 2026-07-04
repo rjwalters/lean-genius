@@ -338,6 +338,25 @@ theorem noStraddle {n : ℕ} (P : Finpartition (univ : Finset (Fin (n + 1))))
   noStraddle_of_isMax P hP (firstBlockMax P) (firstBlockMax_mem_part P)
     (fun z hz => Finset.le_max' _ z hz) a x y hx hy hxm hmy
 
+/-- **Every block lies entirely on one side of the cut.** A direct corollary of `noStraddle`:
+for a non-crossing partition `P`, each block `P.part a` is contained either entirely in the lower
+window `[0, m]` or entirely in the upper window `[m+1, n]` (`m = firstBlockMax P`). This is the
+clean structural form the inverse (gluing) map consumes: since no block straddles `m`, restricting
+`P` to the two offset windows `[1, m]` and `[m+1, n]` drops no block, so the two pieces recombine
+uniquely into `P`. Proof: if some point of the block exceeds `m` then, by `noStraddle`, no point can
+be `≤ m` (else that pair would straddle), giving the right disjunct; otherwise every point is `≤ m`,
+the left disjunct. -/
+theorem part_side_of_firstBlockMax {n : ℕ} (P : Finpartition (univ : Finset (Fin (n + 1))))
+    (hP : IsNonCrossingFp P) (a : Fin (n + 1)) :
+    (∀ x ∈ P.part a, x ≤ firstBlockMax P) ∨ (∀ x ∈ P.part a, firstBlockMax P < x) := by
+  by_cases hex : ∃ y ∈ P.part a, firstBlockMax P < y
+  · obtain ⟨y, hy, hmy⟩ := hex
+    refine Or.inr fun x hx => ?_
+    by_contra hxle
+    exact noStraddle P hP a x y hx hy (not_lt.mp hxle) hmy
+  · push_neg at hex
+    exact Or.inl hex
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
@@ -455,6 +474,7 @@ theorem nonCrossingCount_eq_catalan_of_le_three {n : ℕ} (hn : n ≤ 3) :
 
 #check @nonCrossingCount_zero
 #check @not_mem_part_across_firstBlockMax
+#check @part_side_of_firstBlockMax
 #check @nonCrossingCount_eq_catalan
 #check @nonCrossingCount_eq_catalan_of_le_three
 
