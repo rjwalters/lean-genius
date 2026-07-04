@@ -46,7 +46,7 @@
     "definitionCount": 1
   },
   "overview": {
-    "historicalContext": "The British Flag theorem is a classical result of elementary Euclidean geometry. Its name comes from the picture that results when the four squared-distance segments from an interior point are drawn to the corners of a rectangle: the diagonals and the connecting lines sketch a pattern resembling the Union Jack. Despite its elementary statement it is a recurring exercise in coordinate geometry and a clean illustration of how an orthogonality condition controls a metric identity.",
+    "historicalContext": "The British Flag theorem is a classical result of elementary Euclidean geometry. Its name comes from the picture that results when the four squared-distance segments from an interior point are drawn to the corners of a rectangle: the diagonals and the connecting lines sketch a pattern resembling the Union Jack. Despite its elementary statement it is a recurring exercise in coordinate geometry and a clean illustration of how an orthogonality condition controls a metric identity. The identity holds more generally: the rectangle can be replaced by any right-angled configuration, and the same computation shows the invariant PA²+PC² − PB²−PD² equals twice the dot product of the two edge vectors at A, so the theorem is exactly the vanishing of that dot product. Higher-dimensional and Hilbert-space analogues (the 'parallelogram/orthogonality' version) follow by the identical polarization argument, making the British Flag theorem a low-dimensional instance of the general fact that squared-norm sums to opposite vertices of a box coincide.",
     "problemStatement": "**British Flag Theorem**: Let ABCD be a rectangle and P any point in its plane (A and C are opposite corners, as are B and D). Then\n\nPA² + PC² = PB² + PD².",
     "text": "For any point and any rectangle, the sums of squared distances to the two pairs of opposite corners are equal.",
     "proofStrategy": "We work in the coordinate plane ℝ × ℝ and use the squared-distance function sqDist P Q = (P.1 − Q.1)² + (P.2 − Q.2)². A rectangle is encoded by two conditions on its vertices: a parallelogram closure C = B + D − A (so the figure closes up), and a right angle at A, written as the orthogonality (B.1 − A.1)(D.1 − A.1) + (B.2 − A.2)(D.2 − A.2) = 0.\n\nWriting u = B − A and v = D − A, expanding the four squared distances gives\n\n(PA² + PC²) − (PB² + PD²) = 2 (u.1 · v.1 + u.2 · v.2) = 2 (u ⬝ v).\n\nThis is exactly twice the orthogonality form, so it vanishes precisely because of the right-angle hypothesis. After substituting the parallelogram closure the identity is closed by a single `linear_combination` step against the orthogonality hypothesis.",
@@ -74,28 +74,44 @@
   ],
   "sections": [
     {
-      "id": "header-and-statement",
-      "title": "Module Header and Statement",
-      "startLine": 1,
-      "endLine": 27,
-      "summary": "Imports Mathlib.Tactic and opens the module docstring, which states the theorem PA² + PC² = PB² + PD² and fixes the algebraic encoding of a rectangle: the parallelogram closure hpar (C = B + D − A) and the right angle hperp (edge vectors B − A and D − A orthogonal). The docstring also previews the proof idea — (PA² + PC²) − (PB² + PD²) = 2(u ⬝ v) vanishes by hperp — before the BritishFlagTheorem namespace opens.",
-      "mathContext": "Rectangle encoded by $C = B + D - A$ and $(B-A)\\cdot(D-A) = 0$; the target identity is $PA^2 + PC^2 = PB^2 + PD^2$."
+      "id": "docstring",
+      "title": "Module Docstring: Statement and Algebraic Reduction",
+      "startLine": 3,
+      "endLine": 24,
+      "summary": "The docstring states the British Flag theorem — for a rectangle ABCD and any point P, PA²+PC² = PB²+PD² — and encodes 'rectangle' by two conditions: hpar (the quadrilateral closes as a parallelogram, C = B+D−A) and hperp (a right angle at A, i.e. (B−A)⬝(D−A) = 0). It previews the algebra: with u = B−A, v = D−A, the difference (PA²+PC²) − (PB²+PD²) expands to 2(u⬝v), which vanishes by hperp.",
+      "mathContext": "$(PA^2+PC^2)-(PB^2+PD^2) = 2\\,(B-A)\\cdot(D-A) = 0$ by the right-angle hypothesis."
     },
     {
-      "id": "setup",
-      "title": "Coordinate Setup and Squared Distance",
+      "id": "pt-def",
+      "title": "The Plane Point Type",
       "startLine": 28,
-      "endLine": 32,
-      "summary": "Model planar points as ℝ × ℝ and define sqDist P Q = (P.1 − Q.1)² + (P.2 − Q.2)².",
-      "mathContext": "The squared Euclidean distance between $(p_1,p_2)$ and $(q_1,q_2)$ is $(p_1-q_1)^2 + (p_2-q_2)^2$. Using squared distance avoids square roots entirely, since the theorem is an identity among squared lengths."
+      "endLine": 29,
+      "summary": "Pt := ℝ × ℝ models a point of the Euclidean plane as a pair of real coordinates — a lightweight encoding that keeps the proof purely in coordinate algebra.",
+      "mathContext": "$\\mathrm{Pt} = \\mathbb{R}\\times\\mathbb{R}$."
     },
     {
-      "id": "main",
-      "title": "The British Flag Identity",
+      "id": "sqdist-def",
+      "title": "Squared Euclidean Distance",
+      "startLine": 31,
+      "endLine": 32,
+      "summary": "sqDist P Q := (P.1−Q.1)² + (P.2−Q.2)² is the squared Euclidean distance. Working with squared distances (not distances) keeps everything polynomial, so the whole theorem reduces to a ring identity.",
+      "mathContext": "$\\mathrm{sqDist}(P,Q) = (P_1-Q_1)^2 + (P_2-Q_2)^2$."
+    },
+    {
+      "id": "theorem-statement",
+      "title": "The British Flag Identity: Statement",
       "startLine": 34,
+      "endLine": 43,
+      "summary": "british_flag states the identity sqDist P A + sqDist P C = sqDist P B + sqDist P D under the two hypotheses hpar (C = B+D−A) and hperp ((B−A)⬝(D−A) = 0), for arbitrary A, B, C, D, P : Pt.",
+      "mathContext": "$PA^2 + PC^2 = PB^2 + PD^2$ for a rectangle $ABCD$ and any $P$."
+    },
+    {
+      "id": "proof",
+      "title": "The Proof: subst and linear_combination",
+      "startLine": 44,
       "endLine": 48,
-      "summary": "Substitute the parallelogram closure and reduce the goal to twice the orthogonality form, discharged by linear_combination.",
-      "mathContext": "With $u = B - A$, $v = D - A$, expansion gives $(PA^2 + PC^2) - (PB^2 + PD^2) = 2(u_1 v_1 + u_2 v_2)$, which is zero by the right-angle hypothesis $u \\cdot v = 0$."
+      "summary": "The proof substitutes hpar (eliminating C), unfolds sqDist, and closes with `linear_combination (2 : ℝ) * hperp` — certifying that the residual polynomial difference is exactly twice the orthogonality hypothesis. The British Flag theorem is thereby exposed as the right-angle condition in disguise.",
+      "mathContext": "After `subst hpar` and unfolding, the goal is $2\\cdot\\big((B-A)\\cdot(D-A)\\big) = 0$, discharged by `linear_combination 2 * hperp`."
     }
   ],
   "crossReferences": [
