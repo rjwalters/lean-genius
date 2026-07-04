@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Dihedral Groups Are Solvable",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Docstring settling the dihedral half of the parent entry's open question: DihedralGroup n is solvable for every n (including n = 0, the infinite dihedral group), an infinite solvable family that contrasts with Sₙ becoming non-solvable at n = 5 — showing the Abel–Ruffini obstruction is special to the symmetric groups. States the structural reason (Dₙ is metabelian: a cyclic normal rotation subgroup ⟨r⟩ ≅ ℤ/n of index 2 with abelian quotient ℤ/2), the proof plan via solvable_of_ker_le_range, and that Mathlib had no prior DihedralGroup solvability result. Notes the GLₙ(𝔽ₚ) non-solvability half is left open.",
+      "mathContext": "$D_n$ metabelian: $1 \\to \\mathbb{Z}/n \\to D_n \\to \\mathbb{Z}/2 \\to 1$ with both ends abelian $\\Rightarrow \\mathrm{IsSolvable}(D_n)$ for all $n$; contrast $S_5$ not solvable."
+    },
+    {
       "id": "two-homomorphisms",
       "title": "The Parity Hom and the Rotation Inclusion",
       "startLine": 50,
