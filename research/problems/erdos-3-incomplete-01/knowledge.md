@@ -132,10 +132,30 @@ rw [h]; exact hb` to pin the pre-simp form.
 
 Gallery `meta.json` synced (lineCount 163/486→614, theoremCount 3/10→16).
 
+## Update (2026-07-04, attempt 4): two reusable structural lemmas PROVEN
+
+Followed the last two shallow follow-ups. Added, machine-checked (7743 jobs),
+0-axiom and sorry-free:
+- `rothNumber_mono_length {k m N} (hkm : k ≤ m) : rothNumber k N ≤ rothNumber m N`.
+  `r_k(N)` is monotone in the progression length. Proof: `IsAPFree A k →
+  IsAPFree A m` for `m ≥ k` (an `m`-AP contains a `k`-AP via `containsAP_of_le`,
+  contrapositive), so the `k`-AP-free subfamily of `(range (N+1)).powerset` is a
+  subset of the `m`-AP-free one; `Finset.sup_mono` lifts the subset to the sup.
+  Density-side twin of `containsAP_of_le` (length-monotonicity of `ContainsAP`),
+  completing the "longer APs are easier to avoid" picture.
+- `not_hasDivergentSum_of_strongBound (hδ hC hbound) : ¬ HasDivergentSum A`.
+  Contrapositive packaging of `summable_of_strongBound`, exposing it as a
+  standalone density ⇒ convergence criterion: `f_A(N) ≤ C·N/(log N)^{1+δ}`
+  eventually (`δ>0`) forbids a divergent reciprocal sum. Reusable for any other
+  reciprocal-sum problem sitting at the `(log N)^{1+δ}` threshold.
+
+Gallery `meta.json` synced (lineCount 614 → 646, theoremCount 16 → 18).
+
 ## Next steps
 
 - The remaining `sorry` should NOT be attacked directly — it is as hard as
   Erdős #3. Leave it documented.
-- The `k ≤ 2` corollary is now DONE. Remaining shallow option: expose
-  `summable_of_strongBound` as a reusable density→convergence lemma for other
-  reciprocal-sum problems.
+- The `k ≤ 2` corollary, the length-monotonicity of `r_k`, and the reusable
+  density⇒convergence criterion are now all DONE. The shallow-follow-up surface
+  is essentially exhausted; further honest progress needs the deep analytic
+  content of Erdős #3 itself.

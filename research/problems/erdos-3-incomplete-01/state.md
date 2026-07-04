@@ -36,6 +36,21 @@ Also synced gallery `meta.json` (stale lineCount 163/486 → 614; theoremCount
 2. **0-axiom reduction** (attempt 2): `strong_required_bound_implies_conjecture`
    via dyadic blocking + convergent p-series (`summable_of_strongBound`).
 
+## Result this iteration (attempt 4)
+
+**Two reusable structural lemmas added, 0-axiom, sorry-free** (build 7743 jobs,
+incremental 6.2s). Followed the remaining shallow follow-ups:
+- `rothNumber_mono_length : k ≤ m → rothNumber k N ≤ rothNumber m N` — `r_k(N)`
+  is monotone in the AP length. A `k`-AP-free set is `m`-AP-free (`m ≥ k`) since
+  an `m`-AP contains a `k`-AP (`containsAP_of_le`), so the AP-free family grows
+  with `k` and `Finset.sup_mono` lifts this to `r_k`. Density-side companion to
+  `containsAP_of_le`'s length-monotonicity.
+- `not_hasDivergentSum_of_strongBound` — contrapositive packaging of
+  `summable_of_strongBound`: counting function `O(N/(log N)^{1+δ})` (`δ>0`) ⇒
+  `¬ HasDivergentSum A`. A standalone, reusable density ⇒ convergence criterion.
+
+Gallery `meta.json` synced (lineCount 614 → 646, theoremCount 16 → 18).
+
 ## Blockers
 
 - **Mathematics only:** the original `o(N/log N)` sorry

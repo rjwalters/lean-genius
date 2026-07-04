@@ -475,6 +475,38 @@ theorem strong_required_bound_implies_conjecture :
       _ ≤ C * (N : ℝ) / (Real.log N) ^ (1 + δ) := hN
   exact hdiv (summable_of_strongBound hδ hC hcount)
 
+/-- **`rothNumber` is monotone in the progression length.**
+    A set avoiding `k`-term APs automatically avoids every longer `m`-term AP
+    (`m ≥ k`): an `m`-term progression contains its first `k` terms as a `k`-term
+    progression (`containsAP_of_le`), so `IsAPFree A k → IsAPFree A m`. Hence the
+    family of `k`-AP-free subsets of `{0,…,N}` only *grows* with `k`, and so does
+    its supremum: `k ≤ m → r_k(N) ≤ r_m(N)`. This is the elementary structural
+    monotonicity behind "longer progressions are easier to avoid"; it pairs with
+    the length-monotonicity of `ContainsAP` (`containsAP_of_le`) on the density
+    side. `sorry`-free and axiom-free. -/
+theorem rothNumber_mono_length {k m N : ℕ} (hkm : k ≤ m) :
+    rothNumber k N ≤ rothNumber m N := by
+  unfold rothNumber
+  apply Finset.sup_mono
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS ⊢
+  exact ⟨hS.1, fun hAPm => hS.2 (containsAP_of_le hkm hAPm)⟩
+
+/-- **Density `O(N/(log N)^{1+δ})` rules out a divergent reciprocal sum.**
+    The contrapositive packaging of the analytic core `summable_of_strongBound`:
+    if `A`'s counting function obeys `f_A(N) ≤ C·N/(log N)^{1+δ}` for all large `N`
+    (`δ > 0`), then `A` does *not* have a divergent reciprocal sum. Exposed as a
+    standalone density ⇒ convergence criterion, reusable for any reciprocal-sum
+    problem (the `(log N)^{1+δ}` threshold is exactly the borderline where the
+    dyadic-blocking `p`-series argument closes). `sorry`-free and axiom-free. -/
+theorem not_hasDivergentSum_of_strongBound {A : Set ℕ} {C δ : ℝ}
+    (hδ : 0 < δ) (hC : 0 < C)
+    (hbound : ∀ᶠ N in atTop,
+      (countingFunction A N : ℝ) ≤ C * (N : ℝ) / (Real.log N) ^ (1 + δ)) :
+    ¬ HasDivergentSum A := by
+  intro hdiv
+  exact hdiv (summable_of_strongBound hδ hC hbound)
+
 /-- **The strong threshold dominates the weak one.**
     `StrongRequiredBound k` (`r_k(N) = O(N/(log N)^{1+δ})` for some `δ > 0`) implies the
     weaker `RequiredBound k` (`r_k(N) = o(N/log N)`). Writing the strong bound as
