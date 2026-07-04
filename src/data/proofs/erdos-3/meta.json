@@ -48,7 +48,7 @@
       "Behrend and Elkin constructions axiomatized",
       "Formal proof that Erdos #3 implies Green-Tao"
     ],
-    "axiomCount": 1,
+    "axiomCount": 0,
     "lineCount": 163,
     "prerequisites": [
       "Arithmetic progressions and their properties",
@@ -57,7 +57,7 @@
       "Basic Fourier analysis on finite groups (for Roth's method)",
       "Extremal combinatorics (Ramsey-type reasoning)"
     ],
-    "assumptions": "1 axiom: euler_prime_sum_diverges (Euler 1737 — the sum of reciprocals of primes diverges). 1 sorry.",
+    "assumptions": "0 axioms. `euler_prime_sum_diverges` (Euler 1737, ∑ 1/p diverges) is now a proved theorem, discharged from Mathlib's `not_summable_one_div_on_primes`. 1 sorry remains in `required_bound_implies_conjecture` (the o(N/log N) threshold), which is threshold-critical: as hard as Erdős #3 itself. The strictly stronger (log N)^{1+δ} threshold reduction (`strong_required_bound_implies_conjecture`) is fully proved, sorry-free and axiom-free.",
     "theoremCount": 3,
     "definitionCount": 11
   },
@@ -134,10 +134,10 @@
     {
       "id": "green-tao",
       "title": "Green-Tao Connection",
-      "summary": "Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary.",
-      "startLine": 156,
-      "endLine": 163,
-      "mathContext": "Verified: Axiomatizes Green-Tao (primes contain all APs) and Euler ($\\sum 1/p = \\infty$), then formally proves `erdos3_implies_green_tao`: the conjecture implies Green-Tao as an immediate corollary."
+      "summary": "Proves `euler_prime_sum_diverges` ($\\sum 1/p = \\infty$) from Mathlib's `not_summable_one_div_on_primes` (no longer an axiom), then formally proves `erdos3_implies_green_tao`: assuming Erdős #3, the primes contain arbitrarily long APs — the Green-Tao theorem — as an immediate corollary.",
+      "startLine": 387,
+      "endLine": 405,
+      "mathContext": "Verified: `euler_prime_sum_diverges` ($\\sum 1/p = \\infty$) is discharged from Mathlib (`not_summable_one_div_on_primes`), and `erdos3_implies_green_tao` derives Green-Tao (arbitrarily long prime APs) as an immediate corollary of the conjecture."
     }
   ],
   "conclusion": {
@@ -233,9 +233,9 @@
       "Finset"
     ],
     "namespace": "Erdos3",
-    "lineCount": 440,
-    "axiomCount": 1,
-    "theoremCount": 7,
+    "lineCount": 448,
+    "axiomCount": 0,
+    "theoremCount": 8,
     "definitionCount": 12,
     "path": "Proofs/Erdos3Problem.lean",
     "sorries": 1
