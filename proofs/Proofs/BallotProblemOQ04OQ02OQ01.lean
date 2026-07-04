@@ -692,6 +692,41 @@ theorem isNonCrossingFp_glueFp {n : ℕ} (m : ℕ) (hm : m ≤ n)
       (Fin.mk_lt_mk.mpr (show b.val - (m + 1) < c.val - (m + 1) by omega))
       (Fin.mk_lt_mk.mpr (show c.val - (m + 1) < d.val - (m + 1) by omega)) hca hdb
 
+/-! ### The glued partition recovers the cut index (round-trip linchpin)
+
+`firstReturnForward` cuts a non-crossing `P` at `m = firstBlockMax P`. For the round-trip
+`forward ∘ glue = id` (the `right_inv` law), the first thing the forward map must recover from a
+glued partition `glueFp m hm P₁ P₂` is that same cut index `m`. `firstBlockMax_glueFp_val` proves
+exactly this: the maximum of the block of `0` in the glued partition is again `m`.
+
+Why: the glued block of `0` carries a `Sum.inl` label (`glueLabel_isLeft_of_le` / the `m = 0`
+singleton case), and every `Sum.inl`-labelled point lies in the window `[0, m]` (`glueLabel_le_iff`),
+so no block-of-`0` point exceeds `m` — giving `≤ m`. Conversely, when `m > 0` the point `m` itself
+carries `0`'s label (`0` was glued onto `P₁`'s top block `⟨m-1⟩`, and `m`'s label is that same top
+block via `glueLabel_of_pos_le`), so `m` sits in the block and `m ≤ firstBlockMax`. Together the two
+force `firstBlockMax (glueFp …) = m`. This pins the forward map's cut, hence its two offset windows
+`[1, m]` and `[m+1, n]`, back to the sizes `(m, n-m)` that `glue` consumed — the first step of the
+`right_inv` law. -/
+theorem firstBlockMax_glueFp_val {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) :
+    (firstBlockMax (glueFp m hm P₁ P₂)).val = m := by
+  set Q := glueFp m hm P₁ P₂ with hQ
+  -- Every point sharing `0`'s glued block sits in the window `[0, m]`.
+  have hle : ∀ p ∈ Q.part 0, p.val ≤ m := by
+    intro p hp
+    have hlabel : glueLabel m hm P₁ P₂ (0 : Fin (n + 1)) = glueLabel m hm P₁ P₂ p :=
+      (mem_part_glueFp m hm P₁ P₂ 0 p).mp hp
+    exact (glueLabel_le_iff m hm P₁ P₂ 0 p hlabel).mp (by simp)
+  refine le_antisymm (hle _ (firstBlockMax_mem_part Q)) ?_
+  -- The cut index is `≥ m`: for `m > 0`, the point `m` itself shares `0`'s block.
+  rcases Nat.eq_zero_or_pos m with hm0 | hmpos
+  · omega
+  · have hmmem : (⟨m, by omega⟩ : Fin (n + 1)) ∈ Q.part 0 := by
+      rw [mem_part_glueFp, glueLabel_zero_of_pos m hm hmpos,
+        glueLabel_of_pos_le m hm P₁ P₂ ⟨m, by omega⟩ hmpos (le_refl m)]
+    exact Fin.le_def.mp (Finset.le_max' (Q.part 0) ⟨m, by omega⟩ hmmem)
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
@@ -815,6 +850,7 @@ theorem nonCrossingCount_eq_catalan_of_le_three {n : ℕ} (hn : n ≤ 3) :
 #check @glueLabel_offsetEmb_left
 #check @glueLabel_offsetEmb_right
 #check @mem_part_zero_glueFp_left
+#check @firstBlockMax_glueFp_val
 #check @nonCrossingCount_eq_catalan
 #check @nonCrossingCount_eq_catalan_of_le_three
 
