@@ -28,6 +28,38 @@
     "assumptions": "None. Fully machine-checked from Mathlib with 0 sorries and 0 axioms beyond Lean's foundational propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool). The headline equality is obtained by bridging padicValNat to Nat.factorization via Nat.factorization_def (valid for prime p) and applying Mathlib's Nat.factorization_choose, whose right-hand side #{i ∈ Ico 1 b | pⁱ ≤ k mod pⁱ + (n−k) mod pⁱ} is definitionally the named carryCount. The divisibility corollaries combine Nat.Prime.dvd_iff_one_le_factorization with the headline and close the residual 1 ≤ c ↔ 0 < c by omega; non-vanishing of the binomial / central-binomial coefficients comes from Nat.choose_pos / Nat.centralBinom_pos. The numeric instance v₂(C(4,2)) = 1 is closed by decide on a concrete Finset filter card over Ico 1 4 (kernel reduction, not native_decide).",
     "mathlib_version": "4.26.0"
   },
+  "mainTheorems": [
+    {
+      "name": "padicValNat_choose_eq_carryCount",
+      "type": "core",
+      "description": "Kummer's theorem in the parent's padicValNat style: for prime p, k ≤ n, and any bound b above log_p n, the p-adic valuation of C(n,k) equals carryCount p k (n−k) b — the number of carries when adding k and n−k in base p. Bridges padicValNat to Nat.factorization (via Nat.factorization_def) and applies Mathlib's Nat.factorization_choose, whose RHS is definitionally carryCount.",
+      "leanType": "[Fact p.Prime] → {n k b : ℕ} → k ≤ n → Nat.log p n < b → padicValNat p (n.choose k) = carryCount p k (n - k) b"
+    },
+    {
+      "name": "prime_dvd_choose_iff_carryCount_pos",
+      "type": "core",
+      "description": "Kummer's divisibility criterion: a prime p divides C(n,k) iff the base-p addition of k and n−k produces at least one carry. Combines Nat.Prime.dvd_iff_one_le_factorization with the headline valuation and closes 1 ≤ c ↔ 0 < c by omega.",
+      "leanType": "[Fact p.Prime] → {n k b : ℕ} → k ≤ n → Nat.log p n < b → (p ∣ n.choose k ↔ 0 < carryCount p k (n - k) b)"
+    },
+    {
+      "name": "not_dvd_choose_iff_carryCount_eq_zero",
+      "type": "supporting",
+      "description": "Carry-free corollary (the Lucas condition): C(n,k) is coprime to p iff the base-p addition of k and n−k is carry-free — the divisibility criterion in contrapositive form.",
+      "leanType": "[Fact p.Prime] → {n k b : ℕ} → k ≤ n → Nat.log p n < b → (¬ p ∣ n.choose k ↔ carryCount p k (n - k) b = 0)"
+    },
+    {
+      "name": "padicValNat_centralBinom_eq_carryCount",
+      "type": "supporting",
+      "description": "Kummer specialised to the central binomial coefficient: v_p(C(2n,n)) equals the number of carries in the base-p self-addition n + n.",
+      "leanType": "[Fact p.Prime] → {n b : ℕ} → Nat.log p (2 * n) < b → padicValNat p (centralBinom n) = carryCount p n n b"
+    },
+    {
+      "name": "prime_dvd_centralBinom_iff_carryCount_pos",
+      "type": "supporting",
+      "description": "A prime p divides C(2n,n) iff adding n to itself in base p carries. Since every prime in (n, 2n] forces such a carry, this recovers the classical divisibility of C(2n,n) by all primes in that range.",
+      "leanType": "[Fact p.Prime] → {n b : ℕ} → Nat.log p (2 * n) < b → (p ∣ centralBinom n ↔ 0 < carryCount p n n b)"
+    }
+  ],
   "overview": {
     "historicalContext": "Ernst Kummer proved in 1852 that the exact power of a prime p dividing the binomial coefficient C(m+n, m) equals the number of carries that occur when m and n are added in base p. It is the binomial-coefficient counterpart of Legendre's 1808 factorial formula vₚ(n!) = (n − Sₚ(n))/(p − 1): indeed Kummer's theorem follows from Legendre's by writing vₚ(C(n,k)) = vₚ(n!) − vₚ(k!) − vₚ((n−k)!) and recognising the digit-sum difference as a carry count. Kummer's theorem is the source of many divisibility facts — Lucas' theorem on C(n,k) mod p, the divisibility of the central binomial coefficient C(2n,n) by primes in (n, 2n], and the p-adic content of Mahler's expansion. Mathlib packages the underlying identity as Nat.factorization_choose, expressing the valuation as the cardinality of the set of digit positions where a carry occurs; this entry, the oq-01 follow-up to the gallery's Legendre's-formula entry, names that carry count and restates Kummer's theorem and its standard corollaries in the parent's padicValNat style.",
     "problemStatement": "For a prime p and k ≤ n, show vₚ(C(n,k)) equals the number of carries when adding k and n−k in base p, where a carry into position i ≥ 1 means pⁱ ≤ (k mod pⁱ) + ((n−k) mod pⁱ). Derive: (1) p ∣ C(n,k) iff at least one carry occurs; (2) C(n,k) is coprime to p iff the addition is carry-free; (3) the central-binomial form vₚ(C(2n,n)) = #carries in the base-p self-addition n + n; (4) p ∣ C(2n,n) iff n + n carries. Verify the instance v₂(C(4,2)) = 1.",
