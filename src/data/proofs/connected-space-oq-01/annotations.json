@@ -75,11 +75,11 @@
     "proofId": "connected-space-oq-01",
     "range": {
       "startLine": 64,
-      "endLine": 73
+      "endLine": 67
     },
     "type": "insight",
     "title": "Dense Connected Subset ⟹ Connected Space",
-    "content": "connectedSpace_of_dense_connected is the practical corollary: if a space has a dense connected subset, the whole space is connected. The proof reduces ConnectedSpace α to IsConnected (univ) (connectedSpace_iff_univ); density gives closure s = univ (Dense.closure_eq), so univ is the closure of a connected set, which is connected (IsConnected.closure). This is a standard and reusable route to proving connectedness — establish it on a dense, easier-to-analyze part and let closure do the rest. preconnectedSpace_of_dense_preconnected is the preconnected analogue.",
+    "content": "connectedSpace_of_dense_connected is the practical corollary: if a space has a dense connected subset, the whole space is connected. The proof reduces ConnectedSpace α to IsConnected (univ) (connectedSpace_iff_univ); density gives closure s = univ (Dense.closure_eq), so univ is the closure of a connected set, which is connected (IsConnected.closure). This is a standard and reusable route to proving connectedness — establish it on a dense, easier-to-analyze part and let closure do the rest. Note that ConnectedSpace carries a nonemptiness obligation, which is discharged here by the connected subset s being nonempty (IsConnected bundles Nonempty).",
     "mathContext": "$s$ dense $\\Rightarrow \\overline{s} = \\mathrm{univ}$; $s$ connected $\\Rightarrow \\overline{s}$ connected; hence $\\mathrm{univ}$ is connected, i.e. $\\alpha$ is a ConnectedSpace.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -91,6 +91,29 @@
     "prerequisites": [
       "dense subsets",
       "connected spaces vs connected sets"
+    ]
+  },
+  {
+    "id": "ann-dense-preconnected",
+    "proofId": "connected-space-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 73
+    },
+    "type": "insight",
+    "title": "Dense Preconnected Subset ⟹ Preconnected Space",
+    "content": "preconnectedSpace_of_dense_preconnected is the preconnected analogue, and it is genuinely weaker — not just a cosmetic variant. PreconnectedSpace drops the nonemptiness requirement that ConnectedSpace carries (the empty space is preconnected but not connected), so this statement applies even when the dense subset s is empty and the ambient space is empty. The proof is the same shape: preconnectedSpace_iff_univ reduces to IsPreconnected univ, density gives closure s = univ (Dense.closure_eq), and IsPreconnected.closure finishes. Keeping the preconnected version separate is what lets downstream users pick exactly the hypothesis strength they have — IsPreconnected without a nonemptiness witness.",
+    "mathContext": "Same reduction as the connected case but via $\\text{PreconnectedSpace} \\iff \\text{IsPreconnected}(\\mathrm{univ})$; no nonemptiness is required, so it holds even for the empty space where ConnectedSpace fails.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "preconnectedSpace_iff_univ",
+      "PreconnectedSpace",
+      "IsPreconnected.closure",
+      "nonemptiness"
+    ],
+    "prerequisites": [
+      "dense subsets",
+      "preconnected vs connected (nonemptiness)"
     ]
   }
 ]
