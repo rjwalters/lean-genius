@@ -29,27 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: New proof route (real-rootedness/discriminant) established in the amgm family and complete for the quadratic/n=2 base case, valid for SIGNED inputs. AmgmInequalityOQ02OQ02OQ05.lean: 8 theorems, 0 sorries, 0 axioms (foundational only). General n>=3 retained open (iterated-Rolle crux).",
+    "progressSummary": "PROGRESS (Part VIII, researcher-5): built splits_reverse (Splits p → Splits (reverse p)), the reversal counterpart of Part V that Mathlib lacked, and used it to prove the general-n BOTTOM Newton step (newton_bottom_coeff_ineq / discrim_reverse_bottom) on a real-rooted polynomials three bottom coefficients — genuinely new arbitrary-n content unreachable from Parts III/VII (which only give the first/top step). 33 theorems, 0 sorries, 0 axioms (foundational only), docker-build clean 7743 jobs. Remaining: general interior steps (reverse+derivative) and the Vieta substitution to elementary-symmetric mean form.",
     "builtItems": [
       "discrim_nonneg_of_root in Proofs/AmgmInequalityOQ02OQ02OQ05.lean (real quadratic with a real root has 0 <= discrim)",
       "monic_quadratic_discrim_nonneg / discrim_nonneg_of_roots_nonempty (same via Polynomial.IsRoot and nonempty Polynomial.roots)",
       "realRooted_quadratic_coeff_ineq (4*c <= b^2)",
       "prod_two_linear_eq + root_of_prod_two_linear (Vieta for (X-x)(X-y))",
-      "newton_two_vars: x*y <= ((x+y)/2)^2 for signed reals, via the discriminant of the real-rooted (X-x)(X-y)"
+      "newton_two_vars: x*y <= ((x+y)/2)^2 for signed reals, via the discriminant of the real-rooted (X-x)(X-y)",
+      "splits_reverse_linear (a) : Splits (reverse (X - C a)) in Proofs/AmgmInequalityOQ02OQ02OQ05.lean (Part VIII) — per-factor atom via splits_of_natDegree_le_one_of_invertible + reverse_leadingCoeff + trailingCoeff_eq_zero",
+      "splits_reverse_prod (s : Multiset ℝ) : Splits (reverse ((s.map (X - C ·)).prod)) — multiset induction using reverse_mul_of_domain",
+      "splits_reverse {p} (hp : Splits p) : Splits (reverse p) — THE new infra Mathlib lacks; reversal preserves real-rootedness",
+      "discrim_reverse_bottom (m) {p} (hp : Splits p) (h0 : p.coeff 0 ≠ 0) (hdeg : natDegree p = m+2) : 0 ≤ discrim of p bottom three coeffs (descFactorial-weighted) — general-n BOTTOM Newton step via one reversal",
+      "newton_bottom_coeff_ineq (m) {p} … : 4·(2+m)!desc·m!desc·p.coeff 0·p.coeff 2 ≤ ((1+m)!desc)²·p.coeff 1² — readable b²≥4ac bottom step"
     ],
     "insights": [
       "Mathlib packages the completed-square identity as discrim_eq_sq_of_quadratic_eq_zero (h : a*(x*x)+b*x+c=0) : discrim a b c = (2*a*x+b)^2, so real-root implies nonneg discriminant is a 2-line proof (rw + sq_nonneg). This is the per-derivative atom of the whole Newton/Rolle program.",
       "The real-rootedness route needs only REAL (not positive) roots, so Newton at n=2 (newton_two_vars: x*y <= ((x+y)/2)^2) holds for SIGNED x,y, a genuine generalization over the parent amgm-inequality-oq-02-oq-02 whose induction assumes 0 <= x_i.",
       "Nobody else in the ~50-file amgm family used Polynomial.roots / Rolle / the quadratic discriminant of a splitting polynomial; the sibling oq-02-oq-03-oq-03-oq-01 uses a Cauchy-Schwarz SOS discriminant metaphor, a different mechanism.",
-      "The remaining crux is exactly differentiation preserves full real-rootedness counting multiplicity (iterated Rolle on prod (X - x_i)); Mathlib has Rolle (exists_hasDerivAt_eq_zero) and Polynomial.derivative/roots but not this packaged lemma."
+      "The remaining crux is exactly differentiation preserves full real-rootedness counting multiplicity (iterated Rolle on prod (X - x_i)); Mathlib has Rolle (exists_hasDerivAt_eq_zero) and Polynomial.derivative/roots but not this packaged lemma.",
+      "Reversal preserves splitting over ℝ: reverse (X - C r) has degree ≤1 with leadingCoeff = trailingCoeff(X - C r) ≠ 0 (invertible), so splits via splits_of_natDegree_le_one_of_invertible; distribute reverse over the multiset product (reverse_mul_of_domain) to get splits_reverse: Splits p → Splits (reverse p). Mathlib lacked this; it is the reversal counterpart of Part V splits_derivative.",
+      "Part VII TOP step specialised to the monic splitting poly ∏(X-xᵢ) (top coeffs 1,-e₁,e₂) only reproduces the FIRST Newton inequality (already general in Part III). Genuinely new arbitrary-n content lives in the non-top steps, reached by REVERSING p so its bottom coefficients become the top coefficients of reverse p.",
+      "The BOTTOM Newton step (discrim on p.coeff 0,1,2) is obtained by applying the Part VII engine discrim_iterate_derivative_top to reverse p: needs only Splits(reverse p) + natDegree(reverse p)=m+2, the latter from coeff 0 ≠ 0 ⇒ natTrailingDegree = 0 (natTrailingDegree_le_of_ne_zero). coeff_reverse + revAt_le read the three top coeffs of reverse p back as p.coeff 0,1,2."
     ],
     "mathlibGaps": [
       "No packaged lemma: over R, p.roots.card = p.natDegree implies (derivative p).roots.card = (derivative p).natDegree (Rolle + multiplicity). This is the crux for general n."
     ],
     "nextSteps": [
-      "Prove: derivative of a fully-real-rooted real polynomial is fully real-rooted (Rolle between consecutive roots + multiplicity at repeated roots).",
-      "Reduce three consecutive coefficients to a quadratic by reversing/differentiating, then apply discrim_nonneg_of_root to get the general Newton inequality for signed reals.",
-      "Prove Newton at n=3 as the first nontrivial instance (cubic derivative is a quadratic; Rolle gives its two real roots directly)."
+      "General INTERIOR steps (2 ≤ k ≤ n-2): compose reverse with iterated derivative — apply discrim_iterate_derivative_top to reverse(derivative^[j] p) to read an interior coefficient triple. Needs a nonvanishing hypothesis on the relevant coefficient (reversal drops degree if leading/constant term vanishes).",
+      "Vieta bridge: specialise splits polynomial p = ∏(X-xᵢ) so p.coeff(n-k) = (-1)^k eₖ (Polynomial.coeff_prod_X_sub_C / Multiset.esymm), turning newton_top_coeff_ineq / newton_bottom_coeff_ineq into the classical eₖ² ≥ eₖ₋₁ eₖ₊₁ mean form."
     ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-02-oq-02-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
