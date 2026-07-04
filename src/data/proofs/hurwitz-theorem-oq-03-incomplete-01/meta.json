@@ -152,5 +152,43 @@
     "path": "Proofs/HurwitzUniversal.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "eight_square",
+      "type": "main",
+      "description": "Degen's eight-square identity: normSq a * normSq b = normSq (eightMul a b) over any commutative ring — the n=8 case, the largest dimension for which such a bilinear sum-of-squares identity exists (Hurwitz's 1,2,4,8 theorem)",
+      "leanType": "(a b : Fin 8 → R) → normSq a * normSq b = normSq (eightMul a b)"
+    },
+    {
+      "name": "four_square",
+      "type": "key",
+      "description": "Euler's four-square identity over any commutative ring; the algebraic engine behind Lagrange's four-square theorem",
+      "leanType": "(a b : Fin 4 → R) → normSq a * normSq b = normSq (fourMul a b)"
+    },
+    {
+      "name": "two_square",
+      "type": "key",
+      "description": "Brahmagupta–Fibonacci two-square identity over any commutative ring (the norm form of the Gaussian integers)",
+      "leanType": "(a b : Fin 2 → R) → normSq a * normSq b = normSq (twoMul a b)"
+    },
+    {
+      "name": "one_square",
+      "type": "supporting",
+      "description": "Trivial n=1 identity x²·y² = (xy)² — the degenerate base case of the 1,2,4,8 family",
+      "leanType": "(a b : Fin 1 → R) → normSq a * normSq b = normSq (oneMul a b)"
+    },
+    {
+      "name": "isSumOfSquares_four_mul",
+      "type": "supporting",
+      "description": "Sums of four squares are closed under multiplication in any commutative ring (immediate corollary of four_square)",
+      "leanType": "IsSumOfSquares 4 x → IsSumOfSquares 4 y → IsSumOfSquares 4 (x*y)"
+    },
+    {
+      "name": "int_sumFourSq_mul",
+      "type": "supporting",
+      "description": "Over ℤ, a product of two sums of four squares is a sum of four squares — the multiplicative step in Lagrange's four-square theorem",
+      "leanType": "IsSumOfSquares (R:=ℤ) 4 x → IsSumOfSquares (R:=ℤ) 4 y → IsSumOfSquares (R:=ℤ) 4 (x*y)"
+    }
+  ]
 }
