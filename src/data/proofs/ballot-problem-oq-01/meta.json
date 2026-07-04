@@ -320,5 +320,91 @@
     "path": "Proofs/BallotProblemOQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "cycle_lemma",
+      "type": "core",
+      "description": "The Dvoretzky-Motzkin cycle lemma for k-fold ballot sequences: exactly a - k*b of the cyclic rotations of a sequence with a upsteps (+1) and b downsteps (-k) keep all prefix sums strictly positive.",
+      "leanType": "{k a b : ℕ} {l : List ℤ} (hl : l ∈ kCountedSequence k a b) (hab : k * b < a) : (goodRotations l).card = a - k * b"
+    },
+    {
+      "name": "generalized_ballot_count",
+      "type": "core",
+      "description": "The generalized counting formula: the number of good sequences times (a+b) equals (a - k*b) times the binomial coefficient C(a+b, a), yielding probability (a - k*b)/(a+b).",
+      "leanType": "(k a b : ℕ) (hab : k * b < a) : ∃ (good_count : ℕ), good_count * (a + b) = (a - k * b) * (a + b).choose a"
+    },
+    {
+      "name": "kCountedSequence",
+      "type": "supporting",
+      "description": "The set of vote-count lists with exactly a upsteps (value 1) and b downsteps (value -k), and no other entries.",
+      "leanType": "(k a b : ℕ) : Set (List ℤ)"
+    },
+    {
+      "name": "kStaysPositive",
+      "type": "supporting",
+      "description": "The set of lists whose every nonempty prefix has strictly positive sum, i.e. the path stays strictly above the x-axis throughout counting.",
+      "leanType": ": Set (List ℤ)"
+    },
+    {
+      "name": "sum_eq_count_sub_mul_count",
+      "type": "supporting",
+      "description": "For a list built only from 1 and -k, its total sum equals (count of 1) minus k times (count of -k).",
+      "leanType": "{k : ℕ} {l : List ℤ} (h : ∀ x ∈ l, x = 1 ∨ x = -(k : ℤ)) : l.sum = (l.count 1 : ℤ) - (k : ℤ) * (l.count (-(k : ℤ)))"
+    },
+    {
+      "name": "kCountedSequence_sum",
+      "type": "supporting",
+      "description": "Every sequence in kCountedSequence k a b has total sum a - k*b.",
+      "leanType": "{k a b : ℕ} {l : List ℤ} (hl : l ∈ kCountedSequence k a b) : l.sum = (a : ℤ) - k * b"
+    },
+    {
+      "name": "kCountedSequence_perm",
+      "type": "supporting",
+      "description": "Every counted sequence is a permutation of a canonical list of a ones followed by b copies of -k; this characterization drives finiteness.",
+      "leanType": "(k a b : ℕ) (l : List ℤ) (hl : l ∈ kCountedSequence k a b) : l ~ (List.replicate a 1 ++ List.replicate b (-(k : ℤ)))"
+    },
+    {
+      "name": "kCountedSequence_eq_countedSequence",
+      "type": "supporting",
+      "description": "When k = 1 the generalized counted-sequence set coincides with Mathlib's classical Ballot.countedSequence, connecting this development to Wiedijk #30.",
+      "leanType": "(a b : ℕ) : kCountedSequence 1 a b = Ballot.countedSequence a b"
+    },
+    {
+      "name": "cyclicRotation",
+      "type": "supporting",
+      "description": "The cyclic rotation of a list by i positions: drop the first i elements and append them at the end.",
+      "leanType": "(l : List ℤ) (i : ℕ) : List ℤ"
+    },
+    {
+      "name": "goodRotations",
+      "type": "supporting",
+      "description": "The finite set of rotation offsets i < l.length for which the rotated list stays strictly positive (a good rotation).",
+      "leanType": "(l : List ℤ) : Finset ℕ"
+    },
+    {
+      "name": "goodRotations_card_le",
+      "type": "supporting",
+      "description": "Cycle-lemma upper bound: the number of good rotations is at most the list sum, proved by injecting shifted prefix sums into a range of size l.sum.",
+      "leanType": "{l : List ℤ} (hS : 0 < l.sum) : (goodRotations l).card ≤ l.sum.toNat"
+    },
+    {
+      "name": "level_achieved_ge_min",
+      "type": "supporting",
+      "description": "Discrete intermediate value property: because upsteps are +1, every integer level between the minimum prefix sum and the maximum is attained by some prefix, underpinning the cycle-lemma lower bound.",
+      "leanType": "{k : ℕ} (l : List ℤ) (hmem : ∀ x ∈ l, x = 1 ∨ x = -(k : ℤ)) (v : ℤ) (hlo : minPrefixSum l ≤ v) (hhi : v < minPrefixSum l + l.sum) : ∃ i, i < l.length ∧ prefixSum l i = v"
+    },
+    {
+      "name": "goodRotations_card_ge",
+      "type": "supporting",
+      "description": "Cycle-lemma lower bound: at least a - k*b good rotations exist, obtained by mapping each level to the rightmost position achieving it, which is a good rotation.",
+      "leanType": "{k a b : ℕ} {l : List ℤ} (hl : l ∈ kCountedSequence k a b) (hab : k * b < a) : (a - k * b : ℕ) ≤ (goodRotations l).card"
+    },
+    {
+      "name": "generalized_ballot_prob",
+      "type": "supporting",
+      "description": "The generalized ballot probability (a - k*b)/(a + b) is strictly positive whenever k*b < a.",
+      "leanType": "(k a b : ℕ) (hab : k * b < a) : ((a : ℚ) - k * b) / (a + b) > 0"
+    }
+  ],
   "sorries": 0
 }
