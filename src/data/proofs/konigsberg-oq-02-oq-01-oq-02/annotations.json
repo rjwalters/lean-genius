@@ -90,5 +90,30 @@
       "Eulerian-trail",
       "degree-parity"
     ]
+  },
+  {
+    "id": "ann-ue-circuit-obstruction",
+    "proofId": "konigsberg-oq-02-oq-01-oq-02",
+    "range": {
+      "startLine": 101,
+      "endLine": 109
+    },
+    "type": "key-insight",
+    "title": "One Odd Vertex Already Kills Every Eulerian Circuit",
+    "content": "no_eulerian_circuit_of_odd_degree isolates the closed-trail case: if even a single vertex x has odd degree, no Eulerian circuit can exist. It is the exact contrapositive of eulerian_circuit_forall_even (a circuit forces every degree even), so the proof is a two-line rintro-and-apply. This is strictly stronger than the general trail obstruction no_eulerian_trail_of_card_odd_ne, which needs the odd-vertex count to avoid both 0 and 2: for a *circuit* the endpoints coincide, so the only admissible parity profile is all-even, and any lone odd vertex is fatal. For the Königsberg graph, where all four landmasses have odd degree, either obstruction already closes the problem.",
+    "mathContext": "$\\exists x,\\ \\mathrm{Odd}(\\deg x)\\ \\Rightarrow\\ \\nexists\\ \\text{closed Eulerian trail}$; contrapositive of $\\text{circuit}\\Rightarrow\\forall v,\\ \\mathrm{Even}(\\deg v)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eulerian circuit",
+      "parity of degrees",
+      "contrapositive",
+      "closed walk",
+      "handshake lemma"
+    ],
+    "prerequisites": [
+      "eulerian_circuit_forall_even",
+      "Nat.not_even_iff_odd",
+      "SimpleGraph.Walk.IsEulerian"
+    ]
   }
 ]
