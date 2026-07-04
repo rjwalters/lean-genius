@@ -58,7 +58,43 @@
       "description": "Enumerates Dyck paths by the Catalan numbers — the combinatorial objects whose central and near-central lattice-path counts these binomial identities compare."
     }
   ],
-  "references": [],
+  "references": [
+    {
+      "authors": "R. P. Stanley",
+      "title": "Catalan Numbers",
+      "year": 2015,
+      "venue": "Cambridge University Press",
+      "note": "The definitive monograph on the Catalan numbers, collecting hundreds of combinatorial interpretations and identities including the central-binomial relations used here."
+    },
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics: A Foundation for Computer Science",
+      "year": 1994,
+      "venue": "Addison-Wesley (2nd ed.), Ch. 5",
+      "note": "Systematic treatment of binomial-coefficient identities and the absorption/symmetry manipulations behind C(2n, n±1) = n·catalan n."
+    },
+    {
+      "authors": "E. Catalan",
+      "title": "Note sur une équation aux différences finies",
+      "year": 1838,
+      "venue": "J. Math. Pures Appl. 3, 508–516",
+      "note": "Catalan's original study of the numbers now bearing his name, arising from the recurrence for triangulations/bracketings."
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "A000108: Catalan numbers",
+      "year": 2024,
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "Catalog entry for Cₙ = C(2n,n)/(n+1) listing generating function, recurrences, and neighbour identities."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
+      "year": 2020,
+      "venue": "CPP 2020",
+      "note": "Provides Nat.catalan, Nat.choose, and the central-binomial API underlying this formalization."
+    }
+  ],
   "sections": [
     {
       "id": "header",
