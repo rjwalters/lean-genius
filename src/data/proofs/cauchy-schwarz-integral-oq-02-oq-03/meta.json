@@ -97,9 +97,17 @@
       "id": "forms",
       "title": "One-Sided and Difference Forms",
       "startLine": 118,
+      "endLine": 129,
+      "summary": "norm_sub_norm_le_norm_add drops the absolute value to the one-sided ‖u‖−‖v‖ ≤ ‖u+v‖ (le_abs_self); reverse_minkowski_sub recovers the classical difference form |‖u‖−‖v‖| ≤ ‖u−v‖ by the reflection v ↦ −v.",
+      "mathContext": "Difference form via v ↦ −v: $\\|u+(-v)\\| = \\|u-v\\|$ (norm_neg, sub_eq_add_neg)."
+    },
+    {
+      "id": "lp-lower-bound",
+      "title": "The Lᵖ Lower Bound as Posed",
+      "startLine": 130,
       "endLine": 136,
-      "summary": "norm_sub_norm_le_norm_add (one-sided ‖u‖−‖v‖ ≤ ‖u+v‖), reverse_minkowski_sub (difference form |‖u‖−‖v‖| ≤ ‖u−v‖), and norm_add_ge_norm_sub_norm (the Lᵖ inequality exactly as posed).",
-      "mathContext": "Difference form via v ↦ −v (norm_neg, sub_eq_add_neg)."
+      "summary": "norm_add_ge_norm_sub_norm restates the result for Lᵖ (1 ≤ p) as the lower bound ‖f+g‖_p ≥ ‖f‖_p − ‖g‖_p, matching the open question's phrasing exactly; it is the ge-oriented reading of reverse_minkowski_lp.",
+      "mathContext": "$\\|f+g\\|_p \\ge \\|f\\|_p - \\|g\\|_p$ for $1 \\le p$ — the sum-norm lower bound the open question asks for."
     }
   ],
   "conclusion": {
