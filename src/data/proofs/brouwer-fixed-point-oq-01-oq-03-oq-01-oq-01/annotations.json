@@ -75,23 +75,45 @@
     "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01-oq-01",
     "range": {
       "startLine": 200,
-      "endLine": 333
+      "endLine": 276
     },
     "type": "tactic",
-    "title": "The Ham Sandwich Chain with On-Sphere Continuity",
-    "content": "Re-runs the parent's reduction on top of the on-sphere Borsuk-Ulam, replacing global Continuous by ContinuousOn (Sphere n) at every link: ham_sandwich_reduction_on (topological core), ham_sandwich_of_discrepancy_on (from a continuous-on-sphere discrepancy map), ham_sandwich_of_scalar_continuity_on (from scalar slice-volume continuity), and the headline ham_sandwich_standard_of_scalar_continuity_on (standard linear cut). The chain now uses the continuity hypothesis exactly as Part 9 of the parent demanded — the residual analytic input is finally stated honestly.",
-    "mathContext": "The full chain: on-sphere Borsuk-Ulam ⇒ reduction ⇒ discrepancy ⇒ scalar continuity ⇒ standard Ham Sandwich, all under $\\mathrm{ContinuousOn}\\,(S^n)$.",
+    "title": "The Ham Sandwich Reduction Chain (On-Sphere)",
+    "content": "Re-runs the abstract links of the parent's reduction on top of the on-sphere Borsuk-Ulam, replacing global Continuous by ContinuousOn (Sphere n) at every step: ham_sandwich_reduction_on (topological core), ham_sandwich_of_discrepancy_on (from a continuous-on-sphere discrepancy map, oddness via WithLp.ofLp_injective + discrepancy_odd_of_swap), and ham_sandwich_of_scalar_continuity_on (assembling the n scalar slice-volume maps into a single vector discrepancy through the EuclideanSpace equivalence). Each link inherits the continuity hypothesis in the on-sphere form Part 9 demanded.",
+    "mathContext": "The abstract chain: on-sphere Borsuk-Ulam ⇒ reduction ⇒ discrepancy ⇒ scalar continuity, all under $\\mathrm{ContinuousOn}\\,(S^n)$; the scalar-to-vector assembly uses $(\\mathrm{EuclideanSpace.equiv}\\,(\\mathrm{Fin}\\,n)\\,\\mathbb{R}).\\mathrm{symm}$.",
     "significance": "key",
     "relatedConcepts": [
       "Ham Sandwich reduction",
       "discrepancy map",
       "slice-volume continuity",
-      "standard linear cut",
       "honest hypothesis"
     ],
     "prerequisites": [
       "the on-sphere Borsuk-Ulam collapse",
       "the parent's Ham Sandwich reduction chain"
+    ]
+  },
+  {
+    "id": "hamsand-on-ann-headline",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01-oq-01",
+    "range": {
+      "startLine": 277,
+      "endLine": 333
+    },
+    "type": "theorem",
+    "title": "Headline: Standard Linear Cut, and the Closed Dichotomy",
+    "content": "`ham_sandwich_standard_of_scalar_continuity_on` is the headline result — the honest counterpart of the parent's ham_sandwich_standard_of_scalar_continuity. Under the standard linear half-space assignment stdPos/stdNeg, the antipodal-swap conditions (stdPos_neg, stdNeg_neg) and the finiteness conditions (volume_inter_ne_top) are discharged internally, so the only surviving hypotheses are finite body volume and ContinuousOn (Sphere n) of each scalar slice-volume map. The closing Significance block explains why this closes the gap: the radial extension makes the global Borsuk-Ulam axiom imply the on-sphere collapse, leaving on-sphere Lebesgue continuity of one real slice-volume as the sole remaining analytic input.",
+    "mathContext": "The proof is a direct application of ham_sandwich_of_scalar_continuity_on with the standard-cut side conditions supplied as theorems; the residual dichotomy is now airtight — everything topological, including the global→on-sphere bridge, is proved.",
+    "significance": "key",
+    "relatedConcepts": [
+      "standard linear cut",
+      "stdPos / stdNeg half-spaces",
+      "honest hypothesis",
+      "airtight dichotomy"
+    ],
+    "prerequisites": [
+      "the on-sphere Ham Sandwich reduction chain",
+      "stdPos_neg / stdNeg_neg / volume_inter_ne_top"
     ]
   }
 ]
