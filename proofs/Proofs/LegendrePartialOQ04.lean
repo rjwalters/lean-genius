@@ -31,6 +31,13 @@ New content here:
   * `oppermann_implies_legendre`, `oppermann_implies_two_primes` — the
     conjecture-level corollaries.  VERIFIED, 0-axiom (they take the conjecture
     as a hypothesis; they do not assert it).
+  * `card_primes_Ioc` — the number of primes in `(a, b]` equals `π(b) − π(a)` for
+    Mathlib's `Nat.primeCounting`.  VERIFIED, 0-axiom.
+  * `oppermann_at_iff_pi`, `oppermann_conjecture_iff_pi` — Oppermann in
+    **π-counting form**: for `n ≥ 2`, `OppermannAt n ⟺ π(n²+n) − π(n²) ≥ 1 ∧
+    π((n+1)²) − π(n²+n) ≥ 1` (the composite endpoints `n²+n` and `(n+1)²` make the
+    half-open `π`-difference count exactly the open-interval primes).  VERIFIED,
+    0-axiom.
   * `oppermann_2, …, oppermann_20` — `OppermannAt n` checked with explicit
     witnesses for `n = 2, …, 20` by `native_decide`.
   * `oppermann_conjecture` — the open conjecture stated as an `axiom`.
@@ -114,6 +121,109 @@ theorem oppermann_implies_two_primes (h : OppermannConjecture) :
       2 ≤ ((Finset.Ioo (n ^ 2) ((n + 1) ^ 2)).filter Nat.Prime).card :=
   fun n hn => oppermann_at_two_primes (h n hn)
 
+/-! ## π-counting form (VERIFIED, 0-axiom)
+
+Bridging the interval-existence statement to Mathlib's prime-counting function
+`Nat.primeCounting` (`π(n) = #{p ≤ n : p prime}`).  The number of primes in a
+half-open interval is exactly a difference of `π` values, and Oppermann's
+conjecture becomes a pair of lower bounds on such differences.  All lemmas here
+are elementary and fully machine-checked with no axioms. -/
+
+open Nat (primeCounting)
+
+/-- **Prime count of an interval as a difference of `π`.** For `a ≤ b`, the number
+of primes in the half-open interval `(a, b]` equals `π(b) − π(a)`. -/
+theorem card_primes_Ioc {a b : ℕ} (hab : a ≤ b) :
+    ((Finset.Ioc a b).filter Nat.Prime).card = primeCounting b - primeCounting a := by
+  have key : ∀ m : ℕ,
+      primeCounting m = ((Finset.range (m + 1)).filter Nat.Prime).card := by
+    intro m
+    simp only [Nat.primeCounting, Nat.primeCounting']
+    rw [Nat.count_eq_card_filter_range]
+  rw [key a, key b]
+  have hsub : (Finset.range (a + 1)).filter Nat.Prime ⊆
+      (Finset.range (b + 1)).filter Nat.Prime :=
+    Finset.filter_subset_filter _ (Finset.range_subset.mpr (by omega))
+  rw [← Finset.card_sdiff hsub]
+  congr 1
+  ext x
+  simp only [Finset.mem_sdiff, Finset.mem_filter, Finset.mem_range, Finset.mem_Ioc]
+  constructor
+  · rintro ⟨⟨hxb, hpx⟩, hx⟩
+    have hax : a < x := by
+      by_contra h
+      exact hx ⟨by omega, hpx⟩
+    exact ⟨⟨hax, by omega⟩, hpx⟩
+  · rintro ⟨⟨hax, hxb⟩, hpx⟩
+    exact ⟨⟨by omega, hpx⟩, fun h => absurd h.1 (by omega)⟩
+
+/-- Removing a **non-prime** right endpoint does not change the prime count:
+`#{primes in (a, b)} = #{primes in (a, b]}` when `b` is composite. -/
+theorem card_primes_Ioo_eq_Ioc {a b : ℕ} (hb : ¬ Nat.Prime b) :
+    ((Finset.Ioo a b).filter Nat.Prime).card
+      = ((Finset.Ioc a b).filter Nat.Prime).card := by
+  congr 1
+  ext x
+  simp only [Finset.mem_filter, Finset.mem_Ioo, Finset.mem_Ioc]
+  constructor
+  · rintro ⟨⟨hax, hxb⟩, hpx⟩; exact ⟨⟨hax, le_of_lt hxb⟩, hpx⟩
+  · rintro ⟨⟨hax, hxb⟩, hpx⟩
+    refine ⟨⟨hax, ?_⟩, hpx⟩
+    rcases lt_or_eq_of_le hxb with h | h
+    · exact h
+    · exact absurd (h ▸ hpx) hb
+
+/-- **Existence of a prime in an open interval, as a count bound.** -/
+theorem exists_prime_Ioo_iff_card {a b : ℕ} :
+    (∃ p, Nat.Prime p ∧ a < p ∧ p < b) ↔
+      1 ≤ ((Finset.Ioo a b).filter Nat.Prime).card := by
+  rw [Nat.one_le_iff_ne_zero, ne_eq, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  push_neg
+  constructor
+  · rintro ⟨p, hp, ha, hb⟩
+    exact ⟨p, Finset.mem_Ioo.mpr ⟨ha, hb⟩, hp⟩
+  · rintro ⟨p, hmem, hp⟩
+    obtain ⟨ha, hb⟩ := Finset.mem_Ioo.mp hmem
+    exact ⟨p, hp, ha, hb⟩
+
+/-- **Oppermann's conjecture at `n`, π-counting form.** For `n ≥ 2`,
+`OppermannAt n` is equivalent to the pair of prime-counting lower bounds
+`π(n²+n) − π(n²) ≥ 1` (lower half) and `π((n+1)²) − π(n²+n) ≥ 1` (upper half).
+Both half-open right endpoints `n²+n = n(n+1)` and `(n+1)²` are composite for
+`n ≥ 2`, so the half-open `π`-difference counts exactly the open-interval primes
+of `OppermannAt`. VERIFIED, 0-axiom. -/
+theorem oppermann_at_iff_pi {n : ℕ} (hn : 2 ≤ n) :
+    OppermannAt n ↔
+      (1 ≤ primeCounting (n ^ 2 + n) - primeCounting (n ^ 2)) ∧
+      (1 ≤ primeCounting ((n + 1) ^ 2) - primeCounting (n ^ 2 + n)) := by
+  have hcomp1 : ¬ Nat.Prime (n ^ 2 + n) := by
+    have h : n ^ 2 + n = n * (n + 1) := by ring
+    rw [h]; exact Nat.not_prime_mul (by omega) (by omega)
+  have hcomp2 : ¬ Nat.Prime ((n + 1) ^ 2) := by
+    have h : (n + 1) ^ 2 = (n + 1) * (n + 1) := by ring
+    rw [h]; exact Nat.not_prime_mul (by omega) (by omega)
+  have hle1 : n ^ 2 ≤ n ^ 2 + n := by omega
+  have hle2 : n ^ 2 + n ≤ (n + 1) ^ 2 := by nlinarith
+  have lower : (∃ p, Nat.Prime p ∧ n ^ 2 < p ∧ p < n ^ 2 + n) ↔
+      1 ≤ primeCounting (n ^ 2 + n) - primeCounting (n ^ 2) := by
+    rw [exists_prime_Ioo_iff_card, card_primes_Ioo_eq_Ioc hcomp1, card_primes_Ioc hle1]
+  have upper : (∃ q, Nat.Prime q ∧ n ^ 2 + n < q ∧ q < (n + 1) ^ 2) ↔
+      1 ≤ primeCounting ((n + 1) ^ 2) - primeCounting (n ^ 2 + n) := by
+    rw [exists_prime_Ioo_iff_card, card_primes_Ioo_eq_Ioc hcomp2, card_primes_Ioc hle2]
+  unfold OppermannAt
+  rw [lower, upper]
+
+/-- **Oppermann's conjecture, π-counting form.** Equivalent to: for every `n ≥ 2`,
+`π(n²+n) − π(n²) ≥ 1` and `π((n+1)²) − π(n²+n) ≥ 1`. VERIFIED, 0-axiom. -/
+theorem oppermann_conjecture_iff_pi :
+    OppermannConjecture ↔
+      ∀ n : ℕ, 2 ≤ n →
+        (1 ≤ primeCounting (n ^ 2 + n) - primeCounting (n ^ 2)) ∧
+        (1 ≤ primeCounting ((n + 1) ^ 2) - primeCounting (n ^ 2 + n)) := by
+  constructor
+  · intro h n hn; exact (oppermann_at_iff_pi hn).mp (h n hn)
+  · intro h n hn; exact (oppermann_at_iff_pi hn).mpr (h n hn)
+
 /-! ## Computational verification (axiomatized via `native_decide`)
 
 Each `OppermannAt n` is witnessed by an explicit pair (lower-half prime,
@@ -164,6 +274,14 @@ theorem). -/
 theorem two_primes_2 :
     2 ≤ ((Finset.Ioo (2 ^ 2) (3 ^ 2)).filter Nat.Prime).card :=
   oppermann_at_two_primes oppermann_2
+
+/-- π-counting sanity corollary at `n = 2`: `π(6) − π(4) ≥ 1` (lower half) and
+`π(9) − π(6) ≥ 1` (upper half), derived from the verified instance `oppermann_2`
+through the `π`-equivalence. -/
+theorem pi_bounds_2 :
+    (1 ≤ primeCounting (2 ^ 2 + 2) - primeCounting (2 ^ 2)) ∧
+    (1 ≤ primeCounting ((2 + 1) ^ 2) - primeCounting (2 ^ 2 + 2)) :=
+  (oppermann_at_iff_pi (by norm_num)).mp oppermann_2
 
 /-! ## The open conjecture -/
 
