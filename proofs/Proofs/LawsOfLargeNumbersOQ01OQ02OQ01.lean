@@ -1538,4 +1538,85 @@ theorem tsum_lintegral_trunc_sq_weight_lt_top
 
 end MasterVarianceBound
 
+/-! ## Real summability of the MZ variance sum (feed for the Kolmogorov criterion)
+
+The ℝ≥0∞ finiteness `tsum_lintegral_trunc_sq_weight_lt_top` is transported here to a
+genuine real `Summable`.  Each lower integral is the `ENNReal.ofReal` of the (finite,
+nonnegative) Bochner integral of the truncated square — the truncation `𝟙{|X|≤t}·X` is
+bounded by `t`, hence its square is integrable on a finite measure — so
+`ENNReal.summable_toReal` turns the finite ℝ≥0∞ tsum into summability of the real sequence
+
+    i ↦ i^{-2/p} · ∫ ω, (𝟙{|X ω| ≤ i^{1/p}}·X ω)².
+
+For `aᵢ = i^{1/p}` this is exactly `∑ᵢ 𝔼[Yᵢ²]/aᵢ² < ∞`; since `Var(Yᵢ) ≤ 𝔼[Yᵢ²]`, its
+partial sums are the bounded weighted-variance sums the Kolmogorov criterion
+`ae_tendsto_average_zero_of_variance_weighted_bdd` (S5) consumes.  This is the real-analytic
+hand-off from the measure-theoretic finiteness backbone to the probabilistic assembly. -/
+section RealVarianceSummable
+
+open MeasureTheory
+open scoped ENNReal
+
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
+/-- **Square-integrability of a single MZ truncation.**  The truncated variable
+`Yₜ = 𝟙{|X| ≤ t}·X` is bounded by `t` (both branches: `|X| ≤ t` on the set, `0` off it),
+so `Yₜ²` is dominated by the constant `t²` and is integrable on any finite measure.
+Reusable for the second-moment integrals of the Marcinkiewicz–Zygmund truncations. -/
+theorem integrable_trunc_sq [IsFiniteMeasure μ]
+    (X : Ω → ℝ) (hX : Measurable X) (t : ℝ) :
+    Integrable (fun ω => ({ω | |X ω| ≤ t}.indicator X ω) ^ 2) μ := by
+  have hmeasset : MeasurableSet {ω | |X ω| ≤ t} :=
+    measurableSet_le hX.abs measurable_const
+  have hY : Measurable (fun ω => {ω | |X ω| ≤ t}.indicator X ω) :=
+    hX.indicator hmeasset
+  refine Integrable.mono' (integrable_const (t ^ 2))
+    (hY.pow_const 2).aestronglyMeasurable (ae_of_all _ (fun ω => ?_))
+  rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _), Set.indicator_apply]
+  split_ifs with h
+  · rw [Set.mem_setOf_eq] at h
+    nlinarith [sq_abs (X ω), h, abs_nonneg (X ω), (abs_nonneg (X ω)).trans h]
+  · rw [show ((0 : ℝ)) ^ 2 = 0 by norm_num]; exact sq_nonneg _
+
+#check @integrable_trunc_sq
+
+/-- **Real summability of the weighted truncated second moments (MZ step 4).**  On a finite
+measure, for a measurable `X` with `Integrable |X|ᵖ` and `0 < p < 2`, the real sequence of
+`i^{-2/p}`-weighted truncated second moments is summable:
+
+    Summable (fun i => i^{-2/p} · ∫ ω, (𝟙{|X ω| ≤ i^{1/p}}·X ω)²).
+
+Proof: `tsum_lintegral_trunc_sq_weight_lt_top` gives the ℝ≥0∞ tsum `< ∞`, so
+`ENNReal.summable_toReal` yields summability of the `.toReal` terms.  Each such term equals
+`i^{-2/p} · ∫ (truncation)²`: the lower integral of `ENNReal.ofReal` of a nonnegative
+integrable function is `ENNReal.ofReal` of its Bochner integral
+(`ofReal_integral_eq_lintegral_ofReal`, with integrability from `integrable_trunc_sq`), the
+constant `i^{-2/p} ≥ 0` pulls through both `ofReal` and the integral (`integral_const_mul`),
+and `ENNReal.toReal_ofReal` strips the coercion off the nonnegative real. -/
+theorem summable_trunc_sq_weight_of_integrable [IsFiniteMeasure μ]
+    (X : Ω → ℝ) (hX : Measurable X) {p : ℝ} (hp : 0 < p) (hp2 : p < 2)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    Summable (fun i : ℕ => (i : ℝ) ^ (-(2 / p)) *
+      ∫ ω, ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2 ∂μ) := by
+  have hsummable :=
+    ENNReal.summable_toReal (tsum_lintegral_trunc_sq_weight_lt_top X hX hp hp2 hint).ne
+  refine hsummable.congr (fun i => ?_)
+  rw [← ofReal_integral_eq_lintegral_ofReal
+        ((integrable_trunc_sq X hX ((i : ℝ) ^ (1 / p))).const_mul ((i : ℝ) ^ (-(2 / p))))
+        (ae_of_all _ (fun ω => mul_nonneg
+          (Real.rpow_nonneg (Nat.cast_nonneg i) _) (sq_nonneg _))),
+      integral_const_mul,
+      ENNReal.toReal_ofReal
+        (mul_nonneg (Real.rpow_nonneg (Nat.cast_nonneg i) _)
+          (integral_nonneg (fun ω => sq_nonneg _)))]
+
+#check @summable_trunc_sq_weight_of_integrable
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms integrable_trunc_sq
+#print axioms summable_trunc_sq_weight_of_integrable
+
+end RealVarianceSummable
+
 end LawsOfLargeNumbers.MZ

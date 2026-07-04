@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S4b step-4 variance sum — master bound + ℝ≥0∞ finiteness SHIPPED & VERIFIED — remaining: real-summable conversion + S5 feed + step-3 centering + assembly)
+**Phase**: ACT (S4b step-4 variance sum — master bound + ℝ≥0∞ finiteness + **real-`Summable` conversion** SHIPPED & VERIFIED — remaining: S5 feed [Var≤2nd-moment + partial-sums-bounded-by-total] + step-3 centering + assembly)
 **Since**: 2026-07-04
-**Iteration**: 16 (S4b step-4 **ℝ≥0∞ finiteness** `tsum_lintegral_trunc_sq_weight_lt_top`: for `Integrable |X|ᵖ`, `0<p<2`, the weighted variance sum `∑'ᵢ ∫⁻ i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)² < ∞` — `.trans_lt` the iter-15 master bound then `ENNReal.mul_lt_top ENNReal.ofReal_lt_top` with moment factor finite via `(hasFiniteIntegral_iff_ofReal hnn).mp hint.hasFiniteIntegral` (`hnn` by `Real.rpow_nonneg`) — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs, PR #34406; iter 15 master bound `lintegral_tsum_trunc_sq_weight_le_moment`; iter 14 RHS-integrand domination `trunc_rpow_weight_sq_le_rpow`; iter 13 S4b step-4 **Tonelli interchange** `lintegral_tsum_trunc_sq_weight_le`: `∑'ᵢ ∫⁻ i^{-s}·(𝟙{|X|≤i^{1/p}}·X)² ≤ ∫⁻ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²` — `MeasureTheory.lintegral_tsum` pushes `∑'ᵢ` inside the lower integral (unconditional for nonneg, sidestepping Bochner `integral_tsum`'s `∑∫‖·‖<∞` which is the very finiteness sought), then `lintegral_mono` dominates the pointwise `∑'ᵢ` by iter-12 `tsum_weight_trunc_sq_le` at `x=X ω` via `ENNReal.ofReal_tsum_of_nonneg` — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs; iter 12 pointwise integrand `tsum_weight_trunc_sq_le` `∑ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-s}·x²) ≤ (max 1 |x|ᵖ)^{1-s}·s/(s-1)·x²` — the exact per-`ω` summand of the variance series, root-form region `{i|`|x|`≤i^{1/p}}` bridged to power-form `{i|`|x|ᵖ`≤i}` — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs; iter 11 inner-tail bound `tsum_indicator_ge_rpow_neg_le`; iter 10 inclusive tail `tsum_ge_rpow_neg_le`; iter 9 exclusive backbone `∑_{j>N}j^{-s}≤N^{1-s}/(s-1)`; step-3/4 kernels; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
+**Iteration**: 17 (S4b step-4 **real `Summable` hand-off** `summable_trunc_sq_weight_of_integrable`: for `Integrable |X|ᵖ`, `0<p<2`, finite measure, the real weighted variance sequence `i ↦ i^{-2/p}·∫(𝟙{|X|≤i^{1/p}}·X)²` is `Summable` — `ENNReal.summable_toReal` on the iter-16 ℝ≥0∞ finiteness, each `.toReal` term identified via `ofReal_integral_eq_lintegral_ofReal` [per-term integrability from new reusable `integrable_trunc_sq`: truncation bounded by `t`, `Integrable.mono'` vs `integrable_const t²` on finite measure] + `integral_const_mul` const-pull + `ENNReal.toReal_ofReal` — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs, PR #34421. **This is the real `∑ᵢ 𝔼[Yᵢ²]/aᵢ² < ∞` the S5 criterion consumes.** iter 16 S4b step-4 **ℝ≥0∞ finiteness** `tsum_lintegral_trunc_sq_weight_lt_top`: for `Integrable |X|ᵖ`, `0<p<2`, the weighted variance sum `∑'ᵢ ∫⁻ i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)² < ∞` — `.trans_lt` the iter-15 master bound then `ENNReal.mul_lt_top ENNReal.ofReal_lt_top` with moment factor finite via `(hasFiniteIntegral_iff_ofReal hnn).mp hint.hasFiniteIntegral` (`hnn` by `Real.rpow_nonneg`) — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs, PR #34406; iter 15 master bound `lintegral_tsum_trunc_sq_weight_le_moment`; iter 14 RHS-integrand domination `trunc_rpow_weight_sq_le_rpow`; iter 13 S4b step-4 **Tonelli interchange** `lintegral_tsum_trunc_sq_weight_le`: `∑'ᵢ ∫⁻ i^{-s}·(𝟙{|X|≤i^{1/p}}·X)² ≤ ∫⁻ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²` — `MeasureTheory.lintegral_tsum` pushes `∑'ᵢ` inside the lower integral (unconditional for nonneg, sidestepping Bochner `integral_tsum`'s `∑∫‖·‖<∞` which is the very finiteness sought), then `lintegral_mono` dominates the pointwise `∑'ᵢ` by iter-12 `tsum_weight_trunc_sq_le` at `x=X ω` via `ENNReal.ofReal_tsum_of_nonneg` — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs; iter 12 pointwise integrand `tsum_weight_trunc_sq_le` `∑ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-s}·x²) ≤ (max 1 |x|ᵖ)^{1-s}·s/(s-1)·x²` — the exact per-`ω` summand of the variance series, root-form region `{i|`|x|`≤i^{1/p}}` bridged to power-form `{i|`|x|ᵖ`≤i}` — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs; iter 11 inner-tail bound `tsum_indicator_ge_rpow_neg_le`; iter 10 inclusive tail `tsum_ge_rpow_neg_le`; iter 9 exclusive backbone `∑_{j>N}j^{-s}≤N^{1-s}/(s-1)`; step-3/4 kernels; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
 
 ## Current Focus
 
@@ -142,19 +142,30 @@ interchange**: keep the truncated moment `𝔼[X²·𝟙{|X| ≤ i^{1/p}}]` inta
   **Gotcha:** the naive route `Integrable.lintegral_lt_top` does NOT exist; the working
   bridge is `hasFiniteIntegral_iff_ofReal` (in `L1Space/HasFiniteIntegral.lean`), which needs
   the pointwise-nonneg `0 ≤ᵐ[μ] f` hypothesis.
-- **Next: convert to a real `∑ᵢ 𝔼[Yᵢ²]·i^{-2/p} < ∞` + feed S5.** From the ℝ≥0∞ finiteness
-  (`tsum_lintegral_trunc_sq_weight_lt_top`): the ℝ≥0∞ tsum is finite ⟹ each term `< ∞`, so
-  each summand `= (∫⁻ …).toReal` via `lintegral_ofReal`/`ofReal_toReal`, then an
-  `ENNReal.tsum_toReal`/`Summable` bridge, feeding
-  `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5). Watch weight positivity
-  (use `aᵢ=(i+1)^{1/p}` or `max 1 i^{1/p}`).
+- **Real `Summable` conversion is now DONE (iteration 17, PR #34421):**
+  `summable_trunc_sq_weight_of_integrable` — for `Integrable |X|ᵖ`, `0<p<2`, finite measure,
+  `Summable (fun i => i^{-2/p}·∫(𝟙{|X|≤i^{1/p}}·X)²)`. Proof: `ENNReal.summable_toReal` on the
+  iter-16 ℝ≥0∞ finiteness, then `.congr` identifying each `.toReal` term via
+  `ofReal_integral_eq_lintegral_ofReal` (integrability from new reusable `integrable_trunc_sq`:
+  `|𝟙{|X|≤t}·X| ≤ t` ⟹ `Integrable.mono'` vs `integrable_const t²`), `integral_const_mul`,
+  `ENNReal.toReal_ofReal`. **Do not re-derive.** **Gotcha:** `Integrable.const_mul` puts the
+  constant on the LEFT (`fun ω => c * f ω`), matching the `ofReal(i^{-2/p} * …)` integrand order.
+- **Next: feed S5.** Two small gaps remain before `ae_tendsto_average_zero_of_variance_weighted_bdd`:
+  (a) `variance (Yᵢ) μ ≤ ∫ Yᵢ²` (Mathlib `variance_le_expectation_sq` / `variance_le_...`; needs
+  `μ[Yᵢ²]` finite — from `integrable_trunc_sq`), and (b) `∀ n, ∑_{i≤n} Var(Yᵢ)/aᵢ² ≤ V` from the
+  `Summable` total via `sum_le_tsum` (nonneg terms, partial ≤ total). **Weight positivity:** S5's
+  `ha_pos`/`ha_mono` need `aᵢ>0`; `aᵢ=i^{1/p}` fails at `i=0`, so reindex to `aᵢ=(i+1)^{1/p}` (the
+  `i=0` variance term is `Var(𝟙{|X|≤0}·X)=Var(0)=0`, harmless) or `max 1 i^{1/p}` — reconcile with
+  the `i^{-2/p}` weight in the Summable (note `(i+1)^{-2/p} ≤ i^{-2/p}` only for `i≥1`; cleanest is
+  to prove the Summable directly at weight `(i+1)^{-2/p}` by the same route, or dominate).
 - **Then: step-3 centering** (via `integral_tail_abs_le` + `tendsto_weighted_average_zero`) and
   the final combination with the step-1 truncation reduction into the MZ statement.
 
 ## Attempt Counts
 
 - Total attempts: 13 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation; S4b step-3/4 moment kernels; S4b step-4 tail p-series backbone; iter-10 inclusive tail; iter-11 pointwise inner-tail bound; iter-12 pointwise Tonelli integrand; iter-13 Tonelli interchange `lintegral_tsum_trunc_sq_weight_le`)
-- Latest approach attempts: 1 (S4b step-4 ℝ≥0∞ finiteness `tsum_lintegral_trunc_sq_weight_lt_top` — `.trans_lt` iter-15 master bound `lintegral_tsum_trunc_sq_weight_le_moment`, then `ENNReal.mul_lt_top ENNReal.ofReal_lt_top` + `(hasFiniteIntegral_iff_ofReal hnn).mp hint.hasFiniteIntegral`; landed clean on first build, 7743 jobs, 0-axiom, PR #34406)
+- Latest approach attempts: 1 (S4b step-4 real `Summable` hand-off `summable_trunc_sq_weight_of_integrable` + reusable `integrable_trunc_sq` — `ENNReal.summable_toReal` on iter-16 ℝ≥0∞ finiteness, `.congr` via `ofReal_integral_eq_lintegral_ofReal`+`integral_const_mul`+`ENNReal.toReal_ofReal`; landed clean on first build, 7743 jobs, 0-axiom, PR #34421)
+- Prior approach attempts: 1 (S4b step-4 ℝ≥0∞ finiteness `tsum_lintegral_trunc_sq_weight_lt_top` — `.trans_lt` iter-15 master bound `lintegral_tsum_trunc_sq_weight_le_moment`, then `ENNReal.mul_lt_top ENNReal.ofReal_lt_top` + `(hasFiniteIntegral_iff_ofReal hnn).mp hint.hasFiniteIntegral`; landed clean on first build, 7743 jobs, 0-axiom, PR #34406)
 - Prior approach attempts: 1 (S4b step-4 Tonelli interchange `lintegral_tsum_trunc_sq_weight_le` — `lintegral_tsum` [per-term `Measurable.indicator`∘`measurableSet_le`∘`pow_const`∘`const_mul`∘`ENNReal.measurable_ofReal`] to push `∑'ᵢ` inside `∫⁻`, then `lintegral_mono` + `ENNReal.ofReal_tsum_of_nonneg` [summand summable via `Real.summable_nat_rpow`.`mul_right`.`indicator`] + `tsum_weight_trunc_sq_le`; one binder-type fix [`fun i : ℕ`], then clean build 7743 jobs, 0-axiom)
 - Prior approach attempts: 1 (S4b step-4 pointwise Tonelli integrand `tsum_weight_trunc_sq_le` — `Set.indicator_apply`+`ring` to pull `x²` out of the indicator, `tsum_mul_right` to pull it out of the tsum, root→power region rewrite via `not_lt` on `rpow_inv_lt_iff_lt_rpow`, then `tsum_indicator_ge_rpow_neg_le` + `mul_le_mul_of_nonneg_right`; landed clean on first build, 7743 jobs, 0-axiom)
 - Approaches tried: 7 (S1 literature/decomposition; S2 Abel+Toeplitz;
