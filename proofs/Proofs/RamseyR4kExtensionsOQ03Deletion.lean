@@ -190,16 +190,48 @@ theorem ramsey_deletion (hk : 2 ≤ k) (hkn : k ≤ n) :
     rw [Finset.mem_sdiff] at hmem
     exact hmem.2 hpickD
 
+/-- **The general deletion-window theorem.**  Fix a window index `M` and suppose
+    `n` sits in the `M`-th deletion window, i.e.
+
+        `M · 2^C(k,2) ≤ 2·C(n,k) < (M+1) · 2^C(k,2)`.
+
+    These two inequalities pin the deletion count `⌊2·C(n,k)/2^C(k,2)⌋ = M` exactly,
+    so `ramsey_deletion` keeps a monochromatic-`Kₖ`-free set of `n − M` vertices, i.e.
+    `R(k,k) > n − M`.  This is the single mechanism behind the whole deletion
+    hierarchy: `M = 0` is the first-moment/union regime (whole graph survives), `M = 1`
+    is the first strict improvement past the union threshold, and larger `M` are the
+    successive windows.  Stated in terms of the window index `M` rather than the raw
+    floor, it makes `ramsey_deletion_generalizes_first_moment` (`M = 0`) and
+    `ramsey_deletion_one_past` (`M = 1`) immediate corollaries. -/
+theorem ramsey_deletion_window (hk : 2 ≤ k) (hkn : k ≤ n) (M : ℕ)
+    (hlo : M * 2 ^ (k.choose 2) ≤ 2 * n.choose k)
+    (hhi : 2 * n.choose k < (M + 1) * 2 ^ (k.choose 2)) :
+    ∃ (c : Coloring n) (R : Finset (Fin n)),
+      n - M ≤ R.card ∧
+      ∀ K : Finset (Fin n), K ⊆ R → K.card = k → ¬ Mono c K := by
+  have hbpos : 0 < 2 ^ (k.choose 2) := pow_pos (by norm_num) _
+  -- the two window inequalities force the deletion count to be exactly `M`
+  have hMeq : (2 * n.choose k) / 2 ^ (k.choose 2) = M := by
+    have h1 : M ≤ (2 * n.choose k) / 2 ^ (k.choose 2) := by
+      rw [Nat.le_div_iff_mul_le hbpos]; exact hlo
+    have h2 : (2 * n.choose k) / 2 ^ (k.choose 2) < M + 1 := by
+      rw [Nat.div_lt_iff_lt_mul hbpos]; exact hhi
+    omega
+  obtain ⟨c, R, hRcard, hR⟩ := ramsey_deletion (n := n) (k := k) hk hkn
+  rw [hMeq] at hRcard
+  exact ⟨c, R, hRcard, hR⟩
+
 /-- **Consistency with the first moment.**  When `2·C(n,k) < 2^C(k,2)` (the
     first-moment regime) the deletion count `M` is `0`, so the whole vertex set
     survives and `ramsey_deletion` recovers `first_moment_ramsey`: a colouring of
-    all of `Kₙ` with no monochromatic `Kₖ`. -/
+    all of `Kₙ` with no monochromatic `Kₖ`.  This is the `M = 0` case of
+    `ramsey_deletion_window`. -/
 theorem ramsey_deletion_generalizes_first_moment
     (hk : 2 ≤ k) (hkn : k ≤ n) (hbound : 2 * n.choose k < 2 ^ (k.choose 2)) :
     ∃ c : Coloring n, ∀ K : Finset (Fin n), K.card = k → ¬ Mono c K := by
-  obtain ⟨c, R, hRcard, hR⟩ := ramsey_deletion (n := n) (k := k) hk hkn
-  have hM0 : (2 * n.choose k) / 2 ^ (k.choose 2) = 0 := Nat.div_eq_of_lt hbound
-  rw [hM0, Nat.sub_zero] at hRcard
+  obtain ⟨c, R, hRcard, hR⟩ :=
+    ramsey_deletion_window (n := n) (k := k) hk hkn 0 (by simp) (by simpa using hbound)
+  rw [Nat.sub_zero] at hRcard
   -- R has ≥ n vertices, so R = univ
   have hRuniv : R = univ := by
     apply Finset.eq_univ_of_card
@@ -259,28 +291,18 @@ theorem ramsey_deletion_bound (hk : 2 ≤ k) (hkn : k ≤ n) :
     representative leaves a monochromatic-`Kₖ`-free set of `n − 1` vertices — a strict
     improvement over the union bound precisely where the union bound gives out.
 
-    This is the *general* mechanism behind the concrete `k = 6` (`n = 19`) and `k = 7`
-    (`n = 30`) witnesses below: both land in exactly this `M = 1` window, so
-    `deletion_no_mono_K6` and `deletion_no_mono_K7` are instances of this theorem.  No
-    large `decide` is needed here — the `M = 1` collapse is pure `ℕ`-division reasoning,
-    valid for every `k`. -/
+    This is the *general* mechanism behind the concrete `k = 6` (`n = 19`), `k = 7`
+    (`n = 30`) and `k = 8` (`n = 46`) witnesses below: all land in exactly this `M = 1`
+    window, so `deletion_no_mono_K6/K7/K8` are instances of this theorem.  No large
+    `decide` is needed here — the `M = 1` collapse is pure `ℕ`-division reasoning, valid
+    for every `k`.  It is the `M = 1` case of `ramsey_deletion_window`. -/
 theorem ramsey_deletion_one_past (hk : 2 ≤ k) (hkn : k ≤ n)
     (hlo : 2 ^ (k.choose 2) ≤ 2 * n.choose k)
     (hhi : 2 * n.choose k < 2 * 2 ^ (k.choose 2)) :
     ∃ (c : Coloring n) (R : Finset (Fin n)),
       n - 1 ≤ R.card ∧
-      ∀ K : Finset (Fin n), K ⊆ R → K.card = k → ¬ Mono c K := by
-  have hbpos : 0 < 2 ^ (k.choose 2) := pow_pos (by norm_num) _
-  -- the two window inequalities force the deletion count `M` to be exactly `1`
-  have hM1 : (2 * n.choose k) / 2 ^ (k.choose 2) = 1 := by
-    have hq1 : 1 ≤ (2 * n.choose k) / 2 ^ (k.choose 2) := by
-      rw [Nat.le_div_iff_mul_le hbpos]; simpa using hlo
-    have hq2 : (2 * n.choose k) / 2 ^ (k.choose 2) < 2 := by
-      rw [Nat.div_lt_iff_lt_mul hbpos]; exact hhi
-    omega
-  obtain ⟨c, R, hRcard, hR⟩ := ramsey_deletion (n := n) (k := k) hk hkn
-  rw [hM1] at hRcard
-  exact ⟨c, R, hRcard, hR⟩
+      ∀ K : Finset (Fin n), K ⊆ R → K.card = k → ¬ Mono c K :=
+  ramsey_deletion_window hk hkn 1 (by simpa using hlo) (by simpa using hhi)
 
 set_option maxHeartbeats 800000 in
 /-- **The sharp union bound caps at `n = 17` for `k = 6`.**  The first-moment test
@@ -404,6 +426,7 @@ theorem deletion_no_mono_K8 :
   exact ⟨c, R, hRcard, hR⟩
 
 #check @ramsey_deletion
+#check @ramsey_deletion_window
 #check @ramsey_deletion_generalizes_first_moment
 #check @ramsey_deletion_bound
 #check @ramsey_deletion_one_past
@@ -420,6 +443,7 @@ theorem deletion_no_mono_K8 :
 -- binomials route through `Nat.choose_eq_descFactorial_div_factorial` to keep the kernel
 -- reduction cheap (single-recursion `descFactorial`), also axiom-free.
 #print axioms ramsey_deletion
+#print axioms ramsey_deletion_window
 #print axioms ramsey_deletion_generalizes_first_moment
 #print axioms ramsey_deletion_one_past
 #print axioms deletion_no_mono_K6
