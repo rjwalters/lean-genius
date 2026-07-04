@@ -188,6 +188,18 @@ theorem eq_smul_one_of_sq_eq_nonneg_smul (A : Type*) [NormedDivisionRing A]
 
 /-! ### The General (Division Ring) Case -/
 
+/-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
+`A` over `ℝ` is *commutative*, then it is a normed field, so Gelfand–Mazur
+(`hurwitz_field_case`) pins `finrank ℝ A ∈ {1, 2} ⊆ admissibleDimensions`. This discharges
+the easy half of the case split in `hurwitz_only_if_ring`, leaving only the genuinely
+non-commutative case (the Clifford / Radon–Hurwitz argument) open. No finite-dimensionality
+hypothesis is needed — Gelfand–Mazur supplies it. -/
+theorem hurwitz_only_if_ring_comm (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    (hcomm : ∀ x y : A, x * y = y * x) :
+    Module.finrank ℝ A ∈ admissibleDimensions := by
+  letI : NormedField A := { ‹NormedDivisionRing A› with mul_comm := hcomm }
+  exact hurwitz_field_case A
+
 /-- **Hurwitz Only-If for Normed Division Rings**:
     A finite-dimensional normed division ring over ℝ has finrank in {1, 2, 4, 8}.
 
@@ -225,7 +237,17 @@ theorem hurwitz_only_if_ring (A : Type*) [NormedDivisionRing A] [NormedAlgebra �
        symmetric bilinear form; multiplication then makes `Im A` a Clifford-type space,
        forcing `finrank ℝ (Im A) ∈ {0, 1, 3}` and thus `finrank ℝ A ∈ {1, 2, 4}`.
      Step 3 (the global structure/bilinear-form argument) is not yet formalized; Mathlib
-     lacks the Clifford-algebra / bilinear-form machinery to discharge it directly. -/
-  sorry
+     lacks the Clifford-algebra / bilinear-form machinery to discharge it directly.
+
+     The commutative branch of Step 3 is now fully verified (`hurwitz_only_if_ring_comm`
+     via Gelfand–Mazur), so the sorry below is scoped to the *strictly non-commutative*
+     case — where `hnc : ∃ x y, x * y ≠ y * x` is available as a genuine hypothesis. -/
+  by_cases hcomm : ∀ x y : A, x * y = y * x
+  · -- Commutative subcase: A is a normed field, closed by Gelfand–Mazur.
+    exact hurwitz_only_if_ring_comm A hcomm
+  · -- Non-commutative subcase: the Clifford / Radon–Hurwitz argument (still open).
+    push_neg at hcomm
+    obtain ⟨x, y, _hxy⟩ := hcomm
+    sorry
 
 end HurwitzOnlyIf
