@@ -20,29 +20,35 @@
   },
   "currentState": "SOLVED (axiomatized): Oppermann stated; structural theorems Oppermann ⟹ Legendre and Oppermann ⟹ ≥2 primes per square-gap proved 0-axiom; Oppermann verified for n = 2..20 via native_decide; general conjecture stated as axiom. Proofs/LegendrePartialOQ04.lean.",
   "knowledge": {
-    "progressSummary": "COMPLETE: Oppermann's conjecture formalized. Two fully verified (0-axiom) structural theorems pin its relationship to Legendre — it implies Legendre and implies at least two primes between consecutive squares. Computational evidence for n = 2..20 (native_decide, axiomatized via Lean.ofReduceBool); general conjecture stated as axiom.",
+    "progressSummary": "COMPLETE + EXTENDED: Oppermann formalized; now recast in π-counting form (oppermann_at_iff_pi / oppermann_conjecture_iff_pi) tied to Mathlib's Nat.primeCounting, plus a reusable interval-prime-count bridge card_primes_Ioc. All new content VERIFIED 0-axiom.",
     "builtItems": [
       "OppermannAt / OppermannConjecture: prime in both halves of (n²,(n+1)²) split at n²+n (LegendrePartialOQ04.lean:57,64)",
       "oppermann_at_implies_legendre_at: Oppermann ⟹ Legendre pointwise, 0-axiom (LegendrePartialOQ04.lean:75)",
       "oppermann_at_two_primes: Oppermann ⟹ ≥2 primes in (n²,(n+1)²), 0-axiom (LegendrePartialOQ04.lean:85)",
       "oppermann_implies_legendre / oppermann_implies_two_primes: conjecture-level corollaries, 0-axiom (LegendrePartialOQ04.lean:106,112)",
       "oppermann_2 .. oppermann_20: native_decide verification with explicit lower/upper-half prime witnesses (LegendrePartialOQ04.lean:123-159)",
-      "oppermann_conjecture: open conjecture as axiom; legendre_of_oppermann derives Legendre from it (LegendrePartialOQ04.lean:173,176)"
+      "oppermann_conjecture: open conjecture as axiom; legendre_of_oppermann derives Legendre from it (LegendrePartialOQ04.lean:173,176)",
+      "card_primes_Ioc (LegendrePartialOQ04.lean) — #{primes in (a,b]} = π(b)−π(a); VERIFIED 0-axiom",
+      "card_primes_Ioo_eq_Ioc, exists_prime_Ioo_iff_card (LegendrePartialOQ04.lean) — interval prime-count helpers; VERIFIED 0-axiom",
+      "oppermann_at_iff_pi, oppermann_conjecture_iff_pi (LegendrePartialOQ04.lean) — Oppermann in π-counting form; VERIFIED 0-axiom (propext/Choice/Quot only)",
+      "pi_bounds_2 (LegendrePartialOQ04.lean) — π-form sanity corollary at n=2 (via native_decide witness, Lean.ofReduceBool)"
     ],
     "insights": [
       "Splitting (n²,(n+1)²) at n²+n = n·(n+1) loses no primes since the split point is composite for n ≥ 1; the two halves have widths n and n+1.",
       "Oppermann ⟹ Legendre is immediate from the lower-half prime: (n², n²+n) ⊂ (n², (n+1)²); the containment closes under omega after expanding (n+1)².",
       "The 'strictly stronger' claim is made precise and verified: distinct lower/upper-half primes give #{primes in the gap} ≥ 2, via {p,q} ⊆ filter and card_le_card.",
       "Structural theorems are honest implications taking the conjecture as a hypothesis; only native_decide (Lean.ofReduceBool) and the explicit oppermann_conjecture axiom carry assumptions.",
-      "OppermannAt 1 is false (lower half (1,2) empty) — the boundary that forces the classical n > 1 statement."
+      "OppermannAt 1 is false (lower half (1,2) empty) — the boundary that forces the classical n > 1 statement.",
+      "π-counting form of Oppermann: OppermannAt n ⟺ π(n²+n)−π(n²) ≥ 1 ∧ π((n+1)²)−π(n²+n) ≥ 1 for n ≥ 2. The equivalence is exact because both half-open right endpoints n²+n = n(n+1) and (n+1)² are composite, so #{primes in (a,b]} = #{primes in (a,b)} there.",
+      "Bridge lemma card_primes_Ioc: #{primes in (a,b]} = π(b)−π(a) for Mathlib's Nat.primeCounting, proved via Nat.count_eq_card_filter_range + a disjoint-union card identity (range(a+1) ⊔ Ioc a b = range(b+1)). Avoid Finset.card_sdiff here — in the pinned Mathlib its signature is #(t\\s)=#t−#(s∩t), not the subset-hypothesis form."
     ],
     "mathlibGaps": [
       "No scalable certified primality (Pratt/Lucas certificates) wired up — native_decide does not extend much beyond n = 20."
     ],
     "nextSteps": [
-      "Formalize the π-counting equivalent: π(n²+n) − π(n²) ≥ 1 and π((n+1)²) − π(n²+n) ≥ 1.",
-      "Extend computational verification with certified primality certificates to reach larger n.",
-      "Add the related Brocard conjecture (≥4 primes between consecutive prime squares) as a further strengthening."
+      "Formalize the Brocard conjecture (≥4 primes between consecutive PRIME squares p², q²) as a further strengthening, with the analogous π-counting form π(q²)−π(p²) ≥ 4.",
+      "Extend computational verification with certified primality certificates (Lucas/Pratt) to remove the native_decide (Lean.ofReduceBool) dependence and reach larger n.",
+      "Relate the π-counting form to PNT heuristics: π(n²+n)−π(n²) ~ n/(2 log n) → ∞, giving the standard (non-rigorous) evidence for Oppermann."
     ]
   },
   "tags": [
