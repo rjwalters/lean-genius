@@ -225,6 +225,40 @@ theorem firstBlockMax_mem_antidiagonal {n : ℕ}
   have h : (firstBlockMax P).val ≤ n := Nat.lt_succ_iff.mp (firstBlockMax P).isLt
   omega
 
+/-- **No block straddles the cut (separation lemma, 0 `sorry`).** For a non-crossing partition
+`P`, no block contains a point `a` at-or-below the cut `m = firstBlockMax P` together with a point
+`c` strictly above it. This is the structural fact that makes the first-return decomposition a
+*binary* (Catalan) split rather than a multi-part one: every block lies entirely in `[0, m]` or
+entirely in `[m+1, n]`, so `P` restricts independently to the two windows.
+
+Proof: were `c ∈ P.part a` with `a ≤ m < c`, non-crossing applied to `0 < a < m < c` (using that
+`m ∈ P.part 0`, i.e. `0` and the cut share a block) forces `a ∈ P.part 0`; transporting `c` through
+`a` then puts `c ∈ P.part 0`, so `c ≤ (P.part 0).max' = m` — contradicting `m < c`. (The boundary
+cases `a = 0` and `a = m` land in `P.part 0` immediately.) -/
+theorem not_mem_part_across_firstBlockMax {n : ℕ}
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) (hP : IsNonCrossingFp P)
+    {a c : Fin (n + 1)} (hac : a ≤ firstBlockMax P) (hc : firstBlockMax P < c) :
+    c ∉ P.part a := by
+  intro hmem
+  have h0m : firstBlockMax P ∈ P.part 0 := firstBlockMax_mem_part P
+  -- First show `a` shares a block with `0`.
+  have ha0 : a ∈ P.part 0 := by
+    rcases lt_or_eq_of_le hac with hlt | heq
+    · -- `a < m`: split on whether `a = 0`.
+      rcases Nat.eq_zero_or_pos a.val with ha0v | hapos
+      · have hazero : a = 0 := by apply Fin.ext; rw [Fin.val_zero]; exact ha0v
+        rw [hazero]; exact P.mem_part (mem_univ 0)
+      · -- `0 < a < m < c`: apply non-crossing to `(0, a, m, c)`.
+        have h0a : (0 : Fin (n + 1)) < a := by rw [Fin.lt_def]; simpa using hapos
+        exact hP 0 a (firstBlockMax P) c h0a hlt hc h0m hmem
+    · rw [heq]; exact h0m
+  -- Transport `c` from the block of `a` to the block of `0`.
+  have hpart : P.part a = P.part 0 :=
+    (P.mem_part_iff_part_eq_part (mem_univ a) (mem_univ 0)).mp ha0
+  have hc0 : c ∈ P.part 0 := by rw [← hpart]; exact hmem
+  -- Then `c ≤ m`, contradicting `m < c`.
+  exact absurd (Finset.le_max' (P.part 0) c hc0) (not_le.mpr hc)
+
 /-- **Forward map of the first-return bijection (0 `sorry`).** A non-crossing partition of
 `Fin (n+1)` maps to its cut index `m = firstBlockMax P` (paired with `n - m` in `antidiagonal n`)
 together with the two non-crossing restrictions to the offset windows `[1, m]` and `[m+1, n]`.
@@ -420,6 +454,7 @@ theorem nonCrossingCount_eq_catalan_of_le_three {n : ℕ} (hn : n ≤ 3) :
     decide
 
 #check @nonCrossingCount_zero
+#check @not_mem_part_across_firstBlockMax
 #check @nonCrossingCount_eq_catalan
 #check @nonCrossingCount_eq_catalan_of_le_three
 
