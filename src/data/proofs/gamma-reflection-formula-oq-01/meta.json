@@ -113,48 +113,64 @@
     {
       "name": "gamma_reflection",
       "type": "core",
+      "statement": "For every real s, Γ(s)·Γ(1−s) = π / sin(πs) — Euler's reflection formula for the real Gamma function.",
+      "significance": "The central identity of the entry. Every special-value product below is obtained by specializing s to a rational point where sin(πs) is known exactly, and the non-vanishing corollaries all factor through this equation. Re-exported under a stable name from Mathlib's Real.Gamma_mul_Gamma_one_sub (hence the mathlib badge).",
       "description": "Euler's reflection formula for the real Gamma function: Γ(s)·Γ(1−s) = π/sin(πs). The headline identity itself is delegated to Mathlib's Real.Gamma_mul_Gamma_one_sub (hence the mathlib badge); it is re-exported here under a stable name to anchor the derived results.",
       "leanType": "(s : ℝ) → Gamma s * Gamma (1 - s) = π / sin (π * s)"
     },
     {
       "name": "gamma_reflection_complex",
       "type": "supporting",
+      "statement": "For every complex z, Γ(z)·Γ(1−z) = π / sin(πz) — the complex-analytic form of the reflection formula.",
+      "significance": "Extends the reflection identity to the full complex plane, the setting in which it is an equality of meromorphic functions. Provided so downstream complex-variable work can cite the reflection formula without re-deriving it.",
       "description": "The complex-analytic form of the reflection formula, Γ(z)·Γ(1−z) = π/sin(πz) for z ∈ ℂ, re-exported from Complex.Gamma_mul_Gamma_one_sub.",
       "leanType": "(z : ℂ) → Complex.Gamma z * Complex.Gamma (1 - z) = (π : ℂ) / Complex.sin ((π : ℂ) * z)"
     },
     {
       "name": "gamma_half_sq",
       "type": "core",
+      "statement": "Γ(1/2)² = π, the squared form of the classical value Γ(1/2) = √π.",
+      "significance": "The simplest specialization (s = 1/2, sin(π/2) = 1). Notably it recovers the value of Γ(1/2) purely from reflection, without the Gaussian integral, showing the reflection identity alone pins down this landmark constant.",
       "description": "Γ(1/2)² = π, recovered from reflection at s = 1/2 where sin(π/2) = 1. This is the squared form of the classical Γ(1/2) = √π, obtained here purely from the reflection identity without invoking the Gaussian integral.",
       "leanType": "Gamma (1 / 2) ^ 2 = π"
     },
     {
       "name": "gamma_quarter_mul",
       "type": "core",
+      "statement": "Γ(1/4)·Γ(3/4) = π√2.",
+      "significance": "A special-value product that is exact even though Γ(1/4) itself is not an elementary number (it is transcendental and tied to the lemniscate constant). Demonstrates that reflection extracts closed-form products where the individual factors have no closed form. Not in Mathlib.",
       "description": "Γ(1/4)·Γ(3/4) = π√2, from reflection at s = 1/4 with sin(π/4) = √2/2. Although Γ(1/4) is not elementary, the reflection product evaluates exactly. Not in Mathlib.",
       "leanType": "Gamma (1 / 4) * Gamma (3 / 4) = π * Real.sqrt 2"
     },
     {
       "name": "gamma_third_mul",
       "type": "core",
+      "statement": "Γ(1/3)·Γ(2/3) = 2π/√3.",
+      "significance": "The s = 1/3 product (sin(π/3) = √3/2), a concrete rational-argument evaluation absent from Mathlib and useful in number-theoretic and elliptic-integral contexts where Γ(1/3) appears.",
       "description": "Γ(1/3)·Γ(2/3) = 2π/√3, from reflection at s = 1/3 with sin(π/3) = √3/2. A concrete special-value product absent from Mathlib.",
       "leanType": "Gamma (1 / 3) * Gamma (2 / 3) = 2 * π / Real.sqrt 3"
     },
     {
       "name": "gamma_sixth_mul",
       "type": "core",
+      "statement": "Γ(1/6)·Γ(5/6) = 2π.",
+      "significance": "The cleanest of the rational special-value products: at s = 1/6, sin(π/6) = 1/2 collapses the reflection value to an integer multiple of π. Not in Mathlib.",
       "description": "Γ(1/6)·Γ(5/6) = 2π, from reflection at s = 1/6 with sin(π/6) = 1/2 — the cleanest of the rational special-value products, collapsing to an integer multiple of π.",
       "leanType": "Gamma (1 / 6) * Gamma (5 / 6) = 2 * π"
     },
     {
       "name": "gamma_ne_zero_of_sin_ne_zero",
       "type": "supporting",
+      "statement": "If sin(πs) ≠ 0 then Γ(s) ≠ 0.",
+      "significance": "Turns the reflection formula into a non-vanishing criterion: were Γ(s) zero, the product Γ(s)·Γ(1−s) would vanish, contradicting its equality to the nonzero value π/sin(πs). The engine behind the general non-vanishing result.",
       "description": "Non-vanishing via reflection: if sin(πs) ≠ 0 then Γ(s) ≠ 0. If Γ(s) were 0 the reflection product Γ(s)·Γ(1−s) would be 0, contradicting its equality to the nonzero π/sin(πs).",
       "leanType": "{s : ℝ} → sin (π * s) ≠ 0 → Gamma s ≠ 0"
     },
     {
       "name": "gamma_ne_zero_of_not_int",
       "type": "supporting",
+      "statement": "The Gamma function has no zeros at non-integer real arguments: if s is not an integer, then Γ(s) ≠ 0.",
+      "significance": "The classical statement that Γ never vanishes (its only singularities are the poles at non-positive integers), packaged here as a clean consequence of reflection: a non-integer s has sin(πs) ≠ 0, so the previous corollary applies.",
       "description": "The Gamma function does not vanish at any non-integer real argument. A zero of sin(πs) forces s ∈ ℤ (Real.sin_eq_zero_iff), so a non-integer s has sin(πs) ≠ 0, hence Γ(s) ≠ 0 by the previous corollary.",
       "leanType": "{s : ℝ} → (∀ n : ℤ, (n : ℝ) ≠ s) → Gamma s ≠ 0"
     }
