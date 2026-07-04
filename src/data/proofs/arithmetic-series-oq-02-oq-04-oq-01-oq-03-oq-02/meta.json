@@ -141,5 +141,25 @@
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean"
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "multiset_vandermonde",
+      "type": "core",
+      "description": "The multiset Vandermonde identity: the number of size-r multisets drawn from m+n elements equals the sum over j of (size-j multisets from m) times (size-(r-j) multisets from n). Proved by double induction on m and r.",
+      "leanType": "(m n r : ℕ) : Nat.multichoose (m + n) r = ∑ j ∈ Finset.range (r + 1), Nat.multichoose m j * Nat.multichoose n (r - j)"
+    },
+    {
+      "name": "sum_succ_left",
+      "type": "supporting",
+      "description": "Key sum-decomposition lemma: increasing the first multichoose argument by 1 splits the range(r+2) convolution sum into the original sum plus a shorter range(r+1) sum. Drives the inductive step via the multichoose_succ_succ recurrence.",
+      "leanType": "(m n r : ℕ) : ∑ j ∈ Finset.range (r + 2), Nat.multichoose (m + 1) j * Nat.multichoose n (r + 1 - j) = ∑ j ∈ Finset.range (r + 2), Nat.multichoose m j * Nat.multichoose n (r + 1 - j) + ∑ j ∈ Finset.range (r + 1), Nat.multichoose (m + 1) j * Nat.multichoose n (r - j)"
+    },
+    {
+      "name": "sum_zero_left",
+      "type": "supporting",
+      "description": "Base case: when the first multiset argument is 0, only the j=0 term survives, so the convolution sum collapses to multichoose n r.",
+      "leanType": "(n r : ℕ) : ∑ j ∈ Finset.range (r + 1), Nat.multichoose 0 j * Nat.multichoose n (r - j) = Nat.multichoose n r"
+    }
+  ]
 }
