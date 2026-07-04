@@ -584,6 +584,116 @@ theorem newton_top_coeff_ineq (m : ℕ) {p : ℝ[X]}
   simp only [nsmul_eq_mul] at h
   nlinarith [h]
 
+/-!  ## Part VIII — the general-`n` BOTTOM Newton step via a single reversal
+
+Part VII closed the general TOP Newton step (the discriminant of `p`'s three
+*top* coefficients), but when specialised to the monic splitting polynomial
+`∏(X - xᵢ)` — whose top three coefficients are `1, -e₁, e₂` — that top step only
+reproduces the FIRST Newton inequality (`e₁² ≥ … e₂`), already general in Part III.
+Genuinely new arbitrary-`n` content lives in the *other* steps, and the classical
+route reaches them by REVERSING the polynomial: `reverse p` reads `p`'s
+coefficients bottom-up, so applying the Part VII top-step engine to `reverse p`
+yields Newton's discriminant inequality on `p`'s three *bottom* coefficients
+`coeff 0, coeff 1, coeff 2`.  For `p = ∏(X - xᵢ)` (all roots nonzero, so
+`coeff 0 = ±eₙ ≠ 0`) this is the classical BOTTOM step `eₙ₋₁² ≥ eₙ₋₂ eₙ` — NOT
+reachable from Parts III or VII.
+
+The one piece of infrastructure this needs, and which Mathlib does not package, is
+that reversal preserves splitting: **a real-rooted polynomial has a real-rooted
+reversal**.  We build it here from `splits_iff_exists_multiset` (`p` factors as
+`C (leadingCoeff p) · ∏ (X - rᵢ)`), `reverse_mul_of_domain` (reverse distributes
+over products in a domain), and the fact that each `reverse (X - C rᵢ)` has degree
+`≤ 1` with invertible leading coefficient (`= trailingCoeff (X - C rᵢ) ≠ 0`), hence
+splits.  No sign hypothesis on the roots for splitting itself; the reversal reading
+`p`'s bottom coefficients needs only `p.coeff 0 ≠ 0` (nonzero constant term, i.e.
+`natTrailingDegree p = 0`). -/
+
+/-- **The reversal of a real linear factor splits.**  `reverse (X - C a)` has
+degree `≤ 1` and leading coefficient `trailingCoeff (X - C a) ≠ 0` (invertible in
+the field `ℝ`), so it splits.  This is the per-factor atom for `splits_reverse`. -/
+theorem splits_reverse_linear (a : ℝ) : Splits (reverse (X - C a : ℝ[X])) := by
+  apply splits_of_natDegree_le_one_of_invertible
+  · exact (reverse_natDegree_le _).trans (by rw [natDegree_X_sub_C])
+  · rw [reverse_leadingCoeff]
+    exact invertibleOfNonzero (mt trailingCoeff_eq_zero.mp (X_sub_C_ne_zero a))
+
+/-- **The reversal of a product of real linear factors splits.**  `reverse`
+distributes over the multiset product (domain), and each factor's reversal splits
+(`splits_reverse_linear`), so the whole reversal splits.  Multiset induction. -/
+theorem splits_reverse_prod (s : Multiset ℝ) :
+    Splits (reverse ((s.map (fun r => X - C r)).prod)) := by
+  induction s using Multiset.induction with
+  | empty =>
+      simp only [Multiset.map_zero, Multiset.prod_zero]
+      rw [show (1 : ℝ[X]) = C 1 from C_1.symm, reverse_C]
+      exact Splits.C 1
+  | cons a t ih =>
+      rw [Multiset.map_cons, Multiset.prod_cons, reverse_mul_of_domain]
+      exact (splits_reverse_linear a).mul ih
+
+/-- **Reversal preserves splitting.**  If `p : ℝ[X]` splits over `ℝ` (is
+real-rooted), so does its reversal `reverse p`.  This is the reversal counterpart
+of Part V's `splits_derivative`, and the infrastructure Mathlib lacks that unlocks
+the bottom/interior Newton steps.  Proof: factor `p = C (leadingCoeff p) · ∏(X-rᵢ)`
+via `splits_iff_exists_multiset`, distribute `reverse` over the product
+(`reverse_mul_of_domain`), and split each reversed factor (`splits_reverse_prod`,
+with `reverse (C _) = C _`). -/
+theorem splits_reverse {p : ℝ[X]} (hp : Splits p) : Splits (reverse p) := by
+  obtain ⟨m, hm⟩ := splits_iff_exists_multiset.mp hp
+  rw [hm, reverse_mul_of_domain, reverse_C]
+  exact (Splits.C _).mul (splits_reverse_prod m)
+
+/-- **A split real polynomial with nonzero constant term has nonnegative
+discriminant in its three BOTTOM coefficients** — read directly on
+`p.coeff 0, p.coeff 1, p.coeff 2`.
+
+If `p : ℝ[X]` splits (is real-rooted over `ℝ`), has `natDegree = m + 2`, and has a
+nonzero constant term `p.coeff 0 ≠ 0` (so `natTrailingDegree p = 0`), then applying
+the Part VII top-step engine `discrim_iterate_derivative_top` to `reverse p` — which
+splits (`splits_reverse`), still has `natDegree = m + 2`, and whose top three
+coefficients are `p`'s bottom three (`coeff_reverse` + `revAt_le`) — gives
+`0 ≤ discrim` of `p`'s bottom three coefficients.  For `p = ∏(X - xᵢ)` this is the
+classical BOTTOM Newton log-concavity step `eₙ₋₁² ≥ eₙ₋₂ eₙ`, the reversal-mirror of
+Part VII's top step and unreachable from Parts III/VII.  No sign hypothesis beyond
+`coeff 0 ≠ 0` (all roots nonzero). -/
+theorem discrim_reverse_bottom (m : ℕ) {p : ℝ[X]}
+    (hp : Splits p) (h0 : p.coeff 0 ≠ 0) (hdeg : p.natDegree = m + 2) :
+    0 ≤ discrim
+        ((2 + m).descFactorial m • p.coeff 0)
+        ((1 + m).descFactorial m • p.coeff 1)
+        ((0 + m).descFactorial m • p.coeff 2) := by
+  have htrail : p.natTrailingDegree = 0 := Nat.le_zero.mp (natTrailingDegree_le_of_ne_zero h0)
+  have hqdeg : (reverse p).natDegree = m + 2 := by
+    rw [reverse_natDegree, hdeg, htrail, Nat.sub_zero]
+  have h := discrim_iterate_derivative_top m (splits_reverse hp) hqdeg
+  -- the top three coefficients of `reverse p` are `p`'s bottom three
+  have e2 : (reverse p).coeff (2 + m) = p.coeff 0 := by
+    rw [coeff_reverse, hdeg, revAt_le (by omega)]; congr 1; omega
+  have e1 : (reverse p).coeff (1 + m) = p.coeff 1 := by
+    rw [coeff_reverse, hdeg, revAt_le (by omega)]; congr 1; omega
+  have e0 : (reverse p).coeff (0 + m) = p.coeff 2 := by
+    rw [coeff_reverse, hdeg, revAt_le (by omega)]; congr 1; omega
+  rwa [e2, e1, e0] at h
+
+/-- **General-`n` bottom Newton inequality on the coefficients of a real-rooted
+polynomial.**  For any `p : ℝ[X]` that splits with `natDegree = m + 2` and nonzero
+constant term, the three bottom coefficients satisfy
+`4 · (2+m).descFactorial m · m.descFactorial m · p.coeff 0 · p.coeff 2
+  ≤ ((1+m).descFactorial m)² · p.coeff 1 ²`.
+This is `discrim_reverse_bottom` written as the recognizable log-concavity
+inequality `b² ≥ 4ac` on the bottom three coefficients — the honest calculus proof
+of Newton's BOTTOM step, valid for every arity and all signed inputs (only the
+constant term must be nonzero). -/
+theorem newton_bottom_coeff_ineq (m : ℕ) {p : ℝ[X]}
+    (hp : Splits p) (h0 : p.coeff 0 ≠ 0) (hdeg : p.natDegree = m + 2) :
+    4 * ((2 + m).descFactorial m : ℝ) * ((0 + m).descFactorial m : ℝ)
+        * p.coeff 0 * p.coeff 2
+      ≤ ((1 + m).descFactorial m : ℝ) ^ 2 * p.coeff 1 ^ 2 := by
+  have h := discrim_reverse_bottom m hp h0 hdeg
+  rw [discrim] at h
+  simp only [nsmul_eq_mul] at h
+  nlinarith [h]
+
 /-!  ## Part III, in explicit normalized (`p`) form
 
 `newton_first_general` states the first Newton inequality in cleared-denominator
