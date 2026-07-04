@@ -32,3 +32,35 @@
   get Ṁ = ∑(λ_k P_k + P_{k-1})•ρ_k, then apply `A_mul_putzer_sum_charpoly` to conclude Ṁ = A·M.
 - Final step needs matrix-valued ODE uniqueness vs `NormedSpace.exp` — assess Mathlib coverage
   (`NormedSpace.exp`, `hasDerivAt` for `exp (t•A)`); likely the true remaining blocker.
+
+## Session 2026-07-04 (researcher-14) - Algebraic initial condition M(0)=I + IVP packaging
+
+**Mode**: FRESH (claimed from available pool, WEAK knowledge tier)
+**Outcome**: progress (2 new verified lemmas, 0 sorries, 0 axioms; build OK via docker)
+
+### What I Did
+- The prior sessions supplied the telescoping identity, ρ_n=0 truncation, and the *algebraic*
+  `Ṁ = A·M` right-hand side (`A_mul_putzer_sum_charpoly`). The knowledge doc listed "show M(0)=I"
+  as the next algebraic gap before the analytic layer.
+- Added `putzer_sum_initial`: if `c 0 = 1` and `c k = 0` for all `k > 0`, then
+  `∑_{k<m} c_k • ρ_k = 1` (m ≥ 1). Only the k=0 term survives and ρ₀=1. With `c_k = P_k(0)`
+  this is exactly the Putzer initial condition `M(0) = I`. One-liner via `Finset.sum_eq_single 0`.
+- Added `putzer_ivp_charpoly`: packages BOTH algebraic IVP halves at full length n into a single
+  conjunction — `A·M = ∑(λ_k P_k + P_{k-1})•ρ_k` AND `M = 1` — from χ_A = ∏(X-λᵢ) plus Putzer's
+  initial data (P₀=1, Pₖ=0 for k>0). This is the complete algebraic skeleton of Putzer's theorem.
+
+### Key Findings
+- Both halves of the linear matrix IVP `Ṁ = A·M, M(0)=I` are now pure `CommRing` algebra; the
+  ONLY remaining work is genuinely analytic: (1) construct coefficient FUNCTIONS P_k(t) with the
+  right HasDerivAt relations and initial values, (2) assemble HasDerivAt over the finite sum,
+  (3) matrix-valued ODE uniqueness vs `NormedSpace.exp`. The algebra no longer blocks anything.
+
+### Files Modified
+- proofs/Proofs/CayleyHamiltonOQ02OQ01.lean (+2 lemmas, +new section; 244→292 lines, 14→16 thms)
+- src/data/proofs/cayley-hamilton-oq-02-oq-01/meta.json (counts, contributions, openQuestions)
+
+### Next Steps
+- Analytic layer only (no algebra left): define P_k(t) as ODE solutions (variation of parameters),
+  prove HasDerivAt.sum assembly using A_mul_putzer_sum_charpoly for the algebraic step, feed
+  M(0)=I from putzer_sum_initial, then matrix ODE uniqueness. Assess Mathlib `ODE_solution_unique`
+  / `NormedSpace.exp` coverage for M_n(ℂ)-valued functions — the true remaining blocker.
