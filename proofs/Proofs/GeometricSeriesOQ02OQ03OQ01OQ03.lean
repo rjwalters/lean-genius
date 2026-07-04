@@ -55,6 +55,7 @@ variable {R : Type*} [NormedRing R] [HasSummableGeomSeries R]
 `x − t = x · (1 − x⁻¹ t)`.  This is the algebraic engine of the whole file: it
 turns a perturbation of `x` into a perturbation of `1`, ready for the Neumann
 series. -/
+omit [HasSummableGeomSeries R] in
 theorem factor_sub (x : Rˣ) (t : R) :
     (x : R) - t = ↑x * (1 - (↑x⁻¹ : R) * t) := by
   rw [mul_sub, mul_one, ← mul_assoc, Units.mul_inv, one_mul]
@@ -82,13 +83,10 @@ then
 Setting `x = 1` recovers the ordinary Neumann series `(1 − t)⁻¹ = ∑' n, tⁿ`. -/
 theorem neumann_series_sub (x : Rˣ) (t : R) (h : ‖(↑x⁻¹ : R) * t‖ < 1) :
     Ring.inverse ((x : R) - t) = (∑' n : ℕ, ((↑x⁻¹ : R) * t) ^ n) * ↑x⁻¹ := by
-  set s : R := (↑x⁻¹ : R) * t with hs
-  set u : Rˣ := Units.oneSub s h with hu
-  have hfac : (↑x : R) - t = ↑(x * u) := by
-    rw [Units.val_mul, hu, Units.val_oneSub, factor_sub x t, hs]
-  rw [hfac, Ring.inverse_unit, mul_inv_rev, Units.val_mul]
-  congr 1
-  rw [← Ring.inverse_unit u, hu, Units.val_oneSub, ← geom_series_eq_inverse s h]
+  have hfac : (↑x : R) - t = ↑(x * Units.oneSub ((↑x⁻¹ : R) * t) h) := by
+    rw [Units.val_mul, Units.val_oneSub, factor_sub x t]
+  rw [hfac, Ring.inverse_unit, mul_inv_rev, Units.val_mul, ← Ring.inverse_unit,
+    Units.val_oneSub, geom_series_eq_inverse ((↑x⁻¹ : R) * t) h]
 
 /-- The `HasSum` form of the perturbed Neumann series: the partial sums
 `∑_{i<N} (x⁻¹ t)ⁱ · x⁻¹` converge to `(x − t)⁻¹`. -/
