@@ -176,5 +176,31 @@
       "type": "book"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "exists_and_conj",
+      "type": "core",
+      "description": "Schur–Zassenhaus, abelian case, full form: a complement K₀ of an abelian normal subgroup N of coprime order/index exists, and every complement K is conjugate to K₀ by an element of N — so the complements form a single N-conjugacy class.",
+      "leanType": "(hN : Nat.Coprime (Nat.card N) N.index) → ∃ K₀ : Subgroup G, IsComplement' N K₀ ∧ ∀ K : Subgroup G, IsComplement' N K → ∃ g ∈ N, K = K₀.map (MulAut.conj g).toMonoidHom"
+    },
+    {
+      "name": "isComplement'_conj_of_isMulCommutative",
+      "type": "core",
+      "description": "Conjugacy half of Schur–Zassenhaus (abelian case): any two complements K₁, K₂ of an abelian normal subgroup N of coprime order/index are conjugate by an element of N. Proved via transitivity of the N-action on N.QuotientDiff.",
+      "leanType": "(hN : Nat.Coprime (Nat.card N) N.index) → (h₁ : IsComplement' N K₁) → (h₂ : IsComplement' N K₂) → ∃ g ∈ N, K₂ = K₁.map (MulAut.conj g).toMonoidHom"
+    },
+    {
+      "name": "stabilizer_complementPoint_eq",
+      "type": "core",
+      "description": "Converse of the Schur–Zassenhaus construction: every complement K of an abelian normal N of coprime order/index is the stabilizer of its corresponding point of N.QuotientDiff — identifying complements with fixed points of the N-action.",
+      "leanType": "(hN : Nat.Coprime (Nat.card N) N.index) → (h : IsComplement' N K) → stabilizer G (complementPoint h) = K"
+    },
+    {
+      "name": "le_stabilizer_complementPoint",
+      "type": "supporting",
+      "description": "Each k ∈ K fixes the transversal point complementPoint h: right-translating the subset K by one of its own elements leaves it invariant. The single step that uses that K is a subgroup, giving K ≤ stabilizer G (complementPoint h).",
+      "leanType": "(h : IsComplement' N K) → K ≤ stabilizer G (complementPoint h)"
+    }
+  ]
 }
