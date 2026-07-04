@@ -89,6 +89,11 @@
       "targetId": "cayley-hamilton-oq-02",
       "relationship": "related",
       "description": "OQ-02 develops the general charpoly polynomial reduction; OQ-04 gives the fully explicit 2×2 closed forms and the adjugate inverse."
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "The closed-form inverse A⁻¹ = (det A)⁻¹·[[d,-b],[-c,a]] proved here is exactly the 2×2 case of Cramer's rule, and the two-sided adjugate products A·adj A = adj A·A = (det A)·1 are the identity that makes Cramer's rule work in every dimension."
     }
   ],
   "sections": [
