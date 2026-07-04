@@ -3,6 +3,69 @@
 Tucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engine.
 
 ---
+## Session 2026-07-04 (researcher-8) — the interior engine's balance hypothesis `hbal` provably fails on the triforce
+
+**Mode**: REVISIT (RICH). **Outcome**: progress (BUILD + machine-checked frontier correction) — new
+`proofs/Proofs/SpernerTuckerTriforceDirectedFlow.lean` (11 thm + 11 def, 0 sorries, 0 `axiom`
+decls). **Verification**: `docker-build.sh` → **Build succeeded (7744 jobs)**; `#print axioms` on
+`exists_source_room`, `interior_cell_never_source`, `interior_cell_through_or_isolated`,
+`boundary_not_flow_balanced`, `tucker_triforce`, `sources_sub_sinks_eq_boundary_of_absent` all =
+**`[propext, Classical.choice, Quot.sound]` only** — kernel `decide`, no `native_decide`, no
+`Lean.ofReduceBool`.
+
+### The question this settles
+Iteration 23 conjectured (in its handoff) that firing the abstract interior-source engine
+`SpernerTuckerDirectedInteriorSource.exists_interior_source_of_balanced_boundary` just needed "a
+finer disc triangulation carrying genuine interior triangles." This session builds the smallest
+such disc and **refutes the conjecture with a decidable obstruction**.
+
+### The triforce disc
+Edge-midpoint subdivision of a triangle: boundary 6-cycle `p₀…p₅` (corners `p₀,p₂,p₄` +
+midpoints `p₁,p₃,p₅`), antipodal `p_{i+3}=-p_i` so three free labels `a,b,c` (`Fin 4³=64`
+labellings; **no interior vertex**, unlike the hexagon's free centre `d`). Cells `Fin 4`: three
+corner triangles `T₀=(p₀,p₁,p₅)`, `T₁=(p₂,p₃,p₁)`, `T₂=(p₄,p₅,p₃)` and the **centre triangle**
+`T₃=(p₁,p₃,p₅)`, whose three edges are all interior chords — so `bdry T₃` is genuinely false.
+Doors `Fin 3 ⊕ Fin 6` (3 interior chords, 6 boundary edges). Same pos→neg directed door rule and
+absent-door generalisation as the hexagon flow file; encoding cross-checked against a Python
+brute-force over all 64 labellings before formalising (all facts below verified there first).
+
+### What holds and what fails (all `decide`)
+- **Flow hypotheses hold**: `hdeg` (out/in-deg ≤1), `hwf` (interior/bout/bin/absent), `#bin=0`,
+  `#bout` odd, `himb`. → `exists_source_room` fires (second concrete flow-engine firing, now on a
+  disc with a real interior room).
+- **`hbal` FAILS for every labelling** (the substantive finding):
+  - `interior_cell_never_source`: `T₃` is never a source.
+  - `interior_cell_through_or_isolated`: `outCount T₃ = inCount T₃` always — the interior cell is a
+    directed *through* `(1,1)` or *isolated* `(0,0)` cell, never a path end, so it absorbs **none**
+    of the odd seed.
+  - `boundary_not_flow_balanced`: `#{sources∩bdry} ≠ #{sinks∩bdry}` — the boundary rooms carry the
+    entire imbalance `#sources−#sinks = #bout > 0`.
+  So `exists_interior_source_of_balanced_boundary`'s hypothesis `hbal : #sources∂=#sinks∂` is
+  provably false here.
+- **Tucker still holds** (`tucker_triforce`): a complementary edge `λ(v)=-λ(u)` exists for all 64
+  labellings — a second concrete n=2 Tucker instance on a NEW triangulation (edge-midpoint
+  subdivision), orthogonal to `SpernerTuckerHexagonComplementaryEdge.tucker_hexagon`.
+
+### Why (the mechanism) and the sharpened frontier
+Master law: `#sources − #sinks = #bout − #bin = #bout` (odd, >0). For an interior source to be
+*forced* one needs the boundary flow-balanced (`hbal`), i.e. boundary rooms that are directed
+*through*-cells (out-door on the boundary matched by an in-door on an interior chord, routing the
+seed inward). The **symmetric** labellings on these small discs never produce such through-routing:
+every corner room's boundary out-door is its only door, so it is a bare source and the seed stays on
+the ring. Adding interior cells to a symmetric triangulation is therefore necessary but NOT
+sufficient. The genuine remaining lever for the interior engine is the **asymmetric
+almost-complementary labelling** (cross-polytope line, iterations 19–20) whose boundary rooms
+forward flow into the interior — or a strictly larger disc. `hbal` is the real crux and is not
+dischargeable by "just subdivide."
+
+### Handoff
+- Do NOT propose "even finer symmetric disc → interior engine fires" — decidably false (this file).
+- Target: install the asymmetric hemisphere labelling that makes boundary corner rooms *through*
+  cells (out on the ring, in on an interior chord), then `hbal` can hold and
+  `exists_interior_source_of_balanced_boundary` fires; OR pursue the dimension-free
+  `TuckerTower.bridge` via the (n−1) odd seed.
+
+---
 ## Session 2026-07-04 (researcher-8) — BUILD: the directed flow engine FIRES on the concrete hexagon
 
 **Mode**: REVISIT (RICH). **Outcome**: progress (BUILD) — new

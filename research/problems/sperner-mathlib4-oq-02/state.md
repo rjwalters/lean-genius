@@ -1,5 +1,44 @@
 # Research State: sperner-mathlib4-oq-02
 
+## Iteration 24 (researcher-8, 2026-07-04 — VERIFIED 0-axiom, docker 7744 jobs) — the interior engine's `hbal` provably FAILS on the finer disc
+Added `proofs/Proofs/SpernerTuckerTriforceDirectedFlow.lean` (11 thm / 11 def, 0 sorries,
+0 axioms; `#print axioms` on all 6 headline theorems = propext/Classical.choice/Quot.sound
+only — kernel `decide`, NOT `native_decide`).
+
+**Directly tests iteration 23's handoff conjecture and refutes it.** Iteration 23 fired the
+directed flow engine on the coarse hexagon but noted `exists_interior_source_of_balanced_boundary`
+was unrunnable there because every triangle borders `∂B²` (no interior room), and conjectured the
+fix was "a finer disc triangulation carrying genuine interior triangles; only then is `bdry`
+non-trivial and the interior-source engine runnable." This iteration builds the smallest such disc
+— the **triforce (edge-midpoint) subdivision** of a triangle: 6 boundary vertices `p₀…p₅`
+(corners + edge-midpoints, antipodal `p_{i+3}=-p_i`, three free labels `a,b,c`, `Fin 4³=64`), 4
+triangles = 3 corner cells + 1 **centre cell `T₃`** whose three edges are all interior chords, so
+`bdry T₃` is genuinely false — and shows the conjecture is FALSE.
+
+**Machine-checked results (all `decide`, Tier-A axiom-free):**
+- `hdeg`/`hwf`/`no_boundary_in`/`boundary_out_odd`/`himb` — the four flow hypotheses hold exactly
+  as on the hexagon; `#boundary-in=0`, `#boundary-out` odd.
+- `exists_source_room` — **the flow engine fires** (second concrete firing, now on a disc WITH an
+  interior cell): every antipodal labelling forces a source room.
+- **The correction:** `interior_cell_never_source` — `T₃` is *never* a source;
+  `interior_cell_through_or_isolated` — `outCount T₃ = inCount T₃` always (`T₃` is a directed
+  *through* `(1,1)` or *isolated* `(0,0)` cell, never a path end); `boundary_not_flow_balanced` —
+  `#{sources∩bdry} ≠ #{sinks∩bdry}` for **every** labelling. So the interior-source engine's
+  balance hypothesis `hbal` is provably false here: the whole odd seed `#sources−#sinks=#bout>0` is
+  carried by the **boundary** rooms, not routed into the interior. Merely having an interior cell is
+  necessary but NOT sufficient.
+- `tucker_triforce` — positive by-product: the **actual Tucker conclusion** (a complementary edge
+  `λ(v)=-λ(u)`) holds on this disc for all 64 labellings — a second concrete n=2 Tucker instance,
+  on the edge-midpoint subdivision (orthogonal to `tucker_hexagon`, hexagon + free centre).
+
+**Sharpened frontier.** The interior engine (`exists_interior_source_of_balanced_boundary`) needs
+boundary rooms that are directed *through*-cells forwarding the seed inward — which the symmetric
+labelling never produces on these small discs. The genuine next lever is the **asymmetric
+almost-complementary labelling** (per iterations 19–20's cross-polytope line) whose boundary rooms
+route flow into the interior, OR a strictly larger disc where interior rooms can absorb the seed;
+adding interior cells to a symmetric triangulation does not suffice. The `hbal` hypothesis is the
+real crux and is NOT dischargeable by "just subdivide."
+
 ## Iteration 23 (researcher-8, 2026-07-04 — VERIFIED 0-axiom, docker 7744 jobs) — flow engine FIRES on hexagon
 Added `proofs/Proofs/SpernerTuckerHexagonDirectedFlow.lean` (7 thm / 6 def, 0 sorries,
 0 axioms; `#print axioms` on the 4 headline theorems = propext/Classical.choice/Quot.sound
