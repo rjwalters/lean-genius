@@ -4,9 +4,29 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 4 (PART III)
+**Iteration**: 5 (PART IV)
 
-## Current Focus
+## Iteration 5 (PART IV — n = 4 via SOS), PR #34576
+Discharged **ALL THREE** Newton log-concavity steps at `n = 4` for arbitrary
+SIGNED reals, via explicit SOS certificates (docker-build clean, 7743 jobs; 0
+sorries, 0 axioms). This reaches the middle (`k = 2`) and top (`k = 3`) steps
+that Part III's general `k = 1` QM–AM route does not cover, answering the
+entry's "extend the SOS approach to n = 4" open question. Four new theorems
+(16 → 20):
+- `newton_four_first`:  `8 e₂ ≤ 3 e₁²`   — SOS `∑_{i<j}(xᵢ−xⱼ)²`.
+- `newton_four_second`: `9 e₁ e₃ ≤ 4 e₂²` — SOS
+  `3∑(xᵢxⱼ−xₖxₗ)² + ½∑((xᵢ−xⱼ)(xₖ−xₗ))²` (three opposite-pair splittings).
+- `newton_four_third`:  `8 e₂ e₄ ≤ 3 e₃²` — SOS `∑_{i<j}(xᵢ−xⱼ)²(xₖxₗ)²`, the
+  reciprocal-polynomial image of the `k = 1` certificate.
+- `newton_four_normalized`: all three in normalized p-form.
+Certificates derived + verified symbolically (sympy: exact identities, 0
+numerical violations over 30k random signed samples). Method: the general Rolle
+crux is NOT needed at fixed arity — each Newton inequality at `n = 4` is a PSD
+quartic form whose SOS decomposition `nlinarith` verifies from the listed
+squares. Next SOS increment would be `n = 5` (degrees rise; feasibility of
+explicit certificates is the open question).
+
+## Iteration 4 (PART III) Focus
 Proved the genuinely **arbitrary-`n`** first Newton (= first Maclaurin)
 inequality `p₁² ≥ p₀ p₂` for SIGNED reals — no enumeration, no appeal to the
 still-open iterated-Rolle crux. Three new theorems in
