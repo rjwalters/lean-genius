@@ -70,6 +70,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Viviani's Theorem as a Convex n-gon Characterisation",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Module docstring framing the generalisation: classical Viviani says the sum of distances from an interior point of an equilateral triangle to its sides is constant. This entry proves the sharp n-gon form — the signed distance-sum to the edges of a convex polygon is constant across the plane iff the outward edge-normals sum to zero — and specialises it to regular n-gons, where the normals are roots of unity and automatically cancel. Three parts: a real inner product, an affine reduction, and the roots-of-unity corollary.",
+      "mathContext": "$\\sum_i (c_i - \\langle \\nu_i, x\\rangle)$ is constant in $x$ $\\iff \\sum_i \\nu_i = 0$."
+    },
+    {
       "id": "part1-rdot",
       "title": "Part I: The Real Inner Product and its Additivity over Finite Sums",
       "startLine": 28,
@@ -77,11 +85,20 @@
       "summary": "rdot z w = z.re·w.re + z.im·w.im with its bilinearity simp lemmas and positive-definiteness rdot z z = 0 ↔ z = 0; rdotHom bundles the first slot as an AddMonoidHom so that rdot_sum_left (rdot of a Finset sum is the sum of rdots) follows from map_sum — the n-term generalisation of the parent's two-term bilinearity."
     },
     {
-      "id": "part2-affine",
-      "title": "Part II: The Distance-Sum and the Affine Reduction",
+      "id": "distance-sum-difference",
+      "title": "Part II(a): The Distance-Sum and its Affine Difference",
       "startLine": 78,
+      "endLine": 100,
+      "summary": "distSum s ν c x = ∑ᵢ∈s (cᵢ − rdot(νᵢ) x) is the signed distance-sum to the edges. distSum_sub proves its key affine property: S(x) − S(y) = rdot(∑ᵢ νᵢ)(y − x), so the variation of the distance-sum across the plane is entirely controlled by the single vector ∑ᵢ νᵢ (the sum of outward normals), via the n-term additivity of rdot from Part I.",
+      "mathContext": "$S(x)-S(y)=\\langle \\textstyle\\sum_i\\nu_i,\\ y-x\\rangle$."
+    },
+    {
+      "id": "affine-characterisation",
+      "title": "Part II(b): The Affine Reduction (the n-gon Viviani heart)",
+      "startLine": 102,
       "endLine": 122,
-      "summary": "distSum s ν c x = ∑ᵢ∈s (cᵢ − rdot(νᵢ)x); distSum_sub gives S(x) − S(y) = rdot(∑ᵢνᵢ)(y−x); distSum_const_iff_normalSum_zero proves the headline equivalence — the distance-sum is constant on the whole plane iff the outward normals sum to zero — using positive-definiteness for the forward direction."
+      "summary": "distSum_const_iff_normalSum_zero proves the headline equivalence: the distance-sum is constant on the whole plane iff the outward normals sum to zero. The reverse direction is immediate from distSum_sub; the forward direction uses positive-definiteness of rdot (rdot z z = 0 ↔ z = 0) to force ∑ᵢ νᵢ = 0 from constancy. This is the affine core from which the regular-polygon corollary follows.",
+      "mathContext": "$S\\text{ constant}\\iff\\sum_i\\nu_i=0$."
     },
     {
       "id": "part3-regular",
