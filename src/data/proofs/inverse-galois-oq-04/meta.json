@@ -134,5 +134,19 @@
     ],
     "lemmaCount": 0,
     "additionalFiles": []
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "inertiaDeg_dvd_inertiaDegIn",
+      "type": "main",
+      "description": "Tower + Galois-uniformity brick: for a tower R ⊆ S ⊆ T with T/R Galois (group G) and matching primes p, P, Q, the intermediate inertia degree inertiaDeg p P divides the Galois-invariant inertiaDegIn p T. No Galois hypothesis is needed on the (possibly non-normal) middle ring S.",
+      "leanType": "inertiaDeg p P ∣ inertiaDegIn p T"
+    },
+    {
+      "name": "dvd_inertiaDegIn_of_dvd_inertiaDeg",
+      "type": "key",
+      "description": "Reduction form consumed by the A₅ inverse-Galois argument: to show d ∣ inertiaDegIn p T it suffices to exhibit one intermediate prime P with d ∣ inertiaDeg p P — exactly what the Kummer–Dedekind cubic factor supplies (d = 3).",
+      "leanType": "d ∣ inertiaDeg p P → d ∣ inertiaDegIn p T"
+    }
+  ]
 }
