@@ -130,6 +130,56 @@
     "path": "Proofs/Erdos399Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "erdos_399_disproved",
+      "type": "core",
+      "description": "Formal disproof of Erdős Problem #399, exhibiting a counterexample where n! + y^k = x^k with xy > 1 and k > 2.",
+      "leanType": ": ∃ n : ℕ, ∃ x : ℕ, ∃ y : ℕ, ∃ k : ℕ, 1 < x * y ∧ 2 < k ∧ Nat.factorial n + y^k = x^k"
+    },
+    {
+      "name": "barfield_counterexample",
+      "type": "core",
+      "description": "Barfield's explicit counterexample 10! = 48^4 − 36^4, stated as 10! + 36^4 = 48^4.",
+      "leanType": ": 10! + (36 : ℕ)^4 = (48 : ℕ)^4"
+    },
+    {
+      "name": "erdos_399_alt",
+      "type": "supporting",
+      "description": "The counterexample restated over the integers as 10! = 48^4 − 36^4.",
+      "leanType": ": (10! : ℤ) = (48 : ℤ)^4 - (36 : ℤ)^4"
+    },
+    {
+      "name": "barfield_xy_gt_one",
+      "type": "supporting",
+      "description": "Confirms the counterexample satisfies the constraint xy > 1 since 48 · 36 = 1728.",
+      "leanType": ": 1 < 48 * 36"
+    },
+    {
+      "name": "barfield_k_gt_two",
+      "type": "supporting",
+      "description": "Confirms the counterexample satisfies the constraint k > 2 with exponent k = 4.",
+      "leanType": ": 2 < 4"
+    },
+    {
+      "name": "barfield_not_coprime",
+      "type": "supporting",
+      "description": "Shows the counterexample bases 48 and 36 are not coprime, which is essential to its existence.",
+      "leanType": ": ¬ Nat.Coprime 48 36"
+    },
+    {
+      "name": "barfield_factored",
+      "type": "supporting",
+      "description": "Factors the difference as 48^4 − 36^4 = 12^4 · 175, exposing the shared factor of 12.",
+      "leanType": ": (48 : ℕ)^4 - (36 : ℕ)^4 = (12 : ℕ)^4 * 175"
+    },
+    {
+      "name": "six_factorial_sum_squares",
+      "type": "supporting",
+      "description": "Verifies the exceptional sum-of-two-squares identity 6! = 12^2 + 24^2.",
+      "leanType": ": 6! = (12 : ℕ)^2 + (24 : ℕ)^2"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-373",
