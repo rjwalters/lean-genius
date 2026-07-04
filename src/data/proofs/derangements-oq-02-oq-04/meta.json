@@ -61,20 +61,11 @@
       "mathContext": "$S(n,k) = \\binom{n}{k}\\,D(n-k)$ specialised at codimensions $0,1,2,3$ gives $1,\\,0,\\,\\binom{n}{2},\\,2\\binom{n}{3}$."
     },
     {
-      "id": "small-d2",
-      "title": "D(2) = 1: the Unique Transposition",
+      "id": "small-derangements",
+      "title": "Small Derangement Values",
       "startLine": 33,
-      "endLine": 34,
-      "summary": "numDerangements_two proves D(2) = 1 by kernel `decide`: the only fixed-point-free permutation of two points is the single swap. This constant feeds the codimension-2 count.",
-      "mathContext": "$D(2) = 1$ — one derangement of two points (the transposition)."
-    },
-    {
-      "id": "small-d3",
-      "title": "D(3) = 2: the Two 3-Cycles",
-      "startLine": 36,
       "endLine": 38,
-      "summary": "numDerangements_three proves D(3) = 2 by kernel `decide`: the two derangements of three points are the two 3-cycles. This constant feeds the codimension-3 count. Both decides are kernel reductions (not native_decide), keeping the file axiom-free.",
-      "mathContext": "$D(3) = 2$ — the two 3-cycles on three points."
+      "summary": "numDerangements_two: D(2) = 1 (the unique swap); numDerangements_three: D(3) = 2 (the two 3-cycles), both by kernel decide. These feed the codimension counts below."
     },
     {
       "id": "codim-two",

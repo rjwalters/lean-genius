@@ -50,15 +50,14 @@
     "lastUpdated": "2026-06-28"
   },
   "overview": {
-    "historicalContext": "Erdős Problem #895 (Erdős–Hajnal) asks whether, for large n, every triangle-free graph on {1,…,n} must contain three pairwise-non-adjacent vertices a, b, a+b — an independent additive (Schur) triple. Ben Barber (2015) answered YES for all n ≥ 18 using SAT-solver verification, and showed the threshold is sharp: a triangle-free graph on {1,…,17} exists with no such triple among three distinct vertices. The question sits in the Ramsey-theoretic lineage of Schur (1916), whose theorem forces a monochromatic solution of a+b=c in any finite coloring, and Rado (1933), who characterized partition-regular linear systems; Erdős and Hajnal (1980) sharpened the ask to an *independent* (pairwise non-adjacent) additive triple inside a triangle-free host. Barber settled the exact threshold by a SAT computation rather than a closed-form argument, which is why a formal, kernel-checkable witness at the sharp value n = 18 is worth recording.",
+    "historicalContext": "Erdős Problem #895 (Erdős–Hajnal) asks whether, for large n, every triangle-free graph on {1,…,n} must contain three pairwise-non-adjacent vertices a, b, a+b — an independent additive (Schur) triple. Ben Barber (2015) answered YES for all n ≥ 18 using SAT-solver verification, and showed the threshold is sharp: a triangle-free graph on {1,…,17} exists with no such triple among three distinct vertices.",
     "problemStatement": "Exhibit and machine-verify the sharp counterexample on {1,…,17}: a triangle-free graph with no independent additive triple in three distinct vertices a, b, a+b. (Companion to Erdos895Problem.lean, whose `counterexample_17` is false as stated.)",
     "proofStrategy": "Encode the 42-edge witness (researcher-1's Z3/Python-verified graph) as a List of ascending pairs on {1,…,17}; define a symmetric Boolean adjacency `ce895Adj` via the ascending pair (min, max); build `G895 : SimpleGraph (Fin 18)` with that adjacency plus `a ≠ b` (symmetry from min/max commutativity, looplessness immediate). Mark the triangle-free / independent-triple / distinct-additive-triple predicates `@[reducible]` so instance synthesis sees the bounded quantifiers, then discharge `IsTriangleFree G895` and the negated existence statement by `decide` — each an exhaustive check over Fin 18.",
     "keyInsights": [
       "**Distinctness is the crux.** Barber's theorem concerns three DISTINCT vertices a, b, a+b. A predicate omitting `a ≠ b` admits the degenerate (k, k, 2k) and changes the answer — making every triangle-free graph on Fin 17 (indeed Fin 12+) trivially have a 'triple'. The sibling Erdos895Problem.lean uses the loose predicate, so its `counterexample_17` (Fin 17) is false.",
       "**Index alignment: Fin 18 = {1,…,17}.** `SimpleGraph (Fin 18)` has vertices {0,…,17}; vertex 0 is inert (never part of an additive triple since a+b ≥ 2). So the {1,…,17} counterexample lives on Fin 18, not Fin 17 — an off-by-one in the sibling file.",
       "**The SAT result becomes a 0-axiom kernel-checkable fact.** The exhaustive search Barber ran with a SAT solver becomes, for this specific witness, a plain `decide` evaluation over Fin 18 — turning an external computation into a fully Lean-verified statement (only `propext`/`Quot.sound`, no compiler-trust axiom), cross-checked by an independent Z3 UNSAT proof and a pure-Python verifier.",
-      "**fromRel vs explicit structure.** Building `G895` as an explicit `SimpleGraph` structure (Adj := symmetric Bool ∧ a ≠ b) gives a directly-decidable adjacency, avoiding the extra unfolding `SimpleGraph.fromRel` would interpose before decide.",
-      "**Why kernel `decide`, not `native_decide`.** The whole point of the entry is a trustworthy replacement for an external SAT run, so it deliberately avoids the compiler-trust axiom `Lean.ofReduceBool`: the 18³ triangle search and the distinct-additive-triple search are small enough that the Lean kernel reduces them directly, leaving only `propext`/`Quot.sound` in `#print axioms` — a strictly stronger guarantee than a `native_decide` certificate."
+      "**fromRel vs explicit structure.** Building `G895` as an explicit `SimpleGraph` structure (Adj := symmetric Bool ∧ a ≠ b) gives a directly-decidable adjacency, avoiding the extra unfolding `SimpleGraph.fromRel` would interpose before decide."
     ],
     "prerequisites": [
       "Mathlib.Combinatorics.SimpleGraph.Basic (SimpleGraph, Adj)",
@@ -93,20 +92,12 @@
       "mathContext": "The 42-edge witness is researcher-1's Z3/Python-verified graph; vertex 0 is isolated."
     },
     {
-      "id": "triangle-free-check",
-      "title": "Triangle-Freeness by Exhaustive decide",
+      "id": "verified-properties",
+      "title": "Verified properties (exhaustive decide)",
       "startLine": 87,
-      "endLine": 99,
-      "summary": "ce895_triangleFree proves IsTriangleFree G895 by `decide`, an exhaustive check over all triples of Fin 18 that no three mutually adjacent vertices exist. The @[reducible] predicates let instance synthesis expose the bounded quantifier so the kernel can evaluate it directly.",
-      "mathContext": "Over all $\\binom{18}{3}$ vertex triples, no triangle occurs; discharged by kernel reduction (no native_decide)."
-    },
-    {
-      "id": "no-triple-and-package",
-      "title": "No Distinct Independent Additive Triple, and the Packaged Witness",
-      "startLine": 100,
       "endLine": 111,
-      "summary": "ce895_no_distinct_independent_additive_triple proves by `decide` that G895 has no independent additive triple among three DISTINCT vertices a, b, a+b, and counterexample_fin18 bundles this with triangle-freeness into the existential sharp-threshold witness ∃ G, IsTriangleFree G ∧ ¬∃ a b c, …",
-      "mathContext": "$\\neg\\exists a,b,c$ distinct with $a{+}b{=}c$ pairwise non-adjacent; combined with triangle-freeness gives $\\exists G$, the corrected counterexample."
+      "summary": "ce895_triangleFree and ce895_no_distinct_independent_additive_triple (both decide over Fin 18), combined into counterexample_fin18 — the sharp-threshold witness.",
+      "mathContext": "Triangle-freeness over all triples and absence of any distinct-vertex independent additive triple, checked exhaustively."
     }
   ],
   "conclusion": {

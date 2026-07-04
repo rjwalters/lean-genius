@@ -119,20 +119,12 @@
       "mathContext": "∑_{j=0}^{m}(-1)^j/j! → ∑_{j=0}^{∞}(-1)^j/j! = e^{-1}."
     },
     {
-      "id": "poisson-limit-assembly",
-      "title": "The Poisson(1) Limit: Composition and Scaling",
-      "startLine": 58,
-      "endLine": 84,
-      "summary": "fixedPoints_tendsto_poisson (statement + phase 1): for fixed k the target is S(n,k)/n! → e^{-1}/k!. Since n - k → ∞ (tendsto_atTop_atTop via omega), composing with the partial-sum limit gives altFactPartialSum(n-k) → e^{-1}; scaling by the constant 1/k! (Tendsto.const_mul) and a ring rewrite of (1/k!)·e^{-1} yield the limit e^{-1}/k!.",
+      "id": "poisson-limit",
+      "title": "The Poisson(1) Limit of the Fixed-Point Distribution",
+      "startLine": 62,
+      "endLine": 102,
+      "summary": "fixedPoints_tendsto_poisson: for fixed k, S(n,k)/n! → e^{-1}/k!. Since n - k → ∞ (tendsto_atTop_atTop via omega), the partial sums along n - k still tend to e^{-1}; scaling by the constant 1/k! (Tendsto.const_mul) gives limit e^{-1}/k!; Tendsto.congr' swaps the scaled partial sums for S(n,k)/n! using the eventual (n ≥ k) identity S(n,k)/n! = (1/k!)·altFactPartialSum(n-k) from the parent closed form, closed by field_simp; ring.",
       "mathContext": "Pr[X_n = k] = S(n,k)/n! → e^{-1}/k!, the Poisson(1) probability mass function."
-    },
-    {
-      "id": "poisson-limit-eventual-eq",
-      "title": "Eventual Equality with S(n,k)/n! via the Parent Closed Form",
-      "startLine": 85,
-      "endLine": 100,
-      "summary": "fixedPoints_tendsto_poisson (phase 2): Tendsto.congr' swaps the scaled partial sums for the actual sequence S(n,k)/n!, which agree only eventually — on {n | k ≤ n} (eventually_ge_atTop). On that set the pointwise identity S(n,k)/n! = (1/k!)·altFactPartialSum(n-k) is discharged by substituting the parent's real closed form card_perms_with_kfixed_closed_form_real and clearing the nonzero n!, k! denominators with field_simp.",
-      "mathContext": "For n ≥ k: cancelling n! in S(n,k) = (n!/k!)·∑_{j≤n-k}(-1)^j/j! gives S(n,k)/n! = (1/k!)·altFactPartialSum(n-k)."
     },
     {
       "id": "consistency",

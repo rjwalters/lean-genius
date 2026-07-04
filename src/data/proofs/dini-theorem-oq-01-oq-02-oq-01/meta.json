@@ -102,20 +102,11 @@
       "endLine": 133
     },
     {
-      "id": "log-modulus",
-      "title": "The Explicit Modulus: Real Log Threshold",
+      "id": "explicit-modulus",
+      "title": "The Explicit Modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉",
+      "summary": "pow_lt_of_log_modulus (real-threshold modulus via logarithms and div_le_iff_of_neg) and pow_lt_of_ceil_modulus (packaged natural-number modulus via Nat.le_ceil)",
       "startLine": 134,
-      "endLine": 154,
-      "summary": "pow_lt_of_log_modulus turns the geometric bound into a quantitative threshold: for δ ∈ (0,1) and ε > 0, once n ≥ log ε / log(1−δ) we have (1−δ)ⁿ ≤ ε. Taking logarithms sends (1−δ)ⁿ ≤ ε to n·log(1−δ) ≤ log ε; since log(1−δ) < 0 (Real.log_neg), dividing reverses the inequality (div_le_iff_of_neg), and re-exponentiating via Real.exp_log/Real.log_pow closes it.",
-      "mathContext": "$n \\ge \\log\\varepsilon/\\log(1-\\delta) \\Rightarrow (1-\\delta)^n \\le \\varepsilon$ (log is negative, so the division flips the inequality)."
-    },
-    {
-      "id": "ceil-modulus",
-      "title": "The Explicit Modulus: Natural-Number Form",
-      "startLine": 155,
-      "endLine": 194,
-      "summary": "pow_lt_of_ceil_modulus packages the real threshold as a concrete natural-number modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉₊, using Nat.le_ceil to bridge the ceiling to the real bound and delegating to pow_lt_of_log_modulus. As δ → 0 the threshold blows up (log(1−δ) → 0⁻), interpolating continuously to the parent's non-uniformity on the full [0,1).",
-      "mathContext": "$N(\\varepsilon,\\delta)=\\lceil \\log\\varepsilon/\\log(1-\\delta)\\rceil_+$; $n \\ge N \\Rightarrow (1-\\delta)^n \\le \\varepsilon$."
+      "endLine": 194
     }
   ],
   "conclusion": {

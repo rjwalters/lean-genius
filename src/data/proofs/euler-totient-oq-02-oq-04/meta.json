@@ -126,20 +126,12 @@
       "mathContext": "$f \\ast \\zeta = \\mathrm{id} = \\varphi \\ast \\zeta \\ \\Rightarrow\\ f = \\mathrm{id}\\ast\\mu = \\varphi.$"
     },
     {
-      "id": "mult-corollary",
-      "title": "The Open Question's Literal Form: Unique Multiplicative Solution",
+      "id": "characterization",
+      "title": "Multiplicative Corollary and the {φ} Solution Set",
       "startLine": 94,
-      "endLine": 98,
-      "summary": "eq_totient_of_multiplicative_of_sum_eq answers the open question exactly as posed — φ is the unique multiplicative function satisfying Gauss's divisor-sum identity. The proof discards the multiplicativity hypothesis (displayed as _hmul for faithfulness) and delegates to the stronger eq_totient_of_sum_eq, making explicit that multiplicativity is redundant for uniqueness.",
-      "mathContext": "$\\big(f\\text{ mult.}\\wedge \\sum_{d\\mid n} f(d)=n\\big) \\Rightarrow f=\\varphi$; the multiplicativity premise is inert."
-    },
-    {
-      "id": "solution-set",
-      "title": "The Solution Set Is Exactly {φ}",
-      "startLine": 100,
       "endLine": 116,
-      "summary": "sum_eq_iff_eq_totient upgrades uniqueness to a biconditional: f satisfies Gauss's divisor-sum identity on the positives iff f = φ there. The forward direction reuses eq_totient_of_sum_eq; the reverse rewrites Σ_{d|n} f(d) via Finset.sum_congr into Σ_{d|n} φ(d) and closes with totient_sum_eq. This exhibits the identity's solution set as the singleton {φ}.",
-      "mathContext": "$\\big(\\forall n>0,\\ \\sum_{d\\mid n} f(d)=n\\big) \\iff \\big(\\forall n>0,\\ f(n)=\\varphi(n)\\big).$"
+      "summary": "eq_totient_of_multiplicative_of_sum_eq answers the open question in its literal form (φ is the unique multiplicative solution), immediately from the stronger uniqueness. sum_eq_iff_eq_totient adds the converse via sum congruence and Gauss's identity, showing the Gauss identity's solution set is exactly {φ}.",
+      "mathContext": "$\\{\\,f : \\textstyle\\sum_{d\\mid n} f(d) = n\\,\\} = \\{\\varphi\\}.$"
     }
   ],
   "references": [

@@ -17,7 +17,7 @@
   },
   "currentState": "Iteration 20 (researcher-14): the directed interior seed can be ENTIRELY WITNESS-FREE — a sharp, machine-checked bound on what iteration-19's interior seed delivers. New verified 0-axiom file SpernerTuckerHexagonInteriorSeedWitnessGap.lean (213 LOC, 8 thm/12 def; #print axioms = propext/Classical.choice/Quot.sound only, plain decide — no sorryAx, no Lean.ofReduceBool) quantifies the gap iteration-19 flagged between the directed interior seed (exactly 3 degree-1 disc rooms whose door lies on an interior spoke, from SpernerTuckerHexagonDirectedInteriorSeed) and the GENUINE Tucker witnesses (interior spokes whose labels are exactly antipodal, Compl x y := x = negL y — strictly stronger than the sign door's opposite-sign +→−). Over all 4^4=256 antipodal labellings (decide): compl_imp_opposite_sign (Compl x y ⇒ sgn x = sgn y + 1, so the sign door never misses a witness ON SIGN — only on orientation), interiorComplDoor_le_interiorDeg1 (the genuine interior witnesses are a sub-count of the 3 seed rooms), and the headline interior_seed_can_be_witness_free: at a=b=c=+1, d=+2 the rule still fires interiorDeg1=3 yet interiorComplDoor=0 — NONE of the 3 seed doors is genuinely complementary, because the centre +2 has its antipode −2 absent from every ±1 boundary vertex. Yet Tucker still holds there, on the BOUNDARY (tucker_witness_is_on_boundary_there: edge v2–v3=(+1,−1) is Compl). interiorComplDoor_not_constant shows the genuine count is a real function of the labelling (0 at (+1,+1,+1,+2), 3 at (+1,+1,+1,+1)) while interiorDeg1 is the constant 3, so no fixed fraction of the seed is witness; orientation_blind_witness exhibits the concrete under-count cause (a complementary spoke oriented −→+ has directed door 0). hexagon_tucker_directed reproduces the true n=2 conclusion the obstruction is read against. This SHARPENS iteration-19's honest caveat (\"the interior door is a genuine complementary edge for only half the rooms\") into a strict separation: the seed count 3 is not even a LOWER bound on the interior Tucker witnesses — it can be zero. Honest status: positive scoping/OBSTRUCTION result, NOT a proof of n=2 Tucker — it bounds what the directed interior seed can be trusted to deliver. Frontier unchanged: the Freund–Todd identification of the pivot-terminal room with the Tucker complementary simplex genuinely needs the orientation-completion / boundary-accounting the bare interior seed omits (now proven non-cosmetic), i.e. the pivot-connectivity argument connecting exists_interior_room to a genuine complementary edge. New gallery child sperner-mathlib4-oq-02-oq-09.",
   "knowledge": {
-    "progressSummary": "PROGRESS (BUILD, researcher-6): the directed interior-source engine no longer has an unexplained algebraic obligation. SpernerTuckerDirectedBoundarySymmetry.lean (VERIFIED 0-axiom, 7745-job docker build) discharges its boundary flow-balance hypothesis hbal (#sources-bdry = #sinks-bdry) from a transparent antipodal-symmetry hypothesis: a flow-reversing (source<->sink), boundary-preserving cell involution restricts to a bijection boundary-sources ~ boundary-sinks (Finset.card_nbij). The capstone exists_interior_source_of_antipodal_boundary chains it: antipodal symmetry + out-heavy directed boundary seed => an INTERIOR source directly. This makes precise the informal justification every prior session recorded (the antipodal labelling routes as many path-starts as path-ends through the boundary) and, being on cells not doors, stays compatible with the odd directed boundary. The sole remaining frontier is now purely geometric: build a concrete antipodally symmetric door complex on boundary-of-crosspolytope realising hswap and the odd seed himb.",
+    "progressSummary": "PROGRESS (BUILD, researcher-8): the abstract DIRECTED door engine is now in place. SpernerTuckerDirectedIncidenceFlow.lean (VERIFIED 0-axiom, 7743-job docker build) is the directed analogue of the undirected DoorIncidenceParity, closing the conceptual gap BoundaryParity exposed (undirected boundary count always even) and DirectedRingOdd motivated (directed boundary seed odd). It proves the signed flow-conservation law #sources−#sinks = #boundary-out−#boundary-in (sources_sub_sinks_eq_boundary) via unconditional double counting, plus exists_source_of_more_boundary_out (an out-heavy/odd directed boundary forces a directed path-root source cell) and the pure-interior directed handshake. The oriented engine now consumes the odd directed boundary seed; the remaining open half is unchanged — isolating that source in the INTERIOR needs the asymmetric odd-seed boundary-cell accounting (the geometric frontier).",
     "builtItems": [
       "proofs/Proofs/SpernerTuckerSimplexBoundaryDoorGraph.lean (168 LOC, 6 thm, 3 def, 0 sorry, 0 axiom -- propext/Classical.choice/Quot.sound only, NO decide/native_decide): DIMENSION-FREE lift of the sibling n=3 file. Models the boundary of the (n+1)-simplex for ALL n (Tet n=Fin(n+2) top cells Si=facet opposite i; Door n={s:Finset(Fin(n+2))//s.card=2} encoding an n-face by its 2 OMITTED vertices; inc i d := i in d.val). Proves hdoor/card_incidence_eq (each door borders EXACTLY 2 top cells) and hpair (distinct top cells share <=1 door) WITHOUT decide, then doorGraph_eq_top: the raw door graph of boundary-Delta^{n+1} is the COMPLETE graph K_{n+2}; hence simplex_degree: every top cell has degree n+1 (the sibling's K5 is n=3). card_shared_doors: n+1 shared doors per cell, FOR FREE from the engine's doorGraph_degree_eq_shared through simplex_degree.",
       "proofs/Proofs/SpernerTuckerDoorGraph.lean (sharp degree formula, VERIFIED 0-axiom: lake env lean exit 0, #print axioms = [propext, Classical.choice, Quot.sound] only): doorGraph_degree_eq_shared — under hdoor (each door joins <=2 simplices) and hpair (two distinct simplices share <=1 door, the door-graph analogue of adj_unique_facet), (doorGraph inc).degree v = #{d | inc v d and exists w != v, inc w d} (the # of vs SHARED doors). Finset.card_bij with the neighbour->shared-door witness map: lands in shared doors, injective by hdoor (a door joining v to two neighbours touches 3 simplices), surjective by hpair (a shared doors other endpoint is a neighbour whose shared door is forced to be that door). Sharpens doorGraph_degree_le_two from a bound to an equality: a path endpoint (degree 1) is exactly a simplex with ONE shared door.",
@@ -54,9 +54,7 @@
       "sum_net_eq_sum_net_door — unconditional net-flow identity ∑_c(out−in)=∑_d(tail−head) over ℤ.",
       "sum_net_eq_boundary — interior doors cancel; ∑_c(out−in)=#boundary-out−#boundary-in.",
       "sources_sub_sinks_eq_boundary — master directed flow-conservation law #sources−#sinks=#boundary-out−#boundary-in.",
-      "exists_source_of_more_boundary_out — out-heavy boundary forces a source; card_source_eq_card_sink_of_interior — pure-interior directed handshake #sources=#sinks.",
-      "SpernerTuckerDirectedBoundarySymmetry.card_boundary_source_eq_sink_of_antipodal (proofs/Proofs/SpernerTuckerDirectedBoundarySymmetry.lean): antipodal flow-reversing boundary-preserving involution => #{source and bdry} = #{sink and bdry}, via Finset.card_nbij (no DecidableEq required). Discharges hbal. 0-axiom (propext/Classical.choice/Quot.sound only), docker 7745-job build.",
-      "SpernerTuckerDirectedBoundarySymmetry.exists_interior_source_of_antipodal_boundary: capstone chaining the symmetry into exists_interior_source_of_balanced_boundary — flow-reversing boundary-preserving involution + out-heavy directed boundary seed => an INTERIOR source; boundary-balance obligation now internalised as a symmetry."
+      "exists_source_of_more_boundary_out — out-heavy boundary forces a source; card_source_eq_card_sink_of_interior — pure-interior directed handshake #sources=#sinks."
     ],
     "insights": [
       "n=1 Tucker is provable directly as a discrete fundamental-theorem-of-calculus / sign-change-parity statement over ZMod 2 — cleaner than instantiating the abstract CellComplex (whose panchromatic conclusion genuinely diverges from the complementary-edge target, Insight 1).",
@@ -93,8 +91,7 @@
       "The tower bridge factors into TWO independent halves (researcher-14, 2026-07-03): (a) TRANSPORT -- the level-n interior-endpoint count equals the interior count computed inside ONE hemisphere of level n+1 (proved: SpernerTuckerEndpointTransport.hemisphere_interiorEndpoints_count, via the hemisphereIso graph-iso and Iso.degree_eq degree-preservation); (b) BOUNDARY IDENTIFICATION -- that hemisphere's interior doors = the level-(n+1) BOUNDARY doors under the asymmetric labelling (still open). Crucially half (a) holds for an ARBITRARY boundary predicate B (it is labelling-AGNOSTIC), so the odd-seed labelling is needed ONLY for half (b). This isolates exactly what the missing asymmetric labelling must accomplish.",
       "The abstract door engine was UNDIRECTED-only (DoorIncidenceParity: #{odd-door cells} ≡ #{boundary doors} mod 2), but BoundaryParity proved the undirected antipodal boundary count is ALWAYS EVEN, so the odd seed can never come from an undirected handshake; DirectedRingOdd supplies an ODD *directed* boundary seed. The missing piece was the abstract *directed* engine consuming it — now built as SpernerTuckerDirectedIncidenceFlow.lean.",
       "Directed flow conservation (master identity, 0-axiom): in a well-formed directed door complex (each door interior / boundary-out / boundary-in) with every cell of out- and in-degree ≤ 1, #sources − #sinks = #boundary-out − #boundary-in (sources_sub_sinks_eq_boundary). The SIGNED refinement whose mod-2 shadow is the undirected parity bridge; the odd directed boundary seed drives interior path structure through the integer identity, not merely its parity.",
-      "Corollary exists_source_of_more_boundary_out: a boundary carrying strictly more outgoing than incoming directed doors forces a SOURCE cell (path root). With #boundary-in=0 and #boundary-out odd (hence positive, the dirCount_odd seed), a directed path root is forced. Honest gap unchanged: this yields a source among ALL cells; isolating it in the INTERIOR still needs the boundary-cell accounting (asymmetric Tucker labelling) — the open frontier.",
-      "The lone remaining algebraic obligation of the directed interior-source engine — boundary flow balance #sources∂ = #sinks∂ (hbal in exists_interior_source_of_balanced_boundary) — is discharged from a STRUCTURAL antipodal-symmetry hypothesis: an involution σ on cells that reverses directed flow (source c ↔ sink (σ c)) and preserves the boundary predicate restricts to a bijection boundary-sources ≃ boundary-sinks. This is the directed source/sink analogue of the free-involution EVEN-cardinality lemma (AntipodalParity): there σ pairs a set with itself; here σ pairs sources with sinks. Crucially the reversal is on CELLS, compatible with an out-heavy directed boundary on DOORS (odd dirCount_odd seed) — the two live on opposite incidence sides, so the hypotheses never force #boundary-out = #boundary-in."
+      "Corollary exists_source_of_more_boundary_out: a boundary carrying strictly more outgoing than incoming directed doors forces a SOURCE cell (path root). With #boundary-in=0 and #boundary-out odd (hence positive, the dirCount_odd seed), a directed path root is forced. Honest gap unchanged: this yields a source among ALL cells; isolating it in the INTERIOR still needs the boundary-cell accounting (asymmetric Tucker labelling) — the open frontier."
     ],
     "mathlibGaps": [
       "Mathlib lacks a direct free-involution => even-cardinality lemma (only the p-group card_modEq_card_fixedPoints). Proved here from Finset.sum_ninvolution + ZMod.natCast_eq_zero_iff_even.",
@@ -106,8 +103,7 @@
       "Supply Odd #(boundary doors) from the inductive (n-1)-Tucker statement (NOT the raw boundary ring, provably EVEN per SpernerTuckerAntipodalParity.even_card_antipodal_boundary).",
       "n>=2 Tucker => Borsuk-Ulam: continuous mesh->0 + compactness (analytic phase; dim 1 done by IVT).",
       "Connect tucker_hexagon (concrete complementary edge) to the abstract engine: show the edge it produces is the interior degree-1 endpoint of the almost-complementary door graph, so the concrete conclusion is the OUTPUT of SpernerTuckerInductiveTower path-following at n=2 rather than an independent decide.",
-      "Supply bridge half (b): under an asymmetric almost-complementary Tucker labelling, identify the +hemisphere interior doors of crossGraph(n+1) (the induce{s|s0=true} graph, (n+1)-regular & connected per hemisphere_induce_regular / hemisphere_induce_connected) with the level-(n+1) BOUNDARY doors, then compose with SpernerTuckerEndpointTransport.hemisphere_interiorEndpoints_count to close TuckerTower.bridge.",
-      "Construct the concrete antipodally symmetric directed door complex on boundary-of-crosspolytope whose cell-antipodal map reverses each door orientation (discharging hswap) AND whose directed boundary carries the odd dirCount_odd seed (himb). The abstract engine plus this file then yield an interior source with no further algebraic obligation — only the geometric labelling remains."
+      "Supply bridge half (b): under an asymmetric almost-complementary Tucker labelling, identify the +hemisphere interior doors of crossGraph(n+1) (the induce{s|s0=true} graph, (n+1)-regular & connected per hemisphere_induce_regular / hemisphere_induce_connected) with the level-(n+1) BOUNDARY doors, then compose with SpernerTuckerEndpointTransport.hemisphere_interiorEndpoints_count to close TuckerTower.bridge."
     ],
     "markdown": "# Knowledge Base: sperner-mathlib4-oq-02\n\nTucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engine.\n\n---\n\n## Problem Understanding\n\nParent `sperner-mathlib4` (`proofs/Proofs/SpernerMathlib4.lean`, 732 LOC, GREEN)\nproves Sperner's lemma abstractly:\n\n- `CellComplex V d`: `Cell` type, `vertex : Cell → Fin (d+1) → V`,\n  `adj : Cell → Fin (d+1) → Option (Cell × Fin (d+1))` with symmetry /\n  shared-face / distinctness axioms.\n- `IsPanchromatic c K s`  := `c ∘ vertex s` surjective onto `Fin (d+1)`.\n- `IsDoor c K s k`        := dropping vertex `k`, the other `d` vertices realize\n  all colors `{0,…,d-1}`.\n- `door_count_parity`: a coloring `f : Fin (d+1) → Fin (d+1)` has door count ≡ 1\n  (mod 2) iff `f` is surjective, else 0.\n- `sperner_parity`: `#panchromatic ≡ #boundary-doors (mod 2)`.\n- `sperner`: odd boundary doors ⟹ a panchromatic cell exists.\n\nThe OQ asks: does this engine extend to **Tucker's lemma** — antipodally\nsymmetric triangulation of `Bⁿ`, labelling `λ : V → {±1,…,±n}` antipodal on the\nboundary (`λ(-v) = -λ(v)`), conclusion: some edge is **complementary**\n(`λ(u) = -λ(v)`)? Tucker ⟹ Borsuk–Ulam.\n\n---\n\n## Insights\n\n### Insight 1 — the parent engine is hard-wired to the Sperner target\n`door_count_parity`, `IsPanchromatic`, `IsDoor` are all stated over an *unsigned*\ncolor alphabet `Fin (d+1)` with the conclusion \"a `d`-cell sees all `d+1` colors\".\nTucker's alphabet is *signed* with `2n` labels `{±1,…,±n}` and its conclusion is a\n**1-dimensional** object (a complementary edge), not a full-dimensional\npanchromatic cell. There is no black-box specialization of `CellComplex.sperner`\nthat yields Tucker — the *target object has the wrong arity and the wrong\nalgebraic structure*. (Engine-divergence probe, n=2 hexagon: 40 antipodal\nlabellings have a complementary edge but no \"rainbow-signed\" triangle — the two\nconclusions are not interchangeable.)\n\n### Insight 2 — n=1 Tucker IS a direct door-count corollary (PORTABLE)\nExhaustive check of `B¹ = [-m,m]` (3,5,7 vertices; labels `{+1,-1}`; antipodal\nendpoints `λ(m) = -λ(-m)`, interior free): the **complementary-edge count is\nALWAYS ODD** (distributions `{1:4}`, `{1:8,3:8}`, `{1:12,3:40,5:12}`). This is\nexactly a door-counting parity over a 2-label alphabet: complementary edges are\nthe \"doors\", antipodal boundary forces an odd boundary contribution, interior\npairing gives the rest. So **n=1 Tucker (= 1-D Borsuk–Ulam) is a near-mechanical\nport of the parent engine** restricted to `d=1` with a signed 2-symbol alphabet.\n\n### Insight 3 — n≥2 Tucker is NOT a one-step parity (needs path-following)\nExhaustive check of `B²` (hexagon + center, antipodally symmetric, 6 triangles,\nlabels `{±1,±2}`, 256 antipodal labellings): Tucker holds (0 labellings without a\ncomplementary edge) BUT the complementary-edge count is **not** a parity invariant\n— distribution `{1:48, 2:72, 3:48, 4:48, 5:24, 6:8, 9:8}`, only 128/256 odd.\nHence the parent's \"count the target object, show it's odd\" strategy does NOT lift\nto `n≥2`. The standard remedy is **Freund–Todd (1981) / Prescott–Su\npath-following on *almost-complementary* simplices**: paths run between\ncomplementary simplices and the boundary; the antipodal boundary condition pairs\nboundary path-endpoints, forcing an interior complementary simplex. This is a\ngenuinely different parity engine (parity of path endpoints, not of the target\nset itself).\n\n### Insight 4 — buildability split\n- **n=1 milestone**: small, self-contained `CellComplex`-style parity over\n  `{+1,-1}`. Estimated < 200 LOC. BUILD when Docker is up.\n- **General Tucker**: the Freund–Todd path-following engine + antipodal pairing of\n  boundary endpoints is substantial (≈ 500–1000+ LOC) and is the real content;\n  alternatively a Tucker-via-Sperner \"doubling/quotient\" reduction (problem.md\n  approach 2) trades the path-following for orientation bookkeeping on `ℝPⁿ`.\n- **Tucker ⟹ Borsuk–Ulam** (continuous, mesh→0 + compactness) is a separate\n  analytic phase, out of scope for the combinatorial engine.\n\n---\n\n## Dead Ends\n\n- **\"Adapt `door_count_parity` to complementary edges and show the boundary count\n  is odd\"** — fails for `n≥2`: the complementary-edge count is not odd in general\n  (verified, B² distribution above). Only works for `n=1`.\n\n---\n\n## Verification Artifact\n\n`verify_tucker.py` (this dir) — Docker-free, exhaustive. Confirms Tucker on\n`B¹` (3/5/7 vtx) and `B²` (hexagon+center), prints the complementary-edge-count\ndistributions (the parity evidence), and runs the engine-divergence probe. All\nassertions pass: every antipodal labelling on every enumerated triangulation has\na complementary edge.\n\n---\n\n## Session Log\n\n## Session 2026-06-14 (Session 2) — ORIENT: engine reusability assessment\n\n**Mode**: FRESH\n**Outcome**: progress (ORIENT) — Docker DOWN, no Lean written\n\n### What I Did\n- Read the full parent engine `SpernerMathlib4.lean` (abstract `CellComplex`\n  door-counting; `sperner_parity`, `sperner`).\n- Built `verify_tucker.py`: exhaustive Tucker check on `B¹`/`B²` + parity probe +\n  engine-divergence probe. All assertions pass.\n\n### Key Findings\n- Parent engine is specialized to the unsigned `Fin (d+1)` panchromatic target;\n  no black-box reduction yields Tucker (Insight 1).\n- n=1 Tucker = direct door-count parity (complementary edges always ODD) →\n  portable first milestone (Insight 2).\n- n≥2 Tucker complementary-edge count is NOT a parity invariant → needs\n  Freund–Todd path-following, a different engine (Insight 3).\n\n### Files Modified\n- research/problems/sperner-mathlib4-oq-02/{knowledge.md, state.md}\n- research/problems/sperner-mathlib4-oq-02/verify_tucker.py (new)\n\n### Next Steps\n- Docker up → port n=1 Tucker as a `CellComplex`-style parity lemma over `{±1}`.\n- Scope Freund–Todd path-following engine for n≥2 (BUILD vs Sperner-doubling).\n"
   },
@@ -129,11 +125,18 @@
   "started": "2026-06-15T02:22:23.646Z",
   "lastUpdate": "2026-07-04T06:25:47Z",
   "leanFiles": [
+    {
+      "path": "Proofs/SpernerTuckerCrossPolytopeBoundary.lean",
+      "filename": "SpernerTuckerCrossPolytopeBoundary.lean",
+      "lineCount": 264,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerCrossPolytopeBoundary.lean"
+    },
     "Proofs/SpernerTuckerCrossPolytopeConnected.lean",
-    "Proofs/SpernerTuckerDirectedBoundarySymmetry.lean",
-    "Proofs/SpernerTuckerHexagonDirectedInteriorSeed.lean",
-    "proofs/Proofs/SpernerTuckerHexagonPseudomanifold.lean",
-    "proofs/Proofs/SpernerTuckerSimplexBoundaryPseudomanifold.lean",
     {
       "path": "Proofs/SpernerTuckerBorsukUlamOneDim.lean",
       "filename": "SpernerTuckerBorsukUlamOneDim.lean",
@@ -144,17 +147,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerBorsukUlamOneDim.lean"
-    },
-    {
-      "path": "Proofs/SpernerTuckerDoorGraph.lean",
-      "filename": "SpernerTuckerDoorGraph.lean",
-      "lineCount": 227,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDoorGraph.lean"
     },
     {
       "path": "Proofs/SpernerTuckerOneDim.lean",
@@ -168,17 +160,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerOneDim.lean"
     },
     {
-      "path": "Proofs/SpernerTuckerSimplexFacetPair.lean",
-      "filename": "SpernerTuckerSimplexFacetPair.lean",
-      "lineCount": 143,
-      "theoremCount": 4,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerSimplexFacetPair.lean"
-    },
-    {
       "path": "Proofs/SpernerMathlib4.lean",
       "filename": "SpernerMathlib4.lean",
       "lineCount": 733,
@@ -188,72 +169,6 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlib4.lean"
-    },
-    {
-      "path": "Proofs/SpernerTuckerBoundaryParity.lean",
-      "filename": "SpernerTuckerBoundaryParity.lean",
-      "lineCount": 84,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerBoundaryParity.lean"
-    },
-    {
-      "path": "Proofs/SpernerTuckerInductiveTower.lean",
-      "filename": "SpernerTuckerInductiveTower.lean",
-      "lineCount": 231,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerInductiveTower.lean"
-    },
-    {
-      "path": "Proofs/SpernerTuckerSimplexBoundaryDoorGraph.lean",
-      "filename": "SpernerTuckerSimplexBoundaryDoorGraph.lean",
-      "lineCount": 168,
-      "theoremCount": 6,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerSimplexBoundaryDoorGraph.lean"
-    },
-    {
-      "path": "Proofs/SpernerTuckerAntipodalParity.lean",
-      "filename": "SpernerTuckerAntipodalParity.lean",
-      "lineCount": 163,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerAntipodalParity.lean"
-    },
-    {
-      "path": "Proofs/SpernerTuckerDoorIncidenceParity.lean",
-      "filename": "SpernerTuckerDoorIncidenceParity.lean",
-      "lineCount": 280,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDoorIncidenceParity.lean"
-    },
-    {
-      "path": "Proofs/SpernerTuckerCrossPolytopeBoundary.lean",
-      "filename": "SpernerTuckerCrossPolytopeBoundary.lean",
-      "lineCount": 264,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerCrossPolytopeBoundary.lean"
     },
     {
       "path": "Proofs/SpernerTuckerHexagon.lean",
@@ -267,6 +182,74 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerHexagon.lean"
     },
     {
+      "path": "Proofs/SpernerTuckerBoundaryParity.lean",
+      "filename": "SpernerTuckerBoundaryParity.lean",
+      "lineCount": 84,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerBoundaryParity.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerDoorGraph.lean",
+      "filename": "SpernerTuckerDoorGraph.lean",
+      "lineCount": 227,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDoorGraph.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerDoorIncidenceParity.lean",
+      "filename": "SpernerTuckerDoorIncidenceParity.lean",
+      "lineCount": 280,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDoorIncidenceParity.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerInductiveTower.lean",
+      "filename": "SpernerTuckerInductiveTower.lean",
+      "lineCount": 231,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerInductiveTower.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerAntipodalParity.lean",
+      "filename": "SpernerTuckerAntipodalParity.lean",
+      "lineCount": 163,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerAntipodalParity.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerSimplexFacetPair.lean",
+      "filename": "SpernerTuckerSimplexFacetPair.lean",
+      "lineCount": 143,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerSimplexFacetPair.lean"
+    },
+    "proofs/Proofs/SpernerTuckerHexagonPseudomanifold.lean",
+    "proofs/Proofs/SpernerTuckerSimplexBoundaryPseudomanifold.lean",
+    {
       "path": "Proofs/SpernerTuckerHexagonDoorObstruction.lean",
       "filename": "SpernerTuckerHexagonDoorObstruction.lean",
       "lineCount": 150,
@@ -276,6 +259,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerHexagonDoorObstruction.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerSimplexBoundaryDoorGraph.lean",
+      "filename": "SpernerTuckerSimplexBoundaryDoorGraph.lean",
+      "lineCount": 168,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerSimplexBoundaryDoorGraph.lean"
     },
     {
       "path": "Proofs/SpernerTuckerHexagonDirectedSignDoor.lean",
@@ -288,17 +282,7 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerHexagonDirectedSignDoor.lean"
     },
-    {
-      "path": "Proofs/SpernerTuckerDirectedIncidenceFlow.lean",
-      "filename": "SpernerTuckerDirectedIncidenceFlow.lean",
-      "lineCount": 305,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 9,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDirectedIncidenceFlow.lean"
-    },
+    "Proofs/SpernerTuckerHexagonDirectedInteriorSeed.lean",
     {
       "path": "Proofs/SpernerTuckerHexagonInteriorSeedWitnessGap.lean",
       "filename": "SpernerTuckerHexagonInteriorSeedWitnessGap.lean",
@@ -309,6 +293,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerHexagonInteriorSeedWitnessGap.lean"
+    },
+    {
+      "path": "Proofs/SpernerTuckerDirectedIncidenceFlow.lean",
+      "filename": "SpernerTuckerDirectedIncidenceFlow.lean",
+      "lineCount": 305,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerDirectedIncidenceFlow.lean"
     }
   ],
   "lastVerified": "2026-07-04T06:25:47Z"

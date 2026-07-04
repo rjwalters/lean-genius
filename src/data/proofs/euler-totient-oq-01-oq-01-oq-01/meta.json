@@ -119,14 +119,6 @@
   },
   "sections": [
     {
-      "id": "overview-framing",
-      "title": "Overview: What Mathlib Already Has vs. What This Adds",
-      "startLine": 3,
-      "endLine": 47,
-      "summary": "The docblock is explicit that the parent's requested identity λ(n) = lcm_i λ(pᵢ^{kᵢ}) is already Mathlib's ArithmeticFunction.carmichael_factorization, alongside the per-prime-power closed forms carmichael_pow_of_prime_ne_two (odd p) and carmichael_two_pow_of_ne_two (p=2). Rather than reprove these as thin wrappers, the file cites them and contributes the genuinely unassembled pieces: the explicit closed form λ(n) = lcm_{p|n} p^{k_p−1}(p−1) for odd n, and concrete Carmichael-number evaluations (notably 561) absent from Mathlib.",
-      "mathContext": "$\\lambda(n)$ is the exponent of $(\\mathbb{Z}/n\\mathbb{Z})^\\times$; via CRT $\\lambda(\\prod p_i^{k_i}) = \\operatorname{lcm}_i \\lambda(p_i^{k_i})$ and $\\lambda(n)\\mid\\varphi(n)$."
-    },
-    {
       "id": "odd-prime-power-values",
       "title": "Explicit Values on Odd Prime Powers",
       "startLine": 49,

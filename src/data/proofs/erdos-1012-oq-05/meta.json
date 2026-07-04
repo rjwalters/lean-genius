@@ -62,7 +62,7 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1012 concerns long cycles in dense graphs: above the edge threshold T(n,k), every n-vertex graph contains an (n−k)-cycle (Woodall's 1972 theorem, refining the Erdős–Gallai and Bondy circumference bounds). The parent formalization (erdos-1012) states this and lists five open questions; the fifth asks for the computational complexity of the decision problem sitting exactly at the extremal edge count T(n,k)−1: given such a graph, does it contain an (n−k)-cycle? This is a fixed-length-deficiency cousin of the classical NP-complete problems of detecting Hamiltonian cycles (Karp 1972) and, more generally, cycles through a prescribed number of vertices; the interest at T(n,k)−1 is whether the extremal edge count makes the instance easier. Decidability for a fixed finite graph is never in doubt — the whole point of the open question is the asymptotic complexity — but a formal development must first pin down that the predicates are genuinely computable and to exhibit the finite object being searched. That skeleton is what this entry supplies: `Decidable` instances for cycle, Hamiltonicity, and pancyclicity predicates, an explicit brute-force search space of size |V|^ℓ, and `decide`-evaluated worked examples.",
+    "historicalContext": "Erdős Problem #1012 concerns long cycles in dense graphs: above the edge threshold T(n,k), every n-vertex graph contains an (n−k)-cycle (Woodall's theorem). The parent formalization (erdos-1012) states this and lists five open questions. The fifth asks for the computational complexity of the decision problem at the extremal edge count T(n,k)−1: given such a graph, does it contain an (n−k)-cycle?",
     "problemStatement": "**Open Question #5 of Erdős #1012**: What is the computational complexity of determining whether a given graph with T(n,k)−1 edges contains an (n−k)-cycle?\n\nA polynomial-time algorithm or an NP-hardness reduction is out of reach of current formal libraries. This entry establishes the decidable, finitely-searchable *core* the question presupposes: for a fixed finite graph the problem is algorithmically solvable, with an explicit exponential search space.",
     "text": "For a fixed finite graph, deciding whether it contains a cycle of a given length is decidable via a finite brute-force search over |V|^ℓ candidate vertex sequences; the decision procedure is shown to execute on concrete graphs.",
     "proofStrategy": "**Decidability.** `hasCycleOfLength G (l+1)` is an existential `∃ c : Fin (l+1) → V, Injective c ∧ (closed-walk condition)`. The domain `Fin (l+1) → V` is a Fintype; injectivity is decidable (`Fintype.decidableInjectiveFintype`, using `DecidableEq V`) and the closed-walk condition is a decidable bounded ∀ (using `DecidableRel G.Adj`). Hence `Fintype.decidableExistsFintype` yields `Decidable (hasCycleOfLength G ℓ)`; the ℓ = 0 case is `False`. Hamiltonicity and pancyclicity follow.\n\n**Brute-force search space.** `hasCycleOfLength_iff_exists_mem_univ` rewrites detection as a search over the finite universe of candidate maps, and `searchSpace_card` counts it: `|Fin ℓ → V| = |V|^ℓ` (`Fintype.card_fun` + `Fintype.card_fin`). Specialized to Hamiltonicity this is `n^n`.\n\n**Executability.** Because the decidability instance is computable, `decide` evaluates concrete instances: the triangle K₃ has a 3-cycle; the edgeless graph on three vertices has none and is not Hamiltonian.",
@@ -82,44 +82,25 @@
   },
   "sections": [
     {
-      "id": "prelude",
-      "title": "Problem Framing and Imports",
-      "startLine": 1,
-      "endLine": 59,
-      "summary": "Module docstring stating Erdős #1012 OQ-05 (complexity of (n−k)-cycle detection at T(n,k)−1 edges), the namespace Erdos1012OQ05 opening the parent Erdos1012, and the header of the decidability section.",
-      "mathContext": "Question: how hard is deciding whether a T(n,k)−1-edge graph contains an (n−k)-cycle?"
+      "id": "decidability",
+      "title": "The Decision Problem is Decidable",
+      "startLine": 55,
+      "endLine": 100,
+      "summary": "not_hasCycleOfLength_zero; decidableHasCycleOfLength (the core instance); decidableIsHamiltonian; isPancyclicUpTo_iff and decidableIsPancyclicUpTo."
     },
     {
-      "id": "cycle-decidability",
-      "title": "Decidability of Cycle Detection and Hamiltonicity",
-      "startLine": 60,
-      "endLine": 80,
-      "summary": "not_hasCycleOfLength_zero (the base case: no length-0 cycle), decidableHasCycleOfLength (the core instance making hasCycleOfLength a Decidable predicate for a fixed finite graph), and decidableIsHamiltonian.",
-      "mathContext": "For fixed finite G, hasCycleOfLength G ℓ and IsHamiltonian G are Decidable."
-    },
-    {
-      "id": "pancyclicity",
-      "title": "Pancyclicity as a Bounded Search",
-      "startLine": 81,
-      "endLine": 90,
-      "summary": "isPancyclicUpTo_iff reformulates pancyclicity up to m as a bounded conjunction over cycle lengths 3 … m, and decidableIsPancyclicUpTo derives the corresponding Decidable instance.",
-      "mathContext": "IsPancyclicUpTo G m ⟺ ∀ ℓ ∈ [3,m], hasCycleOfLength G ℓ — decidable."
-    },
-    {
-      "id": "finite-search",
+      "id": "brute-force",
       "title": "Detection as a Finite Brute-Force Search",
-      "startLine": 91,
-      "endLine": 123,
-      "summary": "hasCycleOfLength_iff_exists_mem_univ recasts detection as a search over the finite universe of candidate cycle maps; searchSpace_card counts that space as |V|^ℓ and hamiltonianSearchSpace_card specializes it to n^n.",
-      "mathContext": "The search space of candidate length-ℓ cycle maps has cardinality |V|^ℓ (n^n for Hamiltonicity)."
+      "startLine": 101,
+      "endLine": 124,
+      "summary": "hasCycleOfLength_iff_exists_mem_univ recasts detection as a search over the finite universe of candidate maps; searchSpace_card counts it as |V|^ℓ; hamiltonianSearchSpace_card gives n^n."
     },
     {
       "id": "executable",
       "title": "The Decision Procedure Runs",
-      "startLine": 124,
+      "startLine": 125,
       "endLine": 145,
-      "summary": "triangle_has_3cycle, edgeless_no_3cycle, and edgeless_not_hamiltonian_fin3 — concrete evaluations via `decide` that witness the decision procedure actually executing on small graphs.",
-      "mathContext": "K₃ has a 3-cycle; the edgeless graph on 3 vertices has none and is not Hamiltonian — all by `decide`."
+      "summary": "triangle_has_3cycle, edgeless_no_3cycle, edgeless_not_hamiltonian_fin3 — concrete evaluations via `decide` witnessing executability."
     }
   ],
   "conclusion": {

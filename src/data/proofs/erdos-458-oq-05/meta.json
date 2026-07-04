@@ -30,7 +30,7 @@
     "definitionCount": 2
   },
   "overview": {
-    "historicalContext": "Erdős #458 asks whether lcm(1,…,p_{k+1}-1) < p_k · lcm(1,…,p_k) for every k ≥ 1, where p_k is the k-th prime — an open problem in combinatorial number theory. The parent formalization erdos-458 sets up the statement with p_k = Nat.nth Nat.Prime k and verifies the first base cases, but relies on `native_decide` (which trusts compiled evaluation via the `Lean.ofReduceBool` axiom) and asks in OQ-05 whether the prime-index values can instead be obtained purely from the `Nat.nth` definition. This entry answers that: it re-derives p_0 … p_10 (the primes 2,3,5,7,11,13,17,19,23,29,31, OEIS A000040) from `Nat.nth_count` using only kernel `decide`, and discharges the base cases k = 1,…,4 the same way — trading the compiler-trusting `Lean.ofReduceBool` for the fully kernel-checked foundational axioms and thereby tightening the trust story of the parent while extending its verified range. The conjecture itself, comparing consecutive-prime lcm ratios, remains open.",
+    "historicalContext": "Erdős #458 asks whether lcm(1,…,p_{k+1}-1) < p_k · lcm(1,…,p_k) for every k ≥ 1, where p_k is the k-th prime — an open problem in combinatorial number theory. The parent formalization erdos-458 sets up the statement with p_k = Nat.nth Nat.Prime k and verifies the first base cases, but relies on `native_decide` (which trusts compiled evaluation via the `Lean.ofReduceBool` axiom) and asks in OQ-05 whether the prime-index values can instead be obtained purely from the `Nat.nth` definition.",
     "problemStatement": "OQ-05 of the parent entry: eliminate the reliance on asserted / compiler-trusted prime-index facts by deriving p_k = Nat.nth Nat.Prime k from the definition, and (OQ-03) verify the conjecture for more k. This entry does both with kernel `decide` only, so every result is genuinely axiom-free (no `Lean.ofReduceBool`).",
     "text": "The bridge is `Nat.nth_count : p n → Nat.nth p (Nat.count p n) = n`: knowing that n satisfies p and that exactly `Nat.count p n` elements below n satisfy p pins Nat.nth p at that index to n. Instantiating p = Nat.Prime at each prime n ∈ {2,3,5,7,11,13,17,19,23,29,31} and evaluating `Nat.count Nat.Prime n` by kernel `decide` yields p_0 = 2, …, p_10 = 31. The conjecture instances for k = 1,2,3,4 then rewrite the two prime values to literals and reduce to a decidable inequality between concrete naturals, closed by kernel `decide`.",
     "proofStrategy": "For each prime value: `show Nat.nth Nat.Prime k = n`, obtain `Nat.nth_count` at a primality proof of n, evaluate `Nat.count Nat.Prime n = k` by `decide`, and rewrite. For each base case k: state the parent's conjecture instance `lcm_upto (nthPrime (k+1) - 1) < nthPrime k * lcm_upto (nthPrime k)`, rewrite the two nthPrime values to literals, and close by `decide`. A single `interval_cases` packages k = 1,2,3,4 into `erdos458_base`.",
@@ -50,39 +50,16 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Definitions: lcm_upto and nthPrime",
-      "startLine": 1,
-      "endLine": 45,
-      "description": "Module docstring framing OQ-05 (obtain the prime-index values from Nat.nth rather than native_decide), then the two definitions matching the parent: lcm_upto n = (Finset.Icc 1 n).lcm id and nthPrime k = Nat.nth Nat.Prime k."
+      "title": "Definitions and basic prime-index facts",
+      "description": "`lcm_upto n = (Finset.Icc 1 n).lcm id` and `nthPrime k = Nat.nth Nat.Prime k`, with `nthPrime_prime` and `nthPrime_strictMono` from Mathlib's infinitude of primes."
     },
     {
-      "id": "basic-facts",
-      "title": "Basic Prime-Index Facts",
-      "startLine": 46,
-      "endLine": 52,
-      "description": "nthPrime_prime (every nthPrime k is prime) and nthPrime_strictMono (nthPrime is strictly increasing), both inherited from Mathlib's development of Nat.nth for the infinite predicate Nat.Prime."
+      "title": "Prime-index values from Nat.nth (p_0 … p_10)",
+      "description": "`nthPrime_zero … nthPrime_ten` derive the first eleven primes 2,3,5,7,11,13,17,19,23,29,31 from `Nat.nth_count`, evaluating the prime counts with kernel `decide`. The values p_5 … p_10 are new relative to the parent."
     },
     {
-      "id": "prime-values-parent",
-      "title": "Prime-Index Values p₀ … p₄ (from Nat.nth)",
-      "startLine": 53,
-      "endLine": 96,
-      "description": "nthPrime_zero … nthPrime_four derive the first five primes 2, 3, 5, 7, 11 from Nat.nth_count, evaluating the prime-counting values with kernel decide — reproducing the parent's values but without native_decide."
-    },
-    {
-      "id": "prime-values-new",
-      "title": "New Prime-Index Values p₅ … p₁₀",
-      "startLine": 97,
-      "endLine": 138,
-      "description": "nthPrime_five … nthPrime_ten extend the table to 13, 17, 19, 23, 29, 31 — new relative to the parent — again via Nat.nth_count and kernel decide, supplying the prime values needed for the larger base cases."
-    },
-    {
-      "id": "base-cases",
-      "title": "Axiom-free Base Cases of Erdős #458 (k = 1,2,3,4)",
-      "startLine": 139,
-      "endLine": 180,
-      "description": "erdos458_k1 … erdos458_k4 verify the conjecture instance for each k by rewriting the prime values and applying kernel decide; erdos458_base packages them via interval_cases. This extends the parent's k = 1,2 and drops the native_decide dependency entirely."
+      "title": "Axiom-free base cases of Erdős #458 (k = 1,2,3,4)",
+      "description": "`erdos458_k1 … erdos458_k4` verify the conjecture instance for each k by rewriting prime values and applying kernel `decide`; `erdos458_base` packages them via interval_cases. This extends the parent's k = 1,2 and drops the `native_decide` dependency."
     }
   ],
   "conclusion": {

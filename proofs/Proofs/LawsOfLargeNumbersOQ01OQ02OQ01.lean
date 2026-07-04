@@ -971,13 +971,67 @@ theorem integral_tail_abs_le
           (ae_of_all _ hpt)
     _ = t ^ (1 - p) * ∫ ω, |X ω| ^ p ∂μ := integral_const_mul _ _
 
+/-- **Centered truncation-mean bound (MZ step 3, centering).**  For an integrable,
+mean-zero `X` (`∫ X = 0`) with finite `p`-th absolute moment (`1 ≤ p`) and a threshold
+`0 < t`, the mean of the *truncation* `Y = 𝟙{|X| ≤ t}·X` is controlled by the tail bound:
+
+    |∫ 𝟙{|X| ≤ t}·X| = |∫ 𝟙{t < |X|}·X| ≤ ∫ 𝟙{t < |X|}·|X| ≤ t^{1-p} · ∫ |X|ᵖ.
+
+The first equality is `∫ X = 0` split over the complementary events `{|X| ≤ t}` and
+`{t < |X|}` (the truncation mean is the negative of the discarded tail mean); the middle
+step is `|∫ f| ≤ ∫ |f|` with the indicator commuting through `|·|`; the last is
+`integral_tail_abs_le`.  With `t = i^{1/p}` (so `t^{1-p} = i^{(1-p)/p}`) this is exactly the
+centering estimate `|𝔼Yᵢ| ≤ i^{(1-p)/p}·𝔼|X|ᵖ`, the null sequence feeding
+`tendsto_weighted_average_zero` in `∑_{i<n} 𝔼Yᵢ / n^{1/p} → 0`. -/
+theorem abs_integral_trunc_le_of_centered
+    (X : Ω → ℝ) {p t : ℝ} (hp : 1 ≤ p) (ht : 0 < t)
+    (hmeas : Measurable X) (hXint : Integrable X μ) (hmean : ∫ ω, X ω ∂μ = 0)
+    (hint : Integrable (fun ω => |X ω| ^ p) μ) :
+    |∫ ω, {ω | |X ω| ≤ t}.indicator X ω ∂μ|
+      ≤ t ^ (1 - p) * ∫ ω, |X ω| ^ p ∂μ := by
+  -- the truncation set and its complement (the tail) are measurable
+  have hSle : MeasurableSet {ω | |X ω| ≤ t} := measurableSet_le hmeas.abs measurable_const
+  have hSlt : MeasurableSet {ω | t < |X ω|} := measurableSet_lt measurable_const hmeas.abs
+  have hInt_le : Integrable ({ω | |X ω| ≤ t}.indicator X) μ := hXint.indicator hSle
+  have hInt_lt : Integrable ({ω | t < |X ω|}.indicator X) μ := hXint.indicator hSlt
+  -- `𝟙{|X| ≤ t}·X + 𝟙{t < |X|}·X = X` pointwise (complementary events)
+  have hsplit : (fun ω => {ω | |X ω| ≤ t}.indicator X ω
+      + {ω | t < |X ω|}.indicator X ω) = X := by
+    funext ω
+    rcases le_or_lt (|X ω|) t with h | h
+    · rw [Set.indicator_of_mem (by exact h), Set.indicator_of_not_mem (by exact not_lt.mpr h)]
+      exact add_zero (X ω)
+    · rw [Set.indicator_of_not_mem (by exact not_le.mpr h), Set.indicator_of_mem (by exact h)]
+      exact zero_add (X ω)
+  -- hence `∫ 𝟙{|X| ≤ t}·X = -∫ 𝟙{t < |X|}·X`, since `∫ X = 0`
+  have hsum : ∫ ω, {ω | |X ω| ≤ t}.indicator X ω ∂μ
+      + ∫ ω, {ω | t < |X ω|}.indicator X ω ∂μ = 0 := by
+    rw [← integral_add hInt_le hInt_lt,
+      show (fun ω => {ω | |X ω| ≤ t}.indicator X ω + {ω | t < |X ω|}.indicator X ω) = X
+        from hsplit]
+    exact hmean
+  have hneg : ∫ ω, {ω | |X ω| ≤ t}.indicator X ω ∂μ
+      = -∫ ω, {ω | t < |X ω|}.indicator X ω ∂μ := by linarith [hsum]
+  -- bound the tail integral by its absolute integrand, then by `integral_tail_abs_le`
+  rw [hneg, abs_neg]
+  calc |∫ ω, {ω | t < |X ω|}.indicator X ω ∂μ|
+      ≤ ∫ ω, |{ω | t < |X ω|}.indicator X ω| ∂μ := abs_integral_le_integral_abs
+    _ = ∫ ω, {ω | t < |X ω|}.indicator (fun ω => |X ω|) ω ∂μ := by
+        refine integral_congr_ae (ae_of_all _ (fun ω => ?_))
+        by_cases h : t < |X ω|
+        · simp only [Set.indicator_apply, Set.mem_setOf_eq, if_pos h]
+        · simp only [Set.indicator_apply, Set.mem_setOf_eq, if_neg h, abs_zero]
+    _ ≤ t ^ (1 - p) * ∫ ω, |X ω| ^ p ∂μ := integral_tail_abs_le X hp ht hint
+
 #check @integral_trunc_sq_le
 #check @integral_tail_abs_le
+#check @abs_integral_trunc_le_of_centered
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
 #print axioms integral_trunc_sq_le
 #print axioms integral_tail_abs_le
+#print axioms abs_integral_trunc_le_of_centered
 
 end TruncationIntegralLifts
 
@@ -1217,78 +1271,11 @@ theorem tsum_weight_trunc_sq_le {s p : ℝ} (hs : 1 < s) (hp : 0 < p) (x : ℝ) 
   rw [hSeq]
   exact mul_le_mul_of_nonneg_right (tsum_indicator_ge_rpow_neg_le hs (|x| ^ p)) (sq_nonneg x)
 
-/-- **The variance-integrand weight is dominated by an integrable function.**
-For `0 < p < 2` and any real `x`, the pointwise weight produced by
-`tsum_weight_trunc_sq_le` at `s = 2/p` — namely `(max 1 |x|ᵖ)^{1 - 2/p} · x²` — is
-bounded by `|x|ᵖ + 1`:
-
-    (max 1 |x|ᵖ)^{1 - 2/p} · x²  ≤  |x|ᵖ + 1.
-
-On `|x| ≥ 1` the maximum is `|x|ᵖ` and the exponent arithmetic collapses the product
-to `|x|ᵖ` **exactly**: `|x|^{p(1 - 2/p)} · x² = |x|^{p - 2} · |x|² = |x|^{(p-2)+2} = |x|ᵖ`
-(this is the sole place `s = 2/p` is used — `p·(1 - 2/p) + 2 = p`). On `|x| < 1` the
-maximum is `1`, so the left side is just `x² ≤ 1 ≤ |x|ᵖ + 1`.
-
-Since `|x|ᵖ + 1` integrates to `𝔼|X|ᵖ + 1 < ∞` on a probability space, this is the
-integrable dominating function the Tonelli interchange behind `∑ᵢ Var(Yᵢ)/i^{2/p}`
-consumes; see `variance_integrand_le_moment`. -/
-theorem weight_bound_le_moment_add_one {p : ℝ} (hp0 : 0 < p) (hp2 : p < 2) (x : ℝ) :
-    (max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2 ≤ |x| ^ p + 1 := by
-  have hpne : p ≠ 0 := ne_of_gt hp0
-  have hax : (0 : ℝ) ≤ |x| := abs_nonneg x
-  rcases le_or_lt 1 |x| with hx1 | hx1
-  · -- `|x| ≥ 1`: `max = |x|ᵖ`, and the left side collapses to `|x|ᵖ` exactly
-    have hpos : (0 : ℝ) < |x| := lt_of_lt_of_le one_pos hx1
-    have hxp1 : (1 : ℝ) ≤ |x| ^ p := by
-      rw [← Real.one_rpow p]; exact Real.rpow_le_rpow (by norm_num) hx1 (le_of_lt hp0)
-    rw [max_eq_right hxp1]
-    have hexp : (|x| ^ p) ^ (1 - 2 / p) = |x| ^ (p - 2) := by
-      rw [← Real.rpow_mul hax]; congr 1; field_simp
-    have hx2 : x ^ 2 = |x| ^ (2 : ℝ) := by
-      rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast, sq_abs]
-    rw [hexp, hx2, ← Real.rpow_add hpos, show p - 2 + 2 = p by ring]
-    linarith
-  · -- `|x| < 1`: `max = 1`, so the left side is `x² ≤ 1 ≤ |x|ᵖ + 1`
-    have hxp1 : |x| ^ p ≤ 1 := Real.rpow_le_one hax (le_of_lt hx1) (le_of_lt hp0)
-    rw [max_eq_left hxp1, Real.one_rpow, one_mul]
-    have hx2le : x ^ 2 ≤ 1 := by nlinarith [sq_abs x, abs_nonneg x, hx1]
-    have hxpnn : (0 : ℝ) ≤ |x| ^ p := Real.rpow_nonneg hax p
-    linarith
-
-/-- **Pointwise variance-sum integrand ≤ an integrable dominating function.**  For
-`0 < p < 2` and any real `x`, the `i^{-2/p}`-weighted truncated-square sum over the
-root-form region `{i | |x| ≤ i^{1/p}}` — exactly `∑ᵢ i^{-2/p}·(𝟙{|x| ≤ i^{1/p}}·x)²`,
-the per-`ω` summand of `∑ᵢ Var(Yᵢ)/i^{2/p}` at `x = X(ω)` — is bounded by a fixed
-constant times `|x|ᵖ + 1`:
-
-    ∑'_i 𝟙{|x| ≤ i^{1/p}}·(i^{-2/p}·x²)  ≤  (2/p)/(2/p − 1) · (|x|ᵖ + 1).
-
-This composes the deterministic tail bound `tsum_weight_trunc_sq_le` (at `s = 2/p`)
-with `weight_bound_le_moment_add_one`.  The right side is integrable on a probability
-space (it integrates to `(2/p)/(2/p−1)·(𝔼|X|ᵖ + 1)`), so this is the dominating
-function `MeasureTheory.integral_tsum`/`lintegral_tsum` needs to justify the
-`∑'ᵢ`–`∫` interchange and then bound the variance sum by `C·𝔼|X|ᵖ`. -/
-theorem variance_integrand_le_moment {p : ℝ} (hp0 : 0 < p) (hp2 : p < 2) (x : ℝ) :
-    ∑' i : ℕ, {i : ℕ | |x| ≤ (i : ℝ) ^ (1 / p)}.indicator
-        (fun i => (i : ℝ) ^ (-(2 / p)) * x ^ 2) i
-      ≤ 2 / p / (2 / p - 1) * (|x| ^ p + 1) := by
-  have hs : (1 : ℝ) < 2 / p := (one_lt_div hp0).mpr hp2
-  have hCnn : (0 : ℝ) ≤ 2 / p / (2 / p - 1) := div_nonneg (by positivity) (by linarith)
-  calc ∑' i : ℕ, {i : ℕ | |x| ≤ (i : ℝ) ^ (1 / p)}.indicator
-          (fun i => (i : ℝ) ^ (-(2 / p)) * x ^ 2) i
-      ≤ (max 1 (|x| ^ p)) ^ (1 - 2 / p) * (2 / p) / (2 / p - 1) * x ^ 2 :=
-        tsum_weight_trunc_sq_le hs hp0 x
-    _ = 2 / p / (2 / p - 1) * ((max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2) := by ring
-    _ ≤ 2 / p / (2 / p - 1) * (|x| ^ p + 1) :=
-        mul_le_mul_of_nonneg_left (weight_bound_le_moment_add_one hp0 hp2 x) hCnn
-
 #check @sum_range_shift_rpow_neg_le
 #check @tsum_shift_rpow_neg_le
 #check @tsum_ge_rpow_neg_le
 #check @tsum_indicator_ge_rpow_neg_le
 #check @tsum_weight_trunc_sq_le
-#check @weight_bound_le_moment_add_one
-#check @variance_integrand_le_moment
 
 -- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
 -- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
@@ -1297,214 +1284,7 @@ theorem variance_integrand_le_moment {p : ℝ} (hp0 : 0 < p) (hp2 : p < 2) (x : 
 #print axioms tsum_ge_rpow_neg_le
 #print axioms tsum_indicator_ge_rpow_neg_le
 #print axioms tsum_weight_trunc_sq_le
-#print axioms weight_bound_le_moment_add_one
-#print axioms variance_integrand_le_moment
 
 end TailPSeries
-
-/-! ## Tonelli interchange for the MZ variance sum (measure-theoretic lift of step 4)
-
-The variance series `∑ᵢ Var(Yᵢ)/aᵢ^{2}` with `aᵢ = i^{1/p}` and truncations
-`Yᵢ = 𝟙{|X| ≤ i^{1/p}}·X` is finite **not** term-by-term (that diverges — see the
-`TailPSeries` note) but by a **Tonelli interchange** of `∑ᵢ` and `∫`.  For nonnegative
-integrands the interchange is *unconditional*: `MeasureTheory.lintegral_tsum` pushes `∑'ᵢ`
-through the lower integral needing only a per-term measurability side goal, sidestepping the
-Bochner `integral_tsum` whose `∑'ᵢ ∫‖·‖ < ∞` hypothesis is *exactly* the finiteness we are
-trying to establish.  The pointwise integrand is then dominated by the deterministic bound
-`tsum_weight_trunc_sq_le` at `x = X ω`.
-
-This yields the master estimate (in `ℝ≥0∞`, `s = 2/p`)
-
-    ∑'ᵢ ∫⁻ i^{-s}·(𝟙{|X|≤i^{1/p}}·X)²  ≤  ∫⁻ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²,
-
-the lower-integral form of `∑ᵢ 𝔼[Yᵢ²]·i^{-2/p} ≤ 𝔼[(max 1 |X|ᵖ)^{1-2/p}·(2/p)/(2/p-1)·X²]`.
-With `s = 2/p > 1` the RHS integrand is dominated by `s/(s-1)·max(X², |X|ᵖ)`, integrable on a
-probability space with `𝔼|X|ᵖ < ∞`; so the whole variance sum is finite (that finiteness
-extraction is the next leaf).  0-sorry / 0-`axiom`. -/
-section TonelliInterchange
-
-open MeasureTheory
-open scoped ENNReal
-
-variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
-
-/-- **Tonelli interchange bound for the MZ variance series.**  For a measurable `X`, `1 < s`
-and `0 < p`, the `i^{-s}`-weighted truncated second moments, summed in `ℝ≥0∞`, are bounded by
-the integral of the deterministic pointwise majorant of `tsum_weight_trunc_sq_le`:
-
-    ∑'ᵢ ∫⁻ ω, i^{-s}·(𝟙{|X|≤i^{1/p}}·X)²  ≤  ∫⁻ ω, (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X².
-
-Proof: `lintegral_tsum` (nonneg summand, per-term measurable) pushes `∑'ᵢ` inside the lower
-integral; then `lintegral_mono` dominates the pointwise `∑'ᵢ` by `tsum_weight_trunc_sq_le` at
-`x = X ω`, pulling `ENNReal.ofReal` through the real tsum via `ENNReal.ofReal_tsum_of_nonneg`
-(the per-`ω` summand is summable: an indicator of the `p`-series `i^{-s}` scaled by `X ω ^ 2`). -/
-theorem lintegral_tsum_trunc_sq_weight_le
-    (X : Ω → ℝ) (hX : Measurable X) {s p : ℝ} (hs : 1 < s) (hp : 0 < p) :
-    ∑' i : ℕ, ∫⁻ ω, ENNReal.ofReal
-        ((i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) ∂μ
-      ≤ ∫⁻ ω, ENNReal.ofReal
-        ((max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * (X ω) ^ 2) ∂μ := by
-  -- per-term measurability of `ω ↦ ofReal (i^{-s}·(𝟙{|X|≤i^{1/p}}·X)²)`
-  have hmeas : ∀ i : ℕ, AEMeasurable
-      (fun ω => ENNReal.ofReal
-        ((i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2)) μ := by
-    intro i
-    refine (ENNReal.measurable_ofReal.comp ?_).aemeasurable
-    exact ((hX.indicator (measurableSet_le hX.abs measurable_const)).pow_const 2).const_mul _
-  -- push `∑'ᵢ` inside the lower integral (unconditional for nonneg summands)
-  rw [← lintegral_tsum hmeas]
-  -- dominate pointwise by `tsum_weight_trunc_sq_le` at `x = X ω`
-  apply lintegral_mono
-  intro ω
-  -- the real summand equals the root-form indicator summand of `tsum_weight_trunc_sq_le`
-  have hri : ∀ i : ℕ,
-      (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2
-        = {j : ℕ | |X ω| ≤ (j : ℝ) ^ (1 / p)}.indicator
-            (fun j => (j : ℝ) ^ (-s) * (X ω) ^ 2) i := by
-    intro i
-    simp only [Set.indicator_apply, Set.mem_setOf_eq]
-    split_ifs <;> ring
-  have hr_nonneg : ∀ i : ℕ,
-      0 ≤ (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2 :=
-    fun i => mul_nonneg (Real.rpow_nonneg (Nat.cast_nonneg i) _) (sq_nonneg _)
-  have hclean_summ : Summable
-      ({j : ℕ | |X ω| ≤ (j : ℝ) ^ (1 / p)}.indicator
-        (fun j => (j : ℝ) ^ (-s) * (X ω) ^ 2)) :=
-    ((Real.summable_nat_rpow.mpr (by linarith : -s < -1)).mul_right ((X ω) ^ 2)).indicator _
-  have hr_summ : Summable
-      (fun i : ℕ => (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) :=
-    hclean_summ.congr (fun i => (hri i).symm)
-  calc ∑' i : ℕ, ENNReal.ofReal
-          ((i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2)
-      = ENNReal.ofReal (∑' i : ℕ,
-          (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) :=
-        (ENNReal.ofReal_tsum_of_nonneg hr_nonneg hr_summ).symm
-    _ ≤ ENNReal.ofReal ((max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * (X ω) ^ 2) := by
-        apply ENNReal.ofReal_le_ofReal
-        calc ∑' i : ℕ,
-              (i : ℝ) ^ (-s) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2
-            = ∑' i : ℕ, {j : ℕ | |X ω| ≤ (j : ℝ) ^ (1 / p)}.indicator
-                (fun j => (j : ℝ) ^ (-s) * (X ω) ^ 2) i := tsum_congr hri
-          _ ≤ (max 1 (|X ω| ^ p)) ^ (1 - s) * s / (s - 1) * (X ω) ^ 2 :=
-              tsum_weight_trunc_sq_le hs hp (X ω)
-
-#check @lintegral_tsum_trunc_sq_weight_le
-
--- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
--- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
-#print axioms lintegral_tsum_trunc_sq_weight_le
-
-end TonelliInterchange
-
-/-! ## Pointwise domination of the interchange RHS integrand (MZ step-4 finiteness core)
-
-The Tonelli interchange `lintegral_tsum_trunc_sq_weight_le` bounds the variance sum by
-`∫⁻ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²` with `s = 2/p`.  At *exactly* that exponent the integrand
-core `(max 1 |X|ᵖ)^{1-2/p}·X²` is dominated **pointwise** by `|X|ᵖ`, which makes the RHS
-integral finite whenever `𝔼|X|ᵖ < ∞`.  The two regions both land under `|x|ᵖ`:
-
-* `|x| ≥ 1`: `max = |x|ᵖ`, and `(|x|ᵖ)^{1-2/p}·|x|² = |x|^{(p-2)+2} = |x|ᵖ` (equality);
-* `|x| < 1`: `max = 1`, so the core is `x² = |x|² = |x|ᵖ·|x|^{2-p} ≤ |x|ᵖ` (`|x|^{2-p} ≤ 1`
-  since `0 ≤ 2-p` and `|x| ≤ 1`).
-
-0-sorry / 0-`axiom`. -/
-section VarianceMajorant
-
-/-- **RHS-integrand domination (MZ step-4 finiteness core).**  For `0 < p < 2` and any real
-`x`, the interchange integrand core at `s = 2/p` is dominated by `|x|ᵖ`:
-
-    (max 1 |x|ᵖ)^{1 - 2/p} · x²  ≤  |x|ᵖ.
-
-Multiplying by the nonnegative constant `s/(s-1)` (`s = 2/p`) dominates the full interchange
-RHS integrand by `s/(s-1)·|X|ᵖ`, giving `∫⁻ (…) < ∞` from `𝔼|X|ᵖ < ∞` — the next leaf. -/
-theorem trunc_rpow_weight_sq_le_rpow {p x : ℝ} (hp : 0 < p) (hp2 : p < 2) :
-    (max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2 ≤ |x| ^ p := by
-  have hx2 : x ^ 2 = |x| ^ (2 : ℝ) := by
-    rw [← sq_abs x, ← Real.rpow_natCast (|x|) 2]; norm_num
-  rcases le_or_gt (|x|) 1 with hle | hgt
-  · -- |x| ≤ 1 : max = 1, split |x|² = |x|ᵖ·|x|^{2-p} with |x|^{2-p} ≤ 1
-    have hap : |x| ^ p ≤ 1 := Real.rpow_le_one (abs_nonneg x) hle hp.le
-    rw [max_eq_left hap, Real.one_rpow, one_mul, hx2]
-    have hsplit : |x| ^ (2 : ℝ) = |x| ^ p * |x| ^ (2 - p) := by
-      rw [← Real.rpow_add_of_nonneg (abs_nonneg x) hp.le (by linarith),
-          show p + (2 - p) = (2 : ℝ) from by ring]
-    rw [hsplit]
-    have h1 : |x| ^ (2 - p) ≤ 1 := Real.rpow_le_one (abs_nonneg x) hle (by linarith)
-    calc |x| ^ p * |x| ^ (2 - p)
-        ≤ |x| ^ p * 1 := mul_le_mul_of_nonneg_left h1 (Real.rpow_nonneg (abs_nonneg x) p)
-      _ = |x| ^ p := mul_one _
-  · -- 1 < |x| : max = |x|ᵖ, exact equality
-    have hxpos : (0 : ℝ) < |x| := lt_trans one_pos hgt
-    have hap : 1 ≤ |x| ^ p := by
-      calc (1 : ℝ) = (1 : ℝ) ^ p := (Real.one_rpow p).symm
-        _ ≤ |x| ^ p := Real.rpow_le_rpow zero_le_one hgt.le hp.le
-    have hexp : p * (1 - 2 / p) + 2 = p := by field_simp; ring
-    have hval : (max 1 (|x| ^ p)) ^ (1 - 2 / p) * x ^ 2 = |x| ^ p := by
-      rw [max_eq_right hap, hx2, ← Real.rpow_mul (abs_nonneg x), ← Real.rpow_add hxpos, hexp]
-    exact le_of_eq hval
-
-#check @trunc_rpow_weight_sq_le_rpow
-
--- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
--- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
-#print axioms trunc_rpow_weight_sq_le_rpow
-
-end VarianceMajorant
-
-/-! ## Master finiteness bound for the MZ variance sum (interchange ∘ domination)
-
-Chaining the Tonelli interchange `lintegral_tsum_trunc_sq_weight_le` (at `s = 2/p`) with the
-pointwise domination `trunc_rpow_weight_sq_le_rpow` and a constant pull-out collapses the whole
-`i^{-2/p}`-weighted truncated-second-moment sum to a single multiple of the `p`-th moment:
-
-    ∑'ᵢ ∫⁻ ω, i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)²  ≤  ofReal((2/p)/(2/p-1)) · ∫⁻ ω, |X|ᵖ.
-
-This is the quantitative `∑ᵢ Var(Yᵢ)/aᵢ² ≤ C·𝔼|X|ᵖ` (in `ℝ≥0∞`, `aᵢ = i^{1/p}`): with
-`𝔼|X|ᵖ < ∞` the RHS is finite, so the variance sum is finite — the summability hypothesis of the
-Kolmogorov criterion `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5).  0-sorry / 0-`axiom`. -/
-section MasterVarianceBound
-
-open MeasureTheory
-open scoped ENNReal
-
-variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
-
-/-- **Master variance-sum bound (MZ step 4).**  For a measurable `X` and `0 < p < 2`, the
-`i^{-2/p}`-weighted truncated second moments sum to at most a constant multiple of the `p`-th
-absolute moment (all in `ℝ≥0∞`):
-
-    ∑'ᵢ ∫⁻ ω, i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)²  ≤  ofReal((2/p)/(2/p-1)) · ∫⁻ ω, |X|ᵖ.
-
-Proof: `lintegral_tsum_trunc_sq_weight_le` at `s = 2/p` bounds the LHS by the integral of the
-interchange majorant; `lintegral_const_mul'` pulls the constant out of the target; then
-`lintegral_mono` + `trunc_rpow_weight_sq_le_rpow` dominate the integrand pointwise by
-`(2/p)/(2/p-1)·|X ω|ᵖ`. -/
-theorem lintegral_tsum_trunc_sq_weight_le_moment
-    (X : Ω → ℝ) (hX : Measurable X) {p : ℝ} (hp : 0 < p) (hp2 : p < 2) :
-    ∑' i : ℕ, ∫⁻ ω, ENNReal.ofReal
-        ((i : ℝ) ^ (-(2 / p)) * ({ω | |X ω| ≤ (i : ℝ) ^ (1 / p)}.indicator X ω) ^ 2) ∂μ
-      ≤ ENNReal.ofReal ((2 / p) / (2 / p - 1)) * ∫⁻ ω, ENNReal.ofReal (|X ω| ^ p) ∂μ := by
-  have hs : (1 : ℝ) < 2 / p := by rw [lt_div_iff₀ hp]; linarith
-  have hc : (0 : ℝ) ≤ (2 / p) / (2 / p - 1) := div_nonneg (by positivity) (by linarith)
-  refine (lintegral_tsum_trunc_sq_weight_le X hX hs hp).trans ?_
-  rw [← lintegral_const_mul' (ENNReal.ofReal ((2 / p) / (2 / p - 1)))
-        (fun ω => ENNReal.ofReal (|X ω| ^ p)) ENNReal.ofReal_ne_top]
-  apply lintegral_mono
-  intro ω
-  dsimp only
-  rw [← ENNReal.ofReal_mul hc]
-  apply ENNReal.ofReal_le_ofReal
-  calc (max 1 (|X ω| ^ p)) ^ (1 - 2 / p) * (2 / p) / (2 / p - 1) * (X ω) ^ 2
-      = (2 / p) / (2 / p - 1) * ((max 1 (|X ω| ^ p)) ^ (1 - 2 / p) * (X ω) ^ 2) := by ring
-    _ ≤ (2 / p) / (2 / p - 1) * |X ω| ^ p :=
-        mul_le_mul_of_nonneg_left (trunc_rpow_weight_sq_le_rpow hp hp2) hc
-
-#check @lintegral_tsum_trunc_sq_weight_le_moment
-
--- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
--- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
-#print axioms lintegral_tsum_trunc_sq_weight_le_moment
-
-end MasterVarianceBound
 
 end LawsOfLargeNumbers.MZ

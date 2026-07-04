@@ -78,7 +78,7 @@
       "startLine": 148,
       "endLine": 161
     },
-    "type": "insight",
+    "type": "example",
     "title": "Linear Merge: the Classical O(n·log n) Shape",
     "content": "Instantiating the merge cost $M = \\mathrm{id}$ gives `cost_le_linear`: $T(n) \\le (\\lfloor\\log_2 n\\rfloor + 1)\\cdot n$, the familiar $\\Theta(n\\log n)$ shape for a divide-and-conquer routine with linear-time merging (and the leading behaviour of Schönhage GCD with quasi-linear multiplication, where the extra $M(n)/n$ factor is subsumed). `halvingRegular_id` supplies the regularity check, which for the identity is simply $2\\lfloor n/2\\rfloor \\le n$. The section ends with a `#print axioms` audit confirming the four headline theorems rest only on `propext`, `Classical.choice`, `Quot.sound`.",
     "mathContext": "For $M(n)=n$: $M(\\lfloor n/2\\rfloor)+M(\\lfloor n/2\\rfloor)=2\\lfloor n/2\\rfloor\\le n=M(n)$, so the identity is halving-regular with equality on even $n$. Substituting into `cost_le` collapses `id n` to `n` definitionally, and the bound $(\\lfloor\\log_2 n\\rfloor + 1)\\cdot n$ is exactly the number-of-levels times per-level linear work.",

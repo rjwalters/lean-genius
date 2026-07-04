@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S4b step-4 *Tonelli interchange* — the ∑ᵢ–𝔼 lower-integral interchange itself SHIPPED & VERIFIED — remaining: RHS-integrand finiteness extraction + assembly)
+**Phase**: ACT (S4b step-4 *Tonelli integrand* — pointwise per-`ω` variance-sum integrand SHIPPED & VERIFIED — remaining: the ∑ᵢ–𝔼 interchange itself + assembly)
 **Since**: 2026-07-04
-**Iteration**: 13 (S4b step-4 **Tonelli interchange** `lintegral_tsum_trunc_sq_weight_le`: `∑'ᵢ ∫⁻ i^{-s}·(𝟙{|X|≤i^{1/p}}·X)² ≤ ∫⁻ (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²` — `MeasureTheory.lintegral_tsum` pushes `∑'ᵢ` inside the lower integral (unconditional for nonneg, sidestepping Bochner `integral_tsum`'s `∑∫‖·‖<∞` which is the very finiteness sought), then `lintegral_mono` dominates the pointwise `∑'ᵢ` by iter-12 `tsum_weight_trunc_sq_le` at `x=X ω` via `ENNReal.ofReal_tsum_of_nonneg` — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs; iter 12 pointwise integrand `tsum_weight_trunc_sq_le` `∑ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-s}·x²) ≤ (max 1 |x|ᵖ)^{1-s}·s/(s-1)·x²` — the exact per-`ω` summand of the variance series, root-form region `{i|`|x|`≤i^{1/p}}` bridged to power-form `{i|`|x|ᵖ`≤i}` — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs; iter 11 inner-tail bound `tsum_indicator_ge_rpow_neg_le`; iter 10 inclusive tail `tsum_ge_rpow_neg_le`; iter 9 exclusive backbone `∑_{j>N}j^{-s}≤N^{1-s}/(s-1)`; step-3/4 kernels; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
+**Iteration**: 12 (S4b step-4 pointwise Tonelli integrand `tsum_weight_trunc_sq_le` `∑ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-s}·x²) ≤ (max 1 |x|ᵖ)^{1-s}·s/(s-1)·x²` — the exact per-`ω` summand of the variance series, root-form region `{i|`|x|`≤i^{1/p}}` bridged to power-form `{i|`|x|ᵖ`≤i}` — SHIPPED & build-VERIFIED, 0-axiom, 7743 jobs; iter 11 inner-tail bound `tsum_indicator_ge_rpow_neg_le`; iter 10 inclusive tail `tsum_ge_rpow_neg_le`; iter 9 exclusive backbone `∑_{j>N}j^{-s}≤N^{1-s}/(s-1)`; step-3/4 kernels; step-1 truncation; step-2 tail-sum; S4a variance L¹-bound; S3 martingale; S2 Kronecker; S1 survey)
 
 ## Current Focus
 
@@ -109,33 +109,20 @@ interchange**: keep the truncated moment `𝔼[X²·𝟙{|X| ≤ i^{1/p}}]` inta
 
 ## Next Action
 
-- **S4b step-4 Tonelli interchange is now DONE (iteration 13):** `lintegral_tsum_trunc_sq_weight_le`
-  supplies, for measurable `X`, `1<s`, `0<p`, the **master lower-integral estimate**
-  `∑'ᵢ ∫⁻ ω, i^{-s}·(𝟙{|X|≤i^{1/p}}·X)² ≤ ∫⁻ ω, (max 1 |X|ᵖ)^{1-s}·s/(s-1)·X²`. Proof:
-  `MeasureTheory.lintegral_tsum` (per-term measurability only — **unconditional for nonneg
-  summands**, deliberately avoiding Bochner `integral_tsum` whose `∑'ᵢ∫‖·‖<∞` side goal is the
-  very finiteness we seek) pushes `∑'ᵢ` inside `∫⁻`; then `lintegral_mono` dominates the pointwise
-  `∑'ᵢ` by iter-12 `tsum_weight_trunc_sq_le` at `x=X ω`, pulling `ENNReal.ofReal` through the real
-  tsum via `ENNReal.ofReal_tsum_of_nonneg` (per-`ω` summand summable: an indicator of the `i^{-s}`
-  `p`-series scaled by `X ω ^ 2`). **Do not re-derive.**
-- **RHS-integrand pointwise domination core is now DONE (iteration 14):**
-  `trunc_rpow_weight_sq_le_rpow` — for `0<p<2`, any `x`, the interchange integrand core at
-  `s=2/p` is dominated by `|x|ᵖ`: `(max 1 |x|ᵖ)^{1-2/p}·x² ≤ |x|ᵖ`. Two branches, both under
-  `|x|ᵖ`: `|x|≥1` gives equality `(|x|ᵖ)^{1-2/p}·|x|²=|x|^{(p-2)+2}=|x|ᵖ` (`Real.rpow_mul`+
-  `rpow_add`, exponent `p·(1-2/p)+2=p` by `field_simp;ring`); `|x|<1` splits `|x|²=|x|ᵖ·|x|^{2-p}`
-  (`Real.rpow_add_of_nonneg`) with `|x|^{2-p}≤1` (`Real.rpow_le_one`). **Do not re-derive.**
-- **Master variance-sum bound is now DONE (iteration 15):** `lintegral_tsum_trunc_sq_weight_le_moment`
-  collapses the whole weighted sum to a constant times the `p`-th moment (in ℝ≥0∞):
-  `∑'ᵢ ∫⁻ i^{-2/p}·(𝟙{|X|≤i^{1/p}}·X)² ≤ ofReal((2/p)/(2/p-1)) · ∫⁻ |X|ᵖ`. Proof: chain
-  `lintegral_tsum_trunc_sq_weight_le` at `s=2/p` (`hs: 1<2/p` via `lt_div_iff₀`), `lintegral_const_mul'`
-  (const pull, needs only `ofReal_ne_top` — no measurability), `lintegral_mono` + `ENNReal.ofReal_mul`
-  + `trunc_rpow_weight_sq_le_rpow`. **This is the quantitative `∑ᵢ Var(Yᵢ)/aᵢ² ≤ C·𝔼|X|ᵖ`.**
-  **Do not re-derive.**
-- **Next: extract real finiteness + feed S5.** From `Integrable (fun ω => |X ω|ᵖ)` (⟹
-  `∫⁻ ofReal(|X|ᵖ) < ∞` via `Integrable.lintegral_lt_top`/`hasFiniteIntegral` + `ofReal`/`nnnorm`
-  bridge on the nonneg `|X|ᵖ`), the master bound RHS `ofReal(C)·(finite)` is `< ∞`
-  (`ENNReal.mul_lt_top`), so the ℝ≥0∞ variance sum is finite. Convert to a real
-  `∑ᵢ 𝔼[Yᵢ²]·i^{-2/p} < ∞` (each summand = `(∫⁻ …).toReal` via `lintegral_ofReal`/`ofReal_toReal`),
+- **S4b step-4 pointwise Tonelli integrand is now DONE (iteration 12):** `tsum_weight_trunc_sq_le`
+  supplies, for `1<s`, `0<p`, any `x`, the **per-`ω` variance summand bound**
+  `∑ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-s}·x²) ≤ (max 1 |x|ᵖ)^{1-s}·s/(s-1)·x²`. This is the exact `x=X(ω)`,
+  `s=2/p` integrand of the interchange: the root-form truncation region `{i | |x| ≤ i^{1/p}}`
+  (matching `integral_trunc_sq_le`'s `t=i^{1/p}`) is bridged to the power-form `{i | |x|ᵖ ≤ i}`
+  (complement of `rpow_inv_lt_iff_lt_rpow` via `not_lt`), `x²` is pulled through
+  (`tsum_mul_right`), and iter-11 `tsum_indicator_ge_rpow_neg_le` closes it. **Do not re-derive.**
+- **Next: the ∑ᵢ–𝔼 Tonelli interchange itself** (the one remaining measure-theoretic lift for
+  step-4). Use `MeasureTheory.integral_tsum` / `lintegral_tsum` (nonneg, per-term integrability +
+  `∑'∫|·|<∞` side-goals) to move `∑'ᵢ ∫ i^{-s}·(𝟙{|X|≤i^{1/p}}·X)² dμ = ∫ ∑'ᵢ (…) dμ`; the inner
+  `∑'ᵢ` under the integral is **literally** `tsum_weight_trunc_sq_le` at `x=X(ω)`, so the integrand
+  is dominated by `(max 1 |X|ᵖ)^{1-2/p}·s/(s-1)·X²`. Integrate the RHS: `|X|≥1` branch
+  `(max 1 |X|ᵖ)^{1-2/p}=|X|^{p-2}` so `X²·bound=|X|^p → 𝔼|X|ᵖ`; `|X|<1` branch collapses to
+  `const·X² → const·𝔼X²` (finite via `𝔼|X|ᵖ` + probability space). Yields `∑ᵢ Var(Yᵢ)/i^{2/p} < ∞`,
   feeding `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5). Watch weight positivity
   (use `aᵢ=(i+1)^{1/p}` or `max 1 i^{1/p}`).
 - **Then: step-3 centering** (via `integral_tail_abs_le` + `tendsto_weighted_average_zero`) and
@@ -143,9 +130,8 @@ interchange**: keep the truncated moment `𝔼[X²·𝟙{|X| ≤ i^{1/p}}]` inta
 
 ## Attempt Counts
 
-- Total attempts: 13 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation; S4b step-3/4 moment kernels; S4b step-4 tail p-series backbone; iter-10 inclusive tail; iter-11 pointwise inner-tail bound; iter-12 pointwise Tonelli integrand; iter-13 Tonelli interchange `lintegral_tsum_trunc_sq_weight_le`)
-- Latest approach attempts: 1 (S4b step-4 Tonelli interchange `lintegral_tsum_trunc_sq_weight_le` — `lintegral_tsum` [per-term `Measurable.indicator`∘`measurableSet_le`∘`pow_const`∘`const_mul`∘`ENNReal.measurable_ofReal`] to push `∑'ᵢ` inside `∫⁻`, then `lintegral_mono` + `ENNReal.ofReal_tsum_of_nonneg` [summand summable via `Real.summable_nat_rpow`.`mul_right`.`indicator`] + `tsum_weight_trunc_sq_le`; one binder-type fix [`fun i : ℕ`], then clean build 7743 jobs, 0-axiom)
-- Prior approach attempts: 1 (S4b step-4 pointwise Tonelli integrand `tsum_weight_trunc_sq_le` — `Set.indicator_apply`+`ring` to pull `x²` out of the indicator, `tsum_mul_right` to pull it out of the tsum, root→power region rewrite via `not_lt` on `rpow_inv_lt_iff_lt_rpow`, then `tsum_indicator_ge_rpow_neg_le` + `mul_le_mul_of_nonneg_right`; landed clean on first build, 7743 jobs, 0-axiom)
+- Total attempts: 12 (S1 survey; S2 Kronecker; S3 martingale assembly; +glue; S4a variance L¹ bound; S4b step-2 tail-sum; S4b step-1 i.i.d. truncation; S4b step-3/4 moment kernels; S4b step-4 tail p-series backbone; iter-10 inclusive tail; iter-11 pointwise inner-tail bound; iter-12 pointwise Tonelli integrand)
+- Current approach attempts: 1 (S4b step-4 pointwise Tonelli integrand `tsum_weight_trunc_sq_le` — `Set.indicator_apply`+`ring` to pull `x²` out of the indicator, `tsum_mul_right` to pull it out of the tsum, root→power region rewrite via `not_lt` on `rpow_inv_lt_iff_lt_rpow`, then `tsum_indicator_ge_rpow_neg_le` + `mul_le_mul_of_nonneg_right`; landed clean on first build, 7743 jobs, 0-axiom)
 - Approaches tried: 7 (S1 literature/decomposition; S2 Abel+Toeplitz;
   S3 natural-filtration martingale + upcrossing engine; S4a orthogonality + eLpNorm bridge;
   S4b step-2 discrete layer cake via lintegral_tsum + floor count;

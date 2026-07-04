@@ -5,50 +5,6 @@
 `-oq-01-oq-02` (SLLN rate of convergence, 3 axioms) → this leaf.
 
 ---
-## Session 2026-07-04 (researcher-8) — S4b: variance integrand dominated by an INTEGRABLE function (DEEP DIVE, PROGRESS)
-
-**Mode**: REVISIT (RICH). **Outcome**: progress — two new deterministic leaves appended to
-`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (0 sorries, 0 `axiom`; docker build
-**succeeded, 7743 jobs, exit 0**; `#print axioms` on both = `propext / Classical.choice / Quot.sound`
-only — no `sorryAx`, no `ofReduceBool`).
-
-### What it adds
-The prior leaf `tsum_weight_trunc_sq_le` (r14 iter 12) bounded the per-`ω` variance-sum integrand by
-`(max 1 |x|ᵖ)^{1-s}·s/(s-1)·x²` (`s=2/p`). That RHS still carries the awkward `(max 1 |x|ᵖ)^{1-s}·x²`
-factor; the Tonelli interchange needs it dominated by a function whose **integral is finite**. These
-two leaves supply exactly that domination:
-- **`weight_bound_le_moment_add_one`** (`0<p<2`): `(max 1 |x|ᵖ)^{1-2/p}·x² ≤ |x|ᵖ + 1`. This is the
-  only place `s=2/p` is used essentially: on `|x|≥1` the exponent arithmetic `p·(1-2/p)+2 = p`
-  collapses the two powers to `|x|ᵖ` **exactly** (`|x|^{p-2}·|x|² = |x|ᵖ`); on `|x|<1` the max is `1`
-  and the factor is `x² ≤ 1`. Proof: `Real.rpow_mul` for the exponent collapse (`field_simp` closes
-  `p·(1-2/p)=p-2`), `Real.rpow_add` to recombine, `nlinarith [sq_abs, abs_nonneg]` for the `<1` branch.
-- **`variance_integrand_le_moment`** (`0<p<2`): composes the above with `tsum_weight_trunc_sq_le` to
-  give `∑'ᵢ 𝟙{|x|≤i^{1/p}}·(i^{-2/p}·x²) ≤ (2/p)/(2/p−1)·(|x|ᵖ + 1)` — the pointwise integrand bounded
-  by a **constant × (|x|ᵖ + 1)**, which integrates to `C·(𝔼|X|ᵖ + 1) < ∞` on a probability space.
-
-### Technique (reusable)
-The exponent collapse `(|x|ᵖ)^{1-2/p}·x² = |x|ᵖ` on `|x|≥1`: `rw [← Real.rpow_mul (abs_nonneg x)]` to
-merge to `|x|^{p(1-2/p)}`, `congr 1; field_simp` (do NOT chain `ring` — `field_simp` closes
-`p*(1-2/p)=p-2` by itself, a trailing `ring` errors "no goals"), then convert `x^2` to the rpow
-`|x|^(2:ℝ)` via `rw [show (2:ℝ)=((2:ℕ):ℝ) by norm_num, Real.rpow_natCast, sq_abs]` and recombine with
-`← Real.rpow_add (abs_pos)`. Constant nonneg: `div_nonneg (by positivity) (by linarith)` from `1<2/p`.
-
-### Honest status
-Two correct, reusable **deterministic domination leaves**, NOT the interchange or the assembly. They
-convert the iter-12 weight bound into the clean form `pointwise integrand ≤ C·(|X|ᵖ+1)` with an
-explicitly integrable RHS — removing the last deterministic obstacle before the measure-theoretic
-`∑'ᵢ`–`∫` swap. The substantive open work is unchanged: the actual `MeasureTheory.integral_tsum`
-interchange with its per-term integrability side-goals, then integrating `C·(|X|ᵖ+1)` to `C·(𝔼|X|ᵖ+1)`
-and feeding `∑ᵢ Var(Yᵢ)/i^{2/p} ≤ C·𝔼|X|ᵖ < ∞` into `ae_tendsto_average_zero_of_variance_weighted_bdd`
-(S5); then step-3 centering and the final MZ combination.
-
-### Next steps (frontier unchanged)
-- **The interchange itself**: `∑'ᵢ ∫ i^{-2/p}·Yᵢ² dμ = ∫ ∑'ᵢ i^{-2/p}·Yᵢ² dμ` via `integral_tsum`
-  (per-term integrability + `∑'∫|·|<∞`); dominate the swapped integrand by `variance_integrand_le_moment`.
-- Integrate `C·(|X|ᵖ+1)` to `C·(𝔼|X|ᵖ+1)` (probability measure: `∫(|X|ᵖ+1) = 𝔼|X|ᵖ+1`); feed S5.
-- Step-3 centering, then final MZ combination.
-
----
 
 ## Session 2026-07-04 (researcher-14, iter 12) — S4b step-4 pointwise Tonelli integrand SHIPPED (verified)
 

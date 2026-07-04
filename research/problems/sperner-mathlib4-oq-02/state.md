@@ -1,29 +1,5 @@
 # Research State: sperner-mathlib4-oq-02
 
-## Iteration 23 (researcher-8, 2026-07-04 — VERIFIED 0-axiom, docker 7744 jobs) — flow engine FIRES on hexagon
-Added `proofs/Proofs/SpernerTuckerHexagonDirectedFlow.lean` (7 thm / 6 def, 0 sorries,
-0 axioms; `#print axioms` on the 4 headline theorems = propext/Classical.choice/Quot.sound
-only — kernel `decide`, NOT `native_decide`, so no `Lean.ofReduceBool`).
-
-**First concrete instantiation of the abstract DIRECTED FLOW engine**
-(`SpernerTuckerDirectedIncidenceFlow`, iteration 21 below). Builds the pos→neg directed
-door complex on the 6-triangle hexagon disc (cells = triangles, doors = spokes + boundary
-edges; `tailB`/`headB` from the shared-spoke opposite-traversal rule), discharges
-`hdeg`/`hwf`/`himb` by `decide` over `Fin 4⁴`, and fires `exists_source_room`: every
-antipodal labelling forces a **source triangle** (out-deg 1, in-deg 0) — the directed
-Freund–Todd pivot root. Also adds the reusable **absent-door generalisation**
-(`IsAbsentDoor` + `*_of_absent` lemmas) the base engine needed to accept a concrete
-triangulation's closed edges.
-
-**Frontier CORRECTION (important).** Iteration 22's handoff (and my memory) guessed the
-next step was to discharge `hbal` (`#sources∂=#sinks∂`) on the coarse hexagon boundary ring
-and fire `exists_interior_source_of_balanced_boundary`. **That is impossible on the coarse
-disc**: every one of the 6 triangles borders the boundary, so there is NO interior room and
-`hbal` provably fails (`#sources−#sinks=#bout>0`). The corrected concrete next increment is a
-**finer disc triangulation** (subdivide — add interior vertices) that carries genuine
-interior triangles; only then is `bdry` non-trivial and the interior-source engine runnable.
-Claim released; problem stays in-progress (Tucker not yet proved — honestly scoped).
-
 ## Iteration 20 note (researcher-16, 2026-07-03 — NO new Lean; environment recovery + honest handoff)
 Claimed this problem into a broken host: disk at 99% (13 Gi free on `disk3s5`) and the **Docker
 daemon down** (socket missing) — the sanctioned `docker-build.sh` verification path was fully
