@@ -43,6 +43,10 @@
         `p_1² ≥ p_0 p_2`, i.e. `2 n · e₂ ≤ (n - 1) · e₁²`, for signed reals —
         no enumeration, no appeal to the still-open general Rolle crux (see
         Part III below).
+  * `newton_four_first` / `newton_four_second` / `newton_four_third`  :  ALL
+        THREE Newton log-concavity steps at `n = 4` for signed reals, via explicit
+        SOS certificates (Part IV) — including the middle (`k = 2`) and top
+        (`k = 3`) steps that lie beyond Part III's general `k = 1` reach.
 
   The general SECOND-and-higher steps (`p_k², k ≥ 2`, arbitrary `n`) need the
   crux lemma "differentiation preserves full real-rootedness (counting
@@ -269,5 +273,79 @@ theorem newton_first_general (n : ℕ) (x : ℕ → ℝ) :
         + 2 * (n : ℝ) * (∑ j ∈ range n, ∑ i ∈ range j, x i * x j) := by
     rw [hid]; ring
   nlinarith [hqm, hn]
+
+/-!  ## Part IV — Newton at `n = 4` via explicit SOS certificates
+
+Part III closed the FIRST Newton step (`k = 1`) for every arity, but the higher
+steps `k ≥ 2` at general `n` remain tied to the open iterated-Rolle crux.  Here we
+push the concrete SOS-certificate method of Part II one arity further and discharge
+ALL THREE Newton inequalities at `n = 4`, for arbitrary signed reals — including
+the middle step `k = 2` and the top step `k = 3`, which lie beyond Part III's
+`k = 1` reach.  This answers the "extend the SOS approach to `n = 4`" question and
+supplies the first fully-signed `n = 4` log-concavity chain in the amgm family.
+
+For four real roots `a, b, c, d` the splitting quartic is
+`(X-a)(X-b)(X-c)(X-d) = X⁴ - e₁X³ + e₂X² - e₃X + e₄`, with
+`e₁ = a+b+c+d`, `e₂ = ab+ac+ad+bc+bd+cd`, `e₃ = abc+abd+acd+bcd`, `e₄ = abcd`.
+The three Newton inequalities `p_k² ≥ p_{k-1}p_{k+1}` (`k = 1,2,3`, with
+`p₀=1, p₁=e₁/4, p₂=e₂/6, p₃=e₃/4, p₄=e₄`) become, after clearing denominators:
+
+* `k = 1`:  `8 e₂ ≤ 3 e₁²`   — SOS `∑_{i<j}(xᵢ-xⱼ)²` (the `n = 4` instance of
+  `newton_first_general`);
+* `k = 2`:  `9 e₁ e₃ ≤ 4 e₂²` — SOS
+  `3∑(xᵢxⱼ-xₖxₗ)² + ½∑((xᵢ-xⱼ)(xₖ-xₗ))²` over the three ways to split
+  `{a,b,c,d}` into two opposite pairs;
+* `k = 3`:  `8 e₂ e₄ ≤ 3 e₃²` — SOS `∑_{i<j}(xᵢ-xⱼ)²(xₖxₗ)²`, the image of the
+  `k = 1` certificate under the reciprocal substitution `xᵢ ↦ 1/xᵢ`.
+
+Each certificate is exact (verified symbolically); `nlinarith` closes each from the
+listed squares.  No sign hypothesis anywhere. -/
+
+/-- **Newton's first inequality at `n = 4`** (`p₁² ≥ p₀ p₂`), for arbitrary signed
+reals: `8 e₂ ≤ 3 e₁²`, i.e. `8(ab+ac+ad+bc+bd+cd) ≤ 3(a+b+c+d)²`.  SOS certificate
+`∑_{i<j}(xᵢ-xⱼ)²`.  (Also the `n = 4` instance of `newton_first_general`.) -/
+theorem newton_four_first (a b c d : ℝ) :
+    8 * (a * b + a * c + a * d + b * c + b * d + c * d) ≤ 3 * (a + b + c + d) ^ 2 := by
+  nlinarith [sq_nonneg (a - b), sq_nonneg (a - c), sq_nonneg (a - d),
+    sq_nonneg (b - c), sq_nonneg (b - d), sq_nonneg (c - d)]
+
+/-- **Newton's second (middle) inequality at `n = 4`** (`p₂² ≥ p₁ p₃`), for
+arbitrary signed reals: `9 e₁ e₃ ≤ 4 e₂²`, i.e.
+`9(a+b+c+d)(abc+abd+acd+bcd) ≤ 4(ab+ac+ad+bc+bd+cd)²`.  SOS certificate
+`3[(ab-cd)²+(ac-bd)²+(ad-bc)²] + ½[((a-b)(c-d))²+((a-c)(b-d))²+((a-d)(b-c))²]`.
+This is the `k = 2` step that Part III's general `k = 1` route does not reach. -/
+theorem newton_four_second (a b c d : ℝ) :
+    9 * (a + b + c + d) * (a * b * c + a * b * d + a * c * d + b * c * d)
+      ≤ 4 * (a * b + a * c + a * d + b * c + b * d + c * d) ^ 2 := by
+  nlinarith [sq_nonneg (a * b - c * d), sq_nonneg (a * c - b * d),
+    sq_nonneg (a * d - b * c), sq_nonneg ((a - b) * (c - d)),
+    sq_nonneg ((a - c) * (b - d)), sq_nonneg ((a - d) * (b - c))]
+
+/-- **Newton's third inequality at `n = 4`** (`p₃² ≥ p₂ p₄`), for arbitrary signed
+reals: `8 e₂ e₄ ≤ 3 e₃²`, i.e.
+`8(ab+ac+ad+bc+bd+cd)(abcd) ≤ 3(abc+abd+acd+bcd)²`.  SOS certificate
+`∑_{i<j}(xᵢ-xⱼ)²(xₖxₗ)²`, the image of the `k = 1` certificate under the reciprocal
+substitution `xᵢ ↦ 1/xᵢ`. -/
+theorem newton_four_third (a b c d : ℝ) :
+    8 * (a * b + a * c + a * d + b * c + b * d + c * d) * (a * b * c * d)
+      ≤ 3 * (a * b * c + a * b * d + a * c * d + b * c * d) ^ 2 := by
+  nlinarith [sq_nonneg ((a - b) * (c * d)), sq_nonneg ((a - c) * (b * d)),
+    sq_nonneg ((a - d) * (b * c)), sq_nonneg ((b - c) * (a * d)),
+    sq_nonneg ((b - d) * (a * c)), sq_nonneg ((c - d) * (a * b))]
+
+/-- **Newton at `n = 4` in normalized (`p`) form.**  All three log-concavity steps
+`p_{k-1} p_{k+1} ≤ p_k²` for `k = 1, 2, 3`, with `p₀=1, p₁=e₁/4, p₂=e₂/6,
+p₃=e₃/4, p₄=e₄`, hold for arbitrary signed reals `a, b, c, d`. -/
+theorem newton_four_normalized (a b c d : ℝ) :
+    (1 : ℝ) * ((a * b + a * c + a * d + b * c + b * d + c * d) / 6)
+        ≤ ((a + b + c + d) / 4) ^ 2 ∧
+      ((a + b + c + d) / 4) * ((a * b * c + a * b * d + a * c * d + b * c * d) / 4)
+        ≤ ((a * b + a * c + a * d + b * c + b * d + c * d) / 6) ^ 2 ∧
+      ((a * b + a * c + a * d + b * c + b * d + c * d) / 6) * (a * b * c * d)
+        ≤ ((a * b * c + a * b * d + a * c * d + b * c * d) / 4) ^ 2 := by
+  refine ⟨?_, ?_, ?_⟩
+  · nlinarith [newton_four_first a b c d]
+  · nlinarith [newton_four_second a b c d]
+  · nlinarith [newton_four_third a b c d]
 
 end NewtonRealRooted
