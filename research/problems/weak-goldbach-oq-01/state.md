@@ -1,40 +1,32 @@
 # Research State: weak-goldbach-oq-01
 
 ## Current State
-**Phase**: ACT (in progress)
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-07-03
-**Iteration**: 4
+**Since**: 2026-07-04
+**Iteration**: 5 (r8)
 
 ## Current Focus
-Discharging the `schnirelmann_basis_theorem` axiom in `WeakGoldbach.lean`. The
-**covering** component and now the **entire iteration bookkeeping** are built and
-verified in `proofs/Proofs/SchnirelmannBasis.lean` (0 sorry / 0 axiom). The
-**sole** remaining ingredient is Schnirelmann's inequality itself.
+DONE. The `schnirelmann_basis_theorem` axiom in `WeakGoldbach.lean` is discharged.
 
-## Active Approach
-Schnirelmann's theorem, decomposed:
-- [DONE] Covering lemma: σA+σB ≥ 1 ⟹ A⊕B ⊇ ℕ  (`sumset_covers_of_density_add_ge_one`).
-- [DONE] Terminal + iteration bookkeeping (r8, iter 4): `IsSumOfAtMost` +
-  composition (`.add`), the `h`-fold sum-set `sumsetPow`, and the reduction
-  `isAdditiveBasis_of_sumsetPow_density_ge_half : σ(sumsetPow A h) ≥ ½ ⟹
-  IsAdditiveBasis A (2h)`. Closes the "an element of h·A is a sum of ≤h elements
-  of A" gap and the order-2h composition.
-- [OPEN] Schnirelmann's inequality: σ(A⊕B) ≥ σA+σB−σA·σB — the gap-counting step.
-  **Now the only missing piece**: iterating it drives some σ(sumsetPow A h) above
-  ½, and the reduction above then discharges the axiom outright.
-
-## Attempt Count
-- Total attempts: 3 (1 survey, 2 act)
-- Approaches tried: covering lemma (SUCCESS), iteration bookkeeping (SUCCESS),
-  sumset inequality (not yet attempted — the sole remaining gap)
+## Active Approach (COMPLETED)
+Schnirelmann's theorem `σ(A) > 0 ⟹ ∃ h, A is an additive basis of order h`, fully
+proved in `proofs/Proofs/SchnirelmannTheorem.lean` (0 sorry / 0 axiom, foundational
+`propext / Classical.choice / Quot.sound` only). Assembly:
+- [DONE, prior] Covering lemma + iteration bookkeeping (`SchnirelmannBasis.lean`).
+- [DONE, prior] Schnirelmann's inequality `σ(A⊕B) ≥ σA+σB−σA·σB` (`SchnirelmannCounting.lean`).
+- [DONE, r8] `deficiency_sumsetPow_le`: `1 − σ(h·A) ≤ (1 − σA)^h` by induction on h.
+- [DONE, r8] `schnirelmann_basis_of_zero_mem` (0∈A) and `schnirelmann_basis` (general,
+  via `insert 0 A` + zero-summand deletion).
+- [DONE, r8] `WeakGoldbach.schnirelmann_basis_theorem`: axiom → theorem. axiomCount 5→4.
+- [DONE, r8] Repaired pre-existing Mathlib-4.26 bitrot (file did not compile on main):
+  `exponentialSumOverPrimes` noncomputable, `representationCount_pos_iff` Finset.product
+  API, `vinogradov_from_circle_method` positivity.
 
 ## Blockers
-- Schnirelmann's inequality is the delicate gap-counting argument (Ruzsa,
-  *Sumsets and structure*); an open Mathlib TODO. Non-trivial to formalize.
-- Binary Goldbach itself remains genuinely open (must stay axiomatized).
+- None for this problem's goal (the Schnirelmann axiom). Binary Goldbach itself and the
+  remaining 4 weak-goldbach axioms (Helfgott / circle-method / Chen / binary-verify) are
+  genuinely deep and stay axiomatized.
 
 ## Next Action
-Formalize Schnirelmann's inequality `σ(A⊕B) ≥ σA+σB−σA·σB` (with 0∈A, 0∈B), then
-the iteration; this closes the chain to `schnirelmann_basis_theorem`. The covering
-finisher is already in place in `SchnirelmannBasis.lean`.
+Closed. `docker-build.sh Proofs.WeakGoldbach` and `Proofs.SchnirelmannTheorem` both exit 0.

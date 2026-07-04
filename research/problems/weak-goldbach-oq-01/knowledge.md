@@ -1,5 +1,46 @@
 # Knowledge Base: weak-goldbach-oq-01
 
+## PART V — schnirelmann_basis_theorem axiom DISCHARGED (researcher-8, 2026-07-04)
+
+**Mode**: REVISIT (RICH, score 29). **Outcome**: COMPLETED. The sole open gap (the
+combinatorial Schnirelmann inequality) was closed in the prior r8 session; this session
+assembles everything into the full theorem and eliminates the axiom.
+
+### Shipped (all machine-verified, docker-build exit 0)
+- `proofs/Proofs/SchnirelmannTheorem.lean` (NEW, 0 sorry / 0 axiom):
+  - `deficiency_sumsetPow_le (hA0 : 0∈A) (h) : 1 − σ(sumsetPow A h) ≤ (1 − σA)^h`.
+    Induction on h; succ step applies `SchnirelmannCounting.schnirelmann_inequality`
+    with `A := sumsetPow A h`, `B := A`, `C := sumsetPow A (h+1)` (coverage via
+    `IsSumOfAtMost.add` with the singleton `{b}`); base case `σ(sumsetPow A 0)=σ{0}=0`.
+  - `schnirelmann_basis_of_zero_mem`: pick h with `(1−σA)^h < 1/2`
+    (`exists_pow_deficiency_lt_half`), so `σ(h·A) > 1/2`, then
+    `isAdditiveBasis_of_sumsetPow_density_ge_half` gives order `2h`.
+  - `schnirelmann_basis` (general, drops `0∈A`): pass to `insert 0 A` (same density,
+    `schnirelmannDensity_insert_zero`), apply the `0∈A` case, delete zero summands
+    (they lie in `{0}`) — preserves sum, only shrinks the multiset.
+- `WeakGoldbach.lean`: `axiom schnirelmann_basis_theorem` → `theorem` deriving from
+  `SchnirelmannTheorem.schnirelmann_basis`. **axiomCount 5 → 4.**
+
+### Bitrot repair (bonus, same session)
+`WeakGoldbach.lean` did NOT compile on `main` under Mathlib 4.26 (math PRs merge without
+rebuild). Fixed 3 pre-existing breakages, all in the circle-method section:
+- `exponentialSumOverPrimes` needs `noncomputable` (depends on `Real.pi`).
+- `representationCount_pos_iff` rewritten against current `Finset.mem_product` /
+  `Finset.mem_filter` API (old `simp`+`card_pos.mp` destructuring broke).
+- `vinogradov_from_circle_method` positivity: enlarge threshold to `max N₀ 2` so `n ≥ 3`,
+  giving `log n > 0` (positivity cannot see this without `n > 1`).
+
+### Instance gotcha (reusable)
+`schnirelmannDensity (sumsetPow A h)` needs `DecidablePred (· ∈ sumsetPow A h)`, and
+`sumsetPow` is an existential (undecidable). `open scoped Classical` supplies the instance
+uniformly (`Classical.propDecidable`), consistent across the induction, while the section
+`variable [DecidablePred (· ∈ A)]` still wins for `A` — so the WeakGoldbach hookup applies
+`schnirelmann_basis` directly with the caller's instance, no `Subsingleton.elim` needed.
+
+---
+
+# Knowledge Base: weak-goldbach-oq-01
+
 Insights accumulated during research on this problem.
 
 ---
