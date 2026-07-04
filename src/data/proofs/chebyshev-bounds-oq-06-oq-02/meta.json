@@ -89,8 +89,15 @@
       "id": "chebyshev-upper-bound",
       "title": "The upper Chebyshev bound θ(n) ≤ n·log 4",
       "startLine": 58,
+      "endLine": 64,
+      "summary": "chebyshevTheta_le rewrites θ(n) = log(n#), applies Real.log_le_log to the primorial bound n# ≤ 4ⁿ (Nat.primorial_le_4_pow), and finishes with Real.log_pow: log(4ⁿ) = n·log 4."
+    },
+    {
+      "id": "chebyshev-bound-restatement",
+      "title": "Restatement θ(n) ≤ 2n·log 2",
+      "startLine": 66,
       "endLine": 74,
-      "summary": "chebyshevTheta_le rewrites θ(n) = log(n#), applies Real.log_le_log to the primorial bound n# ≤ 4ⁿ (Nat.primorial_le_4_pow), and finishes with Real.log_pow: log(4ⁿ) = n·log 4. chebyshevTheta_le_two_mul restates this as θ(n) ≤ 2n·log 2 via log 4 = 2·log 2."
+      "summary": "chebyshevTheta_le_two_mul restates the bound in the base-2 constant of the classical Chebyshev estimates, via log 4 = 2·log 2 (from 4 = 2² and Real.log_pow): θ(n) ≤ n·log 4 = 2n·log 2."
     }
   ],
   "overview": {
