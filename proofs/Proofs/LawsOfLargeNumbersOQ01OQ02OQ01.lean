@@ -690,6 +690,84 @@ theorem ae_tendsto_average_zero_of_variance_weighted_bdd [IsProbabilityMeasure �
 
 end KolmogorovKronecker
 
+/-! ## S5 (centering) — dropping the mean-zero hypothesis via internal centering
+
+`ae_tendsto_average_zero_of_variance_weighted_bdd` (S5) requires the variables to be
+mean-zero.  The Marcinkiewicz–Zygmund truncations `Yᵢ = 𝟙{|Xᵢ| ≤ aᵢ}·Xᵢ` are **not**
+mean-zero, so the classical argument centres them: `Zᵢ = Yᵢ − 𝔼Yᵢ`.  This section packages
+that reduction once and for all.  The crux is that variance is *translation-invariant*
+(Mathlib `variance_sub_const`: `Var[fun ω => X ω − c; μ] = Var[X; μ]`), so the **same**
+weighted-variance bound `∑ᵢ Var(Yᵢ)/aᵢ² ≤ V` feeds S5 unchanged for the centred variables,
+while the mean-zero, `L²`, measurability and independence hypotheses transfer mechanically
+by subtracting a constant.  Earlier session notes flagged `Var(Zᵢ) = Var(Yᵢ)` as a brick
+still to build; it is in fact a one-line Mathlib call, so the whole centering step reduces
+to bookkeeping over the existing S5 engine.
+
+The output is the a.s. convergence of the **centred** normalised average
+`(∑_{i<n} (Yᵢ − 𝔼Yᵢ))/aₙ → 0`; the step-3 centering estimate `(∑ᵢ 𝔼Yᵢ)/aₙ → 0` (whose
+pointwise kernel `abs_le_rpow_mul_rpow_of_tail` is already in the file) then removes the
+centering to recover the raw MZ average. -/
+
+section Centering
+
+open MeasureTheory ProbabilityTheory
+open scoped ENNReal NNReal
+
+variable {Ω : Type*} {mΩ : MeasurableSpace Ω} {μ : Measure Ω}
+
+/-- **Centered Kolmogorov–Kronecker normalisation (S5 without the mean-zero hypothesis).**
+For independent `L²` variables `Y i` — *not assumed mean-zero* — and a positive,
+nondecreasing weight `a n → ∞` whose weighted-variance partial sums are uniformly bounded,
+`∑_{i≤n} Var(Yᵢ)/aᵢ² ≤ V`, the normalised averages of the **centred** variables
+`Zᵢ = Yᵢ − 𝔼Yᵢ` converge to zero almost surely:
+
+    (∑_{i<n} (Yᵢ − 𝔼Yᵢ)) / aₙ → 0     a.s.
+
+Proof: apply `ae_tendsto_average_zero_of_variance_weighted_bdd` (S5) to `Zᵢ = Yᵢ − 𝔼Yᵢ`.
+Measurability, `L²` and independence transfer by subtracting a constant
+(`StronglyMeasurable.sub`, `MemLp.sub`, `iIndepFun.comp`); `𝔼Zᵢ = 0` by linearity of the
+integral; and, crucially, `Var(Zᵢ) = Var(Yᵢ)` by translation invariance
+(`variance_sub_const`), so the supplied weighted-variance bound is *verbatim* the one S5
+consumes.  This is the deterministic centering bridge the MZ truncation argument needs
+before the step-3 mean control removes the recentering. -/
+theorem ae_tendsto_centered_average_zero_of_variance_weighted_bdd [IsProbabilityMeasure μ]
+    (Y : ℕ → Ω → ℝ) (a : ℕ → ℝ)
+    (hmeas : ∀ i, StronglyMeasurable (Y i))
+    (hindep : iIndepFun Y μ) (hmemLp : ∀ i, MemLp (Y i) 2 μ)
+    (ha_pos : ∀ n, 0 < a n) (ha_mono : Monotone a) (ha_top : Tendsto a atTop atTop)
+    (V : ℝ)
+    (hV : ∀ n, ∑ i ∈ range (n + 1), variance (Y i) μ / (a i) ^ 2 ≤ V) :
+    ∀ᵐ ω ∂μ,
+      Tendsto (fun n => (∑ i ∈ range n, (Y i ω - μ[Y i])) / a n) atTop (𝓝 0) := by
+  -- centred variables `Zᵢ = Yᵢ − 𝔼Yᵢ`
+  set Z : ℕ → Ω → ℝ := fun i ω => Y i ω - μ[Y i] with hZdef
+  have hZmeas : ∀ i, StronglyMeasurable (Z i) := fun i =>
+    (hmeas i).sub stronglyMeasurable_const
+  have hZindep : iIndepFun Z μ := by
+    have h := hindep.comp (fun i (y : ℝ) => y - μ[Y i])
+      (fun i => measurable_id.sub measurable_const)
+    simpa [hZdef, Function.comp] using h
+  have hZmemLp : ∀ i, MemLp (Z i) 2 μ := fun i => by
+    simpa [hZdef] using (hmemLp i).sub (memLp_const (μ[Y i]))
+  have hZmean : ∀ i, μ[Z i] = 0 := by
+    intro i
+    simp only [hZdef]
+    rw [integral_sub ((hmemLp i).integrable (by norm_num)) (integrable_const _), integral_const]
+    simp
+  -- translation invariance of variance: the given bound feeds S5 unchanged
+  have hZvar : ∀ i, variance (Z i) μ = variance (Y i) μ := fun i =>
+    variance_sub_const (hmeas i).aestronglyMeasurable (μ[Y i])
+  exact ae_tendsto_average_zero_of_variance_weighted_bdd Z a hZmeas hZindep hZmemLp hZmean
+    ha_pos ha_mono ha_top V (fun n => by simp_rw [hZvar]; exact hV n)
+
+#check @ae_tendsto_centered_average_zero_of_variance_weighted_bdd
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound);
+-- no `sorryAx`, no `Lean.ofReduceBool`, no `decide` / `native_decide`.
+#print axioms ae_tendsto_centered_average_zero_of_variance_weighted_bdd
+
+end Centering
+
 /-! ## S4b (step 1) — i.i.d. truncation reduction via first Borel–Cantelli
 
 The Marcinkiewicz–Zygmund proof replaces `Xᵢ` by the truncation

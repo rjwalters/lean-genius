@@ -5,6 +5,66 @@
 `-oq-01-oq-02` (SLLN rate of convergence, 3 axioms) → this leaf.
 
 ---
+## Session 2026-07-04 (researcher-6) — S5 CENTERING BRIDGE: drop the mean-zero hypothesis (DEEP DIVE, PROGRESS)
+
+**Mode**: REVISIT (RICH, score 36). **Outcome**: progress — one new leaf appended to
+`proofs/Proofs/LawsOfLargeNumbersOQ01OQ02OQ01.lean` (§ Centering), 0 sorries, 0 `axiom`;
+docker build **succeeded, 7743 jobs, exit 0** (SKIP-cache, 16 GB); `#print axioms` =
+`propext / Classical.choice / Quot.sound` only — no `sorryAx`, no `ofReduceBool`, no
+`decide`/`native_decide`.
+
+### Key correction to the prior plan
+Iterations 18–19 repeatedly flagged **`Var(Zᵢ) = Var(Yᵢ)` translation-invariance** as a
+brick "still to build" and called it the *only* remaining S5 obstacle. **It already exists
+in Mathlib v4.26** as `ProbabilityTheory.variance_sub_const`:
+
+    variance_sub_const : AEStronglyMeasurable X μ → ∀ (c : ℝ),
+        Var[fun ω => X ω - c; μ] = Var[X; μ]      -- needs [IsProbabilityMeasure μ]
+
+(there is also `variance_add_const`). A build probe confirmed the exact signature. So the
+whole centering step is *bookkeeping over the existing S5 engine*, not a new proof.
+
+### What it adds
+The S5 engine `ae_tendsto_average_zero_of_variance_weighted_bdd` (built ≤ iter 18) demands
+**mean-zero** variables; the MZ truncations `Yᵢ = 𝟙{|Xᵢ|≤aᵢ}·Xᵢ` are not. This leaf runs the
+centering internally so downstream callers never supply mean-zero:
+
+- **`ae_tendsto_centered_average_zero_of_variance_weighted_bdd`**: for independent `L²`
+  variables `Y` (NOT assumed mean-zero), a positive nondecreasing weight `a n → ∞`, and
+  `∀ n, ∑_{i≤n} Var(Yᵢ)/aᵢ² ≤ V`, one has a.s. `(∑_{i<n}(Yᵢ − 𝔼Yᵢ))/aₙ → 0`. Proof: apply
+  S5 to `Zᵢ = Yᵢ − 𝔼Yᵢ`; discharge its hypotheses by subtracting a constant —
+  `StronglyMeasurable.sub stronglyMeasurable_const`, `MemLp.sub (memLp_const _)`,
+  `iIndepFun.comp (fun i y => y - 𝔼Yᵢ) (measurable_id.sub measurable_const)`; mean-zero
+  `𝔼Zᵢ = 0` via `integral_sub (hmemLp i).integrable(1≤2) (integrable_const _)` + `integral_const`
+  + `simp`; and `Var(Zᵢ)=Var(Yᵢ)` by `variance_sub_const (hmeas i).aestronglyMeasurable`,
+  so the supplied `hV` feeds S5 **verbatim** (`simp_rw [hZvar]`).
+
+### Reusable gotchas (Mathlib v4.26)
+- `MemLp.integrable` takes the exponent bound as its **first** explicit arg:
+  `(hmemLp i).integrable (by norm_num : (1:ℝ≥0∞) ≤ 2)` (also needs `[IsFiniteMeasure μ]`,
+  supplied by `IsProbabilityMeasure`).
+- `integral_const` now yields `μ.real Set.univ • c` (measureReal, not `(μ univ).toReal`);
+  `simp` closes it to `c` under `IsProbabilityMeasure` — don't `rw [measure_univ]`.
+- `variance` / `evariance` notations print as `Var[·;·]` / `eVar[·;·]`;
+  `evariance_eq_lintegral_ofReal X μ = ∫⁻ ω, ENNReal.ofReal ((X ω − 𝔼X)²)` if a from-scratch
+  proof is ever needed (it isn't, given `variance_sub_const`).
+
+### Honest status
+One correct, reusable **deterministic centering leaf** — NOT the full MZ SLLN. It removes the
+mean-zero requirement from the S5 normalisation, exactly the "instantiate S5 on the centered
+truncations" step iter-19 named as the last S5 obstacle. Substantive open work unchanged:
+**step-3 centering** `(∑_{i<n}𝔼Yᵢ)/aₙ → 0` (kernel `abs_le_rpow_mul_rpow_of_tail` in file) and
+the **final combination** with the step-1 a.s.-eventual `Xᵢ=Yᵢ` truncation reduction to state
+the raw MZ SLLN.
+
+### Next steps (frontier)
+- **Step-3 centering**: lift `abs_le_rpow_mul_rpow_of_tail` to `|𝔼Yᵢ| ≤ i^{(1-p)/p}·𝔼|X|ᵖ`,
+  then `(∑_{i<n}𝔼Yᵢ)/aₙ → 0` via `tendsto_weighted_average_zero` (null sequence
+  `cᵢ = 𝔼[|X|ᵖ·𝟙{|X|>i^{1/p}}] → 0`).
+- **Final MZ assembly**: combine this centred-average convergence with the step-3 mean
+  control and step-1 truncation reduction into the MZ statement.
+
+---
 ## Session 2026-07-04 (researcher-8) — S5 HAND-OFF: variance≤2nd-moment + weighted partial-sum bound (DEEP DIVE, PROGRESS)
 
 **Mode**: REVISIT (RICH). **Outcome**: progress — two new leaves appended to
