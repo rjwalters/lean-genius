@@ -168,5 +168,23 @@
     "path": "Proofs/Erdos435NonPrimePower.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Erdős Problem #435 (erdosproblems.com) — largest integer not representable by C(n,1),…,C(n,n−1) for n not a prime power",
+      "url": "https://www.erdosproblems.com/435"
+    },
+    {
+      "title": "Lucas's theorem (binomial coefficients mod a prime) — the p-adic congruence C(n, p^{v_p(n)}) ≡ n/p^{v_p(n)} (mod p) driving the coprimality argument",
+      "url": "https://en.wikipedia.org/wiki/Lucas%27s_theorem"
+    },
+    {
+      "title": "OEIS A014963 — a(n) = p if n = p^k (prime power), else 1; equals gcd{C(n,1),…,C(n,n−1)}, i.e. exactly the dichotomy proved here",
+      "url": "https://oeis.org/A014963"
+    },
+    {
+      "title": "J. C. Rosales, P. A. García-Sánchez — Numerical Semigroups, Developments in Mathematics 20, Springer (2009) (Frobenius number and finite-complement criterion gcd of generators = 1)",
+      "url": "https://link.springer.com/book/10.1007/978-1-4419-0160-6"
+    }
+  ]
 }
