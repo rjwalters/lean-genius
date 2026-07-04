@@ -131,6 +131,62 @@
     "path": "Proofs/Erdos212Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "HasRationalDistances",
+      "type": "supporting",
+      "description": "A subset of ℝ² has rational distances if every pair of distinct points is separated by a rational distance.",
+      "leanType": "(S : Set (ℝ × ℝ)) : Prop"
+    },
+    {
+      "name": "Erdos212Conjecture",
+      "type": "core",
+      "description": "The Erdős–Ulam conjecture that no dense subset of ℝ² has all pairwise distances rational.",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "erdos_212_classical",
+      "type": "supporting",
+      "description": "Classically, the Erdős-212 conjecture is either true or false.",
+      "leanType": ": Erdos212Conjecture ∨ ¬Erdos212Conjecture"
+    },
+    {
+      "name": "BombieriLangConjecture",
+      "type": "axiom",
+      "description": "The Bombieri–Lang conjecture in arithmetic geometry, taken as an assumed proposition.",
+      "leanType": ": Prop"
+    },
+    {
+      "name": "tao_shaffaf_conditional",
+      "type": "axiom",
+      "description": "Assuming the Bombieri–Lang conjecture, the Tao–Shaffaf result yields that no dense rational distance set exists.",
+      "leanType": ":\n    BombieriLangConjecture → Erdos212Conjecture"
+    },
+    {
+      "name": "IsRealAlgebraicCurve",
+      "type": "supporting",
+      "description": "A set in ℝ² is a real algebraic curve if it is the zero locus of a bivariate real polynomial.",
+      "leanType": "(C : Set (ℝ × ℝ)) : Prop"
+    },
+    {
+      "name": "shaffaf_tao_algebraic_curves",
+      "type": "axiom",
+      "description": "Unconditionally, any rational distance set is contained in a finite union of real algebraic curves.",
+      "leanType": ":\n    ∀ S : Set (ℝ × ℝ), HasRationalDistances S →\n      ∃ curves : Finset (Set (ℝ × ℝ)), (∀ C ∈ curves, IsRealAlgebraicCurve C) ∧\n                                        S ⊆ ⋃ C ∈ curves, C"
+    },
+    {
+      "name": "solymosi_de_zeeuw",
+      "type": "axiom",
+      "description": "A rational distance set inside a real algebraic curve is finite unless the curve contains a line or a circle.",
+      "leanType": ":\n    ∀ C : Set (ℝ × ℝ), IsRealAlgebraicCurve C →\n      ∀ S : Set (ℝ × ℝ), S ⊆ C → HasRationalDistances S →\n        S.Finite ∨ (∃ line : Set (ℝ × ℝ), line ⊆ C) ∨ (∃ circle : Set (ℝ × ℝ), circle ⊆ C)"
+    },
+    {
+      "name": "summary_erdos_212",
+      "type": "core",
+      "description": "A combined summary theorem packaging the conditional Bombieri–Lang implication with the unconditional finite-union-of-curves containment.",
+      "leanType": ":\n    (BombieriLangConjecture → Erdos212Conjecture) ∧\n    (∀ S : Set (ℝ × ℝ), HasRationalDistances S →\n       ∃ curves : Finset (Set (ℝ × ℝ)), S ⊆ ⋃ C ∈ curves, C)"
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-211",
