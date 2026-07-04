@@ -36,9 +36,9 @@
     {
       "id": "open-question-context",
       "title": "Open Question & Analytic-Continuation Context",
-      "startLine": 4,
-      "endLine": 28,
-      "summary": "The module docstring states the open question — extend the real Gaussian ∫_ℝ e^{-x²} = √π (the b = 1 parent) to complex b with 0 < re b — and answers YES via Mathlib's integral_gaussian_complex. It frames the move to complex b as the analytic continuation into the right half-plane {re b > 0} underlying the Fresnel oscillatory integrals, and notes the value is now a principal (1/2)-power rather than a real square root."
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Imports, the module docstring framing the open question and analytic-continuation context, and `open Real Complex MeasureTheory` — the setup for restating Mathlib's complex Gaussian integral."
     },
     {
       "id": "complex-gaussian",
