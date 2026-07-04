@@ -4,7 +4,9 @@
   "title": "The Sophie Germain Identity a⁴ + 4b⁴ and Its Compositeness Corollary",
   "description": "Sophie Germain's algebraic identity factors a sum that looks irreducible: a⁴ + 4b⁴ = (a² - 2ab + 2b²)(a² + 2ab + 2b²), obtained by completing a⁴ + 4b⁴ = (a²+2b²)² - (2ab)² as a difference of squares (sophie_germain_identity, one-line ring over ℤ). Its classic consequence is read off directly: n⁴ + 4 = (n² - 2n + 2)(n² + 2n + 2), so n⁴ + 4 is prime ONLY for n = 1 (where it is 5) and composite for every n ≥ 2 (not_prime_n_pow_four_add_four), with 1⁴+4 = 5 prime showing the bound is sharp and 5⁴+4 = 629 = 17·37 a concrete witness. Distinct from the base entry's Sophie Germain PRIME work (this is the algebraic identity, which the base meta lists but the source omits). Fully machine-checked, 0 sorries, 0 axioms.",
   "leanFile": {
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "opens": [],
     "namespace": "SophieGermainOQ04",
     "lineCount": 71,
@@ -35,7 +37,9 @@
     "axiomCount": 0,
     "assumptions": "None. The identity is proved over ℤ by ring; the compositeness corollary is transported to ℕ without truncated subtraction. #print axioms reports only propext / Classical.choice / Quot.sound.",
     "dateAdded": "2026-06-19",
-    "mathlibDependencies": ["Nat.not_prime_mul"],
+    "mathlibDependencies": [
+      "Nat.not_prime_mul"
+    ],
     "originalContributions": [
       "Sophie Germain identity sophie_germain_identity: a⁴ + 4b⁴ = (a² - 2ab + 2b²)(a² + 2ab + 2b²) over ℤ — named in the base entry's meta but absent from the Lean source until now",
       "Specialization n_pow_four_add_four_factor: n⁴ + 4 = (n² - 2n + 2)(n² + 2n + 2)",
@@ -50,7 +54,10 @@
     ],
     "mathlib_version": "4.26.0",
     "lineCount": 71,
-    "relatedProblems": ["sophie-germain", "sophie-germain-oq-01"],
+    "relatedProblems": [
+      "sophie-germain",
+      "sophie-germain-oq-01"
+    ],
     "theoremCount": 6,
     "definitionCount": 0
   },
@@ -114,12 +121,16 @@
       "mathContext": "$a^2 - 2ab + 2b^2 = (a-b)^2 + b^2 \\ge 0$."
     },
     {
-      "id": "compositeness",
-      "title": "Compositeness of n⁴ + 4 and Sharpness",
-      "startLine": 55,
+      "title": "Compositeness of n⁴ + 4",
+      "startLine": 49,
+      "endLine": 62,
+      "summary": "not_prime_n_pow_four_add_four: for n ≥ 2, n⁴ + 4 is not prime. Substituting n = m + 2 makes the smaller factor the non-truncated (m+1)² + 1, giving n⁴ + 4 = ((m+1)²+1)·((m+2)²+2(m+2)+2) with both factors ≠ 1, so Nat.not_prime_mul applies."
+    },
+    {
+      "title": "Sharpness: the lone prime and a composite witness",
+      "startLine": 63,
       "endLine": 71,
-      "summary": "not_prime_n_pow_four_add_four: for n ≥ 2, n⁴ + 4 is composite. Substituting n = m + 2 turns the factorization into the addition-only ring identity (m+2)⁴ + 4 = ((m+1)² + 1)·((m+2)² + 2(m+2) + 2); both factors are ≠ 1, so Nat.not_prime_mul applies. one_pow_four_add_four_prime (5 is prime) shows the bound is sharp, and five_pow_four_add_four_eq exhibits 5⁴ + 4 = 17·37.",
-      "mathContext": "$n\\ge 2 \\Rightarrow n^4+4=((n-1)^2+1)(n^2+2n+2)$, both factors $>1$."
+      "summary": "The bound n ≥ 2 is sharp: one_pow_four_add_four_prime confirms 1⁴ + 4 = 5 is genuinely prime (the sole exception), and five_pow_four_add_four_eq exhibits the concrete factorization 5⁴ + 4 = 629 = 17·37, matching the identity's two quadratic factors at n = 5."
     }
   ],
   "references": [
