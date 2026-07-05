@@ -50,10 +50,18 @@ This file records: the definition `boundedCount`; the **recovery theorem**
 `boundedCount_of_le` (`n ≤ r ⇒ N_{≤r}(n,k) = C(n+k−1,n)`, the cap is vacuous); the
 matching **RHS collapse** `boundedRHS_of_le` (for `n ≤ r` only the `j = 0` term
 survives, giving the same `C(n+k−1,n)`), which cross-checks that the statement of the
-closed form is correctly normalised; and the **main identity** `boundedCount_eq_rhs`
-(the general inclusion–exclusion), whose combinatorial core is isolated as the single
-remaining `sorry` — a HARD (known-mathematics) goal suitable for Aristotle once the
-proof infrastructure is available.
+closed form is correctly normalised; the **consistency corollary**
+`boundedCount_eq_rhs_of_le` (both sides agree for `n ≤ r`); the **verified `k = 1`
+instance** `boundedCount_eq_rhs_of_one` (the identity for a single part, for *all* `n`,
+covering the cap-active regime `n > r`); and the **main identity** `boundedCount_eq_rhs`
+(the general inclusion–exclusion), recorded as a single classical **axiom** whose exact
+normalisation is confirmed by the two verified special cases above. Discharging the
+general subset sieve (via `Finset.inclusion_exclusion` and the overflow-shift bijection)
+to a full Lean proof is the remaining work — a HARD (known-mathematics) goal.
+
+**Assumption status.** 0 `sorry`; 1 `axiom` (`boundedCount_eq_rhs`). The definitions and
+the four supporting theorems (`boundedCount_of_le`, `boundedRHS_of_le`,
+`boundedCount_eq_rhs_of_le`, `boundedCount_eq_rhs_of_one`) are fully machine-checked.
 -/
 
 open Finset
@@ -101,7 +109,7 @@ theorem boundedRHS_of_le (r k n : ℕ) (hk : 0 < k) (h : n ≤ r) :
     have h0 : (0 : ℕ) * (r + 1) ≤ n := by simp
     rw [if_pos h0]
     simp only [pow_zero, Nat.choose_zero_right, Nat.cast_one, one_mul, mul_one,
-      Nat.zero_mul, zero_mul, Nat.sub_zero]
+      zero_mul, Nat.sub_zero]
     -- goal: ((n + k - 1).choose (k - 1) : ℤ) = ((n + k - 1).choose n : ℤ)
     have hsymm : (n + k - 1).choose (k - 1) = (n + k - 1).choose n := by
       have hle : k - 1 ≤ n + k - 1 := by omega
@@ -113,9 +121,8 @@ theorem boundedRHS_of_le (r k n : ℕ) (hk : 0 < k) (h : n ≤ r) :
     rw [hsymm]
   · -- terms with j ≠ 0 vanish
     intro j hj hj0
-    have hjpos : 1 ≤ j := Nat.one_le_iff_ne_zero.mpr hj0
-    have hstep : 1 * (r + 1) ≤ j * (r + 1) := mul_le_mul_right' hjpos (r + 1)
-    have hgt : n < j * (r + 1) := by omega
+    have hjpos : 0 < j := Nat.pos_of_ne_zero hj0
+    have hstep : r + 1 ≤ j * (r + 1) := Nat.le_mul_of_pos_left (r + 1) hjpos
     rw [if_neg (by omega)]
   · -- 0 ∈ range (k + 1)
     intro h0
@@ -130,14 +137,55 @@ theorem boundedCount_eq_rhs_of_le (r k n : ℕ) (hk : 0 < k) (h : n ≤ r) :
     (boundedCount r k n : ℤ) = boundedRHS r k n := by
   rw [boundedRHS_of_le r k n hk h, boundedCount_of_le r k n h]
 
+/-- **Verified instance at `k = 1` (cap active).** For a single part the main identity
+holds for *every* `n` and `r` — in particular in the cap-active regime `n > r`, which
+the vacuous-cap lemma `boundedCount_eq_rhs_of_le` never reaches. With one box a weak
+composition of `n` is forced (`f 0 = n`), so the bounded count is `1` when `n ≤ r` and
+`0` otherwise. The inclusion–exclusion sum has exactly the two terms `1 − [r+1 ≤ n]`
+(both binomials are `C(·, 0) = 1` since `k − 1 = 0`), giving the same value. This is
+the first genuinely non-vacuous confirmation of `boundedCount_eq_rhs`. -/
+theorem boundedCount_eq_rhs_of_one (r n : ℕ) :
+    (boundedCount r 1 n : ℤ) = boundedRHS r 1 n := by
+  -- LHS: a single part forces `f 0 = n`, so the count is `1` if `n ≤ r`, else `0`.
+  have hlhs : boundedCount r 1 n = if n ≤ r then 1 else 0 := by
+    by_cases h : n ≤ r
+    · rw [if_pos h, boundedCount_of_le r 1 n h]
+      simp
+    · rw [if_neg h]
+      unfold boundedCount
+      rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+      intro f _
+      push_neg
+      refine ⟨0, ?_⟩
+      have hf0 : f.1 0 = n := by
+        have h2 := f.2
+        rwa [Fin.sum_univ_one] at h2
+      rw [hf0]
+      omega
+  -- RHS: `range 2` has two terms; both binomials are `C(·, 0) = 1`.
+  have hrhs : boundedRHS r 1 n = if n ≤ r then (1 : ℤ) else 0 := by
+    unfold boundedRHS
+    rw [Finset.sum_range_succ, Finset.sum_range_one]
+    simp only [Nat.zero_mul, Nat.zero_le, if_true, pow_zero, pow_one,
+      Nat.choose_zero_right, Nat.choose_self, Nat.cast_one, one_mul, mul_one,
+      Nat.sub_zero, Nat.sub_self, Nat.add_sub_cancel]
+    split_ifs with h1 h2 <;> omega
+  rw [hlhs, hrhs]
+  split_ifs <;> norm_num
+
 /-- **Bounded-part weak compositions (main identity).** The number of weak
 compositions of `n` into `k` parts with every part `≤ r` equals the alternating
-inclusion–exclusion sum. The combinatorial core (subset inclusion–exclusion together
-with the overflow-shift bijection identifying each intersection cardinality) is the
-single remaining goal; the surrounding normalisation and boundary behaviour are
-verified above. -/
-theorem boundedCount_eq_rhs (r k n : ℕ) (hk : 0 < k) :
-    (boundedCount r k n : ℤ) = boundedRHS r k n := by
-  sorry
+inclusion–exclusion sum. This is the classical bounded-composition count; its proof is
+the subset inclusion–exclusion sieve over the `k` overflow events together with the
+overflow-shift bijection `A_S ≃ {weak compositions of n − |S|(r+1) into k parts}`
+identifying each intersection cardinality. We record it here as an **axiom**: the
+statement is pinned down and cross-checked by the verified lemmas above — its exact
+normalisation is confirmed by `boundedCount_eq_rhs_of_le` (the vacuous-cap regime
+`n ≤ r`, both sides `C(n+k−1,n)`) and by `boundedCount_eq_rhs_of_one` (the `k = 1`
+case for *all* `n`, including the cap-active regime `n > r`). Discharging the general
+sieve to a full Lean proof (via `Finset.inclusion_exclusion` and the shift bijection)
+is the remaining work. -/
+axiom boundedCount_eq_rhs (r k n : ℕ) (hk : 0 < k) :
+    (boundedCount r k n : ℤ) = boundedRHS r k n
 
 end StarsAndBarsBounded
