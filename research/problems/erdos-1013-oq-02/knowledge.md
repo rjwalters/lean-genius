@@ -89,3 +89,48 @@ the latter using `log k / k → 0` (from `Real.isLittleO_log_id_atTop`).
   (b) a direct super/subadditivity relation between `h₃(k)` and `h₃(k+1)` controlling
   local variation. Neither is currently in reach; (a) is essentially the asymptotic
   constant question.
+
+---
+
+## Session 2026-07-05 (Session 2) — ACT
+
+**Mode**: CONTINUE. **Outcome**: progress (verified new result).
+
+### What I Did
+- Extended `Erdos1013UnconditionalRatio.lean` from 9 → 14 theorems with the unconditional
+  **straddle-1** result, and verified it via the Docker wrapper (`docker-build.sh`,
+  lean 4.26.0) — the containerd blackout that forced Session 1 onto the `lake env`
+  passthrough has cleared, shared Mathlib volumes work from the worktree.
+- New theorems (0 sorry / 0 axiom; `#print axioms` unchanged: propext/Classical.choice/Quot.sound):
+  - `cesaro_ge_imp` / `cesaro_le_imp` — a vanishing Cesàro mean of a sequence cannot be
+    eventually `≥` a fixed positive constant (resp. `≤` a fixed negative one).
+  - `ratio_frequently_lt` / `ratio_frequently_gt` — for every `ε>0`, the ratio is `<1+ε`
+    infinitely often and `>1−ε` infinitely often, i.e. `liminf ≤ 1 ≤ limsup`.
+  - `h3_ratio_straddles_one` — the `h₃` specialisation (conjunction of both frequencies).
+
+### Key Findings
+- The averaged Cesàro fact is *strong enough to straddle 1 pointwise*. This is strictly
+  sharper than the `[1/2,2]` bounded-ratio window leaf (which only gives `liminf ≤ 2`,
+  `limsup ≥ 1/2`): the straddle pins `liminf ≤ 1 ≤ limsup`, ruling out any **one-sided
+  drift** of the ratio away from 1. Oscillation across the `log log k` band is now the
+  *sole* remaining obstruction to (⋆).
+- Lean mechanics worth remembering:
+  - `cesaro_ge_imp` splits `range K = range N ⊔ Ico N K`
+    (`Finset.sum_range_add_sum_Ico a hK`), bounds the tail below by `c·(K−N)`
+    (`Finset.sum_le_sum` + `Finset.sum_const` + `Nat.card_Ico` + `Nat.cast_sub`), and
+    compares the two Cesàro limits with `le_of_tendsto_of_tendsto` (eventual `≤`).
+  - `cesaro_le_imp` is the `-a` mirror: `hces.neg` + `simp` for `∑(-a) = -∑a`.
+  - `field_simp` fully closed the `(S + c(K−N))/K = S/K + (c − cN/K)` identity — a trailing
+    `ring` then errors with "no goals"; drop it.
+  - Frequency statements via `by_contra` + `Filter.not_frequently` + `not_lt.mp`, then
+    `Real.log_le_log` (monotone) + `Real.log_pos` / `Real.log_neg`.
+
+### Files Modified
+- `proofs/Proofs/Erdos1013UnconditionalRatio.lean` (extended: +5 theorems, module docstring)
+
+### Next Steps
+- Pointwise ratio → 1 still OPEN. The straddle closes the "no one-sided drift" direction;
+  the only remaining attack is a genuine **local-variation** bound
+  `|log h₃(k+1) − log h₃(k)| = o(1)`, which the current `log log k`-wide window cannot
+  supply. Optional polish: promote the frequency forms to explicit `Filter.liminf/limsup`
+  corollaries once cobounded side-conditions are provided.
