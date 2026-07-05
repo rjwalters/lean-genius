@@ -24,6 +24,12 @@ not Desargues). We isolate the linear-algebra heart of the theorem:
     `o = ã + ã'` requires `α, β` invertible and the *absence of zero divisors*
     (so the rescaled representatives stay nonzero). Commutativity is not used
     here either.
+  * `smul_preserves_nonzero_iff_no_zero_divisors` — the algebraic converse hinge:
+    the `smul_ne_zero'` fact the forward proof relies on is *equivalent* to `R`
+    having no zero divisors, and `zero_divisor_breaks_normalization` exhibits the
+    failure otherwise. This pins down exactly which ring-theoretic property the
+    coordinatization mechanism demands (the full geometric converse, Hilbert's
+    coordinatization theorem, is not attempted).
 
 This complements the gallery's Moulton-plane counterexample
 (`desargues-theorem-oq-02`), which realizes the failure direction. Together they
@@ -38,8 +44,10 @@ BUILD STATUS: UNVERIFIED. Written during a Docker + Aristotle blackout
 this file has NOT been machine-checked. It is deliberately placed under
 `research/problems/.../lean/` (outside the `proofs/Proofs/` glob) so it cannot
 break the gallery build. Parts I–II (`nucleus_sum`, `cross_dep`, `cross_eq`,
-`desargues`, `normalize_perspective`) are the reviewed mathematical core; the
-Part III quaternion `example` is an instance-resolution demonstration.
+`desargues`, `normalize_perspective`) and Part III (`zero_divisor_breaks_-`
+`normalization`, `smul_preserves_nonzero_iff_no_zero_divisors`) are the reviewed
+mathematical core; the Part IV quaternion `example` is an instance-resolution
+demonstration.
 
 Tags: projective-geometry, desargues, division-ring, non-commutative, modules
 -/
@@ -165,7 +173,54 @@ theorem normalize_perspective
 
 end Desargues
 
-/-! ## Part III — The non-commutative case is genuinely covered -/
+/-! ## Part III — Necessity of the no-zero-divisors hypothesis (converse hinge)
+
+The forward direction used invertibility in exactly one spot: `smul_ne_zero'`,
+the fact that a nonzero scalar scales a nonzero vector to a nonzero vector. We now
+show this fact is *not free* — it is **equivalent** to `R` having no zero divisors,
+and it genuinely fails otherwise. This is the algebraic half of the converse: it
+pins down precisely which ring-theoretic property the coordinatization mechanism
+demands. (The full geometric converse — that a Desarguesian plane is coordinatized
+by a division ring — is Hilbert's coordinatization theorem and is not attempted
+here.) We read `R` as a module over itself, which is the coordinate line of
+`P(R^n)`. -/
+
+section Necessity
+variable [Ring R]
+
+/-- **Zero-divisor obstruction.** If `R` has a zero divisor — nonzero `α, d` with
+    `α * d = 0` — then the normalization mechanism of the forward direction breaks:
+    the nonzero coordinate `d` is sent by the nonzero scalar `α` to `0`, which
+    represents no projective point. So `smul_ne_zero'` genuinely fails once `R`
+    leaves the class of domains. -/
+theorem zero_divisor_breaks_normalization
+    (α d : R) (hα : α ≠ 0) (hd : d ≠ 0) (hzd : α * d = 0) :
+    α • d = (0 : R) ∧ d ≠ 0 ∧ α ≠ 0 := by
+  refine ⟨?_, hd, hα⟩
+  simpa [smul_eq_mul] using hzd
+
+/-- **The forward crux is equivalent to being a domain.** For the regular module
+    `M = R`, the `smul_ne_zero'` property (nonzero scalar · nonzero vector ≠ 0,
+    for all scalars and vectors) holds **iff** `R` has no zero divisors. Combined
+    with `normalize_perspective`, this shows the division-ring hypothesis of the
+    forward direction is exactly as strong as it needs to be at the rescaling
+    step — no weaker hypothesis on `R` supports the normalization. -/
+theorem smul_preserves_nonzero_iff_no_zero_divisors :
+    (∀ α a : R, α ≠ 0 → a ≠ 0 → α • a ≠ (0 : R)) ↔
+    (∀ α a : R, α * a = 0 → α = 0 ∨ a = 0) := by
+  constructor
+  · intro h α a hmul
+    by_contra hcon
+    push_neg at hcon
+    exact h α a hcon.1 hcon.2 (by simpa [smul_eq_mul] using hmul)
+  · intro h α a hα ha hcon
+    rcases h α a (by simpa [smul_eq_mul] using hcon) with h0 | h0
+    · exact hα h0
+    · exact ha h0
+
+end Necessity
+
+/-! ## Part IV — The non-commutative case is genuinely covered -/
 
 /-- The real quaternions `ℍ` form a non-commutative division ring, so Desargues
     applies verbatim to modules over `ℍ`. This witnesses that the theorem is not
