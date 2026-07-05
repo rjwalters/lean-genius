@@ -1,171 +1,74 @@
-{
-  "id": "basel-problem-oq-08-oq-02-oq-01",
-  "title": "ζ(8) = π⁸/9450: the Degree-8 Basel Value and the π-free Ratio ζ(8)/ζ(2)⁴ = 24/175",
-  "slug": "basel-problem-oq-08-oq-02-oq-01",
-  "description": "The value ζ(8) = ∑' n, 1/n⁸ = π⁸/9450, the next even-argument zeta value after ζ(6) = π⁶/945, obtained by instantiating Mathlib's even-argument zeta formula at k = 4. Because Mathlib provides no bernoulli'_six or bernoulli'_eight, the eighth Bernoulli number B₈ = −1/30 is computed from the defining recurrence (which itself needs B₆ = 1/42). Includes the riemannZeta 8 value and Euler's dimensionless ratio ζ(8)/ζ(2)⁴ = 24/175.",
-  "meta": {
-    "author": "Euler (formalized in Lean 4 with Mathlib)",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Particular_values_of_the_Riemann_zeta_function",
-    "date": "1740",
-    "status": "verified",
-    "tags": [
-      "number-theory",
-      "analysis",
-      "basel-problem",
-      "riemann-zeta",
-      "bernoulli-numbers",
-      "euler",
-      "extension",
-      "research"
-    ],
-    "proofRepoPath": "Proofs/BaselProblemOQ08OQ02OQ01.lean",
-    "badge": "mathlib",
-    "sorries": 0,
-    "axiomCount": 0,
-    "mathlibDependencies": [
-      {
-        "theorem": "hasSum_zeta_nat",
-        "description": "HasSum (fun n => 1/n^(2k)) ((-1)^(k+1)·2^(2k-1)·π^(2k)·B_{2k}/(2k)!) — the general even-argument zeta formula",
-        "module": "Mathlib.NumberTheory.ZetaValues"
-      },
-      {
-        "theorem": "riemannZeta_two_mul_nat",
-        "description": "riemannZeta (2k) = (-1)^(k+1)·2^(2k-1)·π^(2k)·B_{2k}/(2k)! — the same formula for the analytically continued zeta",
-        "module": "Mathlib.NumberTheory.LSeries.HurwitzZetaValues"
-      },
-      {
-        "theorem": "bernoulli'_eq_zero_of_odd",
-        "description": "Odd Bernoulli numbers greater than 1 vanish — used to clear B₅ and B₇ in the B₆ and B₈ recurrences",
-        "module": "Mathlib.NumberTheory.Bernoulli"
-      },
-      {
-        "theorem": "bernoulli_eq_bernoulli'_of_ne_one",
-        "description": "bernoulli n = bernoulli' n for n ≠ 1 — bridges the freshly-computed B₆ into the B₈ recurrence summand",
-        "module": "Mathlib.NumberTheory.Bernoulli"
-      },
-      {
-        "theorem": "hasSum_zeta_two",
-        "description": "HasSum (fun n => 1/n²) (π²/6) — the classical Basel value, used in the ratio",
-        "module": "Mathlib.NumberTheory.ZetaValues"
-      }
-    ],
-    "originalContributions": [
-      "bernoulli_six: the sixth Bernoulli number B₆ = 1/42, computed from the bernoulli'_def recurrence (needed as a summand of the B₈ recurrence)",
-      "bernoulli_eight: the eighth Bernoulli number B₈ = −1/30, computed from the bernoulli'_def recurrence using B₅ = B₇ = 0 and B₆ = 1/42 (Mathlib packages only bernoulli'_two and bernoulli'_four)",
-      "hasSum_one_div_nat_pow_eight: HasSum (fun n => 1/n⁸) (π⁸/9450), the k = 4 instance of the even-zeta formula",
-      "tsum_one_div_nat_pow_eight: the headline tsum value ∑' n, 1/n⁸ = π⁸/9450",
-      "riemannZeta_eight_eq: the riemannZeta 8 = π⁸/9450 value over ℂ via riemannZeta_two_mul_nat",
-      "tsum_eight_div_tsum_two_pow_four: Euler's dimensionless ratio ζ(8)/ζ(2)⁴ = 24/175, π cancelling between the even-zeta values"
-    ],
-    "dateAdded": "2026-06-23",
-    "lineCount": 98,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
-    "mathlib_version": "4.26.0",
-    "theoremCount": 6,
-    "definitionCount": 0
-  },
-  "overview": {
-    "historicalContext": "Euler solved the Basel problem ζ(2) = ∑ 1/n² = π²/6 in 1735 and by 1740 had the full even family ζ(2k) = (−1)^{k+1} B_{2k} (2π)^{2k} / (2(2k)!), where B_{2k} are the Bernoulli numbers. At k = 4 this gives ζ(8) = π⁸/9450, with B₈ = −1/30 — coincidentally equal to B₄. Each even-zeta value is a rational multiple of a power of π and hence transcendental; the odd values ζ(2k+1) remain far less understood (ζ(3) was proved irrational by Apéry in 1978, but ζ(5), ζ(7), … are still open). The dimensionless ratio ζ(8)/ζ(2)⁴ = 24/175 is the π-free shadow of the formula at degree 8, depending only on the Bernoulli numbers B₂ = 1/6 and B₈ = −1/30.",
-    "problemStatement": "**Open Question (basel-problem-oq-08-oq-02-oq-01)**: Formalize ∑' n, 1/n⁸ = π⁸/9450 — the degree-8 even-zeta value requested by the parent ζ(6) entry — by instantiating Mathlib's even-argument zeta formula at k = 4, together with the π-free ratio ζ(8)/ζ(2)⁴.\n\n**Result**: tsum_one_div_nat_pow_eight proves ∑' n, 1/n⁸ = π⁸/9450. The companion riemannZeta_eight_eq gives riemannZeta 8 = π⁸/9450, and tsum_eight_div_tsum_two_pow_four derives Euler's dimensionless ratio ζ(8)/ζ(2)⁴ = 24/175.",
-    "text": "The value ζ(8) = ∑' n, 1/n⁸ = π⁸/9450, the degree-8 analogue of the Basel problem, with the riemannZeta 8 value and the π-free Euler ratio ζ(8)/ζ(2)⁴ = 24/175.",
-    "proofStrategy": "**Proof Strategy: compute B₈ (which needs B₆), then specialise the even-zeta formula.**\n\n1. Mathlib packages `bernoulli'_two` (= 1/6) and `bernoulli'_four` (= −1/30) but no `bernoulli'_six` or `bernoulli'_eight`. We first recompute `bernoulli 6 = 1/42` (as in the parent entry) because it is a summand of the B₈ recurrence, then compute `bernoulli 8 = −1/30` from the defining recurrence `bernoulli'_def`, expanding the range-8 sum and using that `bernoulli' 5 = bernoulli' 7 = 0` (odd indices > 1, via `bernoulli'_eq_zero_of_odd`), `bernoulli' 6 = 1/42`, and the lower `bernoulli' 0..4` from their `@[simp]` lemmas, with the explicit binomial coefficients C(8,k).\n2. `hasSum_zeta_nat` at k = 4 gives `HasSum (fun n => 1/n⁸) ((−1)⁵·2⁷·π⁸·B₈/8!)`. Substituting B₈ = −1/30 and 8! = 40320 reduces (−1)·128·(−1/30)/40320 = 128/1209600 = 1/9450, so the sum is π⁸/9450; `.tsum_eq` gives the tsum value.\n3. `riemannZeta_two_mul_nat` at k = 4 gives the same value for the analytically-continued zeta at 8.\n4. For the ratio, rewrite ∑ 1/n⁸ = π⁸/9450 and ∑ 1/n² = π²/6; the fourth power of the denominator is π⁸/1296, and (π⁸/9450)/(π⁸/1296) = 1296/9450 = 24/175 after `field_simp` (π ≠ 0) and `ring`.",
-    "keyInsights": [
-      "**Even zeta values are rational multiples of powers of π.** ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!); at k = 4, B₈ = −1/30 yields ζ(8) = π⁸/9450.",
-      "**The Bernoulli recurrence chains.** Mathlib stops its packaged Bernoulli evaluations at B₄, and computing B₈ from the recurrence requires B₆ as a summand — so the degree-8 value genuinely builds on the degree-6 work rather than restarting from Mathlib. Curiously B₈ = B₄ = −1/30 even though the recurrences differ.",
-      "**The ratio ζ(8)/ζ(2)⁴ is π-free.** Dividing the even-zeta values cancels π entirely, leaving the rational 24/175 — a structural fact about the Bernoulli numbers, not about π. It continues the chain ζ(4)/ζ(2)² = 2/5, ζ(6)/ζ(2)³ = 8/35, ζ(8)/ζ(2)⁴ = 24/175."
-    ],
-    "prerequisites": [
-      "Infinite sums / tsum and HasSum in Mathlib",
-      "The Riemann zeta function and its even-argument values",
-      "Bernoulli numbers and their defining recurrence",
-      "The classical Basel value ζ(2) = π²/6 and its degree-6 analogue ζ(6) = π⁶/945"
-    ]
-  },
-  "sections": [
-    {
-      "id": "header",
-      "title": "Module Header and Setup",
-      "startLine": 1,
-      "endLine": 31,
-      "summary": "Module docstring stating the open question and approach, Mathlib import, BaselProblemOQ08OQ02OQ01 namespace, and Real/BigOperators opens.",
-      "mathContext": "The degree-8 Basel value ζ(8) = ∑_{n≥1} 1/n⁸ = π⁸/9450, the k=4 case of Euler's even-zeta formula."
-    },
-    {
-      "id": "bernoulli-numbers",
-      "title": "The Bernoulli Numbers B₆ = 1/42 and B₈ = −1/30",
-      "startLine": 32,
-      "endLine": 62,
-      "summary": "bernoulli_six recomputes B₆ = 1/42 (a summand of the B₈ recurrence); bernoulli_eight computes B₈ = −1/30 from bernoulli'_def, using B₅ = B₇ = 0, B₆ = 1/42, and the binomials C(8,k).",
-      "mathContext": "$B_6 = 1/42$ and $B_8 = -1/30$, computed from $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$; Mathlib packages only $B_2, B_4$."
-    },
-    {
-      "id": "zeta-eight",
-      "title": "The Value ζ(8) = π⁸/9450",
-      "startLine": 63,
-      "endLine": 88,
-      "summary": "hasSum_one_div_nat_pow_eight (HasSum form), tsum_one_div_nat_pow_eight (the headline tsum value ∑' n, 1/n⁸ = π⁸/9450), and riemannZeta_eight_eq (the riemannZeta 8 value over ℂ).",
-      "mathContext": "$\\sum_{n=1}^\\infty 1/n^8 = \\pi^8/9450$ and $\\zeta(8) = \\pi^8/9450$, from Mathlib's `hasSum_zeta_nat` and `riemannZeta_two_mul_nat` at k = 4."
-    },
-    {
-      "id": "ratio",
-      "title": "Euler's π-free Ratio ζ(8)/ζ(2)⁴ = 24/175",
-      "startLine": 89,
-      "endLine": 98,
-      "summary": "tsum_eight_div_tsum_two_pow_four divides ζ(8) by ζ(2)⁴, cancelling π to leave the rational 24/175.",
-      "mathContext": "$\\zeta(8)/\\zeta(2)^4 = (\\pi^8/9450)/(\\pi^2/6)^4 = (\\pi^8/9450)/(\\pi^8/1296) = 1296/9450 = 24/175$."
-    }
-  ],
-  "crossReferences": [
-    {
-      "targetId": "basel-problem-oq-08-oq-02",
-      "relationship": "extends",
-      "description": "The parent entry proves ζ(6) = π⁶/945 and lists 'Formalize ζ(8) = π⁸/9450 by computing B₈ = −1/30 from the recurrence' as an open question; this entry answers it, reusing the B₆ computation as a summand"
-    },
-    {
-      "targetId": "basel-problem",
-      "relationship": "related",
-      "description": "The Basel problem proves ζ(2) = π²/6; this entry is the degree-8 analogue ζ(8) = π⁸/9450, and the ratio theorem combines both even-zeta values"
-    }
-  ],
-  "conclusion": {
-    "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of ζ(8) = ∑' n, 1/n⁸ = π⁸/9450, the degree-8 Basel value, together with the Bernoulli numbers B₆ = 1/42 and B₈ = −1/30, the riemannZeta 8 value, and Euler's π-free ratio ζ(8)/ζ(2)⁴ = 24/175. Directly answers the open question posed by the parent ζ(6) entry.",
-    "implications": "Establishes the next even-zeta value in the gallery after ζ(2), ζ(4), and ζ(6). Computing B₈ from the recurrence — chaining through B₆ — demonstrates how the Bernoulli computation accumulates rather than resetting at each degree, the template for ζ(10), ζ(12), …. The π-free ratio ζ(8)/ζ(2)⁴ = 24/175 extends the ratio chain ζ(4)/ζ(2)² = 2/5, ζ(6)/ζ(2)³ = 8/35.",
-    "openQuestions": [
-      "Formalize ζ(10) = π¹⁰/93555 by computing B₁₀ = 5/66 from the recurrence, continuing the chain.",
-      "State the general even-zeta formula ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!) as a single reusable Lean lemma, with B_{2k} supplied by a verified recurrence, removing the per-degree Bernoulli computation."
-    ]
-  },
-  "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
-    "opens": [
-      "Real",
-      "BigOperators"
-    ],
-    "namespace": "BaselProblemOQ08OQ02OQ01",
-    "lineCount": 98,
-    "axiomCount": 0,
-    "theoremCount": 6,
-    "definitionCount": 0,
-    "path": "Proofs/BaselProblemOQ08OQ02OQ01.lean",
-    "sorries": 0
-  },
-  "references": [
-    {
-      "authors": "Euler, Leonhard",
-      "title": "De summis serierum reciprocarum",
-      "year": "1740",
-      "venue": "Commentarii academiae scientiarum Petropolitanae 7, pp. 123–134",
-      "note": "Derives the even-zeta values ζ(2k) as rational multiples of π^{2k}, including ζ(8) = π⁸/9450"
-    },
-    {
-      "authors": "Apéry, Roger",
-      "title": "Irrationalité de ζ(2) et ζ(3)",
-      "year": "1979",
-      "venue": "Astérisque 61, pp. 11–13",
-      "note": "Highlights the contrast: odd zeta values are arithmetically hard, while even ones (like ζ(8)) are explicit rational multiples of powers of π"
-    }
-  ],
-  "sorries": 0
-}
+commit 70ffc625efe2df761ce325df17db397c6ceaf155
+Author: Robb Walters <rjwalters@users.noreply.github.com>
+Date:   Sat Jul 4 20:09:28 2026 -0700
+
+    Enrich Cassini via Q-matrix (cassini-identity-oq-01): keyInsights 4→5, sections 3→5 (94→100) (#34854)
+    
+    - Added 5th keyInsight: det Q = −1 is the product of the golden ratios φψ (constant
+      term of the characteristic polynomial x²−x−1), so Cassini's (−1)^{n+1} = (φψ)^{n+1}
+      — the determinant proof encodes the eigenvalue structure of the recurrence
+    - Added a header section (docstring 1-29, was uncovered) and split the matrix-power
+      identity into statement+base case and inductive step (the file's only induction)
+    - Quality 94→100; preserved verified/original, 0 sorries, 0 axioms
+    
+    Co-authored-by: Robb Walters <agent-5@spheresemi.com>
+    Co-authored-by: Claude Opus 4.8 <noreply@anthropic.com>
+
+diff --git a/src/data/proofs/cassini-identity-oq-01/meta.json b/src/data/proofs/cassini-identity-oq-01/meta.json
+index aa59a4999f5..50a81d83eed 100644
+--- a/src/data/proofs/cassini-identity-oq-01/meta.json
++++ b/src/data/proofs/cassini-identity-oq-01/meta.json
+@@ -84,6 +84,13 @@
+     "definitionCount": 1
+   },
+   "sections": [
++    {
++      "id": "header",
++      "title": "Module Header: the matrix proof vs Mathlib's induction",
++      "startLine": 1,
++      "endLine": 29,
++      "summary": "Docstring stating Cassini's identity F_{n+2}·F_n − F_{n+1}² = (−1)^{n+1} and contrasting the two proofs: Mathlib's induction-only Int.fib_succ_mul_fib_pred_sub_fib_sq versus the linear-algebra proof given here. Lays out the plan — the companion matrix Q = !![1,1;1,0], its powers encoding Fibonacci numbers, and det multiplicativity — then imports Mathlib and opens Matrix."
++    },
+     {
+       "id": "q-matrix",
+       "title": "The Fibonacci Q-Matrix and its Determinant",
+@@ -92,18 +99,25 @@
+       "summary": "The companion matrix Q = !![1,1;1,0] over ℤ, together with det Q = −1 computed by det_fin_two. This single determinant supplies the alternating sign in Cassini's identity."
+     },
+     {
+-      "id": "matrix-power",
+-      "title": "The Matrix-Power Identity",
++      "id": "matrix-power-base",
++      "title": "The Matrix-Power Identity: Statement and Base Case",
+       "startLine": 37,
++      "endLine": 48,
++      "summary": "Q_pow_succ states Q^{n+1} = !![F_{n+2}, F_{n+1}; F_{n+1}, F_n] and opens the induction on n. The base case is Q^1 = Q = !![F₂,F₁;F₁,F₀] = !![1,1;1,0], closed by pow_one, Nat.fib_zero and norm_num."
++    },
++    {
++      "id": "matrix-power-step",
++      "title": "The Matrix-Power Identity: Inductive Step",
++      "startLine": 49,
+       "endLine": 55,
+-      "summary": "Q^{n+1} = !![F_{n+2}, F_{n+1}; F_{n+1}, F_n] by induction on n. The base case is Q^1 = Q; the step multiplies by Q and closes each of the four entries with the Fibonacci recurrence (push_cast [Nat.fib_add_two]) followed by ring."
++      "summary": "The successor case rewrites Q^{k+1} = Q^k·Q via the IH, then closes each of the four entries: fin_cases over the 2×2 indices, expand the matrix product (mul_apply, Fin.sum_univ_two), and finish each entry with the Fibonacci recurrence push_cast [Nat.fib_add_two] followed by ring — this is the file's only induction."
+     },
+     {
+       "id": "cassini",
+       "title": "Cassini's Identity by Determinant Multiplicativity",
+       "startLine": 57,
+       "endLine": 69,
+-      "summary": "Two evaluations of det(Q^{n+1}) are equated: det_pow gives (det Q)^{n+1} = (−1)^{n+1}, while det_fin_two applied to the explicit power gives F_{n+2}·F_n − F_{n+1}². Their equality is Cassini's identity."
++      "summary": "Two evaluations of det(Q^{n+1}) are equated with no further induction: hdet_pow uses Matrix.det_pow and det_Q for (det Q)^{n+1} = (−1)^{n+1}, while hdet_expand uses Matrix.det_fin_two on the explicit power for F_{n+2}·F_n − F_{n+1}². Rewriting one against the other is Cassini's identity."
+     }
+   ],
+   "overview": {
+@@ -114,7 +128,8 @@
+       "**The sign is a determinant.** The mysterious alternating $(-1)^{n+1}$ is nothing but $(\\det Q)^{n+1}$ — the whole oscillation is forced by the single fact $\\det Q = -1$.",
+       "**Fibonacci numbers live in the matrix.** The recurrence $F_{n+2} = F_n + F_{n+1}$ is exactly matrix multiplication by $Q$, so $Q^{n+1}$ tabulates four consecutive Fibonacci numbers and the identity becomes a statement about $\\det$.",
+       "**Multiplicativity does the work.** Once the entries are identified, the proof is just `det_pow` against `det_fin_two`; no second induction on the identity itself is needed.",
+-      "**Stay in ℤ from the start.** Casting the Fibonacci entries into $\\mathbb{Z}$ up front means the subtraction $F_{n+2}F_n - F_{n+1}^2$ is genuine (not truncated), and `ring` handles the entry-wise algebra cleanly."
++      "**Stay in ℤ from the start.** Casting the Fibonacci entries into $\\mathbb{Z}$ up front means the subtraction $F_{n+2}F_n - F_{n+1}^2$ is genuine (not truncated), and `ring` handles the entry-wise algebra cleanly.",
++      "**det Q = −1 is the product of the golden ratios.** $Q$ is the companion matrix of the Fibonacci characteristic polynomial $x^2 - x - 1$, whose roots are $\\varphi = \\tfrac{1+\\sqrt5}{2}$ and $\\psi = \\tfrac{1-\\sqrt5}{2}$. Its determinant $-1$ is exactly the product of roots $\\varphi\\psi$ (the polynomial's constant term), so Cassini's $(-1)^{n+1}$ is $(\\varphi\\psi)^{n+1}$ — the sign is not an accident of the $2\\times2$ layout but the $(n{+}1)$-th power of the product of the recurrence's eigenvalues. The determinant proof thus quietly encodes the eigenvalue structure the closed-form (Binet) proof makes explicit."
+     ],
+     "prerequisites": [
+       "Matrix multiplication and the determinant",
