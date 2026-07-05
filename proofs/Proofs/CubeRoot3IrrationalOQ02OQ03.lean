@@ -364,7 +364,10 @@ theorem capelli_four_coeff_contra {K : Type*} [Field K] {a p q s t : K}
       rcases mul_eq_zero.mp hp3 with h | h
       · exact absurd h hp
       · linear_combination h
-    subst htq
+    -- Rewrite `t ↦ q` in the two hypotheses we still need (keeping `q`, which the
+    -- rest of the argument is phrased in). NB: `subst htq` would eliminate `q`, not
+    -- `t`, breaking every downstream reference to `q`.
+    rw [htq] at h2 h4
     have hp2 : p ^ 2 = 2 * q := by linear_combination -h2
     have hq2 : q ^ 2 = -a := by linear_combination h4
     -- `2 ≠ 0` is forced: otherwise `p² = 2q = 0` gives `p = 0`.
