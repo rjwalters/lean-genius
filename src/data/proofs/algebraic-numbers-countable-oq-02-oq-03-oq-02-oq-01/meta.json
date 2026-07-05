@@ -69,7 +69,8 @@
     "keyInsights": [
       "The 'not Gδ' phenomenon for a dense countable set is entirely topological: it depends only on the ambient space being nonempty, perfect, T1, and Baire — not on ℝ, algebraicity, or any arithmetic.",
       "Density is essential: a countable set that is Fσ-but-not-Gδ must be dense, because the obstruction is exactly that its complement is a competing dense Gδ.",
-      "The abstraction makes the classical placement of ℚ at Borel level Σ⁰₂ ∖ Π⁰₂ a one-line instance, and applies uniformly to any countable dense subset of any perfect Polish space (e.g. ℚⁿ ⊆ ℝⁿ, dyadic rationals in Cantor/Baire space)."
+      "The abstraction makes the classical placement of ℚ at Borel level Σ⁰₂ ∖ Π⁰₂ a one-line instance, and applies uniformly to any countable dense subset of any perfect Polish space (e.g. ℚⁿ ⊆ ℝⁿ, dyadic rationals in Cantor/Baire space).",
+      "A dense countable set is a concrete witness that the Borel hierarchy is proper at level 2 — that Σ⁰₂ ≠ Π⁰₂ — in every perfect Polish space: it lands in Σ⁰₂ (Fσ) but provably escapes Π⁰₂ (Gδ), so the two additive/multiplicative classes genuinely differ. The whole theorem is a pure assembly of three already-verified parent lemmas, contributing no new mathematics beyond isolating the exact typeclass hypotheses that make the Baire obstruction fire."
     ],
     "prerequisites": [
       "Baire category theorem; meagre and comeagre sets",
