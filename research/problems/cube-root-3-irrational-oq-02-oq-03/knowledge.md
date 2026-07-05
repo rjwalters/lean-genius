@@ -172,3 +172,42 @@ draft) — but NOTHING machine-checked this session: **both verifiers were down*
    the 2 monic-normalisation sorries (or fire `aristotle-n4-snippet.lean`), then port the two
    theorems into the main file and rewire the n=4 branch of `vahlen_capelli`.
 2. Then `n = 2^k` induction, then multiplicativity across coprime exponent factors.
+
+## Session 2026-07-05 (researcher-11) — VERIFICATION BLACKOUT ENDS; full scaffold machine-checked
+
+**Mode**: VERIFY + META-SYNC. **Outcome**: milestone (first green build of the whole
+scaffold; gallery meta corrected to match).
+
+### What I did
+- Docker verifier is BACK (`lean4-arm64:v4.26.0` present, `docker ps` OK) after 4 sessions of
+  blackout. Ran `docker-build.sh Proofs.CubeRoot3IrrationalOQ02OQ03`: **3061 jobs, build
+  succeeded, 0 axioms, exactly ONE `sorry`** (line 705). Everything the prior 4 sessions
+  wrote and hand-audited but could never verify is now MACHINE-CHECKED and correct.
+- Corrected the stale gallery `meta.json` (was dated 07-04, claimed 7/10 theorems, described
+  the sorry as "even n ≥ 4"). Now: 20 theorems, 799 lines, sorry correctly localised to
+  `8 ∣ n` with `−a ∈ K²`; originalContributions/assumptions/proofStrategy/keyInsights all
+  rewritten to list the verified n=4 and 2-power lemmas.
+
+### Key findings
+- The ported `vahlen_capelli_four_suff` and all its plumbing (`capelli_four_coeff_contra`,
+  `quartic_two_two_coeffs`, `no_linear_factor`, `monic_natDegree_two_eq`,
+  `leadingCoeff_inv_mul_monic`) elaborate cleanly — the `linear_combination` quartic
+  finishers that state.md flagged as highest-risk (possible sign flips) are CORRECT.
+- `two_power_capelli_of_neg_not_square` (norm-descent keystone, #34997) verifies: it kills
+  the entire `−a ∉ K²` branch of the 2-power tower for all k by a single induction.
+- **Crux-lemma characterisation of the remaining sorry** (worked out by hand this session):
+  the tower step needs `root x of X^m − C a  ⟹  x ∉ K(x)²` where `m = 2^(k-1)`. Equivalently
+  `x ∈ K(x)² ⟺ a ∈ −4K⁴`. Verified the m=2 instance directly: `x = √a` is a square in
+  `K(√a)` iff `±2√(−a) ∈ K²` iff `a ∈ −4K⁴` — matching `vahlen_capelli_four_suff`. The
+  general `m = 2^(k-1) ≥ 4` instance is the multi-page Lang VI §9 norm/trace descent = the
+  open sorry. Norm descent alone can't reach it because in the `−a ∈ K²` case it only
+  re-derives the case hypothesis.
+
+### Dead ends / blockers
+- The `−a ∈ K²` crux lemma is genuinely research-hard; not attempted for real code this
+  session (would risk a false claim). It is already the minimal residual — do NOT relocate.
+
+### Next steps
+1. Draft the general crux lemma `x ∉ K(x)²` (given `a ∉ −4K⁴`) on paper, Lang VI §9 style.
+2. Once the paper reduction is mechanical, delegate sub-steps to Aristotle.
+3. Everything else in the criterion is DONE and verified — this single lemma closes the file.

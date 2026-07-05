@@ -1,40 +1,60 @@
 # Research State: cube-root-3-irrational-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT
+**Phase**: VERIFIED-MILESTONE
 **Path**: full
-**Since**: 2026-07-04T22:17:33-07:00
-**Iteration**: 6
+**Since**: 2026-07-05T02:16:00-07:00
+**Iteration**: 7
 
 ## Current Focus
-n=4 sufficiency base case. Both math lemmas proved on main (`no_root_of_not_square_even`,
-`capelli_four_coeff_contra`). The full polynomial plumbing in `n4-sufficiency-draft.lean` is
-now **`sorry`-free** (still UNVERIFIED — verifier blackout). researcher-5 (2026-07-04) filled
-the four remaining `sorry`s of researcher-6's draft: `hGmon`/`hHmon` via new lemma
-`leadingCoeff_inv_mul_monic`, `hGform`/`hHform` via new lemma `monic_natDegree_two_eq`, and
-abstracted the (2,2) coefficients with `obtain` to remove a latent `rw`-into-`coeff` trap.
+**VERIFICATION BLACKOUT IS OVER.** Docker is back up (`lean4-arm64:v4.26.0`). The full
+Vahlen–Capelli scaffold — hand-audited but UNVERIFIED across the prior 4 sessions — now
+**builds green**: `docker-build.sh Proofs.CubeRoot3IrrationalOQ02OQ03` → 3061 jobs,
+0 axioms, exactly ONE `sorry` (line 705, the `8 ∣ n` + `−a ∈ K²` sub-case).
+
+This is the first machine-check of `vahlen_capelli_four_suff`, `capelli_four_coeff_contra`,
+`quartic_two_two_coeffs`, `no_linear_factor`, `monic_natDegree_two_eq`,
+`leadingCoeff_inv_mul_monic`, `vahlen_capelli_even_mul_odd`,
+`two_power_capelli_of_neg_not_square`, and the full `vahlen_capelli` assembly. All confirmed
+correct — no API mismatches, no residual errors, no sign flips in the quartic finishers.
+
+Gallery meta.json was stale (dated 2026-07-04, claimed 7/10 theorems, described the sorry as
+"even n ≥ 4"). Updated this session to reflect the verified reality: 20 theorems, 799 lines,
+and the sorry now correctly localised to `8 ∣ n` with `−a ∈ K²`.
 
 ## Active Approach
-Elementary factor analysis of `X⁴ − C a`: reducible ⟹ linear factor (killed by no-root) or
-two monic quadratics (killed by coefficient contradiction). Both regime lemmas proved; the
-degree-case-split + monic-normalisation glue is drafted, awaiting a verifier.
+Elementary + norm-transfer factor analysis of `Xⁿ − C a`. Necessity (both parities), odd
+sufficiency, n=2, n=4, odd-part peel-off, and the entire `−a ∉ K²` branch of the 2-power
+tower are all PROVED and now VERIFIED. Only the `−a ∈ K²` 2-power tail remains.
+
+## The Sole Remaining `sorry` — precise math
+Case: `k ≥ 3`, `X^(2^k) − C a`, hypotheses `a ∉ K²` (h1), `a ≠ −4b⁴ ∀b` (h2), `−a ∈ K²`.
+The tower reduction `X_pow_mul_sub_C_irreducible` requires: a root `x` of the irreducible
+base `X^(2^(k-1)) − C a` is NOT a square in `K(x)`. Norm descent gives `N(x) = −a`; a square
+root `x = β²` would force `N(β)² = −a`, i.e. `−a ∈ K²` — which is exactly the case
+hypothesis, so norm descent is INCONCLUSIVE here. Closing it needs the general **crux lemma**
+
+    (root x of irreducible X^m − C a, m = 2^(k-1) ≥ 4)  ⟹  ( x ∈ K(x)²  ⟺  a ∈ −4K⁴ )
+
+whose `⟸` failure (given `a ∉ −4K⁴`) yields `x ∉ K(x)²` and closes the tower. The m=2
+instance of this crux is exactly `vahlen_capelli_four_suff` (done, and verified by hand
+above for m=2: x∈K(x)² ⟺ ±2√(−a)∈K² ⟺ a∈−4K⁴). The general m=2^(k-1)≥4 instance is the
+multi-page hard part of Lang VI §9 (norm/trace descent in the tower) and is Mathlib's open
+TODO. NOT closeable responsibly in one session — attempting to force it risks a false claim.
 
 ## Attempt Count
-- Total attempts: 6
-- Current approach attempts: 5
-- Approaches tried: 1 (elementary factor analysis — succeeding, incremental)
+- Total attempts: 7
+- Approaches tried: 1 (elementary + norm-transfer factor analysis — succeeding incrementally)
 
-## Blockers (VERIFICATION BLACKOUT — 4th consecutive session)
-- Local Docker DOWN: containerd content-store blob I/O corruption; no Lean image, unbuildable.
-- Aristotle MCP DOWN: "Resource not found" on every submission (4th session). Ready-to-fire
-  snippet saved: `aristotle-n4-snippet.lean`.
-- Net: nothing machine-checked this session; main file deliberately untouched to avoid
-  unverifiable regression. The draft is now `sorry`-free but only hand-audited.
+## Blockers
+- None on infrastructure: Docker verifier RESTORED this session (blackout resolved).
+- Mathematical: the `−a ∈ K²` 2-power crux lemma is genuinely research-hard (Lang VI §9),
+  the exact content Mathlib leaves open.
 
 ## Next Action
-On the FIRST session with a working verifier: build `n4-sufficiency-draft.lean` (now
-`sorry`-free), fix any residual API mismatches — the highest-risk item is the four
-`linear_combination` finishers in `quartic_two_two_coeffs` (possible sign flips) — then port
-`monic_natDegree_two_eq`, `leadingCoeff_inv_mul_monic`, `quartic_two_two_coeffs`, and
-`vahlen_capelli_four_suff` into the main file and rewire `vahlen_capelli`'s n=4 branch
-(snippet at bottom of the draft). Shrinks the main-file sorry: even n≥4 → n≥6.
+The frontier is now a single, sharply-stated open lemma. A future session with time budget
+should attempt the general crux lemma
+`crux : Irreducible (X^(2^n) − C a) → a ∉ −4K⁴ → root x ∉ K(x)²` (n ≥ 2), following the
+Lang VI §9 norm/trace descent. Aristotle is a candidate delegate for the mechanical
+sub-steps once a clean paper reduction is written. Do NOT relocate the sorry again without
+genuinely shrinking it — it is already minimal.
