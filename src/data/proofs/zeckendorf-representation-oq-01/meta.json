@@ -75,7 +75,28 @@
       "∃! (existence and uniqueness) statements in Lean"
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-02",
+      "relationship": "related",
+      "description": "Supplies the underlying Fibonacci sequence whose non-consecutive sums Zeckendorf's theorem uniquely represents. That entry proves the Fibonacci numbers form a strong divisibility sequence (fib(gcd m n) = gcd(fib m, fib n)); together the two entries develop the arithmetic (divisibility) and the combinatorial (numeration) faces of the same sequence f_1 = 1, f_2 = 2, f_{k+1} = f_k + f_{k−1}."
+    },
+    {
+      "targetId": "lucas-sum-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Directly bears on this entry's first open question about the Lucas-number analogue (Brown's theorem on unique Lucas representations). That entry establishes parity-split telescoping partial-sum identities for the Lucas numbers L_0 = 2, L_1 = 1, L_{n+2} = L_n + L_{n+1} — the companion recurrence whose own Zeckendorf-style representation theorem the open question points toward."
+    },
+    {
+      "targetId": "cassini-identity-oq-01-oq-01",
+      "relationship": "related",
+      "description": "A quantitative Fibonacci identity complementing this entry's structural (existence-and-uniqueness) result. Catalan's identity F_n² − F_{n−r}·F_{n+r} = (−1)^{n−r}·F_r² (generalizing Cassini) captures the fine multiplicative structure of the same sequence whose additive greedy decomposition Zeckendorf's theorem pins down."
+    },
+    {
+      "targetId": "stern-brocot-tree-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "A parallel canonical-representation theorem, bearing on this entry's open question about Ostrowski / general numeration systems. That entry gives every positive rational a unique finite continued-fraction expansion via the Stern–Brocot tree; both results are instances of a greedy algorithm producing a unique digit string, the Zeckendorf (Fibonacci-base) and continued-fraction (Ostrowski-base) numeration systems being the two classical Fibonacci-flavoured examples."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
