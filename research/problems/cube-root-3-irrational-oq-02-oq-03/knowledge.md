@@ -127,3 +127,48 @@ lemma, Docker-verified; sole file `sorry` unchanged = even n≥4).
 1. `vahlen_capelli_four`: remaining piece is polynomial plumbing — reducible monic quartic ⟹
    monic factor deg 1 or 2, then coeff extraction feeding `capelli_four_coeff_contra`.
 2. Then `n = 2^k` induction, then multiplicativity across coprime exponent factors.
+
+## Session 2026-07-04 (researcher-6, s05) — full n=4 plumbing DRAFTED (verification blackout)
+
+**Mode**: REVISIT. **Outcome**: progress (complete n=4 plumbing written as a ready-to-verify
+draft) — but NOTHING machine-checked this session: **both verifiers were down**.
+
+### Verification blackout (both paths dead)
+- **Local Docker**: containerd content-store corrupted at the blob/filesystem level
+  (`input/output error` reading `io.containerd.content.v1.content/blobs/...`; `docker system
+  df` and image-build both fail). No `lean4-arm64:v4.26.0` image exists and it cannot be
+  rebuilt — host-disk corruption in Docker Desktop, not researcher-fixable.
+- **Aristotle MCP**: `{"status":"error","message":"Resource not found"}` for EVERY submission
+  including a trivial `example : 1+1=2` and a trivial `formalize`. Backend down, 3rd
+  consecutive session (s03–s05). Not an input problem.
+- Consequence: I did NOT touch the compiling, Docker-verified main file (`vahlen_capelli`
+  sorry unchanged) — adding unverifiable code to a verified file would risk silent regression
+  with no way to check. All new work is staged OUTSIDE `proofs/Proofs/`.
+
+### What I did (all in `research/problems/cube-root-3-irrational-oq-02-oq-03/`)
+- `n4-sufficiency-draft.lean`: the COMPLETE n=4 sufficiency plumbing, written from careful
+  reasoning, unverified. New content:
+  * `quartic_two_two_coeffs` — bridge: a (2,2) monic-quadratic factorisation of `X⁴−C a`
+    yields `p+s=0, q+t+ps=0, pt+qs=0, qt=−a` (expand via `map_add/map_mul`+`ring`, read off
+    coeffs 0..3).
+  * `natDegree_pos_of_ne_zero_of_not_isUnit` — over a field, nonzero non-unit ⟹ deg>0.
+  * `no_linear_factor` — a degree-1 factor gives a root, killed by `no_root_of_not_square_even`.
+  * `vahlen_capelli_four_suff` — assembles: monic deg-4, factor-degree split (1,3)/(2,2)/(3,1)
+    via `natDegree_mul`; linear cases → no root; (2,2) → normalise to monic quadratics →
+    `quartic_two_two_coeffs` → `capelli_four_coeff_contra`.
+  * Includes the exact `vahlen_capelli` rewiring snippet (shrinks sorry from even n≥4 to n≥6).
+- `aristotle-n4-snippet.lean`: self-contained ready-to-fire Aristotle submission (two helpers
+  with proofs + two `sorry`s + hint) for the moment the endpoint recovers.
+
+### Key findings / remaining risks (flagged in the draft)
+- Two genuine `sorry`s remain even in the draft: monic-of-`C c·g`, and the monic-degree-2
+  normal form `G = X² + C(G.coeff 1)X + C(G.coeff 0)` — the fiddliest API step, best delegated.
+- Unverifiable API-name uncertainties: `eq_X_add_C_of_natDegree_le_one`, `natDegree_eq_zero`
+  shape, `monic_X_pow_sub_C`, `natDegree_C_mul`, `leadingCoeff_mul`; and the four
+  `linear_combination eK` finishers in the bridge lemma may need sign flips.
+
+### Next steps
+1. FIRST working-verifier session: build `n4-sufficiency-draft.lean`, fix API mismatches, fill
+   the 2 monic-normalisation sorries (or fire `aristotle-n4-snippet.lean`), then port the two
+   theorems into the main file and rewire the n=4 branch of `vahlen_capelli`.
+2. Then `n = 2^k` induction, then multiplicativity across coprime exponent factors.

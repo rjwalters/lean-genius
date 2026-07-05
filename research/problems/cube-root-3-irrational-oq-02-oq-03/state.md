@@ -4,29 +4,34 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04T22:17:33-07:00
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
-n=4 sufficiency base case. Algebraic heart (`capelli_four_coeff_contra`) now GENUINELY
-IMPLEMENTED (s03 had claimed it but only edited docstrings — it was not in the code; s04
-actually wrote the ~30-line proof, elaborates cleanly). Remaining: polynomial plumbing that
-dispatches a reducible quartic into the linear regime (`no_root_of_not_square_even`) and the
-(2,2) regime (`capelli_four_coeff_contra`).
+n=4 sufficiency base case. Both math lemmas proved on main (`no_root_of_not_square_even`,
+`capelli_four_coeff_contra`). The full polynomial plumbing is now DRAFTED (unverified) in
+`n4-sufficiency-draft.lean` — `quartic_two_two_coeffs` (bridge), `no_linear_factor`,
+`natDegree_pos_of_ne_zero_of_not_isUnit`, and the assembling `vahlen_capelli_four_suff`.
+Two `sorry`s remain in the draft (monic-of-`C c·g`; monic-deg-2 normal form).
 
 ## Active Approach
 Elementary factor analysis of `X⁴ − C a`: reducible ⟹ linear factor (killed by no-root) or
-two monic quadratics (killed by coefficient contradiction). Both regime lemmas proved.
+two monic quadratics (killed by coefficient contradiction). Both regime lemmas proved; the
+degree-case-split + monic-normalisation glue is drafted, awaiting a verifier.
 
 ## Attempt Count
-- Total attempts: 4
-- Current approach attempts: 3
+- Total attempts: 5
+- Current approach attempts: 4
 - Approaches tried: 1 (elementary factor analysis — succeeding, incremental)
 
-## Blockers
-- Aristotle MCP endpoint down (2 sessions) — intended tool for the mechanical polynomial
-  coefficient-extraction plumbing. Retry when it recovers.
+## Blockers (VERIFICATION BLACKOUT this session)
+- Local Docker DOWN: containerd content-store blob I/O corruption; no Lean image, unbuildable.
+- Aristotle MCP DOWN: "Resource not found" on every submission (3rd session). Ready-to-fire
+  snippet saved: `aristotle-n4-snippet.lean`.
+- Net: nothing machine-checked this session; main file deliberately untouched to avoid
+  unverifiable regression.
 
 ## Next Action
-Prove `vahlen_capelli_four`: (a) reducible monic quartic ⟹ monic factor of degree 1 or 2;
-(b) coeff extraction for (2,2) case → `capelli_four_coeff_contra`. Delegate to Aristotle when
-up, else manual via `Polynomial.coeff_mul` / `Monic.eq_X_add_C` / `ext_iff`.
+On the FIRST session with a working verifier: build `n4-sufficiency-draft.lean`, fix flagged
+API mismatches, fill the 2 monic-normalisation sorries (or fire `aristotle-n4-snippet.lean`),
+then port `quartic_two_two_coeffs` + `vahlen_capelli_four_suff` into the main file and rewire
+`vahlen_capelli`'s n=4 branch (snippet at bottom of the draft). Shrinks sorry: even n≥4 → n≥6.
