@@ -13,7 +13,8 @@
       "The EGF identity ∑ Bₙ Xⁿ/n! = exp(eˣ − 1) is captured, without a substitution chain rule, by the defining ODE Y' = exp(X)·Y, Y(0) = 1 of which exp(eˣ − 1) is the unique power-series solution.",
       "Coefficient-by-coefficient, that ODE is exactly the Bell binomial recurrence B_{n+1} = ∑_{i+j=n} C(n,i)·B_j: the EGF product exp(X)·bellEGF is the binomial convolution, and the formal derivative is the index shift n ↦ n+1.",
       "The convolution-to-recurrence step reduces to the elementary factorial identity C(n,i)·i!·(n-i)! = n!, which converts (1/i!)·(B_j/j!) into C(n,i)·B_j/n! term by term.",
-      "Uniqueness of the ODE solution is a clean strong induction on the coefficient index: a first-order linear ODE with a given initial value determines every coefficient from the previous ones."
+      "Uniqueness of the ODE solution is a clean strong induction on the coefficient index: a first-order linear ODE with a given initial value determines every coefficient from the previous ones.",
+      "Why ℚ and why exponential: the denominators are the whole point. Although Bₙ and C(n,i) are integers, the generating function must live in ℚ⟦X⟧ because its coefficients are Bₙ/n! — dividing by n! is exactly what makes this the *exponential* GF (rather than the ordinary one) and what turns multiplication into the *binomial* convolution ∑ C(n,i)·… . Every step is field arithmetic over ℚ, and the nonzero factors cancelled along the way (i!, j!, n!, and the derivative weight m+1) are precisely those factorials — the closed form exp(eˣ−1) itself is never written as a Lean term."
     ],
     "prerequisites": [
       "Formal power series over ℚ: PowerSeries.mk, coeff, constantCoeff, coeff_mul over the antidiagonal",
@@ -23,6 +24,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: the missing chain rule and the ODE strategy",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Docstring stating the EGF identity ∑ Bₙ Xⁿ/n! = exp(eˣ − 1) and the formalization obstruction: pinned Mathlib has PowerSeries.subst (so exp(eˣ − 1) is expressible) but no substitution chain rule, so the closed form cannot be differentiated directly. The honest workaround — capture the identity by the defining ODE Y' = exp(X)·Y, Y(0) = 1, of which exp(eˣ − 1) is the unique solution — is laid out, along with the imports and the PowerSeries/Finset/Nat opens.",
+      "mathContext": "$\\sum_n B_n X^n/n! = \\exp(e^X - 1)$, captured via the ODE $Y' = \\exp(X)\\cdot Y,\\ Y(0)=1$."
+    },
     {
       "id": "definition-egf",
       "title": "Section I: The Bell EGF and its Initial Value",
@@ -35,17 +44,25 @@
       "id": "convolution-step",
       "title": "Section II: The Convolution Step",
       "startLine": 73,
-      "endLine": 104,
+      "endLine": 106,
       "summary": "coeff_exp_mul_bellEGF: coeff n (exp ℚ · bellEGF) = B_{n+1}/n!, the power-series incarnation of the Bell binomial recurrence.",
-      "mathContext": "coeff_mul expands the product over the antidiagonal; each term (1/i!)·(B_j/j!) is rewritten as C(n,i)·B_j/n! via Nat.choose_mul_factorial_mul_factorial (proved by field_simp and linear_combination), and Nat.bell_succ' collapses the sum to B_{n+1}."
+      "mathContext": "coeff_mul expands the product over the antidiagonal; each term (1/i!)·(B_j/j!) is rewritten as C(n,i)·B_j/n! via Nat.choose_mul_factorial_mul_factorial (div_eq_div_iff + ring), and Nat.bell_succ' collapses the sum to B_{n+1}."
     },
     {
-      "id": "ode-and-uniqueness",
-      "title": "Section III: The Exponential ODE and its Unique Solution",
-      "startLine": 106,
-      "endLine": 154,
-      "summary": "bellEGF_ODE: d⁄dX bellEGF = exp X · bellEGF; bellEGF_unique: any f with f' = exp·f and f(0) = 1 equals bellEGF; bellEGF_characterization bundles the two, identifying bellEGF with exp(eˣ − 1).",
-      "mathContext": "coeff_derivative turns the left side into (B_{n+1}/(n+1)!)·(n+1) = B_{n+1}/n!, matching the convolution step. Uniqueness is a strong induction on the coefficient index cancelling the nonzero factor (m+1)."
+      "id": "ode",
+      "title": "Section III: The Bell EGF Satisfies the Exponential ODE",
+      "startLine": 108,
+      "endLine": 119,
+      "summary": "bellEGF_ODE: d⁄dX bellEGF = exp X · bellEGF, proved coefficient-wise — coeff_derivative turns the left side into (B_{n+1}/(n+1)!)·(n+1), which equals B_{n+1}/n! = coeff n (exp·bellEGF) from the convolution step after Nat.factorial_succ and field_simp.",
+      "mathContext": "$(B_{n+1}/(n+1)!)\\cdot(n+1) = B_{n+1}/n! = \\mathrm{coeff}_n(\\exp\\cdot\\mathrm{bellEGF})$, so $\\mathrm{d/dX}\\,\\mathrm{bellEGF} = \\exp X\\cdot\\mathrm{bellEGF}$."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Section IV: Uniqueness and the EGF Characterization",
+      "startLine": 121,
+      "endLine": 155,
+      "summary": "bellEGF_unique: any f with f' = exp·f and f(0) = 1 equals bellEGF, by strong induction on the coefficient index — the m-th coefficients of exp·f and exp·bellEGF agree by IH, so the derivative relation forces the (m+1)-st coefficients to agree after cancelling the nonzero factor (m+1). bellEGF_characterization bundles ODE + initial value + uniqueness, identifying bellEGF with exp(eˣ − 1).",
+      "mathContext": "A first-order linear ODE with fixed initial value determines every coefficient from the previous ones; hence bellEGF is *the* solution, i.e. $\\exp(e^X - 1)$."
     }
   ],
   "conclusion": {
