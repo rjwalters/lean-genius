@@ -372,7 +372,8 @@ fiber uniformity. -/
 
 section ProperReduction
 
-open Ballot ProbabilityTheory
+open Ballot ProbabilityTheory MeasureTheory
+open scoped ENNReal
 
 -- MeasurableSpace instances for uniformOn
 -- (discrete σ-algebra; needed since List types are not automatically measurable)
@@ -471,150 +472,7 @@ private theorem multiCountedSequence_nonempty (m : ℕ) (hm : 2 ≤ m) (a b : �
     (multiCountedSequence m (by omega) a b).Nonempty := by
   refine ⟨List.replicate a (leader m (by omega)) ++ List.replicate b ⟨1, by omega⟩, ?_, ?_⟩
   · simp [List.count_append, List.count_replicate, leader]
-    have : (⟨0, by omega⟩ : Fin m) ≠ ⟨1, by omega⟩ := by
-      intro h; exact absurd (Fin.val_eq_of_eq h) (by omega)
-    simp [this]
   · simp
-
-/-- **Conditional probability transfer (proved)**
-
-When a surjection f : A → B has uniform fiber sizes (every element of B
-has the same number of preimages in A), and P ⊆ A is the preimage of
-Q ⊆ B, then uniformOn A P = uniformOn B Q.
-
-Proof by cross-multiplication bijection: φ(s, t) = (project s, fiberSwap(s→t))
-gives a bijection (MCS ∩ MSP) × CS ↔ (CS ∩ SP) × MCS,
-so |MCS ∩ MSP| · |CS| = |CS ∩ SP| · |MCS|, yielding equal condCount ratios. -/
-theorem uniformOn_fiber_transfer (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
-    (hab : b < a) :
-    ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b)
-      (multiStaysPositive m (by omega)) =
-    ProbabilityTheory.uniformOn (Ballot.countedSequence a b)
-      Ballot.staysPositive := by
-  -- Setup
-  set hm1 : m ≥ 1 := by omega
-  set MCS := multiCountedSequence m hm1 a b with MCS_def
-  set MSP := multiStaysPositive m hm1 with MSP_def
-  set CS := Ballot.countedSequence a b with CS_def
-  set SP := Ballot.staysPositive with SP_def
-  -- Finiteness and nonemptiness
-  have hMCS_fin := multiCountedSequence_finite m hm1 a b
-  have hCS_fin := Ballot.countedSequence_finite a b
-  have hMCS_ne := multiCountedSequence_nonempty m hm a b
-  have hCS_ne := Ballot.countedSequence_nonempty a b
-  -- Helpers for fiber properties
-  have cs_pm : ∀ t ∈ CS, ∀ x ∈ t, x = (1 : ℤ) ∨ x = -1 := fun t ht => ht.2.2
-  have cs_neg_eq : ∀ t₁ ∈ CS, ∀ t₂ ∈ CS, t₁.count (-1) = t₂.count (-1) := by
-    intro t₁ ht₁ t₂ ht₂; linarith [ht₁.2.1, ht₂.2.1]
-  -- Cross-multiplication bijection φ : (MCS ∩ MSP) × CS → (CS ∩ SP) × MCS
-  -- φ(s, t) = (project s, fiberSwap(project s → t)(s))
-  let φ : FinSequence m × List ℤ → List ℤ × FinSequence m :=
-    fun ⟨s, t⟩ => (project (leader m hm1) s, fiberSwap m hm1 (project (leader m hm1) s) t s)
-  -- Inverse ψ : (CS ∩ SP) × MCS → (MCS ∩ MSP) × CS
-  let ψ : List ℤ × FinSequence m → FinSequence m × List ℤ :=
-    fun ⟨t', s'⟩ => (fiberSwap m hm1 (project (leader m hm1) s') t' s', project (leader m hm1) s')
-  -- φ maps into (CS ∩ SP) ×ˢ MCS
-  have hφ_maps : Set.MapsTo φ ((MCS ∩ MSP) ×ˢ CS) ((CS ∩ SP) ×ˢ MCS) := by
-    intro ⟨s, t⟩ ⟨⟨hs_mcs, hs_msp⟩, ht_cs⟩
-    exact ⟨⟨project_multi_to_counted hm1 hs_mcs, hs_msp⟩,
-      (fiberSwap_mem_multiProjectionFiber hm1
-        (project_multi_to_counted hm1 hs_mcs) ht_cs ⟨hs_mcs, rfl⟩).1⟩
-  -- φ is injective
-  have hφ_inj : Set.InjOn φ ((MCS ∩ MSP) ×ˢ CS) := by
-    intro ⟨s₁, t₁⟩ ⟨⟨hs₁, _⟩, ht₁⟩ ⟨s₂, t₂⟩ ⟨⟨hs₂, _⟩, ht₂⟩ heq
-    simp only [φ, Prod.mk.injEq] at heq
-    obtain ⟨hproj, hswap⟩ := heq
-    -- project(fiberSwap(sᵢ, tᵢ)) = tᵢ, so t₁ = t₂
-    have hp1 := (fiberSwap_mem_multiProjectionFiber hm1
-      (project_multi_to_counted hm1 hs₁) ht₁ ⟨hs₁, rfl⟩).2
-    have hp2 := (fiberSwap_mem_multiProjectionFiber hm1
-      (project_multi_to_counted hm1 hs₂) ht₂ ⟨hs₂, rfl⟩).2
-    have ht_eq : t₁ = t₂ := hp1 ▸ hp2 ▸ congrArg (project (leader m hm1)) hswap ▸ rfl
-    subst ht_eq
-    -- fiberSwap_cancel recovers sᵢ: s₁ = s₂
-    have hc₁ := fiberSwap_cancel hm1 _ t₁ s₁ rfl (cs_pm t₁ ht₁)
-      (cs_neg_eq _ (project_multi_to_counted hm1 hs₁) _ ht₁)
-    have hc₂ := fiberSwap_cancel hm1 _ t₁ s₂ rfl (cs_pm t₁ ht₂)
-      (cs_neg_eq _ (project_multi_to_counted hm1 hs₂) _ ht₂)
-    rw [hproj] at hc₁
-    ext <;> [exact hc₁ ▸ hc₂ ▸ congrArg (fiberSwap m hm1 t₁ _) hswap; rfl]
-  -- ψ maps into (MCS ∩ MSP) ×ˢ CS
-  have hψ_maps : Set.MapsTo ψ ((CS ∩ SP) ×ˢ MCS) ((MCS ∩ MSP) ×ˢ CS) := by
-    intro ⟨t', s'⟩ ⟨⟨ht'_cs, ht'_sp⟩, hs'_mcs⟩
-    have hs'_cs := project_multi_to_counted hm1 hs'_mcs
-    have hswap := fiberSwap_mem_multiProjectionFiber hm1 hs'_cs ht'_cs ⟨hs'_mcs, rfl⟩
-    exact ⟨⟨hswap.1, by rw [MSP_def, multiStaysPositive, Set.mem_setOf_eq, hswap.2]; exact ht'_sp⟩,
-      hs'_cs⟩
-  -- ψ is injective
-  have hψ_inj : Set.InjOn ψ ((CS ∩ SP) ×ˢ MCS) := by
-    intro ⟨t₁', s₁'⟩ ⟨⟨ht₁', _⟩, hs₁'⟩ ⟨t₂', s₂'⟩ ⟨⟨ht₂', _⟩, hs₂'⟩ heq
-    simp only [ψ, Prod.mk.injEq] at heq
-    obtain ⟨hswap, hproj⟩ := heq
-    -- project equality gives s₁' and s₂' are in the same fiber
-    -- project(fiberSwap(s', t')) = t', so t₁' = t₂' from the swap outputs
-    have hp1 := (fiberSwap_mem_multiProjectionFiber hm1
-      (project_multi_to_counted hm1 hs₁') ht₁' ⟨hs₁', rfl⟩).2
-    have hp2 := (fiberSwap_mem_multiProjectionFiber hm1
-      (project_multi_to_counted hm1 hs₂') ht₂' ⟨hs₂', rfl⟩).2
-    have ht_eq : t₁' = t₂' := hp1 ▸ hp2 ▸ congrArg (project (leader m hm1)) hswap ▸ rfl
-    subst ht_eq
-    have hc₁ := fiberSwap_cancel hm1 _ t₁' s₁' rfl (cs_pm t₁' ht₁')
-      (cs_neg_eq _ (project_multi_to_counted hm1 hs₁') _ ht₁')
-    have hc₂ := fiberSwap_cancel hm1 _ t₁' s₂' rfl (cs_pm t₁' ht₂')
-      (cs_neg_eq _ (project_multi_to_counted hm1 hs₂') _ ht₂')
-    rw [hproj] at hc₁
-    ext <;> [exact hc₁ ▸ hc₂ ▸ congrArg (fiberSwap m hm1 t₁' _) hswap; exact hproj]
-  -- Cross-multiplication: ncard equality via mutual injection (Schröder-Bernstein for ncard)
-  have h_cross : (MCS ∩ MSP).ncard * CS.ncard = (CS ∩ SP).ncard * MCS.ncard := by
-    have h1 := Set.ncard_le_ncard_of_injOn φ hφ_inj hφ_maps
-      (Set.Finite.prod (hCS_fin.subset Set.inter_subset_left) hMCS_fin)
-    have h2 := Set.ncard_le_ncard_of_injOn ψ hψ_inj hψ_maps
-      (Set.Finite.prod (hMCS_fin.subset Set.inter_subset_left) hCS_fin)
-    rw [Set.ncard_prod (hMCS_fin.subset Set.inter_subset_left) hCS_fin,
-        Set.ncard_prod (hCS_fin.subset Set.inter_subset_left) hMCS_fin] at h1 h2
-    omega
-  -- Convert cross-multiplication to uniformOn equality
-  -- uniformOn s t = condCount s t = ↑(s ∩ t).ncard / ↑s.ncard
-  -- Both MCS and CS have positive ncard (nonempty finite sets)
-  have hMCS_pos : 0 < MCS.ncard := Set.ncard_pos hMCS_fin ⟨_, hMCS_ne.choose_spec⟩
-  have hCS_pos : 0 < CS.ncard := Set.ncard_pos hCS_fin ⟨_, hCS_ne.choose_spec⟩
-  -- Unfold uniformOn to condCount (ncard ratio) and apply cross-multiplication
-  simp only [ProbabilityTheory.uniformOn]
-  rw [ENNReal.div_eq_div_iff
-    (by exact_mod_cast hMCS_pos.ne' : (↑MCS.ncard : ENNReal) ≠ 0)
-    (ENNReal.natCast_ne_top _)
-    (by exact_mod_cast hCS_pos.ne' : (↑CS.ncard : ENNReal) ≠ 0)
-    (ENNReal.natCast_ne_top _)]
-  exact_mod_cast h_cross
-
-/-- **Multi-Candidate Ballot Theorem**
-
-    In an election with m ≥ 2 candidates where candidate 0 receives `a` votes
-    and all other candidates receive a combined `b` votes, with a > b, the
-    probability that candidate 0 leads all opponents combined throughout
-    the counting is:
-
-      P = (a - b) / (a + b)
-
-    **Proof chain:**
-    1. `multi_stays_iff_projected`: The "stays positive" property depends
-       only on the ±1 projection, not on opponent label distribution.
-    2. `fiber_card_uniform`: Each ±1 target has the same number of
-       multi-candidate preimages (multinomial coefficient).
-    3. `uniformOn_fiber_transfer`: Uniform fibers preserve
-       conditional probability under projection (proved via cross-multiplication bijection).
-    4. `Ballot.ballot_problem`: The classical ballot theorem gives
-       uniformOn (countedSequence a b) staysPositive = (a-b)/(a+b).
-
-    All steps are fully proved. Step 4 is Mathlib's Wiedijk #30. -/
-theorem multi_candidate_ballot (m : ℕ) (hm : 2 ≤ m) (a b : ℕ) (hab : b < a) :
-    ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b)
-      (multiStaysPositive m (by omega)) =
-    (↑a - ↑b) / (↑a + ↑b) := by
-  rw [uniformOn_fiber_transfer m hm a b hab]
-  exact Ballot.ballot_problem b a hab
-
-end ProperReduction
 
 /-! ## Part VIII-B: Fiber Bijection Infrastructure (toward axiom elimination)
 
@@ -989,6 +847,180 @@ theorem fiber_card_uniform (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
     (Set.ncard_le_ncard_of_injOn _ maps21 inj21 fin1)
 
 end FiberCardinality
+
+/-- **Conditional probability transfer (proved)**
+
+When a surjection f : A → B has uniform fiber sizes (every element of B
+has the same number of preimages in A), and P ⊆ A is the preimage of
+Q ⊆ B, then uniformOn A P = uniformOn B Q.
+
+Proof by cross-multiplication bijection: φ(s, t) = (project s, fiberSwap(s→t))
+gives a bijection (MCS ∩ MSP) × CS ↔ (CS ∩ SP) × MCS,
+so |MCS ∩ MSP| · |CS| = |CS ∩ SP| · |MCS|, yielding equal condCount ratios. -/
+theorem uniformOn_fiber_transfer (m : ℕ) (hm : 2 ≤ m) (a b : ℕ)
+    (hab : b < a) :
+    ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b)
+      (multiStaysPositive m (by omega)) =
+    ProbabilityTheory.uniformOn (Ballot.countedSequence a b)
+      Ballot.staysPositive := by
+  -- Setup
+  set hm1 : m ≥ 1 := by omega
+  set MCS := multiCountedSequence m hm1 a b with MCS_def
+  set MSP := multiStaysPositive m hm1 with MSP_def
+  set CS := Ballot.countedSequence a b with CS_def
+  set SP := Ballot.staysPositive with SP_def
+  -- Finiteness and nonemptiness
+  have hMCS_fin := multiCountedSequence_finite m hm1 a b
+  have hCS_fin := Ballot.countedSequence_finite a b
+  have hMCS_ne := multiCountedSequence_nonempty m hm a b
+  have hCS_ne := Ballot.countedSequence_nonempty a b
+  -- Helpers for fiber properties
+  have cs_pm : ∀ t ∈ CS, ∀ x ∈ t, x = (1 : ℤ) ∨ x = -1 := fun t ht => ht.2.2
+  have cs_neg_eq : ∀ t₁ ∈ CS, ∀ t₂ ∈ CS, t₁.count (-1) = t₂.count (-1) := by
+    intro t₁ ht₁ t₂ ht₂; linarith [ht₁.2.1, ht₂.2.1]
+  -- Cross-multiplication bijection φ : (MCS ∩ MSP) × CS → (CS ∩ SP) × MCS
+  -- φ(s, t) = (project s, fiberSwap(project s → t)(s))
+  let φ : FinSequence m × List ℤ → List ℤ × FinSequence m :=
+    fun ⟨s, t⟩ => (project (leader m hm1) s, fiberSwap m hm1 (project (leader m hm1) s) t s)
+  -- Inverse ψ : (CS ∩ SP) × MCS → (MCS ∩ MSP) × CS
+  let ψ : List ℤ × FinSequence m → FinSequence m × List ℤ :=
+    fun ⟨t', s'⟩ => (fiberSwap m hm1 (project (leader m hm1) s') t' s', project (leader m hm1) s')
+  -- φ maps into (CS ∩ SP) ×ˢ MCS
+  have hφ_maps : Set.MapsTo φ ((MCS ∩ MSP) ×ˢ CS) ((CS ∩ SP) ×ˢ MCS) := by
+    intro ⟨s, t⟩ ⟨⟨hs_mcs, hs_msp⟩, ht_cs⟩
+    exact ⟨⟨project_multi_to_counted hm1 hs_mcs, hs_msp⟩,
+      (fiberSwap_mem_multiProjectionFiber hm1
+        (project_multi_to_counted hm1 hs_mcs) ht_cs ⟨hs_mcs, rfl⟩).1⟩
+  -- φ is injective
+  have hφ_inj : Set.InjOn φ ((MCS ∩ MSP) ×ˢ CS) := by
+    intro ⟨s₁, t₁⟩ ⟨⟨hs₁, _⟩, ht₁⟩ ⟨s₂, t₂⟩ ⟨⟨hs₂, _⟩, ht₂⟩ heq
+    simp only [φ, Prod.mk.injEq] at heq
+    obtain ⟨hproj, hswap⟩ := heq
+    -- project(fiberSwap(sᵢ, tᵢ)) = tᵢ, so t₁ = t₂
+    have hp1 : project (leader m hm1)
+        (fiberSwap m hm1 (project (leader m hm1) s₁) t₁ s₁) = t₁ :=
+      (fiberSwap_mem_multiProjectionFiber hm1
+        (project_multi_to_counted hm1 hs₁) ht₁ ⟨hs₁, rfl⟩).2
+    have hp2 : project (leader m hm1)
+        (fiberSwap m hm1 (project (leader m hm1) s₂) t₂ s₂) = t₂ :=
+      (fiberSwap_mem_multiProjectionFiber hm1
+        (project_multi_to_counted hm1 hs₂) ht₂ ⟨hs₂, rfl⟩).2
+    have ht_eq : t₁ = t₂ :=
+      hp1.symm.trans ((congrArg (project (leader m hm1)) hswap).trans hp2)
+    subst ht_eq
+    -- fiberSwap_cancel recovers sᵢ: s₁ = s₂
+    have hc₁ := fiberSwap_cancel hm1 _ t₁ s₁ rfl (cs_pm t₁ ht₁)
+      (cs_neg_eq _ (project_multi_to_counted hm1 hs₁) _ ht₁)
+    have hc₂ := fiberSwap_cancel hm1 _ t₁ s₂ rfl (cs_pm t₁ ht₂)
+      (cs_neg_eq _ (project_multi_to_counted hm1 hs₂) _ ht₂)
+    rw [hproj] at hc₁ hswap
+    have hs_eq : s₁ = s₂ := by
+      have h := congrArg (fiberSwap m hm1 t₁ (project (leader m hm1) s₂)) hswap
+      rw [hc₁, hc₂] at h; exact h
+    rw [hs_eq]
+  -- ψ maps into (MCS ∩ MSP) ×ˢ CS
+  have hψ_maps : Set.MapsTo ψ ((CS ∩ SP) ×ˢ MCS) ((MCS ∩ MSP) ×ˢ CS) := by
+    intro ⟨t', s'⟩ ⟨⟨ht'_cs, ht'_sp⟩, hs'_mcs⟩
+    have hs'_cs := project_multi_to_counted hm1 hs'_mcs
+    have hswap := fiberSwap_mem_multiProjectionFiber hm1 hs'_cs ht'_cs ⟨hs'_mcs, rfl⟩
+    exact ⟨⟨hswap.1, by rw [MSP_def, multiStaysPositive, Set.mem_setOf_eq, hswap.2]; exact ht'_sp⟩,
+      hs'_cs⟩
+  -- ψ is injective
+  have hψ_inj : Set.InjOn ψ ((CS ∩ SP) ×ˢ MCS) := by
+    intro ⟨t₁', s₁'⟩ ⟨⟨ht₁', _⟩, hs₁'⟩ ⟨t₂', s₂'⟩ ⟨⟨ht₂', _⟩, hs₂'⟩ heq
+    simp only [ψ, Prod.mk.injEq] at heq
+    obtain ⟨hswap, hproj⟩ := heq
+    -- project equality gives s₁' and s₂' are in the same fiber
+    -- project(fiberSwap(s', t')) = t', so t₁' = t₂' from the swap outputs
+    have hp1 : project (leader m hm1)
+        (fiberSwap m hm1 (project (leader m hm1) s₁') t₁' s₁') = t₁' :=
+      (fiberSwap_mem_multiProjectionFiber hm1
+        (project_multi_to_counted hm1 hs₁') ht₁' ⟨hs₁', rfl⟩).2
+    have hp2 : project (leader m hm1)
+        (fiberSwap m hm1 (project (leader m hm1) s₂') t₂' s₂') = t₂' :=
+      (fiberSwap_mem_multiProjectionFiber hm1
+        (project_multi_to_counted hm1 hs₂') ht₂' ⟨hs₂', rfl⟩).2
+    have ht_eq : t₁' = t₂' :=
+      hp1.symm.trans ((congrArg (project (leader m hm1)) hswap).trans hp2)
+    subst ht_eq
+    have hc₁ := fiberSwap_cancel hm1 _ t₁' s₁' rfl (cs_pm t₁' ht₁')
+      (cs_neg_eq _ (project_multi_to_counted hm1 hs₁') _ ht₁')
+    have hc₂ := fiberSwap_cancel hm1 _ t₁' s₂' rfl (cs_pm t₁' ht₂')
+      (cs_neg_eq _ (project_multi_to_counted hm1 hs₂') _ ht₂')
+    rw [hproj] at hc₁ hswap
+    have hs_eq : s₁' = s₂' := by
+      have h := congrArg (fiberSwap m hm1 t₁' (project (leader m hm1) s₂')) hswap
+      rw [hc₁, hc₂] at h; exact h
+    rw [hs_eq]
+  -- Cross-multiplication: ncard equality via mutual injection (Schröder-Bernstein for ncard)
+  have h_cross : (MCS ∩ MSP).ncard * CS.ncard = (CS ∩ SP).ncard * MCS.ncard := by
+    have h1 := Set.ncard_le_ncard_of_injOn φ hφ_maps hφ_inj
+      (Set.Finite.prod (hCS_fin.subset Set.inter_subset_left) hMCS_fin)
+    have h2 := Set.ncard_le_ncard_of_injOn ψ hψ_maps hψ_inj
+      (Set.Finite.prod (hMCS_fin.subset Set.inter_subset_left) hCS_fin)
+    simp only [Set.ncard_prod] at h1 h2
+    omega
+  -- Convert cross-multiplication to uniformOn equality
+  -- uniformOn s t = condCount s t = ↑(s ∩ t).ncard / ↑s.ncard
+  -- Both MCS and CS have positive ncard (nonempty finite sets)
+  have hMCS_pos : 0 < MCS.ncard := (Set.ncard_pos hMCS_fin).mpr hMCS_ne
+  have hCS_pos : 0 < CS.ncard := (Set.ncard_pos hCS_fin).mpr hCS_ne
+  have hMSP_fin : (MCS ∩ MSP).Finite := hMCS_fin.subset Set.inter_subset_left
+  have hSP_fin : (CS ∩ SP).Finite := hCS_fin.subset Set.inter_subset_left
+  have hmMCS : MeasurableSet MCS := trivial
+  have hmCS : MeasurableSet CS := trivial
+  -- `Measure.count = ncard` on finite sets (discrete σ-algebra ⇒ every set measurable).
+  have hcnt_MCS : Measure.count MCS = (MCS.ncard : ℝ≥0∞) := by
+    rw [Measure.count_apply_finite' hMCS_fin hmMCS, Set.ncard_eq_toFinset_card _ hMCS_fin]
+  have hcnt_CS : Measure.count CS = (CS.ncard : ℝ≥0∞) := by
+    rw [Measure.count_apply_finite' hCS_fin hmCS, Set.ncard_eq_toFinset_card _ hCS_fin]
+  have hcnt_MSP : Measure.count (MCS ∩ MSP) = ((MCS ∩ MSP).ncard : ℝ≥0∞) := by
+    rw [Measure.count_apply_finite' hMSP_fin trivial, Set.ncard_eq_toFinset_card _ hMSP_fin]
+  have hcnt_SP : Measure.count (CS ∩ SP) = ((CS ∩ SP).ncard : ℝ≥0∞) := by
+    rw [Measure.count_apply_finite' hSP_fin trivial, Set.ncard_eq_toFinset_card _ hSP_fin]
+  -- Unfold uniformOn to `cond`, expand both sides to `(count s)⁻¹ * count (s ∩ t)`,
+  -- convert to ncard, and close with the cross-multiplication `h_cross`.
+  simp only [ProbabilityTheory.uniformOn]
+  rw [ProbabilityTheory.cond_apply hmMCS, ProbabilityTheory.cond_apply hmCS,
+      hcnt_MCS, hcnt_CS, hcnt_MSP, hcnt_SP,
+      mul_comm (MCS.ncard : ℝ≥0∞)⁻¹, mul_comm (CS.ncard : ℝ≥0∞)⁻¹,
+      ← div_eq_mul_inv, ← div_eq_mul_inv,
+      ENNReal.div_eq_div_iff
+        (by exact_mod_cast hCS_pos.ne' : (↑CS.ncard : ℝ≥0∞) ≠ 0)
+        (ENNReal.natCast_ne_top _)
+        (by exact_mod_cast hMCS_pos.ne' : (↑MCS.ncard : ℝ≥0∞) ≠ 0)
+        (ENNReal.natCast_ne_top _)]
+  rw [mul_comm, mul_comm (MCS.ncard : ℝ≥0∞)]
+  exact_mod_cast h_cross
+
+/-- **Multi-Candidate Ballot Theorem**
+
+    In an election with m ≥ 2 candidates where candidate 0 receives `a` votes
+    and all other candidates receive a combined `b` votes, with a > b, the
+    probability that candidate 0 leads all opponents combined throughout
+    the counting is:
+
+      P = (a - b) / (a + b)
+
+    **Proof chain:**
+    1. `multi_stays_iff_projected`: The "stays positive" property depends
+       only on the ±1 projection, not on opponent label distribution.
+    2. `fiber_card_uniform`: Each ±1 target has the same number of
+       multi-candidate preimages (multinomial coefficient).
+    3. `uniformOn_fiber_transfer`: Uniform fibers preserve
+       conditional probability under projection (proved via cross-multiplication bijection).
+    4. `Ballot.ballot_problem`: The classical ballot theorem gives
+       uniformOn (countedSequence a b) staysPositive = (a-b)/(a+b).
+
+    All steps are fully proved. Step 4 is Mathlib's Wiedijk #30. -/
+theorem multi_candidate_ballot (m : ℕ) (hm : 2 ≤ m) (a b : ℕ) (hab : b < a) :
+    ProbabilityTheory.uniformOn (multiCountedSequence m (by omega) a b)
+      (multiStaysPositive m (by omega)) =
+    (↑a - ↑b) / (↑a + ↑b) := by
+  rw [uniformOn_fiber_transfer m hm a b hab]
+  exact Ballot.ballot_problem b a hab
+
+end ProperReduction
 
 /-! ## Part IX: Reference — The Classical Ballot Theorem
 
