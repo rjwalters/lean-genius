@@ -38,7 +38,7 @@
   {
     "id": "ann-pac-wip01oq02oq04-04-injectivity",
     "proofId": "pac-learning-bounds-wip-01-oq-02-oq-04",
-    "range": { "startLine": 125, "endLine": 165 },
+    "range": { "startLine": 126, "endLine": 165 },
     "type": "theorem",
     "title": "hypoOn_eq_imp_eqOn / hypoOn_injOn: sample-injectivity via trichotomy",
     "content": "hypoOn_eq_imp_eqOn: if two b-bounded functions have the same hypograph over P, they agree on P. The proof is a clean lt-trichotomy needing no closed-form column count: if g x < g' x ≤ b at some x ∈ P, then i := ⟨g x, _⟩ is a valid threshold in Fin b, and (x,i) lies in the hypograph of g' (g' x > g x) but not of g (g x > g x is false), contradicting equality of the hypographs; the symmetric case is identical. hypoOn_injOn packages this as Set.InjOn (hypoOn P b) F for a b-bounded, P-separated class (distinct members already differ on the sample).",
@@ -50,7 +50,7 @@
   {
     "id": "ann-pac-wip01oq02oq04-05-growth",
     "proofId": "pac-learning-bounds-wip-01-oq-02-oq-04",
-    "range": { "startLine": 167, "endLine": 199 },
+    "range": { "startLine": 168, "endLine": 199 },
     "type": "theorem",
     "title": "growthFunction_le_sum_choose / growthFunction_le_pdim: the real-valued growth bound",
     "content": "growthFunction_le_sum_choose: for a b-bounded, P-separated class F of pseudo-dimension ≤ d, card_image_of_injOn turns injectivity into |hypoFam| = |F|, so F.card ≤ Σ_{i≤d} C(|P|·b, i) = O((|P|·b)^d). This is the honest lift of the Boolean growth-function bound to level-valued classes — the O((m/γ)^d) covering bound of oq-04. growthFunction_le_pdim states the same with d = Pdim P b F (the reflexive case), the form covering-number arguments consume. #print axioms confirms dependence only on propext / Classical.choice / Quot.sound: 0 sorries, 0 axioms, no native_decide.",

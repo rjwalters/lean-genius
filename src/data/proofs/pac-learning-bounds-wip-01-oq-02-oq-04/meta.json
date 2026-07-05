@@ -107,6 +107,13 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module header: the hypograph reduction and what is proved",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports the sorry-free parent Sauer–Shelah file (PACLearningBoundsWIP01SauerShelah) and frames open question oq-04: lift the Boolean growth bound |Π_H(S)| ≤ Σ_{i≤d} C(|S|,i) to level/integer-valued classes via Pollard–Haussler's hypograph/subgraph reduction. The docstring states the four results (hypoFam_card_le_sum_choose, hypoOn_injOn, growthFunction_le_sum_choose, growthFunction_le_pdim), records the 0-sorry / 0-axiom / no-native_decide status, and flags the deferred parts (the sharp (2/γ)^k constant and the L∞-cover-to-pattern reduction). Opens the namespace and fixes variable {α : Type*} [DecidableEq α]."
+    },
+    {
       "id": "hypograph-encoding",
       "title": "The Hypograph Encoding and the Pseudo-Dimension",
       "startLine": 66,
