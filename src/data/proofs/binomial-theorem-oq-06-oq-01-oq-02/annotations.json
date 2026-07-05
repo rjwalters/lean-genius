@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-module-overview-comparison",
+    "proofId": "binomial-theorem-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 50
+    },
+    "type": "context",
+    "title": "Two Proofs of One Vanishing",
+    "content": "The module docstring frames the entry against its parent. The parent `binomial-theorem-oq-06-oq-01` evaluates the same sum by extracting the coefficient $[x^n](1-X^2)^n$ in $\\mathbb{Z}[X]$ — heavy machinery (`Polynomial.coeff_mul`, binomial expansion) that returns both cases uniformly: $0$ for odd $n$ and $(-1)^{n/2}\\binom{n}{n/2}$ for even $n$. This entry instead reads the odd-$n$ vanishing as a pure pairing phenomenon and proves it by the involution $k \\mapsto n-k$, using only `Finset.sum_range_reflect`, `Nat.choose_symm`, and the parity of powers of $-1$. The comparison table makes explicit that the reflection route is shorter and more transparent but intrinsically odd-only, since the involution's fixed point $k = n/2$ (present exactly when $n$ is even) is the term that survives and makes the even sum nonzero.",
+    "mathContext": "$[x^n](1-X^2)^n$ (parent) vs. the involution $k \\mapsto n-k$ (this entry)",
+    "significance": "context",
+    "relatedConcepts": [
+      "generating functions",
+      "coefficient extraction",
+      "sign-reversing involution",
+      "odd/even dichotomy"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "alternating sums"
+    ]
+  },
+  {
     "id": "ann-neg-one-pow-sub",
     "proofId": "binomial-theorem-oq-06-oq-01-oq-02",
     "range": {
@@ -44,6 +67,30 @@
       "Finset.sum_range_reflect",
       "Nat.choose_symm",
       "Finset.mul_sum"
+    ]
+  },
+  {
+    "id": "ann-termwise-negation-key",
+    "proofId": "binomial-theorem-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 84,
+      "endLine": 91
+    },
+    "type": "technique",
+    "title": "Each Reflected Term Is Its Own Negative",
+    "content": "The `key` sub-lemma is where the sign-reversing involution is realized termwise: for every k ∈ range(n+1), the reflected summand (-1)^{n-k} C(n,n-k)^2 equals -((-1)^k C(n,k)^2). Two facts combine — `Nat.choose_symm hk` collapses C(n,n-k) to C(n,k) so the squared binomial (the 'weight') is invariant, and `neg_one_pow_sub` flips the sign. `ring` then closes the identity. Feeding this into `Finset.sum_range_reflect` is exactly what turns the reflected sum into -S; without a weight-preserving, sign-reversing pairing at the term level, the S = -S collapse would not follow.",
+    "mathContext": "$(-1)^{n-k}\\binom{n}{n-k}^2 = -\\left((-1)^k\\binom{n}{k}^2\\right)$ for $k \\le n$",
+    "significance": "key",
+    "relatedConcepts": [
+      "termwise negation",
+      "weight-preserving pairing",
+      "sign reversal",
+      "Nat.choose_symm"
+    ],
+    "prerequisites": [
+      "Nat.choose_symm",
+      "neg_one_pow_sub",
+      "Finset.mem_range"
     ]
   },
   {
