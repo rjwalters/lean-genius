@@ -115,7 +115,9 @@
     "keyInsights": [
       "A prime-power cyclotomic is a disguised geometric sum: $\\Phi_{p^{k+1}} = \\sum_{i<p}(X^{p^k})^i$, so its degree is $\\varphi(p^{k+1}) = p^{k}(p-1)$.",
       "Evaluating at $1$ produces a two-valued invariant: $\\Phi_n(1) = p$ on prime powers and $1$ otherwise — the polynomial shadow of the von Mangoldt function, $\\Phi_n(1) = e^{\\Lambda(n)}$.",
-      "The composite end is a cardinality argument: a prime power has exactly one prime factor, so $2 \\le |\\text{primeFactors}(n)|$ rules out $n = p^k$ and forces $\\Phi_n(1) = 1$."
+      "The composite end is a cardinality argument: a prime power has exactly one prime factor, so $2 \\le |\\text{primeFactors}(n)|$ rules out $n = p^k$ and forces $\\Phi_n(1) = 1$.",
+      "The prime-power tower is self-similar: $\\Phi_{p^{k+1}}(X) = \\sum_{i<p}(X^{p^k})^i = \\Phi_p(X^{p^k})$, i.e. every prime-power cyclotomic is the *base* prime cyclotomic $\\Phi_p$ with $X$ replaced by $X^{p^k}$. The whole family $\\Phi_p, \\Phi_{p^2}, \\Phi_{p^3}, \\dots$ is generated from one polynomial by iterated substitution — which is exactly why $\\Phi_4 = \\Phi_2(X^2) = X^2+1$ and $\\Phi_9 = \\Phi_3(X^3) = 1 + X^3 + X^6$.",
+      "The von Mangoldt shadow $\\Phi_n(1) = e^{\\Lambda(n)}$ holds only for $n \\ge 2$. At $n = 1$ it breaks: $\\Phi_1 = X - 1$, so $\\Phi_1(1) = 0$, whereas $e^{\\Lambda(1)} = e^0 = 1$. The two proven ends (value $p$ on prime powers, value $1$ once $\\omega(n) \\ge 2$) deliberately sidestep $n = 1$ — the unique argument with zero prime factors and the only place the polynomial vanishes at $1$."
     ]
   },
   "conclusion": {
