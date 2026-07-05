@@ -139,17 +139,20 @@ theorem units_pow_bijective_of_pow_bijective [Finite M] {n : ℕ} (hn : n ≠ 0)
   constructor
   · -- injective: reflect equality of powers through the coercion `Mˣ → M`
     intro u v huv
+    have huv' : u ^ n = v ^ n := huv
     apply Units.val_injective
     apply h.injective
-    rw [← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, huv]
+    show ((u : M)) ^ n = ((v : M)) ^ n
+    rw [← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, huv']
   · -- surjective: a preimage of a unit is itself a unit
     intro u
     obtain ⟨x, hx⟩ := h.surjective (u : M)
-    have hxu : IsUnit x := (isUnit_pow_iff hn).mp (by rw [hx]; exact u.isUnit)
-    refine ⟨hxu.unit, ?_⟩
-    apply Units.val_injective
+    have hxn : x ^ n = (u : M) := hx
+    have hxu : IsUnit x := (isUnit_pow_iff hn).mp (by rw [hxn]; exact u.isUnit)
+    refine ⟨hxu.unit, Units.val_injective ?_⟩
+    show ((hxu.unit ^ n : Mˣ) : M) = (u : M)
     rw [Units.val_pow_eq_pow_val, hxu.unit_spec]
-    exact hx
+    exact hxn
 
 /-- **The monoid necessary condition.** On a finite monoid, if `x ↦ xⁿ` is a
 bijection (`n ≠ 0`) then `n` is coprime to the order of the unit group `Mˣ`. -/
