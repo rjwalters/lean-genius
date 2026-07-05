@@ -64,7 +64,8 @@
       "**The whole content is one Bernoulli number.** Once Euler's general formula (`hasSum_zeta_nat`) is in hand, computing ζ(6) reduces entirely to evaluating $B_6 = 1/42$ — Mathlib's explicit Bernoulli table stops at $B_4$, so this single recurrence computation is the only mathematical work.",
       "**Even zeta values are rational multiples of π powers.** $\\zeta(2) = \\pi^2/6$, $\\zeta(4) = \\pi^4/90$, $\\zeta(6) = \\pi^6/945$ — the denominators $6, 90, 945$ encode $(2k)!/(2^{2k-1}|B_{2k}|)$ and grow with the Bernoulli numbers.",
       "**The k=5 term vanishes for free.** In the recurrence for $B_6$, the contribution of $B_5$ is killed by `bernoulli'_eq_zero_of_odd` (all odd-index Bernoulli numbers beyond $B_1$ are zero) — a structural fact, not a computation.",
-      "**Signed vs. unsigned Bernoulli.** Mathlib's `hasSum_zeta_nat` uses the signed `bernoulli`, while the explicit values are stated for `bernoulli'`; `bernoulli_eq_bernoulli'_of_ne_one` bridges them since $6 \\neq 1$."
+      "**Signed vs. unsigned Bernoulli.** Mathlib's `hasSum_zeta_nat` uses the signed `bernoulli`, while the explicit values are stated for `bernoulli'`; `bernoulli_eq_bernoulli'_of_ne_one` bridges them since $6 \\neq 1$.",
+      "**The π cancels in the ratio $\\zeta(6)/\\zeta(2)^3$.** Since $\\zeta(2) = \\pi^2/6$ gives $\\zeta(2)^3 = \\pi^6/216$, the ratio $\\zeta(6)/\\zeta(2)^3 = (\\pi^6/945)/(\\pi^6/216) = 216/945 = 8/35$ is a *rational* number — the transcendental $\\pi^6$ divides out. This is the $k=3$ analogue of the sibling entry's advertised $\\zeta(8)/\\zeta(2)^4 = 24/175$; every even zeta value is $\\pi^{2k}$ times a rational, so any ratio of matching $\\pi$-degree is π-free."
     ],
     "prerequisites": [
       "Bernoulli numbers and their defining recurrence",
