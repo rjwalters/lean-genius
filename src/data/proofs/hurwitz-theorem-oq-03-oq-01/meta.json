@@ -22,9 +22,9 @@
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
     "assumptions": "1 sorry: hurwitz_only_if_ring (the remaining strictly-non-commutative global structure argument of Frobenius' theorem — Step 3: show Im A is an ℝ-subspace carrying a positive-definite bilinear form / Clifford structure). Frobenius Steps 1 and 2 are VERIFIED (0 sorries): minpoly_natDegree_le_two and exists_quadratic show every element satisfies a real quadratic (generates ℝ or ℂ); exists_real_shift_sq_scalar completes the square so the imaginary part squares to a real scalar, and eq_smul_one_of_sq_eq_nonneg_smul shows a nonnegative such scalar forces the element into ℝ•1 (via no zero divisors), isolating the genuinely imaginary elements as those with negative square scalar. Two further pieces of Step 3 are now also VERIFIED (0 sorries): anticommutator_real_affine shows x*y+y*x ∈ span_ℝ{x,y,1} for all x,y (Step 3 preparation via polarisation), and hurwitz_only_if_ring_comm discharges the commutative subcase of the general-ring statement via Gelfand-Mazur, scoping the remaining sorry to the strictly non-commutative case. Four further Step-3 pieces are now VERIFIED (0 sorries): IsImaginary defines the imaginary summand a²=r•1 with r≤0; eq_zero_of_smul_one_sq_nonpos and isImaginary_smul_one_iff establish the directness ℝ•1 ∩ Im A = {0}; and anticommutator_scalar_of_sq_scalar proves the Clifford relation x*y+y*x = (c−a−b)•1 whenever x², y², (x+y)² are real scalars. The one remaining sorry is now precisely the single global fact that Im A is closed under addition (equivalently the real-part functional A→ℝ is ℝ-linear), which would supply the (x+y)²∈ℝ•1 hypothesis for imaginary x,y and upgrade the scalar anticommutator to a positive-definite bilinear form forcing finrank ℝ (Im A) ∈ {0,1,3}. The commutative subcase (hurwitz_field_case) is axiom-free.",
-    "lineCount": 347,
-    "theoremCount": 12,
-    "definitionCount": 2,
+    "lineCount": 637,
+    "theoremCount": 23,
+    "definitionCount": 5,
     "originalContributions": [
       "admissibleDimensions: Def {1,2,4,8} — the four admissible finranks",
       "finrank_normed_field_eq_one_or_two: Gelfand-Mazur consequence (0 sorries)",
@@ -39,7 +39,11 @@
       "eq_zero_of_smul_one_sq_nonpos: a real multiple s•1 whose square is a nonpositive real scalar must be zero, via injectivity of algebraMap ℝ A (0 sorries) — Frobenius Step 3, directness of ℝ•1 ⊕ Im A",
       "isImaginary_smul_one_iff: s•1 is imaginary iff s = 0, i.e. ℝ•1 ∩ Im A = {0} (0 sorries) — Frobenius Step 3, the direct-sum intersection",
       "anticommutator_scalar_of_sq_scalar: whenever x², y², (x+y)² are real scalars a•1, b•1, c•1, the anticommutator x*y+y*x equals the real scalar (c−a−b)•1 by polarisation (0 sorries) — Frobenius Step 3, the exact Clifford relation eᵢeⱼ+eⱼeᵢ ∈ ℝ•1 for imaginary inputs",
-      "hurwitz_only_if_ring: general division ring case (1 sorry: remaining strictly-non-commutative global Frobenius structure argument, Step 3 — closure of Im A under addition / ℝ-linearity of the real-part functional)"
+      "hurwitz_only_if_ring: general division ring case (1 sorry: remaining strictly-non-commutative global Frobenius structure argument, Step 3 — closure of Im A under addition / ℝ-linearity of the real-part functional)",
+      "isImaginary_neg / isImaginary_smul / isImaginary_sub: Im A is closed under negation, real scalar multiplication, and subtraction (0 sorries) — Frobenius Step 3, scalar-closure of the imaginary set",
+      "exists_unique_real_part: every a has a UNIQUE real c with a-c•1 imaginary (0 sorries) — existence by completing the square + Step 2b, uniqueness by isImaginary_smul_one_iff",
+      "realPart : A →ₗ[ℝ] ℝ: the real-part functional assembled as an ℝ-linear map (0 sorries) — additivity from isImaginary_add, homogeneity from isImaginary_smul",
+      "imaginarySubmodule := LinearMap.ker realPart with mem_imaginarySubmodule_iff: Im A packaged as an honest ℝ-Submodule, kernel identified with {a | a² ∈ ℝ≤0•1} (0 sorries) — the linear scaffolding for the Frobenius bilinear form"
     ]
   },
   "overview": {
