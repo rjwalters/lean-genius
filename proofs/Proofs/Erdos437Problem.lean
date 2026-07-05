@@ -278,7 +278,7 @@ theorem powers_of_four_all_squares :
   simp only [partialProducts, List.length_tail, List.length_scanl, hL, List.length_map,
     List.length_range, Nat.add_sub_cancel]
 
-/--
+/-
 **Example: Prime sequence gives no squares after first**
 If a₁ is not a square and aᵢ are distinct primes for i ≥ 2,
 then at most one partial product is a square.
@@ -342,8 +342,10 @@ theorem erdos_437_summary :
     -- L(x) is o(x)
     (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) < ε * x) ∧
     -- But L(x) > x^(1-ε) for any ε
-    (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)) :=
-  ⟨erdos_437, L_little_o_x, erdos_437⟩
+    (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)) := by
+  refine ⟨erdos_437, ?_, ?_⟩
+  · intro ε hε; exact L_little_o_x ε hε
+  · intro ε hε; exact erdos_437 ε hε
 
 /--
 The answer to Erdős Problem #437 is YES.
