@@ -180,3 +180,36 @@ sorry is hard — with a concrete corrective (prove the ℂ version first). Next
 increment: `exists_index_two_chain` (L1), fully tractable, deferred to a
 build-capable session. Docker (containerd blob I/O error) and Aristotle (404) both
 down, so no Lean was compiled or committed.
+
+## Session 2026-07-04 (Session 2) — L1 chain: blueprint → code
+
+**Mode**: REVISIT (continuing crashed Session-1 ORIENT)
+**Outcome**: progress (build-independent)
+
+### What I Did
+- Confirmed dual-tool blackout persists (Aristotle `prove` → 404 "Resource not found"; Docker build historically down). Build-independent mode.
+- Localized frontier to `AngleTrisectionOQ02OQ04OQ01.galois_two_group_implies_tower` (line 240, sorry) — the L1/L2/L3 decomposition from Session 1.
+- Verified the crux Mathlib API against the compiling `proofs/Proofs` corpus:
+  `Subgroup.card_map_of_injective (Subgroup.subtype_injective _)`,
+  `Nat.card_congr (Subgroup.equivMapOfInjective …).toEquiv` (LagrangeTheoremOQ03OQ02:115),
+  `range_subtype`, `card_mul_index`, `Fin.cons_zero/succ`, `IsPGroup.to_subgroup`.
+- Wrote the complete L1 proof `exists_index_two_chain` (+ 3 building-block lemmas) as an
+  UNVERIFIED scratch draft: `lean/ExistsIndexTwoChain.lean` (build-safe; not globbed by lakefile).
+
+### Key Findings
+- L1 is genuinely tractable and now fully traced (strong induction on the exponent, generalizing G;
+  Fin.cons prepend of ⊤ onto the mapped-in chain of the index-2 subgroup H).
+- The one delicate spot — `castSucc` through `Fin.cons` — is dispatched by `Fin.cases` on `i`
+  (i=0 vs i=j.succ, using `succ_castSucc` to convert castSucc into a `.succ`).
+- 8 residual risks (R1–R8) are pure Lean naming, enumerated in-file; none mathematical.
+- L2 remains the real bottleneck: `Polynomial.Gal → fixingSubgroup/fixedField` bridge (~100 lines)
+  + real-descent (splitting field E is non-real in ℂ vs. the ℝ-phrased `ConstructibleViaTower`).
+
+### Files Modified
+- research/problems/<id>/lean/ExistsIndexTwoChain.lean (created — full L1 draft)
+- research/problems/<id>/knowledge.md, state.md
+- src/data/research/problems/<id>.json (knowledge fields)
+
+### Next Steps
+- On build/Aristotle recovery: compile ExistsIndexTwoChain.lean, fix R1–R8, integrate L1 into
+  AngleTrisectionOQ02OQ04OQ01.lean, then attack L2 (Gal↔fixedField bridge) and real-descent.
