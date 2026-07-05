@@ -11,19 +11,12 @@
   "path": "full",
   "problemStatement": "Over a free rank-3 module M = R^3 on a possibly non-commutative ring R, determine when the Desargues configuration holds. The classical answer: Desargues holds in P(R^3) iff R is a division ring; commutativity is not required (that governs Pappus). This session formalizes the forward direction — Desargues holds over any division ring — and isolates precisely where the division-ring hypothesis (absence of zero divisors) enters, showing commutativity is never used.",
   "currentState": {
-    "phase": "ACT",
+    "phase": "REFLECT",
     "since": "2026-07-04",
-    "iteration": 3,
-    "focus": "Part V adds concrete finite-ring witnesses making the division-ring dichotomy non-vacuous: ZMod 6 (non-domain, 2*3=0) realizes the NEGATIVE side — smul_ne_zero' provably fails and zero_divisor_breaks_normalization fires on explicit numbers — and ZMod 5 (a field) the positive commutative side, complementing the non-commutative Quaternion example. All four Part-V facts are decide-checked (self-certifying under the build blackout).",
-    "blockers": [
-      "Verification blackout 2026-07-04: Docker image build fails with containerd meta.db I/O error; Aristotle MCP prove_file returns 404. Lean file UNVERIFIED (not machine-checked)."
-    ],
-    "nextAction": "When infra returns: docker-build.sh Proofs.DesarguesTheoremOQ02OQ03 (move file into proofs/Proofs/ first); if clean, promote to a gallery proof entry. Then strengthen to intersection-uniqueness (general position) and attempt the full geometric converse.",
-    "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
-      "approachesTried": 1
-    }
+    "iteration": 4,
+    "focus": "Forward direction (Desargues over any division ring, commutativity unused) plus the converse hinge (smul_ne_zero' ⇔ no zero divisors) and finite-ring dichotomy witnesses are now MACHINE-VERIFIED. Fixed the R-not-pinned stuck-instance bug in cross_dep/desargues that had blocked the build; confirmed via docker-build.sh (7743 jobs).",
+    "blockers": [],
+    "nextAction": "Optional future work: the full geometric converse (Hilbert coordinatization — a Desarguesian projective plane is coordinatized by a division ring) remains unformalized."
   },
   "knowledge": {
     "insights": [
@@ -68,14 +61,14 @@
     {
       "path": "research/problems/desargues-theorem-oq-02-oq-03/lean/DesarguesTheoremOQ02OQ03.lean",
       "filename": "DesarguesTheoremOQ02OQ03.lean",
-      "lineCount": 282,
+      "lineCount": 288,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "verified": false,
-      "note": "UNVERIFIED — Docker + Aristotle blackout 2026-07-04. Part V (4 examples over ZMod 5/6) is decide-only. Placed outside the Proofs glob so it cannot break the gallery build."
+      "verified": true,
+      "note": "VERIFIED via Docker (Lean v4.26.0, 2026-07-04): builds cleanly, 0 errors/warnings, 0 sorry, 0 axiom, 0 native_decide (Part-V witnesses use ordinary kernel-checked decide). Fixed two build-blocking elaboration bugs: Dep's ring R appears only inside its ∃-binder, so R is now pinned (R := R) in cross_dep and desargues statements."
     }
   ],
   "relatedProofs": [

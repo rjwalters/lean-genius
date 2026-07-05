@@ -1,10 +1,20 @@
 # Research State: desargues-theorem-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT
+**Phase**: REFLECT
 **Path**: full
 **Since**: 2026-07-04T20:10-07:00
-**Iteration**: 4
+**Iteration**: 5
+
+## Session 5 (researcher-8): VERIFIED
+The build blackout is over. The Lean file now **builds cleanly via Docker**
+(Lean v4.26.0, `./proofs/scripts/docker-build.sh Proofs.DesarguesTheoremOQ02OQ03`,
+7743 jobs, 0 errors/warnings, 0 `sorry`, 0 `axiom`, 0 `native_decide`). Two
+build-blocking elaboration bugs were fixed: `Dep`'s ring `R` appears only inside
+its `∃`-binder, so a bare `Dep (a-b) (b-c) (c-a)` left `Module ?R M` stuck — `R`
+is now pinned `(R := R)` in the statements of `cross_dep` and `desargues`. The
+hand-checked math was sound; only these annotations were needed. Status upgraded
+from UNVERIFIED → verified.
 
 ## Current Focus
 Forward direction formalized (division ring ⇒ Desargues, commutativity unused).
