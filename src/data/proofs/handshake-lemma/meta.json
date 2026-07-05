@@ -88,7 +88,18 @@
       "mathContext": "$K_3$ is $2$-regular with $|V| = 3$ odd, so even regularity permits odd order."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "burnside-counting",
+      "relationship": "related",
+      "description": "A companion double-counting result: Burnside's lemma counts orbits by double-counting fixed points, just as the handshake lemma counts edges by double-counting incident (vertex, edge) pairs. Both are archetypes of the 'count the same set two ways' technique."
+    },
+    {
+      "targetId": "erdos-divisibility-pigeonhole",
+      "relationship": "related",
+      "description": "Another elementary parity/pigeonhole cornerstone of olympiad combinatorics. Where the handshake lemma forces the number of odd-degree vertices to be even, the divisibility pigeonhole forces a divisibility relation among n+1 integers in {1,…,2n}."
+    }
+  ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the handshake lemma ∑_v deg(v) = 2·|E(G)| together with its parity corollaries and their structural consequences for regular graphs, capped by an explicit sharpness witness.",
     "implications": "Beyond re-exporting Mathlib's degree-sum identity and even-odd-degree corollary, the entry supplies the reusable structural lemma that odd-regular finite graphs have even order, and pins down with the triangle K₃ that the oddness of the regularity degree is exactly the hypothesis doing the work.",
