@@ -24,6 +24,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module header, imports, and proof roadmap",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "States Dobiński's formula Bₙ = (1/e)·Σ_k kⁿ/k! (1877) and the product form e·Bₙ = Σ_k kⁿ/k! actually proved. Lays out the bridge: the Stirling/falling-factorial expansion kⁿ = Σ_{j≤n} S(n,j)·(k)_j (absent from pinned Mathlib), divided by k! and summed so the falling factorial telescopes to Σ_k (k)_j/k! = e, then combined with the row-sum identity Bₙ = Σ_j S(n,j) from the parent BellNumbersOQ01. Imports the real exponential and normed-limit machinery and the parent file; opens Finset and scoped Nat.",
+      "mathContext": "$B_n = \\frac{1}{e}\\sum_{k=0}^{\\infty}\\frac{k^n}{k!}$, obtained from $k^n = \\sum_{j\\le n} S(n,j)\\,(k)_j$, $\\sum_k (k)_j/k! = e$, and $B_n = \\sum_j S(n,j)$."
+    },
+    {
       "id": "power-expansion",
       "title": "Section I: The Stirling / Falling-Factorial Expansion of a Power",
       "startLine": 56,
