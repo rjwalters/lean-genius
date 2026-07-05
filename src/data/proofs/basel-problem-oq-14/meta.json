@@ -62,7 +62,9 @@
       "Mathlib.NumberTheory.ZetaValues",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real"],
+    "opens": [
+      "Real"
+    ],
     "namespace": "BaselEtaFour",
     "path": "Proofs/BaselProblemOQ14.lean",
     "lineCount": 113,
@@ -131,6 +133,11 @@
       {
         "id": "basel-problem-oq-14-oq-01",
         "question": "Abstract the even/odd parity split into a single reusable lemma η(2m) = (1 - 2^(1-2m)) ζ(2m) parameterized over the even exponent 2m, deriving η(2), η(4), η(6), ... uniformly from Mathlib's hasSum_zeta_nat.",
+        "significance": "medium"
+      },
+      {
+        "id": "basel-problem-oq-14-oq-02",
+        "question": "At weight 4 the three series interlock as η(4) = λ(4) − 2^{−4}ζ(4): with ζ(4) = π⁴/90 and the odd-4th-power λ(4) = (1 − 2^{−4})ζ(4) = 15/16·ζ(4) = π⁴/96, one gets η(4) = 15/16·ζ(4) − 1/16·ζ(4) = 7/8·ζ(4) = 7π⁴/720 — the prime 7 in the numerator arising precisely from 1 − 2^{−3} = 7/8. Can this entry cross-link the weight-4 family {ζ(4), λ(4), η(4)} and formalize the coordinate identity η(2m) = (1 − 2^{−(2m−1)})ζ(2m) that makes the numerator 7 explicit?",
         "significance": "medium"
       }
     ]
