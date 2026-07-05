@@ -27,13 +27,13 @@ already-verified parent lemmas:
 * `AlgebraicNumbersCountableOQ02OQ03OQ02.not_isGδ_of_dense_of_disjoint_denseGδ` — two
   disjoint dense `Gδ` sets are impossible in a nonempty Baire space.
 
-## Status: build-pending
+## Status: verified
 
-Written during a dual-tool outage (Docker image store `input/output error`; Aristotle
-backend `Resource not found`), so it has not been machine-checked this session.  It is a
-short assembly of merged, verified lemmas whose signatures were re-checked by inspection;
-please build-verify with `./proofs/scripts/docker-build.sh
-Proofs.AlgebraicNumbersCountableOQ02OQ03OQ02OQ01` before/at merge.
+Machine-checked with `./proofs/scripts/docker-build.sh
+Proofs.AlgebraicNumbersCountableOQ02OQ03OQ02OQ01` (Mathlib 4.26.0): builds cleanly with 0
+sorries and no axioms beyond the standard `propext`/`Classical.choice`/`Quot.sound`.  (It
+was originally written build-pending during a tool outage; this session build-verifies it
+and adds the gallery entry.)
 
 ## References
 - Kechris, *Classical Descriptive Set Theory*, §8 (Borel hierarchy, Baire category).
