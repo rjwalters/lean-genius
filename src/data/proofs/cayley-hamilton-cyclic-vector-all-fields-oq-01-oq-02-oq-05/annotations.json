@@ -12,6 +12,18 @@
     "prerequisites": ["companion matrices", "minimal and characteristic polynomials"]
   },
   {
+    "id": "ann-setup-generic-field",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "definition",
+    "title": "Setup: reuse of the parent scaffold over an arbitrary field",
+    "content": "The file opens the two parent namespaces `CayleyHamiltonReductionOQ02OQ01` and `...WIP01`, which supply the sorry-free block-matrix facts `charpoly_companion_block` (= p·q) and `minpoly_companion_block` (= lcm p q) used verbatim below. The single ambient assumption is `variable {F : Type*} [Field F]` — the entire coprime-merge argument is generic over *any* field, not just ℝ or ℚ, because it rests only on the GCD-monoid arithmetic of F[X]. The one instance the individual lemmas add locally is `[DecidableEq F]`, which is exactly what upgrades `F[X]` to a `GCDMonoid` so that `lcm` (and hence `lcm p q`) is available; supplying it is the sole fix that turned the originally build-pending draft into a machine-checked proof.",
+    "mathContext": "$F$ an arbitrary field $\\Rightarrow$ $F[X]$ is a PID and (with $\\mathrm{DecidableEq}\\,F$) a $\\mathrm{GCDMonoid}$, so $\\mathrm{lcm}$, $\\gcd$, and coprimality are all available.",
+    "significance": "supporting",
+    "relatedConcepts": ["field genericity", "GCDMonoid instance", "DecidableEq", "namespace reuse", "PID structure of F[X]"],
+    "prerequisites": ["fields and polynomial rings", "typeclass instances in Lean"]
+  },
+  {
     "id": "ann-lcm-eq-mul",
     "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
     "range": { "startLine": 55, "endLine": 71 },
