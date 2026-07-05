@@ -39,7 +39,10 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `isBhSet_affine`         : affine invariance — {c·a+t} is B_h whenever A is (c ≥ 1)
 - `hSumset`                : the h-fold sumset {a₁+⋯+a_h : aᵢ ∈ A}
 - `isBhSet_iff_injOn`      : B_h ⟺ Multiset.sum is injective on `A.sym h`
-- `card_hSumset_of_isBhSet`: sharp count — |h-fold sumset| = |A.sym h| = C(|A|+h−1, h)
+- `card_hSumset_of_isBhSet`: sharp count — |h-fold sumset| = |A.sym h|
+- `card_sym`                 : finset "stars and bars" — |A.sym h| = C(|A|+h−1, h)
+- `card_sym_eq_multichoose` : the same count packaged as `multichoose |A| h`
+- `card_hSumset_eq_choose`  : sharp count in closed form — |h-fold sumset| = C(|A|+h−1, h)
 -/
 import Mathlib
 
@@ -453,5 +456,71 @@ restatement of "all `h`-fold sums distinct". -/
 theorem card_hSumset_of_isBhSet {h : ℕ} {A : Finset ℕ} (H : IsBhSet h A) :
     (hSumset h A).card = (A.sym h).card :=
   Finset.card_image_of_injOn ((isBhSet_iff_injOn h A).mp H)
+
+/-!
+## Section VII: The explicit multiset-coefficient count
+
+Section VI reduced `|hSumset h A|` to `(A.sym h).card`, the number of size-`h`
+multisets drawable from `A`.  To make the promised closed form
+`C(|A| + h − 1, h)` fully explicit we still need the **cardinality of the
+`Finset.sym`** itself.
+
+Mathlib supplies the *type-level* "stars and bars" identity
+`Sym.card_sym_eq_choose : Fintype.card (Sym α k) = C(Fintype.card α + k − 1, k)`
+but — perhaps surprisingly — no analogous statement for the *finset* operation
+`A.sym h`.  We supply that missing bridge (`card_sym`): the size-`h` multisets
+drawn from a finite set `A ⊆ ℕ` are in bijection with `Sym ↥A h` via the
+coercion `Sym.map (Subtype.val)`, which is injective, and whose image is exactly
+`A.sym h`.  Transporting `Sym.card_sym_eq_choose` across that bijection gives the
+count, and composing with Section VI yields the sharp `B_h` sumset formula in
+closed binomial form.
+-/
+
+/-- **Cardinality of `Finset.sym` (the missing finset "stars and bars").**
+The size-`h` multisets drawable from a finite set `A ⊆ ℕ` number exactly
+`C(|A| + h − 1, h)`.  Mathlib has this at the `Fintype` level
+(`Sym.card_sym_eq_choose`) but not for the `Finset.sym` operation; we bridge the
+two by identifying `A.sym h` with the injective image of `Sym ↥A h` under the
+coercion `Sym.map Subtype.val`. -/
+theorem card_sym (h : ℕ) (A : Finset ℕ) :
+    (A.sym h).card = (A.card + h - 1).choose h := by
+  -- the lift `Sym ↥A h → Sym ℕ h`, `s ↦ s.map (Subtype.val)`, is injective …
+  have hf : Function.Injective (Sym.map (Subtype.val : {x // x ∈ A} → ℕ)) :=
+    Sym.map_injective Subtype.val_injective h
+  -- … and its image is precisely `A.sym h`.
+  have himg : A.sym h
+      = Finset.univ.image (Sym.map (Subtype.val : {x // x ∈ A} → ℕ)) := by
+    ext t
+    simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_sym_iff]
+    constructor
+    · -- surjectivity onto `A.sym h`: `attach` then relabel into `↥A`.
+      intro ht
+      refine ⟨(Sym.attach t).map (fun x => (⟨x.1, ht x.1 x.2⟩ : {x // x ∈ A})), ?_⟩
+      rw [Sym.map_map]
+      exact Sym.attach_map_coe t
+    · -- membership: every entry of `s.map val` lands back in `A`.
+      rintro ⟨s, rfl⟩ a ha
+      rw [Sym.mem_map] at ha
+      obtain ⟨x, _, rfl⟩ := ha
+      exact x.2
+  rw [himg, Finset.card_image_of_injective _ hf, Finset.card_univ,
+    Sym.card_sym_eq_choose, Fintype.card_coe]
+
+/-- **`Finset.sym` count in `multichoose` form.**  The `multichoose`-packaged
+restatement of `card_sym`: `A.sym h` has cardinality `multichoose |A| h`, the
+number of size-`h` multisets on `|A|` symbols. -/
+theorem card_sym_eq_multichoose (h : ℕ) (A : Finset ℕ) :
+    (A.sym h).card = (A.card).multichoose h := by
+  rw [card_sym, Nat.multichoose_eq]
+
+/-- **The sharp `B_h` sumset formula in closed binomial form.**  For a `B_h` set
+`A`, the `h`-fold sumset has cardinality *exactly* the multiset coefficient
+`C(|A| + h − 1, h)`.  Combines the injectivity count `card_hSumset_of_isBhSet`
+(Section VI) with the finset "stars and bars" identity `card_sym`.  This is the
+fully explicit form of the sharp counting identity: a `B_h` set is precisely one
+whose `h`-fold sumset attains the pigeonhole maximum `C(|A| + h − 1, h)`. -/
+theorem card_hSumset_eq_choose {h : ℕ} {A : Finset ℕ} (H : IsBhSet h A) :
+    (hSumset h A).card = (A.card + h - 1).choose h := by
+  rw [card_hSumset_of_isBhSet H, card_sym]
 
 end Erdos153OQ03
