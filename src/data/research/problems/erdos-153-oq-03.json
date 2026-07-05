@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-04",
-    "iteration": 3,
-    "focus": "Saturation CHARACTERIZATION added and VERIFIED: isBhSet_iff_card_hSumset — A is B_h ⟺ (hSumset h A).card = (A.sym h).card (converse of Section VI's card_hSumset_of_isBhSet, via Finset.injOn_of_card_image_eq). Explicit-binomial bridge attempted but Finset.card_sym does NOT exist in Mathlib v4.26.0 (only Fintype-form Sym.card_sym_eq_choose) — gap stays; density bound remains stated with the honest (A.sym h).card. Gap-variance conjecture still OPEN.",
+    "iteration": 4,
+    "focus": "Explicit stars-and-bars bridge CLOSED: card_finset_sym_eq_choose proves (A.sym h).card = C(|A|+h-1, h) by exhibiting A.sym h as the injective image of univ : Finset (Sym ↥A h) under Sym.map Subtype.val (injective via Subtype.val_injective; onto via Sym.attach + Sym.attach_map_coe), then transporting Sym.card_sym_eq_choose across it and using Fintype.card_coe. This removes the honest-quantity caveat from Sections VII-VIII: added closed-form corollaries card_hSumset_eq_choose_of_isBhSet (saturation) and choose_le_of_isBhSet (density bound C(|A|+h-1,h) ≤ hN+1). 0 sorry, 0 axiom. Build-pending: Docker infra corrupt this session (containerd content-store I/O error on the lean4 image blob), so verification is by static lemma-name/typing analysis against current Mathlib source, not a compile.",
     "blockers": [],
-    "nextAction": "Explicit binomial bridge (A.sym h).card = C(|A|+h-1,h) needs a hand-built equiv ↥(A.sym h) ≃ Sym ↥A h (Sym.map Subtype.val is injective with range A.sym h) then Sym.card_sym_eq_choose + Fintype.card_coe — ~40 lines, deferred. Then attempt the actual gap-variance statement via Sidon reduction.",
+    "nextAction": "Confirm the build once Docker recovers (defeq check on `exact Sym.attach_map_coe s` and the closing rw chain). Then attempt the actual gap-variance statement via the Sidon (isSidon_of_isBhSet) reduction — the genuinely open frontier.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,

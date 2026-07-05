@@ -40,6 +40,9 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `hSumset`                : the h-fold sumset {a₁+⋯+a_h : aᵢ ∈ A}
 - `isBhSet_iff_injOn`      : B_h ⟺ Multiset.sum is injective on `A.sym h`
 - `card_hSumset_of_isBhSet`: sharp count — |h-fold sumset| = |A.sym h| = C(|A|+h−1, h)
+- `card_finset_sym_eq_choose`: the stars-and-bars bridge |A.sym h| = C(|A|+h−1, h)
+- `card_hSumset_eq_choose_of_isBhSet` : saturation in closed binomial form
+- `choose_le_of_isBhSet`     : the B_h density bound C(|A|+h−1, h) ≤ hN+1 in closed form
 -/
 import Mathlib
 
@@ -537,5 +540,77 @@ theorem isBhSet_iff_card_hSumset (h : ℕ) (A : Finset ℕ) :
     exact Finset.card_image_of_injOn H
   · intro H
     exact Finset.injOn_of_card_image_eq H
+
+/-!
+## Section IX: The explicit stars-and-bars bridge  `(A.sym h).card = C(|A|+h−1, h)`
+
+Sections VII–VIII stated every quantitative result with the *honest* quantity
+`(A.sym h).card`, noting only that it "is" the multiset coefficient
+`C(|A| + h − 1, h)` — because Mathlib supplies the stars-and-bars identity only
+in its `Fintype` form `Sym.card_sym_eq_choose` (for `Fintype.card (Sym α h)`),
+with no ready-made `Finset`-level `(A.sym h).card` companion.
+
+Here we close that gap.  The finset `A.sym h` of size-`h` multisets drawn from
+`A` is in explicit bijection with `Sym ↥A h`, the size-`h` multisets on the
+subtype `↥A = {a // a ∈ A}`: the map `Sym.map (Subtype.val)` sends a multiset on
+`↥A` to the underlying multiset on `ℕ` (whose elements all lie in `A`, so it
+lands in `A.sym h`), it is injective (`Subtype.val` is), and it is onto
+`A.sym h` (any size-`h` multiset with elements in `A` lifts back via
+`Sym.attach`).  Transporting `Sym.card_sym_eq_choose` across this bijection and
+using `Fintype.card ↥A = |A|` gives the closed form, upgrading the density bound
+and the saturation identity to their textbook binomial statements.
+-/
+
+/-- **The stars-and-bars identity for `Finset.sym`.**  The number of size-`h`
+multisets drawable from a finite set `A ⊆ ℕ` is the multiset coefficient
+    `(A.sym h).card = C(|A| + h − 1, h)`.
+Proof: `A.sym h` is the injective image of the universe of `Sym ↥A h` under
+`Sym.map Subtype.val`, so its cardinality is `Fintype.card (Sym ↥A h)`; the
+`Fintype`-level `Sym.card_sym_eq_choose` then evaluates that to
+`C(Fintype.card ↥A + h − 1, h)`, and `Fintype.card ↥A = |A|`. -/
+theorem card_finset_sym_eq_choose {h : ℕ} (A : Finset ℕ) :
+    (A.sym h).card = (A.card + h - 1).choose h := by
+  have hinj : Function.Injective (Sym.map (Subtype.val : {x // x ∈ A} → ℕ)) :=
+    Sym.map_injective Subtype.val_injective h
+  -- `A.sym h` is exactly the image of `Sym ↥A h` under `Sym.map Subtype.val`.
+  have key : A.sym h
+      = (Finset.univ : Finset (Sym {x // x ∈ A} h)).image (Sym.map Subtype.val) := by
+    ext s
+    simp only [Finset.mem_sym_iff, Finset.mem_image, Finset.mem_univ, true_and]
+    constructor
+    · -- a multiset with all elements in `A` lifts to `Sym ↥A h` via `attach`
+      intro hs
+      refine ⟨Sym.map (fun x : {a // a ∈ s} => (⟨x.1, hs x.1 x.2⟩ : {a // a ∈ A}))
+                s.attach, ?_⟩
+      rw [Sym.map_map]
+      exact Sym.attach_map_coe s
+    · -- every element of an image multiset is a `Subtype.val`, hence in `A`
+      rintro ⟨t, rfl⟩ a ha
+      rw [Sym.mem_map] at ha
+      obtain ⟨x, _, rfl⟩ := ha
+      exact x.2
+  rw [key, Finset.card_image_of_injective _ hinj, Finset.card_univ,
+      Sym.card_sym_eq_choose, Fintype.card_coe]
+
+/-- **Saturation in closed binomial form.**  For a `B_h` set `A`, the `h`-fold
+sumset has cardinality exactly the multiset coefficient:
+    `(hSumset h A).card = C(|A| + h − 1, h)`.
+The closed-form refinement of `card_hSumset_of_isBhSet`, obtained by evaluating
+`(A.sym h).card` via `card_finset_sym_eq_choose`. -/
+theorem card_hSumset_eq_choose_of_isBhSet {h : ℕ} {A : Finset ℕ} (H : IsBhSet h A) :
+    (hSumset h A).card = (A.card + h - 1).choose h := by
+  rw [card_hSumset_of_isBhSet H, card_finset_sym_eq_choose]
+
+/-- **The `B_h` density bound in closed binomial form.**  A `B_h` set
+`A ⊆ {0, …, N}` satisfies
+    `C(|A| + h − 1, h) ≤ hN + 1`.
+Since the left side is `∼ |A|^h / h!`, this is the sharp `|A| = O(N^{1/h})`
+generalisation of the Sidon (`h = 2`) bound `|A| = O(√N)`.  The closed-form
+refinement of `card_sym_le_of_isBhSet`, via `card_finset_sym_eq_choose`. -/
+theorem choose_le_of_isBhSet {h N : ℕ} {A : Finset ℕ}
+    (H : IsBhSet h A) (hA : A ⊆ Finset.range (N + 1)) :
+    (A.card + h - 1).choose h ≤ h * N + 1 := by
+  rw [← card_finset_sym_eq_choose]
+  exact card_sym_le_of_isBhSet H hA
 
 end Erdos153OQ03
