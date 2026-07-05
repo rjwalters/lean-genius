@@ -93,7 +93,8 @@
       "The pseudo-dimension of a real-valued class IS the VC dimension of its hypograph class — so the hard combinatorial content of oq-04 is already discharged by the verified Boolean Sauer–Shelah lemma; only the encoding and an injectivity check are new.",
       "Because every hypograph is a subset of the finite grid P ×ˢ Fin b, the parent's growth-function machinery (trace of a family on a set) specialises with zero friction: the trace of the hypograph family on the grid equals the family, so the bound reads off directly with ground size |P|·b.",
       "Injectivity of the hypograph encoding on b-bounded functions needs no closed-form count of a hypograph column: a lt-trichotomy exhibits, whenever two functions disagree at a sample point, a single threshold index that separates their hypographs.",
-      "The bound Σ_{i≤d} C(|P|·b, i) = O((|P|·b)^d) is exactly the O((m/γ)^d) claim of oq-04 with b ≈ 1/γ discretisation levels; the sharp middle constant (2/γ)^k needs a separate multivalued shifting argument and is left as a follow-up."
+      "The bound Σ_{i≤d} C(|P|·b, i) = O((|P|·b)^d) is exactly the O((m/γ)^d) claim of oq-04 with b ≈ 1/γ discretisation levels; the sharp middle constant (2/γ)^k needs a separate multivalued shifting argument and is left as a follow-up.",
+      "The reduction is constructive, not an axiomatized bridge: the hypograph is a genuine Finset over the finite grid P × Fin b, so the real-valued bound inherits the parent Boolean Sauer–Shelah lemma's 0-axiom status verbatim — the pseudo-dimension covering bound is machine-checked end-to-end (propext / Classical.choice / Quot.sound only), with no assumption linking the real-valued and Boolean worlds."
     ],
     "prerequisites": [
       "the parent entry's trace / Shatters / VCDim definitions and the verified growth bound trace_card_le_sum_range_choose",
