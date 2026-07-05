@@ -613,4 +613,33 @@ theorem choose_le_of_isBhSet {h N : ℕ} {A : Finset ℕ}
   rw [← card_finset_sym_eq_choose]
   exact card_sym_le_of_isBhSet H hA
 
+/-- **The explicit `O(N^{1/h})` density bound.**  A `B_h` set `A ⊆ {0, …, N}`
+satisfies the fully explicit polynomial inequality
+    `|A|^h ≤ h! · (hN + 1)`.
+This turns the binomial bound `choose_le_of_isBhSet` into a bare power bound with no
+binomial coefficient: it exhibits the growth rate directly, since it rearranges to
+`|A| ≤ (h!)^{1/h} · (hN+1)^{1/h} = O(N^{1/h})`, the sharp `B_h` generalisation of the
+Sidon (`h = 2`) bound `|A| ≤ √(2·(2N+1)) = O(√N)`.
+
+The bridge is the elementary factor comparison
+`|A|^h ≤ (|A|+h−1)ᵈᵉˢᶜ h = h! · C(|A|+h−1, h)`: the descending factorial
+`(|A|+h−1)(|A|+h−2)⋯|A|` is a product of `h` factors each at least `|A|`
+(`Nat.pow_sub_le_descFactorial`), and equals `h!·C(|A|+h−1,h)`
+(`Nat.descFactorial_eq_factorial_mul_choose`). -/
+theorem card_pow_le_of_isBhSet {h N : ℕ} {A : Finset ℕ}
+    (H : IsBhSet h A) (hA : A ⊆ Finset.range (N + 1)) :
+    A.card ^ h ≤ h.factorial * (h * N + 1) := by
+  have hbound := choose_le_of_isBhSet H hA
+  have hpow : A.card ^ h ≤ (A.card + h - 1).descFactorial h := by
+    have hd := Nat.pow_sub_le_descFactorial (A.card + h - 1) h
+    rcases Nat.eq_zero_or_pos h with h0 | hpos
+    · subst h0; simp
+    · have he : A.card + h - 1 + 1 - h = A.card := by omega
+      rwa [he] at hd
+  calc A.card ^ h
+      ≤ (A.card + h - 1).descFactorial h := hpow
+    _ = h.factorial * (A.card + h - 1).choose h :=
+        Nat.descFactorial_eq_factorial_mul_choose _ _
+    _ ≤ h.factorial * (h * N + 1) := Nat.mul_le_mul (le_refl _) hbound
+
 end Erdos153OQ03
