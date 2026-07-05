@@ -26,6 +26,7 @@ References:
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.List.Basic
 
@@ -132,7 +133,7 @@ noncomputable def u (x : ℕ) : ℝ :=
 ## Part V: Trivial Bounds
 -/
 
-/--
+/-
 **Trivial Upper Bound:**
 L(x) ≤ x (can't have more squares than partial products, which is ≤ sequence length ≤ x).
 -/
@@ -191,12 +192,11 @@ axiom L_upper_bound :
 ## Part VIII: Proof Ingredients
 -/
 
-/--
+/-
 **Siegel's Theorem:**
 An elliptic curve over ℚ has only finitely many integral points.
 This implies the o(x) upper bound.
--/
-/--
+
 **Hyperelliptic Curves Connection:**
 The problem reduces to counting integral points on hyperelliptic curves.
 Bui-Pratt-Zaharescu analyze this using techniques from algebraic number theory.
@@ -229,7 +229,7 @@ theorem scanl_mul_all_square :
     · exact hb
     · refine ih (b * c) ?_ ?_ y hy
       · obtain ⟨p, hp⟩ := hb
-        obtain ⟨q, hq⟩ := hall c (List.mem_cons_self c cs)
+        obtain ⟨q, hq⟩ := hall c List.mem_cons_self
         exact ⟨p * q, by rw [mul_mul_mul_comm, hp, hq]⟩
       · intro x hx
         exact hall x (List.mem_cons_of_mem c hx)
@@ -309,10 +309,10 @@ theorem L_growth_rate :
     linarith
   constructor
   · have h := hL₁ x hx₁
-    rw [ge_iff_le, le_div_iff hxpos]
+    rw [ge_iff_le, le_div_iff₀ hxpos]
     linarith [mul_comm (x : ℝ) (Real.exp (-(Real.sqrt 2 + ε) * u x))]
   · have h := hL₂ x hx₂
-    rw [div_le_iff hxpos]
+    rw [div_le_iff₀ hxpos]
     linarith [mul_comm (x : ℝ) (Real.exp (-(1 / Real.sqrt 2 - ε) * u x))]
 
 /--
