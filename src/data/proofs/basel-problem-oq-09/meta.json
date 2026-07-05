@@ -70,7 +70,11 @@
       "Mathlib.Topology.Algebra.InfiniteSum.Ring",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real", "Filter", "Topology"],
+    "opens": [
+      "Real",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "BaselProblemOQ09",
     "path": "Proofs/BaselProblemOQ09.lean",
     "lineCount": 148,
@@ -139,6 +143,11 @@
       {
         "id": "basel-problem-oq-09-oq-01",
         "question": "Generalize the even/odd parity split to a reusable lemma λ(2m) = ∑ 1/(2k+1)^{2m} = (1 - 2^{-2m}) ζ(2m), deriving λ(4) = π⁴/96 from Mathlib's hasSum_zeta_four with no new analytic input.",
+        "significance": "medium"
+      },
+      {
+        "id": "basel-problem-oq-09-oq-02",
+        "question": "The three weight-2 series interlock: ζ(2) = π²/6 (all n), this odd-square λ(2) = π²/8, and the even-square ∑ 1/(2k)² = π²/24 = ¼ζ(2). Since ζ(2) = λ(2) + ¼ζ(2), one gets ζ(2) = (4/3)·λ(2) = (4/3)(π²/8) = π²/6. Can this entry be turned around to derive the Basel value ζ(2) = π²/6 *from* the odd-square series λ(2) = π²/8, giving a self-contained 'odd squares ⟹ Basel' route independent of Mathlib's hasSum_zeta_two?",
         "significance": "medium"
       }
     ]
