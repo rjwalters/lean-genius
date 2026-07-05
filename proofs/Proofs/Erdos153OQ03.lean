@@ -46,6 +46,7 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `isBhSet_sub`            : translation invariance (downward) — A−m is B_h (m ≤ A)
 - `isBhSet_div`            : dilation invariance (downward) — A/c is B_h (c ∣ A, c ≥ 1)
 - `isBhSet_translate_min_zero` : canonical form — every B_h set is a translate of a min-0 B_h set
+- `isBhSet_primitive_normal_form` : primitive normal form — every B_h set (≥2 elts) is `c·C+m` for a primitive (0∈C, gcd 1) B_h set C
 -/
 import Mathlib
 
@@ -791,5 +792,87 @@ theorem isBhSet_translate_min_zero {h : ℕ} {A : Finset ℕ} (hA : A.Nonempty)
       rwa [Nat.sub_add_cancel this]
     · intro hx
       exact ⟨x, hx, Nat.sub_add_cancel (hmle x hx)⟩
+
+/-!
+## Section XI: The primitive normal form
+
+Section X reduced every `B_h` set to an upward translate of a `B_h` set
+anchored at `0` (`isBhSet_translate_min_zero`).  Composing that downward
+translation with the downward dilation `isBhSet_div` lets us *also* strip out the
+common factor of the differences, landing on a **primitive** representative: a
+`B_h` set containing `0` whose elements have gcd `1`.
+
+Concretely, every nonempty `B_h` set with at least two elements is the affine
+image `b ↦ c · b + m` of a primitive (`0 ∈ C`, `gcd = 1`) `B_h` set `C`, where
+`m = min A` and `c = gcd {a − m : a ∈ A}` is the gcd of the differences.
+Absolute position *and* the common scale carry no `B_h` information — the study
+of `B_h` sets reduces to primitive ones.
+
+The gcd-stripping step uses `Finset.gcd_div_id_eq_one` (valid on `ℕ`, which is a
+`MulDivCancelClass`) together with the transport identity
+`(B.image (· / c)).gcd id = B.gcd (· / c)` (`Finset.gcd_eq_gcd_image`).
+-/
+
+/-- **Primitive normal form.**  Every nonempty `B_h` set `A` with at least two
+elements is the affine image `b ↦ c · b + m` of a *primitive* `B_h` set `C`: one
+that contains `0` and whose elements have gcd `1`.  Here `m = min A` and
+`c = gcd {a − m : a ∈ A}` (the gcd of the differences), both determined by `A`.
+Composing the downward translation `isBhSet_translate_min_zero` with the
+downward dilation `isBhSet_div` at `c` strips both the absolute position and the
+common scale, reducing the study of `B_h` sets to primitive ones. -/
+theorem isBhSet_primitive_normal_form {h : ℕ} {A : Finset ℕ} (hA : A.Nonempty)
+    (hcard : 1 < A.card) (H : IsBhSet h A) :
+    ∃ (c m : ℕ) (C : Finset ℕ),
+      0 < c ∧ IsBhSet h C ∧ (0 : ℕ) ∈ C ∧ C.gcd id = 1 ∧
+      A = (C.image (fun b => b * c)).image (fun b => b + m) := by
+  obtain ⟨hBh, h0B, hAB⟩ := isBhSet_translate_min_zero hA H
+  set m := A.min' hA with hm
+  set B := A.image (fun a => a - m) with hB
+  have hmle : ∀ a ∈ A, m ≤ a := fun a ha => Finset.min'_le A a ha
+  -- `· - m` is injective on `A`, so `|B| = |A| > 1`; hence `B` has a nonzero
+  -- element and the gcd `c := B.gcd id` is positive.
+  have hex : ∃ x ∈ B, id x ≠ 0 := by
+    have hBcard : 1 < B.card := by
+      have hcardeq : B.card = A.card := by
+        rw [hB]
+        apply Finset.card_image_of_injOn
+        intro x hx y hy hxy
+        simp only [Finset.mem_coe] at hx hy
+        have hx' := hmle x hx
+        have hy' := hmle y hy
+        have hxy' : x - m = y - m := hxy
+        omega
+      rw [hcardeq]; exact hcard
+    obtain ⟨a, ha, b, hb, hab⟩ := Finset.one_lt_card.mp hBcard
+    rcases eq_or_ne a 0 with rfl | ha0
+    · exact ⟨b, hb, fun hb0 => hab hb0.symm⟩
+    · exact ⟨a, ha, ha0⟩
+  set c := B.gcd id with hc_def
+  have hcne : c ≠ 0 := by rw [hc_def]; exact Finset.gcd_ne_zero_iff.mpr hex
+  have hcpos : 0 < c := Nat.pos_of_ne_zero hcne
+  have hdvd : ∀ a ∈ B, c ∣ a := by
+    intro a ha
+    have hd := Finset.gcd_dvd (f := id) ha
+    simpa [hc_def] using hd
+  -- The primitive representative.
+  set C := B.image (fun a => a / c) with hC
+  refine ⟨c, m, C, hcpos, isBhSet_div hcpos hdvd hBh, ?_, ?_, ?_⟩
+  · -- `0 ∈ C` because `0 ∈ B` and `0 / c = 0`.
+    rw [hC, Finset.mem_image]
+    exact ⟨0, h0B, by simp⟩
+  · -- `gcd C = 1`: transport `gcd` across the image, then divide out the gcd.
+    rw [hC, ← Finset.gcd_eq_gcd_image, hc_def]
+    obtain ⟨w, hwB, hw0⟩ := hex
+    exact Finset.gcd_div_id_eq_one hwB (by simpa using hw0)
+  · -- Reconstruct `A = (c · C) + m`.
+    have hBrec : C.image (fun b => b * c) = B := by
+      rw [hC, Finset.image_image]
+      conv_rhs => rw [← Finset.image_id (s := B)]
+      apply Finset.image_congr
+      intro x hx
+      simp only [Finset.mem_coe] at hx
+      simp only [Function.comp_apply, id_eq]
+      exact Nat.div_mul_cancel (hdvd x hx)
+    rw [hAB, hBrec]
 
 end Erdos153OQ03
