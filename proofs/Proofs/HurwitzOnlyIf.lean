@@ -20,14 +20,16 @@ This file addresses the "only-if" direction of Hurwitz's theorem (1898):
 Any normed field over ℝ is isomorphic as an ℝ-algebra to either ℝ (dim 1) or ℂ (dim 2).
 Thus `finrank ℝ F ∈ {1, 2} ⊆ {1, 2, 4, 8}`.
 
-**Non-commutative case** (A is a division ring): Requires additional machinery.
-The classical proof proceeds via Clifford algebras and Radon-Hurwitz numbers:
-1. Unit elements of A generate Clifford relations on ℝ^(dim A - 1)
-2. Cl(n-1) has a real n-dimensional module only when n ∈ {1, 2, 4, 8}
-   (Radon-Hurwitz numbers: ρ(n) forces this via the periodicity theorem)
-3. Alternatively: reduce to `NSquareIdentity n` (HurwitzTheorem.lean) and
-   apply the `hurwitz_only_if` axiom there.
-Currently formalized as a sorry, pending Clifford representation theory in Mathlib.
+**Non-commutative case** (A is a division ring): now VERIFIED without the classical
+Clifford / Radon-Hurwitz machinery.  Instead of representing `Cl(n-1)`, the argument equips
+the imaginary subspace `Im A := ker realPart` with the positive-definite symmetric form
+`B = imaginaryBilin A` and runs a self-contained inner-product dimension count:
+1. rank–nullity: `finrank ℝ A = finrank ℝ (Im A) + 1` (`finrank_eq_imaginary_add_one`);
+2. for `B`-orthogonal imaginary `x, y`, the product `z = x·y` is a fresh imaginary unit,
+   `B`-orthogonal to both, and no fourth `B`-orthogonal imaginary unit exists;
+3. hence `w ↦ (B(w,x), B(w,y), B(w,z))` embeds `Im A` into `ℝ³` while `{x, y, z}` is
+   independent, forcing `finrank ℝ (Im A) ∈ {0, 1, 3}` (`finrank_imaginarySubmodule_mem`),
+   i.e. `finrank ℝ A ∈ {1, 2, 4} ⊆ {1, 2, 4, 8}`.
 
 ## Relation to HurwitzTheorem.lean
 
@@ -50,8 +52,12 @@ by choosing an orthonormal basis and transporting multiplication through coordin
   part squares to a *negative* scalar)
 - `anticommutator_real_affine`: proved (0 sorries) — Frobenius Step 3 preparation
   (`x*y + y*x ∈ span_ℝ {x, y, 1}` for all `x, y`, via polarisation of the Step-1 quadratics)
-- `hurwitz_only_if_ring`: 1 sorry — the remaining global structure argument (Step 3:
-  `Im A` is a subspace with a positive-definite bilinear form / Clifford structure)
+- `finrank_eq_imaginary_add_one`: proved (0 sorries) — rank–nullity reduction
+  `finrank ℝ A = finrank ℝ (Im A) + 1`
+- `finrank_imaginarySubmodule_mem`: proved (0 sorries) — the inner-product dimension count
+  `finrank ℝ (Im A) ∈ {0, 1, 3}` (quaternion-triple obstruction package)
+- `hurwitz_only_if_ring`: proved (0 sorries) — Frobenius' theorem for normed division rings,
+  `finrank ℝ A ∈ {1, 2, 4} ⊆ {1, 2, 4, 8}`
 -/
 
 namespace HurwitzOnlyIf
@@ -901,6 +907,126 @@ theorem eq_zero_of_orthogonal_to_triple (A : Type*) [NormedDivisionRing A] [Norm
   have hw0 : (w : A) = 0 := eq_zero_of_anticomm_pair_and_product A hx hy hax hay hazr
   exact Submodule.coe_eq_zero.mp hw0
 
+/-- **Frobenius dimension count — `finrank ℝ (Im A) ∈ {0, 1, 3}`.**  The pure
+finite-dimensional inner-product-space argument that closes the non-commutative case, with
+*all* division-ring input already absorbed into the four obstruction lemmas above.
+
+The positive-definite symmetric form `B = imaginaryBilin A` (`imaginaryBilin_symm`,
+`imaginaryBilin_self_nonneg`, `imaginaryBilin_self_eq_zero_iff`) makes `Im A` a real
+inner-product space.  If `finrank ℝ (Im A) ≤ 1` we are already in `{0, 1}`.  Otherwise:
+
+* pick a nonzero `x ∈ Im A`; rank–nullity applied to the functional `B(x, ·) : Im A → ℝ`
+  gives a nonzero `y` with `B(x, y) = 0` (its kernel has dimension `≥ finrank − 1 ≥ 1`);
+* the product `z = x·y` lies in `Im A` (`imaginary_mul_mem_imaginarySubmodule`), is nonzero
+  (no zero divisors) and `B`-orthogonal to both `x` and `y` (`imaginaryBilin_mul_orthogonal`).
+
+Then the linear map `w ↦ (B(w,x), B(w,y), B(w,z)) : Im A → ℝ³` is injective
+(`eq_zero_of_orthogonal_to_triple`), so `finrank ℝ (Im A) ≤ 3`; and `{x, y, z}` is a
+`B`-orthogonal family with positive diagonal, hence linearly independent, so
+`finrank ℝ (Im A) ≥ 3`.  Therefore `finrank ℝ (Im A) = 3 ∈ {0, 1, 3}`. -/
+theorem finrank_imaginarySubmodule_mem (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] :
+    Module.finrank ℝ (imaginarySubmodule A) ∈ ({0, 1, 3} : Set ℕ) := by
+  rcases Nat.lt_or_ge (Module.finrank ℝ (imaginarySubmodule A)) 2 with hlt | hge
+  · -- `finrank ∈ {0, 1}`
+    have h01 : Module.finrank ℝ (imaginarySubmodule A) = 0 ∨
+        Module.finrank ℝ (imaginarySubmodule A) = 1 := by omega
+    rcases h01 with h | h <;> rw [h] <;> simp
+  · -- `finrank ≥ 2 ⟹ finrank = 3`
+    have hpos : 0 < Module.finrank ℝ (imaginarySubmodule A) := by omega
+    have : Nontrivial (imaginarySubmodule A) := finrank_pos_iff.mp hpos
+    obtain ⟨x, hx0⟩ := exists_ne (0 : imaginarySubmodule A)
+    -- rank–nullity for `B(x, ·)`: its kernel is nonzero, giving a `B`-orthogonal partner `y`
+    have hrn := LinearMap.finrank_range_add_finrank_ker (imaginaryBilin A x)
+    have hrange_le : Module.finrank ℝ (LinearMap.range (imaginaryBilin A x)) ≤ 1 := by
+      have := Submodule.finrank_le (LinearMap.range (imaginaryBilin A x))
+      simpa using this
+    have hker_pos : 0 < Module.finrank ℝ (LinearMap.ker (imaginaryBilin A x)) := by omega
+    have hker_ne : LinearMap.ker (imaginaryBilin A x) ≠ ⊥ := by
+      intro h; rw [h, finrank_bot] at hker_pos; exact lt_irrefl 0 hker_pos
+    obtain ⟨y, hy_mem, hy0⟩ := (Submodule.ne_bot_iff _).mp hker_ne
+    have hxy : imaginaryBilin A x y = 0 := LinearMap.mem_ker.mp hy_mem
+    -- the coefficients `x, y` are nonzero in `A`
+    have hxA : (x : A) ≠ 0 := fun h => hx0 (Submodule.coe_eq_zero.mp h)
+    have hyA : (y : A) ≠ 0 := fun h => hy0 (Submodule.coe_eq_zero.mp h)
+    -- the third quaternion generator `z = x·y`
+    have hzmem : (x : A) * (y : A) ∈ imaginarySubmodule A :=
+      imaginary_mul_mem_imaginarySubmodule A x y hxy
+    set z : imaginarySubmodule A := ⟨(x : A) * (y : A), hzmem⟩ with hz_def
+    have hzcoe : (z : A) = (x : A) * (y : A) := by rw [hz_def]
+    have hzA : (z : A) ≠ 0 := by rw [hzcoe]; exact mul_ne_zero hxA hyA
+    have hz0 : z ≠ 0 := fun h => hzA (by rw [h]; simp)
+    obtain ⟨hzx, hzy⟩ := imaginaryBilin_mul_orthogonal A x y z hxy hzcoe
+    -- positive diagonal (positive-definiteness) for `x, y, z`
+    have hxx_pos : 0 < imaginaryBilin A x x :=
+      lt_of_le_of_ne (imaginaryBilin_self_nonneg A x)
+        (fun h => hx0 ((imaginaryBilin_self_eq_zero_iff A x).mp h.symm))
+    have hyy_pos : 0 < imaginaryBilin A y y :=
+      lt_of_le_of_ne (imaginaryBilin_self_nonneg A y)
+        (fun h => hy0 ((imaginaryBilin_self_eq_zero_iff A y).mp h.symm))
+    have hzz_pos : 0 < imaginaryBilin A z z :=
+      lt_of_le_of_ne (imaginaryBilin_self_nonneg A z)
+        (fun h => hz0 ((imaginaryBilin_self_eq_zero_iff A z).mp h.symm))
+    -- **Upper bound `finrank ≤ 3`:** `w ↦ (B(w,x), B(w,y), B(w,z))` is injective.
+    set φ : imaginarySubmodule A →ₗ[ℝ] (Fin 3 → ℝ) :=
+      LinearMap.pi ![(imaginaryBilin A).flip x, (imaginaryBilin A).flip y,
+        (imaginaryBilin A).flip z] with hφ
+    have hφ_inj : Function.Injective φ := by
+      rw [injective_iff_map_eq_zero]
+      intro w hw
+      have e0 : imaginaryBilin A w x = 0 := by
+        have h := congrFun hw 0
+        simpa [hφ, LinearMap.pi_apply, LinearMap.flip_apply] using h
+      have e1 : imaginaryBilin A w y = 0 := by
+        have h := congrFun hw 1
+        simpa [hφ, LinearMap.pi_apply, LinearMap.flip_apply] using h
+      have e2 : imaginaryBilin A w z = 0 := by
+        have h := congrFun hw 2
+        simpa [hφ, LinearMap.pi_apply, LinearMap.flip_apply] using h
+      exact eq_zero_of_orthogonal_to_triple A x y w z hxA hyA hzcoe e0 e1 e2
+    have h_le : Module.finrank ℝ (imaginarySubmodule A) ≤ 3 := by
+      have hle := LinearMap.finrank_le_finrank_of_injective hφ_inj
+      simpa [Module.finrank_fin_fun] using hle
+    -- **Lower bound `finrank ≥ 3`:** `![x, y, z]` is linearly independent.
+    have h_li : LinearIndependent ℝ ![x, y, z] := by
+      rw [Fintype.linearIndependent_iff]
+      intro g hg
+      simp only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one,
+        Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons] at hg
+      -- apply any linear functional `L` to the vanishing combination
+      have coeff : ∀ (L : imaginarySubmodule A →ₗ[ℝ] ℝ),
+          g 0 * L x + g 1 * L y + g 2 * L z = 0 := by
+        intro L
+        simpa [smul_eq_mul] using congrArg L hg
+      have hg0 : g 0 = 0 := by
+        have h := coeff ((imaginaryBilin A).flip x)
+        simp only [LinearMap.flip_apply] at h
+        rw [imaginaryBilin_symm A y x, hxy, hzx] at h
+        simp only [mul_zero, add_zero] at h
+        exact (mul_eq_zero.mp h).resolve_right hxx_pos.ne'
+      have hg1 : g 1 = 0 := by
+        have h := coeff ((imaginaryBilin A).flip y)
+        simp only [LinearMap.flip_apply] at h
+        rw [hxy, hzy] at h
+        simp only [mul_zero, zero_add, add_zero] at h
+        exact (mul_eq_zero.mp h).resolve_right hyy_pos.ne'
+      have hg2 : g 2 = 0 := by
+        have h := coeff ((imaginaryBilin A).flip z)
+        simp only [LinearMap.flip_apply] at h
+        rw [imaginaryBilin_symm A x z, hzx, imaginaryBilin_symm A y z, hzy] at h
+        simp only [mul_zero, zero_add, add_zero] at h
+        exact (mul_eq_zero.mp h).resolve_right hzz_pos.ne'
+      intro i
+      fin_cases i
+      · exact hg0
+      · exact hg1
+      · exact hg2
+    have h_ge : 3 ≤ Module.finrank ℝ (imaginarySubmodule A) := by
+      have := h_li.fintype_card_le_finrank
+      simpa using this
+    have hn3 : Module.finrank ℝ (imaginarySubmodule A) = 3 := le_antisymm h_le h_ge
+    rw [hn3]; simp
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
@@ -921,53 +1047,30 @@ theorem hurwitz_only_if_ring_comm (A : Type*) [NormedDivisionRing A] [NormedAlge
     **Commutative subcase**: If A is also a field (commutative), this follows from
     `hurwitz_field_case` (proved via Gelfand-Mazur).
 
-    **Non-commutative subcase** (HARD sorry): The classical proof uses Clifford algebras.
-    For a normed division ring A of dimension n, the (n-1) imaginary unit vectors satisfy
-    Clifford relations: eᵢeⱼ + eⱼeᵢ = -2δᵢⱼ, giving a real representation of Cl(n-1).
-    The Radon-Hurwitz numbers force n ∈ {1, 2, 4, 8}.
-
-    Alternative: reduce to `HurwitzTheorem.NSquareIdentity n` via an orthonormal basis
-    construction, then apply `HurwitzTheorem.hurwitz_only_if` (axiom in that file).
-
-    **Frobenius' theorem** (associative case): For associative division algebras over ℝ,
-    the only possibilities are ℝ (dim 1), ℂ (dim 2), ℍ (dim 4). Octonions (dim 8) are
-    non-associative and require a separate argument beyond `NormedDivisionRing`. -/
+    **Non-commutative subcase** (now VERIFIED): rather than the classical Clifford /
+    Radon–Hurwitz route, the argument runs through the positive-definite form
+    `B = imaginaryBilin A` on `Im A`.  Rank–nullity reduces the whole statement to
+    `finrank ℝ (Im A) ∈ {0, 1, 3}` (`finrank_eq_imaginary_add_one`), and the quaternion-triple
+    obstruction package pins that count (`finrank_imaginarySubmodule_mem`). -/
 theorem hurwitz_only_if_ring (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
     [Module.Finite ℝ A] :
     Module.finrank ℝ A ∈ admissibleDimensions := by
-  /- Proof outline (Frobenius' theorem, since `NormedDivisionRing` is associative so the
-     answer is in fact `{1, 2, 4} ⊆ {1, 2, 4, 8}`):
+  /- Proof (Frobenius' theorem, since `NormedDivisionRing` is associative so the answer is in
+     fact `{1, 2, 4} ⊆ {1, 2, 4, 8}`):
      STEP 1 (VERIFIED above): every `a : A` satisfies a real quadratic `a² = p•a + q•1`
-       via `exists_quadratic` / `minpoly_natDegree_le_two`. Hence each element generates a
-       subalgebra isomorphic to `ℝ` or `ℂ`.
-     STEP 2a (VERIFIED above): completing the square, `(a - (p/2)•1)² = r•1` for a real
-       scalar `r` (`exists_real_shift_sq_scalar`). This is the concrete `A = ℝ•1 ⊕ Im A`
-       shift: `(p/2)•1` is the real part, `a - (p/2)•1` the imaginary part.
-     STEP 2b (VERIFIED above): if `b² = r•1` with `r ≥ 0` then `b ∈ ℝ•1`
-       (`eq_smul_one_of_sq_eq_nonneg_smul`, from the absence of zero divisors). So the
-       imaginary part is genuinely non-real exactly when its square scalar `r` is negative,
-       pinning down `Im A := {a | a² ∈ ℝ≤0 • 1}`.
-     STEP 3 (partially VERIFIED above): the `A = ℝ•1 ⊕ Im A` decomposition is now direct
-       (`eq_zero_of_smul_one_sq_nonpos` / `isImaginary_smul_one_iff`: `ℝ•1 ∩ Im A = {0}`),
-       and the Clifford relation `x*y + y*x = (c-a-b)•1 ∈ ℝ•1` is verified whenever the
-       three squares `x², y², (x+y)²` are real scalars (`anticommutator_scalar_of_sq_scalar`).
-       What REMAINS is the single global fact that `Im A` is closed under addition
-       (equivalently the real-part functional `A → ℝ` is `ℝ`-linear); this supplies the
-       missing hypothesis `(x+y)² ∈ ℝ•1` for imaginary `x, y`, upgrading the scalar
-       anticommutator to a positive-definite symmetric bilinear form and forcing
-       `finrank ℝ (Im A) ∈ {0, 1, 3}`, hence `finrank ℝ A ∈ {1, 2, 4}`.
-     Step 3's closure-of-`Im A` step is not yet formalized; Mathlib lacks the
-     Clifford-algebra / bilinear-form machinery to discharge it directly.
-
-     The commutative branch of Step 3 is now fully verified (`hurwitz_only_if_ring_comm`
-     via Gelfand–Mazur), so the sorry below is scoped to the *strictly non-commutative*
-     case — where `hnc : ∃ x y, x * y ≠ y * x` is available as a genuine hypothesis. -/
-  by_cases hcomm : ∀ x y : A, x * y = y * x
-  · -- Commutative subcase: A is a normed field, closed by Gelfand–Mazur.
-    exact hurwitz_only_if_ring_comm A hcomm
-  · -- Non-commutative subcase: the Clifford / Radon–Hurwitz argument (still open).
-    push_neg at hcomm
-    obtain ⟨x, y, _hxy⟩ := hcomm
-    sorry
+       via `exists_quadratic` / `minpoly_natDegree_le_two`.
+     STEP 2 (VERIFIED above): completing the square pins the concrete decomposition
+       `A = ℝ•1 ⊕ Im A` with `Im A := {a | a² ∈ ℝ≤0 • 1} = ker realPart`.
+     STEP 3 (VERIFIED above): the real-part functional `A → ℝ` is `ℝ`-linear, so `Im A` is an
+       honest submodule carrying the positive-definite symmetric form `B = imaginaryBilin A`;
+       rank–nullity gives `finrank ℝ A = finrank ℝ (Im A) + 1`
+       (`finrank_eq_imaginary_add_one`), and the quaternion-triple obstruction package forces
+       `finrank ℝ (Im A) ∈ {0, 1, 3}` (`finrank_imaginarySubmodule_mem`), hence
+       `finrank ℝ A ∈ {1, 2, 4} ⊆ admissibleDimensions`. -/
+  have hdim := finrank_eq_imaginary_add_one A
+  have hmem := finrank_imaginarySubmodule_mem A
+  rw [hdim]
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hmem
+  rcases hmem with h | h | h <;> rw [h] <;> simp [admissibleDimensions]
 
 end HurwitzOnlyIf

@@ -1,62 +1,57 @@
 # Research State: hurwitz-theorem-oq-03-oq-01-wip-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: DONE
 **Path**: full
 **Since**: 2026-07-05
-**Iteration**: 8
+**Iteration**: 9
 
 ## Current Focus
-Iter 8 (build-VERIFIED, docker 2715 jobs, 0 sorry/0 axiom added): **the metric-level
-Frobenius cap package** — recast all remaining algebraic obstructions in terms of the
-positive-definite form `B = imaginaryBilin A` on `Im A`, plus the rank–nullity reduction.
-Four new verified lemmas:
+Iter 9 (build-VERIFIED, docker 2715 jobs, **0 sorry / 0 axiom in the whole file**):
+**the Frobenius theorem for normed division rings is now fully machine-checked.** The last
+sorry (`hurwitz_only_if_ring`, strictly non-commutative branch) is discharged by extracting
+and proving the pure linear-algebra core as a standalone theorem.
 
-1. `finrank_eq_imaginary_add_one`: `finrank ℝ A = finrank ℝ (Im A) + 1`. `realPart : A →ₗ[ℝ] ℝ`
-   is surjective (`c•1 ↦ c` via `realPartValue_smul_one`) and `Im A = ker realPart`, so
-   rank–nullity (`LinearMap.finrank_range_add_finrank_ker` + `finrank_top`/`Module.finrank_self`)
-   gives the reduction. **This collapses the whole theorem to `finrank ℝ (Im A) ∈ {0,1,3}`.**
-2. `imaginary_mul_mem_imaginarySubmodule`: for B-orthogonal imaginary x,y, `x*y ∈ Im A`
-   (metric wrapper over `isImaginary_mul_of_anticomm` via the bridge).
-3. `imaginaryBilin_mul_orthogonal`: the third unit `z = x*y` is B-orthogonal to both x and y
-   (metric wrapper over `mul_anticomm_left`/`mul_anticomm_right`). Grows an orthonormal pair
-   into an orthonormal quaternion triple ⟨x, y, x*y⟩.
-4. `eq_zero_of_orthogonal_to_triple`: **no fourth orthogonal unit** — any `w ∈ Im A`
-   B-orthogonal to x, y, and x*y is zero (metric wrapper over
-   `eq_zero_of_anticomm_pair_and_product`). Caps `finrank ℝ (Im A) ≤ 3`.
+New verified theorem:
 
-The whole file still has exactly ONE sorry (`hurwitz_only_if_ring` non-commutative branch),
-now scoped PURELY to the linear-algebra assembly: pick a B-orthonormal basis of `Im A`, use
-(2)+(3) to manufacture the third generator and (4) + positive-definiteness to rule out
-`finrank = 2` and `finrank ≥ 4`, concluding `finrank ℝ (Im A) ∈ {0,1,3}`; combine with (1).
+- `finrank_imaginarySubmodule_mem`: `finrank ℝ (Im A) ∈ {0, 1, 3}`. Pure finite-dimensional
+  inner-product-space count, no further division-ring input. Proof:
+  - `finrank ≤ 1`: already in `{0,1}`.
+  - `finrank ≥ 2`: pick nonzero `x`; rank–nullity on the functional `B(x, ·) : Im A → ℝ`
+    (`LinearMap.finrank_range_add_finrank_ker`) gives its kernel dimension `≥ finrank − 1 ≥ 1`,
+    so there is a nonzero `y` with `B(x, y) = 0`. Set `z = x*y ∈ Im A`
+    (`imaginary_mul_mem_imaginarySubmodule`), nonzero (no zero divisors), `B`-orthogonal to
+    `x, y` (`imaginaryBilin_mul_orthogonal`), with positive diagonal (positive-definiteness).
+    - **Upper bound** `finrank ≤ 3`: the map `w ↦ (B(w,x), B(w,y), B(w,z)) : Im A → ℝ³`
+      (`LinearMap.pi ![B.flip x, B.flip y, B.flip z]`) is injective — its kernel is trivial by
+      `eq_zero_of_orthogonal_to_triple` — so `LinearMap.finrank_le_finrank_of_injective` +
+      `Module.finrank_fin_fun` give `finrank ℝ (Im A) ≤ 3`.
+    - **Lower bound** `finrank ≥ 3`: `![x, y, z]` is `B`-orthogonal with positive diagonal,
+      hence linearly independent (`Fintype.linearIndependent_iff`; kill each coefficient by
+      applying the flip functionals `B.flip x/y/z` and using `mul_eq_zero` against the
+      positive diagonal). `LinearIndependent.fintype_card_le_finrank` gives `3 ≤ finrank`.
+    - Combined: `finrank ℝ (Im A) = 3`.
+
+`hurwitz_only_if_ring` is now closed with no case split on commutativity:
+`finrank_eq_imaginary_add_one` gives `finrank ℝ A = finrank ℝ (Im A) + 1`, and
+`finrank_imaginarySubmodule_mem` pins `finrank ℝ (Im A) ∈ {0,1,3}`, so
+`finrank ℝ A ∈ {1,2,4} ⊆ {1,2,4,8} = admissibleDimensions`.
 
 ## Active Approach
-All ALGEBRAIC and METRIC prerequisites are now in place (0 sorry). What remains is a pure
-finite-dimensional inner-product-space counting argument with NO further division-ring
-input:
-- Reduction to Im A: DONE (`finrank_eq_imaginary_add_one`).
-- Positive-definite inner product on Im A: DONE (`imaginaryBilin*`, iter 6).
-- Metric↔algebra bridge: DONE (`imaginaryBilin_eq_zero_iff_anticomm`, iter 7).
-- Third-unit manufacture + no-fourth-unit obstruction: DONE (iter 8, this commit).
+COMPLETE. Frobenius' theorem (`NormedDivisionRing` over ℝ ⟹ `finrank ∈ {1,2,4}`) is fully
+verified, 0 sorry / 0 axiom (standard `propext`/`Classical.choice`/`Quot.sound` only; no
+`sorryAx`, no `Lean.ofReduceBool`). The metric route (positive-definite `imaginaryBilin`) sidesteps
+the Clifford / Radon–Hurwitz representation machinery Mathlib lacks.
 
 ## Attempt Count
-- Total attempts: 4 (code, shipped)
+- Total attempts: 5 (code, shipped)
 - Approaches tried: 3
 
 ## Blockers
-- The last sorry needs: an orthonormal basis of the positive-definite space `(Im A, B)` and
-  the standard "orthogonal complement is trivial ⟹ full" reasoning to convert lemmas (2)–(4)
-  into the numerical bound `finrank ℝ (Im A) ∈ {0,1,3}`. This is now pure Mathlib linear
-  algebra (needs an `InnerProductSpace`/`BilinForm.Nondegenerate` packaging of `imaginaryBilin`,
-  or a hand-rolled Gram–Schmidt), no more algebra of `A`.
+- None. The remaining sorry has been eliminated.
 
 ## Next Action
-Convert `imaginaryBilin` into an inner product (via `InnerProductSpace.ofCore` or a
-`LinearMap.BilinForm` that is positive-definite hence nondegenerate) so that:
-- `finrank ≠ 2`: with orthonormal e₁,e₂ spanning Im A, `e₁*e₂` (lemma 2) is nonzero and
-  B-orthogonal to the full basis (lemma 3) ⇒ B(e₁*e₂, e₁*e₂)=0 ⇒ e₁*e₂=0, contradiction.
-- `finrank ≤ 3`: a fourth vector orthogonal to e₁,e₂,e₁*e₂ vanishes (lemma 4).
-Then `finrank ℝ (Im A) ∈ {0,1,3}` and `finrank_eq_imaginary_add_one` closes the sorry.
-Consider submitting the fully-scaffolded `hurwitz_only_if_ring` to Aristotle with all four
-new lemmas as context, hint = "finish Frobenius: finrank ℝ (Im A) ∈ {0,1,3} via the
-positive-definite form imaginaryBilin".
+- Ship: commit + PR + update `meta.json` (status → verified, badge → verified, sorries 0).
+- Optional follow-up (separate entry): the octonion (dim 8) case needs a non-associative
+  framework beyond `NormedDivisionRing`; `hurwitz_only_if_ring` proves the associative
+  bound `{1,2,4}`, which is the sharp Frobenius statement for this typeclass.
