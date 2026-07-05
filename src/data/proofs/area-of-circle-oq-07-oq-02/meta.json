@@ -125,6 +125,21 @@
       "targetId": "area-of-circle",
       "relationship": "related",
       "description": "Grandparent. The factor of π in the Gaussian value ultimately traces to the circle-area Jacobian r dr dθ of the polar-coordinate evaluation studied in the area-of-circle entry."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-oq-01",
+      "relationship": "related",
+      "description": "The classical polar-coordinate proof of the SAME full-line value ∫_ℝ e^{-x²} = √π. Where this entry recovers √π from the half-line value through the even-symmetry bridge, that entry squares the integral into a 2-D integral over the plane and evaluates it in polar coordinates — the two derivations reach the identical constant by independent routes, making explicit the π that the half-line argument inherits from Mathlib as a black box."
+    },
+    {
+      "targetId": "area-of-circle-oq-05",
+      "relationship": "related",
+      "description": "The thematic hub linking the Gaussian integral to the area of a circle. This half-line entry is one spoke of that family, isolating the ∫_{(0,∞)} = ½∫_ℝ even-symmetry step that the hub takes for granted."
+    },
+    {
+      "targetId": "area-of-circle-oq-05-incomplete-01",
+      "relationship": "related",
+      "description": "The probabilistic payoff: normalizing e^{-x²} into the normal-distribution density family. The half-line value √π/2 and the half-line moments raised in this entry's open questions are exactly the ingredients of the half-normal distribution's total mass, mean, and variance."
     }
   ],
   "references": [
