@@ -62,7 +62,9 @@
       "Mathlib.NumberTheory.ZetaValues",
       "Mathlib.Tactic"
     ],
-    "opens": ["Real"],
+    "opens": [
+      "Real"
+    ],
     "namespace": "BaselEtaTwo",
     "path": "Proofs/BaselProblemOQ11.lean",
     "lineCount": 114,
@@ -131,6 +133,11 @@
       {
         "id": "basel-problem-oq-11-oq-01",
         "question": "Generalize the even/odd parity split to a reusable lemma η(2m) = (1 - 2^(1-2m)) ζ(2m) for all even arguments, deriving η(4) = 7π⁴/720 from Mathlib's hasSum_zeta_four with no new analytic input.",
+        "significance": "medium"
+      },
+      {
+        "id": "basel-problem-oq-11-oq-02",
+        "question": "At weight 2 the Dirichlet eta collapses to η(2) = ½·ζ(2) (since 1 − 2^{1−2} = ½), placing the weight-2 trio ζ(2) : λ(2) : η(2) = 1 : ¾ : ½ as multiples of π² (π²/6, π²/8, π²/12). Beyond this, η(s) = (1 − 2^{1−s})ζ(s) converges for Re(s) > 0 and so analytically continues ζ past its s = 1 pole. Can this entry cross-link the odd-square sibling (basel-problem-oq-09) and connect η(2) = π²/12 to eta's role as the alternating-series continuation of ζ on the half-plane Re(s) > 0?",
         "significance": "medium"
       }
     ]
