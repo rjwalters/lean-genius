@@ -19,19 +19,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-04T21:40:00-07:00",
-    "iteration": 2,
-    "focus": "Density bound ADDED and VERIFIED: B_h set in {0..N} has (A.sym h).card ≤ hN+1, i.e. C(|A|+h-1,h) ≤ hN+1 ⟹ |A|=O(N^{1/h}). Gap-variance conjecture still OPEN.",
+    "since": "2026-07-04",
+    "iteration": 3,
+    "focus": "Saturation CHARACTERIZATION added and VERIFIED: isBhSet_iff_card_hSumset — A is B_h ⟺ (hSumset h A).card = (A.sym h).card (converse of Section VI's card_hSumset_of_isBhSet, via Finset.injOn_of_card_image_eq). Explicit-binomial bridge attempted but Finset.card_sym does NOT exist in Mathlib v4.26.0 (only Fintype-form Sym.card_sym_eq_choose) — gap stays; density bound remains stated with the honest (A.sym h).card. Gap-variance conjecture still OPEN.",
     "blockers": [],
-    "nextAction": "Bridge (A.sym h).card = C(|A|+h-1,h) (Finset-form stars-and-bars, Mathlib gap) to state |A|=O(N^{1/h}) explicitly; then attempt gap-variance via Sidon reduction.",
+    "nextAction": "Explicit binomial bridge (A.sym h).card = C(|A|+h-1,h) needs a hand-built equiv ↥(A.sym h) ≃ Sym ↥A h (Sym.map Subtype.val is injective with range A.sym h) then Sym.card_sym_eq_choose + Fintype.card_coe — ~40 lines, deferred. Then attempt the actual gap-variance statement via Sidon reduction.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: affine invariance + sharp counting identity + DENSITY BOUND now all machine-verified (Erdos153OQ03.lean, 0 sorry/0 axiom). New: card_sym_le_of_isBhSet — a B_h set A⊆{0..N} has (A.sym h).card ≤ hN+1 (h-fold sums land in {0..hN}, and B_h makes them distinct). Since (A.sym h).card = C(|A|+h-1,h) ~ |A|^h/h!, this is the |A|=O(N^{1/h}) density bound (h-fold Sidon generalisation). Gap-variance conjecture itself remains OPEN.",
+    "progressSummary": "PROGRESS: affine invariance + sharp counting identity + density bound + now the SATURATION CHARACTERIZATION (isBhSet_iff_card_hSumset: B_h ⟺ (hΣA).card=(A.sym h).card) all machine-verified (Erdos153OQ03.lean, 19 thm + 3 def, 0 sorry/0 axiom/0 native_decide). Explicit-binomial bridge blocked by missing Finset.card_sym (needs hand-built equiv, deferred). Gap-variance conjecture itself remains OPEN.",
     "builtItems": [
       "IsBhSet def (Erdos153OQ03.lean)",
       "isBhSet_one: every set is B₁",
@@ -45,7 +45,8 @@
       "isBhSet_add: translation invariance — A+t is B_h whenever A is (Erdos153OQ03.lean, Section V, 0 sorry/axiom)",
       "isBhSet_affine: affine invariance — {c·a+t} is B_h whenever A is (c≥1), composing dilation+translation (Erdos153OQ03.lean, Section V)",
       "hSumset_subset_range: B_h set A⊆range(N+1) ⟹ hSumset h A ⊆ range(hN+1) (each h-fold sum ≤ hN via Multiset.sum_le_card_nsmul) (Erdos153OQ03.lean §VII)",
-      "card_sym_le_of_isBhSet: DENSITY BOUND — IsBhSet h A, A⊆{0..N} ⟹ (A.sym h).card ≤ hN+1 = C(|A|+h-1,h)≤hN+1 ⟹ |A|=O(N^{1/h}) (Erdos153OQ03.lean §VII, 0 sorry/axiom, VERIFIED)"
+      "card_sym_le_of_isBhSet: DENSITY BOUND — IsBhSet h A, A⊆{0..N} ⟹ (A.sym h).card ≤ hN+1 = C(|A|+h-1,h)≤hN+1 ⟹ |A|=O(N^{1/h}) (Erdos153OQ03.lean §VII, 0 sorry/axiom, VERIFIED)",
+      "isBhSet_iff_card_hSumset: SATURATION CHARACTERIZATION — IsBhSet h A ↔ (hSumset h A).card = (A.sym h).card (Erdos153OQ03.lean §VIII, 0 sorry/axiom, VERIFIED). Converse of card_hSumset_of_isBhSet via Finset.injOn_of_card_image_eq; B_h sets are EXACTLY those whose h-fold sumset saturates the pigeonhole max."
     ],
     "insights": [
       "A B_h set (h-fold sums distinct) is cleanly encoded as: Multiset.sum injective on size-h multisets drawn from A. Avoids ordered-tuple/reindexing friction.",
@@ -53,7 +54,9 @@
       "Structural reduction: every B_h set (h≥2) is Sidon, so the OQ-03 gap-variance question for B_h sets is at least as constrained as the already-open h=2 (Sidon) case.",
       "IsBhSet 2 A is EXACTLY the gallery IsSidon condition (characterization, both directions verified). B_h is monotone in BOTH parameters: antitone in the order h (isBhSet_antitone, needs A nonempty) and hereditary in the ground set A (isBhSet_subset, no hypothesis).",
       "The B_h class is closed under every order-preserving affine map a↦c·a+t: sum is ℕ-linear, so h-fold sums scale by c and shift by the constant h·t, both cancellable — completing the affine-structure claim in Section V (dilation was already there; translation was the missing companion).",
-      "DENSITY BOUND executed: the sharp counting identity card_hSumset=(A.sym h).card + the trivial containment hSumset⊆{0..hN} gives (A.sym h).card ≤ hN+1 in ~15 lines. Mathlib GAP: only Fintype-form stars-and-bars (Sym.card_sym_eq_choose) exists; the Finset-form (A.sym h).card = C(|A|+h-1,h) is missing, so the bound is stated with the honest quantity (A.sym h).card (which IS that coefficient)."
+      "DENSITY BOUND executed: the sharp counting identity card_hSumset=(A.sym h).card + the trivial containment hSumset⊆{0..hN} gives (A.sym h).card ≤ hN+1 in ~15 lines. Mathlib GAP: only Fintype-form stars-and-bars (Sym.card_sym_eq_choose) exists; the Finset-form (A.sym h).card = C(|A|+h-1,h) is missing, so the bound is stated with the honest quantity (A.sym h).card (which IS that coefficient).",
+      "Finset-form stars-and-bars (A.sym h).card = C(|A|+h-1,h) is NOT one lemma in Mathlib v4.26.0: Finset.card_sym is Unknown constant; only Sym.card_sym_eq_choose (Fintype form) exists. Bridging needs a hand-built equiv ↥(A.sym h) ≃ Sym ↥A h. Deferred; density bound kept honest via (A.sym h).card.",
+      "B_h ⟺ h-fold-sumset saturation is now a full iff (isBhSet_iff_card_hSumset): forward = Finset.card_image_of_injOn, backward = Finset.injOn_of_card_image_eq. Parallels the h=2 Sidon 'maximal sumset' characterization."
     ],
     "mathlibGaps": [
       "No dedicated B_h / Sidon-of-order-h API in Mathlib; multiset-sum-injectivity encoding is self-sufficient.",
@@ -85,7 +88,7 @@
     "mathlib": []
   },
   "started": "2026-07-04T21:35:19.650Z",
-  "lastUpdate": "2026-07-04T23:05:00.000Z",
+  "lastUpdate": "2026-07-04",
   "significance": 5,
   "tractability": 5,
   "leanFiles": [

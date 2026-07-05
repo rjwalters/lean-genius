@@ -508,4 +508,34 @@ theorem card_sym_le_of_isBhSet {h N : ℕ} {A : Finset ℕ}
         Finset.card_le_card (hSumset_subset_range hA)
     _ = h * N + 1 := Finset.card_range _
 
+/-!
+## Section VIII: The saturation characterization
+
+Section VI proved one direction — a `B_h` set saturates the multiset bound,
+`(hSumset h A).card = (A.sym h).card`.  The converse also holds: if the `h`-fold sumset
+attains that maximum, then the sum map on `A.sym h` has no collisions, so `A` is `B_h`.
+Combining gives a clean *characterization*:
+
+    A is B_h  ⟺  its h-fold sumset saturates the multiset bound (hΣ A).card = (A.sym h).card.
+
+This is the exact quantitative face of the `B_h` property: `B_h` sets are precisely those
+whose `h`-fold sumset is as large as the pigeonhole maximum `C(|A| + h − 1, h)` allows.
+(No stars-and-bars identity is needed — the statement is phrased with the honest quantity
+`(A.sym h).card`, which *is* that multiset coefficient.)
+-/
+
+/-- **The saturation characterization of `B_h`.**  A finite set `A` is `B_h` if and only if
+its `h`-fold sumset attains the maximal cardinality `(A.sym h).card` — i.e. no two distinct
+size-`h` multisets drawn from `A` share a sum.  The forward direction is Section VI's
+`card_hSumset_of_isBhSet`; the converse reads injectivity of the sum map off the
+image-cardinality equality via `Finset.injOn_of_card_image_eq`. -/
+theorem isBhSet_iff_card_hSumset (h : ℕ) (A : Finset ℕ) :
+    IsBhSet h A ↔ (hSumset h A).card = (A.sym h).card := by
+  rw [isBhSet_iff_injOn]
+  constructor
+  · intro H
+    exact Finset.card_image_of_injOn H
+  · intro H
+    exact Finset.injOn_of_card_image_eq H
+
 end Erdos153OQ03
