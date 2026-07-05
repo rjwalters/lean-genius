@@ -39,6 +39,7 @@ counterpart in the odd theory.
 | `vahlen_capelli_odd` — full `iff` for odd `n` (wraps Mathlib) | **proved** |
 | `not_irreducible_of_proper_dvd` — proper divisor ⟹ reducible (over a field) | **proved** |
 | `vahlen_capelli_necessity` — necessity for **all** `n` (both parities) | **proved** |
+| `no_root_of_not_square_even` — even `n` + `a` not a square ⟹ `X^n − C a` has no root | **proved** |
 | `vahlen_capelli` (even `n = 2` base case) — sufficiency via prime Kummer | **proved** |
 
 The two obstruction lemmas assemble into `vahlen_capelli_necessity`: their contrapositive
@@ -56,6 +57,33 @@ whose `4 ∤ 2` makes the `−4·K⁴` obstruction vacuous), `vahlen_capelli` is
 remaining `sorry` to **even `n ≥ 4`** — the 2-power / `4 ∣ n` regime where the Sophie-Germain
 obstruction is essential and Mathlib's prime-power criterion
 `X_pow_sub_C_irreducible_iff_of_prime_pow` is restricted to *odd* primes.
+
+## Roadmap for the base case `n = 4` (the smallest `4 ∣ n` instance)
+
+The `n = 4` sufficiency is the qualitatively new case — the first where condition (2)
+becomes *active in the sufficiency direction*, and the base case of the `2`-power induction.
+Its proof reduces cleanly to a finite factor analysis (worked out in full below; the sole
+missing Lean ingredient is the mechanical two-quadratic coefficient extraction, the natural
+delegation target for a proof-search backend):
+
+Assume `X⁴ − C a` reducible over a field `K`, with `a` not a square and `a ∉ −4·K⁴`.
+Reducible ⟹ `X⁴ − C a = g·h` with `g,h` non-units (monic WLOG), `deg g + deg h = 4`,
+both `≥ 1`. Two regimes:
+
+* **A factor is linear** (splits `(1,3)`/`(3,1)`): that factor has a root `r`, so `r` is a
+  root of `X⁴ − C a` — impossible by `no_root_of_not_square_even` (since `a` is not a
+  square). So the only surviving case is `(2,2)`.
+* **Two monic quadratics** `(X² + pX + q)(X² + sX + t)`. Matching coefficients:
+  `p + s = 0` (so `s = −p`), `q + t − p² = 0`, `p(t − q) = 0`, `q·t = −a`.
+  - If `p = 0`: then `t = −q` and `a = q²` — a square, contradiction.
+  - If `p ≠ 0`: then `t = q`, `2q = p²`, `q² = −a`. Note `p ≠ 0 ⟹ (2 : K) ≠ 0`
+    (else `p² = 2q = 0`), so `b := p/2` is defined and `−(4·b⁴) = −(p⁴/4) = −q² = a`,
+    contradicting `a ∉ −4·K⁴`. **The characteristic-2 obstruction is discharged
+    automatically** — no separate `char ≠ 2` hypothesis is needed.
+
+Thus `n = 4` sufficiency holds over *every* field. The general even case then follows by
+`2`-power induction (`n = 2^k`) plus multiplicativity across coprime exponent factors —
+both currently absent from Mathlib.
 
 ## Mathematical heart: the Sophie Germain identity
 
@@ -268,6 +296,29 @@ theorem vahlen_capelli_necessity {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) 
       omega
     exact not_irreducible_of_proper_dvd hfne hdvd (by rw [hq1eq]; omega)
       (by rw [hq1eq, hfdeg]; omega) hirr
+
+-- ============================================================
+-- PART 5b: Sufficiency groundwork — the root obstruction (all even `n`)
+-- ============================================================
+
+/-- **No-root lemma for even exponents.** If `a` is not a square (condition (1) at the
+prime `p = 2`, which divides every even `n`), then `X^n − C a` has **no root** in `K`:
+a root `r` would give `r^n = a`, and writing `n = 2m` makes `a = (r^m)²` a square.
+
+This is the exact content of the linear-factor obstruction in the *sufficiency* direction.
+Its consequence for even `n` is structural: any nontrivial factorisation of `X^n − C a`
+must be *rootless* (every irreducible factor has degree `≥ 2`). For `n = 4` this collapses
+the reducibility analysis to the single "two coprime quadratics" case — precisely where the
+Sophie-Germain / `−4·K⁴` obstruction (`sophie_germain`, `factor_capelli`) is the only
+remaining way to factor, so condition (2) is exactly what rules it out. -/
+theorem no_root_of_not_square_even {K : Type*} [Field K] {n : ℕ} (hn : Even n)
+    {a : K} (h1 : ∀ b : K, b ^ 2 ≠ a) (r : K) :
+    (X ^ n - C a : K[X]).eval r ≠ 0 := by
+  simp only [eval_sub, eval_pow, eval_X, eval_C]
+  intro h
+  obtain ⟨m, hm⟩ := hn
+  have hrn : r ^ n = a := sub_eq_zero.mp h
+  exact h1 (r ^ m) (by rw [← hrn, hm]; ring)
 
 -- ============================================================
 -- PART 6: The full criterion (even sufficiency = the open Mathlib gap)
