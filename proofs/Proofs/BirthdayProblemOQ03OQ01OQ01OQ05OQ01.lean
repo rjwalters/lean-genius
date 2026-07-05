@@ -187,7 +187,64 @@ coefficient identity is `choose_absorb_M` (Pascal + absorption), after reindexin
 `F n` contribution by `p ↦ p+1`. -/
 theorem F_rec (n d : ℕ) :
     F (n + 1 + 1) (d + 1) = (d + 1) * (F (n + 1) d + (n + 1) * F n d) := by
-  sorry
+  -- LHS as a sum over `range (n+1+1+1)`, coefficient `C(n+2,2p)·M p`.
+  have hL : F (n + 1 + 1) (d + 1)
+      = ∑ p ∈ Finset.range (n + 1 + 1 + 1),
+          (n + 2).choose (2 * p) * M p * (d + 1).descFactorial (n + 2 - p) := rfl
+  -- `(d+1)·F(n+1) d` as a sum over the same range, coefficient `C(n+1,2p)·M p`.
+  have hA : (d + 1) * F (n + 1) d
+      = ∑ p ∈ Finset.range (n + 1 + 1 + 1),
+          (n + 1).choose (2 * p) * M p * (d + 1).descFactorial (n + 2 - p) := by
+    rw [F, Finset.mul_sum,
+        Finset.sum_range_succ (fun p =>
+          (n + 1).choose (2 * p) * M p * (d + 1).descFactorial (n + 2 - p)) (n + 1 + 1),
+        show (n + 1).choose (2 * (n + 1 + 1)) = 0 from Nat.choose_eq_zero_of_lt (by omega),
+        zero_mul, zero_mul, add_zero]
+    apply Finset.sum_congr rfl
+    intro p hp
+    simp only [Finset.mem_range] at hp
+    rw [show (d + 1) * ((n + 1).choose (2 * p) * M p * d.descFactorial (n + 1 - p))
+          = (n + 1).choose (2 * p) * M p * ((d + 1) * d.descFactorial (n + 1 - p)) from by ring,
+        descFactorial_pull, show n + 1 - p + 1 = n + 2 - p from by omega]
+  -- `(n+1)·(d+1)·F n d` as a sum over the same range, with a `p = 0` guard.
+  have hB : (n + 1) * ((d + 1) * F n d)
+      = ∑ p ∈ Finset.range (n + 1 + 1 + 1),
+          (n + 1) * (if p = 0 then 0 else n.choose (2 * (p - 1)) * M (p - 1))
+            * (d + 1).descFactorial (n + 2 - p) := by
+    rw [F, Finset.mul_sum, Finset.mul_sum,
+        Finset.sum_range_succ' (fun p =>
+          (n + 1) * (if p = 0 then 0 else n.choose (2 * (p - 1)) * M (p - 1))
+            * (d + 1).descFactorial (n + 2 - p)) (n + 1 + 1)]
+    simp only [↓reduceIte, mul_zero, zero_mul, add_zero]
+    rw [Finset.sum_range_succ (fun p =>
+          (n + 1) * (if p + 1 = 0 then 0 else n.choose (2 * (p + 1 - 1)) * M (p + 1 - 1))
+            * (d + 1).descFactorial (n + 2 - (p + 1))) (n + 1)]
+    rw [show (if n + 1 + 1 = 0 then 0
+              else n.choose (2 * (n + 1 + 1 - 1)) * M (n + 1 + 1 - 1)) = 0 from by
+          rw [if_neg (by omega), Nat.add_sub_cancel,
+              show n.choose (2 * (n + 1)) = 0 from Nat.choose_eq_zero_of_lt (by omega), zero_mul],
+        mul_zero, zero_mul, add_zero]
+    apply Finset.sum_congr rfl
+    intro p hp
+    simp only [Finset.mem_range] at hp
+    rw [if_neg (by omega : ¬ p + 1 = 0), Nat.add_sub_cancel,
+        show (n + 1) * ((d + 1) * (n.choose (2 * p) * M p * d.descFactorial (n - p)))
+          = (n + 1) * (n.choose (2 * p) * M p) * ((d + 1) * d.descFactorial (n - p)) from by ring,
+        descFactorial_pull, show n - p + 1 = n + 2 - (p + 1) from by omega]
+  -- Assemble the three sums and match coefficients pointwise.
+  rw [mul_add, show (d + 1) * ((n + 1) * F n d) = (n + 1) * ((d + 1) * F n d) from by ring,
+      hA, hB, hL, ← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro p hp
+  match p with
+  | 0 => simp
+  | (q + 1) =>
+    rw [if_neg (by omega : ¬ q + 1 = 0), Nat.add_sub_cancel,
+        show (n + 2).choose (2 * (q + 1)) * M (q + 1) * (d + 1).descFactorial (n + 2 - (q + 1))
+          = ((n + 2).choose (2 * (q + 1)) * M (q + 1)) * (d + 1).descFactorial (n + 2 - (q + 1))
+          from by ring,
+        choose_absorb_M]
+    ring
 
 /-- **General closed form for the birthday count.**  For every `n` and `d`,
 
@@ -225,5 +282,9 @@ theorem birthdayCount3_closed : ∀ n d, birthdayCount3 n d = F n d := by
         simp only [Nat.add_sub_cancel] at hrec
         rw [hrec, ih (m + 1) (by omega) d', ih m (by omega) d']
         exact (F_rec m d').symm
+
+-- Axiom audit: the file contains no `sorry`, no `axiom` declarations, no `native_decide`
+-- and no `decide` on the stated results, so the closed form depends only on the standard
+-- foundational axioms (`propext`, `Classical.choice`, `Quot.sound`) — no assumptions.
 
 end BirthdayGeneralClosed
