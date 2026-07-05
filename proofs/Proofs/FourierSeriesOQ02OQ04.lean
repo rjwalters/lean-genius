@@ -223,7 +223,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
   have hr_pos : 0 < r := geomRatio_pos α
   have hr_lt1 : r < 1 := geomRatio_lt_one α hα_pos
   have hs_gt1 : 1 < s := by
-    unfold_let s; rw [show (1:ℝ) = (2:ℝ)^(0:ℝ) from by simp]
+    rw [hs_def]; rw [show (1:ℝ) = (2:ℝ)^(0:ℝ) from by simp]
     exact Real.rpow_lt_rpow_of_exponent_lt (by norm_num) (by linarith)
   have hs_pos : 0 < s - 1 := by linarith
   have hT_pos := hT.out
@@ -252,13 +252,13 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
           exact_mod_cast Nat.lt_pow_succ_log_self (by omega) n₀
   -- Key rpow bounds
   have h_s_bound : s^p₀ ≤ (2 * T / d)^(1-α) := by
-    unfold_let s
+    rw [hs_def]
     calc (2:ℝ)^(p₀ * (1-α))
         = ((2:ℝ)^p₀)^(1-α) := by rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]; ring_nf
       _ ≤ (2 * T / d)^(1-α) := by
           apply Real.rpow_le_rpow (by positivity) h_pow_le; linarith
   have h_r_bound : r^p₀ < (4 * d / T)^α := by
-    unfold_let r geomRatio
+    rw [hr_def]; unfold geomRatio
     calc (2:ℝ)^(-(p₀ * α))
         = ((2:ℝ)^(p₀+1))^(-α) := by
           rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]; ring_nf
@@ -273,7 +273,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
   -- The difference f(x) - f(y) = ∑' k, r^k • (fourier(2^k)(x) - fourier(2^k)(y))
   have h_diff : wFunc α x - wFunc α y =
       ∑' k : ℕ, (r^k • (fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y)) := by
-    unfold_let wFunc
+    unfold wFunc
     simp_rw [← smul_sub]
     rw [← tsum_sub (wFunc_summable α hα_pos x) (wFunc_summable α hα_pos y)]
   rw [h_diff]
@@ -323,7 +323,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
           apply mul_le_mul_of_nonneg_left _ (by positivity)
           apply geom_partial_sum_le hs_gt1
       _ ≤ (2 * Real.pi * (2 * T)^(1-α)) / (T * ((2:ℝ)^(1-α) - 1)) * d^α := by
-          unfold_let s
+          rw [hs_def]
           rw [div_mul_eq_mul_div, div_le_div_iff (by positivity) (by positivity)]
           calc (2 * Real.pi / T * d) * ((2:ℝ)^(p₀*(1-α)) / ((2:ℝ)^(1-α) - 1)) *
               (T * ((2:ℝ)^(1-α) - 1))
@@ -342,7 +342,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
       (2 * (4:ℝ)^α) / (T^α * (1 - (2:ℝ)^(-α))) * d^α := by
     rw [show (fun k : ℕ => r^(k+p₀) * 2) = fun k => 2 * r^(k+p₀) from funext (fun k => by ring)]
     rw [tsum_mul_left, geom_tail_sum hr_pos hr_lt1]
-    unfold_let r geomRatio
+    rw [hr_def]; unfold geomRatio
     rw [div_mul_eq_mul_div, mul_div_assoc']
     apply div_le_div_of_nonneg_right _ (by positivity)
     calc 2 * (2:ℝ)^(-(p₀:ℝ) * α)
@@ -362,9 +362,9 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
 private theorem wFunc_holderWith (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 1) :
     ∃ (C : ℝ≥0), HolderWith C α.toNNReal (wFunc α (T := T)) := by
   set K : ℝ := (2 * Real.pi * (2 * T)^(1-α)) / (T * ((2:ℝ)^(1-α) - 1)) +
-               (2 * (4:ℝ)^α) / (T^α * (1 - (2:ℝ)^(-α)))
+               (2 * (4:ℝ)^α) / (T^α * (1 - (2:ℝ)^(-α))) with hK_def
   have hK_pos : 0 < K := by
-    unfold_let K
+    rw [hK_def]
     apply add_pos
     · apply div_pos (by positivity)
       apply mul_pos hT.out
