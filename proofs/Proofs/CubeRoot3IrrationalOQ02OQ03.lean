@@ -62,9 +62,11 @@ obstruction is essential and Mathlib's prime-power criterion
 
 The `n = 4` sufficiency is the qualitatively new case — the first where condition (2)
 becomes *active in the sufficiency direction*, and the base case of the `2`-power induction.
-Its proof reduces cleanly to a finite factor analysis (worked out in full below; the sole
-missing Lean ingredient is the mechanical two-quadratic coefficient extraction, the natural
-delegation target for a proof-search backend):
+Its proof reduces cleanly to a finite factor analysis. **Both regimes below are now backed by
+proved lemmas** (`no_root_of_not_square_even` and `capelli_four_coeff_contra`); the sole
+missing Lean ingredient is the mechanical *polynomial* plumbing that dispatches a reducible
+quartic into these two regimes (degree bookkeeping + two-quadratic coefficient extraction) —
+the natural delegation target for a proof-search backend.
 
 Assume `X⁴ − C a` reducible over a field `K`, with `a` not a square and `a ∉ −4·K⁴`.
 Reducible ⟹ `X⁴ − C a = g·h` with `g,h` non-units (monic WLOG), `deg g + deg h = 4`,
@@ -72,14 +74,14 @@ both `≥ 1`. Two regimes:
 
 * **A factor is linear** (splits `(1,3)`/`(3,1)`): that factor has a root `r`, so `r` is a
   root of `X⁴ − C a` — impossible by `no_root_of_not_square_even` (since `a` is not a
-  square). So the only surviving case is `(2,2)`.
+  square). So the only surviving case is `(2,2)`.  ← **proved lemma**
 * **Two monic quadratics** `(X² + pX + q)(X² + sX + t)`. Matching coefficients:
   `p + s = 0` (so `s = −p`), `q + t − p² = 0`, `p(t − q) = 0`, `q·t = −a`.
   - If `p = 0`: then `t = −q` and `a = q²` — a square, contradiction.
   - If `p ≠ 0`: then `t = q`, `2q = p²`, `q² = −a`. Note `p ≠ 0 ⟹ (2 : K) ≠ 0`
     (else `p² = 2q = 0`), so `b := p/2` is defined and `−(4·b⁴) = −(p⁴/4) = −q² = a`,
     contradicting `a ∉ −4·K⁴`. **The characteristic-2 obstruction is discharged
-    automatically** — no separate `char ≠ 2` hypothesis is needed.
+    automatically** — no separate `char ≠ 2` hypothesis is needed.  ← **now `capelli_four_coeff_contra`, proved**
 
 Thus `n = 4` sufficiency holds over *every* field. The general even case then follows by
 `2`-power induction (`n = 2^k`) plus multiplicativity across coprime exponent factors —
