@@ -55,6 +55,10 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `hSumset_mono`               : monotonicity — `A ⊆ B ⟹ hSumset h A ⊆ hSumset h B` (sumset shadow of `Finset.sym_mono`)
 - `hSumset_singleton`          : boundary case `|A|=1` — `hSumset h {a} = {h·a}` (both size bounds collapse to a point)
 - `card_hSumset_singleton`     : `|hSumset h {a}| = 1` — the equality case of both size bounds at `|A|=1`
+- `range_add_range`            : Minkowski sum of intervals `range(a+1)+range(b+1) = range(a+b+1)`
+- `hSumset_range`              : the `h`-fold sumset of the interval `{0,…,n}` is `{0,…,h·n}` (AP extremal)
+- `card_hSumset_range`         : `|hΣ {0,…,n}| = h·n + 1`
+- `card_hSumset_ge_sharp`      : the AP `{0,…,n}` attains the `card_hSumset_ge` floor with equality — sharpness
 -/
 import Mathlib
 
@@ -1029,5 +1033,73 @@ consequence of `hSumset_singleton`: `|hSumset h {a}| = 1`.  This exhibits the eq
 case of both size bounds simultaneously for `|A| = 1`. -/
 theorem card_hSumset_singleton (h a : ℕ) : (hSumset h ({a} : Finset ℕ)).card = 1 := by
   rw [hSumset_singleton, Finset.card_singleton]
+
+/-!
+## Section XII: Sharpness of the Cauchy–Davenport floor — the interval case
+
+The universal floor `card_hSumset_ge` reads `h·(|A|−1)+1 ≤ |hΣ A|`, and its docstring
+asserts (in prose only) that equality is *attained by arithmetic progressions*.  Here we
+formalize the cleanest witness: the initial interval `A = {0,1,…,n} = range (n+1)`, the
+arithmetic progression of common difference `1` based at `0`.  Its `h`-fold sumset is the
+full interval `{0,1,…,h·n} = range (h·n + 1)` — nothing is lost to collisions from below,
+because sums fill every integer between the extremes `0` (all summands `0`) and `h·n`
+(all summands `n`).  So `|hΣ A| = h·n + 1 = h·(|A|−1)+1`, turning the floor prose into a
+theorem (`card_hSumset_ge_sharp`).  Together with `card_hSumset_singleton` (the `|A|=1`
+corner) and `card_hSumset_of_isBhSet` (the `B_h` ceiling), this pins down both extremes of
+the two-sided squeeze `card_hSumset_ge_and_eq_of_isBhSet`.
+-/
+
+/-- **Minkowski sum of two initial intervals.**  `range (a+1) + range (b+1) =
+range (a+b+1)`: the pointwise sums of `{0,…,a}` and `{0,…,b}` are exactly `{0,…,a+b}`.
+The `⊆` direction is `i+j ≤ a+b`; the `⊇` direction writes any `x ≤ a+b` as `x = i+j`
+with `i ≤ a`, `j ≤ b` (take `i = min x a`).  This is the additive engine behind the
+interval sumset computation. -/
+theorem range_add_range (a b : ℕ) :
+    Finset.range (a + 1) + Finset.range (b + 1) = Finset.range (a + b + 1) := by
+  ext x
+  simp only [Finset.mem_add, Finset.mem_range, Nat.lt_succ_iff]
+  constructor
+  · rintro ⟨i, hi, j, hj, rfl⟩
+    omega
+  · intro hx
+    rcases le_or_gt x a with hxa | hxa
+    · exact ⟨x, hxa, 0, Nat.zero_le b, by omega⟩
+    · exact ⟨a, le_refl a, x - a, by omega, by omega⟩
+
+/-- **The `h`-fold sumset of an initial interval is an initial interval.**
+`hSumset h (range (n+1)) = range (h·n + 1)`.  By induction on `h` via the additive
+recurrence `hSumset_succ` and `range_add_range`: the base case is `hSumset 0 = {0} =
+range 1`, and the step multiplies the interval length by adding one more copy of
+`{0,…,n}`.  The initial interval `{0,…,n}` is the arithmetic-progression extremal for the
+sumset-size floor: its `h`-fold sums realise *every* value in `[0, h·n]`. -/
+theorem hSumset_range (h n : ℕ) :
+    hSumset h (Finset.range (n + 1)) = Finset.range (h * n + 1) := by
+  induction h with
+  | zero => rw [hSumset_zero]; simp
+  | succ k ih =>
+    rw [hSumset_succ, ih, range_add_range]
+    congr 1
+    ring
+
+/-- **The `h`-fold sumset of `{0,…,n}` has exactly `h·n + 1` elements.**  Immediate
+cardinality consequence of `hSumset_range`. -/
+theorem card_hSumset_range (h n : ℕ) :
+    (hSumset h (Finset.range (n + 1))).card = h * n + 1 := by
+  rw [hSumset_range, Finset.card_range]
+
+/-- **Sharpness of the Cauchy–Davenport floor.**  The universal lower bound
+`card_hSumset_ge`, `h·(|A|−1)+1 ≤ |hΣ A|`, is *attained with equality* by the arithmetic
+progression `A = range (n+1) = {0,…,n}`:
+
+    |hΣ (range (n+1))|  =  h·(|range (n+1)| − 1) + 1.
+
+Since `|range (n+1)| = n+1`, both sides equal `h·n + 1` (`card_hSumset_range`).  This
+converts the "equality is attained by arithmetic progressions" remark in the docstring of
+`card_hSumset_ge` into a proved statement, and — with `card_hSumset_of_isBhSet` realising
+the `B_h` ceiling — shows both ends of the two-sided squeeze are simultaneously sharp. -/
+theorem card_hSumset_ge_sharp (h n : ℕ) :
+    (hSumset h (Finset.range (n + 1))).card
+      = h * ((Finset.range (n + 1)).card - 1) + 1 := by
+  rw [card_hSumset_range, Finset.card_range, Nat.add_sub_cancel]
 
 end Erdos153OQ03
