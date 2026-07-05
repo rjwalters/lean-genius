@@ -39,7 +39,9 @@
     "keyInsights": [
       "Hermite's identity is a statement about a total; the refinement recovers the distribution. Because each shift k/n ∈ [0, 1), the n summands take only the two consecutive values ⌊x⌋ and ⌊x⌋ + 1 — the total ⌊n·x⌋ is achieved by a low block of ⌊x⌋'s and a high block of (⌊x⌋+1)'s.",
       "The size of the high block is ⌊n·{x}⌋, the same fractional quantity that appears in the scaling identity ⌊n·x⌋ = n·⌊x⌋ + ⌊n·{x}⌋. The jump count and the fractional part of ⌊n·x⌋'s decomposition are one and the same number.",
-      "Counting reduces to summing an indicator: writing the cardinality of the jump set as ∑_{k<n} 1_{jump}(k) and identifying 1_{jump}(k) with the increment ⌊x + k/n⌋ − ⌊x⌋ (valid precisely because of the two-value structure) turns the count into Hermite's sum minus n·⌊x⌋."
+      "Counting reduces to summing an indicator: writing the cardinality of the jump set as ∑_{k<n} 1_{jump}(k) and identifying 1_{jump}(k) with the increment ⌊x + k/n⌋ − ⌊x⌋ (valid precisely because of the two-value structure) turns the count into Hermite's sum minus n·⌊x⌋.",
+      "Everything depends on x only through its fractional part {x}. The scaling identity ⌊n·x⌋ = n·⌊x⌋ + ⌊n·{x}⌋ isolates the integer base n·⌊x⌋ — pulled out of the floor by Int.floor_add_intCast — from the genuinely fractional jump count ⌊n·{x}⌋, so both the two-value structure and the block sizes are invariant under x ↦ x + 1; the integer part of x contributes only a uniform shift of all summands by ⌊x⌋.",
+      "The refinement subsumes its parent rather than depending on it: the sum-decomposition corollary reassembles the total as n·⌊x⌋ plus one unit per jump, recovering Hermite's identity ∑_{k<n} ⌊x + k/n⌋ = ⌊n·x⌋ from the two-value structure and jump count alone. The parent theorem becomes a corollary of the distribution; the parent's two lemmas are reproduced as private helpers only to keep the file standalone and kernel-checkable, not because the argument logically needs them as inputs."
     ],
     "prerequisites": [
       "The fractional-part function {·} = Int.fract and the identity {y} = y − ⌊y⌋",
