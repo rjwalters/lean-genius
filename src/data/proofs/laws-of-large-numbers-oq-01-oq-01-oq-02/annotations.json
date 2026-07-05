@@ -21,9 +21,30 @@
     ]
   },
   {
+    "id": "ann-samplemean-def",
+    "proofId": "laws-of-large-numbers-oq-01-oq-01-oq-02",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "definition",
+    "title": "The Sample Mean and Its Normalization Convention",
+    "content": "`sampleMean X n ω = (↑n)⁻¹ • Σ_{i ∈ range n} Xᵢ ω` is the arithmetic mean of the first `n` samples along the path `ω`. Two conventions are worth noting. First, the leading factor is written with the scalar action `•` rather than multiplication `*`; on `ℝ` these agree, but `•` keeps the definition uniform with Mathlib's module-level averaging lemmas. Second, the `n = 0` case is *not* excluded: with `Finset.range 0 = ∅` the sum is `0` and `(↑0)⁻¹ = 0` in Mathlib's junk-value convention, so `sampleMean X 0 = 0`. That degenerate value is harmless here because the argument only ever instantiates `n = 1`, where `(↑1)⁻¹ = 1` and the sum is a single term.",
+    "mathContext": "$\\mathrm{sampleMean}\\,X\\,n\\,\\omega = \\dfrac{1}{n}\\sum_{i=0}^{n-1} X_i(\\omega)$, with the Mathlib conventions $\\sum_{i\\in\\mathrm{range}\\,0} = 0$ and $(0:\\mathbb{R})^{-1} = 0$ giving $\\mathrm{sampleMean}\\,X\\,0 = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "empirical mean",
+      "Finset.range",
+      "scalar action on ℝ",
+      "junk-value convention for division by zero"
+    ],
+    "prerequisites": [
+      "finite sums over Finset.range",
+      "module scalar action",
+      "Mathlib inv-zero convention"
+    ]
+  },
+  {
     "id": "ann-sample-mean-one",
     "proofId": "laws-of-large-numbers-oq-01-oq-01-oq-02",
-    "range": { "startLine": 52, "endLine": 61 },
+    "range": { "startLine": 55, "endLine": 58 },
     "type": "technique",
     "title": "S₁/1 = X₀: The Load-Bearing Identity",
     "content": "`sampleMean X n ω` packages the n-th sample mean (1/n)·Σ_{i<n} Xᵢ(ω). The lemma `sampleMean_one` proves the pointwise identity `sampleMean X 1 = X 0`.\n\nThe proof is `funext ω` followed by `simp [sampleMean]`. Unfolding the definition at n = 1 leaves `(1:ℝ)⁻¹ • Σ_{i<1} Xᵢ ω`. The simp set collapses two facts automatically: `Finset.sum_range_one` (a sum over `range 1` is just the i = 0 term, X₀ ω) and the scalar simplification `(↑(1:ℕ))⁻¹ = 1` with `one_smul`. What remains is `X 0 ω`.\n\nTrivial as a Lean proof, this identity is the entire mathematical content of the entry: a single sample mean is a single sample. It is precisely the fact that has no almost-sure analogue — one realization of X₀ tells you nothing about a.s. convergence, so the almost-sure necessity theorem cannot short-circuit through n = 1 and must instead recover the moment from the tail behaviour of the whole sequence.",
@@ -58,6 +79,27 @@
       "MemLp membership",
       "rewriting with pointwise function equalities",
       "IdentDistrib"
+    ]
+  },
+  {
+    "id": "ann-probability-space-setup",
+    "proofId": "laws-of-large-numbers-oq-01-oq-01-oq-02",
+    "range": { "startLine": 45, "endLine": 49 },
+    "type": "context",
+    "title": "The Probability-Space Setting Is Not Just Scenery",
+    "content": "The ambient assumptions `{μ : Measure Ω} [IsProbabilityMeasure μ]` look like boilerplate but pin down exactly which part of the Lᵖ story is trivial and which is not. `IsProbabilityMeasure` (total mass one) makes the Lᵖ spaces *nested*: `L^q ⊆ L^p` for `p ≤ q`, so in particular `L^p ⊆ L^1` for every `p ≥ 1`. That nesting is precisely what the *unproved* half of the question — the claim that the limit `c` must equal `E[X₀]` — relies on: Lᵖ convergence implies L¹ convergence on a finite-mass space, and expectations are continuous in L¹, so `E[Sₙ/n] → c`; combined with `E[Sₙ/n] = E[X₀]` (identical distribution) this forces `c = E[X₀]`. The *moment* half proved in this file, by contrast, needs none of this: it never integrates and never uses finiteness of the measure, only the membership `MemLp (sampleMean X 1) p μ`. Flagging the setup makes the division of labour explicit — finiteness of μ is the hinge on which the open direction turns.",
+    "mathContext": "On a probability space, $p \\le q \\Rightarrow \\|f\\|_p \\le \\|f\\|_q$, so $L^q \\subseteq L^p$ and in particular $L^p \\subseteq L^1$ for $p \\ge 1$. Hence $L^p$ convergence $\\Rightarrow$ $L^1$ convergence $\\Rightarrow$ $E[S_n/n] \\to c$; with $E[S_n/n] = E[X_0]$ this would give $c = E[X_0]$ (the open direction).",
+    "significance": "context",
+    "relatedConcepts": [
+      "IsProbabilityMeasure",
+      "nesting of Lᵖ spaces on finite measures",
+      "L¹ continuity of expectation",
+      "Jensen / Hölder inequality"
+    ],
+    "prerequisites": [
+      "finite measure spaces",
+      "inclusions between Lᵖ spaces",
+      "expectation as an integral"
     ]
   }
 ]
