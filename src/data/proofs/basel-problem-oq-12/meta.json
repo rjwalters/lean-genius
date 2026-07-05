@@ -116,6 +116,11 @@
       "targetId": "basel-problem-oq-08",
       "relationship": "sibling",
       "description": "ζ(4) = π⁴/90, the k = 2 case; this entry is the next value ζ(6) in the family."
+    },
+    {
+      "targetId": "basel-problem-oq-15",
+      "relationship": "extendedBy",
+      "description": "ζ(8) = π⁸/9450, the k = 4 case — the next even zeta value in Euler's family after this ζ(6), built from the same hasSum_zeta_nat template with B₈ = −1/30. It realises this entry's first open question (\"Can ζ(8) = π⁸/9450 be obtained the same way?\"), the B₈ recurrence consuming this entry's B₆ = 1/42 as a summand."
     }
   ],
   "sorries": 0,
