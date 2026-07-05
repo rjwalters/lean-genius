@@ -1,25 +1,20 @@
-# Research State: derangements-convergence-oq-04-oq-03
+# State: derangements-convergence-oq-04-oq-03
 
-## Current State
-**Phase**: OBSERVE
-**Path**: full
-**Since**: 2026-07-04T18:35:42-07:00
-**Iteration**: 1
+**Phase:** ACT
+**Status:** in-progress (draft UNVERIFIED — build blackout)
 
-## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+## Current result
+Sharp CRT-fused congruence, drafted in Lean (unverified):
 
-## Active Approach
-None yet.
+  D(n) ≡ (−1)^(n+1)·(n − 1)   (mod n(n−1))
 
-## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+unifying the parent's `(n−1) ∣ D(n)` and `D(n) ≡ (−1)^n (mod n)`.
+Structural engine `crt_combine` transfers the result to any r-derangement
+family sharing the two recurrences.
 
 ## Blockers
-None.
+- Docker Lean build image blob corrupted (containerd meta.db EIO) → no machine check.
+- Aristotle MCP returns 404.
 
-## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+## Next
+Machine-check once Docker restored; promote draft into proofs/Proofs/.
