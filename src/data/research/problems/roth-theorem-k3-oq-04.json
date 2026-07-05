@@ -1,0 +1,23 @@
+{
+  "id": "roth-theorem-k3-oq-04",
+  "name": "Can the Fourier infrastructure be extended to handle polynomial progressions (Bergelson-Leibman)",
+  "parentId": "roth-theorem-k3",
+  "relatedProofs": ["roth-theorem-k3", "roth-theorem-k3-oq-03", "furstenberg-correspondence"],
+  "status": "surveyed",
+  "knowledge": {
+    "score": 4,
+    "progressSummary": "SURVEYED (researcher-6 2026-07-05): the open question has a precise structural answer, not a yes/no. The repo's linear Fourier engine (RothTheorem.lean, 0-axiom: fourierCoeff on ZMod N, Parseval, triple_count_fourier) linearizes the 3-AP count because a 3-AP is a LINEAR form — the count collapses to N⁻¹·∑_r Â(r)²·conj(Â(2r)) via character orthogonality on x+r, x+2r. For polynomial patterns the picture splits: (a) a SINGLE polynomial difference {x, x+n²} (Sárközy/Furstenberg) is STILL reachable with the same linear transform PLUS a quadratic Gauss sum — the count is N⁻¹·∑_r |Â(r)|²·G(r) with G(r)=∑_n ψ(r·n²); (b) genuine multi-term polynomial progressions {x, x+n, x+n²} (the Bergelson-Leibman core) are NOT controlled by the linear (U²) transform at all and require higher-order/Gowers Fourier analysis (U^s norms) + PET induction. Carved a concrete verified target for (a).",
+    "insights": [
+      "The existing Roth Fourier infrastructure is genuine and 0-axiom: RothTheorem.lean defines fourierCoeff A r = ∑_{x∈A} ψ(r·x) on ZMod N, proves Parseval (∑_r ‖Â(r)‖² = |A|·N), and the key linearization triple_count_fourier: tripleCount(A) + |A| = N⁻¹·∑_r Â(r)²·conj(Â(2r)). The 3-AP count linearizes ONLY because the pattern (x, x+d, x+2d) is a linear form: character orthogonality in x forces the frequency relation and collapses two of the three Fourier factors into Â(r) and Â(2r).",
+      "Structural answer to the OQ, part (a) — Sárközy/single square difference IS an accessible extension. For A ⊆ ZMod N the square-difference count SD(A) = ∑_{x,n} 1_A(x)·1_A(x+n²) Fourier-expands (identical orthogonality bookkeeping to triple_count_fourier) to SD(A) = N⁻¹·∑_r |Â(r)|²·G(r), where G(r) = ∑_{n∈ZMod N} ψ(r·n²) is a quadratic GAUSS sum. Principal term r=0: G(0)=N, Â(0)=|A| ⇒ |A|². The new ingredient vs 3-APs is that the non-principal terms are weighted by G(r) (size ≈ √N for r≠0 by classical Gauss-sum bounds) instead of a second coefficient Â(2r). So the LINEAR transform + Weyl/Gauss-sum estimates suffice — this is exactly the circle-method route to Sárközy's theorem.",
+      "Structural answer, part (b) — genuine polynomial PROGRESSIONS (Bergelson-Leibman) are NOT linear-Fourier accessible. Patterns with ≥2 nonlinear terms, e.g. {x, x+n, x+n²}, are provably NOT controlled by the U² (linear Fourier) norm: their count sees quadratic phase correlations invisible to Â. The required machinery is higher-order Fourier analysis (Gowers U^s norms, s≥3) plus PET (Polynomial Exhaustion Technique) induction, or the ergodic Bergelson-Leibman theorem via Furstenberg correspondence (see FurstenbergCorrespondence.lean). None of this — Gowers norms, inverse theorems, PET — exists in Mathlib 4.26. So 'extend the [linear] Fourier infrastructure' to the full Bergelson-Leibman setting is a >1000-line foundational program and open as a formalization target.",
+      "Depth-1 OQ chain (single -oq- segment) but 0 follow-up questions generated: the natural children (formalize the SD Fourier identity; formalize Gowers U³) are already captured as nextSteps here, and a new gallery OQ entry would just duplicate them."
+    ],
+    "builtItems": [],
+    "nextSteps": [
+      "TRACTABLE, verified target (Sárközy Fourier identity): formalize sqDiffCount A = ∑_{x,n} 1_A(x)·1_A(x+n²) and gaussSum N r = ∑_n ψ(r·n²) over ZMod N, then prove SD(A) = N⁻¹·∑_r |Â(r)|²·G(r) — the quadratic analog of triple_count_fourier. Mirrors the existing (0-axiom) orthogonality proof in RothTheorem.lean with n² in place of the linear form. This directly answers the OQ 'yes, for the single square difference' with machine-checked content.",
+      "Follow-on: bound the r≠0 terms by |G(r)| ≤ √(2N) (classical Gauss-sum bound) to derive a density-increment for square differences (finite Sárközy).",
+      "Out of reach in Mathlib 4.26 (document, do not attempt): Gowers U^s norms, the inverse theorem, PET induction — required for genuine {x, x+n, x+n²} polynomial progressions (Bergelson-Leibman)."
+    ]
+  }
+}
