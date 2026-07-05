@@ -134,5 +134,27 @@
       "Formalize the correspondence in its native module-theoretic form: M has a cyclic vector iff the F[X]-module Fⁿ (with X acting as M) is cyclic, i.e. Fⁿ ≅ F[X]/(minpoly M) as F[X]-modules, making the linear-algebraic cyclicity literally module cyclicity.",
       "Extend the framework beyond fields to a PID base, where the structure theorem for finitely generated modules (invariant factors / Smith normal form) governs the analogue of the companion decomposition and the notion of a cyclic generator."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02",
+      "relationship": "extends",
+      "description": "The direct parent in the reduction chain. This entry continues its program by proving that a cyclic vector forces a matrix to be non-derogatory (minimal polynomial = characteristic polynomial) in full generality, with the companion matrices realizing the converse via an explicit cyclic vector."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields",
+      "relationship": "related",
+      "description": "The closely parallel development of the same equivalence over arbitrary fields. That entry proves the reverse implication (nonderogatory ⇒ cyclic vector) via primary decomposition; together with this entry's forward direction (cyclic vector ⇒ non-derogatory) they close the cyclic-vector / non-derogatory equivalence field-independently."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "related",
+      "description": "The foundational theorem underpinning the whole reduction. Cayley–Hamilton (every matrix satisfies its characteristic polynomial) is what makes the minimal polynomial divide the characteristic polynomial; non-derogatoriness is precisely the extremal case minpoly = charpoly this entry characterizes."
+    },
+    {
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Develops the minimal-polynomial machinery this entry's characterization rests on. It generalizes the minimal polynomial to K-algebras; the equality minpoly = charpoly defining a non-derogatory matrix is a statement about exactly that minimal polynomial and its degree."
+    }
+  ]
 }
