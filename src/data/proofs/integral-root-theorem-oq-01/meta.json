@@ -35,7 +35,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The rational root theorem is the classical test for rational roots of integer (or rational) polynomials, a direct consequence of Gauss's lemma on primitive polynomials. It is the standard route to irrationality results — √2, ∛2, and more generally ⁿ√m for non-perfect-powers m — and to bounding the search for rational roots in elementary algebra. The monic special case (rational roots are integers) is the statement that ℤ is integrally closed in ℚ.",
+    "historicalContext": "The rational root theorem is the classical test for rational roots of integer (or rational) polynomials, a direct consequence of Gauss's lemma on primitive polynomials, which Gauss placed at the foundation of his 1801 Disquisitiones Arithmeticae. It is the standard route to irrationality results — √2, ∛2, and more generally ⁿ√m for non-perfect-powers m — and to bounding the search for rational roots in elementary algebra. The monic special case (rational roots are integers) is the statement that ℤ is integrally closed in ℚ; the twentieth-century language of integral closure (Dedekind, Krull, Noether) recast this from a computational trick into a structural property shared by all unique factorization domains.",
     "problemStatement": "**Open Question (OQ-01, integral/rational root theorem)**: Formalize the rational root theorem over ℤ ⊂ ℚ — numerator divides the constant term, denominator divides the leading coefficient — and the monic corollary that rational roots are integers, with a worked irrationality application.\n\n**Formalized**: num_dvd_of_root, den_dvd_of_root, isInteger_of_monic_root, monic_root_isInteger, and the irrationality of √2 (no_rat_sq_eq_two via no_int_sq_eq_two).",
     "text": "A 79-line formalization. The two divisibility statements (num_dvd_of_root, den_dvd_of_root) specialize Mathlib's integrally-closed-domain results to ℤ ⊂ ℚ. The monic corollary monic_root_isInteger unpacks IsLocalization.IsInteger to give an explicit integer z with (z : ℚ) = r. As an application, no_rat_sq_eq_two proves √2 irrational: a rational r with r² = 2 is a root of the monic X² − 2, hence an integer z with z² = 2, contradicting no_int_sq_eq_two. All 6 theorems compile with 0 sorries and 0 axioms; no native_decide is used.",
     "proofStrategy": "**Divisibility (num/den)**: direct specializations of Polynomial.num_dvd_of_is_root and den_dvd_of_is_root (which hold over any integrally closed domain with its fraction field) to A = ℤ, K = ℚ, using IsFractionRing.num / .den.\n\n**Monic ⇒ integer (monic_root_isInteger)**: isInteger_of_is_root_of_monic gives IsLocalization.IsInteger ℤ r, i.e. r ∈ range (algebraMap ℤ ℚ); destructuring yields z : ℤ with algebraMap z = r, and algebraMap ℤ ℚ z = (z : ℚ).\n\n**Irrationality (no_rat_sq_eq_two)**: a rational r with r² = 2 satisfies aeval r (X² − C 2) = 0; X² − C 2 is monic (monic_X_pow_sub_C), so r = z for an integer z, whence z² = 2 by casting — ruled out by no_int_sq_eq_two, proved by bounding −2 < z < 2 (nlinarith with sq_nonneg) and interval_cases.",
@@ -65,18 +65,34 @@
     },
     {
       "id": "sec-divisibility",
-      "title": "The Rational Root Theorem over Z ⊂ Q",
+      "title": "Numerator and Denominator Divisibility",
       "startLine": 30,
+      "endLine": 42,
+      "summary": "num_dvd_of_root (numerator of a rational root divides p.coeff 0) and den_dvd_of_root (denominator divides p.leadingCoeff), specializing Mathlib's num_dvd_of_is_root / den_dvd_of_is_root to Z ⊂ Q via IsFractionRing.num/.den. Together they pin any rational root a/b to a finite candidate list.",
+      "mathContext": "$\\mathrm{aeval}\\,r\\,p=0\\Rightarrow a\\mid p.\\mathrm{coeff}\\,0$ and $b\\mid p.\\mathrm{leadingCoeff}$."
+    },
+    {
+      "id": "sec-monic",
+      "title": "Monic Roots Are Integers",
+      "startLine": 44,
       "endLine": 54,
-      "summary": "num_dvd_of_root (numerator of a rational root divides p.coeff 0) and den_dvd_of_root (denominator divides p.leadingCoeff), specializing Mathlib's num_dvd_of_is_root / den_dvd_of_is_root to Z ⊂ Q via IsFractionRing.num/.den. Also isInteger_of_monic_root and monic_root_isInteger: a rational root of a monic integer polynomial is an integer.",
-      "mathContext": "$a\\mid p.\\mathrm{coeff}\\,0$, $b\\mid p.\\mathrm{leadingCoeff}$; monic $\\Rightarrow \\exists z\\in\\mathbb{Z},(z:\\mathbb{Q})=r$."
+      "summary": "isInteger_of_monic_root (Mathlib's IsLocalization.IsInteger form) and monic_root_isInteger, which unpacks it to an explicit integer z with (z : ℚ) = r. This is the monic corollary of the rational root theorem — equivalently the statement that ℤ is integrally closed in ℚ — and the engine behind the irrationality application.",
+      "mathContext": "$p$ monic, $\\mathrm{aeval}\\,r\\,p=0\\Rightarrow \\exists z\\in\\mathbb{Z},(z:\\mathbb{Q})=r$."
+    },
+    {
+      "id": "sec-no-int-sq",
+      "title": "No Integer Squares to 2",
+      "startLine": 56,
+      "endLine": 63,
+      "summary": "no_int_sq_eq_two (∀ z : ℤ, z² ≠ 2): the finite integer check underpinning the irrationality of √2. Bounds −2 < z < 2 are extracted with nlinarith from sq_nonneg (z ∓ 2), then interval_cases closes the finitely many candidates by simp_all.",
+      "mathContext": "$-2<z<2$ via $\\mathrm{sq\\_nonneg}$, then $\\texttt{interval\\_cases}$: $\\forall z\\in\\mathbb{Z},z^2\\ne 2$."
     },
     {
       "id": "sec-sqrt2",
       "title": "Application: Irrationality of √2",
-      "startLine": 56,
+      "startLine": 65,
       "endLine": 79,
-      "summary": "no_int_sq_eq_two (∀ z : ℤ, z² ≠ 2, via nlinarith bounds + interval_cases) and no_rat_sq_eq_two (√2 irrational): a rational r with r² = 2 is a root of the monic X² − 2, hence an integer z with z² = 2, contradicting no_int_sq_eq_two. The template generalizes to ⁿ√p for any prime p.",
+      "summary": "no_rat_sq_eq_two (√2 irrational): a rational r with r² = 2 is a root of the monic X² − 2 (monic_X_pow_sub_C), hence by monic_root_isInteger an integer z with z² = 2, contradicting no_int_sq_eq_two. The template generalizes to ⁿ√p for any prime p.",
       "mathContext": "$r^2=2\\Rightarrow r$ is a monic root $\\Rightarrow r=z\\in\\mathbb{Z}\\Rightarrow z^2=2$, impossible."
     }
   ],
