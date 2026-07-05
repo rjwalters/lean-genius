@@ -40,17 +40,23 @@ Reference: Artin, *Geometric Algebra* (Desargues ⇔ division ring);
 Hartshorne, *Foundations of Projective Geometry*.
 
 BUILD STATUS: UNVERIFIED. The Docker + Aristotle blackout persists on
-2026-07-04 (containerd `meta.db` I/O error on image build; Aristotle MCP
-`prove_file` returns an error), so this file has NOT been machine-checked. It is
-deliberately placed under `research/problems/.../lean/` (outside the
-`proofs/Proofs/` glob) so it cannot break the gallery build. Parts I–II
-(`nucleus_sum`, `cross_dep`, `cross_eq`, `desargues`, `normalize_perspective`)
-and Part III (`zero_divisor_breaks_normalization`,
+2026-07-04 and is now root-caused: the Docker containerd content store is
+corrupted (blob `input/output error` on any image build) because the host disk
+`/System/Volumes/Data` is 98% full; Aristotle MCP `prove` returns 404 "Resource
+not found". So this file has NOT been machine-checked. It is deliberately placed
+under `research/problems/.../lean/` (outside the `proofs/Proofs/` glob) so it
+cannot break the gallery build. Parts I–II (`nucleus_sum`, `cross_dep`,
+`cross_eq`, `desargues`, `normalize_perspective`) and Part III
+(`zero_divisor_breaks_normalization`,
 `smul_preserves_nonzero_iff_no_zero_divisors`) are the reviewed mathematical
-core; the Part IV quaternion `example` is an instance-resolution demonstration.
-Part V pins the dichotomy to explicit finite rings (`ZMod 6` negative, `ZMod 5`
-positive) via `decide`; those four `example`s are the one self-certifying part
-of the file (finite `DecidableEq` rings), pending only the full kernel check.
+core; the Part IV quaternion `example` is an instance-resolution demonstration —
+its `R` is now pinned `(R := Quaternion ℝ)` on both `Dep` and `desargues`,
+fixing a build-blocking elaboration bug (with `R` unpinned, `Dep`'s implicit `R`
+appears only inside its `∃`-binder, so `Module ?R (Fin 3 → Quaternion ℝ)` cannot
+be synthesized and the `example` fails to elaborate). Part V pins the dichotomy
+to explicit finite rings (`ZMod 6` negative, `ZMod 5` positive) via `decide`;
+those four `example`s are the one self-certifying part of the file (finite
+`DecidableEq` rings), pending only the full kernel check.
 
 Tags: projective-geometry, desargues, division-ring, non-commutative, modules
 -/
@@ -230,8 +236,8 @@ end Necessity
     secretly using commutativity. -/
 example (o a a' b b' c c' : Fin 3 → Quaternion ℝ)
     (h : NormPersp o a a' b b' c c') :
-    Dep (a - b) (b - c) (c - a) :=
-  (desargues o a a' b b' c c' h).1
+    Dep (R := Quaternion ℝ) (a - b) (b - c) (c - a) :=
+  (desargues (R := Quaternion ℝ) o a a' b b' c c' h).1
 
 /-! ## Part V — Concrete witnesses on both sides of the dichotomy
 
