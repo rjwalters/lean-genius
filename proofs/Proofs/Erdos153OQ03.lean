@@ -454,4 +454,58 @@ theorem card_hSumset_of_isBhSet {h : ℕ} {A : Finset ℕ} (H : IsBhSet h A) :
     (hSumset h A).card = (A.sym h).card :=
   Finset.card_image_of_injOn ((isBhSet_iff_injOn h A).mp H)
 
+/-!
+## Section VII: The density bound  `|A| = O(N^{1/h})`
+
+The counting identity of Section VI becomes a *density* statement once the ground set
+is bounded.  If `A ⊆ {0, 1, …, N}` then every `h`-fold sum lies in `{0, …, hN}`, so the
+`h`-fold sumset has at most `hN+1` elements.  For a `B_h` set that sumset has cardinality
+exactly `(A.sym h).card` — the number of size-`h` multisets drawable from `A`, i.e. the
+stars-and-bars count `C(|A|+h−1, h)`.  Hence
+
+    (A.sym h).card = C(|A| + h − 1, h)  ≤  hN + 1.
+
+Since the left side grows like `|A|^h / h!`, this forces `|A| = O(N^{1/h})` — the sharp
+counting bound on the size of a `B_h` set in an interval, the `h`-fold generalisation of
+the `|A| = O(√N)` Sidon (`h = 2`) bound that motivates OQ-03.
+
+(Mathlib provides the stars-and-bars identity only in its `Fintype` form
+`Sym.card_sym_eq_choose : Fintype.card (Sym α k) = C(card α + k − 1, k)`; the `Finset`-level
+equality `(A.sym h).card = C(|A|+h−1, h)` is not yet available, so the bound is stated with
+the honest quantity `(A.sym h).card`, which *is* that multiset coefficient.)
+-/
+
+/-- If `A ⊆ {0, …, N}` then every `h`-fold sum is at most `hN`, so the `h`-fold sumset is
+contained in `{0, …, hN}`. -/
+theorem hSumset_subset_range {h N : ℕ} {A : Finset ℕ}
+    (hA : A ⊆ Finset.range (N + 1)) :
+    hSumset h A ⊆ Finset.range (h * N + 1) := by
+  intro y hy
+  rw [hSumset, Finset.mem_image] at hy
+  obtain ⟨s, hs, rfl⟩ := hy
+  rw [Finset.mem_range, Nat.lt_succ_iff]
+  have hbound : ∀ x ∈ (s : Multiset ℕ), x ≤ N := by
+    intro x hx
+    have hxA : x ∈ A := (Finset.mem_sym_iff.mp hs) x (Sym.mem_coe.mp hx)
+    have hlt := hA hxA
+    rw [Finset.mem_range, Nat.lt_succ_iff] at hlt
+    exact hlt
+  have hcard : (s : Multiset ℕ).card = h := s.2
+  calc (s : Multiset ℕ).sum ≤ (s : Multiset ℕ).card • N :=
+        Multiset.sum_le_card_nsmul _ _ hbound
+    _ = h * N := by rw [hcard, smul_eq_mul]
+
+/-- **The `B_h` density bound.**  A `B_h` set `A ⊆ {0, …, N}` has at most `hN + 1` distinct
+`h`-fold sums, and — since it is `B_h` — those sums are all distinct, so the number of
+size-`h` multisets it supports satisfies `(A.sym h).card ≤ hN + 1`.  As `(A.sym h).card`
+is the multiset coefficient `C(|A| + h − 1, h) ∼ |A|^h/h!`, this forces `|A| = O(N^{1/h})`:
+the sharp `h`-fold generalisation of the `|A| = O(√N)` Sidon density bound. -/
+theorem card_sym_le_of_isBhSet {h N : ℕ} {A : Finset ℕ}
+    (H : IsBhSet h A) (hA : A ⊆ Finset.range (N + 1)) :
+    (A.sym h).card ≤ h * N + 1 := by
+  rw [← card_hSumset_of_isBhSet H]
+  calc (hSumset h A).card ≤ (Finset.range (h * N + 1)).card :=
+        Finset.card_le_card (hSumset_subset_range hA)
+    _ = h * N + 1 := Finset.card_range _
+
 end Erdos153OQ03
