@@ -275,6 +275,150 @@ theorem anticommutator_scalar_of_sq_scalar (A : Type*) [NormedDivisionRing A]
   rw [hx, hy, hxy] at hpol
   linear_combination (norm := module) -hpol
 
+/-! ### Frobenius Step 3: the keystone — imaginary anticommutators are scalar
+
+The last global obstruction to `Im A` being an `ℝ`-subspace is that the anticommutator
+`x*y + y*x` of two *imaginary* elements is a real scalar.  The classical proof of this fact
+runs a linear-independence case split on `{1, x, y}`.  The lemma below discharges it by a
+short, wholly computational route that needs no such split:
+
+* Completing the square on `x + y` (`exists_real_shift_sq_scalar`) gives
+  `x*y + y*x = (2c) • (x + y) + μ • 1`.
+* Multiplying that identity by `x` on the left and on the right yields the *same* element
+  (because `x² = a • 1` is central), so the two expansions must agree — which forces
+  `(2c) • (x*y - y*x) = 0` in the `ℝ`-vector space `A`.
+* Hence either `c = 0`, in which case the identity already reads `x*y + y*x = μ • 1`; or
+  `x*y = y*x`, in which case `(x*y)² = x² y² = (a·b) • 1` with `a·b ≥ 0`, so Step 2b
+  (`eq_smul_one_of_sq_eq_nonneg_smul`) makes `x*y` itself a real scalar and therefore so is
+  `x*y + y*x = 2·(x*y)`.
+
+This is the exact Clifford relation `eᵢeⱼ + eⱼeᵢ ∈ ℝ ⬝ 1`; it upgrades the scalar
+anticommutator of `anticommutator_scalar_of_sq_scalar` from a *hypothesis* to a *theorem* for
+imaginary inputs, giving a well-defined symmetric bilinear form on `Im A`. -/
+theorem anticommutator_scalar_imaginary (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] {x y : A} (hx : IsImaginary A x) (hy : IsImaginary A y) :
+    ∃ t : ℝ, x * y + y * x = t • (1 : A) := by
+  obtain ⟨a, ha, hxsq⟩ := hx
+  obtain ⟨b, hb, hysq⟩ := hy
+  -- Complete the square on `x + y`: `(x + y)² = (2c)•(x + y) + (r - c²)•1`.
+  obtain ⟨c, r, hc⟩ := exists_real_shift_sq_scalar A (x + y)
+  have hsum_sq : (x + y) ^ 2 = (2 * c) • (x + y) + (r - c ^ 2) • (1 : A) := by
+    have hexp : ((x + y) - c • (1 : A)) ^ 2
+        = (x + y) * (x + y) - (2 * c) • (x + y) + (c ^ 2) • (1 : A) := by
+      simp only [sq, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, one_mul, mul_one]
+      module
+    rw [hexp, ← pow_two] at hc
+    linear_combination (norm := module) hc
+  -- Polarisation: `(x + y)² = x² + (x*y + y*x) + y²`.
+  have hpol : (x + y) ^ 2 = x ^ 2 + (x * y + y * x) + y ^ 2 := by
+    simp only [pow_two]; noncomm_ring
+  set μ : ℝ := r - c ^ 2 - a - b with hμ
+  -- Solve for the anticommutator: `x*y + y*x = (2c)•(x + y) + μ•1`.
+  have hS : x * y + y * x = (2 * c) • (x + y) + μ • (1 : A) := by
+    rw [hpol, hxsq, hysq] at hsum_sq
+    rw [hμ]; linear_combination (norm := module) hsum_sq
+  by_cases hc0 : c = 0
+  · -- `c = 0`: the identity already exhibits the anticommutator as the scalar `μ`.
+    exact ⟨μ, by rw [hS, hc0]; simp⟩
+  · -- `c ≠ 0`: multiplying `hS` by `x` on both sides forces `x` and `y` to commute.
+    have h2c : (2 * c) ≠ 0 := mul_ne_zero two_ne_zero hc0
+    have hcomm0 : (2 * c) • (x * y - y * x) = 0 := by
+      have hLR : x * (x * y + y * x) = (x * y + y * x) * x := by
+        have h1 : x * (x * y + y * x) = x ^ 2 * y + x * y * x := by rw [pow_two]; noncomm_ring
+        have h2 : (x * y + y * x) * x = x * y * x + y * x ^ 2 := by rw [pow_two]; noncomm_ring
+        rw [h1, h2, hxsq]
+        simp only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
+        abel
+      have hLexp : x * (x * y + y * x)
+          = (2 * c) • (x * x) + (2 * c) • (x * y) + μ • x := by
+        rw [hS]; simp only [mul_add, mul_smul_comm, mul_one]; module
+      have hRexp : (x * y + y * x) * x
+          = (2 * c) • (x * x) + (2 * c) • (y * x) + μ • x := by
+        rw [hS]; simp only [add_mul, smul_mul_assoc, one_mul]; module
+      rw [hLexp, hRexp] at hLR
+      have hxyeq : (2 * c) • (x * y) = (2 * c) • (y * x) := by
+        linear_combination (norm := module) hLR
+      rw [smul_sub, hxyeq]; exact sub_self _
+    have hxy0 : x * y - y * x = 0 := by
+      have e : x * y - y * x = (2 * c)⁻¹ • ((2 * c) • (x * y - y * x)) := by
+        rw [smul_smul, inv_mul_cancel₀ h2c, one_smul]
+      rw [e, hcomm0, smul_zero]
+    have hxyc : x * y = y * x := sub_eq_zero.mp hxy0
+    -- Commuting imaginaries: `(x*y)² = x²y² = (a·b)•1` with `a·b ≥ 0`, so `x*y` is scalar.
+    have hab : (0 : ℝ) ≤ a * b := by
+      have := mul_nonneg (neg_nonneg.2 ha) (neg_nonneg.2 hb); simpa using this
+    have hsq : (x * y) ^ 2 = (a * b) • (1 : A) := by
+      have hxy2 : (x * y) ^ 2 = x ^ 2 * y ^ 2 := by
+        simp only [pow_two]
+        calc x * y * (x * y) = x * (y * x) * y := by noncomm_ring
+          _ = x * (x * y) * y := by rw [hxyc]
+          _ = x * x * (y * y) := by noncomm_ring
+      rw [hxy2, hxsq, hysq, smul_mul_smul_comm, mul_one]
+    obtain ⟨s, hs⟩ := eq_smul_one_of_sq_eq_nonneg_smul A (x * y) (a * b) hab hsq
+    exact ⟨2 * s, by rw [← hxyc, hs]; module⟩
+
+/-- **`Im A` is closed under addition.** For imaginary `x, y`, the sum `x + y` is imaginary:
+its square is a nonpositive real scalar. Together with closure under real scalars and
+containment of `0`, this makes `Im A` an `ℝ`-subspace — the last structural fact this file
+needed for the Clifford / bilinear-form argument, and the blocker in the problem's research
+log ("`Im A` closed under addition ⟺ the real-part functional `A → ℝ` is `ℝ`-linear").
+
+The square is scalar by polarisation and the keystone `anticommutator_scalar_imaginary`:
+`(x + y)² = x² + (x*y + y*x) + y² = (a + b + t)•1`. Nonpositivity of `a + b + t` is forced:
+were it positive, Step 2b (`eq_smul_one_of_sq_eq_nonneg_smul`) would put `x + y ∈ ℝ•1`, and
+the completing-the-square relation `(2s)•x = (s² + a - b)•1` would collapse `x` (hence, by
+symmetry, `y`) into `ℝ•1 ∩ Im A = {0}` (`isImaginary_smul_one_iff`), contradicting `s ≠ 0`. -/
+theorem isImaginary_add (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] {x y : A} (hx : IsImaginary A x) (hy : IsImaginary A y) :
+    IsImaginary A (x + y) := by
+  obtain ⟨t, ht⟩ := anticommutator_scalar_imaginary A hx hy
+  obtain ⟨a, ha, hxsq⟩ := hx
+  obtain ⟨b, hb, hysq⟩ := hy
+  -- `(x + y)² = (a + b + t)•1`.
+  have hsum : (x + y) ^ 2 = (a + b + t) • (1 : A) := by
+    have hpol : (x + y) ^ 2 = x ^ 2 + (x * y + y * x) + y ^ 2 := by
+      simp only [pow_two]; noncomm_ring
+    rw [hpol, hxsq, hysq, ht]; module
+  refine ⟨a + b + t, ?_, hsum⟩
+  by_contra hpos
+  push_neg at hpos   -- `hpos : 0 < a + b + t`
+  obtain ⟨s, hs⟩ := eq_smul_one_of_sq_eq_nonneg_smul A (x + y) (a + b + t) hpos.le hsum
+  -- Completing the square on `y = s•1 - x` gives `(2s)•x = (s² + a - b)•1`.
+  have hrel : (2 * s) • x = (s ^ 2 + a - b) • (1 : A) := by
+    have hy_eq : y = s • (1 : A) - x := by rw [← hs]; abel
+    have he : y ^ 2 = (s ^ 2 + a) • (1 : A) - (2 * s) • x := by
+      rw [hy_eq]
+      have hexp : (s • (1 : A) - x) ^ 2
+          = (s ^ 2) • (1 : A) - (2 * s) • x + x * x := by
+        simp only [sq, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, one_mul, mul_one]
+        module
+      rw [hexp, ← pow_two, hxsq]; module
+    rw [hysq] at he
+    linear_combination (norm := module) he
+  rcases eq_or_ne s 0 with hs0 | hs0
+  · -- `s = 0` ⟹ `x + y = 0` ⟹ `(a + b + t)•1 = 0` ⟹ `a + b + t = 0`, contradiction.
+    rw [hs0, zero_smul] at hs
+    rw [hs, zero_pow (by norm_num : (2 : ℕ) ≠ 0)] at hsum
+    have hinj : Function.Injective (algebraMap ℝ A) := RingHom.injective _
+    have hk : a + b + t = 0 := by
+      apply hinj
+      rw [map_zero, Algebra.algebraMap_eq_smul_one]; exact hsum.symm
+    exact absurd hk (ne_of_gt hpos)
+  · -- `s ≠ 0` ⟹ `x` is a real scalar, hence `0`; then `y = s•1` imaginary forces `s = 0`.
+    have h2s : (2 * s) ≠ 0 := mul_ne_zero two_ne_zero hs0
+    set k : ℝ := (2 * s)⁻¹ * (s ^ 2 + a - b) with hk
+    have hx_real : x = k • (1 : A) := by
+      have e : x = (2 * s)⁻¹ • ((2 * s) • x) := by
+        rw [smul_smul, inv_mul_cancel₀ h2s, one_smul]
+      rw [e, hrel, smul_smul, hk]
+    have hkimg : IsImaginary A (k • (1 : A)) := by rw [← hx_real]; exact ⟨a, ha, hxsq⟩
+    have hx0 : x = 0 := by
+      rw [hx_real, (isImaginary_smul_one_iff A k).mp hkimg, zero_smul]
+    have hy_real : y = s • (1 : A) := by
+      have hxy := hs; rw [hx0, zero_add] at hxy; exact hxy
+    have hyimg : IsImaginary A (s • (1 : A)) := by rw [← hy_real]; exact ⟨b, hb, hysq⟩
+    exact hs0 ((isImaginary_smul_one_iff A s).mp hyimg)
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
