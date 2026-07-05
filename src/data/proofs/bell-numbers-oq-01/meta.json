@@ -13,7 +13,8 @@
       "The row-sum identity Bₙ = Σ_k S(n,k) reduces to matching two different recurrences Mathlib already knows about: the Bell binomial recurrence and the Stirling triangular recurrence.",
       "The missing link is the horizontal Stirling recurrence S(n+1,k+1) = Σ_{j≤n} C(n,j)·S(j,k), which comes from conditioning on the block of the last point; it is not in pinned Mathlib and is the file's main combinatorial contribution.",
       "Summing the horizontal recurrence over k and swapping the order of summation converts a sum of Stirling row sums into the Bell binomial recurrence — the two definitions then agree by induction.",
-      "The Stirling tail vanishes above the diagonal (S(n,k) = 0 for k > n), so a padded range (n+1 terms) can stand in for the exact range (j+1 terms) via Finset.sum_subset."
+      "The Stirling tail vanishes above the diagonal (S(n,k) = 0 for k > n), so a padded range (n+1 terms) can stand in for the exact range (j+1 terms) via Finset.sum_subset.",
+      "The proof never constructs a single set partition. Mathlib's Nat.bell and Nat.stirlingSecond are numeric sequences defined purely by their recurrences, so the whole bridge is carried out as algebraic manipulation of those recurrences — Pascal's rule, sum reindexing, strong induction, omega — with no Finpartition, Setoid, or bijection in sight. The set-partition picture (conditioning on the block of the last point) only motivates the horizontal recurrence; the formal object it produces is a pure identity between recurrence-defined naturals."
     ],
     "prerequisites": [
       "Set partitions, Bell numbers and Stirling numbers of the second kind",
@@ -40,12 +41,28 @@
       "mathContext": "Absent from pinned Mathlib. The induction peels the j=0 term with Finset.sum_range_succ', applies Pascal's rule to split the remainder into a shifted and an unshifted block, and matches each against the inductive hypothesis; omega discharges the residual arithmetic in the k=0 and k=k'+1 cases."
     },
     {
-      "id": "bell-row-sum",
-      "title": "Section II: Bell Numbers as the Stirling Row Sum",
+      "id": "bell-row-sum-inner",
+      "title": "Section II: Padded Stirling Row Sums Are Bell Numbers",
       "startLine": 84,
+      "endLine": 103,
+      "summary": "bell_eq_sum_stirlingSecond opens by strong induction on n. The key hInner lemma shows that for every j ≤ m the padded Stirling row sum Σ_{k∈range(m+1)} S(j,k) equals bell j: the extra tail terms (k > j) vanish by Nat.stirlingSecond_eq_zero_of_lt, so Finset.sum_subset trims the padded range back to range(j+1) and the strong-induction hypothesis at j closes it.",
+      "mathContext": "$\\sum_{k=0}^{m} S(j,k) = \\sum_{k=0}^{j} S(j,k) = B_j$ for $j \\le m$, since $S(j,k) = 0$ for $k > j$."
+    },
+    {
+      "id": "bell-recurrence-rewrite",
+      "title": "Section III: The Bell Recurrence as Σ_j C(m,j)·B_j",
+      "startLine": 104,
+      "endLine": 112,
+      "summary": "hbell recasts Mathlib's Bell binomial recurrence Nat.bell_succ (B_{m+1} = Σ_i C(m,i)·B_{m-i}) into the reflected form Σ_{j∈range(m+1)} C(m,j)·B_j, using Fin.sum_univ_eq_sum_range, Finset.sum_range_reflect and the binomial symmetry Nat.choose_symm — the shape that will match the summed horizontal recurrence.",
+      "mathContext": "$B_{m+1} = \\sum_{i} \\binom{m}{i} B_{m-i} = \\sum_{j=0}^{m} \\binom{m}{j} B_j$ (by $j = m-i$ and $\\binom{m}{j} = \\binom{m}{m-j}$)."
+    },
+    {
+      "id": "bell-row-sum-assembly",
+      "title": "Section IV: Assembling the Row-Sum Identity",
+      "startLine": 113,
       "endLine": 118,
-      "summary": "bell_eq_sum_stirlingSecond: Nat.bell n = Σ_{k∈range(n+1)} Nat.stirlingSecond n k, by strong induction using the horizontal recurrence and the Bell binomial recurrence.",
-      "mathContext": "The padded Stirling row sum equals bell j for j ≤ m (tail terms vanish by Nat.stirlingSecond_eq_zero_of_lt); rewriting Nat.bell_succ as Σ_j C(m,j)·bell j, substituting the horizontal recurrence, and swapping the summation order (Finset.sum_comm) identifies the two sides."
+      "summary": "The final steps substitute the horizontal recurrence into the Stirling row sum, swap the order of summation with Finset.sum_comm, fold the C(m,j) factor back in via Finset.mul_sum, and apply hInner term-by-term — identifying Σ_k S(m+1,k) with Σ_j C(m,j)·B_j = B_{m+1}.",
+      "mathContext": "$\\sum_{k} S(m{+}1,k) = \\sum_{k}\\sum_{j}\\binom{m}{j}S(j,k) = \\sum_{j}\\binom{m}{j}\\sum_{k}S(j,k) = \\sum_{j}\\binom{m}{j}B_j = B_{m+1}$."
     }
   ],
   "conclusion": {
