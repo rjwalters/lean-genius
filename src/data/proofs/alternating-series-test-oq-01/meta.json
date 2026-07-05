@@ -146,13 +146,45 @@
       "note": "Alternating series test and the truncation error bound (Theorem 3.43)"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "alternating-series-test-oq-01-oq-01",
+      "relationship": "extended by",
+      "description": "Direct child that resolves this entry's first open question. It sharpens the one-sided remainder |S_N − l| ≤ f N into the two-term trap f_{N+1} ≤ |S_N − l| ≤ f_N, using the SAME parity split plus the extra recurrence step S_{N+1} → S_{N+2}, so the error is pinned between the next two omitted terms rather than only bounded above by the first."
+    },
+    {
+      "targetId": "alternating-series-test-oq-01-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child that resolves this entry's second open question. It replaces the monotone (antitone) hypothesis with bounded variation and uses Abel summation (summation by parts) to obtain remainder bounds for Dirichlet-type alternating series whose coefficients need not decrease monotonically — the far-reaching generalisation of the trapping argument used here."
+    },
+    {
+      "targetId": "alternating-series-boole-summation",
+      "relationship": "related",
+      "description": "Companion treatment of alternating sums via a finite Boole summation formula, which expresses ∑ (-1)^i f i through values and forward differences of f at the endpoints. Where this entry extracts a single-term error estimate from bracketing, Boole summation yields an exact finite identity with an explicit remainder — the higher-order analogue of the one-step recurrence partialSum_succ."
+    },
+    {
+      "targetId": "harmonic-divergence-oq-03-oq-01",
+      "relationship": "related",
+      "description": "A different, absolutely convergent series for the same limit: ∑ 1/((2k+1)(2k+2)) = log 2. Pairing the two consecutive terms of the alternating harmonic series ∑ (-1)^i/(i+1) collapses the conditionally convergent series studied here into that positive series — an explicit witness that the limit l in the capstone is exactly log 2."
+    },
+    {
+      "targetId": "basel-problem-oq-10",
+      "relationship": "related",
+      "description": "Leibniz's series π/4 = ∑ (-1)^i/(2i+1) is the other canonical conditionally convergent alternating series: antitone terms 1/(2i+1) → 0, so the two-sided bound here gives truncation error ≤ 1/(2N+1). That entry stresses the conditional (non-absolute) nature of the convergence, exactly the regime in which the remainder estimate proved here is the practical tool."
+    },
+    {
+      "targetId": "antitone-integral-sum-comparison-oq-01",
+      "relationship": "related",
+      "description": "The integral (sum–integral comparison) test for antitone functions — the sibling convergence criterion built on the same antitone f : ℕ → ℝ hypothesis. Where the integral test compares an antitone series to ∫ f to decide convergence and bound the tail, the alternating series test here uses antitonicity to bracket the limit; both extract quantitative remainder control from monotonicity."
+    }
+  ],
   "conclusion": {
     "summary": "The alternating series test is upgraded from bare convergence to the quantitative remainder estimate |S_N − l| ≤ f N, proved with 0 axioms by trapping the limit between consecutive partial sums and splitting on parity; specialising to 1/(i+1) bounds the alternating harmonic truncation error by 1/(N+1).",
     "implications": "Supplies the practically essential error bound that Mathlib's one-directional bracketing lemmas stop short of, in reusable form; the alternating harmonic instance is a ready quantitative approximation of log 2.",
     "openQuestions": [
-      "Can the bound be sharpened to a two-term estimate using S_{N+1} as well, giving |S_N − l| between f_{N+1} and f_N?",
-      "Does the same trapping argument yield Abel-summation error bounds for Dirichlet-type alternating series with non-monotone but bounded-variation coefficients?"
+      "Can the bound be sharpened to a two-term estimate using S_{N+1} as well, giving |S_N − l| between f_{N+1} and f_N? (Resolved affirmatively in the child entry alternating-series-test-oq-01-oq-01, which pins the error between the next two omitted terms.)",
+      "Does the same trapping argument yield Abel-summation error bounds for Dirichlet-type alternating series with non-monotone but bounded-variation coefficients? (Resolved in the child entry alternating-series-test-oq-01-oq-02 via summation by parts under a bounded-variation hypothesis.)",
+      "For the alternating harmonic series specifically, the limit is log 2; can the two-sided remainder be combined with a positive-series representation such as ∑ 1/((2k+1)(2k+2)) = log 2 to certify the value of l inside the same formalization?"
     ]
   },
   "leanFile": {
