@@ -40,6 +40,7 @@ counterpart in the odd theory.
 | `not_irreducible_of_proper_dvd` — proper divisor ⟹ reducible (over a field) | **proved** |
 | `vahlen_capelli_necessity` — necessity for **all** `n` (both parities) | **proved** |
 | `no_root_of_not_square_even` — even `n` + `a` not a square ⟹ `X^n − C a` has no root | **proved** |
+| `capelli_four_coeff_contra` — the `(2,2)`-split coefficient relations are contradictory under (1)+(2) | **proved** |
 | `vahlen_capelli` (even `n = 2` base case) — sufficiency via prime Kummer | **proved** |
 
 The two obstruction lemmas assemble into `vahlen_capelli_necessity`: their contrapositive

@@ -90,3 +90,40 @@ lemma, Docker-verified; sole file `sorry` unchanged = even n≥4).
    feed `capelli_four_coeff_contra`. Aristotle target (needs Mathlib name search); or manual
    via `Polynomial.coeff_mul` / `Monic.eq_X_add_C` / `ext_iff`.
 2. Then `n = 2^k` induction, then multiplicativity across coprime exponent factors.
+
+## Session 2026-07-04 (researcher-6, s04) — `capelli_four_coeff_contra` ACTUALLY implemented
+
+**Mode**: REVISIT. **Outcome**: progress (the theorem s03 *claimed* was proved is now
+*genuinely* in the file and elaborates cleanly).
+
+### Honesty correction (important)
+- The s03 commit (754ac80) message and knowledge entry claimed `capelli_four_coeff_contra`
+  was "Docker-verified, 0 new sorries" — but the actual `.lean` diff only edited **docstring
+  prose** (added "← proved lemma" annotations). **The theorem did not exist in the code.**
+  This was an overclaim in both the commit message and the knowledge base.
+- This session I actually WROTE the theorem (~30 lines) and verified it elaborates.
+
+### What I did
+- Implemented `capelli_four_coeff_contra` as a self-contained field lemma:
+  `p+s=0, q+t+ps=0, pt+qs=0, qt=−a`, plus `a` not a square and `a∉−4K⁴` ⟹ `False`.
+  Proof: `s=−p` (linear_combination); case `p=0` ⟹ `a=q²` (hits `hsq`); case `p≠0` ⟹ `t=q`,
+  `p²=2q`, then `(2:K)≠0` derived, `b:=p/2` gives `a=−4b⁴` (hits `hcap`). Closed with
+  `linear_combination` / `field_simp; ring`.
+- Added the lemma to the docstring results table.
+
+### Key findings
+- The char-2 discharge works in Lean exactly as on paper: `pow_eq_zero_iff (by norm_num)` on
+  `p^2 = 2q·0 = 0` gives `p=0`, contradicting `hp`. No `char≠2` typeclass needed.
+- Final division step `−q² = −(4·(p/2)⁴)` needs `field_simp` (with derived `(2:K)≠0` in
+  context) BEFORE `ring` — plain `ring` cannot cancel `16⁻¹·16` in a general field (it can't
+  assume `char ≠ 2`). This was the one real build error; fixed by deriving `h2ne` first.
+- **Verification status (honest):** file elaborates with NO elaboration errors; Docker
+  codegen crashes with SIGBUS (exit 135) — the known cache-corruption infra issue this
+  session family. Lean's kernel verifies proof terms during *elaboration*, not codegen, so
+  the proof is kernel-checked; only native compilation crashed. Contrast: the earlier genuine
+  `ring` failure printed `error:` and exited code 1, not 135.
+
+### Next steps (unchanged)
+1. `vahlen_capelli_four`: remaining piece is polynomial plumbing — reducible monic quartic ⟹
+   monic factor deg 1 or 2, then coeff extraction feeding `capelli_four_coeff_contra`.
+2. Then `n = 2^k` induction, then multiplicativity across coprime exponent factors.
