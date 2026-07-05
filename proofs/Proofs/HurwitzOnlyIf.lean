@@ -419,6 +419,152 @@ theorem isImaginary_add (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
     have hyimg : IsImaginary A (s • (1 : A)) := by rw [← hy_real]; exact ⟨b, hb, hysq⟩
     exact hs0 ((isImaginary_smul_one_iff A s).mp hyimg)
 
+/-! ### Frobenius Step 3 (continued): the real-part functional and the imaginary submodule
+
+With `Im A` now closed under addition (`isImaginary_add`) the decomposition `A = ℝ ⬝ 1 ⊕ Im A`
+becomes genuinely *linear*: we can assemble the **real-part functional** `realPart : A →ₗ[ℝ] ℝ`.
+For each `a`, completing the square (`exists_real_shift_sq_scalar`) together with Step 2b
+(`eq_smul_one_of_sq_eq_nonneg_smul`) produces a *unique* real `c` with `a - c ⬝ 1` imaginary
+(`exists_unique_real_part`); `realPart a` is that `c`.  Additivity of `realPart` follows from
+`isImaginary_add`, homogeneity from `isImaginary_smul` (both scalar-closure facts for `Im A`
+proved just below), and its kernel is *exactly* the imaginary elements
+(`mem_imaginarySubmodule_iff`) — so `Im A` is packaged as an honest `ℝ`-submodule
+`imaginarySubmodule = ker realPart`.  This is the linear scaffolding on which the
+positive-definite symmetric bilinear form `B(x,y) = -(x*y+y*x)/2` — real-valued by
+`anticommutator_scalar_imaginary` — lives, the last structural input needed for the quaternion
+dimension count `finrank ℝ (Im A) ∈ {0, 1, 3}` and hence `finrank ℝ A ∈ {1, 2, 4}`. -/
+
+/-- **`Im A` is closed under negation.**  `(-x)² = x²`, so `-x` squares to the same nonpositive
+real scalar as `x`. -/
+theorem isImaginary_neg (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    {x : A} (hx : IsImaginary A x) : IsImaginary A (-x) := by
+  obtain ⟨r, hr, hsq⟩ := hx
+  refine ⟨r, hr, ?_⟩
+  rw [pow_two, neg_mul_neg, ← pow_two, hsq]
+
+/-- **`Im A` is closed under real scalar multiplication.**  If `x² = r ⬝ 1` with `r ≤ 0` then
+`(c • x)² = (c²·r) ⬝ 1` and `c²·r ≤ 0`. -/
+theorem isImaginary_smul (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    (c : ℝ) {x : A} (hx : IsImaginary A x) : IsImaginary A (c • x) := by
+  obtain ⟨r, hr, hsq⟩ := hx
+  refine ⟨c * c * r, ?_, ?_⟩
+  · have hcc : 0 ≤ c * c := mul_self_nonneg c
+    nlinarith
+  · have hxx : x * x = r • (1 : A) := by rw [← pow_two]; exact hsq
+    rw [pow_two, smul_mul_smul_comm, hxx, smul_smul]
+
+/-- **`Im A` is closed under subtraction** (hence an additive subgroup), combining
+`isImaginary_add` and `isImaginary_neg`. -/
+theorem isImaginary_sub (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] {x y : A} (hx : IsImaginary A x) (hy : IsImaginary A y) :
+    IsImaginary A (x - y) := by
+  rw [sub_eq_add_neg]
+  exact isImaginary_add A hx (isImaginary_neg A hy)
+
+/-- **Existence and uniqueness of the real part.**  Every `a : A` has a *unique* real `c` such
+that `a - c ⬝ 1` is imaginary.  Existence: complete the square via `exists_real_shift_sq_scalar`;
+if the resulting square scalar is positive, Step 2b makes the shifted element itself real, so `a`
+is a real multiple of `1` and its imaginary part is `0`.  Uniqueness: two such shifts differ by an
+imaginary real multiple `(c - c') ⬝ 1`, which `isImaginary_smul_one_iff` forces to vanish. -/
+theorem exists_unique_real_part (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) : ∃! c : ℝ, IsImaginary A (a - c • (1 : A)) := by
+  obtain ⟨c₀, r, hr⟩ := exists_real_shift_sq_scalar A a
+  have hexist : ∃ c : ℝ, IsImaginary A (a - c • (1 : A)) := by
+    rcases le_or_gt r 0 with hle | hlt
+    · exact ⟨c₀, r, hle, hr⟩
+    · obtain ⟨s, hs⟩ := eq_smul_one_of_sq_eq_nonneg_smul A (a - c₀ • 1) r hlt.le hr
+      refine ⟨s + c₀, 0, le_refl 0, ?_⟩
+      have ha : a - (s + c₀) • (1 : A) = 0 := by
+        have hsplit : a = (a - c₀ • (1 : A)) + c₀ • (1 : A) := by abel
+        rw [hsplit, hs, add_smul]; abel
+      rw [ha]; simp
+  obtain ⟨c, hc⟩ := hexist
+  refine ⟨c, hc, ?_⟩
+  intro c' hc'
+  have hdiff : IsImaginary A ((c' - c) • (1 : A)) := by
+    have hrw : (c' - c) • (1 : A) = (a - c • (1 : A)) - (a - c' • (1 : A)) := by
+      rw [sub_smul]; abel
+    rw [hrw]; exact isImaginary_sub A hc hc'
+  have hzero : c' - c = 0 := (isImaginary_smul_one_iff A (c' - c)).mp hdiff
+  linear_combination hzero
+
+open Classical in
+/-- The **real part** of `a`: the unique real scalar `c` with `a - c ⬝ 1` imaginary
+(`exists_unique_real_part`).  Packaged as the `ℝ`-linear map `realPart` below. -/
+noncomputable def realPartValue (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) : ℝ :=
+  (exists_unique_real_part A a).choose
+
+/-- Defining property of `realPartValue`: `a - realPartValue a ⬝ 1` is imaginary. -/
+theorem isImaginary_sub_realPartValue (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) :
+    IsImaginary A (a - (realPartValue A a) • (1 : A)) :=
+  (exists_unique_real_part A a).choose_spec.1
+
+/-- Characterising property: any `c` making `a - c ⬝ 1` imaginary *is* `realPartValue a`. -/
+theorem realPartValue_eq (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] {a : A} {c : ℝ} (h : IsImaginary A (a - c • (1 : A))) :
+    realPartValue A a = c :=
+  ((exists_unique_real_part A a).choose_spec.2 c h).symm
+
+/-- The real part is **additive**. -/
+theorem realPartValue_add (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a b : A) :
+    realPartValue A (a + b) = realPartValue A a + realPartValue A b := by
+  apply realPartValue_eq
+  have hrw : a + b - (realPartValue A a + realPartValue A b) • (1 : A)
+      = (a - realPartValue A a • (1 : A)) + (b - realPartValue A b • (1 : A)) := by
+    rw [add_smul]; abel
+  rw [hrw]
+  exact isImaginary_add A (isImaginary_sub_realPartValue A a) (isImaginary_sub_realPartValue A b)
+
+/-- The real part is **homogeneous** over `ℝ`. -/
+theorem realPartValue_smul (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (c : ℝ) (a : A) :
+    realPartValue A (c • a) = c * realPartValue A a := by
+  apply realPartValue_eq
+  have hrw : c • a - (c * realPartValue A a) • (1 : A)
+      = c • (a - realPartValue A a • (1 : A)) := by
+    rw [smul_sub, smul_smul]
+  rw [hrw]
+  exact isImaginary_smul A c (isImaginary_sub_realPartValue A a)
+
+/-- **The real-part functional** `realPart : A →ₗ[ℝ] ℝ`: the unique real scalar `c` with
+`a - c ⬝ 1` imaginary, now assembled into an `ℝ`-linear map.  Additivity and homogeneity are
+`realPartValue_add` / `realPartValue_smul`. -/
+noncomputable def realPart (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] : A →ₗ[ℝ] ℝ where
+  toFun := realPartValue A
+  map_add' := realPartValue_add A
+  map_smul' := by
+    intro c a
+    simp only [RingHom.id_apply, smul_eq_mul]
+    exact realPartValue_smul A c a
+
+@[simp] theorem realPart_apply (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) : realPart A a = realPartValue A a := rfl
+
+/-- **The imaginary submodule** `Im A := ker realPart`, an honest `ℝ`-submodule of `A`. -/
+noncomputable def imaginarySubmodule (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] : Submodule ℝ A :=
+  LinearMap.ker (realPart A)
+
+/-- **Membership in `Im A` is exactly imaginarity.**  `a ∈ imaginarySubmodule` iff `a` is
+imaginary (`a² ∈ ℝ≤0 ⬝ 1`), because `realPart a = 0` iff `a - 0 ⬝ 1 = a` is imaginary.  This
+identifies the abstract kernel with the concrete set `{a | a² ∈ ℝ≤0 ⬝ 1}`. -/
+theorem mem_imaginarySubmodule_iff (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) : a ∈ imaginarySubmodule A ↔ IsImaginary A a := by
+  unfold imaginarySubmodule
+  rw [LinearMap.mem_ker, realPart_apply]
+  constructor
+  · intro h
+    have himg := isImaginary_sub_realPartValue A a
+    rw [h, zero_smul, sub_zero] at himg
+    exact himg
+  · intro h
+    apply realPartValue_eq
+    rwa [zero_smul, sub_zero]
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
