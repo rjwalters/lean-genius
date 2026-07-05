@@ -124,4 +124,106 @@ theorem birthdayCount3_rec (n d : ℕ) :
   simp only [birthdayCount3, R_succ, Nat.zero_sub, zero_mul, add_zero, Nat.zero_add]
   rw [hpeel]
 
+/-!
+### The general closed form
+
+`birthdayCount3 n d = ∑_{p} C(n, 2p) · (2p−1)‼ · (d)_{n−p}`.
+-/
+
+/-- Perfect-matching numbers: `M p = (2p−1)‼ = 1·3·5···(2p−1)`, the number of ways to
+partition `2p` labelled points into `p` unordered pairs. -/
+def M : ℕ → ℕ
+  | 0 => 1
+  | p + 1 => (2 * p + 1) * M p
+
+@[simp] theorem M_zero : M 0 = 1 := rfl
+theorem M_succ (p : ℕ) : M (p + 1) = (2 * p + 1) * M p := rfl
+
+/-- Closed-form summand `F n d = ∑_{p=0}^{n} C(n,2p)·(2p−1)‼·(d)_{n−p}`.  Terms with
+`2p > n` vanish because `C(n,2p) = 0`. -/
+def F (n d : ℕ) : ℕ :=
+  ∑ p ∈ Finset.range (n + 1), n.choose (2 * p) * M p * d.descFactorial (n - p)
+
+/-- Pascal + absorption identity underlying the recurrence for the closed form:
+`C(n+2,2q+2)·(2q+1) = C(n+1,2q+2)·(2q+1) + (n+1)·C(n,2q)`. -/
+theorem choose_absorb (n q : ℕ) :
+    (n + 2).choose (2 * q + 2) * (2 * q + 1)
+      = (n + 1).choose (2 * q + 2) * (2 * q + 1) + (n + 1) * n.choose (2 * q) := by
+  have hpascal : (n + 2).choose (2 * q + 2)
+      = (n + 1).choose (2 * q + 1) + (n + 1).choose (2 * q + 2) :=
+    Nat.choose_succ_succ (n + 1) (2 * q + 1)
+  have habs : (n + 1) * n.choose (2 * q)
+      = (n + 1).choose (2 * q + 1) * (2 * q + 1) := by
+    simpa using Nat.succ_mul_choose_eq n (2 * q)
+  rw [hpascal, add_mul, habs]; ring
+
+/-- The same identity with the matching numbers attached:
+`C(n+2,2(q+1))·M(q+1) = C(n+1,2(q+1))·M(q+1) + (n+1)·(C(n,2q)·M q)`. -/
+theorem choose_absorb_M (n q : ℕ) :
+    (n + 2).choose (2 * (q + 1)) * M (q + 1)
+      = (n + 1).choose (2 * (q + 1)) * M (q + 1) + (n + 1) * (n.choose (2 * q) * M q) := by
+  have h := choose_absorb n q
+  have e2 : 2 * (q + 1) = 2 * q + 2 := by ring
+  rw [e2, M_succ]
+  rw [show (n + 2).choose (2 * q + 2) * ((2 * q + 1) * M q)
+        = ((n + 2).choose (2 * q + 2) * (2 * q + 1)) * M q from by ring,
+      show (n + 1).choose (2 * q + 2) * ((2 * q + 1) * M q)
+        = ((n + 1).choose (2 * q + 2) * (2 * q + 1)) * M q from by ring,
+      show (n + 1) * (n.choose (2 * q) * M q)
+        = ((n + 1) * n.choose (2 * q)) * M q from by ring,
+      h, add_mul]
+
+/-- Pulling a factor out of a falling factorial:
+`(d+1)·(d)_k = (d+1)_{k+1}`. -/
+theorem descFactorial_pull (d k : ℕ) :
+    (d + 1) * d.descFactorial k = (d + 1).descFactorial (k + 1) :=
+  (Nat.succ_descFactorial_succ d k).symm
+
+/-- **The closed form satisfies the birthday recurrence.**
+`F (n+2) (d+1) = (d+1)·(F (n+1) d + (n+1)·F n d)`.
+
+Both sides are expressed as sums over `p` of `(coefficient) · (d+1)_{n+2−p}`; the
+coefficient identity is `choose_absorb_M` (Pascal + absorption), after reindexing the
+`F n` contribution by `p ↦ p+1`. -/
+theorem F_rec (n d : ℕ) :
+    F (n + 1 + 1) (d + 1) = (d + 1) * (F (n + 1) d + (n + 1) * F n d) := by
+  sorry
+
+/-- **General closed form for the birthday count.**  For every `n` and `d`,
+
+  `birthdayCount3 n d = ∑_{p=0}^{⌊n/2⌋} C(n, 2p) · (2p−1)‼ · (d)_{n−p}`. -/
+theorem birthdayCount3_closed : ∀ n d, birthdayCount3 n d = F n d := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    rcases n with _ | _ | m
+    · -- n = 0
+      intro d; simp [birthdayCount3, F, M, Finset.sum_range_one]
+    · -- n = 1
+      intro d
+      simp only [birthdayCount3, R_one, add_zero, F]
+      rw [Finset.sum_range_succ, Finset.sum_range_one]
+      simp [M, Nat.choose_eq_zero_of_lt (show (1 : ℕ) < 2 by omega)]
+    · -- n = m + 2
+      intro d
+      rcases d with _ | d'
+      · -- d = 0 : both sides are 0
+        have hb : birthdayCount3 (m + 1 + 1) 0 = 0 := by simp [birthdayCount3, R_succ]
+        have hF : F (m + 1 + 1) 0 = 0 := by
+          rw [F]; apply Finset.sum_eq_zero; intro p hp
+          simp only [Finset.mem_range] at hp
+          rcases Nat.lt_or_ge p (m + 2) with h | h
+          · have : (0 : ℕ).descFactorial (m + 1 + 1 - p) = 0 := by
+              rw [Nat.descFactorial_eq_zero_iff_lt]; omega
+            rw [this, mul_zero]
+          · have : (m + 1 + 1).choose (2 * p) = 0 :=
+              Nat.choose_eq_zero_of_lt (by omega)
+            rw [this, zero_mul, zero_mul]
+        rw [hb, hF]
+      · -- d = d' + 1 : use the recurrence and the closed-form recurrence F_rec
+        have hrec := birthdayCount3_rec (m + 1) (d' + 1)
+        simp only [Nat.add_sub_cancel] at hrec
+        rw [hrec, ih (m + 1) (by omega) d', ih m (by omega) d']
+        exact (F_rec m d').symm
+
 end BirthdayGeneralClosed
