@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module header and the OQ-04 question",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Frames open question OQ-04 of the parent bezout-identity-oq-02-oq-01-oq-02 (FTA generalization to Euclidean domains): is Eisenstein's criterion in Mathlib and usable here? The answer is yes and beyond UFDs — Mathlib's Polynomial.irreducible_of_eisenstein_criterion applies at any prime ideal of any commutative ring. The file packages it as: for any integral domain R, prime p, and n ≥ 1, Xⁿ − p is irreducible over R[X], via Eisenstein at the ideal (p), with specializations R = ℤ (Yⁿ − 2, Yⁿ − 3) and R = ℚ[X] (Yⁿ − X, Eisenstein at the prime element X — the parent's Euclidean-domain theme). Imports Mathlib, opens Polynomial, and enters the namespace.",
+      "mathContext": "$X^n - p$ irreducible over $R[X]$ for $R$ an integral domain, $p$ prime, $n \\ge 1$ — Eisenstein at the prime ideal $(p)$, generalizing the classical $\\mathbb{Z}$ case (e.g. $Y^n - 2$) to arbitrary integral domains including $\\mathbb{Q}[X]$."
+    },
+    {
       "id": "general",
       "title": "The General Theorem",
       "startLine": 42,
