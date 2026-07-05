@@ -213,4 +213,27 @@ theorem even_degree_deleteEdges_of_closed_trail
   refine ⟨a - b, ?_⟩
   omega
 
+/-- **Extracting a maximal trail preserves the all-even-degree invariant.**
+Package the two halves of the Hierholzer induction step into the shape the recursion
+actually consumes. In the greedy phase we grow a trail `p : G.Walk u v` until it is
+*edge-maximal* at its current endpoint `v` (every edge incident to `v` is already used).
+Sub-lemma A (`eq_of_isTrail_edgeMaximal`) shows such a maximal trail is automatically
+**closed** (`u = v`), so the extracted circuit is a genuine closed trail; Sub-lemma B
+(`even_degree_deleteEdges_of_closed_trail`) then shows deleting its edges leaves every
+vertex with even degree. Hence the residual graph `G.deleteEdges p.edges.toFinset`
+re-satisfies "every vertex has even degree" — exactly the hypothesis the strong
+induction on edge count needs to recurse into it, *without* the caller having to know in
+advance that the maximal trail closed up. This is the invariant-preservation obligation
+of the induction step, discharged directly from `heven` and edge-maximality. -/
+theorem even_degree_deleteEdges_of_maximal_trail
+    [Fintype V] [DecidableRel G.Adj]
+    {u v : V} {p : G.Walk u v} (hp : p.IsTrail)
+    (heven : ∀ x, Even (G.degree x))
+    (hmax : ∀ e ∈ G.incidenceFinset v, e ∈ p.edges) (x : V) :
+    Even ((G.deleteEdges (p.edges.toFinset : Set (Sym2 V))).degree x) := by
+  -- A maximal trail is closed: its start equals its (maximal) endpoint.
+  obtain rfl : u = v := eq_of_isTrail_edgeMaximal hp (heven v) hmax
+  -- Now `p : G.Walk u u` is a closed trail; Sub-lemma B applies verbatim.
+  exact even_degree_deleteEdges_of_closed_trail hp heven x
+
 end UndirectedEulerDev
