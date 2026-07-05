@@ -103,7 +103,7 @@ theorem newton_signed_top {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
       ≥ (n : ℝ) ^ 2 * (elemSymm (n - 2) x * elemSymm n x) := by
   -- The k = 1 inequality applied to the reciprocals.
   have hk1 := maclaurin_sq_m1_ge_m2_general hn (fun i => (x i)⁻¹)
-  rw [show (∑ i, (x i)⁻¹) = elemSymm 1 (fun i => (x i)⁻¹) from (elemSymm_one _).symm] at hk1
+  rw [← elemSymm_one] at hk1
   have hk1' : (n : ℝ) ^ 2 * elemSymm 2 (fun i => (x i)⁻¹)
       ≤ (Nat.choose n 2 : ℝ) * (elemSymm 1 (fun i => (x i)⁻¹)) ^ 2 := hk1
   -- eₙ(x) ≠ 0, hence eₙ(x)² > 0.
