@@ -136,5 +136,27 @@
       "Can the O(N^d) door-count bound be sharpened to the actual path length, or shown tight by exhibiting a subdivision whose walk visits a constant fraction of all doors (the exponential-path phenomenon known for some complementary-pivot instances)?",
       "Is there a formal reduction certifying that this constructive walk and the mod-2 parity count locate the same FC simplex, connecting the algorithmic and enumerative proofs of Sperner's lemma?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "sperner-ndim",
+      "relationship": "related",
+      "description": "The root Sperner's-lemma entry whose constructive proof this entry's engine drives. Sperner's lemma guarantees a fully-labeled simplex; the door-pivot walk formalized here is exactly the path-following algorithm that constructively locates one, and its bounded termination is what makes the proof constructive."
+    },
+    {
+      "targetId": "sperner-ndim-mathlib",
+      "relationship": "related",
+      "description": "A parallel formalization of Sperner's lemma via an abstract cell complex. Both entries model the combinatorial skeleton of the lemma; this entry isolates the termination of the door-pivot walk (the PPAD-flavoured path-following engine), complementing the cell-complex packaging there."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "The headline consequence the Kuhn algorithm delivers. Sperner's lemma implies the Brouwer fixed-point theorem, and the constructive path-following walk whose termination this entry proves is the algorithmic heart of that implication — it produces an approximate fixed point in bounded time."
+    },
+    {
+      "targetId": "sperner-ndim-oq-03",
+      "relationship": "related",
+      "description": "A sibling in the n-dimensional Sperner program, developing further structural aspects of the same simplicial-labeling setup that the door-pivot walk of this entry traverses."
+    }
+  ]
 }
