@@ -1403,7 +1403,7 @@ theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (_hdelta1 : delta 
 -- ═══════════════════════════════════════════════════════════════════
 
 /-- The quadratic Gauss sum `G(r) = Σ_{n ∈ ℤ/Nℤ} ψ(r·n²)`. -/
-noncomputable def sqGaussSum {N : ℕ} (r : ZMod N) : ℂ :=
+noncomputable def sqGaussSum {N : ℕ} [NeZero N] (r : ZMod N) : ℂ :=
   Finset.univ.sum fun n : ZMod N => ψ (r * n ^ 2)
 
 /-- The square-difference count `SD(A) = #{(x, n) : x ∈ A, x + n² ∈ A}`. -/
