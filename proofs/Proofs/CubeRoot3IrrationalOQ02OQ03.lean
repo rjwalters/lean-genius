@@ -606,6 +606,56 @@ theorem vahlen_capelli_even_mul_odd {K : Type*} [Field K] {m t : ℕ}
 -- PART 5d: The pure 2-power base (isolated open lemma = Mathlib's exact TODO)
 -- ============================================================
 
+/-- **Norm-descent keystone for the pure `2`-power tower.** If `a` is neither a square nor
+the negative of a square (`−a ∉ K²`), then `X^(2^k) − C a` is irreducible for every `k ≥ 1`.
+
+This is the branch of the even Kummer criterion that needs **only** condition (1) at the
+prime `2` — the `−4·K⁴` obstruction (condition (2)) is never invoked. The mechanism is the
+same norm transfer that drives `vahlen_capelli_even_mul_odd`: reducing
+`X^(2·2^k) − C a = (X²)^(2^k) − C a` to the base `X^(2^k) − C a` via
+`X_pow_mul_sub_C_irreducible`, a root `x` of the (irreducible, even-degree) base has field
+norm `N(x) = (−1)^(2^k)·(−a) = −a`; if `x = b²` in `K⟮x⟯` then `N(b)² = N(x) = −a`, so `−a`
+is a square in `K` — excluded by hypothesis. Because `2^k` is even at **every** level of the
+tower, `−a ∉ K²` is a single field-level condition preserved unchanged as `k` grows, so the
+induction closes with no auxiliary hypothesis.
+
+This isolates the genuinely open content of `two_power_capelli` to the residual case
+`−a ∈ K²` (equivalently `a = −c²`), which is exactly where the `−4·K⁴` factorisation
+`sophie_germain` becomes indispensable (cf. the `k = 2` base `capelli_four_coeff_contra`). -/
+theorem two_power_capelli_of_neg_not_square {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k)
+    {a : K} (h1 : ∀ b : K, b ^ 2 ≠ a) (hneg : ∀ b : K, b ^ 2 ≠ -a) :
+    Irreducible (X ^ 2 ^ k - C a : K[X]) := by
+  induction k, hk using Nat.le_induction with
+  | base =>
+    -- `k = 1`: `X² − C a`, prime exponent; `a` not a square is condition (1) at `p = 2`.
+    rw [pow_one]
+    exact (X_pow_sub_C_irreducible_iff_of_prime Nat.prime_two).mpr h1
+  | succ n hn IH =>
+    -- `X^(2^(n+1)) − C a = X^(2·2^n) − C a`; reduce to the base `X^(2^n) − C a` (= `IH`).
+    have hm0 : (2 : ℕ) ^ n ≠ 0 := pow_ne_zero n two_ne_zero
+    have hm_even : Even ((2 : ℕ) ^ n) := by rw [Nat.even_pow]; exact ⟨even_two, by omega⟩
+    rw [pow_succ, mul_comm (2 ^ n) 2]
+    apply X_pow_mul_sub_C_irreducible IH
+    intro E _ _ x hx
+    -- `x` is a root of the even-degree irreducible base, so it is integral over `K`.
+    have hInt : IsIntegral K x := not_not.mp fun h ↦ by
+      simpa only [degree_zero, degree_X_pow_sub_C (Nat.pos_of_ne_zero hm0),
+        WithBot.natCast_ne_bot] using congr_arg degree (hx.symm.trans (dif_neg h))
+    -- Suffices: the base root `x` is not a square in `K⟮x⟯` — then `X² − C x` is irreducible.
+    apply (X_pow_sub_C_irreducible_iff_of_prime Nat.prime_two).mpr
+    intro b hb
+    -- `hb : b² = x`.  Take the field norm: `N(b)² = N(x) = −a`, contradicting `−a ∉ K²`.
+    apply hneg (Algebra.norm K b)
+    have hpb := Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly
+      (IntermediateField.adjoin.powerBasis hInt)
+    rw [IntermediateField.adjoin.powerBasis_gen, IntermediateField.adjoin.powerBasis_dim,
+      IntermediateField.minpoly_gen, hx, natDegree_X_pow_sub_C, hm_even.neg_one_pow, one_mul,
+      coeff_sub, coeff_X_pow, if_neg (Ne.symm hm0), coeff_C_zero, zero_sub] at hpb
+    calc (Algebra.norm K b) ^ 2
+        = Algebra.norm K (b ^ 2) := by rw [map_pow]
+      _ = Algebra.norm K (IntermediateField.AdjoinSimple.gen K x) := by rw [hb]
+      _ = -a := hpb
+
 /-- **Pure `2`-power base `X^(2^k) − C a`.** If `a` is not a square and `a ∉ −4·K⁴`, then
 `X^(2^k) − C a` is irreducible over the field `K`, for every `k ≥ 1`.
 
@@ -620,12 +670,16 @@ The two low base cases are discharged here:
 * `k = 1` (`X² − C a`): Mathlib's prime-exponent Kummer criterion — condition (1) at `p = 2`.
 * `k = 2` (`X⁴ − C a`): the Sophie-Germain quartic analysis `vahlen_capelli_four_suff`.
 
-The sole remaining `sorry` is the genuine open content `k ≥ 3`: the induction on `k` for the
-`2`-power tower, whose inductive obstruction is the `−4b⁴` factorisation (`sophie_germain`)
-ruled out by condition (2). Concretely, `X^(2^(k+1)) − C a = (X²)^(2^k) − C a`, so
-`X_pow_mul_sub_C_irreducible` reduces the step to showing that a root `x` of the base
-(`x^(2^k) = a`) is **not a square** in `K(x)`; condition (2) is exactly what forbids
-`x = −4y⁴`-type squares from appearing in the tower. -/
+For `k ≥ 3` the tower is split on whether `−a` is a square:
+* `−a ∉ K²` — discharged **unconditionally** by the norm-descent keystone
+  `two_power_capelli_of_neg_not_square` (condition (2) is not needed here).
+* `−a ∈ K²` (equivalently `a = −c²`) — the sole remaining `sorry`: the genuine open content,
+  where the `−4b⁴` factorisation (`sophie_germain`) ruled out by condition (2) is
+  indispensable. Concretely, `X^(2^(k+1)) − C a = (X²)^(2^k) − C a`, so
+  `X_pow_mul_sub_C_irreducible` reduces the step to showing a root `x` of the base
+  (`x^(2^k) = a`) is **not a square** in `K(x)`; when `−a` is itself a square the norm
+  descent is inconclusive and condition (2) is exactly what forbids the `x = −4y⁴`-type
+  squares from appearing in the tower. -/
 theorem two_power_capelli {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k) {a : K}
     (h1 : ∀ b : K, b ^ 2 ≠ a) (h2 : ∀ b : K, a ≠ -(4 * b ^ 4)) :
     Irreducible (X ^ 2 ^ k - C a : K[X]) := by
@@ -637,9 +691,15 @@ theorem two_power_capelli {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k) {a : K}
   · -- `k = 2`: `X⁴ − C a`, the Sophie-Germain quartic base `vahlen_capelli_four_suff`.
     rw [show (2 : ℕ) ^ 2 = 4 from by norm_num]
     exact vahlen_capelli_four_suff h1 h2
-  · -- `k ≥ 3`: the genuine open case — the `2`-power induction on the `−4b⁴` obstruction,
-    -- Mathlib's `X_pow_sub_C_irreducible_of_prime_pow` generalised to `p = 2` (Lang VI §9).
-    sorry
+  · -- `k ≥ 3`: split on whether `−a` is a square.
+    by_cases hna : ∃ c : K, c ^ 2 = -a
+    · -- `−a ∈ K²` (i.e. `a = −c²`): the genuine open sub-case, where the `−4·K⁴`
+      -- factorisation (condition (2)) is indispensable.  Mathlib TODO (Lang VI §9).
+      sorry
+    · -- `−a ∉ K²`: discharged unconditionally by the norm-descent keystone.
+      push_neg at hna
+      refine two_power_capelli_of_neg_not_square ?_ h1 hna
+      omega
 
 -- ============================================================
 -- PART 6: The full criterion (even sufficiency = the open Mathlib gap)
