@@ -2,11 +2,11 @@
   "id": "erdos-76-packing-upper-bound",
   "title": "Erdős #76: The Elementary n²/6 Upper Bound on Monochromatic Triangle Packings",
   "slug": "erdos-76-packing-upper-bound",
-  "description": "Discharges, unconditionally and without axioms, the packing upper bound left as a `sorry` in the parent entry Erdős Problem #76 (Erdos76Problem.lean). The parent formalizes the Erdős–Faudree–Ordman conjecture — solved by Gruslys & Letzter (2020) — that every 2-coloring of K_n contains at least (1+o(1))·n²/12 edge-disjoint monochromatic triangles, and leaves the matching upper bound maxPackingSize c ≤ C(n,2)/3 (≈ n²/6) unproven. That upper bound is pure edge counting: each triangle occupies exactly 6 ordered edges (its offDiag), the triangles of a packing are pairwise edge-disjoint, so their edge sets sit disjointly inside the n(n−1) ordered edges of K_n; hence 6·(packing size) ≤ n²−n and (packing size) ≤ C(n,2)/3. This entry re-declares the triangle/packing machinery locally and proves the bound in full — for arbitrary packings (packing_card_le_choose) and for the maximum monochromatic packing of any coloring (maxPackingSize_le), the exact statement the parent leaves open. The factor-of-2 gap between this trivial upper bound n²/6 and the true optimum n²/12 is precisely what makes Erdős #76 deep: the extremal coloring sacrifices half its edges on a triangle-free red bipartite subgraph. Fully verified, 0 sorries, 0 axioms.",
+  "description": "Discharges, unconditionally and without axioms, the packing upper bound left as a `sorry` in the parent entry Erdős Problem #76 (Erdos76Problem.lean). The parent formalizes the Erdős–Faudree–Ordman conjecture — solved by Gruslys & Letzter (2020) — that every 2-coloring of K_n contains at least (1+o(1))·n²/12 edge-disjoint monochromatic triangles, and leaves the matching upper bound maxPackingSize c ≤ C(n,2)/3 (≈ n²/6) unproven. That upper bound is pure edge counting: each triangle occupies exactly 6 ordered edges (its offDiag), the triangles of a packing are pairwise edge-disjoint, so their edge sets sit disjointly inside the n(n−1) ordered edges of K_n; hence 6·(packing size) ≤ n²−n and (packing size) ≤ C(n,2)/3. This entry re-declares the triangle/packing machinery locally and proves the bound in full — for arbitrary packings (packing_card_le_choose) and for the maximum monochromatic packing of any coloring (maxPackingSize_le), the exact statement the parent leaves open. The factor-of-2 gap between this trivial upper bound n²/6 and the true optimum n²/12 is precisely what makes Erdős #76 deep: the extremal coloring sacrifices half its edges on a triangle-free red bipartite subgraph. Formalization pending — the Lean source file is not yet present on main (issue #34794); the machine-verified claim will be restored once it lands and builds.",
   "meta": {
     "author": "Lean Genius Researcher",
     "date": "2026",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos76PackingUpperBound.lean",
     "tags": [
       "combinatorics",
@@ -19,7 +19,7 @@
       "erdos",
       "research"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 160,
@@ -37,7 +37,8 @@
       "A fully local, axiom-free re-declaration of the triangle-packing vocabulary (Triangle, Triangle.edges as offDiag, isPacking, Color, EdgeColoring, isMonochromatic, monochromaticPacking, maxPackingSize) matching the parent Erdos76Problem.lean so the result drops directly into its narrative."
     ],
     "theoremCount": 4,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. Restore to 'verified' only once the Lean file lands and builds."
   },
   "overview": {
     "historicalContext": "Erdős Problem #76 (conjectured by Erdős, Faudree and Ordman; resolved by Gruslys and Letzter, 2020) asks how many edge-disjoint monochromatic triangles every 2-coloring of the edges of K_n must contain. The answer is (1+o(1))·n²/12, achieved by the balanced bipartition: split the vertices into two equal halves, color within-half edges blue (two K_{n/2} cliques, each packing ≈ n²/24 triangles via Steiner triple systems) and between-half edges red. The red class K_{n/2,n/2} is triangle-free, so it contributes nothing — the count comes entirely from the two blue cliques, giving 2·n²/24 = n²/12. The genuinely hard content is the matching lower bound (every coloring achieves ≥ n²/12), which Gruslys and Letzter proved via the Szemerédi regularity lemma and a greedy-absorption method.",
