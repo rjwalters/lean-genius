@@ -22,18 +22,24 @@
     "sorries": 1,
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
-    "assumptions": "Builds cleanly (verified via Docker, 0 axioms). One sorry remains: the even-sufficiency direction for even n ≥ 4 (the 2-power / 4|n regime), an explicit open TODO in Mathlib/FieldTheory/KummerExtension.lean citing Lang, Algebra, VI §9. Everything else is machine-checked: the Sophie Germain identity, both necessity factorizations, the full necessity direction for ALL n (both parities), the complete odd-case iff, AND the even base case n=2 (sufficiency via Mathlib's prime-exponent criterion X_pow_sub_C_irreducible_iff_of_prime, whose 4∤2 makes the −4·K⁴ obstruction vacuous).",
-    "lineCount": 315,
-    "theoremCount": 7,
+    "assumptions": "Builds cleanly (Docker-verified 2026-07-05, 3061 jobs, 0 axioms, exactly 1 sorry). The sole remaining sorry is now confined to the pure 2-power regime 8 ∣ n WITH −a ∈ K² (a = −c²) — a strict narrowing of the earlier 'even n ≥ 4' gap, and precisely the residual open content of Mathlib/FieldTheory/KummerExtension.lean's TODO (Lang, Algebra, VI §9). Everything else is machine-checked: the Sophie Germain identity, both necessity factorizations, the full necessity direction for ALL n (both parities), the complete odd-case iff, the even base cases n=2 (prime-exponent criterion) and n=4 (vahlen_capelli_four_suff — the full Sophie-Germain two-quadratic factor analysis via capelli_four_coeff_contra + quartic_two_two_coeffs + no_linear_factor), the odd-part peel-off vahlen_capelli_even_mul_odd (norm transfer through the tower), and the norm-descent keystone two_power_capelli_of_neg_not_square which discharges the ENTIRE −a ∉ K² branch of the 2-power tower unconditionally. Net verified coverage: every even n with 8 ∤ n is fully irreducibility-decided, and for 8 ∣ n only the −a ∈ K² sub-case remains.",
+    "lineCount": 799,
+    "theoremCount": 20,
     "definitionCount": 1,
     "originalContributions": [
       "VahlenCapelliCond: the full criterion as a reusable predicate over any field",
       "sophie_germain: u⁴+4v⁴=(u²−2vu+2v²)(u²+2vu+2v²), the algebraic source of the −4·K⁴ obstruction (ring)",
-      "factor_capelli: explicit factorisation X^{4m}+4(C b)⁴ into two degree-2m polynomials (ring)",
-      "capelli_factor_dvd: necessity witness for condition (2) — the Capelli obstruction yields a proper divisor",
+      "factor_capelli / capelli_factor_dvd: explicit factorisation X^{4m}+4(C b)⁴ into two degree-2m polynomials, giving the necessity witness for condition (2)",
       "obstruction_pow_dvd: necessity witness for condition (1) via x−y ∣ xⁿ−yⁿ",
+      "vahlen_capelli_necessity: full necessity direction for ALL n and both parities, via not_irreducible_of_proper_dvd",
       "vahlen_capelli_odd: complete iff for odd n, wrapping Mathlib (0 sorries)",
-      "vahlen_capelli: full statement; odd branch closed, even-sufficiency isolated as the sole sorry"
+      "no_root_of_not_square_even: any nontrivial factorisation of even X^n − C a is rootless when a is not a square — isolates the linear-factor obstruction in the sufficiency direction",
+      "capelli_four_coeff_contra: the (2,2)-split coefficient contradiction — the char-agnostic algebraic heart of the n=4 sufficiency case (the char-2 subtlety is discharged internally, no char≠2 hypothesis)",
+      "quartic_two_two_coeffs / monic_natDegree_two_eq / leadingCoeff_inv_mul_monic: the polynomial plumbing extracting the two monic-quadratic coefficient relations from a reducible quartic",
+      "vahlen_capelli_four_suff: n=4 sufficiency (X⁴ − C a irreducible over EVERY field when a not a square and a ∉ −4K⁴) — the Sophie-Germain quartic base case, fully proved",
+      "vahlen_capelli_even_mul_odd: coprime odd-part peel-off — transfers the odd exponent factor through the tower by a field-norm computation (N(x) = −a since the base degree is even)",
+      "two_power_capelli_of_neg_not_square: norm-descent keystone — X^(2^k) − C a irreducible for all k≥1 whenever neither a nor −a is a square; discharges the entire −a ∉ K² branch of the 2-power tower by induction with no auxiliary hypothesis",
+      "two_power_capelli / vahlen_capelli: full assembly; every case closed except the isolated 8 ∣ n with −a ∈ K² sub-case (the sole sorry, = Mathlib's open TODO)"
     ]
   },
   "leanFile": {
@@ -42,18 +48,18 @@
     "axiomCount": 0,
     "sorries": 1,
     "definitionCount": 1,
-    "theoremCount": 10
+    "theoremCount": 20
   },
   "overview": {
     "historicalContext": "The irreducibility of pure binomials X^n − a is one of the oldest questions in the theory of equations. Abel and Galois already understood the odd-prime case, but the definitive criterion is due to Theodor Vahlen (1895) and Alfredo Capelli (1897), who independently settled when X^n − a is irreducible over a field: it is irreducible iff a is not a p-th power for any prime p ∣ n and — the subtle extra clause — a ∉ −4·K⁴ whenever 4 ∣ n. This last condition traces directly to the Sophie Germain identity u⁴+4v⁴ = (u²−2uv+2v²)(u²+2uv+2v²), which Germain introduced around 1825 during her work on Fermat's Last Theorem. Serge Lang's Algebra (VI §9) gives the modern textbook treatment. Mathlib formalises only the odd-exponent half (X_pow_sub_C_irreducible_iff_forall_prime_of_odd) and leaves the even case as an explicit TODO citing exactly this Lang reference — so this entry attacks a concrete, named gap in the library. The problem descends from the parent gallery entry proving ∛3 irrational by Eisenstein: that argument is the case n = 3, a = 3, and Vahlen–Capelli is the exact iff that generalises the ad hoc Eisenstein bound to every exponent and radicand.",
     "problemStatement": "For a field $K$, an element $a \\in K$, and $n \\ge 1$: $X^n - Ca$ is irreducible over $K$ iff (1) $a$ is not a $p$-th power in $K$ for every prime $p \\mid n$, and (2) if $4 \\mid n$ then $a \\notin -4K^4$, i.e. $a \\ne -4b^4$ for all $b \\in K$.",
-    "proofStrategy": "Encode the two-part criterion as a predicate VahlenCapelliCond, then split the biconditional by parity. Necessity holds for all n and is fully proved: two obstruction lemmas exhibit explicit proper divisors — obstruction_pow_dvd (if a = cᵖ then X^{n/p} − Cc divides the binomial, via x−y ∣ xⁿ−yⁿ) for condition (1), and capelli_factor_dvd (the Sophie Germain / Capelli factorisation of X^{4m} + 4(Cb)⁴ into two degree-2m quadratics) for condition (2). The odd branch of sufficiency is complete: for odd n condition (2) is vacuous (4 ∤ n by omega), so the criterion reduces verbatim to Mathlib's Kummer-extension theorem. The even-sufficiency direction — the hard Capelli theorem — is isolated as the sole sorry, with a documented reduction: write n = 2ᵏt with t odd, dispatch the odd part after substituting X ↦ X^{2ᵏ}, then induct on k with the −4b⁴ factorisation as the inductive obstruction that condition (2) forbids.",
+    "proofStrategy": "Encode the two-part criterion as a predicate VahlenCapelliCond, then split the biconditional by parity. Necessity holds for all n and is fully proved: two obstruction lemmas exhibit explicit proper divisors — obstruction_pow_dvd (if a = cᵖ then X^{n/p} − Cc divides the binomial, via x−y ∣ xⁿ−yⁿ) for condition (1), and capelli_factor_dvd (the Sophie Germain / Capelli factorisation of X^{4m} + 4(Cb)⁴ into two degree-2m quadratics) for condition (2). The odd branch of sufficiency is complete: for odd n condition (2) is vacuous (4 ∤ n by omega), so the criterion reduces verbatim to Mathlib's Kummer-extension theorem. The even-sufficiency direction — the hard Capelli theorem — is progressively dismantled: write n = 2ᵏt with t odd, dispatch the odd part via vahlen_capelli_even_mul_odd (a norm transfer through the tower), reducing to the pure 2-power base X^(2ᵏ) − C a. The base cases k=1 (n=2, prime exponent) and k=2 (n=4, vahlen_capelli_four_suff via the Sophie-Germain two-quadratic coefficient contradiction) are proved, so every even n with 8 ∤ n is fully decided. For k≥3 the tower splits on whether −a is a square: the −a ∉ K² branch is closed unconditionally by the norm-descent keystone two_power_capelli_of_neg_not_square (a root x of the even-degree base has norm −a; a square root would put −a in K²). The SOLE remaining sorry is thus the narrow residual 8 ∣ n WITH −a ∈ K², where norm descent is inconclusive and condition (2)'s −4·K⁴ obstruction becomes indispensable — exactly Mathlib's open TODO.",
     "keyInsights": [
       "The entire even/odd asymmetry of binomial irreducibility comes from a single algebraic fact: u⁴+4v⁴ factors into two quadratics (Sophie Germain, ~1825). Condition (2) of the criterion exists only because this factorisation exists.",
       "Necessity and sufficiency have completely different difficulty profiles. Necessity is elementary and holds for every n — it is just producing an explicit proper divisor. Sufficiency for 4 ∣ n is the genuinely hard content and is precisely what Mathlib leaves open.",
       "Both necessity witnesses are the *same idea* applied to different factorisations: condition (1) uses x−y ∣ xⁿ−yⁿ (a p-th power splits off a linear-in-X^m factor); condition (2) uses u⁴+4v⁴ (a −4b⁴ radicand splits off a quadratic-in-X^m factor).",
       "For odd n the criterion collapses onto Mathlib's existing theorem because condition (2)'s hypothesis 4 ∣ n can never fire — a structural vacuity, not an omission. The Lean proof makes this collapse a theorem about the predicate rather than a re-derivation.",
-      "The sole sorry is honest and well-localised: it coincides exactly with an open TODO in Mathlib/FieldTheory/KummerExtension.lean, so the wip badge marks a real research frontier rather than an incomplete routine argument.",
+      "The sole sorry is honest and well-localised — and progressively narrowed: it no longer covers 'even n ≥ 4' but only the 2-power tail 8 ∣ n WITH −a ∈ K². The −a ∉ K² half of the 2-power tower falls to a clean norm-descent induction (N(x) = −a for a base root x), and only when −a is itself a square does that argument stall, leaving the −4·K⁴ obstruction of condition (2) as the essential missing ingredient — coinciding exactly with Mathlib's open KummerExtension TODO.",
       "The reduction n = 2ᵏt (odd t) shows the even case is not monolithic: coprime-exponent multiplicativity of irreducibility peels away t, concentrating all difficulty in the pure 2-power tower n = 2ᵏ, where induction on k meets the Sophie Germain obstruction."
     ]
   },
