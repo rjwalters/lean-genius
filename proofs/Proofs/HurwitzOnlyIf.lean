@@ -663,6 +663,64 @@ theorem imaginaryBilin_self_eq_zero_iff (A : Type*) [NormedDivisionRing A] [Norm
         _ = 0 := realPartValue_smul_one A 0
     linarith
 
+/-! ### Quaternion generation: products of anticommuting imaginaries
+
+The dimension count `finrank ℝ (Im A) ∈ {0, 1, 3}` that closes Frobenius' theorem runs on the
+following structural mechanism.  Choose orthonormal imaginary units `e₁, …, eₘ` for the
+positive-definite form `B` (`imaginaryBilin`).  Orthogonality `B(eᵢ, eⱼ) = 0` is exactly
+anticommutation `eᵢeⱼ + eⱼeᵢ = 0`, and the two lemmas below show that the product `eᵢeⱼ` is
+*again* an imaginary element that anticommutes with both factors — a fresh imaginary unit.
+Starting from two anticommuting units `i, j` this manufactures a third `k := i*j`, closing a
+quaternion triple `⟨i, j, k⟩` inside `A`; associativity then prevents a *fourth* independent
+unit, pinning `finrank ℝ (Im A) ≤ 3`. -/
+
+/-- **Anticommutation propagates to products.** If `x` and `y` anticommute
+(`x*y + y*x = 0`) then `x` anticommutes with their product `x*y` as well:
+`x*(x*y) + (x*y)*x = 0`.  Purely associative — no imaginary or division hypothesis is used;
+`(x*y)*x = x*(y*x) = -x*(x*y)`. -/
+theorem mul_anticomm_left (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    {x y : A} (hac : x * y + y * x = 0) : x * (x * y) + (x * y) * x = 0 := by
+  have hyx : y * x = -(x * y) := eq_neg_of_add_eq_zero_right hac
+  calc x * (x * y) + (x * y) * x = x * x * y + x * (y * x) := by noncomm_ring
+    _ = x * x * y + x * (-(x * y)) := by rw [hyx]
+    _ = 0 := by noncomm_ring
+
+/-- **Anticommutation propagates to products (right factor).** Symmetric companion of
+`mul_anticomm_left`: if `x*y + y*x = 0` then `y` anticommutes with `x*y`,
+`y*(x*y) + (x*y)*y = 0`.  Here `y*(x*y) = (y*x)*y = -(x*y)*y`. -/
+theorem mul_anticomm_right (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    {x y : A} (hac : x * y + y * x = 0) : y * (x * y) + (x * y) * y = 0 := by
+  have hyx : y * x = -(x * y) := eq_neg_of_add_eq_zero_right hac
+  calc y * (x * y) + (x * y) * y = (y * x) * y + x * y * y := by noncomm_ring
+    _ = (-(x * y)) * y + x * y * y := by rw [hyx]
+    _ = 0 := by noncomm_ring
+
+/-- **Quaternion-generating keystone: the product of two anticommuting imaginaries is
+imaginary.** If `x, y ∈ Im A` (so `x² = a•1`, `y² = b•1` with `a, b ≤ 0`) anticommute
+(`x*y + y*x = 0`), then `x*y ∈ Im A`.  By associativity and `y*x = -(x*y)`,
+`(x*y)² = x*(y*x)*y = -x²·y² = -(a·b)•1`, and `a·b ≥ 0` makes the scalar `-(a·b) ≤ 0`.
+Combined with `mul_anticomm_left`/`mul_anticomm_right` this shows two orthogonal imaginary
+units generate a quaternion triple `⟨x, y, x*y⟩` — the inductive engine of the
+`finrank ℝ (Im A) ∈ {0, 1, 3}` count. -/
+theorem isImaginary_mul_of_anticomm (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    {x y : A} (hx : IsImaginary A x) (hy : IsImaginary A y)
+    (hac : x * y + y * x = 0) : IsImaginary A (x * y) := by
+  obtain ⟨a, ha, hxsq⟩ := hx
+  obtain ⟨b, hb, hysq⟩ := hy
+  have hxx : x * x = a • (1 : A) := by rw [← pow_two]; exact hxsq
+  have hyy : y * y = b • (1 : A) := by rw [← pow_two]; exact hysq
+  have hyx : y * x = -(x * y) := eq_neg_of_add_eq_zero_right hac
+  refine ⟨-(a * b), ?_, ?_⟩
+  · have hab : 0 ≤ a * b := by
+      have := mul_nonneg (neg_nonneg.2 ha) (neg_nonneg.2 hb); simpa using this
+    linarith
+  · have hsq : (x * y) ^ 2 = -(x * x * (y * y)) := by
+      rw [pow_two]
+      calc x * y * (x * y) = x * (y * x) * y := by noncomm_ring
+        _ = x * (-(x * y)) * y := by rw [hyx]
+        _ = -(x * x * (y * y)) := by noncomm_ring
+    rw [hsq, hxx, hyy, smul_mul_smul_comm, mul_one, neg_smul]
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
