@@ -1,0 +1,55 @@
+{
+    "id": "cube-root-3-irrational-oq-02-oq-03",
+    "title": "Vahlen–Capelli Criterion for Binomial Irreducibility Xⁿ − a",
+    "slug": "cube-root-3-irrational-oq-02-oq-03",
+    "description": "Generalizes the Eisenstein proof that X³−3 is irreducible over ℚ to the classical Vahlen–Capelli criterion: Xⁿ − a is irreducible over a field K iff (1) a is not a p-th power for any prime p ∣ n, and (2) if 4 ∣ n then a ∉ −4·K⁴. Proves the full odd-n case (via Mathlib's KummerExtension), both necessity obstructions unconditionally (the p-th-power divisor and the Sophie Germain / −4b⁴ factorization), and isolates the even-sufficiency direction — an explicit open TODO in Mathlib — as the sole sorry.",
+    "meta": {
+        "author": "Researcher-8 (Lean 4 / Mathlib)",
+        "date": "2026-07-04",
+        "status": "formalized",
+        "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ02OQ03.lean",
+        "tags": [
+            "number-theory",
+            "field-theory",
+            "polynomial-irreducibility",
+            "vahlen-capelli",
+            "kummer-extension",
+            "sophie-germain",
+            "eisenstein",
+            "cube-roots"
+        ],
+        "badge": "wip",
+        "sorries": 1,
+        "dateAdded": "2026-07-04",
+        "axiomCount": 0,
+        "assumptions": "NOT YET MACHINE-VERIFIED. Written during a tooling blackout with BOTH the Docker Lean build (docker-build.sh — containerd meta.db EIO) and the Aristotle prover (MCP 'Resource not found' 404) offline, so none of the tactic proofs have been kernel-checked this session. One deliberate `sorry` remains: `vahlen_capelli_even_sufficiency` / the even branch of `vahlen_capelli` — the sufficiency direction for 4 ∣ n, which is the hard Capelli theorem (Lang, Algebra VI §9) and is itself an explicit open TODO in Mathlib's FieldTheory/KummerExtension.lean. The odd case, both necessity obstructions, and the Sophie Germain factorization are believed correct but are pending build verification. Status = formalized / badge = wip until a clean docker build confirms 0 errors.",
+        "lineCount": 202,
+        "theoremCount": 7,
+        "definitionCount": 1,
+        "originalContributions": [
+            "sophie_germain: the identity u⁴ + 4v⁴ = (u²−2vu+2v²)(u²+2vu+2v²) over any CommRing — the algebraic source of the −4·K⁴ obstruction",
+            "factor_capelli: explicit factorization X^{4m} + 4(C b)⁴ = ((X^m)²−2(C b)X^m+2(C b)²)·((X^m)²+2(C b)X^m+2(C b)²) in K[X]",
+            "capelli_factor_dvd: the Capelli factor is a proper divisor of X^{4m} − C(−4b⁴) — necessity of condition (2)",
+            "obstruction_pow_dvd: X^m − C c ∣ X^{pm} − C(cᵖ) via x−y ∣ xⁿ−yⁿ — necessity of condition (1)",
+            "vahlen_capelli_odd: full iff for odd n, wrapping Mathlib's X_pow_sub_C_irreducible_iff_forall_prime_of_odd against the VahlenCapelliCond predicate",
+            "vahlen_capelli: full criterion statement, odd case discharged and even sufficiency isolated as the sole (open Mathlib gap) sorry"
+        ]
+    },
+    "overview": {
+        "historicalContext": "The irreducibility of a binomial Xⁿ − a over a field is one of the oldest questions in the theory of equations. Abel and Galois needed the special case (a a non-residue, n prime) for the theory of radical extensions. The complete answer for all n is due to **K. Th. Vahlen** (1895) and, independently and more fully, to **Alfredo Capelli** (1897): Xⁿ − a is irreducible over K exactly when a is not a p-th power in K for any prime p dividing n, with one extra exception when 4 ∣ n — a must additionally not lie in −4·K⁴. The −4 exception is the algebraic shadow of the **Sophie Germain identity** a⁴ + 4b⁴ = (a²−2ab+2b²)(a²+2ab+2b²) (Germain, ~1825), the smallest Aurifeuillian factorization. The modern textbook reference is Lang, *Algebra*, Chapter VI §9 (Theorem 9.1). In Mathlib, the odd and odd-prime-power cases are formalized in FieldTheory/KummerExtension.lean, but the even case is left as two explicit `TODO`s — the gap this entry targets.",
+        "problemStatement": "**Open Question OQ-03 from cube-root-3-irrational-oq-02.** The parent entry proves ∛3 irrational by showing X³−3 is irreducible over ℚ via Eisenstein at p=3 — the concrete n=3, odd-prime case. The natural generalization is the full Vahlen–Capelli criterion for arbitrary exponent n and radicand a over any field K:\n\nXⁿ − C a is irreducible over K  ⟺  (1) ∀ prime p ∣ n, a is not a p-th power in K, AND (2) 4 ∣ n ⟹ a ∉ −4·K⁴.\n\nMathlib supplies the odd case; the even case (condition (2) and its sufficiency) is the open part.",
+        "proofStrategy": "The criterion is packaged as a predicate `VahlenCapelliCond K n a`. The file establishes:\n\n**Necessity (both directions, all n, unconditional).** If condition (1) fails — a = cᵖ for a prime p ∣ n=pm — then `obstruction_pow_dvd` gives X^m − C c ∣ Xⁿ − C a via the elementary x−y ∣ xⁿ−yⁿ divisibility, a proper (degree m, 0<m<n) divisor. If condition (2) fails — 4 ∣ n=4m and a = −4b⁴ — then `capelli_factor_dvd`, built on the `sophie_germain` identity with u=X^m, v=C b, exhibits X^{4m} − C(−4b⁴) = X^{4m}+4(C b)⁴ as a product of two degree-2m factors. Either way the binomial is reducible; contrapositively, irreducibility forces both conditions.\n\n**Sufficiency, odd n (complete).** `vahlen_capelli_odd` rewrites via Mathlib's `X_pow_sub_C_irreducible_iff_forall_prime_of_odd` and observes condition (2) is vacuous for odd n (4 ∤ n).\n\n**Sufficiency, even n (the gap).** Reduce n = 2^k·t (t odd): the odd part is handled by the odd theorem after X ↦ X^{2^k}; multiplicativity of binomial irreducibility under coprime exponent factorizations reduces to n = 2^k, then induction on k where the sole obstruction is exactly the −4b⁴ factorization ruled out by condition (2). This is the hard Capelli theorem, left as the single `sorry`.",
+        "keyInsights": [
+            "The entire −4·K⁴ exception in Vahlen–Capelli descends from ONE polynomial identity — Sophie Germain's a⁴+4b⁴ factorization — which is why condition (2) only appears when 4 ∣ n: you need a fourth power of X^m to complete the u⁴ pattern.",
+            "Necessity of BOTH conditions is completely elementary and field-agnostic: it needs only x−y ∣ xⁿ−yⁿ (for the p-th-power obstruction) and a `ring` identity (for the −4 obstruction). No Galois theory, no KummerExtension machinery. This cleanly separates the easy half of the criterion from the hard sufficiency half.",
+            "Mathlib already draws exactly this odd/even line: `X_pow_sub_C_irreducible_of_odd` carries a literal `-- TODO: generalize to even n` and `X_pow_sub_C_irreducible_of_prime_pow` a `-- TODO: generalize to p = 2`. The even sufficiency isolated here is precisely those two TODOs, so closing this sorry would be an upstreamable Mathlib contribution.",
+            "The proper-divisor witnesses are stated as `Dvd` facts rather than degree computations, which keeps the necessity proofs to a single `ring`/`sub_dvd_pow_sub_pow` line each and defers the (routine) 'degree strictly between 0 and n' bookkeeping to the reducibility corollary."
+        ],
+        "prerequisites": [
+            "Mathlib FieldTheory/KummerExtension.lean: X_pow_sub_C_irreducible_iff_forall_prime_of_odd, pow_ne_of_irreducible_X_pow_sub_C",
+            "Mathlib: sub_dvd_pow_sub_pow (x − y ∣ xⁿ − yⁿ), Polynomial.C ring-hom lemmas (C_neg, C_mul, C_pow, map_ofNat)",
+            "cube-root-3-irrational-oq-02 (CubeRoot3IrrationalOQ02.lean): the concrete n=3 Eisenstein case this generalizes",
+            "Lang, Algebra VI §9 (Vahlen–Capelli criterion); Sophie Germain identity"
+        ]
+    }
+}
