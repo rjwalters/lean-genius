@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "stars-and-bars-last-part-recurrence-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 72
+    },
+    "type": "concept",
+    "title": "Weak compositions and the last-part recurrence",
+    "content": "A weak composition of n into k parts is an ordered k-tuple (x₀, …, x_{k−1}) of non-negative integers with x₀ + ⋯ + x_{k−1} = n. Writing C(n,k) for the number of these, conditioning on the value j of one distinguished part leaves a weak composition of n−j into k−1 parts, giving C(n,k) = ∑_{j=0}^n C(n−j, k−1) for k ≥ 1, with base case C(n,0) = [n=0]. The count is modelled definitionally as wc n k = (Finset.Nat.antidiagonalTuple k n).card, whose membership is exactly ∑ᵢ xᵢ = n (mem_antidiagonalTuple). The base cases wc_zero (only the empty tuple, so C(n,0) = [n=0]) and wc_one (the unique 1-tuple ![n], so C(n,1) = 1) fall straight out of Mathlib's antidiagonalTuple simp lemmas."
+  },
+  {
+    "id": "ann-fibre",
+    "proofId": "stars-and-bars-last-part-recurrence-oq-01-oq-01",
+    "range": {
+      "startLine": 74,
+      "endLine": 102
+    },
+    "type": "technique",
+    "title": "The first-coordinate fibre bijection",
+    "content": "fiber_card is the combinatorial core: among the weak compositions of n into k+1 parts, those with first coordinate equal to j (for j ≤ n) biject with the weak compositions of n−j into k parts. The bijection drops the first part (Fin.tail) with inverse prepending j (Fin.cons j), discharged by Finset.card_nbij'. The four side conditions are pure sum bookkeeping: Fin.sum_univ_succ splits the total as x₀ + ∑(tail x), so ∑(tail) = n − j; Fin.cons_zero and Fin.cons_succ evaluate the restored tuple (first part j, rest y) to give j + ∑ y = n; and Fin.cons_self_tail / Fin.tail_cons close the two round trips."
+  },
+  {
+    "id": "ann-recurrence",
+    "proofId": "stars-and-bars-last-part-recurrence-oq-01-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 121
+    },
+    "type": "concept",
+    "title": "The recurrence as a fibre partition",
+    "content": "wc_recurrence is the stated open question. Finset.card_eq_sum_card_fiberwise partitions the (k+1)-tuples summing to n by the value of their first coordinate x₀, viewed as a map into range (n+1) — legitimate because a single coordinate is at most the total (Finset.single_le_sum), hence ≤ n. Summing the fibre sizes and rewriting each block by fiber_card yields C(n,k+1) = ∑_{j=0}^n C(n−j,k). Conditioning on the first part equals conditioning on the last (the tuple order is a relabelling), so this is the last-part recurrence."
+  },
+  {
+    "id": "ann-closed-form",
+    "proofId": "stars-and-bars-last-part-recurrence-oq-01-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 150
+    },
+    "type": "concept",
+    "title": "Solving the recurrence with hockey-stick",
+    "content": "wc_closed recovers the stars-and-bars closed form C(n,k+1) = (n+k).choose k by induction on k. The base case is wc_one. The step rewrites by wc_recurrence, applies the inductive hypothesis to each summand, reflects the summation index with Finset.sum_range_reflect (∑_j ((n−j)+k).choose k becomes ∑_i (i+k).choose k), and collapses the telescoping sum with the hockey-stick (Zhu Shijie) identity Nat.sum_range_add_choose. The bridge wc_eq_card_weakComposition identifies wc n k with the subtype cardinality Fintype.card {f : Fin k → ℕ // ∑ i, f i = n} used by the generating-function siblings (via Equiv.subtypeEquivRight and Fintype.card_coe), and a worked example checks wc n 2 = n+1."
+  }
+]
