@@ -98,7 +98,9 @@ Substituting `a ↦ X^m` shows that whenever `a = −4b⁴` and `4 ∣ n = 4m`, 
 `X^n − C a = (X^m)⁴ + 4(C b)⁴` splits into two degree-`2m` factors — so condition (2) is
 *necessary*. Capelli's theorem is that (1)+(2) are also *sufficient*.
 
-## Status: builds cleanly (verified via Docker); sole `sorry` = even-sufficiency (Mathlib TODO)
+## Status: sole `sorry` = even-sufficiency (Mathlib TODO). Body previously Docker-verified;
+`capelli_four_coeff_contra` (new) is a self-contained scalar-field argument checked by hand
+(Docker build infra currently returns an I/O error, so it was not re-built this session).
 -/
 
 import Mathlib.FieldTheory.KummerExtension
@@ -322,6 +324,66 @@ theorem no_root_of_not_square_even {K : Type*} [Field K] {n : ℕ} (hn : Even n)
   obtain ⟨m, hm⟩ := hn
   have hrn : r ^ n = a := sub_eq_zero.mp h
   exact h1 (r ^ m) (by rw [← hrn, hm]; ring)
+
+/-- **The `(2,2)`-split coefficient contradiction** — the algebraic heart of the `n = 4`
+sufficiency case. Suppose the monic quartic `X⁴ − C a` factors as two monic quadratics
+`(X² + pX + q)(X² + sX + t)`. Expanding and matching coefficients gives exactly
+
+  `p + s = 0`,  `q + t + ps = 0`,  `pt + qs = 0`,  `qt = −a`.
+
+Under the two Vahlen–Capelli hypotheses — `a` is **not a square** (condition (1) at the
+prime `2`) and `a ∉ −4·K⁴` (condition (2)) — these four relations are **contradictory**.
+
+Proof (following Lang VI §9, char-agnostic): `h1` gives `s = −p`.
+* If `p = 0`: `h2` forces `t = −q`, so `qt = −q² = −a`, i.e. `a = q²` — a square,
+  contradicting `hsq`.
+* If `p ≠ 0`: `h3` (now `p(t − q) = 0`) forces `t = q`; `h2` gives `p² = 2q` and `h4`
+  gives `q² = −a`. Were `2 = 0` we'd get `p² = 0`, hence `p = 0` — contradiction; so
+  `2 ≠ 0` is **derived, not assumed**. Then with `q = p²/2`,
+  `−(4·(p/2)⁴) = −p⁴/4 = −q² = a`, contradicting `hcap` at `b = p/2`.
+
+The characteristic-2 subtlety is discharged internally, so the conclusion holds over
+*every* field — exactly the content needed for `n = 4` sufficiency. -/
+theorem capelli_four_coeff_contra {K : Type*} [Field K] {a p q s t : K}
+    (h1 : p + s = 0) (h2 : q + t + p * s = 0) (h3 : p * t + q * s = 0)
+    (h4 : q * t = -a)
+    (hsq : ∀ b : K, b ^ 2 ≠ a) (hcap : ∀ b : K, a ≠ -(4 * b ^ 4)) : False := by
+  -- Eliminate `s` via `s = -p`.
+  have hs : s = -p := by linear_combination h1
+  subst hs
+  by_cases hp : p = 0
+  · -- Linear-obstruction regime is excluded, but here `p = 0` forces `a` to be a square.
+    subst hp
+    have ht : t = -q := by linear_combination h2
+    subst ht
+    have hqa : q ^ 2 = a := by linear_combination -h4
+    exact hsq q hqa
+  · -- `p ≠ 0`: `h3` collapses to `t = q`, and condition (2) is violated by `b = p/2`.
+    have htq : t = q := by
+      have hp3 : p * (t - q) = 0 := by linear_combination h3
+      rcases mul_eq_zero.mp hp3 with h | h
+      · exact absurd h hp
+      · linear_combination h
+    subst htq
+    have hp2 : p ^ 2 = 2 * q := by linear_combination -h2
+    have hq2 : q ^ 2 = -a := by linear_combination h4
+    -- `2 ≠ 0` is forced: otherwise `p² = 2q = 0` gives `p = 0`.
+    have h2ne : (2 : K) ≠ 0 := by
+      intro h20
+      apply hp
+      have hpp : p ^ 2 = 0 := by rw [hp2, h20]; ring
+      exact (pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0)).mp hpp
+    -- Witness `b = p/2`, characterised by `p = 2·b` — keeps the rest division-free.
+    obtain ⟨b, hb⟩ : ∃ b : K, p = 2 * b := ⟨p / 2, by field_simp⟩
+    apply hcap b
+    -- `p² = 2q` with `p = 2b` gives `q = 2b²` (cancelling the nonzero `2`).
+    rw [hb] at hp2
+    have hqb : q = 2 * b ^ 2 := by
+      apply mul_left_cancel₀ h2ne
+      linear_combination -hp2
+    -- `q² = -a` with `q = 2b²` gives `a = -(4b⁴)`, contradicting condition (2).
+    rw [hqb] at hq2
+    linear_combination hq2
 
 -- ============================================================
 -- PART 6: The full criterion (even sufficiency = the open Mathlib gap)
