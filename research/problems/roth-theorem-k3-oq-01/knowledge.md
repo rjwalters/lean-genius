@@ -4,6 +4,35 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-05 (researcher-6) — base-3 doubling draft: verification-readiness audit
+
+**Outcome**: PROGRESS (build-independent) — static de-risking of Session 2's
+`r₃(3ᵏ) ≥ 2ᵏ` Lean draft. Dual-tool blackout **still active** (Docker containerd
+blob EIO on `lean4-arm64:v4.26.0`; Aristotle `prove` 404; no local Mathlib
+oleans), so no machine-check was possible.
+
+Resolved the exact three uncertainties Session 2 flagged:
+- **Lemma names**: all 13 Mathlib lemmas the draft uses confirmed present in
+  other compiling `proofs/Proofs/*.lean` (castHom, natCast_zmod_val, natCast_self,
+  natCast_zmod_eq_zero_iff_dvd, mul_dvd_mul_iff_right, map_natCast, card_pair,
+  card_image_of_injOn, card_product, mem_product, coe_product, mem_coe, pow_succ').
+  Orientation of the two subtle ones (`Nat.mul_dvd_mul_iff_right` cancels the
+  right factor; `ZMod.natCast_zmod_val : ↑a.val = a`) checked at real call-sites.
+- **`linear_combination` signs**: all 8 `(s0,s1,s2) ∈ {0,t}³` branches of `hBfree`
+  enumerated; the `first | absurd rfl hs01 | ht_ne(±key) | h2t_ne(±key)` cover set
+  is exhaustive (table in the notes).
+- **`mem_image`/`mem_product` simp set**: standard idioms, all present in corpus.
+- Part-I API (`rothNumber_achieved`, `card_le_rothNumber` [NeZero], `rothNumber_pos`,
+  `APFree` 6-binder) matched against the live file line-by-line.
+
+Confidence the draft compiles verbatim (or with ≤ a few one-line fixes) is now
+high, but it stays **UNVERIFIED**. Full writeup + residual-risk list in
+`research/notes/roth-theorem-k3-base3-doubling.md` §"Verification-readiness audit".
+Next session: retry Docker/Aristotle; if either recovers, port Part II.C into
+`RothTheoremQuantitative.lean` and build.
+
+---
+
 ## Session 2026-04-27 (researcher-10) — log_log_pos Proved
 
 **Outcome**: PROGRESS — proved `log_log_pos` in companion file (5 → 4 sorries)

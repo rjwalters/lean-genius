@@ -290,3 +290,129 @@ theorem pow_two_le_rothNumber_pow_three (k : ℕ) : 2 ^ k ≤ rothNumber (3 ^ k)
 
 end Szemeredi.Roth.Quantitative
 ```
+
+---
+
+## Verification-readiness audit (researcher-6, 2026-07-05)
+
+**Context.** The dual-tool blackout that forced Session 2 to deliver notes-only
+**persists unchanged**: the Docker build image `lean4-arm64:v4.26.0` still fails
+with the same containerd content-store I/O error on blob
+`sha256:3d1c9c6b…` (`docker run` aborts before any Lean runs; disk is now healthy
+at 36 Gi free / 25 %, so this is image-blob corruption, **not** a space problem —
+it needs a Docker restart / image re-pull, which is out of an agent's safe
+scope), and the Aristotle MCP endpoint still returns `{"status":"error",
+"message":"Resource not found."}` (404) for `prove`. There is **no local Mathlib
+`.olean` cache** either (`proofs/.lake/packages/` is empty — Mathlib lives only
+inside the corrupt image), so a bare `lean` type-check is not possible.
+
+Machine-verification was therefore still unavailable. Instead this session did a
+**static de-risking pass** that resolves, by construction, exactly the three
+uncertainties Session 2 flagged ("exact Mathlib lemma names, `linear_combination`
+signs, the `mem_image`/`mem_product` `simp` set"). Nothing below is a substitute
+for a build; it upgrades the draft's confidence from "expect minor repairs" to
+"ready to port verbatim the instant a build path recovers."
+
+### 1. Part-I API cross-check (against the live file)
+
+Every Part-I symbol the two theorems call was matched to its **current**
+declaration in `proofs/Proofs/RothTheoremQuantitative.lean`:
+
+| Symbol used in draft | Live decl | Signature note |
+|---|---|---|
+| `APFree` | L26 | `∀ a d, d ≠ 0 → a ∈ A → a + d ∈ A → a + 2*d ∉ A` — the `hBfree` proof's `intro a d hd ha had hadd` binds all 6, leaving goal `False`. ✓ |
+| `rothNumber_achieved` | L140 | `{N} [NeZero N] : ∃ A, APFree A ∧ A.card = rothNumber N` — matches `obtain ⟨A, hAfree, hAcard⟩`. ✓ |
+| `card_le_rothNumber` | L132 | `{N} [NeZero N] (A) (hA : APFree A) : A.card ≤ rothNumber N` — matches `card_le_rothNumber B hBfree`; the required `[NeZero (3*m)]` is supplied by the `haveI` at the top of the doubling proof. ✓ |
+| `rothNumber_pos` | L118 | `(N) [NeZero N] : 1 ≤ rothNumber N` — base case `simpa using rothNumber_pos 1` (`[NeZero 1]` is a global instance). ✓ |
+
+The target namespace `Szemeredi.Roth.Quantitative` (file L16, closed L393) is the
+one the draft opens, so the two theorems drop in before `end` with no
+`open`/namespace churn.
+
+### 2. Mathlib lemma-name corpus check
+
+Each Mathlib lemma the draft names was confirmed to appear in **other
+already-compiling** `proofs/Proofs/*.lean` files (count = independent
+compiling call-sites in this repo on v4.26.0):
+
+| Lemma | sites | Lemma | sites |
+|---|---|---|---|
+| `ZMod.castHom` | 42 | `Finset.card_pair` | 96 |
+| `ZMod.natCast_zmod_val` | 41 | `Finset.card_image_of_injOn` | 138 |
+| `ZMod.natCast_self` | 34 | `Finset.card_product` | 91 |
+| `ZMod.natCast_zmod_eq_zero_iff_dvd` | 27 | `Finset.mem_product` | 479 |
+| `Nat.mul_dvd_mul_iff_right` | 3 | `Finset.coe_product` | 5 |
+| `map_natCast` | many | `Set.mem_prod` | 23 |
+| `pow_succ'` | many | `Finset.mem_coe` | 422 |
+
+The two whose **orientation** matters were checked at their call-sites, not just
+by name:
+
+* `Nat.mul_dvd_mul_iff_right` — used in `Erdos1054ConstructionD.lean:52` and
+  `Erdos1110Problem.lean:723` as `(Nat.mul_dvd_mul_iff_right hpos).mp hdvd` with
+  `hpos : 0 < k` cancelling the **right** factor of `a*k ∣ b*k`. The draft's
+  `rw [Nat.mul_dvd_mul_iff_right hm] at hcontra` (`hcontra : 3*m ∣ c*m`,
+  `hm : 0 < m`) rewrites to `3 ∣ c` — correct orientation. ✓
+* `ZMod.natCast_zmod_val` — used in `BurnsideCountingOQ03.lean:68` as
+  `← ZMod.natCast_zmod_val r` (i.e. the lemma is `↑(a.val) = a`). In `hπL`, after
+  `map_natCast` turns `π (↑x.val)` into `(↑x.val : ZMod m)`, this rewrites it to
+  `x`, closing the `simp only` at `x = x`. ✓
+
+### 3. `hBfree` casework enumeration (`linear_combination` signs)
+
+The delicate `π d = 0` branch derives `key : s0 + s2 = 2*s1`, `hs01 : s0 ≠ s1`,
+then `rcases`-es each of `s0,s1,s2 ∈ {0,t}` (8 combinations) and closes with
+`first | absurd rfl hs01 | ht_ne (±key) | h2t_ne (±key)`. Enumerating all 8 to
+confirm the alternatives are exhaustive (`t ≠ 0` = `ht_ne`, `t+t ≠ 0` = `h2t_ne`):
+
+| (s0,s1,s2) | `key` becomes | closes with |
+|---|---|---|
+| (0,0,0) | — | `absurd rfl hs01` (s0=s1) |
+| (0,0,t) | — | `absurd rfl hs01` |
+| (0,t,0) | `0 = 2t` | `h2t_ne (by linear_combination -key)` |
+| (0,t,t) | `t = 2t` ⇒ `t=0` | `ht_ne (by linear_combination -key)` |
+| (t,0,0) | `t = 0` | `ht_ne (by linear_combination key)` |
+| (t,0,t) | `t+t = 0` | `h2t_ne (by linear_combination key)` |
+| (t,t,0) | — | `absurd rfl hs01` (s0=s1) |
+| (t,t,t) | — | `absurd rfl hs01` |
+
+All 8 are covered by the 5 listed alternatives, and each `linear_combination`
+sign checked by hand (e.g. `(t,0,t)`: goal `t+t=0`, `key : t+t=0`, so
+`linear_combination key` reduces `(t+t) - (t+t) = 0` ✓). Since `first` tries
+alternatives in order and a failing `absurd rfl hs01` / wrong-sign
+`linear_combination` simply elaboration-fails and is skipped, the block closes
+every branch. **Caveat:** `first`-with-`<;>` back-tracking across a batched
+`rcases` is exactly the kind of tactic-combinator behaviour that can still need a
+one-line nudge under real elaboration; if it misbehaves, split into eight
+explicit `·` bullets using the table above — the *mathematics* of each cell is
+settled here.
+
+### 4. `mem_image` / `mem_product` `simp` set
+
+`memB` and `hfinj` reduce `y ∈ (A ×ˢ {0,t}).image f` via
+`Finset.mem_image, Finset.mem_product` and the coe-set forms
+`Finset.coe_product, Set.mem_prod, Finset.mem_coe` — all present in the compiling
+corpus (§2). These are the standard idioms; no exotic simp lemma is invoked.
+
+### Residual risk (honest)
+
+This is a **static** audit: symbol existence, signature shape, orientation, and
+casework exhaustiveness. It does **not** catch (a) universe/instance-resolution
+quirks (e.g. whether `DecidablePred (@APFree N)` unifies at the new call-sites the
+way it does inside `rothNumber`), (b) `push_cast` normal-form mismatches in
+`h2t_ne` (`push_cast; linear_combination hh`), or (c) `first`/`<;>` back-tracking
+surprises noted in §3. Confidence that the draft compiles **verbatim or with ≤ a
+few one-line fixes** is now high, but it remains **UNVERIFIED**. Do **not** add it
+under `proofs/Proofs/` until a build path (Docker re-pull or Aristotle recovery)
+confirms it — an unbuildable file there would falsify the entry's status.
+
+### Next session
+
+1. Retry Docker (`docker run --rm lean4-arm64:v4.26.0 true`) and Aristotle
+   (`prove` on a trivial sorry). If **either** works, port §"Lean draft" Part II.C
+   into `RothTheoremQuantitative.lean` and run
+   `./proofs/scripts/docker-build.sh Proofs.RothTheoremQuantitative` (or submit
+   via Aristotle), then apply any fixes flagged in §3/§Residual risk.
+2. On green, update the gallery entry (`src/data/proofs/roth-theorem-k3-oq-01/`):
+   the two theorems are 0-axiom, so `status`/`axiomCount` are unaffected, but the
+   new explicit lower bound `r₃(3ᵏ) ≥ 2ᵏ` should be surfaced in the entry prose.
