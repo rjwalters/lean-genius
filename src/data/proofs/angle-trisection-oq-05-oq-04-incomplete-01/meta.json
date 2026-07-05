@@ -64,7 +64,8 @@
       "The crease of an HH-5 fold is forced to be the perpendicular bisector of P₁ and its landing image, because the fold fixes P₂ and is an isometry — so P₂ is automatically equidistant from source and image.",
       "Reflection across a line through P₂ preserves squared distance to P₂; this single algebraic identity yields the necessity direction and shows the equidistance hypothesis captures ALL solvable configurations, not merely some.",
       "The entire algebraic degree of HH-5 lives in the circle-line intersection that produces the landing point (a Real.sqrt); once that witness is given, the fold is rational, so HH-5 introduces at most a quadratic — consistent with the Alperin–Lang classification of HH-5 as a degree-2 operation.",
-      "Working with an explicit squared-Euclidean distSq rather than Mathlib's `dist` on ℝ×ℝ avoids a correctness trap: the default product metric is the sup metric, not the Euclidean one."
+      "Working with an explicit squared-Euclidean distSq rather than Mathlib's `dist` on ℝ×ℝ avoids a correctness trap: the default product metric is the sup metric, not the Euclidean one.",
+      "Solvability collapses to a fold-free metric predicate: because equidistance from P₂ is at once necessary (forced by the fixed-point isometry reflectAcross_distSq_fixed) and sufficient (the perpendicular bisector realises the fold), hh5_solvable_iff restates HH-5 solvability purely as 'ℓ contains a point at squared-distance |P₁−P₂|² from P₂' — a condition on the line and two points alone, with the crease eliminated from the statement entirely."
     ],
     "prerequisites": [
       "Reflection of a point across a line ax+by+c=0 in coordinates",
@@ -85,17 +86,33 @@
       "id": "planar-primitives",
       "title": "Planar Primitives (copied from parent)",
       "startLine": 66,
-      "endLine": 135,
+      "endLine": 133,
       "summary": "Point := ℝ×ℝ, the Line structure (a,b,c with a≠0∨b≠0), Line.contains, reflectAcross (P − 2·((aPx+bPy+c)/(a²+b²))·(a,b)), Line.normSq_pos (a²+b²>0 from non-degeneracy), perpBisector of two distinct points, perpBisector_dirSq_pos, and reflectAcross_perpBisector (the perpendicular bisector reflects P₁ onto P₂). Copied verbatim from Proofs/AngleTrisectionOQ05OQ04.lean so the file compiles against Mathlib alone.",
       "mathContext": "These are the shared coordinate-geometry definitions underlying every Huzita–Hatori construction in the parent programme."
     },
     {
-      "id": "hh5-core",
-      "title": "HH-5 Constructive Core (S8)",
-      "startLine": 137,
+      "id": "necessity-isometry",
+      "title": "Necessity: Reflection Is an Isometry About P₂",
+      "startLine": 134,
+      "endLine": 166,
+      "summary": "distSq (squared Euclidean distance, deliberately not Mathlib's sup-metric `dist` on ℝ×ℝ); reflectAcross_distSq_fixed — reflection across any fold through P₂ preserves squared distance to P₂, so any HH-5 landing point is forced onto the circle |P₁'−P₂| = |P₁−P₂| (necessity of the equidistance condition); perpBisector_contains_of_equidistSq — a point equidistant from P₁ and P₂ lies on their perpendicular bisector, the incidence fact that puts P₂ on the crease.",
+      "mathContext": "$\\mathrm{reflect}_\\ell(P_1)$ with $P_2\\in\\ell \\Rightarrow |\\mathrm{reflect}_\\ell(P_1)-P_2|^2 = |P_1-P_2|^2$."
+    },
+    {
+      "id": "sufficiency-fold",
+      "title": "Sufficiency: The Perpendicular-Bisector Fold",
+      "startLine": 167,
+      "endLine": 194,
+      "summary": "hh5_core — given a landing point P₁'∈ℓ equidistant from P₂, the perpendicular bisector of P₁ and P₁' is a genuine fold through P₂ that sends P₁ onto ℓ; hh5_core_exact strengthens this to land P₁ precisely on the chosen witness P₁'. Together these give the rational, square-root-free construction of the fold once the (irrational) witness is supplied.",
+      "mathContext": "crease $=\\operatorname{perpBisector}(P_1,P_1')$, which passes through the equidistant $P_2$ and reflects $P_1\\mapsto P_1'\\in\\ell$."
+    },
+    {
+      "id": "solvability-iff",
+      "title": "Solvability Characterisation",
+      "startLine": 195,
       "endLine": 216,
-      "summary": "distSq (squared Euclidean distance); reflectAcross_distSq_fixed (reflection across a fold through P₂ preserves squared distance to P₂ — necessity of equidistance); perpBisector_contains_of_equidistSq (equidistant ⇒ on the bisector); hh5_core and hh5_core_exact (witnessed constructive HH-5 folds via the perpendicular bisector of P₁ and the landing point); hh5_solvable_iff (solvability characterisation isolating the sole irrational circle-line-intersection step).",
-      "mathContext": "Reduces HH-5 to a single square-root existence (the landing point) plus a rational fold, matching the Alperin–Lang degree-2 classification of HH-5."
+      "summary": "hh5_solvable_iff combines necessity and sufficiency into a biconditional: an HH-5 fold (through P₂, landing P₁ on ℓ, with landing point ≠ P₁) exists IFF ℓ contains a point at squared-distance distSq P₁ P₂ from P₂. This isolates the sole irrational content of HH-5 — the circle–line intersection witnessing that landing point — and matches the Alperin–Lang degree-2 classification.",
+      "mathContext": "$\\exists\\,\\text{HH-5 fold} \\iff \\exists\\,q\\in\\ell,\\ \\operatorname{distSq}(q,P_2) = \\operatorname{distSq}(P_1,P_2)$."
     }
   ],
   "conclusion": {
