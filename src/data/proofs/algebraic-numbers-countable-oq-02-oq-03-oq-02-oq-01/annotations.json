@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-header-baire-engine",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "The Baire-category engine, abstracted from ℝ",
+    "content": "The parent proves the concrete ℝ dichotomy (algebraic reals Fσ-not-Gδ, transcendentals dense Gδ). This file records the observation that the 'not Gδ' half is pure topology: for a dense countable D in a nonempty perfect T1 Baire space, D is Fσ but not Gδ. The reason: D is meagre (countable in a perfect Baire space), so Dᶜ is comeagre — a dense Gδ; and two disjoint dense Gδ sets cannot coexist in a nonempty Baire space (their intersection would be dense yet empty). The proof assembles three already-verified parent lemmas: `isFσ_of_countable`, `compl_countable_isDenseGδ`, and `not_isGδ_of_dense_of_disjoint_denseGδ`.",
+    "mathContext": "$D \\text{ countable} \\Rightarrow D \\text{ meagre} \\Rightarrow D^c \\text{ dense } G_\\delta;\\quad \\text{two disjoint dense } G_\\delta \\text{ impossible}$",
+    "significance": "context",
+    "relatedConcepts": ["Baire category theorem", "meagre set", "comeagre set", "dense Gδ", "descriptive set theory"],
+    "prerequisites": ["Baire category", "meagre and comeagre sets"]
+  },
+  {
+    "id": "ann-abstract-theorem",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+    "range": { "startLine": 52, "endLine": 65 },
+    "type": "insight",
+    "title": "The space-agnostic dichotomy",
+    "content": "`dense_countable_isFσ_and_not_isGδ` is the headline theorem, quantified over an arbitrary space carrying exactly the four instances the argument needs: `T1Space`, `PerfectSpace`, `BaireSpace`, `Nonempty`. The Fσ part is `isFσ_of_countable` (a countable set in a T1 space is the union of its closed singletons). The 'not Gδ' part is a short `by_contra`: assuming D is Gδ, `compl_countable_isDenseGδ` makes Dᶜ a dense Gδ, and then D and Dᶜ are two disjoint (`disjoint_compl_right`) dense Gδ sets — exactly what `not_isGδ_of_dense_of_disjoint_denseGδ` forbids. Nothing about ℝ, metrics, or algebraicity enters.",
+    "mathContext": "$D \\text{ dense, countable in a perfect } T_1 \\text{ Baire space} \\Rightarrow D \\in \\mathbf{\\Sigma}^0_2 \\setminus \\mathbf{\\Pi}^0_2$",
+    "significance": "key",
+    "relatedConcepts": ["Fσ set", "Gδ set", "perfect space", "T1 space", "Borel hierarchy", "typeclass hypotheses"],
+    "prerequisites": ["Fσ and Gδ sets", "perfect and T1 spaces", "Baire spaces"]
+  },
+  {
+    "id": "ann-projections",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+    "range": { "startLine": 67, "endLine": 77 },
+    "type": "definition",
+    "title": "The two one-sided projections",
+    "content": "`isFσ_of_dense_countable` and `not_isGδ_of_dense_countable` split the conjunction into its two halves, `.1` and `.2` of the main theorem, so downstream callers can cite whichever direction they need without carrying the pair. A small convenience layer over `dense_countable_isFσ_and_not_isGδ`.",
+    "mathContext": "$D \\in \\mathbf{\\Sigma}^0_2 \\quad\\text{and}\\quad D \\notin \\mathbf{\\Pi}^0_2$",
+    "significance": "supporting",
+    "relatedConcepts": ["projection lemmas", "Fσ set", "Gδ set"],
+    "prerequisites": ["conjunction elimination"]
+  },
+  {
+    "id": "ann-rationals-instance",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+    "range": { "startLine": 79, "endLine": 88 },
+    "type": "insight",
+    "title": "The classical ℚ ⊆ ℝ instance in one line",
+    "content": "`rationals_isFσ_and_not_isGδ` recovers the classical fact that ℚ is Fσ but not Gδ in ℝ — placing the rationals at Borel level exactly Σ⁰₂ ∖ Π⁰₂ — as a direct application of the abstract theorem. The rationals are `Set.range ((↑) : ℚ → ℝ)`, countable by `Set.countable_range` and dense by `Rat.denseRange_cast`; ℝ is a nonempty perfect T1 Baire space (all four instances found automatically). What was historically a bespoke Baire-category proof becomes a single term-mode line, and the same instance pattern applies to ℚⁿ ⊆ ℝⁿ, dyadic rationals in Cantor space, etc.",
+    "mathContext": "$\\mathbb{Q} = \\operatorname{range}(\\mathbb{Q}\\hookrightarrow\\mathbb{R}) \\in \\mathbf{\\Sigma}^0_2(\\mathbb{R}) \\setminus \\mathbf{\\Pi}^0_2(\\mathbb{R})$",
+    "significance": "key",
+    "relatedConcepts": ["rational numbers", "dense range", "Rat.denseRange_cast", "Borel hierarchy", "instance recovery"],
+    "prerequisites": ["density of ℚ in ℝ", "countability of ℚ", "ℝ as a Polish space"]
+  }
+]
