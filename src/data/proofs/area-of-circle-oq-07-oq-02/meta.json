@@ -70,6 +70,7 @@
     "proofStrategy": "Three short steps on top of Mathlib. (1) half_gaussian_integral records the half-line value ∫_{(0,∞)} e^{-b x²} = √(π/b)/2 directly from Mathlib's integral_gaussian_Ioi. (2) gaussian_full_eq_two_mul_half proves the even-symmetry bridge ∫_ℝ e^{-x²} = 2·∫_{(0,∞)} e^{-x²}: rewrite the integrand as f(|x|) with f y = e^{-y²} (legal because |x|² = x², via sq_abs) and apply integral_comp_abs, the even-function reflection identity. (3) gaussian_integral_eq_sqrt_pi composes the bridge with the b = 1 half-line value √π/2 to re-derive the parent's √π — an independent route through Set.Ioi 0 and reflection rather than through the parametrized full-line integral_gaussian.",
     "keyInsights": [
       "**The half-line carries exactly half the mass.** Because e^{-b x²} is even, ∫_{(0,∞)} = √(π/b)/2 is precisely half of the full-line √(π/b) — the entry turns the informal remark 'the Gaussian is symmetric' into the explicit machine-checked identity.",
+      "**The parameter b is pure scaling.** The substitution x ↦ x/√b carries e^{-bx²} to e^{-x²}, collapsing the entire b-family of half-line Gaussians to the single unit integral times b^{-1/2} — exactly the √(π/b)/2 form. So specialising to b = 1 (half_gaussian_integral_one) loses no information: the b-dependence is dimensional scaling, carrying no independent analytic content beyond the b = 1 value.",
       "**The even-symmetry bridge is the real content.** gaussian_full_eq_two_mul_half (∫_ℝ = 2·∫_{(0,∞)}) is what makes this a genuine extension rather than a notational variant; it is obtained from integral_comp_abs by recognizing e^{-x²} = e^{-|x|²} through sq_abs.",
       "**An independent route to √π.** Recovering ∫_ℝ e^{-x²} = √π from the half-line value (rather than from the parent's parametrized integral_gaussian at b = 1) gives a genuinely different proof path to the same normalization constant.",
       "**Degeneracy at b ≤ 0 is handled silently.** Like Mathlib's full-line version, integral_gaussian_Ioi evaluates to 0 for b ≤ 0 (where e^{-b x²} is not integrable), so half_gaussian_integral holds for every real b without a positivity hypothesis."
@@ -82,25 +83,44 @@
   },
   "sections": [
     {
-      "id": "half-line-value",
-      "title": "The half-line Gaussian value",
+      "id": "problem-statement",
+      "title": "Problem Statement and Setup",
       "startLine": 1,
+      "endLine": 33,
+      "summary": "Imports and the module docstring stating the open question (the value of ∫_{(0,∞)} e^{-bx²}), its answer √(π/b)/2 = half the full-line mass, the even-symmetry method, and the plan to re-derive the parent's √π by an independent route; closes with `open Real MeasureTheory`.",
+      "mathContext": "$\\int_0^\\infty e^{-b x^2}\\,dx = \\tfrac12\\sqrt{\\tfrac{\\pi}{b}}$."
+    },
+    {
+      "id": "half-line-value",
+      "title": "The Half-Line Gaussian Value",
+      "startLine": 34,
       "endLine": 38,
-      "summary": "Imports, module docstring, and `open Real MeasureTheory`, then `half_gaussian_integral`: for every real b, ∫_{0}^{∞} exp(-b·x²) — the half-line Gaussian value used as the building block."
+      "summary": "half_gaussian_integral: for every real b, ∫_{(0,∞)} e^{-b·x²} = √(π/b)/2, recorded directly from Mathlib's integral_gaussian_Ioi — the building block for everything that follows.",
+      "mathContext": "$\\int_{(0,\\infty)} e^{-b x^2} = \\tfrac{\\sqrt{\\pi/b}}{2}$."
     },
     {
       "id": "symmetry-bridge",
-      "title": "The even-symmetry bridge",
+      "title": "The Even-Symmetry Bridge",
       "startLine": 40,
       "endLine": 49,
-      "summary": "gaussian_full_eq_two_mul_half: ∫_ℝ e^{-x²} = 2·∫_{(0,∞)} e^{-x²}. The integrand is rewritten as f(|x|) with f y = e^{-y²} (using sq_abs: |x|² = x²) and integral_comp_abs supplies the reflection identity — making 'half the mass on each side' an explicit theorem."
+      "summary": "gaussian_full_eq_two_mul_half: ∫_ℝ e^{-x²} = 2·∫_{(0,∞)} e^{-x²}. The integrand is rewritten as f(|x|) with f y = e^{-y²} (using sq_abs: |x|² = x²) and integral_comp_abs supplies the reflection identity — making 'half the mass on each side' an explicit theorem, and the genuine content that distinguishes this entry from a notational variant.",
+      "mathContext": "$\\int_{\\mathbb{R}} e^{-x^2} = 2\\int_{(0,\\infty)} e^{-x^2}$."
+    },
+    {
+      "id": "unit-case",
+      "title": "The Unit Case (b = 1)",
+      "startLine": 51,
+      "endLine": 55,
+      "summary": "half_gaussian_integral_one specialises the half-line value to b = 1, giving ∫_{(0,∞)} e^{-x²} = √π/2 — the concrete number fed into the √π recovery.",
+      "mathContext": "$\\int_{(0,\\infty)} e^{-x^2} = \\tfrac{\\sqrt{\\pi}}{2}$."
     },
     {
       "id": "recover-sqrt-pi",
-      "title": "Recovering the parent's √π",
-      "startLine": 51,
+      "title": "Recovering √π on the Full Line",
+      "startLine": 57,
       "endLine": 64,
-      "summary": "half_gaussian_integral_one specializes the half-line value to b = 1 (√π/2); gaussian_integral_eq_sqrt_pi then composes it with the symmetry bridge to re-derive ∫_ℝ e^{-x²} = √π along an independent route through Set.Ioi 0, closing with ring."
+      "summary": "gaussian_integral_eq_sqrt_pi composes the b = 1 half-line value with the symmetry bridge to re-derive ∫_ℝ e^{-x²} = √π along an independent route through Set.Ioi 0 — rather than the parent's parametrized integral_gaussian — closing with ring.",
+      "mathContext": "$\\int_{\\mathbb{R}} e^{-x^2} = \\sqrt{\\pi}$."
     }
   ],
   "openQuestions": [
