@@ -811,6 +811,96 @@ theorem eq_zero_of_anticomm_pair_and_product (A : Type*) [NormedDivisionRing A]
   have hxy : x * y ≠ 0 := mul_ne_zero hx hy
   exact (mul_eq_zero.mp hz).resolve_left hxy
 
+/-! ### The metric-level Frobenius cap: `finrank ℝ (Im A)` bookkeeping
+
+The three algebraic obstructions above (`isImaginary_mul_of_anticomm`, `mul_anticomm_*`,
+`eq_zero_of_anticomm_pair_and_product`) and the metric bridge
+(`imaginaryBilin_eq_zero_iff_anticomm`) are here recast purely in terms of the
+positive-definite form `B = imaginaryBilin A` on `Im A = imaginarySubmodule A`.  This is the
+inner-product-space packaging on which the final `finrank ℝ (Im A) ∈ {0, 1, 3}` count runs:
+
+* `finrank_eq_imaginary_add_one` reduces the whole theorem to a statement about `Im A`:
+  `finrank ℝ A = finrank ℝ (Im A) + 1` (rank–nullity for the surjective `realPart : A →ₗ ℝ`).
+* `imaginary_mul_mem_imaginarySubmodule` + `imaginaryBilin_mul_orthogonal` manufacture the
+  *third* imaginary unit: for `B`-orthogonal imaginary `x, y`, the product `x*y` is again
+  imaginary and `B`-orthogonal to both `x` and `y` (a fresh quaternion generator).
+* `eq_zero_of_orthogonal_to_triple` is the *no fourth unit* obstruction: any `w ∈ Im A`
+  that is `B`-orthogonal to `x`, `y`, and `x*y` must vanish, capping `finrank ℝ (Im A) ≤ 3`.
+
+Together with positive-definiteness (which forbids `finrank ℝ (Im A) = 2`, since the third
+unit `x*y` would be a nonzero vector orthogonal to a full basis) these pin
+`finrank ℝ (Im A) ∈ {0, 1, 3}`, i.e. `finrank ℝ A ∈ {1, 2, 4}`. -/
+
+/-- **Rank–nullity reduction.** `realPart : A →ₗ[ℝ] ℝ` is surjective (it sends `c•1 ↦ c`),
+and `Im A = ker realPart`, so rank–nullity gives `finrank ℝ A = finrank ℝ (Im A) + 1`.
+This reduces the Hurwitz dimension count entirely to `finrank ℝ (Im A) ∈ {0, 1, 3}`. -/
+theorem finrank_eq_imaginary_add_one (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] :
+    Module.finrank ℝ A = Module.finrank ℝ (imaginarySubmodule A) + 1 := by
+  have hsurj : Function.Surjective (realPart A) := by
+    intro c
+    exact ⟨c • (1 : A), by rw [realPart_apply]; exact realPartValue_smul_one A c⟩
+  have hrange : Module.finrank ℝ (LinearMap.range (realPart A)) = 1 := by
+    rw [LinearMap.range_eq_top.mpr hsurj, finrank_top, Module.finrank_self]
+  have hrn := LinearMap.finrank_range_add_finrank_ker (realPart A)
+  rw [hrange] at hrn
+  -- `imaginarySubmodule A` is definitionally `LinearMap.ker (realPart A)`; matching the
+  -- goal's atom to `hrn`'s atom syntactically lets `omega` finish without reducing inside
+  -- the (noncomputable) kernel term.
+  show Module.finrank ℝ A = Module.finrank ℝ (LinearMap.ker (realPart A)) + 1
+  omega
+
+/-- **The third imaginary unit is imaginary.** For `B`-orthogonal imaginary `x, y`
+(`imaginaryBilin A x y = 0`, equivalently `x*y + y*x = 0`), the product `x*y` lies in
+`Im A`: it is again an imaginary element (`isImaginary_mul_of_anticomm`). -/
+theorem imaginary_mul_mem_imaginarySubmodule (A : Type*) [NormedDivisionRing A]
+    [NormedAlgebra ℝ A] [Module.Finite ℝ A] (x y : imaginarySubmodule A)
+    (hxy : imaginaryBilin A x y = 0) : (x : A) * (y : A) ∈ imaginarySubmodule A := by
+  have hac : (x : A) * (y : A) + (y : A) * (x : A) = 0 :=
+    (imaginaryBilin_eq_zero_iff_anticomm A x y).mp hxy
+  rw [mem_imaginarySubmodule_iff]
+  exact isImaginary_mul_of_anticomm A ((mem_imaginarySubmodule_iff A (x : A)).mp x.2)
+    ((mem_imaginarySubmodule_iff A (y : A)).mp y.2) hac
+
+/-- **The third imaginary unit is orthogonal to both factors.** For `B`-orthogonal imaginary
+`x, y` and any `z ∈ Im A` with `z = x*y`, the fresh unit `z` is `B`-orthogonal to `x` and to
+`y`.  Metric-level restatement of `mul_anticomm_left` / `mul_anticomm_right`: anticommutation
+of the factors propagates to their product, so `B(z, x) = B(z, y) = 0`.  This is the step
+that grows an orthonormal pair `⟨x, y⟩` into an orthonormal quaternion triple `⟨x, y, x*y⟩`. -/
+theorem imaginaryBilin_mul_orthogonal (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x y z : imaginarySubmodule A) (hxy : imaginaryBilin A x y = 0)
+    (hz : (z : A) = (x : A) * (y : A)) :
+    imaginaryBilin A z x = 0 ∧ imaginaryBilin A z y = 0 := by
+  have hac : (x : A) * (y : A) + (y : A) * (x : A) = 0 :=
+    (imaginaryBilin_eq_zero_iff_anticomm A x y).mp hxy
+  refine ⟨?_, ?_⟩
+  · rw [imaginaryBilin_eq_zero_iff_anticomm A z x, hz, add_comm]
+    exact mul_anticomm_left A hac
+  · rw [imaginaryBilin_eq_zero_iff_anticomm A z y, hz, add_comm]
+    exact mul_anticomm_right A hac
+
+/-- **No fourth orthogonal imaginary unit — the `finrank ℝ (Im A) ≤ 3` obstruction.**
+Let `x, y` be nonzero imaginary elements and `z = x*y` their product (the third quaternion
+generator).  Any `w ∈ Im A` that is `B`-orthogonal to all three of `x`, `y`, `z` must be
+zero.  Metric-level restatement of `eq_zero_of_anticomm_pair_and_product`: `w` orthogonal to
+`x` and `y` means `w` anticommutes with both, hence *commutes* with `z = x*y`; being also
+orthogonal to `z` forces `w` to anticommute with `z`, so `z*w = -z*w`, giving `w = 0` (no
+zero divisors, characteristic `≠ 2`).  Thus `Im A` carries at most three mutually orthogonal
+directions. -/
+theorem eq_zero_of_orthogonal_to_triple (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x y w z : imaginarySubmodule A) (hx : (x : A) ≠ 0) (hy : (y : A) ≠ 0)
+    (hz : (z : A) = (x : A) * (y : A)) (hwx : imaginaryBilin A w x = 0)
+    (hwy : imaginaryBilin A w y = 0) (hwz : imaginaryBilin A w z = 0) : w = 0 := by
+  have hax : (w : A) * (x : A) + (x : A) * (w : A) = 0 :=
+    (imaginaryBilin_eq_zero_iff_anticomm A w x).mp hwx
+  have hay : (w : A) * (y : A) + (y : A) * (w : A) = 0 :=
+    (imaginaryBilin_eq_zero_iff_anticomm A w y).mp hwy
+  have hazr : (w : A) * (z : A) + (z : A) * (w : A) = 0 :=
+    (imaginaryBilin_eq_zero_iff_anticomm A w z).mp hwz
+  rw [hz] at hazr
+  have hw0 : (w : A) = 0 := eq_zero_of_anticomm_pair_and_product A hx hy hax hay hazr
+  exact Submodule.coe_eq_zero.mp hw0
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring

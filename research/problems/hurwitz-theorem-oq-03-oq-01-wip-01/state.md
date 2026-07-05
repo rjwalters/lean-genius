@@ -3,49 +3,60 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-07-04
-**Iteration**: 5
+**Since**: 2026-07-05
+**Iteration**: 8
 
 ## Current Focus
-Iter 5 (Docker blackout — `docker run` EIO, no kernel-check possible): **gallery-sync
-increment**. The gallery `meta.json` for `hurwitz-theorem-oq-03-oq-01` was stale by two
-merged/verified commits (#34762 `hurwitz_only_if_ring_comm`, #34770
-`anticommutator_real_affine`) — it still reported 231 lines / 7 theorems and omitted both
-new theorems from `originalContributions`, `assumptions`, and `sections`. Synced counts
-(281 lines / 9 theorems), added the `frobenius-step3-prep` section, and documented both
-verified additions. No new Lean written (blackout precludes verification of hard Step-3
-math). The one remaining sorry is unchanged: the strictly non-commutative global-structure
-argument.
+Iter 8 (build-VERIFIED, docker 2715 jobs, 0 sorry/0 axiom added): **the metric-level
+Frobenius cap package** — recast all remaining algebraic obstructions in terms of the
+positive-definite form `B = imaginaryBilin A` on `Im A`, plus the rank–nullity reduction.
+Four new verified lemmas:
+
+1. `finrank_eq_imaginary_add_one`: `finrank ℝ A = finrank ℝ (Im A) + 1`. `realPart : A →ₗ[ℝ] ℝ`
+   is surjective (`c•1 ↦ c` via `realPartValue_smul_one`) and `Im A = ker realPart`, so
+   rank–nullity (`LinearMap.finrank_range_add_finrank_ker` + `finrank_top`/`Module.finrank_self`)
+   gives the reduction. **This collapses the whole theorem to `finrank ℝ (Im A) ∈ {0,1,3}`.**
+2. `imaginary_mul_mem_imaginarySubmodule`: for B-orthogonal imaginary x,y, `x*y ∈ Im A`
+   (metric wrapper over `isImaginary_mul_of_anticomm` via the bridge).
+3. `imaginaryBilin_mul_orthogonal`: the third unit `z = x*y` is B-orthogonal to both x and y
+   (metric wrapper over `mul_anticomm_left`/`mul_anticomm_right`). Grows an orthonormal pair
+   into an orthonormal quaternion triple ⟨x, y, x*y⟩.
+4. `eq_zero_of_orthogonal_to_triple`: **no fourth orthogonal unit** — any `w ∈ Im A`
+   B-orthogonal to x, y, and x*y is zero (metric wrapper over
+   `eq_zero_of_anticomm_pair_and_product`). Caps `finrank ℝ (Im A) ≤ 3`.
+
+The whole file still has exactly ONE sorry (`hurwitz_only_if_ring` non-commutative branch),
+now scoped PURELY to the linear-algebra assembly: pick a B-orthonormal basis of `Im A`, use
+(2)+(3) to manufacture the third generator and (4) + positive-definiteness to rule out
+`finrank = 2` and `finrank ≥ 4`, concluding `finrank ℝ (Im A) ∈ {0,1,3}`; combine with (1).
 
 ## Active Approach
-Whittling the Clifford structure down from provable pieces:
-- commutative → hurwitz_only_if_ring_comm (0 sorry): Gelfand-Mazur. VERIFIED (iter 3).
-- `anticommutator_real_affine` (0 sorry, NEW iter 4): polarise the Step-1 quadratics of
-  x, y, x+y ⟹ x*y + y*x = c₁•x + c₂•y + c₃•1. The first algebraic constraint toward the
-  Clifford relations. VERIFIED.
-- non-commutative → remaining sorry (Clifford / Radon-Hurwitz, blocked on Mathlib).
+All ALGEBRAIC and METRIC prerequisites are now in place (0 sorry). What remains is a pure
+finite-dimensional inner-product-space counting argument with NO further division-ring
+input:
+- Reduction to Im A: DONE (`finrank_eq_imaginary_add_one`).
+- Positive-definite inner product on Im A: DONE (`imaginaryBilin*`, iter 6).
+- Metric↔algebra bridge: DONE (`imaginaryBilin_eq_zero_iff_anticomm`, iter 7).
+- Third-unit manufacture + no-fourth-unit obstruction: DONE (iter 8, this commit).
 
 ## Attempt Count
-- Total attempts: 2 (code, shipped)
-- Approaches tried: 2
+- Total attempts: 4 (code, shipped)
+- Approaches tried: 3
 
 ## Blockers
-- Non-commutative case genuinely open: needs Clifford-algebra / positive-definite
-  anticommutator bilinear-form machinery not yet in Mathlib.
-- The keystone anticommutator lemma (xy+yx ∈ ℝ·1 for *imaginary* x,y) still needs the
-  trace-additivity / Im A subspace-closure that drops the x,y coefficients in
-  `anticommutator_real_affine` to 0. That closure is the remaining hard step.
+- The last sorry needs: an orthonormal basis of the positive-definite space `(Im A, B)` and
+  the standard "orthogonal complement is trivial ⟹ full" reasoning to convert lemmas (2)–(4)
+  into the numerical bound `finrank ℝ (Im A) ∈ {0,1,3}`. This is now pure Mathlib linear
+  algebra (needs an `InnerProductSpace`/`BilinForm.Nondegenerate` packaging of `imaginaryBilin`,
+  or a hand-rolled Gram–Schmidt), no more algebra of `A`.
 
 ## Next Action
-(Requires working Docker to kernel-check — do not attempt new hard Lean under blackout.)
-Prove trace-additivity: define the real-part functional `re : A → ℝ` (from Step-1's `p/2`)
-and show it is ℝ-linear, so imaginary x, y ⟹ x+y imaginary ⟹ c₁ = c₂ = 0 in
-`anticommutator_real_affine`, yielding `x*y + y*x ∈ ℝ•1`. Then Im A is a subspace and the
-bilinear form `-(xy+yx)` is defined. Aristotle unusable (OPEN, not tactical).
-
-CAUTION on `re` well-definedness: the shift constant `c(a)=p/2` from
-`exists_real_shift_sq_scalar` is NOT unique for scalars a=s•1 (every c gives a real
-square), so the real-part functional cannot be read off the ad-hoc quadratic. The clean
-route is via `minpoly ℝ a` (degree ≤2, genuinely unique): for a ∉ ℝ•1, minpoly = X²−t·X+n
-and `re a := t/2`; for a ∈ ℝ•1, `re a := s`. Uniqueness of the ℝ-or-ℂ subalgebra structure
-then gives ℝ-linearity. Build this on Mathlib's `minpoly` API rather than `exists_quadratic`.
+Convert `imaginaryBilin` into an inner product (via `InnerProductSpace.ofCore` or a
+`LinearMap.BilinForm` that is positive-definite hence nondegenerate) so that:
+- `finrank ≠ 2`: with orthonormal e₁,e₂ spanning Im A, `e₁*e₂` (lemma 2) is nonzero and
+  B-orthogonal to the full basis (lemma 3) ⇒ B(e₁*e₂, e₁*e₂)=0 ⇒ e₁*e₂=0, contradiction.
+- `finrank ≤ 3`: a fourth vector orthogonal to e₁,e₂,e₁*e₂ vanishes (lemma 4).
+Then `finrank ℝ (Im A) ∈ {0,1,3}` and `finrank_eq_imaginary_add_one` closes the sorry.
+Consider submitting the fully-scaffolded `hurwitz_only_if_ring` to Aristotle with all four
+new lemmas as context, hint = "finish Frobenius: finrank ℝ (Im A) ∈ {0,1,3} via the
+positive-definite form imaginaryBilin".
