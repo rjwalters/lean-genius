@@ -1,8 +1,8 @@
 {
   "slug": "konigsberg-oq-02-oq-01-oq-02-oq-01",
   "title": "Hierholzer undirected sufficiency — even-degree connected graph has an Eulerian circuit",
-  "phase": "OBSERVE",
-  "status": "blocked",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Hierholzer base case + continuation invariant + Sub-lemma A (maximal trail is closed) all VERIFIED; remaining: edge-removal preserves even-degree (B), splice+induction (C).",
+    "progressSummary": "PROGRESS: 7 verified sorry-free lemmas cover the base case + entire invariant-preservation half of the Hierholzer induction; extremal engine (L1+L2) drafted, verification blocked by Aristotle+Docker outage. Main theorem: 1 sorry (constructive Sub-lemma C remains).",
     "builtItems": [
       "proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01.lean: stated undirected_euler_circuit_sufficient (sufficiency, 1 sorry) and undirected_euler_circuit_iff (full characterization). The iff necessity half is fully PROVED; only sufficiency delegates to the sorry. Builds cleanly (import Connectivity.Connected added; only the expected sorry warning).",
       "VERIFIED base case of undirected Hierholzer induction: theorem euler_circuit_of_edgeSet_empty in proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean (connected + G.edgeSet = ∅ ⇒ ∃ Eulerian circuit, via nil walk; vacuous count condition). Compiles clean, 0 sorries.",
-      "exists_unused_incident_edge_at_endpoint + eq_of_isTrail_edgeMaximal (Sub-lemma A: a maximal trail is closed) — VERIFIED 0 sorries in KonigsbergOQ02OQ01OQ02OQ01Dev.lean"
+      "exists_unused_incident_edge_at_endpoint + eq_of_isTrail_edgeMaximal (Sub-lemma A: a maximal trail is closed) — VERIFIED 0 sorries in KonigsbergOQ02OQ01OQ02OQ01Dev.lean",
+      "even_countP_edges_of_closed — closed trail has even incident-edge count at every vertex (Dev.lean, VERIFIED 0 sorry)",
+      "even_degree_deleteEdges_of_closed_trail (Sub-lemma B) — deleting a closed trail preserves all-even-degree (Dev.lean, VERIFIED)",
+      "even_degree_deleteEdges_of_maximal_trail — packages Sub-lemma A+B for the induction step (Dev.lean, VERIFIED)",
+      "DRAFT trail_edges_length_le_card — trail length ≤ edgeFinset.card (staged in knowledge.md, unverified: dual-tool blackout)",
+      "DRAFT exists_longer_trail_of_open — open trail into even vertex is strictly extendable = extremal engine (staged, unverified)"
     ],
     "insights": [
       "Target is undirected Hierholzer SUFFICIENCY: connected + all-even-degree implies an Eulerian circuit exists. Necessity is already proved in KonigsbergOQ02OQ01OQ02.lean (eulerian_circuit_forall_even).",
@@ -44,18 +49,20 @@
       "Confirmed (web search + local check): Mathlib4 Trails module has only the necessity/property lemmas (IsEulerian.even_degree_iff, IsEulerian.card_odd_degree). No Eulerian existence/Hierholzer construction exists upstream, so sufficiency must be built natively.",
       "The directed Digraph proof in KonigsbergOQ02OQ01.lean is NOT reusable: it is built on a bespoke Digraph structure with its own Walk/splice/removeArcList/arcCount — none are SimpleGraph.Walk objects. A native SimpleGraph mirror is required.",
       "Aristotle backend returned Resource not found for prove, prove_file, and a trivial inline (1+1=2) prove this session — full backend outage, delegation unavailable. Resubmit the single sorry when backend recovers (known classical result, ideal Aristotle target).",
-      "Sub-lemma A reduces to Mathlib IsTrail.even_countP_edges_iff: p-edges incident to a non-start vertex v number ODD, total incident = degree is EVEN, so an unused incident edge always exists (proper-subset parity argument)."
+      "Sub-lemma A reduces to Mathlib IsTrail.even_countP_edges_iff: p-edges incident to a non-start vertex v number ODD, total incident = degree is EVEN, so an unused incident edge always exists (proper-subset parity argument).",
+      "Extremal reformulation avoids well-founded greedy recursion: a MAX-length trail (lengths bounded by edgeFinset.card) is edge-maximal at its endpoint, hence closed by the verified eq_of_isTrail_edgeMaximal. Reduces the main sorry to (c) closed-max-trail-is-Eulerian + a rotation lemma.",
+      "SimpleGraph.mem_incidenceFinset unfolds to (e ∈ edgeSet ∧ v ∈ e) — confirmed by verified exists_unused_incident_edge_at_endpoint.",
+      "2026-07-04: DUAL-TOOL BLACKOUT — Aristotle 404 (8th session) AND Docker containerd content-store I/O error on the cached lean image blob (docker run fails, docker images empty); disk fine (20Gi). Needs Docker daemon restart. No Lean verifiable this session."
     ],
     "mathlibGaps": [
       "Mathlib provides Eulerian degree bookkeeping (SimpleGraph.Walk.IsEulerian.even_degree_iff, .card_odd_degree) but NO existence/sufficiency (Hierholzer construction) for undirected graphs. Confirmed by parent file docstring: sufficiency remains the open direction."
     ],
     "nextSteps": [
-      "Port the directed sub-lemma structure to undirected: (1) from an all-even-degree graph, any MAXIMAL trail from a vertex is closed (current endpoint always has an unused incident edge by a parity/handshake count); (2) removing the edges of a closed trail preserves all-even-degree; (3) splice a residual closed trail through a shared vertex (exists by connectivity) into the main circuit; induct on edge count.",
-      "Aristotle submission of the sorry file failed with MCP error Resource not found (likely worktree/lake-project resolution). Re-submit from the main repo via research/scripts/aristotle-submit.sh once the PR merges, as a KNOWN classical result.",
-      "Consider building an undirected splice + edgeRemoval operation mirroring KonigsbergOQ02OQ01.lean removeArcList; estimate 600-1000 lines. This is the main effort and may warrant Aristotle or a dedicated multi-session build.",
-      "Prove inductive step sub-lemma A: in an all-even-degree graph with ≥1 edge, a maximal trail from any positive-degree vertex is CLOSED (parity/handshake: current endpoint always has an unused incident edge unless back at start).",
-      "Prove sub-lemma B: deleting the edges of a closed trail (G.deleteEdges on the trail edge set) preserves ∀ v, Even (degree v) — each vertex loses an even number of incident trail-edges.",
-      "Prove sub-lemma C (splice): a residual closed trail sharing a vertex with the main circuit can be spliced in, maintaining the per-edge count=1 invariant; combine with strong induction on G.edgeFinset.card using the verified base case."
+      "When Docker recovers: verify+integrate drafts L1 (trail_edges_length_le_card) and L2 (exists_longer_trail_of_open) into Dev.lean; fix flagged Sym2.other_spec / List.nodup_concat / edges_concat names.",
+      "Prove existence of a maximum-length trail (Finset.exists_max over bounded length set; handle dependent endpoint type, e.g. index by Σ w, G.Walk u w).",
+      "Sub-lemma C step (c): a closed max-length trail is Eulerian — needs a rotation lemma (reindex closed trail to start at any visited vertex) + connectivity to find an unused incident edge at a visited vertex.",
+      "Assemble strong induction on edgeFinset.card off the verified base case euler_circuit_of_edgeSet_empty.",
+      "Resubmit the main-theorem sorry to Aristotle as a KNOWN classical result once its backend returns."
     ],
     "markdown": "# Knowledge Base: konigsberg-oq-02-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
