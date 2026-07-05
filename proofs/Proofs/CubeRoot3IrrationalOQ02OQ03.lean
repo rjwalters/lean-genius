@@ -603,6 +603,45 @@ theorem vahlen_capelli_even_mul_odd {K : Type*} [Field K] {m t : ℕ}
     _ = a := by rw [hpb]; ring
 
 -- ============================================================
+-- PART 5d: The pure 2-power base (isolated open lemma = Mathlib's exact TODO)
+-- ============================================================
+
+/-- **Pure `2`-power base `X^(2^k) − C a`.** If `a` is not a square and `a ∉ −4·K⁴`, then
+`X^(2^k) − C a` is irreducible over the field `K`, for every `k ≥ 1`.
+
+This is precisely Mathlib's open `TODO` — `X_pow_sub_C_irreducible_of_prime_pow`
+(`Mathlib/FieldTheory/KummerExtension.lean`) is stated only for **odd** primes
+(`hp' : p ≠ 2`), and the file's header lists "criteria for even `n`" (Lang, *Algebra*,
+VI §9) as an open goal. Isolating the even case to this single prime-power statement is the
+purpose of the `2`-adic peel-off in `vahlen_capelli`: the odd part is fully handled by
+`vahlen_capelli_even_mul_odd`, so the entire even-sufficiency gap collapses to this lemma.
+
+The two low base cases are discharged here:
+* `k = 1` (`X² − C a`): Mathlib's prime-exponent Kummer criterion — condition (1) at `p = 2`.
+* `k = 2` (`X⁴ − C a`): the Sophie-Germain quartic analysis `vahlen_capelli_four_suff`.
+
+The sole remaining `sorry` is the genuine open content `k ≥ 3`: the induction on `k` for the
+`2`-power tower, whose inductive obstruction is the `−4b⁴` factorisation (`sophie_germain`)
+ruled out by condition (2). Concretely, `X^(2^(k+1)) − C a = (X²)^(2^k) − C a`, so
+`X_pow_mul_sub_C_irreducible` reduces the step to showing that a root `x` of the base
+(`x^(2^k) = a`) is **not a square** in `K(x)`; condition (2) is exactly what forbids
+`x = −4y⁴`-type squares from appearing in the tower. -/
+theorem two_power_capelli {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k) {a : K}
+    (h1 : ∀ b : K, b ^ 2 ≠ a) (h2 : ∀ b : K, a ≠ -(4 * b ^ 4)) :
+    Irreducible (X ^ 2 ^ k - C a : K[X]) := by
+  obtain _ | _ | _ | k := k
+  · exact absurd hk (by norm_num)
+  · -- `k = 1`: `X² − C a`, prime exponent; irreducible ⇔ `a` not a square (condition (1)).
+    rw [pow_one]
+    exact (X_pow_sub_C_irreducible_iff_of_prime Nat.prime_two).mpr h1
+  · -- `k = 2`: `X⁴ − C a`, the Sophie-Germain quartic base `vahlen_capelli_four_suff`.
+    rw [show (2 : ℕ) ^ 2 = 4 from by norm_num]
+    exact vahlen_capelli_four_suff h1 h2
+  · -- `k ≥ 3`: the genuine open case — the `2`-power induction on the `−4b⁴` obstruction,
+    -- Mathlib's `X_pow_sub_C_irreducible_of_prime_pow` generalised to `p = 2` (Lang VI §9).
+    sorry
+
+-- ============================================================
 -- PART 6: The full criterion (even sufficiency = the open Mathlib gap)
 -- ============================================================
 
@@ -635,10 +674,29 @@ theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
     rcases Nat.even_or_odd n with he | ho
     · -- even sufficiency
       by_cases h8 : 8 ∣ n
-      · -- `8 ∣ n`: the genuine remaining open gap (Lang VI §9 / Mathlib TODO — pure
-        -- `2`-power exponents `2^k` with `k ≥ 3`, needing the induction on the `−4b⁴`
-        -- obstruction beyond the `n = 4` base case).
-        sorry
+      · -- `8 ∣ n`: peel off the odd part `n = 2^k · t` (`t` odd, `k = v₂(n) ≥ 3`) and reduce
+        -- to the pure `2`-power base `X^(2^k) − C a` via the verified odd-multiplicativity
+        -- lemma `vahlen_capelli_even_mul_odd`.  This confines the sole remaining `sorry` to
+        -- the prime-power base `two_power_capelli` — exactly Mathlib's open TODO
+        -- (`X_pow_sub_C_irreducible_of_prime_pow`, currently restricted to `p ≠ 2`).
+        have hn0 : n ≠ 0 := by omega
+        obtain ⟨k, t, ht_odd, ht_eq⟩ := Nat.exists_eq_two_pow_mul_odd hn0
+        have h2t : ¬ 2 ∣ t := by rcases ht_odd with ⟨j, rfl⟩; omega
+        have hcop : Nat.Coprime (2 ^ 3) t :=
+          ((Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr h2t).pow_left 3
+        have hdvd : (2 : ℕ) ^ 3 ∣ 2 ^ k := by
+          apply Nat.Coprime.dvd_of_dvd_mul_right hcop
+          rw [← ht_eq, show (2 : ℕ) ^ 3 = 8 from by norm_num]; exact h8
+        have hk3 : 3 ≤ k := by
+          by_contra hk; push_neg at hk; interval_cases k <;> revert hdvd <;> norm_num
+        have hbase : Irreducible (X ^ 2 ^ k - C a : K[X]) :=
+          two_power_capelli (by omega)
+            (hcond.1 2 Nat.prime_two ((by norm_num : (2 : ℕ) ∣ 8).trans h8))
+            (hcond.2 ((by norm_num : (4 : ℕ) ∣ 8).trans h8))
+        have hm_even : Even (2 ^ k) := by rw [Nat.even_pow]; exact ⟨even_two, by omega⟩
+        rw [ht_eq]
+        exact vahlen_capelli_even_mul_odd hm_even (pow_ne_zero k (by norm_num)) ht_odd hbase
+          (fun q hq hqt b => hcond.1 q hq (by rw [ht_eq]; exact hqt.mul_left _) b)
       · by_cases h4 : 4 ∣ n
         · -- `4 ∣ n` but `8 ∤ n` ⇒ `v₂(n) = 2` ⇒ `n = 4·t` with `t` odd.  The base
           -- `X⁴ − C a` is `vahlen_capelli_four_suff`; the odd part `t` is transferred by
