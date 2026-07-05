@@ -112,4 +112,90 @@ example : totalSteps 3 4
 example : totalSteps 3 4 ≤ 4 * (2 * (Nat.log 2 3 + Nat.log 2 4) + 2) :=
   totalSteps_le 3 4 (by norm_num)
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART IV: THE a = 1 ROW IS EXACTLY LOGARITHMIC  (tight Θ(log N))
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- The O(log N) ceiling above is matched exactly on the a = 1 row: for EVERY
+-- b ≥ 1 (not just the sparse worst-case family 2^n − 1),
+--     binaryGcdSteps 1 b = Nat.log 2 b + 1,
+-- because from (1, b) the algorithm floor-halves b at every step
+-- (b ↦ ⌊b/2⌋). Summing over b ∈ [1, N] pins the a = 1 average at
+--     totalSteps 1 N = (∑_{b=1}^N log₂ b) + N = Θ(N log N),
+-- so the a = 1 average step count is Θ(log N): the O(log N) ceiling is tight.
+-- This strictly generalises the parent's binaryGcdSteps 1 (2^n − 1) = n
+-- (BinaryGcdOQ01OQ04.lean) from the sparse family to the whole row.
+
+/-- One binary-GCD step from `(1, 2k)`: the even branch sends `b = 2k ↦ k`. -/
+private theorem binaryGcdSteps_one_two_mul (k : ℕ) (hk : 1 ≤ k) :
+    binaryGcdSteps 1 (2 * k) = 1 + binaryGcdSteps 1 k := by
+  rw [show (1 : ℕ) = 0 + 1 from rfl, show 2 * k = (2 * k - 1) + 1 from by omega,
+      binaryGcdSteps.eq_3]
+  simp only [if_neg (show (0 + 1) % 2 ≠ 0 from by norm_num),
+             if_pos (show ((2 * k - 1) + 1) % 2 = 0 from by omega),
+             show (0 : ℕ) + 1 = 1 from rfl,
+             show ((2 * k - 1) + 1) / 2 = k from by omega]
+
+/-- One binary-GCD step from `(1, 2k+1)`: the odd branch sends `b = 2k+1 ↦ k`. -/
+private theorem binaryGcdSteps_one_two_mul_add_one (k : ℕ) :
+    binaryGcdSteps 1 (2 * k + 1) = 1 + binaryGcdSteps 1 k := by
+  rw [show (1 : ℕ) = 0 + 1 from rfl, binaryGcdSteps.eq_3]
+  simp only [if_neg (show (0 + 1) % 2 ≠ 0 from by norm_num),
+             if_neg (show (2 * k + 1) % 2 ≠ 0 from by omega),
+             if_neg (show ¬(0 + 1 > 2 * k + 1) from by omega),
+             show (0 : ℕ) + 1 = 1 from rfl,
+             show (2 * k + 1 - 1) / 2 = k from by omega]
+
+/-- Unified one-step reduction: from `(1, b)` with `b ≥ 1` the algorithm takes
+    one step to `(1, ⌊b/2⌋)`, regardless of the parity of `b`. -/
+theorem binaryGcdSteps_one_step (b : ℕ) (hb : 1 ≤ b) :
+    binaryGcdSteps 1 b = 1 + binaryGcdSteps 1 (b / 2) := by
+  rcases Nat.even_or_odd b with ⟨k, hk⟩ | ⟨k, hk⟩
+  · have hd : b / 2 = k := by omega
+    have hkpos : 1 ≤ k := by omega
+    rw [hd, show b = 2 * k from by omega, binaryGcdSteps_one_two_mul k hkpos]
+  · have hd : b / 2 = k := by omega
+    rw [hd, hk, binaryGcdSteps_one_two_mul_add_one k]
+
+private theorem binaryGcdSteps_one_eq_log_aux :
+    ∀ b, 1 ≤ b → binaryGcdSteps 1 b = Nat.log 2 b + 1 := by
+  intro b
+  induction b using Nat.strong_induction_on with
+  | _ b ih =>
+    intro hb
+    rcases Nat.lt_or_ge b 2 with hb1 | hb2
+    · have hb11 : b = 1 := by omega
+      subst hb11
+      rw [binaryGcdSteps_one_step 1 le_rfl]
+      simp [Nat.log_one_right]
+    · have hstep := binaryGcdSteps_one_step b (by omega)
+      have hhalf1 : 1 ≤ b / 2 := by omega
+      have hhalflt : b / 2 < b := by omega
+      have hih := ih (b / 2) hhalflt hhalf1
+      have hlogpos : 0 < Nat.log 2 b := Nat.log_pos (by norm_num) hb2
+      have hlog : Nat.log 2 (b / 2) = Nat.log 2 b - 1 := Nat.log_div_base 2 b
+      rw [hstep, hih]; omega
+
+/-- **Exact `a = 1` step count.** For every `b ≥ 1`,
+    `binaryGcdSteps 1 b = Nat.log 2 b + 1`. The algorithm floor-halves `b`
+    each step, so it runs for exactly `⌊log₂ b⌋ + 1` steps. This generalises
+    the parent's `binaryGcdSteps 1 (2^n − 1) = n` from the sparse worst-case
+    family to *every* second argument. -/
+theorem binaryGcdSteps_one_eq_log (b : ℕ) (hb : 1 ≤ b) :
+    binaryGcdSteps 1 b = Nat.log 2 b + 1 :=
+  binaryGcdSteps_one_eq_log_aux b hb
+
+/-- **Exact `a = 1` average.** The total step count over `b ∈ [1, N]` on the
+    `a = 1` row is `(∑_{b=1}^N log₂ b) + N`. Since `∑_{b=1}^N log₂ b = Θ(N log N)`,
+    the `a = 1` average step count is `Θ(log N)` — the `O(log N)` ceiling of
+    `avgSteps_le` is tight, matching the order of Brent's average-case result. -/
+theorem totalSteps_one_eq (N : ℕ) :
+    totalSteps 1 N = (∑ b ∈ Finset.Icc 1 N, Nat.log 2 b) + N := by
+  unfold totalSteps
+  rw [Finset.sum_congr rfl
+        (fun b hb => binaryGcdSteps_one_eq_log b (Finset.mem_Icc.mp hb).1),
+      Finset.sum_add_distrib]
+  congr 1
+  simp [Nat.card_Icc]
+
 end BinaryGcdOQ01OQ04OQ03
