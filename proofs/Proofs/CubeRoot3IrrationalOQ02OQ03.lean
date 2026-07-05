@@ -37,17 +37,20 @@ counterpart in the odd theory.
 | `C_neg_four_mul_pow` — `C(−4b⁴) = −4(C b)⁴` bookkeeping | **proved** |
 | `obstruction_pow_dvd` — `X^m − C c ∣ X^{pm} − C(cᵖ)` | **proved** |
 | `vahlen_capelli_odd` — full `iff` for odd `n` (wraps Mathlib) | **proved** |
+| `not_irreducible_of_proper_dvd` — proper divisor ⟹ reducible (over a field) | **proved** |
+| `vahlen_capelli_necessity` — necessity for **all** `n` (both parities) | **proved** |
 
-The two obstruction lemmas together are the **necessity** half of the criterion
-(their contrapositive: if either condition fails, the binomial factors). They are
-completely elementary and hold over any field for **every** `n`.
+The two obstruction lemmas assemble into `vahlen_capelli_necessity`: their contrapositive
+shows that if either condition fails, the binomial acquires a proper divisor (degree
+strictly between `0` and `n`) and factors. This is completely elementary and holds over any
+field for **every** `n`.
 
 ## The remaining gap (the genuine open part)
 
 The `even sufficiency` direction — "conditions (1),(2) hold ⟹ `X^n − C a` irreducible"
-for `4 ∣ n` — is the hard Capelli theorem and is **not** in Mathlib. It is stated here
-as `vahlen_capelli` with the odd case assembled and the even branch isolated as the sole
-remaining `sorry`, with a proof sketch.
+for `4 ∣ n` — is the hard Capelli theorem and is **not** in Mathlib. With necessity now
+fully discharged (all `n`) and the odd `iff` complete, `vahlen_capelli` isolates this single
+`even sufficiency` step as the **sole** remaining `sorry`, with a proof sketch.
 
 ## Mathematical heart: the Sophie Germain identity
 
@@ -59,7 +62,7 @@ Substituting `a ↦ X^m` shows that whenever `a = −4b⁴` and `4 ∣ n = 4m`, 
 `X^n − C a = (X^m)⁴ + 4(C b)⁴` splits into two degree-`2m` factors — so condition (2) is
 *necessary*. Capelli's theorem is that (1)+(2) are also *sufficient*.
 
-## Status: build-pending (Docker/Aristotle offline this session); even-sufficiency sorry
+## Status: builds cleanly (verified via Docker); sole `sorry` = even-sufficiency (Mathlib TODO)
 -/
 
 import Mathlib.FieldTheory.KummerExtension
@@ -170,7 +173,99 @@ theorem vahlen_capelli_odd {K : Type*} [Field K] {n : ℕ} (hn : Odd n) {a : K} 
     exact h.1
 
 -- ============================================================
--- PART 5: The full criterion (even case = the open Mathlib gap)
+-- PART 5: Necessity of the criterion, for every `n` (both parities)
+-- ============================================================
+
+/-- If a nonzero polynomial `f` has a divisor `d` whose degree is strictly between `0` and
+`f.natDegree`, then `f` is **not** irreducible: both `d` and its cofactor have positive
+degree, so neither is a unit. Over a field this is the workhorse behind "a proper factor
+witnesses reducibility". -/
+theorem not_irreducible_of_proper_dvd {K : Type*} [Field K] {f d : K[X]}
+    (hf : f ≠ 0) (hd : d ∣ f) (hd0 : 0 < d.natDegree)
+    (hdf : d.natDegree < f.natDegree) : ¬ Irreducible f := by
+  rintro hirr
+  obtain ⟨e, rfl⟩ := hd
+  have hd_ne : d ≠ 0 := left_ne_zero_of_mul hf
+  have he_ne : e ≠ 0 := right_ne_zero_of_mul hf
+  rcases hirr.isUnit_or_isUnit rfl with hu | hu
+  · exact absurd (natDegree_eq_zero_of_isUnit hu) (by omega)
+  · have hde : e.natDegree = 0 := natDegree_eq_zero_of_isUnit hu
+    have hadd : (d * e).natDegree = d.natDegree + e.natDegree :=
+      natDegree_mul hd_ne he_ne
+    rw [hde, add_zero] at hadd
+    rw [hadd] at hdf
+    exact absurd hdf (lt_irrefl _)
+
+/-- **Necessity of the Vahlen–Capelli conditions**, for every `n ≥ 1` and *both* parities.
+
+If `X^n − C a` is irreducible then conditions (1) and (2) both hold. The contrapositive is
+elementary: a failure of either condition exhibits a proper divisor —
+`obstruction_pow_dvd` for condition (1) (the `p`-th power `X^m − C c`), and the Sophie
+Germain factor `capelli_factor_dvd` for condition (2) (the degree-`2m` quadratic). Each has
+degree strictly between `0` and `n`, so `not_irreducible_of_proper_dvd` applies.
+
+This is the full "easy half" of the criterion; only the *even sufficiency* direction
+remains open (see `vahlen_capelli`). -/
+theorem vahlen_capelli_necessity {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K}
+    (hirr : Irreducible (X ^ n - C a)) : VahlenCapelliCond K n a := by
+  have hfdeg : (X ^ n - C a : K[X]).natDegree = n := natDegree_X_pow_sub_C
+  have hfne : (X ^ n - C a : K[X]) ≠ 0 := by
+    intro h; rw [h, natDegree_zero] at hfdeg; omega
+  refine ⟨?_, ?_⟩
+  · -- Condition (1): `a` is not a `p`-th power for any prime `p ∣ n`.
+    intro p hp hpn b hba
+    obtain ⟨m, hm⟩ := hpn
+    have hm0 : 0 < m := by
+      rcases Nat.eq_zero_or_pos m with h | h
+      · exfalso; rw [h, Nat.mul_zero] at hm; omega
+      · exact h
+    have hdvd : (X ^ m - C b : K[X]) ∣ (X ^ n - C a) := by
+      rw [hm, ← hba]; exact obstruction_pow_dvd m p b
+    have hddeg : (X ^ m - C b : K[X]).natDegree = m := natDegree_X_pow_sub_C
+    have hmn : m < n := by
+      have h2 : 2 ≤ p := hp.two_le
+      rw [hm]
+      calc m < 2 * m := by omega
+        _ ≤ p * m := by gcongr
+    exact not_irreducible_of_proper_dvd hfne hdvd (by rw [hddeg]; omega)
+      (by rw [hddeg, hfdeg]; exact hmn) hirr
+  · -- Condition (2): if `4 ∣ n` then `a ≠ −4b⁴` for any `b`.
+    intro h4 b heq
+    obtain ⟨m, hm⟩ := h4
+    have hm0 : 0 < m := by
+      rcases Nat.eq_zero_or_pos m with h | h
+      · exfalso; rw [h, Nat.mul_zero] at hm; omega
+      · exact h
+    -- the explicit Sophie Germain factorisation into two degree-`2m` quadratics
+    have hfac : (X ^ n - C a : K[X]) =
+        ((X ^ m) ^ 2 - 2 * C b * X ^ m + 2 * (C b) ^ 2) *
+          ((X ^ m) ^ 2 + 2 * C b * X ^ m + 2 * (C b) ^ 2) := by
+      rw [hm, heq, C_neg_four_mul_pow, sub_neg_eq_add, factor_capelli]
+    have hdvd : ((X ^ m) ^ 2 - 2 * C b * X ^ m + 2 * (C b) ^ 2 : K[X]) ∣ (X ^ n - C a) :=
+      ⟨_, hfac⟩
+    have hq1ne : ((X ^ m) ^ 2 - 2 * C b * X ^ m + 2 * (C b) ^ 2 : K[X]) ≠ 0 :=
+      left_ne_zero_of_mul (hfac ▸ hfne)
+    have hq2ne : ((X ^ m) ^ 2 + 2 * C b * X ^ m + 2 * (C b) ^ 2 : K[X]) ≠ 0 :=
+      right_ne_zero_of_mul (hfac ▸ hfne)
+    have hq1le :
+        ((X ^ m) ^ 2 - 2 * C b * X ^ m + 2 * (C b) ^ 2 : K[X]).natDegree ≤ 2 * m := by
+      compute_degree; omega
+    have hq2le :
+        ((X ^ m) ^ 2 + 2 * C b * X ^ m + 2 * (C b) ^ 2 : K[X]).natDegree ≤ 2 * m := by
+      compute_degree; omega
+    have hsum :
+        ((X ^ m) ^ 2 - 2 * C b * X ^ m + 2 * (C b) ^ 2 : K[X]).natDegree
+          + ((X ^ m) ^ 2 + 2 * C b * X ^ m + 2 * (C b) ^ 2 : K[X]).natDegree = n := by
+      have hmul := natDegree_mul hq1ne hq2ne
+      rw [← hfac, hfdeg] at hmul; omega
+    have hq1eq :
+        ((X ^ m) ^ 2 - 2 * C b * X ^ m + 2 * (C b) ^ 2 : K[X]).natDegree = 2 * m := by
+      omega
+    exact not_irreducible_of_proper_dvd hfne hdvd (by rw [hq1eq]; omega)
+      (by rw [hq1eq, hfdeg]; omega) hirr
+
+-- ============================================================
+-- PART 6: The full criterion (even sufficiency = the open Mathlib gap)
 -- ============================================================
 
 /-- **Vahlen–Capelli criterion (full statement).** For any field `K`, `a : K`, and
@@ -178,13 +273,12 @@ theorem vahlen_capelli_odd {K : Type*} [Field K] {n : ℕ} (hn : Odd n) {a : K} 
 
   `Irreducible (X ^ n − C a) ↔ VahlenCapelliCond K n a`.
 
-* The **odd** case is `vahlen_capelli_odd` (complete, via Mathlib).
-* **Necessity** (`⟸` contrapositive) for all `n` follows from the obstruction lemmas
-  `obstruction_pow_dvd` (condition 1) and `capelli_factor_dvd` (condition 2): if either
-  condition fails, the binomial acquires a proper divisor and is reducible.
-* The **even sufficiency** step — conditions (1),(2) ⟹ irreducible when `4 ∣ n` — is the
-  hard Capelli theorem (Lang, *Algebra*, VI §9), currently an open `TODO` in Mathlib.
-  It is the sole `sorry` below.
+* **Necessity** (`⟹`) is fully proved for all `n` as `vahlen_capelli_necessity`.
+* **Sufficiency** for **odd** `n` is `vahlen_capelli_odd` (complete, via Mathlib).
+* **Sufficiency** for **even** `n` — conditions (1),(2) ⟹ irreducible when `4 ∣ n` — is the
+  hard Capelli theorem (Lang, *Algebra*, VI §9), currently an open `TODO` in Mathlib. It is
+  the **sole remaining `sorry`**; both directions of the odd case and the necessity of the
+  even case are now machine-checked.
 
 Proof sketch for the remaining step (standard reduction, cf. Lang VI §9):
 write `n = 2^k · t` with `t` odd. The odd part is handled by `vahlen_capelli_odd`
@@ -192,11 +286,14 @@ applied after the substitution `X ↦ X^{2^k}`; multiplicativity of irreducibili
 `X^s − C a` under coprime factorisations of the exponent then reduces to `n = 2^k`.
 For `n = 2^k` one argues by induction on `k`: the inductive obstruction is precisely the
 `−4b⁴` factorisation captured by `sophie_germain`, and condition (2) rules it out. -/
-theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (_hn : 1 ≤ n) {a : K} :
+theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
     Irreducible (X ^ n - C a) ↔ VahlenCapelliCond K n a := by
-  rcases Nat.even_or_odd n with _he | ho
-  · -- even case: necessity from the obstruction lemmas above; even sufficiency is the gap
-    sorry
-  · exact vahlen_capelli_odd ho
+  constructor
+  · exact vahlen_capelli_necessity hn
+  · intro hcond
+    rcases Nat.even_or_odd n with _he | ho
+    · -- even sufficiency: the genuine open gap (Lang VI §9 / Mathlib TODO)
+      sorry
+    · exact (vahlen_capelli_odd ho).mpr hcond
 
 end CubeRoot3IrrationalOQ02OQ03
