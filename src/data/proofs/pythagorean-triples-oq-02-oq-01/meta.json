@@ -51,7 +51,7 @@
     "definitionCount": 1
   },
   "overview": {
-    "historicalContext": "The parametrization of Pythagorean triples is classical (Euclid). The conceptual explanation is algebraic: in the Gaussian integers ℤ[i], a² + b² = N(a+bi) is a multiplicative norm, and squaring z = m + ni gives z² = (m²-n²) + (2mn)i with N(z²) = (m²+n²)². Thus every coprime opposite-parity pair (m,n) yields a primitive triple, and — via unique factorization in ℤ[i] — every primitive triple arises this way. Mathlib formalizes the full classification in PythagoreanTriple.coprime_classification.",
+    "historicalContext": "The parametrization of Pythagorean triples is classical (Euclid). The conceptual explanation is algebraic: in the Gaussian integers ℤ[i], a² + b² = N(a+bi) is a multiplicative norm, and squaring z = m + ni gives z² = (m²-n²) + (2mn)i with N(z²) = (m²+n²)². Thus every coprime opposite-parity pair (m,n) yields a primitive triple, and — via unique factorization in ℤ[i] — every primitive triple arises this way. Mathlib formalizes the full classification in PythagoreanTriple.coprime_classification. The rigor of the converse — that unique factorization forces every primitive triple into this shape — rests on ℤ[i] being a Euclidean domain, the setting Gauss introduced in his 1832 memoir on biquadratic reciprocity.",
     "problemStatement": "Classify all primitive Pythagorean triples: show $(x,y,z)$ with $x^2+y^2=z^2$ and $\\gcd(x,y)=1$ is, up to leg-swap and sign of $z$, exactly $(m^2-n^2,\\,2mn,\\,m^2+n^2)$ for some coprime $m,n$ of opposite parity.",
     "text": "OQ-01 of the Gaussian-integers entry asks to formalize the classification of primitive Pythagorean triples. We bridge Mathlib's classification into the Gaussian-parametrization framework and prove the elementary forward facts directly.",
     "proofStrategy": "Define the parametrization map paramTriple. Prove (a) it always yields a Pythagorean triple by the ring identity (m²-n²)²+(2mn)²=(m²+n²)²; (b) for coprime opposite-parity inputs the legs are coprime, derived from the reverse direction of coprime_classification; (c) export the full biconditional classification; (d) the sharper positive standard form via coprime_classification'; (e) the sum-of-two-squares corollary for the hypotenuse.",
@@ -75,24 +75,40 @@
       "title": "Module Documentation",
       "startLine": 1,
       "endLine": 38,
-      "summary": "Statement of OQ-01, the Gaussian-square narrative, and the honest bridge framing.",
-      "mathContext": "For $z = m+ni \\in \\mathbb{Z}[i]$: $z^2 = (m^2-n^2) + (2mn)i$ and $N(z) = m^2+n^2$, so a Pythagorean triple is $N(z^2) = N(z)^2$. Every primitive triple comes from a single such $z$ because $\\mathbb{Z}[i]$ is a unique factorization domain."
+      "summary": "Docstring: primitive Pythagorean triples are classified via the Gaussian integers ℤ[i]. Squaring z = m + ni gives z² = (m²−n²) + (2mn)i whose norm (m²+n²)² is a perfect square, so every coprime opposite-parity pair yields a primitive triple, and unique factorization in ℤ[i] shows every primitive triple arises this way. Bridged to Mathlib's PythagoreanTriple.coprime_classification.",
+      "mathContext": "$a^2+b^2=N(a+bi)$; $z=m+ni\\Rightarrow z^2=(m^2-n^2)+(2mn)i$, $N(z^2)=(m^2+n^2)^2$."
     },
     {
-      "id": "param",
-      "title": "The Gaussian-Square Parametrization",
+      "id": "param-map",
+      "title": "The Gaussian-Square Parametrization Map",
       "startLine": 40,
+      "endLine": 48,
+      "summary": "Defines the map (m,n) ↦ (m²−n², 2mn, m²+n²) as the real/imaginary parts and norm of z² for z = m + ni, and shows it always yields a Pythagorean triple in a single `ring` call — the identity (m²−n²)² + (2mn)² = (m²+n²)² is a polynomial identity over ℤ.",
+      "mathContext": "$(m^2-n^2)^2+(2mn)^2=(m^2+n^2)^2$, proved by \\texttt{ring}."
+    },
+    {
+      "id": "primitivity",
+      "title": "Coprime Opposite-Parity Inputs Give a Primitive Triple",
+      "startLine": 50,
       "endLine": 64,
-      "summary": "paramTriple map, the always-a-triple identity, and primitivity for coprime opposite-parity inputs.",
-      "mathContext": "The identity $(m^2-n^2)^2 + (2mn)^2 = (m^2+n^2)^2$ holds for all $m,n$ (one `ring` call); and $\\gcd(m,n)=1$ with $m \\not\\equiv n \\pmod 2$ forces $\\gcd(m^2-n^2,\\,2mn)=1$, so the triple is primitive."
+      "summary": "Shows that when gcd(m,n) = 1 and m,n have opposite parity, the resulting triple (m²−n², 2mn, m²+n²) is primitive (the legs are coprime). This is the forward direction of the classification: the parametrization surjects onto primitive triples.",
+      "mathContext": "$\\gcd(m,n)=1$, $m\\not\\equiv n\\ (2)\\Rightarrow \\gcd(m^2-n^2,2mn)=1$."
     },
     {
       "id": "classification",
       "title": "The Complete Classification",
       "startLine": 66,
+      "endLine": 80,
+      "summary": "Bridges to Mathlib's PythagoreanTriple.coprime_classification: every primitive triple is (up to sign and order) of the form (m²−n², 2mn, m²+n²) for a coprime opposite-parity pair. Unique factorization in ℤ[i] is what makes this converse hold.",
+      "mathContext": "primitive $(a,b,c)\\Rightarrow \\exists\\, m,n:\\ \\{a,b\\}=\\{m^2-n^2,2mn\\},\\ c=m^2+n^2$."
+    },
+    {
+      "id": "standard-form",
+      "title": "Standard Form and Sum-of-Two-Squares Corollary",
+      "startLine": 82,
       "endLine": 101,
-      "summary": "Full biconditional classification (bridge), the positive standard form, and the hypotenuse sum-of-squares corollary.",
-      "mathContext": "$(x^2+y^2=z^2 \\wedge \\gcd(x,y)=1) \\iff (x,y,z) = \\pm\\,\\mathrm{paramTriple}(m,n)$ for coprime opposite-parity $m,n$; normalizing to $x$ odd, $z>0$ gives $z = m^2+n^2 = N(m+ni)$, a sum of two squares."
+      "summary": "The sign/order-free standard form of the classification, and the corollary that the hypotenuse of a primitive triple is a sum of two squares (c = m² + n²) — a special case of Fermat's two-squares theorem for the hypotenuse.",
+      "mathContext": "$c=m^2+n^2$: the hypotenuse is a sum of two squares."
     }
   ],
   "conclusion": {
