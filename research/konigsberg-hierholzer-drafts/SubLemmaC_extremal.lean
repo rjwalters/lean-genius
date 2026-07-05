@@ -9,6 +9,19 @@ Every lemma name and signature below was cross-checked against the local
 lake glob `Proofs.*` never compiles it; drop the bodies into
 `proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean` once a build host is available.
 
+CORRECTIONS (this pass — three bugs an inspection-only "verify-ready" tag missed,
+each fixed against the actual v4.26.0 source, not from memory):
+  * `Walk.rotate_edges` returns `~r` (`List.IsRotated`), NOT `~` (`List.Perm`).
+    The membership step uses `IsRotated.mem_iff` directly; the length step goes
+    through `.perm` (`IsRotated.perm : l ~r l' → l ~ l'`) then `.length_eq`.
+    Mathlib's own `Paths.lean:497` uses this exact idiom:
+    `rw [isTrail_def, (c.rotate_edges h).perm.nodup_iff]`.
+  * Decomposing an arbitrary `e : Sym2 V` into `∃ a b, e = s(a,b)` cannot use
+    `Sym2.other_spec'` (which needs a membership proof); it is `Sym2.exists.mp ⟨e, rfl⟩`
+    (`Sym2.«exists» : (∃ x, f x) ↔ ∃ x y, f s(x,y)`, Sym2.lean:155).
+  * L2's `Nonempty V` witness (was a `sorry`) is now a proper `[Nonempty V]`
+    hypothesis, discharged in the assembly by `hconn.nonempty`.
+
 ## Why extremal (and not residual induction)
 
 The prior plan was strong induction on `G.edgeFinset.card`: extract a closed
@@ -48,13 +61,19 @@ verified but is OFF the critical path for this route.
   Walk.start_mem_support       Walks/Basic.lean:157
   Walk.exists_boundary_dart    Walks/Basic.lean:388   ⟨d ∈ darts, fst∈S, snd∉S⟩
   Walk.rotate                  Connectivity/WalkDecomp.lean:273
-  Walk.rotate_edges            Connectivity/WalkDecomp.lean:294  (rotate).edges ~ edges
-  IsTrail.rotate               Paths.lean:495
-  Dart.edge / Dart.edge_mem    Dart.lean:61,69
-  Dart.adj  (@[simp])          Dart.lean:33          G.Adj d.fst d.snd
+  Walk.rotate_edges            Connectivity/WalkDecomp.lean:294  (rotate).edges ~r edges  [IsRotated, not Perm!]
+  IsTrail.rotate               Paths.lean:495        (hc.rotate h : (c.rotate h).IsTrail)
+  IsRotated.perm               Data/List/Rotate.lean:397  l ~r l' → l ~ l'
+  IsRotated.mem_iff            Data/List/Rotate.lean:403  (l ~r l') → (a∈l ↔ a∈l')
+  Sym2.«exists»                Data/Sym/Sym2.lean:155  (∃x, f x) ↔ ∃ x y, f s(x,y)
+  Sym2.Mem.other / other_spec  Data/Sym/Sym2.lean:353,357  s(a, Mem.other h) = z
+  Dart.adj  (structure field)  Dart.lean:28          G.Adj d.fst d.snd  (@[simp] :33)
   Connected.exists_isPath      Connectivity/Connected.lean:318
+  Walk.snd_mem_support_of_mem_edges  Walks/Operations.lean:450
   List.nodup_concat            Data/List/Nodup.lean:242   (l.concat u).Nodup ↔ u∉l ∧ l.Nodup
   List.nodup_iff_count_le_one  Data/List/Nodup.lean:140
+  List.count_pos_iff           Data/List/Nodup.lean:147   0 < count a l ↔ a ∈ l
+  isTrail_def  (@[mk_iff])      Paths.lean:67          IsTrail p ↔ p.edges.Nodup
   mem_edgeFinset               Finite.lean:66
   eq_of_isTrail_edgeMaximal    KonigsbergOQ02OQ01OQ02OQ01Dev.lean  (VERIFIED, Sub-lemma A)
 -/
@@ -95,7 +114,7 @@ theorem trail_length_le_card_edgeFinset
 /-- Among all trails of `G` (any endpoints) there is one of maximum length.
 Packaged with the maximality witness in the form Steps 1–2 consume:
 `∀ trail q, q.length ≤ p.length`. -/
-theorem exists_max_length_trail (hne : G.edgeSet.Nonempty ∨ True) :
+theorem exists_max_length_trail [Nonempty V] :
     ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧
       ∀ (x y : V) (q : G.Walk x y), q.IsTrail → q.length ≤ p.length := by
   classical
@@ -106,9 +125,7 @@ theorem exists_max_length_trail (hne : G.edgeSet.Nonempty ∨ True) :
       (fun n => ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧ p.length = n) with hS
   have h0mem : (0 : ℕ) ∈ S := by
     -- the empty walk at any vertex is a trail of length 0
-    obtain ⟨w⟩ : Nonempty V := by
-      -- V is nonempty because … (in the real assembly this comes from `hconn.nonempty`)
-      sorry
+    obtain ⟨w⟩ := (inferInstance : Nonempty V)
     rw [hS, Finset.mem_filter, Finset.mem_range]
     exact ⟨by omega, w, w, Walk.nil, IsTrail.nil, rfl⟩
   have hSne : S.Nonempty := ⟨0, h0mem⟩
@@ -146,7 +163,8 @@ theorem max_trail_is_closed
   obtain ⟨heEdge, hvE⟩ := heInc
   -- extract the neighbour `z`
   obtain ⟨z, rfl⟩ : ∃ z, e = s(v, z) := by
-    -- v ∈ e, so e = s(v, Sym2.Mem.other')  (Sym2 membership decomposition)
+    -- v ∈ e, so e = s(v, Sym2.Mem.other hvE)  (Sym2 membership decomposition; the
+    -- noncomputable `Mem.other` is fine here — the goal is a Prop, no data escapes).
     exact ⟨Sym2.Mem.other hvE, (Sym2.other_spec hvE).symm⟩
   have hadj : G.Adj v z := by rwa [← SimpleGraph.mem_edgeSet]
   -- `p.concat hadj` is a trail (its edge list is `p.edges.concat s(v,z)`, nodup) …
@@ -178,7 +196,7 @@ theorem closed_max_trail_is_eulerian
     have hunused : e ∉ p.edges := by
       rw [← List.count_pos_iff]; omega
     -- endpoint `a` of the missing edge; path from `u` to `a`.
-    obtain ⟨a, b, rfl⟩ : ∃ a b, e = s(a, b) := ⟨_, _, (Sym2.other_spec' e).symm⟩  -- Sym2.exists
+    obtain ⟨a, b, rfl⟩ : ∃ a b, e = s(a, b) := Sym2.exists.mp ⟨e, rfl⟩
     set Sset : Set V := {x | x ∈ p.support} with hSset
     -- If `a ∈ p.support`, e itself is the boundary edge; else cross via a path.
     -- Uniformly: find a dart `d` of some walk with `d.fst ∈ Sset`, `d.snd ∉ Sset`,
@@ -199,15 +217,16 @@ theorem closed_max_trail_is_eulerian
         exact hdsnd (p.snd_mem_support_of_mem_edges hused)
     -- Rotate `p` to `w`, then `concat` the unused edge.
     have hrot_trail : (p.rotate hwsupp).IsTrail := hptrail.rotate hwsupp
-    have hrot_edges_perm : (p.rotate hwsupp).edges ~ p.edges := (p.rotate_edges hwsupp)
+    -- `rotate_edges` gives `~r` (IsRotated), NOT `~` (Perm); bridge with `.perm` when needed.
+    have hrot_edges_rot : (p.rotate hwsupp).edges ~r p.edges := p.rotate_edges hwsupp
     have hunused_rot : s(w, z) ∉ (p.rotate hwsupp).edges := by
-      intro hmem; exact hunused_wz (hrot_edges_perm.mem_iff.mp hmem)
+      intro hmem; exact hunused_wz (hrot_edges_rot.mem_iff.mp hmem)
     have hconcat_trail : ((p.rotate hwsupp).concat hadj).IsTrail := by
       rw [isTrail_def, edges_concat, List.nodup_concat]
       exact ⟨hunused_rot, hrot_trail.edges_nodup⟩
-    -- length: rotate preserves length (perm of edge lists), concat adds 1.
+    -- length: rotate preserves length (IsRotated ⇒ Perm ⇒ equal length of edge lists), concat adds 1.
     have hrot_len : (p.rotate hwsupp).length = p.length := by
-      have := hrot_edges_perm.length_eq
+      have := hrot_edges_rot.perm.length_eq
       rw [length_edges, length_edges] at this; exact this
     have := hmax w z ((p.rotate hwsupp).concat hadj) hconcat_trail
     rw [length_concat, hrot_len] at this
@@ -223,7 +242,8 @@ theorem undirected_euler_circuit_sufficient'
     (hconn : G.Connected) (heven : ∀ v, Even (G.degree v)) :
     ∃ (u : V) (p : G.Walk u u), p.IsEulerian := by
   classical
-  obtain ⟨u, v, p, hptrail, hmax⟩ := exists_max_length_trail (Or.inr trivial)
+  haveI : Nonempty V := hconn.nonempty
+  obtain ⟨u, v, p, hptrail, hmax⟩ := exists_max_length_trail
   -- Step 1: the max trail is closed.
   obtain rfl : u = v := max_trail_is_closed hptrail heven hmax
   -- Step 2: a closed max trail is Eulerian.
@@ -232,20 +252,29 @@ theorem undirected_euler_circuit_sufficient'
 end UndirectedEulerDev
 
 /-
-## Remaining verification obligations (all expected routine at build time)
+## Verification obligations — status after the correction pass
 
-1. `exists_max_length_trail`: the `Nonempty V` witness (marked `sorry` here) must be
-   threaded from `hconn.nonempty` — in the assembly `V` is nonempty, so restate L2
-   taking `[Nonempty V]` or `(hconn : G.Connected)` and use `hconn.nonempty`.
-2. `Sym2` endpoint decomposition (`Sym2.Mem.other` / `Sym2.other_spec` /
-   `Sym2.other_spec'`): confirm exact current names; `Sym2.exists` (`∀ e, ∃ a b, e = s(a,b)`)
-   is the robust fallback used in Step 2.
-3. `IsTrail.rotate` / `rotate_edges` live in `Connectivity.WalkDecomp` + `Paths`;
-   the extra `import …WalkDecomp` above covers `rotate`.
-4. `List.Perm.length_eq`, `List.Perm.mem_iff`, `List.count_pos_iff`,
-   `List.nodup_iff_count_le_one`, `List.nodup_concat` — standard `Data/List`.
-5. `isTrail_def` (`IsTrail p ↔ p.edges.Nodup`) — used to open `concat` trails.
+All five items below were checked against the actual v4.26.0 source (paths/lines in
+the anchor block at the top of the file), and the three that were genuinely wrong
+have been FIXED in the bodies above:
 
-None of these require new mathematics; each is a name/spelling check against v4.26.0.
-The mathematical content is complete and closed.
+1. [FIXED] `exists_max_length_trail` now takes `[Nonempty V]` (was a `sorry`); the
+   assembly discharges it with `haveI : Nonempty V := hconn.nonempty`.
+2. [FIXED] `Sym2` decomposition of an arbitrary edge uses `Sym2.exists.mp ⟨e, rfl⟩`
+   (Sym2.lean:155); `Sym2.other_spec'` was wrong there — it needs a membership proof.
+   Step 1's `∃ z, e = s(v,z)` (with `hvE : v ∈ e`) correctly uses `Sym2.Mem.other` +
+   `Sym2.other_spec` (Sym2.lean:353,357).
+3. [FIXED] `Walk.rotate_edges` gives `~r` (`List.IsRotated`, WalkDecomp.lean:294),
+   not `~`. Membership: `IsRotated.mem_iff` (Rotate.lean:403). Length: `.perm`
+   (`IsRotated.perm`, Rotate.lean:397) then `List.Perm.length_eq`. `IsTrail.rotate`
+   (Paths.lean:495) confirmed; `import …WalkDecomp` covers `Walk.rotate`.
+4. [CONFIRMED] `List.count_pos_iff` (Nodup.lean:147), `List.nodup_iff_count_le_one`
+   (Nodup.lean:140), `List.nodup_concat` (Nodup.lean:242) — all present as used.
+5. [CONFIRMED] `isTrail_def` (`@[mk_iff]`, Paths.lean:67) — used to open `concat` trails.
+
+No new mathematics is required and no `sorry` remains in the blueprint. Remaining
+risk is purely Lean *elaboration* (instance resolution for the classical `Finset.filter`
+predicate in L2; unifier picking `f := (e = ·)` in `Sym2.exists.mp ⟨e, rfl⟩`), which
+only a real build host — currently unavailable — can settle. The mathematical content
+is complete and closed.
 -/
