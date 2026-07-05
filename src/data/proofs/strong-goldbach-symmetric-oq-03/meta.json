@@ -73,6 +73,25 @@
       "note": "The plot of the number of Goldbach partitions of 2m against 2m; the minimal offset studied here is the innermost (closest-to-midpoint) partition contributing to each comet abscissa."
     }
   ],
+  "overview": {
+    "historicalContext": "In his 1742 letter to Euler, Goldbach conjectured that every even integer greater than 2 is a sum of two primes — the Strong (Binary) Goldbach Conjecture, still open after nearly three centuries despite verification past 4·10^18. Writing an even number as 2m, each representation 2m = (m−k) + (m+k) is symmetric about the midpoint m, so a Goldbach partition is a symmetric offset k with both m−k and m+k prime. The classical picture of the conjecture is the Goldbach comet — the plot of the number of such partitions against 2m, always positive and growing. The parent entry formalizes that count (symmetricPairCount). This entry turns to the complementary extremal object: not how many partitions exist, but where the closest one to the midpoint sits.",
+    "problemStatement": "For each m, among all offsets k with 2m = (m−k) + (m+k) and both summands prime, study the minimal such k — the innermost Goldbach partition of 2m. Define minimalSymmetricOffset m as the least symmetric offset (via Nat.find on the parent's decidable symmetric-pair predicate), with an out-of-range sentinel value m when 2m has no partition. Characterize it (minimality, in-range ⟺ existence), locate its diagonal (offset 0 ⟺ m prime), connect it to prime gaps (its summands are the extreme Goldbach primes bracketing m), inherit the parent's coprimality/parity structure, and express the Strong Goldbach Conjecture as an equivalent statement about it.",
+    "proofStrategy": "Six moves. (1) Define minimalSymmetricOffset m by Nat.find on the parent's decidable predicate \"m−k and m+k are both prime\", using the sentinel m for the no-partition case so that `< m` is a decidable in-range test. (2) Extract minimality from Nat.find_min' and the summands' primality / sum-to-2m from the found witness. (3) Prove minimalSymmetricOffset m < m ⟺ a Goldbach partition exists ⟺ symmetricPairCount m > 0, tying the sentinel to the parent's comet count. (4) The diagonal law: when a partition exists, the offset is 0 exactly at prime midpoints (the trivial pair 2m = m+m), and strictly positive at composite midpoints. (5) The prime-gap connection: m + offset is the smallest prime ≥ m whose reflection 2m−j is prime, and m − offset the greatest prime ≤ m with prime complement — so a large minimal offset is a run of primes near m all of whose Goldbach complements are composite. (6) Specialize the parent's coprimality and parity lemmas to the innermost pair, and package the whole thing as the reformulation symmetricGoldbach_iff_minimalSymmetricOffset_lt. Concrete offsets (0 at 5, 1 at 4 and 6, 2 at 9, 3 at 34) are pinned by kernel `decide` via Nat.find_eq_iff, keeping the proof axiom-free (no native_decide).",
+    "keyInsights": [
+      "The minimal offset is the extremal \"where\" companion to the parent comet's \"how many\": it names the single innermost Goldbach partition of 2m, the one whose two primes sit closest to the midpoint m.",
+      "The out-of-range sentinel (returning m itself when 2m has no partition) is what makes the object total and decidable: `minimalSymmetricOffset m < m` is a clean existence test, provably equivalent to the parent comet count symmetricPairCount m being positive.",
+      "The diagonal law minimalSymmetricOffset m = 0 ⟺ m prime pins the offset's zero locus exactly to the trivial diagonal partition 2m = m + m; composite midpoints force a genuinely off-diagonal innermost pair (offset > 0).",
+      "The offset is a prime-gap invariant: its two summands m ± offset are the extreme Goldbach primes bracketing m, so a large minimal offset certifies a stretch of primes near m each of whose reflections across m is composite — an obstruction structurally close to large prime gaps.",
+      "Structure is inherited for free from the parent: at composite m the minimal offset is a nonzero totative of m (coprime), and for m > 2 it has opposite parity to m (both summands odd), by specializing the parent's symmetric_pair_offset_coprime / _parity to the innermost pair.",
+      "The whole study yields a new equivalent form of the conjecture — Strong Goldbach ⟺ the minimal offset is well-defined (< m) for every m ≥ 2 — the minimal-offset analogue of the parent's comet-positivity reformulation, all axiom-free with concrete values by kernel `decide`."
+    ],
+    "prerequisites": [
+      "the parent entry strong-goldbach-symmetric: the symmetric-pair predicate, its decidable instance, the comet count symmetricPairCount, and the coprimality/parity offset lemmas",
+      "Nat.find and its API (Nat.find_min', Nat.find_eq_iff) for least-witness definitions over a decidable predicate",
+      "basic primality (Nat.Prime), Euler totatives / coprimality, and parity arguments",
+      "the Strong (Binary) Goldbach Conjecture and its symmetric reformulation 2m = (m−k) + (m+k)"
+    ]
+  },
   "sections": [
     {
       "id": "definition",
@@ -130,5 +149,15 @@
       "endLine": 289,
       "summary": "Exact minimal offsets by kernel decide, pinned via Nat.find_eq_iff: 0 at prime midpoint 5, 1 at 4 and 6, 2 at 9, 3 at 34 (with nearer reflections composite); and the m=1 existence non-detection."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "This entry gives a fully verified, axiom-free study of the minimal symmetric offset — the offset of the innermost Goldbach partition (m−k, m+k) of 2m. It defines minimalSymmetricOffset via Nat.find with an out-of-range sentinel, proves minimality and the in-range ⟺ existence ⟺ positive-comet-count chain, establishes the diagonal law (offset 0 ⟺ prime midpoint), the prime-gap connection (the summands are the extreme Goldbach primes bracketing m), the inherited coprimality/parity structure at composite midpoints, and a new reformulation of Strong Goldbach as the well-definedness of the minimal offset for every m ≥ 2. The Strong Goldbach Conjecture itself is not proved; a general upper bound on the minimal offset is shown to be equivalent to it. 17 theorems, 1 definition, 0 sorries, 0 axioms.",
+    "implications": "Recasting Goldbach through its innermost partition connects the conjecture to prime-gap phenomena: because m + offset is the smallest prime ≥ m with prime reflection, any uniform bound minimalSymmetricOffset m < f(m) with f(m) ≤ m for all m ≥ 2 would prove Strong Goldbach, so the conjecture is precisely the statement that the innermost Goldbach prime never escapes the midpoint. The offset thus packages Goldbach into a single scalar extremal quantity per even number — one whose typical smallness (offsets 0–3 already at small m) is heuristically expected but whose worst-case growth is exactly the open problem. It also supplies covering-number-free, decidable existence tests that downstream comet and prime-gap formalizations can consume.",
+    "openQuestions": [
+      "A general upper bound on minimalSymmetricOffset m (e.g. minimalSymmetricOffset m < m, or a polylogarithmic bound o(m)) for all m ≥ 2 — this is equivalent to the Strong Goldbach Conjecture and remains open.",
+      "The typical and average growth of the minimal offset as m → ∞: heuristically the innermost partition sits very close to the midpoint (offset O(log^2 m) on average by Hardy–Littlewood-type reasoning), but no unconditional bound is known.",
+      "The precise relationship between large minimal offsets and large prime gaps near m: a large minimal offset certifies a run of primes near m with composite Goldbach complements — how does its extremal behavior compare to maximal prime gaps?",
+      "Whether the minimal offset attains arbitrarily large values infinitely often, and if so, the distribution of the m at which record offsets occur (the minimal-offset analogue of the Goldbach comet's lower envelope)."
+    ]
+  }
 }
