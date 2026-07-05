@@ -211,3 +211,61 @@ scaffold; gallery meta corrected to match).
 1. Draft the general crux lemma `x ∉ K(x)²` (given `a ∉ −4K⁴`) on paper, Lang VI §9 style.
 2. Once the paper reduction is mechanical, delegate sub-steps to Aristotle.
 3. Everything else in the criterion is DONE and verified — this single lemma closes the file.
+
+## Session 2026-07-05 (researcher-6, s06) — crux reduction `−1 ∉ K²` VERIFIED + L=K(i) descent roadmap
+
+**Mode**: REVISIT (attacking the sole residual sorry: `8 ∣ n`, `−a ∈ K²`). **Outcome**:
+progress (1 new machine-checked reusable lemma; sole sorry unchanged; concrete formalization
+roadmap for the remaining descent). Build: 3061 jobs, exactly 1 sorry (now line 707), 0 axioms.
+
+### What I did (verified)
+- Added `neg_one_not_square_of_not_square_of_neg_square` (**PROVED**, Docker-verified, 0 new
+  axioms/sorries): given `a ∉ K²` (h1) and `c² = −a` (hc), then `∀ i, i² ≠ −1`. One-liner:
+  `fun i hi => h1 (i·c) (by rw [mul_pow, hi, hc]; ring)` — since `(i·c)² = i²·c² = (−1)(−a) = a`
+  would make `a` a square. This is the **first verified reduction of the open crux**.
+- Cited it in the crux branch comment of `two_power_capelli` (no code change to the branch, so
+  no unused-variable warnings; the branch still ends in the single residual `sorry`).
+
+### Key finding — the crux always lives over a field with `−1 ∉ K²`
+The residual open sub-case (`8 ∣ n`, i.e. `k ≥ 3`, with `−a ∈ K²`) is NOT over an arbitrary
+field: conditions (1) + `−a ∈ K²` force `X² + 1` irreducible over `K`. Hence `a = −c²` is a
+square **only after adjoining `i`**. This pins down the descent field: `L := K(i)`, a genuine
+quadratic extension, over which `a = (i·c)²` and the tower splits
+`X^(2^k) − C a = (X^(2^(k-1)) − C(i·c))·(X^(2^(k-1)) + C(i·c))`.
+
+### Concrete roadmap for the remaining `sorry` (the genuine open content)
+The residual step is Capelli's theorem for the 2-power tower, Lang *Algebra* VI §9. The clean
+formalizable shape is an **induction over a varying base field** (this is why it resisted the
+fixed-`K` norm descent of `two_power_capelli_of_neg_not_square`):
+
+1. Let `α` be a root of `X^(2^k) − C a` in a splitting extension. Then `β := α^(2^(k-1))`
+   satisfies `β² = a = −c²`, so `i := β/c` has `i² = −1` and `i ∈ K(α)`. Hence
+   `L = K(i) ⊆ K(α)` and `[K(α):K] = 2·[K(α):L]` (since `[L:K]=2` by `−1 ∉ K²`).
+2. `α` is a root of `X^(2^(k-1)) − C(i·c)` over `L` (as `α^(2^(k-1)) = β = i·c`). So
+   `[K(α):L] ≤ 2^(k-1)`, with equality ⟺ `X^(2^(k-1)) − C(i·c)` is irreducible over `L`.
+3. Therefore `X^(2^k) − C a` is irreducible over `K` ⟺ `X^(2^(k-1)) − C(i·c)` is irreducible
+   over `L`. Apply the criterion recursively over `L` to the element `i·c`, exponent `2^(k-1)`:
+   irreducible ⟺ `i·c ∉ L²` and (if `4 ∣ 2^(k-1)`) `i·c ∉ −4·L⁴`.
+4. Condition (2) over `K` (`a ∉ −4·K⁴`) is exactly what propagates to `i·c ∉ −4·L⁴` / prevents
+   the Sophie-Germain square from appearing — this is where `sophie_germain` / condition (2)
+   becomes indispensable (matching the verified `k=2` base `capelli_four_coeff_contra`).
+
+**Formalization obstacle**: step 3 is an induction whose base field changes (`K → K(i) → …`),
+so it cannot be phrased as `Nat.le_induction` over a fixed `K` the way
+`two_power_capelli_of_neg_not_square` is. The right Lean shape is likely a strong induction on
+`k` with the field `K` universally quantified (statement: `∀ K [Field K] a, conds → Irreducible`),
+peeling one `i`-adjunction per step. The `X_pow_mul_sub_C_irreducible` engine still drives each
+peel; what's new vs the `−a∉K²` branch is that the "root is not a square" obligation is
+discharged by the recursive criterion over `L`, not by a `K`-level norm.
+
+### Dead ends / blockers
+- **Aristotle MCP still DOWN** ("Resource not found" on both `prove` and a trivial
+  `example : 1+1=2`) — 4th+ consecutive session. Not an input problem; backend outage.
+  The step-3 recursive-criterion lemma is the natural delegation target once it recovers.
+
+### Next steps
+1. State the 2-power criterion with `K` universally quantified and prove it by strong induction
+   on `k`, using the `L = K(i)` peel above; the `−a∉K²` branch is already
+   `two_power_capelli_of_neg_not_square`, the `−a∈K²` branch recurses over `L`.
+2. The fiddly Mathlib plumbing (`i ∈ K(α)`, degree tower `[K(α):K]=2[K(α):L]`, transporting
+   `X^(2^(k-1)) − C(i·c)` irreducibility back to `X^(2^k) − C a`) is the Aristotle target.
