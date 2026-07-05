@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-05",
-    "iteration": 5,
-    "focus": "Canonical-form reduction ADDED and BUILD-VERIFIED (Section X). Added the two inverse affine maps that were missing companions to Section V: isBhSet_sub (translation DOWN — A.image(·-m) is B_h whenever m ≤ every element, proved by lifting back through ·+m so the h·m shift cancels) and isBhSet_div (dilation DOWN — A.image(·/c) is B_h when c ≥ 1 divides every element, via lift-back through ·*c). Capstone isBhSet_translate_min_zero: every nonempty B_h set A equals (A.image(·-min A)).image(·+min A) where the down-translate is B_h and contains 0 — i.e. every B_h set is an affine translate of a min-0 normalized B_h set, so absolute position carries no B_h information. 0 sorry, 0 axiom. VERIFIED 2026-07-05: docker-build.sh Proofs.Erdos153OQ03 succeeded (7743 jobs); #print axioms on isBhSet_sub/isBhSet_div/isBhSet_translate_min_zero reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no ofReduceBool. Only the 4 pre-existing cosmetic linter warnings at lines 225/232 remain.",
+    "iteration": 6,
+    "focus": "Section XI PRIMITIVE NORMAL FORM added and BUILD-VERIFIED: isBhSet_primitive_normal_form proves every nonempty B_h set A with >=2 elements is the affine image b -> c*b+m of a PRIMITIVE B_h set C (0 in C, C.gcd id = 1), where m = min A and c = gcd of the differences {a-min A}. Composes isBhSet_translate_min_zero (min-0 form, Section X) with isBhSet_div at c (Section X down-dilation) and strips the common scale via Finset.gcd_div_id_eq_one (valid on ℕ since ℕ is MulDivCancelClass) + Finset.gcd_eq_gcd_image transport. 0 sorry, 0 axiom. VERIFIED 2026-07-05: `lake build Proofs.Erdos153OQ03` exit 0 (7743 jobs); `#print axioms Erdos153OQ03.isBhSet_primitive_normal_form` = [propext, Classical.choice, Quot.sound] only (no sorryAx, no ofReduceBool). Completes the normalization program (nextStep #4): B_h reduces to primitive representatives.",
     "blockers": [],
-    "nextAction": "Complete the canonical form: add the gcd normalization (dilate A by 1/gcd of its differences via isBhSet_div to reach gcd 1), giving the full affine-normal representative (min 0, gcd 1) for A.card ≥ 2. Then the genuinely OPEN frontier: the gap-variance statement for B_h (h ≥ 3) via the Sidon reduction + density bound — unsolved, needs a new idea, not more infrastructure.",
+    "nextAction": "Normalization program complete (min-0 in Section X, primitive/gcd-1 in Section XI). Remaining genuine frontier: the gap-variance statement itself via isSidon_of_isBhSet reduction + choose_le_of_isBhSet density bound (open, hard).",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: canonical translation form + downward affine inverses added and build-verified (Section X, 0-axiom); B_h invariance toolkit now complete both directions. Gap-variance conjecture (h≥3) still OPEN.",
+    "progressSummary": "PROGRESS: affine invariance (up+down) + sharp counting identity + closed-form binomial density bound + saturation characterization + min-0 canonical form + now the PRIMITIVE NORMAL FORM (isBhSet_primitive_normal_form: every |A|>=2 B_h set is affine image c·C+m of a primitive gcd-1 min-0 B_h set C) — all machine-verified (Erdos153OQ03.lean, 27 thm + 3 def, 0 sorry/0 axiom/0 native_decide). Normalization program COMPLETE. Gap-variance conjecture itself remains OPEN.",
     "builtItems": [
       "IsBhSet def (Erdos153OQ03.lean)",
       "isBhSet_one: every set is B₁",
@@ -49,7 +49,8 @@
       "isBhSet_iff_card_hSumset: SATURATION CHARACTERIZATION — IsBhSet h A ↔ (hSumset h A).card = (A.sym h).card (Erdos153OQ03.lean §VIII, 0 sorry/axiom, VERIFIED). Converse of card_hSumset_of_isBhSet via Finset.injOn_of_card_image_eq; B_h sets are EXACTLY those whose h-fold sumset saturates the pigeonhole max.",
       "isBhSet_sub in Erdos153OQ03.lean:~700 — translation-down invariance A.image(·-m) is B_h for m ≤ A (converse of isBhSet_add), 0-axiom",
       "isBhSet_div in Erdos153OQ03.lean:~740 — dilation-down invariance A.image(·/c) is B_h for c≥1, c∣A (converse of isBhSet_smul), 0-axiom",
-      "isBhSet_translate_min_zero in Erdos153OQ03.lean:~775 — canonical translation form: nonempty B_h A = (A.image(·-min A)).image(·+min A), down-translate is B_h and contains 0, 0-axiom"
+      "isBhSet_translate_min_zero in Erdos153OQ03.lean:~775 — canonical translation form: nonempty B_h A = (A.image(·-min A)).image(·+min A), down-translate is B_h and contains 0, 0-axiom",
+      "isBhSet_primitive_normal_form: PRIMITIVE NORMAL FORM (Section XI) — every nonempty B_h set A with |A|>=2 equals (C.image (·*c)).image (·+m) for a primitive B_h set C (0 in C, C.gcd id = 1), c = gcd of differences, m = min A (Erdos153OQ03.lean, 0 sorry/axiom, VERIFIED). Capstone of the normalization program: composes isBhSet_translate_min_zero (min-0) with isBhSet_div (gcd contraction)."
     ],
     "insights": [
       "A B_h set (h-fold sums distinct) is cleanly encoded as: Multiset.sum injective on size-h multisets drawn from A. Avoids ordered-tuple/reindexing friction.",
@@ -62,7 +63,8 @@
       "B_h ⟺ h-fold-sumset saturation is now a full iff (isBhSet_iff_card_hSumset): forward = Finset.card_image_of_injOn, backward = Finset.injOn_of_card_image_eq. Parallels the h=2 Sidon 'maximal sumset' characterization.",
       "Section V only supplied the UPWARD affine maps (isBhSet_smul, isBhSet_add); the downward inverses are needed to turn affine-invariance into a canonical-form REDUCTION. Both inverses follow the same lift-back template as the forward maps.",
       "Translation-down needs m ≤ every element (m = min A) so that truncated ℕ-subtraction is exact and ·+m recovers A; dilation-down needs c ∣ every element so ℕ-division is exact and ·*c recovers A.",
-      "Canonical form: every nonempty B_h set is the affine translate B + min A of a min-0 B_h set B — position is inessential to B_h-ness (the geometric refinement of affine invariance from a symmetry into a normal-form theorem)."
+      "Canonical form: every nonempty B_h set is the affine translate B + min A of a min-0 B_h set B — position is inessential to B_h-ness (the geometric refinement of affine invariance from a symmetry into a normal-form theorem).",
+      "Primitive normal form: after translating a B_h set to min 0 (Section X), the gcd g of its elements divides all of them, so dividing by g (isBhSet_div) yields a primitive B_h representative with gcd 1. The gcd-1 step is exactly Finset.gcd_div_id_eq_one, applicable over ℕ because ℕ has a MulDivCancelClass instance; transporting gcd across .image uses Finset.gcd_eq_gcd_image. Every B_h set is thus an affine image c·C+m of a primitive one — position AND common scale carry no B_h information."
     ],
     "mathlibGaps": [
       "No dedicated B_h / Sidon-of-order-h API in Mathlib; multiset-sum-injectivity encoding is self-sufficient.",
@@ -94,15 +96,15 @@
     "mathlib": []
   },
   "started": "2026-07-04T21:35:19.650Z",
-  "lastUpdate": "2026-07-04",
+  "lastUpdate": "2026-07-05",
   "significance": 5,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos153OQ03.lean",
       "filename": "Erdos153OQ03.lean",
-      "lineCount": 795,
-      "theoremCount": 26,
+      "lineCount": 878,
+      "theoremCount": 27,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
