@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1162-oq-04",
   "title": "What is the analogous result for alternating groups A_n",
-  "phase": "ORIENT",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,34 +18,33 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-07-04T22:00:00.000Z",
-    "iteration": 2,
-    "focus": "Free-upper / deep-lower decomposition: g(n) <= f(n) (0 axioms) transfers the entire upper asymptotic from the parent S_n result; only the A_n lower bound is a new axiom.",
-    "blockers": [
-      "Docker build blocked (containerd blob EIO on lean4-arm64:v4.26.0)",
-      "Aristotle offline (404)",
-      "No local Mathlib source to grep API names"
-    ],
-    "nextAction": "When Docker/Aristotle recover: move candidate Erdos1162OQ04.lean into proofs/Proofs/, build, resolve <=5-item API checklist, then create gallery entry.",
+    "phase": "COMPLETE",
+    "since": "2026-07-04",
+    "iteration": 3,
+    "focus": "VERIFIED. Erdos1162OQ04.lean machine-checked (docker build clean, 8.8s): 7 theorems + 2 defs, 0 sorry, 0 native_decide, exactly 2 axioms (roney_dougal_tracey re-declared self-contained + An_lower_bound). Made self-contained after finding the parent Erdos1162Problem.lean has drifted Mathlib imports (Mathlib.GroupTheory.Subgroup.Basic/Finite removed in v4.26.0). Gallery entry src/data/proofs/erdos-1162-oq-04 created (status axiomatized, badge axiom, axiomCount 2, 8 annotations).",
+    "blockers": [],
+    "nextAction": "DONE for this line. Optional future work: (1) formalize An_lower_bound via Gaussian-binomial elementary-abelian-2-subgroup counts (same gap as parent S_n entry); (2) separately, the parent erdos-1162 gallery Lean file needs a Mechanic import/API-drift repair (Subgroup.Basic→Algebra.Group.Subgroup.Basic, Equiv.Perm.subsingleton renamed, simp drift) — out of research scope.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "DECOMPOSITION (unverified - build blocked): g(n)=#subgroups(A_n) <= f(n)=#subgroups(S_n) UNCONDITIONALLY (0 axioms) via injective Subgroup.map along (A_n).subtype. Composing with the parent Roney-Dougal-Tracey S_n asymptotic gives the ENTIRE upper half (limsup log g/n^2 <= 1/16) with NO new axiom. The matching lower bound is the ONLY new input (1 axiom, An_lower_bound); constant stays 1/16 because A_n still contains the dominant elementary abelian 2-subgroups. Candidate Erdos1162OQ04.lean written (kept OUTSIDE proofs glob while unverified).",
+    "progressSummary": "COMPLETE/VERIFIED: log g(n) = (1/16 + o(1))n² for g(n)=#subgroups(A_n). g(n) ≤ f(n) UNCONDITIONAL (injective Subgroup.map), upper half free from parent RDT (0 new axioms), one new axiom An_lower_bound for the matching lower bound; same constant 1/16 (A_n keeps dominant elementary abelian 2-subgroups). Self-contained file (2 axioms total), machine-checked via docker (8.8s), gallery entry created with 8 annotations.",
     "builtItems": [
-      "research/problems/erdos-1162-oq-04/Erdos1162OQ04.lean (CANDIDATE, UNVERIFIED, outside proofs glob): defs numSubgroupsAn; theorems numSubgroupsAn_pos, numSubgroupsAn_le (g<=f, 0 axioms), log_numSubgroupsAn_le, An_ratio_le, An_ratio_eventually_lt (upper half from parent RDT, 0 new axioms), alternating_asymptotic, pyber_alternating; axiom An_lower_bound (the single new deep input).",
-      "research/problems/erdos-1162-oq-04/{knowledge,problem,state}.md research notes."
+      "proofs/Proofs/Erdos1162OQ04.lean VERIFIED (self-contained, import Mathlib): defs numSubgroups/numSubgroupsAn; theorems numSubgroupsAn_pos, numSubgroupsAn_le (g≤f, 0 new axioms), log_numSubgroupsAn_le, An_ratio_le, An_ratio_eventually_lt (upper half free), alternating_asymptotic, pyber_alternating; axioms roney_dougal_tracey + An_lower_bound. 0 sorry, 0 native_decide.",
+      "research/problems/erdos-1162-oq-04/{knowledge,problem,state}.md research notes.",
+      "Gallery entry src/data/proofs/erdos-1162-oq-04/{meta.json,annotations.json} (status axiomatized, axiomCount 2, badge axiom, 8 annotations)."
     ],
     "insights": [
       "Reduction g(n) <= f(n) is UNCONDITIONAL: A_n -> S_n is an injective group hom, so Subgroup.map along (alternatingGroup (Fin n)).subtype injects the A_n subgroup lattice into the S_n one; Nat.card is monotone under injections into the finite type Subgroup(S_n).",
       "The UPPER half of the A_n asymptotic (limsup log g/n^2 <= 1/16) needs NO new axiom: it follows from the parent S_n asymptotic composed with g<=f. Only the matching LOWER bound is deep.",
       "Same constant 1/16 for A_n: the dominant contribution is elementary abelian 2-subgroups on ~ n/4 points; A_n contains these (even-weight products of disjoint transpositions, rank floor(n/2)-1), so (1/4)^2 = 1/16 is unchanged.",
       "Clean axiom accounting via importing Proofs.Erdos1162Problem: reuse Erdos1162.roney_dougal_tracey (parent axiom, not double-counted) and add exactly ONE new axiom (An_lower_bound).",
-      "Small-case contrast: |A_2|=1 so g(2)=1 while f(2)=2; g(1)=1, g(3)=2 (A_3=Z/3 prime), g(4)=10 (A_4 order 12)."
+      "Small-case contrast: |A_2|=1 so g(2)=1 while f(2)=2; g(1)=1, g(3)=2 (A_3=Z/3 prime), g(4)=10 (A_4 order 12).",
+      "Parent Erdos1162Problem.lean is CURRENTLY BROKEN vs Mathlib v4.26.0: imports Mathlib.GroupTheory.Subgroup.Basic/Finite (moved to Mathlib.Algebra.Group.Subgroup.*), and further drift (Equiv.Perm.subsingleton renamed, simp no-progress). Made OQ-04 self-contained (re-declare numSubgroups + roney_dougal_tracey) to avoid the broken dependency → honest 2-axiom accounting instead of 1.",
+      "API drift fixed in OQ-04: Nat.card_pos_of_nonempty→Nat.card_pos (+ Nonempty instance); lt_div_iff/div_lt_iff→lt_div_iff₀/div_lt_iff₀; gcongr now descends into Real.log so An_ratio_le needs both the 0<g and g≤f subgoals (gcongr <;> first|...)."
     ],
     "mathlibGaps": [
       "The deep A_n lower bound (subgroup counts of elementary abelian 2-groups via Gaussian binomials ~ 2^{k^2/4}) is unformalized - same gap the parent S_n entry leaves. Kept as the single axiom An_lower_bound."
@@ -76,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-07-04T21:35:19.650Z",
-  "lastUpdate": "2026-07-04T22:00:00.000Z",
+  "lastUpdate": "2026-07-04",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
