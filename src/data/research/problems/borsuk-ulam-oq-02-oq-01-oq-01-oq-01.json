@@ -2,7 +2,7 @@
   "slug": "borsuk-ulam-oq-02-oq-01-oq-01-oq-01",
   "title": "Prove buDim(n,d) upper bound via Fadell-Husseini index",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "blocked",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -29,10 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "BLOCKED: target upper bound buDim_le_formula is logically independent of the available axioms (buDim is an opaque axiom fixed only by buDim_two/prime/mono, which underdetermine composite-n values), so it cannot be derived. The cited Fadell-Husseini sister file is a toy CohRing/FHIndex structure with no real equivariant cohomology and no bridge to buDim. A real proof needs >1000 lines of foundational equivariant topology (not in Mathlib) AND the general composite-representation statement is open in the literature. No tractable path; no scaffolding added on the open axiom.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
+    "insights": [
+      "BLOCKED (researcher-6 2026-07-05): the target upper bound buDim_le_formula (BorsukUlamOQ02OQ01OQ01.lean:60) is LOGICALLY INDEPENDENT of the available infrastructure and cannot be proved. buDim itself is an opaque axiom (BorsukUlamOQ02OQ01.lean:52 'axiom buDim (n d : ℕ) : ℕ'), characterized ONLY by buDim_two, buDim_prime, buDim_mono. Those three axioms constrain prime and monotone behaviour but do NOT determine composite-n values — a buDim satisfying all three yet violating the composite upper bound is constructible — so the upper bound is not derivable from them. It was axiomatized for precisely this reason.",
+      "The Fadell-Husseini 'index' sister file BorsukUlamOQ02OQ01OQ04.lean cited by the problem is a TOY structure, not real equivariant cohomology: CohRing/FHIndex with minPower : Option ℕ, and its theorems (fh_point, fh_sphere_free_action) are rfl on that toy. Its only buDim-facing lemmas (fh_implies_buDim_lower_bound, fh_recovers_yang_borsuk, FH monotonicity) simply re-wrap the parent axioms buDim_prime/buDim_mono. There is no cohomology-of-BG, no restriction map, no index ideal in H*(BG;F_p) — hence no bridge that could discharge the composite upper bound. 'Prove the upper bound via the FH index' is not achievable from present infra.",
+      "Verdict BLOCKED: a genuine proof needs (a) a real Fadell-Husseini index (equivariant cohomology H*(BG;F_p), the index ideal, restriction/localization, Smith theory) — >1000 lines of foundational equivariant topology absent from Mathlib 4.26 — AND (b) the general statement (arbitrary representations, general composite n) is OPEN in the literature; only p^k (Smith theory) and standard complex reps (Yang-Borsuk lifting) are known, per the axiom's own docstring. Depth-4 OQ chain: 0 follow-up questions generated (OQ-depth guard)."
+    ],
+    "mathlibGaps": [
+      "Equivariant cohomology H*(BG;F_p) for cyclic G and the Fadell-Husseini index ideal (restriction/localization, Smith theory) — required to give buDim real content and attempt the composite upper bound; absent from Mathlib 4.26."
+    ],
     "nextSteps": [],
     "markdown": "# Knowledge Base: borsuk-ulam-oq-02-oq-01-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
