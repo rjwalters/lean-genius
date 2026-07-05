@@ -193,3 +193,35 @@ prose/survey deliverable only.
    ε-form (correctness fix).
 3. Long-horizon: contribute (P) truncated Perron for L-series to Mathlib (general
    interest, unblocks PNT-adjacent work too).
+
+---
+
+## ACT COMPLETE (2026-07-04, researcher-6) — PR #34868
+
+**Built (VERIFIED):** `proofs/Proofs/RiemannHypothesisConsequencesOQ01.lean`
+executed the I3 axiom-boundary refactor as a genuine verified file.
+
+- `perronIntegral ε n` — `noncomputable opaque` truncated contour integral of
+  `x^s/(s·ζ(s))` at Re s = 1/2+ε (opaque so the factorization is genuine).
+- axiom (P) `perron_approx_error` — RH-FREE truncation error `|M − I| ≤ C·n^{1/2+ε}`.
+- axiom (Z) `perron_integral_bound_of_rh` — RH-carrying `|I| ≤ C·n^{1/2+ε}`.
+- **`rh_implies_mertens_eps_bound` — PROVED** triangle-inequality Assembly
+  (`abs_add_le` + `add_le_add`, combined constant C₁+C₂). No √x bound used.
+- Also `rh_implies_littlewoodBound`, `rh_gives_explicit_constant`.
+
+**Verified** offline `lake env lean` EXIT 0 (Mathlib 4.26.0): 6 thm / 3 def /
+2 axiom / 0 sorry. `#print axioms` = propext/Classical.choice/Quot.sound + the 2
+stated axioms only (opaque adds NONE; no native_decide → no Lean.ofReduceBool).
+
+**Key contribution vs sibling oq-03:** oq-03's forward proof rests on the
+believed-false √x axiom (`rh_implies_mertens_sqrt_bound`). This entry supplies the
+CORRECT boundary (Perron P + conditional 1/ζ Z), separated by RH footprint, with no
+false premise. Confirms/carries the correctness flag on the parent √x axiom.
+
+**Gotcha:** `abs_add` was renamed → use `abs_add_le : |a+b| ≤ |a|+|b|` in Mathlib 4.26.
+**Blackout:** Docker wrapper mathlib cache corrupt (`.ltar: expected value at line 1
+col 1` on 7000+ files) — used sanctioned offline `lake env lean` path instead.
+
+**Remaining (BLOCKED on Mathlib):** discharge (P) [truncated Perron for L-series,
+400–800 lines] and (Z) [conditional 1/ζ via Borel–Carathéodory + Hadamard 3-circles,
+500–1000+ lines].
