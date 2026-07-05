@@ -21,9 +21,9 @@
     "sorries": 1,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "1 sorry: hurwitz_only_if_ring (the remaining global structure argument of Frobenius' theorem — Step 3: show Im A is an ℝ-subspace carrying a positive-definite bilinear form / Clifford structure). Frobenius Steps 1 and 2 are now VERIFIED (0 sorries): minpoly_natDegree_le_two and exists_quadratic show every element satisfies a real quadratic (generates ℝ or ℂ); exists_real_shift_sq_scalar completes the square so the imaginary part squares to a real scalar, and eq_smul_one_of_sq_eq_nonneg_smul shows a nonnegative such scalar forces the element into ℝ•1 (via no zero divisors), isolating the genuinely imaginary elements as those with negative square scalar. The commutative subcase (hurwitz_field_case) is axiom-free.",
-    "lineCount": 231,
-    "theoremCount": 7,
+    "assumptions": "1 sorry: hurwitz_only_if_ring (the remaining strictly-non-commutative global structure argument of Frobenius' theorem — Step 3: show Im A is an ℝ-subspace carrying a positive-definite bilinear form / Clifford structure). Frobenius Steps 1 and 2 are VERIFIED (0 sorries): minpoly_natDegree_le_two and exists_quadratic show every element satisfies a real quadratic (generates ℝ or ℂ); exists_real_shift_sq_scalar completes the square so the imaginary part squares to a real scalar, and eq_smul_one_of_sq_eq_nonneg_smul shows a nonnegative such scalar forces the element into ℝ•1 (via no zero divisors), isolating the genuinely imaginary elements as those with negative square scalar. Two further pieces of Step 3 are now also VERIFIED (0 sorries): anticommutator_real_affine shows x*y+y*x ∈ span_ℝ{x,y,1} for all x,y (Step 3 preparation via polarisation), and hurwitz_only_if_ring_comm discharges the commutative subcase of the general-ring statement via Gelfand-Mazur, scoping the remaining sorry to the strictly non-commutative case. The commutative subcase (hurwitz_field_case) is axiom-free.",
+    "lineCount": 281,
+    "theoremCount": 9,
     "definitionCount": 1,
     "originalContributions": [
       "admissibleDimensions: Def {1,2,4,8} — the four admissible finranks",
@@ -33,7 +33,9 @@
       "exists_quadratic: explicit quadratic relation a²=p•a+q•1 for every element (0 sorries) — Frobenius Step 1b, the ℝ-or-ℂ generation heart of Frobenius",
       "exists_real_shift_sq_scalar: completing the square, (a-(p/2)•1)²=r•1 (0 sorries) — Frobenius Step 2a, the concrete A=ℝ•1⊕Im A shift",
       "eq_smul_one_of_sq_eq_nonneg_smul: b²=r•1 with r≥0 ⟹ b∈ℝ•1 via absence of zero divisors (0 sorries) — Frobenius Step 2b, isolating imaginary elements as those with negative square scalar",
-      "hurwitz_only_if_ring: general division ring case (1 sorry: remaining global Frobenius structure argument, Step 3)"
+      "anticommutator_real_affine: x*y+y*x ∈ span_ℝ{x,y,1} for all x,y (0 sorries) — Frobenius Step 3 preparation, the anticommutator is real-affine, obtained by polarising the Step-1 quadratics of x, y, x+y",
+      "hurwitz_only_if_ring_comm: the commutative subcase of the general division-ring statement, finrank ∈ {1,2} ⊆ {1,2,4,8} via a NormedField instance + Gelfand-Mazur (0 sorries) — discharges the easy half of Step 3's case split, scoping the remaining sorry to the strictly non-commutative case",
+      "hurwitz_only_if_ring: general division ring case (1 sorry: remaining strictly-non-commutative global Frobenius structure argument, Step 3)"
     ]
   },
   "overview": {
@@ -93,63 +95,71 @@
       "id": "imports-docstring",
       "title": "Imports and Module Documentation",
       "startLine": 1,
-      "endLine": 46,
-      "summary": "Imports Gelfand-Mazur, complex finrank, and normed field infrastructure. Docstring explains the field vs. non-commutative split and the planned NSquareIdentity reduction."
+      "endLine": 53,
+      "summary": "Imports Gelfand-Mazur, complex finrank, and normed field infrastructure. Docstring explains the field vs. non-commutative split, the planned NSquareIdentity reduction, and lists the verified Frobenius Steps 1–2 plus the Step 3 preparation (anticommutator_real_affine)."
     },
     {
       "id": "gelfand-mazur-lemma",
       "title": "Gelfand-Mazur: finrank 1 or 2 for Normed Fields",
-      "startLine": 55,
-      "endLine": 68,
+      "startLine": 64,
+      "endLine": 77,
       "summary": "finrank_normed_field_eq_one_or_two: uses NormedAlgebra.Real.nonempty_algEquiv_or to get F ≅ ℝ (finrank 1) or F ≅ ℂ (finrank 2), then LinearEquiv.finrank_eq + CommSemiring.finrank_self/Complex.finrank_real_complex",
       "mathContext": "Gelfand-Mazur: every normed ℝ-algebra that is also a field is isomorphic to ℝ or ℂ. Key Mathlib lemma: `NormedAlgebra.Real.nonempty_algEquiv_or`."
     },
     {
       "id": "admissible-def",
       "title": "Admissible Dimensions Definition",
-      "startLine": 48,
-      "endLine": 51,
+      "startLine": 59,
+      "endLine": 62,
       "summary": "Defines admissibleDimensions := {1, 2, 4, 8} as a Set ℕ — the four dimensions permitted by Hurwitz's theorem.",
       "mathContext": "The four values correspond to ℝ (dim 1), ℂ (dim 2), ℍ (dim 4), 𝕆 (dim 8) via the Cayley-Dickson construction."
     },
     {
       "id": "field-case",
       "title": "Commutative Case: Proved via Gelfand-Mazur",
-      "startLine": 53,
-      "endLine": 79,
+      "startLine": 64,
+      "endLine": 86,
       "summary": "finrank_normed_field_eq_one_or_two and hurwitz_field_case: normed fields over ℝ have finrank 1 or 2, both in {1,2,4,8}. Both proved with 0 sorries. No finite-dimensionality assumption needed — Gelfand-Mazur implies it.",
       "mathContext": "Uses NormedAlgebra.Real.nonempty_algEquiv_or (Gelfand-Mazur): F ≅ ℝ or F ≅ ℂ. Then LinearEquiv.finrank_eq + CommSemiring.finrank_self / Complex.finrank_real_complex give finrank = 1 or 2."
     },
     {
       "id": "frobenius-step1",
       "title": "Frobenius Step 1: Quadratic Minimal Polynomials",
-      "startLine": 85,
-      "endLine": 140,
+      "startLine": 88,
+      "endLine": 143,
       "summary": "minpoly_natDegree_le_two and exists_quadratic (0 sorries): every element of a finite-dim real normed division ring has minimal polynomial of degree ≤ 2, and hence satisfies an explicit real quadratic a²=p•a+q•1. This is the 'each element generates ℝ or ℂ' heart of Frobenius' theorem.",
       "mathContext": "minpoly is irreducible over the division-ring domain (element is integral by Module.Finite); irreducible real polynomials have degree ≤ 2 (Irreducible.natDegree_le_two). The quadratic is extracted via aeval_eq_sum_range' over range 3 with interval_cases on the degree."
     },
     {
       "id": "frobenius-step2",
       "title": "Frobenius Step 2: Completing the Square, Real/Imaginary Dichotomy",
-      "startLine": 141,
-      "endLine": 182,
+      "startLine": 145,
+      "endLine": 189,
       "summary": "exists_real_shift_sq_scalar and eq_smul_one_of_sq_eq_nonneg_smul (0 sorries): completing the square, (a-(p/2)•1)²=r•1 gives the concrete A=ℝ•1⊕Im A shift; and b²=r•1 with r≥0 forces b∈ℝ•1 (via no zero divisors: (b-√r•1)(b+√r•1)=0). Thus the genuinely imaginary elements are exactly those whose shifted square scalar is negative.",
       "mathContext": "The difference-of-squares factorization uses that a division ring has no zero divisors (DivisionRing ⟹ NoZeroDivisors), so a nonnegative-scalar square pins the element to ±√r•1 ∈ ℝ•1. Ring/module manipulations discharged by simp normalization + the module tactic."
     },
     {
+      "id": "frobenius-step3-prep",
+      "title": "Frobenius Step 3 Preparation: The Anticommutator is Real-Affine",
+      "startLine": 191,
+      "endLine": 215,
+      "summary": "anticommutator_real_affine (0 sorries): for all x, y, the anticommutator x*y+y*x lies in span_ℝ{x, y, 1}. Obtained by polarising the Step-1 quadratics of x, y, and x+y: (x+y)²=x²+(xy+yx)+y² lets the linear+scalar quadratic data be read off, expressing xy+yx as (ps-px)•x+(ps-py)•y+(qs-qx-qy)•1. No commutativity assumed. This is the first algebraic constraint toward the Clifford relations; restricting to imaginary x, y (where the x, y coefficients vanish by trace-additivity) upgrades it to x*y+y*x ∈ ℝ•1.",
+      "mathContext": "Polarisation identity (x+y)²=x²+(xy+yx)+y² is discharged by noncomm_ring (associative, non-commutative); the coefficient bookkeeping across the three Step-1 quadratics is closed by linear_combination with the module normaliser."
+    },
+    {
       "id": "general-case",
       "title": "General Division Ring Case (1 sorry)",
-      "startLine": 183,
-      "endLine": 231,
-      "summary": "hurwitz_only_if_ring: the non-commutative case with a documented sorry and full proof sketch. Steps 1–2 are verified above; the remaining Step 3 is the global structure argument — Im A is a subspace with a positive-definite bilinear form / Clifford structure forcing finrank ∈ {1,2,4}.",
-      "mathContext": "The sorry covers NormedDivisionRing A, NormedAlgebra ℝ A, Module.Finite ℝ A. By Frobenius, the associative case only admits dims 1, 2, 4 — the '8' entry is vacuous for NormedDivisionRing."
+      "startLine": 217,
+      "endLine": 281,
+      "summary": "hurwitz_only_if_ring_comm (0 sorries) discharges the commutative subcase of the general-ring statement — a commutative NormedDivisionRing is a NormedField, so hurwitz_field_case (Gelfand-Mazur) gives finrank ∈ {1,2} ⊆ {1,2,4,8}. hurwitz_only_if_ring then case-splits on commutativity: the commutative branch is closed by hurwitz_only_if_ring_comm, leaving 1 sorry scoped to the strictly non-commutative case (hnc : ∃ x y, x*y ≠ y*x available). The remaining Step 3 is the global structure argument — Im A is a subspace with a positive-definite bilinear form / Clifford structure forcing finrank ∈ {1,2,4}.",
+      "mathContext": "The commutative subcase builds a NormedField instance from the commutativity hypothesis via letI and reuses hurwitz_field_case. The remaining sorry covers strictly non-commutative NormedDivisionRing A, NormedAlgebra ℝ A, Module.Finite ℝ A. By Frobenius, the associative case only admits dims 1, 2, 4 — the '8' entry is vacuous for NormedDivisionRing."
     }
   ],
   "leanFile": {
     "namespace": "HurwitzOnlyIf",
-    "lineCount": 231,
+    "lineCount": 281,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/HurwitzOnlyIf.lean",
     "sorries": 1
