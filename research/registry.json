@@ -13286,8 +13286,8 @@
       "phase": "OBSERVE",
       "path": "full",
       "started": "2026-04-03T08:51:33.760Z",
-      "status": "active",
-      "lastUpdate": "2026-04-03T08:51:33.932Z"
+      "status": "blocked",
+      "lastUpdate": "2026-07-05T04:40:52.260Z"
     },
     {
       "slug": "erdos-301",
@@ -35206,8 +35206,8 @@
       "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-03T08:42:59.946Z",
-      "status": "completed",
-      "lastUpdate": "2026-07-04T21:03:12-07:00",
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.630Z",
       "completed": "2026-07-04T21:03:12-07:00"
     },
     {
@@ -35646,11 +35646,12 @@
     },
     {
       "slug": "erdos-1162-oq-04",
-      "phase": "ACT",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-04T22:51:07.106Z",
-      "status": "active",
-      "lastUpdate": "2026-07-05T03:55:42.335Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.650Z",
+      "completed": "2026-07-05T04:40:52.650Z"
     },
     {
       "slug": "erdos-153-oq-03",
@@ -35687,35 +35688,39 @@
     },
     {
       "slug": "roth-theorem-k3-oq-01-wip-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-04T22:51:07.106Z",
-      "status": "active",
-      "lastUpdate": "2026-07-04T22:51:07.142Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.651Z",
+      "completed": "2026-07-05T04:40:52.651Z"
     },
     {
       "slug": "fibonacci-identities-oq-05-oq-01-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-05T01:21:07.504Z",
-      "status": "active",
-      "lastUpdate": "2026-07-05T01:21:07.555Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.651Z",
+      "completed": "2026-07-05T04:40:52.651Z"
     },
     {
       "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
-      "phase": "ACT",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-05T01:21:07.504Z",
-      "status": "active",
-      "lastUpdate": "2026-07-05T01:21:07.555Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.652Z",
+      "completed": "2026-07-05T04:40:52.652Z"
     },
     {
       "slug": "pac-learning-bounds-wip-01-oq-02-oq-04",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-05T01:21:07.504Z",
-      "status": "active",
-      "lastUpdate": "2026-07-05T01:21:07.556Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.652Z",
+      "completed": "2026-07-05T04:40:52.652Z"
     },
     {
       "slug": "erdos-793-oq-03",
@@ -35735,11 +35740,12 @@
     },
     {
       "slug": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-05T01:21:07.504Z",
-      "status": "active",
-      "lastUpdate": "2026-07-05T01:21:07.558Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.653Z",
+      "completed": "2026-07-05T04:40:52.653Z"
     },
     {
       "slug": "abel-ruffini-galois-extensions-oq-04-oq-03",
@@ -35775,10 +35781,12 @@
     },
     {
       "slug": "rh-consequences-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-04T19:56:31-07:00",
-      "status": "active"
+      "status": "graduated",
+      "completed": "2026-07-05T04:40:52.656Z",
+      "lastUpdate": "2026-07-05T04:40:52.656Z"
     },
     {
       "slug": "shannon-channel-coding-bec-oq-04",
@@ -35830,11 +35838,12 @@
     },
     {
       "slug": "desargues-theorem-oq-02-oq-03",
-      "phase": "ACT",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-05T03:55:42.310Z",
-      "status": "active",
-      "lastUpdate": "2026-07-05T03:55:42.337Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.655Z",
+      "completed": "2026-07-05T04:40:52.655Z"
     },
     {
       "slug": "erdos-1092-oq-02",
@@ -35846,19 +35855,21 @@
     },
     {
       "slug": "strong-goldbach-symmetric-oq-03",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-05T03:55:42.312Z",
-      "status": "active",
-      "lastUpdate": "2026-07-05T03:55:42.337Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.658Z",
+      "completed": "2026-07-05T04:40:52.658Z"
     },
     {
       "slug": "solution-of-cubic-oq-04",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-07-05T03:55:42.312Z",
-      "status": "active",
-      "lastUpdate": "2026-07-05T03:55:42.338Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T04:40:52.659Z",
+      "completed": "2026-07-05T04:40:52.659Z"
     },
     {
       "slug": "hilbert-11-oq-03",
