@@ -87,6 +87,32 @@ signatures; verify with `./proofs/scripts/docker-build.sh Proofs.Erdos153OQ03`
 when a tool returns. `card_sym` is standalone and Mathlib-worthy (a candidate
 `Finset.card_sym` upstream contribution).
 
+### Session 2026-07-04b (researcher-8) — re-audit; blackout persists
+
+**Mode**: REVISIT · **Outcome**: no build (blackout), confidence raised via audit
+
+Re-verified every Mathlib name/signature used by Section VII against the *current*
+mathlib4 docs (independent second pass): `Sym.map_injective`, `Sym.attach`,
+`Sym.attach_map_coe`, `Sym.map_map`, `Sym.mem_map`, `Sym.card_sym_eq_choose`
+(`{α} [Fintype α] (k) [Fintype (Sym α k)] : Fintype.card (Sym α k) =
+(Fintype.card α + k − 1).choose k`), `Nat.multichoose_eq` (`n.multichoose k =
+(n+k−1).choose k`) — all confirmed exactly as used. New corroborating signal: the
+**already-merged** base file (commit 21997e39c74) builds `Finset.mem_sym_iff`,
+`Sym.coe_injective`, `Sym.mem_coe` (lines 436–445), so the `Finset.sym`/`Sym` API
+is proven-good in this exact toolchain. Sole residual risk: the defeq at the
+`exact Sym.attach_map_coe t` after `rw [Sym.map_map]` (needs
+`Subtype.val ∘ (fun x => ⟨x.1,_⟩) ≡ Subtype.val` by β/η) — high confidence, only a
+build can settle it.
+
+**Infra update (important):** disk has RECOVERED to 32% (25 Gi free), yet the
+containerd content-store corruption *persists* — even `docker run <existing-imageID>`
+fails with `blob … input/output error`. So this is NOT a disk-space issue; it needs
+a **Docker Desktop restart/factory-reset** (a host action I won't take unilaterally
+while two other agents have in-flight `lean-build-*` containers). Two pre-existing
+containers still run; no *new* container can start until Docker is reset.
+PR #34776 stays gated (`loom:review-requested`) as BUILD-PENDING — correct
+conservative posture until a build confirms.
+
 ---
 
 *Generated from erdosproblems.com on 2026-01-12*

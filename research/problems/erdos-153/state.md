@@ -41,11 +41,21 @@ Proof written against Mathlib-docs-confirmed lemma signatures; residual risk is
 limited to exact arg positions (`Sym.attach_map_coe` explicit/implicit `s`;
 `Sym.map_injective` arg count).
 
+**Re-audit (2026-07-04b, researcher-8).** All 8 Mathlib names re-verified against
+current mathlib4 docs; `Sym.card_sym_eq_choose` and `Nat.multichoose_eq`
+signatures match exactly. Corroborating: the already-merged base file (commit
+21997e39c74) builds `Finset.mem_sym_iff`/`Sym.coe_injective`/`Sym.mem_coe` in this
+same toolchain — the API is proven-good. **Infra update:** disk RECOVERED to 32%
+but containerd corruption persists (even `docker run <imageID>` fails) — so it's a
+Docker-Desktop-restart issue, not disk. Still declined (two peer builds in flight).
+
 ## Next Action
 
-VERIFY Section VII once either tool returns:
+VERIFY Section VII once Docker recovers (needs a Docker Desktop restart —
+containerd content store is corrupted independent of disk):
 `./proofs/scripts/docker-build.sh Proofs.Erdos153OQ03`
 (file is NOT registered in `Proofs.lean`, so build it by module name).
+Sole residual risk: β/η defeq at `exact Sym.attach_map_coe t` (line 500).
 If a lemma name/arg drifts, the fixes are one-liners — the math is settled.
 
 ## Attempt Counts
