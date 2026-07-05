@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-pac-wip01oq02oq04-01-header",
+    "proofId": "pac-learning-bounds-wip-01-oq-02-oq-04",
+    "range": { "startLine": 3, "endLine": 53 },
+    "type": "concept",
+    "title": "Lifting Sauer–Shelah to Real-Valued Classes via the Hypograph Reduction",
+    "content": "The header frames open question oq-04: extend the parent's verified Boolean growth bound |Π_H(m)| ≤ Σ_{k≤d} C(m,k) to level/integer-valued function classes, replacing VC dimension with the pseudo-dimension, yielding a covering-number bound O((m/γ)^d). The route is Approach A, the classical hypograph/subgraph reduction of Pollard and Haussler: encode a function g by its hypograph {(x,i) : g x > i} over a point/threshold grid, making it a Boolean concept class to which the verified parent Sauer–Shelah bound applies verbatim. The pseudo-dimension is defined as the VC dimension of that family. The genuinely-analytic parts (a general L∞-cover-to-pattern reduction and the sharp constant (2/γ)^k) are documented follow-ups; the O((m/γ)^d) order is fully delivered."
+  },
+  {
+    "id": "ann-pac-wip01oq02oq04-02-hypoon",
+    "proofId": "pac-learning-bounds-wip-01-oq-02-oq-04",
+    "range": { "startLine": 62, "endLine": 96 },
+    "type": "definition",
+    "title": "hypoOn / hypoFam / Pdim: the hypograph encoding and pseudo-dimension",
+    "content": "hypoOn P b g = (P ×ˢ univ).filter (fun (x,i) => g x > i) encodes a level-valued function g : α → ℕ as a Boolean subset of the finite grid α × Fin b (thresholds 1..b via i.val). hypoFam is the resulting Boolean concept class F.image (hypoOn P b), and Pdim P b F := VCDim (hypoFam P b F) is Pollard's pseudo-dimension. mem_hypoOn unfolds membership to x ∈ P ∧ g x > i.val, and hypoOn_subset shows every hypograph lies inside the grid P ×ˢ univ — the key structural fact that lets the parent's trace machinery collapse."
+  },
+  {
+    "id": "ann-pac-wip01oq02oq04-03-hypofam-bound",
+    "proofId": "pac-learning-bounds-wip-01-oq-02-oq-04",
+    "range": { "startLine": 98, "endLine": 123 },
+    "type": "theorem",
+    "title": "hypoFam_card_le_sum_choose: the hypograph Sauer–Shelah bound",
+    "content": "The main bound: |hypoFam P b F| ≤ Σ_{i≤d} C(|P|·b, i) whenever d bounds the pseudo-dimension VCDim(hypoFam). Proof: since every hypograph is a subset of the grid S = P ×ˢ univ, intersecting with S is the identity, so the parent's trace of hypoFam on S equals hypoFam (image_congr + inter_eq_left + image_id). The verified parent bound trace_card_le_sum_range_choose then gives |hypoFam| = |trace hypoFam S| ≤ Σ_{i≤d} C(|S|, i), and |S| = |P|·b (card_product · card_univ · card_fin). This is O((|P|·b)^d) = O((m/γ)^d) with b ≈ 1/γ levels — the target order of oq-04."
+  },
+  {
+    "id": "ann-pac-wip01oq02oq04-04-injectivity",
+    "proofId": "pac-learning-bounds-wip-01-oq-02-oq-04",
+    "range": { "startLine": 125, "endLine": 165 },
+    "type": "theorem",
+    "title": "hypoOn_eq_imp_eqOn / hypoOn_injOn: sample-injectivity via trichotomy",
+    "content": "hypoOn_eq_imp_eqOn: if two b-bounded functions have the same hypograph over P, they agree on P. The proof is a clean lt-trichotomy needing no closed-form column count: if g x < g' x ≤ b at some x ∈ P, then i := ⟨g x, _⟩ is a valid threshold in Fin b, and (x,i) lies in the hypograph of g' (g' x > g x) but not of g (g x > g x is false), contradicting equality of the hypographs; the symmetric case is identical. hypoOn_injOn packages this as Set.InjOn (hypoOn P b) F for a b-bounded, P-separated class (distinct members already differ on the sample)."
+  },
+  {
+    "id": "ann-pac-wip01oq02oq04-05-growth",
+    "proofId": "pac-learning-bounds-wip-01-oq-02-oq-04",
+    "range": { "startLine": 167, "endLine": 199 },
+    "type": "theorem",
+    "title": "growthFunction_le_sum_choose / growthFunction_le_pdim: the real-valued growth bound",
+    "content": "growthFunction_le_sum_choose: for a b-bounded, P-separated class F of pseudo-dimension ≤ d, card_image_of_injOn turns injectivity into |hypoFam| = |F|, so F.card ≤ Σ_{i≤d} C(|P|·b, i) = O((|P|·b)^d). This is the honest lift of the Boolean growth-function bound to level-valued classes — the O((m/γ)^d) covering bound of oq-04. growthFunction_le_pdim states the same with d = Pdim P b F (the reflexive case), the form covering-number arguments consume. #print axioms confirms dependence only on propext / Classical.choice / Quot.sound: 0 sorries, 0 axioms, no native_decide."
+  }
+]
