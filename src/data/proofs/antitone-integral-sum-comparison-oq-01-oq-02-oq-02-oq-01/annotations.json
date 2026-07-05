@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-antitoneoq02020q01-context",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "Pinning the abstract generalized Euler constant at f = 1/x",
+    "content": "The parent (antitone-integral-sum-comparison-oq-01-oq-02-oq-02) attaches to every antitone nonnegative summand f on [1, ∞) an abstract constant generalizedEuler f := ⨆ n, defect f n, where defect f n := ∑_{i<n} f(1+i) − ∫₁^{1+n} f is the Riemann-sum-minus-integral gap, and proves only the enclosure generalizedEuler f ∈ [0, f 1] — nothing about its value. This file identifies the value in the archetypal harmonic case: generalizedEuler (fun x => 1/x) = Real.eulerMascheroniConstant, the classical γ ≈ 0.5772…, connecting the bespoke construction to Mathlib's canonical Euler–Mascheroni development.",
+    "mathContext": "$\\mathrm{generalizedEuler}(1/\\cdot)=\\gamma$, where $\\gamma$ is Mathlib's $\\mathrm{Real.eulerMascheroniConstant}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler–Mascheroni constant", "generalized Euler constant", "integral test", "harmonic numbers", "abstract vs concrete constant"],
+    "prerequisites": ["the parent generalizedEuler construction", "the Euler–Mascheroni constant γ", "convergence of the defect sequence"]
+  },
+  {
+    "id": "ann-antitoneoq02020q01-hyps",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 42, "endLine": 53 },
+    "type": "tactic",
+    "title": "The two hypotheses tendsto_defect needs",
+    "content": "antitoneOn_one_div proves 1/x is antitone on [1, ∞) via one_div_le_one_div_of_le (needing 0 < a from 1 ≤ a). one_div_nonneg_on proves 1/x ≥ 0 on [1, ∞) by positivity. These feed the parent's tendsto_defect, whose conclusion Tendsto (defect (1/·)) atTop (𝓝 (generalizedEuler (1/·))) is half of the uniqueness-of-limits argument.",
+    "mathContext": "$1/x$ is antitone and $\\ge 0$ on $[1,\\infty)$ — exactly the hypotheses of the parent bounded-monotone convergence theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["AntitoneOn", "one_div_le_one_div_of_le", "positivity", "hypotheses of tendsto_defect"],
+    "prerequisites": ["monotonicity of x ↦ 1/x on positives", "the parent convergence theorem's signature"]
+  },
+  {
+    "id": "ann-antitoneoq02020q01-defect",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 55, "endLine": 72 },
+    "type": "insight",
+    "title": "The 1/x defect is termwise the Euler–Mascheroni sequence",
+    "content": "defect_one_div_eq proves defect (1/·) n = harmonic n − log(n+1) as an exact termwise identity, not up to o(1). The right-open Riemann sum ∑_{i∈range n} 1/(1+i) equals (harmonic n : ℝ) — rw [harmonic] (harmonic n = ∑_{i<n} (i+1)⁻¹), push_cast, and a per-term one_div / add_comm. The integral ∫₁^{1+n} 1/x equals log(n+1) via integral_one_div_of_pos (0<1) (0<1+n) = log((1+n)/1), then div_one and add_comm. The right-open sum (indices 1..n) is what makes the sum harmonic n on the nose, and the endpoint 1+n is what makes the integral log(n+1) — matching Mathlib's Hₙ − log(n+1) normalization.",
+    "mathContext": "$\\mathrm{defect}(1/\\cdot)\\,n=\\sum_{i<n}\\tfrac1{1+i}-\\int_1^{1+n}\\tfrac1x=H_n-\\log(n+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["harmonic numbers", "integral_one_div_of_pos", "right-open Riemann sum", "push_cast", "termwise identity"],
+    "prerequisites": ["definition of harmonic", "∫ 1/x = log", "casting ℚ harmonic to ℝ"]
+  },
+  {
+    "id": "ann-antitoneoq02020q01-identify",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 74, "endLine": 95 },
+    "type": "insight",
+    "title": "Identification by uniqueness of limits, and the sharp enclosure",
+    "content": "generalizedEuler_one_div_eq_eulerMascheroniConstant: tendsto_defect antitoneOn_one_div one_div_nonneg_on gives Tendsto (defect (1/·)) atTop (𝓝 (generalizedEuler (1/·))); rewriting defect (1/·) to fun n => harmonic n − log(n+1) (funext defect_one_div_eq) makes it literally the sequence of Real.tendsto_harmonic_sub_log_add_one (→ γ), so tendsto_nhds_unique equates the two limits: generalizedEuler (1/·) = γ. Because the sequences are equal (not merely asymptotic), no squeeze or error estimate is needed. generalizedEuler_one_div_mem_Ioo then sharpens the parent's crude [0, 1] enclosure to γ ∈ (1/2, 2/3) using Mathlib's numeric bounds. #print axioms confirms only propext / Classical.choice / Quot.sound.",
+    "mathContext": "$\\mathrm{generalizedEuler}(1/\\cdot)=\\gamma\\in(\\tfrac12,\\tfrac23)$ by $\\mathrm{tendsto\\_nhds\\_unique}$.",
+    "significance": "key",
+    "relatedConcepts": ["tendsto_nhds_unique", "Real.tendsto_harmonic_sub_log_add_one", "uniqueness of limits", "eulerMascheroniConstant bounds", "value identification"],
+    "prerequisites": ["the parent tendsto_defect", "Mathlib's sequence convergence to γ", "Hausdorff uniqueness of limits"]
+  }
+]
