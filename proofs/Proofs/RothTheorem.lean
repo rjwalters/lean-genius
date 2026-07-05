@@ -1398,4 +1398,62 @@ theorem roth_density_bound (delta : ℝ) (hdelta : 0 < delta) (_hdelta1 : delta 
   have hN_bound : cornersTheoremBound (delta / 3) ≤ N := by omega
   exact roth_3ap_theorem_nat delta hdelta hN_bound S hS_sub hS_dens hS_free
 
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VI: SÁRKÖZY SQUARE-DIFFERENCE FOURIER IDENTITY
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- The quadratic Gauss sum `G(r) = Σ_{n ∈ ℤ/Nℤ} ψ(r·n²)`. -/
+noncomputable def sqGaussSum {N : ℕ} (r : ZMod N) : ℂ :=
+  Finset.univ.sum fun n : ZMod N => ψ (r * n ^ 2)
+
+/-- The square-difference count `SD(A) = #{(x, n) : x ∈ A, x + n² ∈ A}`. -/
+noncomputable def sqDiffCount {N : ℕ} [NeZero N] (A : Finset (ZMod N)) : ℕ :=
+  ((A ×ˢ (Finset.univ : Finset (ZMod N))).filter
+    (fun p : ZMod N × ZMod N => p.1 + p.2 ^ 2 ∈ A)).card
+
+/-- Principal Gauss sum: `G(0) = N` (every term is ψ(0) = 1). -/
+theorem sqGaussSum_zero {N : ℕ} [NeZero N] : sqGaussSum (0 : ZMod N) = ↑N := by
+  simp only [sqGaussSum, zero_mul, psi_zero, Finset.sum_const, Finset.card_univ, ZMod.card,
+    nsmul_eq_mul, mul_one]
+
+/-- `SD(A)` as a double sum of indicators over `A × ℤ/Nℤ`. -/
+private lemma sqDiffCount_eq_sum {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    (sqDiffCount A : ℂ) =
+      A.sum fun x => Finset.univ.sum fun n : ZMod N =>
+        if x + n ^ 2 ∈ A then (1 : ℂ) else 0 := by
+  unfold sqDiffCount
+  rw [Finset.card_filter, Nat.cast_sum, Finset.sum_product]
+  refine Finset.sum_congr rfl (fun x _ => ?_)
+  refine Finset.sum_congr rfl (fun n _ => ?_)
+  split_ifs <;> simp
+
+/-- Each summand `‖Â(r)‖²·G(r) = Â(r)·conj(Â(r))·G(r)` expands as a triple ψ sum. -/
+private lemma sq_term_expand {N : ℕ} [NeZero N] (A : Finset (ZMod N)) (r : ZMod N) :
+    fourierCoeff A r * starRingEnd ℂ (fourierCoeff A r) * sqGaussSum r =
+    A.sum fun x => A.sum fun y => Finset.univ.sum fun n : ZMod N =>
+      ψ (r * (x - y + n ^ 2)) := by
+  simp only [fourierCoeff_eq_sum_psi, sqGaussSum, map_sum (starRingEnd ℂ), conj_psi]
+  symm
+  simp_rw [show ∀ (x y n : ZMod N), ψ (r * (x - y + n ^ 2)) =
+      ψ (r * x) * (ψ (-(r * y)) * ψ (r * n ^ 2)) from
+    fun x y n => by
+      rw [show r * (x - y + n ^ 2) = r * x + (-(r * y) + r * n ^ 2) from by ring]
+      rw [psi_add, psi_add]]
+  simp_rw [← Finset.mul_sum, ← Finset.sum_mul]
+  rw [← mul_assoc]
+
+/-- **Sárközy square-difference Fourier identity (complex form).** -/
+theorem sqDiffCount_fourier_complex {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    (sqDiffCount A : ℂ) * N =
+    Finset.univ.sum fun r : ZMod N =>
+      fourierCoeff A r * starRingEnd ℂ (fourierCoeff A r) * sqGaussSum r := by
+  sorry
+
+/-- **Sárközy square-difference Fourier identity.** -/
+theorem sqDiffCount_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    (sqDiffCount A : ℂ) = (↑N)⁻¹ *
+      Finset.univ.sum (fun r : ZMod N =>
+        (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) := by
+  sorry
+
 end Szemeredi.Roth
