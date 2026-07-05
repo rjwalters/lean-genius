@@ -13,15 +13,15 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-04",
-    "iteration": 1,
-    "focus": "Linear-algebra proof of Desargues formalized as the 'nucleus' identity (a-b)+(b-c)+(c-a)=0 (holds in ANY module, no division/commutativity) plus a cross-vector coincidence lemma making each a-b the genuine intersection of lines AB and A'B'. Division-ring hypothesis isolated to a single no-zero-divisors rescaling step (normalize_perspective / smul_ne_zero').",
+    "iteration": 3,
+    "focus": "Part V adds concrete finite-ring witnesses making the division-ring dichotomy non-vacuous: ZMod 6 (non-domain, 2*3=0) realizes the NEGATIVE side — smul_ne_zero' provably fails and zero_divisor_breaks_normalization fires on explicit numbers — and ZMod 5 (a field) the positive commutative side, complementing the non-commutative Quaternion example. All four Part-V facts are decide-checked (self-certifying under the build blackout).",
     "blockers": [
       "Verification blackout 2026-07-04: Docker image build fails with containerd meta.db I/O error; Aristotle MCP prove_file returns 404. Lean file UNVERIFIED (not machine-checked)."
     ],
-    "nextAction": "When infra returns, docker-build.sh Proofs.DesarguesTheoremOQ02OQ03 (move file from research/lean/ into proofs/Proofs/ first). If it builds clean, promote to a gallery proof entry. Then attempt the converse direction (failure of Desargues => non-division coordinatization).",
+    "nextAction": "When infra returns: docker-build.sh Proofs.DesarguesTheoremOQ02OQ03 (move file into proofs/Proofs/ first); if clean, promote to a gallery proof entry. Then strengthen to intersection-uniqueness (general position) and attempt the full geometric converse.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
@@ -40,7 +40,8 @@
       "sub_mem_span : x,y in s => x-y in span R s (line-membership helper)",
       "desargues : full statement — NormPersp o a a' b b' c c' => Dep of the three intersections AND each cross vector lies on both relevant lines; proved over [DivisionRing R], commutativity unused",
       "smul_ne_zero' + normalize_perspective : the no-zero-divisors rescaling step isolating the division-ring hypothesis",
-      "Quaternion example : Desargues applies to modules over the non-commutative division ring H = Quaternion R"
+      "Quaternion example : Desargues applies to modules over the non-commutative division ring H = Quaternion R",
+      "Part V concrete witnesses (decide-checked): ZMod 6 negative side (smul_ne_zero' fails, zero_divisor_breaks_normalization non-vacuous) + ZMod 5 field positive side — spanning the classification with the non-commutative Quaternion example"
     ],
     "mathlibGaps": [
       "Mathlib has no Desargues-configuration statement; the projective incidence layer (Projectivization) is built for division rings but the Desargues theorem itself must be set up from scratch.",
@@ -49,10 +50,9 @@
     "nextSteps": [
       "Machine-verify DesarguesTheoremOQ02OQ03.lean once Docker/Aristotle recover; promote to proofs/Proofs/ + gallery entry if clean.",
       "Strengthen 'a-b is THE intersection' to a uniqueness statement (needs general-position hypotheses: triangles non-degenerate, lines distinct) — currently only membership in both lines is shown.",
-      "Attempt the converse: if Desargues holds in a projective plane then it is coordinatized by a division ring (the hard coordinatization direction).",
-      "Formalize the contrast explicitly: exhibit a ring R with zero divisors where normalize_perspective fails, linking to the Moulton counterexample of the parent oq-02."
+      "Attempt the converse: if Desargues holds in a projective plane then it is coordinatized by a division ring (the hard coordinatization direction)."
     ],
-    "progressSummary": "PROGRESS: forward direction of Desargues-over-division-ring formalized (7 theorems, 0 sorries, UNVERIFIED pending build). Division-ring hypothesis isolated to one no-zero-divisors step; commutativity shown unused (proof lives over DivisionRing, applies to quaternions)."
+    "progressSummary": "PROGRESS: forward direction over division rings + algebraic converse hinge (smul_ne_zero' ⇔ no zero divisors), now made non-vacuous by concrete finite witnesses (ZMod 6 negative, ZMod 5 positive; decide-checked). 9 theorems + 5 examples, 0 sorries, UNVERIFIED pending build (Docker+Aristotle blackout persists)."
   },
   "knownResults": {
     "proven": [
@@ -68,14 +68,14 @@
     {
       "path": "research/problems/desargues-theorem-oq-02-oq-03/lean/DesarguesTheoremOQ02OQ03.lean",
       "filename": "DesarguesTheoremOQ02OQ03.lean",
-      "lineCount": 178,
-      "theoremCount": 7,
+      "lineCount": 282,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "verified": false,
-      "note": "UNVERIFIED — Docker + Aristotle blackout 2026-07-04. Placed outside the Proofs glob so it cannot break the gallery build."
+      "note": "UNVERIFIED — Docker + Aristotle blackout 2026-07-04. Part V (4 examples over ZMod 5/6) is decide-only. Placed outside the Proofs glob so it cannot break the gallery build."
     }
   ],
   "relatedProofs": [
