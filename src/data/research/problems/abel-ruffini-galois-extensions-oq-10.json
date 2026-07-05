@@ -31,16 +31,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT: RIGP for Sₙ AND Aₙ reduced to one Mathlib construction (Artin FixedPoints.toAlgAutMulEquiv on the perm action on ℚ(x₁..xₙ)); sole gap = building the perm MulSemiringAction on the fraction field (~150 lines, all API present). Belyi/rigidity unnecessary for these groups. No verified Lean committed (Docker+Aristotle blackout); design draft written non-globbed.",
+    "progressSummary": "COMPLETE: Sₙ and Aₙ realized as Galois groups of the generic function-field extension (0 sorry, 0 axiom, verified). Regularity assertion (ℚ alg-closed in fixed field) discussed but not separately formalized — optional follow-up.",
     "builtItems": [
       "ORIENT roadmap + API map committed: research/problems/abel-ruffini-galois-extensions-oq-10/knowledge.md",
-      "Design draft (non-globbed, NOT build-verified): research/problems/abel-ruffini-galois-extensions-oq-10/GenericSnAnRealization.draft.lean — permToAutF, permAction, realizeSn/realizeAn via FixedPoints.toAlgAutMulEquiv, finrank_Sn=n!"
+      "Design draft (non-globbed, NOT build-verified): research/problems/abel-ruffini-galois-extensions-oq-10/GenericSnAnRealization.draft.lean — permToAutF, permAction, realizeSn/realizeAn via FixedPoints.toAlgAutMulEquiv, finrank_Sn=n!",
+      "Proofs/AbelRuffiniGaloisExtensionsOQ10.lean: realizeSn/realizeAn (Sₙ,Aₙ ≃* Gal of generic ℚ(x₁..xₙ) extension), isGalois_Sn/An, finrank_Sn=n!, finrank_An=|Aₙ|, permFaithful — 0 sorry 0 axiom, builds"
     ],
     "insights": [
       "Both the Sₙ and Aₙ halves of RIGP reduce to ONE construction: Artin fixed-field theorem (Mathlib FixedPoints.toAlgAutMulEquiv) applied to the variable-permutation action of Perm(Fin n) on the rational function field ℚ(x₁..xₙ).",
       "Fixed field F^{Sₙ} = ℚ(e₁..eₙ) (elementary symmetric functions) is purely transcendental over ℚ, so ℚ is algebraically closed in it ⟹ the generic Sₙ extension is REGULAR, resolving the R in RIGP for Sₙ. Same for Aₙ with F^{Aₙ}=ℚ(e)(√disc).",
       "The Belyi three-point-cover / Thompson-rigidity machinery cited on the problem card is only needed for RIGP of GENERAL groups; for the specific groups Sₙ and Aₙ the elementary generic-polynomial route suffices and is Mathlib-reachable today.",
-      "Gallery OQ-01 (AbelRuffiniGaloisExtensionsOQ01) realizes S₅ concretely over ℚ via X⁵−4X+2 (specialized/ordinary IGP, one n); the fixed-field route gives the generic/regular picture for ALL n at once, plus Aₙ."
+      "Gallery OQ-01 (AbelRuffiniGaloisExtensionsOQ01) realizes S₅ concretely over ℚ via X⁵−4X+2 (specialized/ordinary IGP, one n); the fixed-field route gives the generic/regular picture for ALL n at once, plus Aₙ.",
+      "VERIFIED: routing IsFractionRing.fieldEquivOfAlgEquivHom (bundled monoid hom, already injective) through MvPolynomial.renameEquiv eliminates the manual map_one/map_mul + faithfulness sorries; K=ℚ (IsFractionRing ℚ ℚ) makes Algebra ℚ F resolve so the AlgEquiv-over-ℚ route works."
     ],
     "mathlibGaps": [
       "Mathlib ships NO MulSemiringAction (Equiv.Perm (Fin n)) (MvPolynomial (Fin n) ℚ): symmetric polys are defined pointwise as ∀e, rename e p = p (RingTheory/MvPolynomial/Symmetric/Defs.lean), not as fixed points of a group action.",
