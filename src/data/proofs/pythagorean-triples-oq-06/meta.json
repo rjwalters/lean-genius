@@ -52,7 +52,9 @@
       "Mathlib.NumberTheory.PythagoreanTriples",
       "Mathlib.Tactic"
     ],
-    "opens": ["PythagoreanTriple"],
+    "opens": [
+      "PythagoreanTriple"
+    ],
     "namespace": "PythTriplesClassification",
     "path": "Proofs/PythagoreanTriplesOQ06.lean",
     "lineCount": 85,
@@ -122,7 +124,8 @@
         "id": "pythagorean-triples-oq-06-oq-01",
         "question": "Use the classification to enumerate all primitive triples with hypotenuse below a bound, or to prove that exactly one leg of a primitive triple is even (the parity dichotomy).",
         "significance": "low"
-      }
+      },
+      "Use the classification x = m²−n², y = 2mn, z = m²+n² as the base for Fermat's right-triangle theorem: no Pythagorean triangle has a perfect-square area, equivalently x⁴ − y⁴ = z² has no positive integer solution (which contains Fermat's Last Theorem for n = 4). The area ½xy = mn(m²−n²) = mn(m−n)(m+n) is a product of four pairwise-coprime factors; can infinite descent on this factorization be formalized on top of this entry to prove the area is never a square?"
     ]
   },
   "crossReferences": [
