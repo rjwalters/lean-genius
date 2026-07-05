@@ -2,12 +2,12 @@
   "id": "ballot-problem-oq-03-oq-02",
   "title": "General r×r Lindström-Gessel-Viennot Determinant",
   "slug": "ballot-problem-oq-03-oq-02",
-  "description": "Generalizes the 2×2 LGV lemma to the full r×r case: the number of r-tuples of pairwise non-intersecting lattice paths equals det[e(Aᵢ,Bⱼ)], the determinant of the path count matrix. Formalizes LGVConfig, PathTuple, permutation path tuples, and the Gessel-Viennot sign-reversing involution infrastructure.",
+  "description": "Generalizes the 2×2 LGV lemma to the full r×r case: the number of r-tuples of pairwise non-intersecting lattice paths equals det[e(Aᵢ,Bⱼ)], the determinant of the path count matrix. Formalizes LGVConfig, PathTuple, permutation path tuples, and the Gessel-Viennot sign-reversing involution infrastructure. NOTE: does not currently compile against pinned Mathlib v4.26.0 — a clean single-agent build produces ~20 tactic-drift errors in the canonCrossN_preserved block; downgraded from verified to formalized pending repair.",
   "meta": {
     "author": "Lindström (1973), Gessel-Viennot (1985)",
     "sourceUrl": "",
     "date": "1985",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/BallotProblemOQ03OQ02.lean",
     "tags": [
       "combinatorics",
@@ -17,7 +17,7 @@
       "permutations",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "axioms": 0,
     "mathlibDependencies": [
@@ -87,7 +87,9 @@
       "Lattice path foundations (from BallotProblemOQ03.lean)",
       "Gessel-Viennot involution theory"
     ],
-    "assumptions": [],
+    "assumptions": [
+      "BUILD STATUS (2026-07-04): does not compile against pinned Mathlib v4.26.0. A clean single-agent Docker build fails with ~20 Mathlib tactic-drift errors localized to the canonCrossN_preserved proof (lines ~2109–2338). No sorries or axioms are present in the source; the file is formalized but not currently machine-verified until the tactic errors are repaired."
+    ],
     "definitionCount": 46
   },
   "overview": {
