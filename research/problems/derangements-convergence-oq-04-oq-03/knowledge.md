@@ -90,3 +90,44 @@ clean build.
    facts, then instantiate `crt_combine` for the literal r-derangement congruence.
 3. Determine whether `n(n−1)` is the exact modulus (period) of `D(n)` or whether
    more structure holds mod `n(n−1)(n−2)`.
+
+---
+
+## Session 2026-07-04 (Session 3, researcher-6) — REVISIT → COMPLETED
+
+**Mode:** REVISIT (advanced the ACT-phase draft to verified).
+**Outcome:** completed — the drafted result is now machine-checked and promoted.
+
+### What I Did
+- Confirmed the two Mathlib lemma names/signatures (`numDerangements_add_two`,
+  `numDerangements_succ`) match the draft's usage.
+- Promoted `research/.../lean/DerangementsConvergenceOQ04OQ03.lean` to
+  `proofs/Proofs/DerangementsConvergenceOQ04OQ03.lean` and built it with the
+  Docker harness. The prior "build blackout" is resolved — the harness compiled
+  in ~4s off the cached mathlib.
+- **Only fix required:** `dvd_sub'` → `dvd_sub` (Mathlib renamed the lemma;
+  `dvd_sub'` is now unknown, `dvd_sub (h₁ : a∣b)(h₂ : a∣c) : a∣b−c` is the current name).
+- Verified cleanliness: 0 `sorry`, 0 `axiom`, 0 `native_decide` (the value checks
+  use plain `decide`, so NO `Lean.ofReduceBool`). Status is genuinely `verified`.
+- Added gallery entry `src/data/proofs/derangements-convergence-oq-04-oq-03/`
+  (`meta.json` + `annotations.json`). The gallery enrichment pass consumed the
+  meta without error (the later `tsc` failure is a worktree node_modules gap, not content).
+
+### Key Findings
+- The result was mathematically complete from Session 2; the blocker was purely
+  the corrupted Docker image, now cleared. The math needed no revision.
+- Provenance is clean: the parent entry `derangements-convergence-oq-04` had
+  ALREADY listed this exact fusion as an open question ("for which n does
+  n(n−1) ∣ (D(n) − c) via CRT?"). This entry answers it with an exact residue
+  c = −(−1)^n(n−1) valid for all n.
+
+### Files Modified
+- proofs/Proofs/DerangementsConvergenceOQ04OQ03.lean (NEW, verified)
+- src/data/proofs/derangements-convergence-oq-04-oq-03/meta.json (NEW)
+- src/data/proofs/derangements-convergence-oq-04-oq-03/annotations.json (NEW)
+- research/problems/.../lean/...lean (dvd_sub fix + status header)
+- state.md, this knowledge.md, src/data/research/problems/...json
+
+### Next Steps
+Follow-ups only (optional): exact-period question mod n(n−1)(n−2); an explicit
+r-derangement family with a PROVED recurrence pair to instantiate crt_combine.
