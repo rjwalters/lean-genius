@@ -71,7 +71,7 @@
     {
       "id": "inscribed-area-def",
       "title": "Inscribed Area Definition",
-      "startLine": 50,
+      "startLine": 1,
       "endLine": 60,
       "summary": "Defines inscribedArea n r = n * r² / 2 * sin(2π/n) — the area of a regular n-gon inscribed in a circle of radius r, obtained by splitting into n isoceles triangles each with vertex angle 2π/n.",
       "mathContext": "$A_n(r) = n \\cdot \\frac{r^2}{2} \\cdot \\sin\\frac{2\\pi}{n}$. For $n=4$: $A_4 = 2r^2$ (square). For $n=6$: $A_6 = 3\\sqrt{3}r^2/2 \\approx 2.598r^2$, vs $\\pi r^2 \\approx 3.14159r^2$. As $n \\to \\infty$: $A_n \\to \\pi r^2$ since $n\\sin(2\\pi/n) \\to 2\\pi$."

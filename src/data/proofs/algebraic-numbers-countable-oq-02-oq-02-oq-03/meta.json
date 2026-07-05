@@ -92,14 +92,20 @@
   "leanFile": {
     "lineCount": 103,
     "namespace": "BaireCategoryUncountable",
-    "opens": ["Cardinal", "Set", "Function"],
+    "opens": [
+      "Cardinal",
+      "Set",
+      "Function"
+    ],
     "structureCount": 0,
     "axiomCount": 0,
     "theoremCount": 6,
     "substantiveTheoremCount": 4,
     "computationalVerifications": 0,
     "lemmaCount": 0,
-    "imports": ["Mathlib"],
+    "imports": [
+      "Mathlib"
+    ],
     "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02OQ03.lean",
     "sorries": 0,
     "definitionCount": 0
@@ -224,6 +230,28 @@
       "year": "2026",
       "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/MetricSpace/Perfect.html",
       "note": "The Cantor-scheme injection ℕ → Bool ↪ X out of a nonempty perfect set in a complete metric space."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "The direct parent this entry generalizes. Where the parent establishes uncountability for a specific perfect set, this entry locates the right level of abstraction: any nonempty perfect complete metric space is uncountable (the Baire-category core), from which the uncountability of ℝ follows as the special case with no arithmetic input."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "related",
+      "description": "The root of this topic and the contrasting arithmetic route to uncountability. That entry proves the set of algebraic numbers is countable, so the transcendentals — and hence ℝ — are uncountable by a counting argument; this entry replaces that arithmetic with the purely topological perfect-set / Baire-category mechanism."
+    },
+    {
+      "targetId": "baire-category-theorem-oq-01",
+      "relationship": "related",
+      "description": "Supplies the topological engine of this entry's proof. The Baire Category Theorem — a complete metric space is not a countable union of nowhere-dense sets — is exactly what forbids a nonempty perfect complete metric space from being countable, since each singleton in a perfect set is nowhere dense."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "The classical elementary proof this entry abstracts away from. Cantor's diagonal argument shows ℝ is uncountable by directly constructing a missing real; the perfect-set / Baire route here recovers the same conclusion structurally, exposing that completeness plus the absence of isolated points, not the decimal representation, is what drives uncountability."
     }
   ]
 }

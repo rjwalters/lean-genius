@@ -110,7 +110,7 @@
     {
       "id": "header",
       "title": "Header: The Even-Moment Problem",
-      "startLine": 6,
+      "startLine": 1,
       "endLine": 43,
       "summary": "Module docstring stating the open question (evaluate ∫ x^{2n} e^{-x²} = (2n-1)‼√π/2ⁿ by induction) and the answer, outlining the double-factorial recursion from integration by parts and the corollary identification with Γ(n+1/2). Imports the Gaussian-integral, Poisson-summation, and double-factorial Mathlib modules.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n} e^{-x^2}\\,dx = \\dfrac{(2n-1)!!\\,\\sqrt\\pi}{2^n}$."

@@ -208,5 +208,27 @@
       "venue": "Cambridge University Press, Chapter 6",
       "note": "Textbook treatment of Sauer–Shelah and the growth function within the PAC / uniform-convergence framework this entry targets."
     }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pac-learning-bounds-wip-01",
+      "relationship": "extends",
+      "description": "The direct parent named in this entry's own description. That entry builds the 0-axiom VC-theory foundations (trace, shattering, VC dimension) and the elementary half of Sauer–Shelah; this entry completes the growth-function bound |Π_H(m)| ≤ Σ_{k≤d} C(m,k)."
+    },
+    {
+      "targetId": "pac-learning-bounds",
+      "relationship": "related",
+      "description": "The root PAC-learning topic that motivates the Sauer–Shelah bound. The polynomial growth-function bound proved here is the combinatorial lemma that converts finite VC dimension into the uniform-convergence and sample-complexity guarantees at the heart of PAC learnability."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "related",
+      "description": "Supplies the binomial-coefficient sum that is the right-hand side of the Sauer–Shelah bound. The bound Σ_{k≤d} C(m,k) is a partial sum of binomial coefficients, and this entry establishes the combinatorial identities for C(m,k) that make the count O(m^d)."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The source of the binomial coefficients C(m,k) appearing in the growth-function bound. Bounding Σ_{k≤d} C(m,k) ≤ (em/d)^d — the standard corollary turning Sauer–Shelah into a polynomial bound — rests on the binomial expansion and coefficient estimates developed there."
+    }
   ]
 }

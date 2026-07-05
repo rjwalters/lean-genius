@@ -85,7 +85,8 @@
       "The 'coincidence' √π/2 = ½·√π is no accident: integration by parts with u' = 1 trades the entire x² weight for the bare Gaussian, so the second moment is structurally half the zeroth moment.",
       "On ℝ the cocompact filter equals atBot ⊔ atTop, so a single cocompact decay statement (x e^{-x²} → 0) discharges both one-sided boundary terms of the integration by parts at once.",
       "Establishing √π/2 as a genuine real Lebesgue integral — rather than as the Gamma special value Γ(3/2) — gives a self-contained base case for the double-factorial recursion ∫ x^{2n} e^{-x²} = (2n-1)!!·√π/2^n, where each parts step lowers the power by two.",
-      "The badge is 'mathlib': every step is a routine consequence of existing Mathlib results (the IBP lemma, the parent integral_gaussian, and the Gaussian-decay tendsto), assembled rather than newly invented — but the assembly itself is the contribution, since Mathlib does not state the weighted second moment directly."
+      "The badge is 'mathlib': every step is a routine consequence of existing Mathlib results (the IBP lemma, the parent integral_gaussian, and the Gaussian-decay tendsto), assembled rather than newly invented — but the assembly itself is the contribution, since Mathlib does not state the weighted second moment directly.",
+      "A recursion exists at all because the Gaussian is closed under differentiation up to a polynomial factor: d/dx e^{-x²} = -2x·e^{-x²} keeps every derivative inside the family {polynomial · e^{-x²}}. Integration by parts therefore always sends ∫ x^{2n} e^{-x²} back to a lower moment of the SAME kernel rather than to a new transcendental — which is exactly why all Gaussian moments collapse to rational multiples of √π. Here the antiderivative v = -½ e^{-x²} routes the second moment straight back to the zeroth."
     ],
     "prerequisites": [
       "Lebesgue integration over ℝ (MeasureTheory)",
@@ -98,9 +99,9 @@
     {
       "id": "header",
       "title": "Problem and Strategy",
-      "startLine": 5,
+      "startLine": 1,
       "endLine": 35,
-      "summary": "States the open question (the second moment ∫ x² e^{-x²}), the answer √π/2, and the integration-by-parts strategy that reduces it to half the parent zeroth moment √π. Notes the equivalent Gamma form Γ(3/2).",
+      "summary": "Imports, then the module docstring stating the second-moment problem ∫ x² e^{-x²} and the integration-by-parts strategy on the whole line.",
       "mathContext": "$\\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\tfrac{\\sqrt\\pi}{2} = \\Gamma(3/2)$."
     },
     {
@@ -112,12 +113,28 @@
       "mathContext": "$x e^{-x^2} \\to 0$ as $x \\to \\pm\\infty$ (Gaussian decay beats the linear factor)."
     },
     {
-      "id": "second-moment",
-      "title": "Integration by Parts on the Whole Line",
+      "id": "ibp-derivatives-integrability",
+      "title": "Integration by Parts: Derivatives and Integrability",
       "startLine": 53,
+      "endLine": 83,
+      "summary": "gaussian_second_moment opens by choosing u = x (u' = 1) and the antiderivative v = -½ e^{-x²} (v' = x e^{-x²}, via hasDerivAt_pow and .exp), so u·v' = x²e^{-x²} recovers the integrand; then verifies the two integrability side conditions (huv', hu'v) using Mathlib's integrable_rpow_mul_exp_neg_mul_sq and integrable_exp_neg_mul_sq.",
+      "mathContext": "$u = x,\\ v = -\\tfrac12 e^{-x^2},\\quad u\\,v' = x^2 e^{-x^2},\\ u'\\,v = -\\tfrac12 e^{-x^2}$."
+    },
+    {
+      "id": "ibp-boundary-terms",
+      "title": "The Vanishing Boundary Terms",
+      "startLine": 84,
+      "endLine": 98,
+      "summary": "hbot and htop: the boundary product x·(-½ e^{-x²}) tends to 0 at both −∞ and +∞. Each is obtained by restricting the single cocompact decay lemma along atBot ≤ cocompact and atTop ≤ cocompact (cocompact_eq_atBot_atTop), so one decay fact discharges both endpoints of the parts formula.",
+      "mathContext": "$[u v]_{-\\infty}^{\\infty} = 0$ since $x e^{-x^2} \\to 0$ at $\\pm\\infty$."
+    },
+    {
+      "id": "ibp-assembly",
+      "title": "Applying IBP and Evaluating",
+      "startLine": 99,
       "endLine": 118,
-      "summary": "gaussian_second_moment: builds the derivatives u = x, v = -½ e^{-x²}, verifies the two integrability conditions and the two boundary limits, applies integral_mul_deriv_eq_deriv_mul, and evaluates the surviving ½ ∫ e^{-x²} = ½√π via the parent integral_gaussian.",
-      "mathContext": "$\\int u\\,v' = [uv]_{-\\infty}^{\\infty} - \\int u'\\,v = 0 - \\int 1\\cdot(-\\tfrac12 e^{-x^2}) = \\tfrac12\\sqrt\\pi$."
+      "summary": "Applies integral_mul_deriv_eq_deriv_mul with the vanishing boundary data, reducing the second moment to 0 − 0 − ∫ 1·(-½ e^{-x²}); evaluates the surviving integral via the parent ∫ e^{-x²} = √π (integral_gaussian at b = 1), and the final calc assembles ½√π = √π/2.",
+      "mathContext": "$\\int x^2 e^{-x^2} = 0 - \\int 1\\cdot(-\\tfrac12 e^{-x^2}) = \\tfrac12\\sqrt\\pi = \\tfrac{\\sqrt\\pi}{2}$."
     }
   ],
   "openQuestions": [

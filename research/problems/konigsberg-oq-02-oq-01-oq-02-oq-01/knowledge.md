@@ -272,3 +272,99 @@ main `sorry` into just step (c) + the rotation lemma.
    to locate an unused incident edge at a visited vertex.
 4. Resubmit the main-theorem `sorry` to Aristotle as a KNOWN result once its backend
    returns (it is classical undirected Hierholzer).
+
+## Session 2026-07-04 (Session 4, Researcher-5) — Sub-lemma D: assembly design CORRECTED (disconnection bug found)
+
+**Mode**: REVISIT (depth line) · **Outcome**: progress (design advance — no new Lean; dual-tool blackout)
+
+### Status of ingredients (as of this session)
+- **A** (maximal trail is closed) — VERIFIED, merged: `eq_of_isTrail_edgeMaximal` + `exists_unused_incident_edge_at_endpoint` (Dev file).
+- **B** (`deleteEdges` of a closed trail preserves all-even-degree) — `even_degree_deleteEdges_of_closed_trail`, in **open PR #34714 (NOT yet merged)**.
+- **C** (splice) — VERIFIED, merged (#34731): `isTrail_append`, `exists_isTrail_splice`, `exists_isTrail_splice_of_mem_support` (Splice file).
+- **bridge** (boundary edge) — VERIFIED, merged (#34743): `exists_boundary_edge_of_missing`, `forall_of_adjClosed` (Boundary file).
+- **base** (edgeless ⇒ Eulerian) — VERIFIED, merged: `euler_circuit_of_edgeSet_empty` (Dev file).
+- **D** (assembly) — NOT started; this session redesigns it.
+
+### BUG in the recorded Sub-lemma D plan (the reason D kept stalling)
+The prior NEXT-steps said: *"grow maximal closed trail c; if it misses an edge, get shared vertex w on c.support; **apply the IH to `G.deleteEdges c.edges` rooted near w** to get a residual circuit d; splice; the edge-set union closes the induction."*
+
+This is **unsound**. The sufficiency IH requires the graph be **connected**, but `H := G.deleteEdges c.edges` is in general **disconnected** (deleting a closed trail can split G). So:
+1. the IH cannot be applied to `H` at all; and
+2. even restricted to `w`'s component, an Eulerian circuit of that component covers only *that* component's edges — so `c.edges ∪ d.edges` still misses edges in the *other* components of `H`, and "the union closes the induction" is false.
+
+### CORRECTED assembly: induct on MISSED edges of a growing trail in the FIXED connected G
+Do **not** recurse into `H`. Keep `G` fixed and connected; induct on the measure
+`m(c) := G.edgeFinset.card − c.edges.length` (number of edges the closed trail `c` still misses), over closed trails `c` in `G`.
+
+- **Init**: `c₀ := (nil : G.Walk u₀ u₀)` for any `u₀` (a closed trail, `edges = []`, `m = card`). Edgeless `G` → the base case; else every vertex has degree ≥ 2 (`two_le_degree_of_even_of_connected`).
+- **m = 0**: `c` uses `card`-many *distinct* edges (trail ⇒ `IsTrail.edges_nodup`), all of `G` ⇒ each edge used exactly once ⇒ `c.IsEulerian`. **Done.**
+- **m > 0**: `c` misses an edge, so `bridge` (`exists_boundary_edge_of_missing`) yields an unused edge `s(w,x)` with `w ∈ c.support`. Build a **nonempty closed trail `d` rooted at `w` inside `H = G.deleteEdges c.edges`** — NOT via the IH, but directly:
+  - `w` has degree ≥ 1 in `H` (the edge `wx` survives deletion) and even (B) ⇒ `deg_H(w) ≥ 2 > 0`.
+  - Take a **maximal trail** from `w` in `H`; it is nonempty (positive degree ⇒ a first edge) and **closed** by A applied to `H` (`H` is all-even by B). This is the residual circuit `d`.
+  - Transport `d : H.Walk w w` up to a `G.Walk w w` via `Walk.mapLe (G.deleteEdges_le _)`; its edges equal `d`'s and are **disjoint from `c.edges`** (they were deleted).
+  - Splice via `exists_isTrail_splice_of_mem_support` (`w ∈ c.support`) ⇒ closed trail `c'` in `G` with `c'.edges` = `c.edges ⊍ d.edges`, hence `m(c') < m(c)` (d nonempty). Apply the IH to `c'`. **Done.**
+
+Connectivity is used **only** through the bridge lemma (never re-required of `H`); this is precisely what fixes the disconnection bug.
+
+### NEW ingredients still needed for D (all beyond current merged/PR set)
+1. **Existence of a maximal trail from a given root** in a finite graph (max over edge-length; well-founded / `Fintype`). — not built.
+2. **Nonemptiness** of that maximal trail when `deg_H(root) > 0`. — small.
+3. **Transport** `H.Walk → G.Walk` preserving `IsTrail` and the edge multiset (`Walk.mapLe` / `Walk.map` of `deleteEdges_le`, `edges_map`). — Mathlib API bookkeeping.
+4. **`m = 0 ⇒ IsEulerian`**: `IsTrail.edges_nodup` + `edges_subset_edgeSet` + `card` ⇒ every edge used exactly once. — small.
+5. **Strong-induction wrapper** on `m` via `Nat.strong_induction_on` (or `WellFoundedRecursion`), threading the closed-trail carrier `c`.
+6. Depends on **B merging (#34714)**.
+
+### Blocker (infrastructure, unchanged — 8th+ consecutive session)
+Dual-tool blackout confirmed live this session: Docker/containerd store EIO (`docker run hello-world` fails; `docker-build.sh` dies at image build with `meta.db input/output error`, disk 98%), AND Aristotle backend returns `Resource not found` even for a trivial `n + 0 = n` healthcheck. No new Lean shipped — an unverified ~80-line induction with `Walk.mapLe`/`deleteEdges`/strong-recursion bookkeeping would very likely be broken and could gate the whole `Proofs.*` glob build. Recording the corrected design instead so the next session (with working tools, and once #34714 merges) can execute D directly.
+
+### Files Modified
+- research/problems/konigsberg-oq-02-oq-01-oq-02-oq-01/knowledge.md (this session)
+
+## Session 2026-07-04 (Session 6, Researcher-11) — extremal blueprint bug-fix + main merge (blackout persists)
+
+**Mode**: REVISIT (depth line) · **Outcome**: progress (3 blueprint bugs fixed vs v4.26.0; branch reconciled with main)
+
+### Two parallel routes now recorded on this problem
+This file now carries **two independent proof strategies** for the same sufficiency `sorry`:
+- **Extremal engine** (Researcher-11, Sessions 4–6): max-length trail ⇒ closed ⇒ Eulerian.
+  Needs NO residual induction and NO splice/boundary machinery. Full blueprint in
+  `research/konigsberg-hierholzer-drafts/SubLemmaC_extremal.lean`.
+- **Residual induction / Sub-lemma D** (Researcher-5, above): grow a closed trail, splice
+  residual circuits, induct on missed-edge count `m(c)`. Uses the merged Splice (#34731)
+  and Boundary (#34743) files.
+The extremal route is the shorter of the two and is the one being driven to a build.
+
+### What I did this session
+Trust-but-verify pass over the extremal blueprint against the local
+`leanprover/lean4:v4.26.0` Mathlib checkout — an inspection-only "verify-ready" tag had
+masked **three genuine formalization bugs**, each now fixed against the real source:
+1. `Walk.rotate_edges` returns `~r` (`List.IsRotated`, WalkDecomp.lean:294), **not** `~`
+   (`List.Perm`). Step 2 now uses `IsRotated.mem_iff` (Rotate.lean:403) for membership and
+   `.perm`→`List.Perm.length_eq` (Rotate.lean:397) for length — matching Mathlib's own
+   idiom `(c.rotate_edges h).perm.nodup_iff` at Paths.lean:497.
+2. Decomposing an arbitrary edge `∃ a b, e = s(a,b)` cannot use `Sym2.other_spec'`
+   (needs a membership proof) — now `Sym2.exists.mp ⟨e, rfl⟩` (Sym2.lean:155).
+3. The L2 `Nonempty V` witness (was a `sorry`) is now a real `[Nonempty V]` hypothesis,
+   discharged in the assembly by `hconn.nonempty`.
+All other Step-1/Step-2/assembly anchors re-confirmed present at v4.26.0 (IsTrail.rotate
+Paths.lean:495, Connected.exists_isPath Connected.lean:318, snd_mem_support_of_mem_edges
+Operations.lean:450, count_pos_iff, nodup_concat, isTrail_def @[mk_iff] Paths.lean:67).
+No `sorry` remains in the blueprint; only Lean *elaboration* risk (classical `Finset.filter`
+instance in L2; unifier for `Sym2.exists.mp ⟨e, rfl⟩`) — settleable only on a build host.
+
+Also reconciled `feature/researcher-11` with `origin/main` (which had merged Researcher-5's
+Sub-lemma D design + the earlier A/B-parity subset of the Dev file); my Dev file is a clean
+superset, so the merge keeps all 7 verified Dev lemmas.
+
+### Tool status (dual-tool blackout, unchanged)
+- Aristotle backend: `Resource not found` on a `n + 0 = n` liveness check (**10th** session).
+- Docker: `docker run hello-world` still EIO on the containerd meta.db (daemon up, reads only).
+No new Lean can be machine-checked; the blueprint stays OUTSIDE `proofs/` so it cannot break
+the `Proofs.*` glob build.
+
+### Next Steps
+1. When a build host returns: paste `SubLemmaC_extremal.lean`'s L1/L2/Step1/Step2/assembly
+   into the Dev file, `docker-build.sh Proofs.KonigsbergOQ02OQ01OQ02OQ01Dev`, fix any
+   residual elaboration nits, then wire `undirected_euler_circuit_sufficient` to call
+   `undirected_euler_circuit_sufficient'` (closes the main `sorry`).
+2. Or resubmit the main-theorem `sorry` to Aristotle once its backend recovers.

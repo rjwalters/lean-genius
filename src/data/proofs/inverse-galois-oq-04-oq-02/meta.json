@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026",
-    "status": "verified",
+    "status": "pending",
     "tags": [
       "algebra",
       "galois-theory",
@@ -19,7 +19,7 @@
       "polynomial-factorization"
     ],
     "proofRepoPath": "Proofs/InverseGaloisA5DedekindKummerInput.lean",
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
     "prerequisites": [
@@ -50,7 +50,8 @@
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
     "definitionCount": 0,
-    "additionalFiles": []
+    "additionalFiles": [],
+    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. Restore to 'verified' only once the Lean file lands and builds."
   },
   "overview": {
     "historicalContext": "The Inverse Galois Problem asks whether every finite group occurs as $\\mathrm{Gal}(K/\\mathbb{Q})$. The alternating group $A_5$ — the smallest non-solvable group — is realizable over $\\mathbb{Q}$, and the Lean development `Proofs.InverseGaloisA5` formalizes this down to one remaining assumption, `three_dvd_gal_card : 3 \\mid \\mathrm{card}\\,q.\\mathrm{Gal}$, for the quintic $q = X^5 - 5X^4 + 10X^3 - 10X^2 + 25X - 5$. A companion reduction rewrites that as $3 \\mid \\mathrm{inertiaDegIn}_{(7)}(\\mathcal{O}_{q.\\mathrm{SplittingField}})$, provable by a three-step Kummer–Dedekind route. Two abstract bricks already machine-checked the inertia reasoning: `inverse-galois-oq-04-oq-01` (Step 1: an irreducible factor mod $p$ yields a prime of that inertia degree) and `inverse-galois-oq-04` (Steps 2–3: inertia-degree tower multiplicativity and Galois uniformity). Both take as a hypothesis that a chosen polynomial is a monic irreducible factor of the minimal polynomial mod $p$. This entry supplies that hypothesis concretely for the $A_5$ quintic at $p = 7$.",

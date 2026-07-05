@@ -146,7 +146,7 @@
       "id": "corollaries",
       "title": "Corollaries: Multiset Form and the Prime 2",
       "startLine": 243,
-      "endLine": 260,
+      "endLine": 250,
       "mathContext": "$\\{a,b\\} = \\{c,d\\}\\ \\text{as multisets};\\quad 2 = a^2+b^2 \\Rightarrow a = b = 1.$",
       "summary": "representation_unique_up_to_order restates uniqueness as the Multiset equality {a,b} = {c,d} (using Multiset.pair_comm in the swapped case). two_repr_unique specializes to p = 2, concluding that 2 = 1²+1² is the only two-squares representation of 2."
     }

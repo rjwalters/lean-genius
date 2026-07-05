@@ -51,6 +51,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Dihedral Groups Are Solvable",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Docstring settling the dihedral half of the parent entry's open question: DihedralGroup n is solvable for every n (including n = 0, the infinite dihedral group), an infinite solvable family that contrasts with Sₙ becoming non-solvable at n = 5 — showing the Abel–Ruffini obstruction is special to the symmetric groups. States the structural reason (Dₙ is metabelian: a cyclic normal rotation subgroup ⟨r⟩ ≅ ℤ/n of index 2 with abelian quotient ℤ/2), the proof plan via solvable_of_ker_le_range, and that Mathlib had no prior DihedralGroup solvability result. Notes the GLₙ(𝔽ₚ) non-solvability half is left open.",
+      "mathContext": "$D_n$ metabelian: $1 \\to \\mathbb{Z}/n \\to D_n \\to \\mathbb{Z}/2 \\to 1$ with both ends abelian $\\Rightarrow \\mathrm{IsSolvable}(D_n)$ for all $n$; contrast $S_5$ not solvable."
+    },
+    {
       "id": "two-homomorphisms",
       "title": "The Parity Hom and the Rotation Inclusion",
       "startLine": 50,
@@ -73,6 +81,48 @@
       "endLine": 112,
       "summary": "isSolvable: IsSolvable (DihedralGroup n) for all n via solvable_of_ker_le_range (both ℤ/n and ℤ/2 abelian). S5_not_isSolvable_but_dihedral_is packages the contrast with Mathlib's Equiv.Perm.fin_5_not_solvable.",
       "mathContext": "An extension of the solvable $\\mathbb Z/2$ by the solvable $\\langle r\\rangle\\cong\\mathbb Z/n$ is solvable. Compared with $S_5$, which is non-solvable: the dihedral family is solvable for all $n$, the symmetric family only for $n\\le4$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isSolvable",
+      "type": "core",
+      "description": "**Dihedral groups are solvable** — IsSolvable (DihedralGroup n) for every n (including n = 0, the infinite dihedral group). Dₙ is metabelian: the cyclic rotation subgroup ⟨r⟩ ≅ ℤ/n is normal of index 2 with abelian quotient ℤ/2, so solvable_of_ker_le_range applies. Mathlib had no prior solvability result for DihedralGroup.",
+      "leanType": "IsSolvable (DihedralGroup n)",
+      "line": 104,
+      "endLine": 105
+    },
+    {
+      "name": "S5_not_isSolvable_but_dihedral_is",
+      "type": "core",
+      "description": "**The contrast, packaged** — S₅ is not solvable, yet every DihedralGroup m is. This settles the dihedral half of the parent entry's open question and shows the Abel–Ruffini obstruction is special to the symmetric groups, not a generic feature of infinite families of finite groups.",
+      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5)) ∧ ∀ m : ℕ, IsSolvable (DihedralGroup m)",
+      "line": 109,
+      "endLine": 111
+    },
+    {
+      "name": "parity_ker_eq_rotation_range",
+      "type": "key",
+      "description": "**The metabelian witness** — ker(parity) = range(rotation): both are the rotation subgroup {r i}. This is the index-2 normal abelian subgroup that makes Dₙ metabelian and feeds solvable_of_ker_le_range. Reflections are excluded from the kernel because ofAdd 1 ≠ 1 in Multiplicative (ZMod 2).",
+      "leanType": "(parity (n := n)).ker = (rotation (n := n)).range",
+      "line": 84,
+      "endLine": 99
+    },
+    {
+      "name": "parity",
+      "type": "supporting",
+      "description": "The **parity homomorphism** Dₙ → ℤ/2 sending every rotation r i to 0 and every reflection sr i to the generator. Its kernel is exactly the rotation subgroup; it realizes the abelian index-2 quotient.",
+      "leanType": "DihedralGroup n →* Multiplicative (ZMod 2)",
+      "line": 56,
+      "endLine": 64
+    },
+    {
+      "name": "rotation",
+      "type": "supporting",
+      "description": "The **rotation inclusion** ℤ/n → Dₙ, i ↦ r i, a homomorphism since r i · r j = r (i+j). Its range is the cyclic rotation subgroup — the abelian normal subgroup of the metabelian decomposition.",
+      "leanType": "Multiplicative (ZMod n) →* DihedralGroup n",
+      "line": 68,
+      "endLine": 71
     }
   ],
   "conclusion": {

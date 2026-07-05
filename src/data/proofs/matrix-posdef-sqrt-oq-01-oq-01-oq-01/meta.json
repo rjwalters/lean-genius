@@ -109,5 +109,27 @@
       "Construct the partial isometry $U$ in the singular (non-invertible) case from $A = U|A|$ — defined on the range of $|A|$ and extended by zero on its kernel — completing the polar decomposition beyond the invertible parent.",
       "Derive the singular value decomposition from $|A|$: the singular values of $A$ are the eigenvalues of $|A|$, assembling $A = U\\Sigma V^{\\mathsf H}$ and connecting to Schatten-norm theory."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "matrix-posdef-sqrt-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The direct parent this entry refines. It continues the polar-decomposition program by identifying the positive semidefinite factor √(AᴴA) as the operator absolute value |A| and proving its defining length-preservation property ‖Ax‖ = ‖|A|x‖."
+    },
+    {
+      "targetId": "matrix-posdef-sqrt-oq-01",
+      "relationship": "related",
+      "description": "The grandparent entry establishing the positive-semidefinite square root √(AᴴA) whose operator-theoretic meaning this entry pins down. The existence and uniqueness of that square root (via the continuous functional calculus) is the prerequisite for defining |A| = √(AᴴA)."
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-08",
+      "relationship": "related",
+      "description": "The inner-product rigidity companion to this entry's norm-preservation statement. That entry proves norm-rigidity of the real inner product; the identity ‖Ax‖ = ‖|A|x‖ here is precisely the norm-preservation that lets the polar decomposition A = U|A| factor A through an isometry U on the range of |A|."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "A neighbouring result in the Hermitian / positive-semidefinite spectral toolkit. It analyzes orthogonal compressions of Hermitian matrices to coordinate hyperplanes; the operator |A| = √(AᴴA) studied here is Hermitian positive semidefinite, and its eigenvalues are the singular values of A that the same spectral machinery governs."
+    }
+  ]
 }

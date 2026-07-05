@@ -115,7 +115,9 @@
     "keyInsights": [
       "The degree of a cyclotomic polynomial is Euler's totient: $\\deg \\Phi_n = \\varphi(n)$. This single fact links the polynomial's shape to elementary number theory.",
       "Prime cyclotomics are the simplest: $\\Phi_p = 1 + X + \\dots + X^{p-1}$ is a geometric sum, so $\\deg \\Phi_p = p-1$ and $\\Phi_p(1) = p$.",
-      "The divisor factorization $\\prod_{d\\mid n}\\Phi_d = X^n - 1$ carries all the arithmetic: taking degrees turns it into Gauss's $\\sum_{d\\mid n}\\varphi(d) = n$, since the product degree is the sum of factor degrees (each $\\Phi_d \\neq 0$ over the domain $\\mathbb{Z}$) and $X^n-1$ has degree $n$."
+      "The divisor factorization $\\prod_{d\\mid n}\\Phi_d = X^n - 1$ carries all the arithmetic: taking degrees turns it into Gauss's $\\sum_{d\\mid n}\\varphi(d) = n$, since the product degree is the sum of factor degrees (each $\\Phi_d \\neq 0$ over the domain $\\mathbb{Z}$) and $X^n-1$ has degree $n$.",
+      "Degree is the bridge that transports algebra to arithmetic. Gauss's identity is never proved combinatorially here — it is *read off* the polynomial identity by applying $\\deg$ to both sides, which converts the product into a sum and $X^n-1$ into $n$. Evaluation gives nothing comparable: $(X^n-1)$ at $1$ is $0$, so the degree map — not a ring homomorphism — is exactly the invariant that keeps both sides informative.",
+      "The degree formula is ring-agnostic, but the Gauss derivation asks for a domain. $\\deg\\Phi_n=\\varphi(n)$ holds over *any* nontrivial ring because $\\Phi_n$ is monic with fixed integer coefficients. The identity $\\sum_{d\\mid n}\\varphi(d)=n$, however, is derived specifically over $\\mathbb{Z}$: the step $\\deg\\prod_d\\Phi_d = \\sum_d\\deg\\Phi_d$ uses the integral-domain form of `natDegree_prod` (each factor nonzero, no degree-cancelling zero divisors)."
     ]
   },
   "conclusion": {
@@ -130,6 +132,28 @@
       "Investigate the coefficients of $\\Phi_n$: they lie in $\\{-1,0,1\\}$ until $n=105$, where a coefficient $-2$ first appears — can this first 'non-flat' cyclotomic be machine-checked as a witness that the coefficients are not universally bounded by $1$?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "cyclotomic-polynomials-oq-02",
+      "relationship": "extended by",
+      "description": "Direct sibling that continues the structural program with the prime-power cyclotomics and the eval-at-one law Φ_n(1) ∈ {p, 1} (p when n is a prime power p^k, else 1) — the general evaluation refining the Φ_p(1) = p fact packaged here."
+    },
+    {
+      "targetId": "eisenstein-criterion-oq-01",
+      "relationship": "related",
+      "description": "Bears on this entry's second open question. Eisenstein's criterion (applied to Φ_p(X+1)) is the classical route to the irreducibility of the prime cyclotomic Φ_p over ℚ; that entry formalises Eisenstein and the irreducibility of Xⁿ − p, the irreducibility toolkit this entry's structural facts feed into."
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03-oq-01",
+      "relationship": "related",
+      "description": "The constructibility payoff of cyclotomic theory: the Gauss–Wantzel theorem, proved via cyclotomic fields, uses exactly the degree fact deg Φ_n = φ(n) = [ℚ(ζ_n):ℚ] established here (open question 2) to decide which regular n-gons are compass-and-straightedge constructible."
+    },
+    {
+      "targetId": "de-moivre-oq-05-oq-02",
+      "relationship": "related",
+      "description": "Relates to this entry's first open question (the Möbius-inversion form). It proves the sum of the primitive n-th roots of unity — the roots of Φ_n — equals μ(n), i.e. the second coefficient of Φ_n is −μ(n); a concrete Möbius-function shadow of the same divisor/inversion structure that governs the Φ_d factorization of Xⁿ − 1."
+    }
+  ],
   "references": [
     {
       "authors": "Gauss, Carl Friedrich",

@@ -69,6 +69,48 @@
       "mathContext": "Two-step descent from base values; 2/pi < 1 because 2 < pi."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "crossingFactor_two_step_lt",
+      "type": "core",
+      "description": "**Strict two-step decrease** — for n ≥ 2, α_{n+2} < αₙ. Each recurrence step multiplies the positive αₙ by n/(n+1) < 1, so the crossing factor strictly thins every two dimensions. This is the global monotone behaviour the companion file left open.",
+      "leanType": "(n : ℕ) (hn : 2 ≤ n) : crossingFactor (n + 2) < crossingFactor n",
+      "line": 85,
+      "endLine": 92
+    },
+    {
+      "name": "crossingFactor_le_two_div_pi",
+      "type": "core",
+      "description": "**The maximum is α₂ = 2/π** — αₙ ≤ 2/π for all n ≥ 2, by two-step descent from the base values α₂ = 2/π and α₃ = 1/2 ≤ 2/π. Both the even and odd subsequences start at their largest value and decrease.",
+      "leanType": "(n : ℕ) (hn : 2 ≤ n) : crossingFactor n ≤ 2 / π",
+      "line": 105,
+      "endLine": 121
+    },
+    {
+      "name": "crossingFactor_lt_one",
+      "type": "core",
+      "description": "**Below one in every dimension** — αₙ < 1 for all n ≥ 2, since αₙ ≤ 2/π < 1 (because 2 < π). In every dimension the expected hyperplane crossings per unit L/d never reach one.",
+      "leanType": "(n : ℕ) (hn : 2 ≤ n) : crossingFactor n < 1",
+      "line": 126,
+      "endLine": 130
+    },
+    {
+      "name": "crossingFactor_three_lt_two",
+      "type": "key",
+      "description": "The first concrete comparison α₃ < α₂, i.e. 1/2 < 2/π (since π < 4) — the seed of the odd-versus-even interleaving of the two subsequences.",
+      "leanType": "crossingFactor 3 < crossingFactor 2",
+      "line": 95,
+      "endLine": 97
+    },
+    {
+      "name": "crossingFactor_pos",
+      "type": "supporting",
+      "description": "The crossing factor is positive for every n ≥ 2 (strong induction over the two-step recurrence). The positivity that powers each strict-decrease and upper-bound estimate.",
+      "leanType": "∀ n : ℕ, 2 ≤ n → 0 < crossingFactor n",
+      "line": 66,
+      "endLine": 77
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "buffons-needle-oq-02-oq-02",

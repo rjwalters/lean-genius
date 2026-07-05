@@ -103,7 +103,28 @@
       "mathContext": "$X^2-2,\\ X^3-2,\\ X^5-3$ irreducible over $\\mathbb{Z}$."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "eisenstein-criterion-oq-01-oq-03-oq-02",
+      "relationship": "extended by",
+      "description": "Direct descendant that resolves this entry's first open question: it derives the irreducibility of the p-th cyclotomic polynomial Φ_p by applying the criterion to the shifted polynomial Φ_p(X + 1), whose coefficients are Eisenstein at p."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-01",
+      "relationship": "related",
+      "description": "The n = 3 application of this entry's flagship Xⁿ − p result: X³ − 3 is Eisenstein at 3, hence irreducible, so ∛3 is irrational — the concrete case of the second open question here ([ℚ(ⁿ√p):ℚ] = n via the minimal polynomial Xⁿ − p). That entry also treats the general prime case."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-01",
+      "relationship": "related",
+      "description": "A high-profile application of Eisenstein irreducibility: the quintic X⁵ − 4X + 2 is Eisenstein at 2, hence irreducible over ℚ — the first step in exhibiting a polynomial with Galois group S₅ and thus a concrete unsolvable-by-radicals example."
+    },
+    {
+      "targetId": "cyclotomic-polynomials-oq-01",
+      "relationship": "related",
+      "description": "Reciprocal structural entry: its open question on the irreducibility of Φ_n over ℚ is answered for the prime case exactly by Eisenstein applied to Φ_p(X + 1) — the criterion formalised here is the tool that cyclotomic entry points to."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -171,7 +192,7 @@
     "summary": "Formalizes Eisenstein's irreducibility criterion (irreducible_of_eisenstein) and applies it to the canonical family: Xⁿ − p is irreducible over ℤ for every prime p and n ≥ 1 (irreducible_X_pow_sub_C_prime), with the concrete instances X² − 2, X³ − 2, X⁵ − 3. The application uses P = (p) and reduces the five Eisenstein hypotheses to elementary divisibility facts about the coefficients 1, 0, …, 0, −p. All 5 theorems verified with 0 sorries and 0 axioms, no native_decide.",
     "implications": "Eisenstein's criterion is the standard elementary irreducibility test in algebra and number theory. The Xⁿ − p family it certifies supplies algebraic numbers of every degree (the minimal polynomial of ⁿ√p), underpins field-extension and Galois-theory examples, and — via the substitution X ↦ X + 1 — gives the classical proof that the p-th cyclotomic polynomial is irreducible.",
     "openQuestions": [
-      "Derive the irreducibility of the p-th cyclotomic polynomial Φ_p by applying the criterion to Φ_p(X + 1)",
+      "Derive the irreducibility of the p-th cyclotomic polynomial Φ_p by applying the criterion to Φ_p(X + 1) (carried out in the descendant entry eisenstein-criterion-oq-01-oq-03-oq-02)",
       "State the consequence for field degrees: ⁿ√p has minimal polynomial Xⁿ − p, hence [ℚ(ⁿ√p) : ℚ] = n",
       "Generalize the coefficient bookkeeping to Eisenstein-at-p polynomials with arbitrary lower coefficients divisible by p (general IsEisensteinAt instances)"
     ]

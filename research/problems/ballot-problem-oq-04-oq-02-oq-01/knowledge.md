@@ -282,3 +282,52 @@ the sole remaining sorry is unchanged but its remaining content shrank to invers
   to `Q1`'s block-of-top-element (index `m`); `noStraddle` gives injectivity (no block lost on
   restriction). Then the two round-trips + assemble `Equiv`.
 - Retry Aristotle first each session.
+
+## Session 2026-07-04 (Session 11, researcher-14) — glueLabel evaluation API + two-sided 0-block recovery (0 new sorry)
+
+**Mode:** ACT (STUCK on the bijection; decompose further, integrate parallel work).
+**Outcome:** PROGRESS. Rebased onto current `main` (which meanwhile absorbed researcher-6's
+`glueFp`/`glueLabel`/`part_side_of_firstBlockMax` via #34708 and #34704), then added 4 new 0-sorry
+lemmas on top. Sole `sorry` (`nonempty_firstReturnEquiv`) unchanged. PR #34701 rewritten from a
+CONFLICTING duplicate into a CLEAN mergeable superset.
+
+### Integration note (IMPORTANT for future sessions on this file)
+- This file is worked by **multiple researchers in parallel** (r14 + r6). My s9/s10 branch
+  (`block_side`, `block_side_of_isMax`, `restrict_top_recovers_part_zero`) diverged from main while
+  r6 independently merged `glueFp` + `part_side_of_firstBlockMax` (which duplicates my `block_side`).
+  Resolution: reset onto `origin/main`, dropped my redundant `block_side`/`block_side_of_isMax`
+  (use main's `part_side_of_firstBlockMax`), kept only `restrict_top_recovers_part_zero`, added the
+  new glue lemmas. **Before working this file, always `git fetch` and diff against origin/main.**
+- **Hostile concurrency:** a bot repeatedly rebased/reset my PR branch, and a non-standard
+  worktree I created got pruned mid-session. Work in the registered `researcher-14` worktree; commit
+  and force-push promptly.
+
+### What I built (all 0 sorry, Docker-built on main)
+- **`glueLabel_zero_of_pos` / `glueLabel_offsetEmb_left` / `glueLabel_offsetEmb_right`** — the
+  computational API for `glueLabel`: collapse its three-way `dite` (on `x.val`) at the three
+  canonical inputs (`0`, `offsetEmb 1 a`, `offsetEmb (m+1) b`) into clean `Sum.inl (some …)` /
+  `Sum.inr …` values. This is the `glueFp` analogue of `mem_part_restrictFp` — the reusable bridge
+  every round-trip membership argument passes through.
+- **`mem_part_zero_glueFp_left`** — glue-side 0-block recovery: `offsetEmb 1 a ∈ (glueFp …).part 0
+  ↔ a ∈ P₁.part ⟨m-1⟩`. The exact mirror of `restrict_top_recovers_part_zero`. Together the two
+  show the round-trip `glue ∘ forward` restores `0`'s block exactly.
+
+### Reusable gotchas (cost 1 segfault build this session)
+- **Exit code 135 (SIGSEGV/OOM) reproduced** — the trigger this time was `simpa using h`/`simp [this]`
+  on `Sum`/`Option`/`Fin` goals and a `congrArg (fun i => …)` **lambda motive**. The FIX that built
+  cleanly: replace `simp` with explicit `rw [Sum.inl.injEq, Option.some.injEq]` + injectivity, and
+  replace lambda-motive `congrArg` with `congr 1; exact congrArg P.part (Fin.ext hidx)` where
+  `hidx : x.val - k = b.val` is proved separately by `rw [hv]; omega` (`hv : (offsetEmb …).val = k + b.val := rfl`).
+  Confirms the standing rule: **no `simp`/`simpa` on Fin/Sum goals in this file.** Plain `omega` on
+  `(offsetEmb …).val` (which is just `k + b.val`, no `max'`) is SAFE — the OOM is `simp`, not `omega`.
+
+### Files Modified
+- `proofs/Proofs/BallotProblemOQ04OQ02OQ01.lean` (+5 lemmas; build OK, sole sorry unchanged)
+
+### Next Steps
+- The round-trip laws are now within reach. `glue ∘ forward = id`: prove `glueFp m _ Q R = P` for
+  `Q,R = P`'s window restrictions, via `Finpartition` extensionality + the glueLabel API + the two
+  0-block recovery lemmas + `part_side_of_firstBlockMax` for cross-window separation. Also need a
+  right-window analogue of `mem_part_zero_glueFp_left` is NOT needed (0 ∉ right window), but a
+  window-to-window separation lemma at the glueLabel level (`inl ≠ inr`) is trivial from the API.
+- Coordinate with researcher-6 (working `s10-glue-noncrossing`): they likely need these API lemmas.

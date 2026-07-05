@@ -101,6 +101,14 @@
       "endLine": 150,
       "summary": "gaussian_density_total_mass (standard density integrates to 1) and integral_gaussian_half (∫ e^{-x²/2} = √(2π)), both via t = 0.",
       "mathContext": "The t = 0 shadows of the two Fourier identities recover normalization of the density and the half-variance Gaussian integral."
+    },
+    {
+      "id": "charfun-fourier-identity",
+      "title": "Part V: Characteristic Function and the Fourier Identity for gaussianReal 0 1",
+      "startLine": 151,
+      "endLine": 218,
+      "summary": "`charFun_stdGaussian` proves the characteristic function of the standard normal N(0,1) is e^{-t²/2} (the Gaussian is its own Fourier transform up to normalization), and `gaussianReal_fourier_identity` transports this to Mathlib's concrete `gaussianReal 0 1` measure. The closing discussion frames these as the analytic input a full central-limit-theorem formalization would consume.",
+      "mathContext": "$\\varphi_X(t) = \\mathbb{E}[e^{itX}] = e^{-t^2/2}$ for $X \\sim \\mathcal N(0,1)$ — the standard normal is a fixed point of the Fourier transform."
     }
   ],
   "conclusion": {

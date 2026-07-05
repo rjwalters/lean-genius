@@ -122,7 +122,7 @@
       "title": "Part V: Heisenberg for Constant Commutator",
       "summary": "Proves heisenberg_constant_commutator: if [A,B] = c·id, then ΔA·ΔB ≥ |c|/2. Simplifies commutatorEV A B ψ = ⟪ψ,c·ψ⟫ = c·1 = c using hψ: ‖ψ‖=1, then applies robertson_inequality.",
       "startLine": 130,
-      "endLine": 148,
+      "endLine": 147,
       "mathContext": "When $A(B\\psi) - B(A\\psi) = c\\psi$ for all $\\psi$: $\\text{commutatorEV}(A,B,\\psi) = \\langle\\psi, c\\psi\\rangle = c\\cdot\\langle\\psi,\\psi\\rangle = c\\cdot 1 = c$. So Robertson gives $\\Delta A \\cdot \\Delta B \\geq |c|/2$. Setting $c = i\\hbar$ for $[\\hat{x},\\hat{p}] = i\\hbar$: $\\Delta x \\cdot \\Delta p \\geq \\hbar/2$."
     }
   ],

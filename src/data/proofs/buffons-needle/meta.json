@@ -102,7 +102,7 @@
       "id": "pi-estimation",
       "title": "Connection to Pi Estimation",
       "startLine": 147,
-      "endLine": 266,
+      "endLine": 254,
       "summary": "Derives the Monte Carlo estimator: from P = 2ℓ/(πd), solving for π gives π = 2ℓ/(Pd). With n drops and k crossings (P ≈ k/n), we get π ≈ 2ℓn/(kd). Historical note on Lazzarini's suspect 1901 experiment claiming 6-digit accuracy.",
       "mathContext": "From $P = 2\\ell/(\\pi d)$, solving for $\\pi$: $\\pi = 2\\ell/(Pd)$. With $n$ drops and $k$ crossings ($\\hat{P} = k/n$), the estimator is $\\hat{\\pi} = 2\\ell n/(kd)$. By the law of large numbers, $\\hat{\\pi} \\to \\pi$ as $n \\to \\infty$. The variance of $\\hat{P}$ is $P(1-P)/n$, so the standard error of $\\hat{\\pi}$ is $O(1/\\sqrt{n})$."
     }

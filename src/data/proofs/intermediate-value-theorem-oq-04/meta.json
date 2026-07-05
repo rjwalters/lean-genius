@@ -123,6 +123,28 @@
       "Can an effective/constructive version bound the location of a root (e.g. within [-(1+‖coeffs‖), 1+‖coeffs‖] via Cauchy's bound), turning the existence proof into a bracketing suitable for the bisection entries in this IVT family?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "specializes",
+      "description": "The foundational theorem this entry specializes. Bolzano's odd-degree theorem is the classical polynomial corollary of the IVT: once an odd-degree polynomial is shown to take a negative value at some a and a positive value at some b (the ±∞ end-behavior step), the IVT applied on [a, b] delivers the real root. This entry supplies the sign-attainment content the parent IVT then converts into a zero."
+    },
+    {
+      "targetId": "intermediate-value-theorem-oq-02",
+      "relationship": "related",
+      "description": "The constructive companion bearing on this entry's fourth open question. That entry formalizes the bisection algorithm, which turns the pure existence statement of the IVT into an effective root-location procedure with a geometric convergence bound — exactly the constructive/effective root bound (à la Cauchy's |x| ≤ 1 + ‖coeffs‖) this entry's OQ asks to pair with the odd-degree existence result."
+    },
+    {
+      "targetId": "eisenstein-criterion-oq-01",
+      "relationship": "related",
+      "description": "The polynomial-irreducibility counterpart over ℚ, bearing on this entry's first open question about classifying ℝ-irreducible polynomials. Over ℝ the irreducibles are exactly degrees 1 and 2 (the odd-degree result forces every higher odd degree to factor); over ℚ irreducibility is subtle and Eisenstein's criterion is the standard tool, formalized there together with the irreducibility of Xⁿ − p."
+    },
+    {
+      "targetId": "integral-root-theorem-oq-01",
+      "relationship": "related",
+      "description": "A complementary root-existence/location result for polynomials. The Rational Root Theorem constrains where *rational* roots of an integer polynomial can lie (numerator divides the constant term, denominator the leading coefficient); Bolzano's theorem instead guarantees a *real* root exists for odd degree without locating it — together they sketch the gap between algebraic root-counting and analytic root-existence."
+    }
+  ],
   "references": [
     {
       "authors": "Bolzano, Bernard",

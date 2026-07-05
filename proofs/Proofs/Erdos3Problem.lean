@@ -193,6 +193,64 @@ theorem containsAP_of_le {A : Set ℕ} {k m : ℕ} (hkm : k ≤ m)
   rw [Finset.mem_range] at hx ⊢
   omega
 
+/-- **AP-freeness is upward-closed in the progression length.**
+    If `A` avoids `k`-term progressions and `k ≤ m`, then `A` also avoids `m`-term
+    progressions: an `m`-AP inside `A` would contain a `k`-AP (its first `k` terms) by
+    `containsAP_of_le`, contradicting `k`-AP-freeness. Dual to `containsAP_of_le`, and the
+    structural fact underlying monotonicity of the Roth number in `k`. -/
+theorem isAPFree_of_le {A : Set ℕ} {k m : ℕ} (hkm : k ≤ m)
+    (h : IsAPFree A k) : IsAPFree A m :=
+  fun hm => h (containsAP_of_le hkm hm)
+
+/-- **The Roth number is monotone in the progression length.**
+    `r_k(N) ≤ r_m(N)` whenever `k ≤ m`. Avoiding a *longer* progression is an easier
+    constraint (`isAPFree_of_le`: every `k`-AP-free set is `m`-AP-free), so the family of
+    sets `r_m` maximises over contains the family `r_k` maximises over, and the supremum
+    only grows. This is the structural fact the `max k 3` device in
+    `strong_required_bound_implies_conjecture` relies on but never states; it also makes the
+    threshold hypotheses downward-closed in `k` (see `strongRequiredBound_mono`).
+    Fully machine-checked, axiom-free. -/
+theorem rothNumber_mono {k m N : ℕ} (hkm : k ≤ m) :
+    rothNumber k N ≤ rothNumber m N := by
+  unfold rothNumber
+  apply Finset.sup_mono
+  intro S hS
+  rw [Finset.mem_filter] at hS ⊢
+  exact ⟨hS.1, isAPFree_of_le hkm hS.2⟩
+
+/-- **The Roth number is monotone in the search window `N`.**
+    `r_k(M) ≤ r_k(N)` whenever `M ≤ N`. Enlarging the interval `{0,…,N}` can only add
+    AP-free subsets to the family the supremum ranges over (every AP-free subset of
+    `{0,…,M}` is still an AP-free subset of `{0,…,N}`), so `r_k` only grows. This is the
+    `N`-analogue of `rothNumber_mono` (monotone in the length `k`), and is exactly the
+    monotonicity used implicitly whenever the Roth number is compared across dyadic scales
+    `2^j ≤ 2^{j+1}` in the summation arguments. Fully machine-checked, axiom-free. -/
+theorem rothNumber_mono_size {k M N : ℕ} (hMN : M ≤ N) :
+    rothNumber k M ≤ rothNumber k N := by
+  unfold rothNumber
+  apply Finset.sup_mono
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS ⊢
+  refine ⟨hS.1.trans ?_, hS.2⟩
+  intro x hx
+  rw [Finset.mem_range] at hx ⊢
+  omega
+
+/-- **The trivial upper bound on the Roth number.**
+    `r_k(N) ≤ N + 1`. Every subset of `{0,…,N}` has at most `N + 1` elements, so in
+    particular every AP-free one does, and the supremum defining `r_k(N)` is bounded by the
+    cardinality `N + 1` of the whole interval. This is the baseline density — the entire
+    window `{0,…,N}` — against which every `o(N/log N)` improvement in the Roth/Szemerédi
+    literature is measured; the open content of Erdős #3 is precisely how far below this
+    baseline `r_k(N)` can be forced. Fully machine-checked, axiom-free. -/
+theorem rothNumber_le_window (k N : ℕ) : rothNumber k N ≤ N + 1 := by
+  unfold rothNumber
+  apply Finset.sup_le
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  calc S.card ≤ (Finset.range (N + 1)).card := Finset.card_le_card hS.1
+    _ = N + 1 := Finset.card_range (N + 1)
+
 /-- **A genuine `k`-term AP has exactly `k` elements.**
     When the common difference `d` is positive, the generating map `i ↦ a + i·d`
     is injective on `range k`, so `ArithProg a d k` has cardinality `k`.  (This is
@@ -207,6 +265,53 @@ theorem arithProg_card (a d k : ℕ) (hd : 0 < d) :
     exact Nat.eq_of_mul_eq_mul_right hd (Nat.add_left_cancel hij)
   unfold ArithProg
   rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
+
+/-- **Sets too small to contain a `k`-AP are vacuously `k`-AP-free.**
+    Any finite set `S` with fewer than `k` elements avoids `k`-term arithmetic
+    progressions: a genuine `k`-AP (positive common difference) has exactly `k`
+    distinct elements (`arithProg_card`), so it cannot fit inside a set of size
+    `< k`. This is the structural fact behind the trivial lower bound on the Roth
+    number (`rothNumber_ge_min`): below cardinality `k` the AP-freeness constraint
+    is empty. Fully machine-checked, axiom-free. -/
+theorem isAPFree_of_card_lt {S : Finset ℕ} {k : ℕ} (h : S.card < k) :
+    IsAPFree (↑S : Set ℕ) k := by
+  intro hAP
+  obtain ⟨a, d, hd, hsub⟩ := hAP
+  rw [Finset.coe_subset] at hsub
+  have hcard := Finset.card_le_card hsub
+  rw [arithProg_card a d k hd] at hcard
+  omega
+
+/-- **The trivial lower bound on the Roth number.**
+    `min (k - 1) (N + 1) ≤ r_k(N)`. The initial segment `{0, …, min(k-1,N+1)-1}`
+    fits inside the window `{0,…,N}` and has fewer than `k` elements, so it is
+    `k`-AP-free (`isAPFree_of_card_lt`) and enters the family `r_k(N)` maximises
+    over. Together with `rothNumber_le_window` (`r_k(N) ≤ N + 1`) this brackets the
+    Roth number as `min(k-1, N+1) ≤ r_k(N) ≤ N + 1`; in particular `r_k(N) ≥ k - 1`
+    once `N ≥ k - 1`, so all of the `o(N/log N)` content of Erdős #3 lives at large
+    `N` — there is never a sub-constant floor to exploit. Fully machine-checked,
+    axiom-free. -/
+theorem rothNumber_ge_min {k N : ℕ} : min (k - 1) (N + 1) ≤ rothNumber k N := by
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · subst hk
+    have hz : min (0 - 1) (N + 1) = 0 := by omega
+    rw [hz]; exact Nat.zero_le _
+  set m := min (k - 1) (N + 1) with hm
+  have hmN : m ≤ N + 1 := min_le_right _ _
+  have hmk : m < k := lt_of_le_of_lt (min_le_left _ _) (by omega)
+  have hsub : Finset.range m ⊆ Finset.range (N + 1) := by
+    intro x hx
+    rw [Finset.mem_range] at hx ⊢
+    omega
+  have hmem : Finset.range m ∈
+      ((Finset.range (N + 1)).powerset.filter
+        (fun S : Finset ℕ => IsAPFree (↑S : Set ℕ) k)) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨hsub, ?_⟩
+    apply isAPFree_of_card_lt
+    rw [Finset.card_range]; exact hmk
+  calc m = (Finset.range m).card := (Finset.card_range m).symm
+    _ ≤ rothNumber k N := by unfold rothNumber; exact Finset.le_sup hmem
 
 /-- **Only infinite sets contain arbitrarily long APs.**
     If `A` contains a `k`-term arithmetic progression (with positive common
@@ -230,6 +335,74 @@ theorem infinite_of_containsArbitrarilyLongAP {A : Set ℕ}
   have hcard := Finset.card_le_card hsubF
   rw [arithProg_card a d _ hd] at hcard
   omega
+
+/- ## The unconditional low-length regime (`k ≤ 2`)
+
+   Erdős #3 is only *open* for progressions of length `k ≥ 3`. Its conclusion at
+   lengths `k ≤ 2` is a triviality that holds for *any* set with divergent
+   reciprocal sum, with no Roth-type input whatsoever. The lemmas below make this
+   boundary explicit: a divergent reciprocal sum forces infinitude
+   (`infinite_of_hasDivergentSum` — the hypothesis-side companion promised in the
+   `infinite_of_containsArbitrarilyLongAP` docstring), and an infinite set contains
+   a genuine `2`-term progression (`containsAP_two_of_infinite`). Combining them,
+   `hasDivergentSum_containsAP_le_two` proves Erdős #3 verbatim for every `k ≤ 2`.
+   This pins the difficulty of the conjecture entirely at `k ≥ 3`, matching the
+   Roth-number floor `k - 1` (`rothNumber_ge_min`): below length `3` there is no
+   arithmetic content to exploit on either side of the implication. -/
+
+/-- **Divergent reciprocal sum forces infinitude.**
+    If `∑_{a ∈ A} 1/a` diverges then `A` is infinite: a finite set carries a
+    finite (hence summable) reciprocal sum. This is the hypothesis-side companion
+    to `infinite_of_containsArbitrarilyLongAP`; together they confirm both sides of
+    Erdős #3 can only be nontrivial for infinite `A`. Elementary, `sorry`-free and
+    axiom-free. -/
+theorem infinite_of_hasDivergentSum {A : Set ℕ} (h : HasDivergentSum A) :
+    A.Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  have : Fintype ↥A := hfin.fintype
+  exact h (hasSum_fintype (fun n : A => (1 : ℝ) / n)).summable
+
+/-- **Two ordered elements yield a `2`-term progression.**
+    If `a, b ∈ A` with `a < b`, then `{a, b} = ArithProg a (b - a) 2` is a genuine
+    `2`-AP (common difference `b - a > 0`) inside `A`. The elementary building block
+    of the low-length regime. -/
+theorem containsAP_two_of_lt {A : Set ℕ} {a b : ℕ}
+    (ha : a ∈ A) (hb : b ∈ A) (hab : a < b) : ContainsAP A 2 := by
+  refine ⟨a, b - a, by omega, ?_⟩
+  intro x hx
+  rw [Finset.mem_coe, ArithProg, Finset.mem_image] at hx
+  obtain ⟨i, hi, rfl⟩ := hx
+  rw [Finset.mem_range] at hi
+  interval_cases i
+  · simpa using ha
+  · have hb' : a + 1 * (b - a) = b := by omega
+    rw [hb']; exact hb
+
+/-- **Every infinite set contains a `2`-term progression.**
+    An infinite `A ⊆ ℕ` has two distinct elements; the smaller and larger form a
+    genuine `2`-AP (`containsAP_two_of_lt`). `sorry`-free, axiom-free. -/
+theorem containsAP_two_of_infinite {A : Set ℕ} (h : A.Infinite) :
+    ContainsAP A 2 := by
+  obtain ⟨a, ha⟩ := h.nonempty
+  obtain ⟨b, hb⟩ := (h.diff (Set.finite_singleton a)).nonempty
+  rw [Set.mem_diff, Set.mem_singleton_iff] at hb
+  obtain ⟨hbA, hbne⟩ := hb
+  rcases lt_trichotomy a b with hlt | heq | hgt
+  · exact containsAP_two_of_lt ha hbA hlt
+  · exact absurd heq.symm hbne
+  · exact containsAP_two_of_lt hbA ha hgt
+
+/-- **Erdős #3 holds unconditionally for `k ≤ 2`.**
+    Any set with divergent reciprocal sum contains a `k`-term arithmetic
+    progression for every `k ≤ 2` — no Roth-type bound required. Proof: such a set
+    is infinite (`infinite_of_hasDivergentSum`), hence contains a `2`-AP
+    (`containsAP_two_of_infinite`), which downward-closes to all `k ≤ 2`
+    (`containsAP_of_le`). This is exactly the portion of the conjecture that is not
+    open: the content lives entirely at `k ≥ 3`. `sorry`-free, axiom-free. -/
+theorem hasDivergentSum_containsAP_le_two {A : Set ℕ} (h : HasDivergentSum A)
+    {k : ℕ} (hk : k ≤ 2) : ContainsAP A k :=
+  containsAP_of_le hk (containsAP_two_of_infinite (infinite_of_hasDivergentSum h))
 
 /-- **Analytic core of the reduction.**
     If the counting function of `A` obeys `f_A(N) ≤ C · N / (log N)^{1+δ}` for all
@@ -422,6 +595,24 @@ theorem strong_required_bound_implies_conjecture :
       _ ≤ C * (N : ℝ) / (Real.log N) ^ (1 + δ) := hN
   exact hdiv (summable_of_strongBound hδ hC hcount)
 
+/-- **Divergent reciprocal sum forces super-`(log)^{1+δ}` density infinitely often.**
+    The contrapositive of `summable_of_strongBound`, packaged as a positive density
+    statement: if `∑_{a∈A} 1/a = ∞` then for every `C, δ > 0` the counting function
+    exceeds `C·N/(log N)^{1+δ}` for infinitely many `N`. In words, a divergent-reciprocal
+    set can never have counting function that is `O(N/(log N)^{1+δ})`. This is the exact
+    density lower bound Erdős #3 must exploit, and is reusable wherever one needs to turn
+    `HasDivergentSum` into a quantitative growth statement. Axiom-free. -/
+theorem countingFunction_frequently_gt_of_divergent {A : Set ℕ} {C δ : ℝ}
+    (hδ : 0 < δ) (hC : 0 < C) (hdiv : HasDivergentSum A) :
+    ∃ᶠ N : ℕ in atTop,
+      C * (N : ℝ) / (Real.log N) ^ (1 + δ) < (countingFunction A N : ℝ) := by
+  by_contra h
+  rw [Filter.not_frequently] at h
+  apply hdiv
+  apply summable_of_strongBound hδ hC
+  filter_upwards [h] with N hN
+  exact not_lt.mp hN
+
 /-- **The strong threshold dominates the weak one.**
     `StrongRequiredBound k` (`r_k(N) = O(N/(log N)^{1+δ})` for some `δ > 0`) implies the
     weaker `RequiredBound k` (`r_k(N) = o(N/log N)`). Writing the strong bound as
@@ -466,6 +657,27 @@ theorem strongRequiredBound_implies_requiredBound {k : ℕ}
   have hfac : 0 ≤ (N : ℝ) * L * (c * L ^ δ - C) :=
     mul_nonneg (mul_nonneg (Nat.cast_nonneg N) hL.le) (by linarith)
   nlinarith [hfac]
+
+/-- **The strong threshold hypothesis is downward-closed in the length.**
+    `StrongRequiredBound m` implies `StrongRequiredBound k` for every `k ≤ m`: the same
+    witnesses `δ, C` work because `r_k(N) ≤ r_m(N) ≤ C·N/(log N)^{1+δ}` by `rothNumber_mono`.
+    So `∀ k ≥ 3, StrongRequiredBound k` is equivalent to the bound holding for all
+    *sufficiently large* `k` — the content is at large lengths, not small ones. Axiom-free. -/
+theorem strongRequiredBound_mono {k m : ℕ} (hkm : k ≤ m)
+    (h : StrongRequiredBound m) : StrongRequiredBound k := by
+  obtain ⟨δ, hδ, C, hC, hev⟩ := h
+  refine ⟨δ, hδ, C, hC, ?_⟩
+  filter_upwards [hev] with N hN
+  exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
+
+/-- **The weak threshold hypothesis is downward-closed in the length.**
+    `RequiredBound m` implies `RequiredBound k` for every `k ≤ m`, again by `rothNumber_mono`
+    (for each `c > 0`, `r_k(N) ≤ r_m(N) ≤ c·N/log N`). Axiom-free. -/
+theorem requiredBound_mono {k m : ℕ} (hkm : k ≤ m)
+    (h : RequiredBound m) : RequiredBound k := by
+  intro c hc
+  filter_upwards [h c hc] with N hN
+  exact le_trans (by exact_mod_cast rothNumber_mono hkm) hN
 
 /-- **The two `o(N/log N)` formulations in this file coincide.**
     `RequiredBound k` (a non-strict `r_k(N) ≤ c·N/log N` for every `c > 0`) is

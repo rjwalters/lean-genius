@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-navier-stokes-oq0101-imports",
+    "proofId": "navier-stokes-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 2
+    },
+    "type": "context",
+    "title": "One import: the whole chain is elementary",
+    "content": "The file's only dependency is Mathlib.Analysis.SpecialFunctions.Pow.Real — real powers and the square root. Nothing about function spaces, Sobolev embeddings, or the Navier–Stokes PDE is imported, and that is the point: this entry isolates the purely algebraic/analytic core of Ladyzhenskaya's 2D interpolation inequality. The AM–GM step cross_le_grad_sq closes by nlinarith [sq_nonneg (d1 - d2)]; the assembly is one more nlinarith; and the square-root form needs only Real.sq_sqrt, Real.sqrt_sq, and monotonicity Real.sqrt_le_sqrt to pass from n4⁴ ≤ 2·n2²·ng² to n4² ≤ √2·n2·ng. The heavy analytic inputs (the integrated pointwise bound and the two Cauchy–Schwarz slicing estimates) enter only as hypotheses, keeping the machine-checked part sharp-constant-exact and axiom-free.",
+    "mathContext": "The sharp constant $C = 2^{1/4}$ in $\\|u\\|_4 \\le 2^{1/4}\\|u\\|_2^{1/2}\\|\\nabla u\\|_2^{1/2}$ is recovered from $\\|u\\|_4^2 \\le \\sqrt{2}\\,\\|u\\|_2\\|\\nabla u\\|_2$ using only $\\mathrm{Real.sqrt}$ and its monotonicity.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Real.sqrt monotonicity",
+      "nlinarith",
+      "sharp constants",
+      "Ladyzhenskaya inequality",
+      "algebra/analysis split"
+    ],
+    "prerequisites": [
+      "real powers and square roots",
+      "reading a proof's import surface"
+    ]
+  },
+  {
     "id": "ann-overview-scope",
     "proofId": "navier-stokes-oq-01-oq-01",
     "range": {

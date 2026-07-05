@@ -132,7 +132,28 @@
       "significance": "low"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "little-wedderburn-oq-02",
+      "relationship": "extended by",
+      "description": "The direct sibling that resolves this entry's second open question. Where this entry proves every finite division ring is commutative (hence a field), OQ-02 classifies those finite fields — establishing existence and uniqueness of the field of each prime-power order q — completing the structural picture Wedderburn's theorem opens."
+    },
+    {
+      "targetId": "conjugacy-class-equation-oq-01",
+      "relationship": "related",
+      "description": "Supplies the central tool of Wedderburn's proof and bears on this entry's first open question. The class equation |G| = |Z(G)| + Σ [G:C(x)] — proved there via orbit–stabilizer for conjugation — applied to the multiplicative group D^× is exactly what the cyclotomic divisibility argument contradicts unless D = Z(D); OQ-01 here asks for its refinement |D| = |Z(D)|^k."
+    },
+    {
+      "targetId": "cyclotomic-polynomials-oq-01",
+      "relationship": "related",
+      "description": "Provides the arithmetic crux of the classical Wedderburn argument. Writing |D| = q^n and |Z(D)| = q, the class equation forces the cyclotomic value Φ_n(q) to divide both q^n − 1 and each q^n/q^d − 1, yet Φ_n(q) > q − 1 for n > 1 — a contradiction unless n = 1. That entry develops the divisor product Xⁿ − 1 = ∏ Φ_d and deg Φ_n = φ(n) underlying this bound."
+    },
+    {
+      "targetId": "frobenius-endomorphism-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Develops the finite-field structure that Wedderburn's theorem collapses a finite division ring onto. Once D is shown commutative it is a finite field, whose Frobenius x ↦ x^p has the prime subfield 𝔽_p as its fixed field — the Galois-theoretic scaffolding behind the finite-field classification OQ-02 completes."
+    }
+  ],
   "references": [
     {
       "title": "Mathlib4: RingTheory.LittleWedderburn",

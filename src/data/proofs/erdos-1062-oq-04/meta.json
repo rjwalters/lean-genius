@@ -106,7 +106,7 @@
       "id": "kfold-lower-bound",
       "title": "Section VI: The k-Dependent Lower Bound",
       "startLine": 280,
-      "endLine": 358,
+      "endLine": 357,
       "summary": "Strengthens the k-independent primitive floor of Section V with the sharper witness {⌊n/(k+1)⌋+1,…,n}: every element a there exceeds n/(k+1), forcing ⌊n/a⌋ ≤ k, so a has at most k-1 proper multiples ≤ n. Injecting those proper multiples into Icc 2 ⌊n/a⌋ via b ↦ b/a bounds their count, giving maxNDKOSize k n ≥ n − ⌊n/(k+1)⌋. For k=2 this is n − ⌊n/3⌋ ≈ 0.667n, recovering the order of Lebensold's lower bound for the base Erdős #1062 problem.",
       "mathContext": "For a > n/(k+1) the proper multiples 2a,3a,…,⌊n/a⌋·a number ⌊n/a⌋-1 ≤ k-1, so the interval is NoDividesKOthers k; its cardinality n − ⌊n/(k+1)⌋ is a k-dependent lower bound on the extremal function."
     }

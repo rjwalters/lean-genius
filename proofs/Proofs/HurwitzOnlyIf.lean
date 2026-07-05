@@ -46,6 +46,8 @@ by choosing an orthonormal basis and transporting multiplication through coordin
 - `exists_real_shift_sq_scalar`, `eq_smul_one_of_sq_eq_nonneg_smul`: proved (0 sorries) —
   Frobenius Step 2 (completing the square; nonnegative square ⟹ real, so the imaginary
   part squares to a *negative* scalar)
+- `anticommutator_real_affine`: proved (0 sorries) — Frobenius Step 3 preparation
+  (`x*y + y*x ∈ span_ℝ {x, y, 1}` for all `x, y`, via polarisation of the Step-1 quadratics)
 - `hurwitz_only_if_ring`: 1 sorry — the remaining global structure argument (Step 3:
   `Im A` is a subspace with a positive-definite bilinear form / Clifford structure)
 -/
@@ -186,7 +188,45 @@ theorem eq_smul_one_of_sq_eq_nonneg_smul (A : Type*) [NormedDivisionRing A]
   · exact ⟨s, by linear_combination (norm := module) h⟩
   · exact ⟨-s, by linear_combination (norm := module) h⟩
 
+/-! ### Frobenius Step 3 preparation: the anticommutator is real-affine
+
+The Clifford structure that pins `finrank ℝ (Im A)` down begins with a single algebraic
+constraint on the anticommutator `x*y + y*x`.  The following lemma is the first honest step
+towards it and is fully verified: applying the Step-1 quadratic relation to `x`, `y` and
+`x + y` and polarising (`(x+y)² = x² + (xy+yx) + y²`) expresses the anticommutator as a
+*real-linear* combination of `x`, `y` and `1`.  Equivalently, `x*y + y*x ∈ span_ℝ {x, y, 1}`
+for all `x, y` — no commutativity assumed.  This is exactly the algebra that, once restricted
+to imaginary `x, y` (where the `x` and `y` coefficients drop out by trace-additivity), yields
+the scalar-valued anticommutator `x*y + y*x ∈ ℝ•1` underpinning the Clifford relations. -/
+theorem anticommutator_real_affine (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x y : A) :
+    ∃ c₁ c₂ c₃ : ℝ, x * y + y * x = c₁ • x + c₂ • y + c₃ • (1 : A) := by
+  obtain ⟨px, qx, hx⟩ := exists_quadratic A x
+  obtain ⟨py, qy, hy⟩ := exists_quadratic A y
+  obtain ⟨ps, qs, hs⟩ := exists_quadratic A (x + y)
+  refine ⟨ps - px, ps - py, qs - qx - qy, ?_⟩
+  -- polarisation: (x + y)² = x² + (xy + yx) + y²
+  have hpol : (x + y) ^ 2 = x ^ 2 + (x * y + y * x) + y ^ 2 := by
+    simp only [pow_two]; noncomm_ring
+  -- rewrite each square by its Step-1 quadratic and read off the coefficients
+  have key : x ^ 2 + (x * y + y * x) + y ^ 2 = ps • (x + y) + qs • (1 : A) := by
+    rw [← hpol]; exact hs
+  rw [hx, hy] at key
+  linear_combination (norm := module) key
+
 /-! ### The General (Division Ring) Case -/
+
+/-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
+`A` over `ℝ` is *commutative*, then it is a normed field, so Gelfand–Mazur
+(`hurwitz_field_case`) pins `finrank ℝ A ∈ {1, 2} ⊆ admissibleDimensions`. This discharges
+the easy half of the case split in `hurwitz_only_if_ring`, leaving only the genuinely
+non-commutative case (the Clifford / Radon–Hurwitz argument) open. No finite-dimensionality
+hypothesis is needed — Gelfand–Mazur supplies it. -/
+theorem hurwitz_only_if_ring_comm (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    (hcomm : ∀ x y : A, x * y = y * x) :
+    Module.finrank ℝ A ∈ admissibleDimensions := by
+  letI : NormedField A := { ‹NormedDivisionRing A› with mul_comm := hcomm }
+  exact hurwitz_field_case A
 
 /-- **Hurwitz Only-If for Normed Division Rings**:
     A finite-dimensional normed division ring over ℝ has finrank in {1, 2, 4, 8}.
@@ -225,7 +265,17 @@ theorem hurwitz_only_if_ring (A : Type*) [NormedDivisionRing A] [NormedAlgebra �
        symmetric bilinear form; multiplication then makes `Im A` a Clifford-type space,
        forcing `finrank ℝ (Im A) ∈ {0, 1, 3}` and thus `finrank ℝ A ∈ {1, 2, 4}`.
      Step 3 (the global structure/bilinear-form argument) is not yet formalized; Mathlib
-     lacks the Clifford-algebra / bilinear-form machinery to discharge it directly. -/
-  sorry
+     lacks the Clifford-algebra / bilinear-form machinery to discharge it directly.
+
+     The commutative branch of Step 3 is now fully verified (`hurwitz_only_if_ring_comm`
+     via Gelfand–Mazur), so the sorry below is scoped to the *strictly non-commutative*
+     case — where `hnc : ∃ x y, x * y ≠ y * x` is available as a genuine hypothesis. -/
+  by_cases hcomm : ∀ x y : A, x * y = y * x
+  · -- Commutative subcase: A is a normed field, closed by Gelfand–Mazur.
+    exact hurwitz_only_if_ring_comm A hcomm
+  · -- Non-commutative subcase: the Clifford / Radon–Hurwitz argument (still open).
+    push_neg at hcomm
+    obtain ⟨x, y, _hxy⟩ := hcomm
+    sorry
 
 end HurwitzOnlyIf

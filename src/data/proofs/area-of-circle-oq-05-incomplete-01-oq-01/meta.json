@@ -49,6 +49,7 @@
     "text": "Working with Mathlib's standard-normal measure gaussianReal 0 1, the mean and variance come from the library (integral_id_gaussianReal, variance_id_gaussianReal). The raw second moment follows because a vanishing mean collapses the variance integral ∫ (x - E[X])² to ∫ x². The result is then transported to the parent's concrete idiom ∫ x²·(1/√(2π))·exp(-x²/2) = 1 by identifying Mathlib's density gaussianPDFReal 0 1 with the parent's density and applying the withDensity change-of-measure bridge. Finally the MGF simplifies to exp(t²/2).",
     "proofStrategy": "Four ingredients: (1) integral_id_gaussianReal gives E[X] = μ = 0; (2) variance_id_gaussianReal gives Var[X] = v = 1; (3) variance_eq_integral rewrites Var as ∫ (x - E[X])², and substituting E[X] = 0 yields ∫ x² = 1; (4) integral_gaussianReal_eq_integral_smul rewrites any gaussianReal integral as a density-weighted Lebesgue integral, and gaussianPDFReal_std matches that density to the parent's, giving the concrete form. The MGF is mgf_id_gaussianReal specialized to μ=0, v=1.",
     "keyInsights": [
+      "That the MGF exp(t²/2) is finite for every real t — not merely near 0 — makes N(0,1) moment-determinate: a distribution whose MGF converges on an open interval about 0 is uniquely fixed by its moments, so no other law shares the sequence (2k−1)!! (contrast the log-normal, whose moments determine nothing). The same full-line, entire-function convergence is the analytic reason Gaussians are closed under convolution and sit at the centre of the CLT.",
       "For a mean-zero distribution the variance IS the second moment, so E[X²] = Var[X] = 1 needs no separate integral computation.",
       "Mathlib's abstract measure gaussianReal 0 1 and the parent's concrete density (1/√(2π))·exp(-x²/2) are linked by a single withDensity bridge, letting library moment results be stated in elementary ∫ f(x) dx form.",
       "The MGF exp(t²/2) is the compact encoding of every moment at once: its power series ∑ t^{2k}/(2^k k!) reads off E[X^{2k}] = (2k)!/(2^k k!) = (2k-1)!! and the vanishing of the odd moments.",
@@ -63,15 +64,38 @@
   "sections": [
     {
       "title": "The standard normal as gaussianReal 0 1",
-      "description": "`stdNormal := gaussianReal 0 1`, with its IsProbabilityMeasure instance inherited from Mathlib."
+      "startLine": 1,
+      "endLine": 47,
+      "description": "Module docstring, imports, and namespace, then `stdNormal := gaussianReal 0 1` (line 44) with its IsProbabilityMeasure instance inherited from Mathlib (line 46).",
+      "mathContext": "$X \\sim \\mathcal{N}(0,1)$, realised as `ProbabilityTheory.gaussianReal 0 1`."
     },
     {
-      "title": "Mean, variance, and second moment",
-      "description": "`stdNormal_mean` (= 0) and `stdNormal_variance` (= 1) are library specializations. `stdNormal_second_moment` derives E[X²] = 1 from `variance_eq_integral` and the vanishing mean."
+      "title": "Mean and Variance",
+      "startLine": 49,
+      "endLine": 59,
+      "description": "`stdNormal_mean` (E[X] = 0) and `stdNormal_variance` (Var[X] = 1) are direct specialisations of Mathlib's `integral_id_gaussianReal` and `variance_id_gaussianReal` at μ = 0, v = 1 — the two defining parameters of the standard normal read back as its first two moments.",
+      "mathContext": "$\\mathbb{E}[X] = 0, \\qquad \\operatorname{Var}[X] = 1$."
     },
     {
-      "title": "Concrete density form and the MGF",
-      "description": "`gaussianPDFReal_std` matches Mathlib's density to (1/√(2π))·exp(-x²/2); `stdNormal_second_moment_concrete` transports E[X²] = 1 to that idiom via `integral_gaussianReal_eq_integral_smul`. `stdNormal_mgf` records M_X(t) = exp(t²/2)."
+      "title": "The Second Moment",
+      "startLine": 60,
+      "endLine": 69,
+      "description": "`stdNormal_second_moment` derives E[X²] = 1 by rewriting the variance as ∫(x − E[X])² (`variance_eq_integral`) and collapsing it with the vanishing mean — the raw second moment needs no separate integral of its own.",
+      "mathContext": "$\\mathbb{E}[X^2] = \\operatorname{Var}[X] + \\mathbb{E}[X]^2 = 1 + 0 = 1$."
+    },
+    {
+      "title": "Concrete Density Form and Second-Moment Transport",
+      "startLine": 70,
+      "endLine": 93,
+      "description": "`gaussianPDFReal_std` matches Mathlib's density `gaussianPDFReal 0 1` to the parent's elementary form (1/√(2π))·exp(−x²/2); `stdNormal_second_moment_concrete` then transports E[X²] = 1 into that ∫ f(x) dx idiom via `integral_gaussianReal_eq_integral_smul`, bridging the abstract measure and the classical density integral.",
+      "mathContext": "$\\int x^2 \\cdot \\tfrac{1}{\\sqrt{2\\pi}} e^{-x^2/2}\\, dx = 1$."
+    },
+    {
+      "title": "The Moment Generating Function",
+      "startLine": 94,
+      "endLine": 105,
+      "description": "`stdNormal_mgf` records M_X(t) = exp(t²/2), specialising `mgf_id_gaussianReal` to μ = 0, v = 1. Its Taylor coefficients [t^{2k}] = 1/(2^k k!) read off every even moment E[X^{2k}] = (2k−1)!! and the vanishing of the odd moments in one entire function.",
+      "mathContext": "$M_X(t) = \\mathbb{E}[e^{tX}] = e^{t^2/2}$."
     }
   ],
   "crossReferences": [

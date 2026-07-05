@@ -106,17 +106,27 @@
       "description": "OQ-05 formalizes Euler's Weierstrass-product route to ζ(2); the same product method generalizes to every even ζ(2k), of which ζ(4) is the next case"
     },
     {
-      "proofId": "basel-problem-oq-01",
-      "relationship": "Related",
+      "targetId": "basel-problem-oq-01",
+      "relationship": "related",
       "description": "“Is ζ(5) Irrational? (Open Question).” The odd-argument counterpart to this even value: where ζ(4) = π⁴/90 is a transcendental rational-times-π⁴, no closed form or even a full irrationality proof is known for ζ(5), sharpening the even/odd contrast highlighted in this entry's key insights."
+    },
+    {
+      "targetId": "basel-problem-oq-12",
+      "relationship": "extended by",
+      "description": "The next even value, ζ(6) = π⁶/945 — exactly the k = 3 case this entry's second open question asks to formalize. Same specialisation route (Mathlib's even-argument Hurwitz-zeta formula, here at Bernoulli number B₆ = 1/42), continuing the chain ζ(2) = π²/6, ζ(4) = π⁴/90, ζ(6) = π⁶/945."
+    },
+    {
+      "targetId": "basel-problem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Proves every even value ζ(2n) is irrational (indeed a rational multiple of π^{2n}, hence transcendental) while the odd case stays open — the general statement behind this entry's key insight that ζ(4) sits on the fully-understood even side of the even/odd divide."
     }
   ],
   "conclusion": {
     "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of ζ(4) = ∑' n, 1/n⁴ = π⁴/90, the degree-4 Basel value, together with the riemannZeta 4 value and Euler's π-free ratio ζ(4)/ζ(2)² = 2/5. Obtained by specialising Mathlib's even-argument zeta formula, as the open question requests.",
     "implications": "Establishes the next even-zeta value in the gallery after ζ(2). The π-free ratio ζ(4)/ζ(2)² = 2/5 isolates the Bernoulli-number content of the even-zeta formula, independent of the transcendence of π, and contrasts with the still-mysterious odd zeta values.",
     "openQuestions": [
-      "Formalize the general even-zeta formula ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!) as a single Lean statement.",
-      "Formalize ζ(6) = π⁶/945 and the ratio chain ζ(2k)/π^{2k}."
+      "Formalize the general even-zeta formula ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!) as a single Lean statement (as opposed to case-by-case specialisations at k = 2, 3, …).",
+      "Formalize ζ(6) = π⁶/945 (done in the companion entry basel-problem-oq-12) and continue the ratio chain ζ(2k)/π^{2k}, e.g. ζ(6)/ζ(2)³ = 8/35."
     ]
   },
   "leanFile": {

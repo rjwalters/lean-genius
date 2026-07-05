@@ -1,0 +1,60 @@
+{
+  "id": "cube-root-3-irrational-oq-02-oq-03",
+  "title": "Vahlen–Capelli Criterion for Binomial Irreducibility",
+  "slug": "cube-root-3-irrational-oq-02-oq-03",
+  "description": "Formalizes the classical Vahlen–Capelli criterion: over a field K, X^n − C a is irreducible iff (1) a is not a p-th power for any prime p | n, and (2) if 4 | n then a ∉ −4·K⁴. Generalizes the Eisenstein ∛3 argument to arbitrary exponents. The odd case is a complete iff (wrapping Mathlib's X_pow_sub_C_irreducible_iff_forall_prime_of_odd); the Sophie Germain identity and both necessity-obstruction factorizations are proved; the even-sufficiency direction (the genuine Mathlib TODO, Lang Algebra VI §9) is isolated as the sole sorry.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-07-04",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ02OQ03.lean",
+    "tags": [
+      "field-theory",
+      "irreducibility",
+      "polynomials",
+      "kummer-extensions",
+      "binomials",
+      "vahlen-capelli",
+      "sophie-germain",
+      "eisenstein"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "dateAdded": "2026-07-04",
+    "axiomCount": 0,
+    "assumptions": "Build-pending (Docker/Aristotle offline at authoring). One sorry: the even-sufficiency direction of the criterion (conditions (1),(2) ⟹ irreducible for 4 | n), which is an explicit open TODO in Mathlib/FieldTheory/KummerExtension.lean citing Lang, Algebra, VI §9. All other results (Sophie Germain identity, both necessity factorizations, and the full odd-case iff) are stated with complete proofs pending machine verification.",
+    "lineCount": 202,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "originalContributions": [
+      "VahlenCapelliCond: the full criterion as a reusable predicate over any field",
+      "sophie_germain: u⁴+4v⁴=(u²−2vu+2v²)(u²+2vu+2v²), the algebraic source of the −4·K⁴ obstruction (ring)",
+      "factor_capelli: explicit factorisation X^{4m}+4(C b)⁴ into two degree-2m polynomials (ring)",
+      "capelli_factor_dvd: necessity witness for condition (2) — the Capelli obstruction yields a proper divisor",
+      "obstruction_pow_dvd: necessity witness for condition (1) via x−y ∣ xⁿ−yⁿ",
+      "vahlen_capelli_odd: complete iff for odd n, wrapping Mathlib (0 sorries)",
+      "vahlen_capelli: full statement; odd branch closed, even-sufficiency isolated as the sole sorry"
+    ]
+  },
+  "leanFile": {
+    "lineCount": 202,
+    "path": "Proofs/CubeRoot3IrrationalOQ02OQ03.lean",
+    "axiomCount": 0,
+    "sorries": 1,
+    "definitionCount": 1,
+    "theoremCount": 7
+  },
+  "crossReferences": [
+    {
+      "targetId": "cube-root-3-irrational-oq-02",
+      "relationship": "extends",
+      "description": "Parent Eisenstein proof of ∛3 irrationality. This file generalises binomial irreducibility X^n − C a to arbitrary exponent and radicand via the Vahlen–Capelli criterion."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02-oq-04",
+      "relationship": "extends",
+      "description": "OQ-04 gives an unconditional Eisenstein criterion for squarefree radicands; Vahlen–Capelli is the exact iff that replaces the sufficient Eisenstein hypothesis."
+    }
+  ],
+  "sorries": 1
+}

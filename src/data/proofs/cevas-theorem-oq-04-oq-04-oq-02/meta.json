@@ -92,6 +92,64 @@
       "mathContext": "A-excenter = (−(y+z)/2x)A + ((2x+y+z)/2x)·footBisectorA, weights summing to 1 even though the apex weight is negative."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "excenterA_on_bisector_A",
+      "type": "core",
+      "description": "**The A-excenter lies on the internal A-bisector** — the same cevian and foot footBisectorA as the incenter, despite the negative mass −a at A. The mass-point signature of an excentre: a signed weight on the apex, ordinary weights on the base, still concurrent on the internal bisector. The substantive new content of the file.",
+      "leanType": "(x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z) (A B C : V) : excenterA x y z A B C = ((-(y + z)) / (2 * x)) • A + ((2 * x + y + z) / (2 * x)) • footBisectorA x y z B C",
+      "line": 175,
+      "endLine": 183
+    },
+    {
+      "name": "nagel_on_cevian_A",
+      "type": "core",
+      "description": "**The Nagel point lies on the A-cevian** — the affine combination of A and the A-extouch point with weights x/(x+y+z) and (y+z)/(x+y+z). Locates X(8) in tangent-length barycentric coordinates.",
+      "leanType": "(x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z) (A B C : V) : nagel x y z A B C = (x / (x + y + z)) • A + ((y + z) / (x + y + z)) • extouchA y z B C",
+      "line": 122,
+      "endLine": 129
+    },
+    {
+      "name": "gergonne_on_cevian_A",
+      "type": "core",
+      "description": "**The Gergonne point lies on the A-cevian** — the affine combination of A and the incircle contact point on BC with weights yz/(yz+zx+xy) and (zx+xy)/(yz+zx+xy). Locates X(7) in tangent-length barycentric coordinates.",
+      "leanType": "(x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z) (A B C : V) : gergonne x y z A B C = ((y * z) / (y * z + z * x + x * y)) • A + ((z * x + x * y) / (y * z + z * x + x * y)) • contactA y z B C",
+      "line": 152,
+      "endLine": 160
+    },
+    {
+      "name": "incenter_on_bisector_A",
+      "type": "core",
+      "description": "**The incenter lies on the internal A-bisector** through footBisectorA, with both weights positive — the all-positive-mass comparison against the A-excenter's signed mass on the same cevian.",
+      "leanType": "(x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z) (A B C : V) : incenter x y z A B C = ((y + z) / (2 * (x + y + z))) • A + ((2 * x + y + z) / (2 * (x + y + z))) • footBisectorA x y z B C",
+      "line": 187,
+      "endLine": 195
+    },
+    {
+      "name": "excenterB_on_bisector_B",
+      "type": "key",
+      "description": "**The B-excenter lies on the internal B-bisector** (signed mass −b at B). Shows the signed-mass mechanism extends verbatim to the other vertices: each excenter sits on the internal bisector from its own index vertex.",
+      "leanType": "(x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z) (A B C : V) : excenterB x y z A B C = ((-(z + x)) / (2 * y)) • B + ((x + 2 * y + z) / (2 * y)) • footBisectorB x y z C A",
+      "line": 213,
+      "endLine": 221
+    },
+    {
+      "name": "nagel_lineMap_A",
+      "type": "key",
+      "description": "The Nagel point expressed as an AffineMap.lineMap from A to the A-extouch point at parameter (y+z)/(x+y+z) — the cevian membership recast in Mathlib's canonical affine-interpolation form.",
+      "leanType": "(x y z : ℝ) (hx : 0 < x) (hy : 0 < y) (hz : 0 < z) (A B C : V) : nagel x y z A B C = AffineMap.lineMap A (extouchA y z B C) ((y + z) / (x + y + z) : ℝ)",
+      "line": 132,
+      "endLine": 139
+    },
+    {
+      "name": "excenterA_weights_sum_one",
+      "type": "supporting",
+      "description": "The two A-cevian weights for the A-excenter sum to one — even though the mass at A is negative: (−(y+z))/(2x) + (2x+y+z)/(2x) = 1. Confirms the signed-mass affine combination is a genuine barycentric (weights-summing-to-one) point.",
+      "leanType": "(x y z : ℝ) (hx : 0 < x) (_hy : 0 < y) (_hz : 0 < z) : (-(y + z)) / (2 * x) + (2 * x + y + z) / (2 * x) = 1",
+      "line": 166,
+      "endLine": 169
+    }
+  ],
   "references": [
     {
       "authors": [

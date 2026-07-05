@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius research",
     "date": "2026",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/FundamentalTheoremAlgebraOQ04OQ02.lean",
     "tags": [
       "algebra",
@@ -18,7 +18,7 @@
       "steinitz",
       "research"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 110,
@@ -63,7 +63,8 @@
       "not_nonempty_ringEquiv_algebraicClosure_rat_complex with card_algebraicClosure_rat: the honesty statements showing the cardinality hypothesis is necessary — AlgebraicClosure ℚ is algebraically closed of characteristic 0 but countable (#=ℵ₀), hence not isomorphic to ℂ. This concretely refutes the naïve 'unique up to isomorphism' reading."
     ],
     "theoremCount": 7,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. Restore to 'verified' only once the Lean file lands and builds."
   },
   "overview": {
     "historicalContext": "Steinitz (1910), in his foundational paper on field theory, proved that an algebraically closed field is determined up to isomorphism by two invariants: its characteristic and the cardinality of a transcendence basis over the prime field. For uncountable fields the transcendence degree equals the cardinality of the field, so an uncountable algebraically closed field is classified by (characteristic, cardinality). ℂ, being algebraically closed (the Fundamental Theorem of Algebra), of characteristic 0, and of cardinality the continuum 𝔠, is therefore the unique such field with those invariants — but only after the cardinality is pinned down. Dropping the cardinality constraint, the classification fails spectacularly: there are algebraically closed characteristic-0 fields of every infinite cardinality.",

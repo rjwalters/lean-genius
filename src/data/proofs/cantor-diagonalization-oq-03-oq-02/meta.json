@@ -43,7 +43,7 @@
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
     "date": null,
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ02.lean",
     "tags": [
       "cantor",
@@ -55,7 +55,7 @@
       "type-theory",
       "open-question"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "dateAdded": "2026-07-02",
     "mathlib_version": "4.26.0",
@@ -94,7 +94,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 171,
-    "assumptions": "None. Fully machine-checked with 0 sorries and 0 axiom declarations. The Bool development is designed to avoid propositional extensionality: injectivity of the characteristic-function embedding is proved by `decide` rather than `propext`. Beyond Mathlib's foundational axioms (propext, Classical.choice, Quot.sound — none of which is used in an essential, entry-specific way) the proofs introduce no assumptions. No native_decide.",
+    "assumptions": "NOT YET MACHINE-VERIFIED ON main. The Lean source described here (Proofs/CantorDiagonalizationOQ03OQ02.lean — the predicative, propext-free Lawvere/Cantor development: lawvere, no_surjection_of_fpf, no_surjection_to_bool, embed_bool/embed_bool_injective, predicative_cantor, embed_of_two, no_surjection_to_nat; 9 theorems / 2 defs / 171 lines) does NOT exist on the canonical branch main. A complete draft authored as VERIFIED (0 sorries, 0 axiom declarations) lives only on the unmerged branch feature/researcher-9 (commit 21eef2e891b) and has not been merged or re-checked against main's pinned Mathlib, so no source on main backs the public claim. Design goal (as drafted, unverified on main): a strict cardinality increase A < (A → Bool) inside a single universe Type u, with injectivity of the Bool characteristic-function embedding discharged by `decide` (decide_eq_decide) rather than propext, so #print axioms would list only the foundational propext / Classical.choice / Quot.sound and no native_decide. Downgraded from status=verified/badge=verified to formalized/wip pending merge of the source to main and a clean docker build. Counts in leanFile (171 lines, 9 theorems, 2 defs, 0 sorries) reflect the drafted source and will be reconciled on merge.",
     "theoremCount": 9,
     "definitionCount": 2
   },
