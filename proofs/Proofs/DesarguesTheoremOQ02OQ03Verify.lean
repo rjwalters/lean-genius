@@ -293,4 +293,11 @@ example : ∀ α a : ZMod 5, α ≠ 0 → a ≠ 0 → α • a ≠ (0 : ZMod 5) 
 
 end Witnesses
 
+-- Axiom audit: the forward direction and the algebraic converse hinge depend only on
+-- Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). The finite
+-- witnesses use plain `decide`, so NO `Lean.ofReduceBool` dependency appears.
+#print axioms desargues
+#print axioms normalize_perspective
+#print axioms smul_preserves_nonzero_iff_no_zero_divisors
+
 end DesarguesTheoremOQ02OQ03
