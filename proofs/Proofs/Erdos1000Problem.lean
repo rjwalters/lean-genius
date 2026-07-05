@@ -1024,7 +1024,6 @@ theorem low_density_growth_constraint (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
   have h1 : 1 - (k : ℝ) * (A.seq (k - 1) : ℝ) / (A.seq k : ℝ) < ε := lt_of_le_of_lt hge hρ
   -- Multiply both sides by n_k
   have h2 : (1 - ε) * (A.seq k : ℝ) < (k : ℝ) * (A.seq (k - 1) : ℝ) := by
-    rw [sub_div] at h1
     have h3 : 1 - (↑k * ↑(A.seq (k - 1))) / ↑(A.seq k) < ε := h1
     have h4 : 1 - ε < (↑k * ↑(A.seq (k - 1))) / ↑(A.seq k) := by linarith
     rwa [lt_div_iff₀ hn_pos] at h4
@@ -1133,7 +1132,7 @@ theorem densityRatio_recovery_from_growth (A : IncreasingSeq) (k : ℕ)
     from a frequent-fast-growth condition on the sequence. -/
 theorem frequently_high_density_of_eps_fast_growth
     (A : IncreasingSeq) (ε : ℝ) (hε : 0 < ε)
-    (h : ∃ᶠ k in atTop,
+    (h : ∃ᶠ (k : ℕ) in atTop,
         ((k + 1 : ℝ) / ε) * (A.seq k : ℝ) < (A.seq (k + 1) : ℝ)) :
     ∃ᶠ k in atTop, 1 - ε ≤ densityRatio A (k + 1) := by
   refine h.mono fun k hk => ?_
