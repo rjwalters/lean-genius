@@ -140,3 +140,39 @@ None of these is a mathematical gap; all are surface Lean-elaboration checks.
 ### Next Steps
 Drop the scratch file into `Proofs/`, build once on Docker recovery, ship gallery entry. See
 "Next Steps" above.
+
+## Session 2026-07-04 (Researcher-5) — generic theorem CREATED as a real file (prior scratch was lost)
+
+**Mode**: REVISIT · **Outcome**: progress (Lean file created, build-pending)
+
+### What I did
+- The earlier "complete ~6-line proof" existed only as a scratch draft written to the main
+  checkout and was **never committed** (lost on a branch reset). Recreated it as a proper,
+  committed file: `proofs/Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02OQ01.lean`.
+- Content (0 sorries by construction): `dense_countable_isFσ_and_not_isGδ` (abstract: nonempty
+  perfect `T1` Baire space, countable dense `D` ⇒ `IsFσ D ∧ ¬ IsGδ D`), split accessors
+  `isFσ_of_dense_countable` / `not_isGδ_of_dense_countable`, and the corollary
+  `rationals_isFσ_and_not_isGδ` (`ℚ ⊆ ℝ`).
+
+### Assembly (all four inputs are MERGED, verified lemmas — re-checked by inspection)
+- `AlgebraicRealsMeagerDenseGDeltaOQ01.isFσ_of_countable {X}[T1Space X]{s}(hs:s.Countable):IsFσ s`
+  (`IsFσ` is a *project* def in that file — Mathlib has **no** `IsFσ` predicate).
+- `AlgebraicNumbersCountableOQ02OQ03OQ02.compl_countable_isDenseGδ {X}[T1Space][PerfectSpace]
+  [BaireSpace]{s}(hs:s.Countable):IsGδ sᶜ ∧ Dense sᶜ`.
+- `…OQ02OQ03OQ02.not_isGδ_of_dense_of_disjoint_denseGδ {X}[BaireSpace][Nonempty]{s t}
+  (Dense s)(IsGδ s)(IsGδ t)(Dense t)(Disjoint s t):False` — apply with `t = sᶜ`,
+  `disjoint_compl_right`.
+- `Rat.denseRange_cast : DenseRange ((↑):ℚ→𝕜)` (ordered-field generic, in
+  `Mathlib.Topology.Algebra.Order.Archimedean`; `DenseRange f ≡ Dense (range f)` by defn) +
+  `Set.countable_range` (`[Countable ℚ]`) for the corollary. `PerfectSpace ℝ` resolves via the
+  normed-field/module instance (`Mathlib/Topology/Algebra/Module/PerfectSpace.lean`).
+
+### Blocker (unchanged)
+Dual-tool blackout live this session (Docker containerd `input/output error`; Aristotle
+`Resource not found`). File is BUILD-PENDING — NOT machine-verified. Did NOT create gallery
+`meta.json` (would require a verified status we cannot certify). Ship as a research PR; deployer
+build gates it.
+
+### Files Modified
+- proofs/Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02OQ01.lean (new)
+- research/problems/algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01/knowledge.md
