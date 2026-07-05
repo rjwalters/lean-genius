@@ -552,6 +552,57 @@ theorem vahlen_capelli_four_suff {K : Type*} [Field K] {a : K}
       exact no_linear_factor hsq hcomm hhd
 
 -- ============================================================
+-- PART 5c: Even-times-odd reduction (odd multiplicativity of the criterion)
+-- ============================================================
+
+/-- **Even-times-odd reduction.** If the even base `X^m − C a` is irreducible and `a` is
+not a `q`-th power for every prime `q ∣ t` (with `t` odd), then `X^(m·t) − C a` is
+irreducible.
+
+This is the odd-multiplicativity half of Capelli's theorem. It reduces the irreducibility
+of `X^n − C a` for `n = 2^k · t` (`t` odd) to the pure `2`-power base `X^(2^k) − C a`,
+transferring condition (1) across the base extension `K⟮x⟯/K` via the field norm: if some
+`b ∈ K⟮x⟯` satisfied `b^q = x` (a root of the base), then
+`N(b)^q = N(x) = (−1)^m·(−a) = −a` since `m` is even, whence `(−N(b))^q = a` because `q`
+(a prime dividing the odd `t`) is odd — contradicting condition (1) at `q`.
+
+The heavy lifting is Mathlib's `X_pow_mul_sub_C_irreducible` (multiplicativity under
+`X ↦ X^m`) and `X_pow_sub_C_irreducible_of_odd` (the odd-exponent criterion); this lemma
+performs the norm-transfer that feeds them. Combined with the base cases `X^2 − C a`
+(prime) and `X^4 − C a` (`vahlen_capelli_four_suff`), it discharges every even `n` whose
+`2`-adic valuation is `1` or `2` — i.e. all even `n` with `8 ∤ n`. -/
+theorem vahlen_capelli_even_mul_odd {K : Type*} [Field K] {m t : ℕ}
+    (hm : Even m) (hm0 : m ≠ 0) (ht : Odd t) {a : K}
+    (hbase : Irreducible (X ^ m - C a : K[X]))
+    (hodd : ∀ q : ℕ, Nat.Prime q → q ∣ t → ∀ b : K, b ^ q ≠ a) :
+    Irreducible (X ^ (m * t) - C a : K[X]) := by
+  rw [mul_comm]
+  apply X_pow_mul_sub_C_irreducible hbase
+  intro E _ _ x hx
+  have hInt : IsIntegral K x := not_not.mp fun h ↦ by
+    simpa only [degree_zero, degree_X_pow_sub_C (Nat.pos_of_ne_zero hm0),
+      WithBot.natCast_ne_bot] using congr_arg degree (hx.symm.trans (dif_neg h))
+  apply X_pow_sub_C_irreducible_of_odd ht
+  intro q hq hqt b hb
+  have hqodd : Odd q := by
+    rcases hq.eq_two_or_odd' with rfl | h
+    · exact absurd hqt (by rw [Nat.odd_iff] at ht; omega)
+    · exact h
+  apply hodd q hq hqt (-Algebra.norm K b)
+  -- Norm of the base root: `N(x) = (−1)^m·(−a) = −a` since `m` is even.
+  have hpb := Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly
+    (IntermediateField.adjoin.powerBasis hInt)
+  rw [IntermediateField.adjoin.powerBasis_gen, IntermediateField.adjoin.powerBasis_dim,
+    IntermediateField.minpoly_gen, hx, natDegree_X_pow_sub_C, hm.neg_one_pow, one_mul,
+    coeff_sub, coeff_X_pow, if_neg (Ne.symm hm0), coeff_C_zero, zero_sub] at hpb
+  -- `hpb : Algebra.norm K (AdjoinSimple.gen K x) = -a`.  Transfer through `b^q = x`.
+  calc (-Algebra.norm K b) ^ q
+      = -(Algebra.norm K b ^ q) := hqodd.neg_pow _
+    _ = -(Algebra.norm K (b ^ q)) := by rw [map_pow]
+    _ = -(Algebra.norm K (IntermediateField.AdjoinSimple.gen K x)) := by rw [hb]
+    _ = a := by rw [hpb]; ring
+
+-- ============================================================
 -- PART 6: The full criterion (even sufficiency = the open Mathlib gap)
 -- ============================================================
 
@@ -562,44 +613,60 @@ theorem vahlen_capelli_four_suff {K : Type*} [Field K] {a : K}
 
 * **Necessity** (`⟹`) is fully proved for all `n` as `vahlen_capelli_necessity`.
 * **Sufficiency** for **odd** `n` is `vahlen_capelli_odd` (complete, via Mathlib).
-* **Sufficiency** for **even** `n` — conditions (1),(2) ⟹ irreducible when `4 ∣ n` — is the
-  hard Capelli theorem (Lang, *Algebra*, VI §9), currently an open `TODO` in Mathlib. The
-  base cases `n = 2` (`X_pow_sub_C_irreducible_iff_of_prime`) and `n = 4`
-  (`vahlen_capelli_four_suff`) are now proved; the **sole remaining `sorry`** is the higher
-  2-power regime **even `n ≥ 6`**. Both directions of the odd case and the necessity of the
-  even case are fully machine-checked.
+* **Sufficiency** for **even** `n` — conditions (1),(2) ⟹ irreducible — is the hard Capelli
+  theorem (Lang, *Algebra*, VI §9), currently an open `TODO` in Mathlib. Writing
+  `n = 2^k · t` with `t` odd, the odd part `t` is handled by the norm-transfer reduction
+  `vahlen_capelli_even_mul_odd`, leaving only the pure `2`-power base `X^(2^k) − C a`. The
+  base cases `k = 1` (`n = 2`, prime) and `k = 2` (`n = 4`, `vahlen_capelli_four_suff`) are
+  proved, so **every even `n` with `8 ∤ n` is fully discharged**. The **sole remaining
+  `sorry`** is the higher `2`-power regime **`8 ∣ n`** (`k ≥ 3`). Both directions of the odd
+  case and the necessity of the even case are fully machine-checked.
 
-Proof sketch for the remaining step (standard reduction, cf. Lang VI §9):
-write `n = 2^k · t` with `t` odd. The odd part is handled by `vahlen_capelli_odd`
-applied after the substitution `X ↦ X^{2^k}`; multiplicativity of irreducibility of
-`X^s − C a` under coprime factorisations of the exponent then reduces to `n = 2^k`.
-For `n = 2^k` one argues by induction on `k`: the inductive obstruction is precisely the
-`−4b⁴` factorisation captured by `sophie_germain`, and condition (2) rules it out. -/
+Proof sketch for the remaining step (`8 ∣ n`, cf. Lang VI §9): for the pure `2`-power base
+`X^(2^k) − C a` one argues by induction on `k`; the inductive obstruction is precisely the
+`−4b⁴` factorisation captured by `sophie_germain`, and condition (2) rules it out. Once that
+base is available for all `k`, `vahlen_capelli_even_mul_odd` already assembles the general
+even case. -/
 theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
     Irreducible (X ^ n - C a) ↔ VahlenCapelliCond K n a := by
   constructor
   · exact vahlen_capelli_necessity hn
   · intro hcond
-    rcases Nat.even_or_odd n with _he | ho
+    rcases Nat.even_or_odd n with he | ho
     · -- even sufficiency
-      by_cases h2 : n = 2
-      · -- base case n = 2 (prime exponent): the 4·K⁴ obstruction cannot occur since 4 ∤ 2,
-        -- so the criterion collapses to condition (1) at p = 2, i.e. `a` is not a square.
-        -- This is Mathlib's prime-exponent Kummer criterion `X_pow_sub_C_irreducible_iff_of_prime`.
-        subst h2
-        have hp2 : Nat.Prime 2 := Nat.prime_two
-        exact (X_pow_sub_C_irreducible_iff_of_prime hp2).mpr (hcond.1 2 hp2 (dvd_refl 2))
-      · by_cases h4 : n = 4
-        · -- base case `n = 4` (`4 ∣ n`, prime-power `2²`): now discharged by the
-          -- Sophie-Germain / Capelli quartic argument `vahlen_capelli_four_suff`.
-          subst h4
-          exact vahlen_capelli_four_suff
-            (hcond.1 2 Nat.prime_two (by norm_num))
-            (hcond.2 (by norm_num))
-        · -- even `n ≥ 6`: the genuine remaining open gap (Lang VI §9 / Mathlib TODO —
-          -- higher 2-power exponents, requiring the coprime-multiplicativity reduction on
-          -- top of the `n = 4` base case proved above).
-          sorry
+      by_cases h8 : 8 ∣ n
+      · -- `8 ∣ n`: the genuine remaining open gap (Lang VI §9 / Mathlib TODO — pure
+        -- `2`-power exponents `2^k` with `k ≥ 3`, needing the induction on the `−4b⁴`
+        -- obstruction beyond the `n = 4` base case).
+        sorry
+      · by_cases h4 : 4 ∣ n
+        · -- `4 ∣ n` but `8 ∤ n` ⇒ `v₂(n) = 2` ⇒ `n = 4·t` with `t` odd.  The base
+          -- `X⁴ − C a` is `vahlen_capelli_four_suff`; the odd part `t` is transferred by
+          -- `vahlen_capelli_even_mul_odd`.  Covers `n = 12, 20, 28, …`.
+          obtain ⟨t, rfl⟩ := h4
+          have ht : Odd t := by
+            rcases Nat.even_or_odd t with ⟨s, rfl⟩ | ho
+            · exact absurd (⟨s, by ring⟩ : (8 : ℕ) ∣ 4 * (s + s)) h8
+            · exact ho
+          have hbase : Irreducible (X ^ 4 - C a : K[X]) :=
+            vahlen_capelli_four_suff
+              (hcond.1 2 Nat.prime_two ⟨2 * t, by ring⟩)
+              (hcond.2 ⟨t, rfl⟩)
+          exact vahlen_capelli_even_mul_odd (by decide) (by norm_num) ht hbase
+            (fun q hq hqt b => hcond.1 q hq (hqt.trans ⟨4, by ring⟩) b)
+        · -- `4 ∤ n` and `n` even ⇒ `v₂(n) = 1` ⇒ `n = 2·t` with `t` odd.  The base
+          -- `X² − C a` is the prime case (`a` not a square); the odd part `t` is
+          -- transferred by `vahlen_capelli_even_mul_odd`.  Covers `n = 6, 10, 14, …`.
+          obtain ⟨t, rfl⟩ := even_iff_two_dvd.mp he
+          have ht : Odd t := by
+            rcases Nat.even_or_odd t with ⟨s, rfl⟩ | ho
+            · exact absurd (⟨s, by ring⟩ : (4 : ℕ) ∣ 2 * (s + s)) h4
+            · exact ho
+          have hbase : Irreducible (X ^ 2 - C a : K[X]) :=
+            (X_pow_sub_C_irreducible_iff_of_prime Nat.prime_two).mpr
+              (hcond.1 2 Nat.prime_two ⟨t, rfl⟩)
+          exact vahlen_capelli_even_mul_odd (by decide) (by norm_num) ht hbase
+            (fun q hq hqt b => hcond.1 q hq (hqt.trans ⟨2, by ring⟩) b)
     · exact (vahlen_capelli_odd ho).mpr hcond
 
 end CubeRoot3IrrationalOQ02OQ03
