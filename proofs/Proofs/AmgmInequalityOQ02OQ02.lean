@@ -442,12 +442,12 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
   set AD := (b + a) * (d + c) with hAD_def
   set B2 := (c + b) ^ 2 with hB2_def
   have hAD_nn : 0 ≤ AD := by
-    unfold_let AD; nlinarith [mul_nonneg ha_nn hd_nn, mul_nonneg hb_nn hc_nn]
+    simp only [hAD_def]; nlinarith [mul_nonneg ha_nn hd_nn, mul_nonneg hb_nn hc_nn]
   -- binom_ineq ↔ c²·AD ≥ bd·B2
   have h_c2AD_ge_bdB2 : c ^ 2 * AD ≥ b * d * B2 := by nlinarith [h_binom]
   -- Algebraic identity gives dual: b²·AD ≥ ac·B2
   have h_binom_symm : (c ^ 2 - b ^ 2) * AD = (b * d - a * c) * B2 := by
-    unfold_let AD B2; ring
+    simp only [hAD_def, hB2_def]; ring
   have h_b2AD_ge_acB2 : b ^ 2 * AD ≥ a * c * B2 := by
     nlinarith [h_c2AD_ge_bdB2, h_binom_symm]
   -- Positivity of binomial coefficients
@@ -465,7 +465,7 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
       mul_nonneg (mul_nonneg hekm1_nn hekp1_nn) (by nlinarith [h_c2AD_ge_bdB2])
     have h_sum : (ek ^ 2 * (b * d) - ekm1 * ekp1 * c ^ 2) * AD +
         ekm1 * ekp1 * (c ^ 2 * AD - b * d * B2) =
-        b * d * (ek ^ 2 * AD - ekm1 * ekp1 * B2) := by unfold_let AD B2; ring
+        b * d * (ek ^ 2 * AD - ekm1 * ekp1 * B2) := by simp only [hAD_def, hB2_def]; ring
     by_contra h_neg; push_neg at h_neg
     linarith [mul_neg_of_pos_of_neg (mul_pos hb_pos hd_pos) (by linarith :
       ek ^ 2 * AD - ekm1 * ekp1 * B2 < 0)]
@@ -478,7 +478,7 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
       mul_nonneg (mul_nonneg hekm2_nn hek_nn) (by nlinarith [h_b2AD_ge_acB2])
     have h_sum : (ekm1 ^ 2 * (a * c) - ekm2 * ek * b ^ 2) * AD +
         ekm2 * ek * (b ^ 2 * AD - a * c * B2) =
-        a * c * (ekm1 ^ 2 * AD - ekm2 * ek * B2) := by unfold_let AD B2; ring
+        a * c * (ekm1 ^ 2 * AD - ekm2 * ek * B2) := by simp only [hAD_def, hB2_def]; ring
     by_contra h_neg; push_neg at h_neg
     linarith [mul_neg_of_pos_of_neg (mul_pos ha_pos hc_pos) (by linarith :
       ekm1 ^ 2 * AD - ekm2 * ek * B2 < 0)]
