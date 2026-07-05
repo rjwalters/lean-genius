@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "sylvester-sequence-oq-01-oq-02",
+    "range": { "startLine": 4, "endLine": 46 },
+    "type": "concept",
+    "title": "How Fast Does Sylvester's Sequence Grow?",
+    "content": "The parent entry used only the crude bound $a_n \\ge 2$ — enough for coprimality but silent on growth. Since $a_{n+1} = a_n^2 - a_n + 1$ is within $1$ of $a_n^2$, the sequence grows by near-squaring and is doubly-exponential. This entry proves the clean lower bound $a_n \\ge 2^{2^{n-1}}$ for $n \\ge 1$ and, as a corollary, quantifies the convergence rate of the Egyptian-fraction identity $\\sum 1/a_k = 1$. The mathematical crux, flagged in the docstring, is that the obvious induction does not close — one must prove a strengthened statement.",
+    "mathContext": "$a_n \\ge 2^{2^{n-1}} \\quad (n \\ge 1), \\qquad a_{n+1} = a_n^2 - a_n + 1.$",
+    "significance": "key",
+    "relatedConcepts": ["doubly-exponential growth", "recurrence sequences", "Egyptian fractions"],
+    "prerequisites": ["mathematical induction", "quadratic recurrences"]
+  },
+  {
+    "id": "ann-invariant",
+    "proofId": "sylvester-sequence-oq-01-oq-02",
+    "range": { "startLine": 52, "endLine": 80 },
+    "type": "lemma",
+    "title": "The Strengthened +1 Invariant",
+    "content": "The heart of the entry. The naive induction $a_n \\ge b_n$ with $b_n = 2^{2^{n-1}}$ (so $b_{n+1} = b_n^2$) fails: the step needs $a_{n+1} = a_n^2 - a_n + 1 \\ge b_n^2$, but at the tight point $a_n = b_n$ the value $b_n^2 - b_n + 1$ is strictly below $b_n^2$ — the $-a_n$ term wins. The fix is to prove MORE: $a_{n+1} \\ge b_{n+1} + 1$, i.e. $2^{2^n} + 1 \\le a_{n+1}$. With $B = 2^{2^n}$ and $a \\ge B+1$, the step $a^2 - a + 1 \\ge (B+1)^2 - (B+1) + 1 = B^2 + B + 1 \\ge B^2 + 1 = 2^{2^{n+1}} + 1$ is self-sustaining. The Lean proof works in $\\mathbb{Z}$ (via `syl_cast_succ`, dodging truncated $\\mathbb{N}$ subtraction), rewrites $2^{2^{n+1}} = B^2$ with `pow_succ`/`pow_mul`, and lets `nlinarith` close the degree-2 inequality with the hint `sq_nonneg (a - B - 1)`.",
+    "mathContext": "$a \\ge B + 1 \\ \\Rightarrow\\ a^2 - a + 1 \\ge B^2 + B + 1 \\ge B^2 + 1.$",
+    "significance": "key",
+    "relatedConcepts": ["strengthening the induction hypothesis", "sum of squares", "nlinarith", "ℕ→ℤ casting"],
+    "prerequisites": ["induction with a stronger hypothesis", "Positivstellensatz certificates"]
+  },
+  {
+    "id": "ann-bound",
+    "proofId": "sylvester-sequence-oq-01-oq-02",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "theorem",
+    "title": "The Doubly-Exponential Lower Bound",
+    "content": "Specializing the strengthened invariant to $n \\ge 1$: write $n = m+1$, so the target $2^{2^{n-1}} \\le a_n$ becomes $2^{2^m} \\le a_{m+1}$, which follows from $2^{2^m} + 1 \\le a_{m+1}$ by dropping the $+1$ (`Nat.le_succ`, `le_trans`). Numerically: $a_1 \\ge 2, a_2 \\ge 4, a_3 \\ge 16, a_4 \\ge 256$ against the true values $3, 7, 43, 1807$.",
+    "mathContext": "$2^{2^{n-1}} \\le 2^{2^{n-1}} + 1 \\le a_n.$",
+    "significance": "key",
+    "relatedConcepts": ["doubly-exponential growth", "lower bounds"],
+    "prerequisites": ["natural-number subtraction"]
+  },
+  {
+    "id": "ann-rate",
+    "proofId": "sylvester-sequence-oq-01-oq-02",
+    "range": { "startLine": 88, "endLine": 107 },
+    "type": "theorem",
+    "title": "Doubly-Exponential Convergence Rate",
+    "content": "An application tying growth to the Egyptian-fraction identity. The parent proved $\\sum_{k\\le n} 1/a_k = 1 - 1/(a_{n+1}-1)$, so the truncation error is exactly $1/(a_{n+1}-1)$. Since the strengthened invariant gives $a_{n+1} - 1 \\ge 2^{2^n}$, `one_div_le_one_div_of_le` yields $1 - \\sum_{k\\le n} 1/a_k \\le 1/2^{2^n}$: the greedy expansion of $1$ converges doubly-exponentially fast. This is the quantitative statement the sibling entry oq-01-oq-01 explicitly listed as its open question.",
+    "mathContext": "$1 - \\sum_{k\\le n} \\tfrac{1}{a_k} = \\tfrac{1}{a_{n+1}-1} \\le \\tfrac{1}{2^{2^n}}.$",
+    "significance": "key",
+    "relatedConcepts": ["convergence rate", "Egyptian fractions", "reciprocal bounds"],
+    "prerequisites": ["monotonicity of reciprocals", "telescoping closed form"]
+  }
+]
