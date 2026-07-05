@@ -38,13 +38,25 @@
   {
     "id": "ann-antitoneoq02020q01-identify",
     "proofId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02-oq-01",
-    "range": { "startLine": 74, "endLine": 95 },
+    "range": { "startLine": 68, "endLine": 81 },
     "type": "insight",
-    "title": "Identification by uniqueness of limits, and the sharp enclosure",
-    "content": "generalizedEuler_one_div_eq_eulerMascheroniConstant: tendsto_defect antitoneOn_one_div one_div_nonneg_on gives Tendsto (defect (1/·)) atTop (𝓝 (generalizedEuler (1/·))); rewriting defect (1/·) to fun n => harmonic n − log(n+1) (funext defect_one_div_eq) makes it literally the sequence of Real.tendsto_harmonic_sub_log_add_one (→ γ), so tendsto_nhds_unique equates the two limits: generalizedEuler (1/·) = γ. Because the sequences are equal (not merely asymptotic), no squeeze or error estimate is needed. generalizedEuler_one_div_mem_Ioo then sharpens the parent's crude [0, 1] enclosure to γ ∈ (1/2, 2/3) using Mathlib's numeric bounds. #print axioms confirms only propext / Classical.choice / Quot.sound.",
-    "mathContext": "$\\mathrm{generalizedEuler}(1/\\cdot)=\\gamma\\in(\\tfrac12,\\tfrac23)$ by $\\mathrm{tendsto\\_nhds\\_unique}$.",
+    "title": "Identification by uniqueness of limits: generalizedEuler(1/·) = γ",
+    "content": "generalizedEuler_one_div_eq_eulerMascheroniConstant, the main theorem. tendsto_defect antitoneOn_one_div one_div_nonneg_on gives Tendsto (defect (1/·)) atTop (𝓝 (generalizedEuler (1/·))); rewriting defect (1/·) to fun n => harmonic n − log(n+1) (funext defect_one_div_eq) makes it literally the sequence of Real.tendsto_harmonic_sub_log_add_one, which converges to γ. Hausdorff uniqueness of limits (tendsto_nhds_unique) then equates the two limits: generalizedEuler (1/·) = γ. Because the sequences are equal on the nose — not merely asymptotic — no squeeze or error estimate is needed; the identification is exact.",
+    "mathContext": "$\\mathrm{generalizedEuler}(1/\\cdot)=\\gamma$ by $\\mathrm{tendsto\\_nhds\\_unique}$ on two convergent sequences that are termwise equal.",
     "significance": "key",
-    "relatedConcepts": ["tendsto_nhds_unique", "Real.tendsto_harmonic_sub_log_add_one", "uniqueness of limits", "eulerMascheroniConstant bounds", "value identification"],
+    "relatedConcepts": ["tendsto_nhds_unique", "Real.tendsto_harmonic_sub_log_add_one", "uniqueness of limits", "value identification"],
     "prerequisites": ["the parent tendsto_defect", "Mathlib's sequence convergence to γ", "Hausdorff uniqueness of limits"]
+  },
+  {
+    "id": "ann-antitoneoq02020q01-enclosure",
+    "proofId": "antitone-integral-sum-comparison-oq-01-oq-02-oq-02-oq-01",
+    "range": { "startLine": 83, "endLine": 95 },
+    "type": "concept",
+    "title": "Sharp enclosure corollary: γ ∈ (1/2, 2/3)",
+    "content": "generalizedEuler_one_div_mem_Ioo sharpens the parent's crude abstract bound generalizedEuler f ∈ [0, f 1] = [0, 1] into the tight numeric interval generalizedEuler (1/·) = γ ∈ (1/2, 2/3). It simply rewrites by the identification theorem and applies Mathlib's numeric bounds Real.one_half_lt_eulerMascheroniConstant and Real.eulerMascheroniConstant_lt_two_thirds. The trailing #print axioms on both results confirms the whole development rests only on propext / Classical.choice / Quot.sound — no sorry, no extra axioms.",
+    "mathContext": "$\\gamma \\in \\left(\\tfrac12, \\tfrac23\\right)$, sharpening the parent enclosure $[0,1]$ once the value is pinned to $\\gamma$.",
+    "significance": "supporting",
+    "relatedConcepts": ["eulerMascheroniConstant bounds", "Set.Ioo enclosure", "corollary of value identification", "axiom audit"],
+    "prerequisites": ["the identification theorem", "Mathlib's numeric bounds on γ"]
   }
 ]
