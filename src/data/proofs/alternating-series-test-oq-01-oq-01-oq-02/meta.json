@@ -66,7 +66,8 @@
       "A finite non-monotone head is irrelevant to the asymptotic error: shifting the index past the threshold M turns the eventually-antitone problem into the globally-antitone parent problem on the tail",
       "The exact splitting S_{n+M} = S_M + (-1)^M T_n means the truncation errors of the full and shifted series are literally equal in modulus, |S_N − l| = |T_{N-M} − t|, so the parent's bounds transfer with no slack",
       "Convergence is a consequence, not a hypothesis: eventual antitonicity plus f → 0 already supplies the limit l = S_M + (-1)^M t",
-      "The eventual hypothesis is strictly more general — the bumped witness antitone only from index 1 is covered here but not by the parent theorem"
+      "The eventual hypothesis is strictly more general — the bumped witness antitone only from index 1 is covered here but not by the parent theorem",
+      "Generalization is certified, not merely asserted: showing the eventual hypothesis is STRICTLY weaker than the parent's global one demands a concrete sequence living in the gap between them. The bumped profile b_0 = 0, b_i = 1/(i+1) supplies it — the parent theorem provably fails on it (not_antitone_bumped) while this trap provably holds (with M = 1) — and the minimal one-point defect b_0 = 0 < 1/2 = b_1 pins the separation down exactly"
     ],
     "prerequisites": [
       "Convergence of sequences and series in ℝ",
@@ -77,29 +78,45 @@
   },
   "sections": [
     {
-      "id": "shift-reduction",
-      "title": "The Shift Reduction",
+      "id": "shifted-coefficients",
+      "title": "The Shifted-Tail Coefficients",
       "startLine": 1,
-      "endLine": 76,
-      "summary": "The tail coefficients g j = f (j+M) are globally antitone and tend to 0, and the partial sums split exactly as S_{n+M} = S_M + (-1)^M T_n.",
-      "mathContext": "$S_{n+M} = S_M + (-1)^M \\sum_{j<n} (-1)^j f(j+M)$.",
-      "description": "Imports, module docstring, and setup, then the shifted-tail coefficients `g j = f (j + M)` and the **shift reduction**: an eventually-antitone, eventually-null `f` is handled by applying the parent alternating-series test to the shifted tail `g`."
+      "endLine": 56,
+      "summary": "Imports, module docstring, setup, and the shifted-tail coefficients g j = f (j+M): antitone_shift shows they inherit global antitonicity from f's eventual antitonicity, and tendsto_shift_zero shows they still tend to 0 — the setup that lets the globally-antitone parent theorem apply to the tail.",
+      "mathContext": "$g_j = f(j+M),\\quad \\text{Antitone } g,\\quad g \\to 0$.",
+      "description": "An eventually-antitone, eventually-null `f` is reduced to the parent alternating-series test by passing to the shifted tail `g j = f (j + M)`, which is globally antitone and null."
+    },
+    {
+      "id": "shift-splitting",
+      "title": "The Shift Splitting",
+      "startLine": 58,
+      "endLine": 75,
+      "summary": "partialSum_shift: the exact identity S_{n+M} = S_M + (-1)^M T_n linking the full series to its shifted tail T_n = ∑_{j<n} (-1)^j g j, proved by induction on n via (-1)^{n+M} = (-1)^M (-1)^n. This splitting is the mechanism of the whole reduction.",
+      "mathContext": "$S_{n+M} = S_M + (-1)^M \\sum_{j<n} (-1)^j f(j+M)$."
     },
     {
       "id": "convergence-and-trap",
       "title": "Derived Convergence and the Eventual Trap",
-      "startLine": 78,
+      "startLine": 76,
       "endLine": 148,
-      "summary": "Convergence S_N → l = S_M + (-1)^M t is derived from the hypotheses; then |S_N − l| = |T_{N-M} − t| feeds the parent trap to give f N − f (N+1) ≤ |S_N − l| ≤ f N for all N ≥ M.",
+      "summary": "Convergence S_N → l = S_M + (-1)^M t is derived from the hypotheses (tendsto_partialSum_of_eventually_antitone, not assumed); then the identity |S_N − l| = |T_{N-M} − t| feeds the parent trap to give f N − f (N+1) ≤ |S_N − l| ≤ f N for all N ≥ M, with the upper and lower halves extracted as standalone lemmas.",
       "mathContext": "$f_N - f_{N+1} \\le |S_N - l| \\le f_N \\quad (N \\ge M)$."
     },
     {
-      "id": "strictly-weaker-witness",
-      "title": "The Hypothesis Is Strictly Weaker",
+      "id": "bumped-witness",
+      "title": "A Strictly-Weaker-Hypothesis Witness",
       "startLine": 150,
-      "endLine": 206,
-      "summary": "The bumped sequence b 0 = 0, b i = 1/(i+1) is antitone on [1,∞) but not on ℕ; the eventual trap applies to it with M = 1, witnessing genuine generalization beyond the parent.",
+      "endLine": 190,
+      "summary": "The bumped sequence b 0 = 0, b i = 1/(i+1) is constructed and shown antitone on [1,∞) (antitoneOn_bumped) and null (tendsto_bumped_zero) but not globally antitone (not_antitone_bumped, since b 0 = 0 < 1/2 = b 1) — the concrete separator sitting in the gap between the eventual and global hypotheses.",
       "mathContext": "$b_0 = 0 < \\tfrac12 = b_1$, yet $b$ is antitone on $[1,\\infty)$."
+    },
+    {
+      "id": "capstone",
+      "title": "Capstone: The Trap Beyond the Parent",
+      "startLine": 192,
+      "endLine": 206,
+      "summary": "bumped_error_trapped assembles the pieces: ∑ (-1)^i b i converges and its error is trapped for every N ≥ 1 — an instance the parent theorem provably cannot reach — witnessing that the eventually-antitone trap is a genuine generalization.",
+      "mathContext": "$b_N - b_{N+1} \\le |S_N - l| \\le b_N \\quad (N \\ge 1)$."
     }
   ],
   "mainTheorems": [
