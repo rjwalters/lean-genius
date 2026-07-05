@@ -74,7 +74,8 @@
   "conclusion": {
     "summary": "The classical sum-of-squared-medians identity 4(mₐ² + m_b² + m_c²) = 3(a² + b² + c²) is proved coordinate-free in an arbitrary real inner-product affine space by summing the parent's metric median-length formula over the three vertices. Verified, 0 axioms, 0 sorries, no decision procedures. Directly answers the openQuestion posed by law-of-cosines-oq-07.",
     "openQuestions": [
-      "The centroid g (intersection of the medians) satisfies dist(g,a)² + dist(g,b)² + dist(g,c)² = ⅓(a² + b² + c²), and more generally for any point p, ∑ dist(p, vertex)² = 3·dist(p,g)² + ∑ dist(g, vertex)² (Leibniz / Lagrange identity). Can the centroid version be derived from this median-sum entry together with the 2:1 median-ratio?"
+      "The centroid g (intersection of the medians) satisfies dist(g,a)² + dist(g,b)² + dist(g,c)² = ⅓(a² + b² + c²), and more generally for any point p, ∑ dist(p, vertex)² = 3·dist(p,g)² + ∑ dist(g, vertex)² (Leibniz / Lagrange identity). Can the centroid version be derived from this median-sum entry together with the 2:1 median-ratio?",
+      "Because the proof is coordinate-free in an arbitrary real inner-product affine space, it should lift almost verbatim to a simplex. For a tetrahedron the four medians (each joining a vertex to the centroid of the opposite face) satisfy ∑ mᵢ² = (4/9)·∑ (edge)² over the six edges. Can this median-sum entry be generalized to an n-simplex, where the medians from the n+1 vertices to opposite-face centroids obey ∑ mᵢ² = ((n+1)/n²)·∑ (edge)²?"
     ],
     "implications": "Shows that a global metric relation across all three medians of a triangle is a one-line consequence of the single-median Apollonius identity, and that — like its parent — it lives naturally at the level of inner-product affine spaces rather than coordinatised side lengths."
   },
