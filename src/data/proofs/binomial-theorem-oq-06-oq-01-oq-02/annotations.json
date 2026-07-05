@@ -1,0 +1,69 @@
+[
+  {
+    "id": "ann-neg-one-pow-sub",
+    "proofId": "binomial-theorem-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 63,
+      "endLine": 79
+    },
+    "type": "theorem",
+    "title": "The Parity Sign Identity",
+    "content": "The sign-reversing core of the involution: for odd n and k ≤ n, (-1)^{n-k} = -(-1)^k over ℤ. The proof is algebraic rather than a parity case-split: since (n-k)+k = n is odd, (-1)^{n-k}·(-1)^k = (-1)^n = -1, and since ((-1)^k)^2 = 1, multiplying through by (-1)^k isolates (-1)^{n-k} = -(-1)^k.",
+    "mathContext": "$n$ odd, $k \\le n \\implies (-1)^{n-k} = -(-1)^k$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity",
+      "powers of -1",
+      "sign reversal"
+    ],
+    "prerequisites": [
+      "Odd.neg_one_pow",
+      "Even.neg_one_pow",
+      "Nat.sub_add_cancel"
+    ]
+  },
+  {
+    "id": "ann-alternating-choose-sq-odd-reflect",
+    "proofId": "binomial-theorem-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 82,
+      "endLine": 112
+    },
+    "type": "theorem",
+    "title": "The Vanishing Theorem via Reflection",
+    "content": "The main result: ∑_{k=0}^{n} (-1)^k C(n,k)^2 = 0 for odd n, proved by the fixed-point-free sign-reversing involution k ↦ n-k. Finset.sum_range_reflect rewrites the sum over k as the sum over n-k; Nat.choose_symm keeps the squared binomial fixed, and the parity identity makes each reflected term the negation of the original. Thus the sum equals its own negation (S = -S) and vanishes over ℤ. No polynomials or generating functions appear — this is the purely combinatorial companion to the parent's coefficient-extraction proof.",
+    "mathContext": "$\\sum_{k=0}^{n} (-1)^k \\binom{n}{k}^2 = 0$ for odd $n$",
+    "significance": "central",
+    "relatedConcepts": [
+      "sign-reversing involution",
+      "reflection of finite sums",
+      "alternating binomial sums",
+      "fixed-point-free pairing"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_reflect",
+      "Nat.choose_symm",
+      "Finset.mul_sum"
+    ]
+  },
+  {
+    "id": "ann-numerical-checks",
+    "proofId": "binomial-theorem-oq-06-oq-01-oq-02",
+    "range": {
+      "startLine": 114,
+      "endLine": 120
+    },
+    "type": "theorem",
+    "title": "Numerical Sanity Checks",
+    "content": "Kernel-decidable confirmations of the odd cases n=3 (1 - 9 + 9 - 1 = 0) and n=5 (1 - 25 + 100 - 100 + 25 - 1 = 0). These use `decide` (not `native_decide`), so they introduce no Lean.ofReduceBool axiom and the entry remains verified from the foundational axioms only.",
+    "mathContext": "$\\sum_{k=0}^{3}(-1)^k\\binom{3}{k}^2 = \\sum_{k=0}^{5}(-1)^k\\binom{5}{k}^2 = 0$",
+    "significance": "illustrative",
+    "relatedConcepts": [
+      "decidability",
+      "numerical verification"
+    ],
+    "prerequisites": [
+      "Finset.sum"
+    ]
+  }
+]
