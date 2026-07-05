@@ -414,3 +414,31 @@ concern is eliminated. Every API name/line was read from source this session.
    unifier if it complains.
 2. Wire `undirected_euler_circuit_sufficient` → `undirected_euler_circuit_sufficient'`.
 3. Or resubmit the main `sorry` to Aristotle once its backend recovers.
+
+---
+
+## SESSION 2026-07-04 (12th) — ✅ VERIFIED & INTEGRATED (blackout ended)
+
+Docker recovered (host disk freed). Built the extremal Sub-lemma C **for real**:
+
+- Dropped the 4 draft theorems into `proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean`
+  (namespace `UndirectedEulerDev`): `exists_max_length_trail`, `max_trail_is_closed`,
+  `closed_max_trail_is_eulerian`, `undirected_euler_circuit_sufficient'`. Added
+  `import …Connectivity.WalkDecomp`. **Build clean, 0 sorry.**
+- Wired `UndirectedEuler.undirected_euler_circuit_sufficient` (in the main entry file) to
+  delegate to `undirected_euler_circuit_sufficient'` via
+  `import Proofs.KonigsbergOQ02OQ01OQ02OQ01Dev`. Main file builds clean, **sorry gone**.
+  `undirected_euler_circuit_iff` (full characterization) is now complete.
+
+### The one real bug inspection missed
+`obtain … := exists_max_length_trail` stuck on `Nonempty ?m.24` (typeclass instance
+problem: the `[Nonempty V]` argument can't resolve while V/G are still metavariables).
+Fix: `exists_max_length_trail (G := G)`. The blueprint's flagged Step-2 `Sym2.exists`
+unifier risk turned out **fine** — compiled verbatim.
+
+### Build recipe (record for the env)
+`cd <worktree>; LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ02OQ01OQ02OQ01`
+- MUST run the worktree's OWN docker-build.sh (REPO_ROOT is derived from the script path).
+- `LEAN_SKIP_CACHE=true` bypasses the corrupt `lake exe cache get` `.ltar` downloads and
+  uses the 7734 Mathlib oleans already in the `lean-mathlib-packages` volume.
+- Exit 135 (SIGBUS) on olean load is intermittent — retry.

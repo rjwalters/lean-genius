@@ -42,13 +42,19 @@ symmetric: the relevant parity invariant is `Even (G.degree v)` rather than the
 
 ## Status
 
-The main theorem currently carries a single `sorry` and is submitted to Aristotle
-for proof search as a KNOWN classical result. The statement is pinned here so the
-gallery entry can track progress and integrate a completed proof.
+**Complete (0 sorry).** The main theorem `undirected_euler_circuit_sufficient` is
+proved by delegating to `UndirectedEulerDev.undirected_euler_circuit_sufficient'`
+(in `KonigsbergOQ02OQ01OQ02OQ01Dev.lean`), the native `SimpleGraph.Walk` **extremal**
+proof of undirected Hierholzer sufficiency: take a trail of maximum length; it is
+closed (Step 1, via edge-maximality Sub-lemma A) and Eulerian (Step 2, via a
+boundary-crossing dart + rotate + concat). Together with the necessity direction,
+`undirected_euler_circuit_iff` gives Euler's full characterization, machine-checked
+against `leanprover/lean4:v4.26.0` Mathlib.
 -/
 import Mathlib.Combinatorics.SimpleGraph.Trails
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 import Mathlib.Tactic
+import Proofs.KonigsbergOQ02OQ01OQ02OQ01Dev
 
 open SimpleGraph SimpleGraph.Walk
 
@@ -65,8 +71,8 @@ This is the converse of `eulerian_circuit_forall_even` (in
 Eulerian circuits for connected undirected graphs. -/
 theorem undirected_euler_circuit_sufficient
     (hconn : G.Connected) (heven : ∀ v, Even (G.degree v)) :
-    ∃ (u : V) (p : G.Walk u u), p.IsEulerian := by
-  sorry
+    ∃ (u : V) (p : G.Walk u u), p.IsEulerian :=
+  UndirectedEulerDev.undirected_euler_circuit_sufficient' hconn heven
 
 /-- **Euler's characterization of Eulerian circuits (undirected).**
 For a connected undirected simple graph, an Eulerian circuit exists iff every vertex

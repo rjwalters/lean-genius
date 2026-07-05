@@ -1,26 +1,34 @@
 /-
-# Undirected Hierholzer — development scaffolding (base case)
+# Undirected Hierholzer — native `SimpleGraph.Walk` development (COMPLETE)
 
-Companion development file for `KonigsbergOQ02OQ01OQ02OQ01.lean`, whose main
-theorem `undirected_euler_circuit_sufficient` (the undirected Hierholzer
-sufficiency direction) still carries a single `sorry`.
+Companion development file for `KonigsbergOQ02OQ01OQ02OQ01.lean`. It now supplies a
+**complete, 0-sorry** proof of the undirected Hierholzer sufficiency direction; the
+main theorem `undirected_euler_circuit_sufficient` there delegates to
+`undirected_euler_circuit_sufficient'` below.
 
 Mathlib provides the *necessity* direction only
 (`SimpleGraph.Walk.IsEulerian.even_degree_iff`,
 `SimpleGraph.Walk.IsEulerian.card_odd_degree`); it has **no** existence/Hierholzer
-construction, so sufficiency must be built natively in the `SimpleGraph.Walk` API.
-The `Digraph`-based directed proof in `KonigsbergOQ02OQ01.lean` is **not** reusable
-here: it is built on a bespoke `Digraph` structure with its own `Walk`, `splice`,
+construction, so sufficiency is built natively in the `SimpleGraph.Walk` API here.
+The `Digraph`-based directed proof in `KonigsbergOQ02OQ01.lean` is **not** reusable:
+it is built on a bespoke `Digraph` structure with its own `Walk`, `splice`,
 `removeArcList` and `arcCount`, none of which are `SimpleGraph.Walk` objects.
 
-The standard proof is strong induction on `G.edgeFinset.card`. This file discharges
-the **base case** natively (0 edges ⇒ the trivial `nil` walk is Eulerian); the
-remaining inductive core (a maximal trail is closed, edge-removal preserves the
-all-even-degree invariant, and connectivity lets residual circuits splice in) is the
-~600–1000 line classical construction still to be built or delegated.
+This file assembles the sufficiency proof from:
+* the **base case** (0 edges ⇒ the trivial `nil` walk is Eulerian);
+* Sub-lemma A (`eq_of_isTrail_edgeMaximal`): an edge-maximal trail is closed;
+* Sub-lemma B (`even_degree_deleteEdges_of_closed_trail`): edge removal preserves the
+  all-even-degree invariant (kept for the alternate induction route, off the critical
+  path of the extremal argument);
+* Sub-lemma C (the four `exists_max_length_trail` … `undirected_euler_circuit_sufficient'`
+  theorems): the **extremal** argument — a maximum-length trail is closed (Step 1) and
+  Eulerian (Step 2, via `exists_boundary_dart` + `rotate` + `concat`) — which needs
+  neither strong induction on edge count nor Sub-lemma B.
+All checked against `leanprover/lean4:v4.26.0` Mathlib.
 -/
 import Mathlib.Combinatorics.SimpleGraph.Trails
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
+import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkDecomp
 import Mathlib.Tactic
 
 open SimpleGraph SimpleGraph.Walk
@@ -235,5 +243,116 @@ theorem even_degree_deleteEdges_of_maximal_trail
   obtain rfl : u = v := eq_of_isTrail_edgeMaximal hp (heven v) hmax
   -- Now `p : G.Walk u u` is a closed trail; Sub-lemma B applies verbatim.
   exact even_degree_deleteEdges_of_closed_trail hp heven x
+
+/-! ### Sub-lemma C (undirected Hierholzer sufficiency) — EXTREMAL proof.
+
+Rather than the residual-graph induction (extract closed trail, delete edges via
+Sub-lemma B, recurse, splice), take a trail of **maximum** length. It is closed
+(Step 1, via Sub-lemma A) and Eulerian (Step 2, via a boundary-crossing dart +
+rotate + concat). This route needs neither induction nor Sub-lemma B. -/
+
+/-- Among all trails of `G` (any endpoints) there is one of maximum length.
+Formulated over the `Set ℕ` of achievable lengths, closed by `Nat.sSup_mem` /
+`le_csSup`; the a-priori bound is Mathlib's `IsTrail.length_le_card_edgeFinset`. -/
+theorem exists_max_length_trail
+    [Fintype V] [DecidableRel G.Adj] [Nonempty V] :
+    ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧
+      ∀ (x y : V) (q : G.Walk x y), q.IsTrail → q.length ≤ p.length := by
+  classical
+  have hTne :
+      {n | ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧ p.length = n}.Nonempty := by
+    obtain ⟨w⟩ := (inferInstance : Nonempty V)
+    exact ⟨0, w, w, Walk.nil, IsTrail.nil, rfl⟩
+  have hTbdd :
+      BddAbove {n | ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧ p.length = n} := by
+    refine ⟨G.edgeFinset.card, ?_⟩
+    rintro n ⟨u, v, p, hp, rfl⟩
+    exact hp.length_le_card_edgeFinset
+  obtain ⟨u, v, p, hptrail, hplen⟩ := Nat.sSup_mem hTne hTbdd
+  refine ⟨u, v, p, hptrail, ?_⟩
+  intro x y q hq
+  rw [hplen]
+  exact le_csSup hTbdd ⟨x, y, q, hq, rfl⟩
+
+/-- **Step 1.** A maximum-length trail is closed. Any unused incident edge at the
+endpoint would give a strictly longer `concat`, contradicting maximality; hence the
+endpoint is edge-maximal, and `eq_of_isTrail_edgeMaximal` (Sub-lemma A) closes it. -/
+theorem max_trail_is_closed
+    [Fintype V] [DecidableRel G.Adj]
+    {u v : V} {p : G.Walk u v} (hptrail : p.IsTrail)
+    (heven : ∀ w, Even (G.degree w))
+    (hmax : ∀ (x y : V) (q : G.Walk x y), q.IsTrail → q.length ≤ p.length) :
+    u = v := by
+  classical
+  refine eq_of_isTrail_edgeMaximal hptrail (heven v) ?_
+  intro e heInc
+  by_contra hnot
+  rw [SimpleGraph.mem_incidenceFinset] at heInc
+  obtain ⟨heEdge, hvE⟩ := heInc
+  obtain ⟨z, rfl⟩ : ∃ z, e = s(v, z) :=
+    ⟨Sym2.Mem.other hvE, (Sym2.other_spec hvE).symm⟩
+  have hadj : G.Adj v z := by rwa [← SimpleGraph.mem_edgeSet]
+  have hconcat_trail : (p.concat hadj).IsTrail := by
+    rw [isTrail_def, edges_concat, List.nodup_concat]
+    exact ⟨hnot, hptrail.edges_nodup⟩
+  have := hmax u z (p.concat hadj) hconcat_trail
+  rw [length_concat] at this
+  omega
+
+/-- **Step 2.** A maximum-length (hence closed) trail is Eulerian. If some edge is
+unused, a boundary-crossing dart (`exists_boundary_dart`) yields an unused edge at a
+support vertex `w`; rotate `p` to `w`, `concat` it → a longer trail, contradiction. -/
+theorem closed_max_trail_is_eulerian
+    [Fintype V] [DecidableRel G.Adj]
+    {u : V} {p : G.Walk u u} (hptrail : p.IsTrail) (hconn : G.Connected)
+    (hmax : ∀ (x y : V) (q : G.Walk x y), q.IsTrail → q.length ≤ p.length) :
+    p.IsEulerian := by
+  classical
+  intro e heEdge
+  have hle1 : p.edges.count e ≤ 1 := (List.nodup_iff_count_le_one.mp hptrail.edges_nodup) e
+  rcases Nat.lt_or_ge (p.edges.count e) 1 with hlt | hge
+  · exfalso
+    have hunused : e ∉ p.edges := by
+      rw [← List.count_pos_iff]; omega
+    obtain ⟨a, b, rfl⟩ : ∃ a b, e = s(a, b) := Sym2.exists.mp ⟨e, rfl⟩
+    set Sset : Set V := {x | x ∈ p.support} with hSset
+    obtain ⟨w, z, hadj, hwsupp, hunused_wz⟩ :
+        ∃ w z, G.Adj w z ∧ w ∈ p.support ∧ s(w, z) ∉ p.edges := by
+      by_cases ha : a ∈ p.support
+      · exact ⟨a, b, by rwa [← SimpleGraph.mem_edgeSet], ha, hunused⟩
+      · obtain ⟨q, hq⟩ := hconn.exists_isPath u a
+        have huS : u ∈ Sset := by rw [hSset]; exact p.start_mem_support
+        have haS : a ∉ Sset := by rw [hSset]; exact ha
+        obtain ⟨d, hdmem, hdfst, hdsnd⟩ := q.exists_boundary_dart Sset huS haS
+        refine ⟨d.fst, d.snd, d.adj, hdfst, ?_⟩
+        intro hused
+        exact hdsnd (p.snd_mem_support_of_mem_edges hused)
+    have hrot_trail : (p.rotate hwsupp).IsTrail := hptrail.rotate hwsupp
+    have hrot_edges_rot : (p.rotate hwsupp).edges ~r p.edges := p.rotate_edges hwsupp
+    have hunused_rot : s(w, z) ∉ (p.rotate hwsupp).edges := by
+      intro hmem; exact hunused_wz (hrot_edges_rot.mem_iff.mp hmem)
+    have hconcat_trail : ((p.rotate hwsupp).concat hadj).IsTrail := by
+      rw [isTrail_def, edges_concat, List.nodup_concat]
+      exact ⟨hunused_rot, hrot_trail.edges_nodup⟩
+    have hrot_len : (p.rotate hwsupp).length = p.length := by
+      have := hrot_edges_rot.perm.length_eq
+      rw [length_edges, length_edges] at this; exact this
+    have := hmax w z ((p.rotate hwsupp).concat hadj) hconcat_trail
+    rw [length_concat, hrot_len] at this
+    omega
+  · omega
+
+/-- **Undirected Hierholzer sufficiency (extremal proof).**
+Connected + all-even-degree ⇒ an Eulerian circuit exists. Discharges the `sorry` of
+`UndirectedEuler.undirected_euler_circuit_sufficient`. -/
+theorem undirected_euler_circuit_sufficient'
+    [Fintype V] [DecidableRel G.Adj]
+    (hconn : G.Connected) (heven : ∀ v, Even (G.degree v)) :
+    ∃ (u : V) (p : G.Walk u u), p.IsEulerian := by
+  classical
+  haveI : Nonempty V := hconn.nonempty
+  obtain ⟨u, v, p, hptrail, hmax⟩ := exists_max_length_trail (G := G)
+  obtain rfl : u = v := max_trail_is_closed hptrail heven hmax
+  exact ⟨u, p, closed_max_trail_is_eulerian hptrail hconn hmax⟩
 
 end UndirectedEulerDev

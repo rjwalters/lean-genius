@@ -1,13 +1,18 @@
 /-
 # Sub-lemma C (undirected Hierholzer sufficiency) — EXTREMAL BLUEPRINT
 
-STATUS: verify-ready DRAFT, NOT yet machine-checked (dual-tool blackout:
-Aristotle backend 404 + Docker containerd meta.db I/O error prevent building).
-Every lemma name and signature below was cross-checked against the local
-`leanprover/lean4:v4.26.0` Mathlib checkout at /Users/rwalters/GitHub/mathlib4
-(the same toolchain proofs/ pins). This file lives OUTSIDE `proofs/` so the
-lake glob `Proofs.*` never compiles it; drop the bodies into
-`proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean` once a build host is available.
+STATUS: ✅ VERIFIED & INTEGRATED (2026-07-04). The four theorems below were dropped
+into `proofs/Proofs/KonigsbergOQ02OQ01OQ02OQ01Dev.lean` and compiled clean under
+`leanprover/lean4:v4.26.0` Mathlib in Docker (`Build completed successfully`), 0 sorry.
+The main theorem `UndirectedEuler.undirected_euler_circuit_sufficient` now delegates to
+`undirected_euler_circuit_sufficient'` and is likewise sorry-free.
+ONE build-time fix vs the inspection-only draft: the assembly call
+`exists_max_length_trail` needed an explicit `(G := G)` — otherwise `[Nonempty V]`
+resolution stuck on `Nonempty ?m` (metavariable type argument). Everything else
+compiled verbatim. This file is retained as the design record; the live proof is in
+the Dev file. (11-session dual-tool blackout ended: Docker recovered after the host
+disk was freed; `lake exe cache get` still fails on corrupt `.ltar` downloads, so
+build with `LEAN_SKIP_CACHE=true` against the already-populated packages volume.)
 
 CORRECTIONS (this pass — three bugs an inspection-only "verify-ready" tag missed,
 each fixed against the actual v4.26.0 source, not from memory):
