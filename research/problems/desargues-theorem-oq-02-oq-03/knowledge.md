@@ -94,3 +94,26 @@ Verification blackout 2026-07-04: Docker image build fails (containerd
   (`smul_eq_mul`, `push_neg`, `by_contra`, `abel`) — high confidence, hand-checked.
 - Full geometric converse (Hilbert coordinatization) still deferred — large.
 - Next: verify + promote when infra returns; then general-position uniqueness.
+
+### Session 2026-07-04 (Session 4) — API audit + Part IV elaboration-bug fix
+**Mode**: RESUME · **Outcome**: progress (build-blocked; blackout persists)
+- Re-tested infra: Docker daemon UP but `docker run` still EIO on containerd
+  `meta.db`; Aristotle `prove` still returns "Resource not found". No machine
+  check possible — did a full manual API audit against local mathlib v4.26.0.
+- **API audit (all confirmed present, exact signatures):** `inv_mul_cancel₀
+  (h : a ≠ 0) : a⁻¹ * a = 1`, `Submodule.sub_mem` (protected → qualified in file),
+  `Submodule.subset_span`, `smul_smul (a₁ a₂ b) : a₁•a₂•b = (a₁*a₂)•b`,
+  `one_smul`, `Units.mk0`. The bare `smul_eq_mul` resolves to `_root_.smul_eq_mul
+  {α} [Mul α]` (Group/Action/Defs.lean:72) — **not** the `@[deprecated since
+  2025-12-02]` `Algebra.smul_eq_mul`; so Part III is safe. Every tactic step of
+  `smul_ne_zero'`, `desargues`, and the Part III iff re-traced by hand — sound.
+- **Bug found & fixed (build-blocker):** the Part IV quaternion `example` left
+  `R` unpinned. `NormPersp`'s fields never mention `R`, so it auto-binds only
+  `{M} [AddCommGroup M]` and does *not* fix `R`; `M = Fin 3 → Quaternion ℝ` does
+  not determine `R` either, so `Dep`/`desargues` got a metavariable `R` and
+  `DivisionRing ?R` instance synthesis would fail — the file would not have built
+  at Part IV. Fixed by pinning `Dep (R := Quaternion ℝ) …` and
+  `desargues (R := Quaternion ℝ) …`. (Same unpinned-R class as the session-2 fix;
+  the session-3 rewrite reintroduced it.)
+- Next: `docker-build.sh Proofs.DesarguesTheoremOQ02OQ03` the moment infra
+  returns; if clean, promote to gallery entry. Then general-position uniqueness.
