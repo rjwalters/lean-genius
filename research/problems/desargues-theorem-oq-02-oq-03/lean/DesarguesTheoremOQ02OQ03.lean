@@ -39,15 +39,18 @@ division ring.
 Reference: Artin, *Geometric Algebra* (Desargues ⇔ division ring);
 Hartshorne, *Foundations of Projective Geometry*.
 
-BUILD STATUS: UNVERIFIED. Written during a Docker + Aristotle blackout
-(containerd `meta.db` I/O error on image build; Aristotle MCP returns 404), so
-this file has NOT been machine-checked. It is deliberately placed under
-`research/problems/.../lean/` (outside the `proofs/Proofs/` glob) so it cannot
-break the gallery build. Parts I–II (`nucleus_sum`, `cross_dep`, `cross_eq`,
-`desargues`, `normalize_perspective`) and Part III (`zero_divisor_breaks_-`
-`normalization`, `smul_preserves_nonzero_iff_no_zero_divisors`) are the reviewed
-mathematical core; the Part IV quaternion `example` is an instance-resolution
-demonstration.
+BUILD STATUS: UNVERIFIED. The Docker + Aristotle blackout persists on
+2026-07-04 (containerd `meta.db` I/O error on image build; Aristotle MCP
+`prove_file` returns an error), so this file has NOT been machine-checked. It is
+deliberately placed under `research/problems/.../lean/` (outside the
+`proofs/Proofs/` glob) so it cannot break the gallery build. Parts I–II
+(`nucleus_sum`, `cross_dep`, `cross_eq`, `desargues`, `normalize_perspective`)
+and Part III (`zero_divisor_breaks_normalization`,
+`smul_preserves_nonzero_iff_no_zero_divisors`) are the reviewed mathematical
+core; the Part IV quaternion `example` is an instance-resolution demonstration.
+Part V pins the dichotomy to explicit finite rings (`ZMod 6` negative, `ZMod 5`
+positive) via `decide`; those four `example`s are the one self-certifying part
+of the file (finite `DecidableEq` rings), pending only the full kernel check.
 
 Tags: projective-geometry, desargues, division-ring, non-commutative, modules
 -/
@@ -229,5 +232,51 @@ example (o a a' b b' c c' : Fin 3 → Quaternion ℝ)
     (h : NormPersp o a a' b b' c c') :
     Dep (a - b) (b - c) (c - a) :=
   (desargues o a a' b b' c c' h).1
+
+/-! ## Part V — Concrete witnesses on both sides of the dichotomy
+
+Parts II–III are non-vacuous: small concrete rings realize each side of the
+classical equivalence "Desargues holds in `P(R³)` ⇔ `R` is a division ring". The
+Quaternion example above sits on the positive side as a *non-commutative*
+division ring; the field `ZMod 5` sits there as the commutative case; and
+`ZMod 6`, a non-domain, sits on the negative side where the normalization
+mechanism provably breaks. All four facts below are **decidable** (finite rings,
+`DecidableEq`), so they stand on `decide` — the one part of this file that is
+self-certifying without a heavy build. They pin the abstract `smul_ne_zero'` /
+`zero_divisor_breaks_normalization` machinery to explicit numbers. -/
+
+section Witnesses
+
+/-- **Negative witness.** `ZMod 6` is not a domain: `2 * 3 = 0` with both factors
+    nonzero. So the nonzero scalar `2` sends the nonzero coordinate `3` to `0`,
+    making `zero_divisor_breaks_normalization` non-vacuous and exhibiting a
+    concrete ring where the forward direction's normalization step fails. -/
+example :
+    (2 : ZMod 6) • (3 : ZMod 6) = 0 ∧ (3 : ZMod 6) ≠ 0 ∧ (2 : ZMod 6) ≠ 0 :=
+  zero_divisor_breaks_normalization (2 : ZMod 6) 3 (by decide) (by decide) (by decide)
+
+/-- Consequently the exact `smul_ne_zero'` property the forward direction relies
+    on genuinely **fails** over `ZMod 6`: there are nonzero `α, a` with
+    `α • a = 0`. This is `smul_preserves_nonzero_iff_no_zero_divisors` in its
+    contrapositive, made concrete. -/
+example : ¬ (∀ α a : ZMod 6, α ≠ 0 → a ≠ 0 → α • a ≠ (0 : ZMod 6)) := by
+  intro h
+  obtain ⟨hz, hd, hα⟩ :=
+    zero_divisor_breaks_normalization (2 : ZMod 6) 3 (by decide) (by decide) (by decide)
+  exact h 2 3 hα hd hz
+
+/-- **Positive witness (commutative).** `ZMod 5` is a field, hence a domain, so
+    the forward crux holds pointwise: `2 • 3 = 1 ≠ 0`. -/
+example : (2 : ZMod 5) • (3 : ZMod 5) ≠ 0 := by
+  rw [smul_eq_mul]; decide
+
+/-- Over the domain `ZMod 5` the full `smul_ne_zero'` hypothesis that
+    `desargues` / `normalize_perspective` consume holds for *all* nonzero scalars
+    and coordinates — certified here directly by finite check rather than via the
+    `DivisionRing` instance. -/
+example : ∀ α a : ZMod 5, α ≠ 0 → a ≠ 0 → α • a ≠ (0 : ZMod 5) := by
+  simp only [smul_eq_mul]; decide
+
+end Witnesses
 
 end DesarguesTheoremOQ02OQ03
