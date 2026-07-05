@@ -18,25 +18,26 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-04",
-    "iteration": 3,
-    "focus": "Frobenius Step 3 advanced: A = ℝ·1 ⊕ Im A now proved DIRECT (eq_zero_of_smul_one_sq_nonpos / isImaginary_smul_one_iff: ℝ·1 ∩ Im A = {0}) and the Clifford relation x*y+y*x = (c-a-b)·1 ∈ ℝ·1 VERIFIED whenever x²,y²,(x+y)² are real scalars (anticommutator_scalar_of_sq_scalar). Remaining sorry scoped to the single global fact that Im A is closed under addition (real-part functional is ℝ-linear).",
+    "iteration": 4,
+    "focus": "Frobenius Step 3 keystone CLOSED (0 sorry, VERIFIED docker LEAN_SKIP_CACHE): anticommutator_scalar_imaginary — for imaginary x,y the anticommutator x*y+y*x is a real scalar — proved WITHOUT the classical {1,x,y} linear-independence split, via a purely computational route. Its corollary isImaginary_add — Im A closed under addition — is also VERIFIED, resolving the prior blocker (re:A→ℝ is now additive, so Im A is an ℝ-subspace). Remaining single sorry now scoped to finrank ℝ (Im A) ∈ {0,1,3}.",
     "blockers": [
-      "Non-commutative Frobenius Step 3 residual: proving Im A closed under addition (equivalently re:A→ℝ is ℝ-linear); needs the linear-independence case split on {1,x,y}. Mathlib has no Clifford/Radon-Hurwitz or finite-dim real division algebra classification."
+      "Only the final dimension count remains: with the symmetric bilinear form B(x,y) = -(x*y+y*x)/2 on Im A (real-valued by anticommutator_scalar_imaginary), show finrank ℝ (Im A) ∈ {0,1,3} (the quaternion trichotomy). If dim Im A ≥ 2 pick B-orthogonal i,j; k := i*j gives {1,i,j,k} with quaternion relations; associativity forbids dim ≥ 4. Mathlib still lacks Clifford/Radon-Hurwitz machinery, so this is built by hand."
     ],
-    "nextAction": "Prove Im A closed under +: for imaginary x,y show {1,x,y} dependent ⟹ direct compute; independent ⟹ the (x±y) quadratics force linear coeffs p=p'=0 (polarisation identities (i)/(ii)), giving (x+y)² scalar. Then feed anticommutator_scalar_of_sq_scalar to build the bilinear form.",
+    "nextAction": "Assemble the real-part functional re : A → ℝ (unique c with a - c•1 ∈ Im A) and prove it ℝ-linear from isImaginary_add + scalar-closure; define Im A := LinearMap.ker re as a Submodule; equip with B(x,y) = -(x*y+y*x)/2 (real by anticommutator_scalar_imaginary), positive-definite on Im A. Then the quaternion argument for finrank ∈ {0,1,3}, giving finrank ℝ A ∈ {1,2,4}.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: Frobenius Step 3 materially advanced. A = ℝ·1 ⊕ Im A proved DIRECT and the Clifford anticommutator relation x*y+y*x ∈ ℝ·1 VERIFIED under scalar-square hypotheses. Whole file BUILDS (docker LEAN_SKIP_CACHE, 2.4s, 0 axioms/native_decide, exactly 1 sorry). Remaining sorry = single global step 'Im A closed under addition'. Steps 1-2 + commutative case + directness + scalar anticommutator all 0-sorry.",
+    "progressSummary": "ACT iter 4: Frobenius Step 3 KEYSTONE CLOSED. anticommutator_scalar_imaginary (imaginary x,y ⟹ x*y+y*x ∈ ℝ·1) and its corollary isImaginary_add (Im A closed under +) are both VERIFIED (0 sorry, docker LEAN_SKIP_CACHE, 3.5s, 0 axioms/native_decide). The prior blocker 'Im A closed under addition' is RESOLVED. Whole file still has exactly 1 sorry (hurwitz_only_if_ring non-commutative branch), now scoped to the final dimension count finrank ℝ (Im A) ∈ {0,1,3}. Steps 1-2, commutative case, directness, scalar anticommutator, closure-under-+ all 0-sorry.",
     "builtItems": [
       "hurwitz_only_if_ring_comm in HurwitzOnlyIf.lean (commutative Frobenius subcase, 0 sorry, Gelfand-Mazur)",
       "Frobenius Steps 1-2 VERIFIED: minpoly_natDegree_le_two, exists_quadratic, exists_real_shift_sq_scalar, eq_smul_one_of_sq_eq_nonneg_smul, anticommutator_real_affine",
-      "NEW Step 3 ingredients (0 sorry, VERIFIED via LEAN_SKIP_CACHE docker build): IsImaginary def; eq_zero_of_smul_one_sq_nonpos + isImaginary_smul_one_iff (A = ℝ·1 ⊕ Im A is DIRECT, ℝ·1∩Im={0}); anticommutator_scalar_of_sq_scalar (Clifford relation x*y+y*x=(c-a-b)·1 when x²,y²,(x+y)² scalar)",
-      "Case split narrowing hurwitz_only_if_ring sorry to the single non-commutative closure-of-Im-A step"
+      "Step 3 ingredients (0 sorry): IsImaginary def; eq_zero_of_smul_one_sq_nonpos + isImaginary_smul_one_iff (A = ℝ·1 ⊕ Im A DIRECT, ℝ·1∩Im={0}); anticommutator_scalar_of_sq_scalar (Clifford relation x*y+y*x=(c-a-b)·1 when x²,y²,(x+y)² scalar)",
+      "NEW iter 4 (0 sorry, VERIFIED docker LEAN_SKIP_CACHE): anticommutator_scalar_imaginary — for imaginary x,y, x*y+y*x is a real scalar; proved without the linear-independence split via complete-the-square on x+y then either c=0 (scalar directly) or x,y commute so (x*y)²=(a·b)·1 with a·b≥0 forces x*y scalar (Step 2b)",
+      "NEW iter 4 (0 sorry, VERIFIED): isImaginary_add — Im A closed under addition; (x+y)²=(a+b+t)·1 scalar via keystone, nonpositivity forced since a positive square would push x+y (then x, then y) into ℝ·1∩Im={0}"
     ],
     "insights": [
       "The target file HurwitzOnlyIf.lean has exactly ONE real sorry (hurwitz_only_if_ring); grep -c=4 is inflated by 3 docstring mentions of the word sorry.",
@@ -46,17 +47,21 @@
       "Commutative subcase of hurwitz_only_if_ring is provable NOW without Step 3: a commutative NormedDivisionRing is a NormedField, so hurwitz_field_case (Gelfand-Mazur) applies via a letI NormedField instance.",
       "Step-3 keystone splits cleanly: the anticommutator is scalar for imaginary x,y THE MOMENT (x+y)² is a real scalar — proved by pure polarisation (anticommutator_scalar_of_sq_scalar). So the entire non-commutative gap collapses to 'Im A closed under addition'.",
       "Directness of A = ℝ·1 ⊕ Im A is elementary: (s·1)²=(s²)·1 with s²≥0, and algebraMap ℝ A is injective (RingHom.injective, ℝ field + A nontrivial), so s²=r≤0 ⟹ s=0. No zero-divisor lemma needed here (only for Step 2b).",
-      "The residual closure lemma is provable via the (x±y) polarisation system: (x+y)²+(x-y)²=2(a+b)·1 and (x+y)²-(x-y)²=2(xy+yx); linear independence of {1,x,y} forces the quadratic linear-coeffs p=p'=0, hence (x+y)² scalar. Dependent case computes directly."
+      "The residual closure lemma is provable via the (x±y) polarisation system: (x+y)²+(x-y)²=2(a+b)·1 and (x+y)²-(x-y)²=2(xy+yx); linear independence of {1,x,y} forces the quadratic linear-coeffs p=p'=0, hence (x+y)² scalar. Dependent case computes directly.",
+      "★KEY (iter 4): the keystone x*y+y*x∈ℝ·1 for imaginary x,y needs NO linear-independence split. Complete the square on x+y: x*y+y*x = (2c)·(x+y) + μ·1. Multiply this identity by x on left and right — the two products are equal (x²=a·1 is central) — which forces (2c)·(x*y-y*x)=0 in the ℝ-vector space A. So either c=0 (anticommutator = μ·1 immediately) or x*y=y*x, whence (x*y)²=x²y²=(a·b)·1 with a·b≥0 and Step 2b makes x*y itself a scalar. Far shorter and more robust in Lean than the classical polarisation-with-independence argument.",
+      "isImaginary_add (Im A closed under +): (x+y)²=(a+b+t)·1 by keystone; a+b+t≤0 forced by contradiction — a positive square scalar would (Step 2b) put x+y=s·1∈ℝ·1, and completing the square on y=s·1-x gives (2s)·x=(s²+a-b)·1, so x∈ℝ·1∩Im A={0}, then y=s·1∈Im A forces s=0, contradiction. No division-ring facts beyond absence of zero divisors (already in Step 2b) and algebraMap ℝ A injective.",
+      "Lean gotcha (reused verified idiom): (u - v)² expansions over the noncommutative algebra go through `simp only [sq, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, one_mul, mul_one]; module` (copied verbatim from exists_real_shift_sq_scalar). `module` normalises nested scalar smul (s•(s•1)=(s*s)•1) and reconciles s² vs s*s, so no smul_smul needed. To cancel a nonzero real scalar k in k•z=0 without NoZeroSMulDivisors: z = k⁻¹•(k•z) = k⁻¹•0 = 0 via smul_smul + inv_mul_cancel₀."
     ],
     "mathlibGaps": [
       "Mathlib (2026-07) has Gelfand-Mazur (Analysis.Normed.Algebra.GelfandMazur) but NOT the classification of finite-dim real division algebras (Frobenius).",
       "No Clifford-algebra / Radon-Hurwitz-number / positive-definite-quadratic-space machinery to discharge Step 3 directly; must be built locally (~250-450 lines, elementary)."
     ],
     "nextSteps": [
-      "First commit (lowest risk, provable now): hurwitz_only_if_ring_comm assuming forall x y, x*y=y*x, via letI NormedField from commutativity + reuse hurwitz_field_case.",
-      "Keystone Step-3 lemma: anticommutator polarization x*y+y*x in R*1 for x,y imaginary, from (x+y)^2 - x^2 - y^2 and cancellation of linear parts.",
-      "Then re:A->R linear, ImA=ker re is subspace, A = R*1 (+) ImA; B(x,y)=-(x*y+y*x)/2 positive-definite symmetric; finrank ImA in {0,1,3}.",
-      "Alternative: submit hurwitz_only_if_ring to Aristotle once MCP is restored, hint=Frobenius theorem, context_files=HurwitzOnlyIf.lean supplying Steps 1-2."
+      "DONE (iter 4): keystone anticommutator_scalar_imaginary + isImaginary_add both VERIFIED. re:A→ℝ additivity now available.",
+      "Assemble re : A → ℝ as an ℝ-linear map: re a := the unique c with a - c•1 ∈ Im A (existence via exists_real_shift_sq_scalar + Step 2b; uniqueness via ℝ·1∩Im={0}). Additivity from isImaginary_add; homogeneity from IsImaginary scalar-closure. Then Im A := LinearMap.ker re, a Submodule ℝ A, with A = ℝ·1 ⊕ Im A.",
+      "Bilinear form: B(x,y) = -(x*y+y*x)/2, real-valued & symmetric by anticommutator_scalar_imaginary; positive-definite on Im A because x²=-(‖x‖²)·1 style (x imaginary nonzero ⟹ x²=r·1, r<0). Gram–Schmidt gives a B-orthonormal basis with eᵢeⱼ+eⱼeᵢ=-2δᵢⱼ.",
+      "Final dimension count finrank ℝ (Im A) ∈ {0,1,3}: dim 0→ℝ, dim1→ℂ, dim3→ℍ; if dim≥2 set k=e₁e₂ (a third imaginary unit, independent of e₁,e₂); associativity of A forbids a 4th orthogonal imaginary unit, capping finrank ℝ (Im A) at 3. This yields finrank ℝ A ∈ {1,2,4} ⊆ admissibleDimensions, closing the last sorry.",
+      "Alternative: submit hurwitz_only_if_ring to Aristotle (MCP now up), hint=Frobenius theorem via the now-verified keystone + isImaginary_add, context_files=HurwitzOnlyIf.lean."
     ],
     "markdown": "# Knowledge Base: hurwitz-theorem-oq-03-oq-01-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
