@@ -193,9 +193,30 @@
     "implications": "Commutativity under composition places the Chebyshev family, alongside the power maps xⁿ, at the centre of Ritt's 1923 classification of commuting polynomials. The monoid-morphism viewpoint makes the Chebyshev indexing a faithful translation of integer multiplication into polynomial composition, a structure exploited in iteration, approximation theory, and fast multiple-angle evaluation. Because the law is a polynomial identity over an arbitrary commutative ring, all of this holds beyond the trigonometric setting where Tₙ originates.",
     "openQuestions": [
       "Formalize the converse direction of Ritt's theorem: characterize all polynomials that commute with a fixed Chebyshev polynomial Tₙ (n ≥ 2) as exactly the other Chebyshev polynomials (up to conjugation by an affine map).",
-      "Establish the analogous composition/commutation theory for the Chebyshev polynomials of the second kind Uₙ and the Dickson polynomials, identifying which structural laws survive."
+      "Establish the analogous composition/commutation theory for the Chebyshev polynomials of the second kind Uₙ and the Dickson polynomials, identifying which structural laws survive. (Carried out in the child entry chebyshev-polynomials-oq-01-oq-02.)"
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-polynomials-oq-01-oq-01",
+      "relationship": "extended by",
+      "description": "Direct child. Where this entry proves the multiplicative composition law T_{mn} = T_m ∘ T_n, that entry proves the additive companion T_{m+n} = T_m·T_n − (1−X²)·U_{m−1}·U_{n−1}, coupling the first-kind Tₙ to the second-kind Uₙ — the additive counterpart to the composition structure established here."
+    },
+    {
+      "targetId": "chebyshev-polynomials-oq-01-oq-02",
+      "relationship": "extended by",
+      "description": "Direct child that resolves this entry's second open question: it develops the composition/commutation theory for the second-kind Chebyshev polynomials Uₙ and the Dickson polynomials, the analogue of the first-kind composition semigroup {Tₙ} proved here."
+    },
+    {
+      "targetId": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+      "relationship": "extended by",
+      "description": "Grandchild. Packages T_add, U_add, and the Pell/Cassini identity T² − (X²−1)U² = 1 into a single SL₂ matrix representation, whose multiplicativity re-encodes the composition and addition laws (including the T_{mn} = T_m ∘ T_n proved here) as matrix-power identities."
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "related",
+      "description": "The trigonometric origin: the multiple-angle formulas cos(nθ) = Tₙ(cos θ) come from De Moivre's theorem, and the composition law T_{mn} = T_m ∘ T_n proved here is precisely the polynomial shadow of cos(mnθ) = cos(m·(nθ)). That entry derives the explicit multiple-angle expansions from De Moivre; this one lifts their nesting structure to identities over an arbitrary commutative ring."
+    }
+  ],
   "sorries": 0
 }
