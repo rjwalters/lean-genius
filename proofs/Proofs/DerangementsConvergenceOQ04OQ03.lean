@@ -5,7 +5,7 @@
   Problem: derangements-convergence-oq-04-oq-03
   Parent : derangements-convergence-oq-04
 
-  ## Status: VERIFIED (machine-checked 2026-07-04, promoted to proofs/Proofs/)
+  ## Status: UNVERIFIED DRAFT
 
   The Docker Lean build harness is unavailable this session (corrupted
   containerd image blob → the build image cannot be inspected or rebuilt),
