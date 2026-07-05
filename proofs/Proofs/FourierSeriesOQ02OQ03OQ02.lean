@@ -153,14 +153,14 @@ theorem exp_decay_summable (δ : ℝ) (hδ : 0 < δ) :
                (fun n : ℕ => Real.exp (-c * ↑n)) := by
       ext n; congr 1
       rw [Int.cast_natCast, abs_of_nonneg (Nat.cast_nonneg n)]
-      unfold_let c; ring
+      simp only [hc_def]; ring
     rw [heq]; exact hsumm
   · -- Negative half: f(-↑n) for n : ℕ, where |↑(-↑n)| = n
     have heq : (fun n : ℕ => Real.exp (-(2 * Real.pi * δ * |(↑(-↑n : ℤ) : ℝ)|) / T)) =
                (fun n : ℕ => Real.exp (-c * ↑n)) := by
       ext n; congr 1
       rw [Int.cast_neg, Int.cast_natCast, abs_neg, abs_of_nonneg (Nat.cast_nonneg n)]
-      unfold_let c; ring
+      simp only [hc_def]; ring
     rw [heq]; exact hsumm
 
 /-- Exponential decay of Fourier coefficients implies absolute convergence
