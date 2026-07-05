@@ -63,7 +63,8 @@
       "The limit of an alternating series with antitone terms is always trapped between two consecutive partial sums; the whole estimate follows from the gap between them being exactly the next term",
       "Parity is the only case split needed: it fixes the sign (-1)^N and hence which side of l the partial sum falls on",
       "Mathlib already proves both one-sided bracket inequalities; the contribution is assembling them into the symmetric |S_N − l| ≤ f N that is what one actually uses",
-      "The alternating harmonic series is the canonical instance: error ≤ 1/(N+1) makes the slow convergence to log 2 quantitative"
+      "The alternating harmonic series is the canonical instance: error ≤ 1/(N+1) makes the slow convergence to log 2 quantitative",
+      "The two-sided bound does more than estimate — it certifies: consecutive partial sums S_N and S_{N+1} bracket the true limit l in an interval of known width f N, so an alternating series delivers both an approximation and a rigorous error bar for free, a guarantee most convergent series cannot offer without separate tail analysis"
     ],
     "prerequisites": [
       "Convergence of sequences and series in ℝ",
@@ -144,6 +145,12 @@
       "title": "Principles of Mathematical Analysis",
       "year": "1976",
       "note": "Alternating series test and the truncation error bound (Theorem 3.43)"
+    },
+    {
+      "authors": "Knopp, K.",
+      "title": "Theory and Application of Infinite Series",
+      "year": "1951",
+      "note": "The classical reference for alternating (Leibniz) series and the remainder estimate |S_N − l| ≤ a_N, with the sharpened trapping between consecutive terms"
     }
   ],
   "crossReferences": [
