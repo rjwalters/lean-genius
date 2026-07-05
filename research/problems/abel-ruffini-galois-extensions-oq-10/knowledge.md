@@ -148,3 +148,29 @@ blocker. The only real proof obligations are the two monoid‑hom functoriality 
 2. Prove `[F:F^{S_n}] = n!` via `finrank_eq_card` + `Fintype.card_perm`.
 3. Secondary: formalize regularity ($\mathbb{Q}$ algebraically closed in the fixed field)
    to upgrade "IGP" to "RIGP" explicitly.
+
+### Session 2026-07-04 (Session 2) — ACT → COMPLETED
+
+**Mode:** REVISIT (continuing Session 1 ORIENT) · **Outcome:** completed (verified, 0 sorry / 0 axiom)
+
+**What I did**
+- Promoted the Session-1 roadmap to a built proof: `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ10.lean` (157 lines), verified via Docker (`✔ Built ... (0 sorries)`).
+- Found a cleaner path than the draft's hand-rolled `permAutF`/`permToAutF`: Mathlib already ships the **bundled** monoid hom `IsFractionRing.fieldEquivOfAlgEquivHom : (B ≃ₐ[A] B) →* (L ≃ₐ[K] L)` *with* an injectivity lemma. Composing it with `renamePermHom : Perm (Fin n) →* (P ≃ₐ[ℚ] P)` (built from `renameEquiv_refl`/`renameEquiv_trans`) killed the two `map_one`/`map_mul` sorries **and** both faithfulness sorries at once.
+- Key instance realization: take the base fraction field `K = ℚ` itself (valid since `IsFractionRing ℚ ℚ` for a field), so the action lands in `F ≃ₐ[ℚ] F`, which carries the tautological faithful `AlgEquiv.applyMulSemiringAction`. `Algebra ℚ F` and `IsScalarTower ℚ P F` resolve as global instances (`FractionRing` transitivity).
+- Applied Artin (`FixedPoints.toAlgAutMulEquiv`, `finrank_eq_card`) to get `realizeSn`, `realizeAn`, `isGalois_Sn/An`, `finrank_Sn = n!`, `finrank_An = |Aₙ|`.
+
+**Two build-fix deltas (both mechanical)**
+- `map_mul'`: `e * f` and `Equiv.trans f e` are propositionally but not defeq-equal ⟹ close with `congrArg (renameEquiv ℚ) (Equiv.ext fun _ => rfl)`.
+- `renamePermHom_injective`: apply `MvPolynomial.X_injective` explicitly (the `simpa`-close hit a `↑`-coercion mismatch on the `Fin n` goal).
+
+**Files**
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ10.lean` (new, verified)
+- `src/data/proofs/abel-ruffini-galois-extensions-oq-10/meta.json` (new gallery entry, status verified)
+- draft `GenericSnAnRealization.draft.lean` removed (superseded by the built file)
+
+**Scope honesty**
+- Formalized: the **Galois-group realization** of Sₙ and Aₙ (isomorphism to `Gal` of the generic extension) + degrees. NOT separately formalized: the *regularity* claim (ℚ algebraically closed in the fixed field) that upgrades "IGP" to "RIGP" — a genuine optional follow-up; Mathlib has limited "regular extension" API.
+
+**Next steps (optional follow-ups)**
+1. Formalize regularity: `IsAlgClosed`-in / `algebraicClosure ℚ ∩ F^{Sₙ} = ℚ`, using that `F^{Sₙ} = ℚ(e₁,…,eₙ)` is purely transcendental.
+2. Identify `F^{Sₙ}` explicitly with `ℚ(e₁,…,eₙ)` via `MvPolynomial.symmetricSubalgebra` / fundamental theorem of symmetric polynomials.
