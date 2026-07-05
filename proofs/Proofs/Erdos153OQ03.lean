@@ -52,6 +52,9 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `hSumset_succ`             : additive recurrence — `hSumset (h+1) A = A + hSumset h A`
 - `card_hSumset_ge`          : universal lower bound `h·(|A|−1)+1 ≤ |hΣ A|` (no B_h needed; sharp for APs) via Cauchy–Davenport
 - `card_hSumset_ge_and_eq_of_isBhSet` : two-sided squeeze — AP floor ≤ |hΣ A| = C(|A|+h−1,h) for a B_h set
+- `hSumset_mono`               : monotonicity — `A ⊆ B ⟹ hSumset h A ⊆ hSumset h B` (sumset shadow of `Finset.sym_mono`)
+- `hSumset_singleton`          : boundary case `|A|=1` — `hSumset h {a} = {h·a}` (both size bounds collapse to a point)
+- `card_hSumset_singleton`     : `|hSumset h {a}| = 1` — the equality case of both size bounds at `|A|=1`
 -/
 import Mathlib
 
@@ -991,5 +994,40 @@ theorem card_hSumset_ge_and_eq_of_isBhSet {h : ℕ} {A : Finset ℕ}
     h * (A.card - 1) + 1 ≤ (hSumset h A).card ∧
       (hSumset h A).card = (A.sym h).card :=
   ⟨card_hSumset_ge hA, card_hSumset_of_isBhSet H⟩
+
+/-- **Monotonicity of the `h`-fold sumset in the ground set.**  Enlarging `A` can only
+enlarge its `h`-fold sumset: `A ⊆ B ⟹ hSumset h A ⊆ hSumset h B`.  Every size-`h`
+multiset drawn from `A` is also drawn from `B`, so its sum already appears in the image
+over `B.sym h`.  This is the sumset-level shadow of `Finset.sym_mono` and complements the
+subset-heredity of the `B_h` property (`isBhSet_subset`): the property shrinks downward
+while the sumset grows upward. -/
+theorem hSumset_mono {h : ℕ} {A B : Finset ℕ} (hAB : A ⊆ B) :
+    hSumset h A ⊆ hSumset h B := by
+  simp only [hSumset]
+  exact Finset.image_subset_image (Finset.sym_mono hAB h)
+
+/-- **The `h`-fold sumset of a singleton.**  A one-element set has exactly one size-`h`
+multiset (the `h`-fold repetition of its element), whose sum is `h · a`:
+
+    hSumset h {a} = {h * a}.
+
+This is the boundary case `|A| = 1` of the size bounds — the universal floor
+`card_hSumset_ge` reads `h·(1−1)+1 = 1` and the `B_h` ceiling `C(1+h−1, h) = C(h, h) = 1`
+both collapse to the single point `h·a`, so a singleton is (trivially) `B_h` with a
+saturated one-point sumset. -/
+theorem hSumset_singleton (h a : ℕ) : hSumset h ({a} : Finset ℕ) = {h * a} := by
+  have hsum : (Sym.replicate h a : Multiset ℕ).sum = h * a := by
+    rw [Sym.coe_replicate]
+    induction h with
+    | zero => simp
+    | succ k ih =>
+      rw [Multiset.replicate_succ, Multiset.sum_cons, ih, Nat.succ_mul, Nat.add_comm]
+  simp only [hSumset, Finset.sym_singleton, Finset.image_singleton, hsum]
+
+/-- **A singleton's `h`-fold sumset is a single point.**  Immediate cardinality
+consequence of `hSumset_singleton`: `|hSumset h {a}| = 1`.  This exhibits the equality
+case of both size bounds simultaneously for `|A| = 1`. -/
+theorem card_hSumset_singleton (h a : ℕ) : (hSumset h ({a} : Finset ℕ)).card = 1 := by
+  rw [hSumset_singleton, Finset.card_singleton]
 
 end Erdos153OQ03
