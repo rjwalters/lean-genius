@@ -752,6 +752,65 @@ theorem isImaginary_mul_of_anticomm (A : Type*) [NormedDivisionRing A] [NormedAl
         _ = -(x * x * (y * y)) := by noncomm_ring
     rw [hsq, hxx, hyy, smul_mul_smul_comm, mul_one, neg_smul]
 
+/-- **Anticommuting with both factors ⟹ commuting with the product.** In *any* ring, if `w`
+anticommutes with `x` and with `y`, then `w` *commutes* with the product `x*y`: the two sign
+flips cancel,
+`w*(x*y) = (w*x)*y = (-(x*w))*y = -(x*(w*y)) = -(x*(-(y*w))) = (x*y)*w`.
+Pure associativity — no division, norm, or characteristic hypothesis is used. This is the
+parity fact behind the "no fourth orthogonal imaginary unit" obstruction: a `w` orthogonal
+(= anticommuting) to two imaginary units `x, y` automatically commutes with their product
+`z := x*y`, so it cannot also be orthogonal to `z` unless it vanishes
+(`eq_zero_of_anticomm_pair_and_product`). -/
+theorem commutes_mul_of_anticomm_both {R : Type*} [Ring R] {w x y : R}
+    (hx : w * x + x * w = 0) (hy : w * y + y * w = 0) :
+    w * (x * y) = (x * y) * w := by
+  have hwx : w * x = -(x * w) := eq_neg_of_add_eq_zero_left hx
+  have hwy : w * y = -(y * w) := eq_neg_of_add_eq_zero_left hy
+  calc w * (x * y) = (w * x) * y := (mul_assoc w x y).symm
+    _ = (-(x * w)) * y := by rw [hwx]
+    _ = -((x * w) * y) := by rw [neg_mul]
+    _ = -(x * (w * y)) := by rw [mul_assoc]
+    _ = -(x * (-(y * w))) := by rw [hwy]
+    _ = x * (y * w) := by rw [mul_neg, neg_neg]
+    _ = (x * y) * w := (mul_assoc x y w).symm
+
+/-- **No fourth anticommuting direction (the `finrank ℝ (Im A) ≤ 3` obstruction).** In a
+normed division ring over `ℝ`, an element `w` that anticommutes with two *nonzero* elements
+`x, y` **and** with their product `x*y` must vanish.
+
+The proof is the clean algebraic core of Frobenius' theorem. By
+`commutes_mul_of_anticomm_both`, `w` commutes with `x*y`: `w*(x*y) = (x*y)*w`. But the third
+hypothesis says `w` *anticommutes* with `x*y`: `w*(x*y) = -((x*y)*w)`. Hence
+`(x*y)*w = -((x*y)*w)`, so `2·((x*y)*w) = 0`; characteristic zero (`ℝ`-algebra) kills the
+factor `2`, leaving `(x*y)*w = 0`, and `x*y ≠ 0` (no zero divisors) forces `w = 0`.
+
+Read geometrically via `imaginaryBilin_eq_zero_iff_anticomm`: `B`-orthogonality of imaginary
+units is exactly anticommutation, and once `x, y` are orthogonal imaginary units with third
+unit `z = x*y` (`isImaginary_mul_of_anticomm`), *no* nonzero direction is `B`-orthogonal to
+all of `x, y, z`. So `Im A` carries at most three mutually orthogonal directions, i.e.
+`finrank ℝ (Im A) ≤ 3` — the last quantitative step of the Hurwitz Only-If dimension count. -/
+theorem eq_zero_of_anticomm_pair_and_product (A : Type*) [NormedDivisionRing A]
+    [NormedAlgebra ℝ A] {w x y : A} (hx : x ≠ 0) (hy : y ≠ 0)
+    (hwx : w * x + x * w = 0) (hwy : w * y + y * w = 0)
+    (hwz : w * (x * y) + (x * y) * w = 0) : w = 0 := by
+  have hcomm : w * (x * y) = (x * y) * w := commutes_mul_of_anticomm_both hwx hwy
+  have hanti : w * (x * y) = -((x * y) * w) := eq_neg_of_add_eq_zero_left hwz
+  -- The product `(x*y)*w` equals its own negative, hence is 2-torsion.
+  have heq : (x * y) * w = -((x * y) * w) := hcomm.symm.trans hanti
+  have hz : (x * y) * w = 0 := by
+    have hdouble : (x * y) * w + (x * y) * w = 0 := by
+      nth_rewrite 2 [heq]; exact add_neg_cancel _
+    have h2 : (2 : A) * ((x * y) * w) = 0 := by rw [two_mul]; exact hdouble
+    have h2ne : (2 : A) ≠ 0 := by
+      intro hh
+      have hinj : Function.Injective (algebraMap ℝ A) := RingHom.injective _
+      have h20 : (2 : ℝ) = 0 := by
+        apply hinj; rw [map_ofNat, map_zero]; exact hh
+      exact two_ne_zero h20
+    exact (mul_eq_zero.mp h2).resolve_left h2ne
+  have hxy : x * y ≠ 0 := mul_ne_zero hx hy
+  exact (mul_eq_zero.mp hz).resolve_left hxy
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
