@@ -157,4 +157,83 @@ theorem even_countP_edges_of_closed
   intro huu
   exact absurd rfl huu
 
+/-- **Deleting a closed trail's edges preserves the all-even-degree invariant (Sub-lemma B).**
+Let `p : G.Walk u u` be a closed trail in a graph where every vertex has even degree.
+Then in `G.deleteEdges p.edges.toFinset` every vertex *still* has even degree.
+
+This is the induction-step hypothesis-preservation lemma of Hierholzer's construction:
+after extracting a closed circuit and removing its edges, the residual graph again
+satisfies "every vertex has even degree", so the strong induction on edge count applies
+to it. The proof combines two evens: the incident-edge count of `x` in the deleted graph
+is `#(G.incidenceFinset x) - #(A ∩ S)` where `A = G.incidenceFinset x`, `S = p.edges`;
+`#A = G.degree x` is even by hypothesis, and `#(A ∩ S)` — the edges of `p` incident to
+`x` — is even by `even_countP_edges_of_closed`. A difference of evens (with the subtracted
+set a subset) is even. -/
+theorem even_degree_deleteEdges_of_closed_trail
+    [Fintype V] [DecidableRel G.Adj]
+    {u : V} {p : G.Walk u u} (hp : p.IsTrail)
+    (heven : ∀ x, Even (G.degree x)) (x : V) :
+    Even ((G.deleteEdges (p.edges.toFinset : Set (Sym2 V))).degree x) := by
+  classical
+  set S : Finset (Sym2 V) := p.edges.toFinset with hSdef
+  set A : Finset (Sym2 V) := G.incidenceFinset x with hAdef
+  -- The incident edges of `x` surviving deletion are exactly `A \ S`.
+  have hInc : (G.deleteEdges (S : Set (Sym2 V))).incidenceFinset x = A \ S := by
+    rw [hAdef, incidenceFinset_eq_filter, incidenceFinset_eq_filter, edgeFinset_deleteEdges]
+    ext e
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  -- Rewrite the deleted-graph degree as the cardinality of its surviving incidence set.
+  rw [← card_incidenceFinset_eq_degree, hInc]
+  -- `(A \ S).card + (A ∩ S).card = A.card`.
+  have hsplit : (A \ S).card + (A ∩ S).card = A.card :=
+    Finset.card_sdiff_add_card_inter A S
+  -- `A.card = G.degree x` is even.
+  have hAeven : Even A.card := by rw [hAdef, card_incidenceFinset_eq_degree]; exact heven x
+  -- `(A ∩ S).card` counts `p`'s edges incident to `x`; equals `countP`, which is even.
+  have hInterEven : Even (A ∩ S).card := by
+    -- `A ∩ S = (p.edges.filter (x ∈ ·)).toFinset`, whose card is the nodup filter length.
+    have hcard : (A ∩ S).card = p.edges.countP (fun e => x ∈ e) := by
+      have hfilter : A ∩ S = (p.edges.filter (fun e => x ∈ e)).toFinset := by
+        rw [hAdef, hSdef, incidenceFinset_eq_filter]
+        ext e
+        simp only [Finset.mem_inter, Finset.mem_filter, List.mem_toFinset, List.mem_filter,
+          mem_edgeFinset, decide_eq_true_eq]
+        constructor
+        · rintro ⟨⟨_, hx⟩, hmem⟩; exact ⟨hmem, hx⟩
+        · rintro ⟨hmem, hx⟩; exact ⟨⟨p.edges_subset_edgeSet hmem, hx⟩, hmem⟩
+      rw [hfilter, List.toFinset_card_of_nodup (hp.edges_nodup.filter _)]
+      exact List.countP_eq_length_filter.symm
+    rw [hcard]; exact even_countP_edges_of_closed hp x
+  -- Sum of the two parts is `A.card`, both `(A ∩ S).card` and `A.card` even ⇒ `(A \ S).card` even.
+  obtain ⟨a, ha⟩ := hAeven
+  obtain ⟨b, hb⟩ := hInterEven
+  rw [ha] at hsplit
+  rw [hb] at hsplit
+  refine ⟨a - b, ?_⟩
+  omega
+
+/-- **Extracting a maximal trail preserves the all-even-degree invariant.**
+Package the two halves of the Hierholzer induction step into the shape the recursion
+actually consumes. In the greedy phase we grow a trail `p : G.Walk u v` until it is
+*edge-maximal* at its current endpoint `v` (every edge incident to `v` is already used).
+Sub-lemma A (`eq_of_isTrail_edgeMaximal`) shows such a maximal trail is automatically
+**closed** (`u = v`), so the extracted circuit is a genuine closed trail; Sub-lemma B
+(`even_degree_deleteEdges_of_closed_trail`) then shows deleting its edges leaves every
+vertex with even degree. Hence the residual graph `G.deleteEdges p.edges.toFinset`
+re-satisfies "every vertex has even degree" — exactly the hypothesis the strong
+induction on edge count needs to recurse into it, *without* the caller having to know in
+advance that the maximal trail closed up. This is the invariant-preservation obligation
+of the induction step, discharged directly from `heven` and edge-maximality. -/
+theorem even_degree_deleteEdges_of_maximal_trail
+    [Fintype V] [DecidableRel G.Adj]
+    {u v : V} {p : G.Walk u v} (hp : p.IsTrail)
+    (heven : ∀ x, Even (G.degree x))
+    (hmax : ∀ e ∈ G.incidenceFinset v, e ∈ p.edges) (x : V) :
+    Even ((G.deleteEdges (p.edges.toFinset : Set (Sym2 V))).degree x) := by
+  -- A maximal trail is closed: its start equals its (maximal) endpoint.
+  obtain rfl : u = v := eq_of_isTrail_edgeMaximal hp (heven v) hmax
+  -- Now `p : G.Walk u u` is a closed trail; Sub-lemma B applies verbatim.
+  exact even_degree_deleteEdges_of_closed_trail hp heven x
+
 end UndirectedEulerDev
