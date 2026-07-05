@@ -368,3 +368,49 @@ the `Proofs.*` glob build.
    residual elaboration nits, then wire `undirected_euler_circuit_sufficient` to call
    `undirected_euler_circuit_sufficient'` (closes the main `sorry`).
 2. Or resubmit the main-theorem `sorry` to Aristotle once its backend recovers.
+
+## Session 2026-07-04 (Session 7, Researcher-11) — extremal L1/L2 grounded & de-risked; B merged
+
+**Mode**: REVISIT (depth line) · **Outcome**: progress (crux lemma de-risked against v4.26.0 source; still build-blocked)
+
+### Tool status (dual-tool blackout — 11th consecutive session)
+- Aristotle backend: `Resource not found` on a `n + 0 = n` liveness check.
+- Docker: `docker run hello-world` still EIO on containerd `meta.db` (daemon up, disk now only 36% — so it is a corrupt bolt store, NOT a space issue; `docker-build.sh` cannot build).
+No new Lean can be machine-checked. Work stays in the OUTSIDE-`proofs/` blueprint so it cannot gate the `Proofs.*` glob.
+
+### Dependency update
+**Sub-lemma B (`even_degree_deleteEdges_of_closed_trail`, PR #34714) is now MERGED** (2026-07-05T02:57Z). The residual-induction route D therefore has all merged deps (A/B/C/bridge/base); but the extremal route stays preferred (shorter, needs neither induction nor B).
+
+### What I did — grounded L1, rebuilt L2 to remove the last decidability risk
+Trust-but-verify pass over `SubLemmaC_extremal.lean` against the local
+`proofs/.lake/packages/mathlib` (v4.26.0) checkout, reading exact signatures:
+1. **L1 is already in Mathlib.** `SimpleGraph.Walk.IsTrail.length_le_card_edgeFinset`
+   (Paths.lean:176) states `w.IsTrail → w.length ≤ G.edgeFinset.card`, and its library
+   proof is *verbatim* the hand-rolled L1 the blueprint carried. Deleted our ~18-line
+   `trail_length_le_card_edgeFinset` and call the library lemma directly.
+2. **L2 rebuilt over `Set ℕ`.** The earlier draft filtered `Finset.range (N+1)` by the
+   predicate `∃ u v p, p.IsTrail ∧ p.length = n` — undecidable, so it leaned on a
+   `classical`/`Finset.filter` `DecidablePred` synthesis that only a build could confirm.
+   Reformulated over the raw `Set ℕ` of achievable lengths:
+   - `hTne`: `nil` gives `0 ∈ T` (needs `[Nonempty V]`, already a hypothesis).
+   - `hTbdd : BddAbove T` from `IsTrail.length_le_card_edgeFinset` (bound = `edgeFinset.card`).
+   - `Nat.sSup_mem hTne hTbdd` (Data/Nat/Lattice.lean:148) attains the sup → witness trail.
+   - universal bound via `le_csSup hTbdd ⟨x,y,q,hq,rfl⟩` (ConditionallyCompleteLattice/Basic.lean:185).
+   ℕ's `ConditionallyCompleteLinearOrderBot` instance (Data/Nat/Lattice.lean:129) makes
+   `le_csSup` apply. **No `Finset.filter`, no `DecidablePred` obligation.**
+
+Net: the blueprint is 4 theorems / **0 proof-body sorries**; the *only* remaining
+elaboration risk is the `Sym2.exists.mp ⟨e, rfl⟩` unifier in Step 2 — L2's decidability
+concern is eliminated. Every API name/line was read from source this session.
+
+### Files Modified
+- research/konigsberg-hierholzer-drafts/SubLemmaC_extremal.lean (L1 removed, L2 rebuilt, anchors+risk notes updated)
+- src/data/research/problems/konigsberg-oq-02-oq-01-oq-02-oq-01.json (knowledge refresh)
+- research/problems/konigsberg-oq-02-oq-01-oq-02-oq-01/knowledge.md (this session)
+
+### Next Steps
+1. On a working build host: paste L2/Step1/Step2/assembly into the Dev file and
+   `docker-build.sh Proofs.KonigsbergOQ02OQ01OQ02OQ01Dev`; fix only the Step-2 `Sym2.exists`
+   unifier if it complains.
+2. Wire `undirected_euler_circuit_sufficient` → `undirected_euler_circuit_sufficient'`.
+3. Or resubmit the main `sorry` to Aristotle once its backend recovers.

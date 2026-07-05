@@ -75,6 +75,9 @@ verified but is OFF the critical path for this route.
   List.count_pos_iff           Data/List/Nodup.lean:147   0 < count a l ↔ a ∈ l
   isTrail_def  (@[mk_iff])      Paths.lean:67          IsTrail p ↔ p.edges.Nodup
   mem_edgeFinset               Finite.lean:66
+  IsTrail.length_le_card_edgeFinset  Paths.lean:176    w.length ≤ G.edgeFinset.card  (= our old L1)
+  Nat.sSup_mem                 Data/Nat/Lattice.lean:148   s.Nonempty → BddAbove s → sSup s ∈ s
+  le_csSup                     Order/ConditionallyCompleteLattice/Basic.lean:185   BddAbove s → a∈s → a ≤ sSup s
   eq_of_isTrail_edgeMaximal    KonigsbergOQ02OQ01OQ02OQ01Dev.lean  (VERIFIED, Sub-lemma A)
 -/
 import Mathlib.Combinatorics.SimpleGraph.Trails
@@ -88,59 +91,48 @@ namespace UndirectedEulerDev
 
 variable {V : Type*} [DecidableEq V] {G : SimpleGraph V} [Fintype V] [DecidableRel G.Adj]
 
-/-! ### L1. A trail's length is bounded by the number of edges. -/
+/-! ### L1 + L2. A maximum-length trail exists.
 
-/-- A trail uses distinct edges, all lying in `edgeFinset`, so its length is at most
-`G.edgeFinset.card`.  This is the a-priori bound that makes a *maximum*-length trail
-exist. -/
-theorem trail_length_le_card_edgeFinset
-    {u v : V} {p : G.Walk u v} (hp : p.IsTrail) :
-    p.length ≤ G.edgeFinset.card := by
-  classical
-  -- length = #(edge list) = #(edge finset), since the edges are nodup …
-  have h1 : p.length = p.edges.toFinset.card := by
-    rw [List.toFinset_card_of_nodup hp.edges_nodup, length_edges]
-  -- … and the edge finset sits inside `G.edgeFinset`.
-  have h2 : p.edges.toFinset ⊆ G.edgeFinset := by
-    intro e he
-    rw [List.mem_toFinset] at he
-    rw [mem_edgeFinset]
-    exact p.edges_subset_edgeSet he
-  rw [h1]
-  exact Finset.card_le_card h2
-
-/-! ### L2. A maximum-length trail exists. -/
+L1 (a trail's length is bounded by `G.edgeFinset.card`) is exactly Mathlib's
+`SimpleGraph.Walk.IsTrail.length_le_card_edgeFinset` (`Paths.lean:176`), so we no
+longer hand-roll it — the library proof is literally the one we had written.  Given
+that a-priori bound, the achievable trail lengths form a nonempty (`nil` has length 0)
+bounded-above subset of `ℕ`, hence attain their supremum (`Nat.sSup_mem`,
+`Data/Nat/Lattice.lean:148`); a witnessing trail of that supremal length is the
+maximum, with `le_csSup` (`ConditionallyCompleteLattice/Basic.lean:185`) discharging
+the universal bound. -/
 
 /-- Among all trails of `G` (any endpoints) there is one of maximum length.
 Packaged with the maximality witness in the form Steps 1–2 consume:
-`∀ trail q, q.length ≤ p.length`. -/
+`∀ trail q, q.length ≤ p.length`.
+
+Formulated over the `Set ℕ` of achievable lengths and closed by `Nat.sSup_mem` /
+`le_csSup`; this avoids `Finset.filter` on the undecidable predicate
+`∃ u v p, p.IsTrail ∧ p.length = n`, removing the only elaboration risk the earlier
+`Finset.max'` draft carried. -/
 theorem exists_max_length_trail [Nonempty V] :
     ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧
       ∀ (x y : V) (q : G.Walk x y), q.IsTrail → q.length ≤ p.length := by
   classical
-  -- The achievable trail lengths, a nonempty (nil has length 0) bounded ⊆ ℕ.
-  set N := G.edgeFinset.card with hN
-  set S : Finset ℕ :=
-    (Finset.range (N + 1)).filter
-      (fun n => ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧ p.length = n) with hS
-  have h0mem : (0 : ℕ) ∈ S := by
+  -- The achievable trail lengths as a `Set ℕ` — no decidability instance needed.
+  have hTne :
+      {n | ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧ p.length = n}.Nonempty := by
     -- the empty walk at any vertex is a trail of length 0
     obtain ⟨w⟩ := (inferInstance : Nonempty V)
-    rw [hS, Finset.mem_filter, Finset.mem_range]
-    exact ⟨by omega, w, w, Walk.nil, IsTrail.nil, rfl⟩
-  have hSne : S.Nonempty := ⟨0, h0mem⟩
-  set m := S.max' hSne with hm
-  have hmmem : m ∈ S := S.max'_mem hSne
-  rw [hS, Finset.mem_filter] at hmmem
-  obtain ⟨_, u, v, p, hptrail, hplen⟩ := hmmem
+    exact ⟨0, w, w, Walk.nil, IsTrail.nil, rfl⟩
+  -- Every trail length is ≤ |E| (Mathlib `IsTrail.length_le_card_edgeFinset`).
+  have hTbdd :
+      BddAbove {n | ∃ (u v : V) (p : G.Walk u v), p.IsTrail ∧ p.length = n} := by
+    refine ⟨G.edgeFinset.card, ?_⟩
+    rintro n ⟨u, v, p, hp, rfl⟩
+    exact hp.length_le_card_edgeFinset
+  -- The supremum is attained: a trail of maximal length exists.
+  obtain ⟨u, v, p, hptrail, hplen⟩ := Nat.sSup_mem hTne hTbdd
   refine ⟨u, v, p, hptrail, ?_⟩
   intro x y q hq
-  -- q.length ∈ S (it is ≤ N by L1), hence ≤ m = p.length.
-  have hqlenmem : q.length ∈ S := by
-    rw [hS, Finset.mem_filter, Finset.mem_range]
-    exact ⟨by have := trail_length_le_card_edgeFinset hq; omega, x, y, q, hq, rfl⟩
-  have := S.le_max' _ hqlenmem
-  rw [← hplen]; simpa [hm] using this
+  -- q.length ∈ T, so q.length ≤ sSup T = p.length.
+  rw [hplen]
+  exact le_csSup hTbdd ⟨x, y, q, hq, rfl⟩
 
 /-! ### Step 1. A maximum-length trail is closed.
 
@@ -272,9 +264,19 @@ have been FIXED in the bodies above:
    (Nodup.lean:140), `List.nodup_concat` (Nodup.lean:242) — all present as used.
 5. [CONFIRMED] `isTrail_def` (`@[mk_iff]`, Paths.lean:67) — used to open `concat` trails.
 
-No new mathematics is required and no `sorry` remains in the blueprint. Remaining
-risk is purely Lean *elaboration* (instance resolution for the classical `Finset.filter`
-predicate in L2; unifier picking `f := (e = ·)` in `Sym2.exists.mp ⟨e, rfl⟩`), which
-only a real build host — currently unavailable — can settle. The mathematical content
-is complete and closed.
+6. [DE-RISKED, this pass] L2 (`exists_max_length_trail`) was rebuilt to run over the
+   `Set ℕ` of achievable lengths using `Nat.sSup_mem` (Data/Nat/Lattice.lean:148) +
+   `le_csSup` (ConditionallyCompleteLattice/Basic.lean:185), and the hand-rolled L1
+   was deleted in favour of Mathlib's `IsTrail.length_le_card_edgeFinset`
+   (Paths.lean:176 — its library proof is verbatim our old L1). This removes BOTH the
+   old `Finset.filter`-on-an-undecidable-predicate instance-resolution risk AND ~18
+   lines of hand-rolled a-priori-bound proof. Every name/signature used was read from
+   the local v4.26.0 source this session.
+
+No new mathematics is required and no `sorry` remains in the blueprint. The only
+remaining elaboration risk is the unifier picking `f := (e = ·)` in
+`Sym2.exists.mp ⟨e, rfl⟩` (Step 2) — L2's decidability concern is now gone. A real
+build host (currently unavailable — Docker containerd meta.db EIO + Aristotle 404,
+11th consecutive session) is still needed to convert this from verify-ready to
+machine-checked. The mathematical content is complete and closed.
 -/
