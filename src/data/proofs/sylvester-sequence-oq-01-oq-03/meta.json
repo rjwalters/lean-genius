@@ -142,7 +142,16 @@
       "mathContext": "$a_n$ odd for $n\\ge1$; $a_n\\equiv1\\pmod6$ for $n\\ge2$."
     }
   ],
-  "conclusion": "The three classical faces of Sylvester's sequence beyond its reciprocal sum — coprimality, the Euclid product, and the modular skeleton (parity and residue mod 6, and mod every earlier term) — all descend from one identity, a_{n+1} - 1 = a_n(a_n - 1). The formalization keeps everything in ℕ, defusing truncated subtraction by a single change of variable, and derives the mod-6 invariant by a two-line induction rather than case analysis. NOTE: this entry is BUILD-PENDING (status 'pending'/'wip') — the proof is complete and self-reviewed but was not machine-checked this session because the Docker toolchain was unavailable; it must be compiled with docker-build.sh before being promoted to 'verified'.",
+  "conclusion": {
+    "summary": "The full arithmetic skeleton of Sylvester's sequence $a_0=2,\\ a_{n+1}=a_n^2-a_n+1$ is formalised as consequences of a single factorisation $a_{n+1}-1 = a_n(a_n-1)$: the Euclid product identity $a_{n+1}-1=\\prod_{k\\le n}a_k$, the residue structure $a_n\\equiv 1\\pmod{a_i}$ for $i<n$, pairwise coprimality of distinct terms, oddness of every term past the first, and the mod-6 invariant $a_n\\equiv 1\\pmod 6$ from $a_2=7$ on. Six theorems, written with 0 sorries and 0 axioms. NOTE: this entry is BUILD-PENDING (status 'pending', badge 'wip') — the proof is complete and self-reviewed but was not machine-checked this session (the Docker toolchain was unavailable). It must compile via `docker-build.sh Proofs.SylvesterSequenceOQ01OQ03` before being promoted to 'verified'.",
+    "implications": "The recurrence's whole modular behaviour reduces to one algebraic identity read from several angles, which is the value of the formalisation: parity, mod-6, coprimality, and the Euclid product are not independent facts but a single self-propagating divisibility ($6\\mid a_n-1$ is inherited because $a_n-1$ is literally a factor of $a_{n+1}-1$). The coprimality and Euclid-product parts reprove, inside Lean, the classical mechanism behind Sylvester's proof that there are infinitely many primes and the sequence's role in Egyptian-fraction (Curtiss / Znám) constructions. Methodologically, the entry demonstrates a clean way to handle ℕ truncated subtraction in quadratic recurrences: the one-off substitution $a_n = p+2$ turns every truncated subtraction into a genuine one, after which `ring` and `omega` discharge the arithmetic without lifting to ℤ.",
+    "openQuestions": [
+      "Whether every Sylvester number is squarefree is a genuine open problem — no term is known to be divisible by a square, but no proof exists. The modular skeleton formalised here (residues mod earlier terms, coprimality) is the natural starting point for any attack.",
+      "Characterise $a_n \\bmod m$ for a general modulus $m$, generalising the mod-6 invariant: for which $m$ does the sequence become eventually constant mod $m$, and from which index, purely from the factorisation $a_{n+1}-1=a_n(a_n-1)$?",
+      "Formalise the doubly-exponential closed form $a_n = \\lfloor E^{2^{n+1}} + 1/2\\rfloor$ (Aho–Sloane) and the resulting reciprocal-sum identity $\\sum_k 1/a_k = 1$, connecting this modular skeleton to the sequence's growth and its Egyptian-fraction / Znám's-problem applications.",
+      "Machine-check this file with `docker-build.sh` and, on a green build, promote status to 'verified' / badge to 'original'."
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "sylvester-sequence-oq-01",
