@@ -1,0 +1,32 @@
+{
+  "id": "chebyshev-pnt-bridge-oq-01-oq-04",
+  "name": "Multinomial generalization of the p^{v_p(C(2n,n))} ≤ 2n carry bound",
+  "phase": "ACT",
+  "status": "in-progress",
+  "knowledge": {
+    "insights": [
+      "The naive generalization p^{v_p(C(kn;n,...,n))} ≤ kn is FALSE. Smallest counterexample: k=3, n=2, p=3, where the multinomial coefficient is 90 = 2·3²·5, so 3^{v_3}=9 > 6=kn. Verified numerically (132 counterexamples for k∈[2,6], n∈[1,11]) and formalized as naive_multinomial_bound_false.",
+      "Mechanism of failure: for the two-term sum n+n each base-p carry is 0/1, so v_p equals the count of carry positions ≤ log_p(2n); for k≥3 copies of n a single column can carry up to k−1, so valuation accumulates faster than one unit per digit position.",
+      "The honest bound is p^{v_p} ≤ n^k·k! = ∏_{j=1}^{k}(jn), holding for every prime power (0 numerical violations over k≤7,n≤13,p≤23). A weaker clean form is (kn)^{k-1}.",
+      "Product–multinomial identity C(kn;n,...,n)=∏_{j=1}^{k} C(jn,n) is the workhorse: it links the explicit product to the multinomial and computes exact values for the refutation."
+    ],
+    "builtItems": [
+      "def multiProd k n = ∏_{j=1}^k C(jn,n) — Proofs/ChebyshevPNTBridgeOQ01OQ04.lean:46",
+      "lemma multiProd_succ — one-step unfold via Finset.prod_Icc_succ_top — :52",
+      "lemma multiProd_mul_pow_factorial : (∏ C(jn,n))·(n!)^k = (kn)! by induction — :60",
+      "lemma prod_Icc_mul_const : ∏_{j=1}^k (jn) = n^k·k! — :80",
+      "theorem multiProd_prime_pow_le : p^{v_p(multiProd k n)} ≤ n^k·k! — :93",
+      "theorem naive_multinomial_bound_false : ¬ ∀ k n p, 0<n → p.Prime → p^{v_p} ≤ kn — :119"
+    ],
+    "mathlibGaps": [
+      "No direct Mathlib lemma for factorization of Nat.multinomial; worked around by the explicit product-of-binomials decomposition and Nat.factorization_prod.",
+      "No pre-packaged multinomial=product-of-binomials identity; proved here by induction."
+    ],
+    "nextSteps": [
+      "Machine-verify the file once the Docker/Aristotle blackout clears (build-pending); auditor/deployer should upgrade status formalized→verified.",
+      "Optionally derive the corresponding Chebyshev-type lower bound on π(kn) from the corrected n^k·k! bound (parent OQ intent).",
+      "Optionally prove the sharper bound p^{v_p} ≤ (kn)^{k-1} and connect to the exact Legendre expression [k·s_p(n) − s_p(kn)]/(p−1)."
+    ],
+    "progressSummary": "PROGRESS (build-pending): refuted the ≤ kn conjecture with a formalized witness, proved the corrected ≤ n^k·k! bound and the product–multinomial identity. 0 sorries, 0 axioms; not yet machine-checked due to tooling blackout."
+  }
+}
