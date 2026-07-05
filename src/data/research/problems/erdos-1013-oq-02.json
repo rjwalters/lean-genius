@@ -28,10 +28,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-03T23:49:35-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Formalized the unconditional bounded-ratio leaf (1/2 <= liminf <= limsup <= 2) via window sandwich transfer; verified.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Pointwise ratio->1 remains open (log log k gap). Optionally add limsup/liminf headline corollaries.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -39,17 +39,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (verified partial): unconditional averaged ratio statements (Cesaro/geometric-mean/root) for polynomially-bounded h3; pointwise ratio->1 remains OPEN (log log k gap).",
+    "progressSummary": "PROGRESS (verified): the unconditional BOUNDED-RATIO LEAF is now machine-checked (Erdos1013BoundedRatio.lean, 4 thms/1 def/0 sorry/0 axiom): 1/2 <= liminf h3(k+1)/h3(k) <= limsup <= 2, derived by squeezing the two-sided window (1/2-o(1))s <= h3 <= (1+o(1))s against the smooth scale ratio s(k+1)/s(k)->1 (s=k^2 log k). Averaged forms (Cesaro/geom-mean/root) also done (Erdos1013UnconditionalRatio.lean). Pointwise ratio->1 remains OPEN (log log k gap).",
     "builtItems": [
-      "Erdos1013UnconditionalRatio.lean: log_div_tendsto_zero (engine), cesaro_log_ratio_tendsto_zero, geom_mean_ratio_tendsto_one, root_tendsto_one, ratio_iff_log_ratio, polyBounded_of_h3, h3_* corollaries (9 thms, 0 sorries, 0 counted axioms)"
+      "Erdos1013UnconditionalRatio.lean: log_div_tendsto_zero (engine), cesaro_log_ratio_tendsto_zero, geom_mean_ratio_tendsto_one, root_tendsto_one, ratio_iff_log_ratio, polyBounded_of_h3, h3_* corollaries (9 thms, 0 sorries, 0 counted axioms)",
+      "Erdos1013BoundedRatio.lean: ratio_sandwich (per-term two-sided bound), ratio_eventually_between (constant-(a,b) envelope: ratio eventually in (a/b-e, b/a+e)), WindowBounds (def), h3_ratio_eventually_lt_two + h3_ratio_eventually_gt_half (sharp leaf: ratio eventually >1/2-e and <2+e, i.e. 1/2<=liminf<=limsup<=2). 4 thms, 1 def, 0 sorries, 0 axioms. VERIFIED (docker lean 4.26.0)."
     ],
     "insights": [
       "Pointwise h3(k+1)/h3(k)->1 is genuinely OPEN: equivalent to r_{k+1}-r_k->0 where r_k=log h3-scale; known bounds pin r_k only to a log log k-wide band permitting O(log log k) local oscillation, so no two-sided squeeze works.",
-      "The AVERAGED forms are unconditional consequences of the sole clean fact k^2<=h3(k)<=k^3 (=> log(h3 k)/k->0): telescoping cancels the oscillation so only the endpoint r_K=o(K) matters."
+      "The AVERAGED forms are unconditional consequences of the sole clean fact k^2<=h3(k)<=k^3 (=> log(h3 k)/k->0): telescoping cancels the oscillation so only the endpoint r_K=o(K) matters.",
+      "The bounded-ratio leaf is a pure SANDWICH TRANSFER, needing nothing beyond the window: if a*s<=h<=b*s (0<a<=b) and s(k+1)/s(k)->1, then per-term (a/b)(s-ratio) <= h(k+1)/h(k) <= (b/a)(s-ratio), so the ratio is eventually trapped in any nbhd of [a/b, b/a]. Feeding the window at tolerance e (a=1/2-e, b=1+e) and sending e->0 gives the SHARP [1/2,2]; the explicit witness delta=e/(20+2e) makes (1+delta)/(1/2-delta)<=2+e/2 provable by nlinarith. Collapsing a=b=c recovers oq-01 (single point 1) -- leaf and oq-01 are two ends of one sandwich."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Pointwise ratio->1: needs improved upper bound (c+o(1))k^2 log k removing the log log k gap, OR a direct h3(k)<->h3(k+1) local-variation relation; neither currently in reach."
+      "Pointwise ratio->1 still needs the log log k gap closed (improved upper bound (c+o(1))k^2 log k OR a direct local h3(k)<->h3(k+1) variation bound); neither in reach and both are the genuine open core.",
+      "Optional polish: restate the sharp leaf directly with Filter.limsup/liminf (limsup<=2, 1/2<=liminf) as headline corollaries of the eventual-containment theorems (the eventual forms are logically equivalent and already verified)."
     ],
     "markdown": "# Knowledge Base: erdos-1013-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -112,6 +115,17 @@
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false
+    },
+    {
+      "path": "Proofs/Erdos1013BoundedRatio.lean",
+      "filename": "Erdos1013BoundedRatio.lean",
+      "lineCount": 200,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1013BoundedRatio.lean"
     }
   ]
 }
