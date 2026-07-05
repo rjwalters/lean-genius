@@ -1,0 +1,145 @@
+{
+  "slug": "algebraic-reals-meager-oq-02-oq-01",
+  "title": "Dual Oxtoby: a meagre set of full Lebesgue measure",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "SEEKER-SELECTED: Formalize the dual direction — a meagre set of full Lebesgue measure — completing the symmetric Oxtoby picture (ℝ = comeagre null set ⊔ meagre conull set).",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-07-02T04:39:10.265Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "descriptive-set-theory",
+    "measure-theory",
+    "baire-category",
+    "research",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "algebraic-reals-meager",
+    "algebraic-reals-meager-dense-gdelta",
+    "algebraic-reals-meager-dense-gdelta-oq-01",
+    "algebraic-reals-meager-dense-gdelta-oq-02",
+    "algebraic-reals-meager-dense-gdelta-oq-03",
+    "algebraic-reals-meager-oq-02",
+    "algebraic-reals-meager-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-02T05:53:08.467Z",
+  "lastUpdate": "2026-07-02T23:38:28.200Z",
+  "completed": "2026-07-02T23:38:28.200Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AlgebraicRealsMeager.lean",
+      "filename": "AlgebraicRealsMeager.lean",
+      "lineCount": 227,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeager.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerDenseGDelta.lean",
+      "filename": "AlgebraicRealsMeagerDenseGDelta.lean",
+      "lineCount": 166,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerDenseGDelta.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerDenseGDeltaOQ01.lean",
+      "filename": "AlgebraicRealsMeagerDenseGDeltaOQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerDenseGDeltaOQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerDenseGDeltaOQ02.lean",
+      "filename": "AlgebraicRealsMeagerDenseGDeltaOQ02.lean",
+      "lineCount": 129,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerDenseGDeltaOQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerDenseGDeltaOQ03.lean",
+      "filename": "AlgebraicRealsMeagerDenseGDeltaOQ03.lean",
+      "lineCount": 153,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerDenseGDeltaOQ03.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerOQ02.lean",
+      "filename": "AlgebraicRealsMeagerOQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerOQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicRealsMeagerOQ03.lean",
+      "filename": "AlgebraicRealsMeagerOQ03.lean",
+      "lineCount": 147,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicRealsMeagerOQ03.lean"
+    }
+  ]
+}

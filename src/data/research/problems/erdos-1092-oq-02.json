@@ -1,0 +1,71 @@
+{
+  "slug": "erdos-1092-oq-02",
+  "title": "Rödl's Chromatic-Decomposition Construction for r ≥ 3",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Does Rödl's construction extend from } \\chi\\text{-target } 2 \\text{ to } r \\ge 3,\n\\text{ or does the threshold behavior change for higher chromatic targets?}",
+    "plain": "The parent `erdos-1092` studies when a graph's edge set can be decomposed with a prescribed chromatic-threshold behavior; Rödl's construction gives the extremal example for the base ($r=2$) case. This problem asks whether the same construction — and the same threshold — persists when the target chromatic number is raised to $r \\ge 3$, or whether a genuinely different phenomenon (a shifted or qualitatively different threshold) emerges.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-07-04T18:35:43-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: erdos-1092-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "chromatic-number",
+    "extremal-graph-theory"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-10",
+    "erdos-109",
+    "erdos-1092"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-07-05T01:52:27.439Z",
+  "lastUpdate": "2026-07-05T01:52:27.515Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1092Problem.lean",
+      "filename": "Erdos1092Problem.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1092Problem.lean"
+    }
+  ]
+}
