@@ -138,3 +138,50 @@ Insights accumulated during research on this problem.
 - Sub-lemma C: splice residual circuit via shared vertex; strong induction on
   `edgeFinset.card` off the verified base case.
 - Resubmit the single main-theorem sorry to Aristotle once the backend recovers.
+
+## Session 2026-07-04 (Session 4, Researcher-5) — Sub-lemma D: assembly design CORRECTED (disconnection bug found)
+
+**Mode**: REVISIT (depth line) · **Outcome**: progress (design advance — no new Lean; dual-tool blackout)
+
+### Status of ingredients (as of this session)
+- **A** (maximal trail is closed) — VERIFIED, merged: `eq_of_isTrail_edgeMaximal` + `exists_unused_incident_edge_at_endpoint` (Dev file).
+- **B** (`deleteEdges` of a closed trail preserves all-even-degree) — `even_degree_deleteEdges_of_closed_trail`, in **open PR #34714 (NOT yet merged)**.
+- **C** (splice) — VERIFIED, merged (#34731): `isTrail_append`, `exists_isTrail_splice`, `exists_isTrail_splice_of_mem_support` (Splice file).
+- **bridge** (boundary edge) — VERIFIED, merged (#34743): `exists_boundary_edge_of_missing`, `forall_of_adjClosed` (Boundary file).
+- **base** (edgeless ⇒ Eulerian) — VERIFIED, merged: `euler_circuit_of_edgeSet_empty` (Dev file).
+- **D** (assembly) — NOT started; this session redesigns it.
+
+### BUG in the recorded Sub-lemma D plan (the reason D kept stalling)
+The prior NEXT-steps said: *"grow maximal closed trail c; if it misses an edge, get shared vertex w on c.support; **apply the IH to `G.deleteEdges c.edges` rooted near w** to get a residual circuit d; splice; the edge-set union closes the induction."*
+
+This is **unsound**. The sufficiency IH requires the graph be **connected**, but `H := G.deleteEdges c.edges` is in general **disconnected** (deleting a closed trail can split G). So:
+1. the IH cannot be applied to `H` at all; and
+2. even restricted to `w`'s component, an Eulerian circuit of that component covers only *that* component's edges — so `c.edges ∪ d.edges` still misses edges in the *other* components of `H`, and "the union closes the induction" is false.
+
+### CORRECTED assembly: induct on MISSED edges of a growing trail in the FIXED connected G
+Do **not** recurse into `H`. Keep `G` fixed and connected; induct on the measure
+`m(c) := G.edgeFinset.card − c.edges.length` (number of edges the closed trail `c` still misses), over closed trails `c` in `G`.
+
+- **Init**: `c₀ := (nil : G.Walk u₀ u₀)` for any `u₀` (a closed trail, `edges = []`, `m = card`). Edgeless `G` → the base case; else every vertex has degree ≥ 2 (`two_le_degree_of_even_of_connected`).
+- **m = 0**: `c` uses `card`-many *distinct* edges (trail ⇒ `IsTrail.edges_nodup`), all of `G` ⇒ each edge used exactly once ⇒ `c.IsEulerian`. **Done.**
+- **m > 0**: `c` misses an edge, so `bridge` (`exists_boundary_edge_of_missing`) yields an unused edge `s(w,x)` with `w ∈ c.support`. Build a **nonempty closed trail `d` rooted at `w` inside `H = G.deleteEdges c.edges`** — NOT via the IH, but directly:
+  - `w` has degree ≥ 1 in `H` (the edge `wx` survives deletion) and even (B) ⇒ `deg_H(w) ≥ 2 > 0`.
+  - Take a **maximal trail** from `w` in `H`; it is nonempty (positive degree ⇒ a first edge) and **closed** by A applied to `H` (`H` is all-even by B). This is the residual circuit `d`.
+  - Transport `d : H.Walk w w` up to a `G.Walk w w` via `Walk.mapLe (G.deleteEdges_le _)`; its edges equal `d`'s and are **disjoint from `c.edges`** (they were deleted).
+  - Splice via `exists_isTrail_splice_of_mem_support` (`w ∈ c.support`) ⇒ closed trail `c'` in `G` with `c'.edges` = `c.edges ⊍ d.edges`, hence `m(c') < m(c)` (d nonempty). Apply the IH to `c'`. **Done.**
+
+Connectivity is used **only** through the bridge lemma (never re-required of `H`); this is precisely what fixes the disconnection bug.
+
+### NEW ingredients still needed for D (all beyond current merged/PR set)
+1. **Existence of a maximal trail from a given root** in a finite graph (max over edge-length; well-founded / `Fintype`). — not built.
+2. **Nonemptiness** of that maximal trail when `deg_H(root) > 0`. — small.
+3. **Transport** `H.Walk → G.Walk` preserving `IsTrail` and the edge multiset (`Walk.mapLe` / `Walk.map` of `deleteEdges_le`, `edges_map`). — Mathlib API bookkeeping.
+4. **`m = 0 ⇒ IsEulerian`**: `IsTrail.edges_nodup` + `edges_subset_edgeSet` + `card` ⇒ every edge used exactly once. — small.
+5. **Strong-induction wrapper** on `m` via `Nat.strong_induction_on` (or `WellFoundedRecursion`), threading the closed-trail carrier `c`.
+6. Depends on **B merging (#34714)**.
+
+### Blocker (infrastructure, unchanged — 8th+ consecutive session)
+Dual-tool blackout confirmed live this session: Docker/containerd store EIO (`docker run hello-world` fails; `docker-build.sh` dies at image build with `meta.db input/output error`, disk 98%), AND Aristotle backend returns `Resource not found` even for a trivial `n + 0 = n` healthcheck. No new Lean shipped — an unverified ~80-line induction with `Walk.mapLe`/`deleteEdges`/strong-recursion bookkeeping would very likely be broken and could gate the whole `Proofs.*` glob build. Recording the corrected design instead so the next session (with working tools, and once #34714 merges) can execute D directly.
+
+### Files Modified
+- research/problems/konigsberg-oq-02-oq-01-oq-02-oq-01/knowledge.md (this session)
