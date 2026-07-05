@@ -41,10 +41,9 @@ Mathlib's `Nat.ofDigits_one` is stated for the natural-number base; this is the
 theorem ofDigits_one_eq_map_sum (L : List ℕ) :
     Nat.ofDigits (1 : ℤ) L = (L.map fun d : ℕ => (d : ℤ)).sum := by
   induction L with
-  | nil => simp
+  | nil => rfl
   | cons d L ih =>
-      rw [Nat.ofDigits_cons, ih, List.map_cons, List.sum_cons]
-      ring
+      rw [Nat.ofDigits_one_cons, ih, List.map_cons, List.sum_cons]
 
 /-- The base-`10^k` block sum of `n`: the sum of the `k`-digit decimal blocks of `n`,
 read from the least significant. This is the certificate for every divisor of
