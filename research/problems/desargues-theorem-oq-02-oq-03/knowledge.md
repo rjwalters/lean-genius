@@ -117,3 +117,24 @@ Verification blackout 2026-07-04: Docker image build fails (containerd
   the session-3 rewrite reintroduced it.)
 - Next: `docker-build.sh Proofs.DesarguesTheoremOQ02OQ03` the moment infra
   returns; if clean, promote to gallery entry. Then general-position uniqueness.
+
+### Session 2026-07-04 (Session 5) — Concrete negative witness (Part V)
+**Mode**: RESUME · **Outcome**: progress (build-blocked; blackout persists into session 5)
+- Re-probed infra: Docker `run` still EIO on containerd `meta.db`; Aristotle
+  `prove_file` now returns "An error occurred while processing your request"
+  (was 404). Still no machine verification possible.
+- Did NOT repeat the full API re-audit (done session 4). Instead added Part V:
+  two `ZMod 4` `example`s giving a concrete *negative* witness that the
+  zero-divisor obstruction is inhabited — `2 • 2 = 0` with `2 ≠ 0`, closed by
+  `decide`. First feeds `zero_divisor_breaks_normalization`; second shows
+  `ZMod 4` fails `smul_preserves_nonzero_iff_no_zero_divisors` from the failing
+  side (`rw` the iff, then `decide`). Elementary/`decide`-only — high confidence.
+- These are the counterpart to the Part IV quaternion positive witness: together
+  they make the sufficiency/necessity framing concrete on both sides. `decide`
+  (kernel), not `native_decide`, and inside `example` blocks → no axiom impact.
+- Mathematical core is now complete (0 sorries). The ONLY outstanding item is
+  machine verification, which is infra-blocked (5 sessions). Not adding further
+  speculative unverified content (e.g. dimension-counting uniqueness) until a
+  build channel returns.
+- Next: `docker-build.sh Proofs.DesarguesTheoremOQ02OQ03` (after moving into the
+  `proofs/Proofs/` glob) the moment infra returns; if clean, promote to gallery.

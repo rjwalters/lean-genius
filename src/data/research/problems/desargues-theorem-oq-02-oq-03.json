@@ -32,7 +32,8 @@
       "Commutativity of R is genuinely unused: the whole proof typechecks over [DivisionRing R] (not [Field R]); this matches the classical fact that commutativity governs Pappus, not Desargues.",
       "The division-ring hypothesis enters at exactly one point: rescaling a raw perspectivity o = alpha*a + beta*a' to normalized form o = (alpha*a) + (beta*a') requires the rescaled representatives to stay nonzero, i.e. NO ZERO DIVISORS. A general ring can have alpha*a = 0 with alpha, a both nonzero, breaking the normalization.",
       "Scalar rescaling of a representative vector is left-multiplication alpha*a (left module); the argument never needs to move a scalar across a product, which is why non-commutativity causes no trouble.",
-      "Manual Mathlib API audit at v4.26.0: inv_mul_cancel₀, Submodule.sub_mem (protected), Submodule.subset_span, smul_smul, one_smul, Units.mk0 all confirmed; bare smul_eq_mul resolves to _root_.smul_eq_mul [Mul α] (non-deprecated), not Algebra.smul_eq_mul"
+      "Manual Mathlib API audit at v4.26.0: inv_mul_cancel₀, Submodule.sub_mem (protected), Submodule.subset_span, smul_smul, one_smul, Units.mk0 all confirmed; bare smul_eq_mul resolves to _root_.smul_eq_mul [Mul α] (non-deprecated), not Algebra.smul_eq_mul",
+      "Part V: the zero-divisor obstruction is concretely inhabited — ZMod 4 gives 2•2=0 with 2≠0, a decide-checked negative witness that makes the necessity direction of the smul_ne_zero iff non-vacuous; symmetric to the quaternion positive witness of Part IV."
     ],
     "builtItems": [
       "nucleus_sum : (a-b)+(b-c)+(c-a)=0 in any module (research/.../lean/DesarguesTheoremOQ02OQ03.lean) — 0 sorries",
@@ -42,7 +43,8 @@
       "desargues : full statement — NormPersp o a a' b b' c c' => Dep of the three intersections AND each cross vector lies on both relevant lines; proved over [DivisionRing R], commutativity unused",
       "smul_ne_zero' + normalize_perspective : the no-zero-divisors rescaling step isolating the division-ring hypothesis",
       "Quaternion example : Desargues applies to modules over the non-commutative division ring H = Quaternion R",
-      "Fixed build-blocking unpinned-R metavariable in Part IV quaternion example: pinned Dep/desargues (R := Quaternion ℝ) — NormPersp fields never mention R so it does not fix R, and M=Fin 3→ℍ does not determine R, causing DivisionRing ?R synthesis failure (DesarguesTheoremOQ02OQ03.lean:230-231)"
+      "Fixed build-blocking unpinned-R metavariable in Part IV quaternion example: pinned Dep/desargues (R := Quaternion ℝ) — NormPersp fields never mention R so it does not fix R, and M=Fin 3→ℍ does not determine R, causing DivisionRing ?R synthesis failure (DesarguesTheoremOQ02OQ03.lean:230-231)",
+      "Two ZMod 4 example blocks in DesarguesTheoremOQ02OQ03.lean Part V: concrete negative witnesses via zero_divisor_breaks_normalization and smul_preserves_nonzero_iff_no_zero_divisors (decide-checked)."
     ],
     "mathlibGaps": [
       "Mathlib has no Desargues-configuration statement; the projective incidence layer (Projectivization) is built for division rings but the Desargues theorem itself must be set up from scratch.",
@@ -55,7 +57,7 @@
       "Formalize the contrast explicitly: exhibit a ring R with zero divisors where normalize_perspective fails, linking to the Moulton counterexample of the parent oq-02.",
       "When Docker/Aristotle blackout lifts: docker-build.sh Proofs.DesarguesTheoremOQ02OQ03 (move file into proofs/Proofs/ first); if clean, promote to gallery entry"
     ],
-    "progressSummary": "PROGRESS (build-blocked): forward direction + algebraic converse hinge formalized, 0 sorries; session 4 API-audited whole file at v4.26.0 and fixed a Part IV elaboration bug (unpinned R). Machine check still blocked by containerd meta.db EIO + Aristotle 404."
+    "progressSummary": "PROGRESS (build-blocked, session 5): forward direction + algebraic converse hinge + concrete negative witness (ZMod 4) all formalized, 0 sorries. Docker containerd meta.db EIO and Aristotle service error both persist — file remains UNVERIFIED. Mathematical core complete and hand-audited; only machine verification is outstanding."
   },
   "knownResults": {
     "proven": [

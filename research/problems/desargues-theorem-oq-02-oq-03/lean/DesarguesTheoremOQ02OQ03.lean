@@ -47,7 +47,8 @@ break the gallery build. Parts I–II (`nucleus_sum`, `cross_dep`, `cross_eq`,
 `desargues`, `normalize_perspective`) and Part III (`zero_divisor_breaks_-`
 `normalization`, `smul_preserves_nonzero_iff_no_zero_divisors`) are the reviewed
 mathematical core; the Part IV quaternion `example` is an instance-resolution
-demonstration.
+demonstration, and the Part V `ZMod 4` `example`s are concrete `decide`-checked
+witnesses that the zero-divisor obstruction is inhabited (necessity is non-vacuous).
 
 Tags: projective-geometry, desargues, division-ring, non-commutative, modules
 -/
@@ -229,5 +230,29 @@ example (o a a' b b' c c' : Fin 3 → Quaternion ℝ)
     (h : NormPersp o a a' b b' c c') :
     Dep (R := Quaternion ℝ) (a - b) (b - c) (c - a) :=
   (desargues (R := Quaternion ℝ) o a a' b b' c c' h).1
+
+/-! ## Part V — The zero-divisor obstruction is concretely inhabited
+
+Part III shows the forward crux `smul_ne_zero'` is *equivalent* to `R` having no
+zero divisors. Part IV exhibits a genuine non-commutative division ring where the
+theorem applies (positive witness). We close the loop with a concrete *negative*
+witness: a ring where the obstruction actually fires, so the necessity direction
+of the iff is not vacuous. -/
+
+/-- **Concrete negative witness.** `ZMod 4` is not a domain — the nonzero scalar
+    `2` sends the nonzero coordinate `2` to `0`. So `smul_ne_zero'` genuinely fails
+    here and the normalization mechanism of the forward direction collapses,
+    matching `zero_divisor_breaks_normalization`. This is the counterpart to the
+    quaternion positive witness: together they show the division-ring hypothesis is
+    both sufficient (Parts I–IV) and, at the rescaling step, necessary (Part III). -/
+example : (2 : ZMod 4) • (2 : ZMod 4) = 0 ∧ (2 : ZMod 4) ≠ 0 ∧ (2 : ZMod 4) ≠ 0 :=
+  zero_divisor_breaks_normalization (2 : ZMod 4) 2 (by decide) (by decide) (by decide)
+
+/-- The obstruction defeats the crux `smul_preserves_nonzero_iff_no_zero_divisors`
+    from the failing side: `ZMod 4` does not satisfy the nonzero-preservation
+    property, exactly because it has the zero divisor `2 * 2 = 0`. -/
+example : ¬ (∀ α a : ZMod 4, α ≠ 0 → a ≠ 0 → α • a ≠ (0 : ZMod 4)) := by
+  rw [smul_preserves_nonzero_iff_no_zero_divisors]
+  decide
 
 end DesarguesTheoremOQ02OQ03
