@@ -1,0 +1,83 @@
+{
+  "slug": "fibonacci-identities-oq-01-oq-04",
+  "title": "The Gelin–Cesàro Identity via Catalan's Identity",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 8,
+  "status": "completed",
+  "phase": "COMPLETED",
+  "started": "2026-07-05T00:00:00Z",
+  "lastUpdate": "2026-07-05T00:00:00Z",
+  "problemStatement": {
+    "formal": "F_{n-2}\\,F_{n-1}\\,F_{n+1}\\,F_{n+2} = F_n^4 - 1 \\qquad (n \\ge 2).",
+    "plain": "The Gelin–Cesàro identity: the product of the four Fibonacci numbers symmetrically flanking F(n) (two on each side) equals F(n)⁴ − 1. This open question asks to derive it from Catalan's identity F(m+r)² − F(m)·F(m+2r) = (−1)ᵐ·F(r)², already proved as fib_catalan_gap in the sibling entry fibonacci-identities-oq-01-oq-02-oq-01.",
+    "whyMatters": [
+      "Shows the classical higher-degree Fibonacci product identities are not independent facts but structured products of the quadratic Catalan slices.",
+      "The difference-of-squares pattern (outer pair × inner pair with opposite signs) is a reusable template for wider symmetric flanking products F(n−k)·…·F(n+k).",
+      "Mathlib has no Fibonacci product identities of this degree, so the gap engine fib_gelin_cesaro_gap is an original contribution."
+    ]
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-07-05T00:00:00Z",
+    "iteration": 1,
+    "focus": "SOLVED. Full verified proof (0 sorries, 0 axioms) plus gallery integration.",
+    "blockers": [],
+    "nextAction": "Done. Optional follow-ups: generalise to 2k-term flanking products; Lucas-number analogue.",
+    "lastUpdate": "2026-07-05T00:00:00Z"
+  },
+  "knownResults": {
+    "proven": [
+      "fib_gelin_cesaro_gap: ∀ m, F(m)·F(m+1)·F(m+3)·F(m+4) = F(m+2)⁴ − 1 (subtraction-free engine).",
+      "fib_gelin_cesaro: ∀ n ≥ 2, F(n−2)·F(n−1)·F(n+1)·F(n+2) = F(n)⁴ − 1 (named form).",
+      "fib_outer_pair / fib_inner_pair: the r=2 and r=1 Catalan slices, F(m)·F(m+4) = F(m+2)² − (−1)ᵐ and F(m+1)·F(m+3) = F(m+2)² + (−1)ᵐ.",
+      "Dependency fib_catalan_gap (Catalan's identity in gap form) from fibonacci-identities-oq-01-oq-02-oq-01, verified 0-axiom."
+    ],
+    "open": [
+      "Generalise: is F(n−k)·…·F(n+k) always a polynomial in F(n) with constant term ±1, iterating the difference-of-squares pattern?",
+      "Lucas-number analogue via the Lucas Catalan identity."
+    ],
+    "goal": "Derive Gelin–Cesàro from Catalan as a difference of squares, 0 sorries / 0 axioms. ACHIEVED."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ01OQ04.lean",
+      "filename": "FibonacciIdentitiesOQ01OQ04.lean",
+      "lineCount": 127,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ01OQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "fibonacci-identities-oq-01",
+    "fibonacci-identities-oq-01-oq-02-oq-01",
+    "fibonacci-identities-oq-01-oq-03"
+  ],
+  "references": [
+    {
+      "authors": "Cesàro, Ernesto",
+      "title": "Gelin–Cesàro identity",
+      "year": "1880s",
+      "note": "F(n−2)·F(n−1)·F(n+1)·F(n+2) = F(n)⁴ − 1"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "note": "Gelin–Cesàro and higher-degree product identities"
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "fibonacci",
+    "gelin-cesaro",
+    "catalan-identity",
+    "identity",
+    "seeker-selected"
+  ],
+  "path": "research/problems/fibonacci-identities-oq-01-oq-04"
+}
