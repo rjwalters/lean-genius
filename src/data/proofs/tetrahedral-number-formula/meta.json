@@ -65,6 +65,13 @@
   },
   "sections": [
     {
+      "id": "roadmap",
+      "title": "Roadmap: goal, division-free constraint, and the three public theorems",
+      "startLine": 4,
+      "endLine": 48,
+      "summary": "The module docstring fixes the goal ∑_{k≤n} T_k = C(n+2,3) = n(n+1)(n+2)/6 with T_k = C(k+1,2), and the guiding design constraint: phrase everything with Nat.choose so no division appears in the core argument. It names the three headline results — sum_triangular_choose (clean hockey-stick statement), six_mul_sum_triangular (cleared-denominator polynomial identity), six_mul_choose_three (tetrahedral closed form) — and the toolkit (sum_range_succ, Pascal's rule, ring/omega). Imports Mathlib.Tactic and Mathlib.Algebra.BigOperators.Intervals; opens Finset for range-sum notation."
+    },
+    {
       "id": "triangular-bridge",
       "title": "Triangular number as a binomial coefficient",
       "startLine": 50,
