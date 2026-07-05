@@ -39,24 +39,24 @@ division ring.
 Reference: Artin, *Geometric Algebra* (Desargues ⇔ division ring);
 Hartshorne, *Foundations of Projective Geometry*.
 
-BUILD STATUS: UNVERIFIED. The Docker + Aristotle blackout persists on
-2026-07-04 and is now root-caused: the Docker containerd content store is
-corrupted (blob `input/output error` on any image build) because the host disk
-`/System/Volumes/Data` is 98% full; Aristotle MCP `prove` returns 404 "Resource
-not found". So this file has NOT been machine-checked. It is deliberately placed
-under `research/problems/.../lean/` (outside the `proofs/Proofs/` glob) so it
-cannot break the gallery build. Parts I–II (`nucleus_sum`, `cross_dep`,
-`cross_eq`, `desargues`, `normalize_perspective`) and Part III
+BUILD STATUS: VERIFIED (Docker, Lean v4.26.0, 2026-07-04). Builds cleanly with
+0 errors, 0 warnings, 0 `sorry`, 0 `axiom`, 0 `native_decide` (the four Part-V
+witnesses use ordinary `decide`, which is kernel-checked and does NOT introduce
+`Lean.ofReduceBool`). Verified by copying into the `proofs/Proofs/` glob and
+running `./proofs/scripts/docker-build.sh Proofs.DesarguesTheoremOQ02OQ03`
+(7743 jobs). The canonical copy lives here under `research/problems/.../lean/`.
+
+Two build-blocking elaboration bugs were fixed to reach this state: the `Dep`
+predicate has its ring `R` appear *only* inside its `∃`-binder, so a bare
+`Dep (a - b) (b - c) (c - a)` left `Module ?R M` stuck. `R` is now pinned
+`(R := R)` in the statements of `cross_dep` and `desargues` (matching the
+already-pinned Part IV quaternion `example`, whose `(R := Quaternion ℝ)` had
+masked the same latent bug). Parts I–II (`nucleus_sum`, `cross_dep`, `cross_eq`,
+`desargues`, `normalize_perspective`) and Part III
 (`zero_divisor_breaks_normalization`,
-`smul_preserves_nonzero_iff_no_zero_divisors`) are the reviewed mathematical
-core; the Part IV quaternion `example` is an instance-resolution demonstration —
-its `R` is now pinned `(R := Quaternion ℝ)` on both `Dep` and `desargues`,
-fixing a build-blocking elaboration bug (with `R` unpinned, `Dep`'s implicit `R`
-appears only inside its `∃`-binder, so `Module ?R (Fin 3 → Quaternion ℝ)` cannot
-be synthesized and the `example` fails to elaborate). Part V pins the dichotomy
-to explicit finite rings (`ZMod 6` negative, `ZMod 5` positive) via `decide`;
-those four `example`s are the one self-certifying part of the file (finite
-`DecidableEq` rings), pending only the full kernel check.
+`smul_preserves_nonzero_iff_no_zero_divisors`) are the mathematical core; Part V
+pins the dichotomy to explicit finite rings (`ZMod 6` negative, `ZMod 5`
+positive).
 
 Tags: projective-geometry, desargues, division-ring, non-commutative, modules
 -/
@@ -87,7 +87,7 @@ theorem nucleus_sum (a b c : M) : (a - b) + (b - c) + (c - a) = 0 := by
 /-- The three cross vectors are linearly dependent, with the canonical witness
     `(1, 1, 1)`. Geometrically: the three side-intersection points are always
     collinear. Needs only `Nontrivial R` (so `1 ≠ 0`). -/
-theorem cross_dep [Nontrivial R] (a b c : M) : Dep (a - b) (b - c) (c - a) := by
+theorem cross_dep [Nontrivial R] (a b c : M) : Dep (R := R) (a - b) (b - c) (c - a) := by
   refine ⟨1, 1, 1, Or.inl one_ne_zero, ?_⟩
   simp only [one_smul]
   exact nucleus_sum a b c
@@ -130,7 +130,7 @@ structure NormPersp (o a a' b b' c c' : M) : Prop where
     lies on both of the lines it is meant to intersect. Commutativity of `R`
     is never used. -/
 theorem desargues (o a a' b b' c c' : M) (h : NormPersp o a a' b b' c c') :
-    Dep (a - b) (b - c) (c - a) ∧
+    Dep (R := R) (a - b) (b - c) (c - a) ∧
     (a - b ∈ Submodule.span R ({a, b} : Set M) ∧
      a - b ∈ Submodule.span R ({a', b'} : Set M)) ∧
     (b - c ∈ Submodule.span R ({b, c} : Set M) ∧
