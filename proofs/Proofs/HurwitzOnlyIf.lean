@@ -663,6 +663,37 @@ theorem imaginaryBilin_self_eq_zero_iff (A : Type*) [NormedDivisionRing A] [Norm
         _ = 0 := realPartValue_smul_one A 0
     linarith
 
+/-- **Orthogonality is anticommutation.** For imaginary `x, y`, the symmetric form `B(x, y)`
+vanishes *exactly* when `x` and `y` anticommute.  The anticommutator `x*y + y*x` is a real
+scalar `t•1` (`anticommutator_scalar_imaginary`), and
+`B(x, y) = -½·(realPart(x·y) + realPart(y·x)) = -½·realPart(t•1) = -½·t`, so
+`B(x, y) = 0 ↔ t = 0 ↔ x*y + y*x = 0`.  This is the bridge the dimension count needs: a
+`B`-orthonormal pair of imaginary units is precisely an *anticommuting* pair, which
+`isImaginary_mul_of_anticomm` then upgrades to a quaternion triple. -/
+theorem imaginaryBilin_eq_zero_iff_anticomm (A : Type*) [NormedDivisionRing A]
+    [NormedAlgebra ℝ A] [Module.Finite ℝ A] (x y : imaginarySubmodule A) :
+    imaginaryBilin A x y = 0 ↔ (x : A) * (y : A) + (y : A) * (x : A) = 0 := by
+  obtain ⟨t, ht⟩ := anticommutator_scalar_imaginary A
+    ((mem_imaginarySubmodule_iff A (x : A)).mp x.2)
+    ((mem_imaginarySubmodule_iff A (y : A)).mp y.2)
+  -- `realPart(x·y) + realPart(y·x) = realPart(x·y + y·x) = realPart(t•1) = t`.
+  have hsum : realPartValue A ((x : A) * (y : A)) + realPartValue A ((y : A) * (x : A)) = t := by
+    rw [← realPartValue_add A, ht, realPartValue_smul_one]
+  have hB : imaginaryBilin A x y = -(1 / 2) * t := by
+    rw [imaginaryBilin_apply, hsum]
+  rw [hB]
+  constructor
+  · intro h
+    have ht0 : t = 0 := by
+      have hne : (-(1 / 2 : ℝ)) ≠ 0 := by norm_num
+      exact (mul_eq_zero.mp h).resolve_left hne
+    rw [ht, ht0, zero_smul]
+  · intro h
+    rw [h] at ht
+    have ht0 : t = 0 :=
+      (smul_eq_zero.mp ht.symm).resolve_right one_ne_zero
+    rw [ht0]; ring
+
 /-! ### Quaternion generation: products of anticommuting imaginaries
 
 The dimension count `finrank ℝ (Im A) ∈ {0, 1, 3}` that closes Frobenius' theorem runs on the

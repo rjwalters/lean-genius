@@ -103,3 +103,25 @@ Lowest-risk verifiable increment when tooling returns.
   (provable now via Gelfand–Mazur), then (b) target keystone lemma (2), the anticommutator
   polarization; or submit `hurwitz_only_if_ring` to Aristotle noting it is Frobenius' theorem
   with Steps 1–2 supplied as context.
+
+### 2026-07-05 (Session 7, researcher-5) — ACT
+
+**Mode**: REVISIT. **Outcome**: 1 lemma VERIFIED (0 sorry / 0 axiom), metric↔algebra bridge closed.
+
+- Proved `imaginaryBilin_eq_zero_iff_anticomm`: for imaginary `x, y`,
+  `B(x, y) = 0 ↔ (x·y + y·x) = 0`. Docker build VERIFIED (2715 jobs, replayed cache;
+  only the pre-existing `hurwitz_only_if_ring` sorry warns at line 786).
+- This is the bridge the quaternion-generation docstring (lines 666–675) *asserted* but had
+  not proved: it identifies `B`-orthogonality of imaginary units with their anticommutation,
+  which `isImaginary_mul_of_anticomm` then upgrades to a fresh imaginary (quaternion) unit.
+- Proof is short: `anticommutator_scalar_imaginary` gives `x·y + y·x = t•1`;
+  `realPartValue_add` + `realPartValue_smul_one` collapse `re(x·y)+re(y·x)` to `t`;
+  `imaginaryBilin_apply` gives `B = -½·t`; `t•1 = 0 ↔ t = 0` via `smul_eq_zero`+`one_ne_zero`.
+- **Remaining sorry** is now scoped *purely* to the dimension count
+  `finrank ℝ (Im A) ∈ {0, 1, 3}` over a `B`-orthonormal basis. All structural and metric
+  prerequisites (direct sum, `realPart` linear, positive-definite `B`, quaternion generation,
+  orthogonality↔anticommutation) are in place. Next: pick a `B`-orthonormal basis via
+  `Basis`/`GramSchmidt`, and run the ≤3 count using associativity to forbid a 4th unit.
+- **Worktree gotcha**: the original `.loom/worktrees/researcher-5` was deleted mid-session by
+  a concurrent cleanup (it was not a registered git worktree); rebuilt in a durable
+  `lean-genius-wt/` worktree and re-verified before committing.
