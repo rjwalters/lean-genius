@@ -444,7 +444,7 @@ theorem usedSum_le (A : IncreasingSeq) (k : ℕ) :
 theorem phiA_pos (A : IncreasingSeq) (k : ℕ) :
     1 ≤ phiA A k := by
   have := phiA_ge_totient A k
-  have := Nat.totient_pos (A.pos k)
+  have := Nat.totient_pos.mpr (A.pos k)
   omega
 
 /-- ρ_A(k) > 0 for all k. -/
@@ -544,7 +544,9 @@ theorem not_density_zero_of_infinitely_many_primes (A : IncreasingSeq)
 theorem naturalSeq_not_density_zero : ¬ DensityToZero naturalSeq :=
   not_density_zero_of_infinitely_many_primes naturalSeq (fun k => by
     obtain ⟨p, hp_ge, hp_prime⟩ := Nat.exists_infinite_primes (k + 2)
-    exact ⟨p - 1, by omega, by simp [naturalSeq]; omega⟩)
+    exact ⟨p - 1, by omega, by
+      have hpp : p - 1 + 1 = p := by omega
+      simpa [naturalSeq, hpp] using hp_prime⟩)
 
 /- ## Part V-C: Complement and DensityToZero Infrastructure -/
 
@@ -585,7 +587,8 @@ theorem erdos_no_zero_limit (A : IncreasingSeq) : ¬ DensityToZero A := by
   intro hDZ
   -- ρ → 0 gives ρ < ε frequently (eventually implies frequently)
   have h_freq : ∀ ε > 0, ∃ᶠ k in atTop, densityRatio A k < ε :=
-    fun ε hε => (hDZ (Iio_mem_nhds hε)).frequently
+    fun ε hε =>
+      (show ∀ᶠ k in atTop, densityRatio A k < ε from hDZ (Iio_mem_nhds hε)).frequently
   -- Dichotomy: frequently near 0 ⟹ frequently near 1
   have h1 := erdos_dichotomy A h_freq (1/2) (by norm_num)
   -- But ρ → 0 gives eventually ρ < 1/2
@@ -613,7 +616,8 @@ axiom haight_resolution : ∃ A : IncreasingSeq, VanishingAverage A
 theorem cassels_liminf_zero :
     ∃ A : IncreasingSeq, ∀ ε > 0, ∃ᶠ N in atTop, cesaroAvg A N < ε := by
   obtain ⟨A, hA⟩ := haight_resolution
-  exact ⟨A, fun ε hε => (hA (Iio_mem_nhds hε)).frequently⟩
+  exact ⟨A, fun ε hε =>
+    (show ∀ᶠ N in atTop, cesaroAvg A N < ε from hA (Iio_mem_nhds hε)).frequently⟩
 
 /- ## Part IX: Corollaries -/
 
@@ -730,7 +734,7 @@ theorem usedSum_zero (A : IncreasingSeq) : usedSum A 0 = 0 := by
 theorem densityRatio_ge_inv (A : IncreasingSeq) (k : ℕ) :
     1 / (A.seq k : ℝ) ≤ densityRatio A k := by
   unfold densityRatio
-  rw [div_le_div_right₀ (Nat.cast_pos.mpr (A.pos k))]
+  rw [div_le_div_iff_of_pos_right (Nat.cast_pos.mpr (A.pos k))]
   exact_mod_cast phiA_pos A k
 
 /-- The Cesàro average is bounded below by the average totient ratio:
@@ -742,7 +746,7 @@ theorem cesaroAvg_ge_totient_avg (A : IncreasingSeq) (N : ℕ) :
   unfold cesaroAvg
   rcases Nat.eq_zero_or_pos N with rfl | hN
   · simp
-  · rw [div_le_div_right₀ (Nat.cast_pos.mpr hN)]
+  · rw [div_le_div_iff_of_pos_right (Nat.cast_pos.mpr hN)]
     exact Finset.sum_le_sum fun k _ => densityRatio_ge_totient_ratio A k
 
 /-- Any subset of unused divisors of n_k gives a lower bound on φ_A(k).
@@ -802,8 +806,9 @@ theorem phiA_ge_self_and_quotient (A : IncreasingSeq) (k : ℕ) (hk : 0 < k)
   -- Both are large (exceed n_{k-1})
   have h_nk_large : A.seq (k - 1) < A.seq k := A.strictMono (by omega)
   have h_div_large : A.seq (k - 1) < A.seq k / p := by
-    have := Nat.div_mul_cancel hp_dvd
-    omega
+    have hcancel := Nat.div_mul_cancel hp_dvd
+    have hmul : A.seq (k - 1) * p < A.seq k / p * p := by rw [hcancel]; exact hgap
+    exact lt_of_mul_lt_mul_right hmul (Nat.zero_le p)
   -- Both are unused
   have h_nk_unused := divisor_gt_prev_unused A k hk (A.seq k) (dvd_refl _) h_nk_large
   have h_div_unused := divisor_gt_prev_unused A k hk (A.seq k / p)
@@ -975,9 +980,9 @@ theorem divPairs_fiber_j_card_le (A : IncreasingSeq) (N j : ℕ) (hj : j < N)
         apply Finset.card_le_card_of_injOn (fun k => A.seq k / A.seq j)
         · -- Maps into Ico 1 (M+1)
           intro k hk
-          simp only [Finset.mem_filter, Finset.mem_range] at hk
+          simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_range] at hk
           obtain ⟨hkN, _, hdvd⟩ := hk
-          rw [Finset.mem_Ico]
+          simp only [Finset.mem_coe, Finset.mem_Ico]
           constructor
           · -- quotient ≥ 1 (from divisibility and positivity)
             exact Nat.div_pos (Nat.le_of_dvd (A.pos k) hdvd) (A.pos j)
@@ -1001,7 +1006,7 @@ theorem divPairs_fiber_j_card_le (A : IncreasingSeq) (N j : ℕ) (hj : j < N)
               _ = A.seq k₂ / A.seq j * A.seq j := congr_arg (· * A.seq j) heq
               _ = A.seq k₂ := h2
           exact A.strictMono.injective this
-    _ = M := by rw [Nat.card_Ico]; omega
+    _ = M := by rw [Nat.card_Ico, Nat.add_sub_cancel]
 
 /- ## Part XIII: Growth Constraints from Low Density -/
 
