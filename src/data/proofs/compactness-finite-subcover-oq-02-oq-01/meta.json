@@ -145,7 +145,8 @@
     "summary": "A continuous map f from a compact metric space to a metric space is uniformly continuous (heine_cantor). The proof follows the parent's route: cover X by U z = f⁻¹(ball (f z) ε/2), take the Lebesgue number δ of that cover, and observe that dist x y < δ forces both f x and f y within ε/2 of a common f z, so dist (f x) (f y) < ε (heine_cantor_dist). The entry adds the continuity ⇔ uniform-continuity equivalence on compact metric domains (continuous_iff_uniformContinuous) and the Cauchy-preservation corollary (cauchySeq_comp_of_continuous). 105 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries.",
     "implications": "The single ingredient, the Lebesgue number lemma, is Mathlib's, and Mathlib also packages Heine–Cantor directly (hence the mathlib badge); the formalized content is the self-contained derivation along the Lebesgue-number route — turning the parent's subordinate-net structure into a global modulus of continuity — together with the equivalence and Cauchy corollaries read off it.",
     "openQuestions": [
-      "Make the modulus quantitative for Lipschitz/Hölder maps, taking δ linear/polynomial in ε."
+      "Make the modulus quantitative for Lipschitz/Hölder maps, taking δ linear/polynomial in ε.",
+      "Drop the metric on the target and generalize to a uniform space: 'continuous on a compact space ⟹ uniformly continuous' holds for any continuous map from a compact space into a uniform space, where uniform continuity is defined via the diagonal uniformity and there is no Lebesgue number to invoke. Can the Lebesgue-number route of this entry be recast as the uniform-space argument (cover the compact domain by preimages of entourages and extract a finite subcover), recovering Heine–Cantor in the setting Mathlib states it (UniformContinuous on a CompactSpace)?"
     ]
   }
 }
