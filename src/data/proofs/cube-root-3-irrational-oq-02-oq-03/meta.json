@@ -44,6 +44,80 @@
     "definitionCount": 1,
     "theoremCount": 7
   },
+  "overview": {
+    "historicalContext": "The irreducibility of pure binomials X^n − a is one of the oldest questions in the theory of equations. Abel and Galois already understood the odd-prime case, but the definitive criterion is due to Theodor Vahlen (1895) and Alfredo Capelli (1897), who independently settled when X^n − a is irreducible over a field: it is irreducible iff a is not a p-th power for any prime p ∣ n and — the subtle extra clause — a ∉ −4·K⁴ whenever 4 ∣ n. This last condition traces directly to the Sophie Germain identity u⁴+4v⁴ = (u²−2uv+2v²)(u²+2uv+2v²), which Germain introduced around 1825 during her work on Fermat's Last Theorem. Serge Lang's Algebra (VI §9) gives the modern textbook treatment. Mathlib formalises only the odd-exponent half (X_pow_sub_C_irreducible_iff_forall_prime_of_odd) and leaves the even case as an explicit TODO citing exactly this Lang reference — so this entry attacks a concrete, named gap in the library. The problem descends from the parent gallery entry proving ∛3 irrational by Eisenstein: that argument is the case n = 3, a = 3, and Vahlen–Capelli is the exact iff that generalises the ad hoc Eisenstein bound to every exponent and radicand.",
+    "problemStatement": "For a field $K$, an element $a \\in K$, and $n \\ge 1$: $X^n - Ca$ is irreducible over $K$ iff (1) $a$ is not a $p$-th power in $K$ for every prime $p \\mid n$, and (2) if $4 \\mid n$ then $a \\notin -4K^4$, i.e. $a \\ne -4b^4$ for all $b \\in K$.",
+    "proofStrategy": "Encode the two-part criterion as a predicate VahlenCapelliCond, then split the biconditional by parity. Necessity holds for all n and is fully proved: two obstruction lemmas exhibit explicit proper divisors — obstruction_pow_dvd (if a = cᵖ then X^{n/p} − Cc divides the binomial, via x−y ∣ xⁿ−yⁿ) for condition (1), and capelli_factor_dvd (the Sophie Germain / Capelli factorisation of X^{4m} + 4(Cb)⁴ into two degree-2m quadratics) for condition (2). The odd branch of sufficiency is complete: for odd n condition (2) is vacuous (4 ∤ n by omega), so the criterion reduces verbatim to Mathlib's Kummer-extension theorem. The even-sufficiency direction — the hard Capelli theorem — is isolated as the sole sorry, with a documented reduction: write n = 2ᵏt with t odd, dispatch the odd part after substituting X ↦ X^{2ᵏ}, then induct on k with the −4b⁴ factorisation as the inductive obstruction that condition (2) forbids.",
+    "keyInsights": [
+      "The entire even/odd asymmetry of binomial irreducibility comes from a single algebraic fact: u⁴+4v⁴ factors into two quadratics (Sophie Germain, ~1825). Condition (2) of the criterion exists only because this factorisation exists.",
+      "Necessity and sufficiency have completely different difficulty profiles. Necessity is elementary and holds for every n — it is just producing an explicit proper divisor. Sufficiency for 4 ∣ n is the genuinely hard content and is precisely what Mathlib leaves open.",
+      "Both necessity witnesses are the *same idea* applied to different factorisations: condition (1) uses x−y ∣ xⁿ−yⁿ (a p-th power splits off a linear-in-X^m factor); condition (2) uses u⁴+4v⁴ (a −4b⁴ radicand splits off a quadratic-in-X^m factor).",
+      "For odd n the criterion collapses onto Mathlib's existing theorem because condition (2)'s hypothesis 4 ∣ n can never fire — a structural vacuity, not an omission. The Lean proof makes this collapse a theorem about the predicate rather than a re-derivation.",
+      "The sole sorry is honest and well-localised: it coincides exactly with an open TODO in Mathlib/FieldTheory/KummerExtension.lean, so the wip badge marks a real research frontier rather than an incomplete routine argument.",
+      "The reduction n = 2ᵏt (odd t) shows the even case is not monolithic: coprime-exponent multiplicativity of irreducibility peels away t, concentrating all difficulty in the pure 2-power tower n = 2ᵏ, where induction on k meets the Sophie Germain obstruction."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "Imports and namespace",
+      "startLine": 65,
+      "endLine": 75,
+      "summary": "Pulls in KummerExtension (the odd-case theorem and the file whose even-case TODO this targets) and GeomSum (the x−y ∣ xⁿ−yⁿ divisibility), opens the Polynomial namespace for X and C."
+    },
+    {
+      "id": "predicate",
+      "title": "Part 0 — The Vahlen–Capelli criterion as a predicate",
+      "startLine": 77,
+      "endLine": 85,
+      "summary": "Defines VahlenCapelliCond bundling condition (1) (no p-th power for prime p ∣ n) and condition (2) (a ∉ −4K⁴ when 4 ∣ n) into one reusable Prop shared by the odd and full theorems."
+    },
+    {
+      "id": "sophie-germain",
+      "title": "Part 1 — The Sophie Germain / Capelli identity",
+      "startLine": 87,
+      "endLine": 99,
+      "summary": "Proves u⁴+4v⁴ = (u²−2uv+2v²)(u²+2uv+2v²) over any commutative ring by ring. This is the algebraic source of condition (2) and the mathematical heart of the file."
+    },
+    {
+      "id": "necessity-two",
+      "title": "Part 2 — Necessity of condition (2): the −4·K⁴ obstruction",
+      "startLine": 101,
+      "endLine": 133,
+      "summary": "Lifts Sophie Germain to X^{4m}+4(Cb)⁴ (factor_capelli), handles the C-bookkeeping (C_neg_four_mul_pow), and packages the first quadratic as an explicit proper divisor of X^{4m} − C(−4b⁴) (capelli_factor_dvd)."
+    },
+    {
+      "id": "necessity-one",
+      "title": "Part 3 — Necessity of condition (1): the p-th power obstruction",
+      "startLine": 135,
+      "endLine": 151,
+      "summary": "Shows X^m − Cc divides X^{pm} − C(cᵖ) via sub_dvd_pow_sub_pow, so a perfect p-th power radicand (p ∣ n) forces a proper degree-m divisor."
+    },
+    {
+      "id": "odd-case",
+      "title": "Part 4 — The odd case: full iff via Mathlib",
+      "startLine": 153,
+      "endLine": 170,
+      "summary": "For odd n condition (2) is vacuous, so vahlen_capelli_odd reduces the criterion to X_pow_sub_C_irreducible_iff_forall_prime_of_odd — a complete, sorry-free biconditional."
+    },
+    {
+      "id": "full-criterion",
+      "title": "Part 5 — The full criterion and the open even-sufficiency gap",
+      "startLine": 172,
+      "endLine": 202,
+      "summary": "Assembles vahlen_capelli by parity: odd branch closed via Part 4, even branch carries the sole sorry with a documented n = 2ᵏt reduction — the exact even-sufficiency TODO from Mathlib's KummerExtension."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry formalises the Vahlen–Capelli criterion for binomial irreducibility as a single predicate and proves everything except the one direction Mathlib itself leaves open. The Sophie Germain identity, both necessity-obstruction factorisations (for conditions (1) and (2)), and the complete odd-exponent biconditional are all established; the even-sufficiency step (conditions (1),(2) ⟹ irreducible when 4 ∣ n) is isolated as the sole sorry, matching the explicit TODO in Mathlib/FieldTheory/KummerExtension.lean.",
+    "implications": "Closing the remaining sorry would upgrade Mathlib's odd-only Kummer-extension result to the full classical criterion, giving a complete, uniform account of when a pure binomial is irreducible over an arbitrary field — the exact generalisation the parent ∛3-irrationality (Eisenstein, n=3) entry motivates. The reusable VahlenCapelliCond predicate and the two elementary obstruction lemmas are already independently useful: they supply machine-checked necessity witnesses for every n, and the Sophie Germain factorisation is a standalone ring identity applicable well beyond this criterion (Aurifeuillian factorisations, sums of powers).",
+    "openQuestions": [
+      "Complete the even-sufficiency sorry: prove conditions (1),(2) ⟹ Irreducible(X^n − Ca) for 4 ∣ n, following the n = 2ᵏt reduction and induction on the 2-adic valuation k sketched in the docstring.",
+      "Formalise the coprime-exponent multiplicativity of binomial irreducibility (X^{st} − Ca behaviour under gcd(s,t)=1) that the reduction relies on, if not already available in Mathlib.",
+      "Upstream the finished criterion to Mathlib to discharge the standing TODO in KummerExtension.lean, generalising X_pow_sub_C_irreducible_iff_forall_prime_of_odd to all n.",
+      "Derive the classical corollaries (e.g. irreducibility of cyclotomic-adjacent binomials, degree of radical field extensions K(a^{1/n})/K) as immediate consequences of the full iff."
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "cube-root-3-irrational-oq-02",
