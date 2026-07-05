@@ -104,5 +104,76 @@
     ],
     "assumptions": "None beyond Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). No `axiom` declarations, no `sorry`, no `native_decide`. The result formalized is the Galois-group realization (Sₙ, Aₙ ≅ Gal of the generic extension) together with the extension degrees; the additional 'regularity' assertion of RIGP — that ℚ is algebraically closed in the fixed field, so the realization is regular — is discussed but not separately formalized here."
   },
+  "overview": {
+    "historicalContext": "The Inverse Galois Problem — is every finite group the Galois group of some extension of ℚ? — was raised by Hilbert around 1892 and remains open in general. Hilbert himself settled the symmetric and alternating groups: via his Irreducibility Theorem, realizing Sₙ and Aₙ over the purely transcendental field ℚ(e₁,…,eₙ) descends to a realization over ℚ. The transcendental step is the classical 'generic' construction going back to the fundamental theorem of symmetric functions: the symmetric group permutes the variables x₁,…,xₙ of ℚ(x₁,…,xₙ), and its fixed field is exactly the field of symmetric functions ℚ(e₁,…,eₙ) in the elementary symmetric polynomials. Modern inverse Galois theory (Shafarevich for solvable groups; Thompson, Matzat, Malle via rigidity and Belyi maps for many simple groups) needs heavy machinery — but Sₙ and Aₙ are precisely the base cases that require none of it. This entry formalizes that elementary route for all n at once.",
+    "problemStatement": "Realize, with 0 axioms and 0 sorries, every symmetric group Sₙ = Equiv.Perm (Fin n) and every alternating group Aₙ simultaneously as the Galois group of a field extension: exhibit group isomorphisms Sₙ ≃* Gal(F/F^{Sₙ}) and Aₙ ≃* Gal(F/F^{Aₙ}) for F = ℚ(x₁,…,xₙ), together with the extension degrees [F:F^{Sₙ}] = n! and [F:F^{Aₙ}] = |Aₙ|.",
+    "proofStrategy": "Everything rides on Artin's fixed-field theorem (Mathlib's FixedPoints.toAlgAutMulEquiv): a finite group G acting faithfully on a field F automatically makes F/F^G a finite Galois extension with Gal(F/F^G) ≃* G and [F:F^G] = |G|. So the entire task is to build a faithful Sₙ-action on F and quote Artin. (1) renamePermHom: the monoid hom Sₙ →* (ℚ[x₁,…,xₙ] ≃ₐ[ℚ] ℚ[x₁,…,xₙ]) permuting variables, whose map_one/map_mul come free from renameEquiv_refl/renameEquiv_trans. (2) permToFAut: lift it to the fraction field F by composing with the bundled IsFractionRing.fieldEquivOfAlgEquivHom. (3) permFaithful: faithfulness, the one nontrivial input, reduces to injectivity of renameEquiv on generators via rename e (X i) = X (e i) and MvPolynomial.X_injective. (4) realizeSn, isGalois_Sn, finrank_Sn: instantiate Artin and compute the degree n! from Fintype.card_perm. (5) The alternating case reuses the same permToFAut restricted along the subgroup inclusion Aₙ ↪ Sₙ, giving realizeAn, isGalois_An, finrank_An : degree |Aₙ|.",
+    "keyInsights": [
+      "The generic construction realizes ALL Sₙ and Aₙ at once over the transcendental base ℚ(e₁,…,eₙ), sidestepping the rigidity / Belyi-map machinery the general regular inverse Galois problem needs — for these two families the elementary symmetric-function route suffices and is Mathlib-reachable.",
+      "Artin's fixed-field theorem is the whole engine: a finite group acting faithfully on a field F makes F/F^G Galois with Gal ≃ G and [F:F^G] = |G| automatically. The only genuine work is exhibiting a faithful action; realizeSn/realizeAn are then one-line instantiations.",
+      "The fixed field F^{Sₙ} is exactly the field of symmetric rational functions ℚ(e₁,…,eₙ) (fundamental theorem of symmetric functions), and F^{Aₙ} adjoins √disc; this construction is thus the field-theoretic incarnation of 'symmetric functions of the roots', with the degrees n! and n!/2 = |Aₙ| falling out directly.",
+      "Faithfulness — the sole nontrivial hypothesis — collapses to injectivity of variable-renaming on the generators: rename e (X i) = X (e i), so a permutation fixing every variable is the identity (via MvPolynomial.X_injective). The abstract action reduces to a concrete fact about generators.",
+      "Routing the action through the bundled IsFractionRing.fieldEquivOfAlgEquivHom ∘ renameEquiv makes the monoid-hom laws map_one/map_mul fall out of renameEquiv_refl/renameEquiv_trans for free — a design choice that avoids hand-constructing fraction-field automorphisms and their functoriality proofs.",
+      "The alternating case costs almost nothing: the same permToFAut restricted along Aₙ ↪ Sₙ stays faithful (injective ∘ injective), so realizeAn is obtained by re-running Artin on the subgroup — reuse rather than a new construction."
+    ],
+    "prerequisites": [
+      "The inverse Galois problem and Galois-group realizations",
+      "Artin's fixed-field theorem: a faithful finite group action gives a Galois extension over the fixed field",
+      "The fundamental theorem of symmetric functions (fixed field of Sₙ = ℚ(e₁,…,eₙ))",
+      "Rational function fields as fraction rings of polynomial rings; MvPolynomial variable renaming",
+      "Symmetric and alternating groups; the discriminant and its square root fixed by Aₙ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "step1-permutation-action",
+      "title": "Step 1: The variable-permutation action and its lift to the function field",
+      "startLine": 38,
+      "endLine": 83,
+      "summary": "Defines the polynomial ring P = ℚ[x₁,…,xₙ] and function field F = ℚ(x₁,…,xₙ), builds renamePermHom : Sₙ →* (P ≃ₐ[ℚ] P) from MvPolynomial.renameEquiv (with map_one/map_mul from renameEquiv_refl/renameEquiv_trans), proves it injective, and lifts it to permToFAut : Sₙ →* (F ≃ₐ[ℚ] F) via IsFractionRing.fieldEquivOfAlgEquivHom, inheriting injectivity."
+    },
+    {
+      "id": "step2-faithful-action",
+      "title": "Step 2: The Sₙ-action on F and its faithfulness",
+      "startLine": 85,
+      "endLine": 96,
+      "summary": "Installs the MulSemiringAction of Sₙ on F via MulSemiringAction.compHom permToFAut and proves permFaithful — the one nontrivial hypothesis of Artin's theorem — by reducing to injectivity of permToFAut."
+    },
+    {
+      "id": "step3-artin-sn",
+      "title": "Step 3: Artin ⟹ Sₙ is a Galois group",
+      "startLine": 98,
+      "endLine": 119,
+      "summary": "Instantiates FixedPoints.toAlgAutMulEquiv to get realizeSn : Sₙ ≃* Gal(F/F^{Sₙ}), the IsGalois instance isGalois_Sn, and finrank_Sn : [F:F^{Sₙ}] = n! from FixedPoints.finrank_eq_card and Fintype.card_perm."
+    },
+    {
+      "id": "step4-alternating",
+      "title": "Step 4: Aₙ realized by restriction to the alternating subgroup",
+      "startLine": 121,
+      "endLine": 157,
+      "summary": "Reuses permToFAut composed with the subgroup inclusion Aₙ ↪ Sₙ: altAction, altToFAut_injective, altFaithful, then realizeAn : Aₙ ≃* Gal(F/F^{Aₙ}), isGalois_An, and finrank_An : [F:F^{Aₙ}] = |Aₙ|."
+    }
+  ],
+  "conclusion": {
+    "summary": "Realizes every symmetric group Sₙ and every alternating group Aₙ simultaneously as the Galois group of a field extension, via the classical generic construction: Sₙ permutes the variables of F = ℚ(x₁,…,xₙ), Artin's fixed-field theorem turns this faithful action into an isomorphism Sₙ ≃* Gal(F/F^{Sₙ}) with [F:F^{Sₙ}] = n!, and the same machinery restricted to Aₙ gives Aₙ ≃* Gal(F/F^{Aₙ}) with degree |Aₙ|. 0 axioms, 0 sorries.",
+    "implications": "Pins down exactly what the Sₙ/Aₙ case of the (regular) inverse Galois problem costs in a formal library: only Artin's fixed-field theorem plus a faithful variable-permutation action — none of the rigidity or Belyi-map machinery the general problem requires. It complements the sibling entry realizing S₅ concretely over ℚ, and supplies a reusable faithful-action template (renameEquiv routed through fieldEquivOfAlgEquivHom) for further fixed-field constructions.",
+    "openQuestions": [
+      "Can the *regularity* of the realization — that ℚ is algebraically closed in the fixed field ℚ(e₁,…,eₙ), so the extension is regular — be formalized, upgrading this to a full statement of the regular inverse Galois problem for Sₙ and Aₙ?",
+      "Can Hilbert's Irreducibility Theorem be applied in Lean to specialize the generic Sₙ/Aₙ extension over ℚ(e₁,…,eₙ) down to a realization over ℚ itself, recovering Hilbert's classical descent?",
+      "Can the fixed field F^{Sₙ} be identified explicitly with ℚ(e₁,…,eₙ) via a formalized fundamental theorem of symmetric functions, and F^{Aₙ} with ℚ(e₁,…,eₙ)(√disc), yielding an explicit generic polynomial?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-01",
+      "relationship": "related",
+      "description": "Sibling: realizes the single group S₅ concretely over ℚ via the irreducible quintic X⁵ − 4X + 2. This entry instead realizes every Sₙ and Aₙ at once over the transcendental base ℚ(e₁,…,eₙ)."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "related",
+      "description": "Abel–Ruffini uses that Sₙ (n ≥ 5) is unsolvable to prove the generic degree-n equation has no radical solution; this entry realizes those same Sₙ as honest Galois groups, exhibiting the extensions whose unsolvability drives Abel–Ruffini."
+    }
+  ],
   "sorries": 0
 }
