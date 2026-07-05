@@ -143,7 +143,23 @@
     }
   ],
   "conclusion": "The three classical faces of Sylvester's sequence beyond its reciprocal sum — coprimality, the Euclid product, and the modular skeleton (parity and residue mod 6, and mod every earlier term) — all descend from one identity, a_{n+1} - 1 = a_n(a_n - 1). The formalization keeps everything in ℕ, defusing truncated subtraction by a single change of variable, and derives the mod-6 invariant by a two-line induction rather than case analysis. NOTE: this entry is BUILD-PENDING (status 'pending'/'wip') — the proof is complete and self-reviewed but was not machine-checked this session because the Docker toolchain was unavailable; it must be compiled with docker-build.sh before being promoted to 'verified'.",
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "sylvester-sequence-oq-01",
+      "relationship": "complements",
+      "description": "Companion entry proving the telescoping reciprocal-sum identity for ∑ 1/aₖ together with pairwise coprimality of the terms. This entry shares the Euclid-product and coprimality facts (parts 1–2, 4) but adds the modular skeleton the companion does not treat: parity, residue mod 6, and residue modulo every earlier term."
+    },
+    {
+      "targetId": "sylvester-sequence-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Formalizes that the reciprocal sum ∑ 1/aₖ converges to 1 (the Egyptian-fraction / Tendsto face of the sequence). Where that entry studies the analytic limit, this one isolates the arithmetic — divisibility, congruence, and residue — structure of the same recurrence."
+    },
+    {
+      "targetId": "sylvester-sequence-oq-03",
+      "relationship": "related",
+      "description": "Studies the doubly-exponential growth rate of the terms and the speed of reciprocal-sum convergence. It governs the size of aₙ; this entry governs their divisibility and residues — the two complementary halves of the sequence's structure, both descending from a_{n+1} = a_n² - a_n + 1."
+    }
+  ],
   "references": {
     "papers": [],
     "urls": [
