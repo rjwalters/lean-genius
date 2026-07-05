@@ -15,11 +15,24 @@ removed: the `(2,2)` coefficients are abstracted with `obtain` so the final `rw 
 cannot accidentally rewrite the `G` occurring inside `G.coeff 1`. The file now contains
 **zero `sorry`s** — but remains UNVERIFIED (see risks at the bottom).
 
-Next session with a working verifier should (a) build this, (b) fix any Mathlib API-name
-mismatches (flagged `-- API?`) and the four `linear_combination` sign-guards in
-`quartic_two_two_coeffs`, then (c) move the new theorems into
+Robustification pass (researcher-5, later 2026-07-04, blackout STILL in effect — 5th session:
+Docker cache `.ltar` corrupt + Aristotle "Resource not found"): with no build available, the
+draft was hardened against its own biggest uncertainties via a **Mathlib v4.26.0 source audit**
+(`gh api .../contents?ref=v4.26.0`):
+  * the four sign-fragile `linear_combination eK` in `quartic_two_two_coeffs` are now
+    `first | linear_combination eK | linear_combination -eK` — orientation-robust (the math is
+    hand-verified exact, so one sign must close each goal);
+  * `natDegree_pos_of_ne_zero_of_not_isUnit` rewritten onto the CONFIRMED
+    `eq_C_of_natDegree_eq_zero`, dropping the unconfirmed `natDegree_eq_zero` existential;
+  * `eq_X_add_C_of_natDegree_le_one`, `natDegree_le_iff_coeff_eq_zero`, `Monic.coeff_natDegree`
+    confirmed verbatim (see the risk table at the bottom).
+
+Next session with a working verifier should (a) build this, (b) resolve the residual
+`simp`-reduction risks listed at the bottom, then (c) move the new theorems into
 `proofs/Proofs/CubeRoot3IrrationalOQ02OQ03.lean` and rewire the `n = 4` branch of
-`vahlen_capelli` (see the bottom of this file).
+`vahlen_capelli` (see the bottom of this file). Do NOT port before one clean build: the
+deployer merges math PRs without building, so an un-compiled port would silently regress the
+currently-clean main file (one honest `sorry`).
 
 This is intentionally OUTSIDE `proofs/Proofs/` so the lakefile glob does not build it and
 the currently-compiling main file is not put at risk.
@@ -117,21 +130,31 @@ theorem quartic_two_two_coeffs {K : Type*} [Field K] {a p q s t : K}
   -- After simp the `if`s on distinct literals collapse; `norm_num` finishes the arithmetic
   -- guards. Each eK becomes a scalar equation (LHS side is 0 for k=1,2,3 and −a for k=0).
   norm_num at e3 e2 e1 e0
+  -- Math hand-verified: coeff 3 ⟹ p+s=0, coeff 2 ⟹ q+t+ps=0, coeff 1 ⟹ pt+qs=0,
+  -- coeff 0 ⟹ qt=−a. The ONLY residual uncertainty is the orientation of each `eK` after
+  -- `norm_num`, so each finisher tries both signs — one MUST close it (the identity is exact).
   refine ⟨?_, ?_, ?_, ?_⟩
-  · linear_combination e3      -- API? sign may need flipping to `-e3`
-  · linear_combination e2      -- API?
-  · linear_combination e1      -- API?
-  · linear_combination e0      -- API?
+  · first | linear_combination e3 | linear_combination -e3
+  · first | linear_combination e2 | linear_combination -e2
+  · first | linear_combination e1 | linear_combination -e1
+  · first | linear_combination e0 | linear_combination -e0
 
-/-- Over a field, a nonzero non-unit polynomial has positive `natDegree`. -/
+/-- Over a field, a nonzero non-unit polynomial has positive `natDegree`.
+
+Uses `eq_C_of_natDegree_eq_zero : natDegree p = 0 → p = C (p.coeff 0)` (AUDITED present in
+Mathlib v4.26.0, `Algebra/Polynomial/Inductions.lean`), replacing the previously-guessed
+existential form of `natDegree_eq_zero`. The last step rewrites the `IsUnit u` goal with this
+equation, avoiding a fragile `▸`. -/
 theorem natDegree_pos_of_ne_zero_of_not_isUnit {K : Type*} [Field K] {u : K[X]}
     (hu0 : u ≠ 0) (huu : ¬ IsUnit u) : 0 < u.natDegree := by
   rcases Nat.eq_zero_or_pos u.natDegree with h0 | h0
   · exfalso
-    obtain ⟨c, hc⟩ := Polynomial.natDegree_eq_zero.mp h0   -- hc : C c = u   -- API?
-    have hcne : c ≠ 0 := by
-      rintro rfl; rw [map_zero] at hc; exact hu0 hc.symm
-    exact huu (hc ▸ isUnit_C.mpr (isUnit_iff_ne_zero.mpr hcne))
+    have hc : u = C (u.coeff 0) := eq_C_of_natDegree_eq_zero h0
+    have hcne : u.coeff 0 ≠ 0 := by
+      intro hz; rw [hz, map_zero] at hc; exact hu0 hc
+    apply huu
+    rw [hc]
+    exact isUnit_C.mpr (isUnit_iff_ne_zero.mpr hcne)
   · exact h0
 
 /-- A degree-1 factor of `X⁴ − C a` produces a root, contradicting the no-root lemma. -/
@@ -142,7 +165,9 @@ theorem no_linear_factor {K : Type*} [Field K] {a : K}
   have hu0 : u ≠ 0 := by rintro rfl; simp at hu1
   have hform : u = C (u.coeff 1) * X + C (u.coeff 0) := by
     have : u.natDegree ≤ 1 := le_of_eq hu1
-    exact Polynomial.eq_X_add_C_of_natDegree_le_one this   -- API? name/shape
+    -- AUDITED v4.26.0: `eq_X_add_C_of_natDegree_le_one (h : natDegree p ≤ 1) :
+    --   p = C (p.coeff 1) * X + C (p.coeff 0)` (Polynomial/Degree/SmallDegree.lean).
+    exact Polynomial.eq_X_add_C_of_natDegree_le_one this
   have hlead : u.coeff 1 ≠ 0 := by
     -- coeff at natDegree = leadingCoeff ≠ 0
     have := Polynomial.leadingCoeff_ne_zero.mpr hu0
@@ -303,23 +328,35 @@ Mathlib TODO (KummerExtension.lean, Lang VI §9) discharged.
 Net effect once verified: the sole `sorry` in the MAIN file shrinks from "even n ≥ 4" to
 "even n ≥ 6". This draft file itself now has **zero `sorry`s**.
 
-## Remaining verification risks (in decreasing order of concern)
-1. **`quartic_two_two_coeffs` coefficient finishers** (researcher-6's, unchanged): after
-   `simp … ; norm_num at e3 e2 e1 e0`, the four `linear_combination eK` may need sign flips
-   (`-eK`) depending on the exact simp normal form. HIGH confidence in the math, MEDIUM in
-   the tactic. This is the single most likely break point; the natural Aristotle target.
-2. **`monic_natDegree_two_eq`** (researcher-5, NEW): relies on
-   `natDegree_le_iff_coeff_eq_zero`, `coeff_X_pow` (`(X^k).coeff n = if n = k then 1 else 0`),
-   `coeff_eq_zero_of_natDegree_lt`, `eq_X_add_C_of_natDegree_le_one`, `Monic.coeff_natDegree`.
-   The `simp`/`omega` guards in the `coeff` case-split are the likely fiddle points.
-3. **`leadingCoeff_inv_mul_monic`** (researcher-5, NEW): `leadingCoeff_mul`, `leadingCoeff_C`,
-   `inv_mul_cancel₀`. Uses that `Monic p` is defeq to `p.leadingCoeff = 1` (the final
-   `exact h`). If that defeq is rejected, wrap with `Monic.def`/`show`.
-4. **`hGdeg`/`hHdeg`**: `natDegree_mul` (needs both factors `≠ 0`) + `natDegree_C` + `zero_add`
-   — replaces the previous `natDegree_C_mul` guess with the safer product form.
-5. `natDegree_pos_of_ne_zero_of_not_isUnit` (researcher-6's): `Polynomial.natDegree_eq_zero`
-   shape (`∃ x, C x = u` direction).
-6. `no_linear_factor` (researcher-6's): `eq_X_add_C_of_natDegree_le_one` name/shape,
-   `field_simp [hr]` behaviour.
-7. `monic_X_pow_sub_C`, `mul_inv_rev`, `C_mul`, `C_1`, `C_eq_zero` name/signature checks.
+## Remaining verification risks (updated 2026-07-04 researcher-5, after a Mathlib v4.26.0
+   source API audit via `gh api .../contents?ref=v4.26.0` — done because BOTH verifiers are
+   still down, 5th consecutive blackout session; names below are checked against source, not
+   a build).
+
+RESOLVED this session (was risk, now audited/mitigated):
+* `eq_X_add_C_of_natDegree_le_one` — CONFIRMED verbatim in `Polynomial/Degree/SmallDegree.lean`:
+  `(h : natDegree p ≤ 1) : p = C (p.coeff 1) * X + C (p.coeff 0)`. Both call sites match.
+* `natDegree_le_iff_coeff_eq_zero` — CONFIRMED verbatim in `Polynomial/Degree/Lemmas.lean`:
+  `p.natDegree ≤ n ↔ ∀ N, n < N → p.coeff N = 0`. Matches `monic_natDegree_two_eq`.
+* `Monic.coeff_natDegree` — CONFIRMED present (`Polynomial/Monic.lean`, used as `hmo.coeff_natDegree`).
+* `quartic_two_two_coeffs` sign fragility — MITIGATED: each finisher is now
+  `first | linear_combination eK | linear_combination -eK`, orientation-robust. The four
+  identities are hand-verified exact (coeff 3→p+s, 2→q+t+ps, 1→pt+qs, 0→qt=−a), so one of the
+  two signs MUST close each goal regardless of the `norm_num` normal form.
+* `natDegree_pos_of_ne_zero_of_not_isUnit` — REWRITTEN onto the CONFIRMED
+  `eq_C_of_natDegree_eq_zero : natDegree p = 0 → p = C (p.coeff 0)` (`Polynomial/Inductions.lean`),
+  dropping the unconfirmed existential `natDegree_eq_zero` and the fragile `▸`.
+
+STILL open (in decreasing order of concern; need a live build):
+1. **`quartic_two_two_coeffs` simp reduction**: the `simp only [coeff_add, coeff_sub,
+   coeff_C_mul, coeff_X_pow, coeff_X, coeff_C, coeff_ofNat, mul_ite, mul_one, mul_zero]` step
+   must fully reduce each `coeff k` to a scalar equation before `norm_num`. If a `coeff` lemma
+   name is slightly off the `eK` stays symbolic and the finisher fails. (Sign is now safe.)
+2. **`monic_natDegree_two_eq` `coeff` case-split**: `coeff_X_pow`, `coeff_eq_zero_of_natDegree_lt`
+   and the `simp`/`omega` guards — the arithmetic branch structure is the likely fiddle point.
+3. **`leadingCoeff_inv_mul_monic`**: uses `Monic p` defeq `p.leadingCoeff = 1` in the final
+   `exact h`. If rejected, wrap with `Monic.def`/`show`.
+4. **`hGdeg`/`hHdeg`**: `natDegree_mul` (both factors `≠ 0`) + `natDegree_C` + `zero_add`.
+5. `no_linear_factor`: `field_simp [hr]` behaviour on the root computation.
+6. `monic_X_pow_sub_C`, `mul_inv_rev`, `C_mul`, `C_1`, `C_eq_zero` name/signature checks.
 -/
