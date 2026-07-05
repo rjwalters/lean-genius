@@ -27,7 +27,17 @@ unconditionally, is every **averaged** form of (⋆):
         ratios tends to `1`:  `(h(K)/h(0))^{1/K} → 1`;
   * `root_tendsto_one`              — the root test is trivial: `h(k)^{1/k} → 1`.
 
-All three are proved for an arbitrary `h : ℕ → ℝ` that is **positive and polynomially
+Beyond the averages, the known bounds also force an unconditional **pointwise** obstruction
+on the ratio itself:
+
+  * `ratio_frequently_lt` / `ratio_frequently_gt` — for every `ε > 0`, the consecutive
+        ratio is `< 1 + ε` infinitely often and `> 1 - ε` infinitely often, i.e.
+        `liminf ≤ 1 ≤ limsup`.  The ratio **straddles 1** (`h3_ratio_straddles_one`): it
+        cannot drift away from `1` on either side, so if (⋆) fails it fails only by
+        oscillation.  The engine is the pair of Cesàro sign lemmas `cesaro_ge_imp` /
+        `cesaro_le_imp` (a vanishing Cesàro mean cannot dominate a fixed nonzero constant).
+
+The averaged statements are proved for an arbitrary `h : ℕ → ℝ` that is **positive and polynomially
 sandwiched** (`PolyBounded`); the genuine `h₃`, whose bounds sit between `k²` and `k³`,
 qualifies (`polyBounded_of_h3`), so the corollaries `h3_*` apply verbatim.
 
@@ -187,6 +197,100 @@ theorem ratio_iff_log_ratio {h : ℕ → ℝ} (hb : PolyBounded h) :
     filter_upwards with k
     rw [Real.exp_log (div_pos (hb.pos _) (hb.pos _))]
 
+/- ## The ratio *straddles* 1 — an unconditional pointwise obstruction -/
+
+/-- If a sequence's Cesàro mean tends to `0` and the sequence is *eventually* bounded
+below by a constant `c`, then `c ≤ 0`.  (The finite head `∑_{k<N} a k` contributes
+`O(1/K)`; the tail contributes `≥ c·(K−N)/K → c`, so a positive `c` would force the mean
+to stay `≥ c > 0`.) -/
+theorem cesaro_ge_imp {a : ℕ → ℝ} {c : ℝ}
+    (hces : Tendsto (fun K : ℕ => (∑ k ∈ Finset.range K, a k) / K) atTop (𝓝 0))
+    (hev : ∀ᶠ k in atTop, c ≤ a k) : c ≤ 0 := by
+  obtain ⟨N, hN⟩ := eventually_atTop.mp hev
+  set S : ℝ := ∑ k ∈ Finset.range N, a k with hS
+  -- an eventual lower bound for the Cesàro mean, tending to `c`
+  have hle : ∀ᶠ K : ℕ in atTop,
+      (S + c * ((K : ℝ) - N)) / K ≤ (∑ k ∈ Finset.range K, a k) / K := by
+    filter_upwards [eventually_ge_atTop N, eventually_gt_atTop 0] with K hK hK0
+    have hsplit : (∑ k ∈ Finset.range K, a k) = S + ∑ k ∈ Finset.Ico N K, a k := by
+      rw [hS]; exact (Finset.sum_range_add_sum_Ico a hK).symm
+    have htail : c * ((K : ℝ) - N) ≤ ∑ k ∈ Finset.Ico N K, a k := by
+      have hcsum : (∑ _k ∈ Finset.Ico N K, c) ≤ ∑ k ∈ Finset.Ico N K, a k :=
+        Finset.sum_le_sum fun k hk => hN k (Finset.mem_Ico.mp hk).1
+      have heq : (∑ _k ∈ Finset.Ico N K, c) = c * ((K : ℝ) - N) := by
+        rw [Finset.sum_const, Nat.card_Ico, nsmul_eq_mul, Nat.cast_sub hK]; ring
+      rwa [heq] at hcsum
+    have hnum : S + c * ((K : ℝ) - N) ≤ S + ∑ k ∈ Finset.Ico N K, a k := by linarith
+    rw [hsplit]
+    gcongr
+  -- the lower bound tends to `c`
+  have hlow : Tendsto (fun K : ℕ => (S + c * ((K : ℝ) - N)) / K) atTop (𝓝 c) := by
+    have hSK : Tendsto (fun K : ℕ => S / (K : ℝ)) atTop (𝓝 0) :=
+      tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop
+    have hNK : Tendsto (fun K : ℕ => c * (N : ℝ) / (K : ℝ)) atTop (𝓝 0) :=
+      tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop
+    have hsum : Tendsto (fun K : ℕ => S / (K : ℝ) + (c - c * (N : ℝ) / (K : ℝ)))
+        atTop (𝓝 (0 + (c - 0))) := hSK.add (tendsto_const_nhds.sub hNK)
+    rw [zero_add, sub_zero] at hsum
+    refine hsum.congr' ?_
+    filter_upwards [eventually_gt_atTop 0] with K hK0
+    have hKne : (K : ℝ) ≠ 0 := by exact_mod_cast hK0.ne'
+    field_simp
+  exact le_of_tendsto_of_tendsto hlow hces hle
+
+/-- Dual of `cesaro_ge_imp`: eventual upper bound `a k ≤ c` with vanishing Cesàro mean
+forces `0 ≤ c`.  (Apply `cesaro_ge_imp` to `-a`.) -/
+theorem cesaro_le_imp {a : ℕ → ℝ} {c : ℝ}
+    (hces : Tendsto (fun K : ℕ => (∑ k ∈ Finset.range K, a k) / K) atTop (𝓝 0))
+    (hev : ∀ᶠ k in atTop, a k ≤ c) : 0 ≤ c := by
+  have hces' : Tendsto (fun K : ℕ => (∑ k ∈ Finset.range K, (-a k)) / K) atTop (𝓝 0) := by
+    have h0 : Tendsto (fun K : ℕ => -((∑ k ∈ Finset.range K, a k) / K)) atTop (𝓝 (-0)) :=
+      hces.neg
+    rw [neg_zero] at h0
+    refine h0.congr' ?_
+    filter_upwards with K
+    rw [← neg_div]
+    congr 1
+    simp
+  have hev' : ∀ᶠ k in atTop, (-c) ≤ (-a k) := by
+    filter_upwards [hev] with k hk; linarith
+  have := cesaro_ge_imp hces' hev'
+  linarith
+
+/-- **Unconditional: the ratio cannot be eventually bounded above away from 1.**  For
+every `ε > 0`, `h(k+1)/h k < 1 + ε` for infinitely many `k` — i.e.
+`liminf_k h(k+1)/h k ≤ 1`.  If instead the ratio were eventually `≥ 1 + ε`, the log-ratios
+would be eventually `≥ log(1+ε) > 0`, forcing their Cesàro mean `≥ log(1+ε) > 0`, against
+`cesaro_log_ratio_tendsto_zero`. -/
+theorem ratio_frequently_lt {h : ℕ → ℝ} (hb : PolyBounded h) {ε : ℝ} (hε : 0 < ε) :
+    ∃ᶠ k in atTop, h (k + 1) / h k < 1 + ε := by
+  by_contra hcon
+  rw [Filter.not_frequently] at hcon
+  have hge : ∀ᶠ k in atTop, (1 + ε) ≤ h (k + 1) / h k := by
+    filter_upwards [hcon] with k hk; exact not_lt.mp hk
+  have hlogge : ∀ᶠ k in atTop, Real.log (1 + ε) ≤ Real.log (h (k + 1) / h k) := by
+    filter_upwards [hge] with k hk
+    exact Real.log_le_log (by linarith) hk
+  have hle0 := cesaro_ge_imp (cesaro_log_ratio_tendsto_zero hb) hlogge
+  have hpos : 0 < Real.log (1 + ε) := Real.log_pos (by linarith)
+  linarith
+
+/-- **Unconditional: the ratio cannot be eventually bounded below away from 1.**  For
+every `ε` with `0 < ε < 1`, `1 - ε < h(k+1)/h k` for infinitely many `k` — i.e.
+`1 ≤ limsup_k h(k+1)/h k`.  Symmetric to `ratio_frequently_lt` via `cesaro_le_imp`. -/
+theorem ratio_frequently_gt {h : ℕ → ℝ} (hb : PolyBounded h) {ε : ℝ} (hε : 0 < ε)
+    (hε1 : ε < 1) : ∃ᶠ k in atTop, 1 - ε < h (k + 1) / h k := by
+  by_contra hcon
+  rw [Filter.not_frequently] at hcon
+  have hle : ∀ᶠ k in atTop, h (k + 1) / h k ≤ 1 - ε := by
+    filter_upwards [hcon] with k hk; exact not_lt.mp hk
+  have hlogle : ∀ᶠ k in atTop, Real.log (h (k + 1) / h k) ≤ Real.log (1 - ε) := by
+    filter_upwards [hle] with k hk
+    exact Real.log_le_log (div_pos (hb.pos _) (hb.pos _)) hk
+  have hge0 := cesaro_le_imp (cesaro_log_ratio_tendsto_zero hb) hlogle
+  have hneg : Real.log (1 - ε) < 0 := Real.log_neg (by linarith) (by linarith)
+  linarith
+
 /- ## Specialisation to the genuine threshold `h₃` -/
 
 /-- The genuine triangle-free chromatic threshold (as a real candidate `h₃`) is
@@ -218,6 +322,18 @@ theorem h3_geom_mean_ratio_tendsto_one (h₃ : ℕ → ℝ) (hpos : ∀ k, 0 < h
     (hup : ∀ᶠ (k : ℕ) in atTop, h₃ k ≤ (k : ℝ) ^ 3) :
     Tendsto (fun K : ℕ => (h₃ K / h₃ 0) ^ ((K : ℝ)⁻¹)) atTop (𝓝 1) :=
   geom_mean_ratio_tendsto_one (polyBounded_of_h3 h₃ hpos hlow hup)
+
+/-- **Erdős #1013 (oq-02), unconditional straddle for `h₃`.**  For every `ε` with
+`0 < ε < 1`, the consecutive ratio `h₃(k+1)/h₃(k)` is `< 1 + ε` infinitely often *and*
+`> 1 - ε` infinitely often.  So `liminf ≤ 1 ≤ limsup`: the ratio cannot drift away from
+`1` on either side — if (⋆) fails it can only be by oscillation, never by drift. -/
+theorem h3_ratio_straddles_one (h₃ : ℕ → ℝ) (hpos : ∀ k, 0 < h₃ k)
+    (hlow : ∀ᶠ (k : ℕ) in atTop, (k : ℝ) ^ 2 ≤ h₃ k)
+    (hup : ∀ᶠ (k : ℕ) in atTop, h₃ k ≤ (k : ℝ) ^ 3) {ε : ℝ} (hε : 0 < ε) (hε1 : ε < 1) :
+    (∃ᶠ k in atTop, h₃ (k + 1) / h₃ k < 1 + ε) ∧
+      (∃ᶠ k in atTop, 1 - ε < h₃ (k + 1) / h₃ k) :=
+  ⟨ratio_frequently_lt (polyBounded_of_h3 h₃ hpos hlow hup) hε,
+    ratio_frequently_gt (polyBounded_of_h3 h₃ hpos hlow hup) hε hε1⟩
 
 /-
 ## Remarks — why the *pointwise* ratio (⋆) is not settled here
