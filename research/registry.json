@@ -35465,11 +35465,12 @@
     },
     {
       "slug": "ballot-problem-oq-04-oq-02-oq-01-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "fast",
       "started": "2026-07-04T01:29:49.106Z",
-      "status": "active",
-      "lastUpdate": "2026-07-04T04:53:22.042Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T01:21:07.471Z",
+      "completed": "2026-07-05T01:21:07.470Z"
     },
     {
       "slug": "binary-gcd-oq-03-oq-02-incomplete-01-oq-01",
@@ -35598,11 +35599,12 @@
     },
     {
       "slug": "laws-of-large-numbers-oq-01-oq-01-oq-02",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-04T20:03:18.498Z",
-      "status": "active",
-      "lastUpdate": "2026-07-04T20:03:18.516Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T01:21:07.498Z",
+      "completed": "2026-07-05T01:21:07.498Z"
     },
     {
       "slug": "szemeredi-regularity-oq-02-oq-02",
@@ -35664,11 +35666,12 @@
     },
     {
       "slug": "fourier-series-oq-02-oq-03-wip-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-07-04T22:51:07.106Z",
-      "status": "active",
-      "lastUpdate": "2026-07-04T22:51:07.141Z"
+      "status": "graduated",
+      "lastUpdate": "2026-07-05T01:21:07.503Z",
+      "completed": "2026-07-05T01:21:07.503Z"
     },
     {
       "slug": "hurwitz-theorem-oq-03-oq-01-wip-01",
@@ -35685,6 +35688,78 @@
       "started": "2026-07-04T22:51:07.106Z",
       "status": "active",
       "lastUpdate": "2026-07-04T22:51:07.142Z"
+    },
+    {
+      "slug": "fibonacci-identities-oq-05-oq-01-oq-02",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "active",
+      "lastUpdate": "2026-07-05T01:21:07.555Z"
+    },
+    {
+      "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
+      "phase": "ACT",
+      "path": "full",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "active",
+      "lastUpdate": "2026-07-05T01:21:07.555Z"
+    },
+    {
+      "slug": "pac-learning-bounds-wip-01-oq-02-oq-04",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "active",
+      "lastUpdate": "2026-07-05T01:21:07.556Z"
+    },
+    {
+      "slug": "erdos-793-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "active",
+      "lastUpdate": "2026-07-05T01:21:07.557Z"
+    },
+    {
+      "slug": "cauchy-interlacing-theorem-oq-01-oq-01-oq-01",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "blocked",
+      "lastUpdate": "2026-07-05T01:21:07.557Z"
+    },
+    {
+      "slug": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "active",
+      "lastUpdate": "2026-07-05T01:21:07.558Z"
+    },
+    {
+      "slug": "abel-ruffini-galois-extensions-oq-04-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "active",
+      "lastUpdate": "2026-07-05T01:21:07.558Z"
+    },
+    {
+      "slug": "angle-trisection-oq-02-oq-01-oq-02-oq-03",
+      "phase": "OBSERVE",
+      "path": "full",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "active",
+      "lastUpdate": "2026-07-05T01:21:07.558Z"
+    },
+    {
+      "slug": "ballot-problem-oq-01-oq-02-oq-01-oq-02-oq-01",
+      "phase": "OBSERVE",
+      "path": "fast",
+      "started": "2026-07-05T01:21:07.504Z",
+      "status": "active",
+      "lastUpdate": "2026-07-05T01:21:07.558Z"
     }
   ],
   "config": {
