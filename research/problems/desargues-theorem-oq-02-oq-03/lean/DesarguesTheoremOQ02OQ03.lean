@@ -172,7 +172,7 @@ end Desargues
     secretly using commutativity. -/
 example (o a a' b b' c c' : Fin 3 → Quaternion ℝ)
     (h : NormPersp o a a' b b' c c') :
-    Dep (a - b) (b - c) (c - a) :=
-  (desargues o a a' b b' c c' h).1
+    Dep (R := Quaternion ℝ) (a - b) (b - c) (c - a) :=
+  (desargues (R := Quaternion ℝ) o a a' b b' c c' h).1
 
 end DesarguesTheoremOQ02OQ03

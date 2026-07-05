@@ -4,7 +4,7 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
 Forward direction formalized: Desargues holds over any division ring. The
@@ -23,8 +23,10 @@ left throughout so non-commutativity is a non-issue.
 - Approaches tried: 1
 
 ## Blockers
-Verification blackout 2026-07-04: Docker image build fails (containerd meta.db
-I/O error); Aristotle MCP prove_file returns 404. Lean file UNVERIFIED.
+Verification blackout 2026-07-04 (persists through Session 2): `docker run
+hello-world` fails (containerd blob EIO), no lean image; Aristotle MCP `prove`
+(file as context_files) still returns 404 "Resource not found". Lean file
+UNVERIFIED. Session 2 hand-fixed an R-inference bug in the Part III example.
 
 ## Next Action
 When infra returns: docker-build.sh Proofs.DesarguesTheoremOQ02OQ03 (move file
