@@ -45,7 +45,7 @@ Given a strictly increasing sequence, form partial products.
 A list of natural numbers in strictly increasing order.
 -/
 def IsStrictlyIncreasing (a : List ℕ) : Prop :=
-  a.Chain' (· < ·)
+  a.IsChain (· < ·)
 
 /--
 **Bounded Sequence:**
