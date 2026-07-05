@@ -575,7 +575,7 @@ private lemma doubleExp_tail_bound (N : ℕ) :
   set r := (1 : ℝ) / D ^ 2 with hr_def
   have hr_nn : (0 : ℝ) ≤ r := by positivity
   have hr_lt1 : r < 1 := by
-    unfold_let r; rw [div_lt_one (by positivity)]; nlinarith
+    simp only [hr_def]; rw [div_lt_one (by positivity)]; nlinarith
   -- Rewrite each term: 1/2^{2^{k+N+1}} = 1/D^{2^{k+1}}
   have hterm : ∀ k : ℕ, (1 : ℝ) / (2 : ℝ) ^ (2 ^ (k + N + 1)) = 1 / D ^ (2 ^ (k + 1)) := by
     intro k; congr 1; rw [hD_def, ← pow_mul]; congr 1
@@ -600,7 +600,7 @@ private lemma doubleExp_tail_bound (N : ℕ) :
         ≤ 1 / D ^ (2 * (k + 1)) :=
             one_div_le_one_div_of_le (by positivity) (pow_le_pow_right hD_ge1 (key_arith k))
       _ = r ^ (k + 1) := by
-            unfold_let r; rw [div_pow, one_pow, ← pow_mul]
+            simp only [hr_def]; rw [div_pow, one_pow, ← pow_mul]
   -- Summability
   have hTsumm : Summable (fun k : ℕ => r ^ (k + 1)) :=
     (summable_nat_add_iff 1).mpr (summable_geometric_of_lt_one hr_nn hr_lt1)
@@ -610,7 +610,7 @@ private lemma doubleExp_tail_bound (N : ℕ) :
   have hgeo : ∑' k : ℕ, r ^ (k + 1) = 1 / (D ^ 2 - 1) := by
     rw [show (fun k : ℕ => r ^ (k + 1)) = (fun k => r * r ^ k) from funext (fun k => by ring)]
     rw [tsum_mul_left, tsum_geometric_of_lt_one hr_nn hr_lt1]
-    unfold_let r
+    simp only [hr_def]
     have hD2_ne : D ^ 2 ≠ 0 := by positivity
     have h1r_pos : (0 : ℝ) < 1 - 1 / D ^ 2 := by
       rw [sub_pos, div_lt_one (by positivity)]; nlinarith

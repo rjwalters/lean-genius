@@ -228,7 +228,7 @@ theorem erdos_299_no_such_sequence :
   -- The gap a(n+1) - a(n) is positive (strict mono), so bounded by a(N₀+1) for n ≤ N₀
   set Cnat := Nat.max (a (N₀ + 1)) (Nat.ceil C + 1) with hCnat_def
   have hCnat_pos : Cnat > 0 := by
-    unfold_let Cnat; exact Nat.lt_of_lt_of_le (hpos (N₀ + 1)) (Nat.le_max_left _ _)
+    simp only [hCnat_def]; exact Nat.lt_of_lt_of_le (hpos (N₀ + 1)) (Nat.le_max_left _ _)
   -- Uniform gap bound
   have hunif : HasUniformBoundedGaps a Cnat := by
     intro n
