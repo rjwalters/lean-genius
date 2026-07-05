@@ -79,6 +79,50 @@
       "The estimate e > 2 via Real.add_one_lt_exp"
     ]
   },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Docstring framing the goal — upgrade the grandparent's magnitude bound |D(n)/n! − e⁻¹| ≤ 1/(n+1)! and the parent's sign result into the arithmetic identity D(n) = round(n!/e), sharp at n ≥ 1 — with the main-results list. Imports Proofs.DerangementsConvergence (the rate bound) and Mathlib.Tactic; opens Nat/Real/Filter/Topology in a noncomputable section under the DerangementsConvergenceOQ02OQ01 namespace."
+    },
+    {
+      "id": "rounding-criterion",
+      "title": "§1. A Reusable Rounding Criterion",
+      "startLine": 50,
+      "endLine": 59,
+      "summary": "round_eq_of_abs_sub_lt_half: if |x − m| < 1/2 for an integer m, then round x = m. The elementary bridge from an analytic distance bound to an exact integer identity, proved by rewriting round as ⌊x + 1/2⌋ via Int.floor_eq_iff and abs_sub_lt_iff + linarith."
+    },
+    {
+      "id": "boundary-estimate",
+      "title": "§2. The Boundary Estimate e⁻¹ < 1/2",
+      "startLine": 61,
+      "endLine": 68,
+      "summary": "exp_neg_one_lt_half: rexp(−1) < 1/2 because e > 2 (Real.add_one_lt_exp gives 2 < e, then invert). This single elementary input is what makes the distance bound strict at the boundary index n = 1, where the rate bound alone gives only ≤ 1/2."
+    },
+    {
+      "id": "distance-bound",
+      "title": "§3. The Strict Distance Bound |D(n) − n!·e⁻¹| < 1/2",
+      "startLine": 71,
+      "endLine": 111,
+      "summary": "abs_numDerangements_sub_lt_half: the heart of the characterization. Factoring D(n) − n!·e⁻¹ = n!·(D(n)/n! − e⁻¹), the case n = 1 gives distance exactly e⁻¹ < 1/2 (since D(1) = 0), while n ≥ 2 uses the grandparent rate bound derangements_convergence_rate scaled by n! to get 1/(n+1) ≤ 1/3 < 1/2."
+    },
+    {
+      "id": "nearest-integer",
+      "title": "§4. The Nearest-Integer Identity on n ≥ 1",
+      "startLine": 113,
+      "endLine": 129,
+      "summary": "numDerangements_eq_round: for n ≥ 1, round(n!·e⁻¹) = D(n), by feeding the strict distance bound to the rounding criterion. numDerangements_eq_floor restates it in the equivalent floor form ⌊n!·e⁻¹ + 1/2⌋ = D(n) via round_eq."
+    },
+    {
+      "id": "sharpness",
+      "title": "§5. Sharpness: the Identity Fails at n = 0",
+      "startLine": 131,
+      "endLine": 152,
+      "summary": "round_factorial_exp_zero shows round(0!·e⁻¹) = round(e⁻¹) = 0 (nearest integer to ≈0.3679), and numDerangements_round_ne_at_zero concludes 0 ≠ 1 = D(0), so the hypothesis n ≥ 1 cannot be dropped — the threshold is exactly optimal."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "derangements-convergence-oq-03",
