@@ -340,9 +340,9 @@ theorem erdos_437_summary :
     -- The main question is answered affirmatively
     erdos437Conjecture ∧
     -- L(x) is o(x)
-    (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) < ε * x) ∧
+    (∀ ε : ℝ, ε > 0 → ∃ N, ∀ x ≥ N, (L x : ℝ) < ε * x) ∧
     -- But L(x) > x^(1-ε) for any ε
-    (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)) := by
+    (∀ ε : ℝ, ε > 0 → ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)) := by
   refine ⟨erdos_437, ?_, ?_⟩
   · intro ε hε; exact L_little_o_x ε hε
   · intro ε hε; exact erdos_437 ε hε
