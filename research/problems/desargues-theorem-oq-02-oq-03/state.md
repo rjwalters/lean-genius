@@ -40,18 +40,36 @@ and `Module ?R (Fin 3 → Quaternion ℝ)` failed to synthesize. Pinned
 from main. Re-tested infra: BOTH channels still down (details below).
 
 ## Blockers
-Verification blackout persists 2026-07-04, now ROOT-CAUSED. Docker daemon is up
-(`docker ps` OK) but any image build / `docker images` fails with containerd
-content-store blob `input/output error` — the store is corrupted. Underlying
-cause: disk exhaustion, `/System/Volumes/Data` is 98% full (21Gi free). NOT
-transient; needs host-level disk cleanup + containerd repair (out of agent
-scope). Aristotle MCP `prove` now returns 404 "Resource not found". Lean file
-UNVERIFIED but hand-checked line-by-line against Mathlib v4.26.0 (all elementary
-tactics; Part V is `decide`-only).
+Verification blackout persists but its SHAPE CHANGED as of 2026-07-05
+(researcher-14, session 6). The containerd content-store corruption is GONE:
+`docker run lean4-arm64:v4.26.0` executes, `docker image inspect` succeeds, and
+`docker-build.sh` now proceeds all the way into `lake exe cache get` (downloads
+all 7727 mathlib cache files from Azure). The failure has moved DOWNSTREAM to
+cache extraction: dozens of `/root/.cache/mathlib/*.ltar: expected value at line
+1 column 1` errors → `leantar failed with error code 1` during "Decompressing
+7727 file(s)". "expected value at line 1 column 1" = the downloaded `.ltar`
+files hold non-ltar content (empty / error-page / truncated), so the archives
+are corrupt at rest. This recurs IDENTICALLY at 11Gi AND at 24Gi free — so it is
+not purely instantaneous free-space at the `df` endpoints; likely the host disk
+(still 98–99% full, churned by concurrent agents) momentarily hits 100% during
+the ~90s download window and truncates writes, or the CDN returns bad content.
+Either way it is host-level (disk cleanup / cache re-seed), out of agent scope.
+`docker builder prune -f` freed 3.97GB but net free space DROPPED (other agents
+consume it as fast) — confirming systemic host disk pressure. Aristotle MCP
+`prove` STILL returns 404 "Resource not found" (independent channel, also down).
+Lean file UNVERIFIED but hand-checked line-by-line against Mathlib v4.26.0 (all
+elementary tactics; Part V is `decide`-only). Fleet-wide implication: verification
+is blocked for ALL researchers until host disk is freed (target <90%) and/or the
+mathlib cache volume is re-seeded; containerd repair is NO LONGER needed.
 
 ## Next Action
-When infra returns: docker-build.sh Proofs.DesarguesTheoremOQ02OQ03 (move file
-into proofs/Proofs/ first); if clean, promote to a gallery proof entry. Then
-strengthen to intersection-uniqueness (general position) and attempt the full
-geometric converse (ternary ring: minor Desargues ⇒ additive group, major
-Desargues ⇒ multiplicative group).
+A build-attempt copy already exists at `proofs/Proofs/DesarguesTheoremOQ02OQ03Verify.lean`
+(UNTRACKED — mathematically identical to the research/ version; kept so any
+future healthy-infra session can `docker-build.sh Proofs.DesarguesTheoremOQ02OQ03Verify`
+instantly). It MUST NOT be committed to the gallery glob while UNVERIFIED — an
+unverified file under `proofs/Proofs/` risks breaking the gallery build. When
+infra returns: (1) build that Verify target; (2) if clean, promote to a gallery
+proof entry and only THEN commit it into `proofs/Proofs/`. Then strengthen to
+intersection-uniqueness (general position) and attempt the full geometric
+converse (ternary ring: minor Desargues ⇒ additive group, major Desargues ⇒
+multiplicative group).
