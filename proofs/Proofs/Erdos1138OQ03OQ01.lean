@@ -41,9 +41,8 @@ theorem gap_div_le_rpow_neg (x : ℕ) (hx : 25 ≤ x) :
     exact_mod_cast this
   -- x^0.525 / x = x^0.525 / x^1 = x^(0.525 - 1) = x^(-0.475)
   have hdiv : (x : ℝ) ^ (0.525 : ℝ) / x = (x : ℝ) ^ (-(0.475 : ℝ)) := by
-    rw [← Real.rpow_one (x : ℝ), ← Real.rpow_sub hx_pos]
-    congr 1
-    norm_num
+    have h1 : (-(0.475 : ℝ)) = (0.525 : ℝ) - 1 := by norm_num
+    rw [h1, Real.rpow_sub hx_pos, Real.rpow_one]
   calc (maxPrimeGap x : ℝ) / x
       ≤ (x : ℝ) ^ (0.525 : ℝ) / x := by
         gcongr
@@ -59,7 +58,7 @@ theorem bhp_implies_gap_littleo :
     Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / x) atTop (𝓝 0) := by
   -- Upper envelope: g(x) = x^(-0.475) tends to 0 (compose ℝ-limit with ℕ-cast).
   have h_env : Tendsto (fun x : ℕ => (x : ℝ) ^ (-(0.475 : ℝ))) atTop (𝓝 0) :=
-    (Real.tendsto_rpow_neg_atTop (by norm_num : (0 : ℝ) < 0.475)).comp
+    (tendsto_rpow_neg_atTop (by norm_num : (0 : ℝ) < 0.475)).comp
       tendsto_natCast_atTop_atTop
   -- Lower bound: 0 ≤ maxPrimeGap x / x everywhere.
   have h_lo : ∀ x : ℕ, 0 ≤ (maxPrimeGap x : ℝ) / x := fun x =>
@@ -76,7 +75,7 @@ theorem bhp_gap_eventually_le_eps (ε : ℝ) (hε : 0 < ε) :
     ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) ≤ ε * x := by
   -- From the limit, `maxPrimeGap x / x < ε` eventually; clear the denominator.
   have hev : ∀ᶠ x : ℕ in atTop, (maxPrimeGap x : ℝ) / x < ε :=
-    bhp_implies_gap_littleo.eventually_lt_const hε
+    bhp_implies_gap_littleo.eventually (eventually_lt_nhds hε)
   filter_upwards [hev, eventually_ge_atTop 1] with x hxlt hx1
   have hx_pos : (0 : ℝ) < (x : ℝ) := by exact_mod_cast (lt_of_lt_of_le Nat.zero_lt_one hx1)
   rw [div_lt_iff₀ hx_pos] at hxlt
