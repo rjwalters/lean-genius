@@ -37,12 +37,12 @@
     ]
   },
   "leanFile": {
-    "lineCount": 299,
+    "lineCount": 799,
     "path": "Proofs/CubeRoot3IrrationalOQ02OQ03.lean",
     "axiomCount": 0,
     "sorries": 1,
     "definitionCount": 1,
-    "theoremCount": 9
+    "theoremCount": 10
   },
   "overview": {
     "historicalContext": "The irreducibility of pure binomials X^n − a is one of the oldest questions in the theory of equations. Abel and Galois already understood the odd-prime case, but the definitive criterion is due to Theodor Vahlen (1895) and Alfredo Capelli (1897), who independently settled when X^n − a is irreducible over a field: it is irreducible iff a is not a p-th power for any prime p ∣ n and — the subtle extra clause — a ∉ −4·K⁴ whenever 4 ∣ n. This last condition traces directly to the Sophie Germain identity u⁴+4v⁴ = (u²−2uv+2v²)(u²+2uv+2v²), which Germain introduced around 1825 during her work on Fermat's Last Theorem. Serge Lang's Algebra (VI §9) gives the modern textbook treatment. Mathlib formalises only the odd-exponent half (X_pow_sub_C_irreducible_iff_forall_prime_of_odd) and leaves the even case as an explicit TODO citing exactly this Lang reference — so this entry attacks a concrete, named gap in the library. The problem descends from the parent gallery entry proving ∛3 irrational by Eisenstein: that argument is the case n = 3, a = 3, and Vahlen–Capelli is the exact iff that generalises the ad hoc Eisenstein bound to every exponent and radicand.",
