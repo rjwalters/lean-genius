@@ -1,0 +1,130 @@
+{
+  "id": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
+  "title": "Coprime Companion Blocks are Nonderogatory (Matrix CRT)",
+  "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02-oq-05",
+  "description": "Proves the coprime (Chinese Remainder) collapse of two companion blocks: for coprime monic p, q the block-diagonal matrix C(p) ⊕ C(q) has minpoly = charpoly = p·q, hence is nonderogatory (cyclic) and similar to the single companion matrix C(p·q). The matrix incarnation of K[X]/(p·q) ≅ K[X]/(p) × K[X]/(q). Fully verified, 0 axioms / 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02OQ05.lean",
+    "additionalFiles": ["Proofs/CayleyHamiltonReductionOQ02OQ01WIP01.lean"],
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "polynomial",
+      "rational-canonical-form",
+      "companion-matrix",
+      "cayley-hamilton",
+      "chinese-remainder-theorem",
+      "module-theory",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 106,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": [],
+    "dateAdded": "2026-07-04",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "lcm_eq_mul_of_isCoprime_monic: for coprime monic p, q over a field, lcm p q = p·q (via mutual divisibility of two monic polynomials).",
+      "companion_block_coprime_minpoly_eq_charpoly: for coprime monic p, q, the block sum C(p) ⊕ C(q) has both minimal and characteristic polynomial equal to p·q.",
+      "companion_block_coprime_nonderogatory: coprime companion blocks satisfy minpoly = charpoly — the nonderogatory/cyclic criterion — so the block sum is similar to the single companion matrix C(p·q), the matrix form of the CRT decomposition."
+    ],
+    "historicalContext": "The rational canonical form decomposes a matrix into companion blocks of its invariant factors. When two invariant factors are coprime, the Chinese Remainder Theorem K[X]/(p·q) ≅ K[X]/(p) × K[X]/(q) collapses them into a single cyclic block. This entry formalizes exactly that collapse at the matrix level, building on the single-block companion-matrix scaffold of the parent entry.",
+    "proofStrategy": "From CayleyHamiltonReductionOQ02OQ01WIP01 (sorry-free): charpoly(C(p) ⊕ C(q)) = p·q and minpoly(C(p) ⊕ C(q)) = lcm(p, q). The new lemma lcm_eq_mul_of_isCoprime_monic shows lcm p q = p·q for coprime monic p, q (lcm p q ∣ p·q always; p·q ∣ lcm p q by IsCoprime.mul_dvd; both monic ⟹ equal). Substituting gives minpoly = charpoly = p·q, the nonderogatory condition. The GCDMonoid F[X] instance is available under [Field F] [DecidableEq F]."
+  },
+  "parent": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+  "openQuestion": "Multi-block rational canonical form via the K[X]-module structure theorem — generalize the single-block cyclic criterion to a direct sum of companion blocks; the coprime (CRT) two-block case is settled here.",
+  "overview": {
+    "historicalContext": "The parent chain formalizes the nonderogatory ⟺ cyclic ⟺ similar-to-companion-matrix equivalence over an arbitrary field. The natural next step toward the full rational canonical form is the multi-block case governed by the K[X]-module structure theorem. This entry handles the key building block: the coprime two-block merge, which is the matrix incarnation of the Chinese Remainder Theorem for K[X].",
+    "problemStatement": "Show that for coprime monic polynomials p, q over a field, the block-diagonal companion matrix C(p) ⊕ C(q) is nonderogatory (minpoly = charpoly = p·q) and hence cyclic — equivalently, similar to the single companion matrix C(p·q).",
+    "proofStrategy": "Reuse the parent scaffold's charpoly(C(p) ⊕ C(q)) = p·q and minpoly(C(p) ⊕ C(q)) = lcm p q, prove lcm p q = p·q for coprime monic p, q by mutual divisibility of monic polynomials, and conclude minpoly = charpoly. The similarity to C(p·q) then follows from the parent's cyclic-vector bridge.",
+    "keyInsights": [
+      "In general lcm p q strictly divides p·q, so a block sum of companion matrices is derogatory (minpoly ≠ charpoly); coprimality is exactly what removes the gap and makes the block sum cyclic.",
+      "The equality minpoly = charpoly = p·q is the matrix-level statement of K[X]/(p·q) ≅ K[X]/(p) × K[X]/(q): two coprime cyclic modules merge into one cyclic module.",
+      "The whole argument reduces to a clean GCD-monoid fact about monic polynomials — lcm = product for coprimes — showing how much of rational canonical form theory is arithmetic in K[X].",
+      "The GCDMonoid structure on F[X] requires a DecidableEq F instance; supplying it is the only fix needed to machine-check the coprime merge."
+    ],
+    "prerequisites": [
+      "Companion matrices and the rational canonical form",
+      "Minimal and characteristic polynomials of block-diagonal matrices",
+      "GCD monoids: lcm, coprimality, IsCoprime.mul_dvd",
+      "The K[X]-module structure theorem and its CRT decomposition"
+    ]
+  },
+  "sections": [
+    {
+      "id": "lcm-coprime",
+      "title": "lcm = product for coprime monic polynomials",
+      "startLine": 55,
+      "endLine": 71,
+      "summary": "lcm_eq_mul_of_isCoprime_monic: for coprime monic p, q over a field (with DecidableEq F for the GCDMonoid instance), lcm p q = p·q by mutual divisibility of two monic polynomials."
+    },
+    {
+      "id": "coprime-readout",
+      "title": "Minpoly = charpoly = p·q for coprime blocks",
+      "startLine": 73,
+      "endLine": 88,
+      "summary": "companion_block_coprime_minpoly_eq_charpoly: combines the parent scaffold's minpoly = lcm and charpoly = product with lcm = product to read off minpoly = charpoly = p·q."
+    },
+    {
+      "id": "nonderogatory",
+      "title": "Coprime companion blocks are nonderogatory",
+      "startLine": 89,
+      "endLine": 106,
+      "summary": "companion_block_coprime_nonderogatory: the block sum satisfies minpoly = charpoly, the cyclic criterion, hence is similar to the single companion matrix C(p·q) — the CRT collapse of two coprime invariant factors."
+    }
+  ],
+  "conclusion": {
+    "summary": "Settles the coprime two-block case of the multi-block rational canonical form: for coprime monic p, q, the companion block sum C(p) ⊕ C(q) is nonderogatory (minpoly = charpoly = p·q) and hence cyclic, similar to C(p·q). This is the matrix form of the Chinese Remainder Theorem for K[X]. Machine-checked: 0 axioms, 0 sorries.",
+    "implications": "Provides the CRT building block for assembling the full multi-block rational canonical form from the parent's single-block cyclic criterion. It isolates the exact arithmetic content — lcm = product for coprimes — that turns a derogatory block sum into a cyclic one.",
+    "openQuestions": [
+      "Can the coprime merge be iterated over the elementary-divisor factorization to reconstruct the full rational canonical form for an arbitrary matrix?",
+      "Does the explicit similarity C(p) ⊕ C(q) ~ C(p·q) admit a constructive change-of-basis via the companionMatrix restatement of the cyclic-vector bridge?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent: the single-block nonderogatory ⟺ cyclic ⟺ similar-to-companion equivalence. This entry uses that scaffold to handle the coprime two-block merge toward the multi-block rational canonical form."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Nathan Jacobson"
+      ],
+      "title": "Basic Algebra I",
+      "year": "1985",
+      "venue": "W. H. Freeman, Ch. 3 (modules over a PID, rational canonical form)",
+      "note": "Standard treatment of the K[X]-module structure theorem and the CRT decomposition of invariant factors formalized here."
+    },
+    {
+      "authors": [
+        "The Mathlib Community"
+      ],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "Provides the GCDMonoid F[X] structure, IsCoprime.mul_dvd, lcm_dvd, and monic-polynomial divisibility lemmas underpinning the coprime merge."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.CayleyHamiltonReductionOQ02OQ01WIP01"],
+    "opens": ["Matrix", "Polynomial"],
+    "namespace": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02OQ05",
+    "lineCount": 106,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02OQ05.lean",
+    "sorries": 0,
+    "additionalFiles": ["Proofs/CayleyHamiltonReductionOQ02OQ01WIP01.lean"]
+  },
+  "sorries": 0
+}
