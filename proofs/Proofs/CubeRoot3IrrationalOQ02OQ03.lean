@@ -52,12 +52,14 @@ field for **every** `n`.
 
 The `even sufficiency` direction — "conditions (1),(2) hold ⟹ `X^n − C a` irreducible"
 for even `n` — is the hard Capelli theorem and is **not** in Mathlib. With necessity now
-fully discharged (all `n`), the odd `iff` complete, and the **even base case `n = 2` now
-proved** (via Mathlib's prime-exponent criterion `X_pow_sub_C_irreducible_iff_of_prime`,
-whose `4 ∤ 2` makes the `−4·K⁴` obstruction vacuous), `vahlen_capelli` isolates the sole
-remaining `sorry` to **even `n ≥ 4`** — the 2-power / `4 ∣ n` regime where the Sophie-Germain
-obstruction is essential and Mathlib's prime-power criterion
-`X_pow_sub_C_irreducible_iff_of_prime_pow` is restricted to *odd* primes.
+fully discharged (all `n`), the odd `iff` complete, the **even base case `n = 2` proved**
+(via Mathlib's prime-exponent criterion `X_pow_sub_C_irreducible_iff_of_prime`, whose
+`4 ∤ 2` makes the `−4·K⁴` obstruction vacuous), and now the **`4 ∣ n` base case `n = 4`
+proved** (`vahlen_capelli_four_suff`, the full Sophie-Germain quartic factor analysis),
+`vahlen_capelli` isolates the sole remaining `sorry` to **even `n ≥ 6`** — the higher
+2-power regime that needs coprime-exponent multiplicativity on top of the `n = 4` base
+case, where Mathlib's prime-power criterion `X_pow_sub_C_irreducible_iff_of_prime_pow`
+is restricted to *odd* primes.
 
 ## Roadmap for the base case `n = 4` (the smallest `4 ∣ n` instance)
 
@@ -84,9 +86,11 @@ both `≥ 1`. Two regimes:
     contradicting `a ∉ −4·K⁴`. **The characteristic-2 obstruction is discharged
     automatically** — no separate `char ≠ 2` hypothesis is needed.  ← **now `capelli_four_coeff_contra`, proved**
 
-Thus `n = 4` sufficiency holds over *every* field. The general even case then follows by
-`2`-power induction (`n = 2^k`) plus multiplicativity across coprime exponent factors —
-both currently absent from Mathlib.
+Thus `n = 4` sufficiency holds over *every* field — **now fully formalised** as
+`vahlen_capelli_four_suff` (PART 5b) and wired into the `n = 4` branch of `vahlen_capelli`.
+The general even case then follows by `2`-power induction (`n = 2^k`) plus multiplicativity
+across coprime exponent factors — both currently absent from Mathlib, and the content of the
+remaining `n ≥ 6` `sorry`.
 
 ## Mathematical heart: the Sophie Germain identity
 
@@ -389,6 +393,165 @@ theorem capelli_four_coeff_contra {K : Type*} [Field K] {a p q s t : K}
     linear_combination hq2
 
 -- ============================================================
+-- PART 5b: n = 4 sufficiency (the 4 ∣ n base case, now proved)
+-- ============================================================
+
+/-- **Bridge lemma.** If the monic quartic `X⁴ − C a` equals a product of two monic
+quadratics `(X² + C p·X + C q)(X² + C s·X + C t)`, then the four coefficient relations
+feeding `capelli_four_coeff_contra` hold. -/
+theorem quartic_two_two_coeffs {K : Type*} [Field K] {a p q s t : K}
+    (hfac : (X ^ 4 - C a : K[X]) =
+      (X ^ 2 + C p * X + C q) * (X ^ 2 + C s * X + C t)) :
+    p + s = 0 ∧ q + t + p * s = 0 ∧ p * t + q * s = 0 ∧ q * t = -a := by
+  have hexp : (X ^ 2 + C p * X + C q) * (X ^ 2 + C s * X + C t)
+      = X ^ 4 + C (p + s) * X ^ 3 + C (q + t + p * s) * X ^ 2
+        + C (p * t + q * s) * X + C (q * t) := by
+    simp only [map_add, map_mul]
+    ring
+  rw [hexp] at hfac
+  have e3 := congrArg (fun r : K[X] => r.coeff 3) hfac
+  have e2 := congrArg (fun r : K[X] => r.coeff 2) hfac
+  have e1 := congrArg (fun r : K[X] => r.coeff 1) hfac
+  have e0 := congrArg (fun r : K[X] => r.coeff 0) hfac
+  simp only [coeff_add, coeff_sub, coeff_C_mul, coeff_X_pow, coeff_X, coeff_C,
+    mul_ite, mul_one, mul_zero] at e3 e2 e1 e0
+  norm_num at e3 e2 e1 e0
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · first | linear_combination e3 | linear_combination -e3
+  · first | linear_combination e2 | linear_combination -e2
+  · first | linear_combination e1 | linear_combination -e1
+  · first | linear_combination e0 | linear_combination -e0
+
+/-- Over a field, a nonzero non-unit polynomial has positive `natDegree`. -/
+theorem natDegree_pos_of_ne_zero_of_not_isUnit {K : Type*} [Field K] {u : K[X]}
+    (hu0 : u ≠ 0) (huu : ¬ IsUnit u) : 0 < u.natDegree := by
+  rcases Nat.eq_zero_or_pos u.natDegree with h0 | h0
+  · exfalso
+    have hc : u = C (u.coeff 0) := eq_C_of_natDegree_eq_zero h0
+    have hcne : u.coeff 0 ≠ 0 := by
+      intro hz; rw [hz, map_zero] at hc; exact hu0 hc
+    apply huu
+    rw [hc]
+    exact isUnit_C.mpr (isUnit_iff_ne_zero.mpr hcne)
+  · exact h0
+
+/-- A degree-1 factor of `X⁴ − C a` produces a root, contradicting the no-root lemma. -/
+theorem no_linear_factor {K : Type*} [Field K] {a : K}
+    (hsq : ∀ b : K, b ^ 2 ≠ a) {u v : K[X]}
+    (huv : (X ^ 4 - C a : K[X]) = u * v) (hu1 : u.natDegree = 1) : False := by
+  have hu0 : u ≠ 0 := by rintro rfl; simp at hu1
+  have hform : u = C (u.coeff 1) * X + C (u.coeff 0) := by
+    have : u.natDegree ≤ 1 := le_of_eq hu1
+    exact Polynomial.eq_X_add_C_of_natDegree_le_one this
+  have hlead : u.coeff 1 ≠ 0 := by
+    have := Polynomial.leadingCoeff_ne_zero.mpr hu0
+    rwa [Polynomial.leadingCoeff, hu1] at this
+  set r : K := -(u.coeff 0) / (u.coeff 1) with hr
+  have hroot : u.eval r = 0 := by
+    rw [hform]
+    simp only [eval_add, eval_mul, eval_C, eval_X, hr]
+    field_simp
+    ring
+  have hfroot : (X ^ 4 - C a : K[X]).eval r = 0 := by
+    rw [huv, eval_mul, hroot, zero_mul]
+  exact no_root_of_not_square_even (by norm_num : Even 4) hsq r hfroot
+
+/-- **A monic polynomial of `natDegree 2` is `X² + C(coeff 1)·X + C(coeff 0)`.** -/
+theorem monic_natDegree_two_eq {K : Type*} [Field K] {p : K[X]}
+    (hmon : p.Monic) (hdeg : p.natDegree = 2) :
+    p = X ^ 2 + C (p.coeff 1) * X + C (p.coeff 0) := by
+  have hc2 : p.coeff 2 = 1 := by
+    have h := hmon.coeff_natDegree
+    rwa [hdeg] at h
+  have hle : (p - X ^ 2 : K[X]).natDegree ≤ 1 := by
+    rw [natDegree_le_iff_coeff_eq_zero]
+    intro N hN
+    rw [coeff_sub, coeff_X_pow]
+    rcases eq_or_ne N 2 with rfl | hne
+    · rw [hc2]; simp
+    · rw [coeff_eq_zero_of_natDegree_lt (by omega : p.natDegree < N), if_neg hne, sub_zero]
+  have hkey := eq_X_add_C_of_natDegree_le_one hle
+  have hc1 : (p - X ^ 2 : K[X]).coeff 1 = p.coeff 1 := by
+    rw [coeff_sub, coeff_X_pow]; simp
+  have hc0 : (p - X ^ 2 : K[X]).coeff 0 = p.coeff 0 := by
+    rw [coeff_sub, coeff_X_pow]; simp
+  rw [hc1, hc0] at hkey
+  linear_combination hkey
+
+/-- **Monic normalisation.** For a nonzero `g` over a field, `C g.leadingCoeff⁻¹ * g` is
+monic. -/
+theorem leadingCoeff_inv_mul_monic {K : Type*} [Field K] {g : K[X]} (hg0 : g ≠ 0) :
+    (C g.leadingCoeff⁻¹ * g).Monic := by
+  have hlc : g.leadingCoeff ≠ 0 := leadingCoeff_ne_zero.mpr hg0
+  have h : (C g.leadingCoeff⁻¹ * g).leadingCoeff = 1 := by
+    rw [leadingCoeff_mul, leadingCoeff_C, inv_mul_cancel₀ hlc]
+  exact h
+
+/-- **n = 4 sufficiency (the `4 ∣ n` base case).** If `a` is not a square and
+`a ∉ −4·K⁴`, then `X⁴ − C a` is irreducible over the field `K`. This discharges the
+`n = 4` instance of the even-exponent Vahlen–Capelli gap. -/
+theorem vahlen_capelli_four_suff {K : Type*} [Field K] {a : K}
+    (hsq : ∀ b : K, b ^ 2 ≠ a) (hcap : ∀ b : K, a ≠ -(4 * b ^ 4)) :
+    Irreducible (X ^ 4 - C a : K[X]) := by
+  have hmon : (X ^ 4 - C a : K[X]).Monic := monic_X_pow_sub_C a (by norm_num)
+  have hdeg : (X ^ 4 - C a : K[X]).natDegree = 4 := natDegree_X_pow_sub_C
+  have hne : (X ^ 4 - C a : K[X]) ≠ 0 := hmon.ne_zero
+  refine ⟨?_, ?_⟩
+  · intro hu
+    have h0 := natDegree_eq_zero_of_isUnit hu
+    rw [hdeg] at h0
+    exact absurd h0 (by norm_num)
+  · intro g h hgh
+    by_contra hcon
+    push_neg at hcon
+    obtain ⟨hgu, hhu⟩ := hcon
+    have hg0 : g ≠ 0 := by rintro rfl; rw [zero_mul] at hgh; exact hne hgh
+    have hh0 : h ≠ 0 := by rintro rfl; rw [mul_zero] at hgh; exact hne hgh
+    have dgpos := natDegree_pos_of_ne_zero_of_not_isUnit hg0 hgu
+    have dhpos := natDegree_pos_of_ne_zero_of_not_isUnit hh0 hhu
+    have hsum : g.natDegree + h.natDegree = 4 := by
+      rw [← natDegree_mul hg0 hh0, ← hgh, hdeg]
+    have hcase : g.natDegree = 1 ∨ g.natDegree = 2 ∨ g.natDegree = 3 := by omega
+    rcases hcase with hgd | hgd | hgd
+    · exact no_linear_factor hsq hgh hgd
+    · have hhd : h.natDegree = 2 := by omega
+      set cg := g.leadingCoeff with hcg
+      set ch := h.leadingCoeff with hch
+      have hcg0 : cg ≠ 0 := leadingCoeff_ne_zero.mpr hg0
+      have hch0 : ch ≠ 0 := leadingCoeff_ne_zero.mpr hh0
+      have hCcg0 : (C cg⁻¹ : K[X]) ≠ 0 := fun hz => inv_ne_zero hcg0 (C_eq_zero.mp hz)
+      have hCch0 : (C ch⁻¹ : K[X]) ≠ 0 := fun hz => inv_ne_zero hch0 (C_eq_zero.mp hz)
+      set G : K[X] := C cg⁻¹ * g with hG
+      set H : K[X] := C ch⁻¹ * h with hH
+      have hGmon : G.Monic := leadingCoeff_inv_mul_monic hg0
+      have hHmon : H.Monic := leadingCoeff_inv_mul_monic hh0
+      have hGdeg : G.natDegree = 2 := by
+        rw [hG, natDegree_mul hCcg0 hg0, natDegree_C, zero_add, hgd]
+      have hHdeg : H.natDegree = 2 := by
+        rw [hH, natDegree_mul hCch0 hh0, natDegree_C, zero_add, hhd]
+      have hlead1 : cg * ch = 1 := by
+        have hm : (g * h).leadingCoeff = 1 := by rw [← hgh]; exact hmon
+        rwa [leadingCoeff_mul, ← hcg, ← hch] at hm
+      have hinv : cg⁻¹ * ch⁻¹ = 1 := by
+        rw [← mul_inv_rev, mul_comm ch cg, hlead1, inv_one]
+      have hGH : G * H = (X ^ 4 - C a : K[X]) := by
+        rw [hG, hH,
+          show C cg⁻¹ * g * (C ch⁻¹ * h) = C (cg⁻¹ * ch⁻¹) * (g * h) by rw [C_mul]; ring,
+          hinv, C_1, one_mul, hgh]
+      obtain ⟨p, q, hGform⟩ : ∃ p q : K, G = X ^ 2 + C p * X + C q :=
+        ⟨G.coeff 1, G.coeff 0, monic_natDegree_two_eq hGmon hGdeg⟩
+      obtain ⟨s, t, hHform⟩ : ∃ s t : K, H = X ^ 2 + C s * X + C t :=
+        ⟨H.coeff 1, H.coeff 0, monic_natDegree_two_eq hHmon hHdeg⟩
+      have hfacQ : (X ^ 4 - C a : K[X]) =
+          (X ^ 2 + C p * X + C q) * (X ^ 2 + C s * X + C t) := by
+        rw [← hGH, hGform, hHform]
+      obtain ⟨r1, r2, r3, r4⟩ := quartic_two_two_coeffs hfacQ
+      exact capelli_four_coeff_contra r1 r2 r3 r4 hsq hcap
+    · have hhd : h.natDegree = 1 := by omega
+      have hcomm : (X ^ 4 - C a : K[X]) = h * g := by rw [hgh]; ring
+      exact no_linear_factor hsq hcomm hhd
+
+-- ============================================================
 -- PART 6: The full criterion (even sufficiency = the open Mathlib gap)
 -- ============================================================
 
@@ -400,9 +563,11 @@ theorem capelli_four_coeff_contra {K : Type*} [Field K] {a p q s t : K}
 * **Necessity** (`⟹`) is fully proved for all `n` as `vahlen_capelli_necessity`.
 * **Sufficiency** for **odd** `n` is `vahlen_capelli_odd` (complete, via Mathlib).
 * **Sufficiency** for **even** `n` — conditions (1),(2) ⟹ irreducible when `4 ∣ n` — is the
-  hard Capelli theorem (Lang, *Algebra*, VI §9), currently an open `TODO` in Mathlib. It is
-  the **sole remaining `sorry`**; both directions of the odd case and the necessity of the
-  even case are now machine-checked.
+  hard Capelli theorem (Lang, *Algebra*, VI §9), currently an open `TODO` in Mathlib. The
+  base cases `n = 2` (`X_pow_sub_C_irreducible_iff_of_prime`) and `n = 4`
+  (`vahlen_capelli_four_suff`) are now proved; the **sole remaining `sorry`** is the higher
+  2-power regime **even `n ≥ 6`**. Both directions of the odd case and the necessity of the
+  even case are fully machine-checked.
 
 Proof sketch for the remaining step (standard reduction, cf. Lang VI §9):
 write `n = 2^k · t` with `t` odd. The odd part is handled by `vahlen_capelli_odd`
@@ -424,11 +589,17 @@ theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
         subst h2
         have hp2 : Nat.Prime 2 := Nat.prime_two
         exact (X_pow_sub_C_irreducible_iff_of_prime hp2).mpr (hcond.1 2 hp2 (dvd_refl 2))
-      · -- even `n ≥ 4`: the genuine open gap (Lang VI §9 / Mathlib TODO — 2-power exponents,
-        -- where the `−4·K⁴` Sophie-Germain obstruction is the essential extra content and
-        -- Mathlib's prime-power criterion `X_pow_sub_C_irreducible_iff_of_prime_pow` is
-        -- restricted to odd primes).
-        sorry
+      · by_cases h4 : n = 4
+        · -- base case `n = 4` (`4 ∣ n`, prime-power `2²`): now discharged by the
+          -- Sophie-Germain / Capelli quartic argument `vahlen_capelli_four_suff`.
+          subst h4
+          exact vahlen_capelli_four_suff
+            (hcond.1 2 Nat.prime_two (by norm_num))
+            (hcond.2 (by norm_num))
+        · -- even `n ≥ 6`: the genuine remaining open gap (Lang VI §9 / Mathlib TODO —
+          -- higher 2-power exponents, requiring the coprime-multiplicativity reduction on
+          -- top of the `n = 4` base case proved above).
+          sorry
     · exact (vahlen_capelli_odd ho).mpr hcond
 
 end CubeRoot3IrrationalOQ02OQ03
