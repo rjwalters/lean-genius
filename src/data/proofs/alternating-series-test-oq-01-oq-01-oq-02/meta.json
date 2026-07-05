@@ -171,6 +171,21 @@
       "targetId": "alternating-series-test-oq-01-oq-01",
       "relationship": "extends",
       "description": "Parent entry: proves the two-term trap f N − f (N+1) ≤ |S_N − l| ≤ f N for globally antitone f and asks (open question index 1) whether it survives for eventually-antitone coefficients. This entry answers yes, valid for all N ≥ M, by shifting the monotone tail into the parent theorem."
+    },
+    {
+      "targetId": "alternating-series-test-oq-01",
+      "relationship": "part of",
+      "description": "Grandparent / root of the lineage: the one-sided remainder bound |S_N − l| ≤ f N for the alternating series test with globally antitone f. The parent sharpens its upper bound into a two-term trap; this entry relaxes the monotonicity hypothesis to hold only on a tail [M, ∞). The shift splitting S_{n+M} = S_M + (-1)^M T_n used here is the index-shifted form of that root theorem's Finset.sum_range_succ recurrence."
+    },
+    {
+      "targetId": "alternating-series-test-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Resolves this entry's second open question. Where the shift reduction here handles coefficients that are eventually monotone, that sibling drops monotonicity entirely: it uses Abel summation (summation by parts) to obtain two-sided error bounds for alternating series whose coefficients merely have bounded variation — the strictly larger class the eventually-antitone hypothesis only approximates."
+    },
+    {
+      "targetId": "alternating-series-boole-summation",
+      "relationship": "related",
+      "description": "A complementary exact identity for alternating sums: the finite Boole summation formula expresses ∑ (-1)^i f i through endpoint values and forward differences of f. It replaces the inequality-based trap with an equality-plus-remainder, and — unlike the monotonicity route here — imposes no sign condition on the differences of f."
     }
   ],
   "conclusion": {
@@ -178,7 +193,7 @@
     "implications": "Removes the global-monotonicity restriction from the sharp Leibniz error estimate, covering the common situation of a transient initial segment followed by a monotone tail; the same two-term bounds hold from the threshold M onward with no degradation.",
     "openQuestions": [
       "Can the trap be pushed below the threshold to all N (not just N ≥ M) with an explicit correction term accounting for the finite non-monotone head?",
-      "Does an analogous shift reduction yield two-sided bounds for coefficients of bounded variation (not eventually monotone) via Abel summation, as the parent's second open question hints?"
+      "Does an analogous shift reduction yield two-sided bounds for coefficients of bounded variation (not eventually monotone) via Abel summation, as the parent's second open question hints? (Addressed in the sibling entry alternating-series-test-oq-01-oq-02, which derives such bounds directly by summation by parts under a bounded-variation hypothesis.)"
     ]
   },
   "leanFile": {
