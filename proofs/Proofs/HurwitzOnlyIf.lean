@@ -214,6 +214,113 @@ theorem anticommutator_real_affine (A : Type*) [NormedDivisionRing A] [NormedAlg
   rw [hx, hy] at key
   linear_combination (norm := module) key
 
+/-! ### Frobenius Step 3: the imaginary subspace `Im A` is well-defined
+
+Completing the square (Step 2) singles out the *imaginary* elements — those whose square is a
+nonpositive real scalar. The lemmas below are the structural backbone of the decomposition
+`A = ℝ • 1 ⊕ Im A` (0 new sorries; ⚠️ build verification pending — the Docker/containerd
+toolchain was unavailable at authoring time, so these proofs are hand-audited but not yet
+machine-checked):
+
+* `isImaginary_zero`, `eq_zero_of_isImaginary_of_isReal`: `Im A ∩ ℝ • 1 = {0}`.
+* `exists_isImaginary_sub_smul` **and** `isImaginary_sub_smul_unique`: every `a : A` has a
+  *unique* real part `c` with `a - c • 1 ∈ Im A`. Together these make the projection
+  `re : A → ℝ` well-defined — the next Step-3 milestone (proving `re` is `ℝ`-linear, so
+  `Im A = ker re` is a subspace) builds directly on this. -/
+
+/-- An element of a normed division ring is **imaginary** when its square is a nonpositive
+real scalar multiple of `1`. Genuinely imaginary elements (square scalar `< 0`) lie outside
+`ℝ • 1`; the only imaginary real scalar is `0`. This is the concrete `Im A` from the
+`A = ℝ • 1 ⊕ Im A` decomposition, cut out by the sign dichotomy of Frobenius Step 2. -/
+def IsImaginary (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A] (a : A) : Prop :=
+  ∃ r : ℝ, r ≤ 0 ∧ a ^ 2 = r • (1 : A)
+
+/-- `0` is imaginary: its square is `0 = 0 • 1` and `0 ≤ 0`. -/
+theorem isImaginary_zero (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A] :
+    IsImaginary A (0 : A) :=
+  ⟨0, le_refl 0, by simp⟩
+
+/-- **`Im A ∩ ℝ • 1 = {0}`.** An imaginary element that is also a real scalar multiple of `1`
+must be `0`: writing `a = s • 1` gives `a ^ 2 = s ^ 2 • 1`, so the imaginary scalar equals
+`s ^ 2 ≥ 0`; combined with `≤ 0` this forces `s = 0`. Uses that `ℝ` acts without zero
+divisors on `A` (`smul_eq_zero`, `one_ne_zero`) and `s ^ 2 = 0 ⟹ s = 0`. -/
+theorem eq_zero_of_isImaginary_of_isReal (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    (a : A) (hi : IsImaginary A a) (s : ℝ) (hs : a = s • (1 : A)) : a = 0 := by
+  obtain ⟨r, hr_le, hr_eq⟩ := hi
+  have h1 : a ^ 2 = (s ^ 2) • (1 : A) := by
+    rw [hs, pow_two, smul_mul_assoc, one_mul, smul_smul, ← pow_two]
+  have h2 : (s ^ 2 - r) • (1 : A) = 0 := by
+    rw [sub_smul, ← h1, hr_eq, sub_self]
+  have h3 : s ^ 2 - r = 0 := by
+    rcases smul_eq_zero.mp h2 with h | h
+    · exact h
+    · exact absurd h one_ne_zero
+  have h4 : s ^ 2 = r := by linarith
+  have h5 : s = 0 := by
+    have hsq0 : s ^ 2 = 0 := by linarith [sq_nonneg s]
+    exact sq_eq_zero_iff.mp hsq0
+  rw [hs, h5, zero_smul]
+
+/-- **Real part exists.** Every `a : A` admits a real scalar `c` with `a - c • 1 ∈ Im A`.
+From completing the square (`exists_real_shift_sq_scalar`) we get `(a - c₀ • 1) ^ 2 = r • 1`; if
+`r ≤ 0` this is already imaginary, and if `r > 0` then Step 2b puts `a - c₀ • 1 ∈ ℝ • 1`, so
+absorbing that scalar makes the imaginary part exactly `0`. -/
+theorem exists_isImaginary_sub_smul (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (a : A) : ∃ c : ℝ, IsImaginary A (a - c • (1 : A)) := by
+  obtain ⟨c, r, hcr⟩ := exists_real_shift_sq_scalar A a
+  rcases le_or_lt r 0 with hr | hr
+  · exact ⟨c, r, hr, hcr⟩
+  · obtain ⟨s, hs⟩ := eq_smul_one_of_sq_eq_nonneg_smul A (a - c • (1 : A)) r (le_of_lt hr) hcr
+    refine ⟨c + s, ?_⟩
+    have hzero : a - (c + s) • (1 : A) = 0 := by
+      rw [add_smul, sub_add_eq_sub_sub, hs, sub_self]
+    rw [hzero]
+    exact isImaginary_zero A
+
+/-- **Real part is unique.** If `a - c • 1` and `a - c' • 1` are both imaginary, then `c = c'`.
+Writing `d = c' - c`, expanding `(a - c' • 1) ^ 2 = (a - c • 1) ^ 2 - (2d) • (a - c • 1) + d² • 1`
+and using both square-scalar hypotheses gives `(2d) • (a - c • 1) ∈ ℝ • 1`; if `d ≠ 0` this puts
+the imaginary element `a - c • 1` into `ℝ • 1`, forcing it to `0` by
+`eq_zero_of_isImaginary_of_isReal`, whence `a - c' • 1 = (c - c') • 1 ∈ ℝ • 1` is likewise `0`,
+so `c = c'`. Together with `exists_isImaginary_sub_smul` this makes `re : A → ℝ` well-defined. -/
+theorem isImaginary_sub_smul_unique (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    (a : A) (c c' : ℝ) (h : IsImaginary A (a - c • (1 : A)))
+    (h' : IsImaginary A (a - c' • (1 : A))) : c = c' := by
+  by_contra hne
+  obtain ⟨r, _hr_le, hr_eq⟩ := h
+  obtain ⟨r', _hr'_le, hr'_eq⟩ := h'
+  set d := c' - c with hd_def
+  have hd : d ≠ 0 := sub_ne_zero.mpr (Ne.symm hne)
+  have hu'_eq : a - c' • (1 : A) = (a - c • (1 : A)) - d • (1 : A) := by
+    rw [hd_def, sub_smul]; abel
+  have hkey : (2 * d) • (a - c • (1 : A)) = (r + d ^ 2 - r') • (1 : A) := by
+    have expand : (a - c' • (1 : A)) ^ 2
+        = (a - c • (1 : A)) * (a - c • (1 : A)) - (2 * d) • (a - c • (1 : A))
+            + (d ^ 2) • (1 : A) := by
+      rw [hu'_eq]
+      simp only [sq, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, one_mul, mul_one]
+      module
+    rw [← pow_two] at expand
+    rw [hr'_eq, hr_eq] at expand
+    linear_combination (norm := module) expand
+  have h2d : (2 * d) ≠ 0 := mul_ne_zero (by norm_num : (2 : ℝ) ≠ 0) hd
+  have hu_real : a - c • (1 : A) = ((r + d ^ 2 - r') / (2 * d)) • (1 : A) := by
+    have hinv : a - c • (1 : A) = (2 * d)⁻¹ • ((2 * d) • (a - c • (1 : A))) := by
+      rw [inv_smul_smul₀ h2d]
+    rw [hinv, hkey, smul_smul, div_eq_inv_mul]
+  have hu0 : a - c • (1 : A) = 0 :=
+    eq_zero_of_isImaginary_of_isReal A (a - c • (1 : A)) ⟨r, _hr_le, hr_eq⟩ _ hu_real
+  have ha : a = c • (1 : A) := by rw [sub_eq_zero] at hu0; exact hu0
+  have hu'_real : a - c' • (1 : A) = (c - c') • (1 : A) := by rw [ha, ← sub_smul]
+  have hu'0 : a - c' • (1 : A) = 0 :=
+    eq_zero_of_isImaginary_of_isReal A (a - c' • (1 : A)) ⟨r', _hr'_le, hr'_eq⟩ (c - c') hu'_real
+  rw [hu'_real] at hu'0
+  have hcc : c - c' = 0 := by
+    rcases smul_eq_zero.mp hu'0 with h1 | h1
+    · exact h1
+    · exact absurd h1 one_ne_zero
+  exact hne (sub_eq_zero.mp hcc)
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring

@@ -103,3 +103,48 @@ Lowest-risk verifiable increment when tooling returns.
   (provable now via Gelfand–Mazur), then (b) target keystone lemma (2), the anticommutator
   polarization; or submit `hurwitz_only_if_ring` to Aristotle noting it is Frobenius' theorem
   with Steps 1–2 supplied as context.
+
+### 2026-07-04 (Session 2, researcher-11) — ACT (build-pending)
+
+**Mode**: REVISIT. **Outcome**: progress (4 new lemmas drafted + hand-audited; ⚠️ build-blocked).
+
+**What I did.** Advanced Frobenius Step 3 by making the real-part projection `re : A → ℝ`
+well-defined — the structural prerequisite to "`Im A` is a subspace". Added to
+`Proofs/HurwitzOnlyIf.lean` (after `anticommutator_real_affine`):
+- `def IsImaginary A a := ∃ r ≤ 0, a^2 = r•1` — the concrete `Im A`.
+- `isImaginary_zero`.
+- `eq_zero_of_isImaginary_of_isReal` — `Im A ∩ ℝ•1 = {0}` (a=s•1 imaginary ⟹ s²=r≤0, s²≥0 ⟹ s=0).
+- `exists_isImaginary_sub_smul` — every `a` has a real `c` with `a-c•1 ∈ Im A`
+  (from `exists_real_shift_sq_scalar`; the `r>0` branch collapses to `0` via Step 2b).
+- `isImaginary_sub_smul_unique` — that `c` is **unique**: if `a-c•1`, `a-c'•1` both imaginary,
+  expand `(a-c'•1)² = (a-c•1)² - 2d•(a-c•1) + d²•1` (d=c'-c), giving `2d•(a-c•1) ∈ ℝ•1`; if
+  `d≠0` this forces the imaginary `a-c•1 ∈ ℝ•1`, hence `=0` by the lemma above, then
+  `a-c'•1 = (c-c')•1 ∈ ℝ•1` is `0` too, so `c=c'`.
+
+Together `exists_… + …_unique` = well-definedness of `re`. Next milestone: prove `re` additive
+(`re(a+b)=re(a)+re(b)`), i.e. `Im A` closed under `+` — THE keystone, equivalent to
+"anticommutator of imaginaries is scalar". That needs a linear-(in)dependence case split on
+`{x,y,1}` (see Session-1 roadmap item 2); I set it up mentally as `anticommutator_imaginary_scalar`
+but did not land it this session.
+
+**Tooling blocker (unchanged from Session 1).** BOTH verification paths down:
+- Docker: containerd/buildkit metadata DBs return `input/output error` (VM-disk corruption,
+  not disk space — 32% used). `docker ps` works but any build/prune hits the corrupt blob.
+  Needs an operator Docker Desktop restart; not self-triggered (shared infra).
+- Aristotle MCP: `prove` returns `{"status":"error","message":"Resource not found."}` (404).
+Proofs are hand-audited (the `(x−k•1)²` expansion reuses the verbatim
+`simp only [sq, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc, one_mul, mul_one]; module`
+incantation from the already-verified `exists_real_shift_sq_scalar`), but NOT machine-checked.
+PR gated `loom:review-requested` so the deployer will not auto-merge until Docker returns.
+
+**Infra note.** The daemon force-reset worktree `researcher-11` to the stale
+`origin/feature/researcher-11` (missing the anticommutator commit) mid-session, wiping
+uncommitted edits. Reworked on a fresh non-daemon branch `research/hurwitz-oq-03-oq-01-realpart`
+off `origin/main`.
+
+**Next steps.**
+1. When Docker returns: build `Proofs.HurwitzOnlyIf`; fix any lemma-name drift
+   (`sub_add_eq_sub_sub`, `inv_smul_smul₀`, `div_eq_inv_mul`, `sq_eq_zero_iff`).
+2. Land the keystone `anticommutator_imaginary_scalar` (linear-independence case split).
+3. Define `re` via `Classical.choose exists_isImaginary_sub_smul`; prove `re` `ℝ`-linear using
+   the keystone; then `Im A = LinearMap.ker re` is a subspace.
