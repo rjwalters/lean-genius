@@ -59,6 +59,13 @@ open scoped BigOperators
 
 namespace Hilbert13GeneralSpaces
 
+-- Membership in an arbitrary open set is not decidable constructively; since this
+-- entire section is `noncomputable`, we work with classical decidability uniformly.
+-- This makes every `Finset.filter (fun i => x ∈ sets i)` well-typed and, crucially,
+-- gives a *single* `Decidable` instance so `coverOrderAt` and the `show`-restatements
+-- of it in the proofs below stay definitionally equal.
+attribute [local instance] Classical.propDecidable
+
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART I: COVERING DIMENSION
 ═══════════════════════════════════════════════════════════════════════════════ -/
@@ -101,12 +108,20 @@ def IsRefinement {X : Type*} [TopologicalSpace X]
   ∀ j : ι₂, ∃ i : ι₁, B j ⊆ A i
 
 /-- Covering dimension ≤ n: every finite open cover has a finite open refinement
-    of order ≤ n + 1. -/
+    of order ≤ n + 1.
+
+    The cover index types are quantified over `Type` (universe 0) rather than an
+    arbitrary `Type*`. This is not a loss of generality: every *finite* open cover
+    can be reindexed by `Fin m` (which lives in `Type`), and the refinement property
+    is invariant under such reindexing, so `covDimLE X n` denotes exactly the usual
+    covering-dimension property. Pinning the universe keeps this a single-universe
+    definition (`covDimLE.{u}` in `X`'s universe alone), so applications like
+    `covDimEq` no longer leave uninferable universe metavariables. -/
 def covDimLE (X : Type*) [TopologicalSpace X] (n : ℕ) : Prop :=
-  ∀ (ι : Type*) [Fintype ι] (cover : ι → Set X),
+  ∀ (ι : Type) [Fintype ι] (cover : ι → Set X),
     (∀ i, IsOpen (cover i)) →
     (∀ x : X, ∃ i, x ∈ cover i) →
-    ∃ (κ : Type*) (_ : Fintype κ) (refine : κ → Set X),
+    ∃ (κ : Type) (_ : Fintype κ) (refine : κ → Set X),
       (∀ j, IsOpen (refine j)) ∧
       (∀ x : X, ∃ j, x ∈ refine j) ∧
       IsRefinement cover refine ∧
@@ -130,9 +145,9 @@ theorem covDimLE_succ {X : Type*} [TopologicalSpace X] {n : ℕ}
 /-- A space with covering dimension ≤ 0 has a refinement where sets are pairwise disjoint
     (every point belongs to exactly one set of the refinement). -/
 theorem covDimLE_zero_iff_disjoint_refinement {X : Type*} [TopologicalSpace X]
-    (h : covDimLE X 0) {ι : Type*} [Fintype ι] (cover : ι → Set X)
+    (h : covDimLE X 0) {ι : Type} [Fintype ι] (cover : ι → Set X)
     (hopen : ∀ i, IsOpen (cover i)) (hcovers : ∀ x : X, ∃ i, x ∈ cover i) :
-    ∃ (κ : Type*) (_ : Fintype κ) (refine : κ → Set X),
+    ∃ (κ : Type) (_ : Fintype κ) (refine : κ → Set X),
       (∀ j, IsOpen (refine j)) ∧
       (∀ x : X, ∃ j, x ∈ refine j) ∧
       IsRefinement cover refine ∧
@@ -163,10 +178,12 @@ theorem covDimLE_of_unique {X : Type*} [TopologicalSpace X] [Unique X] :
     fun x => ⟨(), Set.mem_univ x⟩,
     fun () => ⟨i₀, fun x _ => Unique.eq_default x ▸ hi₀⟩,
     fun x => by
-      show Finset.card (Finset.univ.filter (fun _ : Unit => x ∈ Set.univ)) ≤ 0 + 1
-      calc Finset.card (Finset.univ.filter (fun _ : Unit => x ∈ Set.univ))
-          ≤ Finset.card (Finset.univ (α := Unit)) := Finset.card_filter_le _ _
-        _ = 1 := by simp [Finset.card_univ]⟩
+      -- `coverOrderAt` counts the sets containing `x`; the refinement is indexed by
+      -- `Unit`, so the count is ≤ card(Unit) = 1. `Finset.card_le_univ` takes the
+      -- finset explicitly, so the `filter`'s `Decidable` instance is fixed by
+      -- unification with the goal rather than re-synthesized (avoiding a mismatch).
+      refine le_trans (Finset.card_le_univ _) ?_
+      simp⟩
 
 /-!
 ### Dimension of [0,1]^n
@@ -301,6 +318,29 @@ def HasSuperpositionProperty (X : Type*) [TopologicalSpace X] [CompactSpace X]
     (∀ q, Continuous (Φ q)) ∧
     ∀ x : X, f x = ∑ q : Fin m, Φ q (g q x)
 
+/-- **STERNFELD'S CHARACTERIZATION — NECESSITY DIRECTION (1985)**
+
+If a compact metrizable space X has the superposition property with 2n+1 maps,
+then its covering dimension is at most n. This is the *hard* direction of
+Sternfeld's characterization: a space whose continuous functions all decompose
+into 2n+1 superposition terms cannot have dimension exceeding n.
+
+**Why axiomatized**: The necessity direction requires showing that spaces with
+dim > n have continuous functions that resist decomposition. Sternfeld's proof uses:
+- Borsuk's theorem on essential maps
+- Properties of Menger compacta (universal n-dimensional spaces)
+- Careful analysis of "basic families" of continuous functions
+
+**Note**: The *sufficiency* direction (`covDimLE X n → HasSuperpositionProperty`)
+is NOT axiomatized separately — it is derived below in `sternfeld_characterization`
+from `generalized_kolmogorov_arnold`, since a generalized KA representation of
+every continuous function is exactly a superposition with 2n+1 terms. This keeps
+the axiom base minimal: only the genuinely independent necessity direction is
+assumed. -/
+axiom sternfeld_necessity (X : Type*) [MetricSpace X] [CompactSpace X]
+    (n : ℕ) :
+    HasSuperpositionProperty X (2 * n + 1) → covDimLE X n
+
 /-- **STERNFELD'S CHARACTERIZATION (1985)**
 
 A compact metrizable space X has the superposition property with 2n+1 maps
@@ -310,15 +350,22 @@ This gives a complete topological characterization of which compact spaces
 admit KA-type representations, establishing covering dimension as the
 precise obstruction.
 
-**Why axiomatized**: Sternfeld's proof uses:
-- Borsuk's theorem on essential maps
-- Properties of Menger compacta (universal n-dimensional spaces)
-- Careful analysis of "basic families" of continuous functions
-- The necessity direction requires showing that spaces with dim > n
-  have continuous functions that resist decomposition -/
-axiom sternfeld_characterization (X : Type*) [MetricSpace X] [CompactSpace X]
+The two directions have very different status here:
+- **Necessity** (`→`) is the deep direction, taken as `sternfeld_necessity`.
+- **Sufficiency** (`←`) is *proved*, not assumed: it follows immediately from
+  `generalized_kolmogorov_arnold`, because a `GeneralizedKARepresentation` of
+  every continuous function unpacks into exactly the data of the superposition
+  property (outer functions `Φ`, inner maps `g`, continuity, and the sum formula).
+  Thus the previously-axiomatized `↔` is strengthened to a theorem whose only
+  irreducible assumption is the necessity implication. -/
+theorem sternfeld_characterization (X : Type*) [MetricSpace X] [CompactSpace X]
     (n : ℕ) :
-    HasSuperpositionProperty X (2 * n + 1) ↔ covDimLE X n
+    HasSuperpositionProperty X (2 * n + 1) ↔ covDimLE X n := by
+  constructor
+  · exact sternfeld_necessity X n
+  · intro hdim f
+    obtain ⟨rep, _⟩ := generalized_kolmogorov_arnold X n hdim f
+    exact ⟨rep.Φ, rep.g, rep.Φ_continuous, rep.represents⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: CONNECTION TO THE CLASSICAL THEOREM
@@ -393,6 +440,15 @@ theorem covDimLE_of_embedding {X Y : Type*} [TopologicalSpace X] [TopologicalSpa
     (f : X → Y) (hf : Continuous f) (hinj : Function.Injective f)
     {n : ℕ} (hdimY : covDimLE Y n) : covDimLE X n := by
   intro ι _ cover hopen hcovers
+  -- If X is empty, the empty family is a valid (order-0) refinement of any cover.
+  rcases isEmpty_or_nonempty X with hX | hX
+  · exact ⟨Empty, inferInstance, Empty.elim,
+      (fun j => j.elim), (fun x => (hX.false x).elim),
+      (fun j => j.elim), (fun x => (hX.false x).elim)⟩
+  -- X is nonempty, hence so is its index type ι.
+  have hιne : Nonempty ι := by
+    obtain ⟨x⟩ := hX
+    exact ⟨(hcovers x).choose⟩
   -- f is a closed map: continuous from compact to T2
   have hclosed_map : IsClosedMap f := fun s hs =>
     (hs.isCompact.image hf).isClosed
@@ -403,21 +459,27 @@ theorem covDimLE_of_embedding {X Y : Type*} [TopologicalSpace X] [TopologicalSpa
     | none => (Set.range f)ᶜ         -- Y \ f(X)
   have hWopen : ∀ j, IsOpen (W j) := by
     intro j; cases j with
-    | none => exact isOpen_compl_iff.mpr (hclosed_map _ isClosed_univ)
+    | none =>
+      refine isOpen_compl_iff.mpr ?_
+      rw [← Set.image_univ]
+      exact hclosed_map _ isClosed_univ
     | some i => exact isOpen_compl_iff.mpr (hclosed_map _ (hopen i).isClosed_compl)
   have hWcovers : ∀ y : Y, ∃ j, y ∈ W j := by
     intro y
     by_cases hy : y ∈ Set.range f
     · obtain ⟨x, rfl⟩ := hy
       obtain ⟨i, hi⟩ := hcovers x
-      exact ⟨some i, by simp [W]; intro habs; exact habs ⟨x, Set.mem_compl hi, rfl⟩⟩
+      refine ⟨some i, ?_⟩
+      show f x ∈ (f '' (cover i)ᶜ)ᶜ
+      rintro ⟨a, ha, hax⟩
+      exact absurd ((hinj hax).symm ▸ hi) ha
     · exact ⟨none, hy⟩
   -- Preimage of W recovers original cover (by injectivity)
   have hpre : ∀ i, f ⁻¹' (W (some i)) ⊆ cover i := by
     intro i x hx
-    simp only [W, Set.mem_compl_iff, Set.mem_image, not_exists, not_and] at hx
     by_contra h
-    exact hx x h rfl
+    -- hx : f x ∉ f '' (cover i)ᶜ, yet x ∈ (cover i)ᶜ gives f x ∈ f '' (cover i)ᶜ.
+    exact hx ⟨x, h, rfl⟩
   -- Apply hdimY to get refinement of W
   obtain ⟨κ, hκ, refine, hrefopen, hrefcovers, hrefref, hreford⟩ :=
     hdimY (Option ι) W hWopen hWcovers
@@ -429,14 +491,11 @@ theorem covDimLE_of_embedding {X Y : Type*} [TopologicalSpace X] [TopologicalSpa
       obtain ⟨oi, hoi⟩ := hrefref j
       cases oi with
       | none =>
-        -- refine j ⊆ (range f)ᶜ → f⁻¹(refine j) = ∅
-        have : Nonempty ι := by
-          have ⟨x, _⟩ := CompactSpace.isCompact_univ.nonempty (α := X)
-          exact ⟨(hcovers x).choose⟩
-        exact ⟨Classical.arbitrary ι, fun x hx =>
-          absurd (Set.mem_range_self x) (Set.not_mem_compl_iff.mpr (hoi hx) |>.elim)⟩
-      | some i => exact ⟨i, fun x hx => hpre i x (hoi hx)⟩,
-    fun x S hS => hreford (f x) S (fun j hj => hS j hj)⟩
+        -- refine j ⊆ (range f)ᶜ → f⁻¹(refine j) = ∅, so any index i works.
+        refine ⟨Classical.arbitrary ι, fun x hx => ?_⟩
+        exact absurd (Set.mem_range_self x) (hoi hx)
+      | some i => exact ⟨i, fun x hx => hpre i (hoi hx)⟩,
+    fun x => hreford (f x)⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IX: OPEN PROBLEMS
@@ -473,6 +532,7 @@ def computational_complexity_open : Prop :=
 #check covDimEq
 #check unitCube_covDimEq
 #check generalized_kolmogorov_arnold
+#check sternfeld_necessity
 #check sternfeld_characterization
 #check classical_KA_from_general
 #check unitCube_superposition_sharp

@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 6,
-    "assumptions": "6 axioms: unitCube_covDimLE_pos (n≥1 case, upper bound for [0,1]^n), unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_characterization (Sternfeld 1985), superposition_2n_plus_1_sharp (optimality of 2n+1). The n=0 case (dim({*})=0) is now fully proved via covDimLE_of_unique. 0 sorries.",
+    "assumptions": "6 axioms: unitCube_covDimLE_pos (n≥1 case, upper bound for [0,1]^n), unitCube_covDim_lower_bound (dimension of [0,1]^n), ostrand_separating_maps (Ostrand 1965), generalized_kolmogorov_arnold (generalized KA theorem), sternfeld_necessity (Sternfeld 1985, hard direction only: superposition ⇒ dim ≤ n), superposition_2n_plus_1_sharp (optimality of 2n+1). The n=0 case (dim({*})=0) is fully proved via covDimLE_of_unique. Sternfeld's characterization is now a THEOREM (sternfeld_characterization): its sufficiency direction (covDimLE ⇒ superposition) is derived from generalized_kolmogorov_arnold rather than assumed, so only the genuinely independent necessity direction remains axiomatic. 0 sorries.",
     "dateAdded": "2026-03-30",
     "hilbertNumber": 13,
     "mathlibDependencies": [
@@ -53,7 +53,9 @@
       "Formalization of Sternfeld's characterization linking covering dimension to superposition property",
       "Proof that 2n+1 is the sharp bound for superposition decomposition",
       "Recovery of the classical KA theorem as a special case via covering dimension of [0,1]^n",
-      "Proved covDimLE_of_unique: singleton spaces have covering dimension 0 (eliminates n=0 case from axiom)"
+      "Proved covDimLE_of_unique: singleton spaces have covering dimension 0 (eliminates n=0 case from axiom)",
+      "Derived the sufficiency direction of Sternfeld's characterization (covDimLE ⇒ superposition property) from the generalized KA axiom, downgrading the former bi-conditional axiom to a necessity-only axiom (sternfeld_necessity) plus a proved theorem",
+      "Repaired the file to compile under current Mathlib: pinned covering-dimension index universes (no generality lost for finite covers), added a local classical-decidability instance for cover-order counting, and restored covDimLE_of_embedding (empty-domain case + updated closed-image/injectivity API)"
     ],
     "prerequisites": [
       "Point-set topology (compactness, metrizability)",
