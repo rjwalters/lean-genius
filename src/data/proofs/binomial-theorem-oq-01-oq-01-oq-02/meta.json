@@ -81,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Module header and the OQ statement",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Frames the open question: exhibit the analytic side of the binomial series — that d/dx (1+x)^α = α(1+x)^(α-1) — and show it is exactly the parent's coefficient-level absorption identity α·genBinom(α−1,k) = (k+1)·genBinom(α,k+1) read off term-by-term. Recalls what the parent binomial-theorem-oq-01-oq-01 supplies (genBinom, absorption, binomial_series_analytic via HasFPowerSeriesOnBall) and the key Mathlib lemma HasDerivAt.rpow_const. Imports Mathlib and the parent, opens Real, enters the namespace. Verified: 0 sorries, 0 axioms, no native_decide.",
+      "mathContext": "Analytic ↔ combinatorial: $\\frac{d}{dx}(1+x)^\\alpha = \\alpha(1+x)^{\\alpha-1}$ is the generating-function shadow of the absorption identity $\\alpha\\binom{\\alpha-1}{k} = (k+1)\\binom{\\alpha}{k+1}$."
+    },
+    {
       "id": "pointwise-derivative",
       "title": "Pointwise Derivative of (1+x)^α",
       "startLine": 34,
