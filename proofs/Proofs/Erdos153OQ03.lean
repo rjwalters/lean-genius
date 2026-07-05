@@ -43,6 +43,9 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `card_finset_sym_eq_choose`: the stars-and-bars bridge |A.sym h| = C(|A|+h−1, h)
 - `card_hSumset_eq_choose_of_isBhSet` : saturation in closed binomial form
 - `choose_le_of_isBhSet`     : the B_h density bound C(|A|+h−1, h) ≤ hN+1 in closed form
+- `isBhSet_sub`            : translation invariance (downward) — A−m is B_h (m ≤ A)
+- `isBhSet_div`            : dilation invariance (downward) — A/c is B_h (c ∣ A, c ≥ 1)
+- `isBhSet_translate_min_zero` : canonical form — every B_h set is a translate of a min-0 B_h set
 -/
 import Mathlib
 
@@ -641,5 +644,152 @@ theorem card_pow_le_of_isBhSet {h N : ℕ} {A : Finset ℕ}
     _ = h.factorial * (A.card + h - 1).choose h :=
         Nat.descFactorial_eq_factorial_mul_choose _ _
     _ ≤ h.factorial * (h * N + 1) := Nat.mul_le_mul (le_refl _) hbound
+
+/-!
+## Section X: Inverse affine maps and the canonical translation form
+
+Section V established that `B_h`-ness is preserved by every order-preserving
+affine map `a ↦ c·a + t` (`isBhSet_affine`), built from dilation-up
+(`isBhSet_smul`) and translation-up (`isBhSet_add`).  To turn "affine geometry
+determines `B_h`-ness" into a genuine *reduction* — every `B_h` set is
+affine-equivalent to a canonical representative — we need the inverse maps as
+well: translation *down* (`isBhSet_sub`, valid once we translate by no more than
+the minimum) and dilation *down* (`isBhSet_div`, valid when the common factor
+divides every element).  These are the exact converses of the Section V maps and
+are proved by the same lift-back template: pull each competing multiset back
+through the inverse map into `A`, where `A`'s `B_h` property forces equality,
+then push the equality forward again.
+
+The payoff is `isBhSet_translate_min_zero`: every nonempty `B_h` set `A` is the
+upward translate `B + min A` of a `B_h` set `B` with minimum `0`.  Position is
+thus inessential — the study of `B_h` sets reduces to those anchored at `0`.
+-/
+
+/-- **Translation invariance (downward).**  The converse of `isBhSet_add`: if
+`A` is a `B_h` set and `m` is at most every element of `A`, then the
+down-translate `A − m = {a − m : a ∈ A}` (here `A.image (· - m)`) is again a
+`B_h` set.  The hypothesis `m ≤ a` makes truncated `ℕ`-subtraction behave like
+genuine subtraction, so lifting back by `· + m` recovers `A` exactly; the shift
+`h·m` cancels between two size-`h` sums, and the `B_h` property of `A` closes the
+gap.  Applying it with `m = min A` down-translates any set to one containing `0`. -/
+theorem isBhSet_sub {h m : ℕ} {A : Finset ℕ} (hm : ∀ a ∈ A, m ≤ a)
+    (H : IsBhSet h A) : IsBhSet h (A.image (fun a => a - m)) := by
+  -- lifting back by `· + m` shifts the sum up by `card · m`
+  have hshift : ∀ s : Multiset ℕ,
+      (s.map (fun x => x + m)).sum = s.sum + Multiset.card s * m := by
+    intro s
+    refine Multiset.induction_on s ?_ ?_
+    · simp
+    · intro a s ih
+      simp only [Multiset.map_cons, Multiset.sum_cons, Multiset.card_cons, ih,
+        Nat.add_mul, Nat.one_mul]
+      ring
+  -- `· + m` inverts `· - m` on the down-translated set, landing back in `A`
+  have hinv : ∀ s : Multiset ℕ, (∀ x ∈ s, x ∈ A.image (fun a => a - m)) →
+      (s.map (fun x => x + m)).map (fun x => x - m) = s ∧
+      (∀ y ∈ s.map (fun x => x + m), y ∈ A) := by
+    intro s hs
+    refine ⟨?_, ?_⟩
+    · rw [Multiset.map_map]
+      conv_rhs => rw [← Multiset.map_id' s]
+      apply Multiset.map_congr rfl
+      intro x _
+      show x + m - m = x
+      omega
+    · intro y hy
+      obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hy
+      obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp (hs x hx)
+      have : a - m + m = a := by have := hm a ha; omega
+      rw [this]; exact ha
+  intro s t hs ht hcs hct hsum
+  obtain ⟨hs_rec, hsA⟩ := hinv s hs
+  obtain ⟨ht_rec, htA⟩ := hinv t ht
+  set s₀ : Multiset ℕ := s.map (fun x => x + m) with hs₀
+  set t₀ : Multiset ℕ := t.map (fun x => x + m) with ht₀
+  have hcs₀ : Multiset.card s₀ = h := by rw [hs₀, Multiset.card_map]; exact hcs
+  have hct₀ : Multiset.card t₀ = h := by rw [ht₀, Multiset.card_map]; exact hct
+  have hsum₀ : s₀.sum = t₀.sum := by
+    have es : s₀.sum = s.sum + Multiset.card s * m := by rw [hs₀]; exact hshift s
+    have et : t₀.sum = t.sum + Multiset.card t * m := by rw [ht₀]; exact hshift t
+    rw [hcs] at es; rw [hct] at et; omega
+  have h0 : s₀ = t₀ := H s₀ t₀ hsA htA hcs₀ hct₀ hsum₀
+  calc s = s₀.map (fun x => x - m) := hs_rec.symm
+    _ = t₀.map (fun x => x - m) := by rw [h0]
+    _ = t := ht_rec
+
+/-- **Dilation invariance (downward).**  The converse of `isBhSet_smul`: if `A`
+is a `B_h` set, `c ≥ 1`, and `c` divides every element of `A`, then the
+contracted set `A / c = {a / c : a ∈ A}` (here `A.image (· / c)`) is again a
+`B_h` set.  Divisibility makes `ℕ`-division exact, so lifting back by `· * c`
+recovers `A`; the common factor `c` cancels from an equality of size-`h` sums,
+and `A`'s `B_h` property closes the gap.  Together with `isBhSet_sub` this lets a
+`B_h` set be contracted by the gcd of its differences. -/
+theorem isBhSet_div {h c : ℕ} {A : Finset ℕ} (hc : 0 < c) (hdvd : ∀ a ∈ A, c ∣ a)
+    (H : IsBhSet h A) : IsBhSet h (A.image (fun a => a / c)) := by
+  -- lifting back by `· * c` scales the sum by `c`
+  have hscale : ∀ s : Multiset ℕ, (s.map (fun x => x * c)).sum = s.sum * c := by
+    intro s
+    refine Multiset.induction_on s ?_ ?_
+    · simp
+    · intro a s ih
+      simp only [Multiset.map_cons, Multiset.sum_cons, ih, Nat.add_mul]
+  -- `· * c` inverts `· / c` on the contracted set, landing back in `A`
+  have hinv : ∀ s : Multiset ℕ, (∀ x ∈ s, x ∈ A.image (fun a => a / c)) →
+      (s.map (fun x => x * c)).map (fun x => x / c) = s ∧
+      (∀ y ∈ s.map (fun x => x * c), y ∈ A) := by
+    intro s hs
+    refine ⟨?_, ?_⟩
+    · rw [Multiset.map_map]
+      conv_rhs => rw [← Multiset.map_id' s]
+      apply Multiset.map_congr rfl
+      intro x _
+      show x * c / c = x
+      rw [Nat.mul_comm x c, Nat.mul_div_cancel_left x hc]
+    · intro y hy
+      obtain ⟨x, hx, rfl⟩ := Multiset.mem_map.mp hy
+      obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp (hs x hx)
+      have : a / c * c = a := Nat.div_mul_cancel (hdvd a ha)
+      rw [this]; exact ha
+  intro s t hs ht hcs hct hsum
+  obtain ⟨hs_rec, hsA⟩ := hinv s hs
+  obtain ⟨ht_rec, htA⟩ := hinv t ht
+  set s₀ : Multiset ℕ := s.map (fun x => x * c) with hs₀
+  set t₀ : Multiset ℕ := t.map (fun x => x * c) with ht₀
+  have hcs₀ : Multiset.card s₀ = h := by rw [hs₀, Multiset.card_map]; exact hcs
+  have hct₀ : Multiset.card t₀ = h := by rw [ht₀, Multiset.card_map]; exact hct
+  have hsum₀ : s₀.sum = t₀.sum := by
+    rw [hs₀, ht₀, hscale, hscale, hsum]
+  have h0 : s₀ = t₀ := H s₀ t₀ hsA htA hcs₀ hct₀ hsum₀
+  calc s = s₀.map (fun x => x / c) := hs_rec.symm
+    _ = t₀.map (fun x => x / c) := by rw [h0]
+    _ = t := ht_rec
+
+/-- **Canonical translation form.**  Every nonempty `B_h` set `A` is the upward
+translate `B + m` (with `m = min A`) of a `B_h` set `B := {a − m : a ∈ A}` whose
+minimum is `0` — witnessed here by `0 ∈ B`.  Hence, up to the affine map
+`b ↦ b + min A`, every `B_h` set is one anchored at the origin: absolute
+position carries no `B_h` information.  The translation analogue of the
+normal-form reduction, obtained from `isBhSet_sub` at `m = min A`. -/
+theorem isBhSet_translate_min_zero {h : ℕ} {A : Finset ℕ} (hA : A.Nonempty)
+    (H : IsBhSet h A) :
+    IsBhSet h (A.image (fun a => a - A.min' hA)) ∧
+    (0 : ℕ) ∈ A.image (fun a => a - A.min' hA) ∧
+    A = (A.image (fun a => a - A.min' hA)).image (fun b => b + A.min' hA) := by
+  set m := A.min' hA with hm
+  have hmle : ∀ a ∈ A, m ≤ a := fun a ha => Finset.min'_le A a ha
+  refine ⟨isBhSet_sub hmle H, ?_, ?_⟩
+  · -- `0 = m − m` lies in the down-translate since `m = min A ∈ A`
+    rw [Finset.mem_image]
+    exact ⟨m, A.min'_mem hA, by omega⟩
+  · -- re-adding `m` recovers `A` exactly, since `m ≤ a` for every `a ∈ A`
+    symm
+    ext x
+    simp only [Finset.image_image, Finset.mem_image, Function.comp]
+    constructor
+    · rintro ⟨a, ha, rfl⟩
+      have := hmle a ha
+      rwa [Nat.sub_add_cancel this]
+    · intro hx
+      exact ⟨x, hx, Nat.sub_add_cancel (hmle x hx)⟩
 
 end Erdos153OQ03

@@ -76,7 +76,7 @@ theorem cesaroAvg_ge_inv_N (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
     1 / (N : ℝ) ≤ cesaroAvg A N := by
   have hNpos : (0 : ℝ) < N := by exact_mod_cast hN
   unfold cesaroAvg
-  rw [div_le_div_right₀ hNpos]
+  rw [div_le_div_iff_of_pos_right hNpos]
   exact sum_densityRatio_ge_one A N hN
 
 /-- Restatement of the floor as `1 ≤ N · C_A(N)`. -/
@@ -103,7 +103,7 @@ theorem cesaroAvg_ge_harmonic (A : IncreasingSeq) (N : ℕ) :
   unfold cesaroAvg
   rcases Nat.eq_zero_or_pos N with rfl | hN
   · simp
-  · rw [div_le_div_right₀ (by exact_mod_cast hN : (0 : ℝ) < N)]
+  · rw [div_le_div_iff_of_pos_right (by exact_mod_cast hN : (0 : ℝ) < N)]
     exact Finset.sum_le_sum fun k _ => densityRatio_ge_inv A k
 
 /-! ## Part III: The large-ratio frequency floor
@@ -138,7 +138,7 @@ theorem cesaroAvg_ge_largeCount (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
   rw [show (((range N).filter (fun k => 1 / 2 ≤ densityRatio A k)).card : ℝ) / (2 * N)
         = ((1 / 2) * ((range N).filter (fun k => 1 / 2 ≤ densityRatio A k)).card) / N by
         ring]
-  rw [div_le_div_right₀ hNpos]
+  rw [div_le_div_iff_of_pos_right hNpos]
   exact hbase
 
 /-! ## Part IV: The prime-density floor
@@ -160,7 +160,7 @@ theorem cesaroAvg_ge_primeCount (A : IncreasingSeq) (N : ℕ) (hN : 0 < N) :
   have hcard : (((range N).filter (fun k => Nat.Prime (A.seq k))).card : ℝ)
       ≤ (((range N).filter (fun k => 1 / 2 ≤ densityRatio A k)).card : ℝ) := by
     exact_mod_cast Finset.card_le_card hsub
-  rw [div_le_div_right₀ (mul_pos (by norm_num : (0 : ℝ) < 2) hNpos)]
+  rw [div_le_div_iff_of_pos_right (mul_pos (by norm_num : (0 : ℝ) < 2) hNpos)]
   exact hcard
 
 /-! ## Part V: Capstone — no vanishing average for prime-dense sequences

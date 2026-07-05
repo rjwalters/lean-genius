@@ -5,6 +5,8 @@ import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.FieldTheory.Minpoly.Basic
 import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
+import Mathlib.Algebra.Algebra.Bilinear
+import Mathlib.LinearAlgebra.BilinearMap
 
 /-!
 # Hurwitz Only-If: Normed Division Algebras Have Dimension in {1, 2, 4, 8}
@@ -564,6 +566,102 @@ theorem mem_imaginarySubmodule_iff (A : Type*) [NormedDivisionRing A] [NormedAlg
   · intro h
     apply realPartValue_eq
     rwa [zero_smul, sub_zero]
+
+/-! ### The positive-definite symmetric bilinear form on `Im A`
+
+With `Im A = imaginarySubmodule A` an honest `ℝ`-submodule and `realPart : A →ₗ[ℝ] ℝ` in
+hand, we equip `Im A` with the **canonical bilinear form**
+`B(x, y) = -½·(realPart(x·y) + realPart(y·x))`.
+
+*Bilinearity* is automatic: multiplication `A × A → A` is `ℝ`-bilinear
+(`LinearMap.mul ℝ A`) and `realPart` is `ℝ`-linear, so `realPart(x·y)` is bilinear; the
+symmetrised half is too.  *Symmetry* is built in by the `+ flip` symmetrisation.
+*Positive-definiteness* is the crux: on the diagonal
+`B(x, x) = -realPart(x²) = -r ≥ 0`, where `x² = r·1` with `r ≤ 0` (imaginarity), and
+`B(x, x) = 0 ⇔ r = 0 ⇔ x² = 0 ⇔ x = 0` (no zero divisors).  This turns `Im A` into a real
+inner-product space — the metric scaffolding needed to pick `B`-orthonormal imaginary units
+`eᵢ` with `eᵢeⱼ + eⱼeᵢ = -2δᵢⱼ·1` and run the final quaternion dimension count. -/
+
+/-- The real part of a real scalar `c · 1` is `c` (the defining decomposition is trivial:
+`c·1 - c·1 = 0` is imaginary). -/
+theorem realPartValue_smul_one (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (c : ℝ) : realPartValue A (c • (1 : A)) = c := by
+  apply realPartValue_eq
+  have h : c • (1 : A) - c • (1 : A) = 0 := sub_self _
+  rw [h]
+  exact ⟨0, le_refl 0, by simp⟩
+
+/-- The `ℝ`-bilinear pairing `A × A → ℝ`, `(x, y) ↦ realPart(x·y)`, obtained by composing the
+`ℝ`-bilinear multiplication `LinearMap.mul ℝ A` with the linear functional `realPart A`. -/
+noncomputable def realMulForm (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] : A →ₗ[ℝ] A →ₗ[ℝ] ℝ :=
+  (LinearMap.mul ℝ A).compr₂ (realPart A)
+
+@[simp] theorem realMulForm_apply (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x y : A) : realMulForm A x y = realPartValue A (x * y) := rfl
+
+/-- **The canonical bilinear form on `Im A`:** `B(x, y) = -½·(realPart(x·y) + realPart(y·x))`.
+Symmetric by construction (the `+ flip` symmetrisation), `ℝ`-bilinear from `realMulForm`. -/
+noncomputable def imaginaryBilin (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] :
+    (imaginarySubmodule A) →ₗ[ℝ] (imaginarySubmodule A) →ₗ[ℝ] ℝ :=
+  (-(1 / 2 : ℝ)) •
+    (let G := (realMulForm A).compl₁₂ (imaginarySubmodule A).subtype (imaginarySubmodule A).subtype
+     G + G.flip)
+
+theorem imaginaryBilin_apply (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x y : imaginarySubmodule A) :
+    imaginaryBilin A x y
+      = -(1 / 2) * (realPartValue A ((x : A) * (y : A)) + realPartValue A ((y : A) * (x : A))) := by
+  simp only [imaginaryBilin, LinearMap.smul_apply, LinearMap.add_apply, LinearMap.flip_apply,
+    LinearMap.compl₁₂_apply, realMulForm_apply, Submodule.subtype_apply, smul_eq_mul]
+
+/-- `B` is **symmetric**. -/
+theorem imaginaryBilin_symm (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x y : imaginarySubmodule A) :
+    imaginaryBilin A x y = imaginaryBilin A y x := by
+  rw [imaginaryBilin_apply, imaginaryBilin_apply]; ring
+
+/-- On the diagonal, `B(x, x) = -realPart(x²)`. -/
+theorem imaginaryBilin_self (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x : imaginarySubmodule A) :
+    imaginaryBilin A x x = - realPartValue A ((x : A) * (x : A)) := by
+  rw [imaginaryBilin_apply]; ring
+
+/-- **`B` is positive semi-definite:** `B(x, x) ≥ 0` for every imaginary `x`. -/
+theorem imaginaryBilin_self_nonneg (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x : imaginarySubmodule A) : 0 ≤ imaginaryBilin A x x := by
+  rw [imaginaryBilin_self]
+  obtain ⟨r, hr, hsq⟩ := (mem_imaginarySubmodule_iff A (x : A)).mp x.2
+  have hxx : (x : A) * (x : A) = r • (1 : A) := by rw [← pow_two]; exact hsq
+  rw [hxx, realPartValue_smul_one]; linarith
+
+/-- **`B` is positive-definite:** `B(x, x) = 0` iff `x = 0`.  Together with
+`imaginaryBilin_symm` and `imaginaryBilin_self_nonneg`, this makes `B` a genuine inner
+product on the real vector space `Im A`. -/
+theorem imaginaryBilin_self_eq_zero_iff (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    [Module.Finite ℝ A] (x : imaginarySubmodule A) :
+    imaginaryBilin A x x = 0 ↔ x = 0 := by
+  rw [imaginaryBilin_self]
+  obtain ⟨r, hr, hsq⟩ := (mem_imaginarySubmodule_iff A (x : A)).mp x.2
+  have hxx : (x : A) * (x : A) = r • (1 : A) := by rw [← pow_two]; exact hsq
+  rw [hxx, realPartValue_smul_one]
+  constructor
+  · intro h
+    have hr0 : r = 0 := by linarith
+    have hx2 : (x : A) ^ 2 = 0 := by rw [hsq, hr0, zero_smul]
+    have hx0 : (x : A) = 0 := by
+      rw [pow_two] at hx2
+      exact (mul_self_eq_zero).mp hx2
+    exact Submodule.coe_eq_zero.mp hx0
+  · intro h
+    have hx0 : (x : A) = 0 := by rw [h]; simp
+    have hrz : r • (1 : A) = 0 := by rw [← hxx, hx0, mul_zero]
+    have hr0 : r = 0 :=
+      calc r = realPartValue A (r • (1 : A)) := (realPartValue_smul_one A r).symm
+        _ = realPartValue A ((0 : ℝ) • (1 : A)) := by rw [hrz, zero_smul]
+        _ = 0 := realPartValue_smul_one A 0
+    linarith
 
 /-! ### The General (Division Ring) Case -/
 
