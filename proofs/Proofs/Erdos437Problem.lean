@@ -206,14 +206,77 @@ Bui-Pratt-Zaharescu analyze this using techniques from algebraic number theory.
 -/
 
 /--
-**Example: Powers of 2 squared give many squares**
-If aᵢ = 4^i, then every partial product is a square.
+**Helper: prefix products of squares are squares.**
+If the accumulator `b` is a perfect square and every element of `a` is a perfect
+square, then every entry of `List.scanl (· * ·) b a` (i.e. every prefix product)
+is a perfect square. The product of two squares is a square, applied along the scan.
+-/
+theorem scanl_mul_all_square :
+    ∀ (a : List ℕ) (b : ℕ), (∃ p, p * p = b) →
+      (∀ x ∈ a, ∃ q, q * q = x) →
+      ∀ y ∈ a.scanl (· * ·) b, ∃ r, r * r = y := by
+  intro a
+  induction a with
+  | nil =>
+    intro b hb _ y hy
+    rw [List.scanl_nil, List.mem_singleton] at hy
+    subst hy
+    exact hb
+  | cons c cs ih =>
+    intro b hb hall y hy
+    rw [List.scanl_cons, List.mem_cons] at hy
+    rcases hy with rfl | hy
+    · exact hb
+    · refine ih (b * c) ?_ ?_ y hy
+      · obtain ⟨p, hp⟩ := hb
+        obtain ⟨q, hq⟩ := hall c (List.mem_cons_self c cs)
+        exact ⟨p * q, by rw [mul_mul_mul_comm, hp, hq]⟩
+      · intro x hx
+        exact hall x (List.mem_cons_of_mem c hx)
+
+/--
+**Example: Powers of 4 give all-square partial products.**
+If aᵢ = 4^i, then *every* partial product is a perfect square: the j-th partial
+product is 4^(1+2+···+j) = (2^(1+2+···+j))², so all k of them are squares and
+`squareCount a = k`.
+
+(The previous version of this file stated `squareCount a = k - 1`, which is false:
+even the first partial product a₁ = 4 = 2² is a perfect square, so the count is k,
+not k - 1.)
 -/
 theorem powers_of_four_all_squares :
     ∀ k : ℕ, k ≥ 1 →
     let a := List.range k |>.map (fun i => 4^(i+1))
-    squareCount a = k - 1 := by
-  sorry
+    squareCount a = k := by
+  intro k _
+  show squareCount (List.range k |>.map (fun i => 4 ^ (i + 1))) = k
+  set L := List.range k |>.map (fun i => 4 ^ (i + 1)) with hL
+  -- Every element of L is a perfect square: 4^(i+1) = (2^(i+1))².
+  have hall : ∀ x ∈ L, ∃ q, q * q = x := by
+    intro x hx
+    rw [hL, List.mem_map] at hx
+    obtain ⟨i, _, rfl⟩ := hx
+    exact ⟨2 ^ (i + 1), by rw [show (4 : ℕ) = 2 * 2 from rfl, mul_pow]⟩
+  -- Hence every entry of the scan (and so every partial product) is a square.
+  have hsq : ∀ y ∈ L.scanl (· * ·) 1, ∃ r, r * r = y :=
+    scanl_mul_all_square L 1 ⟨1, by norm_num⟩ hall
+  have hpp : ∀ n ∈ partialProducts L, Nat.sqrt n * Nat.sqrt n = n := by
+    intro n hn
+    rw [partialProducts] at hn
+    have hmem : n ∈ L.scanl (· * ·) 1 := List.tail_subset _ hn
+    obtain ⟨r, hr⟩ := hsq n hmem
+    rw [← hr, Nat.sqrt_eq]
+  -- The square-filter therefore keeps every partial product.
+  have hfilter :
+      (partialProducts L).filter (fun n => Nat.sqrt n * Nat.sqrt n = n)
+        = partialProducts L := by
+    apply List.filter_eq_self.mpr
+    intro n hn
+    simp only [decide_eq_true_eq]
+    exact hpp n hn
+  rw [squareCount, hfilter]
+  simp only [partialProducts, List.length_tail, List.length_scanl, hL, List.length_map,
+    List.length_range, Nat.add_sub_cancel]
 
 /--
 **Example: Prime sequence gives no squares after first**
