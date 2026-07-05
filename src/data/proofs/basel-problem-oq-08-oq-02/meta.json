@@ -66,7 +66,9 @@
     "keyInsights": [
       "**Even zeta values are rational multiples of powers of π.** ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!); at k = 3, B₆ = 1/42 yields ζ(6) = π⁶/945.",
       "**The missing Bernoulli number is the real work.** Mathlib stops its packaged Bernoulli evaluations at B₄; computing B₆ = 1/42 from the recurrence (using that B₅ = 0) is the one step the gallery adds over a pure Mathlib lookup.",
-      "**The ratio ζ(6)/ζ(2)³ is π-free.** Dividing the even-zeta values cancels π entirely, leaving the rational 8/35 — a structural fact about the Bernoulli numbers, not about π. It generalises the parent's ζ(4)/ζ(2)² = 2/5."
+      "**The ratio ζ(6)/ζ(2)³ is π-free.** Dividing the even-zeta values cancels π entirely, leaving the rational 8/35 — a structural fact about the Bernoulli numbers, not about π. It generalises the parent's ζ(4)/ζ(2)² = 2/5.",
+      "**The π-free ratios form a Bernoulli-determined sequence.** Quotienting each even value by the right power of ζ(2) removes π and leaves a rational invariant: ζ(4)/ζ(2)² = 2/5, ζ(6)/ζ(2)³ = 8/35, and so on. Each such ratio is fixed entirely by the Bernoulli numbers (here B₂ = 1/6 and B₆ = 1/42), so this sequence of dimensionless rationals is exactly the arithmetic content of the even-zeta family that survives when the transcendence of π is factored out.",
+      "**One value, three formal surfaces.** ζ(6) is recorded in all three Mathlib shapes: a `HasSum` witness, a `tsum` over ℝ (the headline ∑' n, 1/n⁶ = π⁶/945), and `riemannZeta 6` over ℂ. At argument 6 the Dirichlet series converges absolutely, so the elementary sum and the analytically-continued ζ agree; the file makes that identification explicit, letting downstream results consume whichever form they need."
     ],
     "prerequisites": [
       "Infinite sums / tsum and HasSum in Mathlib",
@@ -93,17 +95,25 @@
       "mathContext": "$B_6 = 1/42$, the first Bernoulli number beyond Mathlib's packaged $B_2, B_4$, computed from $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$."
     },
     {
-      "id": "zeta-six",
-      "title": "The Value ζ(6) = π⁶/945",
+      "id": "zeta-six-real",
+      "title": "The Real Value ζ(6) = ∑' n, 1/n⁶ = π⁶/945",
       "startLine": 44,
-      "endLine": 65,
-      "summary": "hasSum_one_div_nat_pow_six (HasSum form), tsum_one_div_nat_pow_six (the headline tsum value ∑' n, 1/n⁶ = π⁶/945), and riemannZeta_six_eq (the riemannZeta 6 value over ℂ).",
-      "mathContext": "$\\sum_{n=1}^\\infty 1/n^6 = \\pi^6/945$ and $\\zeta(6) = \\pi^6/945$, from Mathlib's `hasSum_zeta_nat` and `riemannZeta_two_mul_nat` at k = 3."
+      "endLine": 53,
+      "summary": "hasSum_one_div_nat_pow_six instantiates Mathlib's hasSum_zeta_nat at k = 3 and collapses the formula constant 2⁵·(1/42)/720 to 1/945 via norm_num and ring (all analysis is upstream; the gallery supplies B₆ and the arithmetic). tsum_one_div_nat_pow_six then gives the headline tsum value ∑' n, 1/n⁶ = π⁶/945.",
+      "mathContext": "$\\sum_{n=1}^\\infty 1/n^6 = \\pi^6/945$, the $k=3$ instance of `hasSum_zeta_nat` with $B_6 = 1/42$, $6! = 720$."
+    },
+    {
+      "id": "zeta-six-complex",
+      "title": "The Analytic Value riemannZeta 6 = π⁶/945 over ℂ",
+      "startLine": 55,
+      "endLine": 63,
+      "summary": "riemannZeta_six_eq records the same value for the analytically-continued zeta function over ℂ via Mathlib's riemannZeta_two_mul_nat at k = 3, identifying the elementary real series with the complex meromorphic ζ at argument 6 (where the Dirichlet series still converges).",
+      "mathContext": "$\\zeta(6) = \\pi^6/945$ over $\\mathbb{C}$, from `riemannZeta_two_mul_nat` at $k=3$."
     },
     {
       "id": "ratio",
       "title": "Euler's π-free Ratio ζ(6)/ζ(2)³ = 8/35",
-      "startLine": 67,
+      "startLine": 65,
       "endLine": 76,
       "summary": "tsum_six_div_tsum_two_cube divides ζ(6) by ζ(2)³, cancelling π to leave the rational 8/35.",
       "mathContext": "$\\zeta(6)/\\zeta(2)^3 = (\\pi^6/945)/(\\pi^2/6)^3 = (\\pi^6/945)/(\\pi^6/216) = 216/945 = 8/35$."
