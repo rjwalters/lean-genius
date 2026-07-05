@@ -445,7 +445,7 @@ theorem summable_of_strongBound {A : Set ℕ} {C δ : ℝ} (hδ : 0 < δ) (hC : 
     by_cases hmem : i ∈ A
     · rw [Set.indicator_of_mem hmem, hF]
       exact one_div_le_one_div_of_le (by positivity) h2j
-    · rw [Set.indicator_of_not_mem hmem]; positivity
+    · rw [Set.indicator_of_notMem hmem]; positivity
   -- Crude bound: every block has mass ≤ 1.
   have hcrude : ∀ j, block j ≤ 1 := by
     intro j
