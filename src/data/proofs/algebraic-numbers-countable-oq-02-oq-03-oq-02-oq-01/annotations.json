@@ -36,6 +36,18 @@
     "prerequisites": ["conjunction elimination"]
   },
   {
+    "id": "ann-bycontra-mechanics",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "technique",
+    "title": "How the 'not Gδ' proof mechanically fires",
+    "content": "The four-line tactic block is the whole argument. `refine ⟨isFσ_of_countable hcount, ?_⟩` discharges the Fσ half immediately and leaves only `¬ IsGδ D`. Then `intro hGδ` assumes D *is* Gδ for contradiction; `obtain ⟨hgc, hdc⟩ := compl_countable_isDenseGδ hcount` extracts that Dᶜ is Gδ (`hgc`) and dense (`hdc`); and the final `exact not_isGδ_of_dense_of_disjoint_denseGδ hdense hGδ hgc hdc disjoint_compl_right` feeds the referee both dense-Gδ sets plus `disjoint_compl_right : Disjoint D Dᶜ`. The disjointness is the free lemma that closes the loop — D and its complement are always disjoint, so no separation argument is needed. No metric, measure, or induction appears anywhere.",
+    "mathContext": "$D \\in G_\\delta \\;\\wedge\\; D^c \\in G_\\delta \\text{ dense} \\;\\wedge\\; D \\cap D^c = \\varnothing \\;\\Rightarrow\\; \\bot$",
+    "significance": "technical",
+    "relatedConcepts": ["proof by contradiction", "disjoint_compl_right", "term-mode assembly", "Baire category"],
+    "prerequisites": ["Lean tactic mode", "by_contra reasoning"]
+  },
+  {
     "id": "ann-rationals-instance",
     "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02-oq-01",
     "range": { "startLine": 79, "endLine": 88 },
