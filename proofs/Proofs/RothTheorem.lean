@@ -1447,13 +1447,34 @@ theorem sqDiffCount_fourier_complex {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (sqDiffCount A : ℂ) * N =
     Finset.univ.sum fun r : ZMod N =>
       fourierCoeff A r * starRingEnd ℂ (fourierCoeff A r) * sqGaussSum r := by
-  sorry
+  -- Expand each Fourier term as a triple ψ sum
+  simp_rw [sq_term_expand]
+  -- Bring the r-sum innermost
+  rw [Finset.sum_comm]
+  conv_rhs => arg 2; ext; rw [Finset.sum_comm]
+  conv_rhs => arg 2; ext; arg 2; ext; rw [Finset.sum_comm]
+  -- Character orthogonality collapses the r-sum
+  simp_rw [char_orthogonality]
+  -- Swap y and n so the y-sum (which the equation determines) is innermost
+  conv_rhs => arg 2; ext; rw [Finset.sum_comm]
+  simp_rw [show ∀ (x n y : ZMod N), (x - y + n ^ 2 = 0) ↔ (y = x + n ^ 2) from
+    fun x n y => ⟨fun h => by linear_combination -h, fun h => by subst h; ring⟩]
+  simp_rw [Finset.sum_ite_eq']
+  -- Factor out N and match the combinatorial count
+  simp_rw [show ∀ (P : Prop) [Decidable P],
+      (if P then (↑N : ℂ) else 0) = ↑N * (if P then (1 : ℂ) else 0) from
+      fun P _ => by split_ifs <;> simp]
+  simp_rw [← Finset.mul_sum]
+  rw [sqDiffCount_eq_sum]; ring
 
 /-- **Sárközy square-difference Fourier identity.** -/
 theorem sqDiffCount_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     (sqDiffCount A : ℂ) = (↑N)⁻¹ *
       Finset.univ.sum (fun r : ZMod N =>
         (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) := by
-  sorry
+  have hN : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  rw [eq_comm, inv_mul_eq_div, div_eq_iff hN, eq_comm, sqDiffCount_fourier_complex A]
+  refine Finset.sum_congr rfl (fun r _ => ?_)
+  rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 end Szemeredi.Roth
