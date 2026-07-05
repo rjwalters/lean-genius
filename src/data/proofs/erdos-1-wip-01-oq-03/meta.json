@@ -111,5 +111,27 @@
       "Erdős's original question: is f(n) ≥ c·2ⁿ for an absolute constant c? The best known lower bounds (Erdős–Moser type, via the second moment method) fall short of the conjectured constant.",
       "Can kernel `decide` be pushed past n = 8 without native_decide, e.g. by a smarter reflected decision procedure that avoids materializing the full 2ⁿ-element subset-sum finset?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1-wip-01",
+      "relationship": "extends",
+      "description": "The direct parent this open-question entry advances. It develops the distinct-subset-sums problem (Erdős #1); this entry supplies the Conway–Guy construction showing an n-element set with all 2ⁿ subset sums distinct and largest element below the powers-of-two benchmark 2ⁿ⁻¹."
+    },
+    {
+      "targetId": "erdos-1",
+      "relationship": "related",
+      "description": "The root formalization of Erdős Problem #1 — the minimum largest element f(n) of an n-set with distinct subset sums. This entry contributes the upper-bound side: the Conway–Guy sequence beats the trivial {1,2,4,…,2ⁿ⁻¹} construction, sharpening the known bounds on f(n)."
+    },
+    {
+      "targetId": "erdos-1-oq-03",
+      "relationship": "related",
+      "description": "A sibling entry on the same third open question of Erdős #1, developing a complementary facet of the distinct-subset-sums bound that this Conway–Guy construction entry addresses."
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "related",
+      "description": "A neighbouring additive-combinatorics problem sharing the distinct-sums theme. Sidon sets (all pairwise sums distinct) are the pairwise analogue of the all-subset-sums-distinct sets of Erdős #1; the greedy-construction and extremal-growth questions run in close parallel."
+    }
+  ]
 }
