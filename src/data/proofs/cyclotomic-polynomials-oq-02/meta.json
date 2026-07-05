@@ -130,6 +130,28 @@
       "Combine the prime-power degree $\\varphi(p^{k+1}) = p^k(p-1)$ with irreducibility to compute the ramification of $p$ in the cyclotomic field $\\mathbb{Q}(\\zeta_{p^k})$, connecting this entry to the inverse-Galois-by-inertia developments."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "cyclotomic-polynomials-oq-01",
+      "relationship": "extends",
+      "description": "The parent structural entry this companion extends. OQ-01 develops the general cyclotomic program — the Φ_d factorization of Xⁿ − 1, deg Φ_n = φ(n), and Φ_p(1) = p — and this entry zooms into the prime-power case, refining Φ_p(1) = p to the full eval-at-one dichotomy Φ_n(1) ∈ {p, 1} and specialising the degree to φ(p^{k+1}) = p^k(p−1)."
+    },
+    {
+      "targetId": "eisenstein-criterion-oq-01",
+      "relationship": "related",
+      "description": "Supplies the irreducibility input for this entry's third open question. Eisenstein's criterion applied to Φ_p(X+1) is the classical proof that the prime cyclotomic Φ_p is irreducible over ℚ; combining that irreducibility with the prime-power degree φ(p^{k+1}) = p^k(p−1) computed here is exactly what pins down the ramification of p in ℚ(ζ_{p^k})."
+    },
+    {
+      "targetId": "de-moivre-oq-05-oq-02",
+      "relationship": "related",
+      "description": "Bears on this entry's second open question about the companion special values Φ_n(−1) and Φ_n(0). It evaluates the sum of the primitive n-th roots of unity — the roots of Φ_n — as μ(n), the second coefficient of Φ_n, giving a concrete Möbius-function special value alongside the eval-at-one invariant Φ_n(1) studied here."
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03-oq-01",
+      "relationship": "related",
+      "description": "The constructibility payoff of the degree formula. The Gauss–Wantzel theorem decides which regular n-gons are compass-and-straightedge constructible using exactly the cyclotomic degree deg Φ_n = φ(n) = [ℚ(ζ_n):ℚ]; the prime-power specialisation φ(p^{k+1}) = p^k(p−1) established here is the case that determines constructibility of p^k-gons."
+    }
+  ],
   "references": [
     {
       "authors": "Ireland, Kenneth; Rosen, Michael",
