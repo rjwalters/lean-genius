@@ -85,6 +85,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header: the matrix proof vs Mathlib's induction",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Docstring stating Cassini's identity F_{n+2}·F_n − F_{n+1}² = (−1)^{n+1} and contrasting the two proofs: Mathlib's induction-only Int.fib_succ_mul_fib_pred_sub_fib_sq versus the linear-algebra proof given here. Lays out the plan — the companion matrix Q = !![1,1;1,0], its powers encoding Fibonacci numbers, and det multiplicativity — then imports Mathlib and opens Matrix."
+    },
+    {
       "id": "q-matrix",
       "title": "The Fibonacci Q-Matrix and its Determinant",
       "startLine": 30,
@@ -92,18 +99,25 @@
       "summary": "The companion matrix Q = !![1,1;1,0] over ℤ, together with det Q = −1 computed by det_fin_two. This single determinant supplies the alternating sign in Cassini's identity."
     },
     {
-      "id": "matrix-power",
-      "title": "The Matrix-Power Identity",
+      "id": "matrix-power-base",
+      "title": "The Matrix-Power Identity: Statement and Base Case",
       "startLine": 37,
+      "endLine": 48,
+      "summary": "Q_pow_succ states Q^{n+1} = !![F_{n+2}, F_{n+1}; F_{n+1}, F_n] and opens the induction on n. The base case is Q^1 = Q = !![F₂,F₁;F₁,F₀] = !![1,1;1,0], closed by pow_one, Nat.fib_zero and norm_num."
+    },
+    {
+      "id": "matrix-power-step",
+      "title": "The Matrix-Power Identity: Inductive Step",
+      "startLine": 49,
       "endLine": 55,
-      "summary": "Q^{n+1} = !![F_{n+2}, F_{n+1}; F_{n+1}, F_n] by induction on n. The base case is Q^1 = Q; the step multiplies by Q and closes each of the four entries with the Fibonacci recurrence (push_cast [Nat.fib_add_two]) followed by ring."
+      "summary": "The successor case rewrites Q^{k+1} = Q^k·Q via the IH, then closes each of the four entries: fin_cases over the 2×2 indices, expand the matrix product (mul_apply, Fin.sum_univ_two), and finish each entry with the Fibonacci recurrence push_cast [Nat.fib_add_two] followed by ring — this is the file's only induction."
     },
     {
       "id": "cassini",
       "title": "Cassini's Identity by Determinant Multiplicativity",
       "startLine": 57,
       "endLine": 69,
-      "summary": "Two evaluations of det(Q^{n+1}) are equated: det_pow gives (det Q)^{n+1} = (−1)^{n+1}, while det_fin_two applied to the explicit power gives F_{n+2}·F_n − F_{n+1}². Their equality is Cassini's identity."
+      "summary": "Two evaluations of det(Q^{n+1}) are equated with no further induction: hdet_pow uses Matrix.det_pow and det_Q for (det Q)^{n+1} = (−1)^{n+1}, while hdet_expand uses Matrix.det_fin_two on the explicit power for F_{n+2}·F_n − F_{n+1}². Rewriting one against the other is Cassini's identity."
     }
   ],
   "overview": {
@@ -114,7 +128,8 @@
       "**The sign is a determinant.** The mysterious alternating $(-1)^{n+1}$ is nothing but $(\\det Q)^{n+1}$ — the whole oscillation is forced by the single fact $\\det Q = -1$.",
       "**Fibonacci numbers live in the matrix.** The recurrence $F_{n+2} = F_n + F_{n+1}$ is exactly matrix multiplication by $Q$, so $Q^{n+1}$ tabulates four consecutive Fibonacci numbers and the identity becomes a statement about $\\det$.",
       "**Multiplicativity does the work.** Once the entries are identified, the proof is just `det_pow` against `det_fin_two`; no second induction on the identity itself is needed.",
-      "**Stay in ℤ from the start.** Casting the Fibonacci entries into $\\mathbb{Z}$ up front means the subtraction $F_{n+2}F_n - F_{n+1}^2$ is genuine (not truncated), and `ring` handles the entry-wise algebra cleanly."
+      "**Stay in ℤ from the start.** Casting the Fibonacci entries into $\\mathbb{Z}$ up front means the subtraction $F_{n+2}F_n - F_{n+1}^2$ is genuine (not truncated), and `ring` handles the entry-wise algebra cleanly.",
+      "**det Q = −1 is the product of the golden ratios.** $Q$ is the companion matrix of the Fibonacci characteristic polynomial $x^2 - x - 1$, whose roots are $\\varphi = \\tfrac{1+\\sqrt5}{2}$ and $\\psi = \\tfrac{1-\\sqrt5}{2}$. Its determinant $-1$ is exactly the product of roots $\\varphi\\psi$ (the polynomial's constant term), so Cassini's $(-1)^{n+1}$ is $(\\varphi\\psi)^{n+1}$ — the sign is not an accident of the $2\\times2$ layout but the $(n{+}1)$-th power of the product of the recurrence's eigenvalues. The determinant proof thus quietly encodes the eigenvalue structure the closed-form (Binet) proof makes explicit."
     ],
     "prerequisites": [
       "Matrix multiplication and the determinant",
