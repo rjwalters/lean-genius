@@ -2,12 +2,12 @@
   "id": "erdos-1207-oq-04",
   "title": "Erdős #1207 (OQ-04): Isometric transport and the dimension lift P_d(n) ≥ P₁(n)",
   "slug": "erdos-1207-oq-04",
-  "description": "A follow-up to Erdős #1207 that carries the one-dimensional theory into every dimension. The parent entry sets up isosceles-freeness for an arbitrary metric space and the d=1 bridge to 3-AP-free sets; OQ-03 gives the explicit lower bound P₁(3ᵏ) ≥ 2ᵏ on the line. Here we prove that isosceles-freeness transports along any isometric embedding, so placing a one-dimensional configuration on a coordinate axis of ℝ^d realises it isometrically in higher dimensions. Consequences: dimension monotonicity P_d(n) ≥ P₁(n) for all d ≥ 1, and an explicit isosceles-free set of 2ᵏ points in ℝ^d (and in the plane ℝ²), i.e. P_d(3ᵏ) ≥ 2ᵏ. Fully verified, 0 axioms, 0 sorries.",
+  "description": "A follow-up to Erdős #1207 that carries the one-dimensional theory into every dimension. The parent entry sets up isosceles-freeness for an arbitrary metric space and the d=1 bridge to 3-AP-free sets; OQ-03 gives the explicit lower bound P₁(3ᵏ) ≥ 2ᵏ on the line. Here we prove that isosceles-freeness transports along any isometric embedding, so placing a one-dimensional configuration on a coordinate axis of ℝ^d realises it isometrically in higher dimensions. Consequences: dimension monotonicity P_d(n) ≥ P₁(n) for all d ≥ 1, and an explicit isosceles-free set of 2ᵏ points in ℝ^d (and in the plane ℝ²), i.e. P_d(3ᵏ) ≥ 2ᵏ. Formalization pending — the Lean source file is not yet present on main (issue #34794); the machine-verified claim will be restored once it lands and builds.",
   "meta": {
     "author": "Erdős (Er80); formalization by researcher-6",
     "sourceUrl": "https://erdosproblems.com/1207",
     "date": "1980",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/Erdos1207OQ04.lean",
     "tags": [
       "erdos",
@@ -20,7 +20,7 @@
       "dimension-monotonicity",
       "open"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 1207,
     "erdosUrl": "https://erdosproblems.com/1207",
@@ -66,7 +66,8 @@
     "lineCount": 122,
     "assumptions": "None. All declarations are fully machine-checked: 0 axiom declarations, 0 structure-encoded assumptions, 0 sorries. This records the dimension-monotone lower-bound side of P_d(n); it does not resolve the open growth question (whether P_2(n) is subpolynomial is exactly Erdős's problem, and no upper bound is proved here).",
     "theoremCount": 6,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. Restore to 'verified' only once the Lean file lands and builds."
   },
   "overview": {
     "historicalContext": "**Erdős #1207 in general dimension.** The problem asks to estimate P_d(n), the largest guaranteed isosceles-free subset of an n-point set in ℝ^d, and highlights the planar case P_2(n). The parent formalization handles the line d=1 (isosceles-free = 3-AP-free) and OQ-03 gives the base-3 lower bound P₁(3ᵏ) ≥ 2ᵏ. A basic but essential observation is that lower bounds are dimension-monotone: any construction on a line sits isometrically inside ℝ^d, so P_d(n) ≥ P₁(n). This entry makes that transport principle precise and machine-checked.",

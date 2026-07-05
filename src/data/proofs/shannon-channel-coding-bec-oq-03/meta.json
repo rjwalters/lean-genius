@@ -16,7 +16,7 @@
     "author": "Claude Shannon (1948) / Robert Fano (1961), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
     "date": "1961",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/ShannonChannelCodingBECOQ03.lean",
     "tags": [
       "information-theory",
@@ -28,7 +28,7 @@
       "converse",
       "advanced"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -64,7 +64,8 @@
     ],
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. Restore to 'verified' only once the Lean file lands and builds."
   },
   "overview": {
     "historicalContext": "Fano's inequality (1961) is the analytic heart of the converse to Shannon's channel coding theorem: it lower-bounds the conditional entropy H(X|Y) — and hence the decoding error probability — by the residual uncertainty that the channel leaves about the input. For a discrete memoryless channel the single-use converse says (1 - P_e)·log|X| ≤ C + h(P_e), where C is the channel capacity, P_e the Fano error term, and h the binary entropy. The binary erasure channel is the transparent test case: an input bit is either received intact (probability 1-p) or replaced by a known erasure symbol (probability p), giving capacity 1 - p bits.\n\nThe base gallery entry proves the BEC's information capacity (1 - p)·log 2 axiom-free, and the sibling oq-02 obtains the operational coding theorem by invoking the framework's abstract achievability/converse AXIOMS. This entry closes a genuinely axiom-free gap between them: it instantiates the gallery's already-PROVED abstract Fano converse at the BEC, the one channel-specific input being that the uniform-input Fano error term equals exactly p/2.",

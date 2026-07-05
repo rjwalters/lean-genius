@@ -23,10 +23,10 @@
     "sorries": 0
   },
   "title": "The Conjugacy-Class Size Formula over Nat.card",
-  "description": "Specialises the orbit-counting index identity to the conjugation action ConjAct G on G, proving the conjugacy-class size formula Nat.card (conjugacy class of g) = [G : centralizer g] over Mathlib's total cardinal Nat.card — the single-orbit heart of the class equation. Under conjugation the orbit of g is its conjugacy class (orbit_eq_carrier_conjClasses) and the stabilizer is its centralizer; feeding these into the parent's orbit-stabilizer identities gives the size formula, unconditionally (no Finite/Fintype hypothesis), because the underlying orbit-quotient bijection needs none and the centralizer/stabilizer index match transports through the surjective isomorphism ConjAct.toConjAct. The product form |class(g)|·|C_G(g)| = |G| and restatements over the honest ConjClasses carrier are also given, together with the degenerate central-element case [G : C_G(g)] = 1. Fully verified: 0 axioms, 0 sorries.",
+  "description": "Specialises the orbit-counting index identity to the conjugation action ConjAct G on G, proving the conjugacy-class size formula Nat.card (conjugacy class of g) = [G : centralizer g] over Mathlib's total cardinal Nat.card — the single-orbit heart of the class equation. Under conjugation the orbit of g is its conjugacy class (orbit_eq_carrier_conjClasses) and the stabilizer is its centralizer; feeding these into the parent's orbit-stabilizer identities gives the size formula, unconditionally (no Finite/Fintype hypothesis), because the underlying orbit-quotient bijection needs none and the centralizer/stabilizer index match transports through the surjective isomorphism ConjAct.toConjAct. The product form |class(g)|·|C_G(g)| = |G| and restatements over the honest ConjClasses carrier are also given, together with the degenerate central-element case [G : C_G(g)] = 1. Formalization pending — the Lean source file is not yet present on main (issue #34794); the machine-verified claim will be restored once it lands and builds.",
   "meta": {
     "author": "Lean Genius",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01OQ01OQ01OQ01.lean",
     "tags": [
       "group-theory",
@@ -44,7 +44,7 @@
     "lineCount": 149,
     "theoremCount": 6,
     "definitionCount": 0,
-    "badge": "mathlib",
+    "badge": "wip",
     "originalContributions": [
       "card_conjugacyClass_eq_index_centralizer: Nat.card (orbit (ConjAct G) g) = (centralizer {g}).index — the conjugacy-class size formula, proved unconditionally (no Finite/Fintype) by transporting orbitEquivQuotientStabilizer through Nat.card and matching the centralizer index to the stabilizer index",
       "index_centralizer_eq_index_stabilizer: (centralizer {g}).index = (stabilizer (ConjAct G) g).index — the centralizer is the comap of the conjugation stabilizer along the surjective isomorphism ConjAct.toConjAct, and comap along a surjection preserves index",
@@ -85,7 +85,8 @@
         "description": "Nat.card (centralizer {g}) = Nat.card (stabilizer (ConjAct G) g) — matches the centralizer cardinality to the conjugation stabilizer cardinality, used in the product form.",
         "module": "Mathlib.GroupTheory.Rank"
       }
-    ]
+    ],
+    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. Restore to 'verified' only once the Lean file lands and builds."
   },
   "openQuestions": [],
   "crossReferences": [

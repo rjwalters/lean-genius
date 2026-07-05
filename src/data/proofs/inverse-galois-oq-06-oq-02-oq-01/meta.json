@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-07-02",
-    "status": "verified",
+    "status": "pending",
     "proofRepoPath": "Proofs/InverseGaloisPSL27.lean",
     "tags": [
       "galois-theory",
@@ -16,7 +16,7 @@
       "finite-fields",
       "psl27"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
@@ -45,7 +45,8 @@
         "id": "inverse-galois",
         "relationship": "Extends: base inverse Galois problem"
       }
-    ]
+    ],
+    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. Restore to 'verified' only once the Lean file lands and builds."
   },
   "overview": {
     "historicalContext": "PSL(2,7), the simple group of order 168, is the second-smallest non-abelian simple group (after A₅ of order 60). It carries the famous exceptional isomorphism PSL(2,7) ≅ PSL(3,2) = GL(3,2) — the automorphism group of the Fano plane — one of only a handful of coincidences between the two infinite families of finite simple groups of Lie type. Realizing PSL(2,7) as a Galois group over ℚ is a classical success of the inverse Galois program: Wolfram Trinks exhibited (1968) the degree-7 polynomial x⁷−7x+3 whose Galois group is exactly PSL(2,7) acting on its seven roots, computed by Dedekind reduction modulo several primes. The full formalization of that realization is out of reach of current Mathlib (it needs Dedekind's theorem to produce the Frobenius permutation, the same gap the sibling A₅ entry records), but the group-order arithmetic — what order the target group has, and which cycle-length divisibilities constrain the Galois group — is fully elementary and axiom-free.",
