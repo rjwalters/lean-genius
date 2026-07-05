@@ -60,7 +60,9 @@
     "keyInsights": [
       "**The strict gap is the quadratic term.** $(1+a)^n - (1 + na) \\ge \\binom{n}{2}a^2$, which is positive exactly when $n \\ge 2$ and $a \\ne 0$ — this is what the inductive step makes concrete, each step contributing a positive $m a^2$.",
       "**$1 + a > 0$ is all the positivity the induction needs.** The standard textbook proof assumes $a > 0$, but the inductive multiplication only uses $1 + a > 0$, i.e. $a > -1$. The sign of $a$ itself is irrelevant — $a^2 > 0$ regardless — so the strict inequality extends verbatim to $-1 < a < 0$.",
-      "**Sharpness is two-sided.** The pair of `iff` statements leaves no gap: every $(a, n)$ with $a > -1$ is classified as giving a strict inequality (iff $a \\ne 0 \\wedge n \\ge 2$) or an equality (iff $a = 0 \\vee n \\le 1$)."
+      "**Sharpness is two-sided.** The pair of `iff` statements leaves no gap: every $(a, n)$ with $a > -1$ is classified as giving a strict inequality (iff $a \\ne 0 \\wedge n \\ge 2$) or an equality (iff $a = 0 \\vee n \\le 1$).",
+      "**The whole classification rests on one estimate.** Only `one_add_mul_lt_pow` requires an induction; both characterizations are corollaries of it. `one_add_mul_eq_pow_iff` follows by contradiction — a strict inequality forbids equality — and the strictness `iff` closes by checking the finitely many boundary cases $n \\le 1$ with `interval_cases`. The mathematical content is entirely in the single strict bound.",
+      "**The negative range is qualitatively different, not just harder.** For $-1 < a < 0$ the linear lower bound $1 + na$ eventually turns negative (e.g. $a = -\\tfrac12$, $n = 4$ gives $-1$) while $(1+a)^n$ stays strictly positive. There Bernoulli is not a refinement of a positive estimate but separates a negative lower bound from a positive power — exactly the regime Mathlib's weak form and the gallery's $a > 0$ strict form leave uncovered."
     ],
     "prerequisites": [
       "Binomial theorem: (1+a)ⁿ = Σ C(n,k) aᵏ",
