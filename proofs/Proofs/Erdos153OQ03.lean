@@ -47,6 +47,11 @@ constrained* as the Sidon (h = 2) case, because every B_h set is Sidon.
 - `isBhSet_div`            : dilation invariance (downward) — A/c is B_h (c ∣ A, c ≥ 1)
 - `isBhSet_translate_min_zero` : canonical form — every B_h set is a translate of a min-0 B_h set
 - `isBhSet_primitive_normal_form` : primitive normal form — every B_h set (≥2 elts) is `c·C+m` for a primitive (0∈C, gcd 1) B_h set C
+- `hSumset_zero`              : base case — the 0-fold sumset is `{0}`
+- `hSumset_nonempty`         : the h-fold sumset of a nonempty set is nonempty
+- `hSumset_succ`             : additive recurrence — `hSumset (h+1) A = A + hSumset h A`
+- `card_hSumset_ge`          : universal lower bound `h·(|A|−1)+1 ≤ |hΣ A|` (no B_h needed; sharp for APs) via Cauchy–Davenport
+- `card_hSumset_ge_and_eq_of_isBhSet` : two-sided squeeze — AP floor ≤ |hΣ A| = C(|A|+h−1,h) for a B_h set
 -/
 import Mathlib
 
@@ -874,5 +879,117 @@ theorem isBhSet_primitive_normal_form {h : ℕ} {A : Finset ℕ} (hA : A.Nonempt
       simp only [Function.comp_apply, id_eq]
       exact Nat.div_mul_cancel (hdvd x hx)
     rw [hAB, hBrec]
+
+/-!
+## Section XII: The two-sided size bound — Cauchy–Davenport for the h-fold sumset
+
+Sections VI–VIII showed that a `B_h` set *maximises* its `h`-fold sumset:
+`(hSumset h A).card = C(|A|+h−1, h)`, the pigeonhole ceiling.  This section supplies the
+matching *floor*, valid for **every** finite `A ⊆ ℕ` with no `B_h` hypothesis:
+
+    h · (|A| − 1) + 1  ≤  (hSumset h A).card.
+
+Equality holds for arithmetic progressions (the `B_h`-opposite extreme), so the two
+bounds pin the `h`-fold sumset between the linear AP minimum and the binomial `B_h`
+maximum:
+
+    h·(|A|−1) + 1  ≤  |hΣ A|  ≤  C(|A|+h−1, h)   (upper needs `A` to be B_h).
+
+The engine is the **additive recurrence** `hSumset (h+1) A = A + hSumset h A`
+(`hSumset_succ`): a size-`(h+1)` sum is a ground-set element plus a size-`h` sum.
+Feeding it into Mathlib's ordered **Cauchy–Davenport** inequality
+`|A + S| ≥ |A| + |S| − 1` (`cauchy_davenport_add_of_linearOrder_isCancelAdd`, valid over
+ℕ) gives the bound by a one-line induction on `h`.
+-/
+
+open Pointwise
+
+/-- **Base case: the empty-fold sumset.**  `hSumset 0 A = {0}` — the only size-`0`
+multiset is the empty one, whose sum is `0`.  (True even for `A = ∅`.) -/
+theorem hSumset_zero (A : Finset ℕ) : hSumset 0 A = {0} := by
+  simp only [hSumset, Finset.sym_zero, Finset.image_singleton]
+  have h0 : ((∅ : Sym ℕ 0) : Multiset ℕ) = 0 := rfl
+  rw [h0, Multiset.sum_zero]
+
+/-- **Nonemptiness of the `h`-fold sumset.**  If `A` is nonempty then so is its
+`h`-fold sumset, for every `h` (for `h = 0` it is `{0}`; for `h ≥ 1` it inherits
+nonemptiness from `A.sym h`). -/
+theorem hSumset_nonempty {A : Finset ℕ} (hA : A.Nonempty) (h : ℕ) :
+    (hSumset h A).Nonempty := by
+  simp only [hSumset]
+  exact (Finset.sym_nonempty.mpr (Or.inr hA)).image _
+
+/-- **The additive recurrence for the `h`-fold sumset.**  Adjoining one more summand
+to the `h`-fold sumset is exactly the pointwise (Minkowski) sum with the ground set:
+
+    hSumset (h+1) A = A + hSumset h A.
+
+A size-`(h+1)` multiset drawn from `A` is a head element `a ∈ A` consed onto a size-`h`
+multiset, and its sum is `a` plus the sub-sum; conversely every `a + s` with `a ∈ A` and
+`s` an `h`-fold sum of `A` arises this way.  This is the structural bridge that lets the
+`Sym`-based `hSumset` be analysed with the pointwise-sumset machinery of additive
+combinatorics. -/
+theorem hSumset_succ (h : ℕ) (A : Finset ℕ) :
+    hSumset (h + 1) A = A + hSumset h A := by
+  ext x
+  constructor
+  · intro hx
+    simp only [hSumset, Finset.mem_image] at hx
+    obtain ⟨m, hm, rfl⟩ := hx
+    obtain ⟨a, ha⟩ := Sym.exists_mem m
+    obtain ⟨t, rfl⟩ := Sym.exists_cons_of_mem ha
+    have hmem := Finset.mem_sym_iff.mp hm
+    rw [Finset.mem_add]
+    refine ⟨a, hmem a (Sym.mem_cons_self a t), (t : Multiset ℕ).sum, ?_, ?_⟩
+    · simp only [hSumset, Finset.mem_image]
+      exact ⟨t, Finset.mem_sym_iff.mpr (fun y hy => hmem y (Sym.mem_cons_of_mem hy)), rfl⟩
+    · rw [Sym.coe_cons, Multiset.sum_cons]
+  · intro hx
+    rw [Finset.mem_add] at hx
+    obtain ⟨a, ha, z, hz, rfl⟩ := hx
+    simp only [hSumset, Finset.mem_image] at hz
+    obtain ⟨t, ht, rfl⟩ := hz
+    simp only [hSumset, Finset.mem_image]
+    refine ⟨a ::ₛ t, ?_, ?_⟩
+    · refine Finset.mem_sym_iff.mpr (fun y hy => ?_)
+      rw [Sym.mem_cons] at hy
+      rcases hy with rfl | hy
+      · exact ha
+      · exact Finset.mem_sym_iff.mp ht y hy
+    · rw [Sym.coe_cons, Multiset.sum_cons]
+
+/-- **The general lower bound — Cauchy–Davenport for the `h`-fold sumset.**  For every
+nonempty finite `A ⊆ ℕ` and every `h`,
+
+    h · (|A| − 1) + 1  ≤  (hSumset h A).card.
+
+No `B_h` hypothesis is needed: this is the universal *floor* on the size of an `h`-fold
+sumset, matching (from below) the `B_h` *ceiling* `C(|A|+h−1, h)` of `card_hSumset_of_isBhSet`.
+Equality is attained by arithmetic progressions.  The proof inducts on `h` using the
+recurrence `hSumset_succ` and the ordered Cauchy–Davenport inequality
+`|A + S| ≥ |A| + |S| − 1`. -/
+theorem card_hSumset_ge {h : ℕ} {A : Finset ℕ} (hA : A.Nonempty) :
+    h * (A.card - 1) + 1 ≤ (hSumset h A).card := by
+  induction h with
+  | zero => rw [hSumset_zero]; simp
+  | succ n ih =>
+    have hne : (hSumset n A).Nonempty := hSumset_nonempty hA n
+    have hcd := cauchy_davenport_add_of_linearOrder_isCancelAdd hA hne
+    rw [hSumset_succ]
+    have key : (n + 1) * (A.card - 1) = n * (A.card - 1) + (A.card - 1) := by ring
+    have hc1 : 0 < A.card := hA.card_pos
+    omega
+
+/-- **The two-sided size bound for a `B_h` set.**  Combining the universal floor
+`card_hSumset_ge` with the `B_h` saturation identity `card_hSumset_of_isBhSet`, the
+`h`-fold sumset of a nonempty `B_h` set is squeezed between the arithmetic-progression
+minimum and the multiset-coefficient maximum:
+
+    h·(|A|−1) + 1  ≤  |hΣ A|  =  (A.sym h).card  =  C(|A|+h−1, h). -/
+theorem card_hSumset_ge_and_eq_of_isBhSet {h : ℕ} {A : Finset ℕ}
+    (hA : A.Nonempty) (H : IsBhSet h A) :
+    h * (A.card - 1) + 1 ≤ (hSumset h A).card ∧
+      (hSumset h A).card = (A.sym h).card :=
+  ⟨card_hSumset_ge hA, card_hSumset_of_isBhSet H⟩
 
 end Erdos153OQ03
