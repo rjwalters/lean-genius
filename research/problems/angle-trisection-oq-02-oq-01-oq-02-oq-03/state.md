@@ -1,25 +1,21 @@
 # Research State: angle-trisection-oq-02-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-07-04T18:30:24-07:00
 **Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+L1 (finite 2-group index-2 subgroup chain) drafted as complete unverified Lean
+(lean/ExistsIndexTwoChain.lean). Awaiting build/Aristotle recovery to verify + integrate.
 
 ## Active Approach
-Sufficiency via L1 index-2 subgroup chain + L2 fixed-field tower (see knowledge.md).
-
-## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+Decompose galois_two_group_implies_tower into L1 (group theory, DRAFTED) + L2 (Gal→fixedField
+bridge, ~100 lines) + L3 (membership + real-descent). L1 done as scratch; L2 is the bottleneck.
 
 ## Blockers
-None.
+- Docker build down + Aristotle endpoint 404 → cannot compile/verify any Lean this session.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+On tool recovery: build-verify ExistsIndexTwoChain.lean, fix name risks R1–R8, integrate L1,
+then build the Polynomial.Gal ↔ IntermediateField.fixedField bridge for L2.
