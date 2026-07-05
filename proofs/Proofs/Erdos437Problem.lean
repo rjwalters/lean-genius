@@ -26,7 +26,6 @@ References:
 import Mathlib.Data.Nat.Squarefree
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.List.Basic
 
@@ -45,7 +44,7 @@ Given a strictly increasing sequence, form partial products.
 A list of natural numbers in strictly increasing order.
 -/
 def IsStrictlyIncreasing (a : List ℕ) : Prop :=
-  a.IsChain (· < ·)
+  a.Chain' (· < ·)
 
 /--
 **Bounded Sequence:**
@@ -133,7 +132,7 @@ noncomputable def u (x : ℕ) : ℝ :=
 ## Part V: Trivial Bounds
 -/
 
-/-
+/--
 **Trivial Upper Bound:**
 L(x) ≤ x (can't have more squares than partial products, which is ≤ sequence length ≤ x).
 -/
@@ -192,11 +191,12 @@ axiom L_upper_bound :
 ## Part VIII: Proof Ingredients
 -/
 
-/-
+/--
 **Siegel's Theorem:**
 An elliptic curve over ℚ has only finitely many integral points.
 This implies the o(x) upper bound.
-
+-/
+/--
 **Hyperelliptic Curves Connection:**
 The problem reduces to counting integral points on hyperelliptic curves.
 Bui-Pratt-Zaharescu analyze this using techniques from algebraic number theory.
@@ -206,79 +206,16 @@ Bui-Pratt-Zaharescu analyze this using techniques from algebraic number theory.
 -/
 
 /--
-**Helper: prefix products of squares are squares.**
-If the accumulator `b` is a perfect square and every element of `a` is a perfect
-square, then every entry of `List.scanl (· * ·) b a` (i.e. every prefix product)
-is a perfect square. The product of two squares is a square, applied along the scan.
--/
-theorem scanl_mul_all_square :
-    ∀ (a : List ℕ) (b : ℕ), (∃ p, p * p = b) →
-      (∀ x ∈ a, ∃ q, q * q = x) →
-      ∀ y ∈ a.scanl (· * ·) b, ∃ r, r * r = y := by
-  intro a
-  induction a with
-  | nil =>
-    intro b hb _ y hy
-    rw [List.scanl_nil, List.mem_singleton] at hy
-    subst hy
-    exact hb
-  | cons c cs ih =>
-    intro b hb hall y hy
-    rw [List.scanl_cons, List.mem_cons] at hy
-    rcases hy with rfl | hy
-    · exact hb
-    · refine ih (b * c) ?_ ?_ y hy
-      · obtain ⟨p, hp⟩ := hb
-        obtain ⟨q, hq⟩ := hall c List.mem_cons_self
-        exact ⟨p * q, by rw [mul_mul_mul_comm, hp, hq]⟩
-      · intro x hx
-        exact hall x (List.mem_cons_of_mem c hx)
-
-/--
-**Example: Powers of 4 give all-square partial products.**
-If aᵢ = 4^i, then *every* partial product is a perfect square: the j-th partial
-product is 4^(1+2+···+j) = (2^(1+2+···+j))², so all k of them are squares and
-`squareCount a = k`.
-
-(The previous version of this file stated `squareCount a = k - 1`, which is false:
-even the first partial product a₁ = 4 = 2² is a perfect square, so the count is k,
-not k - 1.)
+**Example: Powers of 2 squared give many squares**
+If aᵢ = 4^i, then every partial product is a square.
 -/
 theorem powers_of_four_all_squares :
     ∀ k : ℕ, k ≥ 1 →
     let a := List.range k |>.map (fun i => 4^(i+1))
-    squareCount a = k := by
-  intro k _
-  show squareCount (List.range k |>.map (fun i => 4 ^ (i + 1))) = k
-  set L := List.range k |>.map (fun i => 4 ^ (i + 1)) with hL
-  -- Every element of L is a perfect square: 4^(i+1) = (2^(i+1))².
-  have hall : ∀ x ∈ L, ∃ q, q * q = x := by
-    intro x hx
-    rw [hL, List.mem_map] at hx
-    obtain ⟨i, _, rfl⟩ := hx
-    exact ⟨2 ^ (i + 1), by rw [show (4 : ℕ) = 2 * 2 from rfl, mul_pow]⟩
-  -- Hence every entry of the scan (and so every partial product) is a square.
-  have hsq : ∀ y ∈ L.scanl (· * ·) 1, ∃ r, r * r = y :=
-    scanl_mul_all_square L 1 ⟨1, by norm_num⟩ hall
-  have hpp : ∀ n ∈ partialProducts L, Nat.sqrt n * Nat.sqrt n = n := by
-    intro n hn
-    rw [partialProducts] at hn
-    have hmem : n ∈ L.scanl (· * ·) 1 := List.tail_subset _ hn
-    obtain ⟨r, hr⟩ := hsq n hmem
-    rw [← hr, Nat.sqrt_eq]
-  -- The square-filter therefore keeps every partial product.
-  have hfilter :
-      (partialProducts L).filter (fun n => Nat.sqrt n * Nat.sqrt n = n)
-        = partialProducts L := by
-    apply List.filter_eq_self.mpr
-    intro n hn
-    simp only [decide_eq_true_eq]
-    exact hpp n hn
-  rw [squareCount, hfilter]
-  simp only [partialProducts, List.length_tail, List.length_scanl, hL, List.length_map,
-    List.length_range, Nat.add_sub_cancel]
+    squareCount a = k - 1 := by
+  sorry
 
-/-
+/--
 **Example: Prime sequence gives no squares after first**
 If a₁ is not a square and aᵢ are distinct primes for i ≥ 2,
 then at most one partial product is a square.
@@ -309,10 +246,10 @@ theorem L_growth_rate :
     linarith
   constructor
   · have h := hL₁ x hx₁
-    rw [ge_iff_le, le_div_iff₀ hxpos]
+    rw [ge_iff_le, le_div_iff hxpos]
     linarith [mul_comm (x : ℝ) (Real.exp (-(Real.sqrt 2 + ε) * u x))]
   · have h := hL₂ x hx₂
-    rw [div_le_iff₀ hxpos]
+    rw [div_le_iff hxpos]
     linarith [mul_comm (x : ℝ) (Real.exp (-(1 / Real.sqrt 2 - ε) * u x))]
 
 /--
@@ -340,12 +277,10 @@ theorem erdos_437_summary :
     -- The main question is answered affirmatively
     erdos437Conjecture ∧
     -- L(x) is o(x)
-    (∀ ε : ℝ, ε > 0 → ∃ N, ∀ x ≥ N, (L x : ℝ) < ε * x) ∧
+    (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) < ε * x) ∧
     -- But L(x) > x^(1-ε) for any ε
-    (∀ ε : ℝ, ε > 0 → ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)) := by
-  refine ⟨erdos_437, ?_, ?_⟩
-  · intro ε hε; exact L_little_o_x ε hε
-  · intro ε hε; exact erdos_437 ε hε
+    (∀ ε > 0, ∃ N, ∀ x ≥ N, (L x : ℝ) > (x : ℝ)^(1 - ε)) :=
+  ⟨erdos_437, L_little_o_x, erdos_437⟩
 
 /--
 The answer to Erdős Problem #437 is YES.

@@ -42,6 +42,15 @@ on the ratio itself:
         `liminf_k h(k+1)/h k ≤ 1 ≤ limsup_k h(k+1)/h k`.  Hence if the ratio converges at
         all, its limit is forced to be `1` — a genuine two-sided pinch on the cluster set.
 
+Finally, the same known bounds pin the **polynomial growth exponent** of `h₃`:
+
+  * `log_div_log_eventually_le` — for polynomially bounded `h` of degree `d`, the exponent
+        `log(h k)/log k ≤ d + ε` eventually (upper growth exponent `≤ d`);
+  * `h3_log_exponent_between_two_three` — for the genuine `h₃`, the exact bounds `k² ≤ h₃(k)
+        ≤ k³` give the sharp bracket `2 ≤ log(h₃ k)/log k ≤ 3` eventually.  This is the
+        exponent-level shadow of the conjectured scale `h₃(k) ≍ k²·log k`, unconditional and
+        independent of the open ratio question (⋆).
+
 The averaged statements are proved for an arbitrary `h : ℕ → ℝ` that is **positive and polynomially
 sandwiched** (`PolyBounded`); the genuine `h₃`, whose bounds sit between `k²` and `k³`,
 qualifies (`polyBounded_of_h3`), so the corollaries `h3_*` apply verbatim.
@@ -350,6 +359,39 @@ theorem ratio_liminf_le_one_le_limsup {h : ℕ → ℝ} (hb : PolyBounded h)
       1 ≤ limsup (fun k => h (k + 1) / h k) atTop :=
   ⟨ratio_liminf_le_one hb hbelow, one_le_ratio_limsup hb habove⟩
 
+/- ## Polynomial growth-exponent bound (`log(h k)/log k`) -/
+
+/-- **Unconditional upper bound on the growth exponent.**  For a polynomially bounded
+positive sequence, the normalized logarithm `log(h k)/log k` is eventually below any
+constant strictly above the degree `d` of the polynomial upper bound:  for every `ε > 0`,
+`log(h k)/log k ≤ d + ε` eventually.  Equivalently the *upper growth exponent*
+`limsup_k log(h k)/log k ≤ d`.  This refines the engine `log(h k)/k → 0` (subexponential
+growth) to *sub-degree-`d`-polynomial* growth: the correction `log B/log k → 0` is the only
+gap between the crude `d + ε` and the true exponent. -/
+theorem log_div_log_eventually_le {h : ℕ → ℝ} (hb : PolyBounded h) {ε : ℝ} (hε : 0 < ε) :
+    ∃ d : ℕ, ∀ᶠ k in atTop, Real.log (h k) / Real.log (k : ℝ) ≤ (d : ℝ) + ε := by
+  obtain ⟨B, d, hB, hup⟩ := hb.upper
+  refine ⟨d, ?_⟩
+  -- `log k → ∞`, so the additive correction `log B / log k → 0` is eventually `< ε`
+  have hlogtop : Tendsto (fun k : ℕ => Real.log (k : ℝ)) atTop atTop := by
+    simpa [Function.comp] using Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hBk : Tendsto (fun k : ℕ => Real.log B / Real.log (k : ℝ)) atTop (𝓝 0) :=
+    tendsto_const_nhds.div_atTop hlogtop
+  have hBev : ∀ᶠ k : ℕ in atTop, Real.log B / Real.log (k : ℝ) < ε := by
+    simpa using hBk.eventually (Iio_mem_nhds hε)
+  filter_upwards [hup, hBev, eventually_gt_atTop 1] with k hk hBlt hk1
+  have hk1R : (1 : ℝ) < (k : ℝ) := by exact_mod_cast hk1
+  have hlogk : 0 < Real.log (k : ℝ) := Real.log_pos hk1R
+  have hkd : (0 : ℝ) < (k : ℝ) ^ d := by positivity
+  -- `log(h k) ≤ log B + d·log k`
+  have hlogle : Real.log (h k) ≤ Real.log (B * (k : ℝ) ^ d) := Real.log_le_log (hb.pos k) hk
+  rw [Real.log_mul hB.ne' hkd.ne', Real.log_pow] at hlogle
+  -- `log B < ε·log k`, then combine
+  have hBlt2 : Real.log B < ε * Real.log (k : ℝ) := by
+    rw [div_lt_iff₀ hlogk] at hBlt; linarith
+  rw [div_le_iff₀ hlogk, add_mul]
+  linarith
+
 /- ## Specialisation to the genuine threshold `h₃` -/
 
 /-- The genuine triangle-free chromatic threshold (as a real candidate `h₃`) is
@@ -412,6 +454,33 @@ theorem h3_ratio_liminf_le_one_le_limsup (h₃ : ℕ → ℝ) (hpos : ∀ k, 0 <
   have hbddb : IsBoundedUnder (· ≥ ·) atTop (fun k => h₃ (k + 1) / h₃ k) := ⟨m, hbelow⟩
   have hbdda : IsBoundedUnder (· ≤ ·) atTop (fun k => h₃ (k + 1) / h₃ k) := ⟨M, habove⟩
   exact ratio_liminf_le_one_le_limsup hb hbddb hbdda
+
+/-- **Erdős #1013 (oq-02), unconditional growth-exponent bracket for `h₃`.**  From the
+known two-sided bounds `k² ≤ h₃(k) ≤ k³` alone, the growth exponent of `h₃` is pinned to
+`[2, 3]`:
+`2 ≤ log(h₃ k)/log k ≤ 3` for all sufficiently large `k`.
+No `ε` is needed — because the bounding polynomials are the *exact* monomials `k²`, `k³`
+(leading coefficient `1`, so `log` of the bound is exactly `2·log k`, `3·log k`), the
+bracket is sharp on the nose.  This is the exponent-level shadow of the conjectured scale
+`h₃(k) ≍ k²·log k` (exponent `2`, with a sub-polynomial `log k` correction), and it holds
+unconditionally, independently of the open ratio question (⋆). -/
+theorem h3_log_exponent_between_two_three (h₃ : ℕ → ℝ) (hpos : ∀ k, 0 < h₃ k)
+    (hlow : ∀ᶠ (k : ℕ) in atTop, (k : ℝ) ^ 2 ≤ h₃ k)
+    (hup : ∀ᶠ (k : ℕ) in atTop, h₃ k ≤ (k : ℝ) ^ 3) :
+    ∀ᶠ k in atTop, (2 : ℝ) ≤ Real.log (h₃ k) / Real.log (k : ℝ)
+        ∧ Real.log (h₃ k) / Real.log (k : ℝ) ≤ 3 := by
+  filter_upwards [hlow, hup, eventually_gt_atTop 1] with k hkl hku hk1
+  have hk1R : (1 : ℝ) < (k : ℝ) := by exact_mod_cast hk1
+  have hlogk : 0 < Real.log (k : ℝ) := Real.log_pos hk1R
+  have hk2pos : (0 : ℝ) < (k : ℝ) ^ 2 := by positivity
+  -- `log(k²) = 2·log k ≤ log(h₃ k) ≤ 3·log k = log(k³)`
+  have hlow_log : Real.log ((k : ℝ) ^ 2) ≤ Real.log (h₃ k) := Real.log_le_log hk2pos hkl
+  have hup_log : Real.log (h₃ k) ≤ Real.log ((k : ℝ) ^ 3) := Real.log_le_log (hpos k) hku
+  rw [Real.log_pow] at hlow_log hup_log
+  push_cast at hlow_log hup_log
+  refine ⟨?_, ?_⟩
+  · rw [le_div_iff₀ hlogk]; linarith
+  · rw [div_le_iff₀ hlogk]; linarith
 
 /-
 ## Remarks — why the *pointwise* ratio (⋆) is not settled here
