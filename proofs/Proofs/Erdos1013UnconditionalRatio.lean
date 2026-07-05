@@ -36,6 +36,11 @@ on the ratio itself:
         cannot drift away from `1` on either side, so if (⋆) fails it fails only by
         oscillation.  The engine is the pair of Cesàro sign lemmas `cesaro_ge_imp` /
         `cesaro_le_imp` (a vanishing Cesàro mean cannot dominate a fixed nonzero constant).
+  * `ratio_liminf_le_one` / `one_le_ratio_limsup` — the same straddle in honest
+        `Filter.liminf`/`Filter.limsup` form: once the ratio is eventually two-sided bounded
+        (the `[1/2, 2]` bounded-ratio leaf supplies this for `h₃`),
+        `liminf_k h(k+1)/h k ≤ 1 ≤ limsup_k h(k+1)/h k`.  Hence if the ratio converges at
+        all, its limit is forced to be `1` — a genuine two-sided pinch on the cluster set.
 
 The averaged statements are proved for an arbitrary `h : ℕ → ℝ` that is **positive and polynomially
 sandwiched** (`PolyBounded`); the genuine `h₃`, whose bounds sit between `k²` and `k³`,
@@ -291,6 +296,60 @@ theorem ratio_frequently_gt {h : ℕ → ℝ} (hb : PolyBounded h) {ε : ℝ} (h
   have hneg : Real.log (1 - ε) < 0 := Real.log_neg (by linarith) (by linarith)
   linarith
 
+/- ## Filter-level `liminf ≤ 1 ≤ limsup` (the textbook straddle) -/
+
+/-- **`liminf ≤ 1` in honest `Filter.liminf` form.**  The frequency statement
+`ratio_frequently_lt` (`h(k+1)/h k < 1 + ε` infinitely often, for every `ε > 0`) is exactly
+the assertion `liminf_k h(k+1)/h k ≤ 1`.  Promoting it to the genuine `Filter.liminf`
+requires only that the ratio be *eventually bounded below* (so `liminf` is a real number and
+not `-∞`), supplied here as `IsBoundedUnder (· ≥ ·)`.  For `h₃` this cobounded side-condition
+is furnished by the `[1/2, 2]` bounded-ratio leaf (`Erdos1013BoundedRatio.lean`). -/
+theorem ratio_liminf_le_one {h : ℕ → ℝ} (hb : PolyBounded h)
+    (hbdd : IsBoundedUnder (· ≥ ·) atTop (fun k => h (k + 1) / h k)) :
+    liminf (fun k => h (k + 1) / h k) atTop ≤ 1 := by
+  set L := liminf (fun k => h (k + 1) / h k) atTop with hL
+  by_contra hcon
+  push_neg at hcon              -- hcon : 1 < L
+  set ε : ℝ := (L - 1) / 2 with hεdef
+  have hεpos : 0 < ε := by rw [hεdef]; linarith
+  have hfreq : ∃ᶠ k in atTop, h (k + 1) / h k ≤ 1 + ε :=
+    (ratio_frequently_lt hb hεpos).mono fun k hk => le_of_lt hk
+  have hle : L ≤ 1 + ε := by
+    rw [hL]; exact Filter.liminf_le_of_frequently_le hfreq hbdd
+  rw [hεdef] at hle
+  linarith
+
+/-- **`1 ≤ limsup` in honest `Filter.limsup` form.**  Dual to `ratio_liminf_le_one`: the
+frequency statement `ratio_frequently_gt` gives `1 - ε < h(k+1)/h k` infinitely often for
+every `0 < ε < 1`, i.e. `1 ≤ limsup_k h(k+1)/h k`.  Promotion needs the ratio *eventually
+bounded above* (`limsup` a real number, not `+∞`), supplied as `IsBoundedUnder (· ≤ ·)`. -/
+theorem one_le_ratio_limsup {h : ℕ → ℝ} (hb : PolyBounded h)
+    (hbdd : IsBoundedUnder (· ≤ ·) atTop (fun k => h (k + 1) / h k)) :
+    1 ≤ limsup (fun k => h (k + 1) / h k) atTop := by
+  set L := limsup (fun k => h (k + 1) / h k) atTop with hL
+  by_contra hcon
+  push_neg at hcon              -- hcon : L < 1
+  set ε : ℝ := min ((1 - L) / 2) (1 / 2) with hεdef
+  have hεpos : 0 < ε := lt_min (by linarith) (by norm_num)
+  have hε1 : ε < 1 := lt_of_le_of_lt (min_le_right _ _) (by norm_num)
+  have hεle : ε ≤ (1 - L) / 2 := min_le_left _ _
+  have hfreq : ∃ᶠ k in atTop, 1 - ε ≤ h (k + 1) / h k :=
+    (ratio_frequently_gt hb hεpos hε1).mono fun k hk => le_of_lt hk
+  have hle : 1 - ε ≤ L := by
+    rw [hL]; exact Filter.le_limsup_of_frequently_le hfreq hbdd
+  linarith
+
+/-- **The unconditional Filter-level straddle** for any polynomially bounded positive `h`
+whose consecutive ratio is eventually two-sided bounded:
+`liminf_k h(k+1)/h k ≤ 1 ≤ limsup_k h(k+1)/h k`.  In particular the ratio cannot converge to
+any limit other than `1`: if it converges at all, the limit is `1`. -/
+theorem ratio_liminf_le_one_le_limsup {h : ℕ → ℝ} (hb : PolyBounded h)
+    (hbelow : IsBoundedUnder (· ≥ ·) atTop (fun k => h (k + 1) / h k))
+    (habove : IsBoundedUnder (· ≤ ·) atTop (fun k => h (k + 1) / h k)) :
+    liminf (fun k => h (k + 1) / h k) atTop ≤ 1 ∧
+      1 ≤ limsup (fun k => h (k + 1) / h k) atTop :=
+  ⟨ratio_liminf_le_one hb hbelow, one_le_ratio_limsup hb habove⟩
+
 /- ## Specialisation to the genuine threshold `h₃` -/
 
 /-- The genuine triangle-free chromatic threshold (as a real candidate `h₃`) is
@@ -334,6 +393,25 @@ theorem h3_ratio_straddles_one (h₃ : ℕ → ℝ) (hpos : ∀ k, 0 < h₃ k)
       (∃ᶠ k in atTop, 1 - ε < h₃ (k + 1) / h₃ k) :=
   ⟨ratio_frequently_lt (polyBounded_of_h3 h₃ hpos hlow hup) hε,
     ratio_frequently_gt (polyBounded_of_h3 h₃ hpos hlow hup) hε hε1⟩
+
+/-- **Erdős #1013 (oq-02), the Filter-level straddle for `h₃`.**  Given the two-sided
+*bounded-ratio* input — the consecutive ratio is eventually `≥ m` and eventually `≤ M`
+(as established, with `m = 1/2`, `M = 2`, in `Erdos1013BoundedRatio.lean`) — the honest
+`Filter.liminf`/`Filter.limsup` obstruction holds:
+`liminf_k h₃(k+1)/h₃ k ≤ 1 ≤ limsup_k h₃(k+1)/h₃ k`.
+Consequently, should the ratio converge, its limit can only be `1` — the averaged evidence
+for (⋆) is now a genuine two-sided pinch on the extreme cluster points. -/
+theorem h3_ratio_liminf_le_one_le_limsup (h₃ : ℕ → ℝ) (hpos : ∀ k, 0 < h₃ k)
+    (hlow : ∀ᶠ (k : ℕ) in atTop, (k : ℝ) ^ 2 ≤ h₃ k)
+    (hup : ∀ᶠ (k : ℕ) in atTop, h₃ k ≤ (k : ℝ) ^ 3)
+    {m M : ℝ} (hbelow : ∀ᶠ k in atTop, m ≤ h₃ (k + 1) / h₃ k)
+    (habove : ∀ᶠ k in atTop, h₃ (k + 1) / h₃ k ≤ M) :
+    liminf (fun k => h₃ (k + 1) / h₃ k) atTop ≤ 1 ∧
+      1 ≤ limsup (fun k => h₃ (k + 1) / h₃ k) atTop := by
+  have hb := polyBounded_of_h3 h₃ hpos hlow hup
+  have hbddb : IsBoundedUnder (· ≥ ·) atTop (fun k => h₃ (k + 1) / h₃ k) := ⟨m, hbelow⟩
+  have hbdda : IsBoundedUnder (· ≤ ·) atTop (fun k => h₃ (k + 1) / h₃ k) := ⟨M, habove⟩
+  exact ratio_liminf_le_one_le_limsup hb hbddb hbdda
 
 /-
 ## Remarks — why the *pointwise* ratio (⋆) is not settled here

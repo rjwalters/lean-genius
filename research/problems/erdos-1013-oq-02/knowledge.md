@@ -134,3 +134,50 @@ the latter using `log k / k → 0` (from `Real.isLittleO_log_id_atTop`).
   `|log h₃(k+1) − log h₃(k)| = o(1)`, which the current `log log k`-wide window cannot
   supply. Optional polish: promote the frequency forms to explicit `Filter.liminf/limsup`
   corollaries once cobounded side-conditions are provided.
+
+---
+
+## Session 2026-07-05 (Session 3, researcher-11) — ACT
+
+**Mode**: CONTINUE. **Outcome**: progress (verified new result, first-try Docker build).
+
+### What I Did
+- Executed the "optional polish" flagged by Session 2: promoted the frequency straddle to
+  the genuine `Filter.liminf`/`Filter.limsup` order-theoretic form. Extended
+  `Erdos1013UnconditionalRatio.lean` from 14 → 18 theorems (0 sorry / 0 axiom;
+  `#print axioms` unchanged: propext/Classical.choice/Quot.sound).
+- New theorems:
+  - `ratio_liminf_le_one` — `liminf_k h(k+1)/h k ≤ 1`, needs `IsBoundedUnder (· ≥ ·)`.
+  - `one_le_ratio_limsup` — `1 ≤ limsup_k h(k+1)/h k`, needs `IsBoundedUnder (· ≤ ·)`.
+  - `ratio_liminf_le_one_le_limsup` — the conjunction (general `PolyBounded` `h`).
+  - `h3_ratio_liminf_le_one_le_limsup` — `h₃` specialisation; takes eventual two-sided
+    ratio bounds `m ≤ ratio ≤ M` and constructs the `IsBoundedUnder` witnesses.
+
+### Key Findings
+- The "frequently `< 1±ε` for all ε" facts are *definitionally* the liminf/limsup bounds;
+  the only extra content needed to state them as honest `Filter.liminf`/`Filter.limsup` is
+  a **cobounded side-condition** (ratio eventually bounded below / above), which the
+  `[1/2, 2]` bounded-ratio leaf (`Erdos1013BoundedRatio.lean`) already supplies for `h₃`.
+- **Corollary of independent interest:** `liminf ≤ 1 ≤ limsup` forces any *existing* limit
+  of the ratio to equal `1`. So the open (⋆) is now "does the limit exist?", never "what
+  is it?" — the value is pinned unconditionally.
+
+### Lean mechanics worth remembering
+- `Filter.liminf_le_of_frequently_le (hfreq : ∃ᶠ x, u x ≤ b) (hbdd : IsBoundedUnder (· ≥ ·) l u) : liminf u l ≤ b`
+  and dual `Filter.le_limsup_of_frequently_le` — pass the boundedness explicitly (it's an
+  `isBoundedDefault` autoparam that will NOT auto-discharge here).
+- Weaken `∃ᶠ x, u x < c` to `∃ᶠ x, u x ≤ c` via `Filter.Frequently.mono fun k hk => le_of_lt hk`.
+- `IsBoundedUnder (· ≤ ·) atTop u` unfolds (defeq, via `eventually_map`) to
+  `∃ b, ∀ᶠ x, u x ≤ b`, so the anonymous constructor `⟨M, habove⟩` builds it directly from
+  an eventual bound — no need for named `isBoundedUnder_of_eventually_*` lemmas.
+- `liminf ≤ 1` from `∀ ε>0, liminf ≤ 1+ε`: `by_contra`/`push_neg` to `1 < L`, pick
+  `ε = (L-1)/2`, apply the frequently-lemma, `linarith`. Symmetric for limsup with
+  `ε = min ((1-L)/2) (1/2)` to keep `ε < 1` (required by `ratio_frequently_gt`).
+
+### Files Modified
+- `proofs/Proofs/Erdos1013UnconditionalRatio.lean` (extended: +4 theorems, +docstring)
+
+### Next Steps
+- Pointwise (⋆) still OPEN — unchanged obstruction (local variation across the
+  `log log k` band). The value of any limit is now fully pinned to 1; only *existence*
+  remains, which needs the improved upper bound / local-variation relation.
