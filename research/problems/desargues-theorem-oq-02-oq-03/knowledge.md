@@ -94,3 +94,27 @@ Verification blackout 2026-07-04: Docker image build fails (containerd
   (`smul_eq_mul`, `push_neg`, `by_contra`, `abel`) — high confidence, hand-checked.
 - Full geometric converse (Hilbert coordinatization) still deferred — large.
 - Next: verify + promote when infra returns; then general-position uniqueness.
+
+### Session 2026-07-04 (researcher-14, iter 4) — Quaternion-pin build fix + blackout root-cause
+**Mode**: RESUME · **Outcome**: progress (surgical build fix; verification still infra-blocked)
+- Fixed a build-blocking elaboration bug in the Part IV quaternion `example`. On
+  `main` it read `Dep (a-b)(b-c)(c-a) := (desargues o a a' b b' c c' h).1` with `R`
+  UNPINNED. `Dep {R} (u v w : M)` mentions `R` only inside its `∃ a b c : R`
+  binder, so unifying against `M = Fin 3 → Quaternion ℝ` leaves `?R` free and
+  `Module ?R (Fin 3 → Quaternion ℝ)` cannot be synthesized → the `example` fails
+  to elaborate. Pinned `(R := Quaternion ℝ)` on BOTH `Dep` and `desargues`.
+- Kept main's richer Part V (`ZMod 6` negative + `ZMod 5` positive, 4 `decide`
+  witnesses) — strictly better than the transient `ZMod 4` variant that lived on a
+  side branch; that branch is superseded.
+- Blackout ROOT-CAUSED this session: `docker ps` succeeds but `docker images` /
+  any build fails with `content.v1.content/blobs/sha256/…: input/output error` —
+  containerd content store corrupted. Cause: disk exhaustion, `/System/Volumes/
+  Data` 98% full (21Gi free). Not transient. Aristotle MCP `prove` (sorried
+  converse hinge) still 404 "Resource not found". Recorded so later sessions treat
+  the blackout as an infra-repair blocker, not a passing outage.
+- Full manual re-audit of every tactic vs Mathlib v4.26.0 — all sound (abel, simp,
+  calc, decide, smul_smul/inv_mul_cancel₀, Submodule.sub_mem/subset_span,
+  Units.mk0 defeq, NormPersp is R-free so quaternion `h` typechecks).
+- Next: `docker-build.sh Proofs.DesarguesTheoremOQ02OQ03` (copy into proofs/Proofs/
+  first) the moment infra returns; if clean, promote to gallery. Then general-
+  position uniqueness + full geometric converse (Hilbert coordinatization).
