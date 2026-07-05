@@ -169,20 +169,20 @@ theorem sinTermAbs_antitone (x : ℝ) (hx : |x| ≤ 1) :
     _ ≤ |x| ^ (2 * k + 1) / ↑(Nat.factorial (2 * k + 1)) := by
         apply div_le_div_of_nonneg_left (pow_nonneg (abs_nonneg x) _)
         · exact Nat.cast_pos.mpr (Nat.factorial_pos _)
-        · exact Nat.cast_le.mpr (Nat.factorial_mono (by omega))
+        · exact Nat.cast_le.mpr (Nat.factorial_le (by omega))
 
 /-- Sin series terms tend to 0 for any fixed x. -/
 theorem sinTermAbs_tendsto (x : ℝ) :
     Filter.Tendsto (sinTermAbs x) Filter.atTop (nhds 0) := by
   -- sinTermAbs x k = |x|^{2k+1}/(2k+1)! → 0 since it's a subsequence of
   -- |x|^n/n! → 0 (from summable_pow_div_factorial)
-  simp only [sinTermAbs]
+  unfold sinTermAbs
   have base : Filter.Tendsto (fun n => |x| ^ n / (Nat.factorial n : ℝ))
       Filter.atTop (nhds 0) :=
     (summable_pow_div_factorial ‖x‖).tendsto_atTop_zero.congr fun n => by
       simp [Real.norm_eq_abs]
   exact (base.comp (Filter.tendsto_atTop_atTop_of_monotone
-    (fun _ _ h => by omega : Monotone (fun k => 2 * k + 1))
+    (fun _ _ h => by dsimp only; omega : Monotone (fun k => 2 * k + 1))
     (fun n => ⟨n, by omega⟩)))
 
 -- ═══════════════════════════════════════════════════════════════
@@ -228,7 +228,7 @@ theorem alternating_tighter_than_lagrange_sin (n : ℕ) (x : ℝ) :
   unfold sinTermAbs
   apply div_le_div_of_nonneg_left (pow_nonneg (abs_nonneg x) _)
   · exact Nat.cast_pos.mpr (Nat.factorial_pos _)
-  · exact Nat.cast_le.mpr (Nat.factorial_mono (by omega))
+  · exact Nat.cast_le.mpr (Nat.factorial_le (by omega))
 
 /-- Concrete example: at x = 1, n = 3 (sin approximation through x⁵):
     - Alternating bound: 1/7! = 1/5040 ≈ 0.000198

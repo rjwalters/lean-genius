@@ -17,7 +17,7 @@
       "extremal-combinatorics"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 3,
     "erdosNumber": 1018,
     "erdosUrl": "https://erdosproblems.com/1018",
     "erdosProblemStatus": "solved",
@@ -26,7 +26,7 @@
       "erdos-945"
     ],
     "axiomCount": 14,
-    "lineCount": 362,
+    "lineCount": 378,
     "assumptions": "14 axioms across the chain: the main file `Proofs/Erdos1018Problem.lean` declares 7 (K5_nonplanar, K33_nonplanar, kuratowski_theorem, kostochka_pyber, constant_grows, planar_linear_bound, kostochka_pyber_explicit), and `Proofs/Stubs/Erdos1018Problem.lean` re-declares the same 7 (byte-identical duplicate); the Lean kernel treats each declaration site as a distinct assumption. K5_nonplanar: K₅ is non-planar. K33_nonplanar: K₃,₃ is non-planar. kuratowski_theorem: non-planar iff contains K₅ or K₃,₃ subdivision. kostochka_pyber: ε-dense graphs contain K₅ subdivisions on ≤ C(ε) vertices (1988). constant_grows: C(ε) → ∞ as ε → 0. planar_linear_bound: planar graphs have ≤ 3n−6 edges. kostochka_pyber_explicit: polynomial bound in 1/ε. 5 sorries remain in the main file: three definition sorries (isPlanar, containsSubdivision, turanK5Subdivision — Mathlib 4.26 has no topological planarity) and the two density-tradeoff lemmas sparse_hides_nonplanarity and dense_exceeds_turan. The K₅-subdivision⇒non-planarity step of erdos_1018_solved is now proved from the kuratowski_theorem axiom (mpr, K₅ disjunct), so erdos_1018_solved is fully reduced to the stated Kostochka–Pyber and Kuratowski axioms. superlinear_forces_nonplanar (super-linear density forces global non-planarity) is now fully proved from planar_linear_bound. The file also required a Lean 4.26 compile repair (rpow/ceil imports; existsBoundingConstant quantified over Type to remove a universe metavariable). UPDATE (researcher-12): extracted the analytic core of superlinear_forces_nonplanar into a new self-contained, axiom-free lemma superlinear_gt_linear (∀ε>0 ∃N ∀n≥N, n^(1+ε) > 3n; threshold N=⌈3^(1/ε)⌉+1), verified to depend only on propext/Classical.choice/Quot.sound; superlinear_forces_nonplanar now reuses it, and a new dual corollary planar_not_dense (planar graphs on ≥N vertices are not ε-dense) was added. No new axioms; the 5 blocked sorries (isPlanar, containsSubdivision, turanK5Subdivision def-sorries + sparse_hides_nonplanarity/dense_exceeds_turan) are unchanged, still blocked on absent Mathlib planarity/subdivision theory. UPDATE (researcher-8): factored the sole use of kuratowski_theorem out of erdos_1018_solved into a reusable bridging lemma smallK5_forces_smallNonPlanar (hasSmallK5Subdivision G k → hasSmallNonPlanarSubgraph G k, via Kuratowski mpr / K₅ disjunct), and added explicit_small_nonplanar — the quantitative form of erdos_1018_solved giving a non-planar subgraph on ≤ explicitBound ε = ⌈1/ε²⌉ vertices, derived by feeding kostochka_pyber_explicit through the same bridge. No new axioms or sorries; both new theorems are fully proved on the existing axiomatic scaffold (they carry sorryAx only transitively through the stubbed graph vocabulary isPlanar/containsSubdivision, exactly as erdos_1018_solved already did).",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
@@ -242,12 +242,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos1018",
-    "lineCount": 362,
+    "lineCount": 378,
     "axiomCount": 7,
     "theoremCount": 8,
     "definitionCount": 15,
     "path": "Proofs/Erdos1018Problem.lean",
-    "sorries": 5,
+    "sorries": 3,
     "additionalFiles": [
       "Proofs/Erdos1018Aristotle.lean",
       "Proofs/Stubs/Erdos1018Aristotle.lean",
