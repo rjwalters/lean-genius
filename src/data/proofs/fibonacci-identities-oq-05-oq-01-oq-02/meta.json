@@ -1,0 +1,198 @@
+{
+  "id": "fibonacci-identities-oq-05-oq-01-oq-02",
+  "title": "Gibonacci Weighted Product-Sum: Discriminant Generalization",
+  "slug": "fibonacci-identities-oq-05-oq-01-oq-02",
+  "description": "Answers the open question of the parent entry fibonacci-identities-oq-05-oq-01, which asked to generalize the Fibonacci weighted product-sum ∑ k FₖFₖ₊₁ to the Lucas numbers and to general Gibonacci sequences, tracking how the parity correction (−1)ⁿ becomes a discriminant. A Gibonacci sequence has the Fibonacci recurrence Gₖ₊₂ = Gₖ₊₁ + Gₖ but arbitrary initial conditions G₀ = a, G₁ = b; its Cassini-type invariant is the discriminant D = b² − ab − a². The entry proves two parameterized identities and reads off both named specializations. gib_cassini: the generalized Cassini identity Gₙ₊₁² − Gₙ₊₁Gₙ − Gₙ² = (−1)ⁿ(b² − ab − a²), a one-line induction whose step flips sign, so the invariant is (−1)ⁿ times the fixed discriminant. gib_weighted_prod_sum: the generalized closed form 2·∑_{k≤n} k GₖGₖ₊₁ = 2n Gₙ₊₁² − 2 GₙGₙ₊₁ + 2ab + D·(if n even then −n else n+1), proved by a Cassini-driven induction identical in shape to the Fibonacci case. Substituting the initial conditions recovers the named cases: for Fibonacci (a,b)=(0,1), D=1, gib 0 1 = Nat.fib recovers the parent's fib_weighted_prod_sum verbatim; for Lucas (a,b)=(2,1), D=−5, lucas_cassini gives Lₙ₊₁² − Lₙ₊₁Lₙ − Lₙ² = −5(−1)ⁿ and lucas_weighted_prod_sum gives 2·∑ k LₖLₖ₊₁ = 2n Lₙ₊₁² − 2 LₙLₙ₊₁ + 4 − 5(if n even then −n else n+1). This makes precise the claim that the parity correction becomes the sequence discriminant. Target state: 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Classical (Lucas; Horadam/Gibonacci summation folklore); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lucas_number",
+    "date": "1965",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "lucas",
+      "gibonacci",
+      "cassini",
+      "discriminant",
+      "summation-identity",
+      "weighted-sum",
+      "parity",
+      "integer-sequences",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ05OQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑ i ∈ range (n+1), f i = (∑ i ∈ range n, f i) + f n — peels the last term off each partial sum in the weighted-sum induction",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_one",
+        "description": "∑ i ∈ range 1, f i = f 0 — evaluates the base case of the weighted-sum induction",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Even.neg_one_pow / Odd.neg_one_pow",
+        "description": "(−1)ⁿ = 1 for even n and −1 for odd n — collapses the generalized Cassini sign to ±D in each parity branch of the weighted-sum step",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Nat.even_or_odd",
+        "description": "every natural number is even or odd — drives the two-way parity split in the weighted-sum step",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Nat.even_add_one",
+        "description": "Even (n+1) ↔ ¬ Even n — flips the parity of the successor index when resolving the two if-then-else correction terms",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — used only in the Fibonacci specialization to prove gib 0 1 n = Nat.fib n by two-step induction",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "linear_combination",
+        "description": "certificate tactic reducing each induction step to a ring identity that is an explicit multiple (2(n+1)) of the generalized Cassini identity",
+        "module": "Mathlib.Tactic.LinearCombination"
+      }
+    ],
+    "originalContributions": [
+      "gib (a b : ℤ) : ℕ → ℤ — the Gibonacci sequence with arbitrary initial conditions G₀ = a, G₁ = b and the Fibonacci recurrence; a single family subsuming Fibonacci (0,1) and Lucas (2,1)",
+      "gib_cassini: ∀ a b n, Gₙ₊₁² − Gₙ₊₁Gₙ − Gₙ² = (−1)ⁿ(b² − ab − a²) — the generalized Cassini identity, exhibiting the discriminant D = b² − ab − a² as the (−1)ⁿ-modulated invariant (D = 1 for Fibonacci, −5 for Lucas)",
+      "gib_weighted_prod_sum: ∀ a b n, 2·∑_{k≤n} k GₖGₖ₊₁ = 2n Gₙ₊₁² − 2 GₙGₙ₊₁ + 2ab + D·(if Even n then −n else n+1) — the discriminant-parameterized weighted product-sum closed form, unifying the Fibonacci and Lucas cases and answering the parent's open question",
+      "lucas_weighted_prod_sum: ∀ n, 2·∑_{k≤n} k LₖLₖ₊₁ = 2n Lₙ₊₁² − 2 LₙLₙ₊₁ + 4 − 5(if Even n then −n else n+1) — the concrete Lucas specialization (boundary term 2ab = 4, discriminant −5)",
+      "lucas_cassini: ∀ n, Lₙ₊₁² − Lₙ₊₁Lₙ − Lₙ² = −5(−1)ⁿ — Lucas Cassini as the (2,1) specialization of gib_cassini",
+      "gib_zero_one_eq_fib: ∀ n, gib 0 1 n = (Nat.fib n : ℤ) — identifies the (0,1) Gibonacci sequence with Mathlib's Nat.fib, letting the general theorem recover the parent's fib_weighted_prod_sum verbatim"
+    ],
+    "dateAdded": "2026-07-04",
+    "lineCount": 169,
+    "assumptions": "Target state: fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used. BUILD-PENDING: authored during a Docker + Aristotle tooling blackout; the proof is hand-audited and numerically checked (Lucas n=0..3) but not yet machine-checked in this environment. Do not merge until a clean Lean build confirms.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The parent entry fibonacci-identities-oq-05-oq-01 settled the weighted Fibonacci product sum ∑ k FₖFₖ₊₁ with a Cassini-driven induction, and explicitly asked (its second open question) for the generalization to the Lucas numbers and to general Gibonacci sequences — sequences sharing the Fibonacci recurrence but with arbitrary initial conditions — tracking how the parity correction (−1)ⁿ transforms into a discriminant. The Gibonacci (a.k.a. Horadam) family is the natural home for such identities: everything the Fibonacci case does with the bare alternating sign, the general case does with (−1)ⁿ times the fixed discriminant D = b² − ab − a².",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-05-oq-01)**: Generalize fib_weighted_prod_sum to ∑ k Lₖ Lₖ₊₁ for Lucas numbers and to general Gibonacci sequences, tracking how the parity correction becomes a discriminant.\n\n**Result**: For a Gibonacci sequence G₀ = a, G₁ = b, Gₖ₊₂ = Gₖ₊₁ + Gₖ with discriminant D = b² − ab − a², both the Cassini identity and the weighted product-sum acquire a uniform D-parameterized form. gib_cassini gives Gₙ₊₁² − Gₙ₊₁Gₙ − Gₙ² = (−1)ⁿD, and gib_weighted_prod_sum gives 2·∑ k GₖGₖ₊₁ = 2n Gₙ₊₁² − 2 GₙGₙ₊₁ + 2ab + D·(if n even then −n else n+1). Fibonacci (D=1) and Lucas (D=−5) fall out by substitution.",
+    "text": "A Gibonacci sequence is defined by gib a b with gib a b 0 = a, gib a b 1 = b, gib a b (n+2) = gib a b (n+1) + gib a b n over ℤ. Its discriminant is D = b² − ab − a², the n = 0 value of the Cassini quadratic Gₙ₊₁² − Gₙ₊₁Gₙ − Gₙ². The generalized Cassini identity Gₙ₊₁² − Gₙ₊₁Gₙ − Gₙ² = (−1)ⁿD follows by induction: the quadratic negates under the recurrence, so it equals (−1)ⁿ times its initial value D. The weighted product-sum then satisfies 2·∑_{k=0}^{n} k GₖGₖ₊₁ = 2n Gₙ₊₁² − 2 GₙGₙ₊₁ + 2ab + D·(if n even then −n else n+1); the induction step is, after substitution, exactly 2(n+1) times the generalized Cassini identity. The boundary constant 2ab is the n = 0 value of the closed form (it vanishes for Fibonacci since a = 0), and the parity correction carries the discriminant factor D. Specializing (a,b) = (0,1) recovers the Fibonacci case (gib 0 1 = Nat.fib, D = 1), and (a,b) = (2,1) gives the Lucas case (D = −5, boundary 2ab = 4).",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Definition (`gib`).** Define the Gibonacci sequence over ℤ by the standard 0/1/(n+2) recursion, following the same equation-compiler pattern as the codebase's lucasU sequence (so gib_zero, gib_one, gib_add_two hold by rfl).\n2. **Generalized Cassini (`gib_cassini`).** Induct on n. Base: simp [gib] then ring gives b² − ba − a² = (−1)⁰D. Step: rewrite (−1)ⁿ⁺¹ = −(−1)ⁿ, substitute gib (n+2) = gib (n+1) + gib n, and close with linear_combination −ih — the quadratic negates.\n3. **Weighted sum (`gib_weighted_prod_sum`).** Induct on n. Peel the last term with Finset.sum_range_succ, distribute the leading 2 with mul_add, split on Nat.even_or_odd. In each branch evaluate the two if-then-else corrections by parity (Even/Odd.neg_one_pow specializes Cassini to ±D), substitute the recurrence, and close with linear_combination 2(n+1)·hcass1 after push_cast. The step collapses to a multiple of the generalized Cassini identity — the same certificate coefficient 2(n+1) as the Fibonacci parent.\n4. **Fibonacci specialization (`gib_zero_one_eq_fib`, `fib_weighted_prod_sum`).** Prove gib 0 1 n = Nat.fib n by two-step induction off Nat.fib_add_two, then obtain the parent's identity as the (0,1) case via linear_combination (D = 1, 2ab = 0).\n5. **Lucas specialization (`lucas_cassini`, `lucas_weighted_prod_sum`).** Define lucas := gib 2 1 and read off both identities from gib_cassini and gib_weighted_prod_sum by linear_combination (D = −5, 2ab = 4).",
+    "keyInsights": [
+      "**The discriminant D = b² − ab − a² is the universal Cassini invariant.** For any Gibonacci sequence the quadratic Gₙ₊₁² − Gₙ₊₁Gₙ − Gₙ² negates under the recurrence, so it equals (−1)ⁿ times its n = 0 value D. Fibonacci's Cassini (D = 1) and Lucas's (D = −5) are the two named instances of one identity.",
+      "**One induction certificate serves the whole family.** The weighted-sum step reduces, after substituting the recurrence, to exactly 2(n+1) times the generalized Cassini identity — the identical linear_combination coefficient as the Fibonacci-only parent proof. Parameterizing by (a,b) costs nothing in the proof; only the closed form gains the 2ab boundary term and the D factor.",
+      "**The parity correction scales by the discriminant.** The parent's bare (if n even then −n else n+1) becomes D·(if n even then −n else n+1). This is the precise sense in which 'the parity correction (−1)ⁿ becomes the discriminant': the alternating sum ∑ 2j(−1)^{j−1} that accumulates the correction is multiplied by D = the Cassini value.",
+      "**Arbitrary initial conditions add a single boundary constant.** Relative to the Fibonacci closed form, the only new term is 2ab = 2 G₀G₁, the n = 0 value that the a = 0 Fibonacci case hides. Lucas makes it visible as the constant 4."
+    ],
+    "prerequisites": [
+      "The Fibonacci/Gibonacci recurrence and the notion of a sequence discriminant b² − ab − a²",
+      "Cassini's identity and its parity-driven sign (−1)ⁿ",
+      "Induction with Finset.sum_range_succ; linear_combination over ℤ; the equation-compiler pattern for a two-step integer recurrence"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and the Gibonacci Definition",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Module docstring framing the discriminant generalization asked for by the parent's open question, and the definition of gib a b — the Gibonacci sequence with arbitrary initial conditions — with its rfl recurrence lemmas gib_zero, gib_one, gib_add_two.",
+      "mathContext": "$G_0 = a,\\ G_1 = b,\\ G_{k+2} = G_{k+1} + G_k$ over $\\mathbb{Z}$; discriminant $D = b^2 - ab - a^2$."
+    },
+    {
+      "id": "cassini",
+      "title": "Generalized Cassini Identity",
+      "startLine": 70,
+      "endLine": 78,
+      "summary": "gib_cassini: Gₙ₊₁² − Gₙ₊₁·Gₙ − Gₙ² = (−1)ⁿ(b² − ab − a²), by induction. The quadratic negates under the recurrence, so the invariant is (−1)ⁿ times the fixed discriminant. Specializes to Fibonacci's (−1)ⁿ and Lucas's −5(−1)ⁿ.",
+      "mathContext": "$G_{n+1}^2 - G_{n+1}G_n - G_n^2 = (-1)^n (b^2 - ab - a^2)$."
+    },
+    {
+      "id": "weighted",
+      "title": "Generalized Weighted Product-Sum Closed Form",
+      "startLine": 80,
+      "endLine": 116,
+      "summary": "gib_weighted_prod_sum: 2·∑ k GₖGₖ₊₁ = 2n Gₙ₊₁² − 2 GₙGₙ₊₁ + 2ab + D·(if Even n then −n else n+1). Induction on n, parity split, each branch closed by linear_combination 2(n+1)·gib_cassini after push_cast — the same certificate as the Fibonacci parent.",
+      "mathContext": "$2\\sum_{k=0}^{n} k G_kG_{k+1} = 2n G_{n+1}^2 - 2 G_n G_{n+1} + 2ab + D\\,(\\text{if } n\\text{ even then } -n \\text{ else } n+1)$."
+    },
+    {
+      "id": "fibonacci",
+      "title": "Fibonacci Specialization",
+      "startLine": 118,
+      "endLine": 137,
+      "summary": "gib_zero_one_eq_fib identifies gib 0 1 with Nat.fib by two-step induction off Nat.fib_add_two; fib_weighted_prod_sum then recovers the parent identity as the (0,1), D=1 case (the 2ab boundary term vanishes since a = 0).",
+      "mathContext": "$\\gcd$-free recovery: $\\mathrm{gib}\\,0\\,1\\,n = F_n$, so $2\\sum k F_kF_{k+1} = 2n F_{n+1}^2 - 2 F_n F_{n+1} + (\\text{if } n\\text{ even then } -n \\text{ else } n+1)$."
+    },
+    {
+      "id": "lucas",
+      "title": "Lucas Specialization",
+      "startLine": 139,
+      "endLine": 169,
+      "summary": "lucas := gib 2 1, with lucas_cassini (Lₙ₊₁² − Lₙ₊₁Lₙ − Lₙ² = −5(−1)ⁿ) and lucas_weighted_prod_sum (2·∑ k LₖLₖ₊₁ = 2n Lₙ₊₁² − 2 LₙLₙ₊₁ + 4 − 5(if Even n then −n else n+1)) read off from the general theorems by linear_combination. Here D = −5 and 2ab = 4.",
+      "mathContext": "$2\\sum_{k=0}^{n} k L_kL_{k+1} = 2n L_{n+1}^2 - 2 L_n L_{n+1} + 4 - 5\\,(\\text{if } n\\text{ even then } -n \\text{ else } n+1)$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-05-oq-01",
+      "relationship": "answers",
+      "description": "Settles the parent entry's second open question — the generalization of fib_weighted_prod_sum to Lucas numbers and general Gibonacci sequences — proving that the parity correction (−1)ⁿ becomes the sequence discriminant b² − ab − a², and recovering the parent's Fibonacci identity verbatim as the (0,1) specialization."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-05",
+      "relationship": "relatedTo",
+      "description": "The grandparent entry's product-sum staircase is the unweighted origin of this weighted family; the discriminant generalization extends its Cassini engine to arbitrary initial conditions."
+    }
+  ],
+  "conclusion": {
+    "summary": "A single discriminant-parameterized identity unifies the Fibonacci, Lucas, and general Gibonacci weighted product sums. gib_cassini establishes Gₙ₊₁² − Gₙ₊₁Gₙ − Gₙ² = (−1)ⁿ(b² − ab − a²), and gib_weighted_prod_sum establishes 2·∑ k GₖGₖ₊₁ = 2n Gₙ₊₁² − 2 GₙGₙ₊₁ + 2ab + (b² − ab − a²)(if n even then −n else n+1). The Fibonacci case (discriminant 1, recovered via gib 0 1 = Nat.fib) reproduces the parent identity; the Lucas case (discriminant −5, boundary 4) is the concrete new closed form the open question asked for.",
+    "implications": "Confirms and formalizes the claim that the (−1)ⁿ parity correction of the Fibonacci weighted sum is a shadow of the sequence discriminant b² − ab − a². The proof shows the entire Fibonacci argument lifts to the Gibonacci family with the same induction certificate (2(n+1) times Cassini), at the cost of one boundary constant 2ab. gib and gib_cassini are reusable scaffolding for the whole second-order integer-sequence family.",
+    "openQuestions": [
+      "Establish the second-weighted Gibonacci sum ∑ k² GₖGₖ₊₁ in closed form by iterating the Abel transform against gib_weighted_prod_sum, and identify the discriminant's role in the correction.",
+      "Generalize gib_cassini and gib_weighted_prod_sum to the two-parameter Lucas sequences U(P,Q), V(P,Q) (recurrence xₖ₊₂ = P xₖ₊₁ − Q xₖ), where the discriminant becomes P² − 4Q and the boundary term generalizes accordingly."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "FibonacciIdentitiesOQ05OQ01OQ02",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/FibonacciIdentitiesOQ05OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Horadam, A. F.",
+      "title": "Basic Properties of a Certain Generalized Sequence of Numbers",
+      "year": "1965",
+      "venue": "The Fibonacci Quarterly",
+      "note": "Introduces the general two-parameter Gibonacci/Horadam sequence and its Cassini-type invariants"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Weighted Fibonacci and Lucas sums; Cassini identities and the discriminant"
+    },
+    {
+      "authors": "Lucas, Édouard",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics",
+      "note": "Foundational catalogue of elementary Fibonacci and Lucas summation and product identities"
+    }
+  ],
+  "sorries": 0
+}

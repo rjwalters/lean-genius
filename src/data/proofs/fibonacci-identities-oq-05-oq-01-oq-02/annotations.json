@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ann-fiboq050102-1",
+    "proofId": "fibonacci-identities-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 7,
+      "endLine": 68
+    },
+    "type": "concept",
+    "title": "The Gibonacci Family and Its Discriminant",
+    "content": "**Module framing.** The parent entry proved the weighted Fibonacci product sum $\\sum k F_kF_{k+1}$ and asked to generalize it to the Lucas numbers and to arbitrary *Gibonacci* sequences, tracking how the parity correction $(-1)^n$ becomes a discriminant. A Gibonacci sequence keeps the Fibonacci recurrence $G_{k+2} = G_{k+1} + G_k$ but takes arbitrary initial conditions $G_0 = a$, $G_1 = b$. The single algebraic invariant that governs everything is the **discriminant** $D = b^2 - ab - a^2$: for Fibonacci $(a,b)=(0,1)$ it is $1$, for Lucas $(a,b)=(2,1)$ it is $-5$. The definition `gib a b` is built with the same 0/1/(n+2) equation-compiler pattern as the codebase's `lucasU`, so the recurrence lemmas hold by `rfl`.",
+    "mathContext": "$G_0 = a,\\ G_1 = b,\\ G_{k+2} = G_{k+1} + G_k$; discriminant $D = b^2 - ab - a^2$ (Fibonacci: $1$; Lucas: $-5$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gibonacci / Horadam sequences",
+      "Sequence discriminant b² − ab − a²",
+      "Arbitrary initial conditions vs. the Fibonacci recurrence"
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence and Nat.fib",
+      "The equation-compiler pattern for a two-step integer recurrence"
+    ],
+    "tags": [
+      "module-header",
+      "framing",
+      "gibonacci",
+      "discriminant"
+    ]
+  },
+  {
+    "id": "ann-fiboq050102-2",
+    "proofId": "fibonacci-identities-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 70,
+      "endLine": 78
+    },
+    "type": "key-step",
+    "title": "Generalized Cassini: the Discriminant as Invariant",
+    "content": "**The heart of the generalization.** `gib_cassini` proves $G_{n+1}^2 - G_{n+1}G_n - G_n^2 = (-1)^n(b^2 - ab - a^2)$ by induction. The key computation is that the quadratic $Q(n) = G_{n+1}^2 - G_{n+1}G_n - G_n^2$ satisfies $Q(n+1) = -Q(n)$ under the recurrence, so $Q(n) = (-1)^n Q(0)$ and $Q(0) = b^2 - ab - a^2 = D$. The induction step rewrites $(-1)^{n+1} = -(-1)^n$, substitutes $G_{n+2} = G_{n+1} + G_n$, and closes with `linear_combination -ih`. This is exactly Fibonacci's Cassini identity with the bare $(-1)^n$ replaced by $(-1)^n D$.",
+    "mathContext": "$G_{n+1}^2 - G_{n+1}G_n - G_n^2 = (-1)^n (b^2 - ab - a^2)$; $Q(n+1) = -Q(n)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Cassini's identity",
+      "Sign-flipping invariant under a linear recurrence",
+      "linear_combination certificate"
+    ],
+    "prerequisites": [
+      "Induction on ℕ",
+      "The parity sign relation (−1)ⁿ⁺¹ = −(−1)ⁿ"
+    ],
+    "tags": [
+      "cassini",
+      "discriminant",
+      "induction",
+      "key-step"
+    ]
+  },
+  {
+    "id": "ann-fiboq050102-3",
+    "proofId": "fibonacci-identities-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 116
+    },
+    "type": "key-step",
+    "title": "The Weighted Product-Sum, One Certificate for the Whole Family",
+    "content": "**The main result.** `gib_weighted_prod_sum` gives $2\\sum_{k\\le n} k G_kG_{k+1} = 2n G_{n+1}^2 - 2 G_nG_{n+1} + 2ab + D\\,(\\text{if } n\\text{ even then } -n \\text{ else } n+1)$. The induction peels the last term (`Finset.sum_range_succ`), distributes the leading $2$ (`mul_add`), and splits on `Nat.even_or_odd`. In each parity branch, `Even/Odd.neg_one_pow` specializes the generalized Cassini identity to $\\pm D$, and after substituting the recurrence the step closes with `linear_combination 2(n+1)·hcass1`. Crucially the certificate coefficient $2(n+1)$ is identical to the Fibonacci-only parent proof: parameterizing by $(a,b)$ costs nothing in the argument. Only the closed form changes — it gains the boundary constant $2ab$ (the $n=0$ value, hidden in Fibonacci since $a=0$) and the discriminant factor $D$ on the parity correction.",
+    "mathContext": "$2\\sum_{k=0}^{n} k G_kG_{k+1} = 2n G_{n+1}^2 - 2 G_n G_{n+1} + 2ab + D\\,(\\text{if } n\\text{ even then } -n \\text{ else } n+1)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Discrete Abel transform / summation by parts",
+      "Parity split in the induction step",
+      "Generalized Cassini as the step certificate"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ induction",
+      "linear_combination over ℤ",
+      "The generalized Cassini identity gib_cassini"
+    ],
+    "tags": [
+      "weighted-sum",
+      "closed-form",
+      "discriminant",
+      "key-step"
+    ]
+  },
+  {
+    "id": "ann-fiboq050102-4",
+    "proofId": "fibonacci-identities-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 118,
+      "endLine": 137
+    },
+    "type": "concept",
+    "title": "Fibonacci Recovery: gib 0 1 = Nat.fib",
+    "content": "**Consistency with the parent.** `gib_zero_one_eq_fib` proves $\\mathrm{gib}\\,0\\,1\\,n = F_n$ by two-step induction off `Nat.fib_add_two`, tying the abstract Gibonacci definition back to Mathlib's `Nat.fib`. `fib_weighted_prod_sum` then recovers the parent identity as the $(0,1)$ specialization by `linear_combination`: with $D = 1$ and $a = 0$ the boundary term $2ab$ vanishes and the closed form collapses to exactly the parent's $2\\sum k F_kF_{k+1} = 2n F_{n+1}^2 - 2 F_n F_{n+1} + (\\text{if } n\\text{ even then } -n \\text{ else } n+1)$. This verifies the generalization is faithful.",
+    "mathContext": "$\\mathrm{gib}\\,0\\,1\\,n = F_n$; the $D=1,\\ a=0$ case reproduces the parent identity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.fib and its recurrence",
+      "Two-step induction",
+      "Specialization by substitution"
+    ],
+    "prerequisites": [
+      "Nat.fib_add_two",
+      "Casting ℕ to ℤ"
+    ],
+    "tags": [
+      "fibonacci",
+      "specialization",
+      "consistency"
+    ]
+  },
+  {
+    "id": "ann-fiboq050102-5",
+    "proofId": "fibonacci-identities-oq-05-oq-01-oq-02",
+    "range": {
+      "startLine": 139,
+      "endLine": 169
+    },
+    "type": "key-step",
+    "title": "Lucas Specialization: Discriminant −5, Boundary 4",
+    "content": "**The concrete new closed form the open question asked for.** With `lucas := gib 2 1`, the discriminant is $D = 1 - 2 - 4 = -5$ and the boundary term is $2ab = 4$. `lucas_cassini` reads off $L_{n+1}^2 - L_{n+1}L_n - L_n^2 = -5(-1)^n$ (the classical Lucas Cassini identity), and `lucas_weighted_prod_sum` reads off $2\\sum_{k\\le n} k L_kL_{k+1} = 2n L_{n+1}^2 - 2 L_nL_{n+1} + 4 - 5(\\text{if } n\\text{ even then } -n \\text{ else } n+1)$. Both follow from the general theorems by a single `linear_combination`. Numerically checked: $n=1$ gives $\\sum = 1\\cdot L_1L_2 = 3$, and the RHS $2\\cdot 9 - 2\\cdot 3 + 4 - 10 = 6 = 2\\cdot 3$. ✓",
+    "mathContext": "$2\\sum_{k=0}^{n} k L_kL_{k+1} = 2n L_{n+1}^2 - 2 L_n L_{n+1} + 4 - 5\\,(\\text{if } n\\text{ even then } -n \\text{ else } n+1)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Lucas numbers L₀=2, L₁=1",
+      "Lucas Cassini identity",
+      "Discriminant −5"
+    ],
+    "prerequisites": [
+      "The general theorems gib_cassini and gib_weighted_prod_sum",
+      "linear_combination"
+    ],
+    "tags": [
+      "lucas",
+      "specialization",
+      "weighted-sum",
+      "key-step"
+    ]
+  }
+]
