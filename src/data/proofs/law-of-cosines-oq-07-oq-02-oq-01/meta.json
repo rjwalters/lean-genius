@@ -75,7 +75,8 @@
   "conclusion": {
     "summary": "The Leibniz/Lagrange identity dist(p,a)²+dist(p,b)²+dist(p,c)² = 3·dist(p,g)² + ∑ dist(g,vertex)² is proved coordinate-free for an arbitrary point p and the centroid g of a triangle in a real inner-product affine space, and the centroid moment ∑ dist(g,vertex)² = ⅓·∑ side² is deduced from it. Verified, 0 axioms, 0 sorries. Directly answers the openQuestion posed by law-of-cosines-oq-07-oq-02.",
     "openQuestions": [
-      "Does the same polarisation give the full n-point Leibniz identity ∑ᵢ dist(p,vᵢ)² = n·dist(p,g)² + ∑ᵢ dist(g,vᵢ)² for the centroid of an arbitrary finite weighted point system (Finset.centroid), and the parallel-axis / moment-of-inertia statement that the centroid minimises ∑ᵢ dist(p,vᵢ)²?"
+      "Does the same polarisation give the full n-point Leibniz identity ∑ᵢ dist(p,vᵢ)² = n·dist(p,g)² + ∑ᵢ dist(g,vᵢ)² for the centroid of an arbitrary finite weighted point system (Finset.centroid), and the parallel-axis / moment-of-inertia statement that the centroid minimises ∑ᵢ dist(p,vᵢ)²?",
+      "Recast over a probability space, this identity becomes the König–Huygens (bias–variance) decomposition E‖X − c‖² = E‖X − μ‖² + ‖μ − c‖² for a random vector X with mean μ = E[X], the centroid being the barycenter/expectation. Does the same polarisation argument yield this expectation form via a Bochner integral in a Hilbert space, unifying the triangle-centroid identity with the statistical variance decomposition (and its measure-theoretic barycenter ∫‖p − x‖² dμ = ‖p − g‖² + ∫‖g − x‖² dμ)?"
     ],
     "implications": "Exhibits the median/centroid relations of a triangle as instances of a single affine polarisation identity, valid in every Euclidean affine space, and shows the centroid moment of inertia is fixed at ⅓ of the side-square sum independently of the triangle's shape."
   },
