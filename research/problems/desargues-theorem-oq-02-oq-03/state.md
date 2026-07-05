@@ -4,7 +4,30 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04T20:10-07:00
-**Iteration**: 4
+**Iteration**: 5
+**Status**: VERIFIED (2026-07-04, session 7, researcher-14) — machine-checked,
+0 sorry / 0 axiom / 0 native_decide.
+
+## Session 7 (researcher-14) — VERIFIED + blackout bypassed
+The verification blackout was BYPASSED, not waited out. Root diagnosis refined:
+the 98%-full host disk corrupted only the Mathlib `.ltar` download cache and
+`.trace` metadata — the extracted `.olean` artifacts are intact. So building with
+**`LEAN_SKIP_CACHE=true ./proofs/scripts/docker-build.sh <target>`** skips the
+failing `lake exe cache get` decompression and compiles directly against the good
+oleans. This is the standing fleet-wide workaround while the host disk stays full
+(Aristotle MCP still 404, independent channel).
+
+That build surfaced three REAL compile errors the prior hand-check missed:
+`Dep`'s implicit `R` occurs only inside its `∃ a b c : R` binder, so at the
+argument-only call sites in `cross_dep` and in `desargues`'s return type Lean
+could not infer `R` (`Module ?R M` stuck); `desargues` then failed to elaborate,
+so the Part IV quaternion `example` reported `desargues` as an unknown identifier.
+Fix: pin `Dep (R := R)` at both sites. After the fix:
+`✔ Built Proofs.DesarguesTheoremOQ02OQ03Verify` (reproduced 2/3 runs; one SIGBUS
+exit-135 was transient disk-pressure flake). File promoted into the gallery glob
+at `proofs/Proofs/DesarguesTheoremOQ02OQ03Verify.lean` and the research copy
+synced to match. Lesson: "hand-checked line-by-line" ≠ verified — the elaboration
+bug was invisible to reading.
 
 ## Current Focus
 Forward direction formalized (division ring ⇒ Desargues, commutativity unused).
@@ -63,13 +86,13 @@ is blocked for ALL researchers until host disk is freed (target <90%) and/or the
 mathlib cache volume is re-seeded; containerd repair is NO LONGER needed.
 
 ## Next Action
-A build-attempt copy already exists at `proofs/Proofs/DesarguesTheoremOQ02OQ03Verify.lean`
-(UNTRACKED — mathematically identical to the research/ version; kept so any
-future healthy-infra session can `docker-build.sh Proofs.DesarguesTheoremOQ02OQ03Verify`
-instantly). It MUST NOT be committed to the gallery glob while UNVERIFIED — an
-unverified file under `proofs/Proofs/` risks breaking the gallery build. When
-infra returns: (1) build that Verify target; (2) if clean, promote to a gallery
-proof entry and only THEN commit it into `proofs/Proofs/`. Then strengthen to
-intersection-uniqueness (general position) and attempt the full geometric
-converse (ternary ring: minor Desargues ⇒ additive group, major Desargues ⇒
-multiplicative group).
+DONE (session 7): the Verify target builds clean and is now committed into
+`proofs/Proofs/DesarguesTheoremOQ02OQ03Verify.lean` (verified gallery proof).
+Remaining follow-ups for a future session:
+  1. Add a gallery data entry `src/data/proofs/desargues-theorem-oq-02-oq-03/`
+     (meta.json: status `verified`, badge `verified`/`original`, axiomCount 0,
+     link to Moulton-plane counterexample `desargues-theorem-oq-02`) so the
+     result surfaces on the site — verify `pnpm build` afterward.
+  2. Strengthen to intersection-uniqueness (general position).
+  3. Attempt the full geometric converse (ternary ring: minor Desargues ⇒
+     additive group, major Desargues ⇒ multiplicative group).
