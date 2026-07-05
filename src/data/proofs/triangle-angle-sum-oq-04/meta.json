@@ -114,5 +114,26 @@
       "Should the finite telescoped trigonometric sums and the Dirichlet kernel closed form be contributed upstream to Mathlib, which currently records only the infinite cosine power series Real.cos_eq_tsum?"
     ]
   },
-  "crossReferences": []
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-06",
+      "relationship": "related",
+      "description": "The complex-exponential companion to this entry's real-variable Dirichlet kernel, and the answer to its second open question. That entry gives closed forms for the finite partial sums ∑ e^{ikθ}, ∑ cos(kθ), and ∑ sin(kθ) via De Moivre's geometric sum — including exactly the conjugate Dirichlet sum ∑_{k=1}^n sin(kx) this entry's OQ-02 asks to package as the conjugate kernel."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "The analytic home of the Dirichlet kernel derived here. D_n(x) = ∑_{k=−n}^n e^{ikx} is the partial-sum kernel whose convolution reconstructs a Fourier series; this entry's first open question — the Fejér kernel as the Cesàro average of the D_n — is the standard next step toward uniform (Cesàro) summability of Fourier series."
+    },
+    {
+      "targetId": "de-moivre-oq-02",
+      "relationship": "related",
+      "description": "A parallel De-Moivre-driven trigonometric-identity development. Where this entry uses the Werner product-to-sum identities to telescope a sum of cosines into the Dirichlet kernel, that entry derives the Chebyshev polynomial (multiple-angle) identities cos nθ = T_n(cos θ) from the same De Moivre machinery — the two together span the product-to-sum and power-to-multiple-angle halves of the finite trigonometric toolkit."
+    },
+    {
+      "targetId": "fourier-series-oq-02-oq-03",
+      "relationship": "related",
+      "description": "An analytic payoff of the finite-sum kernel machinery this entry builds. It studies the sharp constant in the decay bound for Fourier coefficients of Hölder functions — a quantitative refinement of the convergence theory that the Dirichlet (and prospective Fejér) kernels of this entry underpin."
+    }
+  ]
 }
