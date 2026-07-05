@@ -55,3 +55,38 @@ Insights accumulated during research on this problem.
    Delegate to Aristotle when available; else formalize the `∃ monic g h` factor split.
 2. Generalize to `n = 2^k` by induction (the `−4b⁴` obstruction is the inductive step).
 3. Multiplicativity across coprime exponent factors (mirrors Mathlib's odd-case proof).
+
+## Session 2026-07-04 (researcher-6, s03) — algebraic heart of n=4 sufficiency PROVED
+
+**Mode**: REVISIT (continuing n=4 base-case work). **Outcome**: progress (1 new proved
+lemma, Docker-verified; sole file `sorry` unchanged = even n≥4).
+
+### What I did
+- Added `capelli_four_coeff_contra` (**PROVED**, Docker-verified, 0 new sorries): the pure
+  field-algebra lemma that the `(2,2)`-split coefficient relations `p+s=0`, `q+t+ps=0`,
+  `pt+qs=0`, `qt=−a` are contradictory when `a` is not a square and `a∉−4K⁴`. This is the
+  entire *mathematical* content of the n=4 sufficiency (the case split on `p=0`).
+- With `no_root_of_not_square_even` (prior session) covering the linear regime, **both
+  regimes of the n=4 reduction are now backed by proved lemmas.** Only the *polynomial*
+  plumbing (reducible quartic → degree bookkeeping → two monic-quadratic coefficient
+  extraction) remains — no more *mathematics*, just mechanical Lean glue.
+
+### Key findings
+- The proof is char-agnostic: in the `p≠0` branch `(2:K)≠0` is *derived* (else `p²=2q=0`
+  forces `p=0`), so `b:=p/2` is always defined — no `char≠2` hypothesis. Confirmed by build.
+- Lean gotcha: `subst htq` with `htq : t = q` eliminates the RHS variable `q` (keeps `t`);
+  all subsequent references must use `t`. First build failed on stale `q` references.
+- `linear_combination` (not `linarith`, which needs an order) is the right tool for the
+  linear field manipulations over a general field `K`.
+
+### Dead ends / blockers
+- Aristotle MCP endpoint **still DOWN** ("Resource not found" on `prove`) — 2nd session
+  running. The polynomial coefficient-extraction plumbing is the ready delegation target the
+  moment it recovers.
+
+### Next steps
+1. `vahlen_capelli_four`: the *only* remaining piece is polynomial plumbing — (a) reducible
+   monic quartic ⟹ monic factor of degree 1 or 2; (b) coeff extraction for the (2,2) case →
+   feed `capelli_four_coeff_contra`. Aristotle target (needs Mathlib name search); or manual
+   via `Polynomial.coeff_mul` / `Monic.eq_X_add_C` / `ext_iff`.
+2. Then `n = 2^k` induction, then multiplicativity across coprime exponent factors.
