@@ -214,6 +214,67 @@ theorem anticommutator_real_affine (A : Type*) [NormedDivisionRing A] [NormedAlg
   rw [hx, hy] at key
   linear_combination (norm := module) key
 
+/-! ### Frobenius Step 3: the imaginary subspace and its scalar anticommutator
+
+Step 2 splits `A = ℝ ⬝ 1 ⊕ Im A`, where the *imaginary* elements are those whose square
+is a nonpositive real scalar. Two facts pin the Clifford structure down:
+
+* the sum is **direct** — a real multiple of `1` is imaginary only if it is `0`
+  (`eq_zero_of_smul_one_sq_nonpos` / `isImaginary_smul_one_iff`), and
+* the **anticommutator is scalar** — whenever `x²`, `y²` and `(x+y)²` are all real
+  scalars, `x*y + y*x` is the real scalar `(c - a - b) ⬝ 1`
+  (`anticommutator_scalar_of_sq_scalar`), the exact Clifford relation `eᵢeⱼ + eⱼeᵢ ∈ ℝ⬝1`.
+
+Both are fully verified below. The one remaining global step is that `Im A` is closed
+under addition (equivalently, the real-part functional `A → ℝ` is `ℝ`-linear), which
+supplies the hypothesis `(x+y)² = c ⬝ 1` for imaginary `x, y` and turns the scalar
+anticommutator into a genuine positive-definite bilinear form, forcing
+`finrank ℝ (Im A) ∈ {0, 1, 3}`. -/
+
+/-- **Imaginary elements.** `a` is *imaginary* when its square is a nonpositive real
+scalar, `a² = r ⬝ 1` with `r ≤ 0`. Zero is imaginary (`r = 0`); by Step 2b
+(`eq_smul_one_of_sq_eq_nonneg_smul`) a nonzero imaginary element is never a real
+multiple of `1`, so `ℝ ⬝ 1 ∩ Im A = {0}`. -/
+def IsImaginary (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A] (a : A) : Prop :=
+  ∃ r : ℝ, r ≤ 0 ∧ a ^ 2 = r • (1 : A)
+
+/-- **Directness of `A = ℝ ⬝ 1 ⊕ Im A`.** A real multiple `s ⬝ 1` whose square is a
+nonpositive real scalar must be zero: `(s ⬝ 1)² = s² ⬝ 1` with `s² ≥ 0`, and the injective
+`algebraMap ℝ A` forces `s² = r ≤ 0`, hence `s = 0`. -/
+theorem eq_zero_of_smul_one_sq_nonpos (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    (s r : ℝ) (hr : r ≤ 0) (h : (s • (1 : A)) ^ 2 = r • (1 : A)) : s = 0 := by
+  have hexp : (s • (1 : A)) ^ 2 = (s * s) • (1 : A) := by
+    rw [sq, smul_mul_smul_comm, mul_one]
+  rw [hexp] at h
+  have hinj : Function.Injective (algebraMap ℝ A) := RingHom.injective _
+  have hval : s * s = r := by
+    apply hinj
+    rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]; exact h
+  have : s * s = 0 := le_antisymm (hval.le.trans hr) (mul_self_nonneg s)
+  exact mul_self_eq_zero.mp this
+
+/-- The imaginary elements meet the reals only at `0`: `s ⬝ 1` is imaginary iff `s = 0`. -/
+theorem isImaginary_smul_one_iff (A : Type*) [NormedDivisionRing A] [NormedAlgebra ℝ A]
+    (s : ℝ) : IsImaginary A (s • (1 : A)) ↔ s = 0 := by
+  constructor
+  · rintro ⟨r, hr, h⟩; exact eq_zero_of_smul_one_sq_nonpos A s r hr h
+  · rintro rfl; exact ⟨0, le_refl 0, by simp⟩
+
+/-- **The scalar anticommutator (Clifford relation).** If the three squares `x²`, `y²`
+and `(x+y)²` are real scalars `a ⬝ 1`, `b ⬝ 1`, `c ⬝ 1`, then the anticommutator is the
+real scalar `(c - a - b) ⬝ 1`. This is pure polarisation of the square,
+`(x+y)² = x² + (x*y + y*x) + y²`; no division-ring hypothesis beyond the ambient algebra
+is used. For imaginary `x, y` it is exactly the Clifford relation `x*y + y*x ∈ ℝ ⬝ 1`. -/
+theorem anticommutator_scalar_of_sq_scalar (A : Type*) [NormedDivisionRing A]
+    [NormedAlgebra ℝ A] (x y : A) (a b c : ℝ)
+    (hx : x ^ 2 = a • (1 : A)) (hy : y ^ 2 = b • (1 : A))
+    (hxy : (x + y) ^ 2 = c • (1 : A)) :
+    x * y + y * x = (c - a - b) • (1 : A) := by
+  have hpol : (x + y) ^ 2 = x ^ 2 + (x * y + y * x) + y ^ 2 := by
+    simp only [pow_two]; noncomm_ring
+  rw [hx, hy, hxy] at hpol
+  linear_combination (norm := module) -hpol
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
@@ -260,12 +321,17 @@ theorem hurwitz_only_if_ring (A : Type*) [NormedDivisionRing A] [NormedAlgebra �
        (`eq_smul_one_of_sq_eq_nonneg_smul`, from the absence of zero divisors). So the
        imaginary part is genuinely non-real exactly when its square scalar `r` is negative,
        pinning down `Im A := {a | a² ∈ ℝ≤0 • 1}`.
-     STEP 3 (remaining): showing `Im A` is an ℝ-subspace (equivalently, that `x*y + y*x ∈
-       ℝ•1` for imaginary `x, y`) and that `(x, y) ↦ -(x*y + y*x)` is a positive-definite
-       symmetric bilinear form; multiplication then makes `Im A` a Clifford-type space,
-       forcing `finrank ℝ (Im A) ∈ {0, 1, 3}` and thus `finrank ℝ A ∈ {1, 2, 4}`.
-     Step 3 (the global structure/bilinear-form argument) is not yet formalized; Mathlib
-     lacks the Clifford-algebra / bilinear-form machinery to discharge it directly.
+     STEP 3 (partially VERIFIED above): the `A = ℝ•1 ⊕ Im A` decomposition is now direct
+       (`eq_zero_of_smul_one_sq_nonpos` / `isImaginary_smul_one_iff`: `ℝ•1 ∩ Im A = {0}`),
+       and the Clifford relation `x*y + y*x = (c-a-b)•1 ∈ ℝ•1` is verified whenever the
+       three squares `x², y², (x+y)²` are real scalars (`anticommutator_scalar_of_sq_scalar`).
+       What REMAINS is the single global fact that `Im A` is closed under addition
+       (equivalently the real-part functional `A → ℝ` is `ℝ`-linear); this supplies the
+       missing hypothesis `(x+y)² ∈ ℝ•1` for imaginary `x, y`, upgrading the scalar
+       anticommutator to a positive-definite symmetric bilinear form and forcing
+       `finrank ℝ (Im A) ∈ {0, 1, 3}`, hence `finrank ℝ A ∈ {1, 2, 4}`.
+     Step 3's closure-of-`Im A` step is not yet formalized; Mathlib lacks the
+     Clifford-algebra / bilinear-form machinery to discharge it directly.
 
      The commutative branch of Step 3 is now fully verified (`hurwitz_only_if_ring_comm`
      via Gelfand–Mazur), so the sorry below is scoped to the *strictly non-commutative*

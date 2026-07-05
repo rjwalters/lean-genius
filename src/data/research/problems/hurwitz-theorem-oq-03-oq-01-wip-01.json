@@ -16,33 +16,37 @@
     "goal": "finrank R A in {1,2,4,8} for finite-dim NormedDivisionRing A over R (Frobenius: actually {1,2,4})."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-07-04T15:07:19-07:00",
-    "iteration": 2,
-    "focus": "Frobenius Step 3 decomposition mapped; execute hurwitz_only_if_ring_comm then anticommutator keystone when tooling returns.",
+    "phase": "ACT",
+    "since": "2026-07-04",
+    "iteration": 3,
+    "focus": "Frobenius Step 3 advanced: A = ℝ·1 ⊕ Im A now proved DIRECT (eq_zero_of_smul_one_sq_nonpos / isImaginary_smul_one_iff: ℝ·1 ∩ Im A = {0}) and the Clifford relation x*y+y*x = (c-a-b)·1 ∈ ℝ·1 VERIFIED whenever x²,y²,(x+y)² are real scalars (anticommutator_scalar_of_sq_scalar). Remaining sorry scoped to the single global fact that Im A is closed under addition (real-part functional is ℝ-linear).",
     "blockers": [
-      "Local build unsafe: host swap 98% full (SIGBUS-135/host-crash risk)",
-      "Aristotle MCP down: Resource not found on all prove calls"
+      "Non-commutative Frobenius Step 3 residual: proving Im A closed under addition (equivalently re:A→ℝ is ℝ-linear); needs the linear-independence case split on {1,x,y}. Mathlib has no Clifford/Radon-Hurwitz or finite-dim real division algebra classification."
     ],
-    "nextAction": "Commit hurwitz_only_if_ring_comm (provable now via Gelfand-Mazur); then keystone anticommutator lemma.",
+    "nextAction": "Prove Im A closed under +: for imaginary x,y show {1,x,y} dependent ⟹ direct compute; independent ⟹ the (x±y) quadratics force linear coeffs p=p'=0 (polarisation identities (i)/(ii)), giving (x+y)² scalar. Then feed anticommutator_scalar_of_sq_scalar to build the bilinear form.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
+      "total": 1,
+      "currentApproach": 1,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: commutative subcase of Frobenius Step 3 VERIFIED (hurwitz_only_if_ring_comm, 0 sorry, Gelfand-Mazur via NormedField promotion). hurwitz_only_if_ring sorry now scoped to strictly non-commutative case. Non-comm case open (Clifford/Radon-Hurwitz, Mathlib gap).",
+    "progressSummary": "ACT: Frobenius Step 3 materially advanced. A = ℝ·1 ⊕ Im A proved DIRECT and the Clifford anticommutator relation x*y+y*x ∈ ℝ·1 VERIFIED under scalar-square hypotheses. Whole file BUILDS (docker LEAN_SKIP_CACHE, 2.4s, 0 axioms/native_decide, exactly 1 sorry). Remaining sorry = single global step 'Im A closed under addition'. Steps 1-2 + commutative case + directness + scalar anticommutator all 0-sorry.",
     "builtItems": [
-      "hurwitz_only_if_ring_comm in HurwitzOnlyIf.lean (commutative Frobenius subcase, 0 sorry)",
-      "Case split narrowing hurwitz_only_if_ring sorry to non-commutative case"
+      "hurwitz_only_if_ring_comm in HurwitzOnlyIf.lean (commutative Frobenius subcase, 0 sorry, Gelfand-Mazur)",
+      "Frobenius Steps 1-2 VERIFIED: minpoly_natDegree_le_two, exists_quadratic, exists_real_shift_sq_scalar, eq_smul_one_of_sq_eq_nonneg_smul, anticommutator_real_affine",
+      "NEW Step 3 ingredients (0 sorry, VERIFIED via LEAN_SKIP_CACHE docker build): IsImaginary def; eq_zero_of_smul_one_sq_nonpos + isImaginary_smul_one_iff (A = ℝ·1 ⊕ Im A is DIRECT, ℝ·1∩Im={0}); anticommutator_scalar_of_sq_scalar (Clifford relation x*y+y*x=(c-a-b)·1 when x²,y²,(x+y)² scalar)",
+      "Case split narrowing hurwitz_only_if_ring sorry to the single non-commutative closure-of-Im-A step"
     ],
     "insights": [
       "The target file HurwitzOnlyIf.lean has exactly ONE real sorry (hurwitz_only_if_ring); grep -c=4 is inflated by 3 docstring mentions of the word sorry.",
       "The remaining sorry is precisely Frobenius theorem: NormedDivisionRing is associative so finrank in {1,2,4} (subset of {1,2,4,8}); octonions excluded by associativity.",
       "Frobenius Steps 1-2 are already VERIFIED in-file (minpoly_natDegree_le_two, exists_quadratic, exists_real_shift_sq_scalar, eq_smul_one_of_sq_eq_nonneg_smul). Only Step 3 (global structure) remains.",
       "Step 3 keystone is the anticommutator polarization: for imaginary x,y, x*y+y*x in R*1. This single lemma makes re:A->R linear and ImA a subspace; prove it first.",
-      "Commutative subcase of hurwitz_only_if_ring is provable NOW without Step 3: a commutative NormedDivisionRing is a NormedField, so hurwitz_field_case (Gelfand-Mazur) applies via a letI NormedField instance."
+      "Commutative subcase of hurwitz_only_if_ring is provable NOW without Step 3: a commutative NormedDivisionRing is a NormedField, so hurwitz_field_case (Gelfand-Mazur) applies via a letI NormedField instance.",
+      "Step-3 keystone splits cleanly: the anticommutator is scalar for imaginary x,y THE MOMENT (x+y)² is a real scalar — proved by pure polarisation (anticommutator_scalar_of_sq_scalar). So the entire non-commutative gap collapses to 'Im A closed under addition'.",
+      "Directness of A = ℝ·1 ⊕ Im A is elementary: (s·1)²=(s²)·1 with s²≥0, and algebraMap ℝ A is injective (RingHom.injective, ℝ field + A nontrivial), so s²=r≤0 ⟹ s=0. No zero-divisor lemma needed here (only for Step 2b).",
+      "The residual closure lemma is provable via the (x±y) polarisation system: (x+y)²+(x-y)²=2(a+b)·1 and (x+y)²-(x-y)²=2(xy+yx); linear independence of {1,x,y} forces the quadratic linear-coeffs p=p'=0, hence (x+y)² scalar. Dependent case computes directly."
     ],
     "mathlibGaps": [
       "Mathlib (2026-07) has Gelfand-Mazur (Analysis.Normed.Algebra.GelfandMazur) but NOT the classification of finite-dim real division algebras (Frobenius).",
@@ -74,5 +78,5 @@
     "mathlib": []
   },
   "started": "2026-07-04T22:16:23.695Z",
-  "lastUpdate": "2026-07-04T22:35:00.000Z"
+  "lastUpdate": "2026-07-04"
 }
