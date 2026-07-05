@@ -1,25 +1,30 @@
 # Research State: cube-root-3-irrational-oq-02-oq-03
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
 **Since**: 2026-07-04T18:35:41-07:00
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Vahlen–Capelli criterion formalized. Necessity direction complete for all n
+(both the prime-power clause and the `4∣n` Sophie Germain clause). Odd-n full
+criterion proved via Mathlib. Even-n sufficiency is the sole remaining sorry.
 
 ## Active Approach
-None yet.
+`proofs/Proofs/CubeRoot3IrrationalOQ02OQ03.lean` — factorization + degree
+bookkeeping for necessity; reuse of `KummerExtension` for the odd case.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+- Even-`n` sufficiency (deep half of Vahlen–Capelli; Mathlib's own open TODO).
+- Tooling: Docker build + Aristotle both unavailable this session (build-pending).
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Formalize the `2ᵏ`-tower sufficiency: `X^{2ᵏ} - C a` irreducible when
+`a ∉ K²` and (for `k ≥ 2`) `a ∉ -4K⁴`. Then assemble general even `n` by
+combining the odd-part (Mathlib) with the 2-adic part.
