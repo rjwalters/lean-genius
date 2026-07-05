@@ -87,7 +87,8 @@
       "**The first crossing is the square's diagonals**: {{0, 2}, {1, 3}} pairs opposite vertices of a 4-gon, so its blocks must cross — the canonical and unique crossing partition at n = 4.",
       "**Crossing = same parity on Fin 4**: the diagonal partition is exactly the kernel of the parity map x ↦ x.val % 2, which makes every required relation a decidable arithmetic fact and the whole discriminator provable by decide.",
       "**This is the single unit separating Bell from Catalan**: B₄ = 15 counts all partitions, catalan 4 = 14 counts the non-crossing ones, and the difference is precisely this one partition — the concrete obstruction any proof of nonCrossingCount n = catalan n must account for.",
-      "**One of the largest Catalan families**: non-crossing partitions are in bijection with Dyck paths, ballot sequences, binary trees, and polygon triangulations, and form the Kreweras lattice under refinement. The n = 4 crossing {{0, 2}, {1, 3}} is the first place this Catalan world parts from the larger Bell-counted world of all set partitions."
+      "**One of the largest Catalan families**: non-crossing partitions are in bijection with Dyck paths, ballot sequences, binary trees, and polygon triangulations, and form the Kreweras lattice under refinement. The n = 4 crossing {{0, 2}, {1, 3}} is the first place this Catalan world parts from the larger Bell-counted world of all set partitions.",
+      "**Axiom-free by construction — decide, not native_decide**: every arithmetic fact (0 ~ 2, 1 ~ 3, ¬0 ~ 1 and the order chain 0 < 1 < 2 < 3) is discharged by ordinary `decide` on decidable Fin/Nat propositions, whose kernel reduction rests only on the foundational propext / Classical.choice / Quot.sound. Crucially it never uses `native_decide`, so the witness does not incur the Lean.ofReduceBool trust dependency — the n = 4 discriminator is genuinely verified, not merely compiler-evaluated."
     ],
     "prerequisites": [
       "The parent predicate IsNonCrossing and its reformulation isNonCrossing_iff (ballot-problem-oq-04)",
@@ -100,25 +101,41 @@
       "id": "header",
       "title": "Overview and Setup",
       "startLine": 1,
-      "endLine": 25,
+      "endLine": 24,
       "mathContext": "Of the $B_4 = 15$ partitions of a 4-element set exactly one crosses, leaving $\\mathrm{catalan}\\,4 = 14$ non-crossing; the crossing one is the same-parity relation $\\{\\{0,2\\},\\{1,3\\}\\}$.",
       "summary": "Docstring situating the file under the parent ballot-problem-oq-04 (IsNonCrossing on Setoid (Fin n); every partition with n ≤ 3 is non-crossing), and stating the goal: exhibit the unique crossing partition of Fin 4 — the same-parity relation {{0,2},{1,3}} whose interleaving 0 ~ 2, 1 ~ 3, ¬0 ~ 1 is the forbidden IsNonCrossing configuration — as a concrete verified witness for the n = 4 discriminator. Imports Proofs.BallotProblemOQ04, opens the parent namespace."
     },
     {
       "id": "definition",
-      "title": "The Crossing Partition as Same-Parity",
+      "title": "crossing4 as the Same-Parity Kernel",
       "startLine": 26,
-      "endLine": 42,
-      "mathContext": "$\\mathrm{crossing4} = \\ker(x \\mapsto x \\bmod 2)$, blocks $\\{0,2\\}$ and $\\{1,3\\}$.",
-      "summary": "crossing4 is the same-parity equivalence on Fin 4 (kernel of the parity map); crossing4_iff records that membership is having equal parity, and crossing4_blocks exhibits the two interleaving blocks 0 ~ 2, 1 ~ 3 with ¬ 0 ~ 1."
+      "endLine": 29,
+      "mathContext": "$\\mathrm{crossing4} = \\mathrm{Setoid.ker}(x \\mapsto x.\\mathrm{val} \\bmod 2)$, even block $\\{0,2\\}$, odd block $\\{1,3\\}$.",
+      "summary": "Defines crossing4 as the kernel of the parity map x ↦ x.val % 2 — the same-parity equivalence on Fin 4. Encoding the diagonal partition {{0,2},{1,3}} as a Setoid kernel is what turns every subsequent relation into a decidable arithmetic statement."
+    },
+    {
+      "id": "characterization",
+      "title": "Same-Parity Characterization and the Interleaving Blocks",
+      "startLine": 31,
+      "endLine": 41,
+      "mathContext": "$\\mathrm{crossing4}\\,x\\,y \\leftrightarrow x \\bmod 2 = y \\bmod 2$; blocks $0 \\sim 2$, $1 \\sim 3$, $\\neg\\,0 \\sim 1$.",
+      "summary": "crossing4_iff reduces membership to equal parity by Iff.rfl (a definitional unfolding of the kernel). crossing4_blocks then exhibits the interleaving that makes the partition cross: the outer pair 0 ~ 2 and inner pair 1 ~ 3 are each related while ¬ 0 ~ 1, all via `decide` after a `show` exposing the kernel equality form."
     },
     {
       "id": "discriminator",
-      "title": "The n = 4 Discriminator",
-      "startLine": 44,
+      "title": "The n = 4 Discriminator: ¬ IsNonCrossing",
+      "startLine": 43,
+      "endLine": 49,
+      "mathContext": "$\\neg\\,\\mathrm{IsNonCrossing}\\ \\mathrm{crossing4}$, from the quadruple $0 < 1 < 2 < 3$.",
+      "summary": "not_isNonCrossing_crossing4 assumes IsNonCrossing crossing4 and applies it to the ordered quadruple 0 < 1 < 2 < 3 with the related outer/inner pairs 0 ~ 2, 1 ~ 3; this forces 0 ~ 1, contradicting crossing4_blocks. This is the single crossing separating B₄ = 15 from catalan 4 = 14."
+    },
+    {
+      "id": "restatement",
+      "title": "Restatement via the Parent's isNonCrossing_iff",
+      "startLine": 51,
       "endLine": 59,
-      "mathContext": "$\\neg\\,\\mathrm{IsNonCrossing}\\ \\mathrm{crossing4}$.",
-      "summary": "not_isNonCrossing_crossing4 proves the same-parity partition is not non-crossing (the quadruple 0 < 1 < 2 < 3 forces 0 ~ 1, a contradiction), and crossing4_has_crossing restates it as the forbidden existential of isNonCrossing_iff — the unique crossing separating B₄ = 15 from catalan 4 = 14."
+      "mathContext": "$\\exists\\,a<b<c<d,\\ a \\sim c \\wedge b \\sim d \\wedge \\neg\\,a \\sim b$ with $(a,b,c,d) = (0,1,2,3)$.",
+      "summary": "crossing4_has_crossing packages the same quadruple 0 < 1 < 2 < 3 as the explicit existential witness that the parent's isNonCrossing_iff reformulation negates — giving the crossing in the exact positive form other results consume, dual to the negative not_isNonCrossing_crossing4."
     }
   ],
   "conclusion": {
