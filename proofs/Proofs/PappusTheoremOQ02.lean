@@ -322,12 +322,12 @@ theorem desargues_forward_K (A B C A' B' C' : Fin 3 → K)
       (cross3 (cross3 B C) (cross3 B' C'))
       (cross3 (cross3 C A) (cross3 C' A')) := by
   unfold collinear_K
-  set d1 := (threeVecMat A B B').det
-  set d2 := (threeVecMat A B A').det
-  set d3 := (threeVecMat B C C').det
-  set d4 := (threeVecMat B C B').det
-  set d5 := (threeVecMat C A A').det
-  set d6 := (threeVecMat C A C').det
+  set d1 := (threeVecMat A B B').det with hd1
+  set d2 := (threeVecMat A B A').det with hd2
+  set d3 := (threeVecMat B C C').det with hd3
+  set d4 := (threeVecMat B C B').det with hd4
+  set d5 := (threeVecMat C A A').det with hd5
+  set d6 := (threeVecMat C A C').det with hd6
   rw [show cross3 (cross3 A B) (cross3 A' B') =
       fun i => d1 * A' i - d2 * B' i from lagrange_cross_K A B A' B',
     show cross3 (cross3 B C) (cross3 B' C') =
@@ -343,8 +343,8 @@ theorem desargues_forward_K (A B C A' B' C' : Fin 3 → K)
   have hCore : d1 * d3 * d5 - d2 * d4 * d6 =
       (threeVecMat (cross3 A A') (cross3 B B') (cross3 C C')).det *
       (threeVecMat A B C).det := by
-    unfold_let d1 d2 d3 d4 d5 d6
-    simp only [threeVecMat_det_explicit, cross3_zero, cross3_one, cross3_two]; ring
+    simp only [hd1, hd2, hd3, hd4, hd5, hd6,
+      threeVecMat_det_explicit, cross3_zero, cross3_one, cross3_two]; ring
   rw [hLHS, hCore, h_persp, zero_mul, zero_mul]
 
 -- ============================================================
