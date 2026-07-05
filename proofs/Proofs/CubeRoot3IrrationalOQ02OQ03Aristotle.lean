@@ -5,23 +5,23 @@
   Target: `vahlen_capelli_four` — the smallest genuine `4 ∣ n` case of the
   even-sufficiency direction, i.e. the *first* exponent at which the Sophie–Germain
   / `-4·K⁴` obstruction is the essential extra content beyond "a is not a square".
-  Discharging it is the concrete next step toward the sole remaining `sorry` in the
-  registered `CubeRoot3IrrationalOQ02OQ03.lean` (`vahlen_capelli`, the even `n ≥ 4`
-  branch), which coincides with an explicit open `TODO` in
-  `Mathlib/FieldTheory/KummerExtension.lean` (Lang, *Algebra*, VI §9).
+  It is the `4 ∣ n` step toward the sole remaining `sorry` in the registered
+  `CubeRoot3IrrationalOQ02OQ03.lean` (`vahlen_capelli`, whose residual gap is now the
+  pure `2`-power base `X^(2^k) − C a` with `k ≥ 3` and `−a ∈ K²`), which coincides
+  with an explicit open `TODO` in `Mathlib/FieldTheory/KummerExtension.lean`
+  (Lang, *Algebra*, VI §9).
 
-  Why a companion. Both local verification paths are currently unavailable — the
-  Docker build gate is failing on a corrupt containerd content store
-  (`input/output error` on blobs) and the interactive Aristotle endpoint returns
-  `Resource not found`. This companion isolates the obligation as a clean,
-  self-contained `theorem … := by sorry` so the batch proof-search pipeline can
-  attempt it remotely once infrastructure recovers, exactly as the repository's
-  Aristotle workflow intends (`research/SORRY-CLASSIFICATION.md`).
+  Status: PROVED (0 sorry). The full Sophie–Germain quartic factor analysis has since
+  landed in the registered file as `vahlen_capelli_four_suff` — identical hypotheses
+  and conclusion — so this companion obligation reduces to a one-line application of
+  that keystone. The elementary coefficient-matching proof plan recorded below is
+  exactly the argument `vahlen_capelli_four_suff` carries out. (The historical note
+  that the Docker build gate and the interactive Aristotle endpoint were unavailable
+  no longer applies — both have recovered and this file builds under the Docker gate.)
 
   It imports the registered file so the already-proven helpers
-  (`sophie_germain`, `factor_capelli`, `no_root_of_not_square_even`, …) are in
-  scope; none are needed to *state* the target, but they give the prover ready
-  building blocks.
+  (`sophie_germain`, `factor_capelli`, `no_root_of_not_square_even`,
+  `vahlen_capelli_four_suff`, …) are in scope.
 
   ---------------------------------------------------------------------------
   Complete elementary proof plan (checked by hand; all characteristics).
@@ -60,9 +60,12 @@
 
   Either case contradicts the hypotheses, so `f` is irreducible.  ∎
 
-  Once proved, the registered `vahlen_capelli` closes its `by_cases h4 : n = 4`
-  branch with `vahlen_capelli_four (hcond.1 2 Nat.prime_two ⟨2, rfl⟩)
-  (hcond.2 ⟨1, rfl⟩)`, shrinking its sole remaining `sorry` to even `n ≥ 6`.
+  In the registered file the `n = 4` branch of `vahlen_capelli` is already closed
+  directly by the `vahlen_capelli_four_suff` keystone (equivalently `vahlen_capelli_four`
+  here); its residual `sorry` has since been narrowed further — through the `2`-adic
+  peel-off (`vahlen_capelli_even_mul_odd`) and the norm-descent keystone
+  (`two_power_capelli_of_neg_not_square`, the `−a ∉ K²` branch) — to the pure `2`-power
+  base `X^(2^k) − C a`, `k ≥ 3`, in the single sub-case `−a ∈ K²`.
 -/
 
 import Mathlib
@@ -86,7 +89,10 @@ in every characteristic (see the proof plan in the file header). -/
 theorem vahlen_capelli_four {K : Type*} [Field K] {a : K}
     (h1 : ∀ b : K, b ^ 2 ≠ a)
     (h2 : ∀ b : K, a ≠ -(4 * b ^ 4)) :
-    Irreducible (X ^ 4 - C a) := by
-  sorry
+    Irreducible (X ^ 4 - C a) :=
+  -- Discharged by the landed keystone: `vahlen_capelli_four_suff` (registered file)
+  -- has the identical hypotheses and conclusion and carries out the full
+  -- Sophie–Germain quartic factor analysis sketched in the header above.
+  vahlen_capelli_four_suff h1 h2
 
 end CubeRoot3IrrationalOQ02OQ03Aristotle
