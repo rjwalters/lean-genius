@@ -39,6 +39,7 @@ counterpart in the odd theory.
 | `vahlen_capelli_odd` — full `iff` for odd `n` (wraps Mathlib) | **proved** |
 | `not_irreducible_of_proper_dvd` — proper divisor ⟹ reducible (over a field) | **proved** |
 | `vahlen_capelli_necessity` — necessity for **all** `n` (both parities) | **proved** |
+| `vahlen_capelli` (even `n = 2` base case) — sufficiency via prime Kummer | **proved** |
 
 The two obstruction lemmas assemble into `vahlen_capelli_necessity`: their contrapositive
 shows that if either condition fails, the binomial acquires a proper divisor (degree
@@ -48,9 +49,13 @@ field for **every** `n`.
 ## The remaining gap (the genuine open part)
 
 The `even sufficiency` direction — "conditions (1),(2) hold ⟹ `X^n − C a` irreducible"
-for `4 ∣ n` — is the hard Capelli theorem and is **not** in Mathlib. With necessity now
-fully discharged (all `n`) and the odd `iff` complete, `vahlen_capelli` isolates this single
-`even sufficiency` step as the **sole** remaining `sorry`, with a proof sketch.
+for even `n` — is the hard Capelli theorem and is **not** in Mathlib. With necessity now
+fully discharged (all `n`), the odd `iff` complete, and the **even base case `n = 2` now
+proved** (via Mathlib's prime-exponent criterion `X_pow_sub_C_irreducible_iff_of_prime`,
+whose `4 ∤ 2` makes the `−4·K⁴` obstruction vacuous), `vahlen_capelli` isolates the sole
+remaining `sorry` to **even `n ≥ 4`** — the 2-power / `4 ∣ n` regime where the Sophie-Germain
+obstruction is essential and Mathlib's prime-power criterion
+`X_pow_sub_C_irreducible_iff_of_prime_pow` is restricted to *odd* primes.
 
 ## Mathematical heart: the Sophie Germain identity
 
@@ -292,8 +297,19 @@ theorem vahlen_capelli {K : Type*} [Field K] {n : ℕ} (hn : 1 ≤ n) {a : K} :
   · exact vahlen_capelli_necessity hn
   · intro hcond
     rcases Nat.even_or_odd n with _he | ho
-    · -- even sufficiency: the genuine open gap (Lang VI §9 / Mathlib TODO)
-      sorry
+    · -- even sufficiency
+      by_cases h2 : n = 2
+      · -- base case n = 2 (prime exponent): the 4·K⁴ obstruction cannot occur since 4 ∤ 2,
+        -- so the criterion collapses to condition (1) at p = 2, i.e. `a` is not a square.
+        -- This is Mathlib's prime-exponent Kummer criterion `X_pow_sub_C_irreducible_iff_of_prime`.
+        subst h2
+        have hp2 : Nat.Prime 2 := Nat.prime_two
+        exact (X_pow_sub_C_irreducible_iff_of_prime hp2).mpr (hcond.1 2 hp2 (dvd_refl 2))
+      · -- even `n ≥ 4`: the genuine open gap (Lang VI §9 / Mathlib TODO — 2-power exponents,
+        -- where the `−4·K⁴` Sophie-Germain obstruction is the essential extra content and
+        -- Mathlib's prime-power criterion `X_pow_sub_C_irreducible_iff_of_prime_pow` is
+        -- restricted to odd primes).
+        sorry
     · exact (vahlen_capelli_odd ho).mpr hcond
 
 end CubeRoot3IrrationalOQ02OQ03
