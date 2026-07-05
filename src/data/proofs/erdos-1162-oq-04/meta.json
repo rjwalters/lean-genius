@@ -85,5 +85,66 @@
       "Elementary abelian $2$-groups $(\\mathbb{Z}/2\\mathbb{Z})^k$ and the constant $1/16$",
       "Filter limits ($\\mathrm{Tendsto}$) for asymptotic statements"
     ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Axiom Accounting",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "States OQ-04 (the $A_n$ analogue of Erdős #1162), lays out the free-upper / deep-lower decomposition, and documents the self-contained two-axiom accounting (re-declared parent RDT asymptotic plus the single new $A_n$ lower bound). Cites [RoTr25] and [Py93]."
+    },
+    {
+      "id": "sn-baseline",
+      "title": "The S_n Baseline (Parent Result)",
+      "startLine": 59,
+      "endLine": 69,
+      "summary": "Defines $f(n) = \\mathrm{Nat.card}\\,(\\mathrm{Subgroup}\\,(S_n))$ and re-declares the Roney–Dougal–Tracey axiom $\\log f(n)/n^2 \\to 1/16$ locally, so the file does not depend on the import-drifted parent entry."
+    },
+    {
+      "id": "an-count-reduction",
+      "title": "The A_n Count and the Unconditional Reduction",
+      "startLine": 71,
+      "endLine": 101,
+      "summary": "Defines $g(n) = \\mathrm{Nat.card}\\,(\\mathrm{Subgroup}\\,(A_n))$, records $g(n) \\ge 1$ via the trivial subgroup, and proves the key reduction $g(n) \\le f(n)$ UNCONDITIONALLY: $\\mathrm{Subgroup.map}$ along the injective inclusion $A_n \\hookrightarrow S_n$ injects the subgroup lattices, and $\\mathrm{Nat.card}$ is monotone under injections into the finite type $\\mathrm{Subgroup}(S_n)$."
+    },
+    {
+      "id": "log-ratio-transfer",
+      "title": "Log/Ratio Transfer and the Free Upper Half",
+      "startLine": 103,
+      "endLine": 133,
+      "summary": "Monotonicity of $\\log$ ($\\texttt{log\\_numSubgroupsAn\\_le}$) and division by $n^2$ ($\\texttt{An\\_ratio\\_le}$) push $g(n) \\le f(n)$ into the normalized ratio $\\log g(n)/n^2 \\le \\log f(n)/n^2$. Combined with only the parent RDT limit, this gives $\\limsup \\log g(n)/n^2 \\le 1/16$ with NO new axiom ($\\texttt{An\\_ratio\\_eventually\\_lt}$)."
+    },
+    {
+      "id": "lower-bound-axiom",
+      "title": "The Single New Axiom: the A_n Lower Bound",
+      "startLine": 135,
+      "endLine": 144,
+      "summary": "Axiomatizes $\\liminf \\log g(n)/n^2 \\ge 1/16$ as $\\texttt{An\\_lower\\_bound}$ — the only genuinely new input. Justified because $A_n$ retains the dominant elementary abelian 2-subgroups (even-weight products of disjoint transpositions, rank $\\lfloor n/2\\rfloor-1$ on $\\approx n/4$ support), keeping the constant at $1/16 = (1/4)^2$."
+    },
+    {
+      "id": "asymptotic-pyber",
+      "title": "The A_n Asymptotic and Pyber-Analog",
+      "startLine": 146,
+      "endLine": 187,
+      "summary": "Combines the free upper half with the one lower-bound axiom to prove $\\log g(n) = (1/16 + o(1))n^2$ ($\\texttt{alternating\\_asymptotic}$, $\\mathrm{Tendsto}$ form), then derives the Pyber-analog $\\tfrac1{32}n^2 \\le \\log g(n) \\le \\tfrac3{32}n^2$ for large $n$ ($\\texttt{pyber\\_alternating}$) as a theorem with no extra axiom."
+    },
+    {
+      "id": "small-cases",
+      "title": "Small Cases (Sanity Checks)",
+      "startLine": 189,
+      "endLine": 203,
+      "summary": "Records $g(1)=1$, $g(2)=1$, $g(3)=2$ ($A_3 \\cong \\mathbb{Z}/3$), $g(4)=10$ ($A_4$ of order 12) informally, noting the contrast $g(2)=1$ vs $f(2)=2$. A $\\texttt{native\\_decide}$ check is deliberately omitted to avoid introducing the $\\texttt{Lean.ofReduceBool}$ axiom and keep the axiom set to exactly two."
+    }
+  ],
+  "conclusion": {
+    "summary": "For $g(n) = |\\{H \\le A_n\\}|$, this entry establishes $\\log g(n) = (\\tfrac{1}{16}+o(1))n^2$ — the same leading constant $1/16$ as the symmetric-group count $f(n)$. The architecture is deliberately asymmetric: the reduction $g(n) \\le f(n)$ and the entire upper half of the asymptotic are unconditional theorems (the upper bound is inherited for free from the parent Roney–Dougal–Tracey $S_n$ result via an injective subgroup-lattice map), while only the matching lower bound is axiomatized. The file is self-contained, carrying exactly two axioms.",
+    "implications": "The result confirms that passing from $S_n$ to its index-2 subgroup $A_n$ does not change the leading-order subgroup-counting constant: the $n^2$ growth is driven by elementary abelian 2-subgroups supported on $\\approx n/4$ points, and $A_n$ still contains these (even-weight products of disjoint transpositions). This mirrors the general principle that subgroup enumeration in $S_n$ and $A_n$ is dominated by the same $2$-group substructure. The proof also illustrates a reusable Lean pattern — transferring an asymptotic across an injective group homomorphism costs no axioms, isolating the genuine mathematical difficulty (here, the lower bound) as a single, honestly-accounted assumption.",
+    "openQuestions": [
+      "Can the axiomatized $A_n$ lower bound $\\liminf \\log g(n)/n^2 \\ge 1/16$ be proved in Lean by formalizing the elementary abelian 2-subgroup construction (even-weight disjoint-transposition products) and its Gaussian-binomial subgroup count?",
+      "What is the second-order term? For $S_n$ the sharpened form of RDT suggests corrections beyond $(1/16)n^2$; does $A_n$ share the same lower-order asymptotics, or does the index-2 restriction perturb them?",
+      "Do the analogous constants hold for other families — e.g. the number of subgroups of $\\mathrm{GL}_n(\\mathbb{F}_q)$, or of the hyperoctahedral / other Weyl groups — and can the same free-upper / deep-lower split be applied there?",
+      "Is there an exact or near-exact formula for the small-to-moderate values of $g(n)$ (beyond $g(4)=10$), and where does the elementary-abelian-2 contribution begin to dominate the count numerically?"
+    ]
   }
 }
