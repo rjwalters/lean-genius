@@ -333,8 +333,16 @@ theorem two_mul_rothNumber_le {N : ℕ} [NeZero N] (h : Nat.Coprime 3 N) :
   rwa [rothNumber_three] at hmul
 
 -- ═══════════════════════════════════════════════════════════════════
--- PART III: QUANTITATIVE BOUNDS (STATEMENTS)
+-- PART III: QUANTITATIVE BOUNDS (AXIOMATIZED EXTERNAL RESULTS)
 -- ═══════════════════════════════════════════════════════════════════
+--
+-- The four deep quantitative Roth bounds below (Roth 1953, Behrend 1946,
+-- Bloom–Sisask 2020, Kelley–Meka 2023) are published results whose full Lean
+-- formalization is out of scope. They were previously stated as `theorem ... := by
+-- sorry`, which misleadingly presents them as provable here. They are now recorded
+-- as `axiom` declarations — honest, disclosed assumptions in the sense of the
+-- project's Axiom Integrity Policy — so the file is sorry-free and its assumption
+-- count (4) is explicit. Parts I–II above remain fully proved and axiom-free.
 
 /-- **Roth's quantitative bound** (1953): r₃(N) ≤ C·N/log(log N).
 
@@ -343,10 +351,9 @@ theorem two_mul_rothNumber_le {N : ℕ} [NeZero N] (h : Nat.Coprime 3 N) :
     reaches O(1), so density must have reached 1. This forces
     ⌊100/δ²⌋ ≥ ⌊log₂(log N)⌋, giving δ ≤ C/√(log log N).
     Roth's more careful analysis (tracking M ≥ N^{2/3}) gives C/log(log N). -/
-theorem roth_quantitative_upper_bound :
+axiom roth_quantitative_upper_bound :
     ∃ (C : ℝ), C > 0 ∧ ∀ N : ℕ, 3 ≤ N →
-      (rothNumber N : ℝ) ≤ C * N / Real.log (Real.log N) := by
-  sorry
+      (rothNumber N : ℝ) ≤ C * N / Real.log (Real.log N)
 
 /-- **Behrend's lower bound** (1946): r₃(N) ≥ N·exp(-c·√(log N)).
 
@@ -357,20 +364,18 @@ theorem roth_quantitative_upper_bound :
     sphere forces a = c, hence a = b = c).
 
     This lower bound has remained essentially optimal for 80 years. -/
-theorem behrend_lower_bound :
+axiom behrend_lower_bound :
     ∃ (c : ℝ), c > 0 ∧ ∀ N : ℕ, 3 ≤ N →
-      (rothNumber N : ℝ) ≥ N * Real.exp (-c * Real.sqrt (Real.log N)) := by
-  sorry
+      (rothNumber N : ℝ) ≥ N * Real.exp (-c * Real.sqrt (Real.log N))
 
 /-- **Bloom-Sisask bound** (2020): r₃(N) ≤ N/(log N)^{1+c}.
 
     Broke the long-standing "logarithmic barrier" in Roth's theorem.
     Previous bounds (Bourgain 1999, 2008; Sanders 2011) could not
     surpass N/(log N)^{1-ε}. -/
-theorem bloom_sisask_bound :
+axiom bloom_sisask_bound :
     ∃ (c : ℝ), c > 0 ∧ ∀ N : ℕ, 3 ≤ N →
-      (rothNumber N : ℝ) ≤ N / (Real.log N) ^ (1 + c) := by
-  sorry
+      (rothNumber N : ℝ) ≤ N / (Real.log N) ^ (1 + c)
 
 /-- **Kelley-Meka bound** (2023): r₃(N) ≤ N·exp(-c·(log N)^{1/12}).
 
@@ -379,10 +384,9 @@ theorem bloom_sisask_bound :
 
     Gap remaining: Behrend gives exp(-c√(log N)), Kelley-Meka gives
     exp(-c(log N)^{1/12}). Closing this gap is a major open problem. -/
-theorem kelley_meka_upper_bound :
+axiom kelley_meka_upper_bound :
     ∃ (c : ℝ), c > 0 ∧ ∀ N : ℕ, 3 ≤ N →
-      (rothNumber N : ℝ) ≤ N * Real.exp (-c * (Real.log N) ^ (1/12 : ℝ)) := by
-  sorry
+      (rothNumber N : ℝ) ≤ N * Real.exp (-c * (Real.log N) ^ (1/12 : ℝ))
 
 -- NOTE: The previously stated crude_sqrt_bound (r₃(N) ≤ 10√N) was FALSE.
 -- Behrend's lower bound gives r₃(N) ≥ N·exp(-c√(log N)) >> √N for large N.
