@@ -1,0 +1,49 @@
+{
+  "slug": "abel-ruffini-galois-extensions-oq-04-oq-03",
+  "title": "Zassenhaus Butterfly Lemma for Subgroups (Schreier Refinement Engine)",
+  "tier": "B",
+  "significance": 7,
+  "status": "in-progress",
+  "phase": "ACT",
+  "started": "2026-07-04",
+  "path": "proofs/Proofs/AbelRuffiniGaloisExtensionsOQ04OQ03.lean",
+  "problemStatement": "Formalize the Zassenhaus butterfly lemma (Schmetterlingslemma, 1934) for subgroups in Lean 4 / Mathlib: for A ⊴ A' and B ⊴ B', the two tower quotients A(A'∩B')/A(A'∩B) and B(B'∩A')/B(B'∩A) are isomorphic, both being isomorphic to the common middle quotient (A'∩B')/((A∩B')(A'∩B)). This is the combinatorial engine behind Schreier's refinement theorem and is not yet in Mathlib (identified as a gap in OQ-04, the Jordan-Hölder formalization).",
+  "knowledge": {
+    "insights": [
+      "The full butterfly reduces to a SINGLE 'half' isomorphism U_A/L_A ≃* I/M (I = A'∩B', M = (A∩B')⊔(A'∩B)); the second tower is the same lemma with A↔B swapped, and the butterfly follows by composing through the common middle quotient via symmetry/transitivity of the iso relation. This reduction (zassenhaus_butterfly) is written and, modulo the half-iso, needs only inf_comm/sup_comm rewrites (middle_symm, inter_symm).",
+      "Mathlib now HAS the Dedekind modular law (the historical blocker): Subgroup.mul_inf_assoc / Subgroup.inf_mul_assoc give ↑A * ↑(B ⊓ C) = ↑A * ↑B ∩ ↑C for A ≤ C. Applying inf_mul_assoc with A'⊓B ≤ A'⊓B' computes the kernel of the surjection as exactly M = (A∩B')⊔(A'∩B).",
+      "The half-iso is provable by the SAME technique OQ-04 used for Noether's second_iso: build φ = mk' ∘ inclusion : (A'⊓B') →* U_A ⧸ L_A.subgroupOf U_A, show surjectivity via mem_sup + relative normality of A in A', and identify ker φ = M via the Dedekind law; then QuotientGroup.quotientKerEquivOfSurjective.",
+      "M ⊴ I is fully provable: A∩B' and A'∩B are each normal in A'∩B' (restrictions of A ⊴ A' and B ⊴ B' via normal_subgroupOf_of_le_normalizer), and a join of normal subgroups is normal (subgroupOf_sup + instance)."
+    ],
+    "builtItems": [
+      "proofs/Proofs/AbelRuffiniGaloisExtensionsOQ04OQ03.lean — new file (build-pending; both build tools down)",
+      "zassenhaus_butterfly — full butterfly stated + reduced to zassenhaus_half via giso_trans/giso_symm and middle_symm/inter_symm (assembly written, unverified)",
+      "middle_normal — M ⊴ I, fully written using OQ-04's normalizer idioms",
+      "middle_le_inter, tower_le, inter_symm, middle_symm — structural containments/symmetry (written)",
+      "giso_symm, giso_trans — symmetry/transitivity of GroupQuotIso re-proved locally"
+    ],
+    "mathlibGaps": [
+      "The Zassenhaus butterfly lemma itself is absent from Mathlib (the target of this work).",
+      "Schreier refinement theorem (any two normal series have equivalent refinements) is absent and would follow from the butterfly lemma."
+    ],
+    "nextSteps": [
+      "Discharge the single remaining sorry zassenhaus_half via the second-iso surjection route (Aristotle target once the 404 clears, or manual once Docker builds).",
+      "Verify the scaffold compiles once the containerd/Docker build blackout (#33336) is resolved — statements and assembly are written but unverified.",
+      "After the half-iso: derive Schreier refinement (equivalent refinements of two normal series) from repeated butterfly application."
+    ],
+    "progressSummary": "PROGRESS (build-pending): formalized the Zassenhaus butterfly STATEMENT and its reduction to a single half-isomorphism, plus the fully-written M ⊴ I normality and structural lemmas. One core sorry (zassenhaus_half) remains. Unverified — Docker build (containerd I/O) and Aristotle (404) both down this session."
+  },
+  "knownResults": [
+    "OQ-04 (parent) instantiated JordanHolderLattice for Subgroup G and proved Noether's second isomorphism theorem (second_iso) with the exact surjection technique this lemma needs.",
+    "Zassenhaus (1934) proved the butterfly lemma; Schreier (1928) used equivalent refinements to prove Jordan-Hölder."
+  ],
+  "references": [
+    "H. Zassenhaus, 'Zum Satz von Jordan-Hölder-Schreier', Abh. Math. Sem. Univ. Hamburg 10 (1934).",
+    "O. Schreier, 'Über den Jordan-Hölderschen Satz', 1928."
+  ],
+  "relatedProofs": [
+    "abel-ruffini-galois-extensions-oq-04",
+    "abel-ruffini-galois-extensions"
+  ],
+  "tags": ["seeker-selected", "group-theory", "mathlib-gap", "jordan-holder", "completion"]
+}
