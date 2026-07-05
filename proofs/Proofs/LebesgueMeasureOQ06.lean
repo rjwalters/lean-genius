@@ -561,20 +561,20 @@ theorem hausdorff_free_subgroup :
     have h2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
     nlinarith [h2]
   -- φ = rotation by arccos(1/3) around the z-axis
-  let Mφ : Matrix (Fin 3) (Fin 3) ℝ :=
+  set Mφ : Matrix (Fin 3) (Fin 3) ℝ :=
     !![(1 : ℝ) / 3, -(2 * Real.sqrt 2 / 3), 0;
        2 * Real.sqrt 2 / 3, (1 : ℝ) / 3, 0;
-       0, 0, 1]
+       0, 0, 1] with hMφ_def
   -- ψ = rotation by arccos(1/3) around the x-axis
-  let Mψ : Matrix (Fin 3) (Fin 3) ℝ :=
+  set Mψ : Matrix (Fin 3) (Fin 3) ℝ :=
     !![1, 0, 0;
        0, (1 : ℝ) / 3, -(2 * Real.sqrt 2 / 3);
-       0, 2 * Real.sqrt 2 / 3, (1 : ℝ) / 3]
+       0, 2 * Real.sqrt 2 / 3, (1 : ℝ) / 3] with hMψ_def
   -- Orthogonality: Mφᵀ * Mφ = 1 (rotation matrices are orthogonal)
   -- Each entry follows from c² + s² = 1 and cs - sc = 0
   have hφ_orth : Mφᵀ * Mφ = 1 := by
     have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    unfold_let Mφ
+    simp only [hMφ_def]
     ext i j
     fin_cases i <;> fin_cases j <;>
       simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
@@ -585,7 +585,7 @@ theorem hausdorff_free_subgroup :
   -- Mφ * Mφᵀ = 1
   have hφ_orth' : Mφ * Mφᵀ = 1 := by
     have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    unfold_let Mφ
+    simp only [hMφ_def]
     ext i j
     fin_cases i <;> fin_cases j <;>
       simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
@@ -596,7 +596,7 @@ theorem hausdorff_free_subgroup :
   -- Mψᵀ * Mψ = 1
   have hψ_orth : Mψᵀ * Mψ = 1 := by
     have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    unfold_let Mψ
+    simp only [hMψ_def]
     ext i j
     fin_cases i <;> fin_cases j <;>
       simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
@@ -607,7 +607,7 @@ theorem hausdorff_free_subgroup :
   -- Mψ * Mψᵀ = 1
   have hψ_orth' : Mψ * Mψᵀ = 1 := by
     have hs2 : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
-    unfold_let Mψ
+    simp only [hMψ_def]
     ext i j
     fin_cases i <;> fin_cases j <;>
       simp only [Matrix.transpose_apply, Matrix.mul_apply, Matrix.one_apply,
@@ -764,7 +764,7 @@ theorem hausdorff_free_subgroup :
                    φ_lin, ψ_lin, LinearEquiv.ofLinear_apply, LinearEquiv.ofLinear_symm_apply,
                    Matrix.toEuclideanLin_apply, WithLp.ofLp_toLp,
                    Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_three] <;>
-        unfold_let Mφ Mψ <;>
+        simp only [hMφ_def, hMψ_def] <;>
         simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
                    Matrix.head_fin_const, Matrix.cons_val_fin_one,
                    Matrix.transpose_apply, Matrix.of_apply] <;>
