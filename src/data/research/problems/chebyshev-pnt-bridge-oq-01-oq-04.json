@@ -1,0 +1,65 @@
+{
+  "slug": "chebyshev-pnt-bridge-oq-01-oq-04",
+  "title": "Multinomial Kummer carry bound: naive p^{v_p} ≤ kn is FALSE; correct bound (kn)^{k-1}",
+  "tier": "B",
+  "significance": 5,
+  "tractability": 6,
+  "status": "in-progress",
+  "phase": "ACT",
+  "path": "full",
+  "started": "2026-07-04T00:00:00.000Z",
+  "lastUpdate": "2026-07-04T00:00:00.000Z",
+  "completed": false,
+  "problemStatement": {
+    "formal": "For a prime p and the central multinomial coefficient C(kn; n,...,n) (k blocks of size n): the conjectured bound p^{v_p} ≤ kn is FALSE for k ≥ 3; the correct sharp clean bound is p^{v_p} ≤ (kn)^{k-1}, with v_p ≤ (k-1)·⌊log_p(kn)⌋.",
+    "plain": "The binomial fact p^{v_p(C(2n,n))} ≤ 2n does NOT generalize to k ≥ 3 blocks as p^{v_p} ≤ kn, because the per-digit Kummer carry lies in {0,...,k-1} rather than {0,1}. The corrected bound is p^{v_p} ≤ (kn)^{k-1}."
+  },
+  "knownResults": [
+    "Binomial: p^{v_p(C(2n,n))} ≤ 2n (gallery chebyshev-pnt-bridge-oq-01, via Nat.pow_factorization_choose_le).",
+    "Multinomial Legendre/Kummer identity (p-1)·v_p(multinomial) + s_p(N) = Σ s_p(aᵢ) — verified in Erdos729LegendreMultinomial.lean (0 sorries, 0 axioms)."
+  ],
+  "knowledge": {
+    "insights": [
+      "The conjectured multinomial bound p^{v_p(C(kn;n,...,n))} ≤ kn is FALSE for every k ≥ 3. The binomial proof relies on each Kummer carry digit ⌊2n/p^i⌋ − 2⌊n/p^i⌋ ∈ {0,1}; for k blocks the per-digit carry lies in {0,1,...,k-1}.",
+      "Explicit minimal counterexamples: k=3,n=2 (N=6): C(6;2,2,2)=90, 3^{v_3}=9 > 6. k=4,n=1 (N=4): C(4;1,1,1,1)=24, 2^{v_2}=8 > 4.",
+      "Numerically the naive bound fails for k≥3 at essentially every n (verified k≤7, n≤14, all primes p ≤ N).",
+      "Corrected sharp clean bound: p^{v_p(C(kn;n,...,n))} ≤ (kn)^{k-1}, from v_p ≤ (k-1)·⌊log_p(kn)⌋. Verified numerically (k≤7, n≤14): 0 failures; worst observed v_p/log_p(N) ratio ≈ 3.47 < k-1.",
+      "The per-digit carry identity: with d=p^i, ⌊kn/d⌋ − k⌊n/d⌋ = ⌊k·(n mod d)/d⌋ ∈ [0, k-1] (since k·(n mod d) < k·d).",
+      "Chebyshev bridge survives: C(kn;n,...,n) ≤ (kn)^{(k-1)·π(kn)} and ≥ k^{kn}/poly, giving π(kn) ≳ (kn)·log k / ((k-1)·log kn); recovers parent bound at k=2."
+    ],
+    "builtItems": [
+      "MultinomialKummerBound.lean: naive_multinomial_bound_false (¬∀ p n k, p^{v_p} ≤ kn) — witnessed by k=3,n=2, DRAFT via native_decide on multinomial value + factorization.",
+      "MultinomialKummerBound.lean: carry_digit_le (⌊kn/p^i⌋ − k⌊n/p^i⌋ ≤ k-1) — full proof drafted (mul_add_div + div_lt_iff_lt_mul), unverified (no build).",
+      "MultinomialKummerBound.lean: central_multinomial_factorization (v_p(mult) = v_p((kn)!) − k·v_p(n!)) — full proof drafted via Nat.multinomial_spec, unverified.",
+      "MultinomialKummerBound.lean: pow_factorization_central_multinomial_le (p^{v_p} ≤ (kn)^{k-1}) — top-level assembly fully drafted, reduces to central_multinomial_val_le_log.",
+      "MultinomialKummerBound.lean: legendre_factorial_val — copied from verified parent ChebyshevPNTBridgeOQ01."
+    ],
+    "mathlibGaps": [
+      "No multinomial analogue of Nat.factorization_choose_le / Nat.pow_factorization_choose_le in Mathlib (binomial only).",
+      "Mathlib's Nat.multinomial API is thin; the carry/valuation bound must be assembled from Nat.multinomial_spec + Legendre."
+    ],
+    "nextSteps": [
+      "Prove the one remaining sorry central_multinomial_val_le_log (v_p ≤ (k-1)·log_p(kn)) — blueprint in file; ideal Aristotle target once the 404 blackout lifts.",
+      "Verify the drafted file once Docker/Aristotle is restored (native_decide counterexamples + carry_digit_le + factorization lemma).",
+      "Derive the explicit π(kn) lower bound corollary from pow_factorization_central_multinomial_le + multinomial lower bound k^{kn}/(poly)."
+    ],
+    "progressSummary": "PROGRESS: disproved the pool's conjectured bound p^{v_p} ≤ kn (counterexamples k≥3); stated + drafted the corrected bound p^{v_p} ≤ (kn)^{k-1} with top-level proof assembled and 2 of 3 supporting lemmas fully drafted; 1 Legendre-sum grind lemma remains (blueprinted). Build-independent session (Aristotle 404, Docker down).",
+    "markdown": ""
+  },
+  "references": [
+    "Nathanson, Elementary Methods in Number Theory (Chebyshev bounds).",
+    "Mathlib: Nat.pow_factorization_choose_le, Nat.multinomial_spec, Nat.multinomial_pos, sub_one_mul_padicValNat_factorial."
+  ],
+  "relatedProofs": [
+    "chebyshev-pnt-bridge-oq-01",
+    "erdos-729 (Erdos729LegendreMultinomial.lean)",
+    "infinitude-primes"
+  ],
+  "currentState": "ACT: corrected-bound draft with 1 remaining grind sorry",
+  "tags": [
+    "number-theory",
+    "analytic-number-theory",
+    "kummer",
+    "chebyshev"
+  ]
+}
