@@ -21,9 +21,9 @@
     "phase": "ACT",
     "since": "2026-07-04",
     "iteration": 4,
-    "focus": "Explicit stars-and-bars bridge CLOSED: card_finset_sym_eq_choose proves (A.sym h).card = C(|A|+h-1, h) by exhibiting A.sym h as the injective image of univ : Finset (Sym ↥A h) under Sym.map Subtype.val (injective via Subtype.val_injective; onto via Sym.attach + Sym.attach_map_coe), then transporting Sym.card_sym_eq_choose across it and using Fintype.card_coe. This removes the honest-quantity caveat from Sections VII-VIII: added closed-form corollaries card_hSumset_eq_choose_of_isBhSet (saturation) and choose_le_of_isBhSet (density bound C(|A|+h-1,h) ≤ hN+1). 0 sorry, 0 axiom. Build-pending: Docker infra corrupt this session (containerd content-store I/O error on the lean4 image blob), so verification is by static lemma-name/typing analysis against current Mathlib source, not a compile.",
+    "focus": "Explicit stars-and-bars bridge CLOSED and NOW BUILD-VERIFIED: card_finset_sym_eq_choose proves (A.sym h).card = C(|A|+h-1, h) by exhibiting A.sym h as the injective image of univ : Finset (Sym ↥A h) under Sym.map Subtype.val (injective via Subtype.val_injective; onto via Sym.attach + Sym.attach_map_coe), then transporting Sym.card_sym_eq_choose across it and using Fintype.card_coe. This removes the honest-quantity caveat from Sections VII-VIII: added closed-form corollaries card_hSumset_eq_choose_of_isBhSet (saturation) and choose_le_of_isBhSet (density bound C(|A|+h-1,h) ≤ hN+1). 0 sorry, 0 axiom. VERIFIED 2026-07-04: `lake build Proofs.Erdos153OQ03` completed successfully (7743 jobs) after repairing Docker (containerd content-store corruption cleared by a Docker Desktop restart; built in fresh private cache volumes to bypass the leantar-corrupt shared volumes). `#print axioms` on the five headline theorems reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no ofReduceBool. Only 4 cosmetic linter warnings (unreachable `exact Multiset.cons_swap` fallback branches in a defensive `first | rfl | ...` at lines 225/232).",
     "blockers": [],
-    "nextAction": "Confirm the build once Docker recovers (defeq check on `exact Sym.attach_map_coe s` and the closing rw chain). Then attempt the actual gap-variance statement via the Sidon (isSidon_of_isBhSet) reduction — the genuinely open frontier.",
+    "nextAction": "Build confirmed. Attempt the actual gap-variance statement via the Sidon (isSidon_of_isBhSet) reduction + the now-closed-form density bound choose_le_of_isBhSet — the genuinely open frontier. (Optional cleanup: silence the two unreachable-tactic warnings by replacing the redundant `first | rfl | exact Multiset.cons_swap _ _ _` with plain `rfl` at lines 225/232.)",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,
@@ -95,8 +95,8 @@
     {
       "path": "Proofs/Erdos153OQ03.lean",
       "filename": "Erdos153OQ03.lean",
-      "lineCount": 458,
-      "theoremCount": 16,
+      "lineCount": 616,
+      "theoremCount": 22,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
