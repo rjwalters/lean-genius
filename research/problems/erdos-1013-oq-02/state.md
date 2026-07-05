@@ -4,11 +4,26 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-05
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
-Promoted the frequency straddle to the **honest `Filter.liminf`/`Filter.limsup` form** in
-`Erdos1013UnconditionalRatio.lean`. New theorems (0 sorry / 0 axiom, Docker lean 4.26.0):
+Added the unconditional **polynomial growth-exponent bracket** to
+`Erdos1013UnconditionalRatio.lean`. New theorems (0 sorry / 0 axiom, Docker lean 4.26.0
+VERIFIED):
+- `log_div_log_eventually_le` (general): for polynomially bounded `h` of degree `d`, the
+  normalized log `log(h k)/log k ≤ d + ε` eventually — i.e. the *upper growth exponent* is
+  `≤ d`.  This refines the engine `log(h k)/k → 0` (subexponential) to *sub-degree-`d`
+  polynomial* growth; the only slack is the vanishing correction `log B/log k → 0`.
+- `h3_log_exponent_between_two_three` (`h₃`): from the exact bounds `k² ≤ h₃(k) ≤ k³`
+  alone, the sharp bracket `2 ≤ log(h₃ k)/log k ≤ 3` eventually (no `ε` — the bounding
+  monomials have leading coefficient `1`, so `log` of each bound is exactly `2·log k`,
+  `3·log k`).  This is the exponent-level shadow of the conjectured scale `h₃(k) ≍ k²·log k`
+  (exponent `2`, sub-polynomial `log k` correction), unconditional and independent of (⋆).
+
+File now 20 theorems, 501 lines. `#print axioms` = propext / Classical.choice / Quot.sound.
+
+## Prior Iteration (4)
+Promoted the frequency straddle to the **honest `Filter.liminf`/`Filter.limsup` form**:
 `ratio_liminf_le_one`, `one_le_ratio_limsup`, `ratio_liminf_le_one_le_limsup`, and the `h₃`
 specialisation `h3_ratio_liminf_le_one_le_limsup`. Given the ratio is eventually two-sided
 bounded (the `[1/2,2]` bounded-ratio leaf supplies this cobounded side-condition), we now
