@@ -164,16 +164,16 @@ private theorem prime_not_dvd_choose_shift {p : ℕ} (hp : p.Prime) {a : ℕ} (h
     {m : ℕ} (hm_pos : 1 ≤ m) :
     ¬(p ∣ Nat.choose (p ^ a * m - 1) (p ^ a - 1)) := by
   -- Setup: N = p^a*m - 1, K = p^a - 1, N - K = p^a*(m-1)
-  set N := p ^ a * m - 1
-  set K := p ^ a - 1
+  set N := p ^ a * m - 1 with hN_def
+  set K := p ^ a - 1 with hK_def
   have hp2 : 2 ≤ p := hp.two_le
   have hpa_pos : 0 < p ^ a := Nat.pos_of_ne_zero (by positivity)
-  have hKN : K ≤ N := by unfold_let K N; omega
-  have hNK_eq : N - K = p ^ a * (m - 1) := by unfold_let N K; omega
+  have hKN : K ≤ N := by simp only [hK_def, hN_def]; omega
+  have hNK_eq : N - K = p ^ a * (m - 1) := by simp only [hN_def, hK_def]; omega
   have hC_pos : 0 < Nat.choose N K := Nat.choose_pos hKN
   -- Use Kummer: multiplicity p (C(N,K)) = |{carries}|
-  set b := Nat.log p N + 2
-  have hNb : Nat.log p N < b := by unfold_let b; omega
+  set b := Nat.log p N + 2 with hb_def
+  have hNb : Nat.log p N < b := by simp only [hb_def]; omega
   have h_kummer := Nat.Prime.multiplicity_choose hp hKN hNb
   -- Step 1: Show the carry set is empty (no carry at any position)
   have h_no_carry : ∀ i, i ∈ Finset.Ico 1 b →
@@ -218,7 +218,7 @@ private theorem prime_not_dvd_choose_shift {p : ℕ} (hp : p.Prime) {a : ℕ} (h
               Nat.mul_le_mul_left _ (by omega)
           _ = p ^ a * p ^ (i - a) - p ^ a * 1 := by rw [Nat.mul_sub_one]
           _ = p ^ i - p ^ a := by rw [← pow_add, hia_sub, mul_one]
-      unfold_let K; omega
+      simp only [hK_def]; omega
   -- Step 2: Empty carry set → multiplicity 0 → ¬(p | C(N,K))
   have h_filter_empty : ((Finset.Ico 1 b).filter fun i =>
       p ^ i ≤ K % p ^ i + (N - K) % p ^ i) = ∅ := by
@@ -279,18 +279,18 @@ theorem f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
   -- Key insight: just use k = P (the largest prime factor, with exponent 1).
   -- Since n is composite, n/P ≥ 2, so P ∈ [2, n/2].
   -- gcd(n, C(n, P)) = n/P by gcd_choose_prime_pow_eq.
-  set P := largestPrimeFactor n
+  set P := largestPrimeFactor n with hP_def
   have h4 : 4 ≤ n := by
     -- n ≥ 2 and not prime → n ≥ 4
     interval_cases n <;> simp_all [Nat.Prime] <;> omega
   have hP_prime : P.Prime := by
-    unfold_let P; unfold largestPrimeFactor; rw [dif_pos hn2]
+    simp only [hP_def]; unfold largestPrimeFactor; rw [dif_pos hn2]
     exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).1
   have hP_dvd : P ∣ n := by
-    unfold_let P; unfold largestPrimeFactor; rw [dif_pos hn2]
+    simp only [hP_def]; unfold largestPrimeFactor; rw [dif_pos hn2]
     exact (Nat.mem_primeFactors.mp (Finset.max'_mem _ _)).2.1
   -- n/P ≥ 2 since n is composite (if n/P = 1 then n = P is prime)
-  set q := n / P
+  set q := n / P with hq_def
   have hPq : n = P * q := (Nat.div_mul_cancel hP_dvd).symm ▸ (mul_comm P q ▸ rfl)
   have hq_ge2 : 2 ≤ q := by
     by_contra h; push_neg at h
@@ -316,7 +316,7 @@ theorem f_upper_bound (n : ℕ) (hn : ¬n.Prime) (hn2 : 2 ≤ n) :
         have h_eq : P * q = P ^ 1 * q := by rw [pow_one]
         conv_lhs => rw [show n = P * q from by omega, h_eq]
         exact gcd_choose_prime_pow_eq hP_prime (le_refl 1) (by omega : 1 ≤ q)
-    _ = n / largestPrimeFactor n := by unfold_let q P
+    _ = n / largestPrimeFactor n := by simp only [hq_def, hP_def]
 
 /-- f(n) ≥ p(n), the smallest prime factor of n.
     For every 2 ≤ k ≤ n/2, gcd(n, C(n,k)) ≥ minFac(n).
