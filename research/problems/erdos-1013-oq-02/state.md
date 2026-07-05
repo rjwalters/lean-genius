@@ -4,16 +4,32 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-07-05
-**Iteration**: 4
+**Iteration**: 5
 
-## Current Focus
-Promoted the frequency straddle to the **honest `Filter.liminf`/`Filter.limsup` form** in
-`Erdos1013UnconditionalRatio.lean`. New theorems (0 sorry / 0 axiom, Docker lean 4.26.0):
+## Current Focus (Iteration 5, 2026-07-05)
+Packaged the pinch into its **sharpest user-facing form** in
+`Erdos1013UnconditionalRatio.lean` (0 sorry / 0 axiom, Docker lean 4.26.0 VERIFIED,
+first-try build). Three new theorems:
+- `ratio_tendsto_imp_one` (general PolyBounded): if the consecutive ratio converges to `L`,
+  then `L = 1`, **with no boundedness side-condition** — a convergent sequence is
+  automatically bounded on both sides, so the cobounded hypotheses of `ratio_liminf_le_one`
+  / `one_le_ratio_limsup` come for free via `Tendsto.isBoundedUnder_ge` / `isBoundedUnder_le`,
+  and `Tendsto.liminf_eq` / `limsup_eq` collapse the straddle to `L ≤ 1 ≤ L`.
+- `ratio_not_tendsto_of_ne_one` (contrapositive): the ratio does not converge to any `L ≠ 1`.
+- `h3_ratio_tendsto_imp_one` (`h₃` specialisation): purely from `k² ≤ h₃(k) ≤ k³`, no
+  bounded-ratio leaf and no constant hypothesis, any limit of `h₃(k+1)/h₃(k)` equals `1`.
+
+This is strictly cleaner than iteration-4's `h3_ratio_liminf_le_one_le_limsup` (which needed
+externally-supplied `m`, `M` bounds): convergence supplies its own two-sided boundedness. It
+is the most direct unconditional statement toward the open (⋆): the ratio *cannot converge to
+anything but `1`*. File now 21 theorems, 476 lines.
+
+## Prior Iteration (4)
+Promoted the frequency straddle to the **honest `Filter.liminf`/`Filter.limsup` form**:
 `ratio_liminf_le_one`, `one_le_ratio_limsup`, `ratio_liminf_le_one_le_limsup`, and the `h₃`
 specialisation `h3_ratio_liminf_le_one_le_limsup`. Given the ratio is eventually two-sided
-bounded (the `[1/2,2]` bounded-ratio leaf supplies this cobounded side-condition), we now
-have `liminf_k h₃(k+1)/h₃ k ≤ 1 ≤ limsup_k h₃(k+1)/h₃ k` as genuine `Filter` statements —
-so **if the ratio converges at all, the limit is forced to be `1`**.
+bounded (the `[1/2,2]` bounded-ratio leaf supplies this cobounded side-condition),
+`liminf_k h₃(k+1)/h₃ k ≤ 1 ≤ limsup_k h₃(k+1)/h₃ k` as genuine `Filter` statements.
 
 ## Prior Iteration (3)
 Added the unconditional **straddle-1** frequency result: for every `ε > 0` the ratio is

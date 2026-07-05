@@ -350,6 +350,38 @@ theorem ratio_liminf_le_one_le_limsup {h : ℕ → ℝ} (hb : PolyBounded h)
       1 ≤ limsup (fun k => h (k + 1) / h k) atTop :=
   ⟨ratio_liminf_le_one hb hbelow, one_le_ratio_limsup hb habove⟩
 
+/- ## The sharp corollary: any limit of the ratio is forced to be `1` -/
+
+/-- **The unconditional pinch, in its sharpest user-facing form.**  For any polynomially
+bounded positive `h`, *if* the consecutive ratio converges to some `L`, then `L = 1` — with
+**no boundedness side-condition** (a convergent sequence is automatically bounded on both
+sides, so the cobounded hypotheses of `ratio_liminf_le_one` / `one_le_ratio_limsup` come for
+free via `Tendsto.isBoundedUnder_ge` / `isBoundedUnder_le`).  A convergent sequence has
+`liminf = limsup = L`, and the straddle `liminf ≤ 1 ≤ limsup` then forces `L ≤ 1 ≤ L`.
+
+This is the direct statement about the open (⋆): we cannot prove the ratio converges, but we
+prove **unconditionally** that it *cannot converge to any value other than `1`*. -/
+theorem ratio_tendsto_imp_one {h : ℕ → ℝ} (hb : PolyBounded h) {L : ℝ}
+    (hlim : Tendsto (fun k => h (k + 1) / h k) atTop (𝓝 L)) : L = 1 := by
+  -- a convergent sequence is bounded above and below
+  have hbelow : IsBoundedUnder (· ≥ ·) atTop (fun k => h (k + 1) / h k) :=
+    hlim.isBoundedUnder_ge
+  have habove : IsBoundedUnder (· ≤ ·) atTop (fun k => h (k + 1) / h k) :=
+    hlim.isBoundedUnder_le
+  -- for a convergent sequence, liminf = limsup = L
+  have hliminf : liminf (fun k => h (k + 1) / h k) atTop = L := hlim.liminf_eq
+  have hlimsup : limsup (fun k => h (k + 1) / h k) atTop = L := hlim.limsup_eq
+  have h1 : L ≤ 1 := by rw [← hliminf]; exact ratio_liminf_le_one hb hbelow
+  have h2 : 1 ≤ L := by rw [← hlimsup]; exact one_le_ratio_limsup hb habove
+  linarith
+
+/-- **Contrapositive form.**  The consecutive ratio of a polynomially bounded positive `h`
+does not converge to any value `L ≠ 1`.  So the only candidate limit is `1` — every other
+value is ruled out unconditionally. -/
+theorem ratio_not_tendsto_of_ne_one {h : ℕ → ℝ} (hb : PolyBounded h) {L : ℝ} (hL : L ≠ 1) :
+    ¬ Tendsto (fun k => h (k + 1) / h k) atTop (𝓝 L) :=
+  fun hlim => hL (ratio_tendsto_imp_one hb hlim)
+
 /- ## Specialisation to the genuine threshold `h₃` -/
 
 /-- The genuine triangle-free chromatic threshold (as a real candidate `h₃`) is
@@ -412,6 +444,18 @@ theorem h3_ratio_liminf_le_one_le_limsup (h₃ : ℕ → ℝ) (hpos : ∀ k, 0 <
   have hbddb : IsBoundedUnder (· ≥ ·) atTop (fun k => h₃ (k + 1) / h₃ k) := ⟨m, hbelow⟩
   have hbdda : IsBoundedUnder (· ≤ ·) atTop (fun k => h₃ (k + 1) / h₃ k) := ⟨M, habove⟩
   exact ratio_liminf_le_one_le_limsup hb hbddb hbdda
+
+/-- **Erdős #1013 (oq-02), the forced-limit corollary for `h₃`.**  Purely from the known
+`k² ≤ h₃(k) ≤ k³` bounds — no bounded-ratio leaf, no hypothesis on the asymptotic constant —
+*if* the consecutive ratio `h₃(k+1)/h₃(k)` converges to some `L`, then `L = 1`.  Convergence
+supplies its own two-sided boundedness, so this is strictly cleaner than
+`h3_ratio_liminf_le_one_le_limsup` (no `m`, `M` inputs).  It is the sharpest unconditional
+statement toward the open (⋆): the ratio *cannot* converge to anything but `1`. -/
+theorem h3_ratio_tendsto_imp_one (h₃ : ℕ → ℝ) (hpos : ∀ k, 0 < h₃ k)
+    (hlow : ∀ᶠ (k : ℕ) in atTop, (k : ℝ) ^ 2 ≤ h₃ k)
+    (hup : ∀ᶠ (k : ℕ) in atTop, h₃ k ≤ (k : ℝ) ^ 3) {L : ℝ}
+    (hlim : Tendsto (fun k => h₃ (k + 1) / h₃ k) atTop (𝓝 L)) : L = 1 :=
+  ratio_tendsto_imp_one (polyBounded_of_h3 h₃ hpos hlow hup) hlim
 
 /-
 ## Remarks — why the *pointwise* ratio (⋆) is not settled here
