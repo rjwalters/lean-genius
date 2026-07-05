@@ -60,7 +60,8 @@
       "**Even zeta values are rational multiples of powers of π.** ζ(2k) = (−1)^{k+1} B_{2k}(2π)^{2k}/(2(2k)!); at k = 2, B₄ = −1/30 yields ζ(4) = π⁴/90.",
       "**The ratio ζ(4)/ζ(2)² is π-free.** Dividing the two even-zeta values cancels π entirely, leaving the rational 2/5 — a structural fact about the Bernoulli numbers, not about π.",
       "**Mathlib already carries the hard analysis.** The Hurwitz-zeta even-argument formula is formalized upstream; this entry is the routine specialisation requested by the open question.",
-      "**Even and odd zeta values could not be more different.** The Bernoulli formula ζ(2k) = (−1)^{k+1}B_{2k}(2π)^{2k}/(2(2k)!) makes *every* even value a rational multiple of a power of π (hence provably transcendental). No analogous closed form is known for a single odd value: ζ(3) is only known to be irrational (Apéry, 1978), and the irrationality of ζ(5) remains open. This entry sits on the fully-understood even side of that divide."
+      "**Even and odd zeta values could not be more different.** The Bernoulli formula ζ(2k) = (−1)^{k+1}B_{2k}(2π)^{2k}/(2(2k)!) makes *every* even value a rational multiple of a power of π (hence provably transcendental). No analogous closed form is known for a single odd value: ζ(3) is only known to be irrational (Apéry, 1978), and the irrationality of ζ(5) remains open. This entry sits on the fully-understood even side of that divide.",
+      "**One value, three formal surfaces.** The entry records ζ(4) in all three shapes Mathlib distinguishes: as a `HasSum` (the summability witness), as a `tsum` over ℝ (the headline ∑' n, 1/n⁴ = π⁴/90), and as `riemannZeta 4` over ℂ (the analytically-continued function). At argument 4 the Dirichlet series converges absolutely, so the elementary sum and the meromorphically-continued ζ agree — the file makes that identification explicit rather than leaving it implicit, which is exactly what lets downstream results pick whichever form they need."
     ],
     "prerequisites": [
       "Infinite sums / tsum and HasSum in Mathlib",
@@ -78,19 +79,35 @@
       "mathContext": "The degree-4 Basel value ζ(4) = ∑_{n≥1} 1/n⁴ = π⁴/90, the k=2 case of Euler's even-zeta formula."
     },
     {
-      "id": "zeta-four",
-      "title": "The Value ζ(4) = π⁴/90",
+      "id": "hassum",
+      "title": "The Summability Witness: HasSum (1/n⁴) (π⁴/90)",
       "startLine": 24,
-      "endLine": 39,
-      "summary": "hasSum_one_div_nat_pow_four (HasSum form), tsum_one_div_nat_pow_four (the headline tsum value ∑' n, 1/n⁴ = π⁴/90), and riemannZeta_four_eq (the riemannZeta 4 value over ℂ).",
-      "mathContext": "$\\sum_{n=1}^\\infty 1/n^4 = \\pi^4/90$ and $\\zeta(4) = \\pi^4/90$, from Mathlib's `hasSum_zeta_four` and `riemannZeta_four`."
+      "endLine": 27,
+      "summary": "hasSum_one_div_nat_pow_four re-exports Mathlib's hasSum_zeta_four: the family n ↦ 1/n⁴ has sum π⁴/90. This HasSum form is the summability witness from which both the tsum value and downstream manipulations are derived.",
+      "mathContext": "$\\mathrm{HasSum}\\ (n \\mapsto 1/n^4)\\ (\\pi^4/90)$, from Mathlib's `hasSum_zeta_four`."
+    },
+    {
+      "id": "tsum",
+      "title": "The Headline Value ζ(4) = ∑' n, 1/n⁴ = π⁴/90",
+      "startLine": 28,
+      "endLine": 31,
+      "summary": "tsum_one_div_nat_pow_four converts the HasSum witness via .tsum_eq to the headline tsum value ∑' n, 1/n⁴ = π⁴/90 — the degree-4 Basel value the open question requests.",
+      "mathContext": "$\\sum_{n=1}^\\infty 1/n^4 = \\pi^4/90$ (the $k=2$ case of Euler's even-zeta formula)."
+    },
+    {
+      "id": "riemann-zeta",
+      "title": "The Analytic Zeta Value: riemannZeta 4 over ℂ",
+      "startLine": 33,
+      "endLine": 35,
+      "summary": "riemannZeta_four_eq records the same value for the analytically-continued zeta function over ℂ (Mathlib's riemannZeta_four), identifying the elementary real series with the complex meromorphic ζ at argument 4 where the Dirichlet series converges.",
+      "mathContext": "$\\zeta(4) = \\pi^4/90$ over $\\mathbb{C}$, from Mathlib's `riemannZeta_four`."
     },
     {
       "id": "ratio",
       "title": "Euler's π-free Ratio ζ(4)/ζ(2)² = 2/5",
-      "startLine": 41,
-      "endLine": 47,
-      "summary": "tsum_four_div_tsum_two_sq divides the two even-zeta values, cancelling π to leave the rational 2/5.",
+      "startLine": 37,
+      "endLine": 45,
+      "summary": "tsum_four_div_tsum_two_sq divides the two even-zeta values ζ(4) = π⁴/90 and ζ(2) = π²/6: after rewriting both tsums, field_simp (π ≠ 0) and ring cancel π entirely, leaving the rational 2/5 — the Bernoulli-number shadow independent of the transcendence of π.",
       "mathContext": "$\\zeta(4)/\\zeta(2)^2 = (\\pi^4/90)/(\\pi^2/6)^2 = (\\pi^4/90)/(\\pi^4/36) = 36/90 = 2/5$."
     }
   ],
