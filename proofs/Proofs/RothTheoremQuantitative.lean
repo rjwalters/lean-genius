@@ -165,6 +165,39 @@ theorem rothNumber_three : rothNumber 3 = 2 := by
     a + d ∈ ({0, 1} : Finset (ZMod 3)) → a + 2 * d ∉ ({0, 1} : Finset (ZMod 3))
   decide
 
+/-- Every AP-free subset of `ZMod 4` has at most two elements.
+
+    Unlike the odd modulus `N = 3`, in `ZMod 4` the step `d = 2` wraps around:
+    `a + 2 * 2 = a + 4 = a`. So an AP-free set may never contain both `a` and
+    `a + 2` (the "progression" `a, a + 2, a` would put `a + 2 * d = a` back in
+    the set). This forbids `{0, 2}` and `{1, 3}` simultaneously, capping the
+    size at two. The finite check is discharged by `decide` on the *unfolded*
+    predicate — the global `APFree` instance is classical and cannot evaluate. -/
+theorem apFree_four_card_le_two :
+    ∀ A : Finset (ZMod 4),
+      (∀ a d : ZMod 4, d ≠ 0 → a ∈ A → a + d ∈ A → a + 2 * d ∉ A) → A.card ≤ 2 := by
+  decide
+
+/-- r₃(4) = 2. Lower bound: `{0, 1}` is AP-free (as in `ZMod 3`). Upper bound:
+    every AP-free set avoids the pairs `{0, 2}` and `{1, 3}` because of the
+    `d = 2` wraparound, so no AP-free subset of `ZMod 4` reaches three elements.
+
+    Note `r₃(4) = 2 = r₃(3)`: the Roth number does not increase from modulus 3
+    to modulus 4, illustrating that `r₃` is not monotone in `N`. -/
+theorem rothNumber_four : rothNumber 4 = 2 := by
+  refine le_antisymm ?_ ?_
+  · -- Upper bound: every set in the powerset filter has card ≤ 2.
+    rw [rothNumber_def]
+    apply Finset.sup_le
+    intro A hA
+    rw [Finset.mem_filter] at hA
+    exact apFree_four_card_le_two A hA.2
+  · -- Lower bound: {0, 1} is an AP-free set of size 2.
+    apply card_le_rothNumber ({0, 1} : Finset (ZMod 4))
+    show ∀ a d : ZMod 4, d ≠ 0 → a ∈ ({0, 1} : Finset (ZMod 4)) →
+      a + d ∈ ({0, 1} : Finset (ZMod 4)) → a + 2 * d ∉ ({0, 1} : Finset (ZMod 4))
+    decide
+
 -- ═══════════════════════════════════════════════════════════════════
 -- PART I.B: QUALITATIVE ROTH ASYMPTOTIC
 -- ═══════════════════════════════════════════════════════════════════

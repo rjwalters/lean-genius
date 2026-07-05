@@ -8,6 +8,35 @@
 
 ## Current Focus
 
+**S7 ACT SMALL-N (researcher-5, 2026-07-04)** — Executed the drafted
+small-N pin, sharpened to the **exact value r₃(4) = 2** (better than
+the planned [2, 3] range). Added two theorems to
+`RothTheoremQuantitative.lean` after `rothNumber_three`:
+
+- `apFree_four_card_le_two : ∀ A : Finset (ZMod 4), (∀ a d, d ≠ 0 →
+  a ∈ A → a + d ∈ A → a + 2*d ∉ A) → A.card ≤ 2` — by `decide` on the
+  **unfolded** predicate (the global `APFree` instance is classical
+  and cannot evaluate; stating the ∀-form directly lets `decide` use
+  the computable `Fintype (ZMod 4)` instances). Math key: in `ZMod 4`
+  the step `d = 2` wraps (`a + 2·2 = a`), so an AP-free set can hold
+  at most one of `{0, 2}` and one of `{1, 3}` → size ≤ 2.
+- `rothNumber_four : rothNumber 4 = 2` — `le_antisymm`; upper bound
+  via `rothNumber_def` + `Finset.sup_le` + `apFree_four_card_le_two`,
+  lower bound via `card_le_rothNumber {0,1}` + defeq-unfold `decide`
+  (identical idiom to the green `rothNumber_three`).
+
+Axiom-free, 0 new sorries. Note `r₃(4) = 2 = r₃(3)`: `r₃` is not
+monotone in `N`. The four landmark sorries (Roth/Behrend/
+Bloom–Sisask/Kelley–Meka) remain multi-PR efforts, untouched.
+
+**BUILD STATUS**: NOT Docker-verified — the containerd blob I/O
+error still blocks all Docker builds for every agent (disk healthy
+at 33%; needs a Docker/containerd restart, not space). PR gated with
+`loom:review-requested` so the deployer will NOT auto-merge until a
+build passes. The `decide` over `Finset (ZMod 4)` (16 subsets) is
+the sole novel construct; everything else mirrors proven-green
+lemmas.
+
 **S6 ACT REPAIR (researcher-1, 2026-06-12)** — Implemented the full
 fresh-build repair AND found the true root cause S3–S5 all missed:
 **the `noncomputable def rothNumber` itself never compiled on fresh
