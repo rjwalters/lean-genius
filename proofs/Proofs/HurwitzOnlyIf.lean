@@ -811,6 +811,37 @@ theorem eq_zero_of_anticomm_pair_and_product (A : Type*) [NormedDivisionRing A]
   have hxy : x * y ≠ 0 := mul_ne_zero hx hy
   exact (mul_eq_zero.mp hz).resolve_left hxy
 
+/-- **The obstruction in inner-product language: no fourth `B`-orthogonal imaginary unit.**
+Since `B` is a genuine inner product on `Im A` (symmetric, positive-definite —
+`imaginaryBilin_symm`, `imaginaryBilin_self_eq_zero_iff`) and `B`-orthogonality *is*
+anticommutation (`imaginaryBilin_eq_zero_iff_anticomm`), the algebraic obstruction
+`eq_zero_of_anticomm_pair_and_product` reads: given imaginary units `x, y` (nonzero) and their
+product `z = x*y` (the third unit of the quaternion triple), any imaginary `w` that is
+`B`-orthogonal to all three of `x, y, z` must be `0`.
+
+Thus `Im A` admits **at most three** mutually `B`-orthogonal nonzero directions — an inner
+product space with no orthonormal 4-frame has dimension `≤ 3`. This is precisely the
+`finrank ℝ (Im A) ≤ 3` bound, packaged for a Gram–Schmidt / basis-counting finish of the
+Hurwitz Only-If dimension count (`finrank ℝ A ∈ {1, 2, 4}`). Only `z = x*y ∈ Im A` is assumed
+(the caller supplies it via `isImaginary_mul_of_anticomm` from `B(x,y) = 0`); orthogonality of
+`x, y` themselves is not needed for the obstruction. -/
+theorem imaginaryBilin_no_fourth_orthogonal (A : Type*) [NormedDivisionRing A]
+    [NormedAlgebra ℝ A] [Module.Finite ℝ A] (x y z w : imaginarySubmodule A)
+    (hx : x ≠ 0) (hy : y ≠ 0) (hz : (z : A) = (x : A) * (y : A))
+    (hwx : imaginaryBilin A w x = 0) (hwy : imaginaryBilin A w y = 0)
+    (hwz : imaginaryBilin A w z = 0) : w = 0 := by
+  have hxA : (x : A) ≠ 0 := fun h => hx (Submodule.coe_eq_zero.mp h)
+  have hyA : (y : A) ≠ 0 := fun h => hy (Submodule.coe_eq_zero.mp h)
+  have hacx : (w : A) * (x : A) + (x : A) * (w : A) = 0 :=
+    (imaginaryBilin_eq_zero_iff_anticomm A w x).mp hwx
+  have hacy : (w : A) * (y : A) + (y : A) * (w : A) = 0 :=
+    (imaginaryBilin_eq_zero_iff_anticomm A w y).mp hwy
+  have hacz : (w : A) * ((x : A) * (y : A)) + ((x : A) * (y : A)) * (w : A) = 0 := by
+    have := (imaginaryBilin_eq_zero_iff_anticomm A w z).mp hwz
+    rwa [hz] at this
+  have hw0 : (w : A) = 0 := eq_zero_of_anticomm_pair_and_product A hxA hyA hacx hacy hacz
+  exact Submodule.coe_eq_zero.mp hw0
+
 /-! ### The General (Division Ring) Case -/
 
 /-- **Frobenius Step 3, commutative subcase — fully verified.** If a normed division ring
