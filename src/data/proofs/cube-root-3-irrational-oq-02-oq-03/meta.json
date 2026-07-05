@@ -22,8 +22,8 @@
     "sorries": 1,
     "dateAdded": "2026-07-04",
     "axiomCount": 0,
-    "assumptions": "Builds cleanly (verified via Docker, 0 axioms). One sorry remains: the even-sufficiency direction of the criterion (conditions (1),(2) ⟹ irreducible for 4 | n), which is an explicit open TODO in Mathlib/FieldTheory/KummerExtension.lean citing Lang, Algebra, VI §9. Everything else is machine-checked: the Sophie Germain identity, both necessity factorizations, the full necessity direction for ALL n (both parities, via vahlen_capelli_necessity), and the complete odd-case iff.",
-    "lineCount": 202,
+    "assumptions": "Builds cleanly (verified via Docker, 0 axioms). One sorry remains: the even-sufficiency direction for even n ≥ 4 (the 2-power / 4|n regime), an explicit open TODO in Mathlib/FieldTheory/KummerExtension.lean citing Lang, Algebra, VI §9. Everything else is machine-checked: the Sophie Germain identity, both necessity factorizations, the full necessity direction for ALL n (both parities), the complete odd-case iff, AND the even base case n=2 (sufficiency via Mathlib's prime-exponent criterion X_pow_sub_C_irreducible_iff_of_prime, whose 4∤2 makes the −4·K⁴ obstruction vacuous).",
+    "lineCount": 315,
     "theoremCount": 7,
     "definitionCount": 1,
     "originalContributions": [
