@@ -663,6 +663,23 @@ theorem two_power_capelli_of_neg_not_square {K : Type*} [Field K] {k : ℕ} (hk 
       _ = Algebra.norm K (IntermediateField.AdjoinSimple.gen K x) := by rw [hb]
       _ = -a := hpb
 
+/-- **First reduction of the residual `−a ∈ K²` crux: `−1` is automatically a non-square.**
+In the sole open sub-case of `two_power_capelli` (`8 ∣ n`, i.e. `k ≥ 3`, with `−a` a square)
+the two hypotheses `a ∉ K²` (condition (1) at `p = 2`) and `c² = −a` already force `−1 ∉ K²`.
+
+Indeed, if `i² = −1` then `(i·c)² = i²·c² = (−1)·(−a) = a`, exhibiting `a` as a square and
+contradicting condition (1). Consequently `X² + 1` is irreducible over `K` in the crux, so
+`L := K(i)` is a genuine quadratic extension over which `a = (i·c)²` **is** a square: this is
+the field in which the Lang VI §9 norm descent operates. Over `L` the tower splits,
+`X^(2^k) − C a = (X^(2^(k-1)) − C (i·c))·(X^(2^(k-1)) + C (i·c))`, and the residual
+`−4·K⁴` obstruction (condition (2)) is exactly what rules out a square in the descent.
+
+This lemma is the verified entry point of that descent; it needs only condition (1). -/
+theorem neg_one_not_square_of_not_square_of_neg_square {K : Type*} [Field K] {a : K}
+    (h1 : ∀ b : K, b ^ 2 ≠ a) {c : K} (hc : c ^ 2 = -a) :
+    ∀ i : K, i ^ 2 ≠ -1 :=
+  fun i hi => h1 (i * c) (by rw [mul_pow, hi, hc]; ring)
+
 /-- **Pure `2`-power base `X^(2^k) − C a`.** If `a` is not a square and `a ∉ −4·K⁴`, then
 `X^(2^k) − C a` is irreducible over the field `K`, for every `k ≥ 1`.
 
@@ -702,6 +719,9 @@ theorem two_power_capelli {K : Type*} [Field K] {k : ℕ} (hk : 1 ≤ k) {a : K}
     by_cases hna : ∃ c : K, c ^ 2 = -a
     · -- `−a ∈ K²` (i.e. `a = −c²`): the genuine open sub-case, where the `−4·K⁴`
       -- factorisation (condition (2)) is indispensable.  Mathlib TODO (Lang VI §9).
+      -- First reduction (verified): `neg_one_not_square_of_not_square_of_neg_square h1 hc`
+      -- gives `−1 ∉ K²` here, so `a = (i·c)²` becomes a square only in `L = K(i)`; the
+      -- residual descent over `L` (Lang VI §9) is the remaining content of this `sorry`.
       sorry
     · -- `−a ∉ K²`: discharged unconditionally by the norm-descent keystone.
       push_neg at hna
