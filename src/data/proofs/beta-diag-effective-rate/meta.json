@@ -1,0 +1,53 @@
+{
+  "id": "beta-diag-effective-rate",
+  "title": "An Effective Two-Sided Rate for the Diagonal Beta Value",
+  "slug": "beta-diag-effective-rate",
+  "description": "Upgrades the asymptotic B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) to an explicit two-sided rate valid for all n ≥ 1. Writing the correction as ratioR n = stirlingSeq n²/(√π·stirlingSeq(2n)), Mathlib’s effective Stirling bounds pin it to √(2π)/e ≤ ratioR n ≤ e²/(2π) (ratioR_ge / ratioR_le), yielding (√(2π)/e)·√(πn)/((2n+1)·4ⁿ) ≤ betaDiag n ≤ (e²/(2π))·√(πn)/((2n+1)·4ⁿ) with constants ≈ 0.922 and 1.176. Honest constant-factor envelope. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/BetaDiagEffectiveRate.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "lineCount": 278,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "analysis",
+      "asymptotics",
+      "beta-function",
+      "stirling",
+      "effective-bounds",
+      "central-binomial",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib",
+      "Proofs.BetaCentralBinomialAsymptotic"
+    ],
+    "additionalFiles": [
+      "Proofs/BetaCentralBinomialAsymptotic.lean"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/BetaDiagEffectiveRate.lean",
+    "lineCount": 278,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "imports": [
+      "import Mathlib",
+      "import Proofs.BetaCentralBinomialAsymptotic"
+    ],
+    "additionalFiles": [
+      "Proofs/BetaCentralBinomialAsymptotic.lean"
+    ]
+  }
+}

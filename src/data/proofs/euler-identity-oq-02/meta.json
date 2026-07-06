@@ -1,0 +1,45 @@
+{
+  "id": "euler-identity-oq-02",
+  "title": "The p-adic Obstruction to Euler’s Identity",
+  "slug": "euler-identity-oq-02",
+  "description": "Records the precise machine-checked reason there is no p-adic Euler identity. Where the p-adic exponential converges (on p·ℤ_p for odd p) its values are principal units in 1 + p·ℤ_p, but −1 is not a principal unit — ‖−1 − 1‖ = 1 (neg_one_sub_one_norm_eq_one) — so exp(x) = −1 is unsolvable (neg_one_not_principal_unit). Also records the one surviving ingredient: a residue-level square root of −1 (a p-adic \"i\") exists exactly when p ≢ 3 (mod 4). 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_identity",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/EulerIdentityOQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "lineCount": 132,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "p-adic",
+      "number-theory",
+      "euler-identity",
+      "exponential",
+      "principal-units",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/EulerIdentityOQ02.lean",
+    "lineCount": 132,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib"
+    ]
+  }
+}

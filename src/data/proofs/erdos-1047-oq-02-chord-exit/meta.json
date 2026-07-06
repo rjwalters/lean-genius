@@ -1,0 +1,58 @@
+{
+  "id": "erdos-1047-oq-02-chord-exit",
+  "title": "Erdős #1047 OQ-02: De-axiomatizing the Goodman Counterexample via a Chord-Exit Certificate",
+  "slug": "erdos-1047-oq-02-chord-exit",
+  "description": "Discharges the single analytic axiom goodman_counterexample of the Erdős #1047 development by exhibiting an explicit preconnected polyline arc through the lemniscate {|f| ≤ c} of f = (X²+1)(X−2)² (c = 5^(3/2)/4) whose connecting chord pokes outside the sublevel set. Each of the four segments stays inside via an all-nonnegative degree-8 Bernstein/SOS decomposition closed by nlinarith, re-deriving ¬grunskyConjecture (grunsky_false_of_chord_exit) with no new axioms. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/Erdos1047OQ02ChordExit.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 16,
+    "definitionCount": 6,
+    "lineCount": 292,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "complex-analysis",
+      "erdos-problems",
+      "lemniscate",
+      "sos-certificate",
+      "convexity",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Proofs.Erdos1047Problem",
+      "Proofs.Erdos1047OQ02Reduction",
+      "Mathlib.Tactic"
+    ],
+    "additionalFiles": [
+      "Proofs/Erdos1047Problem.lean",
+      "Proofs/Erdos1047OQ02Reduction.lean"
+    ],
+    "erdosNumber": 1047,
+    "erdosUrl": "https://www.erdosproblems.com/1047"
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/Erdos1047OQ02ChordExit.lean",
+    "lineCount": 292,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 16,
+    "definitionCount": 6,
+    "imports": [
+      "import Proofs.Erdos1047Problem",
+      "import Proofs.Erdos1047OQ02Reduction",
+      "import Mathlib.Tactic"
+    ],
+    "additionalFiles": [
+      "Proofs/Erdos1047Problem.lean",
+      "Proofs/Erdos1047OQ02Reduction.lean"
+    ]
+  }
+}

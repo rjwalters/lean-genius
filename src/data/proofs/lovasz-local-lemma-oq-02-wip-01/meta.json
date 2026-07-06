@@ -1,0 +1,51 @@
+{
+  "id": "lovasz-local-lemma-oq-02-wip-01",
+  "title": "The Lovász Local Lemma Threshold T(d) Strictly Beats the Classical e-Bound",
+  "slug": "lovasz-local-lemma-oq-02-wip-01",
+  "description": "Quantifies the gap between the sharp algebraic LLL threshold T(d) = dᵈ/(d+1)ᵈ⁺¹ and the classical bound 1/(e(d+1)), proving T(d) > 1/(e(d+1)) for every d ≥ 1 — equivalently e(d+1)·T(d) > 1 — so the sharp threshold admits strictly more probability mass. The single analytic ingredient is (1 + 1/d)ᵈ < e (one_add_inv_pow_lt_exp_one), derived from Mathlib’s Real.add_one_lt_exp and Real.exp_nat_mul; stated over ℝ via the real cast of the parent’s rational threshold. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/LovaszLocalLemmaOQ02Wip01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "lineCount": 102,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "probabilistic-method",
+      "lovasz-local-lemma",
+      "combinatorics",
+      "real-analysis",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib",
+      "Proofs.LovaszLocalLemmaOQ02"
+    ],
+    "additionalFiles": [
+      "Proofs/LovaszLocalLemmaOQ02.lean"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/LovaszLocalLemmaOQ02Wip01.lean",
+    "lineCount": 102,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib",
+      "import Proofs.LovaszLocalLemmaOQ02"
+    ],
+    "additionalFiles": [
+      "Proofs/LovaszLocalLemmaOQ02.lean"
+    ]
+  }
+}

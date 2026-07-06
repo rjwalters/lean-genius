@@ -1,0 +1,43 @@
+{
+  "id": "derangements-convergence-oq-04-oq-04-oq-01",
+  "title": "The Multiplicative Derangement Recurrence D(n) = n·D(n−1) + (−1)ⁿ",
+  "slug": "derangements-convergence-oq-04-oq-04-oq-01",
+  "description": "Derives the classical multiplicative derangement recurrence D(n) = n·D(n−1) + (−1)ⁿ as a genuine corollary of the additive recurrence (the Option decomposition), via the derangement defect e(m) = D(m+1) − (m+1)·D(m): the defect merely flips sign at each step (defect_step) and telescopes to (−1)^{m+1} (defect_eq), giving |D(n) − n·D(n−1)| = 1 and a compatibility check against Mathlib’s numDerangements_succ. Numerical checks use decide (no native_decide). 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/DerangementsConvergenceOQ04OQ04OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "lineCount": 154,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "combinatorics",
+      "derangements",
+      "recurrence",
+      "permutations",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/DerangementsConvergenceOQ04OQ04OQ01.lean",
+    "lineCount": 154,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "imports": [
+      "import Mathlib"
+    ]
+  }
+}
