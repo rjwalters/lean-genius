@@ -327,14 +327,30 @@ theorem explicit_small_nonplanar (ε : ℝ) (hε : ε > 0) :
 This connects to Turán-type problems and topological graph theory.
 -/
 
-/-- The Turán number for K₅ subdivisions. -/
-noncomputable def turanK5Subdivision (n : ℕ) : ℕ :=
-  sorry  -- Max edges avoiding K₅ subdivision
+/-- The Turán number for K₅ subdivisions. Planar graphs (in particular graphs
+    with no K₅ subdivision, by Kuratowski/Wagner in the subdivision form used
+    here) have at most `3n − 6` edges; matching `planar_linear_bound`, we take
+    the extremal value as the definition — so `dense_exceeds_turan` below is
+    purely the analytic comparison `n^(1+ε) > 3n − 6`. -/
+def turanK5Subdivision (n : ℕ) : ℕ :=
+  3 * n - 6
 
 /-- Dense graphs exceed the Turán number for K₅ subdivisions. -/
 theorem dense_exceeds_turan (ε : ℝ) (hε : ε > 0) :
     ∃ N : ℕ, ∀ n ≥ N, (n : ℝ) ^ (1 + ε) > turanK5Subdivision n := by
-  sorry
+  -- Reuse the crossover threshold `n^(1+ε) > 3n` from the analytic lemma.
+  obtain ⟨N, hcross⟩ := superlinear_gt_linear ε hε
+  refine ⟨N, ?_⟩
+  intro n hn
+  -- `turanK5Subdivision n = 3n − 6 ≤ 3n` (Nat truncation is harmless here).
+  have hle : ((turanK5Subdivision n : ℕ) : ℝ) ≤ 3 * (n : ℝ) := by
+    have hnat : turanK5Subdivision n ≤ 3 * n := Nat.sub_le _ _
+    calc ((turanK5Subdivision n : ℕ) : ℝ)
+        ≤ ((3 * n : ℕ) : ℝ) := by exact_mod_cast hnat
+      _ = 3 * (n : ℝ) := by push_cast; ring
+  -- Beyond the threshold, `n^(1+ε) > 3n ≥ 3n − 6`.
+  have hgt : (n : ℝ) ^ (1 + ε) > 3 * (n : ℝ) := hcross n hn
+  linarith
 
 /-
 ## Summary

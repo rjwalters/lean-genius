@@ -88,7 +88,44 @@ theorem alternating_tail_bound {a : ℕ → ℝ}
     (ha_lim : Filter.Tendsto a Filter.atTop (nhds 0))
     (ha_sum : Summable (fun k => (-1 : ℝ) ^ k * a k)) (n : ℕ) :
     ‖∑' k, (-1 : ℝ) ^ (k + n) * a (k + n)‖ ≤ a n := by
-  sorry
+  -- Work with the shifted sequence b k = a (k + n).
+  set b : ℕ → ℝ := fun k => a (k + n) with hb
+  have hb_pos : ∀ k, 0 ≤ b k := fun k => ha_pos _
+  have hb_dec : Antitone b := fun i j hij => ha_dec (Nat.add_le_add_right hij n)
+  -- Summability of the shifted alternating series.
+  have hb_sum : Summable (fun k => (-1 : ℝ) ^ k * b k) := by
+    have h := (summable_nat_add_iff (f := fun k => (-1 : ℝ) ^ k * a k) n).mpr ha_sum
+    have heq : (fun k => (-1 : ℝ) ^ (k + n) * a (k + n))
+        = fun k => (-1 : ℝ) ^ n * ((-1 : ℝ) ^ k * b k) := by
+      funext k; simp only [hb]; rw [pow_add]; ring
+    rw [heq] at h
+    have h2 := h.mul_left ((-1 : ℝ) ^ n)⁻¹
+    simpa [inv_mul_cancel_left₀ (pow_ne_zero n (by norm_num : (-1 : ℝ) ≠ 0))] using h2
+  -- Rewrite the tail sum, factoring out (-1)^n.
+  have hgoal_eq : (∑' k, (-1 : ℝ) ^ (k + n) * a (k + n))
+      = (-1 : ℝ) ^ n * ∑' k, (-1 : ℝ) ^ k * b k := by
+    rw [← tsum_mul_left]
+    congr 1; funext k; simp only [hb]; rw [pow_add]; ring
+  rw [hgoal_eq, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]
+  have hbn : a n = b 0 := by simp [hb]
+  rw [hbn]
+  -- The infinite alternating sum lies in [0, b 0] by taking limits of even partial sums.
+  set T := ∑' k, (-1 : ℝ) ^ k * b k with hT
+  have hsum : HasSum (fun k => (-1 : ℝ) ^ k * b k) T := hb_sum.hasSum
+  have htend : Filter.Tendsto (fun N => ∑ k ∈ Finset.range N, (-1 : ℝ) ^ k * b k)
+      Filter.atTop (nhds T) := hsum.tendsto_sum_nat
+  have hsub : Filter.Tendsto (fun m => 2 * m + 1) Filter.atTop Filter.atTop :=
+    Filter.tendsto_atTop_atTop_of_monotone (fun i j h => by omega) (fun N => ⟨N, by omega⟩)
+  have htend2 : Filter.Tendsto
+      (fun m => ∑ k ∈ Finset.range (2 * m + 1), (-1 : ℝ) ^ k * b k)
+      Filter.atTop (nhds T) := htend.comp hsub
+  have hbounds : ∀ m, 0 ≤ ∑ k ∈ Finset.range (2 * m + 1), (-1 : ℝ) ^ k * b k
+      ∧ ∑ k ∈ Finset.range (2 * m + 1), (-1 : ℝ) ^ k * b k ≤ b 0 :=
+    fun m => alternating_partial_sum_even_bounds hb_pos hb_dec m
+  have h0T : 0 ≤ T := ge_of_tendsto' htend2 (fun m => (hbounds m).1)
+  have hTb : T ≤ b 0 := le_of_tendsto' htend2 (fun m => (hbounds m).2)
+  rw [Real.norm_eq_abs, abs_le]
+  exact ⟨by linarith [hb_pos 0], hTb⟩
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART II: Sin/Cos Series Terms
@@ -132,20 +169,20 @@ theorem sinTermAbs_antitone (x : ℝ) (hx : |x| ≤ 1) :
     _ ≤ |x| ^ (2 * k + 1) / ↑(Nat.factorial (2 * k + 1)) := by
         apply div_le_div_of_nonneg_left (pow_nonneg (abs_nonneg x) _)
         · exact Nat.cast_pos.mpr (Nat.factorial_pos _)
-        · exact Nat.cast_le.mpr (Nat.factorial_mono (by omega))
+        · exact Nat.cast_le.mpr (Nat.factorial_le (by omega))
 
 /-- Sin series terms tend to 0 for any fixed x. -/
 theorem sinTermAbs_tendsto (x : ℝ) :
     Filter.Tendsto (sinTermAbs x) Filter.atTop (nhds 0) := by
   -- sinTermAbs x k = |x|^{2k+1}/(2k+1)! → 0 since it's a subsequence of
   -- |x|^n/n! → 0 (from summable_pow_div_factorial)
-  simp only [sinTermAbs]
+  unfold sinTermAbs
   have base : Filter.Tendsto (fun n => |x| ^ n / (Nat.factorial n : ℝ))
       Filter.atTop (nhds 0) :=
     (summable_pow_div_factorial ‖x‖).tendsto_atTop_zero.congr fun n => by
       simp [Real.norm_eq_abs]
   exact (base.comp (Filter.tendsto_atTop_atTop_of_monotone
-    (fun _ _ h => by omega : Monotone (fun k => 2 * k + 1))
+    (fun _ _ h => by dsimp only; omega : Monotone (fun k => 2 * k + 1))
     (fun n => ⟨n, by omega⟩)))
 
 -- ═══════════════════════════════════════════════════════════════
@@ -191,7 +228,7 @@ theorem alternating_tighter_than_lagrange_sin (n : ℕ) (x : ℝ) :
   unfold sinTermAbs
   apply div_le_div_of_nonneg_left (pow_nonneg (abs_nonneg x) _)
   · exact Nat.cast_pos.mpr (Nat.factorial_pos _)
-  · exact Nat.cast_le.mpr (Nat.factorial_mono (by omega))
+  · exact Nat.cast_le.mpr (Nat.factorial_le (by omega))
 
 /-- Concrete example: at x = 1, n = 3 (sin approximation through x⁵):
     - Alternating bound: 1/7! = 1/5040 ≈ 0.000198
