@@ -66,11 +66,33 @@ def import_candidate_pool(conn: sqlite3.Connection):
         }
         status = status_map.get(status, "available")
 
+        # Status-downgrade guard (see #26802): never let a re-run from a stale
+        # input file resurrect a protected problem back to 'available'. If the
+        # existing DB row is completed/graduated/in-progress/blocked and the
+        # incoming status is 'available', keep the existing status. All other
+        # columns are refreshed from the incoming record, and non-downgrade
+        # status transitions are applied normally.
         cursor.execute("""
-            INSERT OR REPLACE INTO problems (
+            INSERT INTO problems (
                 slug, title, status, tier, significance, tractability,
                 statement_plain, tags, last_updated
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(slug) DO UPDATE SET
+                status = CASE
+                    WHEN excluded.status = 'available'
+                         AND problems.status IN (
+                             'completed', 'graduated', 'in-progress', 'blocked'
+                         )
+                    THEN problems.status
+                    ELSE excluded.status
+                END,
+                title = excluded.title,
+                tier = excluded.tier,
+                significance = excluded.significance,
+                tractability = excluded.tractability,
+                statement_plain = excluded.statement_plain,
+                tags = excluded.tags,
+                last_updated = excluded.last_updated
         """, (
             slug,
             candidate.get("name", slug),

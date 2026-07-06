@@ -20,7 +20,10 @@ import difflib
 
 SCRIPT_DIR = Path(__file__).parent
 DB_PATH = SCRIPT_DIR / "knowledge.db"
-POOL_PATH = SCRIPT_DIR.parent / "candidate-pool.json"
+# Write directly to the CONSUMED pool that Seeker/Researcher agents read.
+# Previously this pointed at research/candidate-pool.json (SCRIPT_DIR.parent),
+# which no consumer reads, leaving the real pool permanently out of sync. See #26802.
+POOL_PATH = SCRIPT_DIR.parent.parent / ".lean" / "state" / "candidate-pool.json"
 
 
 def get_connection() -> sqlite3.Connection:
@@ -169,7 +172,8 @@ def main():
         print(f"\n[DRY RUN] Would write {len(pool_data['candidates'])} candidates to {POOL_PATH}")
         return
 
-    # Write the file
+    # Write the file (ensure the consumed .lean/state directory exists)
+    POOL_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(POOL_PATH, 'w') as f:
         f.write(new_content)
 
