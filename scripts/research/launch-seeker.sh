@@ -178,6 +178,8 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
    # script writes, interleaving stdout progress lines into the JSON and
    # corrupting the reservoir. (Caused 100+ no-op replenish cycles.)
    npx tsx .lean/scripts/extract-problems.ts --json 2>/dev/null
+   # sync_pool.py writes directly to the consumed pool at
+   # .lean/state/candidate-pool.json (see #26802). No copy step is needed.
    python3 research/db/sync_pool.py 2>/dev/null
    \`\`\`
 
@@ -194,11 +196,11 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
    - **CRITICAL - Database-first workflow**: When adding new problems, you MUST:
      a. Ensure database exists: \`if [ ! -f research/db/knowledge.db ]; then python3 research/db/migrate.py; fi\`
      b. Insert into database: \`sqlite3 research/db/knowledge.db "INSERT INTO problems ..."\`
-     c. Regenerate pool JSON: \`python3 research/db/sync_pool.py\`
+     c. Regenerate pool JSON: \`python3 research/db/sync_pool.py\` (writes .lean/state/candidate-pool.json directly)
      d. Then initialize workspace: \`./.lean/scripts/research.sh init <slug>\`
      e. Fill in \`research/problems/<slug>/problem.md\` and any matching site JSON
      f. Validate the filled stub: \`npx tsx scripts/research/validate-seeker-stubs.ts <slug>\`
-   - Without steps (a-c), Researchers will NOT see the new problems in candidate-pool.json
+   - Without steps (a-c), Researchers will NOT see the new problems in the consumed .lean/state/candidate-pool.json
    - Without step (f), unfilled template placeholders may leak into the public gallery
    - **After each problem is selected**, create a completion signal for stats tracking:
      \`\`\`bash
