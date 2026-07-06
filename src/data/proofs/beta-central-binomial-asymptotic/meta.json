@@ -1,0 +1,53 @@
+{
+  "id": "beta-central-binomial-asymptotic",
+  "title": "Wallis/Stirling Asymptotics of the Diagonal Beta Value",
+  "slug": "beta-central-binomial-asymptotic",
+  "description": "Establishes the asymptotic decay of the diagonal Euler Beta value from the parent closed form B(n+1,n+1) = 1/((2n+1)·C(2n,n)). Deriving the central binomial estimate C(2n,n) ~ 4ⁿ/√(πn) from Mathlib’s factorial_isEquivalent_stirling (centralBinom_isEquivalent), it gives B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) (betaDiag_isEquivalent) — the Wallis-rate mass collapse of the symmetric Beta density — neither of which Mathlib states. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/BetaCentralBinomialAsymptotic.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "lineCount": 147,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "analysis",
+      "asymptotics",
+      "beta-function",
+      "stirling",
+      "wallis",
+      "central-binomial",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Proofs.BetaCentralBinomial",
+      "Mathlib"
+    ],
+    "additionalFiles": [
+      "Proofs/BetaCentralBinomial.lean"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/BetaCentralBinomialAsymptotic.lean",
+    "lineCount": 147,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "imports": [
+      "import Proofs.BetaCentralBinomial",
+      "import Mathlib"
+    ],
+    "additionalFiles": [
+      "Proofs/BetaCentralBinomial.lean"
+    ]
+  }
+}

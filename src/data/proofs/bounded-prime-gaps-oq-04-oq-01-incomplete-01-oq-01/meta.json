@@ -1,0 +1,44 @@
+{
+  "id": "bounded-prime-gaps-oq-04-oq-01-incomplete-01-oq-01",
+  "title": "Aggregating the Cotangent Sum: ∑ 1/(2‖a/q‖) = O(q log q)",
+  "slug": "bounded-prime-gaps-oq-04-oq-01-incomplete-01-oq-01",
+  "description": "Completes the Pólya–Vinogradov aggregation step of the bounded-prime-gaps development by proving the elementary bound S(q) = ∑_{a=1}^{q-1} 1/(2‖a/q‖) ≤ q·H_{q-1} ≤ q·(1 + log q) = O(q log q). It uses the exact nearest-integer identity ‖a/q‖ = min(a,q−a)/q (dist_frac_eq) and a single reflection of the index set, reusing Mathlib’s harmonic_le_one_add_log for the harmonic→log step. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "lineCount": 190,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "number-theory",
+      "prime-gaps",
+      "polya-vinogradov",
+      "harmonic-numbers",
+      "character-sums",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/BoundedPrimeGapsOQ04OQ01Incomplete01OQ01.lean",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib"
+    ]
+  }
+}

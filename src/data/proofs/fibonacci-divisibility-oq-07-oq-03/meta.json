@@ -1,0 +1,44 @@
+{
+  "id": "fibonacci-divisibility-oq-07-oq-03",
+  "title": "The Rank of Apparition: k ∣ Fₙ ↔ (entry point of k) ∣ n",
+  "slug": "fibonacci-divisibility-oq-07-oq-03",
+  "description": "Proves the exact Fibonacci divisibility characterization k ∣ Fₙ ↔ α(k) ∣ n, where α(k) is the rank of apparition (Fibonacci entry point) of k. The characterization from minimality needs no finiteness (via Nat.fib_gcd and Nat.fib_dvd); existence of α(k) for every k ≥ 1 is the substantive input, proved by a pigeonhole/periodicity argument on the pair sequence (Fₙ, Fₙ₊₁) ∈ (ZMod k)², making entryPoint k a genuine computable definition. decide only, no native_decide. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/FibonacciDivisibilityOQ07OQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "lineCount": 225,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "divisibility",
+      "rank-of-apparition",
+      "zmod",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/FibonacciDivisibilityOQ07OQ03.lean",
+    "lineCount": 225,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "imports": [
+      "import Mathlib"
+    ]
+  }
+}

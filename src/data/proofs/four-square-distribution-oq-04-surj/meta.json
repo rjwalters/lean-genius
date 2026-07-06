@@ -1,0 +1,43 @@
+{
+  "id": "four-square-distribution-oq-04-surj",
+  "title": "Four-Square Distribution OQ-04: Orbit-Surjectivity of Value-Multiset Tuples",
+  "slug": "four-square-distribution-oq-04-surj",
+  "description": "Discharges the combinatorial residue at the heart of the multiset-arrangement count: two tuples g, h : Fin m → ℤ with the same value-multiset differ by a permutation (exists_perm_comp). The proof is a canonical-form argument via Tuple.sort — two sorted lists that are permutation-equivalent are equal — supplying the orbit-surjectivity underlying the remaining sorries of FourSquareDistributionOQ04ArrangeProof. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/FourSquareDistributionOQ04Surj.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "lineCount": 61,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "combinatorics",
+      "permutations",
+      "multisets",
+      "sorting",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/FourSquareDistributionOQ04Surj.lean",
+    "lineCount": 61,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 1,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib"
+    ]
+  }
+}

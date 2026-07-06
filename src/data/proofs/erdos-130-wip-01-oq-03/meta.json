@@ -1,0 +1,46 @@
+{
+  "id": "erdos-130-wip-01-oq-03",
+  "title": "Erdős #130 OQ-03: The Clique/Cardinality Sandwich for Chromatic Numbers of Integer-Distance Graphs",
+  "slug": "erdos-130-wip-01-oq-03",
+  "description": "Two elementary but load-bearing facts sandwiching the open chromatic number χ(G(A)) of integer-distance graphs: χ ≥ ω (chromatic_ge_clique, pigeonhole on a clique) and χ ≤ |A| (chromatic_le_card, the distinct-colour colouring). Combined with the Anning–Erdős clique bound this locates χ in the window ω ≤ χ ≤ |A| ≤ 4(2D+1)(2E+1) for finite general-position sets (chromatic_finite). 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/Erdos130WIP01OQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 8,
+    "definitionCount": 9,
+    "lineCount": 216,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "graph-theory",
+      "chromatic-number",
+      "erdos-problems",
+      "integer-distances",
+      "combinatorics",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib"
+    ],
+    "erdosNumber": 130,
+    "erdosUrl": "https://www.erdosproblems.com/130"
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/Erdos130WIP01OQ03.lean",
+    "lineCount": 216,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 8,
+    "definitionCount": 9,
+    "imports": [
+      "import Mathlib"
+    ]
+  }
+}

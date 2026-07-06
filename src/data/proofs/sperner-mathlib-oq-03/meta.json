@@ -1,0 +1,54 @@
+{
+  "id": "sperner-mathlib-oq-03",
+  "title": "Antipodal Parity Refinement of the Sperner Door-Counting Engine (the Tucker Frontier)",
+  "slug": "sperner-mathlib-oq-03",
+  "description": "Isolates, at the abstract cell-complex level of the sperner-mathlib engine, the exact parity obstruction for deriving Tucker’s lemma from Sperner door-counting. The antipodal map is a fixed-point-free involution on boundary doors, so the raw antipodal boundary-door count is even (even_card_boundary_doors_of_antipodal), hence the panchromatic count is even (even_card_panchromatic_of_antipodal) and can never supply the odd parity exists_panchromatic requires (not_odd_panchromatic_of_antipodal). Dimension-free; sharpens what the remaining geometric input for Tucker must be. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/SpernerMathlibOQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "lineCount": 163,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "topology",
+      "sperner-lemma",
+      "tucker-lemma",
+      "combinatorial-topology",
+      "parity",
+      "borsuk-ulam",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib",
+      "Proofs.SpernerMathlib"
+    ],
+    "additionalFiles": [
+      "Proofs/SpernerMathlib.lean"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/SpernerMathlibOQ03.lean",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "imports": [
+      "import Mathlib",
+      "import Proofs.SpernerMathlib"
+    ],
+    "additionalFiles": [
+      "Proofs/SpernerMathlib.lean"
+    ]
+  }
+}

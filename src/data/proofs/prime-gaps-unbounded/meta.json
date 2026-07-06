@@ -1,0 +1,52 @@
+{
+  "id": "prime-gaps-unbounded",
+  "title": "Prime Gaps Are Unbounded",
+  "slug": "prime-gaps-unbounded",
+  "description": "An elementary factorial-construction proof that gaps between consecutive primes grow without bound, in two forms: for every G there is a block of G consecutive composites (G+1)!+2,…,(G+1)!+(G+1) (exists_consecutive_composites), and there exist consecutive primes p < q with q − p ≥ G (exists_large_prime_gap). This discharges the large_prime_gaps_exist statement that had appeared only as an axiom in Erdos454Problem. No analytic number theory needed. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/PrimeGapsUnbounded.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "lineCount": 136,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "number-theory",
+      "prime-gaps",
+      "primes",
+      "factorial",
+      "elementary",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Infinite",
+      "Mathlib.Data.Nat.Find",
+      "Mathlib.Tactic"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/PrimeGapsUnbounded.lean",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "imports": [
+      "import Mathlib.Data.Nat.Factorial.Basic",
+      "import Mathlib.Data.Nat.Prime.Basic",
+      "import Mathlib.Data.Nat.Prime.Infinite",
+      "import Mathlib.Data.Nat.Find",
+      "import Mathlib.Tactic"
+    ]
+  }
+}

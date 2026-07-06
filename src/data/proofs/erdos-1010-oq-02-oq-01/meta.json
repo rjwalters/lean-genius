@@ -1,0 +1,46 @@
+{
+  "id": "erdos-1010-oq-02-oq-01",
+  "title": "Erdős #1010 OQ-02: Endpoints and Structure of the Minimum K_r Density Curve (r ≥ 5)",
+  "slug": "erdos-1010-oq-02-oq-01",
+  "description": "De-axiomatizes the Turán forcing step of the parent Erdős #1010 development for every r using Mathlib’s extremal-graph API (exists_clique_of_extremalNumber_lt: more than extremalNumber n K_{r+1} edges forces a K_{r+1}), and pins the provable boundary of the still-unknown K_r density curve g_r(d): the extremal Turán graph has K_{r+1}-density exactly 0 (the lower endpoint), densities live in [0,1], and clique counts are monotone under adding edges. Does not resolve the r ≥ 5 open problem. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/Erdos1010OQ02OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "lineCount": 160,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "graph-theory",
+      "erdos-problems",
+      "turan-theorem",
+      "clique-density",
+      "extremal-combinatorics",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib"
+    ],
+    "erdosNumber": 1010,
+    "erdosUrl": "https://www.erdosproblems.com/1010"
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/Erdos1010OQ02OQ01.lean",
+    "lineCount": 160,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "imports": [
+      "import Mathlib"
+    ]
+  }
+}

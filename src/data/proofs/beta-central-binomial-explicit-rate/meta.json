@@ -1,0 +1,45 @@
+{
+  "id": "beta-central-binomial-explicit-rate",
+  "title": "An Explicit 1 + O(1/n) Rate for the Diagonal Beta Value",
+  "slug": "beta-central-binomial-explicit-rate",
+  "description": "Upgrades the bare asymptotic B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ) to an explicit two-sided rate with effective constants. Writing q n for the multiplicative correction factor, it proves the effective bracket exp(-1/(4(2n-1))) ≤ q n ≤ exp(1/(2(n-1))) for n ≥ 2 (betaDiag_correction_bracket) and the clean Landau form (q n − 1) =O[atTop] (1/n) (betaDiag_correction_isBigO) — the honest 1 + O(1/n) statement — using a tail bound on Mathlib’s Stirling sequence that Mathlib itself does not package. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "dateAdded": "2026-07-05",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/BetaCentralBinomialExplicitRate.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "lineCount": 390,
+    "mathlib_version": "4.26.0",
+    "tags": [
+      "analysis",
+      "asymptotics",
+      "beta-function",
+      "stirling",
+      "central-binomial",
+      "landau-notation",
+      "research"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/BetaCentralBinomialExplicitRate.lean",
+    "lineCount": 390,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 14,
+    "definitionCount": 3,
+    "imports": [
+      "import Mathlib"
+    ]
+  }
+}
