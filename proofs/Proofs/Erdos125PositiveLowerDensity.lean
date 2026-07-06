@@ -54,12 +54,12 @@ The key idea is a **multi-scale density argument**:
 - **DeepMind AlphaProof Nexus (2026-05-21)**: lower density `= 0`. (This file.)
 -/
 
-import Mathlib.Data.Nat.Digits
+import Mathlib.Data.Nat.Digits.Defs
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Order.LiminfLimsup
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.Instances.Real.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Algebra.Order.Group.Pointwise.Interval
 import Mathlib.Data.Set.Card
