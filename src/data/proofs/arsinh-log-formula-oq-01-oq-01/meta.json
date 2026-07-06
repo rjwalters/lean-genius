@@ -146,6 +146,43 @@
       "description": "The parent develops the algebraic theory of arsinh (logarithmic closed form, addition/subtraction/doubling laws, concrete values). This entry answers its first open question, supplying the calculus side: arsinh as the antiderivative of 1/√(1+x²) and the resulting definite-integral evaluations."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "hasDerivAt_arsinh'",
+      "type": "theorem",
+      "statement": "theorem hasDerivAt_arsinh' (x : ℝ) : HasDerivAt arsinh (1 / Real.sqrt (1 + x ^ 2)) x",
+      "significance": "This is the exact content of the parent's open question: it establishes that arsinh is an antiderivative of the integrand 1/√(1 + x²) at every real point, i.e. the '∫ 1/√(1 + x²) dx = arsinh x + C' fact in differential form. It bridges the parent's algebraic theory of arsinh to the calculus side.",
+      "description": "Restates Mathlib's Real.hasDerivAt_arsinh, which records the derivative as (√(1 + x²))⁻¹, in the fractional form 1/√(1 + x²) that matches the integrand; the rewrite is discharged by `simpa [one_div]`."
+    },
+    {
+      "name": "integral_one_div_sqrt_one_add_sq",
+      "type": "theorem",
+      "statement": "theorem integral_one_div_sqrt_one_add_sq (a b : ℝ) : ∫ x in a..b, 1 / Real.sqrt (1 + x ^ 2) = arsinh b - arsinh a",
+      "significance": "The definite-integral incarnation of the antiderivative fact, giving the precise Fundamental Theorem of Calculus evaluation of ∫_a^b 1/√(1 + t²) dt over an arbitrary interval. This is the headline capstone result the file is built to prove.",
+      "description": "Applies intervalIntegral.integral_eq_sub_of_hasDerivAt, feeding it the pointwise derivative hasDerivAt_arsinh' and the interval-integrability of the (continuous) integrand."
+    },
+    {
+      "name": "integral_eq_log_sub_log",
+      "type": "theorem",
+      "statement": "theorem integral_eq_log_sub_log (a b : ℝ) : ∫ x in a..b, 1 / Real.sqrt (1 + x ^ 2) = Real.log (b + Real.sqrt (1 + b ^ 2)) - Real.log (a + Real.sqrt (1 + a ^ 2))",
+      "significance": "Expresses the definite integral in fully explicit logarithmic closed form, connecting the FTC evaluation back to the parent's logarithmic identity arsinh x = log(x + √(1 + x²)). It turns the integral into an elementary closed-form expression free of arsinh.",
+      "description": "Rewrites with integral_one_div_sqrt_one_add_sq and then unfolds arsinh to its logarithmic definition via `rfl`."
+    },
+    {
+      "name": "integral_zero_to",
+      "type": "theorem",
+      "statement": "theorem integral_zero_to (b : ℝ) : ∫ x in (0 : ℝ)..b, 1 / Real.sqrt (1 + x ^ 2) = arsinh b",
+      "significance": "The normalised antiderivative with the integration constant pinned to C = 0 by anchoring the lower limit at 0 (where arsinh 0 = 0). This is the genuine 'arsinh x + C with C = 0' antiderivative and the cleanest statement of the open question's answer.",
+      "description": "Specialises integral_one_div_sqrt_one_add_sq at a = 0 and simplifies using arsinh_zero and sub_zero."
+    },
+    {
+      "name": "integral_symmetric",
+      "type": "theorem",
+      "statement": "theorem integral_symmetric (a : ℝ) : ∫ x in (-a)..a, 1 / Real.sqrt (1 + x ^ 2) = 2 * arsinh a",
+      "significance": "Captures the even-integrand / odd-antiderivative symmetry: because 1/√(1 + t²) is even and arsinh is odd, the integral over a symmetric interval [-a, a] collapses to 2·arsinh a. A clean structural consequence of the FTC evaluation.",
+      "description": "Rewrites with integral_one_div_sqrt_one_add_sq and the oddness Real.arsinh_neg, then closes with `ring`."
+    }
+  ],
   "references": [
     {
       "title": "Mathlib4: Analysis.SpecialFunctions.Arsinh",

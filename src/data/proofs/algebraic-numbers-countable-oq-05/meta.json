@@ -25,6 +25,33 @@
     "definitionCount": 2,
     "dateAdded": "2026-04-26",
     "assumptions": "",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.finite_setOf_isRoot",
+        "description": "A nonzero polynomial has finitely many roots — used for finite_real_roots (each stratum's root fibers are finite)",
+        "module": "Mathlib.Algebra.Polynomial.Roots"
+      },
+      {
+        "theorem": "IsLocalization.integerNormalization_aeval_eq_zero",
+        "description": "Clearing denominators of a rational polynomial preserves its roots — used in algebraic_reals_eq_iUnion_height to pass from ℚ[X] to ℤ[X]",
+        "module": "Mathlib.RingTheory.Localization.Integral"
+      },
+      {
+        "theorem": "Polynomial.aeval_map_algebraMap",
+        "description": "Scalar-tower compatibility of aeval under a base ring map — used for the reverse (ℤ → ℚ) direction of the height decomposition",
+        "module": "Mathlib.RingTheory.Polynomial.Tower"
+      },
+      {
+        "theorem": "Set.countable_iUnion",
+        "description": "A countable union of countable sets is countable — assembles the countable union of finite height strata into the main theorem",
+        "module": "Mathlib.Data.Set.Countable"
+      },
+      {
+        "theorem": "Algebraic.cardinalMk_of_countable_of_charZero",
+        "description": "The algebraic numbers over ℚ in a char-zero field have cardinality ℵ₀ — invoked as a black box to obtain card_algebraic_reals_eq_aleph0 (this corollary is NOT derived from the height argument)",
+        "module": "Mathlib.Algebra.AlgebraicCard"
+      }
+    ],
     "originalContributions": [
       "cantorHeight: The Cantor height function H(p) = natDegree(p) + ∑ᵢ |pᵢ| on integer polynomials",
       "cantorHeight_degree_le: natDegree(p) ≤ H(p) — degree is bounded by height",
@@ -36,7 +63,7 @@
       "algebraic_reals_eq_iUnion_height: IsAlgebraic ℚ x ↔ x ∈ ⋃ₕ algebraicRealsOfHeight(h)",
       "algebraic_reals_countable_via_height: the algebraic reals are countable (main theorem)",
       "algebraicRealsOfHeight_mono: the filtration is monotone — height strata nest",
-      "card_algebraic_reals_eq_aleph0: #(algebraic reals) = ℵ₀",
+      "card_algebraic_reals_eq_aleph0: #(algebraic reals) = ℵ₀ — derived directly from Mathlib's Algebraic.cardinalMk_of_countable_of_charZero (a black-box corollary, not obtained from the height argument)",
       "finite_algebraicReals_bounded_height: explicit characterization of height-bounded algebraic reals"
     ]
   },
