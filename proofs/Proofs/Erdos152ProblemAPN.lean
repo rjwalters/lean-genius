@@ -43,6 +43,14 @@ open scoped Pointwise Asymptotics
 
 open Filter
 
+/-- A Sidon set (B₂ set): all pairwise sums of elements are distinct up to commutativity.
+    Defined locally; `IsSidon` is not in Mathlib — it lives in google-deepmind/formal-conjectures
+    (`FormalConjecturesForMathlib/Combinatorics/Basic.lean`). The original `erdos_152.lean` imported
+    that library; this port replaces it with `import Mathlib` and supplies the definition here. -/
+def IsSidon {α : Type*} [Add α] (A : Set α) : Prop :=
+  ∀ᵉ (i₁ ∈ A) (j₁ ∈ A) (i₂ ∈ A) (j₂ ∈ A),
+  i₁ + i₂ = j₁ + j₂ → (i₁ = j₁ ∧ i₂ = j₂) ∨ (i₁ = j₂ ∧ i₂ = j₁)
+
 namespace Erdos152APN
 
 /-- Define `f n` to be the minimum of `|{s | s - 1 ∉ A + A, s ∈ A + A, s + 1 ∉ A + A}|` as `A`
