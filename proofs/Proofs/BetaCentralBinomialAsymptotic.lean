@@ -107,7 +107,7 @@ theorem centralBinom_isEquivalent :
   refine (hcb.trans hdiv).trans (Filter.EventuallyEq.isEquivalent ?_)
   filter_upwards [eventually_ge_atTop 1] with n hn
   have hm : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr (by omega)
-  simp only [Function.comp_apply]
+  simp only [Pi.div_apply, Pi.mul_apply, Function.comp_apply]
   rw [show ((2 * n : ℕ) : ℝ) = 2 * (n : ℝ) by push_cast; ring]
   exact stirling_ratio_identity hm (Real.exp_pos 1) n
 
@@ -131,7 +131,8 @@ theorem betaDiag_isEquivalent :
   have hR : (fun n : ℕ => (2 * (n : ℝ) + 1)⁻¹ * ((4 : ℝ) ^ n / Real.sqrt (π * n))⁻¹) =ᶠ[atTop]
       (fun n : ℕ => Real.sqrt (π * n) / ((2 * (n : ℝ) + 1) * 4 ^ n)) := by
     apply Filter.Eventually.of_forall; intro n
-    rw [inv_div]; ring
+    dsimp only
+    rw [inv_div, inv_mul_eq_div, div_div, mul_comm ((4 : ℝ) ^ n) (2 * (n : ℝ) + 1)]
   exact (hL.isEquivalent.trans hmul).trans hR.isEquivalent
 
 /-- The complex Euler Beta integral on the diagonal equals the real value
