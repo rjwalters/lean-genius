@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { UserMenu } from '@/components/auth'
+import { LoadingScreen } from '@/components/LoadingScreen'
 import { ProofBadge } from '@/components/ui/proof-badge'
 
 export function ProofPage() {
@@ -70,12 +71,7 @@ export function ProofPage() {
   }, [])
 
   if (loading) {
-    return (
-      <div className="h-screen flex flex-col items-center justify-center gap-4">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-annotation" />
-        <p className="text-muted-foreground">Loading proof...</p>
-      </div>
-    )
+    return <LoadingScreen className="h-screen min-h-0" message="Loading proof..." />
   }
 
   if (error) {

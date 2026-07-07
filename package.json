@@ -5,11 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "export NODE_OPTIONS=\"${NODE_OPTIONS:-} --max-old-space-size=8192\" && pnpm gallery:check-size && pnpm annotations:build && pnpm research:build && pnpm research:enrich && tsc -b && vite build",
+    "build": "export NODE_OPTIONS=\"${NODE_OPTIONS:-} --max-old-space-size=8192\" && pnpm gallery:check-size && pnpm annotations:build && pnpm research:build && pnpm research:enrich && pnpm gallery:loading-facts && tsc -b && vite build",
     "lint": "eslint .",
     "gallery:check-size": "tsx scripts/gallery/check-meta-size.ts",
     "gallery:check-size:strict": "tsx scripts/gallery/check-meta-size.ts --strict",
     "gallery:size-report": "tsx scripts/gallery/check-meta-size.ts --report",
+    "gallery:loading-facts": "tsx scripts/gallery/build-loading-facts.ts",
     "preview": "vite preview",
     "deploy": "pnpm build && wrangler pages deploy dist --project-name=lean-genius --commit-dirty=true",
     "annotations:build": "tsx scripts/annotations/build.ts",
