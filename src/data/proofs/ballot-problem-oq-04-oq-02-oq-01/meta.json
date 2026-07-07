@@ -2,12 +2,12 @@
   "id": "ballot-problem-oq-04-oq-02-oq-01",
   "title": "Non-Crossing Partitions are Counted by the Catalan Numbers: the Recurrence Reduction",
   "slug": "ballot-problem-oq-04-oq-02-oq-01",
-  "description": "Answers openQuestion[2] of the sibling ballot-problem-oq-04-oq-02 up to a single combinatorial recurrence. That entry built nonCrossingCount n := Fintype.card {P : Finpartition (univ : Finset (Fin n)) // IsNonCrossingFp P}, a well-typed count of the non-crossing partitions of Fin n, and located their first divergence from the Bell numbers at n = 4, but left the exact value nonCrossingCount n = catalan n open. This entry supplies the STRUCTURAL REDUCTION of that statement to one lemma. Mathlib's Catalan numbers are defined by the antidiagonal convolution (catalan_succ': catalan (n+1) = ∑ (i,j) ∈ antidiagonal n, catalan i · catalan j), so nonCrossingCount = catalan follows by strong induction the moment nonCrossingCount obeys the same two laws. We prove the base case nonCrossingCount 0 = 1 (the empty set has a unique, vacuously non-crossing partition) and the reduction nonCrossingCount_eq_catalan (a four-line Nat.strong_induction_on matching the antidiagonal shape of catalan_succ' term-by-term), discharging everything EXCEPT the recurrence nonCrossingCount (n+1) = ∑ (i,j) ∈ antidiagonal n, nonCrossingCount i · nonCrossingCount j. That recurrence — the classical block / first-return decomposition of a non-crossing partition of a linearly ordered (n+1)-element set into two independent non-crossing partitions whose sizes sum to n — is the genuine combinatorial content, is not in Mathlib in any form, and remains a single sorry. The contribution is the isolation of the entire difficulty of 'non-crossing = Catalan' into that one recurrence: a reduction in the spirit of replacing an explicit bijection with one structural identity.",
+  "description": "Answers openQuestion[2] of the sibling ballot-problem-oq-04-oq-02 IN FULL: nonCrossingCount n = catalan n, machine-checked with 0 sorries and only the foundational axioms. That entry built nonCrossingCount n := Fintype.card {P : Finpartition (univ : Finset (Fin n)) // IsNonCrossingFp P}, a well-typed count of the non-crossing partitions of Fin n, and located their first divergence from the Bell numbers at n = 4, but left the exact value open. Mathlib's Catalan numbers are defined by the antidiagonal convolution (catalan_succ': catalan (n+1) = ∑ (i,j) ∈ antidiagonal n, catalan i · catalan j), so nonCrossingCount = catalan follows by strong induction once nonCrossingCount obeys the base case nonCrossingCount 0 = 1 and the same convolution recurrence. The recurrence is the genuine combinatorial content — the classical block / first-return decomposition of a non-crossing partition of a linearly ordered (n+1)-element set into two independent non-crossing partitions whose sizes sum to n — and is NOT in Mathlib in any form. This entry builds it from scratch: a restriction operation restrictFp (a Finpartition of Fin (n+1) restricted along an index embedding), an inverse gluing operation glueFp, proofs that both preserve non-crossing (the hard direction uses that no block straddles the cut m = firstBlockMax P), and the two round-trip laws. These are packaged into the first-return bijection by an equinumerosity count: the two sides are shown equal in cardinality via antisymmetry of two explicit injections through a Fin (n+1)-indexed intermediate type (whose window fibers match glueFp's signature definitionally, avoiding dependent-HEq casts), and Fintype.equivOfCardEq supplies the bijection. The whole development — restriction, gluing, non-crossing preservation both ways, and the count — is roughly 1200 lines with no Mathlib support for non-crossing partitions.",
   "meta": {
     "author": "Non-crossing partitions (Kreweras 1972); formalized via Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Noncrossing_partition",
     "date": "1972",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BallotProblemOQ04OQ02OQ01.lean",
     "tags": [
       "combinatorics",
@@ -17,17 +17,17 @@
       "recurrence",
       "strong-induction",
       "ballot-problem",
-      "research",
-      "open-problem"
+      "bijection",
+      "research"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "1 sorry: nonCrossingCount_recurrence (the combinatorial Catalan convolution recurrence for non-crossing Finpartitions; HARD, bijection-level, no Mathlib support). 0 literal `axiom` declarations. The proved parts (nonCrossingCount_zero, and the nonCrossingCount_eq_catalan reduction) depend only on the foundational axioms propext / Classical.choice / Quot.sound; no native_decide, no Lean.ofReduceBool. Because a sorry remains, this entry is `formalized`, not `verified` — the headline equality nonCrossingCount n = catalan n is proved CONDITIONAL on the outstanding recurrence.",
+    "assumptions": "None. 0 sorries, 0 literal `axiom` declarations, 0 structure-encoded assumptions. The full theorem nonCrossingCount n = catalan n (nonCrossingCount_eq_catalan) is machine-checked and depends only on the foundational axioms propext / Classical.choice / Quot.sound (Classical.choice enters via Fintype.equivOfCardEq and .some on the first-return bijection's Nonempty). No native_decide and no Lean.ofReduceBool — the n ≤ 3 corollary uses kernel `decide`, not native_decide. Confirmed by `#print axioms nonCrossingCount_eq_catalan`. Status verified.",
     "dateAdded": "2026-06-26",
-    "lineCount": 199,
-    "theoremCount": 6,
-    "definitionCount": 0,
+    "lineCount": 1198,
+    "theoremCount": 41,
+    "definitionCount": 12,
     "mathlibDependencies": [
       {
         "theorem": "catalan_succ'",
@@ -69,12 +69,41 @@
       {
         "theorem": "Finset.sum_coe_sort",
         "purpose": "reindex the univ-sum over the antidiagonal subtype back to a Finset sum"
+      },
+      {
+        "theorem": "Finpartition.ofSetoid",
+        "description": "build a Finpartition from a Setoid with decidable relation; underlies both restrictFp (Setoid.comap of P.part's kernel along the index embedding) and glueFp (the glueLabel setoid)",
+        "module": "Mathlib.Order.Partition.Finpartition"
+      },
+      {
+        "theorem": "Fintype.card_le_of_injective",
+        "description": "an injection α ↪ β gives card α ≤ card β; used both ways (fwdMid and glMid) so le_antisymm yields card LHS = card MidNc",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Fintype.equivOfCardEq",
+        "description": "equal Fintype cards give a (noncomputable, choice-backed) Equiv; turns card_lhs_eq_card_rhs into nonempty_firstReturnEquiv without constructing a cast-heavy natural bijection",
+        "module": "Mathlib.Logic.Equiv.Fintype"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk",
+        "description": "∑ ij ∈ antidiagonal n, f ij = ∑ k ∈ range (n+1), f (k, n-k); converts the antidiagonal-indexed card sum to the range-indexed one matching the MidNc count (pure ℕ arithmetic, no type casts)",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      },
+      {
+        "theorem": "Fin.sum_univ_eq_sum_range",
+        "description": "∑ i : Fin n, f i = ∑ i ∈ range n, f i; rewrites the MidNc fibre-card sum over Fin (n+1) into the range form",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
       }
     ],
     "originalContributions": [
-      "nonCrossingCount_zero : nonCrossingCount 0 = 1 — the empty set has a unique, vacuously non-crossing partition (via nonCrossingCount_eq_card_of_n_le_three, Unique (Finpartition ⊥), Fintype.card_unique). 0 sorry.",
-      "nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n — the reduction: a Nat.strong_induction_on whose step rewrites nonCrossingCount (n+1) by the recurrence, rewrites catalan (n+1) by catalan_succ', and matches the two antidiagonal sums term-by-term using the inductive hypothesis on each factor (both < n+1). 0 sorry beyond its dependence on the recurrence.",
-      "nonCrossingCount_recurrence (statement): nonCrossingCount (n+1) = ∑ ij ∈ antidiagonal n, nonCrossingCount ij.1 * nonCrossingCount ij.2 — the Catalan convolution for the Finpartition model, stated to match catalan_succ' so the reduction is purely formal. Its proof (the block/first-return decomposition) is the single outstanding sorry and the entire remaining combinatorial content."
+      "nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n — the full theorem, now machine-checked with 0 sorries: a Nat.strong_induction_on whose step rewrites nonCrossingCount (n+1) by the (now-proved) recurrence, rewrites catalan (n+1) by catalan_succ', and matches the two antidiagonal sums term-by-term using the inductive hypothesis on each factor (both < n+1).",
+      "nonCrossingCount_recurrence : nonCrossingCount (n+1) = ∑ ij ∈ antidiagonal n, nonCrossingCount ij.1 * nonCrossingCount ij.2 — the Catalan convolution for the Finpartition model, PROVED (formerly the sole sorry) via nonempty_firstReturnEquiv and the counting reduction nonCrossingCount_recurrence_of_equiv.",
+      "restrictFp / glueFp — a restriction operation (a Finpartition of Fin (n+1) restricted along a strictly monotone index embedding, via Setoid.comap + Finpartition.ofSetoid) and its inverse gluing operation (built from a three-way glueLabel on the distinguished point 0, the left window [1,m], and the right window [m+1,n]). Neither exists in Mathlib.",
+      "firstBlockMax P := (P.part 0).max' and the separation lemmas noStraddle_of_isMax / part_side_of_firstBlockMax : for a non-crossing P, no block straddles the cut m = firstBlockMax P — the structural fact that makes the first-return split BINARY (Catalan) rather than multi-part. This is where the non-crossing hypothesis is genuinely used.",
+      "isNonCrossingFp_restrictFp / isNonCrossingFp_glueFp — restriction and gluing both preserve non-crossing (gluing needs the 'attach 0 to the top block m-1' choice to keep window A non-crossing through the special point).",
+      "The round-trip laws glueFp_restrictFp_eq_self (glue ∘ forward = id, the hard direction), restrictFp_glueFp_left/right and firstBlockMax_glueFp_val (forward ∘ glue = id), assembled by card_lhs_eq_card_rhs: an equinumerosity count via antisymmetry of two injections (fwdMid with left inverse glMid; glMid injective by recovering the cut as an ℕ-equality then both factors), routed through the Fin (n+1)-indexed intermediate type MidNc whose fibers match glueFp definitionally — so no dependent-HEq casts. Fintype.equivOfCardEq then yields nonempty_firstReturnEquiv.",
+      "nonCrossingCount_eq_catalan_of_le_three : an unconditional kernel-decide check for n ≤ 3 (Bell = Catalan up to 3, the regime just before the first divergence Bell 4 = 15 > 14 = catalan 4)."
     ]
   },
   "references": [
@@ -102,10 +131,11 @@
     "problemStatement": "Prove nonCrossingCount n = catalan n. Reduce it, with full rigour, to the single recurrence nonCrossingCount (n+1) = ∑ (i,j) ∈ antidiagonal n, nonCrossingCount i · nonCrossingCount j, matching Mathlib's catalan recurrence.",
     "proofStrategy": "Mathlib's catalan is DEFINED by the antidiagonal convolution and catalan_succ' exposes it. So if nonCrossingCount satisfies (i) nonCrossingCount 0 = 1 and (ii) the same convolution recurrence, then nonCrossingCount = catalan by strong induction. (i) is proved here: univ : Finset (Fin 0) = ⊥, Finpartition ⊥ is Unique, and for n ≤ 3 every partition is non-crossing, so nonCrossingCount 0 = Fintype.card (Finpartition ⊥) = 1. (ii) is STATED as nonCrossingCount_recurrence and used to prove nonCrossingCount_eq_catalan: Nat.strong_induction_on n; the n=0 case is (i); the n=m+1 case rewrites the left side by the recurrence, the right by catalan_succ', and applies Finset.sum_congr over antidiagonal m, rewriting each factor nonCrossingCount i (resp. j) to catalan i (resp. j) by the inductive hypothesis, valid because i, j < m+1. The recurrence's own proof — decomposing a non-crossing Finpartition of Fin (n+1) by the block structure around a distinguished point into independent non-crossing partitions of complementary intervals — is the outstanding sorry.",
     "keyInsights": [
-      "**The whole problem collapses to one recurrence.** Because Mathlib's catalan IS the antidiagonal convolution (catalan_succ'), proving nonCrossingCount obeys the identical convolution plus the base case settles nonCrossingCount = catalan by a four-line strong induction. The reduction isolates 100% of the difficulty into nonCrossingCount_recurrence.",
-      "**The recurrence cannot be assumed.** Deriving it requires an independent combinatorial argument (the block / first-return decomposition); using nonCrossingCount = catalan to obtain it would be circular. This is why it is the genuine content and the honest sorry.",
-      "**Base case via uniqueness, not computation.** nonCrossingCount 0 = 1 falls out of Unique (Finpartition ⊥) once univ : Finset (Fin 0) is identified with ⊥ — no enumeration, and it matches catalan 0 = 1 exactly.",
-      "**Mathlib has no non-crossing partition theory.** There is no nonCrossing/NonCrossingPartition anywhere in Mathlib and no Finpartition block-gap decomposition lemma, so the recurrence has nothing to transport from and must be built from scratch — the reason it remains open."
+      "**The whole problem collapses to one recurrence.** Because Mathlib's catalan IS the antidiagonal convolution (catalan_succ'), proving nonCrossingCount obeys the identical convolution plus the base case settles nonCrossingCount = catalan by a four-line strong induction. All difficulty concentrates in nonCrossingCount_recurrence — which this entry now proves.",
+      "**The cut m = firstBlockMax P makes the split binary.** Choosing the distinguished point's block-maximum as the cut, non-crossing forces every block entirely into [0,m] or [m+1,n] (noStraddle): a block with points on both sides would cross the pair (0, m). This BINARY separation is exactly what turns the decomposition into the Catalan convolution rather than a multi-part composition — and it is the one place the non-crossing hypothesis is essential.",
+      "**Gluing must attach 0 to the top block.** The inverse glueFp reattaches the dropped point 0 to the top block m-1 of the left window; this specific choice is what keeps window A non-crossing through 0, and its correctness is the mirror pair restrict_top_recovers_part_zero / mem_part_zero_glueFp_left.",
+      "**Equinumerosity dodges the dependent-HEq cast.** A natural Equiv between the antidiagonal-indexed Σ-type and the non-crossing partitions would need to match dependent fibers across a merely-propositional index equality (the forward map's cut is computed, not definitional). Instead we prove card LHS = card RHS by antisymmetry of two injections through a Fin (n+1)-indexed intermediate type whose fibers match glueFp definitionally, and let Fintype.equivOfCardEq produce the bijection — no cast bookkeeping.",
+      "**Mathlib has no non-crossing partition theory.** There is no nonCrossing/NonCrossingPartition anywhere in Mathlib and no Finpartition block-gap decomposition lemma, so the entire restriction/gluing calculus had to be built from scratch."
     ],
     "prerequisites": [
       "The parent's Finpartition model nonCrossingCount and nonCrossingCount_eq_card_of_n_le_three (ballot-problem-oq-04-oq-02)",
@@ -113,50 +143,90 @@
       "Strong induction on ℕ and Finset.sum_congr over antidiagonal",
       "Uniqueness of the partition of the empty set (Unique (Finpartition ⊥)) and Fintype.card_unique"
     ],
-    "what": "A rigorous reduction of the open enumeration nonCrossingCount n = catalan n to a single combinatorial recurrence: the base case nonCrossingCount 0 = 1 and the strong-induction argument nonCrossingCount_eq_catalan are proved (0 sorry), leaving only the Catalan convolution recurrence nonCrossingCount_recurrence (1 sorry) as the entire remaining content.",
-    "how": "State nonCrossingCount_recurrence to match Mathlib's catalan_succ'; prove nonCrossingCount 0 = 1 from Unique (Finpartition ⊥); then prove nonCrossingCount_eq_catalan by strong induction, matching the two antidiagonal sums term-by-term via the inductive hypothesis.",
-    "significance": "Reduces the parent entry's openQuestion[2] to one well-defined lemma, demonstrating that 'non-crossing partitions are counted by Catalan' is, modulo the standard block decomposition, a purely formal consequence of Mathlib's definition of catalan. It pinpoints the exact missing piece (a Finpartition block/first-return decomposition, absent from Mathlib) and packages it as a single sorry suitable for focused proof search, rather than leaving the whole enumeration open."
+    "what": "A complete, machine-checked proof (0 sorries, 0 axioms beyond the foundational ones) of the open enumeration nonCrossingCount n = catalan n: the base case nonCrossingCount 0 = 1, the strong-induction reduction nonCrossingCount_eq_catalan, and — the genuine content — the Catalan convolution recurrence nonCrossingCount_recurrence, built from a from-scratch restriction/gluing calculus for non-crossing Finpartitions and its first-return bijection.",
+    "how": "Build restrictFp (restriction of a Finpartition of Fin (n+1) along a strictly monotone index embedding) and glueFp (its inverse, gluing at the cut m = firstBlockMax P via a three-way glueLabel), prove both preserve non-crossing (the hard direction uses the no-straddle separation lemma), and establish the round-trip laws. Package them into the first-return bijection by an equinumerosity count: card LHS = card RHS by antisymmetry of two injections through the Fin (n+1)-indexed intermediate type MidNc, then Fintype.equivOfCardEq. Feed the resulting recurrence into the strong induction against catalan_succ'.",
+    "significance": "Settles the parent entry's openQuestion[2] outright and supplies Mathlib-free infrastructure for non-crossing partitions of a linearly ordered set (restriction, gluing, the firstBlockMax cut invariant, the no-straddle lemma, and the first-return Catalan decomposition), none of which existed in Mathlib. It also demonstrates a reusable packaging pattern: when a forward map's index is computed (only propositionally equal to the target), route the round-trip through an intermediate type with definitionally-matching fibers and finish with a cardinality count instead of a cast-heavy dependent Equiv."
   },
   "sections": [
     {
       "id": "header",
       "title": "Problem Statement and Reduction Plan",
       "startLine": 1,
-      "endLine": 62,
-      "summary": "Module docstring: the reduction of nonCrossingCount n = catalan n to the base case plus the Catalan convolution recurrence, the strong-induction argument that closes the gap, and an honest status note (1 sorry, the recurrence).",
+      "endLine": 69,
+      "summary": "Module docstring: the reduction of nonCrossingCount n = catalan n to the base case plus the Catalan convolution recurrence, and the status note — 0 sorries, verified, only the foundational axioms.",
       "mathContext": "$\\mathrm{nonCrossingCount}\\,n = \\mathrm{catalan}\\,n$"
     },
     {
       "id": "base-case",
       "title": "The Base Case n = 0",
-      "startLine": 63,
-      "endLine": 73,
-      "summary": "nonCrossingCount_zero : nonCrossingCount 0 = 1 — univ : Finset (Fin 0) = ⊥, Finpartition ⊥ is Unique, and every partition for n ≤ 3 is non-crossing, so the count is Fintype.card_unique = 1.",
+      "startLine": 70,
+      "endLine": 80,
+      "summary": "nonCrossingCount_zero : nonCrossingCount 0 = 1 — univ : Finset (Fin 0) = ⊥, Finpartition ⊥ is Unique, so the count is Fintype.card_unique = 1 = catalan 0.",
       "mathContext": "$\\mathrm{nonCrossingCount}\\,0 = 1 = \\mathrm{catalan}\\,0$"
     },
     {
+      "id": "restriction",
+      "title": "Restriction of Non-Crossing Partitions (forward map)",
+      "startLine": 81,
+      "endLine": 360,
+      "summary": "restrictFp (a Finpartition of Fin (n+1) restricted along a strictly monotone index embedding, via Setoid.comap + Finpartition.ofSetoid) and its non-crossing preservation isNonCrossingFp_restrictFp; the concrete interval embeddings (castLE, offsetEmb); the cut invariant firstBlockMax P := (P.part 0).max' and the forward map firstReturnForward; the no-straddle separation lemmas (noStraddle_of_isMax, part_side_of_firstBlockMax) — every block lies entirely on one side of the cut.",
+      "mathContext": "$m = \\max(P.\\mathrm{part}\\,0),\\quad \\text{no block straddles } m$"
+    },
+    {
+      "id": "gluing",
+      "title": "The Inverse Gluing Map and its Non-Crossing Preservation",
+      "startLine": 361,
+      "endLine": 695,
+      "summary": "glueFp: the inverse map, gluing two window partitions at the cut via a three-way glueLabel (the point 0, the left window [1,m] carrying P₁ with 0 attached to the top block m-1, the right window [m+1,n] carrying P₂); the glueLabel evaluation lemmas; restrict_top_recovers_part_zero / mem_part_zero_glueFp_left (0's block is reconstructible); and isNonCrossingFp_glueFp — gluing two non-crossing partitions is non-crossing.",
+      "mathContext": "$\\mathrm{glueFp}\\ m\\ P_1\\ P_2 : \\mathrm{Finpartition}(\\mathrm{Fin}\\,(n{+}1))$"
+    },
+    {
+      "id": "round-trips",
+      "title": "The Round-Trip Laws",
+      "startLine": 696,
+      "endLine": 938,
+      "summary": "firstBlockMax_glueFp_val (glue recovers the cut index), restrictFp_glueFp_left/right (restriction recovers each glued factor) — together forward ∘ glue = id; and glueFp_restrictFp_eq_self — glue ∘ forward = id, the hard direction where non-crossing is essential (three cases on the cut, opposite-side pairs ruled out by noStraddle).",
+      "mathContext": "$\\mathrm{glue}\\circ\\mathrm{forward}=\\mathrm{id},\\quad \\mathrm{forward}\\circ\\mathrm{glue}=\\mathrm{id}$"
+    },
+    {
+      "id": "bijection-count",
+      "title": "Assembling the First-Return Bijection via a Cardinality Count",
+      "startLine": 939,
+      "endLine": 1061,
+      "summary": "The Fin (n+1)-indexed intermediate type MidNc (fibers match glueFp definitionally), the maps fwdMid / glMid, their injectivity (fwdMid by left inverse; glMid by recovering the cut as an ℕ-equality then both factors), and card_lhs_eq_card_rhs: card LHS = card MidNc (antisymmetry) = card RHS (antidiagonal ↔ range reindexing). Dodges the dependent-HEq casts a natural Equiv would need.",
+      "mathContext": "$\\#\\,\\mathrm{LHS} = \\#\\,\\mathrm{RHS}$"
+    },
+    {
       "id": "recurrence",
-      "title": "The Combinatorial Recurrence (Outstanding sorry)",
-      "startLine": 74,
-      "endLine": 89,
-      "summary": "nonCrossingCount_recurrence : nonCrossingCount (n+1) = ∑ ij ∈ antidiagonal n, nonCrossingCount ij.1 * nonCrossingCount ij.2 — the block/first-return decomposition of a non-crossing partition into independent sub-partitions; stated to match catalan_succ', proof is the single sorry.",
+      "title": "The Combinatorial Recurrence",
+      "startLine": 1062,
+      "endLine": 1127,
+      "summary": "nonempty_firstReturnEquiv (the first-return bijection, from card_lhs_eq_card_rhs via Fintype.equivOfCardEq), the counting reduction nonCrossingCount_recurrence_of_equiv (Fintype.card_congr ∘ card_sigma ∘ card_prod), and their corollary nonCrossingCount_recurrence — the Catalan convolution for the Finpartition model, now PROVED.",
       "mathContext": "$\\mathrm{nonCrossingCount}\\,(n{+}1) = \\sum_{i+j=n} \\mathrm{nonCrossingCount}\\,i \\cdot \\mathrm{nonCrossingCount}\\,j$"
     },
     {
       "id": "counting-theorem",
       "title": "The Counting Theorem via Strong Induction",
-      "startLine": 90,
-      "endLine": 114,
+      "startLine": 1128,
+      "endLine": 1148,
       "summary": "nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n — Nat.strong_induction_on; base case from nonCrossingCount_zero, step rewrites by the recurrence and catalan_succ' and matches the antidiagonal sums term-by-term via the IH (both indices < n+1).",
       "mathContext": "$\\mathrm{nonCrossingCount}\\,n = \\mathrm{catalan}\\,n$"
+    },
+    {
+      "id": "n-le-three",
+      "title": "Unconditional Verification for n ≤ 3",
+      "startLine": 1149,
+      "endLine": 1198,
+      "summary": "nonCrossingCount_eq_catalan_of_le_three — an independent kernel-decide check that Bell = Catalan for n ≤ 3 (the regime just before the first divergence Bell 4 = 15 > 14 = catalan 4), plus #check / #print axioms confirming the foundational-only axiom profile.",
+      "mathContext": "$n \\le 3 \\Rightarrow \\mathrm{nonCrossingCount}\\,n = \\mathrm{catalan}\\,n$"
     }
   ],
   "conclusion": {
-    "summary": "Reduces the open enumeration nonCrossingCount n = catalan n to a single combinatorial recurrence. The base case nonCrossingCount 0 = 1 (uniqueness of the empty partition) and the reduction nonCrossingCount_eq_catalan (strong induction matching Mathlib's catalan_succ' term-by-term) are proved with 0 sorry; the Catalan convolution recurrence for the Finpartition model remains a single sorry. Status formalized (not verified): the headline equality is proved conditional on that recurrence.",
-    "implications": "Pinpoints the exact remaining obstacle to the parent's openQuestion[2]: a block/first-return decomposition of non-crossing Finpartitions, which Mathlib lacks entirely. Once that recurrence is proved (by direct decomposition or by transporting the explicit Dyck-word bijection of sibling oq-04-oq-01), nonCrossingCount n = catalan n follows immediately from this file.",
+    "summary": "Proves the parent's openQuestion[2] in full: nonCrossingCount n = catalan n, machine-checked with 0 sorries and only the foundational axioms (propext / Classical.choice / Quot.sound; confirmed by #print axioms). The base case nonCrossingCount 0 = 1 and the strong-induction reduction to the Catalan convolution recurrence are proved, and the recurrence itself — the block / first-return decomposition of a non-crossing Finpartition, absent from Mathlib — is built from scratch here (restrictFp / glueFp, non-crossing preservation both directions, the round-trip laws) and packaged into the first-return bijection by an equinumerosity count. Status verified.",
+    "implications": "Supplies Mathlib-free infrastructure for non-crossing partitions of a linearly ordered set: a restriction/gluing calculus on Finpartition (Fin ·), the cut invariant firstBlockMax with its no-straddle separation lemma, and the first-return Catalan decomposition — the missing piece the parent entry left open. The equinumerosity-via-two-injections packaging (routing through a Fin (n+1)-indexed intermediate type to dodge dependent-HEq casts) is a reusable pattern for turning a computed-index forward map plus round-trip laws into an Equiv.",
     "openQuestions": [
-      "Prove nonCrossingCount_recurrence directly: build the Equiv from non-crossing Finpartitions of Fin (n+1) to Σ (i,j) ∈ antidiagonal n of pairs of non-crossing Finpartitions (via the block of the last/first point and the gaps it induces), then take Fintype.card.",
-      "Alternatively transport DyckWord.card_dyckWord_semilength_eq_catalan along the explicit Dyck-word ↔ non-crossing-partition bijection (sibling ballot-problem-oq-04-oq-01) to obtain the recurrence or the equality directly."
+      "Upstream the non-crossing-partition restriction/gluing calculus (restrictFp, glueFp, firstBlockMax, the no-straddle lemma) to Mathlib, which currently has no non-crossing partition theory.",
+      "Relate this Finpartition-model proof to the explicit Dyck-word ↔ non-crossing-partition bijection of sibling ballot-problem-oq-04-oq-01 (a second, independent route to the same enumeration)."
     ]
   },
   "crossReferences": [
@@ -174,12 +244,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 199,
+    "lineCount": 1198,
     "path": "Proofs/BallotProblemOQ04OQ02OQ01.lean",
     "axiomCount": 0,
-    "sorries": 1,
-    "definitionCount": 0,
-    "theoremCount": 6
+    "sorries": 0,
+    "definitionCount": 12,
+    "theoremCount": 41
   },
-  "sorries": 1
+  "sorries": 0
 }
