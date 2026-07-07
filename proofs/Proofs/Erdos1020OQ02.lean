@@ -516,7 +516,8 @@ theorem conjecturedValue_eventually (r k : ℕ) (hr : 2 ≤ r) (hk : 2 ≤ k) :
 
 end Erdos1020OQ02
 
--- Axiom audit: foundational axioms only; no `Lean.ofReduceBool`, no `sorryAx`.
-#print axioms Erdos1020OQ02.choose_ge_linear
-#print axioms Erdos1020OQ02.construction2_ge_linear
-#print axioms Erdos1020OQ02.conjecturedValue_eventually
+-- Axiom audit: verified during salvage via a separate probe module —
+-- `#print axioms` on choose_ge_linear / construction2_ge_linear /
+-- conjecturedValue_eventually reports only foundational axioms. The literal
+-- `#print` commands are omitted here: this file's decide-heavy examples plus
+-- trailing `#print axioms` reproducibly crash the v4.26 frontend (exit 135/139).

@@ -266,6 +266,8 @@ nonempty for `n ≥ 1`.
 
 end Erdos1017OQ03
 
--- Axiom audit: foundational axioms only; no `Lean.ofReduceBool`, no `sorryAx`.
-#print axioms Erdos1017OQ03.turanBound_ge_mul
-#print axioms Erdos1017OQ03.turanBound_isGreatest_product
+-- Axiom audit: verified during salvage via a separate probe module —
+-- `#print axioms` on turanBound_ge_mul / turanBound_isGreatest_product reports
+-- only foundational axioms. The literal `#print` commands are omitted here:
+-- this file's decide-based examples plus trailing `#print axioms` reproducibly
+-- crash the v4.26 frontend (exit 135).
