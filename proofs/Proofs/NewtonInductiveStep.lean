@@ -150,3 +150,78 @@ theorem binom_ineq (m k : ℕ) (hk : 2 ≤ k) (hkm : k + 1 ≤ m) :
     2 * (k : ℝ) ^ 3 * (r + 1) * b ^ 2 * c * h2' -
     2 * (k : ℝ) * (r ^ 2 - 1) * key3 -
     (k : ℝ) ^ 2 * (r + 1) * key2
+
+/-- Dual binomial inequality: b²·(b+a)·(d+c) ≥ a·c·(c+b)².
+    Companion to `binom_ineq`, needed for the `α ≥ 0` branch of the
+    normalized-Newton inductive step. Proved by the same absorption technique:
+    after multiplying by k³(k+1)(r+1) > 0 (where r = m-k+1) and substituting the
+    absorption identities k·c = r·b, (k+1)·d = (r-1)·c, (r+1)·a = (k-1)·b,
+    the cleared expression equals r·(k+r)²·b⁴ ≥ 0.
+    (The single non-trivial factor is k² - (k-1)(k+1) = 1.) -/
+theorem binom_ineq_dual (m k : ℕ) (hk : 2 ≤ k) (hkm : k + 1 ≤ m) :
+    let a := (Nat.choose m (k - 2) : ℝ)
+    let b := (Nat.choose m (k - 1) : ℝ)
+    let c := (Nat.choose m k : ℝ)
+    let d := (Nat.choose m (k + 1) : ℝ)
+    b ^ 2 * ((b + a) * (d + c)) ≥ a * c * (c + b) ^ 2 := by
+  intro a b c d
+  -- Absorption identities in ℝ (identical to binom_ineq)
+  have h1 : (k : ℝ) * c = ((m : ℝ) - k + 1) * b := by
+    have := Nat.choose_succ_right_eq m (k - 1)
+    rw [show k - 1 + 1 = k from by omega, show m - (k - 1) = m - k + 1 from by omega] at this
+    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢
+    rw [Nat.cast_sub (show k ≤ m by omega)] at this; linarith
+  have h2 : ((k : ℝ) + 1) * d = ((m : ℝ) - k) * c := by
+    have := Nat.choose_succ_right_eq m k
+    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢
+    rw [Nat.cast_sub (show k ≤ m by omega)] at this; linarith
+  have h3 : ((k : ℝ) - 1) * b = ((m : ℝ) - k + 2) * a := by
+    have := Nat.choose_succ_right_eq m (k - 2)
+    rw [show k - 2 + 1 = k - 1 from by omega, show m - (k - 2) = m - k + 2 from by omega] at this
+    have := congr_arg (Nat.cast : ℕ → ℝ) this; push_cast at this ⊢
+    rw [Nat.cast_sub (show 1 ≤ k by omega), Nat.cast_sub (show k ≤ m by omega),
+        Nat.cast_one] at this
+    linarith
+  -- Positivity setup
+  set r := (m : ℝ) - k + 1 with hr_def
+  have hk_pos : (0 : ℝ) < k := by positivity
+  have hr_pos : (0 : ℝ) < r := by
+    simp only [hr_def]; linarith [show (k : ℝ) ≤ m from by exact_mod_cast (by omega : k ≤ m)]
+  -- Primitive absorption identities in terms of r
+  have h1' : (k : ℝ) * c = r * b := by linarith [h1]
+  have h2' : ((k : ℝ) + 1) * d = (r - 1) * c := by
+    have : ((m : ℝ) - k) = r - 1 := by simp only [hr_def]; ring
+    rw [this] at h2; linarith [h2]
+  have h3' : (r + 1) * a = ((k : ℝ) - 1) * b := by
+    have : ((m : ℝ) - k + 2) = r + 1 := by simp only [hr_def]; ring
+    rw [this] at h3; linarith [h3]
+  -- Multiply by D = k³(k+1)(r+1) > 0 and reduce to a nonneg identity.
+  have hD_pos : 0 < (k : ℝ) ^ 3 * ((k : ℝ) + 1) * (r + 1) := by positivity
+  suffices h : (k : ℝ) ^ 3 * ((k : ℝ) + 1) * (r + 1) *
+      (b ^ 2 * ((b + a) * (d + c)) - a * c * (c + b) ^ 2) ≥ 0 by
+    by_contra hlt; push_neg at hlt
+    have : (k : ℝ) ^ 3 * ((k : ℝ) + 1) * (r + 1) *
+        (b ^ 2 * ((b + a) * (d + c)) - a * c * (c + b) ^ 2) < 0 :=
+      mul_neg_of_pos_of_neg hD_pos (by linarith)
+    linarith
+  -- D * target = r·(k+r)²·b⁴ ≥ 0.
+  suffices h_ident : (k : ℝ) ^ 3 * ((k : ℝ) + 1) * (r + 1) *
+      (b ^ 2 * ((b + a) * (d + c)) - a * c * (c + b) ^ 2) =
+      r * ((k : ℝ) + r) ^ 2 * b ^ 4 by
+    rw [h_ident]; positivity
+  -- Single linear_combination against the three primitive absorption identities.
+  linear_combination
+    (-a * b ^ 2 * (k : ℝ) ^ 2 * r ^ 2 - 2 * a * b ^ 2 * (k : ℝ) ^ 2 * r - a * b ^ 2 * (k : ℝ) ^ 2
+      - a * b ^ 2 * (k : ℝ) * r ^ 3 - 3 * a * b ^ 2 * (k : ℝ) * r ^ 2 - 2 * a * b ^ 2 * (k : ℝ) * r
+      - a * b ^ 2 * r ^ 3 - a * b ^ 2 * r ^ 2
+      - 2 * a * b * c * (k : ℝ) ^ 3 * r - 2 * a * b * c * (k : ℝ) ^ 3
+      - a * b * c * (k : ℝ) ^ 2 * r ^ 2 - 3 * a * b * c * (k : ℝ) ^ 2 * r - 2 * a * b * c * (k : ℝ) ^ 2
+      - a * b * c * (k : ℝ) * r ^ 2 - a * b * c * (k : ℝ) * r
+      - a * c ^ 2 * (k : ℝ) ^ 3 * r - a * c ^ 2 * (k : ℝ) ^ 3
+      - a * c ^ 2 * (k : ℝ) ^ 2 * r - a * c ^ 2 * (k : ℝ) ^ 2
+      + b ^ 3 * (k : ℝ) ^ 3 * r + b ^ 3 * (k : ℝ) ^ 3
+      + b ^ 3 * (k : ℝ) ^ 2 * r ^ 2 + b ^ 3 * (k : ℝ) ^ 2 * r) * h1'
+    + (a * b ^ 2 * (k : ℝ) ^ 3 * r + a * b ^ 2 * (k : ℝ) ^ 3
+      + b ^ 3 * (k : ℝ) ^ 3 * r + b ^ 3 * (k : ℝ) ^ 3) * h2'
+    + (-b ^ 3 * (k : ℝ) ^ 2 * r ^ 2 - b ^ 3 * (k : ℝ) ^ 2 * r
+      - b ^ 3 * (k : ℝ) * r ^ 3 - 2 * b ^ 3 * (k : ℝ) * r ^ 2 - b ^ 3 * r ^ 3) * h3'
