@@ -87,15 +87,15 @@
     "additionalFiles": []
   },
   "leanFile": {
-    "lineCount": 203,
+    "lineCount": 329,
     "namespace": "Hilbert17OQ01OQ01OQ01",
     "opens": [
       "Polynomial"
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 5,
-    "substantiveTheoremCount": 4,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 8,
     "computationalVerifications": 0,
     "lemmaCount": 0,
     "imports": [
@@ -132,6 +132,30 @@
       "type": "theorem",
       "description": "Precise Fejér–Riesz normalization: for p ≠ 0, a decomposition p = u² + v² with deg v < deg u and 2·deg u = deg p — one square of degree exactly ½·deg p, the other strictly less — via an explicit orthogonal rotation.",
       "leanType": "p ≠ 0 → IsPSD p → ∃ u v, p = u ^ 2 + v ^ 2 ∧ v.degree < u.degree ∧ 2 * u.natDegree = p.natDegree"
+    },
+    {
+      "name": "two_sos_max_degree_eq",
+      "type": "theorem",
+      "description": "Sharpness of the Fejér–Riesz degree bound in EVERY representation: in any p = u² + v² with p ≠ 0, the larger summand has degree exactly ½·deg p, so the parent's upper bound 2·deg u ≤ deg p is attained and cannot be lowered.",
+      "leanType": "{p u v : ℝ[X]} → p ≠ 0 → p = u ^ 2 + v ^ 2 → 2 * max u.natDegree v.natDegree = p.natDegree"
+    },
+    {
+      "name": "natDegree_two_sos_even",
+      "type": "theorem",
+      "description": "The degree of any nonzero sum of two real squares is even — structural corollary of the exact-degree formula deg p = 2·max(deg u, deg v).",
+      "leanType": "{p u v : ℝ[X]} → p ≠ 0 → p = u ^ 2 + v ^ 2 → Even p.natDegree"
+    },
+    {
+      "name": "two_sos_rotate_normalize",
+      "type": "theorem",
+      "description": "Standalone orthogonal-rotation normalization: any two-squares pair with max(deg u, deg v) = n ≥ 1 can be rotated by a constant orthogonal matrix to u'² + v'² = u² + v² with deg u' = n and deg v' < n.",
+      "leanType": "(u v : ℝ[X]) → 1 ≤ max u.natDegree v.natDegree → ∃ u' v', u' ^ 2 + v' ^ 2 = u ^ 2 + v ^ 2 ∧ u'.natDegree = max u.natDegree v.natDegree ∧ v'.natDegree < max u.natDegree v.natDegree"
+    },
+    {
+      "name": "univariate_psd_two_sos_normalized",
+      "type": "theorem",
+      "description": "Asymmetric Fejér–Riesz normal form, natDegree version: every PSD p with deg p ≥ 2 is u² + v² with 2·deg u = deg p and 2·deg v < deg p.",
+      "leanType": "(p : ℝ[X]) → 2 ≤ p.natDegree → IsPSD p → ∃ u v, p = u ^ 2 + v ^ 2 ∧ 2 * u.natDegree = p.natDegree ∧ 2 * v.natDegree < p.natDegree"
     }
   ],
   "overview": {
