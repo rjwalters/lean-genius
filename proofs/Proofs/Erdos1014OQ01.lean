@@ -75,8 +75,10 @@ theorem ramsey_pos (k l : ℕ) (hk : k ≥ 1) (hl : l ≥ 1) :
   -- HasRamseyProperty (Fin 0) k l is impossible: Fin 0 is empty, can't form any clique
   let c : EdgeColoring (Fin 0) := ⟨fun i => Fin.elim0 i, fun i => Fin.elim0 i, fun i => Fin.elim0 i⟩
   obtain (⟨red, hred, _⟩ | ⟨blue, hblue, _⟩) := hspec c
-  · have := red.card_le_univ; simp [Fintype.card_fin] at this; omega
-  · have := blue.card_le_univ; simp [Fintype.card_fin] at this; omega
+  · have hc : red.card ≤ Fintype.card (Fin 0) := red.card_le_univ
+    rw [Fintype.card_fin] at hc; omega
+  · have hc : blue.card ≤ Fintype.card (Fin 0) := blue.card_le_univ
+    rw [Fintype.card_fin] at hc; omega
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Property 2: Monotonicity R(k, l) ≤ R(k, l+1)
@@ -91,7 +93,7 @@ theorem ramsey_monotone_right (k l : ℕ) :
       show ¬((0 : ℕ) ≥ 1 ∧ l + 1 ≥ 1) from by omega]
   rcases Nat.eq_zero_or_pos l with rfl | hl
   · show ramseyNumber k 0 ≤ ramseyNumber k (0 + 1)
-    unfold ramseyNumber; simp [show ¬(k ≥ 1 ∧ (0 : ℕ) ≥ 1) from by omega]; omega
+    unfold ramseyNumber; simp [show ¬(k ≥ 1 ∧ (0 : ℕ) ≥ 1) from by omega]
   · -- Main case: k ≥ 1, l ≥ 1
     -- HasRamseyProperty (Fin (R(k,l+1))) k (l+1) holds by spec
     -- From a blue (l+1)-clique, take an l-subset to get HasRamseyProperty for k l
@@ -101,8 +103,8 @@ theorem ramsey_monotone_right (k l : ℕ) :
       ramseyNumber_spec k (l + 1) hk (by omega) c
     · left; exact ⟨red, hred_card, hred⟩
     · right
-      obtain ⟨t, ht_sub, ht_card⟩ := Finset.exists_smaller_set blue l (by omega)
-      exact ⟨t, ht_card, hblue.mono (Finset.coe_subset.mpr ht_sub)⟩
+      obtain ⟨t, ht_sub, ht_card⟩ := Finset.exists_subset_card_eq (show l ≤ blue.card by omega)
+      exact ⟨t, ht_card, hblue.subset (Finset.coe_subset.mpr ht_sub)⟩
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Property 3: R(2, l) = l for l ≥ 1
