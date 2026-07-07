@@ -115,4 +115,37 @@ theorem arctan_add_partner_eq_pi_div_four {x : ℝ} (hx0 : 0 < x) (hx1 : x < 1) 
   field_simp [h1x]
   ring
 
+/-! ### A genuinely three-term companion needing two folds
+
+Beyond the two-term Euler identity, `π/4` also decomposes as
+`arctan(1/3) + arctan(1/4) + arctan(2/9)`, assembled by iterating the arctangent
+addition law until the combined argument is exactly `1`. -/
+
+/-- A reusable warm-up fold: `arctan(1/2) + arctan(1/5) = arctan(7/9)`.
+    Here `xy = 1/10 < 1` and `(1/2 + 1/5)/(1 − 1/10) = (7/10)/(9/10) = 7/9`. -/
+theorem fold_half_fifth :
+    arctan (1/2 : ℝ) + arctan (1/5) = arctan (7/9) := by
+  rw [arctan_add (by norm_num : (1/2 : ℝ) * (1/5) < 1)]
+  congr 1
+  norm_num
+
+/-- First fold of the three-term identity: `arctan(1/3) + arctan(1/4) = arctan(7/11)`.
+    Here `xy = 1/12 < 1` and `(1/3 + 1/4)/(1 − 1/12) = (7/12)/(11/12) = 7/11`. -/
+theorem fold_third_fourth :
+    arctan (1/3 : ℝ) + arctan (1/4) = arctan (7/11) := by
+  rw [arctan_add (by norm_num : (1/3 : ℝ) * (1/4) < 1)]
+  congr 1
+  norm_num
+
+/-- **A genuinely three-term companion needing two folds.**
+    `arctan(1/3) + arctan(1/4) + arctan(2/9) = π/4`.
+
+    Fold 1 (`fold_third_fourth`): `arctan(1/3) + arctan(1/4) = arctan(7/11)`.
+    Fold 2: `arctan(7/11) + arctan(2/9) = arctan 1`, since `(7/11)(2/9) = 14/99 < 1`
+    and `(7/11 + 2/9)/(1 − 14/99) = (85/99)/(85/99) = 1`. -/
+theorem machin_three_term :
+    arctan (1/3 : ℝ) + arctan (1/4) + arctan (2/9) = π / 4 := by
+  rw [fold_third_fourth, arctan_add (by norm_num : (7/11 : ℝ) * (2/9) < 1),
+    show ((7/11 + 2/9) / (1 - (7/11 : ℝ) * (2/9))) = 1 by norm_num, arctan_one]
+
 end LeibnizPiOQ04
