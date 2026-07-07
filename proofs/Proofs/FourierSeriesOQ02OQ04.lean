@@ -145,14 +145,14 @@ private theorem wFunc_fourierCoeff (α : ℝ) (hα : 0 < α) (k₀ : ℕ) :
     (wFunc_norm_tsum_ne_top α hα _)]
   -- Simplify each integral: fourier(-2^k₀)(x) * r^k * fourier(2^k)(x)
   --   = r^k * fourier(2^k + (-(2^k₀)))(x)  [character multiplication]
-  simp_rw [smul_eq_mul]
+  simp_rw [Complex.real_smul, Complex.ofReal_pow]
   have h_orth : ∀ k : ℕ,
-      ∫ x : AddCircle T, fourier (-(2:ℤ)^k₀) x * ((geomRatio α : ℝ)^k * fourier ((2:ℤ)^k) x)
+      ∫ x : AddCircle T, fourier (-(2:ℤ)^k₀) x * (((geomRatio α : ℂ))^k * fourier ((2:ℤ)^k) x)
         ∂haarAddCircle =
       (geomRatio α : ℂ)^k * (if (2:ℤ)^k = (2:ℤ)^k₀ then 1 else 0) := by
     intro k
     have h_mul : ∀ x : AddCircle T,
-        fourier (-(2:ℤ)^k₀) x * ((geomRatio α : ℝ)^k * fourier ((2:ℤ)^k) x) =
+        fourier (-(2:ℤ)^k₀) x * ((geomRatio α : ℂ)^k * fourier ((2:ℤ)^k) x) =
         (geomRatio α : ℂ)^k * fourier ((2:ℤ)^k + (-(2:ℤ)^k₀)) x := by
       intro x
       rw [← fourier_add]
@@ -228,7 +228,7 @@ private theorem dist_le_half_period (x y : AddCircle T) : dist x y ≤ T / 2 := 
   set k : ℤ := round (T⁻¹ * (x - y)) with hk_def
   have hround : |T⁻¹ * (x - y) - ↑k| ≤ 1 / 2 := abs_sub_round _
   have hrw : x - y - ↑k * T = T * (T⁻¹ * (x - y) - ↑k) := by
-    field_simp; ring
+    field_simp
   rw [hrw, abs_mul, abs_of_pos hT_pos]
   calc T * |T⁻¹ * (x - y) - ↑k| ≤ T * (1 / 2) := by
         apply mul_le_mul_of_nonneg_left hround hT_pos.le
@@ -318,7 +318,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
       ∑' k : ℕ, (r^k • (fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y)) := by
     unfold wFunc
     rw [← Summable.tsum_sub (wFunc_summable α hα_pos x) (wFunc_summable α hα_pos y)]
-    simp_rw [← smul_sub]
+    simp_rw [← smul_sub, ← hr_def]
   rw [h_diff]
   -- Summability of norms
   have h_summ_norm : Summable (fun k : ℕ => r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖) := by
@@ -343,13 +343,12 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
       (∑ k ∈ Finset.range p₀, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖) +
       ∑' k : ℕ, r^(k + p₀) * 2 := by
     rw [← h_summ_norm.sum_add_tsum_nat_add p₀]
-    gcongr ?_ + ?_
-    · exact le_refl _
-    · apply Summable.tsum_le_tsum _ (h_summ_norm.nat_add p₀)
-        ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2 |>.nat_add p₀)
-      intro k
-      apply mul_le_mul_of_nonneg_left (FourierDecayInfra.fourier_sub_norm_le_two _ _ _)
-      exact pow_nonneg hr_pos.le _
+    refine add_le_add_left ?_ _
+    apply Summable.tsum_le_tsum _ (h_summ_norm.nat_add p₀)
+      ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2 |>.nat_add p₀)
+    intro k
+    apply mul_le_mul_of_nonneg_left (FourierDecayInfra.fourier_sub_norm_le_two _ _ _)
+    exact pow_nonneg hr_pos.le _
   -- Low sum bound: Lipschitz
   have h_low : ∑ k ∈ Finset.range p₀, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖ ≤
       (2 * Real.pi * (2 * T)^(1-α)) / (T * ((2:ℝ)^(1-α) - 1)) * d^α := by
@@ -388,15 +387,19 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
                 ← Real.rpow_neg hd_pos.le, show -(1-α) = α - 1 from by ring]
           rw [hexp]
           have hdpow : d^(α - 1) * d = d^α := by
-            rw [show d = d^(1:ℝ) from (Real.rpow_one d).symm, ← Real.rpow_add hd_pos]
+            conv_lhs => rw [show d = d^(1:ℝ) from (Real.rpow_one d).symm]
+            rw [← Real.rpow_add hd_pos]
             congr 1; ring
           have hden_ne : (2:ℝ)^(1-α) - 1 ≠ 0 := by
-            have : (1:ℝ) < (2:ℝ)^(1-α) := hs_gt1
-            rw [hs_def] at this; linarith
-          field_simp
-          rw [show (2:ℝ)*Real.pi/T*d*((2*T)^(1-α)*d^(α-1)) =
-              2*Real.pi*(2*T)^(1-α)*(d^(α-1)*d)/T from by ring, hdpow]
-          ring
+            have h1 : (1:ℝ) < (2:ℝ)^(1-α) := by rw [← hs_def]; exact hs_gt1
+            linarith
+          -- Rearrange so d^(α-1)·d appears, then substitute hdpow.
+          rw [show (2 * Real.pi / T * d) * ((2*T)^(1-α) * d^(α-1) / ((2:ℝ)^(1-α) - 1)) =
+                2 * Real.pi * (2*T)^(1-α) * (d^(α-1) * d) / (T * ((2:ℝ)^(1-α) - 1)) from by
+                field_simp; ring,
+              hdpow,
+              show 2 * Real.pi * (2*T)^(1-α) * d^α / (T * ((2:ℝ)^(1-α) - 1)) =
+                2 * Real.pi * (2*T)^(1-α) / (T * ((2:ℝ)^(1-α) - 1)) * d^α from by ring]
   -- High sum bound: trivial
   have h_high : ∑' k : ℕ, r^(k + p₀) * 2 ≤
       (2 * (4:ℝ)^α) / (T^α * (1 - (2:ℝ)^(-α))) * d^α := by
