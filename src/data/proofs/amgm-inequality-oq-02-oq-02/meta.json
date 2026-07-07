@@ -53,7 +53,7 @@
       "**Binomial log-concavity as a key lemma**: The normalized Newton inequality differs from the unnormalized one by the binomial coefficients. The fact that binomial coefficients themselves are log-concave ($\\binom{n}{k}^2 \\ge \\binom{n}{k-1} \\cdot \\binom{n}{k+1}$, Part III) ensures the normalized form follows from the unnormalized one without additional complications. The binomial log-concavity proof uses the explicit identity $\\binom{n}{k}^2 - \\binom{n}{k-1} \\binom{n}{k+1} = \\binom{n}{k}^2 \\cdot (1 - \\frac{(k+1)(n-k+1)}{k(n-k)})$ and is itself a clean instance of a discrete log-concavity argument.",
       "**rpow transfer for Maclaurin**: The Maclaurin step requires taking $k$-th and $(k+1)$-th roots, which in Lean are `Real.rpow`. The proof first establishes $a_k^{k+1} \\ge a_{k+1}^k$ as a `Nat`-power inequality (cleaner type-theoretically, no `rpow` framing), then transfers to real exponents via `rpow_ineq_of_pow_ineq` using `Real.rpow_natCast` and `Real.rpow_le_rpow` monotonicity. This natural-power-first strategy is reusable: any inequality of the form $a^p \\ge b^q$ with $p, q \\in \\mathbb{N}$ can be proved in `Nat`/`pow` and then transferred to reals.",
       "**Schur-concavity as a unifying frame**: The Newton-Maclaurin inequalities are corollaries of the *Schur-concavity* of $e_k$ on the non-negative orthant (Marshall-Olkin majorization theory). This file's proof is *self-contained* — it does not invoke majorization theory — but the same structural reason underlies it: $e_k$ is symmetric and concave-along-line-segments-preserving-the-AM, which forces the log-concavity inequality. A future Mathlib refactoring could unify Newton-Maclaurin with the general Schur-concavity framework once that framework lands.",
-      "**Two axioms eliminated, AM ≥ GM now closed**: Before this file, `AmgmInequalityOQ02.lean` had two axioms (`newton_log_concavity` and `maclaurin_step`) that any reader had to take on faith. After this file, both are theorems with explicit constructive proofs, and the entire chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$ — including its famous corollary AM ≥ GM — is verified end-to-end with no remaining assumptions beyond Lean's standard library and Mathlib. This is a complete formalization of Newton-Maclaurin in 959 + parent lines."
+      "**Two axioms eliminated, AM ≥ GM now closed**: Before this file, `AmgmInequalityOQ02.lean` had two axioms (`newton_log_concavity` and `maclaurin_step`) that any reader had to take on faith. After this file, both are theorems with explicit constructive proofs, and the entire chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$ — including its famous corollary AM ≥ GM — is verified end-to-end with no remaining assumptions beyond Lean's standard library and Mathlib. This is a complete formalization of Newton-Maclaurin in 999 + parent lines."
     ],
     "prerequisites": [
       "Elementary symmetric polynomials",
@@ -78,14 +78,21 @@
       "note": "First complete proof of Newton's inequalities, with the extension to the now-named Maclaurin chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$ of normalized means. The chain endpoints AM ($M_1$) and GM ($M_n$) make it a classical route to AM-GM."
     },
     {
-      "authors": ["Hardy, G. H.", "Littlewood, J. E.", "Pólya, G."],
+      "authors": [
+        "Hardy, G. H.",
+        "Littlewood, J. E.",
+        "Pólya, G."
+      ],
       "title": "Inequalities",
       "year": "1934",
       "venue": "Cambridge University Press",
       "note": "Canonical 20th-century treatment. Theorem 51 (page 52) states Newton's inequality and Theorem 52 the Maclaurin chain. Chapter II §2.18 connects Newton-Maclaurin to Muirhead's inequalities and Schur-convexity via the Marshall-Olkin majorization order."
     },
     {
-      "authors": ["Niculescu, Constantin P.", "Persson, Lars-Erik"],
+      "authors": [
+        "Niculescu, Constantin P.",
+        "Persson, Lars-Erik"
+      ],
       "title": "Convex Functions and Their Applications: A Contemporary Approach",
       "year": "2018",
       "venue": "Springer (CMS Books in Mathematics, 2nd ed.)",
@@ -162,7 +169,7 @@
       "Proofs.NewtonInductiveStep"
     ],
     "namespace": "NewtonLogConcavity",
-    "lineCount": 959,
+    "lineCount": 999,
     "axiomCount": 0,
     "theoremCount": 18,
     "definitionCount": 1,
@@ -209,15 +216,15 @@
       "id": "sec-amgm-oq02-oq02-cleared",
       "title": "Parts IV–V: Cleared-Denominator Induction",
       "startLine": 395,
-      "endLine": 810,
+      "endLine": 850,
       "summary": "`newton_cleared_denom_inductive_step`: the key inductive step (520-line proof) via absorption + discriminant argument. `newton_cleared_denom`: full cleared-denominator Newton inequality by induction on $n$.",
       "mathContext": "Cleared-denominator form: $\\binom{n}{k-1}\\binom{n}{k+1} \\cdot e_k^2 \\ge \\binom{n}{k}^2 \\cdot e_{k-1} \\cdot e_{k+1}$. This is equivalent to the normalized Newton inequality without divisions."
     },
     {
       "id": "sec-amgm-oq02-oq02-normalized",
       "title": "Parts VI–VIII: Normalized Newton and Maclaurin Step",
-      "startLine": 811,
-      "endLine": 959,
+      "startLine": 851,
+      "endLine": 999,
       "summary": "`newton_log_concavity_proved`: normalized Newton $(e_k/\\binom{n}{k})^2 \\ge (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. `power_ineq_of_log_concave` and `rpow_ineq_of_pow_ineq`: transfer to real exponents. `maclaurin_step_derived`: $M_k \\ge M_{k+1}$.",
       "mathContext": "Maclaurin's step: $M_k = \\left(\\frac{e_k}{\\binom{n}{k}}\\right)^{1/k} \\ge M_{k+1}$. The decreasing chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$ connects AM to GM."
     }
