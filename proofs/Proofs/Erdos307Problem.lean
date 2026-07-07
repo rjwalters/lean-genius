@@ -28,9 +28,10 @@
 
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Rat.Basic
+import Mathlib.Data.Rat.Defs
 import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
 namespace Erdos307
@@ -42,7 +43,7 @@ open Finset BigOperators
 /-- The sum of reciprocals of elements in a finite set.
     For a set S = {a₁, a₂, ..., aₙ}, this computes 1/a₁ + 1/a₂ + ... + 1/aₙ. -/
 noncomputable def reciprocalSum (S : Finset ℕ) : ℚ :=
-  ∑ n in S, (n : ℚ)⁻¹
+  ∑ n ∈ S, (n : ℚ)⁻¹
 
 /-- The product of two reciprocal sums.
     We ask when this equals 1. -/
@@ -113,7 +114,6 @@ theorem cambieExample1Q_sum : reciprocalSum cambieExample1Q = 5/6 := by
 /-- Cambie's first example: (1 + 1/5)(1/2 + 1/3) = 1. -/
 theorem cambieExample1_works : reciprocalProduct cambieExample1P cambieExample1Q = 1 := by
   simp [reciprocalProduct, cambieExample1P_sum, cambieExample1Q_sum]
-  norm_num
 
 /-- **Cambie's Second Example**:
     P = {1, 41}, Q = {2, 3, 7}
@@ -134,14 +134,13 @@ theorem cambieExample2Q_sum : reciprocalSum cambieExample2Q = 41/42 := by
 /-- Cambie's second example: (1 + 1/41)(1/2 + 1/3 + 1/7) = 1. -/
 theorem cambieExample2_works : reciprocalProduct cambieExample2P cambieExample2Q = 1 := by
   simp [reciprocalProduct, cambieExample2P_sum, cambieExample2Q_sum]
-  norm_num
 
 /-- The coprime version is SOLVED: Cambie's examples prove existence. -/
 theorem erdos_307_coprime_solved : ErdosProblem307Coprime := by
   use cambieExample1P, cambieExample1Q
   refine ⟨?_, ?_, cambieExample1P_coprime, cambieExample1Q_coprime, cambieExample1_works⟩
-  · simp [cambieExample1P]; decide
-  · simp [cambieExample1Q]; decide
+  · simp [cambieExample1P]
+  · simp [cambieExample1Q]
 
 /- ## Part IV: The Strengthened Coprime Version (Open) -/
 
@@ -157,19 +156,107 @@ def ErdosProblem307CoprimeStrengthened : Prop :=
 
 /- ## Part V: Constraints on Prime Solutions -/
 
+/-- The integer numerator of `reciprocalSum P`:  `Σ_{p ∈ P} ∏_{q ∈ P\{p}} q`. -/
+def primeNumer (P : Finset ℕ) : ℕ :=
+  ∑ p ∈ P, ∏ q ∈ P.erase p, q
+
+/-- The integer denominator of `reciprocalSum P`:  `∏_{p ∈ P} p`. -/
+def primeDenom (P : Finset ℕ) : ℕ :=
+  ∏ p ∈ P, p
+
+/-- Clearing denominators:  `(Σ 1/p) · (∏ p) = Σ_{p} ∏_{q ≠ p} q`.
+    Requires only that no element is `0` (true for primes). -/
+lemma reciprocalSum_mul_denom (P : Finset ℕ) (hP : ∀ p ∈ P, p ≠ 0) :
+    reciprocalSum P * (primeDenom P : ℚ) = (primeNumer P : ℚ) := by
+  unfold reciprocalSum primeDenom primeNumer
+  push_cast
+  rw [Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro p hp
+  have hpne : (p : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (hP p hp)
+  rw [← Finset.mul_prod_erase P (fun q => (q : ℚ)) hp, inv_mul_cancel_left₀ hpne]
+
+/-- The cleared-denominator INTEGER identity.  From `(Σ1/p)(Σ1/q) = 1` we get
+    `NP · NQ = DP · DQ` in ℕ. -/
+lemma primeNumer_mul_eq (P Q : Finset ℕ)
+    (hP : ∀ p ∈ P, p ≠ 0) (hQ : ∀ q ∈ Q, q ≠ 0)
+    (h : reciprocalProduct P Q = 1) :
+    primeNumer P * primeNumer Q = primeDenom P * primeDenom Q := by
+  have hA := reciprocalSum_mul_denom P hP
+  have hB := reciprocalSum_mul_denom Q hQ
+  unfold reciprocalProduct at h
+  have key : (primeNumer P : ℚ) * (primeNumer Q : ℚ)
+      = (primeDenom P : ℚ) * (primeDenom Q : ℚ) := by
+    have e : (primeNumer P : ℚ) * (primeNumer Q : ℚ)
+        = (reciprocalSum P * reciprocalSum Q)
+            * ((primeDenom P : ℚ) * (primeDenom Q : ℚ)) := by
+      rw [← hA, ← hB]; ring
+    rw [e, h, one_mul]
+  exact_mod_cast key
+
+/-- For a prime `p₀ ∈ P` (with `P` a set of primes), `p₀` does NOT divide the
+    numerator `NP`.  Equivalently `v_{p₀}(Σ_{p∈P} 1/p) = -1`.
+
+    Proof: reduce `NP = Σ_p ∏_{q≠p} q` modulo `p₀` in the field `𝔽_{p₀}`.
+    Every summand with `p ≠ p₀` contains the factor `p₀`, hence vanishes; the
+    `p = p₀` summand is `∏_{q ≠ p₀} q`, a product of primes all distinct from
+    `p₀`, hence a nonzero product in the field. -/
+lemma prime_not_dvd_primeNumer (P : Finset ℕ) (hP : IsSetOfPrimes P)
+    {p₀ : ℕ} (hp₀ : p₀ ∈ P) : ¬ (p₀ ∣ primeNumer P) := by
+  have hp₀prime : Nat.Prime p₀ := hP p₀ hp₀
+  haveI : Fact (Nat.Prime p₀) := ⟨hp₀prime⟩
+  haveI : NeZero p₀ := ⟨hp₀prime.pos.ne'⟩
+  -- Reduce `NP` modulo `p₀`: only the `p = p₀` summand survives.
+  have hcast : ((primeNumer P : ℕ) : ZMod p₀) = ∏ q ∈ P.erase p₀, (q : ZMod p₀) := by
+    unfold primeNumer
+    push_cast
+    exact Finset.sum_eq_single_of_mem p₀ hp₀ (fun b _ hbne =>
+      Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨Ne.symm hbne, hp₀⟩)
+        (ZMod.natCast_self p₀))
+  -- That surviving product is a nonempty product of nonzero units → nonzero.
+  have hne : ((primeNumer P : ℕ) : ZMod p₀) ≠ 0 := by
+    rw [hcast, Finset.prod_ne_zero_iff]
+    intro q hq
+    rw [Finset.mem_erase] at hq
+    have hqprime : Nat.Prime q := hP q hq.2
+    rw [Ne, ZMod.natCast_eq_zero_iff]
+    exact fun hdvdq => hq.1 ((Nat.prime_dvd_prime_iff_eq hp₀prime hqprime).mp hdvdq).symm
+  -- A divisor would force the cast to vanish.
+  intro hdvd
+  exact hne ((ZMod.natCast_eq_zero_iff _ _).mpr hdvd)
+
 /-- If P and Q are sets of primes with product 1, then P ∩ Q = ∅.
 
-    Proof sketch: If p ∈ P ∩ Q, the product would have p² in the denominator
-    somewhere, but also p² in the numerator. The constraint that the product
-    equals 1 (a rational with denominator 1) forces this.
+    Proof: if `p₀ ∈ P ∩ Q`, then `p₀` divides neither numerator `NP`, `NQ`
+    (each prime-reciprocal sum has `p`-adic valuation `-1` at each of its
+    primes, so `p₀ ∤ NP`), hence `p₀ ∤ NP·NQ`.  But the cleared-denominator
+    identity `NP·NQ = DP·DQ` and `p₀ ∣ DP` give `p₀ ∣ NP·NQ` — contradiction.
 
-    Actually, more directly: if p ∈ P ∩ Q, then 1/p appears in both sums,
-    so the product includes (1/p)² = 1/p². But the product of two sums of
-    distinct primes' reciprocals can't simplify to 1 with repeated primes. -/
+    This is the elementary (mod-`p₀`) form of the `p`-adic valuation argument;
+    it is the same proof verified independently in the `erdos-307-oq-02-oq-01`
+    gallery entry (`Erdos307OQ02OQ01.lean`), ported here to discharge the
+    documented sorry in the main file. -/
 theorem prime_sets_disjoint {P Q : Finset ℕ} (hP : IsSetOfPrimes P)
     (hQ : IsSetOfPrimes Q) (hPQ : reciprocalProduct P Q = 1) :
     P ∩ Q = ∅ := by
-  sorry
+  rw [Finset.eq_empty_iff_forall_notMem]
+  intro p₀ hmem
+  rw [Finset.mem_inter] at hmem
+  obtain ⟨hp₀P, hp₀Q⟩ := hmem
+  have hp₀prime : Nat.Prime p₀ := hP p₀ hp₀P
+  -- p₀ divides neither numerator.
+  have hnP : ¬ p₀ ∣ primeNumer P := prime_not_dvd_primeNumer P hP hp₀P
+  have hnQ : ¬ p₀ ∣ primeNumer Q := prime_not_dvd_primeNumer Q hQ hp₀Q
+  have hnPQ : ¬ p₀ ∣ primeNumer P * primeNumer Q := by
+    rw [hp₀prime.dvd_mul]; exact not_or.mpr ⟨hnP, hnQ⟩
+  -- but p₀ divides both denominators, hence their product.
+  have hdP : p₀ ∣ primeDenom P := by
+    unfold primeDenom; exact Finset.dvd_prod_of_mem (fun p => p) hp₀P
+  have heq := primeNumer_mul_eq P Q
+    (fun p hp => (hP p hp).pos.ne') (fun q hq => (hQ q hq).pos.ne') hPQ
+  have hdvd : p₀ ∣ primeNumer P * primeNumer Q := by
+    rw [heq]; exact hdP.mul_right _
+  exact hnPQ hdvd
 
 /-- A lower bound: if P, Q are prime sets with product 1, then
     Σ_{p ∈ P ∪ Q} 1/p ≥ 2.
@@ -183,7 +270,7 @@ theorem prime_reciprocal_sum_lower_bound {P Q : Finset ℕ}
   -- reciprocalSum (P ∪ Q) = reciprocalSum P + reciprocalSum Q when P, Q disjoint
   have hunion : reciprocalSum (P ∪ Q) = reciprocalSum P + reciprocalSum Q := by
     unfold reciprocalSum
-    rw [Finset.sum_union (Finset.disjoint_iff_disjoint_coe.mp hdisj)]
+    rw [Finset.sum_union hdisj]
   rw [hunion]
   -- Let a = reciprocalSum P, b = reciprocalSum Q
   -- We know a * b = 1 and a, b > 0 (sums of positive terms, nonempty)
@@ -198,6 +285,7 @@ theorem prime_reciprocal_sum_lower_bound {P Q : Finset ℕ}
     have ha_le : a ≤ 0 := h
     -- If a ≤ 0, then a * b ≤ 0, contradicting a * b = 1
     have hb_nn : 0 ≤ b := by
+      show (0 : ℚ) ≤ reciprocalSum Q
       unfold reciprocalSum
       apply Finset.sum_nonneg
       intro n _; positivity
@@ -234,7 +322,7 @@ theorem prime_set_size_lower_bound {P Q : Finset ℕ}
     p₁ = 2, p₂ = 3, p₃ = 5, ...
     S_n = 1/2 + 1/3 + 1/5 + ... + 1/pₙ -/
 noncomputable def primeReciprocalPartialSum (n : ℕ) : ℚ :=
-  ∑ i in (Finset.range n).filter (fun k => (k + 1).minFac = k + 1 ∧ k + 1 > 1),
+  ∑ i ∈ (Finset.range n).filter (fun k => (k + 1).minFac = k + 1 ∧ k + 1 > 1),
     ((i + 1) : ℚ)⁻¹
 
 /-
@@ -299,21 +387,23 @@ theorem one_helps_balance {P Q : Finset ℕ} (h1P : 1 ∈ P)
 
 /-- If P = {1, n}, then reciprocalSum P = 1 + 1/n = (n+1)/n.
     For this to multiply to 1, we need reciprocalSum Q = n/(n+1). -/
-theorem pair_with_one (n : ℕ) (hn : n > 0) :
+theorem pair_with_one (n : ℕ) (hn : 2 ≤ n) :
     reciprocalSum ({1, n} : Finset ℕ) = (n + 1 : ℚ) / n := by
-  simp [reciprocalSum]
+  have h1n : (1 : ℕ) ≠ n := by omega
+  have hn0 : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  rw [reciprocalSum, Finset.sum_pair h1n]
+  push_cast
   field_simp
-  ring
 
 /- ## Part X: Alternative Formulations -/
 
 /-- Multiplicative form: Find P, Q with
     ∏_{p ∈ P} p · ∏_{q ∈ Q} q = (Σ subsets give 1). -/
 def MultiplicativeForm (P Q : Finset ℕ) : Prop :=
-  let pProd := ∏ p in P, p
-  let qProd := ∏ q in Q, q
-  pProd * qProd = (∑ S in P.powerset, ∏ p in S, (∏ q in Q, q)) *
-                  (∑ T in Q.powerset, ∏ q in T, (∏ p in P, p))
+  let pProd := ∏ p ∈ P, p
+  let qProd := ∏ q ∈ Q, q
+  pProd * qProd = (∑ S ∈ P.powerset, ∏ p ∈ S, (∏ q ∈ Q, q)) *
+                  (∑ T ∈ Q.powerset, ∏ q ∈ T, (∏ p ∈ P, p))
 
 /-
 Note: The product equals 1 iff LCD(P) · LCD(Q) = (Σ complements),
@@ -336,19 +426,21 @@ private lemma reciprocal_sum_two_primes_le {P : Finset ℕ} (hcard : P.card = 2)
   -- One of them ≥ 3 since a ≠ b and both ≥ 2
   have hab3 : (3 : ℚ) ≤ a ∨ (3 : ℚ) ≤ b := by
     by_contra h; push_neg at h
-    have : a = 2 := by exact_mod_cast (le_antisymm (by linarith) ha.two_le)
-    have : b = 2 := by exact_mod_cast (le_antisymm (by linarith) hb.two_le)
+    have hlt : a < 3 := by exact_mod_cast h.1
+    have hblt : b < 3 := by exact_mod_cast h.2
+    have hA : a = 2 := le_antisymm (by omega) ha.two_le
+    have hB : b = 2 := le_antisymm (by omega) hb.two_le
     exact hab (by omega)
   have ha_pos : (0 : ℚ) < a := by linarith
   have hb_pos : (0 : ℚ) < b := by linarith
   rcases hab3 with h3 | h3
   · -- a ≥ 3, b ≥ 2: 1/a + 1/b ≤ 1/3 + 1/2 = 5/6
-    have : (a : ℚ)⁻¹ ≤ 1 / 3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
-    have : (b : ℚ)⁻¹ ≤ 1 / 2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+    have : (a : ℚ)⁻¹ ≤ 1 / 3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
+    have : (b : ℚ)⁻¹ ≤ 1 / 2 := by rw [one_div]; exact inv_anti₀ (by norm_num) hb2
     linarith
   · -- a ≥ 2, b ≥ 3: 1/a + 1/b ≤ 1/2 + 1/3 = 5/6
-    have : (a : ℚ)⁻¹ ≤ 1 / 2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
-    have : (b : ℚ)⁻¹ ≤ 1 / 3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
+    have : (a : ℚ)⁻¹ ≤ 1 / 2 := by rw [one_div]; exact inv_anti₀ (by norm_num) ha2
+    have : (b : ℚ)⁻¹ ≤ 1 / 3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
     linarith
 
 /-- No solution with |P| = |Q| = 2 exists among primes.
@@ -377,6 +469,7 @@ private lemma reciprocal_sum_three_primes_le {Q : Finset ℕ} (hcard : Q.card = 
     (hQ : IsSetOfPrimes Q) : reciprocalSum Q ≤ 31 / 30 := by
   obtain ⟨c, t, hct, rfl, ht2⟩ := Finset.card_eq_succ.mp hcard
   obtain ⟨a, b, hab, rfl⟩ := Finset.card_eq_two.mp ht2
+  have hct' : c ∉ ({a, b} : Finset ℕ) := hct
   simp only [Finset.mem_insert, Finset.mem_singleton, not_or] at hct
   obtain ⟨hca, hcb⟩ := hct
   have ha := hQ a (by simp)
@@ -385,13 +478,13 @@ private lemma reciprocal_sum_three_primes_le {Q : Finset ℕ} (hcard : Q.card = 
   have ha2 : (2 : ℚ) ≤ a := by exact_mod_cast ha.two_le
   have hb2 : (2 : ℚ) ≤ b := by exact_mod_cast hb.two_le
   have hc2 : (2 : ℚ) ≤ c := by exact_mod_cast hc.two_le
-  simp only [reciprocalSum, Finset.sum_insert hct, Finset.sum_pair hab]
+  simp only [reciprocalSum, Finset.sum_insert hct', Finset.sum_pair hab]
   -- At least one ≥ 5 (pigeonhole: only 2 primes < 5, namely {2, 3})
   have h5 : 5 ≤ a ∨ 5 ≤ b ∨ 5 ≤ c := by
     by_contra hall; push_neg at hall; obtain ⟨h5a, h5b, h5c⟩ := hall
-    have : a = 2 ∨ a = 3 := by have := ha.two_le; interval_cases a <;> simp_all
-    have : b = 2 ∨ b = 3 := by have := hb.two_le; interval_cases b <;> simp_all
-    have : c = 2 ∨ c = 3 := by have := hc.two_le; interval_cases c <;> simp_all
+    have : a = 2 ∨ a = 3 := by have := ha.two_le; interval_cases a <;> revert ha <;> decide
+    have : b = 2 ∨ b = 3 := by have := hb.two_le; interval_cases b <;> revert hb <;> decide
+    have : c = 2 ∨ c = 3 := by have := hc.two_le; interval_cases c <;> revert hc <;> decide
     rcases ‹a = 2 ∨ a = 3› with rfl | rfl <;> rcases ‹b = 2 ∨ b = 3› with rfl | rfl <;>
       rcases ‹c = 2 ∨ c = 3› with rfl | rfl <;> simp_all
   -- Among any 2 distinct primes, one ≥ 3 (only 1 prime < 3)
@@ -405,29 +498,29 @@ private lemma reciprocal_sum_three_primes_le {Q : Finset ℕ} (hcard : Q.card = 
     exact hxy (by omega)
   -- Bound each reciprocal, then combine
   rcases h5 with h5a | h5b | h5c
-  · have : (a : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) (by exact_mod_cast h5a)
+  · have : (a : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h5a)
     rcases pair3 b c hb hc (Ne.symm hcb) with h3 | h3
-    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
-      have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hc2
+    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
+      have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) hc2
       linarith
-    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
-      have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
+      have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) hb2
       linarith
-  · have : (b : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) (by exact_mod_cast h5b)
+  · have : (b : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h5b)
     rcases pair3 a c ha hc (Ne.symm hca) with h3 | h3
-    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
-      have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hc2
+    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
+      have : (c : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) hc2
       linarith
-    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
-      have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
+    · have : (c : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
+      have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) ha2
       linarith
-  · have : (c : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) (by exact_mod_cast h5c)
+  · have : (c : ℚ)⁻¹ ≤ 1/5 := by rw [one_div]; exact inv_anti₀ (by norm_num) (by exact_mod_cast h5c)
     rcases pair3 a b ha hb hab with h3 | h3
-    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
-      have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) hb2
+    · have : (a : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
+      have : (b : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) hb2
       linarith
-    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) h3
-      have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_le_inv_of_le (by norm_num) ha2
+    · have : (b : ℚ)⁻¹ ≤ 1/3 := by rw [one_div]; exact inv_anti₀ (by norm_num) h3
+      have : (a : ℚ)⁻¹ ≤ 1/2 := by rw [one_div]; exact inv_anti₀ (by norm_num) ha2
       linarith
 
 /-- No solution with |P| = 2 and |Q| = 3 exists among primes.
