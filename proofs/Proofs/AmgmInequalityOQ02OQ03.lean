@@ -30,7 +30,7 @@ References:
 import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02OQ02
 
-open Finset Real AmgmInequalityOQ02
+open Finset Real
 
 namespace AmgmInequalityOQ02OQ03
 
@@ -66,7 +66,7 @@ private lemma normElemSymm_zero_succ (m : ℕ) (x : Fin n → ℝ)
   unfold elemSymm at h_elem ⊢
   -- Each m-subset product is 0 (non-negative sum = 0 implies each term = 0)
   have h_terms : ∀ s ∈ (Finset.univ : Finset (Fin n)).powersetCard m,
-      ∏ i in s, x i = 0 := by
+      ∏ i ∈ s, x i = 0 := by
     intro s hs
     have h_le := Finset.single_le_sum
       (fun t _ => Finset.prod_nonneg fun i _ => hx i) hs
@@ -116,7 +116,7 @@ theorem power_inequality (k : ℕ) (hkn : k + 1 ≤ n)
   | succ k ih =>
     -- ih : a_k^{k+1} ≥ a_{k+1}^k (under appropriate hypotheses)
     have hkn' : k + 1 ≤ n := by omega
-    have ih_applied := ih hkn' x hx
+    have ih_applied := ih hkn'
     -- Newton's log-concavity at k+1: a_{k+1}² ≥ a_k · a_{k+2}
     have hlc := newton_lc (k + 1) (by omega) hkn x hx
     simp only [show k + 1 - 1 = k from by omega] at hlc
@@ -210,8 +210,15 @@ theorem maclaurin_step_from_newton (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤ n)
   have hkk1_pos : (0 : ℝ) < k * (k + 1) := by positivity
   -- (a_k^{k+1})^{1/(k(k+1))} = a_k^{(k+1)/(k(k+1))} = a_k^{1/k}
   -- (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{k/(k(k+1))} = a_{k+1}^{1/(k+1)}
-  have h_exp1 : (1 : ℝ) / k = (↑(k + 1)) / (↑k * (↑k + 1)) := by field_simp
-  have h_exp2 : (1 : ℝ) / (k + 1) = (↑k) / (↑k * (↑k + 1)) := by field_simp
+  have h_exp1 : (1 : ℝ) / k = (↑(k + 1)) / (↑k * (↑k + 1)) := by
+    rw [div_eq_div_iff hk_pos.ne' hkk1_pos.ne']
+    push_cast
+    ring
+  have h_exp2 : (1 : ℝ) / (↑(k + 1) : ℝ) = (↑k) / (↑k * (↑k + 1)) := by
+    rw [div_eq_div_iff (by exact_mod_cast Nat.succ_pos k : (0 : ℝ) < (↑(k + 1) : ℝ)).ne'
+      hkk1_pos.ne']
+    push_cast
+    ring
   rw [show elemSymm k x / (↑(Nat.choose n k) : ℝ) = normElemSymm k x from rfl,
       show elemSymm (k + 1) x / (↑(Nat.choose n (k + 1)) : ℝ) = normElemSymm (k + 1) x from rfl]
   rw [h_exp1, h_exp2]
