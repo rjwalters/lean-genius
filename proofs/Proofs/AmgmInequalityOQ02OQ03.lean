@@ -27,7 +27,6 @@ References:
   Maclaurin, C. (1729): Original derivation
 -/
 
-import Proofs.AmgmInequalityOQ02Defs
 import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02OQ02
 
