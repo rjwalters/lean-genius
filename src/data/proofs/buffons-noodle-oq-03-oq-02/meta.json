@@ -64,7 +64,7 @@
       "Hausdorff dimension and measure: Lipschitz maps do not increase Hausdorff dimension; a set of Hausdorff dimension below the ambient dimension is Lebesgue-null",
       "The identity μH[c] = volume on ℝᶜ (Hausdorff measure equals Lebesgue measure at the top dimension)"
     ],
-    "lineCount": 136,
+    "lineCount": 359,
     "relatedProblems": [
       {
         "id": "buffons-noodle-oq-03",
@@ -80,8 +80,8 @@
       }
     ],
     "assumptions": "None. 0 axioms, 0 sorries (the theorems depend only on the standard foundational axioms propext, Classical.choice, Quot.sound, which are not assumptions). The curve is modelled as a Lipschitz (rectifiable) map, the standard regularity for Buffon-type problems. Work is carried out in the coordinate space Fin c → ℝ with its product (sup) metric, where μH[c] = volume; the measure-zero conclusion is bi-Lipschitz invariant and so transfers verbatim to the Euclidean metric on ℝᶜ.",
-    "theoremCount": 4,
-    "definitionCount": 0,
+    "theoremCount": 20,
+    "definitionCount": 4,
     "structureCount": 0
   },
   "overview": {
@@ -120,7 +120,7 @@
     }
   ],
   "leanFile": {
-    "lineCount": 136,
+    "lineCount": 359,
     "namespace": "BuffonsNoodleOQ03OQ02",
     "opens": [
       "MeasureTheory",
@@ -128,18 +128,19 @@
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 20,
     "substantiveTheoremCount": 2,
     "computationalVerifications": 0,
     "lemmaCount": 0,
     "imports": [
+      "Proofs.BuffonsNoodleOQ03",
       "Mathlib.MeasureTheory.Measure.Hausdorff",
       "Mathlib.Topology.MetricSpace.HausdorffDimension",
       "Mathlib.Tactic"
     ],
     "path": "Proofs/BuffonsNoodleOQ03OQ02.lean",
     "sorries": 0,
-    "definitionCount": 0
+    "definitionCount": 4
   },
   "mainTheorems": [
     {

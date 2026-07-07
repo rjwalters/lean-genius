@@ -386,4 +386,71 @@ theorem diagonalizable_iff_squarefree_minpoly
   rw [Module.Basis.reindex_apply, ← hf]
   exact heig
 
+-- ============================================================
+-- Recovered from PR #32451: standalone eigenbasis extraction and
+-- the CharZero-free headline
+-- ============================================================
+
+omit [DecidableEq n] in
+/-- **Reverse-direction eigenbasis construction (standalone).** Over an
+algebraically closed field, a semisimple endomorphism of `n → K` admits a basis
+of eigenvectors.
+
+Semisimplicity gives `⨆ μ, eigenspace f μ = ⊤` (Bridge B); the eigenspaces are
+always independent (`Module.End.eigenspaces_iSupIndep`), so the family is an
+internal direct sum. Collecting a basis of each eigenspace yields a basis of
+`n → K` indexed by a sigma type, reindexed onto `n` (both index a basis of the
+same finite-dimensional space). Each collected vector lies in a single
+eigenspace, hence is an eigenvector.
+
+This factors the eigenbasis step of `diagonalizable_iff_squarefree_minpoly`
+into a reusable lemma. -/
+theorem _root_.Matrix.exists_eigenbasis_of_isSemisimple [IsAlgClosed K]
+    {f : Module.End K (n → K)} (hss : f.IsSemisimple) :
+    ∃ (b : Module.Basis n K (n → K)) (c : n → K), ∀ i, f (b i) = c i • b i := by
+  classical
+  have htop : ⨆ μ : K, f.eigenspace μ = ⊤ :=
+    Module.End.iSup_eigenspace_eq_top_of_isSemisimple hss
+  have hindep : iSupIndep (fun μ : K => f.eigenspace μ) :=
+    Module.End.eigenspaces_iSupIndep f
+  have hInt : DirectSum.IsInternal (fun μ : K => f.eigenspace μ) :=
+    (DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).mpr ⟨hindep, htop⟩
+  set B := hInt.collectedBasis (fun μ => Module.finBasis K (f.eigenspace μ)) with hB
+  haveI : Fintype (Σ μ : K, Fin (Module.finrank K (f.eigenspace μ))) :=
+    FiniteDimensional.fintypeBasisIndex B
+  have hcard :
+      Fintype.card (Σ μ : K, Fin (Module.finrank K (f.eigenspace μ))) = Fintype.card n := by
+    rw [← Module.finrank_eq_card_basis B, ← Module.finrank_eq_card_basis (Pi.basisFun K n)]
+  set ρ := Fintype.equivOfCardEq hcard with hρ
+  refine ⟨B.reindex ρ, fun i => (ρ.symm i).1, fun i => ?_⟩
+  rw [Module.Basis.reindex_apply]
+  exact Module.End.mem_eigenspace_iff.mp (hInt.collectedBasis_mem _ (ρ.symm i))
+
+/-- **Headline biconditional without `CharZero` (recovered from PR #32451).**
+Over an algebraically closed field of *any* characteristic, a matrix is
+diagonalizable iff its minimal polynomial is squarefree.
+
+Only `[IsAlgClosed K]` is needed: over an algebraically closed field every
+polynomial splits into linear factors, so a squarefree minimal polynomial is a
+product of *distinct* linear factors and semisimplicity already forces an
+eigenbasis — no separability (hence no characteristic-zero) hypothesis is
+required. The textbook statement adds `[CharZero K]` (as
+`diagonalizable_iff_squarefree_minpoly` above does), but that hypothesis is
+redundant. The general-field form (with an explicit `Polynomial.Splits`
+hypothesis) is the target of OQ-02-OQ-03. -/
+theorem diagonalizable_iff_squarefree_minpoly'
+    [IsAlgClosed K] (M : Matrix n n K) :
+    M.IsDiagonalizable ↔ Squarefree (minpoly K M) := by
+  refine ⟨fun h => h.squarefree_minpoly, fun hsq => ?_⟩
+  have hsqf : Squarefree (minpoly K (Matrix.toLin' M : Module.End K (n → K))) := by
+    rw [Matrix.minpoly_toLin']; exact hsq
+  have hss : Module.End.IsSemisimple (Matrix.toLin' M : Module.End K (n → K)) :=
+    Module.End.isSemisimple_iff_squarefree_minpoly.mpr hsqf
+  obtain ⟨b, c, heig⟩ := Matrix.exists_eigenbasis_of_isSemisimple hss
+  exact isDiagonalizable_of_eigenbasis b c heig
+
+/- Axiom audit: expect only `propext`, `Classical.choice`, `Quot.sound`. -/
+#print axioms Matrix.exists_eigenbasis_of_isSemisimple
+#print axioms diagonalizable_iff_squarefree_minpoly'
+
 end Proofs.MinpolyCharpolyOQ02

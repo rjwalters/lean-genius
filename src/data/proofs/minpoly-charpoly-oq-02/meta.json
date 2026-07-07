@@ -22,11 +22,11 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 389,
+    "lineCount": 456,
     "assumptions": "None. Fully machine-checked: 0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms on diagonalizable_iff_squarefree_minpoly and isDiagonalizable_of_eigenbasis reports only propext, Classical.choice, Quot.sound (the standard foundational axioms) — no sorryAx, no Lean.ofReduceBool. The headline hypotheses [IsAlgClosed K] [CharZero K] are explicit typeclass assumptions on the statement (the textbook gold form), not axioms; the general perfect-field-plus-splits form is the target of OQ-02-OQ-03. Pinned at Mathlib v4.26.0.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-04",
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 2,
     "originalContributions": [
       "diagonalizable_iff_squarefree_minpoly (VERIFIED, 0 sorries, 0 axioms): the FULL headline biconditional over an algebraically closed field of characteristic zero — M.IsDiagonalizable ↔ Squarefree (minpoly K M). The reverse direction (previously the sole sorry, blocked across multiple sessions) is now discharged.",
@@ -197,9 +197,9 @@
       "Polynomial"
     ],
     "namespace": "Proofs.MinpolyCharpolyOQ02",
-    "lineCount": 389,
+    "lineCount": 456,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 2,
     "path": "Proofs/MinpolyCharpolyOQ02.lean",
     "sorries": 0

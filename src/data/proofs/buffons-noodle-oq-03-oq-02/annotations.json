@@ -121,5 +121,92 @@
       "orthogonal projection onto a complement",
       "the analytic core volume_lipschitzImage_eq_zero"
     ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-oq-02-codim-01",
+    "proofId": "buffons-noodle-oq-03-oq-02",
+    "range": {
+      "startLine": 196,
+      "endLine": 219
+    },
+    "type": "concept",
+    "title": "The Deterministic Backbone: a Floor Sandwich",
+    "content": "Before any averaging, Buffon counting is a deterministic fact about floors. As one coordinate sweeps from a to b, the grid hyperplanes {x = j·d : j ∈ ℤ} it crosses are those with a/d < j ≤ b/d, i.e. gridCount = ⌊b/d⌋ − ⌊a/d⌋. Sandwiching each floor by x − 1 < ⌊x⌋ ≤ x and using (b−a)/d = b/d − a/d gives |gridCount − (b−a)/d| < 1: the integer count differs from the extent-in-units-of-d by strictly less than one. That ±1 discrepancy is exactly the boundary fluctuation which, averaged over a uniformly random offset t ∈ [0,d), integrates to zero — turning the deterministic count into the crossing factor E = extent/d. This lemma is the honest, non-definitional core of the whole Buffon mechanism and holds in every codimension.",
+    "mathContext": "$\\left|\\,(\\lfloor b/d\\rfloor - \\lfloor a/d\\rfloor) - \\dfrac{b-a}{d}\\,\\right| < 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "floor function",
+      "lattice point counting",
+      "uniform offset averaging",
+      "Buffon crossing factor"
+    ],
+    "prerequisites": [
+      "The floor sandwich x − 1 < ⌊x⌋ ≤ x"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-oq-02-codim-02",
+    "proofId": "buffons-noodle-oq-03-oq-02",
+    "range": {
+      "startLine": 222,
+      "endLine": 249
+    },
+    "type": "concept",
+    "title": "Codimension and the General-Position Dimension Count",
+    "content": "The codimension of a k-dimensional flat in ℝⁿ is c = n − k. A curve is 1-dimensional, and two affine pieces of dimensions 1 and k in general position meet in dimension 1 + k − n = 1 − c. The per-segment intersection count flatSegmentCrossings is therefore defined to be the parent hyperplane value segmentCrossings α ℓ d exactly when c = 1 (isolated crossing points) and 0 otherwise (empty or negative-dimensional intersection). This encodes the almost-sure geometric behaviour directly: a generic curve meets a hyperplane in points, but slips past any lower-dimensional flat with probability one.",
+    "mathContext": "$\\dim(\\text{curve} \\cap k\\text{-flat}) = 1 + k - n = 1 - c$; isolated crossings $\\iff c = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "codimension",
+      "general position",
+      "integral geometry",
+      "Cauchy–Crofton"
+    ],
+    "prerequisites": [
+      "Affine dimension counting for intersections"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-oq-02-codim-03",
+    "proofId": "buffons-noodle-oq-03-oq-02",
+    "range": {
+      "startLine": 270,
+      "endLine": 295
+    },
+    "type": "proof-step",
+    "title": "The Dichotomy: α·L/d at Codimension 1, Zero Otherwise",
+    "content": "Summing the per-segment counts over a noodle gives expectedFlatCrossings. Case-splitting on codim = 1 discharges both branches. In codimension 1, every per-segment term rewrites to the parent segmentCrossings, the sum becomes Noodle.expectedCrossings, and noodle_highdim closes it to α·L/d — length-proportionality survives, and the family is precisely a hyperplane family. In every other codimension the per-segment term is 0, so the sum is identically 0 regardless of the noodle's length or shape. Thus Barbier's length-proportionality is a strictly codimension-1 phenomenon: generalizing the target to lower-dimensional flats does not enlarge the regime, it extinguishes it.",
+    "mathContext": "$E = \\alpha \\cdot L / d$ if $c = 1$; $\\quad E = 0$ if $c \\neq 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linearity of expectation",
+      "shape independence",
+      "dichotomy",
+      "noodle law"
+    ],
+    "prerequisites": [
+      "Parent noodle law E = αₙ·L/d (BuffonsNoodleOQ03)"
+    ]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-03-oq-02-codim-04",
+    "proofId": "buffons-noodle-oq-03-oq-02",
+    "range": {
+      "startLine": 334,
+      "endLine": 355
+    },
+    "type": "example",
+    "title": "Planes vs Lines in ℝ³: the Dichotomy Made Concrete",
+    "content": "The dichotomy is witnessed side by side in three dimensions. Parallel planes (k = 2) are codimension 1, so with the spatial crossing factor α₃ = 1/2 a noodle crosses them E = L/(2d) times. Parallel lines (k = 1) are codimension 2, so the same noodle almost surely misses them: E = 0, whatever its length or shape. The planar case (lines in ℝ², codimension 1) recovers the classical Buffon–Barbier constant E = 2L/(πd) with α₂ = 2/π. A curve dropped in space crosses planes but not lines — the geometric heart of the codimension question.",
+    "mathContext": "$\\mathbb{R}^3$ planes: $E = L/(2d)$; $\\quad \\mathbb{R}^3$ lines: $E = 0$; $\\quad \\mathbb{R}^2$ lines: $E = 2L/(\\pi d)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "planar Buffon constant",
+      "spatial crossing factor",
+      "codimension"
+    ],
+    "prerequisites": [
+      "Crossing factors α₂ = 2/π, α₃ = 1/2"
+    ]
   }
 ]
