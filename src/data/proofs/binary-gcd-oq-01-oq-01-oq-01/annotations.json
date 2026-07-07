@@ -136,5 +136,16 @@
       "tightness",
       "core-result"
     ]
+  },
+  {
+    "id": "ann-bgdiag-6",
+    "proofId": "binary-gcd-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 289
+    },
+    "type": "technique",
+    "title": "Part 2: A Coprime Worst Case Through the Subtraction Branch",
+    "content": "**Why a second family?** Part 1's diagonal $a=b=2^k$ certifies $\\Omega((\\log N)^2)$, but every step there is an even/even *halving* and $\\gcd(a,b)=N$ itself — a critic could object that the genuinely hard, coprime case was never exhibited. This section (recovered from draft PR #32737) runs the all-ones odd number $N = 2^{k+1}-1$ against $b=1$: both operands stay odd, so **every** reduction takes the subtract-then-halve branch $(2^{m+1}-1,\\,1) \\to (2^m-1,\\,1)$ at cost $\\mathtt{size}(2^{m+1}-1) + \\mathtt{size}(1) = m+2$. Summing the arithmetic progression yields the exact division-free closed form $$2\\cdot\\mathtt{binaryGcdCost}(2^{k+1}-1,\\,1) = (k+1)(k+4),$$ proved by a two-lemma recursion (`cost_base`, `cost_step`) plus induction (`cost_family`). Since $\\log_2(2^{k+1}-1)=k$, this gives $(\\log_2 N)^2 \\le 2\\cdot\\mathtt{binaryGcdCost}(N,1)$ (`binaryGcdCost_omega_lower`) and, paired with the parent's upper bound, a two-sided $\\Theta((\\log N)^2)$ squeeze on a $\\gcd$-$1$ family (`binaryGcdCost_family_matching`). The `#print axioms` audit lines at the end confirm every headline theorem of both parts depends only on `propext`, `Classical.choice`, `Quot.sound`."
   }
 ]

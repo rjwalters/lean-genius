@@ -48,6 +48,17 @@
         (L/2)² ≤ binaryGcdCost ≤ (2L+2)(L+2), L = log a + log b
                                                           (Θ((log N)²) squeeze)
 
+  Part 2 (recovered from draft PR #32737) complements the even/even diagonal
+  with the **coprime odd worst-case family** `N = 2^(k+1) − 1` against `b = 1`,
+  which forces the subtract-and-halve branch at every step:
+
+  * `cost_family`
+        2 · binaryGcdCost (2^(k+1) − 1) 1 = (k+1)·(k+4)   (exact closed form)
+  * `binaryGcdCost_omega_lower`
+        (log₂ N)² ≤ 2 · binaryGcdCost N 1                 (Ω((log N)²), gcd = 1)
+  * `binaryGcdCost_family_matching`
+        two-sided Θ((log N)²) squeeze on the coprime family
+
   All results are axiom-free (only the foundational propext / Classical.choice /
   Quot.sound), 0 sorries, no `native_decide`.
 
@@ -154,4 +165,125 @@ theorem binaryGcdCost_diag_two_sided (k : ℕ) :
   · -- upper: the parent's quadratic bound, specialised to a = b = 2^k
     exact binaryGcdCost_le_quadratic (2 ^ k) (2 ^ k) (by positivity) (by positivity)
 
+/-! ## Part 2: the coprime odd worst-case family `(2^(k+1) − 1, 1)`
+
+The diagonal family above is even/even: every step takes the halving branch and
+`gcd = N` itself. A critic could object that the *coprime* case — where the
+algorithm must do real subtraction work — was not exhibited. This section
+(recovered from draft PR #32737) closes that gap with the all-ones odd number
+against `1`:
+
+    N = 2^(k+1) − 1  (binary: k+1 ones),  b = 1,  gcd(N, 1) = 1.
+
+Both operands are odd and `N > 1`, so every reduction takes the
+subtract-then-halve branch, `(2^(m+1) − 1, 1) → (2^m − 1, 1)`, at per-step cost
+`Nat.size (2^(m+1) − 1) + Nat.size 1 = m + 2`. Summing the arithmetic
+progression gives the exact division-free closed form
+
+    2 · binaryGcdCost (2^(k+1) − 1) 1 = (k+1)(k+4),
+
+hence `(log₂ N)² ≤ 2 · binaryGcdCost N 1` with `log₂ N = k`: the quadratic
+upper bound is tight on a coprime family exercising the subtraction branch,
+not only on the degenerate halving diagonal. -/
+
+/-- The bit-length of `2^k - 1` is exactly `k`: in binary it is a block of `k`
+    ones. -/
+theorem size_two_pow_sub_one (k : ℕ) : Nat.size (2 ^ k - 1) = k := by
+  cases k with
+  | zero => simp
+  | succ n =>
+    have hpow : (1 : ℕ) ≤ 2 ^ n := Nat.one_le_pow n 2 (by norm_num)
+    have h2 : 2 ^ (n + 1) = 2 ^ n * 2 := pow_succ 2 n
+    apply le_antisymm
+    · rw [Nat.size_le]; omega
+    · exact Nat.lt_size.mpr (by omega)
+
+/-- Base of the family recursion: `binaryGcdCost 1 1 = 2` (one odd/odd step of
+    cost `size 1 + size 1 = 2`, landing on `(1, 0)`). -/
+theorem cost_base : binaryGcdCost 1 1 = 2 := by
+  show binaryGcdCost (0 + 1) (0 + 1) = 2
+  rw [binaryGcdCost.eq_3, if_neg (by decide), if_neg (by decide), if_neg (by decide)]
+  norm_num [Nat.sub_self, Nat.zero_div, binaryGcdCost_zero_right, Nat.size_one]
+
+/-- One reduction step of the worst-case family: peeling `(2^(k+2) - 1, 1)`
+    costs `size (2^(k+2) - 1) + size 1 = (k+2) + 1 = k+3` and reduces to
+    `(2^(k+1) - 1, 1)`. -/
+theorem cost_step (k : ℕ) :
+    binaryGcdCost (2 ^ (k + 2) - 1) 1
+      = (k + 3) + binaryGcdCost (2 ^ (k + 1) - 1) 1 := by
+  have hk : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_pow k 2 (by norm_num)
+  have hp1 : 2 ^ (k + 1) = 2 ^ k * 2 := pow_succ 2 k
+  have hp2 : 2 ^ (k + 2) = 2 ^ (k + 1) * 2 := pow_succ 2 (k + 1)
+  obtain ⟨a', ha'⟩ : ∃ a', 2 ^ (k + 2) - 1 = a' + 1 := ⟨2 ^ (k + 2) - 2, by omega⟩
+  rw [ha']
+  show binaryGcdCost (a' + 1) (0 + 1)
+      = (k + 3) + binaryGcdCost (2 ^ (k + 1) - 1) 1
+  rw [binaryGcdCost.eq_3, if_neg (by omega), if_neg (by decide), if_pos (by omega)]
+  have harg : (a' + 1 - (0 + 1)) / 2 = 2 ^ (k + 1) - 1 := by omega
+  have hsize : Nat.size (a' + 1) = k + 2 := by
+    rw [← ha']; exact size_two_pow_sub_one (k + 2)
+  rw [harg]
+  simp only [Nat.zero_add]
+  rw [hsize, Nat.size_one]
+
+/-- **Exact cost of the coprime worst-case family (division-free).** The
+    all-ones odd number `2^(k+1) - 1` run against `1` costs exactly
+    `(k+1)(k+4)/2` bit operations, here stated as a doubled identity to stay
+    in `ℕ`. -/
+theorem cost_family (k : ℕ) :
+    2 * binaryGcdCost (2 ^ (k + 1) - 1) 1 = (k + 1) * (k + 4) := by
+  induction k with
+  | zero =>
+    norm_num [show (2 : ℕ) ^ (0 + 1) - 1 = 1 from by norm_num, cost_base]
+  | succ n ih =>
+    show 2 * binaryGcdCost (2 ^ (n + 2) - 1) 1 = (n + 2) * (n + 5)
+    rw [cost_step, Nat.mul_add, ih]
+    ring
+
+/-- **Quadratic lower bound (odd family).** In the bit-length parameter `k`,
+    the coprime worst-case family costs at least `(k+1)²/2` bit operations. -/
+theorem binaryGcdCost_lower_bound (k : ℕ) :
+    (k + 1) ^ 2 ≤ 2 * binaryGcdCost (2 ^ (k + 1) - 1) 1 := by
+  have h := cost_family k
+  nlinarith [h]
+
+/-- **Matching Ω((log N)²) lower bound on a coprime family.** For every `k`,
+    the binary-GCD input `N = 2^(k+1) - 1` has `Nat.log 2 N = k`, yet its total
+    bit-operation cost obeys `(log₂ N)² ≤ 2 · binaryGcdCost N 1`. Hence
+    `binaryGcdCost N 1` is `Ω((log N)²)` already for coprime inputs driven
+    through the subtraction branch. -/
+theorem binaryGcdCost_omega_lower (k : ℕ) :
+    (Nat.log 2 (2 ^ (k + 1) - 1)) ^ 2 ≤ 2 * binaryGcdCost (2 ^ (k + 1) - 1) 1 := by
+  have hk : (1 : ℕ) ≤ 2 ^ k := Nat.one_le_pow k 2 (by norm_num)
+  have hp1 : 2 ^ (k + 1) = 2 ^ k * 2 := pow_succ 2 k
+  have hlog : Nat.log 2 (2 ^ (k + 1) - 1) = k :=
+    Nat.log_eq_of_pow_le_of_lt_pow (by omega) (by omega)
+  rw [hlog]
+  calc k ^ 2 ≤ (k + 1) ^ 2 := by nlinarith
+    _ ≤ 2 * binaryGcdCost (2 ^ (k + 1) - 1) 1 := binaryGcdCost_lower_bound k
+
+/-- **Tightness on the coprime family.** For `N = 2^(k+1) - 1` (with `b = 1`)
+    the total cost is squeezed between `(log₂ N)²/2` and the parent's quadratic
+    upper bound — both `Θ((log N)²)`. -/
+theorem binaryGcdCost_family_matching (k : ℕ) :
+    (Nat.log 2 (2 ^ (k + 1) - 1)) ^ 2 ≤ 2 * binaryGcdCost (2 ^ (k + 1) - 1) 1
+      ∧ binaryGcdCost (2 ^ (k + 1) - 1) 1
+          ≤ (2 * (Nat.log 2 (2 ^ (k + 1) - 1) + Nat.log 2 1) + 2)
+              * (Nat.log 2 (2 ^ (k + 1) - 1) + Nat.log 2 1 + 2) := by
+  have hpos : 0 < 2 ^ (k + 1) - 1 := by
+    have h2 : 2 ≤ 2 ^ (k + 1) := by
+      calc (2 : ℕ) = 2 ^ 1 := (pow_one 2).symm
+        _ ≤ 2 ^ (k + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
+  exact ⟨binaryGcdCost_omega_lower k,
+    BinaryGcdOQ01OQ01.binaryGcdCost_le_quadratic _ 1 hpos (by norm_num)⟩
+
 end BinaryGcdOQ01OQ01OQ01
+
+-- Axiom audit: headline theorems of both families (expect only the
+-- foundational propext / Classical.choice / Quot.sound).
+#print axioms BinaryGcdOQ01OQ01OQ01.binaryGcdCost_two_pow_diag
+#print axioms BinaryGcdOQ01OQ01OQ01.binaryGcdCost_diag_two_sided
+#print axioms BinaryGcdOQ01OQ01OQ01.cost_family
+#print axioms BinaryGcdOQ01OQ01OQ01.binaryGcdCost_omega_lower
+#print axioms BinaryGcdOQ01OQ01OQ01.binaryGcdCost_family_matching
