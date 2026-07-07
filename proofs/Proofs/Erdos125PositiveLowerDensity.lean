@@ -30,9 +30,15 @@ we inline the relevant density definitions below.
 The AlphaProof Nexus proof is 370 lines of highly compressed automated-proof-search
 tactic output. Many lemmas use elaborate one-line proofs that interleave dozens of
 tactics including `bound`, `valid`, and other custom tactics from FormalConjectures.
-A faithful line-by-line port is left as a follow-up task; this file presently
-**states** each lemma with a `sorry` placeholder so the high-level structure
-matches the AlphaProof source, and the dependency graph is correct.
+Most of these have now been ported to pure Mathlib v4.26.0 (see #20842): the
+digit-combinatorics layer (`A_max_k`, `B_max_m`, `A_B_gap`, `A_decomp`, `B_decomp`
+and their `head`/`tail` helpers), the irrationality of `log 4 / log 3`, and the
+Dirichlet-reduction chain (`exists_small_pos_lin_comb`,
+`exists_small_pos_lin_comb_large_k`, `dirichlet_approx`). Three deep lemmas still
+carry `sorry` placeholders: `exists_small_pos_lin_comb_help` (the Dirichlet
+approximation theorem for an irrational), `scale_step` (the multi-scale counting
+core), and `AB_lowerDensity_eq_zero` (the `liminf` bridge). The high-level
+structure and dependency graph match the AlphaProof source throughout.
 
 ## Proof strategy (from the natural-language note)
 
@@ -101,9 +107,10 @@ def B : Set ℕ := { x : ℕ | (Nat.digits 4 x).toFinset ⊆ {0, 1} }
 The lemmas below mirror exactly the structure of the AlphaProof Nexus proof
 (see https://github.com/google-deepmind/alphaproof-nexus-results, file
 `APNOutputs/ErdosProblems/erdos_125.variants.positive_lower_density.lean`).
-Their one-line AlphaProof tactic proofs do not port cleanly to a pure Mathlib
-setup; we therefore state them with `sorry` here. A faithful line-by-line port
-is tracked as a follow-up sub-issue. -/
+The AlphaProof one-line `bound`/`valid` tactic proofs were re-derived in pure
+Mathlib v4.26.0 (#20842); three deep lemmas — `exists_small_pos_lin_comb_help`,
+`scale_step`, and `AB_lowerDensity_eq_zero` — remain `sorry` and are tracked as
+follow-up work. -/
 
 lemma zero_in_A : 0 ∈ A := by
   -- AlphaProof: `norm_num`
