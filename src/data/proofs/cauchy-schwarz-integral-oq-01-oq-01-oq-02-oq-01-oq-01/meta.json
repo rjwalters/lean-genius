@@ -2,9 +2,9 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
   "title": "Lp Riesz Representation for Sigma-Finite Measures",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
-  "description": "Can the Riesz representation theorem for Lp duality be generalized from finite to purely sigma-finite measures? Answer: yes — the three previously HARD (not OPEN) sorries (Lp truncation convergence, localization construction, and density extension) are completed via delegation to the companion file `CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean` (namespace `RieszSigmaFiniteComplete`). NOTE (2026-06-24, #28788): this file transitively fails to compile against the pinned v4.26.0 toolchain because its imported foundation has 53 Mathlib-drift errors; status has been downgraded to formalized until the chain builds green.",
+  "description": "Can the Riesz representation theorem for Lp duality be generalized from finite to purely sigma-finite measures? Answer: yes — the three previously HARD (not OPEN) sorries (Lp truncation convergence, localization construction, and density extension) are completed via delegation to the companion chain `CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01{Infra,Norm,Loc}.lean` (namespace `RieszSigmaFiniteComplete`). Repaired for Mathlib v4.26 in #35123 (spanningSets_mono → monotone_spanningSets, stuck SigmaFinite instance pinned via (μ := μ), localization_existence re-export adapted to the norm-bound-returning companion signature); the full chain now builds green under the Docker wrapper.",
   "meta": {
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
     "tags": [
       "functional-analysis",
@@ -17,9 +17,9 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 213,
-    "buildStatus": "broken",
-    "assumptions": "BUILD BROKEN (2026-06-24, issue #28788): this file transitively fails to compile against leanprover/lean4:v4.26.0. It imports the chain foundation CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean, which produces 53 Mathlib-drift errors; the dependent companion CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean and this file therefore also fail to build. There are 0 literal `sorry` tactics and 0 `axiom` declarations — the formalization exists but is not currently machine-checked, so status was downgraded verified→formalized pending repair of the foundation file. Mathematical content (3 main theorems delegated to RieszSigmaFiniteComplete.* via exact calls) is unchanged.",
+    "lineCount": 218,
+    "buildStatus": "Verified via ./proofs/scripts/docker-build.sh Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01 against pinned Mathlib v4.26.0 (2026-07-07, #35123): build completed successfully (7748 jobs, 0 errors). 0 sorries, 0 axiom declarations, no native_decide; #print axioms on the three headline theorems reports foundational axioms only (propext / Classical.choice / Quot.sound).",
+    "assumptions": "None. 0 sorries, 0 axiom declarations, no structure-encoded assumptions. The prior BUILD BROKEN note (#28788, 53 Mathlib-drift errors in the imported foundation) is resolved: the foundation chain was repaired in #35112/#35122 and this file's own v4.26 drift (spanningSets_mono rename, stuck SigmaFinite instance, norm-bound-returning localization_existence signature) was repaired in #35123. The 'HARD sorry' phrases remaining in the Lean file are historical docstring text, not sorry tactics.",
     "dateAdded": "2026-05-03",
     "theoremCount": 5,
     "definitionCount": 0
@@ -135,7 +135,7 @@
     "imports": [
       "Mathlib"
     ],
-    "lineCount": 213,
+    "lineCount": 218,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
