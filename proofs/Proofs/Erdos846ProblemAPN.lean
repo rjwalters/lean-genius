@@ -54,9 +54,19 @@ scoped[EuclideanGeometry] notation "ℝ²" => EuclideanSpace ℝ (Fin 2)
 
 open scoped EuclideanGeometry
 
+namespace Set
+
+/-- The ternary relation `r` holds triplewise on `s` if `r x y z` for all distinct `x y z ∈ s`.
+    Inlined from FormalConjecturesForMathlib.Data.Set.Triplewise (Apache-2.0). -/
+protected def Triplewise {α : Type*} (s : Set α) (r : α → α → α → Prop) : Prop :=
+  ∀ ⦃x⦄, x ∈ s → ∀ ⦃y⦄, y ∈ s → ∀ ⦃z⦄, z ∈ s → x ≠ y → y ≠ z → x ≠ z → r x y z
+
+end Set
+
 namespace EuclideanGeometry
 
-variable {P : Type*}
+variable {V P : Type*}
+variable [NormedAddCommGroup V] [InnerProductSpace ℝ V] [MetricSpace P] [NormedAddTorsor V P]
 
 /-- A subset `A` of points is non-trilinear if no three of its points are collinear. -/
 def NonTrilinear (A : Set P) : Prop :=
@@ -145,11 +155,23 @@ open scoped Topology
 lemma bipartite_max_cut_nat (E : Finset (ℕ × ℕ)) (hE : ∀ p ∈ E, p.1 < p.2) :
   ∃ V1 : Finset ℕ, 2 * (E.filter (fun p => (p.1 ∈ V1 ∧ p.2 ∉ V1) ∨ (p.1 ∉ V1 ∧ p.2 ∈ V1))).card ≥ E.card := by
   apply(E.finite_toSet.image (Prod.fst)).bddAbove.elim
-  use E.bddAbove.elim fun and J a s=> if I:∑M ∈E,∑x ∈.powerset (.range (a+and.2+1)),ite (M.1 ∈x∧M.2 ∉x ∨M.1 ∉x∧M.2 ∈x) (1) 0<E.card then(? _)else(? _)
-  · cases((E.card_eq_sum_ones)▸ E.sum_le_sum fun and(A) =>Nat.succ_le.2 (Finset.sum_pos' (by valid) ⟨{and.1},by norm_num[ (J A).2.trans, (s ⟨ _,A, rfl⟩).trans,ne_of_gt, *]⟩)).not_gt I
-  by_cases h :∑s ∈E,∑α ∈.powerset (.range (a+and.2+1)),ite ( (s.fst) ∈α ∧s.snd ∉α ∨s.fst ∉α ∧s.snd ∈ α) (1) 0<E.card*2^(a+and.snd)
-  · convert h.not_ge.elim (E.card_nsmul_le_sum _ _ fun and(A) =>.trans (_) (by rw [← Finset.insert_erase (Finset.mem_range_succ_iff.mpr ↑(le_add_right (s (by exists and)))), Finset.sum_powerset_insert (by apply Finset.notMem_erase)]))
-    exact (.trans (by norm_num[le_add_right (s (by exists and))]) (( Finset.sum_le_sum fun R M=>Nat.pos_of_ne_zero (by grind)).trans_eq Finset.sum_add_distrib))
+  use E.bddAbove.elim fun b J a s=> if I:∑M ∈E,∑x ∈.powerset (.range (a+b.2+1)),ite (M.1 ∈x∧M.2 ∉x ∨M.1 ∉x∧M.2 ∈x) (1) 0<E.card then(? _)else(? _)
+  · cases((E.card_eq_sum_ones)▸ E.sum_le_sum fun and(A) =>Nat.succ_le.2 (Finset.sum_pos' (by valid) ⟨{and.1},by have h1 : and.1 ≤ a := s ⟨_, A, rfl⟩; norm_num[ (J A).2.trans, (s ⟨ _,A, rfl⟩).trans,ne_of_gt, *] <;> omega⟩)).not_gt I
+  by_cases h :∑s ∈E,∑α ∈.powerset (.range (a+b.2+1)),ite ( (s.fst) ∈α ∧s.snd ∉α ∨s.fst ∉α ∧s.snd ∈ α) (1) 0<E.card*2^(a+b.snd)
+  · have hpow : ∀ m ∈ E, 2 ^ (a + b.2) ≤ 2 ^ ((Finset.range (a + b.2 + 1)).erase m.1).card := by
+      intro m hm
+      have hle : m.1 ≤ a := s (by exists m)
+      refine Nat.pow_le_pow_right (by norm_num) ?_
+      rw [Finset.card_erase_of_mem, Finset.card_range] <;> first | omega | exact Finset.mem_range.2 (by omega)
+    convert h.not_ge.elim (E.card_nsmul_le_sum _ _ fun and(A) =>.trans (hpow and A) (by
+      rw [← Finset.insert_erase (Finset.mem_range_succ_iff.mpr ↑(le_add_right (s (by exists and)))),
+        Finset.sum_powerset_insert (by apply Finset.notMem_erase),
+        Finset.erase_insert (Finset.notMem_erase and.1 (Finset.range (a + b.2 + 1))),
+        ← Finset.card_powerset, Finset.card_eq_sum_ones, ← Finset.sum_add_distrib]
+      refine Finset.sum_le_sum fun t ht => ?_
+      have hand1 : and.1 ∉ t := fun hc => Finset.notMem_erase _ _ (Finset.mem_powerset.mp ht hc)
+      have hne : and.2 ≠ and.1 := (hE and A).ne'
+      by_cases hc : and.2 ∈ t <;> simp [hand1, hne, hc, Finset.mem_insert]))
   · refine (by_contra fun and' =>h (E.sum_comm.trans_lt ((lt_of_mul_lt_mul_left.comp ( Finset.mul_sum _ _ _).trans_lt) ?_ (2).zero_le)))
     exact ( Finset.sum_lt_sum_of_nonempty (by bound) (fun a s=>lt_of_le_of_lt (by rw [ Finset.card_filter]) (not_le.1 (and' ⟨a,.⟩)))).trans_eq (by norm_num[mul_comm E.card,mul_assoc,pow_succ'])
 
@@ -846,8 +868,9 @@ lemma weakly_nontrilinear_coloring {A : Set ℝ²} (h : WeaklyNonTrilinear A) :
     have hsB : s ∈ B := by norm_num [←hs_eq, B_list, true,<-B.mem_toList]
     have h_nontri : NonTrilinear s := hB2 s hsB
     have h_sub : ({p₁, p₂, p₃} : Set ℝ²) ⊆ s := by push_cast [ *, and_self, true,Set.insert_subset_iff,Set.singleton_subset_iff]
-    have h_not_col_s : ¬ Collinear ℝ ({p₁, p₂, p₃} : Set ℝ²) := by change∀a_, _ at h_nontri
-                                                                   norm_num[ *]
+    have h_not_col_s : ¬ Collinear ℝ ({p₁, p₂, p₃} : Set ℝ²) := by
+      simp only [EuclideanGeometry.NonTrilinear, Set.Triplewise] at h_nontri
+      norm_num[ *]
     exact h_not_col_s
 
 lemma ramsey_sequence (c : ℕ × ℕ → ℕ) (N : ℕ) (hc : ∀ e, c e < N) :
