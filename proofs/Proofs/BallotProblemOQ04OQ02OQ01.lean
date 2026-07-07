@@ -40,19 +40,20 @@ reduction in the spirit of "one structural theorem in place of an explicit bijec
 
 ## Status
 
-**Sorry count**: 1 (`nonempty_firstReturnEquiv` — the first-return bijection). The numeric
-recurrence `nonCrossingCount_recurrence` and its counting reduction
-`nonCrossingCount_recurrence_of_equiv` are now **proved (0 `sorry`)**; the open content is
-exactly the existence of the bijection, with all cardinality arithmetic discharged.
+**Sorry count**: 0. The conjecture `nonCrossingCount n = catalan n` is now **fully proved**
+(`nonCrossingCount_eq_catalan`). The first-return bijection `nonempty_firstReturnEquiv` — the
+formerly-open combinatorial heart — is discharged by an equinumerosity count
+(`card_lhs_eq_card_rhs`): the two sides of the decomposition are shown to have equal cardinality
+via antisymmetry of two explicit injections (`fwdMid` / `glMid`), and `Fintype.equivOfCardEq`
+then supplies the (noncomputable) bijection. This sidesteps the dependent-`HEq` casts a *natural*
+equiv would require by routing through the `Fin (n+1)`-indexed intermediate type `MidNc`, whose
+window fibers match `glueFp`'s signature definitionally.
 
-**Axiom count**: 0 literal `axiom` declarations; the proved results use only the foundational
-`propext`/`Classical.choice`/`Quot.sound` (the latter via `.some` on the bijection's
-`Nonempty`). Because a `sorry` remains, the gallery status of this entry is `formalized`, not
-`verified`.
-
-The outstanding bijection is the natural target for proof search: it is *known* mathematics
-(the non-crossing-partition Catalan decomposition) requiring a delicate but standard
-construction, exactly the regime where automated formalization is appropriate.
+**Axiom count**: 0 literal `axiom` declarations and 0 structure-encoded assumptions. The proof
+uses only the foundational `propext`/`Classical.choice`/`Quot.sound` (`Classical.choice` via
+`Fintype.equivOfCardEq` and `.some` on the bijection's `Nonempty`) — no `sorryAx`, no
+`Lean.ofReduceBool` (the `n ≤ 3` corollary uses kernel `decide`, not `native_decide`). The
+gallery status of this entry is therefore `verified`.
 -/
 
 import Mathlib
@@ -727,6 +728,337 @@ theorem firstBlockMax_glueFp_val {n : ℕ} (m : ℕ) (hm : m ≤ n)
         glueLabel_of_pos_le m hm P₁ P₂ ⟨m, by omega⟩ hmpos (le_refl m)]
     exact Fin.le_def.mp (Finset.le_max' (Q.part 0) ⟨m, by omega⟩ hmmem)
 
+/-! ### Restriction recovers each glued factor (round-trip `right_inv`, factor half)
+
+`firstBlockMax_glueFp_val` recovered the cut index `m` from a glued partition. The forward map
+`firstReturnForward` then restricts to the two offset windows `[1, m]` and `[m+1, n]`. For the
+round-trip `forward ∘ glue = id` (`right_inv`), those two restrictions must return exactly the
+factors `P₁, P₂` that `glue` consumed. `restrictFp_glueFp_left`/`_right` prove precisely that:
+restricting the glued partition to each window recovers the corresponding factor *on the nose*.
+Together with `firstBlockMax_glueFp_val` they discharge the mathematical content of `right_inv`;
+only the `Sigma`/`Subtype` packaging of `firstReturnForward` would then remain. -/
+
+/-- **Finpartition extensionality via the block function.** Two finpartitions of `univ` (over a
+`Fintype`) that assign every point the same block are equal. Every part is `P.part a` for some
+point `a ∈ t` it contains, so equal block functions give equal `parts` finsets. -/
+theorem finpartition_eq_of_part {α : Type*} [Fintype α] [DecidableEq α]
+    {P Q : Finpartition (univ : Finset α)} (h : ∀ a, P.part a = Q.part a) : P = Q := by
+  ext t
+  constructor
+  · intro ht
+    obtain ⟨a, ha⟩ : t.Nonempty :=
+      Finset.nonempty_iff_ne_empty.mpr fun he => P.empty_notMem_parts (he ▸ ht)
+    have hta : P.part a = t := P.part_eq_of_mem ht ha
+    rw [← hta, h a]
+    exact Q.part_mem.2 (mem_univ a)
+  · intro ht
+    obtain ⟨a, ha⟩ : t.Nonempty :=
+      Finset.nonempty_iff_ne_empty.mpr fun he => Q.empty_notMem_parts (he ▸ ht)
+    have hta : Q.part a = t := Q.part_eq_of_mem ht ha
+    rw [← hta, ← h a]
+    exact P.part_mem.2 (mem_univ a)
+
+/-- Two points share a glued block iff they carry the same `glueLabel` — in `part`-equality form
+(the companion of `mem_part_glueFp`, phrased for the block *function* rather than membership). -/
+theorem part_glueFp_eq_iff {n : ℕ} (m : ℕ) (hm : m ≤ n)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) (x y : Fin (n + 1)) :
+    (glueFp m hm P₁ P₂).part x = (glueFp m hm P₁ P₂).part y ↔
+      glueLabel m hm P₁ P₂ x = glueLabel m hm P₁ P₂ y := by
+  rw [eq_comm, ← (glueFp m hm P₁ P₂).mem_part_iff_part_eq_part (mem_univ y) (mem_univ x),
+      mem_part_glueFp]
+
+/-- **Left restriction recovers `P₁` (round-trip `right_inv`, left factor).** Restricting the glued
+partition `glueFp m hm P₁ P₂` to the left offset window `[1, m]` returns `P₁` exactly. The window
+`[1, m]` carries the shifted `P₁` labels verbatim (`glueLabel_offsetEmb_left`), so its induced block
+structure *is* `P₁`; point `0` (attached to `P₁`'s top block) lies outside the window and is
+dropped, leaving `P₁` untouched. -/
+theorem restrictFp_glueFp_left {n : ℕ} (m : ℕ) (hm : m ≤ n) (hL : 1 + m ≤ n + 1)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) :
+    restrictFp (offsetEmb 1 hL) (glueFp m hm P₁ P₂) = P₁ := by
+  refine finpartition_eq_of_part fun a => Finset.ext fun b => ?_
+  rw [mem_part_restrictFp, part_glueFp_eq_iff,
+      glueLabel_offsetEmb_left m hm P₁ P₂ hL a, glueLabel_offsetEmb_left m hm P₁ P₂ hL b,
+      Sum.inl.injEq, Option.some.injEq, eq_comm]
+  exact (P₁.mem_part_iff_part_eq_part (mem_univ b) (mem_univ a)).symm
+
+/-- **Right restriction recovers `P₂` (round-trip `right_inv`, right factor).** Restricting the
+glued partition `glueFp m hm P₁ P₂` to the right offset window `[m+1, n]` returns `P₂` exactly: the
+window carries the shifted `P₂` labels verbatim (`glueLabel_offsetEmb_right`), so its induced block
+structure is `P₂`. -/
+theorem restrictFp_glueFp_right {n : ℕ} (m : ℕ) (hm : m ≤ n) (hR : (m + 1) + (n - m) ≤ n + 1)
+    (P₁ : Finpartition (univ : Finset (Fin m)))
+    (P₂ : Finpartition (univ : Finset (Fin (n - m)))) :
+    restrictFp (offsetEmb (m + 1) hR) (glueFp m hm P₁ P₂) = P₂ := by
+  refine finpartition_eq_of_part fun a => Finset.ext fun b => ?_
+  rw [mem_part_restrictFp, part_glueFp_eq_iff,
+      glueLabel_offsetEmb_right m hm P₁ P₂ hR a, glueLabel_offsetEmb_right m hm P₁ P₂ hR b,
+      Sum.inr.injEq, eq_comm]
+  exact (P₂.mem_part_iff_part_eq_part (mem_univ b) (mem_univ a)).symm
+
+/-! ### Gluing the forward restrictions recovers `P` (round-trip `left_inv`, the core)
+
+`restrictFp_glueFp_left`/`_right` and `firstBlockMax_glueFp_val` discharge the *other* round-trip
+(`forward ∘ glue = id`). The law below is the harder direction — `glue ∘ forward = id` — and the
+one where non-crossing is essential. It says: cutting a non-crossing `P` at `m = firstBlockMax P`,
+restricting to the two windows, and gluing the pieces back reconstructs `P` exactly. -/
+
+/-- **Gluing the forward restrictions recovers `P` (round-trip `left_inv`, the core).** For a
+non-crossing `P` of `Fin (n+1)` with cut `m = firstBlockMax P`, gluing the two window restrictions
+`restrictFp (offsetEmb 1) P` (on `[1, m]`) and `restrictFp (offsetEmb (m+1)) P` (on `[m+1, n]`)
+reconstructs `P` on the nose: `glueFp m hm (restrictFp e₁ P) (restrictFp e₂ P) = P`.
+
+This is the substantive round-trip law `glue ∘ forward = id` (the `left_inv` of
+`nonempty_firstReturnEquiv`), and the hard direction — it is where non-crossing is used. Two points
+share a glued block iff they carry the same `glueLabel`; the proof shows that is equivalent to
+sharing `P`'s block, by three cases on the cut `m`:
+* both in the closed lower window `[0, m]` — labels are `Sum.inl` of the shifted `P₁ = restrict`
+  block, which tracks `P` on `[1, m]`; and point `0` is glued onto the top block `⟨m-1⟩`, whose
+  members are exactly `0`'s `P`-block (`firstBlockMax` shares `P`'s block with `0`), so the label
+  tracks `P.part 0` too;
+* both in the upper window `[m+1, n]` — labels are `Sum.inr` of the shifted `P₂ = restrict` block,
+  tracking `P` verbatim;
+* opposite sides (`a ≤ m < b`) — the labels live in distinct `Sum` sectors, so differ, and
+  `P.part a = P.part b` is impossible: it would straddle the cut (`noStraddle`).
+Combined with `restrictFp_glueFp_left`/`_right` and `firstBlockMax_glueFp_val` (the `right_inv`
+ingredients), only the `Sigma`/`Subtype` packaging remains to assemble the still-open
+`nonempty_firstReturnEquiv`. -/
+theorem glueFp_restrictFp_eq_self {n : ℕ}
+    (P : Finpartition (univ : Finset (Fin (n + 1)))) (hP : IsNonCrossingFp P)
+    (hm : (firstBlockMax P).val ≤ n)
+    (hL : 1 + (firstBlockMax P).val ≤ n + 1)
+    (hR : ((firstBlockMax P).val + 1) + (n - (firstBlockMax P).val) ≤ n + 1) :
+    glueFp (firstBlockMax P).val hm
+      (restrictFp (offsetEmb 1 hL) P)
+      (restrictFp (offsetEmb ((firstBlockMax P).val + 1) hR) P) = P := by
+  set m := (firstBlockMax P).val with hm_def
+  set Q₁ := restrictFp (offsetEmb 1 hL) P with hQ₁def
+  set Q₂ := restrictFp (offsetEmb (m + 1) hR) P with hQ₂def
+  -- Lower-window label evaluation: for `x ≤ m` (`m > 0`), the glued label is `Sum.inl (some ·)`
+  -- of a `Q₁`-block whose lifted `P`-block is `P.part x` (`0` lifts to the cut, sharing `0`'s block).
+  have hlabL : ∀ x : Fin (n + 1), x.val ≤ m → 0 < m →
+      ∃ j : Fin m, glueLabel m hm Q₁ Q₂ x = Sum.inl (some (Q₁.part j))
+        ∧ P.part (offsetEmb 1 hL j) = P.part x := by
+    intro x hx hmpos
+    rcases Nat.eq_zero_or_pos x.val with hx0 | hxpos
+    · refine ⟨⟨m - 1, by omega⟩, glueLabel_of_zero m hm Q₁ Q₂ x hx0 hmpos, ?_⟩
+      have hemb : offsetEmb 1 hL (⟨m - 1, by omega⟩ : Fin m) = firstBlockMax P := by
+        have hv : (offsetEmb 1 hL (⟨m - 1, by omega⟩ : Fin m)).val = 1 + (m - 1) := rfl
+        apply Fin.ext; rw [hv]; omega
+      have hx0' : x = 0 := Fin.ext hx0
+      rw [hemb, hx0']
+      exact (P.mem_part_iff_part_eq_part (mem_univ _) (mem_univ 0)).mp (firstBlockMax_mem_part P)
+    · refine ⟨⟨x.val - 1, by omega⟩, glueLabel_of_pos_le m hm Q₁ Q₂ x hxpos hx, ?_⟩
+      have hv : (offsetEmb 1 hL (⟨x.val - 1, by omega⟩ : Fin m)).val = 1 + (x.val - 1) := rfl
+      have hemb : offsetEmb 1 hL (⟨x.val - 1, by omega⟩ : Fin m) = x := by
+        apply Fin.ext; rw [hv]; omega
+      rw [hemb]
+  -- Upper-window label evaluation: for `x > m`, the glued label is `Sum.inr ·` of a `Q₂`-block
+  -- whose lifted `P`-block is `P.part x`.
+  have hlabR : ∀ x : Fin (n + 1), m < x.val →
+      ∃ k : Fin (n - m), glueLabel m hm Q₁ Q₂ x = Sum.inr (Q₂.part k)
+        ∧ P.part (offsetEmb (m + 1) hR k) = P.part x := by
+    intro x hx
+    refine ⟨⟨x.val - (m + 1), by have := x.isLt; omega⟩, glueLabel_of_gt m hm Q₁ Q₂ x hx, ?_⟩
+    have hv : (offsetEmb (m + 1) hR (⟨x.val - (m + 1), by have := x.isLt; omega⟩ : Fin (n - m))).val
+        = (m + 1) + (x.val - (m + 1)) := rfl
+    have hemb : offsetEmb (m + 1) hR (⟨x.val - (m + 1), by have := x.isLt; omega⟩ : Fin (n - m))
+        = x := by
+      apply Fin.ext; rw [hv]; omega
+    rw [hemb]
+  -- Same-side (lower window) label equality ⟺ same `P`-block.
+  have keyL : ∀ a b : Fin (n + 1), a.val ≤ m → b.val ≤ m →
+      (glueLabel m hm Q₁ Q₂ a = glueLabel m hm Q₁ Q₂ b ↔ P.part a = P.part b) := by
+    intro a b ha hb
+    rcases Nat.eq_zero_or_pos m with hm0 | hmpos
+    · have hab : a = b := Fin.ext (by omega)
+      subst hab; simp
+    · obtain ⟨ja, hlaba, hPa⟩ := hlabL a ha hmpos
+      obtain ⟨jb, hlabb, hPb⟩ := hlabL b hb hmpos
+      rw [hlaba, hlabb, Sum.inl.injEq, Option.some.injEq]
+      have hmem : (jb ∈ Q₁.part ja) ↔
+          (P.part (offsetEmb 1 hL ja) = P.part (offsetEmb 1 hL jb)) := by
+        rw [hQ₁def]; exact mem_part_restrictFp (offsetEmb 1 hL) P ja jb
+      constructor
+      · intro h
+        have hin : jb ∈ Q₁.part ja :=
+          (Q₁.mem_part_iff_part_eq_part (mem_univ jb) (mem_univ ja)).mpr h.symm
+        rw [hmem, hPa, hPb] at hin; exact hin
+      · intro h
+        have hin : jb ∈ Q₁.part ja := by rw [hmem, hPa, hPb]; exact h
+        exact ((Q₁.mem_part_iff_part_eq_part (mem_univ jb) (mem_univ ja)).mp hin).symm
+  -- Same-side (upper window) label equality ⟺ same `P`-block.
+  have keyR : ∀ a b : Fin (n + 1), m < a.val → m < b.val →
+      (glueLabel m hm Q₁ Q₂ a = glueLabel m hm Q₁ Q₂ b ↔ P.part a = P.part b) := by
+    intro a b ha hb
+    obtain ⟨ka, hlaba, hPa⟩ := hlabR a ha
+    obtain ⟨kb, hlabb, hPb⟩ := hlabR b hb
+    rw [hlaba, hlabb, Sum.inr.injEq]
+    have hmem : (kb ∈ Q₂.part ka) ↔
+        (P.part (offsetEmb (m + 1) hR ka) = P.part (offsetEmb (m + 1) hR kb)) := by
+      rw [hQ₂def]; exact mem_part_restrictFp (offsetEmb (m + 1) hR) P ka kb
+    constructor
+    · intro h
+      have hin : kb ∈ Q₂.part ka :=
+        (Q₂.mem_part_iff_part_eq_part (mem_univ kb) (mem_univ ka)).mpr h.symm
+      rw [hmem, hPa, hPb] at hin; exact hin
+    · intro h
+      have hin : kb ∈ Q₂.part ka := by rw [hmem, hPa, hPb]; exact h
+      exact ((Q₂.mem_part_iff_part_eq_part (mem_univ kb) (mem_univ ka)).mp hin).symm
+  -- Opposite sides: labels differ (distinct `Sum` sectors) AND a shared `P`-block would straddle.
+  have keyCross : ∀ a b : Fin (n + 1), a.val ≤ m → m < b.val →
+      (glueLabel m hm Q₁ Q₂ a = glueLabel m hm Q₁ Q₂ b ↔ P.part a = P.part b) := by
+    intro a b ha hb
+    have haleft : (glueLabel m hm Q₁ Q₂ a).isLeft = true := glueLabel_isLeft_of_le m hm Q₁ Q₂ a ha
+    constructor
+    · intro h
+      rw [h, glueLabel_of_gt m hm Q₁ Q₂ b hb] at haleft
+      simp at haleft
+    · intro h
+      have hb_in : b ∈ P.part a := by rw [h]; exact P.mem_part (mem_univ b)
+      exact (noStraddle P hP a a b (P.mem_part (mem_univ a)) hb_in
+        (Fin.le_def.mpr (by omega)) (Fin.lt_def.mpr (by omega))).elim
+  -- Assemble: for every pair, glued-block ⟺ `P`-block.
+  refine finpartition_eq_of_part fun a => Finset.ext fun b => ?_
+  rw [mem_part_glueFp]
+  have hkey : glueLabel m hm Q₁ Q₂ a = glueLabel m hm Q₁ Q₂ b ↔ P.part a = P.part b := by
+    by_cases hAa : a.val ≤ m
+    · by_cases hBb : b.val ≤ m
+      · exact keyL a b hAa hBb
+      · push_neg at hBb; exact keyCross a b hAa hBb
+    · push_neg at hAa
+      by_cases hBb : b.val ≤ m
+      · constructor
+        · intro h; exact ((keyCross b a hBb hAa).mp h.symm).symm
+        · intro h; exact ((keyCross b a hBb hAa).mpr h.symm).symm
+      · push_neg at hBb; exact keyR a b hAa hBb
+  rw [hkey, P.mem_part_iff_part_eq_part (mem_univ b) (mem_univ a)]
+  exact eq_comm
+
+/-! ### Assembling the first-return bijection via a cardinality count
+
+The round-trip laws above (`glueFp_restrictFp_eq_self`, `restrictFp_glueFp_left`/`_right`,
+`firstBlockMax_glueFp_val`) are now packaged into the existence of `nonempty_firstReturnEquiv`.
+
+Rather than fight the dependent-`HEq` casts a *natural* `Equiv` between the antidiagonal-indexed
+`Σ`-type and the non-crossing partitions would demand — the forward map's cut index equals the
+target index only *propositionally*, so matching the two dependent fibers needs transport — we route
+through an intermediate type `MidNc n` indexed by `m : Fin (n+1)`, whose right fiber `Fin (n - m)`
+matches `glueFp`'s argument type **definitionally**. Gluing then needs no cast, both round-trips are
+clean, and `card (LhsNc) = card (MidNc)` follows by antisymmetry of two injections
+(`fwdMid` with left inverse `glMid`; `glMid` injective by recovering the cut and both factors).
+A pure `antidiagonal ↔ range` reindexing gives `card (MidNc) = card (Rhs)`, and
+`Fintype.equivOfCardEq` finally produces the (noncomputable) bijection — no cast bookkeeping. -/
+
+/-- Non-crossing partitions of `Fin k`, as a subtype (the fibers of the first-return split). -/
+abbrev NcFp (k : ℕ) := {P : Finpartition (univ : Finset (Fin k)) // IsNonCrossingFp P}
+
+/-- The intermediate `Fin (n+1)`-indexed home of the first-return split: a cut index `m` together
+with non-crossing partitions of the two windows `Fin m` and `Fin (n - m)`. Its right fiber matches
+`glueFp`'s argument type definitionally, so gluing needs no cast. -/
+abbrev MidNc (n : ℕ) := Σ m : Fin (n + 1), NcFp m.val × NcFp (n - m.val)
+
+/-- Forward map into the intermediate type: cut a non-crossing `P` at `m = firstBlockMax P` and
+restrict to the two offset windows `[1, m]` and `[m+1, n]`. -/
+def fwdMid {n : ℕ} (P : NcFp (n + 1)) : MidNc n :=
+  let m := firstBlockMax P.1
+  have hm : m.val ≤ n := Nat.lt_succ_iff.mp m.isLt
+  have hL : 1 + m.val ≤ n + 1 := by omega
+  have hR : (m.val + 1) + (n - m.val) ≤ n + 1 := by omega
+  ⟨m,
+    ⟨restrictFp (offsetEmb 1 hL) P.1, isNonCrossingFp_restrictFp_offset 1 hL P.1 P.2⟩,
+    ⟨restrictFp (offsetEmb (m.val + 1) hR) P.1,
+      isNonCrossingFp_restrictFp_offset (m.val + 1) hR P.1 P.2⟩⟩
+
+/-- Inverse (gluing) map from the intermediate type: glue the two windows back at the cut. -/
+def glMid {n : ℕ} (x : MidNc n) : NcFp (n + 1) :=
+  ⟨glueFp x.1.val (Nat.lt_succ_iff.mp x.1.isLt) x.2.1.1 x.2.2.1,
+    isNonCrossingFp_glueFp x.1.val (Nat.lt_succ_iff.mp x.1.isLt) x.2.1.1 x.2.2.1 x.2.1.2 x.2.2.2⟩
+
+/-- `glMid ∘ fwdMid = id`: gluing the two window restrictions recovers `P` (the `left_inv` core,
+`glueFp_restrictFp_eq_self`). -/
+theorem glMid_fwdMid {n : ℕ} (P : NcFp (n + 1)) : glMid (fwdMid P) = P := by
+  apply Subtype.ext
+  exact glueFp_restrictFp_eq_self P.1 P.2 _ _ _
+
+/-- The forward map is injective (it has a left inverse). -/
+theorem fwdMid_injective {n : ℕ} : Function.Injective (fwdMid (n := n)) :=
+  Function.LeftInverse.injective glMid_fwdMid
+
+/-- The gluing map is injective: from `glMid x = glMid x'` the cut index is recovered by
+`firstBlockMax_glueFp_val` (an `ℕ`-level equality, so no `HEq`), and after substituting it the two
+factors are recovered by `restrictFp_glueFp_left`/`_right`. -/
+theorem glMid_injective {n : ℕ} : Function.Injective (glMid (n := n)) := by
+  rintro ⟨m, ⟨P₁, h₁⟩, ⟨P₂, h₂⟩⟩ ⟨m', ⟨P₁', h₁'⟩, ⟨P₂', h₂'⟩⟩ hEq
+  have hg : glueFp m.val (Nat.lt_succ_iff.mp m.isLt) P₁ P₂
+      = glueFp m'.val (Nat.lt_succ_iff.mp m'.isLt) P₁' P₂' := congrArg Subtype.val hEq
+  have hmm : m.val = m'.val := by
+    have e1 := firstBlockMax_glueFp_val m.val (Nat.lt_succ_iff.mp m.isLt) P₁ P₂
+    have e2 := firstBlockMax_glueFp_val m'.val (Nat.lt_succ_iff.mp m'.isLt) P₁' P₂'
+    rw [hg] at e1
+    exact e1.symm.trans e2
+  have hm_eq : m = m' := Fin.ext hmm
+  subst hm_eq
+  have hL : 1 + m.val ≤ n + 1 := by omega
+  have hR : (m.val + 1) + (n - m.val) ≤ n + 1 := by omega
+  have hP₁ : P₁ = P₁' :=
+    (restrictFp_glueFp_left m.val (Nat.lt_succ_iff.mp m.isLt) hL P₁ P₂).symm.trans
+      (by rw [hg]; exact restrictFp_glueFp_left m.val (Nat.lt_succ_iff.mp m.isLt) hL P₁' P₂')
+  have hP₂ : P₂ = P₂' :=
+    (restrictFp_glueFp_right m.val (Nat.lt_succ_iff.mp m.isLt) hR P₁ P₂).symm.trans
+      (by rw [hg]; exact restrictFp_glueFp_right m.val (Nat.lt_succ_iff.mp m.isLt) hR P₁' P₂')
+  subst hP₁; subst hP₂; rfl
+
+/-- `card (MidNc n)` as an explicit convolution sum over `range (n+1)`. -/
+theorem card_midNc_eq (n : ℕ) :
+    Fintype.card (MidNc n)
+      = ∑ k ∈ Finset.range (n + 1),
+          Fintype.card {P : Finpartition (univ : Finset (Fin k)) // IsNonCrossingFp P}
+        * Fintype.card {P : Finpartition (univ : Finset (Fin (n - k))) // IsNonCrossingFp P} := by
+  show Fintype.card (Σ m : Fin (n + 1),
+      {P : Finpartition (univ : Finset (Fin m.val)) // IsNonCrossingFp P} ×
+      {P : Finpartition (univ : Finset (Fin (n - m.val))) // IsNonCrossingFp P}) = _
+  rw [Fintype.card_sigma]
+  simp only [Fintype.card_prod]
+  rw [Fin.sum_univ_eq_sum_range
+    (fun k => Fintype.card {P : Finpartition (univ : Finset (Fin k)) // IsNonCrossingFp P}
+            * Fintype.card {P : Finpartition (univ : Finset (Fin (n - k))) // IsNonCrossingFp P})
+    (n + 1)]
+
+/-- `card` of the antidiagonal-indexed `Σ`-type as the same convolution sum over `range (n+1)`. -/
+theorem card_rhs_eq (n : ℕ) :
+    Fintype.card (Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
+        {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
+        {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P})
+      = ∑ k ∈ Finset.range (n + 1),
+          Fintype.card {P : Finpartition (univ : Finset (Fin k)) // IsNonCrossingFp P}
+        * Fintype.card {P : Finpartition (univ : Finset (Fin (n - k))) // IsNonCrossingFp P} := by
+  rw [Fintype.card_sigma]
+  simp only [Fintype.card_prod]
+  rw [Finset.sum_coe_sort (antidiagonal n)
+    (fun ij => Fintype.card {P : Finpartition (univ : Finset (Fin ij.1)) // IsNonCrossingFp P}
+             * Fintype.card {P : Finpartition (univ : Finset (Fin ij.2)) // IsNonCrossingFp P})]
+  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk
+    (fun ij => Fintype.card {P : Finpartition (univ : Finset (Fin ij.1)) // IsNonCrossingFp P}
+             * Fintype.card {P : Finpartition (univ : Finset (Fin ij.2)) // IsNonCrossingFp P}) n]
+
+/-- **The two sides of the first-return decomposition are equinumerous.** The non-crossing
+partitions of `Fin (n+1)` and the antidiagonal-indexed pairs of non-crossing partitions of the two
+windows have equal cardinality. Proved by `card LhsNc = card MidNc` (antisymmetry of the two
+injections `fwdMid`/`glMid`) composed with `card MidNc = card Rhs` (the `antidiagonal ↔ range`
+reindexing). -/
+theorem card_lhs_eq_card_rhs (n : ℕ) :
+    Fintype.card {P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P}
+      = Fintype.card (Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
+          {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
+          {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P}) := by
+  have hmid : Fintype.card {P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P}
+      = Fintype.card (MidNc n) :=
+    le_antisymm (Fintype.card_le_of_injective fwdMid fwdMid_injective)
+                (Fintype.card_le_of_injective glMid glMid_injective)
+  rw [hmid, card_midNc_eq, ← card_rhs_eq]
+
 /-! ## The combinatorial recurrence (HARD)
 
 The recurrence is now split into two parts that separate its *counting* content from its
@@ -742,22 +1074,24 @@ The recurrence is now split into two parts that separate its *counting* content 
 
 `nonCrossingCount_recurrence` is then a corollary of the two. -/
 
-/-- **First-return bijection (the sole open obligation).** A non-crossing partition of the
-linearly ordered set `Fin (n+1)` decomposes — via the classical "first return" of the block
-structure around a distinguished point — into an independent pair of non-crossing partitions of
-an `i`-element and a `j`-element interval, with `(i, j)` ranging over `antidiagonal n`. We
-record the decomposition as a bijection (existence suffices for the count).
+/-- **First-return bijection (now proved).** A non-crossing partition of the linearly ordered set
+`Fin (n+1)` decomposes — via the classical "first return" of the block structure around a
+distinguished point — into an independent pair of non-crossing partitions of an `i`-element and a
+`j`-element interval, with `(i, j)` ranging over `antidiagonal n`. We record the decomposition as
+a bijection (existence suffices for the count).
 
-This is the genuine combinatorial content of `nonCrossing = Catalan`; the analogous
-decomposition is *not* available in Mathlib in any form (Mathlib has no theory of non-crossing
-partitions, nor of restricting a `Finpartition` of `Fin (n+1)` to the gaps cut out by a
-distinguished block). **Outstanding `sorry`** (HARD, bijection-level). -/
+This is the genuine combinatorial content of `nonCrossing = Catalan`; the analogous decomposition
+is *not* available in Mathlib in any form (Mathlib has no theory of non-crossing partitions, nor of
+restricting a `Finpartition` of `Fin (n+1)` to the gaps cut out by a distinguished block). It is
+discharged here by `card_lhs_eq_card_rhs` (the two sides are equinumerous, by antisymmetry of the
+two injections `fwdMid`/`glMid`) fed to `Fintype.equivOfCardEq` — the existence of the bijection
+without the dependent-`HEq` cast bookkeeping a natural equiv would demand. -/
 theorem nonempty_firstReturnEquiv (n : ℕ) :
     Nonempty ({P : Finpartition (univ : Finset (Fin (n + 1))) // IsNonCrossingFp P} ≃
       Σ ij : (antidiagonal n : Finset (ℕ × ℕ)),
         {P : Finpartition (univ : Finset (Fin ij.1.1)) // IsNonCrossingFp P} ×
-        {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P}) := by
-  sorry
+        {P : Finpartition (univ : Finset (Fin ij.1.2)) // IsNonCrossingFp P}) :=
+  ⟨Fintype.equivOfCardEq (card_lhs_eq_card_rhs n)⟩
 
 /-- **Counting half of the recurrence (proved, 0 `sorry`).** Any first-return bijection
 splitting the non-crossing partitions of `Fin (n+1)` over `antidiagonal n` already forces the
@@ -851,7 +1185,14 @@ theorem nonCrossingCount_eq_catalan_of_le_three {n : ℕ} (hn : n ≤ 3) :
 #check @glueLabel_offsetEmb_right
 #check @mem_part_zero_glueFp_left
 #check @firstBlockMax_glueFp_val
+#check @restrictFp_glueFp_left
+#check @restrictFp_glueFp_right
+#check @card_lhs_eq_card_rhs
 #check @nonCrossingCount_eq_catalan
 #check @nonCrossingCount_eq_catalan_of_le_three
+
+-- Axiom audit: the full theorem depends only on the foundational axioms
+-- (`propext`, `Classical.choice`, `Quot.sound`) — no `sorryAx`, no `Lean.ofReduceBool`.
+#print axioms nonCrossingCount_eq_catalan
 
 end BallotProblemOQ04OQ02OQ01
