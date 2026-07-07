@@ -37,7 +37,7 @@
     "author": "Classical (Bernstein, Zygmund)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Rate_of_convergence",
     "date": "1912",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/FourierSeriesOQ02.lean",
     "tags": [
       "analysis",
@@ -47,7 +47,7 @@
       "coefficient-decay",
       "open-question"
     ],
-    "badge": "verified",
+    "badge": "wip",
     "sorries": 0,
     "dateAdded": "2026-03-23",
     "mathlib_version": "4.26.0",
@@ -105,7 +105,7 @@
     ],
     "axiomCount": 0,
     "lineCount": 495,
-    "assumptions": "0 axioms — fully proved via Weierstrass lacunary series construction in FourierSeriesOQ02OQ04.lean.",
+    "assumptions": "Build-broken: FourierSeriesOQ02OQ04.lean (imported for the optimality witness and partial converse) fails to compile against Mathlib 4.26.0 with ~30 API drift errors plus one genuine math gap. Full repair tracked in #34767 (loom:blocked). Revert to status: verified / badge: original once #34767 migration passes docker-build.sh Proofs.FourierSeriesOQ02OQ04.",
     "theoremCount": 19,
     "additionalFiles": [
       "Proofs/FourierSeriesOQ02Incomplete01.lean",
