@@ -135,10 +135,10 @@ private theorem wFunc_fourierCoeff (α : ℝ) (hα : 0 < α) (k₀ : ℕ) :
   -- Unfold definition
   simp only [fourierCoeff, wFunc, smul_eq_mul]
   -- Interchange integral and tsum
-  rw [show (fun x => (∑' k : ℕ, (geomRatio α : ℝ)^k • fourier ((2:ℤ)^k) x) *
-        fourier (-(2:ℤ)^k₀) x) =
+  rw [show (fun x => fourier (-(2:ℤ)^k₀) x *
+        ∑' k : ℕ, (geomRatio α : ℝ)^k • fourier ((2:ℤ)^k) x) =
       fun x => ∑' k : ℕ, fourier (-(2:ℤ)^k₀) x * ((geomRatio α : ℝ)^k • fourier ((2:ℤ)^k) x)
-    from funext fun x => by rw [← tsum_mul_left]; congr 1; ext k; rw [smul_eq_mul]; ring]
+    from funext fun x => by rw [← tsum_mul_left]]
   rw [integral_tsum
     (fun k => (((fourier (-(2:ℤ)^k₀)).continuous.mul
       ((continuous_const.smul (fourier ((2:ℤ)^k)).continuous))).aestronglyMeasurable))
@@ -188,13 +188,17 @@ where p₀ = Nat.log 2 ⌈T / dist x y⌉.
 /-- Partial geometric sum bound: ∑_{k<p} s^k ≤ s^p / (s-1) for s > 1. -/
 private theorem geom_partial_sum_le {s : ℝ} (hs : 1 < s) (p : ℕ) :
     ∑ k ∈ Finset.range p, s^k ≤ s^p / (s - 1) := by
+  have hs1_pos : 0 < s - 1 := by linarith
   induction p with
-  | zero => simp; positivity
+  | zero =>
+      simp only [Finset.range_zero, Finset.sum_empty, pow_zero]
+      exact div_nonneg zero_le_one hs1_pos.le
   | succ n ih =>
     rw [Finset.sum_range_succ]
     calc ∑ k ∈ Finset.range n, s^k + s^n
         ≤ s^n / (s-1) + s^n := by linarith
       _ = s^(n+1) / (s-1) := by
+          have hne : s - 1 ≠ 0 := hs1_pos.ne'
           rw [pow_succ]; field_simp; ring
 
 /-- The geometric tail sum: ∑_{k≥p₀} r^k = r^{p₀} / (1-r). -/
@@ -213,14 +217,15 @@ private theorem dist_le_half_period (x y : AddCircle T) : dist x y ≤ T / 2 := 
   -- Lift to real representatives
   induction x using QuotientAddGroup.induction_on with | _ x =>
   induction y using QuotientAddGroup.induction_on with | _ y =>
-  set k : ℤ := round (T⁻¹ * (x - y)) with hk_def
   have hT_ne : T ≠ 0 := hT_pos.ne'
-  have h_dist : dist (↑x : AddCircle T) (↑y) = |x - y - ↑k * T| := by
+  have h_dist : dist (↑x : AddCircle T) (↑y) =
+      |x - y - round (T⁻¹ * (x - y)) * T| := by
     rw [dist_eq_norm, show (↑x : AddCircle T) - ↑y = ↑(x - y) from
       (map_sub (QuotientAddGroup.mk' (AddSubgroup.zmultiples T)) x y).symm,
       AddCircle.norm_eq]
   rw [h_dist]
   -- |x - y - k·T| = T · |(x-y)/T - round((x-y)/T)| ≤ T · (1/2) = T/2
+  set k : ℤ := round (T⁻¹ * (x - y)) with hk_def
   have hround : |T⁻¹ * (x - y) - ↑k| ≤ 1 / 2 := abs_sub_round _
   have hrw : x - y - ↑k * T = T * (T⁻¹ * (x - y) - ↑k) := by
     field_simp; ring
@@ -299,10 +304,10 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
     calc (2:ℝ)^α * ((2:ℝ)^((p₀:ℝ)+1))^(-α)
         < (2:ℝ)^α * ((T/d)^(-α)) := by
           apply mul_lt_mul_of_pos_left _ (Real.rpow_pos_of_pos (by norm_num) _)
-          exact Real.rpow_lt_rpow_of_exponent_gt hTd_pos h_pow_gt' (by linarith)
+          exact Real.rpow_lt_rpow_of_neg hTd_pos h_pow_gt' (by linarith)
       _ = (2:ℝ)^α * ((d/T)^α) := by
           rw [Real.rpow_neg hTd_pos.le,
-              show (d/T) = (T/d)⁻¹ from by rw [one_div_div],
+              show (d/T) = (T/d)⁻¹ from by rw [inv_div],
               Real.inv_rpow hTd_pos.le]
       _ = (2 * (d / T))^α := by rw [Real.mul_rpow (by norm_num) (by positivity)]
       _ ≤ (4 * d / T)^α := by
@@ -312,16 +317,15 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
   have h_diff : wFunc α x - wFunc α y =
       ∑' k : ℕ, (r^k • (fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y)) := by
     unfold wFunc
-    rw [← tsum_sub (wFunc_summable α hα_pos x) (wFunc_summable α hα_pos y)]
+    rw [← Summable.tsum_sub (wFunc_summable α hα_pos x) (wFunc_summable α hα_pos y)]
     simp_rw [← smul_sub]
   rw [h_diff]
   -- Summability of norms
   have h_summ_norm : Summable (fun k : ℕ => r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖) := by
-    apply Summable.of_nonneg_of_le (fun k => by positivity)
-      (g := fun k => r^k * 2) (fun k => ?_)
-    · exact (summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2
-    · apply mul_le_mul_of_nonneg_left (FourierDecayInfra.fourier_sub_norm_le_two _ _ _)
-      exact pow_nonneg hr_pos.le _
+    refine Summable.of_nonneg_of_le (fun k => by positivity) (fun k => ?_)
+      ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2)
+    apply mul_le_mul_of_nonneg_left (FourierDecayInfra.fourier_sub_norm_le_two _ _ _)
+    exact pow_nonneg hr_pos.le _
   -- Norm bound via triangle inequality
   have h_norm_eq : ∀ k : ℕ, ‖r^k • (fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y)‖ =
       r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖ := fun k => by
@@ -339,12 +343,13 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
       (∑ k ∈ Finset.range p₀, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖) +
       ∑' k : ℕ, r^(k + p₀) * 2 := by
     rw [← h_summ_norm.sum_add_tsum_nat_add p₀]
-    apply add_le_add_left
-    apply Summable.tsum_le_tsum _ (h_summ_norm.nat_add p₀)
-      ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2 |>.nat_add p₀)
-    intro k
-    apply mul_le_mul_of_nonneg_left (FourierDecayInfra.fourier_sub_norm_le_two _ _ _)
-    exact pow_nonneg hr_pos.le _
+    gcongr ?_ + ?_
+    · exact le_refl _
+    · apply Summable.tsum_le_tsum _ (h_summ_norm.nat_add p₀)
+        ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2 |>.nat_add p₀)
+      intro k
+      apply mul_le_mul_of_nonneg_left (FourierDecayInfra.fourier_sub_norm_le_two _ _ _)
+      exact pow_nonneg hr_pos.le _
   -- Low sum bound: Lipschitz
   have h_low : ∑ k ∈ Finset.range p₀, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖ ≤
       (2 * Real.pi * (2 * T)^(1-α)) / (T * ((2:ℝ)^(1-α) - 1)) * d^α := by
@@ -360,8 +365,12 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
       _ = (2 * Real.pi / T * d) * ∑ k ∈ Finset.range p₀, (r * 2)^k := by
           simp_rw [← Finset.mul_sum]; congr 1; ext k; ring
       _ ≤ (2 * Real.pi / T * d) * (s^p₀ / (s - 1)) := by
-          apply mul_le_mul_of_nonneg_left _ (by positivity)
-          apply geom_partial_sum_le hs_gt1
+          have hrs : r * 2 = s := by
+            rw [hr_def, hs_def]; unfold geomRatio
+            rw [show (1:ℝ) - α = -α + 1 from by ring, Real.rpow_add (by norm_num),
+                Real.rpow_one]
+          rw [hrs]
+          apply mul_le_mul_of_nonneg_left (geom_partial_sum_le hs_gt1 p₀) (by positivity)
       _ ≤ (2 * Real.pi * (2 * T)^(1-α)) / (T * ((2:ℝ)^(1-α) - 1)) * d^α := by
           -- Bound s^p₀ ≤ (2T/d)^(1-α), then split (2T/d)^(1-α) = (2T)^(1-α) / d^(1-α).
           have hsm1_pos : 0 < s - 1 := hs_pos
@@ -372,21 +381,18 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
             exact h_s_bound
           refine hstep.trans (le_of_eq ?_)
           rw [hs_def]
-          -- (2T/d)^(1-α) = (2T)^(1-α) · d^(-(1-α)); combine with d and simplify.
+          -- (2T/d)^(1-α) = (2T)^(1-α) · d^(α-1); combine with d and simplify.
           have hd_ne : d ≠ 0 := hd_pos.ne'
           have hexp : (2*T/d)^(1-α) = (2*T)^(1-α) * d^(α - 1) := by
-            rw [show (2*T/d) = (2*T) * d⁻¹ from by ring,
-                Real.mul_rpow (by positivity) (by positivity),
-                ← Real.rpow_neg_one d, ← Real.rpow_natCast d 1]
-            rw [← Real.rpow_mul hd_pos.le]
-            rw [show (1:ℝ) - α = -(α - 1) from by ring, Real.rpow_neg (by positivity)]
-            rw [Real.rpow_natCast, pow_one]
-            rw [show (α - 1) = -(1 - α) from by ring, Real.rpow_neg hd_pos.le]
-            rw [Real.inv_rpow hd_pos.le]
+            rw [Real.div_rpow (by positivity) hd_pos.le, div_eq_mul_inv,
+                ← Real.rpow_neg hd_pos.le, show -(1-α) = α - 1 from by ring]
           rw [hexp]
           have hdpow : d^(α - 1) * d = d^α := by
             rw [show d = d^(1:ℝ) from (Real.rpow_one d).symm, ← Real.rpow_add hd_pos]
-            · congr 1; ring
+            congr 1; ring
+          have hden_ne : (2:ℝ)^(1-α) - 1 ≠ 0 := by
+            have : (1:ℝ) < (2:ℝ)^(1-α) := hs_gt1
+            rw [hs_def] at this; linarith
           field_simp
           rw [show (2:ℝ)*Real.pi/T*d*((2*T)^(1-α)*d^(α-1)) =
               2*Real.pi*(2*T)^(1-α)*(d^(α-1)*d)/T from by ring, hdpow]
@@ -404,8 +410,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
     have hexp : (4 * d / T)^α = (4:ℝ)^α * d^α / T^α := by
       rw [show (4 * d / T) = 4 * d * T⁻¹ from by ring,
           Real.mul_rpow (by positivity) (by positivity),
-          Real.mul_rpow (by norm_num) hd_pos.le, Real.inv_rpow (by positivity),
-          Real.rpow_neg (by positivity)]
+          Real.mul_rpow (by norm_num) hd_pos.le, Real.inv_rpow hT_pos.le]
       ring
     -- Rewrite both sides over the common denominator (1 - 2^(-α)).
     rw [hr_eq, show (2 : ℝ) * (r^p₀ / (1 - (2:ℝ)^(-α))) = (2 * r^p₀) / (1 - (2:ℝ)^(-α)) from by
@@ -417,7 +422,8 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
     rw [← hexp]
     exact mul_le_mul_of_nonneg_left (le_of_lt h_r_bound) (by norm_num)
   -- Combine
-  calc ‖wFunc α (T := T) x - wFunc α y‖
+  rw [add_mul, hs_def]
+  calc ‖∑' k : ℕ, r^k • (fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y)‖
       ≤ ∑' k : ℕ, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖ := h_tri
     _ ≤ _ + ∑' k : ℕ, r^(k + p₀) * 2 := h_split
     _ ≤ _ := add_le_add h_low h_high
