@@ -102,4 +102,23 @@ theorem newton_k2_equality_iff (x y z : ℝ) :
       rw [d1, d2, d3]; norm_num
     linarith [hid, hz]
 
+/-- **Newton's k = 2 inequality in symmetric-means (Maclaurin) form, n = 3, ALL reals.**
+With `S₁ = e₁/C(3,1) = e₁/3`, `S₂ = e₂/C(3,2) = e₂/3`, `S₃ = e₃/C(3,3) = e₃/1`, we have
+`S₂² ≥ S₁ · S₃`. The constant denominators need no positivity side-conditions, so this is
+the literal `S₂² ≥ S₁S₃` statement of the open question, sign-agnostic.
+(Salvaged from PR #34683, restated over this file's `newton_k2_*` API.) -/
+theorem newton_k2_symmetric_means (x y z : ℝ) :
+    (e2 x y z / 3) ^ 2 ≥ (e1 x y z / 3) * (e3 x y z / 1) := by
+  have h := newton_k2_allreals_three x y z
+  have key : (e2 x y z / 3) ^ 2 - (e1 x y z / 3) * (e3 x y z / 1)
+      = (e2 x y z ^ 2 - 3 * e1 x y z * e3 x y z) / 9 := by ring
+  have hnn : (0 : ℝ) ≤ (e2 x y z ^ 2 - 3 * e1 x y z * e3 x y z) / 9 := by
+    apply div_nonneg
+    · linarith [h]
+    · norm_num
+  linarith [key, hnn]
+
 end AmgmInequalityOQ02OQ01OQ05OQ01
+
+-- Axiom audit (salvaged from PR #34683): expect only propext / Classical.choice / Quot.sound.
+#print axioms AmgmInequalityOQ02OQ01OQ05OQ01.newton_k2_symmetric_means

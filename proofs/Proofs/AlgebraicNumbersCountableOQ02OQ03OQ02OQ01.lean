@@ -76,6 +76,34 @@ theorem not_isGδ_of_dense_countable
     [Nonempty X] {D : Set X} (hcount : D.Countable) (hdense : Dense D) : ¬ IsGδ D :=
   (dense_countable_isFσ_and_not_isGδ hcount hdense).2
 
+/-! ### The dual (`Gδ`-only) side and the packaged dichotomy -/
+
+/-- **The complement of a dense countable set is `Gδ` but not `Fσ`** — the dual half of the
+dichotomy.
+
+*`Gδ`*: immediate from `compl_countable_isDenseGδ`. *Not `Fσ`*: were the complement `Fσ`, its
+complement — the original set — would be `Gδ` (`IsFσ.isGδ_compl` together with `compl_compl`),
+contradicting `dense_countable_isFσ_and_not_isGδ`. -/
+theorem dense_countable_compl_isGδ_not_isFσ
+    {X : Type*} [TopologicalSpace X] [T1Space X] [PerfectSpace X] [BaireSpace X]
+    [Nonempty X] {D : Set X} (hcount : D.Countable) (hdense : Dense D) :
+    IsGδ Dᶜ ∧ ¬ IsFσ Dᶜ := by
+  refine ⟨(compl_countable_isDenseGδ hcount).1, fun hf => ?_⟩
+  have hs : IsGδ D := by
+    have h := hf.isGδ_compl
+    rwa [compl_compl] at h
+  exact (dense_countable_isFσ_and_not_isGδ hcount hdense).2 hs
+
+/-- **The complete generic dichotomy.** A dense countable set and its complement sit on
+opposite, `Fσ`-only and `Gδ`-only, sides of the Borel hierarchy: `D` is `Fσ` but not `Gδ`,
+while `Dᶜ` is `Gδ` but not `Fσ`. -/
+theorem dense_countable_gδ_fσ_dichotomy
+    {X : Type*} [TopologicalSpace X] [T1Space X] [PerfectSpace X] [BaireSpace X]
+    [Nonempty X] {D : Set X} (hcount : D.Countable) (hdense : Dense D) :
+    (IsFσ D ∧ ¬ IsGδ D) ∧ (IsGδ Dᶜ ∧ ¬ IsFσ Dᶜ) :=
+  ⟨dense_countable_isFσ_and_not_isGδ hcount hdense,
+    dense_countable_compl_isGδ_not_isFσ hcount hdense⟩
+
 /-! ### The classical `ℚ ⊆ ℝ` instance -/
 
 /-- **`ℚ` is `Fσ` but not `Gδ` in `ℝ`.** The rationals are the range of the (countable,
@@ -87,3 +115,7 @@ theorem rationals_isFσ_and_not_isGδ :
   dense_countable_isFσ_and_not_isGδ (Set.countable_range _) Rat.denseRange_cast
 
 end AlgebraicNumbersCountableOQ02OQ03OQ02OQ01
+
+-- Axiom audit (salvaged from PR #34683): expect only propext / Classical.choice / Quot.sound.
+#print axioms AlgebraicNumbersCountableOQ02OQ03OQ02OQ01.dense_countable_compl_isGδ_not_isFσ
+#print axioms AlgebraicNumbersCountableOQ02OQ03OQ02OQ01.dense_countable_gδ_fσ_dichotomy
