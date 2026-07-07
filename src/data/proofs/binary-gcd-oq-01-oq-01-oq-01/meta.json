@@ -78,39 +78,39 @@
       "id": "header",
       "title": "Module Header: From Upper Bound to a Matching Lower Bound",
       "startLine": 1,
-      "endLine": 59,
+      "endLine": 70,
       "summary": "Module docstring framing OQ-01: the parent proved binaryGcdCost a b = O((log N)^2); is that quadratic bound tight? The answer is given in the sharpest form — on the diagonal power-of-two family a = b = 2^k the cost is exactly (k+1)(k+2), so (log₂ N)^2 ≤ binaryGcdCost N N for N = 2^k. Lists the five main results and confirms the file is axiom-free with no native_decide. Imports Mathlib and both parent files.",
       "mathContext": "$\\mathtt{binaryGcdCost}(2^k, 2^k) = (k+1)(k+2)$; telescoping ladder $\\sum_{j=0}^{k} 2(j+1) = (k+1)(k+2)$."
     },
     {
       "id": "even-diag-step",
       "title": "One even/even reduction step on the diagonal",
-      "startLine": 68,
-      "endLine": 80,
+      "startLine": 79,
+      "endLine": 91,
       "summary": "cost_even_diag: for positive even a, binaryGcdCost a a = 2·Nat.size a + binaryGcdCost (a/2) (a/2). Writes a = a'+1 (Nat.exists_eq_succ_of_ne_zero), fires the parent equation lemma binaryGcdCost.eq_3, and discharges both parity tests with if_pos before ring. This is the arithmetic engine: one diagonal even step charges 2·Nat.size a and recurses on (a/2, a/2).",
       "mathContext": "On an even/even diagonal pair the cost recursion takes the halving branch, charging $2\\,\\mathtt{Nat.size}\\,a$ (the combined bit-length of both operands) and continuing on $(a/2, a/2)$."
     },
     {
       "id": "exact-closed-form",
       "title": "Exact cost on the diagonal power-of-two family",
-      "startLine": 82,
-      "endLine": 106,
+      "startLine": 93,
+      "endLine": 117,
       "summary": "binaryGcdCost_two_pow_diag: binaryGcdCost (2^k) (2^k) = (k+1)(k+2), by induction on k. Base (k=0): (1,1) is odd/odd, one step to (1,0) at cost 2. Step: 2^{n+1} is even with 2^{n+1}/2 = 2^n, so cost_even_diag + Nat.size_pow give 2·(n+2) + (n+1)(n+2), which ring folds to (n+2)(n+3).",
       "mathContext": "The $k+1$ even/even steps $(2^k,2^k) \\to \\cdots \\to (1,1)$ cost $2(j+1)$ each; summing gives $\\sum_{j=0}^{k} 2(j+1) = (k+1)(k+2)$ — an exact quadratic, not merely a lower bound."
     },
     {
       "id": "lower-bounds",
       "title": "The matching Ω((log N)²) lower bound",
-      "startLine": 108,
-      "endLine": 131,
+      "startLine": 119,
+      "endLine": 142,
       "summary": "Three corollaries of the closed form: binaryGcdCost_two_pow_diag_lower (k² ≤ cost, via nlinarith), binaryGcdCost_diag_log_lower ((log₂ 2^k)² ≤ cost, rewriting log₂ 2^k = k by Nat.log_pow), and binaryGcdCost_omega_log_sq (the explicit family a = b = 2^k with log₂ = k and cost ≥ k²) — the requested Ω((log N)^2) input family.",
       "mathContext": "Since $\\log_2(2^k) = k$, the clean floor $k^2 \\le \\mathtt{binaryGcdCost}(2^k,2^k)$ is exactly the $(\\log_2 N)^2$ lower bound for $N = 2^k$, matching the parent's $O((\\log N)^2)$ upper bound."
     },
     {
       "id": "two-sided-squeeze",
       "title": "Two-sided squeeze: Θ((log N)²) on the diagonal family",
-      "startLine": 133,
-      "endLine": 156,
+      "startLine": 144,
+      "endLine": 167,
       "summary": "binaryGcdCost_diag_two_sided: with L = log₂ a + log₂ b, on a = b = 2^k the cost satisfies (L/2)² ≤ binaryGcdCost a b ≤ (2L+2)(L+2). The lower half is the k² floor (L/2 = k); the upper half is the parent binaryGcdCost_le_quadratic specialised to 2^k. Both bounds are quadratic in L, so the cost is Θ(L²) = Θ((log N)^2).",
       "mathContext": "The parent's $O((\\log N)^2)$ upper bound and this entry's $\\Omega((\\log N)^2)$ lower bound coincide in order on the diagonal family, so the quadratic total-cost model is asymptotically tight."
     },
