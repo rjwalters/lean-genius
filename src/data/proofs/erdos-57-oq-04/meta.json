@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 343,
+    "lineCount": 540,
     "dateAdded": "06/27/26",
     "mathlibDependencies": [
       {
@@ -69,8 +69,11 @@
       "Net effect on the parent: `bipartite_iff_no_odd_cycles` and `colorable_two_no_odd_cycles` become fully proved (0 sorries); `Erdos57Problem.lean` drops from 1 sorry to 0."
     ],
     "assumptions": "None for the contributed lemmas. The crux lemma `exists_odd_cycle_of_odd_closed_walk`, the strong-induction auxiliary, and the now-complete `bipartite_iff_no_odd_cycles` / `colorable_two_no_odd_cycles` contain 0 `sorry` and 0 `axiom`; `#print axioms exists_odd_cycle_of_odd_closed_walk` and `#print axioms bipartite_iff_no_odd_cycles` report only `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`, no `Lean.ofReduceBool`. (The host file `Erdos57Problem.lean` retains the single open axiom `erdos_57`, the deep Liu–Montgomery theorem, which these lemmas do not touch.)",
-    "theoremCount": 4,
-    "definitionCount": 0
+    "theoremCount": 12,
+    "definitionCount": 1,
+    "additionalFiles": [
+      "Proofs/Erdos57OddGirthBound.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The classical foundation of chromatic graph theory is König's theorem: a graph is bipartite (2-colorable) if and only if it contains no odd cycle. Erdős Problem #57 sits directly atop this equivalence — the whole hierarchy of the problem (no odd cycles ⟹ χ ≤ 2; finitely many ⟹ infinitely many ⟹ ∑ 1/aᵢ = ∞) begins with the bipartite characterization. While Mathlib has the forward direction and the distance-parity 2-coloring machinery (`two_colorable_iff_forall_loop_even`), it does not have the one combinatorial lemma that bridges 'an odd closed walk exists' to 'an odd cycle exists', and its `SimpleGraph.Bipartite` file flags the full characterization as a TODO. This is the gap open question 4 of Erdős #57 asked about, and the gap this entry fills.",

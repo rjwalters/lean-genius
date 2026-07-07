@@ -10,8 +10,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 152,
-    "theoremCount": 6,
+    "lineCount": 198,
+    "theoremCount": 7,
     "definitionCount": 0,
     "assumptions": "0 axioms, 0 sorries, no native_decide. The hypotheses (k ≥ 2 in the final lower bound, and the smallness bound n² < 2(k-1)·2^(k-1)) are inputs to the statements, not standing assumptions; the core sharpened count card_vdwFamily_two_mul_le needs no hypothesis on k at all. #print axioms reports only propext, Classical.choice, Quot.sound for vdw_lower_bound_sharp, card_vdwFamily_two_mul_le, and vdwFilter_card_eq_sum. The probabilistic core is the gallery's verified entry property-b-first-moment (via vdw_two_coloring_exists from the base van-der-waerden-first-moment entry), consumed as a black box; this entry contributes the exact triangular parameter count and the telescoping-of-squares bound on top of it. Badged 'original' because the exact-count and factor-2 sharpening are new content layered on a verified base entry, not a Mathlib headline theorem.",
     "tags": [
@@ -59,8 +59,8 @@
     "namespace": "ProbMethod.VanDerWaerden",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 152,
-    "theoremCount": 6,
+    "lineCount": 198,
+    "theoremCount": 7,
     "definitionCount": 0
   },
   "overview": {

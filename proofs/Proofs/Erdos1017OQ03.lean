@@ -169,6 +169,73 @@ theorem turanBound_convex (n : ℕ) :
   have h := turanBound_second_diff n
   omega
 
+/-! ### 8. Extremal product characterization: `T(n) = max_{a+b=n} a·b`.
+
+The closed forms above give the *value* of `T` but not the extremal *principle*
+behind it. Erdős #1017's bound `⌊n²/4⌋` is the Turán/Mantel extremal edge count:
+the complete bipartite graph `K_{a,b}` on `a+b = n` vertices has `a·b` edges, and
+`⌊n²/4⌋` is exactly the **maximum** of `a·b` over all balanced/unbalanced splits.
+We pin this down: every product `a·b` with `a+b = n` is at most `T(n)`
+(`turanBound_ge_mul`), and the balanced split `⌊n/2⌋·⌈n/2⌉` attains it
+(`turanBound_eq_mul_split`). Hence `T(n)` is the greatest element of the set of
+achievable edge products — the AM-GM optimum `4·a·b = (a+b)² − (a−b)²`. -/
+
+/-- Every bipartition product is bounded by the Turán bound:
+    `a·b ≤ T(a+b)` for all `a, b`. This is the AM-GM optimum
+    `4ab = (a+b)² − (a−b)²`, with the odd-parity deficit absorbed by
+    `(a−b)² ≥ (a+b) mod 2` (equal parity of `a−b` and `a+b`). -/
+theorem turanBound_ge_mul (a b : ℕ) : a * b ≤ turanBound (a + b) := by
+  have h4 : 4 * turanBound (a + b) = (a + b) ^ 2 - (a + b) % 2 := turanBound_four_mul (a + b)
+  rcases Nat.even_or_odd (a + b) with he | ho
+  · -- even split: `4ab ≤ (a+b)²`.
+    have h0 : (a + b) % 2 = 0 := Nat.even_iff.mp he
+    rw [h0] at h4
+    have key : 4 * (a * b) ≤ (a + b) ^ 2 := by
+      have hz : (4 * (a * b) : ℤ) ≤ ((a + b) ^ 2 : ℤ) := by
+        nlinarith [sq_nonneg ((a : ℤ) - (b : ℤ))]
+      exact_mod_cast hz
+    omega
+  · -- odd split: `a ≠ b`, so `(a−b)² ≥ 1` gives `4ab + 1 ≤ (a+b)²`.
+    have h1 : (a + b) % 2 = 1 := Nat.odd_iff.mp ho
+    rw [h1] at h4
+    have hne : (a : ℤ) - b ≠ 0 := by
+      intro hcontra
+      have hab : a = b := by
+        have : (a : ℤ) = b := by linarith
+        exact_mod_cast this
+      subst hab
+      omega
+    have hsq : (1 : ℤ) ≤ ((a : ℤ) - b) ^ 2 := by
+      rcases hne.lt_or_gt with hl | hl <;> nlinarith
+    have key : 4 * (a * b) + 1 ≤ (a + b) ^ 2 := by
+      have hz : (4 * (a * b) + 1 : ℤ) ≤ ((a + b) ^ 2 : ℤ) := by nlinarith [hsq]
+      exact_mod_cast hz
+    omega
+
+/-- The balanced split attains the bound: `T(n) = ⌊n/2⌋·(n − ⌊n/2⌋)`. Together with
+    `turanBound_ge_mul` this shows `T(n)` is the maximum edge-product `a·b` over all
+    `a + b = n`, realized by the balanced complete bipartite graph. -/
+theorem turanBound_eq_mul_split (n : ℕ) : turanBound n = (n / 2) * (n - n / 2) := by
+  rcases Nat.even_or_odd n with ⟨m, rfl⟩ | ⟨m, rfl⟩
+  · rw [show m + m = 2 * m from by ring, turanBound_two_mul,
+      show (2 * m) / 2 = m from by omega, show 2 * m - m = m from by omega]
+    ring
+  · rw [turanBound_two_mul_add_one, show (2 * m + 1) / 2 = m from by omega,
+      show 2 * m + 1 - m = m + 1 from by omega]
+
+/-- **`T(n)` is the greatest achievable edge-product.** The Turán bound is exactly
+    the maximum of `a·b` over all bipartitions `a + b = n`: it is achieved (by the
+    balanced split) and dominates every split. This is the extremal characterization
+    of `⌊n²/4⌋` underlying Erdős #1017. -/
+theorem turanBound_isGreatest_product (n : ℕ) :
+    IsGreatest {p : ℕ | ∃ a b, a + b = n ∧ p = a * b} (turanBound n) := by
+  constructor
+  · -- membership: the balanced split `(n/2, n − n/2)` realizes `T(n)`.
+    exact ⟨n / 2, n - n / 2, by omega, turanBound_eq_mul_split n⟩
+  · -- upper bound: every product is at most `T(n)`.
+    rintro p ⟨a, b, rfl, rfl⟩
+    exact turanBound_ge_mul a b
+
 /-
 ## Significance
 
@@ -198,3 +265,9 @@ nonempty for `n ≥ 1`.
 -/
 
 end Erdos1017OQ03
+
+-- Axiom audit: verified during salvage via a separate probe module —
+-- `#print axioms` on turanBound_ge_mul / turanBound_isGreatest_product reports
+-- only foundational axioms. The literal `#print` commands are omitted here:
+-- this file's decide-based examples plus trailing `#print axioms` reproducibly
+-- crash the v4.26 frontend (exit 135).

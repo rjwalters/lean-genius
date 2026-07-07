@@ -59,10 +59,10 @@
       }
     ],
     "axiomCount": 0,
-    "lineCount": 401,
+    "lineCount": 498,
     "assumptions": "0 axioms, 0 sorries, no native_decide (the worked examples use decide, which depends only on the foundational kernel, not Lean.ofReduceBool). The hypotheses (edges nonempty; weighted-sum / incidence bounds) are inputs to the statements, not standing assumptions; V is an arbitrary Fintype with DecidableEq and n = Fintype.card V. #print axioms reports only propext, Classical.choice, Quot.sound for every theorem (criterion, averaging, and deletion families — checked for property_b_of_weighted_first_moment, exists_coloring_few_mono, exists_two_colorable_subfamily, exists_two_colorable_subfamily_uniform, k4_bipartite_subfamily, weighted_criterion_sharp, etc.) — no sorryAx, no Lean.ofReduceBool. This is the single-round FIRST-MOMENT bound plus its quantitative (few-bad-edges) and deletion (alteration) corollaries; the Radhakrishnan–Srinivasan √(k/log k) improvement, which needs random RECOLORING rather than deletion, is NOT formalized and is left open.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16,
+    "theoremCount": 19,
     "definitionCount": 1
   },
   "overview": {
@@ -156,11 +156,11 @@
       "BigOperators"
     ],
     "namespace": "ProbMethod.PropertyB",
-    "lineCount": 401,
+    "lineCount": 498,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 16
+    "theoremCount": 19
   },
   "references": [
     {

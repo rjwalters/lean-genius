@@ -20,9 +20,9 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 2423,
-    "theoremCount": 94,
-    "definitionCount": 7,
+    "lineCount": 2503,
+    "theoremCount": 97,
+    "definitionCount": 8,
     "dateAdded": "2026-07-02",
     "mathlib_version": "4.26.0",
     "additionalFiles": [
@@ -33,7 +33,8 @@
       "Proofs/AbundantNumberOQ02OQ01LowerBound.lean",
       "Proofs/AbundantNumberOQ02OQ01GeneralBound.lean",
       "Proofs/AbundantNumberOQ02OQ01SevenPrimeExponents.lean",
-      "Proofs/AbundantNumberOQ02OQ01Squarefree.lean"
+      "Proofs/AbundantNumberOQ02OQ01Squarefree.lean",
+      "Proofs/AbundantNumberOQ02OQ01Capstone.lean"
     ],
     "assumptions": "None. Fully machine-checked with 0 axioms and 0 sorries across all nine files. Abundance of the witness is established via multiplicativity of σ (isMultiplicative_sigma), splitting 5391411025 into its coprime prime-power factors so each σ-atom is a trivial divisor-sum computation — no native_decide is used anywhere, so the result carries no Lean.ofReduceBool axiom. Every #print axioms in the family reports only the standard foundational axioms propext / Classical.choice / Quot.sound. Small finite facts (e.g. σ of a prime power, oddness, non-divisibility by 3) use kernel decide, not native_decide.",
     "originalContributions": [

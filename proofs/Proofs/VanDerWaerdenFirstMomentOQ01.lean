@@ -122,6 +122,49 @@ theorem card_vdwFamily_two_mul_le (k : ℕ) :
         have h := two_mul_sum_sq_le n (k - 1) n
         omega
 
+/-- **The literal first-moment bound `|family| ≤ n · ⌊(n-1)/(k-1)⌋`** asked for by the
+open question, proved directly by bounding the AP step.  A length-`k` AP of step `d`
+fits in `[n]` only when `(k-1)·d ≤ n-1`, i.e. `d ≤ ⌊(n-1)/(k-1)⌋`; so there are at most
+`⌊(n-1)/(k-1)⌋` admissible steps, each pairing with at most `n` first terms `a`.
+
+This records the exact shape the question states (the chained `≤ n²/(k-1)` is then just
+`⌊(n-1)/(k-1)⌋ ≤ (n-1)/(k-1) ≤ n/(k-1)`).  It is **not** dominated by the sharper
+telescoping bound `card_vdwFamily_two_mul_le`: in the regime `n ≤ k-1` *no* AP of
+positive step fits, and this lemma returns the **exact** value `0` (the floor is `0`),
+whereas `n²/(2(k-1))` is strictly positive there. -/
+theorem card_vdwFamily_le_floor {k : ℕ} (hk : 2 ≤ k) :
+    (vdwFamily n k).card ≤ n * ((n - 1) / (k - 1)) := by
+  have hk1 : 0 < k - 1 := by omega
+  refine le_trans (card_vdwFamily_le_sum k) ?_
+  -- Replace each triangular term by `n` on the support `(k-1)d < n` and `0` off it.
+  have hbound : ∀ d ∈ Finset.Icc 1 n,
+      n - (k - 1) * d ≤ (if (k - 1) * d < n then n else 0) := by
+    intro d _
+    split
+    · exact Nat.sub_le n _
+    · omega
+  refine le_trans (Finset.sum_le_sum hbound) ?_
+  -- The indicator sum is `n · |{d ∈ Icc 1 n : (k-1)d < n}|`, and that filter is
+  -- exactly `Icc 1 ⌊(n-1)/(k-1)⌋`.
+  have hfilter : (Finset.Icc 1 n).filter (fun d => (k - 1) * d < n)
+      = Finset.Icc 1 ((n - 1) / (k - 1)) := by
+    ext d
+    simp only [Finset.mem_filter, Finset.mem_Icc]
+    constructor
+    · rintro ⟨⟨h1, _⟩, h3⟩
+      refine ⟨h1, ?_⟩
+      rw [Nat.le_div_iff_mul_le hk1]
+      have hc : (k - 1) * d = d * (k - 1) := Nat.mul_comm _ _
+      omega
+    · rintro ⟨h1, h2⟩
+      have h2' : d * (k - 1) ≤ n - 1 := (Nat.le_div_iff_mul_le hk1).1 h2
+      have hc : (k - 1) * d = d * (k - 1) := Nat.mul_comm _ _
+      have hdle : d ≤ (k - 1) * d := Nat.le_mul_of_pos_left d hk1
+      exact ⟨⟨h1, by omega⟩, by omega⟩
+  rw [← Finset.sum_filter, hfilter, Finset.sum_const, smul_eq_mul,
+      Nat.card_Icc, Nat.add_sub_cancel]
+  exact le_of_eq (Nat.mul_comm _ n)
+
 /-- **Sharpened first-moment van der Waerden lower bound.**
 If `n² < 2·(k-1)·2^(k-1)` then there is a 2-colouring of `[n]` under which every
 length-`k` arithmetic progression with positive step contains both colours.
@@ -150,3 +193,6 @@ theorem vdw_lower_bound_sharp {k : ℕ} (hk : 2 ≤ k)
   exact ⟨⟨by omega, hd, by omega⟩, hb⟩
 
 end ProbMethod.VanDerWaerden
+
+-- Axiom audit: foundational axioms only; no `Lean.ofReduceBool`, no `sorryAx`.
+#print axioms ProbMethod.VanDerWaerden.card_vdwFamily_le_floor

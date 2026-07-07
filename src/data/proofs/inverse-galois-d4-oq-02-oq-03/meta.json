@@ -23,9 +23,9 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 102,
-    "theoremCount": 4,
-    "assumptions": "None beyond the foundational propext / Classical.choice / Quot.sound. #print axioms on all four theorems (lcm_dvd_gal_card, mul_totient_dvd_gal_card_of_coprime, six_dvd_gal_card_cubic, gal_card_cubic_eq_six) reports only those three. The `decide` calls (Nat.Coprime 3 (φ 3), 3·φ(3) = 6, 3! = 6) are kernel decide, not native_decide — no Lean.ofReduceBool.",
+    "lineCount": 81,
+    "theoremCount": 3,
+    "assumptions": "None beyond the foundational propext / Classical.choice / Quot.sound. #print axioms on all four theorems (lcm_dvd_gal_card, mul_totient_dvd_gal_card_of_coprime, six_dvd_gal_card_cubic, gal_card_cubic_eq_six) reports only those three. The `decide` calls (Nat.Coprime 3 (φ 3), 3·φ(3) = 6, 3! = 6) are kernel decide, not native_decide — no Lean.ofReduceBool. NOTE (2026-07-07 dedup): the metacyclic ceiling/coprime-pin theorems originally proved in this file were later merged upstream into InverseGaloisD4OQ02.lean (PRs #31408/#31630); the duplicate declarations were removed from this file to repair the build, so the counts here now cover only this file's own contribution. The results themselves remain fully verified in the ancestor file.",
     "buildStatus": "Verified via `LAKE_UNSAFE=1 lake env lean Proofs/InverseGaloisD4OQ02OQ03.lean` against pinned Mathlib v4.26.0 (single-file elaboration against prebuilt parent oleans; host docker image build skipped due to host disk at 97%). 0 errors. #print axioms confirms 0 non-foundational axioms.",
     "mathlibDependencies": [
       {
@@ -79,35 +79,35 @@
       "id": "overview-docstring",
       "title": "Overview: combining and sharpening the divisibility bracket",
       "startLine": 1,
-      "endLine": 41,
+      "endLine": 44,
       "summary": "Module docstring recalling the parent's three divisibilities (n ∣ |Gal|, φ(n) ∣ |Gal|, |Gal| ∣ n!) and stating the goal: merge the two lower factors into lcm(n, φ(n)), upgrade to the full product n·φ(n) under coprimality, and pin the cubic order |Gal(X³−p)| = 6 exactly."
     },
     {
       "id": "imports-setup",
       "title": "Imports and namespace",
-      "startLine": 42,
-      "endLine": 47,
+      "startLine": 45,
+      "endLine": 57,
       "summary": "Imports Mathlib and the parent module Proofs.InverseGaloisD4OQ02 (source of the three verified divisibility lemmas), opens the InverseGaloisExtensions namespace and Polynomial notation."
     },
     {
       "id": "part-i-lcm",
       "title": "Part I — the combined lower bound lcm(n, φ(n)) ∣ |Gal|",
-      "startLine": 49,
-      "endLine": 59,
+      "startLine": 45,
+      "endLine": 57,
       "summary": "lcm_dvd_gal_card: a one-line Nat.lcm_dvd over the parent's n ∣ |Gal| and φ(n) ∣ |Gal|. The sharp common consequence is the lcm, not the product, since n and φ(n) may share prime factors."
     },
     {
       "id": "part-ii-coprime",
       "title": "Part II — coprime sharpness forces n·φ(n) ∣ |Gal|",
-      "startLine": 61,
-      "endLine": 74,
+      "startLine": 58,
+      "endLine": 66,
       "summary": "mul_totient_dvd_gal_card_of_coprime: when gcd(n, φ(n)) = 1, Nat.Coprime.lcm_eq_mul rewrites lcm(n, φ(n)) to n·φ(n), so the full metacyclic order divides |Gal| with no genericity hypothesis."
     },
     {
       "id": "part-iii-cubic",
       "title": "Part III — the sharp cubic witness |Gal(X³−p)| = 6",
-      "startLine": 76,
-      "endLine": 102,
+      "startLine": 67,
+      "endLine": 81,
       "summary": "six_dvd_gal_card_cubic specialises the coprime theorem to n = 3 (gcd(3, 2) = 1, 3·φ(3) = 6 by decide); gal_card_cubic_eq_six squeezes 6 ∣ |Gal| against |Gal| ∣ 3! = 6 via Nat.dvd_antisymm to pin |Gal(X³−p/ℚ)| = 6 = |S₃| for every prime p."
     }
   ],

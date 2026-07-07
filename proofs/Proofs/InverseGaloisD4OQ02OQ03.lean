@@ -47,32 +47,11 @@ namespace InverseGaloisExtensions
 open Polynomial
 
 -- ============================================================================
--- Part I: The combined lower bound  lcm(n, φ(n)) ∣ |Gal|
--- ============================================================================
-
-/-- **`lcm(n, φ(n)) ∣ |Gal(Xⁿ-p/ℚ)|`.** The two independent lower factors
-`n ∣ |Gal|` (kernel `Cₙ`) and `φ(n) ∣ |Gal|` (quotient `(ℤ/n)ˣ`) combine to their least
-common multiple — the sharp common consequence, since `n` and `φ(n)` may share prime
-factors (e.g. `n = 4`, `φ(4) = 2`, `lcm = 4`). -/
-theorem lcm_dvd_gal_card (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime) :
-    Nat.lcm n n.totient ∣ Fintype.card (X ^ n - C (p : ℚ) : ℚ[X]).Gal :=
-  Nat.lcm_dvd (n_dvd_gal_card n p hn hp) (totient_dvd_gal_card n p hn hp)
-
--- ============================================================================
--- Part II: Coprime sharpness — the full metacyclic order is forced
--- ============================================================================
-
-/-- **`gcd(n, φ(n)) = 1 ⟹ n·φ(n) ∣ |Gal(Xⁿ-p/ℚ)|`.** When the radical degree `n` and
-the cyclotomic degree `φ(n)` are coprime, their lcm equals their product, so the full
-metacyclic order `n·φ(n)` divides `|Gal|` — a lower bound obtained with no
-linear-disjointness / genericity hypothesis.  Combined with the upper bound `|Gal| ∣ n!`,
-whenever `n·φ(n) = n!` (e.g. `n = 3`) this pins `|Gal|` exactly. -/
-theorem mul_totient_dvd_gal_card_of_coprime (n p : ℕ) (hn : 2 ≤ n) (hp : p.Prime)
-    (hcop : Nat.Coprime n n.totient) :
-    n * n.totient ∣ Fintype.card (X ^ n - C (p : ℚ) : ℚ[X]).Gal := by
-  rw [← Nat.Coprime.lcm_eq_mul hcop]
-  exact lcm_dvd_gal_card n p hn hp
-
+-- Parts I & II: The combined lower bound `lcm(n, φ(n)) ∣ |Gal|` and its coprime
+-- sharpening `gcd(n, φ(n)) = 1 ⟹ n·φ(n) ∣ |Gal|` were originally proved here;
+-- identical statements were later merged into the parent `InverseGaloisD4OQ02.lean`
+-- (PR #31408: `lcm_dvd_gal_card`, `mul_totient_dvd_gal_card_of_coprime`), which
+-- this file imports — the duplicates were removed to keep the namespace coherent.
 -- ============================================================================
 -- Part III: The sharp cubic witness  |Gal(X³-p/ℚ)| = 6  for every prime p
 -- ============================================================================

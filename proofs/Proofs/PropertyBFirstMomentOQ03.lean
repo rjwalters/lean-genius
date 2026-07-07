@@ -398,4 +398,101 @@ theorem fano_not_two_colorable :
     ¬ ∃ c : Fin 7 → Bool, ∀ e ∈ fanoPlane, ¬ Mono e c := by
   set_option maxRecDepth 4000 in decide
 
+-- ============================================================
+-- Converse direction: the weighted lower bound on non-2-colorable families
+-- ============================================================
+--
+-- `property_b_of_weighted_first_moment` is the *sufficient* direction: a small
+-- weighted sum forces 2-colorability. Its contrapositive is the *necessary*
+-- direction — the genuine Erdős lower bound `m(k) ≥ 2^(k-1)` in exact weighted
+-- form. The bridge is the precise first-moment identity, which we first expose as
+-- a standalone result (it was previously only computed inline).
+
+/-- **Exact first moment (total monochromatic incidence).** Summed over all `2^n`
+colorings `c : V → Bool`, the total number of monochromatic edges of a family `E` of
+nonempty edges is *exactly*
+
+    `∑_c #{ e ∈ E : e monochromatic under c } = 2 · ∑_{e ∈ E} 2^(n - |e|)`,
+
+`n = |V|`. Every Property B first-moment bound is read off this identity: the
+sufficient criterion divides it by `2^n` and asks the average to be `< 1`, the lower
+bound below asks each summand to be `≥ 1`. -/
+theorem total_mono_incidence_eq (E : Finset (Finset V)) (hne : ∀ e ∈ E, e.Nonempty) :
+    (∑ c : V → Bool, (E.filter (fun e => Mono e c)).card)
+      = 2 * ∑ e ∈ E, 2 ^ (Fintype.card V - e.card) := by
+  rw [Finset.mul_sum]
+  simp_rw [Finset.card_filter]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl ?_
+  intro e he
+  rw [← Finset.card_filter, card_mono e (hne e he)]
+
+/-- **Weighted lower bound for non-2-colorable families (the converse).** If a family
+`E` of nonempty edges has *no* proper 2-coloring, then its weighted sum saturates the
+criterion's threshold:
+
+    `2^n ≤ 2 · ∑_{e ∈ E} 2^(n - |e|)`,   i.e.   `∑_{e ∈ E} 2^(1 - |e|) ≥ 1`.
+
+This is the exact necessary condition behind Erdős' `m(k) ≥ 2^(k-1)`: a non-2-colorable
+family cannot be "first-moment small". Proof: every one of the `2^n` colorings leaves at
+least one monochromatic edge, so the total incidence is `≥ 2^n`; combine with the exact
+identity `total_mono_incidence_eq`. -/
+theorem weighted_lower_bound_of_not_property_b (E : Finset (Finset V))
+    (hne : ∀ e ∈ E, e.Nonempty)
+    (hnc : ¬ ∃ c : V → Bool, ∀ e ∈ E, ¬ Mono e c) :
+    2 ^ Fintype.card V ≤ 2 * ∑ e ∈ E, 2 ^ (Fintype.card V - e.card) := by
+  rw [← total_mono_incidence_eq E hne]
+  -- every coloring leaves at least one monochromatic edge
+  have hpos : ∀ c : V → Bool, 1 ≤ (E.filter (fun e => Mono e c)).card := by
+    intro c
+    rw [Nat.one_le_iff_ne_zero, Ne, Finset.card_eq_zero, ← Ne,
+        ← Finset.nonempty_iff_ne_empty]
+    push_neg at hnc
+    obtain ⟨e, he, hmono⟩ := hnc c
+    exact ⟨e, Finset.mem_filter.mpr ⟨he, hmono⟩⟩
+  have hcard : (univ : Finset (V → Bool)).card = 2 ^ Fintype.card V := by
+    rw [Finset.card_univ, Fintype.card_fun, Fintype.card_bool]
+  calc 2 ^ Fintype.card V
+      = ∑ _c : V → Bool, 1 := by rw [Finset.sum_const, smul_eq_mul, mul_one, hcard]
+    _ ≤ ∑ c : V → Bool, (E.filter (fun e => Mono e c)).card :=
+        Finset.sum_le_sum (fun c _ => hpos c)
+
+/-- **Erdős' uniform lower bound `m(k) ≥ 2^(k-1)`.** A `k`-uniform family `E` (with
+`1 ≤ k ≤ n`) that has no proper 2-coloring must contain at least `2^(k-1)` edges. This is
+the exact converse of `property_b_two_colorable_of_uniform`: together they pin the
+first-moment threshold for uniform hypergraphs at `2^(k-1)` edges. -/
+theorem uniform_lower_bound_of_not_property_b (E : Finset (Finset V)) {k : ℕ}
+    (hk : k ≤ Fintype.card V)
+    (huniform : ∀ e ∈ E, e.card = k)
+    (hne : ∀ e ∈ E, e.Nonempty)
+    (hnc : ¬ ∃ c : V → Bool, ∀ e ∈ E, ¬ Mono e c) :
+    2 ^ (k - 1) ≤ E.card := by
+  -- a non-2-colorable family is nonempty, so `k ≥ 1`
+  obtain ⟨e0, he0⟩ : E.Nonempty := by
+    rw [Finset.nonempty_iff_ne_empty]
+    rintro rfl
+    exact hnc ⟨fun _ => true, by simp⟩
+  have hk1 : 1 ≤ k := by rw [← huniform e0 he0]; exact (hne e0 he0).card_pos
+  -- the weighted converse, with the uniform weighted sum collapsed to `|E|·2^(n-k)`
+  have hwb := weighted_lower_bound_of_not_property_b E hne hnc
+  have hsum : ∑ e ∈ E, 2 ^ (Fintype.card V - e.card)
+      = E.card * 2 ^ (Fintype.card V - k) := by
+    rw [Finset.sum_congr rfl (fun e he => by rw [huniform e he]),
+        Finset.sum_const, smul_eq_mul]
+  rw [hsum] at hwb
+  -- write `n = k + m` and cancel the common factor `2^(m+1)`
+  obtain ⟨m, hm⟩ : ∃ m, Fintype.card V = k + m := ⟨Fintype.card V - k, by omega⟩
+  rw [hm, Nat.add_sub_cancel_left] at hwb
+  have key : 2 ^ (k - 1) * 2 ^ (m + 1) ≤ E.card * 2 ^ (m + 1) := by
+    calc 2 ^ (k - 1) * 2 ^ (m + 1)
+        = 2 ^ (k + m) := by rw [← pow_add]; congr 1; omega
+      _ ≤ 2 * (E.card * 2 ^ m) := hwb
+      _ = E.card * 2 ^ (m + 1) := by rw [pow_succ]; ring
+  exact Nat.le_of_mul_le_mul_right key (by positivity)
+
 end ProbMethod.PropertyB
+
+-- Axiom audit: foundational axioms only; no `Lean.ofReduceBool`, no `sorryAx`.
+#print axioms ProbMethod.PropertyB.total_mono_incidence_eq
+#print axioms ProbMethod.PropertyB.weighted_lower_bound_of_not_property_b
+#print axioms ProbMethod.PropertyB.uniform_lower_bound_of_not_property_b
