@@ -155,9 +155,10 @@ private theorem wFunc_fourierCoeff (α : ℝ) (hα : 0 < α) (k₀ : ℕ) :
         fourier (-(2:ℤ)^k₀) x * ((geomRatio α : ℂ)^k * fourier ((2:ℤ)^k) x) =
         (geomRatio α : ℂ)^k * fourier ((2:ℤ)^k + (-(2:ℤ)^k₀)) x := by
       intro x
-      rw [← fourier_add]
-      push_cast; ring
-    simp_rw [h_mul, integral_mul_left]
+      rw [show fourier (-(2:ℤ)^k₀) x * ((geomRatio α : ℂ)^k * fourier ((2:ℤ)^k) x) =
+            (geomRatio α : ℂ)^k * (fourier ((2:ℤ)^k) x * fourier (-(2:ℤ)^k₀) x) from by ring,
+          ← fourier_add]
+    simp_rw [h_mul, integral_const_mul]
     rw [fourier_integral]
     simp only [add_neg_eq_zero]
   simp_rw [h_orth]
@@ -165,14 +166,12 @@ private theorem wFunc_fourierCoeff (α : ℝ) (hα : 0 < α) (k₀ : ℕ) :
   have h_inj : ∀ k : ℕ, (2:ℤ)^k = (2:ℤ)^k₀ ↔ k = k₀ := by
     intro k
     constructor
-    · intro h; exact_mod_cast Nat.pow_right_injective (by norm_num) (by exact_mod_cast h)
+    · intro h
+      have hnat : (2:ℕ)^k = (2:ℕ)^k₀ := by exact_mod_cast h
+      exact Nat.pow_right_injective (le_refl 2) hnat
     · intro h; subst h; rfl
-  simp_rw [h_inj]
-  rw [tsum_ite_eq_extract (summable_geometric_of_lt_one
-    (by exact_mod_cast pow_nonneg (geomRatio_pos α).le k₀)
-    (by push_cast; exact pow_lt_one (geomRatio_pos α).le (geomRatio_lt_one α hα) (by omega))
-    |>.mul_right _)]
-  simp
+  simp_rw [h_inj, mul_ite, mul_one, mul_zero]
+  rw [tsum_ite_eq k₀]
 
 /-!
 ## Part IV: Hölder continuity of wFunc
@@ -343,7 +342,8 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
       (∑ k ∈ Finset.range p₀, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖) +
       ∑' k : ℕ, r^(k + p₀) * 2 := by
     rw [← h_summ_norm.sum_add_tsum_nat_add p₀]
-    refine add_le_add_left ?_ _
+    refine add_le_add_left ?_
+      (∑ k ∈ Finset.range p₀, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖)
     apply Summable.tsum_le_tsum _ (h_summ_norm.nat_add p₀)
       ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2 |>.nat_add p₀)
     intro k
@@ -362,7 +362,9 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
             _ = 2 * Real.pi * (2:ℝ)^k / T * d := by
                 congr 2; simp [abs_of_pos (pow_pos (by norm_num : (0:ℝ) < 2) k)]
       _ = (2 * Real.pi / T * d) * ∑ k ∈ Finset.range p₀, (r * 2)^k := by
-          simp_rw [← Finset.mul_sum]; congr 1; ext k; ring
+          rw [Finset.mul_sum]
+          apply Finset.sum_congr rfl; intro k _
+          rw [mul_pow]; ring
       _ ≤ (2 * Real.pi / T * d) * (s^p₀ / (s - 1)) := by
           have hrs : r * 2 = s := by
             rw [hr_def, hs_def]; unfold geomRatio
@@ -376,8 +378,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
           have hcoef_nonneg : 0 ≤ 2 * Real.pi / T * d := by positivity
           have hstep : (2 * Real.pi / T * d) * (s^p₀ / (s - 1)) ≤
               (2 * Real.pi / T * d) * ((2*T/d)^(1-α) / (s - 1)) := by
-            gcongr 2 * Real.pi / T * d * (?_ / (s - 1))
-            exact h_s_bound
+            gcongr
           refine hstep.trans (le_of_eq ?_)
           rw [hs_def]
           -- (2T/d)^(1-α) = (2T)^(1-α) · d^(α-1); combine with d and simplify.
@@ -386,20 +387,17 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
             rw [Real.div_rpow (by positivity) hd_pos.le, div_eq_mul_inv,
                 ← Real.rpow_neg hd_pos.le, show -(1-α) = α - 1 from by ring]
           rw [hexp]
-          have hdpow : d^(α - 1) * d = d^α := by
-            conv_lhs => rw [show d = d^(1:ℝ) from (Real.rpow_one d).symm]
-            rw [← Real.rpow_add hd_pos]
-            congr 1; ring
+          have hdpow : d^α = d^(α - 1) * d := by
+            nth_rewrite 1 [show d^α = d^((α - 1) + 1) from by congr 1; ring]
+            rw [Real.rpow_add hd_pos, Real.rpow_one]
           have hden_ne : (2:ℝ)^(1-α) - 1 ≠ 0 := by
             have h1 : (1:ℝ) < (2:ℝ)^(1-α) := by rw [← hs_def]; exact hs_gt1
             linarith
-          -- Rearrange so d^(α-1)·d appears, then substitute hdpow.
-          rw [show (2 * Real.pi / T * d) * ((2*T)^(1-α) * d^(α-1) / ((2:ℝ)^(1-α) - 1)) =
-                2 * Real.pi * (2*T)^(1-α) * (d^(α-1) * d) / (T * ((2:ℝ)^(1-α) - 1)) from by
-                field_simp; ring,
-              hdpow,
-              show 2 * Real.pi * (2*T)^(1-α) * d^α / (T * ((2:ℝ)^(1-α) - 1)) =
-                2 * Real.pi * (2*T)^(1-α) / (T * ((2:ℝ)^(1-α) - 1)) * d^α from by ring]
+          have hT_ne : T ≠ 0 := hT_pos.ne'
+          -- Substitute d^α = d^(α-1)·d on the RHS; everything is then rational in atoms.
+          rw [hdpow]
+          field_simp
+          ring
   -- High sum bound: trivial
   have h_high : ∑' k : ℕ, r^(k + p₀) * 2 ≤
       (2 * (4:ℝ)^α) / (T^α * (1 - (2:ℝ)^(-α))) * d^α := by
