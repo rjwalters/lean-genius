@@ -195,5 +195,29 @@
       "infinite set truncation",
       "Filter.atTop"
     ]
+  },
+  {
+    "id": "erdos-152-apn-lower-bound",
+    "proofId": "erdos-152",
+    "type": "concept",
+    "range": {
+      "startLine": 51,
+      "endLine": 60
+    },
+    "title": "APN Companion: The Explicit $n^2$ Lower Bound",
+    "content": "The weak form is actually resolved in the companion file `Erdos152ProblemAPN.lean` (a verbatim AlphaProof-Nexus port, 0 sorries / 0 axioms). Its load-bearing lemma is `num_isolated_lower_bound`: for every Sidon set $A$ with $|A| = n > 0$, $16 \\cdot I(A) + 100n + 16 \\geq n^2$. Rearranged, $I(A) \\geq (n^2 - 100n - 16)/16$, which $\\to \\infty$, so the isolated count diverges. This is the theorem that makes the entry a resolution rather than a restatement — the gallery file above states the conjecture, and the companion supplies the proof.",
+    "mathContext": "`num_isolated_lower_bound (n : ℕ) (hn : n > 0) (A : Set ℕ) (h_card : A.ncard = n) (h_sidon : IsSidon A) : 16 * num_isolated A + 100 * n + 16 ≥ n * n`. The proof assembles: the isolated-count identity $I(A) + 2N_1(A+A) = |A+A| + V_2(A+A)$ (`I_identity_Z`), a universal local-pattern parity bound (`universal_parity_3`, `local_pattern_bound_Z`), and fibered Sidon-quadruple counts (`quad_upper`, `quad_lower`) that bound the near-collision terms $N_k(A+A)$ — all discharged by a final `omega`. Combined with `exists_sidon_set_n` (the witness family $\\{2^k\\}$), the file concludes `tendsto_f : Tendsto f atTop atTop` and `target_theorem_0 : True ↔ Tendsto f atTop atTop`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isolated-count identity",
+      "Sidon-quadruple counting",
+      "local-pattern parity",
+      "APN companion file"
+    ],
+    "prerequisites": [
+      "num_isolated_lower_bound",
+      "IsSidon",
+      "Filter.Tendsto atTop"
+    ]
   }
 ]

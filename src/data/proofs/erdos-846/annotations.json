@@ -221,5 +221,30 @@
       "startLine": 187,
       "endLine": 199
     }
+  },
+  {
+    "id": "ann-e846-apn-construction",
+    "proofId": "erdos-846",
+    "type": "concept",
+    "title": "APN Companion: The Explicit Counterexample (Elekes Parametrisation)",
+    "content": "The hard direction is not open here — it is DISPROVED in the companion file `Erdos846ProblemAPN.lean` (verbatim AlphaProof-Nexus port, 0 sorries / 0 axioms). The construction takes the Elekes-parametrised map $q(i,j) = (t_i + t_j,\\ t_i^2 + t_i t_j + t_j^2)$ with the fast-growing sequence $t_n = 100^{4^n}$. The resulting infinite set `A_set q` is $(1/2)$-non-trilinear yet admits no finite non-collinear partition, so it satisfies the density hypothesis while refuting the structural conclusion. This is what promotes the entry from 'conjecture stated' to 'conjecture resolved (negatively)'.",
+    "mathContext": "Two load-bearing companion lemmas: (1) `A_set_nontrilinear (q) (hq : IsGoodMap q) : NonTrilinearFor (A_set q) (1/2)` — every finite $B \\subseteq A$ has a non-collinear subset of size $\\geq |B|/2$, produced by a bipartite max-cut argument (`bipartite_max_cut_nat`, which halves any edge set into a triangle-free bipartite subgraph); (2) `A_set_not_weakly (q) (hq : IsGoodMap q) : ¬ WeaklyNonTrilinear (A_set q)` — any finite colouring of the edges yields, via `ramsey_for_triangles`, a monochromatic triangle $q(i,j), q(j,k), q(i,k)$, which `collinear_iff_det2` shows is collinear, contradicting the partition. These combine in `target_false` / `target_theorem_0 : False ↔ (∀ A ε, ε>0 → A.Infinite → NonTrilinearFor A ε → WeaklyNonTrilinear A)`, i.e. the Erdős–Nešetřil–Rödl conjecture is false.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Elekes parametrisation",
+      "bipartite max-cut",
+      "Ramsey for triangles",
+      "APN companion file"
+    ],
+    "prerequisites": [
+      "A_set_nontrilinear",
+      "A_set_not_weakly",
+      "NonTrilinearFor",
+      "WeaklyNonTrilinear"
+    ],
+    "range": {
+      "startLine": 187,
+      "endLine": 199
+    }
   }
 ]
