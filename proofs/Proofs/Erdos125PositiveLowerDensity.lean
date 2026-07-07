@@ -117,13 +117,186 @@ lemma zero_in_A_plus_B : 0 ∈ A + B := by
   refine ⟨0, zero_in_A, 0, zero_in_B, ?_⟩
   simp
 
+/-! ### Digit helper lemmas for `A` (base 3)
+
+Membership in `A` is stable under taking the low digit (`% 3`) and the tail
+(`/ 3`), which lets us reason about `A` by peeling one base-3 digit at a time.
+These replace the AlphaProof `bound`/`valid` golf with explicit `Nat.digits`
+manipulation. -/
+
+/-- The lowest base-3 digit of an element of `A` is `0` or `1`. -/
+lemma A_head3 (x : ℕ) (hx : x ∈ A) : x % 3 ≤ 1 := by
+  rcases Nat.eq_zero_or_pos x with rfl | hpos
+  · omega
+  · have hsub : (Nat.digits 3 x).toFinset ⊆ {0, 1} := hx
+    have hd : Nat.digits 3 x = x % 3 :: Nat.digits 3 (x / 3) :=
+      Nat.digits_def' (by norm_num) hpos
+    have hmem : x % 3 ∈ (Nat.digits 3 x).toFinset := by rw [hd]; simp
+    have hcase := hsub hmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hcase
+    omega
+
+/-- Dropping the lowest base-3 digit (`/ 3`) keeps an element inside `A`. -/
+lemma A_tail3 (x : ℕ) (hx : x ∈ A) : x / 3 ∈ A := by
+  rcases Nat.eq_zero_or_pos x with rfl | hpos
+  · rw [Nat.zero_div]; exact zero_in_A
+  · have hsub : (Nat.digits 3 x).toFinset ⊆ {0, 1} := hx
+    have hd : Nat.digits 3 x = x % 3 :: Nat.digits 3 (x / 3) :=
+      Nat.digits_def' (by norm_num) hpos
+    show (Nat.digits 3 (x / 3)).toFinset ⊆ {0, 1}
+    intro d hd2
+    apply hsub
+    rw [hd]
+    simp only [List.toFinset_cons, Finset.mem_insert]
+    exact Or.inr hd2
+
+/-- Reassemble membership in `A` from the lowest digit and the tail. -/
+lemma mem_A_of_head_tail (x : ℕ) (h1 : x % 3 ≤ 1) (h2 : x / 3 ∈ A) : x ∈ A := by
+  rcases Nat.eq_zero_or_pos x with rfl | hpos
+  · exact zero_in_A
+  · have hsub2 : (Nat.digits 3 (x / 3)).toFinset ⊆ {0, 1} := h2
+    have hd : Nat.digits 3 x = x % 3 :: Nat.digits 3 (x / 3) :=
+      Nat.digits_def' (by norm_num) hpos
+    show (Nat.digits 3 x).toFinset ⊆ {0, 1}
+    rw [hd, List.toFinset_cons, Finset.insert_subset_iff]
+    refine ⟨?_, hsub2⟩
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    omega
+
+/-- Dividing by `3 ^ k` (dropping the low `k` base-3 digits) keeps `A`. -/
+lemma A_div_pow (k a : ℕ) (ha : a ∈ A) : a / 3 ^ k ∈ A := by
+  induction k with
+  | zero => simpa using ha
+  | succ k ih =>
+    have h : a / 3 ^ (k + 1) = a / 3 ^ k / 3 := by
+      rw [pow_succ, Nat.div_div_eq_div_mul]
+    rw [h]
+    exact A_tail3 _ ih
+
+/-- Reducing mod `3 ^ k` (keeping the low `k` base-3 digits) keeps `A`. -/
+lemma A_mod_pow : ∀ (k a : ℕ), a ∈ A → a % 3 ^ k ∈ A := by
+  intro k
+  induction k with
+  | zero => intro a _; rw [pow_zero, Nat.mod_one]; exact zero_in_A
+  | succ k ih =>
+    intro a ha
+    have htail : a / 3 ∈ A := A_tail3 a ha
+    have hs : (a / 3) % 3 ^ k ∈ A := ih (a / 3) htail
+    have hhead : a % 3 ≤ 1 := A_head3 a ha
+    have hmod : a % 3 ^ (k + 1) = a % 3 + 3 * (a / 3 % 3 ^ k) := by
+      rw [pow_succ']; exact Nat.mod_mul
+    rw [hmod]
+    set T := a / 3 % 3 ^ k with hT
+    apply mem_A_of_head_tail
+    · have h3 : (a % 3 + 3 * T) % 3 = a % 3 := by omega
+      rw [h3]; exact hhead
+    · have h4 : (a % 3 + 3 * T) / 3 = T := by omega
+      rw [h4]; exact hs
+
+/-! ### Digit helper lemmas for `B` (base 4) -/
+
+/-- The lowest base-4 digit of an element of `B` is `0` or `1`. -/
+lemma B_head4 (y : ℕ) (hy : y ∈ B) : y % 4 ≤ 1 := by
+  rcases Nat.eq_zero_or_pos y with rfl | hpos
+  · omega
+  · have hsub : (Nat.digits 4 y).toFinset ⊆ {0, 1} := hy
+    have hd : Nat.digits 4 y = y % 4 :: Nat.digits 4 (y / 4) :=
+      Nat.digits_def' (by norm_num) hpos
+    have hmem : y % 4 ∈ (Nat.digits 4 y).toFinset := by rw [hd]; simp
+    have hcase := hsub hmem
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hcase
+    omega
+
+/-- Dropping the lowest base-4 digit (`/ 4`) keeps an element inside `B`. -/
+lemma B_tail4 (y : ℕ) (hy : y ∈ B) : y / 4 ∈ B := by
+  rcases Nat.eq_zero_or_pos y with rfl | hpos
+  · rw [Nat.zero_div]; exact zero_in_B
+  · have hsub : (Nat.digits 4 y).toFinset ⊆ {0, 1} := hy
+    have hd : Nat.digits 4 y = y % 4 :: Nat.digits 4 (y / 4) :=
+      Nat.digits_def' (by norm_num) hpos
+    show (Nat.digits 4 (y / 4)).toFinset ⊆ {0, 1}
+    intro d hd2
+    apply hsub
+    rw [hd]
+    simp only [List.toFinset_cons, Finset.mem_insert]
+    exact Or.inr hd2
+
+/-- Reassemble membership in `B` from the lowest digit and the tail. -/
+lemma mem_B_of_head_tail (y : ℕ) (h1 : y % 4 ≤ 1) (h2 : y / 4 ∈ B) : y ∈ B := by
+  rcases Nat.eq_zero_or_pos y with rfl | hpos
+  · exact zero_in_B
+  · have hsub2 : (Nat.digits 4 (y / 4)).toFinset ⊆ {0, 1} := h2
+    have hd : Nat.digits 4 y = y % 4 :: Nat.digits 4 (y / 4) :=
+      Nat.digits_def' (by norm_num) hpos
+    show (Nat.digits 4 y).toFinset ⊆ {0, 1}
+    rw [hd, List.toFinset_cons, Finset.insert_subset_iff]
+    refine ⟨?_, hsub2⟩
+    simp only [Finset.mem_insert, Finset.mem_singleton]
+    omega
+
+/-- Dividing by `4 ^ m` (dropping the low `m` base-4 digits) keeps `B`. -/
+lemma B_div_pow (m b : ℕ) (hb : b ∈ B) : b / 4 ^ m ∈ B := by
+  induction m with
+  | zero => simpa using hb
+  | succ m ih =>
+    have h : b / 4 ^ (m + 1) = b / 4 ^ m / 4 := by
+      rw [pow_succ, Nat.div_div_eq_div_mul]
+    rw [h]
+    exact B_tail4 _ ih
+
+/-- Reducing mod `4 ^ m` (keeping the low `m` base-4 digits) keeps `B`. -/
+lemma B_mod_pow : ∀ (m b : ℕ), b ∈ B → b % 4 ^ m ∈ B := by
+  intro m
+  induction m with
+  | zero => intro b _; rw [pow_zero, Nat.mod_one]; exact zero_in_B
+  | succ m ih =>
+    intro b hb
+    have htail : b / 4 ∈ B := B_tail4 b hb
+    have hs : (b / 4) % 4 ^ m ∈ B := ih (b / 4) htail
+    have hhead : b % 4 ≤ 1 := B_head4 b hb
+    have hmod : b % 4 ^ (m + 1) = b % 4 + 4 * (b / 4 % 4 ^ m) := by
+      rw [pow_succ']; exact Nat.mod_mul
+    rw [hmod]
+    set T := b / 4 % 4 ^ m with hT
+    apply mem_B_of_head_tail
+    · have h3 : (b % 4 + 4 * T) % 4 = b % 4 := by omega
+      rw [h3]; exact hhead
+    · have h4 : (b % 4 + 4 * T) / 4 = T := by omega
+      rw [h4]; exact hs
+
 /-- If `x < 3^k` and `x ∈ A` then `x ≤ (3^k - 1) / 2`. -/
 lemma A_max_k (k x : ℕ) (hx : x < 3 ^ k) (hA : x ∈ A) : x ≤ (3 ^ k - 1) / 2 := by
-  sorry
+  induction k generalizing x with
+  | zero => simp only [pow_zero] at hx ⊢; omega
+  | succ k ih =>
+    have hh : x % 3 ≤ 1 := A_head3 x hA
+    have ht : x / 3 ∈ A := A_tail3 x hA
+    have hlt : x / 3 < 3 ^ k := by
+      have hx' : x < 3 ^ k * 3 := by rw [← pow_succ]; exact hx
+      exact (Nat.div_lt_iff_lt_mul (by norm_num)).mpr hx'
+    have hih := ih (x / 3) hlt ht
+    have hP : 1 ≤ 3 ^ k := Nat.one_le_pow _ _ (by norm_num)
+    have hodd : 3 ^ k % 2 = 1 := by rw [Nat.pow_mod]; norm_num
+    have hdm : 3 * (x / 3) + x % 3 = x := Nat.div_add_mod x 3
+    have hpow : 3 ^ (k + 1) = 3 * 3 ^ k := by rw [pow_succ']
+    omega
 
 /-- If `y < 4^m` and `y ∈ B` then `y ≤ (4^m - 1) / 3`. -/
 lemma B_max_m (m y : ℕ) (hy : y < 4 ^ m) (hB : y ∈ B) : y ≤ (4 ^ m - 1) / 3 := by
-  sorry
+  induction m generalizing y with
+  | zero => simp only [pow_zero] at hy ⊢; omega
+  | succ m ih =>
+    have hh : y % 4 ≤ 1 := B_head4 y hB
+    have ht : y / 4 ∈ B := B_tail4 y hB
+    have hlt : y / 4 < 4 ^ m := by
+      have hy' : y < 4 ^ m * 4 := by rw [← pow_succ]; exact hy
+      exact (Nat.div_lt_iff_lt_mul (by norm_num)).mpr hy'
+    have hih := ih (y / 4) hlt ht
+    have hP : 1 ≤ 4 ^ m := Nat.one_le_pow _ _ (by norm_num)
+    have hmod3 : 4 ^ m % 3 = 1 := by rw [Nat.pow_mod]; norm_num
+    have hdm : 4 * (y / 4) + y % 4 = y := Nat.div_add_mod y 4
+    have hpow : 4 ^ (m + 1) = 4 * 4 ^ m := by rw [pow_succ']
+    omega
 
 /--
 **Gap lemma.** If `(3^k - 1)/2 + (4^m - 1)/3 < x`, `x < 3^k`, and `x < 4^m`,
@@ -133,17 +306,31 @@ interval below `min(3^k, 4^m)`.)
 lemma A_B_gap (k m x : ℕ)
     (hx_gt : (3 ^ k - 1) / 2 + (4 ^ m - 1) / 3 < x)
     (hx_lt_A : x < 3 ^ k) (hx_lt_B : x < 4 ^ m) : x ∉ A + B := by
-  sorry
+  intro h
+  rcases Set.mem_add.mp h with ⟨a, ha, b, hb, hab⟩
+  have hak : a < 3 ^ k ∨ 3 ^ k ≤ a := by omega
+  have hbm : b < 4 ^ m ∨ 4 ^ m ≤ b := by omega
+  rcases hak with hak1 | hak2
+  · rcases hbm with hbm1 | hbm2
+    · have h1 := A_max_k k a hak1 ha
+      have h2 := B_max_m m b hbm1 hb
+      omega
+    · omega
+  · omega
 
 /-- Decomposition: every `a ∈ A` factors as `a = a₁ · 3^k + a₀` with both pieces in `A`. -/
 lemma A_decomp (k a : ℕ) (ha : a ∈ A) :
     ∃ a1 a0 : ℕ, a1 ∈ A ∧ a0 ∈ A ∧ a0 < 3 ^ k ∧ a = a1 * 3 ^ k + a0 := by
-  sorry
+  refine ⟨a / 3 ^ k, a % 3 ^ k, A_div_pow k a ha, A_mod_pow k a ha,
+    Nat.mod_lt a (by positivity), ?_⟩
+  exact (Nat.div_add_mod' a (3 ^ k)).symm
 
 /-- Decomposition: every `b ∈ B` factors as `b = b₁ · 4^m + b₀` with both pieces in `B`. -/
 lemma B_decomp (m b : ℕ) (hb : b ∈ B) :
     ∃ b1 b0 : ℕ, b1 ∈ B ∧ b0 ∈ B ∧ b0 < 4 ^ m ∧ b = b1 * 4 ^ m + b0 := by
-  sorry
+  refine ⟨b / 4 ^ m, b % 4 ^ m, B_div_pow m b hb, B_mod_pow m b hb,
+    Nat.mod_lt b (by positivity), ?_⟩
+  exact (Nat.div_add_mod' b (4 ^ m)).symm
 
 /-- `log 4 / log 3` is irrational. -/
 lemma log_ratio_irrational : Irrational (Real.log 4 / Real.log 3) := by
