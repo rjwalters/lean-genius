@@ -70,7 +70,7 @@
       "title": "Overview: Gaussian (q-)Binomial Coefficients — q-Pascal, Boundaries, Classical Limit",
       "startLine": 1,
       "endLine": 75,
-      "summary": "Imports (parent GeometricSeriesOQ04, Nat.Choose.Basic, Tactic), module docstring, and setup (open Finset, QuantumInteger; namespace GaussianBinomial; CommRing R). Building on the quantum integer [n]_q = ∑_{i<n} qⁱ, the file develops the Gaussian q-binomial coefficient qBinom q n k = [n choose k]_q over any commutative ring, defined BY the q-Pascal recurrence [n+1 choose k+1]_q = [n choose k]_q + q^{k+1}·[n choose k+1]_q (so definitional, rfl). Proves boundary conditions (qBinom_zero_right, qBinom_self, qBinom_eq_zero_of_lt), the quantum-integer bridge qBinom_one_right ([n choose 1]_q = [n]_q), and the classical limit qBinom_at_one ([n choose k]_1 = C(n,k), the counting interpretation). An expansion qBinom q 4 2 = 1+q+2q²+q³+q⁴ is checked (value C(4,2)=6 at q=1). The q-binomial theorem and box-partition generating function are documented as follow-up. Mathlib has no named Gaussian binomial or q-Pascal; all proofs 0-axiom.",
+      "summary": "Imports (parent GeometricSeriesOQ04, Nat.Choose.Basic, Tactic), module docstring, and setup (open Finset, QuantumInteger; namespace GaussianBinomial; CommRing R). Building on the quantum integer [n]_q = ∑_{i<n} qⁱ, the file develops the Gaussian q-binomial coefficient qBinom q n k = [n choose k]_q over any commutative ring, defined BY the q-Pascal recurrence [n+1 choose k+1]_q = [n choose k]_q + q^{k+1}·[n choose k+1]_q (so definitional, rfl). Proves boundary conditions (qBinom_zero_right, qBinom_self, qBinom_eq_zero_of_lt), the quantum-integer bridge qBinom_one_right ([n choose 1]_q = [n]_q), and the classical limit qBinom_at_one ([n choose k]_1 = C(n,k), the counting interpretation). An expansion qBinom q 4 2 = 1+q+2q²+q³+q⁴ is checked (value C(4,2)=6 at q=1). The q-binomial theorem (Rothe's formula) is proved at the end of the file (qBinomial_theorem); the box-partition generating function remains documented as follow-up. Mathlib has no named Gaussian binomial or q-Pascal; all proofs 0-axiom.",
       "mathContext": "The q=1 value is the shadow of subspace-counting over 𝔽_q: the Gaussian binomial is a genuine polynomial in q degenerating to the ordinary binomial coefficient. Honest note: a faithful formalization of standard textbook q-analog identities (Andrews; Kac–Cheung), not a new result."
     },
     {
@@ -107,10 +107,9 @@
     }
   ],
   "conclusion": {
-    "summary": "Starting from the q-Pascal recurrence as a definition, this entry constructs the Gaussian (q-)binomial coefficient over an arbitrary commutative ring and proves its structural laws: the boundary conditions [n choose 0]_q = [n choose n]_q = 1 and vanishing above the diagonal, the bridge [n choose 1]_q = [n]_q to the parent's quantum integer, and the classical limit [n choose k]_1 = C(n,k). All are fully machine-checked with 0 axioms.",
+    "summary": "Starting from the q-Pascal recurrence as a definition, this entry constructs the Gaussian (q-)binomial coefficient over an arbitrary commutative ring and proves its structural laws: the boundary conditions [n choose 0]_q = [n choose n]_q = 1 and vanishing above the diagonal, the bridge [n choose 1]_q = [n]_q to the parent's quantum integer, and the classical limit [n choose k]_1 = C(n,k). All are fully machine-checked with 0 axioms. The q-binomial theorem (Gauss/Rothe / Rothe's formula) ∏_{i<n}(1 + q^i x) = ∑_{k≤n} q^{C(k,2)} [n choose k]_q x^k is now formalized (qBinomial_theorem) via the functional recurrence qbinomSum_succ, which uses only q-Pascal I.",
     "implications": "The Gaussian binomial and its q-Pascal recurrence are the foundation for the q-binomial theorem, the box-partition/lattice-path generating functions, and the subspace count over F_q. This entry supplies the definition and structural core that Mathlib lacks, on top of the parent's quantum-integer layer.",
     "openQuestions": [
-      "Prove the q-binomial theorem (Gauss/Rothe) ∏_{i<n}(1 + q^i x) = ∑_{k≤n} q^{C(k,2)} [n choose k]_q x^k by induction on n, peeling the first factor and re-substituting x ↦ q·x, matching coefficients via the q-Pascal recurrence and C(k+1,2) = C(k,2) + k.",
       "Establish the box-partition combinatorial interpretation: the generating polynomial ∑_{λ ⊆ (n-k)^k} q^{|λ|} over integer partitions fitting in a k×(n-k) box satisfies the same q-Pascal recurrence and boundary conditions, hence equals [n choose k]_q — a self-contained combinatorial proof.",
       "Prove the symmetry [n choose k]_q = [n choose n-k]_q (reflection of the box) and the q-factorial product formula [n choose k]_q = [n]_q! / ([k]_q! [n-k]_q!) over Z[q] via an exact-divisibility argument."
     ]
@@ -139,10 +138,10 @@
       "QuantumInteger"
     ],
     "namespace": "GaussianBinomial",
-    "lineCount": 144,
+    "lineCount": 211,
     "axiomCount": 0,
-    "theoremCount": 8,
-    "definitionCount": 1,
+    "theoremCount": 11,
+    "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/GeometricSeriesOQ04OQ03.lean"
   }

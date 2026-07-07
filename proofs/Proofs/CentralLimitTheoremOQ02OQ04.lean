@@ -1403,6 +1403,37 @@ theorem survival_covariance_integrand_le_alpha
   simp only [measureReal_def]
   exact davydov_indicator_bound σPair hA hB
 
+/-- **Inner survival integral bound** (S26 inner assembly): integrating the uniform
+α-bound of `survival_covariance_integrand_le_alpha` over the inner window `(0, N]`
+majorises the inner survival integral by `α · N`. This is the inner half of the
+double-integral assembly, feeding the bounded-variable Davydov estimate. -/
+theorem inner_survival_covariance_le_alpha_length
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {f g : Ω → ℝ}
+    (hf : Measurable[σPair 0] f) (hg : Measurable[σPair 1] g)
+    (t N : ℝ) (hN : 0 ≤ N) :
+    |∫ s in Set.Ioc 0 N,
+        (μ.real {ω | t < f ω ∧ s < g ω}
+          - μ.real {ω | t < f ω} * μ.real {ω | s < g ω})|
+      ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) * N := by
+  have hbound : ∀ s ∈ Set.Ioc (0 : ℝ) N,
+      ‖μ.real {ω | t < f ω ∧ s < g ω}
+          - μ.real {ω | t < f ω} * μ.real {ω | s < g ω}‖
+        ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+    intro s _
+    rw [Real.norm_eq_abs]
+    exact survival_covariance_integrand_le_alpha σPair hf hg t s
+  have hkey := norm_setIntegral_le_of_norm_le_const
+    (μ := volume) (s := Set.Ioc (0 : ℝ) N)
+    (f := fun s => μ.real {ω | t < f ω ∧ s < g ω}
+        - μ.real {ω | t < f ω} * μ.real {ω | s < g ω})
+    measure_Ioc_lt_top hbound
+  rw [Real.norm_eq_abs] at hkey
+  have hmr : volume.real (Set.Ioc (0 : ℝ) N) = N := by
+    rw [Real.volume_real_Ioc, sub_zero, max_eq_left hN]
+  rwa [hmr] at hkey
+
 /-- **Bounded-variable Davydov estimate** (S26, this session): the double-integral
 assembly.
 

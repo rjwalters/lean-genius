@@ -177,3 +177,112 @@ theorem frobeniusNumber_triple_strict {m n : ℕ}
   exact frobeniusNumber_lt_of_mem_closure hsub hpair hg hkmem
 
 end FrobeniusMultiGenerator
+
+
+open Nat
+
+namespace FrobeniusNumberOQ01OQ01
+
+/-! ## Explicit representability by `{6, 9, 20}` -/
+
+/-- `n` is representable by `6, 9, 20` if `n = 6x + 9y + 20z` for some naturals `x, y, z`. -/
+def Representable3 (n : ℕ) : Prop := ∃ x y z : ℕ, n = 6 * x + 9 * y + 20 * z
+
+/-- `43` is not representable: no non-negative combination of `6, 9, 20` equals `43`.
+    (`omega` decides this linear Diophantine (non-)existence directly.) -/
+theorem not_representable3_43 : ¬ Representable3 43 := by
+  rintro ⟨x, y, z, h⟩
+  omega
+
+/-- Every integer `≥ 44` is representable by `6, 9, 20`.
+    Base residues `44, 45, 46, 47, 48, 49` are given explicit witnesses; larger values
+    reduce by `6` to a smaller representable value (strong induction). -/
+theorem representable3_ge : ∀ n, 44 ≤ n → Representable3 n := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro hn
+    by_cases h : n ≤ 49
+    · interval_cases n
+      · exact ⟨4, 0, 1, by norm_num⟩   -- 44 = 6·4 + 20
+      · exact ⟨0, 5, 0, by norm_num⟩   -- 45 = 9·5
+      · exact ⟨1, 0, 2, by norm_num⟩   -- 46 = 6 + 20·2
+      · exact ⟨0, 3, 1, by norm_num⟩   -- 47 = 9·3 + 20
+      · exact ⟨8, 0, 0, by norm_num⟩   -- 48 = 6·8
+      · exact ⟨0, 1, 2, by norm_num⟩   -- 49 = 9 + 20·2
+    · obtain ⟨x, y, z, hxyz⟩ := ih (n - 6) (by omega) (by omega)
+      exact ⟨x + 1, y, z, by omega⟩
+
+/-! ## Bridge to Mathlib's `AddSubmonoid.closure` -/
+
+/-- The representable numbers, packaged as the additive submonoid they form. -/
+def R3 : AddSubmonoid ℕ where
+  carrier := {n | Representable3 n}
+  zero_mem' := ⟨0, 0, 0, by norm_num⟩
+  add_mem' := by
+    intro a b ha hb
+    simp only [Set.mem_setOf_eq] at ha hb ⊢
+    obtain ⟨x₁, y₁, z₁, rfl⟩ := ha
+    obtain ⟨x₂, y₂, z₂, rfl⟩ := hb
+    exact ⟨x₁ + x₂, y₁ + y₂, z₁ + z₂, by ring⟩
+
+/-- A submonoid absorbs natural-number multiples of its members. -/
+private theorem nat_mul_mem {S : AddSubmonoid ℕ} {m : ℕ} (hm : m ∈ S) (k : ℕ) : m * k ∈ S := by
+  induction k with
+  | zero => simpa using S.zero_mem
+  | succ k ih => rw [Nat.mul_succ]; exact S.add_mem ih hm
+
+/-- Membership in the closure of `{6, 9, 20}` is exactly representability by `6, 9, 20`. -/
+theorem mem_closure_iff (n : ℕ) :
+    n ∈ AddSubmonoid.closure ({6, 9, 20} : Set ℕ) ↔ Representable3 n := by
+  constructor
+  · intro hn
+    have hle : AddSubmonoid.closure ({6, 9, 20} : Set ℕ) ≤ R3 := by
+      rw [AddSubmonoid.closure_le]
+      intro x hx
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+      rcases hx with rfl | rfl | rfl
+      · exact ⟨1, 0, 0, by norm_num⟩
+      · exact ⟨0, 1, 0, by norm_num⟩
+      · exact ⟨0, 0, 1, by norm_num⟩
+    exact hle hn
+  · rintro ⟨x, y, z, rfl⟩
+    have h6 : (6 : ℕ) ∈ AddSubmonoid.closure ({6, 9, 20} : Set ℕ) :=
+      AddSubmonoid.subset_closure (by simp)
+    have h9 : (9 : ℕ) ∈ AddSubmonoid.closure ({6, 9, 20} : Set ℕ) :=
+      AddSubmonoid.subset_closure (by simp)
+    have h20 : (20 : ℕ) ∈ AddSubmonoid.closure ({6, 9, 20} : Set ℕ) :=
+      AddSubmonoid.subset_closure (by simp)
+    exact add_mem (add_mem (nat_mul_mem h6 x) (nat_mul_mem h9 y)) (nat_mul_mem h20 z)
+
+/-! ## The Chicken McNugget number: `g(6, 9, 20) = 43` -/
+
+/-- **The Chicken McNugget theorem.** The Frobenius number of `{6, 9, 20}` is `43`:
+    `43` cannot be written as a non-negative combination of `6, 9, 20`, but every
+    larger integer can. This is the canonical three-generator instance; no closed-form
+    formula produces it (the pair formula `frobeniusNumber_pair` does not apply). -/
+theorem chickenMcNugget : FrobeniusNumber 43 ({6, 9, 20} : Set ℕ) := by
+  rw [frobeniusNumber_iff]
+  refine ⟨?_, ?_⟩
+  · rw [mem_closure_iff]
+    exact not_representable3_43
+  · intro k hk
+    rw [mem_closure_iff]
+    exact representable3_ge k (by omega)
+
+/-! ## Well-definedness for any number of generators (Schur's theorem) -/
+
+/-- **n-generator well-definedness.** For any set of generators `s`, if `gcd s = 1`
+    and `1 ∉ s` then a Frobenius number exists. This is the structural generalization
+    to `n ≥ 3` generators of the fact that the Frobenius number is well-defined; the
+    (impossible) part of the open question is a *closed form*, not existence. -/
+theorem exists_frobeniusNumber_of_setGcd_one {s : Set ℕ} (hgcd : Nat.setGcd s = 1)
+    (h1 : (1 : ℕ) ∉ s) : ∃ n, FrobeniusNumber n s :=
+  exists_frobeniusNumber_iff.mpr ⟨hgcd, h1⟩
+
+/-- The Chicken McNugget set does have a Frobenius number, and (by `chickenMcNugget`
+    together with the uniqueness built into `IsGreatest`) it is `43`. -/
+theorem exists_frobeniusNumber_mcnugget : ∃ n, FrobeniusNumber n ({6, 9, 20} : Set ℕ) :=
+  ⟨43, chickenMcNugget⟩
+
+end FrobeniusNumberOQ01OQ01
