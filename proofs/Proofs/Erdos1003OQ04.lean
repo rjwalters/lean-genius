@@ -26,10 +26,16 @@ with the concrete numerical record.
      single consecutive *pair* infinitely often — a four-run needs a consecutive
      *triple*.
 
-  2. **Existence equivalences.**  The OQ-04 existence question is equivalent to
-     "`CKE 3` is nonempty", i.e. to "A001274 contains three consecutive
-     integers", tying it cleanly into the `CKE` hierarchy of the sibling OQ-02
-     file and to Erdős's strong conjecture at `k = 3`.
+  2. **Existence equivalences and the infinitude reduction.**  The OQ-04 existence
+     question is equivalent to "`CKE 3` is nonempty", i.e. to "A001274 contains
+     three consecutive integers", tying it cleanly into the `CKE` hierarchy of the
+     sibling OQ-02 file and to Erdős's strong conjecture at `k = 3`.  At the
+     infinitude level the reduction is one-directional and sharp: since every
+     four-run starts at an A001274 member (`fcet_subset_cet`), infinitely many
+     four-runs would force A001274 itself to be infinite
+     (`infinite_cet_of_infinite_fcet` / `oq04_conjecture_imp_1003`).  So OQ-04 is
+     *strictly harder* than the open base #1003 — any affirmative resolution
+     resolves #1003 as a corollary.
 
   3. **The record run.**  `5186` realises a run of length **3**
      (`φ 5186 = φ 5187 = φ 5188 = 2592`) — the longest run of consecutive equal
@@ -175,6 +181,31 @@ theorem fcet_subset_cke_two :
   rw [fcet_eq_cke_three]
   intro n hn i hi
   exact hn i (by omega)
+
+/-- Every four-run starts at a member of the Erdős #1003 set: `FCET ⊆ A001274`.
+(The first of the three consecutive-membership conditions of
+`mem_fcet_iff_three_consecutive`.) -/
+theorem fcet_subset_cet :
+    FourConsecutiveEqualTotients ⊆ ConsecutiveEqualTotients :=
+  fun _ hn => (mem_fcet_iff_three_consecutive.mp hn).1
+
+/-- **OQ-04 infinitude ⟹ #1003 (infinitude level).**  If there are infinitely
+many four-term runs of equal totients, then the base Erdős #1003 set A001274 is
+infinite — i.e. `φ n = φ (n+1)` holds infinitely often.  This makes machine-checked
+the file's thesis that OQ-04 is *strictly harder* than the already-open #1003: any
+affirmative resolution of the four-run infinitude conjecture resolves #1003 as a
+corollary. -/
+theorem infinite_cet_of_infinite_fcet
+    (h : FourConsecutiveEqualTotients.Infinite) :
+    ConsecutiveEqualTotients.Infinite :=
+  h.mono fcet_subset_cet
+
+/-- Restatement of `infinite_cet_of_infinite_fcet` against the named conjecture
+objects: the OQ-04 (`k = 3`) infinitude conjecture implies the #1003 base
+infinitude. -/
+theorem oq04_conjecture_imp_1003 (h : oq04_infinitude_conjecture) :
+    ConsecutiveEqualTotients.Infinite :=
+  infinite_cet_of_infinite_fcet h
 
 /-! ## §3  The concrete record: a run of length three
 
