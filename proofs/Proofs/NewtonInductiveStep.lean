@@ -258,7 +258,7 @@ theorem newton_disc_of_beta_nonpos
           ((e3 * e2 + e1 * e4) * (c + b) ^ 2 - 2 * e3 * e2 * ((b + a) * (d + c))) *
             (e2 * e3 * ((k + 1) * (r + 1)) * (a * b * c * d)) := by
       rw [ha', hd', hc']
-      field_simp
+      field_simp [hk0.ne', hk1.ne', hr1.ne']
       ring
     -- R ≥ 0 (from β ≤ 0).
     have hR : 0 ≤ 2 * (a * b * c * d) * (e2 ^ 2 * e3 ^ 2) -
@@ -308,7 +308,7 @@ theorem newton_disc_of_beta_nonpos
                 ((e2 ^ 2 * (a * c) - e1 * e3 * b ^ 2) * (e3 ^ 2 * (b * d)) +
                   (e3 ^ 2 * (b * d) - e2 * e4 * c ^ 2) * (e1 * e3 * b ^ 2))) := by
       rw [ha', hd', hc']
-      field_simp
+      field_simp [hk0.ne', hk1.ne', hr1.ne']
       ring
     -- Each right-hand summand is non-negative.
     have hcb4 : (0 : ℝ) < (c + b) ^ 4 := by positivity
