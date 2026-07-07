@@ -18,6 +18,10 @@ import Mathlib
 
 namespace Erdos156
 
+-- Sidon-set membership and the greedy construction branch on undecidable
+-- propositions (`IsSidonSet`, `Set.Finite`); use classical decidability.
+open scoped Classical
+
 /-
 ## Sidon Sets
 
@@ -35,49 +39,31 @@ def IsSidonSetAlt (A : Set ℕ) : Prop :=
   ∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
     a < b → c < d → a + b = c + d → a = c ∧ b = d
 
-/-- The two definitions are equivalent -/
+/-- Order-free characterization: `A` is Sidon iff whenever two (not necessarily
+    ordered) pairs of elements have equal sums, they are the same pair.
+
+    Note: the previous form of this lemma additionally gated the hypothesis with
+    `a ≠ b` and `c ≠ d`. That statement is *false* — dropping the diagonal case
+    (`a = b`) makes the right-hand side strictly weaker than `IsSidonSet`
+    (e.g. `A = {1,2,3}` satisfies the gated condition, since the distinct-element
+    sums `3,4,5` are distinct, yet `2 + 2 = 1 + 3` violates `IsSidonSet`).
+    The correct characterization drops the `≠` gating. -/
 theorem sidonSet_iff_alt (A : Set ℕ) :
     IsSidonSet A ↔
     (∀ a b c d : ℕ, a ∈ A → b ∈ A → c ∈ A → d ∈ A →
-      a ≠ b → c ≠ d → a + b = c + d → ({a, b} : Set ℕ) = {c, d}) := by
+      a + b = c + d → ({a, b} : Set ℕ) = {c, d}) := by
   constructor
-  · intro hS a b c d ha hb hc hd hab hcd heq
-    by_cases hle : a ≤ b
-    · by_cases hle' : c ≤ d
-      · exact hS a b c d ha hb hc hd hle hle' heq
-      · push_neg at hle'
-        have heq' : a + b = d + c := by linarith
-        have h := hS a b d c ha hb hd hc hle (le_of_lt hle') heq'
-        ext x
-        simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at h ⊢
-        constructor <;> intro hx <;> {
-          rw [Set.insert_eq, Set.insert_eq, Set.union_comm {d}, Set.union_comm {c}] at h
-          tauto
-        }
-    · push_neg at hle
-      have heq' : b + a = c + d := by linarith
-      by_cases hle' : c ≤ d
-      · have h := hS b a c d hb ha hc hd (le_of_lt hle) hle' heq'
-        ext x; simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at h ⊢
-        have h' : x = b ∨ x = a ↔ x = c ∨ x = d := by
-          constructor <;> intro hx <;> {
-            have := h.subset
-            simp at this
-            tauto
-          }
-        tauto
-      · push_neg at hle'
-        have heq'' : b + a = d + c := by linarith
-        have h := hS b a d c hb ha hd hc (le_of_lt hle) (le_of_lt hle') heq''
-        ext x; simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at h ⊢
-        tauto
-  · intro hS a b c d ha hb hc hd hab hcd heq
-    by_cases h : a = b
-    · by_cases h' : c = d
-      · simp [h, h'] at heq ⊢
-        linarith
-      · exact hS a b c d ha hb hc hd (by intro H; simp [H, h] at heq; linarith) h' heq
-    · exact hS a b c d ha hb hc hd h (by intro H; simp [H] at heq hab; linarith) heq
+  · intro hS a b c d ha hb hc hd heq
+    rcases le_total a b with hab | hab <;> rcases le_total c d with hcd | hcd
+    · exact hS a b c d ha hb hc hd hab hcd heq
+    · have h := hS a b d c ha hb hd hc hab hcd (by omega)
+      rw [Set.pair_comm d c] at h; exact h
+    · have h := hS b a c d hb ha hc hd hab hcd (by omega)
+      rw [Set.pair_comm b a] at h; exact h
+    · have h := hS b a d c hb ha hd hc hab hcd (by omega)
+      rw [Set.pair_comm b a, Set.pair_comm d c] at h; exact h
+  · intro hS a b c d ha hb hc hd _ _ heq
+    exact hS a b c d ha hb hc hd heq
 
 /-
 ## Maximal Sidon Sets
@@ -107,9 +93,9 @@ the Sidon property. This gives maximal Sidon sets of size approximately N^{1/2}.
 -/
 
 /-- Greedy Sidon set construction (specification) -/
-def greedySidon : ℕ → Set ℕ
+noncomputable def greedySidon : ℕ → Set ℕ
   | 0 => ∅
-  | n + 1 => 
+  | n + 1 =>
     let A := greedySidon n
     if IsSidonSet (A ∪ {n + 1}) then A ∪ {n + 1} else A
 
@@ -131,12 +117,13 @@ theorem greedySidon_subset_interval (N : ℕ) : greedySidon N ⊆ Interval N := 
   | zero => intro x hx; simp [greedySidon] at hx
   | succ n ih =>
     intro x hx
-    unfold greedySidon at hx
+    simp only [greedySidon] at hx
     split_ifs at hx with h
     · -- Case: added n+1
-      rcases Set.mem_union.mp hx with hx' | hx'
+      rcases (Set.mem_union _ _ _).mp hx with hx' | hx'
       · exact ⟨(ih hx').1, le_trans (ih hx').2 (Nat.le_succ n)⟩
-      · exact ⟨by omega, le_of_eq (Set.mem_singleton_iff.mp hx').symm⟩
+      · have hxe : x = n + 1 := Set.mem_singleton_iff.mp hx'
+        exact ⟨by omega, by omega⟩
     · -- Case: didn't add
       exact ⟨(ih hx).1, le_trans (ih hx).2 (Nat.le_succ n)⟩
 
@@ -144,17 +131,17 @@ theorem greedySidon_subset_interval (N : ℕ) : greedySidon N ⊆ Interval N := 
 private lemma greedySidon_mono (m n : ℕ) (hmn : m ≤ n) :
     greedySidon m ⊆ greedySidon n := by
   induction n with
-  | zero => simp only [Nat.le_zero] at hmn; subst hmn
+  | zero => simp only [Nat.le_zero] at hmn; subst hmn; exact Set.Subset.rfl
   | succ k ih =>
     rcases eq_or_lt_of_le hmn with rfl | hlt
     · exact Set.Subset.rfl
     · exact Set.Subset.trans (ih (by omega)) (by
-        unfold greedySidon; split_ifs <;> [exact Set.subset_union_left; exact Set.Subset.rfl])
+        simp only [greedySidon]; split_ifs <;> [exact Set.subset_union_left; exact Set.Subset.rfl])
 
 /-- If x was not added at its step, the Sidon check failed. -/
 private lemma greedySidon_rejected (n : ℕ) (h : n + 1 ∉ greedySidon (n + 1)) :
     ¬IsSidonSet (greedySidon n ∪ {n + 1}) := by
-  unfold greedySidon at h
+  simp only [greedySidon] at h
   split_ifs at h with h_check
   · exact absurd (Set.mem_union_right _ rfl) h
   · exact h_check
@@ -188,9 +175,9 @@ Classical results show that Sidon sets in {1,...,N} have size at most √N + O(N
 The greedy algorithm achieves close to this bound.
 -/
 
-/-- Upper bound: any Sidon set in {1,...,N} has size at most √N + O(1) -/
+/- Upper bound: any Sidon set in {1,...,N} has size at most √N + O(1) -/
 
-/-- The greedy construction achieves size Ω(√N) -/
+/- The greedy construction achieves size Ω(√N) -/
 
 /-
 ## Ruzsa's Construction
@@ -199,7 +186,7 @@ Ruzsa [Ru98b] showed there exist maximal Sidon sets of size much smaller than
 the greedy algorithm achieves. Specifically, size o((N log N)^{1/3}) is possible.
 -/
 
-/-- Ruzsa's result: maximal Sidon sets of size close to N^{1/3} exist -/
+/- Ruzsa's result: maximal Sidon sets of size close to N^{1/3} exist -/
 
 /-
 ## The Main Conjecture
@@ -209,7 +196,7 @@ This is stronger than Ruzsa's result, asking for exactly N^{1/3} rather than
 N^{1/3+ε}.
 -/
 
-/-- 
+/-
 Erdős Problem #156 (Open):
 
 Does there exist a maximal Sidon set A ⊂ {1,...,N} of size O(N^{1/3})?
@@ -229,10 +216,9 @@ The current state of knowledge shows a significant gap:
 
 /-- The minimum size of a maximal Sidon set in {1,...,N} -/
 noncomputable def minMaximalSidonSize (N : ℕ) : ℕ :=
-  Nat.find (⟨greedySidon N, greedySidon_is_sidon N,
-    greedySidon_subset_interval N⟩ : ∃ A, IsSidonSet A ∧ A ⊆ Interval N)
+  sInf {n | ∃ A, IsMaximalSidonSet A N ∧ size A = n}
 
-/-- The exponent of the minimum size growth -/
+/- The exponent of the minimum size growth -/
 
 /-
 ## Connection to Additive Combinatorics
@@ -290,7 +276,7 @@ private lemma sumset_eq_image (A : Set ℕ) :
   · rintro ⟨a, b, ha, hb, rfl⟩
     by_cases h : a ≤ b
     · exact ⟨a, b, ⟨ha, hb, h⟩, rfl⟩
-    · exact ⟨b, a, ⟨hb, ha, le_of_not_le h⟩, by ring⟩
+    · exact ⟨b, a, ⟨hb, ha, le_of_not_ge h⟩, by ring⟩
   · rintro ⟨a, b, ⟨ha, hb, _⟩, rfl⟩
     exact ⟨a, b, ha, hb, rfl⟩
 
@@ -365,12 +351,13 @@ private lemma card_upper_tri (s : Finset ℕ) :
         · exact Or.inr (Or.inl ⟨hmem, rfl⟩)
         · exact Or.inr (Or.inr ⟨hmem, hgt⟩)
       · rintro (⟨hmem, _⟩ | ⟨hmem, _⟩ | ⟨hmem, _⟩) <;> exact hmem
-    rw [h_total_eq,
-      Finset.card_union_of_disjoint (by
+    conv_lhs => rw [h_total_eq]
+    rw [Finset.card_union_of_disjoint (by
         rw [Finset.disjoint_left]; intro ⟨a, b⟩ h1 h2
         simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_product] at h1 h2
         rcases h2 with ⟨_, hab⟩ | ⟨_, hab⟩ <;> omega),
       Finset.card_union_of_disjoint (Finset.disjoint_filter.2 fun ⟨a, b⟩ _ h1 h2 => by omega)]
+    omega
   -- Combine: from h_three and symmetry, 2*|{<}| + |diag| = s.card²
   rw [Finset.card_product, h_diag, h_sym] at h_three
   -- h_three: s.card * s.card = |{<}| + s.card + |{<}|
@@ -390,7 +377,7 @@ theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
   rw [sumset_eq_image]
   have hpairs_fin : Set.Finite {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} :=
     (hfin.prod hfin).subset (fun p hp => ⟨hp.1, hp.2.1⟩)
-  rw [Set.ncard_image_of_injOn (sidon_sum_injOn A hA) hpairs_fin]
+  rw [Set.ncard_image_of_injOn (sidon_sum_injOn A hA)]
   -- Convert Set.ncard to Finset.card
   rw [Set.ncard_eq_toFinset_card _ hpairs_fin, Set.ncard_eq_toFinset_card _ hfin]
   -- Show the pair set's toFinset equals the filtered product
@@ -398,7 +385,7 @@ theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
       (hfin.toFinset ×ˢ hfin.toFinset).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) := by
     ext ⟨a, b⟩
     simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq,
-               Finset.mem_filter, Finset.mem_product]
+               Finset.mem_filter, Finset.mem_product, and_assoc]
   rw [h_eq]
   exact card_upper_tri hfin.toFinset
 
@@ -408,16 +395,19 @@ theorem sidon_sumset_size (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
     is not injective (two distinct pairs collide), so |A+A| < |ordered pairs| = n(n+1)/2. -/
 theorem sidon_of_sumset_size (A : Set ℕ) (hfin : A.Finite)
     (h : (sumset A).ncard = A.ncard * (A.ncard + 1) / 2) : IsSidonSet A := by
-  set S := {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2}
+  set S := {p : ℕ × ℕ | p.1 ∈ A ∧ p.2 ∈ A ∧ p.1 ≤ p.2} with hSdef
   set f := (fun p : ℕ × ℕ => p.1 + p.2)
   have hS_fin : S.Finite := (hfin.prod hfin).subset fun p hp => ⟨hp.1, hp.2.1⟩
   -- |S| = n(n+1)/2
   have h_S : S.ncard = A.ncard * (A.ncard + 1) / 2 := by
     rw [Set.ncard_eq_toFinset_card _ hS_fin, Set.ncard_eq_toFinset_card _ hfin]
-    convert card_upper_tri hfin.toFinset using 1
-    congr 1; ext ⟨a, b⟩
-    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq,
-               Finset.mem_filter, Finset.mem_product]
+    have h_eq : hS_fin.toFinset =
+        (hfin.toFinset ×ˢ hfin.toFinset).filter (fun p : ℕ × ℕ => p.1 ≤ p.2) := by
+      ext ⟨a, b⟩
+      simp only [Set.Finite.mem_toFinset, hSdef, Set.mem_setOf_eq,
+                 Finset.mem_filter, Finset.mem_product, and_assoc]
+    rw [h_eq]
+    exact card_upper_tri hfin.toFinset
   -- sumset A = f '' S
   have h_im : sumset A = f '' S := sumset_eq_image A
   -- |f '' S| = |S| (from hypothesis and h_S)
@@ -430,16 +420,16 @@ theorem sidon_of_sumset_size (A : Set ℕ) (hfin : A.Finite)
     push_neg at h_not_inj
     obtain ⟨p, hp, q, hq, hfpq, hne⟩ := h_not_inj
     -- f '' S = f '' (S \ {q}) since f(q) = f(p) and p ∈ S \ {q}
-    have hp_diff : p ∈ S \ {q} := Set.mem_diff_singleton.mpr ⟨hp, Ne.symm hne⟩
+    have hp_diff : p ∈ S \ {q} := Set.mem_diff_singleton.mpr ⟨hp, hne⟩
     have h_im_eq : f '' S = f '' (S \ {q}) := by
       apply Set.Subset.antisymm
-      · intro z ⟨w, hw, rfl⟩
+      · rintro z ⟨w, hw, rfl⟩
         by_cases hwq : w = q
         · exact ⟨p, hp_diff, by rw [hwq, hfpq]⟩
         · exact ⟨w, Set.mem_diff_singleton.mpr ⟨hw, hwq⟩, rfl⟩
-      · exact Set.image_subset f Set.diff_subset
+      · exact Set.image_mono Set.diff_subset
     -- |S \ {q}| < |S| since q ∈ S and S is finite
-    have hS_fin_diff := hS_fin.diff ({q} : Set _)
+    have hS_fin_diff : (S \ ({q} : Set _)).Finite := hS_fin.diff
     have h_lt : (S \ {q}).ncard < S.ncard := by
       apply Set.ncard_lt_ncard _ hS_fin
       exact ⟨Set.diff_subset, fun h_sub =>
@@ -488,7 +478,7 @@ The question is whether this infimum is O(N^{1/3}).
 noncomputable def infMaximalSidonSize (N : ℕ) : ℝ :=
   ⨅ (A : Set ℕ) (_ : IsMaximalSidonSet A N), (size A : ℝ)
 
-/-- The main open question in precise form -/
+/- The main open question in precise form -/
 
 /-
 ## Greedy Sidon Size Lower Bound
@@ -511,7 +501,7 @@ Proof outline:
 
 /-- The greedy Sidon set is finite for each N -/
 lemma greedySidon_finite (N : ℕ) : (greedySidon N).Finite :=
-  Set.Finite.subset (Set.finite_Icc 1 N) fun x hx =>
+  Set.Finite.subset (Set.finite_Icc 1 N) fun _ hx =>
     Set.mem_Icc.mpr (greedySidon_subset_interval N hx)
 
 /-- Type-I shadow: elements expressible as b+c-a for a,b,c ∈ A (via a+x = b+c) -/
@@ -577,12 +567,18 @@ lemma not_sidon_after_insert (A : Set ℕ) (x : ℕ)
       · rcases orx d hd with hdA | rfl
         · -- c,d ∈ A: 2x=c+d, type II
           exact Or.inr ⟨c, d, hcA, hdA, by linarith⟩
-        · -- c∈A, d=x: 2x=c+x → c=x, contradicts c∈A and x∉A
-          exact absurd (show c = x by linarith) (fun h => hxA (h ▸ hcA))
+        · -- c∈A, d=x: from 2x=c+x get c=x, contradicting c∈A and x∉A
+          -- (after the `rfl` substitutions the inserted point is named `d` here)
+          exfalso; apply hxA
+          have hcd_eq : c = d := by omega
+          rw [← hcd_eq]; exact hcA
       · -- a=b=c=x
         rcases orx d hd with hdA | rfl
-        · -- d∈A: 2x=x+d → d=x, contradicts d∈A and x∉A
-          exact absurd (show d = x by linarith) (fun h => hxA (h ▸ hdA))
+        · -- d∈A: from 2x=x+d get d=x, contradicting d∈A and x∉A
+          -- (after the `rfl` substitutions the inserted point is named `c` here)
+          exfalso; apply hxA
+          have hcd_eq : c = d := by omega
+          rw [hcd_eq]; exact hdA
         · -- all four = x: {x,x}={x,x}, contradiction with hne
           exact absurd rfl hne
 
@@ -647,7 +643,7 @@ lemma sumset_ncard_le (A : Set ℕ) (hfin : A.Finite) :
 /-- The diffShadow of A has size at most |A| * |sumset A| ≤ |A| * (|A|*(|A|+1)/2).
     Every element of diffShadow A is `σ - a` for some `a ∈ A` and `σ ∈ sumset A`,
     so diffShadow A is contained in the image of `A ×ˢ sumset A`. -/
-lemma diffShadow_ncard_le (A : Set ℕ) (hA : IsSidonSet A) (hfin : A.Finite) :
+lemma diffShadow_ncard_le (A : Set ℕ) (_hA : IsSidonSet A) (hfin : A.Finite) :
     (diffShadow A).ncard ≤ A.ncard * (A.ncard * (A.ncard + 1) / 2) := by
   have hsfin : (sumset A).Finite := sumset_finite A hfin
   have hprodfin : (A ×ˢ sumset A).Finite := hfin.prod hsfin
