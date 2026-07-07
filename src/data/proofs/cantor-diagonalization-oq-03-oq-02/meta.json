@@ -6,11 +6,11 @@
   "overview": {
     "historicalContext": "Cantor's 1891 diagonal argument showed no set surjects onto its power set. In 1969 F. W. Lawvere recast this and its relatives (Russell's paradox, Gödel's incompleteness, Turing's halting problem) as a single categorical fact: in a cartesian closed category, if there is a 'surjective' (point-surjective) map A → Bᴬ, then every endomorphism of B has a fixed point — so a *fixed-point-free* endomorphism of B rules such a map out. Yanofsky (2003) popularized the set-theoretic reading used here, where the fixed-point-free endomorphism is the moving part shared by every diagonal argument. The parent entry formalizes this over the power type A → Prop. But Prop = Sort 0 is impredicative (a ∀ over all Props is again a Prop), so A → Prop is the 'full' power set, and the standard injection a ↦ (· = a) is injective only via propositional extensionality. Predicativity — the doctrine, traceable to Poincaré, Russell and Weyl and realized in Martin-Löf type theory, that a definition may not quantify over a totality it belongs to — and the constructive suspicion of propext (an axiom in Lean, not a theorem, and not assumed in Book HoTT) motivate asking for a diagonal argument that avoids both. This entry supplies one.",
     "problemStatement": "Open question 2 of the parent: is there a constructive analogue of Lawvere's fixed-point theorem — and hence of Cantor's theorem — that works in a predicative type theory and does not use propositional extensionality? Concretely, can the strict inequality A < (power of A) be witnessed by an explicit injection and a no-surjection proof that (i) keep the codomain in the same universe Type u as A, and (ii) invoke neither impredicative Prop nor propext?",
-    "proofStrategy": "Keep Lawvere's diagonal proof verbatim — it eliminates a single surjectivity witness into an ∃-goal and so is already choice-free and propext-free — and isolate its engine: a fixed-point-free g : B → B forbids any surjection A → (A → B) (no_surjection_of_fpf), for an arbitrary alphabet B. Then replace the alphabet Prop by the two-element data type Bool. This kills impredicativity (A → Bool : Type u) for free, and boolean negation (!·) supplies the fixed-point-free endomorphism, giving the no-surjection direction. For the injection direction, use the decidable characteristic function a ↦ fun x => decide (x = a); its injectivity is discharged by decide_eq_decide — a pure Bool computation — replacing the propext step needed for a ↦ (· = a) over Prop. Bundle both directions into predicative_cantor, then abstract the two ingredients (two distinct decidable values for the embedding; a fixed-point-free endomorphism for the no-surjection) to arbitrary alphabets, instantiating over ℕ with the successor to show the engine is not special to Bool.",
+    "proofStrategy": "Keep Lawvere's diagonal proof verbatim — it eliminates a single surjectivity witness into an ∃-goal and so is already choice-free and propext-free — and isolate its engine: a fixed-point-free g : B → B forbids any surjection A → (A → B) (no_surjection_of_fpf), for an arbitrary alphabet B. Then replace the alphabet Prop by the two-element data type Bool. This kills impredicativity (A → Bool : Type u) for free, and boolean negation (!·) supplies the fixed-point-free endomorphism, giving the no-surjection direction. For the injection direction, use the decidable characteristic function a ↦ fun x => decide (x = a); its injectivity is discharged by a pure Bool computation (decide_eq_true rfl gives decide (a = a) = true, the hypothesis transports it along a Bool-valued Eq, and of_decide_eq_true reads back a = a') — replacing the propext step needed for a ↦ (· = a) over Prop. Bundle both directions into predicative_cantor, then abstract the two ingredients (two distinct decidable values for the embedding; a fixed-point-free endomorphism for the no-surjection) to arbitrary alphabets, instantiating over ℕ with the successor to show the engine is not special to Bool.",
     "keyInsights": [
       "The entire Cantor/Russell/Gödel/Turing phenomenon factors through one abstract hypothesis — a fixed-point-free endomorphism of the alphabet — exposed here as no_surjection_of_fpf; every concrete diagonal argument is just a choice of that endomorphism (boolean ! for Bool, successor for ℕ, the swap for the halting problem).",
       "Swapping the alphabet Prop for Bool simultaneously removes two logical commitments: impredicativity (A → Bool lives in Type u, the same universe as A) and propositional extensionality — they are entangled in the Prop development but neither is essential to the diagonal.",
-      "Injectivity of the characteristic-function embedding is the only place the Prop version secretly used propext (to turn (· = a) = (· = a') into a = a'); over Bool the same step becomes decide (a = a) = decide (a = a') ↦ (a = a) ↔ (a = a'), a decidable computation with no extensionality axiom.",
+      "Injectivity of the characteristic-function embedding is the only place the Prop version secretly used propext (to turn (· = a) = (· = a') into a = a'); over Bool the same step becomes a pure computation on decide — and the trap is real: an earlier draft closed it with rw [decide_eq_decide], an Iff-rewrite that reintroduced propext, caught only by the #print axioms audit and replaced by decide_eq_true / of_decide_eq_true.",
       "The result is a genuine strict cardinality increase A < (A → Bool) realized inside a single universe by explicit maps (an injection that exists and a surjection that cannot), rather than a mere cardinal inequality — a constructively meaningful strengthening.",
       "Only decidable equality on A is required for the injection, and only two distinct alphabet values plus a fixed-point-free map for the no-surjection; nothing about Bool beyond these is used, which is why embed_of_two and the ℕ instance follow immediately."
     ],
@@ -32,7 +32,7 @@
       "Function"
     ],
     "namespace": "CantorDiagonalizationOQ03OQ02",
-    "lineCount": 171,
+    "lineCount": 194,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 2,
@@ -43,7 +43,7 @@
     "author": "Lean Genius Researcher",
     "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
     "date": null,
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ03OQ02.lean",
     "tags": [
       "cantor",
@@ -55,7 +55,7 @@
       "type-theory",
       "open-question"
     ],
-    "badge": "wip",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-07-02",
     "mathlib_version": "4.26.0",
@@ -71,9 +71,9 @@
         "module": "Mathlib.Logic.Function.Basic"
       },
       {
-        "theorem": "decide_eq_decide",
-        "description": "decide p = decide q ↔ (p ↔ q) — reduces injectivity of the Bool characteristic-function embedding to a decidable computation, avoiding propext",
-        "module": "Mathlib.Logic.Basic"
+        "theorem": "decide_eq_true / of_decide_eq_true",
+        "description": "p → decide p = true and decide p = true → p (Lean core, axiom-free) — reduce injectivity of the Bool characteristic-function embedding to a pure Bool computation with an Eq-rewrite only, genuinely avoiding propext (the Iff-lemma decide_eq_decide would reintroduce it via rw)",
+        "module": "Init.Core"
       },
       {
         "theorem": "Nat.succ_ne_self",
@@ -93,8 +93,8 @@
       "succ_fixedPointFree / no_surjection_to_nat: an arbitrary-alphabet instance of the engine over ℕ via the fixed-point-free successor, showing the engine is not special to Bool"
     ],
     "axiomCount": 0,
-    "lineCount": 171,
-    "assumptions": "NOT YET MACHINE-VERIFIED ON main. The Lean source described here (Proofs/CantorDiagonalizationOQ03OQ02.lean — the predicative, propext-free Lawvere/Cantor development: lawvere, no_surjection_of_fpf, no_surjection_to_bool, embed_bool/embed_bool_injective, predicative_cantor, embed_of_two, no_surjection_to_nat; 9 theorems / 2 defs / 171 lines) does NOT exist on the canonical branch main. A complete draft authored as VERIFIED (0 sorries, 0 axiom declarations) lives only on the unmerged branch feature/researcher-9 (commit 21eef2e891b) and has not been merged or re-checked against main's pinned Mathlib, so no source on main backs the public claim. Design goal (as drafted, unverified on main): a strict cardinality increase A < (A → Bool) inside a single universe Type u, with injectivity of the Bool characteristic-function embedding discharged by `decide` (decide_eq_decide) rather than propext, so #print axioms would list only the foundational propext / Classical.choice / Quot.sound and no native_decide. Downgraded from status=verified/badge=verified to formalized/wip pending merge of the source to main and a clean docker build. Counts in leanFile (171 lines, 9 theorems, 2 defs, 0 sorries) reflect the drafted source and will be reconciled on merge.",
+    "lineCount": 194,
+    "assumptions": "None. Machine-verified on main (2026-07-07 status audit, issue #35133): 0 sorries, 0 axiom declarations, no structure-encoded assumptions, no native_decide. The file carries a permanent #print axioms audit block on all seven headline theorems; the build log records 'does not depend on any axioms' for every one of them (lawvere, no_surjection_of_fpf, no_surjection_to_bool, embed_bool_injective, predicative_cantor, embed_of_two, no_surjection_to_nat) — the development is not merely verified but genuinely axiom-free, using none of the foundational propext / Classical.choice / Quot.sound. Audit history: PR #34816 downgraded this entry to formalized/wip solely because the Lean source was absent from main at the time (provenance, not a mathematical objection); recovery merges later restored the file byte-identical to the version PR #32735 verified. The 2026-07-07 audit rebuilt it and found one real defect: the original embed_bool_injective proof used `rw [decide_eq_decide]`, an Iff-rewrite that silently reintroduced propext (making the headline propext-free claim false for embed_bool_injective and predicative_cantor). The proof was repaired to a pure Bool computation (decide_eq_true / of_decide_eq_true with an Eq-rewrite), after which #print axioms confirms zero axioms across the board.",
     "theoremCount": 9,
     "definitionCount": 2
   },
@@ -144,7 +144,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Open question 2 of the parent Lawvere/Cantor entry is answered affirmatively and constructively. Replacing the impredicative alphabet Prop with the two-element data type Bool yields a diagonal argument that lives entirely within a single universe (A → Bool : Type u) and uses no propositional extensionality: the injection a ↦ fun x => decide (x = a) is injective by a decide computation, and the no-surjection direction comes from the fixed-point-free boolean negation feeding Lawvere's (already choice-free) theorem. The two directions bundle into a strict, constructively witnessed cardinality increase A < (A → Bool). Fully machine-checked, 0 sorries, 0 axioms, no native_decide. 9 theorems and 2 definitions in 171 lines.",
+    "summary": "Open question 2 of the parent Lawvere/Cantor entry is answered affirmatively and constructively. Replacing the impredicative alphabet Prop with the two-element data type Bool yields a diagonal argument that lives entirely within a single universe (A → Bool : Type u) and uses no propositional extensionality: the injection a ↦ fun x => decide (x = a) is injective by a decide computation, and the no-surjection direction comes from the fixed-point-free boolean negation feeding Lawvere's (already choice-free) theorem. The two directions bundle into a strict, constructively witnessed cardinality increase A < (A → Bool). Fully machine-checked, 0 sorries, 0 axioms, no native_decide; a permanent #print axioms audit block confirms every headline theorem depends on no axioms at all — not even propext, Classical.choice or Quot.sound. 9 theorems and 2 definitions in 194 lines.",
     "implications": "The proof identifies precisely which logical commitments the classical Cantor/Lawvere development can shed: impredicative Prop and propext are conveniences, not necessities, for the diagonal. By isolating the engine no_surjection_of_fpf — any fixed-point-free endomorphism of the alphabet forbids a surjection — the entry makes the shared core of Cantor, Russell, Gödel and Turing available in a predicative, constructive setting, and the ℕ and general two-value instances show the argument is uniform in the alphabet. This is the kind of result that transfers to predicative foundations (Martin-Löf type theory, univalent foundations without propositional resizing) where A → Prop is not the well-behaved power object.",
     "openQuestions": [
       "Cast the strict increase as a formal inequality of predicative cardinalities / h-levels (e.g. in a HoTT setting), rather than the injection-exists-but-no-surjection pair used here.",
@@ -176,7 +176,7 @@
       "title": "Part 3 — The predicative alphabet Bool",
       "startLine": 108,
       "endLine": 143,
-      "summary": "not_fixedPointFree: boolean negation (!·) has no fixed point (by decide). no_surjection_to_bool: predicative Cantor's no-surjection direction, with codomain A → Bool in the same universe as A and no propext. embed_bool a := fun x => decide (x = a) is the decidable characteristic embedding; embed_bool_injective proves it injective via decide_eq_decide, the propext-free substitute. predicative_cantor bundles the injection-exists / no-surjection pair into a strict growth within Type u."
+      "summary": "not_fixedPointFree: boolean negation (!·) has no fixed point (by decide). no_surjection_to_bool: predicative Cantor's no-surjection direction, with codomain A → Bool in the same universe as A and no propext. embed_bool a := fun x => decide (x = a) is the decidable characteristic embedding; embed_bool_injective proves it injective via decide_eq_true / of_decide_eq_true and an Eq-rewrite, the genuinely propext-free substitute (an earlier Iff-rewrite via decide_eq_decide reintroduced propext and was caught by the #print axioms audit). predicative_cantor bundles the injection-exists / no-surjection pair into a strict growth within Type u."
     },
     {
       "title": "Part 4 — Arbitrary decidable alphabets",

@@ -125,14 +125,21 @@ characteristic function of `{a}`. -/
 def embed_bool {A : Type*} [DecidableEq A] (a : A) : A → Bool := fun x => decide (x = a)
 
 /-- **The embedding is injective — without `propext`.** Injectivity is discharged by a
-`decide` computation on `Bool`, the predicative substitute for the `propext`-dependent
-injectivity of `a ↦ (· = a) : A → (A → Prop)`. -/
+pure `Bool` computation: `decide (a = a)` reduces to `true` (`decide_eq_true rfl`), the
+hypothesis transports that equality along `Bool`-valued `Eq` (only `Eq.mpr`, no `Iff`
+rewriting), and `of_decide_eq_true` reads the result back — the predicative substitute
+for the `propext`-dependent injectivity of `a ↦ (· = a) : A → (A → Prop)`.
+
+(An earlier draft used `rw [decide_eq_decide]`, which silently *reintroduced* `propext`:
+rewriting with an `Iff` converts it to an `Eq` via `propext`.  The `#print axioms` audit
+at the end of this file caught that, and this proof now avoids it.) -/
 theorem embed_bool_injective {A : Type*} [DecidableEq A] :
     Injective (embed_bool : A → A → Bool) := by
   intro a a' h
   have hh : decide (a = a) = decide (a = a') := congr_fun h a
-  rw [decide_eq_decide] at hh
-  exact hh.mp rfl
+  have ht : decide (a = a) = true := decide_eq_true rfl
+  rw [hh] at ht
+  exact of_decide_eq_true ht
 
 /-- **Predicative Cantor, both directions.** For any type `A` with decidable equality
 there is an injection `A ↪ (A → Bool)` but no surjection `A → (A → Bool)`: the
@@ -167,5 +174,21 @@ fixed-point-free successor.  Demonstrates that the engine `no_surjection_of_fpf`
 handles arbitrary (here infinite) alphabets, not just `Bool`. -/
 theorem no_surjection_to_nat {A : Type*} (e : A → A → ℕ) : ¬ Surjective e :=
   no_surjection_of_fpf succ_fixedPointFree e
+
+/-! ### Axiom audit
+
+The headline claim of this entry is not just "verified" but *propext-free and
+choice-free*: the whole development should depend on **no axioms at all** (not even
+the foundational `propext` / `Classical.choice` / `Quot.sound`).  The `#print axioms`
+commands below make the build log record exactly which axioms each headline theorem
+uses, so the claim is machine-audited on every build. -/
+
+#print axioms lawvere
+#print axioms no_surjection_of_fpf
+#print axioms no_surjection_to_bool
+#print axioms embed_bool_injective
+#print axioms predicative_cantor
+#print axioms embed_of_two
+#print axioms no_surjection_to_nat
 
 end CantorDiagonalizationOQ03OQ02
