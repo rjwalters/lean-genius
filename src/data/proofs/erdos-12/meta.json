@@ -153,16 +153,16 @@
     },
     {
       "id": "question1",
-      "title": "Question 1: √N Density (OPEN)",
-      "summary": "Defines sqrtLiminfDensity (∃ c > 0 with A(N)/√N ≥ c eventually) and Erdos12Question1 (∃ A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) ≥ √N/(√(log N)·(log log N)²), the best known bound falling short of √N by logarithmic factors.",
+      "title": "Question 1: √N Density (Resolved — part (i) YES, in APN companion)",
+      "summary": "Defines sqrtLiminfDensity (∃ c > 0 with A(N)/√N ≥ c eventually) and Erdos12Question1 (∃ A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) ≥ √N/(√(log N)·(log log N)²), the best known bound falling short of √N by logarithmic factors. The gallery Prop here states the question; part (i) is resolved affirmatively in the APN companion (Erdos12ProblemAPNPartI.lean) via the explicit prime-tower good set MyGoodSet with proved positive √N liminf density.",
       "startLine": 200,
       "endLine": 216,
       "mathContext": "Defines sqrtLiminfDensity (∃ c > 0 with A(N)/√N ≥ c eventually) and Erdos12Question1 (∃ A with this property). Axiomatizes elsholtz_planitzer_construction: A(N) ≥ √N/(√(log N)·(log log N)²), the best known bound falling short of √N by logarithmic factors."
     },
     {
       "id": "question2",
-      "title": "Question 2: Sparse Infinitely Often (OPEN)",
-      "summary": "Defines Erdos12Question2: ∀ A div-free, ∃ c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasionally reaches √N.",
+      "title": "Question 2: Sparse Infinitely Often (Resolved — part (ii) NO, in APN companion)",
+      "summary": "Defines Erdos12Question2: ∀ A div-free, ∃ c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasionally reaches √N. The gallery Prop here states the question; part (ii) is resolved negatively in the APN companion (Erdos12ProblemAPNPartII.lean) via a Sárközy/CRT sequence with an explicit density lower bound that violates the universal-sparseness assertion.",
       "startLine": 217,
       "endLine": 224,
       "mathContext": "Defines Erdos12Question2: ∀ A div-free, ∃ c > 0 with A(N) < N^{1-c} for infinitely many N. This asks whether the counting function must dip below polynomial growth infinitely often, even if it occasionally reaches √N."
