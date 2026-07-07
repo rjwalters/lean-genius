@@ -68,7 +68,7 @@ private lemma normElemSymm_zero_succ (m : ℕ) (x : Fin n → ℝ)
   have h_terms : ∀ s ∈ (Finset.univ : Finset (Fin n)).powersetCard m,
       ∏ i ∈ s, x i = 0 := by
     intro s hs
-    have h_le := Finset.single_le_sum
+    have h_le := Finset.single_le_sum (f := fun s => ∏ i ∈ s, x i)
       (fun t _ => Finset.prod_nonneg fun i _ => hx i) hs
     have h_ge := Finset.prod_nonneg (s := s) fun i _ => hx i
     linarith
@@ -135,7 +135,8 @@ theorem power_inequality (k : ℕ) (hkn : k + 1 ≤ n)
     by_cases hak1_pos : normElemSymm (k + 1) x = 0
     · -- Case: a_{k+1} = 0
       -- From LC: 0 ≥ a_k * a_{k+2}, so a_k = 0 or a_{k+2} = 0
-      have : normElemSymm k x * normElemSymm (k + 2) x ≤ 0 := by linarith [hlc, hak1_pos]
+      have : normElemSymm k x * normElemSymm (k + 2) x ≤ 0 := by
+        nlinarith [hlc, hak1_pos]
       have : normElemSymm k x * normElemSymm (k + 2) x = 0 := by
         linarith [mul_nonneg hak hak2]
       have hak2_zero : normElemSymm (k + 2) x = 0 := by
@@ -158,9 +159,6 @@ theorem power_inequality (k : ℕ) (hkn : k + 1 ≤ n)
       -- Raise LC to (k+1)-th power
       have hlc_pow : normElemSymm (k + 1) x ^ (2 * (k + 1)) ≥
           (normElemSymm k x * normElemSymm (k + 2) x) ^ (k + 1) := by
-        have : normElemSymm (k + 1) x ^ 2 ^ (k + 1) ≤
-            normElemSymm (k + 1) x ^ (2 * (k + 1)) := by
-          rw [pow_mul]
         calc normElemSymm (k + 1) x ^ (2 * (k + 1))
             = (normElemSymm (k + 1) x ^ 2) ^ (k + 1) := by rw [pow_mul]
           _ ≥ (normElemSymm k x * normElemSymm (k + 2) x) ^ (k + 1) := by
