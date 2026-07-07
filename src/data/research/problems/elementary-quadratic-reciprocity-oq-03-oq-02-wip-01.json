@@ -1,7 +1,7 @@
 {
   "slug": "elementary-quadratic-reciprocity-oq-03-oq-02-wip-01",
   "title": "Kronecker Symbol WIP Completion",
-  "phase": "NEW",
+  "phase": "PROGRESS",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -11,29 +11,53 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "kronecker_mul_right_odd: (a/mn)=(a/m)(a/n) for odd positive m,n (via jacobiSym.mul_right')",
+      "kronecker_quadratic_reciprocity: (m/n)=(-1)^((m/2)(n/2))*(n/m) for odd positive m,n (via jacobiSym.quadratic_reciprocity)",
+      "kronecker_reciprocity_one_mod_four: (m/n)=(n/m) when m%4=1 (via jacobiSym.quadratic_reciprocity_one_mod_four)"
+    ],
+    "open": [
+      "Multiplicativity in the second argument for general (even/negative) moduli",
+      "Generalized quadratic reciprocity for arbitrary fundamental discriminants (needs supplementary laws (2/n),(-1/n) + Gauss sums)"
+    ],
+    "goal": "Fill the two Section-6 stubs (mul in n, QR) with proven theorems; keep hard general cases honestly open."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-05T06:55:50.081Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "PROGRESS",
+    "since": "2026-07-07T00:00:00Z",
+    "iteration": 3,
+    "focus": "Repaired v4.26 drift across the whole file (dead trailing tactics, omega/split_ifs breakage in kronecker_eq_jacobi, Int.natAbs_ofNat rename, dangling Section-5 docstring, simp_all-shaped kroneckerNeg1_mul) and fixed a false concrete value: kronecker_neg4_values claimed (-4/3)=1 but (-4/3)=J(2|3)=-1. Machine-verified via docker-build.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Optional: general mul-in-n via 2-adic valuation + odd part factorization.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Section 6 had two dangling docstrings (parse error) for mul-in-n and generalized QR. Replaced with three proven theorems on the odd-positive-modulus range where kronecker = jacobiSym, each a direct transport of a Mathlib Jacobi lemma across the file's kronecker_eq_jacobi. Separately fixed a pre-existing build break in kronecker0_mul. Originally PR #33901 (draft, build-blocked); repaired for Mathlib v4.26 and machine-verified in the superseding PR (2026-07-07), which also corrected the false (-4/3)=1 claim in kronecker_neg4_values to -1.",
+    "builtItems": [
+      "kronecker_mul_right_odd",
+      "kronecker_quadratic_reciprocity",
+      "kronecker_reciprocity_one_mod_four",
+      "kronecker0_mul (repaired)"
+    ],
+    "insights": [
+      "For odd positive moduli the Kronecker symbol IS the Jacobi symbol (kronecker_eq_jacobi), so mul-in-n and QR come for free from jacobiSym.mul_right' and jacobiSym.quadratic_reciprocity.",
+      "No coprimality hypothesis is needed for the odd-positive QR: when gcd(m,n)>1 both sides vanish.",
+      "The general even/negative case genuinely needs the supplementary laws (2/n) and (-1/n) plus a Gauss-sum/induction combination not yet in Mathlib.",
+      "kronecker0_mul had bit-rotted: Int.isUnit_eq_one_or is now IsUnit u -> (u=1 v u=-1), not an iff; use Int.isUnit_iff instead.",
+      "kronecker_neg4_values originally claimed (-4/3)=1, which is FALSE: (-4/3)=J(-4|3)=J(2|3)=-1 (2 is a non-residue mod 3); the character of Z[i] has chi(3)=-1. Corrected to -1 and proved via kronecker_eq_jacobi + norm_num's Jacobi-symbol extension.",
+      "v4.26 drift: simp now closes the concrete kronecker2/kronecker0 value goals, leaving trailing decide/omega calls dead ('No goals to be solved'); Int.natAbs_ofNat renamed to Int.natAbs_natCast; simp_all case shapes changed under kroneckerNeg1_mul - replaced with explicit if_pos/if_neg + norm_num per sign case."
+    ],
+    "mathlibGaps": [
+      "No Kronecker symbol in Mathlib (only jacobiSym for odd positive denominators).",
+      "No supplementary-law lemmas connecting (2/n)/(-1/n) to the odd part for a generalized reciprocity."
+    ],
+    "nextSteps": [
+      "Attempt general mul-in-n by factoring n into 2-adic valuation + odd part and combining kronecker2/kroneckerNeg1 with the odd part."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -53,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-04-05T08:58:43.841Z",
-  "lastUpdate": "2026-04-05T08:58:43.841Z",
+  "lastUpdate": "2026-07-07T00:00:00Z",
   "significance": 7,
   "tractability": 6
 }
