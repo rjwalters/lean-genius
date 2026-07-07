@@ -35,6 +35,15 @@ exact logical relationships that pin down what an eventual answer must supply.
      infinite worlds, and any *positive* density is equivalent to a strong form of
      the open #1003 conjecture.
 
+  5. **The upper density is the unconditional carrier**: the natural-density
+     *limit* may fail to exist (existence is itself open), but the upper density
+     `upperDensity = limsup_N count(N)/(N+1)` always exists for our bounded
+     sequence.  We show it lies in `[0,1]`, agrees with the natural density when
+     the latter exists, vanishes on finite solution sets, and — most usefully —
+     that a *positive upper density* already forces infinitude
+     (`infinite_of_pos_upperDensity`).  This strengthens (3): one no longer needs
+     the limit to exist, only its limsup to be positive.
+
 These are fully machine-checked (0 sorry, 0 axiom) consequences of the
 definitions.  The definitions agree verbatim with the parent #1003 entry
 (`Proofs.Erdos1003Problem`) and the sibling OQ-02 file.
@@ -45,6 +54,7 @@ Reference: https://erdosproblems.com/1003
 import Mathlib.Data.Nat.Totient
 import Mathlib.Data.Set.Finite.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Topology.Algebra.Order.LiminfLimsup
 
 open Nat Set Filter Topology
 
@@ -225,5 +235,70 @@ theorem oq03_answer_constraints :
   ⟨fun _ _ => hasNaturalDensity_unique,
    fun _ => hasNaturalDensity_mem_Icc,
    fun _ => pos_density_count_unbounded⟩
+
+/-! ## Upper density (the unconditional object)
+
+The natural-density *limit* may fail to exist (its existence is itself open).
+The *upper density* — the `limsup` of the same ratios — always exists for our
+bounded sequence and is the right unconditional carrier of OQ-03.
+Recovered from PR #31611. -/
+
+/-- The upper density of the solution set: the `limsup` of the counting ratios
+`count(N)/(N+1)`.  Unlike the natural density, this always exists (the sequence
+is bounded in `[0,1]`). -/
+noncomputable def upperDensity : ℝ :=
+  limsup (fun N : ℕ => (countConsecutiveEqual N : ℝ) / (N + 1)) atTop
+
+/-- The ratio sequence is bounded above (by `1`); used to feed the `limsup`
+order lemmas. -/
+theorem isBoundedUnder_ratio :
+    IsBoundedUnder (· ≤ ·) atTop
+      (fun N : ℕ => (countConsecutiveEqual N : ℝ) / (N + 1)) :=
+  ⟨1, Filter.eventually_map.mpr (by filter_upwards with N using density_ratio_le_one N)⟩
+
+/-- The ratio sequence is cobounded above (witness `0`, since it is `≥ 0`); used
+to feed the `limsup` order lemmas. -/
+theorem isCoboundedUnder_ratio :
+    IsCoboundedUnder (· ≤ ·) atTop
+      (fun N : ℕ => (countConsecutiveEqual N : ℝ) / (N + 1)) :=
+  isCoboundedUnder_le_of_le atTop density_ratio_nonneg
+
+/-- The upper density is nonnegative. -/
+theorem upperDensity_nonneg : 0 ≤ upperDensity :=
+  Filter.le_limsup_of_frequently_le
+    (Filter.Frequently.of_forall density_ratio_nonneg) isBoundedUnder_ratio
+
+/-- The upper density never exceeds `1`. -/
+theorem upperDensity_le_one : upperDensity ≤ 1 :=
+  Filter.limsup_le_of_le isCoboundedUnder_ratio
+    (by filter_upwards with N using density_ratio_le_one N)
+
+/-- When the natural density exists it coincides with the upper density (the
+`limsup` of a convergent sequence is its limit). -/
+theorem upperDensity_eq_of_hasNaturalDensity {d : ℝ} (h : HasNaturalDensity d) :
+    upperDensity = d :=
+  h.limsup_eq
+
+/-- If the solution set is finite, its upper density is `0`. -/
+theorem upperDensity_zero_of_finite
+    (hfin : ConsecutiveEqualTotients.Finite) : upperDensity = 0 :=
+  (hasNaturalDensity_zero_of_finite hfin).limsup_eq
+
+/-- A *positive upper density* already forces the solution set to be infinite —
+strengthening `infinite_of_pos_density`, since the upper density always exists
+whereas the natural-density limit may not.  (Proof: a finite set has upper
+density `0`.) -/
+theorem infinite_of_pos_upperDensity (h : 0 < upperDensity) :
+    ConsecutiveEqualTotients.Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  rw [upperDensity_zero_of_finite hfin] at h
+  exact lt_irrefl 0 h
+
+-- Axiom audits (expected: propext, Classical.choice, Quot.sound only)
+#print axioms infinite_of_pos_upperDensity
+#print axioms upperDensity_eq_of_hasNaturalDensity
+#print axioms upperDensity_nonneg
+#print axioms upperDensity_le_one
 
 end Erdos1003.OQ03

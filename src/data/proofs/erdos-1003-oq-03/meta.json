@@ -20,9 +20,9 @@
     "badge": "verified",
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 229,
-    "theoremCount": 14,
-    "definitionCount": 3,
+    "lineCount": 304,
+    "theoremCount": 21,
+    "definitionCount": 4,
     "dateAdded": "2026-06-28",
     "assumptions": "0 sorries, 0 axioms (only propext / Classical.choice / Quot.sound, the foundational Lean axioms). Fully machine-verified; no native_decide. Does NOT resolve the open question — it formalizes the logical scaffolding of the density question and its exact relationship to the (open) infinitude conjecture.",
     "originalContributions": [
@@ -34,7 +34,8 @@
       "hasNaturalDensity_unique: the natural density, when it exists, is unique (limits in ℝ are unique; atTop is NeBot). So OQ-03 asks for a well-defined real number, not merely some limit point of the ratios.",
       "hasNaturalDensity_nonneg / hasNaturalDensity_le_one / hasNaturalDensity_mem_Icc: any natural density lies in [0,1] — the density ratio is confined to [0,1] (density_ratio_nonneg / density_ratio_le_one), so its limit is, via ge_of_tendsto' / le_of_tendsto'. An admissible answer to OQ-03 must be a unit-interval real.",
       "pos_density_count_unbounded: a positive density makes the counting function unbounded — threading the density view back to the counting/infinitude view by composing infinite_of_pos_density with infinite_iff_count_unbounded. Contrapositively, while #1003's infinitude is open, no positive density can be exhibited (the counting-function sharpening of infinite_of_pos_density).",
-      "oq03_answer_constraints: bundled summary — any answer d is unique, lies in [0,1], and is positive only if the counting function is unbounded (i.e. the solution set is infinite, the open #1003)."
+      "oq03_answer_constraints: bundled summary — any answer d is unique, lies in [0,1], and is positive only if the counting function is unbounded (i.e. the solution set is infinite, the open #1003).",
+      "infinite_of_pos_upperDensity (with upperDensity := limsup count(N)/(N+1)): a strengthening of infinite_of_pos_density. Since the natural-density LIMIT may fail to exist (its existence is itself part of the open question), the upper density (limsup) is the right unconditional carrier — it always exists for the bounded ratio sequence. We prove it lies in [0,1] (upperDensity_nonneg via le_limsup_of_frequently_le, upperDensity_le_one via the cobounded ratio lemma), coincides with the natural density when the latter exists (upperDensity_eq_of_hasNaturalDensity, the limsup of a convergent sequence), and vanishes on finite solution sets (upperDensity_zero_of_finite). Hence a positive UPPER density already forces infinitude, with no need to assume the limit exists."
     ],
     "mathlibDependencies": [
       {
@@ -56,6 +57,11 @@
         "theorem": "tendsto_nhds_unique",
         "description": "Limits in a Hausdorff space are unique. Turns 'finite ⇒ density 0' into 'positive density ⇒ infinite' by contradiction, and gives uniqueness of the natural density (hasNaturalDensity_unique).",
         "module": "Mathlib.Topology.Separation.Hausdorff"
+      },
+      {
+        "theorem": "Filter.Tendsto.limsup_eq / le_limsup_of_frequently_le / limsup_le_of_le / isCoboundedUnder_le_of_le",
+        "description": "The limsup toolkit for the upper-density layer: the limsup of a convergent sequence is its limit (upperDensity_eq_of_hasNaturalDensity, upperDensity_zero_of_finite), and the frequently/eventually order lemmas with the bounded/cobounded ratio witnesses confine upperDensity to [0,1].",
+        "module": "Mathlib.Order.LiminfLimsup"
       },
       {
         "theorem": "le_of_tendsto' / ge_of_tendsto'",
@@ -129,6 +135,14 @@
       "startLine": 125,
       "endLine": 175,
       "mathContext": "Finite $\\Rightarrow$ density $0$ (squeeze $0 \\le \\text{count}/(N+1) \\le C/(N+1) \\to 0$); density $> 0 \\Rightarrow$ infinite."
+    },
+    {
+      "id": "upper-density",
+      "title": "Upper Density — the Unconditional Object",
+      "summary": "upperDensity := limsup count(N)/(N+1) always exists (bounded sequence), unlike the natural-density limit whose existence is itself open. Proved: upperDensity ∈ [0,1] (upperDensity_nonneg, upperDensity_le_one via the bounded/cobounded ratio lemmas), coincidence with the natural density when it exists (upperDensity_eq_of_hasNaturalDensity), vanishing on finite solution sets (upperDensity_zero_of_finite), and the headline infinite_of_pos_upperDensity: a positive limsup already forces infinitude — strengthening infinite_of_pos_density by removing the limit-existence hypothesis.",
+      "startLine": 239,
+      "endLine": 303,
+      "mathContext": "$\\overline{d} := \\limsup_N \\text{count}(N)/(N+1) \\in [0,1]$ always exists; $\\overline{d} > 0 \\Rightarrow$ infinite; $\\overline{d} = d$ whenever the natural density $d$ exists."
     }
   ],
   "conclusion": {
@@ -136,7 +150,7 @@
     "implications": "**Frames an open question**: locates OQ-03's difficulty precisely — positivity of the density is equivalent to (a strong form of) the open #1003 conjecture, while the conjectured value 0 is the finiteness baseline. **Connects siblings**: the bridge theorem ties the density view to the infinitude view formalized by the parent and OQ-02. **Honest scope**: the analytic Erdős–Pomerance–Sárközy sparsity bound that would establish density exactly 0 is cited as an external input, not claimed.",
     "openQuestions": [
       "Formalize the Erdős–Pomerance–Sárközy upper bound #{n ≤ x : φ(n)=φ(n+1)} ≤ x/exp((log x)^{1/3}), which would give natural density 0 unconditionally (independent of infinitude).",
-      "Is the natural density even known to exist (i.e. does count/(N+1) converge), or only that its limsup is 0? Formalize the upper-density formulation and its relationship to the limit formulation used here."
+      "The upper-density (limsup) formulation and its relationship to the limit formulation is now formalized (upperDensity, infinite_of_pos_upperDensity); it remains open whether the natural density exists at all (does count/(N+1) converge?), and whether upperDensity = 0 unconditionally (which the EPS sparsity bound would give)."
     ]
   },
   "crossReferences": [
@@ -160,7 +174,8 @@
     "imports": [
       "Mathlib.Data.Nat.Totient",
       "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.Analysis.SpecificLimits.Basic"
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup"
     ],
     "opens": [
       "Nat",
@@ -169,10 +184,10 @@
       "Topology"
     ],
     "namespace": "Erdos1003.OQ03",
-    "lineCount": 229,
+    "lineCount": 304,
     "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 3,
+    "theoremCount": 21,
+    "definitionCount": 4,
     "path": "Proofs/Erdos1003OQ03.lean",
     "sorries": 0
   },
