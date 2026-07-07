@@ -445,16 +445,21 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
     simp only [hAD_def]; nlinarith [mul_nonneg ha_nn hd_nn, mul_nonneg hb_nn hc_nn]
   -- binom_ineq ↔ c²·AD ≥ bd·B2
   have h_c2AD_ge_bdB2 : c ^ 2 * AD ≥ b * d * B2 := by nlinarith [h_binom]
-  -- Algebraic identity gives dual: b²·AD ≥ ac·B2
-  have h_binom_symm : (c ^ 2 - b ^ 2) * AD = (b * d - a * c) * B2 := by
-    simp only [hAD_def, hB2_def]; ring
+  -- Dual inequality b²·AD ≥ ac·B2 (from binom_ineq_dual — the earlier
+  -- `(c²-b²)·AD = (b·d-a·c)·B2` "symmetry" was not a ring identity).
+  have h_binom_dual := binom_ineq_dual m k hk hm_eq
   have h_b2AD_ge_acB2 : b ^ 2 * AD ≥ a * c * B2 := by
-    nlinarith [h_c2AD_ge_bdB2, h_binom_symm]
+    simp only [hAD_def, hB2_def]; simp only [ha_def, hb_def, hc_def, hd_def] at h_binom_dual ⊢
+    linarith [h_binom_dual]
   -- Positivity of binomial coefficients
-  have hb_pos : (0 : ℝ) < b := by exact_mod_cast Nat.choose_pos (show k - 1 ≤ m by omega)
-  have hc_pos : (0 : ℝ) < c := by exact_mod_cast Nat.choose_pos (show k ≤ m by omega)
-  have hd_pos : (0 : ℝ) < d := by exact_mod_cast Nat.choose_pos (show k + 1 ≤ m by omega)
-  have ha_pos : (0 : ℝ) < a := by exact_mod_cast Nat.choose_pos (show k - 2 ≤ m by omega)
+  have hb_pos : (0 : ℝ) < b := by
+    rw [hb_def]; exact_mod_cast Nat.choose_pos (show k - 1 ≤ m by omega)
+  have hc_pos : (0 : ℝ) < c := by
+    rw [hc_def]; exact_mod_cast Nat.choose_pos (show k ≤ m by omega)
+  have hd_pos : (0 : ℝ) < d := by
+    rw [hd_def]; exact_mod_cast Nat.choose_pos (show k + 1 ≤ m by omega)
+  have ha_pos : (0 : ℝ) < a := by
+    rw [ha_def]; exact_mod_cast Nat.choose_pos (show k - 2 ≤ m by omega)
   --
   -- Step 2: γ ≥ 0
   have hγ : ek ^ 2 * AD ≥ ekm1 * ekp1 * B2 := by
@@ -483,34 +488,69 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
     linarith [mul_neg_of_pos_of_neg (mul_pos ha_pos hc_pos) (by linarith :
       ekm1 ^ 2 * AD - ekm2 * ek * B2 < 0)]
   --
-  -- Step 4: Discriminant 4αγ ≥ β²
-  have hdisc : 4 * (ekm1 ^ 2 * AD - ekm2 * ek * B2) *
-      (ek ^ 2 * AD - ekm1 * ekp1 * B2) ≥
-      (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2) ^ 2 := by
-    -- Non-negative excess terms from IH and log-concavity
-    have δ₁ : 0 ≤ ek ^ 2 * (b * d) - ekm1 * ekp1 * c ^ 2 := by nlinarith [h_ih_k]
-    have δ₂ : 0 ≤ ekm1 ^ 2 * (a * c) - ekm2 * ek * b ^ 2 := by nlinarith [h_ih_km1]
-    have hU : 0 ≤ ek ^ 2 - ekm1 * ekp1 := by nlinarith [h_unn_k]
-    have hV : 0 ≤ ekm1 ^ 2 - ekm2 * ek := by nlinarith [h_unn_km1]
-    have hW : 0 ≤ ek * ekm1 - ekm2 * ekp1 := by nlinarith [h_cross]
-    -- Products of excess terms (all non-negative)
-    nlinarith [mul_nonneg δ₁ hV, mul_nonneg δ₂ hU, mul_nonneg δ₁ δ₂,
-               mul_nonneg (mul_nonneg hW hekm2_nn) hekp1_nn,
-               sq_nonneg (ek * ekm1 - ekm2 * ekp1),
-               sq_nonneg ((ek ^ 2 - ekm1 * ekp1) * ekm2 * ekp1),
-               sq_nonneg (ek * ekm1 * c - ekm2 * ekp1 * b),
-               sq_nonneg (ek * ekm1 * d - ekm2 * ekp1 * c),
-               mul_nonneg (by nlinarith [h_c2AD_ge_bdB2] : 0 ≤ c ^ 2 * AD - b * d * B2) hU,
-               mul_nonneg (by nlinarith [h_b2AD_ge_acB2] : 0 ≤ b ^ 2 * AD - a * c * B2) hV,
-               mul_nonneg hek_nn hekm1_nn, mul_nonneg hekm2_nn hekp1_nn,
-               mul_nonneg (mul_nonneg hek_nn hekm1_nn) (mul_nonneg hekm2_nn hekp1_nn)]
+  -- Step 4: the quadratic α·t² + β·t + γ is non-negative for t ≥ 0.
+  -- Case split on the sign of β = 2·ek·ekm1·AD − (ek·ekm1 + ekm2·ekp1)·B2:
+  -- for β ≥ 0 all coefficients are non-negative; for β ≤ 0 the discriminant
+  -- inequality 4αγ ≥ β² holds (newton_disc_of_beta_nonpos — it is genuinely
+  -- FALSE without the β ≤ 0 restriction, which is why no nlinarith hint list
+  -- could ever close the former unconditional `hdisc` goal).
+  have h_quad : (ekm1 ^ 2 * AD - ekm2 * ek * B2) * t ^ 2 +
+      (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2) * t +
+      (ek ^ 2 * AD - ekm1 * ekp1 * B2) ≥ 0 := by
+    by_cases hbsign : 0 ≤ 2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2
+    · -- β ≥ 0: every coefficient of the quadratic is non-negative
+      have h1t : 0 ≤ (ekm1 ^ 2 * AD - ekm2 * ek * B2) * t ^ 2 :=
+        mul_nonneg (by linarith [hα]) (sq_nonneg t)
+      have h2t : 0 ≤ (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2) * t :=
+        mul_nonneg hbsign ht_nn
+      have h3t : 0 ≤ ek ^ 2 * AD - ekm1 * ekp1 * B2 := by linarith [hγ]
+      linarith
+    · -- β < 0: discriminant argument
+      push_neg at hbsign
+      -- absorption identities for the level-m binomial coefficients
+      have habs1 : (k : ℝ) * c = ((m : ℝ) - k + 1) * b := by
+        rw [hb_def, hc_def]
+        have h := Nat.choose_succ_right_eq m (k - 1)
+        rw [show k - 1 + 1 = k from by omega,
+            show m - (k - 1) = m - k + 1 from by omega] at h
+        have h' := congr_arg (Nat.cast : ℕ → ℝ) h
+        push_cast at h' ⊢
+        rw [Nat.cast_sub (show k ≤ m by omega)] at h'
+        linarith
+      have habs2 : ((k : ℝ) + 1) * d = (((m : ℝ) - k + 1) - 1) * c := by
+        rw [hc_def, hd_def]
+        have h := Nat.choose_succ_right_eq m k
+        have h' := congr_arg (Nat.cast : ℕ → ℝ) h
+        push_cast at h' ⊢
+        rw [Nat.cast_sub (show k ≤ m by omega)] at h'
+        linarith
+      have habs3 : (((m : ℝ) - k + 1) + 1) * a = ((k : ℝ) - 1) * b := by
+        rw [ha_def, hb_def]
+        have h := Nat.choose_succ_right_eq m (k - 2)
+        rw [show k - 2 + 1 = k - 1 from by omega,
+            show m - (k - 2) = m - k + 2 from by omega] at h
+        have h' := congr_arg (Nat.cast : ℕ → ℝ) h
+        push_cast at h' ⊢
+        rw [Nat.cast_sub (show 1 ≤ k by omega), Nat.cast_sub (show k ≤ m by omega),
+            Nat.cast_one] at h'
+        linarith
+      have hk2R : (2 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+      have hr2R : (2 : ℝ) ≤ (m : ℝ) - k + 1 := by
+        have h : (k : ℝ) + 1 ≤ (m : ℝ) := by exact_mod_cast hm_eq
+        linarith
+      have hdisc := newton_disc_of_beta_nonpos (k : ℝ) ((m : ℝ) - k + 1) a b c d
+        hk2R hr2R ha_pos hb_pos hc_pos hd_pos habs1 habs2 habs3
+        ekm2 ekm1 ek ekp1 hekm2_nn hekm1_nn hek_nn hekp1_nn
+        h_ih_k h_ih_km1 h_cross
+        (by rw [← hAD_def, ← hB2_def]; linarith)
+      rw [← hAD_def, ← hB2_def] at hdisc
+      exact quadratic_nonneg
+        (ekm1 ^ 2 * AD - ekm2 * ek * B2)
+        (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2)
+        (ek ^ 2 * AD - ekm1 * ekp1 * B2)
+        t ht_nn (by linarith [hα]) (by linarith [hγ]) (by linarith [hdisc])
   --
-  -- Step 5: Apply quadratic_nonneg and connect to goal
-  have h_quad := quadratic_nonneg
-    (ekm1 ^ 2 * AD - ekm2 * ek * B2)
-    (2 * ek * ekm1 * AD - (ek * ekm1 + ekm2 * ekp1) * B2)
-    (ek ^ 2 * AD - ekm1 * ekp1 * B2)
-    t ht_nn (by linarith [hα]) (by linarith [hγ]) hdisc
+  -- Step 5: connect the quadratic to the goal
   -- Ring identity: LHS - RHS = α·t² + β·t + γ
   have h_ring : (ek + t * ekm1) ^ 2 * AD - (ekm1 + t * ekm2) * (ekp1 + t * ek) * B2 =
       (ekm1 ^ 2 * AD - ekm2 * ek * B2) * t ^ 2 +

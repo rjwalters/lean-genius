@@ -165,7 +165,7 @@ theorem power_inequality (k : ℕ) (hkn : k + 1 ≤ n)
         calc normElemSymm (k + 1) x ^ (2 * (k + 1))
             = (normElemSymm (k + 1) x ^ 2) ^ (k + 1) := by rw [pow_mul]
           _ ≥ (normElemSymm k x * normElemSymm (k + 2) x) ^ (k + 1) := by
-              apply pow_le_pow_left (mul_nonneg hak hak2) hlc
+              apply pow_le_pow_left₀ (mul_nonneg hak hak2) hlc
       -- Expand the RHS
       rw [mul_pow] at hlc_pow
       -- From IH: a_k^{k+1} ≥ a_{k+1}^k
