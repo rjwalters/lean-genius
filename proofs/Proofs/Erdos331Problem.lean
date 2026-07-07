@@ -27,10 +27,16 @@
 import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Nat.Digits
+import Mathlib.Data.Nat.Digits.Defs
 import Mathlib.Order.Filter.Basic
+import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib.Order.Interval.Finset.Nat
+import Mathlib.Data.Set.Finite.Basic
+import Mathlib.Topology.Basic
+import Mathlib.Topology.Algebra.InfiniteSum.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
-open Real Filter
+open Real Filter Classical
 
 namespace Erdos331
 
@@ -39,7 +45,7 @@ namespace Erdos331
 -/
 
 /-- The counting function for a set A up to N. -/
-def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
+noncomputable def countingFunction (A : Set ℕ) (N : ℕ) : ℕ :=
   (Finset.filter (fun n => n ∈ A) (Finset.Icc 1 N)).card
 
 /-- A set has density at least α if |A ∩ {1,...,N}| ≥ c · N^α for large N. -/
@@ -108,9 +114,10 @@ axiom ruzsaA_has_sqrt_density : HasSqrtDensity ruzsaA
 /-- Ruzsa's B has density ≫ N^{1/2}. -/
 axiom ruzsaB_has_sqrt_density : HasSqrtDensity ruzsaB
 
-/-- Key property: every n ≥ 1 has a UNIQUE representation n = a + b
-    with a ∈ ruzsaA and b ∈ ruzsaB. -/
 /-
+  Key property: every n ≥ 1 has a UNIQUE representation n = a + b
+  with a ∈ ruzsaA and b ∈ ruzsaB.
+
 ## Part V: The Disproof
 -/
 
@@ -127,8 +134,9 @@ theorem ruzsa_counterexample :
   refine ⟨ruzsaA_has_sqrt_density, ruzsaB_has_sqrt_density, ?_⟩
   intro h
   have : commonDifferences ruzsaA ruzsaB = ∅ := ruzsa_no_common_differences
+  unfold HasInfinitelyManyCommonDifferences at h
   rw [this] at h
-  exact Set.not_infinite_empty h
+  exact Set.finite_empty.not_infinite h
 
 /-- **Erdős Problem #331: DISPROVED**
     The conjecture is FALSE. -/
@@ -145,11 +153,13 @@ theorem erdos_331_disproved : ¬ErdosConjecture331 := by
 def ruzsaA_characterization : Prop :=
   ∀ n : ℕ, n ∈ ruzsaA ↔ ∃ f : ℕ → Fin 2, n = ∑' k, (f k : ℕ) * 4^k
 
-/-- The elements of ruzsaB are 2 times elements of ruzsaA.
-    Axiomatized because the proof requires unfolding the digit
-    representation construction in detail. -/
-/-- The growth rate is exactly √N (up to constants). -/
 /-
+  The elements of ruzsaB are 2 times elements of ruzsaA.
+  Axiomatized because the proof requires unfolding the digit
+  representation construction in detail.
+
+  The growth rate is exactly √N (up to constants).
+
 ## Part VII: Ruzsa's Stronger Variant
 -/
 
@@ -160,11 +170,12 @@ def RuzsaVariant : Prop :=
     HasExactSqrtDensity A cA → HasExactSqrtDensity B cB →
     HasInfinitelyManyCommonDifferences A B
 
-/-- **OPEN:** Ruzsa's variant with exact sqrt density is unresolved.
-    Even with the stronger condition |A ∩ {1,...,N}| ~ c·N^{1/2},
-    it is unknown whether the sets must share infinitely many common
-    differences. Axiomatized as an open conjecture. -/
 /-
+  **OPEN:** Ruzsa's variant with exact sqrt density is unresolved.
+  Even with the stronger condition |A ∩ {1,...,N}| ~ c·N^{1/2},
+  it is unknown whether the sets must share infinitely many common
+  differences. Axiomatized as an open conjecture.
+
 ## Part VIII: The Difference Set
 -/
 
@@ -172,7 +183,7 @@ def RuzsaVariant : Prop :=
 def differenceSet (A : Set ℕ) : Set ℤ :=
   { d | ∃ a a' : ℕ, a ∈ A ∧ a' ∈ A ∧ d = (a : ℤ) - a' }
 
-/-- For Ruzsa's A, the difference set is sparse. -/
+/- For Ruzsa's A, the difference set is sparse. -/
 /-- This sparseness is why common differences can be avoided. -/
 def sparseness_explanation : Prop :=
   -- If A - A and B - B are both sparse (density N^{1/2}),
@@ -183,7 +194,7 @@ def sparseness_explanation : Prop :=
 ## Part IX: Comparison with Larger Densities
 -/
 
-/-- For density > N^{1/2}, common differences exist. -/
+/- For density > N^{1/2}, common differences exist. -/
 /-- The threshold N^{1/2} is critical. -/
 def threshold_critical : Prop :=
   -- At density > N^{1/2}: common differences guaranteed
