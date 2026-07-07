@@ -27,11 +27,10 @@ References:
   Maclaurin, C. (1729): Original derivation
 -/
 
-import Proofs.AmgmInequalityOQ02Defs
 import Proofs.AmgmInequalityOQ02
 import Proofs.AmgmInequalityOQ02OQ02
 
-open Finset Real AmgmInequalityOQ02
+open Finset Real
 
 namespace AmgmInequalityOQ02OQ03
 
@@ -67,9 +66,9 @@ private lemma normElemSymm_zero_succ (m : ℕ) (x : Fin n → ℝ)
   unfold elemSymm at h_elem ⊢
   -- Each m-subset product is 0 (non-negative sum = 0 implies each term = 0)
   have h_terms : ∀ s ∈ (Finset.univ : Finset (Fin n)).powersetCard m,
-      ∏ i in s, x i = 0 := by
+      ∏ i ∈ s, x i = 0 := by
     intro s hs
-    have h_le := Finset.single_le_sum
+    have h_le := Finset.single_le_sum (f := fun s => ∏ i ∈ s, x i)
       (fun t _ => Finset.prod_nonneg fun i _ => hx i) hs
     have h_ge := Finset.prod_nonneg (s := s) fun i _ => hx i
     linarith
@@ -117,7 +116,7 @@ theorem power_inequality (k : ℕ) (hkn : k + 1 ≤ n)
   | succ k ih =>
     -- ih : a_k^{k+1} ≥ a_{k+1}^k (under appropriate hypotheses)
     have hkn' : k + 1 ≤ n := by omega
-    have ih_applied := ih hkn' x hx
+    have ih_applied := ih hkn'
     -- Newton's log-concavity at k+1: a_{k+1}² ≥ a_k · a_{k+2}
     have hlc := newton_lc (k + 1) (by omega) hkn x hx
     simp only [show k + 1 - 1 = k from by omega] at hlc
@@ -136,7 +135,8 @@ theorem power_inequality (k : ℕ) (hkn : k + 1 ≤ n)
     by_cases hak1_pos : normElemSymm (k + 1) x = 0
     · -- Case: a_{k+1} = 0
       -- From LC: 0 ≥ a_k * a_{k+2}, so a_k = 0 or a_{k+2} = 0
-      have : normElemSymm k x * normElemSymm (k + 2) x ≤ 0 := by linarith [hlc, hak1_pos]
+      have : normElemSymm k x * normElemSymm (k + 2) x ≤ 0 := by
+        nlinarith [hlc, hak1_pos]
       have : normElemSymm k x * normElemSymm (k + 2) x = 0 := by
         linarith [mul_nonneg hak hak2]
       have hak2_zero : normElemSymm (k + 2) x = 0 := by
@@ -159,13 +159,10 @@ theorem power_inequality (k : ℕ) (hkn : k + 1 ≤ n)
       -- Raise LC to (k+1)-th power
       have hlc_pow : normElemSymm (k + 1) x ^ (2 * (k + 1)) ≥
           (normElemSymm k x * normElemSymm (k + 2) x) ^ (k + 1) := by
-        have : normElemSymm (k + 1) x ^ 2 ^ (k + 1) ≤
-            normElemSymm (k + 1) x ^ (2 * (k + 1)) := by
-          rw [pow_mul]
         calc normElemSymm (k + 1) x ^ (2 * (k + 1))
             = (normElemSymm (k + 1) x ^ 2) ^ (k + 1) := by rw [pow_mul]
           _ ≥ (normElemSymm k x * normElemSymm (k + 2) x) ^ (k + 1) := by
-              apply pow_le_pow_left (mul_nonneg hak hak2) hlc
+              apply pow_le_pow_left₀ (mul_nonneg hak hak2) hlc
       -- Expand the RHS
       rw [mul_pow] at hlc_pow
       -- From IH: a_k^{k+1} ≥ a_{k+1}^k
@@ -211,8 +208,15 @@ theorem maclaurin_step_from_newton (k : ℕ) (hk : 0 < k) (hkn : k + 1 ≤ n)
   have hkk1_pos : (0 : ℝ) < k * (k + 1) := by positivity
   -- (a_k^{k+1})^{1/(k(k+1))} = a_k^{(k+1)/(k(k+1))} = a_k^{1/k}
   -- (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{k/(k(k+1))} = a_{k+1}^{1/(k+1)}
-  have h_exp1 : (1 : ℝ) / k = (↑(k + 1)) / (↑k * (↑k + 1)) := by field_simp
-  have h_exp2 : (1 : ℝ) / (k + 1) = (↑k) / (↑k * (↑k + 1)) := by field_simp
+  have h_exp1 : (1 : ℝ) / k = (↑(k + 1)) / (↑k * (↑k + 1)) := by
+    rw [div_eq_div_iff hk_pos.ne' hkk1_pos.ne']
+    push_cast
+    ring
+  have h_exp2 : (1 : ℝ) / (↑(k + 1) : ℝ) = (↑k) / (↑k * (↑k + 1)) := by
+    rw [div_eq_div_iff (by exact_mod_cast Nat.succ_pos k : (0 : ℝ) < (↑(k + 1) : ℝ)).ne'
+      hkk1_pos.ne']
+    push_cast
+    ring
   rw [show elemSymm k x / (↑(Nat.choose n k) : ℝ) = normElemSymm k x from rfl,
       show elemSymm (k + 1) x / (↑(Nat.choose n (k + 1)) : ℝ) = normElemSymm (k + 1) x from rfl]
   rw [h_exp1, h_exp2]

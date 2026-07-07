@@ -55,41 +55,41 @@
     {
       "id": "docstring-imports",
       "title": "Documentation and Imports",
-      "summary": "Module docstring explaining the Maclaurin chain derivation from Newton's log-concavity, the power inequality strategy, and axiom status. Imports the parent AmgmInequalityOQ02 definitions and theorems, plus the shared definitions module AmgmInequalityOQ02Defs.",
+      "summary": "Module docstring explaining the Maclaurin chain derivation from Newton's log-concavity, the power inequality strategy, and axiom status. Imports the parent AmgmInequalityOQ02 definitions and theorems, plus AmgmInequalityOQ02OQ02 (the fully proved Newton log-concavity).",
       "startLine": 1,
-      "endLine": 34
+      "endLine": 33
     },
     {
       "id": "definitions",
       "title": "Normalized ESP Definitions and Helpers",
       "summary": "Defines normElemSymm k x = eₖ/C(n,k), proves normElemSymm_zero = 1, normElemSymm_nonneg ≥ 0, zero propagation (private), and newton_lc (restates newton_log_concavity for normalized inputs).",
-      "startLine": 35,
-      "endLine": 86,
+      "startLine": 34,
+      "endLine": 99,
       "mathContext": "$a_k := e_k/\\binom{n}{k}$; $a_0 = 1$; $a_k \\geq 0$ for non-negative inputs. Zero propagation: $a_m = 0 \\Rightarrow a_{m+1} = 0$ (used as boundary case in the induction). Newton log-concavity: $a_k^2 \\geq a_{k-1} a_{k+1}$."
     },
     {
       "id": "power-inequality",
       "title": "Power Inequality: aₖ^{k+1} ≥ aₖ₊₁^k",
       "summary": "Proves aₖ^{k+1} ≥ aₖ₊₁^k by induction on k. Base: trivial (a₀ = 1). Inductive step: raise Newton's log-concavity to (k+1)-th power, combine with IH to get a_{k+1}^{2(k+1)} ≥ a_{k+1}^k · a_{k+2}^{k+1}, then divide by a_{k+1}^k (or handle zero case via normElemSymm_zero_succ).",
-      "startLine": 88,
-      "endLine": 175,
+      "startLine": 100,
+      "endLine": 186,
       "mathContext": "$a_k^{k+1} \\geq a_{k+1}^k$ where $a_k = e_k/\\binom{n}{k}$. The induction: raise $a_k^2 \\geq a_{k-1} a_{k+1}$ to the $k$-th power, use IH $a_{k-1}^k \\geq a_k^{k-1}$, and cancel. Zero case: if $a_{k+1} = 0$, then $a_{k+2} = 0$ by zero propagation, making the goal trivial."
     },
     {
       "id": "maclaurin-step",
       "title": "Maclaurin Step via rpow Monotonicity",
       "summary": "Derives Mₖ ≥ Mₖ₊₁ from the power inequality by taking the 1/(k(k+1))-th root. Uses rpow_natCast_mul and rpow_le_rpow. Exponent algebra via field_simp: 1/k = (k+1)/(k(k+1)) and 1/(k+1) = k/(k(k+1)).",
-      "startLine": 177,
-      "endLine": 213,
+      "startLine": 187,
+      "endLine": 231,
       "mathContext": "$M_k = a_k^{1/k} = (a_k^{k+1})^{1/(k(k+1))} \\geq (a_{k+1}^k)^{1/(k(k+1))} = a_{k+1}^{1/(k+1)} = M_{k+1}$. Lean: `rpow_natCast_mul` rewrites $(a^n)^r = a^{nr}$; `rpow_le_rpow` applies the monotonicity $a \\leq b \\Rightarrow a^r \\leq b^r$ for non-negative reals."
     },
     {
       "id": "summary",
       "title": "Summary: maclaurin_step Now a Theorem",
-      "summary": "maclaurin_step_proved is a one-line wrapper around maclaurin_step_from_newton, explicitly marking the axiom elimination. The remaining dependency is newton_log_concavity (axiomatized in the parent file).",
-      "startLine": 215,
-      "endLine": 226,
-      "mathContext": "$M_k \\geq M_{k+1}$ for $k \\geq 1$ and non-negative inputs — proved, not assumed. The only remaining axiom is `newton_log_concavity`: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$."
+      "summary": "maclaurin_step_proved is a one-line wrapper around maclaurin_step_from_newton, explicitly marking the axiom elimination. Newton log-concavity itself is supplied by the proved theorem NewtonLogConcavity.newton_log_concavity_proved (AmgmInequalityOQ02OQ02.lean), so no axiom remains in this chain.",
+      "startLine": 232,
+      "endLine": 242,
+      "mathContext": "$M_k \\geq M_{k+1}$ for $k \\geq 1$ and non-negative inputs — proved, not assumed. Newton's log-concavity input is the proved `newton_log_concavity_proved`: $(e_k/\\binom{n}{k})^2 \\geq (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$."
     }
   ],
   "conclusion": {
@@ -139,7 +139,7 @@
       "AmgmInequalityOQ02"
     ],
     "namespace": "AmgmInequalityOQ02OQ03",
-    "lineCount": 238,
+    "lineCount": 242,
     "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 1,

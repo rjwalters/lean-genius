@@ -151,6 +151,266 @@ theorem binom_ineq (m k : ℕ) (hk : 2 ≤ k) (hkm : k + 1 ≤ m) :
     2 * (k : ℝ) * (r ^ 2 - 1) * key3 -
     (k : ℝ) ^ 2 * (r + 1) * key2
 
+set_option maxHeartbeats 800000 in
+/-- **Core discriminant inequality (normalized form)** for the normalized-Newton
+    inductive step, valid whenever the linear coefficient
+    `β̂ = (kr−k−r−1)·e₂e₃ − (k+1)(r+1)·e₁e₄` is non-positive (which is the only
+    case in which the discriminant is needed: for `β ≥ 0` the quadratic
+    `α·t² + β·t + γ` is trivially non-negative for `t ≥ 0`).
+
+    Here `e1 e2 e3 e4` stand for `e_{k−2}(y), …, e_{k+1}(y)` and the binomial
+    structure has been normalized away via the absorption identities (with
+    `r = m−k+1`): `hP1`/`hP2` are the two normalized-Newton inductive hypotheses
+    and `hcross` the cross-product inequality.
+
+    The proof is the exact algebraic certificate (verified by `ring`): with
+    `α̂ = kr·e₂² − (k+1)(r+1)e₁e₃`, `γ̂ = kr·e₃² − (k+1)(r+1)e₂e₄`,
+    `P̂₁ = k(r−1)e₃² − r(k+1)e₂e₄`, `P̂₂ = (k−1)r·e₂² − k(r+1)e₁e₃`,
+    `Ŝ = (r−1)P̂₂e₃² + (r+1)P̂₁e₁e₃`,
+
+    `kr·e₂²e₃²·(4α̂γ̂ − β̂²)
+       = 2k(2k+r+1)·P̂₂·e₂²e₃⁴ + 2r(k+2r+1)·P̂₁·e₂⁴e₃²
+       + 2(2kr+2k+2r+1)·P̂₁P̂₂·e₂²e₃² + k·Ŝ·e₂e₃·(−β̂)`,
+
+    in which every summand is visibly non-negative (the last one because
+    `β̂ ≤ 0`). Equality holds exactly at geometric data (all inputs equal), which
+    is why no slack-based `nlinarith` hint list could close this goal, and the
+    inequality is genuinely FALSE without the `β̂ ≤ 0` restriction. -/
+theorem newton_disc_hat (k r : ℝ) (hk : 2 ≤ k) (hr : 2 ≤ r)
+    (e1 e2 e3 e4 : ℝ) (he1 : 0 ≤ e1) (he2 : 0 ≤ e2) (he3 : 0 ≤ e3) (he4 : 0 ≤ e4)
+    (hP1 : 0 ≤ k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4))
+    (hP2 : 0 ≤ (k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3))
+    (hcross : e1 * e4 ≤ e3 * e2)
+    (hbeta : (k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4) ≤ 0) :
+    ((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4)) ^ 2 ≤
+      4 * (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) *
+        (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) := by
+  have hk0 : (0 : ℝ) < k := by linarith
+  have hr0 : (0 : ℝ) < r := by linarith
+  have hk1 : (0 : ℝ) < k + 1 := by linarith
+  have hr1 : (0 : ℝ) < r + 1 := by linarith
+  -- Degenerate case: e2·e3 = 0 forces both sides to vanish.
+  rcases eq_or_lt_of_le (mul_nonneg he2 he3) with h23 | h23
+  · have h14 : e1 * e4 = 0 :=
+      le_antisymm (by linarith [hcross]) (mul_nonneg he1 he4)
+    rcases mul_eq_zero.mp h23.symm with h20 | h30
+    · -- e2 = 0: hP2 forces e1·e3 = 0, so both sides vanish
+      have h22 : (k - 1) * r * e2 ^ 2 = 0 := by rw [h20]; ring
+      have h13 : e1 * e3 = 0 := by
+        rcases eq_or_lt_of_le (mul_nonneg he1 he3) with h | h
+        · exact h.symm
+        · exfalso
+          have := mul_pos (mul_pos hk0 hr1) h
+          linarith [hP2, h22]
+      have hL : ((k * r - k - r - 1) * (e2 * e3) -
+          (k + 1) * (r + 1) * (e1 * e4)) ^ 2 = 0 := by
+        rw [h20, h14]; ring
+      have hR : (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) = 0 := by
+        rw [h20, h13]; ring
+      have hR0 : 0 ≤ 4 * (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) *
+          (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) := by
+        rw [hR]; simp
+      linarith [hL, hR0]
+    · -- e3 = 0: hP1 forces e2·e4 = 0, so both sides vanish
+      have h33 : k * (r - 1) * e3 ^ 2 = 0 := by rw [h30]; ring
+      have h24 : e2 * e4 = 0 := by
+        rcases eq_or_lt_of_le (mul_nonneg he2 he4) with h | h
+        · exact h.symm
+        · exfalso
+          have := mul_pos (mul_pos hr0 hk1) h
+          linarith [hP1, h33]
+      have hL : ((k * r - k - r - 1) * (e2 * e3) -
+          (k + 1) * (r + 1) * (e1 * e4)) ^ 2 = 0 := by
+        rw [h30, h14]; ring
+      have hR : (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) = 0 := by
+        rw [h30, h24]; ring
+      have hR0 : 0 ≤ 4 * (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) *
+          (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) := by
+        rw [hR]; simp
+      linarith [hL, hR0]
+  · -- Main case: e2, e3 > 0.
+    have he2' : 0 < e2 := by
+      rcases eq_or_lt_of_le he2 with h | h
+      · exfalso; nlinarith [h23]
+      · exact h
+    have he3' : 0 < e3 := by
+      rcases eq_or_lt_of_le he3 with h | h
+      · exfalso; nlinarith [h23]
+      · exact h
+    -- The exact certificate.
+    have master : k * r * (e2 ^ 2 * e3 ^ 2) *
+        (4 * (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) *
+            (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) -
+          ((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4)) ^ 2) =
+        2 * k * (2 * k + r + 1) *
+            ((k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3)) * (e2 ^ 2 * e3 ^ 4) +
+          2 * r * (k + 2 * r + 1) *
+            (k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4)) * (e2 ^ 4 * e3 ^ 2) +
+          2 * (2 * k * r + 2 * k + 2 * r + 1) *
+            ((k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4)) *
+              ((k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3))) * (e2 ^ 2 * e3 ^ 2) +
+          k * ((r - 1) * ((k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3)) * e3 ^ 2 +
+              (r + 1) * (k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4)) * (e1 * e3)) *
+            (e2 * e3) *
+            (-((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4))) := by
+      ring
+    -- Every right-hand summand is non-negative.
+    have hT1 : 0 ≤ 2 * k * (2 * k + r + 1) *
+        ((k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3)) * (e2 ^ 2 * e3 ^ 4) :=
+      mul_nonneg (mul_nonneg (by positivity) hP2) (by positivity)
+    have hT2 : 0 ≤ 2 * r * (k + 2 * r + 1) *
+        (k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4)) * (e2 ^ 4 * e3 ^ 2) :=
+      mul_nonneg (mul_nonneg (by positivity) hP1) (by positivity)
+    have hT3 : 0 ≤ 2 * (2 * k * r + 2 * k + 2 * r + 1) *
+        ((k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4)) *
+          ((k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3))) * (e2 ^ 2 * e3 ^ 2) :=
+      mul_nonneg (mul_nonneg (by positivity) (mul_nonneg hP1 hP2)) (by positivity)
+    have hS : 0 ≤ (r - 1) * ((k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3)) * e3 ^ 2 +
+        (r + 1) * (k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4)) * (e1 * e3) :=
+      add_nonneg
+        (mul_nonneg (mul_nonneg (by linarith) hP2) (sq_nonneg e3))
+        (mul_nonneg (mul_nonneg (by linarith) hP1) (mul_nonneg he1 he3))
+    have hT4 : 0 ≤ k * ((r - 1) * ((k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3)) * e3 ^ 2 +
+          (r + 1) * (k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4)) * (e1 * e3)) *
+        (e2 * e3) *
+        (-((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4))) :=
+      mul_nonneg (mul_nonneg (mul_nonneg hk0.le hS) (mul_nonneg he2 he3))
+        (neg_nonneg.mpr hbeta)
+    have hkey : 0 ≤ k * r * (e2 ^ 2 * e3 ^ 2) *
+        (4 * (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) *
+            (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) -
+          ((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4)) ^ 2) := by
+      rw [master]
+      linarith [hT1, hT2, hT3, hT4]
+    have hpref : 0 < k * r * (e2 ^ 2 * e3 ^ 2) := by positivity
+    by_contra hcon
+    push_neg at hcon
+    have hneg : 4 * (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) *
+        (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) -
+        ((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4)) ^ 2 < 0 := by
+      linarith
+    have := mul_neg_of_pos_of_neg hpref hneg
+    linarith [hkey]
+
+set_option maxHeartbeats 800000 in
+/-- Discriminant inequality `4·α·γ ≥ β²` for the normalized-Newton inductive
+    step at the cleared-denominator (binomial) level, valid when
+    `β = 2·e₃e₂·AD − (e₃e₂+e₁e₄)·B2 ≤ 0` (with `AD = (b+a)(d+c)`,
+    `B2 = (c+b)²`). Reduces to `newton_disc_hat` via the absorption identities
+    `h1, h2, h3` (where `a b c d` are the binomial coefficients
+    `C(m,k−2), …, C(m,k+1)` and `r = m−k+1`), using the exact ratio identity
+    `(k+1)(r+1)·AD = kr·B2` for the Pascal-combined level-(m+1) coefficients. -/
+theorem newton_disc_of_beta_nonpos
+    (k r a b c d : ℝ) (hk : 2 ≤ k) (hr : 2 ≤ r)
+    (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) (hd : 0 < d)
+    (h1 : k * c = r * b) (h2 : (k + 1) * d = (r - 1) * c) (h3 : (r + 1) * a = (k - 1) * b)
+    (e1 e2 e3 e4 : ℝ) (he1 : 0 ≤ e1) (he2 : 0 ≤ e2) (he3 : 0 ≤ e3) (he4 : 0 ≤ e4)
+    (hd1 : e3 ^ 2 * (b * d) ≥ e2 * e4 * c ^ 2)
+    (hd2 : e2 ^ 2 * (a * c) ≥ e1 * e3 * b ^ 2)
+    (hcross : e3 * e2 ≥ e1 * e4)
+    (hbeta : 2 * e3 * e2 * ((b + a) * (d + c)) ≤ (e3 * e2 + e1 * e4) * (c + b) ^ 2) :
+    4 * (e2 ^ 2 * ((b + a) * (d + c)) - e1 * e3 * (c + b) ^ 2) *
+      (e3 ^ 2 * ((b + a) * (d + c)) - e2 * e4 * (c + b) ^ 2) ≥
+    (2 * e3 * e2 * ((b + a) * (d + c)) - (e3 * e2 + e1 * e4) * (c + b) ^ 2) ^ 2 := by
+  have hk0 : (0 : ℝ) < k := by linarith
+  have hr0 : (0 : ℝ) < r := by linarith
+  have hk1 : (0 : ℝ) < k + 1 := by linarith
+  have hr1 : (0 : ℝ) < r + 1 := by linarith
+  have hb2 : (0 : ℝ) < b ^ 2 := by positivity
+  have hc2 : (0 : ℝ) < c ^ 2 := by positivity
+  have hB2 : (0 : ℝ) < (c + b) ^ 2 := by positivity
+  -- Conversion identities from the absorption relations.
+  have hbd : k * (r - 1) * c ^ 2 = r * (k + 1) * (b * d) := by
+    linear_combination (r - 1) * c * h1 - r * b * h2
+  have hac : (k - 1) * r * b ^ 2 = k * (r + 1) * (a * c) := by
+    linear_combination (-((k - 1) * b)) * h1 - k * c * h3
+  have hAD : (k + 1) * (r + 1) * ((b + a) * (d + c)) = k * r * ((c + b) ^ 2) := by
+    linear_combination (a * r + a + b - c * r) * h1 + ((a + b) * (r + 1)) * h2 +
+      (r * (b + c)) * h3
+  -- Hypothesis conversions to the normalized form.
+  have hP1c : (k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4)) * c ^ 2 =
+      r * (k + 1) * (e3 ^ 2 * (b * d) - e2 * e4 * c ^ 2) := by
+    linear_combination e3 ^ 2 * hbd
+  have hP1 : 0 ≤ k * (r - 1) * e3 ^ 2 - r * (k + 1) * (e2 * e4) := by
+    by_contra hcon
+    push_neg at hcon
+    have hlt := mul_neg_of_neg_of_pos hcon hc2
+    rw [hP1c] at hlt
+    have h0 : 0 ≤ r * (k + 1) * (e3 ^ 2 * (b * d) - e2 * e4 * c ^ 2) :=
+      mul_nonneg (by positivity) (by linarith [hd1])
+    linarith
+  have hP2b : ((k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3)) * b ^ 2 =
+      k * (r + 1) * (e2 ^ 2 * (a * c) - e1 * e3 * b ^ 2) := by
+    linear_combination e2 ^ 2 * hac
+  have hP2 : 0 ≤ (k - 1) * r * e2 ^ 2 - k * (r + 1) * (e1 * e3) := by
+    by_contra hcon
+    push_neg at hcon
+    have hlt := mul_neg_of_neg_of_pos hcon hb2
+    rw [hP2b] at hlt
+    have h0 : 0 ≤ k * (r + 1) * (e2 ^ 2 * (a * c) - e1 * e3 * b ^ 2) :=
+      mul_nonneg (by positivity) (by linarith [hd2])
+    linarith
+  -- β conversion.
+  have hbe : ((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4)) *
+      (c + b) ^ 2 =
+      (k + 1) * (r + 1) *
+        (2 * e3 * e2 * ((b + a) * (d + c)) - (e3 * e2 + e1 * e4) * (c + b) ^ 2) := by
+    linear_combination (-(2 * (e2 * e3))) * hAD
+  have hbehat : (k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4) ≤ 0 := by
+    by_contra hcon
+    push_neg at hcon
+    have hgt := mul_pos hcon hB2
+    rw [hbe] at hgt
+    have h0 : 0 ≤ (k + 1) * (r + 1) *
+        ((e3 * e2 + e1 * e4) * (c + b) ^ 2 - 2 * e3 * e2 * ((b + a) * (d + c))) :=
+      mul_nonneg (by positivity) (by linarith)
+    linarith
+  -- Core inequality in normalized form.
+  have hat := newton_disc_hat k r hk hr e1 e2 e3 e4 he1 he2 he3 he4 hP1 hP2 hcross hbehat
+  -- Convert the conclusion back.
+  have hal : (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) * (c + b) ^ 2 =
+      (k + 1) * (r + 1) * (e2 ^ 2 * ((b + a) * (d + c)) - e1 * e3 * (c + b) ^ 2) := by
+    linear_combination (-(e2 ^ 2)) * hAD
+  have hga : (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) * (c + b) ^ 2 =
+      (k + 1) * (r + 1) * (e3 ^ 2 * ((b + a) * (d + c)) - e2 * e4 * (c + b) ^ 2) := by
+    linear_combination (-(e3 ^ 2)) * hAD
+  have hconv : ((c + b) ^ 2) ^ 2 *
+      (4 * (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) *
+          (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) -
+        ((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4)) ^ 2) =
+      ((k + 1) * (r + 1)) ^ 2 *
+      (4 * (e2 ^ 2 * ((b + a) * (d + c)) - e1 * e3 * (c + b) ^ 2) *
+          (e3 ^ 2 * ((b + a) * (d + c)) - e2 * e4 * (c + b) ^ 2) -
+        (2 * e3 * e2 * ((b + a) * (d + c)) - (e3 * e2 + e1 * e4) * (c + b) ^ 2) ^ 2) := by
+    linear_combination
+      (4 * (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) * (c + b) ^ 2) * hal +
+      (4 * ((k + 1) * (r + 1)) *
+        (e2 ^ 2 * ((b + a) * (d + c)) - e1 * e3 * (c + b) ^ 2)) * hga +
+      (-(((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4)) * (c + b) ^ 2 +
+        (k + 1) * (r + 1) *
+          (2 * e3 * e2 * ((b + a) * (d + c)) -
+            (e3 * e2 + e1 * e4) * (c + b) ^ 2))) * hbe
+  have hhatpos : 0 ≤ 4 * (k * r * e2 ^ 2 - (k + 1) * (r + 1) * (e1 * e3)) *
+      (k * r * e3 ^ 2 - (k + 1) * (r + 1) * (e2 * e4)) -
+      ((k * r - k - r - 1) * (e2 * e3) - (k + 1) * (r + 1) * (e1 * e4)) ^ 2 := by
+    linarith [hat]
+  have hfin : 0 ≤ ((k + 1) * (r + 1)) ^ 2 *
+      (4 * (e2 ^ 2 * ((b + a) * (d + c)) - e1 * e3 * (c + b) ^ 2) *
+          (e3 ^ 2 * ((b + a) * (d + c)) - e2 * e4 * (c + b) ^ 2) -
+        (2 * e3 * e2 * ((b + a) * (d + c)) - (e3 * e2 + e1 * e4) * (c + b) ^ 2) ^ 2) := by
+    rw [← hconv]
+    exact mul_nonneg (sq_nonneg _) hhatpos
+  have hD2 : (0 : ℝ) < ((k + 1) * (r + 1)) ^ 2 := by positivity
+  by_contra hcon
+  push_neg at hcon
+  have hneg : 4 * (e2 ^ 2 * ((b + a) * (d + c)) - e1 * e3 * (c + b) ^ 2) *
+      (e3 ^ 2 * ((b + a) * (d + c)) - e2 * e4 * (c + b) ^ 2) -
+      (2 * e3 * e2 * ((b + a) * (d + c)) - (e3 * e2 + e1 * e4) * (c + b) ^ 2) ^ 2 < 0 := by
+    linarith
+  have := mul_neg_of_pos_of_neg hD2 hneg
+  linarith [hfin]
+
+
 /-- Dual binomial inequality: b²·(b+a)·(d+c) ≥ a·c·(c+b)².
     Companion to `binom_ineq`, needed for the `α ≥ 0` branch of the
     normalized-Newton inductive step. Proved by the same absorption technique:
