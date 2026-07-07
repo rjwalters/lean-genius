@@ -636,14 +636,14 @@ lemma B_seq_nonempty (M : ℕ → ℕ) (p : ℕ → ℕ) (C : ℕ → ℕ) (n : 
 
 lemma B_seq_ncard (M : ℕ → ℕ) (p : ℕ → ℕ) (C : ℕ → ℕ) (n : ℕ) (hM_len : 4 * M n ≥ P_n_def p n) (h_p_pos : P_n_def p n > 0) :
   (4 * M n / P_n_def p n - 1 : ℝ) ≤ (({ x ∈ Icc (10 * M n) (14 * M n) | x % (P_n_def p n) = C n % (P_n_def p n) } : Set ℕ).ncard : ℝ) := by
-  trans↑((Finset.range (4 *M n/P_n_def p n)).image (@.* P_n_def p n+(C n+ Erdos12.P_n_def p n*( (10 *M n-(C n+ Erdos12.P_n_def p n *0))/0)))).card
+  trans↑((Finset.range (4 *M n/P_n_def p n)).image (@.* P_n_def p n+(C n+ P_n_def p n*( (10 *M n-(C n+ P_n_def p n *0))/0)))).card
   · use sub_le_iff_le_add.2 ((div_le_iff₀' (by bound)).2<|mod_cast le_of_lt (by simp_all[pos_iff_ne_zero, Finset.card_image_of_injective,Function.Injective,Nat.lt_mul_div_succ]))
-  trans↑(Nat.card { a ∈ Finset.Icc (10*M n) (14*M n) | a% Erdos12.P_n_def p n = C n% Erdos12.P_n_def p n})
-  · trans↑((Finset.range (4*M n/P_n_def p n)).image (.* Erdos12.P_n_def p n+(C n% Erdos12.P_n_def p n+10*M n% Erdos12.P_n_def p n))).card
+  trans↑(Nat.card { a ∈ Finset.Icc (10*M n) (14*M n) | a% P_n_def p n = C n% P_n_def p n})
+  · trans↑((Finset.range (4*M n/P_n_def p n)).image (.* P_n_def p n+(C n% P_n_def p n+10*M n% P_n_def p n))).card
     · repeat rw[ Finset.card_image_of_injOn fun and _ _ _=>Nat.mul_right_cancel h_p_pos ∘Nat.add_right_cancel]
     use Real.zero_lt_one.le.eq_or_lt.elim (by aesop) fun and=>Nat.card_eq_finsetCard _▸Real.zero_lt_one.le.eq_or_lt.elim (by aesop) ?_
     use fun and=>Nat.cast_le.2 ((Nat.card_eq_finsetCard _)▸((Nat.card_eq_finsetCard _)).symm▸ Finset.card_image_le.trans ( (( Finset.card_filter _ _).trans ( Finset.sum_Ico_eq_sum_range _ _ _)).ge.trans' ?_))
-    use (by valid:14*M n+1-10*M n=4*M n+1).symm▸match R: Erdos12.P_n_def _ _ with|0=>by valid | S+1=>.trans (?_) (by rw [← Finset.card_filter])
+    use (by valid:14*M n+1-10*M n=4*M n+1).symm▸match R: P_n_def _ _ with|0=>by valid | S+1=>.trans (?_) (by rw [← Finset.card_filter])
     use Finset.card_le_card_of_injOn _ (fun a s=>? _) ((add_right_injective (C n-10*M n:ZMod (S+1)).val).comp (mul_right_injective₀ S.succ_ne_zero)).injOn
     norm_num[add_comm (ZMod.val _),←ZMod.val_natCast, mul_add, (ZMod.val_le), (Nat.mul_le_mul_left _ (List.mem_range.1 s)).trans (Nat.mul_div_le _ _)|>.trans',Nat.lt_succ]
   · exact (congr_arg (@ _) ((congr_arg _).comp (congr_arg _) (by. (norm_num)))).le
