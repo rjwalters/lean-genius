@@ -469,7 +469,7 @@ private theorem lacunary_strictMono :
   exact Nat.pow_lt_pow_right (by norm_num) hab
 
 /-- The Fourier coefficient bound: 1 / (2^k)^α = r^k. -/
-private theorem coeff_bound (α : ℝ) (hα : 0 < α) (k : ℕ) :
+private theorem coeff_bound (α : ℝ) (_hα : 0 < α) (k : ℕ) :
     (1:ℝ) / (|(((2:ℤ)^k : ℤ) : ℝ)| ^ α) = (geomRatio α)^k := by
   simp only [Int.cast_pow, Int.cast_ofNat, abs_pow, abs_of_pos (by norm_num : (0:ℝ) < 2)]
   unfold geomRatio
