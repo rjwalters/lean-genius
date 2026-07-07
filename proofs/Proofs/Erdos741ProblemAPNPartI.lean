@@ -64,6 +64,60 @@ open scoped Pointwise
 
 open Set
 
+-- Local ports of FormalConjectures density helpers dropped during the
+-- `import Mathlib` flatten (see FormalConjecturesForMathlib/Data/Set/Density.lean
+-- and .../Order/Interval/Finset/Basic.lean). Inserted verbatim, mirroring the
+-- merged Part II sibling fix (PR #35092). `𝓝` is spelled `nhds` since `Filter`
+-- / `Topology` scopes are not opened at this file-level position.
+
+namespace Set
+
+@[inline]
+noncomputable abbrev partialDensity {β : Type*} [Preorder β] [LocallyFiniteOrderBot β]
+    (S : Set β) (A : Set β := Set.univ) (b : β) : ℝ :=
+  ((S ∩ A) ∩ Iio b).ncard / (A ∩ Iio b).ncard
+
+def HasDensity {β : Type*} [Preorder β] [LocallyFiniteOrderBot β]
+    (S : Set β) (α : ℝ) (A : Set β := Set.univ) : Prop :=
+  Filter.Tendsto (fun (b : β) => S.partialDensity A b) Filter.atTop (nhds α)
+
+def HasPosDensity {β : Type*} [Preorder β] [LocallyFiniteOrderBot β]
+    (S : Set β) (A : Set β := Set.univ) : Prop :=
+  ∃ α > 0, S.HasDensity α A
+
+end Set
+
+theorem Finset.Iio_eventually_nonempty (β : Type*) [PartialOrder β] [LocallyFiniteOrder β]
+    [OrderBot β] [Nontrivial β] : ∃ (b : β), ∀ n ≥ b, (Finset.Iio n).Nonempty :=
+  let ⟨b, hb⟩ := exists_ne (⊥ : β)
+  ⟨b, fun n hn => by simp [ne_bot_of_le_ne_bot hb hn]⟩
+
+theorem Finset.Iio_eventually_card_ne_zero (β : Type*) [PartialOrder β]
+    [LocallyFiniteOrder β] [OrderBot β] [Nontrivial β] :
+    ∃ (b : β), ∀ n ≥ b, (Finset.Iio n).card ≠ 0 :=
+  let ⟨b, hb⟩ := Finset.Iio_eventually_nonempty β
+  ⟨b, fun n hn => by simp [nonempty_iff_ne_empty.1 <| hb n hn]⟩
+
+theorem Set.Iio_eventually_ncard_ne_zero (β : Type*) [PartialOrder β]
+    [LocallyFiniteOrder β] [OrderBot β] [Nontrivial β] :
+    ∃ (b : β), ∀ n ≥ b, (Set.Iio n).ncard ≠ 0 :=
+  let ⟨b, hb⟩ := Finset.Iio_eventually_card_ne_zero β
+  ⟨b, fun n hn => by rw [← Finset.coe_Iio, Set.ncard_coe_finset]; exact hb n hn⟩
+
+namespace Set.HasDensity
+
+@[simp]
+theorem univ {β : Type*} [PartialOrder β] [LocallyFiniteOrder β] [OrderBot β] [Nontrivial β] :
+    (@Set.univ β).HasDensity 1 := by
+  by_cases h : Filter.atTop (α := β) = ⊥
+  · simp [h, Set.HasDensity]
+  · simp [Set.HasDensity, Set.partialDensity]
+    let ⟨b, hb⟩ := Set.Iio_eventually_ncard_ne_zero β
+    refine tendsto_const_nhds.congr' ?_
+    exact (Filter.eventually_ge_atTop b).mono fun n hn ↦ (div_self <| mod_cast hb n hn).symm
+
+end Set.HasDensity
+
 namespace Erdos741APN_I
 
 open MeasureTheory
@@ -312,7 +366,7 @@ lemma base3_to_base4_lt_4_pow_iff (d n : ℕ) : base3_to_base4 n < 4^d ↔ n < 3
   delta base3_to_base4
   trans n%3+4*.ofDigits 4 ((3).digits (n/3))<4^d
   · refine(Nat.pow_lt_pow_iff_left d.two_pow_pos.ne').trans (iff_of_eq (congr_arg (.< _) ((em _).elim (by simp_all) (dif_neg ·▸congr_arg _ ((congr_arg _) ((n/3).strongRec ?_))))))
-    exact (fun R L=>WellFounded.Nat.fix_eq _ _ _▸by cases R with·norm_num[ L,Nat.ofDigits,Nat.div_lt_self (@Nat.succ_pos _)])
+    exact (fun R L=>WellFounded.fix_eq _ _ _▸by cases R with·norm_num[ L,Nat.ofDigits,Nat.div_lt_self (@Nat.succ_pos _)])
   refine d.strongRec (@fun R L=>? _) n
   use fun and=>match R with|0=>?_ | S+1=> (and/3).eq_zero_or_pos.elim ?_ ((3).digits_def' (by decide) ·▸Nat.ofDigits_cons▸pow_succ (3) S▸pow_succ 4 S▸? _)
   · match(3).ofDigits_digits (and/3)▸(3).ofDigits_monotone _ (by decide:4≥3) with | S=>use (by valid),by norm_num+contextual
@@ -336,7 +390,8 @@ lemma B1_sum_ncard (d : ℕ) : ((B1 + B1) ∩ Iio (4^d)).ncard ≤ 3^d := by
   have h_sub := B1_sum_subset_image d
   have h_fin : (Iio (3^d)).Finite := finite_Iio _
   have h_card_image : (base3_to_base4 '' Iio (3^d)).ncard ≤ (Iio (3^d)).ncard := Set.ncard_image_le h_fin
-  have h_card_iio : (Iio (3^d)).ncard = 3^d := by norm_num
+  have h_card_iio : (Iio (3^d)).ncard = 3^d := by
+    rw [← Finset.coe_Iio, Set.ncard_coe_finset, Nat.card_Iio]
   have h_card_sub : ((B1 + B1) ∩ Iio (4^d)).ncard ≤ (base3_to_base4 '' Iio (3^d)).ncard := by
     exact Set.ncard_le_ncard h_sub (Set.Finite.image base3_to_base4 h_fin)
   omega
@@ -430,7 +485,8 @@ lemma B2_sum_ncard (d : ℕ) : ((B2 + B2) ∩ Iio (4^d)).ncard ≤ 3^d := by
   have h_sub := B2_sum_subset_image d
   have h_fin : (Iio (3^d)).Finite := finite_Iio _
   have h_card_image : ((fun n => 2 * base3_to_base4 n) '' Iio (3^d)).ncard ≤ (Iio (3^d)).ncard := Set.ncard_image_le h_fin
-  have h_card_iio : (Iio (3^d)).ncard = 3^d := by norm_num
+  have h_card_iio : (Iio (3^d)).ncard = 3^d := by
+    rw [← Finset.coe_Iio, Set.ncard_coe_finset, Nat.card_Iio]
   have h_card_sub : ((B2 + B2) ∩ Iio (4^d)).ncard ≤ ((fun n => 2 * base3_to_base4 n) '' Iio (3^d)).ncard := by
     exact Set.ncard_le_ncard h_sub (Set.Finite.image (fun n => 2 * base3_to_base4 n) h_fin)
   omega
@@ -480,7 +536,8 @@ lemma univ_has_density_one : HasDensity (Set.univ : Set ℕ) 1 := by
   have h_eq : ∀ (n : ℕ), n > 0 → ((Set.univ ∩ Iio n).ncard : ℝ) / (n : ℝ) = 1 := by
     intro n hn
     have h1 : Set.univ ∩ Iio n = Iio n := Set.univ_inter (Iio n)
-    have h2 : (Iio n).ncard = n := by norm_num
+    have h2 : (Iio n).ncard = n := by
+      rw [← Finset.coe_Iio, Set.ncard_coe_finset, Nat.card_Iio]
     rw [h1, h2]
     exact div_self (by positivity)
   apply Set.HasDensity.univ
@@ -736,30 +793,91 @@ noncomputable def base2_to_base4 (n : ℕ) : ℕ :=
   if h : n = 0 then 0 else (n % 2) + 4 * base2_to_base4 (n / 2)
 termination_by n
 
-lemma base2_to_base4_lt_4_pow (d n : ℕ) : base2_to_base4 n < 4^d ↔ n < 2^d := by rw [← show (2^d*2^d=4^d)by rw [←Nat.mul_pow],base2_to_base4]
-                                                                                 delta base2_to_base4
-                                                                                 refine match n with|0 =>by simp_all|n + 1=>d.strongRec ?_ n
-                                                                                 use fun and A B=>dif_neg B.succ_ne_zero▸match and with|0=>WellFounded.Nat.fix_eq _ _ _▸?_ | S+1=>WellFounded.Nat.fix_eq _ _ _▸pow_succ (2) S▸Nat.mul_mul_mul_comm _ _ _ _▸?_
-                                                                                 · simp_all-contextual
-                                                                                   use fun and=>⟨by valid, fun and=>(( _)/2/2).strongRec ( fun and R M=>WellFounded.Nat.fix_eq _ _ _▸dif_neg (and.ne_of_gt M)▸absurd (R (and/2)) ∘by (fin_omega)) (by valid: 1 ≤_/2/2)⟩
-                                                                                 · exact (by_contra ( absurd (A S · (( B+1)/2 -1)) ∘by match i:_/2 with|0=>grind | S+1=>grind) )
+lemma base2_to_base4_zero : base2_to_base4 0 = 0 := by
+  rw [base2_to_base4]; simp
+
+lemma base2_to_base4_ne_zero (n : ℕ) (hn : n ≠ 0) :
+    base2_to_base4 n = n % 2 + 4 * base2_to_base4 (n / 2) := by
+  rw [base2_to_base4]; exact dif_neg hn
+
+lemma base2_to_base4_lt_succ (n : ℕ) : base2_to_base4 n < base2_to_base4 (n + 1) := by
+  induction n using Nat.strongRecOn with
+  | ind n ih =>
+    rcases Nat.even_or_odd n with ⟨j, hj⟩ | ⟨j, hj⟩
+    · subst hj
+      rcases Nat.eq_zero_or_pos j with hj0 | hjpos
+      · subst hj0
+        rw [base2_to_base4_ne_zero 1 (by norm_num)]
+        simp [base2_to_base4_zero]
+      · have hne : j + j ≠ 0 := by omega
+        rw [base2_to_base4_ne_zero (j + j) hne,
+            base2_to_base4_ne_zero (j + j + 1) (by omega)]
+        have e1 : (j + j) % 2 = 0 := by omega
+        have e2 : (j + j) / 2 = j := by omega
+        have e3 : (j + j + 1) % 2 = 1 := by omega
+        have e4 : (j + j + 1) / 2 = j := by omega
+        rw [e1, e2, e3, e4]; omega
+    · subst hj
+      rw [base2_to_base4_ne_zero (2 * j + 1) (by omega),
+          base2_to_base4_ne_zero (2 * j + 1 + 1) (by omega)]
+      have e1 : (2 * j + 1) % 2 = 1 := by omega
+      have e2 : (2 * j + 1) / 2 = j := by omega
+      have e3 : (2 * j + 1 + 1) % 2 = 0 := by omega
+      have e4 : (2 * j + 1 + 1) / 2 = j + 1 := by omega
+      rw [e1, e2, e3, e4]
+      have ihj : base2_to_base4 j < base2_to_base4 (j + 1) := ih j (by omega)
+      omega
+
+lemma base2_to_base4_strictMono : StrictMono base2_to_base4 :=
+  strictMono_nat_of_lt_succ base2_to_base4_lt_succ
+
+lemma base2_to_base4_two_pow (d : ℕ) : base2_to_base4 (2 ^ d) = 4 ^ d := by
+  induction d with
+  | zero =>
+    rw [pow_zero, pow_zero, base2_to_base4_ne_zero 1 (by norm_num)]
+    norm_num [base2_to_base4_zero]
+  | succ d ih =>
+    have hne : (2 : ℕ) ^ (d + 1) ≠ 0 := by positivity
+    rw [base2_to_base4_ne_zero _ hne]
+    have e1 : (2 : ℕ) ^ (d + 1) % 2 = 0 := by rw [pow_succ]; omega
+    have e2 : (2 : ℕ) ^ (d + 1) / 2 = 2 ^ d := by rw [pow_succ]; omega
+    rw [e1, e2, ih, pow_succ]; ring
+
+lemma base2_to_base4_lt_4_pow (d n : ℕ) : base2_to_base4 n < 4 ^ d ↔ n < 2 ^ d := by
+  rw [← base2_to_base4_two_pow d]
+  exact base2_to_base4_strictMono.lt_iff_lt
 
 noncomputable def extract_binary (m : ℕ) : ℕ :=
   if h : m = 0 then 0 else (m % 2) + 2 * extract_binary (m / 4)
 termination_by m
 
-lemma split1_eq_base2_to_base4 (m : ℕ) : split1 m = base2_to_base4 (extract_binary m) := by aesop( add safe forward True)
-                                                                                            delta Erdos741APN_I.base2_to_base4 Erdos741APN_I.extract_binary Erdos741APN_I.split1
-                                                                                            induction m using @Nat.strongRec
-                                                                                            obtain ⟨a, rfl⟩|⟨b, rfl⟩:=‹ℕ›.even_or_odd
-                                                                                            · obtain ⟨@c⟩ :=eq_or_ne a 0
-                                                                                              · push_cast [WellFounded.Nat.fix_eq]
-                                                                                              repeat rw[WellFounded.Nat.fix_eq, dif_neg <|by valid]
-                                                                                              norm_num[←two_mul,by valid]at‹∀ (n : ℕ),_›⊢
-                                                                                              norm_num[WellFounded.Nat.fix_eq _ _ (2 * _),← (by valid),Nat.div_lt_self,pos_of_ne_zero (by valid),‹¬_›]
-                                                                                              exact (‹∀ (x _),_› (2 *a/4) (by valid):).trans.comp (·.symm▸WellFounded.Nat.fix_eq _ _ _)
-                                                                                            · use WellFounded.Nat.fix_eq _ _ _▸WellFounded.Nat.fix_eq _ _ _▸symm ?_
-                                                                                              exact (.trans (by rw [WellFounded.Nat.fix_eq, dif_neg (by norm_num)]) (by grind))
+lemma extract_binary_zero : extract_binary 0 = 0 := by
+  rw [extract_binary]; simp
+
+lemma extract_binary_ne_zero (m : ℕ) (hm : m ≠ 0) :
+    extract_binary m = m % 2 + 2 * extract_binary (m / 4) := by
+  rw [extract_binary]; exact dif_neg hm
+
+lemma split1_eq_base2_to_base4 (m : ℕ) : split1 m = base2_to_base4 (extract_binary m) := by
+  induction m using Nat.strongRecOn with
+  | ind m ih =>
+    rcases Nat.eq_zero_or_pos m with hm | hm
+    · subst hm
+      rw [split1_zero, extract_binary_zero, base2_to_base4_zero]
+    · have hm0 : m ≠ 0 := by omega
+      rw [split1_eq_add m, extract_binary_ne_zero m hm0]
+      have ihm : split1 (m / 4) = base2_to_base4 (extract_binary (m / 4)) :=
+        ih (m / 4) (by omega)
+      rw [ihm]
+      rcases Nat.eq_zero_or_pos (m % 2 + 2 * extract_binary (m / 4)) with h0 | hpos
+      · have hm2 : m % 2 = 0 := by omega
+        have hr0 : extract_binary (m / 4) = 0 := by omega
+        rw [hm2, hr0]
+        simp [base2_to_base4_zero]
+      · rw [base2_to_base4_ne_zero (m % 2 + 2 * extract_binary (m / 4)) (by omega)]
+        have e1 : (m % 2 + 2 * extract_binary (m / 4)) % 2 = m % 2 := by omega
+        have e2 : (m % 2 + 2 * extract_binary (m / 4)) / 2 = extract_binary (m / 4) := by omega
+        rw [e1, e2]
 
 lemma B1_subset_base2_to_base4 (x : ℕ) (hx : x ∈ B1) : ∃ n, x = base2_to_base4 n := by
   rcases hx with ⟨m, rfl⟩
@@ -779,7 +897,8 @@ lemma B1_Iio_bound (d : ℕ) : (B1 ∩ Iio (4^d)).ncard ≤ 2^d := by
   have h_im_fin : (base2_to_base4 '' Iio (2^d)).Finite := Set.Finite.image _ h_fin
   have h_le1 : (base2_to_base4 '' Iio (2^d)).ncard ≤ (Iio (2^d)).ncard := Set.ncard_image_le h_fin
   have h_le2 : (B1 ∩ Iio (4^d)).ncard ≤ (base2_to_base4 '' Iio (2^d)).ncard := Set.ncard_le_ncard h_sub h_im_fin
-  have h_card : (Iio (2^d)).ncard = 2^d := by norm_num
+  have h_card : (Iio (2^d)).ncard = 2^d := by
+    rw [← Finset.coe_Iio, Set.ncard_coe_finset, Nat.card_Iio]
   omega
 
 lemma B2_eq_2_B1 (x : ℕ) (hx : x ∈ B2) : ∃ y ∈ B1, x = 2 * y := by
