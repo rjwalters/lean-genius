@@ -56,7 +56,7 @@ open scoped Topology
 @[inline]
 noncomputable abbrev partialDensity {β : Type*} [Preorder β] [LocallyFiniteOrderBot β]
     (S : Set β) (A : Set β := Set.univ) (b : β) : ℝ :=
-  (Set.interIio (S ∩ A) b).ncard / (Set.interIio A b).ncard
+  ((S ∩ A) ∩ Iio b).ncard / (A ∩ Iio b).ncard
 
 /-- Lower density: liminf of partial densities. -/
 noncomputable def lowerDensity {β : Type*} [Preorder β] [LocallyFiniteOrderBot β]
@@ -1075,11 +1075,14 @@ lemma tendsto_X_seq : Filter.Tendsto X_seq Filter.atTop Filter.atTop := by
     omega
   exact StrictMono.tendsto_atTop h_mono
 
+private lemma set_iio_ncard (n : ℕ) : (Set.Iio n).ncard = n := by
+  rw [← Finset.coe_Iio, Set.ncard_coe_finset, Nat.card_Iio]
+
 lemma lowerDensity_le_of_seq (S : Set ℕ) (c : ℝ)
   (h : ∀ m, (((Finset.Icc 1 (X_seq m)).filter (· ∈ S)).card : ℝ) ≤ c * X_seq m) :
   S.lowerDensity ≤ c := by
   simp_rw [Set.lowerDensity, Finset.card_filter] at h⊢
-  simp_all -contextual[Filter.liminf_eq,Set.partialDensity]
+  simp_all -contextual[Filter.liminf_eq,Set.partialDensity,set_iio_ncard]
   delta X_seq at h
   use Real.sSup_le (@ fun and ⟨a, H⟩=>not_lt.mp fun and=>(((tendsto_natCast_atTop_atTop.atTop_mul_const ↑(sub_pos.mpr and)).eventually_gt_atTop (a+1)).frequently (@Filter.eventually_atTop.mpr ⟨a+2,? _,⟩))) @?_
   · use fun and μ=>match and with|n + 1=>(((mul_sub _ _ _).trans_le (sub_le_iff_le_add'.2 (((le_div_iff₀' (by bound)).1 (H (n + 1) (by valid))).trans (?_))))).not_gt
