@@ -342,8 +342,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
       (∑ k ∈ Finset.range p₀, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖) +
       ∑' k : ℕ, r^(k + p₀) * 2 := by
     rw [← h_summ_norm.sum_add_tsum_nat_add p₀]
-    refine add_le_add_left ?_
-      (∑ k ∈ Finset.range p₀, r^k * ‖fourier ((2:ℤ)^k) x - fourier ((2:ℤ)^k) y‖)
+    refine add_le_add (le_refl _) ?_
     apply Summable.tsum_le_tsum _ (h_summ_norm.nat_add p₀)
       ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2 |>.nat_add p₀)
     intro k
@@ -397,7 +396,7 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
           -- Substitute d^α = d^(α-1)·d on the RHS; everything is then rational in atoms.
           rw [hdpow]
           field_simp
-          ring
+          try ring
   -- High sum bound: trivial
   have h_high : ∑' k : ℕ, r^(k + p₀) * 2 ≤
       (2 * (4:ℝ)^α) / (T^α * (1 - (2:ℝ)^(-α))) * d^α := by
