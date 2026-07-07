@@ -343,9 +343,11 @@ private theorem wFunc_holder_bound (α : ℝ) (hα_pos : 0 < α) (hα_lt : α < 
       ∑' k : ℕ, r^(k + p₀) * 2 := by
     rw [← h_summ_norm.sum_add_tsum_nat_add p₀]
     refine add_le_add (le_refl _) ?_
-    apply Summable.tsum_le_tsum _ (h_summ_norm.nat_add p₀)
-      ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2 |>.nat_add p₀)
-    intro k
+    have hf : Summable (fun k : ℕ => r^(k + p₀) * ‖fourier ((2:ℤ)^(k+p₀)) x - fourier ((2:ℤ)^(k+p₀)) y‖) :=
+      (summable_nat_add_iff p₀).2 h_summ_norm
+    have hg : Summable (fun k : ℕ => r^(k + p₀) * 2) :=
+      (summable_nat_add_iff p₀).2 ((summable_geometric_of_lt_one hr_pos.le hr_lt1).mul_right 2)
+    refine Summable.tsum_le_tsum (fun k => ?_) hf hg
     apply mul_le_mul_of_nonneg_left (FourierDecayInfra.fourier_sub_norm_le_two _ _ _)
     exact pow_nonneg hr_pos.le _
   -- Low sum bound: Lipschitz
