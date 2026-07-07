@@ -3,13 +3,21 @@
 Migration script to populate SQLite database from existing JSON research files.
 
 Usage:
-    python migrate.py [--dry-run]
+    python migrate.py [--dry-run] [--reset]
 
 This script:
-1. Creates the database from schema.sql
-2. Imports problems from candidate-pool.json
+1. Ensures the database exists (creating it from schema.sql if missing)
+2. Imports problems from candidate-pool.json (UPSERT; the status-downgrade
+   guard preserves protected statuses on re-runs)
 3. Imports detailed knowledge from src/data/research/problems/*.json
 4. Parses markdown session histories into separate session records
+
+By default the import is INCREMENTAL: it upserts into the existing database so
+the ON CONFLICT status-downgrade guard fires and reconciled statuses survive.
+Pass --reset to drop and recreate the database from scratch (dangerous: the
+guard cannot fire on a fresh empty DB, so a stale candidate-pool.json will
+re-inflate 'available' rows -- only use after reconcile_db.py has patched
+research/candidate-pool.json).
 """
 
 import json
@@ -431,18 +439,23 @@ def print_summary(conn: sqlite3.Connection):
 
 def main():
     dry_run = "--dry-run" in sys.argv
+    reset = "--reset" in sys.argv
 
     if dry_run:
         print("DRY RUN - no changes will be made")
         return
 
-    # Remove existing database
-    if DB_PATH.exists():
+    # --reset drops and recreates the DB from scratch. WARNING: the
+    # status-downgrade guard cannot fire on a fresh empty DB, so a stale
+    # candidate-pool.json will re-inflate 'available' rows. Only use --reset
+    # after reconcile_db.py has patched research/candidate-pool.json.
+    if reset and DB_PATH.exists():
         backup_path = DB_PATH.with_suffix('.db.bak')
         DB_PATH.rename(backup_path)
         print(f"✓ Backed up existing database to {backup_path}")
 
-    # Create new database
+    # Default (incremental): create the schema only if the DB does not exist,
+    # then UPSERT so the guard preserves reconciled statuses.
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
 
