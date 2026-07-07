@@ -63,6 +63,16 @@ open scoped Pointwise
 
 open Set
 
+/-- A set `A : Set ℕ` is an additive basis of order `n` if every natural number
+can be expressed as a sum of `n` elements lying in `A`.
+(From FormalConjecturesForMathlib/Combinatorics/Additive/Basis.lean, instantiated for ℕ.) -/
+def IsAddBasisOfOrder (A : Set ℕ) (n : ℕ) : Prop := ∀ a : ℕ, a ∈ n • A
+
+/-- A set is syndetic if it has bounded gaps: there exists `p` such that every
+interval of length `p` meets the set.
+(From FormalConjecturesForMathlib/Combinatorics/Basic.lean.) -/
+def IsSyndetic (A : Set ℕ) : Prop := ∃ p, ∀ n, (A ∩ Set.Icc n (n + p)).Nonempty
+
 namespace Erdos741APN_II
 
 open MeasureTheory
