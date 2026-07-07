@@ -292,6 +292,7 @@ theorem newton_disc_hat (k r : ℝ) (hk : 2 ≤ k) (hr : 2 ≤ r)
     have := mul_neg_of_pos_of_neg hpref hneg
     linarith [hkey]
 
+set_option maxHeartbeats 800000 in
 /-- Discriminant inequality `4·α·γ ≥ β²` for the normalized-Newton inductive
     step at the cleared-denominator (binomial) level, valid when
     `β = 2·e₃e₂·AD − (e₃e₂+e₁e₄)·B2 ≤ 0` (with `AD = (b+a)(d+c)`,
@@ -299,7 +300,6 @@ theorem newton_disc_hat (k r : ℝ) (hk : 2 ≤ k) (hr : 2 ≤ r)
     `h1, h2, h3` (where `a b c d` are the binomial coefficients
     `C(m,k−2), …, C(m,k+1)` and `r = m−k+1`), using the exact ratio identity
     `(k+1)(r+1)·AD = kr·B2` for the Pascal-combined level-(m+1) coefficients. -/
-set_option maxHeartbeats 800000 in
 theorem newton_disc_of_beta_nonpos
     (k r a b c d : ℝ) (hk : 2 ≤ k) (hr : 2 ≤ r)
     (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) (hd : 0 < d)
