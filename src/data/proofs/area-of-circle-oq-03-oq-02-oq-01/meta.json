@@ -68,10 +68,10 @@
     "dateAdded": "2026-06-28",
     "axiomCount": 0,
     "assumptions": "Fully verified: 0 axioms, 0 sorries remain.",
-    "lineCount": 386,
+    "lineCount": 551,
     "mathlib_version": "4.26.0",
-    "theoremCount": 11,
-    "definitionCount": 1
+    "theoremCount": 19,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "In 'Measurement of a Circle' (c. 250 BCE), Archimedes bounded π by inscribing and circumscribing regular polygons in a circle, starting from a hexagon (giving the trivial π > 3) and doubling the number of sides four times to reach a 96-gon: 6 → 12 → 24 → 48 → 96. The engine of the method is the half-angle step: when the central angle is halved, the new polygon's side length is recovered from the old one by extracting a square root, an instance of the identity sin(θ/2) = √((1−cos θ)/2). Archimedes performed these root extractions by hand using clever rational bounds. The parent entry (oq-03-oq-02) verified Archimedes' final numerical bounds 223/71 < π < 22/7 directly from Mathlib's precomputed π bounds; this entry instead formalizes the doubling mechanism itself, answering the open question of whether the half-angle method can be carried out constructively in Lean. The constructive content is made fully explicit through Mathlib's sqrtTwoAddSeries, which is exactly the chain of nested radicals √(2+√(2+√(2+…))) produced by iterating the half-angle step from a square.",
@@ -205,10 +205,10 @@
       "Topology"
     ],
     "namespace": "AreaOfCircleOQ03OQ02OQ01",
-    "lineCount": 386,
+    "lineCount": 551,
     "axiomCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 2,
     "mainTheorems": [
       "archimedes_sin_doubling",
       "archimedes_cos_doubling",

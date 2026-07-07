@@ -364,8 +364,153 @@ theorem pi_sub_halfPerimeter_bounds {m : ℕ} (hm : 4 ≤ m) :
     Real.pi - halfPerimeter m ≤ 7 / 32 * Real.pi ^ 3 / (m : ℝ) ^ 2 :=
   ⟨pi_sub_halfPerimeter_ge hm, pi_sub_halfPerimeter_le hm⟩
 
+/-- **The literal `O(4⁻ᵏ)` geometric convergence rate** of the second open question.
+Running the doubling iteration from the hexagon gives `m = 6·2ᵏ` sides after `k`
+doublings, and specializing the `O(1/m²)` bound at `m = 6·2ᵏ` (where `m² = 36·4ᵏ`)
+yields the explicit geometric decay
+`π − p(6·2ᵏ) ≤ (7 π³ / 1152) · 4⁻ᵏ`.
+So the error is bounded by a constant times `4⁻ᵏ`: each doubling of the side count
+quarters the error bound (see `halfPerimeter_rate_bound_quarters`). -/
+theorem pi_sub_halfPerimeter_pow_le (k : ℕ) :
+    Real.pi - halfPerimeter (6 * 2 ^ k) ≤ (7 / 1152 * Real.pi ^ 3) / 4 ^ k := by
+  have hm : 4 ≤ 6 * 2 ^ k := by
+    have h1 : 1 ≤ 2 ^ k := Nat.one_le_two_pow
+    omega
+  have h := pi_sub_halfPerimeter_le hm
+  have hcast : ((6 * 2 ^ k : ℕ) : ℝ) = 6 * 2 ^ k := by push_cast; ring
+  rw [hcast] at h
+  have h4pos : (0 : ℝ) < 4 ^ k := by positivity
+  have hsq : (6 * (2 : ℝ) ^ k) ^ 2 = 36 * 4 ^ k := by
+    have hpk : ((2 : ℝ) ^ k) ^ 2 = 4 ^ k := by
+      rw [← pow_mul, mul_comm, pow_mul]; norm_num
+    rw [mul_pow, hpk]; ring
+  rw [hsq] at h
+  have heq : (7 : ℝ) / 32 * Real.pi ^ 3 / (36 * 4 ^ k) = (7 / 1152 * Real.pi ^ 3) / 4 ^ k := by
+    field_simp; ring
+  rw [heq] at h
+  exact h
+
+/-- **Each doubling quarters the error bound.** The `O(4⁻ᵏ)` bound of
+`pi_sub_halfPerimeter_pow_le` satisfies the exact geometric recurrence
+`bound(k+1) = bound(k)/4`: passing from a `6·2ᵏ`-gon to a `6·2ᵏ⁺¹`-gon divides the
+guaranteed error bound by exactly four. This is the quantitative content of
+"quadratic convergence" for the doubling method. -/
+theorem halfPerimeter_rate_bound_quarters (k : ℕ) :
+    (7 / 1152 * Real.pi ^ 3) / 4 ^ (k + 1) = ((7 / 1152 * Real.pi ^ 3) / 4 ^ k) / 4 := by
+  rw [pow_succ]; ring
+
+-- PART VI: The circumscribed (upper-bound) side — Archimedes' sandwich
 -- ============================================================
--- PART VI: Summary
+
+/-- Half-perimeter of the *circumscribed* regular m-gon about the unit circle:
+    `q(m) = m · tan(π/m)`. Where the inscribed polygon (PART II) sits inside the
+    circle and underestimates π, the circumscribed polygon wraps around it and
+    *over*estimates π. Archimedes used BOTH — squeezing π between `p(m)` and `q(m)`
+    — to obtain `3 + 10/71 < π < 3 + 1/7` from the 96-gon. -/
+noncomputable def circumHalfPerimeter (m : ℕ) : ℝ := (m : ℝ) * Real.tan (Real.pi / m)
+
+/-- Archimedes' circumscribed seed: the regular hexagon circumscribed about the unit
+    circle has half-perimeter `q(6) = 6·tan(π/6) = 6/√3 = 2√3 ≈ 3.4641`, comfortably
+    above π. Together with `p(6) = 3` this gives the first sandwich `3 < π < 2√3`. -/
+theorem circumHalfPerimeter_hexagon : circumHalfPerimeter 6 = 2 * Real.sqrt 3 := by
+  simp only [circumHalfPerimeter]
+  rw [show ((6 : ℕ) : ℝ) = 6 by norm_num, Real.tan_pi_div_six]
+  have h3 : (0 : ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  have hsq : Real.sqrt 3 * Real.sqrt 3 = 3 := Real.mul_self_sqrt (by norm_num)
+  rw [mul_one_div, div_eq_iff (ne_of_gt h3)]
+  nlinarith [hsq]
+
+/-- **Every circumscribed half-perimeter overestimates π:** `π < q(m)` for `m ≥ 3`.
+    Immediate from `x < tan x` on `(0, π/2)`: with `x = π/m`, `π = m·x < m·tan x`. -/
+theorem pi_lt_circumHalfPerimeter {m : ℕ} (hm : 3 ≤ m) :
+    Real.pi < circumHalfPerimeter m := by
+  have hπ := Real.pi_pos
+  have hm' : (3 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm
+  have hmpos : (0 : ℝ) < (m : ℝ) := by linarith
+  have hu_pos : 0 < Real.pi / m := by positivity
+  have hu_lt : Real.pi / m < Real.pi / 2 := by
+    rw [div_lt_div_iff₀ hmpos (by norm_num)]
+    nlinarith [hπ, hm']
+  have htan := Real.lt_tan hu_pos hu_lt
+  simp only [circumHalfPerimeter]
+  have hmul : (m : ℝ) * (Real.pi / m) < (m : ℝ) * Real.tan (Real.pi / m) :=
+    mul_lt_mul_of_pos_left htan hmpos
+  have hmx : (m : ℝ) * (Real.pi / m) = Real.pi := by field_simp
+  rw [hmx] at hmul
+  exact hmul
+
+/-- **Doubling strictly DECREASES the circumscribed half-perimeter:** `q(2n) < q(n)`
+    for `n ≥ 3`. Proof via the tangent double-angle identity: with `y = π/(2n)`,
+    `tan(π/n) = 2 tan y / (1 - tan²y)`, so `q(n) = q(2n)/(1 - tan²y)`. Since
+    `0 < tan²y < 1` (because `0 < y < π/4`), the factor `1 - tan²y ∈ (0,1)` makes
+    `q(n) > q(2n)`. So the circumscribed estimates *decrease* toward π, mirror-image
+    of the inscribed estimates increasing (PART IV). -/
+theorem circumHalfPerimeter_doubling {n : ℕ} (hn : 3 ≤ n) :
+    circumHalfPerimeter (2 * n) < circumHalfPerimeter n := by
+  have hπ := Real.pi_pos
+  have hn' : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have hnpos : (0 : ℝ) < (n : ℝ) := by linarith
+  set y := Real.pi / (2 * (n : ℝ)) with hy
+  have hypos : 0 < y := by rw [hy]; positivity
+  have hy_lt4 : y < Real.pi / 4 := by
+    rw [hy, div_lt_div_iff₀ (by positivity) (by norm_num)]
+    nlinarith [hπ, hn']
+  have hy_lt2 : y < Real.pi / 2 := by linarith [hy_lt4, hπ.le]
+  have hcosy : 0 < Real.cos y :=
+    Real.cos_pos_of_mem_Ioo ⟨by linarith, hy_lt2⟩
+  have hsiny : 0 < Real.sin y :=
+    Real.sin_pos_of_pos_of_lt_pi hypos (by linarith [hy_lt2, hπ])
+  have htany_pos : 0 < Real.tan y := by rw [Real.tan_eq_sin_div_cos]; positivity
+  have htany_lt1 : Real.tan y < 1 := by
+    have h := Real.tan_lt_tan_of_nonneg_of_lt_pi_div_two hypos.le
+      (show Real.pi / 4 < Real.pi / 2 by linarith [hπ]) hy_lt4
+    rwa [Real.tan_pi_div_four] at h
+  have ht2pos : 0 < Real.tan y ^ 2 := by positivity
+  have ht2lt1 : Real.tan y ^ 2 < 1 := by nlinarith [htany_pos, htany_lt1]
+  have h1mt2 : 0 < 1 - Real.tan y ^ 2 := by linarith
+  -- tangent double-angle at π/n = 2y
+  have h2y : Real.pi / (n : ℝ) = 2 * y := by rw [hy]; field_simp
+  have htan2 : Real.tan (Real.pi / (n : ℝ)) = 2 * Real.tan y / (1 - Real.tan y ^ 2) := by
+    rw [h2y, Real.tan_two_mul]
+  -- express both circumscribed perimeters in terms of tan y
+  have hQ2 : circumHalfPerimeter (2 * n) = 2 * (n : ℝ) * Real.tan y := by
+    simp only [circumHalfPerimeter]; push_cast; rw [← hy]
+  have hQ1 : circumHalfPerimeter n = (2 * (n : ℝ) * Real.tan y) / (1 - Real.tan y ^ 2) := by
+    simp only [circumHalfPerimeter]; rw [htan2]; ring
+  rw [hQ1, hQ2]
+  have hApos : 0 < 2 * (n : ℝ) * Real.tan y := by positivity
+  rw [lt_div_iff₀ h1mt2]
+  nlinarith [hApos, ht2pos]
+
+/-- **Convergence of the circumscribed estimates:** `q(m) → π` as `m → ∞`.
+    Since `q(m) = m·tan(π/m) = p(m)/cos(π/m)` and `p(m) → π`, `cos(π/m) → 1`,
+    the quotient converges to `π/1 = π`. Combined with `circumHalfPerimeter_doubling`
+    this is the upper half of the Archimedes squeeze. -/
+theorem circumHalfPerimeter_tendsto_pi :
+    Filter.Tendsto (fun m : ℕ => circumHalfPerimeter m) Filter.atTop (nhds Real.pi) := by
+  have h0 : Filter.Tendsto (fun m : ℕ => Real.pi / (m : ℝ)) Filter.atTop (nhds 0) :=
+    tendsto_const_div_atTop_nhds_zero_nat Real.pi
+  have hcos : Filter.Tendsto (fun m : ℕ => Real.cos (Real.pi / m)) Filter.atTop (nhds 1) := by
+    have := (Real.continuous_cos.tendsto 0).comp h0
+    simpa [Real.cos_zero] using this
+  have hfun : (fun m : ℕ => circumHalfPerimeter m)
+      = fun m : ℕ => halfPerimeter m / Real.cos (Real.pi / (m : ℝ)) := by
+    funext m
+    simp only [circumHalfPerimeter, halfPerimeter, Real.tan_eq_sin_div_cos]
+    ring
+  rw [hfun]
+  have hdiv := Filter.Tendsto.div halfPerimeter_tendsto_pi hcos (by norm_num : (1 : ℝ) ≠ 0)
+  simpa using hdiv
+
+/-- **Archimedes' two-sided sandwich.** For every `m ≥ 3` the inscribed and
+    circumscribed regular m-gons bracket π:  `p(m) < π < q(m)`. This is the exact
+    logical shape of Archimedes' bound `3 + 10/71 < π < 3 + 1/7` (the `m = 96` case). -/
+theorem archimedes_sandwich {m : ℕ} (hm : 3 ≤ m) :
+    halfPerimeter m < Real.pi ∧ Real.pi < circumHalfPerimeter m :=
+  ⟨halfPerimeter_lt_pi (by omega), pi_lt_circumHalfPerimeter hm⟩
+
+-- ============================================================
+-- PART VII: Summary
 -- ============================================================
 
 /-- **Summary.** Archimedes' half-angle doubling method, formalized constructively:
@@ -383,4 +528,24 @@ theorem archimedes_doubling_method_verified :
    fun _ hn => halfPerimeter_doubling hn, fun _ hm => halfPerimeter_lt_pi hm,
    halfPerimeter_tendsto_pi⟩
 
+/-- **Two-sided summary.** The complete Archimedes method as he actually ran it:
+    both the inscribed half-perimeters `p(m)` and the circumscribed half-perimeters
+    `q(m)` sandwich π (`p(m) < π < q(m)` for `m ≥ 3`); doubling drives `p` strictly up
+    and `q` strictly down; and both sequences converge to π. The bracket
+    `[p(m), q(m)]` collapses onto π, so the doubling method computes π to arbitrary
+    precision from both sides simultaneously. -/
+theorem archimedes_two_sided_method_verified :
+    (∀ m : ℕ, 3 ≤ m → halfPerimeter m < Real.pi ∧ Real.pi < circumHalfPerimeter m) ∧
+    (∀ n : ℕ, 1 ≤ n → halfPerimeter n < halfPerimeter (2 * n)) ∧
+    (∀ n : ℕ, 3 ≤ n → circumHalfPerimeter (2 * n) < circumHalfPerimeter n) ∧
+    Filter.Tendsto (fun m : ℕ => halfPerimeter m) Filter.atTop (nhds Real.pi) ∧
+    Filter.Tendsto (fun m : ℕ => circumHalfPerimeter m) Filter.atTop (nhds Real.pi) :=
+  ⟨fun _ hm => archimedes_sandwich hm, fun _ hn => halfPerimeter_doubling hn,
+   fun _ hn => circumHalfPerimeter_doubling hn,
+   halfPerimeter_tendsto_pi, circumHalfPerimeter_tendsto_pi⟩
+
 end AreaOfCircleOQ03OQ02OQ01
+
+-- Axiom audit: foundational axioms only; no `Lean.ofReduceBool`, no `sorryAx`.
+#print axioms AreaOfCircleOQ03OQ02OQ01.pi_sub_halfPerimeter_pow_le
+#print axioms AreaOfCircleOQ03OQ02OQ01.archimedes_two_sided_method_verified

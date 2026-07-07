@@ -48,10 +48,10 @@
     "dateAdded": "2026-06-26",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "lineCount": 370,
+    "lineCount": 588,
     "assumptions": "None. Fully kernel-checked: 0 sorries, 0 axiom declarations, 0 assumption-carrying structures, and no native_decide (all concrete small-n counts are derived from the closed forms via omega/norm_num rather than native_decide, so Lean.ofReduceBool is NOT used). The single dependency on the parent file (CramersComplexity.gauss_beats_cramer, cramersRuleMuls) is through native_decide-free declarations only.",
-    "theoremCount": 27,
-    "definitionCount": 7
+    "theoremCount": 43,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "**The n³/3 Flop Count**\n\nEvery numerical-linear-algebra textbook states that solving an n×n linear system by Gaussian elimination (equivalently LU factorization) costs about n³/3 multiplications/divisions — one third the naive n³ estimate. The parent entry (cramers-rule-oq-02) compared Cramer's rule against Gaussian elimination but used the deliberately loose upper model gaussMuls n = n³, leaving the precise leading constant unformalized. This entry supplies the exact count.\n\n**Where the n³/3 Comes From**\n\nForward elimination runs in steps k = 1, …, n−1. At step k the pivot is at (k,k) and there are n−k rows beneath it. For each such row we compute one multiplier (a division) and update its n−k trailing entries (a multiplication each), for (n−k) + (n−k)² operations. Summing over k and substituting j = n−k gives ∑_{j=1}^{n−1} (j² + j) = (n−1)·n·(n+1)/3 = (n³ − n)/3.",
@@ -188,9 +188,9 @@
     "path": "Proofs/CramersRuleOQ02OQ01.lean",
     "axiomCount": 0,
     "sorryCount": 0,
-    "theoremCount": 27,
-    "definitionCount": 7,
-    "lineCount": 370
+    "theoremCount": 43,
+    "definitionCount": 13,
+    "lineCount": 588
   },
   "references": [
     {

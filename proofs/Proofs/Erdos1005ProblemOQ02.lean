@@ -3109,4 +3109,64 @@ theorem continuant_run_length_log_sandwich_example :
   continuant_run_length_log_sandwich (d := 3) (D := 3) (by norm_num) (le_refl _) [3, 3, 3]
     (by intro k hk; fin_cases hk <;> norm_num) (by intro k hk; fin_cases hk <;> norm_num)
 
+/-! ## §32: Strict growth from the *right* end — the append dual of §17 monotonicity
+
+§17's `continuant_strict_mono` shows prepending a quotient `k ≥ 2` strictly increases the
+continuant, `K(ks) < K(k :: ks)`.  The §16 reversal bridge `continuant_reverse` upgrades this
+to the **trailing** end for free: appending a quotient `k ≥ 2` is, after reversal, prepending
+it to `ks.reverse` (which is again a nonempty all-`≥ 2` run, membership being reversal-invariant),
+so the same strict inequality holds on the right.  Together the two monotonicities say a
+large-quotient run grows strictly when extended at *either* end — and hence strictly when a run
+is wrapped by quotients on both ends, the metric statement behind "long runs are expensive"
+quantified two-sidedly. -/
+
+/-- **Strict monotonicity under appending (the §17 dual).**  In the large-quotient regime
+appending a quotient `k ≥ 2` on the right strictly increases the continuant:
+`Continuant ks < Continuant (ks ++ [k])`.  By §16 reversal `K(ks ++ [k]) = K(k :: ks.reverse)`
+and `K(ks) = K(ks.reverse)`, so this is `continuant_strict_mono` applied to the reversed run
+(`ks.reverse` is again all-`≥ 2`). -/
+theorem continuant_append_strict_mono {k : ℤ} {ks : List ℤ}
+    (hk : (2 : ℤ) ≤ k) (h : ∀ j ∈ ks, (2 : ℤ) ≤ j) :
+    Continuant ks < Continuant (ks ++ [k]) := by
+  have hrev : ∀ j ∈ ks.reverse, (2 : ℤ) ≤ j :=
+    fun j hj => h j (List.mem_reverse.mp hj)
+  have hmono := continuant_strict_mono (ks := ks.reverse) hk hrev
+  rw [continuant_reverse] at hmono
+  have hrw : Continuant (ks ++ [k]) = Continuant (k :: ks.reverse) := by
+    conv_lhs => rw [← continuant_reverse (ks ++ [k])]
+    congr 1
+    rw [List.reverse_append]
+    rfl
+  rw [hrw]; exact hmono
+
+/-- **Strict growth wrapping a run on both ends.**  Bracketing a large-quotient run `ks` by
+quotients `k, k' ≥ 2` on the left and right strictly increases the continuant past the
+inner run: `Continuant ks < Continuant (k :: (ks ++ [k']))`.  Chains the right-append growth
+`K(ks) < K(ks ++ [k'])` (`continuant_append_strict_mono`) with the prepend growth
+`K(ks ++ [k']) < K(k :: (ks ++ [k']))` (§17 `continuant_strict_mono`, the bracketed run being
+again all-`≥ 2`). -/
+theorem continuant_lt_cons_append {k k' : ℤ} {ks : List ℤ}
+    (hk : (2 : ℤ) ≤ k) (hk' : (2 : ℤ) ≤ k') (h : ∀ j ∈ ks, (2 : ℤ) ≤ j) :
+    Continuant ks < Continuant (k :: (ks ++ [k'])) := by
+  have hwrap : ∀ j ∈ ks ++ [k'], (2 : ℤ) ≤ j := by
+    intro j hj
+    rcases List.mem_append.mp hj with hjks | hj1
+    · exact h j hjks
+    · simpa using (List.mem_singleton.mp hj1) ▸ hk'
+  calc Continuant ks
+      < Continuant (ks ++ [k']) := continuant_append_strict_mono hk' h
+    _ < Continuant (k :: (ks ++ [k'])) := continuant_strict_mono hk hwrap
+
+/-- **Concrete two-ended growth.**  `K[3] = 3 < K[2,3,2] = 13`: bracketing the run `[3]` by
+`2`s on both sides strictly inflates the continuant.  (`K[2,3,2] = 2·(3·2−1) − 2 = 2·5 + 3 = 13`.)
+Discharged through the general two-ended bound. -/
+theorem continuant_lt_cons_append_example :
+    Continuant [3] < Continuant (2 :: ([3] ++ [2])) := by
+  refine continuant_lt_cons_append (k := 2) (k' := 2) (ks := [3]) (by norm_num) (by norm_num) ?_
+  intro j hj; fin_cases hj; norm_num
+
 end Erdos1005OQ02
+
+-- Axiom audit: foundational axioms only; no `Lean.ofReduceBool`, no `sorryAx`.
+#print axioms Erdos1005OQ02.continuant_append_strict_mono
+#print axioms Erdos1005OQ02.continuant_lt_cons_append

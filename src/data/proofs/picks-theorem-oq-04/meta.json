@@ -21,9 +21,9 @@
     "badge": "original",
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 308,
-    "theoremCount": 14,
-    "definitionCount": 9,
+    "lineCount": 453,
+    "theoremCount": 21,
+    "definitionCount": 11,
     "dateAdded": "2026-06-28",
     "assumptions": "0 sorries, 0 axioms (only propext / Classical.choice / Quot.sound, the foundational Lean axioms). Fully machine-verified; no native_decide. The Pick bridge theorems carry the polygon's lattice-point counts (i, b) and Pick's relation as ordinary hypotheses, not as axioms.",
     "originalContributions": [
@@ -50,6 +50,9 @@
       "The triangle shoelace formula (picks-theorem-oq-01) and the triangle bridge 2·Area = |det| (picks-theorem-oq-01-oq-01-oq-01)",
       "Fan triangulation of a simple polygon from a fixed vertex",
       "Integer (lattice) coordinates and the 2D cross product / determinant"
+    ],
+    "additionalFiles": [
+      "Proofs/PicksTheoremOQ04FanApex.lean"
     ]
   },
   "overview": {

@@ -474,4 +474,49 @@ theorem conjecturedValue_r2_large (n k : ℕ) (hk : 2 ≤ k) (hn : k ≤ n)
   unfold conjecturedValue
   exact max_eq_right ((crossover_r2 n k hk hn).2 hthr)
 
+/-- **Linear lower bound for binomial coefficients.** `C(m, d) ≥ m + 1 − d` for `d ≥ 1`:
+    past the diagonal the binomial coefficient grows by at least one per unit increase
+    of `m`. Equality holds at `d = 1` (`C(m, 1) = m`) and at `m = d` (`C(d, d) = 1`).
+    (Complements `choose_unbounded` above with an *explicit* linear rate.) -/
+theorem choose_ge_linear (d m : ℕ) (hd : d ≥ 1) : m + 1 - d ≤ Nat.choose m d := by
+  induction m with
+  | zero =>
+    have : Nat.choose 0 d = 0 := Nat.choose_eq_zero_of_lt (by omega)
+    omega
+  | succ m ih =>
+    obtain ⟨d', rfl⟩ : ∃ d', d = d' + 1 := ⟨d - 1, by omega⟩
+    have hrec : Nat.choose (m + 1) (d' + 1) = Nat.choose m d' + Nat.choose m (d' + 1) :=
+      Nat.choose_succ_succ m d'
+    rcases le_or_gt d' m with hle | hlt
+    · have hpos : 1 ≤ Nat.choose m d' := Nat.choose_pos hle
+      omega
+    · -- `d' > m` ⇒ `d = d' + 1 > m + 1` ⇒ the truncated LHS `(m+1)+1 − d` is `0`.
+      omega
+
+/-- **Explicit linear growth of the large-`n` construction.**
+    `n − (r − 1) ≤ construction2 n r k`: the degree-`(r−1) ≥ 1` top summand
+    `C(n−1, r−1)` already contributes a linear-in-`n` term. -/
+theorem construction2_ge_linear (n r k : ℕ) (hr : r ≥ 2) (hk : k ≥ 2) (hn : n ≥ k) :
+    n - (r - 1) ≤ construction2 n r k := by
+  have htop := construction2_ge_top_summand n r k (by omega) hk hn
+  have hlin := choose_ge_linear (r - 1) (n - 1) (by omega)
+  have hn1 : (n - 1) + 1 = n := by omega
+  rw [hn1] at hlin
+  omega
+
+/-- **The large-`n` regime is unconditional.** For every `r ≥ 2, k ≥ 2` there is a
+    threshold past which the conjectured extremal value collapses to
+    `construction2`: `∀ n ≥ N, conjecturedValue n r k = construction2 n r k`.
+    (What remains open is the *value* of the extremal function inside the gap band,
+    not the identity of the eventual maximiser.) -/
+theorem conjecturedValue_eventually (r k : ℕ) (hr : 2 ≤ r) (hk : 2 ≤ k) :
+    ∃ N, ∀ n, N ≤ n → conjecturedValue n r k = construction2 n r k := by
+  obtain ⟨N, hN⟩ := exists_large_regime r k hr hk
+  exact ⟨N, fun n hn => conjecturedValue_large n r k (hN n hn)⟩
+
 end Erdos1020OQ02
+
+-- Axiom audit: foundational axioms only; no `Lean.ofReduceBool`, no `sorryAx`.
+#print axioms Erdos1020OQ02.choose_ge_linear
+#print axioms Erdos1020OQ02.construction2_ge_linear
+#print axioms Erdos1020OQ02.conjecturedValue_eventually
