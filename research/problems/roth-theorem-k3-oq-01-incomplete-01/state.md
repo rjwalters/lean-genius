@@ -3,10 +3,36 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-12T00:00:00Z (S6 ACT REPAIR this PR)
-**Iteration**: 6
+**Since**: 2026-07-07T00:00:00Z (S7 ACT SMALL-N this PR)
+**Iteration**: 7
 
 ## Current Focus
+
+**S7 ACT SMALL-N (researcher-5 draft 2026-07-04, rebased + verified
+2026-07-07)** — Executed the drafted small-N pin, sharpened to the
+**exact value r₃(4) = 2** (better than the planned [2, 3] range).
+Originally PR #34788 (stale/conflicting); re-applied onto current
+main and Docker-verified as part of the #35118 recovery queue.
+Added two theorems to `RothTheoremQuantitative.lean` after
+`rothNumber_three`:
+
+- `apFree_four_card_le_two : ∀ A : Finset (ZMod 4), (∀ a d, d ≠ 0 →
+  a ∈ A → a + d ∈ A → a + 2*d ∉ A) → A.card ≤ 2` — by `decide` on the
+  **unfolded** predicate (the global `APFree` instance is classical
+  and cannot evaluate; stating the ∀-form directly lets `decide` use
+  the computable `Fintype (ZMod 4)` instances). Math key: in `ZMod 4`
+  the step `d = 2` wraps (`a + 2·2 = a`), so an AP-free set can hold
+  at most one of `{0, 2}` and one of `{1, 3}` → size ≤ 2.
+- `rothNumber_four : rothNumber 4 = 2` — `le_antisymm`; upper bound
+  via `rothNumber_def` + `Finset.sup_le` + `apFree_four_card_le_two`,
+  lower bound via `card_le_rothNumber {0,1}` + defeq-unfold `decide`
+  (identical idiom to the green `rothNumber_three`).
+
+Axiom-free (a `#print axioms rothNumber_four` audit line is in the
+file), 0 new sorries. Note `r₃(4) = 2 = r₃(3)`: `r₃` is not monotone
+in `N`. The four landmark bounds (Roth / Behrend / Bloom–Sisask /
+Kelley–Meka) remain explicit `axiom` declarations on main (entry
+status: axiomatized, axiomCount 4), untouched by this step.
 
 **S6 ACT REPAIR (researcher-1, 2026-06-12)** — Implemented the full
 fresh-build repair AND found the true root cause S3–S5 all missed:

@@ -49,10 +49,11 @@
       "Proof that r₃(N) ≥ 1 for N ≥ 1 (singleton witness)",
       "Proof of iterations_before_contradiction: if δ + kδ²/100 ≤ 1 then k ≤ 100/δ² (density-increment iteration-count bound)",
       "Proof of rothNumber_div_tendsto_zero: the qualitative Roth asymptotic r₃(N)/N → 0, reduced to the parent RothTheorem via Mathlib's corners / triangle-removal chain",
+      "Proof that r₃(4) = 2 exactly (rothNumber_four via apFree_four_card_le_two), axiom-free by decide; shows r₃ is not monotone in N since r₃(4) = r₃(3)",
       "Formal statements of 4 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka"
     ],
-    "lineCount": 393,
-    "theoremCount": 19,
+    "lineCount": 434,
+    "theoremCount": 21,
     "definitionCount": 2,
     "additionalFiles": [
       "Proofs/RothTheoremQuantitativeAristotle.lean"
@@ -218,9 +219,9 @@
       "Finset"
     ],
     "namespace": "Szemeredi.Roth.Quantitative",
-    "lineCount": 393,
+    "lineCount": 434,
     "axiomCount": 4,
-    "theoremCount": 19,
+    "theoremCount": 21,
     "definitionCount": 2,
     "path": "Proofs/RothTheoremQuantitative.lean",
     "sorries": 0,
