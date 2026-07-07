@@ -24,7 +24,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 157,
+    "lineCount": 289,
     "dateAdded": "2026-07-06",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -78,41 +78,49 @@
       "id": "header",
       "title": "Module Header: From Upper Bound to a Matching Lower Bound",
       "startLine": 1,
-      "endLine": 59,
+      "endLine": 70,
       "summary": "Module docstring framing OQ-01: the parent proved binaryGcdCost a b = O((log N)^2); is that quadratic bound tight? The answer is given in the sharpest form — on the diagonal power-of-two family a = b = 2^k the cost is exactly (k+1)(k+2), so (log₂ N)^2 ≤ binaryGcdCost N N for N = 2^k. Lists the five main results and confirms the file is axiom-free with no native_decide. Imports Mathlib and both parent files.",
       "mathContext": "$\\mathtt{binaryGcdCost}(2^k, 2^k) = (k+1)(k+2)$; telescoping ladder $\\sum_{j=0}^{k} 2(j+1) = (k+1)(k+2)$."
     },
     {
       "id": "even-diag-step",
       "title": "One even/even reduction step on the diagonal",
-      "startLine": 68,
-      "endLine": 80,
+      "startLine": 79,
+      "endLine": 91,
       "summary": "cost_even_diag: for positive even a, binaryGcdCost a a = 2·Nat.size a + binaryGcdCost (a/2) (a/2). Writes a = a'+1 (Nat.exists_eq_succ_of_ne_zero), fires the parent equation lemma binaryGcdCost.eq_3, and discharges both parity tests with if_pos before ring. This is the arithmetic engine: one diagonal even step charges 2·Nat.size a and recurses on (a/2, a/2).",
       "mathContext": "On an even/even diagonal pair the cost recursion takes the halving branch, charging $2\\,\\mathtt{Nat.size}\\,a$ (the combined bit-length of both operands) and continuing on $(a/2, a/2)$."
     },
     {
       "id": "exact-closed-form",
       "title": "Exact cost on the diagonal power-of-two family",
-      "startLine": 82,
-      "endLine": 106,
+      "startLine": 93,
+      "endLine": 117,
       "summary": "binaryGcdCost_two_pow_diag: binaryGcdCost (2^k) (2^k) = (k+1)(k+2), by induction on k. Base (k=0): (1,1) is odd/odd, one step to (1,0) at cost 2. Step: 2^{n+1} is even with 2^{n+1}/2 = 2^n, so cost_even_diag + Nat.size_pow give 2·(n+2) + (n+1)(n+2), which ring folds to (n+2)(n+3).",
       "mathContext": "The $k+1$ even/even steps $(2^k,2^k) \\to \\cdots \\to (1,1)$ cost $2(j+1)$ each; summing gives $\\sum_{j=0}^{k} 2(j+1) = (k+1)(k+2)$ — an exact quadratic, not merely a lower bound."
     },
     {
       "id": "lower-bounds",
       "title": "The matching Ω((log N)²) lower bound",
-      "startLine": 108,
-      "endLine": 131,
+      "startLine": 119,
+      "endLine": 142,
       "summary": "Three corollaries of the closed form: binaryGcdCost_two_pow_diag_lower (k² ≤ cost, via nlinarith), binaryGcdCost_diag_log_lower ((log₂ 2^k)² ≤ cost, rewriting log₂ 2^k = k by Nat.log_pow), and binaryGcdCost_omega_log_sq (the explicit family a = b = 2^k with log₂ = k and cost ≥ k²) — the requested Ω((log N)^2) input family.",
       "mathContext": "Since $\\log_2(2^k) = k$, the clean floor $k^2 \\le \\mathtt{binaryGcdCost}(2^k,2^k)$ is exactly the $(\\log_2 N)^2$ lower bound for $N = 2^k$, matching the parent's $O((\\log N)^2)$ upper bound."
     },
     {
       "id": "two-sided-squeeze",
       "title": "Two-sided squeeze: Θ((log N)²) on the diagonal family",
-      "startLine": 133,
-      "endLine": 156,
+      "startLine": 144,
+      "endLine": 167,
       "summary": "binaryGcdCost_diag_two_sided: with L = log₂ a + log₂ b, on a = b = 2^k the cost satisfies (L/2)² ≤ binaryGcdCost a b ≤ (2L+2)(L+2). The lower half is the k² floor (L/2 = k); the upper half is the parent binaryGcdCost_le_quadratic specialised to 2^k. Both bounds are quadratic in L, so the cost is Θ(L²) = Θ((log N)^2).",
       "mathContext": "The parent's $O((\\log N)^2)$ upper bound and this entry's $\\Omega((\\log N)^2)$ lower bound coincide in order on the diagonal family, so the quadratic total-cost model is asymptotically tight."
+    },
+    {
+      "id": "odd-family",
+      "title": "Part 2: The Coprime Odd Worst-Case Family (2^(k+1) − 1, 1)",
+      "startLine": 168,
+      "endLine": 289,
+      "summary": "Recovered from draft PR #32737 and machine-verified: the all-ones odd number N = 2^(k+1)-1 against b = 1 is coprime (gcd = 1) and forces the subtract-and-halve branch at every step, giving the exact division-free closed form 2*binaryGcdCost N 1 = (k+1)(k+4) (cost_base, cost_step, cost_family), hence (log₂ N)² ≤ 2*binaryGcdCost N 1 (binaryGcdCost_omega_lower) and a two-sided Θ((log N)²) squeeze against the parent's upper bound (binaryGcdCost_family_matching). This complements Part 1's even/even diagonal, where every step is a halving and gcd = N. #print axioms audit lines confirm all headline theorems of both parts use only propext / Classical.choice / Quot.sound.",
+      "mathContext": "$2\\cdot\\mathtt{binaryGcdCost}(2^{k+1}-1,\\,1) = (k+1)(k+4)$, so with $\\log_2 N = k$ the cost is $\\Omega((\\log N)^2)$ on a coprime family exercising only the odd/odd subtraction branch."
     }
   ],
   "crossReferences": [
@@ -133,7 +141,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Closes the tightness question left open by binary-gcd-oq-01-oq-01: on the diagonal power-of-two family a = b = 2^k the total bit-operation cost of Stein's Binary GCD is exactly (k+1)(k+2). Since log₂(2^k) = k, this gives the matching lower bound (log₂ N)^2 ≤ binaryGcdCost N N for N = 2^k, and combined with the parent's O((log N)^2) upper bound squeezes the cost into Θ((log N)^2). 6 theorems, 0 axioms, 0 sorries, no native_decide.",
+    "summary": "Closes the tightness question left open by binary-gcd-oq-01-oq-01: on the diagonal power-of-two family a = b = 2^k the total bit-operation cost of Stein's Binary GCD is exactly (k+1)(k+2). Since log₂(2^k) = k, this gives the matching lower bound (log₂ N)^2 ≤ binaryGcdCost N N for N = 2^k, and combined with the parent's O((log N)^2) upper bound squeezes the cost into Θ((log N)^2). 6 theorems, 0 axioms, 0 sorries, no native_decide. Part 2 (recovered from draft PR #32737) strengthens the tightness certificate to a coprime family: N = 2^(k+1)-1 against 1 forces the subtract-and-halve branch every step and costs exactly (k+1)(k+4)/2 bit operations, so the quadratic bound is tight for gcd-1 inputs too, not only on the halving diagonal.",
     "implications": "The parent's quadratic total-cost bound is asymptotically tight, not a loose over-estimate — there is a concrete, natural input family (equal powers of two) on which the O((log N)^2) estimate is achieved to within a constant factor, and in fact realised as an exact quadratic. The single-step-plus-induction pattern (isolate one reduction step as a cost recurrence, then telescope) is reusable for exact cost formulas on any structured input family of a bit-charged recursion.",
     "openQuestions": [
       "The exact leading constant of the worst case over all inputs of a given bit-length, not just the diagonal power-of-two family: is a = b = 2^k the true maximiser of binaryGcdCost among N-bit inputs?",
@@ -211,6 +219,24 @@
       "type": "supporting",
       "description": "One even/even reduction step on a diagonal even pair: binaryGcdCost a a = 2·Nat.size a + binaryGcdCost (a/2) (a/2). The arithmetic engine of the closed form.",
       "leanType": "(a : ℕ) → 0 < a → a % 2 = 0 → binaryGcdCost a a = 2 * Nat.size a + binaryGcdCost (a / 2) (a / 2)"
+    },
+    {
+      "name": "cost_family",
+      "type": "core",
+      "description": "Exact total cost on the coprime odd worst-case family (recovered from draft PR #32737): 2*binaryGcdCost (2^(k+1)-1) 1 = (k+1)(k+4). Every step is a subtract-and-halve reduction (2^(m+1)-1, 1) -> (2^m-1, 1) of cost m+2; the arithmetic progression sums to (k+1)(k+4)/2, stated division-free.",
+      "leanType": "(k : ℕ) → 2 * binaryGcdCost (2 ^ (k + 1) - 1) 1 = (k + 1) * (k + 4)"
+    },
+    {
+      "name": "binaryGcdCost_omega_lower",
+      "type": "core",
+      "description": "Matching Ω((log N)²) lower bound on a coprime family: for N = 2^(k+1)-1 (log₂ N = k, gcd(N,1)=1) the total cost satisfies (log₂ N)² ≤ 2·binaryGcdCost N 1. The quadratic bound is tight already for inputs driven entirely through the subtraction branch, not just on the halving diagonal.",
+      "leanType": "(k : ℕ) → (Nat.log 2 (2 ^ (k + 1) - 1)) ^ 2 ≤ 2 * binaryGcdCost (2 ^ (k + 1) - 1) 1"
+    },
+    {
+      "name": "binaryGcdCost_family_matching",
+      "type": "supporting",
+      "description": "Two-sided Θ((log N)²) squeeze on the coprime odd family: the Ω lower bound paired with the parent's quadratic upper bound binaryGcdCost_le_quadratic, specialised to (2^(k+1)-1, 1).",
+      "leanType": "(k : ℕ) → (Nat.log 2 (2 ^ (k + 1) - 1)) ^ 2 ≤ 2 * binaryGcdCost (2 ^ (k + 1) - 1) 1 ∧ binaryGcdCost (2 ^ (k + 1) - 1) 1 ≤ (2 * (Nat.log 2 (2 ^ (k + 1) - 1) + Nat.log 2 1) + 2) * (Nat.log 2 (2 ^ (k + 1) - 1) + Nat.log 2 1 + 2)"
     }
   ],
   "sorries": 0
