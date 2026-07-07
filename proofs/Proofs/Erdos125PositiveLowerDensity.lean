@@ -334,7 +334,39 @@ lemma B_decomp (m b : ℕ) (hb : b ∈ B) :
 
 /-- `log 4 / log 3` is irrational. -/
 lemma log_ratio_irrational : Irrational (Real.log 4 / Real.log 3) := by
-  sorry
+  have hlog3 : 0 < Real.log 3 := Real.log_pos (by norm_num)
+  have hlog4 : 0 < Real.log 4 := Real.log_pos (by norm_num)
+  have hlog3ne : Real.log 3 ≠ 0 := hlog3.ne'
+  intro h
+  obtain ⟨q, hq⟩ := h
+  have hdenpos : 0 < q.den := q.den_pos
+  have hden_posR : (0 : ℝ) < (q.den : ℝ) := by exact_mod_cast hdenpos
+  have hden0 : (q.den : ℝ) ≠ 0 := hden_posR.ne'
+  -- From `↑q = log 4 / log 3` and `↑q = q.num / q.den`, cross-multiply.
+  have hcast : (q.num : ℝ) / (q.den : ℝ) = Real.log 4 / Real.log 3 := by
+    rw [← Rat.cast_def]; exact hq
+  have h2 : (q.num : ℝ) * Real.log 3 = (q.den : ℝ) * Real.log 4 := by
+    field_simp [hlog3ne, hden0] at hcast
+    linear_combination hcast
+  have hprod : 0 < (q.num : ℝ) * Real.log 3 := by rw [h2]; exact mul_pos hden_posR hlog4
+  have hnumpos : 0 < q.num := by
+    have hR : 0 < (q.num : ℝ) := by nlinarith [hprod, hlog3]
+    exact_mod_cast hR
+  set n := q.num.toNat with hn
+  have hnum_cast : (q.num : ℝ) = (n : ℝ) := by
+    rw [hn]; exact_mod_cast (Int.toNat_of_nonneg hnumpos.le).symm
+  rw [hnum_cast] at h2
+  -- `n * log 3 = q.den * log 4` forces `3 ^ n = 4 ^ q.den`.
+  have hlogeq : Real.log ((3 : ℝ) ^ n) = Real.log ((4 : ℝ) ^ q.den) := by
+    rw [Real.log_pow, Real.log_pow]; linarith [h2]
+  have hpoweq : (3 : ℝ) ^ n = (4 : ℝ) ^ q.den :=
+    Real.log_injOn_pos (Set.mem_Ioi.mpr (by positivity))
+      (Set.mem_Ioi.mpr (by positivity)) hlogeq
+  have hnateq : (3 : ℕ) ^ n = (4 : ℕ) ^ q.den := by exact_mod_cast hpoweq
+  -- But `3 ^ n` is odd and `4 ^ q.den` is even (`q.den ≥ 1`).
+  have hodd : (3 : ℕ) ^ n % 2 = 1 := by rw [Nat.pow_mod]; norm_num
+  have hdvd : 2 ∣ (4 : ℕ) ^ q.den := dvd_pow (by norm_num) hdenpos.ne'
+  omega
 
 /--
 **Dirichlet helper.** For any irrational `α > 0` and any `δ > 0`, there exist
@@ -351,14 +383,57 @@ lemma exists_small_pos_lin_comb (δ : ℝ) (hδ : 0 < δ) :
     ∃ m k : ℕ, 0 < m ∧ 0 < k ∧
       0 < (m : ℝ) * Real.log 4 - (k : ℝ) * Real.log 3 ∧
       (m : ℝ) * Real.log 4 - (k : ℝ) * Real.log 3 < δ := by
-  sorry
+  have h_irr : Irrational (Real.log 4 / Real.log 3) := log_ratio_irrational
+  have hlog3 : 0 < Real.log 3 := Real.log_pos (by norm_num)
+  have hlog3ne : Real.log 3 ≠ 0 := hlog3.ne'
+  have h_pos : 0 < Real.log 4 / Real.log 3 :=
+    div_pos (Real.log_pos (by norm_num)) hlog3
+  have hdd : 0 < δ / Real.log 3 := div_pos hδ hlog3
+  obtain ⟨m, k, hm, hk, hlo, hhi⟩ :=
+    exists_small_pos_lin_comb_help (Real.log 4 / Real.log 3) h_irr h_pos
+      (δ / Real.log 3) hdd
+  -- Rescale by `log 3`: `(m·(log4/log3) − k)·log3 = m·log4 − k·log3`.
+  have heq : (m : ℝ) * Real.log 4 - (k : ℝ) * Real.log 3
+      = ((m : ℝ) * (Real.log 4 / Real.log 3) - (k : ℝ)) * Real.log 3 := by
+    field_simp
+  refine ⟨m, k, hm, hk, ?_, ?_⟩
+  · rw [heq]; exact mul_pos hlo hlog3
+  · rw [heq]
+    have hcancel : δ / Real.log 3 * Real.log 3 = δ := by field_simp
+    have hmul := mul_lt_mul_of_pos_right hhi hlog3
+    rwa [hcancel] at hmul
 
 /-- Refinement: also `K ≤ 3^k`. -/
 lemma exists_small_pos_lin_comb_large_k (δ : ℝ) (hδ : 0 < δ) (K : ℝ) :
     ∃ m k : ℕ, 0 < m ∧ 0 < k ∧ K ≤ (3 ^ k : ℝ) ∧
       0 < (m : ℝ) * Real.log 4 - (k : ℝ) * Real.log 3 ∧
       (m : ℝ) * Real.log 4 - (k : ℝ) * Real.log 3 < δ := by
-  sorry
+  -- Archimedean: choose `N ≥ 1` with `K ≤ 3 ^ N`.
+  obtain ⟨N0, hN0⟩ := pow_unbounded_of_one_lt K (by norm_num : (1 : ℝ) < 3)
+  set N := N0 + 1 with hNdef
+  have hNpos : 0 < N := by omega
+  have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hNpos
+  have hKN : K ≤ (3 : ℝ) ^ N := by
+    have hmono : (3 : ℝ) ^ N0 ≤ (3 : ℝ) ^ N :=
+      pow_le_pow_right₀ (by norm_num) (by omega)
+    linarith [hN0]
+  have hdivN : 0 < δ / (N : ℝ) := div_pos hδ hNR
+  obtain ⟨m0, k0, hm0, hk0, hlo, hhi⟩ := exists_small_pos_lin_comb (δ / (N : ℝ)) hdivN
+  have hexp : ((N * m0 : ℕ) : ℝ) * Real.log 4 - ((N * k0 : ℕ) : ℝ) * Real.log 3
+      = (N : ℝ) * ((m0 : ℝ) * Real.log 4 - (k0 : ℝ) * Real.log 3) := by
+    push_cast; ring
+  refine ⟨N * m0, N * k0, Nat.mul_pos hNpos hm0, Nat.mul_pos hNpos hk0, ?_, ?_, ?_⟩
+  · -- `K ≤ 3 ^ (N * k0)`.
+    have hNk : N ≤ N * k0 := Nat.le_mul_of_pos_right N hk0
+    have hle : (3 : ℝ) ^ N ≤ (3 : ℝ) ^ (N * k0) :=
+      pow_le_pow_right₀ (by norm_num) hNk
+    calc K ≤ (3 : ℝ) ^ N := hKN
+      _ ≤ (3 : ℝ) ^ (N * k0) := hle
+  · rw [hexp]; exact mul_pos hNR hlo
+  · rw [hexp]
+    have hmul := mul_lt_mul_of_pos_left hhi hNR
+    have hcancel : (N : ℝ) * (δ / (N : ℝ)) = δ := by field_simp
+    rwa [hcancel] at hmul
 
 /--
 **Dirichlet approximation.** For any `ε > 0`, there exist `k, m > 0` with
@@ -367,7 +442,24 @@ lemma exists_small_pos_lin_comb_large_k (δ : ℝ) (hδ : 0 < δ) (K : ℝ) :
 lemma dirichlet_approx (ε : ℝ) (hε : 0 < ε) :
     ∃ k m : ℕ, 0 < k ∧ 0 < m ∧ (3 ^ k : ℝ) ≤ 4 ^ m ∧
       (4 ^ m : ℝ) ≤ (3 ^ k : ℝ) * (1 + ε) ∧ (3 ^ k : ℝ) * ε ≥ 3 := by
-  sorry
+  have h_log_eps : 0 < Real.log (1 + ε) := Real.log_pos (by linarith)
+  obtain ⟨m, k, hm, hk, hk_large, h_diff_pos, h_diff_lt⟩ :=
+    exists_small_pos_lin_comb_large_k (Real.log (1 + ε)) h_log_eps (3 / ε)
+  refine ⟨k, m, hk, hm, ?_, ?_, ?_⟩
+  · -- `3 ^ k ≤ 4 ^ m`, via monotonicity of `log`.
+    have hkpos : (0 : ℝ) < (3 : ℝ) ^ k := by positivity
+    have hmpos : (0 : ℝ) < (4 : ℝ) ^ m := by positivity
+    rw [← Real.log_le_log_iff hkpos hmpos, Real.log_pow, Real.log_pow]
+    linarith [h_diff_pos]
+  · -- `4 ^ m ≤ 3 ^ k · (1 + ε)`.
+    have hmpos : (0 : ℝ) < (4 : ℝ) ^ m := by positivity
+    have hrhs : (0 : ℝ) < (3 : ℝ) ^ k * (1 + ε) := by positivity
+    rw [← Real.log_le_log_iff hmpos hrhs, Real.log_pow,
+        Real.log_mul (by positivity) (by positivity), Real.log_pow]
+    linarith [h_diff_lt]
+  · -- `3 ^ k · ε ≥ 3`, from `3 / ε ≤ 3 ^ k`.
+    rw [ge_iff_le, ← div_le_iff₀ hε]
+    exact hk_large
 
 /-- Algebraic identity used in the scale-step. -/
 lemma hz_eq_lemma (x a b a1 a0 b1 b0 k m : ℕ)
