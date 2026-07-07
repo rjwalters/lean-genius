@@ -255,8 +255,21 @@ lemma num_isolated_Z_rel (A : Set ℕ) :
   · exact (Set.Infinite.ncard (h.comp (·.preimage Nat.cast_injective.injOn|>.insert 0|>.subset ↑ fun and⟨A, B, C⟩=>and.eq_zero_or_pos.imp_right fun and' =>⟨⟨ _,B, rfl⟩,by grind⟩))).trans_le bot_le
 
 lemma N_k_Z_rel_1 (A : Set ℕ) : N_k_Z (Z_S (A + A)) (1 : ℤ) = N_k_N (A + A) 1 := by
-  delta N_k_N and N_k_Z Z_S
-  exact (congr_arg ↑_ ↑(Set.ext (by·grind))).trans (Set.ncard_image_of_injective ↑_ Nat.cast_injective)
+  -- Explicit replacement for an AlphaProof `grind` call that fails under Mathlib v4.26.0:
+  -- push the `Nat.cast` image through the "x and x+1 both in the sumset" predicate by hand.
+  have h_im : {x ∈ Z_S (A + A) | x + (1 : ℤ) ∈ Z_S (A + A)}
+      = (fun x : ℕ => (x : ℤ)) '' {x ∈ A + A | x + 1 ∈ A + A} := by
+    ext x
+    simp only [Z_S, Set.mem_setOf_eq, Set.mem_image]
+    constructor
+    · rintro ⟨⟨w, hw, rfl⟩, w₁, hw₁, hcast⟩
+      have hw₁' : w₁ = w + 1 := by exact_mod_cast hcast
+      subst hw₁'
+      exact ⟨w, ⟨hw, hw₁⟩, rfl⟩
+    · rintro ⟨w, ⟨hw, hw1⟩, rfl⟩
+      exact ⟨⟨w, hw, rfl⟩, w + 1, hw1, by norm_cast⟩
+  delta N_k_Z N_k_N
+  exact (congr_arg Set.ncard h_im).trans (Set.ncard_image_of_injective _ Nat.cast_injective)
 
 lemma N_k_Z_rel_2 (A : Set ℕ) : N_k_Z (Z_S (A + A)) (2 : ℤ) = N_k_N (A + A) 2 := by
   norm_num (config := {singlePass :=1}) [N_k_Z, N_k_N, Z_S]
