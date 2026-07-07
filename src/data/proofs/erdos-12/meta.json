@@ -7,7 +7,7 @@
     "author": "Erdős-Sárközy (1970); parts (i)/(ii) by DeepMind AlphaProof Nexus (2026)",
     "sourceUrl": "https://erdosproblems.com/12",
     "date": "1970",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos12Problem.lean",
     "tags": [
       "erdos",
@@ -102,7 +102,7 @@
       "Dilworth's theorem (for antichain bounds)",
       "Multiplicative number theory"
     ],
-    "assumptions": "0 axioms, 0 sorries across all three Lean files (Erdos12Problem.lean, Erdos12ProblemAPNPartI.lean, Erdos12ProblemAPNPartII.lean). Parts (i) and (ii) of the original Erdős problem are now machine-checkable via the DeepMind AlphaProof Nexus port (2026-05-21, arXiv:2605.22763v1). Part (iii) — convergence of Σ 1/n on a divisibility-free set — remains OPEN. Gallery status stays 'axiomatized' until a local Lean build (`./proofs/scripts/docker-build.sh Proofs.Erdos12ProblemAPNPartI` and `... Erdos12ProblemAPNPartII`) confirms the ported proofs compile against Mathlib v4.26.0 in this repo.",
+    "assumptions": "0 axioms, 0 sorries across all three Lean files (Erdos12Problem.lean, Erdos12ProblemAPNPartI.lean, Erdos12ProblemAPNPartII.lean). Parts (i) and (ii) of the original Erdős problem are now machine-checkable via the DeepMind AlphaProof Nexus port (2026-05-21, arXiv:2605.22763v1). Part (iii) — convergence of Σ 1/n on a divisibility-free set — remains OPEN. Both companion files were confirmed to elaborate against Mathlib v4.26.0 via `./proofs/scripts/docker-build.sh Proofs.Erdos12ProblemAPNPartI` and `... Erdos12ProblemAPNPartII` (both exit 0, warnings only) on 2026-07-07 (issue #20841), so the gallery status is now 'verified' for parts (i) and (ii). Badge stays 'wip' pending peer review; part (iii) remains open as a mathematical question but is not claimed by any Lean statement.",
     "theoremCount": 104,
     "definitionCount": 29
   },
