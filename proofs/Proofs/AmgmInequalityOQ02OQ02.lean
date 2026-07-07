@@ -445,16 +445,21 @@ theorem newton_cleared_denom_inductive_step (m k : ℕ) (hk : 2 ≤ k) (hm_eq : 
     simp only [hAD_def]; nlinarith [mul_nonneg ha_nn hd_nn, mul_nonneg hb_nn hc_nn]
   -- binom_ineq ↔ c²·AD ≥ bd·B2
   have h_c2AD_ge_bdB2 : c ^ 2 * AD ≥ b * d * B2 := by nlinarith [h_binom]
-  -- Algebraic identity gives dual: b²·AD ≥ ac·B2
-  have h_binom_symm : (c ^ 2 - b ^ 2) * AD = (b * d - a * c) * B2 := by
-    simp only [hAD_def, hB2_def]; ring
+  -- Dual inequality b²·AD ≥ ac·B2 (from binom_ineq_dual — the earlier
+  -- `(c²-b²)·AD = (b·d-a·c)·B2` "symmetry" was not a ring identity).
+  have h_binom_dual := binom_ineq_dual m k hk hm_eq
   have h_b2AD_ge_acB2 : b ^ 2 * AD ≥ a * c * B2 := by
-    nlinarith [h_c2AD_ge_bdB2, h_binom_symm]
+    simp only [hAD_def, hB2_def]; simp only [ha_def, hb_def, hc_def, hd_def] at h_binom_dual ⊢
+    linarith [h_binom_dual]
   -- Positivity of binomial coefficients
-  have hb_pos : (0 : ℝ) < b := by exact_mod_cast Nat.choose_pos (show k - 1 ≤ m by omega)
-  have hc_pos : (0 : ℝ) < c := by exact_mod_cast Nat.choose_pos (show k ≤ m by omega)
-  have hd_pos : (0 : ℝ) < d := by exact_mod_cast Nat.choose_pos (show k + 1 ≤ m by omega)
-  have ha_pos : (0 : ℝ) < a := by exact_mod_cast Nat.choose_pos (show k - 2 ≤ m by omega)
+  have hb_pos : (0 : ℝ) < b := by
+    rw [hb_def]; exact_mod_cast Nat.choose_pos (show k - 1 ≤ m by omega)
+  have hc_pos : (0 : ℝ) < c := by
+    rw [hc_def]; exact_mod_cast Nat.choose_pos (show k ≤ m by omega)
+  have hd_pos : (0 : ℝ) < d := by
+    rw [hd_def]; exact_mod_cast Nat.choose_pos (show k + 1 ≤ m by omega)
+  have ha_pos : (0 : ℝ) < a := by
+    rw [ha_def]; exact_mod_cast Nat.choose_pos (show k - 2 ≤ m by omega)
   --
   -- Step 2: γ ≥ 0
   have hγ : ek ^ 2 * AD ≥ ekm1 * ekp1 * B2 := by
