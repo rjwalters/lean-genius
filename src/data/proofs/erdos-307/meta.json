@@ -17,7 +17,7 @@
       "reciprocals"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "erdosNumber": 307,
     "erdosUrl": "https://erdosproblems.com/307",
     "erdosProblemStatus": "open",
@@ -272,9 +272,10 @@
     "imports": [
       "Mathlib.NumberTheory.Divisors",
       "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Rat.Basic",
+      "Mathlib.Data.Rat.Defs",
       "Mathlib.Data.Nat.Prime.Basic",
-      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Data.ZMod.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -282,15 +283,15 @@
       "BigOperators"
     ],
     "namespace": "Erdos307",
-    "lineCount": 514,
+    "lineCount": 607,
     "axiomCount": 0,
-    "theoremCount": 22,
-    "definitionCount": 15,
+    "theoremCount": 25,
+    "definitionCount": 17,
     "path": "Proofs/Erdos307Problem.lean",
-    "sorries": 2,
+    "sorries": 1,
     "additionalFiles": [
       "Proofs/Erdos307Aristotle.lean"
     ]
   },
-  "sorries": 2
+  "sorries": 1
 }
