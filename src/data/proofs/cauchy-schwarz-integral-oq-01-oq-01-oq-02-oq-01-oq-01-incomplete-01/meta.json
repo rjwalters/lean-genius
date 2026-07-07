@@ -5,15 +5,15 @@
   "description": "Sigma-finite Lp Riesz representation theorem formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction. NOTE (2026-06-24, #28788): this file transitively fails to compile against the pinned v4.26.0 toolchain because its imported foundation has 53 Mathlib-drift errors; status downgraded to formalized until the chain builds green.",
   "leanFile": {
     "namespace": "RieszSigmaFiniteComplete",
-    "lineCount": 1012,
+    "lineCount": 47,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 2,
+    "theoremCount": 1,
+    "definitionCount": 0,
     "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
     "sorries": 0
   },
   "meta": {
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
     "tags": [
       "functional-analysis",
@@ -26,12 +26,12 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 1012,
-    "buildStatus": "broken",
-    "assumptions": "BUILD BROKEN (2026-06-24, issue #28788): this file imports the chain foundation Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean (line 33), which produces 53 Mathlib-drift errors against leanprover/lean4:v4.26.0, so this file transitively fails to compile. There are 0 literal `sorry` tactics and 0 `axiom` declarations — the formalization exists but is not currently machine-checked, so status was downgraded verified→formalized pending repair of the foundation. Mathematical content unchanged: Step A (localization_existence) proved in PR #15581 via the Hölder extremizer construction (g_seq truncations + MCT for hgnorm, ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for indicator agreement); Steps B (lp_truncation_tendsto_zero via Vitali) and C (integral_representation_sf via Lp.induction) proved earlier. As the assumptions already noted, the parent's status must be assessed independently — it is now also formalized/broken.",
+    "lineCount": 47,
+    "buildStatus": "Verified via ./proofs/scripts/docker-build.sh against pinned Mathlib v4.26.0 (2026-07-07, #35123): the file builds green as part of the Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01 build graph (0 errors). 0 sorries, 0 axiom declarations, no native_decide.",
+    "assumptions": "None. 0 sorries, 0 axiom declarations, no structure-encoded assumptions. The prior BUILD BROKEN note (#28788) is resolved: the chain foundation was repaired in #35112 and this file was migrated to Mathlib v4.26 in #35122 as an S20 split — the 1012-line monolith became a 47-line main file (this proofRepoPath) assembling the theorems now proved in CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01{Infra,Norm,Loc}.lean (same namespace RieszSigmaFiniteComplete, same public names; ~1118 lines and 17 declarations across the four files, all 0-sorry/0-axiom). Step A (localization_existence, Loc), Step B (lp_truncation_tendsto_zero, Infra), Step C (integral_representation_sf, Infra) and the main theorem riesz_lp_surjective_sigma_finite (this file) are all machine-checked.",
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12,
+    "theoremCount": 1,
     "originalContributions": [
       "integrationCLM_sf: integration CLM on Lp(μ) for purely sigma-finite μ — proves IsFiniteMeasure was never needed for the CLM construction (Hölder only)",
       "integral_representation_sf: Step C density extension proved — Lp.induction is valid for SigmaFinite without IsFiniteMeasure, completing the missing piece from the parent entry",
@@ -40,7 +40,7 @@
       "lp_truncation_tendsto_zero: Step B proved via Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) — |f - f·1_{Sₙ}| ≤ |f| pointwise enables unifIntegrable_const + unifTight_const, giving eLpNorm(f - f·1_{Sₙ}) → 0",
       "localization_existence: Step A proved without an Lp restriction map — extByZeroCLM (extension-by-zero from Lp(μ.restrict Sₙ) to Lp(μ)) plus the Hölder-extremizer norm bound (g_seq truncations + MCT) plus ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for cross-level consistency suffice; the global g is glued via Nat.find on the spanning-set cover and shown MemLp by lintegral_iSup over Sₙ ↑ univ"
     ],
-    "definitionCount": 2
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "The Lp Riesz representation theorem — identifying (Lp(μ))* with Lq(μ) for 1/p + 1/q = 1 — is a central result in functional analysis. The sigma-finite generalization (dropping the IsFiniteMeasure hypothesis) requires additional work to construct the representing element g ∈ Lq(μ). The classical proof strategy (Folland §6.2) localizes via the sigma-finite exhaustion, applies the finite-measure result on each piece, and glues via MCT. This entry resolves the density extension step (Step C), showing it requires only sigma-finiteness, not finite total measure.",

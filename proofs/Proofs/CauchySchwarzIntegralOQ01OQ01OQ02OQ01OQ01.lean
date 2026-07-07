@@ -40,12 +40,12 @@ The only change from the parent: drop IsFiniteMeasure from integrationCLM (unuse
 
 ## Summary
 
-Sorries: 3 (all HARD — known classical results; not OPEN).
-Axioms: 0.
-New results proved (no sorry): mem_spanningSets_eventually, pointwise_mul_indicator_tendsto.
+Sorries: 0. Axioms: 0. The three formerly-HARD steps (the "[HARD sorry]" tags in the
+section docstrings below are historical) are all discharged by delegation to the
+companion chain `CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01{Infra,Norm,Loc}.lean`
+(namespace `RieszSigmaFiniteComplete`), machine-checked on Mathlib v4.26.
+New results proved directly here: mem_spanningSets_eventually, pointwise_mul_indicator_tendsto.
 These establish pointwise convergence of spanning-set truncations.
-Step B (lp_truncation_tendsto_zero) is the sigma-finite Lp analogue of measure continuity;
-its proof uses tendsto_Lp_of_tendsto_ae (Vitali's theorem) + unifIntegrable_of + unifTight_const.
 
 ## References
 
@@ -76,7 +76,7 @@ theorem mem_spanningSets_eventually [SigmaFinite μ] (a : α) :
     rw [iUnion_spanningSets]; exact mem_univ a
   rw [mem_iUnion] at ha
   obtain ⟨N, hN⟩ := ha
-  exact (eventually_ge_atTop N).mono fun n hn => spanningSets_mono μ hn hN
+  exact (eventually_ge_atTop N).mono fun n hn => monotone_spanningSets μ hn hN
 
 /-- Pointwise: f(a) · 1_{Sₙ}(a) → f(a) as n → ∞, since a ∈ Sₙ eventually. -/
 theorem pointwise_mul_indicator_tendsto [SigmaFinite μ] (f : α → ℝ) (a : α) :
@@ -85,7 +85,7 @@ theorem pointwise_mul_indicator_tendsto [SigmaFinite μ] (f : α → ℝ) (a : �
   have h1 : Tendsto (fun n : ℕ => (spanningSets μ n).indicator (1 : α → ℝ) a)
       atTop (nhds 1) := by
     apply tendsto_nhds_of_eventually_eq
-    filter_upwards [mem_spanningSets_eventually a] with n hn using indicator_of_mem hn _
+    filter_upwards [mem_spanningSets_eventually (μ := μ) a] with n hn using indicator_of_mem hn _
   simpa using h1.const_mul (f a)
 
 /-- **Key new result** [HARD sorry]: For sigma-finite μ, the spanning-set truncation f · 1_{Sₙ}
@@ -148,8 +148,13 @@ theorem localization_existence
     ∃ g : α → ℝ, MemLp g q μ ∧
       ∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤),
         φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _) =
-        ∫ a in E, g a ∂μ :=
-  RieszSigmaFiniteComplete.localization_existence p q hp1 hptop hpq φ
+        ∫ a in E, g a ∂μ := by
+  -- The complete localization now also returns the converse-Hölder norm bound
+  -- `eLpNorm g q μ ≤ ‖φ‖`; this re-export keeps the original indicator-agreement
+  -- interface and discards the (here unused) quantitative bound.
+  obtain ⟨g, hg, _hg_norm, hagree⟩ :=
+    RieszSigmaFiniteComplete.localization_existence p q hp1 hptop hpq φ
+  exact ⟨g, hg, hagree⟩
 
 -- ============================================================================
 -- § 3. Main theorem (Step C — assembly, HARD sorry for density extension)
@@ -187,26 +192,26 @@ theorem riesz_lp_surjective_sigma_finite
 /-
 ## Sorries Summary
 
-1. `lp_truncation_tendsto_zero` — HARD (~80 lines, not OPEN).
-   Use `tendsto_Lp_of_tendsto_ae` (Vitali's theorem) with `unifIntegrable_of` and
-   `unifTight_const`; a.e. convergence from `pointwise_mul_indicator_tendsto`.
-
-2. `localization_existence` — HARD (~150 lines, not OPEN).
-   Classical proof: Folland §6.2. Lean gap: Lp restriction map infrastructure.
-
-3. `riesz_lp_surjective_sigma_finite` (density extension) — HARD (~50 lines, not OPEN).
-   Parent's `integral_representation` proof ports to [SigmaFinite μ] without change.
+None. The three formerly-HARD steps (`lp_truncation_tendsto_zero`,
+`localization_existence`, and the density extension inside
+`riesz_lp_surjective_sigma_finite`) are discharged by delegation to the companion
+chain (namespace `RieszSigmaFiniteComplete`), which proves them in full.
 
 ## What This File Adds
 
-**Proved** (no sorry):
+**Proved directly** (no delegation):
 - `mem_spanningSets_eventually`: spanning sets eventually cover every point
 - `pointwise_mul_indicator_tendsto`: pointwise convergence of spanning-set truncations
 
-**Identified and classified**:
-- The three Lean infrastructure gaps for the sigma-finite Riesz representation
-- The classical proof blueprint in each case (Folland §6.2, Vitali's theorem)
+**Re-exported** (interface-stable wrappers around the companion chain):
+- `lp_truncation_tendsto_zero`, `localization_existence` (norm bound discarded),
+  `riesz_lp_surjective_sigma_finite` (norm bound discarded)
 -/
+
+-- Axiom audit: foundational axioms only (propext / Classical.choice / Quot.sound).
+#print axioms RieszSigmaFinite.riesz_lp_surjective_sigma_finite
+#print axioms RieszSigmaFinite.localization_existence
+#print axioms RieszSigmaFinite.lp_truncation_tendsto_zero
 
 end RieszSigmaFinite
 

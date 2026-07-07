@@ -344,6 +344,16 @@ theorem riesz_lp_surjective_general
       ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
   sorry
 
+-- Axiom audit (2026-07-07, #35123). The five completed ingredient lemmas are
+-- machine-checked with foundational axioms only (propext / Classical.choice /
+-- Quot.sound); the headline `riesz_lp_surjective_general` still carries its one
+-- HARD (not OPEN) maximality `sorry` and therefore reports `sorryAx`.
+#print axioms RieszLpDualitySynthesis.memLp_exists_sigmaFinite_support
+#print axioms RieszLpDualitySynthesis.sigmaFinite_restrict_iUnion
+#print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_union
+#print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_iUnion
+#print axioms RieszLpDualitySynthesis.riesz_representer_on_sigmaFinite_set
+
 end RieszLpDualitySynthesis
 
 end
