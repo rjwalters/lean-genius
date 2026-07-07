@@ -39,7 +39,7 @@ foundational `propext`/`Classical.choice`/`Quot.sound`.
 import Proofs.AmgmInequalityOQ02OQ03
 import Mathlib.Tactic
 
-open Finset Real AmgmInequalityOQ02 AmgmInequalityOQ02OQ03
+open Finset Real AmgmInequalityOQ02OQ03
 
 namespace AmgmInequalityOQ02OQ03OQ03OQ02
 
