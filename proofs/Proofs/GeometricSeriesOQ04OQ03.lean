@@ -37,18 +37,18 @@ An illustrative expansion `qBinom q 4 2 = 1 + q + 2q² + q³ + q⁴` is checked 
 the end, exhibiting the Gaussian binomial as a genuine polynomial in `q` whose
 `q = 1` value is `C(4,2) = 6`.
 
-## Follow-up (documented, not formalized here)
+## The q-binomial theorem (Gauss / Rothe)
 
-The **q-binomial theorem** (Gauss / Rothe)
+The headline consequence is now **formalized** at the end of this file
+(`qBinomial_theorem`):
 
-  `∏_{i<n} (1 + q^i · x) = ∑_{k≤n} q^{C(k,2)} · [n choose k]_q · x^k`
+  `∏_{i<n} (1 + q^i · x) = ∑_{k≤n} q^{C(k,2)} · [n choose k]_q · x^k`.
 
-follows from the recurrence by induction on `n` (peel the first factor,
-re-substitute `x ↦ q·x`, match coefficients via q-Pascal and the identity
-`C(k+1,2) = C(k,2) + k`).  Likewise the **box-partition generating function**
-`∑_{λ ⊆ (n-k)^k} q^{|λ|}` satisfies the same recurrence, giving the combinatorial
-interpretation.  Both are left as follow-up work; the automated prover has been
-tasked with the q-binomial theorem.
+It follows from the recurrence by induction on `n` (peel the first factor with
+`Finset.prod_range_succ'`, re-substitute `x ↦ q·x`, match coefficients via the
+functional recurrence `qbinomSum_succ`, which uses only q-Pascal I and the
+identity `C(k+1,2) = C(k,2) + k`).  The **box-partition generating function**
+`∑_{λ ⊆ (n-k)^k} q^{|λ|}` satisfies the same recurrence and is left as follow-up.
 
 ## Why Mathlib Doesn't Already Have This
 
@@ -140,5 +140,72 @@ polynomial in `q`.  Its value at `q = 1` is `1 + 1 + 2 + 1 + 1 = 6 = C(4,2)`. -/
 example (q : R) : qBinom q 4 2 = 1 + q + 2 * q ^ 2 + q ^ 3 + q ^ 4 := by
   simp only [qBinom]
   ring
+
+/-! ### The q-binomial theorem (Gauss / Rothe) -/
+
+/-- `(k+1).choose 2 = k.choose 2 + k`, the exponent recurrence used below. -/
+theorem choose_two_succ (k : ℕ) : (k + 1).choose 2 = k.choose 2 + k := by
+  have h : (k + 1).choose 2 = k.choose 1 + k.choose 2 := Nat.choose_succ_succ k 1
+  rw [Nat.choose_one_right] at h
+  omega
+
+/-- The weighted sum `∑_{k≤n} q^{C(k,2)} · [n choose k]_q · x^k` appearing on the
+right-hand side of the q-binomial theorem. -/
+def qbinomSum (q x : R) (n : ℕ) : R :=
+  ∑ k ∈ Finset.range (n + 1), q ^ (k.choose 2) * qBinom q n k * x ^ k
+
+/-- **Functional recurrence** `S_{n+1}(x) = (1 + x) · S_n(q·x)`, proved using
+only q-Pascal I (`qBinom_succ_succ`) and vanishing above the diagonal. -/
+theorem qbinomSum_succ (q x : R) (n : ℕ) :
+    qbinomSum q x (n + 1) = (1 + x) * qbinomSum q (q * x) n := by
+  have hbody : ∀ k, q ^ ((k + 1).choose 2) * qBinom q (n + 1) (k + 1) * x ^ (k + 1)
+      = x * (q ^ (k.choose 2) * qBinom q n k * (q * x) ^ k)
+        + q ^ (k.choose 2 + (2 * k + 1)) * qBinom q n (k + 1) * x ^ (k + 1) := by
+    intro k
+    rw [choose_two_succ, qBinom_succ_succ]
+    ring
+  have hg : ∀ k, q ^ ((k + 1).choose 2) * qBinom q n (k + 1) * (q * x) ^ (k + 1)
+      = q ^ (k.choose 2 + (2 * k + 1)) * qBinom q n (k + 1) * x ^ (k + 1) := by
+    intro k
+    rw [choose_two_succ]
+    ring
+  have hsum_g : (∑ k ∈ Finset.range (n + 1),
+        q ^ (k.choose 2) * qBinom q n k * (q * x) ^ k)
+      = (∑ k ∈ Finset.range n,
+          q ^ (k.choose 2 + (2 * k + 1)) * qBinom q n (k + 1) * x ^ (k + 1)) + 1 := by
+    rw [Finset.sum_range_succ']
+    simp only [hg]
+    have h0 : q ^ ((0 : ℕ).choose 2) * qBinom q n 0 * (q * x) ^ 0 = 1 := by simp
+    rw [h0]
+  have hsum_h : (∑ k ∈ Finset.range (n + 1),
+        q ^ (k.choose 2 + (2 * k + 1)) * qBinom q n (k + 1) * x ^ (k + 1))
+      = (∑ k ∈ Finset.range n,
+          q ^ (k.choose 2 + (2 * k + 1)) * qBinom q n (k + 1) * x ^ (k + 1)) := by
+    rw [Finset.sum_range_succ, qBinom_eq_zero_of_lt q n (n + 1) (Nat.lt_succ_self n)]
+    ring
+  rw [qbinomSum, Finset.sum_range_succ']
+  simp only [hbody]
+  have h0 : q ^ ((0 : ℕ).choose 2) * qBinom q (n + 1) 0 * x ^ 0 = 1 := by simp
+  rw [h0, Finset.sum_add_distrib, qbinomSum, add_mul, one_mul, Finset.mul_sum,
+      hsum_g, hsum_h]
+  ring
+
+/-- **q-binomial theorem (Rothe's formula).**
+`∏_{i<n} (1 + q^i · x) = ∑_{k≤n} q^{C(k,2)} · [n choose k]_q · x^k`.
+
+Proved by induction on `n` (generalizing `x`): peel the *first* factor of the
+product with `Finset.prod_range_succ'`, rewrite `q^{i+1}x = q^i(qx)` to invoke the
+induction hypothesis at `q·x`, then close with the functional recurrence
+`qbinomSum_succ`. -/
+theorem qBinomial_theorem (q x : R) (n : ℕ) :
+    (∏ i ∈ Finset.range n, (1 + q ^ i * x)) = qbinomSum q x n := by
+  induction n generalizing x with
+  | zero => simp [qbinomSum]
+  | succ n ih =>
+    rw [Finset.prod_range_succ']
+    simp only [show ∀ i, 1 + q ^ (i + 1) * x = 1 + q ^ i * (q * x) from
+      fun i => by rw [pow_succ]; ring]
+    rw [ih (q * x), pow_zero, one_mul, qbinomSum_succ]
+    ring
 
 end GaussianBinomial
