@@ -134,8 +134,73 @@ def test_pool_path_targets_consumed_state():
     print(f"PASS: sync_pool.POOL_PATH -> {p}")
 
 
+def test_create_database_is_idempotent():
+    """migrate.py now defaults to INCREMENTAL (no --reset): create_database must
+    be safe to run against an already-populated DB (schema uses IF NOT EXISTS),
+    otherwise the incremental default would crash on the second run."""
+    conn = _fresh_conn(SCRIPT_DIR / "schema.sql")
+    conn.execute(
+        "INSERT INTO problems (slug, title, status) VALUES (?, ?, ?)",
+        ("keeper", "Keeper", "completed"),
+    )
+    conn.commit()
+    # Re-running the schema against the existing DB must not error or wipe rows.
+    migrate.create_database(conn)
+    assert _status(conn, "keeper") == "completed", "incremental re-create lost data"
+    conn.close()
+    print("PASS: create_database is idempotent (incremental default is safe)")
+
+
+def test_incremental_reimport_preserves_reconciled_statuses():
+    """Post-reconciliation regression (see #35085): once reconcile_db.py has set
+    the true statuses, an incremental migrate.py re-run against a STALE pool that
+    still marks everything 'available' must NOT resurrect any reconciled row back
+    to 'available'."""
+    tmp = Path(tempfile.mkdtemp())
+    conn = _fresh_conn(SCRIPT_DIR / "schema.sql")
+
+    # Simulate the reconciled DB: a gallery-completed row, an adopted
+    # in-progress row, a blocked row, and a genuinely-available row.
+    reconciled = {
+        "gallery-done": "completed",
+        "adopted-progress": "in-progress",
+        "adopted-blocked": "blocked",
+        "genuine-available": "available",
+    }
+    for slug, st in reconciled.items():
+        conn.execute(
+            "INSERT INTO problems (slug, title, status) VALUES (?, ?, ?)",
+            (slug, slug, st),
+        )
+    conn.commit()
+
+    # A stale source pool that pre-dates reconciliation: everything 'available'.
+    pool = tmp / "stale-pool.json"
+    _write_pool(pool, [
+        {"id": slug, "name": slug, "status": "available"}
+        for slug in reconciled
+    ])
+
+    orig = migrate.CANDIDATE_POOL
+    try:
+        migrate.CANDIDATE_POOL = pool
+        migrate.import_candidate_pool(conn)
+    finally:
+        migrate.CANDIDATE_POOL = orig
+
+    for slug, st in reconciled.items():
+        got = _status(conn, slug)
+        assert got == st, (
+            f"reconciled status not preserved: {slug} was {st}, became {got}"
+        )
+    conn.close()
+    print("PASS: incremental re-import preserves reconciled statuses (no resurrection)")
+
+
 if __name__ == "__main__":
     test_pool_path_targets_consumed_state()
     test_guard_preserves_protected_statuses()
     test_guard_allows_forward_transitions()
+    test_create_database_is_idempotent()
+    test_incremental_reimport_preserves_reconciled_statuses()
     print("\nAll status-guard regression tests passed.")
