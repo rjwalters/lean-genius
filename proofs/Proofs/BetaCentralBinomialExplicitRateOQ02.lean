@@ -2,7 +2,7 @@ import Mathlib
 import Proofs.BetaCentralBinomialExplicitRate
 
 /-
-# The Second-Order Term of the Diagonal Beta Correction: `log (q n) = 1/(8n) + O(1/n²)`
+# The Second-Order Term of the Diagonal Beta Log-Correction: `log q n = 1/(8n) + O(1/n²)`
 
 ## What This Proves (answering `beta-central-binomial-explicit-rate` OQ-02)
 
@@ -13,10 +13,10 @@ The parent entry (`beta-central-binomial-explicit-rate`) proves the effective
 
 bracketing it between two `O(1/n)` exponentials.  OQ-02 asks whether the
 telescoping tail-bound technique extends to a genuine asymptotic **expansion**
-`log (q n) = c₁/n + c₂/n² + ⋯` with *effective, machine-checked* remainder terms.
-(Every result below is stated for `log (q n)`; exponentiating gives
-`q n = 1 + 1/(8n) + 1/(128 n²) + O(1/n³)`, so `q n` itself keeps a nonzero `1/n²`
-term — it is the *logarithm* whose `1/n²` coefficient cancels.)
+`log q n = c₁/n + c₂/n² + ⋯` with *effective, machine-checked* remainder terms.
+(All results below are stated for `log q n`; exponentiating would reintroduce a
+nonzero `1/n²` term — `q n = 1 + 1/(8n) + 1/(128 n²) + ⋯` — so the vanishing
+second coefficient `c₂ = 0` is a fact about the *log*-correction.)
 
 This entry supplies the first nontrivial coefficient with an effective remainder.
 
@@ -41,9 +41,8 @@ bound `1/(12j)` to order `1/j³`) yields:
 
 * **`correction_log_third_order`** (the `c₂ = 0` answer): for `n ≥ 1`,
     `|log (q n) - 1/(8n)| ≤ 1/(6 n²)` is upgraded to `≤ 1/(72 n³)`.
-  So the asymptotic expansion `log (q n) = c₁/n + c₂/n² + ⋯` has **`c₂ = 0`** — `log (q n)`
-  has no genuine `1/n²` term — and the first correction beyond `1/(8n)` lives at order `1/n³`.
-  (`q n` itself still has a nonzero `1/(128 n²)` term from exponentiating.)
+  So the asymptotic expansion `log q n = c₁/n + c₂/n² + ⋯` has **`c₂ = 0`** — no
+  genuine `1/n²` term — and the first correction beyond `1/(8n)` lives at order `1/n³`.
 
 * **`correction_log_isBigO_third_order`**:
     `(fun n => log (q n) - 1/(8n)) =O[atTop] (fun n => 1/n³)`.
@@ -352,7 +351,7 @@ theorem stirlingLogDev_bracket (j : ℕ) (hj : 1 ≤ j) :
   · have h := stirlingLogDev_lower m; rw [hc]; exact h
   · have h := stirlingLogDev_upper m; rw [hc]; exact h
 
-/-! ### Part 3 — The second-order correction term `log (q n) = 1/(8n) + O(1/n²)` -/
+/-! ### Part 3 — The second-order correction term `log q n = 1/(8n) + O(1/n²)` -/
 
 open BetaDiagExplicitRate
 
@@ -403,7 +402,7 @@ theorem correction_log_isBigO_second_order :
   calc |Real.log (correction n) - 1 / (8 * (n : ℝ))| ≤ 1 / (6 * (n : ℝ) ^ 2) := hb
     _ = 1 / 6 * (1 / (n : ℝ) ^ 2) := by ring
 
-/-! ### Part 4 — The `1/n²` coefficient of `log (q n)` vanishes: `log (q n) = 1/(8n) + O(1/n³)`
+/-! ### Part 4 — The `1/n²` coefficient vanishes: `log q n = 1/(8n) + O(1/n³)`
 
 The second-order result above brackets `log (q n) - 1/(8n)` by `O(1/n²)`.  Does the
 expansion *continue* — is there a genuine `c₂/n²` term?  The true Stirling deviation
@@ -549,9 +548,10 @@ For `n ≥ 1`,
 `|log (q n) - 1/(8n)| ≤ 1/(72 n³)`.
 
 Upgrading the second-order `O(1/n²)` bound to `O(1/n³)` shows the asymptotic expansion
-`log (q n) = c₁/n + c₂/n² + ⋯` has `c₂ = 0`: `log (q n)` has no genuine `1/n²` term, and
-the first correction beyond `1/(8n)` sits at order `1/n³`. (The multiplicative correction
-`q n` itself still has a nonzero `1/(128 n²)` term, obtained by exponentiating.) -/
+`log q n = c₁/n + c₂/n² + ⋯` has `c₂ = 0`: the *log* of the multiplicative diagonal Beta
+correction has no genuine `1/n²` term, and the first correction beyond `1/(8n)` sits at
+order `1/n³`.  (Exponentiating restores a nonzero value-level `1/n²` term, so this
+vanishing is a property of `log q n`, not of `q n` itself.) -/
 theorem correction_log_third_order (n : ℕ) (hn : 1 ≤ n) :
     |Real.log (correction n) - 1 / (8 * (n : ℝ))| ≤ 1 / (72 * (n : ℝ) ^ 3) := by
   have hn0 : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
