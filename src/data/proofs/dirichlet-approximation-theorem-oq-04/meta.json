@@ -157,6 +157,11 @@
       "description": "Counts the ~1/q² good approximations; this entry supplies the orbit-density seed that such counting refines into asymptotic frequency."
     },
     {
+      "targetId": "dirichlet-approximation-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "The simultaneous (d-dimensional) generalization: one common denominator q ≤ Q^d approximating θ₁,…,θ_d at once. OQ-04's density statement is the qualitative shadow — the multi-dimensional orbit {n·(θ₁,…,θ_d)} is dense in the torus exactly when 1,θ₁,…,θ_d are rationally independent (Kronecker), the higher-rank analogue of the single-irrational density proved here."
+    },
+    {
       "targetId": "dirichlet-approximation-theorem-oq-03",
       "relationship": "sibling",
       "description": "Re-derives Dirichlet's bound via Minkowski's geometry of numbers; OQ-04 gives the complementary topological-dynamics route to the same approximation phenomenon."
