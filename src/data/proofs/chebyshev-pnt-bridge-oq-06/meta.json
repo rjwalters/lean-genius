@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Open Question, Imports & Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "File docstring situating OQ-06: the parent ChebyshevPNTBridge proves the upper bound only in ℕ-power form ((Nat.sqrt n)^(π(n)−π(√n)) ≤ 4^n), leaving the real-log consequence as a header comment, while sibling OQ-05 carried the lower bound to real-log form. Lists the three deliverable theorems and the resulting limsup π(x)·log x/x ≤ 2 log 4; then the imports (Mathlib.NumberTheory.PrimeCounting, Analysis.SpecialFunctions.Log.Basic, Tactic, Proofs.ChebyshevPNTBridge), the namespace, and `open Nat`.",
+      "mathContext": "Goal: package $(\\sqrt n)^{\\pi(n)-\\pi(\\sqrt n)} \\le 4^n$ into real-log/density form, the upper mirror of OQ-05."
+    },
+    {
       "id": "real-log-difference",
       "title": "Real-Logarithmic Difference Form",
       "startLine": 44,
