@@ -81,7 +81,8 @@
       "**ℵ₀ absorbs finite operations but not countable powers.** ℵ₀ · ℵ₀ = ℵ₀ (products), #(List ℚ) = ℵ₀ (finite sequences), #(Finset ℚ) = ℵ₀ (finite subsets) — but ℵ₀ ^ ℵ₀ = 𝔠. Finiteness of the operation is exactly the dividing line.",
       "**The ℵ₀-shadow of the continuum results.** This entry is the level-down companion to 𝔠 · 𝔠 = 𝔠 and 𝔠 ^ ℵ₀ = 𝔠: the same absorption laws govern both the smallest infinite cardinal and the continuum, but the *power* operation lifts ℵ₀ strictly up to 𝔠.",
       "**Cantor's gap, made operational.** ℵ₀ < 𝔠 (oq-01) becomes concrete: the rationals are denumerable, yet the rational sequences ℕ → ℚ are not — an uncountable object built entirely from ℚ.",
-      "**Bijection from cardinal arithmetic.** #(ℚ × ℚ) = #ℚ unpacks via `Cardinal.eq` to ℚ × ℚ ≃ ℚ — a pairing of rationals, the ℵ₀ analogue of Cantor's line-plane bijection."
+      "**Bijection from cardinal arithmetic.** #(ℚ × ℚ) = #ℚ unpacks via `Cardinal.eq` to ℚ × ℚ ≃ ℚ — a pairing of rationals, the ℵ₀ analogue of Cantor's line-plane bijection.",
+      "**The boundary value 𝔠 is base-robust: ℚ is not special.** #(ℕ → ℚ) = 𝔠 not because the base is ℚ but because any base κ with 2 ≤ κ ≤ 𝔠 is squeezed by the Cantor–Bernstein sandwich 2^ℵ₀ ≤ κ^ℵ₀ ≤ (2^ℵ₀)^ℵ₀ = 2^(ℵ₀·ℵ₀) = 2^ℵ₀ = 𝔠. So ℕ → ℚ, ℕ → ℤ, ℕ → ℕ, and ℕ → {0,1} all have the same cardinality; `aleph0_power_aleph0` (ℵ₀^ℵ₀ = 𝔠) is one instance of this collapse. The escape from ℵ₀ is driven entirely by the *countably infinite exponent*, not the base."
     ],
     "prerequisites": [
       "Cardinal arithmetic in Mathlib (ℵ₀, 𝔠, multiplication, exponentiation)",
