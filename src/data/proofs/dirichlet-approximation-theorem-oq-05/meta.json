@@ -133,9 +133,26 @@
     ]
   },
   "crossReferences": [
-    "dirichlet-approximation-theorem",
-    "dirichlet-approximation-theorem-oq-01",
-    "dirichlet-approximation-theorem-oq-03"
+    {
+      "targetId": "dirichlet-approximation-theorem",
+      "relationship": "extends",
+      "description": "Parent entry: proves the EXISTENCE of good approximations |qα − p| < 1/N (1 ≤ q ≤ N) by pigeonhole. This OQ-05 proves the dual SHARPNESS statement — that for the golden ratio the exponent cannot be improved — pinning the approximation rate of φ from both sides."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry: counts the ~1/q² good approximations (upper-bound side). OQ-05 supplies the complementary lower bound, showing those approximations cannot be too good for φ."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling entry: the Minkowski geometry-of-numbers re-derivation of the upper bound. OQ-03 produces good approximations; OQ-05 shows they cannot be too good for φ — both refine the parent beyond elementary pigeonhole."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling entry (Kronecker density): every irrational's multiples come arbitrarily close to integers. OQ-04 and OQ-05 bound the irrational rotation's orbit from opposite sides — OQ-04 shows φ's multiples get arbitrarily close, OQ-05 shows they cannot come too close too fast (the badly-approximable dual)."
+    }
   ],
   "references": [
     {
