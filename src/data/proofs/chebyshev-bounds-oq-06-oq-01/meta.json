@@ -90,6 +90,24 @@
       "summary": "For n ≥ 1, the residual identity S(2n)/(S n)² = 4ⁿ/√(πn) is proved by field algebra: √(4πn) = 2√(πn) (Real.sqrt_sq), (2n/e)^{2n} = 4ⁿ·(n/e)^{2n} (mul_pow, pow_mul), and (√(2πn))² = 2πn (Real.sq_sqrt). The common exponential factor (n/e)^{2n} and one factor of √(πn) cancel, leaving exactly 4ⁿ/√(πn)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "centralBinom_isEquivalent_four_pow_div_sqrt",
+      "type": "core",
+      "description": "**Central binomial asymptotic.** The central binomial coefficient C(2n,n) = (2n).choose n is asymptotically equivalent to 4ⁿ/√(πn), derived from Mathlib's Stirling approximation n! ~ √(2πn)·(n/e)ⁿ by transporting it to numerator and denominator and collapsing the Stirling ratio.",
+      "leanType": "(fun n : ℕ => (n.centralBinom : ℝ)) ~[atTop] (fun n : ℕ => (4 : ℝ) ^ n / Real.sqrt (π * n))",
+      "startLine": 48,
+      "endLine": 117
+    },
+    {
+      "name": "choose_two_mul_isEquivalent_four_pow_div_sqrt",
+      "type": "corollary",
+      "description": "Restatement in terms of Nat.choose: C(2n,n) ~ 4ⁿ/√(πn), obtained from the centralBinom form via Nat.centralBinom_eq_two_mul_choose.",
+      "leanType": "(fun n : ℕ => ((2 * n).choose n : ℝ)) ~[atTop] (fun n : ℕ => (4 : ℝ) ^ n / Real.sqrt (π * n))",
+      "startLine": 120,
+      "endLine": 124
+    }
+  ],
   "overview": {
     "historicalContext": "**From the polynomial-factor sandwich to the sharp constant**\n\nThe parent entry `chebyshev-bounds-oq-06` packages the elementary two-sided estimate $\\frac{4^n}{2n+1}\\le\\binom{2n}{n}\\le 4^n$, which pins the central binomial coefficient down to within a polynomial factor and drives Chebyshev-type prime-counting bounds. The *sharp* behaviour, however, is governed by a square-root — not a linear — correction: Stirling's approximation gives\n$$\\binom{2n}{n}\\sim\\frac{4^n}{\\sqrt{\\pi n}}.$$\nThis is the classical refinement asked for by the parent's first open question. The $\\sqrt{\\pi n}$ denominator — with the transcendental constant $\\pi$ emerging from a purely combinatorial quantity — is the same phenomenon that makes the Wallis product and the Gaussian integral appear in the analysis of the binomial distribution.",
     "problemStatement": "**Central binomial asymptotic**\n\nAs $n\\to\\infty$,\n$$\\binom{2n}{n}\\sim\\frac{4^n}{\\sqrt{\\pi n}},$$\ni.e. the ratio of the two sides tends to $1$. The goal is a fully machine-checked, axiom-free statement of this asymptotic equivalence, built on Mathlib's formalisation of Stirling's approximation.",
