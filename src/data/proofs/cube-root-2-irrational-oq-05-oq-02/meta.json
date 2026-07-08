@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring stating the two extensions (rational-exponent prime powers and ∛2 + ∛3), the Mathlib import, and the import/open of the sibling entry OQ-05-OQ-01, from which IsPerfectNthPow, irrational_rpow_inv_iff, rpow_inv_pow, and irrational_cbrt_six are reused.",
+      "mathContext": "$p^{a/b} \\notin \\mathbb{Q}$ (non-integer $a/b$) and $\\sqrt[3]{2}+\\sqrt[3]{3} \\notin \\mathbb{Q}$."
+    },
+    {
       "id": "perfect-power-obstruction",
       "title": "Prime Powers and Perfect b-th Powers",
       "startLine": 45,
@@ -123,6 +131,11 @@
       "targetId": "cube-root-2-irrational",
       "relationship": "related",
       "description": "∛2, the base entry, appears here both as a base of a rational-exponent power and as a summand of the irrational ∛2 + ∛3"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "The general 'not a perfect n-th power ⇒ irrational' criterion underpinning Part 1: after Real.rpow_mul reduces p^(a/b) to (p^a)^(1/b), irrationality is exactly the failure of p^a to be a perfect b-th power"
     }
   ],
   "conclusion": {
