@@ -26,9 +26,13 @@ def primeMutliples (p n : ℕ) : Finset ℕ :=
 
 -- Routine: Count of multiples of p in {1,...,n} equals ⌊n/p⌋.
 -- Uses Finset.Nat.card_multiples or Icc filter card formula.
-theorem prime_multiples_size (p n : ℕ) (hp : p > 0) :
+theorem prime_multiples_size (p n : ℕ) (_hp : p > 0) :
     (primeMutliples p n).card = n / p := by
-  sorry
+  have hIcc : Icc_n n = Finset.Ioc 0 n := by
+    unfold Icc_n; ext k; simp only [Finset.mem_Icc, Finset.mem_Ioc]; omega
+  unfold primeMutliples
+  rw [hIcc]
+  exact Nat.Ioc_filter_dvd_card_eq_div n p
 
 -- Routine: The set of all subset sums of S.
 noncomputable def subsetSums (S : Finset ℕ) : Finset ℕ :=
@@ -42,8 +46,18 @@ def AvoidSum (S : Finset ℕ) (m : ℕ) : Prop :=
 -- Every element of primeMutliples p n is divisible by p; any
 -- nonempty subset sum is also divisible by p; since p ∤ m, m cannot
 -- be achieved as a subset sum.
-theorem prime_multiples_avoid (p m n : ℕ) (hp : Nat.Prime p) (hpm : ¬p ∣ m) :
+theorem prime_multiples_avoid (p m n : ℕ) (_hp : Nat.Prime p) (hpm : ¬p ∣ m) :
     AvoidSum (primeMutliples p n) m := by
-  sorry
+  intro hmem
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+  obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+  rw [Finset.mem_powerset] at hA
+  have hdvd : p ∣ ∑ a ∈ A, a := by
+    refine Finset.dvd_sum (fun a ha => ?_)
+    have ha' : a ∈ primeMutliples p n := hA ha
+    rw [primeMutliples, Finset.mem_filter] at ha'
+    exact ha'.2
+  rw [hAsum] at hdvd
+  exact hpm hdvd
 
 end Erdos771ProblemAristotle
