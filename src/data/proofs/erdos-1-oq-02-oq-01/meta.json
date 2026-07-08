@@ -97,6 +97,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Header, Imports, and the Distinct-Subset-Sums Definition",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring on the Erdős distinct-subset-sums problem and the elementary Erdős–Moser lower bound, imports Mathlib, namespace Erdos1OQ02OQ01, open Finset, and the definition HasDistinctSubsetSums A := ∀ S T ⊆ A, ΣS = ΣT → S = T.",
+      "mathContext": "A has distinct subset sums iff $S \\mapsto \\sum S$ is injective on $\\mathcal{P}(A)$; the conjecture asks $\\max A \\ge c\\cdot 2^{|A|}$."
+    },
+    {
       "id": "structure",
       "title": "Basic Structure",
       "startLine": 41,
@@ -119,6 +127,64 @@
       "endLine": 118,
       "summary": "two_pow_card_le_card_mul_max combines the counting bound with ΣA ≤ |A|·max A to get 2^|A| ≤ |A|·max A + 1; geomSum_two_succ certifies tightness for the powers of two.",
       "mathContext": "$2^{|A|} \\le |A|\\cdot\\max A + 1$, i.e. $\\max A \\ge (2^{|A|}-1)/|A|$; equality $\\sum_{i<n}2^i + 1 = 2^n$ for the powers of two."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "two_pow_card_le_sum_succ",
+      "type": "core",
+      "description": "**Elementary counting bound.** The 2^|A| distinct subset sums all lie in {0,…,ΣA}, so 2^|A| ≤ ΣA + 1. Proved by embedding the injective image of the powerset (subsetSum_injOn) into range(ΣA+1) and comparing cardinalities.",
+      "leanType": "{A : Finset ℕ} (h : HasDistinctSubsetSums A) : 2 ^ A.card ≤ A.sum id + 1",
+      "startLine": 69,
+      "endLine": 82
+    },
+    {
+      "name": "two_pow_card_le_card_mul_max",
+      "type": "core",
+      "description": "**Erdős–Moser elementary bound.** Since ΣA ≤ |A|·max A, the counting bound gives 2^|A| ≤ |A|·max A + 1, i.e. max A ≥ (2^|A|−1)/|A| — the trivial lower bound Erdős's conjecture aims to sharpen to c·2^|A|.",
+      "leanType": "{A : Finset ℕ} (h : HasDistinctSubsetSums A) (hne : A.Nonempty) : 2 ^ A.card ≤ A.card * A.max' hne + 1",
+      "startLine": 98,
+      "endLine": 105
+    },
+    {
+      "name": "card_le_sum",
+      "type": "key",
+      "description": "**|A| ≤ ΣA.** A distinct-subset-sums set has sum at least its cardinality, from the counting bound and |A| < 2^|A|.",
+      "leanType": "{A : Finset ℕ} (h : HasDistinctSubsetSums A) : A.card ≤ A.sum id",
+      "startLine": 85,
+      "endLine": 89
+    },
+    {
+      "name": "geomSum_two_succ",
+      "type": "key",
+      "description": "**Tightness witness.** ∑_{i<n} 2^i + 1 = 2^n: the powers of two {1,2,…,2^{n−1}} attain equality in the counting bound (ΣA = 2^n − 1 = 2^|A| − 1), so the elementary bound is essentially sharp.",
+      "leanType": "(n : ℕ) : (∑ i ∈ range n, 2 ^ i) + 1 = 2 ^ n",
+      "startLine": 111,
+      "endLine": 116
+    },
+    {
+      "name": "subsetSum_injOn",
+      "type": "supporting",
+      "description": "**Injectivity.** The subset-sum map S ↦ ΣS is injective on the powerset of a distinct-subset-sums set — the reformulation powering the counting cardinality argument.",
+      "leanType": "{A : Finset ℕ} (h : HasDistinctSubsetSums A) : Set.InjOn (fun S => S.sum id) (A.powerset : Set (Finset ℕ))",
+      "startLine": 45,
+      "endLine": 48
+    },
+    {
+      "name": "zero_not_mem",
+      "type": "supporting",
+      "description": "**0 ∉ A.** Distinct subset sums forces 0 ∉ A, else {0} and ∅ share the sum 0.",
+      "leanType": "{A : Finset ℕ} (h : HasDistinctSubsetSums A) : 0 ∉ A",
+      "startLine": 51,
+      "endLine": 55
+    },
+    {
+      "name": "HasDistinctSubsetSums.subset",
+      "type": "supporting",
+      "description": "**Hereditary.** Any subset of a distinct-subset-sums set again has distinct subset sums.",
+      "leanType": "{A B : Finset ℕ} (hBA : B ⊆ A) (h : HasDistinctSubsetSums A) : HasDistinctSubsetSums B",
+      "startLine": 59,
+      "endLine": 61
     }
   ],
   "references": [
