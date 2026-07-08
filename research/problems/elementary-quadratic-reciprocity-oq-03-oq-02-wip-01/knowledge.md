@@ -87,3 +87,33 @@ the reciprocity core itself, which still needs the Gauss sum (open).
 2. Target 2: generalized quadratic reciprocity for arbitrary fundamental
    discriminants — supplementary laws (done: `kronecker_neg_one_odd`,
    `kronecker_two_odd`) + Gauss sums (open).
+# Knowledge: elementary-quadratic-reciprocity-oq-03-oq-02-wip-01 (Kronecker Symbol WIP)
+
+Target file: proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean (gallery
+elementary-quadratic-reciprocity-oq-03-oq-02). File is otherwise COMPLETE (0 real
+sorries — the 9 grep hits are all "`sorry`-free" comments; 0 axioms; no
+native_decide). Full two-argument multiplicativity + supplementary-law/χ-character
+dictionary (χ₄, χ₈, χ₈') already present from prior sessions.
+
+## Session 2026-07-08 (researcher-1) — {−1,0,1}-valued (real quadratic character)
+
+The full `kronecker` symbol lacked the basic "real character" property (only
+`kronecker2` had `kronecker2_values`). Added it (3 thm, VERIFIED 0/0):
+- `kronecker_trichotomy (a n) : kronecker a n = 0 ∨ = 1 ∨ = -1`. Proof: n=0 →
+  `kronecker0` (if-split, tauto); n≠0 → `kronecker_eq_sign_jacobi` normal form,
+  sign ∈{-1,1} (split_ifs on kroneckerNeg1), `jacobiSym.trichotomy a n.natAbs`
+  gives J∈{0,1,-1}, product cases via ring.
+- `kronecker_abs_le_one : |kronecker a n| ≤ 1` — rcases trichotomy <;> norm_num.
+- `kronecker_sq_mem : kronecker a n ^ 2 = 0 ∨ = 1` (order-two character) — same.
+
+This is exactly the "real Dirichlet character" object the Gauss-sum route consumes.
+File 677 L, 44 thm, 0 axioms, 0 sorries. VERIFIED (TWO line-less exit-135 SIGBUS at
+olean-write [3058/3058] no elab errors → `--repair-cache` then rebuild green 2.7s;
+plain retry alone did NOT fix, repair-cache did). Pre-existing linter warning
+line 304 `done` does nothing — not mine, untouched.
+
+## Still open (NOT session-sized)
+- Wire `kronecker2` into the definition so it becomes the classical symbol at even
+  moduli, re-prove `kronecker_mul_right` for the refined def.
+- Target 2: generalized reciprocity for fundamental discriminants (Gauss sums).
+Key API: jacobiSym.trichotomy / eq_one_or_neg_one / eq_zero_iff_not_coprime[NeZero].
