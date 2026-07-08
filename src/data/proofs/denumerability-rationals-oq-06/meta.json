@@ -69,7 +69,8 @@
       "**The polynomial ring is where algebraic countability lives**: the sibling entries reach #(ℚ×ℚ), #(List ℚ), #(Finset ℚ) but never the ring ℚ[X], which is the object Cantor's argument actually enumerates.",
       "**One lemma does the work**: Polynomial.cardinalMk_eq_max packages the entire 'countably many coefficients, each from a countable list' combinatorics into #(R[X]) = max #R ℵ₀; the rest is the trivial collapse max ℵ₀ ℵ₀ = ℵ₀.",
       "**ℚ and ℤ give the same answer**: both coefficient rings are ℵ₀, so #(ℚ[X]) = #(ℤ[X]) — passing from ℤ[X] to ℚ[X] does not enlarge the cardinality, mirroring #ℤ = #ℚ at the ring level.",
-      "**Cardinal equality is constructive enough for a bijection**: Cardinal.eq turns the numeric equality #ℕ = #(ℚ[X]) into an actual equivalence ℕ ≃ ℚ[X], making 'ℚ[X] is denumerable' a concrete statement rather than a cardinal slogan."
+      "**Cardinal equality is constructive enough for a bijection**: Cardinal.eq turns the numeric equality #ℕ = #(ℚ[X]) into an actual equivalence ℕ ≃ ℚ[X], making 'ℚ[X] is denumerable' a concrete statement rather than a cardinal slogan.",
+      "**Finite support is exactly what keeps ℚ[X] countable**: a polynomial is a *finitely-supported* function ℕ → ℚ, and there are only ℵ₀ of those, whereas the unrestricted function space ℕ → ℚ already has cardinality 𝔠 (the continuum, as the sibling OQ-05 notes). Countability survives adjoining an indeterminate precisely because polynomials have finite degree — drop the finiteness and the cardinality jumps."
     ],
     "prerequisites": [
       "Cardinal numbers and ℵ₀",
@@ -82,7 +83,7 @@
       "id": "imports-helper",
       "title": "Imports and the Engine Lemma #ℚ = ℵ₀",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "File docstring positioning ℚ[X] against the sibling cardinal results, imports Mathlib, opens Cardinal and Polynomial. mk_rat records #ℚ = ℵ₀ via Cardinal.mk_eq_aleph0 (ℚ countable and infinite).",
       "mathContext": "#ℚ = ℵ₀ because ℚ is both countable and infinite; this is the input the maximum collapses against."
     },
@@ -90,7 +91,7 @@
       "id": "polynomial-cardinality",
       "title": "Countability of ℚ[X] and ℤ[X]",
       "startLine": 33,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "cardinalMk_polynomial_rat and cardinalMk_polynomial_int: each rewrites #(R[X]) via Polynomial.cardinalMk_eq_max to max #R ℵ₀, substitutes #R = ℵ₀, and finishes with max_self. cardinalMk_polynomial_rat_eq_int records #(ℚ[X]) = #(ℤ[X]).",
       "mathContext": "#(R[X]) = max #R ℵ₀ and #ℚ = #ℤ = ℵ₀, so #(ℚ[X]) = #(ℤ[X]) = max ℵ₀ ℵ₀ = ℵ₀."
     },
