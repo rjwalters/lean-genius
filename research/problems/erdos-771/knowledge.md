@@ -54,3 +54,47 @@ uniform-over-all-m argument (primes near log n) not formalized here. Asymptotics
   (`r8-picard`) with an intact Mathlib build instead.
 - `Nat.div_le_div_left (h : a ≤ b) (hpos : 0 < a) : k / b ≤ k / a` — args are the *smaller*
   denominator's `≤` and positivity.
+
+## Session 2026-07-07 (researcher-5) — repaired Erdos771Problem.lean; sorries 7→3
+
+The gallery's canonical `proofRepoPath` (`Erdos771Problem.lean`) had been non-compiling
+since the Mathlib 4.26.0 bump. Repaired it and discharged 4 of the 7 sorries; it now **builds
+clean** (0 build errors, 3 sorries, 2 axioms).
+
+### Compile fixes
+- `import Mathlib` (replaced the 6 stale specific imports; `…/BigOperators/Group/Finset` is now
+  a directory).
+- `AvoidSum · m` `DecidablePred` synthesis failed → supply it classically via `open Classical in`
+  on the (already `noncomputable`) `maxAvoidingSize`. **Do NOT** add a computable `Decidable`
+  instance referencing the `noncomputable` `subsetSums` — that compiled but segfaulted the C
+  codegen (exit 139/135).
+- `f`'s `inf'` nonemptiness: switched to dependent `if h : n = 0`, proving `1 ≤ n*n` from
+  `h : n ≠ 0` via `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero h h)` (the old `by simp` was
+  unprovable — `Icc 1 (n*n)` is empty at n=0).
+- Removed 4 dangling `/-- … -/` doc-comments that were followed by `/- … -/` blocks (parse error
+  `unexpected token; expected 'lemma'`). Same trap: `open Classical in` must precede the
+  doc-comment, not sit between it and the `def`.
+
+### Sorries discharged (7→3)
+- `prime_multiples_size`, `prime_multiples_avoid` — ported verbatim from the verified
+  `Erdos771Construction.lean`.
+- `erdos_graham_conjecture_true` — combined the two axiomatic bounds. For `n ≥ 2`, `L = n/log n > 0`,
+  and the lower/upper bounds squeeze `f n / L ∈ [1/2−ε/2, 1/2+ε/2]`, giving
+  `|f n/L − 1/2| ≤ ε/2 < ε`. Uses `div_le_iff₀`/`le_div_iff₀` (the `₀` forms — plain `div_le_iff`
+  is deprecated) and `Real.log_pos`.
+- `leading_constant` — the `Tendsto … (nhds (1/2))` limit form, via `Metric.tendsto_atTop` +
+  `Real.dist_eq`, is now a one-liner off `erdos_graham_conjecture_true`.
+
+### Remaining (3 sorries)
+- `f_characterization` — relate the `inf'/sup` definition of `f` to `f_property`.
+- `m_eq_one_case` (`maxAvoidingSize n 1 = n-1`) and `m_eq_two_case` (`≥ n-2`) — both need a
+  "subset sum equals a small target ⟺ membership" lemma to bound the `sup` over the powerset.
+
+### Axioms (kept, honest)
+`erdos_graham_lower_bound`, `alon_freiman_upper_bound` — the deep Erdős–Graham / Alon–Freiman
+bounds. Genuinely external; status stays `axiomatized`.
+
+### Build gotcha
+Codegen crash (exit 135/139) in this Docker env is **nondeterministic and masks real errors** —
+tail of the log showed only the crash; a full `> log 2>&1` capture revealed the actual parse
+error. Always capture full output when a build "crashes" with no diagnostic.

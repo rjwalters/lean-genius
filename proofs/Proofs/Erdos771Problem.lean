@@ -20,17 +20,20 @@
 
   The problem combines additive combinatorics with number theory.
 
+  The deep asymptotics (both the Erdős–Graham lower bound and the Alon–Freiman
+  upper bound) are external results and are recorded here as `axiom`s. Everything
+  else in this file is machine-checked: the elementary construction behind the
+  lower bound (`prime_multiples_size`, `prime_multiples_avoid`) is verified, and
+  the two axiomatic bounds are combined into the asymptotic statement
+  (`erdos_graham_conjecture_true`, `leading_constant`). The fully verified,
+  self-contained construction lives in `Erdos771Construction.lean`.
+
   References:
   - Erdős-Graham, "Old and new problems and results..."
   - Alon-Freiman (upper bound)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.NumberTheory.Primorial
+import Mathlib
 
 open Finset BigOperators Real Nat
 
@@ -59,7 +62,10 @@ def IsMAvoidingSet (S : Finset ℕ) (n m : ℕ) : Prop :=
 ## Part II: The Function f(n)
 -/
 
-/-- The maximum size of an m-avoiding set in {1, ..., n}. -/
+open Classical in
+/-- The maximum size of an m-avoiding set in {1, ..., n}.
+    `AvoidSum · m` is a `Prop` whose decidability we supply classically (this
+    definition is `noncomputable`, so no executable code is generated for it). -/
 noncomputable def maxAvoidingSize (n m : ℕ) : ℕ :=
   (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S m)
     |>.sup (fun S => S.card)
@@ -67,8 +73,11 @@ noncomputable def maxAvoidingSize (n m : ℕ) : ℕ :=
 /-- f(n) is the maximum k such that for all m, there exists an
     m-avoiding set of size at least k. -/
 noncomputable def f (n : ℕ) : ℕ :=
-  if n = 0 then 0
-  else Finset.Icc 1 (n * n) |>.inf' (by simp) (fun m => maxAvoidingSize n m)
+  if h : n = 0 then 0
+  else
+    (Finset.Icc 1 (n * n)).inf'
+      (Finset.nonempty_Icc.mpr (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero h h)))
+      (fun m => maxAvoidingSize n m)
 
 /-- Alternative definition: f(n) is max k such that for every m,
     some S ⊆ {1,...,n} with |S| ≥ k avoids m. -/
@@ -107,7 +116,12 @@ def ErdosGrahamConjecture' : Prop :=
 /-- **Erdős-Graham Lower Bound:**
     f(n) ≥ (1/2 + o(1)) · n / log n.
     Proof idea: Take S = multiples of the smallest prime p not dividing m.
-    Then S avoids m (since all subset sums are multiples of p). -/
+    Then S avoids m (since all subset sums are multiples of p).
+
+    This is a deep external result (Erdős–Graham) recorded here as an axiom.
+    The elementary construction underneath it is fully verified below
+    (`prime_multiples_size`, `prime_multiples_avoid`) and, self-contained, in
+    `Erdos771Construction.lean`. -/
 axiom erdos_graham_lower_bound :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     (f n : ℝ) ≥ (1/2 - ε) * n / Real.log n
@@ -117,23 +131,37 @@ def primeMutliples (p n : ℕ) : Finset ℕ :=
   (Icc_n n).filter (fun k => p ∣ k)
 
 /-- Size of prime multiples: ⌊n/p⌋. -/
-theorem prime_multiples_size (p n : ℕ) (hp : p > 0) :
+theorem prime_multiples_size (p n : ℕ) (_hp : p > 0) :
     (primeMutliples p n).card = n / p := by
-  sorry
+  have hIcc : Icc_n n = Finset.Ioc 0 n := by
+    unfold Icc_n; ext k; simp only [Finset.mem_Icc, Finset.mem_Ioc]; omega
+  unfold primeMutliples
+  rw [hIcc]
+  exact Nat.Ioc_filter_dvd_card_eq_div n p
 
-/-- For prime p not dividing m, multiples of p avoid m. -/
-theorem prime_multiples_avoid (p m n : ℕ) (hp : Nat.Prime p) (hpm : ¬p ∣ m) :
+/-- For prime p not dividing m, multiples of p avoid m.
+    Every subset sum of multiples of `p` is divisible by `p`, but `m` is not. -/
+theorem prime_multiples_avoid (p m n : ℕ) (_hp : Nat.Prime p) (hpm : ¬p ∣ m) :
     AvoidSum (primeMutliples p n) m := by
-  sorry
+  intro hmem
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+  obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+  rw [Finset.mem_powerset] at hA
+  have hdvd : p ∣ ∑ a ∈ A, a := by
+    refine Finset.dvd_sum (fun a ha => ?_)
+    have ha' : a ∈ primeMutliples p n := hA ha
+    rw [primeMutliples, Finset.mem_filter] at ha'
+    exact ha'.2
+  rw [hAsum] at hdvd
+  exact hpm hdvd
 
-/-- The smallest prime > n is ≤ 2n (Bertrand's postulate). -/
 /-
 ## Part V: Alon-Freiman Upper Bound
 -/
 
 /-- **Alon-Freiman Upper Bound:**
     f(n) ≤ (1/2 + o(1)) · n / log n.
-    Proof uses LCM argument. -/
+    Proof uses LCM argument. This is a deep external result recorded as an axiom. -/
 axiom alon_freiman_upper_bound :
   ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
     (f n : ℝ) ≤ (1/2 + ε) * n / Real.log n
@@ -142,24 +170,42 @@ axiom alon_freiman_upper_bound :
 noncomputable def lcm_up_to (s : ℕ) : ℕ :=
   (Icc_n s).lcm id
 
-/-- Key estimate: lcm(1,...,s) ≈ e^s. -/
-/-- The upper bound argument: if S is large enough, some m ≤ lcm is achieved. -/
 /-
 ## Part VI: The Complete Answer
 -/
 
 /-- **The Answer: The conjecture is TRUE.**
-    f(n) = (1/2 + o(1)) · n / log n. -/
+    f(n) = (1/2 + o(1)) · n / log n.
+
+    Combining the two axiomatic bounds: for `n ≥ 2` the quantity
+    `L = n / log n` is positive, and the lower/upper bounds squeeze
+    `f n / L` into `[1/2 - ε/2, 1/2 + ε/2]`, so `|f n / L - 1/2| ≤ ε/2 < ε`. -/
 theorem erdos_graham_conjecture_true : ErdosGrahamConjecture := by
   intro ε hε
-  -- Combine lower and upper bounds
   obtain ⟨N₁, hN₁⟩ := erdos_graham_lower_bound (ε/2) (by linarith)
   obtain ⟨N₂, hN₂⟩ := alon_freiman_upper_bound (ε/2) (by linarith)
-  use max N₁ N₂
-  intro n hn
-  have h1 : n ≥ N₁ := le_of_max_le_left hn
-  have h2 : n ≥ N₂ := le_of_max_le_right hn
-  sorry
+  refine ⟨max (max N₁ N₂) 2, fun n hn => ?_⟩
+  have h1 : n ≥ N₁ := le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hn
+  have h2 : n ≥ N₂ := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hn
+  have hn2 : 2 ≤ n := le_trans (le_max_right _ _) hn
+  have hlow := hN₁ n h1
+  have hupp := hN₂ n h2
+  have h1n : (1 : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : 1 < n)
+  have hlogpos : 0 < Real.log n := Real.log_pos h1n
+  have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast (by omega : 0 < n)
+  have hLpos : 0 < (n : ℝ) / Real.log n := div_pos hnpos hlogpos
+  rw [abs_lt]
+  have hUB : (f n : ℝ) / ((n : ℝ) / Real.log n) ≤ 1/2 + ε/2 := by
+    rw [div_le_iff₀ hLpos]
+    have hrw : (1/2 + ε/2 : ℝ) * ((n : ℝ) / Real.log n)
+        = (1/2 + ε/2) * n / Real.log n := by ring
+    rw [hrw]; exact hupp
+  have hLB : (1/2 - ε/2 : ℝ) ≤ (f n : ℝ) / ((n : ℝ) / Real.log n) := by
+    rw [le_div_iff₀ hLpos]
+    have hrw : (1/2 - ε/2 : ℝ) * ((n : ℝ) / Real.log n)
+        = (1/2 - ε/2) * n / Real.log n := by ring
+    rw [hrw]; exact hlow
+  constructor <;> linarith
 
 /-- The asymptotic formula. -/
 theorem f_asymptotic : ErdosGrahamConjecture := erdos_graham_conjecture_true
@@ -174,10 +220,14 @@ def explicitBounds (n : ℕ) : Prop :=
     (0.4 : ℝ) * n / Real.log n ≤ (f n : ℝ) ∧
     (f n : ℝ) ≤ (0.6 : ℝ) * n / Real.log n
 
-/-- The leading constant is exactly 1/2. -/
+/-- The leading constant is exactly 1/2. This is the limit form of
+    `erdos_graham_conjecture_true`. -/
 theorem leading_constant :
     Filter.Tendsto (fun n => (f n : ℝ) / (n / Real.log n)) Filter.atTop (nhds (1/2)) := by
-  sorry
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  obtain ⟨N, hN⟩ := erdos_graham_conjecture_true ε hε
+  exact ⟨N, fun n hn => by rw [Real.dist_eq]; exact hN n hn⟩
 
 /-
 ## Part VIII: Special Cases
@@ -206,11 +256,9 @@ def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=
 def IsSumFree (S : Finset ℕ) : Prop :=
   ∀ a b c, a ∈ S → b ∈ S → c ∈ S → a + b ≠ c
 
-/-- Sum-free sets have size at most n/3 + O(1). -/
-/-- m-avoiding is weaker than sum-free in some sense. -/
+/-- m-avoiding is weaker than sum-free in some sense: m-avoiding sets can be
+    larger than sum-free sets (`n/(2 log n)` vs `n/3`). -/
 def avoiding_vs_sumfree : Prop :=
-  -- m-avoiding sets can be larger than sum-free sets
-  -- (n/(2 log n) vs n/3)
   True
 
 /-

@@ -9,21 +9,28 @@
   "knownResults": "SOLVED: f(n) = (1/2 + o(1))·n/log n (Erdős–Graham lower bound via prime multiples; Alon–Freiman upper bound via LCM).",
   "currentState": "Verified the elementary Erdős–Graham construction in a new self-contained file; the deep asymptotics remain axiomatized in the companion file.",
   "knowledge": {
-    "progressSummary": "Created Erdos771Construction.lean (4 thm/4 def, 0 axioms, 0 sorries): multiples of a prime p in {1,…,n} have size ⌊n/p⌋, avoid any m with p ∤ m, and such a prime exists for every m ≥ 1 — the verified construction behind the lower bound. The companion Erdos771Problem.lean (which left these as sorries) no longer compiles under Mathlib 4.26.0.",
+    "progressSummary": "PROGRESS: Erdos771Problem.lean now compiles under Mathlib 4.26.0 (was broken) with sorries 7→3 and 2 honest external axioms. Discharged prime_multiples_size, prime_multiples_avoid (ported from verified construction), erdos_graham_conjecture_true (asymptotic from the two axiom bounds), and leading_constant (limit form). Remaining sorries: f_characterization, m_eq_one_case, m_eq_two_case (all reason about maxAvoidingSize as a sup over the powerset).",
     "builtItems": [
       "prime_multiples_size in Erdos771Construction.lean:64",
       "prime_multiples_avoid in Erdos771Construction.lean:78",
       "exists_prime_not_dvd in Erdos771Construction.lean:95",
-      "exists_avoiding_multiples in Erdos771Construction.lean:102"
+      "exists_avoiding_multiples in Erdos771Construction.lean:102",
+      "Repaired Erdos771Problem.lean to compile under Mathlib 4.26.0 (import Mathlib; classical DecidablePred for AvoidSum; dependent-if inf nonemptiness; removed dangling doc-comments)",
+      "erdos_graham_conjecture_true in Erdos771Problem.lean: combined the two axiomatic bounds into |f n/(n/log n) - 1/2| < ε (squeeze on n≥2 where n/log n>0)",
+      "leading_constant in Erdos771Problem.lean: Tendsto form via Metric.tendsto_atTop + Real.dist_eq, derived from the conjecture",
+      "Discharged prime_multiples_size and prime_multiples_avoid sorries in Erdos771Problem.lean (ported from verified Erdos771Construction.lean)"
     ],
     "insights": [
       "If every element of S is a multiple of p, so is every subset sum, so S avoids any m with p ∤ m — the engine of the Erdős–Graham lower bound. Primality is not even needed for avoidance.",
-      "For every m ≥ 1 a prime above m fails to divide m, so the construction always applies (an m-avoiding set always exists)."
+      "For every m ≥ 1 a prime above m fails to divide m, so the construction always applies (an m-avoiding set always exists).",
+      "The two deep bounds (Erdős–Graham lower, Alon–Freiman upper) are genuinely external and stay as axioms; but the o(1) asymptotic + limit form follow from them by elementary real analysis (div_le_iff₀/le_div_iff₀ squeeze), so those need not be axiomatized separately.",
+      "In this Docker environment the codegen crash (exit 135/139) is nondeterministic and can MASK a real parse/elaboration error; capture full build output (not tail) to see the actual diagnostic. Here the true error was an open-Classical-in placed after a doc-comment."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Mechanic: repair Erdos771Problem.lean (stale import path; DecidablePred for AvoidSum; inf' nonemptiness; dangling doc-comments).",
-      "Derive the ⌊n/p⌋ size bound for the smallest prime p ∤ m toward the (1/2)·n/log n leading constant."
+      "Discharge m_eq_one_case (maxAvoidingSize n 1 = n-1): S avoids 1 iff 1∉S, so max is {2,…,n}; needs a subset-sum-of-1 ⟺ 1∈S lemma.",
+      "Discharge f_characterization by relating the inf/sup definition of f to f_property.",
+      "Keep the deep bounds as axioms (external results); do not attempt to prove Erdős–Graham/Alon–Freiman."
     ]
   },
   "tags": [
