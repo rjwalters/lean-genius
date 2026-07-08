@@ -1,0 +1,40 @@
+{
+  "slug": "erdos-1026-oq-05",
+  "title": "Erdős #1026 OQ-05: k-monotonic decompositions",
+  "tier": "B",
+  "significance": 5,
+  "tractability": 6,
+  "status": "active",
+  "phase": "ACT",
+  "path": "proofs/Proofs/Erdos1026OQ05.lean",
+  "started": "2026-07-08",
+  "lastUpdate": "2026-07-08",
+  "problemStatement": "Extend Erdős #1026 from single monotonic subsequences to decompositions of the whole sequence into monotonic pieces (Hanani 1957). How many monotonic parts must such a decomposition use?",
+  "currentState": "Elementary lower-bound half proved axiom-free: every monotonic decomposition uses at least n / max(LIS, LDS) parts. The constructive matching upper bound (O(√n) parts always suffice) is left open.",
+  "leanFiles": ["proofs/Proofs/Erdos1026OQ05.lean"],
+  "relatedProofs": ["erdos-1026", "erdos-1026-oq-02"],
+  "knowledge": {
+    "insights": [
+      "The covering condition of a MonotonicDecomposition is exactly a surjection from the disjoint union of the parts (Σ i, Fin (part i length)) onto Fin n; this converts the counting bound into Fintype.card_le_of_surjective + Fintype.card_sigma.",
+      "A monotonic part has length ≤ max(LIS, LDS): increasing parts are ≤ LIS, decreasing ≤ LDS (le_csSup against the sup-of-achievable-lengths definition). This is the only use of monotonicity in the bound.",
+      "The resulting n ≤ numParts · max(LIS, LDS) is the Mirsky/Dilworth lower-bound half of Hanani's decomposition theorem; on Erdős–Szekeres extremal sequences (max(LIS,LDS) ≈ √n) it forces ≳ √n parts."
+    ],
+    "builtItems": [
+      "monotonicDecomposition_numParts_lower_bound: n ≤ numParts · max(LIS, LDS) (Erdos1026OQ05.lean:131)",
+      "monotonicDecomposition_numParts_ge: numParts ≥ n / max(LIS, LDS) via Nat.div_le_of_le_mul (Erdos1026OQ05.lean:159)",
+      "len_le_max_of_monotonic + lis/lds_bddAbove + subsequence_length_le supporting lemmas",
+      "singletonDecomposition: existence witness giving numParts ≤ n; fin_one_strictMono (Erdos1026OQ05.lean:176)"
+    ],
+    "mathlibGaps": [
+      "No Hanani-style monotonic decomposition theorem in Mathlib; the parent file only states the structure. Dilworth is available for antichains but not directly wired to the LIS/LDS monotone-run decomposition.",
+      "The constructive O(√n) upper bound (Hanani 1957) is not formalized and would require a genuine partition construction, not just counting."
+    ],
+    "nextSteps": [
+      "Attempt the Hanani upper bound: construct a monotonic decomposition into O(√n) parts (e.g. greedy patience-sorting / RSK column count), which would close the bracket to Θ(√n) for extremal sequences.",
+      "Prove a Dilworth-type min-max identity for the minimal number of monotonic parts in terms of a partition invariant.",
+      "Connect to the sum-optimization of Erdős #1026: does an optimal decomposition contain a part carrying Ω(1/√n) of the total sum?"
+    ],
+    "progressSummary": "PROGRESS: Mirsky/Dilworth lower bound n ≤ numParts·max(LIS,LDS) proved VERIFIED 0/0; constructive upper bound remains open."
+  },
+  "tags": ["combinatorics", "erdos-szekeres", "monotonic-subsequences", "dilworth", "decomposition", "open-question"]
+}
