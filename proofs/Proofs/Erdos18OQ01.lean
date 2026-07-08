@@ -233,4 +233,33 @@ theorem two_pow_representable (k : ℕ) {n : ℕ} (hn : n < 2 ^ k) :
 theorem two_pow_practical (k : ℕ) : IsPractical (2 ^ k) :=
   ⟨Nat.one_le_pow k 2 (by norm_num), fun _ _ hn => two_pow_representable k hn⟩
 
+/-- **Closure under disjoint union of divisor subsets.**  If two *disjoint*
+    subsets of `divisors m` sum to `a` and `b`, their union realises `a + b` as a
+    sum of distinct divisors, so `a + b` is representable.  This is the additivity
+    building block of the representability algebra: partitioning a divisor set
+    into disjoint pieces adds the represented values. -/
+theorem representable_union {m : ℕ} {S T : Finset ℕ}
+    (hS : S ⊆ divisors m) (hT : T ⊆ divisors m) (hd : Disjoint S T) :
+    IsRepresentable (S.sum id + T.sum id) m :=
+  ⟨S ∪ T, Finset.union_subset hS hT, by rw [Finset.sum_union hd]⟩
+
+/-- **Every representable value is at most `σ(m)`** (the sum of all divisors of
+    `m`).  The representing subset `S ⊆ divisors m` has `S.sum id ≤ (divisors
+    m).sum id`, so no divisor sum can exceed the total — this is the sharp upper
+    end of the representable range `[0, σ(m)]`. -/
+theorem representable_le_sigma {k m : ℕ} (h : IsRepresentable k m) :
+    k ≤ (divisors m).sum id := by
+  obtain ⟨S, hS, hsum⟩ := h
+  calc k = S.sum id := hsum.symm
+    _ ≤ (divisors m).sum id := Finset.sum_le_sum_of_subset hS
+
+/-- **A practical number `m ≥ 2` satisfies `m - 1 ≤ σ(m)`.**  Since `m - 1` lies
+    in `[1, m)` it is representable, so the `σ(m)` upper bound
+    `representable_le_sigma` forces `m - 1 ≤ (divisors m).sum id`.  A first
+    quantitative necessary condition on the sum of divisors of a practical number,
+    complementing the structural `practical_even`. -/
+theorem practical_pred_le_sigma {m : ℕ} (hm : 2 ≤ m) (hp : IsPractical m) :
+    m - 1 ≤ (divisors m).sum id :=
+  representable_le_sigma (hp.2 (m - 1) (by omega) (by omega))
+
 end Erdos18OQ01
