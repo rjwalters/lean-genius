@@ -259,6 +259,52 @@ theorem externallyTangent_comm (O₁ : E) (ρ₁ : ℝ) (O₂ : E) (ρ₂ : ℝ)
   unfold ExternallyTangent
   rw [sdist_comm, add_comm]
 
+/-! ## Inner-product form of the tangency criteria
+
+Tangency is defined as a *distance* equation (`sdist = ρ₁ + ρ₂` externally,
+`= |ρ₁ − ρ₂|` internally), but the quantity one actually computes from ambient
+coordinates is the inner product `scos O₁ O₂ = ⟪O₁, O₂⟫`.  Since
+`cos ∘ sdist = scos` (`cos_sdist`) and `cos` is injective on `[0, π]`, the
+distance equations are equivalent to the single inner-product equations
+
+  external:  `⟪O₁, O₂⟫ = cos (ρ₁ + ρ₂)`,   internal:  `⟪O₁, O₂⟫ = cos (ρ₁ − ρ₂)`,
+
+valid whenever the relevant radius combination lies in `[0, π]` (so that it is a
+legal spherical distance).  This is the bridge a coordinate-level Feuerbach
+tangency proof needs: reduce "the nine-point circle is tangent to the incircle"
+to one inner-product identity between their centres. -/
+
+/-- **External tangency ⇔ inner-product equation.**  For model centres `O₁, O₂`,
+external tangency `sdist O₁ O₂ = ρ₁ + ρ₂` is equivalent to
+`scos O₁ O₂ = cos (ρ₁ + ρ₂)`, provided `ρ₁ + ρ₂ ∈ [0, π]`.  Forward: apply `cos`
+and use `cos_sdist`.  Backward: `cos` is injective on `[0, π]`, and both
+`sdist O₁ O₂` and `ρ₁ + ρ₂` lie there. -/
+theorem externallyTangent_iff_scos {O₁ O₂ : E} (h₁ : OnSphere O₁) (h₂ : OnSphere O₂)
+    {ρ₁ ρ₂ : ℝ} (hlo : 0 ≤ ρ₁ + ρ₂) (hhi : ρ₁ + ρ₂ ≤ Real.pi) :
+    ExternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ scos O₁ O₂ = Real.cos (ρ₁ + ρ₂) := by
+  unfold ExternallyTangent
+  rw [← cos_sdist O₁ O₂ h₁ h₂]
+  constructor
+  · intro h; rw [h]
+  · intro h
+    exact Real.injOn_cos (Set.mem_Icc.mpr ⟨sdist_nonneg O₁ O₂, sdist_le_pi O₁ O₂⟩)
+      (Set.mem_Icc.mpr ⟨hlo, hhi⟩) h
+
+/-- **Internal tangency ⇔ inner-product equation.**  For model centres `O₁, O₂`,
+internal tangency `sdist O₁ O₂ = |ρ₁ − ρ₂|` is equivalent to
+`scos O₁ O₂ = cos (ρ₁ − ρ₂)` (using `cos |ρ₁ − ρ₂| = cos (ρ₁ − ρ₂)`), provided
+`|ρ₁ − ρ₂| ≤ π`. -/
+theorem internallyTangent_iff_scos {O₁ O₂ : E} (h₁ : OnSphere O₁) (h₂ : OnSphere O₂)
+    {ρ₁ ρ₂ : ℝ} (hhi : |ρ₁ - ρ₂| ≤ Real.pi) :
+    InternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ scos O₁ O₂ = Real.cos (ρ₁ - ρ₂) := by
+  unfold InternallyTangent
+  rw [← cos_sdist O₁ O₂ h₁ h₂, ← Real.cos_abs (ρ₁ - ρ₂)]
+  constructor
+  · intro h; rw [h]
+  · intro h
+    exact Real.injOn_cos (Set.mem_Icc.mpr ⟨sdist_nonneg O₁ O₂, sdist_le_pi O₁ O₂⟩)
+      (Set.mem_Icc.mpr ⟨abs_nonneg _, hhi⟩) h
+
 /-! ## The tangent point of two tangent circles
 
 The defining geometric content of tangency is that the two circles actually **meet** — at
