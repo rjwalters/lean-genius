@@ -404,6 +404,34 @@ theorem hasDivergentSum_containsAP_le_two {A : Set ℕ} (h : HasDivergentSum A)
     {k : ℕ} (hk : k ≤ 2) : ContainsAP A k :=
   containsAP_of_le hk (containsAP_two_of_infinite (infinite_of_hasDivergentSum h))
 
+/-- **The Roth-number floor is tight at the boundary `k = 2`:** `r₂(N) = 1`.
+
+    A `2`-AP-free subset of `{0, …, N}` can hold at most one element — any two
+    distinct elements `a < b` already form the genuine `2`-AP `{a, b}`
+    (`containsAP_two_of_lt`) — so `r₂(N) ≤ 1`; and the general floor
+    `rothNumber_ge_min` gives `r₂(N) ≥ min 1 (N+1) = 1`.  This pins the exact
+    value at the largest length for which Erdős #3 carries no arithmetic content,
+    complementing the trivial baseline `rothNumber_le_window` (`r_k(N) ≤ N+1`) and
+    showing the `k-1` floor is attained (not merely a lower bound) when `k = 2`. -/
+theorem rothNumber_two (N : ℕ) : rothNumber 2 N = 1 := by
+  refine le_antisymm ?_ ?_
+  · -- upper bound: every 2-AP-free set in the window has card ≤ 1
+    unfold rothNumber
+    apply Finset.sup_le
+    intro S hS
+    rw [Finset.mem_filter, Finset.mem_powerset] at hS
+    obtain ⟨_, hfree⟩ := hS
+    by_contra hc
+    rw [not_le, Finset.one_lt_card] at hc
+    obtain ⟨a, ha, b, hb, hab⟩ := hc
+    refine hfree ?_
+    rcases lt_or_gt_of_ne hab with h | h
+    · exact containsAP_two_of_lt (Finset.mem_coe.mpr ha) (Finset.mem_coe.mpr hb) h
+    · exact containsAP_two_of_lt (Finset.mem_coe.mpr hb) (Finset.mem_coe.mpr ha) h
+  · -- lower bound: the general floor min (k-1) (N+1) with k = 2
+    have h := @rothNumber_ge_min 2 N
+    rwa [show (2 - 1 : ℕ) = 1 from rfl, Nat.min_eq_left (by omega : (1 : ℕ) ≤ N + 1)] at h
+
 /-- **Analytic core of the reduction.**
     If the counting function of `A` obeys `f_A(N) ≤ C · N / (log N)^{1+δ}` for all
     large `N` (`δ > 0`), then `∑_{a ∈ A} 1/a` converges. Proof by dyadic blocking:
