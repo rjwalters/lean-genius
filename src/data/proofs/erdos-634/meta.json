@@ -43,24 +43,26 @@
     "originalContributions": [
       "Formal definition of triangle congruence via side length multisets",
       "Triangle area via Heron's formula (Triangle.semiperimeter + Triangle.area using Real.sqrt)",
-      "Strengthened Dissection structure: area_partition requiring (∑ pieces).area = T.area, preventing trivial constant-function witnesses from making all n ≥ 1 dissectable",
+      "Dissection structure uses area_partition (∑ pieces.area = T.area) as a necessary condition; NOTE this alone does NOT rule out degenerate witnesses (see Erdos634AreaCollapse.lean)",
       "Statement of known positive results as honest sorries (k², 2k², 3k², 6k², k²+m²) pending explicit construction proofs",
       "Axiomatization of Beeson's negative results (7, 11)",
       "Statement of the 4k+3 prime conjecture",
       "Soifer's theorem on similar dissections",
       "Snover-Waiveris-Williams self-similar characterization",
-      "Analysis of open case n = 19"
+      "Analysis of open case n = 19",
+      "Erdos634AreaCollapse.lean (machine-checked, 0-sorry/0-axiom): proves the area-only IsDissectable predicate is satisfied by EVERY n ≥ 1 — witness is n congruent equilateral pieces of side 1/√n whose areas sum to T.area — refuting the prior claim that the area_partition requirement removed the internal inconsistency. Consequently the Beeson axioms (¬IsDissectable 7, ¬IsDissectable 11) are inconsistent with the area-only definition; a faithful predicate needs genuine covering + interior-disjointness (cf. oq-02 covering work)."
     ],
     "relatedProblems": [
       "erdos-633"
     ],
     "axiomCount": 3,
-    "assumptions": "3 axioms: seven_not_dissectable, eleven_not_dissectable, soifer_theorem. 6 sorries: congruent_implies_similar (sorry pending), squares_dissectable, two_squares_dissectable, three_squares_dissectable, six_squares_dissectable, sum_squares_dissectable (all pending explicit dissection constructions with Heron-formula area equality). The Dissection structure was strengthened from a placeholder positivity condition to a proper area-partition requirement via Heron's formula — removing a prior internal inconsistency where trivial constant-function witnesses made IsDissectable provable for all n ≥ 1, contradicting the Beeson axioms.",
+    "assumptions": "3 axioms: seven_not_dissectable, eleven_not_dissectable, soifer_theorem. 6 sorries in Erdos634Problem.lean: congruent_implies_similar plus the five positive-result stubs (squares/two/three/six/sum). IMPORTANT CAVEAT (proven in Erdos634AreaCollapse.lean, 0-sorry/0-axiom): the area_partition condition does NOT remove the internal inconsistency an earlier note claimed it did — IsDissectable n is provable for every n ≥ 1 by taking n congruent equilateral pieces of side 1/√n (a constant-function witness that DOES satisfy area_partition). Hence the Beeson non-dissectability axioms are logically incompatible with the area-only Dissection predicate; only a definition enforcing genuine covering and interior-disjointness (the oq-02 covering line) resolves this.",
     "lineCount": 331,
     "theoremCount": 16,
     "definitionCount": 20,
     "additionalFiles": [
-      "Proofs/Erdos634Aristotle.lean"
+      "Proofs/Erdos634Aristotle.lean",
+      "Proofs/Erdos634AreaCollapse.lean"
     ]
   },
   "overview": {
@@ -206,7 +208,8 @@
     "sorries": 6,
     "path": "Proofs/Erdos634Problem.lean",
     "additionalFiles": [
-      "Proofs/Erdos634Aristotle.lean"
+      "Proofs/Erdos634Aristotle.lean",
+      "Proofs/Erdos634AreaCollapse.lean"
     ]
   },
   "references": [
