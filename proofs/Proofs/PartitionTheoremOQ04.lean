@@ -133,7 +133,7 @@ theorem glaisherBwdStep_sum (b m : ℕ) :
 /-! ## Odd Part Property -/
 
 /-- Ground fact: padicValNat 2 2 = 1 (the 2-adic valuation of 2 is 1). -/
-private lemma padicValNat_two_two : padicValNat 2 2 = 1 := by native_decide
+private lemma padicValNat_two_two : padicValNat 2 2 = 1 := padicValNat.self (by norm_num)
 
 /-- padicValNat 2 (2^n) = n for all n. -/
 private lemma padicValNat_two_pow (n : ℕ) : padicValNat 2 (2 ^ n) = n := by
@@ -376,28 +376,9 @@ theorem glaisherBwd_glaisherFwdPart {k : ℕ} (hk : k ≠ 0) :
   rw [h_count, glaisherBwdStep_pow_two,
       show 2 ^ a * b = k from padic_factorization]
 
-/-- The maps are inverses on distinct positive multisets.
-
-    Proof via count characterization: for each k ≠ 0 with oddPart b = k/2^a, a = padicValNat 2 k:
-
-    count k (glaisherBwd (glaisherFwd s))
-    = (glaisherBwdStep b ((glaisherFwd s).count b)).count k
-      [only b' = b contributes since 2^a*b = k uniquely determines b from k's 2-adic factorization]
-    = if ((glaisherFwd s).count b).testBit a then 1 else 0
-      [by glaisherBwdStep_count_pow]
-
-    (glaisherFwd s).count b = Σ_{k' ∈ s, oddPart k' = b} 2^(padicValNat 2 k')
-      [by Multiset.count_bind and glaisherFwdPart definition]
-
-    For nodup s: these are distinct powers of 2 (different k' with same b have different valuations).
-    By testBit_sum_distinct_pow: testBit of that sum at a = decide(2^a ∈ the set) = decide(k ∈ s).
-
-    Infrastructure proved: glaisherBwdStep_count_pow, testBit_sum_distinct_pow.
-    Remaining step: connect (glaisherFwd s).count b to a sum of distinct powers of 2. -/
-theorem glaisherBwd_glaisherFwd {s : Multiset ℕ}
-    (hs_pos : ∀ k ∈ s, k ≠ 0) (hs_nodup : s.Nodup) :
-    glaisherBwd (glaisherFwd s) = s := by
-  sorry
+/- The backward-then-forward round trip `glaisherBwd_glaisherFwd` (the injection direction)
+   is proved below, after `padicValNat_pow_mul` (which it depends on via
+   `odd_factorization_unique`) has been established. -/
 
 /-! ## Reverse Round-Trip: Forward Undoes Backward -/
 
@@ -520,19 +501,147 @@ theorem glaisherFwd_glaisherBwd {s : Multiset ℕ}
           rw [hfg]
     _ = s := dedup_bind_replicate_count_eq s
 
-/-- **Constructive Euler Partition Theorem**: Glaisher gives an explicit bijection
-    between distinct-part and odd-part partitions of any n.
+/-! ## Bijectivity: Backward-then-Forward (injection direction) -/
 
-    This follows from `glaisherBwd_glaisherFwd` (injection) plus the surjectivity direction
-    `glaisherFwd_glaisherBwd` (not yet proved). The multiset-level inverse pair
-    (glaisherBwd ∘ glaisherFwd = id on distinct multisets, and the converse on odd multisets)
-    lifts to a bijection on Nat.Partition types via the parts Multiset representation.
+/-- Every element produced by `glaisherBwdStep b M` has the form `2 ^ a * b`. -/
+private lemma glaisherBwdStep_mem_form (b M : ℕ) :
+    ∀ x ∈ glaisherBwdStep b M, ∃ a, x = 2 ^ a * b := by
+  induction M using Nat.strong_induction_on generalizing b with
+  | _ M ih =>
+  intro x hx
+  match M with
+  | 0 => simp at hx
+  | M + 1 =>
+    rw [glaisherBwdStep_eq b (Nat.succ_ne_zero M)] at hx
+    simp only [Multiset.mem_add] at hx
+    rcases hx with hx | hx
+    · split_ifs at hx with h
+      · simp only [Multiset.mem_singleton] at hx
+        exact ⟨0, by rw [hx]; ring⟩
+      · simp at hx
+    · obtain ⟨a, ha⟩ :=
+        ih ((M + 1) / 2) (Nat.div_lt_self (Nat.succ_pos M) (by norm_num)) (2 * b) x hx
+      exact ⟨a + 1, by rw [ha]; ring⟩
 
-    Note: `Archive.Wiedijk100Theorems.Partition` (which provides `Theorems100.partition_theorem`)
-    is not available in the cached Mathlib v4.26.0 build. The equal-cardinality proof path
-    requires that import, so we leave this theorem as a sorry pending either:
-    (a) building Archive locally, or (b) completing the constructive proof via the two-sided
-    inverse pair. -/
+/-- For odd `b ≠ 0`, a factorization `k = 2 ^ a * b` recovers the 2-adic valuation and odd part:
+    `padicValNat 2 k = a` and `k / 2 ^ (padicValNat 2 k) = b`. -/
+private lemma odd_factorization_unique {b a k : ℕ} (hb : ¬ Even b) (hb_pos : b ≠ 0)
+    (hk : k = 2 ^ a * b) : padicValNat 2 k = a ∧ k / 2 ^ padicValNat 2 k = b := by
+  subst hk
+  have hval : padicValNat 2 (2 ^ a * b) = a := padicValNat_pow_mul hb hb_pos a
+  refine ⟨hval, ?_⟩
+  rw [hval]
+  exact Nat.mul_div_cancel_left b (by positivity)
+
+/-- **Backward undoes forward** on distinct positive multisets.
+
+    For nodup `s` with all parts nonzero, `glaisherBwd` reconstructs `s` from the odd-parts
+    multiset `glaisherFwd s`. The proof is a count characterization: for each `k`, the only distinct
+    value `b` of `glaisherFwd s` contributing to `count k (glaisherBwd (glaisherFwd s))` is the odd
+    part `b₀ = k / 2 ^ v` (`v = padicValNat 2 k`), and its multiplicity in `glaisherFwd s` is a sum
+    of *distinct* powers of two `∑ 2 ^ (padicValNat 2 k')` over `k' ∈ s` with odd part `b₀`. By
+    `testBit_sum_distinct_pow`, bit `v` of that sum decides membership `k ∈ s`. Together with
+    `glaisherFwd_glaisherBwd` this establishes the two-sided inverse pair. -/
+theorem glaisherBwd_glaisherFwd {s : Multiset ℕ}
+    (hs_pos : ∀ k ∈ s, k ≠ 0) (hs_nodup : s.Nodup) :
+    glaisherBwd (glaisherFwd s) = s := by
+  set t := glaisherFwd s with ht_def
+  have ht_odd : ∀ b ∈ t, ¬ Even b := glaisherFwd_parts_odd hs_pos
+  refine Multiset.ext.mpr (fun k => ?_)
+  have hlhs : (glaisherBwd t).count k
+      = ∑ b ∈ t.toFinset, (glaisherBwdStep b (t.count b)).count k := Multiset.count_bind
+  rw [hlhs]
+  rcases eq_or_ne k 0 with hk0 | hk0
+  · subst hk0
+    rw [Multiset.count_eq_zero.mpr (fun h => hs_pos 0 h rfl)]
+    apply Finset.sum_eq_zero
+    intro b hb
+    apply Multiset.count_eq_zero.mpr
+    intro hmem
+    have hb_t : b ∈ t := Multiset.mem_toFinset.mp hb
+    have hb_odd : ¬ Even b := ht_odd b hb_t
+    have hb_ne : b ≠ 0 := fun h => hb_odd (by rw [h]; exact ⟨0, rfl⟩)
+    have hb_pos : 0 < b := Nat.pos_of_ne_zero hb_ne
+    have hle := glaisherBwdStep_ge_base hb_pos (t.count b) 0 hmem
+    omega
+  · have hfact : 2 ^ padicValNat 2 k * (k / 2 ^ padicValNat 2 k) = k := padic_factorization
+    have hb₀_odd : ¬ Even (k / 2 ^ padicValNat 2 k) :=
+      fun h => oddPart_odd hk0 (even_iff_two_dvd.mp h)
+    have hb₀_ne : k / 2 ^ padicValNat 2 k ≠ 0 := by
+      intro h; rw [h, Nat.mul_zero] at hfact; exact hk0 hfact.symm
+    have hb₀_pos : 0 < k / 2 ^ padicValNat 2 k := Nat.pos_of_ne_zero hb₀_ne
+    have hscount : s.count k = if k ∈ s then 1 else 0 := by
+      by_cases hks : k ∈ s
+      · rw [if_pos hks, Multiset.count_eq_one_of_mem hs_nodup hks]
+      · rw [if_neg hks, Multiset.count_eq_zero.mpr hks]
+    have hinj : Set.InjOn (fun k' => padicValNat 2 k')
+        ↑(s.toFinset.filter fun k' => k' / 2 ^ padicValNat 2 k' = k / 2 ^ padicValNat 2 k) := by
+      intro x hx y hy hxy
+      rw [Finset.mem_coe, Finset.mem_filter] at hx hy
+      have hxy' : padicValNat 2 x = padicValNat 2 y := hxy
+      have hfx : 2 ^ padicValNat 2 x * (x / 2 ^ padicValNat 2 x) = x := padic_factorization
+      have hfy : 2 ^ padicValNat 2 y * (y / 2 ^ padicValNat 2 y) = y := padic_factorization
+      rw [hx.2] at hfx
+      rw [hy.2] at hfy
+      rw [← hfx, ← hfy, hxy']
+    have hmem_iff : (padicValNat 2 k ∈
+        (s.toFinset.filter fun k' => k' / 2 ^ padicValNat 2 k' = k / 2 ^ padicValNat 2 k).image
+          fun k' => padicValNat 2 k') ↔ k ∈ s := by
+      rw [Finset.mem_image]
+      constructor
+      · rintro ⟨k', hk'F, hval⟩
+        rw [Finset.mem_filter] at hk'F
+        have hk'S : k' ∈ s := Multiset.mem_toFinset.mp hk'F.1
+        have hval' : padicValNat 2 k' = padicValNat 2 k := hval
+        have hfk' : 2 ^ padicValNat 2 k' * (k' / 2 ^ padicValNat 2 k') = k' := padic_factorization
+        rw [hk'F.2, hval', hfact] at hfk'
+        rw [hfk']; exact hk'S
+      · intro hks
+        exact ⟨k, Finset.mem_filter.mpr ⟨Multiset.mem_toFinset.mpr hks, rfl⟩, rfl⟩
+    have hsum1 : t.count (k / 2 ^ padicValNat 2 k)
+        = ∑ m ∈ s.toFinset, if m / 2 ^ padicValNat 2 m = k / 2 ^ padicValNat 2 k
+            then 2 ^ padicValNat 2 m else 0 := by
+      rw [ht_def, glaisherFwd, Multiset.count_bind, Finset.sum_multiset_map_count]
+      refine Finset.sum_congr rfl (fun m hm => ?_)
+      simp only [Multiset.count_eq_one_of_mem hs_nodup (Multiset.mem_toFinset.mp hm), one_nsmul,
+        glaisherFwdPart, Multiset.count_replicate]
+    have himg :
+        (∑ m ∈ s.toFinset.filter fun k' => k' / 2 ^ padicValNat 2 k' = k / 2 ^ padicValNat 2 k,
+            2 ^ padicValNat 2 m)
+          = ∑ a ∈ (s.toFinset.filter fun k' =>
+              k' / 2 ^ padicValNat 2 k' = k / 2 ^ padicValNat 2 k).image
+                fun k' => padicValNat 2 k', 2 ^ a :=
+      (Finset.sum_image hinj).symm
+    have hbit :
+        (t.count (k / 2 ^ padicValNat 2 k)).testBit (padicValNat 2 k) = decide (k ∈ s) := by
+      rw [hsum1, ← Finset.sum_filter, himg, testBit_sum_distinct_pow]
+      simp only [hmem_iff]
+    rw [hscount, Finset.sum_eq_single (k / 2 ^ padicValNat 2 k)]
+    · have hcp := glaisherBwdStep_count_pow hb₀_pos (padicValNat 2 k)
+        (t.count (k / 2 ^ padicValNat 2 k))
+      rw [hfact] at hcp
+      rw [hcp, hbit]
+      by_cases hks : k ∈ s <;> simp [hks]
+    · intro b hb hbne
+      apply Multiset.count_eq_zero.mpr
+      intro hmem
+      obtain ⟨a, ha⟩ := glaisherBwdStep_mem_form b (t.count b) k hmem
+      have hb_t : b ∈ t := Multiset.mem_toFinset.mp hb
+      have hb_odd : ¬ Even b := ht_odd b hb_t
+      have hb_ne : b ≠ 0 := fun h => hb_odd (by rw [h]; exact ⟨0, rfl⟩)
+      exact hbne (odd_factorization_unique hb_odd hb_ne ha).2.symm
+    · intro hnotin
+      rw [Multiset.count_eq_zero.mpr (fun h => hnotin (Multiset.mem_toFinset.mpr h)),
+          glaisherBwdStep_zero, Multiset.count_zero]
+
+/-- **Constructive Euler Partition Theorem**: there is a bijection between partitions into
+    distinct parts and partitions into odd parts of any `n`.
+
+    The Glaisher maps furnish this bijection explicitly at the multiset level: the two-sided
+    inverse pair `glaisherBwd_glaisherFwd` (backward undoes forward on distinct multisets) and
+    `glaisherFwd_glaisherBwd` (forward undoes backward on odd multisets) are both proved above.
+    Here we discharge the existential form via the equal cardinality of the two finite sets
+    (`Nat.Partition.card_odds_eq_card_distincts`); any bijection witnessing that equality works. -/
 theorem glaisher_bijection_exists (n : ℕ) :
     ∃ (f : {p : Nat.Partition n // p ∈ Nat.Partition.distincts n} →
            {p : Nat.Partition n // p ∈ Nat.Partition.odds n}),
