@@ -31,21 +31,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (verified 0 sorries / 0 axioms, PR pending). Dual direction of parent OQ-02: a MEAGRE set of FULL Lebesgue measure (the non-Liouville reals Lᶜ), plus the symmetric decomposition ℝ = L ⊔ Lᶜ. Built on Proofs/AlgebraicRealsMeagerOQ02OQ01.lean, 8 theorems, Docker-verified (3.6s, 7743 jobs).",
+    "progressSummary": "COMPLETE + sharpened (PR #35731 pending): both halves of ℝ = L ⊔ Lᶜ shown dense via new reusable dense_of_conull. Two follow-up open questions logged (ℚ-equivariance; ℝⁿ transfer).",
     "builtItems": [
       "isMeagre_compl_of_mem_residual in AlgebraicRealsMeagerOQ02OQ01.lean:73 — abstract duality: A∈residual α ⟹ IsMeagre Aᶜ (any TopologicalSpace), via rw[IsMeagre, compl_compl].",
       "nonLiouville_meagre:97 + nonLiouville_conull:103 — the non-Liouville reals Lᶜ are meagre and conull (volume (Lᶜ)ᶜ = 0).",
       "exists_meagre_conull:111 — headline: ∃ meagre S ⊆ ℝ with volume Sᶜ = 0 (a meagre set of full Lebesgue measure).",
-      "real_symmetric_oxtoby:131 — ℝ = L ⊔ Lᶜ (union_compl_self + disjoint_compl_right), L comeagre-and-null, Lᶜ meagre-and-conull; oq01_resolution:143 packages it."
+      "real_symmetric_oxtoby:131 — ℝ = L ⊔ Lᶜ (union_compl_self + disjoint_compl_right), L comeagre-and-null, Lᶜ meagre-and-conull; oq01_resolution:143 packages it.",
+      "dense_of_conull in AlgebraicRealsMeagerOQ02OQ01Dense.lean:72 — conull ⟹ Dense (IsOpenPosMeasure); μ implicit and absent from conclusion so callers must pass (μ := volume).",
+      "dense_liouville / dense_nonLiouville:96,106 — both Oxtoby pieces dense; real_symmetric_oxtoby_dense:129 packages ℝ as two disjoint dense sets (comeagre-null + meagre-conull). PR #35731, verified 0/0."
     ],
     "insights": [
       "The dual of a comeagre null set is its literal complement: Lᶜ is meagre (because L is comeagre) and conull (because L is null). No new construction needed — the Liouville numbers already encode both halves of the Oxtoby contrast.",
       "IsMeagre s is DEFINED as sᶜ ∈ residual X (Mathlib Topology/GDelta/Basic:218), so isMeagre_compl_of_mem_residual (A∈residual ⟹ IsMeagre Aᶜ) is a two-line unfold + compl_compl, valid over any topological space.",
       "'Full Lebesgue measure' on ℝ (infinite measure space) is formalized as conullity: volume Sᶜ = 0. For S = Lᶜ this is volume L = 0 via compl_compl + volume_setOf_liouville.",
-      "Sharp form of OQ-02: the single partition ℝ = L ⊔ Lᶜ simultaneously witnesses comeagre⇏conull (on L) and meagre⇏null (on Lᶜ); the two largeness notions are exactly complementary, not merely inequivalent."
+      "Sharp form of OQ-02: the single partition ℝ = L ⊔ Lᶜ simultaneously witnesses comeagre⇏conull (on L) and meagre⇏null (on Lᶜ); the two largeness notions are exactly complementary, not merely inequivalent.",
+      "A conull set in any IsOpenPosMeasure space is dense: interior sᶜ = ∅ (null sets have empty interior, interior_eq_empty_of_null) so closure s = (interior sᶜ)ᶜ = univ. This is the measure-side mirror of dense_of_mem_residual.",
+      "Both halves of the symmetric Oxtoby decomposition ℝ = L ⊔ Lᶜ are dense: L by comeagreness (Baire), Lᶜ despite being MEAGRE by conullity. So the measure/category pathology is topologically ubiquitous, not confined to a nowhere-dense set."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Follow-up (open): are L and Lᶜ each preserved as comeagre-null / meagre-conull under the ℚ-translation and nonzero-ℚ-scaling action on ℝ? Liouville x ⟺ Liouville (x+q) ⟺ Liouville (qx) for q∈ℚˣ would give a group-equivariant Oxtoby decomposition.",
+      "Follow-up (open): does the dense-two-piece decomposition transfer to ℝⁿ (product Liouville set) — a meagre, dense, conull subset of ℝⁿ?"
+    ]
   },
   "tags": [
     "descriptive-set-theory",
