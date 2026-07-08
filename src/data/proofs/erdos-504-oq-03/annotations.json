@@ -1,0 +1,86 @@
+[
+  {
+    "id": "erdos-504-oq-03-ann-setup",
+    "proofId": "erdos-504-oq-03",
+    "range": { "startLine": 39, "endLine": 49 },
+    "type": "context",
+    "title": "Coordinate-Free Euclidean Setting",
+    "content": "The file works over an arbitrary real Euclidean affine space rather than ℝ²: V is a real inner product space and P a NormedAddTorsor over V. The unoriented angle notation ∠ a b c (the angle at vertex b between rays b→a and b→c) comes from Mathlib's EuclideanGeometry. Because nothing is fixed to coordinates or to dimension 2, every result is genuinely a statement about the intrinsic geometry of three points.",
+    "mathContext": "$P$ a torsor over a real inner product space $V$; $\\angle\\, a\\,b\\,c \\in [0,\\pi]$ is the unoriented angle at $b$. The parent problem defines $\\alpha_N = \\min_{|P|=N}\\max_{a,b,c\\in P}\\angle\\,a\\,b\\,c$; here $N=3$.",
+    "significance": "context",
+    "relatedConcepts": ["inner product space", "affine space", "normed torsor", "unoriented angle"],
+    "prerequisites": ["linear algebra", "Euclidean geometry"]
+  },
+  {
+    "id": "erdos-504-oq-03-ann-exists-angle",
+    "proofId": "erdos-504-oq-03",
+    "range": { "startLine": 51, "endLine": 60 },
+    "type": "technique",
+    "title": "Forced Angle via Angle-Sum + Pigeonhole",
+    "content": "exists_angle_ge_pi_div_three shows some interior angle is at least π/3. The proof is a one-line contradiction: Mathlib's triangle angle sum gives ∠ABC + ∠BCA + ∠CAB = π (needing only B ≠ A), and if all three were strictly below π/3 their sum would be strictly below π — impossible. push_neg turns the negated disjunction into three strict inequalities and linarith closes it.",
+    "mathContext": "If $\\angle A B C,\\ \\angle B C A,\\ \\angle C A B < \\tfrac{\\pi}{3}$ then their sum $< \\pi$, contradicting $\\angle A B C + \\angle B C A + \\angle C A B = \\pi$. Hence $\\max \\ge \\tfrac{\\pi}{3}$.",
+    "significance": "key",
+    "relatedConcepts": ["triangle angle sum", "pigeonhole principle", "proof by contradiction"],
+    "prerequisites": ["Euclidean geometry", "elementary inequalities"]
+  },
+  {
+    "id": "erdos-504-oq-03-ann-maxangle-def",
+    "proofId": "erdos-504-oq-03",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "definition",
+    "title": "maxAngle: The Largest of the Three Interior Angles",
+    "content": "maxAngle A B C is defined as max (∠ABC) (max (∠BCA) (∠CAB)), the largest interior angle of the triangle. This scalar is exactly the quantity α₃ minimises over configurations, so the whole file is about bounding and characterising its value for three points.",
+    "mathContext": "$\\operatorname{maxAngle}(A,B,C) = \\max\\{\\angle A B C,\\ \\angle B C A,\\ \\angle C A B\\}$, the inner maximand of $\\alpha_3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["maximum", "extremal quantity"],
+    "prerequisites": ["order theory basics"]
+  },
+  {
+    "id": "erdos-504-oq-03-ann-maxangle-lower",
+    "proofId": "erdos-504-oq-03",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "insight",
+    "title": "α₃ ≥ π/3: The Sharp Lower Bound",
+    "content": "maxAngle_ge_pi_div_three lifts the existential to the maximum: whichever angle is ≥ π/3, it is ≤ maxAngle, so maxAngle ≥ π/3. The three-way case split feeds le_max_of_le_left / le_max_of_le_right. This bound is sharp — the equilateral triangle attains equality — making π/3 the exact minimax value α₃.",
+    "mathContext": "$\\alpha_3 \\ge \\tfrac{\\pi}{3}$ (i.e. $60^\\circ$): every three points span an angle of at least $60^\\circ$, and $\\tfrac{\\pi}{3}$ is attained.",
+    "significance": "key",
+    "relatedConcepts": ["minimax", "extremal configuration", "sharp bound"],
+    "prerequisites": ["Euclidean geometry", "order theory basics"]
+  },
+  {
+    "id": "erdos-504-oq-03-ann-equiangular-iff",
+    "proofId": "erdos-504-oq-03",
+    "range": { "startLine": 76, "endLine": 114 },
+    "type": "concept",
+    "title": "Equiangular ⟺ Equilateral via Pons Asinorum",
+    "content": "all_angles_eq_pi_div_three_iff_equilateral is the crux of uniqueness. Equiangular ⟹ equilateral is the converse of the isosceles-triangle theorem (dist_eq_of_angle_eq_angle_of_angle_ne_pi): equal base angles force equal sides, valid here because π/3 ≠ π. Equilateral ⟹ equiangular is pons asinorum itself (angle_eq_angle_of_dist_eq): equal sides force equal base angles, and the angle sum π then pins each to π/3. Careful angle_comm and dist_comm bookkeeping aligns the vertex labels.",
+    "mathContext": "$\\angle A B C = \\angle B C A = \\angle C A B = \\tfrac{\\pi}{3} \\iff |AB| = |BC| = |CA|$. Forward: converse pons asinorum (apex $\\ne \\pi$ since $\\tfrac{\\pi}{3}\\ne\\pi$). Reverse: pons asinorum + angle sum.",
+    "significance": "key",
+    "relatedConcepts": ["isosceles triangle theorem", "pons asinorum", "equilateral triangle", "congruence"],
+    "prerequisites": ["Euclidean geometry", "isosceles triangle theorem"]
+  },
+  {
+    "id": "erdos-504-oq-03-ann-maxangle-eq",
+    "proofId": "erdos-504-oq-03",
+    "range": { "startLine": 116, "endLine": 139 },
+    "type": "insight",
+    "title": "maxAngle = π/3 Collapses to Equiangularity",
+    "content": "maxAngle_eq_pi_div_three_iff_equilateral is the N = 3 uniqueness in angle form. If maxAngle = π/3 then each angle is ≤ π/3, yet the three sum to π = 3·(π/3), forcing every angle to equal π/3 — no separate optimisation needed. The equiangular ⟺ equilateral lemma then gives the equilateral triangle. The reverse direction plugs three equal angles into max_self.",
+    "mathContext": "If $\\max = \\tfrac{\\pi}{3}$ then each $\\angle \\le \\tfrac{\\pi}{3}$ but $\\sum = \\pi = 3\\cdot\\tfrac{\\pi}{3}$, so each $\\angle = \\tfrac{\\pi}{3}$. Equality in the bound $\\iff$ equilateral.",
+    "significance": "key",
+    "relatedConcepts": ["equality case", "extremal characterisation", "uniqueness"],
+    "prerequisites": ["Euclidean geometry", "elementary inequalities"]
+  },
+  {
+    "id": "erdos-504-oq-03-ann-capstone",
+    "proofId": "erdos-504-oq-03",
+    "range": { "startLine": 141, "endLine": 150 },
+    "type": "insight",
+    "title": "Capstone: The Unique 3-Point Optimum",
+    "content": "alpha_three_optimal_iff_equilateral bundles the two halves: α₃ = maxAngle ≥ π/3 always, and equality holds iff the triangle is equilateral. Since the equality case pins all three side lengths equal, the minimiser is determined up to similarity (translation, rotation, scaling, reflection) — the N = 3 answer to OQ-03's uniqueness question.",
+    "mathContext": "$\\alpha_3 = \\tfrac{\\pi}{3}$, attained exactly by the equilateral triangle, unique up to similarity. Larger $N$ (Sendov's threshold $N = 5\\cdot 2^{n-3}$ in $(2^{n-1},2^n]$) is left open.",
+    "significance": "key",
+    "relatedConcepts": ["uniqueness up to similarity", "extremal configuration", "minimax", "Sendov's theorem"],
+    "prerequisites": ["Euclidean geometry", "similarity transformations"]
+  }
+]
