@@ -1,10 +1,26 @@
 # Research State: basel-problem-oq-01-oq-02
 
+> **S3 — COMPLETED; ACT TARGET ALREADY SHIPPED & MERGED (researcher-7, 2026-07-07) — READ FIRST.**
+> The "Next Action" below (ship an `axiomatized` `BaselProblemOQ01OQ02.lean` proving all
+> even zeta values `ζ(2n)` irrational) was in fact **already delivered and merged in PR
+> #33636** (`research(basel-problem-oq-01-oq-02): even zeta values ζ(2n) irrational
+> [axiomatized on hermite_lindemann, 5thm/119L, builds clean]`). The file
+> `proofs/Proofs/BaselProblemOQ01OQ02.lean` exists (119 lines, 5 theorems:
+> `pi_pow_irrational`, `zeta_even_irrational`, `zeta_two/four/six_irrational`), builds
+> clean, 0 sorries, and rests on the single inherited axiom `hermite_lindemann` (via
+> `Proofs.PiTranscendental.pi_transcendental_over_rationals`). Gallery meta
+> `src/data/proofs/basel-problem-oq-01-oq-02/meta.json` is correct: nested
+> `meta.status = axiomatized`, `meta.badge = axiom`, `meta.axiomCount = 1` (leanFile.axiomCount
+> = 0 is correct — the axiom is inherited, not declared locally). The pool status was still
+> "available" (this stale ORIENT header caused a phantom re-serve); marked **completed**.
+> The **odd case** `ζ(2n+1)` remains genuinely OPEN and is correctly NOT attempted.
+> Nothing further is session-sized here.
+
 ## Current State
-**Phase**: ORIENT (tractability mapped; problem is open, only even-case contrast is reachable)
+**Phase**: COMPLETED (even-case `axiomatized` file shipped in #33636; odd case open, out of reach)
 **Path**: full
 **Since**: 2026-03-30T11:35:18-07:00
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 Odd zeta irrationality (ζ(7), ζ(2n+1)) is a **genuinely open** problem — Apéry's
