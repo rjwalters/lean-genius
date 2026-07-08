@@ -125,5 +125,17 @@
     "path": "Proofs/HermiteFloorIdentity.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "hermite_floor_identity",
+      "type": "theorem",
+      "description": "Hermite's identity: for every real x and every integer n ≥ 1, ∑_{k=0}^{n-1} ⌊x + k/n⌋ = ⌊n·x⌋. Each real floor is collapsed to an integer Euclidean quotient via Int.floor_div_natCast and Int.floor_add_natCast, then the integer Hermite sum finishes."
+    },
+    {
+      "name": "int_hermite_sum",
+      "type": "theorem",
+      "description": "Integer Hermite sum (the arithmetic core): for n ≥ 1 and any integer a, the Euclidean quotients (a + k)/n over k = 0,…,n-1 sum to a. Proved by integer induction on a using a shift recurrence that increases the sum by exactly 1 when a ↦ a+1."
+    }
+  ],
   "sorries": 0
 }
