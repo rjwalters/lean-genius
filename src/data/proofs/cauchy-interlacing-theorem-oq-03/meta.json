@@ -125,6 +125,16 @@
       "targetId": "cauchy-interlacing-theorem-oq-02",
       "relationship": "sibling",
       "description": "Sibling entry (Poincaré separation) — its conclusion explicitly names 'Weyl monotonicity, Lidskii' as reusable consequences of the keystone that 'likewise only need the dimension count to vary'. This entry realises that prediction for the Weyl inequalities."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-03-oq-01",
+      "relationship": "extended-by",
+      "description": "Child refinement — turns the additive Weyl inequalities proved here into the a-priori operator-norm stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ for the k-th eigenvalue under a Hermitian perturbation."
+    },
+    {
+      "targetId": "cauchy-interlacing-theorem-oq-03-oq-02",
+      "relationship": "extended-by",
+      "description": "Child refinement — derives the dual Weyl inequality μ(i) + ν(j) ≤ ρ(k) by negation, the companion of the additive bound established here in the sub/super-additive pair."
     }
   ],
   "references": [
