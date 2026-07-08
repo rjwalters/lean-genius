@@ -556,3 +556,50 @@ theorem exists_nonsmooth_window_value {n k : ℕ} (hn : 2 * k ≤ n) (hk : 1 ≤
       (fun i hi => hcon i (Finset.mem_range.mp hi)), Finset.card_range]
   have := deficiency_lt_k hn hk h
   omega
+
+/-
+## Section XII: The sharp bound already resolves `k ≤ 14` — open frontier is `k ≥ 15`
+
+The sharp factorial bound `(k + deficiency n k)! ≤ (k!)²`
+(`deficiency_add_factorial_le_sq`) is not merely a per-`k` numerical ceiling: for
+small `k` that ceiling already drops below `9`.  A deficiency `≥ 9` would force
+`(k + 9)! ≤ (k!)²`, but a direct finite check shows `(k!)² < (k + 9)!` for every
+`k ≤ 14` (the inequality first fails at `k = 15`, where `(15!)² ` first exceeds
+`24!`).  Hence *no* admissible pair with `k ≤ 14` can have deficiency exceeding
+`8`, and the open universal bound `MaximalDeficiencyIs 9` is confined to `k ≥ 15`
+— a strict sharpening of the `k ≥ 10` reduction of Section VI, obtained with no
+appeal to prime distribution or the axiomatized ELS bound, and `ofReduceBool`-free
+(the finite check is discharged by kernel `decide`, not `native_decide`).
+-/
+
+/-- **The sharp bound closes `k ≤ 14`.**  For an admissible pair with `k ≤ 14`
+the deficiency never exceeds `8`.  Indeed a deficiency `≥ 9` would give
+`(k + 9)! ≤ (k + deficiency n k)! ≤ (k!)²` via `deficiency_add_factorial_le_sq`,
+contradicting the finite fact `(k!)² < (k + 9)!` valid for all `k ≤ 14`.  This is
+the first place the elementary sharp bound *beats* the target `9`, and it does so
+uniformly in `n`. -/
+theorem deficiency_le_eight_of_k_le_14 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 14) : deficiency n k ≤ 8 := by
+  by_contra hcon
+  push_neg at hcon
+  have hsharp := deficiency_add_factorial_le_sq hn h
+  have hle : Nat.factorial (k + 9) ≤ (Nat.factorial k) ^ 2 :=
+    (Nat.factorial_le (by omega)).trans hsharp
+  interval_cases k <;> exact absurd hle (by decide)
+
+/-- **Sharpened reduction to `k ≥ 15`.**  `MaximalDeficiencyIs 9` is equivalent to
+the open universal bound restricted to `k ≥ 15`: the cases `k ≤ 9` are automatic
+from the trivial bound and the cases `10 ≤ k ≤ 14` are now discharged by the sharp
+factorial bound (`deficiency_le_eight_of_k_le_14`).  Strictly sharper than
+`maximalDeficiencyIs_nine_iff_kGe10`; the entire remaining open content of OQ-02
+lives at `k ≥ 15`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe15 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 15 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 14
+    · have := deficiency_le_eight_of_k_le_14 hv.1 hv.2 hk; omega
+    · exact h n k (by omega) hv
