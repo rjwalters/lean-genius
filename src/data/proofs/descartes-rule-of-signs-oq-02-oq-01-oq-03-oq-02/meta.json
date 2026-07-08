@@ -248,6 +248,11 @@
       "targetId": "descartes-rule-of-signs-oq-02",
       "relationship": "related",
       "description": "Supplies the budanCount sign-variation infrastructure whose 0-or-1 value on the isolated intervals produced at the explicit level would complete the certified isolation pipeline."
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "foundational",
+      "description": "The root of the whole lineage: Descartes' rule of signs, bounding the positive real roots of a polynomial by the sign changes in its coefficient sequence. Vincent/Budan root isolation (this leaf's subject) is the algorithmic descendant that turns that global sign-variation count into an interval-by-interval isolation procedure; the explicit bisection depth k₀ = ⌈log₂(w/δ)⌉+1 proved here bounds how deep that subdivision must go."
     }
   ],
   "sorries": 0
