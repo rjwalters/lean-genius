@@ -47,6 +47,33 @@
     "path": "Proofs/EulerTotientOQ01OQ01OQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "unit_pow_carmichael",
+      "type": "theorem",
+      "description": "Carmichael's theorem: every unit of ℤ/nℤ is killed by λ(n), i.e. a ^ λ(n) = 1 — the universal-exponent statement underlying Carmichael's function, a sharpening of Euler's a ^ φ(n) = 1 (λ(n) is the exponent of the unit monoid)."
+    },
+    {
+      "name": "carmichael_dvd_of_forall_pow_eq_one",
+      "type": "theorem",
+      "description": "Minimality of λ(n): any common exponent k of the unit group (a ^ k = 1 for every unit a) is a multiple of λ(n). With unit_pow_carmichael this makes λ(n) the least positive universal exponent."
+    },
+    {
+      "name": "exists_unit_orderOf_eq_carmichael",
+      "type": "theorem",
+      "description": "Attainment / sharpness: for n ≥ 1 there is a λ-primitive unit of ℤ/nℤ whose order is exactly λ(n), so the bound a ^ λ(n) = 1 is met by some element and cannot be lowered."
+    },
+    {
+      "name": "carmichael_dvd_totient",
+      "type": "theorem",
+      "description": "λ refines φ: Carmichael's function divides Euler's totient, λ(n) ∣ φ(n), since the exponent of a finite group divides its order and (ZMod n)ˣ has order φ(n)."
+    },
+    {
+      "name": "unit_pow_totient",
+      "type": "theorem",
+      "description": "Euler's theorem recovered from Carmichael: since λ(n) ∣ φ(n) and a ^ λ(n) = 1, every unit satisfies a ^ φ(n) = 1 — the Fermat–Euler theorem as a corollary of the sharper Carmichael period."
+    }
+  ],
   "sorries": 0,
   "overview": {
     "historicalContext": "Carmichael's function λ(n), introduced by Robert Carmichael in 1910, is the exponent of the multiplicative group (ℤ/nℤ)*: the least positive integer m such that a^m ≡ 1 (mod n) for every a coprime to n. Carmichael's theorem a^λ(n) ≡ 1 (mod n) sharpens the Fermat–Euler theorem a^φ(n) ≡ 1 (mod n), because λ(n) divides φ(n) and is often strictly smaller (for example λ(8) = 2 while φ(8) = 4, and λ(561) = 80 while φ(561) = 320). The gallery's parent chain established λ as a group exponent and proved it multiplicative, then computed its explicit prime-power value; what remained was the theorem that justifies the name and the precise sense in which λ(n) is the best possible exponent. Mathlib provides the Fermat–Euler theorem and a full monoid-exponent API but no ℕ-indexed Carmichael function, so the named package is assembled here.",
