@@ -639,4 +639,156 @@ theorem transport_new_seeds :
     (∀ k, 5 * 2 ^ (k + 1) ∈ EqualitySet) ∧ (∀ k, 13 * 2 ^ (k + 1) ∈ ForwardSet) :=
   ⟨mem_EqualitySet_five, mem_ForwardSet_thirteen⟩
 
+-- ===========================================================================
+-- THE k-INDEPENDENT THREE-WAY CRITERION
+-- ---------------------------------------------------------------------------
+-- The transport lemma places `D(a·2^(k+1)) = C·2^k` with `C = 2a − φ(b)`
+-- constant in `k`.  To read off the sign of `φ(n) − φ(D(n))` one must also know
+-- `φ(D(n))`, which depends on the 2-adic valuation of `C`.  Writing the landing
+-- constant as `C = e·2^t` with `e` odd and `t ≥ 1` (it is always even, being a
+-- difference of an even `2a` and the even `φ(b)` for `b ≥ 3`, or `e = 1` at the
+-- bottom), BOTH totients factor through the inert `2^k`:
+--
+--       φ(n)    = φ(a) · 2^k,
+--       φ(D(n)) = φ(e) · 2^(t−1) · 2^k.
+--
+-- Hence the three-way comparison `φ(n) ⋛ φ(D(n))` is, for EVERY `k`, decided by
+-- the single `k`-free inequality `φ(a) ⋛ φ(e)·2^(t−1)` on the odd data
+-- `(a, e, t)`.  This is the criterion promised by the transport programme: the
+-- regime of a whole family is a finite computation on three odd numbers, with
+-- the power of two carrying no information.  The five explicit families of this
+-- file are read off instantly (see the corollaries after the criterion).
+-- ===========================================================================
+
+/-- **k-independent double-iterate totient values.**  With the transport data
+    `a, b` odd, `2a − φ(a) = 2b`, and the 2-adic decomposition of the landing
+    constant `C = 2a − φ(b) = e·2^t` (`e` odd, `t ≥ 1`), both totients along the
+    family `n = a·2^(k+1)` factor through a common `2^k`:
+    `φ(n) = φ(a)·2^k` and `φ(D(n)) = φ(e)·2^(t−1)·2^k`.  All `k`-dependence is
+    the inert factor `2^k`. -/
+theorem dblIter_totient_values {a b e t : ℕ} (ha : Odd a) (hb : Odd b)
+    (he : Odd e) (ht : 1 ≤ t)
+    (hstep : 2 * a - Nat.totient a = 2 * b)
+    (hC : 2 * a - Nat.totient b = e * 2 ^ t) (k : ℕ) :
+    Nat.totient (a * 2 ^ (k + 1)) = Nat.totient a * 2 ^ k ∧
+    Nat.totient (dblIter (a * 2 ^ (k + 1)))
+      = Nat.totient e * 2 ^ (t - 1) * 2 ^ k := by
+  -- odd ⇒ coprime to every power of two
+  have oddCop : ∀ (c m : ℕ), Odd c → Nat.Coprime c (2 ^ m) := by
+    intro c m hc
+    have h2 : ¬ (2 ∣ c) := by
+      intro hd
+      rw [Nat.dvd_iff_mod_eq_zero] at hd
+      have := Nat.odd_iff.mp hc; omega
+    exact ((Nat.prime_two.coprime_iff_not_dvd).mpr h2).symm.pow_right m
+  have hp2 : ∀ m : ℕ, Nat.totient (2 ^ (m + 1)) = 2 ^ m := by
+    intro m; rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos m)]; simp
+  -- φ(n) = φ(a)·2^k
+  have hφn : Nat.totient (a * 2 ^ (k + 1)) = Nat.totient a * 2 ^ k := by
+    rw [Nat.totient_mul (oddCop a (k + 1) ha), hp2 k]
+  refine ⟨hφn, ?_⟩
+  -- D(n) = e·2^(t+k)
+  have hD : dblIter (a * 2 ^ (k + 1)) = e * 2 ^ (t + k) := by
+    rw [dblIter_transport ha hb hstep k, hC, pow_add]; ring
+  -- φ(2^(t+k)) = 2^(t+k−1)  (t+k ≥ 1 since t ≥ 1)
+  have hφe2 : Nat.totient (2 ^ (t + k)) = 2 ^ (t + k - 1) := by
+    obtain ⟨m, hm⟩ : ∃ m, t + k = m + 1 := ⟨t + k - 1, by omega⟩
+    rw [hm, Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos m)]
+    simp
+  rw [hD, Nat.totient_mul (oddCop e (t + k) he), hφe2]
+  -- 2^(t+k−1) = 2^(t−1)·2^k
+  have hexp : t + k - 1 = (t - 1) + k := by omega
+  rw [hexp, pow_add, ← mul_assoc]
+
+/-- **Three-way criterion — reversal branch.**  `φ(n) < φ(D(n))` for `n = a·2^(k+1)`
+    iff the `k`-free inequality `φ(a) < φ(e)·2^(t−1)` holds. -/
+theorem dblIter_reversal_iff {a b e t : ℕ} (ha : Odd a) (hb : Odd b)
+    (he : Odd e) (ht : 1 ≤ t)
+    (hstep : 2 * a - Nat.totient a = 2 * b)
+    (hC : 2 * a - Nat.totient b = e * 2 ^ t) (k : ℕ) :
+    (a * 2 ^ (k + 1)) ∈ ReversalSet
+      ↔ Nat.totient a < Nat.totient e * 2 ^ (t - 1) := by
+  obtain ⟨h1, h2⟩ := dblIter_totient_values ha hb he ht hstep hC k
+  show Nat.totient (a * 2 ^ (k + 1))
+      < Nat.totient (dblIter (a * 2 ^ (k + 1))) ↔ _
+  rw [h1, h2]
+  have hpos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  constructor
+  · intro h; exact lt_of_mul_lt_mul_right h (Nat.zero_le _)
+  · intro h; exact mul_lt_mul_of_pos_right h hpos
+
+/-- **Three-way criterion — equality branch.**  `φ(n) = φ(D(n))` for `n = a·2^(k+1)`
+    iff the `k`-free equality `φ(a) = φ(e)·2^(t−1)` holds. -/
+theorem dblIter_equality_iff {a b e t : ℕ} (ha : Odd a) (hb : Odd b)
+    (he : Odd e) (ht : 1 ≤ t)
+    (hstep : 2 * a - Nat.totient a = 2 * b)
+    (hC : 2 * a - Nat.totient b = e * 2 ^ t) (k : ℕ) :
+    (a * 2 ^ (k + 1)) ∈ EqualitySet
+      ↔ Nat.totient a = Nat.totient e * 2 ^ (t - 1) := by
+  obtain ⟨h1, h2⟩ := dblIter_totient_values ha hb he ht hstep hC k
+  show Nat.totient (a * 2 ^ (k + 1))
+      = Nat.totient (dblIter (a * 2 ^ (k + 1))) ↔ _
+  rw [h1, h2]
+  have hpos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  constructor
+  · intro h; exact Nat.eq_of_mul_eq_mul_right hpos h
+  · intro h; rw [h]
+
+/-- **Three-way criterion — forward branch.**  `φ(D(n)) < φ(n)` for `n = a·2^(k+1)`
+    iff the `k`-free inequality `φ(e)·2^(t−1) < φ(a)` holds. -/
+theorem dblIter_forward_iff {a b e t : ℕ} (ha : Odd a) (hb : Odd b)
+    (he : Odd e) (ht : 1 ≤ t)
+    (hstep : 2 * a - Nat.totient a = 2 * b)
+    (hC : 2 * a - Nat.totient b = e * 2 ^ t) (k : ℕ) :
+    (a * 2 ^ (k + 1)) ∈ ForwardSet
+      ↔ Nat.totient e * 2 ^ (t - 1) < Nat.totient a := by
+  obtain ⟨h1, h2⟩ := dblIter_totient_values ha hb he ht hstep hC k
+  show Nat.totient (dblIter (a * 2 ^ (k + 1)))
+      < Nat.totient (a * 2 ^ (k + 1)) ↔ _
+  rw [h1, h2]
+  have hpos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  constructor
+  · intro h; exact lt_of_mul_lt_mul_right h (Nat.zero_le _)
+  · intro h; exact mul_lt_mul_of_pos_right h hpos
+
+-- --- The criterion reads off all five families uniformly (no per-k work) ---
+
+theorem totient_17 : Nat.totient 17 = 16 := Nat.totient_prime (by norm_num)
+
+/-- Reversal family `21·2^(k+1)`: odd data `a = 21, e = 17, t = 1`, and
+    `φ(21) = 12 < 16 = φ(17)·2^0`, so the criterion returns "reversal" for all `k`
+    at once — recovering `mem_ReversalSet_family` from the sign inequality. -/
+theorem reversal_via_criterion (k : ℕ) : (21 * 2 ^ (k + 1)) ∈ ReversalSet := by
+  rw [dblIter_reversal_iff (a := 21) (b := 15) (e := 17) (t := 1)
+        (by decide) (by decide) (by decide) (by norm_num)
+        (by norm_num [totient_21]) (by norm_num [totient_15]) k]
+  norm_num [totient_21, totient_17]
+
+/-- Equality family `15·2^(k+1)`: odd data `a = 15, e = 5, t = 2`, and
+    `φ(15) = 8 = 4·2 = φ(5)·2^1`, so the criterion returns "equality" for all `k`. -/
+theorem equality_via_criterion (k : ℕ) : (15 * 2 ^ (k + 1)) ∈ EqualitySet := by
+  rw [dblIter_equality_iff (a := 15) (b := 11) (e := 5) (t := 2)
+        (by decide) (by decide) (by decide) (by norm_num)
+        (by norm_num [totient_15])
+        (by norm_num [Nat.totient_prime (show Nat.Prime 11 by norm_num)]) k]
+  norm_num [totient_15, totient_5]
+
+/-- Forward family `13·2^(k+1)`: odd data `a = 13, e = 5, t = 2`, and
+    `φ(5)·2^1 = 8 < 12 = φ(13)`, so the criterion returns "forward" for all `k`. -/
+theorem forward_via_criterion (k : ℕ) : (13 * 2 ^ (k + 1)) ∈ ForwardSet := by
+  rw [dblIter_forward_iff (a := 13) (b := 7) (e := 5) (t := 2)
+        (by decide) (by decide) (by decide) (by norm_num)
+        (by norm_num [totient_13])
+        (by norm_num [Nat.totient_prime (show Nat.Prime 7 by norm_num)]) k]
+  norm_num [totient_13, totient_5]
+
+/-- **The criterion is a complete `k`-free classifier for transport families.**
+    All three explicit regimes are decided uniformly by the odd data `(a, e, t)`,
+    with the power of two `2^k` carrying no information. -/
+theorem threeway_criterion_classifies :
+    (∀ k, (21 * 2 ^ (k + 1)) ∈ ReversalSet) ∧
+    (∀ k, (15 * 2 ^ (k + 1)) ∈ EqualitySet) ∧
+    (∀ k, (13 * 2 ^ (k + 1)) ∈ ForwardSet) :=
+  ⟨reversal_via_criterion, equality_via_criterion, forward_via_criterion⟩
+
 end Erdos1064OQ03
