@@ -146,6 +146,56 @@
       "summary": "schur_majorization_convexOn: for convex φ on s ⊇ spectrum, ConvexOn.map_sum_le applied with weights D i j (nonnegative, summing to 1 by the row sums) and points λ j ∈ s gives φ(d i) ≤ ∑ⱼ D i j • φ(λ j); summing over i, swapping the order (Finset.sum_comm), and collapsing each column with ∑ᵢ D i j = 1 (Finset.sum_smul, one_smul) yields ∑ᵢ φ(d i) ≤ ∑ⱼ φ(λ j). schur_trace_eq specializes to the equality case ∑ d i = ∑ λ j directly from diag_decomp and the column sums (no convexity), and schur_sum_sq_le applies the master theorem with φ = (·)² (Even.convexOn_pow at n=2) to bound ∑ d i² ≤ ∑ λ j²."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "schur_majorization_convexOn",
+      "type": "core",
+      "description": "**Schur's majorization theorem (Karamata form)** — for any convex φ on a set s containing the spectrum, ∑ᵢ φ(re ⟪T (e i), e i⟫) ≤ ∑ⱼ φ(λ j): the diagonal of a Hermitian operator in any orthonormal basis is majorized by its eigenvalue spectrum, diag(T) ≺ spec(T). Proved by row-by-row Jensen on the doubly-stochastic matrix D i j = ‖⟪v j, e i⟫‖² followed by a column-sum swap.",
+      "leanType": "{φ : ℝ → ℝ} {s : Set ℝ} (hφ : ConvexOn ℝ s φ) (hmem : ∀ j, λ j ∈ s) : ∑ i, φ (re ⟪T (e i), e i⟫) ≤ ∑ j, φ (λ j)",
+      "line": 129,
+      "endLine": 153
+    },
+    {
+      "name": "diag_decomp",
+      "type": "key",
+      "description": "**Diagonal as doubly-stochastic image of the spectrum** — each diagonal entry is the convex combination re ⟪T (e i), e i⟫ = ∑ⱼ λ j · D i j of the eigenvalues. The single nontrivial identity of the file; everything downstream is Jensen plus a sum swap. Obtained by expanding over the eigenbasis and collapsing each cross term with the spectral relation and RCLike.conj_mul.",
+      "leanType": "(i : Fin n) : re ⟪T (e i), e i⟫ = ∑ j, λ j * dsWeight i j",
+      "line": 94,
+      "endLine": 118
+    },
+    {
+      "name": "dsWeight_row_sum",
+      "type": "key",
+      "description": "**Row stochasticity** — ∑ⱼ D i j = 1, by Parseval (OrthonormalBasis.sum_sq_norm_inner_right) for the eigenbasis v, since ‖e i‖ = 1. One half of the double stochasticity of D i j = ‖⟪v j, e i⟫‖²; supplies the Jensen weights.",
+      "leanType": "(i : Fin n) : ∑ j, dsWeight i j = 1",
+      "line": 78,
+      "endLine": 83
+    },
+    {
+      "name": "dsWeight_col_sum",
+      "type": "key",
+      "description": "**Column stochasticity** — ∑ᵢ D i j = 1, by Parseval (OrthonormalBasis.sum_sq_norm_inner_left) for the basis e, since ‖v j‖ = 1. The other half of double stochasticity; used to collapse the eigenvalue weights back to 1 after the sum swap.",
+      "leanType": "(j : Fin n) : ∑ i, dsWeight i j = 1",
+      "line": 85,
+      "endLine": 92
+    },
+    {
+      "name": "schur_trace_eq",
+      "type": "supporting",
+      "description": "**Basis independence of the trace** — ∑ᵢ re ⟪T (e i), e i⟫ = ∑ⱼ λ j, the k=n equality case of majorization, from diag_decomp and the column sums with no convexity.",
+      "leanType": "∑ i, re ⟪T (e i), e i⟫ = ∑ j, λ j",
+      "line": 158,
+      "endLine": 167
+    },
+    {
+      "name": "schur_sum_sq_le",
+      "type": "supporting",
+      "description": "**Sum-of-squares bound** — ∑ᵢ (re ⟪T (e i), e i⟫)² ≤ ∑ⱼ (λ j)², the φ=(·)² instance (Even.convexOn_pow at n=2): the diagonal is no longer in Euclidean norm than the spectrum.",
+      "leanType": "∑ i, (re ⟪T (e i), e i⟫)² ≤ ∑ j, (λ j)²",
+      "line": 172,
+      "endLine": 176
+    }
+  ],
   "references": [
     {
       "authors": "Horn, R. A. and Johnson, C. R.",
