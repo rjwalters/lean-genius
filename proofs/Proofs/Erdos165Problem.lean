@@ -303,6 +303,46 @@ theorem pgm_conjecture_refuted : ¬ pgmConjecture := by
   have : (1:ℝ)/2 ≤ 1/4 := R3_upper_constant_ge_half (1/4) hupper
   norm_num at this
 
+/-- **No asymptotic lower constant above `1`.**  The mirror of
+    `R3_upper_constant_ge_half`: if `R(3,k) ≥ (a - ε)·k²/log k` holds eventually for
+    *every* `ε > 0`, then `a ≤ 1`.  This is Shearer's upper bound (`c ≤ 1`) phrased as an
+    obstruction — any *valid* first-order lower constant for `R(3,k)` is at most `1`.  The
+    only Ramsey input is `shearer_upper_bound`; the rest is the axiom-free
+    `asymptotic_constant_le`. -/
+theorem R3_lower_constant_le_one (a : ℝ)
+    (ha : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+        (a - ε) * k^2 / log k ≤ (R3 k : ℝ)) :
+    a ≤ 1 := by
+  refine asymptotic_constant_le (fun k => (R3 k : ℝ)) a 1 ha ?_
+  intro ε hε
+  obtain ⟨k₀, hk₀⟩ := shearer_upper_bound ε hε
+  exact ⟨k₀, fun k hk => hk₀ k hk⟩
+
+/-- A conjectured exact asymptotic constant `c` for `R(3,k)`, i.e. `R(3,k) ~ c·k²/log k`:
+    `(c-ε)·k²/log k ≤ R(3,k) ≤ (c+ε)·k²/log k` eventually for every `ε > 0`.  This is the
+    common shape of `mainConjecture` (`c = 1/2`) and `pgmConjecture` (`c = 1/4`). -/
+def constantConjecture (c : ℝ) : Prop :=
+    ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+      (c - ε) * k^2 / log k ≤ R3 k ∧ (R3 k : ℝ) ≤ (c + ε) * k^2 / log k
+
+/-- **Any conjectured constant `> 1` is refuted by Shearer's upper bound.**  The symmetric
+    companion to `pgm_conjecture_refuted`: whereas the PGM constant `1/4` is ruled out from
+    *below* (HHKP forces the constant `≥ 1/2`), any constant exceeding `1` is ruled out from
+    *above* — its lower half would assert a valid lower constant `> 1`, contradicting
+    `R3_lower_constant_le_one`.  Together with `pgm_conjecture_refuted` this pins the exact
+    constant to the interval `[1/2, 1]`: no conjecture with constant `< 1/2` or `> 1` can
+    hold.  The only Ramsey input is `shearer_upper_bound`. -/
+theorem constantConjecture_refuted_of_one_lt (c : ℝ) (hc : 1 < c) :
+    ¬ constantConjecture c := by
+  intro h
+  have hlower : ∀ ε > 0, ∃ k₀ : ℕ, ∀ k : ℕ, k ≥ k₀ →
+      (c - ε) * k^2 / log k ≤ (R3 k : ℝ) := by
+    intro ε hε
+    obtain ⟨k₀, hk₀⟩ := h ε hε
+    exact ⟨k₀, fun k hk => (hk₀ k hk).1⟩
+  have : c ≤ 1 := R3_lower_constant_le_one c hlower
+  linarith
+
 /- ## Part VII: Related Problems -/
 
 /-
