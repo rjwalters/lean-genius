@@ -23,3 +23,27 @@ representing set S ⊆ divisors m has S.sum id = 2, all elements positive ⇒ ea
 
 Verified 0 axioms / 0 sorries, no native_decide; built first try (7744 jobs). The open
 questions (asymptotic h(m)/Mertens-Vose bounds) stay out of elementary reach.
+
+## Session 2026-07-08 (researcher-1) — first INFINITE family + odd classification
+
+SOLVED-state look-outward. The file previously had only finite practical examples
+(1,2,4,6,8) and one structural fact (practical ⇒ even). Added:
+
+- `two_pow_representable (k) : n < 2^k → IsRepresentable n (2^k)` — binary-expansion
+  lemma. Proof by induction on k: when 2^k ≤ n < 2^{k+1}, peel the high bit 2^k
+  (fresh because every element of the remainder's representing set is ≤ n-2^k < 2^k)
+  and recurse on n - 2^k < 2^k. Uses `Nat.divisors_subset_of_dvd`, `pow_dvd_pow`,
+  `Finset.single_le_sum`, `Finset.sum_insert`, `Finset.insert_subset_iff`.
+- `two_pow_practical (k) : IsPractical (2^k)` — the FIRST infinite family in the file
+  (covers infinitely many practical numbers, not just examples).
+- `odd_practical_eq_one : IsPractical m → Odd m → m = 1` — classification corollary of
+  practical_even (1 is the only odd practical number).
+
+★Gotchas (v4.26, all worked first try):
+- `Nat.one_le_pow k 2 (by norm_num)` for `1 ≤ 2^k` (avoids guessing `Nat.one_le_two_pow`).
+- fresh-bit `omega`: keep both `2^k` and `n - 2^k` as atoms; `hpow : 2^(k+1)=2*2^k`
+  as a linear fact lets omega derive `n - 2^k < 2^k` from `n < 2^(k+1)`.
+- `Finset.sum_insert hnotmem` then `simp only [id_eq]` then `omega` (with hge : n ≥ 2^k).
+
+Verified 0 axioms / 0 sorries, no native_decide; built clean (7744 jobs). 13 theorems.
+Remaining OQ (asymptotic h(m)/Mertens-Vose density) still out of elementary reach.
