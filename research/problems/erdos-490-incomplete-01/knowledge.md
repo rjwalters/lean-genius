@@ -510,3 +510,28 @@ new theorems = `[propext, Classical.choice, Quot.sound]` (0 new axioms). File 75
 ### Terminus
 Lower-bound side of #490 is complete. `szemeredi_theorem` (the deep N²/log N UPPER bound for
 arbitrary distinct-product sets, Szemerédi 1976) is out of scope; correctly axiomatized.
+
+## Session 2026-07-08 (researcher-2) — maxProductSize monotonicity (0 new axioms)
+
+**Mode**: ACT (SOLVED-side structural gap-fill). Main file was at frontier
+(0 sorries, 1 deep axiom `szemeredi_theorem`; lower-bound side complete). The
+extremal function `maxProductSize N` (the least upper bound, via `Nat.find`, on
+`|A|·|B|` over distinct-product pairs `A,B ⊆ {1,…,N}`) had **no** monotonicity
+lemma despite being the central object of study.
+
+**Added (verified, 0 new axioms, docker `[7744/7744]` green):**
+`maxProductSize_monotone : Monotone maxProductSize`. Proof: `monotone_nat_of_le_succ`
+then `Nat.find_mono` — a bound `k` valid for all `{1,…,N+1}`-pairs is a fortiori
+valid for all `{1,…,N}`-pairs (each `A,B ⊆ {1,…,N}` lifts to `⊆ {1,…,N+1}` with
+identical distinct products), so `Nat.find (max_exists N) ≤ Nat.find (max_exists (N+1))`.
+The subset lift is one line each via `(hA a ha).2.trans (Nat.le_succ N)`.
+
+**Gotcha:** `maxProductSize` is a plain (non-reducible) `noncomputable def` wrapping
+`Nat.find (maxProductSize.max_exists N)` (the existence witness lives in a `where`
+clause, accessible as `maxProductSize.max_exists`). `apply Nat.find_mono` does not
+see through the def — must `unfold maxProductSize` first. `Nat.find_mono` direction:
+`(∀ n, q n → p n) → Nat.find hp ≤ Nat.find hq` (here `p = p_N`, `q = p_{N+1}`).
+
+Modest: a basic structural sanity property, not progress on the deep axiom.
+`szemeredi_theorem` (the N²/log N upper bound, Szemerédi 1976) stays correctly
+axiomatized — out of scope. Meta leanFile lineCount 843→861, theoremCount 25→26.
