@@ -5836,10 +5836,12 @@
       "issues": []
     },
     "chebyshev-bounds-oq-02-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-06-25T00:00:00Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T18:30:19Z",
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708",
+      "notes": "Re-audit CLEAN: 0 axioms/0 sorries/0 native_decide confirmed (grep hits were docstring). Own chebyshevPsi/Theta + prime-power decomposition are genuine; O(sqrt n log n) bound honestly transported from Mathlib Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log via disclosed bridge. verified badge accurate."
     },
     "chebyshev-bounds-oq-03": {
       "auditCount": 1,
@@ -5879,10 +5881,12 @@
       "issues": []
     },
     "chebyshev-bounds-oq-06": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-25T21:01:58Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T18:30:19Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "agentId": "auditor-reaudit-20260708",
+      "notes": "Re-audit CLEAN: 0/0/0 (sorry/native_decide grep hits are docstring line 31). Explicit honest Mathlib-assembly: lower bound IS Nat.four_pow_le_two_mul_add_one_mul_central_binom, upper bound one-liner from Nat.choose_le_two_pow; description/originalContributions/mathlibDependencies/assumptions all credit Mathlib + disclaim novelty. No overclaim."
     },
     "chebyshev-pnt-bridge": {
       "auditCount": 2,
@@ -27736,10 +27740,12 @@
       "result": "clean"
     },
     "chebyshev-bounds-oq-06-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-07-08T04:59:24Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T18:30:19Z",
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708",
+      "notes": "Re-audit CLEAN: 0 axioms/0 sorries. Substantial IsEquivalent algebra collapsing Stirling factors to prove C(2n,n) ~ 4^n/sqrt(pi n); derived from Mathlib Stirling.factorial_isEquivalent_stirling, honestly credited; docstring notes effective one-sided bound NOT achieved (Robbins absent). verified/verified accurate."
     },
     "chebyshev-bounds-oq-06-oq-02": {
       "auditCount": 1,
