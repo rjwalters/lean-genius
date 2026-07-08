@@ -726,6 +726,98 @@ theorem normal_imp_disjunctive (b k : ℕ) (hb : 2 ≤ b) (x : ℝ)
   (normal_ktuple_infinitely_often b k hb x hn s).nonempty
 
 -- ============================================================
+-- PART IV.6: SHARP BOUNDARY — the converse obstruction to normality
+-- ============================================================
+
+/-!
+## The non-normality criterion
+
+`normal_imp_disjunctive` shows disjunctivity (every finite digit-string occurs)
+is *necessary* for normality. The results below are its exact contrapositive:
+if some tuple is *eventually absent*, the number cannot be normal. This is the
+precise sharp boundary — normality is strictly stronger than both irrationality
+and disjunctivity, and the frequency-`0` of a missing tuple is the obstruction.
+
+The abstract count bound `match_count_le` is the `x`-general form of
+`rational_match_count_le`; the final theorem `normal_imp_irrational_of_criterion`
+re-derives "normal ⇒ irrational" from the criterion, showing it is non-vacuous
+and subsumes the rational case.
+-/
+
+/-- **General count bound.** If the `k`-tuple `s` is eventually missing from `x`
+    (never fully matched past position `N₀`), the matching starting positions in
+    `Finset.range N` number at most `N₀`. The `x`-general core shared by
+    `normal_imp_irrational` and the non-normality criterion. -/
+private lemma match_count_le (b : ℕ) (x : ℝ) (k N₀ : ℕ) (s : Fin k → Fin b)
+    (h : ∀ n ≥ N₀, ∃ i : Fin k, nthDigit b (n + i.val) x ≠ (s i : ℤ))
+    (N : ℕ) :
+    ((Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card
+      ≤ N₀ := by
+  refine (Finset.card_le_card (s := _) (t := Finset.range N₀) ?_).trans
+    (Finset.card_range N₀).le
+  intro n hn
+  rw [Finset.mem_filter, Finset.mem_range] at hn
+  obtain ⟨_, hmatch⟩ := hn
+  rw [Finset.mem_range]
+  by_contra hN
+  push_neg at hN
+  obtain ⟨i, hi⟩ := h n hN
+  exact hi (hmatch i)
+
+/-- **Sharp boundary: a missing tuple forbids normality.**
+    If some `k`-tuple `s` of base-`b` digits is *eventually absent* from `x`
+    (never fully matched past position `N₀`), then `x` is **not** normal in
+    base `b`. This is the exact converse of `normal_imp_disjunctive`:
+    disjunctivity is *necessary* for normality, so its failure rules normality
+    out. Proof mirrors `normal_imp_irrational`: the matching-position count is
+    bounded by `N₀`, so its frequency tends to `0`, while normality forces it to
+    tend to `b^(-k) > 0`; uniqueness of limits yields `b^(-k) = 0`. -/
+theorem not_normal_of_eventually_missing_ktuple (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (k N₀ : ℕ) (s : Fin k → Fin b)
+    (hmiss : ∀ n ≥ N₀, ∃ i : Fin k, nthDigit b (n + i.val) x ≠ (s i : ℤ)) :
+    ¬ IsNormalInBase b x := by
+  intro hn
+  have h_count_le := match_count_le b x k N₀ s hmiss
+  have h_zero :
+      Tendsto
+        (fun N : ℕ =>
+          (((Finset.range N).filter
+            (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+            / (N : ℝ))
+        atTop (nhds 0) :=
+    tendsto_bounded_count_div_atTop_zero N₀ _ h_count_le
+  have h_normal := hn k s
+  have heq : (0 : ℝ) = (b : ℝ) ^ (-(k : ℤ)) :=
+    tendsto_nhds_unique h_zero h_normal
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hpos : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  linarith
+
+/-- **A single missing digit forbids normality.**
+    If a digit `d` is eventually absent from the base-`b` expansion of `x`, then
+    `x` is not normal in base `b`. The `k = 1` case of
+    `not_normal_of_eventually_missing_ktuple` — the cleanest obstruction to
+    normality (a frequency-`0` digit). -/
+theorem not_normal_of_eventually_missing_digit (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (d : Fin b) (N₀ : ℕ) (hmiss : ∀ n ≥ N₀, nthDigit b n x ≠ (d : ℤ)) :
+    ¬ IsNormalInBase b x :=
+  not_normal_of_eventually_missing_ktuple b hb x 1 N₀ (fun _ => d)
+    (fun n hn => ⟨0, by simpa using hmiss n hn⟩)
+
+/-- **The criterion subsumes `normal_imp_irrational`.**
+    Every rational has an eventually-missing tuple
+    (`rational_has_missing_ktuple_intCast`), so the non-normality criterion
+    recovers "normal ⇒ irrational" as a special case — confirming the criterion
+    is non-vacuous and strictly generalises the rational obstruction. -/
+theorem normal_imp_irrational_of_criterion (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) : Irrational x := by
+  rintro ⟨q, hq⟩
+  subst hq
+  obtain ⟨k, N₀, s, _, hmiss⟩ := rational_has_missing_ktuple_intCast b hb q
+  exact not_normal_of_eventually_missing_ktuple b hb (q : ℝ) k N₀ s hmiss hn
+
+-- ============================================================
 -- PART V: OPEN QUESTION
 -- ============================================================
 
