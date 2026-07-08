@@ -1,0 +1,117 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "algebraic-reals-meager-oq-02-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "The Dual Oxtoby Phenomenon",
+    "content": "The docstring frames the dual of the parent OQ-02. OQ-02 exhibits a *comeagre yet null* set (the Liouville numbers $L$): topologically large, measure-small. This file supplies the mirror image — a *meagre yet conull* set: topologically small, measure-large — with no new construction. The witness is simply $L^c$, the non-Liouville reals. Because $L$ is comeagre, $L^c$ is meagre; because $L$ is null, $L^c$ is conull (full Lebesgue measure). Packaged as the symmetric decomposition $\\mathbb{R} = L \\sqcup L^c$, this shows the two notions of largeness are not merely inequivalent but exactly complementary along one partition of $\\mathbb{R}$.",
+    "mathContext": "Meagre: complement comeagre (residual). Conull: complement Lebesgue-null. $L$ comeagre & null $\\Rightarrow$ $L^c$ meagre & conull.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Baire category",
+      "Lebesgue measure",
+      "Oxtoby duality",
+      "Liouville numbers",
+      "meagre sets"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Baire category",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-duality-lemma",
+    "proofId": "algebraic-reals-meager-oq-02-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "Complement of a Comeagre Set is Meagre",
+    "content": "`isMeagre_compl_of_mem_residual`: the abstract engine of the whole file. In Mathlib `IsMeagre s` is *defined* as `sᶜ ∈ residual X`. So `IsMeagre Aᶜ` unfolds to `Aᶜᶜ ∈ residual X`, and `compl_compl` rewrites $A^{cc} = A$, reducing the goal to the hypothesis `A ∈ residual X`. The lemma is stated for an arbitrary topological space, making the point that converting a comeagre witness into a meagre one is a purely formal complementation — nothing measure-theoretic is used here.",
+    "mathContext": "$\\mathrm{IsMeagre}\\,s := s^c \\in \\mathrm{residual}$; hence $A \\in \\mathrm{residual} \\Rightarrow \\mathrm{IsMeagre}\\,A^c$ via $A^{cc}=A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsMeagre",
+      "residual filter",
+      "compl_compl",
+      "Baire category"
+    ],
+    "prerequisites": [
+      "definition of meagre / residual sets"
+    ]
+  },
+  {
+    "id": "ann-liouville-facts",
+    "proofId": "algebraic-reals-meager-oq-02-oq-01",
+    "range": {
+      "startLine": 82,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "Liouville Numbers: Comeagre and Null",
+    "content": "`liouville_residual` and `liouville_null` recall the two Mathlib facts that make the Liouville numbers the canonical separating example: they are residual/comeagre (`eventually_residual_liouville`) and Lebesgue-null (`volume_setOf_liouville`). These are exactly the two properties of $L$ that the dual construction complements — comeagreness gives meagreness of $L^c$, nullity gives conullity of $L^c$.",
+    "mathContext": "$L = \\{x : \\mathbb{R} \\mid \\mathrm{Liouville}\\,x\\}$ satisfies $L \\in \\mathrm{residual}\\,\\mathbb{R}$ and $\\mathrm{volume}\\,L = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Liouville numbers",
+      "residual filter",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "Liouville numbers"
+    ]
+  },
+  {
+    "id": "ann-dual-witness",
+    "proofId": "algebraic-reals-meager-oq-02-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "A Meagre Set of Full Lebesgue Measure",
+    "content": "The heart of the entry. `nonLiouville_meagre` applies the duality lemma to `liouville_residual` to conclude $L^c$ is meagre. `nonLiouville_conull` shows $\\mathrm{volume}\\,(L^c)^c = 0$ by rewriting $(L^c)^c = L$ (`compl_compl`) and invoking `liouville_null` — i.e. $L^c$ has full Lebesgue measure. `exists_meagre_conull` then packages the existential: there is a meagre subset of $\\mathbb{R}$ whose complement is null. This is the exact mirror of the parent's comeagre null set, completing the measure/category contrast in the dual direction.",
+    "mathContext": "$L^c$ meagre (complement $L$ comeagre) and conull ($\\mathrm{volume}\\,(L^c)^c = \\mathrm{volume}\\,L = 0$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "meagre sets",
+      "conull sets",
+      "Liouville numbers",
+      "full measure"
+    ],
+    "prerequisites": [
+      "meagre / residual sets",
+      "conull sets"
+    ]
+  },
+  {
+    "id": "ann-decomposition",
+    "proofId": "algebraic-reals-meager-oq-02-oq-01",
+    "range": {
+      "startLine": 119,
+      "endLine": 149
+    },
+    "type": "theorem",
+    "title": "The Symmetric Oxtoby Decomposition ℝ = L ⊔ Lᶜ",
+    "content": "`real_symmetric_oxtoby` packages the whole picture: $\\mathbb{R}$ partitions as $A \\cup B$ with $A = L$ and $B = L^c$, disjoint (`disjoint_compl_right`) and covering (`union_compl_self`), where $A$ is comeagre-and-null and $B$ is meagre-and-conull. This is the sharp form of OQ-02: the parent shows comeagre $\\not\\Rightarrow$ conull; here a *single* partition of $\\mathbb{R}$ simultaneously witnesses that one piece is topologically large but measure-small and the other topologically small but measure-large. `oq01_resolution` bundles the dual witness with the decomposition as the OQ-01 deliverable.",
+    "mathContext": "$\\mathbb{R} = L \\sqcup L^c$; $L$ comeagre & null, $L^c$ meagre & conull — the two largeness notions are complementary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Oxtoby duality",
+      "measure versus category",
+      "partition of ℝ",
+      "sharp boundary"
+    ],
+    "prerequisites": [
+      "meagre / residual sets",
+      "conull sets",
+      "set complementation"
+    ]
+  }
+]
