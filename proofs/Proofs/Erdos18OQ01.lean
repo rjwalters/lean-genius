@@ -20,7 +20,12 @@
     practical number);
   * the first **infinite family** — `two_pow_practical`: every power of two `2^k`
     is practical, via `two_pow_representable` (the binary expansion of any
-    `n < 2^k` selects distinct divisors of `2^k` summing to `n`).
+    `n < 2^k` selects distinct divisors of `2^k` summing to `n`);
+  * a **packaging lemma** `practical_represents_le` extending representability to
+    the full closed segment `0 ≤ k ≤ m` (boundary cases `0` and `m`);
+  * that evenness is **necessary but not sufficient** — `not_practical_ten` /
+    `even_not_sufficient`: `10` is even yet not practical (`4` is not a sum of
+    distinct divisors of `10`), so the converse of `practical_even` fails.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -122,6 +127,69 @@ theorem odd_practical_eq_one {m : ℕ} (hp : IsPractical m) (ho : Odd m) : m = 1
     obtain ⟨e, he⟩ := ho
     omega
 
+/-- **A practical number represents its entire initial segment.**  The definition
+    only asks for `1 ≤ k < m`; this packages the two boundary cases (`k = 0` by the
+    empty set, `k = m` by the singleton `{m}`) so that *every* `k ≤ m` is a sum of
+    distinct divisors of `m`.  A convenient reformulation of practicality. -/
+theorem practical_represents_le {m : ℕ} (hp : IsPractical m) {k : ℕ} (hk : k ≤ m) :
+    IsRepresentable k m := by
+  rcases Nat.eq_zero_or_pos k with h0 | hpos
+  · subst h0; exact zero_representable m
+  · rcases eq_or_lt_of_le hk with heq | hlt
+    · subst heq; exact self_representable hp.1
+    · exact hp.2 k hpos hlt
+
+/-! ## Evenness is necessary but not sufficient
+
+`practical_even` shows every practical `m ≥ 2` is even.  The converse fails: `10`
+is even yet not practical, because `4` is not a sum of distinct divisors of `10`
+(the divisors are `{1, 2, 5, 10}`, whose subset sums skip `4`).  So evenness is a
+genuine *necessary* condition that is strictly weaker than practicality. -/
+
+/-- **`4` is not representable by divisors of `10`.**  Every divisor of `10` used
+    in a subset summing to `4` is itself `≤ 4`, and the divisors of `10` in that
+    range are only `1` and `2`; hence the subset lies in `{1,2}` and sums to at
+    most `3 < 4`. -/
+theorem four_not_representable_ten : ¬ IsRepresentable 4 10 := by
+  rintro ⟨S, hSsub, hSsum⟩
+  -- Each element of `S` divides `10` and is `≤ 4`, hence is `1` or `2`.
+  have hbound : ∀ x ∈ S, x = 1 ∨ x = 2 := by
+    intro x hx
+    have hdvd : x ∣ 10 := Nat.dvd_of_mem_divisors (hSsub hx)
+    have hx1 : 1 ≤ x := Nat.pos_of_mem_divisors (hSsub hx)
+    have hxle : x ≤ 4 := by
+      calc x = id x := rfl
+        _ ≤ S.sum id := Finset.single_le_sum (fun i _ => Nat.zero_le _) hx
+        _ = 4 := hSsum
+    interval_cases x
+    · left; rfl
+    · right; rfl
+    · exact absurd hdvd (by decide)
+    · exact absurd hdvd (by decide)
+  -- So `S ⊆ {1,2}` and its sum is at most `1 + 2 = 3`.
+  have hsub : S ⊆ ({1, 2} : Finset ℕ) := fun x hx =>
+    (hbound x hx).elim (fun h => by simp [h]) (fun h => by simp [h])
+  have hpair : ({1, 2} : Finset ℕ).sum id = 3 := by
+    rw [Finset.sum_pair (by norm_num)]; rfl
+  have hle : S.sum id ≤ 3 := by
+    have := Finset.sum_le_sum_of_subset (f := id) hsub
+    rwa [hpair] at this
+  rw [hSsum] at hle
+  omega
+
+/-- **`10` is even but not practical.**  Since `4 < 10` is not representable
+    (`four_not_representable_ten`), `10` fails the practicality condition, even
+    though `practical_even` would be satisfied.  This witnesses that the converse
+    of `practical_even` is false: not every even number is practical. -/
+theorem not_practical_ten : ¬ IsPractical 10 := fun hp =>
+  four_not_representable_ten (hp.2 4 (by norm_num) (by norm_num))
+
+/-- **Evenness does not imply practicality.**  `10` is a concrete even
+    non-practical number, so `practical_even` is a strictly necessary (not
+    sufficient) constraint. -/
+theorem even_not_sufficient : ∃ m, Even m ∧ ¬ IsPractical m :=
+  ⟨10, ⟨5, by norm_num⟩, not_practical_ten⟩
+
 /-- **Every `n < 2^k` is a sum of distinct divisors of `2^k`.**  The binary
     expansion of `n` selects distinct powers of two below `2^k`, each a divisor
     of `2^k`.  Proved by induction on `k`: when `2^k ≤ n < 2^{k+1}` the high bit
@@ -147,7 +215,7 @@ theorem two_pow_representable (k : ℕ) {n : ℕ} (hn : n < 2 ^ k) :
       have hnotmem : (2 : ℕ) ^ k ∉ S := by
         intro hmem
         have hle : (2 : ℕ) ^ k ≤ S.sum id :=
-          Finset.single_le_sum (fun i _ => Nat.zero_le _) hmem
+          Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hmem
         rw [hSsum] at hle
         omega
       refine ⟨insert (2 ^ k) S, ?_, ?_⟩
