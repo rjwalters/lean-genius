@@ -4,7 +4,7 @@
   "parentId": "roth-theorem-k3-oq-03",
   "status": "in-progress",
   "knowledge": {
-    "score": 13,
+    "score": 16,
     "insights": [
       "The parent OQ-03 defines gowersNorm and kAPCount constructively but proves NO algebraic properties of them — this child fills that gap with the foundational degenerate/normalization identities.",
       "kAPCount on a constant tuple (c,…,c) equals c^k: the inner product is c^k and the normalized double average (N^-1)^2 * sum_{x,d} c^k = c^k cancels N^2 against the (N^-1)^2 prefactor. The all-ones case gives Λ_k(1,…,1)=1, the total normalized k-AP mass.",
@@ -14,7 +14,11 @@
       "Parent RothTheoremOQ03.lean has TOOLCHAIN DRIFT on the current Mathlib (Complex.abs removed; Fin.val rewrite patterns and a dangling /-- docstring no longer parse) — this child is therefore SELF-CONTAINED, re-declaring the operators with the modern norm ‖·‖ so it builds independently of the broken parent.",
       "norm notation ‖ ... ‖ wrapping a ∑/∏ that extends to the right swallows the closing bar — wrap the inner expression in explicit parentheses ‖(...)‖ (the parent dodged this with Complex.abs (...)).",
       "Multilinearity of Λ_k is proved slotwise via Function.update: the j-th factor factors out of the product (Finset.mul_prod_erase + Function.update_apply), then additivity/homogeneity descend to the pointwise product and close by ring after Pi.add_apply / Pi.smul_apply+smul_eq_mul.",
-      "These two identities (additivity + homogeneity in each slot) are exactly the linear step of the generalized von Neumann argument: they license splitting one Λ_k slot as 1_A = δ·1 + (1_A − δ)."
+      "These two identities (additivity + homogeneity in each slot) are exactly the linear step of the generalized von Neumann argument: they license splitting one Λ_k slot as 1_A = δ·1 + (1_A − δ).",
+      "kAPCount_update_split (von Neumann slot-split): for any scalar δ, Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g − δ·1)). Proof = kAPCount_update_add on g = δ·1 + (g−δ·1) followed by kAPCount_update_smul; the δ·1 + (g−δ·1) = g step closes by add_sub_cancel. This is literally the first density-decomposition step of the generalized von Neumann argument (take g=1_A, δ=|A|/N).",
+      "kAPCount_update_sub: subtractivity in a slot, derived from update_add + update_smul via g₁−g₂ = g₁ + (−1)•g₂ (neg_one_smul, sub_eq_add_neg, neg_one_mul). Completes the slotwise linear structure (add/sub/smul/zero).",
+      "kAPCount_update_zero (@[simp]): overwriting slot j with 0 gives Λ_k = 0 — one-liner off kAPCount_eq_zero_of_zero + Function.update_self; the additive unit of the slot module.",
+      "Toolchain: Function.update_self (NOT update_same) is the v4.26 name for update f j v j = v; add_sub_cancel proves a + (b − a) = b here (works for the module ZMod N → ℂ)."
     ],
     "builtItems": [
       "RothTheoremOQ03OQ01.lean: self-contained, 4 noncomputable defs (hypercubeShift, conjugateByWeight, gowersNorm, kAPCount) + 5 proved theorems, 0 axioms, 0 sorries.",
@@ -25,14 +29,17 @@
       "kAPCount_eq_zero_of_zero: f j = 0 ⟹ kAPCount k f = 0.",
       "prod_update_factor: factors the j-th slot of the inner product ∏ᵢ (update f j g) i (x+i·d) = g(x+j·d)·∏_{i≠j} fᵢ(x+i·d) — the workhorse for slotwise linearity.",
       "kAPCount_update_add: additivity in slot j — Λ_k(update f j (g₁+g₂)) = Λ_k(update f j g₁) + Λ_k(update f j g₂).",
-      "kAPCount_update_smul: scalar homogeneity in slot j — Λ_k(update f j (c•g)) = c·Λ_k(update f j g)."
+      "kAPCount_update_smul: scalar homogeneity in slot j — Λ_k(update f j (c•g)) = c·Λ_k(update f j g).",
+      "kAPCount_update_split: von Neumann slot-split identity Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1)). 0 axioms (propext/Choice/Quot only), host lake env lean EXIT 0.",
+      "kAPCount_update_sub: slotwise subtractivity.",
+      "kAPCount_update_zero (@[simp]): zero slot annihilates the count (update form)."
     ],
-    "progressSummary": "PROGRESS: added slotwise multilinearity of the k-AP counting operator Λ_k (prod_update_factor, kAPCount_update_add, kAPCount_update_smul) — the linear engine of the generalized von Neumann argument. 0 axioms, 0 sorries. score 10→13.",
+    "progressSummary": "PROGRESS (S+1, researcher-5): added the generalized von Neumann slot-split kAPCount_update_split (Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1))) — the first density-decomposition step the prior nextSteps called for — plus its supporting slotwise linearity (kAPCount_update_sub, kAPCount_update_zero). All host-verified (lake env lean EXIT 0), 0 axioms/0 sorries (foundational trio only). score 13→16.",
     "nextSteps": [
-      "Iterate the slot-splitting: expand a chosen slot as δ·1 + (1_A − δ) and apply kAPCount_update_add/smul to get the von Neumann telescoping into 2^k terms.",
-      "Bound the non-major terms by the Gowers U^{k-1} norm (the generalized von Neumann inequality) — needs a Cauchy-Schwarz/Gowers-norm control lemma next.",
-      "Connect kAPCount of an indicator function to the actual count of k-APs in a finset.",
-      "Repair the toolchain drift in the parent RothTheoremOQ03.lean (Complex.abs → ‖·‖) so the two files can be merged."
+      "Iterate the split across all k slots to telescope Λ_k(1_A,…,1_A) into the major term δ^k·Λ_k(1,…,1)=δ^k plus 2^k−1 balanced remainders (each with ≥1 mean-zero slot g−δ·1).",
+      "Prove the generalized von Neumann INEQUALITY: bound each balanced remainder |Λ_k(…, g−δ·1, …)| by the Gowers U^{k−1} norm of the balanced slot (needs a Cauchy–Schwarz / box-norm control lemma; the gowersNorm def is already in this file).",
+      "Connect kAPCount of an indicator 1_A to the actual count of 3-APs in a finset A ⊆ ZMod N.",
+      "Repair toolchain drift in parent RothTheoremOQ03.lean (Complex.abs → ‖·‖) so the two files can merge."
     ]
   },
   "relatedProofs": [

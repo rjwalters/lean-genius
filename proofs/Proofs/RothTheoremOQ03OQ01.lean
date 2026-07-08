@@ -211,4 +211,45 @@ theorem kAPCount_update_smul {N : ℕ} [NeZero N] (k : ℕ)
     ring
   rw [key]; ring
 
+/-- A zero slot makes the whole count vanish, phrased via `Function.update`:
+    overwriting slot `j` with the zero function gives `Λ_k = 0`.  The
+    `Function.update`-flavoured companion of `kAPCount_eq_zero_of_zero`, and the
+    additive unit for the slotwise linear structure. -/
+@[simp] theorem kAPCount_update_zero {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) :
+    kAPCount k (Function.update f j 0) = 0 :=
+  kAPCount_eq_zero_of_zero k _ j (Function.update_self j 0 f)
+
+/-- Subtractivity in slot `j`: `Λ_k` is additive under subtraction in each
+    function argument.  Combined with `kAPCount_update_add`/`kAPCount_update_smul`
+    this is the full linear structure the generalized von Neumann argument uses to
+    telescope a slot expanded as `1_A = δ·1 + (1_A − δ)`. -/
+theorem kAPCount_update_sub {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) (g₁ g₂ : ZMod N → ℂ) :
+    kAPCount k (Function.update f j (g₁ - g₂))
+      = kAPCount k (Function.update f j g₁)
+        - kAPCount k (Function.update f j g₂) := by
+  have h1 : g₁ - g₂ = g₁ + (-1 : ℂ) • g₂ := by
+    rw [neg_one_smul, ← sub_eq_add_neg]
+  rw [h1, kAPCount_update_add, kAPCount_update_smul, neg_one_mul, ← sub_eq_add_neg]
+
+/-- **The generalized von Neumann slot-split.**  For any scalar `δ`, expanding
+    the `j`-th slot as `g = δ·1 + (g − δ·1)` splits the count into its *major
+    term* `δ · Λ_k(…,1,…)` and a *balanced remainder* whose `j`-th slot
+    `g − δ·1` has mean-zero flavour.  Taking `g = 1_A` and `δ = |A|/N` (the
+    density) this is exactly the first step of the density-increment / von
+    Neumann decomposition: the major term is the main `k`-AP count and the
+    remainder is controlled by a Gowers uniformity norm. -/
+theorem kAPCount_update_split {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) (g : ZMod N → ℂ) (δ : ℂ) :
+    kAPCount k (Function.update f j g)
+      = δ * kAPCount k (Function.update f j 1)
+        + kAPCount k (Function.update f j (g - δ • (1 : ZMod N → ℂ))) := by
+  have hadd := kAPCount_update_add k f j (δ • (1 : ZMod N → ℂ))
+    (g - δ • (1 : ZMod N → ℂ))
+  have hg : δ • (1 : ZMod N → ℂ) + (g - δ • (1 : ZMod N → ℂ)) = g := by
+    rw [add_sub_cancel]
+  rw [hg] at hadd
+  rw [hadd, kAPCount_update_smul]
+
 end RothTheoremOQ03OQ01
