@@ -1,16 +1,51 @@
 # Research State: cauchy-schwarz-integral-lp-duality-synthesis
 
 ## Current State
-**Phase**: ACT (maximality assembly VERIFIED — one chain-ext wiring build from axiom elimination)
+**Phase**: ACT (wiring RESOLVED end-to-end; one Docker build from discharging the Synthesis sorry)
 **Path**: full
 **Since**: 2026-07-08
-**Iteration**: 25
+**Iteration**: 26
 
 ## Current Focus
 The **last analytic content** — the Folland-6.16 arbitrary-measure Riesz maximality
-assembly — is now VERIFIED and shipped (PR #35433, S25). What remains to eliminate the
-`riesz_lp_surjective` axiom is a single **chain-ext wiring** step in the Synthesis file
-(Docker-gated).
+assembly — is VERIFIED and shipped (PR #35433, S25). What remains to discharge the
+`riesz_lp_surjective_general` `sorry` (Synthesis.lean) is a single **chain-ext wiring**
+Docker build. **S26 fully resolved that wiring** (the 25-session "which extByZeroCLM"
+ambiguity) and captured it as a ready-to-apply patch — see `lp-duality-final-wiring.patch`
+and Next Action.
+
+## Progress this session (S26, researcher-5)
+Resolved the exact blocker that stalled 25 prior sessions — *which* `extByZeroCLM` the
+discharge uses and *what ingredient is still missing* — and produced a complete,
+import-correct patch (NOT applied to source; NOT built — infra saturated):
+- **Two twin `extByZeroCLM` defs** with *identical* signatures
+  `hS (hp : p≠0) (hptop : p≠⊤) [Fact (1≤p)]`:
+  `RieszLpDualityExtension.extByZeroCLM` (used by `riesz_general_of_sigmaFinite`) and
+  `RieszSigmaFiniteComplete.extByZeroCLM` (Incomplete01Infra.lean:283 — the one against
+  which `riesz_representer_on_sigmaFinite_set` produces its representation).
+- Because the twins differ *syntactically*, `riesz_representer_on_sigmaFinite_set` does
+  **not** plug into `riesz_general_of_sigmaFinite` (hard-wired to the *Extension* twin).
+  ⇒ the discharge must call the **ext-agnostic `riesz_general`** directly, passing the
+  `RieszSigmaFiniteComplete` twin as the abstract `ext` family.
+- **The one missing ingredient**: `riesz_general`'s `hext` arg needs the a.e.
+  indicator-agreement `coeFn` lemma for `RieszSigmaFiniteComplete.extByZeroCLM`, which
+  did **not** exist. It is a one-line `.coeFn_toLp` mirror of the *verified*
+  `RieszLpDualityExtension.extByZeroCLM_coeFn`; the patch adds it to Infra:
+  `(memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).coeFn_toLp`.
+- **Import**: the discharge needs only ONE new import in Synthesis —
+  `import Proofs.CauchySchwarzIntegralLpDualityMaximal` — which transitively supplies
+  `RieszLpDualityMaximal/Consistency/Ingredients/Gluing/Extension` (Maximal imports all
+  four; each is Mathlib-only). Verified statically that all referenced lemma names +
+  arg orders match (Hmono/Hcons mirror the verified `riesz_general_of_sigmaFinite` call).
+- **Confidence**: verified-by-analogy (each new term mirrors a compiling twin), but NOT
+  kernel-checked (heavy Incomplete01 chain build; infra saturated). Deliberately NOT
+  merged into source: math PRs bypass Lean CI, so an unverified chain edit would risk a
+  masked-broken build with the axiom falsely appearing discharged.
+
+## Infra note (S26)
+3 concurrent `lean-build` containers + swap 91% used (1.5 GB free); no chain oleans in
+worktree. Launching a 4th heavy Incomplete01-chain Docker build would OOM/SIGBUS and
+destabilise the other three agents — correctly NOT launched (same call as S25).
 
 ## Progress this session (S25, researcher-4)
 Wrote and host-verified the complete maximising-hull construction that 24 prior sessions
@@ -43,33 +78,39 @@ chain), so it is a light build. Host-verified by building the 4 ingredient olean
   `lean-build` — the S21/S22 SIGBUS signature. A 3rd heavy chain build was correctly
   NOT launched (would OOM and destabilise the other two agents).
 
-## Next Action (Docker session, quiet infra)
-Discharge the axiom in ONE Docker build:
-1. In `CauchySchwarzIntegralLpDualitySynthesis.lean`, `import
-   Proofs.CauchySchwarzIntegralLpDualityMaximal`, and replace the `sorry` in
-   `riesz_lp_surjective_general` with (sketch):
-   ```
-   intro φ
-   refine RieszLpDualityMaximal.riesz_general hp1 hptop hpq φ
-     (fun S hS => RieszSigmaFiniteComplete.extByZeroCLM hS (lt_of_lt_of_le zero_lt_one hp1.le).ne' hptop)
-     (fun S hS f => <chain extByZeroCLM_coeFn>)          -- resolve the chain's coeFn lemma/arity
-     (fun S hS hSσ => riesz_representer_on_sigmaFinite_set hp1 hptop hpq hS hSσ φ)
-     ?Hmono ?Hcons ?HsigU ?Hglue
-   ```
-   `riesz_general` is **ext-agnostic**, so pass the CHAIN's `extByZeroCLM` here — NO
-   ext-swap needed. Discharge `?Hmono`/`?Hcons` with
-   `RieszLpDualityConsistency.representer_{eLpNorm_mono,ae_eq}_of_subset` (feeding the
-   chain ext + its coeFn), `?HsigU` with
-   `RieszLpDualityIngredients.sigmaFinite_restrict_iUnion`, `?Hglue` with
-   `RieszLpDualityGluing.eLpNorm_ae_zero_on_diff_of_le`.
-   NOTE: there appear to be TWO chain `extByZeroCLM` decls (Incomplete01OQ01
-   `extByZeroCLM_coeFn` takes `hS g`, 2 args; Synthesis line ~325 uses `hS (…).ne' hptop`,
-   3 args) — resolve which `RieszSigmaFiniteComplete.extByZeroCLM`/coeFn matches
-   `riesz_representer_on_sigmaFinite_set` before building.
-2. Then swap `axiom riesz_lp_surjective` → `theorem … := riesz_lp_surjective_general …`
-   in `CauchySchwarzIntegralOQ01OQ01OQ02.lean`, and update
-   `src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02/meta.json`
-   (`axiomCount 1→0`, status/badge) iff green.
+## Next Action (Docker session, quiet infra) — patch is READY
+The two-ext ambiguity noted in prior sessions is **RESOLVED** (S26). Apply the captured
+patch and build in ONE shot:
+```bash
+cd <worktree>
+git apply research/problems/cauchy-schwarz-integral-lp-duality-synthesis/lp-duality-final-wiring.patch
+./proofs/scripts/docker-build.sh Proofs.CauchySchwarzIntegralLpDualitySynthesis
+#   LEAN_MEMORY_LIMIT ~16–20GB; ONLY when docker lean-build count ≤ 1 and swap has headroom.
+```
+The patch does exactly two things:
+1. **Infra** (`…Incomplete01Infra.lean`): adds `RieszSigmaFiniteComplete.extByZeroCLM_coeFn`
+   (the previously-missing `coeFn` lemma; one-line `.coeFn_toLp` mirror of the verified
+   `RieszLpDualityExtension` twin).
+2. **Synthesis**: adds `import Proofs.CauchySchwarzIntegralLpDualityMaximal` and discharges
+   the `riesz_lp_surjective_general` `sorry` by applying the ext-agnostic
+   `RieszLpDualityMaximal.riesz_general` with `ext := RieszSigmaFiniteComplete.extByZeroCLM`
+   (matching the ext of `riesz_representer_on_sigmaFinite_set`'s `Hσ`), and the four side
+   goals via `Consistency.representer_{eLpNorm_mono,ae_eq}_of_subset`,
+   `Ingredients.sigmaFinite_restrict_iUnion`, `Gluing.eLpNorm_ae_zero_on_diff_of_le`.
+
+Resolution of the "TWO extByZeroCLM" note: the Incomplete01OQ01 twin (2-arg coeFn) is a
+*different* CLM and is NOT the one used here. The one matching
+`riesz_representer_on_sigmaFinite_set` is `RieszSigmaFiniteComplete.extByZeroCLM`
+(Infra.lean:283), signature `hS (hp) (hptop) [Fact]` — the patch's new coeFn is for THAT one.
+
+**If green**, then to actually eliminate the gallery axiom (separate follow-on step —
+mind the import direction: `riesz_lp_surjective` lives *upstream* in
+`CauchySchwarzIntegralOQ01OQ01OQ02.lean`, which cannot import the downstream Synthesis file,
+so an in-place `axiom → theorem := riesz_lp_surjective_general` swap will NOT typecheck as-is):
+re-point the gallery entry to the Synthesis theorem, or introduce a top-level re-export file
+that imports Synthesis and restates `riesz_lp_surjective` as a theorem. Update
+`src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02/meta.json` (`axiomCount 1→0`,
+status/badge) iff green.
 
 ## Ingredient inventory (all VERIFIED on main / this PR)
 - Maximality assembly: `RieszLpDualityMaximal.riesz_general{,_of_sigmaFinite}` (PR #35433).

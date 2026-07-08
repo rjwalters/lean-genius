@@ -1357,3 +1357,42 @@ Docker-gated because Synthesis imports the σ-finite chain. NOT attempted this s
 swap free ~1.5 GB / RAM free ~1.7 GB / 2 concurrent lean-build = the S21/S22 SIGBUS
 signature; a 3rd heavy chain build would OOM. See state.md "Next Action" for the exact
 wiring recipe + the two-`extByZeroCLM`-arity caveat to resolve.
+
+---
+
+## Session 26 (2026-07-08, researcher-5): two-`extByZeroCLM` ambiguity RESOLVED + missing `coeFn` ingredient supplied
+
+The prior "Next Action" flagged a `<chain extByZeroCLM_coeFn>` hole and a "TWO
+extByZeroCLM decls / which arity?" caveat. Both are now settled by static source read:
+
+- **The two twins.** `RieszLpDualityExtension.extByZeroCLM` (Extension.lean:79) and
+  `RieszSigmaFiniteComplete.extByZeroCLM` (Incomplete01Infra.lean:283) are *distinct*
+  defs with the *same* signature `hS (hp : p≠0) (hptop : p≠⊤) [Fact (1≤p)]` (3 explicit
+  args + `f`). Both are `LinearMap.mkContinuous {toFun := (indicator).toLp} 1 _`. The
+  Incomplete01OQ01 `extByZeroCLM`/`extByZeroCLM_coeFn` (2-arg, no `hp/hptop`) is yet a
+  THIRD, unrelated CLM — a red herring for this wiring.
+- **Which one the discharge needs.** `riesz_representer_on_sigmaFinite_set`
+  (Synthesis) states its representation against `RieszSigmaFiniteComplete.extByZeroCLM`.
+  So its output is `riesz_general`'s `Hσ` *only if* the abstract `ext` fed to
+  `riesz_general` is that same twin. Hence `riesz_general_of_sigmaFinite` (hard-wired to
+  the *Extension* twin) is NOT usable here; call the ext-agnostic `riesz_general` directly
+  with `ext := fun S hS => RieszSigmaFiniteComplete.extByZeroCLM hS hp0 hptop`.
+- **The missing ingredient.** `riesz_general`'s `hext` needs
+  `RieszSigmaFiniteComplete.extByZeroCLM hS hp hptop f =ᵐ[μ] S.indicator ⇑f`, which did
+  NOT exist. It is one line, mirroring the verified Extension twin:
+  ```lean
+  theorem extByZeroCLM_coeFn {S} (hS) {p} (hp : p≠0) (hptop : p≠⊤) [Fact (1≤p)] (f) :
+      extByZeroCLM hS hp hptop f =ᵐ[μ] S.indicator (f : α → ℝ) :=
+    (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).coeFn_toLp
+  ```
+  (`memLp_indicator_of_restrict_loc … : MemLp (S.indicator ⇑f) p μ`, so `.coeFn_toLp`
+  gives the a.e. equality; the def reduces to `(that).toLp _` through `mkContinuous`.)
+- **Imports.** Synthesis needs only `import Proofs.CauchySchwarzIntegralLpDualityMaximal`
+  added; Maximal transitively pulls Ingredients/Consistency/Gluing/Extension (all
+  Mathlib-only), so no other import is required. `RieszSigmaFiniteComplete.*` is already
+  reachable via the existing Incomplete01 import.
+- **Deliverable.** Full patch captured as `lp-duality-final-wiring.patch` (verified
+  `git apply --check` clean). NOT applied to source / NOT merged: infra saturated (3
+  lean-build + swap 91%), so it is verified-by-analogy only, and merging unbuilt chain
+  code risks a masked-broken build (math PRs bypass Lean CI). Apply + one Docker build
+  when infra is quiet.
