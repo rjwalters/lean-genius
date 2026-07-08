@@ -343,6 +343,37 @@ theorem kronecker_reciprocity_one_mod_four (m n : ℕ)
   rw [kronecker_eq_jacobi (m : ℤ) n hn hno, kronecker_eq_jacobi (n : ℤ) m hmpos hmo]
   exact jacobiSym.quadratic_reciprocity_one_mod_four hm (Nat.odd_iff.mpr hno)
 
+-- ============================================================
+-- Section 8: Supplementary Laws at Odd Moduli
+-- ============================================================
+
+/-- **First supplementary law `(-1/n)` at odd moduli.**
+    For odd positive `n`, `(-1/n) = 1` if `n ≡ 1 (mod 4)` and `-1` if
+    `n ≡ 3 (mod 4)`. This is the `-1` half of the supplementary laws that
+    generalized quadratic reciprocity for arbitrary fundamental discriminants
+    (refinement 2) needs. It follows from agreement with the Jacobi symbol
+    (`kronecker_eq_jacobi`) and Mathlib's `jacobiSym.at_neg_one`
+    (`J(-1 | n) = χ₄ n`), unfolded via `ZMod.χ₄_nat_eq_if_mod_four`.
+    `sorry`-free, axiom-free. -/
+theorem kronecker_neg_one_odd (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (-1) n = if n % 4 = 1 then 1 else -1 := by
+  rw [kronecker_eq_jacobi (-1) n hn hno, jacobiSym.at_neg_one (Nat.odd_iff.mpr hno),
+    ZMod.χ₄_nat_eq_if_mod_four, if_neg (show ¬ n % 2 = 0 by omega)]
+
+/-- **Second supplementary law `(2/n)` at odd moduli.**
+    For odd positive `n`, `(2/n) = 1` if `n ≡ ±1 (mod 8)` and `-1` if
+    `n ≡ ±3 (mod 8)`. This is the `2` half of the supplementary laws needed for
+    refinement 2. It follows from `kronecker_eq_jacobi` and Mathlib's
+    `jacobiSym.at_two` (`J(2 | n) = χ₈ n`), unfolded via
+    `ZMod.χ₈_nat_eq_if_mod_eight`. Note this is the value of the symbol at a
+    fixed *numerator* `2` as the odd *denominator* `n` varies — complementary to
+    `kronecker2` (the `(·/2)` character, a function of the numerator).
+    `sorry`-free, axiom-free. -/
+theorem kronecker_two_odd (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker 2 n = if n % 8 = 1 ∨ n % 8 = 7 then 1 else -1 := by
+  rw [kronecker_eq_jacobi 2 n hn hno, jacobiSym.at_two (Nat.odd_iff.mpr hno),
+    ZMod.χ₈_nat_eq_if_mod_eight, if_neg (show ¬ n % 2 = 0 by omega)]
+
 /-!
 ## Module note: what remains open
 
@@ -367,9 +398,12 @@ moduli and at `n = ±1`). Two refinements remain open: (1) wiring `kronecker2`
 into the definition so it becomes the classical Kronecker symbol at even
 moduli, and re-proving multiplicativity for that refined symbol; and (2) the
 **generalized quadratic reciprocity** law for arbitrary fundamental
-discriminants (the class-field-theory / Artin form), which needs the
-supplementary laws `(2/n)`, `(-1/n)` and a Gauss-sum argument. The odd
-positive reciprocity case is `kronecker_quadratic_reciprocity` above.
+discriminants (the class-field-theory / Artin form), which still needs a
+Gauss-sum argument. Two of its ingredients — the supplementary laws `(-1/n)`
+and `(2/n)` at odd moduli — are now proved (`kronecker_neg_one_odd`,
+`kronecker_two_odd` in Section 8), leaving the Gauss-sum / reciprocity core.
+The odd positive main reciprocity case is `kronecker_quadratic_reciprocity`
+above.
 -/
 
 -- Axiom audits: headline theorems should use only the standard foundational
