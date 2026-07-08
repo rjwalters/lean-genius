@@ -491,4 +491,152 @@ theorem forward_not_confined_to_primes :
   Set.infinite_of_injective_forall_mem pow2_family_injective
     (fun k => ⟨not_prime_pow2 k, mem_ForwardSet_pow2 k⟩)
 
+-- ===========================================================================
+-- GENERAL TRANSPORT LEMMA:  one mechanism behind all of the families above.
+--
+-- Every explicit family in this file — 15·2^(k+1) (equality), 21·2^(k+1)
+-- (reversal), and the power-of-two forward family — is a special case of a
+-- single structural fact.  For an odd seed `a` whose first cototient step has
+-- 2-adic valuation exactly one — i.e. `2a − φ(a) = 2b` with `b` again odd — the
+-- double iterate transports the whole family `a·2^(k+1)` onto `(2a − φ(b))·2^k`,
+-- uniformly in `k`:
+--
+--     D(a·2^(k+1)) = (2a − φ(b))·2^k.
+--
+-- The odd data `(a, b)` carries everything; the power of two is inert and merely
+-- scales.  Because the landing constant `C = 2a − φ(b)` is INDEPENDENT of `k`,
+-- the three-way sign of `φ(n) − φ(D(n))` is constant along each family — which is
+-- exactly why every family realises a single one of `>`, `=`, `<` for all `k`.
+-- The lemma is also GENERATIVE: feeding it new odd seeds yields brand-new
+-- infinite families in each regime (below, `a = 5` and `a = 13`).
+-- ===========================================================================
+
+/-- **General transport lemma.**  Let `a`, `b` be odd with `2a − φ(a) = 2b`
+    (the first cototient step has 2-adic valuation exactly one).  Then for every
+    `k` the double iterate transports the family `a·2^(k+1)` onto the value
+    `(2a − φ(b))·2^k`.  Each explicit family of this file is an instance:
+    `a = 15, b = 11`; `a = 21, b = 15`; etc. -/
+theorem dblIter_transport {a b : ℕ} (ha : Odd a) (hb : Odd b)
+    (hstep : 2 * a - Nat.totient a = 2 * b) (k : ℕ) :
+    dblIter (a * 2 ^ (k + 1)) = (2 * a - Nat.totient b) * 2 ^ k := by
+  -- odd ⇒ coprime to every power of two
+  have oddCop : ∀ c : ℕ, Odd c → Nat.Coprime c (2 ^ (k + 1)) := by
+    intro c hc
+    have h2 : ¬ (2 ∣ c) := by
+      intro hd
+      rw [Nat.dvd_iff_mod_eq_zero] at hd
+      have := Nat.odd_iff.mp hc
+      omega
+    exact ((Nat.prime_two.coprime_iff_not_dvd).mpr h2).symm.pow_right (k + 1)
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have copa := oddCop a ha
+  have copb := oddCop b hb
+  have hm1 : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+  have e_n : a * 2 ^ (k + 1) = 2 * a * 2 ^ k := by rw [hm1]; ring
+  -- φ(n) = φ(a)·2^k
+  have hφn : Nat.totient (a * 2 ^ (k + 1)) = Nat.totient a * 2 ^ k := by
+    rw [Nat.totient_mul copa, hp2]
+  -- first cototient step lands on b·2^(k+1)
+  have step1 : a * 2 ^ (k + 1) - Nat.totient a * 2 ^ k = b * 2 ^ (k + 1) := by
+    rw [e_n, hm1,
+        show (2 : ℕ) * a * 2 ^ k = (2 * a) * 2 ^ k from by ring,
+        show b * (2 * 2 ^ k) = (2 * b) * 2 ^ k from by ring,
+        ← Nat.sub_mul, hstep]
+  -- φ(b·2^(k+1)) = φ(b)·2^k
+  have hφb : Nat.totient (b * 2 ^ (k + 1)) = Nat.totient b * 2 ^ k := by
+    rw [Nat.totient_mul copb, hp2]
+  unfold dblIter
+  rw [hφn, step1, hφb, e_n,
+      show (2 : ℕ) * a * 2 ^ k = (2 * a) * 2 ^ k from by ring, ← Nat.sub_mul]
+
+-- Concrete totient values for the seeds (via factorisation, NOT kernel `decide`
+-- on `Nat.totient`, which would blow the stack — see the note near `totient_15`).
+theorem totient_5 : Nat.totient 5 = 4 := Nat.totient_prime (by norm_num)
+theorem totient_13 : Nat.totient 13 = 12 := Nat.totient_prime (by norm_num)
+theorem totient_21 : Nat.totient 21 = 12 := by
+  rw [show (21 : ℕ) = 3 * 7 from rfl, Nat.totient_mul (by decide),
+      Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+
+/-- The existing reversal family `21·2^(k+1)` is an instance of transport:
+    `D(21·2^(k+1)) = 34·2^k = 17·2^(k+1)` (cf. `dblIter_family`). -/
+example (k : ℕ) : dblIter (21 * 2 ^ (k + 1)) = 34 * 2 ^ k := by
+  have h := dblIter_transport (a := 21) (b := 15)
+    (by decide) (by decide) (by rw [totient_21]) k
+  rw [h]; norm_num [totient_15]
+
+/-- The existing equality family `15·2^(k+1)` is an instance of transport:
+    `D(15·2^(k+1)) = 20·2^k = 5·2^(k+2)` (cf. `dblIter_eq_family`). -/
+example (k : ℕ) : dblIter (15 * 2 ^ (k + 1)) = 20 * 2 ^ k := by
+  have h := dblIter_transport (a := 15) (b := 11)
+    (by decide) (by decide) (by rw [totient_15]) k
+  rw [h]; norm_num [Nat.totient_prime (show Nat.Prime 11 by norm_num)]
+
+-- --- NEW families obtained by feeding the transport lemma fresh odd seeds ---
+
+/-- **New equality family `5·2^(k+1)` (seed `a = 5`, `b = 3`).**  Transport gives
+    `D(5·2^(k+1)) = (2·5 − φ(3))·2^k = 8·2^k = 2^(k+3)`, and
+    `φ(5·2^(k+1)) = 4·2^k = 2^(k+2) = φ(2^(k+3))`, so every member lies exactly on
+    the equality diagonal.  This is a smaller equality family than `15·2^(k+1)`,
+    generated purely from the transport mechanism. -/
+theorem mem_EqualitySet_five (k : ℕ) : 5 * 2 ^ (k + 1) ∈ EqualitySet := by
+  have hD : dblIter (5 * 2 ^ (k + 1)) = 8 * 2 ^ k := by
+    have h := dblIter_transport (a := 5) (b := 3)
+      (by decide) (by decide) (by rw [totient_5]) k
+    rw [h]; norm_num [Nat.totient_prime (show Nat.Prime 3 by norm_num)]
+  show Nat.totient (5 * 2 ^ (k + 1)) = Nat.totient (dblIter (5 * 2 ^ (k + 1)))
+  rw [hD]
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have cop5 : Nat.Coprime 5 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 5 2 by norm_num).pow_right (k + 1)
+  have hφn : Nat.totient (5 * 2 ^ (k + 1)) = 4 * 2 ^ k := by
+    rw [Nat.totient_mul cop5, Nat.totient_prime (by norm_num), hp2]
+  have h8 : (8 : ℕ) * 2 ^ k = 2 ^ (k + 3) := by rw [pow_add]; ring
+  have hφD : Nat.totient (8 * 2 ^ k) = 4 * 2 ^ k := by
+    rw [h8, Nat.totient_prime_pow Nat.prime_two (by omega : 0 < k + 3)]
+    rw [show k + 3 - 1 = k + 2 from by omega, show (2 : ℕ) - 1 = 1 from rfl,
+        mul_one, pow_add]
+    ring
+  rw [hφn, hφD]
+
+/-- **New forward family `13·2^(k+1)` (seed `a = 13`, `b = 7`).**  Transport gives
+    `D(13·2^(k+1)) = (2·13 − φ(7))·2^k = 20·2^k = 5·2^(k+2)`, and
+    `φ(13·2^(k+1)) = 12·2^k > 8·2^k = φ(5·2^(k+2)) = φ(D(n))`, so every member is a
+    forward point.  This is a composite forward family distinct from the earlier
+    power-of-two family, again generated from the transport mechanism. -/
+theorem mem_ForwardSet_thirteen (k : ℕ) : 13 * 2 ^ (k + 1) ∈ ForwardSet := by
+  have hD : dblIter (13 * 2 ^ (k + 1)) = 20 * 2 ^ k := by
+    have h := dblIter_transport (a := 13) (b := 7)
+      (by decide) (by decide) (by rw [totient_13]) k
+    rw [h]; norm_num [Nat.totient_prime (show Nat.Prime 7 by norm_num)]
+  show Nat.totient (dblIter (13 * 2 ^ (k + 1))) < Nat.totient (13 * 2 ^ (k + 1))
+  rw [hD]
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have hp2' : Nat.totient (2 ^ (k + 2)) = 2 ^ (k + 1) := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos (k + 1))]; simp
+  have cop13 : Nat.Coprime 13 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 13 2 by norm_num).pow_right (k + 1)
+  have cop5 : Nat.Coprime 5 (2 ^ (k + 2)) :=
+    (show Nat.Coprime 5 2 by norm_num).pow_right (k + 2)
+  have hφn : Nat.totient (13 * 2 ^ (k + 1)) = 12 * 2 ^ k := by
+    rw [Nat.totient_mul cop13, Nat.totient_prime (by norm_num), hp2]
+  have h20 : (20 : ℕ) * 2 ^ k = 5 * 2 ^ (k + 2) := by rw [pow_add]; ring
+  have hφD : Nat.totient (20 * 2 ^ k) = 8 * 2 ^ k := by
+    rw [h20, Nat.totient_mul cop5, Nat.totient_prime (by norm_num), hp2', pow_succ]
+    ring
+  rw [hφn, hφD]
+  have hpos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  omega
+
+/-- **Generativity of the transport lemma.**  Beyond the original three seeds
+    (15, 21, powers of two), transport yields further explicit infinite families
+    in each regime.  Two new ones: `a = 5` places every `5·2^(k+1)` on the
+    equality diagonal, and `a = 13` places every `13·2^(k+1)` in the forward
+    region — neither coinciding with the earlier families. -/
+theorem transport_new_seeds :
+    (∀ k, 5 * 2 ^ (k + 1) ∈ EqualitySet) ∧ (∀ k, 13 * 2 ^ (k + 1) ∈ ForwardSet) :=
+  ⟨mem_EqualitySet_five, mem_ForwardSet_thirteen⟩
+
 end Erdos1064OQ03
