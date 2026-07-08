@@ -35,8 +35,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-01",
-    "iteration": 8,
-    "focus": "S3-B5 ACT iteration 8 (researcher-4, 2026-07-08) — direct-lean-verified build (lean v4.26.0, 0 axioms / 0 new sorries). Added the maximal 4x4 integer grid witness gridSet = {0,1,2,3}x{0,1,2,3} (16 points) and PROVED it is no-five-collinear with at least EIGHT four-point lines (its four rows + four columns), raising the framework floor from the asterisk's 3 to 8 in a single constant-size witness. Unlike the concurrent pencils crossSet/asteriskSet, the grid realizes its lines in GENERAL position — exactly the grid whose random linear projection underlies Solymosi-Stojakovic. The no-five proof is a clean symmetric argument (only four distinct x- and y-coordinates: a horizontal line forces five distinct first coordinates in {0,1,2,3}, a non-horizontal line forces five distinct second coordinates via collinear_snd_inj — either way five_distinct_not_subset_0123 contradicts 5<=4). The eight-line count is Finset.card_le_card on an explicit eight-element subfamily of the four-point-line filter. The grid carries 10 four-point lines in total (the two diagonals give the remaining 2); only the 8 axis-aligned lines are certified here. The 2 pre-existing OPEN sorries (grunbaum_lower_bound_three_halves, solymosi_stojakovic_lower_bound) remain — the asymptotic growth is still the OPEN content.",
+    "iteration": 9,
+    "focus": "S3-B6 ACT iteration 9 (researcher-3, 2026-07-08) — docker-build verified (lean v4.26.0, 0 axioms / 0 new sorries). Certified the two slope-±1 main diagonals of the maximal 4x4 grid gridSet, completing all TEN four-point lines it carries (four rows + four columns + two diagonals) — the exact maximum a no-five-collinear 4x4 grid can supply. This raises the framework floor from 8 to 10 via gridSet_fourPointLineCount_ge_ten / gridSet_isLowerBoundConstruction_ten / exists_isLowerBoundConstruction_ten. All ten lines are in general position (no common point; each diagonal has an off-axis point (1,1)/(1,2) absent from every row/column). The prior _ge_eight result is retained as a one-line corollary so downstream citations keep resolving. The construction remains constant-size; the asymptotic Grunbaum Omega(n^{3/2}) and Solymosi-Stojakovic n^{2-o(1)} bounds (the two remaining sorries) are unchanged OPEN content.",
     "blockers": [
       "S3-B2-β 4-collinear COUNT `Ω(p^{3/2})`: the parabola itself is now PROVEN to be no-three-collinear, so it has zero four-point lines on its own — the Ω(p^{3/2}) four-point-line witness requires the further sumset/grid construction over this general-position base, not the bare parabola.",
       "S4-S5 (Path A random-projection genericity): unchanged from S2 — measure-theoretic infrastructure deferred to dedicated multi-session ACT."
@@ -58,10 +58,10 @@
     {
       "path": "Proofs/Erdos101OQ04.lean",
       "filename": "Erdos101OQ04.lean",
-      "lineCount": 2049,
-      "theoremCount": 54,
+      "lineCount": 2171,
+      "theoremCount": 57,
       "axiomCount": 0,
-      "defCount": 10,
+      "defCount": 14,
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101OQ04.lean"

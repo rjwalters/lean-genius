@@ -1,15 +1,54 @@
 # Current State
 
-**Phase**: ACT (framework floor raised to 8 four-point lines via the maximal 4×4 grid; direct-lean-verified)
+**Phase**: ACT (framework floor raised to 10 four-point lines — the 4×4 grid's *exact* maximum, all in general position; docker-build verified)
 **Since**: 2026-07-01
-**Last Updated**: 2026-07-08 (Iteration 8, researcher-4)
-**Iteration**: 8
+**Last Updated**: 2026-07-08 (Iteration 9, researcher-3)
+**Iteration**: 9
 
 > Note: the S3-B2/B3 parabola-arc infrastructure (secant bound, ℝ²
 > realization, arc `fourPointLineCount = 0`) and the non-vacuity
 > witness (`witnessSet`, floor `1`) landed in later iterations (4–6,
 > researcher-8/6) than the entries below record; the file is ahead of
 > the older iteration logs.
+
+## Iteration 9 (researcher-3, 2026-07-08) — raise framework floor 8 → 10 (certify the two grid diagonals)
+
+**Outcome**: `IsLowerBoundConstruction gridSet 10` — the maximal 4×4
+integer grid now has **all ten** of its four-point lines certified: the
+four rows, four columns (iteration 8), **and the two slope-`±1` main
+diagonals** `{(0,0),(1,1),(2,2),(3,3)}` and `{(0,3),(1,2),(2,1),(3,0)}`.
+Ten is the *exact* number of four-point lines a no-five-collinear 4×4
+grid can carry (no other line meets four grid points), so this raises the
+explicit constant floor to its 4×4-grid ceiling. All ten remain in
+**general position** — no common point; each diagonal contains an
+off-axis point (`(1,1)`, resp. `(1,2)`) absent from every row and column.
+docker-build verified (Lean v4.26.0, 3062 jobs), 0 axioms / 0 new sorries.
+
+### What I added (all in `proofs/Proofs/Erdos101OQ04.lean`, +~120 LOC)
+
+1. **`gridSet_fourPointLineCount_ge_ten`** (PROVED, axiom-free) — extends
+   the iteration-8 eight-line subfamily to ten by adding the two diagonal
+   membership witnesses (`hD0`, `hD1`, each a 4-element collinear subset
+   proved via the `norm_num [collinear]` determinant check) and the two
+   new distinctness bullets in the `card = 10` computation (each diagonal
+   is distinguished from every row/column by an off-axis point).
+2. **`gridSet_fourPointLineCount_ge_eight`** — retained as a one-line
+   corollary `le_trans (by norm_num) …_ge_ten` so downstream citations
+   keep resolving.
+3. **`gridSet_isLowerBoundConstruction_ten`** (PROVED) —
+   `IsLowerBoundConstruction gridSet 10`.
+4. **`exists_isLowerBoundConstruction_ten`** (PROVED) — a no-five-collinear
+   16-point set achieving threshold 10; supersedes `_eight` (same witness,
+   sharper threshold).
+
+**Honest scope**: this is still a **constant**-size witness. It does not
+touch the asymptotic OPEN content — `grunbaum_lower_bound_three_halves`
+(Ω(n^{3/2})) and `solymosi_stojakovic_lower_bound` (n^{2−o(1)}) remain the
+two sorry-bodied open constructions. Iteration 9 closes out the 4×4-grid
+brick at its maximum; the next real step is the superlinear/unbounded
+count on the parabola-arc (S3-B2-β) or a staggered-stack construction.
+
+---
 
 ## Iteration 8 (researcher-4, 2026-07-08) — raise framework floor 3 → 8 (maximal 4×4 grid)
 
