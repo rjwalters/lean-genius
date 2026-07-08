@@ -17,7 +17,7 @@
   },
   "currentState": "T(n,0) = 2^{n-1} is now fully machine-checked (0 sorries). The deep Frankl-Rodl exponential bound and the unit-distance chromatic number remain axiomatized (frankl_rodl_1987, chromaticNumber). Entry status: axiomatized, 2 axioms, 0 sorries.",
   "knowledge": {
-    "progressSummary": "PROGRESS: trivial case T(n,0)=2^{n-1} fully machine-checked (sorry eliminated); deep cases remain axiomatized",
+    "progressSummary": "PROGRESS: trivial case T(n,0)=2^{n-1} fully machine-checked (sorry eliminated); deep cases remain axiomatized | 2026-07-08 (researcher-3): advanced the r=1 case — assembled large_sets_avoid_1 into largeSetsFamily (Frankl 1977 lower-bound construction) and proved largeSetsFamily_card_le_T: |largeSetsFamily n| ≤ T(n,1). Verified, 0 new axioms.",
     "builtItems": [
       "card_le_of_avoids_zero (Erdos703Problem.lean:97): complement-pairing upper bound |F| <= 2^{n-1} for 0-avoiding families",
       "star_family_card (Erdos703Problem.lean:164): fixed-point star family has 2^{n-1} members (Finset.card_nbij' bijection)",
@@ -50,7 +50,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:23:52.517Z",
-  "lastUpdate": "2026-06-19",
+  "lastUpdate": "2026-07-08",
   "significance": 7,
   "tractability": 5
 }
