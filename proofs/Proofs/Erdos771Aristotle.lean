@@ -36,9 +36,13 @@ def primeMutliples (p n : ℕ) : Finset ℕ :=
 
 /-- The number of multiples of p in {1, ..., n} equals floor(n/p).
     This is a standard counting result: multiples of p in [1,n] are p, 2p, ..., floor(n/p)*p. -/
-theorem prime_multiples_size (p n : ℕ) (hp : p > 0) :
+theorem prime_multiples_size (p n : ℕ) (_hp : p > 0) :
     (primeMutliples p n).card = n / p := by
-  sorry
+  have hIcc : Icc_n n = Finset.Ioc 0 n := by
+    unfold Icc_n; ext k; simp only [Finset.mem_Icc, Finset.mem_Ioc]; omega
+  unfold primeMutliples
+  rw [hIcc]
+  exact Nat.Ioc_filter_dvd_card_eq_div n p
 
 -- ===================================================================
 -- Section 2: Prime multiples avoid non-multiples
@@ -60,22 +64,38 @@ theorem primeMutliples_subset_sum_dvd (p n : ℕ) (A : Finset ℕ)
 
 /-- For prime p not dividing m, multiples of p avoid sum m.
     Any subset sum of multiples of p is a multiple of p, but m is not. -/
-theorem prime_multiples_avoid (p m n : ℕ) (hp : Nat.Prime p) (hpm : ¬p ∣ m) :
+theorem prime_multiples_avoid (p m n : ℕ) (_hp : Nat.Prime p) (hpm : ¬p ∣ m) :
     AvoidSum (primeMutliples p n) m := by
-  sorry
+  intro hmem
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+  obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+  rw [Finset.mem_powerset] at hA
+  have hdvd := primeMutliples_subset_sum_dvd p n A hA
+  rw [hAsum] at hdvd
+  exact hpm hdvd
 
 -- ===================================================================
 -- Section 3: Avoiding sum 1
 -- ===================================================================
 
 /-- The set {2, ..., n} is a 1-avoiding set of size n-1 for n >= 2. -/
-theorem Icc_2_n_avoids_one (n : ℕ) (hn : n ≥ 2) :
+theorem Icc_2_n_avoids_one (n : ℕ) (_hn : n ≥ 2) :
     AvoidSum (Finset.Icc 2 n) 1 := by
-  sorry
+  intro hmem
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+  obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+  rw [Finset.mem_powerset] at hA
+  -- Every element of A is ≥ 2, so a nonempty sum is ≥ 2 and the empty sum is 0 — never 1.
+  rcases A.eq_empty_or_nonempty with rfl | hne
+  · simp at hAsum
+  · obtain ⟨x, hx⟩ := hne
+    have hx2 : 2 ≤ x := by have := hA hx; rw [Finset.mem_Icc] at this; omega
+    have hle : x ≤ ∑ a ∈ A, a := Finset.single_le_sum (fun i _ => Nat.zero_le i) hx
+    omega
 
 /-- The set {2, ..., n} has card n - 1. -/
-theorem Icc_2_n_card (n : ℕ) (hn : n ≥ 2) :
+theorem Icc_2_n_card (n : ℕ) (_hn : n ≥ 2) :
     (Finset.Icc 2 n).card = n - 1 := by
-  sorry
+  rw [Nat.card_Icc]; omega
 
 end Erdos771Aristotle
