@@ -201,7 +201,7 @@ uncorrelatedness (`cov[Wᵢ, Wⱼ] = 0` for all `i ≠ j`) forces the double sum
 so is *sufficient*, but the identity holds under the strictly weaker hypothesis that the
 off-diagonal covariances merely *cancel in aggregate*. -/
 theorem variance_sum_eq_iff_offDiag_covariance_zero [IsFiniteMeasure μ] {ι : Type*}
-    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
+    [DecidableEq ι] {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ) :
     Var[∑ i ∈ s, W i; μ] = ∑ i ∈ s, Var[W i; μ] ↔
       ∑ i ∈ s, ∑ j ∈ s.erase i, cov[W i, W j; μ] = 0 := by
   have hsplit : ∀ i ∈ s, ∑ j ∈ s, cov[W i, W j; μ]
