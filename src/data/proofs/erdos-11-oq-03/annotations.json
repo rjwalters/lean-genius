@@ -24,6 +24,18 @@
     "prerequisites": ["floor logarithm base 2", "k < 2^k", "counting a filtered Finset.range"]
   },
   {
+    "id": "ann-erdos11oq03-api",
+    "proofId": "erdos-11-oq-03",
+    "range": { "startLine": 46, "endLine": 88 },
+    "type": "definition",
+    "title": "The kernel-reducible squarefree test — the linchpin of the 0-axiom count",
+    "content": "The self-contained API re-declared here is what makes the whole distributional argument decide at 0 axioms. IsSquarefreePlusPow2 n is the plain existence predicate (∃ squarefree s, ∃ k, n = s + 2^k), and isSquarefreePlusPow2_iff bounds the search to k ∈ range (n+1) via k < 2^k ≤ n. The crux is SquarefreeCheck n := 1 ≤ n ∧ ∀ d ∈ range (n+1), 2 ≤ d → ¬ (d*d ∣ n): a *finite conjunction of Nat divisibility tests* that the Lean kernel reduces directly. Its DecidablePred instance therefore kernel-evaluates, whereas Mathlib's Squarefree routes its Decidable instance through Nat.minSqFac, which does NOT kernel-reduce — so a decide over Squarefree would either fail to reduce or force native_decide (dragging in Lean.ofReduceBool). squarefree_iff_check n proves the two predicates are equivalent unconditionally (both are False at n = 0, handled by not_squarefree_zero / the 1 ≤ n clause), letting every later lemma freely swap the mathematically-standard Squarefree for the kernel-computable SquarefreeCheck. This single substitution is exactly why reprCount is a kernel-computable Nat and the verified range closes by one axiom-free decide.",
+    "mathContext": "$\\mathrm{SquarefreeCheck}(n):\\ 1\\le n\\ \\wedge\\ \\forall d\\in[2,n],\\ d^2\\nmid n$, kernel-reducible; $\\mathrm{Squarefree}\\,n\\iff\\mathrm{SquarefreeCheck}\\,n$ unconditionally.",
+    "significance": "key",
+    "relatedConcepts": ["kernel reduction", "Decidable instances", "Nat.minSqFac", "native_decide vs decide", "reflection of a Prop as a computable test"],
+    "prerequisites": ["Squarefree and its Decidable instance", "kernel reduction vs compiler evaluation", "why native_decide adds Lean.ofReduceBool"]
+  },
+  {
     "id": "ann-erdos11oq03-count",
     "proofId": "erdos-11-oq-03",
     "range": { "startLine": 128, "endLine": 166 },
