@@ -79,6 +79,33 @@
     "definitionCount": 0,
     "theoremCount": 5
   },
+  "mainTheorems": [
+    {
+      "name": "totient_coprime_iff",
+      "type": "theorem",
+      "description": "Flagship characterisation (Mathlib's Nat.totient_coprime_totient_iff, re-exported): φ(m) and φ(n) are coprime if and only if at least one argument lies in {1, 2}. Since φ(k) is even for every k ≥ 3, two totients of arguments ≥ 3 always share the factor 2."
+    },
+    {
+      "name": "gcd_totient_eq_one_iff",
+      "type": "theorem",
+      "description": "The gcd form of the characterisation: gcd(φ m, φ n) = 1 exactly when one argument is 1 or 2 (Nat.Coprime is definitionally gcd = 1)."
+    },
+    {
+      "name": "not_coprime_totient_of_three_le",
+      "type": "theorem",
+      "description": "Headline consequence: for m, n ≥ 3 the totients φ(m), φ(n) are never coprime — they share the factor 2 (both are even). The genuinely informative half of the characterisation, stated as a clean implication."
+    },
+    {
+      "name": "two_dvd_gcd_totient_of_three_le",
+      "type": "theorem",
+      "description": "New divisibility fact not in Mathlib's biconditional: for m, n ≥ 3 both totients are even, so 2 ∣ gcd(φ m, φ n) — the explicit shared factor."
+    },
+    {
+      "name": "two_le_gcd_totient_of_three_le",
+      "type": "theorem",
+      "description": "Lower bound on the shared structure: for m, n ≥ 3 the gcd of the two totients is at least 2, so they always have a nontrivial common factor (from the divisibility fact plus positivity of the gcd)."
+    }
+  ],
   "sorries": 0,
   "overview": {
     "historicalContext": "Leonhard Euler introduced the totient function φ(n) — the order of the unit group (ℤ/nℤ)ˣ — in his 1763 generalization of Fermat's little theorem. A recurring question when manipulating totients (e.g. in cyclotomic field theory or order computations) is whether φ(m) and φ(n) can be coprime. The answer is sharply constrained by parity: φ(k) is even for every k > 2 (the element −1 ∈ (ℤ/kℤ)ˣ has order 2 for k > 2, so Lagrange forces 2 ∣ φ(k)). Consequently the only way two totients avoid the common factor 2 is for one argument to be 1 or 2, where φ = 1 is coprime to everything. Mathlib packages the resulting biconditional as `Nat.totient_coprime_totient_iff`; the explicit shared-factor consequence — the gcd is always ≥ 2 when both arguments exceed 2 — is the structural picture this entry records.",
