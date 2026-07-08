@@ -70,7 +70,8 @@
       "**The diagonal argument's payoff is global, not local.** OQ-03 produces the diagonal witnesses that prove a < 2^a; this entry shows what that single inequality buys: the entire cardinal order is unbounded, with an explicit witnessing tower over every point.",
       "**Monotonicity of the tower is NOT monotonicity of exponentiation.** Whether a < b implies 2^a < 2^b is the GCH-adjacent question, independent of ZFC. The tower climbs only because Cantor's inequality is re-applied at each rung — `strictMono_nat_of_lt_succ` needs exactly the consecutive comparisons, never the general one.",
       "**No maximum, constructively witnessed.** ¬ IsMax a is not an abstract non-existence: powTower hands you infinitely many explicit, pairwise-distinct cardinals 2^a, 2^(2^a), … all strictly above a.",
-      "**The beth ladder in miniature.** powTower 0 is exactly the finite-index beth sequence ℶ₀, ℶ₁, ℶ₂, … starting from a; the result is the well-foundedness-free fact that this ladder never stops rising."
+      "**The beth ladder in miniature.** powTower 0 is exactly the finite-index beth sequence ℶ₀, ℶ₁, ℶ₂, … starting from a; the result is the well-foundedness-free fact that this ladder never stops rising.",
+      "**This is the resolution of Cantor's paradox, not a victim of it.** The naive 'cardinal of the set of all cardinals' is contradictory precisely because ¬ IsMax a forbids a top: any purported universal cardinal would be exceeded by its own powerset. The lesson ZFC draws is that the cardinals form a proper class (not a set), which is exactly the unformalized direction flagged in the open questions — the diagonal argument that powers this entry is the same one that dissolves the paradox."
     ],
     "prerequisites": [
       "Cantor's theorem in cardinal form (Cardinal.cantor)",
