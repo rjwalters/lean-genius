@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring stating the parent's second open question — a prime to a non-integer rational power p^(a/b) is irrational, and ∛2 + ∛3 is irrational — with the two proof sketches. Imports Mathlib and the sibling CubeRoot2IrrationalOQ05OQ01, enters namespace CubeRoot2IrrationalOQ05OQ02, opens Real, and imports the sibling's IsPerfectNthPow, irrational_rpow_inv_iff, rpow_inv_pow, and irrational_cbrt_six.",
+      "mathContext": "$p^{a/b} \\notin \\mathbb{Q}$ ($b \\ge 2$) and $\\sqrt[3]{2}+\\sqrt[3]{3} \\notin \\mathbb{Q}$."
+    },
+    {
       "id": "perfect-power-obstruction",
       "title": "Prime Powers and Perfect b-th Powers",
       "startLine": 45,
@@ -104,8 +112,50 @@
       "title": "Irrationality of ∛2 + ∛3",
       "startLine": 105,
       "endLine": 143,
-      "summary": "irrational_cbrt_two_add_cbrt_three: cubes s = ∛2 + ∛3 to s³ = 5 + 3·∛6·s (using ∛2·∛3 = ∛6 from Real.mul_rpow); rationality of s would make ∛6 = (s³−5)/(3s) rational, contradicting irrational_cbrt_six.",
+      "summary": "irrational_cbrt_two_add_cbrt_three: cubes s = ∛2 + ∛3 to s³ = 5 + 3·∛6·s (using ∛2·∛3 = ∛6 from Real.mul_rpow); rationality of s would make ∛6 = (s³−5)/(3s) rational, contradicting irrational_cbrt_six. Closes namespace CubeRoot2IrrationalOQ05OQ02.",
       "mathContext": "$(\\sqrt[3]{2}+\\sqrt[3]{3})^3 = 5 + 3\\sqrt[3]{6}\\,(\\sqrt[3]{2}+\\sqrt[3]{3})$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "irrational_prime_rpow",
+      "type": "core",
+      "description": "**A prime raised to a non-integer rational power is irrational.** For a prime p and a positive rational q with denominator ≥ 2, p^q is irrational — generalizing the parent's unit-fraction exponents 1/n to arbitrary reduced fractions a/b. Rewrites p^q = (p^a)^(1/b) via Real.rpow_mul, applies the sibling's rationality criterion, and uses coprimality of a = q.num.natAbs and b = q.den to rule out b ∣ a.",
+      "leanType": "{p : ℕ} (hp : p.Prime) {q : ℚ} (hq : 0 < q) (hden : 2 ≤ q.den) : Irrational ((p : ℝ) ^ (q : ℝ))",
+      "startLine": 65,
+      "endLine": 93
+    },
+    {
+      "name": "irrational_cbrt_two_add_cbrt_three",
+      "type": "core",
+      "description": "**∛2 + ∛3 is irrational.** Cubing s = ∛2 + ∛3 and using ∛2·∛3 = ∛6 (Real.mul_rpow) gives s³ = 5 + 3·∛6·s; were s rational, ∛6 = (s³−5)/(3s) would be rational too, contradicting the sibling's irrational_cbrt_six. The first sum-of-radicals irrationality in this family.",
+      "leanType": "Irrational ((2 : ℝ) ^ ((3 : ℝ)⁻¹) + (3 : ℝ) ^ ((3 : ℝ)⁻¹))",
+      "startLine": 110,
+      "endLine": 141
+    },
+    {
+      "name": "not_isPerfectNthPow_prime_pow",
+      "type": "supporting",
+      "description": "**A prime power p^a is a perfect b-th power only when b ∣ a.** From p^a = k^b, comparing p-adic valuations (Nat.factorization_pow, Nat.Prime.factorization_self) gives a = b·v_p(k), so b ∣ a — the arithmetic obstruction driving irrational_prime_rpow.",
+      "leanType": "{p a b : ℕ} (hp : p.Prime) (hndvd : ¬ b ∣ a) : ¬ IsPerfectNthPow (p ^ a) b",
+      "startLine": 50,
+      "endLine": 58
+    },
+    {
+      "name": "irrational_two_rpow_two_thirds",
+      "type": "corollary",
+      "description": "**2^(2/3) is irrational** — a prime to a non-integer rational power below 1.",
+      "leanType": "Irrational ((2 : ℝ) ^ ((2 / 3 : ℚ) : ℝ))",
+      "startLine": 96,
+      "endLine": 98
+    },
+    {
+      "name": "irrational_three_rpow_three_halves",
+      "type": "corollary",
+      "description": "**3^(3/2) is irrational** — the exponent exceeds 1 yet is still non-integer, showing the criterion is not confined to exponents in (0,1).",
+      "leanType": "Irrational ((3 : ℝ) ^ ((3 / 2 : ℚ) : ℝ))",
+      "startLine": 101,
+      "endLine": 103
     }
   ],
   "crossReferences": [
