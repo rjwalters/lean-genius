@@ -130,6 +130,64 @@
       "mathContext": "Worked values illustrating λ(2ᵏ) = 2ᵏ⁻²."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "carmichael_two_pow",
+      "type": "core",
+      "description": "**λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3 — the open question's target.** The unit group (ℤ/2ᵏℤ)ˣ is ℤ/2 × ℤ/2ᵏ⁻² (non-cyclic for k ≥ 3), so its exponent is 2ᵏ⁻², strictly smaller than φ(2ᵏ) = 2ᵏ⁻¹. Packages Mathlib's carmichael_two_pow_of_ne_two.",
+      "leanType": "{k : ℕ} (hk : 3 ≤ k) : Carmichael (2 ^ k) = 2 ^ (k - 2)",
+      "startLine": 36,
+      "endLine": 38
+    },
+    {
+      "name": "two_mul_carmichael_two_pow",
+      "type": "key",
+      "description": "**λ(2ᵏ) is exactly half the totient**, stated as 2·λ(2ᵏ) = φ(2ᵏ) for k ≥ 3 — the quantitative signature of the non-cyclic ℤ/2 × ℤ/2ᵏ⁻² structure that makes λ strictly smaller than φ.",
+      "leanType": "{k : ℕ} (hk : 3 ≤ k) : 2 * Carmichael (2 ^ k) = (2 ^ k).totient",
+      "startLine": 43,
+      "endLine": 45
+    },
+    {
+      "name": "carmichael_odd_prime_pow",
+      "type": "key",
+      "description": "**λ(pᵏ) = φ(pᵏ) for odd primes p.** The unit group of an odd prime power is cyclic, so its exponent equals its order and the Carmichael and totient functions coincide — the contrast case to the powers of two.",
+      "leanType": "{p : ℕ} (k : ℕ) (hp : p.Prime) (hodd : p ≠ 2) : Carmichael (p ^ k) = (p ^ k).totient",
+      "startLine": 50,
+      "endLine": 52
+    },
+    {
+      "name": "carmichael_dvd_totient",
+      "type": "supporting",
+      "description": "**λ(n) ∣ φ(n).** The Carmichael function always divides the totient: Euler's theorem factors through the smaller universal exponent λ.",
+      "leanType": "(n : ℕ) : Carmichael n ∣ n.totient",
+      "startLine": 56,
+      "endLine": 57
+    },
+    {
+      "name": "pow_carmichael",
+      "type": "supporting",
+      "description": "**Universal exponent property.** Every unit a modulo n satisfies a^{λ(n)} = 1 — the defining property that makes λ(n) a universal exponent for (ℤ/nℤ)ˣ.",
+      "leanType": "{n : ℕ} (a : (ZMod n)ˣ) : a ^ Carmichael n = 1",
+      "startLine": 60,
+      "endLine": 61
+    },
+    {
+      "name": "carmichael_eight",
+      "type": "supporting",
+      "description": "**λ(8) = 2**, the smallest non-trivial instance of the powers-of-two identity (k = 3), showing the exponent of (ℤ/8ℤ)ˣ ≅ ℤ/2 × ℤ/2 is 2 while φ(8) = 4.",
+      "leanType": ": Carmichael 8 = 2",
+      "startLine": 64,
+      "endLine": 67
+    },
+    {
+      "name": "carmichael_sixteen",
+      "type": "supporting",
+      "description": "**λ(16) = 4** (k = 4): the exponent of (ℤ/16ℤ)ˣ ≅ ℤ/2 × ℤ/4 is 4 while φ(16) = 8, a second concrete witness of λ(2ᵏ) = φ(2ᵏ)/2.",
+      "leanType": ": Carmichael 16 = 4",
+      "startLine": 70,
+      "endLine": 73
+    }
+  ],
   "conclusion": {
     "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 75 lines and 7 theorems on the Carmichael function at prime powers: λ(2ᵏ) = 2ᵏ⁻² = φ(2ᵏ)/2 for k ≥ 3 (non-cyclic), λ(pᵏ) = φ(pᵏ) for odd primes (cyclic), λ(n) ∣ φ(n), the universal-exponent property, and λ(8) = 2, λ(16) = 4.",
     "implications": "This answers the parent's OQ-01-OQ-02, packaging Mathlib's Carmichael prime-power identities. Combined with the lcm formula λ(n) = lcm over prime powers (carmichael_factorization), these determine λ for every n. The result quantifies how far Euler's theorem can be sharpened: the optimal universal exponent λ(n) can be as small as half of φ(n) (powers of two) or equal to it (odd prime powers).",
