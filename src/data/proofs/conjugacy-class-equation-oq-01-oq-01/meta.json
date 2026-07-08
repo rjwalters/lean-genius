@@ -117,6 +117,48 @@
       "mathContext": "$|Z(G)| + \\sum_{x} [G : C_G(g_x)] = |G|$."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "conjClass_card_eq_index_centralizer",
+      "type": "supporting",
+      "description": "**Per-class index identity** (re-derived from the parent file). The size of the conjugacy class of g equals the index of its centralizer: |class(g)| = [G : C_G(g)]. Via ConjAct.stabilizer_eq_centralizer and MulAction.index_stabilizer.",
+      "leanType": "(g : G) → Nat.card (ConjClasses.mk g).carrier = (Subgroup.centralizer ({ConjAct.toConjAct g} : Set (ConjAct G))).index",
+      "startLine": 40,
+      "endLine": 46
+    },
+    {
+      "name": "classRep",
+      "type": "supporting",
+      "description": "A chosen representative of a conjugacy class (Classical choice via ConjClasses.exists_rep), with mk_classRep : ConjClasses.mk (classRep x) = x. Noncomputable.",
+      "leanType": "(x : ConjClasses G) → G",
+      "startLine": 49,
+      "endLine": 49
+    },
+    {
+      "name": "card_carrier_eq_index_centralizer",
+      "type": "supporting",
+      "description": "**Pointwise bridge.** The size of any conjugacy class x equals the index of the centralizer of its chosen representative: |x| = [G : C_G(classRep x)]. Feeds the per-class identity through classRep into the summed class equation.",
+      "leanType": "(x : ConjClasses G) → Nat.card x.carrier = (Subgroup.centralizer ({ConjAct.toConjAct (classRep x)} : Set (ConjAct G))).index",
+      "startLine": 56,
+      "endLine": 61
+    },
+    {
+      "name": "classEquation_centralizer_index_form",
+      "type": "core",
+      "description": "**The class equation, index form.** For a finite group G, |Z(G)| + Σ_{noncentral classes x} [G : C_G(classRep x)] = |G|. Obtained from Mathlib's Group.nat_card_center_add_sum_card_noncenter_eq_card by replacing each noncentral class size with the centralizer index of a representative.",
+      "leanType": "[Finite G] → Nat.card (Subgroup.center G) + ∑ᶠ x ∈ ConjClasses.noncenter G, (Subgroup.centralizer ({ConjAct.toConjAct (classRep x)} : Set (ConjAct G))).index = Nat.card G",
+      "startLine": 71,
+      "endLine": 78
+    },
+    {
+      "name": "sum_noncenter_index_eq_card_sub_center",
+      "type": "corollary",
+      "description": "**Corollary.** The sum of centralizer indices over the noncentral conjugacy classes accounts for exactly the noncentral elements: Σ [G : C_G(gᵢ)] = |G| − |Z(G)|.",
+      "leanType": "[Finite G] → ∑ᶠ x ∈ ConjClasses.noncenter G, (Subgroup.centralizer ({ConjAct.toConjAct (classRep x)} : Set (ConjAct G))).index = Nat.card G - Nat.card (Subgroup.center G)",
+      "startLine": 82,
+      "endLine": 87
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "conjugacy-class-equation-oq-01",
