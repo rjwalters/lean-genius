@@ -58,6 +58,14 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "The module docstring states the two-sided central binomial sandwich 4ⁿ/(2n+1) ≤ C(2n,n) ≤ 4ⁿ, explains its role as the workhorse behind Chebyshev-type prime-counting bounds (the upper bound feeds θ(n), the lower bound forces prime factors into C(2n,n) to drive π(n)), and is honest about provenance: a routine assembly of Mathlib primitives (four_pow_le_two_mul_add_one_mul_central_binom for the lower bound, choose_le_two_pow for the even-row upper bound) into one named axiom-free building block. Imports Mathlib, enters the ChebyshevBoundsOQ06 namespace, opens Nat.",
+      "mathContext": "$\\frac{4^n}{2n+1} \\le \\binom{2n}{n} \\le 4^n$ — the elementary estimate underlying Chebyshev's prime bounds."
+    },
+    {
       "id": "upper-bound",
       "title": "Upper bound C(2n,n) ≤ 4ⁿ",
       "startLine": 38,
@@ -77,6 +85,43 @@
       "startLine": 56,
       "endLine": 87,
       "summary": "four_pow_div_succ_two_mul_le_centralBinom gives the textbook 4ⁿ/(2n+1) ≤ C(2n,n) over ℕ via Nat.div_le_of_le_mul. centralBinom_sandwich bundles both bounds. centralBinom_real_sandwich lifts to ℝ so the division is genuine: cast both ℕ-inequalities with Nat.cast_le, push_cast, and close by linarith / div_le_iff₀."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "centralBinom_sandwich",
+      "type": "core",
+      "description": "**The two-sided sandwich, product form.** Combines both bounds: 4ⁿ ≤ (2n+1)·C(2n,n) and C(2n,n) ≤ 4ⁿ, for every n. The named axiom-free building block for the axiomatized parent chebyshev-bounds.",
+      "leanType": "(n : ℕ) : 4 ^ n ≤ (2 * n + 1) * centralBinom n ∧ centralBinom n ≤ 4 ^ n",
+      "startLine": 65
+    },
+    {
+      "name": "centralBinom_real_sandwich",
+      "type": "core",
+      "description": "**The two-sided sandwich, real-valued quotient form.** 4ⁿ/(2n+1) ≤ C(2n,n) ≤ 4ⁿ as an inequality of reals, so the division is the genuine quotient rather than its ℕ-truncation. Cast both ℕ-inequalities with Nat.cast_le, push_cast, close by linarith / div_le_iff₀.",
+      "leanType": "(n : ℕ) : (4 : ℝ) ^ n / (2 * n + 1) ≤ (centralBinom n : ℝ) ∧ (centralBinom n : ℝ) ≤ (4 : ℝ) ^ n",
+      "startLine": 72
+    },
+    {
+      "name": "centralBinom_le_four_pow",
+      "type": "supporting",
+      "description": "**Upper bound.** C(2n,n) ≤ 4ⁿ, since any entry of row 2n of Pascal's triangle is ≤ the row sum 2^(2n) = 4ⁿ (Nat.choose_le_two_pow). Mathlib has the odd-row analogue choose_middle_le_pow but not this even-row form.",
+      "leanType": "(n : ℕ) : centralBinom n ≤ 4 ^ n",
+      "startLine": 41
+    },
+    {
+      "name": "four_pow_le_succ_two_mul_mul_centralBinom",
+      "type": "supporting",
+      "description": "**Lower bound (product form).** 4ⁿ ≤ (2n+1)·C(2n,n) — Mathlib's Nat.four_pow_le_two_mul_add_one_mul_central_binom restated in centralBinom notation, stated multiplicatively to avoid truncated division.",
+      "leanType": "(n : ℕ) : 4 ^ n ≤ (2 * n + 1) * centralBinom n",
+      "startLine": 51
+    },
+    {
+      "name": "four_pow_div_succ_two_mul_le_centralBinom",
+      "type": "supporting",
+      "description": "**Lower bound (quotient form).** The literal textbook statement 4ⁿ/(2n+1) ≤ C(2n,n) with truncated ℕ-division, immediate from the product form via Nat.div_le_of_le_mul.",
+      "leanType": "(n : ℕ) : 4 ^ n / (2 * n + 1) ≤ centralBinom n",
+      "startLine": 58
     }
   ],
   "overview": {
