@@ -119,5 +119,27 @@
     "path": "Proofs/HermiteFloorIdentityOQ03.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "hermite_fract_identity",
+      "type": "theorem",
+      "description": "Additive (fractional-part) twin of Hermite's floor identity: for every real x and n ≥ 1, ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2. Derived by decomposing {·} = value − floor, evaluating the exact sum via the real Gauss sum, and substituting the imported HermiteFloorIdentity.hermite_floor_identity."
+    },
+    {
+      "name": "hermite_fract_sum_at_zero",
+      "type": "theorem",
+      "description": "Specialisation at x = 0: the fractional parts 0, 1/n, …, (n-1)/n sum to (n-1)/2, i.e. ∑_{k=0}^{n-1} {k/n} = (n-1)/2."
+    },
+    {
+      "name": "hermite_fract_sum_of_mul_int",
+      "type": "theorem",
+      "description": "Specialisation when n·x is an integer ({n·x} = 0): the sawtooth sum is exactly (n-1)/2, independent of x."
+    },
+    {
+      "name": "sum_range_cast",
+      "type": "lemma",
+      "description": "Real-valued Gauss sum ∑_{k<m} k = m(m-1)/2, proved over ℝ to avoid ℕ-division under the cast; the sole arithmetic input beyond Hermite's floor identity."
+    }
+  ],
   "sorries": 0
 }
