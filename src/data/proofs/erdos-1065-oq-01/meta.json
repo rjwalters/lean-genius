@@ -96,6 +96,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Header, Imports, and Form-A Framing",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring framing Erdős #1065's 'form A' primes p = 2^k·q + 1 (odd q) and the goal of showing the (k,q) representation is canonical. Imports Mathlib, declares namespace Erdos1065OQ01, and opens Nat.",
+      "mathContext": "A form-A prime is $p = 2^k \\cdot q + 1$ with $q$ odd; this file proves the pair $(k,q)$ is uniquely determined via the 2-adic valuation of $p-1$."
+    },
+    {
       "id": "valuation",
       "title": "The 2-adic Valuation Reads Off the Exponent",
       "startLine": 33,
@@ -118,6 +126,48 @@
       "endLine": 85,
       "summary": "formA_41: 41 = 2³·5 + 1 with 5 an odd prime, whose form-A representation (3, 5) is unique by formA_repr_unique.",
       "mathContext": "$41 = 2^3 \\cdot 5 + 1$, a form-A prime with unique representation $(k,q) = (3,5)$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "formA_repr_unique",
+      "type": "core",
+      "description": "**The form-A representation of a prime is unique.** If p = 2^{k₁}·q₁ + 1 = 2^{k₂}·q₂ + 1 with q₁, q₂ odd, then k₁ = k₂ and q₁ = q₂ — the pair (k,q) in Erdős #1065's form 2^k·q + 1 is determined by p. A direct specialisation of two_pow_mul_odd_unique.",
+      "leanType": "{k₁ k₂ q₁ q₂ : ℕ} (hq₁ : Odd q₁) (hq₂ : Odd q₂) (h : 2 ^ k₁ * q₁ + 1 = 2 ^ k₂ * q₂ + 1) : k₁ = k₂ ∧ q₁ = q₂",
+      "startLine": 66,
+      "endLine": 68
+    },
+    {
+      "name": "factorization_two_pow_mul_odd",
+      "type": "core",
+      "description": "**v₂(2^a·m) = a for odd m.** The 2-adic valuation of 2^a·m is exactly a when m is odd, since m contributes no factor of 2. The engine reading the exponent off the valuation.",
+      "leanType": "{a m : ℕ} (hm : Odd m) : (2 ^ a * m).factorization 2 = a",
+      "startLine": 40,
+      "endLine": 46
+    },
+    {
+      "name": "two_pow_mul_odd_unique",
+      "type": "key",
+      "description": "**Uniqueness of the 2^a·m form.** If 2^a·m = 2^b·n with m,n odd, then a = b (equal 2-adic valuations) and m = n (cancel 2^a). The canonical odd-part / power-of-two factorisation.",
+      "leanType": "{a b m n : ℕ} (hm : Odd m) (hn : Odd n) (h : 2 ^ a * m = 2 ^ b * n) : a = b ∧ m = n",
+      "startLine": 55,
+      "endLine": 61
+    },
+    {
+      "name": "formA_exponent_eq",
+      "type": "key",
+      "description": "**Exponent recovery.** The exponent k of a form-A number p = 2^k·q + 1 (odd q) is recovered as the 2-adic valuation of p − 1.",
+      "leanType": "{k q : ℕ} (hq : Odd q) : ((2 ^ k * q + 1) - 1).factorization 2 = k",
+      "startLine": 72,
+      "endLine": 74
+    },
+    {
+      "name": "formA_41",
+      "type": "supporting",
+      "description": "**Concrete instance.** 41 = 2³·5 + 1 with 5 an odd prime, so 41 is a form-A prime whose representation (k,q) = (3,5) is the only one by formA_repr_unique.",
+      "leanType": "(41 : ℕ) = 2 ^ 3 * 5 + 1 ∧ Odd (5 : ℕ) ∧ Nat.Prime 5",
+      "startLine": 82,
+      "endLine": 83
     }
   ],
   "references": [
