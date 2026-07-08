@@ -35,6 +35,11 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
   cover with B. H. Neumann's coset-covering theorem (Mathlib's `CosetCover`): if ω(Γ(G)) is
   finite then *some* centralizer `C_G(a)` has finite index. This is a genuine partial
   result toward (still strictly weaker than) the hard direction.
+* `exists_finiteIndex_iInf_centralizer_of_boundedCliques` — **(fully proved, new)** strengthens
+  the previous step: if ω(Γ(G)) is finite then the *finite-index* centralizers already cover
+  `G`, and their intersection `H = ⋂ₐ C_G(a)` is a finite-index subgroup. This isolates the
+  finite-index "core" `H` that Neumann's argument analyses (still strictly weaker than the hard
+  direction, which needs `Z(G)` — the intersection over *all* of `G` — to have finite index).
 * `neumann_hard_direction` — **(axiom, Neumann 1976)** if ω(Γ(G)) is finite then
   `[G:Z(G)]` is finite. This is the deep content of Erdős #1098.
 * `neumann_full_theorem` — the equivalence ω(Γ(G)) finite ⟺ [G:Z(G)] finite.
@@ -42,12 +47,15 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
 ## Honesty
 
 The forward (bounding) direction is fully machine-checked with the explicit and sharp
-bound `ω ≤ [G:Z(G)]`. For the converse we now machine-check the *first two steps* of
-Neumann's argument — the reduction to a finite centralizer cover and the extraction of a
-single finite-index centralizer via Mathlib's `CosetCover` — leaving only the final BFC
-step (from one finite-index centralizer to finite-index *centre*) as the axiom
-`neumann_hard_direction`, a genuinely non-trivial result not available in Mathlib. It is
-stated as a single, clearly-labelled axiom with citation. Status: axiomatized.
+bound `ω ≤ [G:Z(G)]`. For the converse we now machine-check the *first three steps* of
+Neumann's argument — the reduction to a finite centralizer cover, the extraction of a
+single finite-index centralizer via Mathlib's `CosetCover`, and the further reduction to a
+finite-index *core* `H = ⋂ₐ C_G(a)` (the finite-index centralizers already cover `G`, and
+their intersection has finite index). This leaves only the final BFC step (from the
+finite-index core `H`, which centralizes a maximal clique, to the finite-index *centre*,
+i.e. the intersection over *all* of `G`) as the axiom `neumann_hard_direction`, a genuinely
+non-trivial result not available in Mathlib. It is stated as a single, clearly-labelled
+axiom with citation. Status: axiomatized.
 
 ## Sorries
 
@@ -232,6 +240,56 @@ theorem exists_finiteIndex_centralizer_of_boundedCliques (h : BoundedCliques G) 
     exact ⟨a, haS, by rw [one_smul]; exact Subgroup.mem_centralizer_singleton_iff.mpr hax.symm⟩
   obtain ⟨k, _, hk⟩ := Subgroup.exists_finiteIndex_of_leftCoset_cover hcovers
   exact ⟨k, hk.index_ne_zero⟩
+
+/-- **(New, fully proved — strengthens the covering step to a finite-index core.)**
+    If ω(Γ(G)) is finite, then there is a finite set `T` of elements such that
+
+    * every centralizer `C_G(a)`, `a ∈ T`, has finite index in `G`;
+    * these finite-index centralizers already **cover** `G` (as left cosets `1 · C_G(a)`);
+      and
+    * their intersection `H := ⋂_{a ∈ T} C_G(a)` is itself a **finite-index** subgroup.
+
+    *Proof.* Start from the finite clique `S` whose centralizers cover `G`
+    (`exists_clique_centralizer_cover`), viewed as a left-coset cover with trivial
+    representatives. B. H. Neumann's coset-covering theorem in the form
+    `Subgroup.leftCoset_cover_filter_FiniteIndex` says the *finite-index* members of a
+    finite coset cover already cover, so `T := {a ∈ S : [G:C_G(a)] < ∞}` still covers
+    `G`. Finally the intersection of finitely many finite-index subgroups has finite
+    index (`Subgroup.finiteIndex_iInf'`).
+
+    This is a strict advance over `exists_finiteIndex_centralizer_of_boundedCliques`
+    (which produced only *one* finite-index centralizer): it isolates the finite-index
+    subgroup `H` that Neumann's argument actually analyses. `H` centralizes every
+    `a ∈ T` by construction. The remaining deep step — that this finite-index `H`
+    forces the *centre* `Z(G)` (the intersection of *all* centralizers, over all of
+    `G`) to have finite index — is the BFC content recorded as
+    `neumann_hard_direction`. -/
+theorem exists_finiteIndex_iInf_centralizer_of_boundedCliques (h : BoundedCliques G) :
+    ∃ T : Finset G,
+      (∀ a ∈ T, (Subgroup.centralizer {a}).index ≠ 0) ∧
+      (⋃ a ∈ T, (1 : G) • ((Subgroup.centralizer {a} : Subgroup G) : Set G)) = Set.univ ∧
+      (⨅ a ∈ T, Subgroup.centralizer {a}).index ≠ 0 := by
+  classical
+  obtain ⟨S, _, hcover⟩ := exists_clique_centralizer_cover h
+  -- Reformulate the clique cover as a left-coset cover with trivial representatives.
+  have hcovers :
+      ⋃ a ∈ S, (1 : G) • ((Subgroup.centralizer {a} : Subgroup G) : Set G)
+        = Set.univ := by
+    rw [Set.eq_univ_iff_forall]
+    intro x
+    obtain ⟨a, haS, hax⟩ := hcover x
+    rw [Set.mem_iUnion₂]
+    exact ⟨a, haS, by rw [one_smul]; exact Subgroup.mem_centralizer_singleton_iff.mpr hax.symm⟩
+  refine ⟨S.filter (fun a => (Subgroup.centralizer {a}).FiniteIndex), ?_, ?_, ?_⟩
+  · -- Each surviving centralizer has finite index by construction.
+    intro a ha
+    exact (Finset.mem_filter.mp ha).2.index_ne_zero
+  · -- Neumann's coset-cover theorem: the finite-index members already cover `G`.
+    exact Subgroup.leftCoset_cover_filter_FiniteIndex
+      (s := S) (g := fun _ => (1 : G)) (H := fun a => Subgroup.centralizer {a}) hcovers
+  · -- The intersection of finitely many finite-index subgroups has finite index.
+    exact (Subgroup.finiteIndex_iInf' (fun a => Subgroup.centralizer {a})
+      (fun a ha => (Finset.mem_filter.mp ha).2)).index_ne_zero
 
 -- ============================================================
 -- SECTION IV: Hard direction — Neumann's theorem (axiom)
