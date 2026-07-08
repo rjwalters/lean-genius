@@ -205,4 +205,19 @@ theorem univariate_psd_is_sos (p : ℝ[X]) (h : IsPSD p) :
   rw [huv, Fin.sum_univ_two]
   simp
 
+/-- **Characterization capstone (univariate Hilbert 17, iff form).**
+    A real univariate polynomial is PSD *if and only if* it is a sum of two
+    squares of polynomials. The forward direction is Hilbert's 1888 theorem
+    (`psd_eq_sq_add_sq_aux`, the substantial content); the converse is immediate,
+    since a sum of squares evaluates to a sum of squares of reals at every point.
+    Together they pin down the PSD univariate polynomials *exactly* as the
+    two-square sums — the sharp univariate counterpart of Artin's theorem
+    (which needs rational functions, and squares beyond two, in ≥ 2 variables). -/
+theorem isPSD_iff_sq_add_sq (p : ℝ[X]) :
+    IsPSD p ↔ ∃ u v : ℝ[X], p = u ^ 2 + v ^ 2 := by
+  refine ⟨fun h => psd_eq_sq_add_sq_aux p.natDegree p rfl h, ?_⟩
+  rintro ⟨u, v, rfl⟩ x
+  simp only [eval_add, eval_pow]
+  positivity
+
 end Hilbert17UnivariatePSDSOS
