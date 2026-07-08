@@ -1732,14 +1732,21 @@ private theorem grid_line_ne {s t : Finset (ℝ × ℝ)} (x : ℝ × ℝ)
     (hxs : x ∈ s) (hxt : x ∉ t) : s ≠ t :=
   fun h => hxt (h ▸ hxs)
 
-/-- **The `4×4` grid has at least eight four-point lines** — its four
-rows and four columns.  Each is a four-element collinear subset of the
-grid, and the eight are pairwise distinct (rows are separated by their
-common second coordinate, columns by their common first coordinate, and
-a row differs from a column because a row contains two points with
-distinct first coordinates while a column's points all share theirs). -/
-theorem gridSet_fourPointLineCount_ge_eight :
-    8 ≤ fourPointLineCount gridSet := by
+/-- **The `4×4` grid has at least ten four-point lines** — its four
+rows, four columns, and two main diagonals.  Ten is the *exact* number
+of four-point lines carried by the maximal no-five-collinear grid (the
+four rows, four columns, and the two slope-`±1` diagonals; no other line
+meets four grid points), and all ten are in general position — no single
+point lies on all of them, unlike the concurrent pencils
+`crossSet`/`asteriskSet`.  Each of the ten is a four-element collinear
+subset of the grid, and the ten are pairwise distinct (rows are
+separated by their common second coordinate, columns by their common
+first coordinate, a row differs from a column because a row contains two
+points with distinct first coordinates while a column's share theirs,
+and each diagonal contains an off-axis point — `(1,1)` resp. `(1,2)` —
+absent from every row and column). -/
+theorem gridSet_fourPointLineCount_ge_ten :
+    10 ≤ fourPointLineCount gridSet := by
   rw [fourPointLineCount]
   set Q : Finset (ℝ × ℝ) → Prop := fun S =>
     S.card = 4 ∧ ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
@@ -1921,8 +1928,55 @@ theorem gridSet_fourPointLineCount_ge_eight :
     · intro p hp
       simp only [Finset.mem_insert, Finset.mem_singleton] at hp
       rcases hp with rfl | rfl | rfl | rfl <;> simp [collinear]
-  -- The eight lines form an eight-element subfamily of the filter.
-  have hsub : ({({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)),
+  -- The two main diagonals (slope ±1).
+  have hD0 : ({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ)) ∈
+      gridSet.points.powerset.filter Q := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_, (0, 0), (1, 1), ?_, ?_, ?_, ?_⟩
+    · intro x hx
+      show x ∈ gridPoints
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl | rfl <;>
+        simp [gridPoints, Finset.mem_product]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · simp
+    · simp
+    · norm_num [Prod.ext_iff]
+    · intro p hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      rcases hp with rfl | rfl | rfl | rfl <;> norm_num [collinear]
+  have hD1 : ({(0, 3), (1, 2), (2, 1), (3, 0)} : Finset (ℝ × ℝ)) ∈
+      gridSet.points.powerset.filter Q := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_, (0, 3), (1, 2), ?_, ?_, ?_, ?_⟩
+    · intro x hx
+      show x ∈ gridPoints
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl | rfl <;>
+        simp [gridPoints, Finset.mem_product]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · simp
+    · simp
+    · norm_num [Prod.ext_iff]
+    · intro p hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      rcases hp with rfl | rfl | rfl | rfl <;> norm_num [collinear]
+  -- The ten lines form a ten-element subfamily of the filter.
+  have hsub : ({({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ)),
+      {(0, 3), (1, 2), (2, 1), (3, 0)},
+      {(0, 0), (1, 0), (2, 0), (3, 0)},
       {(0, 1), (1, 1), (2, 1), (3, 1)}, {(0, 2), (1, 2), (2, 2), (3, 2)},
       {(0, 3), (1, 3), (2, 3), (3, 3)}, {(0, 0), (0, 1), (0, 2), (0, 3)},
       {(1, 0), (1, 1), (1, 2), (1, 3)}, {(2, 0), (2, 1), (2, 2), (2, 3)},
@@ -1930,7 +1984,9 @@ theorem gridSet_fourPointLineCount_ge_eight :
       gridSet.points.powerset.filter Q := by
     intro S hS
     simp only [Finset.mem_insert, Finset.mem_singleton] at hS
-    rcases hS with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    rcases hS with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    · exact hD0
+    · exact hD1
     · exact hR0
     · exact hR1
     · exact hR2
@@ -1939,12 +1995,15 @@ theorem gridSet_fourPointLineCount_ge_eight :
     · exact hC1
     · exact hC2
     · exact hC3
-  have h8 : ({({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)),
+  have h10 : ({({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ)),
+      {(0, 3), (1, 2), (2, 1), (3, 0)},
+      {(0, 0), (1, 0), (2, 0), (3, 0)},
       {(0, 1), (1, 1), (2, 1), (3, 1)}, {(0, 2), (1, 2), (2, 2), (3, 2)},
       {(0, 3), (1, 3), (2, 3), (3, 3)}, {(0, 0), (0, 1), (0, 2), (0, 3)},
       {(1, 0), (1, 1), (1, 2), (1, 3)}, {(2, 0), (2, 1), (2, 2), (2, 3)},
-      {(3, 0), (3, 1), (3, 2), (3, 3)}} : Finset (Finset (ℝ × ℝ))).card = 8 := by
+      {(3, 0), (3, 1), (3, 2), (3, 3)}} : Finset (Finset (ℝ × ℝ))).card = 10 := by
     rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
+        Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
         Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
         Finset.card_insert_of_notMem, Finset.card_insert_of_notMem,
         Finset.card_insert_of_notMem]
@@ -2019,31 +2078,94 @@ theorem gridSet_fourPointLineCount_ge_eight :
           (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
         grid_line_ne (0, 0) (by simp)
           (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff])⟩
+    · -- D- ∉ {R0, R1, R2, R3, C0, C1, C2, C3}
+      simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg
+      refine ⟨grid_line_ne (0, 3) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 3) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 3) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (1, 2) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (1, 2) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 3) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 3) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 3) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff])⟩
+    · -- D+ ∉ {D-, R0, R1, R2, R3, C0, C1, C2, C3}
+      simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg
+      refine ⟨grid_line_ne (0, 0) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (1, 1) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 0) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 0) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 0) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (1, 1) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 0) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 0) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]),
+        grid_line_ne (0, 0) (by simp)
+          (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff])⟩
   have hle := Finset.card_le_card hsub
-  rw [h8] at hle
+  rw [h10] at hle
   exact hle
 
-/-- **Framework floor ≥ 8** (this session's deliverable).  The explicit
-sixteen-point `4×4` grid is a no-five-collinear planar point set with at
-least eight four-point lines — its four rows and four columns —
-`IsLowerBoundConstruction gridSet 8`.  This more than doubles the
-asterisk's floor of `3`, and does so with lines in general position
-(the grid whose projection underlies Solymosi–Stojaković), rather than a
-concurrent pencil.  The construction is still *constant* in size: the
-asymptotic growth of `fourPointLineCount` remains the OPEN content of
-`grunbaum_lower_bound_three_halves` and `solymosi_stojakovic_lower_bound`. -/
+/-- **The `4×4` grid has at least eight four-point lines** (corollary of
+the sharper `gridSet_fourPointLineCount_ge_ten`).  Retained so downstream
+citations of the rows-and-columns floor keep resolving. -/
+theorem gridSet_fourPointLineCount_ge_eight :
+    8 ≤ fourPointLineCount gridSet :=
+  le_trans (by norm_num) gridSet_fourPointLineCount_ge_ten
+
+/-- **Framework floor ≥ 8.**  The explicit sixteen-point `4×4` grid is a
+no-five-collinear planar point set with at least eight four-point lines —
+its four rows and four columns — `IsLowerBoundConstruction gridSet 8`.
+This more than doubles the asterisk's floor of `3`, and does so with
+lines in general position (the grid whose projection underlies
+Solymosi–Stojaković), rather than a concurrent pencil. -/
 theorem gridSet_isLowerBoundConstruction :
     IsLowerBoundConstruction gridSet 8 :=
   ⟨gridSet_noFiveCollinear, by exact_mod_cast gridSet_fourPointLineCount_ge_eight⟩
 
 /-- **The framework floor reaches at least eight.**  There is a
 no-five-collinear planar point set of exactly sixteen points that is a
-lower-bound construction for threshold `8`.  Together with the pencil
-witnesses `exists_isLowerBoundConstruction_three` (floor `3`, ten
-points), `_two` (floor `2`) and `_pos` (floor `1`), this is the largest
-explicit constant-size lower-bound witness in the file. -/
+lower-bound construction for threshold `8`. -/
 theorem exists_isLowerBoundConstruction_eight :
     ∃ P : PlanarPointSet, P.points.card = 16 ∧ IsLowerBoundConstruction P 8 :=
   ⟨gridSet, gridPoints_card, gridSet_isLowerBoundConstruction⟩
+
+/-- **Framework floor ≥ 10** (this session's deliverable).  Adding the
+two slope-`±1` main diagonals to the rows and columns certifies all
+**ten** four-point lines of the maximal `4×4` grid — its *exact* count —
+so `IsLowerBoundConstruction gridSet 10`.  All ten lie in general
+position: no point is common to all of them (the rows/columns meet only
+pairwise, and each diagonal carries an off-axis point `(1,1)` / `(1,2)`).
+The construction remains *constant* in size, so the asymptotic growth of
+`fourPointLineCount` is still the OPEN content of
+`grunbaum_lower_bound_three_halves` and `solymosi_stojakovic_lower_bound`;
+this iteration raises the explicit constant floor to its 4×4-grid ceiling. -/
+theorem gridSet_isLowerBoundConstruction_ten :
+    IsLowerBoundConstruction gridSet 10 :=
+  ⟨gridSet_noFiveCollinear, by exact_mod_cast gridSet_fourPointLineCount_ge_ten⟩
+
+/-- **The framework floor reaches at least ten.**  There is a
+no-five-collinear planar point set of exactly sixteen points that is a
+lower-bound construction for threshold `10` — the largest explicit
+constant-size lower-bound witness in the file, and the maximum any
+`4×4` grid can supply.  Supersedes `exists_isLowerBoundConstruction_eight`
+(same witness, sharper threshold). -/
+theorem exists_isLowerBoundConstruction_ten :
+    ∃ P : PlanarPointSet, P.points.card = 16 ∧ IsLowerBoundConstruction P 10 :=
+  ⟨gridSet, gridPoints_card, gridSet_isLowerBoundConstruction_ten⟩
 
 end Erdos101OQ04
