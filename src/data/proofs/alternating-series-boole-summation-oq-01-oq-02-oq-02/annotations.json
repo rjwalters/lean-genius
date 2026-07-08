@@ -47,17 +47,40 @@
     ]
   },
   {
-    "id": "ann-sharp-bound",
+    "id": "ann-boole-limit",
     "proofId": "alternating-series-boole-summation-oq-01-oq-02-oq-02",
     "range": {
       "startLine": 90,
+      "endLine": 111
+    },
+    "type": "theorem",
+    "title": "The Boole series converges to a₀ − 2S",
+    "content": "fdiff_tendsto identifies the limit of the forward-difference (Boole) series: altSum (Δa) 0 m → a_0 − 2S, obtained by specializing the grandparent's fdiff_altSum_tendsto to n = 0 (where (-1)^0 a_0 = a_0). Establishing this limit FIRST is what makes the next theorem's bound a statement about a genuine remainder rather than about an arbitrary target: the quantity (a_0 − 2S) − altSum (Δa) 0 m is the true truncation error of a convergent series. The hypothesis is only a → 0 (plus the original limit S); antitonicity is not yet needed here — it enters with the sharp bound.",
+    "mathContext": "$\\mathrm{altSum}\\,(\\Delta a)\\,0\\,m \\to a_0 - 2S = T$, the Boole value (grandparent's limit at $n=0$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Boole value T = a₀ − 2S",
+      "fdiff_altSum_tendsto at n = 0",
+      "limit of forward-difference series",
+      "genuine remainder vs arbitrary target"
+    ],
+    "prerequisites": [
+      "fdiff_altSum_tendsto (grandparent)",
+      "convergence of the original alternating series to S"
+    ]
+  },
+  {
+    "id": "ann-sharp-bound",
+    "proofId": "alternating-series-boole-summation-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 112,
       "endLine": 140
     },
     "type": "theorem",
-    "title": "The Boole limit and the sharp remainder bound",
-    "content": "fdiff_tendsto identifies a_0 − 2S as the true limit of the Boole series (fdiff_altSum_tendsto at n = 0), so the quantity bounded is a genuine remainder. fdiff_remainder_bound is the headline result: rewriting by the exact remainder identity and casing on the parity of m, the parent's brackets even_partial_le / le_odd_partial pin r_m to [0, a_m] for even m and [−a_m, 0] for odd m. The identity then reads a_m − 2 r_m (even) or −a_m − 2 r_m (odd), both of absolute value ≤ a_m by abs_le and linarith. The sign correlation between (-1)^m a_m and r_m is exactly what makes the two terms partially cancel, sharpening the naive 3 a_m to a_m; nonnegativity a_m ≥ 0 is derived from the bracket, not assumed, so only antitonicity and convergence are needed.",
+    "title": "The sharp remainder bound |T − altSum (Δa) 0 m| ≤ aₘ",
+    "content": "fdiff_remainder_bound is the headline result: rewriting by the exact remainder identity and casing on the parity of m, the parent's brackets even_partial_le / le_odd_partial pin r_m to [0, a_m] for even m and [−a_m, 0] for odd m. The identity then reads a_m − 2 r_m (even) or −a_m − 2 r_m (odd), both of absolute value ≤ a_m by abs_le and linarith. The sign correlation between (-1)^m a_m and r_m is exactly what makes the two terms partially cancel, sharpening the naive 3 a_m to a_m; nonnegativity a_m ≥ 0 is derived from the bracket, not assumed, so only antitonicity and convergence are needed.",
     "mathContext": "$|(a_0 - 2S) - \\mathrm{altSum}\\,(\\Delta a)\\,0\\,m| \\le a_m$, matching the original series' sharp bound.",
-    "significance": "essential",
+    "significance": "key",
     "relatedConcepts": [
       "sharp remainder / first-omitted-term bound",
       "even/odd bracketing",
@@ -66,7 +89,7 @@
     ],
     "prerequisites": [
       "even_partial_le and le_odd_partial (parent brackets)",
-      "fdiff_altSum_tendsto (Boole limit, grandparent)",
+      "the exact remainder identity fdiff_remainder_eq",
       "abs_le, parity case split, linarith"
     ]
   },
