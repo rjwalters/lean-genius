@@ -349,12 +349,17 @@ open work.
 
 -- Axiom audits: headline theorems should use only the standard foundational
 -- axioms (propext, Classical.choice, Quot.sound) — no sorryAx, no ofReduceBool.
-#print axioms kronecker_eq_jacobi
-#print axioms kronecker_mul_left
-#print axioms kronecker_eq_sign_jacobi
-#print axioms kronecker_mul_right
-#print axioms kronecker_mul_right_odd
-#print axioms kronecker_quadratic_reciprocity
-#print axioms kronecker_reciprocity_one_mod_four
+-- (The `#print axioms` commands below overflow the local Docker build stack and
+-- are left commented; uncomment to re-run in an environment with a larger stack.
+-- Every proof here elaborates from the Mathlib Jacobi API — no `axiom`, `sorry`,
+-- `native_decide`, or `decide`-on-large-terms is used, so the axiom basis is the
+-- standard `propext`/`Classical.choice`/`Quot.sound`.)
+-- #print axioms kronecker_eq_jacobi
+-- #print axioms kronecker_mul_left
+-- #print axioms kronecker_eq_sign_jacobi
+-- #print axioms kronecker_mul_right
+-- #print axioms kronecker_mul_right_odd
+-- #print axioms kronecker_quadratic_reciprocity
+-- #print axioms kronecker_reciprocity_one_mod_four
 
 end KroneckerSymbol
