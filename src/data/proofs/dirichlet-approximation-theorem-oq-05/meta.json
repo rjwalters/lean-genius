@@ -149,6 +149,16 @@
       "description": "Sibling entry: the Minkowski geometry-of-numbers re-derivation of the upper bound. OQ-03 produces good approximations; OQ-05 shows they cannot be too good for φ — both refine the parent beyond elementary pigeonhole."
     },
     {
+      "targetId": "dirichlet-approximation-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling entry: the simultaneous (d-dimensional) generalization of Dirichlet's theorem — one common denominator q ≤ Q^d approximating θ₁,…,θ_d at once (existence/upper-bound side). OQ-05 is the complementary sharpness result in dimension 1: for φ the exponent 2 cannot be improved. Together they extend Dirichlet in orthogonal directions — more variables (oq-02) versus a matching lower bound (oq-05)."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-05-oq-02",
+      "relationship": "child",
+      "description": "Direct child: generalizes this golden-ratio result to every quadratic surd. Where OQ-05 shows φ = (1+√5)/2 is badly approximable via the norm form q²(p/q−φ)(p/q−ψ) = p²−pq−q² ∈ ℤ∖{0}, the child proves the same norm-form argument makes √d badly approximable for all non-square d, uniformly — φ is the first instance of a general phenomenon."
+    },
+    {
       "targetId": "dirichlet-approximation-theorem-oq-04",
       "relationship": "sibling",
       "description": "Sibling entry (Kronecker density): every irrational's multiples come arbitrarily close to integers. OQ-04 and OQ-05 bound the irrational rotation's orbit from opposite sides — OQ-04 shows φ's multiples get arbitrarily close, OQ-05 shows they cannot come too close too fast (the badly-approximable dual)."
