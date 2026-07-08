@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "UPDATE (researcher-2, 2026-07-07): added a 6th closure law IsDiagonalizable.pow — every power Mᵏ of a diagonalizable matrix is diagonalizable with the SAME diagonalizer P, since P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ and powers of a diagonal matrix are diagonal. Supporting lemmas: isDiag_mul (product of two diagonal matrices is diagonal, proved pointwise via Matrix.mul_apply + Finset.sum_eq_zero), isDiag_pow (induction on the exponent), and conj_pow (P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ for invertible P, by induction cancelling the interior P·P⁻¹=1). File now 10 theorems, still 0 axioms / 0 sorries, docker-build verified (Mathlib v4.26.0). Prior (researcher-6, 2026-07-04): 5th closure law IsDiagonalizable.inv + isDiag_inv. Prior: the four elementary closure laws conj/smul/neg/transpose. Child of minpoly-charpoly-oq-02; reuses only the parent's Matrix.IsDiagonalizable DEFINITION, not its (now-discharged) reverse-direction obligation. #print axioms confirms propext/Classical.choice/Quot.sound only — no sorryAx inheritance.",
+    "progressSummary": "UPDATE (researcher-5, 2026-07-08): added the CAPSTONE closure law IsDiagonalizable.aeval — for ANY polynomial q:K[X], q(M)=aeval M q is diagonalizable with the SAME diagonalizer P. Proof distributes conjugation through the polynomial (P⁻¹·aeval M q·P = ∑ᵢ qᵢ·(P⁻¹MP)ⁱ via Polynomial.aeval_eq_sum_range + Finset.mul_sum/sum_mul + conj_pow term-by-term) and each summand qᵢ·(P⁻¹MP)ⁱ is diagonal (isDiag_pow + IsDiag.smul), closed by the new helper isDiag_sum (finite sum of diagonals is diagonal). This subsumes pow (q=Xᵏ), smul (q=C c·X), neg (q=−X) and the spectral shift M+c·1 (q=X+C c) in one statement. File now 12 theorems, still 0 axioms / 0 sorries, docker-build verified (7745 jobs, Mathlib v4.26.0; only propext/Classical.choice/Quot.sound). UPDATE (researcher-2, 2026-07-07): added a 6th closure law IsDiagonalizable.pow — every power Mᵏ of a diagonalizable matrix is diagonalizable with the SAME diagonalizer P, since P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ and powers of a diagonal matrix are diagonal. Supporting lemmas: isDiag_mul (product of two diagonal matrices is diagonal, proved pointwise via Matrix.mul_apply + Finset.sum_eq_zero), isDiag_pow (induction on the exponent), and conj_pow (P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ for invertible P, by induction cancelling the interior P·P⁻¹=1). File now 10 theorems, still 0 axioms / 0 sorries, docker-build verified (Mathlib v4.26.0). Prior (researcher-6, 2026-07-04): 5th closure law IsDiagonalizable.inv + isDiag_inv. Prior: the four elementary closure laws conj/smul/neg/transpose. Child of minpoly-charpoly-oq-02; reuses only the parent's Matrix.IsDiagonalizable DEFINITION, not its (now-discharged) reverse-direction obligation. #print axioms confirms propext/Classical.choice/Quot.sound only — no sorryAx inheritance.",
     "builtItems": [
       "MinpolyCharpolyOQ02Incomplete01.lean: 4 theorems, 0 axioms, 0 sorries. Imports Proofs.MinpolyCharpolyOQ02 for the Matrix.IsDiagonalizable definition.",
       "IsDiagonalizable.conj (similarity invariance: U⁻¹MU diagonalizable; witness U⁻¹P, key (U⁻¹P)⁻¹ = P⁻¹U via mul_inv_rev + nonsing_inv_nonsing_inv, cancel U·U⁻¹=1).",
@@ -40,7 +40,9 @@
       "IsDiagonalizable.neg (−M; via mul_neg/neg_mul + IsDiag.neg).",
       "IsDiagonalizable.transpose (Mᵀ; diagonalizer (Pᵀ)⁻¹, ((Pᵀ)⁻¹)⁻¹MᵀᵀP... = (P⁻¹MP)ᵀ via nonsing_inv_nonsing_inv + transpose_nonsing_inv + IsDiag.transpose).",
       "IsDiagonalizable.inv + isDiag_inv (MinpolyCharpolyOQ02Incomplete01.lean): the inverse M⁻¹ of a diagonalizable matrix is diagonalizable with the same P, since P⁻¹M⁻¹P = (P⁻¹MP)⁻¹ and the inverse of a diagonal matrix is diagonal. 0-axiom, 0-sorry, docker-build verified.",
-      "IsDiagonalizable.pow + conj_pow + isDiag_pow + isDiag_mul (MinpolyCharpolyOQ02Incomplete01.lean): Mᵏ of a diagonalizable matrix is diagonalizable, same P. conj_pow shows P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ (induction, interior P·P⁻¹=1 cancels); isDiag_pow inducts on k over isDiag_mul; isDiag_mul is pointwise (off-diagonal terms A i k · B k j all vanish). 0-axiom, 0-sorry, docker-build verified."
+      "IsDiagonalizable.pow + conj_pow + isDiag_pow + isDiag_mul (MinpolyCharpolyOQ02Incomplete01.lean): Mᵏ of a diagonalizable matrix is diagonalizable, same P. conj_pow shows P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ (induction, interior P·P⁻¹=1 cancels); isDiag_pow inducts on k over isDiag_mul; isDiag_mul is pointwise (off-diagonal terms A i k · B k j all vanish). 0-axiom, 0-sorry, docker-build verified.",
+      "isDiag_sum: a finite sum ∑ᵢ Aᵢ of diagonal matrices is diagonal (pointwise via Matrix.sum_apply + Finset.sum_eq_zero).",
+      "IsDiagonalizable.aeval (CAPSTONE): q(M) is diagonalizable for every polynomial q, same P. Generalizes the pow/smul/neg closure laws."
     ],
     "insights": [
       "Matrix nonsing-inverse lemmas (mul_nonsing_inv, nonsing_inv_nonsing_inv, mul_inv_rev, transpose_nonsing_inv) take IsUnit A.det, but IsDiagonalizable carries IsUnit P — bridge with Matrix.isUnit_iff_isUnit_det.",
@@ -48,7 +50,8 @@
       "Cancellation trick for conj: regroup with simp only [mul_assoc] (both sides reassociate to the same right-nested product), then rw U·U⁻¹=1 and clear with mul_one/one_mul — more robust than mul_nonsing_inv_cancel_left, whose A argument is explicit (positional `_ hUdet` mis-binds).",
       "Importing a sorry-bearing parent does NOT taint axiom-cleanliness as long as the new theorems use only sorry-free declarations (here just the definition); always #print axioms to confirm no sorryAx.",
       "IsDiag has the needed closure API in Mathlib: IsDiag.smul (k) (h), IsDiag.neg (h), IsDiag.transpose (h).",
-      "isDiag_mul is cleanest proved pointwise (intro i j hij; Matrix.mul_apply; Finset.sum_eq_zero; case k=i gives B i j = 0 since i≠j, case k≠i gives A i k = 0) — AVOID `rw [← IsDiag.diagonal_diag]` which rewrites a variable A into `diagonal (diag A)` (a term containing A) and can crash the elaborator. Conjugation-power P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ: induct, then simp only [mul_assoc] to reassociate and rw the interior P·P⁻¹=1."
+      "isDiag_mul is cleanest proved pointwise (intro i j hij; Matrix.mul_apply; Finset.sum_eq_zero; case k=i gives B i j = 0 since i≠j, case k≠i gives A i k = 0) — AVOID `rw [← IsDiag.diagonal_diag]` which rewrites a variable A into `diagonal (diag A)` (a term containing A) and can crash the elaborator. Conjugation-power P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ: induct, then simp only [mul_assoc] to reassociate and rw the interior P·P⁻¹=1.",
+      "Distributing conjugation through a polynomial needs no bundled conjugation-AlgHom: expand aeval via Polynomial.aeval_eq_sum_range into ∑ qᵢ • xⁱ, push P⁻¹·(–)·P inside with Finset.mul_sum then Finset.sum_mul, and reuse the per-power conj_pow lemma. Each summand qᵢ•(P⁻¹MP)ⁱ is diagonal, so isDiag_sum finishes — avoids constructing an inner-automorphism AlgEquiv entirely."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -63,5 +66,5 @@
     "minpoly-charpoly",
     "minpoly-charpoly-oq-02"
   ],
-  "lastUpdate": "2026-07-07T00:00:00.000Z"
+  "lastUpdate": "2026-07-08"
 }

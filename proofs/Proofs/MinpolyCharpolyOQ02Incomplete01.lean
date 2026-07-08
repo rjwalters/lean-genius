@@ -178,4 +178,35 @@ theorem IsDiagonalizable.pow {M : Matrix n n K} (hM : M.IsDiagonalizable) (k : �
   rw [conj_pow hPdet]
   exact isDiag_pow hD k
 
+/-- **A finite sum of diagonal matrices is diagonal.**  Pointwise off the
+    diagonal every summand vanishes, so does their sum. -/
+theorem isDiag_sum {ι : Type*} (s : Finset ι) (A : ι → Matrix n n K)
+    (h : ∀ i ∈ s, (A i).IsDiag) : (∑ i ∈ s, A i).IsDiag := by
+  intro r c hrc
+  rw [Matrix.sum_apply]
+  exact Finset.sum_eq_zero fun i hi => h i hi hrc
+
+/-- **Polynomial closure — the capstone law.**  For *any* polynomial `q : K[X]`,
+    the matrix `q(M) = aeval M q` is diagonalizable whenever `M` is, with the
+    *same* diagonalizer `P`.  Indeed
+    `P⁻¹ · q(M) · P = ∑ᵢ qᵢ · (P⁻¹ M P)ⁱ` (distributing the conjugation through
+    the polynomial and applying `conj_pow` term-by-term), and each summand
+    `qᵢ · (P⁻¹ M P)ⁱ` is diagonal (`isDiag_pow` + scaling), hence so is the sum.
+
+    This subsumes the earlier `IsDiagonalizable.pow` (`q = Xᵏ`),
+    `IsDiagonalizable.smul` (`q = C c · X`), `IsDiagonalizable.neg` (`q = -X`),
+    and the spectral shift `M + c·1` (`q = X + C c`) in one statement. -/
+theorem IsDiagonalizable.aeval {M : Matrix n n K} (hM : M.IsDiagonalizable)
+    (q : Polynomial K) : ((Polynomial.aeval M) q).IsDiagonalizable := by
+  obtain ⟨P, hP, hD⟩ := hM
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  refine ⟨P, hP, ?_⟩
+  have hconj : P⁻¹ * ((Polynomial.aeval M) q) * P
+      = ∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i • (P⁻¹ * M * P) ^ i := by
+    rw [Polynomial.aeval_eq_sum_range, Finset.mul_sum, Finset.sum_mul]
+    refine Finset.sum_congr rfl fun i _ => ?_
+    rw [Matrix.mul_smul, Matrix.smul_mul, conj_pow hPdet]
+  rw [hconj]
+  exact isDiag_sum _ _ fun i _ => IsDiag.smul (q.coeff i) (isDiag_pow hD i)
+
 end MinpolyCharpolyOQ02Incomplete01
