@@ -45,7 +45,7 @@
       "The pattern 15·2^k for the reverse inequality",
       "Generalized statement for f(n) = o(n)"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 132,
     "prerequisites": [
       "Euler's totient function φ(n) and its multiplicativity",
@@ -53,8 +53,8 @@
       "Asymptotic notation (o(n), almost all)",
       "Prime factorization and coprimality"
     ],
-    "assumptions": "2 axioms: lucaPomerance_density_one, glw_infinitely_many. See Lean source for complete statements.",
-    "theoremCount": 1,
+    "assumptions": "1 axiom: lucaPomerance_density_one (the density-1 result of Luca-Pomerance 2002, requiring analytic number theory). The former glw_infinitely_many axiom (Grytczuk-Luca-Wojtowicz 2001, infinitely many n with phi(n) < phi(n-phi(n))) is now constructively PROVED via the explicit family n = 15*2^(k+1). Concrete illustrative examples use native_decide (Lean.ofReduceBool). See Lean source for complete statements.",
+    "theoremCount": 4,
     "definitionCount": 4
   },
   "overview": {
@@ -127,7 +127,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures both parts of Erdős Problem 1064. Luca-Pomerance showed φ(n) > φ(n - φ(n)) has density 1, while Grytczuk-Luca-Wójtowicz showed the reverse inequality holds for infinitely many n (including all n = 15·2^k). We state both results as axioms and verify concrete examples.",
+    "summary": "This formalization captures both parts of Erdős Problem 1064. Luca-Pomerance showed φ(n) > φ(n - φ(n)) has density 1, while Grytczuk-Luca-Wójtowicz showed the reverse inequality holds for infinitely many n (including all n = 15·2^k). The infinitely-often part (Grytczuk-Luca-Wojtowicz) is constructively PROVED here from the explicit family n = 15*2^(k+1), eliminating its former axiom; only the density-1 result of Luca-Pomerance remains stated as an axiom (it requires analytic number theory).",
     "implications": "**Theoretical Significance**: The resolution illustrates fundamental themes in analytic number theory:\n\n1. **Typical vs exceptional behavior:** The set $A_>$ has density 1 but its complement $A_<$ is infinite — a common pattern for arithmetic functions where 'almost all' coexists with infinitely many exceptions. This parallels the Erdős-Kac theorem (1940), which shows that $\\omega(n) \\sim \\log\\log n$ for almost all $n$ but fluctuates on exceptional sets.\n\n2. **Smooth number structure:** The Luca-Pomerance proof exploits that $n - \\phi(n)$ tends to be smooth (divisible by many small primes) for typical $n$. Smooth numbers have low totient ratios, which is why $\\phi(n - \\phi(n))$ is typically small. This connects to the broader theory of smooth number distribution (Dickman's function, Canfield-Erdős-Pomerance theorem).\n\n3. **Multiplicative structure and explicit constructions:** The pattern $15 \\cdot 2^k$ exploits the multiplicativity of $\\phi$ to construct infinitely many exceptions. Similar techniques appear throughout Erdős's work: finding sparse but infinite exceptional sets via arithmetic structure.\n\n4. **Iterated arithmetic functions:** The map $n \\mapsto n - \\phi(n) \\mapsto n - \\phi(n) - \\phi(n - \\phi(n)) \\mapsto \\cdots$ defines a dynamical system on $\\mathbb{N}$ whose long-term behavior is not well understood. The Carmichael conjecture — that for every $n$, the equation $\\phi(x) = n$ has either 0 or $\\geq 2$ solutions — relates to the 'fiber structure' of $\\phi$ over its range.\n\n5. **Analogues for other functions:** Similar questions for the sum-of-divisors function $\\sigma(n)$ — comparing $\\sigma(n)$ with $\\sigma(n - \\sigma(n))$ when $\\sigma(n) < n$ (deficient numbers) — lead to different density behavior due to the different growth rate of $\\sigma$.",
     "openQuestions": [
       "What is the density of A₌ where φ(n) = φ(n - φ(n))?",
@@ -193,9 +193,9 @@
       "Nat"
     ],
     "namespace": "Erdos1064",
-    "lineCount": 132,
-    "axiomCount": 2,
-    "theoremCount": 1,
+    "lineCount": 182,
+    "axiomCount": 1,
+    "theoremCount": 4,
     "definitionCount": 4,
     "path": "Proofs/Erdos1064Problem.lean",
     "sorries": 0
