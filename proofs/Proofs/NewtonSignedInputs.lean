@@ -27,6 +27,9 @@
     obtained by applying the (already signed) k = 1 inequality to the
     reciprocals yᵢ = 1/xᵢ and clearing eₙ².  This transports signedness from
     the bottom index to the top index for every n.
+  * `newton_signed_top_general`: the same top-index inequality with the nonzero
+    hypothesis removed — it holds for ALL real inputs, since a zero coordinate
+    forces eₙ = 0 and collapses the right-hand side.
   * `newton_n3_k2_signed`: the n = 3, k = 2 case for arbitrary reals (including
     zeros), by an explicit sum-of-squares certificate
         (ab+bc+ca)² - 3abc(a+b+c) = ½[(ab-bc)² + (bc-ca)² + (ca-ab)²].
@@ -128,6 +131,28 @@ theorem newton_signed_top {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ)
       = (Nat.choose n 2 : ℝ) * elemSymm (n - 1) x ^ 2 := by rw [mul_assoc, h1]
   rw [hL, hR] at key
   exact key
+
+/-- **Newton's inequality at the top index, for ALL real inputs (no nonzero
+hypothesis).**  For all `n ≥ 2` and all reals `x₁,…,xₙ`,
+    C(n,2)·e_{n-1}(x)² ≥ n²·e_{n-2}(x)·eₙ(x).
+The nonzero hypothesis of `newton_signed_top` is unnecessary: if some `xᵢ = 0`
+then `eₙ(x) = ∏ xᵢ = 0`, so the right-hand side vanishes while the left-hand
+side `C(n,2)·e_{n-1}²` is a nonnegative multiple of a square.  Combined with the
+nonzero case (`newton_signed_top`) this gives the fully general signed top-index
+Newton inequality. -/
+theorem newton_signed_top_general {n : ℕ} (hn : 2 ≤ n) (x : Fin n → ℝ) :
+    (Nat.choose n 2 : ℝ) * (elemSymm (n - 1) x) ^ 2
+      ≥ (n : ℝ) ^ 2 * (elemSymm (n - 2) x * elemSymm n x) := by
+  rcases eq_or_ne (elemSymm n x) 0 with hen | hen
+  · -- eₙ(x) = 0 (e.g. some coordinate is zero): the right-hand side collapses.
+    rw [hen, mul_zero, mul_zero]
+    exact mul_nonneg (Nat.cast_nonneg _) (sq_nonneg _)
+  · -- eₙ(x) = ∏ xᵢ ≠ 0, so every coordinate is nonzero; use the nonzero case.
+    have hx : ∀ i, x i ≠ 0 := by
+      rw [elemSymm_n_eq_prod] at hen
+      intro i hi
+      exact hen (Finset.prod_eq_zero (Finset.mem_univ i) hi)
+    exact newton_signed_top hn x hx
 
 /-
 ## Part III: The n = 3, k = 2 case for arbitrary reals (via sum of squares)
