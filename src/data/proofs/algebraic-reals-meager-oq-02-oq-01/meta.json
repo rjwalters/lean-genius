@@ -145,5 +145,30 @@
       "summary": "Proves real_symmetric_oxtoby: ℝ = L ⊔ Lᶜ (disjoint, union = univ) with L comeagre-and-null and Lᶜ meagre-and-conull, and oq01_resolution packaging the dual witness with the decomposition.",
       "mathContext": "A single partition of ℝ witnesses both failures of implication: comeagre ⇏ conull (on L) and meagre ⇏ null (on Lᶜ)."
     }
+  ],
+  "conclusion": {
+    "summary": "The entry completes the Oxtoby measure/category contrast in the direction the parent OQ-02 leaves implicit. Where OQ-02 exhibits a comeagre yet null set (the Liouville numbers L), this entry supplies the dual — a meagre yet conull set — with no new construction: the witness is simply Lᶜ. The abstract engine is isMeagre_compl_of_mem_residual (the complement of any residual set is meagre, a two-line unfolding of IsMeagre s := sᶜ ∈ residual via compl_compl); instantiated at L it gives nonLiouville_meagre, while compl_compl with volume_setOf_liouville gives nonLiouville_conull. These combine into the headline exists_meagre_conull and, sharper, real_symmetric_oxtoby: the partition ℝ = L ⊔ Lᶜ into a comeagre-null piece and a meagre-conull piece. 8 theorems, 0 sorries, 0 axioms.",
+    "implications": "The symmetric decomposition ℝ = L ⊔ Lᶜ makes precise that Baire category and Lebesgue measure fail to coincide not merely as inequivalent notions but in opposite directions along a single partition: one piece is topologically large and measure-small, the other topologically small and measure-large. This is the concrete realisation of the classical fact (Oxtoby) that the meagre and null σ-ideals, despite their formal duality, are genuinely distinct — ℝ can be split into a meagre set and a null set. The reusable abstract lemma isMeagre_compl_of_mem_residual mechanically converts any comeagre-null witness into a meagre-conull one, so the construction transfers verbatim to any other residual null set.",
+    "openQuestions": [
+      "Can the decomposition be strengthened to a quantitative or effective statement — e.g. an explicit Borel (Fσ / Gδ) representative of each piece, or a bound on the Baire-category / measure 'rate' at which L and Lᶜ separate?",
+      "Does the same complementation duality package cleanly for other σ-ideal pairs beyond (meagre, null) — for instance σ-porous versus null, or Haar-meagre versus Haar-null in a general Polish group — as a single abstract lemma of which isMeagre_compl_of_mem_residual is the topological instance?",
+      "Is there a canonical constructive witness of the dual phenomenon that avoids the Liouville numbers entirely, exhibiting a meagre conull set built directly rather than as a complement?"
+    ]
+  },
+  "references": [
+    {
+      "title": "Measure and Category: A Survey of the Analogies between Topological and Measure Spaces",
+      "author": "John C. Oxtoby",
+      "year": "1980",
+      "venue": "Springer, Graduate Texts in Mathematics 2 (2nd ed.)",
+      "description": "The standard reference for the duality and genuine difference between the meagre and null σ-ideals, including the decomposition of ℝ into a meagre set and a null set that this entry formalizes."
+    },
+    {
+      "title": "Mathlib4: NumberTheory.Transcendental.Liouville.Residual and .Measure",
+      "author": "Mathlib Community",
+      "year": "2026",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of eventually_residual_liouville (the Liouville numbers are comeagre) and volume_setOf_liouville (they are Lebesgue-null) — the separating witness reused here in the dual direction."
+    }
   ]
 }
