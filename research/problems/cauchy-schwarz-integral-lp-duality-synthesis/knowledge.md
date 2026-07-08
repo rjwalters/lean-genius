@@ -1151,3 +1151,63 @@ Lean-side much longer than S18's "180s" figure but well under the 60min envelope
 reaped mid-session once** (killed an in-flight build; branch survived) — commit before every
 Docker build; recreate via `git worktree add .loom/worktrees/researcher-5 feature/researcher-5`
 then `git reset --hard origin/main`.
+
+### 2026-07-08 (Session 22, researcher-6) — REPRESENTER CONSISTENCY brick VERIFIED: `representer_ae_eq_of_subset` + norm-monotonicity corollary [0-sorry/0-axiom, first-try green]
+
+**State of the world (re-read of `origin/main`, not the stale S16–S19 notes).** The
+σ-finite Riesz theorem is now **fully verified** on main: `Incomplete01.lean` is a clean
+47-line file (`RieszSigmaFiniteComplete.riesz_lp_surjective_sigma_finite`, 0 sorry)
+assembled from the split `…Incomplete01{Infra,Norm,Loc}.lean` pieces (the S18/S19
+"split + drift" mandate was completed in the intervening unlogged sessions #34741/#34744).
+It **returns the norm bound** `eLpNorm g q μ ≤ ofReal ‖φ‖`. The ONLY remaining `sorry`
+in the whole strand is `RieszLpDualitySynthesis.riesz_lp_surjective_general`
+(Synthesis.lean:345) — the arbitrary-measure **maximality assembly** (Folland 6.16).
+
+**All HARD analysis was already packaged by prior sessions** (verified, decoupled,
+Mathlib-only): nondegeneracy/uniqueness `RieszLpDualityAnnihilator.lp_pairing_eq_zero_ae_zero`;
+gluing-forces-vanishing `RieszLpDualityGluing.eLpNorm_ae_zero_on_diff_of_le`; q-power
+additivity `RieszLpDualityIngredients.eLpNorm_rpow_restrict_{union,iUnion,diff,mono}`;
+σ-finite countable union `sigmaFinite_restrict_iUnion`; step-1 pullback-with-norm-bound
+`RieszLpDualitySynthesis.riesz_representer_on_sigmaFinite_set`; decoupled isometric
+`RieszLpDualityExtension.extByZeroCLM{,_coeFn}`.
+
+**The one structural brick that was still MISSING** — the "by uniqueness of the
+representing function" that the Synthesis top-of-file sketch (steps 2–3) *assumes* but never
+packaged: **representer consistency under set inclusion**. Added this session as a new
+standalone Mathlib-only file `CauchySchwarzIntegralLpDualityConsistency.lean` (namespace
+`RieszLpDualityConsistency`), **first-try Docker-green, 0 sorry / 0 axiom**:
+
+- `representer_ae_eq_of_subset`: for `S ⊆ S'` measurable and `g_S ∈ Lᵠ(μ|S)`,
+  `g_{S'} ∈ Lᵠ(μ|S')` representing the `extByZero`-pullbacks of the **same** `φ`, then
+  `g_S =ᵐ[μ|S] g_{S'}`. Proof: Mathlib
+  `AEFinStronglyMeasurable.ae_eq_of_forall_setIntegral_eq` (AEEqOfIntegral.lean:303), tested
+  against the Lᵖ indicator `𝟙_t` of finite `t ⊆ S`. Both `∫_t g_S ∂μ` and `∫_t g_{S'} ∂μ`
+  equal `φ` at the **same** Lᵖ(μ) element (`extS 𝟙_t =ᵐ[μ] 𝟙_t =ᵐ extS' 𝟙_t` ⟹ equal via
+  `Lp.ext`), so they coincide.
+- `representer_eLpNorm_mono_of_subset`: `‖g_S‖_{q,S} ≤ ‖g_{S'}‖_{q,S'}` (consistency +
+  `eLpNorm_congr_ae` + `eLpNorm_mono_measure`). This is exactly the input that pins
+  `‖g_T‖ = c` in the maximality step (since `Sₙ ⊆ T ⟹ ‖g_{Sₙ}‖ ≤ ‖g_T‖ ≤ c`).
+
+**DECOUPLED design.** The two extension maps enter only through the coeFn characterization
+`extS f =ᵐ[μ] S.indicator f`, taken as abstract CLM hypotheses ⇒ **`import Mathlib` only**,
+does NOT touch the σ-finite chain. Either concrete `extByZeroCLM` (decoupled or in-chain)
+satisfies the hypothesis. `hp1`/`hptop` were unused (consistency needs only `q` finite via
+`hpq`) so dropped; kept `[Fact (1 ≤ p)]`.
+
+**What remains to eliminate the axiom = pure maximizing-sequence bookkeeping in
+`riesz_lp_surjective_general`** (no new analysis). Sketch, now with EVERY ingredient in hand:
+(1) `c := ⨆_S ‖g_S‖_q` over measurable σ-finite-restriction `S`, choice-selecting a
+representer per `S` from `riesz_representer_on_sigmaFinite_set`; `c ≤ ofReal‖φ‖`. (2) maximizing
+seq `Sₙ` with `‖g_{Sₙ}‖ → c`; `T = ⋃ₙ Sₙ` σ-finite (`sigmaFinite_restrict_iUnion`); `‖g_T‖ = c`
+via `representer_eLpNorm_mono_of_subset` (`≥`) and `T` qualifying (`≤`). (3) arbitrary
+`f ∈ Lᵖ(μ)` has σ-finite support `S_f` (`memLp_exists_sigmaFinite_support`); `U = T ∪ S_f`;
+`g_U =ᵐ g_T` on `T` (`representer_ae_eq_of_subset`), and `‖g_U‖_{q,U} ≤ c = ‖g_U‖_{q,T}` ⟹
+`g_U = 0` a.e. off `T` (`eLpNorm_ae_zero_on_diff_of_le`), so `φ f = ∫ f·g_U = ∫ f·(ext-by-0 of
+g_T)`. The remaining friction is the `sSup`/choice/maximizing-sequence extraction (ℝ≥0∞ or
+`.toReal` bounded by `‖φ‖`), est. ~200 lines of glue.
+
+**Mathlib v4.26 API notes (this session):** `AEFinStronglyMeasurable.ae_eq_of_forall_setIntegral_eq`
+takes `(int-finite gS)(int-finite gS')(setIntegral-eq)(aefsm gS)(aefsm gS')`; `memLp_indicator_const`
+disjunction order is `c = 0 ∨ μ s ≠ ∞`; `MemLp.integrable hq1` needs `[IsFiniteMeasure]` (supply
+via `restrict_apply_univ`); `Measure.restrict_restrict hs` needs the OUTER `in`-set measurable;
+`Lp.ext : f =ᵐ[μ] g → f = g`.
