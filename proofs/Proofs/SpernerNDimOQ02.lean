@@ -3373,7 +3373,7 @@ theorem zeroPivotCell_lastIncDir (s : GridSimplex d N) (hd1 : 0 < d)
     (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
     lastIncDir (zeroPivotCell s hd1 hfeas) hd1 = s.incDir ⟨0, hd1⟩ := by
   have hk : d - 1 < d := by omega
-  have hnl : ¬ (⟨d - 1, hk⟩ : Fin d).val + 1 < d := by simp only [Fin.val_mk]; omega
+  have hnl : ¬ (⟨d - 1, hk⟩ : Fin d).val + 1 < d := by omega
   show zeroPivotInc s hd1 ⟨d - 1, hk⟩ = s.incDir ⟨0, hd1⟩
   exact zeroPivotInc_last s hd1 ⟨d - 1, hk⟩ hnl
 
