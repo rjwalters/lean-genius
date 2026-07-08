@@ -82,24 +82,31 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Module header and the imported Cassini core",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "The docstring frames Vajda as the master identity above Cassini, Catalan, and d'Ocagne and states the single-bilinear-expansion strategy. The setup lines are the linchpin of the whole approach: `import Proofs.CassiniIdentityOQ01OQ01` and `open CassiniIdentityOQ01OQ01 (cassini_sub)` pull in the parent file's normalized Cassini core F_{n+1}² − F_n·F_{n+1} − F_n² = (−1)^n, so this file contributes no induction of its own — the sole induction in the development already lives inside the imported cassini_sub."
+    },
+    {
       "id": "vajda-master",
       "title": "Vajda's identity (the bilinear master identity)",
-      "startLine": 54,
-      "endLine": 98,
+      "startLine": 51,
+      "endLine": 106,
       "summary": "vajda proves F_{n+i}·F_{n+j} − F_n·F_{n+i+j} = (−1)^n·F_i·F_j. After the i=0 and j=0 vanishing cases, the i=s+1, j=t+1 case expands all three compound Fibonacci values (and the inner F_{s+t+1}, F_{s+t+2}) with Nat.fib_add, then a single linear_combination against the Cassini core cassini_sub collapses every cross term."
     },
     {
       "id": "vajda-specializations",
       "title": "Specializations: Cassini, Catalan, d'Ocagne",
-      "startLine": 100,
-      "endLine": 129,
+      "startLine": 108,
+      "endLine": 137,
       "summary": "vajda_cassini (i=j=1), vajda_catalan (i=j=r, recovering the parent's catalan_aux), and vajda_docagne (j=1) each follow from vajda by a one-line linear_combination, exhibiting the three classical bilinear identities as instances of the master identity."
     },
     {
       "id": "vajda-sanity",
       "title": "Numerical sanity checks",
-      "startLine": 131,
-      "endLine": 147,
+      "startLine": 139,
+      "endLine": 154,
       "summary": "vajda_2_1_3 (F₃F₅ − F₂F₆ = 2) and vajda_3_2_2 (F₅² − F₃F₇ = −1, the Catalan instance) check concrete numerical instances of the master identity."
     }
   ],
