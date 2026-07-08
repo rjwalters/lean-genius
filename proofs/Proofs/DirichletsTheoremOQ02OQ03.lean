@@ -794,4 +794,58 @@ theorem B_div_C_diverges (m : ℕ) : ∃ K, ∀ k, K ≤ k → m * C k ≤ B k :
     _ = C k ^ 2 := (sq (C k)).symm
     _ ≤ B k := hsq
 
+/-! ## Certified lower bound on the prime-counting function `π(x; 4, 3)`
+
+Everything above bounds the *k-th* prime `≡ 3 (mod 4)` from the enumeration side.
+Dually, one can bound the **counting function**
+`π(x; 4, 3) = #{p ≤ x : p prime, p ≡ 3 (mod 4)}` from below.  Because `p3` is
+strictly increasing with `p3 k ≤ 4^(2^k)`, the `K + 1` primes `p3 0 < ⋯ < p3 K`
+all lie below `4^(2^K)`; so once `x` reaches that height, at least `K + 1` primes
+`≡ 3 (mod 4)` have appeared.
+
+Inverting the doubly-exponential threshold, the certificate is an **iterated
+logarithm**: `π(x; 4, 3)` exceeds roughly `log₂ log₄ x`.  The truth is
+`π(x; 4, 3) ∼ x / (2 ln x)` (PNT for arithmetic progressions), an analytic input
+the elementary Euclid construction cannot reach — but the counting bound below is
+fully certified and axiom-free. -/
+
+/-- `countP3 x` is the number of primes `p ≤ x` with `p ≡ 3 (mod 4)`. -/
+def countP3 (x : ℕ) : ℕ :=
+  ((Finset.range (x + 1)).filter (fun n => Nat.Prime n ∧ n % 4 = 3)).card
+
+/-- **Certified lower bound on the counting function.** Whenever `x` reaches the
+doubly-exponential height `4^(2^K)`, at least `K + 1` primes `≡ 3 (mod 4)` lie in
+`[0, x]`, i.e. `π(x; 4, 3) ≳ log₂ log₄ x`.  Proof: the `K + 1` values
+`p3 0 < ⋯ < p3 K` are distinct primes `≡ 3 (mod 4)`, each `≤ p3 K ≤ 4^(2^K) ≤ x`,
+so they inject into the counted set. -/
+theorem countP3_ge (K x : ℕ) (hx : 4 ^ (2 ^ K) ≤ x) : K + 1 ≤ countP3 x := by
+  have hsub : (Finset.range (K + 1)).image p3 ⊆
+      (Finset.range (x + 1)).filter (fun n => Nat.Prime n ∧ n % 4 = 3) := by
+    intro q hq
+    simp only [Finset.mem_image, Finset.mem_range] at hq
+    obtain ⟨k, hk, rfl⟩ := hq
+    rw [Finset.mem_filter, Finset.mem_range]
+    refine ⟨?_, p3_prime k, p3_mod k⟩
+    have h1 : p3 k ≤ p3 K := p3_strictMono.monotone (by omega)
+    have h2 : p3 K ≤ 4 ^ (2 ^ K) := p3_le_doubly_exp K
+    omega
+  have hcard : ((Finset.range (K + 1)).image p3).card = K + 1 := by
+    rw [Finset.card_image_of_injective _ p3_strictMono.injective, Finset.card_range]
+  calc K + 1 = ((Finset.range (K + 1)).image p3).card := hcard.symm
+    _ ≤ countP3 x := Finset.card_le_card hsub
+
+/-- The counting function is unbounded: for every `K` the threshold `x = 4^(2^K)`
+already gives at least `K` primes `≡ 3 (mod 4)` — a counting-function restatement
+of Dirichlet's infinitude for this progression, with a certified rate. -/
+theorem countP3_unbounded (K : ℕ) : ∃ x, K ≤ countP3 x :=
+  ⟨4 ^ (2 ^ K), le_trans (Nat.le_succ K) (countP3_ge K _ le_rfl)⟩
+
+/-- Concrete instance of `countP3_ge` at `K = 1`: past `x = 16 = 4^(2^1)` at least
+two primes `≡ 3 (mod 4)` have appeared. -/
+example : 2 ≤ countP3 16 := countP3_ge 1 16 (by norm_num)
+
+/-- The certified bound is loose: the true count at `x = 16` is `3` (the primes
+`3, 7, 11`), whereas `countP3_ge` only guarantees `2`. -/
+theorem countP3_sixteen : countP3 16 = 3 := by decide
+
 end DirichletsTheoremOQ02OQ03
