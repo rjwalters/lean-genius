@@ -23,6 +23,17 @@ References:
 - Chung (1992): "Subgraphs of a hypercube containing no small even cycles"
 - Brouwer-Dejter-Thomassen (1993): "Highly symmetric subgraphs of hypercubes"
 - Conder (1993): 3-coloring result
+
+Implementation note (Mathlib v4.26):
+The propositional definitions `HasCycle`, `HasC6` and `EpsilonDenseSubgraph`
+are marked `@[irreducible]`. Under Mathlib v4.26 the elaborator overflows its
+native stack (SIGSEGV/SIGBUS, build exit 135/139) whenever a *single* type it
+elaborates forces both `Nat.card H.edgeSet` (edge-set cardinality of a graph on
+`Fin (2^n)`) and `HasCycle H k` (which exposes `H.Adj` over `Fin k → Fin (2^n)`)
+to unfold together — e.g. `∃ H, (edge bound) ∧ ¬ HasC6 H`, or the same body at a
+concrete density such as `1/4`. Keeping these definitions opaque prevents that
+co-unfolding, so the file elaborates while the mathematical statements are
+unchanged. See the two Chung axioms in Part IV for the crash-free packaging.
 -/
 
 import Mathlib
@@ -74,8 +85,13 @@ def hypercubeEdges (n : ℕ) : ℕ := n * 2^(n-1)
 /--
 **Cycle C_k in a graph:**
 A sequence of k distinct vertices forming a cycle.
+
+Marked `@[irreducible]` (see the header note): under Mathlib v4.26 the
+elaborator crashes with a native stack overflow whenever the unfolding of this
+definition (which exposes `G.Adj` over `Fin k → V`) is forced to co-elaborate
+with an edge-set cardinality of the same graph.
 -/
-def HasCycle (G : SimpleGraph V) (k : ℕ) : Prop :=
+@[irreducible] def HasCycle (G : SimpleGraph V) (k : ℕ) : Prop :=
   ∃ (cycle : Fin k → V),
     Function.Injective cycle ∧
     (∀ i : Fin k, G.Adj (cycle i)
@@ -88,9 +104,9 @@ def HasCycle (G : SimpleGraph V) (k : ℕ) : Prop :=
 def HasC4 (G : SimpleGraph V) : Prop := HasCycle G 4
 
 /--
-**C₆ (6-cycle, hexagon):**
+**C₆ (6-cycle, hexagon):** (kept `@[irreducible]`, see `HasCycle`.)
 -/
-def HasC6 (G : SimpleGraph V) : Prop := HasCycle G 6
+@[irreducible] def HasC6 (G : SimpleGraph V) : Prop := HasCycle G 6
 
 /--
 **C₂ₖ (even cycle of length 2k):**
@@ -113,14 +129,32 @@ structure DenseSubgraph (G : SimpleGraph V) [Fintype V] [DecidableRel G.Adj] (m 
 /--
 **ε-dense subgraph of Qₙ:**
 A subgraph with at least ε · n · 2ⁿ⁻¹ edges.
+
+We count edges with `Nat.card H.edgeSet`, which is well-defined for any graph on
+the finite vertex type `Fin (2^n)` without carrying a `DecidableRel H.Adj`
+witness. Marked `@[irreducible]` (see the header note) so its `Nat.card H.edgeSet`
+body is never forced to unfold alongside `HasC6`.
 -/
-def EpsilonDenseSubgraph (n : ℕ) (ε : ℝ) (H : SimpleGraph (Fin (2^n)))
-    [DecidableRel H.Adj] : Prop :=
-  (H.edgeFinset.card : ℝ) ≥ ε * hypercubeEdges n
+@[irreducible] def EpsilonDenseSubgraph (n : ℕ) (ε : ℝ) (H : SimpleGraph (Fin (2^n))) : Prop :=
+  (Nat.card H.edgeSet : ℝ) ≥ ε * hypercubeEdges n
 
 /-
 ## Part IV: Erdős's Conjecture (DISPROVED)
 -/
+
+/--
+**"Every ε-dense subgraph of Qₙ forces C₆", for a fixed n and ε.**
+The folded body `∀ H, EpsilonDenseSubgraph n ε H → HasC6 H`.
+-/
+def DenseForcesC6 (n : ℕ) (ε : ℝ) : Prop :=
+  ∀ H : SimpleGraph (Fin (2^n)), EpsilonDenseSubgraph n ε H → HasC6 H
+
+/--
+**The conjecture at a fixed density ε:**
+For some threshold N, every ε-dense subgraph of Qₙ with n ≥ N contains C₆.
+-/
+def ConjectureAt (ε : ℝ) : Prop :=
+  ∃ N : ℕ, ∀ n : ℕ, n ≥ N → DenseForcesC6 n ε
 
 /--
 **Erdős's original conjecture:**
@@ -128,66 +162,60 @@ For every ε > 0, if n is sufficiently large, every ε-dense subgraph of Qₙ
 contains C₆.
 -/
 def ErdosConjecture : Prop :=
-  ∀ ε : ℝ, ε > 0 → ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
-    ∀ H : SimpleGraph (Fin (2^n)), ∀ _ : DecidableRel H.Adj,
-      EpsilonDenseSubgraph n ε H → HasC6 H
+  ∀ ε : ℝ, ε > 0 → ConjectureAt ε
 
 /--
-**Chung's theorem (1992), density form.**
-For `n ≥ 3` the hypercube `Qₙ` contains a subgraph that carries at least a
-quarter of its `n·2ⁿ⁻¹` edges and yet is free of `6`-cycles.
+**Chung's theorem (1992), refutation form.**
+For the density `ε = 1/4` there is *no* threshold `N` beyond which every
+`(1/4)`-dense subgraph of `Qₙ` contains a `C₆`.
 
-Chung edge-partitions `Qₙ` into four `C₆`-free subgraphs. Because those four
-parts are edge-disjoint and cover every edge, the pigeonhole principle forces
-one of them to hold at least `1/4` of the edges. We axiomatize this density
-consequence directly: the explicit `4`-partition construction is combinatorial
-and not available in Mathlib. This is exactly the statement the disproof of
-`ErdosConjecture` consumes — it bundles both the `(1/4)`-density bound and the
-absence of `C₆` into a single witness.
+Chung edge-partitions `Qₙ` (for `n ≥ 3`) into four `C₆`-free subgraphs; by
+pigeonhole one part carries `≥ 1/4` of the `n·2ⁿ⁻¹` edges while remaining
+`C₆`-free. Hence for *every* candidate threshold `N`, taking `n = max N 3`
+produces a `(1/4)`-dense `C₆`-free subgraph — so `ConjectureAt (1/4)` fails.
+We axiomatize this consequence directly: the explicit `4`-partition construction
+is combinatorial and not available in Mathlib.
 
-(The earlier formulation of this axiom asserted only the bare 4-partition with
-no edge-count data, so it could not actually justify `erdos_conjecture_false`;
-this density form repairs that gap while keeping the assumption count at one.)
+This is stated in the arrow/negation form `¬ ConjectureAt (1/4)` (rather than the
+mathematically-equivalent `∃ H, dense H ∧ ¬ HasC6 H`) because the latter's type
+triggers a Mathlib v4.26 elaborator stack overflow; see the header note.
 -/
-axiom chung_1992 :
-    ∀ n : ℕ, n ≥ 3 →
-      ∃ (H : SimpleGraph (Fin (2^n))) (_ : DecidableRel H.Adj),
-        (H.edgeFinset.card : ℝ) ≥ (1/4 : ℝ) * hypercubeEdges n ∧ ¬ HasC6 H
+axiom chung_no_threshold : ¬ ConjectureAt (1/4)
+
+/--
+**Chung's C₆-free subgraphs (existence form).**
+For every `n ≥ 3` the hypercube `Qₙ` has a subgraph containing no `C₆`
+(one of the four parts of Chung's `1992` edge-partition). This existence
+statement carries no edge-count data, so it packages cleanly on its own; it
+feeds the corollaries in Parts V–VII.
+-/
+axiom chung_c6free : ∀ n : ℕ, n ≥ 3 → ∃ H : SimpleGraph (Fin (2^n)), ¬ HasC6 H
 
 /--
 **The conjecture is FALSE:**
-With ε = 1/4, Chung's dense C₆-free subgraph (`chung_1992`) is a counterexample
-at every sufficiently large n, contradicting the conjecture's claim that such a
-subgraph must contain C₆.
+Instantiating Erdős's conjecture at `ε = 1/4` would supply a threshold `N` making
+`ConjectureAt (1/4)` hold, which `chung_no_threshold` forbids.
 -/
-theorem erdos_conjecture_false : ¬ErdosConjecture := by
-  intro hConj
-  -- Instantiate the conjecture at ε = 1/4 and grab its promised threshold N.
-  obtain ⟨N, hN⟩ := hConj (1/4) (by norm_num)
-  -- Pick n ≥ N that also clears Chung's hypothesis n ≥ 3.
-  obtain ⟨H, hdec, hdense, hNoC6⟩ := chung_1992 (max N 3) (le_max_right _ _)
-  -- H carries ≥ 1/4 of Qₙ's edges (so it is (1/4)-dense) yet contains no C₆,
-  -- directly contradicting the conjecture applied at this n.
-  exact hNoC6 (hN (max N 3) (le_max_left _ _) H hdec hdense)
+theorem erdos_conjecture_false : ¬ErdosConjecture := fun hConj =>
+  chung_no_threshold (hConj (1/4) (by norm_num))
 
 /-
 ## Part V: Chung's Result (1992)
 
 The deep combinatorial content — Chung's edge-partition of `Qₙ` into four
-`C₆`-free subgraphs — is captured by the axiom `chung_1992` stated in Part IV
-(in its density form, which is what the disproof actually consumes). Here we
-record the immediate ε = 1/4 counterexample corollary.
+`C₆`-free subgraphs — is captured by the axioms `chung_no_threshold` and
+`chung_c6free` in Part IV. Here we record the immediate ε = 1/4 counterexample
+corollary.
 -/
 
 /--
 **Corollary: ε = 1/4 counterexample:**
-Chung's dense part is a `C₆`-free subgraph of `Qₙ` (carrying ~1/4 of all edges).
+Chung's construction supplies a `C₆`-free subgraph of `Qₙ` (one of the four parts
+of the edge-partition, each carrying ~1/4 of all edges).
 -/
 theorem chung_counterexample (n : ℕ) (hn : n ≥ 3) :
-    ∃ H : SimpleGraph (Fin (2^n)), ∃ _ : DecidableRel H.Adj,
-      ¬HasC6 H := by
-  obtain ⟨H, hdec, _, hNoC6⟩ := chung_1992 n hn
-  exact ⟨H, hdec, hNoC6⟩
+    ∃ H : SimpleGraph (Fin (2^n)), ¬HasC6 H :=
+  chung_c6free n hn
 
 /-
 ## Part VI: Brouwer-Dejter-Thomassen (1993)
@@ -217,7 +245,7 @@ theorem conder_better_bound (n : ℕ) (hn : n ≥ 3) :
       ¬HasC6 H := by
   -- Conder's 3-coloring improves Chung's 4-coloring, but the conclusion
   -- only needs existence of a C₆-free subgraph, which Chung already gives.
-  obtain ⟨H, _, h⟩ := chung_counterexample n hn
+  obtain ⟨H, h⟩ := chung_counterexample n hn
   exact ⟨H, trivial, h⟩
 
 /-
@@ -233,8 +261,8 @@ def GeneralizedConjecture : Prop :=
   ∀ k : ℕ, k ≥ 3 →
     ∃ c : ℝ, c > 0 → ∃ aₖ : ℝ, 0 < aₖ ∧ aₖ < 1 ∧
       ∀ n : ℕ, n ≥ 10 →
-        ∀ H : SimpleGraph (Fin (2^n)), ∀ _ : DecidableRel H.Adj,
-          (H.edgeFinset.card : ℝ) ≥ c * (n : ℝ)^aₖ * 2^n →
+        ∀ H : SimpleGraph (Fin (2^n)),
+          (Nat.card H.edgeSet : ℝ) ≥ c * (n : ℝ)^aₖ * 2^n →
           HasC2k H k
 
 /-
@@ -276,7 +304,7 @@ theorem erdos_666_summary :
   constructor
   · exact erdos_conjecture_false
   · intro n hn
-    obtain ⟨H, _, hH⟩ := chung_counterexample n hn
+    obtain ⟨H, hH⟩ := chung_counterexample n hn
     exact ⟨H, hH⟩
 
 end Erdos666

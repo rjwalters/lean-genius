@@ -235,12 +235,12 @@
     "id": "ann-666-chung",
     "proofId": "erdos-666",
     "range": {
-      "startLine": 146,
-      "endLine": 161
+      "startLine": 165,
+      "endLine": 192
     },
     "type": "concept",
     "title": "Chung's Partition (1992)",
-    "content": "**chung_1992:**\n\nFor n ≥ 3, Qₙ can be edge-partitioned into 4 subgraphs H₁, H₂, H₃, H₄ such that:\n1. Each Hᵢ is a subgraph of Qₙ\n2. The Hᵢ partition Qₙ's edges (disjoint union)\n3. Each Hᵢ is C₆-free\n\nEach part has approximately n·2ⁿ⁻¹/4 edges - a 1/4 fraction.",
+    "content": "**chung_no_threshold / chung_c6free:**\n\nFor n ≥ 3, Qₙ can be edge-partitioned into 4 subgraphs H₁, H₂, H₃, H₄ such that:\n1. Each Hᵢ is a subgraph of Qₙ\n2. The Hᵢ partition Qₙ's edges (disjoint union)\n3. Each Hᵢ is C₆-free\n\nEach part has approximately n·2ⁿ⁻¹/4 edges - a 1/4 fraction. This is captured by two axioms: chung_no_threshold (no threshold N forces C₆ in every (1/4)-dense subgraph) supplies the disproof, and chung_c6free (a C₆-free subgraph exists for n ≥ 3) supplies the corollaries. The split avoids a Mathlib v4.26 elaborator stack overflow on the bundled ∃ H, dense ∧ ¬C₆ form.",
     "mathContext": "Published in J. Graph Theory. The construction is explicit and algebraic, using properties of binary strings.",
     "significance": "key",
     "relatedConcepts": [
