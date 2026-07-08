@@ -69,33 +69,51 @@ mkdir -p "$PROBLEMS_DIR"
 mkdir -p "$LOCKS_DIR"
 
 # ============================================================================
-# File Locking for candidate-pool.json
+# File Locking (generic advisory locks)
 # ============================================================================
-# Uses flock for advisory locking. On macOS, falls back to mkdir-based locking.
+# Uses flock for advisory locking. On macOS (no flock), falls back to
+# mkdir-based locking. Both backends are parameterized by a lock-path so the
+# same primitive can serialize the candidate pool AND per-claim reclaim
+# decisions (issue #35319).
+#
+# flock is unavailable on macOS dev machines (confirmed: `which flock` returns
+# nothing on Darwin), so the mkdir fallback is the path actually exercised
+# locally and must remain the cross-platform arbiter.
 
-# Acquire lock on candidate-pool.json with timeout
-# Returns 0 on success, 1 on timeout
-acquire_pool_lock() {
+# acquire_generic_lock <lock-file-path>
+# Acquire an advisory lock at the given path with LOCK_TIMEOUT.
+# Returns 0 on success, 1 on timeout.
+#
+# The flock backend opens a per-lock file descriptor derived from a hash of the
+# lock path so distinct locks never collide on a single fixed fd. The mkdir
+# backend creates "<lock-file>.d" atomically.
+acquire_generic_lock() {
+    local lock_file="$1"
     local lock_acquired=false
-    local start_time=$(date +%s)
+    local start_time
+    start_time=$(date +%s)
 
-    # Create lock file if it doesn't exist
-    touch "$POOL_LOCK_FILE"
-
-    # Try flock if available (Linux)
     if command -v flock &>/dev/null; then
-        exec 200>"$POOL_LOCK_FILE"
-        if flock -w "$LOCK_TIMEOUT" 200; then
+        # Derive a stable, per-lock file descriptor (200-254) from the path so
+        # concurrent locks on different paths don't share fd 200.
+        local fd=$(( 200 + $(cksum <<< "$lock_file" | cut -d' ' -f1) % 55 ))
+        touch "$lock_file"
+        eval "exec ${fd}>\"\$lock_file\""
+        if flock -w "$LOCK_TIMEOUT" "$fd"; then
             lock_acquired=true
+            # Record the fd so release can close exactly this one.
+            eval "__LOCK_FD_${fd}=1"
+            __LAST_LOCK_FD="$fd"
         fi
     else
         # Fallback for macOS: mkdir-based locking with timeout
-        local lock_dir="${POOL_LOCK_FILE}.d"
+        local lock_dir="${lock_file}.d"
         while ! mkdir "$lock_dir" 2>/dev/null; do
-            local now=$(date +%s)
+            local now
+            now=$(date +%s)
             local elapsed=$((now - start_time))
             if [[ $elapsed -ge $LOCK_TIMEOUT ]]; then
-                echo "Warning: Timeout waiting for pool lock after ${LOCK_TIMEOUT}s" >&2
+                echo "Warning: Timeout waiting for lock $lock_file after ${LOCK_TIMEOUT}s" >&2
                 return 1
             fi
             sleep 0.5
@@ -108,21 +126,34 @@ acquire_pool_lock() {
     if $lock_acquired; then
         return 0
     else
-        echo "Warning: Could not acquire pool lock" >&2
+        echo "Warning: Could not acquire lock $lock_file" >&2
         return 1
     fi
 }
 
-# Release lock on candidate-pool.json
-release_pool_lock() {
+# release_generic_lock <lock-file-path>
+release_generic_lock() {
+    local lock_file="$1"
     if command -v flock &>/dev/null; then
-        # flock releases automatically when file descriptor closes
-        exec 200>&- 2>/dev/null || true
+        # Close the per-lock fd (flock releases when the fd closes).
+        local fd=$(( 200 + $(cksum <<< "$lock_file" | cut -d' ' -f1) % 55 ))
+        eval "exec ${fd}>&- 2>/dev/null" || true
     else
         # mkdir-based locking
-        local lock_dir="${POOL_LOCK_FILE}.d"
+        local lock_dir="${lock_file}.d"
         rm -rf "$lock_dir" 2>/dev/null || true
     fi
+}
+
+# Acquire lock on candidate-pool.json with timeout (thin wrapper for callers)
+# Returns 0 on success, 1 on timeout
+acquire_pool_lock() {
+    acquire_generic_lock "$POOL_LOCK_FILE"
+}
+
+# Release lock on candidate-pool.json
+release_pool_lock() {
+    release_generic_lock "$POOL_LOCK_FILE"
 }
 
 # Run a command with pool lock
@@ -259,15 +290,41 @@ EOF
         echo "Expires: $EXPIRES_AT"
         return 0
     else
-        # Lock exists - check if stale
+        # Lock exists. The stale-reclaim retry (check-expired -> rm -rf -> retry
+        # mkdir) is NOT atomic on its own: two agents that both observe an
+        # expired claim can interleave their rm/mkdir so each ends up believing
+        # it holds the claim, and each overwrites the other's claim_file
+        # (issue #35319). Serialize the whole reclaim decision behind a
+        # per-claim advisory lock so only ONE agent observes-and-acts on
+        # "expired" at a time. The uncontended fast path above (plain mkdir) is
+        # untouched, so this adds no cost to the common case.
+        local reclaim_lock="${lock_dir}.reclaim-lock"
+        if ! acquire_generic_lock "$reclaim_lock"; then
+            echo "Error: could not acquire reclaim lock for $problem_id" >&2
+            return 1
+        fi
+
+        # Re-check under the lock. Another agent may have reclaimed AND
+        # re-claimed while we waited, in which case the claim is now live and
+        # this agent must back off cleanly.
+        if [[ -d "$lock_dir" ]] && ! is_claim_expired "$claim_file"; then
+            release_generic_lock "$reclaim_lock"
+            local existing_agent
+            existing_agent=$(jq -r '.agent_id' "$claim_file" 2>/dev/null || echo "unknown")
+            echo "Error: $problem_id already claimed by $existing_agent" >&2
+            return 1
+        fi
+
+        # At this point either the lock dir is gone or the claim is expired:
+        # we hold reclaim_lock, so no other agent can race the reclaim.
         if is_claim_expired "$claim_file"; then
             echo "Stale claim detected, reclaiming..."
-            rm -rf "$lock_dir"
-            rm -f "$claim_file"
+        fi
+        rm -rf "$lock_dir"
+        rm -f "$claim_file"
 
-            # Retry
-            if mkdir "$lock_dir" 2>/dev/null; then
-                cat > "$claim_file" << EOF
+        if mkdir "$lock_dir" 2>/dev/null; then
+            cat > "$claim_file" << EOF
 {
   "problem_id": "$problem_id",
   "agent_id": "$AGENT_ID",
@@ -278,13 +335,16 @@ EOF
   "knowledge_tier": "$knowledge_tier"
 }
 EOF
-                echo "Claimed $problem_id by $AGENT_ID"
-                echo "Knowledge score: $knowledge_score ($knowledge_tier)"
-                echo "Expires: $EXPIRES_AT"
-                return 0
-            fi
+            release_generic_lock "$reclaim_lock"
+            echo "Claimed $problem_id by $AGENT_ID"
+            echo "Knowledge score: $knowledge_score ($knowledge_tier)"
+            echo "Expires: $EXPIRES_AT"
+            return 0
         fi
 
+        # mkdir failed even though we hold the reclaim lock (unexpected — e.g.
+        # filesystem error). Report as already claimed and back off cleanly.
+        release_generic_lock "$reclaim_lock"
         local existing_agent
         existing_agent=$(jq -r '.agent_id' "$claim_file" 2>/dev/null || echo "unknown")
         echo "Error: $problem_id already claimed by $existing_agent" >&2
