@@ -68,11 +68,13 @@ def ContainsUnitSquare (S : Set Plane) : Prop :=
 def Erdos214Statement : Prop :=
   ∀ S : Set Plane, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ
 
-/-- Juhász's Theorem (1979): Affirmatively resolves Problem #214 -/
-axiom juhasz_1979 : Erdos214Statement
+/-- Juhász's Theorem (1979): Affirmatively resolves Problem #214.
 
-/-- The main theorem: Problem #214 is solved -/
-theorem erdos_214_solved : Erdos214Statement := juhasz_1979
+NOTE: This is *not* assumed as a separate axiom.  It is derived below
+(`juhasz_1979`) from the single stronger axiom `juhasz_stronger` via the proved
+reduction `unit_square_from_stronger`, so the file rests on exactly one
+mathematical assumption (Juhász's 4-point theorem) rather than two.  The main
+theorem `erdos_214_solved` and the summary are stated after that derivation. -/
 
 /-
 ## Part 3: Stronger Version - Any 4-Point Set
@@ -133,6 +135,15 @@ theorem unit_square_from_stronger :
   · rw [hf_isom, hP]; exact h30
   · rw [hf_isom, hP]; exact h02
   · rw [hf_isom, hP]; exact h13
+
+/-- Juhász's 1979 theorem, **derived** from the stronger 4-point theorem rather
+than assumed.  Since `juhasz_stronger` supplies a congruent copy of *any* 4-point
+configuration in the complement, `unit_square_from_stronger` specialises it to the
+unit square, so the original Problem #214 statement follows with no extra axiom. -/
+theorem juhasz_1979 : Erdos214Statement := unit_square_from_stronger juhasz_stronger
+
+/-- The main theorem: Problem #214 is solved -/
+theorem erdos_214_solved : Erdos214Statement := juhasz_1979
 
 /-
 ## Part 4: Limitations for Larger Sets
