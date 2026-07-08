@@ -81,39 +81,4 @@ theorem bhp_gap_eventually_le_eps (ε : ℝ) (hε : 0 < ε) :
   rw [div_lt_iff₀ hx_pos] at hxlt
   exact le_of_lt hxlt
 
-/-- **Sharp-boundary strengthening.** For *every* exponent `θ` strictly above the
-    Baker–Harman–Pintz exponent `0.525`, the normalised gap `maxPrimeGap x / x^θ`
-    tends to `0`. The sublinearity result `bhp_implies_gap_littleo` is exactly the
-    `θ = 1` case, and the threshold is the BHP exponent itself: the family of
-    vanishing limits is available precisely for `θ > 0.525`.
-
-    The proof is the same squeeze as `bhp_implies_gap_littleo`, with the envelope
-    `x^0.525 / x^θ = x^(0.525 - θ) = x^(-(θ - 0.525)) → 0` (valid since `θ - 0.525 > 0`). -/
-theorem bhp_gap_div_rpow_littleo (θ : ℝ) (hθ : (0.525 : ℝ) < θ) :
-    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / (x : ℝ) ^ θ) atTop (𝓝 0) := by
-  have hy : (0 : ℝ) < θ - 0.525 := by linarith
-  -- Envelope: x^(-(θ - 0.525)) → 0 (compose the ℝ-limit with the ℕ-cast).
-  have h_env : Tendsto (fun x : ℕ => (x : ℝ) ^ (-(θ - 0.525))) atTop (𝓝 0) :=
-    (tendsto_rpow_neg_atTop hy).comp tendsto_natCast_atTop_atTop
-  -- Lower bound: 0 ≤ maxPrimeGap x / x^θ (the denominator is a nonneg rpow).
-  have h_lo : ∀ x : ℕ, 0 ≤ (maxPrimeGap x : ℝ) / (x : ℝ) ^ θ := fun x =>
-    div_nonneg (Nat.cast_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg _) _)
-  -- Upper bound: holds eventually (for x ≥ 25), via the BHP bound.
-  have h_hi : ∀ᶠ x : ℕ in atTop,
-      (maxPrimeGap x : ℝ) / (x : ℝ) ^ θ ≤ (x : ℝ) ^ (-(θ - 0.525)) := by
-    filter_upwards [eventually_ge_atTop 25] with x hx
-    have hx_pos : (0 : ℝ) < (x : ℝ) := by
-      have : (0 : ℕ) < x := lt_of_lt_of_le (by norm_num) hx
-      exact_mod_cast this
-    have hdiv : (x : ℝ) ^ (0.525 : ℝ) / (x : ℝ) ^ θ = (x : ℝ) ^ (-(θ - 0.525)) := by
-      rw [← Real.rpow_sub hx_pos]
-      congr 1
-      ring
-    calc (maxPrimeGap x : ℝ) / (x : ℝ) ^ θ
-        ≤ (x : ℝ) ^ (0.525 : ℝ) / (x : ℝ) ^ θ := by
-          gcongr
-          exact baker_harman_pintz x hx
-      _ = (x : ℝ) ^ (-(θ - 0.525)) := hdiv
-  exact squeeze_zero' (Eventually.of_forall h_lo) h_hi h_env
-
 end Erdos1138OQ03

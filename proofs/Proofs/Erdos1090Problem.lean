@@ -511,25 +511,6 @@ theorem ramsey_lower_bound (k : ℕ) (hk : k ≥ 3) : ramseyNumber k ≥ k := by
   rw [ge_iff_le, ← hcard]
   exact hasRamseyProperty_card_ge A k hA
 
-/--
-**Monotonicity of the Ramsey number in `k`:**
-For `3 ≤ k` and `k' ≤ k`, `ramseyNumber k' ≤ ramseyNumber k`. Requiring more
-monochromatic collinear points can only need a larger set: a size-minimal set
-witnessing the property for `k` also witnesses it for `k'` (by
-`hasRamseyProperty_antitone`), so the minimum size for `k'` is no larger. This
-makes `ramseyNumber` a genuine nondecreasing threshold, complementing the trivial
-lower bound `ramsey_lower_bound`.
--/
-theorem ramseyNumber_le_of_le {k k' : ℕ} (hk : k' ≤ k) (hk3 : 3 ≤ k) :
-    ramseyNumber k' ≤ ramseyNumber k := by
-  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}.Nonempty := by
-    obtain ⟨A, hA⟩ := hunter_observation k hk3
-    exact ⟨A.card, A, rfl, hA⟩
-  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
-  calc ramseyNumber k'
-      ≤ A.card := Nat.sInf_le ⟨A, rfl, hasRamseyProperty_antitone hk hA⟩
-    _ = ramseyNumber k := hcard
-
 /-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.

@@ -181,25 +181,4 @@ theorem compress_eq_restrict_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 
   -- `ext` already reduces to the coerced (ambient-`V`) equality of the images.
   exact (coe_compress_of_invariant H hinv y).trans (LinearMap.restrict_coe_apply T hinv y).symm
 
-/-- **The compression is a genuine restriction iff the subspace is invariant.**
-
-Converse of `coe_compress_of_invariant`.  The orthogonal compression `compress T H`
-acts as `T` itself on `H` — pointwise `↑(compress T H y) = T ↑y`, i.e. it incurs
-*no* projection error — **iff** `H` is `T`-invariant.
-
-The forward direction is `coe_compress_of_invariant`.  Conversely, `compress T H y`
-is by construction an element of `H`, so its coercion `↑(compress T H y)` always
-lies in `H`; if that coercion equals `T ↑y`, then `T ↑y ∈ H`, which is exactly
-invariance.  This pins down the attainment case of the interlacing bound: the
-compression stops losing spectral information *precisely* on invariant subspaces. -/
-theorem coe_compress_eq_iff_invariant {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V) :
-    (∀ y : H, ((compress T H y : H) : V) = T (y : V)) ↔ (∀ y ∈ H, T y ∈ H) := by
-  constructor
-  · intro h y hy
-    have key : T y = ((compress T H ⟨y, hy⟩ : H) : V) := (h ⟨y, hy⟩).symm
-    rw [key]
-    exact SetLike.coe_mem _
-  · intro hinv y
-    exact coe_compress_of_invariant H hinv y
-
 end CauchyInterlacing.PoincareCompression

@@ -100,17 +100,9 @@
   },
   "sections": [
     {
-      "id": "overview-setup",
-      "title": "Erdős #286: Small-k Egyptian Representations of 1",
-      "startLine": 1,
-      "endLine": 37,
-      "summary": "Module docstring: child OQ-01 of Erdős Problem #286 (unit fractions in short intervals). The parent proves the k = 2 impossibility via (x−1)(y−1) = 1; this entry pins down the exact small-k picture — k = 2 is impossible and k = 3 has the unique realizer {2,3,6}. Imports Mathlib, opens Finset.",
-      "mathContext": "For k distinct unit fractions summing to 1: k = 2 is impossible; k = 3 forces {1/2, 1/3, 1/6} uniquely."
-    },
-    {
       "id": "k2",
       "title": "k = 2: No Two Distinct Unit Fractions Sum to 1",
-      "startLine": 38,
+      "startLine": 39,
       "endLine": 62,
       "summary": "no_two_distinct_unit_fractions rules out 1/a + 1/b = 1 for distinct a < b: a = 1 forces a vanishing term, while a ≥ 2 forces b ≥ 3 and a sum ≤ 5/6 < 1.",
       "mathContext": "$\\tfrac1a + \\tfrac1b = 1$ with $a < b$ has no solution: $a=1 \\Rightarrow \\tfrac1b = 0$; $a \\ge 2 \\Rightarrow \\tfrac1a + \\tfrac1b \\le \\tfrac12 + \\tfrac13 = \\tfrac56 < 1$."
@@ -118,7 +110,7 @@
     {
       "id": "k3",
       "title": "k = 3: Existence and Uniqueness of {2, 3, 6}",
-      "startLine": 63,
+      "startLine": 64,
       "endLine": 133,
       "summary": "repr_236 gives existence; three_distinct_unit_fractions_eq_one gives uniqueness by squeezing a = 2, b = 3, then c = 6; three_distinct_iff packages both directions.",
       "mathContext": "For $a < b < c$: $\\tfrac1a + \\tfrac1b + \\tfrac1c = 1 \\iff (a,b,c) = (2,3,6)$; and $\\tfrac12 + \\tfrac13 + \\tfrac16 = 1$."
@@ -168,39 +160,5 @@
       "Enumerate the k = 4 distinct representations of 1 (there are several, e.g. {2,3,7,42}, {2,3,8,24}, {2,3,9,18}, {2,3,10,15}, {2,4,5,20}, {2,4,6,12}) and verify the count.",
       "For each k, determine the minimal interval width among distinct-denominator representations of 1 and compare to the parent's asymptotic (e−1)k."
     ]
-  },
-  "mainTheorems": [
-    {
-      "name": "three_distinct_unit_fractions_eq_one",
-      "type": "core",
-      "description": "**Uniqueness for k = 3.** The only strictly increasing positive integers a < b < c with 1/a + 1/b + 1/c = 1 are (2, 3, 6). Proved by squeezing a < 3 and a ≠ 1, then 2 < b < 4, then solving 1/c = 1/6 via inv_inj.",
-      "leanType": "(a b c : ℕ) (ha : 0 < a) (hab : a < b) (hbc : b < c) (h : (1:ℚ)/a + 1/b + 1/c = 1) : a = 2 ∧ b = 3 ∧ c = 6",
-      "startLine": 77,
-      "endLine": 123
-    },
-    {
-      "name": "no_two_distinct_unit_fractions",
-      "type": "core",
-      "description": "**k = 2 impossibility.** No two distinct positive integers a < b satisfy 1/a + 1/b = 1: a = 1 forces a vanishing term; a ≥ 2 forces b ≥ 3 and 1/a + 1/b ≤ 1/2 + 1/3 < 1.",
-      "leanType": "(a b : ℕ) (ha : 0 < a) (hab : a < b) : (1:ℚ)/a + 1/b ≠ 1",
-      "startLine": 45,
-      "endLine": 61
-    },
-    {
-      "name": "three_distinct_iff",
-      "type": "key",
-      "description": "**Characterisation for k = 3 (ordered).** For strictly increasing positive integers, 1/a + 1/b + 1/c = 1 iff (a, b, c) = (2, 3, 6) — packaging existence and uniqueness into one iff.",
-      "leanType": "(a b c : ℕ) (ha : 0 < a) (hab : a < b) (hbc : b < c) : (1:ℚ)/a + 1/b + 1/c = 1 ↔ a = 2 ∧ b = 3 ∧ c = 6",
-      "startLine": 127,
-      "endLine": 131
-    },
-    {
-      "name": "repr_236",
-      "type": "supporting",
-      "description": "**Existence for k = 3.** The witnessing representation 1 = 1/2 + 1/3 + 1/6.",
-      "leanType": "(1 : ℚ) / 2 + 1 / 3 + 1 / 6 = 1",
-      "startLine": 68,
-      "endLine": 68
-    }
-  ]
+  }
 }

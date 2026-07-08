@@ -208,3 +208,59 @@ front-loads investment; S2-A defers).
   iter 1
 - `src/data/research/problems/erdos101-problem-oq-04.json` — Phase
   OBSERVE, iter 1, references, knowledge surface
+
+## Iteration (researcher-2, 2026-07-08) — ACT: first unconditional *growing* lower bound
+
+**Outcome (VERIFIED, 0 new axioms, 0 new sorries).** Added to
+`Proofs/Erdos101OQ04.lean` the first unconditional lower bound on the
+four-point-line count that GROWS with `n`, breaking the constant-witness
+treadmill (`crossSet` ≥ 2, `asteriskSet` ≥ 3, `gridSet` ≥ 10).
+
+New declarations:
+- `onQuartic p : Prop := p.2 = p.1^4 - 5*p.1^2` — membership in the
+  graph of the quartic `y = x⁴ − 5x²`.
+- `noFiveCollinear_of_onQuartic` — **any** point set contained in the
+  quartic graph is `NoFiveCollinear`. Proof: five distinct collinear
+  points would be five distinct roots of the degree-4 polynomial
+  `C(b₁−a₁)·(X⁴ − 5X²) − C(b₂−a₂)·X − C c₀` (leading coeff `b₁−a₁ ≠ 0`
+  since distinct points on a function graph have distinct `x`), and
+  `Polynomial.card_roots' ≤ natDegree = 4` gives the contradiction. This
+  replaces the bespoke finite `NoFiveCollinear` case-analyses of every
+  prior witness with a single polynomial-degree fact — the reusable
+  general-position engine for curve-based constructions.
+- `quartic_linear_lower_bound (k) (hk : 0 < k)` — for every `k ≥ 1`
+  there is a `NoFiveCollinear` set on `≤ 4k` points with
+  `fourPointLineCount ≥ k`. Hence `L₄(n) = Ω(n)` unconditionally and
+  `fourPointLineCount` is *unbounded* over no-five-collinear sets.
+  Witness = `k` horizontal chords `y = c` of the quartic, one per level
+  `u ∈ (0, 5/2)` with the four points `(±√u, c), (±√(5−u), c)`,
+  `c = u² − 5u`; distinct levels ⇒ distinct heights ⇒ distinct 4-lines
+  (`Function.Injective L`), assembled through the pre-existing
+  `fourPointLineCount_ge_of_injOn_family`.
+- `exists_isLowerBoundConstruction_linear` — the same, packaged as
+  `IsLowerBoundConstruction P (k:ℝ)` with `P.points.card ≤ 4k`.
+
+**Scope honesty.** This is the *linear* floor beneath the OPEN
+`Ω(n^{3/2})` / `n^{2−o(1)}` growth; it does NOT touch the single
+remaining `sorry` (`solymosi_stojakovic_lower_bound`, the deep
+measure-theoretic random-projection construction). Value = the first
+machine-verified proof that the four-point-line count is unbounded, plus
+the scalable quartic-graph no-5 engine for future sharper constructions.
+
+**Build notes (infra).** Repeated line-less exit-135 (SIGBUS) while
+*loading* pristine dependency oleans (`Erdos101Problem`/`Erdos101OQ01`)
+under concurrent fleet builds hammering the shared `lean-mathlib-cache`
+Docker volume — NOT code. Fix: `--repair-cache`, remove the stale
+`Erdos101Problem.olean` from the volume, and start the build in a
+zero-`lean-build`-container window (once past ~2s import-load the
+elaboration runs in the container and tolerates fleet returning).
+`compute_degree!` crashed the kernel (135); plain `compute_degree`
+proves `natDegree ≤ 4` fine. `simp [C-sub lemmas]` mangled the leading
+coeff — use `simp only [coeff_sub, coeff_C_mul, coeff_X_pow, coeff_C,
+coeff_X]; norm_num` for `q.coeff 4`.
+
+### Next directions (unchanged priority)
+- The genuine open target remains `solymosi_stojakovic_lower_bound`
+  (Path A). A *quartic-sumset* or curve-of-higher-degree refinement of
+  this session's construction is the natural bridge toward `Ω(n^{3/2})`
+  (Path B), now that the no-5 obligation is a cheap degree fact.

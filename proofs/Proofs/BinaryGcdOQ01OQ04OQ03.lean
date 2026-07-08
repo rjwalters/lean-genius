@@ -245,39 +245,4 @@ theorem totalSteps_one_ge (N : ℕ) :
     _ ≤ ∑ b ∈ Finset.Icc 1 N, Nat.log 2 b :=
         Finset.sum_le_sum_of_subset hsub
 
-/-- **Average-case lower bound (a = 1 row).**  For `N ≥ 2`, the *average* step
-    count over `b ∈ [1, N]` on the `a = 1` row is at least `(log₂ N − 1)/2`:
-
-      (log₂ N − 1)/2 ≤ (∑_{b=1}^N binaryGcdSteps 1 b) / N.
-
-    This is the average-level companion of `totalSteps_one_ge` (which bounds the
-    *total* below by `Ω(N·log N)`) and of the `O(log N)` ceiling `avgSteps_le`.
-    Together they pin the `a = 1` average at a genuine `Θ(log N)` directly at the
-    average granularity: `(log₂ N − 1)/2 ≤ avg ≤ 2·log₂ N + 2`.
-
-    Proof: divide the total lower bound `(N − ⌊N/2⌋)·(log₂ N − 1) ≤ totalSteps 1 N`
-    by `N`, using `N − ⌊N/2⌋ = ⌈N/2⌉ ≥ N/2` to replace the leading factor. -/
-theorem avgSteps_one_ge (N : ℕ) (hN : 2 ≤ N) :
-    ((Nat.log 2 N : ℚ) - 1) / 2 ≤ (totalSteps 1 N : ℚ) / (N : ℚ) := by
-  have hL : 1 ≤ Nat.log 2 N := Nat.log_pos (by norm_num) hN
-  have hNpos : 0 < N := by omega
-  have hNQ : (0 : ℚ) < (N : ℚ) := by exact_mod_cast hNpos
-  -- Cast the ℕ total lower bound into ℚ, linearising the truncated `log₂ N − 1`.
-  have hcastL : ((Nat.log 2 N - 1 : ℕ) : ℚ) = (Nat.log 2 N : ℚ) - 1 := by
-    rw [Nat.cast_sub hL, Nat.cast_one]
-  have hgeQ : ((N - N / 2 : ℕ) : ℚ) * ((Nat.log 2 N : ℚ) - 1) ≤ (totalSteps 1 N : ℚ) := by
-    have h := totalSteps_one_ge N
-    rw [← hcastL]
-    exact_mod_cast h
-  -- `N ≤ 2·(N − ⌊N/2⌋)` (i.e. `⌈N/2⌉ ≥ N/2`), and `log₂ N − 1 ≥ 0`.
-  have hhalf : (N : ℚ) ≤ 2 * ((N - N / 2 : ℕ) : ℚ) := by
-    have h : N ≤ 2 * (N - N / 2) := by omega
-    exact_mod_cast h
-  have hLQ : (0 : ℚ) ≤ (Nat.log 2 N : ℚ) - 1 := by
-    have : (1 : ℚ) ≤ (Nat.log 2 N : ℚ) := by exact_mod_cast hL
-    linarith
-  rw [le_div_iff₀ hNQ]
-  nlinarith [hgeQ, hhalf, hLQ,
-    mul_nonneg hLQ (by linarith : (0 : ℚ) ≤ 2 * ((N - N / 2 : ℕ) : ℚ) - (N : ℚ))]
-
 end BinaryGcdOQ01OQ04OQ03

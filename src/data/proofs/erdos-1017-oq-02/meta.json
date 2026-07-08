@@ -71,14 +71,14 @@
       "title": "Integer AM-GM Kernel",
       "summary": "four_mul_mul_le_add_sq (4ab <= (a+b)^2) and its strict form four_mul_mul_lt_add_sq (a != b).",
       "startLine": 63,
-      "endLine": 83,
+      "endLine": 90,
       "mathContext": "The square gap (a-b)^2 is exposed by case-splitting a <= b / b <= a and writing the larger as smaller + d, reducing to 0 <= d^2 (resp. 1 <= d^2)."
     },
     {
       "id": "extremality",
       "title": "Upper Bound, Equality at Balance, and Uniqueness",
       "summary": "mul_compl_le_turanBound (a*(n-a) <= T(n)), balanced_mul_compl_eq_turanBound (equality at floor(n/2)), exists_balanced_max (T(n) is the maximum), even_unbalanced_lt (unique maximiser for even n).",
-      "startLine": 84,
+      "startLine": 91,
       "endLine": 149,
       "mathContext": "Nat.le_div_iff_mul_le converts the floor bound to the kernel; parity split plus the closed forms give equality at balance; Nat.lt_of_mul_lt_mul_left cancels the factor 4 for strict uniqueness."
     }

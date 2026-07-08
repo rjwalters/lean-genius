@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: certified elementary bound now in explicit closed form p3 k ≤ 4^(2^k) (doubly exponential). Elementary methods cannot reach true 2k·ln k order without density/analytic input — that is the terminus for the upper-bound side.",
+    "progressSummary": "COMPLETE + EXTENDED (verified 0/0): the primorial-vs-factorial tightness is now a THEOREM for all k — C_le_B: C k ≤ B k universally (was only checked at k=1,2), via towerProd_succ_le_factorial and the elementary n·(n−1)≤n!. native_decide-free, 0 axioms, 0 sorries.",
     "builtItems": [
       "exists_prime_three_mod_four_in_interval (DirichletsTheoremOQ02OQ03.lean:78) — certified interval form: ∀n ∃ prime p≡3 mod4, n<p≤4·(n+1)!−1.",
       "nextP3 + nextP3_le_of + nextP3_le_factorial (DirichletsTheoremOQ02OQ03.lean:113–134) — least prime ≡3 mod4 above n, its minimality, and the one-step factorial bound.",
@@ -39,14 +39,9 @@
       "p3_le_primorial (DirichletsTheoremOQ02OQ03.lean) — primorial bound p3 k ≤ 4·(∏_{i<k} p3 i) − 1, the certified content of the primorial Euclid construction.",
       "towerProd + C + towerProd_eq_prod + p3_le_primorialTower — explicit primorial tower C with p3 k ≤ C k (strong induction).",
       "C_one_eq=11, C_two_eq=131, primorial_tighter_than_factorial (7≤11=C1<95=B1), p3_bracketed_primorial (4k+3 ≤ p3 k ≤ C k). All 0 sorry / 0 axiom (foundational trio only), native_decide-free.",
-      "C_le_B (DirichletsTheoremOQ02OQ03.lean §\"primorial tower never exceeds factorial tower\") — VERIFIED 0/0 (propext/Classical.choice/Quot.sound only): the primorial tower C k ≤ B k for ALL k, upgrading the two verified instances (k=1: 11≤95; k=2: 131 vs 4·96!−1) to a uniform theorem. Reduces to towerProd_succ_le_factorial via the one-step maps.",
-      "towerProd_succ_le_factorial — the reduction inequality towerProd (k+1) = ∏_{i≤k} C i ≤ (B k + 1)!, which is exactly C (k+1) ≤ B (k+1). Proved by induction; step bounds towerProd (k+2) ≤ 4·((B k+1)!)² ≤ (4·(B k+1)!)! = (B (k+1)+1)!.",
-      "sq_le_factorial — reusable: n·n ≤ n! for n ≥ 4 (Nat.le_induction from 16≤24; step (n+1)² ≤ (n+1)·n! since n+1 ≤ n! ). This is the engine that lets the factorial tower swallow the primorial's squaring.",
-      "factorial_gt_mul_pred (DirichletsTheoremOQ02OQ03.lean:480) — strict n·(n−1) < n! for n≥4 via n!=n·(n−1)! and Nat.lt_factorial_self ((n−1) < (n−1)! for n−1≥3). Strict refinement of factorial_ge_mul_pred; supplies the slack for C_lt_B.",
-      "towerProd_succ_lt_factorial (DirichletsTheoremOQ02OQ03.lean:490) — strict running-product bound towerProd (k+1) < (B k + 1)!, by induction with the strict factorial step; the arg 4·(B k+1)! is always ≥4 so factorial_gt_mul_pred applies.",
-      "C_lt_B (DirichletsTheoremOQ02OQ03.lean:509) — VERIFIED 0/0: the primorial tower is STRICTLY below the factorial tower, C k < B k for all k≥1, promoting the single-index C 1=11<95=B 1 to a theorem.",
-      "C_eq_B_iff (DirichletsTheoremOQ02OQ03.lean:517) — VERIFIED 0/0: exact comparison C k = B k ↔ k = 0; combines C_le_B, C_lt_B and the base equality C 0 = B 0 = 3.",
-      "four_mul_towerProd_le / C_le_doubly_exp / p3_le_doubly_exp in DirichletsTheoremOQ02OQ03.lean (~525-548): squaring induction 4·towerProd k ≤ 4^(2^k), collapsing the recursive tower to closed form. VERIFIED 0/0."
+      "factorial_ge_mul_pred (DirichletsTheoremOQ02OQ03.lean) — elementary n·(n−1) ≤ n! from n!=n·(n−1)! and self_le_factorial.",
+      "towerProd_succ_le_factorial — towerProd(k+1) ≤ (B k+1)!, the running-product-vs-factorial crux.",
+      "C_le_B — primorial tower ≤ factorial tower for ALL k (VERIFIED 0/0, propext+Quot.sound only); upgrades primorial_tighter_than_factorial from k=1 to universal."
     ],
     "insights": [
       "The Euclid construction N=4·(n+1)!−1 certifies an INTERVAL, not just existence: a prime ≡3 (mod 4) always lies in (n, 4·(n+1)!−1]. The upper bound is p∣N⇒p≤N; the lower is the standard p∤(n+1)! coprimality twist.",
@@ -56,15 +51,14 @@
       "The Euclid ≡3(mod4) construction only needs the PRODUCT of the primes found so far, not a factorial of the previous bound: N=4·(∏_{i<k}p3 i)−1 is ≡3 mod4, its ≡3-mod4 prime factor p cannot divide ∏p3 i (else p∣4·∏ and p∣N ⇒ p∣1), so p is new and p3 k ≤ p ≤ N. This gives the PRIMORIAL bound p3 k ≤ 4·∏_{i<k}p3 i − 1, dramatically tighter than the factorial tower.",
       "The primorial tower C(k)=4·(∏_{i<k}C i)−1 (C0=3,C1=11,C2=131,C3=17291) is doubly-exponential but incomparably smaller than the iterated-factorial tower B (B2=4·96!−1). p3 k ≤ C k follows by STRONG induction feeding p3_le_primorial the pointwise p3 i ≤ C i for i<k via Finset.prod_le_prod.",
       "Structural-recursion trick for a product-defined tower: define the running product towerProd k (towerProd 0=1, towerProd(k+1)=towerProd k·(4·towerProd k−1)) structurally, set C k := 4·towerProd k−1, then prove towerProd k = ∏_{i<k} C i by induction (prod_range_succ). Avoids non-structural self-reference of C.",
-      "The factorial tower B and primorial tower C differ only in their one-step map (4·(prev+1)!−1 vs 4·prev−1). C k ≤ B k holds uniformly because the extra factorial at every level dominates the squaring the primorial recursion introduces: towerProd(k+2) ≈ 4·towerProd(k+1)² while (B(k+1)+1)! = (4·(B k+1)!)! ≥ (4·(B k+1)!)² ≥ that. Formalised via the elementary lemma n² ≤ n! (n≥4).",
-      "The ≤-domination C k ≤ B k is in fact STRICT for every k≥1: the only inequality used (n·(n−1) ≤ n!) is itself strict once n≥4 (n! = n·(n−1)! and (n−1) < (n−1)! for n−1≥3), and the towers factorial argument 4·(B k+1)! is always ≥4, so the strictness propagates and equality survives ONLY at the base k=0 where both towers equal 3.",
-      "Closed form: the recursive primorial tower C k satisfies C k ≤ 4^(2^k), so p3 k ≤ 4^(2^k) — an explicit non-recursive certified bound whose exponent 2^k exhibits the doubly-exponential order directly (true value ~ 2k ln k)."
+      "The primorial tower C is dominated by the factorial tower B EVERYWHERE: C k ≤ B k for all k, not just k=1,2. Proof reduces (both towers are 4·x−1) to towerProd(k+1) ≤ (B k+1)!, an induction whose step uses towerProd(k+2)=towerProd(k+1)·(4·towerProd(k+1)−1) ≤ F·(4F−1) ≤ (4F)·(4F−1) ≤ (4F)! with F=(B k+1)!, needing only the elementary n·(n−1)≤n!. Equality holds solely at k=0 (both = 3)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Attempt a genuinely elementary sub-exponential certified bound (or prove the primorial tower´s doubly-exponential growth is intrinsic to Euclid-style iteration without an analytic input).",
-      "Port the primorial-tower framework to other elementary progressions (e.g. the ≡5 mod 6 primes via N=6·∏−1).",
-      "Quantify the gap growth: prove B k / C k → ∞ (or a lower bound like B k ≥ C k · (something growing), since each factorial step swaps a squaring for a full factorial)."
+      "Prove the strict domination C k < B k for all k ≥ 1 (equality only at k=0): the slack towerProd(k+1) < (B k+1)! is present already at k=1 and should propagate, giving a clean strict theorem.",
+      "Prove the primorial tower never exceeds the factorial tower in general: C k ≤ B k (needs ∏_{i<k} C i ≤ (B(k-1)+1)!), making the tightness a theorem for all k rather than just k=1,2.",
+      "Attempt a genuinely elementary sub-exponential certified bound (or prove the primorial tower's doubly-exponential growth is intrinsic to Euclid-style iteration without an analytic input).",
+      "Port the primorial-tower framework to other elementary progressions (e.g. the ≡5 mod 6 primes via N=6·∏−1)."
     ],
     "markdown": "# Knowledge Base: dirichlets-theorem-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
