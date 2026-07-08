@@ -27,8 +27,11 @@ the definition but which the parent omits:
   * `IsDiagonalizable.inv`       — the inverse `M⁻¹` is diagonalizable (same `P`),
     because `P⁻¹ M⁻¹ P = (P⁻¹ M P)⁻¹` and the inverse of a diagonal matrix is
     diagonal (`isDiag_inv`).
+  * `IsDiagonalizable.pow`       — every power `Mᵏ` is diagonalizable (same `P`),
+    because `P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ` (`conj_pow`) and powers of a diagonal matrix
+    are diagonal (`isDiag_pow`, built on `isDiag_mul`).
 
-All five are fully machine-checked (0 axioms, 0 sorries) and reuse only the
+All are fully machine-checked (0 axioms, 0 sorries) and reuse only the
 parent's *definition* (not its open reverse-direction obligation).
 
 Reference: Axler, *Linear Algebra Done Right* §5–8; Dummit–Foote §12.
@@ -126,5 +129,53 @@ theorem IsDiagonalizable.inv {M : Matrix n n K} (hM : M.IsDiagonalizable) :
       ← mul_assoc]
   rw [← key]
   exact isDiag_inv hD
+
+/-- **The product of two diagonal matrices is diagonal.**  Off the diagonal
+    (`i ≠ j`), every term `A i k * B k j` of `(A * B) i j = ∑ₖ A i k * B k j`
+    vanishes: if `k ≠ i` then `A i k = 0`, and if `k = i` then `B k j = B i j = 0`
+    (since `i ≠ j`). -/
+theorem isDiag_mul {A B : Matrix n n K} (hA : A.IsDiag) (hB : B.IsDiag) :
+    (A * B).IsDiag := by
+  intro i j hij
+  rw [Matrix.mul_apply]
+  apply Finset.sum_eq_zero
+  intro k _
+  rcases eq_or_ne i k with rfl | hik
+  · rw [hB hij, mul_zero]
+  · rw [hA hik, zero_mul]
+
+/-- **Powers of a diagonal matrix are diagonal.**  Immediate induction on the
+    exponent: `A⁰ = 1` is diagonal and `Aᵏ⁺¹ = Aᵏ * A` is a product of diagonals. -/
+theorem isDiag_pow {A : Matrix n n K} (h : A.IsDiag) (k : ℕ) : (A ^ k).IsDiag := by
+  induction k with
+  | zero => rw [pow_zero]; exact Matrix.isDiag_one
+  | succ k ih => rw [pow_succ]; exact isDiag_mul ih h
+
+/-- **Conjugation commutes with taking powers.**  For invertible `P`,
+    `P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ`.  Proof by induction, cancelling the interior
+    `P * P⁻¹ = 1` at each step. -/
+theorem conj_pow {M P : Matrix n n K} (hP : IsUnit P.det) (k : ℕ) :
+    P⁻¹ * M ^ k * P = (P⁻¹ * M * P) ^ k := by
+  induction k with
+  | zero => rw [pow_zero, pow_zero, mul_one, Matrix.nonsing_inv_mul P hP]
+  | succ k ih =>
+      have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hP
+      rw [pow_succ, pow_succ, ← ih]
+      have hcollapse : P⁻¹ * M ^ k * P * (P⁻¹ * M * P)
+          = P⁻¹ * M ^ k * (P * P⁻¹) * (M * P) := by simp only [mul_assoc]
+      rw [hcollapse, hPP]
+      simp only [mul_one, mul_assoc]
+
+/-- **Powers stay diagonalizable.**  The *same* `P` diagonalizes `Mᵏ`: since
+    `P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ` (`conj_pow`) and powers of the diagonal matrix
+    `P⁻¹ M P` are diagonal (`isDiag_pow`), `P⁻¹ Mᵏ P` is diagonal.  Completes the
+    documented `nextSteps` item on powers of a diagonalizable matrix. -/
+theorem IsDiagonalizable.pow {M : Matrix n n K} (hM : M.IsDiagonalizable) (k : ℕ) :
+    (M ^ k).IsDiagonalizable := by
+  obtain ⟨P, hP, hD⟩ := hM
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  refine ⟨P, hP, ?_⟩
+  rw [conj_pow hPdet]
+  exact isDiag_pow hD k
 
 end MinpolyCharpolyOQ02Incomplete01
