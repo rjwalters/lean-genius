@@ -12,6 +12,33 @@
     "definitionCount": 1,
     "sorryCount": 0
   },
+  "mainTheorems": [
+    {
+      "name": "comm_bound_sharp",
+      "type": "theorem",
+      "description": "Sharpness of the commutative Hurwitz bound: the set of ℝ-dimensions of commutative real normed division algebras is exactly {1,2} — both endpoints are realized (ℝ→1, ℂ→2) and no other dimension occurs. The realizability direction the parent's one-sided bound lacks."
+    },
+    {
+      "name": "finrank_normed_field_eq_one_or_two",
+      "type": "theorem",
+      "description": "Commutative Hurwitz upper bound: every normed field over ℝ has finrank ℝ F ∈ {1,2}, via NormedAlgebra.Real.nonempty_algEquiv_or (Gelfand–Mazur) — F is ℝ- or ℂ-isomorphic."
+    },
+    {
+      "name": "finrank_normed_field_admissible",
+      "type": "theorem",
+      "description": "Restatement: finrank ℝ F lies in the admissibleDimensions set {1,2} for every normed field F over ℝ."
+    },
+    {
+      "name": "finrank_real_self",
+      "type": "theorem",
+      "description": "Realizability of dimension 1: finrank ℝ ℝ = 1."
+    },
+    {
+      "name": "finrank_complex",
+      "type": "theorem",
+      "description": "Realizability of dimension 2: finrank ℝ ℂ = 2."
+    }
+  ],
   "sorries": 0,
   "meta": {
     "author": "Lean Genius (realizability/sharpness direction); upper bound reproduced from parent HurwitzOnlyIf.lean; Gelfand-Mazur from Mathlib",
