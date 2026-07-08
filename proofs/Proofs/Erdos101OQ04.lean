@@ -17,15 +17,19 @@ This file focuses on the **lower-bound construction direction**:
   no-five-collinear planar point set whose four-point line count is
   at least a given lower bound (the framework abstraction).
 * `Erdos101OQ04.grunbaum_lower_bound_three_halves` — Grünbaum's
-  pre-Solymosi–Stojaković Ω(n^{3/2}) construction, recorded as a
-  `theorem ... := by sorry` so it can be cited by other theorems
-  without introducing a permanent axiom.  Path B in
-  `research/problems/erdos101-problem-oq-04/state.md`.
+  pre-Solymosi–Stojaković Ω(n^{3/2}) bound.  Now **proved** as a
+  corollary of `solymosi_stojakovic_lower_bound`: since the modern
+  witness rate `n^{2−C/√(log n)}` strictly dominates `n^{3/2}`, the
+  weaker Grünbaum bound follows with no fresh construction.  It carries
+  no `sorry` of its own and no axiom; it inherits the single remaining
+  open obligation from `solymosi_stojakovic_lower_bound`.  An
+  *unconditional* proof (Path B, the F_p parabola of §S3-B1 below) would
+  remove that dependency.
 * `Erdos101OQ04.solymosi_stojakovic_lower_bound` — the modern
   n^{2−O(1/√(log n))} bound.  Re-states
   `Erdos101OQ01.solymosi_stojakovic_lower_bound` in OQ-04's
   `IsLowerBoundConstruction` packaging (re-named here for OQ-04
-  provenance); both remain deferred proof obligations.
+  provenance); the **sole** remaining deferred proof obligation.
 * `Erdos101OQ04.exists_four_collinear_subset_of_count_pos` —
   unconditional: a no-five-collinear `P` with at least one four-point
   line admits an explicit 4-element collinear subset of `P.points`.
@@ -37,8 +41,11 @@ This file focuses on the **lower-bound construction direction**:
 OQ-01's framing — "is the upper bound o(n²)?" — records the open
 *upper-bound refinement* question; OQ-04's framing — "can the
 construction be formalised?" — records the open *lower-bound
-discharge*.  Both are sorry-bodied in their current Lean form.  This
-file's primary contribution is the OQ-04 *framework*, plus the
+discharge*.  After this iteration exactly **one** obligation is
+sorry-bodied here: `solymosi_stojakovic_lower_bound` (the modern
+construction).  `grunbaum_lower_bound_three_halves` is now derived from
+it, so the two lower-bound theorems collapse to a single open input.
+This file's primary contribution is the OQ-04 *framework*, plus the
 `exists_four_collinear_subset_of_count_pos` extraction lemma that any
 future lower-bound construction PR will need.
 
@@ -231,29 +238,22 @@ Solymosi–Stojaković, but remains valid as a *weaker* lower bound;
 Grünbaum's construction continues to be the cleanest fully-explicit
 witness against any sub-$n^{3/2}$ upper bound. -/
 
-/-- **Grünbaum's Ω(n^{3/2}) lower bound** on the maximum four-point
-line count.  For every `C > 0`, there exists a planar point set `P`
-with no five collinear, `|P| ≥ N`, and
-`fourPointLineCount P ≥ C · |P|^{3/2}` for all sufficiently large `N`.
+/- **Grünbaum's Ω(n^{3/2}) lower bound** on the maximum four-point line count.
 
-Reference: B. Grünbaum, *Arrangements and Spreads* (1972), CBMS
-Regional Conference Series in Mathematics 10, §3.3.
+`grunbaum_lower_bound_three_halves` is stated and *proved* below, immediately
+after `solymosi_stojakovic_lower_bound` and the exponent comparison
+`solymosi_stojakovic_exponent_gt_three_halves`.  It is no longer a deferred
+`sorry`: because the Solymosi–Stojaković witness rate `n^{2 − C/√(log n)}`
+strictly dominates `n^{3/2}` (for `C < 1/2`, `n ≥ 3`), Grünbaum's weaker bound is
+now derived as a *corollary* of the (still-deferred) Solymosi–Stojaković
+existence statement.  The concrete F_p parabola construction (Path B in
+`state.md`) would give an *unconditional* proof; this reduction instead pins
+Grünbaum's bound to the single remaining open input, cutting OQ-04's open
+obligations from two to one.
 
-This lower bound was superseded by the stronger Solymosi–Stojaković
-n^{2−O(1/√(log n))} bound (recorded as
-`solymosi_stojakovic_lower_bound` below and in
-`Erdos101OQ01.solymosi_stojakovic_lower_bound`); both refute Erdős's
-Θ(n^{3/2}) conjecture in the upper direction, but only the
-Solymosi–Stojaković bound goes strictly beyond Grünbaum's witness.
-
-Recorded as `theorem ... := by sorry` so it can be cited without
-introducing a permanent axiom.  Path B in `state.md` provides the
-concrete F_p construction sketch. -/
-theorem grunbaum_lower_bound_three_halves :
-    ∀ C : ℝ, 0 < C → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
-      ∃ P : PlanarPointSet, P.points.card = n ∧ NoFiveCollinear P ∧
-        C * (n : ℝ) ^ (3 / 2 : ℝ) ≤ (fourPointLineCount P : ℝ) := by
-  sorry
+Reference: B. Grünbaum, *Arrangements and Spreads* (1972), CBMS Regional
+Conference Series in Mathematics 10, §3.3; superseded by Solymosi–Stojaković
+(*Combinatorica* 33, 2013). -/
 
 /- ## Solymosi–Stojaković n^{2−O(1/√(log n))} lower bound (OQ-04 re-statement)
 
@@ -330,6 +330,96 @@ theorem solymosi_stojakovic_exponent_gt_three_halves
     rw [div_lt_iff₀ hsqrt_pos]
     nlinarith [hsqrt_gt_one, hC_pos]
   linarith
+
+/-- **Grünbaum's Ω(n^{3/2}) lower bound**, derived from Solymosi–Stojaković.
+
+For every `C > 0` there is a threshold `N` past which some no-five-collinear
+planar set `P` of size `n` has `fourPointLineCount P ≥ C · n^{3/2}`.
+
+Proof strategy (a genuine reduction, not a fresh construction).  Specialise
+`solymosi_stojakovic_lower_bound` to the fixed constant `C₀ = 1/4`, giving a
+witness `P` with `n^{2 − (1/4)/√(log n)} ≤ fourPointLineCount P`.  Writing the
+Solymosi–Stojaković exponent as `(e − 3/2) + 3/2` with
+`e − 3/2 = 1/2 − (1/4)/√(log n) ≥ 1/4` (valid once `n ≥ 3`, so `√(log n) ≥ 1`),
+factor `n^{2−(1/4)/√log n} = n^{e−3/2} · n^{3/2} ≥ n^{1/4} · n^{3/2}`.  Finally
+`n^{1/4} ≥ C` once `n ≥ C^4`, so `C · n^{3/2} ≤ n^{1/4} · n^{3/2} ≤
+fourPointLineCount P`.
+
+This makes Grünbaum's bound a *corollary* of the (still-deferred)
+Solymosi–Stojaković existence statement, cutting the file's open obligations
+from two to one.  It is honest about scope: it does not build the Grünbaum
+witness explicitly (that is Path B / the F_p parabola infrastructure below), and
+it inherits the single remaining `sorry` from `solymosi_stojakovic_lower_bound`.
+
+Reference: Grünbaum (1972); Solymosi–Stojaković, *Combinatorica* 33 (2013). -/
+theorem grunbaum_lower_bound_three_halves :
+    ∀ C : ℝ, 0 < C → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
+      ∃ P : PlanarPointSet, P.points.card = n ∧ NoFiveCollinear P ∧
+        C * (n : ℝ) ^ (3 / 2 : ℝ) ≤ (fourPointLineCount P : ℝ) := by
+  intro C hC
+  -- Solymosi–Stojaković with the fixed constant `C₀ = 1/4`.
+  obtain ⟨N₁, hN₁⟩ := solymosi_stojakovic_lower_bound (1 / 4 : ℝ) (by norm_num)
+  -- A threshold `K` with `C^4 < K`, so that `C ≤ n^{1/4}` once `n ≥ K`.
+  obtain ⟨K, hK⟩ := exists_nat_gt (C ^ 4)
+  refine ⟨max N₁ (max K 3), fun n hn => ?_⟩
+  have hnN₁ : N₁ ≤ n := (le_max_left _ _).trans hn
+  have hnK : K ≤ n := (le_max_left K 3).trans ((le_max_right N₁ _).trans hn)
+  have hn3 : 3 ≤ n := (le_max_right K 3).trans ((le_max_right N₁ _).trans hn)
+  -- Real coercions of the size bounds.
+  have hn3real : (3 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn3
+  have hb0 : (0 : ℝ) < (n : ℝ) := by linarith
+  have hb1 : (1 : ℝ) ≤ (n : ℝ) := by linarith
+  -- Solymosi–Stojaković witness at size `n`.
+  obtain ⟨P, hcard, hLBC⟩ := hN₁ n hnN₁
+  obtain ⟨hP_no5, hP_lb⟩ := hLBC
+  refine ⟨P, hcard, hP_no5, ?_⟩
+  -- `√(log n) > 1` (since `n ≥ 3 > exp 1`).
+  have h_exp_lt_n : Real.exp 1 < (n : ℝ) := by
+    have : Real.exp 1 < (3 : ℝ) := by linarith [Real.exp_one_lt_d9]
+    linarith
+  have hlog_gt_one : (1 : ℝ) < Real.log (n : ℝ) := by
+    have h := Real.log_lt_log (Real.exp_pos 1) h_exp_lt_n
+    rwa [Real.log_exp] at h
+  have hsqrt_gt_one : (1 : ℝ) < Real.sqrt (Real.log (n : ℝ)) := by
+    have h := Real.sqrt_lt_sqrt (by norm_num : (0 : ℝ) ≤ 1) hlog_gt_one
+    rwa [Real.sqrt_one] at h
+  have hsqrt_pos : (0 : ℝ) < Real.sqrt (Real.log (n : ℝ)) := by linarith
+  -- The Solymosi–Stojaković exponent minus `3/2` is at least `1/4`.
+  have hfrac_le : (1 / 4 : ℝ) / Real.sqrt (Real.log (n : ℝ)) ≤ 1 / 4 := by
+    rw [div_le_iff₀ hsqrt_pos]; nlinarith [hsqrt_gt_one]
+  have he_ge :
+      (1 / 4 : ℝ) ≤ (2 - (1 / 4) / Real.sqrt (Real.log (n : ℝ))) - 3 / 2 := by
+    linarith
+  -- `C ≤ n^{1/4}`.
+  have hCn4 : (C : ℝ) ^ (4 : ℕ) ≤ (n : ℝ) := by
+    have hKn : (K : ℝ) ≤ (n : ℝ) := by exact_mod_cast hnK
+    linarith [hK]
+  have hCquarter : C ≤ (n : ℝ) ^ ((1 / 4 : ℝ)) := by
+    have hmono : ((C : ℝ) ^ (4 : ℕ)) ^ ((1 / 4 : ℝ)) ≤ (n : ℝ) ^ ((1 / 4 : ℝ)) :=
+      Real.rpow_le_rpow (by positivity) hCn4 (by norm_num)
+    have heq : ((C : ℝ) ^ (4 : ℕ)) ^ ((1 / 4 : ℝ)) = C := by
+      rw [← Real.rpow_natCast C 4, ← Real.rpow_mul hC.le,
+        show ((4 : ℕ) : ℝ) * (1 / 4 : ℝ) = 1 by push_cast; ring, Real.rpow_one]
+    rwa [heq] at hmono
+  -- `n^{1/4} ≤ n^{e - 3/2}` (base ≥ 1, exponent increases).
+  have hstep :
+      (n : ℝ) ^ ((1 / 4 : ℝ)) ≤
+        (n : ℝ) ^ ((2 - (1 / 4) / Real.sqrt (Real.log (n : ℝ))) - 3 / 2) :=
+    Real.rpow_le_rpow_of_exponent_le hb1 he_ge
+  -- Factor `n^{e} = n^{e-3/2} · n^{3/2}`.
+  have hfactor :
+      (n : ℝ) ^ ((2 - (1 / 4) / Real.sqrt (Real.log (n : ℝ))) - 3 / 2)
+          * (n : ℝ) ^ ((3 / 2 : ℝ))
+        = (n : ℝ) ^ (2 - (1 / 4) / Real.sqrt (Real.log (n : ℝ))) := by
+    rw [← Real.rpow_add hb0]; congr 1; ring
+  have hn32pos : (0 : ℝ) < (n : ℝ) ^ ((3 / 2 : ℝ)) := Real.rpow_pos_of_pos hb0 _
+  -- Chain everything: `C · n^{3/2} ≤ n^{e} ≤ count`.
+  calc C * (n : ℝ) ^ ((3 / 2 : ℝ))
+      ≤ (n : ℝ) ^ ((2 - (1 / 4) / Real.sqrt (Real.log (n : ℝ))) - 3 / 2)
+          * (n : ℝ) ^ ((3 / 2 : ℝ)) := by
+        apply mul_le_mul_of_nonneg_right (le_trans hCquarter hstep) hn32pos.le
+    _ = (n : ℝ) ^ (2 - (1 / 4) / Real.sqrt (Real.log (n : ℝ))) := hfactor
+    _ ≤ (fourPointLineCount P : ℝ) := hP_lb
 
 /- ## S3-B1 (Grünbaum F_p² parabola — foundational definition + cardinality)
 
