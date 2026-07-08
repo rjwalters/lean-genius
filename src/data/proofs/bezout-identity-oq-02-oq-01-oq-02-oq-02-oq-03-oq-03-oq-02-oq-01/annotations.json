@@ -14,7 +14,7 @@
   {
     "id": "bezout-irrednorm-ann-euclidean-instance",
     "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02-oq-01",
-    "range": { "startLine": 40, "endLine": 45 },
+    "range": { "startLine": 42, "endLine": 45 },
     "type": "concept",
     "title": "The imported Euclidean structure: why irreducible ⟹ prime here",
     "content": "The whole necessity argument silently rests on one structural fact carried over from the parent import: for −2 ≤ d < 0, ℤ[√d] is norm-Euclidean, hence a PID, hence a unique factorization domain. That is exactly why `irreducible` can be traded for the far stronger `prime` — the step `UniqueFactorizationMonoid.irreducible_iff_prime` used at the top of the main theorem, activated by `letI := NormEuclideanZsqrtdFamily.euclideanDomain d hd hd2`. In a general integral domain irreducibles need not be prime, and neither the divides-a-rational-prime lemma (which uses `Prime.dvd_or_dvd`) nor the norm-comparison finish would go through. The bare `open Zsqrtd` / `variable {d : ℤ}` here is thus the seam where the earlier Euclidean-domain development is grafted onto this file; the hypotheses `hd : d < 0` and `hd2 : -2 ≤ d` threaded through every theorem are precisely the conditions under which that instance exists.",

@@ -341,17 +341,20 @@ def ColoringEquiv {n k : ℕ} [NeZero n] (c₁ c₂ : Coloring n k) : Prop :=
     - |Fix(3)| = 2 (only constant colorings)
     Sum = 24.
 
-    Discharged in S3 (researcher-9, 2026-06-10) by `native_decide`:
+    Discharged by `decide` (S3 originally used `native_decide`; the S5 drift
+    repair for Mathlib v4.26 switched to the kernel tactic `decide`, which
+    both fixes a native-compilation crash and removes the `Lean.ofReduceBool`
+    dependency for this theorem):
     `Coloring 4 2 = Fin 4 → Fin 2` is finite; `IsFixedByRotation r` is
     decidable (instance above); hence
     `Fintype.card { c // IsFixedByRotation r c }` is computable and the
-    arithmetic identity is verified by evaluation of `decide`. -/
+    arithmetic identity is verified by kernel evaluation of `decide`. -/
 theorem fixed_point_sum_binary_4 :
     Fintype.card { c : Coloring 4 2 // IsFixedByRotation 0 c } +
     Fintype.card { c : Coloring 4 2 // IsFixedByRotation 1 c } +
     Fintype.card { c : Coloring 4 2 // IsFixedByRotation 2 c } +
     Fintype.card { c : Coloring 4 2 // IsFixedByRotation 3 c } = 24 := by
-  native_decide
+  decide
 
 /-- The equivalence relation on colorings by rotation.
     Derived from `AddAction.orbitRel` (replacing the prior axiom): two
@@ -381,24 +384,46 @@ def coloringQuotientFintype (n k : ℕ) [NeZero n] :
     There are exactly 6 distinct binary necklaces of length 4.
 
     Mathematically this is Burnside's lemma: `(16 + 2 + 4 + 2) / 4 = 6`.
-    Formally it is discharged directly: `coloringQuotientFintype 4 2` is a
-    *computable* `Fintype (Quotient (coloringSetoid 4 2))` — built from
-    `Quotient.fintype` over the finite carrier `Coloring 4 2 = Fin 4 → Fin 2`
-    and the decidable orbit relation `coloringSetoid_decidableRel`. So
-    `Fintype.card` of the orbit quotient is obtained by enumerating the 16
-    colorings, mapping each to its rotation orbit, and counting the 6
-    distinct classes. `native_decide` evaluates that chain at native speed.
 
-    Discharged in S4 (this PR): the last of the 5 original axioms in this
-    file; `BurnsideCounting.lean` is now axiom-free. -/
+    S4 originally discharged this by `native_decide` over the computable
+    `coloringQuotientFintype 4 2`, enumerating the orbit quotient directly.
+    The S5 drift repair replaces that with a genuine application of Mathlib's
+    additive Burnside lemma
+    `AddAction.sum_card_fixedBy_eq_card_orbits_mul_card_addGroup`:
+      `∑ a : ZMod 4, |Fix a| = |orbits| * |ZMod 4|`.
+    The fixed-point sum is `24` (`fixed_point_sum_binary_4`, whose subtypes
+    `{c // IsFixedByRotation a c}` are defeq to `fixedBy (Coloring 4 2) a`)
+    and `|ZMod 4| = 4`, so `|orbits| * 4 = 24`, giving `|orbits| = 6` by
+    arithmetic — no quotient enumeration required. This route is kernel-checked
+    (no `native_decide`, no `Lean.ofReduceBool`): it counts orbits from the
+    fixed-point data rather than by native evaluation of the quotient. -/
 theorem binary_necklaces_4 :
     @Fintype.card (Quotient (@coloringSetoid 4 2 _)) (coloringQuotientFintype 4 2) = 6 := by
-  native_decide
-
-#check burnside_lemma
-#check cyclicAddActionOnColorings
-#check binary_4_colorings_count
-#check constant_4_2
-#check period2_count
-
-end BurnsideCounting
+  -- Supply the orbit-quotient `Fintype` in BOTH the `coloringSetoid` form (used
+  -- by the goal / calc LHS) and the defeq `orbitRel` form (used by Burnside's
+  -- `hb` and the calc RHS), both as `coloringQuotientFintype 4 2`, so every
+  -- `Fintype.card` of the quotient resolves to the same instance.
+  letI : Fintype (Quotient (@coloringSetoid 4 2 _)) := coloringQuotientFintype 4 2
+  letI : Fintype (Quotient (AddAction.orbitRel (ZMod 4) (Coloring 4 2))) :=
+    coloringQuotientFintype 4 2
+  -- Additive Burnside: `∑ a, |Fix a| = |orbits| * |ZMod 4|`.
+  have hb := AddAction.sum_card_fixedBy_eq_card_orbits_mul_card_addGroup
+    (ZMod 4) (Coloring 4 2)
+  -- `fixedBy (Coloring 4 2) a` and `{c // IsFixedByRotation a c}` are defeq.
+  have hbridge : ∀ a : ZMod 4,
+      Fintype.card (AddAction.fixedBy (Coloring 4 2) a) =
+        Fintype.card { c : Coloring 4 2 // IsFixedByRotation a c } := fun a =>
+    Fintype.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)
+  have hsum : (∑ a : ZMod 4, Fintype.card (AddAction.fixedBy (Coloring 4 2) a)) = 24 := by
+    simp only [hbridge]
+    decide
+  have hcard : Fintype.card (ZMod 4) = 4 := by decide
+  rw [hsum, hcard] at hb
+  -- hb : 24 = Fintype.card (Quotient (orbitRel (ZMod 4) (Coloring 4 2))) * 4.
+  -- Bridge the goal's quotient (`coloringSetoid` form + `coloringQuotientFintype`
+  -- instance) to Burnside's (`orbitRel` form) in term mode; a `rw` would force
+  -- the kernel to reduce `coloringQuotientFintype`, which is expensive.
+  calc @Fintype.card (Quotient (@coloringSetoid 4 2 _)) (coloringQuotientFintype 4 2)
+      = Fintype.card (Quotient (AddAction.orbitRel (ZMod 4) (Coloring 4 2))) :=
+        Fintype.card_congr (Equiv.refl _)
+    _ = 6 := by omega

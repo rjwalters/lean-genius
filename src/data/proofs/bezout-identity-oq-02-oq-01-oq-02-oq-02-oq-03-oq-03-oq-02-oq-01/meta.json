@@ -39,7 +39,8 @@
       "The norm turns a structural question about irreducibles into an elementary divisibility statement about integers: z prime divides N(z) = z·z̄, so it must divide a rational prime factor of |N(z)|.",
       "exists_prime_dvd_natCast is the crux — moving from 'z divides the image of a composite integer' to 'z divides the image of a rational prime' — and it is a clean strong induction that peels prime factors and uses Prime.dvd_or_dvd at each step.",
       "Once z ∣ ↑p is known, norm_intCast (N(↑p) = p²) forces |N(z)| ∣ p², and the only non-unit divisors of p² are p and p²; this is exactly the split/ramified (norm p) vs inert (norm p²) dichotomy.",
-      "This is the necessary direction complementing the parent's sufficient irreducible_of_prime_norm: prime norm ⟹ irreducible, and irreducible ⟹ norm p or p²."
+      "This is the necessary direction complementing the parent's sufficient irreducible_of_prime_norm: prime norm ⟹ irreducible, and irreducible ⟹ norm p or p².",
+      "The proof never case-splits on d: it invokes only d < 0 (to make the norm nonnegative, so ↑|N(z)| = N(z)) and −2 ≤ d < 0 (to summon the parent's EuclideanDomain/UFD instance). The p-vs-p² dichotomy is thus a formal consequence of 'UFD + nonnegative multiplicative norm', uniform across the whole family, and this is exactly why the leftover content — which rational primes are inert (norm p²) versus split (norm p) — is the genuinely d-dependent part, decided per-d by a congruence/Legendre-symbol condition rather than by the norm bound proved here."
     ],
     "prerequisites": [
       "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02: the parent PID/UFD entry with irreducible_of_prime_norm and the EuclideanDomain (ℤ√d) value for −2 ≤ d < 0",
