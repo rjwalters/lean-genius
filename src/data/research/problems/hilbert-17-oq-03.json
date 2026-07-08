@@ -47,8 +47,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Attempt quadratic_psd_is_sos_aux (PSD quadratic form = SOS of linear forms) via the Gram matrix: poly↔symmetric A, A PSD ⟹ A = BᵀB (Mathlib Matrix.PosSemidef / Cholesky-spectral), Q = ‖Bx‖². The poly↔matrix bridge is the main work.",
-      "pfister_bound_aux (Pfister's 2ⁿ bound) is genuinely deep (Pfister forms over formally real fields); no short Mathlib path — leave axiomatized."
+      "STATE UPDATE (2026-07-08): quadratic_psd_is_sos_aux is ALREADY DISCHARGED and merged — Hilbert17QuadraticGram.lean (483 L, 0 axioms) proves the homogeneous PSD-quadratic = SOS case and it is wired into the parent. Do NOT re-attempt it.",
+      "The parent Hilbert17SumOfSquares.lean is now at ONE deep axiom: pfister_bound_aux (Pfister's 2ⁿ bound over formally real fields) — genuinely hard, no short Mathlib path, correctly left axiomatized. The strand is at its frontier.",
+      "The oq-03 question itself (computational complexity of deciding PSD⟹SOS) is a complexity meta-question, not a clean Lean target; its mathematical substance is fully covered by children oq-01..oq-05 (Motzkin/Robinson non-SOS, univariate/quadratic PSD=SOS, sharp Motzkin threshold)."
     ]
   },
   "tags": [
