@@ -231,6 +231,24 @@ theorem kronecker2_periodic (a : ℤ) : kronecker2 (a + 8) = kronecker2 a := by
       Int.emod_emod_of_dvd x (by norm_num : (8 : ℤ) ∣ 8)]
   rw [hred (a + 8), hred a, Int.add_emod_right]
 
+/-- **`kronecker2` is an even character:** `(−a/2) = (a/2)`.  The `(·/2)` symbol
+    depends only on the residue `a % 8`, and negation permutes the odd residues
+    `1 ↔ 7`, `3 ↔ 5` — fixing the value-`+1` class `{1, 7}` and the value-`−1`
+    class `{3, 5}` setwise (and the even class maps to the even class).  Together
+    with `kronecker2_mul` and `kronecker2_periodic` this shows `(·/2)` is the *even*
+    real Dirichlet character mod 8, the identification the Gauss-sum route to
+    generalized reciprocity (Target 2) requires. -/
+theorem kronecker2_neg (a : ℤ) : kronecker2 (-a) = kronecker2 a := by
+  unfold kronecker2
+  split_ifs <;> omega
+
+/-- **`kronecker2` takes values in `{−1, 0, 1}`.**  Like every Kronecker/Jacobi
+    symbol it is `0` exactly on the even residues and `±1` on the units mod 8. -/
+theorem kronecker2_values (a : ℤ) :
+    kronecker2 a = -1 ∨ kronecker2 a = 0 ∨ kronecker2 a = 1 := by
+  unfold kronecker2
+  split_ifs <;> decide
+
 /-- The Kronecker symbol is completely multiplicative in the first argument:
     (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
 
