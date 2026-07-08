@@ -153,5 +153,27 @@
       "relationship": "sibling",
       "description": "Supplies the parity-split closed forms T(2m) = m^2 and T(2m+1) = m(m+1) reused here to prove equality at the balanced split, plus the strict growth and real envelope of T."
     }
+  ],
+  "references": [
+    {
+      "authors": "Thomas F. Bloom (ed.)",
+      "title": "Erdős Problem #1017",
+      "year": 2024,
+      "note": "erdosproblems.com/1017. States the Erdős–Goodman–Pósa clique-partition question f(n,k), records the f ≤ ⌊n²/4⌋ bound with the balanced complete bipartite graph as extremal example, and the known partial results."
+    },
+    {
+      "authors": "Paul Erdős, A. W. Goodman, Louis Pósa",
+      "title": "The representation of a graph by set intersections",
+      "year": 1966,
+      "venue": "Canadian Journal of Mathematics 18, 106–112",
+      "note": "Origin of Erdős #1017: the edges of any n-vertex graph can be partitioned into at most ⌊n²/4⌋ complete subgraphs, the bound realized by the balanced (triangle-free) complete bipartite graph."
+    },
+    {
+      "authors": "Willem Mantel",
+      "title": "Problem 28",
+      "year": 1907,
+      "venue": "Wiskundige Opgaven 10, 60–61",
+      "note": "The quarter-square extremality: an n-vertex triangle-free graph has at most ⌊n²/4⌋ edges, attained by the balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} — the ab ≤ ⌊n²/4⌋ maximum this entry formalizes."
+    }
   ]
 }
