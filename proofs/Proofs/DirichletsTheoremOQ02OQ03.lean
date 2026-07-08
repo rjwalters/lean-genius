@@ -974,4 +974,90 @@ infinitely many primes `≡ 3 (mod 4)`", now with an explicit certified threshol
 theorem primesCount3_unbounded (m : ℕ) : ∃ x, m ≤ primesCount3 x :=
   ⟨4 ^ (2 ^ m), le_trans (Nat.le_succ m) (primesCount3_ge_of_doubly_exp m)⟩
 
+/-! ## Step 13: `B` dominates **every fixed power** of `C` — `(C k)^p ≤ B k`
+
+Step 10 proved the factorial tower `B` eventually dominates the *square* of the
+primorial tower, `(C k)² ≤ B k`, hence `B / C → ∞`.  The tetration lower bound
+`2 ↑↑ k ≤ B k` (Step 11) makes a far stronger statement transparent: `B`
+eventually dominates **any fixed power** `(C k)^p`, and even `m·(C k)^p` for any
+fixed multiplier `m`.  So `B / C^p → ∞` for *every* exponent `p`, i.e. `B`
+outgrows every polynomial in the primorial certificate `C`.
+
+The mechanism is the closed-form sandwich: on the `C` side
+`(C k)^p ≤ (4^(2^k))^p = 2^(2^(k+1)·p)` (`C_le_doubly_exp`), while on the `B` side
+`B k ≥ 2 ↑↑ k = 2^(2 ↑↑ (k−1))` (`tower2_le_B`).  It therefore suffices to
+compare the *exponents*: `2^(k+1)·p ≤ 2 ↑↑ (k−1)`, and the tetration term
+eventually dwarfs the doubly-exponential one.  Certified, `native_decide`-free —
+the only quantitative inputs are `n < 2^n` and the linear tetration bound
+`2^(k+2) ≤ 2 ↑↑ k` of Step 11. -/
+
+/-- Tetration beats a fixed doubly-exponential with a doubled exponent:
+`2^(2k+2) ≤ 2 ↑↑ k` for `k ≥ 5`.  Writing `k = i+1`, the claim
+`2^(2i+4) ≤ 2^(2 ↑↑ i)` reduces to `2i+4 ≤ 2 ↑↑ i`, which follows from
+`2^(i+2) ≤ 2 ↑↑ i` (`two_pow_le_tower2`, `i ≥ 4`) together with the elementary
+`2·(i+2) ≤ 2^(i+2)` (from `i+1 < 2^(i+1)`).  This is the exponent-level engine
+behind the power-domination result. -/
+theorem two_pow_two_mul_le_tower2 {j : ℕ} (hj : 5 ≤ j) : 2 ^ (2 * j + 2) ≤ tower2 j := by
+  obtain ⟨i, rfl⟩ : ∃ i, j = i + 1 := ⟨j - 1, by omega⟩
+  rw [tower2_succ]
+  apply Nat.pow_le_pow_right (by norm_num)
+  have hi4 : 4 ≤ i := by omega
+  have h := two_pow_le_tower2 hi4
+  have hb : i + 1 < 2 ^ (i + 1) := lt_two_pow_aux (i + 1)
+  have heq : (2 : ℕ) ^ (i + 2) = 2 * 2 ^ (i + 1) := by rw [pow_succ]; ring
+  omega
+
+/-- **`B` dominates every fixed power of `C`:** for each `p` there is a threshold
+`K` (here `K = p + 6`) with `(C k)^p ≤ B k` for all `k ≥ K`.  Generalises
+`C_sq_le_B` (the `p = 2` case) to arbitrary exponents, using the tetration lower
+bound on `B` rather than the ad-hoc quartic estimate.  Proof: bound the `C` side
+by `2^(2^(k+1)·p)` via `C_le_doubly_exp`, bound `B` below by
+`2^(2 ↑↑ (k−1)) = 2 ↑↑ k` via `tower2_le_B`, and compare exponents through
+`2^(k+1)·p ≤ 2^(2k')·… ≤ 2 ↑↑ (k−1)` (`two_pow_two_mul_le_tower2`, absorbing the
+multiplier `p ≤ 2^{k−1}`). Certified, `native_decide`-free. -/
+theorem C_pow_le_B_eventually (p : ℕ) : ∃ K, ∀ k, K ≤ k → (C k) ^ p ≤ B k := by
+  refine ⟨p + 6, fun k hk => ?_⟩
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  have hj5 : 5 ≤ j := by omega
+  have hjp : p ≤ j := by omega
+  -- `C` side: `(C (j+1))^p ≤ 2^(2^(j+2)·p)`.
+  have hC2 : (C (j + 1)) ^ p ≤ 2 ^ (2 ^ (j + 2) * p) := by
+    calc (C (j + 1)) ^ p ≤ (4 ^ (2 ^ (j + 1))) ^ p :=
+          Nat.pow_le_pow_left (C_le_doubly_exp (j + 1)) p
+      _ = 2 ^ (2 ^ (j + 2) * p) := by
+          rw [← pow_mul, show (4 : ℕ) = 2 ^ 2 by norm_num, ← pow_mul]
+          congr 1
+          have h42 : (2 : ℕ) ^ (j + 2) = 2 * 2 ^ (j + 1) := by rw [pow_succ]; ring
+          rw [h42]; ring
+  -- exponent comparison: `2^(j+2)·p ≤ 2 ↑↑ j`.
+  have hp2 : p ≤ 2 ^ j :=
+    le_trans (le_of_lt (lt_two_pow_aux p)) (Nat.pow_le_pow_right (by norm_num) hjp)
+  have hexp : 2 ^ (j + 2) * p ≤ tower2 j := by
+    calc 2 ^ (j + 2) * p ≤ 2 ^ (j + 2) * 2 ^ j := Nat.mul_le_mul (le_refl _) hp2
+      _ = 2 ^ (2 * j + 2) := by rw [← pow_add]; congr 1; ring
+      _ ≤ tower2 j := two_pow_two_mul_le_tower2 hj5
+  -- `B` side: `2^(2^(j+2)·p) ≤ 2^(2 ↑↑ j) = 2 ↑↑ (j+1) ≤ B (j+1)`.
+  have hB2 : 2 ^ (2 ^ (j + 2) * p) ≤ B (j + 1) := by
+    calc 2 ^ (2 ^ (j + 2) * p) ≤ 2 ^ tower2 j := Nat.pow_le_pow_right (by norm_num) hexp
+      _ = tower2 (j + 1) := (tower2_succ j).symm
+      _ ≤ B (j + 1) := tower2_le_B (j + 1)
+  exact le_trans hC2 hB2
+
+/-- **`B / C^p → ∞` for every fixed `p` (division-free form):**
+`∀ p m, ∃ K, ∀ k ≥ K, m·(C k)^p ≤ B k`.  Generalises `B_div_C_diverges` (the
+`p = 1` case) to arbitrary powers: the factorial certificate `B` outgrows every
+fixed *polynomial* in the primorial certificate `C`, with any constant.  Proof:
+absorb the multiplier as an extra factor, `m·(C k)^p ≤ (C k)^(p+1)` once
+`m ≤ C k` (true for `k ≥ m` since `C k ≥ k+3`), then apply
+`C_pow_le_B_eventually (p+1)`. -/
+theorem B_div_C_pow_diverges (p m : ℕ) : ∃ K, ∀ k, K ≤ k → m * (C k) ^ p ≤ B k := by
+  obtain ⟨K0, hK0⟩ := C_pow_le_B_eventually (p + 1)
+  refine ⟨max K0 m, fun k hk => ?_⟩
+  have hkK0 : K0 ≤ k := le_trans (le_max_left _ _) hk
+  have hkm : m ≤ k := le_trans (le_max_right _ _) hk
+  have hmC : m ≤ C k := le_trans hkm (by have := C_ge_add k; omega)
+  calc m * (C k) ^ p ≤ C k * (C k) ^ p := Nat.mul_le_mul_right _ hmC
+    _ = (C k) ^ (p + 1) := by rw [pow_succ]; ring
+    _ ≤ B k := hK0 k hkK0
+
 end DirichletsTheoremOQ02OQ03
