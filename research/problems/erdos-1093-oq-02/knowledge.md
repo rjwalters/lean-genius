@@ -259,3 +259,50 @@ two binomial/factorization record certs above (+ parent's `deficiency_284_28`).
 Unchanged: the universal upper bound (and closing 10≤d≤18 at k=28) is BLOCKED on
 effective analytic NT absent from Mathlib. The Kummer de-native_decide of
 `noSmallPrimeFactors_284_28` is the one remaining *bounded* trust-surface win.
+
+## Session 2026-07-08 (researcher-3) — de-native_decide `noSmallPrimeFactors_284_28` via Kummer
+
+**Mode:** AXIOM/TRUST-REDUCTION (elementary theory saturated; the "one remaining
+bounded trust-surface win" flagged by researcher-2's session was the Kummer route).
+**Outcome:** progress (1 native_decide → kernel `decide`). VERIFIED, 0 sorry / 0 axiom.
+
+### What I did
+Rewrote `noSmallPrimeFactors_284_28`. Old proof: `rw [noSmallPrimeFactors_iff]; native_decide`
+(computes the ~50-digit bignum `C(284,28)` and tests divisibility → `Lean.ofReduceBool`).
+New proof invokes **Kummer's theorem** `Nat.factorization_choose` (Mathlib
+`Mathlib/Data/Nat/Choose/Factorization.lean`): `(C n k).factorization p =
+#{i ∈ Ico 1 b | p^i ≤ k % p^i + (n-k) % p^i}` (carry count), for any `b > log p n`.
+For each prime `p ≤ 28`, `p ∣ C(284,28)` ⇒ `0 < factorization p` (`Prime.factorization_pos_of_dvd`)
+⇒ a positive carry count over `Ico 1 9`; adding `28`+`256` has no carry in any base
+`p ≤ 28`, so the count is 0 — contradiction. `interval_cases p` (2..28), primes closed by
+`decide` on the concrete carry set, composites by `norm_num` on `¬ p.Prime`.
+
+### Key gotchas (reusable)
+- **`log` doesn't reduce under kernel `decide`** (well-founded rec). Bound `log p 284 < 9`
+  via `Nat.log_lt_of_lt_pow (h : 284 < p^9)`, and `284 < p^9` generically from
+  `284 < 2^9 ≤ p^9` (`Nat.pow_le_pow_left hpp.two_le`). No `log` ever hits `decide`.
+- **`decide` DOES reduce the `Finset.Ico 1 9` filter-card** (confirmed by isolated probes —
+  `decide`, `rfl`, `simp+decide` all work standalone even for `p=23`, `23^8`). The bignum
+  `C(284,28)` is what `decide` can't do (exponential Pascal recursion), NOT the carry set.
+- **Branch-order trap in `interval_cases p <;> first | A | B`:** put the `decide` branch
+  FIRST. If `norm_num` (proving `¬ p.Prime`) is tried against a genuine *prime*, it reduces
+  the side goal to `⊢ False` and STALLS with "unsolved goals" — a hard error, not a clean
+  failure `first` can recover from. With `decide` first, primes are closed before `norm_num`
+  is reached, so `norm_num` only ever sees composites (where `¬ p.Prime` holds cleanly).
+
+### Build notes
+Documented exit-135/139 SIGBUS at `[3060/3060]` (elaborates fully in ~1-2s, 0 proof errors,
+then crashes on olean finalization under fleet memory contention) reproduced ~11× in a row;
+`LEAN_SKIP_CACHE=true` did NOT help (crash is post-decompress). Fix: `docker-build.sh
+--repair-cache` (force cache refresh; decompress dropped to 15s, a sign the fleet quieted),
+then the very next build went green `✔ [3060/3060] Built (2.4s)` exit 0. Real proof errors,
+by contrast, print explicit `.lean:LINE:COL: error` diagnostics (the branch-order bug printed
+9 of them) — their ABSENCE + reaching `[3060/3060]` is the tell for an environmental crash.
+
+### Frontier
+Unchanged: the universal upper bound (and closing `10 ≤ d ≤ 18` at `k=28`) is BLOCKED on
+effective analytic NT absent from Mathlib. Remaining native_decide in this file: exactly one
+— `smooth_indices_284_28` — which CANNOT be de-native_decided (`IsKSmooth` decidability routes
+through `Nat.primeFactors`, well-founded recursion, does not reduce under kernel `decide`). The
+parent's `deficiency_284_28` also remains native_decide. So the file is still `ofReduceBool`-
+dependent overall, but this session removed one of the two record-cert dependencies here.
