@@ -82,9 +82,16 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module header and setup",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "The docstring states Catalan's identity F_n² − F_{n−r}·F_{n+r} = (−1)^{n−r}·F_r² as the r-step generalization of Cassini, notes that Mathlib carries only the r = 1 integer-indexed Cassini specialization, and lays out the three-lemma plan (cassini_sub → catalan_aux → catalan) that needs only one induction. Followed by the Mathlib import and namespace."
+    },
+    {
       "id": "cassini-core",
       "title": "The Cassini core (normalized form)",
-      "startLine": 40,
+      "startLine": 37,
       "endLine": 54,
       "summary": "cassini_sub proves F_{m+1}² − F_m·F_{m+1} − F_m² = (−1)^m by induction off Nat.fib_add_two. This is the r = 1 engine that the general identity scales by F_r²."
     },
