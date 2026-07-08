@@ -31,9 +31,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE (phantom): the exact deliverable already exists, verified 0-sorry/0-axiom.",
+    "builtItems": [
+      "poincare_separation_compression in CauchyInterlacingPoincareCompression.lean (#28084) — unconditional codimension-m Poincaré separation: given a symmetric T on V (dim n+m) and any subspace H (dim n), the descending eigenvalues of the explicit orthogonal compression compress T H interlace those of T as lam⟨k+m⟩ ≤ mu k ≤ lam⟨k⟩, with NO Rayleigh side hypothesis.",
+      "compress / isSymmetric_compress / rayleigh_compress_eq in CauchyInterlacingCompression.lean (#27245) — define compress T H := P_H∘T∘ι_H, prove it symmetric, and discharge the Rayleigh-agreement identity for an arbitrary subspace via the orthogonal-projection adjoint identity.",
+      "poincare_separation_compression_span — same result compressing onto span of an orthonormal frame; cauchy_interlacing_compression_of_poincare — the m=1 corollary."
+    ],
+    "insights": [
+      "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",
+      "Rayleigh discharge mechanism: for y∈H, ⟨compress T H y, y⟩_H = ⟨P_H(Ty), y⟩ = ⟨Ty, y⟩_V by the orthogonal-projection adjoint identity (P_H self-adjoint, P_H y = y); norms agree since the inclusion H↪V is a linear isometry."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -53,8 +60,8 @@
     "mathlib": []
   },
   "started": "2026-07-02T05:53:08.467Z",
-  "lastUpdate": "2026-07-02T23:38:28.210Z",
+  "lastUpdate": "2026-07-07T00:00:00.000Z",
   "completed": "2026-07-02T23:38:28.210Z",
-  "significance": 6,
+  "significance": 3,
   "tractability": 7
 }
