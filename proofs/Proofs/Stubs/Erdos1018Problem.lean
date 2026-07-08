@@ -180,9 +180,29 @@ theorem erdos_1018_solved : erdos_1018_question := by
 Erdős noted that C_ε → ∞ as ε → 0.
 -/
 
-/-- C_ε → ∞ as ε → 0: smaller density requires larger subgraph. -/
-axiom constant_grows : ∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀,
-  ∀ C, existsBoundingConstant ε → C ≥ M
+/-- **The former `constant_grows` axiom was mis-stated and is provably false.**
+    Erdős observed that the *minimal* bounding constant `C_ε → ∞` as `ε → 0`.
+    The previous formalization
+    `∀ M, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C, existsBoundingConstant ε → C ≥ M`
+    does not capture that: its body does not mention `C`, so the inner
+    `∀ C, existsBoundingConstant ε → C ≥ M` collapses — taking `C = 0` and
+    `M ≥ 1` — to `¬ existsBoundingConstant ε`. But `erdos_1018_solved` proves
+    `existsBoundingConstant ε` for *every* `ε`, so the statement is false. As an
+    `axiom` it made the file's axiom set inconsistent (it could derive `False`).
+    We remove the axiom and record a machine-checked disproof instead.
+
+    The genuine "`C_ε → ∞`" claim concerns the *least* valid constant `C_ε` and
+    remains out of reach here — it needs the lower-bound / planarity theory that
+    is absent from Mathlib (the same blocker as `sparse_hides_nonplanarity`). -/
+theorem constant_grows_as_stated_is_false :
+    ¬ (∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C : ℕ,
+        existsBoundingConstant ε → C ≥ M) := by
+  intro h
+  obtain ⟨ε₀, hε₀pos, hbody⟩ := h 1
+  have hlt : ε₀ / 2 < ε₀ := by linarith
+  have hcontra : (0 : ℕ) ≥ 1 :=
+    hbody (ε₀ / 2) hlt 0 (erdos_1018_solved (ε₀ / 2))
+  omega
 
 /-- Intuition: sparser graphs hide non-planarity in larger structures. -/
 theorem sparse_hides_nonplanarity :
