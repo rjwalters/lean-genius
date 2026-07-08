@@ -111,7 +111,15 @@
       "summary": "For strongly additive f the hypothesis is equivalent to f(p)/log p unbounded over the primes."
     }
   ],
-  "conclusion": "This companion nails down the theory Part I of Erdős #897 rests on: the growth hypothesis is non-vacuous (logSqWeight witnesses it), selective (log and ω fail it), forces plain unboundedness, and — for strongly additive f — reduces to a statement about the primes alone. The forward implication of Part I itself remains OPEN and is not asserted. Verified, 0 axioms, 0 sorries.",
+  "conclusion": {
+    "summary": "This companion nails down the theory Part I of Erdős #897 rests on: the growth hypothesis limsup_{p,k} f(p^k)/log(p^k) = ∞ is non-vacuous (logSqWeight(n) = ∑_{p|n}(log p)² witnesses it), selective (the classical additive functions log and ω both fail it), forces f plainly unbounded on prime powers, and — for strongly additive f — reduces to a statement about the primes alone (f(p)/log p unbounded). The forward implication of Part I itself remains OPEN and is not asserted. Verified, 0 axioms, 0 sorries.",
+    "implications": "Establishes that Part I is a genuine, non-trivial conditional: its hypothesis is satisfiable yet excludes the standard additive functions, so any proof of Part I must use more than the defining growth condition alone. The strongly-additive reduction localizes the hypothesis entirely to prime values, mirroring the parent entry's completely-additive reduction and narrowing where the open difficulty lives (the interplay between prime-power growth and consecutive-integer differences).",
+    "openQuestions": [
+      "Part I itself (OPEN): does limsup_{p,k} f(p^k)/log(p^k) = ∞ for additive f force limsup_n (f(n+1)−f(n))/log n = ∞?",
+      "Does the strongly-additive reduction extend to a corresponding reduction of the Part I *conclusion* (consecutive differences) to prime-indexed data?",
+      "Is there an additive witness satisfying the hypothesis for which the consecutive-difference limsup can be computed or bounded explicitly, testing Part I on a concrete family beyond logSqWeight?"
+    ]
+  },
   "leanFile": {
     "path": "Proofs/Erdos897OQ01.lean",
     "imports": [
@@ -129,8 +137,32 @@
   },
   "crossReferences": [
     {
-      "slug": "erdos-897",
-      "reason": "Parent formalization: definitions of additive/strongly/completely additive, Wirsing's converse, and the completely-additive reduction this file mirrors."
+      "targetId": "erdos-897",
+      "relationship": "parent",
+      "description": "Parent formalization: definitions of additive / strongly additive / completely additive functions, Wirsing's 1970 converse, and the completely-additive reduction that this file's strongly-additive reduction (stronglyAdditive_unboundedOnPrimePowers_iff) mirrors."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul",
+      "title": "Erdős Problem #897",
+      "year": "1990s",
+      "venue": "erdosproblems.com/897",
+      "note": "The open problem on additive functions growing faster than log on prime powers and their consecutive differences."
+    },
+    {
+      "authors": "Wirsing, Eduard",
+      "title": "Das asymptotische Verhalten von Summen über multiplikative Funktionen II",
+      "year": "1967",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae 18",
+      "note": "Mean-value and growth theory for additive/multiplicative functions; source of the converse-direction context formalized in the parent entry."
+    },
+    {
+      "authors": "Elliott, Peter D. T. A.",
+      "title": "Probabilistic Number Theory I: Mean-Value Theorems",
+      "year": "1979",
+      "venue": "Grundlehren der mathematischen Wissenschaften 239, Springer",
+      "note": "Standard reference for additive arithmetic functions, the ω function, and growth conditions relative to log."
     }
   ],
   "sorries": 0
