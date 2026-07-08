@@ -172,6 +172,38 @@ theorem omega_stronglyAdditive : IsStronglyAdditive omega := by
     simp only [omega]
     rw [Nat.primeFactors_pow p (by omega : k ≠ 0)]
 
+/-- `Ω(n)` (the total number of prime factors, counted with multiplicity) is
+**completely additive**: `Ω(ab) = Ω(a) + Ω(b)` for all positive `a, b`, and
+`Ω(p^k) = k·Ω(p) = k`.  This is the archetypal *integer-valued* completely additive
+function named in the `IsCompletelyAdditive` docstring, and the natural counterpart of
+`omega_stronglyAdditive`; here we verify the predicate holds so it is non-vacuous.
+
+Both parts reduce to the fact that `Ω` counts the length of `Nat.primeFactorsList`,
+which is additive under multiplication up to a permutation
+(`Nat.perm_primeFactorsList_mul`).  The prime-power identity follows by induction on the
+exponent, with the multiplier `Ω(p)` carried symbolically (no need to evaluate it). -/
+theorem bigOmega_completelyAdditive : IsCompletelyAdditive bigOmega := by
+  refine ⟨?_, ?_⟩
+  · -- additivity (in fact for all positive a, b, coprime or not)
+    intro a b ha hb _hab
+    simp only [bigOmega]
+    rw [(Nat.perm_primeFactorsList_mul ha.ne' hb.ne').length_eq, List.length_append]
+    push_cast
+    ring
+  · -- prime powers: Ω(p^k) = k · Ω(p), by induction on k
+    intro p k hp
+    have hpne : p ≠ 0 := hp.pos.ne'
+    simp only [bigOmega]
+    induction k with
+    | zero => simp [Nat.primeFactorsList_one]
+    | succ n ih =>
+        rw [pow_succ,
+            (Nat.perm_primeFactorsList_mul (pow_ne_zero n hpne) hpne).length_eq,
+            List.length_append]
+        push_cast at ih ⊢
+        rw [ih]
+        ring
+
 /-
 ## Reduction for Completely Additive Functions
 
