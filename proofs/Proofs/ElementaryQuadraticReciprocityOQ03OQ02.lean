@@ -274,6 +274,20 @@ theorem kronecker2_sq_odd (a : ℤ) (ha : a % 2 = 1) :
     kronecker2 a * kronecker2 a = 1 := by
   rw [kronecker2_sq, if_neg (by omega)]
 
+/-- **The local `(·/2)` symbol is Mathlib's canonical quadratic character mod 8.**
+    `kronecker2 a = χ₈ a` for every integer `a`. The extra `a % 8 = -1` disjunct in
+    the local definition is vacuous (`Int.emod` by `8` lands in `[0,8)`), so the two
+    branch conditions agree. This bridge exports all of Mathlib's `χ₈`/`jacobiSym`
+    theory (e.g. `jacobiSym.at_two`, the second supplementary law) to the local
+    development, and conversely certifies the hand-rolled definition against the
+    library — the natural entry point for the Gauss-sum route to generalized
+    reciprocity (Target 2). -/
+theorem kronecker2_eq_χ₈ (a : ℤ) : kronecker2 a = ZMod.χ₈ (a : ZMod 8) := by
+  rw [ZMod.χ₈_int_eq_if_mod_eight]
+  unfold kronecker2
+  have h8 : 0 ≤ a % 8 := Int.emod_nonneg a (by norm_num)
+  split_ifs <;> omega
+
 /-- The Kronecker symbol is completely multiplicative in the first argument:
     (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
 
