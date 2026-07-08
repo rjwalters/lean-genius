@@ -99,6 +99,16 @@
       "targetId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
       "relationship": "extends",
       "description": "Parent: the single-block nonderogatory ⟺ cyclic ⟺ similar-to-companion equivalence. This entry uses that scaffold to handle the coprime two-block merge toward the multi-block rational canonical form."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+      "relationship": "related",
+      "description": "Grandparent — 'Cyclic Vector Theorem: Factorization Bridge via Multiset UFD': builds the factorization machinery over K[X] that the single-block cyclic criterion rests on. The lcm = product step here (lcm_eq_mul_of_isCoprime_monic) is the two-factor, coprime specialization of that same UFD arithmetic."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields",
+      "relationship": "related",
+      "description": "Base of the chain — 'Nonderogatory → Cyclic Vector: All Fields (Primary Decomposition)': establishes the nonderogatory ⇒ cyclic-vector direction over an arbitrary field via primary decomposition. The CRT collapse proved here is the coprime instance of that primary-decomposition picture, where two coprime primary parts merge into one cyclic block."
     }
   ],
   "references": [
