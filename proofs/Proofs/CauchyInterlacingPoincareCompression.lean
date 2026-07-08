@@ -145,4 +145,40 @@ theorem poincare_separation_compression_span
   poincare_separation_compression hT hVdim (Submodule.span 𝕜 (Set.range f))
     ((finrank_span_eq_card hf.linearIndependent).trans (Fintype.card_fin n)) k
 
+/-! ## Tightness: the invariant-subspace (attainment) case
+
+The interlacing bound `μ_k ≤ λ_k` is not always an equality, but there is a
+clean structural characterisation of *when* the compression stops losing
+information: exactly when `H` is invariant under `T`.  In that case the abstract
+orthogonal compression `compress T H` coincides with the honest restriction
+`T.restrict` of `T` to `H` — no projection error is incurred, because `T ↑y`
+already lies in `H` and the orthogonal projection fixes it.
+
+Consequently the spectrum of the compression is a sub-multiset of the spectrum
+of `T` (the eigenvalues of a restriction to an invariant subspace are a subset
+of the ambient eigenvalues), so Poincaré separation degenerates to equality on
+that block — the extremal / attainment case of the interlacing inequality. -/
+
+/-- Pointwise form of `compress_eq_restrict_of_invariant`: on a `T`-invariant
+subspace the compression acts by `T` itself, `↑(compress T H y) = T ↑y`.  The
+orthogonal projection in `compress` is inert here because it is applied to a
+vector `T ↑y` that already lies in `H`. -/
+theorem coe_compress_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hinv : ∀ y ∈ H, T y ∈ H) (y : H) :
+    ((compress T H y : H) : V) = T (y : V) := by
+  rw [compress_apply, Submodule.coe_orthogonalProjection_apply,
+      Submodule.starProjection_eq_self_iff.mpr (hinv _ y.2)]
+
+/-- **The compression onto a `T`-invariant subspace is the restriction of `T`.**
+
+If `T y ∈ H` for every `y ∈ H`, then `compress T H = T.restrict hinv` as
+operators `H →ₗ[𝕜] H`: no projection error is incurred, so the compression
+recovers `T` exactly on the invariant block. -/
+theorem compress_eq_restrict_of_invariant {T : V →ₗ[𝕜] V} (H : Submodule 𝕜 V)
+    (hinv : ∀ y ∈ H, T y ∈ H) :
+    compress T H = T.restrict hinv := by
+  ext y
+  -- `ext` already reduces to the coerced (ambient-`V`) equality of the images.
+  exact (coe_compress_of_invariant H hinv y).trans (LinearMap.restrict_coe_apply T hinv y).symm
+
 end CauchyInterlacing.PoincareCompression
