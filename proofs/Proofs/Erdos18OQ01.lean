@@ -262,4 +262,45 @@ theorem practical_pred_le_sigma {m : ℕ} (hm : 2 ≤ m) (hp : IsPractical m) :
     m - 1 ≤ (divisors m).sum id :=
   representable_le_sigma (hp.2 (m - 1) (by omega) (by omega))
 
+/-! ## Complement symmetry of the representable set
+
+The representable values of `m` are symmetric about `σ(m)/2`: if `k` is a sum of
+distinct divisors of `m`, so is its complement `σ(m) - k` (take the divisors NOT
+used).  Together with `representable_le_sigma` (every representable value is `≤
+σ(m)`) this pins the representable set inside `[0, σ(m)]` and makes it invariant
+under `k ↦ σ(m) - k`.  A structural companion to the additive
+`representable_union` above. -/
+
+/-- **The full divisor sum `σ(m)` is representable** — by the set of *all*
+    divisors of `m`.  This is the top of the representable range `[0, σ(m)]`,
+    matching the upper bound `representable_le_sigma`. -/
+theorem sigma_representable (m : ℕ) : IsRepresentable ((divisors m).sum id) m :=
+  ⟨divisors m, Finset.Subset.refl _, rfl⟩
+
+/-- **Complement symmetry.**  If `k` is representable by divisors of `m`, then so
+    is `σ(m) - k`: the divisors left unused by a subset summing to `k` themselves
+    sum to `σ(m) - k`.  Hence the representable set is symmetric under
+    `k ↦ σ(m) - k`. -/
+theorem representable_compl {k m : ℕ} (h : IsRepresentable k m) :
+    IsRepresentable ((divisors m).sum id - k) m := by
+  obtain ⟨S, hS, hsum⟩ := h
+  refine ⟨divisors m \ S, Finset.sdiff_subset, ?_⟩
+  have hsd : (divisors m \ S).sum id + S.sum id = (divisors m).sum id :=
+    Finset.sum_sdiff hS
+  omega
+
+/-- **Practical numbers also represent their TOP segment `[σ(m) - m, σ(m)]`.**
+    `practical_represents_le` gives the bottom segment `[0, m]`; reflecting it
+    through the complement symmetry `representable_compl` yields the mirror-image
+    top segment.  So a practical number represents both ends of `[0, σ(m)]` in a
+    full width-`m` block. -/
+theorem practical_top_segment {m : ℕ} (hp : IsPractical m) {k : ℕ}
+    (hlo : (divisors m).sum id - m ≤ k) (hhi : k ≤ (divisors m).sum id) :
+    IsRepresentable k m := by
+  -- `σ(m) - k ≤ m`, so the bottom segment represents it; complement back to `k`.
+  have hk' : (divisors m).sum id - k ≤ m := by omega
+  have hrep := representable_compl (practical_represents_le hp hk')
+  have hcancel : (divisors m).sum id - ((divisors m).sum id - k) = k := by omega
+  rwa [hcancel] at hrep
+
 end Erdos18OQ01
