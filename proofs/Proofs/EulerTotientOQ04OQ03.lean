@@ -304,4 +304,98 @@ theorem oq03_both_directions_infinite :
   rw [this]
   exact Nat.infinite_setOf_prime.diff (Set.finite_singleton 2)
 
+-- ===========================================================================
+-- EQUALITY family:  φ(n) = φ(D(n)) holds infinitely often, via  n = 15·2^(k+1).
+--
+-- The higher-iterate comparison is genuinely THREE-WAY (>, =, <), not a clean
+-- dichotomy: alongside the forward (odd-prime) and reversal (21·2^(k+1))
+-- families, the diagonal `φ(n) = φ(D(n))` is realised on its own explicit
+-- infinite family.  For n = 15·2^(k+1) the double iterate collapses to
+-- D(n) = 5·2^(k+2), and both n and D(n) carry the SAME totient value 8·2^k:
+--
+--   φ(15·2^(k+1)) = 8·2^k;                       (15 = 3·5, φ(15) = 8)
+--   n − φ(n) = 11·2^(k+1),  φ(11·2^(k+1)) = 10·2^k;
+--   D(n) = 15·2^(k+1) − 10·2^k = 20·2^k = 5·2^(k+2);
+--   φ(5·2^(k+2)) = 4·2^(k+1) = 8·2^k = φ(n).
+--
+-- This turns the earlier empirical observation ("equality is common, 35 of the
+-- n in [2,200)") into a proved infinite branch, and — with the two inequality
+-- families — pins down all three cases as occurring infinitely often.
+-- ===========================================================================
+
+/-- The equality locus `{n | φ(n) = φ(D(n))}` for the double iterate. -/
+def EqualitySet : Set ℕ := {n : ℕ | Nat.totient n = Nat.totient (dblIter n)}
+
+/-- **The double iterate collapses the family `15·2^(k+1)` onto `5·2^(k+2)`.**
+    For every `k`, `D(15·2^(k+1)) = 5·2^(k+2)`.  (First cototient step lands on
+    `11·2^(k+1)`; the second step recombines to the pure power-of-two–times-`5`
+    form `20·2^k`.) -/
+theorem dblIter_eq_family (k : ℕ) : dblIter (15 * 2 ^ (k + 1)) = 5 * 2 ^ (k + 2) := by
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have cop15 : Nat.Coprime 15 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 15 2 by norm_num).pow_right (k + 1)
+  have cop11 : Nat.Coprime 11 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 11 2 by norm_num).pow_right (k + 1)
+  -- φ(n) = 8·2^k
+  have hφn : Nat.totient (15 * 2 ^ (k + 1)) = 8 * 2 ^ k := by
+    rw [Nat.totient_mul cop15, totient_15, hp2]
+  -- n − φ(n) = 11·2^(k+1)
+  have hsub1 : 15 * 2 ^ (k + 1) - 8 * 2 ^ k = 11 * 2 ^ (k + 1) := by
+    have h2 : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+    rw [h2]; omega
+  -- φ(11·2^(k+1)) = 10·2^k
+  have hφsub : Nat.totient (11 * 2 ^ (k + 1)) = 10 * 2 ^ k := by
+    rw [Nat.totient_mul cop11, Nat.totient_prime (by norm_num), hp2]
+  -- D(n) = n − φ(n − φ(n)) = 5·2^(k+2)
+  unfold dblIter
+  rw [hφn, hsub1, hφsub]
+  have h2 : (2 : ℕ) ^ (k + 2) = 4 * 2 ^ k := by rw [pow_succ, pow_succ]; ring
+  have h2' : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+  rw [h2, h2']; omega
+
+/-- **Equality on the entire family `15·2^(k+1)`.**  For every `k`,
+    `φ(15·2^(k+1)) = 8·2^k = φ(D(15·2^(k+1)))`, so each member sits exactly on
+    the diagonal `φ(n) = φ(D(n))`. -/
+theorem mem_EqualitySet_family (k : ℕ) : 15 * 2 ^ (k + 1) ∈ EqualitySet := by
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have hp2' : Nat.totient (2 ^ (k + 2)) = 2 ^ (k + 1) := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos (k + 1))]; simp
+  have cop15 : Nat.Coprime 15 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 15 2 by norm_num).pow_right (k + 1)
+  have cop5 : Nat.Coprime 5 (2 ^ (k + 2)) :=
+    (show Nat.Coprime 5 2 by norm_num).pow_right (k + 2)
+  have hφn : Nat.totient (15 * 2 ^ (k + 1)) = 8 * 2 ^ k := by
+    rw [Nat.totient_mul cop15, totient_15, hp2]
+  have hφD : Nat.totient (5 * 2 ^ (k + 2)) = 4 * 2 ^ (k + 1) := by
+    rw [Nat.totient_mul cop5, Nat.totient_prime (by norm_num), hp2']
+  show Nat.totient (15 * 2 ^ (k + 1)) = Nat.totient (dblIter (15 * 2 ^ (k + 1)))
+  rw [dblIter_eq_family, hφn, hφD]
+  have h2 : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+  rw [h2]; ring
+
+/-- The map `k ↦ 15·2^(k+1)` is injective. -/
+theorem eq_family_injective : Function.Injective (fun k : ℕ => 15 * 2 ^ (k + 1)) := by
+  intro a b hab
+  simp only at hab
+  have h2 : (2 : ℕ) ^ (a + 1) = 2 ^ (b + 1) := Nat.eq_of_mul_eq_mul_left (by norm_num) hab
+  have := Nat.pow_right_injective (le_refl 2) h2
+  omega
+
+/-- **Equality `φ(n) = φ(D(n))` holds infinitely often.**  The diagonal locus
+    `{n | φ(n) = φ(D(n))}` is infinite, exhibited by the explicit injective
+    family `n = 15·2^(k+1)`.  No density machinery is required. -/
+theorem equality_infinitely_many : EqualitySet.Infinite :=
+  Set.infinite_of_injective_forall_mem eq_family_injective mem_EqualitySet_family
+
+/-- **Summary (OQ-03, all three cases realised infinitely).**  The higher-iterate
+    comparison `φ(n)` vs `φ(D(n))` is genuinely three-way: the strict forward
+    inequality (odd primes), the strict reversal (`21·2^(k+1)`), and exact
+    equality (`15·2^(k+1)`) each hold on an explicit infinite family.  So, unlike
+    a clean dichotomy, all of `>`, `=`, `<` occur infinitely often. -/
+theorem oq03_three_way_infinite :
+    {p : ℕ | p.Prime ∧ 3 ≤ p}.Infinite ∧ ReversalSet.Infinite ∧ EqualitySet.Infinite :=
+  ⟨oq03_both_directions_infinite.1, reversal_infinitely_many, equality_infinitely_many⟩
+
 end Erdos1064OQ03
