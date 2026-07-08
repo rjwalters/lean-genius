@@ -183,5 +183,31 @@
       "startLine": 52,
       "endLine": 65
     }
+  },
+  {
+    "id": "openai-2026-extraction-scaffold",
+    "proofId": "erdos-90",
+    "type": "concept",
+    "title": "Point-Set Extraction Map + Counting Scaffold (OpenAI2026LowerBound.lean)",
+    "content": "The companion file Proofs/Erdos90/OpenAI2026LowerBound.lean formalizes the combinatorial/geometric core of the OpenAI 2026 construction. It defines a concrete point-set extraction map pointSet K φ₀ φ₁ r : Finset (EuclideanSpace ℝ (Fin 2)) — the finite lattice points of 𝓞_K inside a ball (via Mathlib's NumberField.canonicalEmbedding.integerLattice.inter_ball_finite) projected to the plane by the real parts at two chosen complex embeddings. The counting lemma (many unit-distance pairs from the algebraic structure) is stated as two axioms pending the peer-reviewed OpenAI formula, and the headline lower bound openai_2026_unit_distance_lower_bound is left as sorry until the published exponent α is fixed.",
+    "significance": "key",
+    "mathContext": "The extraction map is the honest planar shadow of the algebraic point set: for a number field $K$ of a high tower level, the canonical (Minkowski) embedding $\\iota : K \\hookrightarrow (K \\to_{+*} \\mathbb{C}) \\to \\mathbb{C}$ restricts on $\\mathcal{O}_K$ to a lattice whose intersection with a ball of radius $r$ is **finite** (Mathlib: `integerLattice.inter_ball_finite`). Reading off two coordinates (real parts at chosen embeddings $\\varphi_0, \\varphi_1$) lands the configuration in $\\mathbb{R}^2 = $ `EuclideanSpace ℝ (Fin 2)`, exactly the type consumed by `unitDistancePairsCount`. This part is fully constructive (0 axioms; `pointSet_card_le` bounds its cardinality). The **counting bound** $\\#\\{\\text{unit-distance pairs}\\} \\ge m^{1+\\alpha_0}$ and the **transfer** to $u(n) = $ `maxUnitDistances n` are axiomatized (`unitDistanceCountingBound`, `towerYieldsGrowingPointSets`) because the explicit exponent and unit-count formula await the peer-reviewed OpenAI publication (parent tracker #20576's external blocker). The reduction wires three dependencies: (i) class field tower existence (`ClassFieldTower.lean`), (ii) Golod–Shafarevich infinitude (`GolodShafarevich.lean`), (iii) the local counting lemma. The `PointSetExtraction` structure bundles the construction output ($\\alpha > 0$ with the eventual bound) so that `lowerBound_of_extraction` discharges the headline once a concrete peer-reviewed instantiation is supplied.",
+    "relatedConcepts": [
+      "canonical (Minkowski) embedding",
+      "integer lattice in a ball",
+      "planar projection",
+      "unit-distance counting",
+      "class field tower",
+      "axiomatized construction"
+    ],
+    "prerequisites": [
+      "algebraic number theory",
+      "Minkowski embedding / geometry of numbers",
+      "Dirichlet unit theorem"
+    ],
+    "range": {
+      "startLine": 106,
+      "endLine": 145
+    }
   }
 ]
