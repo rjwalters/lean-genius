@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS: established the forward inequality φ(n) > φ(D(n)) on the entire infinite family of odd primes (via the collapse D(p) = p − 1), pinned the sharp boundary at p = 2 (equality), and exhibited a concrete reversal at n = 39 (D(39) = 31 prime). Whether the reverse holds infinitely often, and the almost-all direction, remain OPEN. All results ofReduceBool-free (0 axioms, 0 sorries).",
+    "progressSummary": "PROGRESS: forward inequality on all odd primes; sharp boundary at p=2. This session added the STRUCTURAL reversal criterion (reversal ⟺ φ(n)+1<D(n) on prime landings, explaining the clustering) and showed reversal extends to COMPOSITE landings (n=42, D(42)=34=2·17). Infinitely-often direction remains OPEN. All results 0 axioms / 0 sorries.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -44,19 +44,25 @@
       "totient_39 / totient_15 / totient_31 — concrete totient values via factorisation (Nat.totient_mul on coprime prime factors), avoiding kernel gcd-reduction in decide.",
       "dblIter_39 — D(39) = 31: the double iterate lands on a prime.",
       "reverse_at_39 — REVERSAL witness: φ(39) = 24 < 30 = φ(31) = φ(D(39)); the smallest n where φ(n) < φ(D(n)).",
-      "forward_not_universal — packaging theorem: (∀ prime p≥3, φ(D(p))<φ(p)) ∧ (∃ n, φ(n)<φ(D(n))); shows both directions occur for the higher iterate, mirroring the single-step Erdős 1064."
+      "forward_not_universal — packaging theorem: (∀ prime p≥3, φ(D(p))<φ(p)) ∧ (∃ n, φ(n)<φ(D(n))); shows both directions occur for the higher iterate, mirroring the single-step Erdős 1064.",
+      "reversal_iff_of_dblIter_prime (structural reversal criterion, EulerTotientOQ04OQ03.lean:127)",
+      "reverse_of_dblIter_prime + reverse_at_39 re-derivation (EulerTotientOQ04OQ03.lean:137,143)",
+      "reversal_with_composite_landing: composite-landing reversal via n=42 witness (dblIter_42, dblIter_42_not_prime, reverse_at_42; EulerTotientOQ04OQ03.lean:187)"
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
       "The reversal φ(n) < φ(D(n)) empirically clusters where D(n) is itself prime: the smallest cases n = 39,42,55,84,85,93,110,115,133,155,165,168 in [2,200) have D(n) ∈ {31,34,47,68,73,73,86,97,113,131,101,136}, many of them prime, making φ(D(n)) = D(n) − 1 large. This is the higher-iterate echo of the single-step reversal phenomenon.",
       "Equality φ(n) = φ(D(n)) is also common (35 of the n in [2,200), including all n where D(n) shares the totient value), so the higher-iterate comparison is genuinely three-way (>, =, <) rather than a clean dichotomy — a structural difference worth noting versus the single-step statement.",
-      "Computing concrete totient values through Nat.totient_mul on coprime prime factors is the robust route in Lean: plain `decide` on Nat.totient stalls because Nat.gcd is well-founded recursion that does not reduce well in the kernel; factorisation sidesteps this and keeps the file ofReduceBool-free."
+      "Computing concrete totient values through Nat.totient_mul on coprime prime factors is the robust route in Lean: plain `decide` on Nat.totient stalls because Nat.gcd is well-founded recursion that does not reduce well in the kernel; factorisation sidesteps this and keeps the file ofReduceBool-free.",
+      "Reversal criterion collapses on prime landings: when D(n) is prime, φ(n)<φ(D(n)) ⟺ φ(n)+1<D(n), since φ(D(n))=D(n)−1. This EXPLAINS the empirical clustering of reversals on prime landings — φ(D(n)) is maximal there, so reversal is governed purely by the landing value size.",
+      "Reversal is NOT confined to prime landings: at n=42, D(42)=34=2·17 is COMPOSITE yet φ(42)=12<16=φ(34). So the reversal family strictly contains the prime-landing family, refining the earlier clustering observation."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Attempt the reversal-infinitude direction via primes q with q+φ(q−1)-shaped preimages: characterise n with D(n) prime, since those are the reversal candidates; a Dirichlet/linnik-type input would be needed and is likely the OPEN crux.",
       "Prove a density-1 forward statement φ(n) > φ(D(n)) for almost all n by transporting the Luca–Pomerance single-step argument through one extra cototient step (assess whether the extra step preserves the density-1 set).",
-      "Formalise the three-way classification on a finite window (n ≤ N) as a decidable certificate to complement the qualitative theorems, and search for the second/third reversal families beyond 'D(n) prime'."
+      "Formalise the three-way classification on a finite window (n ≤ N) as a decidable certificate to complement the qualitative theorems, and search for the second/third reversal families beyond 'D(n) prime'.",
+      "Characterize composite landing values D(n) admitting reversal (2p with p prime? squarefree with few factors?) toward an infinitely-often construction not relying on prime landings"
     ]
   }
 }
