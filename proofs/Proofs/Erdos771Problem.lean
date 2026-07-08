@@ -84,10 +84,123 @@ noncomputable def f (n : ℕ) : ℕ :=
 def f_property (n k : ℕ) : Prop :=
   ∀ m ≥ 1, ∃ S : Finset ℕ, S ⊆ Icc_n n ∧ S.card ≥ k ∧ AvoidSum S m
 
+/-- If every element of `S` is strictly larger than `m`, then `S` avoids `m`:
+    every nonempty subset sum is at least its (single) minimum element `> m`, and
+    the empty subset sums to `0`, which is filtered out of `subsetSums`. -/
+theorem avoid_of_forall_lt (S : Finset ℕ) (m : ℕ) (hlb : ∀ a ∈ S, m < a) :
+    AvoidSum S m := by
+  intro hmem
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+  obtain ⟨⟨A, hA, hAsum⟩, hpos⟩ := hmem
+  rw [Finset.mem_powerset] at hA
+  rcases A.eq_empty_or_nonempty with hA0 | hA1
+  · rw [hA0, Finset.sum_empty] at hAsum; omega
+  · obtain ⟨a₀, ha₀⟩ := hA1
+    have hle : a₀ ≤ ∑ a ∈ A, a := Finset.single_le_sum (fun i _ => Nat.zero_le i) ha₀
+    have hlt : m < a₀ := hlb a₀ (hA ha₀)
+    rw [hAsum] at hle
+    omega
+
+/-- A positive element of `S`, taken as the singleton `{a}`, is one of its subset
+    sums. Hence a set containing a positive `m` cannot avoid `m`. -/
+theorem self_mem_subsetSums (S : Finset ℕ) (a : ℕ) (ha : a ∈ S) (hpos : 0 < a) :
+    a ∈ subsetSums S := by
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image]
+  refine ⟨⟨{a}, ?_, ?_⟩, hpos⟩
+  · rw [Finset.mem_powerset]; simpa using ha
+  · simp
+
+/-- Every avoiding subset of `{1,…,n}` has size at most `n`. -/
+theorem maxAvoidingSize_le (n m : ℕ) : maxAvoidingSize n m ≤ n := by
+  classical
+  unfold maxAvoidingSize
+  apply Finset.sup_le
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  have hcard : S.card ≤ (Icc_n n).card := Finset.card_le_card hS.1
+  rw [Icc_n, Nat.card_Icc] at hcard
+  omega
+
+/-- For `m > n²` the whole set `{1,…,n}` avoids `m`: every subset sum is at most
+    `|A|·n ≤ n·n < m`, so `m` is never realised. -/
+theorem avoid_full (n m : ℕ) (h : n * n < m) : AvoidSum (Icc_n n) m := by
+  intro hmem
+  rw [subsetSums, Finset.mem_filter, Finset.mem_image] at hmem
+  obtain ⟨⟨A, hA, hAsum⟩, _⟩ := hmem
+  rw [Finset.mem_powerset] at hA
+  have hbound : ∑ a ∈ A, a ≤ A.card * n := by
+    have hle := Finset.sum_le_card_nsmul A id n (fun a ha => by
+      have haI : a ∈ Icc_n n := hA ha
+      rw [Icc_n, Finset.mem_Icc] at haI; simpa using haI.2)
+    simpa [smul_eq_mul] using hle
+  have hcard : A.card ≤ n := by
+    have hc := Finset.card_le_card hA
+    rw [Icc_n, Nat.card_Icc] at hc; omega
+  have hfin : ∑ a ∈ A, a ≤ n * n :=
+    le_trans hbound (Nat.mul_le_mul hcard (le_refl n))
+  rw [hAsum] at hfin
+  omega
+
+/-- Key bridge: an avoiding subset of size ≥ k exists iff `maxAvoidingSize n m ≥ k`. -/
+theorem maxAvoidingSize_ge_iff (n m k : ℕ) :
+    (∃ S : Finset ℕ, S ⊆ Icc_n n ∧ S.card ≥ k ∧ AvoidSum S m)
+      ↔ k ≤ maxAvoidingSize n m := by
+  classical
+  constructor
+  · rintro ⟨S, hSsub, hScard, hSavoid⟩
+    have hmem : S ∈ (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S m) := by
+      rw [Finset.mem_filter, Finset.mem_powerset]; exact ⟨hSsub, hSavoid⟩
+    calc k ≤ S.card := hScard
+      _ ≤ maxAvoidingSize n m := by unfold maxAvoidingSize; exact Finset.le_sup hmem
+  · intro hk
+    rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+    · exact ⟨∅, Finset.empty_subset _, by rw [hk0]; exact Nat.zero_le _,
+        avoid_of_forall_lt ∅ m (fun a ha => absurd ha (Finset.notMem_empty a))⟩
+    · unfold maxAvoidingSize at hk
+      rw [Finset.le_sup_iff (show (⊥ : ℕ) < k from hkpos)] at hk
+      obtain ⟨S, hSmem, hScard⟩ := hk
+      rw [Finset.mem_filter, Finset.mem_powerset] at hSmem
+      exact ⟨S, hSmem.1, hScard, hSmem.2⟩
+
 /-- f(n) is the largest k satisfying f_property. -/
 theorem f_characterization (n : ℕ) (hn : n ≥ 1) :
     f_property n (f n) ∧ ∀ k > f n, ¬f_property n k := by
-  sorry
+  classical
+  have hn0 : n ≠ 0 := by omega
+  have H : (Finset.Icc 1 (n * n)).Nonempty :=
+    Finset.nonempty_Icc.mpr (Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero hn0 hn0))
+  have hf : f n = (Finset.Icc 1 (n * n)).inf' H (fun m => maxAvoidingSize n m) := by
+    unfold f; rw [dif_neg hn0]
+  have hfn_le : f n ≤ n := by
+    rw [hf]
+    calc (Finset.Icc 1 (n * n)).inf' H (fun m => maxAvoidingSize n m)
+        ≤ maxAvoidingSize n 1 :=
+          Finset.inf'_le _ (Finset.mem_Icc.mpr ⟨le_refl 1, by nlinarith [hn]⟩)
+      _ ≤ n := maxAvoidingSize_le n 1
+  refine ⟨?_, ?_⟩
+  · -- f_property n (f n)
+    intro m hm
+    rw [maxAvoidingSize_ge_iff]
+    rcases le_or_lt m (n * n) with hmle | hmgt
+    · rw [hf]; exact Finset.inf'_le _ (Finset.mem_Icc.mpr ⟨hm, hmle⟩)
+    · have hfull : n ≤ maxAvoidingSize n m := by
+        have hmemfull : Icc_n n ∈
+            (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S m) := by
+          rw [Finset.mem_filter, Finset.mem_powerset]
+          exact ⟨Finset.Subset.refl _, avoid_full n m hmgt⟩
+        calc n = (Icc_n n).card := by rw [Icc_n, Nat.card_Icc]; omega
+          _ ≤ maxAvoidingSize n m := by unfold maxAvoidingSize; exact Finset.le_sup hmemfull
+      omega
+  · -- maximality
+    intro k hk hprop
+    obtain ⟨m₀, hm₀mem, hm₀eq⟩ :=
+      Finset.exists_mem_eq_inf' H (fun m => maxAvoidingSize n m)
+    rw [Finset.mem_Icc] at hm₀mem
+    obtain ⟨S, hSsub, hScard, hSavoid⟩ := hprop m₀ hm₀mem.1
+    have hle : k ≤ maxAvoidingSize n m₀ :=
+      (maxAvoidingSize_ge_iff n m₀ k).mp ⟨S, hSsub, hScard, hSavoid⟩
+    have hfm0 : f n = maxAvoidingSize n m₀ := by rw [hf, hm₀eq]
+    omega
 
 /-
 ## Part III: The Erdős-Graham Conjecture
@@ -233,15 +346,53 @@ theorem leading_constant :
 ## Part VIII: Special Cases
 -/
 
-/-- For m = 1, we can't include 1 in S. -/
+/-- For m = 1, we can't include 1 in S, so the largest 1-avoiding subset of
+    `{1,…,n}` is `{2,…,n}`, of size `n − 1`. -/
 theorem m_eq_one_case (n : ℕ) (hn : n ≥ 1) :
     maxAvoidingSize n 1 = n - 1 := by
-  sorry
+  classical
+  unfold maxAvoidingSize
+  apply le_antisymm
+  · -- every 1-avoiding S omits 1, so |S| ≤ n − 1
+    apply Finset.sup_le
+    intro S hS
+    rw [Finset.mem_filter, Finset.mem_powerset] at hS
+    obtain ⟨hSsub, hSavoid⟩ := hS
+    have h1notin : 1 ∉ S := fun h1 => hSavoid (self_mem_subsetSums S 1 h1 one_pos)
+    have hsub2 : S ⊆ Finset.Icc 2 n := by
+      intro x hx
+      have hxI : x ∈ Icc_n n := hSsub hx
+      rw [Icc_n, Finset.mem_Icc] at hxI
+      rw [Finset.mem_Icc]
+      rcases Nat.lt_or_ge x 2 with hlt | hge
+      · interval_cases x
+        · omega
+        · exact absurd hx h1notin
+      · exact ⟨hge, hxI.2⟩
+    calc S.card ≤ (Finset.Icc 2 n).card := Finset.card_le_card hsub2
+      _ = n - 1 := by rw [Nat.card_Icc]; omega
+  · -- {2,…,n} is 1-avoiding with size n − 1
+    have hmem : Finset.Icc 2 n ∈
+        (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S 1) := by
+      rw [Finset.mem_filter, Finset.mem_powerset]
+      refine ⟨fun x hx => by rw [Finset.mem_Icc] at hx; rw [Icc_n, Finset.mem_Icc]; omega,
+        avoid_of_forall_lt _ 1 (fun a ha => by rw [Finset.mem_Icc] at ha; omega)⟩
+    calc n - 1 = (Finset.Icc 2 n).card := by rw [Nat.card_Icc]; omega
+      _ ≤ _ := Finset.le_sup hmem
 
-/-- For m = 2, we can't include 2 or have {1} alone. -/
+/-- For m = 2, the set `{3,…,n}` is 2-avoiding and has size `n − 2`, so the
+    largest 2-avoiding subset has size at least `n − 2`. -/
 theorem m_eq_two_case (n : ℕ) (hn : n ≥ 2) :
     maxAvoidingSize n 2 ≥ n - 2 := by
-  sorry
+  classical
+  unfold maxAvoidingSize
+  have hmem : Finset.Icc 3 n ∈
+      (Finset.powerset (Icc_n n)).filter (fun S => AvoidSum S 2) := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨fun x hx => by rw [Finset.mem_Icc] at hx; rw [Icc_n, Finset.mem_Icc]; omega,
+      avoid_of_forall_lt _ 2 (fun a ha => by rw [Finset.mem_Icc] at ha; omega)⟩
+  calc n - 2 = (Finset.Icc 3 n).card := by rw [Nat.card_Icc]; omega
+    _ ≤ _ := Finset.le_sup hmem
 
 /-- Small primes give good constructions. -/
 def smallPrimeConstruction (m n : ℕ) : Finset ℕ :=

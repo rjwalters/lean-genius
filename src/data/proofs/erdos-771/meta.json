@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 771,
     "erdosUrl": "https://erdosproblems.com/771",
     "erdosProblemStatus": "solved",
@@ -79,9 +79,9 @@
       "erdos_771, erdos_771_main, erdos_771_solved: main theorem statements"
     ],
     "axiomCount": 2,
-    "lineCount": 292,
-    "assumptions": "2 axioms: erdos_graham_lower_bound, alon_freiman_upper_bound. 7 sorries.",
-    "theoremCount": 11,
+    "lineCount": 443,
+    "assumptions": "2 axioms: erdos_graham_lower_bound, alon_freiman_upper_bound. 0 sorries.",
+    "theoremCount": 16,
     "definitionCount": 16,
     "additionalFiles": [
       "Proofs/Erdos771Aristotle.lean",
@@ -214,11 +214,11 @@
       "Nat"
     ],
     "namespace": "Erdos771",
-    "lineCount": 292,
+    "lineCount": 443,
     "axiomCount": 2,
-    "theoremCount": 11,
+    "theoremCount": 16,
     "definitionCount": 16,
-    "sorries": 3,
+    "sorries": 0,
     "path": "Proofs/Erdos771Problem.lean",
     "additionalFiles": [
       "Proofs/Erdos771Aristotle.lean",
@@ -243,5 +243,5 @@
       "description": "Related Erdős problem sharing themes: additive-combinatorics, solved, subset-sums"
     }
   ],
-  "sorries": 3
+  "sorries": 0
 }
