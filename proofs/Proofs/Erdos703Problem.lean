@@ -246,6 +246,38 @@ theorem large_sets_avoid_1 (n : ℕ) (A B : Finset ℕ)
       _ = n := Finset.card_range n
   omega
 
+/--
+**The family of large sets (Frankl's `r = 1` lower-bound construction).**
+`F = {A ⊆ [n] : |A| > (n+1)/2}`. Every pair of members — including a set with
+itself — has intersection size `≠ 1`, so this is a valid `1`-avoiding family.
+-/
+def largeSetsFamily (n : ℕ) : Finset (Finset ℕ) :=
+  (Finset.range n).powerset.filter (fun A => A.card > (n + 1) / 2)
+
+/--
+**The large-set family avoids `1`-intersections.**
+Immediate from `large_sets_avoid_1`: any two sets both larger than `(n+1)/2`
+cannot meet in exactly one point.
+-/
+theorem largeSetsFamily_avoids_1 (n : ℕ) : avoidsRIntersection 1 (largeSetsFamily n) := by
+  intro A B hA hB
+  rw [largeSetsFamily, Finset.mem_filter, Finset.mem_powerset] at hA hB
+  exact large_sets_avoid_1 n A B hA.1 hB.1 hA.2 hB.2
+
+/--
+**Lower bound on `T(n,1)` from the large-set construction.**
+Since the large-set family is a valid `1`-avoiding subfamily of `2^{[n]}`, its
+cardinality is a lower bound for `T(n,1)`. This is Frankl's (1977) lower-bound
+construction: the extremal `1`-avoiding families are (essentially) the large
+sets together with a small-set tail.
+-/
+theorem largeSetsFamily_card_le_T (n : ℕ) : (largeSetsFamily n).card ≤ T n 1 := by
+  have hmem : largeSetsFamily n ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection 1) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _), largeSetsFamily_avoids_1 n⟩
+  exact Finset.le_sup hmem
+
 /-
 ## Part IV: Frankl-Füredi Optimal Families
 -/
