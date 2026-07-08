@@ -218,6 +218,19 @@ theorem kronecker2_mul (a b : ℤ) :
   have hsb : b % 8 < 8 := Int.emod_lt_of_pos b (by norm_num)
   interval_cases (a % 8) <;> interval_cases (b % 8) <;> decide
 
+/-- `kronecker2` (the `(·/2)` character) has period 8: `(a+8/2) = (a/2)`.
+    Immediate from `kronecker2 x` depending only on `x % 8`, since
+    `(a + 8) % 8 = a % 8`.  Together with `kronecker2_mul` this exhibits
+    `kronecker2` as a Dirichlet character modulo 8 — the structural fact the
+    Gauss-sum route to generalized quadratic reciprocity (Target 2) rests on. -/
+theorem kronecker2_periodic (a : ℤ) : kronecker2 (a + 8) = kronecker2 a := by
+  have hred : ∀ x : ℤ, kronecker2 x = kronecker2 (x % 8) := by
+    intro x
+    unfold kronecker2
+    rw [Int.emod_emod_of_dvd x (by norm_num : (2 : ℤ) ∣ 8),
+      Int.emod_emod_of_dvd x (by norm_num : (8 : ℤ) ∣ 8)]
+  rw [hred (a + 8), hred a, Int.add_emod_right]
+
 /-- The Kronecker symbol is completely multiplicative in the first argument:
     (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
 
