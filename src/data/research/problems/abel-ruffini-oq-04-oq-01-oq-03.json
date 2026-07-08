@@ -34,9 +34,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: three verbatim S₅ Sylow lemmas factored into a single generic core, further strengthened to an arbitrary prime p; 0-sorry / 0-axiom, builds (7743 jobs).",
+    "builtItems": [
+      "zpowers_orderP_normal (AbelRuffiniOQ04OQ01OQ03.lean:65) — generic-prime Sylow-elimination: order p·m, p∤m, unique ≡1(mod p) divisor ⇒ ⟨c⟩ normal for order-p c",
+      "conj_mem_zpowers_orderP (AbelRuffiniOQ04OQ01OQ03.lean:129) — every element normalizes ⟨c⟩, generic p",
+      "zpowers_order5_normal / conj_mem_zpowers_order5 (AbelRuffiniOQ04OQ01OQ03.lean:147,158) — the Abel–Ruffini p=5 lemmas recovered as one-line specializations of the generic core"
+    ],
+    "insights": [
+      "The Sylow-elimination core of gal_card_ne_10/_20/_40 depends only on the prime 5 dividing |G| exactly once — nothing about the value 5 itself is used, so the whole argument generalizes verbatim to an arbitrary prime p.",
+      "Generalizing 5→p breaks two omega calls that silently relied on 5 being a literal: (1) index cancellation P.index*p = p*m is nonlinear in p (fix: Nat.eq_of_mul_eq_mul_right hp.out.pos), and (2) 1 % p = 1 no longer reduces definitionally (fix: Nat.mod_eq_of_lt hp.out.one_lt)."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
