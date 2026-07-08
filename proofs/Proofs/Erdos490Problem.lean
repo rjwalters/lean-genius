@@ -33,6 +33,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.NumberTheory.Primorial
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.NumberTheory.Bertrand
+import Mathlib.NumberTheory.Chebyshev
 
 open Finset Real
 open scoped Classical
@@ -175,18 +176,89 @@ theorem optimalA_card (N : ℕ) : (optimalA N).card = N / 2 := by
       exact ⟨by omega, h1, h2⟩
   rw [hset, Nat.card_Icc]; omega
 
-/-- **Chebyshev-type prime-counting lower bound** (the one irreducible analytic input
-to the optimal-example *lower* bound).  The number of primes in `(N/2, N]` — i.e.
-`(optimalB N).card = π(N) − π(N/2)` — is `≳ N / log N`.  The true asymptotic is
-`~ N / (2 log N)` by the prime number theorem; the existence of *some* positive
-constant `c` valid for all `N ≥ 4` is Chebyshev-strength and elementary, but Mathlib's
-`Nat.primeCounting` API currently provides only an *upper* bound
-(`Nat.primeCounting'_add_le`) and monotonicity — no lower bound on `π(N) − π(N/2)`.
-We therefore isolate exactly this fact as an explicit axiom; the rest of the
-lower-bound derivation (`bound_is_optimal`) is fully verified from it. -/
-axiom primes_upper_half_lower_bound :
-  ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 4 →
-    c * N / Real.log N ≤ ((optimalB N).card : ℝ)
+/-- **Chebyshev θ-gap lower bound** (the one irreducible analytic input, now stated
+against Mathlib's `Chebyshev.theta`).  Here `θ x = ∑_{p ≤ x} log p` is the first
+Chebyshev function.  The half-open interval `(N/2, N]` contributes at least a positive
+constant fraction of `N` to `θ`: `θ(N) − θ(N/2) ≳ N`.  This is the classical
+Chebyshev-strength lower bound `θ(N) − θ(N/2) ≥ c·N`, whose elementary proof runs
+through the central binomial coefficient (Erdős's proof of Bertrand's postulate gives
+exactly this `(2n/3, 2n]` product estimate).  Mathlib's `Mathlib.NumberTheory.Chebyshev`
+currently supplies only the *upper* bounds `theta_le_log4_mul_x` and `psi_le_const_mul_self`
+— it has **no** lower bound on `θ`, `ψ`, or `Nat.primeCounting` — so we isolate exactly
+this Chebyshev θ-gap as the single explicit analytic axiom.  Everything downstream (the
+bespoke prime-counting bound `primes_upper_half_lower_bound`, and hence `bound_is_optimal`)
+is then *fully verified* from it via the `θ → π` bridge below. -/
+axiom chebyshev_theta_upper_half_lower_bound :
+    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 4 →
+      c * N ≤ Chebyshev.theta (N : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ)
+
+/-- **θ-gap as a sum over the optimal `B` (0-axiom).** The primes counted by
+`Chebyshev.theta N − Chebyshev.theta (N/2)` are exactly the primes in `(N/2, N]`, i.e. the
+elements of `optimalB N`, so the θ-gap equals `∑_{p ∈ optimalB N} log p`.  This is the
+combinatorial heart of the `θ → π` bridge: it re-expresses Mathlib's Chebyshev θ-difference
+as a sum ranging over our optimal example. -/
+theorem theta_gap_eq_sum_optimalB (N : ℕ) :
+    Chebyshev.theta (N : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ)
+      = ∑ p ∈ optimalB N, Real.log (p : ℝ) := by
+  -- `θ ↑m = ∑_{p ∈ Ioc 0 m, p prime} log p`, using `⌊↑m⌋₊ = m`.
+  have e1 : Chebyshev.theta (N : ℝ)
+      = ∑ p ∈ {p ∈ Finset.Ioc 0 N | p.Prime}, Real.log (p : ℝ) := by
+    simp only [Chebyshev.theta, Nat.floor_natCast]
+  have e2 : Chebyshev.theta ((N / 2 : ℕ) : ℝ)
+      = ∑ p ∈ {p ∈ Finset.Ioc 0 (N / 2) | p.Prime}, Real.log (p : ℝ) := by
+    simp only [Chebyshev.theta, Nat.floor_natCast]
+  -- The primes `≤ N/2` are a subset of the primes `≤ N`.
+  have hsub : {p ∈ Finset.Ioc 0 (N / 2) | p.Prime} ⊆ {p ∈ Finset.Ioc 0 N | p.Prime} :=
+    Finset.filter_subset_filter _ (Finset.Ioc_subset_Ioc_right (Nat.div_le_self N 2))
+  -- The set difference is exactly the primes in `(N/2, N]`, i.e. `optimalB N`.
+  have hset : {p ∈ Finset.Ioc 0 N | p.Prime} \ {p ∈ Finset.Ioc 0 (N / 2) | p.Prime}
+      = optimalB N := by
+    ext p
+    simp only [Finset.mem_sdiff, Finset.mem_filter, Finset.mem_Ioc, optimalB,
+      Finset.mem_range]
+    constructor
+    · rintro ⟨⟨⟨hp0, hpN⟩, hpr⟩, hnot⟩
+      refine ⟨by omega, hpr, ?_, hpN⟩
+      by_contra h; push_neg at h
+      exact hnot ⟨⟨hp0, by omega⟩, hpr⟩
+    · rintro ⟨_, hpr, hlt, hle⟩
+      exact ⟨⟨⟨hpr.pos, hle⟩, hpr⟩, by rintro ⟨⟨_, h2⟩, _⟩; omega⟩
+  rw [e1, e2, ← hset, Finset.sum_sdiff_eq_sub hsub]
+
+/-- **θ → π bridge (0-axiom).** Since every prime `p` counted in the θ-gap satisfies
+`p ≤ N`, each `log p ≤ log N`, so the θ-gap is bounded by `|optimalB N| · log N`.  Dividing
+by `log N` turns a Chebyshev θ lower bound into the prime-counting lower bound we need. -/
+theorem theta_gap_le_card_mul_log {N : ℕ} (hN : 2 ≤ N) :
+    Chebyshev.theta (N : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ)
+      ≤ ((optimalB N).card : ℝ) * Real.log N := by
+  rw [theta_gap_eq_sum_optimalB]
+  have h : ∀ p ∈ optimalB N, Real.log (p : ℝ) ≤ Real.log N := by
+    intro p hp
+    simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hp
+    exact Real.log_le_log (by exact_mod_cast hp.2.1.pos) (by exact_mod_cast hp.2.2.2)
+  calc ∑ p ∈ optimalB N, Real.log (p : ℝ)
+      ≤ ∑ _p ∈ optimalB N, Real.log (N : ℝ) := Finset.sum_le_sum h
+    _ = ((optimalB N).card : ℝ) * Real.log N := by
+        rw [Finset.sum_const, nsmul_eq_mul]
+
+/-- **Chebyshev-type prime-counting lower bound** (the one irreducible analytic input to
+the optimal-example *lower* bound), now a *theorem* (0 new axioms) derived from the
+Chebyshev θ-gap axiom `chebyshev_theta_upper_half_lower_bound` via the verified `θ → π`
+bridge.  The number of primes in `(N/2, N]` — i.e. `(optimalB N).card = π(N) − π(N/2)` — is
+`≳ N / log N`, because `θ(N) − θ(N/2) = ∑_{N/2 < p ≤ N} log p ≤ (π(N)−π(N/2))·log N` and the
+θ-gap is `≳ N`.  The eventual elimination of the remaining axiom is now *exactly* the
+classical Chebyshev θ-gap lower bound `θ(N) − θ(N/2) ≥ c·N`, cleanly pinned to Mathlib's
+`Chebyshev.theta` API rather than a bespoke prime-counting difference. -/
+theorem primes_upper_half_lower_bound :
+    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 4 →
+      c * N / Real.log N ≤ ((optimalB N).card : ℝ) := by
+  obtain ⟨c, hc, hgap⟩ := chebyshev_theta_upper_half_lower_bound
+  refine ⟨c, hc, fun N hN => ?_⟩
+  have hlogN : 0 < Real.log N := Real.log_pos (by exact_mod_cast (by omega : 1 < N))
+  have h1 : c * (N : ℝ) ≤ ((optimalB N).card : ℝ) * Real.log N :=
+    (hgap N hN).trans (theta_gap_le_card_mul_log (by omega))
+  rw [div_le_iff₀ hlogN]
+  exact h1
 
 /-- **Bridge to Mathlib's prime-counting function** (0-axiom). The optimal `B` is exactly
 the set of primes in `(N/2, N]`, so its cardinality is `π(N) − π(N/2)`, where
