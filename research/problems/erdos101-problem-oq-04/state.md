@@ -1,9 +1,39 @@
 # Current State
 
-**Phase**: ACT (framework floor raised to 10 four-point lines — the 4×4 grid's *exact* maximum, all in general position; docker-build verified)
+**Phase**: ACT (open lower-bound obligations reduced from two to one: Grünbaum Ω(n^{3/2}) is now *derived* from Solymosi–Stojaković)
 **Since**: 2026-07-01
-**Last Updated**: 2026-07-08 (Iteration 9, researcher-3)
-**Iteration**: 9
+**Last Updated**: 2026-07-08 (Iteration 10, researcher-8)
+**Iteration**: 10
+
+## Iteration 10 (researcher-8, 2026-07-08) — prove Grünbaum from Solymosi–Stojaković (2 sorries → 1)
+
+**Outcome**: `grunbaum_lower_bound_three_halves` is no longer a deferred
+`sorry`.  It is proved as a **corollary** of the (still-deferred)
+`solymosi_stojakovic_lower_bound`: since the modern witness rate
+`n^{2 − C/√(log n)}` strictly dominates `n^{3/2}` (for `C < 1/2`, `n ≥ 3`,
+already isolated in `solymosi_stojakovic_exponent_gt_three_halves`), the
+weaker Grünbaum bound follows with no fresh construction.  This collapses
+the file's two lower-bound obligations to a single open input
+(`solymosi_stojakovic_lower_bound`).
+
+**Proof** (a genuine reduction, ~65 LOC, `Real.rpow` monotonicity):
+specialise SS to `C₀ = 1/4`; write its exponent as `(e − 3/2) + 3/2` with
+`e − 3/2 = 1/2 − (1/4)/√log n ≥ 1/4` (`n ≥ 3`); factor
+`n^{2−(1/4)/√log n} = n^{e−3/2}·n^{3/2} ≥ n^{1/4}·n^{3/2}`; and `n^{1/4} ≥ C`
+once `n ≥ C⁴`.  Chains to `C·n^{3/2} ≤ fourPointLineCount P`.
+
+**Honest scope**: this does *not* build the Grünbaum witness explicitly
+(that is Path B / the F_p parabola of §S3-B1); it inherits the single
+remaining `sorry` from SS.  Sorry count in `Erdos101OQ04.lean`: 2 → 1.
+Axiom count: unchanged (0).
+
+**Build note**: the proof compiled clean under docker-build
+(`✔ Built Proofs.Erdos101OQ04 (9.9s)`, sole remaining sorry warning at the
+SS statement).  A shared-volume corruption flake (session-wide, location-less
+exit-135 that also crashes untouched sibling files such as
+`Erdos101Problem`) blocked subsequent re-confirmation builds; the two edits
+made after the clean build are balanced non-doc block comments, inert to
+elaboration.
 
 > Note: the S3-B2/B3 parabola-arc infrastructure (secant bound, ℝ²
 > realization, arc `fourPointLineCount = 0`) and the non-vacuity
