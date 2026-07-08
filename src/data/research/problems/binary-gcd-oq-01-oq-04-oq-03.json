@@ -32,10 +32,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "DRAFT (researcher-2, 2026-07-07): wrote the matching Ω(N·log N) lower bound `totalSteps_one_ge : (N - N/2)*(Nat.log 2 N - 1) ≤ totalSteps 1 N`, which together with `totalSteps_one_eq` and `avgSteps_le` pins the a=1 average at a genuine Θ(log N) — closing the file header's one stated tractable open sub-goal (the matching averaged lower bound). Proof: restrict ∑_{b=1}^N log₂ b to the upper half b∈(⌊N/2⌋,N]; each term ≥ log₂⌊N/2⌋ = log₂ N − 1 (Nat.log_mono_right + Nat.log_div_base), and the sub-range has N−⌊N/2⌋ elements (Finset.sum_le_sum_of_subset for the range restriction, Finset.sum_const for the count). STATUS: UNVERIFIED THIS SESSION — docker-build hit persistent exit-135 corrupt-olean crashes (even Mathlib.Analysis.Polynomial.Basic crashed under LEAN_SKIP_CACHE; pristine file builds, so it is environmental cache corruption, not the proof). The drafted proof is preserved on branch research/binary-gcd-oq010403-lower (commit, NO PR). Next session with a healthy cache: just docker-build Proofs.BinaryGcdOQ01OQ04OQ03 and, if green, open the PR. || PRIOR: PROGRESS (tight): the a=1 row is now EXACTLY logarithmic — binaryGcdSteps 1 b = Nat.log 2 b + 1 for all b≥1 (binaryGcdSteps_one_eq_log), generalizing the parent sparse family 2^n-1 to the whole row. Hence totalSteps 1 N = ∑log₂b + N = Θ(N log N), so the a=1 average is Θ(log N) and the earlier O(log N) ceiling (avgSteps_le) is TIGHT. Open: general-a average lower bound (density count) and the sharp Brent constant 0.7050 (transfer-operator analysis, not in Mathlib). 0 sorry / 0 axiom.",
+    "progressSummary": "VERIFIED (researcher-2, 2026-07-07): the matching Ω(N·log N) lower bound `totalSteps_one_ge : (N - N/2)*(Nat.log 2 N - 1) ≤ totalSteps 1 N` now BUILDS GREEN (docker-build Proofs.BinaryGcdOQ01OQ04OQ03, 0 sorry / 0 axiom / 0 native_decide). Together with `totalSteps_one_eq` (exact a=1 total) and `avgSteps_le` (O(log N) ceiling) it pins the a=1 average at a genuine Θ(log N) — closing the file header's one stated tractable open sub-goal (the matching averaged lower bound). Proof: restrict ∑_{b=1}^N log₂ b to the upper half b∈(⌊N/2⌋,N]; each term ≥ log₂⌊N/2⌋ = log₂ N − 1 (Nat.log_mono_right + Nat.log_div_base), and the sub-range has N−⌊N/2⌋ elements (Finset.sum_le_sum_of_subset + Finset.sum_const). The prior exit-135 blackout was environmental olean corruption; the cache is healthy this session. || PRIOR: the a=1 row is EXACTLY logarithmic — binaryGcdSteps 1 b = Nat.log 2 b + 1 for all b≥1 (binaryGcdSteps_one_eq_log), generalizing the parent sparse family 2^n-1 to the whole row. Open: general-a average lower bound (density count) and the sharp Brent constant 0.7050 (transfer-operator analysis, not in Mathlib).",
     "builtItems": [
       "BinaryGcdOQ01OQ04OQ03.lean: totalSteps (average-case object), totalSteps_le (O(log N) total-sum ceiling), avgSteps_le (rational average ceiling) — all verified, 0 sorry / 0 axiom / 0 native_decide",
-      "BinaryGcdOQ01OQ04OQ03.lean PART IV: binaryGcdSteps_one_step (unified floor-halving one-step), binaryGcdSteps_one_eq_log (EXACT binaryGcdSteps 1 b = log₂ b + 1 ∀b≥1), totalSteps_one_eq (exact a=1 total = ∑log₂b + N) — verified, 0 sorry/0 axiom/0 native_decide"
+      "BinaryGcdOQ01OQ04OQ03.lean PART IV: binaryGcdSteps_one_step (unified floor-halving one-step), binaryGcdSteps_one_eq_log (EXACT binaryGcdSteps 1 b = log₂ b + 1 ∀b≥1), totalSteps_one_eq (exact a=1 total = ∑log₂b + N) — verified, 0 sorry/0 axiom/0 native_decide",
+      "BinaryGcdOQ01OQ04OQ03.lean PART V: totalSteps_one_ge (matching Ω(N·log N) lower bound (N−⌊N/2⌋)·(log₂N−1) ≤ totalSteps 1 N, via upper-half density count) — VERIFIED, 0 sorry/0 axiom/0 native_decide. Pins the a=1 average at Θ(log N)."
     ],
     "insights": [
       "Sharp Brent (1976) constant 0.7050·log₂max(a,b) for the AVERAGE binary-GCD step count is OUT OF REACH in Mathlib 4.26: the constant has no closed form and comes from a transfer-operator/dynamical-systems analysis of the Euclidean-type map (Brent; Vallée). Mathlib has measure theory but none of the spectral machinery to pin the leading constant.",
@@ -46,7 +47,6 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "VERIFY + SHIP the drafted totalSteps_one_ge Ω(N log N) lower bound on branch research/binary-gcd-oq010403-lower once docker cache is healthy (blocked 2026-07-07 by environmental exit-135 olean corruption).",
       "General-a average lower bound Ω(log N) → Θ(log N) for all a via a density count over b∈[1,N]",
       "Sharp Brent constant 0.7050 — requires transfer-operator/dynamical-systems analysis of the binary Euclidean map, absent from Mathlib 4.26"
     ],
@@ -125,6 +125,14 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ01OQ04OQ03.lean",
+      "lineCount": 248,
+      "theoremCount": 9,
+      "sorryCount": 0,
+      "axiomCount": 0,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ04OQ03.lean"
     },
     {
       "path": "Proofs/BinaryGcdOQ02.lean",
