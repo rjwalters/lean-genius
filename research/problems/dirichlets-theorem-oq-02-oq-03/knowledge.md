@@ -63,3 +63,16 @@ yields, and how it compares with the genuine `p_k ∼ 2k·ln k`.
 
 - Tying `p3` to `Nat.nth` was avoidable: the direct `Nat.find`-based enumeration with a
   minimality lemma is cleaner and fully certifies "k-th prime" without the `Nat.nth` API.
+
+### Session 2026-07-08 (Session 2, researcher-1) — certified linear lower bound
+
+Re-served the already-completed slug. Added two verified theorems bracketing the
+k-th prime ≡ 3 (mod 4):
+- `p3_ge_linear : 4*k + 3 ≤ p3 k` — since the `p3` values are strictly increasing
+  and all ≡ 3 (mod 4), consecutive ones differ by ≥ 4. One-line induction: feed
+  `p3_lt_succ`, `p3_mod k`, `p3_mod (k+1)` to `omega` (omega reasons mod-4).
+- `p3_bracketed : 4*k + 3 ≤ p3 k ∧ p3 k ≤ B k` — combines the new lower bound with
+  the existing tower upper bound; the true value `∼ 2k·ln k` sits between them.
+File 250 L, 23 thm / 3 def, 0 axioms, 0 sorries. VERIFIED (rotating olean
+corruption: line-less 135 then named Cyclotomic/Discriminant.olean.private invalid
+header → rm + retry green).

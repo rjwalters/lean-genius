@@ -242,6 +242,26 @@ theorem p3_le_tower (k : ℕ) : p3 k ≤ B k := by
       _ ≤ 4 * (B k + 1)! - 1 := step_mono ih
       _ = B (k + 1) := by simp
 
+/-- **Certified linear lower bound.** The values `p3 k` are strictly increasing and all
+`≡ 3 (mod 4)`, so consecutive ones differ by at least `4`; hence `p3 k ≥ 4k + 3`. This
+is elementary (no primality input beyond the mod-4 residue) and complements the tower
+upper bound. -/
+theorem p3_ge_linear (k : ℕ) : 4 * k + 3 ≤ p3 k := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    have hlt := p3_lt_succ k
+    have hmk := p3_mod k
+    have hmk1 := p3_mod (k + 1)
+    omega
+
+/-- **Bracketing the k-th prime `≡ 3 (mod 4)`.** Combining the two certified bounds,
+`4k + 3 ≤ p3 k ≤ B k`: the k-th such prime is pinned between an explicit linear lower
+bound and the iterated-factorial tower `B`. (The true growth is `p_k ∼ 2k·ln k`, which
+sits between them.) -/
+theorem p3_bracketed (k : ℕ) : 4 * k + 3 ≤ p3 k ∧ p3 k ≤ B k :=
+  ⟨p3_ge_linear k, p3_le_tower k⟩
+
 /-! ## Step 4: sanity checks and the honest contrast
 
 Small values of both sides, confirming the bound holds and quantifying its
