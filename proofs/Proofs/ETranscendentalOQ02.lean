@@ -5,6 +5,7 @@ import Mathlib.Data.Real.Irrational
 import Mathlib.Topology.Algebra.Order.Floor
 import Mathlib.Order.Filter.Basic
 import Mathlib.Tactic
+import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
 import Proofs.eTranscendental
 
 /-!
@@ -816,6 +817,239 @@ theorem normal_imp_irrational_of_criterion (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   subst hq
   obtain ⟨k, N₀, s, _, hmiss⟩ := rational_has_missing_ktuple_intCast b hb q
   exact not_normal_of_eventually_missing_ktuple b hb (q : ℝ) k N₀ s hmiss hn
+
+-- ============================================================
+-- PART IV.7: SHARP BOUNDARY WITNESS — an explicit irrational, non-normal number
+-- ============================================================
+
+/-!
+## An irrational number that is not normal
+
+`normal_imp_irrational` shows normality implies irrationality; the sharp boundary
+is whether the converse can fail. It does, and here is the witness.
+
+**Liouville's constant** `L_b = ∑ 1/b^{i!}` is irrational — indeed transcendental,
+being a Liouville number (`liouville_liouvilleNumber`) — yet is **not normal in
+base `b`** for any `b ≥ 4`. The reason is structural: the base-`b` digits of `L_b`
+only ever take the values `0, 1, 2` (a digit at position `n` counts the indices
+`i` with `i! = n`, and `0! = 1!` is the only collision), so the digit `3` is
+entirely absent. A missing digit forbids normality
+(`not_normal_of_eventually_missing_digit`), so `L_b` is irrational but not normal.
+
+This closes the sharp boundary: **irrational ⇏ normal** — the exact converse of
+`normal_imp_irrational` is false.
+-/
+
+open scoped Nat
+
+/-- Existence of a factorial exceeding `n` (witnessed by `k = n + 1`, since
+    `n < n + 1 ≤ (n+1)!`). Used to define the split index below. -/
+private lemma exists_factorial_gt (n : ℕ) : ∃ k, n < k ! :=
+  ⟨n + 1, lt_of_lt_of_le (Nat.lt_succ_self n) (Nat.self_le_factorial _)⟩
+
+/-- The least index `k` with `n < k!`. Because `i ↦ i!` is monotone,
+    `Finset.range (splitIdx n)` is exactly the set of indices whose factorial does
+    not exceed `n`, which is what separates the integer and fractional parts of
+    `b^n · L_b`. -/
+private def splitIdx (n : ℕ) : ℕ := Nat.find (exists_factorial_gt n)
+
+private lemma lt_splitIdx_iff (n i : ℕ) : i < splitIdx n ↔ i ! ≤ n := by
+  unfold splitIdx
+  constructor
+  · intro hi
+    have h := Nat.find_min (exists_factorial_gt n) hi
+    omega
+  · intro hi
+    by_contra hcon
+    push_neg at hcon
+    have hspec := Nat.find_spec (exists_factorial_gt n)
+    have h2 := Nat.factorial_le hcon
+    omega
+
+/-- `(i + K)! ≥ m + i + 1` whenever `K ≥ 1` and `m < K!`. The super-linear growth
+    of the factorial that makes the tail `∑_{i≥K} b^{n-i!}` geometrically small. -/
+private lemma factorial_add_ge (m i K : ℕ) (hK : m < K !) (hK1 : 1 ≤ K) :
+    m + i + 1 ≤ (i + K)! := by
+  induction i with
+  | zero => simp only [Nat.zero_add, Nat.add_zero]; omega
+  | succ j ih =>
+    have h1 : (j + 1 + K)! = (j + K + 1) * (j + K)! := by
+      rw [show j + 1 + K = (j + K) + 1 by ring, Nat.factorial_succ]
+    have hF : 1 ≤ (j + K)! := Nat.factorial_pos _
+    calc m + (j + 1) + 1 = (m + j + 1) + 1 := by ring
+      _ ≤ (j + K)! + 1 := by omega
+      _ ≤ (j + K)! + (j + K)! := by omega
+      _ = 2 * (j + K)! := by ring
+      _ ≤ (j + K + 1) * (j + K)! := by gcongr; omega
+      _ = (j + 1 + K)! := h1.symm
+
+/-- The integer part of `b^n · L_b`: the finite sum over indices whose factorial
+    does not exceed `n`. Each term `b^(n - i!)` is a genuine non-negative power. -/
+private def liouvilleIntPart (b n : ℕ) : ℕ :=
+  ∑ i ∈ Finset.range (splitIdx n), b ^ (n - i !)
+
+/-- **Floor identity.** For `b ≥ 3` and `n ≥ 1`, the floor of `b^n · L_b` is the
+    integer `liouvilleIntPart b n`. The finite indices `i < splitIdx n` (those with
+    `i! ≤ n`) contribute the integer part; the tail `∑_{i ≥ splitIdx n} b^{n-i!}`
+    is a positive quantity `< 1`, bounded by a convergent geometric series. -/
+private lemma floor_pow_mul_liouville (b : ℕ) (hb : 3 ≤ b) (n : ℕ) (hn : 1 ≤ n) :
+    ⌊(b : ℝ) ^ n * liouvilleNumber b⌋ = (liouvilleIntPart b n : ℤ) := by
+  have hb1 : (1 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 1 < b)
+  have hbpos : (0 : ℝ) < (b : ℝ) := by linarith
+  have hbne : (b : ℝ) ≠ 0 := ne_of_gt hbpos
+  have hsummable : Summable (fun i : ℕ => 1 / (b : ℝ) ^ i !) :=
+    LiouvilleNumber.summable hb1
+  set f : ℕ → ℝ := fun i => (b : ℝ) ^ n * (1 / (b : ℝ) ^ i !) with hf_def
+  have hfsummable : Summable f := hsummable.mul_left _
+  -- b^n · L = ∑' f
+  have hLsum : (b : ℝ) ^ n * liouvilleNumber b = ∑' i, f i := by
+    simp only [hf_def]
+    unfold liouvilleNumber
+    rw [← tsum_mul_left]
+  -- split index
+  set K : ℕ := splitIdx n with hK_def
+  have hspec : n < K ! := by rw [hK_def]; exact Nat.find_spec (exists_factorial_gt n)
+  have hKpos : 1 ≤ K := by
+    rcases Nat.eq_zero_or_pos K with h | h
+    · rw [h] at hspec; simp only [Nat.factorial_zero] at hspec; omega
+    · exact h
+  have hsplit : (∑ i ∈ Finset.range K, f i) + ∑' i, f (i + K) = ∑' i, f i :=
+    hfsummable.sum_add_tsum_nat_add K
+  -- finite part is the integer part
+  have hfin : (∑ i ∈ Finset.range K, f i) = (liouvilleIntPart b n : ℝ) := by
+    unfold liouvilleIntPart
+    rw [← hK_def, Nat.cast_sum]
+    apply Finset.sum_congr rfl
+    intro i hi
+    rw [Finset.mem_range, hK_def, lt_splitIdx_iff] at hi
+    simp only [hf_def, one_div]
+    rw [show ((b ^ (n - i !) : ℕ) : ℝ) = (b : ℝ) ^ (n - i !) from by push_cast; ring,
+        pow_sub₀ (b : ℝ) hbne hi]
+  -- tail is in [0, 1)
+  have htail_nonneg : (0 : ℝ) ≤ ∑' i, f (i + K) := by
+    apply tsum_nonneg
+    intro i
+    simp only [hf_def]; positivity
+  have hr0 : (0 : ℝ) ≤ 1 / (b : ℝ) := by positivity
+  have hr1 : (1 / (b : ℝ)) < 1 := by rw [div_lt_one hbpos]; exact hb1
+  have hshift : (fun i : ℕ => (1 / (b : ℝ)) ^ (i + 1)) =
+      fun i => (1 / (b : ℝ)) * (1 / (b : ℝ)) ^ i := by
+    funext i; rw [pow_succ]; ring
+  have hgeo : Summable (fun i : ℕ => (1 / (b : ℝ)) ^ i) :=
+    summable_geometric_of_lt_one hr0 hr1
+  have hgeo_sum : Summable (fun i : ℕ => (1 / (b : ℝ)) ^ (i + 1)) := by
+    rw [hshift]; exact hgeo.mul_left _
+  have hbound : ∀ i, f (i + K) ≤ (1 / (b : ℝ)) ^ (i + 1) := by
+    intro i
+    have hfac : n + (i + 1) ≤ (i + K)! := by
+      have := factorial_add_ge n i K hspec hKpos; omega
+    simp only [hf_def]
+    rw [mul_one_div, div_pow, one_pow,
+        div_le_div_iff₀ (by positivity) (by positivity), one_mul, ← pow_add]
+    exact pow_le_pow_right₀ (by exact_mod_cast (by omega : 1 ≤ b)) hfac
+  have htail_lt : ∑' i, f (i + K) < 1 := by
+    have hbig : (2 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 2 < b)
+    have hval : ∑' i : ℕ, (1 / (b : ℝ)) ^ (i + 1) = 1 / ((b : ℝ) - 1) := by
+      have hbm1 : (b : ℝ) - 1 ≠ 0 := by
+        intro h; rw [sub_eq_zero] at h; rw [h] at hbig; norm_num at hbig
+      have h1b : (1 : ℝ) - 1 / (b : ℝ) ≠ 0 := by
+        have hlt : 1 / (b : ℝ) < 1 := by rw [div_lt_one hbpos]; exact hb1
+        intro h; rw [sub_eq_zero] at h; linarith
+      rw [hshift, tsum_mul_left, tsum_geometric_of_lt_one hr0 hr1, eq_div_iff hbm1]
+      field_simp
+    calc ∑' i, f (i + K)
+        ≤ ∑' i, (1 / (b : ℝ)) ^ (i + 1) :=
+          Summable.tsum_le_tsum hbound ((summable_nat_add_iff K).mpr hfsummable) hgeo_sum
+      _ = 1 / ((b : ℝ) - 1) := hval
+      _ < 1 := by rw [div_lt_one (by linarith)]; linarith
+  -- assemble
+  rw [hLsum, ← hsplit, hfin, Int.floor_eq_iff]
+  constructor
+  · push_cast; linarith [htail_nonneg]
+  · push_cast; linarith [htail_lt]
+
+/-- The count of indices `i` with `i ! = n` is at most `2`, the sole collision being
+    `0! = 1! = 1`. Hence `liouvilleIntPart b n mod b ≤ 2`: every summand
+    `b^(n - i!)` with `i! < n` is divisible by `b`, and only the `≤ 2` indices with
+    `i! = n` contribute a unit. -/
+private lemma card_filter_factorial_le_two (s : Finset ℕ) (n : ℕ) :
+    (s.filter (fun i => i ! = n)).card ≤ 2 := by
+  have hone : ((s.filter (fun i => i ! = n)).filter (fun i => 1 ≤ i)).card ≤ 1 := by
+    rw [Finset.card_le_one]
+    intro a ha c hc
+    simp only [Finset.mem_filter] at ha hc
+    obtain ⟨⟨_, hafac⟩, ha1⟩ := ha
+    obtain ⟨⟨_, hcfac⟩, hc1⟩ := hc
+    have heq : a ! = c ! := by rw [hafac, hcfac]
+    rcases lt_trichotomy a c with h | h | h
+    · exact absurd heq (by have := (Nat.factorial_lt (by omega : 0 < a)).mpr h; omega)
+    · exact h
+    · exact absurd heq (by have := (Nat.factorial_lt (by omega : 0 < c)).mpr h; omega)
+  have hsub : s.filter (fun i => i ! = n) ⊆
+      insert 0 ((s.filter (fun i => i ! = n)).filter (fun i => 1 ≤ i)) := by
+    intro i hi
+    by_cases h0 : i = 0
+    · subst h0; exact Finset.mem_insert_self 0 _
+    · exact Finset.mem_insert_of_mem (Finset.mem_filter.mpr ⟨hi, Nat.one_le_iff_ne_zero.mpr h0⟩)
+  calc (s.filter (fun i => i ! = n)).card
+      ≤ (insert 0 ((s.filter (fun i => i ! = n)).filter (fun i => 1 ≤ i))).card :=
+        Finset.card_le_card hsub
+    _ ≤ ((s.filter (fun i => i ! = n)).filter (fun i => 1 ≤ i)).card + 1 :=
+        Finset.card_insert_le _ _
+    _ ≤ 1 + 1 := by omega
+    _ = 2 := rfl
+
+private lemma liouvilleIntPart_mod_le (b : ℕ) (hb : 3 ≤ b) (n : ℕ) :
+    liouvilleIntPart b n % b ≤ 2 := by
+  unfold liouvilleIntPart
+  rw [Finset.sum_nat_mod]
+  have hterm : ∀ i ∈ Finset.range (splitIdx n),
+      b ^ (n - i !) % b = (if i ! = n then 1 else 0) := by
+    intro i hi
+    rw [Finset.mem_range, lt_splitIdx_iff] at hi
+    by_cases hie : i ! = n
+    · rw [if_pos hie, hie, Nat.sub_self, pow_zero, Nat.mod_eq_of_lt (by omega)]
+    · rw [if_neg hie]
+      have hk : n - i ! = (n - i ! - 1) + 1 := by omega
+      rw [hk, pow_succ, Nat.mul_mod_left]
+  rw [Finset.sum_congr rfl hterm]
+  refine Nat.le_trans (Nat.mod_le _ _) ?_
+  rw [Finset.sum_boole]
+  simpa using card_filter_factorial_le_two (Finset.range (splitIdx n)) n
+
+/-- **Key digit bound.** Every base-`b` digit of Liouville's constant `L_b`
+    (for `b ≥ 3`, at positions `n ≥ 1`) is at most `2`. This is the floor identity
+    combined with the count-of-factorials bound. -/
+private lemma nthDigit_liouville_le_two (b : ℕ) (hb : 3 ≤ b) (n : ℕ) (hn : 1 ≤ n) :
+    nthDigit b n (liouvilleNumber b) ≤ 2 := by
+  unfold nthDigit
+  rw [floor_pow_mul_liouville b hb n hn, ← Int.natCast_mod]
+  exact_mod_cast liouvilleIntPart_mod_le b hb n
+
+/-- **Sharp boundary — irrational ⇏ normal.**
+    For every base `b ≥ 4`, Liouville's constant `L_b = ∑ 1/b^{i!}` is irrational
+    (it is a Liouville number, hence transcendental) yet **not** normal in base `b`:
+    all of its base-`b` digits are `≤ 2`, so the digit `3` is eventually absent, and
+    a missing digit rules out normality (`not_normal_of_eventually_missing_digit`).
+    Thus irrationality does *not* imply normality — the converse of
+    `normal_imp_irrational` fails. -/
+theorem exists_irrational_not_normal (b : ℕ) (hb : 4 ≤ b) :
+    ∃ x : ℝ, Irrational x ∧ ¬ IsNormalInBase b x := by
+  refine ⟨liouvilleNumber b, (liouville_liouvilleNumber (by omega)).irrational, ?_⟩
+  refine not_normal_of_eventually_missing_digit b (by omega) (liouvilleNumber b)
+    (⟨3, by omega⟩ : Fin b) 1 (fun n hn => ?_)
+  have hle := nthDigit_liouville_le_two b (by omega) n hn
+  have h3 : ((⟨3, by omega⟩ : Fin b) : ℤ) = 3 := by simp
+  rw [h3]
+  omega
+
+/-- **Normality is strictly stronger than irrationality.** There is an irrational
+    (indeed transcendental) real number that is not absolutely normal — witnessed by
+    Liouville's constant in base `4`. -/
+theorem exists_irrational_not_absolutelyNormal :
+    ∃ x : ℝ, Irrational x ∧ ¬ IsAbsolutelyNormal x := by
+  obtain ⟨x, hirr, hnn⟩ := exists_irrational_not_normal 4 (le_refl 4)
+  exact ⟨x, hirr, fun h => hnn (h 4 (by norm_num))⟩
 
 -- ============================================================
 -- PART V: OPEN QUESTION
