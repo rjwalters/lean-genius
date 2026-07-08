@@ -85,6 +85,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring framing the 2D permutation-matrix view of derangements and the open question, the Mathlib imports (permutation-matrix and derangement APIs), the namespace, the variable {n : ℕ}, and the Section I docstring introducing the entry formula.",
+      "mathContext": "$P_\\sigma$ = permutation matrix of $\\sigma \\in \\mathrm{Sym}(\\mathrm{Fin}\\,n)$; derangement matrix $\\iff$ zero diagonal."
+    },
+    {
       "id": "entry-formula",
       "title": "Permutation Matrix Entry Formula",
       "startLine": 54,
@@ -213,7 +221,50 @@
     {
       "name": "hasZeroDiagonal_iff_mem_derangements",
       "type": "core",
-      "description": "A permutation matrix has zero diagonal iff the underlying permutation is a derangement — the matrix↔derangement bridge."
+      "description": "A permutation matrix has zero diagonal iff the underlying permutation is a derangement — the pointwise matrix↔derangement bridge.",
+      "leanType": "(∀ i, (σ.permMatrix ℝ) i i = 0) ↔ σ ∈ derangements (Fin n)",
+      "startLine": 82,
+      "endLine": 86
+    },
+    {
+      "name": "trace_permMatrix_eq_zero_iff",
+      "type": "core",
+      "description": "The global (trace) characterization: trace (σ.permMatrix ℝ) = 0 iff σ is a derangement, since the trace of a permutation matrix counts its fixed points (Mathlib's trace_permutation).",
+      "leanType": "(σ.permMatrix ℝ).trace = 0 ↔ σ ∈ derangements (Fin n)",
+      "startLine": 88,
+      "endLine": 93
+    },
+    {
+      "name": "permMatrix_apply",
+      "type": "supporting",
+      "description": "The entry formula (σ.permMatrix ℝ) i j = if σ i = j then 1 else 0, from which the diagonal specialisation and both bridges follow.",
+      "leanType": "(σ.permMatrix ℝ) i j = if σ i = j then 1 else 0",
+      "startLine": 57,
+      "endLine": 60
+    },
+    {
+      "name": "zeroDiagonal_setOf_eq_derangements",
+      "type": "key",
+      "description": "Set identity: the zero-diagonal permutation matrices are exactly the derangements of Fin n — extensionality plus the pointwise bridge.",
+      "leanType": "{σ : Perm (Fin n) | ∀ i, (σ.permMatrix ℝ) i i = 0} = derangements (Fin n)",
+      "startLine": 95,
+      "endLine": 108
+    },
+    {
+      "name": "card_derangement_permMatrices",
+      "type": "key",
+      "description": "Count: there are numDerangements n derangement permutation matrices on Fin n, via card_derangements_fin_eq_numDerangements.",
+      "leanType": "Nat.card {σ : Perm (Fin n) | ∀ i, (σ.permMatrix ℝ) i i = 0} = numDerangements n",
+      "startLine": 110,
+      "endLine": 113
+    },
+    {
+      "name": "derangementMatrixProb_mem_Icc",
+      "type": "corollary",
+      "description": "The derangement-matrix probability numDerangements n / n! lies in [0,1], via numDerangements n ≤ n! — the quantity whose sharp 1/e rate is the subject of derangements-oq-03.",
+      "leanType": "derangementMatrixProb n ∈ Set.Icc (0 : ℝ) 1",
+      "startLine": 127,
+      "endLine": 132
     }
   ],
   "sorries": 0
