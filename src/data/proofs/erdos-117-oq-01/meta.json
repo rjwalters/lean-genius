@@ -25,8 +25,8 @@
     "erdosNumber": 117,
     "erdosUrl": "https://erdosproblems.com/117",
     "erdosProblemStatus": "open",
-    "lineCount": 300,
-    "theoremCount": 8,
+    "lineCount": 368,
+    "theoremCount": 10,
     "definitionCount": 9,
     "additionalFiles": [
       "Proofs/Erdos117OQ01Aristotle.lean",
@@ -128,6 +128,18 @@
       "type": "supporting",
       "description": "Submultiplicativity of h → convergence (Fekete's lemma)",
       "leanType": "submultiplicative → growthRateConverges"
+    },
+    {
+      "name": "limSup_le_log_c2",
+      "type": "theorem",
+      "statement": "∃ c₂ > 1, growthRateLimSup ≤ log c₂.",
+      "significance": "Symmetric companion of limInf_ge_log_c1, completing the two-sided bound log c₁ ≤ liminf ≤ limsup ≤ log c₂ that Part III sets up. Both extreme cluster values of log h(n)/n are trapped inside Pyber's window even without knowing the limit exists. Proved via Filter.limsup_le_of_le with the lower bound as the cobound witness."
+    },
+    {
+      "name": "convergent_limit_in_pyber_window",
+      "type": "theorem",
+      "statement": "If growthRate → L then ∃ c₁ c₂, 1 < c₁ < c₂ ∧ log c₁ ≤ L ≤ log c₂.",
+      "significance": "Even though existence of the limit is the open question, its value (should it exist) is pinned to Pyber's interval: the exponential base exp L lies in [c₁, c₂]. Passes the eventual two-sided bounds on growthRate through ge_of_tendsto / le_of_tendsto."
     }
   ],
   "crossReferences": [
@@ -146,9 +158,9 @@
       "Filter"
     ],
     "namespace": "Erdos117OQ01",
-    "lineCount": 300,
+    "lineCount": 368,
     "axiomCount": 3,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "substantiveTheoremCount": 6,
     "sorryTheorems": 0,
     "definitionCount": 9,
