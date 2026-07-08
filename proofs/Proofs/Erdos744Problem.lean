@@ -36,13 +36,32 @@ structure SimpleGraph' (V : Type*) where
   sym : ∀ u v, Adj u v → Adj v u
   loopless : ∀ v, ¬Adj v v
 
-/-- The chromatic number of a graph (axiomatized).
-    The chromatic number χ(G) is the minimum number of colors needed
-    to properly color the vertices of G. -/
-axiom chromaticNumber {V : Type*} (G : SimpleGraph' V) : ℕ
+/-- The chromatic number of a graph, defined intrinsically (no axiom).
+
+    `χ(G)` is the least number of colors `k` admitting a *proper* coloring
+    `c : V → Fin k` — one in which adjacent vertices receive distinct colors.
+    Over a finite vertex type the coloring set is nonempty (the injective
+    coloring by `Fintype.equivFin` uses `Fintype.card V` colors and is proper),
+    so this infimum is genuinely attained and `chromaticNumber_le_card` below
+    records the bound. -/
+noncomputable def chromaticNumber {V : Type*} [Fintype V] (G : SimpleGraph' V) : ℕ :=
+  sInf { k | ∃ c : V → Fin k, ∀ u v, G.Adj u v → c u ≠ c v }
+
+/-- A proper coloring with `Fintype.card V` colors always exists (color each
+    vertex by its index under `Fintype.equivFin`; distinct indices for distinct
+    vertices, and adjacency forbids equal vertices via `loopless`). Hence the
+    chromatic number is well-defined and bounded by the number of vertices. -/
+theorem chromaticNumber_le_card {V : Type*} [Fintype V] (G : SimpleGraph' V) :
+    chromaticNumber G ≤ Fintype.card V := by
+  apply Nat.sInf_le
+  refine ⟨fun x => Fintype.equivFin V x, ?_⟩
+  intro u v hadj hc
+  have huv : u = v := (Fintype.equivFin V).injective hc
+  subst huv
+  exact G.loopless u hadj
 
 /-- A graph is k-chromatic if its chromatic number is exactly k. -/
-def isKChromatic {V : Type*} (G : SimpleGraph' V) (k : ℕ) : Prop :=
+def isKChromatic {V : Type*} [Fintype V] (G : SimpleGraph' V) (k : ℕ) : Prop :=
   chromaticNumber G = k
 
 /--
@@ -55,7 +74,7 @@ A graph G is k-chromatic critical if:
 Critical graphs are the "minimal" examples requiring k colors.
 Every k-chromatic graph contains a k-critical subgraph.
 -/
-def isCritical {V : Type*} (G : SimpleGraph' V) : Prop :=
+def isCritical {V : Type*} [Fintype V] (G : SimpleGraph' V) : Prop :=
   ∀ u v, G.Adj u v →
     chromaticNumber ⟨fun a b => G.Adj a b ∧ ¬(a = u ∧ b = v ∨ a = v ∧ b = u),
       fun _ _ h => ⟨G.sym _ _ h.1, fun hor => h.2 (Or.symm (Or.imp And.symm And.symm hor))⟩,
@@ -74,7 +93,7 @@ independent sets. Equivalently, it is 2-colorable.
 -/
 
 /-- A graph is bipartite if it has a 2-coloring (χ(G) ≤ 2). -/
-def isBipartite {V : Type*} (G : SimpleGraph' V) : Prop :=
+def isBipartite {V : Type*} [Fintype V] (G : SimpleGraph' V) : Prop :=
   chromaticNumber G ≤ 2
 
 /-
