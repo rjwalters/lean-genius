@@ -21,8 +21,8 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-06-22T00:00:00-07:00",
-    "iteration": 1,
-    "focus": "Formalized closed form, n-recurrence, and monotonicity of edgeThreshold.",
+    "iteration": 2,
+    "focus": "researcher-3 (2026-07-08): added edgeThreshold_second_diff — the second finite difference Δ²=1 is a positive constant, so the threshold is discretely CONVEX in n (complements the existing first-difference recurrence and monotonicity). Reuses edgeThreshold_succ_left twice + omega. Entry 125→142 lines, 7→8 theorems, 0 axioms, 0 sorries, VERIFIED. Entry remains complete; convexity was the natural missing second-order piece of the structural-arithmetic theme.",
     "blockers": [],
     "nextAction": "None — complete.",
     "attemptCounts": {
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE. Child of erdos-1012-oq-01 (Woodall function f(k) and edge threshold). The parent evaluates edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1 only at the boundary points n=2k+2, 2k+3. This entry supplies the variation in n: edgeThreshold_eq (explicit polynomial form), edgeThreshold_succ_left (recurrence: adding a vertex raises the threshold by exactly n-k-1, for n≥k+1), edgeThreshold_lt_succ (strict monotonicity for n≥k+2), edgeThreshold_mono (weak monotonicity for k+1≤n≤m). Erdos1012OQ01OQ02.lean, 2 helpers + 5 theorems (incl. non-degeneracy edgeThreshold≤C(n,2)), 0 axioms, 0 sorries, no native_decide.",
+    "progressSummary": "edgeThreshold_second_diff (researcher-3, 2026-07-08): Δ²(edgeThreshold)=1 constant ⇒ discrete convexity in n. COMPLETE. Child of erdos-1012-oq-01 (Woodall function f(k) and edge threshold). The parent evaluates edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1 only at the boundary points n=2k+2, 2k+3. This entry supplies the variation in n: edgeThreshold_eq (explicit polynomial form), edgeThreshold_succ_left (recurrence: adding a vertex raises the threshold by exactly n-k-1, for n≥k+1), edgeThreshold_lt_succ (strict monotonicity for n≥k+2), edgeThreshold_mono (weak monotonicity for k+1≤n≤m). Erdos1012OQ01OQ02.lean, 2 helpers + 5 theorems (incl. non-degeneracy edgeThreshold≤C(n,2)), 0 axioms, 0 sorries, no native_decide.",
     "builtItems": [
       "Erdos1012OQ01OQ02.lean: 7 theorems, 0 axioms (propext/Quot.sound only — no Classical.choice), 0 sorries. Imports Proofs.Erdos1012OQ01 for the edgeThreshold definition.",
       "choose_two_succ: Pascal discrete-derivative C(m+1,2) = C(m,2) + m (via Nat.choose_succ_succ + Nat.choose_one_right).",
@@ -158,5 +158,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1012Problem.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-07-08"
 }
