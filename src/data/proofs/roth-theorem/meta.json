@@ -167,7 +167,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified formalization (0 sorries, 0 axioms) of Roth's theorem and its key Fourier-analytic components. The 49-theorem file develops complete machinery: character theory, Parseval, AP counting, large Fourier coefficient (the key standalone lemma), and density increment. The main theorem wraps via Mathlib's `roth_3ap_theorem_nat`.",
+    "summary": "Fully verified formalization (0 sorries, 0 axioms) of Roth's theorem and its key Fourier-analytic components. The 42-theorem file develops complete machinery: character theory, Parseval, AP counting, large Fourier coefficient (the key standalone lemma), and density increment. The main theorem wraps via Mathlib's `roth_3ap_theorem_nat`.",
     "implications": "The independently verified `fourier_large_coefficient` theorem provides a formalized version of the core analytic step that underlies quantitative improvements to Roth's theorem (Bourgain, Bloom-Sisask). The density increment infrastructure could be extended to prove better bounds.",
     "openQuestions": [
       "Formalize Bourgain's quantitative bound r₃(N) = O(N/(log log N)^{1/2})",
