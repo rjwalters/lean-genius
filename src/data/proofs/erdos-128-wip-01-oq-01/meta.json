@@ -15,6 +15,33 @@
     "path": "Proofs/Erdos128WIP01OQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "blowup_C5_triangleFree",
+      "type": "theorem",
+      "description": "Capstone: every blow-up of the 5-cycle C₅, at every size n and for every class assignment c : Fin n → Fin 5, is triangle-free — exactly the triangle-freeness of the extremal construction conjectured to witness Erdős #128's optimal constant 1/50."
+    },
+    {
+      "name": "triangleFree_of_hom",
+      "type": "theorem",
+      "description": "Triangle-freeness is preserved by pullback along an arbitrary graph homomorphism: if f : G → H is a homomorphism and H is triangle-free, then G is triangle-free (the three image vertices forced distinct by H's irreflexivity). Induced subgraphs and blow-ups are both instances."
+    },
+    {
+      "name": "blowup_triangleFree",
+      "type": "theorem",
+      "description": "Every blow-up of a triangle-free base graph is triangle-free — triangleFree_of_hom applied to the class map."
+    },
+    {
+      "name": "blowup_isHom",
+      "type": "theorem",
+      "description": "The class map of a blow-up is a graph homomorphism blowup H c → H."
+    },
+    {
+      "name": "C5_triangleFree",
+      "type": "theorem",
+      "description": "The concrete 5-cycle C₅ on Fin 5 is triangle-free, verified by the decision procedure over Fin 5 (not native_decide)."
+    }
+  ],
   "description": "Identifies the structural reason the conjectured-optimal extremal witnesses for Erdős Problem #128 ($250, OPEN) are triangle-free. The parent entry erdos-128-wip-01 proved triangle-freeness is hereditary under induced subgraphs and the edge count is monotone. This entry proves the sharper fact those rest on: triangle-freeness is preserved under ARBITRARY graph homomorphisms, pulled back along the map (triangleFree_of_hom) -- if there is a homomorphism f : G -> H and H is triangle-free, then G is triangle-free, the three image vertices being forced distinct by H's irreflexivity. Induced subgraphs (identity inclusion) and blow-ups (class map) are both instances. The blow-up of a base graph H along a class map c is defined (blowup) and its class map is shown to be a homomorphism (blowup_isHom), giving blowup_triangleFree: every blow-up of a triangle-free graph is triangle-free. The concrete 5-cycle C5 on Fin 5 is shown triangle-free by the decision procedure (C5_triangleFree, not native_decide), and combining yields blowup_C5_triangleFree: every blow-up of C5, at every size n and for every class assignment c : Fin n -> Fin 5, is triangle-free -- exactly the triangle-freeness of the extremal construction conjectured to witness the optimal constant 1/50. 5 theorems, 5 definitions + 1 structure, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
