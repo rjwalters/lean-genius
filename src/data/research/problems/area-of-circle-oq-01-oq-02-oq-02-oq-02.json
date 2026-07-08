@@ -11,18 +11,24 @@
       "Mathlib does NOT package 'derivative of a periodic function is periodic' (no Function.Periodic.deriv on this toolchain). Proved here from deriv_comp_add_const: since (fun x ↦ f (x+T)) = f, their derivatives agree, giving f'(t+T) = f'(t).",
       "ContDiff ℝ 1 (deriv f) is extracted from ContDiff ℝ 2 f via contDiff_succ_iff_deriv (n := 1) |>.2.2 — note the current 3-way conjunction (Differentiable ∧ (n=ω→AnalyticOn) ∧ ContDiff n (deriv f)).",
       "(i·n)·(i·n) collapses to −n² via Complex.I_mul_I (I*I = -1) after a ring normalization that pulls out (I*I)·n².",
-      "The n=0 companion is governed by FTC, not the i·n divide-by-n identity: fourier 0 = 1 so c₀(f') is the period-average of f', and intervalIntegral.integral_deriv_eq_sub + periodicity forces it to 0. Together with the -n² eigenvalue (n≠0) this pins the full differentiation spectrum: 0 on constants, i·n on the n-th harmonic."
+      "The n=0 companion is governed by FTC, not the i·n divide-by-n identity: fourier 0 = 1 so c₀(f') is the period-average of f', and intervalIntegral.integral_deriv_eq_sub + periodicity forces it to 0. Together with the -n² eigenvalue (n≠0) this pins the full differentiation spectrum: 0 on constants, i·n on the n-th harmonic.",
+      "Wirtinger inequality ∫f²≤∫(f')² (mean-zero, period 2π) is a clean termwise hasSum_le on the two Parseval sums: |ĉₙ(f')|²=n²|ĉₙ(f)|² and n²≥1 for n≠0, with the n=0 mode killed on both sides (ĉ₀(f')=0 companion, ĉ₀(f)=0 zero-mean)."
     ],
     "builtItems": [
       "AreaOfCircleOQ01OQ02OQ02OQ02.lean: 3 theorems, 0 axioms, 0 sorries, imports and reuses the parent IBP identity. VERIFIED via docker build (Built [7744/7744]).",
       "deriv_periodic_of_periodic: the derivative of a T-periodic function is T-periodic.",
       "fourierCoeffOn_deriv2_periodic: cₙ(f'') = -n²·cₙ(f) for C² periodic f, n ≠ 0.",
-      "fourierCoeffOn_deriv_zero_periodic: c₀(f') = 0 for C¹ periodic f (zero mode), via FTC ∫ f' = f(2π)-f(0) = 0."
+      "fourierCoeffOn_deriv_zero_periodic: c₀(f') = 0 for C¹ periodic f (zero mode), via FTC ∫ f' = f(2π)-f(0) = 0.",
+      "wirtinger_inequality in AreaOfCircleOQ01OQ02OQ02OQ02.lean (VERIFIED 0/0): ∫₀^2π f² ≤ ∫₀^2π (f')² for C¹ period-2π mean-zero f",
+      "memLp_two_of_continuous helper: continuous ℝ→ℂ is L² on Ioc(0,2π) via MemLp.of_bound + IsCompact.exists_bound_of_continuousOn"
     ],
-    "progressSummary": "PROGRESS: n=0 companion c₀(f')=0 proved and VERIFIED (0/0), completing the spectral picture of d/dx on periodic functions (3 theorems total). Remaining: Wirtinger via Parseval, then isoperimetric assembly.",
+    "progressSummary": "PROGRESS: Wirtinger inequality proved and VERIFIED (0/0) — 4 theorems total. The analytic core of the Hurwitz/Fourier isoperimetric proof is done; remaining is the area/perimeter Fourier assembly.",
     "nextSteps": [
-      "Assemble Wirtinger inequality ∫|f'|² ≥ ∫|f|² (mean-zero f, period 2π) from the n²≥1 Fourier-mode bound and Parseval; requires fourierCoeffOn Parseval/completeness for periodic functions (assess Mathlib fourierCoeff L² isometry availability).",
-      "Combine with the area/perimeter Fourier expansions to close the isoperimetric inequality C² ≥ 4πA with the circle as the equality case."
+      "Assemble the full isoperimetric inequality C²≥4πA: express area A and perimeter C via Fourier coefficients of the (mean-adjusted) boundary parametrisation and apply wirtinger_inequality mode-by-mode; equality iff only n=±1 harmonics survive (circle). Requires Greens-theorem area formula A=½∮(x dy − y dx) in Fourier form.",
+      "Characterise the equality case of wirtinger_inequality: ∫f²=∫(f')² iff ĉₙ(f)=0 for all |n|≥2 (only the first harmonic), i.e. f(t)=a cos t + b sin t."
+    ],
+    "mathlibGaps": [
+      "Mathlib has Parseval on an interval (hasSum_sq_fourierCoeffOn / tsum_sq_fourierCoeffOn, AddCircle.lean) — no gap; the L² isometry is available directly, so Wirtinger did NOT need custom infrastructure."
     ]
   },
   "relatedProofs": [
