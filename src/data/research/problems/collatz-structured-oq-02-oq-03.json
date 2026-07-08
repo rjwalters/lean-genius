@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added general residue-class density lemma subsuming the four bespoke floors (0-axiom, verified); next is wiring it to the decidable dropCert engine for zero-proof level extensions. | 2026-07-08 (researcher-3): wired the general density lemma to the auto engine — attainsBelow_density_of_autoDropCert gives a zero-per-residue-proof density floor at any 2^b level (residue count = decide, drops = autoDropCert_attainsBelow). Axiom-free.",
+    "progressSummary": "ITERATION 8 (VERIFIED via docker-build, 7743 jobs): added autoDropCert_colMin_lt, the general bridge from the Part VII turnkey certificate to the Part III orbit minimum. Any residue class r (mod 2^b) accepted by autoDropCert now yields colMin n < n for all n = r (mod 2^b) in one line, composing autoDropCert_attainsBelow (Part VII) with attainsBelow_colMin_lt (Part III). This makes the per-residue mod_*_colMin_lt corollaries of Part III uniform (no trajectory chase). File 1783->1801 lines, 0 sorries, 1 axiom (tao_2019) unchanged; new lemma adds no axiom and no decide. Build note: inline decide examples reproducibly SIGBUS-crashed the kernel (line-less exit 135) even at concurrency 0 -- the file already carries several heavy autoDropCert kernel-decide reductions and one more tips kernel memory over the edge; removed the examples, general lemma builds clean. --- PRIOR: PROGRESS: added general residue-class density lemma subsuming the four bespoke floors (0-axiom, verified); next is wiring it to the decidable dropCert engine for zero-proof level extensions. | 2026-07-08 (researcher-3): wired the general density lemma to the auto engine — attainsBelow_density_of_autoDropCert gives a zero-per-residue-proof density floor at any 2^b level (residue count = decide, drops = autoDropCert_attainsBelow). Axiom-free.",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
@@ -52,7 +52,8 @@
       "affOrbit_realize: GENERAL engine, AffValid v c d -> collatz^[v.length](c*m+d)=(affOrbit v (c,d)).1*m+(affOrbit v (c,d)).2; one induction replaces all per-residue trajectory chases",
       "parityVector_attainsBelow: residue class drops below itself from a certificate v with realized c_k<M, d_k<r; new families reduce to a decidable certificate check (mod16/3 re-derived as validation example)",
       "attainsBelow_density_of_residues (CollatzStructuredOQ02OQ03.lean): general residue-class density floor — for 1≤M and any certified residue set R, |R|·(N-1) ≤ #{n∈[1,M·N] : AttainsBelow n}. Axiom-free.",
-      "attainsBelow_density_lower_16_general: re-derives the 13/16 floor from the general lemma; residue count 13 via kernel `decide` (axiom-free), drop hypotheses via omega-checked congruences + Part II lemmas."
+      "attainsBelow_density_lower_16_general: re-derives the 13/16 floor from the general lemma; residue count 13 via kernel `decide` (axiom-free), drop hypotheses via omega-checked congruences + Part II lemmas.",
+      "CollatzStructuredOQ02OQ03.autoDropCert_colMin_lt: autoDropCert b r = true & n%2^b=r -> colMin n < n (general Part VII->Part III bridge, VERIFIED, no new axiom/decide)"
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -64,7 +65,8 @@
       "STRUCTURAL (now general & machine-checked): the per-residue leading coefficient closed form is the unconditional multiplicative identity leadCoeff v (3^p*2^q)=3^(p+#odd)*2^(q-#even). The honest subtlety is order/feasibility of halvings: rather than divide (which needs c even at each even step), induct on the FORM 3^p*2^q with #even<=q, which keeps every prefix a genuine nat and makes the law unconditional. Specializing p=0,q=b gives 3^a for M=2^b, so the drop criterion c<M is exactly 3^a<2^b.",
       "ENGINE: separating the certificate (AffValid: parities forced, checked per step) from the realization (affOrbit_realize: one induction) is what generalizes the chase. The realization needs only that 2*c'*m is recognizably even — omega atomizes (2*c')*m as one nonlinear blob and loses the factor 2, so supply 2*c'*m=2*(c'*m) explicitly. With that, the whole engine is 6 theorems + 1 inductive and a new residue family is a (decidable) certificate, not a bespoke proof.",
       "The four explicit density floors (3/4, 13/16, 7/8, 115/128) all instantiate ONE counting pattern: a finite certified residue set mod M gives lower density |R|/M. Abstracting it removes ~600 lines of per-level pairwise-disjointness bookkeeping.",
-      "Disjointness across residue classes collapses to a single injectivity: (r,m) ↦ M·m+r is injective on R ×ˢ [1,N-1] because r<M is exactly the remainder of M·m+r mod M (Nat.add_mul_mod_self_left). No per-pair Disjoint witnesses needed."
+      "Disjointness across residue classes collapses to a single injectivity: (r,m) ↦ M·m+r is injective on R ×ˢ [1,N-1] because r<M is exactly the remainder of M·m+r mod M (Nat.add_mul_mod_self_left). No per-pair Disjoint witnesses needed.",
+      "Kernel decide on autoDropCert (deriveVec/affOrbit over Nat with 2^b) is very memory-heavy; the file sits near the kernel memory ceiling, so each added autoDropCert `by decide` risks a deterministic line-less exit 135 (SIGBUS 128+7) independent of build concurrency. Prefer the general colMin bridge lemma over inline decide examples."
     ],
     "mathlibGaps": [],
     "nextSteps": [
