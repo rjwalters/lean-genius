@@ -137,6 +137,14 @@
       "endLine": 66
     },
     {
+      "name": "gaussianExponent_deriv2",
+      "type": "supporting",
+      "description": "ψ''(t) = −σ² (constant): the second cumulant is κ₂ = −ψ''(0) = σ².",
+      "leanType": "(μ σ_sq t : ℝ) → HasDerivAt (fun s : ℝ => (↑μ * Complex.I - ↑(σ_sq * s) : ℂ)) (-↑σ_sq) t",
+      "startLine": 87,
+      "endLine": 93
+    },
+    {
       "name": "gaussianExponent_deriv3",
       "type": "core",
       "description": "ψ''' ≡ 0: all cumulants of order ≥ 3 vanish.",
