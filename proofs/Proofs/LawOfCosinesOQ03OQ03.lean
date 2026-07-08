@@ -328,4 +328,46 @@ theorem equilateral_pi_four_cosh (t : HyperbolicTriangle)
   rw [div_eq_iff hpos.ne']
   linear_combination (1 / 2 : ℝ) * hs
 
+-- ============================================================
+-- PART 8: Monotonicity across the equilateral family
+-- ============================================================
+
+/-- For any hyperbolic triangle the common denominator `1 - cos C` of the inverted
+    second law is strictly positive, since `0 < C < π` forces `cos C < 1`. -/
+theorem one_sub_cos_C_pos (t : HyperbolicTriangle) : 0 < 1 - Real.cos t.C := by
+  nlinarith [Real.sin_sq_add_cos_sq t.C, sin_C_pos t, Real.neg_one_le_cos t.C]
+
+/-- **The equilateral hyperbolic side is strictly decreasing in the common angle.**
+    Compare two *equilateral* hyperbolic triangles (each with all three angles equal).
+    If the common angle of `t₁` is strictly smaller than that of `t₂` (`t₁.C < t₂.C`),
+    then `t₁` has the strictly larger side: `cosh t₂.c < cosh t₁.c`.
+
+    This is immediate from the equilateral closed form `cosh side = cos θ / (1 - cos θ)`:
+    the map `θ ↦ cos θ / (1 - cos θ)` is strictly decreasing on `(0, π)`, because `cos`
+    is antitone there and `x ↦ x / (1 - x)` is increasing for `x < 1`. Thin equilateral
+    triangles (small angle, large defect) are the large ones — the hyperbolic reversal of
+    Euclidean similarity, where all equilateral triangles have angle exactly `π/3`. -/
+theorem equilateral_cosh_antitone_in_angle (t₁ t₂ : HyperbolicTriangle)
+    (h₁ : t₁.A = t₁.B) (h₁' : t₁.B = t₁.C)
+    (h₂ : t₂.A = t₂.B) (h₂' : t₂.B = t₂.C)
+    (hlt : t₁.C < t₂.C) : Real.cosh t₂.c < Real.cosh t₁.c := by
+  have hcos : Real.cos t₂.C < Real.cos t₁.C :=
+    Real.cos_lt_cos_of_nonneg_of_le_pi t₁.hC.le t₂.hC_lt.le hlt
+  rw [equilateral_cosh t₁ h₁ h₁', equilateral_cosh t₂ h₂ h₂',
+    div_lt_div_iff₀ (one_sub_cos_C_pos t₂) (one_sub_cos_C_pos t₁)]
+  nlinarith [hcos, one_sub_cos_C_pos t₁, one_sub_cos_C_pos t₂]
+
+/-- **Larger equilateral triangle ⟺ smaller angle.** The side-length form of
+    `equilateral_cosh_antitone_in_angle`: among equilateral hyperbolic triangles, a
+    strictly smaller common angle yields a strictly longer side, `t₂.c < t₁.c` whenever
+    `t₁.C < t₂.C`. Combined with `equilateral_angle_lt_pi_third` (angle `< π/3`) this
+    pins down the whole one-parameter equilateral family: as `θ ↗ π/3` the triangle
+    shrinks toward the Euclidean point-limit, and as `θ ↘ 0` it grows without bound. -/
+theorem equilateral_side_antitone_in_angle (t₁ t₂ : HyperbolicTriangle)
+    (h₁ : t₁.A = t₁.B) (h₁' : t₁.B = t₁.C)
+    (h₂ : t₂.A = t₂.B) (h₂' : t₂.B = t₂.C)
+    (hlt : t₁.C < t₂.C) : t₂.c < t₁.c :=
+  (Real.cosh_strictMonoOn.lt_iff_lt (mem_Ici.mpr t₂.hc.le) (mem_Ici.mpr t₁.hc.le)).mp
+    (equilateral_cosh_antitone_in_angle t₁ t₂ h₁ h₁' h₂ h₂' hlt)
+
 end HyperbolicAAA
