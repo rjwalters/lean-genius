@@ -39,6 +39,42 @@
   },
   "mainTheorems": [
     {
+      "name": "weylW_pow_four",
+      "type": "supporting",
+      "description": "The Weyl element has order dividing 4 in SL(2,p): w⁴ = 1. Immediate from w² = -1 (val_weylW_sq); the four-fold matrix product is computed entrywise against the identity.",
+      "leanType": "weylW * weylW * weylW * weylW = (1 : Matrix.SpecialLinearGroup (Fin 2) (ZMod p))"
+    },
+    {
+      "name": "val_weylW_sq",
+      "type": "core",
+      "description": "The square of the Weyl element is the central scalar -1: w² = [[0,-1],[1,0]]² = [[-1,0],[0,-1]] = -I. Since -I is the non-trivial central element of SL(2,p) for p>2, w has order 4 in SL(2,p) and order 2 in PSL(2,p), pinning down the Weyl group W = N(T)/T ≅ ℤ/2 whose non-trivial element acts on the torus by the reflection a ↦ a⁻¹.",
+      "leanType": "((weylW * weylW : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) : Matrix (Fin 2) (Fin 2) (ZMod p)) = !![-1, 0; 0, -1]"
+    },
+    {
+      "name": "weylW_conj_lowerUnipotent",
+      "type": "core",
+      "description": "The Weyl element conjugates the lower (opposite) unipotent subgroup U⁻ back to the upper one U: w·[[1,0],[t,1]]·w⁻¹ = [[1,-t],[0,1]]. Together with weylW_conj_unipotent (which sends U to U⁻) this shows w interchanges the two opposite root groups U ↔ U⁻, so ⟨U, U⁻⟩ is stable under conjugation by w — one of the closure facts behind ⟨U, U⁻⟩ = SL(2,p).",
+      "leanType": "(t : ZMod p) → weylW * lowerUnipotent t * weylW⁻¹ = unipotentUpper (-t)"
+    },
+    {
+      "name": "unipotent_inter_torus_trivial",
+      "type": "core",
+      "description": "U ∩ T = 1: the only matrix simultaneously upper-unipotent [[1,t],[0,1]] and diagonal [[a,0],[0,a⁻¹]] is the identity (t = 0 and a = 1). Combined with card_unipotent_range and card_torus_range this makes the Borel B = U ⋊ T a genuine internal semidirect product with |B| = p(p-1).",
+      "leanType": "(t : ZMod p) → (a : (ZMod p)ˣ) → unipotentUpper t = torusDiag a → t = 0 ∧ a = 1"
+    },
+    {
+      "name": "weylW_conj_unipotent",
+      "type": "core",
+      "description": "The Weyl element sends the upper unipotent subgroup to the lower one: w·[[1,t],[0,1]]·w⁻¹ = [[1,0],[-t,1]] ∈ U⁻. Because ⟨U, U⁻⟩ = SL(2,p), this exhibits U⁻ as a w-conjugate of U — the step that makes the conjugates of the abelian normal subgroup U generate the whole group, exactly the generation hypothesis of Iwasawa's simplicity criterion.",
+      "leanType": "(t : ZMod p) → weylW * unipotentUpper t * weylW⁻¹ = lowerUnipotent (-t)"
+    },
+    {
+      "name": "weylW_conj_torus",
+      "type": "core",
+      "description": "The Weyl element reflects the split torus: w·diag(a)·w⁻¹ = diag(a⁻¹). Hence w normalises T and realises the non-trivial element of the Weyl group W = N(T)/T ≅ ℤ/2, acting on T by the reflection a ↦ a⁻¹.",
+      "leanType": "(a : (ZMod p)ˣ) → weylW * torusDiag a * weylW⁻¹ = torusDiag a⁻¹"
+    },
+    {
       "name": "torusHom_conj_unipotent",
       "type": "core",
       "description": "The split torus normalizes the unipotent subgroup, acting by squares: diag(a)·[[1,t],[0,1]]·diag(a)⁻¹ = [[1,a²t],[0,1]] for every unit a and every t. Rewriting (torusHom a)⁻¹ = torusHom a⁻¹ via map_inv exposes diag(a)⁻¹ = [[a⁻¹,0],[0,a]]; the triple matrix product is computed entrywise, the diagonal entries collapsing through a·a⁻¹ = 1 and the top-right entry being a·t·a = a²·t by ring. This is the U ⊴ B normality that makes the Borel B = U ⋊ T the point stabiliser Iwasawa's criterion requires.",
@@ -200,12 +236,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 265,
+    "lineCount": 436,
     "path": "Proofs/SylowTheoremOQ04OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 4,
-    "theoremCount": 17
+    "definitionCount": 7,
+    "theoremCount": 20
   },
   "sorries": 0
 }
