@@ -68,6 +68,14 @@ WORKTREES_DIR="$REPO_ROOT/.loom/worktrees"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 LOGS_DIR="$REPO_ROOT/.loom/logs"
 
+# Shared worktree reclaim helper (remove_own_worktree, guards 1-5). The deep
+# worktree cleanup below routes every removal through these structural guards so
+# a dirty tree, unpushed commits, a live owning process, or a locked/current
+# worktree is never force-removed — even when the claim tracker shows no active
+# claim (issue #35256). Mirrors parallel-research.sh's reclaim_worktrees().
+# shellcheck source=../lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
 # Parse arguments
 DRY_RUN=false
 DEEP_CLEAN=false
@@ -243,45 +251,70 @@ if [[ "$DEEP_CLEAN" == true ]]; then
     worktree_count=0
 
     if [[ -d "$WORKTREES_DIR" ]]; then
-        # Clean researcher-{N} worktrees without active claims
+        # Clean researcher-{N} worktrees.
+        #
+        # The removal decision is gated by the structural guards 1-5 in
+        # `remove_own_worktree` (via `would_remove_own_worktree` for the
+        # predicate), NOT by claim-tracker state. Claim state is racy — a
+        # concurrently-wiped or TTL-expired claim can make an actively-used
+        # worktree look idle — so trusting it alone can force-remove a worktree
+        # with a live session or uncommitted work (issue #35256). The guards
+        # (dirty tree, unpushed commits, live process, locked, current checkout)
+        # are a superset of anything claim correctness could tell us. The claim
+        # scan below is retained for diagnostic messaging ONLY.
         for worktree_dir in "$WORKTREES_DIR"/researcher-*; do
             [[ ! -d "$worktree_dir" ]] && continue
 
             researcher_id=$(basename "$worktree_dir")
 
-            # Check if researcher has any active claims
-            has_active_work=false
+            # Diagnostic only: note if a live claim references this researcher.
+            claim_note=""
             for claim_file in "$CLAIMS_DIR"/*.json; do
                 [[ ! -f "$claim_file" ]] && continue
                 agent_id=$(jq -r '.agent_id' "$claim_file" 2>/dev/null || echo "")
                 if [[ "$agent_id" == "$researcher_id" ]] && ! is_claim_expired "$claim_file"; then
-                    has_active_work=true
+                    claim_note=" (active claim by $agent_id)"
                     break
                 fi
             done
 
-            if [[ "$has_active_work" == false ]]; then
-                ((++worktree_count))
-                if [[ "$DRY_RUN" == true ]]; then
-                    info "Would remove worktree: $researcher_id (no active claims)"
-                elif [[ "$FORCE" == true ]]; then
-                    git worktree remove "$worktree_dir" --force 2>/dev/null && \
-                        success "Removed worktree: $researcher_id" || \
-                        warning "Failed to remove: $researcher_id"
+            # Structural guard decision (read-only; matches what a real
+            # remove_own_worktree call would do). The predicate returns non-zero
+            # for any "preserve" outcome; `|| true` keeps that from tripping the
+            # script's `set -e` — the decision is carried by the echoed word.
+            decision="$(would_remove_own_worktree "$worktree_dir")" || true
+
+            if [[ "$decision" != "remove" ]]; then
+                # A guard preserves this worktree regardless of claim state.
+                info "Preserving worktree: $researcher_id (guard: $decision)"
+                continue
+            fi
+
+            # All guards pass: this worktree is idle, clean, and fully backed up.
+            ((++worktree_count))
+            if [[ "$DRY_RUN" == true ]]; then
+                info "Would remove worktree: $researcher_id${claim_note}"
+            elif [[ "$FORCE" == true ]]; then
+                remove_own_worktree "$worktree_dir"
+                if [[ ! -d "$worktree_dir" ]]; then
+                    success "Removed worktree: $researcher_id"
                 else
-                    echo -e "  ${YELLOW}$researcher_id${NC} (no active claims)"
-                    read -r -p "  Remove this worktree? [y/N] " -n 1 CONFIRM
-                    echo ""
-                    if [[ $CONFIRM =~ ^[Yy]$ ]]; then
-                        git worktree remove "$worktree_dir" --force 2>/dev/null && \
-                            success "Removed worktree: $researcher_id" || \
-                            warning "Failed to remove: $researcher_id"
-                    else
-                        info "Skipping: $researcher_id"
-                    fi
+                    warning "Preserved (guard triggered): $researcher_id"
                 fi
             else
-                info "Preserving worktree: $researcher_id (active claims)"
+                echo -e "  ${YELLOW}$researcher_id${NC}${claim_note}"
+                read -r -p "  Remove this worktree? [y/N] " -n 1 CONFIRM
+                echo ""
+                if [[ $CONFIRM =~ ^[Yy]$ ]]; then
+                    remove_own_worktree "$worktree_dir"
+                    if [[ ! -d "$worktree_dir" ]]; then
+                        success "Removed worktree: $researcher_id"
+                    else
+                        warning "Preserved (guard triggered): $researcher_id"
+                    fi
+                else
+                    info "Skipping: $researcher_id"
+                fi
             fi
         done
     fi
