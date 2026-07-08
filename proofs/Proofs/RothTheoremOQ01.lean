@@ -307,6 +307,80 @@ theorem rothNumberNat_isLittleO_of_bourgain :
           (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2)) * (N : ℝ) := by ring
     _ ≤ ε * (N : ℝ) := mul_le_mul_of_nonneg_right hbound.le (Nat.cast_nonneg N)
 
+/-- **Endpoint positivity.** For `N ≥ 3`, `log N > 1` (since `N ≥ 3 > e`). A small
+reusable helper extracted from the endpoint reasoning in `rothNumberNat_bourgain`. -/
+theorem one_lt_logN_of_three_le {N : ℕ} (hN : 3 ≤ N) : (1 : ℝ) < Real.log N := by
+  have h3R : (0 : ℝ) < 3 := by norm_num
+  have hNR : (3 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have h_e_lt_3 : Real.exp 1 < 3 :=
+    Real.exp_one_lt_d9.trans (by norm_num : (2.7182818286 : ℝ) < 3)
+  have h_one_lt_log3 : (1 : ℝ) < Real.log 3 := by
+    have h := (Real.log_lt_log_iff (Real.exp_pos 1) h3R).mpr h_e_lt_3
+    rwa [Real.log_exp] at h
+  exact lt_of_lt_of_le h_one_lt_log3 (Real.log_le_log h3R hNR)
+
+/-- **Double-log positivity.** For `N ≥ 3`, `log (log N) > 0`, since `log N > 1`. -/
+theorem loglog_pos_of_three_le {N : ℕ} (hN : 3 ≤ N) :
+    0 < Real.log (Real.log N) :=
+  Real.log_pos (one_lt_logN_of_three_le hN)
+
+/-- **Polylog decay engine (axiom-free).** `(log log N)³ / log N → 0`.  This is the
+quantitative core distinguishing Bourgain's `(log log N / log N)^{1/2}` saving from
+Roth's original `1 / log log N` saving: setting `u = log N → ∞`, Mathlib's
+`Real.tendsto_pow_log_div_mul_add_atTop` gives `(log u)³ / u → 0`, and `log N → ∞`
+carries the limit through the composition.  Uses only Mathlib's log-growth API — no
+axioms, no dependence on the Bloom–Sisask assumption. -/
+theorem loglog_cubed_div_log_tendsto_zero :
+    Filter.Tendsto
+      (fun N : ℕ => Real.log (Real.log N) ^ 3 / Real.log N)
+      Filter.atTop (nhds 0) := by
+  -- `(log u)³ / u → 0` as `u → ∞`.
+  have hpoly : Filter.Tendsto (fun u : ℝ => Real.log u ^ 3 / u) Filter.atTop (nhds 0) := by
+    simpa using Real.tendsto_pow_log_div_mul_add_atTop 1 0 3 one_ne_zero
+  -- `log N → ∞` as `N → ∞` (over ℕ).
+  have hlogN : Filter.Tendsto (fun N : ℕ => Real.log N) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- compose: `(log (log N))³ / log N → 0`.
+  simpa [Function.comp] using hpoly.comp hlogN
+
+/-- **Bourgain's saving is asymptotically strictly stronger than Roth's 1953 saving.**
+
+The Bourgain 1999 density factor `(log log N / log N)^{1/2}` is `o` of Roth's original
+1953 density factor `1 / log log N`:
+
+  `(fun N => (log log N / log N)^{1/2}) =o[atTop] (fun N => 1 / log log N)`.
+
+This formalizes the qualitative point emphasized throughout this file and its
+references — that Bourgain's improvement is a *power-of-log* saving, genuinely
+better than Roth's mere `log log` saving, not a rephrasing of it.  The ratio
+squares to `(log log N)³ / log N → 0` (`loglog_cubed_div_log_tendsto_zero`), so the
+ratio itself is `√((log log N)³ / log N) → 0`.  **Axiom-free** — this is a pure
+statement about the two rate *shapes* and does not touch the Bloom–Sisask
+assumption. -/
+theorem bourgain_factor_isLittleO_roth_factor :
+    Asymptotics.IsLittleO Filter.atTop
+      (fun N : ℕ => (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2))
+      (fun N : ℕ => 1 / Real.log (Real.log N)) := by
+  refine (Asymptotics.isLittleO_iff_tendsto' ?_).mpr ?_
+  · -- `g N = 0 → f N = 0` holds vacuously for `N ≥ 3` (there `1 / log log N ≠ 0`).
+    filter_upwards [Filter.eventually_ge_atTop 3] with N hN h0
+    exact absurd h0 (one_div_ne_zero (ne_of_gt (loglog_pos_of_three_le hN)))
+  · -- the ratio `f N / g N = √((log log N)³ / log N) → 0`.
+    have hratio : Filter.Tendsto
+        (fun N : ℕ => Real.sqrt (Real.log (Real.log N) ^ 3 / Real.log N))
+        Filter.atTop (nhds 0) := by
+      have := (Real.continuous_sqrt.tendsto 0).comp loglog_cubed_div_log_tendsto_zero
+      simpa [Real.sqrt_zero] using this
+    refine hratio.congr' ?_
+    filter_upwards [Filter.eventually_ge_atTop 3] with N hN
+    have hLL : 0 < Real.log (Real.log N) := loglog_pos_of_three_le hN
+    have hL : 0 < Real.log N := lt_trans one_pos (one_lt_logN_of_three_le hN)
+    -- `(log log N)³ / log N = (log log N / log N) · (log log N)²` (field identity).
+    have e1 : Real.log (Real.log N) ^ 3 / Real.log N
+        = Real.log (Real.log N) / Real.log N * Real.log (Real.log N) ^ 2 := by ring
+    rw [e1, Real.sqrt_mul (div_pos hLL hL).le, Real.sqrt_sq hLL.le,
+        div_div_eq_mul_div, div_one, ← Real.sqrt_eq_rpow]
+
 #check rothNumberNat_bourgain
 #check bourgainConst
 #check bourgainConst_pos
@@ -316,10 +390,19 @@ theorem rothNumberNat_isLittleO_of_bourgain :
 #check rothNumberNat_le_min_bourgain_blasi
 #check bourgain_factor_tendsto_zero
 #check rothNumberNat_isLittleO_of_bourgain
+#check one_lt_logN_of_three_le
+#check loglog_pos_of_three_le
+#check loglog_cubed_div_log_tendsto_zero
+#check bourgain_factor_isLittleO_roth_factor
 
 -- Axiom audit: `rothNumberNat_bourgain` is now a THEOREM.  Its only non-foundational
 -- dependency is the imported `RothTheoremOQ02.rothNumberNat_bloom_sisask` — there is NO
 -- separate Bourgain axiom, and no `sorryAx` / `Lean.ofReduceBool`.
 #print axioms rothNumberNat_bourgain
+
+-- The rate-shape comparison and its polylog engine are fully AXIOM-FREE (they depend on
+-- neither the Bourgain nor the Bloom–Sisask assumption — only Mathlib's log-growth API).
+#print axioms loglog_cubed_div_log_tendsto_zero
+#print axioms bourgain_factor_isLittleO_roth_factor
 
 end RothTheoremOQ01
