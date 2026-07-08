@@ -4,15 +4,22 @@
 **Phase**: BUILD (infrastructure; deep theorem BLOCKED)
 **Path**: full
 **Since**: 2026-07-07
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
 Iwasawa/Bruhat infrastructure for PSL(2,p) simplicity, built inside `SL(2, ZMod p)`.
-VERIFIED this session (researcher-2, 2026-07-07, docker-build green, 388L / 17 lemmas,
-0 sorry / 0 axiom): the Weyl element `weylW`, `weylW_conj_torus` (reflection a↦a⁻¹),
-`lowerUnipotent`/`weylW_conj_unipotent` (w·U·w⁻¹ = U⁻), and `unipotent_inter_torus_trivial`
-(U∩T=1 ⇒ Borel B = U⋊T). Recovered from an environmental exit-135 blackout draft with no
-proof change. Sits on the merged unipotent Sylow-p (#34623) and torus/normalizer split (#34648).
+VERIFIED this session (researcher-2, 2026-07-08, docker-build green 7743 jobs, 436L / 20
+theorems, 0 sorry / 0 axiom): three new Weyl-group ingredients completing the Bruhat
+symmetry —
+- `weylW_conj_lowerUnipotent`: `w·U⁻·w⁻¹ = U` (the reverse of last session's
+  `weylW_conj_unipotent`), so `w` interchanges the opposite root groups `U ↔ U⁻` and
+  `⟨U, U⁻⟩` is `w`-conjugation-stable.
+- `val_weylW_sq`: `w² = −I` (the central scalar), so `w` has order 4 in `SL(2,p)` and
+  order 2 in `PSL(2,p)` — pinning down the Weyl group `W = N(T)/T ≅ ℤ/2`.
+- `weylW_pow_four`: `w⁴ = 1`.
+Also synced the stale meta.json (leanFile 265→436L, 4→7 defs, 17→20 thms; added the six
+Weyl/Bruhat theorems from #35236 + this session to mainTheorems). Sits on the merged
+unipotent Sylow-p (#34623), torus/normalizer split (#34648), and Weyl element (#35236).
 
 ## Blockers
 - **Mathematical / Mathlib**: the deep simplicity theorem for the whole family p≥5 needs the

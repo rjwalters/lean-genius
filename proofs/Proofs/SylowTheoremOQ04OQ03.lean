@@ -370,6 +370,54 @@ theorem weylW_conj_unipotent (t : ZMod p) :
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
+/-- **The Weyl element sends the lower unipotent subgroup back to the upper one.**
+The reverse of `weylW_conj_unipotent`: conjugation by `w` turns `[[1, 0], [t, 1]] ∈ U⁻`
+into `[[1, -t], [0, 1]] ∈ U`:
+
+    w · [[1, 0], [t, 1]] · w⁻¹ = [[1, -t], [0, 1]].
+
+Together with `weylW_conj_unipotent` this shows `w` interchanges the two opposite root
+groups `U ↔ U⁻`; in particular the subgroup `⟨U, U⁻⟩` is stable under conjugation by
+`w`, one of the closure facts behind `⟨U, U⁻⟩ = SL(2, p)`. -/
+theorem weylW_conj_lowerUnipotent (t : ZMod p) :
+    weylW * lowerUnipotent t * weylW⁻¹ = unipotentUpper (-t) := by
+  rw [weylW_inv]
+  apply Subtype.ext
+  show ((!![(0 : ZMod p), -1; 1, 0] * !![1, 0; t, 1]) * !![(0 : ZMod p), 1; -1, 0])
+      = !![1, -t; 0, 1]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+
+/-- **`w² = −1`.**  The square of the Weyl element is the central scalar `−1`:
+
+    w² = [[0, -1], [1, 0]]² = [[-1, 0], [0, -1]] = −I.
+
+Since `−I` is the non-trivial central element of `SL(2, p)` (for `p > 2`), `w` has
+order `4` in `SL(2, p)` and order `2` in `PSL(2, p)`.  This pins down the Weyl group
+`W = N(T)/T ≅ ℤ/2`, whose non-trivial element acts on the torus by the reflection
+`a ↦ a⁻¹` of `weylW_conj_torus`. -/
+theorem val_weylW_sq :
+    ((weylW * weylW : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) :
+        Matrix (Fin 2) (Fin 2) (ZMod p)) = !![-1, 0; 0, -1] := by
+  show (!![(0 : ZMod p), -1; 1, 0] * !![(0 : ZMod p), -1; 1, 0]) = !![-1, 0; 0, -1]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+
+/-- **`w⁴ = 1`.**  A direct consequence of `w² = −1`: the Weyl element has order
+dividing `4` in `SL(2, p)`. -/
+theorem weylW_pow_four :
+    weylW * weylW * weylW * weylW = (1 : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := by
+  apply Subtype.ext
+  show (((!![(0 : ZMod p), -1; 1, 0] * !![(0 : ZMod p), -1; 1, 0])
+          * !![(0 : ZMod p), -1; 1, 0]) * !![(0 : ZMod p), -1; 1, 0])
+      = (1 : Matrix (Fin 2) (Fin 2) (ZMod p))
+  rw [Matrix.one_fin_two]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two]
+
 /-- **`U ∩ T = 1`.**  The only matrix that is simultaneously upper unipotent
 `[[1, t], [0, 1]]` and diagonal `[[a, 0], [0, a⁻¹]]` is the identity: `t = 0` and
 `a = 1`.  Combined with `card_unipotent_range` and `card_torus_range`, this makes
