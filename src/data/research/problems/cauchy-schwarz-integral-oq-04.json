@@ -22,9 +22,9 @@
     "phase": "COMPLETED",
     "since": "2026-06-22T00:00:00-07:00",
     "iteration": 1,
-    "focus": "Formalized the Cauchy-Schwarz core of the uncertainty principle; the full operator-commutator statement is beyond a single file.",
+    "focus": "Formalized the full Robertson uncertainty relation robertson_uncertainty AND its variance-form specialization heisenberg_variance_form (at the expectation values), on top of the Cauchy-Schwarz core. All verified, 0 axioms/sorries.",
     "blockers": [],
-    "nextAction": "None for the core inequality. The full Var(A)Var(B) ≥ ¼|⟪[A,B]⟫|² needs self-adjoint operator + commutator infrastructure.",
+    "nextAction": "None — the operator-theoretic statement Var(A)Var(B) ≥ ¼|⟪[A,B]⟫|² is proved for symmetric operators (robertson_uncertainty) and stated in variance form (heisenberg_variance_form). A future extension would tie ⟨A⟩ to a bundled self-adjoint-operator/observable layer if Mathlib gains one.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -32,13 +32,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "RESOLVED (full Robertson relation). OQ-04 asked whether Heisenberg Δx·Δp ≥ ℏ/2 can be formalized as a Cauchy-Schwarz consequence. A prior session had only the CS core (abs_im_inner_le_norm_mul_norm, im_inner_sq_le). This session PROVES the full operator-theoretic Robertson uncertainty relation in CauchySchwarzIntegralOQ04.lean: robertson_uncertainty (¼·‖⟪ψ,(AB−BA)ψ⟫‖² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²) for symmetric A,B on any RCLike inner product space, any state ψ, any real shifts a,b. Key lemma inner_commutator_eq_sub: ⟪ψ,(AB−BA)ψ⟫ = ⟪u,v⟫−⟪v,u⟫ for centred u=(A−a)ψ, v=(B−b)ψ — the shifts CANCEL by symmetry. Then ⟪v,u⟫=conj⟪u,v⟫ gives commutator = 2i·Im⟪u,v⟫ (RCLike.sub_conj), norm 2|Im⟪u,v⟫|, and im_inner_sq_le finishes. Setting a=⟨A⟩,b=⟨B⟩ makes RHS Var(A)·Var(B). Verified: 0 axioms (propext/Classical/Quot only), 0 sorries, no native_decide. File now 4 theorems.",
+    "progressSummary": "RESOLVED (full Robertson relation). OQ-04 asked whether Heisenberg Δx·Δp ≥ ℏ/2 can be formalized as a Cauchy-Schwarz consequence. A prior session had only the CS core (abs_im_inner_le_norm_mul_norm, im_inner_sq_le). This session PROVES the full operator-theoretic Robertson uncertainty relation in CauchySchwarzIntegralOQ04.lean: robertson_uncertainty (¼·‖⟪ψ,(AB−BA)ψ⟫‖² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²) for symmetric A,B on any RCLike inner product space, any state ψ, any real shifts a,b. Key lemma inner_commutator_eq_sub: ⟪ψ,(AB−BA)ψ⟫ = ⟪u,v⟫−⟪v,u⟫ for centred u=(A−a)ψ, v=(B−b)ψ — the shifts CANCEL by symmetry. Then ⟪v,u⟫=conj⟪u,v⟫ gives commutator = 2i·Im⟪u,v⟫ (RCLike.sub_conj), norm 2|Im⟪u,v⟫|, and im_inner_sq_le finishes. Setting a=⟨A⟩,b=⟨B⟩ makes RHS Var(A)·Var(B). Verified: 0 axioms (propext/Classical/Quot only), 0 sorries, no native_decide. File now 5 theorems (adds heisenberg_variance_form, the variance-form specialization at the expectation values).",
     "builtItems": [
-      "CauchySchwarzIntegralOQ04.lean: 2 theorems over a general RCLike inner product space, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
+      "CauchySchwarzIntegralOQ04.lean: 5 theorems over a general RCLike inner product space, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
       "abs_im_inner_le_norm_mul_norm: |RCLike.im (inner 𝕜 u v)| ≤ ‖u‖·‖v‖ (RCLike.abs_im_le_norm |im z| ≤ ‖z‖, then norm_inner_le_norm).",
       "im_inner_sq_le: (RCLike.im (inner 𝕜 u v))² ≤ ‖u‖²·‖v‖² (nlinarith from the core + sq_abs).",
       "robertson_uncertainty in CauchySchwarzIntegralOQ04.lean (¼‖⟪ψ,[A,B]ψ⟫‖² ≤ ‖(A−a)ψ‖²‖(B−b)ψ‖² — Heisenberg/Robertson, OQ-04 target)",
-      "inner_commutator_eq_sub in CauchySchwarzIntegralOQ04.lean (⟪ψ,(AB−BA)ψ⟫ = ⟪u,v⟫−⟪v,u⟫, shift-independent)"
+      "inner_commutator_eq_sub in CauchySchwarzIntegralOQ04.lean (⟪ψ,(AB−BA)ψ⟫ = ⟪u,v⟫−⟪v,u⟫, shift-independent)",
+      "heisenberg_variance_form in CauchySchwarzIntegralOQ04.lean: the physically standard variance form — instantiates robertson_uncertainty at a=Re⟪ψ,Aψ⟫, b=Re⟪ψ,Bψ⟫ so each RHS factor is Var_ψ(A)=‖(A−⟨A⟩)ψ‖², Var_ψ(B). Verified 0 extra axioms."
     ],
     "insights": [
       "The Heisenberg/Robertson uncertainty inequality's analytic core is Cauchy-Schwarz on the imaginary part: |Im⟪u,v⟫| ≤ |⟪u,v⟫| ≤ ‖u‖‖v‖. For real fields Im = 0 (trivial); the content is the ℂ case.",
@@ -395,8 +396,8 @@
     {
       "path": "Proofs/CauchySchwarzIntegralOQ04.lean",
       "filename": "CauchySchwarzIntegralOQ04.lean",
-      "lineCount": 55,
-      "theoremCount": 2,
+      "lineCount": 137,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
