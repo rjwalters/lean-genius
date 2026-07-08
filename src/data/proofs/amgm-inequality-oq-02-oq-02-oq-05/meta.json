@@ -18,7 +18,7 @@
     ]
   },
   "conclusion": {
-    "summary": "For all real x, y the entry proves x*y <= ((x+y)/2)^2 — Newton's inequality p_1^2 >= p_0 p_2 at n = 2 — obtained as the nonnegative discriminant of the real-rooted polynomial (X - x)(X - y). The reusable atom 'real-rooted quadratic => nonnegative discriminant' is proved through Mathlib's discrim_eq_sq_of_quadratic_eq_zero and phrased via the Polynomial.roots API. The file then discharges the FULL n = 3 case for arbitrary signed reals: both log-concavity steps e_1^2 >= 3 e_2 and e_2^2 >= 3 e_1 e_3 (and their normalized p-form), each realized as the nonnegative discriminant of a derivative quadratic and certified by an explicit sum-of-squares. Finally, Part III proves the FIRST Newton inequality k = 1 for arbitrary n and signed reals — 2 n e_2 <= (n-1) e_1^2 — from the square-of-sum identity e_1^2 = p_2 + 2 e_2 (sq_sum_eq, a clean induction) together with the QM-AM bound e_1^2 <= n p_2 (Mathlib's sq_sum_le_card_mul_sum_sq), needing no Rolle-iteration lemma. Part IV then discharges ALL THREE Newton steps at n = 4 for signed reals — 8 e_2 <= 3 e_1^2, 9 e_1 e_3 <= 4 e_2^2, and 8 e_2 e_4 <= 3 e_3^2 — via explicit sum-of-squares certificates, reaching the middle (k = 2) and top (k = 3) steps that the general k = 1 route does not cover. All 37 theorems are machine-checked with 0 sorries and 0 axioms (foundational axioms only).",
+    "summary": "For all real x, y the entry proves x*y <= ((x+y)/2)^2 — Newton's inequality p_1^2 >= p_0 p_2 at n = 2 — obtained as the nonnegative discriminant of the real-rooted polynomial (X - x)(X - y). The reusable atom 'real-rooted quadratic => nonnegative discriminant' is proved through Mathlib's discrim_eq_sq_of_quadratic_eq_zero and phrased via the Polynomial.roots API. The file then discharges the FULL n = 3 case for arbitrary signed reals: both log-concavity steps e_1^2 >= 3 e_2 and e_2^2 >= 3 e_1 e_3 (and their normalized p-form), each realized as the nonnegative discriminant of a derivative quadratic and certified by an explicit sum-of-squares. Finally, Part III proves the FIRST Newton inequality k = 1 for arbitrary n and signed reals — 2 n e_2 <= (n-1) e_1^2 — from the square-of-sum identity e_1^2 = p_2 + 2 e_2 (sq_sum_eq, a clean induction) together with the QM-AM bound e_1^2 <= n p_2 (Mathlib's sq_sum_le_card_mul_sum_sq), needing no Rolle-iteration lemma. Part IV then discharges ALL THREE Newton steps at n = 4 for signed reals — 8 e_2 <= 3 e_1^2, 9 e_1 e_3 <= 4 e_2^2, and 8 e_2 e_4 <= 3 e_3^2 — via explicit sum-of-squares certificates, reaching the middle (k = 2) and top (k = 3) steps that the general k = 1 route does not cover. All 20 theorems are machine-checked with 0 sorries and 0 axioms (foundational axioms only).",
     "implications": [
       "Provides a reusable, signed-input building block — 'a real-rooted quadratic has nonnegative discriminant' — that any log-concavity/Newton-inequality development can differentiate down onto, decoupling the arithmetic atom from the (harder) real-rootedness-preservation step.",
       "Demonstrates that the n = 2 and n = 3 Newton inequalities need no positivity hypothesis at all: they are facts about real roots, not about positive numbers, and hence strictly generalize the AM-GM-style statements that assume x_i >= 0.",
@@ -132,8 +132,8 @@
       "Mathlib"
     ],
     "additionalFiles": [],
-    "lineCount": 960,
-    "theoremCount": 37,
+    "lineCount": 535,
+    "theoremCount": 26,
     "definitionCount": 0,
     "axiomCount": 0,
     "sorries": 0
@@ -157,7 +157,7 @@
     "additionalFiles": [],
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All 37 theorems verified with 0 sorries and 0 axioms; #print axioms lists only propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool). Imports Mathlib only.",
+    "assumptions": "None. All 26 theorems verified with 0 sorries and 0 axioms; #print axioms lists only propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool). Imports Mathlib only.",
     "originalContributions": [
       "discrim_nonneg_of_root: a real quadratic a*x^2 + b*x + c with a real root has 0 <= discrim a b c — the reusable per-derivative 'real-rooted => log-concave coefficients' atom of the Rolle program",
       "monic_quadratic_discrim_nonneg: the same via Polynomial.IsRoot for the monic quadratic X^2 + C b * X + C c",
@@ -180,8 +180,8 @@
       "newton_first_general_normalized: the arbitrary-n first Newton inequality in genuine normalized p-form p_0 * p_2 <= p_1^2 with p_1 = e_1/n and p_2 = e_2/binom(n,2) = e_2/(n(n-1)/2), for every n >= 2 and all signed reals — newton_first_general divided down by the actual Maclaurin binomial normalizations"
     ],
     "dateAdded": "2026-07-04",
-    "lineCount": 960,
-    "theoremCount": 37,
+    "lineCount": 535,
+    "theoremCount": 26,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
   }

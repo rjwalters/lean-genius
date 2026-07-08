@@ -1,37 +1,32 @@
 # Research State: roth-theorem-oq-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: ORIENT
 **Path**: full
-**Since**: 2026-07-08T13:30:00-07:00
-**Iteration**: 3
+**Since**: 2026-06-14T17:42:10-07:00
+**Iteration**: 2
 
 ## Current Focus
-File is axiomatized-complete (15 theorems, 0 sorries, 0 own axioms; rests only on the single
-imported `RothTheoremOQ02.rothNumberNat_bloom_sisask` axiom). Session 2026-07-08 (researcher-9,
-REVISIT) added the universal (arbitrary 3-AP-free set) forms of both quantitative bounds via
-Mathlib's `ThreeAPFree.le_rothNumberNat` — the applicable interface, previously absent (all
-bounds constrained only the extremal `rothNumberNat N`).
+Feasibility and approach identified (Session 1, ORIENT). Statement anchored to Mathlib
+`rothNumberNat`; sibling `roth-theorem-oq-02` precedent (axiomatized Bloom–Sisask bound) noted.
 
 ## Active Approach
-Axiomatized route is essentially exhausted. New content is the interface lift
-(`threeAPFree_card_le_blasi`, `threeAPFree_card_le_bourgain`), Docker-verified. The genuine
-from-scratch quantitative proof stays BLOCKED (>1000 LOC Bohr-set/large-spectrum Fourier infra
-absent from Mathlib v4.26).
+SURVEY/axiomatized route. The genuine Fourier/density-increment proof is blocked on missing
+Mathlib infrastructure (>1000 LOC: large-spectrum estimates, Bohr sets). Realistic next unit:
+M1 — state `rothNumberNat_bourgain` (`N (loglog N/log N)^{1/2}`) and prove the bridge to the
+qualitative `rothNumberNat_isLittleO_id`. Requires Docker (currently down) to verify.
 
 ## Attempt Count
-- Total attempts: 3
-- Current approach attempts: 1
-- Approaches tried: axiomatized landmark + rate comparisons + universal interface lift
+- Total attempts: 0
+- Current approach attempts: 0
+- Approaches tried: 0
 
 ## Blockers
-- From-scratch quantitative Bourgain proof needs additive-combinatorics infrastructure (large
-  spectrum, Bohr sets) not in Mathlib — multi-session, out of scope.
-- Erdős reciprocal-sum theorem for 3-APs (∑ 1/a < ∞ for 3-AP-free A) is the natural next unit:
-  `threeAPFree_card_le_blasi` is the input, but the dyadic-block partial-summation + p-series
-  convergence derivation is ~100–200 LOC — deferred as a genuine follow-up.
+- Docker build environment down (cannot compile/verify Lean this session).
+- A from-scratch quantitative proof needs additive-combinatorics infrastructure (large spectrum,
+  Bohr sets) not in Mathlib — out of single-session scope.
 
 ## Next Action
-Optional follow-up: formalize the Erdős reciprocal-sum consequence using
-`threeAPFree_card_le_blasi` + `Real.summable_one_div_nat_rpow` (p = 1 + blasiConst > 1) via a
-dyadic-block partial-summation argument.
+When Docker is up: create `proofs/Proofs/RothTheoremOQ01.lean` with the M1 deliverable —
+`axiom rothNumberNat_bourgain` + proved bridge lemma `… → rothNumberNat_isLittleO_id`
+(mirroring the `RothTheoremOQ02.lean` axiomatized pattern). Status `axiomatized`.

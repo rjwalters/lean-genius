@@ -48,14 +48,10 @@ the **tractable half** and formalizes the question precisely.
 ## Axioms
 
 The record facts (`deficiency_284_28`, `noSmallPrimeFactors_284_28`,
-`smooth_indices_284_28`) are discharged by `native_decide`, so they depend on
-`Lean.ofReduceBool`: they compute the bignum binomial `C(284,28)` (Pascal
-recursion, infeasible for the kernel) or factor values via `Nat.primeFactors`
-(well-founded recursion, which does not reduce under kernel `decide`).  The
-numeric certificate `(28!)² < 47!` inside `deficiency_record_le_18` (Section XII)
-is now discharged by kernel `decide` (`Nat.factorial` is structural recursion, so
-the kernel reduces it), hence it is `ofReduceBool`-free.  The structural results
-(1, 5) and all of Sections IV–XI are `ofReduceBool`-free.
+`smooth_indices_284_28`) and the single numeric certificate `(28!)² < 47!`
+inside `deficiency_record_le_18` (Section XII) are discharged by `native_decide`,
+so they depend on `Lean.ofReduceBool`.  The structural results (1, 5) and all of
+Sections IV–XI are `ofReduceBool`-free.
 
 ## Status: OPEN (universal upper bound); existence half machine-verified.
 -/
@@ -682,7 +678,7 @@ theorem sharp_bound_frontier_exact (k : ℕ) :
 Section X's sharp closed form `(k + deficiency n k)! ≤ (k!)²`
 (`deficiency_add_factorial_le_sq`) is an abstract inequality; specialising it to
 the record modulus `k = 28` turns it into a concrete numeric ceiling on the
-deficiency.  Since `(28!)² < 47!` (a single bignum comparison, kernel `decide`)
+deficiency.  Since `(28!)² < 47!` (a single bignum comparison, `native_decide`)
 while `(28!)² ≥ 46! = (28 + 18)!`, the bound `(28 + d)! ≤ (28!)²` forces
 `d ≤ 18`.  So *every* admissible pair with `k = 28` — including the record
 `(284, 28)` itself — has deficiency at most `18`.
@@ -707,10 +703,7 @@ theorem deficiency_record_le_18 {n : ℕ} (hn : 56 ≤ n)
   have hsq := deficiency_add_factorial_le_sq (n := n) (k := 28) (by omega) h
   have hmono : Nat.factorial 47 ≤ Nat.factorial (28 + deficiency n 28) :=
     Nat.factorial_le (by omega)
-  -- `Nat.factorial` is structural recursion, so the kernel reduces it: this
-  -- bignum comparison is checked by `decide` (⇒ no `Lean.ofReduceBool`), matching
-  -- the `interval_cases k <;> decide` pattern used for the abstract bound above.
-  have hnum : (Nat.factorial 28) ^ 2 < Nat.factorial 47 := by decide
+  have hnum : (Nat.factorial 28) ^ 2 < Nat.factorial 47 := by native_decide
   exact absurd (hmono.trans hsq) (not_le.mpr hnum)
 
 /-

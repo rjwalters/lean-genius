@@ -41,7 +41,7 @@
     ],
     "dateAdded": "2026-03-22",
     "axiomCount": 0,
-    "lineCount": 487,
+    "lineCount": 152,
     "prerequisites": [
       "Binomial coefficients and their properties (absorption identities)",
       "Real arithmetic and polynomial inequalities",
@@ -49,7 +49,7 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 2,
     "definitionCount": 0
   },
   "overview": {
@@ -156,7 +156,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This module provides a fully verified proof (487 lines, 5 theorems, 0 axioms, 0 sorries) of the key binomial inequality for Newton's log-concavity. The absorption identity technique converts the problem into a clean polynomial identity, verified by linear_combination. It serves as infrastructure for 2 downstream proofs.",
+    "summary": "This module provides a fully verified proof (152 lines, 2 theorems, 0 axioms, 0 sorries) of the key binomial inequality for Newton's log-concavity. The absorption identity technique converts the problem into a clean polynomial identity, verified by linear_combination. It serves as infrastructure for 2 downstream proofs.",
     "implications": "Newton's inequalities and log-concavity of binomial coefficients have deep connections to combinatorics, algebra, and probability. The technique of using absorption identities to reduce binomial coefficient inequalities to polynomial identities is broadly applicable: any inequality involving a fixed number of consecutive binomial coefficients can be handled this way, making it a powerful paradigm for formal verification.",
     "openQuestions": [
       "Formalize the full Newton's inequality e_k^2 >= e_{k-1} * e_{k+1} for elementary symmetric polynomials",
@@ -170,9 +170,9 @@
     ],
     "opens": [],
     "namespace": "",
-    "lineCount": 487,
+    "lineCount": 152,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 2,
     "definitionCount": 0,
     "path": "Proofs/NewtonInductiveStep.lean",
     "additionalFiles": [

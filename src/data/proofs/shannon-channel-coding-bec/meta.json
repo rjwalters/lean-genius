@@ -41,7 +41,7 @@
     "assumptions": "2 axioms inherited in scope from ShannonChannelCoding.lean: channel_coding_achievability, channel_coding_converse. (The parent's fano_inequality was discharged to a proven theorem via ShannonChannelCodingOQ02OQ01.fano_inequality_proved, and its former bsc_capacity_eq axiom was removed -- the BSC capacity bounds now follow from general capacity theorems and the exact value is proved in ShannonChannelCodingOQ02.) 0 sorries. The BEC capacity result itself is proved from first principles and does not invoke any of these axioms; they are carried in scope because the file imports the parent (and the BSC development in ShannonChannelCodingOQ02). Unlike the BSC, the BEC is not weakly symmetric (its erasure column sums to 2p, the others to 1 - p), so the parent's symmetric-channel machinery does not apply -- the H(X|Y) = p · H(X) identity is the engine instead.",
     "dateAdded": "2026-06-18",
     "axiomCount": 2,
-    "lineCount": 317,
+    "lineCount": 243,
     "prerequisites": [
       "Shannon entropy and mutual information (ShannonEntropy.lean)",
       "Discrete memoryless channels and channel capacity (ShannonChannelCoding.lean)",
@@ -49,7 +49,7 @@
       "Binary entropy function h(p) (ShannonChannelCodingOQ04.lean)"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 14,
+    "theoremCount": 12,
     "definitionCount": 1
   },
   "overview": {
@@ -178,11 +178,11 @@
   ],
   "leanFile": {
     "axiomCount": 0,
-    "lineCount": 317,
+    "lineCount": 243,
     "path": "Proofs/ShannonChannelCodingBEC.lean",
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 14
+    "theoremCount": 12
   },
   "sorries": 0,
   "references": [

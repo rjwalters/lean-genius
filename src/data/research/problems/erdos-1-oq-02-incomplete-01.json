@@ -29,12 +29,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED (both parent oq-02 and child oq-01 verified 0-axiom). Session 2026-07-08 added the matching powers-of-two extremal construction to oq-01, resolving its top open question (c ≤ 1/2 two-sided wall). Erdős #1 conjecture (constant-factor c·2^n) itself remains open.",
+    "progressSummary": "COMPLETED: fixed a FALSE axiom (logical unsoundness) and repaired 4 Mathlib-4.26 build breakages in Erdos1OQ02.lean. File now compiles cleanly (verified via host lake env lean against pinned Mathlib 2df2f015/v4.26.0) with exactly 1 (true) axiom and 0 sorries; #print axioms shows no sorryAx.",
     "builtItems": [
       "Corrected axiom anticoncentration_bound (Chebyshev form) in Erdos1OQ02.lean",
       "Re-proved dfx_lower_bound: 2ⁿ ≤ 3·√n·N+2 (0 sorries) in Erdos1OQ02.lean",
-      "Repaired Mathlib-4.26 build breakages in sum_sq_le_card_mul_max_sq, sum_sq_cauchy_schwarz, improvement_factor",
-      "Erdos1OQ02OQ01.lean Section 4: geomSet, twoPow_injective, card_geomSet, mem_geomSet, sum_image_twoPow, geomSet_hasDistinctSubsetSums, sum_geomSet, max'_geomSet, exists_extremal_geomSet (8 thm + 1 def, host-verified 0-axiom/0-sorry)."
+      "Repaired Mathlib-4.26 build breakages in sum_sq_le_card_mul_max_sq, sum_sq_cauchy_schwarz, improvement_factor"
     ],
     "insights": [
       "The 'incomplete-01' snapshot (2 sorries, dated 2026-03-30) is obsolete: those sorries were filled long ago. The live file Erdos1OQ02.lean had 0 sorries but a FALSE axiom.",
@@ -42,14 +41,12 @@
       "Replaced with the rigorous Chebyshev anticoncentration bound `2ⁿ ≤ 3·√(Σaᵢ²)+2`, verified true on all test sets incl. the asymptotic extremal (powers of two: 256 ≤ 445).",
       "The file had ALSO broken on the Mathlib 4.26 bump (toolchain v4.26.0): div_le_iff→div_le_iff₀, a simp recursion in sum_sq_le_card_mul_max_sq (Finset.card_eq_sum_ones loop), an nlinarith cast-atom mismatch in sum_sq_cauchy_schwarz (ih not push_cast'd), and omega on the nonlinear n<n*n.",
       "dfx_lower_bound re-derived via Σaᵢ²≤n·N² (sum_sq_le_card_mul_max_sq) → √Q≤√n·N → 2ⁿ≤3·√n·N+2; dropped the now-unnecessary hN/hA_pos hypotheses (the +2 slack covers small n).",
-      "Session 2026-06-30 (researcher-2): AXIOM DISCHARGED. The anticoncentration_bound axiom (2^n ≤ 3√Q+2) is now a proved theorem in Erdos1OQ02.lean (0 axioms / 0 sorries, docker-verified [7744]); gallery entry erdos-1-oq-02 flipped axiomatized→verified. Combine of the prior ingredients: V = 2^n distinct same-parity doubled deviations with ΣV v²=2^n Q; split at ⌈2√Q⌉ — central-interval parity count ≤ L+1, discrete Chebyshev tail (new ℤ-indexed card_mul_le_sum_of_nonneg) ≤ 2^n/4 — gives (3/4)2^n ≤ 2√Q+1 ⇒ 2^n ≤ 3√Q+2. Q≥1 from distinct-subset-sums forcing 0∉A.",
-      "Session 2026-07-08 (researcher-4): the claimed problem was phantom-complete (parent erdos-1-oq-02 fully VERIFIED 0-axiom since #31542, child oq-01 since #33160). Looked outward and resolved the child's top open question: the powers-of-two set is now PROVEN to have distinct subset sums, not just an arithmetic tightness identity.",
-      "Distinctness of {2^0,…,2^{n-1}} follows cleanly from Mathlib Finset.geomSum_injective (Colex.lean: I↦∑_{i∈I}n^i injective for n≥2, uniqueness of n-ary expansions) + Finset.subset_image_iff (every subset of an image is an image of an index subset). No from-scratch max-element induction needed."
+      "Session 2026-06-30 (researcher-2): AXIOM DISCHARGED. The anticoncentration_bound axiom (2^n ≤ 3√Q+2) is now a proved theorem in Erdos1OQ02.lean (0 axioms / 0 sorries, docker-verified [7744]); gallery entry erdos-1-oq-02 flipped axiomatized→verified. Combine of the prior ingredients: V = 2^n distinct same-parity doubled deviations with ΣV v²=2^n Q; split at ⌈2√Q⌉ — central-interval parity count ≤ L+1, discrete Chebyshev tail (new ℤ-indexed card_mul_le_sum_of_nonneg) ≤ 2^n/4 — gives (3/4)2^n ≤ 2√Q+1 ⇒ 2^n ≤ 3√Q+2. Q≥1 from distinct-subset-sums forcing 0∉A."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "The elementary entry oq-01 is now complete both directions (lower counting wall + upper doubling construction). To sharpen the UPPER wall on the constant c below 1/2, formalize a Conway–Guy / Atkinson–Negro–Santoro construction (max A < 0.23·2^n) — this is a genuinely harder, non-elementary construction.",
-      "Cross-problem: exists_extremal_geomSet / geomSet_hasDistinctSubsetSums are reusable witnesses for any other distinct-subset-sums research entry needing an explicit extremal example."
+      "Discharge anticoncentration_bound via the discrete second-moment route (NO probability theory): (1) prove the identity ∑_{T∈A.powerset}(2·T.sum id − S)² = 2^|A|·Σaᵢ² via off-diagonal membership-toggle cancellation; (2) prove ∑(v_j−c)² ≥ (M³−M)/12 for M distinct integers; combine. See knowledge.md 2026-06-28 (researcher-3) for the full plan.",
+      "Land step (1), the second-moment identity, first as a standalone 0-axiom lemma — it is the crux and self-contained."
     ],
     "markdown": "# Knowledge Base: erdos-1-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

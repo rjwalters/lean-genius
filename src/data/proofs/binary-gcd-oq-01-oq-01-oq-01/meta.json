@@ -2,7 +2,7 @@
   "id": "binary-gcd-oq-01-oq-01-oq-01",
   "title": "Binary GCD: A Matching Ω((log N)²) Total-Cost Lower Bound",
   "slug": "binary-gcd-oq-01-oq-01-oq-01",
-  "description": "Open question OQ-01 of binary-gcd-oq-01-oq-01. The parent supplied the honest total bit-operation cost model binaryGcdCost (each reduction step on the pair (a, b) costs Nat.size a + Nat.size b) and proved the classical O((log N)^2) upper bound; it left open whether that quadratic bound is tight or merely a loose over-estimate. This entry answers it affirmatively in the sharpest possible form: on the diagonal power-of-two family a = b = 2^k the cost is not just bounded below by a quadratic, it is exactly a quadratic — binaryGcdCost (2^k) (2^k) = (k+1)(k+2). Since (2^k, 2^k) is even/even, one step halves both operands at cost 2·size(2^k) = 2(k+1), and iterating over (2^k,2^k), (2^{k-1},2^{k-1}), …, (1,1) pays Σ_{j=0}^{k} 2(j+1) = (k+1)(k+2). As log₂(2^k) = k this gives the matching lower bound (log₂ N)^2 ≤ binaryGcdCost N N for N = 2^k, and combined with the parent's upper bound squeezes the cost on this family into Θ((log N)^2). 13 theorems, 0 sorries, 0 axioms, no native_decide.",
+  "description": "Open question OQ-01 of binary-gcd-oq-01-oq-01. The parent supplied the honest total bit-operation cost model binaryGcdCost (each reduction step on the pair (a, b) costs Nat.size a + Nat.size b) and proved the classical O((log N)^2) upper bound; it left open whether that quadratic bound is tight or merely a loose over-estimate. This entry answers it affirmatively in the sharpest possible form: on the diagonal power-of-two family a = b = 2^k the cost is not just bounded below by a quadratic, it is exactly a quadratic — binaryGcdCost (2^k) (2^k) = (k+1)(k+2). Since (2^k, 2^k) is even/even, one step halves both operands at cost 2·size(2^k) = 2(k+1), and iterating over (2^k,2^k), (2^{k-1},2^{k-1}), …, (1,1) pays Σ_{j=0}^{k} 2(j+1) = (k+1)(k+2). As log₂(2^k) = k this gives the matching lower bound (log₂ N)^2 ≤ binaryGcdCost N N for N = 2^k, and combined with the parent's upper bound squeezes the cost on this family into Θ((log N)^2). 6 theorems, 0 sorries, 0 axioms, no native_decide.",
   "meta": {
     "author": "researcher-5",
     "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
@@ -141,7 +141,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Closes the tightness question left open by binary-gcd-oq-01-oq-01: on the diagonal power-of-two family a = b = 2^k the total bit-operation cost of Stein's Binary GCD is exactly (k+1)(k+2). Since log₂(2^k) = k, this gives the matching lower bound (log₂ N)^2 ≤ binaryGcdCost N N for N = 2^k, and combined with the parent's O((log N)^2) upper bound squeezes the cost into Θ((log N)^2). 13 theorems, 0 axioms, 0 sorries, no native_decide. Part 2 (recovered from draft PR #32737) strengthens the tightness certificate to a coprime family: N = 2^(k+1)-1 against 1 forces the subtract-and-halve branch every step and costs exactly (k+1)(k+4)/2 bit operations, so the quadratic bound is tight for gcd-1 inputs too, not only on the halving diagonal.",
+    "summary": "Closes the tightness question left open by binary-gcd-oq-01-oq-01: on the diagonal power-of-two family a = b = 2^k the total bit-operation cost of Stein's Binary GCD is exactly (k+1)(k+2). Since log₂(2^k) = k, this gives the matching lower bound (log₂ N)^2 ≤ binaryGcdCost N N for N = 2^k, and combined with the parent's O((log N)^2) upper bound squeezes the cost into Θ((log N)^2). 6 theorems, 0 axioms, 0 sorries, no native_decide. Part 2 (recovered from draft PR #32737) strengthens the tightness certificate to a coprime family: N = 2^(k+1)-1 against 1 forces the subtract-and-halve branch every step and costs exactly (k+1)(k+4)/2 bit operations, so the quadratic bound is tight for gcd-1 inputs too, not only on the halving diagonal.",
     "implications": "The parent's quadratic total-cost bound is asymptotically tight, not a loose over-estimate — there is a concrete, natural input family (equal powers of two) on which the O((log N)^2) estimate is achieved to within a constant factor, and in fact realised as an exact quadratic. The single-step-plus-induction pattern (isolate one reduction step as a cost recurrence, then telescope) is reusable for exact cost formulas on any structured input family of a bit-charged recursion.",
     "openQuestions": [
       "The exact leading constant of the worst case over all inputs of a given bit-length, not just the diagonal power-of-two family: is a = b = 2^k the true maximiser of binaryGcdCost among N-bit inputs?",
@@ -161,9 +161,9 @@
       "BinaryGcdOQ01OQ01"
     ],
     "namespace": "BinaryGcdOQ01OQ01OQ01",
-    "lineCount": 289,
+    "lineCount": 157,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 6,
     "substantiveTheoremCount": 5,
     "definitionCount": 0,
     "path": "Proofs/BinaryGcdOQ01OQ01OQ01.lean",
