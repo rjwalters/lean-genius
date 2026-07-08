@@ -31,18 +31,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (phantom): the exact deliverable already exists, verified 0-sorry/0-axiom.",
+    "progressSummary": "COMPLETE (phantom deliverable pre-existed, verified 0/0). Researcher-9 (2026-07-08) added the tightness/attainment companion: the compression onto a T-invariant subspace equals the honest restriction T.restrict, characterising the equality case of the interlacing bound.",
     "builtItems": [
       "poincare_separation_compression in CauchyInterlacingPoincareCompression.lean (#28084) — unconditional codimension-m Poincaré separation: given a symmetric T on V (dim n+m) and any subspace H (dim n), the descending eigenvalues of the explicit orthogonal compression compress T H interlace those of T as lam⟨k+m⟩ ≤ mu k ≤ lam⟨k⟩, with NO Rayleigh side hypothesis.",
       "compress / isSymmetric_compress / rayleigh_compress_eq in CauchyInterlacingCompression.lean (#27245) — define compress T H := P_H∘T∘ι_H, prove it symmetric, and discharge the Rayleigh-agreement identity for an arbitrary subspace via the orthogonal-projection adjoint identity.",
-      "poincare_separation_compression_span — same result compressing onto span of an orthonormal frame; cauchy_interlacing_compression_of_poincare — the m=1 corollary."
+      "poincare_separation_compression_span — same result compressing onto span of an orthonormal frame; cauchy_interlacing_compression_of_poincare — the m=1 corollary.",
+      "compress_eq_restrict_of_invariant + coe_compress_of_invariant (researcher-9, CauchyInterlacingPoincareCompression.lean) — if H is T-invariant (∀ y∈H, T y∈H) then compress T H = T.restrict hinv as operators H→ₗH; pointwise ↑(compress T H y)=T ↑y. Proof: compress_apply, then the orthogonal projection is inert on T ↑y∈H via coe_orthogonalProjection_apply + starProjection_eq_self_iff.mpr. This is the attainment/tightness case of Poincaré separation."
     ],
     "insights": [
       "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",
-      "Rayleigh discharge mechanism: for y∈H, ⟨compress T H y, y⟩_H = ⟨P_H(Ty), y⟩ = ⟨Ty, y⟩_V by the orthogonal-projection adjoint identity (P_H self-adjoint, P_H y = y); norms agree since the inclusion H↪V is a linear isometry."
+      "Rayleigh discharge mechanism: for y∈H, ⟨compress T H y, y⟩_H = ⟨P_H(Ty), y⟩ = ⟨Ty, y⟩_V by the orthogonal-projection adjoint identity (P_H self-adjoint, P_H y = y); norms agree since the inclusion H↪V is a linear isometry.",
+      "The interlacing μ_k ≤ λ_k is an equality on a block exactly when the corresponding invariant subspace is T-stable. compress T H loses information only through the orthogonal projection P_H(T ↑y); when T ↑y already lies in H the projection is the identity, so compress collapses to the restriction and no eigenvalue is lost — the extremal case of Poincaré separation."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalise the spectral consequence: under H T-invariant, the descending eigenvalues of compress T H are a sub-multiset of those of T (equality is attained in the interlacing bound). Needs bridging equal operators to equal eigenvalue tuples across distinct IsSymmetric proofs — watch proof-irrelevance of the symmetry witness in hT.eigenvalues.",
+      "Converse: if compress T H = T.restrict for some restriction then H is T-invariant (the projection error vanishes iff T ↑y∈H for all y)."
+    ]
   },
   "tags": [
     "linear-algebra",
@@ -60,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-07-02T05:53:08.467Z",
-  "lastUpdate": "2026-07-07T00:00:00.000Z",
+  "lastUpdate": "2026-07-08T00:00:00.000Z",
   "completed": "2026-07-02T23:38:28.210Z",
   "significance": 3,
   "tractability": 7
