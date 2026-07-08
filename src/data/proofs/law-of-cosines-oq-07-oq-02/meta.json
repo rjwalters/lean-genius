@@ -112,5 +112,17 @@
     "path": "Proofs/LawOfCosinesOQ07OQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "sum_sq_medians",
+      "type": "theorem",
+      "description": "Sum of squared medians: 4·(m_a² + m_b² + m_c²) = 3·(a² + b² + c²), where m_x is the median from vertex x to the opposite midpoint. Proved by summing the parent's median_length identity over the three vertices and closing with linear_combination."
+    },
+    {
+      "name": "sum_sq_medians_three_quarters",
+      "type": "theorem",
+      "description": "The ¾-ratio form: the sum of the squared medians equals three quarters of the sum of the squared sides — a direct rescaling of sum_sq_medians."
+    }
+  ],
   "sorries": 0
 }
