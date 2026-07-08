@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Header, Imports, and the Open-Question Framing",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring stating Erdős #10's fourth open question — the exact lower density d̲(S₁) of the set of primes-plus-one-power-of-2 — and clarifying this file builds infrastructure rather than resolving it. Imports Mathlib.Tactic, Nat.Prime.Basic, the real infinite-sum topology, and AtTopBot order filters; opens Set/Filter/Classical and declares namespace Erdos10S1Density.",
+      "mathContext": "$S_k = \\{p + \\sum 2^{a_i}\\}$; the open question asks the exact value of $\\underline{d}(S_1)$, the base of the chain whose limit is Gallagher's 1."
+    },
+    {
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 42,
@@ -70,6 +78,56 @@
       "endLine": 181,
       "summary": "Proves the counting ratio lies in [0,1], that lower density is monotone under inclusion and valued in [0,1], hence d̲(S₁) ∈ [0,1], and finally the lower-edge bound d̲(S₁) ≤ d̲(Sₖ) for k ≥ 1.",
       "mathContext": "0 ≤ d̲(S) ≤ 1; A ⊆ B ⇒ d̲(A) ≤ d̲(B); d̲(S₁) ∈ [0,1]; 1 ≤ k ⇒ d̲(S₁) ≤ d̲(Sₖ)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "lowerDensity_S1_le",
+      "type": "core",
+      "description": "**Lower edge of Gallagher's theorem.** Since S₁ ⊆ Sₖ for every k ≥ 1, d̲(S₁) ≤ d̲(Sₖ): the lower density of S₁ is a lower bound for every d̲(Sₖ). Gallagher (1975) proved d̲(Sₖ) → 1; the exact value of d̲(S₁), the base of this increasing chain, is the open question.",
+      "leanType": "{k : ℕ} (hk : 1 ≤ k) : lowerDensity (sumPrimeAndTwoPows 1) ≤ lowerDensity (sumPrimeAndTwoPows k)",
+      "startLine": 177,
+      "endLine": 179
+    },
+    {
+      "name": "mem_sumPrimeAndTwoPows_one_iff",
+      "type": "key",
+      "description": "**Membership characterization of S₁.** n ∈ S₁ iff n is prime or n = p + 2ᵃ for some prime p and exponent a — a quantifier-light description obtained by case-splitting the multiset of powers into empty (bare prime) or singleton.",
+      "leanType": "(n : ℕ) : n ∈ sumPrimeAndTwoPows 1 ↔ n.Prime ∨ ∃ p a : ℕ, p.Prime ∧ n = p + 2 ^ a",
+      "startLine": 62,
+      "endLine": 78
+    },
+    {
+      "name": "sumPrimeAndTwoPows_mono",
+      "type": "key",
+      "description": "**Monotonicity of the family.** Sₖ is monotone in k: allowing more powers of 2 can only add representable integers. The inclusion S₁ ⊆ Sₖ powering the lower-edge bound.",
+      "leanType": "Monotone sumPrimeAndTwoPows",
+      "startLine": 82,
+      "endLine": 85
+    },
+    {
+      "name": "lowerDensity_mono",
+      "type": "key",
+      "description": "**Lower density is monotone under inclusion.** A ⊆ B ⇒ d̲(A) ≤ d̲(B), via Filter.liminf_le_liminf on the counting ratios with the boundedness side-conditions.",
+      "leanType": "{A B : Set ℕ} (h : A ⊆ B) : lowerDensity A ≤ lowerDensity B",
+      "startLine": 136,
+      "endLine": 148
+    },
+    {
+      "name": "lowerDensity_S1_mem_Icc",
+      "type": "key",
+      "description": "**d̲(S₁) ∈ [0,1].** The lower density of S₁ is a genuine density value, from lowerDensity_nonneg and lowerDensity_le_one.",
+      "leanType": "lowerDensity (sumPrimeAndTwoPows 1) ∈ Set.Icc (0 : ℝ) 1",
+      "startLine": 169,
+      "endLine": 171
+    },
+    {
+      "name": "densityFn_mem_Icc",
+      "type": "supporting",
+      "description": "**Counting ratio bound.** densityFn S n = |S ∩ [0,n]|/(n+1) ∈ [0,1] — the pointwise bound underlying all the lower-density [0,1] results.",
+      "leanType": "(S : Set ℕ) (n : ℕ) : densityFn S n ∈ Set.Icc (0 : ℝ) 1",
+      "startLine": 114,
+      "endLine": 123
     }
   ],
   "conclusion": {
