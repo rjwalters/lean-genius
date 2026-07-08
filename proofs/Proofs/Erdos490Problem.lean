@@ -755,4 +755,89 @@ theorem bound_is_optimal :
     rw [ge_iff_le]
     linarith [hprod, hsimp]
 
+/-- **Upper bound on the optimal `B` (0 new axioms).** For `N ≥ 4`, the primes in
+`(N/2, N]` satisfy `|optimalB N| · log(N/2) ≤ log 4 · N`.  Each `p ∈ optimalB N` has
+`p > N/2`, so `log(N/2) ≤ log p`; summing gives `|optimalB N| · log(N/2) ≤ ∑ log p =
+θ(N) − θ(N/2) ≤ θ(N) ≤ log 4 · N`, the last step being Mathlib's Chebyshev upper bound
+`Chebyshev.theta_le_log4_mul_x`.  This is the upper-bound companion to
+`primes_upper_half_lower_bound`. -/
+theorem optimalB_card_upper_bound {N : ℕ} (hN : 4 ≤ N) :
+    ((optimalB N).card : ℝ) * Real.log ((N : ℝ) / 2) ≤ Real.log 4 * N := by
+  have hNpos : (0 : ℝ) < (N : ℝ) := by exact_mod_cast (by omega : 0 < N)
+  have hhalf_pos : (0 : ℝ) < (N : ℝ) / 2 := by linarith
+  -- Every prime `p ∈ optimalB N` exceeds `N/2`, so `log(N/2) ≤ log p`.
+  have hlb : ∀ p ∈ optimalB N, Real.log ((N : ℝ) / 2) ≤ Real.log (p : ℝ) := by
+    intro p hp
+    simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hp
+    obtain ⟨_, _, hlt, _⟩ := hp
+    have hNp : (N : ℝ) < 2 * (p : ℝ) := by
+      have : N < 2 * p := by omega
+      exact_mod_cast this
+    exact Real.log_le_log hhalf_pos (by linarith)
+  -- `|B| · log(N/2) ≤ ∑_{p ∈ B} log p` (constant lower bound on each term).
+  have hsum : ((optimalB N).card : ℝ) * Real.log ((N : ℝ) / 2)
+      ≤ ∑ p ∈ optimalB N, Real.log (p : ℝ) := by
+    calc ((optimalB N).card : ℝ) * Real.log ((N : ℝ) / 2)
+        = ∑ _p ∈ optimalB N, Real.log ((N : ℝ) / 2) := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+      _ ≤ ∑ p ∈ optimalB N, Real.log (p : ℝ) := Finset.sum_le_sum hlb
+  -- The sum is `θ(N) − θ(N/2) ≤ θ(N) ≤ log 4 · N`.
+  have heq := theta_gap_eq_sum_optimalB N
+  have hθnn : 0 ≤ Chebyshev.theta ((N / 2 : ℕ) : ℝ) := Chebyshev.theta_nonneg _
+  have hθub : Chebyshev.theta (N : ℝ) ≤ Real.log 4 * N :=
+    Chebyshev.theta_le_log4_mul_x (by positivity)
+  calc ((optimalB N).card : ℝ) * Real.log ((N : ℝ) / 2)
+      ≤ ∑ p ∈ optimalB N, Real.log (p : ℝ) := hsum
+    _ = Chebyshev.theta (N : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ) := heq.symm
+    _ ≤ Chebyshev.theta (N : ℝ) := by linarith
+    _ ≤ Real.log 4 * N := hθub
+
+/-- **The optimal example attains order `N²/log N` from above (0 new axioms).** For
+`N ≥ 4`, `|optimalA N| · |optimalB N| ≤ log 4 · N² / log N`.  Combined with
+`bound_is_optimal` (the matching `≥ c·N²/log N` lower bound) this shows the explicit
+extremal construction `A = [1, N/2]`, `B = {primes in (N/2, N]}` achieves
+`|A|·|B| = Θ(N²/log N)` — the full order of magnitude of Erdős #490 — *without* invoking
+the deep axiom `szemeredi_theorem` (only Mathlib's Chebyshev upper bound `θ(x) ≤ log 4·x`).
+
+Proof: `|optimalA N| = ⌊N/2⌋ ≤ N/2`, and `optimalB_card_upper_bound` gives
+`|optimalB N| ≤ log 4·N / log(N/2)`.  For `N ≥ 4`, `log(N/2) = log N − log 2 ≥ (1/2) log N`
+(because `log N ≥ log 4 = 2 log 2`), so the product is `≤ (N/2)·log 4·N / ((1/2) log N) =
+log 4·N² / log N`. -/
+theorem optimal_example_upper_bound (N : ℕ) (hN : 4 ≤ N) :
+    ((optimalA N).card * (optimalB N).card : ℝ) ≤ Real.log 4 * N ^ 2 / Real.log N := by
+  have hNR : (4 : ℝ) ≤ (N : ℝ) := by exact_mod_cast hN
+  have hNnn : (0 : ℝ) ≤ (N : ℝ) := by linarith
+  have hlogN : 0 < Real.log N := Real.log_pos (by linarith)
+  have hlog4nn : (0 : ℝ) ≤ Real.log 4 := Real.log_nonneg (by norm_num)
+  have hlogN4 : Real.log 4 ≤ Real.log N := Real.log_le_log (by norm_num) hNR
+  -- `log(N/2) = log N − log 2`, and `log 4 = 2 log 2`.
+  have hlogNhalf_eq : Real.log ((N : ℝ) / 2) = Real.log N - Real.log 2 :=
+    Real.log_div (by exact_mod_cast (by omega : N ≠ 0)) (by norm_num)
+  have hlog4 : Real.log 4 = 2 * Real.log 2 := by
+    rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num
+  -- `log(N/2) ≥ (1/2) log N > 0`.
+  have hhalf_lb : Real.log N / 2 ≤ Real.log ((N : ℝ) / 2) := by
+    rw [hlogNhalf_eq]
+    have h2 : 2 * Real.log 2 ≤ Real.log N := by rw [← hlog4]; exact hlogN4
+    linarith
+  have hhalf_pos : 0 < Real.log ((N : ℝ) / 2) := by linarith
+  -- `|optimalA N| ≤ N/2`, and the two cardinalities are nonnegative.
+  have hAcard : (optimalA N).card = N / 2 := optimalA_card N
+  have hAR : ((optimalA N).card : ℝ) ≤ (N : ℝ) / 2 := by
+    rw [hAcard]
+    have hnat : (N / 2 : ℕ) * 2 ≤ N := by omega
+    have : ((N / 2 : ℕ) : ℝ) * 2 ≤ (N : ℝ) := by exact_mod_cast hnat
+    linarith
+  have hA0 : (0 : ℝ) ≤ ((optimalA N).card : ℝ) := by positivity
+  have hB0 : (0 : ℝ) ≤ ((optimalB N).card : ℝ) := by positivity
+  have hBub := optimalB_card_upper_bound hN
+  -- Clear the denominator and finish with the nonnegative-product chain.
+  rw [le_div_iff₀ hlogN]
+  nlinarith [hBub, hAR, hhalf_lb, hA0, hB0, hlogN.le, hlog4nn, hNnn,
+    mul_nonneg hA0 hB0,
+    mul_le_mul_of_nonneg_left hBub hA0,
+    mul_le_mul_of_nonneg_right hAR (mul_nonneg hlog4nn hNnn),
+    mul_le_mul_of_nonneg_left (show Real.log N ≤ 2 * Real.log ((N : ℝ) / 2) by linarith)
+      (mul_nonneg hA0 hB0)]
+
 end Erdos490

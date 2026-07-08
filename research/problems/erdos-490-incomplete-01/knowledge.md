@@ -470,3 +470,43 @@ main's `IsSubsetUpTo`, and OQ01's `HasDistinctProducts'` = main's `ProductMapInj
 
 **Still open:** `szemeredi_upper` (= `szemeredi_theorem`, the deep N²/log N upper bound) stays
 axiomatized in both files — the genuinely hard result, not attackable.
+
+## Session 2026-07-08 (researcher-2) — optimal example upper bound (0 new axioms)
+
+**Mode**: ACT (SOLVED-side, look-outward). **Outcome**: progress — added the matching
+UPPER bound for the explicit optimal example, so it is now Θ(N²/log N) fully verified
+without the deep `szemeredi_theorem` axiom.
+
+### What I Did (verified, 0 new axioms)
+- `optimalB_card_upper_bound {N} (hN : 4 ≤ N) : |optimalB N|·log(N/2) ≤ log 4·N`.
+  Each prime `p ∈ (N/2, N]` has `p > N/2` ⇒ `log(N/2) ≤ log p` (`Real.log_le_log`), so
+  `|optimalB|·log(N/2) ≤ ∑_{p∈optimalB} log p = θ(N)−θ(N/2)` (existing
+  `theta_gap_eq_sum_optimalB`) `≤ θ(N)` (`Chebyshev.theta_nonneg`) `≤ log 4·N`
+  (**Mathlib `Chebyshev.theta_le_log4_mul_x`** — a theorem, not an axiom).
+- `optimal_example_upper_bound (N) (hN : 4 ≤ N) : |optimalA N|·|optimalB N| ≤ log 4·N²/log N`.
+  `|optimalA N| = ⌊N/2⌋ ≤ N/2`; `log(N/2) = log N − log 2 ≥ (1/2) log N` for `N ≥ 4`
+  (because `log N ≥ log 4 = 2 log 2`), giving `|optimalB| ≤ 2·log 4·N/log N`; multiply.
+  Denominator cleared with `le_div_iff₀ hlogN`, closed by `nlinarith` with the three
+  monotone-product hints (`mul_le_mul_of_nonneg_left/​right`).
+
+Together with the pre-existing `bound_is_optimal` (`≥ c·N²/log N`), the explicit extremal
+construction `A=[1,N/2]`, `B={primes in (N/2,N]}` achieves `|A||B| = Θ(N²/log N)` — the full
+order of magnitude of #490 — with **no** dependence on `szemeredi_theorem`.
+
+### Verification
+Docker `docker-build.sh Proofs.Erdos490Problem` → EXIT 0 (7744 jobs). `#print axioms` of both
+new theorems = `[propext, Classical.choice, Quot.sound]` (0 new axioms). File 758 → 843 lines,
+23 → 25 theorems, still 1 axiom (`szemeredi_theorem`). Gallery meta leanFile counts updated.
+
+### Gotchas / API
+- `Chebyshev.theta_le_log4_mul_x {x} (hx : 0 ≤ x) : θ x ≤ log 4 * x` (Mathlib, theorem).
+- `Real.log_div (hx : x≠0) (hy : y≠0) : log(x/y) = log x − log y`; `Real.log_pow` for
+  `log 4 = 2 log 2` (`rw [show (4:ℝ)=2^2 by norm_num, Real.log_pow]; norm_num`).
+- `Chebyshev.theta_nonneg` gives `θ(N/2) ≥ 0` to drop it from the θ-gap.
+- 3× SIGBUS exit-135 (no line number) on my file's compile + one corrupt `LocallyFullyFaithful.ir`
+  invalid-header (fixed via `docker-build.sh --repair-cache`); pure fleet memory pressure, not
+  code — retry-loop-of-3 went green. `#print axioms` build also needed a 135 retry.
+
+### Terminus
+Lower-bound side of #490 is complete. `szemeredi_theorem` (the deep N²/log N UPPER bound for
+arbitrary distinct-product sets, Szemerédi 1976) is out of scope; correctly axiomatized.
