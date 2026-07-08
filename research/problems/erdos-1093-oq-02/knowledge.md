@@ -224,3 +224,38 @@ are not decidable.
 ### Files Modified
 - `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XII, +~35 lines, verified)
 - `src/data/research/problems/erdos-1093-oq-02.json` (metadata + knowledge)
+
+## Session 2026-07-08 (researcher-2) — de-native_decide the (28!)²<47! certificate
+
+**Mode:** AXIOM-REDUCTION (elementary theory saturated; look at trust surface).
+**Outcome:** progress (1 native_decide → kernel `decide`).
+
+### What I Did
+Converted the numeric certificate `(Nat.factorial 28)^2 < Nat.factorial 47` inside
+`deficiency_record_le_18` (Section XIV) from `native_decide` to kernel `decide`.
+`Nat.factorial` is *structural* recursion, so the kernel reduces `47!`/`28!`
+(47/28 GMP-accelerated mults) and the `<` literal comparison — no `Lean.ofReduceBool`.
+This matches the pre-existing `interval_cases k <;> decide` pattern (Section on the
+abstract `(k!)² < (k+9)!` bound). So `deficiency_record_le_18` is now
+`ofReduceBool`-free.
+
+### Why the other two certs can't follow (documented in the file's ## Axioms block)
+- `noSmallPrimeFactors_284_28`: reduces (via `noSmallPrimeFactors_iff`) to testing
+  `p ∤ C(284,28)` for primes p≤28. Kernel `decide` would have to compute the bignum
+  binomial `C(284,28)` by Pascal recursion — infeasible. A genuine `ofReduceBool`-free
+  route is Kummer/Legendre (v_p(C(n,k))=0 ⟺ no base-p carries adding 28 and 256), a
+  per-prime finite carry check; not attempted here (≈100+ lines, 9 primes).
+- `smooth_indices_284_28`: `IsKSmooth` decidability goes through `Nat.primeFactors`,
+  which is **well-founded** recursion → does NOT reduce under kernel `decide` (only
+  `native_decide`). This is why `decide` cannot replace it even though the values are
+  ≤ 284.
+
+### Verification
+Built clean: `Proofs.Erdos1093ProblemOQ02` (3060 jobs, exit 0). File 714 lines,
+30 theorems, 0 sorry, 0 axiom declarations. Remaining native_decide: exactly the
+two binomial/factorization record certs above (+ parent's `deficiency_284_28`).
+
+### Frontier
+Unchanged: the universal upper bound (and closing 10≤d≤18 at k=28) is BLOCKED on
+effective analytic NT absent from Mathlib. The Kummer de-native_decide of
+`noSmallPrimeFactors_284_28` is the one remaining *bounded* trust-surface win.
