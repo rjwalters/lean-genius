@@ -102,16 +102,16 @@
       "id": "two-by-two",
       "title": "Section I: The 2×2 Closed Forms",
       "startLine": 44,
-      "endLine": 80,
+      "endLine": 79,
       "summary": "det_updateCol_two_zero / _one expand the column-replaced 2×2 determinants; cramer_two_zero / _one then give x₀ = (b₀a₁₁ − a₀₁b₁)/(a₀₀a₁₁ − a₀₁a₁₀) and x₁ = (a₀₀b₁ − b₀a₁₀)/det A.",
       "mathContext": "Cramer's rule for two equations in two unknowns, as a ratio of 2×2 determinants."
     },
     {
       "id": "three-by-three",
       "title": "Section II: The 3×3 Closed Forms",
-      "startLine": 82,
-      "endLine": 157,
-      "summary": "det_updateCol_three_zero / _one / _two expand the three column-replaced 3×3 determinants by Sarrus; cramer_three_zero / _one / _two give the explicit quotients with numerator and denominator both fully expanded into entries.",
+      "startLine": 80,
+      "endLine": 158,
+      "summary": "det_updateCol_three_zero / _one / _two expand the three column-replaced 3×3 determinants by Sarrus; cramer_three_zero / _one / _two give the explicit quotients with numerator and denominator both fully expanded into entries. Closes section ThreeByThree and the namespace CramersRuleOQ04OQ01OQ01OQ01.",
       "mathContext": "Cramer's rule for three equations in three unknowns, with Sarrus-expanded determinants."
     }
   ],
