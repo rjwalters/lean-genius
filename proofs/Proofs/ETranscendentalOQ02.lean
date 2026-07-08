@@ -4,6 +4,7 @@ import Mathlib.Data.Complex.ExponentialBounds
 import Mathlib.Data.Real.Irrational
 import Mathlib.Topology.Algebra.Order.Floor
 import Mathlib.Order.Filter.Basic
+import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleNumber
 import Mathlib.Tactic
 import Proofs.eTranscendental
 
@@ -850,5 +851,171 @@ theorem e_normal_implies_uniform_decimal_digits
 /-- e is irrational — a necessary condition for normality (not sufficient). -/
 theorem e_irrational_necessary_for_normality : Irrational (Real.exp 1) :=
   e_irrational
+
+-- ============================================================
+-- PART VI: SHARPNESS — AN EXPLICIT IRRATIONAL NON-NORMAL NUMBER
+-- ============================================================
+
+/-!
+`normal_imp_irrational` shows normality ⇒ irrationality. Is the converse true?
+No: irrationality is strictly weaker than normality. We exhibit a concrete
+*verified* witness — the base-`b` Liouville constant
+`liouvilleNumber b = ∑_{i≥0} b^(-i!)` (Mathlib) — which is irrational (indeed
+transcendental) yet **not normal** in base `b` for every `b ≥ 3`: its base-`b`
+digits are all `0` or `1` (from position `n ≥ 2` on), so the digit `2` is
+eventually missing and the criterion `not_normal_of_eventually_missing_digit`
+applies. This closes the sharp boundary of `normal_imp_irrational`.
+-/
+
+open scoped Nat in
+/-- For every `n ≥ 1` there is a factorial "window" index `k` with
+`k ! ≤ n < (k+1)!` (the position of `n` in the factorial number system). -/
+theorem exists_factorial_window {n : ℕ} (hn : 1 ≤ n) :
+    ∃ k, k ! ≤ n ∧ n < (k + 1)! := by
+  have hex : ∃ m, n < (m + 1)! :=
+    ⟨n, lt_of_lt_of_le (Nat.lt_succ_self n) (Nat.self_le_factorial _)⟩
+  classical
+  refine ⟨Nat.find hex, ?_, Nat.find_spec hex⟩
+  set k := Nat.find hex with hk
+  rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+  · rw [hk0]; simpa using hn
+  · have hmin : ¬ n < (k - 1 + 1)! := Nat.find_min hex (Nat.sub_lt hkpos Nat.one_pos)
+    rw [Nat.sub_add_cancel hkpos] at hmin
+    exact Nat.not_lt.mp hmin
+
+open scoped Nat in
+/-- **Exact floor of `bⁿ · (base-b Liouville constant)`.**
+For `k ! ≤ n < (k+1)!` the value `bⁿ · liouvilleNumber b` has integer part
+`∑_{i=0}^{k} b^(n - i!)`: the partial sum contributes an integer (all exponents
+`n - i!` are non-negative) and the remainder tail is `< 1` (Mathlib's
+`remainder_lt'` gives `bⁿ · remainder < 2/b ≤ 2/3 < 1` when `b ≥ 3`). -/
+theorem liouvilleNumber_floor {b : ℕ} (hb : 3 ≤ b) {k n : ℕ}
+    (hk_le : k ! ≤ n) (hk_lt : n < (k + 1)!) :
+    ⌊(b : ℝ) ^ n * liouvilleNumber (b : ℝ)⌋
+      = ∑ i ∈ Finset.range (k + 1), (b : ℤ) ^ (n - i !) := by
+  have hb1 : (1 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 1 < b)
+  have hb2R : (2 : ℝ) ≤ (b : ℝ) := by exact_mod_cast (by omega : 2 ≤ b)
+  have hbpos : (0 : ℝ) < (b : ℝ) := by linarith
+  set P : ℤ := ∑ i ∈ Finset.range (k + 1), (b : ℤ) ^ (n - i !) with hP
+  -- Claim 1: the partial sum scales to the integer P.
+  have hbne : (b : ℝ) ≠ 0 := by positivity
+  have hclaim1 : (b : ℝ) ^ n * LiouvilleNumber.partialSum (b : ℝ) k = (P : ℝ) := by
+    rw [LiouvilleNumber.partialSum, Finset.mul_sum, hP, Int.cast_sum]
+    apply Finset.sum_congr rfl
+    intro i hi
+    have hik : i ! ≤ n :=
+      le_trans (Nat.factorial_le (Nat.le_of_lt_succ (Finset.mem_range.mp hi))) hk_le
+    rw [Int.cast_pow, Int.cast_natCast, mul_one_div, div_eq_iff (pow_ne_zero _ hbne),
+      ← pow_add, Nat.sub_add_cancel hik]
+  -- The remainder tail is non-negative and < 1.
+  have hrem_nonneg : 0 ≤ (b : ℝ) ^ n * LiouvilleNumber.remainder (b : ℝ) k :=
+    mul_nonneg (by positivity) (le_of_lt (LiouvilleNumber.remainder_pos hb1 k))
+  have hrem_lt : (b : ℝ) ^ n * LiouvilleNumber.remainder (b : ℝ) k < 1 := by
+    have hR := LiouvilleNumber.remainder_lt' k hb1
+    have hbn : (0 : ℝ) ≤ (b : ℝ) ^ n := by positivity
+    -- Tail bound: remainder ≤ 2 / b^((k+1)!).
+    have hstep : LiouvilleNumber.remainder (b : ℝ) k ≤ 2 / (b : ℝ) ^ (k + 1)! := by
+      calc LiouvilleNumber.remainder (b : ℝ) k
+          ≤ (1 - 1 / (b : ℝ))⁻¹ * (1 / (b : ℝ) ^ (k + 1)!) := le_of_lt hR
+        _ ≤ 2 * (1 / (b : ℝ) ^ (k + 1)!) := by
+            gcongr; exact sub_one_div_inv_le_two hb2R
+        _ = 2 / (b : ℝ) ^ (k + 1)! := by rw [mul_one_div]
+    -- Polynomial gap: 2·bⁿ < b^((k+1)!) since (k+1)! ≥ n+1 and b ≥ 3.
+    have hexp : 2 * (b : ℝ) ^ n < (b : ℝ) ^ (k + 1)! := by
+      calc 2 * (b : ℝ) ^ n
+          < (b : ℝ) * (b : ℝ) ^ n := by
+            apply mul_lt_mul_of_pos_right _ (by positivity)
+            exact_mod_cast (by omega : (2 : ℕ) < b)
+        _ = (b : ℝ) ^ (n + 1) := by rw [pow_succ, mul_comm]
+        _ ≤ (b : ℝ) ^ (k + 1)! := pow_le_pow_right₀ hb1.le (by omega)
+    have key : (b : ℝ) ^ n * (2 / (b : ℝ) ^ (k + 1)!) < 1 := by
+      rw [← mul_div_assoc, div_lt_one (by positivity)]
+      linarith [hexp]
+    exact lt_of_le_of_lt (mul_le_mul_of_nonneg_left hstep hbn) key
+  -- Assemble: bⁿ·x = P + (small tail), so the floor is P.
+  have hsplit : (b : ℝ) ^ n * liouvilleNumber (b : ℝ)
+      = (P : ℝ) + (b : ℝ) ^ n * LiouvilleNumber.remainder (b : ℝ) k := by
+    rw [← LiouvilleNumber.partialSum_add_remainder hb1 k, mul_add, hclaim1]
+  rw [Int.floor_eq_iff]
+  refine ⟨?_, ?_⟩
+  · rw [hsplit]; exact le_add_of_nonneg_right hrem_nonneg
+  · rw [hsplit]; push_cast; linarith [hrem_lt]
+
+open scoped Nat in
+/-- **Every base-b digit of the Liouville constant (from position 2 on) is 0 or 1.**
+Consequently it is never equal to `2`. This is the digit obstruction that
+forbids normality. -/
+theorem liouvilleNumber_digit_le_one {b : ℕ} (hb : 3 ≤ b) {k n : ℕ}
+    (hk_le : k ! ≤ n) (hk_lt : n < (k + 1)!) (hn : 2 ≤ n) :
+    (⌊(b : ℝ) ^ n * liouvilleNumber (b : ℝ)⌋) % (b : ℤ) ≤ 1 := by
+  rw [liouvilleNumber_floor hb hk_le hk_lt, Finset.sum_range_succ]
+  -- Lower-index terms are all divisible by b (their exponents are ≥ 1).
+  have hdvd : (b : ℤ) ∣ ∑ i ∈ Finset.range k, (b : ℤ) ^ (n - i !) := by
+    apply Finset.dvd_sum
+    intro i hi
+    have hi_lt_k : i < k := Finset.mem_range.mp hi
+    have hik : i ! < n := by
+      rcases Nat.eq_zero_or_pos i with h0 | hp
+      · rw [h0, Nat.factorial_zero]; omega
+      · calc i ! < k ! := (Nat.factorial_lt hp).mpr hi_lt_k
+          _ ≤ n := hk_le
+    exact dvd_pow_self (b : ℤ) (by omega : n - i ! ≠ 0)
+  obtain ⟨c, hc⟩ := hdvd
+  rw [hc, add_comm, Int.add_mul_emod_self_left]
+  -- Remaining top term b^(n - k!) has residue 0 (if n > k!) or 1 (if n = k!).
+  rcases eq_or_lt_of_le hk_le with heq | hlt
+  · -- n = k! : b^0 = 1, and 1 % b = 1.
+    have hz : n - k ! = 0 := by omega
+    rw [hz, pow_zero]
+    have h1 : (1 : ℤ) % (b : ℤ) = 1 :=
+      Int.emod_eq_of_lt (by norm_num) (by exact_mod_cast (by omega : (1 : ℕ) < b))
+    omega
+  · -- k! < n : exponent ≥ 1, so b divides the term.
+    obtain ⟨d, hd⟩ := dvd_pow_self (b : ℤ) (by omega : n - k ! ≠ 0)
+    have h0 : (b : ℤ) ^ (n - k !) % (b : ℤ) = 0 := by rw [hd, Int.mul_emod_right]
+    omega
+
+open scoped Nat in
+/-- The base-`b` Liouville constant is irrational (in fact transcendental). -/
+theorem liouvilleNumber_irrational {b : ℕ} (hb : 2 ≤ b) :
+    Irrational (liouvilleNumber (b : ℝ)) :=
+  (liouville_liouvilleNumber hb).irrational
+
+open scoped Nat in
+/-- **The Liouville constant is not normal in base `b` (b ≥ 3).**
+Its base-`b` digit `2` is absent from position `2` onwards, so
+`not_normal_of_eventually_missing_digit` applies. -/
+theorem liouvilleNumber_not_normal {b : ℕ} (hb : 3 ≤ b) :
+    ¬ IsNormalInBase b (liouvilleNumber (b : ℝ)) := by
+  have hb2 : 2 ≤ b := by omega
+  have h2b : (2 : ℕ) < b := by omega
+  refine not_normal_of_eventually_missing_digit b hb2 (liouvilleNumber (b : ℝ))
+    (⟨2, h2b⟩ : Fin b) 2 ?_
+  intro n hn
+  obtain ⟨k, hk_le, hk_lt⟩ := exists_factorial_window (by omega : 1 ≤ n)
+  have hdig := liouvilleNumber_digit_le_one hb hk_le hk_lt (by omega : 2 ≤ n)
+  have hval : ((⟨2, h2b⟩ : Fin b) : ℤ) = 2 := by simp
+  rw [hval]
+  unfold nthDigit
+  omega
+
+open scoped Nat in
+/-- **Sharpness of `normal_imp_irrational`: an explicit irrational non-normal number.**
+For every base `b ≥ 3`, the Liouville constant is irrational yet not normal in
+base `b`. -/
+theorem exists_irrational_not_normal {b : ℕ} (hb : 3 ≤ b) :
+    ∃ x : ℝ, Irrational x ∧ ¬ IsNormalInBase b x :=
+  ⟨liouvilleNumber (b : ℝ), liouvilleNumber_irrational (by omega),
+    liouvilleNumber_not_normal hb⟩
+
+/-- **Irrationality does not imply normality.**
+The converse of `normal_imp_irrational` fails: there is an irrational real that
+is not normal in base `3`. Normality is therefore *strictly* stronger than
+irrationality (together with disjunctivity). -/
+theorem irrational_not_imp_normal :
+    ¬ ∀ (b : ℕ), 2 ≤ b → ∀ x : ℝ, Irrational x → IsNormalInBase b x := by
+  intro h
+  obtain ⟨x, hx_irr, hx_not⟩ := exists_irrational_not_normal (b := 3) (by norm_num)
+  exact hx_not (h 3 (by norm_num) x hx_irr)
 
 end ETranscendentalOQ02
