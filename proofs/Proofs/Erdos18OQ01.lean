@@ -303,4 +303,60 @@ theorem practical_top_segment {m : ℕ} (hp : IsPractical m) {k : ℕ}
   have hcancel : (divisors m).sum id - ((divisors m).sum id - k) = k := by omega
   rwa [hcancel] at hrep
 
+/-! ## Multiplicative closure under doubling
+
+If `m` is practical, so is `2m`.  This is the smallest case of the
+Stewart–Sierpiński multiplicative criterion (`mp` is practical when `m` is
+practical and `p ≤ σ(m) + 1` is prime, here `p = 2`), and it strengthens
+`two_pow_practical` from a single family to a *generator*: doubling any practical
+number stays practical, so from each practical `m` the whole chain `m, 2m, 4m, …`
+is practical (`practical_two_pow_mul`).  With `m = 1` this recovers the powers of
+two, but it also yields new families such as `6·2^k`, `20·2^k`, `28·2^k`. -/
+
+/-- **Doubling preserves practicality.**  If `m` is practical then `2m` is
+    practical.  For a target `1 ≤ k < 2m`: if `k < m` it is already a sum of
+    distinct divisors of `m ∣ 2m`; if `m ≤ k < 2m`, write `k = m + (k - m)` with
+    `k - m < m`, represent the remainder `k - m` by divisors of `m`, and adjoin
+    the divisor `m` of `2m` (fresh, since the remainder's representing set sums to
+    `k - m < m`, so none of its elements can equal `m`). -/
+theorem practical_two_mul {m : ℕ} (hp : IsPractical m) : IsPractical (2 * m) := by
+  have hm1 : 1 ≤ m := hp.1
+  have hmdvd : m ∣ 2 * m := ⟨2, by ring⟩
+  have hsub : divisors m ⊆ divisors (2 * m) :=
+    Nat.divisors_subset_of_dvd (by omega) hmdvd
+  refine ⟨by omega, fun k hk1 hk2m => ?_⟩
+  rcases lt_or_ge k m with hlt | hge
+  · -- `k < m`: representable by divisors of `m`, which all divide `2m`.
+    obtain ⟨S, hS, hsum⟩ := practical_represents_le hp (le_of_lt hlt)
+    exact ⟨S, hS.trans hsub, hsum⟩
+  · -- `m ≤ k < 2m`: peel the divisor `m` and represent the remainder `k - m < m`.
+    have hj : k - m < m := by omega
+    obtain ⟨S, hS, hsum⟩ := practical_represents_le hp (le_of_lt hj)
+    have hmS : m ∉ S := by
+      intro hmem
+      have hle : m ≤ S.sum id :=
+        Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) hmem
+      rw [hsum] at hle
+      omega
+    refine ⟨insert m S, ?_, ?_⟩
+    · rw [Finset.insert_subset_iff]
+      exact ⟨Nat.mem_divisors.mpr ⟨hmdvd, by omega⟩, hS.trans hsub⟩
+    · rw [Finset.sum_insert hmS, hsum]
+      simp only [id_eq]
+      omega
+
+/-- **Every `2^k · m` with `m` practical is practical** — an infinite family
+    generated from *any* practical number by repeated doubling
+    (`practical_two_mul`).  Taking `m = 1` recovers `two_pow_practical` (the powers
+    of two); taking `m = 6, 20, 28, …` gives further infinite families of
+    practical numbers. -/
+theorem practical_two_pow_mul {m : ℕ} (hp : IsPractical m) (k : ℕ) :
+    IsPractical (2 ^ k * m) := by
+  induction k with
+  | zero => simpa using hp
+  | succ k ih =>
+    have hrw : 2 ^ (k + 1) * m = 2 * (2 ^ k * m) := by ring
+    rw [hrw]
+    exact practical_two_mul ih
+
 end Erdos18OQ01
