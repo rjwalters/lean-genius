@@ -76,7 +76,8 @@
       "**The criterion is an integral-closedness statement.** The hard direction is precisely that ℤ is integrally closed in ℚ specialised to xⁿ - m: a rational root of a monic integer polynomial is an integer. Mathlib's irrational_nrt_of_notint_nrt is this fact in n-th-root clothing.",
       "**Primality was never essential — only 'not a perfect power' is.** The parent used primes because a prime is the cleanest non-perfect-power. The general criterion exposes the real obstruction and is strictly stronger: it decides composite radicands like 6 and 8 that the prime corollary cannot.",
       "**rpow turns the radical into an exponent identity.** Writing the n-th root as m^(n⁻¹) reduces both directions to the single homomorphism law Real.rpow_mul for nonnegative base; the only arithmetic is n⁻¹·n = 1.",
-      "**Sharp at n = 1.** The hypothesis n ≥ 1 is exactly right: at n = 1 every m is (trivially) a perfect 1st power and m^(1/1) = m is rational, so the equivalence still holds and degenerates correctly."
+      "**Sharp at n = 1.** The hypothesis n ≥ 1 is exactly right: at n = 1 every m is (trivially) a perfect 1st power and m^(1/1) = m is rational, so the equivalence still holds and degenerates correctly.",
+      "**From analysis to a finite check.** The criterion reduces an a priori analytic question — is the real number m^(1/n) rational? — to a decidable arithmetic one: is m a perfect n-th power, i.e. does ⌊m^(1/n)⌋ⁿ = m? The worked instances (∛8 rational via k = 2, ∛6 irrational by ruling out k = 0, 1 and k ≥ 2) are exactly this finite search, which is what makes the equivalence a usable decision procedure rather than merely a true statement."
     ],
     "prerequisites": [
       "Integral closedness of ℤ in ℚ via the n-th-root criterion irrational_nrt_of_notint_nrt",
