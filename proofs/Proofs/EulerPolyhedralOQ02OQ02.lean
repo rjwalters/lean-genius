@@ -352,6 +352,75 @@ theorem chi_determined (M N : CGBManifold)
   rw [hdim, hpf, hN] at hM
   exact_mod_cast hM.symm
 
+-- ============================================================================
+-- Part X: Connected sums (χ is additive up to the sphere correction)
+-- ============================================================================
+
+/-- The connected sum `M # N` of two Chern-Gauss-Bonnet manifolds of the *same*
+    dimension (`h : M.halfDim = N.halfDim`). Removing an open `2n`-disk from each
+    and gluing along the boundary spheres gives χ(M # N) = χ(M) + χ(N) − χ(S^{2n})
+    = χ(M) + χ(N) − 2, and correspondingly ∫Pf drops by the sphere's contribution
+    `2·(2π)^n`. This is consistent with Chern-Gauss-Bonnet because the same
+    normalization constant `cgbConst n` governs all three pieces. -/
+def connectedSumCGB (M N : CGBManifold) (h : M.halfDim = N.halfDim) : CGBManifold where
+  halfDim := M.halfDim
+  chi := M.chi + N.chi - 2
+  totalPfaffian := M.totalPfaffian + N.totalPfaffian - 2 * cgbConst M.halfDim
+  chern_gauss_bonnet := by
+    rw [M.chern_gauss_bonnet, N.chern_gauss_bonnet, h]
+    push_cast; ring
+
+/-- Connected sum preserves dimension: dim(M # N) = dim M. -/
+theorem connectedSumCGB_dim (M N : CGBManifold) (h : M.halfDim = N.halfDim) :
+    (connectedSumCGB M N h).dim = M.dim := rfl
+
+/-- **Euler characteristic of a connected sum**: χ(M # N) = χ(M) + χ(N) − 2. -/
+theorem connectedSumCGB_chi (M N : CGBManifold) (h : M.halfDim = N.halfDim) :
+    (connectedSumCGB M N h).chi = M.chi + N.chi - 2 := rfl
+
+/-- **Total Pfaffian of a connected sum**: it is additive minus the sphere's
+    `2·(2π)^n` (the curvature removed with the two glued disks). -/
+theorem connectedSumCGB_totalPfaffian (M N : CGBManifold) (h : M.halfDim = N.halfDim) :
+    (connectedSumCGB M N h).totalPfaffian
+      = M.totalPfaffian + N.totalPfaffian - 2 * cgbConst M.halfDim := rfl
+
+/-- **The sphere is the identity for connected sum** (on Euler characteristics):
+    χ(S^{2n} # N) = χ(N). Connected sum makes `2n`-manifolds a monoid with
+    identity `S^{2n}`, and χ − 2 is the induced additive homomorphism to ℤ. -/
+theorem connectedSum_sphere_chi (n : ℕ) (N : CGBManifold)
+    (h : (sphereCGB n).halfDim = N.halfDim) :
+    (connectedSumCGB (sphereCGB n) N h).chi = N.chi := by
+  rw [connectedSumCGB_chi]
+  show (2 : ℤ) + N.chi - 2 = N.chi
+  ring
+
+/-- The sphere is also neutral for the total Pfaffian: ∫Pf(S^{2n} # N) = ∫Pf(N),
+    since the `2·(2π)^n` removed with the two disks exactly cancels the sphere's own
+    total Pfaffian `2·(2π)^n`. -/
+theorem connectedSum_sphere_totalPfaffian (n : ℕ) (N : CGBManifold)
+    (h : (sphereCGB n).halfDim = N.halfDim) :
+    (connectedSumCGB (sphereCGB n) N h).totalPfaffian = N.totalPfaffian := by
+  rw [connectedSumCGB_totalPfaffian]
+  show 2 * cgbConst n + N.totalPfaffian - 2 * cgbConst n = N.totalPfaffian
+  ring
+
+/-- **Genus-2 surface from two tori.** The connected sum T² # T² is the genus-2
+    closed orientable surface, with χ = 0 + 0 − 2 = −2 — matching the classical
+    χ(Σ_g) = 2 − 2g at g = 2. -/
+theorem genus_two_surface_chi :
+    (connectedSumCGB (torusCGB 1) (torusCGB 1) rfl).chi = -2 := by
+  rw [connectedSumCGB_chi]
+  show (0 : ℤ) + 0 - 2 = -2
+  ring
+
+/-- The genus-2 surface has total Pfaffian ∫Pf = −4π (so ∫Pf/2π = −2 = χ),
+    consistent with Gauss-Bonnet: a hyperbolic Σ₂ has ∫K dA = 2π·χ = −4π. -/
+theorem genus_two_surface_totalPfaffian :
+    (connectedSumCGB (torusCGB 1) (torusCGB 1) rfl).totalPfaffian = -(4 * π) := by
+  rw [connectedSumCGB_totalPfaffian]
+  show (0 : ℝ) + 0 - 2 * cgbConst 1 = -(4 * π)
+  rw [cgbConst_one]; ring
+
 end ChernGaussBonnet
 
 end

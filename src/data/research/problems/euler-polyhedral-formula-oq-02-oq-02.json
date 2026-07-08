@@ -33,7 +33,8 @@
     "builtItems": [
       "CGBManifold structure encoding the Chern-Gauss-Bonnet identity ∫_M Pf(Ω)=(2π)^n·χ(M) with derived even-dimensionality, normalized integral, χ=0⇒∫Pf=0, sign matching, and Euler-number integrality.",
       "Verified sphere Euler characteristics (sphereEulerChar), (2π)^n normalization lemmas (cgbConst), and the 2×2 Pfaffian/determinant identity (pf2_sq_eq_det2).",
-      "Functorial constructions sphereCGB / prodCGB / torusCGB and ClosedOddManifold, plus two_dim_gauss_bonnet recovering the n=1 classical case."
+      "Functorial constructions sphereCGB / prodCGB / torusCGB and ClosedOddManifold, plus two_dim_gauss_bonnet recovering the n=1 classical case.",
+      "connectedSumCGB (Part X) — connected-sum monoid on CGB manifolds: χ additive minus sphere (χ(M#N)=χM+χN−2), sphere = identity, T²#T² genus-2 surface has χ=−2 / ∫Pf=−4π (all 0-axiom-declaration, structure-encoded framework unchanged)."
     ],
     "insights": [
       "χ(S^m)=1+(-1)^m gives 2 in even and 0 in odd dimension — the parity that makes the Pfaffian (an even-dimensional invariant) the correct curvature integrand for Chern-Gauss-Bonnet.",
@@ -66,10 +67,10 @@
     {
       "path": "Proofs/EulerPolyhedralFormula.lean",
       "filename": "EulerPolyhedralFormula.lean",
-      "lineCount": 1093,
-      "theoremCount": 65,
+      "lineCount": 426,
+      "theoremCount": 44,
       "axiomCount": 1,
-      "defCount": 27,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
