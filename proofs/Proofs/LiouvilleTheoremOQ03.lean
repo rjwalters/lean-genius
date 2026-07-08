@@ -45,6 +45,10 @@ machine-checkable content from the one deep input:
 
 * **Derived from the axiom** (real consequences, not restatements):
   - `dimH_wellApprox_two`: `dimH (W 2) = 1`;
+  - the family shape: `dimH_wellApprox_pos` (`0 < dimH (W τ)` for `τ ≥ 2`),
+    `dimH_wellApprox_lt_one` (`< 1` for `τ > 2`), `dimH_wellApprox_strictAntitone`
+    (strict decrease for `2 ≤ σ < τ`), and `dimH_wellApprox_tendsto_zero`
+    (`dimH (W τ) → 0` as `τ → ∞`);
   - `dimH_liouville_le`: `dimH {Liouville} ≤ 2/τ` for every `τ ≥ 2`;
   - **`dimH_liouville_eq_zero`**: the Liouville numbers have Hausdorff dimension
     `0` — squeezed from the bound as `τ → ∞`. This recovers the classical fact
@@ -158,6 +162,60 @@ theorem dimH_wellApprox_two : dimH (wellApprox 2) = 1 := by
 theorem dimH_wellApprox_eq_jbDim (τ : ℝ) (hτ : 2 ≤ τ) :
     dimH (wellApprox τ) = ENNReal.ofReal (jbDim τ) :=
   dimH_wellApprox τ hτ
+
+/-! ### Quantitative shape of the dimension family `τ ↦ dimH (W τ)`
+
+The Jarník–Besicovitch formula pins the dimension exactly, so the qualitative
+picture of the whole family follows: each `W τ` (for `τ ≥ 2`) is a genuine
+fractal of *positive* dimension, strictly below the full line once `τ > 2`, and
+the dimension decays to `0` as the approximation demand `τ → ∞`. These are the
+family-level analogues of the single-set Liouville statement in Part V. -/
+
+/-- **Positive dimension.** For `τ ≥ 2` the well-approximable set is a genuine
+fractal: `0 < dimH (W τ)`. It is never dimensionally negligible at any finite
+exponent. -/
+theorem dimH_wellApprox_pos {τ : ℝ} (hτ : 2 ≤ τ) : 0 < dimH (wellApprox τ) := by
+  rw [dimH_wellApprox τ hτ, ENNReal.ofReal_pos]
+  positivity
+
+/-- **Sub-line dimension for `τ > 2`.** Above the threshold the dimension is a
+proper fraction of the line: `dimH (W τ) < 1`. Together with
+`dimH_wellApprox_pos` this places `W τ` strictly between a point set and the full
+line for every `τ > 2`. -/
+theorem dimH_wellApprox_lt_one {τ : ℝ} (hτ : 2 < τ) : dimH (wellApprox τ) < 1 := by
+  rw [dimH_wellApprox τ hτ.le, ENNReal.ofReal_lt_one]
+  rw [div_lt_one (by linarith)]
+  linarith
+
+/-- **Strict antitonicity of the dimension.** For `2 ≤ σ < τ` the dimension
+strictly decreases: `dimH (W τ) < dimH (W σ)`. A larger exponent is a strictly
+stronger demand, and the Jarník–Besicovitch value `2/τ` records that strictly.
+(The set-level inclusion `wellApprox_antitone` only gives `≤`; the strict drop is
+a genuine consequence of the dimension *formula*.) -/
+theorem dimH_wellApprox_strictAntitone {σ τ : ℝ} (hσ : 2 ≤ σ) (h : σ < τ) :
+    dimH (wellApprox τ) < dimH (wellApprox σ) := by
+  have hσ0 : (0 : ℝ) < σ := by linarith
+  rw [dimH_wellApprox τ (hσ.trans h.le), dimH_wellApprox σ hσ]
+  rw [ENNReal.ofReal_lt_ofReal_iff (by positivity)]
+  exact div_lt_div_of_pos_left (by norm_num) hσ0 h
+
+/-- **The dimension family decays to zero.** As the approximation exponent
+`τ → ∞` the well-approximable sets vanish dimensionally:
+`dimH (W τ) → 0`. This lifts the single-set fact
+`dimH_liouville_eq_zero` to the whole nested family, and is what forces the
+Liouville set — contained in every `W τ` — to have dimension `0`. -/
+theorem dimH_wellApprox_tendsto_zero :
+    Tendsto (fun τ : ℝ => dimH (wellApprox τ)) atTop (𝓝 0) := by
+  -- The exact values `2/τ → 0` (as extended reals) drive the limit.
+  have h0 : Tendsto (fun τ : ℝ => (2 : ℝ) / τ) atTop (𝓝 0) := by
+    simpa [div_eq_mul_inv] using tendsto_inv_atTop_zero.const_mul (2 : ℝ)
+  have h1 : Tendsto (fun τ : ℝ => ENNReal.ofReal (2 / τ)) atTop (𝓝 0) := by
+    have := (ENNReal.continuous_ofReal.tendsto 0).comp h0
+    simpa using this
+  -- The family agrees with those values eventually (for `τ ≥ 2`).
+  refine h1.congr' ?_
+  filter_upwards [eventually_ge_atTop (2 : ℝ)] with τ hτ
+  exact (dimH_wellApprox τ hτ).symm
 
 /-! ## Part V: Liouville numbers have Hausdorff dimension zero -/
 
