@@ -1,25 +1,28 @@
 # Research State: dirichlets-theorem-oq-02-oq-03
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-07-01T18:19:25-07:00
-**Iteration**: 1
+**Since**: 2026-07-08
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Deliverable complete: certified iterated-factorial tower bound on the k-th prime
+≡ 3 (mod 4), verified 0 sorry / 0 axiom.
 
 ## Active Approach
-None yet.
+Interval form of the Euclid construction → `Nat.find` enumeration `p3` → induction to the
+tower `B(0)=3, B(k+1)=4·(B(k)+1)!−1`, giving `p3 k ≤ B k`.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+None for the certified elementary bound. Sharpening toward the true `p_k ∼ 2k·ln k`
+provably requires analytic PNT-for-APs input (out of scope for the elementary argument).
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Optional follow-ups: formalize the counting-function (density) side; attempt to lower the
+certified tower toward exponential while staying elementary.

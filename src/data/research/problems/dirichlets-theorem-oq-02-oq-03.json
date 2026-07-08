@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE (verified 0/0): certified iterated-factorial tower B(k) upper-bounds the k-th prime ≡3 (mod 4); B(1)=95 vs true p_1=7, honest contrast with p_k∼2k·ln k. Deliverable Proofs/DirichletsTheoremOQ02OQ03.lean (7743 jobs, native_decide-free).",
+    "builtItems": [
+      "exists_prime_three_mod_four_in_interval (DirichletsTheoremOQ02OQ03.lean:78) — certified interval form: ∀n ∃ prime p≡3 mod4, n<p≤4·(n+1)!−1.",
+      "nextP3 + nextP3_le_of + nextP3_le_factorial (DirichletsTheoremOQ02OQ03.lean:113–134) — least prime ≡3 mod4 above n, its minimality, and the one-step factorial bound.",
+      "p3 enumeration with p3_prime/p3_mod/p3_strictMono (DirichletsTheoremOQ02OQ03.lean:144–168).",
+      "B tower + p3_le_tower (DirichletsTheoremOQ02OQ03.lean:176–201) — MAIN: p3 k ≤ B k, the certified iterated-factorial bound on the k-th prime ≡3 mod4.",
+      "p3_one=7, B_one=95, tower_loose_at_one (DirichletsTheoremOQ02OQ03.lean:209–229) — worked values quantifying looseness. Verified 0 sorry / 0 axiom, 7743 jobs."
+    ],
+    "insights": [
+      "The Euclid construction N=4·(n+1)!−1 certifies an INTERVAL, not just existence: a prime ≡3 (mod 4) always lies in (n, 4·(n+1)!−1]. The upper bound is p∣N⇒p≤N; the lower is the standard p∤(n+1)! coprimality twist.",
+      "Iterating the one-step factorial bound gives an explicit iterated-factorial TOWER B(0)=3, B(k+1)=4·(B(k)+1)!−1 as a certified upper bound on the k-th prime ≡3 (mod 4). B(1)=95 vs true p_1=7; B(2)=4·96!−1 — astronomically loose against the true p_k∼2k·ln k.",
+      "Nat.find plus its minimality lemma (Nat.find_min) lets one define the increasing enumeration p3 of primes ≡3 (mod 4) and certify it skips none — so p3 k is genuinely the k-th such prime WITHOUT invoking Mathlib’s Nat.nth API (which is fiddly).",
+      "The whole development is native_decide-free: the only numeric fact (B 1 = 95) is discharged by kernel decide, so axiomCount stays 0 (verified, not axiomatized)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Formalize the counting-function side: turn the certified upper bound on p_k into a certified LOWER bound on π(x;4,3), isolating precisely where analytic PNT input becomes unavoidable.",
+      "Try to lower the certified tower from iterated-factorial toward exponential while staying elementary (e.g. via the primorial variant N=4·∏(known primes)−1), or argue the tower is intrinsic to Euclid-style iteration.",
+      "Port the certified-tower framework to other elementary progressions (5 mod 6, etc.)."
+    ],
     "markdown": "# Knowledge Base: dirichlets-theorem-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
