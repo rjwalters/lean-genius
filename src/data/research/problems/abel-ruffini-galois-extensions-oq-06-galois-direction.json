@@ -1,8 +1,8 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06-galois-direction",
   "title": "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p)",
-  "phase": "S22_RECONCILE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "galois-direction",
   "parent": "abel-ruffini-galois-extensions-oq-06",
@@ -43,21 +43,21 @@
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
-    "phase": "S22_RECONCILE",
-    "since": "2026-06-18T00:00:00.000Z",
-    "iteration": 22,
-    "focus": "S22 RECONCILE (researcher-11, 2026-06-18): corrected the stale frontier in this record. The S21 json said 'frontier 3 (Step 1 sylow_p_unique, Step 4, main remain)', but origin/main has ADVANCED since: Step 1 sylow_p_unique was discharged in #25875 and the main assembly in #25698. The registered file AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean now carries EXACTLY ONE sorry — Step 4 normalizer_iso_AGL1Z (line 425) — verified by direct grep of origin/main. The whole famous theorem is one step from done. Did not attempt Step 4 this cycle: it is the genuine ~80-150 LOC crux (generic-σ conjugation transport + |N|=p(p-1) surjectivity) and warrants a dedicated build-iterating session rather than a blind one-shot.",
-    "nextAction": "Discharge Step 4 normalizer_iso_AGL1Z (THE sole remaining sorry; completes the entire theorem). Route (numerically certified by verify_step4_normalizer.py): (1) relabel ZMod p by a permutation taking σ to the standard translation σ_std=(x↦x+1) so the parent AGL1Z/toPerm machinery applies, transporting the normalizer iso back by conjugation; (2) build φ: N(⟨σ⟩)→*AGL1Z via h↦(h(0), h(1)-h(0)) (group hom per cert part C); (3) injective from AGL1Z.toPerm_injective; (4) surjective via |N_{S_p}(⟨σ⟩)|=p(p-1)=|AGL1Z| (cert part B) — likely MulEquiv.ofBijective. Build from the worktree works (cache-volume shadows .lake/build; ~14 min/build).",
+    "phase": "COMPLETED",
+    "since": "2026-07-08T00:00:00.000Z",
+    "iteration": 26,
+    "focus": "S26 BUILD-VERIFY + CLEANUP (researcher-3, 2026-07-08): problem re-served as available (phantom re-serve). Confirmed the 5 registered GaloisDirection files match origin/main byte-for-byte with zero proof-term sorry / zero axiom / zero native_decide. Closed the gap S25 left open (completion had never been locally build-verified) by running docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection: Build succeeded, 7746 jobs, 0 errors, 0 sorry warnings. Deleted the redundant unimported AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4Aristotle.lean companion (its normalizer_iso_AGL1Z_companion was a leftover sorry; the obligation is discharged sorry-free in the Step4 module used by the main file). The entire primitive_solvable_subgroup_embeds_AGL1Z chain is machine-checked and axiom-clean.",
+    "nextAction": "None — problem complete, build-verified, axiom-clean. Do not re-serve.",
     "blockers": [],
     "attemptCounts": {
       "total": 9,
       "currentApproach": 1,
       "approachesTried": 4
     },
-    "lastUpdate": "2026-06-18T19:50:00.000Z"
+    "lastUpdate": "2026-07-08T00:00:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "ONE SORRY FROM DONE (researcher-11, 2026-06-18, S22 reconcile): origin/main's registered file carries EXACTLY ONE sorry — Step 4 normalizer_iso_AGL1Z (line 425). Since the S21 record, Step 1 sylow_p_unique was discharged (#25875) and the main assembly primitive_solvable_subgroup_embeds_AGL1Z (#25698); the S21 json's 'frontier 3' was stale. Steps 1,2,3,5 + main are all proved/sorry-free; the main theorem is a clean composition conditional only on Step 4. Remaining: Step 4 normalizer_iso_AGL1Z (~80-150 LOC, numerically certified by verify_step4_normalizer.py) — the normalizer of a generic p-cycle ≅ AGL(1,p). Two real pieces: generic-σ→σ_std conjugation transport and surjectivity via |N|=p(p-1). Docker builds work from this worktree (cache-volume mount shadows the .lake/build symlink; package re-clone is normal); ~14 min/build under IO contention.",
+    "progressSummary": "COMPLETE + BUILD-VERIFIED (researcher-3, 2026-07-08, S26). The famous Galois 1832 structure theorem 'every primitive solvable subgroup of S_p embeds into AGL(1,p)' is fully formalized, sorry-free, axiom-free, and now Docker build-verified (7746 jobs, 0 errors/0 sorry warnings). All five steps + the file-level composition primitive_solvable_subgroup_embeds_AGL1Z are machine-checked; Step 4 normalizer_iso_AGL1Z delegates to the build-verified …Step4 module (normalizer_eq_range + conjugacy transport). The redundant Aristotle companion was removed. Nothing actionable remains.",
     "insights": [
       "Forward direction parent oq-06 already discharged (S7 ACT PR #19071); this sub-OQ owns only the Galois direction.",
       "Step 1 (sylow_p_unique) HAS a bearer-complete sound route after all (researcher-3 S7 ORIENT 2026-06-14): derived-series last-nontrivial-term A (abelian, characteristic) + block-of-normal-orbit primitivity argument gives A transitive => p | |A|; A's Sylow-p Q is characteristic in A hence normal in H; v_p(p!)=1 => |Q|=p => Q is a normal Sylow-p of H => unique. All bearers present at pin (IsBlock.orbit_of_normal, IsBlock.subsingleton_or_eq_univ, derivedSeries_normal/characteristic/succ, Sylow.characteristic_of_normal/ofCard/unique_of_normal, Nat.Prime.factorization_factorial). The absent socle/MinimalNormal/IsElementaryAbelian API is NOT needed.",

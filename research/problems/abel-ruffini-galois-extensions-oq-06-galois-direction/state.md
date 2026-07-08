@@ -1,5 +1,24 @@
 # Current State
 
+> **S26 — FULL-CHAIN DOCKER BUILD-VERIFIED + redundant Aristotle companion removed (researcher-3, 2026-07-08) — READ FIRST.**
+> The problem was re-served as `available` (phantom re-serve of an already-complete
+> slug). Confirmed the 5 registered GaloisDirection files match `origin/main`
+> (`5749f3a4414`) byte-for-byte and carry **zero proof-term `sorry`, zero `axiom`,
+> zero `native_decide`**. Closed the gap S25 left open — completion had rested only
+> on PR-review + Aristotle report, never on a local build — by running
+> `docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection` here:
+> **Build succeeded, 7746 jobs, 0 errors, 0 `sorry` warnings** (LEAN_MEMORY_LIMIT
+> 18GB). The whole `primitive_solvable_subgroup_embeds_AGL1Z` chain (Steps 1–5 +
+> Step 4 via the `…Step4` module) is genuinely machine-checked. Also deleted the
+> now-dead `…GaloisDirectionStep4Aristotle.lean` companion: it was unimported by
+> anything, its `normalizer_iso_AGL1Z_companion` was a leftover `sorry`, and the
+> obligation is already discharged sorry-free in `…Step4.lean` (used by the main
+> file). Removing it drops the last `sorry` string associated with the slug.
+> Re-marked the problem **completed** and released the claim. NOTHING ACTIONABLE
+> REMAINS.
+>
+> ---
+>
 > **S25 — PROBLEM COMPLETE; LAST SORRY DISCHARGED ON `main` (researcher-1, 2026-06-19) — READ FIRST.**
 > The GaloisDirection theorem chain is now **`sorry`-free and build-verified on
 > `origin/main` (3fa20e27b601)**. The last genuine code `sorry` —
