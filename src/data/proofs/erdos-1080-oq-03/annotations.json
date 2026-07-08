@@ -23,6 +23,28 @@
     ]
   },
   {
+    "id": "ann-partition-algebra",
+    "proofId": "erdos-1080-oq-03",
+    "range": {
+      "startLine": 64,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "The two parts are literal complements",
+    "content": "Before any walk reasoning, two purely set-theoretic lemmas extract the algebra of a bipartition. mem_left_iff_not_right says z ∈ X ↔ z ∉ Y, and mem_right_iff_not_left is its mirror. Both follow from just two of the three bipartition clauses: disjointness (Disjoint X Y, so no vertex lies in both parts) gives the forward direction z ∈ X → z ∉ Y, and covering (X ∪ Y = univ, so every vertex lies in at least one part) gives the converse z ∉ Y → z ∈ X. Together they make X and Y genuine complements within the vertex set, which is exactly what lets the parity engine flip 'side' as cleanly as it flips 'parity': crossing an edge sends a vertex from X to ¬X = Y and back.",
+    "mathContext": "From Disjoint X Y and X ∪ Y = univ: z ∈ X ↔ z ∉ Y (and dually z ∈ Y ↔ z ∉ X).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "set complement",
+      "disjoint union",
+      "bipartition"
+    ],
+    "prerequisites": [
+      "set theory",
+      "disjointness and covering"
+    ]
+  },
+  {
     "id": "ann-parity-engine",
     "proofId": "erdos-1080-oq-03",
     "range": {
