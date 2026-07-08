@@ -1141,8 +1141,8 @@
       "issues": []
     },
     "angle-trisection-oq-05-oq-04": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-12T06:48:56Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean",
       "issues": []
     },
@@ -3149,8 +3149,8 @@
       "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "binomial-theorem-oq-04-oq-01-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-07-08T05:59:18Z",
+      "auditCount": 3,
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean",
       "issues": []
     },
@@ -3586,9 +3586,9 @@
       "result": "clean"
     },
     "bounded-prime-gaps-oq-05": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-06-24T20:41:48Z",
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean"
     },
     "brianchon-theorem-oq-01": {
@@ -3705,15 +3705,15 @@
       "result": "clean"
     },
     "brouwer-fixed-point-oq-01-oq-03-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-15T20:55:34Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean",
       "issues": []
     },
     "brouwer-fixed-point-oq-01-oq-03-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-06-24T12:27:19Z",
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean"
     },
     "brouwer-fixed-point-oq-02": {
@@ -12878,8 +12878,8 @@
     },
     "erdos-360": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 5,
-      "lastAudited": "2026-07-08T05:59:18Z",
+      "auditCount": 6,
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean",
       "issues": []
     },
@@ -18986,9 +18986,9 @@
       "issues": []
     },
     "four-square-distribution-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-05-08T03:30:00Z",
-      "result": "issues-fixed",
+      "auditCount": 3,
+      "lastAudited": "2026-07-08T06:05:08Z",
+      "result": "clean",
       "issues": [],
       "notes": "Original drift fixed via #16716, then file grew to 888 lines / 84 theorems via #16804/#16860/#16893; meta.lineCount and meta.theoremCount now match origin/main."
     },
@@ -21938,15 +21938,15 @@
       "issues": []
     },
     "law-of-cosines-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-05T00:59:36Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean",
       "issues": []
     },
     "law-of-cosines-oq-03-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-06-24T12:27:19Z",
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean"
     },
     "law-of-cosines-oq-04": {
@@ -23211,9 +23211,10 @@
     },
     "p-vs-np": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:08:16Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T06:05:08Z",
+      "result": "clean",
+      "issues": []
     },
     "pac-learning-bounds": {
       "auditCount": 4,
@@ -23520,9 +23521,9 @@
       "result": "clean"
     },
     "picks-theorem": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-04T04:02:28Z",
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean"
     },
     "picks-theorem-oq-01": {
@@ -29199,9 +29200,9 @@
       "result": "clean"
     },
     "roth-theorem-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-07-08T04:59:24Z",
+      "lastAudited": "2026-07-08T06:05:08Z",
       "result": "clean"
     },
     "russell-1-plus-1-oq-02": {
@@ -29554,5 +29555,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-07-08T05:59:18Z"
+  "lastUpdated": "2026-07-08T06:05:08Z"
 }
