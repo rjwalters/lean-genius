@@ -230,4 +230,57 @@ theorem firstMoment_threshold_ge_self (t : ℕ) (ht : 1 ≤ t) :
 theorem firstMomentThreshold_two : firstMomentThreshold 2 = 2 := by
   unfold firstMomentThreshold; norm_num
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 6: The threshold diverges — a formal `c_t → ∞`
+-- ══════════════════════════════════════════════════════════════════
+
+/-- Truncated integer division by a fixed positive constant is cofinal: as the
+    dividend runs to infinity so does the quotient.  This is the arithmetic hook
+    that survives dividing the exponential threshold by a fixed ground-set size. -/
+theorem tendsto_div_const_atTop {n : ℕ} (hn : 0 < n) :
+    Filter.Tendsto (· / n) Filter.atTop Filter.atTop := by
+  rw [Filter.tendsto_atTop_atTop]
+  intro b
+  refine ⟨b * n, fun m hm => ?_⟩
+  rw [Nat.le_div_iff_mul_le hn]
+  exact hm
+
+/-- **The first-moment threshold tends to infinity.**  `firstMomentThreshold t
+    = 2^{t-1} → ∞` as `t → ∞`.  This upgrades the pointwise bound
+    `firstMoment_threshold_ge_self` (`t ≤ 2^{t-1}`) to the actual limit
+    statement, making precise the `c_t → ∞` that Problem #1022 asks for. -/
+theorem firstMomentThreshold_tendsto_atTop :
+    Filter.Tendsto firstMomentThreshold Filter.atTop Filter.atTop :=
+  Filter.tendsto_atTop_mono' _
+    (by
+      filter_upwards [Filter.eventually_ge_atTop 1] with t ht
+      exact firstMoment_threshold_ge_self t ht)
+    Filter.tendsto_id
+
+/-- **An admissible sparseness coefficient exists and diverges (bounded ground
+    set).**  Over any *fixed* nonempty ground set `V`, the explicit function
+    `c(t) = ⌊2^{t-1} / |V|⌋` satisfies both halves of Erdős #1022's existential
+    in the first-moment regime:
+
+    * `c(t) → ∞` as `t → ∞` (the divergence the problem requires), and
+    * every `c(t)`-sparse family whose members all have size at least `t ≥ 1`
+      has Property B.
+
+    This packages the whole file into the exact logical shape of the conjecture
+    (`∃ c, (c → ∞) ∧ (sparse ⟹ Property B)`), *honestly restricted* to bounded
+    ground sets: the divisor `|V|` is the fixed cardinality, so the crude
+    ground-set bound (and hence this construction) degrades once `V` is allowed
+    to grow with the family — precisely the untouched hard regime. -/
+theorem exists_admissible_coeff (hV : 0 < Fintype.card V) :
+    ∃ c : ℕ → ℕ, Filter.Tendsto c Filter.atTop Filter.atTop ∧
+      ∀ (F : Finset (Finset V)) (t : ℕ), 1 ≤ t →
+        (∀ e ∈ F, t ≤ e.card) → IsSparse F (c t) → HasPropertyB F := by
+  refine ⟨fun t => firstMomentThreshold t / Fintype.card V, ?_, ?_⟩
+  · exact (tendsto_div_const_atTop hV).comp firstMomentThreshold_tendsto_atTop
+  · intro F t ht hmin hsparse
+    refine propertyB_of_sparse F t _ ht hmin hsparse ?_
+    calc firstMomentThreshold t / Fintype.card V * Fintype.card V
+          ≤ firstMomentThreshold t := Nat.div_mul_le_self _ _
+      _ = 2 ^ (t - 1) := rfl
+
 end Erdos1022OQ02
