@@ -97,6 +97,80 @@
       "mathContext": "ψ(n) − θ(n) = ∑_{k≥2} θ(n^{1/k}) and |ψ(n) − θ(n)| ≤ 2√n·log n = O(√n log n)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "chebyshevTheta",
+      "type": "supporting",
+      "description": "The **first Chebyshev function** θ(n) = ∑_{p ≤ n, p prime} log p, defined as a sum over the primes in [1,n]. Noncomputable.",
+      "leanType": "(n : ℕ) → ℝ",
+      "startLine": 57,
+      "endLine": 58
+    },
+    {
+      "name": "chebyshevTheta_eq_sum_vonMangoldt",
+      "type": "supporting",
+      "description": "θ in von Mangoldt form: θ(n) = ∑_{m≤n} [m prime]·Λ(m). The prime part of ψ is θ, since Λ(p) = log p for prime p.",
+      "leanType": "(n : ℕ) → chebyshevTheta n = ∑ m ∈ Finset.Icc 1 n, (if m.Prime then Λ m else 0)",
+      "startLine": 67,
+      "endLine": 73
+    },
+    {
+      "name": "psi_sub_theta",
+      "type": "core",
+      "description": "**The structural heart.** ψ(n) − θ(n) = ∑_{m≤n, ¬prime} Λ(m): the two Chebyshev functions share the same main term and differ only by the higher-prime-power contribution (m = p^k, k ≥ 2).",
+      "leanType": "(n : ℕ) → chebyshevPsi n - chebyshevTheta n = ∑ m ∈ Finset.Icc 1 n, (if m.Prime then 0 else Λ m)",
+      "startLine": 80,
+      "endLine": 85
+    },
+    {
+      "name": "theta_le_psi",
+      "type": "supporting",
+      "description": "θ(n) ≤ ψ(n) — immediate from nonnegativity of every term of ψ − θ.",
+      "leanType": "(n : ℕ) → chebyshevTheta n ≤ chebyshevPsi n",
+      "startLine": 94,
+      "endLine": 95
+    },
+    {
+      "name": "psi_sub_theta_eq_proper_prime_powers",
+      "type": "core",
+      "description": "The difference written explicitly over the *proper* prime powers in [1,n] (m = p^k with k ≥ 2, i.e. IsPrimePow m ∧ ¬m.Prime), the terms where Λ is nonzero.",
+      "leanType": "(n : ℕ) → chebyshevPsi n - chebyshevTheta n = ∑ m ∈ (Finset.Icc 1 n).filter (fun m => IsPrimePow m ∧ ¬ m.Prime), Λ m",
+      "startLine": 100,
+      "endLine": 111
+    },
+    {
+      "name": "chebyshevPsi_eq_mathlib",
+      "type": "supporting",
+      "description": "**Bridge.** The parent's elementary ℕ-indexed second Chebyshev function agrees with Mathlib's Chebyshev.psi, aligning Icc 1 n indexing with Mathlib's Ioc 0 ⌊x⌋₊.",
+      "leanType": "(n : ℕ) → chebyshevPsi n = Chebyshev.psi (n : ℝ)",
+      "startLine": 117,
+      "endLine": 119
+    },
+    {
+      "name": "chebyshevTheta_eq_mathlib",
+      "type": "supporting",
+      "description": "**Bridge.** chebyshevTheta agrees with Mathlib's Chebyshev.theta.",
+      "leanType": "(n : ℕ) → chebyshevTheta n = Chebyshev.theta (n : ℝ)",
+      "startLine": 122,
+      "endLine": 124
+    },
+    {
+      "name": "psi_sub_theta_eq_sum_theta",
+      "type": "core",
+      "description": "**Same-main-term identity** (the Σ_{k≥2} θ(n^{1/k}) form). For n ≥ 2, ψ(n) − θ(n) = ∑_{k=2}^{⌊log₂ n⌋} θ(n^{1/k}), transported from Mathlib's Chebyshev.psi_eq_theta_add_sum_theta via the bridge.",
+      "leanType": "(n : ℕ) → (hn : 2 ≤ n) → chebyshevPsi n - chebyshevTheta n = ∑ k ∈ Finset.Icc 2 ⌊Real.log n / Real.log 2⌋₊, Chebyshev.theta ((n : ℝ) ^ ((1 : ℝ) / k))",
+      "startLine": 130,
+      "endLine": 135
+    },
+    {
+      "name": "abs_psi_sub_theta_le",
+      "type": "core",
+      "description": "**Quantitative same-main-term bound.** For n ≥ 1, |ψ(n) − θ(n)| ≤ 2·√n·log n, so ψ and θ agree up to O(√n·log n). Transported from Mathlib's Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log.",
+      "leanType": "(n : ℕ) → (hn : 1 ≤ n) → |chebyshevPsi n - chebyshevTheta n| ≤ 2 * Real.sqrt n * Real.log n",
+      "startLine": 141,
+      "endLine": 144
+    }
+  ],
   "conclusion": {
     "summary": "A 146-line, fully machine-checked file (0 sorries, 0 axioms, no native_decide) establishing that the first and second Chebyshev functions θ and ψ share the same main term. It proves directly, over the parent's self-contained ℕ-indexed ψ, the structural decomposition ψ(n) − θ(n) = ∑_{m ≤ n, ¬ m prime} Λ(m) (with nonnegativity and θ ≤ ψ, and an explicit restatement over the proper prime powers), then bridges chebyshevPsi/chebyshevTheta to Mathlib's Chebyshev.psi/theta to transport the exact identity ψ(n) − θ(n) = ∑_{k=2}^{⌊log₂ n⌋} θ(n^{1/k}) and the sharp bound |ψ(n) − θ(n)| ≤ 2·√n·log n = O(√n·log n).",
     "implications": "The result answers the parent chebyshev-bounds-oq-02's open question on the ψ−θ comparison and is the technical justification for treating θ and ψ interchangeably in elementary approaches to the Prime Number Theorem: since their difference is only O(√n·log n) while each is asymptotic to n, an asymptotic ψ(n) ∼ n immediately yields θ(n) ∼ n, and bounds on ψ transfer to bounds on the prime-counting function π. The gallery↔Mathlib bridge is reusable infrastructure — it imports Mathlib's full Chebyshev development into the parent's elementary thread through a single Finset.sum_congr identification.",
@@ -106,6 +180,29 @@
       "Combine with the abscissa of convergence of ∑ Λ(n)/nˢ to connect the ψ−θ gap to the zero-free region of the Riemann zeta function."
     ]
   },
+  "references": [
+    {
+      "authors": "Chebyshev, P. L.",
+      "title": "Mémoire sur les nombres premiers",
+      "year": "1852",
+      "venue": "Journal de mathématiques pures et appliquées, 1re série, 17, 366–390",
+      "note": "Introduces the functions θ and ψ (there ψ and θ) and the elementary bounds on π(n); the origin of the two Chebyshev functions whose shared main term is formalized here."
+    },
+    {
+      "authors": "Apostol, Tom M.",
+      "title": "Introduction to Analytic Number Theory",
+      "year": "1976",
+      "venue": "Springer UTM, §4.3–4.4",
+      "note": "Chebyshev's functions ψ and θ; Theorem 4.10 gives 0 ≤ ψ(x) − θ(x) and the O(√x·log²x) estimate — the same-main-term relation proved in this entry."
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "2008",
+      "venue": "Oxford University Press, 6th ed., §22.1–22.2",
+      "note": "Classical treatment of the Chebyshev functions and the equivalence of the θ, ψ, and π asymptotics."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "chebyshev-bounds-oq-02",
