@@ -143,6 +143,18 @@
     "path": "Proofs/FibonacciIdentitiesOQ06.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "fib_sum",
+      "type": "theorem",
+      "description": "Fibonacci partial-sum (telescoping) identity: F₀ + F₁ + ⋯ + Fₙ = Fₙ₊₂ − 1, stated additively as (∑_{i≤n} Fᵢ) + 1 = Fₙ₊₂ to stay in ℕ. The telescoping step closes by omega once the recurrence Fₖ₊₃ = Fₖ₊₂ + Fₖ₊₁ is supplied."
+    },
+    {
+      "name": "fib_weighted_sum",
+      "type": "theorem",
+      "description": "Index-weighted Fibonacci sum (discrete first moment): 0·F₀ + 1·F₁ + ⋯ + n·Fₙ = n·Fₙ₊₂ − Fₙ₊₃ + 2, additively (∑ i·Fᵢ) + Fₙ₊₃ = n·Fₙ₊₂ + 2 — the Fibonacci analogue of ∑ i·rⁱ, closed by zify + linear_combination on the induction hypothesis."
+    }
+  ],
   "references": [
     {
       "authors": "Lucas, Édouard",
