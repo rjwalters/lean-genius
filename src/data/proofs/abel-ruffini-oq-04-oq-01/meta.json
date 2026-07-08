@@ -504,15 +504,16 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib",
+      "Proofs.AbelRuffiniOQ04OQ01OQ03"
     ],
     "opens": [
       "Polynomial"
     ],
     "namespace": "AbelRuffiniOQ04OQ01",
-    "lineCount": 1498,
+    "lineCount": 1337,
     "axiomCount": 0,
-    "theoremCount": 64,
+    "theoremCount": 65,
     "definitionCount": 15,
     "mainTheorems": [
       {
