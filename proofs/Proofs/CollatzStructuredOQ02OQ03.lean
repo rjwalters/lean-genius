@@ -1780,4 +1780,22 @@ example {n : ℕ} (h : n % 128 = 7) : AttainsBelow n :=
   autoDropCert_attainsBelow (b := 7) (r := 7) (by decide)
     (by rw [show (2 : ℕ) ^ 7 = 128 by norm_num]; exact h)
 
+/-! ### Part VII bridge to the orbit minimum (Part III)
+
+The per-residue `…_colMin_lt` corollaries of Part III (`mod_sixteen_three_colMin_lt`,
+`mod_thirtytwo_eleven_colMin_lt`, `mod_onetwentyeight_seven_colMin_lt`, …) each compose a
+*hand-written* `AttainsBelow` witness with `attainsBelow_colMin_lt`.  With the turnkey
+engine in place that composition is itself uniform: **any** residue class the auto
+certificate accepts has orbit minimum strictly below its start, with no per-residue proof.
+This is the last hand-written layer of Part III replaced by a single general lemma. -/
+
+/-- **Auto engine → orbit minimum.**  A residue class `r (mod 2^b)` accepted by the
+turnkey certificate `autoDropCert` has orbit minimum strictly below every start:
+`colMin n < n` for all `n ≡ r (mod 2^b)`.  Composes `autoDropCert_attainsBelow` (Part VII)
+with `attainsBelow_colMin_lt` (Part III), so a new level `b` yields the Part III drop with
+one line and no trajectory chase. -/
+theorem autoDropCert_colMin_lt {b r : ℕ} (h : autoDropCert b r = true)
+    {n : ℕ} (hn : n % 2 ^ b = r) : colMin n < n :=
+  attainsBelow_colMin_lt (autoDropCert_attainsBelow h hn)
+
 end CollatzStructuredOQ02OQ03
