@@ -431,6 +431,71 @@ theorem cover_graph_characterization [Fintype V] :
     letI : DecidableLT V := fun a b => Classical.propDecidable _
     exact cover_graph_admits_robust hP
 
+/-- **Concrete girth-3 non-example** (proved, no axiom): the triangle `K₃`
+    (the complete graph on `Fin 3`) admits *no* robustly acyclic orientation.
+
+    This is the smallest witness of the Nešetřil-Rödl phenomenon
+    (`nesetril_rodl_counterexample` below, at `g = 3`): a triangle is not a
+    cover graph because *every* acyclic orientation of it is transitive.
+    Concretely, the three vertices get pairwise-distinct ranks (adjacent
+    vertices cannot share a rank), so they line up as a source `a`, middle `b`
+    and sink `c` with arcs `a → b`, `b → c`, `a → c`. The arc `a → c` is then
+    *dependent*: the alternate directed path `a → b → c` already connects its
+    endpoints, so reversing `a → c` closes the cycle `c → a → b → c`. Hence no
+    orientation is robust.
+
+    Via `cover_graph_characterization` this reproves directly that the triangle
+    is not the Hasse diagram of any poset. -/
+theorem triangle_not_robust :
+    ¬ admitsRobustAcyclicOrientation (⊤ : SimpleGraph (Fin 3)) := by
+  rintro ⟨O, ⟨rank, hrank⟩, hdep⟩
+  -- Distinct vertices of `Fin 3` are adjacent in the complete graph.
+  have adj : ∀ u v : Fin 3, u ≠ v → (⊤ : SimpleGraph (Fin 3)).Adj u v := by
+    intro u v h; simpa using h
+  -- Each edge is oriented toward the higher rank.
+  have arc_of_lt : ∀ u v : Fin 3, u ≠ v → rank u < rank v → O.arc u v := by
+    intro u v hne hlt
+    rcases O.covers u v (adj u v hne) with h | h
+    · exact h
+    · exact absurd (hrank _ _ h) (by omega)
+  -- Adjacent (hence distinct) vertices get distinct ranks.
+  have rank_ne : ∀ u v : Fin 3, u ≠ v → rank u ≠ rank v := by
+    intro u v hne heq
+    rcases O.covers u v (adj u v hne) with h | h <;>
+      exact absurd (hrank _ _ h) (by omega)
+  -- A transitive triangle `rank a < rank b < rank c` has a dependent arc `a → c`:
+  -- the path `a → b → c` avoids `(a, c)`, so reversing `a → c` closes a cycle.
+  have triangle_dep : ∀ a b c : Fin 3, a ≠ b → b ≠ c → a ≠ c →
+      rank a < rank b → rank b < rank c → O.hasDependentArc := by
+    intro a b c hab hbc hac h1 h2
+    refine ⟨a, c, arc_of_lt a c hac (h1.trans h2), ?_⟩
+    refine Relation.TransGen.tail
+      (Relation.TransGen.single ⟨arc_of_lt a b hab h1, ?_⟩)
+      ⟨arc_of_lt b c hbc h2, ?_⟩
+    · intro h; rw [Prod.mk.injEq] at h; exact hbc h.2
+    · intro h; rw [Prod.mk.injEq] at h; exact hab h.1.symm
+  -- The three ranks are pairwise distinct, so they linearly order the vertices;
+  -- in every ordering we exhibit a transitive triangle and contradict robustness.
+  have d01 := rank_ne 0 1 (by decide)
+  have d02 := rank_ne 0 2 (by decide)
+  have d12 := rank_ne 1 2 (by decide)
+  rcases lt_trichotomy (rank 0) (rank 1) with h01 | h01 | h01
+  · rcases lt_trichotomy (rank 1) (rank 2) with h12 | h12 | h12
+    · exact hdep (triangle_dep 0 1 2 (by decide) (by decide) (by decide) h01 h12)
+    · exact absurd h12 d12
+    · rcases lt_trichotomy (rank 0) (rank 2) with h02 | h02 | h02
+      · exact hdep (triangle_dep 0 2 1 (by decide) (by decide) (by decide) h02 h12)
+      · exact absurd h02 d02
+      · exact hdep (triangle_dep 2 0 1 (by decide) (by decide) (by decide) h02 h01)
+  · exact absurd h01 d01
+  · rcases lt_trichotomy (rank 1) (rank 2) with h12 | h12 | h12
+    · rcases lt_trichotomy (rank 0) (rank 2) with h02 | h02 | h02
+      · exact hdep (triangle_dep 1 0 2 (by decide) (by decide) (by decide) h01 h02)
+      · exact absurd h02 d02
+      · exact hdep (triangle_dep 1 2 0 (by decide) (by decide) (by decide) h12 h02)
+    · exact absurd h12 d12
+    · exact hdep (triangle_dep 2 1 0 (by decide) (by decide) (by decide) h12 h01)
+
 /-- Fisher-Fraughnaugh-Langley-West (1997): If the chromatic number of G
     is less than its girth, then G admits a robustly acyclic orientation. -/
 axiom chromatic_lt_girth_implies_robust [Fintype V]
@@ -460,8 +525,10 @@ axiom nesetril_rodl_counterexample (g : ℕ) (hg : g ≥ 3) :
 7. `cover_graph_characterization` - Robust orientation ↔ cover graph
    (de-axiomatized: forward via the reachability order `reachOrder`,
     reverse via `cover_graph_admits_robust`)
+8. `triangle_not_robust` - The triangle K₃ admits no robustly acyclic
+   orientation (concrete girth-3 witness of Nešetřil-Rödl, no axiom)
 
 ### Axiomatized (deep results):
-8. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
-9. `nesetril_rodl_counterexample` - Counterexamples for all girths ≥ 3
+9. `chromatic_lt_girth_implies_robust` - χ(G) < girth(G) suffices
+10. `nesetril_rodl_counterexample` - Counterexamples for all girths ≥ 3
 -/
