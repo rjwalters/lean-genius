@@ -47,7 +47,8 @@
       "In general lcm p q strictly divides p·q, so a block sum of companion matrices is derogatory (minpoly ≠ charpoly); coprimality is exactly what removes the gap and makes the block sum cyclic.",
       "The equality minpoly = charpoly = p·q is the matrix-level statement of K[X]/(p·q) ≅ K[X]/(p) × K[X]/(q): two coprime cyclic modules merge into one cyclic module.",
       "The whole argument reduces to a clean GCD-monoid fact about monic polynomials — lcm = product for coprimes — showing how much of rational canonical form theory is arithmetic in K[X].",
-      "The GCDMonoid structure on F[X] requires a DecidableEq F instance; supplying it is the only fix needed to machine-check the coprime merge."
+      "The GCDMonoid structure on F[X] requires a DecidableEq F instance; supplying it is the only fix needed to machine-check the coprime merge.",
+      "Coprimality is stated as IsCoprime p q — the Bézout condition ∃ a, b, a·p + b·q = 1 — not as gcd(p,q) = 1. This is deliberate: the key step p·q ∣ lcm p q is IsCoprime.mul_dvd, whose proof multiplies the Bézout identity by lcm p q. Over the PID F[X] the two formulations are equivalent, but the Bézout form is what actually powers the divisibility, making the argument portable to any Bézout domain, not just fields."
     ],
     "prerequisites": [
       "Companion matrices and the rational canonical form",
