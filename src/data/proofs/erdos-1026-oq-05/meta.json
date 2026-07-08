@@ -48,6 +48,14 @@
   },
   "sections": [
     {
+      "id": "overview-docstring",
+      "title": "Problem framing and imports",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "File docstring: Erdős #1026 and OQ-05's extension from single monotonic subsequences to monotonic decompositions (Hanani 1957). States the goal — the Mirsky/Dilworth lower-bound half n ≤ numParts · max(LIS, LDS) — and explains why the Subsequence/LIS/LDS/MonotonicDecomposition interface is re-stated rather than imported (the parent Erdos1026Problem.lean depends on Archive.Wiedijk100Theorems). Single `import Mathlib`.",
+      "mathContext": "Goal: $n \\le \\mathrm{numParts}\\cdot\\max(\\mathrm{LIS},\\mathrm{LDS})$, the lower-bound side of Hanani's $(\\sqrt2+o(1))\\sqrt n$ decomposition theorem."
+    },
+    {
       "id": "subsequence-interface",
       "title": "The Subsequence Interface and Monotonicity",
       "startLine": 42,
@@ -75,7 +83,7 @@
       "id": "existence-bracket",
       "title": "Existence of a Decomposition and the Bracket",
       "startLine": 167,
-      "endLine": 187,
+      "endLine": 184,
       "summary": "fin_one_strictMono: any function out of Fin 1 is vacuously strictly monotone. singletonDecomposition: splitting into n singleton parts is a valid monotonic decomposition, so the class is nonempty and numParts ≤ n. Together with the lower bound this brackets the optimal number of parts in [n / max(LIS, LDS), n].",
       "mathContext": "Optimal $\\mathrm{numParts} \\in [\\,n/\\max(\\mathrm{LIS},\\mathrm{LDS}),\\; n\\,]$."
     }
