@@ -4594,10 +4594,13 @@
       "result": "clean"
     },
     "cauchy-interlacing-theorem-oq-01-oq-02": {
-      "auditCount": 1,
-      "issues": [],
-      "lastAudited": "2026-06-24T12:27:19Z",
-      "result": "clean"
+      "auditCount": 2,
+      "issues": [
+        "Stale theoremCount/lineCount reconciled to Lean source after research growth (re-audit)"
+      ],
+      "lastAudited": "2026-07-08T20:35:55Z",
+      "result": "issues-fixed",
+      "agentId": "auditor-reaudit-20260708"
     },
     "cauchy-interlacing-theorem-oq-01-oq-02-oq-01": {
       "auditCount": 2,
@@ -8587,9 +8590,13 @@
       "result": "clean"
     },
     "erdos-1006-oq-01": {
-      "auditCount": 4,
-      "lastAudited": "2026-06-20T17:37:55Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T20:35:55Z",
+      "result": "issues-fixed",
+      "agentId": "auditor-reaudit-20260708",
+      "issues": [
+        "Stale theoremCount/lineCount reconciled to Lean source after research growth (re-audit)"
+      ]
     },
     "erdos-1006-oq-01-oq-02": {
       "auditCount": 2,
@@ -9020,12 +9027,13 @@
       "result": "clean"
     },
     "erdos-1022-oq-02": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [
-        "Stale theoremCount/lineCount reconciled to Lean source (re-audit)"
+        "Stale theoremCount/lineCount reconciled to Lean source (re-audit)",
+        "Stale theoremCount/lineCount reconciled to Lean source after research growth (re-audit)"
       ],
-      "lastAudited": "2026-07-08T19:12:11Z",
-      "result": "clean",
+      "lastAudited": "2026-07-08T20:35:55Z",
+      "result": "issues-fixed",
       "agentId": "auditor-reaudit-20260708"
     },
     "erdos-1022-oq-04": {
@@ -15757,11 +15765,12 @@
     },
     "erdos-703": {
       "agentId": "auditor-reaudit-20260708",
-      "auditCount": 6,
-      "lastAudited": "2026-07-08T19:12:11Z",
-      "result": "clean",
+      "auditCount": 7,
+      "lastAudited": "2026-07-08T20:35:55Z",
+      "result": "issues-fixed",
       "issues": [
-        "Stale theoremCount/lineCount reconciled to Lean source (re-audit)"
+        "Stale theoremCount/lineCount reconciled to Lean source (re-audit)",
+        "Stale theoremCount/lineCount reconciled to Lean source after research growth (re-audit)"
       ]
     },
     "erdos-704": {
@@ -24491,18 +24500,22 @@
       "result": "issues-fixed"
     },
     "roth-theorem": {
-      "auditCount": 3,
-      "lastAudited": "2026-07-08T18:54:18Z",
-      "result": "clean",
-      "issues": [],
-      "agentId": "auditor-agent-7"
+      "auditCount": 4,
+      "lastAudited": "2026-07-08T20:35:55Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Stale theoremCount/lineCount reconciled to Lean source after research growth (re-audit)"
+      ],
+      "agentId": "auditor-reaudit-20260708"
     },
     "roth-theorem-k3": {
-      "auditCount": 6,
-      "issues": [],
-      "lastAudited": "2026-07-08T18:54:18Z",
-      "result": "clean",
-      "agentId": "auditor-agent-7"
+      "auditCount": 7,
+      "issues": [
+        "Stale theoremCount/lineCount reconciled to Lean source after research growth (re-audit)"
+      ],
+      "lastAudited": "2026-07-08T20:35:55Z",
+      "result": "issues-fixed",
+      "agentId": "auditor-reaudit-20260708"
     },
     "roth-theorem-k3-oq-01": {
       "auditCount": 5,
@@ -29633,14 +29646,16 @@
       "result": "clean"
     },
     "dirichlets-theorem-oq-02-oq-03": {
-      "lastAudited": "2026-07-08T19:12:11Z",
-      "auditCount": 2,
-      "result": "clean",
+      "lastAudited": "2026-07-08T20:35:55Z",
+      "auditCount": 3,
+      "result": "issues-fixed",
       "agentId": "auditor-reaudit-20260708",
       "notes": "Audit CLEAN (first audit): 0 sorries/0 axioms/0 native_decide. Uses kernel `decide` (lines 219,224) NOT native_decide for B 1=95 numeric check; assumptions field correctly states ofReduceBool-free. Genuine Euclid-construction + iterated-factorial tower bound p3(k)<=B(k). verified/original accurate.",
-      "issues": []
+      "issues": [
+        "Stale theoremCount/lineCount reconciled to Lean source after research growth (re-audit)"
+      ]
     }
   },
   "version": 1,
-  "lastUpdated": "2026-07-08T19:12:11Z"
+  "lastUpdated": "2026-07-08T20:35:55Z"
 }
