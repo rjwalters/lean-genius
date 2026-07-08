@@ -1,0 +1,54 @@
+{
+  "slug": "erdos-1093-oq-02",
+  "title": "Erdős #1093 OQ-02 — Is d(284,28)=9 the maximal deficiency?",
+  "phase": "ACT",
+  "status": "in-progress",
+  "started": "2026-07-08T00:00:00.000Z",
+  "lastUpdate": "2026-07-08T00:00:00.000Z",
+  "path": "full",
+  "parentId": "erdos-1093",
+  "tier": "C",
+  "significance": 5,
+  "tractability": 3,
+  "tags": ["erdos", "smooth-numbers", "binomial-coefficients"],
+  "problemStatement": {
+    "plain": "The deficiency of C(n,k) (for n>=2k, when C(n,k) has no prime factor <= k) is the number of 0<=i<k with n-i being k-smooth. The current record is deficiency(C(284,28))=9. OQ-02 asks: is 9 the maximum possible deficiency over all admissible (n,k), or do higher values occur?",
+    "formal": "MaximalDeficiencyIs 9 := (exists admissible (n,k) with deficiency n k = 9) and (forall admissible (n,k), deficiency n k <= 9)."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1093ProblemOQ02.lean",
+      "filename": "Erdos1093ProblemOQ02.lean",
+      "lineCount": 149,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1093ProblemOQ02.lean"
+    }
+  ],
+  "knowledge": {
+    "progressSummary": "PROGRESS: existence half of OQ-02 machine-verified; the full conjecture is reduced to a single open universal upper bound. Universal bound remains OPEN.",
+    "builtItems": [
+      "noSmallPrimeFactors_iff (Erdos1093ProblemOQ02.lean) — decidable reduction of the admissibility side-condition (unbounded ∀ prime) to a bounded check over primes p ≤ k; ofReduceBool-free.",
+      "noSmallPrimeFactors_284_28 — the record pair (284,28) is admissible: no prime ≤ 28 divides C(284,28) (parent verified only the count = 9, never admissibility).",
+      "smooth_indices_284_28 — explicit 9-index certificate {4,8,9,11,12,14,18,20,24} (the 28-smooth values 280,276,275,273,272,270,266,264,260).",
+      "exists_deficiency_nine — existence half of OQ-02: an admissible example attains deficiency 9.",
+      "maximalDeficiencyIs_nine_iff_upperBound — MaximalDeficiencyIs 9 ⇔ (no admissible pair has deficiency > 9); isolates the open content.",
+      "deficiency_le_nine_of_k_le_nine — OQ-02 is automatic for k ≤ 9 (from the trivial bound deficiency ≤ k), confining the open part to k ≥ 10.",
+      "Repaired the parent Erdos1093Problem.lean (broken on main: omega at L173 in isKSmooth_one lacked p.Prime's two_le) — parent now builds (3058 jobs)."
+    ],
+    "insights": [
+      "The parent's deficiency_284_28 = 9 alone does NOT exhibit a valid deficiency example: the deficiency count is defined unconditionally, but the ELS problem requires C(n,k) to have no prime factor ≤ k. Checking admissibility only needs primes ≤ k (Kummer is unnecessary): C(284,28) is a ~110-bit bignum, so native_decide computes it and tests divisibility by primes ≤ 28 instantly.",
+      "The maximality question splits cleanly: the existence half is a finite verification (attained at (284,28)); the universal half (no admissible pair exceeds 9) is the genuinely open content and cannot be enumerated (unbounded n, k).",
+      "Trivial bound deficiency ≤ k means any counterexample needs k ≥ 10; the ELS bound n ≪ 2^k·√k (parent axiom els_upper_bound) bounds n per fixed k but the number of k-values is still unbounded."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Attack the universal upper bound for small k ≥ 10: for each fixed k the ELS bound gives a finite search range n ≤ C·2^k·√k, but C is not effective in the parent axiom — obtaining an explicit constant would make each fixed-k slice a finite (if large) decidable check.",
+      "Prove structural constraints: an admissible pair with deficiency d forces d of the k consecutive integers n,n-1,...,n-k+1 to be k-smooth, a strong density constraint (Erdős–Lacampagne–Selfridge exploit this for the ≥1 ⇒ n ≪ 2^k√k bound).",
+      "Consider whether Kummer's theorem (carry count in base p) gives a cleaner ofReduceBool-free proof of noSmallPrimeFactors_284_28."
+    ]
+  }
+}

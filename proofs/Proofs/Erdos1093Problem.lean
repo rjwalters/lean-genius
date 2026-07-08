@@ -170,7 +170,7 @@ theorem deficiency_le (n k : ℕ) : deficiency n k ≤ k := by
 /-- 1 is k-smooth for any k (vacuously: 1 has no prime factors). -/
 theorem isKSmooth_one (k : ℕ) : IsKSmooth k 1 := by
   intro p hp hd
-  exact absurd (Nat.le_of_dvd (by omega) hd) (by omega)
+  exact absurd (Nat.dvd_one.mp hd) hp.one_lt.ne'
 
 /-- 0 is not k-smooth for any k (every prime divides 0). -/
 theorem not_isKSmooth_zero (k : ℕ) : ¬IsKSmooth k 0 := by
