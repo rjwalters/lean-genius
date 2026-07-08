@@ -68,6 +68,14 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header, Ravi Coordinates and Setup",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "The module docstring states the open question (mass-point treatment of the excenters, Nagel and Gergonne points) and introduces tangent-length (Ravi) coordinates x = s−a, y = s−b, z = s−c, in which the triangle inequalities collapse to x,y,z > 0 and the classical barycentrics become polynomial: incenter (y+z:z+x:x+y), A-excenter (−(y+z):z+x:x+y) (signed mass), Nagel (x:y:z), Gergonne (yz:zx:xy). Cites Coxeter–Greitzer and Kimberling's ETC. Imports Mathlib, enters the MassPointCeva.Excenters namespace, and fixes the ambient real module {V : Type*} [AddCommGroup V] [Module ℝ V].",
+      "mathContext": "Ravi map (x,y,z) ↦ (a,b,c) = (y+z, z+x, x+y) with x,y,z>0 parametrises all nondegenerate triangles; s = x+y+z."
+    },
+    {
       "id": "centres",
       "title": "Triangle centres in tangent-length barycentric coordinates",
       "startLine": 62,
