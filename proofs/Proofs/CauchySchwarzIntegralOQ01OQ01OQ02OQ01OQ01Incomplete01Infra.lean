@@ -338,6 +338,16 @@ noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
             eLpNorm_indicator_eq_restrict_loc hS _ hp hptop]
       exact heq.le)
 
+/-- The underlying function of `extByZeroCLM hS f` agrees `μ`-a.e. with the
+    extension-by-zero `S.indicator f`.  Mirror of `RieszLpDualityExtension.extByZeroCLM_coeFn`
+    for the σ-finite-chain copy of the extension CLM; needed to feed this `ext`
+    family (against which `riesz_representer_on_sigmaFinite_set` produces its
+    representation) into the ext-agnostic `RieszLpDualityMaximal.riesz_general`. -/
+theorem extByZeroCLM_coeFn {S : Set α} (hS : MeasurableSet S)
+    {p : ℝ≥0∞} (hp : p ≠ 0) (hptop : p ≠ ⊤) [Fact (1 ≤ p)]
+    (f : Lp ℝ p (μ.restrict S)) :
+    extByZeroCLM hS hp hptop f =ᵐ[μ] S.indicator (f : α → ℝ) :=
+  (memLp_indicator_of_restrict_loc hS hp hptop (Lp.memLp f)).coeFn_toLp
 
 end RieszSigmaFiniteComplete
 

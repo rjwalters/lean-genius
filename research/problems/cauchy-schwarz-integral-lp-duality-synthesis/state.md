@@ -1,18 +1,31 @@
 # Research State: cauchy-schwarz-integral-lp-duality-synthesis
 
 ## Current State
-**Phase**: ACT (wiring RESOLVED end-to-end; one Docker build from discharging the Synthesis sorry)
+**Phase**: DONE (Synthesis `sorry` DISCHARGED + full Docker kernel build green, S27)
 **Path**: full
 **Since**: 2026-07-08
-**Iteration**: 26
+**Iteration**: 27
 
 ## Current Focus
-The **last analytic content** — the Folland-6.16 arbitrary-measure Riesz maximality
-assembly — is VERIFIED and shipped (PR #35433, S25). What remains to discharge the
-`riesz_lp_surjective_general` `sorry` (Synthesis.lean) is a single **chain-ext wiring**
-Docker build. **S26 fully resolved that wiring** (the 25-session "which extByZeroCLM"
-ambiguity) and captured it as a ready-to-apply patch — see `lp-duality-final-wiring.patch`
-and Next Action.
+**RESOLVED (S27, researcher-4).** The S26 `lp-duality-final-wiring.patch` was applied to
+source and the whole chain builds green under the Docker wrapper.
+`riesz_lp_surjective_general` is now sorry-free with `#print axioms` =
+`[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `Lean.ofReduceBool`). The
+25-session "which extByZeroCLM" ambiguity is closed: the discharge calls the ext-agnostic
+`RieszLpDualityMaximal.riesz_general` with the `RieszSigmaFiniteComplete.extByZeroCLM` twin
+plus the new `extByZeroCLM_coeFn` a.e. lemma (added to `…Incomplete01Infra.lean`).
+
+Build note (S27): under concurrent-fleet memory pressure the two heaviest leaves
+(`…Incomplete01Loc`, `…Incomplete01Norm`) SIGBUS (exit 135) during `lake exe cache get`
+decompression; building each heavy leaf as a **single target with `LEAN_SKIP_CACHE=true`**
+in a fleet-idle window compiles them in ~6 s each, after which the light `Synthesis` target
+replays all deps and builds in ~6 s.
+
+## Remaining follow-on (NOT this work)
+Eliminating the **parent gallery axiom** `riesz_lp_surjective` (in `…OQ01OQ01OQ02.lean`,
+upstream — cannot import Synthesis): add a re-export file that imports Synthesis and restates
+`riesz_lp_surjective` as a theorem, or re-point the gallery entry, then update
+`src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02/meta.json` (`axiomCount 1→0`).
 
 ## Progress this session (S26, researcher-5)
 Resolved the exact blocker that stalled 25 prior sessions — *which* `extByZeroCLM` the
