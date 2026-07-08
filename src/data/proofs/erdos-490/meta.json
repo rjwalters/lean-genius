@@ -63,14 +63,14 @@
       "optimal_works_because_primes: divisibility argument (proved)",
       "optimalA_card: |optimalA N| = ⌊N/2⌋ (0-axiom, proved)",
       "optimalB_card_eq_primeCounting: |optimalB N| = π(N) − π(N/2) via Mathlib's Nat.primeCounting (0-axiom, proved) — pins the Chebyshev axiom to Mathlib's prime-counting API",
-      "chebyshev_theta_upper_half_lower_bound axiom: the Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N, stated against Mathlib's Chebyshev.theta (the classical first Chebyshev function) — replaces the former bespoke primes_upper_half_lower_bound axiom",
+      "chebyshev_theta_upper_half_lower_bound: NOW A THEOREM (0 axioms, 0 sorries) — the classical Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N, formerly an axiom, is fully proved by combining the central-binomial estimate theta_gap_lower_bound with the analytic tail erdos490_analytic_tail (√n·log n = o(n)) and a Bertrand small-N base case. This eliminates the last analytic axiom of the lower-bound half of #490.",
       "primes_upper_half_lower_bound: NOW A THEOREM (0 new axioms) — the prime-counting lower bound π(N)−π(N/2) ≳ N/log N is DERIVED from the Chebyshev θ-gap axiom via the verified θ→π bridge",
       "theta_gap_eq_sum_optimalB: θ(N)−θ(N/2) = ∑_{p∈optimalB N} log p (0-axiom) — re-expresses Mathlib's Chebyshev θ-difference as a sum over the optimal example, via Finset.sum_sdiff_eq_sub on the prime-filtered Ioc intervals",
       "theta_gap_le_card_mul_log: θ(N)−θ(N/2) ≤ |optimalB N|·log N (0-axiom) — each prime p ≤ N has log p ≤ log N, so the θ-gap is bounded by the count times log N; dividing by log N is the θ→π bridge",
       "productRatio, LimitQuestion: open limit formalization",
       "IsMultiplicativeSidon: A = B special case",
       "multiplicativeEnergy: counting quadruples a₁b₁ = a₂b₂",
-      "bound_is_optimal: matching lower bound (proved from the 2 axioms, 0 sorries)",
+      "bound_is_optimal: matching lower bound (proved from the 1 remaining axiom (Szemerédi), 0 sorries)",
       "optimal_has_distinct_products: PROVED 0-axiom (formerly an axiom) — the optimal construction A=[1,N/2], B=primes in (N/2,N] has distinct products, derived from optimal_works_because_primes via the ProductMapInjective↔HasDistinctProducts bridge",
       "hasDistinctProducts_iff_injOn: HasDistinctProducts A B ↔ injectivity of (a,b)↦a·b on A×ˢB (via Finset.card_image_iff)",
       "productMapInjective_iff_hasDistinctProducts: the two distinctness notions agree",
@@ -78,12 +78,13 @@
       "optimalB_nonempty: for N ≥ 2 the interval (N/2,N] contains a prime (0-axiom, via Mathlib's Bertrand postulate Nat.exists_prime_lt_and_le_two_mul) — discharges the qualitative content of the Chebyshev axiom",
       "optimalB_card_pos: |optimalB N| ≥ 1 for N ≥ 2 (0-axiom, via Bertrand)",
       "primeCounting_half_lt: π(N/2) < π(N) for N ≥ 2 (0-axiom) — the strict prime-counting gap, combining optimalB_card_pos with optimalB_card_eq_primeCounting",
-      "Erdos490Chebyshev.lean (NEW, standalone, 0-axiom/0-sorry): verified central-binomial decomposition centralBinom_le_small_mul_large (centralBinom n ≤ (2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p, the combinatorial crux of Chebyshev's θ lower bound — Mathlib's own stated TODO), plus theta_gap_lower_bound reducing θ(2n)−θ(n) to the elementary explicit lower bound n·log4 − ⌊2n/3⌋·log4 − log n − √(2n)·log(2n). Reduces (does NOT yet eliminate) the axiom chebyshev_theta_upper_half_lower_bound to the analytic tail √n·log n = o(n) + small-n Bertrand reconciliation."
+      "Erdos490Chebyshev.lean (NEW, standalone, 0-axiom/0-sorry): verified central-binomial decomposition centralBinom_le_small_mul_large (centralBinom n ≤ (2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p, the combinatorial crux of Chebyshev's θ lower bound — Mathlib's own stated TODO), plus theta_gap_lower_bound reducing θ(2n)−θ(n) to the elementary explicit lower bound n·log4 − ⌊2n/3⌋·log4 − log n − √(2n)·log(2n). Reduces (does NOT yet eliminate) the axiom chebyshev_theta_upper_half_lower_bound to the analytic tail √n·log n = o(n) + small-n Bertrand reconciliation.",
+      "erdos490_analytic_tail (in Erdos490Chebyshev.lean, 0-axiom): ∃c>0,∃N₀,∀n≥N₀, the elementary θ-gap lower bound (n/3)·log4 − log n − √(2n)·log(2n) ≥ c·n, proved from Real.isLittleO_log_id_atTop and isLittleO_log_rpow_atTop (exponent 1/2). This is the single analytic input that converted the Chebyshev θ-gap axiom into a theorem."
     ],
-    "axiomCount": 2,
-    "lineCount": 660,
-    "assumptions": "2 axioms, 0 sorries. Axioms: szemeredi_theorem (Szemerédi 1976 upper bound, deep); chebyshev_theta_upper_half_lower_bound (the classical Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N, stated directly against Mathlib's Chebyshev.theta; Mathlib's Mathlib.NumberTheory.Chebyshev currently supplies only UPPER bounds theta_le_log4_mul_x / psi_le_const_mul_self and no lower bound on θ, ψ, or Nat.primeCounting, so this single θ-gap fact is isolated as the analytic axiom). The former bespoke axiom primes_upper_half_lower_bound is NOW A THEOREM (0 new axioms): it is derived from the Chebyshev θ-gap axiom through the fully-verified θ→π bridge theta_gap_eq_sum_optimalB (θ(N)−θ(N/2) = ∑_{p∈optimalB N} log p) and theta_gap_le_card_mul_log (θ(N)−θ(N/2) ≤ |optimalB N|·log N, since each prime p ≤ N has log p ≤ log N); dividing by log N yields π(N)−π(N/2) ≥ c·N/log N. The former axiom optimal_has_distinct_products was eliminated (proved 0-axiom via the ProductMapInjective↔HasDistinctProducts bridge). Progression: researcher-8 (2026-06-28) repaired the build against the current Mathlib pin and eliminated 4 sorries with 0-axiom proofs (optimal_works_because_primes, the two IsSubsetUpTo subgoals, primes_products_determine_pair). researcher-3 (2026-06-28) then proved distinct_minimal_energy (HasDistinctProducts ↔ multiplicative energy = |A||B|) 0-axiom via the diagonal-subset argument, and in a follow-up session eliminated the last sorry: proved optimalA_card (|optimalA N| = ⌊N/2⌋, 0-axiom) and discharged the bound_is_optimal lower bound from the isolated Chebyshev axiom (note: the previously hardcoded constant 1/3 was false at small N, e.g. N=10 where the product ratio dips to ≈0.115, so the theorem is now in its honest ∃c>0 form). researcher-5 (2026-07-04) discharged the qualitative half of primes_upper_half_lower_bound: optimalB_nonempty / optimalB_card_pos prove (via Mathlib's Bertrand postulate) that (N/2,N] always contains a prime for N ≥ 2, and primeCounting_half_lt derives the strict gap π(N/2) < π(N); the axiom now asserts purely the quantitative growth rate c·N/log N. researcher-9 (2026-07-07) restated that quantitative axiom against Mathlib's Chebyshev.theta as chebyshev_theta_upper_half_lower_bound (θ(N)−θ(N/2) ≥ c·N) and DERIVED the former primes_upper_half_lower_bound axiom as a theorem via the verified θ→π bridge (theta_gap_eq_sum_optimalB + theta_gap_le_card_mul_log); axiom count unchanged at 2, but the remaining analytic axiom is now the single standard Chebyshev θ-gap fact rather than a bespoke prime-counting difference, and its eventual elimination is exactly the classical θ(N)−θ(N/2) ≥ c·N lower bound (Erdős's central-binomial argument).",
-    "theoremCount": 22,
+    "axiomCount": 1,
+    "lineCount": 758,
+    "assumptions": "1 axiom, 0 sorries. Axiom: szemeredi_theorem (Szemerédi 1976 N²/log N upper bound, deep — the hard analytic input of the problem). The former second axiom chebyshev_theta_upper_half_lower_bound (the classical Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N) is NOW A THEOREM (0-axiom), proved by combining the verified central-binomial estimate Erdos490Cheb.theta_gap_lower_bound with the analytic tail Erdos490Cheb.erdos490_analytic_tail (log n and √(2n)·log(2n) are o(n)) and a Bertrand-based θ(N)−θ(N/2) ≥ log 2 for the finitely many small N. Only the deep Szemerédi upper bound remains axiomatized; status stays 'axiomatized'.",
+    "theoremCount": 23,
     "definitionCount": 15,
     "additionalFiles": [
       "Proofs/Erdos490ProblemAristotle.lean",
@@ -185,10 +186,10 @@
     {
       "id": "summary",
       "title": "Summary and Optimality",
-      "summary": "erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (proved from the 2 axioms, 0 sorries)",
+      "summary": "erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (proved from the 1 remaining axioms, 0 sorries)",
       "startLine": 228,
       "endLine": 282,
-      "mathContext": "Bound: erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (proved from the 2 axioms, 0 sorries)"
+      "mathContext": "Bound: erdos_490 and erdos_490_main restating the YES answer; bound_is_optimal showing Θ(N²/log N) tightness via the prime construction (proved from the 1 remaining axiom (Szemerédi), 0 sorries)"
     }
   ],
   "conclusion": {
@@ -216,9 +217,9 @@
       "Real"
     ],
     "namespace": "Erdos490",
-    "lineCount": 660,
-    "axiomCount": 2,
-    "theoremCount": 22,
+    "lineCount": 758,
+    "axiomCount": 1,
+    "theoremCount": 23,
     "definitionCount": 15,
     "path": "Proofs/Erdos490Problem.lean",
     "sorries": 0,
