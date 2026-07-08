@@ -23,8 +23,8 @@
     {
       "path": "Proofs/Erdos1093ProblemOQ02.lean",
       "filename": "Erdos1093ProblemOQ02.lean",
-      "lineCount": 595,
-      "theoremCount": 26,
+      "lineCount": 816,
+      "theoremCount": 35,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
@@ -33,7 +33,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS (limitative): proved the elementary sharp bound (k+deficiency)! ≤ (k!)² resolves EXACTLY k ≤ 14 and is provably powerless for k ≥ 15 (sharp_bound_frontier_exact, sharp_bound_permits_deficiency_nine; (k+9)! ≤ (k!)² for all k ≥ 15). This rigorously establishes that OQ-02's open tail k ≥ 15 requires genuinely analytic ELS density input — no elementary factorial-product bound can close it. Section XIV additionally specialises the sharp bound to the record modulus k=28, yielding the explicit ceiling deficiency n 28 ≤ 18 for every admissible pair (via the bignum certificate (28!)² < 47!); the record there is 9, so the elementary theory still leaves 10 ≤ d ≤ 18 open. 0 axioms, 0 sorries added; universal bound = 9 remains OPEN.",
+    "progressSummary": "PROGRESS (limitative + sharpening): resolved OQ-02 elementarily for ALL k≤15 (was k≤14) by using the correct deficiency-≥10 threshold (k+10)!≤(k!)² instead of the deficiency-9 threshold; the tight open frontier is now k≥16 (strictly sharper than the recorded k≥15). Proved the (k!)² method is provably powerless for k≥16 (permits deficiency 10). Established that the existing ELS location axiom cannot yield a conditional resolution (needs a smooth-COUNT bound; any faithful form is circular) — the k≥16 tail is irreducibly analytic and BLOCKED pending Mathlib smooth-number density. 0 axioms, 0 sorries added; universal bound = 9 remains OPEN for k≥16.",
     "builtItems": [
       "noSmallPrimeFactors_iff (Erdos1093ProblemOQ02.lean) — decidable reduction of the admissibility side-condition (unbounded ∀ prime) to a bounded check over primes p ≤ k; ofReduceBool-free.",
       "noSmallPrimeFactors_284_28 — the record pair (284,28) is admissible: no prime ≤ 28 divides C(284,28) (parent verified only the count = 9, never admissibility).",
@@ -54,8 +54,8 @@
       "maximalDeficiencyIs_nine_iff_kGe15 — sharpened reduction: MaximalDeficiencyIs 9 ⇔ (∀ admissible with k≥15, deficiency ≤ 9). Strictly sharper than maximalDeficiencyIs_nine_iff_kGe10; discharges 10≤k≤14 via the sharp factorial bound.",
       "sharp_bound_permits_deficiency_nine (Erdos1093ProblemOQ02.lean, Section XIII): ∀ k ≥ 15, (k+9)! ≤ (k!)². ofReduceBool-free (kernel decide base + Nat.le_induction).",
       "sharp_bound_frontier_exact (Erdos1093ProblemOQ02.lean, Section XIII): the exact split — k ≤ 14 ⟹ (k!)² < (k+9)! and 15 ≤ k ⟹ (k+9)! ≤ (k!)², pinning the elementary method's reach to exactly k ≤ 14.",
-      "deficiency_record_le_18 (Erdos1093ProblemOQ02.lean, Section XIV) — EXPLICIT ceiling at the record modulus: every admissible (n,28) has deficiency n 28 ≤ 18. Specialises deficiency_add_factorial_le_sq ((28+d)! ≤ (28!)²) with the native_decide certificate (28!)² < 47!; a deficiency ≥ 19 gives 47! ≤ (28+d)! ≤ (28!)² < 47!. Quantifies the elementary-vs-record gap (record is 9)."
-
+      "deficiency_record_le_18 (Erdos1093ProblemOQ02.lean, Section XIV) — EXPLICIT ceiling at the record modulus: every admissible (n,28) has deficiency n 28 ≤ 18. Specialises deficiency_add_factorial_le_sq ((28+d)! ≤ (28!)²) with the native_decide certificate (28!)² < 47!; a deficiency ≥ 19 gives 47! ≤ (28+d)! ≤ (28!)² < 47!. Quantifies the elementary-vs-record gap (record is 9).",
+      "Section XV (Erdos1093ProblemOQ02.lean): factorial_sq_lt_add_ten_of_k_le_15, deficiency_le_nine_of_k_le_15, maximalDeficiencyIs_nine_iff_kGe16 (strict sharpening of _kGe15), sharp_bound_permits_deficiency_ten (k≥16 limitative), oq02_frontier_exact — VERIFIED 0 sorries / 0 new axioms, ofReduceBool-free (kernel decide)."
     ],
     "insights": [
       "The parent's deficiency_284_28 = 9 alone does NOT exhibit a valid deficiency example: the deficiency count is defined unconditionally, but the ELS problem requires C(n,k) to have no prime factor ≤ k. Checking admissibility only needs primes ≤ k (Kummer is unnecessary): C(284,28) is a ~110-bit bignum, so native_decide computes it and tests divisibility by primes ≤ 28 instantly.",
@@ -65,17 +65,18 @@
       "The density bound reframes the open core: a hypothetical deficiency > 9 at k ≥ 10 requires a length-k run of consecutive integers containing < k−9 primes, i.e. an exceptionally prime-poor window — precisely the input ELS bound the axiomatized els_upper_bound to n ≪ 2^k√k.",
       "Section X: the smooth window values are DISTINCT integers (i↦n-i injective on i<k≤n), so their product exceeds not just (k+1)^d but the ascending factorial (k+1)(k+2)···(k+d). This distinct-value refinement of Section IX yields (k+1).ascFactorial(deficiency) ≤ k!, i.e. (k+deficiency)! ≤ (k!)². For k=28 it forces deficiency ≤ 18 versus ≤ 20 from (k+1)^d ≤ k! — a strict elementary improvement, still ofReduceBool-free and independent of the axiomatized ELS bound.",
       "Section XII: the sharp bound (k+deficiency)! ≤ (k!)² is not just a per-k ceiling — for small k that ceiling drops below 9. A deficiency ≥ 9 forces (k+9)! ≤ (k!)², but (k!)² < (k+9)! for every k ≤ 14 (first fails at k=15, where (15!)² first exceeds 24!). So NO admissible pair with k ≤ 14 exceeds deficiency 8, pushing the open frontier of MaximalDeficiencyIs 9 from k≥10 to k≥15 — with no ELS/prime-distribution input and ofReduceBool-free (kernel decide, not native_decide).",
-      "LIMITATIVE RESULT (this session): the elementary sharp bound (k+deficiency)! ≤ (k!)² is EXACTLY tight — it resolves precisely k ≤ 14 and is provably powerless for k ≥ 15. Concretely (k+9)! ≤ (k!)² for ALL k ≥ 15 (proved by induction from base 24! ≤ (15!)², step multiplies IH by factor k+10 ≤ (k+1)²), so the bound is consistent with deficiency = 9 at every k ≥ 15 and can never by itself exclude it. The finite comparison (k!)² < (k+9)! powering deficiency_le_eight_of_k_le_14 reverses exactly at k=15. This rigorously confines OQ-02's open tail to genuinely analytic (ELS density) input — no push of the (k!)² method can close k ≥ 15."
+      "LIMITATIVE RESULT (this session): the elementary sharp bound (k+deficiency)! ≤ (k!)² is EXACTLY tight — it resolves precisely k ≤ 14 and is provably powerless for k ≥ 15. Concretely (k+9)! ≤ (k!)² for ALL k ≥ 15 (proved by induction from base 24! ≤ (15!)², step multiplies IH by factor k+10 ≤ (k+1)²), so the bound is consistent with deficiency = 9 at every k ≥ 15 and can never by itself exclude it. The finite comparison (k!)² < (k+9)! powering deficiency_le_eight_of_k_le_14 reverses exactly at k=15. This rigorously confines OQ-02's open tail to genuinely analytic (ELS density) input — no push of the (k!)² method can close k ≥ 15.",
+      "FRONTIER SHARPENED (this session, k≥15 → k≥16): the file's Section XII–XIII tracked the deficiency-9 comparison (k!)²<(k+9)! (reversing at k=15), but OQ-02 (MaximalDeficiencyIs 9) requires excluding deficiency ≥10, governed by (k!)²<(k+10)! — which reverses one step LATER, at k=16. Exact arithmetic: 25!/(15!)²≈9.07>1 (deficiency ≥10 EXCLUDED at k=15) but 26!/(16!)²≈0.92<1 (deficiency 10 PERMITTED at k=16). So the elementary sharp bound (k+d)!≤(k!)² closes OQ-02 for ALL k≤15, and the tight open frontier is k≥16. The prior maximalDeficiencyIs_nine_iff_kGe15 was NOT tight (it left k=15 nominally open).",
+      "The existing parent axiom els_upper_bound (n ≪ 2^k·√k for deficiency ≥1) is a LOCATION bound on n and is provably insufficient to close the deficiency universal bound: it constrains where admissible pairs sit, not how many smooth values the length-k window holds. Any conditional resolution therefore needs a short-interval smooth-COUNT bound, and any faithful such hypothesis is (# k-smooth values in (n-k,n]) ≤ 9 = deficiency n k ≤ 9, i.e. circular. This confirms the k≥16 tail is irreducibly analytic (ψ(x,y)/Dickman-ρ density), not reachable by axiomatizing the current ELS location bound."
     ],
     "mathlibGaps": [
       "No smooth-number density estimates (ψ(x,y) / Dickman ρ) in Mathlib v4.26 — the Erdős–Lacampagne–Selfridge analytic input needed for the k ≥ 15 tail of OQ-02 cannot yet be formalized without building this."
     ],
     "nextSteps": [
-      "The elementary (k!)² method is now PROVEN insufficient for k ≥ 15 (sharp_bound_frontier_exact). Any further progress on the universal bound MaximalDeficiencyIs 9 must supply the analytic Erdős–Lacampagne–Selfridge smooth-number density bound as an explicit (axiomatized) hypothesis and prove the conditional resolution; Mathlib lacks smooth-number density estimates, so this is a genuine infrastructure gap.",
       "Assess whether a hybrid bound (Section VII prime-count + an Erdős–Rankin prime-gap lower bound on primes in a length-k window) could beat (k!)² for k ≥ 15; likely still insufficient since the sharp ceiling grows ~linearly in k.",
       "Push the sharp bound quantitatively: (k+d)! ≤ (k!)² is equivalent to C(k+d,d)·d! ≤ k!; combine with an ELS-style lower bound on smooth-count to see if it can reach deficiency ≤ 9 for large k.",
-      "Consider whether the descFactorial/ascFactorial packaging generalizes to bound the number of k-smooth values in ANY length-k window (independent of deficiency admissibility)."
-
+      "Consider whether the descFactorial/ascFactorial packaging generalizes to bound the number of k-smooth values in ANY length-k window (independent of deficiency admissibility).",
+      "The k≥16 open tail is irreducibly analytic: the missing input is a short-interval k-smooth-count bound (ψ(x,x+k) type / Dickman ρ), which Mathlib lacks; a faithful hypothesis is equivalent to the conclusion (circular), so no elementary conditional reduction exists. Treat as BLOCKED pending smooth-number density infrastructure (>1000 lines, deep chains)."
     ]
   }
 }
