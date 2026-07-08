@@ -137,6 +137,14 @@
       "endLine": 50
     },
     {
+      "name": "natEquivPolynomialRat",
+      "type": "supporting",
+      "description": "**The extracted enumeration ℕ ≃ ℚ[X].** A concrete (noncomputable) bijection witnessing denumerability, obtained by choosing a witness from nonempty_nat_equiv_polynomial_rat — turning the existence statement into a usable equivalence object.",
+      "leanType": "ℕ ≃ ℚ[X]",
+      "startLine": 54,
+      "endLine": 55
+    },
+    {
       "name": "mk_rat",
       "type": "supporting",
       "description": "**#ℚ = ℵ₀** (mk_eq_aleph0) — the engine lemma the polynomial-ring cardinalities reduce to.",
