@@ -444,6 +444,34 @@ theorem kronecker_two_odd (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
   rw [kronecker_eq_jacobi 2 n hn hno, jacobiSym.at_two (Nat.odd_iff.mpr hno),
     ZMod.χ₈_nat_eq_if_mod_eight, if_neg (show ¬ n % 2 = 0 by omega)]
 
+/-- **The first supplementary character is Mathlib's `χ₄`.**
+    For odd positive `n`, the denominator-side symbol `(-1/n)` equals the canonical
+    quadratic Dirichlet character modulo `4`: `kronecker (-1) n = χ₄ n`. This is the
+    `χ`-form of `kronecker_neg_one_odd` — the *denominator-side* analogue of the
+    numerator bridge `kronecker2_eq_χ₈` (which identifies the `(·/2)` character with
+    `χ₈`). It exports the sign supplementary law to Mathlib's `χ₄`, so the Gauss sum
+    of `(-1/·)` (Target 2) can be taken directly against the library character.
+    Immediate from `kronecker_eq_jacobi` and `jacobiSym.at_neg_one`.
+    `sorry`-free, axiom-free. -/
+theorem kronecker_neg_one_eq_χ₄ (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (-1) (n : ℤ) = ZMod.χ₄ (n : ZMod 4) := by
+  rw [kronecker_eq_jacobi (-1) n hn hno]
+  exact jacobiSym.at_neg_one (Nat.odd_iff.mpr hno)
+
+/-- **The second supplementary character is Mathlib's `χ₈`.**
+    For odd positive `n`, the denominator-side symbol `(2/n)` equals the canonical
+    quadratic Dirichlet character modulo `8`: `kronecker 2 n = χ₈ n`. This is the
+    `χ`-form of `kronecker_two_odd`. Combined with `kronecker_neg_one_eq_χ₄`, *both*
+    supplementary laws are now identified with the Mathlib characters `χ₄`, `χ₈` on
+    the denominator side — the mirror of the numerator-side identification
+    `kronecker2_eq_χ₈`, and the entry point for the Gauss-sum route to generalized
+    reciprocity (Target 2). Immediate from `kronecker_eq_jacobi` and
+    `jacobiSym.at_two`. `sorry`-free, axiom-free. -/
+theorem kronecker_two_eq_χ₈ (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker 2 (n : ℤ) = ZMod.χ₈ (n : ZMod 8) := by
+  rw [kronecker_eq_jacobi 2 n hn hno]
+  exact jacobiSym.at_two (Nat.odd_iff.mpr hno)
+
 /-- **Self-reciprocity of the prime 2.** For odd positive `n`, the value of the
     `(·/2)` character `kronecker2` at `n` equals the fixed-numerator symbol
     `(2/n) = kronecker 2 n`:

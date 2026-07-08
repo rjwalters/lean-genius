@@ -36,10 +36,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (WIP, still open): (·/2) mod-8 character now certified equal to Mathlib's ZMod.χ₈ (kronecker2_eq_χ₈, 0/0). Character theory complete AND library-bridged; remaining open work is Target 2 (generalized reciprocity for fundamental discriminants via Gauss sums) and the even-modulus refinement of the full kronecker symbol.",
+    "progressSummary": "PROGRESS (WIP, still open): (\u00b7/2) mod-8 character now certified equal to Mathlib's ZMod.\u03c7\u2088 (kronecker2_eq_\u03c7\u2088, 0/0). Character theory complete AND library-bridged; remaining open work is Target 2 (generalized reciprocity for fundamental discriminants via Gauss sums) and the even-modulus refinement of the full kronecker symbol.",
     "builtItems": [
-      "kronecker2_periodic (ElementaryQuadraticReciprocityOQ03OQ02.lean): (a+8/2)=(a/2), period-8 of the (·/2) character; with kronecker2_mul this makes kronecker2 a Dirichlet character mod 8 (foundation for the Gauss-sum route to Target 2).",
-      "kronecker2_mul (ElementaryQuadraticReciprocityOQ03OQ02.lean): (ab/2)=(a/2)(b/2) unconditional multiplicativity of the (·/2) mod-8 character, via x%8 reduction + 64-case decide.",
+      "kronecker2_periodic (ElementaryQuadraticReciprocityOQ03OQ02.lean): (a+8/2)=(a/2), period-8 of the (\u00b7/2) character; with kronecker2_mul this makes kronecker2 a Dirichlet character mod 8 (foundation for the Gauss-sum route to Target 2).",
+      "kronecker2_mul (ElementaryQuadraticReciprocityOQ03OQ02.lean): (ab/2)=(a/2)(b/2) unconditional multiplicativity of the (\u00b7/2) mod-8 character, via x%8 reduction + 64-case decide.",
       "kronecker_mul_right_odd",
       "kronecker_quadratic_reciprocity",
       "kronecker_reciprocity_one_mod_four",
@@ -47,8 +47,10 @@
       "kronecker_eq_sign_jacobi",
       "kroneckerNeg1_sq (private)",
       "kronecker_mul_right (full, all nonzero moduli)",
-      "kronecker2_sq / kronecker2_sq_odd (ElementaryQuadraticReciprocityOQ03OQ02.lean, VERIFIED 0/0): the (·/2) character is REAL — its square is the principal character mod 2 ((a/2)²=0 on evens, =1 on odds); completes the even-real-Dirichlet-character-mod-8 identification alongside kronecker2_mul/_periodic/_neg/_values.",
-      "kronecker2_eq_χ₈ (ElementaryQuadraticReciprocityOQ03OQ02.lean, VERIFIED 0/0): the local (·/2) mod-8 character equals Mathlib's canonical ZMod.χ₈. Proof: rw [ZMod.χ₈_int_eq_if_mod_eight]; unfold kronecker2; split_ifs <;> omega — the local def's extra 'a%8=-1' disjunct is vacuous since Int.emod by 8 is nonnegative."
+      "kronecker2_sq / kronecker2_sq_odd (ElementaryQuadraticReciprocityOQ03OQ02.lean, VERIFIED 0/0): the (\u00b7/2) character is REAL \u2014 its square is the principal character mod 2 ((a/2)\u00b2=0 on evens, =1 on odds); completes the even-real-Dirichlet-character-mod-8 identification alongside kronecker2_mul/_periodic/_neg/_values.",
+      "kronecker2_eq_\u03c7\u2088 (ElementaryQuadraticReciprocityOQ03OQ02.lean, VERIFIED 0/0): the local (\u00b7/2) mod-8 character equals Mathlib's canonical ZMod.\u03c7\u2088. Proof: rw [ZMod.\u03c7\u2088_int_eq_if_mod_eight]; unfold kronecker2; split_ifs <;> omega \u2014 the local def's extra 'a%8=-1' disjunct is vacuous since Int.emod by 8 is nonnegative.",
+      "kronecker_neg_one_eq_\u03c7\u2084 (NEW): for odd positive n, kronecker (-1) n = ZMod.\u03c7\u2084 n \u2014 \u03c7-form of kronecker_neg_one_odd (first supplementary law as Mathlib \u03c7\u2084).",
+      "kronecker_two_eq_\u03c7\u2088 (NEW): for odd positive n, kronecker 2 n = ZMod.\u03c7\u2088 n \u2014 \u03c7-form of kronecker_two_odd (second supplementary law as Mathlib \u03c7\u2088)."
     ],
     "insights": [
       "For odd positive moduli the Kronecker symbol IS the Jacobi symbol (kronecker_eq_jacobi), so mul-in-n and QR come for free from jacobiSym.mul_right' and jacobiSym.quadratic_reciprocity.",
@@ -62,14 +64,15 @@
       "Sign multiplicativity across a nonzero product: only the m<0,n<0 case is nontrivial (m*n>0), where the two sign chars cancel via kroneckerNeg1_sq (a value in {+-1} squares to 1).",
       "SCOPE/HONESTY: at even moduli this file's kronecker equals Jacobi's value at 2, NOT the classical mod-8 kronecker2 (defined but never wired into kronecker). So kronecker_mul_right is multiplicativity of the symbol AS DEFINED (matches the classical Kronecker symbol at all odd moduli and at n=+-1). Kept status wip.",
       "BUILD: local Docker build SIGSEGVs (exit 135/139) on the #print axioms commands (stack overflow); origin/main replays its cached olean so the crash only surfaces after editing. Commented the block out; file then builds in ~2s.",
-      "Session 2026-07-08 (researcher-4): Mathlib ALREADY has the (·/2) character as ZMod.χ₈ with a matching if-then-else value lemma χ₈_int_eq_if_mod_eight and the bridge jacobiSym.at_two : J(2|b)=χ₈ b (odd b). So the local kronecker2 character theory (mul/periodic/neg/values/sq) is now certified equal to χ₈, and Target-2 Gauss-sum work can lean on Mathlib's χ₈/jacobiSym API instead of re-deriving it."
+      "Session 2026-07-08 (researcher-4): Mathlib ALREADY has the (\u00b7/2) character as ZMod.\u03c7\u2088 with a matching if-then-else value lemma \u03c7\u2088_int_eq_if_mod_eight and the bridge jacobiSym.at_two : J(2|b)=\u03c7\u2088 b (odd b). So the local kronecker2 character theory (mul/periodic/neg/values/sq) is now certified equal to \u03c7\u2088, and Target-2 Gauss-sum work can lean on Mathlib's \u03c7\u2088/jacobiSym API instead of re-deriving it.",
+      "Denominator-side \u03c7-bridges complete the library identification: both supplementary laws (-1/\u00b7) and (2/\u00b7) at odd moduli are now Mathlib's canonical \u03c7\u2084, \u03c7\u2088 (2-line consequences of kronecker_eq_jacobi + jacobiSym.at_neg_one / at_two), mirroring the numerator bridge kronecker2_eq_\u03c7\u2088. This is the entry point for the Gauss-sum route (Target 2): the Gauss sums can be taken directly against library characters."
     ],
     "mathlibGaps": [
       "No Kronecker symbol in Mathlib (only jacobiSym for odd positive denominators).",
       "No supplementary-law lemmas connecting (2/n)/(-1/n) to the odd part for a generalized reciprocity."
     ],
     "nextSteps": [
-      "Use kronecker2_eq_χ₈ + jacobiSym.at_two to re-express kronecker at even moduli through χ₈ (the 2-adic refinement of nextStep 'route even moduli through kronecker2'), then re-prove kronecker_mul_right for the refined definition without re-deriving χ₈ multiplicativity.",
+      "Use kronecker2_eq_\u03c7\u2088 + jacobiSym.at_two to re-express kronecker at even moduli through \u03c7\u2088 (the 2-adic refinement of nextStep 'route even moduli through kronecker2'), then re-prove kronecker_mul_right for the refined definition without re-deriving \u03c7\u2088 multiplicativity.",
       "Refine kronecker to use kronecker2 for the 2-adic part (classical symbol at even moduli), then re-prove kronecker_mul_right for the refined definition.",
       "Target 2: generalized quadratic reciprocity for arbitrary fundamental discriminants (supplementary laws + Gauss sums)."
     ]
