@@ -51,4 +51,67 @@ theorem im_inner_sq_le (u v : E) :
   nlinarith [h, abs_nonneg (RCLike.im (inner 𝕜 u v)),
     sq_abs (RCLike.im (inner 𝕜 u v)), norm_nonneg u, norm_nonneg v]
 
+/-! ## The full Robertson uncertainty relation
+
+The lemmas above are the Cauchy–Schwarz core.  Here we assemble them into the
+genuine operator-theoretic **Robertson uncertainty relation**
+
+  `‖(A−a)ψ‖²·‖(B−b)ψ‖² ≥ ¼·‖⟪ψ, (AB−BA)ψ⟫‖²`,
+
+for symmetric (self-adjoint) operators `A, B` on any inner product space over `ℝ`
+or `ℂ`, any state `ψ`, and *any* real shifts `a, b`.  Taking `a = ⟪ψ,Aψ⟫`,
+`b = ⟪ψ,Bψ⟫` (the expectation values) makes the left side `Var(A)·Var(B)`, so this
+is exactly Heisenberg's `Δx·Δp ≥ ℏ/2` with `[x,p] = iℏ`.
+
+The key algebraic fact is that the commutator expectation equals the antisymmetric
+part of `⟪u,v⟫` for the centred vectors `u = (A−a)ψ`, `v = (B−b)ψ` — and, crucially,
+is **independent of the shifts** `a, b` (they cancel by symmetry).  Combined with
+`⟪v,u⟫ = conj⟪u,v⟫`, this makes `⟪ψ,[A,B]ψ⟫ = ⟪u,v⟫ − conj⟪u,v⟫ = 2·i·Im⟪u,v⟫`,
+whose norm is `2·|Im⟪u,v⟫|`, and `im_inner_sq_le` finishes. -/
+
+/-- **Commutator = antisymmetric part of the centred inner product.**  For symmetric
+`A, B` and any real shifts `a, b`, with `u = (A−a)ψ`, `v = (B−b)ψ`,
+`⟪ψ, (AB−BA)ψ⟫ = ⟪u,v⟫ − ⟪v,u⟫`.  The shifts cancel, so the commutator expectation
+does not depend on the centring. -/
+theorem inner_commutator_eq_sub {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    inner 𝕜 ψ (A (B ψ) - B (A ψ))
+      = inner 𝕜 (A ψ - (a : 𝕜) • ψ) (B ψ - (b : 𝕜) • ψ)
+        - inner 𝕜 (B ψ - (b : 𝕜) • ψ) (A ψ - (a : 𝕜) • ψ) := by
+  have e1 : inner 𝕜 (A ψ) (B ψ) = inner 𝕜 ψ (A (B ψ)) := hA ψ (B ψ)
+  have e2 : inner 𝕜 (B ψ) (A ψ) = inner 𝕜 ψ (B (A ψ)) := hB ψ (A ψ)
+  have e3 : inner 𝕜 (A ψ) ψ = inner 𝕜 ψ (A ψ) := hA ψ ψ
+  have e4 : inner 𝕜 (B ψ) ψ = inner 𝕜 ψ (B ψ) := hB ψ ψ
+  simp only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right,
+    RCLike.conj_ofReal]
+  rw [e1, e2, e3, e4]
+  ring
+
+/-- **Robertson uncertainty relation.**  For symmetric operators `A, B`, any state
+`ψ` and any real shifts `a, b`,
+`¼·‖⟪ψ, (AB−BA)ψ⟫‖² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²`.  With `a = ⟪ψ,Aψ⟫`, `b = ⟪ψ,Bψ⟫` the
+right-hand side is the product of variances `Var(A)·Var(B)`, giving the Heisenberg
+uncertainty principle `Δx·Δp ≥ ℏ/2`. -/
+theorem robertson_uncertainty {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) (a b : ℝ) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+      ≤ ‖A ψ - (a : 𝕜) • ψ‖ ^ 2 * ‖B ψ - (b : 𝕜) • ψ‖ ^ 2 := by
+  set u := A ψ - (a : 𝕜) • ψ with hu
+  set v := B ψ - (b : 𝕜) • ψ with hv
+  have hid : inner 𝕜 ψ (A (B ψ) - B (A ψ)) = inner 𝕜 u v - inner 𝕜 v u :=
+    inner_commutator_eq_sub hA hB ψ a b
+  have hconj : inner 𝕜 v u = (starRingEnd 𝕜) (inner 𝕜 u v) := (inner_conj_symm v u).symm
+  have hInorm : ‖(RCLike.I : 𝕜)‖ ≤ 1 := by
+    rcases eq_or_ne (RCLike.I : 𝕜) 0 with h | h
+    · rw [h, norm_zero]; norm_num
+    · rw [RCLike.norm_I_of_ne_zero h]
+  have h2 : ‖(2 : 𝕜)‖ = 2 := RCLike.norm_two
+  -- ‖⟪ψ,[A,B]ψ⟫‖ ≤ 2·|Im⟪u,v⟫|
+  have hnb : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ≤ 2 * |RCLike.im (inner 𝕜 u v)| := by
+    rw [hid, hconj, RCLike.sub_conj, norm_mul, norm_mul, RCLike.norm_ofReal, h2]
+    nlinarith [hInorm, abs_nonneg (RCLike.im (inner 𝕜 u v))]
+  have him := im_inner_sq_le (𝕜 := 𝕜) u v
+  nlinarith [hnb, him, norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ))),
+    abs_nonneg (RCLike.im (inner 𝕜 u v)), sq_abs (RCLike.im (inner 𝕜 u v))]
+
 end CauchySchwarzIntegralOQ04
