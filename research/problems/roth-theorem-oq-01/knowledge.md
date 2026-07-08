@@ -212,3 +212,57 @@ thousands of lines of Bohr-set/Fourier infrastructure not in Mathlib). But the f
   axioms if any are added (KM is actually *stronger* than BS in a different regime — not derivable
   this way). The remaining genuine open work is the from-scratch Bourgain/BS proof (BLOCKED on
   Mathlib Bohr-set infrastructure, >1000 LOC).
+
+---
+
+## Session 2026-07-08 (researcher-9) — REVISIT: universal 3-AP-free interface bounds
+
+**Mode**: REVISIT. On claim, the file was already axiomatized-complete (13 theorems, 0 sorries,
+0 own axioms; rests only on the single imported `RothTheoremOQ02.rothNumberNat_bloom_sisask`
+axiom). Four prior PRs (#30176, #31182, #35228, #35501) extracted the reasonable axiomatized
+deliverables: the Bourgain bound (now DERIVED from Bloom–Sisask, not axiomatized), the
+`o(N)` derivation, the Behrend-consistency, and the Bourgain-vs-Roth-1953 rate comparison.
+The genuine from-scratch quantitative proof stays BLOCKED (>1000 LOC Bohr-set/large-spectrum
+Fourier infra absent from Mathlib v4.26).
+
+**Gap identified**: every quantitative bound in the file constrained only the *extremal* Roth
+number `rothNumberNat N` (the size of a **largest** 3-AP-free subset of `range N`). Nothing
+stated the bound for an **arbitrary** 3-AP-free set — the universally-quantified form that
+applications (e.g. the Erdős reciprocal-sum problem) actually consume.
+
+**Outcome**: added 2 theorems (13→15), lifting both extremal bounds to arbitrary 3-AP-free
+finite sets via Mathlib's `ThreeAPFree.le_rothNumberNat`. Still 0 sorries / 0 own axioms
+(Docker `docker-build.sh Proofs.RothTheoremOQ01` → `=== Build succeeded ===`; `#print axioms`
+confirms both depend on `[propext, RothTheoremOQ02.rothNumberNat_bloom_sisask]` — no new axiom,
+no sorryAx/ofReduceBool):
+- **`threeAPFree_card_le_blasi`**: `ThreeAPFree ↑s → 3≤N → (∀ x∈s, x<N) → #s ≤ N/(log N)^{1+c}`.
+- **`threeAPFree_card_le_bourgain`**: same hypotheses → `#s ≤ bourgainConst·N·(loglog N/log N)^{1/2}`.
+Both are 3-line composition proofs: `ThreeAPFree.le_rothNumberNat s hs hsub rfl : #s ≤ rothNumberNat N`,
+cast `#s ≤ rothNumberNat N` to ℝ via `exact_mod_cast`, then chain the extremal bound
+(`rothNumberNat_le_blasi` / `rothNumberNat_le_bourgain`).
+
+### Lean gotchas (v4.26)
+- `ThreeAPFree.le_rothNumberNat (s : Finset ℕ) (hs : ThreeAPFree ↑s) (hsn : ∀ x∈s, x<n) (hsk : #s=k) : k ≤ rothNumberNat n`
+  — despite the dotted name, `s` is the FIRST explicit arg; call it fully applied
+  `ThreeAPFree.le_rothNumberNat s hs hsub rfl` (the `rfl` instantiates `k := #s`, and `n` is
+  inferred from `hsub`). `rothNumberNat : ℕ →o ℕ`, applied as `rothNumberNat N`.
+- Host-verify (`lake env lean -o`) FAILS on this chain: "missing IR data file for module
+  Mathlib.Logic.OpClass" at the import line — `cache get` oleans lack the IR the frontend wants.
+  Use `docker-build.sh` for the OQ01/OQ02 chain (Corner.Roth + Behrend imports).
+- Line-less exit-135 on the FIRST docker build of a byte-identical file = volume corruption under
+  concurrent fleet load; a plain retry replayed OQ02 and built OQ01 green (4.0s).
+- **`.loom/worktrees/researcher-9` was DELETED mid-session** (again). Rebuilt into durable
+  `/Users/rwalters/lg-r9-wt2` off origin/main; the two Roth `.lean` files were byte-identical
+  between the stale base and origin/main so the build carried over. Re-applied all edits.
+
+### Honest status
+Still **axiomatized** (single imported Bloom–Sisask assumption). The new theorems are a modest
+but genuinely-distinct *interface* addition — they change the subject from the extremal Roth
+number to arbitrary 3-AP-free sets, the form needed downstream. NOT a rate-cosmetic variant.
+
+### Remaining open direction (NOT attempted — too heavy for one session)
+The headline Bloom–Sisask consequence — the **Erdős reciprocal-sum theorem for 3-APs**: any
+3-AP-free `A ⊆ ℕ` has `∑_{a∈A} 1/a < ∞`. `threeAPFree_card_le_blasi` is exactly the input, but
+the derivation needs a dyadic-block partial-summation argument + p-series convergence
+(`Real.summable_one_div_nat_rpow`, valid since `1+c>1`), ~100–200 LOC of `Finset.sum`
+manipulation over dyadic ranges — a genuine multi-session effort, deferred.
