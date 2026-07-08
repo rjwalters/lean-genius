@@ -228,14 +228,26 @@ function detectIssues(target: AuditTarget): string[] {
   }
 
   // Sorry count mismatch.
-  // Two coexisting meta.sorries conventions for entries with companion/additional files:
+  // Multiple coexisting meta.sorries conventions for entries with companion/additional files:
   //   - chain-aggregate (PR #18120, axiom-symmetric): counts main + additionalFiles + companion
   //   - main-file-only (PR #18127): counts only the main proofRepoPath
-  // Accept either to break the false-clean oscillation cycle on Aristotle-companion entries
-  // (Issue #18137). When no companion/additional files are followed, both counts are equal,
-  // so single-file entries are unaffected.
+  //   - distinct-gap (erdos-125): counts distinct unproved lemmas once, even when an
+  //     Aristotle companion file physically duplicates the same `sorry` (e.g. `scale_step`
+  //     appears in both PositiveLowerDensity.lean and its ...Aristotle.lean twin). The
+  //     honest distinct-gap count then lies strictly between the main-file-only count
+  //     and the chain-aggregate count, and is unreachable by either endpoint — so a
+  //     meta.sorries that is accurate on distinct gaps re-flagged forever (PRs #35142,
+  //     #35151, #35165 all edited meta and the flag recurred because no single meta value
+  //     is both honest and endpoint-matching).
+  // Accept any claim within the inclusive [main, chain] range to break the oscillation
+  // (Issues #18137, erdos-125). The lower bound (mainSorryCount) still flags a claim that
+  // underclaims the main proof file itself; the upper bound (chain) still flags genuine
+  // overclaims. When no companion/additional files are followed both counts are equal, so
+  // single-file entries collapse to an exact-match check and are unaffected.
   const claimed = target.meta.claimedSorries
-  if (claimed !== target.actual.sorryCount && claimed !== target.actual.mainSorryCount) {
+  const loSorries = Math.min(target.actual.mainSorryCount, target.actual.sorryCount)
+  const hiSorries = Math.max(target.actual.mainSorryCount, target.actual.sorryCount)
+  if (claimed < loSorries || claimed > hiSorries) {
     issues.push(
       target.actual.mainSorryCount === target.actual.sorryCount
         ? `sorry mismatch: claims ${claimed}, actual ${target.actual.sorryCount}`
