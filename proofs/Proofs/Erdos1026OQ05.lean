@@ -181,4 +181,36 @@ def singletonDecomposition (seq : RealSeq n) : MonotonicDecomposition n seq wher
   disjoint := fun _ _ _ _ hij => hij
   covering := fun k => ⟨k, 0, Nat.one_pos, rfl⟩
 
+/-- The **minimum number of monotone parts** needed to decompose `seq` — the covering
+number underlying Hanani's theorem (a Dilworth/Mirsky-type invariant, and the actual object
+OQ-05 asks about). It is well-defined because `singletonDecomposition` always supplies a
+decomposition, so the set of achievable part-counts is nonempty. -/
+noncomputable def minMonotonicParts (seq : RealSeq n) : ℕ :=
+  sInf {p | ∃ D : MonotonicDecomposition n seq, D.numParts = p}
+
+/-- The minimum number of monotone parts is at most `n`, witnessed by the singleton
+decomposition. -/
+theorem minMonotonicParts_le (seq : RealSeq n) : minMonotonicParts seq ≤ n := by
+  unfold minMonotonicParts
+  apply Nat.sInf_le
+  exact ⟨singletonDecomposition seq, rfl⟩
+
+/-- The minimum number of monotone parts is at least `n / max (LIS, LDS)`: the elementary
+(Mirsky/Dilworth) lower bound holds for *every* decomposition, hence for the optimal one. -/
+theorem minMonotonicParts_ge (seq : RealSeq n) :
+    n / max (LIS seq) (LDS seq) ≤ minMonotonicParts seq := by
+  unfold minMonotonicParts
+  apply le_csInf
+  · exact ⟨n, singletonDecomposition seq, rfl⟩
+  · rintro p ⟨D, rfl⟩
+    exact monotonicDecomposition_numParts_ge seq D
+
+/-- **The optimal number of monotone parts is bracketed** in `[n / max(LIS, LDS), n]`.
+The lower bound is the elementary (Mirsky/Dilworth) half of Hanani's theorem; the matching
+`O(√n)` *upper* bound for the extremal Erdős–Szekeres sequences is the hard constructive
+direction, still open (stated, not axiomatized). -/
+theorem minMonotonicParts_bracket (seq : RealSeq n) :
+    n / max (LIS seq) (LDS seq) ≤ minMonotonicParts seq ∧ minMonotonicParts seq ≤ n :=
+  ⟨minMonotonicParts_ge seq, minMonotonicParts_le seq⟩
+
 end Erdos1026OQ05
