@@ -115,6 +115,88 @@
       "mathContext": "Cramer's rule for three equations in three unknowns, with Sarrus-expanded determinants."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "det_updateCol_two_zero",
+      "type": "supporting",
+      "description": "Numerator determinant for x₀ (2×2): replacing column 0 of A by b gives det = b₀·a₁₁ − a₀₁·b₁, via det_fin_two + updateCol_self/updateCol_ne.",
+      "leanType": "(A : Matrix (Fin 2) (Fin 2) K) → (b : Fin 2 → K) → (A.updateCol 0 b).det = b 0 * A 1 1 - A 0 1 * b 1",
+      "startLine": 50,
+      "endLine": 54
+    },
+    {
+      "name": "det_updateCol_two_one",
+      "type": "supporting",
+      "description": "Numerator determinant for x₁ (2×2): replacing column 1 by b gives det = a₀₀·b₁ − b₀·a₁₀.",
+      "leanType": "(A : Matrix (Fin 2) (Fin 2) K) → (b : Fin 2 → K) → (A.updateCol 1 b).det = A 0 0 * b 1 - b 0 * A 1 0",
+      "startLine": 58,
+      "endLine": 62
+    },
+    {
+      "name": "cramer_two_zero",
+      "type": "core",
+      "description": "**2×2 Cramer's rule, first unknown.** If A·x = b and det A ≠ 0 then x₀ = (b₀a₁₁ − a₀₁b₁)/(a₀₀a₁₁ − a₀₁a₁₀). From cramer_solution + det_updateCol_two_zero + det_fin_two.",
+      "leanType": "(A : Matrix (Fin 2) (Fin 2) K) → (x b : Fin 2 → K) → (hx : A *ᵥ x = b) → (hdet : A.det ≠ 0) → x 0 = (b 0 * A 1 1 - A 0 1 * b 1) / (A 0 0 * A 1 1 - A 0 1 * A 1 0)",
+      "startLine": 66,
+      "endLine": 69
+    },
+    {
+      "name": "cramer_two_one",
+      "type": "core",
+      "description": "**2×2 Cramer's rule, second unknown.** x₁ = (a₀₀b₁ − b₀a₁₀)/(a₀₀a₁₁ − a₀₁a₁₀).",
+      "leanType": "(A : Matrix (Fin 2) (Fin 2) K) → (x b : Fin 2 → K) → (hx : A *ᵥ x = b) → (hdet : A.det ≠ 0) → x 1 = (A 0 0 * b 1 - b 0 * A 1 0) / (A 0 0 * A 1 1 - A 0 1 * A 1 0)",
+      "startLine": 73,
+      "endLine": 76
+    },
+    {
+      "name": "det_updateCol_three_zero",
+      "type": "supporting",
+      "description": "Numerator determinant for x₀ (3×3): column 0 of A replaced by b, expanded via det_fin_three (Sarrus).",
+      "leanType": "(A : Matrix (Fin 3) (Fin 3) K) → (b : Fin 3 → K) → (A.updateCol 0 b).det = ⋯ (Sarrus expansion in b, A)",
+      "startLine": 87,
+      "endLine": 95
+    },
+    {
+      "name": "det_updateCol_three_one",
+      "type": "supporting",
+      "description": "Numerator determinant for x₁ (3×3): column 1 replaced by b.",
+      "leanType": "(A : Matrix (Fin 3) (Fin 3) K) → (b : Fin 3 → K) → (A.updateCol 1 b).det = ⋯",
+      "startLine": 98,
+      "endLine": 107
+    },
+    {
+      "name": "det_updateCol_three_two",
+      "type": "supporting",
+      "description": "Numerator determinant for x₂ (3×3): column 2 replaced by b.",
+      "leanType": "(A : Matrix (Fin 3) (Fin 3) K) → (b : Fin 3 → K) → (A.updateCol 2 b).det = ⋯",
+      "startLine": 109,
+      "endLine": 118
+    },
+    {
+      "name": "cramer_three_zero",
+      "type": "core",
+      "description": "**3×3 Cramer's rule, x₀.** If A·x = b and det A ≠ 0 then x₀ = det(A₀)/det A, the Sarrus closed form. From cramer_solution + det_updateCol_three_zero + det_fin_three.",
+      "leanType": "(A : Matrix (Fin 3) (Fin 3) K) → (x b : Fin 3 → K) → (hx : A *ᵥ x = b) → (hdet : A.det ≠ 0) → x 0 = (Sarrus numerator) / (det_fin_three A)",
+      "startLine": 121,
+      "endLine": 130
+    },
+    {
+      "name": "cramer_three_one",
+      "type": "core",
+      "description": "**3×3 Cramer's rule, x₁.** x₁ = det(A₁)/det A.",
+      "leanType": "(A : Matrix (Fin 3) (Fin 3) K) → (x b : Fin 3 → K) → (hx : A *ᵥ x = b) → (hdet : A.det ≠ 0) → x 1 = (Sarrus numerator) / (det_fin_three A)",
+      "startLine": 133,
+      "endLine": 142
+    },
+    {
+      "name": "cramer_three_two",
+      "type": "core",
+      "description": "**3×3 Cramer's rule, x₂.** x₂ = det(A₂)/det A.",
+      "leanType": "(A : Matrix (Fin 3) (Fin 3) K) → (x b : Fin 3 → K) → (hx : A *ᵥ x = b) → (hdet : A.det ≠ 0) → x 2 = (Sarrus numerator) / (det_fin_three A)",
+      "startLine": 145,
+      "endLine": 154
+    }
+  ],
   "conclusion": {
     "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 158 lines and 10 theorems specializing the explicit Cramer formula to the 2×2 and 3×3 cases. The numerator helpers det_updateCol_two/three_* expand det(A.updateCol i b) via det_fin_two / det_fin_three and updateCol_self / updateCol_ne; the headline cramer_two_zero/one and cramer_three_zero/one/two deliver the textbook entrywise closed forms as ratios of these determinants.",
     "implications": "This closes the parent's OQ-01: the abstract formula xᵢ = det(Aᵢ)/det A is now instantiated as the small-case formulas every textbook states, verified against Mathlib's own det_fin_two / det_fin_three rather than reproved. The det_updateCol helper lemmas are reusable wherever a column-replaced small determinant appears (e.g. explicit inverses, Cramer-based root formulas for low-degree systems).",
