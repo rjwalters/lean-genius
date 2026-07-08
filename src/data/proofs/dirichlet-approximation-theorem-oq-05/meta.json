@@ -97,6 +97,32 @@
       "summary": "goldenRatio_badly_approximable assembles the bound with explicit constant c = 1/4. From norm_form_ne_zero, |p² − pq − q²| ≥ 1, so |φ − p/q|·|ψ − p/q|·q² ≥ 1. A case split on |φ − p/q| finishes: if ≥ 1 the inequality (1/4)/q² ≤ 1/4 ≤ 1 is immediate; if < 1, the triangle inequality bounds the conjugate factor |ψ − p/q| ≤ |φ − p/q| + |φ − ψ| = |φ − p/q| + √5 < 4 (since √5 < 3), and nlinarith combines this with the product bound to conclude |φ − p/q| ≥ 1/(4q²)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "goldenRatio_badly_approximable",
+      "type": "core",
+      "description": "**The golden ratio is badly approximable.** There is a constant c > 0 (here c = 1/4) with c/q² ≤ |φ − p/q| for all p ∈ ℤ, q > 0 — no rational approximates φ better than order 1/q², so Dirichlet's exponent 2 is sharp for φ. The gallery's first Diophantine lower bound, dual to the family's existence statements.",
+      "leanType": "∃ c : ℝ, 0 < c ∧ ∀ (p : ℤ) (q : ℕ), 0 < q → c / (q : ℝ) ^ 2 ≤ |goldenRatio - (p : ℝ) / q|",
+      "startLine": 88,
+      "endLine": 141
+    },
+    {
+      "name": "norm_form_ne_zero",
+      "type": "key",
+      "description": "**Non-vanishing of the norm form.** For q > 0 the integer p² − pq − q² is never zero — otherwise p/q would equal one of the irrational roots φ, ψ (goldenRatio/goldenConj irrationality). Supplies the |·| ≥ 1 integer lower bound driving the approximation estimate.",
+      "leanType": "(p : ℤ) (q : ℕ) (hq : 0 < q) : p ^ 2 - p * (q : ℤ) - (q : ℤ) ^ 2 ≠ 0",
+      "startLine": 69,
+      "endLine": 80
+    },
+    {
+      "name": "norm_form_identity",
+      "type": "supporting",
+      "description": "**Norm-form identity.** Since φ, ψ are the roots of x² − x − 1 (φ+ψ=1, φ·ψ=−1), (p/q − φ)(p/q − ψ) = (p² − pq − q²)/q² — the value of the ℤ[φ]-norm form at p − qφ, the algebraic identity the whole proof rests on.",
+      "leanType": "(p : ℤ) (q : ℕ) (hq : 0 < q) : ((p : ℝ) / q - goldenRatio) * ((p : ℝ) / q - goldenConj) = ((p ^ 2 - p * q - q ^ 2 : ℤ) : ℝ) / (q : ℝ) ^ 2",
+      "startLine": 54,
+      "endLine": 65
+    }
+  ],
   "conclusion": {
     "summary": "The golden ratio is badly approximable: c/q² ≤ |φ − p/q| with c = 1/4, proved sorry-free and axiom-free by an elementary norm-form argument. The argument turns the ℤ[φ]-norm identity q²(p/q − φ)(p/q − ψ) = p² − pq − q² into a nonzero integer (via irrationality of φ), then bounds the conjugate factor to extract the lower bound.",
     "implications": "This is the gallery's first Diophantine lower bound — the sharpness dual to Dirichlet's existence theorem — establishing that the exponent 2 cannot be improved for φ, the worst-approximable real number. The constant 1/4 is explicit but not optimal: Hurwitz's sharp value is 1/√5, attained precisely at φ at the top of the Lagrange spectrum.",
