@@ -182,4 +182,51 @@ theorem edgeThreshold_lt_choose_two (n k : ℕ) (h : 2 * k + 3 ≤ n)
       omega
   omega
 
+/-! ## Structural arithmetic in the clique size `k`
+
+The results above vary the vertex count `n` with `k` fixed.  This section supplies the
+complementary variation in `k` with `n` fixed.  Because `edgeThreshold n k =
+C(n-k-1,2) + C(k+2,2) + 1` moves both binomial coefficients in opposite directions as
+`k` grows (the first shrinks, the second grows), the discrete `k`-derivative is the
+*signed* quantity `2k + 4 − n`:
+
+    edgeThreshold n (k+1) − edgeThreshold n k = (k+2) − (n-k-2) = 2k + 4 − n     (for n ≥ k+2).
+
+We record it as the subtraction-free `ℕ` identity `edgeThreshold n (k+1) + n =
+edgeThreshold n k + (2k+4)` and read off the sign: the threshold is **U-shaped
+(convex) in `k`**, decreasing while `n ≥ 2k+4` and increasing once `n ≤ 2k+4`, with
+its minimum at `k ≈ (n-4)/2`.  This is the `k`-analogue of the well-defined-minimum
+structure the parent needs to make `f(k)` meaningful. -/
+
+/-- **Recurrence in `k`.**  For `n ≥ k+2`, incrementing the clique size satisfies the
+    subtraction-free identity `edgeThreshold n (k+1) + n = edgeThreshold n k + (2k+4)`,
+    i.e. the signed discrete `k`-derivative is `2k + 4 − n`.  Unlike the `n`-recurrence
+    this derivative changes sign, so the identity is stated additively to stay in `ℕ`. -/
+theorem edgeThreshold_succ_right (n k : ℕ) (h : k + 2 ≤ n) :
+    edgeThreshold n (k + 1) + n = edgeThreshold n k + (2 * k + 4) := by
+  unfold edgeThreshold
+  have ha : n - k - 1 = (n - k - 2) + 1 := by omega
+  have hb : n - (k + 1) - 1 = n - k - 2 := by omega
+  have hc : k + 1 + 2 = (k + 2) + 1 := by omega
+  rw [ha, hb, hc, choose_two_succ (n - k - 2), choose_two_succ (k + 2)]
+  omega
+
+/-- **Decreasing branch in `k`.**  While the graph is large relative to the clique size
+    (`n ≥ 2k+4`), the threshold does not increase with `k`:
+    `edgeThreshold n (k+1) ≤ edgeThreshold n k`. -/
+theorem edgeThreshold_succ_right_le (n k : ℕ) (h : 2 * k + 4 ≤ n) :
+    edgeThreshold n (k + 1) ≤ edgeThreshold n k := by
+  have hrec := edgeThreshold_succ_right n k (by omega)
+  omega
+
+/-- **Increasing branch in `k`.**  Once the clique size is large relative to the graph
+    (`k+2 ≤ n ≤ 2k+4`), the threshold does not decrease with `k`:
+    `edgeThreshold n k ≤ edgeThreshold n (k+1)`.  Together with
+    `edgeThreshold_succ_right_le` this shows the threshold is U-shaped (convex) in `k`,
+    minimized near `k = (n-4)/2`. -/
+theorem edgeThreshold_le_succ_right (n k : ℕ) (h1 : k + 2 ≤ n) (h2 : n ≤ 2 * k + 4) :
+    edgeThreshold n k ≤ edgeThreshold n (k + 1) := by
+  have hrec := edgeThreshold_succ_right n k h1
+  omega
+
 end Erdos1012OQ01OQ02

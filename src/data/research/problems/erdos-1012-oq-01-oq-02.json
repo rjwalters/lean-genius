@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE. Child of erdos-1012-oq-01 (Woodall function f(k) and edge threshold). The parent evaluates edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1 only at the boundary points n=2k+2, 2k+3. This entry supplies the variation in n: edgeThreshold_eq (explicit polynomial form), edgeThreshold_succ_left (recurrence: adding a vertex raises the threshold by exactly n-k-1, for n≥k+1), edgeThreshold_lt_succ (strict monotonicity for n≥k+2), edgeThreshold_mono (weak monotonicity for k+1≤n≤m). Erdos1012OQ01OQ02.lean, 2 helpers + 5 theorems (incl. non-degeneracy edgeThreshold≤C(n,2)), 0 axioms, 0 sorries, no native_decide.",
+    "progressSummary": "COMPLETE. Child of erdos-1012-oq-01 (Woodall function f(k) and edge threshold). The parent evaluates edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1 only at the boundary points n=2k+2, 2k+3. This entry supplies the variation in n: edgeThreshold_eq (explicit polynomial form), edgeThreshold_succ_left (recurrence: adding a vertex raises the threshold by exactly n-k-1, for n≥k+1), edgeThreshold_lt_succ (strict monotonicity for n≥k+2), edgeThreshold_mono (weak monotonicity for k+1≤n≤m). Erdos1012OQ01OQ02.lean, 2 helpers + 5 theorems (incl. non-degeneracy edgeThreshold≤C(n,2)), 0 axioms, 0 sorries, no native_decide. Follow-up (researcher-1, 2026-07-08): added the k-direction — edgeThreshold_succ_right (recurrence, signed derivative 2k+4-n) and the two monotonicity branches edgeThreshold_succ_right_le / edgeThreshold_le_succ_right establishing convexity (U-shape) in k, minimized near k=(n-4)/2. VERIFIED 0 axioms / 0 sorries, no native_decide.",
     "builtItems": [
       "Erdos1012OQ01OQ02.lean: 7 theorems, 0 axioms (propext/Quot.sound only — no Classical.choice), 0 sorries. Imports Proofs.Erdos1012OQ01 for the edgeThreshold definition.",
       "choose_two_succ: Pascal discrete-derivative C(m+1,2) = C(m,2) + m (via Nat.choose_succ_succ + Nat.choose_one_right).",
@@ -42,7 +42,8 @@
       "two_mul_choose_two: 2·C(m,2) = m·(m-1) (subtraction-free doubling helper, elementary induction reusing choose_two_succ).",
       "edgeThreshold_le_choose_two: NON-DEGENERACY — for n≥2k+3, edgeThreshold n k ≤ C(n,2). The required edge count never exceeds the complete graph's, so the long-cycle hypothesis edgeCount G ≥ edgeThreshold n k is satisfiable rather than vacuous. Doubled gap 2(C(n,2)−edgeThreshold) = 2k(k+2)+2c(k+1)≥0 (c=n−(2k+3)), closed by nlinarith.",
       "edgeThreshold_add_surplus_eq_choose_two: exact surplus identity C(n,2) = edgeThreshold n k + (k(k+2) + (n-(2k+3))(k+1)) for n ≥ 2k+3 — upgrades the ≤ bound edgeThreshold_le_choose_two to an equality with an explicit nonnegative gap.",
-      "edgeThreshold_lt_choose_two: strict non-degeneracy — edgeThreshold n k < C(n,2) for n ≥ 2k+3 except at the single degenerate point (k,n)=(0,3) where edgeThreshold 3 0 = C(3,2) = 3."
+      "edgeThreshold_lt_choose_two: strict non-degeneracy — edgeThreshold n k < C(n,2) for n ≥ 2k+3 except at the single degenerate point (k,n)=(0,3) where edgeThreshold 3 0 = C(3,2) = 3.",
+      "edgeThreshold_succ_right + edgeThreshold_succ_right_le + edgeThreshold_le_succ_right (researcher-1): recurrence and convexity in k. Subtraction-free identity edgeThreshold n (k+1) + n = edgeThreshold n k + (2k+4) (signed k-derivative 2k+4-n), giving the U-shape: threshold non-increasing in k while n≥2k+4, non-decreasing once n≤2k+4, minimized near k=(n-4)/2."
     ],
     "insights": [
       "The threshold's discrete derivative in n is exactly n-k-1: C((n-k-1)+1,2) - C(n-k-1,2) = n-k-1. This is the structural reason the edge requirement tightens with each added vertex and f(k) is a well-defined minimum.",
@@ -50,11 +51,11 @@
       "edgeThreshold_eq cannot be finished by omega alone (the m*(m-1) product is nonlinear); use Nat.choose_two_right and only the linear subtraction identities (n-k-1-1 = n-k-2, k+2-1 = k+1) under omega.",
       "Weak monotonicity proved by `induction hnm with | refl | @step m h ih` on the ≤ proof (Nat.le.rec); the step case applies the n-recurrence and omega (treating edgeThreshold terms as atoms, n-k-1 ≥ 0).",
       "Non-degeneracy needs no division: double both sides via 2·C(m,2)=m·(m-1), substitute n=2k+3+c to eliminate all truncated subtraction, and the gap becomes the manifestly nonnegative polynomial 2k(k+2)+2c(k+1). nlinarith closes it; omega then divides the doubled inequality back by 2.",
-      "The threshold-vs-complete-graph surplus is exactly k(k+2)+(n-(2k+3))(k+1); it vanishes only at (k,n)=(0,3), so away from that corner the long-cycle edge hypothesis has strict room above the threshold (not forced to K_n). Proven by halving the parent's doubled polynomial identity and cancelling 2 via Nat.eq_of_mul_eq_mul_left."
+      "The threshold-vs-complete-graph surplus is exactly k(k+2)+(n-(2k+3))(k+1); it vanishes only at (k,n)=(0,3), so away from that corner the long-cycle edge hypothesis has strict room above the threshold (not forced to K_n). Proven by halving the parent's doubled polynomial identity and cancelling 2 via Nat.eq_of_mul_eq_mul_left.",
+      "k-direction complements the n-direction: both binomials C(n-k-1,2) and C(k+2,2) move oppositely as k grows, so the discrete k-derivative 2k+4-n is signed (unlike the always-positive n-derivative n-k-1). Stating it additively (LHS+n = RHS+(2k+4)) keeps it subtraction-free in ℕ; the two monotonicity branches then follow by omega from the recurrence + the sign of 2k+4-n."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Monotonicity in k for fixed n, and the joint growth rate Θ(n²) of the threshold.",
       "Connect the n-recurrence to the parent's threshold_diff (the boundary difference C(k+2,2)-C(k+1,2) is the single step at n=2k+2)."
     ]
   },
@@ -87,8 +88,8 @@
     {
       "path": "Proofs/Erdos1012OQ01OQ02.lean",
       "filename": "Erdos1012OQ01OQ02.lean",
-      "lineCount": 185,
-      "theoremCount": 9,
+      "lineCount": 232,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
