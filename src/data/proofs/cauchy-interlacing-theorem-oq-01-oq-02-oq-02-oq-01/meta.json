@@ -118,16 +118,32 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "The module docstring frames the forward (Schur) direction of the Schur–Horn theorem: the diagonal of a symmetric operator T in any orthonormal basis e is majorized by its spectrum, diag T ≺ spec T. The setup fixes the symmetric operator T, its finrank hypothesis, the chosen orthonormal basis e, and (implicitly) the eigenbasis v = hT.eigenvectorBasis."
+    },
+    {
+      "id": "ds-matrix",
       "title": "The Doubly Stochastic Change-of-Basis Matrix",
-      "content": "dsWeight defines D i j = ‖⟪v j, e i⟫‖², the squared moduli of the inner products between the orthonormal eigenbasis v of T and the chosen orthonormal basis e. dsWeight_nonneg is sq_nonneg. dsWeight_row_sum and dsWeight_col_sum prove ∑ j, D i j = 1 and ∑ i, D i j = 1 by Parseval — OrthonormalBasis.sum_sq_norm_inner_right for v (rows, giving ‖e i‖² = 1) and sum_sq_norm_inner_left for e (columns, giving ‖v j‖² = 1) — so D is doubly stochastic."
+      "startLine": 67,
+      "endLine": 89,
+      "summary": "dsWeight defines D i j = ‖⟪v j, e i⟫‖², the squared moduli of the inner products between the orthonormal eigenbasis v of T and the chosen orthonormal basis e. dsWeight_nonneg is sq_nonneg. dsWeight_row_sum and dsWeight_col_sum prove ∑ j, D i j = 1 and ∑ i, D i j = 1 by Parseval — OrthonormalBasis.sum_sq_norm_inner_right for v (rows, giving ‖e i‖² = 1) and sum_sq_norm_inner_left for e (columns, giving ‖v j‖² = 1) — so D is doubly stochastic."
     },
     {
+      "id": "diagonal-ds-image",
       "title": "Diagonal as Doubly-Stochastic Image of the Spectrum",
-      "content": "diag_decomp proves re ⟪T (e i), e i⟫ = ∑ⱼ λⱼ · D i j. Expand ⟪T(e i), e i⟫ = ∑ⱼ ⟪T(e i), v j⟫⟪v j, e i⟫ by OrthonormalBasis.sum_inner_mul_inner. Each cross term is rewritten using eigenvectorBasis_apply_self_apply (⟪v j, T(e i)⟫ = (λ j)·⟪v j, e i⟫), inner_conj_symm, RCLike.conj_ofReal (the eigenvalue is real, so its conjugate is itself), and RCLike.conj_mul (conj z · z = ‖z‖²), giving (λ j)·‖⟪v j, e i⟫‖² = (λ j)·D i j; taking real parts term by term yields the claim. This exhibits each diagonal entry as a convex combination of eigenvalues."
+      "startLine": 90,
+      "endLine": 119,
+      "summary": "diag_decomp proves re ⟪T (e i), e i⟫ = ∑ⱼ λⱼ · D i j. Expand ⟪T(e i), e i⟫ = ∑ⱼ ⟪T(e i), v j⟫⟪v j, e i⟫ by OrthonormalBasis.sum_inner_mul_inner. Each cross term is rewritten using eigenvectorBasis_apply_self_apply (⟪v j, T(e i)⟫ = (λ j)·⟪v j, e i⟫), inner_conj_symm, RCLike.conj_ofReal (the eigenvalue is real, so its conjugate is itself), and RCLike.conj_mul (conj z · z = ‖z‖²), giving (λ j)·‖⟪v j, e i⟫‖² = (λ j)·D i j; taking real parts term by term yields the claim. This exhibits each diagonal entry as a convex combination of eigenvalues."
     },
     {
+      "id": "majorization",
       "title": "Majorization by Jensen, and Specializations",
-      "content": "schur_majorization_convexOn: for convex φ on s ⊇ spectrum, ConvexOn.map_sum_le applied with weights D i j (nonnegative, summing to 1 by the row sums) and points λ j ∈ s gives φ(d i) ≤ ∑ⱼ D i j • φ(λ j); summing over i, swapping the order (Finset.sum_comm), and collapsing each column with ∑ᵢ D i j = 1 (Finset.sum_smul, one_smul) yields ∑ᵢ φ(d i) ≤ ∑ⱼ φ(λ j). schur_trace_eq specializes to the equality case ∑ d i = ∑ λ j directly from diag_decomp and the column sums (no convexity), and schur_sum_sq_le applies the master theorem with φ = (·)² (Even.convexOn_pow at n=2) to bound ∑ d i² ≤ ∑ λ j²."
+      "startLine": 120,
+      "endLine": 178,
+      "summary": "schur_majorization_convexOn: for convex φ on s ⊇ spectrum, ConvexOn.map_sum_le applied with weights D i j (nonnegative, summing to 1 by the row sums) and points λ j ∈ s gives φ(d i) ≤ ∑ⱼ D i j • φ(λ j); summing over i, swapping the order (Finset.sum_comm), and collapsing each column with ∑ᵢ D i j = 1 (Finset.sum_smul, one_smul) yields ∑ᵢ φ(d i) ≤ ∑ⱼ φ(λ j). schur_trace_eq specializes to the equality case ∑ d i = ∑ λ j directly from diag_decomp and the column sums (no convexity), and schur_sum_sq_le applies the master theorem with φ = (·)² (Even.convexOn_pow at n=2) to bound ∑ d i² ≤ ∑ λ j²."
     }
   ],
   "references": [
