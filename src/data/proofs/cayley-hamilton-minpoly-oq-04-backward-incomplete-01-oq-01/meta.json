@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header, Imports and Setup",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports the parent file CayleyHamiltonMinpolyOQ04BackwardIncomplete01 (supplying IsCyclicVector and cyclic_of_irreducible_minpoly) together with Set.Card, Fintype.BigOperators and Mathlib.Tactic. The module docstring frames the problem: the parent proves only the one-directional 'every nonzero vector is cyclic', and this file closes it to an iff and draws the enumerative consequence qⁿ − 1. Opens the CayleyHamiltonMinpolyOQ04BackwardInc01 namespace and Matrix/Polynomial, and fixes the ambient data variable {K : Type*} [Field K] {n : ℕ}.",
+      "mathContext": "Setup for the sharp characterization: cyclic locus = Kⁿ ∖ {0}, of size qⁿ − 1 over a finite field."
+    },
+    {
       "id": "zero",
       "title": "The Zero Vector is Never Cyclic",
       "startLine": 39,
@@ -95,6 +103,36 @@
       "endLine": 86,
       "summary": "ncard_cyclic_vectors: over a finite field with q elements, the cyclic-vector set has cardinality qⁿ − 1, via the {0}ᶜ description, Finset.card_compl, and Fintype.card (Fin n → K) = qⁿ.",
       "mathContext": "#{v | cyclic} = #({0}ᶜ) = qⁿ − 1."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cyclic_iff_ne_zero",
+      "type": "core",
+      "description": "**Full characterization.** For a matrix M whose minimal polynomial is irreducible of full degree n (> 0), a vector is cyclic for M iff it is nonzero. Sharpens the parent's one-directional 'every nonzero vector is cyclic' into an iff; the new (forward) direction is the contrapositive of zero_not_cyclic, the backward direction is the parent's cyclic_of_irreducible_minpoly.",
+      "leanType": "[DecidableEq K[X]] (M : Matrix (Fin n) (Fin n) K) (hirr : Irreducible (minpoly K M)) (hdeg : (minpoly K M).natDegree = n) (hn : 0 < n) (v : Fin n → K) : IsCyclicVector M v ↔ v ≠ 0",
+      "startLine": 53
+    },
+    {
+      "name": "ncard_cyclic_vectors",
+      "type": "corollary",
+      "description": "**Count over a finite field.** If K is finite with q = #K and minpoly K M is irreducible of degree n > 0, the number of cyclic vectors is exactly qⁿ − 1 — every one of the qⁿ vectors except 0. Falls out of the {0}ᶜ set description with no extra structure.",
+      "leanType": "[Fintype K] [DecidableEq K[X]] (M : Matrix (Fin n) (Fin n) K) (hirr : Irreducible (minpoly K M)) (hdeg : (minpoly K M).natDegree = n) (hn : 0 < n) : {v : Fin n → K | IsCyclicVector M v}.ncard = Fintype.card K ^ n - 1",
+      "startLine": 73
+    },
+    {
+      "name": "zero_not_cyclic",
+      "type": "supporting",
+      "description": "The zero vector is never cyclic (for n > 0): the nonzero constant polynomial 1 has degree 0 < n and annihilates 0 under M, witnessing the failure of the cyclic condition. Supplies the previously-missing forward direction of the characterization.",
+      "leanType": "(M : Matrix (Fin n) (Fin n) K) (hn : 0 < n) : ¬ IsCyclicVector M (0 : Fin n → K)",
+      "startLine": 43
+    },
+    {
+      "name": "setOf_cyclic_eq_compl_zero",
+      "type": "supporting",
+      "description": "The set of cyclic vectors is exactly the complement of {0}, the punctured space — the maximal possible cyclic locus. Immediate from cyclic_iff_ne_zero by set extensionality, and the bridge to the finite count.",
+      "leanType": "[DecidableEq K[X]] (M : Matrix (Fin n) (Fin n) K) (hirr : Irreducible (minpoly K M)) (hdeg : (minpoly K M).natDegree = n) (hn : 0 < n) : {v : Fin n → K | IsCyclicVector M v} = ({0} : Set (Fin n → K))ᶜ",
+      "startLine": 63
     }
   ],
   "references": [
