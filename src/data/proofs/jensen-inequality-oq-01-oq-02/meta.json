@@ -131,5 +131,17 @@
       "Mathlib"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "powerMean_le_powerMean",
+      "type": "theorem",
+      "description": "Weighted power-mean monotonicity: for nonnegative data z with nonnegative weights w summing to 1 and 0 < p ≤ q, the weighted power mean is nondecreasing in the exponent — (∑ᵢ wᵢ·zᵢ^p)^(1/p) ≤ (∑ᵢ wᵢ·zᵢ^q)^(1/q)."
+    },
+    {
+      "name": "weighted_am_le_qm",
+      "type": "theorem",
+      "description": "Weighted arithmetic-mean ≤ quadratic-mean, the p=1, q=2 instance: ∑ᵢ wᵢ·zᵢ ≤ (∑ᵢ wᵢ·zᵢ²)^(1/2)."
+    }
+  ],
   "sorries": 0
 }
