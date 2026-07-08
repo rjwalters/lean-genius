@@ -110,4 +110,65 @@ theorem awgn_multisymbol_output_power [IsProbabilityMeasure μ] {ι : Type*}
   rw [awgn_multisymbol_power hW hindep hmean]
   exact Finset.sum_congr rfl hP
 
+/-!
+### Sharp form: pairwise *uncorrelatedness* already suffices
+
+The results above assume **pairwise independence** of the contributions, following
+`ProbabilityTheory.IndepFun.variance_sum`.  But the Bienaymé identity only ever uses
+that the *pairwise covariances vanish* — the off-diagonal terms of the double sum
+`Var[∑ Wᵢ] = ∑ᵢ ∑ⱼ cov[Wᵢ, Wⱼ]` (`ProbabilityTheory.variance_sum'`) drop out.  Pairwise
+independence is a strictly stronger hypothesis than pairwise uncorrelatedness (there
+exist uncorrelated but dependent random variables), so the identity holds under the
+weaker, and in fact *exactly sufficient*, second-order hypothesis `cov[Wᵢ, Wⱼ] = 0` for
+`i ≠ j`.  For the AWGN power budget this is the sharp statement: **uncorrelated** signal
+and noise contributions — not necessarily independent — still add in power.
+-/
+
+/-- **Sharp Bienaymé identity.**  The variance of a finite sum of *pairwise
+uncorrelated* square-integrable random variables is the sum of the variances.  Only the
+vanishing of the pairwise covariances is required; this is strictly weaker than the
+pairwise-independence hypothesis of `ProbabilityTheory.IndepFun.variance_sum`, and it is
+the exact second-order condition that makes the off-diagonal covariances of
+`variance_sum'` disappear. -/
+theorem variance_sum_of_pairwise_uncorrelated [IsFiniteMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (huncor : Set.Pairwise ↑s fun i j => cov[W i, W j; μ] = 0) :
+    Var[∑ i ∈ s, W i; μ] = ∑ i ∈ s, Var[W i; μ] := by
+  rw [variance_sum' hW]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  rw [Finset.sum_eq_single_of_mem i hi fun j hj hji => huncor hi hj hji.symm]
+  exact covariance_self (hW i hi).aemeasurable
+
+/-- Pairwise independence is a special case of pairwise uncorrelatedness, so the
+independence-based `awgn_multisymbol_variance` factors through the sharp identity:
+`IndepFun.covariance_eq_zero` turns each pairwise-independence witness into a vanishing
+covariance. -/
+theorem variance_sum_of_pairwise_indep [IsFiniteMeasure μ] {ι : Type*} {W : ι → Ω → ℝ}
+    {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (hindep : Set.Pairwise ↑s fun i j => W i ⟂ᵢ[μ] W j) :
+    Var[∑ i ∈ s, W i; μ] = ∑ i ∈ s, Var[W i; μ] :=
+  variance_sum_of_pairwise_uncorrelated hW fun i hi j hj hij =>
+    (hindep hi hj hij).covariance_eq_zero (hW i hi) (hW j hj)
+
+/-- **Multi-symbol AWGN output power under mere uncorrelatedness (sharp).**  If the
+aggregate channel output is the finite sum `∑_{i ∈ s} Wᵢ` of *pairwise-uncorrelated*,
+zero-mean, square-integrable contributions, then the output second moment (power) is the
+sum of the individual second moments:
+
+        E[(∑_{i ∈ s} Wᵢ)²] = ∑_{i ∈ s} E[Wᵢ²].
+
+This strengthens `awgn_multisymbol_power` by replacing pairwise independence with the
+weaker (and exactly sufficient) hypothesis of vanishing pairwise covariances. -/
+theorem awgn_multisymbol_power_of_uncorrelated [IsProbabilityMeasure μ] {ι : Type*}
+    {W : ι → Ω → ℝ} {s : Finset ι} (hW : ∀ i ∈ s, MemLp (W i) 2 μ)
+    (huncor : Set.Pairwise ↑s fun i j => cov[W i, W j; μ] = 0)
+    (hmean : ∀ i ∈ s, μ[W i] = 0) :
+    μ[(∑ i ∈ s, W i) ^ 2] = ∑ i ∈ s, μ[(W i) ^ 2] := by
+  have hSum : MemLp (∑ i ∈ s, W i) 2 μ := memLp_finset_sum' s hW
+  have hSum0 : μ[∑ i ∈ s, W i] = 0 := sum_mean_zero hW hmean
+  rw [second_moment_eq_variance hSum hSum0,
+    variance_sum_of_pairwise_uncorrelated hW huncor]
+  refine Finset.sum_congr rfl fun i hi => ?_
+  exact (second_moment_eq_variance (hW i hi) (hmean i hi)).symm
+
 end ShannonAWGNMultiSymbolPower
