@@ -48,7 +48,19 @@
       "Behrend and Elkin constructions axiomatized",
       "Formal proof that Erdos #3 implies Green-Tao",
       "arithProg_card: a genuine k-term AP (d > 0) has exactly k elements, via injectivity of i ↦ a + i·d on range k — a reusable counting fact turning AP-containment into cardinality lower bounds",
-      "infinite_of_containsArbitrarilyLongAP: only infinite sets contain arbitrarily long APs (a finite set of size n cannot contain the (n+1)-element AP it would need), a sorry-free axiom-free sanity check on the conjecture's conclusion side"
+      "infinite_of_containsArbitrarilyLongAP: only infinite sets contain arbitrarily long APs (a finite set of size n cannot contain the (n+1)-element AP it would need), a sorry-free axiom-free sanity check on the conjecture's conclusion side",
+      "not_summable_one_div_nat_mul_log (Proofs/Erdos3LogHarmonic.lean): a self-contained, sorry-free, axiom-free Cauchy-condensation proof that the log-harmonic (Bertrand) series ∑ 1/(n·log n) diverges — no equivalent exists in Mathlib v4.26. This substantiates the counterexample profile behind the o(N/log N) threshold: a set at that density (e.g. the primes, counting function ~ N/log N) can still have a divergent reciprocal sum, so RequiredBound alone cannot force the AP conclusion and the strictly stronger StrongRequiredBound O(N/(log N)^{1+δ}) threshold is genuinely needed"
+    ],
+    "additionalFiles": [
+      {
+        "path": "Proofs/Erdos3LogHarmonic.lean",
+        "description": "Divergence of the log-harmonic (Bertrand) series ∑ 1/(n·log n) via Cauchy condensation; substantiates the o(N/log N) counterexample profile in Erdos3Problem.lean's StrongRequiredBound docstring. Machine-checked, 0 sorries, axioms only [propext, Classical.choice, Quot.sound].",
+        "status": "verified",
+        "sorries": 0,
+        "axiomCount": 0,
+        "theoremCount": 1,
+        "lineCount": 127
+      }
     ],
     "axiomCount": 0,
     "lineCount": 163,
