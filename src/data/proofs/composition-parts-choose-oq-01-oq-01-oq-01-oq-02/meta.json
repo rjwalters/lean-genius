@@ -104,6 +104,40 @@
       "summary": "parts_genfun_eval_one specialises parts_genfun at t = 1 over ℕ: since 1^(c.length) = 1, the left side counts the compositions while the right side is 1·2^(n−1), re-deriving the grandparent's 2^(n−1) count as a special value of the generating function. parts_genfun_binomial expands t·(1+t)^(n−1) via the binomial theorem add_pow (after writing n = M+1) into ∑_{k<n} C(n−1,k)·t^(k+1), so the coefficient of t^(k+1) is C(n−1,k) = C(n−1,(k+1)−1) — exactly the number of compositions of n with k+1 parts, the grandparent's graded count."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "sum_pow_card",
+      "type": "supporting",
+      "description": "**Subset generating function.** Over any commutative semiring R, Σ_{s ⊆ Fin m} t^|s| = (t+1)^m — the Finset.prod_add expansion of ∏_{i} (t+1): each of the 2^m monomials picks t from a subset s and 1 from the rest, contributing t^|s|.",
+      "leanType": "{R : Type*} → [CommSemiring R] → (t : R) → (m : ℕ) → (∑ s : Finset (Fin m), t ^ s.card = (t + 1) ^ m)",
+      "startLine": 71,
+      "endLine": 76
+    },
+    {
+      "name": "parts_genfun",
+      "type": "core",
+      "description": "**Generating function of the number of parts.** For n ≥ 1, Σ_{c : Composition n} t^c.length = t·(1+t)^(n−1) — the (unnormalised) probability generating function of the part-count. Proved by transporting the sum across the gap bijection gapsEquiv to Σ_{s ⊆ Fin(n−1)} t^(|s|+1), factoring out one t, and applying sum_pow_card.",
+      "leanType": "{R : Type*} → [CommSemiring R] → (t : R) → (n : ℕ) → (hn : 1 ≤ n) → (∑ c : Composition n, t ^ c.length = t * (1 + t) ^ (n - 1))",
+      "startLine": 90,
+      "endLine": 98
+    },
+    {
+      "name": "parts_genfun_eval_one",
+      "type": "corollary",
+      "description": "**Evaluation at t = 1 recovers the count.** #(Composition n) = 2^(n−1): the total mass of the part-count distribution, re-derived as the special value parts_genfun(1) = 1·(1+1)^(n−1), independently of Mathlib's composition_card.",
+      "leanType": "(n : ℕ) → (hn : 1 ≤ n) → ((Fintype.card (Composition n) : ℕ) = 2 ^ (n - 1))",
+      "startLine": 105,
+      "endLine": 108
+    },
+    {
+      "name": "parts_genfun_binomial",
+      "type": "core",
+      "description": "**Explicit polynomial form.** The generating function equals the binomial polynomial Σ_{k<n} C(n−1,k)·t^(k+1); the coefficient of t^(k+1) is C(n−1,k), the number of compositions of n with k+1 parts (the graded count). Proved directly from the binomial theorem add_pow.",
+      "leanType": "{R : Type*} → [CommSemiring R] → (t : R) → (n : ℕ) → (hn : 1 ≤ n) → (∑ k ∈ Finset.range n, ((n - 1).choose k : R) * t ^ (k + 1) = t * (1 + t) ^ (n - 1))",
+      "startLine": 114,
+      "endLine": 121
+    }
+  ],
   "conclusion": {
     "summary": "The entire generating function of the number of parts of a composition is formalised sorry-free and axiom-free over an arbitrary commutative semiring: $\\sum_{c\\,:\\,\\mathrm{Composition}\\ n} t^{\\,c.\\mathrm{length}} = t\\,(1 + t)^{\\,n-1}$ for $n \\ge 1$ (`parts_genfun`). Its value at $t = 1$ is the count $2^{n-1}$ (`parts_genfun_eval_one`) and its coefficients are the graded counts $\\binom{n-1}{k}$ (`parts_genfun_binomial`) — so the count, the graded count, the mean $(n+1)/2$ and the variance $(n-1)/4$ of the whole family are now special values and derivatives of a single closed form.",
     "implications": "The content beyond Mathlib is the subset generating function $\\sum_{s \\subseteq \\mathrm{Fin}\\,m} t^{\\#s} = (t+1)^m$ (`sum_pow_card`), proved as a Finset.prod_add expansion, and its assembly via the gap bijection into the part-count generating function $t(1+t)^{n-1}$. This answers the direct parent's open question — whether all the moments can be produced at once — affirmatively and uniformly: the generating function is exactly the shifted-Binomial PGF $t\\cdot((1+t)/2)^{n-1}$ after normalising, exhibiting the part-count as $1 + \\mathrm{Binomial}(n-1, 1/2)$ and recovering every earlier statistic without recomputing a binomial sum.",
@@ -112,6 +146,29 @@
       "Can the generating function of the part-count of a composition into parts drawn from a fixed set S (rather than all positive integers) be obtained by the same product expansion, replacing (1 + t) by the S-restricted local factor?"
     ]
   },
+  "references": [
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd ed., §1.2",
+      "note": "Compositions of n and their enumeration (2^(n−1) compositions, C(n−1,k−1) with k parts); the graded count whose generating function is assembled here."
+    },
+    {
+      "authors": "Flajolet, Philippe; Sedgewick, Robert",
+      "title": "Analytic Combinatorics",
+      "year": "2009",
+      "venue": "Cambridge University Press, §I.3, III.2",
+      "note": "Generating functions of combinatorial parameters (bivariate / probability generating functions of a statistic such as the number of parts); the t·(1+t)^(n−1) form is the PGF of the part-count."
+    },
+    {
+      "authors": "Comtet, Louis",
+      "title": "Advanced Combinatorics",
+      "year": "1974",
+      "venue": "D. Reidel, §I.4",
+      "note": "Classical treatment of compositions and their generating functions."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "composition-parts-choose-oq-01-oq-01-oq-01",
