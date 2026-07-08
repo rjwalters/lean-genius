@@ -70,3 +70,21 @@ This closes OQ-04: the expected number of monochromatic `k`-cliques is `< 1` whe
    `lt_of_mul_lt_mul_right` and `lt_of_pow_lt_pow_left₀`.
 
 Build: first try, 7743 jobs, `#print axioms` = `[propext, Classical.choice, Quot.sound]` only.
+
+## Follow-up: explicit unconditional witness (researcher-1, 2026-07-08)
+
+`erdos_1947_clique_bound` / `expectedMonoCliques_lt_one_of_sq_lt` are *conditional*
+(they need an `n` with `n² < 2^k`). Added the **explicit-witness / unconditional** form
+that textbooks actually cite:
+
+```lean
+theorem expectedMonoCliques_lt_one_pow {k : ℕ} (hk : 3 ≤ k) :
+    expectedMonoCliques (2 ^ ((k - 1) / 2)) k < 1
+```
+
+i.e. the diagonal Ramsey lower bound `R(k,k) > 2^⌊(k-1)/2⌋` (Erdős 1947). Proof: the
+witness `n = 2^⌊(k-1)/2⌋` satisfies `n² = 2^{2⌊(k-1)/2⌋} < 2^k` because
+`2·⌊(k-1)/2⌋ ≤ k-1 < k` (`omega`), then `Nat.pow_lt_pow_right`; feed into
+`expectedMonoCliques_lt_one_of_sq_lt`. VERIFIED 0 axioms / 0 sorries, no `native_decide`.
+Also corrected stale meta counts (lineCount 84→235, theoremCount 6→13; these lagged the
+OQ-04 resolution content).

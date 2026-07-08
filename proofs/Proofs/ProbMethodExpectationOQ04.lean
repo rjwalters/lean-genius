@@ -215,4 +215,21 @@ theorem expectedMonoCliques_lt_one_of_sq_lt {n k : ℕ} (hk : 3 ≤ k) (hn : n ^
   push_cast at hcast
   linarith
 
+/-- **Erdős 1947, explicit witness form.**  The conditional bound
+`expectedMonoCliques_lt_one_of_sq_lt` requires an `n` with `n² < 2^k`; here we exhibit one
+that grows like `2^{k/2}`.  For every `k ≥ 3`, the explicit choice
+`n = 2^{⌊(k−1)/2⌋}` satisfies `expectedMonoCliques n k < 1`.  This is the textbook
+*unconditional* diagonal Ramsey lower bound `R(k,k) > 2^{⌊(k−1)/2⌋}` (Erdős 1947): a
+random 2-colouring of `K_{2^{⌊(k−1)/2⌋}}` almost surely has no monochromatic `k`-clique.
+
+The witness works because `2·⌊(k−1)/2⌋ ≤ k−1 < k`, so
+`n² = (2^{⌊(k−1)/2⌋})² = 2^{2·⌊(k−1)/2⌋} < 2^k`. -/
+theorem expectedMonoCliques_lt_one_pow {k : ℕ} (hk : 3 ≤ k) :
+    expectedMonoCliques (2 ^ ((k - 1) / 2)) k < 1 := by
+  apply expectedMonoCliques_lt_one_of_sq_lt hk
+  have hm : 2 * ((k - 1) / 2) < k := by omega
+  calc (2 ^ ((k - 1) / 2)) ^ 2
+      = 2 ^ (2 * ((k - 1) / 2)) := by rw [← pow_mul, Nat.mul_comm]
+    _ < 2 ^ k := Nat.pow_lt_pow_right (by norm_num) hm
+
 end ProbMethod.ExpectationOQ04

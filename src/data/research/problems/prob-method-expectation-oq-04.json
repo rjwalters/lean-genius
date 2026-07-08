@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "RESOLVED. OQ-04 asked to strengthen expected_mono_cliques to E(n,k) < 1 for n < 2^(k/2). ProbMethodExpectationOQ04.lean now PROVES this: erdos_1947_clique_bound (n^2 < 2^k ∧ k≥3 ⟹ 2·C(n,k) < 2^C(k,2)) discharges the pure-ℕ power inequality the prior session had only reduced to, and expectedMonoCliques_lt_one_of_sq_lt combines it with expectedMonoCliques_lt_one_iff to give E(n,k) < 1 unconditionally on n^2 < 2^k. This is the Erdős 1947 diagonal Ramsey lower bound R(k,k) > n. Proof compares squares to stay in ℕ (descFactorial_le_pow + factorial growth 2^(k+2) ≤ (k!)^2 + identity 2·C(k,2)+k = k^2). Verified: 0 axioms (propext/Classical/Quot only), 0 sorries, no native_decide. Also retains the non-strict first-moment averaging lemmas.",
+    "progressSummary": "RESOLVED. OQ-04 asked to strengthen expected_mono_cliques to E(n,k) < 1 for n < 2^(k/2). ProbMethodExpectationOQ04.lean now PROVES this: erdos_1947_clique_bound (n^2 < 2^k ∧ k≥3 ⟹ 2·C(n,k) < 2^C(k,2)) discharges the pure-ℕ power inequality the prior session had only reduced to, and expectedMonoCliques_lt_one_of_sq_lt combines it with expectedMonoCliques_lt_one_iff to give E(n,k) < 1 unconditionally on n^2 < 2^k. This is the Erdős 1947 diagonal Ramsey lower bound R(k,k) > n. Proof compares squares to stay in ℕ (descFactorial_le_pow + factorial growth 2^(k+2) ≤ (k!)^2 + identity 2·C(k,2)+k = k^2). Verified: 0 axioms (propext/Classical/Quot only), 0 sorries, no native_decide. Also retains the non-strict first-moment averaging lemmas. Follow-up (researcher-1, 2026-07-08): added expectedMonoCliques_lt_one_pow — the explicit-witness/unconditional form of Erdős 1947, R(k,k) > 2^⌊(k-1)/2⌋, by instantiating expectedMonoCliques_lt_one_of_sq_lt at n=2^⌊(k-1)/2⌋. VERIFIED 0 axioms / 0 sorries, no native_decide.",
     "builtItems": [
       "ProbMethodExpectationOQ04.lean: 6 theorems, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
       "exists_ge_of_card_mul_le / exists_le_of_card_mul_ge: division-free first moment via by_contra + Finset.sum_lt_sum_of_nonempty + sum_const/nsmul_eq_mul + linarith.",
@@ -40,7 +40,8 @@
       "first_moment_ge / first_moment_le: non-strict threshold (E[X] ≥ t ⟹ ∃ f a ≥ t) via the average lemma + le_trans.",
       "erdos_1947_clique_bound in ProbMethodExpectationOQ04.lean (n^2<2^k, k≥3 ⟹ 2·C(n,k) < 2^C(k,2))",
       "expectedMonoCliques_lt_one_of_sq_lt in ProbMethodExpectationOQ04.lean (E(n,k) < 1 for n^2<2^k, k≥3 — OQ-04 target)",
-      "two_pow_add_two_le_factorial_sq and two_mul_choose_two_add helper lemmas"
+      "two_pow_add_two_le_factorial_sq and two_mul_choose_two_add helper lemmas",
+      "expectedMonoCliques_lt_one_pow in ProbMethodExpectationOQ04.lean: explicit witness n=2^⌊(k-1)/2⌋ (k≥3) gives E(n,k)<1 — the unconditional Erdős-1947 form R(k,k) > 2^⌊(k-1)/2⌋."
     ],
     "insights": [
       "The division-free shapes (t·|s| ≤ ∑f ⟹ ∃ f a ≥ t) are the practical lower-bound forms of the first moment method — they avoid dividing by |s| and feed directly into existence arguments.",
@@ -49,7 +50,8 @@
       "Non-strict completes strict: first_moment_principle (parent) handles E[X] > t; first_moment_ge handles E[X] ≥ t, the boundary the strict form misses.",
       "OQ-04 fully resolved: the half-integer hypothesis n < 2^(k/2) is equivalent (squaring) to the clean ℕ statement n^2 < 2^k, sidestepping rpow entirely.",
       "Square-comparison keeps the whole Erdős 1947 argument in ℕ: prove (2·C(n,k))^2 < (2^C(k,2))^2 via multiplying through by (k!)^2, then lt_of_pow_lt_pow_left₀.",
-      "Key sublemmas: Nat.descFactorial_le_pow gives C(n,k)·k! ≤ n^k; factorial growth 2^(k+2) ≤ (k!)^2 (induction, base 32 ≤ 36); and 2·C(k,2)+k = k^2 (induction via choose_succ_succ)."
+      "Key sublemmas: Nat.descFactorial_le_pow gives C(n,k)·k! ≤ n^k; factorial growth 2^(k+2) ≤ (k!)^2 (induction, base 32 ≤ 36); and 2·C(k,2)+k = k^2 (induction via choose_succ_succ).",
+      "Instantiating the conditional bound at n=2^⌊(k-1)/2⌋ yields the classical unconditional Ramsey lower bound: 2·⌊(k-1)/2⌋ ≤ k-1 < k so n²=2^{2⌊(k-1)/2⌋}<2^k (via Nat.pow_lt_pow_right + omega for the exponent inequality)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -91,8 +93,8 @@
     {
       "path": "Proofs/ProbMethodExpectationOQ04.lean",
       "filename": "ProbMethodExpectationOQ04.lean",
-      "lineCount": 84,
-      "theoremCount": 6,
+      "lineCount": 235,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
