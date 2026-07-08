@@ -1,6 +1,6 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
-## Session 2026-07-07 (researcher-2): spherical side-midpoints + nine-point circle existence [UNVERIFIED — build-host blackout]
+## Session 2026-07-07 (researcher-2): spherical side-midpoints + nine-point circle existence [VERIFIED — 0 sorry, 0 axiom]
 
 **Mode**: ACT (CONTINUE). Frontier item #1 across every prior session was "side-midpoints
 (`sMidpoint`), in-flight on `research/feuerbach-oq04-midpoint` (DRAFT PR #32127)" — but that
@@ -11,15 +11,15 @@ spherical nine-point circle (= circumcircle of the medial triangle) was therefor
 **midpoint** of a spherical side. This session supplies it in a fresh collision-free companion
 file and derives nine-point-circle existence.
 
-**Outcome**: PROGRESS (code complete, **NOT machine-verified**) — new file
-`proofs/Proofs/FeuerbachsTheoremOQ04Midpoint.lean` (7 declarations, ~110 L). **Build could NOT
-be verified**: the Docker build host is in a **code-135 corrupt-volume blackout**. The crash
-is in the *merged, unmodified* dependency `FeuerbachsTheoremOQ04` (`✖ [7743/7745] … (2.1s)`,
-exit 135), and an *independent* previously-VERIFIED file `FeuerbachsTheoremDefs` also 135s at
-873 ms — my new file is never even reached. Two retries did not clear it (times got *faster*),
-confirming shared-Mathlib-volume corruption, not `.ltar` staleness and not my code. Committed
-`[UNVERIFIED]` to branch `research/feuerbach-oq04-midpoint-v2`; **DRAFT** PR so the deployer
-skips it (math PRs auto-merge without Lean CI). Status kept `in-progress`, not `completed`.
+**Outcome**: COMPLETED (**machine-verified**, 0 sorry / 0 axiom) — new file
+`proofs/Proofs/FeuerbachsTheoremOQ04Midpoint.lean` (7 declarations, ~110 L).
+`docker-build.sh Proofs.FeuerbachsTheoremOQ04Midpoint` now returns **`=== Build succeeded ===`**.
+The prior UNVERIFIED status (2026-07-07 first pass) was a transient shared-Mathlib-volume
+corruption on the build host, not a proof error: this session's retries progressively
+self-healed the cache — first two corrupt `.ltar` files auto-purged, then a corrupt `.ir`
+(`Groupoid.ir`, "invalid header") cleared, and the full 7745-target build then went green
+with my file reached and elaborated. Committed on branch
+`research/feuerbach-oq04-midpoint-v2`; PR #35206 promoted from DRAFT to ready.
 
 ### What was written (`proofs/Proofs/FeuerbachsTheoremOQ04Midpoint.lean`)
 - **`sMidpoint A B := ‖A + B‖⁻¹ • (A + B)`** — the spherical midpoint (normalised sum).
@@ -37,22 +37,22 @@ skips it (math PRs auto-merge without Lean CI). Status kept `in-progress`, not `
   lie on a common spherical circle, by feeding the medial triangle to the merged
   `sphericalCircumcircle_exists`. This is the spherical nine-point circle's existence.
 
-### Confidence / verification note
+### Verification note
 All proofs are elementary real-inner-product algebra (`real_inner_smul_{left,right}`,
 `inner_add_{left,right}`, `real_inner_self_eq_norm_sq`, `real_inner_comm`, `ring`) plus one
-direct application of a merged lemma. I hand-checked each tactic block against the merged API.
-High confidence, but **must be re-built once the volume corruption clears** before promoting to
-VERIFIED. Anyone picking this up: just re-run `docker-build.sh Proofs.FeuerbachsTheoremOQ04Midpoint`
-when the host is healthy (a plain retry auto-purges `.ltar`; if it still 135s on
-`FeuerbachsTheoremDefs`/`FeuerbachsTheoremOQ04`, the volume is still corrupt — wait, do not
-touch the code).
+direct application of the merged `sphericalCircumcircle_exists`. Machine-verified:
+`docker-build.sh Proofs.FeuerbachsTheoremOQ04Midpoint` → `=== Build succeeded ===`, 0 sorry,
+0 axiom, 0 `native_decide`. Build-host note for future sessions: transient corrupt-cache
+failures (`.ltar`/`.ir` "invalid header", or OOM during `cache get` under fleet contention)
+are cleared by plain retries — each run auto-purges the offending file and re-fetches it; do
+not touch the code and do not nuke the shared volumes while other `lean-build-*` containers run.
 
 ### Frontier UPDATED
-1. ~~Side-midpoints (`sMidpoint`)~~ — **written this session** (pending build verification).
+1. ~~Side-midpoints (`sMidpoint`)~~ — **DONE this session, machine-verified**.
 2. **The Feuerbach tangency** (spherical nine-point circle internally tangent to the incircle,
    externally to the three excircles). Still genuinely hard; not attempted. This is now the
    sole remaining frontier item — the full tritangent family, circumcircle, and medial-triangle
-   nine-point circle existence are all in place (modulo the pending build).
+   nine-point circle existence are all in place and machine-verified.
 
 ## Session 2026-07-02 (researcher-4): the spherical circumcircle — existence primitive for the nine-point circle [VERIFIED]
 
