@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "context",
+    "title": "The Exact Prime-Degree Order and AGL(1,ℓ)",
+    "content": "The parent chain squeezed |Gal(Xⁿ−p/ℚ)| between the metacyclic ceiling n·φ(n) and the lower bounds lcm(n,φ(n)) (always) and n·φ(n) (when gcd(n,φ(n))=1), pinning the order exactly at n·φ(n) in the coprime case. This file extracts the general prime-degree consequence: |Gal(Xˡ−p)| = ℓ(ℓ−1) = |AGL(1,ℓ)|, the order of the affine group 𝔽ₗ ⋊ 𝔽ₗˣ — the largest solvable transitive subgroup of Sₗ.",
+    "mathContext": "$|\\mathrm{Gal}(X^\\ell - p/\\mathbb{Q})| = \\ell(\\ell-1) = |\\mathrm{AGL}(1,\\ell)|, \\quad \\mathrm{AGL}(1,\\ell) = \\mathbb{F}_\\ell \\rtimes \\mathbb{F}_\\ell^\\times$",
+    "significance": "context",
+    "relatedConcepts": ["inverse Galois problem", "affine group AGL(1,ℓ)", "radical extensions"],
+    "prerequisites": ["Galois theory", "solvable groups", "Euler totient"]
+  },
+  {
+    "id": "ann-coprime",
+    "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 61 },
+    "type": "insight",
+    "title": "Prime Degree Supplies Coprimality for Free",
+    "content": "coprime_self_totient_of_prime proves gcd(ℓ, φ(ℓ)) = 1 for prime ℓ. Since Nat.totient_prime gives φ(ℓ) = ℓ − 1, and a prime cannot divide a strictly smaller positive number, ℓ ∤ (ℓ − 1); Nat.Prime.coprime_iff_not_dvd converts non-divisibility to coprimality (omega closes it). This is exactly the hypothesis the parent's exact pin requires, supplied automatically at every prime degree.",
+    "mathContext": "$\\gcd(\\ell, \\varphi(\\ell)) = \\gcd(\\ell, \\ell-1) = 1 \\quad (\\ell \\text{ prime})$",
+    "significance": "key",
+    "relatedConcepts": ["Euler totient", "coprimality", "consecutive integers"],
+    "prerequisites": ["Nat.totient_prime", "Nat.Prime.coprime_iff_not_dvd", "Nat.le_of_dvd"]
+  },
+  {
+    "id": "ann-exact-order",
+    "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 76 },
+    "type": "insight",
+    "title": "The Exact Order |Gal(Xˡ−p)| = ℓ(ℓ−1)",
+    "content": "gal_card_prime_degree is the headline: for every prime ℓ and prime p, |Gal(Xˡ−p/ℚ)| = ℓ(ℓ−1), with no genericity hypothesis and uniform in p. It applies the parent's coprime exact pin gal_card_eq_n_mul_totient_of_coprime — whose hypothesis is discharged by coprime_self_totient_of_prime — and rewrites φ(ℓ) = ℓ − 1. It subsumes the parent instances 2 (ℓ=2), 6 (ℓ=3), 20 (ℓ=5) in one statement.",
+    "mathContext": "$\\forall\\, \\ell, p \\text{ prime}: \\; |\\mathrm{Gal}(X^\\ell - p/\\mathbb{Q})| = \\ell(\\ell-1)$",
+    "significance": "key",
+    "relatedConcepts": ["exact group order", "metacyclic group", "radical extension"],
+    "prerequisites": ["gal_card_eq_n_mul_totient_of_coprime", "Nat.totient_prime"]
+  },
+  {
+    "id": "ann-index",
+    "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 82, "endLine": 94 },
+    "type": "insight",
+    "title": "Index (ℓ−2)! in Sₗ — Non-Genericity for ℓ ≥ 5",
+    "content": "gal_index_in_symm proves |Gal(Xˡ−p)|·(ℓ−2)! = ℓ!, so Gal sits inside Sₗ with index exactly (ℓ−2)!. Writing ℓ = m+2, this is the factorisation ℓ! = ℓ(ℓ−1)(ℓ−2)! closed by ring. For ℓ ≥ 5 the index (ℓ−2)! > 1, so the Galois group of the irreducible separable Xˡ − p is a PROPER subgroup of Sₗ — radical polynomials are never Sₗ-generic at prime degree ≥ 5.",
+    "mathContext": "$|\\mathrm{Gal}(X^\\ell - p)| \\cdot (\\ell-2)! = \\ell!, \\qquad [S_\\ell : \\mathrm{Gal}] = (\\ell-2)!$",
+    "significance": "key",
+    "relatedConcepts": ["symmetric group index", "generic Galois group", "solvability by radicals"],
+    "prerequisites": ["Nat.factorial_succ", "group index", "ring tactic"]
+  },
+  {
+    "id": "ann-septic",
+    "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "context",
+    "title": "The Septic Instance |Gal(X⁷−p)| = 42",
+    "content": "gal_card_septic_eq_42 specialises the closed form to ℓ = 7: |Gal(X⁷−p/ℚ)| = 42 = |AGL(1,7)| for every prime p, discharged by gal_card_prime_degree and norm_num. It is the next instance after the parent's quintic 20, and it dramatises how loose the factorial bound is — |Gal| ∣ 7! = 5040 cannot see 42 ≪ 5040.",
+    "mathContext": "$|\\mathrm{Gal}(X^7 - p/\\mathbb{Q})| = 42 = |\\mathrm{AGL}(1,7)| \\ll 5040 = 7!$",
+    "significance": "context",
+    "relatedConcepts": ["concrete instance", "affine group AGL(1,7)", "factorial bound"],
+    "prerequisites": ["norm_num", "specialisation of the closed form"]
+  },
+  {
+    "id": "ann-squeeze",
+    "proofId": "inverse-galois-d4-oq-02-oq-03-oq-01-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 77 },
+    "type": "technique",
+    "title": "Ceiling Meets Floor Forces Exact Equality",
+    "content": "The exact order is not a fresh computation but a squeeze: the metacyclic ceiling |Gal| ≤ ℓ·φ(ℓ) and the coprime lower bound ℓ·φ(ℓ) ∣ |Gal| (available because gcd(ℓ,φ(ℓ)) = 1 at prime degree) sandwich the order at exactly ℓ·φ(ℓ). Divisibility upward plus boundedness downward by the same value is what upgrades a two-sided estimate into an equality.",
+    "mathContext": "$\\ell\\varphi(\\ell) \\mid |\\mathrm{Gal}| \\;\\wedge\\; |\\mathrm{Gal}| \\le \\ell\\varphi(\\ell) \\;\\Rightarrow\\; |\\mathrm{Gal}| = \\ell\\varphi(\\ell)$",
+    "significance": "supporting",
+    "relatedConcepts": ["two-sided squeeze", "divisibility and bound", "exact pin"],
+    "prerequisites": ["gal_card_le_n_mul_totient", "antisymmetry of divisibility under a bound"]
+  }
+]
