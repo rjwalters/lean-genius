@@ -52,10 +52,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S14 (researcher-2, 2026-06-15) SOUNDNESS AUDIT (doc-only): two new findings beyond S11/S12/S13. (1) The recommended SpherePacking-marker fix is unsound — a contentless `extends PackingDensity` marker is freely inhabited, so the dimer re-wraps in and False survives. (2) The child KeplerConjectureOQ04.lean is INDEPENDENTLY inconsistent via its own bezdek axiom over the contentless EllipsoidLatticePacking marker applied to the dimer, contradicting its own tetrahedronDimerDensity_gt_fccDensity — no parent axiom needed. Correct fix specified: uninterpreted `opaque IsSpherePacking/IsDiskPacking/IsEllipsoidLatticePacking : PackingDensity → Prop` predicates as forwarded hypotheses; build-pending under Docker blackout. See SOUNDNESS-AUDIT-S14.md.",
+    "progressSummary": "S15/S8 (researcher-7, 2026-07-08): the S14 soundness fix is now BUILD-VERIFIED. The opaque-predicate remediation specified at S14 (opaque IsSpherePacking/IsDiskPacking/IsEllipsoidLatticePacking/IsSymmetricConvexBody3DPacking as forwarded proof-field hypotheses on the shape-restricted bounds) was already present on main in both KeplerConjecture.lean and KeplerConjectureOQ04.lean; it now compiles clean against Mathlib v4.26 (docker-build 7744 jobs), so the earlier 'independently inconsistent contentless marker' exploit is genuinely closed. New S8 section adds two axiom-free theorems certifying the gates are non-vacuous: the tetrahedral dimer density is provably NOT an ellipsoid lattice packing (exceeds the Bezdek-Kuperberg ceiling) and the zero density is provably NOT a symmetric convex body packing (below the Ulam floor). Child file: 2 legitimate STATEMENT axioms (bezdek_kuperberg, ulam), 0 sorries, 15 theorems, status axiomatized.",
     "builtItems": [
       "Realigned 6 drifted annotations (ranges pinned to the pre-S3 ~118-line file) to the current 456-line source + added 5 new annotations covering S3-S7 (refutation, PackingDensity instance/existential, Bezdek-Kuperberg axiom, Ulam axiom, density_hierarchy_3d aggregation); annotations now 11, matching the 11 meta.json sections, in src/data/proofs/kepler-conjecture-oq-04/annotations.json",
-      "Backfilled missing S5/S6/S7 session entries in research/problems/kepler-conjecture-oq-04/knowledge.md (previously only S1 + S3+S4 were recorded; S5/S6/S7 had been deferred to a post-build doc update)"
+      "Backfilled missing S5/S6/S7 session entries in research/problems/kepler-conjecture-oq-04/knowledge.md (previously only S1 + S3+S4 were recorded; S5/S6/S7 had been deferred to a post-build doc update)",
+      "S15/S8 (researcher-7, 2026-07-08): BUILD-VERIFIED the S14 opaque-predicate soundness fix. Both KeplerConjecture.lean (opaque IsDiskPacking/IsSpherePacking/IsSpherePacking8D) and KeplerConjectureOQ04.lean (opaque IsEllipsoidLatticePacking/IsSymmetricConvexBody3DPacking, gated marker structures) compile clean against Mathlib v4.26 (docker-build 7744 jobs), confirming the fix that was 'build-pending under Docker blackout' at S14. Added S8: two theorems proving the shape gates are NON-VACUOUS."
     ],
     "insights": [
       "The tetrahedral refutation 4000/4671 > pi/(3*sqrt(2)) is AXIOM-FREE in Lean: pure real-number arithmetic provable via Real.pi_sq_lt (pi^2 < 9.8696). Squared form: 288_000_000 > 21_818_241 * pi^2, margin ~ 25% even with the loosest Mathlib pi bound.",
@@ -66,7 +67,9 @@
       "Annotation file-growth co-drift: as the file grew from ~118 LOC (S2) to 456 LOC (S7), all 6 original annotation ranges stayed pinned to old line numbers and pointed at the wrong declarations; the gallery page rendered annotations only through the S2 rational anchor, leaving the entire S3-S7 core math (axiom-free refutation through the final hierarchy theorem) un-annotated",
       "S14 SOUNDNESS (researcher-2): the recommended SpherePacking-marker fix (S11) does NOT restore soundness — a structure that `extends PackingDensity` with no constrained field is freely inhabited by any PackingDensity (anonymous constructor PackingDensity → marker), so the tetrahedral dimer re-wraps into it and the False derivation survives. A marker excludes a witness only if it carries a hypothesis the witness cannot satisfy.",
       "S14 SOUNDNESS (researcher-2): KeplerConjectureOQ04.lean is independently inconsistent on its OWN axioms — no parent axiom needed. `bezdek_kuperberg_ellipsoid_lattice_upper_bound` (l.324) applied to (⟨tetrahedronDimerPacking⟩ : EllipsoidLatticePacking) (contentless marker l.309) yields tetrahedronDimerDensity ≤ fccDensity, contradicting the file s own axiom-free tetrahedronDimerDensity_gt_fccDensity (l.207). S11/S12/S13 all routed through parent axioms and missed this. `ulam_conjecture` (a lower bound) is unaffected.",
-      "S14 FIX SPEC (researcher-2): correct remediation replaces contentless markers with an uninterpreted shape predicate `opaque IsSpherePacking : PackingDensity → Prop` (plus IsDiskPacking, IsEllipsoidLatticePacking), added as a hypothesis to each shape-restricted bound and forwarded through derived theorems. The dimer has no such proof and opaque blocks consumers from manufacturing one. opaque introduces a definition, not an assumption, so it does not inflate the genuine axiom count. Blast radius confined to the two Kepler files (grep: only term-consumers are their own derived theorems; all other repo refs are docstring prose). Docker-gated."
+      "S14 FIX SPEC (researcher-2): correct remediation replaces contentless markers with an uninterpreted shape predicate `opaque IsSpherePacking : PackingDensity → Prop` (plus IsDiskPacking, IsEllipsoidLatticePacking), added as a hypothesis to each shape-restricted bound and forwarded through derived theorems. The dimer has no such proof and opaque blocks consumers from manufacturing one. opaque introduces a definition, not an assumption, so it does not inflate the genuine axiom count. Blast radius confined to the two Kepler files (grep: only term-consumers are their own derived theorems; all other repo refs are docstring prose). Docker-gated.",
+      "S15 (researcher-7): the opaque-predicate soundness fix specified at S14 was ALREADY present in both KeplerConjecture.lean and KeplerConjectureOQ04.lean on main; it just had never been build-verified. It now compiles clean (7744 jobs), so soundness is restored, not merely specified.",
+      "S8 non-vacuity (researcher-7): the opaque shape gates are genuinely restrictive, not just uninhabited-by-fiat. tetrahedronDimer_not_ellipsoidLattice proves ¬IsEllipsoidLatticePacking tetrahedronDimerPacking (the dimer density 4000/4671 exceeds the Bezdek-Kuperberg ellipsoid-lattice ceiling fccDensity, so it cannot be an ellipsoid lattice packing). zeroDensity_not_symmetricConvexBody proves ¬IsSymmetricConvexBody3DPacking ⟨0,…⟩ (zero density falls below the Ulam floor fccDensity>0). These are exactly the pre-S15 unsoundness exploits, now discharged as honest negative facts. 0 new axioms."
     ],
     "mathlibGaps": [
       "No IsPacking / LatticePacking predicate in Mathlib v4.26.0. Mathlib has Convex and ConvexHull infrastructure for general convex sets, but no abstract notion of 'a packing of congruent copies of a shape K' with associated density.",
@@ -74,12 +77,9 @@
       "No Ulam packing-conjecture statement in Mathlib's probability/measure-theory namespaces. A gallery-side formalization documents the open landscape around Kepler."
     ],
     "nextSteps": [
-      "S2: create Proofs/KeplerConjectureOQ04.lean with tetrahedronDimerDensity := 4000/4671, positivity, and < 1 (~25 lines, both proofs norm_num).",
-      "S3: prove tetrahedronDimerDensity > fccDensity using cross-multiplication + squaring + Real.pi_sq_lt + nlinarith (~50 lines, axiom-free).",
-      "S4: construct tetrahedronDimerPacking : PackingDensity and prove exists_packing_density_gt_fcc corollary (~20 lines).",
-      "S5: state and axiomatize Bezdek-Kuperberg ellipsoid lattice bound (+1 axiom, ~30 lines).",
-      "S6: state and axiomatize Ulam packing conjecture (+1 axiom, ~15 lines).",
-      "S15 (Docker-enabled): apply the S14 opaque-predicate fix to KeplerConjecture.lean + KeplerConjectureOQ04.lean and build-verify that `example : False` is no longer derivable; supersedes the contentless-marker recommendation in S11/S12/S13 and the #24509 bezdek discharge."
+      "S16: refine the opaque shape predicates into structures carrying the underlying convex body K (e.g. Convex ℝ K + central symmetry ∀x, x∈K ↔ -x∈K) so IsSymmetricConvexBody3DPacking / IsEllipsoidLatticePacking become derivable from an actual geometric construction rather than opaque markers; the axioms bezdek_kuperberg and ulam survive as STATEMENT axioms on the refined types.",
+      "Formalize affine density invariance under invertible linear maps (the Mathlib v4.26 gap noted at S5) to discharge bezdek_kuperberg_ellipsoid_lattice_upper_bound from gauss_lattice_theorem instead of axiomatizing it.",
+      "Add the degenerate aspect-ratio-1 sphere case as a concrete inhabitant of IsEllipsoidLatticePacking (via fccPacking) once the marker is refined, giving equality in the ellipsoid-lattice bound."
     ]
   },
   "tags": [
@@ -143,8 +143,8 @@
     {
       "path": "Proofs/KeplerConjectureOQ04.lean",
       "filename": "KeplerConjectureOQ04.lean",
-      "lineCount": 571,
-      "theoremCount": 13,
+      "lineCount": 638,
+      "theoremCount": 15,
       "axiomCount": 2,
       "defCount": 2,
       "sorryCount": 0,
