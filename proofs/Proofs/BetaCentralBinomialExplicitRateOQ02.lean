@@ -32,6 +32,18 @@ This entry supplies the first nontrivial coefficient with an effective remainder
 * **`correction_log_isBigO_second_order`** (clean Landau form):
     `(fun n => log (q n) - 1/(8n)) =O[atTop] (fun n => 1/n²)`.
 
+Part 4 pushes this one order further.  Sharpening the *lower* Stirling bracket from
+`1/(12j) - 1/(12j²)` to the cubic `1/(12j) - 1/(144 j³)` (matching the exact upper
+bound `1/(12j)` to order `1/j³`) yields:
+
+* **`correction_log_third_order`** (the `c₂ = 0` answer): for `n ≥ 1`,
+    `|log (q n) - 1/(8n)| ≤ 1/(6 n²)` is upgraded to `≤ 1/(72 n³)`.
+  So the asymptotic expansion `q n = 1 + c₁/n + c₂/n² + ⋯` has **`c₂ = 0`** — no
+  genuine `1/n²` term — and the first correction beyond `1/(8n)` lives at order `1/n³`.
+
+* **`correction_log_isBigO_third_order`**:
+    `(fun n => log (q n) - 1/(8n)) =O[atTop] (fun n => 1/n³)`.
+
 ## The Engine
 
 The exact second-order coefficient is unlocked by Mathlib's **exact per-step
@@ -386,5 +398,196 @@ theorem correction_log_isBigO_second_order :
     abs_of_pos (by positivity : (0 : ℝ) < 1 / (n : ℝ) ^ 2)]
   calc |Real.log (correction n) - 1 / (8 * (n : ℝ))| ≤ 1 / (6 * (n : ℝ) ^ 2) := hb
     _ = 1 / 6 * (1 / (n : ℝ) ^ 2) := by ring
+
+/-! ### Part 4 — The `1/n²` coefficient vanishes: `q n = 1 + 1/(8n) + O(1/n³)`
+
+The second-order result above brackets `log (q n) - 1/(8n)` by `O(1/n²)`.  Does the
+expansion *continue* — is there a genuine `c₂/n²` term?  The true Stirling deviation
+`S(j) = log stirlingSeq(j) - log√π = 1/(12j) - 1/(360 j³) + ⋯` carries **no** `1/j²`
+term, so `c₂ = 0` and the next correction sits at `1/n³`.
+
+We prove this by *sharpening the lower bracket*.  The per-step deficit of the exact
+upper model from the leading series term is
+  `1/(12 i(i+1)) - 1/(3(2i+1)²) = 1/(12 i(i+1)(2i+1)²)`,
+which is dominated by the telescoping cubic model `(1/144)(1/i³ - 1/(i+1)³)` — the
+inequality collapses to `0 ≤ 7·i(i+1) + 1`.  Telescoping this `O(1/i⁴)` deficit gives
+the cubic lower bracket `S(j) ≥ 1/(12j) - 1/(144 j³)`, matching the exact upper bound
+`S(j) ≤ 1/(12j)` to order `1/j³`.  Feeding `log (q n) = 2·S(n) - S(2n)` collapses the
+`1/n²` contributions to exactly `0`. -/
+
+/-- **Sharpened lower per-step bound (new).**  For every `m`, the per-step drop exceeds
+the exact upper model corrected by a *cubic* telescoping term:
+`step ≥ (1/(12(m+1)) - 1/(12(m+2))) - (1/144)(1/(m+1)³ - 1/(m+2)³)`.
+
+The correction majorant telescopes to an `O(1/j³)` tail — one order sharper than
+`diff_lower`.  The pointwise inequality reduces to `0 ≤ 7·t(t+1) + 1`. -/
+lemma diff_lower_cubic (m : ℕ) :
+    (1 / (12 * ((m : ℝ) + 1)) - 1 / (12 * ((m : ℝ) + 2)))
+        - (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3 - 1 / ((m : ℝ) + 2) ^ 3)
+      ≤ Real.log (Stirling.stirlingSeq (m + 1)) - Real.log (Stirling.stirlingSeq (m + 2)) := by
+  have hlead := diff_lower_leading m
+  set t : ℝ := (m : ℝ) + 1 with ht
+  have ht0 : (0 : ℝ) < t := by rw [ht]; positivity
+  have ht1p : (0 : ℝ) < t + 1 := by linarith
+  have hden : (0 : ℝ) < 2 * t + 1 := by linarith
+  have ht2 : (m : ℝ) + 2 = t + 1 := by rw [ht]; ring
+  rw [ht2]
+  have hne0 : t ≠ 0 := ht0.ne'
+  have hne1 : t + 1 ≠ 0 := ht1p.ne'
+  have hne2 : 2 * t + 1 ≠ 0 := hden.ne'
+  have halg :
+      (1 / (12 * t) - 1 / (12 * (t + 1))) - (1 / 144) * (1 / t ^ 3 - 1 / (t + 1) ^ 3)
+        ≤ 1 / (3 * (2 * t + 1) ^ 2) := by
+    rw [← sub_nonneg]
+    have hEq : 1 / (3 * (2 * t + 1) ^ 2)
+          - ((1 / (12 * t) - 1 / (12 * (t + 1)))
+              - (1 / 144) * (1 / t ^ 3 - 1 / (t + 1) ^ 3))
+        = (7 * (t * (t + 1)) + 1)
+            / (144 * t ^ 3 * (t + 1) ^ 3 * (2 * t + 1) ^ 2) := by
+      field_simp; ring
+    rw [hEq]
+    apply div_nonneg
+    · nlinarith [ht0, mul_pos ht0 ht1p]
+    · positivity
+  linarith [hlead, halg]
+
+/-- Telescoping sum of the cubic correction model. -/
+private lemma tel_cubic (m N : ℕ) :
+    (∑ j ∈ Finset.range N,
+        ((1 / 144) * (1 / ((m : ℝ) + j + 1) ^ 3 - 1 / ((m : ℝ) + j + 2) ^ 3)))
+      = (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3 - 1 / ((m : ℝ) + N + 1) ^ 3) := by
+  induction N with
+  | zero => simp
+  | succ k ih => rw [Finset.sum_range_succ, ih]; push_cast; ring
+
+/-- **Cubic lower bound of the deviation (new).**  For every `m`,
+`1/(12(m+1)) - (1/144)/(m+1)³ ≤ log stirlingSeq(m+1) - log√π`. -/
+lemma stirlingLogDev_lower_cubic (m : ℕ) :
+    1 / (12 * ((m : ℝ) + 1)) - (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3)
+      ≤ Real.log (Stirling.stirlingSeq (m + 1)) - Real.log (Real.sqrt π) := by
+  set g : ℕ → ℝ := fun j => Real.log (Stirling.stirlingSeq (m + j + 1)) with hg
+  have hsum : ∀ N : ℕ, (∑ j ∈ Finset.range N, (g j - g (j + 1)))
+      = Real.log (Stirling.stirlingSeq (m + 1)) - Real.log (Stirling.stirlingSeq (m + N + 1)) := by
+    intro N; rw [Finset.sum_range_sub' g N]
+  have hbound : ∀ N : ℕ,
+      (1 / (12 * ((m : ℝ) + 1)) - 1 / (12 * ((m : ℝ) + N + 1)))
+          - (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3)
+        ≤ (∑ j ∈ Finset.range N, (g j - g (j + 1))) := by
+    intro N
+    have hle : (∑ j ∈ Finset.range N,
+          ((1 / (12 * ((m : ℝ) + j + 1)) - 1 / (12 * ((m : ℝ) + j + 2)))
+            - (1 / 144) * (1 / ((m : ℝ) + j + 1) ^ 3 - 1 / ((m : ℝ) + j + 2) ^ 3)))
+        ≤ (∑ j ∈ Finset.range N, (g j - g (j + 1))) := by
+      apply Finset.sum_le_sum
+      intro j _
+      have h := diff_lower_cubic (m + j)
+      have hc1 : ((m + j : ℕ) : ℝ) + 1 = (m : ℝ) + j + 1 := by push_cast; ring
+      have hc2 : ((m + j : ℕ) : ℝ) + 2 = (m : ℝ) + j + 2 := by push_cast; ring
+      rw [hc1, hc2] at h
+      simpa only [hg] using h
+    rw [Finset.sum_sub_distrib, tel_upper m N, tel_cubic m N] at hle
+    have hmono : (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3 - 1 / ((m : ℝ) + N + 1) ^ 3)
+        ≤ (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3) := by
+      have : (0 : ℝ) ≤ 1 / ((m : ℝ) + N + 1) ^ 3 := by positivity
+      nlinarith [this]
+    linarith
+  have hπ : (0 : ℝ) < Real.sqrt π := Real.sqrt_pos.mpr Real.pi_pos
+  have htend_arg : Tendsto (fun N : ℕ => m + N + 1) atTop atTop :=
+    tendsto_atTop_atTop.2 (fun b => ⟨b, fun a ha => by omega⟩)
+  have htend_s : Tendsto (fun N : ℕ => Stirling.stirlingSeq (m + N + 1)) atTop (𝓝 (Real.sqrt π)) :=
+    Stirling.tendsto_stirlingSeq_sqrt_pi.comp htend_arg
+  have htend_log : Tendsto (fun N : ℕ => Real.log (Stirling.stirlingSeq (m + N + 1))) atTop
+      (𝓝 (Real.log (Real.sqrt π))) :=
+    (Real.continuousAt_log hπ.ne').tendsto.comp htend_s
+  have htend : Tendsto (fun N : ℕ => ∑ j ∈ Finset.range N, (g j - g (j + 1))) atTop
+      (𝓝 (Real.log (Stirling.stirlingSeq (m + 1)) - Real.log (Real.sqrt π))) := by
+    have := (tendsto_const_nhds (x := Real.log (Stirling.stirlingSeq (m + 1)))).sub htend_log
+    refine this.congr ?_
+    intro N; rw [hsum N]
+  have htendM : Tendsto (fun N : ℕ =>
+      1 / (12 * ((m : ℝ) + 1)) - 1 / (12 * ((m : ℝ) + N + 1))) atTop
+      (𝓝 (1 / (12 * ((m : ℝ) + 1)) - 0)) :=
+    tendsto_const_nhds.sub (tendsto_tail_zero m)
+  have htend_lb : Tendsto (fun N : ℕ =>
+      (1 / (12 * ((m : ℝ) + 1)) - 1 / (12 * ((m : ℝ) + N + 1)))
+        - (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3)) atTop
+      (𝓝 ((1 / (12 * ((m : ℝ) + 1)) - 0) - (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3))) :=
+    htendM.sub_const _
+  have hfinal := le_of_tendsto_of_tendsto' htend_lb htend hbound
+  have hsimp : (1 / (12 * ((m : ℝ) + 1)) - 0) - (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3)
+      = 1 / (12 * ((m : ℝ) + 1)) - (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3) := by
+    rw [sub_zero]
+  rw [hsimp] at hfinal
+  exact hfinal
+
+/-- **Cubic Stirling deviation bracket (new).**  For `j ≥ 1`,
+`1/(12j) - 1/(144 j³) ≤ log stirlingSeq(j) - log√π ≤ 1/(12j)`.
+
+This is one order sharper on the lower side than `stirlingLogDev_bracket`: the slack
+drops from `1/(12j²)` to `1/(144 j³)`, pinning `S(j) = 1/(12j) + O(1/j³)`. -/
+theorem stirlingLogDev_bracket_cubic (j : ℕ) (hj : 1 ≤ j) :
+    1 / (12 * (j : ℝ)) - 1 / (144 * (j : ℝ) ^ 3)
+        ≤ Real.log (Stirling.stirlingSeq j) - Real.log (Real.sqrt π) ∧
+    Real.log (Stirling.stirlingSeq j) - Real.log (Real.sqrt π) ≤ 1 / (12 * (j : ℝ)) := by
+  obtain ⟨m, rfl⟩ : ∃ m, j = m + 1 := ⟨j - 1, by omega⟩
+  have hc : ((m + 1 : ℕ) : ℝ) = (m : ℝ) + 1 := by push_cast; ring
+  refine ⟨?_, ?_⟩
+  · have h := stirlingLogDev_lower_cubic m
+    rw [hc]
+    have hconv : (1 / 144) * (1 / ((m : ℝ) + 1) ^ 3) = 1 / (144 * ((m : ℝ) + 1) ^ 3) := by
+      rw [div_mul_div_comm, one_mul]
+    rw [hconv] at h
+    exact h
+  · have h := stirlingLogDev_upper m; rw [hc]; exact h
+
+/-- **Main result (OQ-02, third order): the `1/n²` coefficient of `log (q n)` vanishes.**
+For `n ≥ 1`,
+`|log (q n) - 1/(8n)| ≤ 1/(72 n³)`.
+
+Upgrading the second-order `O(1/n²)` bound to `O(1/n³)` shows the asymptotic expansion
+`q n = 1 + c₁/n + c₂/n² + ⋯` has `c₂ = 0`: the multiplicative diagonal Beta correction
+has no genuine `1/n²` term, and the first correction beyond `1/(8n)` sits at order
+`1/n³`. -/
+theorem correction_log_third_order (n : ℕ) (hn : 1 ≤ n) :
+    |Real.log (correction n) - 1 / (8 * (n : ℝ))| ≤ 1 / (72 * (n : ℝ) ^ 3) := by
+  have hn0 : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+  have hnz : (n : ℝ) ≠ 0 := hn0.ne'
+  obtain ⟨hSn_lo, hSn_hi⟩ := stirlingLogDev_bracket_cubic n hn
+  obtain ⟨hS2n_lo, hS2n_hi⟩ := stirlingLogDev_bracket_cubic (2 * n) (by omega)
+  have hcast2n : ((2 * n : ℕ) : ℝ) = 2 * (n : ℝ) := by push_cast; ring
+  rw [hcast2n] at hS2n_lo hS2n_hi
+  rw [log_correction_eq n hn]
+  set Sn : ℝ := Real.log (Stirling.stirlingSeq n) - Real.log (Real.sqrt π) with hSn
+  set S2n : ℝ := Real.log (Stirling.stirlingSeq (2 * n)) - Real.log (Real.sqrt π) with hS2n
+  rw [abs_le]
+  refine ⟨?_, ?_⟩
+  · -- lower
+    have e1 : (2 : ℝ) * (1 / (12 * (n : ℝ)) - 1 / (144 * (n : ℝ) ^ 3))
+        - 1 / (12 * (2 * (n : ℝ))) - 1 / (8 * (n : ℝ)) = -(1 / (72 * (n : ℝ) ^ 3)) := by
+      field_simp; ring
+    linarith [hSn_lo, hS2n_hi, e1]
+  · -- upper
+    have e2 : (2 : ℝ) * (1 / (12 * (n : ℝ)))
+        - (1 / (12 * (2 * (n : ℝ))) - 1 / (144 * (2 * (n : ℝ)) ^ 3))
+        - 1 / (8 * (n : ℝ)) = 1 / (1152 * (n : ℝ) ^ 3) := by
+      field_simp; ring
+    have h1152le72 : (1 : ℝ) / (1152 * (n : ℝ) ^ 3) ≤ 1 / (72 * (n : ℝ) ^ 3) := by
+      apply one_div_le_one_div_of_le (by positivity)
+      nlinarith [hn0, pow_pos hn0 3]
+    linarith [hSn_hi, hS2n_lo, e2, h1152le72]
+
+/-- **Clean Landau form (third order).**  `log (q n) - 1/(8n) = O(1/n³)`. -/
+theorem correction_log_isBigO_third_order :
+    (fun n : ℕ => Real.log (correction n) - 1 / (8 * (n : ℝ))) =O[atTop]
+      (fun n : ℕ => 1 / (n : ℝ) ^ 3) := by
+  rw [Asymptotics.isBigO_iff]
+  refine ⟨1 / 72, ?_⟩
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  have hn0 : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+  have hb := correction_log_third_order n hn
+  rw [Real.norm_eq_abs, Real.norm_eq_abs,
+    abs_of_pos (by positivity : (0 : ℝ) < 1 / (n : ℝ) ^ 3)]
+  calc |Real.log (correction n) - 1 / (8 * (n : ℝ))| ≤ 1 / (72 * (n : ℝ) ^ 3) := hb
+    _ = 1 / 72 * (1 / (n : ℝ) ^ 3) := by ring
 
 end BetaDiagSecondOrder
