@@ -313,10 +313,16 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
     if (i === 0) mainSorryCount = fileSorryCount
     axiomCount += (content.match(/^(?:(?:private|noncomputable)\s+)*axiom /gm) || []).length
 
-    // True stubs: only count theorem/lemma declarations, not example (Issue #6130)
+    // True stubs: only count theorem/lemma declarations, not example (Issue #6130).
+    // A genuine True stub proves `True` as its *entire* conclusion (`: True :=`,
+    // `: True := by ...`, or bare `: True`). Do NOT flag declarations where `True`
+    // is merely part of a larger proposition, e.g. the Aristotle answer idiom
+    // `answer : True ↔ ∃ x, P x := by ...` (real content is the RHS existential) or
+    // helper lemmas like `True ↔ True`. Requiring the type to terminate at `True`
+    // (followed by `:=` or end-of-line) removes a recurring erdos-741 false positive.
     for (const line of content.split('\n')) {
       const trimmed = line.trim()
-      if (/^(theorem|lemma)\b/.test(trimmed) && /(:= trivial\b|: True\b)/.test(trimmed)) {
+      if (/^(theorem|lemma)\b/.test(trimmed) && /(:=\s*trivial\b|:\s*True\s*(?::=|$))/.test(trimmed)) {
         trueStubCount++
       }
     }
