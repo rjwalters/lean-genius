@@ -1155,4 +1155,425 @@ theorem exists_isLowerBoundConstruction_two :
       (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff])]
     simp, crossSet_isLowerBoundConstruction⟩
 
+/- ## S3-B4 (framework floor 2 → 3): the 10-point asterisk
+
+Raising the four-point-line floor from `2` to `3` needs a *third*
+four-point line.  Two four-point lines already force `4 + 4 - 1 = 7`
+distinct points (`crossSet`); a third line concurrent at the same
+common point adds three more, giving the minimal 10-point witness.
+
+We use the explicit "asterisk" of three lines through the origin —
+the `x`-axis, the `y`-axis and the main diagonal `y = x`:
+
+    A = {(0,0),(1,0),(2,0),(3,0),         -- x-axis
+         (0,1),(0,2),(0,3),               -- y-axis (minus origin)
+         (1,1),(2,2),(3,3)}               -- diagonal (minus origin).
+
+Its three four-point lines are the `x`-axis, the `y`-axis and the
+diagonal, so `fourPointLineCount A ≥ 3`.  Crucially `A` still has only
+the four distinct second coordinates `{0,1,2,3}`, and every horizontal
+level carries at most four of its points (four on `y = 0`, two each on
+`y = 1,2,3`), so — by the same `collinear_snd_inj` /
+`collinear_snd_eq_of_horiz` argument used for the cross — `A` has no
+five collinear points: `IsLowerBoundConstruction A 3`.
+
+The construction is again *constant* in size; the asymptotic growth of
+`fourPointLineCount` remains the OPEN content of the two deferred
+theorems above. -/
+
+/-- The explicit 10-point asterisk: three four-point lines (`x`-axis,
+`y`-axis, diagonal `y = x`) sharing the origin. -/
+noncomputable def asteriskPoints : Finset (ℝ × ℝ) :=
+  {(0, 0), (1, 0), (2, 0), (3, 0), (0, 1), (0, 2), (0, 3), (1, 1), (2, 2), (3, 3)}
+
+/-- The four second coordinates occurring in `asteriskPoints` are
+exactly `{0, 1, 2, 3}`. -/
+theorem asteriskPoints_snd_mem {p : ℝ × ℝ} (h : p ∈ asteriskPoints) :
+    p.2 ∈ ({0, 1, 2, 3} : Finset ℝ) := by
+  simp only [asteriskPoints, Finset.mem_insert, Finset.mem_singleton] at h
+  rcases h with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;> simp
+
+/-- An asterisk point on the `x`-axis (`y = 0`) is one of the four
+`x`-axis points. -/
+theorem asterisk_level0 {p : ℝ × ℝ} (hp : p ∈ asteriskPoints) (hy : p.2 = 0) :
+    p ∈ ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) := by
+  simp only [asteriskPoints, Finset.mem_insert, Finset.mem_singleton] at hp
+  rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · simp
+  · simp
+  · simp
+  · simp
+  · exact absurd (show (1 : ℝ) = 0 from hy) (by norm_num)
+  · exact absurd (show (2 : ℝ) = 0 from hy) (by norm_num)
+  · exact absurd (show (3 : ℝ) = 0 from hy) (by norm_num)
+  · exact absurd (show (1 : ℝ) = 0 from hy) (by norm_num)
+  · exact absurd (show (2 : ℝ) = 0 from hy) (by norm_num)
+  · exact absurd (show (3 : ℝ) = 0 from hy) (by norm_num)
+
+/-- An asterisk point on the level `y = 1` is one of `{(0,1),(1,1)}`. -/
+theorem asterisk_level1 {p : ℝ × ℝ} (hp : p ∈ asteriskPoints) (hy : p.2 = 1) :
+    p ∈ ({(0, 1), (1, 1)} : Finset (ℝ × ℝ)) := by
+  simp only [asteriskPoints, Finset.mem_insert, Finset.mem_singleton] at hp
+  rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · exact absurd (show (0 : ℝ) = 1 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 1 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 1 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 1 from hy) (by norm_num)
+  · simp
+  · exact absurd (show (2 : ℝ) = 1 from hy) (by norm_num)
+  · exact absurd (show (3 : ℝ) = 1 from hy) (by norm_num)
+  · simp
+  · exact absurd (show (2 : ℝ) = 1 from hy) (by norm_num)
+  · exact absurd (show (3 : ℝ) = 1 from hy) (by norm_num)
+
+/-- An asterisk point on the level `y = 2` is one of `{(0,2),(2,2)}`. -/
+theorem asterisk_level2 {p : ℝ × ℝ} (hp : p ∈ asteriskPoints) (hy : p.2 = 2) :
+    p ∈ ({(0, 2), (2, 2)} : Finset (ℝ × ℝ)) := by
+  simp only [asteriskPoints, Finset.mem_insert, Finset.mem_singleton] at hp
+  rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · exact absurd (show (0 : ℝ) = 2 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 2 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 2 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 2 from hy) (by norm_num)
+  · exact absurd (show (1 : ℝ) = 2 from hy) (by norm_num)
+  · simp
+  · exact absurd (show (3 : ℝ) = 2 from hy) (by norm_num)
+  · exact absurd (show (1 : ℝ) = 2 from hy) (by norm_num)
+  · simp
+  · exact absurd (show (3 : ℝ) = 2 from hy) (by norm_num)
+
+/-- An asterisk point on the level `y = 3` is one of `{(0,3),(3,3)}`. -/
+theorem asterisk_level3 {p : ℝ × ℝ} (hp : p ∈ asteriskPoints) (hy : p.2 = 3) :
+    p ∈ ({(0, 3), (3, 3)} : Finset (ℝ × ℝ)) := by
+  simp only [asteriskPoints, Finset.mem_insert, Finset.mem_singleton] at hp
+  rcases hp with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl
+  · exact absurd (show (0 : ℝ) = 3 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 3 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 3 from hy) (by norm_num)
+  · exact absurd (show (0 : ℝ) = 3 from hy) (by norm_num)
+  · exact absurd (show (1 : ℝ) = 3 from hy) (by norm_num)
+  · exact absurd (show (2 : ℝ) = 3 from hy) (by norm_num)
+  · simp
+  · exact absurd (show (1 : ℝ) = 3 from hy) (by norm_num)
+  · exact absurd (show (2 : ℝ) = 3 from hy) (by norm_num)
+  · simp
+
+/-- The asterisk set as a `PlanarPointSet`. -/
+noncomputable def asteriskSet : PlanarPointSet where
+  points := asteriskPoints
+  size_pos := by
+    rw [asteriskPoints]
+    apply Finset.card_pos.mpr
+    exact ⟨(0, 0), by simp⟩
+
+/-- **The asterisk has no five collinear points.**  It has only the
+four distinct second coordinates `{0,1,2,3}`; a non-horizontal line
+meets it in at most one point per level (`collinear_snd_inj`), i.e. at
+most four, while a horizontal line lies in a single level, each of
+which holds at most four points. -/
+theorem asteriskSet_noFiveCollinear : NoFiveCollinear asteriskSet := by
+  intro a b c d e ha hb hc hd he hab hac had hae hbc hbd hbe hcd hce hde
+  rintro ⟨hcol_c, hcol_d, hcol_e⟩
+  have caa : collinear a b a := by unfold collinear; ring
+  have cab : collinear a b b := by unfold collinear; ring
+  have ha' : a ∈ asteriskPoints := ha
+  have hb' : b ∈ asteriskPoints := hb
+  have hc' : c ∈ asteriskPoints := hc
+  have hd' : d ∈ asteriskPoints := hd
+  have he' : e ∈ asteriskPoints := he
+  have hcard5 : ({a, b, c, d, e} : Finset (ℝ × ℝ)).card = 5 := by
+    rw [Finset.card_insert_of_notMem]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · simp [hde]
+        · simp [hcd, hce]
+      · simp [hbc, hbd, hbe]
+    · simp [hab, hac, had, hae]
+  by_cases hab2 : a.2 = b.2
+  · -- Horizontal line: all five points share the second coordinate `a.2`.
+    have hab1 : a.1 ≠ b.1 := fun h1 => hab (Prod.ext h1 hab2)
+    have hb0 : b.2 = a.2 := collinear_snd_eq_of_horiz cab hab2 hab1
+    have hc0 : c.2 = a.2 := collinear_snd_eq_of_horiz hcol_c hab2 hab1
+    have hd0 : d.2 = a.2 := collinear_snd_eq_of_horiz hcol_d hab2 hab1
+    have he0 : e.2 = a.2 := collinear_snd_eq_of_horiz hcol_e hab2 hab1
+    have hva : a.2 ∈ ({0, 1, 2, 3} : Finset ℝ) := asteriskPoints_snd_mem ha'
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hva
+    -- The common level holds at most four asterisk points, so five distinct
+    -- points cannot all sit on a single horizontal line.
+    rcases hva with h | h | h | h
+    · have hsub : ({a, b, c, d, e} : Finset (ℝ × ℝ)) ⊆
+          ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl | rfl | rfl
+        · exact asterisk_level0 ha' h
+        · exact asterisk_level0 hb' (by rw [hb0]; exact h)
+        · exact asterisk_level0 hc' (by rw [hc0]; exact h)
+        · exact asterisk_level0 hd' (by rw [hd0]; exact h)
+        · exact asterisk_level0 he' (by rw [he0]; exact h)
+      have hle := Finset.card_le_card hsub
+      rw [hcard5] at hle
+      have h4 : ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)).card = 4 := by
+        rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · rw [Finset.card_insert_of_notMem]
+            · simp
+            · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      rw [h4] at hle; omega
+    · have hsub : ({a, b, c, d, e} : Finset (ℝ × ℝ)) ⊆
+          ({(0, 1), (1, 1)} : Finset (ℝ × ℝ)) := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl | rfl | rfl
+        · exact asterisk_level1 ha' h
+        · exact asterisk_level1 hb' (by rw [hb0]; exact h)
+        · exact asterisk_level1 hc' (by rw [hc0]; exact h)
+        · exact asterisk_level1 hd' (by rw [hd0]; exact h)
+        · exact asterisk_level1 he' (by rw [he0]; exact h)
+      have hle := Finset.card_le_card hsub
+      rw [hcard5] at hle
+      have h2 : ({(0, 1), (1, 1)} : Finset (ℝ × ℝ)).card = 2 := by
+        rw [Finset.card_insert_of_notMem]
+        · simp
+        · norm_num [Finset.mem_singleton, Prod.ext_iff]
+      rw [h2] at hle; omega
+    · have hsub : ({a, b, c, d, e} : Finset (ℝ × ℝ)) ⊆
+          ({(0, 2), (2, 2)} : Finset (ℝ × ℝ)) := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl | rfl | rfl
+        · exact asterisk_level2 ha' h
+        · exact asterisk_level2 hb' (by rw [hb0]; exact h)
+        · exact asterisk_level2 hc' (by rw [hc0]; exact h)
+        · exact asterisk_level2 hd' (by rw [hd0]; exact h)
+        · exact asterisk_level2 he' (by rw [he0]; exact h)
+      have hle := Finset.card_le_card hsub
+      rw [hcard5] at hle
+      have h2 : ({(0, 2), (2, 2)} : Finset (ℝ × ℝ)).card = 2 := by
+        rw [Finset.card_insert_of_notMem]
+        · simp
+        · norm_num [Finset.mem_singleton, Prod.ext_iff]
+      rw [h2] at hle; omega
+    · have hsub : ({a, b, c, d, e} : Finset (ℝ × ℝ)) ⊆
+          ({(0, 3), (3, 3)} : Finset (ℝ × ℝ)) := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl | rfl | rfl | rfl
+        · exact asterisk_level3 ha' h
+        · exact asterisk_level3 hb' (by rw [hb0]; exact h)
+        · exact asterisk_level3 hc' (by rw [hc0]; exact h)
+        · exact asterisk_level3 hd' (by rw [hd0]; exact h)
+        · exact asterisk_level3 he' (by rw [he0]; exact h)
+      have hle := Finset.card_le_card hsub
+      rw [hcard5] at hle
+      have h2 : ({(0, 3), (3, 3)} : Finset (ℝ × ℝ)).card = 2 := by
+        rw [Finset.card_insert_of_notMem]
+        · simp
+        · norm_num [Finset.mem_singleton, Prod.ext_iff]
+      rw [h2] at hle; omega
+  · -- Non-horizontal line: the second coordinate is injective on the five
+    -- points, so their `y`-values are five distinct elements of `{0,1,2,3}`.
+    have inj : ∀ x y : ℝ × ℝ, collinear a b x → collinear a b y →
+        x ≠ y → x.2 ≠ y.2 := by
+      intro x y hx hy hxy h2
+      exact hxy (collinear_snd_inj hx hy hab2 h2)
+    have yab : a.2 ≠ b.2 := hab2
+    have yac : a.2 ≠ c.2 := inj a c caa hcol_c hac
+    have yad : a.2 ≠ d.2 := inj a d caa hcol_d had
+    have yae : a.2 ≠ e.2 := inj a e caa hcol_e hae
+    have ybc : b.2 ≠ c.2 := inj b c cab hcol_c hbc
+    have ybd : b.2 ≠ d.2 := inj b d cab hcol_d hbd
+    have ybe : b.2 ≠ e.2 := inj b e cab hcol_e hbe
+    have ycd : c.2 ≠ d.2 := inj c d hcol_c hcol_d hcd
+    have yce : c.2 ≠ e.2 := inj c e hcol_c hcol_e hce
+    have yde : d.2 ≠ e.2 := inj d e hcol_d hcol_e hde
+    have hysub : ({a.2, b.2, c.2, d.2, e.2} : Finset ℝ) ⊆
+        ({0, 1, 2, 3} : Finset ℝ) := by
+      intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl | rfl | rfl | rfl
+      · exact asteriskPoints_snd_mem ha'
+      · exact asteriskPoints_snd_mem hb'
+      · exact asteriskPoints_snd_mem hc'
+      · exact asteriskPoints_snd_mem hd'
+      · exact asteriskPoints_snd_mem he'
+    have hycard5 : ({a.2, b.2, c.2, d.2, e.2} : Finset ℝ).card = 5 := by
+      rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · rw [Finset.card_insert_of_notMem]
+            · simp
+            · simp [yde]
+          · simp [ycd, yce]
+        · simp [ybc, ybd, ybe]
+      · simp [yab, yac, yad, yae]
+    have hle := Finset.card_le_card hysub
+    rw [hycard5] at hle
+    have h4 : ({0, 1, 2, 3} : Finset ℝ).card = 4 := by
+      rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num
+        · norm_num
+      · norm_num
+    rw [h4] at hle; omega
+
+/-- The asterisk has at least three four-point lines: the `x`-axis
+`{(0,0),(1,0),(2,0),(3,0)}`, the `y`-axis `{(0,0),(0,1),(0,2),(0,3)}`,
+and the diagonal `{(0,0),(1,1),(2,2),(3,3)}` are three distinct
+four-element collinear subsets. -/
+theorem asteriskSet_fourPointLineCount_ge_three :
+    3 ≤ fourPointLineCount asteriskSet := by
+  rw [fourPointLineCount]
+  set Q : Finset (ℝ × ℝ) → Prop := fun S =>
+    S.card = 4 ∧ ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p with hQ
+  -- The `x`-axis line.
+  have hx_mem : ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) ∈
+      asteriskSet.points.powerset.filter Q := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_, (0, 0), (1, 0), ?_, ?_, ?_, ?_⟩
+    · intro x hx
+      show x ∈ asteriskPoints
+      rw [asteriskPoints]
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+      tauto
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · simp
+    · simp
+    · norm_num [Prod.ext_iff]
+    · intro p hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      rcases hp with rfl | rfl | rfl | rfl <;> simp [collinear]
+  -- The `y`-axis line.
+  have hy_mem : ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)) ∈
+      asteriskSet.points.powerset.filter Q := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_, (0, 0), (0, 1), ?_, ?_, ?_, ?_⟩
+    · intro x hx
+      show x ∈ asteriskPoints
+      rw [asteriskPoints]
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+      tauto
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · simp
+    · simp
+    · norm_num [Prod.ext_iff]
+    · intro p hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      rcases hp with rfl | rfl | rfl | rfl <;> simp [collinear]
+  -- The diagonal line `y = x`.
+  have hd_mem : ({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ)) ∈
+      asteriskSet.points.powerset.filter Q := by
+    rw [Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_, (0, 0), (1, 1), ?_, ?_, ?_, ?_⟩
+    · intro x hx
+      show x ∈ asteriskPoints
+      rw [asteriskPoints]
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx ⊢
+      tauto
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+        · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+      · norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff]
+    · simp
+    · simp
+    · norm_num [Prod.ext_iff]
+    · intro p hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      rcases hp with rfl | rfl | rfl | rfl <;> simp [collinear]
+  -- The three lines are pairwise distinct.
+  have hne_xy : ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) ≠
+      ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)) := by
+    intro h
+    have : ((1, 0) : ℝ × ℝ) ∈ ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)) := by
+      rw [← h]; simp
+    simp only [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff] at this
+    norm_num at this
+  have hne_xd : ({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)) ≠
+      ({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ)) := by
+    intro h
+    have : ((1, 0) : ℝ × ℝ) ∈ ({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ)) := by
+      rw [← h]; simp
+    simp only [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff] at this
+    norm_num at this
+  have hne_yd : ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)) ≠
+      ({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ)) := by
+    intro h
+    have : ((0, 1) : ℝ × ℝ) ∈ ({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ)) := by
+      rw [← h]; simp
+    simp only [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff] at this
+    norm_num at this
+  -- A three-element subset of the filter gives card ≥ 3.
+  have hsub : ({({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)),
+      ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)),
+      ({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ))} :
+      Finset (Finset (ℝ × ℝ))) ⊆ asteriskSet.points.powerset.filter Q := by
+    intro S hS
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hS
+    rcases hS with rfl | rfl | rfl
+    · exact hx_mem
+    · exact hy_mem
+    · exact hd_mem
+  have h3 : ({({(0, 0), (1, 0), (2, 0), (3, 0)} : Finset (ℝ × ℝ)),
+      ({(0, 0), (0, 1), (0, 2), (0, 3)} : Finset (ℝ × ℝ)),
+      ({(0, 0), (1, 1), (2, 2), (3, 3)} : Finset (ℝ × ℝ))} :
+      Finset (Finset (ℝ × ℝ))).card = 3 := by
+    rw [Finset.card_insert_of_notMem, Finset.card_insert_of_notMem]
+    · simp
+    · simp only [Finset.mem_singleton]; exact hne_yd
+    · simp only [Finset.mem_insert, Finset.mem_singleton]
+      push_neg; exact ⟨hne_xy, hne_xd⟩
+  have hle := Finset.card_le_card hsub
+  rw [h3] at hle
+  exact hle
+
+/-- **Framework floor ≥ 3** (this session's deliverable).  The explicit
+10-point asterisk is a no-five-collinear planar point set with at least
+three four-point lines: `IsLowerBoundConstruction asteriskSet 3`.  This
+strictly raises the framework floor above the two-line `crossSet`, and
+— because three four-point lines concurrent at a point already require
+`3·3 + 1 = 10` distinct points — cannot be realized by fewer than ten.
+The construction remains *constant* in size; the asymptotic growth of
+`fourPointLineCount` is the OPEN content of
+`grunbaum_lower_bound_three_halves` and `solymosi_stojakovic_lower_bound`. -/
+theorem asteriskSet_isLowerBoundConstruction :
+    IsLowerBoundConstruction asteriskSet 3 :=
+  ⟨asteriskSet_noFiveCollinear, by exact_mod_cast asteriskSet_fourPointLineCount_ge_three⟩
+
+/-- **The framework floor reaches at least three.**  There is a
+no-five-collinear planar point set of exactly ten points that is a
+lower-bound construction for threshold `3` — three four-point lines.
+With `exists_isLowerBoundConstruction_two` (floor `2`, seven points)
+and `exists_isLowerBoundConstruction_pos` (floor `1`, five points) this
+exhibits an increasing sequence of explicit lower-bound witnesses. -/
+theorem exists_isLowerBoundConstruction_three :
+    ∃ P : PlanarPointSet, P.points.card = 10 ∧ IsLowerBoundConstruction P 3 :=
+  ⟨asteriskSet, by
+    show asteriskPoints.card = 10
+    rw [asteriskPoints]
+    repeat rw [Finset.card_insert_of_notMem
+      (by norm_num [Finset.mem_insert, Finset.mem_singleton, Prod.ext_iff])]
+    simp, asteriskSet_isLowerBoundConstruction⟩
+
 end Erdos101OQ04
