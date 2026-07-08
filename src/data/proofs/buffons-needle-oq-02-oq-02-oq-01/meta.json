@@ -40,7 +40,8 @@
       "The recurrence multiplies by n/(n+1) < 1 each two-dimension step, so the crossing factor strictly decreases along even and along odd dimensions.",
       "Both subsequences start at their first term, and alpha_3 = 1/2 < 2/pi = alpha_2, so the global maximum is the classical Buffon value alpha_2 = 2/pi.",
       "Therefore alpha_n < 1 in every dimension: a unit-length curve has expected crossings per spacing strictly below one, with the bound 2/pi attained only in the plane.",
-      "Self-containment is forced by upstream bit-rot — the companion crossing-factor file no longer builds — but the recurrence is a one-line definition, so the monotone theory is fully reproducible."
+      "Self-containment is forced by upstream bit-rot — the companion crossing-factor file no longer builds — but the recurrence is a one-line definition, so the monotone theory is fully reproducible.",
+      "The n/(n+1) factor and the even/odd split are structural, not incidental: the closed form alpha_n = Gamma(n/2)/(sqrt(pi)·Gamma((n+1)/2)) turns the shift n -> n+2 into (n/2)/((n+1)/2) = n/(n+1) via the Gamma functional equation Gamma(x+1) = x·Gamma(x), while the parity of n/2 is left fixed. So the two interleaved subsequences descend independently through pure factorial algebra, never invoking the reflection formula that would couple them — which is exactly why the two-step strong induction, not a one-step argument, is the natural proof shape."
     ]
   },
   "sections": [
