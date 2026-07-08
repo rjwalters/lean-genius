@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lieb & Ruskai (1973)",
     "date": "1973",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "information-theory",
       "analysis",
@@ -16,10 +16,10 @@
       "verified"
     ],
     "proofRepoPath": "Proofs/ShannonEntropySSA.lean",
-    "badge": "original",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All theorems proved from Mathlib primitives. Strong subadditivity proved via conditional KL divergence ≥ 0 (kl_term_bound applied to the conditional independence distribution q(x,y,z) = pXY(x,y)·pYZ(y,z)/pY(y)).",
+    "assumptions": "None. The strong-subadditivity inequality H(X,Y,Z)+H(Y) ≤ H(X,Y)+H(Y,Z) is proved axiom-free (0 sorries) in the parent file Proofs/ShannonEntropy.lean as InformationTheory.strong_subadditivity (conditional-KL-divergence argument: each term p·log(p/q) ≥ p−q via the Gibbs inequality, block sum telescoping to 0). This file re-exports that theorem and derives its two three-variable corollaries (conditioning_reduces_entropy_general, conditional_mi_nonneg) by linear rearrangement. #print axioms reports only [propext, Classical.choice, Quot.sound].",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_nonneg",
@@ -38,20 +38,18 @@
       }
     ],
     "originalContributions": [
-      "Three-variable marginal distributions: marginalXY, marginalYZ, marginalY_3 with proved properties",
-      "Entropy chain rule statement: H(X,Y) = H(Y) + H(X|Y)",
-      "Strong subadditivity statement with proof strategy via conditional KL divergence",
-      "Conditioning reduces entropy (general): H(X|Y,Z) ≤ H(X|Y) from SSA",
-      "Conditional MI non-negativity: I(X;Z|Y) ≥ 0 from SSA"
+      "Three-variable 'conditioning reduces entropy' H(X|Y,Z) ≤ H(X|Y) as a corollary of SSA",
+      "Non-negativity of conditional mutual information I(X;Z|Y) ≥ 0"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 526,
-    "theoremCount": 11,
-    "definitionCount": 6,
+    "lineCount": 92,
+    "theoremCount": 3,
+    "definitionCount": 0,
     "additionalFiles": [
       "Proofs/ShannonEntropySSAAristotle.lean"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "verifiedAt": "2026-07-07"
   },
   "overview": {
     "historicalContext": "Strong subadditivity (SSA) of entropy was conjectured by Lanford and Robinson in 1968 (Comm. Math. Phys. 9, 327–338) in the context of quantum statistical mechanics, where they identified it as the missing inequality required for the existence of the thermodynamic limit of mean entropy. After five years of intensive effort by mathematical physicists, Lieb and Ruskai (1973, J. Math. Phys. 14, 1938–1941) proved the quantum (von Neumann) version using Lieb's deep concavity theorem on operator-monotone functions of two matrix arguments. The classical (Shannon) case, formalized here, is comparatively elementary: it follows from the non-negativity of KL divergence applied per-slice to the conditional distribution p(x,z|y), with the y-average preserving non-negativity. SSA is equivalent to the non-negativity of conditional mutual information I(X;Z|Y) ≥ 0, and to the statement that conditioning on more variables can only reduce entropy: H(X|Y,Z) ≤ H(X|Y) — the data-processing intuition for entropy. Pippenger (2003) proved that for three random variables every valid linear entropy inequality is a non-negative combination of submodularity (SSA) and non-negativity, classifying the three-variable entropy cone. The four-variable analogue is famously NOT a finitely generated cone: Zhang and Yeung (1998) discovered the first 'non-Shannon-type' inequality, opening the modern study of the (still incompletely understood) entropy cone for n ≥ 4.",
@@ -78,59 +76,27 @@
   },
   "sections": [
     {
-      "id": "header",
       "title": "Module Header & Overview",
+      "id": "header",
       "startLine": 1,
-      "endLine": 45,
-      "summary": "Imports (Mathlib and the parent ShannonEntropy.lean) and the module docstring stating the SSA inequality H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z), its three equivalent formulations (conditional MI non-negativity, conditioning reduces entropy, conditional subadditivity), the per-slice KL proof strategy, the Lanford-Robinson/Lieb-Ruskai history, and the dependency note that only ShannonEntropy.lean infrastructure is used. Opens the InformationTheory namespace and the Finset namespace.",
+      "endLine": 52,
+      "summary": "Module docstring and imports (Mathlib and the parent Proofs/ShannonEntropy.lean). States the strong-subadditivity inequality H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z), its conditional-mutual-information reading I(X;Z|Y) ≥ 0, and the conditional-KL proof strategy (each term p·log(p/q) ≥ p − q via the Gibbs inequality, block sum telescoping to 0). Records that the full self-contained proof — the marginal operators, their distribution laws, the entropy chain rule, subadditivity, and strong subadditivity — lives in the parent file as InformationTheory.strong_subadditivity (0 sorries, 0 axioms), and that this file reuses it directly to stay in the axiom-free, collision-free state. Opens namespace InformationTheory.SSA.",
       "mathContext": "$H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$, equivalently $I(X;Z|Y) = H(X|Y) - H(X|Y,Z) \\geq 0$ and $H(X|Y,Z) \\leq H(X|Y)$."
     },
     {
-      "id": "marginals",
-      "title": "Part I — Three-Variable Marginal Distributions",
-      "startLine": 46,
-      "endLine": 72,
-      "summary": "Reproduces shannonEntropy' for self-containment and defines the three marginalization operators marginalXY, marginalYZ, and marginalY_3 that collapse a 3-variable joint distribution onto its 2-variable and 1-variable marginals by summing out the omitted coordinates.",
-      "mathContext": "$p_{XY}(x,y) = \\sum_z p(x,y,z)$, $p_{YZ}(y,z) = \\sum_x p(x,y,z)$, $p_Y(y) = \\sum_x \\sum_z p(x,y,z)$"
-    },
-    {
-      "id": "properties",
-      "title": "Part II — Marginal Properties",
-      "startLine": 73,
-      "endLine": 139,
-      "summary": "Proves the six lemmas establishing that each marginal is a valid probability distribution: marginalXY/marginalYZ/marginalY_3_nonneg (non-negativity is preserved via Finset.sum_nonneg) and marginalXY/marginalYZ/marginalY_3_sum (each marginal sums to 1, proved by rewriting the iterated sum as a single sum over the product type with Fintype.sum_prod_type and Finset.sum_comm).",
-      "mathContext": "If $p \\geq 0$ and $\\sum p = 1$, then each marginal distribution is also non-negative and sums to 1: $\\sum_{x,y} p_{XY}(x,y) = \\sum_{y,z} p_{YZ}(y,z) = \\sum_y p_Y(y) = 1$."
-    },
-    {
-      "id": "chain-rule",
-      "title": "Part III — Entropy Chain Rule for Pairs",
-      "startLine": 140,
-      "endLine": 243,
-      "summary": "Defines the Y-marginal marginalSnd and the conditional entropy condEntropy, then fully proves (0 sorries) the entropy chain rule H(X,Y) = H(Y) + H(X|Y). The proof splits log p(x,y) = log(p(x,y)/p_Y(y)) + log p_Y(y) term-by-term (hterm), telescopes the marginal term over x (hmarg via Finset.sum_mul), converts the product-type sum to a nested sum, and reassembles with ring.",
-      "mathContext": "$H(X,Y) = H(Y) + H(X|Y)$ where $H(X|Y) = -\\sum_{x,y} p(x,y) \\log \\frac{p(x,y)}{p_Y(y)}$; the key identity is $\\log p(x,y) = \\log\\frac{p(x,y)}{p_Y(y)} + \\log p_Y(y)$."
-    },
-    {
-      "id": "subadditivity",
-      "title": "Part IV — Subadditivity from the Chain Rule",
-      "startLine": 244,
-      "endLine": 270,
-      "summary": "Proves subadditivity H(X,Y) ≤ H(X) + H(Y) by rewriting the joint entropy via entropy_chain_rule and bounding the conditional entropy by the marginal entropy using conditioning_reduces_entropy (imported from ShannonEntropy.lean), closing with linarith.",
-      "mathContext": "$H(X,Y) = H(Y) + H(X|Y) \\leq H(Y) + H(X) = H(X) + H(Y)$, using $H(X|Y) \\leq H(X)$."
-    },
-    {
+      "title": "Strong Subadditivity",
       "id": "ssa",
-      "title": "Part V — Strong Subadditivity",
-      "startLine": 271,
-      "endLine": 489,
-      "summary": "The technical core: a complete (0-sorry) proof of strong subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z). A local copy of the KL bound kl_tb (p·log(p/q) ≥ p − q) is established, then four telescoping identities (htele and its XY/YZ/Y specializations) rewrite each marginal entropy as a nested sum, and a term-splitting identity (hterm) decomposes log p(x,y,z) into the conditional-MI term plus the three marginal log terms minus the Y-marginal term. Part 1 builds the conditional-independence distribution q(x,y,z) = p_{XY}·p_{YZ}/p_Y, proves it sums to 1, and applies kl_tb per-slice to show the conditional mutual information is ≥ 0 (h_cmi). Part 2 unfolds all entropies, normalizes every sum to nested form, applies the telescoping and splitting identities, and closes with linarith [h_cmi].",
+      "startLine": 54,
+      "endLine": 66,
+      "summary": "The headline theorem strong_subadditivity: H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z), re-exported from the parent's InformationTheory.strong_subadditivity. The parent proof establishes a local KL bound p·log(p/q) ≥ p − q, rewrites each marginal entropy as a nested sum via four telescoping identities, and sums the per-slice divergences I(X;Z|Y) = Σ_y p(y)·D(p(x,z|y) ‖ p(x|y)p(z|y)) ≥ 0.",
       "mathContext": "$H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$, equivalently $I(X;Z|Y) = \\sum_y p(y)\\, D\\!\\left(p(x,z\\mid y)\\,\\|\\,p(x\\mid y)p(z\\mid y)\\right) \\geq 0$, each term non-negative by $p\\log(p/q) \\geq p - q$."
     },
     {
+      "title": "Consequences of SSA",
       "id": "consequences",
-      "title": "Part VI — Consequences of SSA",
-      "startLine": 490,
-      "endLine": 526,
-      "summary": "Derives two corollaries directly from strong_subadditivity by linear rearrangement (linarith): conditioning_reduces_entropy_general (H(X|Y,Z) ≤ H(X|Y), i.e. extra conditioning cannot increase entropy) and conditional_mi_nonneg (I(X;Z|Y) ≥ 0, the conditional mutual information is non-negative). Closes the InformationTheory namespace.",
+      "startLine": 68,
+      "endLine": 92,
+      "summary": "Two three-variable corollaries derived from strong subadditivity by linear rearrangement (linarith), not present in the parent file: conditioning_reduces_entropy_general (H(X|Y,Z) ≤ H(X|Y), extra conditioning cannot increase entropy) and conditional_mi_nonneg (I(X;Z|Y) ≥ 0, the conditional mutual information is non-negative).",
       "mathContext": "SSA implies (1) $H(X|Y,Z) \\leq H(X|Y)$ and (2) $I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y) \\geq 0$."
     }
   ],
@@ -198,11 +164,11 @@
     "opens": [
       "Finset"
     ],
-    "namespace": "InformationTheory",
-    "lineCount": 526,
+    "namespace": "InformationTheory.SSA",
+    "lineCount": 92,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 6,
+    "theoremCount": 3,
+    "definitionCount": 0,
     "path": "Proofs/ShannonEntropySSA.lean",
     "sorries": 0,
     "additionalFiles": [
@@ -211,17 +177,24 @@
   },
   "mainTheorems": [
     {
-      "name": "entropy_chain_rule",
-      "type": "core",
-      "description": "Entropy chain rule: H(X,Y) = H(Y) + H(X|Y)",
-      "leanType": "shannonEntropy' pXY = shannonEntropy' (marginalSnd pXY) + condEntropy pXY"
-    },
-    {
       "name": "strong_subadditivity",
       "type": "core",
-      "description": "SSA: H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z)",
-      "leanType": "shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) ≤ shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)"
+      "description": "Strong subadditivity of Shannon entropy: H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z)",
+      "leanType": "shannonEntropy pXYZ + shannonEntropy (marginalY pXYZ) ≤ shannonEntropy (marginalXY pXYZ) + shannonEntropy (marginalYZ pXYZ)"
+    },
+    {
+      "name": "conditioning_reduces_entropy_general",
+      "type": "corollary",
+      "description": "Conditioning reduces entropy: H(X | Y,Z) ≤ H(X | Y)",
+      "leanType": "shannonEntropy pXYZ - shannonEntropy (marginalYZ pXYZ) ≤ shannonEntropy (marginalXY pXYZ) - shannonEntropy (marginalY pXYZ)"
+    },
+    {
+      "name": "conditional_mi_nonneg",
+      "type": "corollary",
+      "description": "Conditional mutual information is non-negative: I(X;Z | Y) ≥ 0",
+      "leanType": "shannonEntropy (marginalXY pXYZ) + shannonEntropy (marginalYZ pXYZ) - shannonEntropy pXYZ - shannonEntropy (marginalY pXYZ) ≥ 0"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "status": "verified"
 }
