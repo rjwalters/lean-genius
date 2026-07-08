@@ -5938,10 +5938,12 @@
       "issues": []
     },
     "chebyshev-pnt-bridge-oq-06": {
-      "auditCount": 2,
-      "lastAudited": "2026-06-27T23:04:23Z",
+      "auditCount": 3,
+      "lastAudited": "2026-07-08T18:33:17Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "agentId": "auditor-reaudit-20260708",
+      "notes": "Re-audit CLEAN: 0/0/0. Real-log transform of the project's OWN ChebyshevPNTBridge.pow_sqrt_primeCounting_diff_le (sibling file, disclosed) using Nat.primeCounting def + monotonicity; NOT a Mathlib PNT wrapper (mathlibDeps=[] correct). assumptions honest: exact not asymptotic, limsup statement prose-only."
     },
     "chebyshev-pnt-bridge-oq-06-oq-01": {
       "auditCount": 1,
@@ -6609,10 +6611,12 @@
       "issues": []
     },
     "conjugacy-class-equation-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-06-24T12:27:19Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T18:33:17Z",
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708",
+      "notes": "Re-audit CLEAN: 0/0/0, badge=mathlib. Textbook Tier-B assembly: Mathlib supplies Group.nat_card_center_add_sum_card_noncenter_eq_card, parent supplies per-class |class(g)|=[G:C_G(g)]; honestly disclosed. No overclaim."
     },
     "conjugacy-class-equation-oq-01-oq-02": {
       "auditCount": 1,
@@ -26924,10 +26928,12 @@
       "issues": []
     },
     "composition-parts-choose-oq-01-oq-01-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-07-01T20:12:12Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T18:33:17Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "agentId": "auditor-reaudit-20260708",
+      "notes": "Re-audit CLEAN: 0/0/0. Generating-function identity Sum t^|s|=(t+1)^m proved via Finset.prod_add + elementary Mathlib primitives; genuine original packaging of the parts generating function (parts_genfun, parts_genfun_binomial). verified/original justified."
     },
     "composition-parts-choose-oq-01-oq-03": {
       "auditCount": 2,
@@ -29608,6 +29614,14 @@
       "issues": [],
       "lastAudited": "2026-07-08T17:06:10Z",
       "result": "clean"
+    },
+    "dirichlets-theorem-oq-02-oq-03": {
+      "lastAudited": "2026-07-08T18:33:17Z",
+      "auditCount": 1,
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708",
+      "notes": "Audit CLEAN (first audit): 0 sorries/0 axioms/0 native_decide. Uses kernel `decide` (lines 219,224) NOT native_decide for B 1=95 numeric check; assumptions field correctly states ofReduceBool-free. Genuine Euclid-construction + iterated-factorial tower bound p3(k)<=B(k). verified/original accurate.",
+      "issues": []
     }
   },
   "version": 1,
