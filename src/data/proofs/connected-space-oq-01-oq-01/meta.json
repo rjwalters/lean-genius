@@ -93,6 +93,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Header, Imports, and the Negative/Positive Dichotomy",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Imports Mathlib's path-connectedness and local-path-connectedness topology (Topology.Connected.PathConnected, Topology.Connected.LocPathConnected) plus Tactic, then a module docstring framing the parent's open question: how closure behaves for path-connectedness versus connectedness. Lays out the two halves — the negative half (only connectedness survives closure, witnessed by the topologist's sine curve) and the positive half (local path-connectedness makes path components clopen, restoring rigidity) — and lists the Mathlib facts used. Closes with the namespace, open Set Topology, and the variable {α} [TopologicalSpace α] setup.",
+      "mathContext": "The topologist's sine curve $\\{(x,\\sin(1/x)) : x>0\\}$ is path-connected but its closure (adding $\\{0\\}\\times[-1,1]$) is connected yet not path-connected — the counterexample driving the whole dichotomy."
+    },
+    {
       "id": "negative-half",
       "title": "Section I: Closure Only Preserves Connectedness",
       "startLine": 59,
