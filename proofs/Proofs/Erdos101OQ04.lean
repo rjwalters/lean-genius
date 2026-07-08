@@ -125,6 +125,76 @@ theorem exists_four_collinear_subset_of_count_pos (P : PlanarPointSet)
   obtain ⟨hS_pow, hcard, hwitness⟩ := hS
   exact ⟨S, Finset.mem_powerset.mp hS_pow, hcard, hwitness⟩
 
+/- ## Reusable counting engine (axiom-free)
+
+Every explicit lower-bound witness in this file — `crossSet` (≥ 2),
+`asteriskSet` (≥ 3), `gridSet` (≥ 10) — establishes its bound by the
+*same* two-step argument: exhibit a finite family of four-point
+collinear subsets of `P.points`, then compare cardinalities against
+the powerset-filter that *defines* `fourPointLineCount`.  The two
+lemmas below factor that comparison out once and for all, so a future
+construction only has to supply the geometry (the collinear quadruples
+and their distinctness) and never re-derive the `Finset.card_le_card`
+plumbing.  This separates the *easy* counting from the *hard* geometry
+that is the genuine open content of `grunbaum_lower_bound_three_halves`
+and `solymosi_stojakovic_lower_bound`. -/
+
+/-- **Counting lower bound from a family of four-point lines (set form).**
+If `T` is a finite collection of subsets of `P.points`, each of size
+`4` and each collinear (carrying two distinct anchors `a, b` with all
+of `S` collinear with `a, b`), then `T.card ≤ fourPointLineCount P`.
+
+This is the exact converse plumbing of
+`exists_four_collinear_subset_of_count_pos`: rather than *extract* one
+line from a positive count, it *aggregates* many certified lines into a
+lower bound.  Because `T` is a `Finset` of `Finset`s, its own
+`T.card` already accounts for distinctness — the caller proves the
+quadruples are pairwise distinct exactly once, when building `T`. -/
+theorem fourPointLineCount_ge_of_subset (P : PlanarPointSet)
+    (T : Finset (Finset (ℝ × ℝ)))
+    (hmem : ∀ S ∈ T, S ⊆ P.points)
+    (hcard : ∀ S ∈ T, S.card = 4)
+    (hcol : ∀ S ∈ T, ∃ a b : ℝ × ℝ, a ∈ S ∧ b ∈ S ∧ a ≠ b ∧
+      ∀ p ∈ S, collinear a b p) :
+    T.card ≤ fourPointLineCount P := by
+  rw [fourPointLineCount]
+  apply Finset.card_le_card
+  intro S hS
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨hmem S hS, hcard S hS, hcol S hS⟩
+
+/-- **Counting lower bound from an injective family (indexed form).**
+If `L : Fin k → Finset (ℝ × ℝ)` is an injective family of four-point
+collinear subsets of `P.points`, then `k ≤ fourPointLineCount P`.  This
+is the shape a growing construction naturally produces — one four-point
+line per index — so injectivity of `L` (no two indices name the same
+line) is the *only* combinatorial obligation beyond the per-line
+geometry.  Derived from `fourPointLineCount_ge_of_subset` applied to
+`Finset.univ.image L`. -/
+theorem fourPointLineCount_ge_of_injOn_family (P : PlanarPointSet) (k : ℕ)
+    (L : Fin k → Finset (ℝ × ℝ))
+    (hmem : ∀ i, L i ⊆ P.points)
+    (hcard : ∀ i, (L i).card = 4)
+    (hcol : ∀ i, ∃ a b : ℝ × ℝ, a ∈ L i ∧ b ∈ L i ∧ a ≠ b ∧
+      ∀ p ∈ L i, collinear a b p)
+    (hinj : Function.Injective L) :
+    k ≤ fourPointLineCount P := by
+  have hsub := fourPointLineCount_ge_of_subset P (Finset.univ.image L)
+    (by
+      intro S hS
+      simp only [Finset.mem_image, Finset.mem_univ, true_and] at hS
+      obtain ⟨i, rfl⟩ := hS; exact hmem i)
+    (by
+      intro S hS
+      simp only [Finset.mem_image, Finset.mem_univ, true_and] at hS
+      obtain ⟨i, rfl⟩ := hS; exact hcard i)
+    (by
+      intro S hS
+      simp only [Finset.mem_image, Finset.mem_univ, true_and] at hS
+      obtain ⟨i, rfl⟩ := hS; exact hcol i)
+  rwa [Finset.card_image_of_injective _ hinj, Finset.card_univ,
+    Fintype.card_fin] at hsub
+
 /-- **Lower bound vacuous below size 4**: for `P` with fewer than 4
 points, no four-point line exists.  Restatement of
 `fourPointLineCount_lt_four` to fix the OQ-04 namespace conventions. -/
