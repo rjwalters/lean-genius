@@ -56,7 +56,8 @@
       "**|sin(πθ)| ≥ 2‖θ‖ is the sharp periodized Jordan inequality.** On [−1/2,1/2] it is Mathlib's 2/π·|x| ≤ |sin x| at x = πθ (the factor π cancels exactly), and π·ℤ-periodicity of |sin| extends it to all θ via the distance to the nearest integer.",
       "**The factor of 2 is exact at θ = 1/2.** sin(π/2) = 1 = 2·(1/2), so the bound is tight at the boundary — the cosecant 1/(2‖θ‖) is the right size, not merely an order-of-magnitude estimate.",
       "**This is the conversion that makes Pólya–Vinogradov work.** Combined with the sibling's |∑ e^{2πiθn}| ≤ 1/|sin(πθ)|, it gives |∑ e^{2πiθn}| ≤ 1/(2‖θ‖); summing 1/(2‖a/q‖) over residues a is exactly the cotangent sum that aggregates to O(q log q).",
-      "**round / distance-to-nearest-integer is the natural variable.** Using Mathlib's round and abs_sub_round keeps the statement coordinate-free and matches the standard ‖·‖ notation of analytic number theory."
+      "**round / distance-to-nearest-integer is the natural variable.** Using Mathlib's round and abs_sub_round keeps the statement coordinate-free and matches the standard ‖·‖ notation of analytic number theory.",
+      "**Why the constant is 2 and not π.** The ratio |sin(πθ)|/‖θ‖ decreases monotonically from π (as θ→0, where sin(πθ) ≈ πθ) down to 2 (at θ = 1/2). A *global* linear lower bound c·‖θ‖ must therefore take the endpoint value c = 2 — near 0 the tangent-line behavior would allow the far larger slope π, but the boundary θ = 1/2 forces the smaller constant. The 2‖θ‖ bound is thus best-possible as a single linear estimate across the whole period, at the cost of a factor π/2 of slack near the integers."
     ]
   },
   "sections": [
