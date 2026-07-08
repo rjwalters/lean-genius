@@ -405,6 +405,28 @@ theorem kronecker_two_odd (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
   rw [kronecker_eq_jacobi 2 n hn hno, jacobiSym.at_two (Nat.odd_iff.mpr hno),
     ZMod.χ₈_nat_eq_if_mod_eight, if_neg (show ¬ n % 2 = 0 by omega)]
 
+/-- **Self-reciprocity of the prime 2.** For odd positive `n`, the value of the
+    `(·/2)` character `kronecker2` at `n` equals the fixed-numerator symbol
+    `(2/n) = kronecker 2 n`:
+
+    `(n/2) = (2/n)`.
+
+    This is the reciprocity law for the prime `2`: the two a-priori distinct
+    "2-characters" in this file — `kronecker2` (a function of the *numerator*,
+    the even real Dirichlet character mod 8 established in Section 6) and
+    `kronecker 2 ·` (a function of the *denominator*, evaluated in Section 8) —
+    agree on the odd integers. Both equal `+1` on residues `±1 (mod 8)` and `−1`
+    on residues `±3 (mod 8)`, so the identity reduces to a residue comparison
+    after `kronecker_two_odd`. `sorry`-free, axiom-free. -/
+theorem kronecker2_eq_kronecker_two (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker2 (n : ℤ) = kronecker 2 n := by
+  rw [kronecker_two_odd n hn hno]
+  unfold kronecker2
+  rw [if_neg (show ¬ (n : ℤ) % 2 = 0 by omega)]
+  by_cases h : n % 8 = 1 ∨ n % 8 = 7
+  · rw [if_pos h, if_pos (by omega)]
+  · rw [if_neg h, if_neg (by omega)]
+
 /-!
 ## Module note: what remains open
 
