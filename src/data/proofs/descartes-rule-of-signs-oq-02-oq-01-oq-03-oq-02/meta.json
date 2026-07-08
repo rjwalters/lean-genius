@@ -125,6 +125,56 @@
       ]
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "width_lt_minGap_of_clog_lt",
+      "type": "core",
+      "description": "**Threshold form (the effective core).** For every bisection level k strictly above Nat.clog 2 ⌈w / minGap S⌉₊, the subinterval width w / 2^k is already strictly below the minimum gap. The strict hypothesis (< k, i.e. at least one level past the ceiling-log) is exactly what upgrades Nat.le_pow_clog's ≤-bound to the strict < that isolation needs — the explicit replacement for the parent's non-constructive Archimedean choice.",
+      "leanType": "(S : Finset ℝ) {w : ℝ} (_hw : 0 < w) {k : ℕ} (hk : Nat.clog 2 ⌈w / minGap S⌉₊ < k) : w / 2 ^ k < minGap S",
+      "startLine": 133,
+      "endLine": 154
+    },
+    {
+      "name": "level_isolates_explicit_bound",
+      "type": "key",
+      "description": "**Explicit witness bound.** The concrete, computable level k₀ = Nat.clog 2 ⌈w / minGap S⌉₊ + 1 already makes the bisected width strictly smaller than the minimum gap — the effective replacement for the parent's existential exists_width_lt.",
+      "leanType": "(S : Finset ℝ) {w : ℝ} (hw : 0 < w) : w / 2 ^ (Nat.clog 2 ⌈w / minGap S⌉₊ + 1) < minGap S",
+      "startLine": 160,
+      "endLine": 162
+    },
+    {
+      "name": "level_isolates_explicit",
+      "type": "key",
+      "description": "**Effective eventual isolation.** At the concrete level k₀ = Nat.clog 2 ⌈w / minGap S⌉₊ + 1, every subinterval [c, c + w/2^k₀] contains at most one root of S — the level now given by an O(log(w / minGap S)) formula rather than an unspecified existential.",
+      "leanType": "(S : Finset ℝ) {w : ℝ} (hw : 0 < w) (c : ℝ) : {x | x ∈ S ∧ x ∈ Set.Icc c (c + w / 2 ^ (Nat.clog 2 ⌈w / minGap S⌉₊ + 1))}.Subsingleton",
+      "startLine": 169,
+      "endLine": 172
+    },
+    {
+      "name": "level_isolates_explicit_each",
+      "type": "key",
+      "description": "**Packaged for a concrete interval [a,b].** Mirrors the parent's exists_level_isolates_each with the explicit level k₀ = Nat.clog 2 ⌈(b−a)/minGap S⌉₊ + 1: each dyadic subinterval [a + j·s, a + j·s + s] with s = (b−a)/2^k₀ is root-isolated.",
+      "leanType": "(S : Finset ℝ) {a b : ℝ} (hab : a < b) (j : ℕ) : {x | x ∈ S ∧ x ∈ Set.Icc (a + j*s) (a + j*s + s)}.Subsingleton  (s = (b−a)/2^(clog₂⌈(b−a)/minGap S⌉+1))",
+      "startLine": 178,
+      "endLine": 184
+    },
+    {
+      "name": "subsingleton_of_width_lt_minGap",
+      "type": "supporting",
+      "description": "**Isolation criterion (reproduced from the parent).** Any interval [c, c+s] of width s < minGap S meets S in at most one point — the bridge from a sub-gap width to root isolation.",
+      "leanType": "(S : Finset ℝ) (c s : ℝ) (hs : s < minGap S) : {x | x ∈ S ∧ x ∈ Set.Icc c (c + s)}.Subsingleton",
+      "startLine": 110,
+      "endLine": 121
+    },
+    {
+      "name": "minGap_pos",
+      "type": "supporting",
+      "description": "**Positivity of the minimum gap (reproduced).** minGap S > 0 for any finite root set S — the separation guaranteeing a strictly positive isolation width exists.",
+      "leanType": "(S : Finset ℝ) : 0 < minGap S",
+      "startLine": 83,
+      "endLine": 96
+    }
+  ],
   "references": [
     {
       "authors": [
