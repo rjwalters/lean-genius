@@ -120,5 +120,32 @@
     "path": "Proofs/Erdos76OQ02.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "extremal_crossclass_is_two_color_phenomenon",
+      "type": "theorem",
+      "description": "Capstone (Erdős #76 OQ-02): packages the separation — every 2-partition (here Fin 6 → Fin 2) has a triangle-free cross graph, while the 3-partition id : Fin 3 → Fin 3 does not. The triangle-freeness of the sacrificial cross class is therefore a genuinely two-color phenomenon with no naive extension to k ≥ 3 colors."
+    },
+    {
+      "name": "cliqueFree_three_iff",
+      "type": "theorem",
+      "description": "Headline dichotomy: the complete multipartite cross graph multipartiteGraph part is triangle-free (CliqueFree 3) if and only if the part-assignment uses at most two distinct parts, #(univ.image part) ≤ 2. The contrapositive of not_cliqueFree_three_iff."
+    },
+    {
+      "name": "not_cliqueFree_three_iff",
+      "type": "theorem",
+      "description": "Core equivalence: the cross graph contains a triangle (¬ CliqueFree 3) iff the partition uses ≥ 3 parts. Forward direction injects a transversal triangle onto three distinct parts; reverse picks one vertex from each of three parts, which are pairwise adjacent since their parts differ."
+    },
+    {
+      "name": "bipartite_cliqueFree",
+      "type": "theorem",
+      "description": "Two colors: any 2-partition part : V → Fin 2 yields a triangle-free complete bipartite cross graph, since its image has at most #(Fin 2) = 2 parts. This is the structural property the Erdős #76 balanced bipartition relies on."
+    },
+    {
+      "name": "K3_not_cliqueFree",
+      "type": "theorem",
+      "description": "Three-color witness: the discrete 3-partition id : Fin 3 → Fin 3 gives the complete graph K₃, a single transversal triangle — the concrete counterexample showing the construction breaks at k = 3 (the cross class is no longer triangle-free)."
+    }
+  ],
   "sorries": 0
 }
