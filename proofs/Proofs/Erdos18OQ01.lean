@@ -15,7 +15,12 @@
     finite check over `(divisors m).powerset`, and the verified practical numbers
     `4`, `6`, `8` (extending the parent's `1`, `2` along OEIS A005153);
   * the first **structural** constraint — `practical_even`: every practical number
-    `m ≥ 2` is even (Srinivasan 1948), since `2` must be a sum of distinct divisors.
+    `m ≥ 2` is even (Srinivasan 1948), since `2` must be a sum of distinct divisors,
+    and its classification corollary `odd_practical_eq_one` (`1` is the only odd
+    practical number);
+  * the first **infinite family** — `two_pow_practical`: every power of two `2^k`
+    is practical, via `two_pow_representable` (the binary expansion of any
+    `n < 2^k` selects distinct divisors of `2^k` summing to `n`).
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -106,5 +111,58 @@ theorem practical_even {m : ℕ} (hm : 2 ≤ m) (hp : IsPractical m) : 2 ∣ m :
 theorem practical_even' {m : ℕ} (hm : 2 ≤ m) (hp : IsPractical m) : Even m := by
   obtain ⟨c, hc⟩ := practical_even hm hp
   exact ⟨c, by omega⟩
+
+/-- **1 is the only odd practical number.**  Combines `practical_even` (every
+    practical `m ≥ 2` is even) with the base case `m = 1`; there is no odd
+    practical number beyond `1`. -/
+theorem odd_practical_eq_one {m : ℕ} (hp : IsPractical m) (ho : Odd m) : m = 1 := by
+  rcases Nat.lt_or_ge m 2 with h | h
+  · have := hp.1; omega
+  · obtain ⟨d, hd⟩ := practical_even h hp
+    obtain ⟨e, he⟩ := ho
+    omega
+
+/-- **Every `n < 2^k` is a sum of distinct divisors of `2^k`.**  The binary
+    expansion of `n` selects distinct powers of two below `2^k`, each a divisor
+    of `2^k`.  Proved by induction on `k`: when `2^k ≤ n < 2^{k+1}` the high bit
+    `2^k` is peeled off and the remainder `n - 2^k < 2^k` is handled by the
+    inductive hypothesis (and `2^k` is fresh, since every element of the
+    remainder's representing set is `≤ n - 2^k < 2^k`). -/
+theorem two_pow_representable (k : ℕ) {n : ℕ} (hn : n < 2 ^ k) :
+    IsRepresentable n (2 ^ k) := by
+  induction k generalizing n with
+  | zero =>
+    have hn0 : n = 0 := by omega
+    subst hn0; exact zero_representable _
+  | succ k ih =>
+    have hpow : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by ring
+    have hdvd : (2 : ℕ) ^ k ∣ 2 ^ (k + 1) := pow_dvd_pow 2 (Nat.le_succ k)
+    have hsub : divisors (2 ^ k) ⊆ divisors (2 ^ (k + 1)) :=
+      Nat.divisors_subset_of_dvd (by positivity) hdvd
+    rcases lt_or_ge n (2 ^ k) with hlt | hge
+    · obtain ⟨S, hSsub, hSsum⟩ := ih hlt
+      exact ⟨S, hSsub.trans hsub, hSsum⟩
+    · have hlt2 : n - 2 ^ k < 2 ^ k := by omega
+      obtain ⟨S, hSsub, hSsum⟩ := ih hlt2
+      have hnotmem : (2 : ℕ) ^ k ∉ S := by
+        intro hmem
+        have hle : (2 : ℕ) ^ k ≤ S.sum id :=
+          Finset.single_le_sum (fun i _ => Nat.zero_le _) hmem
+        rw [hSsum] at hle
+        omega
+      refine ⟨insert (2 ^ k) S, ?_, ?_⟩
+      · rw [Finset.insert_subset_iff]
+        exact ⟨Nat.mem_divisors.mpr ⟨hdvd, by positivity⟩, hSsub.trans hsub⟩
+      · rw [Finset.sum_insert hnotmem, hSsum]
+        simp only [id_eq]
+        omega
+
+/-- **Every power of two is practical** — the first *infinite* family of
+    practical numbers in this file (the parent and the small examples `4,6,8`
+    above cover only finitely many).  The divisors of `2^k` are exactly
+    `1,2,4,…,2^k`, so the binary expansion of any `1 ≤ n < 2^k` exhibits it as a
+    sum of distinct divisors (`two_pow_representable`). -/
+theorem two_pow_practical (k : ℕ) : IsPractical (2 ^ k) :=
+  ⟨Nat.one_le_pow k 2 (by norm_num), fun _ _ hn => two_pow_representable k hn⟩
 
 end Erdos18OQ01
