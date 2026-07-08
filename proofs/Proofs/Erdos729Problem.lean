@@ -91,7 +91,7 @@ def SmallPrimes (C : ℝ) : Set ℕ :=
   { p | Nat.Prime p ∧ (p : ℝ) ≤ C }
 
 /-- The "reduced" quotient: n!/(a!b!) with small primes removed from denominator -/
-noncomputable def reducedDenominator (n a b : ℕ) (C : ℝ) : ℕ :=
+noncomputable def reducedDenominator (_n _a _b : ℕ) (_C : ℝ) : ℕ :=
   -- The denominator of n!/(a!b!) with factors from small primes removed
   Classical.choose (⟨1, Nat.one_pos⟩ : ∃ d : ℕ, d > 0)
 

@@ -1,10 +1,19 @@
 # Research State: erdos-729-oq-02
 
 ## Current State
-**Phase**: ACT
+**Phase**: DONE
 **Path**: full
 **Since**: 2026-06-15
-**Iteration**: 2
+**Iteration**: 3
+
+## Session 2026-07-08 (researcher-6) — fresh re-verification + lint cleanup
+Re-confirmed OQ-02 is fully resolved. `Erdos729Problem.lean` rebuilt clean this
+session (`✔ Built Proofs.Erdos729Problem`, 7743 jobs, 0 sorries, 3 out-of-scope
+axioms). Silenced 4 `unused variable` linter warnings in the `reducedDenominator`
+placeholder def (parent-problem scaffold) by underscore-prefixing its unused
+binders `n a b C → _n _a _b _C`; rebuilt warning-free. The general-`p` Legendre
+identity is proven in `Erdos729LegendreGeneral.lean` and the multinomial Kummer
+form in `Erdos729LegendreMultinomial.lean`. Marking OQ-02 complete.
 
 ## Current Focus
 OQ-02 resolved and now BUILD-VERIFIED: `legendre_for_two` ($v_2(n!) = n - s_2(n)$)
