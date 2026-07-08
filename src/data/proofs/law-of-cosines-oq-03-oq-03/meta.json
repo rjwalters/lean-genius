@@ -17,8 +17,8 @@
     ],
     "axiomCount": 7,
     "sorries": 0,
-    "lineCount": 331,
-    "theoremCount": 22,
+    "lineCount": 373,
+    "theoremCount": 24,
     "definitionCount": 1
   },
   "openQuestion": {
@@ -282,6 +282,18 @@
       "type": "theorem",
       "statement": "For hyperbolic triangles t₁, t₂ with t₁.A = t₂.A, t₁.B = t₂.B and t₁.C < t₂.C, t₂.c < t₁.c.",
       "significance": "Hyperbolic angle-side comparison: with two angles pinned, the side is a strictly decreasing function of its opposite angle. Upgrades AAA congruence (equal angles ⟹ equal sides) to a strict order statement via cosh injectivity on [0,∞). The hyperbolic analogue of the Euclidean larger-angle/longer-side law, but reversed and quantitative."
+    },
+    {
+      "name": "equilateral_cosh_antitone",
+      "type": "theorem",
+      "statement": "For two equilateral hyperbolic triangles with common angles θ₁ < θ₂, cosh(side₂) < cosh(side₁).",
+      "significance": "The equilateral closed form cosh(side) = cos θ/(1 - cos θ) is strictly decreasing across the admissible range (0, π/3): the side blows up as θ → 0 (thin, large triangles) and shrinks to 0 as θ → π/3 (Euclidean limit). Unlike side_antitone_in_angle, which pins two angles, this varies all three angles together along the equilateral family."
+    },
+    {
+      "name": "equilateral_side_antitone",
+      "type": "theorem",
+      "statement": "For two equilateral hyperbolic triangles with common angles θ₁ < θ₂, the second has the strictly shorter side: t₂.c < t₁.c.",
+      "significance": "The monotone hyperbolic counterpart of the Euclidean fact that all equilateral triangles are similar: here each admissible common angle pins down a unique size, refining AAA congruence into a strict monotonicity along the equilateral family (via cosh injectivity on [0,∞))."
     }
   ],
   "references": [
@@ -353,8 +365,8 @@
     ],
     "sorries": 0,
     "axiomCount": 7,
-    "lineCount": 331,
-    "theoremCount": 22,
+    "lineCount": 373,
+    "theoremCount": 24,
     "definitionCount": 1,
     "originalContributions": [
       "HyperbolicTriangle structure encoding the three second laws of cosines plus the angular defect",
@@ -364,7 +376,8 @@
       "aaa_congruence: equal angles ⟹ equal sides via cosh injectivity on [0,∞)",
       "equilateral_cosh: closed form cosh(side) = cos θ/(1-cos θ) for the equilateral triangle",
       "side_antitone_in_angle / cosh_c_antitone_in_C: angle-side monotonicity — holding two angles fixed, increasing the third strictly shortens the opposite side (refines AAA congruence to a strict comparison)",
-      "Equilateral corollaries (Part 7): equilateral_angle_lt_pi_third (an equilateral hyperbolic triangle has common angle < π/3, the sharp defect-driven counterpart of the Euclidean π/3) and equilateral_pi_four_cosh (the all-angles-π/4 equilateral triangle has every side arcosh(1+√2), i.e. cosh = 1+√2) — no new assumptions"
+      "Equilateral corollaries (Part 7): equilateral_angle_lt_pi_third (an equilateral hyperbolic triangle has common angle < π/3, the sharp defect-driven counterpart of the Euclidean π/3) and equilateral_pi_four_cosh (the all-angles-π/4 equilateral triangle has every side arcosh(1+√2), i.e. cosh = 1+√2) — no new assumptions",
+      "Equilateral-family monotonicity (Part 8): equilateral_cosh_antitone and equilateral_side_antitone — along the one-parameter equilateral family, the side is a strictly decreasing function of the common angle θ ∈ (0, π/3). This sharpens AAA congruence (Part 4) into a strict order statement across the family, complementing the two-angles-fixed monotonicity of Part 4b."
     ],
     "proofStrategy": "Invert each second law of cosines (linear in cosh of the opposite side) via eq_div_iff + linear_combination to get cosh(side) as a ratio of angle functions. Prove the angle ratio exceeds 1 from the defect using cos(A+B) > cos(π-C) = -cos C (strict antitonicity of cos on [0,π]). Conclude AAA congruence by cosh injectivity on [0,∞). Specialize to the equilateral case for a closed form.",
     "openQuestions": [
