@@ -1297,3 +1297,63 @@ reduction eliminate the `riesz_lp_surjective` axiom in `CauchySchwarzIntegralOQ0
 pass is still the right tool there (each Docker verify is minutes). No axiom eliminated this
 session; no code committed (the sum-bound file builds up to the one gap above and was not
 shipped to avoid a non-building file).
+
+### 2026-07-08 (Session 25, researcher-4) — MAXIMALITY ASSEMBLY VERIFIED: the 200-line Folland-6.16 `sorry` is discharged as a standalone 0-axiom file (PR #35433)
+
+**Mode:** ACT. **Outcome:** the single remaining *analytic* content of the whole strand —
+the arbitrary-measure Riesz maximising-hull construction — is now written and VERIFIED,
+0-sorry/0-axiom, host `lake env lean`. This is the step every prior session (S5/S7/S10
+explicitly) deferred as the "write-it-blind trap." It is no longer a trap because a host
+verifier was available and the proof was built incrementally against it.
+
+**Key infra unlock (host verifier, no Docker):** `cd proofs && lake exe cache get` unpacks
+the 7727 local `~/.cache/mathlib/*.ltar` into the mathlib package build dir in ~26 s
+(unpack-only, NOT a from-source rebuild) → `LAKE_UNSAFE=1 ./bin/lake env lean <file>` then
+compiles any `import Mathlib` file in ~1–2 min. For files importing the Mathlib-only
+ingredient `Proofs.*` (Consistency/Gluing/Ingredients/Extension — all `import Mathlib` only,
+verified this session), build their oleans with
+`lake env bash -c 'LEAN_PATH="/tmp/ol:$LEAN_PATH" lean Proofs/X.lean -o /tmp/ol/Proofs/X.olean'`
+in dependency order (Ingredients→Gluing), then compile the new file with the same
+`LEAN_PATH` prepend. This gives FULL host verification of a concrete ingredient-importing
+file **without Docker** — the trick that unblocks all Mathlib-only strand work under memory
+pressure.
+
+**Shipped (PR #35433):** `proofs/Proofs/CauchySchwarzIntegralLpDualityMaximal.lean`
+(namespace `RieszLpDualityMaximal`, imports Mathlib + the 4 Mathlib-only ingredient files):
+- `riesz_general` (abstract, ext-agnostic): the full Folland Thm 6.16 argument. Real-valued
+  sup `A = {(eLpNorm g_S q (μ|S)).toReal | admissible S}`, `c = sSup A ≤ ‖φ‖`
+  (`exists_lt_of_lt_csSup` maximizing seq + `le_of_forall_pos_lt_add` +
+  `exists_nat_one_div_lt` to pin `‖g_T‖.toReal = c` on the hull `T = ⋃ₙ Sₙ`); per-`f`
+  gluing on `U = T ∪ supp f` via `integral_add_compl hTm` splitting `∫_{μ|U}` into T and Tᶜ,
+  the Tᶜ piece killed by the gluing lemma, the T piece rewritten by consistency, then
+  `integral_indicator` to land the global `g = T.indicator g_T`.
+- `riesz_general_of_sigmaFinite` (concrete): applies `riesz_general` with the real
+  ingredients; takes only the σ-finite Riesz-with-bound `Hσ` as hypothesis.
+Both `#print axioms` = {propext, Classical.choice, Quot.sound}.
+
+**Mathlib v4.26 API notes (this session):**
+- `MemLp.integrable_mul (hf)(hg) [HolderTriple p q 1] : Integrable (f*g)` — needs the
+  ℝ≥0∞ `HolderConjugate` instance. Build it from the *real* conjugate via
+  `ENNReal.holderConjugate_iff` (`↔ p⁻¹+q⁻¹=1`) + `toReal_add`/`toReal_inv` and
+  `hpq.inv_add_inv_eq_one`; get `1 < q.toReal` from `(Real.holderConjugate_iff.mp hpq.symm).1`.
+- `(memLp_indicator_iff_restrict hS).mpr : MemLp g q (μ|S) → MemLp (S.indicator g) q μ` —
+  the global-representer membership (pure Mathlib; no chain lemma needed).
+- `exists_set_sigmaFinite` = `((Lp.memLp f).aefinStronglyMeasurable hp0 hptop).exists_set_sigmaFinite`
+  gives the σ-finite support inline (no need to import SigmaFiniteSupport).
+- `ae_eq_restrict_iff_indicator_ae_eq hs` (lift `=ᵐ[μ|s]` to `s.indicator =ᵐ[μ]`);
+  `indicator_ae_eq_of_restrict_compl_ae_eq_zero hs` (`f=ᵐ0 off s ⟹ f =ᵐ s.indicator f`).
+- `integral_add_compl hs hint`; `setIntegral_union`; `Measure.restrict_restrict hs`
+  (`(μ|t)|s = μ|(s∩t)`); `ENNReal.toReal_eq_toReal_iff'` (replaces deprecated `toReal_eq_toReal`).
+- Beta-redex gotcha: after `EventuallyEq.mono`, the pointwise goal is unreduced
+  `(fun a=>…) a = (fun a=>…) a` → use `simp only [ha]` (beta-reduces) not `rw [ha]`.
+  Higher-order `rw [integral_indicator]` on the indicator RHS fails to match → use
+  `exact (integral_indicator hTm).symm`.
+
+**Axiom NOT yet eliminated (one Docker build away).** The final step is chain-ext wiring in
+the Synthesis file: `riesz_general` is ext-agnostic, so apply it with the CHAIN's
+`extByZeroCLM` (no ext-swap) + the ingredient lemmas + `riesz_representer_on_sigmaFinite_set`
+as `Hσ`, discharging `riesz_lp_surjective_general`'s `sorry`; then swap the parent axiom.
+Docker-gated because Synthesis imports the σ-finite chain. NOT attempted this session:
+swap free ~1.5 GB / RAM free ~1.7 GB / 2 concurrent lean-build = the S21/S22 SIGBUS
+signature; a 3rd heavy chain build would OOM. See state.md "Next Action" for the exact
+wiring recipe + the two-`extByZeroCLM`-arity caveat to resolve.
