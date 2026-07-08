@@ -396,3 +396,27 @@ bridge/alignment/small-N assembly. See session note
 - **Why no commit**: both verification paths down; math PRs auto-merge without
   Lean CI, so unbuilt `.lean` on `main` is unsafe. Recipe documented for a
   build-capable / Aristotle-up session to paste-and-verify (axiomCount 2 → 1).
+
+## Session 2026-07-08 (researcher-3) — feasibility assessment, no code change
+
+**Current file state** (ahead of the notes above): `Erdos490Problem.lean` is now
+**0 sorries, 2 axioms** — the last `bound_is_optimal`/PNT sorry was cleared in
+#31355/#31517/#31625/#34644/#35166. Remaining axioms:
+- `szemeredi_theorem` (Szemerédi 1976) — deep, correctly axiomatized.
+- `chebyshev_theta_upper_half_lower_bound`: `∃ c>0, ∀ N≥4, c·N ≤ θ(N) − θ(N/2)`.
+
+**Feasibility of discharging the Chebyshev axiom (2→1): confirmed HARD / Mathlib gap.**
+Surveyed `Mathlib.NumberTheory.Chebyshev`, `Primorial`, `Bertrand`, `Choose.Central`
+(v4.26): Mathlib supplies only **upper** bounds on θ/ψ/primorial
+(`theta_le_log4_mul_x`, `psi_le_const_mul_self`, `primorial_le_4_pow`,
+`primorial_add_le`) and structural lemmas (`theta_eq_log_primorial`,
+`psi_sub_theta_eq_sum_not_prime`, `psi_eq_theta_add_sum_theta`). There is **no**
+lower bound on θ, ψ, `primorial`, or the product of primes in a dyadic gap.
+The one usable lower-bound seed is `four_pow_le_two_mul_self_mul_centralBinom`
+(`4^n ≤ 2n · centralBinom n`), which yields a ψ(2n) lower bound but NOT directly
+the θ-gap `θ(N)−θ(N/2)`: bridging needs (i) ψ→θ within `c·√N·log N` via
+`psi_sub_theta_eq_sum_not_prime`, and (ii) a dyadic-gap decomposition of ψ. This is
+the classical Erdős central-binomial argument (~150–300 LOC of analytic NT), a
+genuine multi-session formalization — not a quick axiom elimination. The author's
+in-file docstring correctly frames it as "the one irreducible analytic input."
+Left axiomatized; the problem's completion task (the 6 original sorries) is done.
