@@ -18,7 +18,11 @@
   5. Structural analysis: cardinality bounds, trivial bound (§6)
 
   Sorry count: 0
-  Axiom count: 2 (Szemerédi bound, optimal example lower bound). `maxProd_exists` is now
+  Axiom count: 1 (Szemerédi upper bound only). The optimal-example lower bound
+  `optimal_lower` is now a **proved theorem** (0-axiom), derived from the sibling file's
+  verified `Erdos490.bound_is_optimal` via `maxProd_is_upper` (the maximum dominates the
+  optimal example's product), with small cases `N ∈ {2,3}` handled by `maxProd_ge_self`.
+  `maxProd_exists` is likewise
   a proved theorem: the maximum ranges over subsets of the finite set {1,...,N}, so the
   achievable-value set is a nonempty finite set of naturals and we take its `Finset.max'`.
   (Also repaired Mathlib v4.26 API drift: div_le_iff→div_le_iff₀, le_div_iff→le_div_iff₀,
@@ -26,6 +30,7 @@
 -/
 
 import Mathlib
+import Proofs.Erdos490Problem
 
 open Finset Real Filter
 
@@ -125,9 +130,79 @@ theorem maxProd_is_achieved (N : ℕ) (hN : 2 ≤ N) :
 axiom szemeredi_upper : ∃ C : ℝ, 0 < C ∧
   ∀ N : ℕ, (hN : 2 ≤ N) → (maxProd N hN : ℝ) ≤ C * (N : ℝ)^2 / Real.log (N : ℝ)
 
-/-- **Optimal example bound (axiom)**: maxProd(N) ≥ c·N²/log N for some c > 0. -/
-axiom optimal_lower : ∃ c : ℝ, 0 < c ∧
-  ∀ N : ℕ, (hN : 2 ≤ N) → c * (N : ℝ)^2 / Real.log (N : ℝ) ≤ (maxProd N hN : ℝ)
+/-- **Crude lower bound** `maxProd N ≥ N` (0-axiom).  The pair `A = {1,…,N}`, `B = {1}`
+has distinct products (`a·1 = a`) and `|A|·|B| = N·1 = N`, so the maximum is at least `N`.
+This handles the small cases `N ∈ {2,3}` of `optimal_lower`, where the quantitative
+`N²/log N` machinery is not yet in force. -/
+theorem maxProd_ge_self (N : ℕ) (hN : 2 ≤ N) : (N : ℝ) ≤ (maxProd N hN : ℝ) := by
+  have hAsub : IsSubsetUpTo' (Finset.Icc 1 N) N := by
+    intro a ha; exact Finset.mem_Icc.mp ha
+  have hBsub : IsSubsetUpTo' ({1} : Finset ℕ) N := by
+    intro a ha
+    simp only [Finset.mem_singleton] at ha
+    subst ha; exact ⟨le_refl 1, by omega⟩
+  have hd : HasDistinctProducts' (Finset.Icc 1 N) ({1} : Finset ℕ) := by
+    intro a₁ a₂ b₁ b₂ _ _ hb₁ hb₂ heq
+    simp only [Finset.mem_singleton] at hb₁ hb₂
+    subst hb₁; subst hb₂
+    simp only [mul_one] at heq
+    exact ⟨heq, rfl⟩
+  have hup := maxProd_is_upper N hN (Finset.Icc 1 N) ({1} : Finset ℕ) hAsub hBsub hd
+  simp only [Nat.card_Icc, Finset.card_singleton, mul_one, Nat.add_sub_cancel] at hup
+  exact_mod_cast hup
+
+/-- **Optimal example bound (theorem, 0-axiom)**: `maxProd(N) ≥ c·N²/log N` for some
+`c > 0`.  Formerly an axiom; now derived from the sibling file's fully-proved
+`Erdos490.bound_is_optimal` (the optimal example `A = [1,N/2]`, `B = primes in (N/2,N]`
+achieves `|A||B| ≥ c₀·N²/log N` for `N ≥ 4`, using the verified Chebyshev θ-gap bound).
+Since `maxProd N` dominates the product of *any* valid pair (`maxProd_is_upper`), the
+lower bound transfers.  The small cases `N ∈ {2,3}` use `maxProd_ge_self` with the
+constant shrunk to `≤ log N / N`. -/
+theorem optimal_lower : ∃ c : ℝ, 0 < c ∧
+    ∀ N : ℕ, (hN : 2 ≤ N) → c * (N : ℝ)^2 / Real.log (N : ℝ) ≤ (maxProd N hN : ℝ) := by
+  obtain ⟨c₀, hc₀, hbig⟩ := Erdos490.bound_is_optimal
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hlog3 : 0 < Real.log 3 := Real.log_pos (by norm_num)
+  refine ⟨min c₀ (min (Real.log 2 / 2) (Real.log 3 / 3)), ?_, ?_⟩
+  · exact lt_min hc₀ (lt_min (by positivity) (by positivity))
+  · intro N hN
+    set c := min c₀ (min (Real.log 2 / 2) (Real.log 3 / 3)) with hcdef
+    have hlogN : 0 < Real.log (N : ℝ) :=
+      Real.log_pos (by exact_mod_cast (show 1 < N by omega))
+    by_cases h4 : 4 ≤ N
+    · -- Large N: transfer the optimal-example bound.
+      obtain ⟨A, B, hA, hB, hd, hge⟩ := hbig N h4
+      have hA' : IsSubsetUpTo' A N := by intro a ha; exact hA a ha
+      have hB' : IsSubsetUpTo' B N := by intro b hb; exact hB b hb
+      have hd' : HasDistinctProducts' A B := by
+        have hpmi := (Erdos490.productMapInjective_iff_hasDistinctProducts A B).mpr hd
+        intro a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ heq
+        exact hpmi a₁ a₂ b₁ b₂ ha₁ ha₂ hb₁ hb₂ heq
+      have hup : (A.card * B.card : ℝ) ≤ (maxProd N hN : ℝ) := by
+        exact_mod_cast maxProd_is_upper N hN A B hA' hB' hd'
+      have hmain : c₀ * (N : ℝ)^2 / Real.log N ≤ (maxProd N hN : ℝ) :=
+        le_trans hge hup
+      -- Scale the constant down from c₀ to c ≤ c₀.
+      have hX0 : (0 : ℝ) ≤ (N : ℝ)^2 / Real.log N := div_nonneg (by positivity) hlogN.le
+      have hmono : c * (N : ℝ)^2 / Real.log N ≤ c₀ * (N : ℝ)^2 / Real.log N := by
+        rw [mul_div_assoc, mul_div_assoc]
+        exact mul_le_mul_of_nonneg_right (min_le_left _ _) hX0
+      exact le_trans hmono hmain
+    · -- Small N (N = 2 or 3): use maxProd N ≥ N with c ≤ log N / N.
+      have hself : (N : ℝ) ≤ (maxProd N hN : ℝ) := maxProd_ge_self N hN
+      have hc2 : c ≤ Real.log 2 / 2 := le_trans (min_le_right _ _) (min_le_left _ _)
+      have hc3 : c ≤ Real.log 3 / 3 := le_trans (min_le_right _ _) (min_le_right _ _)
+      interval_cases N
+      · -- N = 2
+        have hbound : c * (2 : ℝ)^2 / Real.log 2 ≤ (2 : ℝ) := by
+          rw [div_le_iff₀ hlog2]; nlinarith [hc2, hlog2]
+        push_cast at hself ⊢
+        linarith [hbound, hself]
+      · -- N = 3
+        have hbound : c * (3 : ℝ)^2 / Real.log 3 ≤ (3 : ℝ) := by
+          rw [div_le_iff₀ hlog3]; nlinarith [hc3, hlog3]
+        push_cast at hself ⊢
+        linarith [hbound, hself]
 
 -- ============================================================================
 -- § 4. The Product Ratio Sequence
