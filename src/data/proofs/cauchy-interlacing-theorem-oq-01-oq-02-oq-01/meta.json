@@ -90,16 +90,32 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Compression Setup",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "The module docstring states the Ky Fan interlacing package built on the parent Poincaré separation theorem: for a symmetric operator T on an (n+m)-dimensional space and its compression TH to an n-dimensional subspace H, the compression eigenvalues μ are trapped between the top and bottom n eigenvalues λ of T. The setup fixes the operators, eigenbases, eigenvalue lists (hlam/hmu antitone), the dimension hypotheses, and the Rayleigh-agreement hypothesis, then `include`s them into every theorem below."
+    },
+    {
+      "id": "ky-fan-sum-bounds",
       "title": "The Ky Fan Sum Bounds over an Arbitrary Index Set",
-      "content": "sum_mu_le_sum_top_lam and sum_bot_lam_le_sum_mu apply Finset.sum_le_sum to the two halves of the parent's Poincaré separation theorem. For any s : Finset (Fin n), the upper half μ_k ≤ λ_⟨k⟩ sums to ∑_{k∈s} μ_k ≤ ∑_{k∈s} λ_⟨k⟩, and the lower half λ_⟨k+m⟩ ≤ μ_k sums to ∑_{k∈s} λ_⟨k+m⟩ ≤ ∑_{k∈s} μ_k. Leaving s free is the design choice that makes every later corollary a specialisation."
+      "startLine": 63,
+      "endLine": 77,
+      "summary": "sum_mu_le_sum_top_lam and sum_bot_lam_le_sum_mu apply Finset.sum_le_sum to the two halves of the parent's Poincaré separation theorem. For any s : Finset (Fin n), the upper half μ_k ≤ λ_⟨k⟩ sums to ∑_{k∈s} μ_k ≤ ∑_{k∈s} λ_⟨k⟩, and the lower half λ_⟨k+m⟩ ≤ μ_k sums to ∑_{k∈s} λ_⟨k+m⟩ ≤ ∑_{k∈s} μ_k. Leaving s free is the design choice that makes every later corollary a specialisation."
     },
     {
+      "id": "weak-majorization",
       "title": "Weak Majorization: Top-j Partial Sums",
-      "content": "partial_sum_mu_le_partial_sum_lam specialises s to the initial segment {k : Fin n | (k : ℕ) < j}, giving ∑_{k<j} μ_k ≤ ∑_{k<j} λ_k for every j : ℕ. This is the Ky Fan weak-majorization statement: the descending spectrum of the compression is weakly majorized by the largest eigenvalues of the full operator."
+      "startLine": 78,
+      "endLine": 92,
+      "summary": "partial_sum_mu_le_partial_sum_lam specialises s to the initial segment {k : Fin n | (k : ℕ) < j}, giving ∑_{k<j} μ_k ≤ ∑_{k<j} λ_k for every j : ℕ. This is the Ky Fan weak-majorization statement: the descending spectrum of the compression is weakly majorized by the largest eigenvalues of the full operator."
     },
     {
+      "id": "trace-trapping",
       "title": "Trace Trapping",
-      "content": "trace_compress_le and trace_compress_ge specialise s to Finset.univ: the trace of the compression (the sum of all n of its eigenvalues) is at most the sum of the n largest eigenvalues of T and at least the sum of the n smallest (those with index m … n+m-1). trace_interlacing bundles the two as ∑_{j=m}^{n+m-1} λ_j ≤ ∑_k μ_k ≤ ∑_{j=0}^{n-1} λ_j."
+      "startLine": 93,
+      "endLine": 116,
+      "summary": "trace_compress_le and trace_compress_ge specialise s to Finset.univ: the trace of the compression (the sum of all n of its eigenvalues) is at most the sum of the n largest eigenvalues of T and at least the sum of the n smallest (those with index m … n+m-1). trace_interlacing bundles the two as ∑_{j=m}^{n+m-1} λ_j ≤ ∑_k μ_k ≤ ∑_{j=0}^{n-1} λ_j."
     }
   ],
   "mainTheorems": [
