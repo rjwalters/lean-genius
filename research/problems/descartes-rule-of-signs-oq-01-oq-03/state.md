@@ -2,7 +2,7 @@
 
 **Phase**: SOLVED
 **Since**: 2026-06-25T21:00:00.000Z
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 
@@ -14,7 +14,9 @@ Reduction skeleton over ℕ (`upper_bound_core`, `parity_core`, both omega-close
 
 ## Result
 
-`proofs/Proofs/DescartesRuleOfSignsOQ01OQ03.lean` — 8 theorems, 1 definition, 1 structure, 0 sorries, 0 `axiom` declarations. The general direction is conditional on the `SturmReduction` bridge data (counted as the entry's single standing assumption); the linear-polynomial validation is unconditional and axiom-free. Gallery entry: `descartes-rule-of-signs-oq-01-oq-03`.
+`proofs/Proofs/DescartesRuleOfSignsOQ01OQ03.lean` — 10 theorems, 1 definition, 1 structure, 0 sorries, 0 `axiom` declarations. The general direction is conditional on the `SturmReduction` bridge data (counted as the entry's single standing assumption); the linear-polynomial validation is unconditional and axiom-free.
+
+**Iteration 3 increment (2026-07-07):** made the linear branch *fully* unconditional. Previously `linearReduction`/`linear_descartes_bound` took `hV : signChangesInCoeffs (X − C c) = 1` as an unproved hypothesis. That coefficient count is now computed directly by a new axiom-free lemma `linear_signChanges`, built on a new general helper `countSignChanges_two` (a length-2 real sequence with opposite-sign entries has exactly one sign change — the base file had only ever *axiomatised* such concrete counts, e.g. `example_x2_minus_1_sign_changes`). So the `hV` hypothesis is discharged and the linear case carries no assumption beyond `c > 0`. Gallery entry: `descartes-rule-of-signs-oq-01-oq-03`.
 
 A prerequisite Mathlib-rot repair was made to the base file `Proofs/DescartesRuleOfSigns.lean` (renamed `Polynomial.card_roots_le_degree` → `Polynomial.card_roots'`, fixed `Fin.castSucc_lt_succ` application, and supplied the explicit multiset argument to `Multiset.countP_le_card`) so the dependency chain compiles against Mathlib 4.26.0.
 
@@ -24,7 +26,7 @@ None.
 
 ## Next Action
 
-Solved. Open question: prove the three comparison facts (B1)-(B3) for general polynomials to make the general Sturm ⟹ Descartes implication unconditional.
+Solved. Remaining open question: prove the three comparison facts (B1)-(B3) for *general* polynomials to make the general Sturm ⟹ Descartes implication unconditional. (For linear polynomials this is now done — the (B1)-(B3) facts are discharged axiom-free via `linear_signChanges`/`countSignChanges_two`.) A natural next intermediate step is extending the axiom-free coefficient sign-change computation from `Fin 2` to `Fin 3` (quadratics), which would let the base file's axiomatised examples `example_x2_minus_1_sign_changes`/`example_x2_plus_1_sign_changes` be de-axiomatised.
 
 ## Attempt Counts
 

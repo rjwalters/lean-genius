@@ -216,7 +216,7 @@ theorem linear_signChanges (hc : 0 < c) :
   rw [dif_neg hne, natDegree_X_sub_C]
   apply countSignChanges_two
   have e0 : DescartesRuleOfSigns.coeffSequence (X - C c) 1 0 = 1 := by
-    simp [DescartesRuleOfSigns.coeffSequence, coeff_sub, coeff_X_one, coeff_C]
+    simp [DescartesRuleOfSigns.coeffSequence, coeff_sub, coeff_X_one]
   have e1 : DescartesRuleOfSigns.coeffSequence (X - C c) 1 1 = -c := by
     simp [DescartesRuleOfSigns.coeffSequence, coeff_sub, coeff_X_zero, coeff_C]
   rw [e0, e1]
