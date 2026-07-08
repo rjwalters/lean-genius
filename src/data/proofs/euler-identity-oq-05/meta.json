@@ -18,6 +18,38 @@
     "path": "Proofs/EulerIdentityOQ05.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "four_square_identity",
+      "type": "theorem",
+      "description": "Euler's four-square identity: a product of two sums of four squares equals a sum of four explicit bilinear squares — the algebraic engine reducing Lagrange's four-square theorem to the prime case."
+    },
+    {
+      "name": "IsSumFourSq.mul",
+      "type": "theorem",
+      "description": "Multiplicative closure: the product of two sums of four squares is a sum of four squares, with witnesses read straight off Euler's identity. The four-square analogue of Mathlib's two-square sq_add_sq_mul."
+    },
+    {
+      "name": "isSumFourSq_prod",
+      "type": "theorem",
+      "description": "A finite product of sums of four squares is a sum of four squares."
+    },
+    {
+      "name": "IsSumFourSq.pow",
+      "type": "theorem",
+      "description": "A power of a sum of four squares is a sum of four squares — so the sums of four squares form a multiplicative submonoid (containing 0, 1 and every square)."
+    },
+    {
+      "name": "not_isSumThreeSq_mul_closed",
+      "type": "theorem",
+      "description": "Sharpness of 'four': sums of three squares are NOT multiplicatively closed — 3 and 5 are each sums of three squares but 15 = 3·5 ≡ 7 (mod 8) is not, proved self-containedly via squares ∈ {0,1,4} mod 8. Four is the minimal count for Euler-style closure."
+    },
+    {
+      "name": "fifteen_not_isSumThreeSq",
+      "type": "theorem",
+      "description": "15 is not a sum of three integer squares, since 15 ≡ 7 (mod 8) is the forbidden residue (decide over ZMod 8)."
+    }
+  ],
   "sorries": 0,
   "references": [
     {
