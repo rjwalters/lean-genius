@@ -137,6 +137,43 @@ theorem descartes_rule_via_sturm {p : ℝ[X]} (d : SturmReduction p) :
   obtain ⟨m, hm⟩ := descartes_parity_via_sturm d
   exact ⟨m, by omega⟩
 
+/- ## § 2½. Computing the two-term coefficient sign-change count (verified, axiom-free)
+
+The gallery's base file only ever *axiomatised* concrete sign-change counts
+(`example_x2_minus_1_sign_changes` and friends are `axiom` declarations, because the
+`countSignChanges` definition filters over `Fin n × Fin n` with a classically-decided
+predicate that `decide` cannot reduce).  Here we discharge the length-2 case by hand:
+a two-term real sequence whose entries have opposite signs has exactly one sign change.
+This lets the linear validation below assume *nothing* about the coefficient count. -/
+
+/-- **Sign-change count of a two-term sequence.**  If the two entries of `f : Fin 2 → ℝ`
+have opposite signs (`f 0 * f 1 < 0`) then `f` has exactly one sign change.  Proved by
+exhibiting the single qualifying index pair `(0, 1)`; axiom-free. -/
+theorem countSignChanges_two {f : Fin 2 → ℝ} (h : f 0 * f 1 < 0) :
+    DescartesRuleOfSigns.countSignChanges f = 1 := by
+  have h0 : f 0 ≠ 0 := fun he => by rw [he, zero_mul] at h; exact lt_irrefl 0 h
+  have h1 : f 1 ≠ 0 := fun he => by rw [he, mul_zero] at h; exact lt_irrefl 0 h
+  unfold DescartesRuleOfSigns.countSignChanges
+  rw [Finset.card_eq_one]
+  refine ⟨(0, 1), ?_⟩
+  ext ⟨i, j⟩
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton,
+    decide_eq_true_eq, DescartesRuleOfSigns.SignChangeBetween,
+    DescartesRuleOfSigns.oppositeSign, Prod.mk.injEq]
+  constructor
+  · rintro ⟨hij, -, -, -, -⟩
+    fin_cases i <;> fin_cases j <;>
+      first
+        | exact ⟨rfl, rfl⟩
+        | exact absurd hij (by decide)
+  · rintro ⟨rfl, rfl⟩
+    refine ⟨by decide, h0, h1, ?_, h⟩
+    intro k hk0 hk1
+    fin_cases k <;>
+      first
+        | exact absurd hk0 (by decide)
+        | exact absurd hk1 (by decide)
+
 /- ## § 3. Axiom-free validation of the Sturm half on linear polynomials
 
 For `p = X − c` with `c > 0`, the gallery already proves (axiom-free) that the
@@ -168,12 +205,28 @@ theorem linear_sturm_count (hc : 0 < c) :
   have hp : countPositiveRoots (X - C c) = 1 := linear_positiveRoots c hc
   omega
 
+/-- **Coefficient sign-change count of `X − c` (`c > 0`), computed axiom-free.**  The
+coefficient sequence of `X − c` is `[1, −c]` (leading coefficient `1`, constant term
+`−c`), whose two entries have opposite signs — exactly one sign change.  This discharges
+the coefficient fact that `linearReduction` previously took as an unproved hypothesis. -/
+theorem linear_signChanges (hc : 0 < c) :
+    signChangesInCoeffs (X - C c) = 1 := by
+  have hne : (X - C c : ℝ[X]) ≠ 0 := (monic_X_sub_C c).ne_zero
+  unfold signChangesInCoeffs
+  rw [dif_neg hne, natDegree_X_sub_C]
+  apply countSignChanges_two
+  have e0 : DescartesRuleOfSigns.coeffSequence (X - C c) 1 0 = 1 := by
+    simp [DescartesRuleOfSigns.coeffSequence, coeff_sub, coeff_X_one]
+  have e1 : DescartesRuleOfSigns.coeffSequence (X - C c) 1 1 = -c := by
+    simp [DescartesRuleOfSigns.coeffSequence, coeff_sub, coeff_X_zero, coeff_C]
+  rw [e0, e1]
+  simpa using hc
+
 /-- The full `SturmReduction` data for `X − c` (`c > 0`).  The Sturm half is
-discharged axiom-free; only the coefficient-comparison facts (B1)–(B3) remain as
-the data's standing assumptions — and for this polynomial they are the trivial
-`1 ≤ 1`, `Even 0`, `Even 0`, supplied here against the single coefficient fact
-`V(X − c) = 1`. -/
-def linearReduction (hc : 0 < c) (hV : signChangesInCoeffs (X - C c) = 1) :
+discharged axiom-free; the coefficient-comparison facts (B1)–(B3) are now *also*
+discharged axiom-free, using the computed count `V(X − c) = 1` (`linear_signChanges`).
+For this polynomial the reduction therefore carries **no standing assumption**. -/
+def linearReduction (hc : 0 < c) :
     SturmReduction (X - C c) where
   B := c + 1
   hB := by linarith
@@ -185,10 +238,12 @@ def linearReduction (hc : 0 < c) (hV : signChangesInCoeffs (X - C c) = 1) :
     omega
   bridge_bound := by
     have h0 : sturmVariations (X - C c) 0 = 1 := sturm_linear_left c 0 hc
+    have hV : signChangesInCoeffs (X - C c) = 1 := linear_signChanges c hc
     omega
   bridge_parity := by
     rw [Nat.even_iff]
     have h0 : sturmVariations (X - C c) 0 = 1 := sturm_linear_left c 0 hc
+    have hV : signChangesInCoeffs (X - C c) = 1 := linear_signChanges c hc
     omega
   tail_even := by
     rw [Nat.even_iff]
@@ -197,11 +252,11 @@ def linearReduction (hc : 0 < c) (hV : signChangesInCoeffs (X - C c) = 1) :
     omega
 
 /-- End-to-end check: feeding the linear data through the reduction reproduces
-Descartes' upper bound for `X − c`. -/
-theorem linear_descartes_bound (hc : 0 < c)
-    (hV : signChangesInCoeffs (X - C c) = 1) :
+Descartes' upper bound for `X − c`, now **unconditionally** — no coefficient count is
+assumed, only `c > 0`. -/
+theorem linear_descartes_bound (hc : 0 < c) :
     countPositiveRoots (X - C c) ≤ signChangesInCoeffs (X - C c) :=
-  descartes_upper_bound_via_sturm (linearReduction c hc hV)
+  descartes_upper_bound_via_sturm (linearReduction c hc)
 
 end Linear
 
