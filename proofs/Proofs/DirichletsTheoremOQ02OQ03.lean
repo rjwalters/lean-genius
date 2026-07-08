@@ -289,4 +289,122 @@ theorem B_one : B 1 = 95 := by decide
 theorem tower_loose_at_one : p3 1 < B 1 := by
   rw [p3_one, B_one]; norm_num
 
+/-! ## Step 5: the tighter **primorial** bound
+
+The iterated-factorial tower `B` is astronomically loose because each step takes
+a *factorial of the whole previous bound*.  The classical Euclid argument for
+`≡ 3 (mod 4)` in fact only needs the *product of the primes found so far*, not a
+factorial: given the first `k` primes `p3 0, …, p3 (k−1) ≡ 3 (mod 4)`, the number
+
+    N = 4·(p3 0 · p3 1 ⋯ p3 (k−1)) − 1
+
+is `≡ 3 (mod 4)`, so it has a prime factor `p ≡ 3 (mod 4)`; and `p` cannot be any
+of `p3 0, …, p3 (k−1)` (each of those divides the product, hence `4·product`,
+while `p ∣ N = 4·product − 1`, forcing `p ∣ 1`).  So `p` is a *new* prime
+`≡ 3 (mod 4)`, giving `p3 k ≤ p ≤ N`.  This is the **primorial bound**
+
+    p3 k ≤ 4·(∏_{i<k} p3 i) − 1,
+
+replacing the factorial by a product.  It is enormously tighter: e.g.
+`p3 1 ≤ 4·3 − 1 = 11` versus the factorial tower's `B 1 = 95`. -/
+
+/-- **Primorial bound (actual-prime form).** The `k`-th prime `≡ 3 (mod 4)` is
+bounded by four times the product of the previous ones, minus one:
+`p3 k ≤ 4·(∏_{i<k} p3 i) − 1`.  This is the certified content of the *primorial*
+Euclid construction and is far tighter than the factorial tower `B`. -/
+theorem p3_le_primorial (k : ℕ) :
+    p3 k ≤ 4 * (∏ i ∈ range k, p3 i) - 1 := by
+  set M := ∏ i ∈ range k, p3 i with hM_def
+  have hM_pos : 0 < M := Finset.prod_pos (fun i _ => (p3_prime i).pos)
+  set N := 4 * M - 1 with hN_def
+  have hN_gt_one : 1 < N := by omega
+  have hN_mod : N % 4 = 3 := by omega
+  obtain ⟨p, hp, hpN, hpmod⟩ := exists_prime_factor_three_mod_four N hN_gt_one hN_mod
+  have hp_le_N : p ≤ N := Nat.le_of_dvd (by omega) hpN
+  -- `p` is a prime `≡ 3 (mod 4)`, hence appears in the enumeration: `p = p3 m`.
+  obtain ⟨m, hm⟩ := p3_surjective hp hpmod
+  -- `p` is NOT among the first `k` primes: else it divides the product and `N`.
+  have hp_new : k ≤ m := by
+    by_contra hlt
+    push_neg at hlt
+    have hdvd_M : p ∣ M := by
+      rw [hM_def, ← hm]; exact Finset.dvd_prod_of_mem p3 (Finset.mem_range.mpr hlt)
+    have hdvd_4M : p ∣ 4 * M := hdvd_M.mul_left 4
+    have hNp1 : N + 1 = 4 * M := by omega
+    rw [← hNp1] at hdvd_4M
+    -- `p ∣ N` and `p ∣ N + 1` force `p ∣ 1`.
+    have h1 : p ∣ 1 := (Nat.dvd_add_right hpN).mp hdvd_4M
+    have hp1 := hp.one_lt
+    have := Nat.le_of_dvd one_pos h1
+    omega
+  calc p3 k ≤ p3 m := p3_strictMono.monotone hp_new
+    _ = p := hm
+    _ ≤ N := hp_le_N
+
+/-! ### The explicit primorial tower `C`
+
+`C k = 4·(∏_{i<k} C i) − 1`, computed via the running product `towerProd`.
+Unrolling: `C 0 = 3`, `C 1 = 11`, `C 2 = 131`, `C 3 = 17291`, … — doubly
+exponential, but incomparably smaller than the factorial tower `B` (`B 2 = 4·96!−1`).
+We prove `p3 k ≤ C k` by strong induction, feeding `p3_le_primorial` the pointwise
+bound `p3 i ≤ C i` for `i < k`. -/
+
+/-- Running product `towerProd k = ∏_{i<k} C i`, defined structurally so that the
+primorial tower `C` is a genuine recursion. -/
+def towerProd : ℕ → ℕ
+  | 0 => 1
+  | (k + 1) => towerProd k * (4 * towerProd k - 1)
+
+/-- The explicit primorial tower `C k = 4·(∏_{i<k} C i) − 1`. -/
+def C (k : ℕ) : ℕ := 4 * towerProd k - 1
+
+theorem C_eq (k : ℕ) : C k = 4 * towerProd k - 1 := rfl
+
+@[simp] theorem towerProd_zero : towerProd 0 = 1 := rfl
+@[simp] theorem towerProd_succ (k : ℕ) :
+    towerProd (k + 1) = towerProd k * (4 * towerProd k - 1) := rfl
+
+/-- `towerProd k` is the product `∏_{i<k} C i`, so `C` really is the primorial tower. -/
+theorem towerProd_eq_prod (k : ℕ) : towerProd k = ∏ i ∈ range k, C i := by
+  induction k with
+  | zero => simp
+  | succ k ih => rw [Finset.prod_range_succ, ← ih, C_eq, towerProd_succ]
+
+/-- **Main tighter bound.** The `k`-th prime `≡ 3 (mod 4)` is bounded by the
+explicit primorial tower: `p3 k ≤ C k`.  Compared with the factorial tower
+`p3 k ≤ B k`, this replaces a tower of factorials by a doubly-exponential
+primorial tower — still not tight (`p_k ∼ 2k·ln k`), but vastly closer. -/
+theorem p3_le_primorialTower (k : ℕ) : p3 k ≤ C k := by
+  induction k using Nat.strong_induction_on with
+  | _ k ih =>
+    have hle : (∏ i ∈ range k, p3 i) ≤ ∏ i ∈ range k, C i :=
+      Finset.prod_le_prod (fun i _ => Nat.zero_le _) (fun i hi => ih i (Finset.mem_range.mp hi))
+    have hstep := p3_le_primorial k
+    rw [C_eq, towerProd_eq_prod]
+    omega
+
+/-! ### Worked values and the honest contrast with the factorial tower -/
+
+/-- `C 0 = 3`. -/
+theorem C_zero_eq : C 0 = 3 := rfl
+
+/-- `C 1 = 11`: the primorial bound on the 2nd prime `≡ 3 (mod 4)` is `11`
+(true value `7`), versus the factorial tower's `B 1 = 95`. -/
+theorem C_one_eq : C 1 = 11 := by decide
+
+/-- `C 2 = 131`: the primorial bound on the 3rd prime `≡ 3 (mod 4)` is `131`,
+versus `B 2 = 4·96! − 1`. -/
+theorem C_two_eq : C 2 = 131 := by decide
+
+/-- **The primorial tower is strictly tighter than the factorial tower** already
+at `k = 1`, while remaining a valid upper bound:
+`p3 1 = 7 ≤ 11 = C 1 < 95 = B 1`. -/
+theorem primorial_tighter_than_factorial : p3 1 ≤ C 1 ∧ C 1 < B 1 := by
+  rw [p3_one, C_one_eq, B_one]; exact ⟨by norm_num, by norm_num⟩
+
+/-- **Sharper bracketing.** Combining the linear lower bound with the primorial
+tower: `4k + 3 ≤ p3 k ≤ C k`, a strictly tighter ceiling than `p3_bracketed`. -/
+theorem p3_bracketed_primorial (k : ℕ) : 4 * k + 3 ≤ p3 k ∧ p3 k ≤ C k :=
+  ⟨p3_ge_linear k, p3_le_primorialTower k⟩
+
 end DirichletsTheoremOQ02OQ03
