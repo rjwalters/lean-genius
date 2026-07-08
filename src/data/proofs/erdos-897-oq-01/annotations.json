@@ -1,0 +1,90 @@
+[
+  {
+    "id": "ann-e897oq01-header",
+    "proofId": "erdos-897-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "type": "concept",
+    "title": "Part I of Erdős #897 — what is proved and what is not",
+    "content": "**Part I (OPEN)** of Erdős #897 asks: if an additive `f` satisfies `limsup_{p,k} f(p^k)/log(p^k) = ∞`, must `limsup_n (f(n+1)−f(n))/log n = ∞`? This file does **not** assert Part I. It proves the verified surrounding theory: a non-vacuity witness, selectivity against the classical examples, plain unboundedness, and a strongly-additive reduction. All results are axiom-free with 0 sorries."
+  },
+  {
+    "id": "ann-e897oq01-logsqweight",
+    "proofId": "erdos-897-oq-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "The witness `logSqWeight`",
+    "content": "`logSqWeight n = ∑_{p ∈ primeFactors n} (log p)²`. On a prime power `p^k` its value is `(log p)²` (independent of `k`), while `log(p^k) = k·log p`. This gap is what makes it grow faster than `log` on prime powers."
+  },
+  {
+    "id": "ann-e897oq01-additive",
+    "proofId": "erdos-897-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 71
+    },
+    "type": "theorem",
+    "title": "`logSqWeight` is (strongly) additive",
+    "content": "Additivity follows because coprime numbers have disjoint prime supports, so the defining sum splits over a coprime product. Strong additivity follows from `(p^k).primeFactors = p.primeFactors`, giving `logSqWeight(p^k) = logSqWeight(p) = (log p)²`."
+  },
+  {
+    "id": "ann-e897oq01-nonvacuity",
+    "proofId": "erdos-897-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "Non-vacuity: the hypothesis is satisfiable",
+    "content": "`logSqWeight` satisfies `UnboundedOnPrimePowers`: at `k = 1`, `(log p)² > M·log p` whenever `log p > M`, and a prime past `exp M` (via `Nat.exists_infinite_primes`) achieves this. Hence `exists_additive_unboundedOnPrimePowers` — Part I is **not vacuously true**."
+  },
+  {
+    "id": "ann-e897oq01-selectivity-log",
+    "proofId": "erdos-897-oq-01",
+    "range": {
+      "startLine": 108,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Selectivity: `log` fails the hypothesis",
+    "content": "`logN(p^k) = log(p^k)` exactly, so it never strictly exceeds `1·log(p^k)`. The logarithm sits precisely at the boundary of the growth condition and does not satisfy it."
+  },
+  {
+    "id": "ann-e897oq01-selectivity-omega",
+    "proofId": "erdos-897-oq-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "Selectivity: `ω` fails the hypothesis",
+    "content": "`ω(p^k) = 1` is bounded on prime powers. With `M = 2/log 2` the required inequality `ω(p^k) > M·log(p^k)` would force `1 > 2`. So the hypothesis isolates functions growing strictly faster than `log`."
+  },
+  {
+    "id": "ann-e897oq01-plain-unbounded",
+    "proofId": "erdos-897-oq-01",
+    "range": {
+      "startLine": 144,
+      "endLine": 165
+    },
+    "type": "theorem",
+    "title": "The hypothesis forces plain unboundedness",
+    "content": "Because `log(p^k) ≥ log 2 > 0` uniformly, choosing `M = (|B|+1)/log 2` turns `f(p^k) > M·log(p^k)` into `f(p^k) > B`. So growth relative to `log` implies plain unboundedness on prime powers."
+  },
+  {
+    "id": "ann-e897oq01-reduction",
+    "proofId": "erdos-897-oq-01",
+    "range": {
+      "startLine": 182,
+      "endLine": 214
+    },
+    "type": "theorem",
+    "title": "Strongly-additive reduction to the primes",
+    "content": "For strongly additive `f`, `f(p^k) = f(p)` is constant in `k`, so `UnboundedOnPrimePowers f ⇔ ∀ M, ∃ prime p, f(p) > M·log p`. Forward: for `M ≥ 0` drop the factor `k ≥ 1`; for `M < 0` invoke the hypothesis at `0` (then `f(p) > 0 ≥ M·log p`). Reverse: take `k = 1`. This is the strongly-additive counterpart of the parent's completely-additive reduction."
+  }
+]
