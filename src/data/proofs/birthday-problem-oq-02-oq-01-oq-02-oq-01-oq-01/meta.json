@@ -40,7 +40,8 @@
       "Schur-convexity of ∑ xᵢ² is, in operator form, a one-line Jensen argument: every doubly stochastic operator is a row-wise convex combination, and squaring is convex, so applying it can only decrease the sum of squares. No transfer-chain combinatorics are needed once the doubly-stochastic formulation is adopted.",
       "The two stochasticity constraints play distinct roles: the *row* sums = 1 make each output a convex combination (the Jensen step), while the *column* sums = 1 make the doubled sum collapse back to ∑ qⱼ² (the global step).",
       "The uniform-minimizer endpoint is not a separate computation but a single instance of the global inequality at the all-1/d matrix, exhibiting the uniform vector as the unique HLP-bottom of the majorization order on the simplex.",
-      "Mathlib supplies the doubly-stochastic matrix API (entrywise nonnegativity, row/column sums) but no majorization or Schur-convexity layer; this monotonicity-under-averaging result is the missing global statement the parent's open question requested."
+      "Mathlib supplies the doubly-stochastic matrix API (entrywise nonnegativity, row/column sums) but no majorization or Schur-convexity layer; this monotonicity-under-averaging result is the missing global statement the parent's open question requested.",
+      "Because x ↦ x² is *strictly* convex, the Jensen step is an equality only when each row of D is a degenerate convex combination — a 0/1 row selecting a single coordinate — so the sum of squares is preserved exactly when D acts as a permutation on the support of q. This is why permutation matrices are the only extreme points of the Birkhoff polytope that leave collision probability unchanged, and it is the seed of the equality-case open question below."
     ],
     "prerequisites": [
       "doublyStochastic and its API: nonneg_of_mem_doublyStochastic, sum_row_of_mem_doublyStochastic, sum_col_of_mem_doublyStochastic, mem_doublyStochastic_iff_sum",
