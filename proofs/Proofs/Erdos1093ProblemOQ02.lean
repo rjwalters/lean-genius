@@ -55,6 +55,7 @@ The record facts (`deficiency_284_28`, `noSmallPrimeFactors_284_28`,
 -/
 
 import Proofs.Erdos1093Problem
+import Mathlib.Data.Nat.Prime.Factorial
 import Mathlib.Tactic
 
 /-
@@ -261,3 +262,122 @@ theorem window_primefree_of_deficiency_eq_k {n k : ℕ} (hn : 2 * k ≤ n)
   intro i hi hp
   have := deficiency_lt_k_of_prime_in_window hn hi hp
   omega
+
+/-
+## Section VIII: The multiplicative reformulation — admissibility as coprimality
+
+The admissibility side-condition `NoSmallPrimeFactors n k` ("no prime `≤ k`
+divides `C(n,k)`") is exactly the statement that `C(n,k)` is **coprime to `k!`**:
+the prime factors of `k!` are precisely the primes `≤ k`.  Recasting the
+condition this way is what makes the Erdős–Lacampagne–Selfridge argument run,
+because the window product factors multiplicatively:
+
+    ∏_{i<k} (n - i)  =  n.descFactorial k  =  k! · C(n,k).
+
+For an admissible pair the cofactor `C(n,k)` carries *no* prime `≤ k`, so the
+entire "small-prime part" of the length-`k` window is packaged into the single
+factor `k!`.  This is the exact accounting the density bound of Section V only
+approximated, and it yields (Section IX) the first *quantitative* upper bound on
+the deficiency improving on the trivial `deficiency ≤ k` **without** invoking the
+axiomatized ELS bound.
+-/
+
+/-- **Admissibility ⇔ coprimality with `k!`.**  `C(n,k)` has no prime factor
+`≤ k` exactly when it is coprime to `k!` (whose prime factors are the primes
+`≤ k`).  This is the conceptual form of `NoSmallPrimeFactors`, cleaner than the
+bounded prime check `noSmallPrimeFactors_iff` and the form ELS work in. -/
+theorem noSmallPrimeFactors_iff_coprime (n k : ℕ) :
+    NoSmallPrimeFactors n k ↔ Nat.Coprime (n.choose k) (Nat.factorial k) := by
+  constructor
+  · intro h
+    apply Nat.coprime_of_dvd
+    intro p hp hpc hpf
+    have hlt : k < p := h p hp hpc
+    have hle : p ≤ k := (Nat.Prime.dvd_factorial hp).mp hpf
+    omega
+  · intro hcop p hp hpc
+    by_contra hle
+    push_neg at hle
+    have hpf : p ∣ Nat.factorial k := (Nat.Prime.dvd_factorial hp).mpr (by omega)
+    have hcop' : Nat.gcd (n.choose k) (Nat.factorial k) = 1 := hcop
+    have hd1 : p ∣ Nat.gcd (n.choose k) (Nat.factorial k) := Nat.dvd_gcd hpc hpf
+    rw [hcop'] at hd1
+    exact hp.one_lt.ne' (Nat.dvd_one.mp hd1)
+
+/-- The multiplicative decomposition of the length-`k` window: the product of the
+`k` consecutive integers `n, n-1, …, n-k+1` equals `k! · C(n,k)`.  (This is the
+descending-factorial identity `n.descFactorial k = k! · C(n,k)` expressed over the
+window range.) -/
+theorem window_prod_eq_choose_mul_factorial (n k : ℕ) :
+    ∏ i ∈ Finset.range k, (n - i) = Nat.factorial k * n.choose k := by
+  rw [← Nat.descFactorial_eq_prod_range, Nat.descFactorial_eq_factorial_mul_choose]
+
+/-- A finite product of `k`-smooth numbers is `k`-smooth. -/
+theorem isKSmooth_prod {k : ℕ} {s : Finset ℕ} {f : ℕ → ℕ}
+    (hf : ∀ i ∈ s, IsKSmooth k (f i)) : IsKSmooth k (∏ i ∈ s, f i) :=
+  Finset.prod_induction f (IsKSmooth k) (fun _ _ ha hb => isKSmooth_mul ha hb)
+    (isKSmooth_one k) hf
+
+/-
+## Section IX: A quantitative bound `(k+1)^{deficiency} ≤ k!`
+
+For an admissible pair the product `P` of the smooth window values is `k`-smooth,
+so it shares no prime factor with the cofactor `C(n,k)` (which is coprime to every
+prime `≤ k`).  Since `P ∣ k! · C(n,k)` and `gcd(P, C(n,k)) = 1`, we get `P ∣ k!`.
+Each smooth contributor exceeds `k`, so `P ≥ (k+1)^{deficiency}`; combined with
+`P ≤ k!` this bounds the deficiency strictly below the trivial `k` for every `k`
+(e.g. for `k = 28` it already forces `deficiency ≤ 20`, the record being `9`).
+Crucially this bound is `ofReduceBool`-free and independent of the axiomatized
+`els_upper_bound`.
+-/
+
+/-- **The smooth part of the window divides `k!`.**  For an admissible pair the
+product of the `k`-smooth values among `n, …, n-k+1` divides `k!`: it is `k`-smooth
+and hence coprime to the admissible cofactor `C(n,k)`, while it divides
+`k! · C(n,k) = ∏(n-i)`. -/
+theorem smooth_window_prod_dvd_factorial {n k : ℕ} (h : NoSmallPrimeFactors n k) :
+    (∏ i ∈ (Finset.range k).filter (fun i => IsKSmooth k (n - i)), (n - i)) ∣ Nat.factorial k := by
+  set S := (Finset.range k).filter (fun i => IsKSmooth k (n - i)) with hS
+  set P := ∏ i ∈ S, (n - i) with hP
+  have hPsmooth : IsKSmooth k P := by
+    apply isKSmooth_prod
+    intro i hi
+    exact (Finset.mem_filter.mp hi).2
+  have hdvd : P ∣ Nat.factorial k * n.choose k := by
+    have hsub : S ⊆ Finset.range k := Finset.filter_subset _ _
+    have hpd : P ∣ ∏ i ∈ Finset.range k, (n - i) :=
+      Finset.prod_dvd_prod_of_subset S (Finset.range k) (fun i => n - i) hsub
+    rwa [window_prod_eq_choose_mul_factorial] at hpd
+  have hcop : Nat.Coprime P (n.choose k) := by
+    apply Nat.coprime_of_dvd
+    intro q hq hqP hqC
+    have hqk : q ≤ k := hPsmooth q hq hqP
+    have : k < q := h q hq hqC
+    omega
+  exact hcop.dvd_of_dvd_mul_right hdvd
+
+/-- **Quantitative deficiency bound.**  For an admissible pair, since each of the
+`deficiency n k` smooth window values exceeds `k` and their product divides `k!`,
+
+    `(k+1) ^ (deficiency n k) ≤ k!`.
+
+This is the first upper bound in the file that improves on the trivial
+`deficiency n k ≤ k` without the axiomatized ELS bound (for `k = 28` it already
+forces `deficiency ≤ 20`). -/
+theorem deficiency_pow_succ_le_factorial {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) :
+    (k + 1) ^ deficiency n k ≤ Nat.factorial k := by
+  set S := (Finset.range k).filter (fun i => IsKSmooth k (n - i)) with hS
+  have hcard : deficiency n k = S.card := rfl
+  set P := ∏ i ∈ S, (n - i) with hP
+  have hlow : (k + 1) ^ S.card ≤ P := by
+    apply Finset.pow_card_le_prod
+    intro i hi
+    have hir : i < k := Finset.mem_range.mp (Finset.filter_subset _ _ hi)
+    have := window_value_gt_k hir hn
+    omega
+  have hdvd : P ∣ Nat.factorial k := smooth_window_prod_dvd_factorial h
+  have hle : P ≤ Nat.factorial k := Nat.le_of_dvd (Nat.factorial_pos k) hdvd
+  calc (k + 1) ^ deficiency n k = (k + 1) ^ S.card := by rw [hcard]
+    _ ≤ P := hlow
+    _ ≤ Nat.factorial k := hle
