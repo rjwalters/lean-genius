@@ -13,7 +13,9 @@
     `one_representable`, `self_representable`);
   * a **decidable bridge** `practical_of_check` turning `IsPractical m` into a
     finite check over `(divisors m).powerset`, and the verified practical numbers
-    `4`, `6`, `8` (extending the parent's `1`, `2` along OEIS A005153).
+    `4`, `6`, `8` (extending the parent's `1`, `2` along OEIS A005153);
+  * the first **structural** constraint — `practical_even`: every practical number
+    `m ≥ 2` is even (Srinivasan 1948), since `2` must be a sum of distinct divisors.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -66,5 +68,43 @@ theorem six_practical : IsPractical 6 :=
 /-- **8 is practical** (divisors `{1,2,4,8}`: `1, 2, 1+2, 4, 1+4, 2+4, 1+2+4`). -/
 theorem eight_practical : IsPractical 8 :=
   practical_of_check (by norm_num) (by decide)
+
+/-- **Every practical number `≥ 2` is even** (Srinivasan 1948).  The first
+    *structural* constraint on practical numbers, beyond the representability
+    algebra and the small verified examples above.
+
+    Proof: `2` must be a sum of distinct divisors of `m`.  For `m = 2` the claim is
+    immediate; for `m ≥ 3` the representing set `S ⊆ divisors m` has `S.sum id = 2`
+    with all elements positive, so every element is `≤ 2`.  If `2 ∉ S` every element
+    is exactly `1`, forcing `S ⊆ {1}` and `S.sum id ≤ 1 < 2` — contradiction.  Hence
+    `2 ∈ S ⊆ divisors m`, i.e. `2 ∣ m`. -/
+theorem practical_even {m : ℕ} (hm : 2 ≤ m) (hp : IsPractical m) : 2 ∣ m := by
+  rcases eq_or_lt_of_le hm with h2 | h3
+  · exact ⟨1, by omega⟩
+  · obtain ⟨S, hSsub, hSsum⟩ := hp.2 2 (by norm_num) h3
+    by_contra hnot
+    have h2S : 2 ∉ S := fun h2mem => hnot (Nat.dvd_of_mem_divisors (hSsub h2mem))
+    have hall1 : ∀ x ∈ S, x = 1 := by
+      intro x hx
+      have hx1 : 1 ≤ x := Nat.pos_of_mem_divisors (hSsub hx)
+      have hx2 : x ≤ 2 := by
+        calc x = id x := rfl
+          _ ≤ S.sum id := Finset.single_le_sum (fun i _ => Nat.zero_le _) hx
+          _ = 2 := hSsum
+      rcases (by omega : x = 1 ∨ x = 2) with h | h
+      · exact h
+      · exact absurd (h ▸ hx) h2S
+    have hsub1 : S ⊆ ({1} : Finset ℕ) := fun x hx => Finset.mem_singleton.mpr (hall1 x hx)
+    have hone : ({1} : Finset ℕ).sum id = 1 := by simp
+    have hchain : S.sum id ≤ 1 := by
+      have hle : S.sum id ≤ ({1} : Finset ℕ).sum id := Finset.sum_le_sum_of_subset hsub1
+      rwa [hone] at hle
+    rw [hSsum] at hchain
+    exact absurd hchain (by norm_num)
+
+/-- **Restatement of `practical_even` via `Even`.** -/
+theorem practical_even' {m : ℕ} (hm : 2 ≤ m) (hp : IsPractical m) : Even m := by
+  obtain ⟨c, hc⟩ := practical_even hm hp
+  exact ⟨c, by omega⟩
 
 end Erdos18OQ01
