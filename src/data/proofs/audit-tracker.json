@@ -8823,10 +8823,11 @@
       "result": "clean"
     },
     "erdos-1014-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T03:58:18Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T18:54:18Z",
+      "result": "clean",
+      "agentId": "auditor-agent-7"
     },
     "erdos-1014-oq-02": {
       "auditCount": 5,
@@ -9824,10 +9825,10 @@
       "result": "clean"
     },
     "erdos-1093": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:03:30Z",
-      "result": "clean"
+      "agentId": "auditor-agent-7",
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T18:54:18Z",
+      "result": "issues-fixed"
     },
     "erdos-1094": {
       "agentId": "auditor-cycle-20-batch",
@@ -12382,9 +12383,9 @@
       "result": "clean"
     },
     "erdos-3": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-07-08T06:13:49Z",
+      "agentId": "auditor-agent-7",
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T18:54:18Z",
       "result": "clean",
       "issues": []
     },
@@ -12663,9 +12664,9 @@
       "result": "issues-fixed"
     },
     "erdos-331": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-29T18:31:46Z",
+      "agentId": "auditor-agent-7",
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T18:54:18Z",
       "result": "clean",
       "issues": [
         "phantom axioms in sections/originalContributions (ruzsa_unique_representation, ruzsaB_eq_double_ruzsaA, ruzsa_exact_growth, ruzsaVariantOpen, ruzsaA_sparse_differences, larger_density_common_differences); section line-range drift; summary claims 9 axioms but file has 3; conclusion 245 lines vs 223 actual (#14480)"
@@ -15394,9 +15395,9 @@
       "result": "clean"
     },
     "erdos-659": {
-      "agentId": "auditor-loop-1777609366",
-      "auditCount": 4,
-      "lastAudited": "2026-05-25T08:29:08Z",
+      "agentId": "auditor-agent-7",
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T18:54:18Z",
       "result": "clean",
       "issues": [
         "Section range drift (axiom/theorem swapped); 3 of 6 isConfiguration cases reduce to True (isoTrap1, isoTrap2, kite) \u2014 issue #14110"
@@ -15928,9 +15929,9 @@
       "issues": []
     },
     "erdos-729": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 5,
-      "lastAudited": "2026-05-17T03:12:52Z",
+      "agentId": "auditor-agent-7",
+      "auditCount": 6,
+      "lastAudited": "2026-07-08T18:54:18Z",
       "result": "clean"
     },
     "erdos-729-oq-04": {
@@ -21505,9 +21506,9 @@
       "result": "clean"
     },
     "kroneckers-jugendtraum": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T22:58:19Z",
+      "agentId": "auditor-agent-7",
+      "auditCount": 4,
+      "lastAudited": "2026-07-08T18:54:18Z",
       "result": "clean"
     },
     "kroneckers-jugendtraum-oq-01": {
@@ -23086,9 +23087,9 @@
       "issues": []
     },
     "newton-inductive-step": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T22:56:22Z",
+      "agentId": "auditor-agent-7",
+      "auditCount": 4,
+      "lastAudited": "2026-07-08T18:54:18Z",
       "result": "clean"
     },
     "newton-inductive-step-oq-01": {
@@ -24476,16 +24477,18 @@
       "result": "issues-fixed"
     },
     "roth-theorem": {
-      "auditCount": 2,
-      "lastAudited": "2026-07-01T12:32:35Z",
+      "auditCount": 3,
+      "lastAudited": "2026-07-08T18:54:18Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "agentId": "auditor-agent-7"
     },
     "roth-theorem-k3": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-06-18T19:57:55Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-07-08T18:54:18Z",
+      "result": "clean",
+      "agentId": "auditor-agent-7"
     },
     "roth-theorem-k3-oq-01": {
       "auditCount": 5,
@@ -29625,5 +29628,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-07-08T17:45:24Z"
+  "lastUpdated": "2026-07-08T18:54:18Z"
 }
