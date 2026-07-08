@@ -22,10 +22,15 @@
 
   so the average is ≤ 2·(log₂ a + log₂ N) + 2 = O(log N). This is the first
   verified average-case statement for the (1, 2^n − 1) worst-case family's
-  gallery entry. It is an honest ceiling, not the Brent constant: the matching
-  Ω(log N) average lower bound (which would give Θ(log N)) requires a density
-  count over the range, and the sharp 0.7050 constant requires the dynamical
-  analysis above — both remain open here.
+  gallery entry. It is an honest ceiling, not the Brent constant.
+
+  On the a = 1 row this ceiling is now shown TIGHT: `totalSteps_one_eq` gives the
+  exact total `(∑_{b=1}^N log₂ b) + N`, and `totalSteps_one_ge` supplies the
+  matching `Ω(N·log N)` lower bound `(N − ⌊N/2⌋)·(log₂ N − 1) ≤ totalSteps 1 N`
+  (obtained by an elementary upper-half density count over the range), so the
+  a = 1 average step count is a genuine `Θ(log N)` — the order of Brent's result.
+  The sharp `0.7050` leading constant still requires the dynamical (transfer-
+  operator) analysis above and remains out of reach here.
 
   References:
   - Brent (1976), "Analysis of the binary Euclidean algorithm"
@@ -197,5 +202,47 @@ theorem totalSteps_one_eq (N : ℕ) :
       Finset.sum_add_distrib]
   congr 1
   simp [Nat.card_Icc]
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART V: THE MATCHING Ω(N·log N) LOWER BOUND  (a = 1 row)  ⇒  Θ
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- `totalSteps_one_eq` gives an *exact* total, but only over the abstract sum
+-- `∑ log₂ b`. To make the `Ω(N log N)` order explicit — and hence pin the
+-- `a = 1` average at a genuine `Θ(log N)`, matching the ORDER of Brent's
+-- average-case result — we bound the total below by restricting the sum to the
+-- upper half of the range. For every `b` in `(N/2, N]` we have
+-- `log₂ b ≥ log₂ ⌊N/2⌋ = log₂ N − 1`, and there are `⌈N/2⌉ = N − ⌊N/2⌋` such
+-- terms, giving `∑_{b=1}^N log₂ b ≥ (N − ⌊N/2⌋)·(log₂ N − 1)`.
+
+/-- **Matching Ω(N·log N) lower bound (a = 1 row).**  The total step count over
+    `b ∈ [1, N]` on the `a = 1` row is at least `(N − ⌊N/2⌋)·(log₂ N − 1)`.
+    Together with the `O(log N)` ceiling (`avgSteps_le`) and the exact form
+    (`totalSteps_one_eq`) this pins the `a = 1` average at `Θ(log N)`, closing the
+    file header's stated open sub-goal (the matching averaged lower bound).
+
+    Proof: restrict the sum `∑_{b=1}^N log₂ b` to the upper half `b ∈ (⌊N/2⌋, N]`.
+    Each such `b ≥ ⌊N/2⌋`, so `log₂ b ≥ log₂ ⌊N/2⌋ = log₂ N − 1`
+    (`Nat.log_mono_right`, `Nat.log_div_base`); the sub-range has
+    `N − ⌊N/2⌋` elements. -/
+theorem totalSteps_one_ge (N : ℕ) :
+    (N - N / 2) * (Nat.log 2 N - 1) ≤ totalSteps 1 N := by
+  rw [totalSteps_one_eq]
+  refine le_trans ?_ (Nat.le_add_right _ N)
+  have hsub : Finset.Icc (N / 2 + 1) N ⊆ Finset.Icc 1 N := by
+    intro x hx; rw [Finset.mem_Icc] at hx ⊢; omega
+  calc (N - N / 2) * (Nat.log 2 N - 1)
+      = ∑ _b ∈ Finset.Icc (N / 2 + 1) N, (Nat.log 2 N - 1) := by
+        rw [Finset.sum_const, smul_eq_mul, Nat.card_Icc]; congr 1; omega
+    _ ≤ ∑ b ∈ Finset.Icc (N / 2 + 1) N, Nat.log 2 b := by
+        apply Finset.sum_le_sum
+        intro b hb
+        rw [Finset.mem_Icc] at hb
+        have hmono : Nat.log 2 (N / 2) ≤ Nat.log 2 b :=
+          Nat.log_mono_right (by omega)
+        rw [Nat.log_div_base] at hmono
+        exact hmono
+    _ ≤ ∑ b ∈ Finset.Icc 1 N, Nat.log 2 b :=
+        Finset.sum_le_sum_of_subset hsub
 
 end BinaryGcdOQ01OQ04OQ03
