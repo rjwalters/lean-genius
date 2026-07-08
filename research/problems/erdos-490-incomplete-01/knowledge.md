@@ -276,3 +276,52 @@ problem is at a stable frontier — the next genuine advance is a dedicated mult
 central-binomial build, not a single-session sorry. `optimalB_card_eq_primeCounting`
 already pins the target to `Nat.primeCounting`, so that build's deliverable is exactly a
 lower bound on `π(N) − π(N/2)`.
+
+## Session 2026-07-07 (researcher-10) — ORIENT: upstream confirms axiom is blocked (Mathlib Chebyshev.lean)
+
+**Mode**: ORIENT (axiom-reachability, upstream re-survey). **Outcome**: no `.lean` change
+(file unchanged on `main`: 588 lines, 0 sorries, 2 axioms). A definitive *upstream* finding
+that settles the elimination question for `primes_upper_half_lower_bound` with an authoritative
+citation, superseding the earlier "PrimeCounting.lean has no lower bound" reasoning.
+
+### KEY UPSTREAM FINDING (via `gh api .../contents/...?ref=v4.26.0`)
+Mathlib v4.26.0 **now ships `Mathlib/NumberTheory/Chebyshev.lean`** (it did not when the earlier
+sessions surveyed only `PrimeCounting.lean` / `Bertrand.lean`). It defines the Chebyshev
+functions `θ` (`Chebyshev.theta`) and `ψ` (`Chebyshev.psi`) with scoped notation, plus:
+- `theta_le_log4_mul_x : 0 ≤ x → θ x ≤ log 4 * x`  — Chebyshev **upper** bound.
+- `psi_le_const_mul_self`                          — Chebyshev **upper** bound on ψ.
+- `theta_mono`, `psi_mono`, `theta_nonneg`, `psi_nonneg`, `theta_eq_log_primorial`,
+  `psi_eq_theta_add_sum_theta`, `sum_PrimePow_eq_sum_sum`, `theta_le_psi`.
+
+**Crucially, the module's own "Future work" docstring (line ~44) lists**:
+> - Prove Chebyshev's lower bound.
+
+So Mathlib itself does **not** yet have any lower bound on θ/ψ (hence none on `π`), and flags it
+as unproven future work. This is the *exact* analytic input that `primes_upper_half_lower_bound`
+isolates. Conclusion, now upstream-authoritative: the axiom is **not eliminable** against the
+current pin by any Mathlib lemma — eliminating it means *proving Chebyshev's lower bound from
+scratch* (central-binomial route: `ψ(2n) ≥ log C(2n,n) ≥ n·log4 − log(2n+1)`, using
+`Nat.four_pow_lt_mul_centralBinom`). That is a genuine multi-session build, exactly as the
+07-02 / 07-04 ORIENT sessions found. `szemeredi_theorem` (the N²/log N *upper* bound) stays
+axiomatized (deep, not attackable).
+
+### Runway upgrade for the eventual build
+When that build happens it should now target Mathlib's `Chebyshev.psi`/`theta` API directly
+(reuse `theta_eq_log_primorial`, `psi_eq_theta_add_sum_theta`) rather than rolling bespoke
+prime-product machinery — the θ↔ψ scaffolding and the centralBinom inequalities in
+`Mathlib.NumberTheory.Bertrand` are the two pieces to bridge. If/when a `theta_ge_*` lower
+bound lands upstream, `primes_upper_half_lower_bound` collapses to a short derivation via
+`optimalB_card_eq_primeCounting` + a θ→π count on `(N/2, N]`.
+
+### Unmerged sibling branch (flagged, not merged)
+`research/erdos-490-chebyshev-theta-gap` (commit `48cca03a48c`, **not on `main`**) restates the
+analytic axiom against `Chebyshev.theta` and adds a verified θ→π bridge but **does not reduce
+the axiom count** (still 2). It is a pure hygiene refactor pinning the axiom to the canonical θ
+lower bound. A build-capable session should evaluate whether to merge it; this ORIENT session
+did not (cannot build-verify here, and it yields no axiom reduction so the merge risk is not
+justified without a green build).
+
+### Status
+No math change. Both axioms remain correctly isolated and minimal. Problem stays at a stable,
+well-characterized frontier: the sole in-scope elimination target is blocked on an input that
+Mathlib upstream itself lists as future work.
