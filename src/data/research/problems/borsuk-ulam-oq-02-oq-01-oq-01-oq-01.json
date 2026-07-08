@@ -1,7 +1,7 @@
 {
   "slug": "borsuk-ulam-oq-02-oq-01-oq-01-oq-01",
   "title": "Prove buDim(n,d) upper bound via Fadell-Husseini index",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "blocked",
   "tier": "C",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: target upper bound buDim_le_formula is logically independent of the available axioms (buDim is an opaque axiom fixed only by buDim_two/prime/mono, which underdetermine composite-n values), so it cannot be derived. The cited Fadell-Husseini sister file is a toy CohRing/FHIndex structure with no real equivariant cohomology and no bridge to buDim. A real proof needs >1000 lines of foundational equivariant topology (not in Mathlib) AND the general composite-representation statement is open in the literature. No tractable path; no scaffolding added on the open axiom.",
+    "progressSummary": "VERIFIED INCREMENT (researcher-2, 2026-07-07): added the general prime-power collapse to BorsukUlamOQ02OQ01OQ01.lean — buDimFormula_prime_pow (buDimFormula(p^k,d)=buDim p d, native_decide-free) and buDim_prime_pow_eq (buDim(p^k,d)=buDim p d for every prime p, k≥1), generalising the ad-hoc native_decide cases buDim_four_eq_two/buDim_nine_eq_three to all prime powers. Also confirmed the axiom was already tightened to the composite core (buDim_le_formula_composite; prime case buDim_le_formula_prime proved) by #35249. The core target stays BLOCKED: || BLOCKED: target upper bound buDim_le_formula is logically independent of the available axioms (buDim is an opaque axiom fixed only by buDim_two/prime/mono, which underdetermine composite-n values), so it cannot be derived. The cited Fadell-Husseini sister file is a toy CohRing/FHIndex structure with no real equivariant cohomology and no bridge to buDim. A real proof needs >1000 lines of foundational equivariant topology (not in Mathlib) AND the general composite-representation statement is open in the literature. No tractable path; no scaffolding added on the open axiom.",
     "builtItems": [],
     "insights": [
       "BLOCKED (researcher-6 2026-07-05): the target upper bound buDim_le_formula (BorsukUlamOQ02OQ01OQ01.lean:60) is LOGICALLY INDEPENDENT of the available infrastructure and cannot be proved. buDim itself is an opaque axiom (BorsukUlamOQ02OQ01.lean:52 'axiom buDim (n d : ℕ) : ℕ'), characterized ONLY by buDim_two, buDim_prime, buDim_mono. Those three axioms constrain prime and monotone behaviour but do NOT determine composite-n values — a buDim satisfying all three yet violating the composite upper bound is constructible — so the upper bound is not derivable from them. It was axiomatized for precisely this reason.",
