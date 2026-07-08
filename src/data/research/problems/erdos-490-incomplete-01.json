@@ -26,9 +26,9 @@
     ]
   },
   "currentState": {
-    "summary": "AXIOM ELIMINATED (chebyshev_theta_upper_half_lower_bound → theorem). Erdos490Problem.lean now builds against Mathlib 4.26 with 0 sorries and 1 axiom (szemeredi_theorem, the deep N²/log N upper bound; correctly stays axiomatized). The Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N — the last analytic axiom of the lower-bound half — is now fully proved: new lemma Erdos490Cheb.erdos490_analytic_tail (log n, √(2n)·log(2n) = o(n) via Real.isLittleO_log_id_atTop / isLittleO_log_rpow_atTop) supplies the analytic tail; combined with the existing central-binomial estimate theta_gap_lower_bound, a nat↔real bridge, the N↦⌊N/2⌋ alignment (Chebyshev.theta_mono), and a Bertrand-based θ-gap ≥ log 2 small-N base case. Docker build verified green (7744 jobs). Files: Erdos490Problem.lean 660→758 lines, 2→1 axioms; Erdos490Chebyshev.lean 206→257 lines, +erdos490_analytic_tail.",
+    "summary": "OPTIMAL EXAMPLE NOW TWO-SIDED (0 new axioms). Added optimalB_card_upper_bound (|optimalB N|·log(N/2) ≤ log4·N, via Mathlib Chebyshev.theta_le_log4_mul_x) and optimal_example_upper_bound (|optimalA N|·|optimalB N| ≤ log4·N²/logN for N≥4). Together with the existing lower bound bound_is_optimal (≥ c·N²/logN) this establishes the explicit extremal construction A=[1,N/2], B={primes in (N/2,N]} achieves |A||B|=Θ(N²/logN) — the full order of magnitude of Erdős #490 — WITHOUT invoking the deep axiom szemeredi_theorem (only Mathlib's Chebyshev θ upper bound). Docker build green (7744 jobs); #print axioms = [propext, Classical.choice, Quot.sound] for both. Erdos490Problem.lean 758→843 lines, 23→25 theorems, still 1 axiom (szemeredi_theorem).",
     "outcome": "progress",
-    "nextAction": "None from the lower-bound side. The sole remaining axiom szemeredi_theorem (N²/log N upper bound) is the deep result of the problem — out of scope for elimination."
+    "nextAction": "None tractable. The sole remaining axiom szemeredi_theorem (the deep N²/logN UPPER bound for arbitrary distinct-product A,B) is Szemerédi 1976 — out of scope for elimination. Both the lower AND upper bound of the explicit optimal example are now fully verified (0 axioms beyond foundational)."
   },
   "knowledge": {
     "insights": [
@@ -43,7 +43,8 @@
       "θ→π bridge is elementary and now verified: θ(N)−θ(N/2)=∑_{N/2<p≤N} log p (= sum over optimalB via Finset.sum_sdiff_eq_sub on prime-filtered Ioc intervals), and each log p ≤ log N gives θ-gap ≤ |optimalB|·log N; dividing by log N turns any Chebyshev θ lower bound directly into the π(N)−π(N/2) ≳ N/log N bound.",
       "The Chebyshev θ-gap axiom θ(N)−θ(N/2)≥c·N has a known elementary proof via the central binomial coefficient (Erdős's Bertrand argument): primes n<p≤2n divide C(2n,n) exactly once, and small primes ≤2n/3 contribute at most (2n)^√(2n)·4^(2n/3). Mathlib's Bertrand internals (factorization_centralBinom_*, pow_factorization_choose_le, primorial_le_4_pow) are PUBLIC and suffice for the combinatorial half.",
       "Mathlib's Mathlib.NumberTheory.Chebyshev explicitly lists 'Prove Chebyshev's lower bound' as an open TODO — so a θ lower bound is genuinely NOT available and must be built.",
-      "Remaining to fully eliminate the axiom: (a) the analytic tail √(2n)·log(2n)=o(n) and log n=o(n) (Mathlib has Real.isLittleO_log_id_atTop); (b) small-n reconciliation via Bertrand (finite min); (c) alignment (2n,n)↦(N,N/2) via θ monotonicity."
+      "Remaining to fully eliminate the axiom: (a) the analytic tail √(2n)·log(2n)=o(n) and log n=o(n) (Mathlib has Real.isLittleO_log_id_atTop); (b) small-n reconciliation via Bertrand (finite min); (c) alignment (2n,n)↦(N,N/2) via θ monotonicity.",
+      "2026-07-08 (researcher-2): the optimal example's UPPER bound is unconditional (0 new axioms): |optimalB N| ≤ log4·N/log(N/2) because each prime p∈(N/2,N] has log p ≥ log(N/2), so |optimalB|·log(N/2) ≤ ∑log p = θ(N)−θ(N/2) ≤ θ(N) ≤ log4·N (Mathlib Chebyshev.theta_le_log4_mul_x). With log(N/2)=logN−log2 ≥ (1/2)logN for N≥4 (since logN≥log4=2log2), and |optimalA|=⌊N/2⌋≤N/2, get |A||B| ≤ log4·N²/logN. This is the matching upper bound to bound_is_optimal, so the optimal example is Θ(N²/logN) fully verified — no dependence on szemeredi_theorem."
     ],
     "builtItems": [
       "Build repair: Nat.card_Icc, open scoped Classical, orphan-comment fixes (Erdos490Problem.lean)",
@@ -61,7 +62,9 @@
       "Erdos490Chebyshev.lean:centralBinom_le_small_mul_large — centralBinom n ≤ (2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p (0-axiom, the combinatorial crux)",
       "Erdos490Chebyshev.lean:four_pow_lt_bound — 4^n < n·(2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p (0-axiom)",
       "Erdos490Chebyshev.lean:theta_gap_eq_log_prod — θ(2n)−θ(n) = log ∏_{n<p≤2n}p (0-axiom)",
-      "Erdos490Chebyshev.lean:theta_gap_lower_bound — θ(2n)−θ(n) ≥ n·log4−⌊2n/3⌋·log4−log n−√(2n)·log(2n) (0-axiom; reduces axiom to analytic tail)"
+      "Erdos490Chebyshev.lean:theta_gap_lower_bound — θ(2n)−θ(n) ≥ n·log4−⌊2n/3⌋·log4−log n−√(2n)·log(2n) (0-axiom; reduces axiom to analytic tail)",
+      "optimalB_card_upper_bound (Erdos490Problem.lean) — |optimalB N|·log(N/2) ≤ log4·N, 0 new axioms",
+      "optimal_example_upper_bound (Erdos490Problem.lean) — |optimalA N|·|optimalB N| ≤ log4·N²/logN for N≥4, 0 new axioms; matches bound_is_optimal to give Θ(N²/logN) for the optimal example without szemeredi_theorem"
     ],
     "mathlibGaps": [
       "No prime-counting lower bound (π(N) − π(N/2)) readily available for the optimal-example lower bound.",
