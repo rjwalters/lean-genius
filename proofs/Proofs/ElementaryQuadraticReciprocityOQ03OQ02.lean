@@ -460,6 +460,32 @@ theorem kronecker_two_periodic (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
   have h8 : (n + 8) % 8 = n % 8 := by omega
   rw [h8]
 
+/-- **The numerator character `(·/n)` depends only on `a mod n`.**
+    For odd positive `n`, `(a/n) = (a % n / n)`: the Kronecker symbol at a fixed
+    odd modulus `n`, viewed as a function of the numerator, factors through
+    `ℤ / nℤ`. This is the numerator-side structural fact dual to the
+    denominator-side periodicities (`kronecker_neg_one_periodic`,
+    `kronecker_two_periodic`): together with first-argument multiplicativity
+    (`kronecker_mul_left`) it exhibits `(·/n)` as a real Dirichlet character
+    modulo `n` — the object whose L-function and Gauss sum drive the reciprocity
+    (refinement 2) and the Dirichlet-character applications this file targets.
+    Immediate from `kronecker_eq_jacobi` and Mathlib's `jacobiSym.mod_left`.
+    `sorry`-free, axiom-free. -/
+theorem kronecker_mod_numerator (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker a (n : ℤ) = kronecker (a % (n : ℤ)) (n : ℤ) := by
+  rw [kronecker_eq_jacobi a n hn hno, kronecker_eq_jacobi (a % (n : ℤ)) n hn hno]
+  exact jacobiSym.mod_left a n
+
+/-- **The numerator character `(·/n)` has period `n`.**
+    For odd positive `n`, `(a + n / n) = (a/n)`. A direct corollary of
+    `kronecker_mod_numerator`, since `(a + n) % n = a % n`. This is the
+    numerator-side complement of `kronecker2_periodic` (period 8 in the numerator
+    of the `(·/2)` character). `sorry`-free, axiom-free. -/
+theorem kronecker_periodic_numerator (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (a + (n : ℤ)) (n : ℤ) = kronecker a (n : ℤ) := by
+  rw [kronecker_mod_numerator (a + (n : ℤ)) n hn hno, kronecker_mod_numerator a n hn hno,
+    Int.add_emod_right]
+
 /-!
 ## Module note: what remains open
 
