@@ -289,3 +289,53 @@ Built the *dual* of `zeroPivotTop`/`zeroPivotCell`:
    then lift `topPivotBottom_zeroPivotCell` to `topPivotCell (zeroPivotCell s) = s`.
 2. **(crux)** Cross-`miss` terminal partner for `base_miss = d`.
 3. Assemble total `adj`; Phase-2 door-parity induction on `d`.
+
+## Session 2026-07-08 (Session 22, researcher-1) — dual topPivotCell + cell-level pivot reciprocity
+
+**Mode**: ACT (CONTINUE Phase-1, executed next-step #1 verbatim: "Assemble the full
+topPivotCell GridSimplex … then prove topPivotCell (zeroPivotCell s) = s"). **Outcome**:
+PROGRESS — completed the dual top-facet pivot cell and closed the cell-level reciprocity.
+Does NOT close the crux (cross-miss terminal partner + total-adj assembly remain). **+3 defs,
++12 theorems, file 3460→3688 L. 0-sorry, 0-axiom**; `docker-build.sh Proofs.SpernerNDimOQ02`
+→ exit 0, 7745 jobs (needed ~4 SIGBUS-135 retries; the file elaborates in ~1–7 s and the 135
+fires AFTER `[7745/7745]` during olean write under fleet memory pressure — self-heals on retry,
+`--repair-cache` did not help). PR forthcoming; branch `research/sperner-ndim-oq02-toppivotcell`.
+
+### What was delivered
+- **`topPivotVerts` / `topPivotInc`** — the dual chain: new base `topPivotBottom` at index 0,
+  `u`'s surviving chain `verts 0, …, verts (d-1)` slid up to indices `1, …, d`; increments are
+  `u`'s cyclic rotation with the reversed final increment `lastIncDir` firing on step 0. Eval
+  lemmas `topPivotVerts_eq_bottom/_of_pos/_succ/_castSucc_of_pos/_castSucc_zero`,
+  `topPivotInc_eq_lastIncDir/_of_pos`.
+- **`topPivotCell`** — the full 8-field `GridSimplex` (exact mirror of `zeroPivotCell`), with
+  `topPivotCell_verts/_incDir/_miss` simp restatements and **`topPivotCell_ne`** (base is
+  `topPivotBottom`, which lies on no chain vertex ⇒ distinct from `u`).
+- **`topPivotCell_zeroPivotCell`** (capstone) — `topPivotCell (zeroPivotCell s) = s`. Lifts the
+  vertex-level `topPivotBottom_zeroPivotCell` to the whole cell via the existing private
+  `gridSimplex_ext`: verts recovered index-by-index (0 = reciprocal base; k ≥ 1 by the two
+  mutually-inverse chain shifts), incDir by the two inverse cyclic rotations, miss preserved.
+
+### Why this matters
+The facet-0 cross-chain pivot (`zeroPivotCell`) and the dual top-facet pivot (`topPivotCell`) now
+provably **invert one another** at the shared facet `gridFacet s 0 = gridFacet (zeroPivotCell s)
+(Fin.last d)` (`zeroPivotCell_gridFacet_last`). This is the partial-involution reciprocity the
+boundary `adj` requires — the two cells filling that facet map to each other. No new geometry: the
+whole thing is index bookkeeping (zeroPivotCell shifts the chain UP + appends an apex; topPivotCell
+shifts DOWN + prepends a base; they compose to the identity on indices ≥ 1, vertex 0 is the
+reciprocal-base identity, the incDir rotations are mutual inverses).
+
+### Lean gotchas caught this session
+- `omega` does NOT reduce `Fin.val` of a `⟨_, _⟩` mk literal (it stays opaque). The `h : k'.val < d`
+  arguments of `zeroPivotCell_verts_of_lt` / `zeroPivotInc_of_lt` (with `k' = ⟨k.val-1, _⟩`) must be
+  discharged with `by show k.val - 1 (+ 1) < d; …; omega` — the `show` uses defeq to expose the val.
+- `congr 1` on `u.verts A = u.verts B` with `A`, `B` defeq (`k.castSucc` vs `⟨(k.succ).val-1,_⟩`)
+  closes the goal outright, so a trailing `apply Fin.ext; …` hits "No goals" — use a bare `rfl`.
+- A private `gridSimplex_ext` (field-wise `GridSimplex` extensionality) already exists (L695) — reuse
+  it; redeclaring collides.
+
+### Frontier UNCHANGED (genuine blocker)
+1. **(crux)** Cross-miss TERMINAL partner for the infeasible regime `base_miss = d` — the last door
+   of the descent, crossing to a different Kuhn miss-fibre (the sole gluing none of the pivot
+   constructions produce).
+2. Total `adj` with geometric none-fibre exactly `{Fin.last d}`; discharge `boundary_face`.
+3. Assemble `SpernerTriangulation`; Phase-2 door-parity induction on `d`; apply `sperner_ndim`.
