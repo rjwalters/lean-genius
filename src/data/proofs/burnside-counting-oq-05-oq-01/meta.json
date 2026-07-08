@@ -70,7 +70,8 @@
       "Parity changes the orbit structure qualitatively: for even 2m the negation involution has two fixed points {0, m} (not one), and a second reflection class — the fixed-point-free i ↦ −1−i — appears that has no odd analogue",
       "The edge reflection i ↦ −1−i is handled by the clean value identity (−1−i).val = 2m−1−i.val, which turns its fold into the same min-of-value template used for the vertex axis",
       "Both counts come from explicit computable folding sections, not abstract orbit-quotient machinery — the same reusable pattern as the odd case, instantiated at two different fundamental domains",
-      "The strict inequality k^(n/2) < k^(n/2+1) is the formal statement that even-cycle reflections are not a single power of k, the precise sense in which the even case is richer than the odd one"
+      "The strict inequality k^(n/2) < k^(n/2+1) is the formal statement that even-cycle reflections are not a single power of k, the precise sense in which the even case is richer than the odd one",
+      "Each count is k raised to the NUMBER OF VERTEX-ORBITS of the reflection: a vertex-axis reflection has (m−1) swapped pairs plus the 2 fixed vertices {0, m} = m+1 orbits, giving k^(m+1); an edge-axis reflection has m swapped pairs and no fixed vertex = m orbits, giving k^m. The whole k^(m+1) vs k^m gap is exactly the two fixed points of the vertex axis contributing two singleton orbits that the fixed-point-free edge axis lacks — the folding-section proofs are the constructive incarnation of this orbit count"
     ],
     "prerequisites": [
       "Group actions and the Burnside/Cauchy–Frobenius counting philosophy",
@@ -80,6 +81,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Setup: two reflection classes of the even cycle",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports Mathlib and opens the namespace, with a small helper (the modulus 2m is nonzero for m ≠ 0, needed for the ZMod.val lemmas). The module docstring frames the problem: unlike an odd cycle, an even 2m-cycle has TWO conjugacy classes of reflections in the dihedral group — vertex-axis (i ↦ −i, through two opposite vertices) and edge-axis (i ↦ −1−i, through two opposite edge midpoints) — and this file counts the colorings fixed by each, the reflection contributions to the full dihedral Burnside average, which is absent from Mathlib.",
+      "mathContext": "The dihedral group $D_{2m}$ acting on the $2m$-cycle has two reflection conjugacy classes; each contributes a term $\\tfrac{1}{|G|}\\#\\mathrm{Fix}$ to the Burnside count of necklaces."
+    },
+    {
       "id": "vertex-axis",
       "title": "Type I — Vertex-Axis Reflection i ↦ −i",
       "startLine": 51,
@@ -88,11 +97,19 @@
       "mathContext": "$\\#\\{c : \\mathbb{Z}/2m \\to \\mathrm{Fin}\\,k \\mid c(-i)=c(i)\\} = k^{m+1}$."
     },
     {
-      "id": "edge-axis",
-      "title": "Type II — Edge-Axis Reflection i ↦ −1−i",
+      "id": "edge-axis-fold",
+      "title": "Type II — Edge-Axis Reflection: value identities and folding",
       "startLine": 126,
+      "endLine": 183,
+      "summary": "The reflection i ↦ −1−i has no fixed points, handled by the value identities edge_cast and edge_val: (−1−i).val = 2m−1−i.val, turning its fold into the same min-of-value template used for the vertex axis. incl2 injects the fundamental domain {0,…,m−1} = Fin m into the cycle and fold2 folds i ↦ min(i.val, 2m−1−i.val); fold2_incl2, fold2_edge and incl2_fold2 establish that fold2 and incl2 are mutually inverse on the reflection-invariant colorings.",
+      "mathContext": "$(-1-i).\\mathrm{val} = 2m-1-i.\\mathrm{val}$; $\\mathrm{fold2}(i) = \\min(i.\\mathrm{val},\\, 2m-1-i.\\mathrm{val})$."
+    },
+    {
+      "id": "edge-axis-count",
+      "title": "Type II — The Bijection and the kᵐ Count",
+      "startLine": 184,
       "endLine": 210,
-      "summary": "The reflection i ↦ −1−i has no fixed points; (−1−i).val = 2m−1−i.val. Its fundamental domain is {0,…,m−1} = Fin m with folding i ↦ min(i.val, 2m−1−i.val). The bijection edgeInvariantEquiv yields card_edgeInvariant = k^m.",
+      "summary": "edgeInvariantEquiv assembles the folding lemmas into an explicit equivalence between edge-reflection-invariant colorings of ZMod (2m) and arbitrary colorings of the fundamental domain Fin m, and card_edgeInvariant reads off the count k^m — one free color per swapped pair, with no fixed vertex to contribute an extra factor.",
       "mathContext": "$\\#\\{c : \\mathbb{Z}/2m \\to \\mathrm{Fin}\\,k \\mid c(-1-i)=c(i)\\} = k^{m}$."
     },
     {
