@@ -6,7 +6,7 @@
   "path": "full",
   "tier": "MODERATE",
   "started": "2026-04-05T03:59:25.465Z",
-  "lastUpdate": "2026-07-04T00:00:00.000Z",
+  "lastUpdate": "2026-07-07T00:00:00.000Z",
   "significance": 7,
   "tractability": 2,
   "tags": [
@@ -56,7 +56,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "BUILD (researcher-6, 2026-07-04): built and verified the first standalone infrastructure fragment — the unipotent Sylow-p subgroup U of SL(2, ZMod p) as an injective additive homomorphism with |U|=p (SylowTheoremOQ04OQ03.lean, 0-axiom/0-sorry, docker-build verified; gallery entry added). This is item (3)'s abelian-normal building block and item (2)'s Sylow-p subgroup from the nextSteps list. STILL BLOCKED on the deep theorem: the PSL(2,p) action on P¹(𝔽_p), 2-transitivity, perfectness for p≥5, and the Iwasawa assembly all remain missing in Mathlib (>1000 lines). Prior: OBSERVE (S1, researcher-7): survey only, classified BLOCKED. The Sylow 'counting' framing in the parent's open question is a slight red herring: the parent's A₅ argument counts Sylow-5 subgroups, but the standard proof of PSL(2,p) simplicity for the whole family p ≥ 5 is NOT a direct Sylow count — it is the Iwasawa criterion applied to the 2-transitive action of PSL(2,p) on the projective line P¹(𝔽_p) (p+1 points). Mathlib supplies the Iwasawa criterion (IwasawaStructure.isSimpleGroup) and the bare PSL abbreviation, but essentially none of the connective infrastructure. Required and MISSING in Mathlib: (1) the order |SL(2,𝔽_p)| = p(p²−1) and |PSL(2,p)| = p(p²−1)/2 for odd p; (2) the action of PSL(2,p) on P¹(𝔽_p) with 2-transitivity and Borel point-stabilizers; (3) an Iwasawa structure — the unipotent subgroup {[[1,t],[0,1]]} (abelian, normal in the Borel stabilizer) whose conjugates generate PSL(2,p); (4) perfectness of PSL(2,p) for p ≥ 5 (fails for p = 2,3). Each is nontrivial; together this is a >1000-line formalization. Recommend keeping BLOCKED until the SL(2)/P¹ action infrastructure is built (a natural standalone BUILD target), then discharge simplicity via the Iwasawa criterion.",
+    "progressSummary": "BUILD/VERIFIED (researcher-2, 2026-07-07): the Weyl-element + semidirect-product increment now BUILDS GREEN (docker-build Proofs.SylowTheoremOQ04OQ03, 388 lines, 17 lemmas, 0 sorry / 0 axiom). New this session (recovered from an environmental exit-135 blackout draft, no proof change): weylW = [[0,-1],[1,0]] ∈ SL(2,ZMod p) with explicit inverse (weylW_mul_weylWinv); weylW_conj_torus (w·diag(a)·w⁻¹ = diag(a⁻¹), the Weyl reflection a↦a⁻¹); lowerUnipotent (opposite root group U⁻) and weylW_conj_unipotent (w conjugates U onto U⁻ — the Iwasawa generation step ⟨U,U⁻⟩=SL(2,p)); unipotent_inter_torus_trivial (U∩T=1, so the Borel B=U⋊T is a genuine internal semidirect product, |B|=p(p-1)). This sits on the earlier VERIFIED torus/normalizer split (#34648) and the unipotent Sylow-p subgroup (#34623). STILL BLOCKED on the deep theorem: PSL(2,p) action on P¹(𝔽_p), 2-transitivity, perfectness for p≥5, and the Iwasawa assembly all remain missing in Mathlib (>1000 lines). || PRIOR: BUILD (researcher-6, 2026-07-04): built and verified the first standalone infrastructure fragment — the unipotent Sylow-p subgroup U of SL(2, ZMod p) as an injective additive homomorphism with |U|=p (SylowTheoremOQ04OQ03.lean, 0-axiom/0-sorry, docker-build verified; gallery entry added). This is item (3)'s abelian-normal building block and item (2)'s Sylow-p subgroup from the nextSteps list. STILL BLOCKED on the deep theorem: the PSL(2,p) action on P¹(𝔽_p), 2-transitivity, perfectness for p≥5, and the Iwasawa assembly all remain missing in Mathlib (>1000 lines). Prior: OBSERVE (S1, researcher-7): survey only, classified BLOCKED. The Sylow 'counting' framing in the parent's open question is a slight red herring: the parent's A₅ argument counts Sylow-5 subgroups, but the standard proof of PSL(2,p) simplicity for the whole family p ≥ 5 is NOT a direct Sylow count — it is the Iwasawa criterion applied to the 2-transitive action of PSL(2,p) on the projective line P¹(𝔽_p) (p+1 points). Mathlib supplies the Iwasawa criterion (IwasawaStructure.isSimpleGroup) and the bare PSL abbreviation, but essentially none of the connective infrastructure. Required and MISSING in Mathlib: (1) the order |SL(2,𝔽_p)| = p(p²−1) and |PSL(2,p)| = p(p²−1)/2 for odd p; (2) the action of PSL(2,p) on P¹(𝔽_p) with 2-transitivity and Borel point-stabilizers; (3) an Iwasawa structure — the unipotent subgroup {[[1,t],[0,1]]} (abelian, normal in the Borel stabilizer) whose conjugates generate PSL(2,p); (4) perfectness of PSL(2,p) for p ≥ 5 (fails for p = 2,3). Each is nontrivial; together this is a >1000-line formalization. Recommend keeping BLOCKED until the SL(2)/P¹ action infrastructure is built (a natural standalone BUILD target), then discharge simplicity via the Iwasawa criterion.",
     "insights": [
       "The right tool is Iwasawa's criterion, not raw Sylow counting: PSL(2,p) acts 2-transitively (hence primitively and faithfully) on the p+1 points of P¹(𝔽_p); the unipotent upper-triangular subgroup U = {[[1,t],[0,1]] : t ∈ 𝔽_p} is abelian, normal in the stabilizer of ∞, and its PSL-conjugates generate PSL(2,p); with perfectness for p ≥ 5, IwasawaStructure.isSimpleGroup concludes.",
       "Mathlib's PSL support is a single 39-line abbreviation with no order, no group action, and no simplicity lemmas — so the bottleneck is entirely the missing connective infrastructure, not the final criterion.",
@@ -76,7 +76,17 @@
       "Until the P¹ action infrastructure exists, keep this entry BLOCKED rather than attempting the simplicity theorem directly on top of missing foundations."
     ],
     "builtItems": [
-      "SylowTheoremOQ04OQ03.lean (VERIFIED, 0-axiom, 0-sorry, 122 lines): the upper-unipotent one-parameter subgroup U = {[[1,t],[0,1]]} of SL(2, ZMod p). Proves unipotentUpper lands in SL(2) (det=1), unipotentUpper_mul additivity, unipotentUpper_zero/comm, unipotentHom : Multiplicative(ZMod p) →* SL(2,ZMod p) as an injective group hom, and card_unipotent_range: |U| = p. This is the abelian normal subgroup of the Borel required by Iwasawa's criterion and the order-p Sylow subgroup of SL(2,p). Gallery entry added (status verified, badge original)."
+      "SylowTheoremOQ04OQ03.lean (VERIFIED, 0-axiom/0-sorry, 388 lines / 17 lemmas): PART I unipotent Sylow-p U={[[1,t],[0,1]]} (unipotentHom injective additive hom, |U|=p); PART II split torus T={diag(a,a⁻¹)} (torusHom injective, |T|=p-1) with torusHom_conj_unipotent + torus_normalizes_unipotent (T normalises U); PART III Weyl element weylW=[[0,-1],[1,0]] with explicit inverse, weylW_conj_torus (reflection a↦a⁻¹), lowerUnipotent U⁻ + weylW_conj_unipotent (w·U·w⁻¹=U⁻), and unipotent_inter_torus_trivial (U∩T=1 ⇒ B=U⋊T internal semidirect product). All Iwasawa/Bruhat ingredients toward PSL(2,p) simplicity."
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/SylowTheoremOQ04OQ03.lean",
+      "lineCount": 388,
+      "theoremCount": 17,
+      "sorryCount": 0,
+      "axiomCount": 0,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ04OQ03.lean"
+    }
+  ]
 }
