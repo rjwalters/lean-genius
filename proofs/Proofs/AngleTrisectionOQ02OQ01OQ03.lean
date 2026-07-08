@@ -16,6 +16,11 @@
   concrete degree-3 obstruction behind the 60° trisection (cos 20° has
   minimal degree 3, which is not a power of 2).
 
+  A general odd-degree obstruction (`odd_degree_gt_one_not_2group`) records
+  that *any* algebraic real whose minimal polynomial has odd degree `> 1` has
+  no 2-group Galois group — subsuming the degree-3 (cos 20°) case and covering
+  degrees `5, 7, 9, …`.
+
   Parent: AngleTrisectionOQ02OQ01.lean (natDegree_dvd_card_gal, reused here)
 -/
 
@@ -77,5 +82,27 @@ theorem degree_three_not_2group (α : ℝ) (hα : IsIntegral ℚ α)
           _ ≤ 2 ^ k := Nat.pow_le_pow_right (by norm_num) hge
       omega
   exact h2k hk.symm
+
+/-- **The general odd-degree obstruction.**
+    Any algebraic real whose minimal polynomial has *odd* degree `> 1` has no
+    2-group Galois group: an odd number `> 1` is never a power of `2`
+    (`2^0 = 1`, and `2^k` is even for `k ≥ 1`).
+
+    This generalizes `degree_three_not_2group` from the single degree `3` to
+    every odd degree `3, 5, 7, 9, …`, and gives a clean sufficient condition
+    for non-constructibility: an algebraic real of odd degree `> 1` cannot be
+    constructed by straightedge and compass. -/
+theorem odd_degree_gt_one_not_2group (α : ℝ) (hα : IsIntegral ℚ α)
+    (hodd : Odd (minpoly ℚ α).natDegree) (hgt : 1 < (minpoly ℚ α).natDegree) :
+    ¬ IsPGroup 2 (minpoly ℚ α).Gal := by
+  refine not_pgroup_of_degree_ne_pow_p α hα Nat.prime_two (fun k hk => ?_)
+  rcases Nat.eq_zero_or_pos k with hk0 | hkpos
+  · -- `k = 0`: `2^0 = 1`, contradicting `natDegree > 1`.
+    rw [hk0, pow_zero] at hk; omega
+  · -- `k ≥ 1`: `2^k` is even, contradicting the odd degree.
+    have heven : (2 ^ k) % 2 = 0 :=
+      Nat.even_iff.mp (Nat.even_pow.mpr ⟨even_two, by omega⟩)
+    rw [hk, Nat.odd_iff] at hodd
+    omega
 
 end AngleTrisectionOQ02OQ01OQ03
