@@ -248,6 +248,65 @@ theorem rothNumberNat_le_min_bourgain_blasi (N : ℕ) (hN : 3 ≤ N) :
           ((N : ℝ) / Real.log N ^ (1 + RothTheoremOQ02.blasiConst)) :=
   le_min (rothNumberNat_le_bourgain N hN) (RothTheoremOQ02.rothNumberNat_le_blasi N hN)
 
+/-- **The Bourgain density factor `(log log N / log N)^{1/2}` tends to `0`.**
+This is the analytic heart of "explicit rate ⟹ `o(N)`": `log log N / log N → 0`
+because `log =o[atTop] id` (so `log u / u → 0`, applied at `u = log N → ∞`), and the
+continuous `·^{1/2}` map carries the limit `0 ↦ 0`.  Axiom-free (uses only Mathlib's
+`Real.isLittleO_log_id_atTop`). -/
+theorem bourgain_factor_tendsto_zero :
+    Filter.Tendsto
+      (fun N : ℕ => (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2))
+      Filter.atTop (nhds 0) := by
+  -- `log u / u → 0` as `u → ∞`, from `log =o[atTop] id`.
+  have hbase : Filter.Tendsto (fun u : ℝ => Real.log u / u) Filter.atTop (nhds 0) := by
+    simpa using Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero
+  -- `log N → ∞` as `N → ∞` (over ℕ).
+  have hlogN : Filter.Tendsto (fun N : ℕ => Real.log N) Filter.atTop Filter.atTop :=
+    Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- compose: `log (log N) / log N → 0`.
+  have hratio : Filter.Tendsto
+      (fun N : ℕ => Real.log (Real.log N) / Real.log N) Filter.atTop (nhds 0) :=
+    hbase.comp hlogN
+  -- `√·` is continuous and sends `0 ↦ 0`; `√x = x ^ (1/2)`.
+  have hsqrt : Filter.Tendsto
+      (fun N : ℕ => Real.sqrt (Real.log (Real.log N) / Real.log N))
+      Filter.atTop (nhds 0) := by
+    have := (Real.continuous_sqrt.tendsto 0).comp hratio
+    simpa [Real.sqrt_zero] using this
+  exact hsqrt.congr (fun N => Real.sqrt_eq_rpow _)
+
+/-- **Bourgain's explicit bound recovers the qualitative Roth theorem — derived, not
+re-exported.**  From `rothNumberNat N ≤ C · N · (log log N / log N)^{1/2}` with the density
+factor tending to `0`, we obtain `rothNumberNat N = o(N)` directly.  Unlike
+`bourgain_consistent_with_isLittleO` (which merely re-exports Mathlib's independent
+`rothNumberNat_isLittleO_id`), this theorem *proves* the little-o statement **from the
+quantitative Bourgain bound**, so it certifies that the explicit rate is genuinely strong
+enough to yield `o(N)`. -/
+theorem rothNumberNat_isLittleO_of_bourgain :
+    Asymptotics.IsLittleO Filter.atTop
+      (fun N : ℕ => (rothNumberNat N : ℝ)) (fun N : ℕ => (N : ℝ)) := by
+  rw [Asymptotics.isLittleO_iff]
+  intro ε hε
+  -- `bourgainConst · (factor N) → 0`, so eventually it is `< ε`.
+  have hfac : Filter.Tendsto
+      (fun N : ℕ => bourgainConst *
+        (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2))
+      Filter.atTop (nhds 0) := by
+    simpa using bourgain_factor_tendsto_zero.const_mul bourgainConst
+  have hev : ∀ᶠ N : ℕ in Filter.atTop,
+      bourgainConst * (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2) < ε := by
+    have hmem : Set.Iio ε ∈ nhds (0 : ℝ) := Iio_mem_nhds hε
+    simpa [Set.mem_Iio] using hfac.eventually hmem
+  filter_upwards [hev, Filter.eventually_ge_atTop 3] with N hbound hN3
+  rw [Real.norm_eq_abs, Real.norm_eq_abs, Nat.abs_cast, Nat.abs_cast]
+  calc (rothNumberNat N : ℝ)
+      ≤ bourgainConst * (N : ℝ) *
+          (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2) :=
+        rothNumberNat_le_bourgain N hN3
+    _ = (bourgainConst *
+          (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2)) * (N : ℝ) := by ring
+    _ ≤ ε * (N : ℝ) := mul_le_mul_of_nonneg_right hbound.le (Nat.cast_nonneg N)
+
 #check rothNumberNat_bourgain
 #check bourgainConst
 #check bourgainConst_pos
@@ -255,6 +314,8 @@ theorem rothNumberNat_le_min_bourgain_blasi (N : ℕ) (hN : 3 ≤ N) :
 #check bourgain_consistent_with_isLittleO
 #check bourgain_consistent_with_Behrend
 #check rothNumberNat_le_min_bourgain_blasi
+#check bourgain_factor_tendsto_zero
+#check rothNumberNat_isLittleO_of_bourgain
 
 -- Axiom audit: `rothNumberNat_bourgain` is now a THEOREM.  Its only non-foundational
 -- dependency is the imported `RothTheoremOQ02.rothNumberNat_bloom_sisask` — there is NO

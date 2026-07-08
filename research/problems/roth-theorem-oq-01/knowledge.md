@@ -4,6 +4,47 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-07-07 (researcher-2) — ACT: explicit bound ⟹ o(N), derived not re-exported
+
+**Mode**: REVISIT (add verified content). The from-scratch Bourgain/Bloom–Sisask proof stays
+BLOCKED (>1000 LOC Bohr-set/Fourier infra not in Mathlib v4.26), and the axiom count is already
+minimal (0 own axioms; rests on the single imported OQ-02 Bloom–Sisask axiom). The realistic
+deliverable was to upgrade the weakest link: `bourgain_consistent_with_isLittleO` merely
+**re-exported** Mathlib's independent `rothNumberNat_isLittleO_id` — it did NOT show the
+*explicit* Bourgain rate actually yields `o(N)`.
+
+**Outcome**: COMPLETED this deliverable (machine-verified, `docker-build.sh Proofs.RothTheoremOQ01`
+→ `=== Build succeeded ===`, first try). Added **2 theorems** (7→9), file 264→325 L, still
+0 own axioms / 0 sorries:
+- **`bourgain_factor_tendsto_zero`** (axiom-free): `(log log N/log N)^(1/2) → 0`. Proof chain:
+  `Real.isLittleO_log_id_atTop.tendsto_div_nhds_zero` gives `log u/u → 0` (real atTop); compose
+  with `Real.tendsto_log_atTop.comp tendsto_natCast_atTop_atTop` (`log N → ∞` over ℕ) to get
+  `log(log N)/log N → 0`; then push through `·^(1/2)` via `Real.sqrt` (`Real.continuous_sqrt.tendsto 0`,
+  `Real.sqrt_zero`) and convert back with `hsqrt.congr (fun N => Real.sqrt_eq_rpow _)`.
+- **`rothNumberNat_isLittleO_of_bourgain`**: `rothNumberNat N = o(N)` DERIVED from the Bourgain
+  bound. `Asymptotics.isLittleO_iff`; for ε>0, `bourgainConst · factor → 0` so eventually `< ε`
+  (`hfac.eventually (Iio_mem_nhds hε)`); `filter_upwards` with `eventually_ge_atTop 3`; clear
+  norms with `Real.norm_eq_abs` + `Nat.abs_cast`; `calc` through `rothNumberNat_le_bourgain` then
+  `mul_le_mul_of_nonneg_right`.
+
+### Lean gotchas (v4.26)
+- **`Real.continuousAt_rpow_const` does NOT exist** (Unknown constant). Route `y^(1/2)` through
+  `Real.sqrt` instead: `Real.sqrt_eq_rpow x : √x = x^(1/2:ℝ)` (unconditional) + `Real.continuous_sqrt`.
+- `Filter.Tendsto.eventually_lt_const` is unreliable; use `hfac.eventually (Iio_mem_nhds hε)` +
+  `simpa [Set.mem_Iio]` to get eventual `< ε` from a `nhds 0` limit.
+- `Real.norm_eq_abs` then `Nat.abs_cast` clears `‖(n:ℝ)‖` for a ℕ-cast (both `rothNumberNat N`
+  and `N`); `mul_le_mul_of_nonneg_right ... (Nat.cast_nonneg N)`.
+- Build-host note: same corrupt-cache/OOM-under-contention flakiness as elsewhere — plain retries
+  self-heal (each auto-purges + re-fetches the bad `.ltar`/`.ir`); this session built first try.
+
+### Honest status
+Still **axiomatized** — the presented Bourgain bound rests on the imported Bloom–Sisask axiom;
+`rothNumberNat_isLittleO_of_bourgain` inherits that single assumption (via `rothNumberNat_le_bourgain`),
+while `bourgain_factor_tendsto_zero` is fully axiom-free. No new axioms. The genuine remaining
+open work (a from-scratch quantitative proof) is unchanged and BLOCKED.
+
+---
+
 ## Problem Understanding
 
 Target: a **quantitative** upper bound on the Roth number `r₃(N)` (largest 3-AP-free subset
