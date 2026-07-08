@@ -12,10 +12,12 @@ However, a STRONGER axiom capturing the Selberg sieve's quantitative prediction
 — that the qualifying fraction at level l is ≥ l/(l+1) — combined with a mild
 growth condition, DOES imply density at factorial evaluation points.
 
-**Key results** (0 sorries, 2 axioms):
+**Key results** (0 sorries, 1 axiom):
 1. `primesInLevel`, `qualifyingInLevel`: interval-level counting functions
 2. `strong_selberg_density`: axiom — q(l)*(l+1) ≥ p(l)*l for l ≥ 3
-3. `primes_growth_in_levels`: axiom — p(l) ≥ l for l ≥ 3 (very weak PNT)
+3. `primesInLevel_pos`: THEOREM (was an axiom) — p(l) ≥ 1 for l ≥ 1, proved from
+   Bertrand's postulate. The downstream results need only positivity, so the old
+   `p(l) ≥ l` axiom is eliminated.
 4. `qualifyingInLevel_le_primesInLevel`: q(l) ≤ p(l) always
 5. `strong_implies_weak`: strong axiom → selberg_density_axiom (≥1 per interval)
 6. `levelwise_density_bound`: for l ≥ k, q(l)*(k+1) ≥ p(l)*k
@@ -33,7 +35,8 @@ bounds (the sieve analysis is performed interval by interval). The aggregation
 from level-wise to cumulative density is the non-trivial step that requires
 understanding the interaction between different interval scales.
 
-Axioms: 2 (strong_selberg_density, primes_growth_in_levels)
+Axioms: 1 (strong_selberg_density) — the former primes_growth_in_levels axiom is
+now the proved theorem primesInLevel_pos (Bertrand's postulate)
 Dependencies: Erdos1059OQ01 (counting functions), Erdos1059OQ02 (intervals, weak axiom)
 -/
 
@@ -474,9 +477,12 @@ theorem density_one_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N 
 **This file is now sorry-free** — the previous two `sorry`s (the interval
 decompositions) are discharged by `count_decomp`.
 
-**Axioms** (2, both disclosed sieve inputs):
+**Axioms** (1, a single disclosed sieve input):
 - strong_selberg_density: captures Selberg sieve's quantitative prediction
-- primes_growth_in_levels: weak PNT (p(l) ≥ l for l ≥ 3)
+
+The former `primes_growth_in_levels` axiom (`p(l) ≥ l`) is now the proved theorem
+`primesInLevel_pos` (`p(l) ≥ 1`, via Bertrand's postulate); the downstream
+results only ever used positivity of the level prime count.
 
 **Open**: Extending from factorial points to all x requires within-interval
 density estimates, which is a deeper sieve-theoretic result.
