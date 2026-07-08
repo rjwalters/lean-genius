@@ -5,17 +5,35 @@
 #
 # Usage:
 #   ./proofs/scripts/docker-build.sh [target]
+#   ./proofs/scripts/docker-build.sh --repair-cache   # repair corrupt oleans, then exit
 #
 # Environment variables:
 #   LEAN_MEMORY_LIMIT  - Memory limit in MB (default: 32768 = 32GB)
 #   LEAN_BUILD_TIMEOUT - Build timeout (default: 60m)
 #   LEAN_SKIP_CACHE    - Skip Mathlib cache download (default: false)
 #
+# Recovering from exit-135 / SIGBUS ("unexpected end of input") corruption:
+#   The shared Mathlib volumes can retain truncated oleans after an OOM-killed
+#   build, poisoning every subsequent build that imports the module. Run the
+#   first-line, in-place repair (Option B, `lake exe cache get!`):
+#       ./proofs/scripts/docker-build.sh --repair-cache
+#   which delegates to proofs/scripts/docker-repair-cache.sh. See that script
+#   and proofs/scripts/DOCKER-BUILD-RUNBOOK.md for the fallback volume reset.
+#
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROOFS_DIR="$(dirname "$SCRIPT_DIR")"
 REPO_ROOT="$(dirname "$PROOFS_DIR")"
+
+# --repair-cache: delegate to the standalone repair script (first-line Option B,
+# in-place `lake exe cache get!` force-refresh) and exit. Does NOT touch the
+# normal build path. Any extra args (e.g. --nuke) are forwarded to the repair
+# script, so `--repair-cache --nuke` runs the guarded full volume reset.
+if [[ "${1:-}" == "--repair-cache" ]]; then
+    shift
+    exec "${SCRIPT_DIR}/docker-repair-cache.sh" "$@"
+fi
 
 # Configuration
 MEMORY_LIMIT="${LEAN_MEMORY_LIMIT:-32768}"  # 32GB default
