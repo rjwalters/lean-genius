@@ -1,13 +1,13 @@
 {
   "slug": "erdos-1090-incomplete-01",
-  "title": "Complete proof of Erd\u0151s Problem #1090: Monochromatic Collinear Points",
+  "title": "Complete proof of Erdős Problem #1090: Monochromatic Collinear Points",
   "phase": "NEW",
   "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Complete proof of Erd\u0151s Problem #1090: Monochromatic Collinear Points.",
+    "plain": "Formal investigation in geometry: Complete proof of Erdős Problem #1090: Monochromatic Collinear Points.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,21 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED & VERIFIED (0 axioms, 0 sorries): Eliminated BOTH axioms (graham_selfridge, hunter_observation) by proving erdos1090_construction from Mathlib's Hales-Jewett theorem (Combinatorics.Line.exists_mono_in_high_dimension) via an explicit linear projection of the combinatorial cube [k]^\u03b9 into \u211d\u00b2. Also repaired the file's pre-existing non-compiling state (orphan /-- docstrings, invalid \u2200 p q r \u2208 A multi-binders, SylvesterGallai DecidablePred). #print axioms: [propext, Classical.choice, Quot.sound] only.",
+    "progressSummary": "COMPLETED & VERIFIED (0 axioms, 0 sorries): Eliminated BOTH axioms (graham_selfridge, hunter_observation) by proving erdos1090_construction from Mathlib's Hales-Jewett theorem (Combinatorics.Line.exists_mono_in_high_dimension) via an explicit linear projection of the combinatorial cube [k]^ι into ℝ². Also repaired the file's pre-existing non-compiling state (orphan /-- docstrings, invalid ∀ p q r ∈ A multi-binders, SylvesterGallai DecidablePred). #print axioms: [propext, Classical.choice, Quot.sound] only.",
     "builtItems": [
-      "erdos1090_construction (Erdos1090Problem.lean:155): general k\u22653 Ramsey set built from Hales-Jewett combinatorial line via linear projection \u03c6 p = \u2211 j (p j:\u211d)\u2022v j, v j=!\u2082[1,w j]; direction nonzero since first coord = |varying|\u22651.",
+      "erdos1090_construction (Erdos1090Problem.lean:155): general k≥3 Ramsey set built from Hales-Jewett combinatorial line via linear projection φ p = ∑ j (p j:ℝ)•v j, v j=!₂[1,w j]; direction nonzero since first coord = |varying|≥1.",
       "graham_selfridge, hunter_observation: converted from axiom to theorem (both = instances of erdos1090_construction).",
-      "Repaired 7 orphan /-- docstrings \u2192 /- block comments; expanded 2 invalid multi-binders \u2200 p q r \u2208 A; added open Classical in before SylvesterGallai for filter DecidablePred.",
-      "ramseyNumber_le_of_le (NEW): for 3\u2264k, k'\u2264k \u27f9 ramseyNumber k' \u2264 ramseyNumber k \u2014 the min-set-size threshold is nondecreasing in k (from hasRamseyProperty_antitone + Nat.sInf_le). Complements ramsey_lower_bound."
+      "Repaired 7 orphan /-- docstrings → /- block comments; expanded 2 invalid multi-binders ∀ p q r ∈ A; added open Classical in before SylvesterGallai for filter DecidablePred."
     ],
     "insights": [
-      "Erd\u0151s #1090 general case is provable axiom-free in Lean: Mathlib's Hales-Jewett (Combinatorics.Line.exists_mono_in_high_dimension) + a linear 'generic projection' suffices. No genericity argument needed \u2014 taking the projection's first coordinate as the coordinate-SUM makes any combinatorial line's direction have first coord = |V| \u2265 1 > 0, so it is automatically nonzero and the k image points are distinct.",
-      "Affine identity \u03c6(l a) = \u03c6(l 0) + (a:\u211d)\u2022dir proved at the module level (add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum) from the per-coordinate fact emb(l a j)=emb(l 0 j)+emb a*[varying]; nonzeroness pushed through WithLp.ofLp (linear) to a positive Finset sum.",
-      "The committed file at HEAD never compiled (last commit was 'UNVERIFIED \u2014 build host down'); a prior knowledge note claimed the build was fixed but that fix was not in the committed state."
+      "Erdős #1090 general case is provable axiom-free in Lean: Mathlib's Hales-Jewett (Combinatorics.Line.exists_mono_in_high_dimension) + a linear 'generic projection' suffices. No genericity argument needed — taking the projection's first coordinate as the coordinate-SUM makes any combinatorial line's direction have first coord = |V| ≥ 1 > 0, so it is automatically nonzero and the k image points are distinct.",
+      "Affine identity φ(l a) = φ(l 0) + (a:ℝ)•dir proved at the module level (add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum) from the per-coordinate fact emb(l a j)=emb(l 0 j)+emb a*[varying]; nonzeroness pushed through WithLp.ofLp (linear) to a positive Finset sum.",
+      "The committed file at HEAD never compiled (last commit was 'UNVERIFIED — build host down'); a prior knowledge note claimed the build was fixed but that fix was not in the committed state."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Quantitative upper bound on ramseyNumber k remains open: the Hales-Jewett construction gives a set of size \u2264 k^|\u03b9| but |\u03b9| (the HJ dimension) is non-explicit, so no clean closed-form upper bound is available without an explicit HJ number. Monotonicity (ramseyNumber_le_of_le), the lower bound (\u2265k), the r-coloring generalization, and the higher-dimensional analogue are all now proved."
+      "Optional follow-up: prove a quantitative upper bound on ramseyNumber k (currently only ramsey_lower_bound ≥ k is proved).",
+      "Optional: prove Erdos1090Generalized (r-coloring) from the same Hales-Jewett projection (Mathlib HJ already allows arbitrary finite color type)."
     ]
   },
   "tags": [

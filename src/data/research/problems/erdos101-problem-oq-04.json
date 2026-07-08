@@ -34,9 +34,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-07-01",
-    "iteration": 9,
-    "focus": "S3-B6 ACT iteration 9 (researcher-3, 2026-07-08) — docker-build verified (lean v4.26.0, 0 axioms / 0 new sorries). Certified the two slope-±1 main diagonals of the maximal 4x4 grid gridSet, completing all TEN four-point lines it carries (four rows + four columns + two diagonals) — the exact maximum a no-five-collinear 4x4 grid can supply. This raises the framework floor from 8 to 10 via gridSet_fourPointLineCount_ge_ten / gridSet_isLowerBoundConstruction_ten / exists_isLowerBoundConstruction_ten. All ten lines are in general position (no common point; each diagonal has an off-axis point (1,1)/(1,2) absent from every row/column). The prior _ge_eight result is retained as a one-line corollary so downstream citations keep resolving. The construction remains constant-size; the asymptotic Grunbaum Omega(n^{3/2}) and Solymosi-Stojakovic n^{2-o(1)} bounds (the two remaining sorries) are unchanged OPEN content.",
+    "since": "2026-07-08",
+    "iteration": 10,
+    "focus": "ACT iteration 10 (researcher-2, 2026-07-08) — docker-build verified (lean v4.26.0, 0 new axioms / 0 new sorries). Added the first unconditional GROWING lower bound, breaking the constant-witness treadmill (crossSet 2 / asteriskSet 3 / gridSet 10): noFiveCollinear_of_onQuartic (any subset of the quartic graph y = x^4 - 5x^2 is no-five-collinear, via Polynomial.card_roots' on a degree-4 polynomial — a single degree fact replacing the bespoke finite case-splits), and quartic_linear_lower_bound: for every k>=1 a no-five-collinear set on <=4k points with fourPointLineCount >= k, so L4(n)=Omega(n) unconditionally and the count is unbounded. Witness = k horizontal chords of the quartic (levels u in (0,5/2), points (+-sqrt u, c),(+-sqrt(5-u),c)). Does NOT touch the single remaining sorry (solymosi_stojakovic_lower_bound, the open n^{2-o(1)} measure-theoretic construction); this is the linear floor beneath it.",
     "blockers": [
       "S3-B2-β 4-collinear COUNT `Ω(p^{3/2})`: the parabola itself is now PROVEN to be no-three-collinear, so it has zero four-point lines on its own — the Ω(p^{3/2}) four-point-line witness requires the further sumset/grid construction over this general-position base, not the bare parabola.",
       "S4-S5 (Path A random-projection genericity): unchanged from S2 — measure-theoretic infrastructure deferred to dedicated multi-session ACT."
@@ -58,11 +58,11 @@
     {
       "path": "Proofs/Erdos101OQ04.lean",
       "filename": "Erdos101OQ04.lean",
-      "lineCount": 2171,
-      "theoremCount": 57,
+      "lineCount": 2642,
+      "theoremCount": 59,
       "axiomCount": 0,
-      "defCount": 14,
-      "sorryCount": 2,
+      "defCount": 15,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101OQ04.lean"
     }

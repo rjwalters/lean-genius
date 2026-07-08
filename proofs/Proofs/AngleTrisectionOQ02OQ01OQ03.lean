@@ -195,39 +195,4 @@ theorem pgroup_distinct_primes_degree_one (α : ℝ) (hα : IsIntegral ℚ α)
         _ ≤ p ^ k := Nat.le_self_pow (by omega) p
     exact hne (pgroup_prime_unique α hα hp hp' hgt hP hP')
 
-/-- **Two distinct prime factors kill every p-group structure.**
-    If the minimal-polynomial degree of `α` has two *distinct* prime divisors
-    `q₁ ≠ q₂`, then `Gal(minpoly ℚ α)` is not a `p`-group for **any** prime `p`.
-
-    This is qualitatively stronger than the earlier obstructions, which each rule
-    out a p-group for one specific prime: a p-group forces the degree to be a
-    prime power `p^k` (a single prime factor), so whatever prime `p` one picks, at
-    least one of `q₁, q₂` differs from `p` and divides the degree, tripping the
-    master criterion `not_pgroup_of_prime_dvd_degree_ne`.  Equivalently, the Galois
-    group of such an `α` is not nilpotent of prime-power order for any prime. -/
-theorem no_pgroup_of_two_prime_factors (α : ℝ) (hα : IsIntegral ℚ α)
-    {q₁ q₂ : ℕ} (hq₁ : q₁.Prime) (hq₂ : q₂.Prime) (hne : q₁ ≠ q₂)
-    (h₁ : q₁ ∣ (minpoly ℚ α).natDegree) (h₂ : q₂ ∣ (minpoly ℚ α).natDegree)
-    {p : ℕ} (hp : p.Prime) :
-    ¬ IsPGroup p (minpoly ℚ α).Gal := by
-  rcases eq_or_ne q₁ p with h1p | h1p
-  · -- `q₁ = p`, so `q₂ ≠ p`; use `q₂` as the offending prime factor.
-    have hq2p : q₂ ≠ p := h1p ▸ hne.symm
-    exact not_pgroup_of_prime_dvd_degree_ne α hα hp hq₂ hq2p h₂
-  · -- `q₁ ≠ p`; use `q₁` directly.
-    exact not_pgroup_of_prime_dvd_degree_ne α hα hp hq₁ h1p h₁
-
-/-- **A concrete capstone at degree 6.**
-    Since `6 = 2 · 3` carries two distinct prime factors, an algebraic real whose
-    minimal polynomial has degree `6` has a Galois group that is not a `p`-group
-    for *any* prime `p` — no straightedge-and-compass tower (a chain of `2`-power
-    steps) can reach it, and neither can any single-prime radical tower. -/
-theorem degree_six_no_pgroup (α : ℝ) (hα : IsIntegral ℚ α)
-    (h6 : (minpoly ℚ α).natDegree = 6) {p : ℕ} (hp : p.Prime) :
-    ¬ IsPGroup p (minpoly ℚ α).Gal := by
-  refine no_pgroup_of_two_prime_factors α hα Nat.prime_two Nat.prime_three
-    (by norm_num) ?_ ?_ hp
-  · rw [h6]; decide
-  · rw [h6]; decide
-
 end AngleTrisectionOQ02OQ01OQ03

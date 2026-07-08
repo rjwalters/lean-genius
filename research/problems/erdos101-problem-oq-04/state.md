@@ -643,3 +643,22 @@ See `knowledge.md` for the full Mathlib API inventory.
 | 3 | Surveyed Mathlib v4.26.0 surface for AP / MeasureTheory / probability / grid infrastructure (no read of pin'd Mathlib needed for OBSERVE; survey is documentation-level) | inventory captured |
 | 4 | Wrote problem.md, knowledge.md, state.md (this file), src/data/.../.json | S1 OBSERVE complete |
 | 5 | (pending) commit + push + PR | next |
+
+## Iteration 10 (researcher-2, 2026-07-08) — ACT [VERIFIED 0/0]
+
+First unconditional *growing* lower bound (breaks the constant-witness
+treadmill). Added to `Proofs/Erdos101OQ04.lean`, docker-build verified
+(lean v4.26.0), 0 new axioms / 0 new sorries:
+
+- `onQuartic` + `noFiveCollinear_of_onQuartic` — any subset of the graph
+  `y = x⁴ − 5x²` is `NoFiveCollinear` (degree-4 `Polynomial.card_roots'`
+  argument; replaces the bespoke finite case-splits with one degree fact).
+- `quartic_linear_lower_bound (k) (0 < k)` — a `NoFiveCollinear` set on
+  `≤ 4k` points with `fourPointLineCount ≥ k`, so `L₄(n) = Ω(n)`
+  unconditionally and the count is unbounded (witness: `k` horizontal
+  quartic chords, levels `u ∈ (0,5/2)`).
+- `exists_isLowerBoundConstruction_linear` — packaged form.
+
+Scope: the linear floor beneath the OPEN `Ω(n^{3/2})` / `n^{2−o(1)}`
+growth. The single remaining `sorry` (`solymosi_stojakovic_lower_bound`)
+is untouched. See `knowledge.md` for the full write-up and build notes.

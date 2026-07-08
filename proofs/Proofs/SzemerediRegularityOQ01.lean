@@ -33,14 +33,6 @@
     `|A'| ≥ eps·|A| > 0`), so `edgeDensity_compl` applies uniformly and the two
     density gaps agree in absolute value.
 
-  * `even_card_of_fpf_involution` — a reusable combinatorial lemma: a
-    fixed-point-free involution on a `Finset` forces even cardinality.
-  * `even_card_irregularOrderedPairs` — **counting consequence of symmetry**: the
-    set of ordered irregular pairs `(P, Q)` (distinct parts failing ε-regularity) has
-    *even* cardinality, since `Prod.swap` acts on it as a fixed-point-free involution
-    (via `isEpsilonRegular_comm`).  Equivalently, the ordered irregular pairs number
-    exactly twice the underlying unordered irregular pairs.
-
   All results are fully machine-checked (0 axioms, 0 sorries).
 
   Reference: Szemerédi (1975); Komlós–Simonovits (1996).
@@ -176,82 +168,5 @@ theorem isEpsilonRegular_compl (G : SimpleGraph V) [DecidableRel G.Adj]
   · intro h A' B' hA' hB' hcA' hcB'
     rw [main A' B' hA' hB' hcA' hcB']
     exact h A' B' hA' hB' hcA' hcB'
-
-/-- **Fixed-point-free involution ⟹ even cardinality.**  If `f` maps `s` to itself,
-    is an involution on `s` (`f (f a) = a`), and has no fixed point on `s`
-    (`f a ≠ a`), then `s` has even cardinality: its elements pair off into
-    two-element orbits `{a, f a}`.  Proved by strong induction, removing one such
-    orbit `{a, f a}` at a time. -/
-theorem even_card_of_fpf_involution {α : Type*} [DecidableEq α] (f : α → α)
-    (s : Finset α) : (∀ a ∈ s, f a ∈ s) → (∀ a ∈ s, f (f a) = a) →
-      (∀ a ∈ s, f a ≠ a) → Even s.card := by
-  induction s using Finset.strongInductionOn with
-  | _ s ih =>
-    intro hmem hinv hfree
-    rcases s.eq_empty_or_nonempty with rfl | ⟨a, ha⟩
-    · exact ⟨0, rfl⟩
-    · have hfa : f a ∈ s := hmem a ha
-      have hne : f a ≠ a := hfree a ha
-      have hane : a ≠ f a := fun h => hne h.symm
-      have hfa_mem : f a ∈ s.erase a := Finset.mem_erase.mpr ⟨hne, hfa⟩
-      set t := (s.erase a).erase (f a) with ht
-      have hasub : t ⊆ s := (Finset.erase_subset _ _).trans (Finset.erase_subset _ _)
-      have hant : a ∉ t := by
-        rw [ht]; exact fun h => Finset.notMem_erase a s (Finset.mem_of_mem_erase h)
-      have hssub : t ⊂ s := (Finset.ssubset_iff_of_subset hasub).mpr ⟨a, ha, hant⟩
-      -- `t` is again closed under `f`: neither `f b = a` nor `f b = f a` can hold
-      -- for `b ∈ t`, since applying the involution would force `b = f a` or `b = a`.
-      have hmem' : ∀ b ∈ t, f b ∈ t := by
-        intro b hb
-        rw [ht, Finset.mem_erase, Finset.mem_erase] at hb
-        obtain ⟨hbfa, hba, hbs⟩ := hb
-        rw [ht, Finset.mem_erase, Finset.mem_erase]
-        refine ⟨?_, ?_, hmem b hbs⟩
-        · intro h
-          have hbe : b = a := by
-            have := congrArg f h; rwa [hinv b hbs, hinv a ha] at this
-          exact hba hbe
-        · intro h
-          have hbe : b = f a := by
-            have := congrArg f h; rwa [hinv b hbs] at this
-          exact hbfa hbe
-      have hinv' : ∀ b ∈ t, f (f b) = b := fun b hb => hinv b (hssub.subset hb)
-      have hfree' : ∀ b ∈ t, f b ≠ b := fun b hb => hfree b (hssub.subset hb)
-      obtain ⟨k, hk⟩ := ih t hssub hmem' hinv' hfree'
-      have h2card : 2 ≤ s.card := Finset.one_lt_card.mpr ⟨a, ha, f a, hfa, hane⟩
-      have hc1 : (s.erase a).card = s.card - 1 := Finset.card_erase_of_mem ha
-      have hc2 : t.card = (s.erase a).card - 1 := by
-        rw [ht]; exact Finset.card_erase_of_mem hfa_mem
-      exact ⟨k + 1, by omega⟩
-
-/-- **The ordered irregular-pair count is even.**  Fix a partition `parts` and
-    threshold `eps`.  The set of ordered pairs `(P, Q)` of parts that are *distinct*
-    and *fail* to be ε-regular is closed under the coordinate swap `Prod.swap`
-    (by `isEpsilonRegular_comm`) and has no fixed point (distinctness rules out
-    `(P, P)`), so by `even_card_of_fpf_involution` its cardinality is even —
-    it is exactly twice the number of *unordered* irregular pairs.
-
-    This realizes the symmetry-to-counting observation: `IsRegularPartition`
-    thresholds ordered irregular pairs, but the underlying unordered irregular
-    pairs number half as many. -/
-theorem even_card_irregularOrderedPairs (G : SimpleGraph V) [DecidableRel G.Adj]
-    (eps : ℚ) (parts : Finset (Finset V)) :
-    Even (((parts ×ˢ parts).filter
-      (fun p => p.1 ≠ p.2 ∧ ¬IsEpsilonRegular G eps p.1 p.2)).card) := by
-  apply even_card_of_fpf_involution Prod.swap
-  · -- swap-closed
-    rintro ⟨x, y⟩ hp
-    simp only [Finset.mem_filter, Finset.mem_product, Prod.swap_prod_mk] at hp ⊢
-    obtain ⟨⟨hx, hy⟩, hne, hreg⟩ := hp
-    exact ⟨⟨hy, hx⟩, fun h => hne h.symm, by rw [isEpsilonRegular_comm]; exact hreg⟩
-  · -- involution
-    intro p _; exact Prod.swap_swap p
-  · -- fixed-point-free
-    rintro ⟨x, y⟩ hp
-    simp only [Finset.mem_filter, Finset.mem_product] at hp
-    rw [Prod.swap_prod_mk]
-    intro h
-    rw [Prod.mk.injEq] at h
-    exact hp.2.1 h.2
 
 end Szemeredi.Regularity.OQ01

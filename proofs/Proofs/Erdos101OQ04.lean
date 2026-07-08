@@ -85,6 +85,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic.LinearCombination
+import Mathlib.Algebra.Polynomial.Roots
+import Mathlib.Tactic.ComputeDegree
 
 namespace Erdos101OQ04
 
@@ -2327,5 +2329,314 @@ constant-size lower-bound witness in the file, and the maximum any
 theorem exists_isLowerBoundConstruction_ten :
     ∃ P : PlanarPointSet, P.points.card = 16 ∧ IsLowerBoundConstruction P 10 :=
   ⟨gridSet, gridPoints_card, gridSet_isLowerBoundConstruction_ten⟩
+
+/- ## Quartic-graph construction: the first *unconditional growing* lower bound
+
+All explicit witnesses above (`crossSet` ≥ 2, `asteriskSet` ≥ 3,
+`gridSet` ≥ 10) are *constant* in size, so they certify only a fixed
+floor for `fourPointLineCount`.  The genuine open content — asymptotic
+GROWTH — is recorded in `grunbaum_lower_bound_three_halves` /
+`solymosi_stojakovic_lower_bound` (the file's single remaining `sorry`).
+
+This section supplies the first *unconditional* lower bound that grows
+with the point count: for every `k` there is a no-five-collinear set with
+at least `k` four-point lines on at most `4·k` points, so
+`L₄(n) = Ω(n)` unconditionally (`quartic_linear_lower_bound`).
+
+The construction places every point on the graph of the quartic
+`y = x⁴ − 5x²`.  Because a real line meets that graph in at most four
+points — a degree-4 polynomial has at most four roots — ANY subset is
+automatically no-five-collinear.  Thus the `NoFiveCollinear` obligation,
+which each previous witness discharged by a bespoke finite case split,
+becomes a single polynomial-degree fact (`noFiveCollinear_of_onQuartic`).
+The four-point lines are the horizontal chords `y = c` for
+`c ∈ (−25/4, 0)`: with `u = x²`, the level `c = u² − 5u` meets the
+quartic in the four points `(±√u, c), (±√(5−u), c)`.  Distinct levels
+`u ∈ (0, 5/2)` give distinct (hence pairwise-distinct as `Finset`s)
+four-point lines, so `k` levels force `fourPointLineCount ≥ k`.
+
+This does not resolve the OPEN `Ω(n^{3/2})` / `n^{2−o(1)}` growth, but it
+is a genuine advance over the constant witnesses: the maximum four-point
+line count over no-five-collinear sets is *unbounded*, verified with no
+axioms and no `sorry`. -/
+
+/-- Membership in the graph of the quartic `y = x⁴ − 5x²`. -/
+def onQuartic (p : ℝ × ℝ) : Prop := p.2 = p.1 ^ 4 - 5 * p.1 ^ 2
+
+/-- Two distinct points on the quartic graph have distinct first
+coordinates: the graph is a function of `x`, so equal `x` forces equal
+points. -/
+theorem onQuartic_fst_ne {u v : ℝ × ℝ} (hu : onQuartic u) (hv : onQuartic v)
+    (huv : u ≠ v) : u.1 ≠ v.1 := by
+  intro h1
+  apply huv
+  have h2 : u.2 = v.2 := by rw [hu, hv, h1]
+  exact Prod.ext h1 h2
+
+/-- **The quartic graph is no-five-collinear.**  If every point of `P`
+lies on `y = x⁴ − 5x²`, then `P` has no five collinear points.  Five
+distinct points collinear with an anchor pair `a, b` (which, lying on the
+graph, have distinct first coordinates, so the line is non-vertical)
+would give five distinct roots of the degree-4 polynomial
+`(b₁−a₁)·(X⁴ − 5X²) − (b₂−a₂)·X − ((b₁−a₁)·a₂ − (b₂−a₂)·a₁)`, whose
+leading coefficient `b₁−a₁ ≠ 0`.  A nonzero degree-4 polynomial has at
+most four roots, a contradiction. -/
+theorem noFiveCollinear_of_onQuartic (P : PlanarPointSet)
+    (hP : ∀ p ∈ P.points, onQuartic p) : NoFiveCollinear P := by
+  intro a b c d e ha hb hc hd he hab hac had hae hbc hbd hbe hcd hce hde
+  rintro ⟨hcol_c, hcol_d, hcol_e⟩
+  have qa : onQuartic a := hP a ha
+  have qb : onQuartic b := hP b hb
+  have qc : onQuartic c := hP c hc
+  have qd : onQuartic d := hP d hd
+  have qe : onQuartic e := hP e he
+  -- The anchor pair has distinct first coordinates (distinct points on a graph).
+  have hA0 : b.1 - a.1 ≠ 0 := sub_ne_zero.mpr (onQuartic_fst_ne qb qa hab.symm)
+  -- Root relation: a collinear on-quartic point's x-coordinate is a root of `q`.
+  have hroot : ∀ p : ℝ × ℝ, onQuartic p → collinear a b p →
+      (b.1 - a.1) * (p.1 ^ 4 - 5 * p.1 ^ 2) - (b.2 - a.2) * p.1
+        - ((b.1 - a.1) * a.2 - (b.2 - a.2) * a.1) = 0 := by
+    intro p hpq hcol
+    have hcol' : (b.1 - a.1) * (p.2 - a.2) = (p.1 - a.1) * (b.2 - a.2) := hcol
+    rw [hpq] at hcol'
+    linear_combination hcol'
+  -- The degree-4 polynomial with those roots.
+  set q : Polynomial ℝ :=
+      Polynomial.C (b.1 - a.1) * (Polynomial.X ^ 4 - Polynomial.C 5 * Polynomial.X ^ 2)
+        - Polynomial.C (b.2 - a.2) * Polynomial.X
+        - Polynomial.C ((b.1 - a.1) * a.2 - (b.2 - a.2) * a.1) with hq
+  have hqdeg : q.natDegree ≤ 4 := by rw [hq]; compute_degree
+  have hqc : q.coeff 4 = b.1 - a.1 := by
+    rw [hq]
+    simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow,
+      Polynomial.coeff_C, Polynomial.coeff_X]
+    norm_num
+  have hq0 : q ≠ 0 := by
+    intro h; rw [h, Polynomial.coeff_zero] at hqc; exact hA0 hqc.symm
+  have hqeval : ∀ x : ℝ, q.eval x
+      = (b.1 - a.1) * (x ^ 4 - 5 * x ^ 2) - (b.2 - a.2) * x
+        - ((b.1 - a.1) * a.2 - (b.2 - a.2) * a.1) := by
+    intro x
+    simp only [hq, Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_pow,
+      Polynomial.eval_C, Polynomial.eval_X]
+  have hisroot : ∀ p : ℝ × ℝ, onQuartic p → collinear a b p → p.1 ∈ q.roots := by
+    intro p hpq hcol
+    rw [Polynomial.mem_roots hq0]
+    show q.eval p.1 = 0
+    rw [hqeval]
+    linear_combination hroot p hpq hcol
+  -- All five points are collinear with the anchor pair `a, b`.
+  have cab_a : collinear a b a := by unfold collinear; ring
+  have cab_b : collinear a b b := by unfold collinear; ring
+  have ra := hisroot a qa cab_a
+  have rb := hisroot b qb cab_b
+  have rc := hisroot c qc hcol_c
+  have rd := hisroot d qd hcol_d
+  have re := hisroot e qe hcol_e
+  -- Their first coordinates are pairwise distinct.
+  have nab : a.1 ≠ b.1 := onQuartic_fst_ne qa qb hab
+  have nac : a.1 ≠ c.1 := onQuartic_fst_ne qa qc hac
+  have nad : a.1 ≠ d.1 := onQuartic_fst_ne qa qd had
+  have nae : a.1 ≠ e.1 := onQuartic_fst_ne qa qe hae
+  have nbc : b.1 ≠ c.1 := onQuartic_fst_ne qb qc hbc
+  have nbd : b.1 ≠ d.1 := onQuartic_fst_ne qb qd hbd
+  have nbe : b.1 ≠ e.1 := onQuartic_fst_ne qb qe hbe
+  have ncd : c.1 ≠ d.1 := onQuartic_fst_ne qc qd hcd
+  have nce : c.1 ≠ e.1 := onQuartic_fst_ne qc qe hce
+  have nde : d.1 ≠ e.1 := onQuartic_fst_ne qd qe hde
+  -- Five distinct roots of a degree-4 polynomial: impossible.
+  have hsub : ({a.1, b.1, c.1, d.1, e.1} : Finset ℝ) ⊆ q.roots.toFinset := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rw [Multiset.mem_toFinset]
+    rcases hx with rfl | rfl | rfl | rfl | rfl
+    exacts [ra, rb, rc, rd, re]
+  have hScard : ({a.1, b.1, c.1, d.1, e.1} : Finset ℝ).card = 5 := by
+    rw [Finset.card_insert_of_notMem]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · rw [Finset.card_insert_of_notMem]
+          · simp
+          · simp [nde]
+        · simp [ncd, nce]
+      · simp [nbc, nbd, nbe]
+    · simp [nab, nac, nad, nae]
+  have h5 : (5 : ℕ) ≤ q.natDegree :=
+    calc (5 : ℕ) = ({a.1, b.1, c.1, d.1, e.1} : Finset ℝ).card := hScard.symm
+      _ ≤ q.roots.toFinset.card := Finset.card_le_card hsub
+      _ ≤ Multiset.card q.roots := Multiset.toFinset_card_le _
+      _ ≤ q.natDegree := Polynomial.card_roots' q
+  omega
+
+/-- **Unconditional linear lower bound** `L₄(n) = Ω(n)`.  For every `k ≥ 1`
+there is a no-five-collinear planar point set `P` on at most `4·k` points
+with `fourPointLineCount P ≥ k`.  Hence the maximum number of four-point
+lines over no-five-collinear sets is *unbounded* — the first growing (as
+opposed to constant) lower-bound family in the file.
+
+The witness is `k` horizontal four-point chords of the quartic
+`y = x⁴ − 5x²`, one per level `u ∈ (0, 5/2)`; no-five-collinearity is the
+polynomial-degree fact `noFiveCollinear_of_onQuartic`, and the count is
+`fourPointLineCount_ge_of_injOn_family` applied to the level family.
+
+This does NOT settle the open `Ω(n^{3/2})` growth
+(`grunbaum_lower_bound_three_halves`); it is the linear floor beneath it,
+proved unconditionally and axiom-free. -/
+theorem quartic_linear_lower_bound (k : ℕ) (hk : 0 < k) :
+    ∃ P : PlanarPointSet, P.points.card ≤ 4 * k ∧
+      NoFiveCollinear P ∧ k ≤ fourPointLineCount P := by
+  classical
+  -- Level parameters: `t i ∈ (0,1)`, `u i = t i · (5/2) ∈ (0, 5/2)`, height `h i = u i² − 5 u i`.
+  set t : Fin k → ℝ := fun i => ((i.val : ℝ) + 1) / ((k : ℝ) + 1) with ht
+  set u : Fin k → ℝ := fun i => t i * (5 / 2) with hu
+  set h : Fin k → ℝ := fun i => (u i) ^ 2 - 5 * (u i) with hh
+  have hk1 : (0 : ℝ) < (k : ℝ) + 1 := by positivity
+  have ht_pos : ∀ i, 0 < t i := by intro i; rw [ht]; positivity
+  have ht_lt : ∀ i : Fin k, t i < 1 := by
+    intro i
+    rw [ht, div_lt_one hk1]
+    have : (i.val : ℝ) + 1 ≤ (k : ℝ) := by exact_mod_cast Nat.succ_le_of_lt i.isLt
+    linarith
+  have hu_pos : ∀ i, 0 < u i := by intro i; rw [hu]; have := ht_pos i; positivity
+  have hu_lt : ∀ i, u i < 5 / 2 := by
+    intro i; rw [hu]; have h1 := ht_lt i; have h2 := ht_pos i; nlinarith
+  have hu5 : ∀ i, u i < 5 - u i := by intro i; have := hu_lt i; linarith
+  have hu_pos5 : ∀ i, 0 < 5 - u i := by intro i; have := hu_lt i; linarith
+  -- Square-root data for each level.
+  have sp_pos : ∀ i, 0 < Real.sqrt (u i) := fun i => Real.sqrt_pos.mpr (hu_pos i)
+  have sq_pos : ∀ i, 0 < Real.sqrt (5 - u i) := fun i => Real.sqrt_pos.mpr (hu_pos5 i)
+  have spq : ∀ i, Real.sqrt (u i) < Real.sqrt (5 - u i) :=
+    fun i => Real.sqrt_lt_sqrt (hu_pos i).le (hu5 i)
+  -- The four points at level `i`, all at height `h i`.
+  set L : Fin k → Finset (ℝ × ℝ) := fun i =>
+    {(Real.sqrt (u i), h i), (-(Real.sqrt (u i)), h i),
+     (Real.sqrt (5 - u i), h i), (-(Real.sqrt (5 - u i)), h i)} with hL
+  -- Distinctness of two points sharing a height reduces to distinct first coordinates.
+  have mkne : ∀ (x y c : ℝ), x ≠ y → ((x, c) : ℝ × ℝ) ≠ (y, c) :=
+    fun x y c hxy heq => hxy (congrArg Prod.fst heq)
+  -- The point set: the union of all levels.
+  set pts : Finset (ℝ × ℝ) := Finset.univ.biUnion L with hpts
+  have hi0 : (⟨0, hk⟩ : Fin k) ∈ (Finset.univ : Finset (Fin k)) := Finset.mem_univ _
+  have hpts_ne : pts.Nonempty := by
+    refine ⟨(Real.sqrt (u ⟨0, hk⟩), h ⟨0, hk⟩), ?_⟩
+    rw [hpts, Finset.mem_biUnion]
+    exact ⟨⟨0, hk⟩, hi0, by rw [hL]; simp⟩
+  set P : PlanarPointSet := ⟨pts, Finset.card_pos.mpr hpts_ne⟩ with hP
+  -- Every point lies on the quartic graph.
+  have hquartic : ∀ p ∈ P.points, onQuartic p := by
+    intro p hp
+    have hp' : p ∈ pts := hp
+    rw [hpts, Finset.mem_biUnion] at hp'
+    obtain ⟨i, _, hpi⟩ := hp'
+    rw [hL] at hpi
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hpi
+    have hupos := (hu_pos i).le
+    have hu5pos := (hu_pos5 i).le
+    rcases hpi with rfl | rfl | rfl | rfl
+    · show h i = (Real.sqrt (u i)) ^ 4 - 5 * (Real.sqrt (u i)) ^ 2
+      rw [hh, show (Real.sqrt (u i)) ^ 4 = ((Real.sqrt (u i)) ^ 2) ^ 2 by ring,
+          Real.sq_sqrt hupos]
+    · show h i = (-(Real.sqrt (u i))) ^ 4 - 5 * (-(Real.sqrt (u i))) ^ 2
+      rw [hh, show (-(Real.sqrt (u i))) ^ 4 = ((Real.sqrt (u i)) ^ 2) ^ 2 by ring,
+          show (-(Real.sqrt (u i))) ^ 2 = (Real.sqrt (u i)) ^ 2 by ring, Real.sq_sqrt hupos]
+    · show h i = (Real.sqrt (5 - u i)) ^ 4 - 5 * (Real.sqrt (5 - u i)) ^ 2
+      rw [hh, show (Real.sqrt (5 - u i)) ^ 4 = ((Real.sqrt (5 - u i)) ^ 2) ^ 2 by ring,
+          Real.sq_sqrt hu5pos]
+      ring
+    · show h i = (-(Real.sqrt (5 - u i))) ^ 4 - 5 * (-(Real.sqrt (5 - u i))) ^ 2
+      rw [hh, show (-(Real.sqrt (5 - u i))) ^ 4 = ((Real.sqrt (5 - u i)) ^ 2) ^ 2 by ring,
+          show (-(Real.sqrt (5 - u i))) ^ 2 = (Real.sqrt (5 - u i)) ^ 2 by ring,
+          Real.sq_sqrt hu5pos]
+      ring
+  have hno5 : NoFiveCollinear P := noFiveCollinear_of_onQuartic P hquartic
+  -- Each level has exactly four (distinct) points.
+  have hLcard : ∀ i, (L i).card = 4 := by
+    intro i
+    rw [hL]
+    have e12 : Real.sqrt (u i) ≠ -(Real.sqrt (u i)) := by
+      intro heq; have := sp_pos i; linarith
+    have e13 : Real.sqrt (u i) ≠ Real.sqrt (5 - u i) := ne_of_lt (spq i)
+    have e14 : Real.sqrt (u i) ≠ -(Real.sqrt (5 - u i)) := by
+      intro heq; have := sp_pos i; have := sq_pos i; linarith
+    have e23 : -(Real.sqrt (u i)) ≠ Real.sqrt (5 - u i) := by
+      intro heq; have := sp_pos i; have := sq_pos i; linarith
+    have e24 : -(Real.sqrt (u i)) ≠ -(Real.sqrt (5 - u i)) := by
+      intro heq; exact (ne_of_lt (spq i)) (by linarith)
+    have e34 : Real.sqrt (5 - u i) ≠ -(Real.sqrt (5 - u i)) := by
+      intro heq; have := sq_pos i; linarith
+    rw [Finset.card_insert_of_notMem]
+    · rw [Finset.card_insert_of_notMem]
+      · rw [Finset.card_insert_of_notMem]
+        · simp
+        · simp [mkne _ _ _ e34]
+      · simp [mkne _ _ _ e23, mkne _ _ _ e24]
+    · simp [mkne _ _ _ e12, mkne _ _ _ e13, mkne _ _ _ e14]
+  -- Each level is a four-point collinear line inside `P`.
+  have hmem : ∀ i, L i ⊆ P.points := by
+    intro i
+    show L i ⊆ pts
+    rw [hpts]
+    exact Finset.subset_biUnion_of_mem L (Finset.mem_univ i)
+  have hcol : ∀ i, ∃ a b : ℝ × ℝ, a ∈ L i ∧ b ∈ L i ∧ a ≠ b ∧
+      ∀ p ∈ L i, collinear a b p := by
+    intro i
+    refine ⟨(Real.sqrt (u i), h i), (-(Real.sqrt (u i)), h i), ?_, ?_, ?_, ?_⟩
+    · rw [hL]; simp
+    · rw [hL]; simp
+    · exact mkne _ _ _ (by intro heq; have := sp_pos i; linarith)
+    · intro p hp
+      rw [hL] at hp
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      have hp2 : p.2 = h i := by rcases hp with rfl | rfl | rfl | rfl <;> rfl
+      show (-(Real.sqrt (u i)) - Real.sqrt (u i)) * (p.2 - h i)
+          = (p.1 - Real.sqrt (u i)) * (h i - h i)
+      rw [hp2]; ring
+  -- Distinct levels give distinct four-point lines.
+  have hinj : Function.Injective L := by
+    intro i j hij
+    have hmemi : (Real.sqrt (u i), h i) ∈ L i := by rw [hL]; simp
+    rw [hij, hL] at hmemi
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hmemi
+    have hhij : h i = h j := by
+      rcases hmemi with h' | h' | h' | h' <;> exact congrArg Prod.snd h'
+    have huij : u i = u j := by
+      have hfact : (u i - u j) * (u i + u j - 5) = 0 := by
+        simp only [hh] at hhij; linear_combination hhij
+      have hsum : u i + u j - 5 < 0 := by have := hu_lt i; have := hu_lt j; linarith
+      rcases mul_eq_zero.mp hfact with h' | h'
+      · linarith [sub_eq_zero.mp h']
+      · linarith
+    have htij : t i = t j := by
+      simp only [hu] at huij
+      exact mul_right_cancel₀ (by norm_num : (5 / 2 : ℝ) ≠ 0) huij
+    simp only [ht] at htij
+    rw [div_eq_div_iff hk1.ne' hk1.ne'] at htij
+    have hval : (i.val : ℝ) = (j.val : ℝ) := by
+      have := mul_right_cancel₀ hk1.ne' htij
+      linarith
+    exact Fin.ext (by exact_mod_cast hval)
+  -- Point count `≤ 4·k`.
+  have hcardP : P.points.card ≤ 4 * k := by
+    show pts.card ≤ 4 * k
+    rw [hpts]
+    calc (Finset.univ.biUnion L).card
+        ≤ ∑ i : Fin k, (L i).card := Finset.card_biUnion_le
+      _ = ∑ _i : Fin k, 4 := Finset.sum_congr rfl (fun i _ => hLcard i)
+      _ = 4 * k := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]; ring
+  refine ⟨P, hcardP, hno5, ?_⟩
+  exact fourPointLineCount_ge_of_injOn_family P k L hmem hLcard hcol hinj
+
+/-- **Packaged linear lower bound.**  For every `k ≥ 1` there is a
+no-five-collinear planar point set that is an `IsLowerBoundConstruction`
+for threshold `k` on at most `4·k` points.  Contrast with the constant
+witnesses `crossSet`/`asteriskSet`/`gridSet` (fixed floors ≤ 10): this
+family's floor grows without bound, so `fourPointLineCount` is unbounded
+over no-five-collinear sets. -/
+theorem exists_isLowerBoundConstruction_linear (k : ℕ) (hk : 0 < k) :
+    ∃ P : PlanarPointSet, P.points.card ≤ 4 * k ∧
+      IsLowerBoundConstruction P (k : ℝ) := by
+  obtain ⟨P, hcard, hno5, hcount⟩ := quartic_linear_lower_bound k hk
+  exact ⟨P, hcard, hno5, by exact_mod_cast hcount⟩
 
 end Erdos101OQ04

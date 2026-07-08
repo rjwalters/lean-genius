@@ -25,21 +25,6 @@
   * `edgeThreshold_lt_choose_two` — **strict** non-degeneracy: `edgeThreshold n k < C(n,2)`
     on `n ≥ 2k+3` away from the single degenerate corner `(k,n) = (0,3)`.
 
-  It also records the complementary variation in the *cycle-length parameter `k`* (with
-  `n` fixed), which the parent likewise omits:
-
-  * `edgeThreshold_succ_right`   — the **recurrence in `k`** (for `n ≥ k+2`):
-    `edgeThreshold n (k+1) + (n-k-2) = edgeThreshold n k + (k+2)`; the discrete
-    derivative in `k` is `2k+4-n`, negative for small `k` and positive for large `k`.
-  * `edgeThreshold_succ_right_le` / `edgeThreshold_succ_right_ge` — the threshold
-    **decreases** in `k` on `n ≥ 2k+4` and **increases** on `k+2 ≤ n ≤ 2k+4`.
-  * `edgeThreshold_second_diff`  — **convexity**: the second difference in `k` is the
-    constant `+2` (`edgeThreshold n k + edgeThreshold n (k+2) = 2·edgeThreshold n (k+1)+2`),
-    so `k ↦ edgeThreshold n k` is U-shaped.
-  * `edgeThreshold_reflect`      — **reflection symmetry** `edgeThreshold n k =
-    edgeThreshold n (n-k-3)` (the involution `k ↦ n-k-3` swaps the two binomials),
-    which with convexity pins the minimum to the axis `k = (n-3)/2`.
-
   All results are fully machine-checked (0 axioms, 0 sorries), reusing the parent's
   `edgeThreshold` definition.
 
@@ -108,83 +93,6 @@ theorem edgeThreshold_mono (k : ℕ) {n m : ℕ} (hn : k + 1 ≤ n) (hnm : n ≤
     have hkm : k + 1 ≤ m := le_trans hn h
     rw [edgeThreshold_succ_left m k hkm]
     omega
-
-/-!
-### Variation in `k` (fixed `n`)
-
-The results above track how `edgeThreshold n k` moves as the vertex count `n` grows.
-The complementary direction — how it moves as the cycle-length parameter `k` grows with
-`n` held fixed — is governed by the *other* binomial coefficient.  Writing
-`edgeThreshold n k = C(n-k-1, 2) + C(k+2, 2) + 1`, increasing `k` by one *shrinks* the
-first coefficient (its argument `n-k-1` drops) while it *grows* the second (`k+2` rises),
-so the threshold is a sum of a decreasing and an increasing term.  The net discrete
-derivative in `k` is `(k+2) - (n-k-2) = 2k+4-n`: negative for small `k`, positive for
-large `k`.  Hence `k ↦ edgeThreshold n k` is **convex (U-shaped)** in `k`, with constant
-second difference `2` and a reflection symmetry about the axis `k = (n-3)/2`.
--/
-
-/-- **Recurrence in `k`.**  For `n ≥ k+2` (so `n-k-1 ≥ 1`), the subtraction-free form of
-    the discrete derivative in `k`:
-
-        edgeThreshold n (k+1) + (n - k - 2) = edgeThreshold n k + (k + 2).
-
-    Equivalently `edgeThreshold n (k+1) − edgeThreshold n k = (k+2) − (n-k-2) = 2k+4-n`.
-    Raising `k` shrinks the leading coefficient by `n-k-2 = C(n-k-1,2)-C(n-k-2,2)` and
-    grows the trailing one by `k+2 = C(k+3,2)-C(k+2,2)`. -/
-theorem edgeThreshold_succ_right (n k : ℕ) (h : k + 2 ≤ n) :
-    edgeThreshold n (k + 1) + (n - k - 2) = edgeThreshold n k + (k + 2) := by
-  unfold edgeThreshold
-  have e1 : n - (k + 1) - 1 = n - k - 2 := by omega
-  have e2 : k + 1 + 2 = (k + 2) + 1 := by omega
-  have e3 : n - k - 1 = (n - k - 2) + 1 := by omega
-  rw [e1, e2, choose_two_succ (k + 2), e3, choose_two_succ (n - k - 2)]
-  omega
-
-/-- **Threshold decreases in `k` on the pre-axis range `n ≥ 2k+4`.**  When `2k+4 ≤ n`
-    the step from `k` to `k+1` lands on the decreasing (negative-derivative) branch. -/
-theorem edgeThreshold_succ_right_le (n k : ℕ) (h : 2 * k + 4 ≤ n) :
-    edgeThreshold n (k + 1) ≤ edgeThreshold n k := by
-  have hr := edgeThreshold_succ_right n k (by omega)
-  omega
-
-/-- **Threshold increases in `k` on the post-axis range `k+2 ≤ n ≤ 2k+4`.**  When
-    `n ≤ 2k+4` (and `n ≥ k+2` so the recurrence applies) the step from `k` to `k+1`
-    lands on the increasing (nonnegative-derivative) branch. -/
-theorem edgeThreshold_succ_right_ge (n k : ℕ) (hlo : k + 2 ≤ n) (hhi : n ≤ 2 * k + 4) :
-    edgeThreshold n k ≤ edgeThreshold n (k + 1) := by
-  have hr := edgeThreshold_succ_right n k hlo
-  omega
-
-/-- **Convexity in `k`: constant second difference.**  For `n ≥ k+3`,
-
-        edgeThreshold n k + edgeThreshold n (k+2) = 2 · edgeThreshold n (k+1) + 2.
-
-    The second discrete difference is the constant `+2`, so `k ↦ edgeThreshold n k` is
-    (discretely) convex — a genuine U-shape rather than a monotone curve.  This is the
-    structural reason the two single-step directions above have opposite signs. -/
-theorem edgeThreshold_second_diff (n k : ℕ) (h : k + 3 ≤ n) :
-    edgeThreshold n k + edgeThreshold n (k + 2)
-      = 2 * edgeThreshold n (k + 1) + 2 := by
-  have hA := edgeThreshold_succ_right n k (by omega)
-  have hB := edgeThreshold_succ_right n (k + 1) (by omega)
-  rw [show k + 1 + 1 = k + 2 from rfl] at hB
-  omega
-
-/-- **Reflection symmetry in `k`.**  For `n ≥ k+3`,
-
-        edgeThreshold n k = edgeThreshold n (n - k - 3).
-
-    The involution `k ↦ n-k-3` swaps the two binomial coefficients
-    (`n-k-1 ↔ (n-k-3)+2` and `k+2 ↔ n-(n-k-3)-1`), so the threshold is symmetric about
-    the axis `k = (n-3)/2`.  Together with `edgeThreshold_second_diff` (convexity) this
-    pins the minimum of `k ↦ edgeThreshold n k` to that axis. -/
-theorem edgeThreshold_reflect (n k : ℕ) (h : k + 3 ≤ n) :
-    edgeThreshold n k = edgeThreshold n (n - k - 3) := by
-  unfold edgeThreshold
-  have e1 : n - (n - k - 3) - 1 = k + 2 := by omega
-  have e2 : (n - k - 3) + 2 = n - k - 1 := by omega
-  rw [e1, e2]
-  ring
 
 /-- **Non-degeneracy of the edge threshold.**  On the Woodall range `n ≥ 2k+3` the
     threshold never exceeds the total number of edges of the complete graph `Kₙ`:

@@ -66,17 +66,9 @@
   },
   "sections": [
     {
-      "id": "overview-setup",
-      "title": "Framing: A Local Obstruction for Erdős #12",
-      "startLine": 1,
-      "endLine": 36,
-      "summary": "Module docstring framing Erdős Problem #12 and this WIP file: it isolates the local divisibility obstruction for a divisibility-free set A (no a ∣ b+c for distinct a<b, a<c in A), records the structural consequences, and exhibits a concrete witness. Imports Mathlib and opens the Erdos12WIP01 namespace.",
-      "mathContext": "A ⊆ ℕ is divisibility-free iff no distinct a<b, a<c in A have a ∣ (b+c); the file draws the multiple-uniqueness and residue consequences and checks {4,5,6}."
-    },
-    {
       "id": "definition",
       "title": "The Divisibility-Free Predicate",
-      "startLine": 37,
+      "startLine": 39,
       "endLine": 46,
       "summary": "IsDivisibilityFree A: no distinct a, b, c ∈ A with a < b, a < c and a ∣ (b + c). Matches the erdos-12 gallery definition.",
       "mathContext": "$A$ is divisibility-free iff $\\forall a,b,c \\in A$ distinct with $a < b, a < c$, $a \\nmid (b+c)$."
@@ -111,30 +103,22 @@
     {
       "name": "no_two_larger_multiples",
       "type": "core",
-      "description": "For a ∈ A in a divisibility-free set, no two distinct elements of A larger than a are both multiples of a.",
-      "startLine": 51,
-      "endLine": 55
+      "description": "For a ∈ A in a divisibility-free set, no two distinct elements of A larger than a are both multiples of a."
     },
     {
       "name": "unique_larger_multiple",
       "type": "core",
-      "description": "Each a ∈ A has at most one larger multiple in A (any two coincide).",
-      "startLine": 59,
-      "endLine": 63
+      "description": "Each a ∈ A has at most one larger multiple in A (any two coincide)."
     },
     {
       "name": "no_antipodal_pair",
       "type": "supporting",
-      "description": "No two distinct elements of A larger than a sum to 0 mod a — the residue-level form of the obstruction.",
-      "startLine": 74,
-      "endLine": 79
+      "description": "No two distinct elements of A larger than a sum to 0 mod a — the residue-level form of the obstruction."
     },
     {
       "name": "divFree_456",
       "type": "supporting",
-      "description": "The concrete set {4, 5, 6} is divisibility-free, witnessing non-vacuous satisfiability.",
-      "startLine": 84,
-      "endLine": 88
+      "description": "The concrete set {4, 5, 6} is divisibility-free, witnessing non-vacuous satisfiability."
     }
   ],
   "crossReferences": [
@@ -146,9 +130,7 @@
   ],
   "sorries": 0,
   "leanFile": {
-    "imports": [
-      "Mathlib"
-    ],
+    "imports": ["Mathlib"],
     "opens": [],
     "namespace": "Erdos12WIP01",
     "lineCount": 90,

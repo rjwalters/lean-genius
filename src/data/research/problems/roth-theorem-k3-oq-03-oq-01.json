@@ -18,9 +18,7 @@
       "kAPCount_update_split (von Neumann slot-split): for any scalar δ, Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g − δ·1)). Proof = kAPCount_update_add on g = δ·1 + (g−δ·1) followed by kAPCount_update_smul; the δ·1 + (g−δ·1) = g step closes by add_sub_cancel. This is literally the first density-decomposition step of the generalized von Neumann argument (take g=1_A, δ=|A|/N).",
       "kAPCount_update_sub: subtractivity in a slot, derived from update_add + update_smul via g₁−g₂ = g₁ + (−1)•g₂ (neg_one_smul, sub_eq_add_neg, neg_one_mul). Completes the slotwise linear structure (add/sub/smul/zero).",
       "kAPCount_update_zero (@[simp]): overwriting slot j with 0 gives Λ_k = 0 — one-liner off kAPCount_eq_zero_of_zero + Function.update_self; the additive unit of the slot module.",
-      "Toolchain: Function.update_self (NOT update_same) is the v4.26 name for update f j v j = v; add_sub_cancel proves a + (b − a) = b here (works for the module ZMod N → ℂ).",
-      "The full slot-telescoping Λ_k(g,…,g)=∑_{S⊆[k]}δ^{k−|S|}Λ_k(i↦if i∈S then b else 1) (b=g−δ·1) is obtained in ONE shot from Finset.prod_add on the inner product ∏ᵢ g(x+i·d)=∏ᵢ(b(x+i·d)+δ), rather than iterating kAPCount_update_split k times. S=∅ gives the δ^k major term (kAPCount_const_one).",
-      "Assembly: expand inner product on both sides to a canonical triple sum (N⁻¹)²∑ₓ∑_d∑_S, then reconcile via two Finset.sum_comm reorderings (∑_S∑ₓ∑_d → ∑ₓ∑_d∑_S). RHS if-slots collapse via Finset.prod_ite_mem + univ_inter; δ-power exponent k−|S| via Finset.card_sdiff_of_subset."
+      "Toolchain: Function.update_self (NOT update_same) is the v4.26 name for update f j v j = v; add_sub_cancel proves a + (b − a) = b here (works for the module ZMod N → ℂ)."
     ],
     "builtItems": [
       "RothTheoremOQ03OQ01.lean: self-contained, 4 noncomputable defs (hypercubeShift, conjugateByWeight, gowersNorm, kAPCount) + 5 proved theorems, 0 axioms, 0 sorries.",
@@ -34,14 +32,14 @@
       "kAPCount_update_smul: scalar homogeneity in slot j — Λ_k(update f j (c•g)) = c·Λ_k(update f j g).",
       "kAPCount_update_split: von Neumann slot-split identity Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1)). 0 axioms (propext/Choice/Quot only), host lake env lean EXIT 0.",
       "kAPCount_update_sub: slotwise subtractivity.",
-      "kAPCount_update_zero (@[simp]): zero slot annihilates the count (update form).",
-      "kAPCount_diag_eq_sum_subsets (generalized von Neumann telescoping, 2^k subset expansion)"
+      "kAPCount_update_zero (@[simp]): zero slot annihilates the count (update form)."
     ],
-    "progressSummary": "PROGRESS (S+1, researcher-5): added the generalized von Neumann slot-split kAPCount_update_split (Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1))) — the first density-decomposition step the prior nextSteps called for — plus its supporting slotwise linearity (kAPCount_update_sub, kAPCount_update_zero). All host-verified (lake env lean EXIT 0), 0 axioms/0 sorries (foundational trio only). score 13→16. [2026-07-08 researcher-10] Proved the full slot-telescoping kAPCount_diag_eq_sum_subsets (the density-decomposition step the prior nextSteps called for, completed): Λ_k(g,…,g)=∑_{S⊆[k]}δ^{k−|S|}Λ_k(i↦if i∈S then g−δ·1 else 1), all 2^k terms with δ^k major term at S=∅, via Finset.prod_add. VERIFIED 0/0 (docker-build green). File 354L/12 theorems.",
+    "progressSummary": "PROGRESS (S+1, researcher-5): added the generalized von Neumann slot-split kAPCount_update_split (Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1))) — the first density-decomposition step the prior nextSteps called for — plus its supporting slotwise linearity (kAPCount_update_sub, kAPCount_update_zero). All host-verified (lake env lean EXIT 0), 0 axioms/0 sorries (foundational trio only). score 13→16.",
     "nextSteps": [
-      "Prove the generalized von Neumann INEQUALITY: bound each balanced-remainder term |Λ_k(…,b,…)| (b mean-zero) by the Gowers U^{k−1} norm of the balanced slot (Cauchy–Schwarz/box-norm control; gowersNorm def already in file)",
-      "Connect kAPCount of an indicator 1_A to the actual count of 3-APs in a finset A ⊆ ZMod N",
-      "Repair parent RothTheoremOQ03.lean toolchain drift (Complex.abs → ‖·‖) so the files can merge"
+      "Iterate the split across all k slots to telescope Λ_k(1_A,…,1_A) into the major term δ^k·Λ_k(1,…,1)=δ^k plus 2^k−1 balanced remainders (each with ≥1 mean-zero slot g−δ·1).",
+      "Prove the generalized von Neumann INEQUALITY: bound each balanced remainder |Λ_k(…, g−δ·1, …)| by the Gowers U^{k−1} norm of the balanced slot (needs a Cauchy–Schwarz / box-norm control lemma; the gowersNorm def is already in this file).",
+      "Connect kAPCount of an indicator 1_A to the actual count of 3-APs in a finset A ⊆ ZMod N.",
+      "Repair toolchain drift in parent RothTheoremOQ03.lean (Complex.abs → ‖·‖) so the two files can merge."
     ]
   },
   "relatedProofs": [

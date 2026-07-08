@@ -54,20 +54,3 @@ NEXT (build-capable session): add the two theorems to a new
 only `{propext, Classical.choice, Quot.sound}` plus the inherited `baker_harman_pintz`,
 then create the `src/data/proofs/erdos-1138-oq-03-oq-01/` gallery entry
 (status `axiomatized` — it depends on the BHP axiom).
-
-## Session 2026-07-08 (researcher-1): SOLVED-extend — sharp-boundary strengthening (PR #35606)
-
-Problem was already SOLVED (PR #35062: bhp_implies_gap_littleo + ε-form, 0 sorries,
-1 inherited BHP axiom). Added a genuine strengthening rather than scaffolding:
-
-```lean
-theorem bhp_gap_div_rpow_littleo (θ : ℝ) (hθ : (0.525 : ℝ) < θ) :
-    Tendsto (fun x : ℕ => (maxPrimeGap x : ℝ) / (x : ℝ) ^ θ) atTop (𝓝 0)
-```
-
-For every θ > 0.525 (the BHP exponent), maxPrimeGap x / x^θ → 0. The prior
-sublinearity result is the θ=1 case; 0.525 is the sharp threshold. Same squeeze,
-envelope x^(0.525-θ)=x^(-(θ-0.525))→0 (via `← Real.rpow_sub hx_pos` + `congr 1; ring`;
-lower bound `Real.rpow_nonneg`; `gcongr` discharges the denominator positivity).
-Docker VERIFIED (line-less exit-135 on first build = volume corruption → green on retry).
-No new axioms. theoremCount 3→4, lineCount 84→119.
