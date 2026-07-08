@@ -407,4 +407,57 @@ tower: `4k + 3 ≤ p3 k ≤ C k`, a strictly tighter ceiling than `p3_bracketed`
 theorem p3_bracketed_primorial (k : ℕ) : 4 * k + 3 ≤ p3 k ∧ p3 k ≤ C k :=
   ⟨p3_ge_linear k, p3_le_primorialTower k⟩
 
+/-! ## Step 6: the primorial tower never exceeds the factorial tower (`C k ≤ B k`)
+
+`primorial_tighter_than_factorial` established `C 1 < B 1` at the single index
+`k = 1`.  We now upgrade this to a *theorem for all `k`*: the primorial tower `C`
+is dominated by the iterated-factorial tower `B` everywhere, `C k ≤ B k`.
+
+The engine is the reduction `C (k+1) ≤ B (k+1) ⇔ towerProd (k+1) ≤ (B k + 1)!`
+(both sides are `4·· − 1`), so it suffices to bound the running product
+`towerProd` by the factorial appearing in `B`.  That product bound is proved by
+induction: writing `F = (B k + 1)!`, the inductive hypothesis gives
+`towerProd (k+1) ≤ F`, and then
+`towerProd (k+2) = towerProd (k+1)·(4·towerProd (k+1) − 1) ≤ F·(4F − 1)
+   ≤ (4F)·(4F − 1) ≤ (4F)! = (B (k+1) + 1)!`,
+using only the elementary factorial lower bound `n·(n−1) ≤ n!`. -/
+
+/-- Elementary factorial lower bound `n·(n−1) ≤ n!` (from `n! = n·(n−1)!` and
+`n−1 ≤ (n−1)!`).  Supplies the single non-arithmetic step in `C_le_B`. -/
+theorem factorial_ge_mul_pred : ∀ n : ℕ, n * (n - 1) ≤ n !
+  | 0 => by simp
+  | (m + 1) => by
+      rw [Nat.add_sub_cancel, Nat.factorial_succ]
+      exact Nat.mul_le_mul (le_refl (m + 1)) (Nat.self_le_factorial m)
+
+/-- The running product is bounded by the factorial appearing in the next `B`
+step: `towerProd (k+1) ≤ (B k + 1)!`.  This is the crux of `C_le_B`. -/
+theorem towerProd_succ_le_factorial (k : ℕ) : towerProd (k + 1) ≤ (B k + 1)! := by
+  induction k with
+  | zero => decide
+  | succ k ih =>
+    have hFpos := Nat.factorial_pos (B k + 1)
+    have hB1 : B (k + 1) + 1 = 4 * (B k + 1)! := by rw [B_succ]; omega
+    rw [towerProd_succ, hB1]
+    set F := (B k + 1)! with hF
+    set tp := towerProd (k + 1) with htp
+    calc tp * (4 * tp - 1)
+        ≤ F * (4 * F - 1) := Nat.mul_le_mul ih (by omega)
+      _ ≤ (4 * F) * (4 * F - 1) := Nat.mul_le_mul (by omega) (le_refl _)
+      _ ≤ (4 * F)! := factorial_ge_mul_pred (4 * F)
+
+/-- **The primorial tower never exceeds the factorial tower.** For every `k`,
+`C k ≤ B k`: the doubly-exponential primorial tower `C` is dominated everywhere
+by the iterated-factorial tower `B`.  Equality holds only at `k = 0`
+(`C 0 = B 0 = 3`); for `k ≥ 1` the domination is strict already at `k = 1`
+(`C 1 = 11 < 95 = B 1`, see `primorial_tighter_than_factorial`).  This makes the
+tightness of the primorial refinement a *theorem for all `k`* rather than a
+single-index observation. -/
+theorem C_le_B (k : ℕ) : C k ≤ B k := by
+  cases k with
+  | zero => decide
+  | succ k =>
+    have h := towerProd_succ_le_factorial k
+    rw [C_eq, B_succ]; omega
+
 end DirichletsTheoremOQ02OQ03
