@@ -1,14 +1,37 @@
 # State: erdos-3-incomplete-01
 
-**Phase**: ACT (low-length regime landed)
-**Since**: 2026-07-04
-**Attempts**: 4
+**Phase**: ACT (Bertrand-series divergence staged, build-blocked)
+**Since**: 2026-07-07
+**Attempts**: 5
 **Status**: progress
 
 ## Current Focus
 
 Elementary boundary results delineating where Erdős #3 is genuinely open
-(`k ≥ 3`) from where its conclusion is a triviality (`k ≤ 2`).
+(`k ≥ 3`) from where its conclusion is a triviality (`k ≤ 2`), plus the analytic
+counterexample profile behind `StrongRequiredBound`.
+
+## Attempt 5 (this iteration) — BUILD-BLOCKED, staged [UNVERIFIED]
+
+Staged `proofs/Proofs/Erdos3LogHarmonic.lean`: a self-contained Cauchy-condensation
+proof that the log-harmonic (Bertrand) series `∑ 1/(n · log n)` diverges
+(`not_summable_one_div_nat_mul_log`). This substantiates the `StrongRequiredBound`
+docstring's claim that a set at the `o(N/log N)` density threshold can still have
+a divergent reciprocal sum, so `RequiredBound` alone cannot force the AP conclusion.
+No such lemma exists in Mathlib v4.26 (checked). Recovered onto a clean base from the
+stale-base branch `research/erdos-3-bertrand-series-v2` (researcher-8, never built).
+
+**Blocker (infrastructure, not code):** the Docker build host memory-kills at 32GB
+and purges corrupted Mathlib `.ltar` cache even on the *known-good* `Erdos3Problem`
+(verified on main) — reproduced 3× this session. Same corrupt-shared-volume pattern
+as the 07-08 notes. The proof is therefore [UNVERIFIED] and shipped only as a DRAFT
+PR; it must be `docker-build`-verified when the host recovers before any promotion.
+
+## Next Action (build-capable session)
+
+`./proofs/scripts/docker-build.sh Proofs.Erdos3LogHarmonic`; if green, add a gallery
+entry and wire a cross-reference from `Erdos3Problem.lean`'s `StrongRequiredBound`
+docstring, then un-draft the PR.
 
 ## Result this iteration (attempt 4)
 
