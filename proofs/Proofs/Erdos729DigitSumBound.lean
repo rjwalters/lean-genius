@@ -110,4 +110,92 @@ theorem erdos_two_adic_bound_log (n a b : ℕ) (ha : a ≠ 0) (hb : b ≠ 0)
   have hlb := digitSum_two_le_log b hb
   omega
 
+-- ----------------------------------------------------------------------------
+-- The honest UNIFORM real-logarithmic Erdős (1968) bound, axiom-free.
+--
+-- The parent file carries the classical bound only through the axiom
+-- `erdos_1968_classical`, stated as `∀ n a b, a!b! ∣ n! → ∃ C>0, a+b ≤ n+C·log n`.
+-- That statement is defective on two counts:
+--   * it is UNSOUND at `n ∈ {0,1}` — e.g. `n=0, a=b=1`: `1!·1! ∣ 0!` holds, yet
+--     `a+b = 2 ≤ 0 + C·log 0 = 0` is false for every `C` (Real.log 0 = 0); and
+--   * with `C` chosen per-instance INSIDE the `∀`, it is VACUOUS for `n ≥ 2`
+--     (take `C = (a+b)/log n`), so it does not express Erdős's actual content.
+-- The mathematically meaningful statement puts a SINGLE uniform `C` outside the
+-- quantifiers.  We prove exactly that, axiom-free, with the explicit constant
+-- `C = 4 / log 2`, valid for all `n ≥ 2`.  This is the correct replacement for
+-- the parent's `erdos_1968_classical`.
+-- ----------------------------------------------------------------------------
+
+/-- **`⌊log₂ n⌋ · log 2 ≤ log n`.**  Real-logarithm form of `2^⌊log₂ n⌋ ≤ n`:
+take `Real.log` of `2^(Nat.log 2 n) ≤ n` and use `Real.log_pow`. -/
+theorem natLog_two_mul_log_two_le_log (n : ℕ) (hn : 1 ≤ n) :
+    (Nat.log 2 n : ℝ) * Real.log 2 ≤ Real.log n := by
+  have hpow : (2 : ℕ) ^ Nat.log 2 n ≤ n := Nat.pow_log_le_self 2 (by omega)
+  have h2n : (2 : ℝ) ^ Nat.log 2 n ≤ (n : ℝ) := by exact_mod_cast hpow
+  have hpos : (0 : ℝ) < (2 : ℝ) ^ Nat.log 2 n := by positivity
+  have hlog : Real.log ((2 : ℝ) ^ Nat.log 2 n) ≤ Real.log n := Real.log_le_log hpos h2n
+  rwa [Real.log_pow] at hlog
+
+/-- **Erdős (1968), uniform real-logarithmic form — axiom-free.**  There is a
+    single constant `C = 4 / log 2 > 0` such that for every `n ≥ 2` and all
+    `a, b` with `a! · b! ∣ n!`,
+        `a + b ≤ n + C · log n`.
+    This is the honest, non-vacuous statement of the classical bound (uniform
+    `C`, no small-`n` unsoundness), derived entirely from the elementary 2-adic
+    digit-sum bound `erdos_two_adic_bound_log`. -/
+theorem erdos_1968_uniform :
+    ∃ C : ℝ, 0 < C ∧ ∀ n a b : ℕ, 2 ≤ n → a ! * b ! ∣ n ! →
+      (a + b : ℝ) ≤ n + C * Real.log n := by
+  have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  refine ⟨4 / Real.log 2, by positivity, ?_⟩
+  intro n a b hn hdvd
+  -- log n ≥ log 2 > 0
+  have hlogn2 : Real.log 2 ≤ Real.log n := by
+    have h2n : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    exact Real.log_le_log (by norm_num) h2n
+  have hlognpos : 0 < Real.log n := lt_of_lt_of_le hlog2 hlogn2
+  -- a ≤ n and b ≤ n from the divisibility
+  have han : a ≤ n := by
+    by_contra hc
+    push_neg at hc
+    have hd : a ! ∣ n ! := (dvd_mul_right (a !) (b !)).trans hdvd
+    have hle : a ! ≤ n ! := Nat.le_of_dvd (Nat.factorial_pos n) hd
+    have hlt : n ! < a ! := (Nat.factorial_lt (by omega)).mpr hc
+    omega
+  have hbn : b ≤ n := by
+    by_contra hc
+    push_neg at hc
+    have hd : b ! ∣ n ! := (dvd_mul_left (b !) (a !)).trans hdvd
+    have hle : b ! ≤ n ! := Nat.le_of_dvd (Nat.factorial_pos n) hd
+    have hlt : n ! < b ! := (Nat.factorial_lt (by omega)).mpr hc
+    omega
+  -- Reduce the RHS constant to a multiple of L := log n / log 2
+  have hL : (4 / Real.log 2) * Real.log n = 4 * (Real.log n / Real.log 2) := by ring
+  have hL1 : (1 : ℝ) ≤ Real.log n / Real.log 2 := (one_le_div hlog2).mpr hlogn2
+  rw [hL]
+  set L : ℝ := Real.log n / Real.log 2 with hLdef
+  -- Case a = 0 or b = 0: a + b ≤ n directly
+  rcases Nat.eq_zero_or_pos a with ha0 | ha1
+  · subst ha0
+    have hb' : (b : ℝ) ≤ n := by exact_mod_cast hbn
+    have : (0 : ℝ) ≤ 4 * L := by positivity
+    push_cast; linarith
+  rcases Nat.eq_zero_or_pos b with hb0 | hb1
+  · subst hb0
+    have ha' : (a : ℝ) ≤ n := by exact_mod_cast han
+    have : (0 : ℝ) ≤ 4 * L := by positivity
+    push_cast; linarith
+  -- Main case a, b ≥ 1: elementary bound + logarithm bridge
+  have hmain := erdos_two_adic_bound_log n a b (by omega) (by omega) hdvd
+  have hla : Nat.log 2 a ≤ Nat.log 2 n := Nat.log_mono_right han
+  have hlb : Nat.log 2 b ≤ Nat.log 2 n := Nat.log_mono_right hbn
+  have hnat : a + b ≤ n + 2 * Nat.log 2 n + 2 := by omega
+  have hcast : (a : ℝ) + b ≤ (n : ℝ) + 2 * (Nat.log 2 n : ℝ) + 2 := by exact_mod_cast hnat
+  -- ⌊log₂ n⌋ ≤ L
+  have hlogdiv : (Nat.log 2 n : ℝ) ≤ L := by
+    rw [hLdef, le_div_iff₀ hlog2]
+    exact natLog_two_mul_log_two_le_log n (by omega)
+  -- assemble:  a+b ≤ n + 2·⌊log₂ n⌋ + 2 ≤ n + 2L + 2L = n + 4L
+  linarith
+
 end Erdos729DigitSum

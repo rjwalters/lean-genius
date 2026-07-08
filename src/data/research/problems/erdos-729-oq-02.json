@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (researcher-6, 2026-07-08): de-axiomatized the elementary 2-adic core of Erdős 1968 — new verified companion Erdos729DigitSumBound.lean proves the sharp digit-sum bound a+b ≤ n+s₂(a)+s₂(b) and its log corollary, 0 axioms/0 sorries.",
+    "progressSummary": "PROGRESS (researcher-3, 2026-07-08): added the honest UNIFORM real-logarithmic Erdős-1968 bound to the companion Erdos729DigitSumBound.lean, axiom-free (0 axioms/0 sorries). erdos_1968_uniform: ∃ single C=4/log2>0, ∀ n≥2, ∀ a,b with a!b!∣n!, (a+b:ℝ)≤n+C·log n. This is the correct replacement for the parent file's axiom erdos_1968_classical, which is BOTH unsound at n∈{0,1} (n=0,a=b=1: 1∣1 but 2≤0 false) AND vacuous for n≥2 (C chosen per-instance inside ∀ ⟹ take C=(a+b)/log n). Derived from the elementary 2-adic digit-sum bound via a Nat.log→Real.log bridge (2^⌊log₂n⌋≤n).",
     "builtItems": [
       "digitSum_prime_mul_add (p n r)(hp:1<p)(hr:r<p): (Nat.digits p (p*n+r)).sum = (Nat.digits p n).sum + r -- general base-p digit left-shift, Erdos729LegendrePrimeRecurrence.lean",
       "digitSum_prime_mul (p n)(hp:1<p): s_p(p*n)=s_p(n) -- r=0 invariant",
@@ -47,18 +47,24 @@
       "Erdos729DigitSumBound.lean: v2_add_le_of_dvd — a!·b!∣n! ⟹ v₂(a!)+v₂(b!) ≤ v₂(n!) via Nat.factorization_prime_le_iff_dvd + factorization_mul + factorization_def",
       "Erdos729DigitSumBound.lean: erdos_two_adic_bound — axiom-free sharp bound a+b ≤ n+s₂(a)+s₂(b)",
       "Erdos729DigitSumBound.lean: digitSum_two_le_log — s₂(m) ≤ Nat.log 2 m + 1 (List.sum_le_card_nsmul + Nat.digits_len)",
-      "Erdos729DigitSumBound.lean: erdos_two_adic_bound_log — log form a+b ≤ n+(log₂a+1)+(log₂b+1)"
+      "Erdos729DigitSumBound.lean: erdos_two_adic_bound_log — log form a+b ≤ n+(log₂a+1)+(log₂b+1)",
+      "natLog_two_mul_log_two_le_log (Erdos729DigitSumBound.lean): (⌊log₂ n⌋:ℝ)·log 2 ≤ log n via Real.log of 2^⌊log₂n⌋≤n + Real.log_pow.",
+      "erdos_1968_uniform (Erdos729DigitSumBound.lean): ∃ uniform C=4/log2>0, ∀ n≥2 ∀ a,b, a!b!∣n! → (a+b:ℝ)≤n+C·log n — axiom-free honest Erdős-1968; correct replacement for the unsound/vacuous main-file axiom erdos_1968_classical."
     ],
     "insights": [
       "The 2-adic doubling recurrence v_2((2n)!)=n+v_2(n!) is the p=2 shadow of a general-prime law: for EVERY prime p and residue 0<=r<p, v_p((p*n+r)!) = n + v_p(n!), the increment n being INDEPENDENT of r. So all p consecutive arguments pn, pn+1, ..., pn+(p-1) share one valuation step. Proof: (p-1)*v_p(m!)=m-s_p(m) (Mathlib) plus s_p(p*n+r)=s_p(n)+r and (p-1)*n+n=p*n, then cancel p-1>0. Not a named Mathlib lemma.",
       "General textbook Legendre identity v_p(n!)=(n-s_p(n))/(p-1) proved axiom-free for ALL primes p in new companion Erdos729LegendreGeneral.lean (sibling PR #24474 covers only p=2). Division form derived from Mathlib sub_one_mul_padicValNat_factorial via Nat.mul_div_cancel_left; not a named Mathlib lemma.",
       "v_2((2n)!) = n + v_2(n!): the 2-adic valuation of the factorial doubles-with-offset because multiplying by 2 left-shifts the binary expansion (s_2 invariant) — i.e. 2n! gains exactly n factors of two over n!. Equivalent to Legendre + s_2(2n)=s_2(n). v_2(n!) hits its ceiling n-1 exactly when s_2(n)=1 (n a power of two). None of these are named Mathlib lemmas.",
-      "The exact 2-adic core of the Erdős (1968) constraint is elementary and axiom-free: a!·b! ∣ n! ⟹ v₂(a!)+v₂(b!) ≤ v₂(n!) (factorization is monotone under divisibility and additive over products), so by Legendre v₂(m!)=m−s₂(m) one gets the SHARP subtraction-free bound a + b ≤ n + s₂(a) + s₂(b). The excess a+b−n never exceeds the total 1-bit count of the two parts — no O(·) needed. The log form a+b ≤ n+(⌊log₂a⌋+1)+(⌊log₂b⌋+1) follows from s₂(m) ≤ Nat.log 2 m + 1 (each binary digit ≤ 1, digit count = log₂+1). Parent file carries this only as the deep axiom erdos_1968_classical."
+      "The exact 2-adic core of the Erdős (1968) constraint is elementary and axiom-free: a!·b! ∣ n! ⟹ v₂(a!)+v₂(b!) ≤ v₂(n!) (factorization is monotone under divisibility and additive over products), so by Legendre v₂(m!)=m−s₂(m) one gets the SHARP subtraction-free bound a + b ≤ n + s₂(a) + s₂(b). The excess a+b−n never exceeds the total 1-bit count of the two parts — no O(·) needed. The log form a+b ≤ n+(⌊log₂a⌋+1)+(⌊log₂b⌋+1) follows from s₂(m) ≤ Nat.log 2 m + 1 (each binary digit ≤ 1, digit count = log₂+1). Parent file carries this only as the deep axiom erdos_1968_classical.",
+      "The main-file axiom erdos_1968_classical (∀ n a b, a!b!∣n! → ∃C>0, a+b≤n+C·log n) is defective TWO ways: unsound at n∈{0,1} (Real.log=0 there, but a+b can be 2>n), and mathematically VACUOUS for n≥2 because the ∃C sits INSIDE the ∀ (pick C=(a+b)/log n). The meaningful form puts a single uniform C outside the quantifiers; that form IS provable axiom-free with C=4/log2 for n≥2.",
+      "Nat.log→Real.log bridge: 2^⌊log₂ n⌋≤n (Nat.pow_log_le_self) ⟹ (via Real.log monotone + Real.log_pow) ⌊log₂ n⌋·log2≤log n ⟹ ⌊log₂ n⌋≤log n/log2. Combined with a,b≤n (from a!∣a!b!∣n! ⟹ a!≤n! ⟹ a≤n via Nat.factorial_lt) the ℕ digit-sum bound a+b≤n+2⌊log₂n⌋+2 lifts to the real n+O(log n) shape with explicit constant.",
+      "v4.26 rename: le_div_iff → le_div_iff₀ (one_le_div still exists as an alias in Field/Basic)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Sharpen the excess bound: s₂(a)+s₂(b)−s₂(n) equals the number of carries when adding a and (n−a) in base 2 (Kummer); relate to erdos_two_adic_bound to characterize equality a+b=n+carries.",
-      "Note main-file axiom erdos_1968_classical is unsound at n=0 (a=b=1: DividesFactorial 0 1 1 holds but 2 ≤ 0 fails); the elementary ℕ-form erdos_two_adic_bound is the correct replacement for the classical direction."
+      "PROPOSE main-file fix (auditor/follow-up): replace the unsound axiom erdos_1968_classical with either a `2 ≤ n` hypothesis + reference to erdos_1968_uniform, or import the companion and delete the axiom (reduces main-file axiomCount 3→2). erdos_729_statement's first conjunct is currently backed by a false axiom.",
+      "Kummer refinement: s₂(a)+s₂(b)−s₂(n) = number of base-2 carries adding a and n−a; characterize equality a+b=n+carries.",
+      "The two barreto_leeham axioms (mod-small-primes resolution) are the genuinely deep research inputs — not Mathlib-eliminable; leave and document."
     ],
     "markdown": "# Knowledge Base: erdos-729-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -80,7 +86,7 @@
     "mathlib": []
   },
   "started": "2026-04-13T00:54:20.846Z",
-  "lastUpdate": "2026-06-20",
+  "lastUpdate": "2026-07-08T00:00:00.000Z",
   "significance": 7,
   "tractability": 8,
   "leanFiles": [
@@ -127,6 +133,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos729DigitSumBound.lean",
+      "filename": "Erdos729DigitSumBound.lean",
+      "lineCount": 201,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos729DigitSumBound.lean"
     }
   ]
 }
