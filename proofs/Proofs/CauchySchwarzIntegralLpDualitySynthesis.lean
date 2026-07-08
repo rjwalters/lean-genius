@@ -255,6 +255,36 @@ theorem eLpNorm_rpow_restrict_iUnion {g : α → ℝ} {S : ℕ → Set α}
     one_div_mul_cancel hqr, ENNReal.rpow_one]
   rw [Measure.restrict_iUnion hSd hSm, lintegral_sum_measure]
 
+/-- **Monotonicity of the `q`-power Lᵠ-seminorm under set inclusion** (step 2 ingredient).
+    For `0 < q < ∞` and measurable `A ⊆ B`, the `q`-th power of the Lᵠ-seminorm is
+    monotone in the restriction set:
+
+      `‖g‖_{q, A}^q ≤ ‖g‖_{q, B}^q`.
+
+    This is the order-theoretic content that makes the maximality *supremum*
+    `c = ⨆_S ‖g_S‖_q` well-behaved: enlarging the σ-finite support set can only increase
+    the representing function's norm, so a maximizing *sequence* can be replaced by its
+    increasing union without loss. It is an immediate corollary of the disjoint additivity
+    `eLpNorm_rpow_restrict_union` applied to the decomposition `B = A ∪ (B \ A)`: the
+    `(B \ A)`-contribution is a nonnegative `ℝ≥0∞`, so it only adds. Stated on the
+    `q`-power (not the seminorm itself) for the same reason as its additive companion —
+    the `q`-power splits exactly over disjoint supports while the seminorm is merely
+    subadditive. -/
+theorem eLpNorm_rpow_restrict_mono {g : α → ℝ} {A B : Set α}
+    (hA : MeasurableSet A) (hB : MeasurableSet B) (hAB : A ⊆ B)
+    {q : ℝ≥0∞} (hq0 : q ≠ 0) (hqtop : q ≠ ∞) :
+    eLpNorm g q (μ.restrict A) ^ q.toReal
+      ≤ eLpNorm g q (μ.restrict B) ^ q.toReal := by
+  have hdiff : MeasurableSet (B \ A) := hB.diff hA
+  have hdisj : Disjoint A (B \ A) :=
+    Set.disjoint_left.2 (fun x hxA hxD => hxD.2 hxA)
+  have hunion : A ∪ (B \ A) = B := Set.union_diff_cancel hAB
+  have key := eLpNorm_rpow_restrict_union (μ := μ) (g := g) (A := A) (B := B \ A)
+    hdiff hdisj hq0 hqtop
+  rw [hunion] at key
+  rw [key]
+  exact le_self_add
+
 /-- **Step 1 of the maximality reduction — per-σ-finite-set representer.**
     For any measurable set `S` whose restriction `μ.restrict S` is σ-finite, the
     functional `φ` on `Lp ℝ p μ`, pulled back along the extension-by-zero embedding
@@ -352,6 +382,7 @@ theorem riesz_lp_surjective_general
 #print axioms RieszLpDualitySynthesis.sigmaFinite_restrict_iUnion
 #print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_union
 #print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_iUnion
+#print axioms RieszLpDualitySynthesis.eLpNorm_rpow_restrict_mono
 #print axioms RieszLpDualitySynthesis.riesz_representer_on_sigmaFinite_set
 
 end RieszLpDualitySynthesis

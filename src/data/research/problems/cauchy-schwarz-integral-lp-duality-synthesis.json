@@ -67,7 +67,8 @@
       "Uniqueness needs no SigmaFinite μ hypothesis: a MemLp function at a finite exponent q<∞ is automatically AEFinStronglyMeasurable, and testing against finite-measure indicators gives ∫_s g=0 ∀s.",
       "S18: Incomplete01 fixed 65→63 (verified). Root structural bug: hg_eq_n was defined INSIDE the hg_lq_norm `have … := by` block but used at Step A5 outside that scope → `unknown identifier` + phantom cascade over lines 902-970. Hoisting it de-cascades the tail (exposes ~8 REAL drift errors).",
       "S18 CRITICAL: with ~15 more source-verified drift fixes applied, the build runs 40 FULL min of live `Building` ticks then Terminates without flushing errors — a resource blowup (>32GB/40min), NOT a hang or docker death. The fixes let elaboration proceed much further through the 600-line localization_existence, which then cannot complete under the 32GB envelope. Residual real errors are likely FEW but unmeasurable until the file fits.",
-      "S18: Lean flushes its error summary only at FILE COMPLETION; a build that times out mid-elaboration shows 0 errors in the log (not `clean`). Full-file compile time for Incomplete01 with errors is ~180s of Lean (post cache-get)."
+      "S18: Lean flushes its error summary only at FILE COMPLETION; a build that times out mid-elaboration shows 0 errors in the log (not `clean`). Full-file compile time for Incomplete01 with errors is ~180s of Lean (post cache-get).",
+      "q-power seminorm monotonicity under set inclusion is a free corollary of the disjoint additivity lemma already proved: eLpNorm g q (μ.restrict A)^q ≤ eLpNorm g q (μ.restrict B)^q since the (B\\A) contribution is a nonnegative ℝ≥0∞ (le_self_add). Justifies replacing a maximizing sequence by its increasing union."
     ],
     "builtItems": [
       "memLp_exists_sigmaFinite_support — bridge lemma: for 0<p<inf, every f in Lp(mu) is a.e. supported on a measurable S with mu.restrict S sigma-finite (proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean). High-confidence (uses only confirmed Mathlib API) but UNVERIFIED this session (no build).",
@@ -89,7 +90,8 @@
       "private rpow_iSup: (⨆f)^q=⨆fᵠ for q>0 via ENNReal.orderIsoRpow.map_iSup",
       "RieszLpDualityAnnihilator.lp_pairing_eq_zero_ae_zero in proofs/Proofs/CauchySchwarzIntegralLpDualityAnnihilator.lean — annihilator/uniqueness lemma: g∈Lᵠ, ∫f·g=0 ∀f∈Lᵖ ⟹ g=ᵐ0. Standalone, Mathlib-only, verified lake env lean EXIT 0, #print axioms = {propext,Classical.choice,Quot.sound}.",
       "S18 (committed, verified): hoisted hg_eq_n to localization_existence top level; AEStronglyMeasurable .congr_ae→.congr; eLpNorm one-norm via eLpNorm_one_eq_lintegral_enorm+enorm_eq_nnnorm. Rebuild-confirmed 63 errors.",
-      "S18 (staged, source-verified, unverified-by-build): research/problems/cauchy-schwarz-integral-lp-duality-synthesis/s18-batch3-drift-fixes.patch — git-apply-clean; fixes integrationCLM_sf map_add/map_smul (=ᵐ coeFn→integral_congr_ae), integral_norm direction, hg_norm rpow shape, Measure.ae_mono→ae_mono, Set.subset_univ _, (hind:α→ℝ)→E.indicator 1, EventuallyEq.mul_right drop-arg."
+      "S18 (staged, source-verified, unverified-by-build): research/problems/cauchy-schwarz-integral-lp-duality-synthesis/s18-batch3-drift-fixes.patch — git-apply-clean; fixes integrationCLM_sf map_add/map_smul (=ᵐ coeFn→integral_congr_ae), integral_norm direction, hg_norm rpow shape, Measure.ae_mono→ae_mono, Set.subset_univ _, (hind:α→ℝ)→E.indicator 1, EventuallyEq.mul_right drop-arg.",
+      "eLpNorm_rpow_restrict_mono (2026-07-08, researcher-3): monotonicity of the q-power Lᵠ-seminorm under measurable set inclusion A⊆B, from eLpNorm_rpow_restrict_union on B=A∪(B\\A) + le_self_add. Foundational-only axioms. The step-2 ingredient that makes the maximality supremum c=⨆_S‖g_S‖_q well-behaved (enlarging the support can only increase the norm)."
     ],
     "mathlibGaps": [
       "Mathlib has NO general Lp-Lq duality / Riesz surjectivity (no *Dual* Lp file under MeasureTheory/Function). This remains a genuine Mathlib gap that the gallery chain fills.",
@@ -112,8 +114,8 @@
     {
       "path": "Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean",
       "filename": "CauchySchwarzIntegralLpDualitySynthesis.lean",
-      "lineCount": 350,
-      "theoremCount": 6,
+      "lineCount": 390,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 13,
@@ -121,7 +123,7 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean"
     }
   ],
-  "lastUpdate": "2026-07-02",
+  "lastUpdate": "2026-07-08",
   "currentState": {
     "phase": "ACT",
     "since": "2026-07-02",
