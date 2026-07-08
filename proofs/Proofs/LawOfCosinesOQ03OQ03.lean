@@ -328,4 +328,46 @@ theorem equilateral_pi_four_cosh (t : HyperbolicTriangle)
   rw [div_eq_iff hpos.ne']
   linear_combination (1 / 2 : ℝ) * hs
 
+-- ============================================================
+-- PART 8: The equilateral family — the side strictly decreases in the common angle
+-- ============================================================
+
+/-- **The equilateral side strictly decreases in the common angle (cosh form).**
+    Two equilateral hyperbolic triangles with common angles `θ₁ < θ₂` satisfy
+    `cosh(side₂) < cosh(side₁)`. Together with `equilateral_cosh` this shows the closed
+    form `θ ↦ cos θ / (1 - cos θ)` is strictly decreasing across the admissible range
+    `(0, π/3)`: the side blows up as `θ → 0` (thin, large triangles) and shrinks to `0`
+    as `θ → π/3` (the Euclidean limit). Unlike PART 4b, which pins two angles and varies
+    the third, this varies all three angles together along the equilateral family. -/
+theorem equilateral_cosh_antitone (t₁ t₂ : HyperbolicTriangle)
+    (h₁ : t₁.A = t₁.B) (h₁' : t₁.B = t₁.C)
+    (h₂ : t₂.A = t₂.B) (h₂' : t₂.B = t₂.C)
+    (hlt : t₁.C < t₂.C) :
+    Real.cosh t₂.c < Real.cosh t₁.c := by
+  have hcos : Real.cos t₂.C < Real.cos t₁.C :=
+    Real.cos_lt_cos_of_nonneg_of_le_pi t₁.hC.le t₂.hC_lt.le hlt
+  -- `1 - cos θ > 0` for `0 < θ < π`, since `cos θ < cos 0 = 1`.
+  have hd₁ : 0 < 1 - Real.cos t₁.C := by
+    have h := Real.cos_lt_cos_of_nonneg_of_le_pi (le_refl (0 : ℝ)) t₁.hC_lt.le t₁.hC
+    rw [Real.cos_zero] at h; linarith
+  have hd₂ : 0 < 1 - Real.cos t₂.C := by
+    have h := Real.cos_lt_cos_of_nonneg_of_le_pi (le_refl (0 : ℝ)) t₂.hC_lt.le t₂.hC
+    rw [Real.cos_zero] at h; linarith
+  rw [equilateral_cosh t₁ h₁ h₁', equilateral_cosh t₂ h₂ h₂',
+      div_lt_div_iff₀ hd₂ hd₁]
+  nlinarith [hcos]
+
+/-- **The equilateral side strictly decreases in the common angle.** With common angles
+    `θ₁ < θ₂`, the second triangle has the strictly shorter side: `t₂.c < t₁.c`. This is
+    the monotone hyperbolic counterpart of the Euclidean fact that all equilateral
+    triangles are similar — here each admissible common angle pins down a *unique* size,
+    refining the AAA congruence of PART 4 into a strict monotonicity along the family. -/
+theorem equilateral_side_antitone (t₁ t₂ : HyperbolicTriangle)
+    (h₁ : t₁.A = t₁.B) (h₁' : t₁.B = t₁.C)
+    (h₂ : t₂.A = t₂.B) (h₂' : t₂.B = t₂.C)
+    (hlt : t₁.C < t₂.C) :
+    t₂.c < t₁.c :=
+  (Real.cosh_strictMonoOn.lt_iff_lt (mem_Ici.mpr t₂.hc.le) (mem_Ici.mpr t₁.hc.le)).mp
+    (equilateral_cosh_antitone t₁ t₂ h₁ h₁' h₂ h₂' hlt)
+
 end HyperbolicAAA

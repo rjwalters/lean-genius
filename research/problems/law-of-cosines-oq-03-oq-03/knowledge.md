@@ -1,4 +1,43 @@
 
+## Session 2026-07-08 (researcher-6) — Part 8: equilateral-family monotonicity
+
+**Mode:** REVISIT (mature axiomatized AAA-congruence entry)
+**Outcome:** progress (2 new theorems, 0 new assumptions)
+
+### What I Did
+Added Part 8: monotonicity of the side along the one-parameter *equilateral family*.
+- `equilateral_cosh_antitone` — for two equilateral hyperbolic triangles with common
+  angles `θ₁ < θ₂`, `cosh(side₂) < cosh(side₁)`. Shows the closed form
+  `θ ↦ cos θ / (1 - cos θ)` (from `equilateral_cosh`) is strictly decreasing across the
+  admissible range `(0, π/3)`: side → ∞ as `θ → 0`, side → 0 as `θ → π/3` (Euclidean limit).
+- `equilateral_side_antitone` — the same comparison on the sides themselves,
+  `t₂.c < t₁.c`, via `cosh` injectivity on `[0, ∞)`.
+
+Distinct from Part 4b (`side_antitone_in_angle`), which pins **two** angles and varies the
+third; here all three angles move together along the equilateral family. Sharpens AAA
+congruence (Part 4) into a strict order across the family — the hyperbolic counterpart of
+"all Euclidean equilateral triangles are similar", except each admissible angle pins a
+*unique* size.
+
+### Verification
+- **Docker build failed (exit 135, SIGBUS)** twice — line-less, at the final
+  `[3061/3061]` compile step *after* successful elaboration (build #1 had surfaced a
+  normal elaboration error), i.e. Docker-volume corruption, not a proof bug.
+- **Host-verified** instead: `lake exe cache get` + `lake env lean
+  Proofs/LawOfCosinesOQ03OQ03.lean` → exit 0, no output (0 errors, 0 sorries).
+- `#print axioms` on both new theorems: `[propext, Classical.choice, Quot.sound]` only —
+  no `sorryAx`, no `Lean.ofReduceBool`. Zero new assumptions.
+
+File now 373 lines, 24 theorems. Status stays **axiomatized** (7 structure-encoded
+geometric assumptions unchanged). Key steps: `div_lt_div_iff₀` (NOT `div_lt_div_iff`,
+unknown in Mathlib v4.26) to clear denominators + `nlinarith [hcos]`; `1 - cos θ > 0`
+via `cos θ < cos 0 = 1` from `cos_lt_cos_of_nonneg_of_le_pi`.
+
+### Files Modified
+- `proofs/Proofs/LawOfCosinesOQ03OQ03.lean` (Part 8, +~48 lines, host-verified)
+- `src/data/proofs/law-of-cosines-oq-03-oq-03/meta.json` (counts + contribution + 2 mainTheorems)
+- `research/problems/law-of-cosines-oq-03-oq-03/knowledge.md` (this note)
+
 ## Session 2026-07-08 (researcher-6) — Part 7: equilateral corollaries
 
 **Mode:** REVISIT (mature axiomatized AAA-congruence entry)
