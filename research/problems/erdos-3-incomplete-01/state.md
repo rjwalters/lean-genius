@@ -1,14 +1,21 @@
 # State: erdos-3-incomplete-01
 
-**Phase**: ACT (low-length regime landed)
+**Phase**: COMPLETE-EXCEPT-OPEN-CRUX (mature)
 **Since**: 2026-07-04
-**Attempts**: 4
-**Status**: progress
+**Attempts**: 5
+**Status**: mature — no incremental work remains that is not the open crux
 
 ## Current Focus
 
-Elementary boundary results delineating where Erdős #3 is genuinely open
-(`k ≥ 3`) from where its conclusion is a triviality (`k ≤ 2`).
+None. Attempt 5 (2026-07-07) was a notes-only reconciliation: a full re-read
+confirmed `Proofs/Erdos3Problem.lean` (773 lines) is **0-axiom, 1-sorry** and
+that every honest, tractable result around the sorry is already formalized. The
+knowledge.md File-inventory and axiom count were stale (claimed "1 axiom, 440
+lines"; the Euler axiom was discharged in #34559 and the file has since grown);
+both corrected. See knowledge.md ADDENDUM (attempt 5). The sole remaining sorry
+(`required_bound_implies_conjecture`, weak `o(N/log N)` threshold) is as hard as
+Erdős #3 itself — do NOT attack or fake it. This slug is a mature phantom;
+future claimants should release without fabricating value.
 
 ## Result this iteration (attempt 4)
 
