@@ -211,4 +211,62 @@ theorem stronglyAdditive_unboundedOnPrimePowers_iff {f : ℕ → ℝ}
     rw [hfp, pow_one]
     exact hpp
 
+/-
+## (5) The converse of (3) fails: `Ω` separates "plainly unbounded" from the hypothesis
+
+Theorem (3) shows the Erdős #897 hypothesis forces plain unboundedness on prime powers.
+The converse is **false**, and `Ω` (`bigOmega`) is the witness. `Ω` is completely
+additive with `Ω(p^k) = k`, so `Ω(2^k) = k → ∞` — it is plainly unbounded on prime
+powers. Yet it FAILS the normalized hypothesis: `Ω(p) = 1` for every prime while
+`log p ≥ log 2`, so via the completely-additive reduction the hypothesis would demand
+`1 > M·log p` at every `M`, which fails already at `M = 1/log 2`. Hence "unbounded on
+prime powers" is strictly weaker than the #897 hypothesis "unbounded relative to `log`".
+-/
+
+/-- `Ω(p) = 1` for a prime `p`: its factor list with multiplicity is `[p]`. -/
+theorem bigOmega_prime {p : ℕ} (hp : p.Prime) : bigOmega p = 1 := by
+  simp [bigOmega, Nat.primeFactorsList_prime hp]
+
+/-- **Selectivity for `Ω`.** The total-prime-factor count fails the hypothesis. Via the
+completely-additive reduction it would require some prime with `Ω(p) = 1 > M·log p` for
+every `M`; at `M = 1/log 2` this forces `log p < log 2`, impossible for a prime `p ≥ 2`. -/
+theorem not_unboundedOnPrimePowers_bigOmega : ¬ UnboundedOnPrimePowers bigOmega := by
+  rw [completelyAdditive_unboundedOnPrimePowers_iff bigOmega bigOmega_completelyAdditive]
+  push_neg
+  refine ⟨1 / Real.log 2, ?_⟩
+  intro p hp
+  rw [bigOmega_prime hp]
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hlogp : Real.log 2 ≤ Real.log p :=
+    Real.log_le_log (by norm_num) (by exact_mod_cast hp.two_le)
+  have hnn : (0 : ℝ) ≤ 1 / Real.log 2 := by positivity
+  have hmul : (1 / Real.log 2) * Real.log 2 ≤ (1 / Real.log 2) * Real.log p :=
+    mul_le_mul_of_nonneg_left hlogp hnn
+  have hinv : (1 / Real.log 2) * Real.log 2 = 1 := by field_simp
+  linarith
+
+/-- `Ω` is nonetheless **plainly** unbounded on prime powers: `Ω(2^k) = k` exceeds any
+bound. Sharp complement to `not_unboundedOnPrimePowers_bigOmega`. -/
+theorem bigOmega_unbounded_on_primePowers :
+    ∀ B : ℝ, ∃ p k : ℕ, p.Prime ∧ 1 ≤ k ∧ bigOmega (p ^ k) > B := by
+  intro B
+  refine ⟨2, ⌈B⌉₊ + 1, Nat.prime_two, by omega, ?_⟩
+  have hval : bigOmega (2 ^ (⌈B⌉₊ + 1)) = ((⌈B⌉₊ + 1 : ℕ) : ℝ) := by
+    rw [bigOmega_completelyAdditive.2 2 (⌈B⌉₊ + 1) Nat.prime_two, bigOmega_prime Nat.prime_two]
+    ring
+  rw [hval]
+  have hceil : B ≤ (⌈B⌉₊ : ℝ) := Nat.le_ceil B
+  push_cast
+  linarith
+
+/-- **The converse of (3) is false (headline).** There is an additive function that is
+plainly unbounded on prime powers yet fails the Erdős #897 hypothesis, so the two
+notions of unboundedness are genuinely distinct. Witness: `Ω = bigOmega`. -/
+theorem unbounded_not_implies_unboundedOnPrimePowers :
+    ∃ f : ℕ → ℝ, IsAdditive f ∧
+      (∀ B : ℝ, ∃ p k : ℕ, p.Prime ∧ 1 ≤ k ∧ f (p ^ k) > B) ∧
+      ¬ UnboundedOnPrimePowers f :=
+  ⟨bigOmega, bigOmega_completelyAdditive.1, bigOmega_unbounded_on_primePowers,
+    not_unboundedOnPrimePowers_bigOmega⟩
+
 end Erdos897
