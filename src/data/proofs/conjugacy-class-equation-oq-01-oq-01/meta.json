@@ -94,10 +94,10 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and Setup",
+      "title": "Module Header, Setup, and the Per-Class Index Identity",
       "startLine": 1,
-      "endLine": 38,
-      "summary": "Module docstring explaining the assembly of the index form from Mathlib's cardinality-form class equation and the parent's per-class identity. Mathlib import, open MulAction Subgroup ConjAct, namespace, variable {G : Type*} [Group G], and the re-derived per-class bridge conjClass_card_eq_index_centralizer.",
+      "endLine": 46,
+      "summary": "Module docstring explaining the assembly of the index form from Mathlib's cardinality-form class equation and the parent's per-class identity. Mathlib import, open MulAction Subgroup ConjAct, namespace, variable {G : Type*} [Group G], and the re-derived per-class bridge conjClass_card_eq_index_centralizer (lines 40-46): |class(g)| = [G : C_G(g)], proved by rewriting the class carrier as the ConjAct orbit and identifying the stabilizer with the centralizer (MulAction.index_stabilizer).",
       "mathContext": "$|G| = |Z(G)| + \\sum_i [G : C_G(g_i)]$."
     },
     {
