@@ -75,8 +75,92 @@ def hypercubeVertices (n : ℕ) : ℕ := 2^n
 def hypercubeEdges (n : ℕ) : ℕ := n * 2^(n-1)
 
 /-
-**Degree in Qₙ:** every vertex has degree n.
+## Part I′: Structural invariants of Qₙ (regularity and edge count)
+
+The definitions `hypercubeVertices` and `hypercubeEdges` above are bare numeric
+formulas. Here we *prove* that they agree with the actual graph `Hypercube n`:
+`Qₙ` is `n`-regular and therefore, by the handshake lemma, has exactly
+`n · 2ⁿ⁻¹` edges. This connects the numeric definitions to the honest graph and
+is independent of the (irreducible) cycle machinery, so it does not interact
+with the `Nat.card · .edgeSet` / `HasCycle` co-unfolding described in the header.
 -/
+
+/-- Adjacency in `Qₙ` is decidable (classically). Needed only so that `degree`
+and `edgeFinset` are meaningful; it introduces no assumption beyond the ambient
+`Classical.choice`. -/
+noncomputable instance instDecidableHypercubeAdj (n : ℕ) :
+    DecidableRel (Hypercube n).Adj :=
+  fun _ _ => Classical.propDecidable _
+
+/--
+**`Qₙ` is `n`-regular:** every vertex has exactly `n` neighbours.
+
+The neighbours of `x` are precisely the `n` vertices `x ⊕ 2ⁱ` for `i < n`
+(flipping one of the `n` coordinate bits). The map `i ↦ x ⊕ 2ⁱ` from `Fin n`
+is injective (powers of two are distinct and `xor` is left-cancellative), and
+its image is exactly `neighborFinset x`.
+-/
+theorem hypercube_degree (n : ℕ) (x : Fin (2 ^ n)) :
+    (Hypercube n).degree x = n := by
+  -- the `i`-th neighbour, `x` with bit `i` flipped
+  have hlt2 : ∀ i : Fin n, x.val ^^^ 2 ^ (i : ℕ) < 2 ^ n := fun i =>
+    Nat.xor_lt_two_pow x.2 (Nat.pow_lt_pow_right (by norm_num) i.2)
+  set f : Fin n → Fin (2 ^ n) := fun i => ⟨x.val ^^^ 2 ^ (i : ℕ), hlt2 i⟩ with hf
+  have hfinj : Function.Injective f := by
+    intro a b hab
+    have hv : x.val ^^^ 2 ^ (a : ℕ) = x.val ^^^ 2 ^ (b : ℕ) := congrArg Fin.val hab
+    have h2 : (2 : ℕ) ^ (a : ℕ) = 2 ^ (b : ℕ) := by
+      have e : x.val ^^^ (x.val ^^^ 2 ^ (a : ℕ))
+          = x.val ^^^ (x.val ^^^ 2 ^ (b : ℕ)) := by rw [hv]
+      rwa [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor,
+        ← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at e
+    exact Fin.ext (Nat.pow_right_injective (le_refl 2) h2)
+  have hnb : (Hypercube n).neighborFinset x = Finset.univ.image f := by
+    ext y
+    simp only [SimpleGraph.mem_neighborFinset, Finset.mem_image, Finset.mem_univ,
+      true_and, hf]
+    constructor
+    · intro hadj
+      obtain ⟨i, hi⟩ := hadj
+      have hlt : (2 : ℕ) ^ i < 2 ^ n := hi ▸ Nat.xor_lt_two_pow x.2 y.2
+      have hin : i < n := (Nat.pow_lt_pow_iff_right (by norm_num)).mp hlt
+      refine ⟨⟨i, hin⟩, ?_⟩
+      apply Fin.ext
+      have h2 : x.val ^^^ (x.val ^^^ y.val) = x.val ^^^ 2 ^ i := by rw [hi]
+      rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at h2
+      exact h2.symm
+    · rintro ⟨i, rfl⟩
+      refine ⟨(i : ℕ), ?_⟩
+      show x.val ^^^ (x.val ^^^ 2 ^ (i : ℕ)) = 2 ^ (i : ℕ)
+      rw [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor]
+  rw [← SimpleGraph.card_neighborFinset_eq_degree, hnb,
+    Finset.card_image_of_injective _ hfinj, Finset.card_univ, Fintype.card_fin]
+
+/-- **`Qₙ` is `n`-regular** (packaged form). -/
+theorem hypercube_isRegular (n : ℕ) : (Hypercube n).IsRegularOfDegree n :=
+  fun x => hypercube_degree n x
+
+/--
+**Edge count of `Qₙ`:** the number of edges of `Hypercube n` is exactly
+`hypercubeEdges n = n · 2ⁿ⁻¹`.
+
+Proof: `Qₙ` is `n`-regular, so the degree sum is `n · 2ⁿ`; the handshake lemma
+equates that with `2 · |E|`, and `n · 2ⁿ = 2 · (n · 2ⁿ⁻¹)`.
+-/
+theorem hypercube_card_edges (n : ℕ) :
+    (Hypercube n).edgeFinset.card = hypercubeEdges n := by
+  have hsum : ∑ x : Fin (2 ^ n), (Hypercube n).degree x
+      = 2 * (Hypercube n).edgeFinset.card :=
+    (Hypercube n).sum_degrees_eq_twice_card_edges
+  rw [Finset.sum_congr rfl (fun x _ => hypercube_degree n x)] at hsum
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hsum
+  -- hsum : 2 ^ n * n = 2 * (edge count)
+  have key : 2 ^ n * n = 2 * hypercubeEdges n := by
+    simp only [hypercubeEdges]
+    cases n with
+    | zero => simp
+    | succ m => rw [Nat.succ_sub_one, pow_succ]; ring
+  omega
 
 /-
 ## Part II: Cycles in Graphs
