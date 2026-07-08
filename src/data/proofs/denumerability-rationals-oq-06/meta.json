@@ -103,48 +103,6 @@
       "mathContext": "Since #ℕ = ℵ₀ = #(ℚ[X]), Cardinal.eq gives an equivalence ℕ ≃ ℚ[X], i.e. ℚ[X] is denumerable."
     }
   ],
-  "mainTheorems": [
-    {
-      "name": "cardinalMk_polynomial_rat",
-      "type": "core",
-      "description": "**#(ℚ[X]) = ℵ₀.** The rational polynomial ring is denumerable: Polynomial.cardinalMk_eq_max gives #(ℚ[X]) = max #ℚ ℵ₀, and #ℚ = ℵ₀ collapses the maximum to ℵ₀. So adjoining an indeterminate to ℚ does not increase cardinality.",
-      "leanType": "#(ℚ[X]) = ℵ₀",
-      "startLine": 36,
-      "endLine": 37
-    },
-    {
-      "name": "cardinalMk_polynomial_int",
-      "type": "key",
-      "description": "**#(ℤ[X]) = ℵ₀.** The same argument with #ℤ = ℵ₀ (Cardinal.mk_int): the integer polynomial ring is also denumerable.",
-      "leanType": "#(ℤ[X]) = ℵ₀",
-      "startLine": 40,
-      "endLine": 41
-    },
-    {
-      "name": "cardinalMk_polynomial_rat_eq_int",
-      "type": "supporting",
-      "description": "**#(ℚ[X]) = #(ℤ[X]).** The rational and integer polynomial rings have the same cardinality (both ℵ₀).",
-      "leanType": "#(ℚ[X]) = #(ℤ[X])",
-      "startLine": 44,
-      "endLine": 45
-    },
-    {
-      "name": "nonempty_nat_equiv_polynomial_rat",
-      "type": "key",
-      "description": "**ℚ[X] is denumerable.** Since #ℕ = #(ℚ[X]) (both ℵ₀), Cardinal.eq yields a bijection ℕ ≃ ℚ[X].",
-      "leanType": "Nonempty (ℕ ≃ ℚ[X])",
-      "startLine": 49,
-      "endLine": 50
-    },
-    {
-      "name": "mk_rat",
-      "type": "supporting",
-      "description": "**#ℚ = ℵ₀** (mk_eq_aleph0) — the engine lemma the polynomial-ring cardinalities reduce to.",
-      "leanType": "#ℚ = ℵ₀",
-      "startLine": 32,
-      "endLine": 32
-    }
-  ],
   "references": [
     {
       "authors": "Cantor, Georg",

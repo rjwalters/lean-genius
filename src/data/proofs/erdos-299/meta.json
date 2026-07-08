@@ -53,9 +53,9 @@
       "Verified Egyptian fraction examples: {2,3,6} and {2,4,6,12}",
       "Proof that powers of 2 have unbounded gaps"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 386,
-    "assumptions": "1 axiom (bloom_theorem: Bloom's 2021 result on positive density sets). 0 sorries. Plus `Lean.ofReduceBool`: the theorems `egyptian_236` and `egyptian_2_4_6_12` (concrete unit-fraction identities) are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction (#print axioms lists `Lean.ofReduceBool`). Axiom total including ofReduceBool: 2.",
+    "assumptions": "1 axiom (bloom_theorem: Bloom's 2021 result on positive density sets). 0 sorries.",
     "theoremCount": 10,
     "definitionCount": 7
   },

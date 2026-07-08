@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: deliverable poincare_separation_compression (unconditional codim-m Poincaré separation, no Rayleigh hypothesis) verified 0-sorry/0-axiom under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). Phantom recorded #35278; pool status reconciled to completed 2026-07-08.",
+    "progressSummary": "COMPLETE (phantom): the exact deliverable already exists, verified 0-sorry/0-axiom.",
     "builtItems": [
       "poincare_separation_compression in CauchyInterlacingPoincareCompression.lean (#28084) — unconditional codimension-m Poincaré separation: given a symmetric T on V (dim n+m) and any subspace H (dim n), the descending eigenvalues of the explicit orthogonal compression compress T H interlace those of T as lam⟨k+m⟩ ≤ mu k ≤ lam⟨k⟩, with NO Rayleigh side hypothesis.",
       "compress / isSymmetric_compress / rayleigh_compress_eq in CauchyInterlacingCompression.lean (#27245) — define compress T H := P_H∘T∘ι_H, prove it symmetric, and discharge the Rayleigh-agreement identity for an arbitrary subspace via the orthogonal-projection adjoint identity.",
@@ -39,13 +39,10 @@
     ],
     "insights": [
       "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",
-      "Rayleigh discharge mechanism: for y∈H, ⟨compress T H y, y⟩_H = ⟨P_H(Ty), y⟩ = ⟨Ty, y⟩_V by the orthogonal-projection adjoint identity (P_H self-adjoint, P_H y = y); norms agree since the inclusion H↪V is a linear isometry.",
-      "Re-verification 2026-07-08: poincare_separation_compression (CauchyInterlacingPoincareCompression.lean:73) is 0-sorry/0-axiom; sibling gallery entry cauchy-interlacing-theorem-oq-01-oq-02 is status=verified badge=mathlib axiomCount=0. The single grep sorry hit in CauchyInterlacingCompression.lean is inside a docstring (0-sorry/0-axiom self-reference), not a real sorry. Nothing left to prove."
+      "Rayleigh discharge mechanism: for y∈H, ⟨compress T H y, y⟩_H = ⟨P_H(Ty), y⟩ = ⟨Ty, y⟩_V by the orthogonal-projection adjoint identity (P_H self-adjoint, P_H y = y); norms agree since the inclusion H↪V is a linear isometry."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "STRONG FOLLOW-UP (theory-level, genuinely distinct): the extremal/equality (Fan-Pall) converse — characterize when interlacing is TIGHT, i.e. λ_{k+m}(A)=μ_k or μ_k=λ_k(A). Tightness should force the compression subspace to align with eigenspaces of A. This is a real converse, not a cosmetic variant, and would need eigenspace-intersection dimension counting not yet in the compression files."
-    ]
+    "nextSteps": []
   },
   "tags": [
     "linear-algebra",

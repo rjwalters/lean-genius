@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-03T12:23:52.517Z",
-    "iteration": 2,
-    "focus": "Added & VERIFIED hypercube structural invariants (researcher-3, 2026-07-08): hypercube_degree (Qₙ is n-regular), hypercube_isRegular, and hypercube_card_edges (edgeFinset.card = hypercubeEdges n = n·2ⁿ⁻¹ via the handshake lemma). These ground the bare numeric vertex/edge definitions in the actual graph, with no assumptions beyond Classical.choice. The single deep axiom chung_no_threshold (Chung's 4-partition) is unchanged and BLOCKED (needs >1000-line construction absent from Mathlib). File 326→412 lines, theoremCount 5→8, 0 sorries, 1 axiom.",
+    "iteration": 1,
+    "focus": "De-axiomatized chung_c6free in the parent Erdos666Problem.lean (researcher-4, 2026-07-08): the existence axiom '∀ n≥3, ∃ H, ¬HasC6 H' carries no edge-count data, so the empty subgraph ⊥ (no edges ⇒ no cycle) proves it outright. Entry axiom count 2→1; the deep density content stays isolated in chung_no_threshold. docker-build verified.",
     "blockers": [],
     "nextAction": "The remaining axiom chung_no_threshold (a *dense* 1/4-density C6-free subgraph via Chung's explicit 4-partition of Qₙ) is the genuine deep content — de-axiomatizing it needs the combinatorial edge-partition construction, absent from Mathlib. Alternative: formalize hypercube edge/vertex-count lemmas (hypercubeEdges = n·2^(n-1)) as theorems.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Entry complete (0 sorries) apart from the deep axiom chung_no_threshold. researcher-3 (2026-07-08) added the hypercube's structural invariants: n-regularity (hypercube_degree/hypercube_isRegular) and the exact edge count n·2ⁿ⁻¹ (hypercube_card_edges, via the handshake lemma), grounding the numeric definitions in the real graph. VERIFIED, Lean v4.26.0. COMPLETED: Discharged the lone sorry in erdos_conjecture_false and repaired the file so it actually compiles (it previously had 24 errors: nonexistent Nat.popcount, missing Real/edgeFinset imports, orphaned docstrings, a buggy HasCycle mod_lt, and a malformed conder_better_bound tuple). The disproof now follows from a single well-formed axiom chung_1992 (density form). 0 sorries, 1 axiom; #print axioms shows only propext/Classical.choice/Quot.sound + chung_1992.",
+    "progressSummary": "COMPLETED: Discharged the lone sorry in erdos_conjecture_false and repaired the file so it actually compiles (it previously had 24 errors: nonexistent Nat.popcount, missing Real/edgeFinset imports, orphaned docstrings, a buggy HasCycle mod_lt, and a malformed conder_better_bound tuple). The disproof now follows from a single well-formed axiom chung_1992 (density form). 0 sorries, 1 axiom; #print axioms shows only propext/Classical.choice/Quot.sound + chung_1992.",
     "builtItems": [
       "Proved Erdos666.erdos_conjecture_false from chung_1992 (Proofs/Erdos666Problem.lean)",
       "Repaired Hypercube, HasCycle, DenseSubgraph defs and imports so the file compiles (282 lines, 0 errors)"

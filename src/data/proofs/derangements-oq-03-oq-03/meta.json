@@ -85,14 +85,6 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Header, Imports, and the Permutation-Matrix View",
-      "startLine": 1,
-      "endLine": 53,
-      "summary": "Module docstring framing the 2D permutation-matrix view of derangements: a random n×n permutation matrix is a derangement matrix (zero diagonal) exactly when its permutation has no fixed point, connecting Mathlib's Equiv.Perm.permMatrix / Matrix.trace_permutation API to the derangement combinatorics and the 1/e law. Imports Mathlib.Tactic, opens Equiv/Equiv.Perm/Matrix/Finset/Function and scoped BigOperators, declares namespace DerangementsOQ03OQ03 and variable {n : ℕ}.",
-      "mathContext": "$P_\\sigma$ is a derangement matrix $\\iff \\sigma \\in \\mathrm{derangements}(\\mathrm{Fin}\\,n)$; probability $= \\mathrm{numDerangements}\\,n / n! \\to 1/e$."
-    },
-    {
       "id": "entry-formula",
       "title": "Permutation Matrix Entry Formula",
       "startLine": 54,
@@ -221,66 +213,7 @@
     {
       "name": "hasZeroDiagonal_iff_mem_derangements",
       "type": "core",
-      "description": "**The matrix↔derangement bridge.** A permutation matrix has zero diagonal iff the underlying permutation is a derangement: (∀ i, (σ.permMatrix ℝ) i i = 0) ↔ σ ∈ derangements (Fin n). Immediate from permMatrix_diag_eq_zero_iff pointwise.",
-      "leanType": "(σ : Perm (Fin n)) : (∀ i, (σ.permMatrix ℝ) i i = 0) ↔ σ ∈ derangements (Fin n)",
-      "startLine": 82,
-      "endLine": 84
-    },
-    {
-      "name": "trace_permMatrix_eq_zero_iff",
-      "type": "key",
-      "description": "**Trace characterization.** The trace of a permutation matrix counts its fixed points, so it vanishes exactly when the permutation is a derangement: trace (σ.permMatrix ℝ) = 0 ↔ σ ∈ derangements (Fin n).",
-      "leanType": "(σ : Perm (Fin n)) : trace (σ.permMatrix ℝ) = 0 ↔ σ ∈ derangements (Fin n)",
-      "startLine": 88,
-      "endLine": 91
-    },
-    {
-      "name": "zeroDiagonal_setOf_eq_derangements",
-      "type": "key",
-      "description": "**Set-level identity.** The set of zero-diagonal (derangement) permutation matrices is exactly the set of derangements of Fin n.",
-      "leanType": "{σ : Perm (Fin n) | ∀ i, (σ.permMatrix ℝ) i i = 0} = derangements (Fin n)",
-      "startLine": 95,
-      "endLine": 98
-    },
-    {
-      "name": "card_derangement_permMatrices",
-      "type": "key",
-      "description": "**Count.** The number of derangement permutation matrices on Fin n is numDerangements n (Fintype.card of the derangement subtype).",
-      "leanType": "Fintype.card (derangements (Fin n)) = numDerangements n",
-      "startLine": 110,
-      "endLine": 112
-    },
-    {
-      "name": "derangementMatrixProb_mem_Icc",
-      "type": "key",
-      "description": "**Probability is genuine.** derangementMatrixProb n = numDerangements n / n! lies in [0,1] — a legitimate probability, since 0 ≤ numDerangements n ≤ n!.",
-      "leanType": "(n : ℕ) : derangementMatrixProb n ∈ Set.Icc (0 : ℝ) 1",
-      "startLine": 127,
-      "endLine": 130
-    },
-    {
-      "name": "permMatrix_apply",
-      "type": "supporting",
-      "description": "**Entry formula.** (σ.permMatrix ℝ) i j = 1 iff σ i = j, else 0 — the definition unfolded via PEquiv.toMatrix_apply.",
-      "leanType": "(σ : Perm (Fin n)) (i j : Fin n) : (σ.permMatrix ℝ) i j = if σ i = j then 1 else 0",
-      "startLine": 57,
-      "endLine": 59
-    },
-    {
-      "name": "permMatrix_diag_eq_zero_iff",
-      "type": "supporting",
-      "description": "**Diagonal vanishing.** A diagonal entry vanishes exactly at non-fixed points: (σ.permMatrix ℝ) i i = 0 ↔ σ i ≠ i — the pointwise engine of the bridge lemma.",
-      "leanType": "(σ : Perm (Fin n)) (i : Fin n) : (σ.permMatrix ℝ) i i = 0 ↔ σ i ≠ i",
-      "startLine": 67,
-      "endLine": 70
-    },
-    {
-      "name": "numDerangements_le_factorial",
-      "type": "supporting",
-      "description": "**Upper bound.** numDerangements n ≤ n! since the derangements sit inside all n! permutations — the inequality making the probability ≤ 1.",
-      "leanType": "(n : ℕ) : numDerangements n ≤ n.factorial",
-      "startLine": 115,
-      "endLine": 119
+      "description": "A permutation matrix has zero diagonal iff the underlying permutation is a derangement — the matrix↔derangement bridge."
     }
   ],
   "sorries": 0

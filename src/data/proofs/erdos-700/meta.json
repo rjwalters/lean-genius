@@ -19,11 +19,11 @@
     "sourceUrl": "https://erdosproblems.com/700",
     "erdosUrl": "https://erdosproblems.com/700",
     "erdosProblemStatus": "open",
-    "axiomCount": 3,
+    "axiomCount": 2,
     "lineCount": 427,
     "theoremCount": 14,
     "definitionCount": 3,
-    "assumptions": "2 axioms: (1) erdos_700_question2 — there are infinitely many composite n with f(n) > √n (open; n=30 is a known example); (2) erdos_700_question3 — f(n) ≪_A n/(log n)^A for every A > 0 (open; connects to Hardy-Ramanujan). 14 theorems proved: bounds, f(pq)=p, f(30)=6, f(p²)≥p. 0 sorries. Plus `Lean.ofReduceBool`: the theorem `f_30` (f(30)=6) is discharged by `native_decide` (interval_cases over 2≤k≤15 plus the k=5 witness), which trusts the Lean compiler's kernel reduction (#print axioms lists `Lean.ofReduceBool`). Axiom total including ofReduceBool: 3.",
+    "assumptions": "2 axioms: (1) erdos_700_question2 — there are infinitely many composite n with f(n) > √n (open; n=30 is a known example); (2) erdos_700_question3 — f(n) ≪_A n/(log n)^A for every A > 0 (open; connects to Hardy-Ramanujan). 14 theorems proved: bounds, f(pq)=p, f(30)=6, f(p²)≥p. 0 sorries.",
     "mathlib_version": "4.26.0"
   },
   "sections": [

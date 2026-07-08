@@ -68,7 +68,7 @@ def ContainsUnitSquare (S : Set Plane) : Prop :=
 def Erdos214Statement : Prop :=
   ∀ S : Set Plane, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ
 
-/-- Juhász's Theorem (1979): Affirmatively resolves Problem #214.
+/- Juhász's Theorem (1979): Affirmatively resolves Problem #214.
 
 NOTE: This is *not* assumed as a separate axiom.  It is derived below
 (`juhasz_1979`) from the single stronger axiom `juhasz_stronger` via the proved
@@ -108,6 +108,15 @@ theorem dist_coords (a b c d : ℝ) :
   unfold Erdos214.dist
   rw [← dist_eq_norm, EuclideanSpace.dist_eq, Fin.sum_univ_two]
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Real.dist_eq, sq_abs]
+
+/-- Distance between two arbitrary plane points via their coordinates:
+    `dist p q = √((p₀-q₀)² + (p₁-q₁)²)`. The coordinate form of `dist_coords`,
+    used to reason about the scaled lattice below. -/
+theorem dist_sq (p q : Plane) :
+    Erdos214.dist p q = Real.sqrt ((p 0 - q 0) ^ 2 + (p 1 - q 1) ^ 2) := by
+  unfold Erdos214.dist
+  rw [← dist_eq_norm, EuclideanSpace.dist_eq, Fin.sum_univ_two]
+  simp only [Real.dist_eq, sq_abs]
 
 /-- The standard unit square `(0,0),(1,0),(1,1),(0,1)` really is a unit square. -/
 theorem isUnitSquare_standard :
@@ -189,6 +198,23 @@ theorem unit_distance_free_iff_no_edges (S : Set Plane) :
 /-- A proper example: scale ℤ² by √2 -/
 def ScaledLattice : Set Plane :=
   {p : Plane | ∃ a b : ℤ, p 0 = Real.sqrt 2 * a ∧ p 1 = Real.sqrt 2 * b}
+
+/-- **The scaled lattice `√2·ℤ²` is unit-distance-free.**
+
+Two distinct lattice points `(√2·a₁, √2·b₁)`, `(√2·a₂, √2·b₂)` are at squared
+distance `2·((a₁-a₂)² + (b₁-b₂)²)`, twice a nonnegative integer. If that distance
+equalled `1` we would need `2·m = 1` for an integer `m`, impossible. This exhibits
+an explicit *infinite* unit-distance-free set, so the hypothesis of Problem #214 is
+non-vacuous. -/
+theorem scaledLattice_unitDistanceFree : IsUnitDistanceFree ScaledLattice := by
+  rintro p q ⟨a₁, b₁, hp0, hp1⟩ ⟨a₂, b₂, hq0, hq1⟩ _ hdist
+  have h2 : Real.sqrt 2 * Real.sqrt 2 = 2 := Real.mul_self_sqrt (by norm_num)
+  have hX : (p 0 - q 0) ^ 2 + (p 1 - q 1) ^ 2
+      = ((2 * ((a₁ - a₂) ^ 2 + (b₁ - b₂) ^ 2) : ℤ) : ℝ) := by
+    rw [hp0, hp1, hq0, hq1]; push_cast; nlinarith [h2]
+  rw [dist_sq, hX, Real.sqrt_eq_one] at hdist
+  have hint : (2 * ((a₁ - a₂) ^ 2 + (b₁ - b₂) ^ 2) : ℤ) = 1 := by exact_mod_cast hdist
+  omega
 
 /-
 ## Part 8: Related Problems
