@@ -1,10 +1,15 @@
 # Research State: erdos-1138-oq-03-oq-01
 
 ## Current State
-**Phase**: SURVEYED
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-07-02
-**Iteration**: 1
+**Since**: 2026-07-05
+**Iteration**: 2
+
+## Completion
+VERIFIED and merged in PR #35062: `proofs/Proofs/Erdos1138OQ03OQ01.lean`, 0 sorries,
+0 local axioms, 3 theorems, 1 inherited axiom (`Erdos1138OQ03.baker_harman_pintz`).
+The build-blocked survey note below is superseded. Do not re-serve.
 
 ## Current Focus
 Scoped a tractable oq-01 for the fresh (previously EMPTY, no problem.md) candidate:
