@@ -83,6 +83,56 @@
       "mathContext": "Nat.le_div_iff_mul_le converts the floor bound to the kernel; parity split plus the closed forms give equality at balance; Nat.lt_of_mul_lt_mul_left cancels the factor 4 for strict uniqueness."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "exists_balanced_max",
+      "type": "core",
+      "description": "**T(n) is the maximum.** Combining the upper bound with equality at balance, ⌊n²/4⌋ is exactly the largest edge count among complete bipartite graphs K_{a,n−a} on n vertices, witnessed by the balanced split a = ⌊n/2⌋. The extremal-graph fact behind Erdős #1017's sharp bound.",
+      "leanType": "(n : ℕ) : ∃ a, a ≤ n ∧ a * (n - a) = turanBound n",
+      "startLine": 114,
+      "endLine": 116
+    },
+    {
+      "name": "mul_compl_le_turanBound",
+      "type": "core",
+      "description": "**The upper bound.** For any split a ≤ n, K_{a,n−a} has a·(n−a) ≤ T(n) edges — no complete bipartite graph on n vertices exceeds ⌊n²/4⌋ edges. Proved by converting the floor bound to the integer AM–GM kernel.",
+      "leanType": "(n a : ℕ) (h : a ≤ n) : a * (n - a) ≤ turanBound n",
+      "startLine": 87,
+      "endLine": 94
+    },
+    {
+      "name": "balanced_mul_compl_eq_turanBound",
+      "type": "key",
+      "description": "**Equality at balance.** The balanced split a = ⌊n/2⌋ attains the bound: ⌊n/2⌋·(n − ⌊n/2⌋) = T(n), by a parity split and the closed forms T(2m)=m², T(2m+1)=m(m+1).",
+      "leanType": "(n : ℕ) : (n / 2) * (n - n / 2) = turanBound n",
+      "startLine": 98,
+      "endLine": 109
+    },
+    {
+      "name": "even_unbalanced_lt",
+      "type": "key",
+      "description": "**Uniqueness for even n.** When n = 2m, the balanced split is the unique maximiser: any unequal split a ≠ m yields strictly fewer than m² = T(2m) edges, from the strict integer AM–GM.",
+      "leanType": "(m a : ℕ) (ha : a ≤ 2 * m) (hne : a ≠ m) : a * (2 * m - a) < turanBound (2 * m)",
+      "startLine": 121,
+      "endLine": 129
+    },
+    {
+      "name": "four_mul_mul_le_add_sq",
+      "type": "supporting",
+      "description": "**Integer AM–GM kernel.** 4·a·b ≤ (a+b)² over ℕ, the gap being the perfect square (a−b)²; exposed by a case split on a ≤ b / b ≤ a to avoid truncated subtraction. The engine of the upper bound.",
+      "leanType": "(a b : ℕ) : 4 * (a * b) ≤ (a + b) ^ 2",
+      "startLine": 66,
+      "endLine": 71
+    },
+    {
+      "name": "four_mul_mul_lt_add_sq",
+      "type": "supporting",
+      "description": "**Strict integer AM–GM.** 4·a·b < (a+b)² whenever a ≠ b — the square gap (a−b)² is then ≥ 1. Powers the even-n uniqueness.",
+      "leanType": "(a b : ℕ) (h : a ≠ b) : 4 * (a * b) < (a + b) ^ 2",
+      "startLine": 75,
+      "endLine": 82
+    }
+  ],
   "conclusion": {
     "summary": "Among complete bipartite graphs K_{a,n-a} on n vertices, the edge count a*(n - a) is at most the Turán bound T(n) = floor(n^2/4) and equals it exactly at the balanced split a = floor(n/2); thus T(n) is the maximum, and for even n the balanced split is the unique maximiser. This is the extremal-graph fact that makes the balanced complete bipartite graph THE Erdős-Goodman-Pósa extremal example. Self-contained over Mathlib via the integer AM-GM kernel 4ab <= (a+b)^2.",
     "implications": "The result pins down the extremal graph behind Erdős #1017's sharp bound: floor(n^2/4) is realised by the balanced split and (for even n) by no other complete bipartite split. The integer AM-GM kernel and the quarter-square maximum are reusable across extremal graph theory (Mantel/Turán edge maxima, Cauchy-Schwarz-free product bounds).",
