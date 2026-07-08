@@ -17,6 +17,9 @@ This file supplies that missing structural layer — all fully machine-checked
   * `subsetSums_pos`          — subset sums of positive sets are positive;
   * `nonemptySubsets_card`    — there are exactly `2^|A| − 1` non-empty subsets;
   * `subsetSums_card_le`      — **`|subsetSums A| ≤ 2^|A| − 1`** (counting anchor);
+  * `subset_subsetSums`       — `A ⊆ subsetSums A` (elements are subset sums);
+  * `subsetSums_card_ge`      — **`|A| ≤ |subsetSums A|`** (counting lower bound);
+  * `subsetSums_card_bounds`  — the sandwich `|A| ≤ |subsetSums A| ≤ 2^|A| − 1`;
   * `subsetSums_singleton`    — `subsetSums {a} = {a}`.
 
 The headline is downward closure: any subset of a valid set is valid — the
@@ -146,5 +149,28 @@ theorem subsetSums_singleton (a : ℕ) : subsetSums {a} = {a} := by
     refine ⟨{s}, ?_, by simp⟩
     rw [Finset.mem_filter, Finset.mem_powerset]
     exact ⟨Finset.Subset.refl _, Finset.singleton_ne_empty s⟩
+
+/-- Every element of `A` is one of its own subset sums (the singleton subset
+    `{a}` sums to `a`), so `A ⊆ subsetSums A`. -/
+theorem subset_subsetSums (A : Finset ℕ) : A ⊆ subsetSums A := by
+  intro a ha
+  unfold subsetSums nonemptySubsets
+  rw [Finset.mem_image]
+  refine ⟨{a}, ?_, by simp⟩
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨Finset.singleton_subset_iff.mpr ha, Finset.singleton_ne_empty a⟩
+
+/-- **Cardinality lower bound.**  A set has at least `|A|` distinct non-empty
+    subset sums, since its own elements are singleton subset sums.  Together with
+    `subsetSums_card_le` this sandwiches the count:
+    `|A| ≤ |subsetSums A| ≤ 2^|A| − 1`. -/
+theorem subsetSums_card_ge (A : Finset ℕ) : A.card ≤ (subsetSums A).card :=
+  Finset.card_le_card (subset_subsetSums A)
+
+/-- The full sandwich for the number of distinct non-empty subset sums:
+    it is at least the number of generators `|A|` and at most `2^|A| − 1`. -/
+theorem subsetSums_card_bounds (A : Finset ℕ) :
+    A.card ≤ (subsetSums A).card ∧ (subsetSums A).card ≤ 2 ^ A.card - 1 :=
+  ⟨subsetSums_card_ge A, subsetSums_card_le A⟩
 
 end Erdos882OQ03
