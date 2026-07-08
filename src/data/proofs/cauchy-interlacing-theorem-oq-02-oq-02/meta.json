@@ -124,12 +124,14 @@
   },
   "crossReferences": [
     {
-      "slug": "cauchy-interlacing-theorem-oq-02",
-      "relation": "Parent entry — proves the abstract Poincaré separation λ(k+m) ≤ μ(k) ≤ λ(k) for a symmetric operator and a codimension-m compression with agreeing Rayleigh quotient, and lists the principal-submatrix bridge as its second open question. This entry supplies that bridge by realising the compression as toEuclideanLin of a principal submatrix."
+      "targetId": "cauchy-interlacing-theorem-oq-02",
+      "relationship": "parent",
+      "description": "Parent entry — proves the abstract Poincaré separation λ(k+m) ≤ μ(k) ≤ λ(k) for a symmetric operator and a codimension-m compression with agreeing Rayleigh quotient, and lists the principal-submatrix bridge as its second open question. This entry supplies that bridge by realising the compression as toEuclideanLin of a principal submatrix."
     },
     {
-      "slug": "cauchy-interlacing-theorem",
-      "relation": "Root entry — the codimension-one Cauchy interlacing theorem and the Courant–Fischer keystone on which the entire chain rests."
+      "targetId": "cauchy-interlacing-theorem",
+      "relationship": "ancestor",
+      "description": "Root entry — the codimension-one Cauchy interlacing theorem and the Courant–Fischer keystone on which the entire chain rests."
     }
   ],
   "references": [

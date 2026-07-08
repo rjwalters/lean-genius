@@ -117,12 +117,14 @@
   },
   "crossReferences": [
     {
-      "slug": "cauchy-interlacing-theorem",
-      "relation": "Parent entry — proves the Courant–Fischer max–min keystone (eigenvalue_maxmin_lower / eigenvalue_maxmin_upper) and the codimension-one interlacing inequality. This entry reuses the keystone verbatim to derive Weyl's monotonicity and additive inequalities."
+      "targetId": "cauchy-interlacing-theorem",
+      "relationship": "parent",
+      "description": "Parent entry — proves the Courant–Fischer max–min keystone (eigenvalue_maxmin_lower / eigenvalue_maxmin_upper) and the codimension-one interlacing inequality. This entry reuses the keystone verbatim to derive Weyl's monotonicity and additive inequalities."
     },
     {
-      "slug": "cauchy-interlacing-theorem-oq-02",
-      "relation": "Sibling entry (Poincaré separation) — its conclusion explicitly names 'Weyl monotonicity, Lidskii' as reusable consequences of the keystone that 'likewise only need the dimension count to vary'. This entry realises that prediction for the Weyl inequalities."
+      "targetId": "cauchy-interlacing-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling entry (Poincaré separation) — its conclusion explicitly names 'Weyl monotonicity, Lidskii' as reusable consequences of the keystone that 'likewise only need the dimension count to vary'. This entry realises that prediction for the Weyl inequalities."
     }
   ],
   "references": [

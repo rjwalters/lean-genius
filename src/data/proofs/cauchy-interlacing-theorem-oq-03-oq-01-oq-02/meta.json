@@ -166,16 +166,19 @@
   },
   "crossReferences": [
     {
-      "slug": "cauchy-interlacing-theorem-oq-03-oq-01",
-      "relation": "Parent entry — proves Weyl's a-priori operator-norm stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ and lists this residual / a-posteriori bound (Bauer–Fike for the Hermitian case) as its lead open question. This entry closes that question with the converse, a-posteriori direction."
+      "targetId": "cauchy-interlacing-theorem-oq-03-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry — proves Weyl's a-priori operator-norm stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ and lists this residual / a-posteriori bound (Bauer–Fike for the Hermitian case) as its lead open question. This entry closes that question with the converse, a-posteriori direction."
     },
     {
-      "slug": "cauchy-interlacing-theorem-oq-03",
-      "relation": "Grandparent entry — proves Weyl monotonicity (weyl_monotone) and the additive inequality from the Courant–Fischer keystone, on which the parent's stability bound rests."
+      "targetId": "cauchy-interlacing-theorem-oq-03",
+      "relationship": "ancestor",
+      "description": "Grandparent entry — proves Weyl monotonicity (weyl_monotone) and the additive inequality from the Courant–Fischer keystone, on which the parent's stability bound rests."
     },
     {
-      "slug": "cauchy-interlacing-theorem",
-      "relation": "Root entry — proves the Courant–Fischer max–min keystone underlying the whole eigenvalue-perturbation family."
+      "targetId": "cauchy-interlacing-theorem",
+      "relationship": "ancestor",
+      "description": "Root entry — proves the Courant–Fischer max–min keystone underlying the whole eigenvalue-perturbation family."
     }
   ],
   "references": [
