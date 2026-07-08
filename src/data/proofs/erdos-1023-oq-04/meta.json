@@ -172,6 +172,11 @@
       "targetId": "erdos-1023-oq-02",
       "relationship": "sibling",
       "description": "Develops the intersection and difference analogues of the union-free problem: the complementation bijection A ↦ Aᶜ carries union-free families onto intersection-free families, giving F∩(n) = F(n), so the same central-binomial value and hence the same 2^n/(n+1) ≤ F ≤ 2^n brackets proved here transfer verbatim to the intersection-free maximum."
+    },
+    {
+      "targetId": "beta-central-binomial-asymptotic",
+      "relationship": "related",
+      "description": "Supplies the sharp central-binomial asymptotic this entry defers: it derives C(2n,n) ~ 4ⁿ/√(πn) from Mathlib's Stirling equivalent. Since the even subsequence here is exactly that quantity (unionFreeMax_two_mul: F(2n) = centralBinom n = C(2n,n)), that estimate turns the elementary bracket 2^n/(n+1) ≤ F(n) ≤ 2^n proved here into the true √n-order growth F(2n) ~ 4ⁿ/√(πn) — the Stirling-type refinement listed as this entry's first open question."
     }
   ],
   "references": [
