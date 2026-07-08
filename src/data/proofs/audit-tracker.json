@@ -4387,10 +4387,11 @@
       "issues": []
     },
     "catalan-numbers-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-07-08T17:39:58Z",
+      "auditCount": 3,
+      "lastAudited": "2026-07-08T18:06:14Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "agentId": "lean-auditor-reaudit"
     },
     "catalan-numbers-oq-01-oq-01": {
       "auditCount": 1,
@@ -4611,10 +4612,11 @@
       "issues": []
     },
     "cauchy-interlacing-theorem-oq-01-oq-02-oq-02-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-07-08T17:39:58Z",
+      "auditCount": 3,
+      "lastAudited": "2026-07-08T18:06:14Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "agentId": "lean-auditor-reaudit"
     },
     "cauchy-interlacing-theorem-oq-02": {
       "auditCount": 2,
@@ -4623,22 +4625,25 @@
       "result": "clean"
     },
     "cauchy-interlacing-theorem-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-07-08T17:39:58Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T18:06:14Z",
+      "result": "clean",
+      "agentId": "lean-auditor-reaudit"
     },
     "cauchy-interlacing-theorem-oq-03-oq-01": {
-      "auditCount": 1,
-      "issues": [],
-      "lastAudited": "2026-06-24T12:27:19Z",
-      "result": "clean"
-    },
-    "cauchy-interlacing-theorem-oq-03-oq-01-oq-02": {
       "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-07-08T17:39:58Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T18:06:14Z",
+      "result": "clean",
+      "agentId": "lean-auditor-reaudit"
+    },
+    "cauchy-interlacing-theorem-oq-03-oq-01-oq-02": {
+      "auditCount": 3,
+      "issues": [],
+      "lastAudited": "2026-07-08T18:06:14Z",
+      "result": "clean",
+      "agentId": "lean-auditor-reaudit"
     },
     "cauchy-interlacing-theorem-oq-03-oq-02": {
       "auditCount": 2,
@@ -8207,10 +8212,11 @@
       "result": "clean"
     },
     "elementary-quadratic-reciprocity-oq-03-oq-02": {
-      "auditCount": 7,
+      "auditCount": 8,
       "issues": [],
-      "lastAudited": "2026-07-08T17:45:24Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T18:06:14Z",
+      "result": "clean",
+      "agentId": "lean-auditor-reaudit"
     },
     "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01": {
       "auditCount": 3,
@@ -11692,10 +11698,11 @@
       ]
     },
     "erdos-214": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-06-18T15:16:32Z",
-      "result": "issues-fixed"
+      "agentId": "lean-auditor-reaudit",
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T18:06:14Z",
+      "result": "clean",
+      "issues": []
     },
     "erdos-214-incomplete-01-oq-01": {
       "auditCount": 1,
@@ -14017,9 +14024,9 @@
       "result": "clean"
     },
     "erdos-490": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 10,
-      "lastAudited": "2026-07-08T17:18:11Z",
+      "agentId": "lean-auditor-reaudit",
+      "auditCount": 11,
+      "lastAudited": "2026-07-08T18:06:14Z",
       "result": "clean",
       "issues": [],
       "notes": "Re-audit CLEAN: meta status/badge/sorries/axiomCount all reconcile with Lean source. Sorry-count 'mismatches' from companion *Aristotle scaffolds are not counted (meta.sorries tracks main file). native_decide in erdos-1064 backs only illustrative examples with ofReduceBool disclosed; descartes axiomCount=1 = SturmReduction structure-encoded assumption, disclosed."
