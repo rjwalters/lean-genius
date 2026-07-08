@@ -287,7 +287,7 @@ theorem noFiveCollinear_of_height_certificate (P : PlanarPointSet)
       intro p hp
       rw [Finset.mem_filter]
       simp only [Finset.mem_insert, Finset.mem_singleton] at hp
-      rcases hp with rfl | rfl | rfl | rfl | rfl
+      rcases hp with h | h | h | h | h <;> rw [h]
       · exact ⟨ha, rfl⟩
       · exact ⟨hb, hheight.symm⟩
       · exact ⟨hc, hforce c hcol_c⟩
