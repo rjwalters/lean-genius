@@ -22,6 +22,11 @@
   * `irregularPairs_swap_mem` — the set of ordered irregular pairs underlying
     `IsRegularPartition` is closed under swapping coordinates: irregularity is a
     symmetric relation on parts.
+  * `edgeDensity_compl` — **complement transfer**: for disjoint nonempty `A, B`,
+    `d_{Gᶜ}(A, B) = 1 − d_G(A, B)`, via Mathlib's
+    `SimpleGraph.edgeDensity_add_edgeDensity_compl` and the gallery bridge.
+  * `edgeDensity_mem_Icc` — the range is packaged as a single membership
+    `d(A, B) ∈ Set.Icc 0 1` for downstream positivity/interval reasoning.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -82,5 +87,29 @@ theorem irregularPairs_swap_mem (G : SimpleGraph V) [DecidableRel G.Adj]
   refine ⟨fun h => hpair.1 h.symm, ?_⟩
   rw [isEpsilonRegular_comm]
   exact hpair.2
+
+/-- **Complement transfer of edge density.**  For *disjoint*, nonempty vertex sets
+    `A` and `B`, every cross pair is either a `G`-edge or a `Gᶜ`-edge (disjointness
+    rules out the diagonal `a = b`), so the two densities are complementary:
+
+        d_{Gᶜ}(A, B) = 1 − d_G(A, B).
+
+    Proved by transporting both gallery densities to Mathlib via `edgeDensity_eq_mathlib`
+    and invoking `SimpleGraph.edgeDensity_add_edgeDensity_compl`.  This is the density
+    half of "regularity passes to the complement graph": the density *gap* on any
+    disjoint sub-pair is preserved (`|d_{Gᶜ} − d_{Gᶜ}| = |d_G − d_G|`). -/
+theorem edgeDensity_compl (G : SimpleGraph V) [DecidableRel G.Adj]
+    {A B : Finset V} (hA : A.Nonempty) (hB : B.Nonempty) (h : Disjoint A B) :
+    edgeDensity Gᶜ A B = 1 - edgeDensity G A B := by
+  have hsum := G.edgeDensity_add_edgeDensity_compl hA hB h
+  rw [edgeDensity_eq_mathlib, edgeDensity_eq_mathlib]
+  linarith [hsum]
+
+/-- **Edge density lies in `[0, 1]`.**  Packages `edgeDensity_nonneg` and
+    `edgeDensity_le_one` into a single interval membership, convenient for
+    downstream positivity and `Set.Icc` reasoning. -/
+theorem edgeDensity_mem_Icc (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) : edgeDensity G A B ∈ Set.Icc (0 : ℚ) 1 :=
+  ⟨edgeDensity_nonneg G A B, edgeDensity_le_one G A B⟩
 
 end Szemeredi.Regularity.OQ01
