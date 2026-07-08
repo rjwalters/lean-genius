@@ -39,6 +39,18 @@
   },
   "mainTheorems": [
     {
+      "name": "exists_unipotent_isCommutator",
+      "type": "main",
+      "description": "For every prime p ≥ 5, every unipotent element u(s) is a commutator: u(s) = [diag(2), u(t)] for a suitable t. Taking a = 2 makes a²−1 = 3 a unit (since p ≠ 2,3), so the commutator map t ↦ [diag(a),u(t)] covers the whole root group U. This is the perfectness input to Iwasawa's simplicity criterion, valid exactly on the range p ≥ 5 where PSL(2,p) is simple (and failing for p = 2,3).",
+      "leanType": "5 ≤ p → ∀ (s : ZMod p), ∃ (a : (ZMod p)ˣ) (t : ZMod p), torusHom a * unipotentUpper t * (torusHom a)⁻¹ * (unipotentUpper t)⁻¹ = unipotentUpper s"
+    },
+    {
+      "name": "torus_unipotent_commutator",
+      "type": "main",
+      "description": "The root-group form of the SL(2) commutator relation: conjugating u(t) by diag(a) and multiplying by u(t)⁻¹ scales the unipotent parameter by a²−1, i.e. [diag(a), u(t)] = u((a²−1)·t). Obtained by composing the torus-conjugation law (diag(a)·u(t)·diag(a)⁻¹ = u(a²t)) with the additive law u(a²t)·u(−t) = u((a²−1)t).",
+      "leanType": "torusHom a * unipotentUpper t * (torusHom a)⁻¹ * (unipotentUpper t)⁻¹ = unipotentUpper (((a : ZMod p) ^ 2 - 1) * t)"
+    },
+    {
       "name": "weylW_pow_four",
       "type": "supporting",
       "description": "The Weyl element has order dividing 4 in SL(2,p): w⁴ = 1. Immediate from w² = -1 (val_weylW_sq); the four-fold matrix product is computed entrywise against the identity.",
@@ -236,12 +248,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 436,
+    "lineCount": 520,
     "path": "Proofs/SylowTheoremOQ04OQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 7,
-    "theoremCount": 20
+    "theoremCount": 24
   },
   "sorries": 0
 }
