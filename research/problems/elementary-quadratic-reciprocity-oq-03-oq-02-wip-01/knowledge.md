@@ -37,9 +37,29 @@ New declarations:
   *replays* its cached olean so the crash only appears once the file is edited.
   Commented the `#print axioms` block out; the file otherwise builds in ~2s.
 
+## Update (2026-07-08) — self-reciprocity of the prime 2
+
+New theorem `kronecker2_eq_kronecker_two (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1)`:
+`kronecker2 (n : ℤ) = kronecker 2 n`, i.e. `(n/2) = (2/n)` for odd positive `n`.
+This bridges the two a-priori distinct "2-characters" that coexist in the file:
+- `kronecker2` — a function of the *numerator*, the even real Dirichlet character
+  mod 8 (Section 6: `kronecker2_mul` / `_periodic` / `_neg` / `_values`), and
+- `kronecker 2 ·` — a function of the *denominator* (Section 8: `kronecker_two_odd`).
+They agree on the odd integers (both `+1` on `±1 mod 8`, `−1` on `±3 mod 8`), so
+the proof is `kronecker_two_odd` + `unfold kronecker2` + a residue comparison by
+`omega`. Build-verified (3058 jobs, 0 sorries, 0 axioms). `theoremCount` 25→26.
+
+*Build note:* the file still exhibits the documented exit-135 SIGSEGV on the
+first fresh build after an edit (elaborates fully — `3058/3058` — then crashes on
+finalization). A plain retry builds green (environmental / shared-volume, not a
+proof error). Do NOT edit the proof in response to a line-less 135.
+
 ## Open work
 
 1. Refine `kronecker` to use `kronecker2` at the 2-adic part (→ classical symbol
    at even moduli), then re-prove `kronecker_mul_right` for the refined def.
+   (`kronecker2_eq_kronecker_two` is a step toward this: it shows the refined and
+   current defs would agree at odd moduli, so only the even branch changes.)
 2. Target 2: generalized quadratic reciprocity for arbitrary fundamental
-   discriminants — supplementary laws + Gauss sums.
+   discriminants — supplementary laws (done: `kronecker_neg_one_odd`,
+   `kronecker_two_odd`) + Gauss sums (open).
