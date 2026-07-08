@@ -427,6 +427,39 @@ theorem kronecker2_eq_kronecker_two (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
   · rw [if_pos h, if_pos (by omega)]
   · rw [if_neg h, if_neg (by omega)]
 
+/-- **The denominator character `(-1/·)` is periodic mod 4.**
+    For odd positive `n`, `(-1/(n+4)) = (-1/n)`. Together with multiplicativity
+    in the second argument (`kronecker_mul_right`) this exhibits the *sign*
+    supplementary character — the value `(-1/·)` as the odd denominator varies —
+    as a Dirichlet character modulo `4`. This is the denominator-side complement
+    of `kronecker2_periodic` (which shows the *numerator* character `(·/2)` is a
+    Dirichlet character mod 8); both are structural inputs to the Gauss-sum route
+    to generalized reciprocity (refinement 2). Immediate from `kronecker_neg_one_odd`,
+    since `(n+4) % 4 = n % 4`. `sorry`-free, axiom-free. -/
+theorem kronecker_neg_one_periodic (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (-1) ((n : ℤ) + 4) = kronecker (-1) (n : ℤ) := by
+  have e : ((n : ℤ) + 4) = ((n + 4 : ℕ) : ℤ) := by push_cast; ring
+  rw [e, kronecker_neg_one_odd (n + 4) (by omega) (by omega),
+    kronecker_neg_one_odd n hn hno]
+  have h4 : (n + 4) % 4 = n % 4 := by omega
+  rw [h4]
+
+/-- **The denominator character `(2/·)` is periodic mod 8.**
+    For odd positive `n`, `(2/(n+8)) = (2/n)`. Together with `kronecker_mul_right`
+    this exhibits the fixed-numerator-`2` supplementary character — the value
+    `(2/·)` as the odd denominator varies — as a Dirichlet character modulo `8`.
+    It is the denominator-side complement of `kronecker2_periodic`; note the two
+    "2-characters" agree on the odd integers by `kronecker2_eq_kronecker_two`, so
+    both periodicities (numerator mod 8, denominator mod 8) hold. Immediate from
+    `kronecker_two_odd`, since `(n+8) % 8 = n % 8`. `sorry`-free, axiom-free. -/
+theorem kronecker_two_periodic (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker 2 ((n : ℤ) + 8) = kronecker 2 (n : ℤ) := by
+  have e : ((n : ℤ) + 8) = ((n + 8 : ℕ) : ℤ) := by push_cast; ring
+  rw [e, kronecker_two_odd (n + 8) (by omega) (by omega),
+    kronecker_two_odd n hn hno]
+  have h8 : (n + 8) % 8 = n % 8 := by omega
+  rw [h8]
+
 /-!
 ## Module note: what remains open
 
