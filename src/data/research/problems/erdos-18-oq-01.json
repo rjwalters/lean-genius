@@ -38,14 +38,16 @@
       "zero_representable (∅), mem_divisors_representable (singleton {d}), one_representable (1∣m), self_representable ({m}).",
       "practical_of_check: IsPractical m from ∀ k ∈ range m, 1≤k → ∃ S ∈ (divisors m).powerset, S.sum id = k (decidable via Finset.decidableBExists/BAll).",
       "four_practical, six_practical, eight_practical via practical_of_check + decide.",
-      "representability algebra (researcher-7, 2026-07-08): representable_union (closure under disjoint union of divisor subsets: a,b representable via disjoint sets ⟹ a+b representable), representable_le_sigma (every representable value ≤ σ(m) = sum of all divisors), and practical_pred_le_sigma (a practical m ≥ 2 satisfies m-1 ≤ σ(m)). 0 axioms, 0 sorries, builds clean 7744 jobs."
+      "representability algebra (researcher-7, 2026-07-08): representable_union (closure under disjoint union of divisor subsets: a,b representable via disjoint sets ⟹ a+b representable), representable_le_sigma (every representable value ≤ σ(m) = sum of all divisors), and practical_pred_le_sigma (a practical m ≥ 2 satisfies m-1 ≤ σ(m)). 0 axioms, 0 sorries, builds clean 7744 jobs.",
+      "sigma_representable, representable_compl, practical_top_segment (3 theorems, 0 axioms): complement symmetry k↦σ(m)−k of the representability algebra + its consequence for the top segment of a practical number."
     ],
     "insights": [
       "IsRepresentable k m = ∃ S ⊆ divisors m, S.sum id = k; the bounded form ∃ S ∈ (divisors m).powerset (via Finset.mem_powerset) is DECIDABLE, so IsPractical m reduces to a finite decidable check and small cases follow by `decide`.",
       "KERNEL `decide` (not native_decide) on the powerset check stays 0-axiom (propext/Classical.choice/Quot.sound only, no Lean.ofReduceBool) — verified via #print axioms; computing Nat.divisors m for small m is cheap enough for the kernel.",
       "Representability building blocks: 0 by ∅, d by {d} (Finset.sum_singleton), 1 by Nat.one_mem_divisors.mpr (m≠0), m by Nat.mem_divisors_self.",
       "The open content (h(m) < (log log m)^O(1) infinitely often; h(n!) bounds) is analytic and far from these elementary facts.",
-      "The representable range of m is exactly [0, σ(m)]: 0 is representable (empty set), σ(m) is the max (representable_le_sigma), and disjoint divisor subsets add (representable_union). This is the elementary closure structure underlying every practical-number argument."
+      "The representable range of m is exactly [0, σ(m)]: 0 is representable (empty set), σ(m) is the max (representable_le_sigma), and disjoint divisor subsets add (representable_union). This is the elementary closure structure underlying every practical-number argument.",
+      "Complement symmetry (researcher-4, 2026-07-08): the representable set of m is symmetric under k↦σ(m)−k. sigma_representable: σ(m) itself is representable (all divisors). representable_compl: if S⊆divisors m sums to k, the unused divisors divisors m\\S sum to σ(m)−k (Finset.sum_sdiff + omega), so σ(m)−k is representable. practical_top_segment: reflecting practical_represents_le ([0,m] representable) through this symmetry gives the TOP block [σ(m)−m, σ(m)] representable — a practical number represents both width-m ends of [0,σ(m)]. All elementary, 0 axioms."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -209,8 +211,8 @@
     {
       "path": "Proofs/Erdos18OQ01.lean",
       "filename": "Erdos18OQ01.lean",
-      "lineCount": 265,
-      "theoremCount": 20,
+      "lineCount": 306,
+      "theoremCount": 23,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
