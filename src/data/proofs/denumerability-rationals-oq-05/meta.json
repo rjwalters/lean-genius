@@ -197,6 +197,11 @@
       "targetId": "cantor-diagonalization-oq-07",
       "relationship": "related",
       "description": "The ℵ₀-level shadow of the continuum-stability results: 𝔠 · 𝔠 = 𝔠 and 𝔠 ^ ℵ₀ = 𝔠 mirror ℵ₀ · ℵ₀ = ℵ₀, but the power lifts ℵ₀ strictly to 𝔠"
+    },
+    {
+      "targetId": "denumerability-rationals-oq-05-oq-01",
+      "relationship": "child",
+      "description": "Direct child answering this entry's first open question: it shows the ℵ₀/𝔠 boundary is structural, not special to ℚ. For ANY countably infinite commutative ring R, the polynomial ring stays denumerable (#(R[X]) = ℵ₀) while the countable power jumps to the continuum (#(ℕ → R) = 𝔠) — generalizing #(Finset ℚ)=ℵ₀ vs #(ℕ → ℚ)=𝔠 proved here to the ring level."
     }
   ],
   "conclusion": {
