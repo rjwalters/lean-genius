@@ -114,5 +114,17 @@
     "path": "Proofs/HermiteFloorIdentityOQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "hermite_fract_sum",
+      "type": "theorem",
+      "description": "Companion sawtooth identity — the fractional-part analogue of Hermite's floor identity: for every real x and every n ≥ 1, ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2, where {·} = Int.fract. Proved by expanding each {·} as value − floor, evaluating the exact sum, and substituting Hermite's floor identity."
+    },
+    {
+      "name": "sum_div_eq",
+      "type": "theorem",
+      "description": "Supporting arithmetic-series lemma: ∑_{k=0}^{n-1} k/n = (n-1)/2 over ℝ, the exact (un-floored) contribution to the sawtooth sum; proved via Gauss's sum by induction to avoid ℕ-division under the cast."
+    }
+  ],
   "sorries": 0
 }
