@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { getListings } from '@/data/proofs'
+import { getListings, getSearchIndex } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
@@ -8,7 +8,7 @@ import { LoadingScreen } from '@/components/LoadingScreen'
 import { ProofBadge, WiedijkBadge, ErdosBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2, Dices } from 'lucide-react'
-import { useDebouncedUrlState, useUrlState, serializers, useFetchedData } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical' | 'updated'
@@ -35,6 +35,12 @@ export function HomePage() {
 
   // URL-synced state
   const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
+
+  // Full-text search index (issue #35117): fetched lazily only once the user
+  // searches, so first paint never pays for it. Restores description search
+  // recall past the 140-char listings excerpt. Falls back to the truncated
+  // listing description while it loads or if the fetch fails.
+  const { data: searchIndex } = useLazyFetchedData(getSearchIndex, searchQuery.trim().length > 0)
   const [selectedBadges, setSelectedBadges] = useUrlState<ProofBadgeType[]>(
     'badges',
     [],
@@ -58,14 +64,20 @@ export function HomePage() {
   const proofs = useMemo(() => {
     let filtered: ProofListing[] = listings ?? []
 
-    // Filter by search query
+    // Filter by search query. Description matching consults the full-text
+    // search index (issue #35117) when available so matches past the 140-char
+    // listing excerpt still surface; the truncated listing.description is the
+    // fallback while the index loads or for entries absent from it.
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
-      filtered = filtered.filter((listing) =>
-        listing.title.toLowerCase().includes(query) ||
-        listing.description.toLowerCase().includes(query) ||
-        listing.tags.some(tag => tag.toLowerCase().includes(query))
-      )
+      filtered = filtered.filter((listing) => {
+        const fullDescription = searchIndex?.[listing.slug]
+        return (
+          listing.title.toLowerCase().includes(query) ||
+          (fullDescription ?? listing.description.toLowerCase()).includes(query) ||
+          listing.tags.some(tag => tag.toLowerCase().includes(query))
+        )
+      })
     }
 
     // Filter by badge type
@@ -124,7 +136,7 @@ export function HomePage() {
           return 0
       }
     })
-  }, [listings, searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly, showErdosOnly])
+  }, [listings, searchIndex, searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly, showErdosOnly])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {

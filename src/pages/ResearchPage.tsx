@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { getResearchListings } from '@/data/research'
+import { getResearchListings, getResearchSearchIndex } from '@/data/research'
 // Auth context available if needed for future features
 // import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
@@ -8,7 +8,7 @@ import { Footer } from '@/components/Footer'
 import { LoadingScreen } from '@/components/LoadingScreen'
 import { ResearchCard, ContributeSection, RelatedToolsSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
-import { useDebouncedUrlState, useUrlState, serializers, useFetchedData } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData, useLazyFetchedData } from '@/hooks'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
 import {
   FlaskConical,
@@ -30,6 +30,12 @@ export function ResearchPage() {
 
   // URL-synced state
   const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
+
+  // Full-text search index (issue #35117): fetched lazily only once the user
+  // searches, so first paint never pays for it. Restores description search
+  // recall past the 140-char listings excerpt. Falls back to the truncated
+  // listing description while it loads or if the fetch fails.
+  const { data: searchIndex } = useLazyFetchedData(getResearchSearchIndex, searchQuery.trim().length > 0)
   const [selectedPhases, setSelectedPhases] = useUrlState<ResearchPhase[]>(
     'phases',
     [],
@@ -59,14 +65,20 @@ export function ResearchPage() {
   const problems = useMemo(() => {
     let filtered: ResearchListing[] = [...(researchListings ?? [])]
 
-    // Filter by search query
+    // Filter by search query. Description matching consults the full-text
+    // search index (issue #35117) when available so matches past the 140-char
+    // listing excerpt still surface; the truncated problem.description is the
+    // fallback while the index loads or for entries absent from it.
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase()
-      filtered = filtered.filter((problem) =>
-        problem.title.toLowerCase().includes(query) ||
-        problem.description.toLowerCase().includes(query) ||
-        (problem.tags ?? []).some(tag => tag.toLowerCase().includes(query))
-      )
+      filtered = filtered.filter((problem) => {
+        const fullDescription = searchIndex?.[problem.slug]
+        return (
+          problem.title.toLowerCase().includes(query) ||
+          (fullDescription ?? problem.description.toLowerCase()).includes(query) ||
+          (problem.tags ?? []).some(tag => tag.toLowerCase().includes(query))
+        )
+      })
     }
 
     // Filter by phase
@@ -108,7 +120,7 @@ export function ResearchPage() {
           return 0
       }
     })
-  }, [researchListings, searchQuery, selectedPhases, selectedTiers, selectedStatus, sortBy])
+  }, [researchListings, searchIndex, searchQuery, selectedPhases, selectedTiers, selectedStatus, sortBy])
 
   const handlePhaseToggle = (phase: ResearchPhase) => {
     setSelectedPhases((prev) =>

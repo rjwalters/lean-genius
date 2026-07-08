@@ -368,6 +368,13 @@ function sha8(filePath: string): string {
 const LISTINGS_MANIFEST_KEY = '__listings__';
 
 /**
+ * Reserved data-manifest key carrying the content hash of the emitted public
+ * search-index file (issue #35117). Never collides with a proof slug
+ * (slugs are kebab-case directory names).
+ */
+const SEARCH_INDEX_MANIFEST_KEY = '__searchindex__';
+
+/**
  * Truncate a listing description to a card-length excerpt (issue #35117).
  * Card view clamps to a few lines anyway; the full description still lives in
  * the per-proof meta.json fetched on the detail page. Cuts at a word boundary
@@ -549,6 +556,15 @@ function emitDataManifest(proofs: ProofConfig[]): boolean {
     src: '',
   };
 
+  // Reserved entry: content hash of the public search-index file so the runtime
+  // getSearchIndex() fetch is cache-busted on any content change (issue #35117).
+  const publicSearchIndex = path.join(PUBLIC_PROOFS_DIR, 'search-index.json');
+  manifest[SEARCH_INDEX_MANIFEST_KEY] = {
+    meta: fs.existsSync(publicSearchIndex) ? sha8(publicSearchIndex) : '',
+    ann: '',
+    src: '',
+  };
+
   const manifestPath = path.join(PROOFS_DATA_DIR, 'data-manifest.json');
   const next = JSON.stringify(manifest, null, 2) + '\n';
 
@@ -660,6 +676,59 @@ function generateListings(
 }
 
 /**
+ * Generate a precomputed search index (issue #35117).
+ *
+ * The listings payload truncates each description to a 140-char card excerpt,
+ * which narrowed client-side search recall — 91.9% of proof descriptions
+ * exceed the excerpt, so queries matching only the description tail stopped
+ * returning cards. This index restores full-text description search WITHOUT
+ * reinflating the eager listings fetch: it is emitted only to `public/data/`
+ * (never bundled into the JS graph) and fetched lazily at runtime, only when
+ * the user actually searches (see `getSearchIndex()` in
+ * `src/data/proofs/index.ts`).
+ *
+ * Shape: `{ [slug]: <full description, lowercased> }`. Title and tags are
+ * omitted — they already ship in full in the listings payload, so search
+ * consults the listing for those and this index only for the description.
+ * Lowercasing at build time keeps the runtime match a plain `includes()` and
+ * shrinks the transferred bytes slightly (no per-query re-lowercasing of a
+ * multi-MB string blob).
+ *
+ * Off-graph guarantee: written ONLY under public/data/proofs/. The 600 KB
+ * bundle-budget guard (scripts/gallery/check-bundle-budget.ts) protects against
+ * any future accidental inlining.
+ */
+function generateSearchIndex(proofs: ProofConfig[]): void {
+  const index: Record<string, string> = {};
+
+  for (const proof of proofs) {
+    const metaPath = path.join(proof.dataDir, 'meta.json');
+    if (!fs.existsSync(metaPath)) continue;
+
+    const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+    const slug = meta.slug || proof.id;
+    const description: string = (meta.description || '').trim();
+    // Only index proofs whose full description carries text beyond what the
+    // card excerpt would show — otherwise the listing description already
+    // covers the whole string and an index entry would be redundant bytes.
+    // (Search still falls back to the listing description for every proof, so
+    // short-description proofs remain fully searchable without an index entry.)
+    if (description.length > LISTING_EXCERPT_MAX) {
+      index[slug] = description.toLowerCase();
+    }
+  }
+
+  fs.mkdirSync(PUBLIC_PROOFS_DIR, { recursive: true });
+  // public/ only — this asset is fetched lazily at runtime and must never be
+  // pulled into the vite/Rollup module graph. Compact serialization; these
+  // bytes go over the wire.
+  const publicPath = path.join(PUBLIC_PROOFS_DIR, 'search-index.json');
+  fs.writeFileSync(publicPath, JSON.stringify(index));
+
+  console.log(`🔎 Generated search-index.json (${Object.keys(index).length} proofs indexed, ${Math.round(fs.statSync(publicPath).size / 1024)}KB public)`);
+}
+
+/**
  * Compute a deterministic input-fingerprint for the annotation build.
  *
  * Inputs (per issue #22149 Strategy B):
@@ -744,6 +813,12 @@ function build(options: { strict: boolean; verbose: boolean }): boolean {
 
   // Generate lightweight listings for HomePage
   generateListings(proofs, touched);
+
+  // Generate the precomputed full-text search index (issue #35117). Emitted to
+  // public/ only and fetched lazily at runtime when the user searches, so it
+  // restores description search recall without reinflating the eager listings
+  // payload (which only carries 140-char excerpts).
+  generateSearchIndex(proofs);
 
   // Emit Lean source to the build-generated public asset tree (fetched by slug
   // at runtime instead of imported via `*.lean?raw`). See issue #20992. With
