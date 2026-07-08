@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "The module docstring frames this as the eigenvalue-stability corollary of Weyl's inequalities (parent CauchyInterlacingWeyl): the k-th descending eigenvalues of two symmetric operators T, U differ by at most the operator norm ‖T − U‖. Imports, the CauchyInterlacing.Stability namespace, the CauchyInterlacing.Weyl open, and the operator/eigenbasis variables.",
+      "mathContext": "$|\\lambda_k(T) - \\lambda_k(U)| \\le \\lVert T - U\\rVert$ for symmetric $T,U$."
+    },
+    {
       "id": "rayleigh-bound",
       "title": "The Operator-Norm Rayleigh Bound",
       "startLine": 52,
@@ -105,6 +113,14 @@
       "endLine": 156,
       "summary": "weyl_eigenvalue_stability: |μ(k) − ν(k)| ≤ ‖T − U‖. The Loewner sandwich U − δ·I ⪯ T ⪯ U + δ·I (δ = ‖T−U‖) feeds two applications of weyl_monotone to the shifted operators U ± δ·I, giving μ(k) ≤ ν(k) + δ and ν(k) − δ ≤ μ(k); abs_le combines them.",
       "mathContext": "The classical Weyl perturbation theorem |λ_k(A) − λ_k(B)| ≤ ‖A − B‖ — eigenvalues are 1-Lipschitz in the operator norm."
+    },
+    {
+      "id": "sanity-check",
+      "title": "Sanity Check: Non-Vacuous and Sharp at T = U",
+      "startLine": 157,
+      "endLine": 166,
+      "summary": "A worked example confirming the bound is sharp: at T = U the eigenvalues coincide pointwise and weyl_eigenvalue_stability reads |μ_k − μ_k| = 0 ≤ ‖T − T‖ = 0, an equality — so the stability bound is attained and non-vacuous.",
+      "mathContext": "At $T=U$: $|\\mu_k-\\mu_k| = 0 \\le \\lVert T-T\\rVert = 0$ (equality)."
     }
   ],
   "conclusion": {
