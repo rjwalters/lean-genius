@@ -107,6 +107,40 @@
       "mathContext": "The classical λ_{i+j+1}(A+B) ≤ λ_{i+1}(A) + λ_{j+1}(B) in 0-based descending form — the foundational eigenvalue perturbation bound."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "weyl_add_le",
+      "type": "core",
+      "description": "**Weyl's subadditive inequality** — for i + j ≤ k, ρ(k) ≤ μ(i) + ν(j), where ρ, μ, ν are the descending eigenvalues of T+U, T, U. The classical λ_{i+j+1}(A+B) ≤ λ_{i+1}(A) + λ_{j+1}(B), the foundational eigenvalue perturbation bound. Proof intersects the optimal (k+1)-dim subspace for T+U with the two upper-tail eigenspans, a two-fold Grassmann count leaving a common nonzero vector on which Rayleigh additivity closes.",
+      "leanType": "(T U : E →ₗ[𝕜] E) (b, μ, hbT, hμ) (c, ν, hcU, hν) (d, ρ, hdW, hρ) (i j k : Fin n) (hk : i + j ≤ k) : ρ k ≤ μ i + ν j",
+      "line": 128,
+      "endLine": 185
+    },
+    {
+      "name": "weyl_monotone",
+      "type": "core",
+      "description": "**Weyl's monotonicity theorem** — if re⟪Tx,x⟫ ≤ re⟪Ux,x⟫ for all x (the Loewner order T ⪯ U) then μ(k) ≤ ν(k) for every k. Proof feeds the optimal (k+1)-dim subspace for T from the keystone lower half into the keystone upper half for U; the witness x satisfies μ(k) ≤ R_T(x) ≤ R_U(x) ≤ ν(k).",
+      "leanType": "(T U : E →ₗ[𝕜] E) (b, μ, hbT, hμ) (c, ν, hcU, hν) (hle : ∀ x, re ⟪T x, x⟫ ≤ re ⟪U x, x⟫) (k : Fin n) : μ k ≤ ν k",
+      "line": 92,
+      "endLine": 119
+    },
+    {
+      "name": "rayleigh_le_on_upper_eigenspan",
+      "type": "key",
+      "description": "**Upper-tail eigenspan bound** — the reusable dual of the keystone's rayleigh_ge_on_eigenspan_of_lb: for antitone μ, every nonzero vector in the eigenspan over indices ≥ i has Rayleigh quotient ≤ μ(i) (the supremum of μ over Finset.Ici i). The eigenspan bound the additive inequality runs on.",
+      "leanType": "(T : E →ₗ[𝕜] E) (b, μ) (hb, hμ : Antitone μ) (i : Fin n) (x) (hx : x ∈ span 𝕜 (b '' Ici i)) (hx0 : x ≠ 0) : re ⟪T x, x⟫ / ‖x‖² ≤ μ i",
+      "line": 67,
+      "endLine": 79
+    },
+    {
+      "name": "finrank_inf_lb",
+      "type": "supporting",
+      "description": "**Grassmann intersection bound** — finrank(P ⊓ Q) ≥ finrank P + finrank Q − finrank E, from finrank_sup_add_finrank_inf_eq and finrank(P ⊔ Q) ≤ finrank E. Applied twice to drive the triple-intersection dimension count of the additive inequality.",
+      "leanType": "(P Q : Submodule 𝕜 E) : finrank 𝕜 P + finrank 𝕜 Q ≤ finrank 𝕜 E + finrank 𝕜 (P ⊓ Q)",
+      "line": 53,
+      "endLine": 61
+    }
+  ],
   "conclusion": {
     "summary": "A machine-checked Lean 4 proof of Weyl's monotonicity theorem and Weyl's subadditive eigenvalue inequality for symmetric operators, derived entirely from the parent entry's Courant–Fischer max–min keystone. The file is 0-axiom, 0-sorry, as is its keystone import. It confirms the structural prediction of oq-02 that the variational keystone already subsumes Weyl-type perturbation bounds with only the dimension count varying.",
     "implications": "Adds the eigenvalue-perturbation half of min-max theory (monotonicity + Weyl's inequality) to the Cauchy-interlacing family, alongside codimension-one interlacing (parent), the orthogonal-projection compression (oq-01), and Poincaré separation (oq-02). The remaining classical corollaries — the dual upper Weyl inequality ρ(k) ≥ μ(i) + ν(j) for i + j ≥ k + (n−1) (apply the theorem to −T, −U), Lidskii's majorisation, and Weyl's |λ_k(A) − λ_k(B)| ≤ ‖A − B‖ stability bound — are now one short step each from the same keystone.",
