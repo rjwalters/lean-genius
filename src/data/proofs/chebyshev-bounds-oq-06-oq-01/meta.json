@@ -88,6 +88,13 @@
       "startLine": 78,
       "endLine": 117,
       "summary": "For n ≥ 1, the residual identity S(2n)/(S n)² = 4ⁿ/√(πn) is proved by field algebra: √(4πn) = 2√(πn) (Real.sqrt_sq), (2n/e)^{2n} = 4ⁿ·(n/e)^{2n} (mul_pow, pow_mul), and (√(2πn))² = 2πn (Real.sq_sqrt). The common exponential factor (n/e)^{2n} and one factor of √(πn) cancel, leaving exactly 4ⁿ/√(πn)."
+    },
+    {
+      "id": "nat-choose-restatement",
+      "title": "Restatement via Nat.choose",
+      "startLine": 118,
+      "endLine": 126,
+      "summary": "choose_two_mul_isEquivalent_four_pow_div_sqrt restates the equivalence for the binomial coefficient written as (2n).choose n rather than n.centralBinom: (fun n => ((2n).choose n : ℝ)) ~[atTop] (fun n => 4ⁿ/√(π·n)). It follows in one step from the central-binomial version by rewriting through Nat.centralBinom_eq_two_mul_choose."
     }
   ],
   "mainTheorems": [
