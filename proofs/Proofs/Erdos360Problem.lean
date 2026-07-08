@@ -17,8 +17,10 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.NumberTheory.Divisors
 import Mathlib.Data.Nat.Totient
+import Mathlib.Data.Nat.Nth
 
 namespace Erdos360
 
@@ -100,8 +102,8 @@ axiom conlon_fox_pham_2021 :
   ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
   ∀ n : ℕ, n ≥ 10 →
     let φn := Nat.totient n
-    c₁ * (n : ℝ)^(1/3 : ℝ) * (n / φn) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) ≤ f n ∧
-    (f n : ℝ) ≤ c₂ * (n : ℝ)^(1/3 : ℝ) * (n / φn) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ))
+    c₁ * (n : ℝ)^(1/3 : ℝ) * ((n : ℝ) / (φn : ℝ)) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) ≤ f n ∧
+    (f n : ℝ) ≤ c₂ * (n : ℝ)^(1/3 : ℝ) * ((n : ℝ) / (φn : ℝ)) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ))
 
 /-
 ## Key Observations
@@ -122,15 +124,13 @@ because arithmetic progressions with common factors create more sum constraints.
 /-- For prime n, φ(n) = n - 1, so n/φ(n) ≈ 1. -/
 theorem prime_totient_ratio (p : ℕ) (hp : Nat.Prime p) :
     (p : ℚ) / Nat.totient p = p / (p - 1) := by
-  rw [Nat.Prime.totient_eq_pred hp]
-  ring_nf
-  simp
+  rw [Nat.totient_prime hp, Nat.cast_sub hp.one_lt.le, Nat.cast_one]
 
 /-- For highly composite n, n/φ(n) can be large (like log log n for primorials). -/
 axiom primorial_totient_ratio :
   ∀ k : ℕ, k ≥ 2 →
-    let n := (Finset.range k).prod (fun i => Nat.nth Nat.Prime i)
-    (n : ℝ) / Nat.totient n ≥ Real.log (Real.log k)
+    let n : ℕ := (Finset.range k).prod (fun i => Nat.nth Nat.Prime i)
+    (n : ℝ) / (Nat.totient n : ℝ) ≥ Real.log (Real.log k)
 
 /-
 ## Small Cases
@@ -140,11 +140,147 @@ For small n, we can compute f(n) directly.
 
 /-- f(2) = 1: {1} is already 2-sum-free (can't sum to 2 with one element). -/
 theorem f_2 : f 2 = 1 := by
-  sorry -- Requires showing {1} is 2-sum-free and optimal
+  -- `1` is achievable: the single class `{1}`.
+  have hmem1 : (1 : ℕ) ∈ ValidPartitionSizes 2 := by
+    refine ⟨{{1}}, Finset.card_singleton _, ?_, ?_, ?_, ?_⟩
+    · -- every element of every class lies in {1,...,1}
+      intro P hP x hx
+      rw [Finset.mem_singleton] at hP
+      subst hP
+      rw [Finset.mem_singleton] at hx
+      subst hx
+      omega
+    · -- classes are pairwise disjoint (there is only one)
+      intro P Q hP hQ hPQ
+      rw [Finset.mem_singleton] at hP hQ
+      subst hP; subst hQ
+      exact absurd rfl hPQ
+    · -- coverage of {1,...,1}
+      intro x hx1 hx2
+      interval_cases x
+      exact ⟨{1}, Finset.mem_singleton_self _, Finset.mem_singleton_self _⟩
+    · -- each class is 2-sum-free
+      intro P hP
+      rw [Finset.mem_singleton] at hP
+      subst hP
+      intro T hT
+      have hb : T.sum id ≤ ({1} : Finset ℕ).sum id :=
+        Finset.sum_le_sum_of_subset (f := id) hT
+      have hval : ({1} : Finset ℕ).sum id = 1 := by simp
+      omega
+  -- `0` is not achievable: the empty partition cannot cover `1`.
+  have hmem0 : (0 : ℕ) ∉ ValidPartitionSizes 2 := by
+    rintro ⟨parts, hcard, _, _, hcov, _⟩
+    rw [Finset.card_eq_zero] at hcard
+    subst hcard
+    obtain ⟨P, hP, _⟩ := hcov 1 (by norm_num) (by norm_num)
+    exact absurd hP (Finset.notMem_empty P)
+  -- The infimum of a set of naturals containing `1` but not `0` is `1`.
+  have hle : sInf (ValidPartitionSizes 2) ≤ 1 := Nat.sInf_le hmem1
+  have hmem : sInf (ValidPartitionSizes 2) ∈ ValidPartitionSizes 2 :=
+    Nat.sInf_mem ⟨1, hmem1⟩
+  have hne0 : sInf (ValidPartitionSizes 2) ≠ 0 := fun h => hmem0 (h ▸ hmem)
+  show sInf (ValidPartitionSizes 2) = 1
+  omega
 
 /-- f(4) = 2: Need 2 classes because {1,3} sums to 4. -/
 theorem f_4 : f 4 = 2 := by
-  sorry -- Partition into {1, 2} and {3}, for example
+  -- `2` is achievable: the partition `{{1,2}, {3}}`.
+  -- `{1,2}` and `{3}` are distinct, so the partition has two classes.
+  have hne12 : ({1, 2} : Finset ℕ) ≠ ({3} : Finset ℕ) := by
+    intro h
+    have h2 : (2 : ℕ) ∈ ({3} : Finset ℕ) :=
+      h ▸ Finset.mem_insert_of_mem (Finset.mem_singleton_self 2)
+    rw [Finset.mem_singleton] at h2
+    exact absurd h2 (by norm_num)
+  have hmem2 : (2 : ℕ) ∈ ValidPartitionSizes 4 := by
+    refine ⟨{{1, 2}, {3}}, ?_, ?_, ?_, ?_, ?_⟩
+    · -- the two classes are distinct, so the cardinality is 2
+      rw [Finset.card_insert_of_notMem (by rw [Finset.mem_singleton]; exact hne12),
+        Finset.card_singleton]
+    · -- membership bounds
+      intro P hP x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP
+      rcases hP with rfl | rfl
+      · rw [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl <;> omega
+      · rw [Finset.mem_singleton] at hx
+        subst hx
+        omega
+    · -- pairwise disjointness
+      intro P Q hP hQ hPQ
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP hQ
+      rcases hP with rfl | rfl <;> rcases hQ with rfl | rfl
+      · exact absurd rfl hPQ
+      · rw [Finset.disjoint_left]
+        intro a ha
+        rw [Finset.mem_insert, Finset.mem_singleton] at ha
+        rcases ha with rfl | rfl <;> simp
+      · rw [Finset.disjoint_left]
+        intro a ha
+        rw [Finset.mem_singleton] at ha
+        subst ha
+        simp
+      · exact absurd rfl hPQ
+    · -- coverage of {1,2,3}
+      intro x hx1 hx2
+      interval_cases x
+      · exact ⟨{1, 2}, Finset.mem_insert_self _ _, Finset.mem_insert_self _ _⟩
+      · exact ⟨{1, 2}, Finset.mem_insert_self _ _,
+          Finset.mem_insert_of_mem (Finset.mem_singleton_self _)⟩
+      · exact ⟨{3}, Finset.mem_insert_of_mem (Finset.mem_singleton_self _),
+          Finset.mem_singleton_self _⟩
+    · -- each class is 4-sum-free (max subset sum is 3)
+      intro P hP
+      rw [Finset.mem_insert, Finset.mem_singleton] at hP
+      rcases hP with rfl | rfl
+      · intro T hT
+        have hb : T.sum id ≤ ({1, 2} : Finset ℕ).sum id :=
+          Finset.sum_le_sum_of_subset (f := id) hT
+        have hval : ({1, 2} : Finset ℕ).sum id = 3 := by
+          rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 2)]; norm_num
+        omega
+      · intro T hT
+        have hb : T.sum id ≤ ({3} : Finset ℕ).sum id :=
+          Finset.sum_le_sum_of_subset (f := id) hT
+        have hval : ({3} : Finset ℕ).sum id = 3 := by simp
+        omega
+  -- `0` is not achievable: the empty partition cannot cover `1`.
+  have hmem0 : (0 : ℕ) ∉ ValidPartitionSizes 4 := by
+    rintro ⟨parts, hcard, _, _, hcov, _⟩
+    rw [Finset.card_eq_zero] at hcard
+    subst hcard
+    obtain ⟨P, hP, _⟩ := hcov 1 (by norm_num) (by norm_num)
+    exact absurd hP (Finset.notMem_empty P)
+  -- `1` is not achievable: a single class covering {1,2,3} contains {1,3} → 4.
+  have hmem1 : (1 : ℕ) ∉ ValidPartitionSizes 4 := by
+    rintro ⟨parts, hcard, _, _, hcov, hsf⟩
+    rw [Finset.card_eq_one] at hcard
+    obtain ⟨P, hPeq⟩ := hcard
+    subst hPeq
+    obtain ⟨Q1, hQ1, h1P⟩ := hcov 1 (by norm_num) (by norm_num)
+    obtain ⟨Q3, hQ3, h3P⟩ := hcov 3 (by norm_num) (by norm_num)
+    rw [Finset.mem_singleton] at hQ1 hQ3
+    rw [hQ1] at h1P
+    rw [hQ3] at h3P
+    have hfree : IsNSumFree 4 P := hsf P (Finset.mem_singleton_self P)
+    have hsub : ({1, 3} : Finset ℕ) ⊆ P := by
+      intro x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · exact h1P
+      · exact h3P
+    have hval : ({1, 3} : Finset ℕ).sum id = 4 := by
+      rw [Finset.sum_pair (by norm_num : (1 : ℕ) ≠ 3)]; norm_num
+    exact hfree {1, 3} hsub hval
+  -- The infimum of a set containing `2` but not `0` or `1` is `2`.
+  have hle : sInf (ValidPartitionSizes 4) ≤ 2 := Nat.sInf_le hmem2
+  have hmem : sInf (ValidPartitionSizes 4) ∈ ValidPartitionSizes 4 :=
+    Nat.sInf_mem ⟨2, hmem2⟩
+  have hne0 : sInf (ValidPartitionSizes 4) ≠ 0 := fun h => hmem0 (h ▸ hmem)
+  have hne1 : sInf (ValidPartitionSizes 4) ≠ 1 := fun h => hmem1 (h ▸ hmem)
+  show sInf (ValidPartitionSizes 4) = 2
+  omega
 
 /-
 ## Connection to Subset Sums and Ramsey Theory
@@ -163,8 +299,8 @@ theorem erdos_360_solved :
     ∃ c₁ c₂ : ℝ, c₁ > 0 ∧ c₂ > 0 ∧
     ∀ n : ℕ, n ≥ 10 →
       let φn := Nat.totient n
-      c₁ * (n : ℝ)^(1/3 : ℝ) * (n / φn) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) ≤ f n ∧
-      (f n : ℝ) ≤ c₂ * (n : ℝ)^(1/3 : ℝ) * (n / φn) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) :=
+      c₁ * (n : ℝ)^(1/3 : ℝ) * ((n : ℝ) / (φn : ℝ)) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) ≤ f n ∧
+      (f n : ℝ) ≤ c₂ * (n : ℝ)^(1/3 : ℝ) * ((n : ℝ) / (φn : ℝ)) / ((Real.log n)^(1/3 : ℝ) * (Real.log (Real.log n))^(2/3 : ℝ)) :=
   conlon_fox_pham_2021
 
 end Erdos360
