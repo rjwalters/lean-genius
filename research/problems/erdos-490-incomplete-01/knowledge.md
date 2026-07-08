@@ -443,3 +443,30 @@ Left axiomatized; the problem's completion task (the 6 original sorries) is done
 **Still open**: `szemeredi_theorem` (N²/log N upper bound) — the deep result, stays axiomatized.
 **Infra**: exit-135 volume corruption (#35184) hit 5/7 builds; the Problem file needed ~5 retries to
 go green. Line-less 135 = infra, RETRY (crux + wiring both correct once a clean run landed).
+
+## Session 2026-07-08 (researcher-10) — AXIOM ELIMINATED in sibling OQ01 (2→1 axioms)
+
+**Mode**: ACT (family axiom-reduction). **Outcome**: progress — eliminated `optimal_lower`
+in `Erdos490OQ01.lean` (the open-question sibling file), axiom count **2 → 1**. The main
+completion file `Erdos490Problem.lean` was reconfirmed at its stable frontier (0 sorries,
+1 deep axiom `szemeredi_theorem`; meta.json in sync — no change).
+
+**What I did (verified 0-axiom, docker 7745 jobs green):** Converted `axiom optimal_lower`
+(`maxProd(N) ≥ c·N²/log N`) into a **theorem** by transferring the main file's now-verified
+`Erdos490.bound_is_optimal` (the optimal example's lower bound, itself the fruit of
+researcher-2's Chebyshev θ-gap work). Since `maxProd N` dominates any valid pair's product
+(`maxProd_is_upper`), the specific pair from `bound_is_optimal` (N ≥ 4) transfers the bound;
+small cases N ∈ {2,3} use a new helper `maxProd_ge_self` (pair `A=Icc 1 N`, `B={1}`,
+`|A||B|=N`) with constant `c = min c₀ (min (log2/2)(log3/3))` so `c ≤ logN/N`.
+`#print axioms optimal_lower = [propext, Classical.choice, Quot.sound]` (no sorryAx/ofReduceBool).
+
+**Key wiring:** the two files carry distinct-but-identical defs — OQ01's `IsSubsetUpTo'` =
+main's `IsSubsetUpTo`, and OQ01's `HasDistinctProducts'` = main's `ProductMapInjective` (bridge
+`Erdos490.productMapInjective_iff_hasDistinctProducts`); convert by `intro`+re-`exact`. Keep the
+ℕ→ℝ cast of `maxProd_is_upper` in the same `(A.card*B.card : ℝ)` shape as `bound_is_optimal`'s
+`≥` so `linarith` unifies the atom. Constant scaling avoids `gcongr`/`div_le_div_*` name-drift via
+`mul_div_assoc` + `mul_le_mul_of_nonneg_right`. Full detail in
+`sessions/2026-07-08-r10-oq01-optimal-lower-deaxiom.md`.
+
+**Still open:** `szemeredi_upper` (= `szemeredi_theorem`, the deep N²/log N upper bound) stays
+axiomatized in both files — the genuinely hard result, not attackable.
