@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/1000",
     "erdosProblemStatus": "solved",
     "axiomCount": 3,
-    "lineCount": 1153,
+    "lineCount": 1149,
     "assumptions": "Two deep mathematical axioms: erdos_dichotomy (liminf=0 implies limsup=1, via Euler product for φ(n)/n), haight_resolution (vanishing Cesàro average exists, via highly composite construction). Plus `Lean.ofReduceBool`: the theorems `naturalSeq_phiA_eq_totient` (k=0 base case) and the supporting lemma `card_Icc_filter_reducedDenom_eq` are discharged by `native_decide`, which trusts the Lean compiler's kernel reduction (#print axioms lists `Lean.ofReduceBool`). erdos_no_zero_limit is now PROVED from erdos_dichotomy (convergence to 0 contradicts dichotomy via frequently-vs-eventually). cassels_liminf_zero is PROVED from haight_resolution. Infrastructure: complement formula, growth bounds, multiplicity bounds, double-counting vocabulary, growth constraints from low density, deficit counting bounds.",
     "mathlib_version": "4.26.0",
     "theoremCount": 61,
@@ -272,7 +272,7 @@
       "Topology"
     ],
     "namespace": "Erdos1000",
-    "lineCount": 1153,
+    "lineCount": 1149,
     "axiomCount": 2,
     "theoremCount": 61,
     "definitionCount": 12,

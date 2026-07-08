@@ -107,48 +107,6 @@
       "mathContext": "$\\sqrt[3]{p}, \\sqrt[3]{2}, \\sqrt[3]{3}, \\sqrt[n]{2} \\notin \\mathbb{Q}$."
     }
   ],
-  "mainTheorems": [
-    {
-      "name": "irrational_rpow_inv_prime",
-      "type": "core",
-      "description": "**The n-th root of a prime is irrational.** For any prime p and degree n ≥ 2, the real number p^(1/n) is irrational — the two-parameter generalization filling the gap left by Mathlib's Nat.Prime.irrational_sqrt (square roots only). Proof: with x = p^(n⁻¹), x^n = p by rpow composition (p ≥ 0), and multiplicity (p:ℤ) (p:ℤ) = 1 is not divisible by n ≥ 2, so irrational_nrt_of_n_not_dvd_multiplicity applies.",
-      "leanType": "{p n : ℕ} (hp : p.Prime) (hn : 2 ≤ n) : Irrational ((p : ℝ) ^ ((n : ℝ)⁻¹))",
-      "startLine": 38,
-      "endLine": 53
-    },
-    {
-      "name": "irrational_cbrt_prime",
-      "type": "corollary",
-      "description": "**The cube root of a prime is irrational** (the n = 3 slice). ∛p is irrational for every prime p — the direct generalization of the base entry from p = 2 to all primes.",
-      "leanType": "{p : ℕ} (hp : p.Prime) : Irrational ((p : ℝ) ^ ((3 : ℝ)⁻¹))",
-      "startLine": 57,
-      "endLine": 59
-    },
-    {
-      "name": "irrational_cbrt_two",
-      "type": "corollary",
-      "description": "**∛2 is irrational** — the base gallery entry recovered as the p = 2 case of irrational_cbrt_prime.",
-      "leanType": "Irrational ((2 : ℝ) ^ ((3 : ℝ)⁻¹))",
-      "startLine": 63,
-      "endLine": 65
-    },
-    {
-      "name": "irrational_cbrt_three",
-      "type": "corollary",
-      "description": "**∛3 is irrational** — the p = 3 case, illustrating that the result is genuinely prime-uniform.",
-      "leanType": "Irrational ((3 : ℝ) ^ ((3 : ℝ)⁻¹))",
-      "startLine": 68,
-      "endLine": 70
-    },
-    {
-      "name": "irrational_rpow_inv_two",
-      "type": "corollary",
-      "description": "**Every n-th root of 2 (n ≥ 2) is irrational** — the p = 2 slice of the family, holding the prime fixed and varying the degree.",
-      "leanType": "{n : ℕ} (hn : 2 ≤ n) : Irrational ((2 : ℝ) ^ ((n : ℝ)⁻¹))",
-      "startLine": 73,
-      "endLine": 76
-    }
-  ],
   "crossReferences": [
     {
       "targetId": "cube-root-2-irrational",

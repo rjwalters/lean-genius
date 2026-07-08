@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 2,
     "assumptions": "0 axioms in the parent file BallotProblemOQ01OQ02.lean (all axioms eliminated: fiber_card_uniform proved via fiberSwap bijection, uniformOn_fiber_transfer proved via cross-multiplication bijection showing |(MCS ∩ MSP)| · |CS| = |(CS ∩ SP)| · |MCS|). 2 axioms in the registered companion BallotProblemOQ01OQ02OQ02.lean (LGV path-ordering extension): three_candidate_ordering_formula and three_ordering_product_conjecture, both stating the 3-candidate ordering probability as the product of pairwise ballot ratios via the Lindström-Gessel-Viennot lemma (non-intersecting lattice path theory not in Mathlib). Chain axiom total: 2.",
-    "lineCount": 1079,
+    "lineCount": 1047,
     "theoremCount": 40,
     "definitionCount": 19,
     "additionalFiles": [
@@ -104,7 +104,7 @@
   },
   "leanFile": {
     "namespace": "MultiBallot",
-    "lineCount": 1079,
+    "lineCount": 1047,
     "axiomCount": 0,
     "theoremCount": 40,
     "definitionCount": 19,
