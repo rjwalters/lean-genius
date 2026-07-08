@@ -252,4 +252,50 @@ theorem kAPCount_update_split {N : ℕ} [NeZero N] (k : ℕ)
   rw [hg] at hadd
   rw [hadd, kAPCount_update_smul]
 
+/-- Negation in slot `j`: `Λ_k(…, −g, …) = −Λ_k(…, g, …)`.  The additive
+    inverse of the slotwise linear structure, a one-liner off homogeneity
+    at `c = −1`. -/
+theorem kAPCount_update_neg {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) (g : ZMod N → ℂ) :
+    kAPCount k (Function.update f j (-g))
+      = - kAPCount k (Function.update f j g) := by
+  have hg : (-g) = (-1 : ℂ) • g := by rw [neg_one_smul]
+  rw [hg, kAPCount_update_smul, neg_one_mul]
+
+/-- **Finite-sum additivity in slot `j`.**  `Λ_k` commutes with a finite sum
+    placed in a single slot:
+    `Λ_k(…, ∑_{a∈s} g a, …) = ∑_{a∈s} Λ_k(…, g a, …)`.  This is the iterated
+    form of `kAPCount_update_add` (proved by induction on the index set) and
+    the primitive that lets the generalized von Neumann telescoping expand an
+    indicator over a finite basis one slot at a time. -/
+theorem kAPCount_update_sum {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) {ι : Type*} (s : Finset ι)
+    (g : ι → ZMod N → ℂ) :
+    kAPCount k (Function.update f j (∑ a ∈ s, g a))
+      = ∑ a ∈ s, kAPCount k (Function.update f j (g a)) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert a s ha ih =>
+      rw [Finset.sum_insert ha, kAPCount_update_add, ih, Finset.sum_insert ha]
+
+/-- **`Λ_k` is a linear functional in each slot.**  Combining finite-sum
+    additivity with scalar homogeneity, a linear combination `∑_{a∈s} c a • g a`
+    placed in slot `j` is read off coefficient-wise:
+    `Λ_k(…, ∑_{a∈s} c a • g a, …) = ∑_{a∈s} c a · Λ_k(…, g a, …)`.  Taking the
+    `g a` to be a basis of functions on `ZMod N` (e.g. indicators of points, or
+    the additive characters) exhibits each slot of `Λ_k` as a genuine linear
+    functional — the exact structure the density-increment argument exploits
+    when it expands `1_A` and separates the major term from the balanced
+    remainder. -/
+theorem kAPCount_update_sum_smul {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) {ι : Type*} (s : Finset ι)
+    (c : ι → ℂ) (g : ι → ZMod N → ℂ) :
+    kAPCount k (Function.update f j (∑ a ∈ s, c a • g a))
+      = ∑ a ∈ s, c a * kAPCount k (Function.update f j (g a)) := by
+  rw [kAPCount_update_sum]
+  apply Finset.sum_congr rfl
+  intro a _
+  rw [kAPCount_update_smul]
+
 end RothTheoremOQ03OQ01
