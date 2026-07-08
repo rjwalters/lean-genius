@@ -32,9 +32,11 @@ References:
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.Convex.Hull
 
 open Real Set
 
@@ -87,7 +89,7 @@ noncomputable def alphaN (n : ℕ) : ℝ :=
 
 /- ## Part V: Erdős-Szekeres Results (1960) -/
 
-/--
+/-
 **Erdős-Szekeres Theorem (1960)**
 
 For powers of 2, the minimum maximum angle is achieved by regular polygons:
@@ -99,7 +101,7 @@ noncomputable def erdosSzekeresFormula (n : ℕ) : ℝ := π * (1 - 1 / n)
 
 /- ## Part VI: Sendov's Complete Solution (1993) -/
 
-/--
+/-
 **Sendov's Formula (1993)**
 
 The complete determination of α_N:
@@ -147,10 +149,22 @@ with 2^{n-1} < N ≤ 2^n. Sendov disproved this in 1992.
 
 The counterexample shows that in the range 2^{n-1} < N ≤ 2^{n-1} + 2^{n-3},
 the optimal value is different: α_N = π(1 - 1/(2n-1)).
--/
-axiom erdos_szekeres_conjecture_false :
+
+**Derived, not assumed.** This is now a *theorem*: it is an immediate consequence
+of `sendov_lower`. Take `n = 3`, `N = 5` (so `2^{n-1} = 4 < 5 ≤ 5 = 2^{n-1}+2^{n-3}`):
+`sendov_lower` gives `α₅ = π(1 - 1/5)`, whereas the Erdős–Szekeres formula predicts
+`π(1 - 1/3)`, and `π(1 - 1/5) ≠ π(1 - 1/3)` since `π ≠ 0` and `4/5 ≠ 2/3`. -/
+theorem erdos_szekeres_conjecture_false :
     ∃ n N : ℕ, n ≥ 3 ∧ 2^(n-1) < N ∧ N ≤ 2^n ∧
-    alphaN N ≠ erdosSzekeresFormula n
+    alphaN N ≠ erdosSzekeresFormula n := by
+  refine ⟨3, 5, by norm_num, by norm_num, by norm_num, ?_⟩
+  rw [sendov_lower 3 5 (by norm_num) (by norm_num) (by norm_num),
+    sendovLowerFormula, erdosSzekeresFormula]
+  intro h
+  have h2 : (1 - 1 / (2 * (3 : ℝ) - 1)) = (1 - 1 / (3 : ℝ)) := by
+    push_cast at h
+    exact mul_left_cancel₀ Real.pi_ne_zero h
+  norm_num at h2
 
 /- ## Part VIII: Optimal Configurations -/
 
@@ -163,13 +177,13 @@ for certain values of N related to powers of 2.
 For a regular n-gon, the maximum angle formed by three vertices is
 related to the central angle and inscribed angle theorems.
 -/
-def regularNGonVertices (n : ℕ) : Finset (ℝ × ℝ) :=
-  Finset.image (fun k => (Real.cos (2 * π * k / n), Real.sin (2 * π * k / n)))
+noncomputable def regularNGonVertices (n : ℕ) : Finset (ℝ × ℝ) :=
+  Finset.image (fun k : ℕ => (Real.cos (2 * π * k / n), Real.sin (2 * π * k / n)))
     (Finset.range n)
 
 /- ## Part IX: Connection to Convex Position -/
 
-/--
+/-
 **Convex vs General Position**
 
 The problem considers all point sets, not just convex position.
@@ -177,8 +191,13 @@ Interestingly, the optimal configurations achieving α_N are often
 in convex position (vertices of convex polygons).
 -/
 
-/-- A finite set is in convex position if all points are vertices of its convex hull. -/
-axiom isConvexPosition (A : Finset (ℝ × ℝ)) : Prop
+/-- A finite set is in **convex position** if every one of its points is a vertex of
+its convex hull — equivalently, no point lies in the convex hull of the others.
+
+Formerly an opaque `axiom … : Prop` (an undefined predicate); now a genuine
+definition, so it no longer counts as an assumption. -/
+def isConvexPosition (A : Finset (ℝ × ℝ)) : Prop :=
+  ∀ a ∈ A, a ∉ convexHull ℝ ((A.erase a : Finset (ℝ × ℝ)) : Set (ℝ × ℝ))
 
 /- ## Part X: Summary -/
 
