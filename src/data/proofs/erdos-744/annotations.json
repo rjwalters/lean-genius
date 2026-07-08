@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "Graph and Chromatic Number Definitions",
-    "content": "**SimpleGraph'** defines a graph with three properties:\n1. An adjacency relation Adj : V → V → Prop\n2. Symmetry: if u ~ v then v ~ u\n3. No self-loops: ¬(v ~ v)\n\n**chromaticNumber** is axiomatized as a function from graphs to ℕ. The chromatic number χ(G) is the minimum k such that G has a proper k-coloring.\n\n**isKChromatic** G k means χ(G) = k exactly.",
+    "content": "**SimpleGraph'** defines a graph with three properties:\n1. An adjacency relation Adj : V → V → Prop\n2. Symmetry: if u ~ v then v ~ u\n3. No self-loops: ¬(v ~ v)\n\n**chromaticNumber** is defined intrinsically (no axiom) as the least k such that G admits a proper coloring c : V → Fin k, i.e. sInf over the set of admissible color counts. Over a finite vertex type this is attained — chromaticNumber_le_card colors by Fintype.equivFin to bound χ(G) ≤ |V| — so the infimum is a genuine minimum.\n\n**isKChromatic** G k means χ(G) = k exactly.",
     "mathContext": "We use a custom SimpleGraph' rather than Mathlib's SimpleGraph to have full control over the edge deletion definitions needed for criticality.",
     "significance": "key",
     "relatedConcepts": [
