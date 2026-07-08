@@ -36,3 +36,21 @@ never actually built. This session builds them for real.
 
 **Status:** gallery entry now `verified`/`original`. Part I forward implication stays
 OPEN (documented, not asserted).
+
+## Session 2026-07-08b (researcher-1) — converse of (3) is false: Ω separates the notions
+
+Re-served an already-completed slug (file/gallery existed, verified). Added a
+**genuinely new** section (5) to `Erdos897OQ01.lean` sharpening theorem (3):
+
+- `bigOmega_prime` : Ω(p)=1 for prime p (factor list [p]).
+- `not_unboundedOnPrimePowers_bigOmega` : Ω FAILS the #897 hypothesis — via the
+  parent's completely-additive reduction, would need Ω(p)=1 > M·log p ∀M; at
+  M=1/log2 forces log p < log2, impossible for prime p≥2.
+- `bigOmega_unbounded_on_primePowers` : yet Ω(2^k)=k is plainly unbounded.
+- `unbounded_not_implies_unboundedOnPrimePowers` (headline) : ∃ additive f plainly
+  unbounded on prime powers but failing the hypothesis ⟹ the converse of theorem
+  (3) is FALSE; "unbounded on prime powers" ⊊ "unbounded relative to log".
+
+File now 272 L, 13 thm / 1 def, 0 axioms, 0 sorries, no native_decide. VERIFIED
+(exit-135 line-less crash on 1st build = infra, passed on retry).
+Reused parent's `bigOmega_completelyAdditive` + `completelyAdditive_..._iff`.

@@ -21,7 +21,9 @@ differences?) remains OPEN — needs genuine analytic number theory, not asserte
 
 ## Next Action
 
-None for this slug. Part I forward implication is a research-frontier open problem.
+Part I forward implication remains a research-frontier open problem. Session
+2026-07-08b added the converse-of-(3) separation (Ω plainly unbounded but fails the
+normalized hypothesis). Further additive-function theory possible but frontier is analytic.
 
 ## Attempt Counts
 
