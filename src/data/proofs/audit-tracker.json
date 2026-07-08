@@ -11707,9 +11707,9 @@
     },
     "erdos-214": {
       "agentId": "lean-auditor-reaudit",
-      "auditCount": 5,
-      "lastAudited": "2026-07-08T18:06:14Z",
-      "result": "clean",
+      "auditCount": 6,
+      "lastAudited": "2026-07-08T18:46:32Z",
+      "result": "issues-fixed",
       "issues": []
     },
     "erdos-214-incomplete-01-oq-01": {
@@ -22375,8 +22375,8 @@
       "result": "clean"
     },
     "liouville-theorem-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-07-08T18:16:34Z",
+      "auditCount": 3,
+      "lastAudited": "2026-07-08T18:46:32Z",
       "result": "issues-fixed",
       "issues": [
         "theoremCount stale (leanFile=21, meta=17; actual=19) \u2014 reconciled to 19"
