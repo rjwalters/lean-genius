@@ -42,6 +42,7 @@ Dependencies: Erdos1059OQ01 (counting functions), Erdos1059OQ02 (intervals, weak
 
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.NumberTheory.Bertrand
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
