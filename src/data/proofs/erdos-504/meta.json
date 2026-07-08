@@ -15,10 +15,10 @@
       "Set"
     ],
     "namespace": "Erdos504",
-    "lineCount": 217,
-    "axiomCount": 5,
-    "theoremCount": 1,
-    "definitionCount": 6,
+    "lineCount": 236,
+    "axiomCount": 3,
+    "theoremCount": 2,
+    "definitionCount": 7,
     "path": "Proofs/Erdos504Problem.lean",
     "sorries": 0
   },
@@ -39,9 +39,9 @@
     "erdosNumber": 504,
     "erdosUrl": "https://erdosproblems.com/504",
     "erdosProblemStatus": "solved",
-    "axiomCount": 5,
+    "axiomCount": 3,
     "lineCount": 217,
-    "assumptions": "5 axioms: maxAngleInSet (maximum angle function), sendov_upper, sendov_lower, erdos_szekeres_conjecture_false, isConvexPosition. No sorries.",
+    "assumptions": "3 axioms: maxAngleInSet (the maximum-angle functional), sendov_upper, sendov_lower (Sendov's deep 1993 upper/lower bounds). No sorries. erdos_szekeres_conjecture_false is now a derived theorem (from sendov_lower); isConvexPosition is now a real definition, not an axiom.",
     "mathlib_version": "4.26.0",
     "theoremCount": 1,
     "definitionCount": 6
@@ -60,7 +60,7 @@
     ],
     "originalContributions": [
       "Axiomatized maxAngleInSet to avoid sorry in Finset.sup' nonempty proof",
-      "Axiomatized isConvexPosition to avoid sorry in definition",
+      "Defined isConvexPosition (no point lies in the convex hull of the others); formerly an opaque axiom",
       "Summary theorem combining both Sendov formulas with the counterexample result"
     ],
     "prerequisites": [
@@ -191,7 +191,7 @@
       "title": "Part IX: Connection to Convex Position",
       "startLine": 170,
       "endLine": 182,
-      "content": "Discusses that optimal configurations tend to lie in convex position, and introduces `isConvexPosition A` as an axiomatized predicate on finite point sets.",
+      "content": "Discusses that optimal configurations tend to lie in convex position, and introduces `isConvexPosition A` as a defined predicate on finite point sets.",
       "proofMethod": "Single `axiom` declaring the convex-position predicate; surrounding text is expository.",
       "mathContext": "A finite set $A$ is in convex position when every point is a vertex of its convex hull (predicate axiomatized).",
       "summary": "Convex-position predicate and its relevance to optimality."

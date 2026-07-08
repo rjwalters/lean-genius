@@ -32,6 +32,7 @@ References:
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Inverse
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
@@ -88,7 +89,7 @@ noncomputable def alphaN (n : ℕ) : ℝ :=
 
 /- ## Part V: Erdős-Szekeres Results (1960) -/
 
-/--
+/-
 **Erdős-Szekeres Theorem (1960)**
 
 For powers of 2, the minimum maximum angle is achieved by regular polygons:
@@ -100,7 +101,7 @@ noncomputable def erdosSzekeresFormula (n : ℕ) : ℝ := π * (1 - 1 / n)
 
 /- ## Part VI: Sendov's Complete Solution (1993) -/
 
-/--
+/-
 **Sendov's Formula (1993)**
 
 The complete determination of α_N:
@@ -176,13 +177,13 @@ for certain values of N related to powers of 2.
 For a regular n-gon, the maximum angle formed by three vertices is
 related to the central angle and inscribed angle theorems.
 -/
-def regularNGonVertices (n : ℕ) : Finset (ℝ × ℝ) :=
-  Finset.image (fun k => (Real.cos (2 * π * k / n), Real.sin (2 * π * k / n)))
+noncomputable def regularNGonVertices (n : ℕ) : Finset (ℝ × ℝ) :=
+  Finset.image (fun k : ℕ => (Real.cos (2 * π * k / n), Real.sin (2 * π * k / n)))
     (Finset.range n)
 
 /- ## Part IX: Connection to Convex Position -/
 
-/--
+/-
 **Convex vs General Position**
 
 The problem considers all point sets, not just convex position.
