@@ -295,4 +295,37 @@ theorem area_positive (t : HyperbolicTriangle) :
     0 < Real.pi - (t.A + t.B + t.C) := by
   linarith [t.defect]
 
+-- ============================================================
+-- PART 7: The equilateral triangle — angle bound and a concrete value
+-- ============================================================
+
+/-- **Equilateral angle bound.** An equilateral hyperbolic triangle (all three angles
+    equal) has common angle strictly below `π/3`. This is the sharp hyperbolic
+    counterpart of the Euclidean equilateral angle `π/3`: the angular defect
+    `A + B + C < π` forces `3θ < π`, i.e. `θ < π/3`, and the closer `θ` is to `π/3`
+    the smaller (more Euclidean) the triangle. -/
+theorem equilateral_angle_lt_pi_third (t : HyperbolicTriangle)
+    (hAB : t.A = t.B) (hBC : t.B = t.C) : t.C < Real.pi / 3 := by
+  have h := t.defect
+  rw [hAB, hBC] at h
+  linarith
+
+/-- **A concrete equilateral triangle.** The hyperbolic equilateral triangle whose
+    three angles are all `π/4` has every side of length `arcosh (1 + √2)`:
+
+      cosh(side) = cos(π/4) / (1 - cos(π/4)) = 1 + √2.
+
+    (Since `π/4 < π/3`, this angle is admissible, and `1 + √2 > 1` confirms a genuine
+    hyperbolic side.) A clean closed value obtained from `equilateral_cosh`. -/
+theorem equilateral_pi_four_cosh (t : HyperbolicTriangle)
+    (hAB : t.A = t.B) (hBC : t.B = t.C) (hC4 : t.C = Real.pi / 4) :
+    Real.cosh t.c = 1 + Real.sqrt 2 := by
+  rw [equilateral_cosh t hAB hBC, hC4, Real.cos_pi_div_four]
+  have hs : Real.sqrt 2 ^ 2 = 2 := Real.sq_sqrt (by norm_num)
+  have hs0 : 0 ≤ Real.sqrt 2 := Real.sqrt_nonneg 2
+  have hlt : Real.sqrt 2 < 2 := by nlinarith [hs, hs0]
+  have hpos : (0 : ℝ) < 1 - Real.sqrt 2 / 2 := by linarith [hlt]
+  rw [div_eq_iff hpos.ne']
+  linear_combination (1 / 2 : ℝ) * hs
+
 end HyperbolicAAA
