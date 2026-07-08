@@ -37,7 +37,8 @@
       "The covering condition of a monotonic decomposition is exactly the statement that the parts' index maps assemble into a surjection from their disjoint union onto the index set Fin n; this turns the counting bound into a one-line application of Fintype.card_le_of_surjective plus Fintype.card_sigma.",
       "Each part contributes at most max(LIS, LDS) to the cover because a monotonic subsequence is either increasing (length ≤ LIS) or decreasing (length ≤ LDS); this is the only place monotonicity is used, and it is what ties the decomposition size to the longest-monotone-run parameter.",
       "The resulting bound n ≤ numParts · max(LIS, LDS) is the Mirsky/Dilworth lower-bound half of Hanani's theorem: on the Erdős–Szekeres extremal sequences (max(LIS, LDS) ≈ √n) it forces numParts ≳ √n, matching Hanani's O(√n) upper bound in order.",
-      "The elementary lower bound is unconditional and axiom-free; the matching upper bound (a construction achieving O(√n) parts for every sequence) is the genuinely hard direction and is left open, stated but not axiomatized."
+      "The elementary lower bound is unconditional and axiom-free; the matching upper bound (a construction achieving O(√n) parts for every sequence) is the genuinely hard direction and is left open, stated but not axiomatized.",
+      "The counting skeleton n ≤ numParts · (max part length) is order-free: it is the pure pigeonhole fact that a cover by numParts pieces of length ≤ L cannot cover more than numParts · L points. Monotonicity is invoked only once, to instantiate L = max(LIS, LDS) via len_le_max_of_monotonic — so the same proof template yields a lower bound for any decomposition into pieces whose lengths are controlled by a single extremal parameter."
     ],
     "prerequisites": [
       "The Erdős–Szekeres theorem and monotonic subsequences",
