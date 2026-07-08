@@ -2121,13 +2121,31 @@ theorem r2_pos_iff (n : ℕ) (_hn : 0 < n) :
     have hp : q.Prime := Nat.prime_of_mem_primeFactors hq
     rw [← Nat.factorization_def n hp]; exact H q hp hq4
 
-/-- The average order of r₂: (1/N) Σ_{n≤N} r₂(n) → π.
-    This is equivalent to the Gauss circle problem: the number of
-    lattice points in the disk x²+y² ≤ N is πN + O(N^{1/2+ε}). -/
-axiom r2_average_order :
-    Tendsto (fun N : ℕ =>
-      (∑ n ∈ Finset.range (N + 1), (r2 n : ℝ)) / (N : ℝ))
-      atTop (𝓝 π)
+/-
+  **Average order of r₂ (documented target, formerly an axiom — removed).**
+
+  The `r2 n` defined above counts *nonnegative ordered* pairs `(a, b)` with
+  `a, b ≥ 0` and `a² + b² = n` (see the `r2_pos_iff` docstring, which calls it
+  the "nonnegative-pair" count). Hence
+
+      Σ_{n ≤ N} r2 n = #{ (a, b) ∈ ℕ² : a² + b² ≤ N },
+
+  the number of lattice points in the **closed first-quadrant quarter disk** of
+  radius √N. By the Gauss circle problem this is `(π/4)·N + O(√N)`, so the true
+  average order is
+
+      (1/N) Σ_{n ≤ N} r2 n  →  π/4      (NOT π).
+
+  The previous `axiom r2_average_order` asserted the limit was `π`, conflating
+  this nonnegative-pair count with the *full-plane signed* representation count
+  `r₂(n) = 4(d₁(n) − d₃(n))` (whose sum over the full disk is `π·N`). As stated
+  it was FALSE for this definition — a latent unsoundness (combined with a proof
+  of the π/4 limit it yields `π = π/4`). It was also unused: nothing in this
+  file consumed it. It is removed here rather than corrected-and-kept, because
+  the corrected π/4 statement is a genuine Gauss-circle result not yet available
+  in Mathlib (v4.26) and proving it needs lattice-point-counting infrastructure
+  that does not yet exist. Documented here as a target for future work.
+-/
 
 /-- The algebraic identity connecting the three factors to the density constant.
     (π/8) × (6/π²) × (2/3) = 1/(2π). The 1/8 comes from restricting
@@ -2144,14 +2162,17 @@ theorem triple_count_from_r2_connection :
 noncomputable def sumOfTwoSquaresCount (N : ℕ) : ℕ :=
   ((Finset.range (N + 1)).filter (fun n => 0 < r2 n)).card
 
-/-- Landau's theorem: #{n ≤ N : n is a sum of two squares} ∼ C·N/√(log N)
-    for a constant C > 0 (the Landau-Ramanujan constant ≈ 0.7642).
-    Equivalently, sumOfTwoSquaresCount(N) × √(log N) / N → C. -/
-axiom landau_two_squares :
-    ∃ C : ℝ, 0 < C ∧
-    Tendsto (fun N : ℕ =>
-      (sumOfTwoSquaresCount N : ℝ) * Real.sqrt (Real.log N) / (N : ℝ))
-      atTop (𝓝 C)
+/-
+  **Landau's theorem (documented target, formerly an axiom — removed).**
+
+  Landau–Ramanujan: `#{n ≤ N : n is a sum of two squares} ∼ C·N/√(log N)` for a
+  constant `C > 0` (the Landau–Ramanujan constant ≈ 0.7642); equivalently
+  `sumOfTwoSquaresCount(N) · √(log N) / N → C`. This is a deep analytic result
+  not available in Mathlib (v4.26) and it was **not used** anywhere in this file
+  — it stood only as a decorative assumption inflating the trusted-axiom base.
+  Removed to keep the axiom base to the three assumptions the main density
+  theorem actually depends on. Retained here as prose for future formalization.
+-/
 
 /-
 ## Part XXI: Pythagorean Triples by Leg and Area
@@ -2175,13 +2196,17 @@ noncomputable def primitiveByArea (N : ℕ) : ℕ :=
     (a * a + b * b).sqrt ^ 2 = a * a + b * b ∧
     a * b ≤ 2 * N) |>.card
 
-/-- The leg count: #{primitive triples with leg a ≤ N} ~ N/π.
-    This is exactly twice the hypotenuse density, reflecting
-    the parametrization: if c = m²+n², then a = m²-n² < c. -/
-axiom primitive_by_leg_density :
-    Tendsto (fun N : ℕ =>
-      (primitiveByLeg N : ℝ) / (N : ℝ))
-      atTop (𝓝 (1 / π))
+/-
+  **Leg-count density (documented target, formerly an axiom — removed).**
+
+  `#{primitive triples with leg a ≤ N} ~ N/π`, twice the hypotenuse density
+  (from the parametrization `c = m²+n²`, `a = m²−n² < c`). This is a separate
+  density result — it is NOT an exact `2×` of `primitiveTripleCount` at finite
+  `N`, so it does not follow algebraically from the main theorem and would need
+  its own asymptotic analysis. It was **not used** anywhere in this file.
+  Removed as a decorative, unproven assumption; retained here as a documented
+  target for future work.
+-/
 
 /-
 ## Part XXII: Generalizations — Gaussian Integers
@@ -2243,20 +2268,27 @@ theorem all_primitive_triples_from_gaussian :
 ## Part XXII Summary
 
 ### New Definitions and Theorems:
-- **r2**: representation function r₂(n) = #{(a,b) : a²+b² = n}
+- **r2**: representation function counting *nonnegative ordered* pairs
+  #{(a,b) ∈ ℕ² : a²+b² = n}
 - **r2_pos_iff**: characterization via prime factorization [PROVED from Mathlib's
   `Nat.eq_sq_add_sq_iff` — no longer an axiom]
-- **r2_average_order**: (1/N)Σr₂(n) → π (Gauss circle) [AXIOM]
+- **r2_average_order**: [REMOVED] was `(1/N)Σr2(n) → π` but the correct limit for
+  the nonnegative-pair `r2` is π/4; unused and false as stated (documented target)
 - **GaussianInt**: Gaussian integer structure
 - **gaussian_norm_mul**: norm multiplicativity (PROVED)
 - **gaussian_square_pythagorean**: z² gives Pythagorean triple (PROVED)
 - **gaussian_square_components**: real and imaginary parts of z² (PROVED)
 - **landau_two_squares_statement**: Landau-Ramanujan constant (documentation)
 
-### Axiom Count: 6 total — 3 core (sector_lattice_point_density,
-###   coprime_fraction_in_sector, bothOdd_fraction_in_coprime_sector) +
-###   3 supplementary (r2_average_order, landau_two_squares, primitive_by_leg_density).
+### Axiom Count: 3 total — the 3 core axioms the main density theorem depends on:
+###   sector_lattice_point_density (Gauss circle, sector), coprime_fraction_in_sector
+###   (Möbius, 6/π²), bothOdd_fraction_in_coprime_sector (parity sieve, 1/3).
 ###   (r2_pos_iff was previously an axiom; it is now PROVED.)
+###   The 3 former "supplementary" axioms — r2_average_order, landau_two_squares,
+###   primitive_by_leg_density — were REMOVED: they were unused (fed no result),
+###   and r2_average_order was in fact FALSE as stated (asserted the nonnegative-
+###   pair average order → π when the correct value for that def is π/4). Their
+###   mathematical content is retained as documented targets in the body.
 ### Sorries: 0
 -/
 
@@ -2515,9 +2547,12 @@ The straddling analysis explains WHY the parity axiom holds:
 - Summing: total straddling = O(sqrt(N)) << coprime sector = Theta(N)
 
 ### Overall File Statistics:
-- **Axioms**: 6 (3 core + 3 supplementary: r2_average_order, landau_two_squares,
-  primitive_by_leg_density). `r2_pos_iff` was eliminated — it is now a proved
-  theorem (`Nat.eq_sq_add_sq_iff`), so the file is down from 7 axioms to 6.
+- **Axioms**: 3 (the core density axioms only). The 3 former supplementary
+  axioms — r2_average_order (FALSE as stated: nonnegative-pair average order is
+  π/4, not π), landau_two_squares, primitive_by_leg_density — were unused and are
+  now removed (content retained as documented targets). `r2_pos_iff` was earlier
+  eliminated — it is now a proved theorem (`Nat.eq_sq_add_sq_iff`). Axiom history:
+  7 → 6 (r2_pos_iff proved) → 3 (3 unused/incorrect supplementary axioms removed).
 - **Sorries**: 0
 - **Theorems proved**: ~121
 - **Definitions**: ~39

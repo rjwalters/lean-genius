@@ -39,20 +39,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: base 2-D Pythagorean theorem solved (PythagoreanTheorem.lean, 0 sorry). As family follow-up, closed the only open sorry in the flat-limit file (PythagoreanTheoremOQ05.lean spherical_flat_limit) and repaired pervasive Mathlib-cache drift across that file.",
+    "progressSummary": "AXIOM REDUCTION: PythagoreanTriplesOQ01.lean 6→3 axioms. Removed 3 unused supplementary axioms (r2_average_order was additionally FALSE as stated — nonneg-pair average order is π/4 not π). Remaining 3 are the load-bearing Gauss-circle/Möbius/parity assumptions. Full docker verification memory-blocked (>90GB for fresh elaboration; change is compile-safe removal of unused decls).",
     "builtItems": [
-      "sin_eq_sinc_mul, tendsto_one_sub_cos_mul_div_sq, tendsto_cos_mul_one, tendsto_one_sub_cos_prod_div_sq, spherical_flat_limit in Proofs/PythagoreanTheoremOQ05.lean (0 sorry, 0 axioms, verified via lake env lean 4.26.0)"
+      "sin_eq_sinc_mul, tendsto_one_sub_cos_mul_div_sq, tendsto_cos_mul_one, tendsto_one_sub_cos_prod_div_sq, spherical_flat_limit in Proofs/PythagoreanTheoremOQ05.lean (0 sorry, 0 axioms, verified via lake env lean 4.26.0)",
+      "Removed 3 unused axioms from Proofs/PythagoreanTriplesOQ01.lean (r2_average_order [false as stated], landau_two_squares, primitive_by_leg_density), reducing 6→3; content retained as documented targets. Updated meta.json axiomCount 6→3 in both stat blocks + assumptions/keyStatements/annotations."
     ],
     "insights": [
       "Spherical flat limit: from cos(tc)=cos(ta)cos(tb) ∀t>0, c²=a²+b² follows by the exact identity (1-cos(tx))/t² = (x²/2)·sinc(tx/2)², using half-angle 1-cos(tx)=2sin(tx/2)² and sin u = sinc u · u; sinc continuity (sinc 0 = 1) gives the limit. No range restriction on a,b,c needed.",
-      "This sinc-identity route is cleaner than the hyperbolic squeeze: it avoids all monotonicity/second-derivative machinery and reduces the limit to continuity of Real.sinc at 0."
+      "This sinc-identity route is cleaner than the hyperbolic squeeze: it avoids all monotonicity/second-derivative machinery and reduces the limit to continuity of Real.sinc at 0.",
+      "PythagoreanTriplesOQ01.lean had 6 axioms but only 3 (sector_lattice_point_density, coprime_fraction_in_sector, bothOdd_fraction_in_coprime_sector) are consumed by the main density theorem; the other 3 were decorative/unused.",
+      "The `r2_average_order` axiom was FALSE as stated: this file's `r2` counts nonnegative ordered pairs (quarter disk), so Σ_{n≤N} r2(n) ~ (π/4)N and the average order → π/4, not π. The axiom conflated it with the full-plane signed r₂ (whose disk sum ~ πN). An unused false axiom is a latent unsoundness (π = π/4 derivable)."
     ],
     "mathlibGaps": [
       "Mathlib cache drift broke the existing hyperbolic section: le_div_iff→le_div_iff₀, div_le_div_iff→div_le_div_iff₀, Filter.eventually_nhdsWithin_of_forall→eventually_nhdsWithin_of_forall, Tendsto.congr! argument order (eventuallyEq first), pointwise squeeze tendsto_of_tendsto_of_tendsto_of_le_of_le→eventually variant (prime), HasDerivAt.sub of a const now yields x-0 (needs simpa/convert), and let-bound f 0 = 0 no longer closes by bare simp (needs show)."
     ],
     "nextSteps": [
       "Optionally create a gallery entry (src/data/proofs/pythagorean-theorem-oq-05) for the now-complete flat-limit file.",
-      "Audit sibling pythagorean files (OQ03 etc.) for the same Mathlib drift."
+      "Audit sibling pythagorean files (OQ03 etc.) for the same Mathlib drift.",
+      "Future: prove the corrected quarter-disk average order (→π/4) once Mathlib gains lattice-point-counting / Gauss-circle infrastructure; likewise Landau–Ramanujan and leg-density."
     ],
     "markdown": "# Knowledge Base: pythagorean-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
