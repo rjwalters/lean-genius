@@ -73,7 +73,8 @@
       "**One counting argument, two parameters.** Irrationality of p^(1/n) is governed entirely by a single divisibility: n must divide the p-adic valuation of the radicand. Since a prime has valuation 1 at itself, and n ≥ 2 never divides 1, every such root is irrational.",
       "**Subsumes the base entry and Mathlib's square-root lemma.** ∛2 (p = 2, n = 3) is the base gallery entry; √p (n = 2) is `Nat.Prime.irrational_sqrt`. Both are single instances of irrational_rpow_inv_prime.",
       "**rpow makes the radical algebraic.** Writing the n-th root as the real power p^(n⁻¹) turns 'x^n = p' into the exponent identity n⁻¹·n = 1, so the only analytic input is the homomorphism law `Real.rpow_mul` for nonnegative base.",
-      "**Sharpness.** The hypothesis n ≥ 2 is necessary (n = 1 gives p, rational) and primality can be relaxed to 'p is not a perfect n-th power' — the multiplicity argument is exactly the obstruction."
+      "**Sharpness.** The hypothesis n ≥ 2 is necessary (n = 1 gives p, rational) and primality can be relaxed to 'p is not a perfect n-th power' — the multiplicity argument is exactly the obstruction.",
+      "**Valuation beats descent.** The classical √2 proof runs an even/odd infinite descent (2 ∣ a² ⟹ 2 ∣ a), which is awkward to iterate for cube and higher roots. Replacing parity by the full p-adic valuation vₚ turns the argument into a single divisibility count that is uniform in both p and n — this is precisely why one lemma (irrational_nrt_of_n_not_dvd_multiplicity) discharges the entire family rather than one root at a time."
     ],
     "prerequisites": [
       "p-adic multiplicity / valuation and unique factorization (multiplicity, multiplicity_self)",
