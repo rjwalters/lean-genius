@@ -93,7 +93,9 @@
     "keyInsights": [
       "Pairwise independence is enough. The block-power identity does not need mutual (full) independence of the contributions: the variance of a sum expands into a double sum of covariances, and only pairwise independence is required to make every off-diagonal covariance vanish. Mathlib packages this as IndepFun.variance_sum with a Set.Pairwise hypothesis.",
       "Zero mean is what turns 'variance' into 'power', and it must hold for the aggregate too. The engineering quantity E[W²] equals the probabilistic variance Var[W] only after the squared-mean term (E[W])² is dropped. The same reduction on the aggregate ∑ Wᵢ is legitimate because a finite sum of zero-mean contributions is again zero-mean (sum_mean_zero).",
-      "The two-term parent result is the special case |s| = 2. Instantiating s = {signal, noise} recovers E[(X+Z)²] = E[X²] + E[Z²]; the Finset formulation makes the n-symbol block-power budget a single identity rather than an induction the caller must run."
+      "The two-term parent result is the special case |s| = 2. Instantiating s = {signal, noise} recovers E[(X+Z)²] = E[X²] + E[Z²]; the Finset formulation makes the n-symbol block-power budget a single identity rather than an induction the caller must run.",
+      "The Finset indexing sidesteps induction entirely. Rather than adding one symbol at a time and re-verifying independence at each step, the argument works directly with an arbitrary finite index set s and its Set.Pairwise independence hypothesis, so IndepFun.variance_sum discharges the whole block in one application — the same proof shape as the two-term case, with a Finset in place of a two-element set.",
+      "Square-integrability is the minimal regularity that makes every step legitimate. MemLp 2 does double duty: memLp_finset_sum' keeps the aggregate ∑ Wᵢ in L² so variance_eq_sub applies to it, and MemLp.integrable (via 1 ≤ 2) supplies the integrability needed for linearity of expectation over the Finset — no boundedness or higher moments are assumed."
     ]
   },
   "sections": [
