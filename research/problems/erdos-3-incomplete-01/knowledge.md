@@ -173,3 +173,43 @@ threshold-critical (as hard as Erdős #3).
   trivially contains 2-APs (`hasDivergentSum_containsAP_le_two`).
 - Only remaining shallow follow-up: expose `summable_of_strongBound` as a reusable
   density→convergence lemma for other reciprocal-sum problems.
+
+---
+
+## ADDENDUM (2026-07-07, attempt 5): NOTES RECONCILIATION — file is 0-axiom, complete except open crux
+
+This session made no proof change: a full re-read of `Proofs/Erdos3Problem.lean`
+(now **773 lines**, not 440) confirmed the file is **mathematically complete
+except for the single genuinely-open sorry**, and that several sections above are
+stale. Corrections:
+
+- **Axiom count is now 0, not 1.** The "1 axiom: `euler_prime_sum_diverges`"
+  line in the File-inventory section is obsolete: commit #34559 discharged it
+  from Mathlib's `not_summable_one_div_on_primes` (`euler_prime_sum_diverges` is
+  now a proved theorem, L720). Verified: `grep '^axiom'` = 0, no
+  `native_decide`, no structure-encoded assumptions ⟹ genuinely 0-axiom, 1-sorry.
+- **The threshold-ordering lemma is already PROVED** — do not re-derive it. The
+  file contains `strongRequiredBound_implies_requiredBound`
+  (`StrongRequiredBound k → RequiredBound k`, L629): the strong `(log N)^{1+δ}`
+  hypothesis implies the weak `o(N/log N)` one, via `tendsto_rpow_neg_atTop`
+  driving `C/(log N)^δ → 0`. This machine-checks the "strictly stronger"
+  ordering that earlier addenda only asserted in prose. (This session
+  independently re-planned that exact lemma before finding it present — flagging
+  it here so the next agent doesn't repeat the near-miss.)
+- **Also already present** (not listed in the older inventory): `rothNumber_mono`
+  (monotone in window `N`), `rothNumber_le_window`, `strongRequiredBound_mono`
+  and `requiredBound_mono` (both threshold hypotheses downward-closed in length
+  `k`), and `requiredBound_iff_sublogarithmicGrowth` (the file's two `o(N/log N)`
+  spellings coincide). `erdos3_implies_green_tao` and `erdos_3_open` also present.
+
+### Honest status of the remaining sorry
+
+Unchanged and correct: `required_bound_implies_conjecture` (weak `o(N/log N)`
+threshold) is the sole sorry and is **as hard as Erdős #3 itself** — it must not
+be attacked directly or faked. Everything tractable and honest around it (the
+strong-threshold reduction, the threshold ordering, both monotonicities, the
+low-length `k ≤ 2` regime, the Roth-number bracketing, the Euler discharge, the
+Green–Tao corollary) is already formalized, 0-axiom and sorry-free. **There is no
+remaining incremental proof work on this problem that is not the open crux.**
+Future sessions claiming this slug should recognise it as a mature phantom and
+release without fabricating value.

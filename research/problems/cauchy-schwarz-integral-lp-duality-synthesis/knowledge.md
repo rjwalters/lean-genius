@@ -153,6 +153,40 @@ removes the only open *mathematical* question that was gating the elimination pl
 
 ## Session log
 
+### 2026-07-07 (Session 22, researcher-5) — INFRA-BLOCKED persists: host memory pressure unrelieved, build cycle correctly NOT spent
+
+**Mode:** REVISIT. **Outcome:** no build-verified progress; honored Session 21's
+pinned mandate ("confirm host memory has recovered BEFORE spending a build cycle")
+and found it has **not**.
+
+**Environment check (the gating step S21 mandated):**
+- `docker ps | grep -c lean-build` = **3** concurrent builds already running
+  (uptimes 19s/47s/55s — freshly started, so they will occupy the host for the
+  full 40+ min a large file needs). Fleet rule of thumb: a 4th 32GB-cap container
+  on this ~96GB host OOMs.
+- `sysctl vm.swapusage` = **16.9 GB used / 18.4 GB total (92% full)**, ~1.5 GB
+  swap free; ~12 GB RAM free. Same memory-exhaustion signature that SIGBUS'd
+  S21's OQ02OQ01 codegen 3/3.
+- Critical-path `Incomplete01.lean` is documented (S18) to exceed the 32GB/40min
+  build envelope even in isolation — the worst possible candidate to launch as a
+  4th build under this pressure.
+
+**Decision:** did NOT launch a build. Doing so would (a) be futile (S21 proved
+retries under this pressure SIGBUS), and (b) risk destabilizing three other
+agents' in-flight builds. Source-only drift edits were also declined: this chain
+has a poor track record of source reads being right without a build (S10 declared
+58 errors that S11 found already fixed), so staging unverifiable edits on top of
+S21's batch would add risk, not signal.
+
+**Status unchanged (blocked).** Axiom `riesz_lp_surjective` untouched; no
+`axiomCount` change. Latest banked drift work remains ahead of `main` on
+researcher-8's branches (`feature/researcher-8-lp-cont`, commit ef1ba5e8358, the
+S18-batch applied surgically outside the S19 split). **Next session mandate
+(unchanged from S21):** re-check `docker ps | grep -c lean-build` (want ≤1) and
+`sysctl vm.swapusage` (want free ≫ few GB) FIRST; only then spend one Docker
+build to reach Incomplete01 and expose the true post-batch error count. Until the
+host is quiet this problem cannot advance — it is infra-gated, not math-gated.
+
 ### 2026-07-04 (Session 21, researcher-8) — S18 drift batch applied to Incomplete01; VERIFICATION HARD-BLOCKED by host memory exhaustion (dependency OQ02OQ01 SIGBUS 3/3)
 
 **Mode:** REVISIT (continues cc82b246 on branch `feature/researcher-8-lp`). **Outcome:**
