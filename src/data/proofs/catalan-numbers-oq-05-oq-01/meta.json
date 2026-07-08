@@ -57,6 +57,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and the Ballot-Number Framing",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring stating the open question (the row-difference/ballot-number form of the Catalan number), the base-case result catalan n = C(2n,n) − C(2n,n+1), and the three lemmas that deliver it; notes that Mathlib has only the division form catalan n = centralBinom n / (n+1). Import of Mathlib, namespace, and open Nat.",
+      "mathContext": "$C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$, the base entry ($k=0$) of the ballot-number triangle $B(m,k) = \\binom{m}{k} - \\binom{m}{k-1}$."
+    },
+    {
       "id": "neighbour",
       "title": "The Neighbour Coefficient C(2n,n+1) = n·catalan n",
       "startLine": 41,
@@ -127,6 +135,29 @@
       "targetId": "combinations-formula-oq-01-oq-01",
       "relationship": "related",
       "description": "Another Pascal's-triangle binomial-identity entry (the Fibonacci shallow-diagonal sum); both read a named integer sequence off a structured combination of binomial coefficients."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "venue": "Cambridge University Press",
+      "note": "Ballot numbers, the Catalan triangle, and the difference form of the Catalan number."
+    },
+    {
+      "authors": "Désiré André",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, vol. 105, pp. 436–437",
+      "note": "The reflection principle giving the combinatorial meaning of the binomial differences as ballot numbers."
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.Combinatorics.Enumerative.Catalan and Mathlib.Data.Nat.Choose.Central / .Basic",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Sources of succ_mul_catalan_eq_centralBinom, Nat.choose_succ_right_eq, Nat.choose_symm, and the centralBinom API bridged here."
     }
   ]
 }
