@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-oq-04-oq-01-oq-03",
   "title": "Generic Sylow Lemma for Galois Group Elimination",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "research/problems/abel-ruffini-oq-04-oq-01-oq-03",
@@ -21,7 +21,7 @@
     "goal": "State and prove a generic sylow_elim_card lemma subsuming the three gal_card_ne_k lemmas."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-07-05T00:00:00+0000",
     "iteration": 1,
     "focus": "Seeker-seeded stub. Read problem.md and the parent AbelRuffiniOQ04OQ01.lean.",
@@ -34,21 +34,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (structural consequences, verified 0/0): added zpowers_index_eq (quotient order m) and not_isSimpleGroup_of_sylow — a group of order p·m with the normal-Sylow hypotheses and 1<m is NOT simple; p=5 corollary + order-40 capstone. Docker-built, 0 axioms/0 sorries, no native_decide. Core normality/involution results were already verified; this session adds the non-simplicity payoff that feeds solvability arguments.",
+    "progressSummary": "COMPLETE: generic Sylow-elim core (arbitrary prime + non-simplicity) merged (#35245); parent S5 proof now refactored to use it (Docker-verified). Both halves of the seeker task done.",
     "builtItems": [
       "zpowers_sylow_normal in AbelRuffiniOQ04OQ01OQ03.lean — arbitrary-prime Sylow-elimination core: order p·m + p∤m + no-small-divisor ⇒ ⟨c⟩ (order-p) normal",
       "conj_mem_zpowers_sylow — every g normalizes ⟨c⟩ (general prime consequence)",
       "zpowers_order5_normal now a one-line corollary of zpowers_sylow_normal (p=5 instance)",
       "zpowers_index_eq in AbelRuffiniOQ04OQ01OQ03.lean — [G:⟨c⟩]=m (quotient order m) by prime cancellation, no huniq/normality needed",
       "not_isSimpleGroup_of_sylow in AbelRuffiniOQ04OQ01OQ03.lean — arbitrary-prime non-simplicity from the normal Sylow core (1<m)",
-      "not_isSimpleGroup_order5 + capstone example — p=5 corollary and 'any group of order 40 with an order-5 element is not simple'"
+      "not_isSimpleGroup_order5 + capstone example — p=5 corollary and 'any group of order 40 with an order-5 element is not simple'",
+      "absurd_conj_of_transposition helper in AbelRuffiniOQ04OQ01.lean: shared S5 finish turning the involution disjunction (τcτ⁻¹=c ∨ =c⁻¹) into False via transposition_not_normalizing_5cycle (c and c⁻¹=c⁴ both forbidden)",
+      "Parent refactor removed ~180 lines of triplicated Sylow machinery; parent 1498->1337 lines, Docker-verified 0-sorry."
     ],
     "insights": [
       "Generalizing the fixed prime 5 to a variable prime p is NOT a rename: the two number-theoretic steps change tactic. n_p ≡ 1 (mod p) ⇒ n_p = 1 needs Nat.mod_eq_of_lt hp.out.one_lt to evaluate 1 % p (omega cannot do variable-modulus mod); index cancellation [G:P]·p = p·m ⇒ [G:P] = m needs Nat.eq_of_mul_eq_mul_right (omega cannot cancel a variable multiplier).",
       "The whole Sylow API (Sylow.card_eq_multiplicity, card_sylow_modEq_one, Sylow.card_dvd_index, IsPGroup.exists_le_sylow) is already prime-generic, so the group-theory skeleton transports verbatim; only the two ℕ-arithmetic steps required new lemmas.",
       "The normal Sylow p-subgroup is not just an intermediate step: it is a proper nontrivial normal subgroup, so any group of order p·m (p∤m, no small Frobenius divisor, 1<m) with an order-p element is NOT simple. This is the structural reason the x⁵-4x+2 Galois groups (orders 10,20,40) cannot be the simple A₅.",
       "IsSimpleGroup.eq_bot_or_eq_top_of_normal turns non-simplicity into a clean two-case refutation: ⟨c⟩=⊥ contradicts orderOf c=p>1 (via Subgroup.zpowers_eq_bot + orderOf_one), ⟨c⟩=⊤ contradicts index=m>1 (via Subgroup.index_top).",
-      "The index [G:⟨c⟩]=m follows by pure counting (index_mul_card + Nat.eq_of_mul_eq_mul_right cancelling the prime p) with NO divisor hypothesis and NO normality — it just records that G⧸⟨c⟩ has order m."
+      "The index [G:⟨c⟩]=m follows by pure counting (index_mul_card + Nat.eq_of_mul_eq_mul_right cancelling the prime p) with NO divisor hypothesis and NO normality — it just records that G⧸⟨c⟩ has order m.",
+      "Parent AbelRuffiniOQ04OQ01.lean refactored to USE the generic core: the three gal_card_ne_10/20/40 lemmas now delegate to AbelRuffiniSylowElim.involution_conj_eq_self_or_inv, making the abstraction load-bearing (completes the second half of the seeker task)."
     ],
     "mathlibGaps": [],
     "nextSteps": [

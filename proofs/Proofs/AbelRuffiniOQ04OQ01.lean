@@ -1,4 +1,5 @@
 import Mathlib
+import Proofs.AbelRuffiniOQ04OQ01OQ03
 
 /-
 # Galois Group of x⁵ - 4x + 2 is S₅ (Abel-Ruffini OQ-04 Extension)
@@ -892,6 +893,37 @@ theorem gal_has_transposition :
     exact absurd galSign_conjGal (by rw [this]; decide)
   · exact galSign_conjGal
 
+/-- Shared `S₅` finish for the `gal_card_ne_10 / _20 / _40` lemmas.  Once the
+    generic Sylow-elimination core (`involution_conj_eq_self_or_inv`) shows that
+    the involution `τ` conjugates the 5-cycle `c` to `c` or `c⁻¹`, both options
+    are ruled out: `τ c τ⁻¹ = c` contradicts the first clause of
+    `transposition_not_normalizing_5cycle`, while `τ c τ⁻¹ = c⁻¹ = c⁴`
+    contradicts the fourth. -/
+private theorem absurd_conj_of_transposition {G : Subgroup (Equiv.Perm (Fin 5))}
+    (τ c : G)
+    (hτ2 : (τ : Equiv.Perm (Fin 5)) ^ 2 = 1)
+    (hτ_sign : Equiv.Perm.sign (τ : Equiv.Perm (Fin 5)) = -1)
+    (hc5 : (c : Equiv.Perm (Fin 5)) ^ 5 = 1)
+    (hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1)
+    (hinv : τ * c * τ⁻¹ = c ∨ τ * c * τ⁻¹ = c⁻¹) : False := by
+  have hτ_inv : (τ : Equiv.Perm (Fin 5))⁻¹ = τ :=
+    inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hτ2)
+  obtain ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
+    (c : Equiv.Perm (Fin 5)) (τ : Equiv.Perm (Fin 5)) hc5 hc_ne hτ_sign hτ2
+  rcases hinv with h | h
+  · apply hn1
+    have hv := congr_arg Subtype.val h
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv] at hv
+    rwa [hτ_inv] at hv
+  · apply hn4
+    have hv := congr_arg Subtype.val h
+    simp only [Subgroup.coe_mul, Subgroup.coe_inv] at hv
+    rw [hτ_inv] at hv
+    rw [hv]
+    have h4 : (c : Equiv.Perm (Fin 5)) ^ 4 * (c : Equiv.Perm (Fin 5)) = 1 := by
+      rw [← pow_succ]; exact hc5
+    exact inv_eq_of_mul_eq_one_left h4
+
 -- Section E6b: |Gal| ≠ 20 (from transposition + F₂₀ structure)
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -902,24 +934,12 @@ theorem gal_has_transposition :
     lies in the normalizer N_{S₅}(⟨5-cycle⟩) = F₂₀. -/
 private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
   intro hc
-  -- Get the transposition in the Galois group image
+  -- The Galois-group image `G ≤ S₅` has order `20 = 5·4`, contains a
+  -- transposition, and — via the generic Sylow-elimination core in
+  -- `AbelRuffiniOQ04OQ01OQ03.lean` — its unique normal Sylow 5-subgroup is
+  -- `⟨c⟩` for a 5-cycle `c`.  So the transposition conjugates `c` to `c` or
+  -- `c⁻¹`, both forbidden by `transposition_not_normalizing_5cycle`.
   obtain ⟨σ, hσ2, hσ_ne, hσ_sign⟩ := gal_has_transposition
-  -- Get the 5-cycle from five_dvd_gal_card + Cauchy's theorem
-  -- The image galToPerm5.range has order 20 and is transitive on Fin 5.
-  -- It contains a 5-cycle (from 5 | 20 + Cauchy) and a transposition.
-  -- But transposition_not_normalizing_5cycle says no transposition normalizes
-  -- any 5-cycle. The normalizer of any Sylow 5-subgroup in a transitive
-  -- order-20 subgroup of S₅ IS the whole group (since F₂₀ has a unique
-  -- Sylow 5-subgroup, which is normal). So every element normalizes the
-  -- 5-cycle, contradicting transposition_not_normalizing_5cycle.
-  --
-  -- More concretely: in a group of order 20 with 5 | |G|, the Sylow
-  -- 5-subgroup is unique (by Sylow's theorem: n₅ | 4 and n₅ ≡ 1 mod 5,
-  -- so n₅ = 1). So ⟨c⟩ ◁ G where c is a 5-cycle. Then every element
-  -- normalizes c, i.e., σ·c·σ⁻¹ ∈ {c, c², c³, c⁴}.
-  -- But transposition_not_normalizing_5cycle says this fails for transpositions.
-  --
-  -- Full Sylow proof: unique normal Sylow 5-subgroup in order-20 group
   set G := galToPerm5.range
   have hG_card : Nat.card G = 20 := by
     rw [show Nat.card G = Nat.card p.Gal from
@@ -937,75 +957,15 @@ private theorem gal_card_ne_20 : Fintype.card p.Gal ≠ 20 := by
   have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
     absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
   set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
-  obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := G)
-  have hP_card : Nat.card (↑P₅ : Subgroup G) = 5 := by
-    rw [P₅.card_eq_multiplicity, hG_card]; native_decide
-  have : Nat.card (Sylow 5 G) = 1 := by
-    have h_mod := card_sylow_modEq_one 5 G
-    have h_idx : (↑P₅ : Subgroup G).index = 4 := by
-      have := (↑P₅ : Subgroup G).index_mul_card; rw [hP_card, hG_card] at this; omega
-    have h_dvd := Sylow.card_dvd_index P₅; rw [h_idx] at h_dvd
-    have h_le : Nat.card (Sylow 5 G) ≤ 4 := Nat.le_of_dvd (by norm_num) h_dvd
-    have h_pos : 0 < Nat.card (Sylow 5 G) := Nat.card_pos
-    rw [Nat.ModEq] at h_mod
-    interval_cases (Nat.card (Sylow 5 G)) <;> omega
-  haveI : Subsingleton (Sylow 5 G) := by
-    haveI := Fintype.ofFinite (Sylow 5 G)
-    rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
-  haveI hNP : (↑P₅ : Subgroup G).Normal := by
-    apply Subgroup.Normal.mk; intro n hn g
-    have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
-    exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
-  have hc_P5 : c ∈ (↑P₅ : Subgroup G) := by
-    have h_pg : IsPGroup 5 (Subgroup.zpowers c) :=
-      IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hc_ord]⟩
-    obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
-    exact (Subsingleton.elim Q P₅ : Q = P₅) ▸ hQ (Subgroup.mem_zpowers c)
-  have hzpow_le : Subgroup.zpowers c ≤ ↑P₅ := fun x hx => by
-    obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
-    exact (↑P₅ : Subgroup G).zpow_mem hc_P5 k
-  have hP5_eq : (↑P₅ : Subgroup G) = Subgroup.zpowers c := by
-    apply le_antisymm _ hzpow_le
-    intro x hx
-    have hbij : Function.Bijective (Subgroup.inclusion hzpow_le) := by
-      haveI := Fintype.ofFinite ↥(↑P₅ : Subgroup G)
-      haveI := Fintype.ofFinite ↥(Subgroup.zpowers c)
-      exact (Fintype.bijective_iff_injective_and_card _).mpr
-        ⟨Subgroup.inclusion_injective _, by
-          rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card,
-              Nat.card_zpowers, hc_ord, hP_card]⟩
-    obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
-    rwa [show y = x from congr_arg Subtype.val hxy] at hy
-  have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
-    (SetLike.ext_iff.mp hP5_eq _).mp (hNP.conj_mem c hc_P5 σ')
-  obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
-  have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
-    inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
-  have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
-    have h := congr_arg Subtype.val hk
-    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h
-    rw [hσ_inv] at h; exact h.symm
-  have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
-    ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
-  have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
-    rw [← hconj_val]; intro h
-    have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
-      Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
-    have hc1 : c = 1 := by have := (by group : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ'); rw [h1] at this; simpa using this
-    exact hc_ne (congr_arg Subtype.val hc1)
-  have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
-    have hdiv : k = 5 * (k / 5) + k % 5 := by omega
-    conv_lhs => rw [hdiv]
-    rw [zpow_add, zpow_mul]
-    have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
-      rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
-    rw [h5z, one_zpow, one_mul]
-    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
-    simp only [zpow_natCast]
-  rw [hred] at hconj_val hck_ne
-  have hbound : (k % 5).toNat < 5 := by
-    rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
-  exfalso; interval_cases (k % 5).toNat <;> simp_all
+  have hg : σ' * σ' = 1 := Subtype.ext (by
+    show galToPerm5 σ * galToPerm5 σ = 1; rw [← sq]; exact hσ2)
+  -- Generic core: an involution normalizing a normal prime-order cyclic
+  -- subgroup conjugates its generator to itself or its inverse.  Here
+  -- `m = 4 < 5`, so `huniq` is discharged by `huniq_of_lt`.
+  have hinv := AbelRuffiniSylowElim.involution_conj_eq_self_or_inv 4
+    (hG_card.trans (by norm_num)) (by norm_num)
+    (AbelRuffiniSylowElim.huniq_of_lt (by norm_num) (by norm_num)) c hc_ord hg
+  exact absurd_conj_of_transposition σ' c hσ2 hσ_sign hc5 hc_ne hinv
 
 -- Section E6b2: |Gal| ≠ 10 (same Sylow argument as ne_20)
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1033,75 +993,13 @@ private theorem gal_card_ne_10 : Fintype.card p.Gal ≠ 10 := by
   have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
     absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
   set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
-  obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := G)
-  have hP_card : Nat.card (↑P₅ : Subgroup G) = 5 := by
-    rw [P₅.card_eq_multiplicity, hG_card]; native_decide
-  have : Nat.card (Sylow 5 G) = 1 := by
-    have h_mod := card_sylow_modEq_one 5 G
-    have h_idx : (↑P₅ : Subgroup G).index = 2 := by
-      have := (↑P₅ : Subgroup G).index_mul_card; rw [hP_card, hG_card] at this; omega
-    have h_dvd := Sylow.card_dvd_index P₅; rw [h_idx] at h_dvd
-    have h_le : Nat.card (Sylow 5 G) ≤ 2 := Nat.le_of_dvd (by norm_num) h_dvd
-    have h_pos : 0 < Nat.card (Sylow 5 G) := Nat.card_pos
-    rw [Nat.ModEq] at h_mod
-    interval_cases (Nat.card (Sylow 5 G)) <;> omega
-  haveI : Subsingleton (Sylow 5 G) := by
-    haveI := Fintype.ofFinite (Sylow 5 G)
-    rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
-  haveI hNP : (↑P₅ : Subgroup G).Normal := by
-    apply Subgroup.Normal.mk; intro n hn g
-    have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
-    exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
-  have hc_P5 : c ∈ (↑P₅ : Subgroup G) := by
-    have h_pg : IsPGroup 5 (Subgroup.zpowers c) :=
-      IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hc_ord]⟩
-    obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
-    exact (Subsingleton.elim Q P₅ : Q = P₅) ▸ hQ (Subgroup.mem_zpowers c)
-  have hzpow_le : Subgroup.zpowers c ≤ ↑P₅ := fun x hx => by
-    obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
-    exact (↑P₅ : Subgroup G).zpow_mem hc_P5 k
-  have hP5_eq : (↑P₅ : Subgroup G) = Subgroup.zpowers c := by
-    apply le_antisymm _ hzpow_le
-    intro x hx
-    have hbij : Function.Bijective (Subgroup.inclusion hzpow_le) := by
-      haveI := Fintype.ofFinite ↥(↑P₅ : Subgroup G)
-      haveI := Fintype.ofFinite ↥(Subgroup.zpowers c)
-      exact (Fintype.bijective_iff_injective_and_card _).mpr
-        ⟨Subgroup.inclusion_injective _, by
-          rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card,
-              Nat.card_zpowers, hc_ord, hP_card]⟩
-    obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
-    rwa [show y = x from congr_arg Subtype.val hxy] at hy
-  have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
-    (SetLike.ext_iff.mp hP5_eq _).mp (hNP.conj_mem c hc_P5 σ')
-  obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
-  have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
-    inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
-  have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
-    have h := congr_arg Subtype.val hk
-    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h
-    rw [hσ_inv] at h; exact h.symm
-  have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
-    ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
-  have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
-    rw [← hconj_val]; intro h
-    have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
-      Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
-    have hc1 : c = 1 := by have := (by group : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ'); rw [h1] at this; simpa using this
-    exact hc_ne (congr_arg Subtype.val hc1)
-  have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
-    have hdiv : k = 5 * (k / 5) + k % 5 := by omega
-    conv_lhs => rw [hdiv]
-    rw [zpow_add, zpow_mul]
-    have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
-      rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
-    rw [h5z, one_zpow, one_mul]
-    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
-    simp only [zpow_natCast]
-  rw [hred] at hconj_val hck_ne
-  have hbound : (k % 5).toNat < 5 := by
-    rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
-  exfalso; interval_cases (k % 5).toNat <;> simp_all
+  have hg : σ' * σ' = 1 := Subtype.ext (by
+    show galToPerm5 σ * galToPerm5 σ = 1; rw [← sq]; exact hσ2)
+  -- Generic core with `m = 2 < 5` (so `huniq` is `huniq_of_lt`).
+  have hinv := AbelRuffiniSylowElim.involution_conj_eq_self_or_inv 2
+    (hG_card.trans (by norm_num)) (by norm_num)
+    (AbelRuffiniSylowElim.huniq_of_lt (by norm_num) (by norm_num)) c hc_ord hg
+  exact absurd_conj_of_transposition σ' c hσ2 hσ_sign hc5 hc_ne hinv
 
 -- Section E6b3: |Gal| ≠ 40 (same Sylow argument as ne_20)
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1129,75 +1027,16 @@ private theorem gal_card_ne_40 : Fintype.card p.Gal ≠ 40 := by
   have hc_ne : (c : Equiv.Perm (Fin 5)) ≠ 1 := fun h =>
     absurd hc_ord (by rw [show c = (1 : G) from Subtype.ext h, orderOf_one]; norm_num)
   set σ' : G := ⟨galToPerm5 σ, ⟨σ, rfl⟩⟩
-  obtain ⟨P₅⟩ := Sylow.nonempty (p := 5) (G := G)
-  have hP_card : Nat.card (↑P₅ : Subgroup G) = 5 := by
-    rw [P₅.card_eq_multiplicity, hG_card]; native_decide
-  have : Nat.card (Sylow 5 G) = 1 := by
-    have h_mod := card_sylow_modEq_one 5 G
-    have h_idx : (↑P₅ : Subgroup G).index = 8 := by
-      have := (↑P₅ : Subgroup G).index_mul_card; rw [hP_card, hG_card] at this; omega
-    have h_dvd := Sylow.card_dvd_index P₅; rw [h_idx] at h_dvd
-    have h_le : Nat.card (Sylow 5 G) ≤ 8 := Nat.le_of_dvd (by norm_num) h_dvd
-    have h_pos : 0 < Nat.card (Sylow 5 G) := Nat.card_pos
-    rw [Nat.ModEq] at h_mod
-    interval_cases (Nat.card (Sylow 5 G)) <;> omega
-  haveI : Subsingleton (Sylow 5 G) := by
-    haveI := Fintype.ofFinite (Sylow 5 G)
-    rw [← Fintype.card_le_one_iff_subsingleton, ← Nat.card_eq_fintype_card]; omega
-  haveI hNP : (↑P₅ : Subgroup G).Normal := by
-    apply Subgroup.Normal.mk; intro n hn g
-    have : g • P₅ = P₅ := Subsingleton.elim _ _; rw [Sylow.smul_eq_iff_mem_normalizer] at this
-    exact ((Subgroup.mem_normalizer_iff.mp this) n).mp hn
-  have hc_P5 : c ∈ (↑P₅ : Subgroup G) := by
-    have h_pg : IsPGroup 5 (Subgroup.zpowers c) :=
-      IsPGroup.iff_card.mpr ⟨1, by rw [pow_one, Nat.card_zpowers, hc_ord]⟩
-    obtain ⟨Q, hQ⟩ := h_pg.exists_le_sylow
-    exact (Subsingleton.elim Q P₅ : Q = P₅) ▸ hQ (Subgroup.mem_zpowers c)
-  have hzpow_le : Subgroup.zpowers c ≤ ↑P₅ := fun x hx => by
-    obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
-    exact (↑P₅ : Subgroup G).zpow_mem hc_P5 k
-  have hP5_eq : (↑P₅ : Subgroup G) = Subgroup.zpowers c := by
-    apply le_antisymm _ hzpow_le
-    intro x hx
-    have hbij : Function.Bijective (Subgroup.inclusion hzpow_le) := by
-      haveI := Fintype.ofFinite ↥(↑P₅ : Subgroup G)
-      haveI := Fintype.ofFinite ↥(Subgroup.zpowers c)
-      exact (Fintype.bijective_iff_injective_and_card _).mpr
-        ⟨Subgroup.inclusion_injective _, by
-          rw [← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card,
-              Nat.card_zpowers, hc_ord, hP_card]⟩
-    obtain ⟨⟨y, hy⟩, hxy⟩ := hbij.surjective ⟨x, hx⟩
-    rwa [show y = x from congr_arg Subtype.val hxy] at hy
-  have hconj_zpow : σ' * c * σ'⁻¹ ∈ Subgroup.zpowers c :=
-    (SetLike.ext_iff.mp hP5_eq _).mp (hNP.conj_mem c hc_P5 σ')
-  obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp hconj_zpow
-  have hσ_inv : (galToPerm5 σ)⁻¹ = galToPerm5 σ :=
-    inv_eq_iff_mul_eq_one.mpr (by rw [← sq]; exact hσ2)
-  have hconj_val : galToPerm5 σ * ↑c * galToPerm5 σ = (↑c : Equiv.Perm (Fin 5)) ^ k := by
-    have h := congr_arg Subtype.val hk
-    simp only [Subgroup.coe_mul, Subgroup.coe_inv, SubgroupClass.coe_zpow, σ'] at h
-    rw [hσ_inv] at h; exact h.symm
-  have ⟨hn1, hn2, hn3, hn4⟩ := transposition_not_normalizing_5cycle
-    ↑c (galToPerm5 σ) hc5 hc_ne hσ_sign hσ2
-  have hck_ne : (↑c : Equiv.Perm (Fin 5)) ^ k ≠ 1 := by
-    rw [← hconj_val]; intro h
-    have h1 : σ' * c * σ'⁻¹ = (1 : G) :=
-      Subtype.ext (by simp only [σ', Subgroup.coe_mul, Subgroup.coe_inv]; rw [hσ_inv]; exact h)
-    have hc1 : c = 1 := by have := (by group : c = σ'⁻¹ * (σ' * c * σ'⁻¹) * σ'); rw [h1] at this; simpa using this
-    exact hc_ne (congr_arg Subtype.val hc1)
-  have hred : (↑c : Equiv.Perm (Fin 5)) ^ k = (↑c) ^ (k % 5).toNat := by
-    have hdiv : k = 5 * (k / 5) + k % 5 := by omega
-    conv_lhs => rw [hdiv]
-    rw [zpow_add, zpow_mul]
-    have h5z : (↑c : Equiv.Perm (Fin 5)) ^ (5 : ℤ) = 1 := by
-      rw [show (5 : ℤ) = ↑(5 : ℕ) from by norm_cast, zpow_natCast]; exact_mod_cast hc5
-    rw [h5z, one_zpow, one_mul]
-    conv_lhs => rw [(Int.toNat_of_nonneg (Int.emod_nonneg k (by norm_num))).symm]
-    simp only [zpow_natCast]
-  rw [hred] at hconj_val hck_ne
-  have hbound : (k % 5).toNat < 5 := by
-    rw [Int.toNat_lt (by omega)]; exact Int.emod_lt_of_pos k (by norm_num)
-  exfalso; interval_cases (k % 5).toNat <;> simp_all
+  have hg : σ' * σ' = 1 := Subtype.ext (by
+    show galToPerm5 σ * galToPerm5 σ = 1; rw [← sq]; exact hσ2)
+  -- Generic core with `m = 8`.  Here `8 > 5`, so `huniq_of_lt` does not apply;
+  -- the divisor hypothesis needs the genuine divisibility (`6 ≡ 1 mod 5` but
+  -- `6 ∤ 8`), discharged by `interval_cases`.
+  have hinv := AbelRuffiniSylowElim.involution_conj_eq_self_or_inv 8
+    (hG_card.trans (by norm_num)) (by norm_num)
+    (by intro d hd hmod; have := Nat.le_of_dvd (by norm_num) hd;
+        interval_cases d <;> omega) c hc_ord hg
+  exact absurd_conj_of_transposition σ' c hσ2 hσ_sign hc5 hc_ne hinv
 
 -- Section E6c: three_dvd_gal_card as THEOREM
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
