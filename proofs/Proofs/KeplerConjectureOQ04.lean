@@ -635,4 +635,121 @@ theorem zeroDensity_not_symmetricConvexBody :
     ulam_conjecture ⟨⟨0, le_refl 0, zero_le_one⟩, h⟩
   exact absurd hge (not_le.mpr fccDensity_pos)
 
+/-!
+## S9 — Regular octahedron: a denser shape benchmark above the tetrahedral dimer
+
+Extends the shape hierarchy upward with a third named non-spherical benchmark.
+Minkowski's lattice-packing theory gives the regular octahedron an (optimal
+lattice) packing density of `18 / 19 ≈ 0.9474` — strictly denser than both the
+FCC sphere density `π / (3 √ 2) ≈ 0.7405` and the Chen–Engel–Glotzer tetrahedral
+dimer `4000 / 4671 ≈ 0.8564`.  This produces the strict chain
+
+  `fccDensity < tetrahedronDimerDensity < octahedronPackingDensity < 1`,
+
+reinforcing the OQ-04 message that the FCC bound is nowhere near universal across
+convex shapes.  Everything here is axiom-free (rational `norm_num` arithmetic
+plus transitivity through the S3 inequality).  The regular octahedron is a
+centrally symmetric convex body, so its density lying above `fccDensity` is fully
+consistent with the (conjectural) Ulam lower bound — it is *not* a counterexample
+to S6, merely a witness far above the floor.
+
+Reference: H. Minkowski, "Dichteste gitterförmige Lagerung kongruenter Körper",
+*Nachr. K. Ges. Wiss. Göttingen* (1904), 311–355 — the densest lattice packing
+of regular octahedra has density `18/19`.
+-/
+
+/--
+**Regular-octahedron (Minkowski) lattice packing density in ℝ³.**
+
+The rational constant `18 / 19 ≈ 0.9474` is the density of the densest lattice
+packing of congruent regular octahedra (Minkowski 1904).  It strictly exceeds
+the tetrahedral dimer density (`tetrahedronDimerDensity_lt_octahedron` below) and
+hence, a fortiori, the FCC sphere density.
+-/
+noncomputable def octahedronPackingDensity : ℝ := 18 / 19
+
+/-- The regular-octahedron packing density is positive. -/
+theorem octahedronPackingDensity_pos : 0 < octahedronPackingDensity := by
+  unfold octahedronPackingDensity
+  norm_num
+
+/-- The regular-octahedron packing density is strictly less than one. -/
+theorem octahedronPackingDensity_lt_one : octahedronPackingDensity < 1 := by
+  unfold octahedronPackingDensity
+  norm_num
+
+/--
+**The octahedron beats the tetrahedral dimer.**
+
+`tetrahedronDimerDensity = 4000/4671 ≈ 0.8564 < 18/19 = octahedronPackingDensity`.
+A pure rational comparison (`4000 · 19 = 76000 < 84078 = 18 · 4671`), discharged
+by `norm_num`.  No axioms.
+-/
+theorem tetrahedronDimerDensity_lt_octahedron :
+    tetrahedronDimerDensity < octahedronPackingDensity := by
+  unfold tetrahedronDimerDensity octahedronPackingDensity
+  norm_num
+
+/--
+**The octahedron beats the FCC sphere density.**
+
+`fccDensity < octahedronPackingDensity`, by transitivity through the tetrahedral
+dimer: `fccDensity < tetrahedronDimerDensity` (S3, axiom-free) and
+`tetrahedronDimerDensity < octahedronPackingDensity` (rational).  No new axioms.
+-/
+theorem octahedronPackingDensity_gt_fccDensity :
+    fccDensity < octahedronPackingDensity :=
+  lt_trans tetrahedronDimerDensity_gt_fccDensity tetrahedronDimerDensity_lt_octahedron
+
+/--
+**Regular-octahedron packing as a `PackingDensity` instance.**
+
+Bundles `octahedronPackingDensity` with the S9 positivity / less-than-one bounds
+into the parent's abstract `PackingDensity` structure, mirroring
+`tetrahedronDimerPacking`.
+-/
+noncomputable def octahedronPacking : PackingDensity where
+  density := octahedronPackingDensity
+  nonneg  := octahedronPackingDensity_pos.le
+  le_one  := octahedronPackingDensity_lt_one.le
+
+/--
+**Existential refinement: a `PackingDensity` strictly above the tetrahedral
+dimer.**
+
+Strengthens `exists_packingDensity_gt_fcc` — not only does the abstract
+`PackingDensity` type admit values above `fccDensity`, it admits values above the
+tetrahedral dimer itself.  Witness: `octahedronPacking`.
+-/
+theorem exists_packingDensity_gt_tetrahedronDimer :
+    ∃ p : PackingDensity, tetrahedronDimerDensity < p.density :=
+  ⟨octahedronPacking, tetrahedronDimerDensity_lt_octahedron⟩
+
+/--
+**Non-vacuity of the ellipsoid-lattice gate, octahedron edition.**
+
+The octahedron packing density exceeds the Bezdek–Kuperberg ellipsoid-lattice
+ceiling `fccDensity`, so `octahedronPacking` is provably NOT an ellipsoid lattice
+packing — a second honest negative fact certifying the S5 shape gate is genuinely
+restrictive (cf. `tetrahedronDimer_not_ellipsoidLattice`).  No new axioms.
+-/
+theorem octahedron_not_ellipsoidLattice :
+    ¬ IsEllipsoidLatticePacking octahedronPacking := by
+  intro h
+  have hle : octahedronPackingDensity ≤ fccDensity :=
+    bezdek_kuperberg_ellipsoid_lattice_upper_bound ⟨octahedronPacking, h⟩
+  exact absurd hle (not_le.mpr octahedronPackingDensity_gt_fccDensity)
+
+/--
+**Strict three-shape chain.**
+
+`fccDensity < tetrahedronDimerDensity < octahedronPackingDensity`, packaging the
+S3 refutation and the S9 octahedron benchmark into a single strictly increasing
+ladder of concrete non-spherical densities, all sitting above the FCC bound.
+-/
+theorem fcc_lt_tetrahedron_lt_octahedron :
+    fccDensity < tetrahedronDimerDensity ∧
+    tetrahedronDimerDensity < octahedronPackingDensity :=
+  ⟨tetrahedronDimerDensity_gt_fccDensity, tetrahedronDimerDensity_lt_octahedron⟩
+
 end KeplerConjectureOQ04
