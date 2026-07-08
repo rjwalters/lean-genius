@@ -348,4 +348,43 @@ theorem admissibleCoeff_lt_of_pos (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 �
   have h := admissibleCoeff_ge_two_mul hV t ht
   omega
 
+/-- **Matching upper bound on the coefficient's step.**  The floor can only ever
+    add one extra unit on top of doubling: `c(t+1) ≤ 2·c(t) + 1`.  Indeed
+    `c(t+1) = ⌊2·2^{t-1}/|V|⌋` and `⌊2x⌋ ≤ 2⌊x⌋ + 1` for the truncated division
+    `x = 2^{t-1}/|V|`.  Combined with the lower bound `admissibleCoeff_ge_two_mul`,
+    this pins the coefficient recurrence to `c(t+1) ∈ {2·c(t), 2·c(t)+1}` — the
+    sharp two-sided step, so the "at least doubles" growth is in fact "doubles,
+    up to the unavoidable `±1` from the floor". -/
+theorem admissibleCoeff_le_two_mul_succ (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ t) :
+    firstMomentThreshold (t + 1) / Fintype.card V
+      ≤ 2 * (firstMomentThreshold t / Fintype.card V) + 1 := by
+  rw [firstMoment_threshold_doubles t ht]
+  set n := Fintype.card V with hn
+  set M := firstMomentThreshold t with hM
+  have hq : n * (M / n) + M % n = M := Nat.div_add_mod M n
+  have hmod : M % n < n := Nat.mod_lt _ hV
+  have hrewrite : 2 * M = n * (2 * (M / n)) + 2 * (M % n) := by
+    have h2 : 2 * M = 2 * (n * (M / n) + M % n) := by rw [hq]
+    rw [h2]; ring
+  rw [hrewrite, Nat.mul_add_div hV]
+  have hlt : 2 * (M % n) / n < 2 := by
+    rw [Nat.div_lt_iff_lt_mul hV]; omega
+  omega
+
+/-- **The exact coefficient recurrence (two-sided pin).**  For every `t ≥ 1` over
+    a fixed nonempty ground set, the admissible coefficient `c(t) = ⌊2^{t-1}/|V|⌋`
+    satisfies
+
+        2·c(t)  ≤  c(t+1)  ≤  2·c(t) + 1,
+
+    i.e. `c(t+1) ∈ {2·c(t), 2·c(t)+1}`.  This is the sharp coefficient-level
+    growth law for the first-moment regime: exponential doubling, deviating from
+    exact doubling by at most one unit (the truncated-division remainder). -/
+theorem admissibleCoeff_step_bracket (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ t) :
+    2 * (firstMomentThreshold t / Fintype.card V)
+        ≤ firstMomentThreshold (t + 1) / Fintype.card V
+      ∧ firstMomentThreshold (t + 1) / Fintype.card V
+        ≤ 2 * (firstMomentThreshold t / Fintype.card V) + 1 :=
+  ⟨admissibleCoeff_ge_two_mul hV t ht, admissibleCoeff_le_two_mul_succ hV t ht⟩
+
 end Erdos1022OQ02
