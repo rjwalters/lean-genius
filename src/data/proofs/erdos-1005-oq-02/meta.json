@@ -253,5 +253,25 @@
       "description": "Quantified depth dichotomy. If the depth-2j balanced bounding fraction F_{2j+1} fits under the order-n cap (F_{2j+1} ≤ n) then 2ʲ ≤ n, i.e. j ≤ log₂ n. Combined with the §6 linear bound (one-sided chains admit Θ(n) levels), this is an EXPONENTIAL separation between the two extreme mediant-descent strategies: balanced chains exhaust the order cap in O(log n) levels, one-sided chains in Θ(n). Cassini's identity (fib_cassini) certifies the balanced bounding pairs as genuine Farey neighbours, so both bounds live in the same unimodular gap calculus.",
       "leanType": "∀ (j n : ℕ), Nat.fib (2*j+1) ≤ n → 2^j ≤ n"
     }
+  ],
+  "references": [
+    {
+      "authors": "Thomas F. Bloom (ed.)",
+      "title": "Erdős Problem #1005",
+      "year": 2024,
+      "note": "erdosproblems.com/1005. States the longest-run-of-similarly-ordered-Farey-fractions problem and records the bounds (1/12 − o(1))n ≤ f(n) ≤ n/4 + O(1) with the leading constant open — the run problem whose mediant-gap calculus this entry formalizes."
+    },
+    {
+      "authors": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": 2008,
+      "note": "Oxford University Press, Chapter III. The classical development of the Farey sequence, the mediant (a+c)/(b+d), and the unimodular relation bc − ad = 1 for adjacent fractions — the arithmetic this entry makes exact."
+    },
+    {
+      "authors": "Ronald L. Graham, Donald E. Knuth, Oren Patashnik",
+      "title": "Concrete Mathematics (2nd ed.)",
+      "year": 1994,
+      "note": "Addison-Wesley, §4.5. The Stern–Brocot tree and mediant insertion, with the unimodular invariant and the Fibonacci/Cassini identities that certify balanced mediant-descent chains as genuine Farey neighbours."
+    }
   ]
 }
