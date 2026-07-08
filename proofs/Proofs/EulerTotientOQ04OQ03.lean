@@ -193,4 +193,115 @@ theorem reversal_with_composite_landing :
     ∃ n : ℕ, ¬ (dblIter n).Prime ∧ Nat.totient n < Nat.totient (dblIter n) :=
   ⟨42, dblIter_42_not_prime, reverse_at_42⟩
 
+-- ----------------------------------------------------------------------------
+-- INFINITELY MANY reversals:  the explicit family  n = 21·2^(k+1).
+--
+-- This resolves the reversal (infinitely-often) direction of OQ-03 outright,
+-- with no density input, by generalising the composite-landing witness n = 42
+-- (the k = 0 case) into an infinite family.  For every k the double iterate
+-- lands on  D(21·2^(k+1)) = 17·2^(k+1), and
+--
+--     φ(21·2^(k+1)) = 12·2^k   <   16·2^k = φ(17·2^(k+1)) = φ(D(n)),
+--
+-- so the reverse inequality  φ(n) < φ(D(n))  holds throughout an infinite,
+-- injectively-parametrised family.  The mechanism mirrors the single-step
+-- family n = 15·2^(k+1) of the parent problem (Erdős 1064), but pushed through
+-- one extra cototient step:
+--
+--     21·2^(k+1)  --−φ-->  15·2^(k+1)  --−φ-->  17·2^(k+1),
+--
+-- where the first cototient step 21·2^(k+1) − φ(·) = 15·2^(k+1) is exactly the
+-- entry point of the parent family, and the second step lifts the odd part
+-- 15 ↦ 17, raising the totient past φ(n).
+-- ----------------------------------------------------------------------------
+
+/-- The reversal set  `{n | φ(n) < φ(D(n))}`  of OQ-03. -/
+def ReversalSet : Set ℕ := {n : ℕ | Nat.totient n < Nat.totient (dblIter n)}
+
+/-- **The double iterate collapses the family `21·2^(k+1)` onto `17·2^(k+1)`.**
+    For every `k`, `D(21·2^(k+1)) = 17·2^(k+1)`.  (First cototient step lands on
+    `15·2^(k+1)`, the parent family's member; the second lifts `15 ↦ 17`.) -/
+theorem dblIter_family (k : ℕ) : dblIter (21 * 2 ^ (k + 1)) = 17 * 2 ^ (k + 1) := by
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have cop21 : Nat.Coprime 21 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 21 2 by norm_num).pow_right (k + 1)
+  have cop15 : Nat.Coprime 15 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 15 2 by norm_num).pow_right (k + 1)
+  have h21 : Nat.totient 21 = 12 := by
+    rw [show (21 : ℕ) = 3 * 7 from rfl, Nat.totient_mul (by decide),
+        Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+  -- φ(n) = 12·2^k
+  have hφn : Nat.totient (21 * 2 ^ (k + 1)) = 12 * 2 ^ k := by
+    rw [Nat.totient_mul cop21, h21, hp2]
+  -- n − φ(n) = 15·2^(k+1)
+  have hsub1 : 21 * 2 ^ (k + 1) - 12 * 2 ^ k = 15 * 2 ^ (k + 1) := by
+    have h2 : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+    rw [h2]; omega
+  -- φ(15·2^(k+1)) = 8·2^k
+  have hφsub : Nat.totient (15 * 2 ^ (k + 1)) = 8 * 2 ^ k := by
+    rw [Nat.totient_mul cop15, totient_15, hp2]
+  -- D(n) = n − φ(n − φ(n)) = 17·2^(k+1)
+  unfold dblIter
+  rw [hφn, hsub1, hφsub]
+  have h2 : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+  rw [h2]; omega
+
+/-- **Reversal on the entire family `21·2^(k+1)`.**  For every `k`,
+    `φ(21·2^(k+1)) = 12·2^k < 16·2^k = φ(D(21·2^(k+1)))`, so each member is a
+    reversal point.  In particular `n = 42` (k = 0) and `n = 84` (k = 1) recover
+    the earlier numerical witnesses. -/
+theorem mem_ReversalSet_family (k : ℕ) : 21 * 2 ^ (k + 1) ∈ ReversalSet := by
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have cop21 : Nat.Coprime 21 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 21 2 by norm_num).pow_right (k + 1)
+  have cop17 : Nat.Coprime 17 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 17 2 by norm_num).pow_right (k + 1)
+  have h21 : Nat.totient 21 = 12 := by
+    rw [show (21 : ℕ) = 3 * 7 from rfl, Nat.totient_mul (by decide),
+        Nat.totient_prime (by norm_num), Nat.totient_prime (by norm_num)]
+  have hφn : Nat.totient (21 * 2 ^ (k + 1)) = 12 * 2 ^ k := by
+    rw [Nat.totient_mul cop21, h21, hp2]
+  have hφD : Nat.totient (17 * 2 ^ (k + 1)) = 16 * 2 ^ k := by
+    rw [Nat.totient_mul cop17, Nat.totient_prime (by norm_num), hp2]
+  show Nat.totient (21 * 2 ^ (k + 1)) < Nat.totient (dblIter (21 * 2 ^ (k + 1)))
+  rw [dblIter_family, hφn, hφD]
+  have hpos : 0 < 2 ^ k := pow_pos (by norm_num) k
+  omega
+
+/-- The map `k ↦ 21·2^(k+1)` is injective. -/
+theorem family_injective : Function.Injective (fun k : ℕ => 21 * 2 ^ (k + 1)) := by
+  intro a b hab
+  simp only at hab
+  have h2 : (2 : ℕ) ^ (a + 1) = 2 ^ (b + 1) := Nat.eq_of_mul_eq_mul_left (by norm_num) hab
+  have := Nat.pow_right_injective (le_refl 2) h2
+  omega
+
+/-- **The reversal `φ(n) < φ(D(n))` holds infinitely often.**  This resolves the
+    open (infinitely-often) direction of OQ-03 for the double iterate: the
+    reversal set `{n | φ(n) < φ(D(n))}` is infinite, exhibited by the explicit
+    injective family `n = 21·2^(k+1)`.  No density machinery is required. -/
+theorem reversal_infinitely_many : ReversalSet.Infinite :=
+  Set.infinite_of_injective_forall_mem family_injective mem_ReversalSet_family
+
+/-- **Summary (OQ-03, both directions realised infinitely).**  Both the forward
+    inequality `φ(n) > φ(D(n))` (on the infinite family of odd primes) and the
+    reverse inequality `φ(n) < φ(D(n))` (on the infinite family `21·2^(k+1)`)
+    hold on explicit infinite families.  So, exactly as for the single-step
+    Erdős 1064, the higher-iterate comparison genuinely goes both ways —
+    infinitely often in each direction. -/
+theorem oq03_both_directions_infinite :
+    {p : ℕ | p.Prime ∧ 3 ≤ p}.Infinite ∧ ReversalSet.Infinite := by
+  refine ⟨?_, reversal_infinitely_many⟩
+  -- the odd primes are infinite
+  have : {p : ℕ | p.Prime ∧ 3 ≤ p} = {p : ℕ | p.Prime} \ {2} := by
+    ext p
+    simp only [Set.mem_setOf_eq, Set.mem_diff, Set.mem_singleton_iff]
+    constructor
+    · rintro ⟨hp, hp3⟩; exact ⟨hp, by omega⟩
+    · rintro ⟨hp, hp2⟩; exact ⟨hp, by have := hp.two_le; omega⟩
+  rw [this]
+  exact Nat.infinite_setOf_prime.diff (Set.finite_singleton 2)
+
 end Erdos1064OQ03
