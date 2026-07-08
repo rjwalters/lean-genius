@@ -74,6 +74,38 @@
     "definitionCount": 0,
     "theoremCount": 6
   },
+  "mainTheorems": [
+    {
+      "name": "totient_odd_iff",
+      "type": "theorem",
+      "description": "Odd-totient classification (headline): φ(n) is odd if and only if n = 1 or n = 2 — the only n with odd totient, since φ 1 = φ 2 = 1 while φ 0 = 0 is even. Proved by bounding n ≤ 2 from oddness then deciding the finite cases."
+    },
+    {
+      "name": "totient_even_iff",
+      "type": "theorem",
+      "description": "Even-totient classification: φ(n) is even if and only if n ∉ {1, 2}. The Boolean complement of totient_odd_iff (via not_odd_iff_even and De Morgan)."
+    },
+    {
+      "name": "totient_even_of_two_lt",
+      "type": "theorem",
+      "description": "Euler's totient is even for every n > 2 (Nat.totient_even). The structural reason: −1 ∈ (ZMod n)ˣ has order 2 when n > 2, so 2 divides |(ZMod n)ˣ| = φ(n) by Lagrange's theorem."
+    },
+    {
+      "name": "le_two_of_odd_totient",
+      "type": "theorem",
+      "description": "If φ(n) is odd then n ≤ 2 — the contrapositive of totient_even_of_two_lt (an odd number cannot be even), supplying the bound that drives the odd classification."
+    },
+    {
+      "name": "two_dvd_totient_of_two_lt",
+      "type": "theorem",
+      "description": "Divisibility restatement of the even direction: 2 ∣ φ(n) whenever n > 2."
+    },
+    {
+      "name": "even_totient_of_three_le",
+      "type": "theorem",
+      "description": "Convenience form of the even direction stated with the hypothesis 3 ≤ n."
+    }
+  ],
   "sorries": 0,
   "overview": {
     "historicalContext": "Leonhard Euler introduced the totient function φ(n) — the count of integers in {1, …, n} coprime to n, equivalently the order of the unit group (ℤ/nℤ)ˣ — in his 1763 generalization of Fermat's little theorem. A basic structural fact is that φ(n) is even for all n > 2. The cleanest reason is group-theoretic: the unit group (ℤ/nℤ)ˣ contains the element −1, which differs from 1 precisely when n > 2 and squares to 1, hence has order 2; by Lagrange's theorem 2 divides |(ℤ/nℤ)ˣ| = φ(n). The only exceptions n = 1 and n = 2 have φ = 1 (and n = 0 has φ = 0, still even). Mathlib formalizes the even direction as `Nat.totient_even`; the sharp biconditional classification — φ is odd at exactly 1 and 2 — is the complete parity picture this entry records.",
