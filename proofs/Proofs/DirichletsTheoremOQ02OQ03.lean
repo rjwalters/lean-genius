@@ -460,4 +460,111 @@ theorem C_le_B (k : ℕ) : C k ≤ B k := by
     have h := towerProd_succ_le_factorial k
     rw [C_eq, B_succ]; omega
 
+/-! ## Step 7: the domination is **strict** for every `k ≥ 1` (`C k < B k`)
+
+`C_le_B` gives `C k ≤ B k` everywhere, with equality at `k = 0`
+(`C 0 = B 0 = 3`).  We now upgrade the inequality to a *strict* one for all
+`k ≥ 1`, matching the single-index observation `C 1 = 11 < 95 = B 1` of
+`primorial_tighter_than_factorial`.  The slack is already present in the
+factorial step: the ceiling `n·(n−1) ≤ n!` used in `C_le_B` is in fact *strict*
+for `n ≥ 4` (`n! = n·(n−1)!` and `(n−1)! > (n−1)` once `n−1 ≥ 3`), and the
+argument `4·(B k + 1)! ≥ 4` always lands in that regime.  So the running-product
+bound `towerProd (k+1) ≤ (B k + 1)!` sharpens to a strict `<`, and the strictness
+transfers to `C (k+1) < B (k+1)` because both towers apply the same monotone
+`x ↦ 4·(x+1)! − 1` (resp. `x ↦ 4·x − 1`) map. -/
+
+/-- Strict elementary factorial bound `n·(n−1) < n!` for `n ≥ 4`.  From
+`n! = n·(n−1)!` together with `(n−1) < (n−1)!` (valid since `n − 1 ≥ 3`), i.e.
+`Nat.lt_factorial_self`.  This is the strict refinement of `factorial_ge_mul_pred`
+that supplies the strictness in `C_lt_B`. -/
+theorem factorial_gt_mul_pred {n : ℕ} (hn : 4 ≤ n) : n * (n - 1) < n ! := by
+  obtain ⟨p, rfl⟩ : ∃ p, n = p + 1 := ⟨n - 1, by omega⟩
+  have hp : 3 ≤ p := by omega
+  have hlt : p < p ! := Nat.lt_factorial_self hp
+  rw [Nat.add_sub_cancel, Nat.factorial_succ]
+  exact mul_lt_mul_of_pos_left hlt (by omega)
+
+/-- Strict running-product bound `towerProd (k+1) < (B k + 1)!`.  Identical to
+`towerProd_succ_le_factorial` except the final factorial step is strict via
+`factorial_gt_mul_pred` (its argument `4·(B k + 1)!` is always `≥ 4`). -/
+theorem towerProd_succ_lt_factorial (k : ℕ) : towerProd (k + 1) < (B k + 1)! := by
+  induction k with
+  | zero => decide
+  | succ k ih =>
+    have hFpos := Nat.factorial_pos (B k + 1)
+    have hB1 : B (k + 1) + 1 = 4 * (B k + 1)! := by rw [B_succ]; omega
+    rw [towerProd_succ, hB1]
+    set F := (B k + 1)! with hF
+    set tp := towerProd (k + 1) with htp
+    calc tp * (4 * tp - 1)
+        ≤ F * (4 * F - 1) := Nat.mul_le_mul (by omega) (by omega)
+      _ ≤ (4 * F) * (4 * F - 1) := Nat.mul_le_mul (by omega) (le_refl _)
+      _ < (4 * F)! := factorial_gt_mul_pred (by omega)
+
+/-- **The primorial tower is strictly below the factorial tower for every
+`k ≥ 1`.**  `C k < B k` whenever `k ≥ 1`, sharpening `C_le_B` (which allows
+equality) and promoting the single-index fact `C 1 = 11 < 95 = B 1` to a theorem
+for all `k ≥ 1`.  Equality holds *only* at `k = 0` (`C 0 = B 0 = 3`), so together
+with `C_le_B` this pins down the comparison exactly: `C k = B k ⇔ k = 0`. -/
+theorem C_lt_B {k : ℕ} (hk : 1 ≤ k) : C k < B k := by
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  have h := towerProd_succ_lt_factorial j
+  rw [C_eq, B_succ]; omega
+
+/-- **Exact comparison of the two towers.** `C k = B k` if and only if `k = 0`;
+for all `k ≥ 1` the primorial tower is strictly smaller.  Combines `C_le_B`,
+`C_lt_B`, and the base equality `C 0 = B 0 = 3`. -/
+theorem C_eq_B_iff (k : ℕ) : C k = B k ↔ k = 0 := by
+  constructor
+  · intro h
+    by_contra hk
+    exact absurd h (Nat.ne_of_lt (C_lt_B (by omega)))
+  · rintro rfl; decide
+
+/-! ### An explicit (non-recursive) closed-form certified bound
+
+The bounds `p3 k ≤ B k` and `p3 k ≤ C k` are both *recursive*: to evaluate them
+one must unfold the tower.  Here we collapse the primorial recursion into a single
+explicit closed form, `p3 k ≤ 4^(2^k)`, which makes the *doubly-exponential* growth
+of the certified bound literally visible in the exponent `2^k`.  The proof is a clean
+squaring induction: `4·towerProd (k+1) = (4·towerProd k)·(4·towerProd k − 1) ≤
+(4·towerProd k)^2`, and squaring the inductive bound `4·towerProd k ≤ 4^(2^k)` gives
+`(4^(2^k))^2 = 4^(2^(k+1))`. -/
+
+/-- Squaring induction: `4·towerProd k ≤ 4^(2^k)`.  This is the engine converting the
+recursive primorial tower into a closed-form bound; the leading factor `4` is carried so
+that `C k = 4·towerProd k − 1` inherits the bound with no residual arithmetic. -/
+theorem four_mul_towerProd_le (k : ℕ) : 4 * towerProd k ≤ 4 ^ (2 ^ k) := by
+  induction k with
+  | zero => decide
+  | succ n ih =>
+    have h1 : 4 * towerProd (n + 1) ≤ (4 * towerProd n) * (4 * towerProd n) := by
+      rw [towerProd_succ]
+      calc 4 * (towerProd n * (4 * towerProd n - 1))
+            = (4 * towerProd n) * (4 * towerProd n - 1) := by ring
+        _ ≤ (4 * towerProd n) * (4 * towerProd n) :=
+            Nat.mul_le_mul_left _ (Nat.sub_le _ _)
+    have h3 : 4 ^ (2 ^ n) * 4 ^ (2 ^ n) = 4 ^ (2 ^ (n + 1)) := by
+      rw [← pow_add, pow_succ, Nat.mul_two]
+    calc 4 * towerProd (n + 1) ≤ (4 * towerProd n) * (4 * towerProd n) := h1
+      _ ≤ 4 ^ (2 ^ n) * 4 ^ (2 ^ n) := Nat.mul_le_mul ih ih
+      _ = 4 ^ (2 ^ (n + 1)) := h3
+
+/-- **Closed-form primorial-tower bound.** `C k ≤ 4^(2^k)`: the primorial tower is
+dominated by the explicit doubly-exponential `4^(2^k)`, no recursion required. -/
+theorem C_le_doubly_exp (k : ℕ) : C k ≤ 4 ^ (2 ^ k) :=
+  le_trans (by rw [C_eq]; exact Nat.sub_le _ _) (four_mul_towerProd_le k)
+
+/-- **Explicit doubly-exponential certified bound.** The `k`-th prime `≡ 3 (mod 4)`
+satisfies `p3 k ≤ 4^(2^k)` — a single closed-form expression, no tower to unfold.
+This exposes the exact order of the certified elementary bound: doubly exponential in
+`k` (true value `∼ 2k·ln k`).  It is a corollary of `p3_le_primorialTower` and
+`C_le_doubly_exp`. -/
+theorem p3_le_doubly_exp (k : ℕ) : p3 k ≤ 4 ^ (2 ^ k) :=
+  le_trans (p3_le_primorialTower k) (C_le_doubly_exp k)
+
+/-- The closed-form bound is consistent with the primorial tower at `k = 2`:
+`p3 2 ≤ C 2 = 131 ≤ 256 = 4^(2^2)`. -/
+theorem doubly_exp_at_two : C 2 ≤ 4 ^ (2 ^ 2) := by rw [C_two_eq]; norm_num
+
 end DirichletsTheoremOQ02OQ03

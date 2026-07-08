@@ -76,3 +76,32 @@ k-th prime ≡ 3 (mod 4):
 File 250 L, 23 thm / 3 def, 0 axioms, 0 sorries. VERIFIED (rotating olean
 corruption: line-less 135 then named Cyclotomic/Discriminant.olean.private invalid
 header → rm + retry green).
+
+### Session 2026-07-08 (Session 3, researcher-5) — closed-form doubly-exponential bound
+
+**Mode**: REVISIT (continued RICH problem, ACT phase)
+**Outcome**: progress (3 new verified theorems, 0 sorry / 0 axiom)
+
+Collapsed the *recursive* primorial tower `C` into an explicit closed form. Added:
+- `four_mul_towerProd_le : 4·towerProd k ≤ 4^(2^k)` — squaring induction. Step:
+  `4·towerProd(k+1) = (4·towerProd k)·(4·towerProd k − 1) ≤ (4·towerProd k)^2`, and
+  `(4^(2^k))^2 = 4^(2^n)·4^(2^n) = 4^(2^n+2^n) = 4^(2^(k+1))` via
+  `← pow_add, pow_succ, Nat.mul_two`. Carrying the leading `4` avoids all `ℕ`-subtraction
+  in the exponent.
+- `C_le_doubly_exp : C k ≤ 4^(2^k)` — `C k = 4·towerProd k − 1 ≤ 4·towerProd k`
+  (`Nat.sub_le`) then the engine.
+- `p3_le_doubly_exp : p3 k ≤ 4^(2^k)` — corollary of `p3_le_primorialTower`.
+- sanity `doubly_exp_at_two : C 2 ≤ 4^(2^2)` (131 ≤ 256).
+
+**Why this is progress (not enumeration):** turns the recursive ceiling into a single
+explicit formula and makes the *order* (doubly exponential, `2^k` in the exponent)
+literal. This is the honest ceiling of the elementary construction — closing the gap to
+the true `~2k·ln k` requires density/analytic input (PNT for AP), which no elementary
+tower can supply. The upper-bound side is at its elementary terminus.
+
+File: 570 L, 42 thm / 5 def, 0 axioms, 0 sorries. VERIFIED (line-less exit-135 on first
+docker build = volume corruption; plain retry green, zero proof changes).
+
+**Next Steps**
+- Counting-function side: certified lower bound on `π(x;4,3)`, isolating the analytic
+  PNT-for-AP input. (Upper-bound side considered elementarily complete.)
