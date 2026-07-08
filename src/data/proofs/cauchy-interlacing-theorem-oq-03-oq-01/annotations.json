@@ -2,31 +2,58 @@
   {
     "id": "ann-stability-oq0301-header",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
-    "range": { "startLine": 4, "endLine": 42 },
+    "range": {
+      "startLine": 4,
+      "endLine": 42
+    },
     "type": "concept",
     "title": "The Open Question: Quantitative Stability from Qualitative Monotonicity",
     "content": "The module docstring frames the deliverable: this file answers the lead open question of the parent entry cauchy-interlacing-theorem-oq-03 — derive the operator-norm eigenvalue stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ (Weyl's perturbation theorem, eigenvalues are 1-Lipschitz in the operator norm) purely from the already-proven Weyl MONOTONICITY theorem weyl_monotone, itself a 0-sorry/0-axiom corollary of the Courant–Fischer keystone (#25063). The strategy is the Loewner sandwich: with δ = ‖T − U‖, the elementary Rayleigh bound re⟪(T−U)x,x⟫ ≤ δ‖x‖² yields U − δ·I ⪯ T ⪯ U + δ·I; the shifted operators U ± δ·I reuse U's eigenbasis with eigenvalues ν ± δ, and feeding both inequalities into weyl_monotone brackets μ(k) between ν(k) − δ and ν(k) + δ. No new spectral theory is introduced — the qualitative monotonicity result already contains the quantitative Lipschitz bound.",
     "mathContext": "Answers parent oq-03: from $weyl\\_monotone$ obtain $|\\mu_k - \\nu_k| \\le \\|T-U\\|$ via $U - \\|T-U\\| I \\preceq T \\preceq U + \\|T-U\\| I$.",
     "significance": "supporting",
-    "relatedConcepts": ["Weyl perturbation theorem", "Loewner sandwich", "Courant–Fischer keystone", "open question resolution"],
-    "prerequisites": ["Weyl monotonicity", "operator norm", "Loewner order"]
+    "relatedConcepts": [
+      "Weyl perturbation theorem",
+      "Loewner sandwich",
+      "Courant–Fischer keystone",
+      "open question resolution"
+    ],
+    "prerequisites": [
+      "Weyl monotonicity",
+      "operator norm",
+      "Loewner order"
+    ]
   },
   {
     "id": "ann-stability-oq0301-setup",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
-    "range": { "startLine": 44, "endLine": 50 },
+    "range": {
+      "startLine": 42,
+      "endLine": 50
+    },
     "type": "concept",
     "title": "Setup: A Corollary File over the Weyl Keystone",
     "content": "The single non-Mathlib import is `Proofs.CauchyInterlacingWeyl`, which supplies `weyl_monotone` (re⟪Tx,x⟫ ≤ re⟪Ux,x⟫ for all x ⟹ μ(k) ≤ ν(k)) — itself a 0-axiom/0-sorry corollary of the Courant–Fischer keystone. Opening `CauchyInterlacing.Weyl` brings that monotonicity theorem into scope so the whole stability bound is assembled from it without re-deriving any spectral theory. The `variable` block fixes an inner product space `E` over `𝕜 : RCLike` (real or complex); crucially the operators below are presented as CONTINUOUS linear maps `E →L[𝕜] E`, so that `‖T − U‖` is the genuine operator norm with the Lipschitz constant 1 the theorem claims — the eigen-presentation is carried to the bare `LinearMap` coercion only where `weyl_monotone` is applied.",
     "mathContext": "Imports `weyl_monotone : (∀ x, \\mathrm{re}\\langle Tx,x\\rangle \\le \\mathrm{re}\\langle Ux,x\\rangle) \\Rightarrow \\mu_k \\le \\nu_k$; operators are continuous so $\\|T-U\\|$ is the true operator norm.",
     "significance": "supporting",
-    "relatedConcepts": ["Weyl monotonicity", "operator norm", "continuous linear map", "module import"],
-    "prerequisites": ["the parent Weyl monotonicity entry", "operator norm on E →L[𝕜] E", "RCLike inner product spaces"]
+    "relatedConcepts": [
+      "Weyl monotonicity",
+      "operator norm",
+      "continuous linear map",
+      "module import"
+    ],
+    "prerequisites": [
+      "the parent Weyl monotonicity entry",
+      "operator norm on E →L[𝕜] E",
+      "RCLike inner product spaces"
+    ]
   },
   {
     "id": "ann-stability-oq0301-rayleigh-bound",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
-    "range": { "startLine": 59, "endLine": 71 },
+    "range": {
+      "startLine": 59,
+      "endLine": 71
+    },
     "type": "tactic",
     "title": "Cauchy–Schwarz Meets the Operator Norm",
     "content": "reInner_diff_le is the only new analytic input of the proof: the real Rayleigh numerator of a difference is controlled by the operator norm, re⟪(A−B)x, x⟫ ≤ ‖A−B‖·‖x‖². It is a two-step chain — Cauchy–Schwarz on the real part (re_inner_le_norm: re⟪y, x⟫ ≤ ‖y‖·‖x‖) followed by the defining operator-norm inequality ‖(A−B)x‖ ≤ ‖A−B‖·‖x‖ (ContinuousLinearMap.le_opNorm). This estimate is precisely what converts the operator-norm hypothesis ‖T − U‖ into the two Loewner inequalities the eigenvalue sandwich runs on.",
@@ -46,7 +73,10 @@
   {
     "id": "ann-stability-oq0301-scalar-shift",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
-    "range": { "startLine": 76, "endLine": 89 },
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
     "type": "concept",
     "title": "A Real Scalar Shift Is Spectrally Transparent",
     "content": "Two short lemmas record that adding a real multiple of the identity does nothing but shift the spectrum. reInner_add_smul: the Rayleigh quotient shifts by the scalar, re⟪(V + s·I)x, x⟫ = re⟪V x, x⟫ + s·‖x‖² (the cross term re⟪s·x, x⟫ becomes s·‖x‖² because s is real — RCLike.conj_ofReal passes it through the conjugate-linear slot, and inner_self_eq_norm_sq turns ⟪x,x⟫ into ‖x‖²). shift_eigen: the operator V + s·I acts on each eigenvector e i with the shifted eigenvalue lam i + s. Together they let U ± ‖T−U‖·I reuse U's eigenbasis with eigenvalues ν ± ‖T−U‖, which stay antitone (Antitone.add_const) — exactly the spectral presentation weyl_monotone demands.",
@@ -67,8 +97,11 @@
   {
     "id": "ann-stability-oq0301-statement",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
-    "range": { "startLine": 104, "endLine": 112 },
-    "type": "definition",
+    "range": {
+      "startLine": 104,
+      "endLine": 112
+    },
+    "type": "theorem",
     "title": "The Theorem Interface: Spectral Presentation as Input",
     "content": "The signature encodes the design choice that keeps the whole family variational. Rather than reconstructing spectra internally, `weyl_eigenvalue_stability` receives each operator together with its spectral data: T with an orthonormal eigenbasis `b`, an antitone (descending) eigenvalue enumeration `μ : Fin n → ℝ`, and the eigen-equations `hbT : ∀ i, T (b i) = (μ i) • b i`; U symmetrically with `c`, `ν`, `hcU`. `[FiniteDimensional 𝕜 E]` guarantees such an enumeration is a genuine finite descending list (so index `k : Fin n` and the max–min keystone underneath make sense), while the operators being continuous (`E →L[𝕜] E`) makes `‖T − U‖` the true operator norm. Because the presentation is taken as a hypothesis — always available for a symmetric operator by the spectral theorem — the file needs no self-adjointness machinery and reuses `weyl_monotone` verbatim; the conclusion `|μ k − ν k| ≤ ‖T − U‖` is the pointwise Lipschitz bound for each fixed coordinate `k`.",
     "mathContext": "$$T(b_i)=\\mu_i\\,b_i,\\ \\ U(c_i)=\\nu_i\\,c_i,\\quad \\mu,\\nu\\ \\text{antitone};\\qquad \\forall k,\\ |\\mu_k-\\nu_k|\\le\\|T-U\\|.$$",
@@ -89,7 +122,10 @@
   {
     "id": "ann-stability-oq0301-sandwich",
     "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
-    "range": { "startLine": 113, "endLine": 156 },
+    "range": {
+      "startLine": 113,
+      "endLine": 156
+    },
     "type": "insight",
     "title": "The Loewner Sandwich Lipschitz Bound",
     "content": "weyl_eigenvalue_stability is the classical Weyl perturbation theorem |μ(k) − ν(k)| ≤ ‖T − U‖ — eigenvalues are 1-Lipschitz in the operator norm. The proof needs no new spectral theory: with δ = ‖T − U‖, the Rayleigh bound gives the two Loewner inequalities U − δ·I ⪯ T ⪯ U + δ·I. Feeding T ⪯ U + δ·I into the parent's weyl_monotone (with the shifted operator's eigenvalues ν + δ) yields μ(k) ≤ ν(k) + δ; feeding U − δ·I ⪯ T (using ‖U − T‖ = ‖T − U‖ via norm_sub_rev) yields ν(k) − δ ≤ μ(k). The two one-sided bounds combine through abs_le into |μ(k) − ν(k)| ≤ δ. This is the structural point: the qualitative monotonicity of the parent already contains the quantitative stability bound — bracket and apply twice.",
