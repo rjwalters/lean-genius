@@ -16,7 +16,9 @@
   "knownResults": {
     "proven": [
       "sublevelSup: the supremum of sublevel-set measures over admissible monic polynomials, introduced as a Lean object (⨆ over MonicRealRootedIn01 f of sublevelMeasure f).",
-      "le_sublevelSup: 2√2 ≤ sublevelSup — the machine-checkable HALF of the Erdős–Herzog–Piranian (1958) / Tao (2025) result sublevelSup = 2√2. The extremal quadratic x²−1 attains 2√2, so the supremum is at least 2√2 (via le_iSup_of_le with the quadratic witness). The matching upper bound needs logarithmic potential theory beyond Mathlib and is not attempted."
+      "le_sublevelSup: 2√2 ≤ sublevelSup — the machine-checkable HALF of the Erdős–Herzog–Piranian (1958) / Tao (2025) result sublevelSup = 2√2. The extremal quadratic x²−1 attains 2√2, so the supremum is at least 2√2 (via le_iSup_of_le with the quadratic witness). The matching upper bound needs logarithmic potential theory beyond Mathlib and is not attempted.",
+      "sublevelInf: the infimum of sublevel-set measures over admissible monic polynomials, introduced as a Lean object (⨅ over MonicRealRootedIn01 f of sublevelMeasure f) — the companion open quantity (2^(4/3)−1 ≤ inf ≤ 1.835).",
+      "sublevelInf_le_two: sublevelInf ≤ 2 — a genuine machine-checked upper bound on the (open) infimum, via a second exact witness, the linear polynomial X (admissible; sublevel set (−1,1) of measure exactly 2; iInf_le_of_le). Not claimed tight: the true infimum is ≤ 1.835 < 2, whose witness needs logarithmic potential theory beyond Mathlib."
     ],
     "open": [],
     "goal": ""
@@ -25,23 +27,26 @@
     "phase": "COMPLETED",
     "since": "2026-06-22T00:00:00-07:00",
     "iteration": 1,
-    "focus": "Formalized the extremal quadratic and its sublevel-set measure 2√2.",
+    "focus": "Added the infimum side: the sublevelInf object and a second exact witness (linear X, measure 2) bounding sublevelInf ≤ 2.",
     "blockers": [],
-    "nextAction": "None — complete. The full supremum bound over all admissible f needs logarithmic potential theory beyond Mathlib (not attempted).",
+    "nextAction": "The two provable directions (2√2 ≤ sublevelSup, sublevelInf ≤ 2) are done. Tightening sublevelInf ≤ 2 toward the true ≤ 1.835 needs the polynomial (x+1)(x−1)^m and logarithmic potential theory beyond Mathlib.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE. First theorems for Erdős #1038 (the gallery file Erdos1038Problem is a stub: definitions only, all 'theorems' commented as prose). Formalizes the concrete extremal computation: the quadratic q = X²−1 is admissible (monic, roots ±1 ∈ [-1,1]), its sublevel set {x : |x²−1| < 1} = Ioo(-√2,√2) \\ {0}, and its Lebesgue measure is exactly 2√2 — the supremum value (Erdős–Herzog–Piranian 1958, Tao 2025). Erdos1038WIP01.lean, 1 def-eval + 4 theorems, 0 axioms, 0 sorries, no native_decide. The full supremum bound over all f needs logarithmic potential theory (not attempted).",
+    "progressSummary": "COMPLETE. First theorems for Erdős #1038 (the gallery file Erdos1038Problem is a stub: definitions only, all 'theorems' commented as prose). Formalizes the concrete extremal computation: the quadratic q = X²−1 is admissible (monic, roots ±1 ∈ [-1,1]), its sublevel set {x : |x²−1| < 1} = Ioo(-√2,√2) \\ {0}, and its Lebesgue measure is exactly 2√2 — the supremum value (Erdős–Herzog–Piranian 1958, Tao 2025). Erdos1038WIP01.lean, 6 defs + 9 theorems (172 lines), 0 axioms, 0 sorries, no native_decide. Now covers BOTH extremal quantities: sublevelSup (2√2 ≤ sup, quadratic witness) and sublevelInf (inf ≤ 2, linear witness). The full supremum bound over all f, and the tight infimum, need logarithmic potential theory (not attempted).",
     "builtItems": [
       "Erdos1038WIP01.lean: q := X²−1, eval_q (simp), 4 theorems, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries. Self-contained re-decl of MonicRealRootedIn01/sublevelSet/sublevelMeasure (stub-independent).",
       "quadratic_admissible: q is monic (monic_X_pow_sub_C 1 (n:=2)) with roots in [-1,1] (mem_roots' → r²−1=0 → nlinarith).",
       "mem_sublevelSet_quadratic: x ∈ sublevelSet q ↔ 0 < x² ∧ x² < 2 (elementary, abs_lt + linarith).",
       "sublevelSet_quadratic: = Ioo(-√2,√2) \\ {0} (√2 bounds via Real.sq_sqrt + Real.sqrt_pos + nlinarith with sq_nonneg(x±√2)).",
-      "sublevelMeasure_quadratic: = ENNReal.ofReal (2√2) (measure_diff_null removes {0}, Real.volume_Ioo, ring for √2−(−√2)=2√2)."
+      "sublevelMeasure_quadratic: = ENNReal.ofReal (2√2) (measure_diff_null removes {0}, Real.volume_Ioo, ring for √2−(−√2)=2√2).",
+      "sublevelSup / le_sublevelSup: sublevelSup := ⨆ over admissible f of sublevelMeasure f; 2√2 ≤ sublevelSup via le_iSup_of_le q (le_iSup_of_le quadratic_admissible sublevelMeasure_quadratic.ge).",
+      "linear_admissible / sublevelSet_linear / sublevelMeasure_linear: X is monic (monic_X) with root 0 ∈ [-1,1]; sublevelSet X = Ioo(-1,1) (abs_lt); measure = ENNReal.ofReal 2.",
+      "sublevelInf / sublevelInf_le_two: sublevelInf := ⨅ over admissible f of sublevelMeasure f; sublevelInf ≤ 2 via iInf_le_of_le X (iInf_le_of_le linear_admissible sublevelMeasure_linear.le)."
     ],
     "insights": [
       "x²−1 is the explicit extremizer for the Erdős #1038 supremum: |x²−1| < 1 ⟺ 0 < x² < 2 ⟺ x ∈ (-√2,√2)\\{0}, measure 2√2.",
@@ -53,7 +58,7 @@
       "The supremum BOUND (every admissible f has sublevel measure ≤ 2√2) requires logarithmic potential theory (Tao 2025) not in Mathlib — only the extremal witness is formalized here."
     ],
     "nextSteps": [
-      "The infimum side: the polynomial (x+1)(x−1)^m for m ≥ 3 witnesses inf < 2; formalize its sublevel measure as an explicit upper bound on the (open) infimum.",
+      "Tighten sublevelInf ≤ 2 toward the true ≤ 1.835: the polynomial (x+1)(x−1)^m for m ≥ 3 witnesses inf < 2; formalize its sublevel measure as a sharper upper bound on the (open) infimum.",
       "Products: MonicRealRootedIn01 is preserved under multiplication (monic × monic, roots union), giving a closure structure on admissible polynomials.",
       "The general upper bound 2√2 over all admissible f (the hard analytic core, Tao's logarithmic-potential argument)."
     ]
