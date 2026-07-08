@@ -332,6 +332,58 @@ theorem franklFurediOdd_card_le_T (n r : ℕ) : (franklFurediOdd n r).card ≤ T
     exact ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _), franklFurediOdd_avoids_r n r⟩
   exact Finset.le_sup hmem
 
+/--
+**Two members of `franklFurediEven` avoid `r`-intersection (`n + r` even, `n ≥ 1`).**
+The even-parity companion of `franklFurediOdd_avoids_r`. Here the "large" condition
+is on the *centred* set `A₀ = A \ {0}` (`|A₀| ≥ (n+r)/2`), living in the
+`(n−1)`-element ground set `{1,…,n−1}`. For two large sets, inclusion–exclusion on
+the centred sets gives
+`|A ∩ B| ≥ |A₀ ∩ B₀| ≥ 2·⌊(n+r)/2⌋ − (n−1) = (n+r) − (n−1) = r+1 > r`,
+using `n + r` even so `2·⌊(n+r)/2⌋ = n+r`; if either set is small (`|·| < r`) then
+`|A ∩ B| ≤ min(|A|,|B|) < r`. In every case `|A ∩ B| ≠ r`. -/
+theorem franklFurediEven_avoids_r (n r : ℕ) (hn : 1 ≤ n) (hpar : (n + r) % 2 = 0) :
+    avoidsRIntersection r (franklFurediEven n r) := by
+  intro A B hA hB
+  rw [franklFurediEven, Finset.mem_filter, Finset.mem_powerset] at hA hB
+  obtain ⟨hAsub, hAcond⟩ := hA
+  obtain ⟨hBsub, hBcond⟩ := hB
+  set A0 := A.filter (· ≠ 0) with hA0
+  set B0 := B.filter (· ≠ 0) with hB0
+  have hA0subA : A0 ⊆ A := Finset.filter_subset _ _
+  have hB0subB : B0 ⊆ B := Finset.filter_subset _ _
+  -- The centred intersection sits inside the actual intersection.
+  have hcard_int : (A0 ∩ B0).card ≤ (A ∩ B).card :=
+    Finset.card_le_card (Finset.inter_subset_inter hA0subA hB0subB)
+  -- The centred sets live in `{1,…,n−1}`, which has `n−1` elements.
+  have hground : ((Finset.range n).filter (· ≠ 0)).card = n - 1 := by
+    rw [Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_range.mpr hn),
+      Finset.card_range]
+  have hA0sub : A0 ⊆ (Finset.range n).filter (· ≠ 0) :=
+    Finset.filter_subset_filter (· ≠ 0) hAsub
+  have hB0sub : B0 ⊆ (Finset.range n).filter (· ≠ 0) :=
+    Finset.filter_subset_filter (· ≠ 0) hBsub
+  have hunion0 : (A0 ∪ B0).card ≤ n - 1 := by
+    calc (A0 ∪ B0).card ≤ ((Finset.range n).filter (· ≠ 0)).card :=
+          Finset.card_le_card (Finset.union_subset hA0sub hB0sub)
+      _ = n - 1 := hground
+  have hie0 := Finset.card_union_add_card_inter A0 B0
+  have hiA : (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+  have hiB : (A ∩ B).card ≤ B.card := Finset.card_le_card Finset.inter_subset_right
+  rcases hAcond with hAlarge | hAsmall <;> rcases hBcond with hBlarge | hBsmall <;> omega
+
+/--
+**Lower bound on `T(n,r)` from the `franklFurediEven` construction (`n + r` even).**
+The even-parity analogue of `franklFurediOdd_card_le_T`: `franklFurediEven n r` is a
+valid `r`-avoiding subfamily of `2^{[n]}`, so its cardinality bounds `T(n,r)` below. -/
+theorem franklFurediEven_card_le_T (n r : ℕ) (hn : 1 ≤ n) (hpar : (n + r) % 2 = 0) :
+    (franklFurediEven n r).card ≤ T n r := by
+  have hmem : franklFurediEven n r ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _),
+      franklFurediEven_avoids_r n r hn hpar⟩
+  exact Finset.le_sup hmem
+
 /-
 ## Part V: The Main Question - Exponential Bound
 
