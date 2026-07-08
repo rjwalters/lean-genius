@@ -1,0 +1,62 @@
+{
+  "slug": "erdos-1064-oq-03",
+  "title": "Erdős #1064 OQ-03 — Higher iterate: φ(n) vs φ(n − φ(n − φ(n)))",
+  "phase": "ACT",
+  "status": "in-progress",
+  "started": "2026-07-08T00:00:00.000Z",
+  "lastUpdate": "2026-07-08T00:00:00.000Z",
+  "path": "full",
+  "parentId": "erdos-1064",
+  "tier": "B",
+  "significance": 4,
+  "tractability": 6,
+  "tags": [
+    "erdos",
+    "number-theory",
+    "totient-function",
+    "density",
+    "arithmetic-functions"
+  ],
+  "problemStatement": {
+    "plain": "Erdős #1064 (parent) asks whether φ(n) > φ(n − φ(n)) for almost all n (yes, density 1, Luca–Pomerance), while the reverse holds infinitely often. OQ-03 extends this to the higher iterate D(n) = n − φ(n − φ(n)): how does φ(n) compare with φ(D(n)) = φ(n − φ(n − φ(n)))?",
+    "formal": "Let D(n) = n − φ(n − φ(n)). Study the sign of φ(n) − φ(D(n)). Does φ(n) > φ(D(n)) hold for almost all n, and does φ(n) < φ(D(n)) hold infinitely often?"
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerTotientOQ04OQ03.lean",
+      "filename": "EulerTotientOQ04OQ03.lean",
+      "lineCount": 111,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04OQ03.lean"
+    }
+  ],
+  "knowledge": {
+    "progressSummary": "PROGRESS: established the forward inequality φ(n) > φ(D(n)) on the entire infinite family of odd primes (via the collapse D(p) = p − 1), pinned the sharp boundary at p = 2 (equality), and exhibited a concrete reversal at n = 39 (D(39) = 31 prime). Whether the reverse holds infinitely often, and the almost-all direction, remain OPEN. All results ofReduceBool-free (0 axioms, 0 sorries).",
+    "builtItems": [
+      "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
+      "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
+      "totient_dblIter_lt_of_prime — forward inequality on odd primes: for prime p ≥ 3, φ(D(p)) = φ(p−1) < p−1 = φ(p). An infinite family on which the expected direction holds; reduces to Nat.totient_lt.",
+      "totient_dblIter_eq_two — sharp boundary: at p = 2 the inequality degenerates to equality (D(2)=1, φ(D(2))=φ(2)=1).",
+      "totient_39 / totient_15 / totient_31 — concrete totient values via factorisation (Nat.totient_mul on coprime prime factors), avoiding kernel gcd-reduction in decide.",
+      "dblIter_39 — D(39) = 31: the double iterate lands on a prime.",
+      "reverse_at_39 — REVERSAL witness: φ(39) = 24 < 30 = φ(31) = φ(D(39)); the smallest n where φ(n) < φ(D(n)).",
+      "forward_not_universal — packaging theorem: (∀ prime p≥3, φ(D(p))<φ(p)) ∧ (∃ n, φ(n)<φ(D(n))); shows both directions occur for the higher iterate, mirroring the single-step Erdős 1064."
+    ],
+    "insights": [
+      "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
+      "The reversal φ(n) < φ(D(n)) empirically clusters where D(n) is itself prime: the smallest cases n = 39,42,55,84,85,93,110,115,133,155,165,168 in [2,200) have D(n) ∈ {31,34,47,68,73,73,86,97,113,131,101,136}, many of them prime, making φ(D(n)) = D(n) − 1 large. This is the higher-iterate echo of the single-step reversal phenomenon.",
+      "Equality φ(n) = φ(D(n)) is also common (35 of the n in [2,200), including all n where D(n) shares the totient value), so the higher-iterate comparison is genuinely three-way (>, =, <) rather than a clean dichotomy — a structural difference worth noting versus the single-step statement.",
+      "Computing concrete totient values through Nat.totient_mul on coprime prime factors is the robust route in Lean: plain `decide` on Nat.totient stalls because Nat.gcd is well-founded recursion that does not reduce well in the kernel; factorisation sidesteps this and keeps the file ofReduceBool-free."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Attempt the reversal-infinitude direction via primes q with q+φ(q−1)-shaped preimages: characterise n with D(n) prime, since those are the reversal candidates; a Dirichlet/linnik-type input would be needed and is likely the OPEN crux.",
+      "Prove a density-1 forward statement φ(n) > φ(D(n)) for almost all n by transporting the Luca–Pomerance single-step argument through one extra cototient step (assess whether the extra step preserves the density-1 set).",
+      "Formalise the three-way classification on a finite window (n ≤ N) as a decidable certificate to complement the qualitative theorems, and search for the second/third reversal families beyond 'D(n) prime'."
+    ]
+  }
+}
