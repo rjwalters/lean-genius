@@ -45,11 +45,24 @@ theorem buDimFormula_le (n d : ℕ) : buDimFormula n d ≤ buDim n d := by
   have hmem := Nat.mem_primeFactors.mp hp
   exact buDim_mono p n d hmem.2.1
 
--- ## Upper Bound (Open Conjecture, Axiomatized)
+-- ## Upper Bound
 
-/-- **OPEN CONJECTURE**: buDim(n, d) ≤ max_{p|n, prime} buDim(p, d).
-    This asserts that composite cyclic groups add no extra topological
-    constraint beyond their prime subgroups.
+/-- **Prime case (proved).** For prime `n` the upper bound is immediate:
+    `primeFactors n = {n}`, so `buDimFormula n d = buDim n d` by definition and
+    the bound is reflexivity. No topological input is needed — the "conjecture"
+    is vacuous here because the formula reduces to `buDim` itself. -/
+theorem buDim_le_formula_prime {n : ℕ} (hn : n.Prime) (d : ℕ) :
+    buDim n d ≤ buDimFormula n d := by
+  have h : buDimFormula n d = buDim n d := by
+    unfold buDimFormula
+    rw [hn.primeFactors, Finset.sup_singleton]
+  exact h.symm.le
+
+/-- **OPEN CONJECTURE (composite case only).** For composite `n`,
+    `buDim(n, d) ≤ max_{p|n, prime} buDim(p, d)` asserts that a composite cyclic
+    group adds no extra topological constraint beyond its prime subgroups. This
+    is the genuinely open content; the prime case is now a theorem
+    (`buDim_le_formula_prime`), so only composite `n` remains axiomatized.
 
     Evidence (not in Mathlib 4.26):
     - Holds for n = p^k via Smith theory: only prime p matters
@@ -57,7 +70,16 @@ theorem buDimFormula_le (n d : ℕ) : buDimFormula n d ≤ buDim n d := by
     - Open for arbitrary representations and general composite n
 
     References: Fadell-Husseini index theory (1988), Smith theory -/
-axiom buDim_le_formula (n d : ℕ) (hn : 2 ≤ n) : buDim n d ≤ buDimFormula n d
+axiom buDim_le_formula_composite (n d : ℕ) (hn : 2 ≤ n) (hcomp : ¬ n.Prime) :
+    buDim n d ≤ buDimFormula n d
+
+/-- Upper bound for all `n ≥ 2`, dispatched into the proved prime case and the
+    axiomatized composite case. Same statement as before; the assumption is now
+    strictly weaker (primes are discharged, not assumed). -/
+theorem buDim_le_formula (n d : ℕ) (hn : 2 ≤ n) : buDim n d ≤ buDimFormula n d := by
+  by_cases hp : n.Prime
+  · exact buDim_le_formula_prime hp d
+  · exact buDim_le_formula_composite n d hn hp
 
 -- ## The Formula Theorem
 
