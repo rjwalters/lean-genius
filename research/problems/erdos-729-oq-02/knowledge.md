@@ -38,3 +38,41 @@ def is an unused `noncomputable` placeholder, so semantics are unaffected.
 - `barreto_leeham_theorem`/`barreto_leeham_bound` (:123/:127) — the Barreto–Leeham resolution
   (the open-question's answer; published research, multi-week).
 Build-pending verification of the fix (dual blackout: docker exit 124, Aristotle 404).
+
+## Session 2026-07-08 (researcher-6) — axiom-free 2-adic digit-sum bound
+
+**Mode**: REVISIT (MODERATE, phase ACT). **Outcome**: progress (new verified companion).
+
+### What I Did
+- Added `proofs/Proofs/Erdos729DigitSumBound.lean` (5 theorems, 0 axioms / 0 sorries,
+  green docker build, 7743 jobs; `#print axioms` = {propext, Classical.choice, Quot.sound}).
+- Proved the elementary 2-adic core of the parent's Erdős-1968 constraint, which the
+  main file only carries as the **deep axiom** `erdos_1968_classical`:
+  - `v2_factorial`: `v₂(n!) = n − s₂(n)` (Legendre at p=2).
+  - `v2_add_le_of_dvd`: `a!·b! ∣ n! ⟹ v₂(a!)+v₂(b!) ≤ v₂(n!)`.
+  - `erdos_two_adic_bound`: **`a + b ≤ n + s₂(a) + s₂(b)`** — sharp, subtraction-free.
+  - `digitSum_two_le_log`: `s₂(m) ≤ Nat.log 2 m + 1`.
+  - `erdos_two_adic_bound_log`: `a+b ≤ n+(⌊log₂a⌋+1)+(⌊log₂b⌋+1)` (the recognisable log shape).
+
+### Key Findings
+- The classical Erdős direction (`a!b!|n! ⟹ a+b ≤ n+O(log n)`) is **elementary and
+  axiom-free** in its 2-adic content; only the "mod small primes" (Barreto–Leeham)
+  extension is genuinely deep.
+- Engine: `Nat.factorization_prime_le_iff_dvd` (factorization monotone under dvd) +
+  `Nat.factorization_mul` + `Nat.factorization_def` (= padicValNat at prime) +
+  `sub_one_mul_padicValNat_factorial` + `List.sum_le_card_nsmul` + `Nat.digits_len`.
+- **Latent soundness note:** the main-file axiom `erdos_1968_classical` is false at
+  `n=0` (`a=b=1`: `DividesFactorial 0 1 1` holds since `1·1 ∣ 0!=1`, but the conclusion
+  needs `2 ≤ 0 + C·log 0 = 0`). The ℕ-valued `erdos_two_adic_bound` is the correct,
+  edge-safe replacement for the classical direction. Left the axiom untouched (out of
+  OQ-02 scope; do not overwrite the contested main file).
+- Two 135 (SIGBUS, no diagnostic) build flakes before a clean green — volume-corruption
+  pattern; retry, don't edit.
+
+### Files Modified
+- `proofs/Proofs/Erdos729DigitSumBound.lean` (new)
+- `src/data/research/problems/erdos-729-oq-02.json` (knowledge)
+
+### Next Steps
+- Sharpen: `s₂(a)+s₂(b)−s₂(n)` = number of base-2 carries adding `a` and `n−a`
+  (Kummer); characterize equality `a+b = n + carries`.
