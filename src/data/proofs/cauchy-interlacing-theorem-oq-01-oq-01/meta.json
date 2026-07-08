@@ -75,7 +75,8 @@
       "The orthogonal-projection adjoint identity is the entire content of 'compression preserves inner products with vectors that already live in the subspace' — the projection drops out and the compression's form is just the ambient form restricted",
       "Reading a matrix entry as the inner product ⟪e_a, A e_b⟫ of standard basis vectors turns the abstract operator identity into a one-line column-extraction computation",
       "The coordinate hyperplane is the span of all standard basis vectors except one; restricting an orthonormal basis along the injection j.succAbove keeps it orthonormal, so the hyperplane is automatically n-dimensional",
-      "This identification is exactly the bridge from the gallery's abstract compression-interlacing to the textbook statement that a principal submatrix's eigenvalues interlace the parent matrix's"
+      "This identification is exactly the bridge from the gallery's abstract compression-interlacing to the textbook statement that a principal submatrix's eigenvalues interlace the parent matrix's",
+      "Interlacing needs two facts the identification supplies together: the principal submatrix inherits Hermitian-ness (isHermitian_principalSubmatrix), so its eigenvalues are real and orderable, and the coordinate hyperplane is genuinely codimension one (finrank_coordinateHyperplane), so n eigenvalues meet n+1 — deleting one row/column is precisely compressing to a codimension-one subspace, which is why exactly one interlacing inequality appears at each end"
     ],
     "prerequisites": [
       "Hermitian matrices and their real eigenvalues",
@@ -85,6 +86,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: compression, principal submatrices, and interlacing",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Imports Mathlib and opens the namespace. The module docstring states the goal: identify the orthogonal compression of a Hermitian operator to a coordinate hyperplane with the principal submatrix obtained by deleting one row and column, the linear-algebra bridge underlying Cauchy's interlacing theorem (the n eigenvalues of an n×n principal submatrix interlace the n+1 eigenvalues of a Hermitian (n+1)×(n+1) matrix).",
+      "mathContext": "For Hermitian $A \\in \\mathbb{C}^{(n+1)\\times(n+1)}$ with eigenvalues $\\lambda_1 \\le \\dots \\le \\lambda_{n+1}$ and a principal submatrix $B$ with eigenvalues $\\mu_1 \\le \\dots \\le \\mu_n$, interlacing reads $\\lambda_i \\le \\mu_i \\le \\lambda_{i+1}$."
+    },
     {
       "id": "compression",
       "title": "The Compression and Its Inner Product",
@@ -105,9 +114,17 @@
       "id": "identification",
       "title": "Compression Equals Principal Submatrix",
       "startLine": 101,
+      "endLine": 128,
+      "summary": "hyperplaneBasis picks out the natural basis of the coordinate hyperplane, and compress_inner_eq_principalSubmatrix shows the compression's entries on that basis are exactly A.submatrix j.succAbove j.succAbove — deleting row and column j. isHermitian_principalSubmatrix records that this principal submatrix inherits Hermitian-ness from A, so its eigenvalues are real and interlacing is meaningful.",
+      "mathContext": "$\\langle e_{j\\triangleleft i'}, \\operatorname{compress}_H A\\, e_{j\\triangleleft i}\\rangle = A_{j\\triangleleft i',\\, j\\triangleleft i}$, and $A$ Hermitian $\\Rightarrow$ the submatrix is Hermitian."
+    },
+    {
+      "id": "dimension",
+      "title": "The Coordinate Hyperplane Has Dimension n",
+      "startLine": 129,
       "endLine": 145,
-      "summary": "The compression to the coordinate hyperplane has, on its natural basis, the entries of A.submatrix j.succAbove j.succAbove; the hyperplane is n-dimensional and the submatrix is Hermitian.",
-      "mathContext": "$\\langle e_{j\\triangleleft i'}, \\operatorname{compress}_H A\\, e_{j\\triangleleft i}\\rangle = A_{j\\triangleleft i',\\, j\\triangleleft i}$."
+      "summary": "finrank_coordinateHyperplane confirms the coordinate hyperplane is a genuine codimension-one subspace of the (n+1)-dimensional ambient space: it has dimension exactly n. This is what makes the eigenvalue count line up — an n×n principal submatrix (n eigenvalues) sitting inside an (n+1)×(n+1) Hermitian matrix (n+1 eigenvalues) — the shape required for Cauchy interlacing.",
+      "mathContext": "$\\dim H = n$, one less than $\\dim (\\text{EuclideanSpace }\\mathbb{K}\\,(\\text{Fin }(n+1))) = n+1$."
     }
   ],
   "references": [
