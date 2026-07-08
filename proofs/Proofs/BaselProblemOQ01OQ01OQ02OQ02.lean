@@ -969,4 +969,65 @@ theorem pow_factorization_mul_choose_le {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n)
 
 end Part12
 
+section Part13
+/-! ## Part 13 (Session 21 ACT) — `mul_choose_dvd_lcmRange` (general `m ≥ 4`)
+
+Closes the general `m · C(n, m) ∣ lcmRange n` divisibility, subsuming the
+piecemeal `m = 1, 2, 3` cases (Parts 6–11 `mul_choose_dvd_lcmRange_one/
+two/three`). The proof mirrors `choose_dvd_lcmRange` (Part 11): decompose
+`m · C(n, m)` into its prime-power factorization via
+`Nat.factorization_prod_pow_eq_self`, then apply
+`Finset.prod_dvd_of_isRelPrime`. Pairwise coprimality of the distinct
+prime-power factors follows from `Nat.coprime_pow_primes`; each factor
+`p ^ v_p(m·C(n,m))` divides `lcmRange n` because it is `≤ n` — the sharp
+`pow_factorization_mul_choose_le` bound from Part 12 — and positive
+(prime base), so the local `dvd_lcmRange` applies.
+
+Unlike the `choose_dvd_lcmRange` proof (which reuses the specialized
+Mathlib `Nat.prod_pow_factorization_choose` product-over-range identity),
+there is no `m · C(n, m)`-specific product lemma, so the decomposition is
+taken over the actual prime-support via `factorization_prod_pow_eq_self`.
+This makes every factor's base a genuine prime factor, so primality is
+immediate from membership (no `factorization ≠ 0 ⇒ prime` contrapositive
+is needed).
+
+Bearers:
+* `Nat.factorization_prod_pow_eq_self` — Mathlib/Data/Nat/Factorization/Defs.lean:97
+* `Finset.prod_dvd_of_isRelPrime` — Mathlib/RingTheory/Coprime/Lemmas.lean:252
+* `Nat.coprime_pow_primes` — Mathlib/Data/Nat/Prime/Basic.lean:201
+* `pow_factorization_mul_choose_le` — Part 12 (this file)
+-/
+
+/-- **General `m · C(n, m)` divisibility**: for `0 < m ≤ n`,
+    `m * C(n, m) ∣ lcmRange n`.
+
+    Subsumes the piecemeal `m = 1, 2, 3` cases
+    (`mul_choose_dvd_lcmRange_one/two/three`) with a uniform
+    prime-power-decomposition argument, closing the `m ≥ 4` gap left
+    open by the Session 6–10 parity case analysis. -/
+theorem mul_choose_dvd_lcmRange {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) :
+    m * Nat.choose n m ∣ lcmRange n := by
+  have hC_pos : 0 < Nat.choose n m := Nat.choose_pos hmn
+  have hN_pos : 0 < m * Nat.choose n m := Nat.mul_pos hm hC_pos
+  -- Decompose `N := m · C(n, m)` into its prime-power factorization.
+  conv_lhs => rw [← Nat.factorization_prod_pow_eq_self hN_pos.ne']
+  rw [Finsupp.prod]
+  apply Finset.prod_dvd_of_isRelPrime
+  · -- Sub-goal 1: pairwise `IsRelPrime` on the prime-power factors.
+    intro p hp q hq hne
+    simp only [Function.onFun]
+    have hpp : p.Prime :=
+      Nat.prime_of_mem_primeFactors (by rwa [Finset.mem_coe] at hp)
+    have hqq : q.Prime :=
+      Nat.prime_of_mem_primeFactors (by rwa [Finset.mem_coe] at hq)
+    exact Nat.coprime_iff_isRelPrime.mp
+      (Nat.coprime_pow_primes _ _ hpp hqq hne)
+  · -- Sub-goal 2: each prime-power factor divides `lcmRange n`.
+    intro p hp
+    have hpp : p.Prime := Nat.prime_of_mem_primeFactors hp
+    exact dvd_lcmRange (pow_pos hpp.pos _)
+      (pow_factorization_mul_choose_le hm hmn)
+
+end Part13
+
 end BaselProblemOQ01OQ01OQ02OQ02
