@@ -165,6 +165,16 @@
       "targetId": "cauchy-interlacing-theorem",
       "relationship": "related",
       "description": "Root of the Cauchy interlacing family. The Schur–Horn theorem is the classical companion of interlacing in the theory of eigenvalue inequalities and majorization for Hermitian operators."
+    },
+    {
+      "targetId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The same majorization machinery in a combinatorial setting: that entry proves Schur-convexity of the two-draw collision probability via the Hardy–Littlewood–Pólya form of majorization (p ≺ q iff p = Dq for a doubly stochastic D) — exactly the doubly-stochastic majorization diag(T) ≺ spec(T) established here as the forward Schur–Horn direction."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Muirhead's inequality is the archetypal application of the majorization order this entry produces: its atomic bunching (Robin-Hood) step is a single majorizing transfer, and Muirhead's symmetric-mean inequality follows by the same Karamata/convexity argument used here to turn diag(T) ≺ spec(T) into scalar inequalities."
     }
   ],
   "sorries": 0
