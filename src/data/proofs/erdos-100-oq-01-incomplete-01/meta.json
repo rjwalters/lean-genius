@@ -120,6 +120,11 @@
       "targetId": "erdos-100",
       "relationship": "foundational",
       "description": "The base Erdős #100 framework (integer-distance planar point sets and their diameter). This entry supplies the combinatorial inequality behind the current best diameter lower bound."
+    },
+    {
+      "targetId": "erdos-89",
+      "relationship": "related",
+      "description": "Erdős #89, the distinct-distances problem (an n-point planar set determines ≫ n/√(log n) distinct distances, resolved up to log by Guth–Katz). It is the companion this bridge feeds: distinct_distances_le_diam (#distinct ≤ diam) converts #89's distinct-distances lower bound into the current best diameter lower bound for #100. The link #100 ↔ #89 documented throughout this entry is exactly the erdos-89 result."
     }
   ],
   "references": [
