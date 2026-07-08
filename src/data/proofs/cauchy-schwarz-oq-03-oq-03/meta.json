@@ -89,6 +89,14 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Proof Outline",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "The module docstring frames the L^p interpolation (log-convexity) inequality ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) for 1/r = θ/p + (1-θ)/q, θ ∈ (0,1), as the step beyond the parent's Hölder inequality (cauchy-schwarz-oq-03), and explains the single-Hölder proof: build the conjugate pair a = p/(rθ), b = q/(r(1-θ)) (so 1/a + 1/b = 1) from Real.HolderConjugate, apply NNReal.inner_le_Lp_mul_Lq to the split f_i^r = f_i^(rθ)·f_i^(r(1-θ)), then raise to 1/r. Imports Mathlib, opens Finset/NNReal, and enters the CauchySchwarzOQ03OQ03 namespace.",
+      "mathContext": "Cauchy–Schwarz/Hölder is the θ = 1/2 midpoint face of the log-convexity of $t \\mapsto \\log\\|f\\|_{1/t}$."
+    },
+    {
       "id": "lp-interpolation",
       "title": "L^p Interpolation Inequality",
       "summary": "The main result: ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) for 1/r = θ/p + (1-θ)/q, θ ∈ (0,1). Built from Hölder with the conjugate pair a = p/(rθ), b = q/(r(1-θ)) applied to the split f_i^r = f_i^(rθ)·f_i^(r(1-θ)).",
