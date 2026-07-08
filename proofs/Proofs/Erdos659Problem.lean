@@ -285,6 +285,26 @@ theorem two_representable : 2 ∈ representable_x2_2y2 := ⟨0, 1, by norm_num�
 /-- `3 = 1² + 2·1²` is representable (`3 ≡ 3 (mod 8)` splits in `ℤ[√-2]`). -/
 theorem three_representable : 3 ∈ representable_x2_2y2 := ⟨1, 1, by norm_num⟩
 
+/-- **Every perfect square is representable** (`n² = n² + 2·0²`, the norm of a
+    rational integer). -/
+theorem sq_representable (n : ℕ) : n ^ 2 ∈ representable_x2_2y2 :=
+  ⟨(n : ℤ), 0, by push_cast; ring⟩
+
+/-- **Powers of a representable integer are representable.**  Immediate induction
+    from `representable_mul` and `one_representable` (`m⁰ = 1`).  This makes precise
+    the claim in the `representable_mul` docstring that "every power of `2` is
+    representable". -/
+theorem representable_pow {m : ℕ} (hm : m ∈ representable_x2_2y2) (k : ℕ) :
+    m ^ k ∈ representable_x2_2y2 := by
+  induction k with
+  | zero => simpa using one_representable
+  | succ k ih => rw [pow_succ]; exact representable_mul ih hm
+
+/-- **Every power of `2` is representable** (`2ᵏ = Norm((√-2)ᵏ)`), the special case
+    of `representable_pow` promised by the `representable_mul` docstring. -/
+theorem two_pow_representable (k : ℕ) : 2 ^ k ∈ representable_x2_2y2 :=
+  representable_pow two_representable k
+
 /-- The 4-point property follows from avoiding all six two-distance configurations,
     **together with** the geometric lower bound that no 4-point subset collapses to
     fewer than two distinct distances.
