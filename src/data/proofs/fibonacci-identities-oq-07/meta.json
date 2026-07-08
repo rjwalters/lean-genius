@@ -154,5 +154,27 @@
     "path": "Proofs/FibonacciIdentitiesOQ07.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "fib_dvd_iff",
+      "type": "theorem",
+      "description": "Fibonacci divisibility characterisation (m ≥ 3): Fₘ ∣ Fₙ ↔ m ∣ n. The forward direction uses the gcd identity gcd(Fₘ, Fₙ) = F_{gcd(m,n)}; the reverse is the classical Fₘ ∣ F_{km}."
+    },
+    {
+      "name": "dvd_of_fib_dvd",
+      "type": "theorem",
+      "description": "Forward direction (m ≥ 3): Fₘ ∣ Fₙ ⟹ m ∣ n, via F_{gcd(m,n)} = gcd(Fₘ,Fₙ) = Fₘ forcing gcd(m,n) = m."
+    },
+    {
+      "name": "not_fib_dvd_of_not_dvd",
+      "type": "theorem",
+      "description": "Contrapositive convenience form (m ≥ 3): if m ∤ n then Fₘ ∤ Fₙ."
+    },
+    {
+      "name": "fib_dvd_iff_needs_three",
+      "type": "theorem",
+      "description": "Sharpness of the m ≥ 3 hypothesis: F₂ ∣ F₃ yet 2 ∤ 3 (F₂ = 1 divides everything), so the characterisation fails for m = 2 (and m = 1)."
+    }
+  ],
   "sorries": 0
 }
