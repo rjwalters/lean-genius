@@ -96,24 +96,32 @@
       "id": "header",
       "title": "Module Header, Setup, and the Per-Class Index Identity",
       "startLine": 1,
-      "endLine": 46,
-      "summary": "Module docstring explaining the assembly of the index form from Mathlib's cardinality-form class equation and the parent's per-class identity. Mathlib import, open MulAction Subgroup ConjAct, namespace, variable {G : Type*} [Group G], and the re-derived per-class bridge conjClass_card_eq_index_centralizer (lines 40-46): |class(g)| = [G : C_G(g)], proved by rewriting the class carrier as the ConjAct orbit and identifying the stabilizer with the centralizer (MulAction.index_stabilizer).",
+      "endLine": 36,
+      "summary": "Module docstring explaining the assembly of the index form from Mathlib's cardinality-form class equation (Group.nat_card_center_add_sum_card_noncenter_eq_card) and the parent's per-class identity, and its role as the arithmetic engine behind the p-group center corollary. Mathlib import, open MulAction Subgroup ConjAct, namespace, and variable {G : Type*} [Group G].",
       "mathContext": "$|G| = |Z(G)| + \\sum_i [G : C_G(g_i)]$."
+    },
+    {
+      "id": "per-class-index",
+      "title": "Per-Class Index Identity",
+      "startLine": 37,
+      "endLine": 46,
+      "summary": "conjClass_card_eq_index_centralizer: |class(g)| = [G : C_G(g)], re-derived from the parent file via orbit–stabilizer for the conjugation action (ConjAct.orbit_eq_carrier_conjClasses, ConjAct.stabilizer_eq_centralizer, MulAction.index_stabilizer). The pointwise identity that turns each class size into a centralizer index.",
+      "mathContext": "$|\\mathrm{class}(g)| = [G : C_G(g)]$."
     },
     {
       "id": "representatives",
       "title": "Class Representatives and the Pointwise Bridge",
       "startLine": 48,
-      "endLine": 68,
+      "endLine": 61,
       "summary": "classRep (chosen representative via ConjClasses.exists_rep) and mk_classRep (its defining simp lemma), then card_carrier_eq_index_centralizer: |x| = [G : C_G(classRep x)] for an arbitrary conjugacy class x, lifting the per-class identity through the chosen representative.",
       "mathContext": "$|x| = [G : C_G(\\mathrm{classRep}\\,x)]$."
     },
     {
       "id": "index-form",
       "title": "The Class Equation in Index Form",
-      "startLine": 70,
+      "startLine": 63,
       "endLine": 89,
-      "summary": "classEquation_centralizer_index_form rewrites Mathlib's summed class equation summand-by-summand (congr 1 then finsum_mem_congr) into |Z(G)| + Σ_{noncentral classes} [G : C_G(classRep x)] = |G|; sum_noncenter_index_eq_card_sub_center derives Σ [G : C_G(gᵢ)] = |G| − |Z(G)| by omega.",
+      "summary": "classEquation_centralizer_index_form rewrites Mathlib's summed class equation summand-by-summand (congr 1 then finsum_mem_congr) into |Z(G)| + Σ_{noncentral classes} [G : C_G(classRep x)] = |G|; sum_noncenter_index_eq_card_sub_center derives Σ [G : C_G(gᵢ)] = |G| − |Z(G)| by omega. Closes namespace ConjugacyClassEquationOQ01OQ01.",
       "mathContext": "$|Z(G)| + \\sum_{x} [G : C_G(g_x)] = |G|$."
     }
   ],
