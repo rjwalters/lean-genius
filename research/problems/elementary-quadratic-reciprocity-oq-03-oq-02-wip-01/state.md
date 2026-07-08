@@ -22,15 +22,22 @@ None for Target 1. Two refinements remain open (documented, not axiomatized):
    Kronecker symbol at even moduli (current def routes even moduli through
    `jacobiSym |n|`), then re-prove multiplicativity for that refined symbol.
 2. Generalized quadratic reciprocity for arbitrary fundamental discriminants
-   (Target 2) — needs the supplementary laws `(2/n)`, `(-1/n)` + Gauss sums.
+   (Target 2) — needs a Gauss-sum argument. **Its two supplementary-law
+   ingredients are now proved** (build-verified, 3058 jobs):
+   `kronecker_neg_one_odd` — `(-1/n) = 1` if `n≡1 mod 4`, `-1` if `n≡3 mod 4`;
+   `kronecker_two_odd` — `(2/n) = 1` if `n≡±1 mod 8`, `-1` if `n≡±3 mod 8`.
+   Both reduce to `kronecker_eq_jacobi` + `jacobiSym.at_neg_one`/`at_two` +
+   `ZMod.χ₄`/`χ₈` conditional forms. Only the Gauss-sum / reciprocity core remains.
 
 ## Next Action
 
-Optionally attempt refinement (1): redefine `kronecker` to use `kronecker2` for the
-2-adic part and re-establish `kronecker_mul_right` via `kronecker2` multiplicativity.
+Refinement (2) core: the generalized-reciprocity law itself (Gauss sums) — the
+supplementary laws are done. Or refinement (1): redefine `kronecker` to use
+`kronecker2` for the 2-adic part and re-establish `kronecker_mul_right` via
+`kronecker2` multiplicativity.
 
 ## Attempt Counts
 
-- Total attempts: 1
+- Total attempts: 2
 - Current approach attempts: 1
 - Approaches tried: 1
