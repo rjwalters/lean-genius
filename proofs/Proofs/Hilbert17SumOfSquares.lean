@@ -127,6 +127,56 @@ def IsSumOfSquaresRatFunc {R : Type*} [CommRing R] [IsDomain R]
     (f : RatFunc R) : Prop :=
   ∃ (m : ℕ) (g : Fin m → RatFunc R), f = ∑ i, g i ^ 2
 
+/-! ### Closure properties of the SOS cone
+
+The multivariate sum-of-squares polynomials form a cone that is *generated* by
+squares and *closed* under addition and multiplication. These are the elementary
+structural facts underlying the whole PSD/SOS theory (e.g. the rational-SOS
+multiplier arguments multiply a PSD polynomial by an explicit SOS multiplier).
+They are stated once here so downstream files can reuse them instead of
+re-deriving the concatenation / product-of-sums identities ad hoc. All three are
+`0`-axiom, over an arbitrary `CommRing`. -/
+
+/-- **Every square is a sum of squares** (the single-term case). -/
+theorem isSumOfSquares_sq {R : Type*} [CommRing R] {σ : Type*}
+    (q : MvPolynomial σ R) : IsSumOfSquaresMvPolynomial (q ^ 2) :=
+  ⟨1, fun _ => q, by rw [Fin.sum_univ_one]⟩
+
+/-- **The SOS cone is closed under addition.** Concatenate the two square lists:
+if `p = ∑ aᵢ²` and `q = ∑ bⱼ²`, then `p + q = ∑ (a ⧺ b)²` over `Fin (m + k)`. -/
+theorem isSumOfSquares_add {R : Type*} [CommRing R] {σ : Type*}
+    {p q : MvPolynomial σ R} (hp : IsSumOfSquaresMvPolynomial p)
+    (hq : IsSumOfSquaresMvPolynomial q) :
+    IsSumOfSquaresMvPolynomial (p + q) := by
+  obtain ⟨m, a, rfl⟩ := hp
+  obtain ⟨k, b, rfl⟩ := hq
+  refine ⟨m + k, Fin.append a b, ?_⟩
+  rw [Fin.sum_univ_add]
+  congr 1
+  · exact Finset.sum_congr rfl (fun i _ => by rw [Fin.append_left])
+  · exact Finset.sum_congr rfl (fun i _ => by rw [Fin.append_right])
+
+/-- **The SOS cone is closed under multiplication.** The product of two sums of
+squares is a sum of squares, via the Cauchy–Lagrange identity
+`(∑ aᵢ²)(∑ bⱼ²) = ∑_{i,j} (aᵢ bⱼ)²`; the `m·k` cross terms are reindexed by
+`finProdFinEquiv`. -/
+theorem isSumOfSquares_mul {R : Type*} [CommRing R] {σ : Type*}
+    {p q : MvPolynomial σ R} (hp : IsSumOfSquaresMvPolynomial p)
+    (hq : IsSumOfSquaresMvPolynomial q) :
+    IsSumOfSquaresMvPolynomial (p * q) := by
+  obtain ⟨m, a, rfl⟩ := hp
+  obtain ⟨k, b, rfl⟩ := hq
+  refine ⟨m * k,
+    fun idx => a (finProdFinEquiv.symm idx).1 * b (finProdFinEquiv.symm idx).2, ?_⟩
+  have key : (∑ pr : Fin m × Fin k, (a pr.1 * b pr.2) ^ 2)
+      = ∑ idx : Fin (m * k),
+          (a (finProdFinEquiv.symm idx).1 * b (finProdFinEquiv.symm idx).2) ^ 2 := by
+    apply Fintype.sum_equiv finProdFinEquiv
+    intro pr
+    simp only [Equiv.symm_apply_apply]
+  rw [← key, Fintype.sum_prod_type, Finset.sum_mul]
+  simp_rw [Finset.mul_sum, mul_pow]
+
 /-! ### Positive Semidefinite (PSD) Definitions -/
 
 /-- A univariate polynomial is *positive semidefinite* (PSD) if it is non-negative
