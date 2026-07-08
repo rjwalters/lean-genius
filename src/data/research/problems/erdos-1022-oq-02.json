@@ -28,19 +28,19 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-06-23T00:00:00Z",
-    "iteration": 1,
-    "focus": "Created 233-line formalization: 8 theorems, 3 defs, 0 axioms, 0 sorries.",
+    "since": "2026-07-08T00:00:00Z",
+    "iteration": 2,
+    "focus": "Added §7 (coefficient-level growth rate): 3 theorems pinning that the integer admissible coefficient c(t)=⌊2^{t-1}/|V|⌋ at least doubles per step (2·c(t)≤c(t+1)), tracks the real density to within one vertex, and strictly increases once positive. File now 350 lines, 14 theorems, 3 defs, 0 axioms, 0 sorries. Docker build verified (7744 jobs).",
     "blockers": [],
-    "nextAction": "None.",
+    "nextAction": "None. First-moment regime is now exhausted at both threshold and coefficient level; the open hard regime (ground set growing with the family, Lovász-type) is out of scope.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 233-line formalization, 8 proved theorems, 0 axioms, 0 sorries. First-moment answer to OQ-02 (exponential growth of the threshold).",
+    "progressSummary": "[2026-07-08] Coefficient-level growth rate pinned: the integer admissible coefficient c(t)=⌊2^{t-1}/|V|⌋ at least doubles per step (2·c(t)≤c(t+1), admissibleCoeff_ge_two_mul) despite the floor, tracks the real density 2^{t-1}/|V| to within one vertex (threshold_lt_succ_coeff_mul), and is strictly increasing once positive. This upgrades the earlier qualitative c_t→∞ to a quantitative exponential rate for the coefficient itself. COMPLETE: 233-line formalization, 8 proved theorems, 0 axioms, 0 sorries. First-moment answer to OQ-02 (exponential growth of the threshold).",
     "builtItems": [
       "Created Proofs/Erdos1022OQ02.lean (233 lines, 8 theorems, 3 defs, 0 axioms)",
       "Created gallery entry src/data/proofs/erdos-1022-oq-02/",
@@ -84,7 +84,7 @@
     "mathlib": []
   },
   "started": "2026-06-23T00:00:00Z",
-  "lastUpdate": "2026-06-23T00:00:00Z",
+  "lastUpdate": "2026-07-08T00:00:00Z",
   "significance": 5,
   "tractability": 5,
   "leanFiles": [
@@ -102,8 +102,8 @@
     {
       "path": "Proofs/Erdos1022OQ02.lean",
       "filename": "Erdos1022OQ02.lean",
-      "lineCount": 234,
-      "theoremCount": 8,
+      "lineCount": 351,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,

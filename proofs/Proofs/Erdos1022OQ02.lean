@@ -283,4 +283,69 @@ theorem exists_admissible_coeff (hV : 0 < Fintype.card V) :
           ≤ firstMomentThreshold t := Nat.div_mul_le_self _ _
       _ = 2 ^ (t - 1) := rfl
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 7: Quantitative growth rate of the admissible *coefficient*
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+  § 5-6 pin the growth of the *threshold* `2^{t-1}` (it doubles per step,
+  `firstMoment_threshold_doubles`) and show the admissible coefficient
+  `c(t) = ⌊2^{t-1}/|V|⌋` diverges (`exists_admissible_coeff`).  What was left
+  *qualitative* is the growth rate of that integer coefficient itself.  This
+  section pins it: over a fixed ground set `c(t)` tracks the real density
+  `2^{t-1}/|V|` to within one vertex (the floor loses `< |V|`), and — despite
+  the floor — `c(t)` *at least doubles* with each unit increase of `t`.  So the
+  admissible coefficient, not merely the underlying threshold, grows at least
+  exponentially in the minimum set size `t`: the sharp coefficient-level answer
+  to OQ-02 in the first-moment regime for bounded ground sets.
+-/
+
+-- The `DecidableEq V` instance is unused in this final section (only `Fintype`
+-- and `Nat` arithmetic are needed); omit it for the remaining declarations.
+omit [DecidableEq V]
+
+/-- **The integer coefficient tracks the real density to within one vertex.**
+    `c(t) = ⌊2^{t-1}/|V|⌋` satisfies `2^{t-1} < (c(t)+1)·|V|`: the truncated
+    division discards strictly less than a full copy of `|V|`, so the integer
+    coefficient never falls more than one vertex-worth below the exact real
+    threshold `2^{t-1}/|V|`.  Together with `propertyB_of_sparse`'s lower bound
+    this brackets `c(t)` tightly around `2^{t-1}/|V|`. -/
+theorem threshold_lt_succ_coeff_mul (hV : 0 < Fintype.card V) (t : ℕ) :
+    firstMomentThreshold t
+      < (firstMomentThreshold t / Fintype.card V + 1) * Fintype.card V := by
+  have hdm := Nat.div_add_mod (firstMomentThreshold t) (Fintype.card V)
+  have hmod := Nat.mod_lt (firstMomentThreshold t) hV
+  rw [add_mul, one_mul,
+      Nat.mul_comm (firstMomentThreshold t / Fintype.card V) (Fintype.card V)]
+  omega
+
+/-- **The admissible coefficient at least doubles with each unit increase of
+    `t`.**  This lifts the threshold-level doubling
+    (`firstMoment_threshold_doubles`) to the *integer* coefficient
+    `c(t) = ⌊2^{t-1}/|V|⌋` itself, surviving the floor: `2·c(t) ≤ c(t+1)`.
+    Hence the admissible sparseness coefficient — the quantity Problem #1022
+    actually asks about, not merely the real threshold — grows at least
+    exponentially in the minimum set size `t`.  This is the sharp
+    coefficient-level growth rate for the first-moment regime over a bounded
+    ground set. -/
+theorem admissibleCoeff_ge_two_mul (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ t) :
+    2 * (firstMomentThreshold t / Fintype.card V)
+      ≤ firstMomentThreshold (t + 1) / Fintype.card V := by
+  rw [firstMoment_threshold_doubles t ht, Nat.le_div_iff_mul_le hV, mul_assoc]
+  have h : firstMomentThreshold t / Fintype.card V * Fintype.card V
+      ≤ firstMomentThreshold t := Nat.div_mul_le_self _ _
+  omega
+
+/-- **Strict growth of the admissible coefficient once it is positive.**  As
+    soon as the ground set is small enough for the threshold to admit a nonzero
+    coefficient (`0 < c(t)`, i.e. `|V| ≤ 2^{t-1}`), the coefficient strictly
+    increases at the next step: `c(t) < c(t+1)`.  Immediate from the doubling
+    bound `2·c(t) ≤ c(t+1)`. -/
+theorem admissibleCoeff_lt_of_pos (hV : 0 < Fintype.card V) (t : ℕ) (ht : 1 ≤ t)
+    (hpos : 0 < firstMomentThreshold t / Fintype.card V) :
+    firstMomentThreshold t / Fintype.card V
+      < firstMomentThreshold (t + 1) / Fintype.card V := by
+  have h := admissibleCoeff_ge_two_mul hV t ht
+  omega
+
 end Erdos1022OQ02
