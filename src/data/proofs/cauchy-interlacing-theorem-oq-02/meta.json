@@ -125,12 +125,14 @@
   },
   "crossReferences": [
     {
-      "slug": "cauchy-interlacing-theorem",
-      "relation": "Parent entry — proves the codimension-one interlacing λ(k.succ) ≤ μ(k) ≤ λ(k.castSucc) and the Courant–Fischer keystone. This entry generalises the inequality to arbitrary codimension (the parent's second open question) and recovers the codimension-one case as the m = 1 corollary."
+      "targetId": "cauchy-interlacing-theorem",
+      "relationship": "parent",
+      "description": "Parent entry — proves the codimension-one interlacing λ(k.succ) ≤ μ(k) ≤ λ(k.castSucc) and the Courant–Fischer keystone. This entry generalises the inequality to arbitrary codimension (the parent's second open question) and recovers the codimension-one case as the m = 1 corollary."
     },
     {
-      "slug": "cauchy-interlacing-theorem-oq-01",
-      "relation": "Sibling entry — discharges the Rayleigh-agreement hypothesis for the codimension-one compression by building the orthogonal projection compression explicitly. The same construction discharges it for arbitrary codimension, which would make this entry's inequality unconditional."
+      "targetId": "cauchy-interlacing-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry — discharges the Rayleigh-agreement hypothesis for the codimension-one compression by building the orthogonal projection compression explicitly. The same construction discharges it for arbitrary codimension, which would make this entry's inequality unconditional."
     }
   ],
   "references": [
