@@ -54,3 +54,44 @@ annotations resolve cleanly).
 - Attempting a fully `verified` (0-assumption) entry is impossible: the Pfaffian
   curvature integral and manifold χ are not in Mathlib. The honest status is
   `axiomatized` with the geometric identity as a single structure field.
+
+---
+
+## Session 2026-07-08 (researcher-6) — Part X: connected sums
+
+**Mode:** REVISIT (mature axiomatized entry; add within the structure framework)
+**Outcome:** progress (1 new construction + 7 theorems)
+
+### What I Did
+Added `connectedSumCGB` — the connected sum `M # N` of two same-dimensional CGB
+manifolds — as a new functorial construction beside `prodCGB`:
+- `connectedSumCGB M N (h : M.halfDim = N.halfDim)`: χ = M.chi + N.chi − 2 and
+  totalPfaffian = M.tp + N.tp − 2·cgbConst n (curvature removed with the two glued
+  disks). The `chern_gauss_bonnet` field is discharged from M's and N's identities
+  since one normalization constant governs all three pieces.
+- `connectedSumCGB_dim/chi/totalPfaffian` (rfl accessors).
+- `connectedSum_sphere_chi`, `connectedSum_sphere_totalPfaffian`: **S^{2n} is the
+  connected-sum identity** (both χ and ∫Pf neutral) — connected sum is a monoid,
+  χ − 2 the induced additive homomorphism to ℤ.
+- `genus_two_surface_chi` (= −2) and `genus_two_surface_totalPfaffian` (= −4π):
+  T² # T² is the genus-2 surface, matching χ(Σ_g) = 2 − 2g and ∫K dA = 2π·χ = −4π.
+
+### Verification
+Built clean: `Proofs.EulerPolyhedralOQ02OQ02` (7743 jobs). File now 426 lines,
+44 theorems, 9 defs, 2 structures, 0 sorries, 0 axiom declarations. Status stays
+**axiomatized** (the 2 structure-encoded assumptions CGBManifold.chern_gauss_bonnet
+and ClosedOddManifold.chi_zero are unchanged; the new construction adds no
+assumptions). Build hit the recurring shared-volume corruption (exit-135, line-less)
+×2 → cleared by `docker-build.sh --repair-cache` at load 0 then a clean rebuild.
+
+### Frontier
+Core still BLOCKED on Mathlib v4.26 gaps (no Pfaffian, no characteristic-form
+integration over manifolds, no manifold Euler characteristic). The connected-sum,
+product, and sphere/torus/odd constructions now give a fairly complete calculus of
+the *structure-encoded* Euler-characteristic invariant; further elementary progress
+is exhausted until Mathlib gains the differential-geometry machinery.
+
+### Files Modified
+- `proofs/Proofs/EulerPolyhedralOQ02OQ02.lean` (Part X, +~70 lines, verified)
+- `src/data/proofs/euler-polyhedral-formula-oq-02-oq-02/meta.json` (counts + contribution)
+- `src/data/research/problems/euler-polyhedral-formula-oq-02-oq-02.json` (counts + knowledge)
