@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "assumptions": "This entry bundles two files and ships two axioms total. Main file Proofs/RothTheoremOQ01.lean declares 0 axioms of its own and 0 sorries; every one of its 9 theorems is machine-checked (including the axiom-free `bourgain_factor_tendsto_zero`). Its presented result `rothNumberNat_bourgain` rests on exactly one assumption: `RothTheoremOQ02.rothNumberNat_bloom_sisask` (Bloom–Sisask 2020 logarithmic-barrier bound rothNumberNat N ≤ N/(log N)^(1+c), arXiv:2007.03528), imported from the companion file Proofs/RothTheoremOQ02.lean and used to derive the weaker Bourgain bound by rpow monotonicity. The companion file additionally declares a second axiom `rothNumberNat_kelley_meka` (Kelley–Meka 2023, quasi-polynomial bound); it is NOT in the dependency chain of the main Bourgain result, but it IS used by the companion's own theorems `rothNumberNat_le_kelley_meka`, `kelley_meka_consistent_with_Behrend`, and `rothNumberNat_le_min_blasi_kelley_meka`, so it counts as an assumption the entry carries. Both axioms encode state-of-the-art quantitative refinements requiring Bohr-set / density-increment infrastructure not yet in Mathlib v4.26.0. The former standalone `axiom rothNumberNat_bourgain` has been eliminated: Bourgain is now a derived theorem.",
+    "assumptions": "This entry bundles two files and ships two axioms total. Main file Proofs/RothTheoremOQ01.lean declares 0 axioms of its own and 0 sorries; every one of its 13 theorems is machine-checked (including the axiom-free `bourgain_factor_tendsto_zero` and the new rate-shape comparison `bourgain_factor_isLittleO_roth_factor`). Its presented result `rothNumberNat_bourgain` rests on exactly one assumption: `RothTheoremOQ02.rothNumberNat_bloom_sisask` (Bloom–Sisask 2020 logarithmic-barrier bound rothNumberNat N ≤ N/(log N)^(1+c), arXiv:2007.03528), imported from the companion file Proofs/RothTheoremOQ02.lean and used to derive the weaker Bourgain bound by rpow monotonicity. The companion file additionally declares a second axiom `rothNumberNat_kelley_meka` (Kelley–Meka 2023, quasi-polynomial bound); it is NOT in the dependency chain of the main Bourgain result, but it IS used by the companion's own theorems `rothNumberNat_le_kelley_meka`, `kelley_meka_consistent_with_Behrend`, and `rothNumberNat_le_min_blasi_kelley_meka`, so it counts as an assumption the entry carries. Both axioms encode state-of-the-art quantitative refinements requiring Bohr-set / density-increment infrastructure not yet in Mathlib v4.26.0. The former standalone `axiom rothNumberNat_bourgain` has been eliminated: Bourgain is now a derived theorem.",
     "originalContributions": [
       "rothNumberNat_bourgain: Bourgain's 1999 bound ∃ C > 0, ∀ N ≥ 3, rothNumberNat N ≤ C·N·(log log N/log N)^(1/2), derived (not axiomatized) from the imported Bloom–Sisask bound",
       "Explicit analytic reduction Bloom–Sisask ⟹ Bourgain: cancel N, split L^(1+c) = L^(1/2)·L^(1/2+c) via Real.rpow_add and (LL/L)^(1/2) = LL^(1/2)/L^(1/2) via Real.div_rpow, then close by base-monotonicity (Real.rpow_le_rpow) reading the constant C = 1/(B·E) off the N = 3 endpoint",
@@ -29,11 +29,14 @@
       "bourgain_consistent_with_Behrend: the Bourgain upper bound dominates Behrend's unconditional lower bound N·exp(-4√(log N)), verified transitively",
       "rothNumberNat_le_min_bourgain_blasi: the formal record that OQ-02 ⟹ OQ-01 — rothNumberNat N is bounded by the min of the Bourgain and Bloom–Sisask right-hand sides",
       "bourgain_factor_tendsto_zero: the density factor (log log N/log N)^(1/2) → 0 as N → ∞ — axiom-free, from Real.isLittleO_log_id_atTop (log u/u → 0 at u = log N → ∞) and continuity of √· = ·^(1/2)",
-      "rothNumberNat_isLittleO_of_bourgain: rothNumberNat N = o(N) DERIVED from the explicit Bourgain bound (not re-exported from Mathlib) — certifies the quantitative rate is genuinely strong enough to recover the qualitative Roth theorem"
+      "rothNumberNat_isLittleO_of_bourgain: rothNumberNat N = o(N) DERIVED from the explicit Bourgain bound (not re-exported from Mathlib) — certifies the quantitative rate is genuinely strong enough to recover the qualitative Roth theorem",
+      "bourgain_factor_isLittleO_roth_factor: Bourgain's 1999 density saving (log log N/log N)^(1/2) is o() of Roth's 1953 saving 1/log log N — a formal proof that Bourgain's improvement is a genuine power-of-log gain over Roth, not a rephrasing. Axiom-free (depends on neither the Bourgain nor Bloom–Sisask assumption).",
+      "loglog_cubed_div_log_tendsto_zero: axiom-free polylog decay engine (log log N)^3/log N → 0, the quantitative core behind the Bourgain-vs-Roth rate comparison, via Real.tendsto_pow_log_div_mul_add_atTop composed with log N → ∞",
+      "one_lt_logN_of_three_le / loglog_pos_of_three_le: reusable endpoint-positivity helpers (log N > 1 and log log N > 0 for N ≥ 3) extracted from the endpoint reasoning"
     ],
     "dateAdded": "2026-07-02",
-    "lineCount": 325,
-    "theoremCount": 9,
+    "lineCount": 408,
+    "theoremCount": 13,
     "definitionCount": 1,
     "additionalFiles": [
       "Proofs/RothTheoremOQ02.lean"
@@ -75,9 +78,9 @@
       "Proofs.RothTheoremOQ02"
     ],
     "namespace": "RothTheoremOQ01",
-    "lineCount": 325,
+    "lineCount": 408,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 13,
     "definitionCount": 1,
     "path": "Proofs/RothTheoremOQ01.lean",
     "sorries": 0,
