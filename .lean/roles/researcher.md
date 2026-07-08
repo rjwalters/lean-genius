@@ -168,6 +168,8 @@ Knowledge score: 8 (MODERATE)
 cd $REPO_ROOT/.loom/worktrees/researcher-$N
 ```
 
+`.loom/worktrees/researcher-$N` is the sanctioned location — the create path preserves in-flight work, so avoid making defensive worktrees under `$HOME` or `/tmp`. The backstop janitor (`scripts/clean-branches.sh`) automatically reclaims any stray `$HOME`/`/private/tmp` worktree once it is clean and stale; dirty or unpushed worktrees are always preserved.
+
 If no problems are available, wait 5 minutes and retry.
 
 ## Step 3: Research the Problem

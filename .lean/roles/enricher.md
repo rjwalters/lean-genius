@@ -61,6 +61,12 @@ You receive these environment variables:
 
 You work in an **isolated worktree** with your own branch (e.g., `feature/enricher-1`).
 
+**IMPORTANT:** The sanctioned worktree location is `$REPO_ROOT/.loom/worktrees/enricher-$N`. Always work there — the create path preserves in-flight work, so there is no need to make defensive worktrees under `$HOME` or `/tmp`. Any stray worktree you do leave outside `.loom/worktrees/` is automatically reclaimed by the backstop janitor (`scripts/clean-branches.sh`) once it is clean and stale; dirty or unpushed worktrees are always preserved.
+
+```bash
+cd $REPO_ROOT/.loom/worktrees/enricher-$N
+```
+
 ## Logging
 
 Log your actions for observability. After each major step, append to your log:
