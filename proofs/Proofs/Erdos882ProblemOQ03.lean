@@ -20,6 +20,8 @@ This file supplies that missing structural layer — all fully machine-checked
   * `subset_subsetSums`       — `A ⊆ subsetSums A` (elements are subset sums);
   * `subsetSums_card_ge`      — **`|A| ≤ |subsetSums A|`** (counting lower bound);
   * `subsetSums_card_bounds`  — the sandwich `|A| ≤ |subsetSums A| ≤ 2^|A| − 1`;
+  * `subsetSums_le`           — every subset sum is `≤ n·|A|`;
+  * `subsetSums_subset_Icc`   — **`subsetSums A ⊆ {1,…,n·|A|}`** (membership range);
   * `subsetSums_singleton`    — `subsetSums {a} = {a}`.
 
 The headline is downward closure: any subset of a valid set is valid — the
@@ -128,6 +130,34 @@ theorem subsetSums_card_le (A : Finset ℕ) :
     (subsetSums A).card ≤ 2 ^ A.card - 1 := by
   unfold subsetSums
   exact le_trans Finset.card_image_le (le_of_eq (nonemptySubsets_card A))
+
+/-- **Membership upper bound.**  If every element of `A` is at most `n`, then
+    every non-empty subset sum is at most `n · |A|`: each of the (at most `|A|`)
+    summands of a subset `S ⊆ A` contributes at most `n`. -/
+theorem subsetSums_le {A : Finset ℕ} {n : ℕ} (hA : ∀ a ∈ A, a ≤ n) :
+    ∀ s ∈ subsetSums A, s ≤ n * A.card := by
+  intro s hs
+  unfold subsetSums nonemptySubsets at hs
+  rw [Finset.mem_image] at hs
+  obtain ⟨S, hS, rfl⟩ := hs
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  obtain ⟨hSsub, _⟩ := hS
+  have hcard : S.card ≤ A.card := Finset.card_le_card hSsub
+  calc S.sum id ≤ ∑ _a ∈ S, n := Finset.sum_le_sum (fun i hi => hA i (hSsub hi))
+    _ = n * S.card := by rw [Finset.sum_const, smul_eq_mul, Nat.mul_comm]
+    _ ≤ n * A.card := Nat.mul_le_mul (le_refl n) hcard
+
+/-- **Membership range.**  For a set of positive integers each `≤ n`, every
+    non-empty subset sum lies in the explicit interval `{1,…,n·|A|}`.  Together
+    with `subsetSums_card_le` this pins down the counting side of the
+    `(1+o(1))log₂ n` upper bound: the `≤ 2^|A| − 1` distinct subset sums are all
+    confined to an interval of length `n·|A|`. -/
+theorem subsetSums_subset_Icc {A : Finset ℕ} {n : ℕ}
+    (hlo : ∀ a ∈ A, 1 ≤ a) (hhi : ∀ a ∈ A, a ≤ n) :
+    subsetSums A ⊆ Finset.Icc 1 (n * A.card) := by
+  intro s hs
+  rw [Finset.mem_Icc]
+  exact ⟨subsetSums_pos hlo s hs, subsetSums_le hhi s hs⟩
 
 /-- The subset-sum set of a singleton is the singleton itself: the only non-empty
     subset of `{a}` is `{a}`, whose sum is `a`. -/
