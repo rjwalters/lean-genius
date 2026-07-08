@@ -10,7 +10,54 @@ of `0 ≤ i < k` with `n − i` being `k`-smooth. The current record is
 **OQ-02:** Is `9` the maximum possible deficiency over all admissible `(n,k)`,
 or do higher values occur? (The universal upper-bound direction is open.)
 
-## Status: OPEN (universal bound); existence half machine-verified.
+## Status: OPEN (universal bound, now confined to k≥16); existence half machine-verified.
+
+---
+
+## Session 2026-07-08 (Session 3) — Correct OQ-02 frontier: k≥15 → k≥16
+
+**Mode:** REVISIT (RICH knowledge tier, highest available)
+**Outcome:** progress (limitative + strict sharpening)
+
+### Key realization
+Sections XII–XIII tracked the **deficiency-9** comparison `(k!)² < (k+9)!`
+(reversing at `k=15`) and concluded "open frontier `k ≥ 15`". But OQ-02
+(`MaximalDeficiencyIs 9`) rules out deficiency **`≥ 10`**, whose exclusion is
+governed by `(k!)² < (k+10)!` — reversing one step **later**, at `k=16`. The
+threshold `9` was one too small. Exact arithmetic:
+- `25!/(15!)² ≈ 9.07 > 1` ⟹ deficiency `≥10` **excluded** at `k=15`
+- `26!/(16!)² ≈ 0.92 < 1` ⟹ deficiency `10` **permitted** at `k=16`
+
+So the elementary sharp bound `(k+deficiency)! ≤ (k!)²` (Section X) already
+**resolves OQ-02 for all `k ≤ 15`**; the tight open frontier is **`k ≥ 16`**.
+
+### What I Did — Section XV (VERIFIED, 0 sorry, 0 new axioms, ofReduceBool-free)
+- `factorial_sq_lt_add_ten_of_k_le_15` — `(k!)² < (k+10)!` for `k ≤ 15` (kernel `decide`).
+- `deficiency_le_nine_of_k_le_15` — admissible `k ≤ 15` ⟹ `deficiency ≤ 9`
+  (a deficiency `≥10` forces `(k+10)! ≤ (k!)²`, impossible for `k ≤ 15`).
+- `maximalDeficiencyIs_nine_iff_kGe16` — strict sharpening of `_kGe15`.
+- `sharp_bound_permits_deficiency_ten` — `(k+10)! ≤ (k!)²` for `k ≥ 16` (limitative:
+  induction from `26! ≤ (16!)²`, step factor `k+11 ≤ (k+1)²`).
+- `oq02_frontier_exact` — the split at the frontier `k = 16`.
+
+### Why the tail is genuinely blocked (new clarification)
+The parent axiom `els_upper_bound` (`n ≪ 2^k·√k` for deficiency `≥1`) is a
+**location** bound on `n`, provably insufficient to close the deficiency universal
+bound: it constrains *where* admissible pairs sit, not *how many* `k`-smooth values
+the length-`k` window holds. A conditional resolution needs a short-interval
+**smooth-count** bound; any faithful such hypothesis is `#{k-smooth in (n−k,n]} ≤ 9`
+`= deficiency n k ≤ 9`, i.e. circular. Hence the `k ≥ 16` tail is irreducibly
+analytic (ψ(x,y)/Dickman-ρ density) — BLOCKED pending Mathlib smooth-number density
+(>1000 lines, deep chains). This corrects the earlier "axiomatize ELS then prove a
+conditional resolution" next-step, which cannot work.
+
+### Verification
+`./proofs/scripts/docker-build.sh Proofs.Erdos1093ProblemOQ02` → `Built (3060 jobs)`,
+0 sorry, 0 `axiom` declarations. File now 816 lines, 35 theorems.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XV, +~110 lines, verified)
+- `src/data/research/problems/erdos-1093-oq-02.json` (leanFiles counts + knowledge)
 
 ---
 

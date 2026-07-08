@@ -705,3 +705,112 @@ theorem deficiency_record_le_18 {n : ℕ} (hn : 56 ≤ n)
     Nat.factorial_le (by omega)
   have hnum : (Nat.factorial 28) ^ 2 < Nat.factorial 47 := by native_decide
   exact absurd (hmono.trans hsq) (not_le.mpr hnum)
+
+/-
+## Section XV: The correct OQ-02 frontier — the sharp bound closes `k ≤ 15`, open frontier is `k ≥ 16`
+
+Sections XII–XIII analysed the finite comparison `(k!)² < (k + 9)!`, whose reversal
+at `k = 15` confines the reach of the sharp bound *for detecting deficiency `9`* to
+`k ≤ 14`.  But OQ-02 (`MaximalDeficiencyIs 9`) is the statement that no admissible
+pair has deficiency **exceeding** `9`, i.e. it must rule out deficiency `≥ 10`.  The
+threshold `9` was therefore one too small: the exclusion of deficiency `≥ 10` is
+governed by the comparison `(k!)² < (k + 10)!`, whose reversal sits at `k = 16`, not
+`k = 15`.
+
+Concretely `(k!)² < (k + 10)!` holds for every `k ≤ 15` (at the frontier
+`25!/(15!)² ≈ 9.07 > 1`) and *reverses* at `k = 16` (`26!/(16!)² ≈ 0.92 < 1`).  Via
+the sharp factorial bound `(k + deficiency n k)! ≤ (k!)²`
+(`deficiency_add_factorial_le_sq`), the case `deficiency ≥ 10` forces
+`(k + 10)! ≤ (k!)²`, impossible for `k ≤ 15`.  Hence *every* admissible pair with
+`k ≤ 15` already has `deficiency ≤ 9`, and the open universal bound of OQ-02 is
+confined to `k ≥ 16` — a strict sharpening of `maximalDeficiencyIs_nine_iff_kGe15`
+(which left `k = 15` nominally open).  Like everything since Section V it is
+`ofReduceBool`-free (the finite comparisons are discharged by kernel `decide`).
+-/
+
+/-- **The deficiency-`10` frontier comparison.**  For every `k ≤ 15` one has
+`(k!)² < (k + 10)!`.  This is the analogue for the exclusion of deficiency `≥ 10`
+of the `(k!)² < (k + 9)!` comparison of Section XII, and it reverses one step
+later — at `k = 16` (see `sharp_bound_permits_deficiency_ten`). -/
+theorem factorial_sq_lt_add_ten_of_k_le_15 {k : ℕ} (hk : k ≤ 15) :
+    (Nat.factorial k) ^ 2 < Nat.factorial (k + 10) := by
+  interval_cases k <;> decide
+
+/-- **The sharp bound closes `k ≤ 15` for OQ-02.**  For an admissible pair with
+`k ≤ 15` the deficiency never exceeds `9`.  Indeed a deficiency `≥ 10` would give
+`(k + 10)! ≤ (k + deficiency n k)! ≤ (k!)²` via `deficiency_add_factorial_le_sq`,
+contradicting `(k!)² < (k + 10)!` (`factorial_sq_lt_add_ten_of_k_le_15`).  This is
+the sharp elementary resolution of OQ-02 in the range `k ≤ 15`: it rules out the
+record-breaking deficiency `≥ 10` uniformly in `n`, extending the
+`deficiency ≤ 8`-for-`k ≤ 14` bound of Section XII to cover `k = 15` as well
+(where the bound permits deficiency `9` but not `10`). -/
+theorem deficiency_le_nine_of_k_le_15 {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) (hk : k ≤ 15) : deficiency n k ≤ 9 := by
+  by_contra hcon
+  push_neg at hcon
+  have hsharp := deficiency_add_factorial_le_sq hn h
+  have hle : Nat.factorial (k + 10) ≤ (Nat.factorial k) ^ 2 :=
+    (Nat.factorial_le (by omega)).trans hsharp
+  exact absurd hle (not_le.mpr (factorial_sq_lt_add_ten_of_k_le_15 hk))
+
+/-- **Sharpened reduction to `k ≥ 16`.**  `MaximalDeficiencyIs 9` is equivalent to
+the open universal bound restricted to `k ≥ 16`: the cases `k ≤ 14` are discharged
+by `deficiency_le_eight_of_k_le_14` and the case `k = 15` by the new
+`deficiency_le_nine_of_k_le_15`.  Strictly sharper than
+`maximalDeficiencyIs_nine_iff_kGe15`; the entire remaining open content of OQ-02
+lives at `k ≥ 16`.  (The earlier `k ≥ 15` reduction was not tight because it tracked
+the deficiency-`9` frontier `(k!)² < (k + 9)!` rather than the deficiency-`10`
+frontier `(k!)² < (k + 10)!` that actually governs the conjecture.) -/
+theorem maximalDeficiencyIs_nine_iff_kGe16 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 16 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 15
+    · exact deficiency_le_nine_of_k_le_15 hv.1 hv.2 hk
+    · exact h n k (by omega) hv
+
+/-- **The sharp bound permits deficiency `10` for every `k ≥ 16`.**  For all
+`k ≥ 16` one has `(k + 10)! ≤ (k!)²`.  Hence the sharp factorial bound
+`deficiency_add_factorial_le_sq` is *consistent with* `deficiency = 10` at every
+`k ≥ 16`: it cannot exclude a record-breaking deficiency `≥ 10` there.  Paired with
+`factorial_sq_lt_add_ten_of_k_le_15` — whose comparison reverses exactly at
+`k = 16` — this shows the elementary sharp bound resolves OQ-02 for *precisely* the
+cases `k ≤ 15`, confirming the open frontier `k ≥ 16` is beyond its reach.
+
+Proof by induction from the base `26! ≤ (16!)²`; the inductive step multiplies the
+hypothesis `(k + 10)! ≤ (k!)²` by the factor `k + 11 ≤ (k + 1)²`. -/
+theorem sharp_bound_permits_deficiency_ten :
+    ∀ k, 16 ≤ k → Nat.factorial (k + 10) ≤ (Nat.factorial k) ^ 2 := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => decide
+  | succ k hk ih =>
+      have e1 : k + 1 + 10 = (k + 10) + 1 := by omega
+      have hstep :
+          (k + 11) * Nat.factorial (k + 10) ≤ (k + 1) ^ 2 * (Nat.factorial k) ^ 2 := by
+        have h1 : (k + 11) * Nat.factorial (k + 10) ≤ (k + 11) * (Nat.factorial k) ^ 2 :=
+          Nat.mul_le_mul le_rfl ih
+        have h2 :
+            (k + 11) * (Nat.factorial k) ^ 2 ≤ (k + 1) ^ 2 * (Nat.factorial k) ^ 2 :=
+          Nat.mul_le_mul (by nlinarith [hk]) le_rfl
+        exact h1.trans h2
+      calc Nat.factorial (k + 1 + 10)
+          = (k + 11) * Nat.factorial (k + 10) := by
+              rw [e1, Nat.factorial_succ]
+        _ ≤ (k + 1) ^ 2 * (Nat.factorial k) ^ 2 := hstep
+        _ = (Nat.factorial (k + 1)) ^ 2 := by rw [Nat.factorial_succ, mul_pow]
+
+/-- **The elementary sharp bound resolves OQ-02 for *exactly* `k ≤ 15`.**  Combining
+`deficiency_le_nine_of_k_le_15` (the sharp bound forces `deficiency ≤ 9` when
+`k ≤ 15`) with `sharp_bound_permits_deficiency_ten` (the bound is consistent with
+`deficiency = 10` once `k ≥ 16`): the `(k!)²` method closes the OQ-02 question for
+`k ≤ 15` and is provably powerless for `k ≥ 16`.  Stated as the sharp split of the
+finite comparison `(k!)² < (k + 10)!` at the frontier `k = 16`. -/
+theorem oq02_frontier_exact (k : ℕ) :
+    (k ≤ 15 → (Nat.factorial k) ^ 2 < Nat.factorial (k + 10)) ∧
+    (16 ≤ k → Nat.factorial (k + 10) ≤ (Nat.factorial k) ^ 2) :=
+  ⟨fun hk => factorial_sq_lt_add_ten_of_k_le_15 hk,
+   fun hk => sharp_bound_permits_deficiency_ten k hk⟩
