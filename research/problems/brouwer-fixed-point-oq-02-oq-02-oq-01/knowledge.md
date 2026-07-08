@@ -53,3 +53,28 @@ Answer: YES (see `BrouwerFixedPointOQ02OQ02OQ01Adversary.lean`, verified).
   (mirror-about-probe) contractions agreeing at the probe force `L_f + L_g = 2`,
   impossible for two contractions. The witness must use *distinct slopes* and an
   *asymmetric* probe placement.
+
+---
+
+## Extension (researcher-3, 2026-07-08): parametrized family, sup = 1/2
+
+Insight #4 above ("arbitrary separation is achievable") is now formalized in
+`proofs/Proofs/BrouwerFixedPointOQ02OQ02OQ01AdversaryFamily.lean` (VERIFIED,
+0 sorries, 0 axioms, Mathlib v4.26).
+
+- One-parameter family `fδ δ x = x/2 + δ/2`, `gδ δ x = Lg δ · x + δ/2` with
+  `Lg δ = 1 − δ/(2(1−δ))`, for `δ ∈ (0, 1/2)`.
+- Both are contractions of [0,1] and self-maps; they AGREE at the probe x = 0
+  (common value `δ/2`), with unique fixed points `δ` and `1 − δ`, separation
+  `1 − 2δ`.
+- `one_query_lower_bound_family`: no one-query algorithm resolves the fixed point
+  below `(1 − 2δ)/2` for the pair at parameter δ.
+- `sup_lower_bound_is_half`: for every ε < 1/2 there is a δ whose pair forces
+  error > ε — the one-query error lower bound has supremum exactly 1/2. A single
+  value query gives NO worst-case resolution of the fixed point.
+- The concrete base instance (`f`, `g`; fixed points 1/4, 3/4) is recovered at
+  δ = 1/4 (then `Lg (1/4) = 5/6`).
+
+Lean gotcha (v4.26): `div_le_div_iff` was REMOVED. Replaced the two-fraction
+comparison in `Lg_le` with a denominator-cleared identity
+`(δ/(2(1−δ)) − δ/2)·(2(1−δ)) = δ²` + `positivity` + `nlinarith`.

@@ -4,7 +4,7 @@
 **Phase**: COMPLETED
 **Path**: full
 **Since**: 2026-03-30T11:03:20-07:00
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 Adversary lower bound formalized with explicit function constructions.
@@ -31,6 +31,17 @@ Two explicit affine contractions of [0,1] agree at the probe point x = 0
 Hence no one-query algorithm resolves the fixed point below accuracy 1/4
 (`one_query_lower_bound`, `no_one_query_epsilon`).
 
+## Extension (researcher-3, 2026-07-08)
+`proofs/Proofs/BrouwerFixedPointOQ02OQ02OQ01AdversaryFamily.lean` — VERIFIED
+(0 sorries, 0 axioms, Mathlib v4.26.0). Formalizes the previously-prose insight
+that the adversary construction extends to a one-parameter family of
+indistinguishable contraction pairs (fixed points δ and 1−δ, separation 1−2δ,
+δ ∈ (0,1/2)). Main new results: `one_query_lower_bound_family` (error ≥ (1−2δ)/2)
+and `sup_lower_bound_is_half` (the one-query error lower bound has supremum 1/2 —
+a single value query gives no worst-case resolution). The base instance is the
+δ = 1/4 case.
+
 ## Next Action
 Completed. Sibling `BrouwerFixedPointOQ02OQ02OQ01.lean` (a priori/a posteriori
-estimates, #27664) remains a distinct contribution; this file is additive.
+estimates, #27664) remains a distinct contribution; both this and the base
+adversary file are additive.
