@@ -14,6 +14,16 @@
 
 set -euo pipefail
 
+# Shared per-workflow worktree reclaim helper. Provides `remove_own_worktree`,
+# which applies structural safety guards (1-5) before removing an agent's
+# worktree instead of the unconditional `git worktree remove --force || rm -rf`
+# that could silently destroy an in-flight agent's uncommitted work (#35255,
+# follow-up to #35223 / PR #35237). Anchored to this script's own directory so
+# it resolves regardless of the caller's cwd.
+_LAUNCH_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../lib/worktree-cleanup.sh
+source "$_LAUNCH_SCRIPT_DIR/../lib/worktree-cleanup.sh"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -1523,19 +1533,47 @@ _do_respawn_agent() {
             # Spawn a specific enricher slot directly (parallel-enrich.sh refuses
             # to start if any enricher is already running, so we inline the logic)
             local agent_num="${session##*-}"
-            local worktree_dir=".loom/worktrees/enricher-$agent_num"
-            local branch="feature/enricher-$agent_num"
+            local base_dir=".loom/worktrees/enricher-$agent_num"
+            local base_branch="feature/enricher-$agent_num"
+            local worktree_dir="$base_dir"
+            local branch="$base_branch"
             local enricher_id="enricher-$agent_num"
             local log_file=".loom/logs/$session.log"
             local prompt_file=".loom/logs/$session-prompt.md"
             local repo_root
             repo_root=$(pwd)
 
-            # Recreate worktree from current main
+            # Reclaim any existing worktree at the primary path using the shared
+            # safety guards instead of an unconditional force-delete.
+            # `remove_own_worktree` returns 0 whether it removed OR preserved the
+            # worktree, so re-test the directory afterwards to distinguish.
             if [[ -d "$worktree_dir" ]]; then
-                git worktree remove "$worktree_dir" --force 2>/dev/null || rm -rf "$worktree_dir"
+                remove_own_worktree "$worktree_dir"
             fi
-            git branch -D "$branch" 2>/dev/null || true
+            # If a guard preserved in-flight work, allocate a fresh,
+            # non-colliding path/branch rather than discarding it.
+            if [[ -d "$worktree_dir" ]]; then
+                daemon_log "WARN" "Worktree $worktree_dir preserved (in-flight work); allocating fresh path"
+                local suffix=2
+                while [[ -d "$base_dir-$suffix" ]]; do
+                    remove_own_worktree "$base_dir-$suffix"
+                    [[ -d "$base_dir-$suffix" ]] || break
+                    suffix=$((suffix + 1))
+                done
+                worktree_dir="$base_dir-$suffix"
+                branch="$base_branch-$suffix"
+            fi
+            # Delete the target branch only when safe (`-d` refuses to drop a
+            # branch with unmerged/unpushed commits or one still checked out).
+            if git show-ref --verify --quiet "refs/heads/$branch" \
+                && ! git branch -d "$branch" >/dev/null 2>&1; then
+                daemon_log "WARN" "Branch $branch has unpushed work; allocating fresh branch"
+                local bsuffix=2
+                while git show-ref --verify --quiet "refs/heads/${base_branch}-$bsuffix"; do
+                    bsuffix=$((bsuffix + 1))
+                done
+                branch="${base_branch}-$bsuffix"
+            fi
             git worktree add "$worktree_dir" -b "$branch" main 2>/dev/null || {
                 daemon_log "WARN" "Cannot create worktree for $session"
                 return
@@ -1574,18 +1612,46 @@ _do_respawn_agent() {
         researcher)
             # Respawn the specific researcher slot (mirrors enricher respawn pattern)
             local agent_num="${session##*-}"
-            local worktree_dir=".loom/worktrees/researcher-$agent_num"
-            local branch="feature/researcher-$agent_num"
+            local base_dir=".loom/worktrees/researcher-$agent_num"
+            local base_branch="feature/researcher-$agent_num"
+            local worktree_dir="$base_dir"
+            local branch="$base_branch"
             local log_file=".loom/logs/$session.log"
             local prompt_file=".loom/logs/$session-prompt.md"
             local repo_root
             repo_root=$(pwd)
 
-            # Recreate worktree from current main
+            # Reclaim any existing worktree at the primary path using the shared
+            # safety guards instead of an unconditional force-delete.
+            # `remove_own_worktree` returns 0 whether it removed OR preserved the
+            # worktree, so re-test the directory afterwards to distinguish.
             if [[ -d "$worktree_dir" ]]; then
-                git worktree remove "$worktree_dir" --force 2>/dev/null || rm -rf "$worktree_dir"
+                remove_own_worktree "$worktree_dir"
             fi
-            git branch -D "$branch" 2>/dev/null || true
+            # If a guard preserved in-flight work, allocate a fresh,
+            # non-colliding path/branch rather than discarding it.
+            if [[ -d "$worktree_dir" ]]; then
+                daemon_log "WARN" "Worktree $worktree_dir preserved (in-flight work); allocating fresh path"
+                local suffix=2
+                while [[ -d "$base_dir-$suffix" ]]; do
+                    remove_own_worktree "$base_dir-$suffix"
+                    [[ -d "$base_dir-$suffix" ]] || break
+                    suffix=$((suffix + 1))
+                done
+                worktree_dir="$base_dir-$suffix"
+                branch="$base_branch-$suffix"
+            fi
+            # Delete the target branch only when safe (`-d` refuses to drop a
+            # branch with unmerged/unpushed commits or one still checked out).
+            if git show-ref --verify --quiet "refs/heads/$branch" \
+                && ! git branch -d "$branch" >/dev/null 2>&1; then
+                daemon_log "WARN" "Branch $branch has unpushed work; allocating fresh branch"
+                local bsuffix=2
+                while git show-ref --verify --quiet "refs/heads/${base_branch}-$bsuffix"; do
+                    bsuffix=$((bsuffix + 1))
+                done
+                branch="${base_branch}-$bsuffix"
+            fi
             git worktree add "$worktree_dir" -b "$branch" main 2>/dev/null || {
                 daemon_log "WARN" "Cannot create worktree for $session"
                 return

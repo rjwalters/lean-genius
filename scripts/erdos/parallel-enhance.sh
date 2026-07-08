@@ -26,6 +26,14 @@ LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 CLAIM_TTL=90  # Minutes
 
+# Shared per-workflow worktree reclaim helper. Provides `remove_own_worktree`,
+# which applies structural safety guards (1-5) before removing an agent's
+# worktree instead of the unconditional `git worktree remove --force || rm -rf`
+# that could silently destroy an in-flight agent's uncommitted work (#35255,
+# follow-up to #35223 / PR #35237).
+# shellcheck source=../lib/worktree-cleanup.sh
+source "$REPO_ROOT/scripts/lib/worktree-cleanup.sh"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -66,24 +74,74 @@ get_running_agents() {
     tmux list-sessions 2>/dev/null | grep "^$SESSION_PREFIX" | cut -d: -f1 || true
 }
 
-# Create worktree for an agent
+# Create worktree for an agent.
+#
+# Historically this force-deleted any existing worktree at the slot-keyed path
+# (.loom/worktrees/enhancer-N) with `git worktree remove --force || rm -rf`,
+# silently destroying an in-flight agent's uncommitted work (#35223 / #35255).
+#
+# This version:
+#   1. Uses the shared `remove_own_worktree` guards (1-5) from
+#      scripts/lib/worktree-cleanup.sh instead of an unconditional force-delete,
+#      so a dirty / unpushed / locked / busy / current-checkout worktree is
+#      preserved rather than discarded.
+#   2. If a guard preserves the existing worktree, allocates a fresh,
+#      non-colliding path (enhancer-N-2, enhancer-N-3, ...) instead of deleting
+#      in-flight work.
+#   3. Guards the branch deletion: a branch carrying unpushed commits is never
+#      force-deleted; a fresh branch name is allocated instead.
+#
+# Emits two tab-separated fields on stdout: "<worktree_path>\t<branch_name>".
+# All human-readable progress is routed to stderr so the caller can safely
+# capture the machine-readable line. The branch is returned because a
+# reallocated path uses a matching unique branch, and the caller must reference
+# the real branch in the agent prompt.
 create_agent_worktree() {
     local agent_num="$1"
-    local worktree_path="$WORKTREES_DIR/enhancer-$agent_num"
-    local branch_name="feature/enhancer-$agent_num"
+    local base_path="$WORKTREES_DIR/enhancer-$agent_num"
+    local base_branch="feature/enhancer-$agent_num"
 
-    # Remove existing worktree if it exists
+    local worktree_path="$base_path"
+    local branch_name="$base_branch"
+
+    # Reclaim any existing worktree at the primary path with the shared safety
+    # guards. `remove_own_worktree` returns 0 whether it removed OR preserved
+    # the worktree, so re-test the directory afterwards to distinguish.
     if [[ -d "$worktree_path" ]]; then
-        print_info "Removing existing worktree for agent $agent_num..."
-        git worktree remove "$worktree_path" --force 2>/dev/null || rm -rf "$worktree_path"
+        print_info "Reclaiming existing worktree for agent $agent_num (guarded)..." >&2
+        remove_own_worktree "$worktree_path"
     fi
 
-    # Delete existing branch if it exists (force fresh start)
-    git branch -D "$branch_name" 2>/dev/null || true
+    # If the primary path is still occupied, a guard preserved in-flight work.
+    # Allocate a fresh, non-colliding path/branch rather than deleting it.
+    if [[ -d "$worktree_path" ]]; then
+        print_warning "Worktree for agent $agent_num preserved (in-flight work); allocating a fresh path..." >&2
+        local suffix=2
+        while [[ -d "$base_path-$suffix" ]]; do
+            remove_own_worktree "$base_path-$suffix"
+            [[ -d "$base_path-$suffix" ]] || break
+            suffix=$((suffix + 1))
+        done
+        worktree_path="$base_path-$suffix"
+        branch_name="$base_branch-$suffix"
+    fi
 
-    # Create fresh worktree with new branch from main
-    print_info "Creating worktree for agent $agent_num..."
-    git worktree add "$worktree_path" -b "$branch_name" main
+    # Delete the target branch only when safe. `git branch -d` refuses to drop a
+    # branch with unmerged/unpushed commits or one still checked out, so it will
+    # never force-discard in-flight work the way the old unconditional `-D` did.
+    if git show-ref --verify --quiet "refs/heads/$branch_name" \
+        && ! git branch -d "$branch_name" >/dev/null 2>&1; then
+        print_warning "Branch $branch_name has unpushed work; allocating a fresh branch..." >&2
+        local bsuffix=2
+        while git show-ref --verify --quiet "refs/heads/${base_branch}-$bsuffix"; do
+            bsuffix=$((bsuffix + 1))
+        done
+        branch_name="${base_branch}-$bsuffix"
+    fi
+
+    # Create fresh worktree with the (possibly reallocated) branch from main.
+    print_info "Creating worktree for agent $agent_num at $worktree_path (branch $branch_name)..." >&2
+    git worktree add "$worktree_path" -b "$branch_name" main >&2
 
     # Initialize submodules if needed
     if [[ -f "$worktree_path/.gitmodules" ]]; then
@@ -96,7 +154,7 @@ create_agent_worktree() {
         ln -s "$REPO_ROOT/proofs/.lake" "$worktree_path/proofs/.lake"
     fi
 
-    echo "$worktree_path"
+    printf '%s\t%s\n' "$worktree_path" "$branch_name"
 }
 
 # Show status of all agents
@@ -232,12 +290,28 @@ cleanup_worktrees() {
 
         if [[ -d "$worktree_path" ]]; then
             print_info "Removing worktree: $worktree_path"
-            git worktree remove "$worktree_path" --force 2>/dev/null || rm -rf "$worktree_path"
+            # Full-teardown path (operator-invoked `cleanup`). Use the guarded
+            # remove so a genuinely dirty/unpushed worktree survives an
+            # accidental cleanup invocation instead of being force-discarded.
+            # remove_own_worktree returns 0 whether it removed OR preserved, so
+            # re-test the directory to surface a preserved worktree to the
+            # operator. No fresh-path reallocation here — this is a teardown, not
+            # a create path.
+            remove_own_worktree "$worktree_path"
+            if [[ -d "$worktree_path" ]]; then
+                print_warning "Worktree preserved (in-flight work): $worktree_path — cleanup incomplete"
+            fi
         fi
 
-        # Delete branch
-        git branch -D "$branch_name" 2>/dev/null && \
-            print_info "Deleted branch: $branch_name" || true
+        # Delete branch only when safe (`-d` refuses branches with
+        # unmerged/unpushed commits or still checked out).
+        if git show-ref --verify --quiet "refs/heads/$branch_name"; then
+            if git branch -d "$branch_name" 2>/dev/null; then
+                print_info "Deleted branch: $branch_name"
+            else
+                print_warning "Branch preserved (unpushed work): $branch_name — cleanup incomplete"
+            fi
+        fi
     done
 
     # Prune worktree references
@@ -350,9 +424,11 @@ launch_agents() {
         local log_file="$LOGS_DIR/$session.log"
         local enhancer_id="enhancer-$i"
 
-        # Create isolated worktree for this agent
-        local worktree_path
-        worktree_path=$(create_agent_worktree "$i")
+        # Create isolated worktree for this agent. create_agent_worktree emits
+        # "<path>\t<branch>"; the branch may differ from feature/enhancer-$i when
+        # a guard preserved in-flight work and a fresh path/branch was allocated.
+        local worktree_path branch_name
+        IFS=$'\t' read -r worktree_path branch_name < <(create_agent_worktree "$i")
 
         # Create tmux session starting in the worktree
         tmux new-session -d -s "$session" -c "$worktree_path"
@@ -370,7 +446,7 @@ launch_agents() {
 You are working in an isolated git worktree with your own branch.
 
 **Your worktree:** $worktree_path
-**Your branch:** feature/enhancer-$i
+**Your branch:** $branch_name
 **Claim script:** \$REPO_ROOT/scripts/erdos/claim-stub.sh
 
 ## Quick Start
@@ -382,10 +458,10 @@ You are working in an isolated git worktree with your own branch.
 4. Enhance it (Lean proof, meta.json, annotations.json)
 5. Build: \`pnpm build\`
 6. Commit: \`git add src/data/proofs/erdos-N/ proofs/Proofs/ErdosNProblem.lean && git commit -m "Enhance Erdős #N: Title"\`
-7. Push: \`git push -u origin feature/enhancer-$i\`
+7. Push: \`git push -u origin $branch_name\`
 8. Create PR: \`gh pr create --title "Enhance Erdős #N" --body "Stub enhancement" --label erdos-enhancement\`
 9. Mark complete: \`\$REPO_ROOT/scripts/erdos/claim-stub.sh complete N\` (fails if quality issues remain; use --force to override)
-10. Reset for next: \`git checkout main && git pull && git checkout -B feature/enhancer-$i main\`
+10. Reset for next: \`git checkout main && git pull && git checkout -B $branch_name main\`
 11. Repeat from step 2
 
 Start now by running step 1 to read the full instructions, then claim and enhance a stub.
