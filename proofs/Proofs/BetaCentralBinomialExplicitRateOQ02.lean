@@ -149,10 +149,13 @@ lemma diff_lower_leading (m : ℕ) :
     intro k _; positivity
   have h0 := le_hasSum hHS 0 hnonneg
   have hy_eq : y = 1 / (2 * t + 1) ^ 2 := by rw [hy, hx, div_pow]; norm_num
-  have hbeta : (fun k : ℕ => 1 / (2 * ((k : ℝ) + 1) + 1) * y ^ (k + 1)) 0
+  -- `le_hasSum` already β-reduces the `k = 0` term in `h0`; rewrite it in place.
+  have hbeta : 1 / (2 * (((0 : ℕ) : ℝ) + 1) + 1) * y ^ (0 + 1)
       = 1 / (3 * (2 * t + 1) ^ 2) := by
-    show 1 / (2 * (((0 : ℕ) : ℝ) + 1) + 1) * y ^ (0 + 1) = 1 / (3 * (2 * t + 1) ^ 2)
-    rw [hy_eq]; simp only [Nat.cast_zero, zero_add, pow_one]; ring
+    rw [hy_eq]
+    simp only [Nat.cast_zero, zero_add, pow_one]
+    rw [div_mul_div_comm]
+    norm_num
   rw [hbeta] at h0
   exact h0
 
@@ -316,7 +319,8 @@ lemma stirlingLogDev_lower (m : ℕ) :
     htendM.sub_const _
   have hfinal := le_of_tendsto_of_tendsto' htend_lb htend hbound
   have hsimp : (1 / (12 * ((m : ℝ) + 1)) - 0) - (1 / 12) * (1 / ((m : ℝ) + 1) ^ 2)
-      = 1 / (12 * ((m : ℝ) + 1)) - 1 / (12 * ((m : ℝ) + 1) ^ 2) := by ring
+      = 1 / (12 * ((m : ℝ) + 1)) - 1 / (12 * ((m : ℝ) + 1) ^ 2) := by
+    rw [sub_zero, div_mul_div_comm, one_mul]
   rw [hsimp] at hfinal
   exact hfinal
 
