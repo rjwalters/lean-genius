@@ -297,6 +297,41 @@ def franklFurediEven (n r : ℕ) : Finset (Finset ℕ) :=
   (Finset.range n).powerset.filter
     (fun A => (A.filter (· ≠ 0)).card ≥ (n + r) / 2 ∨ A.card < r)
 
+/--
+**Two members of `franklFurediOdd` avoid `r`-intersection.**
+Generalizes `large_sets_avoid_1` (the `r = 1` case) to all `r`. Three cases:
+* both sets large (`|A|, |B| > (n+r)/2`): inclusion–exclusion gives
+  `|A ∩ B| ≥ |A| + |B| - n ≥ 2⌊(n+r)/2⌋ + 2 - n ≥ r + 1 > r` (both parities);
+* either set small (`|·| < r`): `|A ∩ B| ≤ min(|A|,|B|) < r`.
+In every case `|A ∩ B| ≠ r`.
+-/
+theorem franklFurediOdd_avoids_r (n r : ℕ) : avoidsRIntersection r (franklFurediOdd n r) := by
+  intro A B hA hB
+  rw [franklFurediOdd, Finset.mem_filter, Finset.mem_powerset] at hA hB
+  obtain ⟨hAsub, hAcond⟩ := hA
+  obtain ⟨hBsub, hBcond⟩ := hB
+  have hie := Finset.card_union_add_card_inter A B
+  have hunion : (A ∪ B).card ≤ n := by
+    calc (A ∪ B).card ≤ (Finset.range n).card :=
+          Finset.card_le_card (Finset.union_subset hAsub hBsub)
+      _ = n := Finset.card_range n
+  have hiA : (A ∩ B).card ≤ A.card := Finset.card_le_card Finset.inter_subset_left
+  have hiB : (A ∩ B).card ≤ B.card := Finset.card_le_card Finset.inter_subset_right
+  rcases hAcond with hAlarge | hAsmall <;> rcases hBcond with hBlarge | hBsmall <;> omega
+
+/--
+**Lower bound on `T(n,r)` from the Frankl–Füredi `franklFurediOdd` construction.**
+Since `franklFurediOdd n r` is a valid `r`-avoiding subfamily of `2^{[n]}`, its
+cardinality bounds `T(n,r)` below. This is the general-`r` analogue of
+`largeSetsFamily_card_le_T`.
+-/
+theorem franklFurediOdd_card_le_T (n r : ℕ) : (franklFurediOdd n r).card ≤ T n r := by
+  have hmem : franklFurediOdd n r ∈
+      ((Finset.range n).powerset.powerset).filter (avoidsRIntersection r) := by
+    rw [Finset.mem_filter]
+    exact ⟨Finset.mem_powerset.mpr (Finset.filter_subset _ _), franklFurediOdd_avoids_r n r⟩
+  exact Finset.le_sup hmem
+
 /-
 ## Part V: The Main Question - Exponential Bound
 
