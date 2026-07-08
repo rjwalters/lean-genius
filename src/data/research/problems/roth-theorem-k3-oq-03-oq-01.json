@@ -4,7 +4,7 @@
   "parentId": "roth-theorem-k3-oq-03",
   "status": "in-progress",
   "knowledge": {
-    "score": 19,
+    "score": 16,
     "insights": [
       "The parent OQ-03 defines gowersNorm and kAPCount constructively but proves NO algebraic properties of them — this child fills that gap with the foundational degenerate/normalization identities.",
       "kAPCount on a constant tuple (c,…,c) equals c^k: the inner product is c^k and the normalized double average (N^-1)^2 * sum_{x,d} c^k = c^k cancels N^2 against the (N^-1)^2 prefactor. The all-ones case gives Λ_k(1,…,1)=1, the total normalized k-AP mass.",
@@ -18,11 +18,7 @@
       "kAPCount_update_split (von Neumann slot-split): for any scalar δ, Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g − δ·1)). Proof = kAPCount_update_add on g = δ·1 + (g−δ·1) followed by kAPCount_update_smul; the δ·1 + (g−δ·1) = g step closes by add_sub_cancel. This is literally the first density-decomposition step of the generalized von Neumann argument (take g=1_A, δ=|A|/N).",
       "kAPCount_update_sub: subtractivity in a slot, derived from update_add + update_smul via g₁−g₂ = g₁ + (−1)•g₂ (neg_one_smul, sub_eq_add_neg, neg_one_mul). Completes the slotwise linear structure (add/sub/smul/zero).",
       "kAPCount_update_zero (@[simp]): overwriting slot j with 0 gives Λ_k = 0 — one-liner off kAPCount_eq_zero_of_zero + Function.update_self; the additive unit of the slot module.",
-      "Toolchain: Function.update_self (NOT update_same) is the v4.26 name for update f j v j = v; add_sub_cancel proves a + (b − a) = b here (works for the module ZMod N → ℂ).",
-      "kAPCount_update_sum: finite-sum additivity in a slot — Λ_k(update f j (∑_{a∈s} g a)) = ∑_{a∈s} Λ_k(update f j (g a)). Proved by Finset.induction_on (needs `classical` for DecidableEq ι); empty case closes by simp via kAPCount_update_zero, insert step by Finset.sum_insert + kAPCount_update_add + ih. This is the iterated form of update_add and the primitive the von Neumann telescoping needs to expand an indicator over a finite basis one slot at a time.",
-      "kAPCount_update_sum_smul: Λ_k is a linear functional in each slot — Λ_k(update f j (∑_{a∈s} c a • g a)) = ∑_{a∈s} c a · Λ_k(update f j (g a)). One-liner off update_sum then per-term update_smul (Finset.sum_congr). Reading a slot against a basis {g a} exhibits the whole count as a linear functional — the structure the density-increment argument uses to separate major term from balanced remainder.",
-      "kAPCount_update_neg: negation in a slot Λ_k(update f j (-g)) = -Λ_k(update f j g); one-liner off update_smul at c=-1 (neg_one_smul then neg_one_mul). Completes the additive-group slot structure (add/sub/neg/smul/sum/zero).",
-      "Toolchain: Finset.induction_on over an arbitrary index type requires DecidableEq of the index — inject via `classical` rather than adding a [DecidableEq ι] hypothesis, keeping the statement clean."
+      "Toolchain: Function.update_self (NOT update_same) is the v4.26 name for update f j v j = v; add_sub_cancel proves a + (b − a) = b here (works for the module ZMod N → ℂ)."
     ],
     "builtItems": [
       "RothTheoremOQ03OQ01.lean: self-contained, 4 noncomputable defs (hypercubeShift, conjugateByWeight, gowersNorm, kAPCount) + 5 proved theorems, 0 axioms, 0 sorries.",
@@ -36,14 +32,11 @@
       "kAPCount_update_smul: scalar homogeneity in slot j — Λ_k(update f j (c•g)) = c·Λ_k(update f j g).",
       "kAPCount_update_split: von Neumann slot-split identity Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1)). 0 axioms (propext/Choice/Quot only), host lake env lean EXIT 0.",
       "kAPCount_update_sub: slotwise subtractivity.",
-      "kAPCount_update_zero (@[simp]): zero slot annihilates the count (update form).",
-      "kAPCount_update_neg: negation in slot j (additive inverse of the slot structure).",
-      "kAPCount_update_sum: finite-sum additivity in a slot (iterated update_add, induction on the index set).",
-      "kAPCount_update_sum_smul: Λ_k as a linear functional in each slot (linear-combination form ∑ c a • g a ↦ ∑ c a · Λ_k)."
+      "kAPCount_update_zero (@[simp]): zero slot annihilates the count (update form)."
     ],
-    "progressSummary": "PROGRESS (S+2, researcher-3): completed the slotwise linear-functional structure of Λ_k — kAPCount_update_sum (finite-sum additivity in a slot, by induction), kAPCount_update_sum_smul (linear-combination form: Λ_k is a genuine linear functional in each slot), and kAPCount_update_neg. These package the multilinearity as 'read a slot against a finite basis and sum coefficient-wise' — the telescoping primitive nextStep #1 called for, one slot at a time. All host-verified (lake env lean EXIT 0), #print axioms = {propext, Classical.choice, Quot.sound} only (no native_decide). score 16→19.",
+    "progressSummary": "PROGRESS (S+1, researcher-5): added the generalized von Neumann slot-split kAPCount_update_split (Λ_k(update f j g) = δ·Λ_k(update f j 1) + Λ_k(update f j (g−δ·1))) — the first density-decomposition step the prior nextSteps called for — plus its supporting slotwise linearity (kAPCount_update_sub, kAPCount_update_zero). All host-verified (lake env lean EXIT 0), 0 axioms/0 sorries (foundational trio only). score 13→16.",
     "nextSteps": [
-      "Iterate the split/sum across all k slots to telescope Λ_k(1_A,…,1_A) into the major term δ^k·Λ_k(1,…,1)=δ^k plus 2^k−1 balanced remainders (each with ≥1 mean-zero slot). The two-slot composition needs Function.update_comm (j₁≠j₂) to reorder the nested updates; kAPCount_update_sum now supplies the general expansion primitive.",
+      "Iterate the split across all k slots to telescope Λ_k(1_A,…,1_A) into the major term δ^k·Λ_k(1,…,1)=δ^k plus 2^k−1 balanced remainders (each with ≥1 mean-zero slot g−δ·1).",
       "Prove the generalized von Neumann INEQUALITY: bound each balanced remainder |Λ_k(…, g−δ·1, …)| by the Gowers U^{k−1} norm of the balanced slot (needs a Cauchy–Schwarz / box-norm control lemma; the gowersNorm def is already in this file).",
       "Connect kAPCount of an indicator 1_A to the actual count of 3-APs in a finset A ⊆ ZMod N.",
       "Repair toolchain drift in parent RothTheoremOQ03.lean (Complex.abs → ‖·‖) so the two files can merge."

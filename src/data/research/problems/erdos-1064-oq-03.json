@@ -25,17 +25,17 @@
     {
       "path": "Proofs/EulerTotientOQ04OQ03.lean",
       "filename": "EulerTotientOQ04OQ03.lean",
-      "lineCount": 111,
-      "theoremCount": 9,
+      "lineCount": 307,
+      "theoremCount": 24,
       "axiomCount": 0,
-      "defCount": 1,
+      "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ04OQ03.lean"
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS: forward inequality on all odd primes; sharp boundary at p=2. This session added the STRUCTURAL reversal criterion (reversal ⟺ φ(n)+1<D(n) on prime landings, explaining the clustering) and showed reversal extends to COMPOSITE landings (n=42, D(42)=34=2·17). Infinitely-often direction remains OPEN. All results 0 axioms / 0 sorries.",
+    "progressSummary": "RESOLVED (infinitely-often direction): the reversal φ(n) < φ(D(n)) now holds on an EXPLICIT INFINITE family n = 21·2^(k+1), for which D(n) = 17·2^(k+1) and φ(n) = 12·2^k < 16·2^k = φ(D(n)). This generalises the composite-landing witnesses n=42 (k=0), n=84 (k=1) into a full infinite family, so ReversalSet is infinite — no density input. Combined with the odd-prime forward family, BOTH directions of OQ-03 now hold infinitely often (oq03_both_directions_infinite). All 0 axioms / 0 sorries (only propext/Classical.choice/Quot.sound).",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -47,7 +47,13 @@
       "forward_not_universal — packaging theorem: (∀ prime p≥3, φ(D(p))<φ(p)) ∧ (∃ n, φ(n)<φ(D(n))); shows both directions occur for the higher iterate, mirroring the single-step Erdős 1064.",
       "reversal_iff_of_dblIter_prime (structural reversal criterion, EulerTotientOQ04OQ03.lean:127)",
       "reverse_of_dblIter_prime + reverse_at_39 re-derivation (EulerTotientOQ04OQ03.lean:137,143)",
-      "reversal_with_composite_landing: composite-landing reversal via n=42 witness (dblIter_42, dblIter_42_not_prime, reverse_at_42; EulerTotientOQ04OQ03.lean:187)"
+      "reversal_with_composite_landing: composite-landing reversal via n=42 witness (dblIter_42, dblIter_42_not_prime, reverse_at_42; EulerTotientOQ04OQ03.lean:187)",
+      "ReversalSet := {n | φ(n) < φ(D(n))} (EulerTotientOQ04OQ03.lean)",
+      "dblIter_family — D(21·2^(k+1)) = 17·2^(k+1) for all k (the family collapses through the parent's 15·2^(k+1) entry point, then lifts odd part 15↦17).",
+      "mem_ReversalSet_family — φ(21·2^(k+1)) = 12·2^k < 16·2^k = φ(D(·)); reversal on the whole family; recovers n=42 (k=0), n=84 (k=1).",
+      "family_injective — k ↦ 21·2^(k+1) injective.",
+      "reversal_infinitely_many — ReversalSet.Infinite: RESOLVES the open infinitely-often reversal direction (no density).",
+      "oq03_both_directions_infinite — both odd-prime forward family and 21·2^(k+1) reversal family are infinite; OQ-03 goes both ways infinitely often."
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -55,14 +61,16 @@
       "Equality φ(n) = φ(D(n)) is also common (35 of the n in [2,200), including all n where D(n) shares the totient value), so the higher-iterate comparison is genuinely three-way (>, =, <) rather than a clean dichotomy — a structural difference worth noting versus the single-step statement.",
       "Computing concrete totient values through Nat.totient_mul on coprime prime factors is the robust route in Lean: plain `decide` on Nat.totient stalls because Nat.gcd is well-founded recursion that does not reduce well in the kernel; factorisation sidesteps this and keeps the file ofReduceBool-free.",
       "Reversal criterion collapses on prime landings: when D(n) is prime, φ(n)<φ(D(n)) ⟺ φ(n)+1<D(n), since φ(D(n))=D(n)−1. This EXPLAINS the empirical clustering of reversals on prime landings — φ(D(n)) is maximal there, so reversal is governed purely by the landing value size.",
-      "Reversal is NOT confined to prime landings: at n=42, D(42)=34=2·17 is COMPOSITE yet φ(42)=12<16=φ(34). So the reversal family strictly contains the prime-landing family, refining the earlier clustering observation."
+      "Reversal is NOT confined to prime landings: at n=42, D(42)=34=2·17 is COMPOSITE yet φ(42)=12<16=φ(34). So the reversal family strictly contains the prime-landing family, refining the earlier clustering observation.",
+      "The infinitely-often reversal direction (previously OPEN crux) is provable by an EXPLICIT family with NO density machinery: n = 21·2^(k+1) satisfies D(n)=17·2^(k+1) and φ(n)=12·2^k < 16·2^k=φ(D(n)) for every k. n=42,84,168,... are its members.",
+      "The reversal family is obtained by prepending one cototient preimage step to the PARENT single-step family 15·2^(k+1): the first cototient step of 21·2^(k+1) lands exactly on 15·2^(k+1) (the parent family member), and the second step lifts the odd part 15↦17, pushing φ(D(n)) above φ(n). This is a clean 'one extra step' transport of the Grytczuk–Luca–Wójtowicz construction.",
+      "Scaling caveat that guided the search: for n=a·2^(k+1) the totient scales as φ(a)·2^k on both n and D(n) only when the powers of 2 match; a=15 gives EQUALITY (both odd parts have φ=8), whereas a=21 gives strict reversal because the second step lifts 15↦17 raising φ from 8·2^k to 16·2^k."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Attempt the reversal-infinitude direction via primes q with q+φ(q−1)-shaped preimages: characterise n with D(n) prime, since those are the reversal candidates; a Dirichlet/linnik-type input would be needed and is likely the OPEN crux.",
-      "Prove a density-1 forward statement φ(n) > φ(D(n)) for almost all n by transporting the Luca–Pomerance single-step argument through one extra cototient step (assess whether the extra step preserves the density-1 set).",
-      "Formalise the three-way classification on a finite window (n ≤ N) as a decidable certificate to complement the qualitative theorems, and search for the second/third reversal families beyond 'D(n) prime'.",
-      "Characterize composite landing values D(n) admitting reversal (2p with p prime? squarefree with few factors?) toward an infinitely-often construction not relying on prime landings"
+      "Density-1 forward statement φ(n) > φ(D(n)) for almost all n by transporting Luca–Pomerance through one extra cototient step (assess whether the extra step preserves the density-1 set) — this is now the main remaining open direction.",
+      "Characterise ALL reversal points (three-way >,=,< classification) on a finite window as a decidable certificate; the 21·2^(k+1) family covers only one infinite branch.",
+      "Prime-landing reversal infinitude (D(n) prime infinitely often) as a distinct, Dirichlet-type harder direction complementing the elementary 21·2^(k+1) family."
     ]
   }
 }
