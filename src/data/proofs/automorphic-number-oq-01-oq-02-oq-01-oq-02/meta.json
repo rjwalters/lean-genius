@@ -119,6 +119,14 @@
   ],
   "sections": [
     {
+      "id": "setup-from-count-to-structure",
+      "title": "Setup: From the parent's count to an explicit structure",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Imports the two verified siblings — AutomorphicNumberOQ01 (idem_eq_zero_or_one, idemCongr, idemPi) and AutomorphicNumberOQ01OQ02OQ01 (the parent count) — and opens the working namespace. The module docstring frames the upgrade: the parent proved the bare COUNT 2^ω(m) of idempotents of ℤ/m^k; this file replaces that shadow with an explicit bijection identifying each idempotent as a per-prime Bool choice, and then reads the same Boolean cube multiplicatively as the unitary divisors.",
+      "mathContext": "A cardinality 2^ω(m) says how many idempotents exist; this file exhibits which elements they are — the vertices of a Boolean cube of dimension ω(m), one independent 0/1 choice per prime factor of m."
+    },
+    {
       "id": "local-factor-bool",
       "title": "Part I: The local factor — two idempotents, named by Bool",
       "startLine": 57,
@@ -135,12 +143,20 @@
       "mathContext": "ℤ/m^k ≅ ∏ over the distinct primes p of m of the local ring ℤ/p^{v_p}, so an idempotent is a function p ↦ (0 or 1) — a subset of primeFactors(m), giving 2^ω(m) idempotents."
     },
     {
-      "id": "unitary-divisors",
-      "title": "Part III: Unitary divisors and concrete correspondences",
+      "id": "unitary-divisors-def",
+      "title": "Part III: Unitary divisors — the same cube, read multiplicatively",
       "startLine": 112,
-      "endLine": 143,
-      "summary": "unitaryDivisors n := n.divisors.filter (fun d => Nat.Coprime d (n / d)) collects the divisors d ∣ n with gcd(d, n/d) = 1 — equivalently d takes at each prime either the full prime-power p^v_p(n) or 1, so unitary divisors also biject with subsets of primeFactors(n). Four decide-checked examples exhibit the correspondence: unitaryDivisors 12 = {1,3,4,12} and (card = 4) for ω(12) = 2, (unitaryDivisors 30).card = 8 for ω(30) = 3, and unitaryDivisors 9 = {1,9} for the prime power ω(9) = 1. These decide only through Nat.divisors.filter / Nat.Coprime, never reducing Nat.primeFactors.",
+      "endLine": 119,
+      "summary": "Defines unitaryDivisors n := n.divisors.filter (fun d => Nat.Coprime d (n / d)) — the divisors d ∣ n with gcd(d, n/d) = 1. Such a d takes at each prime either the full prime-power p^v_p(n) or 1, so the unitary divisors biject with subsets of primeFactors(n): the same Boolean cube of dimension ω(n) as the idempotents, now recorded multiplicatively rather than as 0/1 residues.",
       "mathContext": "A unitary divisor d ∣ n (gcd(d, n/d) = 1) chooses, at each prime, the full prime-power or 1; unitary divisors biject with subsets of primeFactors(n) and hence with the idempotents of ℤ/n, matching the count 2^ω(n)."
+    },
+    {
+      "id": "unitary-divisors-examples",
+      "title": "Part IV: Concrete idempotent ↔ unitary-divisor correspondences",
+      "startLine": 120,
+      "endLine": 143,
+      "summary": "Four decide-checked examples exhibit the correspondence at concrete moduli: unitaryDivisors 12 = {1,3,4,12} and (card = 4) for ω(12) = 2, (unitaryDivisors 30).card = 8 for ω(30) = 3, and unitaryDivisors 9 = {1,9} for the prime power ω(9) = 1 — each matching card_idempotents_via_bool's 2^ω. These decide only through Nat.divisors.filter / Nat.Coprime (kernel-reducible), never reducing the well-founded Nat.primeFactors, so the entry stays verified on only foundational axioms.",
+      "mathContext": "For n = 12 = 2²·3 (ω=2), 30 = 2·3·5 (ω=3), 9 = 3² (ω=1): #unitaryDivisors n = 2^ω(n) = #idempotents of ℤ/n, checked by decide."
     }
   ],
   "overview": {
@@ -151,7 +167,8 @@
       "**Idempotents are a Boolean cube**: idemEquivPrimeBool identifies each idempotent of ℤ/m^k with a function primeFactors(m^k) → Bool — an independent 0/1 choice at each prime — so 2^ω(m) is transparently a subset count, not an abstract cardinality.",
       "**Naming the local idempotents by Bool is the hinge**: idemEquivBool turns the two trivial idempotents 0 and 1 of each local factor ℤ/p^v into a single Bool, which is exactly what converts the CRT decomposition into a function type.",
       "**Unitary divisors are the same cube, read multiplicatively**: a unitary divisor d ∣ n (gcd(d, n/d) = 1) takes at each prime either the full prime-power or 1, so unitary divisors also biject with subsets of primeFactors(n) — the same 2^ω(n) Boolean cube as the idempotents.",
-      "**decide stays kernel-friendly**: the concrete examples check unitaryDivisors via Nat.divisors.filter and Nat.Coprime (kernel-reducible), never reducing the well-founded Nat.primeFactors recursion, keeping the entry verified with only foundational axioms."
+      "**decide stays kernel-friendly**: the concrete examples check unitaryDivisors via Nat.divisors.filter and Nat.Coprime (kernel-reducible), never reducing the well-founded Nat.primeFactors recursion, keeping the entry verified with only foundational axioms.",
+      "**Locality is why each factor contributes exactly one bit**: the dimension of the Boolean cube is ω(m) precisely because CRT decomposes ℤ/m^k into LOCAL rings ℤ/p^v, and a local ring has no nontrivial idempotents (a nontrivial e would split the ring as a product, contradicting the single maximal ideal). So the count 2^ω(m) is really a statement about how many connected pieces the spectrum of ℤ/m^k has — one binary choice per prime — with idem_eq_zero_or_one supplying the local input to the global CRT decomposition."
     ],
     "prerequisites": [
       "Idempotents in a commutative ring (e² = e) and the Boolean algebra they form",
