@@ -525,6 +525,62 @@ theorem kronecker_periodic_numerator (a : ℤ) (n : ℕ) (hn : 0 < n) (hno : n %
   rw [kronecker_mod_numerator (a + (n : ℤ)) n hn hno, kronecker_mod_numerator a n hn hno,
     Int.add_emod_right]
 
+/-! ### Section 9: the supplementary laws as Mathlib's canonical characters
+
+Section 8 states the supplementary laws in explicit `if`-form (readable residue
+tables).  For the Gauss-sum route to generalized reciprocity (Target 2) the useful
+shape is the opposite: the laws as the *canonical Dirichlet character objects*
+`ZMod.χ₄`, `ZMod.χ₈`, `ZMod.χ₈'` — precisely the characters whose Gauss sums enter
+the reciprocity argument.  These restate `kronecker_neg_one_odd` / `kronecker_two_odd`
+(and the `−2` combined law) without the `if`-unfolding, and are the denominator-side
+counterparts of the numerator-side bridge `kronecker2_eq_χ₈`.  The three then satisfy
+the classical product relation `χ₈' = χ₄ · χ₈` on odd residues, here *certified
+through the local symbol* via first-argument multiplicativity (`kronecker_mul_left`)
+— an independent check of Mathlib's character identity `ZMod.χ₈'_eq...`. -/
+
+/-- **First supplementary law as `χ₄`.**  For odd positive `n`,
+`(-1/n) = χ₄ n` — the classical `(-1)^((n-1)/2)` law in the canonical
+character form Mathlib's reciprocity API consumes.  (The `if`-form is
+`kronecker_neg_one_odd`.) -/
+theorem kronecker_neg_one_eq_χ₄ (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (-1) (n : ℤ) = ZMod.χ₄ (n : ZMod 4) := by
+  rw [kronecker_eq_jacobi (-1) n hn hno, jacobiSym.at_neg_one (Nat.odd_iff.mpr hno)]
+
+/-- **Second supplementary law as `χ₈`.**  For odd positive `n`,
+`(2/n) = χ₈ n` — the classical `(-1)^((n²-1)/8)` law in canonical character
+form.  (The `if`-form is `kronecker_two_odd`.) -/
+theorem kronecker_two_eq_χ₈ (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker 2 (n : ℤ) = ZMod.χ₈ (n : ZMod 8) := by
+  rw [kronecker_eq_jacobi 2 n hn hno, jacobiSym.at_two (Nat.odd_iff.mpr hno)]
+
+/-- **Combined supplementary law as `χ₈'`.**  For odd positive `n`,
+`(-2/n) = χ₈' n`, using Mathlib's `jacobiSym.at_neg_two`.  `χ₈'` is the second
+primitive quadratic character mod `8`. -/
+theorem kronecker_neg_two_eq_χ₈' (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    kronecker (-2) (n : ℤ) = ZMod.χ₈' (n : ZMod 8) := by
+  rw [kronecker_eq_jacobi (-2) n hn hno, jacobiSym.at_neg_two (Nat.odd_iff.mpr hno)]
+
+/-- **`(-2/n) = (-1/n)·(2/n)` at every modulus.**  A direct instance of first-argument
+multiplicativity `kronecker_mul_left` (`-2 = (-1)·2`, nonzero product), specialising
+the general multiplicative law to the supplementary numerators.  No oddness or
+positivity of the modulus is needed — the identity holds for every integer `n`. -/
+theorem kronecker_neg_two_eq_mul (n : ℤ) :
+    kronecker (-2) n = kronecker (-1) n * kronecker 2 n := by
+  rw [show ((-2 : ℤ)) = (-1) * 2 by ring]
+  exact kronecker_mul_left (-1) 2 n (by norm_num)
+
+/-- **The character identity `χ₈' = χ₄ · χ₈` on odd residues, certified via the
+Kronecker symbol.**  Chaining the three supplementary-law bridges through the
+symbol's first-argument multiplicativity: `χ₈' n = (-2/n) = (-1/n)·(2/n) = χ₄ n · χ₈ n`.
+This independently reproves the classical relation between the two primitive
+characters mod `8` and the character mod `4`, obtained here from
+`kronecker_mul_left` rather than from `ZMod`'s character algebra. -/
+theorem χ₈'_eq_χ₄_mul_χ₈_of_odd (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1) :
+    ZMod.χ₈' (n : ZMod 8) = ZMod.χ₄ (n : ZMod 4) * ZMod.χ₈ (n : ZMod 8) := by
+  rw [← kronecker_neg_two_eq_χ₈' n hn hno, ← kronecker_neg_one_eq_χ₄ n hn hno,
+    ← kronecker_two_eq_χ₈ n hn hno]
+  exact kronecker_neg_two_eq_mul (n : ℤ)
+
 /-!
 ## Module note: what remains open
 
