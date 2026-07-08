@@ -407,65 +407,118 @@ tower: `4k + 3 ≤ p3 k ≤ C k`, a strictly tighter ceiling than `p3_bracketed`
 theorem p3_bracketed_primorial (k : ℕ) : 4 * k + 3 ≤ p3 k ∧ p3 k ≤ C k :=
   ⟨p3_ge_linear k, p3_le_primorialTower k⟩
 
-/-! ### The primorial tower never exceeds the factorial tower
+/-! ## Step 6: the primorial tower never exceeds the factorial tower (`C k ≤ B k`)
 
-The worked values suggested `C k` is dramatically smaller than `B k` (`C 1 = 11`
-vs `B 1 = 95`; `C 2 = 131` vs `B 2 = 4·96! − 1`).  We now upgrade this from the
-two verified instances `k = 1, 2` to a **theorem for all `k`**: `C k ≤ B k`.
+`primorial_tighter_than_factorial` established `C 1 < B 1` at the single index
+`k = 1`.  We now upgrade this to a *theorem for all `k`*: the primorial tower `C`
+is dominated by the iterated-factorial tower `B` everywhere, `C k ≤ B k`.
 
-The heart of the argument is the multiplicative gap between the two one-step maps.
-Writing `t = towerProd (k+1) = ∏_{i≤k} C i`, the primorial step gives
-`C (k+1) = 4·t − 1`, whereas the factorial step gives `B (k+1) = 4·(B k + 1)! − 1`.
-So `C (k+1) ≤ B (k+1)` reduces to the single inequality
+The engine is the reduction `C (k+1) ≤ B (k+1) ⇔ towerProd (k+1) ≤ (B k + 1)!`
+(both sides are `4·· − 1`), so it suffices to bound the running product
+`towerProd` by the factorial appearing in `B`.  That product bound is proved by
+induction: writing `F = (B k + 1)!`, the inductive hypothesis gives
+`towerProd (k+1) ≤ F`, and then
+`towerProd (k+2) = towerProd (k+1)·(4·towerProd (k+1) − 1) ≤ F·(4F − 1)
+   ≤ (4F)·(4F − 1) ≤ (4F)! = (B (k+1) + 1)!`,
+using only the elementary factorial lower bound `n·(n−1) ≤ n!`. -/
 
-    towerProd (k+1) ≤ (B k + 1)!.
+/-- Elementary factorial lower bound `n·(n−1) ≤ n!` (from `n! = n·(n−1)!` and
+`n−1 ≤ (n−1)!`).  Supplies the single non-arithmetic step in `C_le_B`. -/
+theorem factorial_ge_mul_pred : ∀ n : ℕ, n * (n - 1) ≤ n !
+  | 0 => by simp
+  | (m + 1) => by
+      rw [Nat.add_sub_cancel, Nat.factorial_succ]
+      exact Nat.mul_le_mul (le_refl (m + 1)) (Nat.self_le_factorial m)
 
-Inductively `towerProd (k+1) = towerProd k · (4·towerProd k − 1) ≤ 4·m²` with
-`m = (B (k−1) + 1)! ≥ towerProd k`, and `4·m² ≤ (4m)! = (B k + 1)!` because a
-factorial dominates the square of its argument (`sq_le_factorial`).  The factorial
-tower's extra `(·)!` at every level therefore swallows the primorial's squaring,
-keeping `C` below `B` uniformly. -/
-
-/-- A factorial dominates the square of its argument once `n ≥ 4`: `n·n ≤ n!`.
-(`4·4 = 16 ≤ 24 = 4!`, and the gap only widens.) -/
-theorem sq_le_factorial : ∀ n : ℕ, 4 ≤ n → n * n ≤ n ! := by
-  intro n hn
-  induction n, hn using Nat.le_induction with
-  | base => decide
-  | succ n hn ih =>
-    rw [Nat.factorial_succ]
-    have h1 : n + 1 ≤ n ! := le_trans (by nlinarith [hn]) ih
-    exact Nat.mul_le_mul (le_refl (n + 1)) h1
-
-/-- **The reduction inequality.**  `towerProd (k+1) = ∏_{i≤k} C i ≤ (B k + 1)!`.
-This is exactly what makes the primorial step stay below the factorial step:
-`C (k+1) = 4·towerProd (k+1) − 1 ≤ 4·(B k + 1)! − 1 = B (k+1)`.  Proved by
-induction; the step bounds `towerProd (k+2) ≤ 4·((B k + 1)!)² ≤ (4·(B k + 1)!)!
-= (B (k+1) + 1)!` via `sq_le_factorial`. -/
+/-- The running product is bounded by the factorial appearing in the next `B`
+step: `towerProd (k+1) ≤ (B k + 1)!`.  This is the crux of `C_le_B`. -/
 theorem towerProd_succ_le_factorial (k : ℕ) : towerProd (k + 1) ≤ (B k + 1)! := by
   induction k with
   | zero => decide
   | succ k ih =>
-    have hm1 : 1 ≤ (B k + 1)! := Nat.factorial_pos _
-    have hBsucc : B (k + 1) + 1 = 4 * (B k + 1)! := by rw [B_succ]; omega
-    have hsq := sq_le_factorial (4 * (B k + 1)!) (by omega)
-    calc towerProd (k + 1 + 1)
-          = towerProd (k + 1) * (4 * towerProd (k + 1) - 1) := towerProd_succ (k + 1)
-      _ ≤ (B k + 1)! * (4 * (B k + 1)!) := Nat.mul_le_mul ih (by omega)
-      _ ≤ (4 * (B k + 1)!) * (4 * (B k + 1)!) := Nat.mul_le_mul (by omega) (le_refl _)
-      _ ≤ (4 * (B k + 1)!)! := hsq
-      _ = (B (k + 1) + 1)! := by rw [hBsucc]
+    have hFpos := Nat.factorial_pos (B k + 1)
+    have hB1 : B (k + 1) + 1 = 4 * (B k + 1)! := by rw [B_succ]; omega
+    rw [towerProd_succ, hB1]
+    set F := (B k + 1)! with hF
+    set tp := towerProd (k + 1) with htp
+    calc tp * (4 * tp - 1)
+        ≤ F * (4 * F - 1) := Nat.mul_le_mul ih (by omega)
+      _ ≤ (4 * F) * (4 * F - 1) := Nat.mul_le_mul (by omega) (le_refl _)
+      _ ≤ (4 * F)! := factorial_ge_mul_pred (4 * F)
 
-/-- **The primorial tower never exceeds the factorial tower: `C k ≤ B k` for all `k`.**
-Upgrades the two verified instances (`primorial_tighter_than_factorial`, `k = 1`;
-`C_two_eq` vs `B 2`) to a uniform theorem.  Both towers certify the same bound
-`p3 k ≤ B k, C k`, but `C` — replacing the running factorial by the running
-primorial — is always the tighter certificate.  `native_decide`-free. -/
+/-- **The primorial tower never exceeds the factorial tower.** For every `k`,
+`C k ≤ B k`: the doubly-exponential primorial tower `C` is dominated everywhere
+by the iterated-factorial tower `B`.  Equality holds only at `k = 0`
+(`C 0 = B 0 = 3`); for `k ≥ 1` the domination is strict already at `k = 1`
+(`C 1 = 11 < 95 = B 1`, see `primorial_tighter_than_factorial`).  This makes the
+tightness of the primorial refinement a *theorem for all `k`* rather than a
+single-index observation. -/
 theorem C_le_B (k : ℕ) : C k ≤ B k := by
   cases k with
   | zero => decide
   | succ k =>
     have h := towerProd_succ_le_factorial k
     rw [C_eq, B_succ]; omega
+
+/-! ## Step 7: the domination is **strict** for every `k ≥ 1` (`C k < B k`)
+
+`C_le_B` gives `C k ≤ B k` everywhere, with equality at `k = 0`
+(`C 0 = B 0 = 3`).  We now upgrade the inequality to a *strict* one for all
+`k ≥ 1`, matching the single-index observation `C 1 = 11 < 95 = B 1` of
+`primorial_tighter_than_factorial`.  The slack is already present in the
+factorial step: the ceiling `n·(n−1) ≤ n!` used in `C_le_B` is in fact *strict*
+for `n ≥ 4` (`n! = n·(n−1)!` and `(n−1)! > (n−1)` once `n−1 ≥ 3`), and the
+argument `4·(B k + 1)! ≥ 4` always lands in that regime.  So the running-product
+bound `towerProd (k+1) ≤ (B k + 1)!` sharpens to a strict `<`, and the strictness
+transfers to `C (k+1) < B (k+1)` because both towers apply the same monotone
+`x ↦ 4·(x+1)! − 1` (resp. `x ↦ 4·x − 1`) map. -/
+
+/-- Strict elementary factorial bound `n·(n−1) < n!` for `n ≥ 4`.  From
+`n! = n·(n−1)!` together with `(n−1) < (n−1)!` (valid since `n − 1 ≥ 3`), i.e.
+`Nat.lt_factorial_self`.  This is the strict refinement of `factorial_ge_mul_pred`
+that supplies the strictness in `C_lt_B`. -/
+theorem factorial_gt_mul_pred {n : ℕ} (hn : 4 ≤ n) : n * (n - 1) < n ! := by
+  obtain ⟨p, rfl⟩ : ∃ p, n = p + 1 := ⟨n - 1, by omega⟩
+  have hp : 3 ≤ p := by omega
+  have hlt : p < p ! := Nat.lt_factorial_self hp
+  rw [Nat.add_sub_cancel, Nat.factorial_succ]
+  exact mul_lt_mul_of_pos_left hlt (by omega)
+
+/-- Strict running-product bound `towerProd (k+1) < (B k + 1)!`.  Identical to
+`towerProd_succ_le_factorial` except the final factorial step is strict via
+`factorial_gt_mul_pred` (its argument `4·(B k + 1)!` is always `≥ 4`). -/
+theorem towerProd_succ_lt_factorial (k : ℕ) : towerProd (k + 1) < (B k + 1)! := by
+  induction k with
+  | zero => decide
+  | succ k ih =>
+    have hFpos := Nat.factorial_pos (B k + 1)
+    have hB1 : B (k + 1) + 1 = 4 * (B k + 1)! := by rw [B_succ]; omega
+    rw [towerProd_succ, hB1]
+    set F := (B k + 1)! with hF
+    set tp := towerProd (k + 1) with htp
+    calc tp * (4 * tp - 1)
+        ≤ F * (4 * F - 1) := Nat.mul_le_mul (by omega) (by omega)
+      _ ≤ (4 * F) * (4 * F - 1) := Nat.mul_le_mul (by omega) (le_refl _)
+      _ < (4 * F)! := factorial_gt_mul_pred (by omega)
+
+/-- **The primorial tower is strictly below the factorial tower for every
+`k ≥ 1`.**  `C k < B k` whenever `k ≥ 1`, sharpening `C_le_B` (which allows
+equality) and promoting the single-index fact `C 1 = 11 < 95 = B 1` to a theorem
+for all `k ≥ 1`.  Equality holds *only* at `k = 0` (`C 0 = B 0 = 3`), so together
+with `C_le_B` this pins down the comparison exactly: `C k = B k ⇔ k = 0`. -/
+theorem C_lt_B {k : ℕ} (hk : 1 ≤ k) : C k < B k := by
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  have h := towerProd_succ_lt_factorial j
+  rw [C_eq, B_succ]; omega
+
+/-- **Exact comparison of the two towers.** `C k = B k` if and only if `k = 0`;
+for all `k ≥ 1` the primorial tower is strictly smaller.  Combines `C_le_B`,
+`C_lt_B`, and the base equality `C 0 = B 0 = 3`. -/
+theorem C_eq_B_iff (k : ℕ) : C k = B k ↔ k = 0 := by
+  constructor
+  · intro h
+    by_contra hk
+    exact absurd h (Nat.ne_of_lt (C_lt_B (by omega)))
+  · rintro rfl; decide
 
 end DirichletsTheoremOQ02OQ03
