@@ -62,7 +62,7 @@
   {
     "id": "erdos1017oq05-ann-keystones",
     "proofId": "erdos-1017-oq-05",
-    "range": { "startLine": 210, "endLine": 290 },
+    "range": { "startLine": 210, "endLine": 270 },
     "type": "theorem",
     "title": "Upper Bounds, Disjointness Keystone, and Positivity",
     "content": "Both numbers are bounded by the hyperedge count (partitionNum_le_edgesCard, coverNum_le_edgesCard) via the trivial partition. The disjointness keystone CompletePartition.edge_unique_clique states a hyperedge lies in a UNIQUE partition clique — exactly the property a cover lacks, and (as in the graph case) the structural reason cpₖ can exceed ccₖ; every partition-number lower bound rests on it. The base cases coverNum_pos_of_edge and partitionNum_pos_of_edge show both numbers are ≥ 1 once H has a hyperedge, by a card_eq_zero contradiction: an empty family cannot contain any hyperedge. These are the reusable lemmas a future strict-gap argument (a concrete witness hypergraph plus a counting identity over k-subsets) would build on. The strict gap ccₖ(H) < cpₖ(H) is left open, honestly parallel to the open strict graph gap.",
@@ -77,6 +77,26 @@
     "prerequisites": [
       "Finset.card_eq_zero",
       "unique existence extraction"
+    ]
+  },
+  {
+    "id": "erdos1017oq05-ann-graph-case",
+    "proofId": "erdos-1017-oq-05",
+    "range": { "startLine": 283, "endLine": 290 },
+    "type": "insight",
+    "title": "Sanity check: the k = 2 case recovers OQ-04's graph notions",
+    "content": "mem_edges_of_isCompleteSub_card_eq closes the loop back to the parent graph problem OQ-04. At uniformity k = 2 the abstract machinery must collapse to ordinary graph clique cover/partition: a hyperedge is a vertex pair, a complete sub-hypergraph is a clique, and ccₖ, cpₖ become cc(G), cp(G). This theorem records the non-trivial converse specialising the definition — a 2-element vertex set that is a complete sub-hypergraph is itself a hyperedge (obtained by applying the IsCompleteSub predicate to the reflexive subset with the exact cardinality). Together with the forward direction isCompleteSub_of_mem_edges it confirms that, for k = 2, 'smallest complete sub-hypergraph = single edge', so the whole development is a faithful generalisation of OQ-04 rather than a divergent definition.",
+    "mathContext": "At $k = 2$: $S$ with $|S| = 2$ is a complete sub-hypergraph $\\iff S \\in E(H)$ — the hypergraph clique cover/partition numbers specialise to the graph $cc(G) \\le cp(G)$ of OQ-04.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specialisation to graphs (k = 2)",
+      "clique = edge at uniformity 2",
+      "faithful generalisation of OQ-04",
+      "IsCompleteSub predicate"
+    ],
+    "prerequisites": [
+      "the IsCompleteSub definition",
+      "the k = 2 graph clique cover/partition numbers"
     ]
   }
 ]
