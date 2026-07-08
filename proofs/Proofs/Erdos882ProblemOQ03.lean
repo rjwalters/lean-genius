@@ -203,4 +203,48 @@ theorem subsetSums_card_bounds (A : Finset ℕ) :
     A.card ≤ (subsetSums A).card ∧ (subsetSums A).card ≤ 2 ^ A.card - 1 :=
   ⟨subsetSums_card_ge A, subsetSums_card_le A⟩
 
+/-- **The total sum is a subset sum.**  The whole set `A` is one of its own
+    non-empty subsets (when `A` is non-empty), so its total `∑ A` occurs as a
+    subset sum. -/
+theorem sum_mem_subsetSums {A : Finset ℕ} (hA : A.Nonempty) :
+    A.sum id ∈ subsetSums A := by
+  unfold subsetSums nonemptySubsets
+  rw [Finset.mem_image]
+  refine ⟨A, ?_, rfl⟩
+  rw [Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨Finset.Subset.refl A, Finset.nonempty_iff_ne_empty.mp hA⟩
+
+/-- **The total sum dominates every subset sum.**  Every non-empty subset sum is
+    at most the total `∑ A`, since a subset's sum never exceeds the whole set's
+    sum (all summands are non-negative). -/
+theorem subsetSums_le_sum {A : Finset ℕ} :
+    ∀ s ∈ subsetSums A, s ≤ A.sum id := by
+  intro s hs
+  unfold subsetSums nonemptySubsets at hs
+  rw [Finset.mem_image] at hs
+  obtain ⟨S, hS, rfl⟩ := hs
+  rw [Finset.mem_filter, Finset.mem_powerset] at hS
+  exact Finset.sum_le_sum_of_subset hS.1
+
+/-- **Sharp membership range.**  For a set of positive integers every non-empty
+    subset sum lies in `{1,…,∑ A}`.  This refines `subsetSums_subset_Icc`
+    (`{1,…,n·|A|}`): since each element is `≤ n`, `∑ A ≤ n·|A|`, so this interval
+    is contained in the coarser one, and by `sum_mem_subsetSums` its right endpoint
+    is attained. -/
+theorem subsetSums_subset_Icc_sum {A : Finset ℕ}
+    (hlo : ∀ a ∈ A, 1 ≤ a) :
+    subsetSums A ⊆ Finset.Icc 1 (A.sum id) := by
+  intro s hs
+  rw [Finset.mem_Icc]
+  exact ⟨subsetSums_pos hlo s hs, subsetSums_le_sum s hs⟩
+
+/-- **The maximum subset sum is the total.**  For a non-empty set the largest of
+    its non-empty subset sums is exactly `∑ A`: it is attained (by the full subset,
+    `sum_mem_subsetSums`) and dominates all others (`subsetSums_le_sum`). -/
+theorem max'_subsetSums_eq_sum {A : Finset ℕ} (hA : A.Nonempty) :
+    (subsetSums A).max' (subsetSums_nonempty hA) = A.sum id :=
+  le_antisymm
+    (Finset.max'_le _ _ _ (fun s hs => subsetSums_le_sum s hs))
+    (Finset.le_max' _ _ (sum_mem_subsetSums hA))
+
 end Erdos882OQ03
