@@ -122,4 +122,21 @@ theorem edgeThreshold_le_choose_two (n k : ℕ) (h : 2 * k + 3 ≤ n) :
       Nat.zero_le (k * k)]
   omega
 
+/-- **Discrete convexity: the second difference is constant.**  For `n ≥ k+1`,
+
+        edgeThreshold (n+2) k + edgeThreshold n k = 2 · edgeThreshold (n+1) k + 1,
+
+    i.e. the second finite difference `Δ²(edgeThreshold) = 1` is a positive constant.
+    Where `edgeThreshold_succ_left` records the *first* difference `n-k-1` (linear in
+    `n`), this records that its increments themselves grow by exactly `1` per step — so
+    the threshold is a genuinely convex (accelerating) function of the vertex count `n`,
+    not merely increasing.  Convexity is what forces `edgeThreshold` to cross any fixed
+    edge budget at a single well-defined `n₀`, underpinning the parent's `f(k)`. -/
+theorem edgeThreshold_second_diff (n k : ℕ) (h : k + 1 ≤ n) :
+    edgeThreshold (n + 2) k + edgeThreshold n k = 2 * edgeThreshold (n + 1) k + 1 := by
+  have h1 := edgeThreshold_succ_left n k h
+  have h2 : edgeThreshold (n + 2) k = edgeThreshold (n + 1) k + (n + 1 - k - 1) :=
+    edgeThreshold_succ_left (n + 1) k (by omega)
+  omega
+
 end Erdos1012OQ01OQ02

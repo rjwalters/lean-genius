@@ -8,7 +8,7 @@
   "significance": 5,
   "tractability": 6,
   "started": "2026-06-28T00:00:00.000Z",
-  "lastUpdate": "2026-07-08T00:00:00Z",
+  "lastUpdate": "2026-06-30T00:00:00.000Z",
   "tags": [
     "number-theory",
     "combinatorics",
@@ -26,9 +26,8 @@
     ]
   },
   "currentState": {
-    "summary": "AXIOM ELIMINATED (chebyshev_theta_upper_half_lower_bound → theorem). Erdos490Problem.lean now builds against Mathlib 4.26 with 0 sorries and 1 axiom (szemeredi_theorem, the deep N²/log N upper bound; correctly stays axiomatized). The Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N — the last analytic axiom of the lower-bound half — is now fully proved: new lemma Erdos490Cheb.erdos490_analytic_tail (log n, √(2n)·log(2n) = o(n) via Real.isLittleO_log_id_atTop / isLittleO_log_rpow_atTop) supplies the analytic tail; combined with the existing central-binomial estimate theta_gap_lower_bound, a nat↔real bridge, the N↦⌊N/2⌋ alignment (Chebyshev.theta_mono), and a Bertrand-based θ-gap ≥ log 2 small-N base case. Docker build verified green (7744 jobs). Files: Erdos490Problem.lean 660→758 lines, 2→1 axioms; Erdos490Chebyshev.lean 206→257 lines, +erdos490_analytic_tail.",
-    "outcome": "progress",
-    "nextAction": "None from the lower-bound side. The sole remaining axiom szemeredi_theorem (N²/log N upper bound) is the deep result of the problem — out of scope for elimination."
+    "summary": "DONE (build-repair + full sorry elimination + axiom reduction). File builds against Mathlib 4.26 with 0 sorries and 2 axioms (szemeredi_theorem, primes_upper_half_lower_bound). The former axiom optimal_has_distinct_products is now PROVED 0-axiom from optimal_works_because_primes via a ProductMapInjective↔HasDistinctProducts bridge. The two remaining axioms are the deep Szemerédi upper bound and the irreducible Chebyshev prime-counting lower bound absent from the current Mathlib pin.",
+    "outcome": "progress"
   },
   "knowledge": {
     "insights": [
@@ -94,9 +93,9 @@
     {
       "path": "Proofs/Erdos490Problem.lean",
       "filename": "Erdos490Problem.lean",
-      "lineCount": 758,
-      "theoremCount": 23,
-      "axiomCount": 1,
+      "lineCount": 557,
+      "theoremCount": 16,
+      "axiomCount": 2,
       "defCount": 15,
       "sorryCount": 0,
       "isAristotle": false,

@@ -15,27 +15,42 @@
     {
       "name": "chebAlgEnd",
       "statement": "chebAlgEnd : ℤ →* (R[X] →ₐ[R] R[X]), n ↦ aeval (C R n).",
-      "description": "The bundled monoid homomorphism from (ℤ, ·) into the algebra-endomorphism monoid AlgHom.End of R[X]. Each chebAlgEnd n is the substitution X ↦ Cₙ, a genuine R-algebra endomorphism; map_mul is the Chebyshev composition law C_{mn} = Cₘ ∘ Cₙ and map_one is C₁ = X (aeval X = AlgHom.id)."
+      "description": "The bundled monoid homomorphism from (ℤ, ·) into the algebra-endomorphism monoid AlgHom.End of R[X]. Each chebAlgEnd n is the substitution X ↦ Cₙ, a genuine R-algebra endomorphism; map_mul is the Chebyshev composition law C_{mn} = Cₘ ∘ Cₙ and map_one is C₁ = X (aeval X = AlgHom.id).",
+      "type": "core",
+      "startLine": 73,
+      "endLine": 82
     },
     {
       "name": "chebAlgEnd_comp",
       "statement": "(chebAlgEnd m).comp (chebAlgEnd n) = chebAlgEnd (m * n).",
-      "description": "The composition law C_{mn} = Cₘ ∘ Cₙ realised inside the algebra-endomorphism monoid: this is map_mul written with AlgHom composition."
+      "description": "The composition law C_{mn} = Cₘ ∘ Cₙ realised inside the algebra-endomorphism monoid: this is map_mul written with AlgHom composition.",
+      "type": "key",
+      "startLine": 102,
+      "endLine": 105
     },
     {
       "name": "chebAlgEnd_X",
       "statement": "chebAlgEnd n X = C R n.",
-      "description": "The Chebyshev polynomial Cₙ is recovered as the image of the generator X under the substitution endomorphism, since X.comp Cₙ = Cₙ."
+      "description": "The Chebyshev polynomial Cₙ is recovered as the image of the generator X under the substitution endomorphism, since X.comp Cₙ = Cₙ.",
+      "type": "key",
+      "startLine": 91,
+      "endLine": 92
     },
     {
       "name": "chebAlgEnd_map_mul",
       "statement": "chebAlgEnd n (p * q) = chebAlgEnd n p * chebAlgEnd n q.",
-      "description": "Each chebAlgEnd n is multiplicative — a genuine algebra endomorphism — in contrast to the parent's left-regular action p ↦ Cₙ ∘ p, which is not. This is the precise content of the OQ's 'algebra-endomorphism-valued' upgrade."
+      "description": "Each chebAlgEnd n is multiplicative — a genuine algebra endomorphism — in contrast to the parent's left-regular action p ↦ Cₙ ∘ p, which is not. This is the precise content of the OQ's 'algebra-endomorphism-valued' upgrade.",
+      "type": "core",
+      "startLine": 122,
+      "endLine": 124
     },
     {
       "name": "eval_chebAlgEnd_unit",
       "statement": "Over a field F, z ≠ 0: (chebAlgEnd n p).eval (z + z⁻¹) = p.eval (zⁿ + z⁻ⁿ).",
-      "description": "On the unit-circle locus the substitution endomorphism reparametrizes the polynomial argument by the De Moivre power map, tying the algebra-endomorphism action back to the grandparent's evaluation identity chebyshevC_eval_field_int."
+      "description": "On the unit-circle locus the substitution endomorphism reparametrizes the polynomial argument by the De Moivre power map, tying the algebra-endomorphism action back to the grandparent's evaluation identity chebyshevC_eval_field_int.",
+      "type": "key",
+      "startLine": 137,
+      "endLine": 141
     }
   ],
   "crossReferences": [
@@ -81,6 +96,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "setup",
+      "title": "Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring motivating the algebra-endomorphism upgrade of the Chebyshev substitution and its relation to the parent DeMoivreOQ01OQ03OQ01OQ01. Imports Mathlib.RingTheory.Polynomial.Chebyshev, Tactic, and the parent file; declares namespace DeMoivreChebyshevAlgEnd, opens Polynomial.Chebyshev and scoped Polynomial, and introduces variable {R} [CommRing R].",
+      "mathContext": "Substitution $p \\mapsto p \\circ C_n$ as an $R$-algebra endomorphism of $R[X]$, indexed by the multiplicative monoid $(\\mathbb{Z}, \\cdot)$."
+    },
     {
       "id": "alg-end-hom",
       "title": "The algebra-endomorphism homomorphism",

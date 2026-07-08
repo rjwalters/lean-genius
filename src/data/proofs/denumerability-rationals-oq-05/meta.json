@@ -115,6 +115,72 @@
       "mathContext": "$\\aleph_0^{\\aleph_0} = \\mathfrak{c} > \\aleph_0$, so $\\mathbb{N} \\to \\mathbb{Q}$ is uncountable."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "mk_seq_rat",
+      "type": "core",
+      "description": "**The boundary: #(ℕ → ℚ) = 𝔠.** Where every finite operation keeps ℚ at ℵ₀, the countable power of rational sequences already reaches the continuum: mk_arrow gives #ℚ ^ #ℕ = ℵ₀ ^ ℵ₀, collapsed by aleph0_power_aleph0 to 𝔠. The sharp companion to the rest of the file — ℕ → ℚ is equinumerous with ℝ.",
+      "leanType": "#(ℕ → ℚ) = 𝔠",
+      "startLine": 64,
+      "endLine": 65
+    },
+    {
+      "name": "not_countable_seq_rat",
+      "type": "key",
+      "description": "**ℕ → ℚ is uncountable.** Immediate from mk_seq_rat and aleph0_lt_continuum (ℵ₀ < 𝔠): rational sequences are strictly more numerous than the rationals themselves.",
+      "leanType": "¬ Countable (ℕ → ℚ)",
+      "startLine": 69,
+      "endLine": 71
+    },
+    {
+      "name": "mk_rat",
+      "type": "supporting",
+      "description": "**#ℚ = ℵ₀.** The rationals are denumerable — countable and infinite, hence exactly ℵ₀ (Cardinal.mk_eq_aleph0). The engine for every result in the file.",
+      "leanType": "#ℚ = ℵ₀",
+      "startLine": 32,
+      "endLine": 33
+    },
+    {
+      "name": "mk_rat_prod",
+      "type": "supporting",
+      "description": "**#(ℚ × ℚ) = ℵ₀.** Pairs of rationals are still denumerable: mk_prod gives #ℚ · #ℚ and aleph0_mul_aleph0 collapses ℵ₀ · ℵ₀ to ℵ₀ — the ℵ₀-analogue of the continuum's 𝔠 · 𝔠 = 𝔠.",
+      "leanType": "#(ℚ × ℚ) = ℵ₀",
+      "startLine": 38,
+      "endLine": 39
+    },
+    {
+      "name": "mk_rat_prod_eq_mk_rat",
+      "type": "supporting",
+      "description": "**#(ℚ × ℚ) = #ℚ.** The plane of rationals equals the line of rationals; both are ℵ₀.",
+      "leanType": "#(ℚ × ℚ) = #ℚ",
+      "startLine": 43,
+      "endLine": 44
+    },
+    {
+      "name": "nonempty_equiv_prod_rat",
+      "type": "supporting",
+      "description": "**An explicit bijection ℚ × ℚ ≃ ℚ exists** (Cardinal.eq applied to mk_rat_prod_eq_mk_rat).",
+      "leanType": "Nonempty (ℚ × ℚ ≃ ℚ)",
+      "startLine": 47,
+      "endLine": 48
+    },
+    {
+      "name": "mk_list_rat",
+      "type": "supporting",
+      "description": "**#(List ℚ) = ℵ₀.** Finite sequences of rationals are denumerable (mk_list_eq_aleph0, valid for any countable nonempty type).",
+      "leanType": "#(List ℚ) = ℵ₀",
+      "startLine": 52,
+      "endLine": 53
+    },
+    {
+      "name": "mk_finset_rat",
+      "type": "supporting",
+      "description": "**#(Finset ℚ) = ℵ₀.** Finite subsets of ℚ are denumerable: mk_finset_of_infinite gives #(Finset ℚ) = #ℚ, rewritten to ℵ₀ by mk_rat.",
+      "leanType": "#(Finset ℚ) = ℵ₀",
+      "startLine": 57,
+      "endLine": 58
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "denumerability-rationals",
