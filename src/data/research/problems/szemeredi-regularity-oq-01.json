@@ -16,11 +16,10 @@
       "SzemerediRegularityOQ01.lean: 5 theorems, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Imports Proofs.SzemerediRegularity (reuses edgeDensity_eq_mathlib bridge + Core defs).",
       "edgeDensity_comm (headline symmetry), isEpsilonRegular_comm (regularity symmetry), edgeDensity_empty_left, edgeDensity_empty_right, irregularPairs_swap_mem (irregularity is symmetric on parts)."
     ],
-    "progressSummary": "COMPLETE. First child of the (Mathlib-bridged, complete) szemeredi-regularity gallery entry. Fills a structural gap: the gallery's edgeDensity and IsEpsilonRegular were never shown symmetric in their two arguments, yet regularity is conventionally an unordered-pair notion. edgeDensity_comm (d(A,B)=d(B,A)) via the existing Mathlib bridge + SimpleGraph.edgeDensity_comm; isEpsilonRegular_comm (the iff) via witness-swap; irregularPairs_swap_mem (irregular-pair set closed under swap). All 0-axiom verified, no native_decide.",
+    "progressSummary": "COMPLETE. First child of the (Mathlib-bridged, complete) szemeredi-regularity gallery entry. Fills a structural gap: the gallery's edgeDensity and IsEpsilonRegular were never shown symmetric in their two arguments, yet regularity is conventionally an unordered-pair notion. edgeDensity_comm (d(A,B)=d(B,A)) via the existing Mathlib bridge + SimpleGraph.edgeDensity_comm; isEpsilonRegular_comm (the iff) via witness-swap; irregularPairs_swap_mem (irregular-pair set closed under swap). All 0-axiom verified, no native_decide. [2026-07-08 researcher-2] Extended with edgeDensity_compl (d_{Gᶜ}(A,B)=1−d_G(A,B) for disjoint nonempty A,B, via SimpleGraph.edgeDensity_add_edgeDensity_compl + gallery bridge) and edgeDensity_mem_Icc (range packaged as Set.Icc 0 1). File now 115L / 7 theorems, 0 sorry / 0 axiom (docker-build green, 7745 jobs).",
     "nextSteps": [
-      "Complement transfer: for disjoint A,B (so every cross pair is non-adjacent-or-not), d_{Gᶜ}(A,B) = 1 − d_G(A,B), hence IsEpsilonRegular Gᶜ ε A B ↔ IsEpsilonRegular G ε A B — regularity passes to the complement graph.",
       "Use isEpsilonRegular_comm to halve the irregular-pair count bookkeeping: the IsRegularPartition threshold counts ordered pairs, but symmetry means the underlying unordered irregular pairs are half as many.",
-      "edgeDensity range packaged: edgeDensity G A B ∈ Set.Icc 0 1 (combine edgeDensity_nonneg + edgeDensity_le_one) as a single membership lemma for downstream positivity/interval reasoning."
+      "Full complement regularity transfer IsEpsilonRegular Gᶜ ε A B ↔ IsEpsilonRegular G ε A B: edgeDensity_compl gives the density identity on disjoint nonempty sub-pairs, but the ε-regularity witnesses A'⊆A, B'⊆B can be empty (edgeDensity=0 on both G and Gᶜ, breaking the 1−d identity), so the transfer needs a degenerate-witness case split — left as a follow-up."
     ]
   },
   "relatedProofs": [
@@ -43,8 +42,8 @@
     {
       "path": "Proofs/SzemerediRegularityOQ01.lean",
       "filename": "SzemerediRegularityOQ01.lean",
-      "lineCount": 87,
-      "theoremCount": 5,
+      "lineCount": 115,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
