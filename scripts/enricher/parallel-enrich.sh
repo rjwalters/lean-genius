@@ -70,31 +70,92 @@ get_running_agents() {
     tmux list-sessions 2>/dev/null | grep "^$SESSION_PREFIX" | cut -d: -f1 || true
 }
 
-# Create worktree for an agent
+# Create worktree for an agent.
+#
+# Historically this keyed the worktree by agent slot number
+# (.loom/worktrees/enricher-N) and force-deleted any existing worktree at that
+# path before recreating it. Because the path was slot-keyed, relaunching the
+# same slot always fought over one path, and the unconditional
+# `git worktree remove --force || rm -rf` silently destroyed an in-flight
+# agent's uncommitted work — which drove agents to squat in untracked
+# worktrees under $HOME (issue #35223).
+#
+# This version:
+#   1. Uses the shared `remove_own_worktree` guards (1-5) from
+#      scripts/lib/worktree-cleanup.sh instead of an unconditional force-delete,
+#      so a dirty / unpushed / locked / busy / current-checkout worktree is
+#      preserved rather than discarded.
+#   2. If a guard preserves the existing worktree, allocates a fresh,
+#      non-colliding path (enricher-N-2, enricher-N-3, ...) instead of deleting
+#      in-flight work — keying the task by a unique path rather than the slot.
+#   3. Guards the branch deletion: a branch carrying unpushed/unbacked commits
+#      is never force-deleted; a fresh branch name is allocated instead.
+#
+# Emits two tab-separated fields on stdout: "<worktree_path>\t<branch_name>".
+# All human-readable progress is sent to stderr so callers can safely capture
+# the machine-readable line. The branch is returned because a reallocated path
+# uses a matching unique branch name, and callers must reference the real
+# branch in agent prompts.
 create_agent_worktree() {
     local agent_num="$1"
-    local worktree_path="$WORKTREES_DIR/enricher-$agent_num"
-    local branch_name="feature/enricher-$agent_num"
+    local base_path="$WORKTREES_DIR/enricher-$agent_num"
+    local base_branch="feature/enricher-$agent_num"
 
-    # Remove existing worktree if it exists
+    local worktree_path="$base_path"
+    local branch_name="$base_branch"
+
+    # If a worktree already exists at the primary path, try to reclaim it with
+    # the shared safety guards. `remove_own_worktree` returns 0 whether it
+    # removed the worktree OR preserved it, so re-test the directory afterwards
+    # to distinguish the two outcomes.
     if [[ -d "$worktree_path" ]]; then
-        print_info "Removing existing worktree for agent $agent_num..."
-        git worktree remove "$worktree_path" --force 2>/dev/null || rm -rf "$worktree_path"
+        print_info "Reclaiming existing worktree for agent $agent_num (guarded)..." >&2
+        remove_own_worktree "$worktree_path"
     fi
 
-    # Delete existing branch if it exists (force fresh start)
-    git branch -D "$branch_name" 2>/dev/null || true
+    # If the primary path is still occupied, a guard preserved in-flight work.
+    # Allocate a fresh, non-colliding path/branch rather than deleting it.
+    if [[ -d "$worktree_path" ]]; then
+        print_warning "Worktree for agent $agent_num preserved (in-flight work); allocating a fresh path..." >&2
+        local suffix=2
+        while [[ -d "$base_path-$suffix" ]]; do
+            # Try to reclaim previously-allocated fallback paths too; stop at the
+            # first one the guards free up (or that no longer exists).
+            remove_own_worktree "$base_path-$suffix"
+            [[ -d "$base_path-$suffix" ]] || break
+            suffix=$((suffix + 1))
+        done
+        worktree_path="$base_path-$suffix"
+        branch_name="$base_branch-$suffix"
+    fi
 
-    # Create fresh worktree with new branch from main
-    print_info "Creating worktree for agent $agent_num..."
-    git worktree add "$worktree_path" -b "$branch_name" main
+    # Delete the target branch only when it is safe to do so. `git branch -d`
+    # (safe delete) refuses to drop a branch with unmerged/unpushed commits and
+    # refuses to drop a branch still checked out in a worktree, so it will never
+    # force-discard in-flight work the way the old unconditional `-D` did.
+    if git show-ref --verify --quiet "refs/heads/$branch_name" \
+        && ! git branch -d "$branch_name" >/dev/null 2>&1; then
+        # Branch exists and is NOT safe to delete (unpushed work or still
+        # checked out). Reallocate to a fresh branch name so we never
+        # force-discard those commits.
+        print_warning "Branch $branch_name has unpushed work; allocating a fresh branch..." >&2
+        local bsuffix=2
+        while git show-ref --verify --quiet "refs/heads/${base_branch}-$bsuffix"; do
+            bsuffix=$((bsuffix + 1))
+        done
+        branch_name="${base_branch}-$bsuffix"
+    fi
+
+    # Create fresh worktree with the (possibly reallocated) branch from main.
+    print_info "Creating worktree for agent $agent_num at $worktree_path (branch $branch_name)..." >&2
+    git worktree add "$worktree_path" -b "$branch_name" main >&2
 
     # Initialize submodules if needed
     if [[ -f "$worktree_path/.gitmodules" ]]; then
         (cd "$worktree_path" && git submodule update --init --recursive 2>/dev/null) || true
     fi
 
-    echo "$worktree_path"
+    printf '%s\t%s\n' "$worktree_path" "$branch_name"
 }
 
 # Show status of all agents
@@ -329,9 +390,11 @@ launch_agents() {
         local log_file="$LOGS_DIR/$session.log"
         local enricher_id="enricher-$i"
 
-        # Create isolated worktree for this agent
-        local worktree_path
-        worktree_path=$(create_agent_worktree "$i")
+        # Create isolated worktree for this agent. create_agent_worktree emits
+        # "<path>\t<branch>"; the branch may differ from feature/enricher-$i when
+        # a guard preserved in-flight work and a fresh path/branch was allocated.
+        local worktree_path branch_name
+        IFS=$'\t' read -r worktree_path branch_name < <(create_agent_worktree "$i")
 
         # Create tmux session starting in the worktree
         tmux new-session -d -s "$session" -c "$worktree_path"
@@ -352,7 +415,7 @@ launch_agents() {
 You are working in an isolated git worktree with your own branch.
 
 **Your worktree:** $worktree_path
-**Your branch:** feature/enricher-$i
+**Your branch:** $branch_name
 **Claim script:** \$REPO_ROOT/scripts/enricher/claim-target.sh
 
 ## Quick Start
@@ -364,10 +427,10 @@ You are working in an isolated git worktree with your own branch.
 4. Enrich it (improve meta.json, annotations.json - add depth, cross-refs, context)
 5. Build: \`pnpm build\`
 6. Commit: \`git add src/data/proofs/<id>/ && git commit -m "Enrich <title>: add depth"\`
-7. Push: \`git push -u origin feature/enricher-$i\`
+7. Push: \`git push -u origin $branch_name\`
 8. Create PR: \`gh pr create --title "Enrich <title>" --body "Enrichment pass" --label enrichment\`
 9. Mark complete: \`\$REPO_ROOT/scripts/enricher/claim-target.sh complete <id>\`
-10. Reset for next: \`git checkout main && git pull && git checkout -B feature/enricher-$i main\`
+10. Reset for next: \`git checkout main && git pull && git checkout -B $branch_name main\`
 11. Repeat from step 2
 
 Start now by running step 1 to read the full instructions, then claim and enrich a target.
@@ -449,7 +512,9 @@ case "${1:-}" in
         session="$SESSION_PREFIX-$i"
         log_file="$LOGS_DIR/$session.log"
         enricher_id="enricher-$i"
-        worktree_path=$(create_agent_worktree "$i")
+        # create_agent_worktree emits "<path>\t<branch>"; the branch may differ
+        # from feature/enricher-$i when a guard preserved in-flight work.
+        IFS=$'\t' read -r worktree_path branch_name < <(create_agent_worktree "$i")
         tmux kill-session -t "$session" 2>/dev/null || true
         tmux new-session -d -s "$session" -c "$worktree_path"
         tmux send-keys -t "$session" "export ENRICHER_ID='$enricher_id'" Enter
@@ -464,7 +529,7 @@ case "${1:-}" in
 You are working in an isolated git worktree with your own branch.
 
 **Your worktree:** $worktree_path
-**Your branch:** feature/enricher-$i
+**Your branch:** $branch_name
 **Claim script:** \$REPO_ROOT/scripts/enricher/claim-target.sh
 
 ## Quick Start
@@ -476,10 +541,10 @@ You are working in an isolated git worktree with your own branch.
 4. Enrich it (improve meta.json, annotations.json - add depth, cross-refs, context)
 5. Build: \`pnpm build\`
 6. Commit: \`git add src/data/proofs/<id>/ && git commit -m "Enrich <title>: add depth"\`
-7. Push: \`git push -u origin feature/enricher-$i\`
+7. Push: \`git push -u origin $branch_name\`
 8. Create PR: \`gh pr create --title "Enrich <title>" --body "Enrichment pass" --label enrichment\`
 9. Mark complete: \`\$REPO_ROOT/scripts/enricher/claim-target.sh complete <id>\`
-10. Reset for next: \`git checkout main && git pull && git checkout -B feature/enricher-$i main\`
+10. Reset for next: \`git checkout main && git pull && git checkout -B $branch_name main\`
 11. Repeat from step 2
 
 Start now by running step 1 to read the full instructions, then claim and enrich a target.
