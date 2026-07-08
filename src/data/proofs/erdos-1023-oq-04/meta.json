@@ -82,6 +82,72 @@
       "mathContext": "F(2n) = C(2n,n) = centralBinom n ≥ C(2n,1) = 2n via Nat.choose_le_centralBinom, giving unboundedness over ℕ with no real analysis."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "unionFreeMax_bracket",
+      "type": "core",
+      "description": "**The two-sided bracket.** 2ⁿ ≤ (n+1)·F(n) and F(n) ≤ 2ⁿ together, pinning the growth of F(n) = C(n,⌊n/2⌋) up to a polynomial factor with no Stirling estimate. The qualitative content of the parent's asymptotic axiom as an elementary statement.",
+      "leanType": "(n : ℕ) : 2 ^ n ≤ (n + 1) * unionFreeMax n ∧ unionFreeMax n ≤ 2 ^ n",
+      "startLine": 83,
+      "endLine": 85
+    },
+    {
+      "name": "pow_le_succ_mul_central",
+      "type": "core",
+      "description": "**Key elementary lower bound.** 2ⁿ ≤ (n+1)·F(n): summing ∑_{m≤n} C(n,m) = 2ⁿ and bounding every term by the maximal central column C(n,⌊n/2⌋) gives F(n) ≥ 2ⁿ/(n+1), an exponential lower bound needing no Stirling estimate.",
+      "leanType": "(n : ℕ) : 2 ^ n ≤ (n + 1) * unionFreeMax n",
+      "startLine": 72,
+      "endLine": 78
+    },
+    {
+      "name": "unionFreeMax_unbounded",
+      "type": "core",
+      "description": "**Divergence.** F(n) → ∞ (∀ M, ∃ n, M ≤ F(n)), proved purely over ℕ via the even subsequence F(2M) = centralBinom M ≥ 2M ≥ M — no real analysis.",
+      "leanType": "∀ M : ℕ, ∃ n, M ≤ unionFreeMax n",
+      "startLine": 112,
+      "endLine": 116
+    },
+    {
+      "name": "central_le_pow",
+      "type": "key",
+      "description": "**Upper bracket.** F(n) ≤ 2ⁿ: a union-free family is a family of subsets, and the central column is one term of the binomial sum (Nat.choose_le_two_pow).",
+      "leanType": "(n : ℕ) : unionFreeMax n ≤ 2 ^ n",
+      "startLine": 65,
+      "endLine": 66
+    },
+    {
+      "name": "pow_div_succ_le_central",
+      "type": "key",
+      "description": "**Real-valued lower bracket.** 2ⁿ/(n+1) ≤ F(n) over ℝ — the analytic form of pow_le_succ_mul_central.",
+      "leanType": "(n : ℕ) : (2 : ℝ) ^ n / (n + 1) ≤ (unionFreeMax n : ℝ)",
+      "startLine": 88,
+      "endLine": 96
+    },
+    {
+      "name": "unionFreeMax_two_mul",
+      "type": "key",
+      "description": "**Even-index central binomial.** F(2n) = C(2n,n) = centralBinom n — the even subsequence is exactly the central binomial coefficient, the bridge powering divergence.",
+      "leanType": "(n : ℕ) : unionFreeMax (2 * n) = Nat.centralBinom n",
+      "startLine": 99,
+      "endLine": 101
+    },
+    {
+      "name": "two_mul_le_unionFreeMax_two_mul",
+      "type": "supporting",
+      "description": "**Linear lower bound on the even subsequence.** 2n ≤ F(2n), since C(2n,n) ≥ C(2n,1) = 2n (Nat.choose_le_centralBinom). The elementary witness of divergence.",
+      "leanType": "(n : ℕ) : 2 * n ≤ unionFreeMax (2 * n)",
+      "startLine": 105,
+      "endLine": 108
+    },
+    {
+      "name": "unionFreeMax_pos",
+      "type": "supporting",
+      "description": "**Positivity.** 0 < F(n): the empty set is always in a union-free family (Nat.choose_pos).",
+      "leanType": "(n : ℕ) : 0 < unionFreeMax n",
+      "startLine": 60,
+      "endLine": 61
+    }
+  ],
   "conclusion": {
     "summary": "The union-free maximum F(n) = C(n, floor(n/2)) of Erdős Problem #1023 is bracketed elementarily by 2^n/(n+1) ≤ F(n) ≤ 2^n, and shown to diverge F(n) → ∞, with zero axioms beyond Mathlib's foundations. The lower bracket is a one-line average of the binomial identity ∑ C(n,m) = 2^n against the maximality of the central column; the upper bracket is a single term of that sum; divergence uses F(2n) = centralBinom n ≥ 2n. This captures the qualitative growth content of the parent file's Stirling-based asymptotic axiom as a machine-checked elementary statement.",
     "implications": "The brackets make rigorous, without Stirling's formula, the fact that the maximum union-free family has size of order 2^n up to a polynomial factor and grows without bound. They isolate exactly what the exact asymptotic F(n) ~ √(2/π)·2^n/√n adds beyond the elementary picture (only the precise constant and the √n power, which genuinely require Stirling). The central-binomial bracket 2^n/(n+1) ≤ C(n, floor(n/2)) ≤ 2^n is reusable wherever the central column appears.",
