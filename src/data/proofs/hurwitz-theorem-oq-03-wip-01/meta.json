@@ -49,12 +49,13 @@
       "A field-agnostic theorem anticommuting_invertible_forces_even: over any field with 2 ≠ 0, two anticommuting invertible m×m matrices force m to be even — the elementary determinant engine behind the Hurwitz impossibility argument, stated once and reused over ℝ and ℂ",
       "The contrapositive no_anticommuting_invertible_of_odd and the complex-structure form no_anticommuting_complex_structures_of_odd, packaging exactly the hypotheses (M²=-I, anticommuting) produced by the parent's crossMat infrastructure",
       "Identifies and formalizes the precise reduction that extends the parent's elementary ODD-case argument to the n≡2 (mod 4) case, narrowing the parent's remaining sorry to n≡0 (mod 4), n∉{4,8}",
-      "ℝ and ℂ specializations recorded as sanity examples, exhibiting the same engine driving the real odd case and the complex n≡2 (mod 4) reduction"
+      "ℝ and ℂ specializations recorded as sanity examples, exhibiting the same engine driving the real odd case and the complex n≡2 (mod 4) reduction",
+      "Product engine (arbitrary ring): mul_prod_anticomm — moving an element that anticommutes with every factor of a list-product acquires the sign (-1)^length; with even/odd corollaries (commute_prod_of_anticomm_of_even, anticommute_prod_of_anticomm_of_odd). This is the reusable algebraic core of the P = M₁⋯M_{n-1} construction in the n ≡ 2 (mod 4) Hurwitz reduction."
     ],
     "axiomCount": 0,
     "assumptions": "None. 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound), 0 sorries — confirmed via #print axioms. This entry proves ONLY the reusable determinant obstruction and its odd-dimension corollaries; it does NOT close the parent hurwitz-theorem-oq-03 sorry. The full even case still requires (a) constructing the product complex structure P=M₁⋯M_{n-1} and verifying P²=-I and its commutation with each Mᵢ for n≡2 mod 4, then reinterpreting ℝⁿ as a complex space to invoke this theorem over ℂ; and (b) the genuinely blocked residue class n≡0 (mod 4), n∉{4,8}, which needs Clifford-algebra representation theory (Bott periodicity + Artin–Wedderburn) not present in Mathlib.",
-    "lineCount": 138,
-    "theoremCount": 3,
+    "lineCount": 203,
+    "theoremCount": 6,
     "definitionCount": 0
   },
   "overview": {
@@ -147,9 +148,9 @@
       "Matrix"
     ],
     "namespace": "HurwitzOQ03WIP01",
-    "lineCount": 138,
+    "lineCount": 203,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 6,
     "definitionCount": 0,
     "path": "Proofs/HurwitzTheoremOQ03WIP01.lean",
     "sorries": 0
@@ -173,6 +174,11 @@
       "type": "key",
       "description": "Complex-structure form: in odd dimension, no two anticommuting complex structures (A²=B²=-1) exist. Packages exactly the crossMat hypotheses from the parent proof; invertibility is derived from M·(-M)=1.",
       "leanType": "(2 : K) ≠ 0 → Odd m → (A B : Matrix (Fin m) (Fin m) K) → A * A = -1 → B * B = -1 → A * B = -(B * A) → False"
+    },
+    {
+      "name": "mul_prod_anticomm",
+      "statement": "For a : R and t : List R with a anticommuting with every entry of t, a * t.prod = (-1)^(t.length) * (t.prod * a).",
+      "significance": "The move-through sign lemma: reusable engine behind P = M₁⋯M_{n-1}; parity of the length decides whether a fresh anticommuting complex structure commutes or anticommutes with the product P."
     }
   ]
 }

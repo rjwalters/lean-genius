@@ -135,4 +135,69 @@ example (hodd : Odd m)
     (hanti : A * B = -(B * A)) : False :=
   no_anticommuting_complex_structures_of_odd (by norm_num) hodd A B hAsq hBsq hanti
 
+-- ═══════════════════════════════════════════════════════════════════
+-- THE PRODUCT ENGINE: moving an anticommuting element through `P = M₁⋯M_k`
+-- ═══════════════════════════════════════════════════════════════════
+--
+-- The `n ≡ 2 (mod 4)` reduction (see `HurwitzTheorem.lean`) forms the product
+-- `P = M₁ ⋯ M_{n-1}` of the anticommuting complex structures and studies how a
+-- fresh structure `a` (one of the `Mᵢ`, or a probe) moves through it. The single
+-- algebraic fact behind that whole step is: **an element that anticommutes with
+-- every factor of a product acquires the sign `(-1)^(length)` when moved across
+-- the entire product.** These lemmas are stated over an arbitrary ring, so they
+-- apply verbatim to the real `crossMat` family and to its complexification.
+
+section ProductEngine
+
+variable {R : Type*} [Ring R]
+
+/-- **Move-through sign.** If `a` anticommutes with every entry of the list `t`,
+    then moving `a` across the whole product `t.prod` picks up the sign
+    `(-1)^(t.length)`:
+
+      `a * t.prod = (-1)^(t.length) * (t.prod * a)`.
+
+    This is the reusable engine behind the `P = M₁⋯M_{n-1}` construction in the
+    `n ≡ 2 (mod 4)` Hurwitz reduction: with all factors pairwise anticommuting,
+    parity of the length controls whether `a` commutes or anticommutes with `P`. -/
+theorem mul_prod_anticomm {a : R} :
+    ∀ {t : List R}, (∀ x ∈ t, a * x = -(x * a)) →
+      a * t.prod = (-1 : R) ^ t.length * (t.prod * a) := by
+  intro t
+  induction t with
+  | nil => intro _; simp
+  | cons b s ih =>
+    intro h
+    have hb : a * b = -(b * a) := h b (by simp)
+    have hs : ∀ x ∈ s, a * x = -(x * a) := fun x hx => h x (by simp [hx])
+    have hcb : b * (-1 : R) ^ s.length = (-1 : R) ^ s.length * b :=
+      ((Commute.neg_one_left b).pow_left s.length).eq.symm
+    calc a * (b :: s).prod
+        = -(b * (a * s.prod)) := by
+          rw [List.prod_cons, ← mul_assoc, hb, neg_mul, mul_assoc]
+      _ = -(b * ((-1 : R) ^ s.length * (s.prod * a))) := by rw [ih hs]
+      _ = -((-1 : R) ^ s.length * (b * (s.prod * a))) := by
+          rw [← mul_assoc, hcb, mul_assoc]
+      _ = (-1 : R) ^ (b :: s).length * ((b :: s).prod * a) := by
+          rw [List.length_cons, List.prod_cons, pow_succ]
+          noncomm_ring
+
+/-- **Even length ⇒ commutes.** If `a` anticommutes with every factor of `L` and
+    `L` has even length, then `a` commutes with the whole product `L.prod`. -/
+theorem commute_prod_of_anticomm_of_even {a : R} {L : List R}
+    (h : ∀ x ∈ L, a * x = -(x * a)) (hlen : Even L.length) :
+    a * L.prod = L.prod * a := by
+  rw [mul_prod_anticomm h, hlen.neg_one_pow, one_mul]
+
+/-- **Odd length ⇒ anticommutes.** If `a` anticommutes with every factor of `L`
+    and `L` has odd length, then `a` anticommutes with the product `L.prod`. This
+    is the shape used on the `M₁⋯M_{n-1}` product (odd for even `n`): a fresh
+    complex structure anticommuting with each factor also anticommutes with `P`. -/
+theorem anticommute_prod_of_anticomm_of_odd {a : R} {L : List R}
+    (h : ∀ x ∈ L, a * x = -(x * a)) (hlen : Odd L.length) :
+    a * L.prod = -(L.prod * a) := by
+  rw [mul_prod_anticomm h, hlen.neg_one_pow, neg_one_mul]
+
+end ProductEngine
+
 end HurwitzOQ03WIP01
