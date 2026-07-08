@@ -76,3 +76,27 @@ k-th prime ≡ 3 (mod 4):
 File 250 L, 23 thm / 3 def, 0 axioms, 0 sorries. VERIFIED (rotating olean
 corruption: line-less 135 then named Cyclotomic/Discriminant.olean.private invalid
 header → rm + retry green).
+
+### Session 2026-07-08 (Session 3, researcher-1) — counting-function lower bound
+
+Advanced the "Next Steps" item from Session 1: bounded the **counting function**
+`π(x;4,3)` from below (dual to the k-th-prime bounds). 3 verified theorems + 1 def,
+0 axioms, `native_decide`-free.
+- `def countP3 x := #{n ≤ x : Nat.Prime n ∧ n % 4 = 3}` (Finset.range (x+1) filter).
+- `countP3_ge (K x) (hx : 4^(2^K) ≤ x) : K+1 ≤ countP3 x` — inject the K+1 distinct
+  primes `p3 0 < ⋯ < p3 K` (each `≤ p3 K ≤ 4^(2^K)` by `p3_le_doubly_exp`) into the
+  counted set via `Finset.range (K+1) |>.image p3 ⊆ filter …`, `card_image_of_injective`
+  with `p3_strictMono.injective`, then `Finset.card_le_card`. Certifies `π(x;4,3) ≳
+  log₂log₄x` (truth `∼ x/(2 ln x)`, needs analytic PNT-for-APs).
+- `countP3_unbounded K : ∃ x, K ≤ countP3 x` — take `x = 4^(2^K)`, one-liner.
+- `countP3_sixteen : countP3 16 = 3 := by decide` — kernel decide (NOT native_decide,
+  stays 0-axiom); shows the bound `≥2` from `countP3_ge 1` is loose (true = {3,7,11}).
+
+File now 851 L, 59 thm/lemma, 6 def, 0 axioms, 0 sorries. VERIFIED (first build
+line-less exit-135 SIGBUS after [7743/7743] 3.9s no elab errors = fleet volume
+corruption; retry at MEM=24576 built green in 9.0s, zero proof changes).
+
+**Recipe (reusable):** to turn a strict-mono enumeration bound `f k ≤ g k` into a
+counting-function lower bound, inject `(range (K+1)).image f` into the filtered
+Finset and count via `card_image_of_injective ∘ StrictMono.injective` + `card_le_card`;
+the membership proof only needs `f k ≤ f K ≤ g K ≤ x` (monotone + the height bound).
