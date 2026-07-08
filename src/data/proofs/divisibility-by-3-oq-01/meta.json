@@ -165,6 +165,80 @@
       "mathContext": "Unified framework: digit-sum rules ($d \\mid b-1$), last-$k$-digit rules ($d \\mid b^k$), and truncation rules ($d \\mid mb \\pm 1$). All derive from $n = qb + r$ and modular arithmetic."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "dvd_iff_dvd_mod",
+      "type": "core",
+      "description": "**Master last-k-digits lemma.** If d ∣ M then d ∣ n ↔ d ∣ (n mod M). Writing n = M·(n/M) + n mod M, the first term is divisible by d whenever d ∣ M, so divisibility is decided entirely by the residue n mod M. Every concrete last-digit rule (2, 4, 8, 16, 32, 5, 25, 125, and the binary/hex variants) is a one-line instance of this single fact.",
+      "leanType": "(d M n : ℕ) (hdM : d ∣ M) : d ∣ n ↔ d ∣ (n % M)",
+      "startLine": 37,
+      "endLine": 48
+    },
+    {
+      "name": "pow2_dvd_last_k",
+      "type": "key",
+      "description": "**Power-of-two generalization.** 2^k ∣ n ↔ 2^k ∣ (n mod 10^k): the last k decimal digits decide divisibility by 2^k, obtained by instantiating the master lemma at M = 10^k via 2^k ∣ 10^k. The companion pow5_dvd_last_k gives the identical statement for 5^k.",
+      "leanType": "(k n : ℕ) : 2 ^ k ∣ n ↔ 2 ^ k ∣ (n % 10 ^ k)",
+      "startLine": 113,
+      "endLine": 114
+    },
+    {
+      "name": "digitSum_dvd_iff",
+      "type": "core",
+      "description": "**General digit-sum rule.** If b ≡ 1 (mod d) then d ∣ n ↔ d divides the base-b digit sum, via Mathlib's Nat.modEq_digits_sum. Base-agnostic: it yields the classical casting-out-nines/threes rules in base 10 and rules for 37, 99, 999, 27 in base 100/1000, plus 3 in hex, 7 in octal, etc.",
+      "leanType": "(d b : ℕ) (hdb : b % d = 1) (n : ℕ) : d ∣ n ↔ d ∣ (Nat.digits b n).sum",
+      "startLine": 161,
+      "endLine": 163
+    },
+    {
+      "name": "thirteen_dvd_truncation",
+      "type": "key",
+      "description": "**Truncation rule for 13 ('add 4× the last digit').** 13 ∣ n ↔ 13 ∣ (⌊n/10⌋ + 4·(n mod 10)), proved in ℤ from 10(q + 4r) = n + 39r ≡ n (mod 13) and coprimality of 13 and 10 (IsCoprime.dvd_of_dvd_mul_left). The template multiply-and-cancel argument underlying every truncation rule.",
+      "leanType": "(n : ℕ) : 13 ∣ n ↔ (13 : ℤ) ∣ (↑(n / 10) + 4 * ↑(n % 10))",
+      "startLine": 129,
+      "endLine": 148
+    },
+    {
+      "name": "seven_dvd_truncation",
+      "type": "key",
+      "description": "**Truncation rule for 7 ('subtract 2× the last digit').** 7 ∣ n ↔ 7 ∣ (⌊n/10⌋ − 2·(n mod 10)), from 10(q − 2r) = n − 21r and 21 = 3·7. The subtractive dual of the 13-rule; siblings eleven/seventeen/nineteen_dvd_truncation cover 11, 17, 19, so every prime coprime to 10 up to 19 has a certified truncation test.",
+      "leanType": "(n : ℕ) : 7 ∣ n ↔ (7 : ℤ) ∣ (↑(n / 10) - 2 * ↑(n % 10))",
+      "startLine": 386,
+      "endLine": 405
+    },
+    {
+      "name": "casting_out_nines",
+      "type": "supporting",
+      "description": "**Casting out nines.** n ≡ (base-10 digit sum) (mod 9), the specialization of the digit-sum congruence to d = 9. Its add/mul companions (casting_out_nines_add/mul) show the digit sum is a ring homomorphism mod 9, formalizing the classical arithmetic check.",
+      "leanType": "(n : ℕ) : n ≡ (Nat.digits 10 n).sum [MOD 9]",
+      "startLine": 224,
+      "endLine": 226
+    },
+    {
+      "name": "three_dvd_iff_three_dvd_digitalRoot",
+      "type": "key",
+      "description": "**Digital-root characterization of divisibility by 3.** 3 ∣ n ↔ 3 ∣ digitalRoot n, resting on digitalRoot n ≡ n (mod 3). The digital root (iterated digit sum collapsing to one digit) reduces divisibility by 3 to inspecting a single digit.",
+      "leanType": "(n : ℕ) : 3 ∣ n ↔ 3 ∣ digitalRoot n",
+      "startLine": 316,
+      "endLine": 318
+    },
+    {
+      "name": "coprime_mul_dvd_iff",
+      "type": "core",
+      "description": "**Coprime factorization rule.** For coprime d₁, d₂: d₁·d₂ ∣ n ↔ d₁ ∣ n ∧ d₂ ∣ n — a CRT-style decomposition. Instantiated to derive the composite rules for 6, 12, 15, 18, 36, 45, 60, 90 from their coprime prime-power factors.",
+      "leanType": "(d₁ d₂ n : ℕ) (h : Nat.Coprime d₁ d₂) : d₁ * d₂ ∣ n ↔ d₁ ∣ n ∧ d₂ ∣ n",
+      "startLine": 337,
+      "endLine": 341
+    },
+    {
+      "name": "divisibility_rules_summary",
+      "type": "key",
+      "description": "**Capstone summary.** A single conjunction bundling the three rule families — digit-sum (3, 9, 37, 99), last-k-digit (2, 4, 8, 5, 25), and the power generalizations (2^k, 5^k) — assembled by discharging each conjunct with the corresponding named theorem, exhibiting the whole collection as instances of the unified framework.",
+      "leanType": "(∀ n, 3 ∣ n ↔ 3 ∣ (Nat.digits 10 n).sum) ∧ … ∧ (∀ k n, 5 ^ k ∣ n ↔ 5 ^ k ∣ (n % 10 ^ k))",
+      "startLine": 522,
+      "endLine": 548
+    }
+  ],
   "conclusion": {
     "summary": "This extension provides a comprehensive, formally verified collection of divisibility rules covering three major families: last-k-digits, digit-sum, and truncation methods. Truncation rules are proved for all primes up to 19 coprime to 10 (7, 11, 13, 17, 19). All 50+ theorems are proved without sorry, building on Mathlib's digit and modular arithmetic infrastructure. Note: many theorems discharge their numeric side conditions (b % d = 1, coprimality) via `native_decide`, which depends on the Lean.ofReduceBool axiom, so the file is not axiom-free (these conditions are decidable and could be reduced to kernel `decide`).",
     "implications": "The proof demonstrates the power of unifying theorems:\n\n**1. One theorem, many rules**: The general last-k-digits theorem (d|M → d|n ↔ d|(n%M)) instantly gives all power-of-2 and power-of-5 rules.\n\n**2. Base-agnostic digit sums**: The digit-sum framework works in any base, giving rules for divisibility by 37, 99, 999, and more via base 1000/100.\n\n**3. Digital root theory**: The complete characterization of digital root connects elementary arithmetic to modular algebra.\n\n**4. Practical checking**: Casting out nines and coprime factorization provide verified foundations for mental arithmetic techniques.",
