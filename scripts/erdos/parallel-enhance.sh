@@ -145,7 +145,10 @@ create_agent_worktree() {
 
     # Initialize submodules if needed
     if [[ -f "$worktree_path/.gitmodules" ]]; then
-        (cd "$worktree_path" && git submodule update --init --recursive 2>/dev/null) || true
+        # Route submodule stdout ("Submodule path '...': checked out '...'")
+        # to stderr so it cannot corrupt the function's `<path>\t<branch>`
+        # tab-return contract on stdout; suppress git's own stderr noise.
+        (cd "$worktree_path" && git submodule update --init --recursive >&2 2>/dev/null) || true
     fi
 
     # Symlink .lake for fast Lean builds
