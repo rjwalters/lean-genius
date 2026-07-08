@@ -22,8 +22,8 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 160,
-    "assumptions": "None. All results are axiom-free and self-contained: the Triangle structure, its edge set (t.vertices.offDiag), edge-disjoint packings, the 2-coloring, and maxPackingSize are all re-declared locally, so nothing depends on the parent entry's three research axioms (gruslys_letzter, balanced_achieves_bound, extremal_uniqueness). No native_decide is used. `#print axioms` on the four public results (Triangle.edges_card, packing_edge_bound, packing_card_le_choose, maxPackingSize_le) reports only [propext, Classical.choice, Quot.sound]. Mathlib lemmas used: Finset.offDiag_card, Finset.card_biUnion, Finset.mem_offDiag, Finset.card_le_card, Finset.card_univ, Nat.choose_two_right, Nat.div_div_eq_div_mul, Nat.le_div_iff_mul_le, csSup_le. Kernel-verified against Mathlib v4.26.0.",
+    "lineCount": 0,
+    "assumptions": "No Lean source file exists yet. The file listed in proofRepoPath (Proofs/Erdos76PackingUpperBound.lean) has never been committed on any branch (issue #34794, re-flagged #35604), so there are currently no machine-verified declarations, axioms, or assumptions to report — theoremCount, definitionCount and lineCount are therefore 0. The narrative below describes the INTENDED axiom-free double-counting formalization (a local re-declaration of the Triangle/packing vocabulary and the four public results Triangle.edges_card, packing_edge_bound, packing_card_le_choose, maxPackingSize_le); those declaration claims and the `#print axioms` result will be restored, along with accurate counts, once the source file lands and builds against Mathlib v4.26.0.",
     "dateAdded": "2026-07-02",
     "mathlib_version": "4.26.0",
     "erdosNumber": 76,
@@ -36,9 +36,9 @@
       "maxPackingSize_le: DISCHARGES THE PARENT'S sorry — for every 2-coloring c of K_n, maxPackingSize c ≤ C(n,2)/3, i.e. the maximum monochromatic triangle packing is at most ≈ n²/6. Proved with csSup_le over the (nonempty, via the empty packing) set of achievable packing sizes.",
       "A fully local, axiom-free re-declaration of the triangle-packing vocabulary (Triangle, Triangle.edges as offDiag, isPacking, Color, EdgeColoring, isMonochromatic, monochromaticPacking, maxPackingSize) matching the parent Erdos76Problem.lean so the result drops directly into its narrative."
     ],
-    "theoremCount": 4,
-    "definitionCount": 8,
-    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. Restore to 'verified' only once the Lean file lands and builds."
+    "theoremCount": 0,
+    "definitionCount": 0,
+    "verificationNote": "Downgraded from 'verified' to 'pending' by mechanic (issue #34794) and counts zeroed by mechanic (issue #35604): the Lean source file listed in proofRepoPath does not exist on main and has never appeared in any git commit, so the machine-verified claim is unbacked. theoremCount, definitionCount and lineCount are set to 0 to reflect the absent source; the originalContributions and sections below describe the intended formalization, not committed code. Restore the counts and 'verified' status only once the Lean file lands and builds."
   },
   "overview": {
     "historicalContext": "Erdős Problem #76 (conjectured by Erdős, Faudree and Ordman; resolved by Gruslys and Letzter, 2020) asks how many edge-disjoint monochromatic triangles every 2-coloring of the edges of K_n must contain. The answer is (1+o(1))·n²/12, achieved by the balanced bipartition: split the vertices into two equal halves, color within-half edges blue (two K_{n/2} cliques, each packing ≈ n²/24 triangles via Steiner triple systems) and between-half edges red. The red class K_{n/2,n/2} is triangle-free, so it contributes nothing — the count comes entirely from the two blue cliques, giving 2·n²/24 = n²/12. The genuinely hard content is the matching lower bound (every coloring achieves ≥ n²/12), which Gruslys and Letzter proved via the Szemerédi regularity lemma and a greedy-absorption method.",
