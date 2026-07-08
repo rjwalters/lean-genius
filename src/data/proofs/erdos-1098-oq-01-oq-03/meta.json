@@ -33,10 +33,11 @@
       "bounded_cliques_of_finite_index: finite centre index ⟹ ω(Γ(G)) finite with explicit bound",
       "exists_clique_centralizer_cover: ω(Γ(G)) finite ⟹ a single maximal clique's centralizers cover G (first proved step of Neumann's hard direction)",
       "exists_finiteIndex_centralizer_of_boundedCliques: ω(Γ(G)) finite ⟹ some centralizer C_G(a) has finite index, via Mathlib's CosetCover (B. H. Neumann's coset-covering theorem)",
-      "neumann_full_theorem: the equivalence ω(Γ(G)) finite ⟺ [G:Z(G)] finite"
+      "neumann_full_theorem: the equivalence ω(Γ(G)) finite ⟺ [G:Z(G)] finite",
+      "center_finiteIndex_iff_relIndex_core: ω(Γ(G)) finite ⟹ [G:Z(G)] finite iff Z(G) has finite index within the explicit finite-index core H = ⋂ₐ C_G(a); localizes the residual axiom to (center G).relIndex H, whose Mathlib endgame is Subgroup.index_center_le_pow gated on Finite (commutatorSet G)"
     ],
-    "lineCount": 337,
-    "theoremCount": 10,
+    "lineCount": 391,
+    "theoremCount": 12,
     "defCount": 3,
     "definitionCount": 3
   },
@@ -138,12 +139,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 337,
+    "lineCount": 391,
     "path": "Proofs/Erdos1098OQ01OQ03.lean",
     "axiomCount": 1,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 10
+    "theoremCount": 12
   },
   "sorries": 0
 }
