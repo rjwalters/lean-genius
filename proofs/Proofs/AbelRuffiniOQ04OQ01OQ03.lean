@@ -132,6 +132,80 @@ theorem conj_mem_zpowers_sylow {G : Type*} [Group G] [Finite G] {p : ℕ}
     g * c * g⁻¹ ∈ Subgroup.zpowers c :=
   (zpowers_sylow_normal m hcard hpm huniq c hc).conj_mem c (Subgroup.mem_zpowers c) g
 
+/-- **Abstract "an involution acts by inversion" step.**
+
+Under the hypotheses of `zpowers_sylow_normal` (so `⟨c⟩` is normal of prime order
+`p`), any *involution* `g` — an element with `g * g = 1`, in particular any
+transposition once `G ↪ S₅` — conjugates `c` either to itself or to its inverse:
+
+    `g * c * g⁻¹ = c    ∨    g * c * g⁻¹ = c⁻¹`.
+
+This is the abstract heart of the final, `S₅`-specific bullet of the three
+`gal_card_ne_10 / _20 / _40` lemmas ("a transposition cannot normalize a 5-cycle"):
+conjugation by `g` normalizes `⟨c⟩`, so `g c g⁻¹ = c ^ k` for some `k : ℤ`;
+conjugating a second time and using `g * g = 1` gives `c ^ (k*k) = c`, whence
+`k*k ≡ 1 (mod p)`; as `p` is prime, `p ∣ (1-k)(1+k)` forces `k ≡ ±1 (mod p)`, i.e.
+`c ^ k = c` or `c⁻¹`. (The concrete step then observes that a genuine transposition
+conjugates a 5-cycle to a different 5-cycle, ruling out *both* alternatives — but
+that part needs the permutation structure and lives in the concrete proof.) -/
+theorem involution_conj_eq_self_or_inv {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) {g : G} (hg : g * g = 1) :
+    g * c * g⁻¹ = c ∨ g * c * g⁻¹ = c⁻¹ := by
+  -- `g c g⁻¹ ∈ ⟨c⟩`, so `g c g⁻¹ = c ^ k` for some `k : ℤ`.
+  obtain ⟨k, hk⟩ :=
+    Subgroup.mem_zpowers_iff.mp (conj_mem_zpowers_sylow m hcard hpm huniq c hc g)
+  -- Conjugating `c ^ k` by `g` again returns `c`, using `g * g = 1`.
+  have hconj2 : g * c ^ k * g⁻¹ = c := by
+    rw [hk]
+    have : g * (g * c * g⁻¹) * g⁻¹ = (g * g) * c * (g⁻¹ * g⁻¹) := by group
+    rw [this, hg]
+    have hg' : g⁻¹ * g⁻¹ = 1 := by rw [← mul_inv_rev, hg, inv_one]
+    rw [hg', one_mul, mul_one]
+  -- Conjugation is an automorphism, so it commutes with taking the `k`-th power.
+  have hpow : g * c ^ k * g⁻¹ = (g * c * g⁻¹) ^ k := by
+    simpa [MulAut.conj_apply] using (map_zpow (MulAut.conj g) c k)
+  -- Combine: `c = (c ^ k) ^ k = c ^ (k * k)`.
+  rw [hpow, ← hk, ← zpow_mul] at hconj2
+  have hkey : c ^ (k * k) = c ^ (1 : ℤ) := by rw [zpow_one]; exact hconj2
+  -- `k * k ≡ 1 (mod p)`.
+  rw [zpow_eq_zpow_iff_modEq, hc] at hkey
+  have hdvd : (p : ℤ) ∣ (1 - k) * (1 + k) := by
+    have h := (Int.modEq_iff_dvd.mp hkey)
+    calc (p : ℤ) ∣ 1 - k * k := h
+      _ = (1 - k) * (1 + k) := by ring
+  haveI hp_int : Prime (p : ℤ) := Int.prime_iff_natAbs_prime.mpr (by simpa using hp.out)
+  rcases hp_int.dvd_mul.mp hdvd with h1 | h2
+  · -- `k ≡ 1 (mod p)` ⇒ `c ^ k = c`.
+    left
+    have : k ≡ 1 [ZMOD p] := Int.modEq_iff_dvd.mpr h1
+    have hck : c ^ k = c ^ (1 : ℤ) := zpow_eq_zpow_iff_modEq.mpr (by rw [hc]; exact this)
+    rw [hk] at hck
+    rw [hck, zpow_one]
+  · -- `k ≡ -1 (mod p)` ⇒ `c ^ k = c⁻¹`.
+    right
+    have : k ≡ -1 [ZMOD p] := Int.modEq_iff_dvd.mpr (by
+      have : (p : ℤ) ∣ 1 + k := h2
+      rwa [show (-1 : ℤ) - k = -(1 + k) by ring, dvd_neg])
+    have hck : c ^ k = c ^ (-1 : ℤ) := zpow_eq_zpow_iff_modEq.mpr (by rw [hc]; exact this)
+    rw [hk] at hck
+    rw [hck, zpow_neg_one]
+
+/-- **Reusable sufficient condition for the divisor hypothesis `huniq`.** If the
+index `m` is smaller than the prime `p`, then the only divisor `d ∣ m` with
+`d ≡ 1 (mod p)` is `d = 1`: any such `d` satisfies `d ≤ m < p`, so `d % p = d`, and
+`d % p = 1` gives `d = 1`. This discharges the `huniq` hypothesis uniformly for every
+index below `p` (in the Abel–Ruffini application, `m = 2` and `m = 4` are `< 5`; only
+`m = 8 > 5` genuinely needs the divisibility, as `6 ≡ 1 (mod 5)` but `6 ∤ 8`). -/
+theorem huniq_of_lt {p m : ℕ} (hm0 : 0 < m) (hmp : m < p) :
+    ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1 := by
+  intro d hd hmod
+  have hdm : d ≤ m := Nat.le_of_dvd hm0 hd
+  have hdp : d < p := lt_of_le_of_lt hdm hmp
+  rwa [Nat.mod_eq_of_lt hdp] at hmod
+
 /-! ### The fixed prime `p = 5`
 
 The original Abel–Ruffini application only needs `p = 5`.  With the general
@@ -169,13 +243,13 @@ The three `private` lemmas in `AbelRuffiniOQ04OQ01.lean` instantiate the core at
 instantiation needs the divisor hypothesis `huniq`, verified here once and for
 all for the three relevant indices. -/
 
-/-- Order `10 = 5·2`: the only divisor of `2` that is `≡ 1 (mod 5)` is `1`. -/
-example : ∀ d : ℕ, d ∣ 2 → d % 5 = 1 → d = 1 := by
-  intro d hd hmod; have := Nat.le_of_dvd (by norm_num) hd; interval_cases d <;> omega
+/-- Order `10 = 5·2`: the only divisor of `2` that is `≡ 1 (mod 5)` is `1`.
+Since `2 < 5`, this is the `huniq_of_lt` case. -/
+example : ∀ d : ℕ, d ∣ 2 → d % 5 = 1 → d = 1 := huniq_of_lt (by norm_num) (by norm_num)
 
-/-- Order `20 = 5·4`: the only divisor of `4` that is `≡ 1 (mod 5)` is `1`. -/
-example : ∀ d : ℕ, d ∣ 4 → d % 5 = 1 → d = 1 := by
-  intro d hd hmod; have := Nat.le_of_dvd (by norm_num) hd; interval_cases d <;> omega
+/-- Order `20 = 5·4`: the only divisor of `4` that is `≡ 1 (mod 5)` is `1`.
+Since `4 < 5`, this is again the `huniq_of_lt` case. -/
+example : ∀ d : ℕ, d ∣ 4 → d % 5 = 1 → d = 1 := huniq_of_lt (by norm_num) (by norm_num)
 
 /-- Order `40 = 5·8`: the only divisor of `8` that is `≡ 1 (mod 5)` is `1`.
 Note `6 ≡ 1 (mod 5)` but `6 ∤ 8`, so the divisibility hypothesis is essential. -/
