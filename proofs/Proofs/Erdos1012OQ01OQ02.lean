@@ -40,6 +40,17 @@ theorem choose_two_succ (m : ℕ) : (m + 1).choose 2 = m.choose 2 + m := by
   show m + m.choose 2 = m.choose 2 + m
   omega
 
+/-- Doubled second binomial coefficient: `2 * C(m, 2) = m * (m - 1)` (over ℕ,
+    subtraction-free once `m` is a successor). -/
+theorem two_mul_choose_two (m : ℕ) : 2 * m.choose 2 = m * (m - 1) := by
+  induction m with
+  | zero => rfl
+  | succ p ih =>
+    rw [choose_two_succ, Nat.mul_add, ih, Nat.add_sub_cancel]
+    cases p with
+    | zero => rfl
+    | succ q => simp only [Nat.succ_sub_one]; ring
+
 /-- **Explicit polynomial form of the edge threshold.** -/
 theorem edgeThreshold_eq (n k : ℕ) :
     edgeThreshold n k =
@@ -77,5 +88,38 @@ theorem edgeThreshold_mono (k : ℕ) {n m : ℕ} (hn : k + 1 ≤ n) (hnm : n ≤
     have hkm : k + 1 ≤ m := le_trans hn h
     rw [edgeThreshold_succ_left m k hkm]
     omega
+
+/-- **Non-degeneracy of the edge threshold.**  On the Woodall range `n ≥ 2k+3` the
+    threshold never exceeds the total number of edges of the complete graph `Kₙ`:
+
+        edgeThreshold n k ≤ C(n, 2).
+
+    Hence the long-cycle hypothesis `edgeCount G ≥ edgeThreshold n k` is *satisfiable*
+    (some graph on `n` vertices has that many edges) rather than vacuous — the parent's
+    `hasLongCycle` is not trivially true for lack of dense enough graphs.
+
+    Doubling both sides, the gap is exactly
+    `2·(C(n,2) − edgeThreshold n k) = 2k(k+2) + 2c(k+1) ≥ 0` where `c = n − (2k+3)`. -/
+theorem edgeThreshold_le_choose_two (n k : ℕ) (h : 2 * k + 3 ≤ n) :
+    edgeThreshold n k ≤ n.choose 2 := by
+  obtain ⟨c, rfl⟩ : ∃ c, n = 2 * k + 3 + c := ⟨n - (2 * k + 3), by omega⟩
+  -- Double the threshold: 2·edgeThreshold = (k+2+c)(k+1+c) + (k+2)(k+1) + 2.
+  have d1 : 2 * edgeThreshold (2 * k + 3 + c) k
+      = (k + 2 + c) * (k + 1 + c) + (k + 2) * (k + 1) + 2 := by
+    unfold edgeThreshold
+    have h1 : 2 * (2 * k + 3 + c - k - 1).choose 2 = (k + 2 + c) * (k + 1 + c) := by
+      rw [show 2 * k + 3 + c - k - 1 = k + 2 + c by omega, two_mul_choose_two,
+          show k + 2 + c - 1 = k + 1 + c by omega]
+    have h2 : 2 * (k + 2).choose 2 = (k + 2) * (k + 1) := by
+      rw [two_mul_choose_two, show k + 2 - 1 = k + 1 by omega]
+    omega
+  -- Double the complete-graph edge count: 2·C(n,2) = (2k+3+c)(2k+2+c).
+  have d2 : 2 * (2 * k + 3 + c).choose 2 = (2 * k + 3 + c) * (2 * k + 2 + c) := by
+    rw [two_mul_choose_two, show 2 * k + 3 + c - 1 = 2 * k + 2 + c by omega]
+  -- The doubled inequality is a manifestly nonnegative polynomial gap.
+  have hle : 2 * edgeThreshold (2 * k + 3 + c) k ≤ 2 * (2 * k + 3 + c).choose 2 := by
+    rw [d1, d2]; nlinarith [Nat.zero_le k, Nat.zero_le c, Nat.zero_le (k * c),
+      Nat.zero_le (k * k)]
+  omega
 
 end Erdos1012OQ01OQ02
