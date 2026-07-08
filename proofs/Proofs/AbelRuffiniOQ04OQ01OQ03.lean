@@ -427,4 +427,104 @@ example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
       interval_cases d <;> omega)
     c hc
 
+/-- **Solvability capstone for order `20`.**  Any finite group of order `20`
+containing an element of order `5` is solvable: order `20 = 5·2²`, `5 ∤ 4`, the
+divisor condition holds (only `1 ∣ 4` is `≡ 1 mod 5`), and the quotient of order
+`4` is a `2`-group, hence solvable.  Together with the order-`10` and order-`40`
+cases this closes the three candidate Galois-group orders of `x⁵-4x+2`. -/
+example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
+    (hcard : Nat.card G = 20) : IsSolvable G :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  haveI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
+  isSolvable_of_sylow_primePow_index (p := 5) (q := 2) (k := 2)
+    (hcard.trans (by norm_num)) (by norm_num)
+    (by
+      intro d hd hmod
+      rw [show (2 : ℕ) ^ 2 = 4 from by norm_num] at hd
+      have := Nat.le_of_dvd (by norm_num) hd
+      interval_cases d <;> omega)
+    c hc
+
+/-! ### The N/C theorem: `[G : C_G(c)] ∣ p - 1`
+
+The `involution_conj_eq_self_or_inv` dichotomy (`g c g⁻¹ ∈ {c, c⁻¹}` for an
+involution `g`) is the order-`2` shadow of a single structural fact.  Because
+`⟨c⟩` is a **normal** cyclic subgroup of prime order `p`, conjugation defines a
+group homomorphism `G →* MulAut ⟨c⟩`, and `MulAut ⟨c⟩ ≅ (ZMod p)ˣ` is cyclic of
+order `φ(p) = p - 1`.  Its kernel is exactly the centralizer `C_G(c)` — an element
+acts trivially on `⟨c⟩` iff it commutes with the generator `c` — so the first
+isomorphism theorem embeds `G ⧸ C_G(c)` into a group of order `p - 1`, giving
+
+> `[G : C_G(c)] ∣ p - 1`.
+
+This is the classical **N/C theorem** `N_G(⟨c⟩)/C_G(⟨c⟩) ↪ Aut(⟨c⟩)` in the case
+where `⟨c⟩` is normal (so `N_G(⟨c⟩) = G`).  It sharpens the `±1` dichotomy to
+*arbitrary* element order: the conjugation exponent of any `g` is a `(p-1)`-st
+root of unity mod `p`, of which `±1` (order dividing `2`) is only the involution
+case handled by `involution_conj_eq_self_or_inv`. -/
+
+/-- **N/C theorem for a normal Sylow `p`-subgroup.**  Under the hypotheses of
+`zpowers_sylow_normal`, the centralizer `C_G(c)` of the order-`p` element `c` has
+index dividing `p - 1`.  Proof: conjugation gives `G →* MulAut ⟨c⟩` with kernel
+`C_G(c)`, and `|MulAut ⟨c⟩| = φ(p) = p - 1` since `⟨c⟩` is cyclic of prime order,
+so `[G : C_G(c)] = |range| ∣ p - 1` by the first isomorphism theorem. -/
+theorem centralizer_index_dvd_prime_sub_one {G : Type*} [Group G] [Finite G]
+    {p : ℕ} [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) :
+    (Subgroup.centralizer {c}).index ∣ p - 1 := by
+  haveI hN : (Subgroup.zpowers c).Normal := zpowers_sylow_normal m hcard hpm huniq c hc
+  haveI hcyc : IsCyclic ↥(Subgroup.zpowers c) :=
+    (Subgroup.isCyclic_iff_exists_zpowers_eq_top _).mpr ⟨c, rfl⟩
+  -- The conjugation action `G →* MulAut ⟨c⟩` has kernel exactly `C_G(c)`.
+  have hker : (MulAut.conjNormal (H := Subgroup.zpowers c)).ker
+      = Subgroup.centralizer {c} := by
+    ext g
+    rw [MonoidHom.mem_ker, Subgroup.mem_centralizer_iff]
+    constructor
+    · -- acting trivially on `⟨c⟩` ⇒ commuting with the generator `c`
+      intro hg h hh
+      rw [Set.mem_singleton_iff] at hh
+      subst hh
+      have happ : (MulAut.conjNormal (H := Subgroup.zpowers c) g)
+          ⟨c, Subgroup.mem_zpowers c⟩ = ⟨c, Subgroup.mem_zpowers c⟩ := by
+        rw [hg]; rfl
+      have hval : g * c * g⁻¹ = c := by
+        have hcoe := congrArg Subtype.val happ
+        rwa [MulAut.conjNormal_apply] at hcoe
+      rw [mul_inv_eq_iff_eq_mul] at hval
+      exact hval.symm
+    · -- commuting with `c` ⇒ acting trivially on all of `⟨c⟩`
+      intro hg
+      have hcomm : Commute c g := hg c rfl
+      apply MulEquiv.ext
+      intro h
+      apply Subtype.ext
+      obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp h.property
+      have hgc : Commute g (c ^ k) := hcomm.symm.zpow_right k
+      show ((MulAut.conjNormal (H := Subgroup.zpowers c) g) h : G) = (h : G)
+      rw [MulAut.conjNormal_apply, ← hk, hgc.eq, mul_assoc, mul_inv_cancel, mul_one]
+  -- `|MulAut ⟨c⟩| = φ(p) = p - 1`.
+  have hAut : Nat.card (MulAut ↥(Subgroup.zpowers c)) = p - 1 := by
+    rw [IsCyclic.card_mulAut, Nat.card_zpowers, hc, Nat.totient_prime hp.out]
+  -- First isomorphism theorem: `[G : ker] = |range| ∣ |MulAut ⟨c⟩| = p - 1`.
+  have hdvd : (MulAut.conjNormal (H := Subgroup.zpowers c)).ker.index ∣ p - 1 := by
+    rw [Subgroup.index_ker, ← hAut]
+    exact (MulAut.conjNormal (H := Subgroup.zpowers c)).range.card_subgroup_dvd_card
+  rwa [hker] at hdvd
+
+/-- **Fixed prime `5` N/C bound** (`p = 5` specialisation of
+`centralizer_index_dvd_prime_sub_one`).  In a finite group of order `5·m` with
+`5 ∤ m` and the divisor condition, the centralizer of an order-`5` element has
+index dividing `4`.  For the Abel–Ruffini `x⁵-4x+2` application (`c` a 5-cycle in
+`S₅`) this is `[G : C_G(c)] ∣ 4`, the index that in fact equals `4`. -/
+theorem centralizer_index_dvd_four_order5 {G : Type*} [Group G] [Finite G] (m : ℕ)
+    (hcard : Nat.card G = 5 * m) (hm5 : ¬ (5 ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % 5 = 1 → d = 1)
+    (c : G) (hc : orderOf c = 5) :
+    (Subgroup.centralizer {c}).index ∣ 4 := by
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  simpa using centralizer_index_dvd_prime_sub_one m hcard hm5 huniq c hc
+
 end AbelRuffiniSylowElim
