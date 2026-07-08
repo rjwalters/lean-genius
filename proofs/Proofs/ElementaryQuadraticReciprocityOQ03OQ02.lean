@@ -332,19 +332,26 @@ Complete multiplicativity is now established in **both** arguments over all
 nonzero pairs: `kronecker_mul_left` and `kronecker_mul_right` together give
 `(ab/n) = (a/n)(b/n)` and `(a/mn) = (a/m)(a/n)` for every nonzero product.
 The second-argument result follows from the normal form
-`kronecker_eq_sign_jacobi`, which reduces the special moduli `n = ±1` to the
-sign character times `J(a|1) = 1`, so no mod-8 machinery is needed: the
-`kronecker2` supplementary law only enters the symbol at *even* moduli
-through the natAbs Jacobi factor, which `jacobiSym.mul_right'` already handles
-multiplicatively.
+`kronecker_eq_sign_jacobi`: for every nonzero `n` the symbol equals
+`sign(n) · J(a | |n|)`, where `sign(n) = (a/(-1))` when `n < 0` and `1`
+otherwise (the special moduli `n = ±1` reduce to `sign(n) · J(a|1) = sign(n)`).
+Multiplicativity then reduces to `Int.natAbs_mul` together with
+`jacobiSym.mul_right'` on the Jacobi factor and multiplicativity of the sign
+character (which uses that `(a/(-1))` squares to `1`).
 
-What remains open is the **generalized quadratic reciprocity** law for
-arbitrary (even/negative) fundamental discriminants d₁, d₂ — the form used in
-class field theory, equivalent to Artin reciprocity for quadratic extensions
-of ℚ. That law additionally requires the supplementary reciprocity relations
-for `(2/n)` and `(-1/n)` combined with a Gauss-sum or induction argument; the
-odd positive case is `kronecker_quadratic_reciprocity` above. This is left as
-open work.
+**Scope caveat.** The general branch of `kronecker` routes the *entire*
+modulus — including its 2-adic part — through `jacobiSym |n|`; it does **not**
+invoke `kronecker2`. So at even moduli the symbol defined here takes Jacobi's
+value at 2 rather than the classical mod-8 character `kronecker2`. The
+multiplicativity above is therefore an honest theorem about the symbol *as
+defined* (which coincides with the classical Kronecker symbol at all odd
+moduli and at `n = ±1`). Two refinements remain open: (1) wiring `kronecker2`
+into the definition so it becomes the classical Kronecker symbol at even
+moduli, and re-proving multiplicativity for that refined symbol; and (2) the
+**generalized quadratic reciprocity** law for arbitrary fundamental
+discriminants (the class-field-theory / Artin form), which needs the
+supplementary laws `(2/n)`, `(-1/n)` and a Gauss-sum argument. The odd
+positive reciprocity case is `kronecker_quadratic_reciprocity` above.
 -/
 
 -- Axiom audits: headline theorems should use only the standard foundational
