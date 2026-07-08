@@ -381,3 +381,128 @@ theorem deficiency_pow_succ_le_factorial {n k : ℕ} (hn : 2 * k ≤ n)
   calc (k + 1) ^ deficiency n k = (k + 1) ^ S.card := by rw [hcard]
     _ ≤ P := hlow
     _ ≤ Nat.factorial k := hle
+
+/-
+## Section X: The sharp factorial bound `(k + deficiency)! ≤ (k!)²`
+
+Section IX only used that each smooth window value exceeds `k`, giving the crude
+lower bound `P ≥ (k+1)^{deficiency}`.  But the smooth window values are *distinct*
+integers (the map `i ↦ n - i` is injective on `i < k ≤ n`), so `P` is a product of
+`deficiency` **distinct** integers each `≥ k+1`.  The smallest such product is
+`(k+1)(k+2)⋯(k+d) = (k+1).ascFactorial d`, hence
+
+    `(k+1).ascFactorial (deficiency n k) ≤ P ≤ k!`.
+
+Multiplying by `k!` and using `k! · (k+1).ascFactorial d = (k+d)!`
+(`Nat.factorial_mul_ascFactorial`) turns this into the memorable closed form
+
+    `(k + deficiency n k)! ≤ (k!)²`.
+
+This strictly improves Section IX (for `k = 28` it forces `deficiency ≤ 18` versus
+the `≤ 20` from `(k+1)^d ≤ k!`), and like everything since Section V it is
+`ofReduceBool`-free and independent of the axiomatized ELS bound.
+-/
+
+/-- **Product lower bound for distinct naturals bounded below.**  If every element
+of a finset `T ⊆ ℕ` is at least `m`, then `∏_{x∈T} x ≥ m(m+1)⋯(m+|T|-1)` — the
+product of the `|T|` smallest values the elements could possibly take.  Proved by
+induction on `T`, peeling off the maximum: the erased set lies in `[m, max)`, whose
+`max - m` slots bound its cardinality, forcing `max ≥ m + (|T|-1)`. -/
+theorem prod_range_add_le_prod_of_forall_ge {m : ℕ} :
+    ∀ (T : Finset ℕ), (∀ x ∈ T, m ≤ x) →
+      (∏ j ∈ Finset.range T.card, (m + j)) ≤ ∏ x ∈ T, x := by
+  intro T
+  induction T using Finset.strongInduction with
+  | _ T ih =>
+    intro hT
+    rcases T.eq_empty_or_nonempty with rfl | hne
+    · simp
+    · set M := T.max' hne with hM
+      have hMmem : M ∈ T := T.max'_mem hne
+      have hMge : m ≤ M := hT M hMmem
+      have hsub : T.erase M ⊆ Finset.Ico m M := by
+        intro x hx
+        have hxT : x ∈ T := Finset.mem_of_mem_erase hx
+        have hxne : x ≠ M := Finset.ne_of_mem_erase hx
+        have hxle : x ≤ M := T.le_max' x hxT
+        exact Finset.mem_Ico.mpr ⟨hT x hxT, lt_of_le_of_ne hxle hxne⟩
+      have hcardle : (T.erase M).card ≤ M - m := by
+        calc (T.erase M).card ≤ (Finset.Ico m M).card := Finset.card_le_card hsub
+          _ = M - m := Nat.card_Ico m M
+      have hMbound : m + (T.erase M).card ≤ M := by omega
+      have hcard : T.card = (T.erase M).card + 1 := by
+        have he := Finset.card_erase_of_mem hMmem
+        have hpos : 0 < T.card := Finset.card_pos.mpr hne
+        omega
+      have hIH : (∏ j ∈ Finset.range (T.erase M).card, (m + j)) ≤ ∏ x ∈ T.erase M, x :=
+        ih (T.erase M) (Finset.erase_ssubset hMmem)
+          (fun x hx => hT x (Finset.mem_of_mem_erase hx))
+      rw [hcard, Finset.prod_range_succ]
+      calc (∏ j ∈ Finset.range (T.erase M).card, (m + j)) * (m + (T.erase M).card)
+          ≤ (∏ x ∈ T.erase M, x) * M := Nat.mul_le_mul hIH hMbound
+        _ = ∏ x ∈ T, x := by
+              rw [mul_comm]; exact Finset.mul_prod_erase T (fun x => x) hMmem
+
+/-- **The smooth window product dominates `(k+1).ascFactorial (deficiency)`.**  The
+`deficiency n k` smooth values in the window are distinct integers each `> k`, so
+their product is at least the product `(k+1)(k+2)⋯(k+deficiency)` of the smallest
+possible distinct values above `k`. -/
+theorem ascFactorial_le_smooth_window_prod {n k : ℕ} (hn : 2 * k ≤ n) :
+    (k + 1).ascFactorial (deficiency n k) ≤
+      ∏ i ∈ (Finset.range k).filter (fun i => IsKSmooth k (n - i)), (n - i) := by
+  set S := (Finset.range k).filter (fun i => IsKSmooth k (n - i)) with hS
+  have hcard : deficiency n k = S.card := rfl
+  set T := S.image (fun i => n - i) with hT
+  have hinj : ∀ a ∈ S, ∀ b ∈ S, (fun i => n - i) a = (fun i => n - i) b → a = b := by
+    intro a ha b hb hab
+    simp only at hab
+    have hak : a < k := Finset.mem_range.mp (Finset.filter_subset _ _ ha)
+    have hbk : b < k := Finset.mem_range.mp (Finset.filter_subset _ _ hb)
+    omega
+  have hTcard : T.card = S.card := Finset.card_image_of_injOn (by
+    intro a ha b hb hab
+    exact hinj a (Finset.mem_coe.mp ha) b (Finset.mem_coe.mp hb) hab)
+  have hPeq : (∏ x ∈ T, x) = ∏ i ∈ S, (n - i) := Finset.prod_image hinj
+  have hTge : ∀ x ∈ T, k + 1 ≤ x := by
+    intro x hx
+    rw [hT, Finset.mem_image] at hx
+    obtain ⟨i, hiS, rfl⟩ := hx
+    have hik : i < k := Finset.mem_range.mp (Finset.filter_subset _ _ hiS)
+    have := window_value_gt_k hik hn
+    omega
+  calc (k + 1).ascFactorial (deficiency n k)
+      = (k + 1).ascFactorial T.card := by rw [hcard, hTcard]
+    _ = ∏ j ∈ Finset.range T.card, (k + 1 + j) := by rw [Nat.ascFactorial_eq_prod_range]
+    _ ≤ ∏ x ∈ T, x := prod_range_add_le_prod_of_forall_ge T hTge
+    _ = ∏ i ∈ S, (n - i) := hPeq
+
+/-- **Sharp ascending-factorial bound.**  For an admissible pair,
+
+    `(k+1).ascFactorial (deficiency n k) ≤ k!`,
+
+i.e. `(k+1)(k+2)⋯(k+deficiency) ≤ k!`.  This refines Section IX's
+`(k+1)^{deficiency} ≤ k!` because the smooth window values are distinct. -/
+theorem deficiency_ascFactorial_le_factorial {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) :
+    (k + 1).ascFactorial (deficiency n k) ≤ Nat.factorial k := by
+  have hlow := ascFactorial_le_smooth_window_prod (n := n) (k := k) hn
+  have hdvd := smooth_window_prod_dvd_factorial h
+  exact hlow.trans (Nat.le_of_dvd (Nat.factorial_pos k) hdvd)
+
+/-- **Sharp factorial bound (closed form).**  For an admissible pair,
+
+    `(k + deficiency n k)! ≤ (k!)²`.
+
+This is the strongest elementary upper bound in the file: it improves Section IX
+(for `k = 28` it forces `deficiency ≤ 18`, versus `≤ 20`), is `ofReduceBool`-free,
+and does not use the axiomatized ELS bound.  It follows from
+`deficiency_ascFactorial_le_factorial` via `k! · (k+1).ascFactorial d = (k+d)!`. -/
+theorem deficiency_add_factorial_le_sq {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : NoSmallPrimeFactors n k) :
+    Nat.factorial (k + deficiency n k) ≤ (Nat.factorial k) ^ 2 := by
+  have hasc := deficiency_ascFactorial_le_factorial hn h
+  calc Nat.factorial (k + deficiency n k)
+      = Nat.factorial k * (k + 1).ascFactorial (deficiency n k) :=
+        (Nat.factorial_mul_ascFactorial k (deficiency n k)).symm
+    _ ≤ Nat.factorial k * Nat.factorial k := Nat.mul_le_mul (le_refl _) hasc
+    _ = (Nat.factorial k) ^ 2 := by rw [pow_two]
