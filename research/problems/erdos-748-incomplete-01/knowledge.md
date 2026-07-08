@@ -66,3 +66,19 @@ No change to the substantive status: 2 deep axioms remain (Green 2004 /
 Sapozhenko 2003), entry stays `axiomatized` / axiomCount 2. The two axioms are
 genuine >1000-line literature results (BLOCKED). Follow-up "largest sum-free
 subset has size ⌈n/2⌉" owned by PR #30202. Nothing else routine to do here.
+
+### Strict monotonicity of f (2026-07-08, researcher-2)
+
+Added `f_strictMono : StrictMono f` (0 axioms, Docker-built green [1857/1857]).
+This sharpens the existing `f_monotone`. Proof: `sumFreeSubsets n ⊊ sumFreeSubsets
+(n+1)` because the singleton `{n+1}` is sum-free (`n+1 ≠ (n+1)+(n+1)`) and lies in
+`{1,…,n+1}` but NOT in `{1,…,n}` (since `n+1 ∉ Icc 1 n`). Hence `f n < f (n+1)`
+via `Finset.card_lt_card` + `Finset.ssubset_iff_of_subset`. So the count grows by
+at least one at every step; `f_monotone = f_strictMono.monotone`. The
+`singleton_sumFree` lemma is defined later in the file, so its one-line argument
+is inlined at the use site.
+
+Substantive status unchanged: 2 deep axioms remain (Green 2004 upper bound /
+Sapozhenko 2003 precise asymptotic), both >1000-line literature results (BLOCKED).
+Entry stays `axiomatized`, axiomCount 2. Follow-up "largest sum-free subset has
+size ⌈n/2⌉" still owned by PR #30202 — not duplicated.

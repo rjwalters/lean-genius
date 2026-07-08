@@ -209,6 +209,41 @@ theorem f_monotone : Monotone f :=
   monotone_nat_of_le_succ fun n =>
     Finset.card_le_card (sumFreeSubsets_subset_succ n)
 
+/--
+**The counting function `f` is strictly monotone.**
+Passing from `{1,…,n}` to `{1,…,n+1}` keeps every existing sum-free subset
+(`sumFreeSubsets_subset_succ`) and adds at least one genuinely new one: the
+singleton `{n+1}`, which is sum-free (`n+1 ≠ (n+1)+(n+1)`) but cannot fit inside
+`{1,…,n}`. Hence the inclusion of families is *strict*, so the count grows by at
+least one at every step (`f n < f (n+1)`). This sharpens `f_monotone`, which now
+follows as `f_strictMono.monotone`.
+-/
+theorem f_strictMono : StrictMono f := by
+  apply strictMono_nat_of_lt_succ
+  intro n
+  show (sumFreeSubsets n).card < (sumFreeSubsets (n + 1)).card
+  apply Finset.card_lt_card
+  rw [Finset.ssubset_iff_of_subset (sumFreeSubsets_subset_succ n)]
+  refine ⟨{n + 1}, ?_, ?_⟩
+  · -- `{n+1}` is a sum-free subset of `{1,…,n+1}`.
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨?_, ?_⟩
+    · intro x hx
+      rw [Finset.mem_singleton] at hx
+      subst hx
+      rw [Finset.mem_Icc]
+      omega
+    · -- `{n+1}` is sum-free: `n+1 ≠ (n+1) + (n+1)` (inlined `singleton_sumFree`).
+      intro a b c ha hb hc
+      rw [Finset.mem_singleton] at ha hb hc
+      omega
+  · -- `{n+1} ⊄ {1,…,n}`, so it is not counted by `sumFreeSubsets n`.
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+    rintro ⟨hsub, -⟩
+    have hmem : (n + 1) ∈ Finset.Icc 1 n := hsub (Finset.mem_singleton_self _)
+    rw [Finset.mem_Icc] at hmem
+    omega
+
 /-
 ## Part IV: The Cameron-Erdős Conjecture
 -/
