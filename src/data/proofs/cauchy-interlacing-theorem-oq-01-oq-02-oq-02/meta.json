@@ -94,7 +94,8 @@
       "Positivity of a compression needs neither eigenvalues nor the spectral theorem: the orthogonal compression's Rayleigh quotient agrees with T's on H, so re ⟪T x, x⟫ ≥ 0 transfers directly — the cleanest statement is the operator form LinearMap.IsPositive, not an eigenvalue inequality",
       "The same termwise Poincaré bound λ_{k+m} ≤ μ_k ≤ λ_k yields both eigenvalue nonnegativity (lower half, with PSD) and spectral-range containment (both halves, with antitonicity), so the positivity and range corollaries are two readings of one inequality",
       "The honest derivable majorization is WEAK (Schur-half): the compression spectrum has length n while the full spectrum has length n+m, so equality-majorization of the zero-padded spectrum is a dimension mismatch — overclaiming full majorization here would be wrong",
-      "Spectral-range containment μ_k ∈ [λ_min, λ_max] is a clean uniform sandwich that follows from the two endpoint comparisons λ_{n+m-1} ≤ λ_{k+m} and λ_k ≤ λ_0 supplied by antitonicity"
+      "Spectral-range containment μ_k ∈ [λ_min, λ_max] is a clean uniform sandwich that follows from the two endpoint comparisons λ_{n+m-1} ≤ λ_{k+m} and λ_k ≤ λ_0 supplied by antitonicity",
+      "Trace nonnegativity is proved as the eigenvalue-side shadow of tr(P_H T P_H) ≥ 0: rather than manipulating a trace-of-product, trace_compress_nonneg lifts termwise eigenvalue nonnegativity through Finset.sum_nonneg, so the trace corollary inherits its proof verbatim from compress_eigenvalues_nonneg with no new spectral input."
     ],
     "prerequisites": [
       "Operator positivity LinearMap.IsPositive (symmetric and ∀ x, 0 ≤ re ⟪T x, x⟫) and its projections",
@@ -105,40 +106,46 @@
   },
   "sections": [
     {
+      "id": "header-and-setup",
       "title": "Header and Setup",
       "startLine": 1,
       "endLine": 49,
-      "content": "The header docstring frames the two textbook corollaries the file delivers — positivity of compressions (operator form) and the Schur–Horn (majorization) direction's eigenvalue consequences — and explicitly disclaims full equality-majorization of the zero-padded length-(n+m) spectrum as a dimension mismatch. The imports pull in the gallery's own Poincaré separation (Proofs.CauchyInterlacingPoincare) and explicit orthogonal compression (Proofs.CauchyInterlacingCompression) files, so no new spectral theory is introduced. The opens (InnerProductSpace, BigOperators, CauchyInterlacing.Poincare) and the enclosing namespace CauchyInterlacing.MajorizationPositivity are established here."
+      "summary": "The header docstring frames the two textbook corollaries the file delivers — positivity of compressions (operator form) and the Schur–Horn (majorization) direction's eigenvalue consequences — and explicitly disclaims full equality-majorization of the zero-padded length-(n+m) spectrum as a dimension mismatch. The imports pull in the gallery's own Poincaré separation (Proofs.CauchyInterlacingPoincare) and explicit orthogonal compression (Proofs.CauchyInterlacingCompression) files, so no new spectral theory is introduced. The opens (InnerProductSpace, BigOperators, CauchyInterlacing.Poincare) and the enclosing namespace CauchyInterlacing.MajorizationPositivity are established here."
     },
     {
+      "id": "positivity-of-compressions-operator-form",
       "title": "Positivity of Compressions (Operator Form)",
       "startLine": 51,
       "endLine": 76,
-      "content": "compress_isPositive proves that for a positive operator T (Mathlib's LinearMap.IsPositive: symmetric with re ⟪T x, x⟫ ≥ 0 for all x) and any subspace H, the orthogonal compression compress T H is again positive. Symmetry comes from isSymmetric_compress applied to hT.isSymmetric. For the Rayleigh nonnegativity, the inner product ⟪compress T H y, y⟫_H rewrites to ⟪T ↑y, ↑y⟫_V via compress_apply and the orthogonal-projection adjoint identity Submodule.inner_orthogonalProjection_eq_of_mem_right, so 0 ≤ re ⟪T ↑y, ↑y⟫ (from hT) finishes. No eigenvalues, no spectral theorem, and the subspace H is arbitrary. This section is self-contained (its own `section Positivity` with only the finite-dimensional inner-product-space variables) and does not touch the Poincaré hypothesis bundle."
+      "summary": "compress_isPositive proves that for a positive operator T (Mathlib's LinearMap.IsPositive: symmetric with re ⟪T x, x⟫ ≥ 0 for all x) and any subspace H, the orthogonal compression compress T H is again positive. Symmetry comes from isSymmetric_compress applied to hT.isSymmetric. For the Rayleigh nonnegativity, the inner product ⟪compress T H y, y⟫_H rewrites to ⟪T ↑y, ↑y⟫_V via compress_apply and the orthogonal-projection adjoint identity Submodule.inner_orthogonalProjection_eq_of_mem_right, so 0 ≤ re ⟪T ↑y, ↑y⟫ (from hT) finishes. No eigenvalues, no spectral theorem, and the subspace H is arbitrary. This section is self-contained (its own `section Positivity` with only the finite-dimensional inner-product-space variables) and does not touch the Poincaré hypothesis bundle."
     },
     {
+      "id": "shared-poincar-hypothesis-bundle",
       "title": "Shared Poincaré Hypothesis Bundle",
       "startLine": 78,
       "endLine": 92,
-      "content": "The three eigenvalue corollaries all consume the same elaborate Poincaré setup, so it is factored into a single section variable block: the operator T with eigenbasis b and descending spectrum lam (hT, hlam), an n-dimensional subspace H (hHdim), the compression TH with eigenbasis bH and descending spectrum mu (hTH, hmu), and the Rayleigh-agreement hypothesis hRayleigh linking the two quotients. Because Lean 4 auto-includes only variables appearing in a theorem's statement, the explicit include forces the whole package — consumed solely inside the proof bodies via poincare_separation — into every theorem in the section. hRayleigh is the only link between compression and full operator the corollaries need, so the file never re-opens the spectral theorem."
+      "summary": "The three eigenvalue corollaries all consume the same elaborate Poincaré setup, so it is factored into a single section variable block: the operator T with eigenbasis b and descending spectrum lam (hT, hlam), an n-dimensional subspace H (hHdim), the compression TH with eigenbasis bH and descending spectrum mu (hTH, hmu), and the Rayleigh-agreement hypothesis hRayleigh linking the two quotients. Because Lean 4 auto-includes only variables appearing in a theorem's statement, the explicit include forces the whole package — consumed solely inside the proof bodies via poincare_separation — into every theorem in the section. hRayleigh is the only link between compression and full operator the corollaries need, so the file never re-opens the spectral theorem."
     },
     {
+      "id": "nonnegative-compression-eigenvalues",
       "title": "Nonnegative Compression Eigenvalues",
       "startLine": 94,
       "endLine": 101,
-      "content": "compress_eigenvalues_nonneg reads the eigenvalue form of positivity off the Poincaré lower bound: if every eigenvalue λ i of T is nonnegative, then for each k the chain 0 ≤ λ_{k+m} ≤ μ_k gives 0 ≤ μ_k, discharged by a single le_trans (hpos _) (poincare_separation …).1. This is the eigenvalue-side companion of the operator-form compress_isPositive."
+      "summary": "compress_eigenvalues_nonneg reads the eigenvalue form of positivity off the Poincaré lower bound: if every eigenvalue λ i of T is nonnegative, then for each k the chain 0 ≤ λ_{k+m} ≤ μ_k gives 0 ≤ μ_k, discharged by a single le_trans (hpos _) (poincare_separation …).1. This is the eigenvalue-side companion of the operator-form compress_isPositive."
     },
     {
+      "id": "spectral-range-containment",
       "title": "Spectral-Range Containment",
       "startLine": 103,
       "endLine": 121,
-      "content": "compress_eigenvalue_mem_Icc sandwiches every compression eigenvalue inside the spectral range of T: μ_k ∈ [λ_{n+m-1}, λ_0] = [λ_min, λ_max]. The lower endpoint comes from λ_{n+m-1} ≤ λ_{k+m} ≤ μ_k and the upper from μ_k ≤ λ_k ≤ λ_0, each endpoint comparison supplied by antitonicity of λ on the Fin indices (reduced to Fin.le_def plus omega) and the matching Poincaré bound. This is the uniform two-sided statement that the compression spectrum never escapes the full spectrum's range."
+      "summary": "compress_eigenvalue_mem_Icc sandwiches every compression eigenvalue inside the spectral range of T: μ_k ∈ [λ_{n+m-1}, λ_0] = [λ_min, λ_max]. The lower endpoint comes from λ_{n+m-1} ≤ λ_{k+m} ≤ μ_k and the upper from μ_k ≤ λ_k ≤ λ_0, each endpoint comparison supplied by antitonicity of λ on the Fin indices (reduced to Fin.le_def plus omega) and the matching Poincaré bound. This is the uniform two-sided statement that the compression spectrum never escapes the full spectrum's range."
     },
     {
+      "id": "nonnegative-trace-of-a-psd-compression",
       "title": "Nonnegative Trace of a PSD Compression",
       "startLine": 123,
       "endLine": 130,
-      "content": "trace_compress_nonneg lifts eigenvalue nonnegativity through Finset.sum_nonneg to conclude the trace ∑_k μ_k of a PSD compression is nonnegative, since each summand μ_k ≥ 0 by compress_eigenvalues_nonneg. It is the eigenvalue-side companion of trace nonnegativity for positive operators."
+      "summary": "trace_compress_nonneg lifts eigenvalue nonnegativity through Finset.sum_nonneg to conclude the trace ∑_k μ_k of a PSD compression is nonnegative, since each summand μ_k ≥ 0 by compress_eigenvalues_nonneg. It is the eigenvalue-side companion of trace nonnegativity for positive operators."
     }
   ],
   "references": [
