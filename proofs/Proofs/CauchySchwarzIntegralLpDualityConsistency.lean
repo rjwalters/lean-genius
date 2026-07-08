@@ -68,7 +68,7 @@ namespace RieszLpDualityConsistency
     hypotheses; the concrete `extByZeroCLM` (either the decoupled or in-chain version)
     satisfies them. -/
 theorem representer_ae_eq_of_subset
-    {p q : ℝ≥0∞} (hp1 : 1 < p) (hptop : p ≠ ⊤)
+    {p q : ℝ≥0∞}
     (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)]
     {S S' : Set α} (hS : MeasurableSet S) (hS' : MeasurableSet S') (hSS' : S ⊆ S')
     (φ : Lp ℝ p μ →L[ℝ] ℝ)
@@ -179,6 +179,40 @@ theorem representer_ae_eq_of_subset
       rw [Measure.restrict_restrict hs]
     rw [e1, e2]
     exact key (s ∩ S) (hs.inter hS) Set.inter_subset_right hsS_fin
+
+/-- **Monotonicity of the representer `Lᵠ`-seminorm under set inclusion.** With the
+    same data as `representer_ae_eq_of_subset`, the seminorm of the smaller-set
+    representer does not exceed that of the larger one:
+    `‖g_S‖_{q, S} ≤ ‖g_{S'}‖_{q, S'}`.
+
+    This is the input that forces the union-hull representer to *realize* the supremum
+    `c = ⨆_S ‖g_S‖_q` in the maximality construction: since `S_n ⊆ T = ⋃ₙ S_n`, one has
+    `‖g_{S_n}‖ ≤ ‖g_T‖ ≤ c`, so `‖g_T‖ = c`. It follows from consistency
+    (`g_S = g_{S'}` a.e. on `S`) plus the monotonicity of `eLpNorm` in the measure. -/
+theorem representer_eLpNorm_mono_of_subset
+    {p q : ℝ≥0∞}
+    (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)]
+    {S S' : Set α} (hS : MeasurableSet S) (hS' : MeasurableSet S') (hSS' : S ⊆ S')
+    (φ : Lp ℝ p μ →L[ℝ] ℝ)
+    {gS gS' : α → ℝ}
+    (hgS : MemLp gS q (μ.restrict S)) (hgS' : MemLp gS' q (μ.restrict S'))
+    (extS : Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ)
+    (hextS : ∀ f : Lp ℝ p (μ.restrict S),
+      (extS f : α → ℝ) =ᵐ[μ] S.indicator (f : α → ℝ))
+    (extS' : Lp ℝ p (μ.restrict S') →L[ℝ] Lp ℝ p μ)
+    (hextS' : ∀ f : Lp ℝ p (μ.restrict S'),
+      (extS' f : α → ℝ) =ᵐ[μ] S'.indicator (f : α → ℝ))
+    (hrepS : ∀ f : Lp ℝ p (μ.restrict S),
+      φ (extS f) = ∫ a, (f : α → ℝ) a * gS a ∂(μ.restrict S))
+    (hrepS' : ∀ f : Lp ℝ p (μ.restrict S'),
+      φ (extS' f) = ∫ a, (f : α → ℝ) a * gS' a ∂(μ.restrict S')) :
+    eLpNorm gS q (μ.restrict S) ≤ eLpNorm gS' q (μ.restrict S') := by
+  have hcons : gS =ᵐ[μ.restrict S] gS' :=
+    representer_ae_eq_of_subset hpq hS hS' hSS' φ hgS hgS' extS hextS extS' hextS' hrepS hrepS'
+  calc eLpNorm gS q (μ.restrict S)
+      = eLpNorm gS' q (μ.restrict S) := eLpNorm_congr_ae hcons
+    _ ≤ eLpNorm gS' q (μ.restrict S') :=
+        eLpNorm_mono_measure _ (Measure.restrict_mono hSS' le_rfl)
 
 end RieszLpDualityConsistency
 
