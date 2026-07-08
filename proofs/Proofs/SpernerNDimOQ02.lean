@@ -3253,4 +3253,182 @@ theorem zeroPivotCell_base_miss_recover (s : GridSimplex d N) (hd1 : 0 < d)
   rw [if_neg (fun hh => s.miss_ne_inc ⟨0, hd1⟩ hh.symm), if_pos rfl] at h
   exact h
 
+-- ============================================================
+-- SECTION: The top-facet (`Fin.last d`) pivot — reciprocal base vertex
+-- ============================================================
+-- Dual to `zeroPivotTop`/`zeroPivotCell`.  Where the facet-`0` pivot
+-- deletes `u`'s base vertex and *appends* a new apex `zeroPivotTop`
+-- above the chain (reversing the FIRST increment `incDir 0`), the
+-- facet-`Fin.last d` pivot deletes `u`'s apex and *prepends* a new
+-- base vertex below `u.verts 0`, reversing the LAST increment
+-- `incDir (d-1)`: it decrements that direction and increments `miss`.
+-- This is exactly the downward move `zeroPivotCell_base_recover`
+-- pins at the coordinate level.  The section builds the new base
+-- vertex as a bona-fide `BaryPoint` and proves the vertex-level
+-- reciprocity `topPivotBottom (zeroPivotCell s) = s.verts 0` — the
+-- top-facet pivot on the facet-`0` partner recovers `s`'s deleted
+-- apex, the identity `adj` needs to be a partial involution across
+-- the boundary facets.  All 0-sorry, 0-axiom; builds only on the
+-- `GridSimplex` chain primitives and the `zeroPivotCell_base_recover`
+-- lemma family above.
+
+/-- The direction that increases at `u`'s final chain step `d-1` — the
+increment the top-facet (`Fin.last d`) pivot reverses. -/
+def lastIncDir (u : GridSimplex d N) (hd1 : 0 < d) : Fin (d + 1) :=
+  u.incDir ⟨d - 1, by omega⟩
+
+/-- **Reciprocal base vertex of the top-facet (`Fin.last d`) pivot.**  Dual to
+`zeroPivotTop`: the facet-`Fin.last d` pivot deletes `u`'s apex and prepends a
+new base *below* `u.verts 0`, obtained by reversing `u`'s final increment —
+decrement the last-increment direction `lastIncDir`, increment the `miss`
+direction (so the barycentric sum is preserved).  Feasible when that coordinate
+of `u`'s base is at least `1`. -/
+def topPivotBottom (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    BaryPoint d N where
+  coords := fun j =>
+    if j = lastIncDir u hd1 then (u.verts 0).coords j - 1
+    else if j = u.miss then (u.verts 0).coords j + 1
+    else (u.verts 0).coords j
+  sum_eq := by
+    set p := lastIncDir u hd1 with hp
+    set q := u.miss with hq
+    set V := u.verts 0 with hV
+    have hpq : p ≠ q := u.miss_ne_inc ⟨d - 1, by omega⟩
+    have key : ∀ j : Fin (d + 1),
+        (if j = p then V.coords j - 1
+          else if j = q then V.coords j + 1 else V.coords j)
+        + (if j = p then 1 else 0)
+        = V.coords j + (if j = q then 1 else 0) := by
+      intro j
+      by_cases h1 : j = p
+      · subst h1
+        rw [if_pos rfl, if_pos rfl, if_neg hpq]
+        have : 1 ≤ V.coords p := hfeas
+        omega
+      · by_cases h2 : j = q
+        · subst h2
+          rw [if_neg h1, if_pos rfl, if_neg h1, if_pos rfl]
+        · rw [if_neg h1, if_neg h2, if_neg h1, if_neg h2]
+    have hone_p : (∑ j : Fin (d + 1), (if j = p then (1 : ℕ) else 0)) = 1 := by simp
+    have hone_q : (∑ j : Fin (d + 1), (if j = q then (1 : ℕ) else 0)) = 1 := by simp
+    have hsum :
+        (∑ j : Fin (d + 1),
+            (if j = p then V.coords j - 1
+              else if j = q then V.coords j + 1 else V.coords j)) + 1
+          = (∑ j : Fin (d + 1), V.coords j) + 1 := by
+      calc
+        (∑ j : Fin (d + 1),
+            (if j = p then V.coords j - 1
+              else if j = q then V.coords j + 1 else V.coords j)) + 1
+            = (∑ j : Fin (d + 1),
+                (if j = p then V.coords j - 1
+                  else if j = q then V.coords j + 1 else V.coords j))
+              + (∑ j : Fin (d + 1), (if j = p then (1 : ℕ) else 0)) := by rw [hone_p]
+          _ = ∑ j : Fin (d + 1),
+                ((if j = p then V.coords j - 1
+                    else if j = q then V.coords j + 1 else V.coords j)
+                  + (if j = p then (1 : ℕ) else 0)) := by rw [Finset.sum_add_distrib]
+          _ = ∑ j : Fin (d + 1),
+                (V.coords j + (if j = q then (1 : ℕ) else 0)) :=
+                Finset.sum_congr rfl (fun j _ => key j)
+          _ = (∑ j : Fin (d + 1), V.coords j)
+                + (∑ j : Fin (d + 1), (if j = q then (1 : ℕ) else 0)) := by
+                rw [Finset.sum_add_distrib]
+          _ = (∑ j : Fin (d + 1), V.coords j) + 1 := by rw [hone_q]
+    rw [V.sum_eq] at hsum
+    omega
+
+/-- Coordinate of `topPivotBottom` at the reversed direction `lastIncDir`. -/
+theorem topPivotBottom_coords_lastIncDir (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    (topPivotBottom u hd1 hfeas).coords (lastIncDir u hd1)
+      = (u.verts 0).coords (lastIncDir u hd1) - 1 := by
+  show (if lastIncDir u hd1 = lastIncDir u hd1 then _ else _) = _
+  rw [if_pos rfl]
+
+/-- Coordinate of `topPivotBottom` at the `miss` direction. -/
+theorem topPivotBottom_coords_miss (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    (topPivotBottom u hd1 hfeas).coords u.miss
+      = (u.verts 0).coords u.miss + 1 := by
+  have hpq : u.miss ≠ lastIncDir u hd1 :=
+    fun h => u.miss_ne_inc ⟨d - 1, by omega⟩ h.symm
+  show (if u.miss = lastIncDir u hd1 then _ else if u.miss = u.miss then _ else _) = _
+  rw [if_neg hpq, if_pos rfl]
+
+/-- Coordinate of `topPivotBottom` at any other direction: unchanged from the
+base vertex `u.verts 0`. -/
+theorem topPivotBottom_coords_other (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1))
+    (j : Fin (d + 1)) (hjp : j ≠ lastIncDir u hd1) (hjq : j ≠ u.miss) :
+    (topPivotBottom u hd1 hfeas).coords j = (u.verts 0).coords j := by
+  show (if j = lastIncDir u hd1 then _ else if j = u.miss then _ else _) = _
+  rw [if_neg hjp, if_neg hjq]
+
+/-- The facet-`0` partner's last increment direction is `s`'s omitted
+direction `incDir 0` (deferred to the final step by the cyclic rotation
+`zeroPivotInc`). -/
+theorem zeroPivotCell_lastIncDir (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    lastIncDir (zeroPivotCell s hd1 hfeas) hd1 = s.incDir ⟨0, hd1⟩ := by
+  have hk : d - 1 < d := by omega
+  have hnl : ¬ (⟨d - 1, hk⟩ : Fin d).val + 1 < d := by
+    show ¬ (d - 1) + 1 < d
+    omega
+  show zeroPivotInc s hd1 ⟨d - 1, hk⟩ = s.incDir ⟨0, hd1⟩
+  exact zeroPivotInc_last s hd1 ⟨d - 1, hk⟩ hnl
+
+/-- The top-facet pivot is always feasible on the facet-`0` partner: its base
+vertex `t.verts 0 = s.verts 1` has `incDir 0` coordinate `base + 1 ≥ 1`
+(`step_inc` at step `0`). -/
+theorem zeroPivotCell_lastIncDir_feasible (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    1 ≤ ((zeroPivotCell s hd1 hfeas).verts 0).coords
+          (lastIncDir (zeroPivotCell s hd1 hfeas) hd1) := by
+  have ht : (zeroPivotCell s hd1 hfeas).verts 0 = s.verts (⟨0, hd1⟩ : Fin d).succ := by
+    rw [zeroPivotCell_verts_of_lt s hd1 hfeas 0 hd1]; congr 1
+  rw [zeroPivotCell_lastIncDir, ht]
+  have hstep := s.step_inc ⟨0, hd1⟩
+  have hcs : (⟨0, hd1⟩ : Fin d).castSucc = (0 : Fin (d + 1)) := by
+    apply Fin.ext; simp [Fin.castSucc, Fin.castAdd, Fin.castLE]
+  rw [hcs] at hstep
+  rw [hstep]; omega
+
+/-- **Vertex-level reciprocity: the top-facet pivot recovers `s`'s deleted
+apex.**  The facet-`0` partner `t = zeroPivotCell s` reuses `s`'s upper chain
+and appends a new apex, deleting `s`'s base vertex `s.verts 0`.  Applying the
+dual top-facet (`Fin.last d`) pivot to `t` — deleting `t`'s apex and prepending
+a new base by reversing `t`'s last increment (`= s.incDir 0`,
+`zeroPivotCell_lastIncDir`) — reconstructs exactly `s.verts 0`: decrement
+`incDir 0`, increment `miss` from `t.verts 0 = s.verts 1`, precisely the formula
+of `zeroPivotCell_base_recover`.  This is the reciprocal (downward) vertex the
+partial involution `adj` needs at the boundary facets: the two pivots invert one
+another at the shared cross-chain facet `gridFacet s 0 = gridFacet t (Fin.last d)`
+(`zeroPivotCell_gridFacet_last`). -/
+theorem topPivotBottom_zeroPivotCell (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    topPivotBottom (zeroPivotCell s hd1 hfeas) hd1
+        (zeroPivotCell_lastIncDir_feasible s hd1 hfeas) = s.verts 0 := by
+  have hlast : lastIncDir (zeroPivotCell s hd1 hfeas) hd1 = s.incDir ⟨0, hd1⟩ :=
+    zeroPivotCell_lastIncDir s hd1 hfeas
+  have hmiss : (zeroPivotCell s hd1 hfeas).miss = s.miss :=
+    zeroPivotCell_miss s hd1 hfeas
+  ext j
+  by_cases hP : j = lastIncDir (zeroPivotCell s hd1 hfeas) hd1
+  · subst hP
+    rw [topPivotBottom_coords_lastIncDir, hlast]
+    exact (zeroPivotCell_base_incDir0 s hd1 hfeas).symm
+  · by_cases hQ : j = (zeroPivotCell s hd1 hfeas).miss
+    · subst hQ
+      rw [topPivotBottom_coords_miss, hmiss]
+      exact (zeroPivotCell_base_miss_recover s hd1 hfeas).symm
+    · have hjp : j ≠ s.incDir ⟨0, hd1⟩ := by rw [← hlast]; exact hP
+      have hjq : j ≠ s.miss := by rw [← hmiss]; exact hQ
+      rw [topPivotBottom_coords_other (zeroPivotCell s hd1 hfeas) hd1
+        (zeroPivotCell_lastIncDir_feasible s hd1 hfeas) j hP hQ]
+      have h := zeroPivotCell_base_recover s hd1 hfeas j
+      rw [if_neg hjp, if_neg hjq] at h
+      exact h.symm
+
 end SpernerNDimOQ02

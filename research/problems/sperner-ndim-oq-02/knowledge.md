@@ -251,3 +251,41 @@ Then assemble `SpernerTriangulation`; Phase-2 door oddness induction on `d`; app
 1. **(crux)** Dual top-facet pivot construction + involution reciprocity.
 2. **(crux)** Cross-`miss` terminal partner for `base_miss = d`.
 3. Assemble total `adj`; Phase-2 parity.
+
+## Session 2026-07-07 (Session 21, researcher-9) — Top-facet pivot reciprocal base vertex
+
+**Mode**: ACT. **Outcome**: PROGRESS — the dual top-facet (`Fin.last d`) pivot's new
+base vertex is now a first-class `BaryPoint` and its recovery is proved. Does NOT yet
+close the crux (still need the full `topPivotCell` GridSimplex + involution). **+7 decls,
++~150 L. 0-sorry, 0-axiom**; `docker-build.sh Proofs.SpernerNDimOQ02` → exit 0, 7745 jobs.
+Branch `research/sperner-ndim-oq02-toppivot-reciprocity` (off main HEAD).
+
+### What I did
+Built the *dual* of `zeroPivotTop`/`zeroPivotCell`:
+- `lastIncDir u hd1 := u.incDir ⟨d-1, _⟩` — the final-step increment the top pivot reverses.
+- `topPivotBottom u hd1 hfeas` — new base *below* `u.verts 0`: decrement `lastIncDir`,
+  increment `miss`. `sum_eq` proved by telescoping (mirror of `zeroPivotTop`, +1/−1 swapped;
+  needs `1 ≤ (u.verts 0).coords (lastIncDir u hd1)`). Accessors `_coords_lastIncDir`/`_coords_miss`/`_coords_other`.
+- `zeroPivotCell_lastIncDir` — partner's last increment = `s`'s omitted `incDir 0`
+  (deferred by the cyclic rotation `zeroPivotInc`; `zeroPivotInc_last`).
+- `zeroPivotCell_lastIncDir_feasible` — top pivot always feasible on the partner
+  (`step_inc` at step 0 gives `base+1 ≥ 1`).
+- `topPivotBottom_zeroPivotCell` — **capstone**: `topPivotBottom (zeroPivotCell s) = s.verts 0`,
+  proved per-coordinate from `zeroPivotCell_base_recover`/`_incDir0`/`_miss_recover`. The
+  top-facet pivot on the facet-`0` partner recovers `s`'s deleted apex exactly.
+
+### Lean gotchas caught this session
+- `omega` does NOT reduce `(⟨d-1, hk⟩ : Fin d).val` to `d-1` on its own (opaque counterexample);
+  reduce it first via `show ¬ (d - 1) + 1 < d` (Fin.val of mk is defeq). A `simp only [Fin.val_mk]`
+  works too but trips the `unusedSimpArgs` linter (false positive — omega consumes the normalized form).
+- After `subst h1` (h1 : j = p, p a `set` local), `j` is eliminated → reference `p`, not `j`.
+- Corrupt shared Mathlib cache produced code 135/139 and "invalid header"/"unexpected end of input"
+  on unrelated Mathlib oleans; **self-heals across plain retries** (failure point advances) — took
+  ~4 retries to land a clean build. Do NOT bisect your own code on a line-less 135 that reproduces
+  after Mathlib rebuilds clean.
+
+### Next steps (crux unchanged)
+1. **(crux)** `topPivotVerts`/`topPivotInc` + full `topPivotCell` GridSimplex (7 chain fields),
+   then lift `topPivotBottom_zeroPivotCell` to `topPivotCell (zeroPivotCell s) = s`.
+2. **(crux)** Cross-`miss` terminal partner for `base_miss = d`.
+3. Assemble total `adj`; Phase-2 door-parity induction on `d`.
