@@ -82,3 +82,16 @@ daemon; commit in `/tmp` immediately —
 - 4: added the low-length regime `k ≤ 2` (`infinite_of_hasDivergentSum`,
   `containsAP_two_of_lt`, `containsAP_two_of_infinite`,
   `hasDivergentSum_containsAP_le_two`); 0-axiom, 0-sorry, 7743 jobs verified.
+- 5: **VERIFIED** the previously build-blocked Bertrand-series divergence.
+  Recovered `Proofs/Erdos3LogHarmonic.lean` (staged UNVERIFIED in commit
+  fcc4a776011 when the build host was OOM-killing at 32 GB) onto clean main and
+  machine-checked it with `docker-build.sh Proofs.Erdos3LogHarmonic` (7743 jobs,
+  6.7 s target build). `not_summable_one_div_nat_mul_log`: ∑ 1/(n·log n) diverges
+  via Cauchy condensation (`summable_condensed_iff_of_nonneg`) → constant multiple
+  of the harmonic series (`not_summable_one_div_natCast`). `#print axioms` reports
+  only `[propext, Classical.choice, Quot.sound]` — no `sorryAx`/`ofReduceBool`.
+  This substantiates the o(N/log N) counterexample profile in the
+  `StrongRequiredBound` docstring. Build host was healthy this session (0 docker
+  lean-build containers at build time), unlike the OOM-blocked session that staged it.
+  The threshold-critical `required_bound_implies_conjecture` sorry remains
+  documented and untouched (as hard as Erdős #3 itself).
