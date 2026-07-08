@@ -63,6 +63,14 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "Framing: Completing the Parent's Decidability Claim",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Module docstring framing Erdős #11 (OPEN: is every odd n > 1 the sum of a squarefree number and a power of two?) and the specific gap this file fills — the parent erdos-11-wip-01 proved the bounded characterization isSquarefreePlusPow2_iff and called it a 'decidable characterization' but never registered the Decidable instance. Lists the three results (the instance, the k = 0 sufficient family, the n = 1 boundary). Imports the verified parent (Proofs.Erdos11WIP01) and opens Finset.",
+      "mathContext": "Parent: IsSquarefreePlusPow2 n ↔ ∃ k ∈ range (n+1), 2^k ≤ n ∧ Squarefree (n − 2^k); this file registers the instance from that equivalence and derives its first structural consequences."
+    },
+    {
       "id": "decidable",
       "title": "The Decidability Instance",
       "startLine": 35,
