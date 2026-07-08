@@ -433,4 +433,88 @@ theorem unipotent_inter_torus_trivial (t : ZMod p) (a : (ZMod p)ˣ)
   refine ⟨h01, ?_⟩
   exact Units.ext (by rw [Units.val_one]; exact h00.symm)
 
+/-!
+## The commutator `[T, U]` and perfectness of the root group
+
+The complementary Iwasawa ingredient is **perfectness**: for `p ≥ 5` every
+unipotent element is a commutator, hence lies in the derived subgroup
+`[SL(2,p), SL(2,p)]`.  The engine is the single identity
+
+    [diag(a), u(t)] = diag(a)·u(t)·diag(a)⁻¹·u(t)⁻¹ = u((a² − 1)·t),
+
+obtained by composing the torus-conjugation law `torusHom_conj_unipotent`
+(`diag(a)·u(t)·diag(a)⁻¹ = u(a²t)`) with the addition law
+`u(a²t)·u(−t) = u((a² − 1)t)`.  When the scalar `a² − 1` is a unit of `𝔽_p` the
+map `t ↦ [diag(a), u(t)]` covers the whole root group `U`, so every `u(s)` is a
+commutator.  This happens for `a = 2` exactly when `p ≥ 5` (then `a² − 1 = 3 ≠ 0`,
+while it fails for `p = 2, 3` — precisely the primes for which `PSL(2, p)` is
+*not* simple).
+-/
+
+/-- The group inverse of a unipotent element: `[[1, t], [0, 1]]⁻¹ = [[1, -t], [0, 1]]`. -/
+@[simp] theorem unipotentUpper_inv (t : ZMod p) :
+    (unipotentUpper t)⁻¹ = unipotentUpper (-t) := by
+  rw [eq_comm, eq_inv_iff_mul_eq_one, unipotentUpper_mul, neg_add_cancel, unipotentUpper_zero]
+
+/-- **The commutator of a torus element and a root-group element.**  Conjugating
+`u(t)` by `diag(a)` and multiplying by `u(t)⁻¹` scales the unipotent parameter by
+`a² − 1`:
+
+    [diag(a), u(t)] = diag(a)·u(t)·diag(a)⁻¹·u(t)⁻¹ = u((a² − 1)·t).
+
+This is the root-group form of the SL(2) commutator relation; iterating it over a
+generating unit `a` is what makes `SL(2, p)` perfect for `p ≥ 5`. -/
+theorem torus_unipotent_commutator (a : (ZMod p)ˣ) (t : ZMod p) :
+    torusHom a * unipotentUpper t * (torusHom a)⁻¹ * (unipotentUpper t)⁻¹
+      = unipotentUpper (((a : ZMod p) ^ 2 - 1) * t) := by
+  rw [torusHom_conj_unipotent, unipotentUpper_inv, unipotentUpper_mul]
+  congr 1
+  ring
+
+/-- **Every unipotent element is a commutator when `a² − 1` is a unit.**  If the
+scalar `a² − 1` is invertible in `𝔽_p`, then for every `s` the unipotent `u(s)` is
+the commutator `[diag(a), u(t)]` with `t = (a² − 1)⁻¹ · s`.  This is the
+derived-subgroup membership that feeds the perfectness hypothesis of Iwasawa's
+criterion. -/
+theorem unipotent_isCommutator_of_isUnit {a : (ZMod p)ˣ}
+    (ha : IsUnit ((a : ZMod p) ^ 2 - 1)) (s : ZMod p) :
+    ∃ t : ZMod p,
+      torusHom a * unipotentUpper t * (torusHom a)⁻¹ * (unipotentUpper t)⁻¹
+        = unipotentUpper s := by
+  obtain ⟨u, hu⟩ := ha
+  refine ⟨((u⁻¹ : (ZMod p)ˣ) : ZMod p) * s, ?_⟩
+  rw [torus_unipotent_commutator]
+  congr 1
+  rw [← hu, ← mul_assoc, Units.mul_inv, one_mul]
+
+/-- **For every prime `p ≥ 5`, every unipotent element is a commutator.**  Taking
+`a = 2` (a unit since `p ≠ 2`) gives `a² − 1 = 3`, a unit since `p ≠ 3`, so
+`unipotent_isCommutator_of_isUnit` applies: each `u(s)` equals `[diag(2), u(t)]`
+for a suitable `t`.  Hence the whole root group `U` lies in the derived subgroup —
+the perfectness input to Iwasawa's simplicity criterion, valid exactly on the
+range `p ≥ 5` where `PSL(2, p)` is simple. -/
+theorem exists_unipotent_isCommutator (hp : 5 ≤ p) (s : ZMod p) :
+    ∃ (a : (ZMod p)ˣ) (t : ZMod p),
+      torusHom a * unipotentUpper t * (torusHom a)⁻¹ * (unipotentUpper t)⁻¹
+        = unipotentUpper s := by
+  have hp2 : ¬ (p ∣ 2) := fun h => by have := Nat.le_of_dvd (by norm_num) h; omega
+  have hp3 : ¬ (p ∣ 3) := fun h => by have := Nat.le_of_dvd (by norm_num) h; omega
+  have h2 : (2 : ZMod p) ≠ 0 := by
+    have h : ((2 : ℕ) : ZMod p) ≠ 0 := by
+      rw [Ne, CharP.cast_eq_zero_iff (ZMod p) p]; exact hp2
+    simpa using h
+  have h3 : (3 : ZMod p) ≠ 0 := by
+    have h : ((3 : ℕ) : ZMod p) ≠ 0 := by
+      rw [Ne, CharP.cast_eq_zero_iff (ZMod p) p]; exact hp3
+    simpa using h
+  refine ⟨(isUnit_iff_ne_zero.mpr h2).unit, ?_⟩
+  have ha_val : (((isUnit_iff_ne_zero.mpr h2).unit : (ZMod p)ˣ) : ZMod p) = 2 :=
+    IsUnit.unit_spec _
+  have haU : IsUnit ((((isUnit_iff_ne_zero.mpr h2).unit : (ZMod p)ˣ) : ZMod p) ^ 2 - 1) := by
+    rw [ha_val]
+    have h : (2 : ZMod p) ^ 2 - 1 = 3 := by ring
+    rw [h]
+    exact isUnit_iff_ne_zero.mpr h3
+  exact unipotent_isCommutator_of_isUnit haU s
+
 end SylowOQ04OQ03
