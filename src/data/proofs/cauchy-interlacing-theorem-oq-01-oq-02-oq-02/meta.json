@@ -183,5 +183,35 @@
       "description": "Supplies the explicit orthogonal compression compress T H and its Rayleigh-agreement identity, which power the operator-form positivity result compress_isPositive."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "compress_isPositive",
+      "type": "core",
+      "description": "**Positivity of compressions (operator form).** The orthogonal compression compress T H of a positive operator T to ANY subspace H is again positive (LinearMap.IsPositive). Proved with no eigenvalues and no spectral theorem: symmetry via isSymmetric_compress and Rayleigh nonnegativity transferred through ⟪compress T H y, y⟫_H = ⟪T ↑y, ↑y⟫_V (the orthogonal-projection adjoint identity).",
+      "leanType": "{𝕜 V : Type*} → [RCLike 𝕜] → [NormedAddCommGroup V] → [InnerProductSpace 𝕜 V] → [FiniteDimensional 𝕜 V] → {T : V →ₗ[𝕜] V} → T.IsPositive → (H : Submodule 𝕜 V) → (compress T H).IsPositive",
+      "startLine": 68
+    },
+    {
+      "name": "compress_eigenvalues_nonneg",
+      "type": "core",
+      "description": "**PSD compression has nonnegative eigenvalues.** If every eigenvalue λ i of T is nonnegative, then every eigenvalue μ k of its compression is nonnegative — the eigenvalue form of compress_isPositive, read from the Poincaré lower bound λ_{k+m} ≤ μ_k.",
+      "leanType": "(hpos : ∀ i, 0 ≤ lam i) → (k : Fin n) → 0 ≤ mu k",
+      "startLine": 98
+    },
+    {
+      "name": "compress_eigenvalue_mem_Icc",
+      "type": "core",
+      "description": "**Spectral-range containment.** Every compression eigenvalue μ k lies in the spectral range [λ_min, λ_max] = [λ_{n+m-1}, λ_0] of T, chaining the two termwise Poincaré bounds with antitonicity of the descending eigenvalue family λ.",
+      "leanType": "(k : Fin n) → mu k ∈ Set.Icc (lam ⟨n + m - 1, _⟩) (lam ⟨0, _⟩)",
+      "startLine": 108
+    },
+    {
+      "name": "trace_compress_nonneg",
+      "type": "supporting",
+      "description": "**PSD compression has nonnegative trace.** The trace ∑_k μ_k of a PSD operator's compression is nonnegative, lifting compress_eigenvalues_nonneg through Finset.sum_nonneg.",
+      "leanType": "(hpos : ∀ i, 0 ≤ lam i) → 0 ≤ ∑ k : Fin n, mu k",
+      "startLine": 125
+    }
+  ],
   "sorries": 0
 }
