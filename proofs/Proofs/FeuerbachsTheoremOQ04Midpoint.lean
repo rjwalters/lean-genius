@@ -58,7 +58,7 @@ noncomputable def sMidpoint (A B : E) : E := (‖A + B‖)⁻¹ • (A + B)
 
 /-- The spherical midpoint is symmetric in its two arguments. -/
 theorem sMidpoint_comm (A B : E) : sMidpoint A B = sMidpoint B A := by
-  unfold sMidpoint; rw [add_comm]
+  unfold sMidpoint; rw [add_comm A B]
 
 /-- **The midpoint of a non-degenerate spherical side is a model point.**  For non-antipodal
 `A, B` (`A + B ≠ 0`) the normalised sum has unit norm.  The hypothesis is genuinely needed:
