@@ -29,23 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved pgm_conjecture_refuted : not pgmConjecture, backed by the axiom-free incompatibility lemma asymptotic_constant_le and the general obstruction R3_upper_constant_ge_half. Added 0 new axioms. Also repaired a pre-existing Mathlib-drift build failure in erdos_165 (line 161): linarith could not widen 5/4 to 2 without k^2/log k >= 0; fixed by threading log-positivity via max k0 2 and mul_div_assoc.",
+    "progressSummary": "COMPLETED: Proved pgm_conjecture_refuted : not pgmConjecture, backed by the axiom-free incompatibility lemma asymptotic_constant_le and the general obstruction R3_upper_constant_ge_half. Added 0 new axioms. Also repaired a pre-existing Mathlib-drift build failure in erdos_165 (line 161): linarith could not widen 5/4 to 2 without k^2/log k >= 0; fixed by threading log-positivity via max k0 2 and mul_div_assoc. Follow-up (researcher-1, 2026-07-08): added the symmetric obstruction R3_lower_constant_le_one (Shearer's c≤1 ⟹ any valid lower constant ≤1) and the general constantConjecture def + constantConjecture_refuted_of_one_lt (any exact constant >1 refuted). With pgm_conjecture_refuted this brackets the true constant to [1/2,1]. 0 new axioms; still 10 deep-Ramsey axioms, none Mathlib-eliminable.",
     "builtItems": [
       "asymptotic_constant_le in Erdos165Problem.lean (axiom-free incompatibility lemma)",
       "R3_upper_constant_ge_half in Erdos165Problem.lean (HHKP obstruction)",
       "pgm_conjecture_refuted in Erdos165Problem.lean (not pgmConjecture)",
-      "Repaired erdos_165 proof (Mathlib-drift fix)"
+      "Repaired erdos_165 proof (Mathlib-drift fix)",
+      "R3_lower_constant_le_one (researcher-1): Shearer's upper bound (c≤1) as an obstruction — any valid first-order LOWER constant for R(3,k) is ≤ 1. Mirror of R3_upper_constant_ge_half; reuses axiom-free asymptotic_constant_le.",
+      "constantConjecture c (general def) + constantConjecture_refuted_of_one_lt: any conjectured exact constant c>1 is refuted from above by Shearer. With pgm_conjecture_refuted (c<1/2 refuted from below) this pins the true constant to [1/2,1]. 0 new axioms."
     ],
     "insights": [
       "The erdos-165 file on origin/main did NOT compile (linarith failure in erdos_165) despite meta claiming 0 sorries / axiomatized -- latent Mathlib drift.",
       "linarith treats c*k^2/log k as opaque unless mul_div_assoc factors out k^2/log k as a single atom; supplying 0 <= k^2/log k then lets it scale constants.",
       "The mathematical core of conjectured-constant-refuted-by-a-better-bound is a pure real-analysis fact (asymptotic_constant_le), fully axiom-free; only hhkp_bound is Ramsey input.",
-      "oq-05 (complete sorry in R3_asymptotic_order) was stale: no such sorry exists in the current file."
+      "oq-05 (complete sorry in R3_asymptotic_order) was stale: no such sorry exists in the current file.",
+      "asymptotic_constant_le is two-sided infrastructure: instantiated with (lower=HHKP, b=variable) it gives upper-constant≥1/2; with (lower=variable, upper=Shearer, b=1) it gives lower-constant≤1. The two obstructions bracket the exact constant to [1/2,1] using only the two Ramsey axioms hhkp_bound and shearer_upper_bound."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Consider an analogous obstruction ruling out any conjectured constant > 1 against shearer_upper_bound."
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-165-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -69,8 +70,8 @@
     {
       "path": "Proofs/Erdos165Problem.lean",
       "filename": "Erdos165Problem.lean",
-      "lineCount": 324,
-      "theoremCount": 6,
+      "lineCount": 363,
+      "theoremCount": 8,
       "axiomCount": 10,
       "defCount": 3,
       "sorryCount": 0,
