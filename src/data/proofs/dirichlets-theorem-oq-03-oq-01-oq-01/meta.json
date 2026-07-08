@@ -108,6 +108,14 @@
   ],
   "sections": [
     {
+      "id": "setup",
+      "title": "Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring framing the abstract critical-exponent lower bound and its specialisation to Linnik's constant for primes ≡ 1 (mod q). Imports Mathlib, opens Real and Set, declares namespace LinnikLowerBound and the index variable {I : Type*}.",
+      "mathContext": "The Linnik constant is the critical exponent $L$ with $p(a,q) \\le c\\, q^L$; this file proves $L \\ge 1$ from elementary domination."
+    },
+    {
       "id": "abstract-critical-exponent",
       "title": "The Abstract Critical Exponent and its Lower Bound",
       "startLine": 41,
@@ -127,6 +135,40 @@
       "startLine": 120,
       "endLine": 144,
       "summary": "`linnikConstant_ge_one`: for any selector of primes ≡ 1 (mod q+1), the associated Linnik constant is ≥ 1, resolving the parent's sorry."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "linnikConstant_ge_one",
+      "type": "core",
+      "description": "**The Linnik constant is ≥ 1.** For any selector P of primes ≡ 1 (mod q+1) for every modulus, the growth function q ↦ P(q+1) dominates the unbounded base q ↦ q+1, so its critical exponent — the Linnik constant — is ≥ 1. Resolves the parent's linnikConstant_pos sorry with no analytic input, only prime_one_mod_ge.",
+      "leanType": "(P : ℕ → ℕ) (hP : ∀ q, (P (q + 1)).Prime ∧ P (q + 1) ≡ 1 [MOD (q + 1)]) (hne : (admissible …).Nonempty) : 1 ≤ criticalExponent (fun q => (P (q + 1) : ℝ)) (fun q => (q : ℝ) + 1)",
+      "startLine": 124,
+      "endLine": 137
+    },
+    {
+      "name": "admissible_ge_one",
+      "type": "core",
+      "description": "**Lower bound on every admissible exponent.** If the growth function f dominates an unbounded base b ≥ 1, then every admissible L is ≥ 1. Proof: an admissible L gives b i ^ (1−L) ≤ c uniformly; if L < 1 then picking b i above the threshold c^(1/(1−L)) contradicts it. The abstract engine of the whole file.",
+      "leanType": "{f b : I → ℝ} (hb : ∀ i, 1 ≤ b i) (hlower : ∀ i, b i ≤ f i) (hunb : ∀ M, ∃ i, M < b i) {L : ℝ} (hL : L ∈ admissible f b) : 1 ≤ L",
+      "startLine": 59,
+      "endLine": 86
+    },
+    {
+      "name": "criticalExponent_ge_one",
+      "type": "key",
+      "description": "**The critical exponent is ≥ 1** under the same domination hypotheses plus nonemptiness of the admissible set (Linnik's existence theorem in the arithmetic-progression instance). Immediate from admissible_ge_one via le_csInf.",
+      "leanType": "{f b : I → ℝ} (hb : ∀ i, 1 ≤ b i) (hlower : ∀ i, b i ≤ f i) (hunb : ∀ M, ∃ i, M < b i) (hne : (admissible f b).Nonempty) : 1 ≤ criticalExponent f b",
+      "startLine": 90,
+      "endLine": 95
+    },
+    {
+      "name": "prime_one_mod_ge",
+      "type": "supporting",
+      "description": "**Any prime p ≡ 1 (mod q) satisfies q ≤ p.** Elementary: q ∣ p−1 and p ≥ 2, so q ≤ p−1 < p. Supplies the domination hypothesis b i ≤ f i of the abstract theorem in the Linnik instance.",
+      "leanType": "{p q : ℕ} (hp : p.Prime) (h : p ≡ 1 [MOD q]) : q ≤ p",
+      "startLine": 104,
+      "endLine": 108
     }
   ],
   "meta": {
