@@ -40,6 +40,11 @@ the size of every clique", i.e. ω(Γ(G)) finite) and prove the full equivalence
   `G`, and their intersection `H = ⋂ₐ C_G(a)` is a finite-index subgroup. This isolates the
   finite-index "core" `H` that Neumann's argument analyses (still strictly weaker than the hard
   direction, which needs `Z(G)` — the intersection over *all* of `G` — to have finite index).
+* `center_finiteIndex_iff_relIndex_core` — **(fully proved, new)** localizes the residual
+  gap: if ω(Γ(G)) is finite then `[G:Z(G)]` is finite *iff* `Z(G)` has finite index inside
+  the explicit finite-index core `H = ⋂ₐ C_G(a)` (which contains `Z(G)`). The remaining hard
+  content is thus confined to the single relative index `(center G).relIndex H`; the natural
+  Mathlib endgame is `Subgroup.index_center_le_pow`, gated on `Finite (commutatorSet G)`.
 * `neumann_hard_direction` — **(axiom, Neumann 1976)** if ω(Γ(G)) is finite then
   `[G:Z(G)]` is finite. This is the deep content of Erdős #1098.
 * `neumann_full_theorem` — the equivalence ω(Γ(G)) finite ⟺ [G:Z(G)] finite.
@@ -290,6 +295,55 @@ theorem exists_finiteIndex_iInf_centralizer_of_boundedCliques (h : BoundedClique
   · -- The intersection of finitely many finite-index subgroups has finite index.
     exact (Subgroup.finiteIndex_iInf' (fun a => Subgroup.centralizer {a})
       (fun a ha => (Finset.mem_filter.mp ha).2)).index_ne_zero
+
+/-- The centre lies in the centralizer of any single element: a central `z`
+    commutes with everything, in particular with `a`. -/
+theorem center_le_centralizer_singleton (a : G) :
+    Subgroup.center G ≤ Subgroup.centralizer {a} := by
+  intro z hz
+  rw [Subgroup.mem_centralizer_singleton_iff]
+  exact (Subgroup.mem_center_iff.mp hz a).symm
+
+/-- **(New, fully proved — localizes the residual gap to a finite-index core.)**
+    If ω(Γ(G)) is finite, then there is a *finite-index* subgroup
+    `H = ⋂_{a ∈ T} C_G(a)` (centralizing a maximal clique `T`) with `Z(G) ≤ H`,
+    such that
+
+    > `[G : Z(G)]` is finite  ⟺  `Z(G)` has finite index **within `H`**.
+
+    *Proof.* Take the finite-index core `H` from
+    `exists_finiteIndex_iInf_centralizer_of_boundedCliques`. Since `Z(G)` commutes
+    with everything it lies in every `C_G(a)`, hence `Z(G) ≤ H`. The index tower
+    `[G : Z(G)] = [H : Z(G)] · [G : H]` (`Subgroup.relIndex_mul_index`) with the
+    finite factor `[G : H] ≠ 0` makes `[G : Z(G)] ≠ 0` equivalent to
+    `[H : Z(G)] ≠ 0`.
+
+    This does **not** remove `neumann_hard_direction`: the relative index
+    `(center G).relIndex H` is exactly the quantity that remains to be bounded, and
+    bounding it is still the deep BFC content of Neumann's theorem. What the lemma
+    *does* achieve is to confine that content to a single, explicit finite-index
+    subgroup `H` that centralizes a maximal clique — Neumann's remaining work is now
+    entirely *inside* `H`, not spread over all of `G`. The natural Mathlib endgame is
+    `Subgroup.index_center_le_pow` (finite `commutatorSet` ⟹ finite-index centre),
+    whose hypothesis `Finite (commutatorSet G)` is the BFC statement that bounded
+    cliques must still be shown to imply. -/
+theorem center_finiteIndex_iff_relIndex_core (h : BoundedCliques G) :
+    ∃ H : Subgroup G, H.index ≠ 0 ∧ Subgroup.center G ≤ H ∧
+      ((Subgroup.center G).index ≠ 0 ↔ (Subgroup.center G).relIndex H ≠ 0) := by
+  obtain ⟨T, _, _, hHidx⟩ := exists_finiteIndex_iInf_centralizer_of_boundedCliques h
+  set H := ⨅ a ∈ T, Subgroup.centralizer {a} with hHdef
+  have hle : Subgroup.center G ≤ H :=
+    le_iInf₂ (fun a _ => center_le_centralizer_singleton a)
+  refine ⟨H, hHidx, hle, ?_⟩
+  -- Index tower: `[H : Z(G)] · [G : H] = [G : Z(G)]`.
+  have hmul := Subgroup.relIndex_mul_index hle
+  constructor
+  · intro hz hr
+    rw [hr, zero_mul] at hmul
+    exact hz hmul.symm
+  · intro hr
+    rw [← hmul]
+    exact mul_ne_zero hr hHidx
 
 -- ============================================================
 -- SECTION IV: Hard direction — Neumann's theorem (axiom)

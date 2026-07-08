@@ -38,25 +38,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Proved the elementary half of Neumann's theorem with the sharp bound ω ≤ [G:Z(G)] by injecting cliques into the central quotient G/Z(G); axiomatized Neumann's deep converse with citation.",
+    "progressSummary": "PROGRESS: Added center_finiteIndex_iff_relIndex_core — localizes Neumann axiom to Z(G) finite index within an explicit finite-index core H=⋂ₐC_G(a); identified Mathlib Subgroup.index_center_le_pow as the Schur-side endgame (gated on Finite commutatorSet = BFC content). Axiom unchanged (1); build green; 2 new verified theorems.",
     "builtItems": [
       "commuting_of_invMul_mem_center",
       "nonCommuting_distinct_image",
       "clique_inj_on_quotient",
       "clique_card_le_index",
       "bounded_cliques_of_finite_index",
-      "neumann_full_theorem"
+      "neumann_full_theorem",
+      "center_le_centralizer_singleton",
+      "center_finiteIndex_iff_relIndex_core"
     ],
     "insights": [
       "Mathlib's index = 0 convention makes 'finite index' the clean hypothesis index ≠ 0",
       "QuotientGroup.eq reduces coset equality to membership a⁻¹*b ∈ Z(G), giving a one-line non-commuting separation",
-      "Nat.card_pos_iff turns finite index into a Finite quotient instance, the only ingredient needed for the cardinality bound"
+      "Nat.card_pos_iff turns finite index into a Finite quotient instance, the only ingredient needed for the cardinality bound",
+      "Neumann axiom localizes: [G:Z(G)] finite ⟺ Z(G) finite index within the finite-index core H = ⋂ₐ C_G(a) (Z(G) ≤ H since central elts commute with all a; index tower relIndex_mul_index). Residual gap = bound (center G).relIndex H.",
+      "Mathlib Schur endgame is Subgroup.index_center_le_pow / finiteIndex_center (Commutator/Finite.lean): Finite (commutatorSet G) [+ Group.FG] ⟹ (center G) finite index. Hypothesis Finite (commutatorSet G) from bounded cliques is itself the BFC content (equally hard), so it does not eliminate the axiom."
     ],
     "mathlibGaps": [
       "No formalization of B. H. Neumann's BFC theorem (bounded non-commuting sets ⟹ finite centre index)"
     ],
     "nextSteps": [
-      "Attempt Neumann's covering argument to remove the axiom"
+      "Attempt bounded cliques ⟹ Finite (commutatorSet G) (BFC), then chain Mathlib Subgroup.index_center_le_pow to remove neumann_hard_direction — this is the deep Neumann 1976 content",
+      "Alternatively bound (center G).relIndex H directly within the finite-index core H that centralizes a maximal clique"
     ],
     "markdown": "# Knowledge Base: erdos-1098-oq-01-oq-03\n\n## Problem Understanding\n\nNeumann's theorem (Erdős #1098): ω(Γ(G)) finite ⟺ [G:Z(G)] finite.\n\n## Insights\n\n- Reverse direction is elementary and sharp: ω ≤ [G:Z(G)] via injectivity of G → G/Z(G) on cliques.\n- Forward direction is Neumann (1976), a BFC/covering argument, axiomatized.\n\n## Dead Ends\n\n- Direct formalization of Neumann's covering argument is out of reach in one session.\n"
   },
