@@ -1,0 +1,149 @@
+{
+  "id": "algebraic-reals-meager-oq-02-oq-01",
+  "title": "Dual Oxtoby: a meagre set of full Lebesgue measure",
+  "slug": "algebraic-reals-meager-oq-02-oq-01",
+  "description": "Completes the symmetric Oxtoby picture begun by the parent OQ-02. Where OQ-02 exhibits a comeagre (topologically large) yet null (measure-small) set — the Liouville numbers — this entry supplies the dual: a meagre (topologically small) yet conull (full Lebesgue measure) set, namely the non-Liouville reals Lᶜ. No new construction is needed: Lᶜ is meagre because its complement L is comeagre, and conull because L is null. Packaged as the symmetric decomposition ℝ = L ⊔ Lᶜ into a comeagre-null part and a meagre-conull part, showing topological and measure largeness are not merely inequivalent but exactly complementary along one partition of ℝ.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Meagre_set",
+    "date": "2026-07-08",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicRealsMeagerOQ02OQ01.lean",
+    "tags": [
+      "measure-theory",
+      "baire-category",
+      "liouville-numbers",
+      "meagre",
+      "residual",
+      "lebesgue-measure",
+      "real-analysis",
+      "sharp-boundary"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-07-08",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "eventually_residual_liouville",
+        "description": "The set of Liouville numbers is residual (comeagre)",
+        "module": "Mathlib.NumberTheory.Transcendental.Liouville.Residual"
+      },
+      {
+        "theorem": "volume_setOf_liouville",
+        "description": "The set of Liouville numbers has Lebesgue measure zero",
+        "module": "Mathlib.NumberTheory.Transcendental.Liouville.Measure"
+      },
+      {
+        "theorem": "IsMeagre",
+        "description": "IsMeagre s is defined as sᶜ ∈ residual X — a set is meagre iff its complement is comeagre",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      },
+      {
+        "theorem": "compl_compl",
+        "description": "Double complement: sᶜᶜ = s",
+        "module": "Mathlib.Order.SetNotation"
+      },
+      {
+        "theorem": "union_compl_self",
+        "description": "s ∪ sᶜ = univ",
+        "module": "Mathlib.Data.Set.Basic"
+      },
+      {
+        "theorem": "disjoint_compl_right",
+        "description": "Disjoint s sᶜ",
+        "module": "Mathlib.Order.BooleanAlgebra"
+      }
+    ],
+    "originalContributions": [
+      "isMeagre_compl_of_mem_residual: PROVED the abstract duality that the complement of any residual (comeagre) set is meagre — a two-line unfolding of IsMeagre s := sᶜ ∈ residual via compl_compl; the structural engine converting a comeagre-null witness into a meagre-conull one",
+      "nonLiouville_meagre: PROVED the non-Liouville reals Lᶜ are meagre (their complement, the Liouville numbers, is comeagre)",
+      "nonLiouville_conull: PROVED the non-Liouville reals are conull — volume (Lᶜ)ᶜ = volume L = 0 — i.e. of full Lebesgue measure",
+      "exists_meagre_conull: PROVED the headline dual Oxtoby statement — there exists a meagre subset of ℝ of full Lebesgue measure, the mirror of the parent's comeagre null set",
+      "real_symmetric_oxtoby: PROVED the symmetric decomposition ℝ = L ⊔ Lᶜ (disjoint, union = univ) with L comeagre-and-null and Lᶜ meagre-and-conull, the sharp form of OQ-02 exhibiting the two largeness notions as exactly complementary",
+      "Synthesis (no new mathematics): reuses Mathlib's Liouville residual/measure-zero facts and complementation to complete the OQ-02 measure/category contrast in the dual direction the parent leaves implicit"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Baire category: meagre / residual (comeagre) sets and the definition IsMeagre s := sᶜ ∈ residual",
+      "Lebesgue measure on ℝ; conull (full measure) = complement is null",
+      "Liouville numbers: residual (comeagre) and Lebesgue-null"
+    ],
+    "lineCount": 178,
+    "relatedProblems": [
+      {
+        "id": "algebraic-reals-meager-oq-02",
+        "relationship": "Parent: records the comeagre-null half of the Oxtoby contrast (comeagre ⇏ conull, witnessed by the Liouville numbers); this entry supplies the dual meagre-conull half and packages the symmetric decomposition of ℝ"
+      },
+      {
+        "id": "algebraic-reals-meager",
+        "relationship": "Grandparent: the Baire-category smallness (meagreness) of the algebraic reals, the origin of the measure/category theme"
+      }
+    ],
+    "assumptions": "0 axioms. Relies only on Mathlib's Baire-category infrastructure (IsMeagre, residual), the Liouville residual/measure-zero results, and elementary complement identities. The ordinary foundational triple (propext / Classical.choice / Quot.sound) is inherited from Mathlib and does not count as an assumption.",
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Baire (1899) and Lebesgue (1902) gave two independent notions of 'smallness' for subsets of ℝ: meagre (category-small, a countable union of nowhere-dense sets) and null (measure-small). Oxtoby's 'Measure and Category' (1980) systematically contrasts them, and a recurring theme is that although the two σ-ideals share many formal properties (a duality principle), they are genuinely different: ℝ can be split into a meagre set and a null set whose union is everything. The classic witness is the Liouville numbers, comeagre yet null. The parent entry OQ-02 formalized that half — a comeagre null set. This entry records the mirror image, a meagre set of full measure, and the resulting complementary partition of ℝ.",
+    "problemStatement": "Formalize the dual direction of the parent OQ-02: exhibit a meagre subset of ℝ of full Lebesgue measure (a meagre conull set), completing the symmetric Oxtoby picture in which ℝ decomposes into a comeagre null set and a meagre conull set.",
+    "text": "A 0-sorry, 0-axiom synthesis. The witness is the complement of the Liouville numbers, Lᶜ. By definition IsMeagre s ↔ sᶜ ∈ residual, so Lᶜ is meagre exactly because L is comeagre (isMeagre_compl_of_mem_residual applied to eventually_residual_liouville). And Lᶜ is conull because volume (Lᶜ)ᶜ = volume L = 0 (volume_setOf_liouville). Packaged as real_symmetric_oxtoby: ℝ = L ⊔ Lᶜ with L comeagre-and-null and Lᶜ meagre-and-conull.",
+    "proofStrategy": "The core is the abstract lemma isMeagre_compl_of_mem_residual: unfold IsMeagre Aᶜ to Aᶜᶜ ∈ residual and rewrite with compl_compl to reduce to A ∈ residual. Instantiating at the Liouville numbers gives meagreness of Lᶜ; conullity is compl_compl followed by volume_setOf_liouville. The decomposition uses union_compl_self and disjoint_compl_right for the partition, reusing liouville_residual and liouville_null for the properties of the comeagre-null side.",
+    "keyInsights": [
+      "**Duality by complementation**: the dual of a comeagre null set is a meagre conull set — its literal complement. No new construction is required; the Liouville numbers already encode both halves of the Oxtoby contrast.",
+      "**IsMeagre is complement-of-residual by definition**: isMeagre_compl_of_mem_residual is a two-line unfolding (IsMeagre s := sᶜ ∈ residual, then compl_compl), making the meagreness of Lᶜ immediate from the comeagreness of L.",
+      "**Full measure = complement null**: on ℝ (an infinite measure space) 'full Lebesgue measure' is stated as conullity, volume Sᶜ = 0; for S = Lᶜ this is volume L = 0.",
+      "**Complementary, not merely inequivalent**: the parent shows comeagre ⇏ conull; this entry sharpens it to a single partition ℝ = L ⊔ Lᶜ where one piece is topologically large / measure-small and the other topologically small / measure-large — the two notions of largeness fail to coincide in opposite directions simultaneously.",
+      "**Honest scope**: every ingredient is already in Mathlib; the contribution is the explicit, machine-checked dual statement and the packaged symmetric decomposition the parent leaves implicit."
+    ],
+    "prerequisites": [
+      "Baire category: meagre and residual (comeagre) sets",
+      "The definition IsMeagre s := sᶜ ∈ residual X",
+      "Lebesgue measure on ℝ and the notion of a conull (full-measure) set",
+      "Liouville numbers: residual and Lebesgue-null"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: the dual Oxtoby phenomenon",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "File docstring and imports. Recalls the parent's comeagre-null witness (the Liouville numbers) and frames the dual goal — a meagre set of full Lebesgue measure — with the witness being the complement Lᶜ. Previews the symmetric decomposition ℝ = L ⊔ Lᶜ and the honesty note that all ingredients are standard Mathlib.",
+      "mathContext": "A set is meagre if its complement is comeagre (residual); conull if its complement is Lebesgue-null. The Liouville numbers L are comeagre and null, so Lᶜ is meagre and conull."
+    },
+    {
+      "id": "duality",
+      "title": "Abstract duality: complement of a comeagre set is meagre",
+      "startLine": 64,
+      "endLine": 76,
+      "summary": "Proves isMeagre_compl_of_mem_residual: for any topological space, A ∈ residual ⟹ IsMeagre Aᶜ. Two-line proof unfolding IsMeagre and rewriting Aᶜᶜ = A via compl_compl.",
+      "mathContext": "IsMeagre s := sᶜ ∈ residual X; the complement of a residual set is therefore meagre by double-complement."
+    },
+    {
+      "id": "liouville",
+      "title": "The Liouville numbers: comeagre and null",
+      "startLine": 78,
+      "endLine": 88,
+      "summary": "Recalls from Mathlib the two facts used as the separating witness: the Liouville numbers are residual (eventually_residual_liouville) and Lebesgue-null (volume_setOf_liouville).",
+      "mathContext": "L = {x | Liouville x} ∈ residual ℝ and volume L = 0."
+    },
+    {
+      "id": "dual-witness",
+      "title": "The non-Liouville reals are meagre yet conull",
+      "startLine": 90,
+      "endLine": 113,
+      "summary": "Proves nonLiouville_meagre (Lᶜ is meagre, from the duality lemma), nonLiouville_conull (volume (Lᶜ)ᶜ = 0, from compl_compl + liouville_null), and the headline exists_meagre_conull — a meagre subset of ℝ of full Lebesgue measure.",
+      "mathContext": "Lᶜ is the dual witness: meagre because L is comeagre, conull because L is null."
+    },
+    {
+      "id": "decomposition",
+      "title": "The symmetric Oxtoby decomposition of ℝ",
+      "startLine": 115,
+      "endLine": 149,
+      "summary": "Proves real_symmetric_oxtoby: ℝ = L ⊔ Lᶜ (disjoint, union = univ) with L comeagre-and-null and Lᶜ meagre-and-conull, and oq01_resolution packaging the dual witness with the decomposition.",
+      "mathContext": "A single partition of ℝ witnesses both failures of implication: comeagre ⇏ conull (on L) and meagre ⇏ null (on Lᶜ)."
+    }
+  ]
+}
