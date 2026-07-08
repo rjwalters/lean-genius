@@ -75,6 +75,23 @@
       "summary": "diff_lower_cubic sharpens the lower per-step bound with a cubic telescoping correction (the inequality collapsing to 0 ≤ 7·t(t+1)+1); tel_cubic telescopes it; stirlingLogDev_lower_cubic and stirlingLogDev_bracket_cubic yield the cubic deviation bracket 1/(12j) − 1/(144 j³) ≤ S(j) ≤ 1/(12j), one order sharper on the lower side. correction_log_third_order then proves |log q(n) − 1/(8n)| ≤ 1/(72 n³): the 1/n² contributions cancel, so c₂ = 0. correction_log_isBigO_third_order gives the Landau form =O[atTop](1/n³) with constant 1/72."
     }
   ],
+  "crossReferences": [
+    {
+      "slug": "beta-central-binomial-explicit-rate",
+      "relationship": "parent",
+      "description": "The parent entry, whose open question OQ-02 this entry answers. It establishes the first-order rate q(n) = 1 + O(1/n) and the identity log q(n) = 2·S(n) − S(2n) that this entry feeds its sharp brackets into, and uses only the crude 1/(4j) telescoping bound that this entry sharpens to 1/(12j)."
+    },
+    {
+      "slug": "beta-central-binomial-asymptotic",
+      "relationship": "related",
+      "description": "The originating asymptotic study of the diagonal Beta value B(n+1,n+1) relative to its Wallis/Stirling leading term, of which the explicit-rate line (parent) and this second/third-order refinement are the effective continuation."
+    },
+    {
+      "slug": "stirling-formula",
+      "relationship": "foundation",
+      "description": "Supplies the Stirling sequence stirlingSeq(k) → √π and Mathlib's exact per-step series log_stirlingSeq_diff_hasSum — the engine that unlocks the true 1/12 leading coefficient of the log-deviation used throughout this entry."
+    }
+  ],
   "conclusion": {
     "summary": "The entry answers open question OQ-02 of the parent beta-central-binomial-explicit-rate in the affirmative and quantitatively. The telescoping tail-bound technique does extend into a genuine effective asymptotic expansion of the multiplicative correction q(n) = stirlingSeq(n)²/(√π·stirlingSeq(2n)). Its technical core is a pair of sharp, machine-checked Stirling deviation brackets built from Mathlib's exact per-step series log_stirlingSeq_diff_hasSum: the leading bracket 1/(12j) − 1/(12j²) ≤ log stirlingSeq(j) − log√π ≤ 1/(12j) (a factor-of-three improvement over the parent's crude 1/(4j)) and its cubic refinement 1/(12j) − 1/(144 j³) ≤ S(j) ≤ 1/(12j). Feeding log q(n) = 2·S(n) − S(2n) collapses the leading contributions to exactly 1/(8n), giving the first coefficient c₁ = 1/8 with an effective O(1/n²) remainder (|log q(n) − 1/(8n)| ≤ 1/(6 n²)); the cubic bracket then makes the 1/n² pieces cancel identically, upgrading the remainder to O(1/n³) (|log q(n) − 1/(8n)| ≤ 1/(72 n³)) and exhibiting c₂ = 0. Nothing is assumed: 0 axioms, 0 sorries.",
     "implications": "The result recovers, by elementary telescoping and with fully explicit constants, the first two coefficients of the classical Stirling (Binet) series structure — c₁ = 1/8 and c₂ = 0 — for the diagonal Beta correction, confirming that the absence of a 1/n² term is a genuine feature (a cancellation certified by the cubic bracket) rather than an artifact of a lossy estimate. The sharp deviation bracket 1/(12j) − O(1/j³) ≤ log stirlingSeq(j) − log√π ≤ 1/(12j) is itself reusable infrastructure: it upgrades any factorial-ratio asymptotic driven by Mathlib's Stirling sequence from leading order to second and third order with effective remainders, and pins the true 1/12 leading coefficient that the qualitative Mathlib development and the parent's 1/(4·) telescope both leave unidentified.",
