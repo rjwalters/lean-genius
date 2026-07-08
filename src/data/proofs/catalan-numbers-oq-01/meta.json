@@ -103,6 +103,22 @@
       "mathContext": "$C_{n+1} = 2(2n+1)\\,C_n / (n+2)$."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "catalan_linear_recurrence",
+      "type": "core",
+      "description": "The headline result: the first-order (holonomic) linear recurrence for the Catalan numbers, $(n+2)\\,C_{n+1} = 2(2n+1)\\,C_n$, over ℕ. Absent from Mathlib, which states only the quadratic Segner convolution catalan_succ' and the closed form catalan_eq_centralBinom_div. Proved without induction by multiplying through by n+1, rewriting via the central-binomial bridge succ_mul_catalan_eq_centralBinom and the central-binomial recurrence Nat.succ_mul_centralBinom_succ, then cancelling n+1.",
+      "leanType": "(n : ℕ) → (n + 2) * catalan (n + 1) = 2 * (2 * n + 1) * catalan n",
+      "startLine": 31
+    },
+    {
+      "name": "catalan_succ_eq_div",
+      "type": "corollary",
+      "description": "The recurrence solved for the next term, exhibiting the exact O(1) division step $C_{n+1} = 2(2n+1)\\,C_n/(n+2)$ over ℕ. The truncating division is provably exact because n+2 divides the numerator (Nat.mul_div_cancel_left).",
+      "leanType": "(n : ℕ) → catalan (n + 1) = 2 * (2 * n + 1) * catalan n / (n + 2)",
+      "startLine": 53
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "catalan-numbers-oq-01-oq-01",
