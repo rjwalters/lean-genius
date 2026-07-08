@@ -794,4 +794,78 @@ theorem B_div_C_diverges (m : ℕ) : ∃ K, ∀ k, K ≤ k → m * C k ≤ B k :
     _ = C k ^ 2 := (sq (C k)).symm
     _ ≤ B k := hsq
 
+/-! ## Step 11: the counting-function side — a certified lower bound on `π(x; 4, 3)`
+
+Steps 1–10 quantified the `k`-th prime `≡ 3 (mod 4)` (the *value* `p3 k`).  The
+dual object is the **counting function** `π(x; 4, 3) = #{p ≤ x : p prime, p ≡ 3
+(mod 4)}`.  The enumeration `p3` transfers the value bound into a count bound: the
+`k+1` distinct primes `p3 0, …, p3 k` all lie below `x` as soon as `p3 k ≤ x`, so
+
+    p3 k ≤ x  ⟹  k + 1 ≤ π(x; 4, 3).
+
+Feeding the certified closed-form value bound `p3 k ≤ 4^(2^k)` (`p3_le_doubly_exp`)
+gives an *explicit* certified lower bound on the counting function:
+
+    π(4^(2^k); 4, 3) ≥ k + 1,   i.e.   π(x; 4, 3) ≥ k + 1  whenever  x ≥ 4^(2^k).
+
+Since `4^(2^k)` is doubly exponential in `k`, the certified count grows only like
+an *iterated logarithm* of `x` (`π(x; 4, 3) ⪆ log₂ log₄ x`).  The genuine
+asymptotic is `π(x; 4, 3) ∼ x / (2 ln x)` (PNT for arithmetic progressions), so —
+exactly as on the value side — the elementary Euclid certificate is astronomically
+weaker than the truth, and this makes the gap precise on the counting side too.
+Everything here is `native_decide`/`ofReduceBool`-free. -/
+
+/-- The counting function `π(x; 4, 3)`: the number of primes `p ≤ x` with
+`p ≡ 3 (mod 4)`. -/
+def primesCount3 (x : ℕ) : ℕ :=
+  ((Finset.range (x + 1)).filter (fun p => Nat.Prime p ∧ p % 4 = 3)).card
+
+/-- **Value bound ⟹ count bound.**  If the `k`-th prime `≡ 3 (mod 4)` satisfies
+`p3 k ≤ x`, then there are at least `k + 1` primes `≡ 3 (mod 4)` below `x`:
+`k + 1 ≤ π(x; 4, 3)`.  The `k + 1` witnesses are the distinct enumerated primes
+`p3 0, …, p3 k`, all `≤ p3 k ≤ x`, all prime `≡ 3 (mod 4)`. -/
+theorem card_le_primesCount3 {k x : ℕ} (hk : p3 k ≤ x) : k + 1 ≤ primesCount3 x := by
+  have hsub : (Finset.range (k + 1)).image p3 ⊆
+      (Finset.range (x + 1)).filter (fun p => Nat.Prime p ∧ p % 4 = 3) := by
+    intro p hp
+    simp only [Finset.mem_image, Finset.mem_range] at hp
+    obtain ⟨i, hi, rfl⟩ := hp
+    have hle : p3 i ≤ p3 k := p3_strictMono.monotone (by omega)
+    simp only [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, p3_prime i, p3_mod i⟩
+  have hcard : ((Finset.range (k + 1)).image p3).card = k + 1 := by
+    rw [Finset.card_image_of_injective _ p3_strictMono.injective, Finset.card_range]
+  calc k + 1 = ((Finset.range (k + 1)).image p3).card := hcard.symm
+    _ ≤ primesCount3 x := Finset.card_le_card hsub
+
+/-- The counting function is monotone: `π(·; 4, 3)` never decreases. -/
+theorem primesCount3_mono : Monotone primesCount3 := by
+  intro a b hab
+  simp only [primesCount3]
+  apply Finset.card_le_card
+  intro p hp
+  simp only [Finset.mem_filter, Finset.mem_range] at hp ⊢
+  exact ⟨by omega, hp.2⟩
+
+/-- **Certified lower bound at the tower points.**  At `x = 4^(2^k)` there are at
+least `k + 1` primes `≡ 3 (mod 4)`: `k + 1 ≤ π(4^(2^k); 4, 3)`.  Immediate from the
+value bound `p3 k ≤ 4^(2^k)` (`p3_le_doubly_exp`) via `card_le_primesCount3`. -/
+theorem primesCount3_ge_of_doubly_exp (k : ℕ) : k + 1 ≤ primesCount3 (4 ^ (2 ^ k)) :=
+  card_le_primesCount3 (p3_le_doubly_exp k)
+
+/-- **Certified counting-function lower bound.**  For every `k`, once `x ≥ 4^(2^k)`
+there are at least `k + 1` primes `≡ 3 (mod 4)` up to `x`:
+`k + 1 ≤ π(x; 4, 3)`.  Since `4^(2^k)` is doubly exponential in `k`, the certified
+count grows only like an iterated logarithm of `x` — vastly weaker than the true
+`π(x; 4, 3) ∼ x/(2 ln x)`, quantifying the elementary gap on the counting side. -/
+theorem primesCount3_ge (k x : ℕ) (hx : 4 ^ (2 ^ k) ≤ x) : k + 1 ≤ primesCount3 x :=
+  le_trans (primesCount3_ge_of_doubly_exp k) (primesCount3_mono hx)
+
+/-- **The count is unbounded (infinitude, counting form).**  For every target `m`
+there is a threshold `x` beyond which `π(x; 4, 3) ≥ m`: taking `x = 4^(2^m)` gives
+`m ≤ m + 1 ≤ π(x; 4, 3)`.  This is the counting-function restatement of "there are
+infinitely many primes `≡ 3 (mod 4)`", now with an explicit certified threshold. -/
+theorem primesCount3_unbounded (m : ℕ) : ∃ x, m ≤ primesCount3 x :=
+  ⟨4 ^ (2 ^ m), le_trans (Nat.le_succ m) (primesCount3_ge_of_doubly_exp m)⟩
+
 end DirichletsTheoremOQ02OQ03
