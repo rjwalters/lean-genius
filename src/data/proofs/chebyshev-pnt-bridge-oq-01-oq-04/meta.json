@@ -79,6 +79,29 @@
       "summary": "Shows ¬ ∀ k n p, … , p^{v_p} ≤ kn. Uses the identity to compute multiProd 3 2 = 90, divisibility 3²∣90 to get v_3 ≥ 2, hence 3^{v_3} ≥ 9 > 6 = 3·2."
     }
   ],
+  "conclusion": {
+    "summary": "The central-binomial prime-power bound $p^{v_p(\\binom{2n}{n})} \\le 2n$ — Chebyshev's and Erdős's combinatorial engine — does NOT generalize to the balanced multinomial coefficient $\\binom{kn}{n,\\dots,n}$ in the naive form $p^{v_p} \\le kn$. The failure is unconditional and explicit: at $k=3, n=2, p=3$ the coefficient is $90 = 2 \\cdot 3^2 \\cdot 5$, so $3^{v_3} = 9 > 6 = kn$. The honest replacement, $p^{v_p} \\le n^k \\, k!$, is proved from Mathlib's per-factor bound applied across the decomposition $\\binom{kn}{n,\\dots,n} = \\prod_{j=1}^{k}\\binom{jn}{n}$. Six theorems, one definition, 0 sorries, 0 axioms.",
+    "implications": "The result clarifies exactly why the two-term case is special: for $n+n$ every base-$p$ carry is $0$ or $1$, so $v_p$ counts carry positions and is capped by $\\log_p(2n)$; adding $k \\ge 3$ copies lets a single column carry up to $k-1$, breaking the one-unit-per-digit accounting that the $\\le 2n$ bound relies on. This is a cautionary boundary for anyone attempting to push Chebyshev/Erdős-style elementary prime-counting arguments to higher-order multinomial settings: the clean linear bound is a genuine artifact of $k=2$, and the correct growth is the super-linear $n^k k!$. The product decomposition $\\prod_{j=1}^k \\binom{jn}{n}$ is the reusable bridge that transports any single-binomial valuation bound to the multinomial coefficient.",
+    "openQuestions": [
+      "Is $n^k \\, k!$ itself tight, or is there a smaller closed-form majorant for $p^{v_p(\\binom{kn}{n,\\dots,n})}$ valid for all primes $p$ (e.g. one that recovers $\\le 2n$ exactly at $k=2$ but grows slower than $n^k k!$)?",
+      "What is the correct Kummer-carry statement for $k \\ge 3$ terms — does $v_p$ equal a weighted count of carries where a column contributing carry $c \\in \\{0,\\dots,k-1\\}$ is counted with multiplicity reflecting $c$, and can that be turned into a sharp bound?",
+      "Does the failure of the $\\le kn$ bound affect any downstream elementary lower bound on prime-counting that a multinomial analogue of Chebyshev's argument would produce, or is the $n^k k!$ bound still strong enough to yield a nontrivial $\\pi(x)$ estimate?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-01",
+      "relationship": "parent — establishes the central-binomial Kummer bound p^{v_p(C(2n,n))} ≤ 2n whose k-fold multinomial generalization this entry refutes (and replaces with n^k·k!)."
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge",
+      "relationship": "grandparent — the Chebyshev↔PNT bridge formalization from which the central-binomial prime-power estimates and the analytic prime-counting context descend."
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-01-oq-02",
+      "relationship": "sibling — a parallel OQ-01 follow-up exploring the same central-binomial valuation circle of ideas."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Choose.Factorization",
