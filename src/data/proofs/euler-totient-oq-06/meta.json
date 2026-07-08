@@ -125,6 +125,56 @@
       "summary": "`le_two_of_odd_totient` (odd totient ⟹ n ≤ 2, contrapositive of the even theorem), `totient_odd_iff` (`Odd (φ n) ↔ n = 1 ∨ n = 2`, closed by `interval_cases`/`decide` on {0,1,2}), and `totient_even_iff` (`Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2`, the De Morgan complement)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "totient_odd_iff",
+      "type": "core",
+      "description": "**Odd-totient classification.** φ(n) is odd iff n = 1 or n = 2 — sharpening Mathlib's one-directional Nat.totient_even into a biconditional pinning the exact arguments where φ is odd (Mathlib provides no such iff). Forward reduces to n ≤ 2 via le_two_of_odd_totient then a finite interval_cases/decide on {0,1,2}; backward is decide on the two witnesses.",
+      "leanType": "{n : ℕ} : Odd (φ n) ↔ n = 1 ∨ n = 2",
+      "startLine": 70,
+      "endLine": 76
+    },
+    {
+      "name": "totient_even_iff",
+      "type": "core",
+      "description": "**Even-totient classification.** The De Morgan complement Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2 — the cleanest 'φ is even except at 1 and 2', correctly covering the boundary φ 0 = 0 (even). From totient_odd_iff via Nat.not_odd_iff_even and not_or.",
+      "leanType": "{n : ℕ} : Even (φ n) ↔ n ≠ 1 ∧ n ≠ 2",
+      "startLine": 79,
+      "endLine": 81
+    },
+    {
+      "name": "le_two_of_odd_totient",
+      "type": "key",
+      "description": "**The new direction.** An odd totient forces n ≤ 2 — the contrapositive of totient_even_of_two_lt (an odd number is not even), which together with a finite check on {0,1,2} closes the classification. This is the content Mathlib lacks.",
+      "leanType": "{n : ℕ} (h : Odd (φ n)) : n ≤ 2",
+      "startLine": 62,
+      "endLine": 65
+    },
+    {
+      "name": "totient_even_of_two_lt",
+      "type": "supporting",
+      "description": "**The even direction (Mathlib's Nat.totient_even).** φ(n) is even for n > 2, because −1 ∈ (ZMod n)ˣ has order 2, so 2 ∣ |(ZMod n)ˣ| = φ(n) by Lagrange. The engine of the whole classification, restated here.",
+      "leanType": "{n : ℕ} (hn : 2 < n) : Even (φ n)",
+      "startLine": 47,
+      "endLine": 48
+    },
+    {
+      "name": "two_dvd_totient_of_two_lt",
+      "type": "supporting",
+      "description": "**Divisibility restatement.** 2 ∣ φ(n) whenever n > 2 — the headline parity fact packaged as a divisibility for downstream use.",
+      "leanType": "{n : ℕ} (hn : 2 < n) : 2 ∣ φ n",
+      "startLine": 51,
+      "endLine": 52
+    },
+    {
+      "name": "even_totient_of_three_le",
+      "type": "supporting",
+      "description": "**Convenience form.** The same even-totient fact stated with the 3 ≤ n hypothesis.",
+      "leanType": "{n : ℕ} (hn : 3 ≤ n) : Even (φ n)",
+      "startLine": 55,
+      "endLine": 56
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "euler-totient",
