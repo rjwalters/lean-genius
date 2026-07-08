@@ -8,6 +8,12 @@
 # EXACT structural safety guards 1-5 from that janitor so the two paths share a
 # single decision contract and a crashed agent mid-edit never loses work.
 #
+# On the janitor side, those guards 1-5 (plus the reclaim-eligibility triggers)
+# live in a single `reclaim_worktree` function shared by both the
+# `.loom/worktrees/*` scratch pass and the pass that reclaims git-registered
+# worktrees located OUTSIDE `.loom/worktrees/` (issue #35257); this helper stays
+# in lock-step with those guards.
+#
 # Guards (a worktree is removed ONLY when ALL hold):
 #   1. Not the current checkout (real-path normalized compare).
 #   2. Not locked (`git worktree list --porcelain` does not flag it `locked`).

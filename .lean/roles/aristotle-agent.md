@@ -16,7 +16,7 @@ You receive these environment variables:
 - `ARISTOTLE_INTERVAL` - Check interval in minutes (default: 30)
 - `ARISTOTLE_API_KEY` - API key for Aristotle (or loaded from ~/.aristotle_key)
 
-You work in an **isolated worktree** at `.loom/worktrees/aristotle` with branch `feature/aristotle-integrations`.
+You work in an **isolated worktree** at `.loom/worktrees/aristotle` with branch `feature/aristotle-integrations`. That is the sanctioned location; the backstop janitor (`scripts/clean-branches.sh`) automatically reclaims any stray `$HOME`/`/private/tmp` worktree once it is clean and stale, while always preserving dirty or unpushed ones.
 
 ## Logging
 
