@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETE + SHARPENED (VERIFIED 0 sorry/0 axiom, 3.7s Docker, 7743 jobs): the multi-symbol AWGN output-power identity now holds under pairwise UNCORRELATEDNESS (vanishing pairwise covariances), strictly weaker than the pairwise independence of the original theorems and of Mathlib IndepFun.variance_sum. Identifies the exact second-order hypothesis behind Bienaymé.",
+    "builtItems": [
+      "variance_sum_of_pairwise_uncorrelated (ShannonChannelCodingAWGNOQ02OQ02.lean:131): Var[∑ i∈s, Wi] = ∑ Var[Wi] from Set.Pairwise cov=0 + MemLp; [IsFiniteMeasure].",
+      "variance_sum_of_pairwise_indep (:150): independence ⟹ uncorrelated ⟹ identity, via IndepFun.covariance_eq_zero — shows the sharp version subsumes IndepFun.variance_sum.",
+      "awgn_multisymbol_power_of_uncorrelated (:165): E[(∑Wi)²]=∑E[Wi²] under pairwise-uncorrelated + zero-mean, strengthening awgn_multisymbol_power."
+    ],
+    "insights": [
+      "Bienaymé variance-of-a-sum needs only PAIRWISE UNCORRELATEDNESS (cov[Wi,Wj]=0 for i≠j), not pairwise independence: the off-diagonal covariances of Var[∑Wi]=∑i∑j cov[Wi,Wj] (Mathlib variance_sum´) are exactly what must vanish. Independence is strictly stronger (there exist uncorrelated dependent variables).",
+      "Mathlib gap: no Uncorrelated concept and no pairwise-uncorrelated variance-sum lemma — only variance_sum´ (always true, double sum) and IndepFun.variance_sum (independence). The uncorrelated version sits strictly between them and was missing.",
+      "Proof recipe mirrors Mathlib IndepFun.variance_sum: rw[variance_sum´ hW]; Finset.sum_congr; collapse inner ∑j via Finset.sum_eq_single_of_mem i hi (fun j hj hji => huncor hi hj hji.symm); finish with covariance_self (hW i hi).aemeasurable. Replaces independence-derived covariance_eq_zero with the direct hypothesis.",
+      "For AWGN engineering: uncorrelated (not necessarily independent) signal+noise contributions still add in POWER — E[(∑Wi)²]=∑E[Wi²] for zero-mean pairwise-uncorrelated square-integrable terms."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no pairwise-uncorrelated variance-sum lemma (only variance_sum´ double-sum form and IndepFun.variance_sum). Candidate upstream contribution: variance_sum under Set.Pairwise (cov=0)."
+    ],
+    "nextSteps": [
+      "Consider upstreaming variance_sum_of_pairwise_uncorrelated to Mathlib (Probability/Moments/Variance.lean), from which IndepFun.variance_sum becomes a one-line corollary.",
+      "Further sharp boundary: does the identity extend to L² limits / countable pairwise-uncorrelated families (Var of a series)? Would need dominated-convergence for covariance."
+    ],
     "markdown": "# Knowledge Base: shannon-channel-coding-awgn-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
