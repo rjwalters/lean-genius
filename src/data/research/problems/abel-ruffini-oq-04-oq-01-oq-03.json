@@ -34,11 +34,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: base refactoring (fixed prime 5) merged #35245; follow-up generalizes core to arbitrary prime p, VERIFIED 0/0.",
+    "builtItems": [
+      "zpowers_sylow_normal in AbelRuffiniOQ04OQ01OQ03.lean — arbitrary-prime Sylow-elimination core: order p·m + p∤m + no-small-divisor ⇒ ⟨c⟩ (order-p) normal",
+      "conj_mem_zpowers_sylow — every g normalizes ⟨c⟩ (general prime consequence)",
+      "zpowers_order5_normal now a one-line corollary of zpowers_sylow_normal (p=5 instance)"
+    ],
+    "insights": [
+      "Generalizing the fixed prime 5 to a variable prime p is NOT a rename: the two number-theoretic steps change tactic. n_p ≡ 1 (mod p) ⇒ n_p = 1 needs Nat.mod_eq_of_lt hp.out.one_lt to evaluate 1 % p (omega cannot do variable-modulus mod); index cancellation [G:P]·p = p·m ⇒ [G:P] = m needs Nat.eq_of_mul_eq_mul_right (omega cannot cancel a variable multiplier).",
+      "The whole Sylow API (Sylow.card_eq_multiplicity, card_sylow_modEq_one, Sylow.card_dvd_index, IsPGroup.exists_le_sylow) is already prime-generic, so the group-theory skeleton transports verbatim; only the two ℕ-arithmetic steps required new lemmas."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional: apply zpowers_sylow_normal to eliminate |Gal| ∈ {p·m} cases for other irreducible quintics/higher-degree solvability obstructions where a Sylow p-subgroup is forced cyclic-normal."
+    ]
   },
   "tags": [
     "algebra",
