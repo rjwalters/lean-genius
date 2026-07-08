@@ -140,4 +140,75 @@ theorem kAPCount_eq_zero_of_zero {N : ℕ} [NeZero N] (k : ℕ)
         Finset.sum_congr rfl (fun d _ => hprod x d))]
   simp
 
+-- ============================================================
+-- Multilinearity in each slot
+--
+-- The k-AP counting operator is *multilinear*: linear separately in
+-- each of its `k` function arguments.  These are exactly the identities
+-- that drive the generalized von Neumann argument, where one slot is
+-- expanded as `1_A = δ·1 + (1_A − δ)` and the count is split by linearity
+-- in that slot.  We record linearity in an arbitrary slot `j` via
+-- `Function.update`.
+-- ============================================================
+
+/-- Factor out the `j`-th slot of the inner product: replacing `f j` by an
+    arbitrary function `g` (via `Function.update`) pulls the `j`-th factor
+    `g (x + j·d)` out in front of the product over the remaining slots. -/
+theorem prod_update_factor {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) (g : ZMod N → ℂ) (x d : ZMod N) :
+    (∏ i : Fin k, Function.update f j g i (x + i.val • d))
+      = g (x + j.val • d) *
+          ∏ i ∈ Finset.univ.erase j, f i (x + i.val • d) := by
+  rw [← Finset.mul_prod_erase Finset.univ
+        (fun i => Function.update f j g i (x + i.val • d)) (Finset.mem_univ j)]
+  congr 1
+  · simp
+  · apply Finset.prod_congr rfl
+    intro i hi
+    simp only [Finset.mem_erase] at hi
+    simp [hi.1]
+
+/-- Additivity in slot `j`: `Λ_k` is additive in each function argument.
+    Splitting the `j`-th slot as a sum `g₁ + g₂` splits the whole count.
+    This is the linear step that lets the generalized von Neumann argument
+    decompose `1_A = δ·1 + (1_A − δ)` inside a single AP-count slot. -/
+theorem kAPCount_update_add {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) (g₁ g₂ : ZMod N → ℂ) :
+    kAPCount k (Function.update f j (g₁ + g₂))
+      = kAPCount k (Function.update f j g₁)
+        + kAPCount k (Function.update f j g₂) := by
+  unfold kAPCount
+  rw [← mul_add]
+  congr 1
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro x _
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro d _
+  rw [prod_update_factor, prod_update_factor, prod_update_factor, Pi.add_apply]
+  ring
+
+/-- Scalar homogeneity in slot `j`: scaling one function argument by a
+    constant `c` scales the whole count by `c`.  Together with
+    `kAPCount_update_add` this establishes multilinearity of `Λ_k`. -/
+theorem kAPCount_update_smul {N : ℕ} [NeZero N] (k : ℕ)
+    (f : Fin k → ZMod N → ℂ) (j : Fin k) (c : ℂ) (g : ZMod N → ℂ) :
+    kAPCount k (Function.update f j (c • g))
+      = c * kAPCount k (Function.update f j g) := by
+  unfold kAPCount
+  have key : (∑ x : ZMod N, ∑ d : ZMod N,
+                ∏ i : Fin k, Function.update f j (c • g) i (x + i.val • d))
+      = c * ∑ x : ZMod N, ∑ d : ZMod N,
+                ∏ i : Fin k, Function.update f j g i (x + i.val • d) := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro x _
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro d _
+    rw [prod_update_factor, prod_update_factor, Pi.smul_apply, smul_eq_mul]
+    ring
+  rw [key]; ring
+
 end RothTheoremOQ03OQ01
