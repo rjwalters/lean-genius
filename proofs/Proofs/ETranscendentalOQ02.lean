@@ -43,6 +43,8 @@ No specific constant has been proved normal, though almost all reals are (Borel,
 - [x] Normality defined rigorously (digit frequency version)
 - [x] Decimal digits 1–6 of e proved from exp_one bounds
 - [x] `normal_imp_irrational`: normality implies irrationality
+- [x] `normal_ktuple_infinitely_often` / `normal_imp_disjunctive`: normal ⇒ every
+      finite digit-string occurs (infinitely often)
 - [x] e is irrational (necessary condition for normality)
 - [ ] Whether e is normal in base 10, base 2, or any base (OPEN — axiomatized)
 -/
@@ -81,11 +83,11 @@ def IsAbsolutelyNormal (x : ℝ) : Prop :=
 
 /-- e is irrational (Euler, 1737 — proved via transcendence). -/
 theorem e_irrational : Irrational (Real.exp 1) :=
-  ETranscendental.e_irrational
+  _root_.e_irrational
 
 /-- e is transcendental over ℤ (Hermite, 1873). -/
 theorem e_transcendental : Transcendental ℤ (Real.exp 1) :=
-  ETranscendental.e_transcendental
+  _root_.e_transcendental
 
 /-- Tight bounds on e from Mathlib. -/
 theorem e_bounds : 2.718281828 < Real.exp 1 ∧ Real.exp 1 < 2.7182818286 :=
@@ -475,7 +477,9 @@ theorem periodic_has_missing_ktuple (b T k : ℕ) (hb : 2 ≤ b) (hT : 0 < T)
             hperiod _ (by omega), ih]
     -- f(n + i) = f(N₀ + (n-N₀)%T + i) for all i (by reducing mod T)
     have hfn_eq : ∀ i : Fin k, f (n + i.val) = f (N₀ + (n - N₀) % T + i.val) := fun i => by
-      rw [show n + i.val = N₀ + (n - N₀) % T + (n - N₀) / T * T + i.val from by omega]
+      have key : N₀ + (n - N₀) % T + (n - N₀) / T * T = n := by
+        rw [Nat.add_assoc, Nat.mod_add_div', Nat.add_sub_cancel' hn]
+      rw [show n + i.val = N₀ + (n - N₀) % T + (n - N₀) / T * T + i.val from by rw [key]]
       exact hperiod_rep ((n - N₀) / T) i.val
     -- So (fun i => f(N₀+(n-N₀)%T+i)) = s, meaning s ∈ orbit: contradiction
     exact hs (Finset.mem_image.mpr ⟨(n - N₀) % T, Finset.mem_range.mpr (Nat.mod_lt _ hT),
@@ -676,6 +680,51 @@ theorem normal_imp_irrational (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
   have hpos : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
   linarith
 
+/-- **Normal numbers are disjunctive (this session).**
+    In a number normal in base `b`, every `k`-tuple of digits `s` occurs at
+    *infinitely many* starting positions. Proof (the positive companion to
+    `normal_imp_irrational`, which instead exhibits a *missing* tuple): if only
+    finitely many positions matched `s`, the matching count would be bounded, so
+    `tendsto_bounded_count_div_atTop_zero` would force its frequency to tend to
+    `0`; but normality forces that same frequency to tend to `b^(-k) > 0`, and
+    the uniqueness of limits yields the contradiction `b^(-k) = 0`. -/
+theorem normal_ktuple_infinitely_often (b k : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) (s : Fin k → Fin b) :
+    {n : ℕ | ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)}.Infinite := by
+  by_contra hfin
+  rw [Set.not_infinite] at hfin
+  have h_count_le : ∀ N,
+      ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card
+        ≤ hfin.toFinset.card := by
+    intro N
+    refine Finset.card_le_card ?_
+    intro n hnmem
+    rw [Finset.mem_filter] at hnmem
+    exact hfin.mem_toFinset.mpr hnmem.2
+  have h_zero :
+      Tendsto
+        (fun N : ℕ =>
+          (((Finset.range N).filter
+            (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ)
+            / (N : ℝ))
+        atTop (nhds 0) :=
+    tendsto_bounded_count_div_atTop_zero hfin.toFinset.card _ h_count_le
+  have h_normal := hn k s
+  have heq : (0 : ℝ) = (b : ℝ) ^ (-(k : ℤ)) :=
+    tendsto_nhds_unique h_zero h_normal
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hpos : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  linarith
+
+/-- **Every finite string appears (disjunctivity corollary).**
+    A number normal in base `b` contains every `k`-tuple of base-`b` digits at
+    some starting position — immediate from the infinitude of matches. -/
+theorem normal_imp_disjunctive (b k : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) (s : Fin k → Fin b) :
+    ∃ n : ℕ, ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ) :=
+  (normal_ktuple_infinitely_often b k hb x hn s).nonempty
+
 -- ============================================================
 -- PART V: OPEN QUESTION
 -- ============================================================
@@ -705,8 +754,6 @@ theorem e_normal_implies_uniform_decimal_digits
   have h := hn 1 (fun _ => d)
   simp [nthDigit] at h ⊢
   convert h using 2
-  · congr 1; ext N; congr 1; ext n; simp
-  · norm_num
 
 /-- e is irrational — a necessary condition for normality (not sufficient). -/
 theorem e_irrational_necessary_for_normality : Irrational (Real.exp 1) :=

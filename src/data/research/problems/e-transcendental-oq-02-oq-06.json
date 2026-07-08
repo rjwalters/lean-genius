@@ -1,7 +1,7 @@
 {
   "slug": "e-transcendental-oq-02-oq-06",
   "title": "Complete `normal_imp_irrational` in Lean 4, eliminating the axiom",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS (verified 0/0 for new results): normal_imp_irrational was already complete, so added normal_ktuple_infinitely_often + normal_imp_disjunctive (normal numbers are disjunctive) and repaired 4 pre-existing latent build breaks so the whole file compiles under current Mathlib. Only remaining axiom e_absolutely_normal is the genuine open conjecture (e is normal).",
+    "builtItems": [
+      "normal_ktuple_infinitely_often (Proofs/ETranscendentalOQ02.lean): {n | s occurs at n}.Infinite for x normal in base b. Verified 0 sorry; axioms [propext, Classical.choice, Quot.sound].",
+      "normal_imp_disjunctive (same file): every finite digit string appears at least once (corollary via Set.Infinite.nonempty).",
+      "Repair: eTranscendental.lean lost its namespace -> ETranscendental.e_irrational/e_transcendental became _root_.e_irrational/_root_.e_transcendental.",
+      "Repair: periodic_has_missing_ktuple L480 omega replaced by Nat.mod_add_div' + Nat.add_sub_cancel' (variable-divisor div/mod is nonlinear for omega).",
+      "Repair: e_normal_implies_uniform_decimal_digits convert now closes the goal outright; dropped stale post-convert bullets."
+    ],
+    "insights": [
+      "The stated target normal_imp_irrational was ALREADY a complete 0-sorry theorem (Session 13); OQ-02-OQ-06 as literally phrased was resolved. Added genuinely new theory instead of reclaiming.",
+      "Normal numbers are DISJUNCTIVE: every finite digit-string occurs, in fact at infinitely many positions. Positive companion to normal_imp_irrational (which uses a MISSING tuple to force frequency 0); here a bounded match-count would force frequency 0, contradicting the positive normal limit b^(-k).",
+      "The file did NOT build on current Mathlib (never Lean-CI-d; math PRs skip the Lean build). Four latent breaks were repaired to reach a verified state."
+    ],
+    "mathlibGaps": [
+      "omega does not discharge variable-divisor Euclidean identities (a/T*T + a%T = a with T variable, nonlinear); use Nat.mod_add_div'/Nat.div_add_mod explicitly."
+    ],
+    "nextSteps": [
+      "Sharpness: irrational does NOT imply normal. Construct an explicit irrational non-normal number (Liouville-type digit sequence with a frequency-0 digit) in the nthDigit framework, proving non-eventual-periodicity and a frequency-0 block.",
+      "Quantitative disjunctivity: bound first-occurrence position / gaps of a fixed k-tuple via the normality convergence rate (only qualitative infinitude proved so far)."
+    ],
     "markdown": "# Knowledge Base: e-transcendental-oq-02-oq-06\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -57,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-07-04T19:52:25.455Z",
-  "lastUpdate": "2026-07-04T19:52:25.491Z",
+  "lastUpdate": "2026-07-08",
   "leanFiles": [
     {
       "path": "Proofs/ETranscendentalOQ01.lean",
