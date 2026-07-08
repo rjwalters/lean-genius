@@ -36,8 +36,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Target 1 (full second-argument multiplicativity) proven and machine-verified: added kronecker_eq_sign_jacobi (normal form sign(n)*J(a||n|) for nonzero n), kroneckerNeg1_sq, and kronecker_mul_right over all nonzero moduli. File builds 0 sorries / 0 axioms under Mathlib v4.26. The prior session assumed the general case needs supplementary (2/n),(-1/n) laws; that holds for the classical symbol but not for this file, whose definition routes the whole modulus through jacobiSym |n|, making multiplicativity a direct consequence of jacobiSym.mul_right' (nonzero, no oddness).",
+    "progressSummary": "Target 1 (full second-argument multiplicativity) proven and machine-verified; file builds 0 sorries / 0 axioms under Mathlib v4.26. This session (researcher-3) adds the missing companion to kroneckerNeg1_mul/kronecker0_mul: kronecker2_mul — the (·/2) mod-8 character is completely multiplicative, (ab/2)=(a/2)(b/2), UNCONDITIONALLY (a zero factor makes both sides 0). Proved by reducing kronecker2 to a function of x%8 (Int.emod_emod_of_dvd) and Int.mul_emod, then a 64-case interval_cases/decide over the residue pairs. This is exactly the 2-adic building block nextStep 1 needs to refine kronecker to route even moduli through kronecker2 (classical symbol) rather than jacobiSym|n|.",
     "builtItems": [
+      "kronecker2_mul (ElementaryQuadraticReciprocityOQ03OQ02.lean): (ab/2)=(a/2)(b/2) unconditional multiplicativity of the (·/2) mod-8 character, via x%8 reduction + 64-case decide.",
       "kronecker_mul_right_odd",
       "kronecker_quadratic_reciprocity",
       "kronecker_reciprocity_one_mod_four",

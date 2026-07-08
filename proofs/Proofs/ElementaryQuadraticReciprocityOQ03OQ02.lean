@@ -200,6 +200,24 @@ private theorem kronecker0_mul (a b : ℤ) (hab : a * b ≠ 0) :
           (show a * (-b) = 1 by simp [mul_neg, h]))
     simp only [kronecker0, if_neg hnu, if_neg ha, zero_mul]
 
+/-- `kronecker2` (the `(·/2)` character) is completely multiplicative:
+    `(ab/2) = (a/2)(b/2)`, unconditionally (a zero factor makes both sides 0).
+    Since `kronecker2 x` depends only on `x % 8`, this reduces to a finite check
+    over the 64 residue pairs mod 8. -/
+theorem kronecker2_mul (a b : ℤ) :
+    kronecker2 (a * b) = kronecker2 a * kronecker2 b := by
+  have hred : ∀ x : ℤ, kronecker2 x = kronecker2 (x % 8) := by
+    intro x
+    unfold kronecker2
+    rw [Int.emod_emod_of_dvd x (by norm_num : (2 : ℤ) ∣ 8),
+      Int.emod_emod_of_dvd x (by norm_num : (8 : ℤ) ∣ 8)]
+  rw [hred a, hred b, hred (a * b), Int.mul_emod]
+  have hra : 0 ≤ a % 8 := Int.emod_nonneg a (by norm_num)
+  have hrb : a % 8 < 8 := Int.emod_lt_of_pos a (by norm_num)
+  have hsa : 0 ≤ b % 8 := Int.emod_nonneg b (by norm_num)
+  have hsb : b % 8 < 8 := Int.emod_lt_of_pos b (by norm_num)
+  interval_cases (a % 8) <;> interval_cases (b % 8) <;> decide
+
 /-- The Kronecker symbol is completely multiplicative in the first argument:
     (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
 
