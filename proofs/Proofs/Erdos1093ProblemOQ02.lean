@@ -47,21 +47,27 @@ the **tractable half** and formalizes the question precisely.
 
 ## Axioms
 
-The record facts (`deficiency_284_28`, `noSmallPrimeFactors_284_28`,
-`smooth_indices_284_28`) are discharged by `native_decide`, so they depend on
-`Lean.ofReduceBool`: they compute the bignum binomial `C(284,28)` (Pascal
-recursion, infeasible for the kernel) or factor values via `Nat.primeFactors`
-(well-founded recursion, which does not reduce under kernel `decide`).  The
-numeric certificate `(28!)² < 47!` inside `deficiency_record_le_18` (Section XII)
-is now discharged by kernel `decide` (`Nat.factorial` is structural recursion, so
-the kernel reduces it), hence it is `ofReduceBool`-free.  The structural results
-(1, 5) and all of Sections IV–XI are `ofReduceBool`-free.
+Two record facts remain discharged by `native_decide`, so they depend on
+`Lean.ofReduceBool`: the parent's `deficiency_284_28` computes the bignum
+binomial `C(284,28)` (Pascal recursion, infeasible for the kernel), and
+`smooth_indices_284_28` factors values via `Nat.primeFactors` (well-founded
+recursion, which does not reduce under kernel `decide`).  Two facts that
+previously used `native_decide` are now `ofReduceBool`-free:
+- the numeric certificate `(28!)² < 47!` inside `deficiency_record_le_18`
+  (Section XII), via kernel `decide` (`Nat.factorial` is structural recursion, so
+  the kernel reduces it);
+- `noSmallPrimeFactors_284_28`, via **Kummer's theorem** — instead of the bignum
+  divisibility test it reduces each prime `p ≤ 28` to a bounded base-`p` carry
+  count (`Nat.factorization_choose`) that the kernel discharges.
+
+The structural results (1, 5) and all of Sections IV–XI are `ofReduceBool`-free.
 
 ## Status: OPEN (universal upper bound); existence half machine-verified.
 -/
 
 import Proofs.Erdos1093Problem
 import Mathlib.Data.Nat.Prime.Factorial
+import Mathlib.Data.Nat.Choose.Factorization
 import Mathlib.Tactic
 
 /-
@@ -90,11 +96,44 @@ theorem noSmallPrimeFactors_iff (n k : ℕ) :
 -/
 
 /-- No prime `≤ 28` divides `C(284,28)`, so the pair `(284,28)` is admissible
-and its deficiency is well-defined.  Verified by `native_decide` after the
-reduction to a bounded prime check. -/
+and its deficiency is well-defined.
+
+**`ofReduceBool`-free (kernel `decide` only).**  Rather than compute the
+~50-digit bignum `C(284,28)` and test divisibility — which would force
+`native_decide`, since kernel `decide` cannot evaluate the exponential Pascal
+recursion for `Nat.choose 284 28` — we invoke **Kummer's theorem**
+(`Nat.factorization_choose`): the `p`-adic valuation of `C(n,k)` equals the
+number of carries when `k` and `n - k` are added in base `p`.  For each prime
+`p ≤ 28`, `p ∣ C(284,28)` would force a positive carry count over the finite
+window `Ico 1 9` (valid because `log p 284 ≤ log 2 284 = 8 < 9`), a purely
+bounded `%`/`≤` computation the kernel discharges.  Adding `28` and `256` has no
+carry in any base `p ≤ 28`, so the carry count is `0` and no such prime divides
+`C(284,28)`. -/
 theorem noSmallPrimeFactors_284_28 : NoSmallPrimeFactors 284 28 := by
   rw [noSmallPrimeFactors_iff]
-  native_decide
+  intro p hp hpp hdvd
+  have hp2 : 2 ≤ p := hpp.two_le
+  have hchoose_ne : Nat.choose 284 28 ≠ 0 := (Nat.choose_pos (by norm_num)).ne'
+  have hpos : 0 < (Nat.choose 284 28).factorization p :=
+    hpp.factorization_pos_of_dvd hchoose_ne hdvd
+  -- Kummer's carry bound needs any `b > log p 284`; `log p 284 ≤ log 2 284 = 8`.
+  have hb : Nat.log p 284 < 9 := by
+    apply Nat.log_lt_of_lt_pow (by norm_num)
+    calc (284 : ℕ) < 2 ^ 9 := by norm_num
+      _ ≤ p ^ 9 := Nat.pow_le_pow_left hp2 9
+  rw [Nat.factorization_choose hpp (by norm_num) hb] at hpos
+  -- `hpos : 0 < #{i ∈ Ico 1 9 | p ^ i ≤ 28 % p ^ i + (284 - 28) % p ^ i}`.
+  -- Case on the finitely many `p ≤ 28`: non-primes contradict `hpp`; for each
+  -- prime the carry set is empty, contradicting `hpos`.
+  have hp28 : p ≤ 28 := by have := Finset.mem_range.mp hp; omega
+  -- For each prime `p` the carry set is empty (`decide` closes `0 < card → False`);
+  -- composite `p` are ruled out by `hpp` (`norm_num` only ever sees non-primes here,
+  -- where `¬ p.Prime` holds — proving it against a *prime* would instead reduce the
+  -- side goal to `⊢ False` and stall, so `decide` must be tried first).
+  interval_cases p <;>
+    first
+      | (revert hpos; decide)
+      | exact absurd hpp (by norm_num)
 
 /-- Explicit certificate: the nine smooth indices witnessing `deficiency 284 28 = 9`
 are exactly `{4, 8, 9, 11, 12, 14, 18, 20, 24}` (the `28`-smooth values
