@@ -22,7 +22,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "theoremCount": 48,
+    "theoremCount": 54,
     "mathlibDependencies": [
       {
         "theorem": "Real.exp_one_gt_d9",
@@ -66,11 +66,15 @@
       "Lemma rational_match_count_le (S13, private): for the missing-tuple data, the count of n ∈ Finset.range N where the digit-tuple matches s is at most N₀ (positions ≥ N₀ are excluded by the missing-tuple property; Finset.card_le_card with Finset.range N₀)",
       "Lemma tendsto_bounded_count_div_atTop_zero (S13, private): a non-negative ℕ-valued sequence bounded above by N₀ has c_N / N → 0 as N → ∞ (squeeze theorem with N₀/N = N₀ · N⁻¹ → N₀ · 0 = 0)",
       "Theorem normal_imp_irrational (S13, was axiom): normality in any base b ≥ 2 implies irrationality — discharged by composing the three Layer-4b lemmas: missing-tuple ⇒ bounded count ⇒ frequency → 0 contradicts normality's frequency → b^(-k) > 0 (tendsto_nhds_unique + zpow_pos)",
-      "Axiom e_absolutely_normal: e is absolutely normal — the main open conjecture (2026, the only remaining axiom)"
+      "Axiom e_absolutely_normal: e is absolutely normal — the main open conjecture (2026, the only remaining axiom)",
+      "Lemma match_count_le (this session, private): the x-general form of rational_match_count_le — if a k-tuple s is eventually missing past N₀, matching positions in Finset.range N number at most N₀ (Finset.card_le_card into Finset.range N₀).",
+      "Theorem not_normal_of_eventually_missing_ktuple (this session): the sharp-boundary converse of normal_imp_disjunctive — if some k-tuple is eventually absent from x's base-b expansion, x is NOT normal in base b (frequency → 0 via match_count_le + tendsto_bounded_count_div_atTop_zero contradicts normality's frequency → b^(-k) > 0). Establishes normality is strictly stronger than disjunctivity.",
+      "Theorem not_normal_of_eventually_missing_digit (this session): the k=1 corollary — a single eventually-absent digit forbids normality (the cleanest obstruction: a frequency-0 digit).",
+      "Theorem normal_imp_irrational_of_criterion (this session): re-derives normal ⇒ irrational from the non-normality criterion via rational_has_missing_ktuple_intCast, confirming the criterion is non-vacuous and subsumes the rational case."
     ],
     "dateAdded": "2026-05-04",
     "axiomCount": 1,
-    "lineCount": 715,
+    "lineCount": 854,
     "assumptions": "1 axiom (the main open conjecture): e_absolutely_normal — e is absolutely normal (open as of 2026). Session 13 discharged the normal_imp_irrational axiom: composing rational_has_missing_ktuple_intCast (the ℤ-valued lift of S12's Layer 4a missing-tuple), rational_match_count_le (the matching-position count is bounded by N₀ via Finset.card_le_card), and tendsto_bounded_count_div_atTop_zero (squeeze: 0 ≤ count_N/N ≤ N₀/N → 0). For rational q, normality forces frequency → b^(-k) > 0, but the bound forces it → 0; tendsto_nhds_unique closes the contradiction. Earlier history: rational-digits-periodic was discharged in Session 11 via the 3-layer recipe (Layer 1 eventually_periodic_iterate S8, Layer 2 ratResidue_eventually_periodic S9, Layer 3 floor_pow_mul_div S10 + nthDigit_succ_via_residue S11), then Session 12 added Layer 4a (Fin b cast bridge) and rational_has_missing_ktuple. 33 public theorems including first 9 decimal digits of e proved from exp_one bounds and now normal_imp_irrational fully axiom-free.",
     "mathlib_version": "4.26.0",
     "definitionCount": 5
@@ -167,6 +171,11 @@
       "endLine": 715,
       "summary": "The sole axiom and its consequences. axiom e_absolutely_normal: e is absolutely normal (the 2026 open conjecture). e_normal_base_10 and e_normal_binary are immediate consequences; e_normal_implies_uniform_decimal_digits gives each decimal digit 0–9 frequency 1/10 under base-10 normality; e_irrational_necessary_for_normality records that e is irrational (a necessary condition), derived independently from e_irrational.",
       "mathContext": "Open conjecture (axiomatized): e is normal in every base b ≥ 2; computational evidence over the first 5×10¹³ digits is consistent but no proof exists for any base. Irrationality, a necessary condition, is already proved unconditionally."
+    },
+    {
+      "title": "Part IV.6: Sharp Boundary — the Non-Normality Criterion (missing tuple/digit forbids normality)",
+      "startLine": 729,
+      "endLine": 819
     }
   ],
   "conclusion": {
@@ -198,9 +207,9 @@
       "Filter"
     ],
     "namespace": "ETranscendentalOQ02",
-    "lineCount": 762,
+    "lineCount": 854,
     "axiomCount": 1,
-    "theoremCount": 50,
+    "theoremCount": 54,
     "definitionCount": 5,
     "path": "Proofs/ETranscendentalOQ02.lean",
     "sorries": 0
