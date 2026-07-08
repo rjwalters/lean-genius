@@ -121,6 +121,21 @@
       "targetId": "cube-root-2-irrational",
       "relationship": "related",
       "description": "∛2 irrational (the base entry) is recovered here as irrational_cbrt_two, an instance of the prime corollary"
+    },
+    {
+      "targetId": "cube-root-2-irrational-oq-05-oq-02",
+      "relationship": "related",
+      "description": "Sibling child of OQ-05 taking the orthogonal direction: instead of characterizing which integer radicands give rational roots, it varies the exponent — p^q irrational for non-integer rational q — and proves ∛2 + ∛3 ∉ ℚ"
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "States the same irrationality direction (m not a perfect n-th power ⇒ m^(1/n) irrational) as a standalone theorem; this entry sharpens it to a full iff by adding the converse (perfect power ⇒ rational) via integral closedness"
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The n = 2 slice of this criterion: √m is rational iff m is a perfect square, the archetypal case from which the general perfect-n-th-power characterization descends"
     }
   ],
   "conclusion": {
