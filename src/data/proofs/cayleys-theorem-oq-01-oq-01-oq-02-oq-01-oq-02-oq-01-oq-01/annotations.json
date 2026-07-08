@@ -32,7 +32,7 @@
     },
     "type": "definition",
     "title": "regularRepHom: the Left-Regular Representation as a Monoid Hom",
-    "content": "regularRepHom G : G →* Perm G has underlying function Equiv.mulLeft and is a homomorphism because Equiv.mulLeft 1 = 1 (mulLeft_one) and Equiv.mulLeft (σ*τ) = Equiv.mulLeft σ * Equiv.mulLeft τ (mulLeft_mul). regularRepHom_apply records its value (Equiv.mulLeft g) and regularRepHom_apply_apply its action (g·x). Recognising the two equivalence-level identities as the unit and product laws of a homomorphism is exactly what upgrades the parent's family of translations to one morphism.",
+    "content": "regularRepHom G : G →* Perm G has underlying function Equiv.mulLeft and is a homomorphism because Equiv.mulLeft 1 = 1 (mulLeft_one) and Equiv.mulLeft (σ*τ) = Equiv.mulLeft σ * Equiv.mulLeft τ (mulLeft_mul). regularRepHom_apply records its value (Equiv.mulLeft g), whose action on a point x is left translation g·x definitionally. Recognising the two equivalence-level identities as the unit and product laws of a homomorphism is exactly what upgrades the parent's family of translations to one morphism.",
     "mathContext": "$L_{\\sigma\\tau}=L_\\sigma L_\\tau$ and $L_1=\\mathrm{id}$, so $\\sigma\\mapsto L_\\sigma$ is a homomorphism $G\\to\\operatorname{Perm}G$.",
     "significance": "critical",
     "relatedConcepts": [
