@@ -14,8 +14,8 @@
         "proven": [
             "primesInLevel, qualifyingInLevel: interval-level counting functions for primes and qualifying primes in each primorial interval",
             "strong_selberg_density: axiom capturing Selberg sieve's quantitative prediction — qualifying fraction ≥ l/(l+1) at each level",
-            "primes_growth_in_levels: axiom — at least l primes per level (very weak PNT)",
-            "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + growth",
+            "primesInLevel_pos: PROVED p(l) ≥ 1 for l ≥ 1 from Bertrand's postulate — was the axiom primes_growth_in_levels (p(l) ≥ l); axiom count reduced 2 → 1",
+            "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + primesInLevel_pos",
             "strong_implies_weak: PROVED strong axiom recovers selberg_density_axiom",
             "levelwise_density_bound: PROVED l/(l+1) ≥ k/(k+1) monotonicity for interval counts",
             "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",
@@ -30,16 +30,16 @@
     "currentState": {
         "phase": "COMPLETED",
         "since": "2026-04-12T00:00:00Z",
-        "iteration": 1,
-        "focus": "Verified deliverable already complete in main: proofs/Proofs/Erdos1059OQ01OQ01.lean and gallery entry erdos-1059-oq-01-oq-01 (status axiomatized)."
+        "iteration": 2,
+        "focus": "2026-07-08: eliminated the primes_growth_in_levels axiom (proved primesInLevel_pos p(l) >= 1 from Bertrand's postulate; downstream needs only positivity), reducing axiomCount 2 -> 1. Also repaired several latent build breaks that had been merged without Lean CI (density_one_at_factorials witness N0+1 and a sum_mul bridge; card>=1 rewrites via Finset.one_le_card; a ring_nf that left an unsolved <=). File now builds under Mathlib v4.26 (3068 jobs, 0 sorries, 1 axiom)."
     },
     "knowledge": {
-        "progressSummary": "COMPLETED (axiomatized) in main (480 lines, 11 theorems, 0 sorries, axiomCount 2, badge 'axiom'); the stated assumptions are isolated as named axioms per the axiom-integrity policy. Investigates whether density_one_conjecture can be derived from selberg_density_axiom. Shows the weak axiom is provably insufficient, introduces a strong Selberg density axiom (qualifying fraction ≥ l/(l+1) at each level), and proves it implies density at factorial evaluation points. Identifies the precise mathematical gap for general x: factorial growth of interval sizes prevents aggregation of level-wise bounds.",
+        "progressSummary": "COMPLETED (axiomatized) in main (496 lines, 12 theorems, 0 sorries, axiomCount 1, badge 'axiom'); the stated assumptions are isolated as named axioms per the axiom-integrity policy. Investigates whether density_one_conjecture can be derived from selberg_density_axiom. Shows the weak axiom is provably insufficient, introduces a strong Selberg density axiom (qualifying fraction ≥ l/(l+1) at each level), and proves it implies density at factorial evaluation points. Identifies the precise mathematical gap for general x: factorial growth of interval sizes prevents aggregation of level-wise bounds.",
         "builtItems": [
             "primesInLevel, qualifyingInLevel: interval-level counting functions for primes and qualifying primes in each primorial interval",
             "strong_selberg_density: axiom capturing Selberg sieve's quantitative prediction — qualifying fraction ≥ l/(l+1) at each level",
-            "primes_growth_in_levels: axiom — at least l primes per level (very weak PNT)",
-            "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + growth",
+            "primesInLevel_pos: PROVED p(l) ≥ 1 for l ≥ 1 from Bertrand's postulate — was the axiom primes_growth_in_levels (p(l) ≥ l); axiom count reduced 2 → 1",
+            "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + primesInLevel_pos",
             "strong_implies_weak: PROVED strong axiom recovers selberg_density_axiom",
             "levelwise_density_bound: PROVED l/(l+1) ≥ k/(k+1) monotonicity for interval counts",
             "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",

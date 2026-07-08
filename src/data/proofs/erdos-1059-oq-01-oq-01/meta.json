@@ -54,22 +54,22 @@
     ],
     "originalContributions": [
       "primesInLevel, qualifyingInLevel: interval-level counting functions for primes and qualifying primes in each primorial interval",
-      "strong_selberg_density: axiom capturing Selberg sieve's quantitative prediction — qualifying fraction ≥ l/(l+1) at each level",
-      "primes_growth_in_levels: axiom — at least l primes per level (very weak PNT)",
-      "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + growth",
+      "strong_selberg_density: axiom capturing Selberg sieve's quantitative prediction — qualifying fraction ≥ l/(l+1) at each level (the sole remaining axiom)",
+      "primesInLevel_pos: PROVED p(l) ≥ 1 for l ≥ 1 from Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul) — was the axiom primes_growth_in_levels (p(l) ≥ l); downstream results need only positivity, so the axiom is eliminated (2 axioms → 1)",
+      "qualifyingInLevel_pos: PROVED q(l) ≥ 1 for l ≥ 3 from strong axiom + primesInLevel_pos",
       "strong_implies_weak: PROVED strong axiom recovers selberg_density_axiom",
       "levelwise_density_bound: PROVED l/(l+1) ≥ k/(k+1) monotonicity for interval counts",
       "levelwise_strict_surplus: PROVED per-level surplus ≥ 1 for l ≥ max(3, k+2)",
       "density_at_levels: PROVED (main theorem) — level-sum density bound via sum splitting and surplus accumulation",
       "Gap analysis: factorial growth of interval sizes prevents extending from factorial points to general x"
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "prerequisites": [
       "Elementary number theory: primes, factorials, compositeness",
       "Sieve theory: Selberg sieve, Brun-Titchmarsh inequality (motivational)",
       "Finset operations: filter, card, sum, sum splitting"
     ],
-    "lineCount": 480,
+    "lineCount": 496,
     "relatedProblems": [
       {
         "id": "erdos-1059-oq-01",
@@ -84,8 +84,8 @@
         "relationship": "Grandparent: main Erdős 1059 conjecture"
       }
     ],
-    "assumptions": "Two explicit sieve axioms: strong_selberg_density (the Selberg sieve's quantitative prediction q(l)·(l+1) ≥ p(l)·l for l ≥ 3) and primes_growth_in_levels (weak PNT: p(l) ≥ l for l ≥ 3). The file is now SORRY-FREE: the two interval-decomposition lemmas (π(n!) and C(n!) as sums over primorial levels), previously sorry, are proved via the generic count_decomp by induction. Hence density_one_at_factorials is fully derived modulo the two disclosed axioms.",
-    "theoremCount": 11,
+    "assumptions": "One explicit sieve axiom: strong_selberg_density (the Selberg sieve's quantitative prediction q(l)·(l+1) ≥ p(l)·l for l ≥ 3). The former second axiom primes_growth_in_levels (p(l) ≥ l) is now the PROVED theorem primesInLevel_pos (p(l) ≥ 1, via Bertrand's postulate); the downstream results only ever used positivity of the level prime count, so the axiom count drops from 2 to 1. The file is SORRY-FREE: the two interval-decomposition lemmas (π(n!) and C(n!) as sums over primorial levels) are proved via the generic count_decomp by induction. Hence density_one_at_factorials is fully derived modulo the single disclosed axiom.",
+    "theoremCount": 12,
     "definitionCount": 3
   },
   "overview": {
@@ -118,7 +118,7 @@
     {
       "id": "axioms",
       "title": "Part II: The Strong Selberg Density Axiom",
-      "summary": "States two axioms: (1) strong_selberg_density, the bound q(l)·(l+1) ≥ p(l)·l capturing the Selberg sieve prediction, and (2) primes_growth_in_levels, a weak growth bound p(l) ≥ l for l ≥ 3.",
+      "summary": "States the single axiom strong_selberg_density, the bound q(l)·(l+1) ≥ p(l)·l capturing the Selberg sieve prediction. The former growth axiom primes_growth_in_levels (p(l) ≥ l) is replaced by the proved theorem primesInLevel_pos (p(l) ≥ 1, via Bertrand's postulate), which is all the downstream results require.",
       "startLine": 77,
       "endLine": 116,
       "mathContext": "The sieve argument gives $q(l) \\geq p(l) \\cdot (1 - O((l+1)/\\log(l!)))$. The axiom $q(l)(l+1) \\geq p(l)l$ captures the leading term."
@@ -166,10 +166,10 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Inventory of results: 7 theorems proved from first principles (through density_at_levels), 3 statements requiring sorry (the two decompositions plus density_one_at_factorials), and the 2 axioms (strong_selberg_density, primes_growth_in_levels). Notes the open extension to all x.",
+      "summary": "Inventory of results: all theorems proved from first principles including the interval decompositions and density_one_at_factorials (0 sorries), and the single axiom strong_selberg_density (the former primes_growth_in_levels is now the proved theorem primesInLevel_pos). Notes the open extension to all x.",
       "startLine": 409,
       "endLine": 434,
-      "mathContext": "2 axioms, 2 sorries; the factorial-point result is unconditional given the axioms, while the all-x extension remains open."
+      "mathContext": "1 axiom, 0 sorries; the factorial-point result is unconditional given the single Selberg axiom, while the all-x extension remains open."
     }
   ],
   "crossReferences": [
@@ -190,15 +190,15 @@
     }
   ],
   "leanFile": {
-    "lineCount": 480,
+    "lineCount": 496,
     "namespace": "Erdos1059OQ01OQ01",
     "opens": [
       "Nat"
     ],
     "structureCount": 0,
-    "axiomCount": 2,
-    "theoremCount": 11,
-    "substantiveTheoremCount": 7,
+    "axiomCount": 1,
+    "theoremCount": 12,
+    "substantiveTheoremCount": 8,
     "computationalVerifications": 0,
     "lemmaCount": 0,
     "imports": [

@@ -31,7 +31,7 @@
     },
     "type": "concept",
     "title": "The Strong Selberg Density Axiom",
-    "content": "The strong axiom states q(l)·(l+1) ≥ p(l)·l for l ≥ 3, meaning the qualifying fraction q(l)/p(l) is at least l/(l+1). This is motivated by the Selberg sieve: each of the l+1 'bad' conditions (p - k! composite for some k ≤ l) eliminates at most O(l!/log²(l!)) primes by Brun-Titchmarsh, while the total is ≈ l!/log(l!) by PNT, so the bad fraction is O((l+1)/log(l!)) → 0. The axiom captures the leading behavior with the clean threshold l/(l+1). The companion axiom primes_growth_in_levels (p(l) ≥ l for l ≥ 3) is an extremely weak consequence of PNT — the actual count is astronomically larger.",
+    "content": "The strong axiom states q(l)·(l+1) ≥ p(l)·l for l ≥ 3, meaning the qualifying fraction q(l)/p(l) is at least l/(l+1). This is motivated by the Selberg sieve: each of the l+1 'bad' conditions (p - k! composite for some k ≤ l) eliminates at most O(l!/log²(l!)) primes by Brun-Titchmarsh, while the total is ≈ l!/log(l!) by PNT, so the bad fraction is O((l+1)/log(l!)) → 0. The axiom captures the leading behavior with the clean threshold l/(l+1). It is now the SOLE axiom: the companion growth bound (formerly the axiom primes_growth_in_levels, p(l) ≥ l) is now the proved theorem primesInLevel_pos (p(l) ≥ 1, from Bertrand's postulate), since the downstream results only need positivity of the level prime count.",
     "mathContext": "Axiom: $q(l) \\cdot (l+1) \\geq p(l) \\cdot l$ for $l \\geq 3$, equivalently $\\frac{q(l)}{p(l)} \\geq \\frac{l}{l+1}$. From Brun-Titchmarsh: non-qualifying primes in $I(l)$ are $\\leq (l+1) \\cdot \\frac{2 \\cdot l!}{\\log^2(l!)}$, while $p(l) \\approx \\frac{l!}{\\log(l!)}$, giving bad fraction $\\leq \\frac{2(l+1)}{\\log(l!)} \\to 0$.",
     "significance": "key",
     "relatedConcepts": [
@@ -55,17 +55,17 @@
     },
     "type": "concept",
     "title": "Strong Axiom Recovers the Weak Selberg Axiom",
-    "content": "strong_implies_weak proves that the strong axiom gives q(l) ≥ 1 for l ≥ 3, recovering the weak selberg_density_axiom (at least one qualifying prime per interval). The chain: from the axioms, q(l)·(l+1) ≥ p(l)·l ≥ l² ≥ 9 > 0, so q(l) ≥ 1. From q(l) ≥ 1, extract a specific element via Finset.card_ne_zero → Finset.Nonempty → ∃ element. This confirms the strong axiom strictly generalizes the weak one.",
-    "mathContext": "$q(l)(l+1) \\geq p(l) \\cdot l \\geq l^2 \\geq 9 > 0 \\implies q(l) \\geq 1$. The extraction $q(l) \\geq 1 \\implies \\exists p \\in I(l), \\text{Prime}(p) \\wedge \\text{AFSC}(p)$ uses the correspondence between cardinality $\\geq 1$ and nonemptiness.",
+    "content": "strong_implies_weak proves that the strong axiom gives q(l) ≥ 1 for l ≥ 3, recovering the weak selberg_density_axiom (at least one qualifying prime per interval). The chain: from the strong axiom and primesInLevel_pos (p(l) ≥ 1), q(l)·(l+1) ≥ p(l)·l ≥ 1·3 = 3 > 0, so q(l) ≥ 1. From q(l) ≥ 1, extract a specific element via Finset.one_le_card → Finset.Nonempty → ∃ element. This confirms the strong axiom strictly generalizes the weak one.",
+    "mathContext": "$q(l)(l+1) \\geq p(l) \\cdot l \\geq 1 \\cdot 3 = 3 > 0 \\implies q(l) \\geq 1$. The extraction $q(l) \\geq 1 \\implies \\exists p \\in I(l), \\text{Prime}(p) \\wedge \\text{AFSC}(p)$ uses the correspondence between cardinality $\\geq 1$ and nonemptiness.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Finset.card_ne_zero",
+      "Finset.one_le_card",
       "Finset.Nonempty",
       "selberg_density_axiom"
     ],
     "prerequisites": [
       "strong_selberg_density",
-      "primes_growth_in_levels"
+      "primesInLevel_pos"
     ]
   },
   {
