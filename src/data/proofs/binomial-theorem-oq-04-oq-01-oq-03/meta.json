@@ -125,7 +125,7 @@
       "title": "Mathlib: a unified library of mathematics formalized in Lean 4",
       "year": 2020,
       "venue": "CPP",
-      "note": "Provides Nat.multinomial, Finset.piAntidiag, PMF, and the probability/binomial API underlying this formalization."
+      "note": "Provides the finite-sum API over Finset.range (Finset.sum, sum_range_succ / sum_range_succ', sum_add_distrib, sum_congr), the geometric-sum identity geom_sum_mul, and the linear_combination tactic over a CommRing that drive the absorption and q-Vandermonde inductions. Mathlib has no native Gaussian-binomial API as of v4.26, so qBinomial and the q-Pascal recurrence are supplied by the gallery's own development."
     }
   ]
 }
