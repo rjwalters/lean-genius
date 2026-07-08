@@ -1477,4 +1477,29 @@ theorem sqDiffCount_fourier {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
   refine Finset.sum_congr rfl (fun r _ => ?_)
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/-- **Circle-method principal-term extraction for the square-difference count.**
+Peeling the `r = 0` frequency off the verified `sqDiffCount_fourier` identity
+isolates the expected main term `|A|²`:
+    SD(A) = |A|² + N⁻¹ · Σ_{r ≠ 0} ‖Â(r)‖² · G(r).
+The `r = 0` summand is `‖Â(0)‖²·G(0) = |A|²·N` (since `Â(0) = |A|` and the
+quadratic Gauss sum `G(0) = N`), and the outer `N⁻¹` cancels that `N`, leaving
+`|A|²` plus the nonzero-frequency error term.  This is the exact form the circle
+method bounds (via `|G(r)| ≲ √N` and Parseval) to prove Sárközy's theorem, and
+mirrors the merged 3-AP principal-term split. -/
+theorem sqDiffCount_fourier_main {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
+    (sqDiffCount A : ℂ) = (↑A.card) ^ 2 + (↑N)⁻¹ *
+      (Finset.univ \ {(0 : ZMod N)}).sum (fun r : ZMod N =>
+        (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) := by
+  have hN : (↑N : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne N)
+  -- Split the r = 0 frequency off the full sum.  The explicit summand argument to
+  -- `sum_eq_add_sum_diff_singleton` is essential: leaving it to be inferred forces a
+  -- higher-order unification against the whole Fourier sum that blows up elaboration.
+  have hsplit := Finset.sum_eq_add_sum_diff_singleton (Finset.mem_univ (0 : ZMod N))
+    (fun r : ZMod N => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r)
+  rw [sqDiffCount_fourier A, hsplit]
+  -- Evaluate the r = 0 term: ‖Â(0)‖²·G(0) = |A|²·N.
+  simp only [sqGaussSum_zero, fourierCoeff_zero', Complex.norm_natCast, Complex.ofReal_pow,
+    Complex.ofReal_natCast]
+  field_simp
+
 end Szemeredi.Roth
