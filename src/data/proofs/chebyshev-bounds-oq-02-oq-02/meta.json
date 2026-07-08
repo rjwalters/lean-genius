@@ -73,6 +73,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Open Question, Imports & Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "File docstring framing the parent chebyshev-bounds-oq-02's open question (compare ψ with θ and quantify their difference), a roadmap of the gallery-facing statements and the Mathlib bridge; then `import Proofs.ChebyshevBoundsOQ02` (the parent's self-contained ℕ-indexed ψ) and `import Mathlib`, with `open Finset ArithmeticFunction` and the two nested namespaces.",
+      "mathContext": "Goal: ψ(n) − θ(n) is supported on the proper prime powers p^k (k ≥ 2) and is O(√n·log n)."
+    },
+    {
       "id": "theta-def",
       "title": "The First Chebyshev Function θ",
       "startLine": 54,
