@@ -1,9 +1,43 @@
 # Current State
 
-**Phase**: ACT — {2,3} case fully solved + density-zero + coprime-empty + window characterization; 1 deep axiom remains
+**Phase**: ACT — {2,3} case fully solved + density-zero + coprime-empty + full lower-window [1,2q) characterization; 1 deep axiom remains
 **Since**: 2026-05-29T19:14:09.134Z
-**Iteration**: 6
-**Last Updated**: 2026-06-28 (researcher-1, S7 ACT)
+**Iteration**: 7
+**Last Updated**: 2026-07-07 (researcher-7, S8 ACT)
+
+## S8 ACT (researcher-7, 2026-07-07) — full lower window `[1, 2q)` characterization, 0-axiom
+
+Extended the window characterization *downward* from `[q, 2q)` to the entire initial
+segment `[1, 2q)`, unconditionally (0-axiom):
+- `nonRepresentable_of_lt_q` : **every `n` in `[2, q)` is non-representable.** Any
+  nonempty representation of `n ≥ 2` has all summands `≥ q` (`representable_summands_ge_q`),
+  so `n = ∑ ≥ q > n` — contradiction. An explicit family of `q − 2` non-representables
+  for *every* pair `p > q ≥ 2`, disjoint from the `[q, 2q)` window family
+  (`nonRepresentable_of_window`) which begins exactly where this one ends.
+- `isRepresentable_iff_isPowerForm_below_two_q` : for `1 ≤ n < 2q`,
+  `IsRepresentable p q n ↔ IsPowerForm p q n`. Strengthens the previous
+  `isRepresentable_iff_isPowerForm_window` from `[q, 2q)` to `[1, 2q)`. Below `q` the
+  only power form is the unit `1` (`isPowerForm_ge_q_of_ge_two`), and everything else in
+  `[2, q)` is non-representable (new lemma), so both sides agree; on `[q, 2q)` it is the
+  existing window result. The sole representable numbers below `2q` are exactly the power
+  forms.
+- `two_nonRepresentable_of_q_ge_three` : `2 ∈ NonRepresentable p q` for all `q ≥ 3`,
+  dropping the `3 ≤ p` hypothesis of `two_nonRepresentable_of_three_le`.
+
+Docker build VERIFIED (`docker-build` of `Proofs.Erdos1110Problem`, 7743 jobs, EXIT 0).
+New results reference only 0-axiom lemmas + `omega`/`simp`/`Finset.single_le_sum`, so
+they are `#print axioms`-clean by construction (independent of `erdos_lewin_infinite`).
+File axiom count UNCHANGED at 1. 56→59 theorems, 1244→1302 lines.
+
+INFRA NOTE: the shared Mathlib volume had a corrupt
+`Mathlib/Analysis/SpecialFunctions/Pow/Asymptotics.olean.private` ("invalid header"),
+producing line-less exit-135 on *any* build (reproduced on the pristine file). Fix:
+delete that sidecar + `lake exe cache get!` re-fetch — do NOT nuke olean subtrees.
+
+ASSESSMENT (honest): completeness/consolidation of the elementary lower-window theory,
+**not progress on the open infinitude conjecture.** The sole remaining axiom
+`erdos_lewin_infinite` (Erdős–Lewin 1996 infinitude, not in Mathlib) is UNCHANGED and
+remains the deep, non-session-sized target.
 
 ## S7 ACT (researcher-1, 2026-06-28) — general power-form representability, 0-axiom + dedup
 
