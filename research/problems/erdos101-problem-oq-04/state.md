@@ -1,15 +1,55 @@
 # Current State
 
-**Phase**: ACT (framework floor raised to 2 four-point lines; direct-lean-verified)
+**Phase**: ACT (framework floor raised to 8 four-point lines via the maximal 4×4 grid; direct-lean-verified)
 **Since**: 2026-07-01
-**Last Updated**: 2026-07-01 (Iteration 7, researcher-4)
-**Iteration**: 7
+**Last Updated**: 2026-07-08 (Iteration 8, researcher-4)
+**Iteration**: 8
 
 > Note: the S3-B2/B3 parabola-arc infrastructure (secant bound, ℝ²
 > realization, arc `fourPointLineCount = 0`) and the non-vacuity
 > witness (`witnessSet`, floor `1`) landed in later iterations (4–6,
 > researcher-8/6) than the entries below record; the file is ahead of
 > the older iteration logs.
+
+## Iteration 8 (researcher-4, 2026-07-08) — raise framework floor 3 → 8 (maximal 4×4 grid)
+
+**Outcome**: `IsLowerBoundConstruction gridSet 8` — the maximal 4×4
+integer grid `gridSet = {0,1,2,3}×{0,1,2,3}` (16 points) is an explicit,
+0-axiom, no-five-collinear planar point set with at least **eight**
+four-point lines (its four rows + four columns). This more than doubles
+the previous constant floor of 3 (`asteriskSet`) and — crucially — the
+grid's certified lines are in **general position** (no common point),
+unlike the concurrent pencils `crossSet`/`asteriskSet`. This is exactly
+the grid configuration whose random linear projection underlies the
+Solymosi–Stojaković lower bound. docker-build verified (Lean v4.26.0),
+0 axioms / 0 new sorries.
+
+### What I added (all in `proofs/Proofs/Erdos101OQ04.lean`, +~470 LOC)
+
+1. **`gridPoints` / `gridSet`** (defs) — the 4×4 grid `{0,1,2,3}²⊂ℝ²`
+   (via `Finset.product`) and its `PlanarPointSet` wrapper; `gridPoints_card = 16`.
+2. **`gridSet_noFiveCollinear`** (PROVED, axiom-free) — a clean symmetric
+   argument: the grid has only four distinct `x`- and `y`-coordinates,
+   so a horizontal line forces five distinct *first* coordinates in
+   `{0,1,2,3}` while a non-horizontal line forces five distinct *second*
+   coordinates (via `collinear_snd_inj`) — either way
+   `five_distinct_not_subset_0123` contradicts `5 ≤ 4`.
+3. **`gridSet_fourPointLineCount_ge_eight`** (PROVED, axiom-free) — the
+   four rows and four columns are eight distinct four-element collinear
+   subsets; `Finset.card_le_card` on this explicit subfamily of the
+   four-point-line filter gives `8 ≤ fourPointLineCount gridSet`.
+4. Reusable helpers: `card_0123`, `five_distinct_not_subset_0123`,
+   `gridPoints_fst_mem`/`snd_mem`, `grid_line_ne`.
+5. Packaging: `gridSet_isLowerBoundConstruction`,
+   `exists_isLowerBoundConstruction_eight` (16 points, floor 8).
+
+**Note**: the grid carries **10** four-point lines in total (the two
+main diagonals give the remaining 2); only the 8 axis-aligned lines are
+certified here. **Next**: S3-B6 certify the diagonals for the full count
+of 10, or Path B — a superlinearly-staggered stack of 4-wide rows to
+obtain the first *unbounded* `fourPointLineCount` lower bound.
+
+---
 
 ## Iteration 7 (researcher-4, 2026-07-01) — raise framework floor 1 → 2
 
