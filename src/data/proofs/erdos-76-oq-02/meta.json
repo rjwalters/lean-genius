@@ -87,6 +87,56 @@
     ],
     "implications": "Pins down that the #76 extremal construction is special to two colors: its engine is the triangle-freeness of the bipartite cross class, a property that provably fails for every partition into three or more parts. Any genuine multi-color extension of #76 must therefore abandon the 'sacrifice a triangle-free color class' strategy and control monochromatic triangles by other means."
   },
+  "mainTheorems": [
+    {
+      "name": "cliqueFree_three_iff",
+      "type": "core",
+      "description": "**The headline dichotomy.** The cross-part graph is triangle-free iff the partition uses at most 2 parts: CliqueFree 3 ↔ (univ.image part).card ≤ 2. This is exactly the property the Erdős #76 balanced bipartition relies on, and it holds precisely in the two-color regime. Repackages not_cliqueFree_three_iff by contraposition (omega).",
+      "leanType": "[Fintype V] [DecidableEq V] {β : Type*} [DecidableEq β] (part : V → β) : (multipartiteGraph part).CliqueFree 3 ↔ (univ.image part).card ≤ 2",
+      "startLine": 122,
+      "endLine": 133
+    },
+    {
+      "name": "not_cliqueFree_three_iff",
+      "type": "key",
+      "description": "**Triangle ⟺ ≥ 3 parts.** The cross-part graph contains a triangle iff the partition uses at least 3 parts: ¬ CliqueFree 3 ↔ 3 ≤ (univ.image part).card. Forward: a 3-clique's part map is injective (pairwise adjacency ⇒ distinct parts), so Finset.card_image_of_injOn gives an image of size 3. Backward: Finset.two_lt_card_iff extracts three distinct parts whose representatives form a transversal triangle.",
+      "leanType": "[Fintype V] [DecidableEq V] {β : Type*} [DecidableEq β] (part : V → β) : ¬ (multipartiteGraph part).CliqueFree 3 ↔ 3 ≤ (univ.image part).card",
+      "startLine": 72,
+      "endLine": 116
+    },
+    {
+      "name": "extremal_crossclass_is_two_color_phenomenon",
+      "type": "key",
+      "description": "**The separation, packaged.** Every Fin 2 partition's cross class is triangle-free while the discrete Fin 3 partition's cross class is not — so triangle-freeness of the cross class is a genuinely two-color phenomenon with no naive k-color extension. The capstone answering oq-02.",
+      "leanType": "(∀ (part : Fin 6 → Fin 2), (multipartiteGraph part).CliqueFree 3) ∧ ¬ (multipartiteGraph (id : Fin 3 → Fin 3)).CliqueFree 3",
+      "startLine": 164,
+      "endLine": 167
+    },
+    {
+      "name": "bipartite_cliqueFree",
+      "type": "supporting",
+      "description": "**Two colors: always triangle-free.** Every 2-partition (β = Fin 2) gives a triangle-free complete bipartite cross graph K_{n/2,n/2} — the structural property behind the #76 balanced bipartition. Via cliqueFree_three_iff and Finset.card_le_univ (image ≤ #(Fin 2) = 2).",
+      "leanType": "[Fintype V] [DecidableEq V] (part : V → Fin 2) : (multipartiteGraph part).CliqueFree 3",
+      "startLine": 145,
+      "endLine": 149
+    },
+    {
+      "name": "K3_not_cliqueFree",
+      "type": "supporting",
+      "description": "**Three colors: the break.** The discrete 3-partition id : Fin 3 → Fin 3 yields the complete graph K₃, a single transversal triangle — the concrete witness that the sacrificial-triangle-free-class mechanism fails at k = 3.",
+      "leanType": "¬ (multipartiteGraph (id : Fin 3 → Fin 3)).CliqueFree 3",
+      "startLine": 155,
+      "endLine": 158
+    },
+    {
+      "name": "multipartiteGraph",
+      "type": "supporting",
+      "description": "**The cross-class model (definition).** The complete multipartite graph on V with u, v adjacent iff part u ≠ part v — a self-contained, axiom-free SimpleGraph model of the cross-part color class of a k-partition. For β = Fin 2 it is exactly the complete bipartite red class of the Erdős #76 balanced coloring.",
+      "leanType": "{β : Type*} (part : V → β) : SimpleGraph V",
+      "startLine": 53,
+      "endLine": 70
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-76",
