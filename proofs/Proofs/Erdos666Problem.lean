@@ -105,8 +105,8 @@ theorem hypercube_degree (n : ℕ) (x : Fin (2 ^ n)) :
   -- the `i`-th neighbour, `x` with bit `i` flipped
   have hlt2 : ∀ i : Fin n, x.val ^^^ 2 ^ (i : ℕ) < 2 ^ n := fun i =>
     Nat.xor_lt_two_pow x.2 (Nat.pow_lt_pow_right (by norm_num) i.2)
-  set f : Fin n → Fin (2 ^ n) := fun i => ⟨x.val ^^^ 2 ^ (i : ℕ), hlt2 i⟩ with hf
-  have hfinj : Function.Injective f := by
+  have hfinj : Function.Injective
+      (fun i : Fin n => (⟨x.val ^^^ 2 ^ (i : ℕ), hlt2 i⟩ : Fin (2 ^ n))) := by
     intro a b hab
     have hv : x.val ^^^ 2 ^ (a : ℕ) = x.val ^^^ 2 ^ (b : ℕ) := congrArg Fin.val hab
     have h2 : (2 : ℕ) ^ (a : ℕ) = 2 ^ (b : ℕ) := by
@@ -115,10 +115,12 @@ theorem hypercube_degree (n : ℕ) (x : Fin (2 ^ n)) :
       rwa [← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor,
         ← Nat.xor_assoc, Nat.xor_self, Nat.zero_xor] at e
     exact Fin.ext (Nat.pow_right_injective (le_refl 2) h2)
-  have hnb : (Hypercube n).neighborFinset x = Finset.univ.image f := by
+  have hnb : (Hypercube n).neighborFinset x
+      = Finset.univ.image
+        (fun i : Fin n => (⟨x.val ^^^ 2 ^ (i : ℕ), hlt2 i⟩ : Fin (2 ^ n))) := by
     ext y
     simp only [SimpleGraph.mem_neighborFinset, Finset.mem_image, Finset.mem_univ,
-      true_and, hf]
+      true_and]
     constructor
     · intro hadj
       obtain ⟨i, hi⟩ := hadj
