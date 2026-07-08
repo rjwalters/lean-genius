@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-header-setup",
+    "proofId": "hurwitz-theorem-oq-03-wip-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "context",
+    "title": "WIP framing: isolating the elementary engine of Hurwitz–Radon",
+    "content": "The module docstring positions this file as a *building block*, not a closure of the parent's open even case. Hurwitz–Radon reduces the existence of an n-square identity to a family of anticommuting complex structures M₁,…,M_{n-1} on ℝⁿ (skew-symmetric, orthogonal, Mᵢ²=−I, mutually anticommuting). The parent `hurwitz-theorem-oq-03` kills the odd non-admissible dimensions elementarily but leaves the even case blocked on Clifford representation theory absent from Mathlib. Rather than tackle that, this file extracts the reusable determinant obstruction and states it once over a generic field. The setup `variable {K : Type*} [Field K] {m : ℕ}` (line 52) is deliberately field-agnostic so the single theorem can be replayed over both ℝ (odd case) and ℂ (the n≡2 mod 4 reduction). Despite the 'WIP' label the file is fully verified: 0 sorries, 0 axioms.",
+    "mathContext": "Anticommuting complex structures: $M_i^\\top = -M_i,\\ M_i^\\top M_i = I,\\ M_i^2 = -I,\\ M_iM_j + M_jM_i = 0\\ (i\\neq j)$ — a real representation of $\\mathrm{Cl}(0,n-1)$.",
+    "significance": "context",
+    "relatedConcepts": ["Hurwitz–Radon theorem", "sums of squares identities", "Clifford algebra Cl(0,k)", "complex structures", "division algebras"],
+    "prerequisites": ["Clifford algebras", "the {1,2,4,8} dimension theorem", "Lean section variables"]
+  },
+  {
     "id": "ann-obstruction",
     "proofId": "hurwitz-theorem-oq-03-wip-01",
     "range": {
