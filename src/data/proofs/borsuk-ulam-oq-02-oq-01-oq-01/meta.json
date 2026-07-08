@@ -17,11 +17,11 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 187,
     "theoremCount": 13,
     "definitionCount": 1,
-    "assumptions": "1 axiom: buDim_le_formula (the open conjecture: buDim(n,d) ≤ max_{p|n} buDim(p,d)). Lower bound direction proved from buDim_mono in parent file. Specific cases n=4,6,9 proved. buDim function and known results axiomatized in parent file BorsukUlamOQ02OQ01.lean.",
+    "assumptions": "1 axiom: buDim_le_formula (the open conjecture: buDim(n,d) ≤ max_{p|n} buDim(p,d)). Lower bound direction proved from buDim_mono in parent file. Specific cases n=4,6,9 proved. buDim function and known results axiomatized in parent file BorsukUlamOQ02OQ01.lean. The specific cases n=4,6,9 are discharged via `native_decide` (computing `Nat.primeFactors 4 = {2}`, `{2,3}`, `{3}`), so those presented theorems additionally depend on `Lean.ofReduceBool` (kernel-trusted compiler reduction). Counting this compiler-trust assumption alongside the buDim_le_formula axiom gives meta.axiomCount = 2; leanFile.axiomCount = 1 counts only the literal `axiom` declaration.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
