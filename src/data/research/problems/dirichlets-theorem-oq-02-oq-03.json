@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE + EXTENDED (verified 0/0): added the sharper PRIMORIAL certified bound p3 k ≤ 4·(∏_{i<k} p3 i) − 1 and its explicit tower C (C1=11 vs B1=95, C2=131 vs B2=4·96!−1), strictly tighter than the iterated-factorial tower while remaining honest against p_k∼2k·ln k. native_decide-free, 0 axioms, 0 sorries.",
+    "progressSummary": "COMPLETE + EXTENDED (verified 0/0): the primorial-vs-factorial tightness is now a THEOREM for all k — C_le_B: C k ≤ B k universally (was only checked at k=1,2), via towerProd_succ_le_factorial and the elementary n·(n−1)≤n!. native_decide-free, 0 axioms, 0 sorries.",
     "builtItems": [
       "exists_prime_three_mod_four_in_interval (DirichletsTheoremOQ02OQ03.lean:78) — certified interval form: ∀n ∃ prime p≡3 mod4, n<p≤4·(n+1)!−1.",
       "nextP3 + nextP3_le_of + nextP3_le_factorial (DirichletsTheoremOQ02OQ03.lean:113–134) — least prime ≡3 mod4 above n, its minimality, and the one-step factorial bound.",
@@ -38,7 +38,10 @@
       "p3_one=7, B_one=95, tower_loose_at_one (DirichletsTheoremOQ02OQ03.lean:209–229) — worked values quantifying looseness. Verified 0 sorry / 0 axiom, 7743 jobs.",
       "p3_le_primorial (DirichletsTheoremOQ02OQ03.lean) — primorial bound p3 k ≤ 4·(∏_{i<k} p3 i) − 1, the certified content of the primorial Euclid construction.",
       "towerProd + C + towerProd_eq_prod + p3_le_primorialTower — explicit primorial tower C with p3 k ≤ C k (strong induction).",
-      "C_one_eq=11, C_two_eq=131, primorial_tighter_than_factorial (7≤11=C1<95=B1), p3_bracketed_primorial (4k+3 ≤ p3 k ≤ C k). All 0 sorry / 0 axiom (foundational trio only), native_decide-free."
+      "C_one_eq=11, C_two_eq=131, primorial_tighter_than_factorial (7≤11=C1<95=B1), p3_bracketed_primorial (4k+3 ≤ p3 k ≤ C k). All 0 sorry / 0 axiom (foundational trio only), native_decide-free.",
+      "factorial_ge_mul_pred (DirichletsTheoremOQ02OQ03.lean) — elementary n·(n−1) ≤ n! from n!=n·(n−1)! and self_le_factorial.",
+      "towerProd_succ_le_factorial — towerProd(k+1) ≤ (B k+1)!, the running-product-vs-factorial crux.",
+      "C_le_B — primorial tower ≤ factorial tower for ALL k (VERIFIED 0/0, propext+Quot.sound only); upgrades primorial_tighter_than_factorial from k=1 to universal."
     ],
     "insights": [
       "The Euclid construction N=4·(n+1)!−1 certifies an INTERVAL, not just existence: a prime ≡3 (mod 4) always lies in (n, 4·(n+1)!−1]. The upper bound is p∣N⇒p≤N; the lower is the standard p∤(n+1)! coprimality twist.",
@@ -47,10 +50,12 @@
       "The whole development is native_decide-free: the only numeric fact (B 1 = 95) is discharged by kernel decide, so axiomCount stays 0 (verified, not axiomatized).",
       "The Euclid ≡3(mod4) construction only needs the PRODUCT of the primes found so far, not a factorial of the previous bound: N=4·(∏_{i<k}p3 i)−1 is ≡3 mod4, its ≡3-mod4 prime factor p cannot divide ∏p3 i (else p∣4·∏ and p∣N ⇒ p∣1), so p is new and p3 k ≤ p ≤ N. This gives the PRIMORIAL bound p3 k ≤ 4·∏_{i<k}p3 i − 1, dramatically tighter than the factorial tower.",
       "The primorial tower C(k)=4·(∏_{i<k}C i)−1 (C0=3,C1=11,C2=131,C3=17291) is doubly-exponential but incomparably smaller than the iterated-factorial tower B (B2=4·96!−1). p3 k ≤ C k follows by STRONG induction feeding p3_le_primorial the pointwise p3 i ≤ C i for i<k via Finset.prod_le_prod.",
-      "Structural-recursion trick for a product-defined tower: define the running product towerProd k (towerProd 0=1, towerProd(k+1)=towerProd k·(4·towerProd k−1)) structurally, set C k := 4·towerProd k−1, then prove towerProd k = ∏_{i<k} C i by induction (prod_range_succ). Avoids non-structural self-reference of C."
+      "Structural-recursion trick for a product-defined tower: define the running product towerProd k (towerProd 0=1, towerProd(k+1)=towerProd k·(4·towerProd k−1)) structurally, set C k := 4·towerProd k−1, then prove towerProd k = ∏_{i<k} C i by induction (prod_range_succ). Avoids non-structural self-reference of C.",
+      "The primorial tower C is dominated by the factorial tower B EVERYWHERE: C k ≤ B k for all k, not just k=1,2. Proof reduces (both towers are 4·x−1) to towerProd(k+1) ≤ (B k+1)!, an induction whose step uses towerProd(k+2)=towerProd(k+1)·(4·towerProd(k+1)−1) ≤ F·(4F−1) ≤ (4F)·(4F−1) ≤ (4F)! with F=(B k+1)!, needing only the elementary n·(n−1)≤n!. Equality holds solely at k=0 (both = 3)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Prove the strict domination C k < B k for all k ≥ 1 (equality only at k=0): the slack towerProd(k+1) < (B k+1)! is present already at k=1 and should propagate, giving a clean strict theorem.",
       "Prove the primorial tower never exceeds the factorial tower in general: C k ≤ B k (needs ∏_{i<k} C i ≤ (B(k-1)+1)!), making the tightness a theorem for all k rather than just k=1,2.",
       "Attempt a genuinely elementary sub-exponential certified bound (or prove the primorial tower's doubly-exponential growth is intrinsic to Euclid-style iteration without an analytic input).",
       "Port the primorial-tower framework to other elementary progressions (e.g. the ≡5 mod 6 primes via N=6·∏−1)."
