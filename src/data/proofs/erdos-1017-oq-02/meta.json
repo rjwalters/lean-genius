@@ -71,14 +71,14 @@
       "title": "Integer AM-GM Kernel",
       "summary": "four_mul_mul_le_add_sq (4ab <= (a+b)^2) and its strict form four_mul_mul_lt_add_sq (a != b).",
       "startLine": 63,
-      "endLine": 83,
+      "endLine": 90,
       "mathContext": "The square gap (a-b)^2 is exposed by case-splitting a <= b / b <= a and writing the larger as smaller + d, reducing to 0 <= d^2 (resp. 1 <= d^2)."
     },
     {
       "id": "extremality",
       "title": "Upper Bound, Equality at Balance, and Uniqueness",
       "summary": "mul_compl_le_turanBound (a*(n-a) <= T(n)), balanced_mul_compl_eq_turanBound (equality at floor(n/2)), exists_balanced_max (T(n) is the maximum), even_unbalanced_lt (unique maximiser for even n).",
-      "startLine": 84,
+      "startLine": 91,
       "endLine": 149,
       "mathContext": "Nat.le_div_iff_mul_le converts the floor bound to the kernel; parity split plus the closed forms give equality at balance; Nat.lt_of_mul_lt_mul_left cancels the factor 4 for strict uniqueness."
     }
@@ -152,6 +152,11 @@
       "targetId": "erdos-1017-oq-03",
       "relationship": "sibling",
       "description": "Supplies the parity-split closed forms T(2m) = m^2 and T(2m+1) = m(m+1) reused here to prove equality at the balanced split, plus the strict growth and real envelope of T."
+    },
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "related",
+      "description": "Mantel's theorem (1907): a triangle-free n-vertex graph has at most ⌊n²/4⌋ edges, attained by the balanced complete bipartite graph — the founding result of extremal graph theory and the r=2 case of Turán. This entry formalizes exactly the arithmetic core behind that extremal value: the integer quarter-square maximum a·(n−a) ≤ ⌊n²/4⌋, tight and (for even n) uniquely at the balanced split a = ⌊n/2⌋. Mantel supplies the graph-theoretic edge bound; this entry supplies the number-theoretic extremality (why balanced) it rests on."
     }
   ],
   "references": [
