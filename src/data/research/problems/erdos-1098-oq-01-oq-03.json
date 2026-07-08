@@ -38,25 +38,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Proved the elementary half of Neumann's theorem with the sharp bound ω ≤ [G:Z(G)] by injecting cliques into the central quotient G/Z(G); axiomatized Neumann's deep converse with citation.",
+    "progressSummary": "Proved the elementary half of Neumann's theorem with the sharp bound ω ≤ [G:Z(G)]; machine-checked the first three steps of the hard direction (finite centralizer cover; one finite-index centralizer via CosetCover; and now the finite-index core H = ⋂ₐ C_G(a): the finite-index centralizers already cover G and their intersection has finite index). Neumann's deep BFC finish (from core H to finite-index centre) remains axiomatized.",
     "builtItems": [
       "commuting_of_invMul_mem_center",
       "nonCommuting_distinct_image",
       "clique_inj_on_quotient",
       "clique_card_le_index",
       "bounded_cliques_of_finite_index",
-      "neumann_full_theorem"
+      "neumann_full_theorem",
+      "exists_finiteIndex_iInf_centralizer_of_boundedCliques"
     ],
     "insights": [
       "Mathlib's index = 0 convention makes 'finite index' the clean hypothesis index ≠ 0",
       "QuotientGroup.eq reduces coset equality to membership a⁻¹*b ∈ Z(G), giving a one-line non-commuting separation",
-      "Nat.card_pos_iff turns finite index into a Finite quotient instance, the only ingredient needed for the cardinality bound"
+      "Nat.card_pos_iff turns finite index into a Finite quotient instance, the only ingredient needed for the cardinality bound",
+      "Subgroup.leftCoset_cover_filter_FiniteIndex (Mathlib v4.26 CosetCover) discards the infinite-index cosets of a finite coset cover while preserving the cover — the clean way to pass from 'some finite-index centralizer' to 'the finite-index ones cover G'.",
+      "Subgroup.finiteIndex_iInf' gives finite index of ⨅ i ∈ s, f i for a Finset s of finite-index subgroups; combined with the filtered cover it yields the finite-index core H = ⋂ₐ C_G(a)."
     ],
     "mathlibGaps": [
       "No formalization of B. H. Neumann's BFC theorem (bounded non-commuting sets ⟹ finite centre index)"
     ],
     "nextSteps": [
-      "Attempt Neumann's covering argument to remove the axiom"
+      "Build-verify exists_finiteIndex_iInf_centralizer_of_boundedCliques (blocked this session by shared Mathlib cache corruption: invalid-header .ir files / Lean exit 135 at the import line — not a proof error).",
+      "Attempt the final BFC step: from the finite-index core H (which centralizes a maximal clique covering G) to finite-index Z(G). This is Neumann/Schur territory ([G:Z(G)]<∞ ⟺ |G'|<∞); a full formalization is a large (>1000-line) development."
     ],
     "markdown": "# Knowledge Base: erdos-1098-oq-01-oq-03\n\n## Problem Understanding\n\nNeumann's theorem (Erdős #1098): ω(Γ(G)) finite ⟺ [G:Z(G)] finite.\n\n## Insights\n\n- Reverse direction is elementary and sharp: ω ≤ [G:Z(G)] via injectivity of G → G/Z(G) on cliques.\n- Forward direction is Neumann (1976), a BFC/covering argument, axiomatized.\n\n## Dead Ends\n\n- Direct formalization of Neumann's covering argument is out of reach in one session.\n"
   },
