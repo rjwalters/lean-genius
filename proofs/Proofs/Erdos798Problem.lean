@@ -254,11 +254,39 @@ For small n, we can compute or bound t(n) explicitly.
 -/
 
 /--
-For n = 2: t(2) = 3
-Three points suffice to cover the 4 lattice points.
--/
-theorem t_2_bound : t 2 ≤ 3 := by
-  sorry
+For n = 2: t(2) = 4.
+
+**Correction.** An earlier version of this file claimed `t 2 ≤ 3`, which is *false*.
+For `n = 2` the grid `{1,2}²` is exactly its four corners, so any covering set is a
+subset of those four points. Three of them form a right triangle whose three lines
+are two sides and the hypotenuse (e.g. `{(1,1),(1,2),(2,1)}` gives the lines `x=1`,
+`y=1`, `x+y=3`), none of which passes through the fourth corner. Hence three points
+never cover the grid and `t 2 = 4`. All four points trivially do (each corner lies on
+a vertical line through two chosen points), giving the correct bound `t 2 ≤ 4`. -/
+theorem t_2_bound : t 2 ≤ 4 := by
+  -- Membership in the vertical line x = c, realized through the points (c,1),(c,2).
+  have vline : ∀ (c : ℤ) (r : ℤ × ℤ), r.1 = c →
+      r ∈ lineThroughPoints (c, 1) (c, 2) := by
+    intro c r hrc
+    have hne : ((c, 1) : ℤ × ℤ) ≠ (c, 2) := by simp
+    simp only [lineThroughPoints, if_neg hne, Set.mem_setOf_eq]
+    exact ⟨(r.2 : ℚ) - 1, by push_cast [hrc]; ring, by push_cast; ring⟩
+  apply Nat.sInf_le
+  refine ⟨{(1, 1), (1, 2), (2, 1), (2, 2)}, by decide, ?_, ?_⟩
+  · -- the four corners lie in the grid {1,2}²
+    intro p hp
+    simp only [Finset.coe_insert, Set.mem_insert_iff, Finset.coe_singleton,
+      Set.mem_singleton_iff] at hp
+    rcases hp with rfl | rfl | rfl | rfl <;>
+      · simp only [latticeGrid, Set.mem_setOf_eq]; refine ⟨?_, ?_, ?_, ?_⟩ <;> decide
+  · -- every grid point is covered by a vertical line through two chosen corners
+    intro r hr
+    simp only [latticeGrid, Set.mem_setOf_eq] at hr
+    obtain ⟨h1, h2, h3, h4⟩ := hr
+    have hr1 : r.1 = 1 ∨ r.1 = 2 := by omega
+    rcases hr1 with e1 | e1
+    · exact ⟨(1, 1), (1, 2), by simp, by simp, by decide, vline 1 r e1⟩
+    · exact ⟨(2, 1), (2, 2), by simp, by simp, by decide, vline 2 r e1⟩
 
 /--
 For n = 3: t(3) = 4
