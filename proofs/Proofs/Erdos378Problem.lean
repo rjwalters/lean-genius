@@ -171,6 +171,114 @@ theorem squarefreeCount_even_of_odd {n : ℕ} (hn : Odd n) :
   rw [hsc, splitS, cardAB]
   exact ⟨B.card, rfl⟩
 
+/-- **Parity theorem, even case.** For even `n > 0`, the parity of the count of
+squarefree interior binomials in row `n` is governed by the *central* binomial
+coefficient: the count is **odd** exactly when `C(n, n/2)` is squarefree.
+
+Proof: the involution `k ↦ n − k` again pairs up the counted indices, but for
+even `n` it has the single fixed point `k = n/2` (where `2k = n`). The two open
+halves `2k < n` and `2k > n` are swapped bijectively, contributing an even
+amount; the only possible odd contribution is the fixed point `n/2`, which is
+counted iff `C(n, n/2)` is squarefree.
+
+Together with `squarefreeCount_even_of_odd` this fully explains why
+Granville–Ramaré only ever record *even* counts `2m + 2`: for odd `n` the count
+is automatically even, and for even `n` it is even unless the central binomial
+`C(n, n/2)` is squarefree — which, by Sárközy's theorem on central binomial
+coefficients, happens only for small `n`. -/
+theorem squarefreeCount_odd_iff_central_of_even
+    {n : ℕ} (hn : Even n) (hpos : 0 < n) :
+    Odd (squarefreeCount n) ↔ Squarefree (n.choose (n / 2)) := by
+  classical
+  obtain ⟨c, hc⟩ := hn
+  have hn2 : n = 2 * c := by omega
+  have hcpos : 0 < c := by omega
+  have hcn : c < n := by omega
+  have hcdiv : n / 2 = c := by omega
+  set S : Finset ℕ := (range n).filter (fun k => 1 ≤ k ∧ Squarefree (n.choose k))
+    with hS
+  have memS : ∀ k, k ∈ S ↔ (k < n ∧ 1 ≤ k ∧ Squarefree (n.choose k)) := by
+    intro k; simp only [hS, mem_filter, mem_range]; tauto
+  have klt : ∀ k ∈ S, k < n := fun k hk => ((memS k).1 hk).1
+  have mapsS : ∀ k ∈ S, (n - k) ∈ S := by
+    intro k hk
+    obtain ⟨hkn, hk1, hsq⟩ := (memS k).1 hk
+    rw [memS]; refine ⟨by omega, by omega, ?_⟩
+    rw [Nat.choose_symm hkn.le]; exact hsq
+  have invol : ∀ k ∈ S, n - (n - k) = k := by
+    intro k hk; have := klt k hk; omega
+  set A : Finset ℕ := S.filter (fun k => 2 * k < n) with hA
+  set C : Finset ℕ := S.filter (fun k => n < 2 * k) with hC
+  -- ι = (n - ·) swaps the two open halves A and C bijectively.
+  have cardAC : A.card = C.card := by
+    refine card_nbij' (fun k => n - k) (fun k => n - k) ?_ ?_ ?_ ?_
+    · intro k hk
+      simp only [Finset.mem_coe, hA, hC, mem_filter] at hk ⊢
+      obtain ⟨hkS, h2k⟩ := hk
+      have := klt k hkS
+      exact ⟨mapsS k hkS, by omega⟩
+    · intro k hk
+      simp only [Finset.mem_coe, hA, hC, mem_filter] at hk ⊢
+      obtain ⟨hkS, h2k⟩ := hk
+      have := klt k hkS
+      exact ⟨mapsS k hkS, by omega⟩
+    · intro k hk
+      simp only [Finset.mem_coe, hA, mem_filter] at hk
+      exact invol k hk.1
+    · intro k hk
+      simp only [Finset.mem_coe, hC, mem_filter] at hk
+      exact invol k hk.1
+  -- Trichotomy split: S = A ⊔ (middle) ⊔ C.
+  have splitAC : S.card = A.card + C.card + (S.filter (fun k => 2 * k = n)).card := by
+    have h1 : S.card = A.card + (S.filter (fun k => ¬ 2 * k < n)).card := by
+      rw [hA]; exact (filter_card_add_filter_neg_card_eq_card _).symm
+    have h2 : (S.filter (fun k => ¬ 2 * k < n)).card
+        = (S.filter (fun k => 2 * k = n)).card + C.card := by
+      rw [← filter_card_add_filter_neg_card_eq_card
+            (s := S.filter (fun k => ¬ 2 * k < n)) (p := fun k => 2 * k = n)]
+      congr 1
+      · ext k; simp only [mem_filter]
+        constructor
+        · rintro ⟨⟨hkS, _⟩, h⟩; exact ⟨hkS, h⟩
+        · rintro ⟨hkS, h⟩; exact ⟨⟨hkS, by omega⟩, h⟩
+      · ext k; simp only [hC, mem_filter]
+        constructor
+        · rintro ⟨⟨hkS, h1'⟩, h2'⟩; exact ⟨hkS, by omega⟩
+        · rintro ⟨hkS, h⟩; exact ⟨⟨hkS, by omega⟩, by omega⟩
+    rw [h1, h2]; ring
+  -- The middle set is {c} ∩ S; its cardinality is 1 or 0.
+  have hmidmem : ∀ k, k ∈ S.filter (fun k => 2 * k = n) ↔ (k = c ∧ c ∈ S) := by
+    intro k; simp only [mem_filter]
+    constructor
+    · rintro ⟨hkS, h2k⟩
+      have hkc : k = c := by omega
+      subst hkc; exact ⟨rfl, hkS⟩
+    · rintro ⟨rfl, hcS⟩; exact ⟨hcS, by omega⟩
+  have hcentral : c ∈ S ↔ Squarefree (n.choose c) := by
+    rw [memS]
+    exact ⟨fun h => h.2.2, fun h => ⟨hcn, hcpos, h⟩⟩
+  have hsc' : squarefreeCount n = S.card := by rw [hS]; rfl
+  rw [hcdiv]
+  by_cases hcS : c ∈ S
+  · -- middle = {c}: count is 2·|A| + 1, hence odd; and central is squarefree
+    have hmid : (S.filter (fun k => 2 * k = n)).card = 1 := by
+      rw [show S.filter (fun k => 2 * k = n) = {c} by
+        ext k; rw [hmidmem, mem_singleton]
+        exact ⟨fun h => h.1, fun h => ⟨h, hcS⟩⟩, card_singleton]
+    have hval : squarefreeCount n = 2 * A.card + 1 := by
+      rw [hsc', splitAC, cardAC, hmid]; ring
+    exact ⟨fun _ => hcentral.1 hcS, fun _ => ⟨A.card, hval⟩⟩
+  · -- middle = ∅: count is 2·|A|, hence even; and central is not squarefree
+    have hmid : (S.filter (fun k => 2 * k = n)).card = 0 := by
+      rw [card_eq_zero]; ext k
+      simp only [hmidmem, not_mem_empty, iff_false]
+      rintro ⟨rfl, h⟩; exact hcS h
+    have hval : squarefreeCount n = 2 * A.card := by
+      rw [hsc', splitAC, cardAC, hmid]; ring
+    constructor
+    · intro hodd; rw [Nat.odd_iff, hval] at hodd; omega
+    · intro hsq; exact absurd (hcentral.2 hsq) hcS
+
 /-
 ## Part IV: Natural density
 -/
