@@ -66,6 +66,64 @@
       "Does the analogous 'imbalanced vertices are exactly the endpoints' statement for directed Eulerian paths (via out-degree − in-degree) admit the same clean packaging over KonigsbergOQ02's digraph framework?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "euler_trail_odd_iff_endpoint",
+      "type": "core",
+      "description": "**Endpoint ⟺ odd degree.** For an open Eulerian trail from u to v (u ≠ v), a vertex w has odd degree iff it is an endpoint (w = u ∨ w = v). The forward direction restates the contrapositive of Mathlib's IsEulerian.even_degree_iff; the backward direction (endpoint ⟹ odd) is the genuinely new content the sibling KonigsbergOQ01 left open.",
+      "leanType": "{u v w : V} (p : G.Walk u v) (hp : p.IsEulerian) (huv : u ≠ v) : Odd (G.degree w) ↔ (w = u ∨ w = v)",
+      "startLine": 51,
+      "endLine": 67
+    },
+    {
+      "name": "euler_trail_card_odd_eq_two",
+      "type": "core",
+      "description": "**Exactly two odd-degree vertices.** For an open Eulerian trail there are exactly two odd-degree vertices — sharpening Mathlib's card_odd_degree (which only gives 0 ∨ 2), since the endpoint u witnesses the count is nonzero.",
+      "leanType": "{u v : V} (p : G.Walk u v) (hp : p.IsEulerian) (huv : u ≠ v) : Fintype.card {w : V | Odd (G.degree w)} = 2",
+      "startLine": 90,
+      "endLine": 100
+    },
+    {
+      "name": "euler_trail_odd_set",
+      "type": "key",
+      "description": "**The odd-degree vertices are exactly the endpoints.** For an open Eulerian trail the set of odd-degree vertices equals the two-element endpoint set: {w | Odd (G.degree w)} = {u, v}. The set-level form of euler_trail_odd_iff_endpoint.",
+      "leanType": "{u v : V} (p : G.Walk u v) (hp : p.IsEulerian) (huv : u ≠ v) : {w : V | Odd (G.degree w)} = {u, v}",
+      "startLine": 79,
+      "endLine": 89
+    },
+    {
+      "name": "euler_circuit_no_odd",
+      "type": "key",
+      "description": "**A circuit has no odd-degree vertices.** For an Eulerian circuit (u = u) the set of odd-degree vertices is empty — the = ∅ complement of the open-trail case, completing the dichotomy.",
+      "leanType": "{u : V} (p : G.Walk u u) (hp : p.IsEulerian) : {w : V | Odd (G.degree w)} = ∅",
+      "startLine": 111,
+      "endLine": 119
+    },
+    {
+      "name": "euler_trail_left_odd",
+      "type": "supporting",
+      "description": "**The left endpoint has odd degree.** Immediate from euler_trail_odd_iff_endpoint at w = u.",
+      "leanType": "{u v : V} (p : G.Walk u v) (hp : p.IsEulerian) (huv : u ≠ v) : Odd (G.degree u)",
+      "startLine": 68,
+      "endLine": 72
+    },
+    {
+      "name": "euler_trail_right_odd",
+      "type": "supporting",
+      "description": "**The right endpoint has odd degree.** Immediate from euler_trail_odd_iff_endpoint at w = v.",
+      "leanType": "{u v : V} (p : G.Walk u v) (hp : p.IsEulerian) (huv : u ≠ v) : Odd (G.degree v)",
+      "startLine": 73,
+      "endLine": 77
+    },
+    {
+      "name": "euler_circuit_card_odd_eq_zero",
+      "type": "supporting",
+      "description": "**Zero odd-degree vertices in a circuit.** The count complement of euler_trail_card_odd_eq_two, via euler_circuit_no_odd.",
+      "leanType": "{u : V} (p : G.Walk u u) (hp : p.IsEulerian) : Fintype.card {w : V | Odd (G.degree w)} = 0",
+      "startLine": 120,
+      "endLine": 129
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "konigsberg",
