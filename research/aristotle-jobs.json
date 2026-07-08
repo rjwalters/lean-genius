@@ -2257,6 +2257,17 @@
         "hasConvexNGon_of_pair",
         "hasConvexNGon_caseB"
       ]
+    },
+    {
+      "project_id": "43c71274-3fd9-448e-97c3-23d2753b0486",
+      "file": "proofs/Proofs/Erdos125PositiveLowerDensityAristotle.lean",
+      "problem_id": "erdos-125",
+      "submitted": "2026-07-08T01:29:44Z",
+      "sorries": [
+        "scale_step"
+      ],
+      "notes": "Erdos #125 positive_lower_density variant (#20842): the last remaining sorry, scale_step (multi-scale 11/12 counting core of the AlphaProof Nexus proof). Self-contained companion mirrors Erdos125PositiveLowerDensity.lean with all deps proved (digit layer, Dirichlet chain, hz_eq_lemma, dirichlet_approx). Known result (arXiv:2605.22763v1), HARD tier. Submitted via CLI by Aristotle agent (MCP down: 'Resource not found').",
+      "status": "submitted"
     }
   ]
 }
