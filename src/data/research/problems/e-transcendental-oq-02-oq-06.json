@@ -29,25 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (verified 0/0 for new results): normal_imp_irrational was already complete, so added normal_ktuple_infinitely_often + normal_imp_disjunctive (normal numbers are disjunctive) and repaired 4 pre-existing latent build breaks so the whole file compiles under current Mathlib. Only remaining axiom e_absolutely_normal is the genuine open conjecture (e is normal).",
+    "progressSummary": "PROGRESS (verified 0/0 new): added the non-normality criterion (missing k-tuple/digit ⇒ not normal), the exact converse of normal_imp_disjunctive and the sharp boundary showing normality > irrationality + disjunctivity; recovered normal_imp_irrational as a corollary. Open conjecture axiom e_absolutely_normal unchanged. Genuine irrational non-normal witness (Liouville digit computation) is the remaining sharpness step.",
     "builtItems": [
       "normal_ktuple_infinitely_often (Proofs/ETranscendentalOQ02.lean): {n | s occurs at n}.Infinite for x normal in base b. Verified 0 sorry; axioms [propext, Classical.choice, Quot.sound].",
       "normal_imp_disjunctive (same file): every finite digit string appears at least once (corollary via Set.Infinite.nonempty).",
       "Repair: eTranscendental.lean lost its namespace -> ETranscendental.e_irrational/e_transcendental became _root_.e_irrational/_root_.e_transcendental.",
       "Repair: periodic_has_missing_ktuple L480 omega replaced by Nat.mod_add_div' + Nat.add_sub_cancel' (variable-divisor div/mod is nonlinear for omega).",
-      "Repair: e_normal_implies_uniform_decimal_digits convert now closes the goal outright; dropped stale post-convert bullets."
+      "Repair: e_normal_implies_uniform_decimal_digits convert now closes the goal outright; dropped stale post-convert bullets.",
+      "match_count_le (ETranscendentalOQ02.lean:751, private): x-general count bound, generalizes rational_match_count_le off the concrete (q:ℝ).",
+      "not_normal_of_eventually_missing_ktuple (ETranscendentalOQ02.lean:776): eventually-missing k-tuple ⇒ ¬IsNormalInBase b x. VERIFIED 0 sorry/0 new axiom.",
+      "not_normal_of_eventually_missing_digit (ETranscendentalOQ02.lean:802): single eventually-missing digit ⇒ not normal (k=1 corollary).",
+      "normal_imp_irrational_of_criterion (ETranscendentalOQ02.lean:813): normal ⇒ irrational re-derived from the criterion via rational_has_missing_ktuple_intCast (non-vacuity)."
     ],
     "insights": [
       "The stated target normal_imp_irrational was ALREADY a complete 0-sorry theorem (Session 13); OQ-02-OQ-06 as literally phrased was resolved. Added genuinely new theory instead of reclaiming.",
       "Normal numbers are DISJUNCTIVE: every finite digit-string occurs, in fact at infinitely many positions. Positive companion to normal_imp_irrational (which uses a MISSING tuple to force frequency 0); here a bounded match-count would force frequency 0, contradicting the positive normal limit b^(-k).",
-      "The file did NOT build on current Mathlib (never Lean-CI-d; math PRs skip the Lean build). Four latent breaks were repaired to reach a verified state."
+      "The file did NOT build on current Mathlib (never Lean-CI-d; math PRs skip the Lean build). Four latent breaks were repaired to reach a verified state.",
+      "SHARP BOUNDARY (2026-07-08, r5): normality is strictly stronger than both irrationality and disjunctivity. The precise obstruction is a frequency-0 (eventually-missing) tuple/digit; formalized as not_normal_of_eventually_missing_ktuple, the exact contrapositive of normal_imp_disjunctive.",
+      "The count/Tendsto engine (match_count_le + tendsto_bounded_count_div_atTop_zero + tendsto_nhds_unique + zpow_pos) that discharged normal_imp_irrational is fully reusable for arbitrary x: only the missing-tuple hypothesis differs between the rational case and the general criterion."
     ],
     "mathlibGaps": [
-      "omega does not discharge variable-divisor Euclidean identities (a/T*T + a%T = a with T variable, nonlinear); use Nat.mod_add_div'/Nat.div_add_mod explicitly."
+      "omega does not discharge variable-divisor Euclidean identities (a/T*T + a%T = a with T variable, nonlinear); use Nat.mod_add_div'/Nat.div_add_mod explicitly.",
+      "Genuine irrational-AND-non-normal WITNESS (true sharpness of 'irrational ⇏ normal') still needs the real→digit bridge for a specific transcendental: computing nthDigit b n x = ⌊bⁿx⌋%b for an explicit series (e.g. Liouville ∑ b^(-k!)) requires summing the tail to isolate the k-th digit — a real-analysis construction not present. The abstract criterion is the tool; only the witness digit-computation is missing."
     ],
     "nextSteps": [
       "Sharpness: irrational does NOT imply normal. Construct an explicit irrational non-normal number (Liouville-type digit sequence with a frequency-0 digit) in the nthDigit framework, proving non-eventual-periodicity and a frequency-0 block.",
-      "Quantitative disjunctivity: bound first-occurrence position / gaps of a fixed k-tuple via the normality convergence rate (only qualitative infinitude proved so far)."
+      "Quantitative disjunctivity: bound first-occurrence position / gaps of a fixed k-tuple via the normality convergence rate (only qualitative infinitude proved so far).",
+      "Construct a concrete irrational non-normal witness: define x = ∑_{k≥1} b^(-k!) (Liouville, Mathlib has LiouvilleNumber/Liouville.irrational), prove digit d=2..b-1 is eventually absent (nthDigit = 0 or 1 only at factorial gaps), then apply not_normal_of_eventually_missing_digit to get a verified irrational non-normal number — completing the sharpness of normal_imp_irrational.",
+      "Frequency-mismatch criterion: strengthen not_normal_of_eventually_missing_digit to 'if digit-d frequency tends to a limit ≠ 1/b then not normal' (only the absence/0-frequency case is done)."
     ],
     "markdown": "# Knowledge Base: e-transcendental-oq-02-oq-06\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
