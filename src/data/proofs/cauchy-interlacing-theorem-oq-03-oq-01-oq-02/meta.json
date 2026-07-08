@@ -161,7 +161,8 @@
     "implications": "Adds the a-posteriori counterpart to the Cauchy-interlacing family's eigenvalue-perturbation layer: alongside the parent's a-priori Weyl stability |λ_k(A) − λ_k(B)| ≤ ‖A − B‖, the residual bound certifies a single computed eigenpair from the residual alone — the Hermitian Bauer–Fike theorem and the basis of stopping criteria for iterative eigensolvers. The proof reuses only linearity and orthonormality, so it applies verbatim to any orthonormally diagonalisable operator with real spectrum.",
     "openQuestions": [
       "Upgrade the scalar residual bound to the subspace / Davis–Kahan sin Θ theorem: if a whole subspace has small residual ‖T X − X M‖, then it is close (in principal angles) to an invariant subspace of T, certifying computed eigenspaces rather than single eigenpairs.",
-      "Establish the matching lower bound making the estimate two-sided: dist(λ, spectrum) is itself attained as a residual by the corresponding spectral-projection of x, so ‖T x − λ·x‖ ≥ dist(λ, spectrum)·‖x‖ with equality characterised — pinning the residual exactly to the distance to the spectrum."
+      "Establish the matching lower bound making the estimate two-sided: dist(λ, spectrum) is itself attained as a residual by the corresponding spectral-projection of x, so ‖T x − λ·x‖ ≥ dist(λ, spectrum)·‖x‖ with equality characterised — pinning the residual exactly to the distance to the spectrum.",
+      "Prove the Kato–Temple quadratic sharpening: when λ = R_T(x) is the Rayleigh quotient of the unit vector x and (a, b) is an eigenvalue-free interval around λ, the residual bound improves from first order to |μ(k) − λ| ≤ ‖T x − λ·x‖² / gap, where the gap is the distance from λ to the rest of the spectrum. This turns a small residual into a much tighter (order residual²) a-posteriori error, the estimate actually used to certify converged eigenpairs in numerical linear algebra."
     ]
   },
   "crossReferences": [
