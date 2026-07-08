@@ -206,6 +206,55 @@ theorem huniq_of_lt {p m : ℕ} (hm0 : 0 < m) (hmp : m < p) :
   have hdp : d < p := lt_of_le_of_lt hdm hmp
   rwa [Nat.mod_eq_of_lt hdp] at hmod
 
+/-! ### Structural consequence: the group is not simple
+
+The whole point of a *normal* Sylow `p`-subgroup is structural: it is a proper,
+nontrivial normal subgroup, so the ambient group is **not simple**.  This is
+precisely why the Galois groups arising from `x⁵-4x+2` (orders `10, 20, 40`)
+cannot be the simple `A₅`, and — more generally — why the "order `p·m`" obstruction
+argument never produces a simple group.  A non-simple finite group has a nontrivial
+proper normal subgroup, the first ingredient of a composition/derived series, so
+these results feed directly into solvability-by-radicals arguments for higher-degree
+extensions. -/
+
+/-- **The index of `⟨c⟩` equals `m`** (equivalently, the quotient `G ⧸ ⟨c⟩` has
+order `m`).  Pure counting: `|⟨c⟩| = orderOf c = p` and `[G:⟨c⟩]·|⟨c⟩| = |G| = p·m`,
+so cancel the prime `p`.  Needs neither the divisor hypothesis nor normality. -/
+theorem zpowers_index_eq {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ) (hcard : Nat.card G = p * m)
+    (c : G) (hc : orderOf c = p) :
+    (Subgroup.zpowers c).index = m := by
+  have hcard_zc : Nat.card (Subgroup.zpowers c) = p := by rw [Nat.card_zpowers, hc]
+  have hh := (Subgroup.zpowers c).index_mul_card
+  rw [hcard_zc, hcard] at hh
+  exact Nat.eq_of_mul_eq_mul_right hp.out.pos (by rw [hh]; ring)
+
+/-- **Non-simplicity from a normal Sylow `p`-subgroup (arbitrary prime).**
+
+Under the hypotheses of `zpowers_sylow_normal` together with `1 < m`, the cyclic
+group `⟨c⟩` is a normal subgroup that is neither trivial (it has prime order `p`)
+nor everything (its index is `m > 1`), so `G` is **not simple**.  In particular no
+group carrying this "order `p·m`, `p ∤ m`, no small Frobenius divisor" structure can
+be a nonabelian simple group such as `A₅`. -/
+theorem not_isSimpleGroup_of_sylow {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1) (hm : 1 < m)
+    (c : G) (hc : orderOf c = p) :
+    ¬ IsSimpleGroup G := by
+  intro hsimple
+  haveI := hsimple
+  have hN := zpowers_sylow_normal m hcard hpm huniq c hc
+  rcases IsSimpleGroup.eq_bot_or_eq_top_of_normal (Subgroup.zpowers c) hN with hb | ht
+  · -- `⟨c⟩ = ⊥` would force `c = 1`, contradicting `orderOf c = p > 1`.
+    rw [Subgroup.zpowers_eq_bot] at hb
+    rw [hb, orderOf_one] at hc
+    exact absurd hc.symm hp.out.one_lt.ne'
+  · -- `⟨c⟩ = ⊤` would force index `1 = m`, contradicting `1 < m`.
+    have hidx := zpowers_index_eq m hcard c hc
+    rw [ht, Subgroup.index_top] at hidx
+    omega
+
 /-! ### The fixed prime `p = 5`
 
 The original Abel–Ruffini application only needs `p = 5`.  With the general
@@ -236,6 +285,20 @@ theorem conj_mem_zpowers_order5 {G : Type*} [Group G] [Finite G] (m : ℕ)
     g * c * g⁻¹ ∈ Subgroup.zpowers c :=
   (zpowers_order5_normal m hcard hm5 huniq c hc).conj_mem c (Subgroup.mem_zpowers c) g
 
+/-- **Fixed prime `5` non-simplicity** (`p = 5` specialisation of
+`not_isSimpleGroup_of_sylow`).  A finite group of order `5·m` with `1 < m`,
+`5 ∤ m`, the `huniq` divisor condition, and an order-`5` element is not simple —
+its normal `⟨c⟩` is a proper nontrivial normal subgroup.  This is exactly the
+structural reason the `x⁵-4x+2` Galois groups of order `10, 20, 40` are not the
+simple `A₅`. -/
+theorem not_isSimpleGroup_order5 {G : Type*} [Group G] [Finite G] (m : ℕ)
+    (hcard : Nat.card G = 5 * m) (hm5 : ¬ (5 ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % 5 = 1 → d = 1) (hm : 1 < m)
+    (c : G) (hc : orderOf c = 5) :
+    ¬ IsSimpleGroup G :=
+  haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
+  not_isSimpleGroup_of_sylow m hcard hm5 huniq hm c hc
+
 /-! ### Recovering the three original orders `10, 20, 40`
 
 The three `private` lemmas in `AbelRuffiniOQ04OQ01.lean` instantiate the core at
@@ -255,5 +318,14 @@ example : ∀ d : ℕ, d ∣ 4 → d % 5 = 1 → d = 1 := huniq_of_lt (by norm_n
 Note `6 ≡ 1 (mod 5)` but `6 ∤ 8`, so the divisibility hypothesis is essential. -/
 example : ∀ d : ℕ, d ∣ 8 → d % 5 = 1 → d = 1 := by
   intro d hd hmod; have := Nat.le_of_dvd (by norm_num) hd; interval_cases d <;> omega
+
+/-- **Capstone.** Any finite group of order `40` containing an element of order `5`
+is not simple: order `40 = 5·8`, `5 ∤ 8`, the divisor condition holds (only `1 ∣ 8`
+is `≡ 1 mod 5`, as `6 ∤ 8`), and `8 > 1`, so `not_isSimpleGroup_order5` applies. -/
+example {G : Type*} [Group G] [Finite G] (c : G) (hc : orderOf c = 5)
+    (hcard : Nat.card G = 40) : ¬ IsSimpleGroup G :=
+  not_isSimpleGroup_order5 8 (hcard.trans (by norm_num)) (by norm_num)
+    (by intro d hd hmod; have := Nat.le_of_dvd (by norm_num) hd; interval_cases d <;> omega)
+    (by norm_num) c hc
 
 end AbelRuffiniSylowElim
