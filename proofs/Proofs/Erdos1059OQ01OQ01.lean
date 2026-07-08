@@ -126,13 +126,13 @@ axiom strong_selberg_density (l : ℕ) (hl : l ≥ 3) :
 theorem primesInLevel_pos (l : ℕ) (hl : l ≥ 1) :
     primesInLevel l ≥ 1 := by
   unfold primesInLevel Erdos1059OQ02.PrimorialInterval
-  rw [Nat.one_le_iff_ne_zero, Finset.card_ne_zero]
+  rw [ge_iff_le, Finset.one_le_card]
   obtain ⟨p, hp, hlt, hle⟩ :=
     Nat.exists_prime_lt_and_le_two_mul (Nat.factorial l) (Nat.factorial_ne_zero l)
-  refine ⟨p, ?_⟩
-  rw [Finset.mem_filter, Finset.mem_Ioc]
   have hstep : 2 * Nat.factorial l ≤ Nat.factorial (l + 1) := by
     rw [Nat.factorial_succ]; gcongr; omega
+  refine ⟨p, ?_⟩
+  rw [Finset.mem_filter, Finset.mem_Ioc]
   exact ⟨⟨hlt, by omega⟩, hp⟩
 
 /-
@@ -164,7 +164,7 @@ theorem qualifyingPrime_exists (l : ℕ) (hl : l ≥ 3) :
     p.Prime ∧ Erdos1059OQ01.AllFactorialSubtractionsComposite p := by
   have hpos := qualifyingInLevel_pos l hl
   unfold qualifyingInLevel at hpos
-  rw [Nat.one_le_iff_ne_zero, Finset.card_ne_zero] at hpos
+  rw [ge_iff_le, Finset.one_le_card] at hpos
   obtain ⟨p, hp⟩ := hpos
   simp only [Finset.mem_filter] at hp
   exact ⟨p, hp.1, hp.2.1, hp.2.2⟩
@@ -344,7 +344,7 @@ theorem density_at_levels (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
     rw [Finset.mul_sum]
     apply Finset.sum_le_sum
     intro l _
-    ring_nf
+    exact le_of_eq (mul_comm (primesInLevel l) k)
   -- Low-level LHS contribution is ≥ 0
   have h_low_nonneg : 0 ≤ (Finset.range L₀).sum (fun l => qualifyingInLevel l * (k + 1)) :=
     Nat.zero_le _
