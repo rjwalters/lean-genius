@@ -105,6 +105,22 @@
       "mathContext": "$\\|f\\|_r \\leq \\left(\\|f\\|_p\\,\\|f\\|_q\\right)^{1/2}$ with $\\tfrac2r = \\tfrac1p + \\tfrac1q$; the geometric-mean face of log-convexity."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "lp_interpolation_nnreal",
+      "type": "core",
+      "description": "The headline result: the discrete L^p interpolation (log-convexity) inequality ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^(1-θ) for finitely-supported nonnegative f, whenever 1/r = θ/p + (1-θ)/q and θ ∈ (0,1). Proved by a single application of Hölder (NNReal.inner_le_Lp_mul_Lq) with the conjugate pair a = p/(rθ), b = q/(r(1-θ)) to the zero-safe split f_i^r = f_i^(rθ)·f_i^(r(1-θ)), then raising to the power 1/r. Expresses that t ↦ log‖f‖_(1/t) is convex.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (f : ι → ℝ≥0) → {p q r θ : ℝ} → 0 < p → 0 < q → 0 < r → 0 < θ → θ < 1 → 1/r = θ/p + (1-θ)/q → (∑ i ∈ s, f i ^ r) ^ (1/r) ≤ (∑ i ∈ s, f i ^ p) ^ (θ/p) * (∑ i ∈ s, f i ^ q) ^ ((1-θ)/q)",
+      "startLine": 42
+    },
+    {
+      "name": "lp_interpolation_midpoint_nnreal",
+      "type": "corollary",
+      "description": "The θ = 1/2 midpoint face: the geometric-mean interpolation ‖f‖_r ≤ (‖f‖_p·‖f‖_q)^(1/2) whenever 2/r = 1/p + 1/q. Derived from lp_interpolation_nnreal by specializing θ = 1/2 and folding the two 1/2-powers with rpow_mul; the symmetric p = q instance is the Cauchy–Schwarz face of the log-convexity family.",
+      "leanType": "{ι : Type*} → (s : Finset ι) → (f : ι → ℝ≥0) → {p q r : ℝ} → 0 < p → 0 < q → 0 < r → 2/r = 1/p + 1/q → (∑ i ∈ s, f i ^ r) ^ (1/r) ≤ ((∑ i ∈ s, f i ^ p) ^ (1/p)) ^ (2⁻¹ : ℝ) * ((∑ i ∈ s, f i ^ q) ^ (1/q)) ^ (2⁻¹ : ℝ)",
+      "startLine": 96
+    }
+  ],
   "conclusion": {
     "summary": "Establishes the discrete L^p interpolation inequality ‖f‖_r ≤ ‖f‖_p^θ·‖f‖_q^{1-θ} (1/r = θ/p + (1-θ)/q, θ ∈ (0,1)) — equivalently, that t ↦ log‖f‖_{1/t} is convex — as a single application of Hölder's inequality with the conjugate pair a = p/(rθ), b = q/(r(1-θ)). The midpoint θ = 1/2 corollary gives the geometric-mean face ‖f‖_r ≤ (‖f‖_p‖f‖_q)^{1/2}, of which Cauchy–Schwarz is the diagonal p = q instance. 0 axioms, 0 sorries, verified against Mathlib v4.26.0.",
     "implications": "The result completes the Cauchy–Schwarz → Hölder → interpolation arc for finite sums, exhibiting all three inequalities as faces of one log-convexity phenomenon rather than as separate results. It is the elementary discrete kernel of the Riesz–Thorin interpolation theorem: the scalar log-convexity that Riesz–Thorin lifts (via the complex-analytic Thorin trick) to operators between L^p spaces. Formally, it demonstrates the pattern of *reducing an interpolation statement to conjugate-exponent bookkeeping* — the interpolation constraint and Hölder conjugacy are the same equation — and the value of working in ℝ≥0 with zero-safe rpow lemmas to avoid case splits.",
