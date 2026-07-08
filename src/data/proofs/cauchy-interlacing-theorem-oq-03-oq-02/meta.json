@@ -82,6 +82,14 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and the Negation Strategy",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports (Mathlib and the parent Proofs.CauchyInterlacingWeyl) and the module docstring laying out the two-sided Weyl bracket: the parent's subadditive weyl_add_le (i + j ≤ k → ρ k ≤ μ i + ν j) versus the superadditive weyl_add_ge (k + (n−1) ≤ i + j → μ i + ν j ≤ ρ k) proved here. Explains the negation trick — presenting −T by the reversed eigenbasis b∘Fin.rev and the antitone enumeration t ↦ −μ(Fin.rev t) — and how feeding −T, −U, −(T+U) into weyl_add_le at reversed indices converts hypothesis and conclusion into the dual bound. Opens InnerProductSpace scope and the CauchyInterlacing.Weyl namespace. Flagged as a research file, intentionally not registered in Proofs.lean.",
+      "mathContext": "Two-sided bracket λ_{i+1}(A) + λ_{j+1}(B) ≤ λ_{i+j+1−(n−1)}(A+B) ≤ λ_{i'+1}(A) + λ_{j'+1}(B); the lower half is the upper half read off −T, −U."
+    },
+    {
       "id": "negation-eigen",
       "title": "The Negation Eigen-Presentation",
       "startLine": 50,
