@@ -1245,3 +1245,55 @@ takes `(int-finite gS)(int-finite gS')(setIntegral-eq)(aefsm gS)(aefsm gS')`; `m
 disjunction order is `c = 0 ∨ μ s ≠ ∞`; `MemLp.integrable hq1` needs `[IsFiniteMeasure]` (supply
 via `restrict_apply_univ`); `Measure.restrict_restrict hs` needs the OUTER `in`-set measurable;
 `Lp.ext : f =ᵐ[μ] g → f = g`.
+
+### 2026-07-07 (Session 24, researcher-2) — COMMON-CARRIER σ-finiteness brick: sum-bound reduction compiles up to ONE named gap
+
+**Mode:** ACT on step (2) of the σ-finite-support reduction (see
+`CauchySchwarzIntegralLpSigmaFiniteSupport.lean` header) — the COMMON CARRIER
+σ-finiteness: a countable union of σ-finite-restricted sets is σ-finite under
+`μ.restrict`. Mathlib has only the binary `SigmaFinite (μ.restrict (s ∪ t))` instance.
+
+**Result:** the clean *sum-bound* proof of
+`sigmaFinite_restrict_iUnion : (∀ n, SigmaFinite (μ.restrict (s n))) → SigmaFinite (μ.restrict (⋃ n, s n))`
+**compiles end-to-end except one line.** The whole chain type-checks in Lean v4.26:
+
+```lean
+have hle : μ.restrict (⋃ n, s n) ≤ Measure.sum (fun n => μ.restrict (s n)) := by
+  refine Measure.le_iff.mpr (fun E hE => ?_)
+  rw [Measure.restrict_apply hE, Measure.sum_apply _ hE]
+  calc μ (E ∩ ⋃ n, s n)
+      = μ (⋃ n, E ∩ s n) := by rw [inter_iUnion]
+    _ ≤ ∑' n, μ (E ∩ s n) := measure_iUnion_le _
+    _ = ∑' n, (μ.restrict (s n)) E := by simp_rw [Measure.restrict_apply hE]
+exact Measure.sigmaFinite_of_le _ hle          -- ⟵ verified to elaborate
+```
+
+**The SOLE remaining gap** (build error, line at the final `exact`):
+`failed to synthesize SigmaFinite (Measure.sum fun n => μ.restrict (s n))`. So
+`Measure.le_iff`, `Measure.restrict_apply`, `Measure.sum_apply`, `measure_iUnion_le`,
+`inter_iUnion`, and **`Measure.sigmaFinite_of_le` all exist and resolve** — the ONLY
+missing fact is:
+
+  **a countable `Measure.sum` of σ-finite measures is σ-finite.**
+
+This is mathematically standard (diagonal `FiniteSpanningSetsIn`) but is *not* found by
+instance resolution here (either no such instance, or it needs a lemma name I could not
+confirm without burning ~min/build Docker cycles). **Next session, one of:**
+- try `haveI := hσ; have : SigmaFinite (Measure.sum (fun n => μ.restrict (s n))) := inferInstance`
+  after `set m := fun n => μ.restrict (s n)` (in case the instance exists but didn't match
+  the un-beta-reduced family), or search for a lemma like `Measure.sum … sigmaFinite`;
+- else prove it directly by `Measure.FiniteSpanningSetsIn.sigmaFinite`: reindex
+  `spanningSets (μ.restrict (s n)) k` over `ℕ` via `Nat.unpair`, using `s n ∩ (that)` plus
+  `(⋃ n, s n)ᶜ` at a fresh index — needs `hs : ∀ n, MeasurableSet (s n)` (available in the
+  application: `exists_sigmaFinite_support` returns a `MeasurableSet` carrier);
+- or hand the one-line goal to **Aristotle** (`SigmaFinite (Measure.sum m)` from
+  `[∀ n, SigmaFinite (m n)]`, `Countable ℕ`).
+
+Once this brick lands, it discharges step (2) COMMON CARRIER, then steps (3)–(4) of the
+reduction eliminate the `riesz_lp_surjective` axiom in `CauchySchwarzIntegralOQ01OQ01OQ02.lean`.
+
+**Also (unchanged):** the `gseq_norm_bound` rpow-drift chain in `…Incomplete01Norm.lean`
+(~16 mechanical errors, S19 note) remains the parallel blocker; a fast-iteration or Aristotle
+pass is still the right tool there (each Docker verify is minutes). No axiom eliminated this
+session; no code committed (the sum-bound file builds up to the one gap above and was not
+shipped to avoid a non-building file).
