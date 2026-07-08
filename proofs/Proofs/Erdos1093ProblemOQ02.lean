@@ -147,3 +147,80 @@ OQ-02 is automatic for `k ≤ 9`.
 theorem deficiency_le_nine_of_k_le_nine {n k : ℕ} (hk : k ≤ 9) :
     deficiency n k ≤ 9 :=
   (deficiency_le n k).trans hk
+
+/-
+## Section V: A density bound — high deficiency forces few primes in the window
+
+The trivial bound `deficiency n k ≤ k` treats every one of the `k` consecutive
+integers `n, n-1, …, n-k+1` as a potential smooth contributor.  But a *prime*
+value in that window can never contribute: for an admissible pair every value
+`n - i` (`i < k`, `n ≥ 2k`) exceeds `k`, and a `k`-smooth number `> k` cannot be
+prime (a prime is `k`-smooth iff it is `≤ k`).  Hence the deficiency is bounded
+by the number of *non-prime* values in the window, and — the sharper statement —
+`deficiency + (#primes in the window) ≤ k`.  A large deficiency therefore forces
+the length-`k` window of consecutive integers to contain few primes, exactly the
+density phenomenon the Erdős–Lacampagne–Selfridge bound exploits.
+-/
+
+/-- Every value `n - i` in the deficiency window exceeds `k` (needs `i < k`,
+`n ≥ 2k`). -/
+theorem window_value_gt_k {n k i : ℕ} (hi : i < k) (hn : 2 * k ≤ n) :
+    k < n - i := by omega
+
+/-- A smooth contributor to the deficiency is never prime: it exceeds `k`, and a
+`k`-smooth number `> k` cannot be prime (a prime `p` is `k`-smooth iff `p ≤ k`). -/
+theorem smooth_contributor_not_prime {n k i : ℕ} (hi : i < k) (hn : 2 * k ≤ n)
+    (hs : IsKSmooth k (n - i)) : ¬ (n - i).Prime := by
+  intro hp
+  have hle : n - i ≤ k := (isKSmooth_prime_iff hp).mp hs
+  have hgt : k < n - i := window_value_gt_k hi hn
+  omega
+
+/-- **Density bound (weak form).**  The deficiency is at most the number of
+non-prime values among the `k` consecutive integers `n, …, n-k+1`. -/
+theorem deficiency_le_nonprime_count {n k : ℕ} (hn : 2 * k ≤ n) :
+    deficiency n k ≤
+      ((Finset.range k).filter (fun i => ¬ (n - i).Prime)).card := by
+  unfold deficiency
+  apply Finset.card_le_card
+  intro i hi
+  rw [Finset.mem_filter] at hi ⊢
+  obtain ⟨hir, hsmooth⟩ := hi
+  exact ⟨hir, smooth_contributor_not_prime (Finset.mem_range.mp hir) hn hsmooth⟩
+
+/-- **Density bound (sharp form).**  The deficiency plus the number of primes in
+the length-`k` window `n, …, n-k+1` is at most `k`.  Equivalently, an admissible
+pair with deficiency `d` has at most `k - d` primes among its `k` consecutive
+integers, so a record-breaking deficiency forces an unusually prime-poor window. -/
+theorem deficiency_add_prime_count_le {n k : ℕ} (hn : 2 * k ≤ n) :
+    deficiency n k
+      + ((Finset.range k).filter (fun i => (n - i).Prime)).card ≤ k := by
+  have hpart :
+      ((Finset.range k).filter (fun i => (n - i).Prime)).card
+        + ((Finset.range k).filter (fun i => ¬ (n - i).Prime)).card = k := by
+    rw [Finset.filter_card_add_filter_neg_card_eq_card, Finset.card_range]
+  have hd := deficiency_le_nonprime_count (n := n) (k := k) hn
+  omega
+
+/-
+## Section VI: Sharpening the open core to `k ≥ 10`
+
+Combining the trivial bound with the existence half, the whole conjecture
+`MaximalDeficiencyIs 9` collapses to a universal statement quantified only over
+`k ≥ 10`: the cases `k ≤ 9` are automatic from `deficiency ≤ k`.
+-/
+
+/-- **Sharpened reduction.**  `MaximalDeficiencyIs 9` is equivalent to the open
+statement restricted to `k ≥ 10`; the small cases `k ≤ 9` are discharged by the
+trivial bound.  This is strictly sharper than
+`maximalDeficiencyIs_nine_iff_upperBound`. -/
+theorem maximalDeficiencyIs_nine_iff_kGe10 :
+    MaximalDeficiencyIs 9 ↔
+      ∀ n k, 10 ≤ k → ValidDeficiencyExample n k → deficiency n k ≤ 9 := by
+  rw [maximalDeficiencyIs_nine_iff_upperBound]
+  constructor
+  · intro h n k _ hv; exact h n k hv
+  · intro h n k hv
+    by_cases hk : k ≤ 9
+    · exact deficiency_le_nine_of_k_le_nine hk
+    · exact h n k (by omega) hv

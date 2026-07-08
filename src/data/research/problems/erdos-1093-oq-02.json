@@ -10,7 +10,11 @@
   "tier": "C",
   "significance": 5,
   "tractability": 3,
-  "tags": ["erdos", "smooth-numbers", "binomial-coefficients"],
+  "tags": [
+    "erdos",
+    "smooth-numbers",
+    "binomial-coefficients"
+  ],
   "problemStatement": {
     "plain": "The deficiency of C(n,k) (for n>=2k, when C(n,k) has no prime factor <= k) is the number of 0<=i<k with n-i being k-smooth. The current record is deficiency(C(284,28))=9. OQ-02 asks: is 9 the maximum possible deficiency over all admissible (n,k), or do higher values occur?",
     "formal": "MaximalDeficiencyIs 9 := (exists admissible (n,k) with deficiency n k = 9) and (forall admissible (n,k), deficiency n k <= 9)."
@@ -29,7 +33,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "PROGRESS: existence half of OQ-02 machine-verified; the full conjecture is reduced to a single open universal upper bound. Universal bound remains OPEN.",
+    "progressSummary": "PROGRESS: added first non-trivial upper bound (density bound deficiency + #primes ≤ k, ofReduceBool-free) and sharpened the reduction to k≥10. Universal bound remains OPEN.",
     "builtItems": [
       "noSmallPrimeFactors_iff (Erdos1093ProblemOQ02.lean) — decidable reduction of the admissibility side-condition (unbounded ∀ prime) to a bounded check over primes p ≤ k; ofReduceBool-free.",
       "noSmallPrimeFactors_284_28 — the record pair (284,28) is admissible: no prime ≤ 28 divides C(284,28) (parent verified only the count = 9, never admissibility).",
@@ -37,18 +41,26 @@
       "exists_deficiency_nine — existence half of OQ-02: an admissible example attains deficiency 9.",
       "maximalDeficiencyIs_nine_iff_upperBound — MaximalDeficiencyIs 9 ⇔ (no admissible pair has deficiency > 9); isolates the open content.",
       "deficiency_le_nine_of_k_le_nine — OQ-02 is automatic for k ≤ 9 (from the trivial bound deficiency ≤ k), confining the open part to k ≥ 10.",
-      "Repaired the parent Erdos1093Problem.lean (broken on main: omega at L173 in isKSmooth_one lacked p.Prime's two_le) — parent now builds (3058 jobs)."
+      "Repaired the parent Erdos1093Problem.lean (broken on main: omega at L173 in isKSmooth_one lacked p.Prime's two_le) — parent now builds (3058 jobs).",
+      "deficiency_add_prime_count_le (Erdos1093ProblemOQ02.lean) — DENSITY BOUND (ofReduceBool-free): deficiency n k + #{i<k : (n-i).Prime} ≤ k. Sharper than the trivial deficiency ≤ k; a record deficiency forces a prime-poor length-k window (the ELS density phenomenon).",
+      "deficiency_le_nonprime_count — weak form: deficiency ≤ #{i<k : ¬(n-i).Prime}; the smooth filter ⊆ the non-prime filter.",
+      "smooth_contributor_not_prime — every smooth contributor n-i (i<k, n≥2k) is composite: it exceeds k, and a k-smooth number > k cannot be prime (isKSmooth_prime_iff).",
+      "maximalDeficiencyIs_nine_iff_kGe10 — sharpened reduction: MaximalDeficiencyIs 9 ⇔ (∀ admissible with k≥10, deficiency ≤ 9). Strictly sharper than maximalDeficiencyIs_nine_iff_upperBound; discharges k≤9 via the trivial bound."
     ],
     "insights": [
       "The parent's deficiency_284_28 = 9 alone does NOT exhibit a valid deficiency example: the deficiency count is defined unconditionally, but the ELS problem requires C(n,k) to have no prime factor ≤ k. Checking admissibility only needs primes ≤ k (Kummer is unnecessary): C(284,28) is a ~110-bit bignum, so native_decide computes it and tests divisibility by primes ≤ 28 instantly.",
       "The maximality question splits cleanly: the existence half is a finite verification (attained at (284,28)); the universal half (no admissible pair exceeds 9) is the genuinely open content and cannot be enumerated (unbounded n, k).",
-      "Trivial bound deficiency ≤ k means any counterexample needs k ≥ 10; the ELS bound n ≪ 2^k·√k (parent axiom els_upper_bound) bounds n per fixed k but the number of k-values is still unbounded."
+      "Trivial bound deficiency ≤ k means any counterexample needs k ≥ 10; the ELS bound n ≪ 2^k·√k (parent axiom els_upper_bound) bounds n per fixed k but the number of k-values is still unbounded.",
+      "Primes in the k-consecutive-integer window contribute ZERO to the deficiency: for admissible pairs each n-i > k, and a prime is k-smooth iff ≤ k. This upgrades the trivial bound deficiency ≤ k to deficiency ≤ (#non-primes in window) = k − (#primes in window) — the first non-trivial upper bound in the file and a concrete step toward the open universal bound.",
+      "The density bound reframes the open core: a hypothetical deficiency > 9 at k ≥ 10 requires a length-k run of consecutive integers containing < k−9 primes, i.e. an exceptionally prime-poor window — precisely the input ELS bound the axiomatized els_upper_bound to n ≪ 2^k√k."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Attack the universal upper bound for small k ≥ 10: for each fixed k the ELS bound gives a finite search range n ≤ C·2^k·√k, but C is not effective in the parent axiom — obtaining an explicit constant would make each fixed-k slice a finite (if large) decidable check.",
       "Prove structural constraints: an admissible pair with deficiency d forces d of the k consecutive integers n,n-1,...,n-k+1 to be k-smooth, a strong density constraint (Erdős–Lacampagne–Selfridge exploit this for the ≥1 ⇒ n ≪ 2^k√k bound).",
-      "Consider whether Kummer's theorem (carry count in base p) gives a cleaner ofReduceBool-free proof of noSmallPrimeFactors_284_28."
+      "Consider whether Kummer's theorem (carry count in base p) gives a cleaner ofReduceBool-free proof of noSmallPrimeFactors_284_28.",
+      "Quantify the density bound: combine deficiency + #primes ≤ k with a lower bound on primes in [n-k+1,n] (a Brun–Titchmarsh / prime-counting input) to force k-dependent upper bounds on deficiency for k ≥ 10.",
+      "Attempt k=10,11,12 slices: show no length-k window of admissible integers has ≥ 10 smooth values, using the composite-contributor structure plus the p∤C(n,k) admissibility constraint."
     ]
   }
 }
