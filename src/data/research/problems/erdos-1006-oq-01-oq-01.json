@@ -44,14 +44,16 @@
       "reachOrder (Proofs/Erdos1006OQ01.lean): reflexive-transitive closure of an acyclic orientation's arcs as a PartialOrder; antisymmetry from rank-strict-monotonicity.",
       "rank_lt_of_tg / rank_le_of_rtg: rank is strictly/weakly monotone along TransGen/ReflTransGen paths.",
       "lift_below / lift_above: a directed path whose endpoint is rank-below v (resp. start rank-above u) never uses the arc (u,v), so it lifts to the (u,v)-excluded relation — the technical core of 'each arc is a covering pair'.",
-      "cover_graph_characterization is now a theorem (Proofs/Erdos1006OQ01.lean:371): admits robust orientation ↔ isCoverGraph, verified 0 extra axioms."
+      "cover_graph_characterization is now a theorem (Proofs/Erdos1006OQ01.lean:371): admits robust orientation ↔ isCoverGraph, verified 0 extra axioms.",
+      "triangle_not_robust (Proofs/Erdos1006OQ01.lean): the triangle K3 (complete graph on Fin 3) admits no robustly acyclic orientation — concrete girth-3 witness of Nesetril-Rodl, VERIFIED 0 extra axioms. Any acyclic orientation of a triangle is transitive (source->middle->sink), so the source->sink arc is dependent via the middle vertex."
     ],
     "insights": [
       "The slug broad-matches the whole Erdos1006* proof family because the stripped base prefix is Erdos1006.",
       "The main characterization is still represented by an explicit axiom in Erdos1006OQ01.lean.",
       "S1/S2 found a soundness bug: hasDependentArc had its rank inequality backwards (rank v ≤ rank u), making it vacuously false for every acyclic orientation. This collapsed isRobustlyAcyclic to isAcyclic and rendered the cover_graph_characterization and nesetril_rodl_counterexample axioms UNSOUND (false statements).",
       "S3 fix: redefine hasDependentArc via reachability — an arc (u,v) is dependent iff Relation.TransGen of the arc relation (with (u,v) excluded) connects u to v. Reversing the arc then closes a directed cycle v→u⇝v. This is faithful to the textbook meaning and makes all three robustness obligations elementary TransGen inductions (no Szpilrajn/linear-extension machinery).",
-      "With the reachability definition of hasDependentArc, BOTH directions of Pretzel-Brightwell are elementary: forward = take transitive-closure poset, 'no dependent arc' ⇔ 'every arc is a covering pair'; reverse = cover_graph_admits_robust. The literature's 'depth' is in the definition/recognition, not the equivalence under this model."
+      "With the reachability definition of hasDependentArc, BOTH directions of Pretzel-Brightwell are elementary: forward = take transitive-closure poset, 'no dependent arc' ⇔ 'every arc is a covering pair'; reverse = cover_graph_admits_robust. The literature's 'depth' is in the definition/recognition, not the equivalence under this model.",
+      "The g=3 base case of nesetril_rodl_counterexample is elementary and now proved concretely (triangle_not_robust): a triangle is the smallest non-cover-graph. The abstract axiom remains for the deep all-girths construction, but the smallest witness is grounded."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -89,8 +91,8 @@
     {
       "path": "Proofs/Erdos1006OQ01.lean",
       "filename": "Erdos1006OQ01.lean",
-      "lineCount": 468,
-      "theoremCount": 7,
+      "lineCount": 534,
+      "theoremCount": 8,
       "axiomCount": 2,
       "defCount": 13,
       "sorryCount": 0,
