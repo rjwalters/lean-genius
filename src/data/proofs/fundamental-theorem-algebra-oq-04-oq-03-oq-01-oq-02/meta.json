@@ -92,7 +92,9 @@
   "references": [
     {
       "key": "Artin1942",
-      "authors": ["E. Artin"],
+      "authors": [
+        "E. Artin"
+      ],
       "title": "Galois Theory",
       "venue": "Notre Dame Mathematical Lectures",
       "year": "1942",
@@ -102,8 +104,14 @@
   "leanFile": {
     "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02.lean",
     "filePath": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02.lean",
-    "imports": ["Mathlib", "Proofs.FundamentalTheoremAlgebraOQ04OQ03OQ01"],
-    "opens": ["Complex", "Classical"],
+    "imports": [
+      "Mathlib",
+      "Proofs.FundamentalTheoremAlgebraOQ04OQ03OQ01"
+    ],
+    "opens": [
+      "Complex",
+      "Classical"
+    ],
     "namespace": "FTAGaloisIso",
     "lineCount": 111,
     "axiomCount": 0,
@@ -111,5 +119,32 @@
     "definitionCount": 1,
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "mathlibGaloisIso_eq",
+      "type": "theorem",
+      "description": "Flagship identification: Mathlib's generic cyclic iso zmodCyclicMulEquiv transported along |Gal(ℂ/ℝ)| = 2 is exactly the explicit hand-built galoisGroupEquivZMod2.symm. The Classical.choice of a generator hidden inside zmodCyclicMulEquiv is therefore forced to be the canonical one."
+    },
+    {
+      "name": "mathlibGaloisIso",
+      "type": "definition",
+      "description": "Mathlib's generic cyclic iso specialised to Gal(ℂ/ℝ): transporting zmodCyclicMulEquiv along Nat.card (ℂ ≃ₐ[ℝ] ℂ) = 2 yields an isomorphism Multiplicative (ZMod 2) ≃* Gal(ℂ/ℝ)."
+    },
+    {
+      "name": "eq_galoisGroupEquivZMod2_symm",
+      "type": "theorem",
+      "description": "Rigidity / uniqueness: any isomorphism Multiplicative (ZMod 2) ≃* Gal(ℂ/ℝ) equals the explicit galoisGroupEquivZMod2.symm, since both agree on the only two elements 1 and ofAdd 1."
+    },
+    {
+      "name": "any_equiv_ofAdd_one",
+      "type": "theorem",
+      "description": "Every isomorphism Multiplicative (ZMod 2) ≃* Gal(ℂ/ℝ) sends the generator ofAdd 1 to complex conjugation Complex.conjAe: the non-identity element must map to a non-identity automorphism, and conjAe is the only one."
+    },
+    {
+      "name": "mathlibGaloisIso_ofAdd_one",
+      "type": "theorem",
+      "description": "The canonical generator is complex conjugation: under Mathlib's generic iso, ofAdd 1 ∈ Multiplicative (ZMod 2) maps to Complex.conjAe."
+    }
+  ],
   "sorries": 0
 }
