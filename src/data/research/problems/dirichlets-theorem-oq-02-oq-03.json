@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Step 11, VERIFIED 0/0): closed-form tetration lower bound 2↑↑k ≤ B k (tower2_le_B) + SHARP growth-class separation C k≤4^(2^k)≤2↑↑k≤B k for k≥5 (growth_class_separation), threshold k=5 proven sharp. Upgrades the qualitative Steps 8-9 / ratio-divergence Step 10 to an explicit closed-form sandwich where B´s lower certificate overtakes C´s upper certificate. Upper-bound side of the original OQ still at elementary terminus (needs analytic 2k·ln k).",
+    "progressSummary": "PROGRESS (verified 0/0, PR #35706): counting-function side added — certified π(x;4,3) ≥ k+1 for x ≥ 4^(2^k) (iterated-log growth). Value-side B/C divergence already done on main (#35694). Remaining: low-novelty modulus port; analytic terminus for sharpening toward the truth.",
     "builtItems": [
       "exists_prime_three_mod_four_in_interval (DirichletsTheoremOQ02OQ03.lean:78) — certified interval form: ∀n ∃ prime p≡3 mod4, n<p≤4·(n+1)!−1.",
       "nextP3 + nextP3_le_of + nextP3_le_factorial (DirichletsTheoremOQ02OQ03.lean:113–134) — least prime ≡3 mod4 above n, its minimality, and the one-step factorial bound.",
@@ -55,7 +55,8 @@
       "C_sq_le_B (:766) — VERIFIED 0/0: the factorial tower dominates the SQUARE of the primorial tower, (C k)² ≤ B k for k≥3. Chain: B(j+1)≥2^(C j), C(j+1)²≤(C j+1)^4≤2^(C j) (quartic, C j≥17 since C 2=131 & monotone).",
       "B_div_C_diverges (:787) — VERIFIED 0/0: division-free ratio divergence ∀m ∃K ∀k≥K, m·C k ≤ B k. From C k→∞ pick k≥max 3 m so m≤C k, then m·C k ≤ (C k)² ≤ B k. PR #TBD.",
       "tower2 (base-2 tetration def) + tower2_le_B: 2↑↑k ≤ B k (DirichletsTheoremOQ02OQ03.lean Step 11)",
-      "two_pow_le_tower2 (2^(k+2)≤2↑↑k for k≥4), doubly_exp_le_tower2 (4^(2^k)≤2↑↑k for k≥5), growth_class_separation (C k≤4^(2^k)≤2↑↑k≤B k for k≥5), tower2_lt_doubly_exp_at_four (sharp threshold), lt_two_pow_aux"
+      "two_pow_le_tower2 (2^(k+2)≤2↑↑k for k≥4), doubly_exp_le_tower2 (4^(2^k)≤2↑↑k for k≥5), growth_class_separation (C k≤4^(2^k)≤2↑↑k≤B k for k≥5), tower2_lt_doubly_exp_at_four (sharp threshold), lt_two_pow_aux",
+      "primesCount3 + card_le_primesCount3 / primesCount3_mono / primesCount3_ge_of_doubly_exp / primesCount3_ge / primesCount3_unbounded in Proofs/DirichletsTheoremOQ02OQ03.lean Step 11 (5 thm, 0/0, PR #35706)"
     ],
     "insights": [
       "The Euclid construction N=4·(n+1)!−1 certifies an INTERVAL, not just existence: a prime ≡3 (mod 4) always lies in (n, 4·(n+1)!−1]. The upper bound is p∣N⇒p≤N; the lower is the standard p∤(n+1)! coprimality twist.",
@@ -74,17 +75,14 @@
       "The primorial recursion linearises for ring via set d := 4·towerProd k − 1: C(k+1)+1 = (C k+1)·C k has a clean closed form once the nat-subtraction sub-term is abstracted to an atom, sidestepping ring´s inability to normalise ℕ subtraction.",
       "quartic step (n+2)^4 ≤ 2·(n+1)^4 is degree-4; nlinarith needs the products handed in (289≤n·n and 289·n²≤n·n·n·n) — bare nlinarith [hn] fails to synthesise the n⁴ monomial.",
       "Tetration/tower-exponential lower bound: the factorial certificate B satisfies 2↑↑k ≤ B k (closed-form, via B_succ_ge_two_pow + monotonicity of 2^·). This is the closed-form counterpart of the recursive step 2^(B k)≤B(k+1) and places B strictly above C´s doubly-exponential growth class.",
-      "Growth-class SEPARATION is sharp: for k≥5, C k ≤ 4^(2^k) ≤ 2↑↑k ≤ B k — the doubly-exponential UPPER bound on the primorial tower C is dominated by the tetration LOWER bound on B. Threshold k=5 is sharp (at k=4, 2↑↑4=65536 < 4^(2^4)=4294967296)."
+      "Growth-class SEPARATION is sharp: for k≥5, C k ≤ 4^(2^k) ≤ 2↑↑k ≤ B k — the doubly-exponential UPPER bound on the primorial tower C is dominated by the tetration LOWER bound on B. Threshold k=5 is sharp (at k=4, 2↑↑4=65536 < 4^(2^4)=4294967296).",
+      "Counting-function side (π(x;4,3)) done: p3 k ≤ x ⟹ k+1 ≤ π(x;4,3) transfers the certified value bound p3 k ≤ 4^(2^k) into π(x;4,3) ≥ k+1 for x ≥ 4^(2^k) — an iterated-log lower bound, honestly isolating the analytic gap to the truth π(x;4,3) ∼ x/(2 ln x) (PR #35706).",
+      "B/C ratio divergence (∀m ∃K ∀k≥K, m·C k ≤ B k) was completed on main by #35694 (C_succ_add_one, C_sq_le_B, B_div_C_diverges, quartic_le_two_pow) — do NOT rebuild; the exact quadratic recursion C(k+1)=(C k+1)·C k is there too."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Attempt a genuinely elementary sub-exponential certified bound (or prove the primorial tower´s doubly-exponential growth is intrinsic to Euclid-style iteration without an analytic input).",
-      "Formalize B/C→∞ as ∀m, ∃K, ∀k≥K, m·C k≤B k (division-free divergence), building on 2^(C k)≤B(k+1) and the doubly-exp bracket for C.",
-      "Port the primorial-tower framework to other elementary progressions (e.g. the ≡5 mod 6 primes via N=6·∏−1).",
-      "Quantify the gap growth: prove B k / C k → ∞ (or a lower bound like B k ≥ C k · (something growing), since each factorial step swaps a squaring for a full factorial).",
-      "Sharpen (C k)²≤B k to (C k)^p ≤ B k for every fixed p (same route with (n+1)^(2p)≤2^n), or to B k ≥ 2^(C (k-1)) exhibiting the true tower gap.",
-      "Formalise C k ↑↑-style: B k ≥ 2 ↑↑ k vs C k ≤ 4^(2^k) to state the growth-class separation as an iterated-exponential lower bound on B.",
-      "Generalize C_sq_le_B to (C k)^p ≤ B k for every fixed p (same quartic→2^n route with (n+1)^(2p)≤2^n), giving B/(C^p)→∞ for all p — the tetration lower bound now makes this transparent."
+      "Port the primorial-tower framework to other elementary progressions (≡5 mod 6 via N=6·∏−1) — low novelty, mechanical.",
+      "Upper-bound side (certified analytic-free 2k·ln k) remains a genuine terminus: Step 8 proved the tower is intrinsically doubly-exponential, so no re-evaluation of THIS certificate yields sub-exponential; needs ψ(x,y)/analytic input Mathlib lacks."
     ],
     "markdown": "# Knowledge Base: dirichlets-theorem-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
