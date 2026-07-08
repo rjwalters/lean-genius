@@ -67,7 +67,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S11, researcher-6, 2026-06-30): Target D CAPSTONE obliqueCount (reverseTour t) = obliqueCount t PROVED (0-sorry/0-axiom, new file KnightsTourObliqueOQ02ReverseCount.lean). Reversal is a verified independent order-2 symmetry of the oblique-count distribution. Built a reusable cyclic-count abstraction (cyclicObliqueCount + perm-map workhorse) with three generic invariances (map-neg, reverse, rotate-1) and the structural (R) identity tourMoves(reverseTour t) = ((tourMoves t).map neg).reverse.rotate 1. Next: fuse with D4 into the order-16 symmetry group on the histogram.",
+    "progressSummary": "PROGRESS (S12, researcher-4, 2026-07-08): Built the full order-16 symmetry group D4×C2 acting on closed tours (Order16.lean, 0-sorry/0-axiom, Docker GREEN 7747 jobs). Proved the two symmetries commute (direct product), reversal is a level-set bijection, and every full orbit cardinality divides 16 (block sizes {1,2,4,8,16}). Enlarges the D4 orbit-divisibility picture by the independent reversal factor.",
     "builtItems": [
       "research/problems/knights-tour-oblique-oq-02/problem.md — problem description, tractability triage, parent linkage, references (Knuth 2025, Loebbing-Wegener 1996, McKay 1997)",
       "research/problems/knights-tour-oblique-oq-02/knowledge.md — parent infrastructure survey (`obliqueCount`, `tourMoves`, `turnAngle`, `tour_winding_zero`, `no_turn_angle_4_all`), feasibility table, sorries/axioms anticipated",
@@ -124,7 +124,11 @@
       "KnightsTourObliqueOQ02ReverseCount.lean (NEW, 0-sorry/0-axiom, 14 thm, 251 lines): obliqueCount_reverseTour CAPSTONE",
       "cyclicObliqueCount + obliqueCount_eq_cyclic (bridge) + cyclicObliqueCount_eq_of_perm_map (workhorse)",
       "cyclicObliqueCount_map_neg, cyclicObliqueCount_reverse, cyclicObliqueCount_rotate_one (three cyclic invariances)",
-      "General list infra: tail_append_head!_eq_rotate_one, zip_rotate_one_comm, zip_reverse_comm, rotate_one_reverse_rotate_one, tourMoves_eq_zip_rotate, tourMoves_reverseTour"
+      "General list infra: tail_append_head!_eq_rotate_one, zip_rotate_one_comm, zip_reverse_comm, rotate_one_reverse_rotate_one, tourMoves_eq_zip_rotate, tourMoves_reverseTour",
+      "applyD4Tour_reverseTour_comm: D4 board action and time reversal COMMUTE (Order16.lean) — combined group is direct product D4×C2",
+      "levelSet_image_reverseTour_eq: reversal is a bijection of each obliqueDistribution level set (reversal analogue of D4 level-set result)",
+      "C2 group (Bool synonym under xor) + D4xC2:=D4×C2 order-16 MulAction on ClosedTour (Order16.lean)",
+      "fullOrbit_card_dvd_sixteen + fullOrbit_card_eq {1,2,4,8,16}: order-16 orbit divisibility, enlarges d4Orbit_card_dvd_eight (Order16.lean)"
     ],
     "insights": [
       "The full histogram is unreachable in Lean (1.3 × 10^13 tours), but the *structural skeleton* of the distribution — support, D4 invariance, reversal symmetry, winding-parity — is reachable using only the parent's existing infrastructure.",
@@ -150,7 +154,9 @@
       "S11 (researcher-6, 2026-06-30): Target D CAPSTONE PROVED — obliqueCount (reverseTour t) = obliqueCount t, 0-sorry/0-axiom in new companion KnightsTourObliqueOQ02ReverseCount.lean (251 lines). Reversal is now a verified order-2 symmetry of the oblique-count distribution, independent of the D4 board action. Combined symmetry group on the histogram level sets is enlarged accordingly.",
       "Key abstraction: cyclicObliqueCount (L : List MoveVector) := filter-length of isOblique over the cyclic adjacent-pair list L.zip (L.tail ++ [L.head!]); definitionally equal to obliqueCount on tourMoves t. Workhorse lemma cyclicObliqueCount_eq_of_perm_map: if cyclic-pair list of L1 is a PERMUTATION of (cyclic-pair list of L2).map f and f preserves isOblique on pairs, the counts agree (proof via List.countP_eq_length_filter + Perm.countP_eq + countP_map + countP_congr).",
       "Three cyclic-count invariances proved generically: map-neg (uses isOblique_neg_neg, exact pair-list equality via zip_map), reverse (uses isOblique_comm + Prod.swap; perm via reverse_perm∘rotate_perm), rotate-1 (identity f; perm via rotate_perm). Index-level engine lemmas zip_rotate_one_comm and zip_reverse_comm proved by List.ext_getElem + simp[getElem_zip,getElem_rotate/reverse]; rotate_one_reverse_rotate_one ((L.rotate 1).reverse.rotate 1 = L.reverse) via reverse_rotate+rotate_rotate+rotate_mod.",
-      "(R) index identity tourMoves (reverseTour t) = ((tourMoves t).map MoveVector.neg).reverse.rotate 1 proved STRUCTURALLY (no per-index getElem): map/reverse/rotate commutation (map_map, map_reverse, map_rotate, zip_swap) + getMoveVector_swap on adjacent pairs (neg∘g = g∘Prod.swap), with adjacency of every cyclic square pair from tourPairs_all_adj. The closing-edge offset is exactly the cyclic rotate 1."
+      "(R) index identity tourMoves (reverseTour t) = ((tourMoves t).map MoveVector.neg).reverse.rotate 1 proved STRUCTURALLY (no per-index getElem): map/reverse/rotate commutation (map_map, map_reverse, map_rotate, zip_swap) + getMoveVector_swap on adjacent pairs (neg∘g = g∘Prod.swap), with adjacency of every cyclic square pair from tourPairs_all_adj. The closing-edge offset is exactly the cyclic rotate 1.",
+      "Reversal commutes with D4 because reversal permutes traversal order while D4 permutes squares; List.map_reverse gives both sides square list (t.squares.map (applyD4 g)).reverse. So the enlarged group is D4×C2 (DIRECT product, order 16), not semidirect.",
+      "Order-16 MulAction packaging mirrors the D4 pattern: C2 needs a Bool synonym (Bool already carries boolean-ring and/true, not xor/false); mul_smul reduces to applyD4Tour_mul + revBool_mul + applyD4Tour_revBool_comm."
     ],
     "mathlibGaps": [
       "No `Fintype` instance for `ClosedTour` in the parent file. The parent uses `Classical.choice` for existential extraction; OQ-02 needs an explicit `Fintype` (or a parametric workaround).",
@@ -158,9 +164,9 @@
       "Mathlib's `IsCycle` / `Cycle` infrastructure may apply to `ClosedTour`'s cyclic permutation viewpoint; check before re-implementing reversal symmetry."
     ],
     "nextSteps": [
-      "Combine D4 (order 8) + reversal (order 2) into the full order-16 symmetry acting on obliqueDistribution level sets; quotient the histogram and re-derive the mod-8 residue with the enlarged group.",
-      "Characterize tours fixed by reversal (palindromic move sequences) — likely none for closed knight tours; if so, every reversal orbit has size 2, giving 2 | (level-set cardinality).",
-      "Bridge reversal-invariance to a sharper divisibility statement for obliqueDistribution(k) combining D4-orbit-size (∣8) with the reversal pairing."
+      "Characterize tours fixed by the full order-16 group; a fixed-point-free reversal factor would upgrade orbit-divisibility to 16 | obliqueDistribution k in the generic (self-symmetry-free) regime.",
+      "Show closed knight tours are never palindromic (reverseTour t ≠ t): would give every reversal orbit size 2, hence 2 | levelSet card unconditionally.",
+      "Combine fullOrbit block-size {1,2,4,8,16} enumeration with the self-symmetric-tour count to state obliqueDistribution k ≡ s_k (mod 16)."
     ],
     "proven": []
   },
