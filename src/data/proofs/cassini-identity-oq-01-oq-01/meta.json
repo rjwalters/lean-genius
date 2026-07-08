@@ -33,6 +33,21 @@
       "proofId": "cassini-identity-oq-01",
       "relationship": "parent",
       "description": "The parent proves Cassini's identity F_{n+2}·F_n − F_{n+1}² = (−1)^{n+1} via the determinant of the Fibonacci companion matrix Q. Catalan is the r-step generalization (Cassini is r = 1); this entry directly answers the parent's first open question — whether the r-step identity follows elementarily — by the addition-formula route rather than Q-matrix bookkeeping."
+    },
+    {
+      "proofId": "cassini-identity-oq-01-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Vajda's bilinear master identity F_{n+i}·F_{n+j} − F_n·F_{n+i+j} = (−1)^n·F_i·F_j, of which Catalan is the diagonal slice i = j = r. This child directly resolves this entry's first open question: the same expand-then-Cassini method does extend to the full two-parameter Vajda identity, from which Cassini (i = j = 1), Catalan (i = j = r) and d'Ocagne (j = 1) all descend as one-line corollaries."
+    },
+    {
+      "proofId": "fibonacci-identities-oq-01-oq-04",
+      "relationship": "related",
+      "description": "The Gelin–Cesàro identity F_{n−2}·F_{n−1}·F_{n+1}·F_{n+2} = F_n⁴ − 1 is proved by factoring through exactly the subtraction-free Catalan lemma F_{m+r}² − F_m·F_{m+2r} = (−1)^m·F_r² established here, pairing the outer flanking terms (r = 2) against the inner ones (r = 1). A concrete downstream consumer of catalan_aux."
+    },
+    {
+      "proofId": "fibonacci-identities-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "An independent derivation of the same Catalan identity F_n² − F_{n−r}·F_{n+r} = (−1)^{n−r}·F_r² as the diagonal i = j = r slice of Vajda's two-parameter cross-determinant lemma, rather than by addition-formula expansion plus the Cassini core — the same theorem reached by a different route."
     }
   ],
   "references": [
@@ -96,7 +111,7 @@
       "Isolates the structural fact that Catalan = Cassini × F_r²: every Cassini-type alternating identity of step r is the step-1 identity multiplied by F_r²."
     ],
     "openQuestions": [
-      "Does the same expand-then-Cassini method give the full Vajda identity F_{n+i}F_{n+j} − F_n F_{n+i+j} = (−1)^n F_i F_j, with Catalan the diagonal case i = j = r?",
+      "The same expand-then-Cassini method does extend to the full Vajda identity F_{n+i}F_{n+j} − F_n F_{n+i+j} = (−1)^n F_i F_j (Catalan is the diagonal case i = j = r) — now carried out in the child entry cassini-identity-oq-01-oq-01-oq-01. Does the addition-formula route further reach the mixed d'Ocagne shift identity F_m F_{n+1} − F_{m+1} F_n = (−1)^n F_{m−n} without passing through Vajda?",
       "Is there a determinant proof of Catalan — writing F_{m+r}² − F_m F_{m+2r} as det of a 2×2 product of Q-powers — matching the parent entry's matrix proof of Cassini?"
     ]
   },
