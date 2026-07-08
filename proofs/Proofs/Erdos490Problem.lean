@@ -149,6 +149,24 @@ axiom szemeredi_theorem :
 /-- The answer to Erdős Problem #490 is YES. -/
 theorem erdos_490_answer : ErdosQuestion490 := szemeredi_theorem
 
+/-- **The extremal function `maxProductSize` is monotone.**
+Enlarging the ambient range `{1,…,N} → {1,…,N+1}` can only add admissible pairs:
+any `A, B ⊆ {1,…,N}` with distinct products are still `⊆ {1,…,N+1}` with the same
+(distinct) products, so the supremum `maxProductSize N` of `|A|·|B|` never decreases.
+This is the structural fact behind the growth `maxProductSize N = Θ(N²/log N)`: the
+supply of distinct-product pairs is non-decreasing in `N`. Proved by `Nat.find_mono`,
+since a bound valid for all `{1,…,N+1}`-pairs is a fortiori valid for all
+`{1,…,N}`-pairs. -/
+theorem maxProductSize_monotone : Monotone maxProductSize := by
+  apply monotone_nat_of_le_succ
+  intro N
+  unfold maxProductSize
+  apply Nat.find_mono
+  intro k hk A B hA hB hAB
+  exact hk A B
+    (fun a ha => ⟨(hA a ha).1, (hA a ha).2.trans (Nat.le_succ N)⟩)
+    (fun b hb => ⟨(hB b hb).1, (hB b hb).2.trans (Nat.le_succ N)⟩) hAB
+
 /-
 ## Part IV: The Optimal Example
 -/
