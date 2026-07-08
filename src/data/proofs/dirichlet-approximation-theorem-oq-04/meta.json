@@ -170,6 +170,11 @@
       "targetId": "dirichlet-approximation-theorem-oq-05",
       "relationship": "sibling",
       "description": "The dual SHARPNESS lower bound (the golden ratio is badly approximable). OQ-04 shows every irrational's multiples come arbitrarily close to integers; OQ-05 shows that for φ they cannot come too close too fast — bounding the irrational rotation's orbit from both qualitative and quantitative sides."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-04-oq-02",
+      "relationship": "child",
+      "description": "Direct child: upgrades the homogeneous density proved here (the orbit {n·a} accumulates at 0) to the inhomogeneous Kronecker theorem — for any base point b the shifted orbit {n·a + b} is dense, i.e. the irrational rotation x ↦ x + a is MINIMAL (every orbit dense, not just the orbit of 0). Where this entry seeds density at a single point, the child promotes it to minimality of the whole rotation."
     }
   ],
   "references": [
