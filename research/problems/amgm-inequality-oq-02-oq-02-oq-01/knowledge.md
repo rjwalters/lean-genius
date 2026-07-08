@@ -16,6 +16,46 @@ because `∏(t - xᵢ)` is real-rooted regardless of the signs of its roots.
 - The general **k ≥ 2** case (`newton_log_concavity_proved`) requires
   non-negativity — the cleared-denominator induction uses `eⱼ ≥ 0` essentially.
 
+## Session 2026-07-07 (REVISIT) — first genuinely intermediate index n=4, k=2
+
+**Mode:** REVISIT (MODERATE-tier knowledge, highest priority in pool)
+**Outcome:** progress — **build-VERIFIED** (docker 7744 jobs, 0 sorry / 0 axiom).
+
+### What I did
+Added `newton_n4_k2_signed` to `NewtonSignedInputs.lean`. This is the **first
+Newton index that is genuinely interior**: for `n = 4`, `k = 2` satisfies
+`1 < 2 < 3 = n-1`, so it is neither the Cauchy–Schwarz base (`k = 1`, already
+signed) nor the reciprocal-duality top (`k = n-1`, `newton_signed_top`). Prior
+to this session every signed case in the file was one of those two endpoints (or
+`n = 3, k = 2`, which is the top index for `n = 3`).
+
+### Key finding — the interior case is still elementary (SOS)
+The normalized inequality `p₂² ≥ p₁ p₃` (with `p₁=e₁/4, p₂=e₂/6, p₃=e₃/4`),
+cleared of its `144` denominator, is `4 e₂² ≥ 9 e₁ e₃`, and the **exact
+identity** (verified by expansion in sympy)
+
+    4 e₂² − 9 e₁ e₃
+      = 3·[(ab−cd)² + (ac−bd)² + (ad−bc)²]
+        + ½·[((a−b)(c−d))² + ((a−c)(b−d))² + ((a−d)(b−c))²]
+
+certifies non-negativity for **all** real `a,b,c,d`. The two square families are
+indexed by the three complementary-pair splits of `{a,b,c,d}`. `nlinarith` with
+these six `sq_nonneg` hints closes the goal directly. So the smallest interior
+Newton inequality does **not** require the real-rootedness / Rolle machinery.
+
+### Files modified
+- `proofs/Proofs/NewtonSignedInputs.lean` (+`newton_n4_k2_signed`, Part IV +
+  header/frontier note updates)
+- `src/data/research/problems/amgm-inequality-oq-02-oq-02-oq-01.json` (knowledge)
+
+### Next steps
+- Probe how far plain SOS reaches: try `n=5, k=2` and other small interior
+  `(n,k)`. Newton differences are PSD but not always plain SOS in the elementary
+  symmetric variables; the first `nlinarith` failure flags where a genuine
+  multiplier/denominator (hence real-rootedness) becomes necessary.
+- Long-term uniform route: formalize "derivative of a real-rooted polynomial is
+  real-rooted" (Rolle across the root multiset + Vieta for `P'`).
+
 ## Session 2026-07-04 (FRESH) — top-index via reciprocal duality
 
 **Outcome:** progress (proof written, 0 sorry / 0 axiom by construction) but

@@ -35,10 +35,15 @@
         (ab+bc+ca)² - 3abc(a+b+c) = ½[(ab-bc)² + (bc-ca)² + (ca-ab)²].
     The gallery's `newton_n3_k2` states the same inequality but assumes
     a,b,c ≥ 0; the certificate above shows the hypothesis is unnecessary.
+  * `newton_n4_k2_signed`: the FIRST genuinely intermediate index, n = 4, k = 2
+    (1 < 2 < 3 = n-1), for arbitrary reals a,b,c,d, via the SOS certificate
+        4e₂² − 9e₁e₃ = 3·∑(ab−cd)² + ½·∑((a−b)(c−d))².
+    This is neither the k = 1 base nor the top index k = n-1; it shows the
+    smallest interior Newton inequality is still elementary.
 
-  Frontier.  The intermediate indices 1 < k < n-1 for general n still require
-  the real-rootedness / Rolle machinery (differentiate ∏(t-xᵢ), which stays
-  real-rooted, to reduce k) and are NOT proved here; see the note at the end.
+  Frontier.  The remaining intermediate indices 1 < k < n-1 for n ≥ 5 still
+  require the real-rootedness / Rolle machinery (differentiate ∏(t-xᵢ), which
+  stays real-rooted, to reduce k) and are NOT proved here; see the note at the end.
 
   References:
   - Hardy–Littlewood–Pólya, "Inequalities" (1934), §2.22, Theorem 51.
@@ -170,11 +175,54 @@ theorem newton_n3_k2_signed (a b c : ℝ) :
              sq_nonneg (c * a - a * b)]
 
 /-
-## Frontier: the intermediate indices 1 < k < n-1
+## Part IV: The first genuinely intermediate index — n = 4, k = 2 (signed)
+
+For `n = 3` the index `k = 2` coincides with the top index `n - 1`, so it is
+covered by reciprocal duality.  The *first* index strictly between the bottom
+(`k = 1`, Cauchy–Schwarz) and the top (`k = n - 1`, `newton_signed_top`) occurs
+at `n = 4, k = 2` (here `1 < 2 < 3`).  It is not reachable by either the k = 1
+Cauchy–Schwarz argument or the top-index reciprocal duality, yet — like every
+Newton inequality — it holds for ALL real inputs, because `∏ᵢ (t - xᵢ)` is
+real-rooted regardless of the signs of the `xᵢ`.
+
+The proof below is a direct sum-of-squares certificate, exhibiting the frontier
+case as elementary after all.  With `eⱼ` the elementary symmetric polynomials of
+`a, b, c, d`, Newton at `k = 2` is `p₂² ≥ p₁ p₃` with
+`p₁ = e₁/4, p₂ = e₂/6, p₃ = e₃/4`; clearing the `144` denominator this reads
+`4 e₂² ≥ 9 e₁ e₃`, and the exact identity
+
+    4 e₂² − 9 e₁ e₃
+      = 3·[(ab−cd)² + (ac−bd)² + (ad−bc)²]
+        + ½·[((a−b)(c−d))² + ((a−c)(b−d))² + ((a−d)(b−c))²]
+
+(both sides verified by expansion) certifies non-negativity for every real
+`a, b, c, d`.  The two square families are indexed by the three ways to split the
+four indices into complementary pairs.
+-/
+
+/-- **Newton's inequality for n = 4, k = 2, signed inputs (the first genuinely
+intermediate index).**  With `p₁ = e₁/4`, `p₂ = e₂/6`, `p₃ = e₃/4` the
+normalized Newton means of four arbitrary reals `a, b, c, d`,
+    p₂² ≥ p₁ · p₃,
+i.e. `((ab+ac+ad+bc+bd+cd)/6)² ≥ ((a+b+c+d)/4)·((abc+abd+acd+bcd)/4)`.
+No non-negativity is required: this is the first Newton index that is neither the
+Cauchy–Schwarz base (`k = 1`) nor the reciprocal-duality top (`k = n-1`), proved
+here by the sum-of-squares certificate `4e₂² − 9e₁e₃ = 3·∑(pair−pair)² +
+½·∑((diff)(diff))²`. -/
+theorem newton_n4_k2_signed (a b c d : ℝ) :
+    ((a * b + a * c + a * d + b * c + b * d + c * d) / 6) ^ 2
+      ≥ ((a + b + c + d) / 4) * ((a * b * c + a * b * d + a * c * d + b * c * d) / 4) := by
+  nlinarith [sq_nonneg (a * b - c * d), sq_nonneg (a * c - b * d),
+             sq_nonneg (a * d - b * c), sq_nonneg ((a - b) * (c - d)),
+             sq_nonneg ((a - c) * (b - d)), sq_nonneg ((a - d) * (b - c))]
+
+/-
+## Frontier: the remaining intermediate indices 1 < k < n-1 for n ≥ 5
 
 For general `n`, the indices strictly between the bottom (k = 1, Cauchy–Schwarz)
-and the top (k = n-1, this file, via reciprocal duality) are not covered by an
-elementary sum-of-squares or duality argument.  The classical route is:
+and the top (k = n-1, this file, via reciprocal duality) — with the smallest
+case `n = 4, k = 2` now settled above by an explicit SOS certificate — are not
+covered by a single uniform elementary argument.  The classical route is:
 
   1.  P(t) = ∏ᵢ (t - xᵢ) has all real roots.
   2.  P'(t) has all real roots (Rolle between consecutive roots of P).
