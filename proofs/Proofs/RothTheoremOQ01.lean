@@ -381,6 +381,50 @@ theorem bourgain_factor_isLittleO_roth_factor :
     rw [e1, Real.sqrt_mul (div_pos hLL hL).le, Real.sqrt_sq hLL.le,
         div_div_eq_mul_div, div_one, ← Real.sqrt_eq_rpow]
 
+/-- **Bloom–Sisask density bound for an arbitrary 3-AP-free set.**
+
+Every three-term-AP-free finite set `s ⊆ [0, N)` (with `N ≥ 3`) has cardinality bounded by
+the Bloom–Sisask rate:
+
+  `#s ≤ N / (log N)^(1 + blasiConst)`.
+
+All the other quantitative bounds in this file (`rothNumberNat_le_bourgain`,
+`RothTheoremOQ02.rothNumberNat_le_blasi`, …) constrain only the *extremal* Roth number
+`rothNumberNat N` — the size of a *largest* 3-AP-free subset of `range N`.  This theorem
+lifts the bound to *every* 3-AP-free set via Mathlib's `ThreeAPFree.le_rothNumberNat`,
+giving the universally-quantified interface form that applications consume (e.g. the
+Erdős reciprocal-sum problem, where one needs the density bound for the specific set at
+hand, not merely the extremal one).  Inherits the single imported Bloom–Sisask assumption
+through `rothNumberNat_le_blasi`; adds no new axiom. -/
+theorem threeAPFree_card_le_blasi
+    {s : Finset ℕ} (hs : ThreeAPFree (s : Set ℕ)) {N : ℕ} (hN : 3 ≤ N)
+    (hsub : ∀ x ∈ s, x < N) :
+    (s.card : ℝ) ≤ (N : ℝ) / Real.log N ^ (1 + RothTheoremOQ02.blasiConst) := by
+  have hcard : s.card ≤ rothNumberNat N := ThreeAPFree.le_rothNumberNat s hs hsub rfl
+  calc (s.card : ℝ) ≤ (rothNumberNat N : ℝ) := by exact_mod_cast hcard
+    _ ≤ (N : ℝ) / Real.log N ^ (1 + RothTheoremOQ02.blasiConst) :=
+        RothTheoremOQ02.rothNumberNat_le_blasi N hN
+
+/-- **Bourgain density bound for an arbitrary 3-AP-free set.**
+
+The Bourgain-strength companion of `threeAPFree_card_le_blasi`: every 3-AP-free finite set
+`s ⊆ [0, N)` (`N ≥ 3`) satisfies
+
+  `#s ≤ bourgainConst · N · (log log N / log N)^(1/2)`.
+
+Same lifting via `ThreeAPFree.le_rothNumberNat`, this time composed with the Bourgain
+extremal bound `rothNumberNat_le_bourgain`.  No new axiom. -/
+theorem threeAPFree_card_le_bourgain
+    {s : Finset ℕ} (hs : ThreeAPFree (s : Set ℕ)) {N : ℕ} (hN : 3 ≤ N)
+    (hsub : ∀ x ∈ s, x < N) :
+    (s.card : ℝ) ≤
+      bourgainConst * (N : ℝ) * (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2) := by
+  have hcard : s.card ≤ rothNumberNat N := ThreeAPFree.le_rothNumberNat s hs hsub rfl
+  calc (s.card : ℝ) ≤ (rothNumberNat N : ℝ) := by exact_mod_cast hcard
+    _ ≤ bourgainConst * (N : ℝ) *
+          (Real.log (Real.log N) / Real.log N) ^ ((1 : ℝ) / 2) :=
+        rothNumberNat_le_bourgain N hN
+
 #check rothNumberNat_bourgain
 #check bourgainConst
 #check bourgainConst_pos
@@ -394,6 +438,8 @@ theorem bourgain_factor_isLittleO_roth_factor :
 #check loglog_pos_of_three_le
 #check loglog_cubed_div_log_tendsto_zero
 #check bourgain_factor_isLittleO_roth_factor
+#check threeAPFree_card_le_blasi
+#check threeAPFree_card_le_bourgain
 
 -- Axiom audit: `rothNumberNat_bourgain` is now a THEOREM.  Its only non-foundational
 -- dependency is the imported `RothTheoremOQ02.rothNumberNat_bloom_sisask` — there is NO
@@ -404,5 +450,10 @@ theorem bourgain_factor_isLittleO_roth_factor :
 -- neither the Bourgain nor the Bloom–Sisask assumption — only Mathlib's log-growth API).
 #print axioms loglog_cubed_div_log_tendsto_zero
 #print axioms bourgain_factor_isLittleO_roth_factor
+
+-- The universal (arbitrary 3-AP-free set) forms inherit exactly the one Bloom–Sisask
+-- assumption via the extremal bounds; they add no new axiom of their own.
+#print axioms threeAPFree_card_le_blasi
+#print axioms threeAPFree_card_le_bourgain
 
 end RothTheoremOQ01
