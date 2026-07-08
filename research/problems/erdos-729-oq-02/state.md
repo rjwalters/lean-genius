@@ -7,27 +7,37 @@
 **Iteration**: 2
 
 ## Current Focus
-OQ-02 resolved: `legendre_for_two` ($v_2(n!) = n - s_2(n)$) is now proved
-axiom-free from Mathlib's `sub_one_mul_padicValNat_factorial`. The
-`legendre_identity` axiom has been deleted (file axiom count 4 → 3).
+OQ-02 resolved and now BUILD-VERIFIED: `legendre_for_two` ($v_2(n!) = n - s_2(n)$)
+is proved axiom-free from Mathlib's `sub_one_mul_padicValNat_factorial`. The
+`legendre_identity` axiom was deleted (file axiom count 4 → 3). The three
+remaining axioms (`erdos_1968_classical`, `barreto_leeham_theorem`,
+`barreto_leeham_bound`) are the genuinely deep open math, out of scope.
 
 ## Active Approach
-Direct application of Mathlib's Legendre theorem at $p = 2$, plus a strong-induction
-bridge `digitSum_eq_digits_sum` from the file's recursive digit sum to
-`(Nat.digits p n).sum`.
+Direct application of Mathlib's Legendre theorem at $p = 2$. `digitSum p n` is now
+defined directly as `(Nat.digits p n).sum` (the previous naive recursion
+`n % p + digitSum p (n / p)` was ill-founded for `p ≤ 1`), so the bridge
+`digitSum_eq_digits_sum` is definitional (`rfl`).
 
 ## Attempt Count
-- Total attempts: 1
+- Total attempts: 2
 - Current approach attempts: 1
 - Approaches tried: 1
 
 ## Blockers
-Docker build wrapper unavailable this session (blackout). Proof shipped
-build-pending after full name-check against sibling mathlib4 v4.26.0.
-Sole at-risk line: `rw [digitSum.eq_def, if_neg hn]` (wf-def unfold idiom).
+None. `Erdos729Problem.lean` builds cleanly (`Built Proofs.Erdos729Problem`,
+0 sorries, 3 axioms).
 
 ## Next Action
-Build-verify when Docker returns:
-`./proofs/scripts/docker-build.sh Proofs.Erdos729Problem`.
+Build-repair complete. The file had been committed build-pending during a Docker
+blackout and merged without Lean CI (math PRs auto-merge); the first real build
+exposed four latent errors, all now fixed:
+- ill-founded `digitSum` recursion → redefined via `Nat.digits`;
+- `Nat.log_lt` (removed) → `Nat.log_lt_of_lt_pow`;
+- `Nat.lt_two_pow n` (removed in v4.26) → `n.lt_two_pow_self`;
+- `Finset.sum_congr (by omega)` (omega can't prove a Finset equality) →
+  `by rw [Nat.add_sub_cancel]`, with the `1+k = k+1` index shift via `Nat.add_comm`;
+- two orphaned `/--` doc comments causing parse errors → `/-` block comments.
+
 Remaining axioms (Erdős 1968, Barreto–Leeham) are the genuinely deep open math,
 out of scope for OQ-02.
