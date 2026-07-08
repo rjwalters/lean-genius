@@ -448,7 +448,9 @@ theorem density_one_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N 
     Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) * (k + 1) ≥
     Erdos1059OQ01.primeCount (Nat.factorial n) * k := by
   obtain ⟨N₀, hN₀⟩ := density_at_levels k
-  refine ⟨max N₀ 1, fun n hn => ?_⟩
+  -- Witness N₀ + 1: we apply the level-sum bound at n - 1 (range n = range ((n-1)+1)),
+  -- which needs n - 1 ≥ N₀, i.e. n ≥ N₀ + 1.
+  refine ⟨N₀ + 1, fun n hn => ?_⟩
   have hn1 : n ≥ 1 := by omega
   have hnN : n ≥ N₀ := by omega
   rw [qualifyingCount_decomposition n hn1, primeCount_decomposition n hn1]
