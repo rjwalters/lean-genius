@@ -1,0 +1,115 @@
+[
+  {
+    "id": "ann-motivation-verbatim-lemmas",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "context",
+    "title": "Motivation: Three Verbatim Sylow Lemmas, One Group-Order Fact",
+    "content": "The verified Abel–Ruffini proof that x⁵ − 4x + 2 is not solvable by radicals (parent AbelRuffiniOQ04OQ01) eliminates the intermediate Galois-group orders 10, 20, and 40 with three private lemmas gal_card_ne_10 / _20 / _40. Read side by side, the three proofs are byte-for-byte identical except for the order value (10/20/40) and the resulting Sylow index (2/4/8). Every structural step — that the Sylow 5-subgroup has order 5, that it is unique hence normal, that it equals ⟨c⟩ for a 5-cycle c, that every element therefore normalizes ⟨c⟩ — depends only on the group order, not on the ambient symmetric group. This entry isolates that shared skeleton into a single generic lemma quantified over the group order 5·m, discharging the open question oq-03. The whole file is fully abstract: no Polynomial.Gal, no permutations, and — unlike the private lemmas — no native_decide.",
+    "mathContext": "$\\text{gal\\_card\\_ne\\_}10/20/40$ share one core: order $5m \\Rightarrow$ normal Sylow 5-subgroup $= \\langle c\\rangle$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Abel–Ruffini theorem",
+      "Sylow's theorems",
+      "code refactoring / deduplication",
+      "normal subgroup"
+    ],
+    "prerequisites": [
+      "Sylow theory",
+      "Galois group of a quintic",
+      "symmetric group S_5"
+    ]
+  },
+  {
+    "id": "ann-statement",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-03",
+    "range": {
+      "startLine": 51,
+      "endLine": 62
+    },
+    "type": "concept",
+    "title": "The Generic Statement, Parameterized by the Group Order",
+    "content": "zpowers_order5_normal takes an arbitrary finite group G together with three hypotheses that encode 'the order is 5·m with a well-behaved 5′-part': hcard : Nat.card G = 5 * m, hm5 : ¬ 5 ∣ m (so 5 divides |G| exactly once), and huniq : ∀ d, d ∣ m → d % 5 = 1 → d = 1 (the only divisor of the index congruent to 1 mod 5 is 1). Given any element c of order 5 it concludes (Subgroup.zpowers c).Normal. The hypotheses are precisely the data that varied between the three original lemmas: m is the Sylow index (2, 4, 8) and huniq is the arithmetic fact that pins the Sylow count to 1 for that specific m.",
+    "mathContext": "$G \\text{ finite},\\ |G| = 5m,\\ 5 \\nmid m,\\ (\\forall d \\mid m,\\ d \\equiv 1 \\Rightarrow d = 1),\\ \\mathrm{ord}(c) = 5 \\;\\Rightarrow\\; \\langle c\\rangle \\trianglelefteq G.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "cyclic subgroup zpowers",
+      "orderOf",
+      "parameterization by group order"
+    ],
+    "prerequisites": [
+      "Nat.card of a group",
+      "divisibility and modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-sylow-order-nonative",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-03",
+    "range": {
+      "startLine": 63,
+      "endLine": 82
+    },
+    "type": "technique",
+    "title": "Sylow Order Without native_decide, and Uniqueness via Counting",
+    "content": "The private lemmas computed |P₅| = 5 with native_decide on a concrete order. Here the same fact is proved symbolically: Sylow.card_eq_multiplicity gives |P₅| = 5^(v₅(|G|)), and since |G| = 5·m with 5 ∤ m, Nat.factorization_mul together with Nat.Prime.factorization and Nat.factorization_eq_zero_of_not_dvd evaluate v₅(5·m) = 1 + 0 = 1, so |P₅| = 5. This avoids the Lean.ofReduceBool axiom that native_decide would introduce, keeping the result 0-axiom. Uniqueness then follows by counting: the index of P₅ is m, and Sylow's third theorem (card_sylow_modEq_one) with Sylow.card_dvd_index give the Sylow count n₅ ∣ m and n₅ ≡ 1 (mod 5); huniq collapses these to n₅ = 1.",
+    "mathContext": "$v_5(5m) = 1 \\Rightarrow |P_5| = 5; \\quad n_5 \\mid m \\wedge n_5 \\equiv 1 \\ (\\mathrm{mod}\\ 5) \\Rightarrow n_5 = 1.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "p-adic valuation Nat.factorization",
+      "Sylow's third theorem",
+      "avoiding native_decide"
+    ],
+    "prerequisites": [
+      "Nat.factorization of a product",
+      "Sylow.card_eq_multiplicity",
+      "index of a subgroup"
+    ]
+  },
+  {
+    "id": "ann-normal-and-cyclic",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-03",
+    "range": {
+      "startLine": 83,
+      "endLine": 110
+    },
+    "type": "technique",
+    "title": "Uniqueness ⇒ Normality ⇒ Identification with ⟨c⟩",
+    "content": "n₅ = 1 makes Sylow 5 G a subsingleton, and Sylow.smul_eq_iff_mem_normalizer turns 'g • P₅ = P₅ (automatic when there is only one Sylow subgroup)' into 'g normalizes P₅', giving (↑P₅).Normal. To identify P₅ with ⟨c⟩: the order-5 element c generates a 5-subgroup, which IsPGroup.exists_le_sylow places inside some Sylow subgroup Q; by uniqueness Q = P₅, so ⟨c⟩ ≤ P₅. Both have order 5, so the inclusion Subgroup.inclusion is a bijection (Fintype.bijective_iff_injective_and_card), giving P₅ = ⟨c⟩. Rewriting normality of P₅ along this equality (rwa [hP5_eq] at hNP) yields (Subgroup.zpowers c).Normal.",
+    "mathContext": "$\\mathrm{Subsingleton}(\\mathrm{Sylow}\\ 5\\ G) \\Rightarrow P_5 \\trianglelefteq G; \\quad \\langle c\\rangle \\le P_5 \\wedge |{\\langle c\\rangle}| = |P_5| \\Rightarrow P_5 = \\langle c\\rangle.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "normality of a unique Sylow subgroup",
+      "Subgroup.inclusion bijection by cardinality",
+      "IsPGroup.exists_le_sylow"
+    ],
+    "prerequisites": [
+      "normalizer of a subgroup",
+      "cardinality of cyclic subgroups"
+    ]
+  },
+  {
+    "id": "ann-corollary-and-examples",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-03",
+    "range": {
+      "startLine": 112,
+      "endLine": 142
+    },
+    "type": "insight",
+    "title": "Corollary and Recovering the Orders 10, 20, 40",
+    "content": "conj_mem_zpowers_order5 packages the reusable consequence: under the same hypotheses, every g satisfies g·c·g⁻¹ ∈ ⟨c⟩ — this is exactly the 'hconj_zpow' line that appeared identically in all three private lemmas, now a one-line application of Normal.conj_mem. The three closing examples verify huniq for m = 2, 4, 8, which are precisely the 5′-parts of the original orders 10 = 5·2, 20 = 5·4, 40 = 5·8. The m = 8 example is the instructive one: 6 ≡ 1 (mod 5), so the congruence alone would admit n₅ = 6 — it is ruled out only because 6 ∤ 8, which is why huniq must require both d ∣ m and d % 5 = 1.",
+    "mathContext": "$g c g^{-1} \\in \\langle c\\rangle; \\quad m \\in \\{2,4,8\\} \\Leftrightarrow |G| \\in \\{10,20,40\\}; \\quad 6 \\equiv 1\\ (\\mathrm{mod}\\ 5)\\ \\text{but}\\ 6 \\nmid 8.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Normal.conj_mem",
+      "specialization to concrete orders",
+      "necessity of the divisibility hypothesis"
+    ],
+    "prerequisites": [
+      "conjugation in a group",
+      "interval_cases on bounded divisors"
+    ]
+  }
+]
