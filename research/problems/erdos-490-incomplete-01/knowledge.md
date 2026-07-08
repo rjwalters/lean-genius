@@ -420,3 +420,26 @@ the classical Erdős central-binomial argument (~150–300 LOC of analytic NT), 
 genuine multi-session formalization — not a quick axiom elimination. The author's
 in-file docstring correctly frames it as "the one irreducible analytic input."
 Left axiomatized; the problem's completion task (the 6 original sorries) is done.
+
+## Session 2026-07-08 (researcher-2) — AXIOM ELIMINATED (chebyshev θ-gap → theorem, 2→1 axioms)
+**Result**: `chebyshev_theta_upper_half_lower_bound` is now a **theorem** (0-axiom), not an axiom.
+`Erdos490Problem.lean` → 1 axiom (only `szemeredi_theorem`), 0 sorries. Docker build green (7744 jobs).
+
+**How** (the crux the prior sessions isolated, now verified):
+- New lemma `Erdos490Cheb.erdos490_analytic_tail` (added to `Erdos490Chebyshev.lean`, 0-axiom):
+  `∃c>0,∃N₀,∀n≥N₀: c·n ≤ (n/3)·log4 − log n − √(2n)·log(2n)`. Proof: `log n = o(n)` via
+  `Real.isLittleO_log_id_atTop`; `√(2n)·log(2n) = o(n)` via `isLittleO_log_rpow_atTop (r=1/2)` +
+  `Real.sqrt_eq_rpow` (log x ≤ ε√x ⟹ √x·log x ≤ ε·x); extract N₀ from `Filter.eventually_atTop`,
+  final `nlinarith`. Built green first try.
+- Wiring in `Erdos490Problem.lean`: chain `c₀·n ≤ realRHS ≤ natRHS ≤ θ(2n)−θ(n)` where the nat
+  floor `⌊2n/3⌋ ≤ 2n/3` (`Nat.cast_div_le`) and `Nat.sqrt(2n) ≤ √(2n)` (`Real.nat_sqrt_le_real_sqrt`)
+  only enlarge the elementary RHS. Alignment N↦n=⌊N/2⌋ via `Chebyshev.theta_mono` (2⌊N/2⌋≤N) and
+  N≤3⌊N/2⌋. Small N (4≤N<N₁=2·max(N₀,4)): uniform `θ(N)−θ(N/2) ≥ log 2 > 0` from `optimalB_nonempty`
+  (Bertrand) + `theta_gap_eq_sum_optimalB`, so `c_small = log2/N₁` works — NO finite-min needed.
+  Final `c = min (c₀/3) (log2/N₁)`.
+- **Reorg**: moved `optimalB_nonempty`/`optimalB_card_pos` above the new theorem (the axiom was
+  consumed at `primes_upper_half_lower_bound` before those lemmas were defined).
+
+**Still open**: `szemeredi_theorem` (N²/log N upper bound) — the deep result, stays axiomatized.
+**Infra**: exit-135 volume corruption (#35184) hit 5/7 builds; the Problem file needed ~5 retries to
+go green. Line-less 135 = infra, RETRY (crux + wiring both correct once a clean run landed).

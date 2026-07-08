@@ -202,5 +202,56 @@ theorem theta_gap_lower_bound (n : ℕ) (hn : 4 ≤ n) :
     Real.log_pow, Real.log_pow] at hlog
   linarith [hlog]
 
+open Real Filter Asymptotics in
+/-- **Analytic tail (0 axioms, 0 sorries).** The elementary lower bound supplied by
+`theta_gap_lower_bound` eventually dominates a positive multiple of `n`:
+`(n/3)·log 4 − log n − √(2n)·log(2n) ≥ (log 4 / 6)·n` for all large `n`, because both
+`log n` and `√(2n)·log(2n)` are `o(n)` (`Real.isLittleO_log_id_atTop` and
+`isLittleO_log_rpow_atTop` with exponent `1/2`).  This is the single remaining analytic
+input needed to turn the axiom `chebyshev_theta_upper_half_lower_bound` in
+`Erdos490Problem.lean` into a theorem.  Stated with the *real* `√` and `2n/3`; the nat
+floor `⌊2n/3⌋` and `Nat.sqrt (2n)` of `theta_gap_lower_bound` only make its RHS larger, so
+this real bound lower-bounds it directly. -/
+theorem erdos490_analytic_tail :
+    ∃ c : ℝ, 0 < c ∧ ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n →
+      c * (n : ℝ) ≤ (n : ℝ) * Real.log 4 - (2 * (n : ℝ) / 3) * Real.log 4
+        - Real.log (n : ℝ) - Real.sqrt (2 * (n : ℝ)) * Real.log (2 * (n : ℝ)) := by
+  have hL : (0 : ℝ) < Real.log 4 := Real.log_pos (by norm_num)
+  -- `log n = o(n)`: eventually `log x ≤ (log 4 / 12)·x`.
+  have hE1 : ∀ᶠ x : ℝ in atTop, Real.log x ≤ (Real.log 4 / 12) * x := by
+    have h := (isLittleO_iff.mp Real.isLittleO_log_id_atTop)
+      (show (0 : ℝ) < Real.log 4 / 12 by positivity)
+    filter_upwards [h, Filter.eventually_ge_atTop (1 : ℝ)] with x hx hx1
+    have hlog : (0 : ℝ) ≤ Real.log x := Real.log_nonneg hx1
+    have hx0 : (0 : ℝ) ≤ x := by linarith
+    simpa [id_eq, Real.norm_of_nonneg hlog, Real.norm_of_nonneg hx0] using hx
+  -- `√x·log x = o(x)`: eventually `√x · log x ≤ (log 4 / 24)·x`.
+  have hE2 : ∀ᶠ x : ℝ in atTop, Real.sqrt x * Real.log x ≤ (Real.log 4 / 24) * x := by
+    have hlo : (Real.log) =o[atTop] (fun x : ℝ => x ^ (1 / 2 : ℝ)) :=
+      isLittleO_log_rpow_atTop (by norm_num)
+    have h := (isLittleO_iff.mp hlo) (show (0 : ℝ) < Real.log 4 / 24 by positivity)
+    filter_upwards [h, Filter.eventually_ge_atTop (1 : ℝ)] with x hx hx1
+    have hx0 : (0 : ℝ) ≤ x := by linarith
+    have hlog : (0 : ℝ) ≤ Real.log x := Real.log_nonneg hx1
+    have hrp : (0 : ℝ) ≤ x ^ (1 / 2 : ℝ) := Real.rpow_nonneg hx0 _
+    rw [Real.norm_of_nonneg hlog, Real.norm_of_nonneg hrp] at hx
+    have hsqrt : Real.sqrt x = x ^ (1 / 2 : ℝ) := Real.sqrt_eq_rpow x
+    calc Real.sqrt x * Real.log x
+        ≤ Real.sqrt x * ((Real.log 4 / 24) * x ^ (1 / 2 : ℝ)) :=
+          mul_le_mul_of_nonneg_left hx (Real.sqrt_nonneg x)
+      _ = (Real.log 4 / 24) * (Real.sqrt x * x ^ (1 / 2 : ℝ)) := by ring
+      _ = (Real.log 4 / 24) * x := by rw [← hsqrt, Real.mul_self_sqrt hx0]
+  obtain ⟨X1, hX1⟩ := Filter.eventually_atTop.mp hE1
+  obtain ⟨X2, hX2⟩ := Filter.eventually_atTop.mp hE2
+  refine ⟨Real.log 4 / 6, by positivity, ⌈max X1 X2⌉₊, ?_⟩
+  intro n hn
+  have hnR : max X1 X2 ≤ (n : ℝ) := le_trans (Nat.le_ceil _) (by exact_mod_cast hn)
+  have hn1 : X1 ≤ (n : ℝ) := le_trans (le_max_left _ _) hnR
+  have hn2 : X2 ≤ 2 * (n : ℝ) := by
+    have := le_trans (le_max_right _ _) hnR; linarith
+  have e1 := hX1 (n : ℝ) hn1
+  have e2 := hX2 (2 * (n : ℝ)) hn2
+  nlinarith [e1, e2, hL]
+
 end Erdos490Cheb
 

@@ -34,6 +34,7 @@ import Mathlib.NumberTheory.Primorial
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.NumberTheory.Bertrand
 import Mathlib.NumberTheory.Chebyshev
+import Proofs.Erdos490Chebyshev
 
 open Finset Real
 open scoped Classical
@@ -176,21 +177,14 @@ theorem optimalA_card (N : ℕ) : (optimalA N).card = N / 2 := by
       exact ⟨by omega, h1, h2⟩
   rw [hset, Nat.card_Icc]; omega
 
-/-- **Chebyshev θ-gap lower bound** (the one irreducible analytic input, now stated
-against Mathlib's `Chebyshev.theta`).  Here `θ x = ∑_{p ≤ x} log p` is the first
-Chebyshev function.  The half-open interval `(N/2, N]` contributes at least a positive
-constant fraction of `N` to `θ`: `θ(N) − θ(N/2) ≳ N`.  This is the classical
-Chebyshev-strength lower bound `θ(N) − θ(N/2) ≥ c·N`, whose elementary proof runs
-through the central binomial coefficient (Erdős's proof of Bertrand's postulate gives
-exactly this `(2n/3, 2n]` product estimate).  Mathlib's `Mathlib.NumberTheory.Chebyshev`
-currently supplies only the *upper* bounds `theta_le_log4_mul_x` and `psi_le_const_mul_self`
-— it has **no** lower bound on `θ`, `ψ`, or `Nat.primeCounting` — so we isolate exactly
-this Chebyshev θ-gap as the single explicit analytic axiom.  Everything downstream (the
-bespoke prime-counting bound `primes_upper_half_lower_bound`, and hence `bound_is_optimal`)
-is then *fully verified* from it via the `θ → π` bridge below. -/
-axiom chebyshev_theta_upper_half_lower_bound :
-    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 4 →
-      c * N ≤ Chebyshev.theta (N : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ)
+/- The Chebyshev θ-gap lower bound `θ(N) − θ(N/2) ≥ c·N` was formerly an axiom here.
+   It is now a **theorem** (`chebyshev_theta_upper_half_lower_bound`, 0 axioms), proved
+   below immediately after `theta_gap_eq_sum_optimalB`, by combining the elementary
+   central-binomial estimate `Erdos490Cheb.theta_gap_lower_bound` with the analytic-tail
+   lemma `Erdos490Cheb.erdos490_analytic_tail` (`log n`, `√(2n)·log(2n) = o(n)`), plus a
+   Bertrand-based positive lower bound `θ(N) − θ(N/2) ≥ log 2` for the finitely many small
+   `N`.  This eliminates the last analytic axiom of the *lower*-bound half of #490 (only
+   `szemeredi_theorem`, the deep `N²/log N` *upper* bound, remains axiomatized). -/
 
 /-- **θ-gap as a sum over the optimal `B` (0-axiom).** The primes counted by
 `Chebyshev.theta N − Chebyshev.theta (N/2)` are exactly the primes in `(N/2, N]`, i.e. the
@@ -224,6 +218,129 @@ theorem theta_gap_eq_sum_optimalB (N : ℕ) :
     · rintro ⟨_, hpr, hlt, hle⟩
       exact ⟨⟨⟨hpr.pos, hle⟩, hpr⟩, by rintro ⟨⟨_, h2⟩, _⟩; omega⟩
   rw [e1, e2, ← hset, Finset.sum_sdiff_eq_sub hsub]
+
+/-- **Qualitative lower bound (0-axiom, via Bertrand's postulate).** For every `N ≥ 2`
+the half-open interval `(N/2, N]` contains a prime, so the optimal `B` is nonempty.
+Proof: apply Bertrand's postulate `Nat.exists_prime_lt_and_le_two_mul` at `m = ⌊N/2⌋`
+(nonzero since `N ≥ 2`) to get a prime `p` with `N/2 < p ≤ 2·⌊N/2⌋ ≤ N`. -/
+theorem optimalB_nonempty {N : ℕ} (hN : 2 ≤ N) : (optimalB N).Nonempty := by
+  have hm : N / 2 ≠ 0 := by omega
+  obtain ⟨p, hp, hlt, hle⟩ := Nat.exists_prime_lt_and_le_two_mul (N / 2) hm
+  refine ⟨p, ?_⟩
+  have hpN : p ≤ N := by omega
+  simp only [optimalB, Finset.mem_filter, Finset.mem_range]
+  exact ⟨by omega, hp, hlt, hpN⟩
+
+/-- The optimal `B` has at least one element for `N ≥ 2` (0-axiom, via Bertrand). -/
+theorem optimalB_card_pos {N : ℕ} (hN : 2 ≤ N) : 0 < (optimalB N).card :=
+  Finset.card_pos.mpr (optimalB_nonempty hN)
+
+/-- **Chebyshev θ-gap lower bound (0 axioms, 0 sorries).** `∃ c > 0, ∀ N ≥ 4,
+`c·N ≤ θ(N) − θ(N/2)`.  This is the classical Chebyshev-strength lower bound, now fully
+verified — formerly the analytic axiom `chebyshev_theta_upper_half_lower_bound`.
+
+The proof assembles three verified ingredients:
+* `Erdos490Cheb.theta_gap_lower_bound`: the elementary central-binomial estimate
+  `n·log 4 − ⌊2n/3⌋·log 4 − log n − √(2n)·log(2n) ≤ θ(2n) − θ(n)` (Erdős's Bertrand proof);
+* `Erdos490Cheb.erdos490_analytic_tail`: `∃ c₀ > 0, ∃ N₀, ∀ n ≥ N₀`, the real form of that
+  RHS is `≥ c₀·n` (because `log n` and `√(2n)·log(2n)` are `o(n)`);
+* `optimalB_nonempty` (Bertrand): `θ(N) − θ(N/2) ≥ log 2 > 0` for every `N ≥ 2`, covering
+  the finitely many `N` below the asymptotic threshold `N₁ = 2·max(N₀, 4)`.
+
+Alignment `N ↦ n = ⌊N/2⌋` uses `Chebyshev.theta_mono` (`2⌊N/2⌋ ≤ N`) and `N ≤ 3⌊N/2⌋`. -/
+theorem chebyshev_theta_upper_half_lower_bound :
+    ∃ c : ℝ, c > 0 ∧ ∀ N : ℕ, N ≥ 4 →
+      c * N ≤ Chebyshev.theta (N : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ) := by
+  obtain ⟨c₀, hc₀, N₀, htail⟩ := Erdos490Cheb.erdos490_analytic_tail
+  set M : ℕ := max N₀ 4 with hMdef
+  set N₁ : ℕ := 2 * M with hN₁def
+  have hM4 : 4 ≤ M := le_max_right N₀ 4
+  have hMN0 : N₀ ≤ M := le_max_left N₀ 4
+  have hMpos : 0 < M := by omega
+  have hN₁pos : 0 < N₁ := by omega
+  -- Uniform positive lower bound: `log 2 ≤ θ(N) − θ(N/2)` for `N ≥ 2`.
+  have hgap2 : ∀ N : ℕ, 2 ≤ N →
+      Real.log 2 ≤ Chebyshev.theta (N : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ) := by
+    intro N hN
+    rw [theta_gap_eq_sum_optimalB N]
+    obtain ⟨p₀, hp₀⟩ := optimalB_nonempty hN
+    have hp₀mem := hp₀
+    simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hp₀mem
+    have hp₀prime : Nat.Prime p₀ := hp₀mem.2.1
+    have hp₀2 : (2 : ℝ) ≤ (p₀ : ℝ) := by exact_mod_cast hp₀prime.two_le
+    have hp₀pos : (0 : ℝ) < (p₀ : ℝ) := by exact_mod_cast hp₀prime.pos
+    have hnn : ∀ p ∈ optimalB N, 0 ≤ Real.log (p : ℝ) := by
+      intro p hp
+      simp only [optimalB, Finset.mem_filter, Finset.mem_range] at hp
+      exact Real.log_nonneg (by exact_mod_cast hp.2.1.one_lt.le)
+    calc Real.log 2 ≤ Real.log (p₀ : ℝ) :=
+          (Real.log_le_log_iff (by norm_num) hp₀pos).mpr hp₀2
+      _ ≤ ∑ p ∈ optimalB N, Real.log (p : ℝ) := Finset.single_le_sum hnn hp₀
+  -- Large branch: for `n ≥ M`, `c₀·n ≤ θ(2n) − θ(n)`.
+  have hlarge : ∀ n : ℕ, M ≤ n →
+      c₀ * (n : ℝ) ≤ Chebyshev.theta ((2 * n : ℕ) : ℝ) - Chebyshev.theta ((n : ℕ) : ℝ) := by
+    intro n hnM
+    have hn4 : 4 ≤ n := le_trans hM4 hnM
+    have hnN0 : N₀ ≤ n := le_trans hMN0 hnM
+    have ht := Erdos490Cheb.theta_gap_lower_bound n hn4
+    have ha := htail n hnN0
+    have hL : (0 : ℝ) < Real.log 4 := Real.log_pos (by norm_num)
+    have hn1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast (by omega : 1 ≤ n)
+    -- Nat floor / Nat.sqrt only make the elementary RHS larger than its real form.
+    have hfloor : ((2 * n / 3 : ℕ) : ℝ) ≤ 2 * (n : ℝ) / 3 := by
+      calc ((2 * n / 3 : ℕ) : ℝ) ≤ ((2 * n : ℕ) : ℝ) / ((3 : ℕ) : ℝ) := Nat.cast_div_le
+        _ = 2 * (n : ℝ) / 3 := by push_cast; ring
+    have hsqrt : (Nat.sqrt (2 * n) : ℝ) ≤ Real.sqrt (2 * (n : ℝ)) := by
+      rw [show (2 * (n : ℝ)) = ((2 * n : ℕ) : ℝ) by push_cast; ring]
+      exact Real.nat_sqrt_le_real_sqrt
+    have hlog2n : 0 ≤ Real.log (2 * (n : ℝ)) := Real.log_nonneg (by linarith)
+    have h1 : ((2 * n / 3 : ℕ) : ℝ) * Real.log 4 ≤ (2 * (n : ℝ) / 3) * Real.log 4 :=
+      mul_le_mul_of_nonneg_right hfloor hL.le
+    have h2 : (Nat.sqrt (2 * n) : ℝ) * Real.log (2 * (n : ℝ))
+        ≤ Real.sqrt (2 * (n : ℝ)) * Real.log (2 * (n : ℝ)) :=
+      mul_le_mul_of_nonneg_right hsqrt hlog2n
+    linarith [ha, ht, h1, h2]
+  refine ⟨min (c₀ / 3) (Real.log 2 / N₁), ?_, ?_⟩
+  · have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+    have hN₁R : (0 : ℝ) < (N₁ : ℝ) := by exact_mod_cast hN₁pos
+    exact lt_min (div_pos hc₀ (by norm_num)) (div_pos hlog2 hN₁R)
+  · intro N hN
+    rcases lt_or_ge N N₁ with hsmall | hbig
+    · -- Small `N` (`4 ≤ N < N₁`): the uniform gap `≥ log 2` and `c ≤ log 2 / N₁ ≤ log 2 / N`.
+      have hgap := hgap2 N (by omega)
+      have hNpos : (0 : ℝ) < (N : ℝ) := by exact_mod_cast (by omega : 0 < N)
+      have hNle : (N : ℝ) ≤ (N₁ : ℝ) := by exact_mod_cast hsmall.le
+      have hlog2 : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+      have hN₁R : (0 : ℝ) < (N₁ : ℝ) := by exact_mod_cast hN₁pos
+      have hcmin : min (c₀ / 3) (Real.log 2 / N₁) ≤ Real.log 2 / N₁ := min_le_right _ _
+      have hle : (Real.log 2 / N₁) * (N : ℝ) ≤ Real.log 2 := by
+        rw [div_mul_eq_mul_div, div_le_iff₀ hN₁R]
+        exact mul_le_mul_of_nonneg_left hNle hlog2.le
+      have hstep : min (c₀ / 3) (Real.log 2 / N₁) * (N : ℝ) ≤ Real.log 2 :=
+        le_trans (mul_le_mul_of_nonneg_right hcmin hNpos.le) hle
+      linarith [hgap, hstep]
+    · -- Large `N` (`N ≥ N₁ = 2M`): set `n = ⌊N/2⌋ ≥ M`, align via `θ` monotone.
+      have hnM : M ≤ N / 2 := by omega
+      have hbranch := hlarge (N / 2) hnM
+      have h2le : (2 * (N / 2) : ℕ) ≤ N := by omega
+      have hmono : Chebyshev.theta ((2 * (N / 2) : ℕ) : ℝ) ≤ Chebyshev.theta (N : ℝ) :=
+        Chebyshev.theta_mono (by exact_mod_cast h2le)
+      have hN3 : (N : ℝ) ≤ 3 * ((N / 2 : ℕ) : ℝ) := by
+        have : N ≤ 3 * (N / 2) := by omega
+        exact_mod_cast this
+      have hcmin : min (c₀ / 3) (Real.log 2 / N₁) ≤ c₀ / 3 := min_le_left _ _
+      have hcN : min (c₀ / 3) (Real.log 2 / N₁) * (N : ℝ) ≤ (c₀ / 3) * (N : ℝ) :=
+        mul_le_mul_of_nonneg_right hcmin (by positivity)
+      have hstep2 : (c₀ / 3) * (N : ℝ) ≤ c₀ * ((N / 2 : ℕ) : ℝ) := by
+        have hmul := mul_le_mul_of_nonneg_left hN3 (le_of_lt (div_pos hc₀ (by norm_num : (0:ℝ) < 3)))
+        calc (c₀ / 3) * (N : ℝ) ≤ (c₀ / 3) * (3 * ((N / 2 : ℕ) : ℝ)) := hmul
+          _ = c₀ * ((N / 2 : ℕ) : ℝ) := by ring
+      calc min (c₀ / 3) (Real.log 2 / N₁) * (N : ℝ)
+          ≤ (c₀ / 3) * (N : ℝ) := hcN
+        _ ≤ c₀ * ((N / 2 : ℕ) : ℝ) := hstep2
+        _ ≤ Chebyshev.theta ((2 * (N / 2) : ℕ) : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ) :=
+            hbranch
+        _ ≤ Chebyshev.theta (N : ℝ) - Chebyshev.theta ((N / 2 : ℕ) : ℝ) := by linarith [hmono]
 
 /-- **θ → π bridge (0-axiom).** Since every prime `p` counted in the θ-gap satisfies
 `p ≤ N`, each `log p ≤ log N`, so the θ-gap is bounded by `|optimalB N| · log N`.  Dividing
@@ -296,25 +413,6 @@ theorem optimalB_card_eq_primeCounting (N : ℕ) :
   rw [Finset.filter_filter, Finset.filter_filter, ← hB, hlow] at hpart
   rw [hπ N, hπ (N / 2)]
   omega
-
-/-- **Qualitative lower bound (0-axiom, via Bertrand's postulate).** For every `N ≥ 2`
-the half-open interval `(N/2, N]` contains a prime, so the optimal `B` is nonempty.
-Proof: apply Bertrand's postulate `Nat.exists_prime_lt_and_le_two_mul` at `m = ⌊N/2⌋`
-(nonzero since `N ≥ 2`) to get a prime `p` with `N/2 < p ≤ 2·⌊N/2⌋ ≤ N`.
-This discharges the *qualitative* content of `primes_upper_half_lower_bound` (there is at
-least one prime in the upper half) from a genuine Mathlib theorem; what the axiom still
-asserts is purely the *quantitative growth rate* `c · N / log N`. -/
-theorem optimalB_nonempty {N : ℕ} (hN : 2 ≤ N) : (optimalB N).Nonempty := by
-  have hm : N / 2 ≠ 0 := by omega
-  obtain ⟨p, hp, hlt, hle⟩ := Nat.exists_prime_lt_and_le_two_mul (N / 2) hm
-  refine ⟨p, ?_⟩
-  have hpN : p ≤ N := by omega
-  simp only [optimalB, Finset.mem_filter, Finset.mem_range]
-  exact ⟨by omega, hp, hlt, hpN⟩
-
-/-- The optimal `B` has at least one element for `N ≥ 2` (0-axiom, via Bertrand). -/
-theorem optimalB_card_pos {N : ℕ} (hN : 2 ≤ N) : 0 < (optimalB N).card :=
-  Finset.card_pos.mpr (optimalB_nonempty hN)
 
 /-- **Strict prime-counting gap (0-axiom).** For `N ≥ 2`, `π(N/2) < π(N)`: the upper
 half `(N/2, N]` always contributes at least one new prime. This is the qualitative
