@@ -251,6 +251,43 @@ theorem puiseux_binomial_ramification (hK : IsAlgClosed K) (n : ℕ+) (c : K) (h
     rw [hexp, ha]
   · rw [HahnSeries.orderTop_single ha0]
 
+/-- **General binomial ramification** — the Newton-polygon edge of arbitrary slope.
+
+For `n : ℕ+`, `m : ℚ`, and `c ≠ 0` over an algebraically closed field, the binomial
+`Yⁿ = c·xᵐ` has a Puiseux root `y` whose leading exponent (`orderTop`) is exactly `m/n`.
+This is the general single-edge statement of Newton–Puiseux: an edge of slope `-m/n`
+contributes a leading term of exponent `m/n`. It unifies the three concrete ramification
+facts already in this file:
+
+* `puiseux_binomial_ramification` — the case `m = 1`, exponent `1/n`;
+* `square_root_puiseux` — the case `n = 2, m = 1`, exponent `1/2`;
+* `cusp_parameterization` — the case `n = 2, m = 3`, exponent `3/2`.
+
+Whenever the reduced denominator of `m/n` exceeds `1` the exponent is genuinely
+fractional, so the root lies outside the Laurent field `K((x))` (integer exponents only)
+— the concrete obstruction to `K((x))` being algebraically closed, now stated for an
+arbitrary Newton-polygon slope rather than a fixed one. The proof is the same direct
+`HahnSeries.single` computation as the special cases, with the general exponent `m/n`
+satisfying `n • (m/n) = m`. -/
+theorem puiseux_binomial_orderTop (hK : IsAlgClosed K) (n : ℕ+) (m : ℚ) (c : K) (hc : c ≠ 0) :
+    ∃ y : HahnSeries ℚ K,
+      IsPuiseuxSeries y ∧
+      y ^ (n : ℕ) = HahnSeries.single m c ∧
+      y.orderTop = (m / (n : ℚ) : ℚ) := by
+  haveI := hK
+  obtain ⟨a, ha⟩ := IsAlgClosed.exists_pow_nat_eq c n.pos
+  have ha0 : a ≠ 0 := by
+    rintro rfl
+    rw [zero_pow n.ne_zero] at ha
+    exact hc ha.symm
+  refine ⟨HahnSeries.single (m / (n : ℚ)) a, isPuiseux_single _ _, ?_, ?_⟩
+  · rw [HahnSeries.single_pow]
+    have hn : (n : ℚ) ≠ 0 := by exact_mod_cast n.ne_zero
+    have hexp : (n : ℕ) • (m / (n : ℚ)) = m := by
+      rw [nsmul_eq_mul, mul_comm, div_mul_cancel₀ _ hn]
+    rw [hexp, ha]
+  · rw [HahnSeries.orderTop_single ha0]
+
 /-- **Binomial polynomial root** — the binomial Puiseux root expressed as an honest
 `Polynomial.IsRoot`.
 
