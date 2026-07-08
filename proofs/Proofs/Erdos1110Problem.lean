@@ -726,6 +726,163 @@ theorem two_nonRepresentable_of_q_ge_three {p q : ℕ} (hp : p > q) (hq : q ≥ 
   nonRepresentable_of_lt_q hp (by omega) (le_refl 2) (by omega)
 
 /-
+## Part IId': The sharp lower window `[1, p + q)` (unconditional, 0-axiom)
+
+The `[q, 2q)` window bound `isRepresentable_iff_isPowerForm_window` used only the crude
+estimate "two summands, each `≥ q`, sum to `≥ 2q`". That is not tight: the *smallest*
+possible sum of a genuine two-element antichain of power forms is not `2q` but `p + q`.
+
+Indeed, every power form strictly below `p` is a **pure power of `q`** (any factor of `p`
+already pushes the value up to `≥ p`), and pure powers of `q` form a divisibility *chain*.
+So a two-element antichain cannot live entirely below `p`: at least one member is `≥ p`,
+while the other is still `≥ q` (the unit `1` divides everything, so it never appears in an
+antichain of size `≥ 2`). Hence any two-summand representation already sums to `≥ p + q`.
+
+This sharpens the exact characterization `IsRepresentable ↔ IsPowerForm` from the interval
+`[1, 2q)` up to `[1, p + q)` — strictly larger, since `p > q` gives `p + q > 2q`. The
+threshold `p + q` is **optimal**: whenever `q ∤ p` the antichain `{p, q}` represents `p + q`
+itself (`isRepresentable_p_add_q`), and `p + q` is generally not a power form, so the
+equivalence must fail at `p + q`.
+-/
+
+/-- **A power form strictly below `p` is a pure power of `q`.** Any factor of `p`
+(exponent `k ≥ 1`) already forces the value to be `≥ p`, so a power form `< p` must have
+`k = 0`. -/
+lemma isPowerForm_lt_p_pow_q {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (h : IsPowerForm p q n) (hlt : n < p) : ∃ l, n = q ^ l := by
+  obtain ⟨k, l, rfl⟩ := h
+  rcases Nat.eq_zero_or_pos k with hk | hk
+  · exact ⟨l, by rw [hk, pow_zero, one_mul]⟩
+  · exfalso
+    have hpk : p ≤ p ^ k := Nat.le_self_pow (by omega) p
+    have hql : 1 ≤ q ^ l := Nat.one_le_pow _ _ (by omega)
+    have : p ≤ p ^ k * q ^ l := le_trans hpk (Nat.le_mul_of_pos_right _ hql)
+    omega
+
+/-- **Two power forms both below `p` are comparable under divisibility.** Below `p` every
+power form is a pure power of `q` (`isPowerForm_lt_p_pow_q`), and the powers of `q` form a
+chain, so one divides the other. -/
+lemma powerForms_lt_p_dvd {p q a b : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (ha : IsPowerForm p q a) (hb : IsPowerForm p q b)
+    (hap : a < p) (hbp : b < p) : a ∣ b ∨ b ∣ a := by
+  obtain ⟨la, rfl⟩ := isPowerForm_lt_p_pow_q hp hq ha hap
+  obtain ⟨lb, rfl⟩ := isPowerForm_lt_p_pow_q hp hq hb hbp
+  rcases le_total la lb with h | h
+  · exact Or.inl (pow_dvd_pow q h)
+  · exact Or.inr (pow_dvd_pow q h)
+
+/-- **The minimal sum of a two-element antichain of power forms is `p + q`
+(unconditional, 0-axiom).** Given two distinct power forms `a, b` with neither dividing the
+other: neither is `1` (the unit divides everything), so both are `≥ q`; and they cannot
+both be `< p` (else they would be comparable powers of `q`), so the larger is `≥ p`. Hence
+`a + b ≥ p + q`. -/
+lemma antichain_pair_sum_ge {p q a b : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (ha : IsPowerForm p q a) (hb : IsPowerForm p q b)
+    (hnd1 : ¬ a ∣ b) (hnd2 : ¬ b ∣ a) : p + q ≤ a + b := by
+  have ha1 : a ≠ 1 := fun h => hnd1 (h ▸ one_dvd b)
+  have hb1 : b ≠ 1 := fun h => hnd2 (h ▸ one_dvd a)
+  have hapos : 0 < a := by
+    obtain ⟨k, l, rfl⟩ := ha
+    exact mul_pos (pow_pos (by omega) k) (pow_pos (by omega) l)
+  have hbpos : 0 < b := by
+    obtain ⟨k, l, rfl⟩ := hb
+    exact mul_pos (pow_pos (by omega) k) (pow_pos (by omega) l)
+  have ha2 : 2 ≤ a := by omega
+  have hb2 : 2 ≤ b := by omega
+  have haq : q ≤ a := isPowerForm_ge_q_of_ge_two hp hq ha ha2
+  have hbq : q ≤ b := isPowerForm_ge_q_of_ge_two hp hq hb hb2
+  have hmax : p ≤ a ∨ p ≤ b := by
+    by_contra hcon
+    push_neg at hcon
+    rcases powerForms_lt_p_dvd hp hq ha hb hcon.1 hcon.2 with h | h
+    · exact hnd1 h
+    · exact hnd2 h
+  rcases hmax with h | h <;> omega
+
+/-- **Any representation with two or more summands has sum `≥ p + q`
+(unconditional, 0-axiom).** Pick two distinct summands `a ≠ b`; they form an antichain, so
+`a + b ≥ p + q` (`antichain_pair_sum_ge`), and the full sum dominates the pair. -/
+lemma representable_card_two_sum_ge {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    {S : Finset ℕ} (hpf : ∀ s ∈ S, IsPowerForm p q s)
+    (hac : NoOneDividesAnother S) (hcard : 2 ≤ S.card) (hsum : S.sum id = n) :
+    p + q ≤ n := by
+  obtain ⟨a, b, ha, hb, hab⟩ := Finset.one_lt_card_iff.mp hcard
+  have hsub : ({a, b} : Finset ℕ) ⊆ S := by
+    intro x hx; simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> assumption
+  have hpair : ({a, b} : Finset ℕ).sum id ≤ S.sum id :=
+    Finset.sum_le_sum_of_subset hsub
+  rw [Finset.sum_pair hab, hsum] at hpair
+  simp only [id_eq] at hpair
+  have hge := antichain_pair_sum_ge hp hq (hpf a ha) (hpf b hb)
+    (hac a ha b hb hab) (hac b hb a ha (Ne.symm hab))
+  omega
+
+/-- **Sharp representability characterization on the lower window `[1, p + q)`
+(unconditional, 0-axiom).** For every `1 ≤ n < p + q`,
+
+    `IsRepresentable p q n ↔ IsPowerForm p q n`.
+
+Any representation with `≥ 2` summands has sum `≥ p + q` (`representable_card_two_sum_ge`),
+so below `p + q` every representation is a singleton `{n}`, forcing `n` to be a power form;
+the converse is `isRepresentable_of_isPowerForm`. Strictly strengthens
+`isRepresentable_iff_isPowerForm_below_two_q` (`p + q > 2q` since `p > q`). -/
+theorem isRepresentable_iff_isPowerForm_below_p_add_q {p q n : ℕ} (hp : p > q)
+    (hq : q ≥ 2) (hlo : 1 ≤ n) (hhi : n < p + q) :
+    IsRepresentable p q n ↔ IsPowerForm p q n := by
+  constructor
+  · rintro ⟨S, hne, hpf, hac, hsum⟩
+    have hcard1 : S.card = 1 := by
+      rcases Nat.lt_or_ge S.card 2 with hc | hc
+      · have : 1 ≤ S.card := Finset.card_pos.mpr hne
+        omega
+      · have := representable_card_two_sum_ge hp hq hpf hac hc hsum
+        omega
+    obtain ⟨x, rfl⟩ := Finset.card_eq_one.mp hcard1
+    rw [Finset.sum_singleton, id_eq] at hsum
+    rw [← hsum]
+    exact hpf x (Finset.mem_singleton_self x)
+  · intro h
+    exact isRepresentable_of_isPowerForm h
+
+/-- **Non-power-forms in the sharp window `[1, p + q)` are non-representable
+(unconditional, 0-axiom).** Contrapositive of `isRepresentable_iff_isPowerForm_below_p_add_q`:
+for every pair `p > q ≥ 2` this hands an explicit non-representable for each non-power-form
+below `p + q` — a strictly larger family than the `[q, 2q)` window
+(`nonRepresentable_of_window`). -/
+theorem nonRepresentable_of_below_p_add_q {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hlo : 1 ≤ n) (hhi : n < p + q) (hnp : ¬ IsPowerForm p q n) :
+    n ∈ NonRepresentable p q := by
+  rw [NonRepresentable, Set.mem_setOf_eq,
+    isRepresentable_iff_isPowerForm_below_p_add_q hp hq hlo hhi]
+  exact hnp
+
+/-- **Sharpness of the `p + q` threshold (unconditional, 0-axiom).** Whenever `q ∤ p` the
+antichain `{p, q}` represents `p + q`: both are power forms (`p = p^1 q^0`, `q = p^0 q^1`),
+they are distinct (`p > q`), and neither divides the other (`p ∤ q` because `q < p`, and
+`q ∤ p` by hypothesis). Since `p + q` is in general not a power form, the equivalence
+`isRepresentable_iff_isPowerForm_below_p_add_q` genuinely stops at `p + q`. -/
+theorem isRepresentable_p_add_q {p q : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hqp : ¬ q ∣ p) : IsRepresentable p q (p + q) := by
+  refine ⟨{p, q}, Finset.insert_nonempty _ _, ?_, ?_, ?_⟩
+  · intro s hs
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hs
+    rcases hs with rfl | rfl
+    · exact ⟨1, 0, by simp⟩
+    · exact ⟨0, 1, by simp⟩
+  · intro a ha b hb hab
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha hb
+    have hpq : ¬ p ∣ q := fun h => by
+      have := Nat.le_of_dvd (by omega) h; omega
+    rcases ha with rfl | rfl <;> rcases hb with rfl | rfl
+    · exact absurd rfl hab
+    · exact hpq
+    · exact hqp
+    · exact absurd rfl hab
+  · rw [Finset.sum_pair (by omega : p ≠ q)]
+    simp
+
+/-
 ## Part IIe: Multiplicative Closure of Representability (unconditional, 0-axiom)
 
 The `{2,3}` induction (`case_2_3_all_representable`) rested on a *doubling* step:

@@ -1,9 +1,45 @@
 # Current State
 
-**Phase**: ACT — {2,3} case fully solved + density-zero + coprime-empty + full lower-window [1,2q) characterization; 1 deep axiom remains
+**Phase**: ACT — sharp lower-window [1, p+q) characterization (optimal); {2,3} solved + density-zero + coprime-empty; 1 deep axiom remains
 **Since**: 2026-05-29T19:14:09.134Z
-**Iteration**: 7
-**Last Updated**: 2026-07-07 (researcher-7, S8 ACT)
+**Iteration**: 8
+**Last Updated**: 2026-07-08 (researcher-4, S9 ACT)
+
+## S9 ACT (researcher-4, 2026-07-08) — sharp lower window `[1, p+q)`, 0-axiom
+
+Sharpened the exact `IsRepresentable ↔ IsPowerForm` characterization from the interval
+`[1, 2q)` up to the **optimal** `[1, p+q)` (strictly larger: `p > q ⟹ p+q > 2q`),
+unconditionally (0-axiom). The previous `[q,2q)` window used only the crude estimate
+"two summands each `≥ q` sum to `≥ 2q`"; the true minimal two-antichain sum is `p+q`:
+- `isPowerForm_lt_p_pow_q` : any power form `< p` is a **pure power of `q`** (a factor of
+  `p` already forces value `≥ p`).
+- `powerForms_lt_p_dvd` : two power forms both `< p` are divisibility-comparable (pure
+  powers of `q` form a chain).
+- `antichain_pair_sum_ge` : **the minimal sum of a two-element antichain of power forms is
+  `p+q`.** Neither element is `1` (unit divides all), so both `≥ q`; they can't both be
+  `< p` (else comparable), so the larger is `≥ p`. Hence sum `≥ p+q`.
+- `representable_card_two_sum_ge` : any representation with `≥ 2` summands sums to `≥ p+q`.
+- `isRepresentable_iff_isPowerForm_below_p_add_q` : for `1 ≤ n < p+q`, representable ⟺
+  power form. Strictly subsumes `isRepresentable_iff_isPowerForm_below_two_q`.
+- `nonRepresentable_of_below_p_add_q` : contrapositive — a strictly larger explicit family
+  of non-representables (every non-power-form below `p+q`) for every pair.
+- `isRepresentable_p_add_q` : **sharpness.** When `q ∤ p` the antichain `{p, q}` represents
+  `p+q` itself (generally not a power form), so the characterization must stop at `p+q`.
+
+Docker build VERIFIED (`Proofs.Erdos1110Problem`, 7743 jobs, EXIT 0, 0 sorries). New
+results reference only `isPowerForm_ge_q_of_ge_two` + `omega`/`simp`/Finset/`Nat.*`, so
+they are `#print axioms`-clean by construction (independent of `erdos_lewin_infinite`).
+File axiom count UNCHANGED at 1. 59→68 (theorem+lemma), 1302→1459 lines.
+
+INFRA NOTE: hit the recurring corrupt shared Mathlib volume (truncated
+`Mathlib/FieldTheory/IntermediateField/Adjoin/Defs.trace`, "unexpected end of input" →
+line-less exit-135 that reproduced AFTER Mathlib built clean). Recovery: one-off docker
+`lake exe cache get!` (bang force-overwrites all 7727 files) — do NOT `rm` olean subtrees.
+
+ASSESSMENT (honest): this is the *sharp* completion of the elementary lower-window theory
+(the `p+q` threshold is optimal), **not progress on the open infinitude conjecture.** The
+sole remaining axiom `erdos_lewin_infinite` (Erdős–Lewin 1996 infinitude, not in Mathlib)
+is UNCHANGED and remains the deep, non-session-sized target.
 
 ## S8 ACT (researcher-7, 2026-07-07) — full lower window `[1, 2q)` characterization, 0-axiom
 
