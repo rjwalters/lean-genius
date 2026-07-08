@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "summary": "import Mathlib, then the module docstring stating the goal — every Pascal row is log-concave, C(n,k)·C(n,k+2) ≤ C(n,k+1)² — and situating it against the sibling family (which records binomial identities) and Mathlib's related results (choose_le_middle unimodality, choose_succ_right_eq adjacent ratio); then `namespace CombinationsFormulaOQ04` and `open Nat`.",
+      "startLine": 1,
+      "endLine": 50,
+      "mathContext": "$C(n,k)\\,C(n,k+2) \\le C(n,k+1)^2$ — log-concavity of a binomial row."
+    },
+    {
       "id": "log-concave",
       "title": "Log-Concavity of the Row",
       "summary": "choose_mul_choose_le_sq: C(n,k)·C(n,k+2) ≤ C(n,k+1)² for all n, k. Splits on whether k+2 ≤ n; in range, substitutes n = k+2+t, applies choose_succ_right_eq twice, multiplies the two ratio relations, and cancels the common positive factor.",
@@ -93,6 +101,14 @@
       "summary": "choose_mul_choose_le_sq': rewriting k = j−1 gives the symmetric form C(n,j−1)·C(n,j+1) ≤ C(n,j)² for 1 ≤ j.",
       "startLine": 109,
       "endLine": 114
+    },
+    {
+      "id": "checks-summary",
+      "title": "Sanity Checks and Summary",
+      "summary": "Three #check lines confirming the signatures of the exported theorems, followed by the closing Summary docstring recapping the three results (log-concavity, its strict interior form = Newton's inequality, and the centered restatement) and the proof's clearing-denominators strategy via choose_succ_right_eq; then `end CombinationsFormulaOQ04`.",
+      "startLine": 115,
+      "endLine": 135,
+      "mathContext": "Log-concavity underlies unimodality of the Pascal row (Nat.choose_le_middle)."
     }
   ],
   "mainTheorems": [
