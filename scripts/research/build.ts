@@ -574,6 +574,22 @@ function isUnfilledStub(problem: ResearchProblem): boolean {
 /**
  * Generate lightweight listing from full problem
  */
+/**
+ * Truncate a listing description to a card-length excerpt (issue #35117).
+ * Card view clamps to a few lines anyway; the full text still lives in the
+ * per-problem JSON fetched on the detail page. Cuts at a word boundary when
+ * one exists reasonably close to the limit. Mirrors
+ * `scripts/annotations/build.ts:excerpt`.
+ */
+const LISTING_EXCERPT_MAX = 140
+function excerpt(text: string, max: number = LISTING_EXCERPT_MAX): string {
+  const t = text.trim()
+  if (t.length <= max) return t
+  const cut = t.slice(0, max)
+  const lastSpace = cut.lastIndexOf(' ')
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.]+$/, '') + '…'
+}
+
 function generateListing(problem: ResearchProblem): ResearchListing {
   // Safety net: if problemStatement.plain is a status placeholder, fall back to title
   const rawDescription = problem.problemStatement?.plain || ''
@@ -584,7 +600,7 @@ function generateListing(problem: ResearchProblem): ResearchListing {
   return {
     slug: problem.slug,
     title: problem.title,
-    description,
+    description: excerpt(description),
     phase: problem.phase,
     status: problem.status,
     tier: problem.tier,
@@ -735,6 +751,14 @@ function emitDataManifest(slugs: string[]): void {
     }
   }
 
+  // Reserved entry: content hash of the public research-listings file so the
+  // runtime getResearchListings() fetch is cache-busted on any listings
+  // change (issue #35117). Never collides with a problem slug.
+  const publicListings = path.join(PUBLIC_RESEARCH_DIR, 'research-listings.json')
+  if (fs.existsSync(publicListings)) {
+    manifest['__listings__'] = sha8(publicListings)
+  }
+
   const next = JSON.stringify(manifest, null, 2) + '\n'
 
   if (fs.existsSync(DATA_MANIFEST_PATH)) {
@@ -875,9 +899,18 @@ function build(): void {
     }
   }
 
-  // Write listings index (always rebuilt from the loaded problem data)
+  // Write listings index (always rebuilt from the loaded problem data).
+  // src/ copy: kept for tooling that reads it off disk (deploy sync). No
+  // longer imported into the vite module graph (issue #35117).
   const listingsPath = path.join(OUTPUT_DIR, 'research-listings.json')
   fs.writeFileSync(listingsPath, JSON.stringify(listings, null, 2) + '\n')
+
+  // public/ copy: fetched at runtime by getResearchListings() in
+  // src/data/research/index.ts with a `?v=<sha8>` cache-buster recorded in
+  // the data manifest (issue #35117). Compact — these bytes go over the wire.
+  fs.mkdirSync(PUBLIC_RESEARCH_DIR, { recursive: true })
+  const publicListingsPath = path.join(PUBLIC_RESEARCH_DIR, 'research-listings.json')
+  fs.writeFileSync(publicListingsPath, JSON.stringify(listings))
 
   // Phase 3 (issue #20994): emit the hashed slug -> sha8 manifest consumed by
   // the runtime loader in `src/data/research/index.ts`. Must run after the

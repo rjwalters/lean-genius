@@ -1,13 +1,14 @@
 import { useState, useMemo, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { listings } from '@/data/proofs'
+import { getListings } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
+import { LoadingScreen } from '@/components/LoadingScreen'
 import { ProofBadge, WiedijkBadge, ErdosBadge, BadgeFilter, MathlibIndicator } from '@/components/ui/proof-badge'
 import { WIEDIJK_BADGE_INFO, HILBERT_BADGE_INFO, MILLENNIUM_BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2, Dices } from 'lucide-react'
-import { useDebouncedUrlState, useUrlState, serializers } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData } from '@/hooks'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'newest' | 'oldest' | 'alphabetical' | 'updated'
@@ -23,10 +24,14 @@ export function HomePage() {
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
 
+  // Listings are fetched at runtime rather than bundled (issue #35117).
+  const { data: listings, error: listingsError } = useFetchedData(getListings)
+
   const goToRandomProof = useCallback(() => {
+    if (!listings) return
     const proof = listings[Math.floor(Math.random() * listings.length)]
     if (proof) navigate(`/proof/${proof.slug}`)
-  }, [navigate])
+  }, [navigate, listings])
 
   // URL-synced state
   const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
@@ -51,7 +56,7 @@ export function HomePage() {
 
   // Filter and sort proofs
   const proofs = useMemo(() => {
-    let filtered: ProofListing[] = listings
+    let filtered: ProofListing[] = listings ?? []
 
     // Filter by search query
     if (searchQuery.trim()) {
@@ -119,7 +124,7 @@ export function HomePage() {
           return 0
       }
     })
-  }, [searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly, showErdosOnly])
+  }, [listings, searchQuery, selectedBadges, sortBy, showWiedijkOnly, showHilbertOnly, showMillenniumOnly, showErdosOnly])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -158,6 +163,24 @@ export function HomePage() {
       setCopySuccess(true)
       setTimeout(() => setCopySuccess(false), 2000)
     }
+  }
+
+  // Loading / error states while the listings fetch is in flight (#35117).
+  if (listingsError) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <p className="text-muted-foreground">Failed to load the proof gallery.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-sm text-annotation hover:underline"
+        >
+          Reload
+        </button>
+      </div>
+    )
+  }
+  if (!listings) {
+    return <LoadingScreen message="Loading proofs..." />
   }
 
   return (

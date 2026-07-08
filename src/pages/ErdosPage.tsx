@@ -1,13 +1,14 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { listings } from '@/data/proofs'
+import { getListings } from '@/data/proofs'
 import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
+import { LoadingScreen } from '@/components/LoadingScreen'
 import { ProofBadge, ErdosBadge, MathlibIndicator, BadgeFilter } from '@/components/ui/proof-badge'
 import { BADGE_INFO, ERDOS_BADGE_INFO } from '@/types/proof'
 import { ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown, Search, Github, Share2, ExternalLink, Calendar, Trophy } from 'lucide-react'
-import { useDebouncedUrlState, useUrlState, serializers } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData } from '@/hooks'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
 type SortOption = 'problem-number' | 'newest' | 'updated' | 'alphabetical'
@@ -40,6 +41,9 @@ const AI_MILESTONES = [
 export function ErdosPage() {
   const { isAuthenticated } = useAuth()
 
+  // Listings are fetched at runtime rather than bundled (issue #35117).
+  const { data: listings, error: listingsError } = useFetchedData(getListings)
+
   // URL-synced state
   const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
   const [selectedBadges, setSelectedBadges] = useUrlState<ProofBadgeType[]>(
@@ -63,7 +67,7 @@ export function ErdosPage() {
   // Filter to Erdős problems only, then apply additional filters
   const erdosProofs = useMemo(() => {
     // Start with only Erdős problems
-    let filtered: ProofListing[] = listings.filter(l => l.erdosNumber !== undefined)
+    let filtered: ProofListing[] = (listings ?? []).filter(l => l.erdosNumber !== undefined)
 
     // Filter by search query
     if (searchQuery.trim()) {
@@ -109,11 +113,11 @@ export function ErdosPage() {
           return 0
       }
     })
-  }, [searchQuery, selectedBadges, sortBy, showAiSolvedOnly])
+  }, [listings, searchQuery, selectedBadges, sortBy, showAiSolvedOnly])
 
   // Compute statistics
   const stats = useMemo(() => {
-    const all = listings.filter(l => l.erdosNumber !== undefined)
+    const all = (listings ?? []).filter(l => l.erdosNumber !== undefined)
     const aiSolved = all.filter(l => l.badge === 'ai-solved')
     const complete = all.filter(l => l.sorries === 0)
     return {
@@ -121,7 +125,7 @@ export function ErdosPage() {
       aiSolved: aiSolved.length,
       complete: complete.length,
     }
-  }, [])
+  }, [listings])
 
   const handleBadgeToggle = (badge: ProofBadgeType) => {
     setSelectedBadges((prev) => {
@@ -156,6 +160,24 @@ export function ErdosPage() {
       setCopySuccess(true)
       setTimeout(() => setCopySuccess(false), 2000)
     }
+  }
+
+  // Loading / error states while the listings fetch is in flight (#35117).
+  if (listingsError) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <p className="text-muted-foreground">Failed to load the Erdős problem gallery.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-sm text-annotation hover:underline"
+        >
+          Reload
+        </button>
+      </div>
+    )
+  }
+  if (!listings) {
+    return <LoadingScreen message="Loading Erdős problems..." />
   }
 
   return (

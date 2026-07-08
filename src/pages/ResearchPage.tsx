@@ -1,13 +1,14 @@
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { researchListings } from '@/data/research'
+import { getResearchListings } from '@/data/research'
 // Auth context available if needed for future features
 // import { useAuth } from '@/contexts/AuthContext'
 import { UserMenu } from '@/components/auth/UserMenu'
 import { Footer } from '@/components/Footer'
+import { LoadingScreen } from '@/components/LoadingScreen'
 import { ResearchCard, ContributeSection, RelatedToolsSection } from '@/components/research'
 import { PHASE_INFO, TIER_INFO } from '@/types/research'
-import { useDebouncedUrlState, useUrlState, serializers } from '@/hooks'
+import { useDebouncedUrlState, useUrlState, serializers, useFetchedData } from '@/hooks'
 import type { ResearchPhase, ValueTier, ResearchStatus, ResearchListing } from '@/types/research'
 import {
   FlaskConical,
@@ -24,6 +25,9 @@ import {
 type SortOption = 'newest' | 'activity' | 'significance' | 'alphabetical'
 
 export function ResearchPage() {
+  // Listings are fetched at runtime rather than bundled (issue #35117).
+  const { data: researchListings, error: listingsError } = useFetchedData(getResearchListings)
+
   // URL-synced state
   const [searchQuery, setSearchQuery] = useDebouncedUrlState('q', '', serializers.string)
   const [selectedPhases, setSelectedPhases] = useUrlState<ResearchPhase[]>(
@@ -53,7 +57,7 @@ export function ResearchPage() {
 
   // Filter and sort problems
   const problems = useMemo(() => {
-    let filtered: ResearchListing[] = [...researchListings]
+    let filtered: ResearchListing[] = [...(researchListings ?? [])]
 
     // Filter by search query
     if (searchQuery.trim()) {
@@ -104,7 +108,7 @@ export function ResearchPage() {
           return 0
       }
     })
-  }, [searchQuery, selectedPhases, selectedTiers, selectedStatus, sortBy])
+  }, [researchListings, searchQuery, selectedPhases, selectedTiers, selectedStatus, sortBy])
 
   const handlePhaseToggle = (phase: ResearchPhase) => {
     setSelectedPhases((prev) =>
@@ -151,6 +155,24 @@ export function ResearchPage() {
       setCopySuccess(true)
       setTimeout(() => setCopySuccess(false), 2000)
     }
+  }
+
+  // Loading / error states while the listings fetch is in flight (#35117).
+  if (listingsError) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4">
+        <p className="text-muted-foreground">Failed to load the research gallery.</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-sm text-annotation hover:underline"
+        >
+          Reload
+        </button>
+      </div>
+    )
+  }
+  if (!researchListings) {
+    return <LoadingScreen message="Loading research problems..." />
   }
 
   // Stats
