@@ -20,6 +20,16 @@
   * `sublevelSup`                 — the supremum of sublevel measures over admissible `f`.
   * `le_sublevelSup`              — `2√2 ≤ sublevelSup` (the provable half of `= 2√2`).
 
+  On the infimum side (the companion quantity, whose exact value
+  `2^(4/3) − 1 ≤ inf ≤ 1.835` is open), we compute a second exact witness — the
+  linear polynomial `X`, with sublevel set `(−1, 1)` of measure `2` — and record the
+  matching machine-checkable bound:
+
+  * `sublevelMeasure_linear`      — `|{x : |x| < 1}| = 2`.
+  * `sublevelInf`                 — the infimum of sublevel measures over admissible `f`.
+  * `sublevelInf_le_two`          — `sublevelInf ≤ 2` (linear witness; not claimed tight —
+                                    the true infimum is `≤ 1.835`, needing potential theory).
+
   All results are fully machine-checked (0 axioms, 0 sorries).
 
   Reference: Erdős–Herzog–Piranian (1958); Tao, *Sublevel Sets of Logarithmic
@@ -113,5 +123,50 @@ noncomputable def sublevelSup : ℝ≥0∞ :=
     not attempted here. -/
 theorem le_sublevelSup : ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup :=
   le_iSup_of_le q (le_iSup_of_le quadratic_admissible sublevelMeasure_quadratic.ge)
+
+/-! ### The infimum side: a second exact witness
+
+The companion extremal quantity is the *infimum* of `sublevelMeasure` over admissible
+`f`, whose exact value is open (`2^(4/3) − 1 ≤ inf ≤ 1.835`).  Here we compute a second
+polynomial exactly — the linear `X`, whose sublevel set is `(−1, 1)` — and use it to bound
+the infimum from above. -/
+
+/-- **The linear polynomial `X` (single root `0`) is admissible**: monic with its one
+    root `0 ∈ [-1,1]`. -/
+theorem linear_admissible : MonicRealRootedIn01 (X : Polynomial ℝ) := by
+  refine ⟨monic_X, ?_⟩
+  intro r hr
+  rw [Polynomial.mem_roots'] at hr
+  have hroot : r = 0 := by simpa using hr.2
+  subst hroot
+  simp [Set.mem_Icc]
+
+/-- **The sublevel set of `X` is `(−1, 1)`**: `|x| < 1 ↔ x ∈ (−1, 1)`. -/
+theorem sublevelSet_linear : sublevelSet (X : Polynomial ℝ) = Set.Ioo (-1 : ℝ) 1 := by
+  ext x
+  simp only [sublevelSet, Set.mem_setOf_eq, Polynomial.eval_X, abs_lt, Set.mem_Ioo]
+
+/-- **The sublevel set of `X` has Lebesgue measure `2`.** -/
+theorem sublevelMeasure_linear :
+    sublevelMeasure (X : Polynomial ℝ) = ENNReal.ofReal 2 := by
+  unfold sublevelMeasure
+  rw [sublevelSet_linear, Real.volume_Ioo]
+  congr 1
+  ring
+
+/-- The **infimum of sublevel-set measures** over all admissible monic polynomials.  Its
+    exact value is open: `2^(4/3) − 1 ≤ sublevelInf ≤ 1.835` (the upper bound and the exact
+    value need logarithmic potential theory beyond Mathlib).  Introduced as a Lean object so
+    a concrete witness can bound it. -/
+noncomputable def sublevelInf : ℝ≥0∞ :=
+  ⨅ (f : Polynomial ℝ) (_ : MonicRealRootedIn01 f), sublevelMeasure f
+
+/-- **Infimum upper bound: `sublevelInf ≤ 2`.**  The admissible linear polynomial `X`
+    attains sublevel measure `2`, so the infimum is at most `2`.  This is a genuine
+    machine-checked upper bound on the (open) infimum; it is *not* claimed tight — the true
+    infimum is `≤ 1.835 < 2`, whose witness lies beyond the elementary computations
+    available here. -/
+theorem sublevelInf_le_two : sublevelInf ≤ ENNReal.ofReal 2 :=
+  iInf_le_of_le X (iInf_le_of_le linear_admissible sublevelMeasure_linear.le)
 
 end Erdos1038WIP01
