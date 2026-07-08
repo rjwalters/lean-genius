@@ -1030,4 +1030,67 @@ theorem mul_choose_dvd_lcmRange {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) :
 
 end Part13
 
+section Part14
+/-! ## Part 14 (Session 24 ACT) — alternating-half reduction ingredients
+
+Two ingredients that reduce the **alternating-bilinear half** of the van
+der Poorten closed form to a pure-binomial divisibility, now that the
+general `mul_choose_dvd_lcmRange` (Part 13) is available.
+
+The alternating summand for `1 ≤ m ≤ k ≤ n` carries the denominator
+`2 · m³ · C(n, m) · C(n+m, m)`; multiplied through by the outer square
+`C(n,k)² · C(n+k,k)²` from the Apéry number and cleared by
+`(lcmRange n)³`, integrality of the term reduces to the pure
+divisibility
+  `m³ · C(n, m) · C(n+m, m) ∣ (lcmRange n)³ · C(n,k)² · C(n+k,k)²`.
+
+`cube_mul_cube_choose_dvd_lcmRange_cube` discharges the `m³ · C(n, m)³`
+chunk purely from the lcm side (no `k` dependence), separating the
+now-solved lcm analysis (Parts 1–13) from the remaining pure-binomial
+telescoping (van der Poorten §6).
+
+`choose_mul_choose_reindex` rewrites the cross binomial product
+`C(n, m) · C(n+m, m)` as `C(n+m, 2m) · C(2m, m)`, exposing the central
+binomial `C(2m, m)` that drives that telescoping. It is a specialization
+of the subset-of-a-subset identity `Nat.choose_mul` at `(n+m, 2m, m)`
+and holds for **all** `n, m` (no `m ≤ n` hypothesis).
+-/
+
+/-- **Central-binomial reindexing** of the alternating denominator's
+    binomial product:
+    `C(n, m) · C(n+m, m) = C(n+m, 2m) · C(2m, m)`.
+
+    Instance of the subset-of-a-subset identity `Nat.choose_mul` at
+    `(n+m, 2m, m)`; holds unconditionally. Exposes the central binomial
+    `C(2m, m)` used in van der Poorten's telescoping of the
+    alternating-bilinear half. -/
+theorem choose_mul_choose_reindex (n m : ℕ) :
+    Nat.choose n m * Nat.choose (n + m) m
+      = Nat.choose (n + m) (2 * m) * Nat.choose (2 * m) m := by
+  have h := Nat.choose_mul (n := n + m) (k := 2 * m) (s := m) (by omega)
+  have e1 : n + m - m = n := by omega
+  have e2 : 2 * m - m = m := by omega
+  rw [e1, e2] at h
+  rw [h]; ring
+
+/-- **Cube of the general divisibility**: `(m · C(n, m))³ ∣ (lcmRange n)³`.
+    Immediate cube of `mul_choose_dvd_lcmRange` (Part 13). -/
+theorem mul_choose_cube_dvd_lcmRange_cube {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) :
+    (m * Nat.choose n m) ^ 3 ∣ (lcmRange n) ^ 3 :=
+  pow_dvd_pow_of_dvd (mul_choose_dvd_lcmRange hm hmn) 3
+
+/-- **Expanded cube divisibility**: `m³ · C(n, m)³ ∣ (lcmRange n)³`.
+
+    The `k`-free lcm chunk of the alternating-term integrality
+    reduction: it clears the `m³ · C(n, m)³` factor of the denominator
+    entirely from the lcm side, leaving only the pure-binomial
+    cross-factor `C(n+m, m)` (against the outer `C(n,k)² C(n+k,k)²`) to
+    the §6 telescoping. -/
+theorem cube_mul_cube_choose_dvd_lcmRange_cube {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) :
+    m ^ 3 * (Nat.choose n m) ^ 3 ∣ (lcmRange n) ^ 3 := by
+  have h := mul_choose_cube_dvd_lcmRange_cube hm hmn
+  rwa [mul_pow] at h
+
+end Part14
+
 end BaselProblemOQ01OQ01OQ02OQ02

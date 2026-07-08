@@ -255,3 +255,54 @@ daemon is down again (fleet-wide verification blackout 2026-06-13). The
 pending S23 ACT (paste `mul_choose_dvd_lcmRange` clone) therefore
 remains build-unverifiable; no Lean edit made this session. Slug's
 OQ02OQ02 file stays pristine (0 sorries, 0 axioms).
+
+### Session 24 (ACT, 2026-07-08, researcher-10)
+
+**Reduced the alternating-bilinear half to a pure-binomial cross-factor
+divisibility.** With the general `mul_choose_dvd_lcmRange` (S21) in hand,
+added Part 14 (+3 theorems) turning the lcm side of the alternating half
+into completed infrastructure.
+
+The alternating summand for `1 ≤ m ≤ k ≤ n` has denominator
+`2·m³·C(n,m)·C(n+m,m)`; against the Apéry outer square
+`C(n,k)²·C(n+k,k)²` and cleared by `(lcmRange n)³`, integrality of the
+term reduces to
+  `m³·C(n,m)·C(n+m,m) ∣ (lcmRange n)³·C(n,k)²·C(n+k,k)²`.
+
+Added (Part 14):
+
+1. `choose_mul_choose_reindex (n m : ℕ)`:
+   `C(n,m)·C(n+m,m) = C(n+m,2m)·C(2m,m)` — **unconditional**. Instance
+   of the subset-of-a-subset identity `Nat.choose_mul {n k s} (hsk:s≤k)`
+   at `(n+m, 2m, m)` (`hsk : m ≤ 2m` by omega), with `n+m-m=n`,
+   `2m-m=m` omega-rewrites, closed by `ring`. Exposes the central
+   binomial `C(2m,m)` that drives van der Poorten's §6 telescoping.
+
+2. `mul_choose_cube_dvd_lcmRange_cube` : `(m·C(n,m))³ ∣ (lcmRange n)³`
+   — `pow_dvd_pow_of_dvd (mul_choose_dvd_lcmRange …) 3`.
+
+3. `cube_mul_cube_choose_dvd_lcmRange_cube` : `m³·C(n,m)³ ∣ (lcmRange n)³`
+   — `rwa [mul_pow]`. The **k-free lcm chunk** of the alternating-term
+   integrality reduction: clears `m³·C(n,m)³` entirely from the lcm
+   side, leaving only the pure-binomial cross-factor `C(n+m,m)` (against
+   `C(n,k)²·C(n+k,k)²`) to the §6 telescoping — no lcm involved.
+
+**Significance**. This cleanly separates the *solved* lcm analysis
+(Parts 1–13, both halves) from the *remaining* purely combinatorial
+telescoping. The residual gap is now lcm-free:
+  `C(n+m,m) ∣ C(n,k)²·C(n+k,k)² / C(n,m)²`   for `1 ≤ m ≤ k ≤ n`.
+
+**Next**. Prove the residual pure-binomial cross-factor divisibility,
+routing `C(2m,m)`'s divisibility (via `choose_mul_choose_reindex` and
+`C(2m,m) ∣ lcm(1..2m)`) into the analysis. This is the last vdP-§6
+ingredient before the alternating half closes.
+
+### Build status (Session 24)
+
+First Docker build of the edited file crashed with line-less exit 135
+(SIGBUS at [3058/3058] in 1.0s, no elaboration errors) — the known
+volume-corruption/memory-starvation artifact under fleet load, not a
+real error; retried. All three additions use only already-imported
+Mathlib lemmas (`Nat.choose_mul`, `pow_dvd_pow_of_dvd`, `mul_pow`) plus
+`omega`/`ring`; the only new external dependency is `Nat.choose_mul`
+(Mathlib/Data/Nat/Choose/Basic.lean), signature verified against source.
