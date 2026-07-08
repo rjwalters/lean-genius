@@ -4606,10 +4606,11 @@
       "result": "clean"
     },
     "cauchy-interlacing-theorem-oq-01-oq-02-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-27T01:23:00Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T19:05:17Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "agentId": "auditor-reaudit-20260708"
     },
     "cauchy-interlacing-theorem-oq-01-oq-02-oq-02-oq-01": {
       "auditCount": 3,
@@ -5022,10 +5023,11 @@
       "issues": []
     },
     "cauchy-schwarz-oq-03-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-07-08T18:16:34Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708"
     },
     "cauchy-schwarz-oq-04": {
       "auditCount": 6,
@@ -5526,10 +5528,11 @@
       "result": "clean"
     },
     "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-07-08T18:30:00Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708"
     },
     "cayleys-theorem-oq-01-oq-01-oq-02-oq-02": {
       "auditCount": 1,
@@ -6631,10 +6634,11 @@
       "result": "clean"
     },
     "connected-space-oq-01-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-07-08T17:39:58Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708"
     },
     "connected-space-oq-01-oq-02": {
       "auditCount": 1,
@@ -8220,11 +8224,13 @@
       "result": "clean"
     },
     "elementary-quadratic-reciprocity-oq-03-oq-02": {
-      "auditCount": 8,
-      "issues": [],
-      "lastAudited": "2026-07-08T18:06:14Z",
-      "result": "clean",
-      "agentId": "lean-auditor-reaudit"
+      "auditCount": 9,
+      "issues": [
+        "Stale theoremCount/lineCount reconciled to Lean source (re-audit)"
+      ],
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "issues-fixed",
+      "agentId": "auditor-reaudit-20260708"
     },
     "elementary-quadratic-reciprocity-oq-03-oq-02-oq-01": {
       "auditCount": 3,
@@ -9014,10 +9020,13 @@
       "result": "clean"
     },
     "erdos-1022-oq-02": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-07-08T05:29:02Z",
-      "result": "clean"
+      "auditCount": 3,
+      "issues": [
+        "Stale theoremCount/lineCount reconciled to Lean source (re-audit)"
+      ],
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "issues-fixed",
+      "agentId": "auditor-reaudit-20260708"
     },
     "erdos-1022-oq-04": {
       "auditCount": 1,
@@ -9489,10 +9498,11 @@
       "result": "clean"
     },
     "erdos-1059-oq-01-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-07T01:34:18Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708"
     },
     "erdos-1059-oq-02": {
       "auditCount": 2,
@@ -9825,10 +9835,10 @@
       "result": "clean"
     },
     "erdos-1093": {
-      "agentId": "auditor-agent-7",
-      "auditCount": 5,
-      "lastAudited": "2026-07-08T18:54:18Z",
-      "result": "issues-fixed"
+      "agentId": "auditor-reaudit-20260708",
+      "auditCount": 6,
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "clean"
     },
     "erdos-1094": {
       "agentId": "auditor-cycle-20-batch",
@@ -11707,10 +11717,10 @@
       ]
     },
     "erdos-214": {
-      "agentId": "lean-auditor-reaudit",
-      "auditCount": 6,
-      "lastAudited": "2026-07-08T18:46:32Z",
-      "result": "issues-fixed",
+      "agentId": "auditor-reaudit-20260708",
+      "auditCount": 7,
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "clean",
       "issues": []
     },
     "erdos-214-incomplete-01-oq-01": {
@@ -15746,11 +15756,13 @@
       "result": "clean"
     },
     "erdos-703": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-07-08T17:39:58Z",
-      "result": "clean",
-      "issues": []
+      "agentId": "auditor-reaudit-20260708",
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Stale theoremCount/lineCount reconciled to Lean source (re-audit)"
+      ]
     },
     "erdos-704": {
       "agentId": "auditor-cycle-20-batch",
@@ -21397,10 +21409,11 @@
       "issues": []
     },
     "kepler-conjecture-oq-04": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-07-08T18:16:34Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "clean",
+      "agentId": "auditor-reaudit-20260708"
     },
     "knights-tour-oblique": {
       "auditCount": 4,
@@ -22376,12 +22389,13 @@
       "result": "clean"
     },
     "liouville-theorem-oq-03": {
-      "auditCount": 3,
-      "lastAudited": "2026-07-08T18:46:32Z",
-      "result": "issues-fixed",
+      "auditCount": 4,
+      "lastAudited": "2026-07-08T19:05:17Z",
+      "result": "clean",
       "issues": [
         "theoremCount stale (leanFile=21, meta=17; actual=19) \u2014 reconciled to 19"
-      ]
+      ],
+      "agentId": "auditor-reaudit-20260708"
     },
     "liouville-theorem-oq-04": {
       "auditCount": 3,
@@ -27749,9 +27763,9 @@
       "result": "clean"
     },
     "chebyshev-bounds-oq-06-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-07-08T18:30:19Z",
+      "lastAudited": "2026-07-08T19:05:17Z",
       "result": "clean",
       "agentId": "auditor-reaudit-20260708",
       "notes": "Re-audit CLEAN: 0 axioms/0 sorries. Substantial IsEquivalent algebra collapsing Stirling factors to prove C(2n,n) ~ 4^n/sqrt(pi n); derived from Mathlib Stirling.factorial_isEquivalent_stirling, honestly credited; docstring notes effective one-sided bound NOT achieved (Robbins absent). verified/verified accurate."
