@@ -173,6 +173,22 @@
       "leanType": "(S : Finset ℝ) : 0 < minGap S",
       "startLine": 83,
       "endLine": 96
+    },
+    {
+      "name": "minGap",
+      "type": "supporting",
+      "description": "**The minimum-gap object.** The smallest distance between two distinct points of a finite set S (via S.offDiag), with a harmless default of 1 when S has fewer than two points. This noncomputable definition is the quantity the entire effective-bisection bound is stated against — the isolation width scale δ = minGap S.",
+      "leanType": "(S : Finset ℝ) : ℝ",
+      "startLine": 77,
+      "endLine": 80
+    },
+    {
+      "name": "minGap_le",
+      "type": "supporting",
+      "description": "**Gap lower-bounds every distinct-pair distance (reproduced).** minGap S ≤ |x − y| for any two distinct x, y ∈ S — the defining property making δ = minGap S a genuine separation radius, used to turn a sub-δ width into isolation.",
+      "leanType": "{S : Finset ℝ} {x y : ℝ} (hx : x ∈ S) (hy : y ∈ S) (hxy : x ≠ y) : minGap S ≤ |x - y|",
+      "startLine": 98,
+      "endLine": 106
     }
   ],
   "references": [
