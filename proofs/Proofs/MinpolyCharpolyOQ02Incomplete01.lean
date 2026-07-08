@@ -259,4 +259,74 @@ theorem IsDiagonalizable.mul_of_commonDiagonalizer {M N P : Matrix n n K}
   rw [h]
   exact isDiag_mul hM hN
 
+/-- **Common diagonalizer ⟹ the difference is diagonalizable.**  Companion to
+    `add_of_commonDiagonalizer`: if a single invertible `P` diagonalizes both `M`
+    and `N`, the same `P` diagonalizes `M - N`, since
+    `P⁻¹ (M - N) P = P⁻¹ M P - P⁻¹ N P` is a difference of two diagonal matrices. -/
+theorem IsDiagonalizable.sub_of_commonDiagonalizer {M N P : Matrix n n K}
+    (hP : IsUnit P) (hM : (P⁻¹ * M * P).IsDiag) (hN : (P⁻¹ * N * P).IsDiag) :
+    (M - N).IsDiagonalizable := by
+  refine ⟨P, hP, ?_⟩
+  have h : P⁻¹ * (M - N) * P = (P⁻¹ * M * P) + (-(P⁻¹ * N * P)) := by
+    rw [Matrix.mul_sub, Matrix.sub_mul, sub_eq_add_neg]
+  rw [h]
+  exact hM.add hN.neg
+
+/-- **Common diagonalizer ⟹ a whole finite family sum is diagonalizable.**  The
+    `n`-ary generalization of `add_of_commonDiagonalizer`: if a single invertible
+    `P` diagonalizes every `M i` (`i ∈ s`), it diagonalizes `∑ i ∈ s, M i`, since
+    conjugation distributes over the sum (`Finset.mul_sum`/`Finset.sum_mul`) and a
+    finite sum of diagonal matrices is diagonal (`isDiag_sum`). -/
+theorem IsDiagonalizable.sum_of_commonDiagonalizer {ι : Type*} (s : Finset ι)
+    (M : ι → Matrix n n K) {P : Matrix n n K} (hP : IsUnit P)
+    (hM : ∀ i ∈ s, (P⁻¹ * M i * P).IsDiag) :
+    (∑ i ∈ s, M i).IsDiagonalizable := by
+  refine ⟨P, hP, ?_⟩
+  have h : P⁻¹ * (∑ i ∈ s, M i) * P = ∑ i ∈ s, (P⁻¹ * M i * P) := by
+    rw [Finset.mul_sum, Finset.sum_mul]
+  rw [h]
+  exact isDiag_sum s _ hM
+
+/-- **Common diagonalizer ⟹ the matrices commute.**  The (easy) *converse* half of
+    the classical "commuting ⟺ simultaneously diagonalizable" theorem, complementing
+    `mul_of_commonDiagonalizer`.  If a single invertible `P` diagonalizes both `M`
+    and `N`, then `M` and `N` commute: their conjugates `P⁻¹ M P` and `P⁻¹ N P` are
+    diagonal, hence commute (`diagonal_mul_diagonal` on both orders differ only by the
+    pointwise `mul_comm`), and conjugation by the unit `P` is injective — undoing it
+    (`P · (P⁻¹ · X · P) · P⁻¹ = X`) turns the equality of conjugates of `M N` and
+    `N M` into `M * N = N * M`.  Together with the (hard, still open) fact that
+    commuting diagonalizable matrices *admit* a common diagonalizer, this closes one
+    direction of the simultaneous-diagonalization equivalence. -/
+theorem commute_of_commonDiagonalizer {M N P : Matrix n n K}
+    (hP : IsUnit P) (hM : (P⁻¹ * M * P).IsDiag) (hN : (P⁻¹ * N * P).IsDiag) :
+    M * N = N * M := by
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hPdet
+  -- conjugation of a product splits by cancelling the interior `P * P⁻¹ = 1`
+  have hMN : P⁻¹ * (M * N) * P = (P⁻¹ * M * P) * (P⁻¹ * N * P) := by
+    calc P⁻¹ * (M * N) * P
+        = P⁻¹ * M * (P * P⁻¹) * N * P := by rw [hPP]; simp only [mul_one, mul_assoc]
+      _ = (P⁻¹ * M * P) * (P⁻¹ * N * P) := by simp only [mul_assoc]
+  have hNM : P⁻¹ * (N * M) * P = (P⁻¹ * N * P) * (P⁻¹ * M * P) := by
+    calc P⁻¹ * (N * M) * P
+        = P⁻¹ * N * (P * P⁻¹) * M * P := by rw [hPP]; simp only [mul_one, mul_assoc]
+      _ = (P⁻¹ * N * P) * (P⁻¹ * M * P) := by simp only [mul_assoc]
+  -- diagonal matrices commute
+  have hdcomm : (P⁻¹ * M * P) * (P⁻¹ * N * P) = (P⁻¹ * N * P) * (P⁻¹ * M * P) := by
+    rw [← hM.diagonal_diag, ← hN.diagonal_diag, Matrix.diagonal_mul_diagonal,
+      Matrix.diagonal_mul_diagonal]
+    congr 1
+    funext i
+    exact mul_comm _ _
+  -- so the conjugates of `M * N` and `N * M` agree
+  have hconj : P⁻¹ * (M * N) * P = P⁻¹ * (N * M) * P := by rw [hMN, hNM, hdcomm]
+  -- undo the conjugation on both sides
+  have hcancel : ∀ X : Matrix n n K, P * (P⁻¹ * X * P) * P⁻¹ = X := by
+    intro X
+    rw [show P * (P⁻¹ * X * P) * P⁻¹ = (P * P⁻¹) * X * (P * P⁻¹) by simp only [mul_assoc]]
+    rw [hPP]; simp only [one_mul, mul_one]
+  calc M * N = P * (P⁻¹ * (M * N) * P) * P⁻¹ := (hcancel _).symm
+    _ = P * (P⁻¹ * (N * M) * P) * P⁻¹ := by rw [hconj]
+    _ = N * M := hcancel _
+
 end MinpolyCharpolyOQ02Incomplete01
