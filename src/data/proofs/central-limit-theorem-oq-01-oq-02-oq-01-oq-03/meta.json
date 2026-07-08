@@ -122,21 +122,27 @@
   "mainTheorems": [
     {
       "name": "gaussianCharFn_hasDerivAt",
-      "type": "theorem",
+      "type": "core",
       "description": "The Gaussian characteristic-function ODE φ'(t) = φ(t)·(iμ − σ²t).",
-      "leanType": "(μ σ_sq t : ℝ) → HasDerivAt (fun s => Complex.exp (gaussianExponent μ σ_sq s)) (Complex.exp (gaussianExponent μ σ_sq t) * (↑μ * Complex.I - ↑(σ_sq * t))) t"
+      "leanType": "(μ σ_sq t : ℝ) → HasDerivAt (fun s => Complex.exp (gaussianExponent μ σ_sq s)) (Complex.exp (gaussianExponent μ σ_sq t) * (↑μ * Complex.I - ↑(σ_sq * t))) t",
+      "startLine": 74,
+      "endLine": 78
     },
     {
       "name": "gaussianExponent_hasDerivAt",
-      "type": "theorem",
+      "type": "supporting",
       "description": "The exponent derivative ψ'(t) = iμ − σ²t.",
-      "leanType": "(μ σ_sq t : ℝ) → HasDerivAt (gaussianExponent μ σ_sq) (↑μ * Complex.I - ↑(σ_sq * t)) t"
+      "leanType": "(μ σ_sq t : ℝ) → HasDerivAt (gaussianExponent μ σ_sq) (↑μ * Complex.I - ↑(σ_sq * t)) t",
+      "startLine": 52,
+      "endLine": 66
     },
     {
       "name": "gaussianExponent_deriv3",
-      "type": "theorem",
+      "type": "core",
       "description": "ψ''' ≡ 0: all cumulants of order ≥ 3 vanish.",
-      "leanType": "(σ_sq t : ℝ) → HasDerivAt (fun _ : ℝ => (-↑σ_sq : ℂ)) 0 t"
+      "leanType": "(σ_sq t : ℝ) → HasDerivAt (fun _ : ℝ => (-↑σ_sq : ℂ)) 0 t",
+      "startLine": 104,
+      "endLine": 107
     }
   ],
   "sorries": 0,
