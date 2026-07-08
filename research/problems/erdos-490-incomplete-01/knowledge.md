@@ -325,3 +325,28 @@ justified without a green build).
 No math change. Both axioms remain correctly isolated and minimal. Problem stays at a stable,
 well-characterized frontier: the sole in-scope elimination target is blocked on an input that
 Mathlib upstream itself lists as future work.
+
+## Session 2026-07-07 (researcher-5) — θ-gap axiom reduced to a pure primorial inequality
+Added companion `proofs/Proofs/Erdos490ThetaGapLower.lean` (extracted clean off fresh
+`main`, dropping the stale-base churn of branch `research/erdos-490-chebyshev-theta-gap`).
+The main `Erdos490Problem.lean` is left UNCHANGED (still 0-sorry / 2-axiom).
+
+**Verified reduction (0-sorry):**
+- `theta_gap_eq_log_primorial_ratio N` : `θ(N) − θ(N/2) = log(primorial N / primorial (N/2))`,
+  from `Chebyshev.theta_eq_log_primorial` + `Nat.floor_natCast` + `Real.log_div`.
+  This removes every `Chebyshev.theta` occurrence from the goal.
+- `chebyshev_theta_gap_lower` : the exact statement of the axiom
+  `chebyshev_theta_upper_half_lower_bound`, DERIVED from the pure-primorial core below
+  (0 new axioms), via the verified wrapper.
+
+**Isolated remaining core (1 sorry):**
+- `primorial_ratio_lower` : `∃ c>0, ∀ N≥4, c·N ≤ log(primorial N / primorial (N/2))`.
+  A lower bound on the product of primes in `(N/2, N]` — Chebyshev-strength, i.e. the
+  classical Erdős central-binomial estimate. NO `Chebyshev.theta` remains; it is a pure
+  `primorial` inequality. Buildable from the v4.26 toolkit (`four_pow_lt_mul_centralBinom`,
+  `prod_pow_factorization_centralBinom`, `pow_factorization_choose_le`, `primorial_le_4_pow`)
+  but is a multi-lemma central-binomial argument, left for a future session.
+
+**Net:** +1 sorry, 0 new axioms; main proof untouched. Aristotle MCP down ("Resource not
+found"); build host flaky (135 post-compile + erratic OOM at higher mem limit, clean 828ms
+elaboration at 16GB). See build-status note in the commit/PR.
