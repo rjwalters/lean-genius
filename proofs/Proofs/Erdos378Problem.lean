@@ -171,6 +171,98 @@ theorem squarefreeCount_even_of_odd {n : ℕ} (hn : Odd n) :
   rw [hsc, splitS, cardAB]
   exact ⟨B.card, rfl⟩
 
+/-- **Parity theorem, even rows.** For even `n ≥ 2`, the number of squarefree
+interior binomials in row `n` is *odd* exactly when the central binomial
+coefficient `C(n, n/2)` is squarefree.
+
+This complements `squarefreeCount_even_of_odd` and completes the parity theory of
+row counts: for odd `n` the count is always even (the involution `k ↦ n − k` is
+fixed-point free), while for even `n` the involution has the single fixed point
+`k = n/2`, so `squarefreeCount n = 2·|A| + |F|` where `|F| ∈ {0,1}` records
+whether the central index is itself squarefree. Hence the count is odd iff
+`C(n, n/2)` is squarefree. In particular an odd count forces `n` even — the
+Granville–Ramaré count `2m + 2` is even, matching the odd-`n` theorem. -/
+theorem squarefreeCount_odd_iff_central_squarefree {n : ℕ}
+    (hn : Even n) (hn2 : 2 ≤ n) :
+    Odd (squarefreeCount n) ↔ Squarefree (n.choose (n / 2)) := by
+  classical
+  obtain ⟨j, hj⟩ := hn
+  set S : Finset ℕ := (range n).filter (fun k => 1 ≤ k ∧ Squarefree (n.choose k))
+    with hS
+  set A : Finset ℕ := S.filter (fun k => 2 * k < n) with hA
+  set C : Finset ℕ := S.filter (fun k => n < 2 * k) with hC
+  set F : Finset ℕ := S.filter (fun k => 2 * k = n) with hF
+  have memS : ∀ k, k ∈ S ↔ (k < n ∧ 1 ≤ k ∧ Squarefree (n.choose k)) := by
+    intro k; simp only [hS, mem_filter, mem_range]; tauto
+  have klt : ∀ k ∈ S, k < n := fun k hk => ((memS k).1 hk).1
+  have mapsS : ∀ k ∈ S, (n - k) ∈ S := by
+    intro k hk
+    obtain ⟨hkn, hk1, hsq⟩ := (memS k).1 hk
+    rw [memS]
+    refine ⟨by omega, by omega, ?_⟩
+    rw [Nat.choose_symm hkn.le]; exact hsq
+  have invol : ∀ k ∈ S, n - (n - k) = k := by
+    intro k hk; have := klt k hk; omega
+  -- Split S on (2k < n): S = A ⊔ D.
+  set D : Finset ℕ := S.filter (fun k => ¬ 2 * k < n) with hD
+  have splitAD : S.card = A.card + D.card := by
+    rw [hA, hD]; exact (filter_card_add_filter_neg_card_eq_card _).symm
+  -- Within D (2k ≥ n), split on (n < 2k): the strict part is C, the equality part F.
+  have hCeq : C = D.filter (fun k => n < 2 * k) := by
+    ext k; simp only [hC, hD, mem_filter]
+    constructor
+    · rintro ⟨hkS, h2⟩; exact ⟨⟨hkS, by omega⟩, h2⟩
+    · rintro ⟨⟨hkS, _⟩, h2⟩; exact ⟨hkS, h2⟩
+  have hFeq : F = D.filter (fun k => ¬ n < 2 * k) := by
+    ext k; simp only [hF, hD, mem_filter]
+    constructor
+    · rintro ⟨hkS, h2⟩; exact ⟨⟨hkS, by omega⟩, by omega⟩
+    · rintro ⟨⟨hkS, hnlt⟩, h2⟩; exact ⟨hkS, by omega⟩
+  have splitDCF : D.card = C.card + F.card := by
+    rw [hCeq, hFeq]
+    exact (filter_card_add_filter_neg_card_eq_card (fun k => n < 2 * k)).symm
+  -- ι := (n - ·) maps A bijectively onto C.
+  have cardAC : A.card = C.card := by
+    refine card_nbij' (fun k => n - k) (fun k => n - k) ?_ ?_ ?_ ?_
+    · intro k hk
+      simp only [Finset.mem_coe, hA, hC, mem_filter] at hk ⊢
+      obtain ⟨hkS, h2k⟩ := hk
+      have hkn := klt k hkS
+      exact ⟨mapsS k hkS, by omega⟩
+    · intro k hk
+      simp only [Finset.mem_coe, hC, hA, mem_filter] at hk ⊢
+      obtain ⟨hkS, h2k⟩ := hk
+      have hkn := klt k hkS
+      exact ⟨mapsS k hkS, by omega⟩
+    · intro k hk
+      simp only [Finset.mem_coe, hA, mem_filter] at hk
+      exact invol k hk.1
+    · intro k hk
+      simp only [Finset.mem_coe, hC, mem_filter] at hk
+      exact invol k hk.1
+  -- The fixed-point set F is the singleton {n/2} when squarefree, else empty.
+  have eFc : F = S.filter (fun k => k = n / 2) := by
+    ext k; simp only [hF, mem_filter]
+    constructor
+    · rintro ⟨hkS, h2⟩; exact ⟨hkS, by omega⟩
+    · rintro ⟨hkS, h2⟩; exact ⟨hkS, by omega⟩
+  have hFodd : Odd F.card ↔ (n / 2) ∈ S := by
+    by_cases h : (n / 2) ∈ S
+    · have hFs : F = {n / 2} := by rw [eFc, filter_eq', if_pos h]
+      rw [hFs, Finset.card_singleton]; simp [h, Nat.odd_iff]
+    · have hFe : F = ∅ := by rw [eFc, filter_eq', if_neg h]
+      rw [hFe, Finset.card_empty]; simp [h, Nat.odd_iff]
+  -- Assemble: squarefreeCount n = 2·|C| + |F|, so its parity is that of |F|.
+  have key : squarefreeCount n = 2 * C.card + F.card := by
+    have hsc : squarefreeCount n = S.card := by rw [hS]; rfl
+    omega
+  have hparity : Odd (2 * C.card + F.card) ↔ Odd F.card := by
+    rw [Nat.odd_iff, Nat.odd_iff]; omega
+  have hlt : n / 2 < n := by omega
+  have hge : 1 ≤ n / 2 := by omega
+  rw [key, hparity, hFodd, memS (n / 2)]
+  tauto
+
 /-
 ## Part IV: Natural density
 -/
