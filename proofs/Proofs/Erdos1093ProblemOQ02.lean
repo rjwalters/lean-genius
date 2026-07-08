@@ -224,3 +224,40 @@ theorem maximalDeficiencyIs_nine_iff_kGe10 :
     by_cases hk : k ≤ 9
     · exact deficiency_le_nine_of_k_le_nine hk
     · exact h n k (by omega) hv
+
+/-
+## Section VII: Prime values in the window cap the deficiency
+
+The sharp density bound `deficiency + (#primes in window) ≤ k`
+(`deficiency_add_prime_count_le`) has a clean *effective* consequence:
+exhibiting a **single** prime among the `k` consecutive integers `n, …, n-k+1`
+already forces `deficiency n k < k`.  Dually, the extreme case
+`deficiency n k = k` (every window value `k`-smooth) can only occur across a
+prime gap of length `≥ k` — no window value is prime.  This is a structural
+reason record deficiencies are hard: they demand unusually prime-poor windows,
+exactly the phenomenon the Erdős–Lacampagne–Selfridge density bound exploits.
+-/
+
+/-- **A prime in the window strictly lowers the deficiency.**  If some `n - i`
+(`i < k`) is prime, then `deficiency n k < k`: the prime occupies a window slot
+that no smooth contributor can (a smooth window value is never prime), and the
+sharp bound converts this into `< k`.  Effective: one prime certificate suffices. -/
+theorem deficiency_lt_k_of_prime_in_window {n k i : ℕ} (hn : 2 * k ≤ n)
+    (hi : i < k) (hp : (n - i).Prime) : deficiency n k < k := by
+  have hmem : i ∈ (Finset.range k).filter (fun j => (n - j).Prime) :=
+    Finset.mem_filter.mpr ⟨Finset.mem_range.mpr hi, hp⟩
+  have hpos : 1 ≤ ((Finset.range k).filter (fun j => (n - j).Prime)).card :=
+    Finset.one_le_card.mpr ⟨i, hmem⟩
+  have hbound := deficiency_add_prime_count_le (n := n) (k := k) hn
+  omega
+
+/-- **Extreme deficiency forces a prime gap.**  If the deficiency attains the
+trivial maximum `deficiency n k = k` (every one of the `k` consecutive integers
+`n, …, n-k+1` is `k`-smooth), then none of them is prime — a prime gap of length
+`≥ k`.  Record deficiencies are correspondingly hard: they demand prime-poor
+windows. -/
+theorem window_primefree_of_deficiency_eq_k {n k : ℕ} (hn : 2 * k ≤ n)
+    (h : deficiency n k = k) : ∀ i < k, ¬ (n - i).Prime := by
+  intro i hi hp
+  have := deficiency_lt_k_of_prime_in_window hn hi hp
+  omega

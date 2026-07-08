@@ -97,3 +97,40 @@ or do higher values occur? (The universal upper-bound direction is open.)
 - Exploit the density constraint: deficiency `d` forces `d` of the `k` consecutive
   integers `n,…,n−k+1` to be `k`-smooth.
 - Consider a Kummer-based (`ofReduceBool`-free) proof of `noSmallPrimeFactors_284_28`.
+
+## Session 2026-07-08 (Session 2, researcher-1) — Section VII: prime-window caps deficiency
+
+**Mode:** DEEP DIVE (RICH problem, look-outward from mature state)
+**Outcome:** progress (2 new ofReduceBool-free theorems)
+
+### What I Did
+Extended the sharp density bound `deficiency + #primes-in-window ≤ k`
+(`deficiency_add_prime_count_le`) with its effective/extreme consequences:
+- `deficiency_lt_k_of_prime_in_window`: a single prime `n-i` (`i<k`) in the
+  window forces `deficiency n k < k` (one prime certificate suffices — effective).
+- `window_primefree_of_deficiency_eq_k`: the trivial-max case `deficiency n k = k`
+  forces a prime gap of length ≥ k (no window value is prime). Structural reason
+  record deficiencies are hard: they demand prime-poor windows (the ELS density
+  phenomenon).
+
+Both proved by pulling `#primes ≥ 1` (`Finset.one_le_card.mpr ⟨i,_⟩`) into the
+sharp bound and closing with `omega`. No native_decide, no new axioms.
+
+### Verification
+Built clean (3059 jobs). File now 19 theorems, 0 sorries, 0 axiom declarations.
+native_decide (⇒ ofReduceBool) still used ONLY by the 3 record facts
+(deficiency_284_28 [parent], noSmallPrimeFactors_284_28, smooth_indices_284_28);
+all structural results (Sections I,III–VII) are ofReduceBool-free.
+
+### Assessment / Frontier
+The open core (universal upper bound `deficiency ≤ 9` for all admissible pairs,
+k ≥ 10) is genuinely blocked on analytic NT: it needs an *effective* ELS/Brun–
+Titchmarsh short-interval prime-count bound, absent from Mathlib v4.26. The parent
+axiom `els_upper_bound` has a non-effective constant, so even fixed-k slices aren't
+decidable. Elementary structural theory here is near its frontier.
+
+### Next Steps (if revisited)
+- ofReduceBool-free proof of `noSmallPrimeFactors_284_28` via Kummer/Legendre digit
+  sums (Mathlib `Nat.Prime.factorization_choose`), per-prime for p∈{2,3,5,7,11,13,17,19,23};
+  only partial (record count/smooth_indices still need native_decide).
+- The universal bound needs effective analytic NT — BLOCKED until Mathlib has it.
