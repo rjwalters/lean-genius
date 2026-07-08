@@ -1735,6 +1735,28 @@ theorem autoDropCert_attainsBelow {b r : ℕ} (h : autoDropCert b r = true)
   exact parityVector_attainsBelow _ hk
     (affValidB_sound (affValidB_deriveVec _ _ _)) hc hd hn
 
+open Classical in
+/-- **Mechanized density floor — zero per-residue proof.**  For any exponent `b`, the
+number of residues `r (mod 2^b)` that the auto engine certifies (a single decidable
+filter, no hand-supplied parity vectors) times `(N-1)` lower-bounds the count of
+drop-below starts in `[1, 2^b · N]`.  This is the promised union of the two halves of
+the file: the general density lemma `attainsBelow_density_of_residues` fed by the
+turnkey certificate `autoDropCert`, so **any** new level `b` is discharged with no new
+proof — the `goodResidues` count is a `decide`, and every drop hypothesis is
+`autoDropCert_attainsBelow`.  (Axiom-free: `decide`, not `native_decide`.) -/
+theorem attainsBelow_density_of_autoDropCert (b N : ℕ) :
+    ((Finset.range (2 ^ b)).filter (fun r => autoDropCert b r = true)).card * (N - 1) ≤
+      ((Finset.Icc 1 (2 ^ b * N)).filter (fun n => AttainsBelow n)).card := by
+  refine attainsBelow_density_of_residues (M := 2 ^ b) (Nat.one_le_pow b 2 (by norm_num))
+    ((Finset.range (2 ^ b)).filter (fun r => autoDropCert b r = true))
+    (fun r hr => (Finset.mem_range.1 (Finset.mem_filter.1 hr).1)) ?_ N
+  intro r hr m _
+  obtain ⟨_, hcert⟩ := Finset.mem_filter.1 hr
+  have hrlt : r < 2 ^ b := Finset.mem_range.1 (Finset.mem_filter.1 hr).1
+  have hmod : (2 ^ b * m + r) % 2 ^ b = r := by
+    rw [Nat.add_comm, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hrlt]
+  exact autoDropCert_attainsBelow hcert hmod
+
 /-! ### Validation: the auto-derived engine reproduces the gallery families
 
 Each call below supplies only the modulus exponent `b` and the residue `r`; the parity

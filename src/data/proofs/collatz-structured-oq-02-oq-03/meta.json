@@ -20,12 +20,15 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1761,
+    "lineCount": 1783,
     "assumptions": "1 axiom: tao_2019 — the precise statement of Tao (2019, Forum Math. Pi), that for every f : ℕ → ℝ with f n → ∞ the set {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. This is the deep analytic result the open question asks about; it is recorded, not proved, because its proof (3-adic transport/concentration estimates plus a Fourier-analytic input) is far beyond current Mathlib. No theorem in the file is derived from this axiom — the proven Parts II–III are independently machine-verified and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound.",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.26.0",
-    "theoremCount": 62,
-    "definitionCount": 13
+    "theoremCount": 63,
+    "definitionCount": 13,
+    "originalContributions": [
+      "attainsBelow_density_of_autoDropCert: fuses the general density lemma attainsBelow_density_of_residues with the turnkey autoDropCert engine, so the drop-below density floor at any 2^b level is (#auto-certified residues)·(N-1) with ZERO per-residue proof — the residue count is a decide, every drop hypothesis is autoDropCert_attainsBelow (axiom-free, no native_decide)"
+    ]
   },
   "overview": {
     "historicalContext": "The Collatz conjecture asserts every positive integer's orbit reaches 1. Short of the full conjecture, 'almost all' results bound the orbit for density-one sets of starting values. Terras (1976) and Korec (1994) showed almost all n (in natural density) have finite stopping time — their orbit drops below the starting value. Tao (2019, Forum Math. Pi) gave a dramatically stronger statement: for any f → ∞, almost all n (in the finer logarithmic density) have orbit minimum below f(n), i.e. orbits attain almost bounded values. OQ-03 asks whether this analytic landmark can be formalized in Lean.",
@@ -134,9 +137,9 @@
       "Mathlib"
     ],
     "namespace": "CollatzStructuredOQ02OQ03",
-    "lineCount": 1761,
+    "lineCount": 1783,
     "axiomCount": 1,
-    "theoremCount": 62,
+    "theoremCount": 63,
     "path": "Proofs/CollatzStructuredOQ02OQ03.lean",
     "sorries": 0,
     "definitionCount": 13
@@ -156,5 +159,13 @@
     "Earlier floor preserved: n ≡ 3 (mod 16) drops in 6 steps (attainsBelow_density_lower_16, ≥ 13/16); evens and powers of two handled by the n/2 branch",
     "Tao 2019 stated precisely (tao_2019 axiom, HasLogDensityOne); deep analytic proof BLOCKED, all elementary content independent of the axiom",
     "Uniform Terras drop criterion `terras_attainsBelow`: for a window with a triplings and b halvings on modulus 2^b, the drop condition c_k < 2^b collapses to the textbook inequality 3^a < 2^b — the leading coefficient is forced to 3^a by the parity counts (leadCoeff_two_pow), so no affine-orbit computation is needed. Axiom-free."
+  ],
+  "mainTheorems": [
+    {
+      "name": "attainsBelow_density_of_autoDropCert",
+      "type": "theorem",
+      "statement": "For all b, N: (#{r < 2^b : autoDropCert b r}) · (N-1) ≤ #{n ∈ [1, 2^b·N] : AttainsBelow n}.",
+      "significance": "Unifies the two halves of the file: the general residue-density lemma fed by the fully-auto certificate engine. A new modulus level 2^b now yields a density floor with no new proof — the good-residue count is a single decide and each drop is discharged by autoDropCert_attainsBelow. Axiom-free (decide, not native_decide)."
+    }
   ]
 }
