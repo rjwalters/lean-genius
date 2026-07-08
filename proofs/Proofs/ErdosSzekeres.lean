@@ -8,9 +8,12 @@ import Mathlib.Tactic
 # Erdős–Szekeres Theorem
 
 ## What This Proves
-We prove the Erdős–Szekeres Theorem: any sequence of at least (r-1)(s-1) + 1 distinct
-real numbers contains either an increasing subsequence of length r, or a decreasing
-subsequence of length s. This is Wiedijk's 100 Theorems #73.
+We formalize and axiomatize the Erdős–Szekeres Theorem: any sequence of at least
+(r-1)(s-1) + 1 distinct real numbers contains either an increasing subsequence of
+length r, or a decreasing subsequence of length s. This is Wiedijk's 100 Theorems #73.
+The core existence and tightness results are stated as axioms (see
+`erdos_szekeres_existence_axiom` and `erdos_szekeres_tight_axiom`); the pigeonhole
+proof described below is the intended approach but is not yet carried out in Lean.
 
 ## Historical Context
 Paul Erdős and George Szekeres proved this theorem in 1935 in their paper "A combinatorial
@@ -33,15 +36,15 @@ The proof uses an elegant pigeonhole argument:
 
 ## Approach
 - **Foundation:** We formalize increasing/decreasing subsequences using StrictMono/StrictAnti
-- **Original Contributions:** Direct proof of the pigeonhole argument using Finset cardinality
-- **Proof Techniques:** Pigeonhole principle, subsequence enumeration, order theory
+- **Original Contributions:** Type-safe subsequence definitions and the proved 2-element base case
+- **Proof Techniques:** Pigeonhole principle (axiomatized), subsequence enumeration, order theory
 
 ## Status
 - [ ] Complete proof
 - [x] Uses Mathlib for foundations
 - [x] Proves extensions/corollaries
 - [x] Pedagogical example
-- [x] Incomplete (has sorries)
+- [x] Incomplete (core theorem axiomatized; 0 sorries)
 
 ## Mathlib Dependencies
 - `Finset.card_le_card` : Cardinality is monotone
