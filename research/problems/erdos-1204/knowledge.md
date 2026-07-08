@@ -198,3 +198,59 @@ idiom `fin_cases hxE <;> first | decide | exact absurd (by decide) hxne`.
 Still OPEN: asymptotics A(k)∼k log k and B(k) (need analytic sieve). Next exact value:
 A(7)=20 (H(7)), witness e.g. {0,4,6,10,16,18,22}? — verify; the lower bound will need
 primes 2,3,5,7 combined and the case analysis grows.
+
+## Session 2026-07-08 (researcher-1, iteration 6) — exact value A(7) = 20 (prime 7 NOT yet binding)
+
+Added the next exact value after A(2)=2, A(3)=6, A(4)=8, A(5)=12, A(6)=16 as companion
+file `proofs/Proofs/Erdos1204A7.lean` (5 thm, **0 axioms / 0 sorries**, kernel `decide`
+only — NO native_decide). Kept separate from the Problem file to avoid the concurrent-
+session race, matching A4/A5/A6.
+
+- `A_seven : A 7 = 20` — matches Hardy–Littlewood minimal diameter H(7)=20.
+- `admissible_witness_seven : Admissible {0,2,6,8,12,18,20}` — witness for A(7) ≤ 20
+  (even ⇒ miss odd mod 2; residues 0,2,0,2,0,0,2 mod 3 ⇒ miss class 1; residues
+  0,2,1,3,2,3,0 mod 5 ⇒ miss class 4; residues 0,2,6,1,5,4,6 mod 7 ⇒ miss class 3;
+  p≥11 automatic since |a|=7<p).
+- `no_admissible_seven_evens` / `no_admissible_seven_odds` — the lower-bound cores.
+- `admissible_seven_sup_ge` — A(7) ≥ 20.
+
+**CORRECTION to the A(6) note's prediction.** The A(6) session guessed A(7)=20 "will need
+primes 2,3,5,7 combined". It does NOT. In each 10-element single-parity window
+{0,2,…,18} / {1,3,…,19} the mod-3 classes have sizes 4,3,3 (not 3,2,3 as in the smaller
+8-element A(6) windows). Missing the size-4 class leaves 6 elements (< 7 ⇒ contradiction),
+and missing EITHER size-3 class leaves a forced 7-set — so there are TWO forced 7-sets per
+parity (vs exactly one at A(6)):
+- evens: {0,2,6,8,12,14,18} (drop 1 mod 3) and {0,4,6,10,12,16,18} (drop 2 mod 3);
+- odds: {1,5,7,11,13,17,19} (drop 0 mod 3) and {1,3,7,9,13,15,19} (drop 2 mod 3).
+All four are mod-5-COMPLETE (cover every residue class mod 5), so p=5 alone kills them.
+Hence A(7)=20 closes with 2,3,5 and the prime 7 is not yet binding. The A(7) witness DOES
+miss a class mod 7, but that is only needed for the *upper*-bound admissibility of the
+witness, not the lower bound.
+
+**Recipe (reused verbatim from A6).** For each forced 7-set use
+`Finset.eq_of_subset_of_card_le hs (by rw [hcard]; decide)` to pin it, then
+`rw [heq] at ha; obtain ⟨r5,hr5⟩ := ha 5 (by decide); fin_cases r5` and discharge each
+class with `exact absurd (by decide) (hr5 <elem> (by decide))` picking the concrete
+element realizing that mod-5 class. Subset-narrowing under a missed mod-3 class uses
+`fin_cases hxE <;> first | decide | exact absurd (by decide) hxne`. Card contradictions
+(the size-4-class branches) use `have hle := Finset.card_le_card hs; rw [hcard] at hle;
+revert hle; decide`. The main split is `obtain ⟨r2,hr2⟩ := ha 2 (by decide); fin_cases r2`
+with `omega` closing single-parity window membership from `x ≤ 19` + `2 ∣ x` / `¬2∣x`.
+
+**INFRA (important for next session).** The shared docker Mathlib-cache volume developed a
+filesystem-level SIGBUS corruption: EVERY `import Mathlib` build died at exit 135 in ~1s
+while compiling the Erdos1204Problem dependency (line-less, at [7743/7744]). Reproduced 5×
+across the sparse `.loom` worktree AND a fresh durable worktree. `--repair-cache`
+(`lake exe cache get!` force-overwrite) reported "Cache force-refresh succeeded" but the
+next build still hit the identical 135 — so `cache get!` does NOT fix filesystem-level
+volume damage; only a full `--nuke` reset would, and that needs a zero-container window
+(2 fleet containers were active, so nuke was unsafe/impolite). A(7) was VERIFIED instead
+via the host-lake bypass: `LAKE_UNSAFE=1 ./bin/lake exe cache get` then
+`./bin/lake env lean Proofs/Erdos1204A7.lean` on the host, outside docker (fresh host
+.lake, unaffected by the corrupt docker volume). Also note: `--repair-cache` run from a
+RESET/sparse `.loom` worktree fails on attempt 2 with "no configuration file ...
+lakefile.toml" — it must be run from a NON-SPARSE worktree that actually has proofs/.
+
+Still OPEN: asymptotics A(k)∼k log k and B(k) (need analytic sieve). Next: A(8)=26 (H(8)
+jumps by 6). Consider factoring a generic "single-parity window minus one mod-p class"
+helper before the case analysis grows further.
