@@ -198,10 +198,14 @@ axiom constant_grows : ∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀,
     for **every** vertex type with **no** cardinality threshold — is strictly
     stronger than `existsBoundingConstant ε` (which only needs *some* threshold
     `N`). We discharge `existsBoundingConstant ε` by taking `N = 0`, then feed it
-    to `constant_grows` to conclude `C ≥ M`. -/
+    to `constant_grows` to conclude `C ≥ M`.
+
+    The vertex quantifier ranges over `Type` (matching `existsBoundingConstant`,
+    which is itself stated over `Type`) so that the `N = 0` witness lands in
+    exactly the universe the goal expects. -/
 theorem sparse_hides_nonplanarity :
     ∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C,
-      (∀ (V : Type*) [Fintype V] [DecidableEq V],
+      (∀ (V : Type) [Fintype V] [DecidableEq V],
         ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
           isDense G ε → hasSmallNonPlanarSubgraph G C) → C ≥ M := by
   intro M
