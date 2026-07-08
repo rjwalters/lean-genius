@@ -48,14 +48,14 @@
       "Binomial base case of algebraic closure proved (puiseux_binomial_root): over any algebraically closed K, every binomial Yⁿ = c·xᵐ has an honest Puiseux root c^(1/n)·x^(m/n)",
       "Genuine ramification witnessed (puiseux_binomial_ramification): the root of Yⁿ = c·x has orderTop exactly 1/n, so for n≥2 it lies strictly outside the Laurent field",
       "isPuiseux_single helper: every single-term Hahn series is a Puiseux series",
-      "Galois group Gal(Puiseux/Laurent) ≅ Ẑ described structurally",
-      "Characteristic zero requirement demonstrated via Artin-Schreier counterexample",
+      "Galois group Gal(Puiseux/Laurent) ≅ Ẑ noted as an informal String descriptor (galois_group_is_profinite_integers), not formalized",
+      "Characteristic-zero requirement noted as an informal String descriptor (char_zero_required, Artin-Schreier obstruction), not formalized",
       "Binomial root lifted to an honest Polynomial.IsRoot (puiseux_binomial_isRoot): the Puiseux series c^(1/n)·x^(m/n) is a genuine root of the polynomial Xⁿ - C(single m c) over the Hahn/Puiseux field, the polynomial-level form of a single Newton-polygon edge"
     ],
     "dateAdded": "2025-12-29",
     "axiomCount": 0,
     "lineCount": 640,
-    "assumptions": "No axiom declarations, no sorries, no native_decide (all theorems depend only on propext/Classical.choice/Quot.sound). The file no longer contains any vacuous True-stub theorems: the last two placeholders (puiseux_theorem, puiseux_is_algebraic_closure) were replaced by genuine, fully computed Hahn-series theorems puiseux_binomial_root and puiseux_binomial_ramification, which establish the binomial base case of Puiseux's theorem (every binomial Yⁿ = c·xᵐ has a Puiseux root of ramification n over an algebraically closed field). This is a rigorously verified FRAGMENT: the full Newton–Puiseux theorem for arbitrary polynomials over the Puiseux field (assembling binomial roots term by term, with its char-0 convergence argument) is not formalized here — the required infrastructure is absent from Mathlib. Badge remains 'wip' to reflect that the headline algebraic-closure theorem is not fully proven.",
+    "assumptions": "No axiom declarations, no sorries, no native_decide (all theorems depend only on propext/Classical.choice/Quot.sound). The two headline placeholders (puiseux_theorem, puiseux_is_algebraic_closure) were replaced by genuine, fully computed Hahn-series theorems puiseux_binomial_root and puiseux_binomial_ramification, which establish the binomial base case of Puiseux's theorem (every binomial Yⁿ = c·xᵐ has a Puiseux root of ramification n over an algebraically closed field). Four narrative theorems remain as String-literal descriptors carrying no formal content (curve_branches_are_puiseux, newton_polygon_tropicalization, galois_group_is_profinite_integers, char_zero_required); each merely asserts ∃ desc : String, desc = \"…\" and marks an informal application/connection rather than a machine-checked result. This is a rigorously verified FRAGMENT: the full Newton–Puiseux theorem for arbitrary polynomials over the Puiseux field (assembling binomial roots term by term, with its char-0 convergence argument) is not formalized here — the required infrastructure is absent from Mathlib. Badge remains 'wip' to reflect that the headline algebraic-closure theorem is not fully proven.",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
     "definitionCount": 2
