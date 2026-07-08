@@ -36,11 +36,12 @@ open GlaisherBijection Nat
 
 /-
   The inverse property: backward ∘ forward = identity on distinct positive multisets.
-  Uses count characterization proved via glaisherBwdStep_count_pow and testBit_sum_distinct_pow.
+  Now discharged directly from `GlaisherBijection.glaisherBwd_glaisherFwd`, which proves this
+  via the count characterization (glaisherBwdStep_count_pow and testBit_sum_distinct_pow).
 -/
 theorem glaisherBwd_glaisherFwd_ari {s : Multiset ℕ}
     (hs_pos : ∀ k ∈ s, k ≠ 0) (hs_nodup : s.Nodup) :
-    glaisherBwd (glaisherFwd s) = s := by
-  sorry
+    glaisherBwd (glaisherFwd s) = s :=
+  GlaisherBijection.glaisherBwd_glaisherFwd hs_pos hs_nodup
 
 end GlaisherBijectionAristotle
