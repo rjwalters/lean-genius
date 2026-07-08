@@ -100,16 +100,46 @@
   },
   "sections": [
     {
-      "title": "The Coordinate Isometry",
-      "content": "The natural basis vectors e_{j.succAbove i} of the coordinate hyperplane are orthonormal (orthonormal_hyperplaneBasis) and span it (span_hyperplaneBasis_top), so OrthonormalBasis.mk assembles them into coordBasis : OrthonormalBasis (Fin n) 𝕜 H. Its inverse representation coordEquiv := coordBasis.repr.symm is the linear isometry equivalence EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H sending the standard basis vector e_i to e_{j.succAbove i}; reading any coordinate of an image against the basis returns the input coordinate (coordBasis_inner_coordEquiv)."
+      "id": "header",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "The module docstring frames the file as answering the parent entry's first open question: upgrading the form-level identification (the compression's sesquilinear form on the coordinate hyperplane is the principal submatrix A' = A.submatrix j.succAbove j.succAbove) to the spectral statement that the submatrix's eigenvalues interlace the parent's, λ_{k+1} ≤ μ_k ≤ λ_k. Works over any RCLike field (ℝ and ℂ); imports the parent geometric identification and the gallery's abstract Cauchy interlacing theorem."
     },
     {
+      "id": "index-bookkeeping",
+      "title": "Eigenvalues Are Independent of the finrank Proof",
+      "startLine": 61,
+      "endLine": 73,
+      "summary": "eigenvalues_finrank_congr: LinearMap.IsSymmetric.eigenvalues is indexed by Fin m through a proof finrank 𝕜 E = m, so the operator statement (via finrank_euclideanSpace_fin) and the literal eigenvalues₀ statement (via finrank_euclideanSpace) name the same list against two different indexings. Since both m and m' equal finrank 𝕜 E, the equality m = m' is forced, and after obtain rfl the Fin.cast reindexing collapses to the identity — the only bridge needed between the abstract-operator proof and Mathlib's Matrix.IsHermitian.eigenvalues₀ indexing."
+    },
+    {
+      "id": "transfer-engine",
+      "title": "The Abstract Transfer Engine",
+      "startLine": 74,
+      "endLine": 110,
+      "summary": "interlacing_of_intertwine, the reusable core: given a symmetric operator T on V (antitone eigendata b, lam), a codimension-one H ≤ V, a model operator T' on E (antitone eigendata b', mu), an isometry e : E ≃ₗᵢ H, and the intertwining T_H (e x) = e (T' x), it concludes lam k.succ ≤ mu k ≤ lam k.castSucc. The proof maps T''s eigenbasis b' through e (b'.map e) to obtain an eigenbasis of the compression with the SAME eigenvalues mu, then invokes the abstract cauchy_interlacing — no eigenvalue-uniqueness lemma required. Stated for abstract V, E to keep the heavy unification generic."
+    },
+    {
+      "id": "coordinate-isometry",
+      "title": "The Coordinate Orthonormal Basis and Isometry",
+      "startLine": 111,
+      "endLine": 164,
+      "summary": "The natural basis vectors e_{j.succAbove i} of the coordinate hyperplane are orthonormal (orthonormal_hyperplaneBasis) and span it (span_hyperplaneBasis_top), so OrthonormalBasis.mk assembles them into coordBasis : OrthonormalBasis (Fin n) 𝕜 H. Its inverse representation coordEquiv := coordBasis.repr.symm is the linear isometry equivalence EuclideanSpace 𝕜 (Fin n) ≃ₗᵢ H sending e_i to e_{j.succAbove i}; reading any coordinate of an image against the basis returns the input coordinate (coordBasis_inner_coordEquiv)."
+    },
+    {
+      "id": "intertwining",
       "title": "The Intertwining: Compression Is the Submatrix Operator",
-      "content": "On a single coordinate vector, coordBasis.repr.injective reduces the intertwining to one submodule inner product, evaluated by the previous entry's compress_inner_eq_principalSubmatrix as an entry of the principal submatrix (compress_coordBasis). Expanding a general x in the standard basis and pushing compress, toEuclideanLin A' and coordEquiv through the sum with map_sum/map_smul yields the full intertwining compress (toEuclideanLin A) H (coordEquiv x) = coordEquiv (toEuclideanLin A' x) (compress_intertwine)."
+      "startLine": 165,
+      "endLine": 205,
+      "summary": "On a single coordinate vector, coordBasis.repr.injective reduces the intertwining to one submodule inner product, evaluated by the previous entry's compress_inner_eq_principalSubmatrix as an entry of the principal submatrix (compress_coordBasis). Expanding a general x in the standard basis and pushing compress, toEuclideanLin A' and coordEquiv through the sum with map_sum/map_smul yields the full intertwining compress (toEuclideanLin A) H (coordEquiv x) = coordEquiv (toEuclideanLin A' x) (compress_intertwine). Keeping these as rewrite lemmas leaves the OrthonormalBasis.mk-built isometry opaque, avoiding a definitional-unfolding blow-up."
     },
     {
-      "title": "The Transfer Engine and the Eigenvalue Corollary",
-      "content": "interlacing_of_intertwine is a reusable abstract theorem: an isometric intertwining of the compression with a symmetric operator T' transports T''s antitone eigenbasis onto an eigenbasis of the compression with the same eigenvalues, which — with the orthogonal compression's Rayleigh agreement — feeds the gallery's abstract cauchy_interlacing. Instantiating it with the coordinate isometry yields the operator form principalSubmatrix_eigenvalues_interlacing; the bookkeeping lemma eigenvalues_finrank_congr then re-expresses it in Mathlib's Matrix.IsHermitian.eigenvalues₀ indexing as eigenvalues₀_principalSubmatrix_interlacing: λ_{k+1} ≤ μ_k ≤ λ_k."
+      "id": "eigenvalue-corollary",
+      "title": "The Eigenvalue Interlacing Corollary",
+      "startLine": 206,
+      "endLine": 294,
+      "summary": "Instantiating the transfer engine with the coordinate isometry gives the operator form principalSubmatrix_eigenvalues_interlacing; the bookkeeping lemma eigenvalues_finrank_congr then re-expresses it in Mathlib's Matrix.IsHermitian.eigenvalues₀ indexing as eigenvalues₀_principalSubmatrix_interlacing: λ_{k+1} ≤ μ_k ≤ λ_k — the literal matrix statement the parent entry's open question requested."
     }
   ],
   "references": [
