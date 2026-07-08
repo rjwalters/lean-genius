@@ -3,10 +3,11 @@
 
   The gallery entry `CauchySchwarzIntegral` proves the L²/inner-product Cauchy–Schwarz
   inequality `|⟪f,g⟫| ≤ ‖f‖·‖g‖`.  Its OQ-04 asks for the **Heisenberg uncertainty
-  principle**.  The full operator-theoretic statement
-  `Var_ψ(A)·Var_ψ(B) ≥ ¼|⟪ψ,[A,B]ψ⟫|²` needs self-adjoint operators and the
-  commutator, beyond a single file; but the *single inequality that drives it* is a
-  clean Cauchy–Schwarz corollary, and that is what we formalize.
+  principle**.  We formalize both the Cauchy–Schwarz core that drives it *and* the
+  full operator-theoretic statement `Var_ψ(A)·Var_ψ(B) ≥ ¼|⟪ψ,[A,B]ψ⟫|²` for
+  symmetric (self-adjoint) operators `A, B` over `ℝ` or `ℂ` (`robertson_uncertainty`),
+  together with its variance-form specialization at the expectation values
+  (`heisenberg_variance_form`).
 
   Writing `u = (A−⟨A⟩)ψ`, `v = (B−⟨B⟩)ψ`, the uncertainty product is
   `Var(A)·Var(B) = ‖u‖²·‖v‖²`, and the commutator term is `Im⟪u,v⟫`.  The
@@ -20,6 +21,8 @@
 
   * `abs_im_inner_le_norm_mul_norm` — `|Im⟪u,v⟫| ≤ ‖u‖·‖v‖`.
   * `im_inner_sq_le` — `(Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²`.
+  * `robertson_uncertainty` — `¼‖⟪ψ,[A,B]ψ⟫‖² ≤ ‖(A−a)ψ‖²·‖(B−b)ψ‖²`.
+  * `heisenberg_variance_form` — the same at `a = ⟨A⟩`, `b = ⟨B⟩` (variance form).
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -113,5 +116,22 @@ theorem robertson_uncertainty {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
   have him := im_inner_sq_le (𝕜 := 𝕜) u v
   nlinarith [hnb, him, norm_nonneg (inner 𝕜 ψ (A (B ψ) - B (A ψ))),
     abs_nonneg (RCLike.im (inner 𝕜 u v)), sq_abs (RCLike.im (inner 𝕜 u v))]
+
+/-- **Heisenberg uncertainty principle (variance form).**  The physically standard
+statement: instantiating `robertson_uncertainty` at the expectation values
+`⟨A⟩ = Re⟪ψ,Aψ⟫`, `⟨B⟩ = Re⟪ψ,Bψ⟫` makes each factor on the right the variance
+`Var_ψ(A) = ‖(A−⟨A⟩)ψ‖²`, `Var_ψ(B) = ‖(B−⟨B⟩)ψ‖²`, so
+
+  `Var_ψ(A)·Var_ψ(B) ≥ ¼·‖⟪ψ, (AB−BA)ψ⟫‖²`.
+
+For a symmetric operator `⟪ψ,Aψ⟫` is real, so `Re⟪ψ,Aψ⟫` is the genuine
+expectation value `⟨A⟩` and the centred vector `(A−⟨A⟩)ψ` is the fluctuation. -/
+theorem heisenberg_variance_form {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
+    (hB : B.IsSymmetric) (ψ : E) :
+    (1 / 4 : ℝ) * ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ^ 2
+      ≤ ‖A ψ - ((RCLike.re (inner 𝕜 ψ (A ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2
+        * ‖B ψ - ((RCLike.re (inner 𝕜 ψ (B ψ)) : ℝ) : 𝕜) • ψ‖ ^ 2 :=
+  robertson_uncertainty hA hB ψ (RCLike.re (inner 𝕜 ψ (A ψ)))
+    (RCLike.re (inner 𝕜 ψ (B ψ)))
 
 end CauchySchwarzIntegralOQ04
