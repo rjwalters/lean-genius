@@ -581,6 +581,51 @@ theorem χ₈'_eq_χ₄_mul_χ₈_of_odd (n : ℕ) (hn : 0 < n) (hno : n % 2 = 1
     ← kronecker_two_eq_χ₈ n hn hno]
   exact kronecker_neg_two_eq_mul (n : ℤ)
 
+-- ============================================================
+-- Section 10: The symbol is {−1, 0, 1}-valued (a real character)
+-- ============================================================
+
+/-- **The Kronecker symbol is `{−1, 0, 1}`-valued.**  For every integer pair
+`(a, n)` the symbol `(a/n)` lands in `{−1, 0, 1}`: the special moduli `n = 0, −1`
+are `{0,1}`- and `{−1,1}`-valued by definition, `n = 1` gives `1`, and the general
+branch is `sign · J(a ∣ |n|)` with `sign ∈ {−1,1}` and the Jacobi symbol
+`{−1,0,1}`-valued (`jacobiSym.trichotomy`).  Taking `{−1,0,1}` values is the
+defining feature of a *real* (quadratic) Dirichlet character — exactly the object
+the Gauss-sum route consumes.  Previously known here only for `kronecker2`
+(`kronecker2_values`); this establishes it for the full symbol. -/
+theorem kronecker_trichotomy (a n : ℤ) :
+    kronecker a n = 0 ∨ kronecker a n = 1 ∨ kronecker a n = -1 := by
+  rcases eq_or_ne n 0 with rfl | hn0
+  · rw [show kronecker a 0 = kronecker0 a from by simp [kronecker], kronecker0]
+    split_ifs <;> tauto
+  · rw [kronecker_eq_sign_jacobi a n hn0]
+    have hs : (if n < 0 then kroneckerNeg1 a else 1) = 1 ∨
+        (if n < 0 then kroneckerNeg1 a else 1) = -1 := by
+      split_ifs with hlt
+      · rw [kroneckerNeg1]; split_ifs <;> tauto
+      · tauto
+    rcases jacobiSym.trichotomy a n.natAbs with hj | hj | hj
+    · left; rw [hj, mul_zero]
+    · rw [hj, mul_one]; tauto
+    · rw [hj]
+      rcases hs with h | h
+      · rw [h]; right; right; ring
+      · rw [h]; right; left; ring
+
+/-- **The symbol is bounded by `1` in absolute value.**  An immediate consequence
+of `kronecker_trichotomy`: `|(a/n)| ≤ 1` for all `a, n`.  The clean quantitative
+form of "the Kronecker symbol is a quadratic character". -/
+theorem kronecker_abs_le_one (a n : ℤ) : |kronecker a n| ≤ 1 := by
+  rcases kronecker_trichotomy a n with h | h | h <;> rw [h] <;> norm_num
+
+/-- **The symbol squares into `{0, 1}` (order-two character).**  From the
+trichotomy, `(a/n)² ∈ {0, 1}`: the value squared is `0` on non-coprime pairs and
+`1` otherwise, i.e. the Kronecker symbol has order dividing `2` wherever it is
+nonzero — the abstract statement that `(·/n)` is a *quadratic* character. -/
+theorem kronecker_sq_mem (a n : ℤ) :
+    kronecker a n ^ 2 = 0 ∨ kronecker a n ^ 2 = 1 := by
+  rcases kronecker_trichotomy a n with h | h | h <;> rw [h] <;> norm_num
+
 /-!
 ## Module note: what remains open
 
