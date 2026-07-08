@@ -182,14 +182,30 @@ triggers a Mathlib v4.26 elaborator stack overflow; see the header note.
 -/
 axiom chung_no_threshold : ¬ ConjectureAt (1/4)
 
-/--
-**Chung's C₆-free subgraphs (existence form).**
-For every `n ≥ 3` the hypercube `Qₙ` has a subgraph containing no `C₆`
-(one of the four parts of Chung's `1992` edge-partition). This existence
-statement carries no edge-count data, so it packages cleanly on its own; it
-feeds the corollaries in Parts V–VII.
+/-
+**C₆-free subgraphs of `Qₙ` exist (existence form).**
+For every `n ≥ 3` the hypercube `Qₙ` has a subgraph containing no `C₆`.
+
+Chung's `1992` edge-partition supplies such a subgraph carrying `≥ 1/4` of
+all edges — but *that* density content is precisely what the axiom
+`chung_no_threshold` captures. The bare existence statement here carries
+**no edge-count data**, so it is provable outright: the empty subgraph `⊥`
+(no edges) contains no cycle of any length, hence no `C₆`. We therefore
+prove it rather than assume it — the deep combinatorial content stays
+isolated in the single density axiom `chung_no_threshold`.
+
+(The empty-graph witness is the honest minimal certificate for this weak
+statement; the corollaries in Parts V–VII only invoke the existence form.)
 -/
-axiom chung_c6free : ∀ n : ℕ, n ≥ 3 → ∃ H : SimpleGraph (Fin (2^n)), ¬ HasC6 H
+unseal HasC6 HasCycle in
+/-- **C₆-free subgraphs of `Qₙ` exist**: witnessed by the empty subgraph `⊥`,
+which contains no cycle. The density-carrying content lives in the axiom
+`chung_no_threshold`. -/
+theorem chung_c6free : ∀ n : ℕ, n ≥ 3 → ∃ H : SimpleGraph (Fin (2^n)), ¬ HasC6 H := by
+  intro n _
+  refine ⟨⊥, ?_⟩
+  rintro ⟨cycle, -, hadj, -⟩
+  simpa using hadj 0
 
 /--
 **The conjecture is FALSE:**

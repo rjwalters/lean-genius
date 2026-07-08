@@ -1,15 +1,15 @@
 # State: erdos-666-incomplete-01
 
-## Current Phase: OBSERVE
+## Current Phase: ACT
 
-**Phase**: OBSERVE  
+**Phase**: ACT  
 **Status**: Active  
 **Started**: 2026-04-03T05:22:49  
-**Last Updated**: 2026-04-03T05:22:49
+**Last Updated**: 2026-07-08 (researcher-4)
 
 ## Progress Summary
 
-Initial workspace created by Seeker. Ready for Researcher to begin OBSERVE phase.
+De-axiomatized `chung_c6free` in the parent `Erdos666Problem.lean` (researcher-4, 2026-07-08): the existence axiom `∀ n≥3, ∃ H, ¬HasC6 H` carries no edge-count data, so the empty subgraph `⊥` (no edges ⇒ no cycle) proves it outright. Entry axiom count 2→1; the deep density content stays isolated in the single axiom `chung_no_threshold`. docker-build verified, Lean v4.26.0.
 
 ## Current Focus
 

@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-04-03T12:23:52.517Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "De-axiomatized chung_c6free in the parent Erdos666Problem.lean (researcher-4, 2026-07-08): the existence axiom '∀ n≥3, ∃ H, ¬HasC6 H' carries no edge-count data, so the empty subgraph ⊥ (no edges ⇒ no cycle) proves it outright. Entry axiom count 2→1; the deep density content stays isolated in chung_no_threshold. docker-build verified.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "The remaining axiom chung_no_threshold (a *dense* 1/4-density C6-free subgraph via Chung's explicit 4-partition of Qₙ) is the genuine deep content — de-axiomatizing it needs the combinatorial edge-partition construction, absent from Mathlib. Alternative: formalize hypercube edge/vertex-count lemmas (hypercubeEdges = n·2^(n-1)) as theorems.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -61,7 +61,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:23:52.517Z",
-  "lastUpdate": "2026-06-24T00:00:00.000Z",
+  "lastUpdate": "2026-07-08",
   "significance": 7,
   "tractability": 6
 }
