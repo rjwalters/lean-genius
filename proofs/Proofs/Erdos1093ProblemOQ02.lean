@@ -48,8 +48,10 @@ the **tractable half** and formalizes the question precisely.
 ## Axioms
 
 The record facts (`deficiency_284_28`, `noSmallPrimeFactors_284_28`,
-`smooth_indices_284_28`) are discharged by `native_decide`, so they depend on
-`Lean.ofReduceBool`.  The structural results (1, 5) are `ofReduceBool`-free.
+`smooth_indices_284_28`) and the single numeric certificate `(28!)² < 47!`
+inside `deficiency_record_le_18` (Section XII) are discharged by `native_decide`,
+so they depend on `Lean.ofReduceBool`.  The structural results (1, 5) and all of
+Sections IV–XI are `ofReduceBool`-free.
 
 ## Status: OPEN (universal upper bound); existence half machine-verified.
 -/
@@ -669,3 +671,37 @@ theorem sharp_bound_frontier_exact (k : ℕ) :
     (15 ≤ k → Nat.factorial (k + 9) ≤ (Nat.factorial k) ^ 2) := by
   refine ⟨fun hk => ?_, fun hk => sharp_bound_permits_deficiency_nine k hk⟩
   interval_cases k <;> decide
+
+/-
+## Section XIV: The explicit elementary bound at the record modulus `k = 28`
+
+Section X's sharp closed form `(k + deficiency n k)! ≤ (k!)²`
+(`deficiency_add_factorial_le_sq`) is an abstract inequality; specialising it to
+the record modulus `k = 28` turns it into a concrete numeric ceiling on the
+deficiency.  Since `(28!)² < 47!` (a single bignum comparison, `native_decide`)
+while `(28!)² ≥ 46! = (28 + 18)!`, the bound `(28 + d)! ≤ (28!)²` forces
+`d ≤ 18`.  So *every* admissible pair with `k = 28` — including the record
+`(284, 28)` itself — has deficiency at most `18`.
+
+This is the best ceiling the purely elementary (ELS-axiom-free) theory of this
+file delivers at `k = 28`, and it quantifies precisely the gap it leaves open:
+the actual record there is `deficiency 284 28 = 9`, so closing OQ-02 at this
+modulus still needs to rule out the range `10 ≤ d ≤ 18` — exactly the analytic
+short-interval prime-density input the elementary product argument cannot supply.
+-/
+
+/-- **Explicit deficiency ceiling at the record modulus `k = 28`.**  Every
+admissible pair `(n, 28)` has `deficiency n 28 ≤ 18`.  This specialises the sharp
+factorial bound `(28 + d)! ≤ (28!)²` (`deficiency_add_factorial_le_sq`) using the
+numeric certificate `(28!)² < 47!`: a deficiency `≥ 19` would give
+`47! ≤ (28 + d)! ≤ (28!)² < 47!`, a contradiction.  The record `(284, 28)` attains
+`9`, so the elementary theory still leaves the window `10 ≤ d ≤ 18` open. -/
+theorem deficiency_record_le_18 {n : ℕ} (hn : 56 ≤ n)
+    (h : NoSmallPrimeFactors n 28) : deficiency n 28 ≤ 18 := by
+  by_contra hgt
+  push_neg at hgt
+  have hsq := deficiency_add_factorial_le_sq (n := n) (k := 28) (by omega) h
+  have hmono : Nat.factorial 47 ≤ Nat.factorial (28 + deficiency n 28) :=
+    Nat.factorial_le (by omega)
+  have hnum : (Nat.factorial 28) ^ 2 < Nat.factorial 47 := by native_decide
+  exact absurd (hmono.trans hsq) (not_le.mpr hnum)
