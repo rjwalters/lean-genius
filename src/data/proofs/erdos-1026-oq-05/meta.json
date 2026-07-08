@@ -1,0 +1,146 @@
+{
+  "id": "erdos-1026-oq-05",
+  "title": "Erdős #1026 OQ-05: A Lower Bound on Monotonic Decompositions",
+  "slug": "erdos-1026-oq-05",
+  "description": "Open question OQ-05 of Erdős Problem #1026 (monotonic subsequence sum optimization) asks to extend the picture from single monotonic subsequences to decompositions of the whole sequence into monotonic pieces — the object underlying Hanani's 1957 theorem, formalized as MonotonicDecomposition in the parent file. That parent states the MonotonicDecomposition structure but proves nothing about how many parts such a decomposition must use; Hanani's (√2 + o(1))√n bound lives only in a comment. This entry proves, axiom-free, the elementary but genuine Mirsky/Dilworth lower-bound half: every monotonic decomposition of a length-n sequence satisfies n ≤ numParts · max(LIS, LDS) (monotonicDecomposition_numParts_lower_bound), equivalently numParts ≥ n / max(LIS, LDS) (monotonicDecomposition_numParts_ge). The proof is a clean counting argument: the parts' index maps assemble into a surjection from their disjoint union onto Fin n (exactly the covering condition), so n is at most the sum of the part lengths; and each part, being monotonic, has length at most the longest increasing subsequence LIS (if increasing) or longest decreasing subsequence LDS (if decreasing), hence at most their max. A trivial singleton decomposition is exhibited (singletonDecomposition), showing the class is nonempty and giving the matching crude upper bound numParts ≤ n, so the optimal number of parts is bracketed in [n / max(LIS, LDS), n]. For the extremal Erdős–Szekeres sequences, where the longest monotone run has length only ≈ √n, the bound forces numParts ≳ √n pieces — the lower-bound side of Hanani's theorem. The matching upper bound (that O(√n) pieces always suffice) is the hard constructive direction and is left open, stated but not axiomatized. No axioms, no sorries.",
+  "meta": {
+    "author": "Research formalization 2026",
+    "sourceUrl": "https://www.erdosproblems.com/1026",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1026OQ05.lean",
+    "tags": [
+      "combinatorics",
+      "order-theory",
+      "erdos-szekeres",
+      "monotonic-subsequences",
+      "dilworth",
+      "decomposition",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 184,
+    "assumptions": "None. The file introduces no axioms and no sorries; every theorem depends only on the standard foundational axioms propext / Classical.choice / Quot.sound. Only the lower-bound (Mirsky/Dilworth) direction of the decomposition problem is proved; the hard upper-bound direction of OQ-05 — that O(√n) monotone pieces always suffice (Hanani 1957) — is stated in prose as the remaining open direction, not assumed.",
+    "dateAdded": "2026-07-08",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1026 concerns monotonic subsequences. The Erdős–Szekeres theorem (1935) guarantees that every sequence of k²+1 distinct reals contains a monotonic subsequence of length k+1. Dually, Hanani (1957) showed the whole sequence can be partitioned into few monotonic subsequences — at most (√2 + o(1))√n of them — and the optimization variant studies the sums such pieces carry. The parent gallery formalization records the MonotonicDecomposition structure but proves no quantitative bound on the number of parts. This entry supplies the elementary lower bound that any such decomposition must obey.",
+    "problemStatement": "**OQ-05**: Extend Erdős #1026 from single monotonic subsequences to k-monotonic decompositions of the whole sequence — partitions into pieces that are each increasing or decreasing. How many pieces are required?",
+    "text": "We re-state the minimal Subsequence / LIS / LDS / MonotonicDecomposition interface and prove the Mirsky/Dilworth lower bound: every monotonic decomposition of a length-n sequence uses at least n / max(LIS, LDS) parts. The bound is tight in order of magnitude against the Erdős–Szekeres extremal sequences (longest monotone run ≈ √n forces ≈ √n parts), pinning the lower-bound side of Hanani's theorem. The constructive upper bound is left open.",
+    "proofStrategy": "Self-contained over a minimal Subsequence n m (a strictly monotone index map Fin m → Fin n), re-stated rather than imported because the parent Erdos1026Problem.lean depends on Archive.Wiedijk100Theorems. LIS/LDS are the sSup of achievable increasing/decreasing subsequence lengths, each bounded above by n (lis_bddAbove / lds_bddAbove via subsequence_length_le). A monotonic subsequence has length ≤ max(LIS, LDS) (len_le_max_of_monotonic, from len_le_LIS_of_increasing / len_le_LDS_of_decreasing and le_csSup). For a decomposition D, the map g : (Σ i, Fin (part i length)) → Fin n sending (i, j) ↦ (part i).indices j is surjective by the covering condition, so Fintype.card_le_of_surjective gives n = |Fin n| ≤ |Σ i, Fin (part i length)| = Σ i, (part i length) (Fintype.card_sigma). Bounding each summand by max(LIS, LDS) and summing the constant over numParts parts (Finset.sum_const) yields n ≤ numParts · max(LIS, LDS); Nat.div_le_of_le_mul rephrases it as numParts ≥ n / max(LIS, LDS). The singleton decomposition (each element its own vacuously-monotonic part, fin_one_strictMono) shows the class is nonempty and gives numParts ≤ n.",
+    "keyInsights": [
+      "The covering condition of a monotonic decomposition is exactly the statement that the parts' index maps assemble into a surjection from their disjoint union onto the index set Fin n; this turns the counting bound into a one-line application of Fintype.card_le_of_surjective plus Fintype.card_sigma.",
+      "Each part contributes at most max(LIS, LDS) to the cover because a monotonic subsequence is either increasing (length ≤ LIS) or decreasing (length ≤ LDS); this is the only place monotonicity is used, and it is what ties the decomposition size to the longest-monotone-run parameter.",
+      "The resulting bound n ≤ numParts · max(LIS, LDS) is the Mirsky/Dilworth lower-bound half of Hanani's theorem: on the Erdős–Szekeres extremal sequences (max(LIS, LDS) ≈ √n) it forces numParts ≳ √n, matching Hanani's O(√n) upper bound in order.",
+      "The elementary lower bound is unconditional and axiom-free; the matching upper bound (a construction achieving O(√n) parts for every sequence) is the genuinely hard direction and is left open, stated but not axiomatized."
+    ],
+    "prerequisites": [
+      "The Erdős–Szekeres theorem and monotonic subsequences",
+      "Longest increasing / decreasing subsequence lengths (LIS, LDS) as suprema",
+      "Dilworth/Mirsky-style covering-versus-chain counting",
+      "Finite cardinality of a sigma type and surjection-cardinality bounds"
+    ]
+  },
+  "sections": [
+    {
+      "id": "subsequence-interface",
+      "title": "The Subsequence Interface and Monotonicity",
+      "startLine": 42,
+      "endLine": 68,
+      "summary": "RealSeq n := Fin n → ℝ; Subsequence n m is a strictly monotone index map Fin m → Fin n; IsIncreasing/IsDecreasing/IsMonotonic re-state the exact notions (matching Erdos1026Problem.lean) so the file is self-contained.",
+      "mathContext": "A subsequence is a strictly increasing $\\iota : \\mathrm{Fin}\\,m \\to \\mathrm{Fin}\\,n$; it is monotonic when $\\mathrm{seq}\\circ\\iota$ is strictly monotone or strictly antitone."
+    },
+    {
+      "id": "lis-lds",
+      "title": "Longest Monotone Runs and Length Bounds",
+      "startLine": 70,
+      "endLine": 128,
+      "summary": "subsequence_length_le: a subsequence is no longer than its parent. LIS/LDS are the suprema of achievable increasing/decreasing lengths, bounded above by n (lis_bddAbove/lds_bddAbove). len_le_LIS_of_increasing / len_le_LDS_of_decreasing / len_le_max_of_monotonic bound the length of a monotonic subsequence by max(LIS, LDS).",
+      "mathContext": "$m \\le \\mathrm{LIS}$ for increasing, $m \\le \\mathrm{LDS}$ for decreasing, hence $m \\le \\max(\\mathrm{LIS},\\mathrm{LDS})$ for monotonic."
+    },
+    {
+      "id": "decomposition-lower-bound",
+      "title": "The Monotonic-Decomposition Lower Bound",
+      "startLine": 130,
+      "endLine": 165,
+      "summary": "MonotonicDecomposition packages numParts monotonic parts that cover and are pairwise disjoint. monotonicDecomposition_numParts_lower_bound: n ≤ numParts · max(LIS, LDS), via a surjection from the disjoint union of parts onto Fin n and Fintype.card_sigma. monotonicDecomposition_numParts_ge: the division form numParts ≥ n / max(LIS, LDS).",
+      "mathContext": "$n = |\\mathrm{Fin}\\,n| \\le \\sum_i |\\text{part}_i| \\le \\mathrm{numParts}\\cdot\\max(\\mathrm{LIS},\\mathrm{LDS})$."
+    },
+    {
+      "id": "existence-bracket",
+      "title": "Existence of a Decomposition and the Bracket",
+      "startLine": 167,
+      "endLine": 187,
+      "summary": "fin_one_strictMono: any function out of Fin 1 is vacuously strictly monotone. singletonDecomposition: splitting into n singleton parts is a valid monotonic decomposition, so the class is nonempty and numParts ≤ n. Together with the lower bound this brackets the optimal number of parts in [n / max(LIS, LDS), n].",
+      "mathContext": "Optimal $\\mathrm{numParts} \\in [\\,n/\\max(\\mathrm{LIS},\\mathrm{LDS}),\\; n\\,]$."
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ-05 of Erdős #1026 is given a precise formalization on the MonotonicDecomposition object, and its elementary lower-bound half is settled axiom-free: every monotonic decomposition of a length-n sequence uses at least n / max(LIS, LDS) parts (equivalently n ≤ numParts · max(LIS, LDS)), by a covering-surjection counting argument in which each monotonic part contributes at most max(LIS, LDS) to the cover. A singleton decomposition witnesses existence and the crude upper bound numParts ≤ n, bracketing the optimum. On the Erdős–Szekeres extremal sequences the bound forces ≳ √n parts, matching Hanani's O(√n) in order of magnitude.",
+    "implications": "The lower bound is the Mirsky/Dilworth-side certificate for Hanani's decomposition theorem and reduces the open content to a purely constructive question: does every sequence admit a monotonic decomposition into O(√n) parts, matching the bound? The parameter controlling the answer is max(LIS, LDS), the longest monotone run, exactly the quantity Erdős–Szekeres bounds below by √n.",
+    "openQuestions": [
+      "Does every length-n sequence admit a monotonic decomposition into O(√n) parts (Hanani's upper bound), matching the lower bound proved here up to constants?",
+      "What is the exact minimal number of monotonic parts as a function of the sequence, and is it always equal to max over an appropriate partition invariant (a Dilworth-type min-max identity)?",
+      "How does the maximum-sum optimization of Erdős #1026 interact with the decomposition: can one always find a monotonic part carrying an Ω(1/√n) share of the total sum inside an optimal decomposition?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1026",
+      "relationship": "extends",
+      "description": "Parent gallery proof: Erdős Problem #1026 (monotonic subsequence sum optimization), whose MonotonicDecomposition structure and Erdős–Szekeres LIS·LDS ≥ n bound this entry quantifies from below."
+    },
+    {
+      "targetId": "erdos-1026-oq-02",
+      "relationship": "related",
+      "description": "Sibling open question OQ-02 (approximate monotonicity) built on the same self-contained Subsequence interface."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, P. and Szekeres, G.",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "venue": "Compositio Mathematica 2, 463–470",
+      "note": "Every sequence of k²+1 distinct reals contains a monotonic subsequence of length k+1; the LIS·LDS ≥ n form underlies the √n scale of the bound."
+    },
+    {
+      "authors": "Hanani, H.",
+      "title": "On the number of monotonic subsequences",
+      "year": "1957",
+      "venue": "",
+      "note": "Every sequence of n elements decomposes into at most (√2 + o(1))√n monotonic subsequences — the upper bound whose lower-bound counterpart is proved here."
+    },
+    {
+      "authors": "Erdős problem database",
+      "title": "Erdős Problem #1026",
+      "year": "",
+      "venue": "erdosproblems.com/1026",
+      "note": "Source of the monotonic subsequence sum optimization problem and its open questions."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Erdos1026OQ05",
+    "lineCount": 184,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "path": "Proofs/Erdos1026OQ05.lean",
+    "sorries": 0,
+    "definitionCount": 9
+  },
+  "sorries": 0,
+  "highlights": [
+    "Every monotonic decomposition of a length-n sequence uses at least n / max(LIS, LDS) parts (monotonicDecomposition_numParts_lower_bound / monotonicDecomposition_numParts_ge): the Mirsky/Dilworth lower-bound half of Hanani's theorem, proved axiom-free.",
+    "The proof turns the covering condition into a surjection from the disjoint union of the parts onto Fin n, so n ≤ Σ part-lengths via Fintype.card_sigma; each monotonic part contributes at most max(LIS, LDS) because it is increasing (≤ LIS) or decreasing (≤ LDS).",
+    "A singleton decomposition (each element its own vacuously-monotonic part) witnesses existence and the crude upper bound numParts ≤ n, bracketing the optimal number of parts in [n / max(LIS, LDS), n].",
+    "On the Erdős–Szekeres extremal sequences (longest monotone run ≈ √n) the bound forces ≳ √n parts, matching Hanani's O(√n) in order; the constructive matching upper bound is stated but left open and unaxiomatized (0 axioms, 0 sorries)."
+  ]
+}
