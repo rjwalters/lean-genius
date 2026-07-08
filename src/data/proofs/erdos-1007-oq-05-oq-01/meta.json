@@ -60,6 +60,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Header, Imports, and the Embedding Structure",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring on the graph-dimension problem (Erdős #1007 OQ-05) — the least n for which a graph has a unit-distance embedding in ℝⁿ — and why the structure is reproduced locally rather than imported. Imports Mathlib, namespace Erdos1007OQ05OQ01, open Finset, then the UnitDistanceEmbedding structure and the hasUnitEmbedding predicate (Nonempty of an embedding).",
+      "mathContext": "$\\mathrm{hasUnitEmbedding}\\,V\\,\\mathrm{adj}\\,n$ = a map $V \\to \\mathbb{R}^n$ realizing every edge as a unit distance; the graph dimension is the least such $n$."
+    },
+    {
       "id": "monotonicity",
       "title": "Monotonicity of Embeddability",
       "startLine": 44,
@@ -136,20 +144,26 @@
     {
       "name": "hasUnitEmbedding_mono",
       "type": "core",
-      "description": "Monotonicity of unit-embeddability in the ambient dimension",
-      "leanType": "{V : Type*} → {adj : V → V → Prop} → {n m : ℕ} → n ≤ m → hasUnitEmbedding V adj n → hasUnitEmbedding V adj m"
+      "description": "Monotonicity of unit-embeddability in the ambient dimension: an embedding in ℝⁿ lifts to ℝᵐ for m ≥ n, so the admissible dimensions form an up-set.",
+      "leanType": "{V : Type*} → {adj : V → V → Prop} → {n m : ℕ} → n ≤ m → hasUnitEmbedding V adj n → hasUnitEmbedding V adj m",
+      "startLine": 72,
+      "endLine": 74
     },
     {
       "name": "hasUnitEmbedding_zero_iff_edgeless",
       "type": "key",
-      "description": "Dimension-0 base case: embeds in ℝ⁰ iff edgeless",
-      "leanType": "{V : Type*} → {adj : V → V → Prop} → (hasUnitEmbedding V adj 0 ↔ ∀ u v, ¬ adj u v)"
+      "description": "Dimension-0 base case: a graph embeds in ℝ⁰ iff it is edgeless (an edge would force distance 1 in a 0-dimensional space, where every distance is 0).",
+      "leanType": "{V : Type*} → {adj : V → V → Prop} → (hasUnitEmbedding V adj 0 ↔ ∀ u v, ¬ adj u v)",
+      "startLine": 92,
+      "endLine": 94
     },
     {
       "name": "embedding_mono",
       "type": "key",
-      "description": "Coordinate-padding extends an embedding to higher dimension",
-      "leanType": "{V : Type*} → {adj : V → V → Prop} → {n m : ℕ} → n ≤ m → UnitDistanceEmbedding V adj n → UnitDistanceEmbedding V adj m"
+      "description": "Coordinate-padding extends a unit-distance embedding to higher dimension: pad the new coordinates with 0, leaving all edge distances unchanged. The construction underlying hasUnitEmbedding_mono.",
+      "leanType": "{V : Type*} → {adj : V → V → Prop} → {n m : ℕ} → n ≤ m → UnitDistanceEmbedding V adj n → UnitDistanceEmbedding V adj m",
+      "startLine": 47,
+      "endLine": 69
     }
   ],
   "references": [
