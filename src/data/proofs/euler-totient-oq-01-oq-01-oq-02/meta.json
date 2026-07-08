@@ -98,6 +98,48 @@
     ],
     "implications": "Supplies the theorem that justifies Carmichael's function and pins down the precise sense in which λ(n) improves on Euler's φ(n): it is the least universal exponent, attained, and a divisor of φ(n). Together with the parent's multiplicativity and the sibling's explicit formula, the gallery now has λ as a fully operational object — definition, value, and governing theorem — ready for downstream uses such as Korselt's criterion for Carmichael numbers and primitive-root / cyclicity questions."
   },
+  "mainTheorems": [
+    {
+      "name": "unit_pow_carmichael",
+      "type": "core",
+      "description": "**Carmichael's theorem.** Every unit of ℤ/nℤ is killed by λ(n): a^λ(n) = 1 — the universal-exponent statement underlying Carmichael's function, sharpening Euler's a^φ(n) = 1. Specialises Monoid.pow_exponent_eq_one to the unit group.",
+      "leanType": "(n : ℕ) (a : (ZMod n)ˣ) : a ^ carmichael n = 1",
+      "startLine": 44,
+      "endLine": 47
+    },
+    {
+      "name": "carmichael_dvd_of_forall_pow_eq_one",
+      "type": "key",
+      "description": "**Minimality of λ(n).** Any common exponent k of the unit group (a^k = 1 for every unit a) is a multiple of λ(n) — so with Carmichael's theorem λ(n) is the least positive universal exponent. The (⇐) direction of Monoid.exponent_dvd_iff_forall_pow_eq_one.",
+      "leanType": "(n : ℕ) {k : ℕ} (hk : ∀ a : (ZMod n)ˣ, a ^ k = 1) : carmichael n ∣ k",
+      "startLine": 52,
+      "endLine": 55
+    },
+    {
+      "name": "exists_unit_orderOf_eq_carmichael",
+      "type": "key",
+      "description": "**Attainment / sharpness.** For n ≥ 1 some unit of ℤ/nℤ has order exactly λ(n), so the universal-exponent bound a^λ(n) = 1 is met and cannot be lowered. Uses Monoid.exists_orderOf_eq_exponent with ExponentExists.of_finite (finiteness from NeZero n).",
+      "leanType": "(n : ℕ) [NeZero n] : ∃ a : (ZMod n)ˣ, orderOf a = carmichael n",
+      "startLine": 60,
+      "endLine": 63
+    },
+    {
+      "name": "carmichael_dvd_totient",
+      "type": "key",
+      "description": "**λ refines φ.** Carmichael's function divides Euler's totient, λ(n) ∣ φ(n): the exponent of a finite group divides its order (Group.exponent_dvd_nat_card), and #(ℤ/nℤ)* = φ(n) via ZMod.card_units_eq_totient. This single divisibility is why Carmichael's theorem sharpens Euler's.",
+      "leanType": "(n : ℕ) [NeZero n] : carmichael n ∣ n.totient",
+      "startLine": 68,
+      "endLine": 72
+    },
+    {
+      "name": "unit_pow_totient",
+      "type": "supporting",
+      "description": "**Fermat–Euler recovered from Carmichael.** Since λ(n) ∣ φ(n) and a^λ(n) = 1, every unit satisfies a^φ(n) = 1 — the Fermat–Euler theorem as a corollary of the sharper Carmichael period, with λ(n) ≤ φ(n) the genuine order.",
+      "leanType": "(n : ℕ) [NeZero n] (a : (ZMod n)ˣ) : a ^ n.totient = 1",
+      "startLine": 77,
+      "endLine": 80
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "euler-totient-oq-01-oq-01",
@@ -115,7 +157,19 @@
       "author": "Robert D. Carmichael",
       "title": "Note on a new number theory function",
       "year": 1910,
-      "note": "Introduces λ(n) and the theorem a^λ(n) ≡ 1 (mod n) refining the Fermat–Euler theorem."
+      "note": "Introduces λ(n) and the theorem a^λ(n) ≡ 1 (mod n) refining the Fermat–Euler theorem. Bulletin of the AMS 16(5), 232–238."
+    },
+    {
+      "author": "Alwin R. Korselt",
+      "title": "Problème chinois",
+      "year": 1899,
+      "note": "L'intermédiaire des mathématiciens 6, 142–143. Origin of Korselt's criterion (n is a Carmichael number iff n is squarefree and p−1 ∣ n−1 for every prime p ∣ n), the target of this entry's open question λ(n) ∣ n−1."
+    },
+    {
+      "author": "G. H. Hardy and E. M. Wright",
+      "title": "An Introduction to the Theory of Numbers (6th ed.)",
+      "year": 2008,
+      "note": "Oxford University Press. Euler's theorem, the structure of (ℤ/nℤ)*, primitive roots, and the order of units — the classical context in which λ(n) sharpens φ(n)."
     }
   ]
 }
