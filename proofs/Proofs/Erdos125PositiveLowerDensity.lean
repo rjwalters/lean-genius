@@ -32,13 +32,13 @@ tactic output. Many lemmas use elaborate one-line proofs that interleave dozens 
 tactics including `bound`, `valid`, and other custom tactics from FormalConjectures.
 Most of these have now been ported to pure Mathlib v4.26.0 (see #20842): the
 digit-combinatorics layer (`A_max_k`, `B_max_m`, `A_B_gap`, `A_decomp`, `B_decomp`
-and their `head`/`tail` helpers), the irrationality of `log 4 / log 3`, and the
-Dirichlet-reduction chain (`exists_small_pos_lin_comb`,
-`exists_small_pos_lin_comb_large_k`, `dirichlet_approx`). Three deep lemmas still
-carry `sorry` placeholders: `exists_small_pos_lin_comb_help` (the Dirichlet
-approximation theorem for an irrational), `scale_step` (the multi-scale counting
-core), and `AB_lowerDensity_eq_zero` (the `liminf` bridge). The high-level
-structure and dependency graph match the AlphaProof source throughout.
+and their `head`/`tail` helpers), the irrationality of `log 4 / log 3`, the
+Dirichlet-reduction chain (`exists_small_pos_lin_comb_help`,
+`exists_small_pos_lin_comb`, `exists_small_pos_lin_comb_large_k`,
+`dirichlet_approx`), and the `liminf` bridge (`AB_lowerDensity_eq_zero`).
+One deep lemma still carries a `sorry` placeholder: `scale_step` (the
+multi-scale counting core, tracked in #20842). The high-level structure and
+dependency graph match the AlphaProof source throughout.
 
 ## Proof strategy (from the natural-language note)
 
@@ -66,6 +66,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
 import Mathlib.Order.LiminfLimsup
 import Mathlib.Topology.Instances.Real.Lemmas
+import Mathlib.Topology.Algebra.Order.Archimedean
+import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Algebra.Order.Group.Pointwise.Interval
 import Mathlib.Data.Set.Card
@@ -108,9 +110,8 @@ The lemmas below mirror exactly the structure of the AlphaProof Nexus proof
 (see https://github.com/google-deepmind/alphaproof-nexus-results, file
 `APNOutputs/ErdosProblems/erdos_125.variants.positive_lower_density.lean`).
 The AlphaProof one-line `bound`/`valid` tactic proofs were re-derived in pure
-Mathlib v4.26.0 (#20842); three deep lemmas — `exists_small_pos_lin_comb_help`,
-`scale_step`, and `AB_lowerDensity_eq_zero` — remain `sorry` and are tracked as
-follow-up work. -/
+Mathlib v4.26.0 (#20842); one deep lemma — `scale_step`, the multi-scale
+counting core — remains `sorry` and is tracked as follow-up work. -/
 
 lemma zero_in_A : 0 ∈ A := by
   -- AlphaProof: `norm_num`
@@ -383,7 +384,145 @@ lemma exists_small_pos_lin_comb_help (α : ℝ) (hα : Irrational α) (hα_pos :
     (δ : ℝ) (hδ : 0 < δ) :
     ∃ m k : ℕ, 0 < m ∧ 0 < k ∧
       0 < (m : ℝ) * α - (k : ℝ) ∧ (m : ℝ) * α - (k : ℝ) < δ := by
-  sorry
+  -- Strategy: the additive subgroup `ℤ·1 + ℤ·α ≤ ℝ` is dense (were it cyclic,
+  -- `α` would be rational).  Pick `x = p + q·α ∈ (0, δ')` in the subgroup with
+  -- `δ' = min δ (min α 1)`.  If `q ≥ 1` then `p ≤ -1` (since `x < α`) and
+  -- `(q, -p)` works directly.  If `q ≤ -1` then `p ≥ 1` and the descent step
+  -- `y = α - ⌊α/x⌋·x ∈ (0, x)` has the form `(1 - jq)·α - jp` with positive
+  -- coefficients.  `q = 0` is impossible since `(0, δ') ⊆ (0, 1)` contains no
+  -- integer.
+  set δ' : ℝ := min δ (min α 1) with hδ'def
+  have hδ'_pos : 0 < δ' := lt_min hδ (lt_min hα_pos one_pos)
+  have hδ'_le_δ : δ' ≤ δ := min_le_left _ _
+  have hδ'_le_α : δ' ≤ α := (min_le_right _ _).trans (min_le_left _ _)
+  have hδ'_le_one : δ' ≤ 1 := (min_le_right _ _).trans (min_le_right _ _)
+  -- The subgroup `⟨1, α⟩` is dense in `ℝ`.
+  have hdense : Dense ((AddSubgroup.closure {1, α} : AddSubgroup ℝ) : Set ℝ) := by
+    rcases AddSubgroup.dense_or_cyclic (AddSubgroup.closure {1, α}) with h | ⟨a, ha⟩
+    · exact h
+    · exfalso
+      have h1 : (1 : ℝ) ∈ AddSubgroup.closure ({1, α} : Set ℝ) :=
+        AddSubgroup.subset_closure (by simp)
+      have h2 : α ∈ AddSubgroup.closure ({1, α} : Set ℝ) :=
+        AddSubgroup.subset_closure (by simp)
+      rw [ha, AddSubgroup.mem_closure_singleton] at h1 h2
+      obtain ⟨n, hn⟩ := h1
+      obtain ⟨m, hm⟩ := h2
+      have hn0 : n ≠ 0 := by
+        rintro rfl
+        simp at hn
+      have hcomm : (n : ℝ) * α = (m : ℝ) := by
+        have hn' : (n : ℝ) * a = 1 := by rw [← zsmul_eq_mul]; exact hn
+        have hm' : (m : ℝ) * a = α := by rw [← zsmul_eq_mul]; exact hm
+        calc (n : ℝ) * α = (n : ℝ) * ((m : ℝ) * a) := by rw [hm']
+          _ = (m : ℝ) * ((n : ℝ) * a) := by ring
+          _ = (m : ℝ) := by rw [hn', mul_one]
+      exact (hα.intCast_mul hn0).ne_int m hcomm
+  -- Pick a subgroup element `x ∈ (0, δ')`.
+  obtain ⟨x, hx_Ioo, hxG⟩ :=
+    dense_iff_inter_open.mp hdense (Set.Ioo 0 δ') isOpen_Ioo
+      ⟨δ' / 2, Set.mem_Ioo.mpr ⟨by linarith, by linarith⟩⟩
+  rw [Set.mem_Ioo] at hx_Ioo
+  obtain ⟨hx_pos, hx_lt⟩ := hx_Ioo
+  rw [SetLike.mem_coe] at hxG
+  obtain ⟨p, q, hpq⟩ := AddSubgroup.mem_closure_pair.mp hxG
+  rw [zsmul_eq_mul, zsmul_eq_mul, mul_one] at hpq
+  -- `hpq : (p : ℝ) + (q : ℝ) * α = x`
+  rcases lt_trichotomy q 0 with hq_neg | rfl | hq_pos
+  · -- `q ≤ -1`: descent step `y = α - ⌊α/x⌋·x`.
+    have hq1 : (q : ℝ) ≤ -1 := by exact_mod_cast (by omega : q ≤ (-1 : ℤ))
+    have hqα : (q : ℝ) * α ≤ -1 * α := mul_le_mul_of_nonneg_right hq1 hα_pos.le
+    have hpR : (0 : ℝ) < (p : ℝ) := by linarith
+    have hp1 : 1 ≤ p := by
+      have : (0 : ℤ) < p := by exact_mod_cast hpR
+      omega
+    set j : ℤ := ⌊α / x⌋ with hjdef
+    have hj1 : 1 ≤ j := by
+      rw [hjdef, Int.le_floor, Int.cast_one, le_div_iff₀ hx_pos, one_mul]
+      linarith
+    have hfl := Int.floor_le (α / x)
+    rw [← hjdef] at hfl
+    have hjx_le : (j : ℝ) * x ≤ α := by
+      have h' := mul_le_mul_of_nonneg_right hfl hx_pos.le
+      rwa [div_mul_cancel₀ α hx_pos.ne'] at h'
+    have hfl2 := Int.lt_floor_add_one (α / x)
+    rw [← hjdef] at hfl2
+    have hjx_gt : α < ((j : ℝ) + 1) * x := by
+      have h' := mul_lt_mul_of_pos_right hfl2 hx_pos
+      rwa [div_mul_cancel₀ α hx_pos.ne'] at h'
+    -- Integer coefficients of the descent element.
+    have hjq : j * q ≤ j * (-1) := mul_le_mul_of_nonneg_left (by omega) (by omega)
+    have hM1 : 1 ≤ 1 - j * q := by linarith
+    have hK1 : 1 ≤ j * p := by
+      have h' := mul_le_mul hj1 hp1 zero_le_one (by omega : (0 : ℤ) ≤ j)
+      linarith
+    have hMcast : (((1 - j * q).toNat : ℤ)) = 1 - j * q := Int.toNat_of_nonneg (by linarith)
+    have hKcast : (((j * p).toNat : ℤ)) = j * p := Int.toNat_of_nonneg (by linarith)
+    have hMR : (((1 - j * q).toNat : ℕ) : ℝ) = 1 - (j : ℝ) * (q : ℝ) := by
+      rw [← Int.cast_natCast, hMcast]; push_cast; ring
+    have hKR : (((j * p).toNat : ℕ) : ℝ) = (j : ℝ) * (p : ℝ) := by
+      rw [← Int.cast_natCast, hKcast]; push_cast; ring
+    have hyx : (1 - (j : ℝ) * (q : ℝ)) * α - (j : ℝ) * (p : ℝ) = α - (j : ℝ) * x := by
+      rw [← hpq]; ring
+    have hMne : 1 - j * q ≠ 0 := by
+      intro hh
+      rw [hh] at hM1
+      exact absurd hM1 (by norm_num)
+    have hy_ne : α - (j : ℝ) * x ≠ 0 := by
+      intro h0
+      have heq : ((1 - j * q : ℤ) : ℝ) * α = ((j * p : ℤ) : ℝ) := by
+        push_cast
+        linarith [hyx]
+      exact (hα.intCast_mul hMne).ne_int (j * p) heq
+    have hy_pos : 0 < α - (j : ℝ) * x :=
+      lt_of_le_of_ne (by linarith) (Ne.symm hy_ne)
+    have hy_lt : α - (j : ℝ) * x < x := by linarith
+    refine ⟨(1 - j * q).toNat, (j * p).toNat, ?_, ?_, ?_, ?_⟩
+    · have h' : (0 : ℤ) < ((1 - j * q).toNat : ℤ) := by rw [hMcast]; linarith
+      exact_mod_cast h'
+    · have h' : (0 : ℤ) < ((j * p).toNat : ℤ) := by rw [hKcast]; linarith
+      exact_mod_cast h'
+    · calc (0 : ℝ) < α - (j : ℝ) * x := hy_pos
+        _ = (1 - (j : ℝ) * (q : ℝ)) * α - (j : ℝ) * (p : ℝ) := hyx.symm
+        _ = (((1 - j * q).toNat : ℕ) : ℝ) * α - (((j * p).toNat : ℕ) : ℝ) := by
+            rw [hMR, hKR]
+    · calc (((1 - j * q).toNat : ℕ) : ℝ) * α - (((j * p).toNat : ℕ) : ℝ)
+          = (1 - (j : ℝ) * (q : ℝ)) * α - (j : ℝ) * (p : ℝ) := by rw [hMR, hKR]
+        _ = α - (j : ℝ) * x := hyx
+        _ < x := hy_lt
+        _ < δ' := hx_lt
+        _ ≤ δ := hδ'_le_δ
+  · -- `q = 0`: impossible, `(0, δ') ⊆ (0, 1)` contains no integer.
+    exfalso
+    rw [Int.cast_zero, zero_mul, add_zero] at hpq
+    have hp0 : (0 : ℤ) < p := by exact_mod_cast hpq ▸ hx_pos
+    have hp1 : (1 : ℝ) ≤ (p : ℝ) := by exact_mod_cast hp0
+    linarith [hpq ▸ hx_lt]
+  · -- `q ≥ 1`: `(q, -p)` works directly since `p ≤ -1`.
+    have hq1 : (1 : ℝ) ≤ (q : ℝ) := by exact_mod_cast hq_pos
+    have hqα : α ≤ (q : ℝ) * α := le_mul_of_one_le_left hα_pos.le hq1
+    have hp_neg : (p : ℝ) < 0 := by linarith
+    have hp1 : p ≤ -1 := by
+      have : p < 0 := by exact_mod_cast hp_neg
+      omega
+    have hqcast : ((q.toNat : ℤ)) = q := Int.toNat_of_nonneg (by omega)
+    have hpcast : (((-p).toNat : ℤ)) = -p := Int.toNat_of_nonneg (by omega)
+    have hqR : ((q.toNat : ℕ) : ℝ) = (q : ℝ) := by rw [← Int.cast_natCast, hqcast]
+    have hpR : (((-p).toNat : ℕ) : ℝ) = -(p : ℝ) := by
+      rw [← Int.cast_natCast, hpcast]; push_cast; ring
+    refine ⟨q.toNat, (-p).toNat, ?_, ?_, ?_, ?_⟩
+    · have h' : (0 : ℤ) < (q.toNat : ℤ) := by rw [hqcast]; omega
+      exact_mod_cast h'
+    · have h' : (0 : ℤ) < ((-p).toNat : ℤ) := by rw [hpcast]; omega
+      exact_mod_cast h'
+    · calc (0 : ℝ) < x := hx_pos
+        _ = (q : ℝ) * α - -(p : ℝ) := by rw [← hpq]; ring
+        _ = ((q.toNat : ℕ) : ℝ) * α - (((-p).toNat : ℕ) : ℝ) := by rw [hqR, hpR]
+    · calc ((q.toNat : ℕ) : ℝ) * α - (((-p).toNat : ℕ) : ℝ)
+          = (q : ℝ) * α - -(p : ℝ) := by rw [hqR, hpR]
+        _ = x := by rw [← hpq]; ring
+        _ < δ' := hx_lt
+        _ ≤ δ := hδ'_le_δ
 
 /-- Specialisation to `α = log 4 / log 3`. -/
 lemma exists_small_pos_lin_comb (δ : ℝ) (hδ : 0 < δ) :
@@ -548,7 +687,75 @@ Source: `APNOutputs/ErdosProblems/erdos_125.variants.positive_lower_density.lean
 in https://github.com/google-deepmind/alphaproof-nexus-results.
 -/
 theorem AB_lowerDensity_eq_zero : lowerDensity (A + B) = 0 := by
-  sorry
+  -- `lowerDensity` is the `liminf` of the partial densities; we show the
+  -- partial densities are nonnegative, bounded by `1`, and frequently `≤ ε`
+  -- for every `ε > 0`.  The last point uses `density_tends_to_zero` together
+  -- with the observation that a window `[0,N)` of density `≤ ε'` must satisfy
+  -- `N ≥ 1/ε'` (because `0 ∈ A + B` forces at least one element), so the
+  -- small-density windows go to infinity.
+  have h_nonneg : ∀ b : ℕ, 0 ≤ partialDensity (A + B) b := fun b =>
+    div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+  have h_le_one : ∀ b : ℕ, partialDensity (A + B) b ≤ 1 := by
+    intro b
+    rcases Nat.eq_zero_or_pos b with rfl | hb
+    · simp [partialDensity]
+    · have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast hb
+      have hcard : (interIio (A + B) b).card ≤ b := by
+        calc (interIio (A + B) b).card
+            ≤ (Finset.range b).card := Finset.card_filter_le _ _
+          _ = b := Finset.card_range b
+      rw [partialDensity, div_le_iff₀ hbR, one_mul]
+      exact_mod_cast hcard
+  have h_bdd_ge : Filter.IsBoundedUnder (· ≥ ·) atTop
+      (fun b : ℕ => partialDensity (A + B) b) :=
+    Filter.isBoundedUnder_of ⟨0, fun b => h_nonneg b⟩
+  have h_bdd_le : Filter.IsBoundedUnder (· ≤ ·) atTop
+      (fun b : ℕ => partialDensity (A + B) b) :=
+    Filter.isBoundedUnder_of ⟨1, fun b => h_le_one b⟩
+  have h_freq : ∀ ε : ℝ, 0 < ε →
+      ∃ᶠ b in atTop, partialDensity (A + B) b ≤ ε := by
+    intro ε hε
+    rw [Filter.frequently_atTop]
+    intro N₀
+    have hpos : (0 : ℝ) < (N₀ : ℝ) + 1 := by positivity
+    have hε' : 0 < min ε (1 / ((N₀ : ℝ) + 1)) := lt_min hε (by positivity)
+    obtain ⟨N, hN, hcard⟩ := density_tends_to_zero _ hε'
+    have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN
+    have hcard_eq : (Finset.Ico 0 N).filter (· ∈ A + B) = interIio (A + B) N := by
+      rw [interIio, Nat.Ico_zero_eq_range]
+    have hone : (1 : ℝ) ≤ (((Finset.Ico 0 N).filter (· ∈ A + B)).card : ℝ) := by
+      have h0 : (0 : ℕ) ∈ (Finset.Ico 0 N).filter (· ∈ A + B) :=
+        Finset.mem_filter.mpr ⟨Finset.mem_Ico.mpr ⟨le_rfl, hN⟩, zero_in_A_plus_B⟩
+      exact_mod_cast Finset.card_pos.mpr ⟨0, h0⟩
+    refine ⟨N, ?_, ?_⟩
+    · -- `N₀ ≤ N`: from `1 ≤ card ≤ ε' · N ≤ N/(N₀+1)`.
+      have h1 : (1 : ℝ) ≤ 1 / ((N₀ : ℝ) + 1) * (N : ℝ) := by
+        calc (1 : ℝ) ≤ (((Finset.Ico 0 N).filter (· ∈ A + B)).card : ℝ) := hone
+          _ ≤ min ε (1 / ((N₀ : ℝ) + 1)) * (N : ℝ) := hcard
+          _ ≤ 1 / ((N₀ : ℝ) + 1) * (N : ℝ) :=
+              mul_le_mul_of_nonneg_right (min_le_right _ _) hNR.le
+      rw [one_div_mul_eq_div, le_div_iff₀ hpos, one_mul] at h1
+      have h2 : N₀ + 1 ≤ N := by exact_mod_cast h1
+      omega
+    · -- `partialDensity (A+B) N ≤ ε`.
+      rw [partialDensity, ← hcard_eq, div_le_iff₀ hNR]
+      calc (((Finset.Ico 0 N).filter (· ∈ A + B)).card : ℝ)
+          ≤ min ε (1 / ((N₀ : ℝ) + 1)) * (N : ℝ) := hcard
+        _ ≤ ε * (N : ℝ) := mul_le_mul_of_nonneg_right (min_le_left _ _) hNR.le
+  rw [lowerDensity]
+  refine le_antisymm ?_ ?_
+  · -- `liminf ≤ 0`: otherwise `liminf ≤ liminf/2` gives a contradiction.
+    by_contra hlt
+    push_neg at hlt
+    have hhalf : 0 < atTop.liminf (fun b : ℕ => partialDensity (A + B) b) / 2 := by
+      linarith
+    have hle : atTop.liminf (fun b : ℕ => partialDensity (A + B) b) ≤
+        atTop.liminf (fun b : ℕ => partialDensity (A + B) b) / 2 :=
+      Filter.liminf_le_of_frequently_le (h_freq _ hhalf) h_bdd_ge
+    linarith
+  · -- `0 ≤ liminf`: the partial densities are nonnegative.
+    exact Filter.le_liminf_of_le h_bdd_le.isCoboundedUnder_ge
+      (Filter.Eventually.of_forall h_nonneg)
 
 /--
 **Corollary:** the lower density of `A + B` is *not* positive — i.e., the
