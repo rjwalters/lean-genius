@@ -1,53 +1,50 @@
-# Knowledge: prob-method-expectation-oq-04
+# Knowledge Base: prob-method-expectation-oq-04
 
-## Established Facts
+OQ-04 asks to strengthen `expected_mono_cliques` to `E(n,k) < 1` for `n < 2^(k/2)` — the
+Erdős 1947 diagonal Ramsey lower bound `R(k,k) > 2^(k/2)`.
 
-(None yet — populated during OBSERVE.)
+## Current state (verified, #31500)
 
-## Open Questions Within This Problem
+`ProbMethodExpectationOQ04.lean` (0-axiom / 0-sorry) already:
+- defines `expectedMonoCliques n k = C(n,k) · 2^(1 - C(k,2))`;
+- **reduces** `E < 1` to a pure ℕ-power inequality:
+  `expectedMonoCliques_lt_one_iff : expectedMonoCliques n k < 1 ↔ (C(n,k):ℚ)·2 < 2^(C(k,2))`;
+- records the first-moment upper bound `E ≤ (n^k/k!)·2^(1-C(k,2))` via `Nat.choose_le_pow_div`.
 
-- The main open question (see `problem.md`).
+The file's docstring flags the power inequality as "the clean target a later session (or
+Aristotle) must discharge."
 
-## Failed Approaches
+## Precise, self-contained target (researcher-2, 2026-07-08)
 
-(None yet.)
+The `n < 2^(k/2)` hypothesis is fiddly (half-integer exponent). It is **equivalent to the
+clean ℕ statement `n^2 < 2^k`** (square both sides). So OQ-04 reduces to proving:
 
-## Promising Leads
+```lean
+theorem erdos_1947_clique_bound (n k : ℕ) (hk : 3 ≤ k) (hn : n ^ 2 < 2 ^ k) :
+    2 * (n.choose k) < 2 ^ (k.choose 2)
+```
 
-(None yet.)
+which, via `expectedMonoCliques_lt_one_iff` (cast to ℚ), gives `expectedMonoCliques n k < 1`
+and hence (strict first-moment principle) a 2-colouring of `Kₙ` with no monochromatic
+`k`-clique, i.e. `R(k,k) > n`. **This statement is TRUE** (spot-checked k=3,4,5,6,10) and
+entirely in ℕ.
 
-## Session 2026-06-28 (researcher-3) — Erdős <1 reduction stepping stones [OBSERVE/ORIENT]
+### Proof route (all ℕ, no half-integers)
+1. `C(n,k) ≤ n^k / k!`  (`Nat.choose_le_pow_div`), so `2·C(n,k) ≤ 2·n^k/k!`.
+2. `n^2 < 2^k ⟹ n^k < 2^(k*k/2)` (raise to the `k`; `(n^2)^k < (2^k)^k = 2^(k^2)`, and
+   `n^(2k) = (n^k)^2`, `2^(k^2) = (2^(k*k/2))^2` when `k` even / handle `k` odd via `k*(k-1)`).
+   Cleanest: compare **squares** to stay in ℕ — prove `(2·C(n,k))^2 < (2^(C(k,2)))^2`.
+3. Key growth fact `2^(k+2) ≤ (k!)^2` for `k ≥ 3` (induction on `k`; base `k=3`: `2^5=32 ≤ 36`).
+4. Combine: `(2·C(n,k))^2 ≤ 4·n^(2k)/(k!)^2 < 4·2^(k^2)/(k!)^2` and
+   `(2^(C(k,2)))^2 = 2^(k(k-1)) = 2^(k^2-k)`, reducing to `2^(k+2) ≤ (k!)^2`.
 
-**Mode**: OBSERVE→ORIENT. The problem.md question is the Erdős 1947 strengthening
-("strengthen `expected_mono_cliques` to show the count is `< 1` for `n < 2^(k/2)`"); the
-parent `ProbMethodExpectation.expected_mono_cliques` only proves the count `≥ 0` (trivial)
-and `erdos_ramsey_lower_bound` is a VACUOUS existence (`∃ n, n ≥ 2^(k/2)`), not the
-probabilistic-method bound. The full `< 1` proof is a hard multi-session formalization
-(needs `C(n,k) ≤ n^k/k!`, a `k!` growth bound, and exponent arithmetic complicated by the
-ℕ floor division in `2^(k/2)`). This session delivered verified **reductions**, not the
-full bound.
+### Discharge options
+- **Aristotle** on `erdos_1947_clique_bound` (submitted 2026-07-08, backend returned
+  "Resource not found" — retry when the Aristotle service is back up).
+- A direct Lean proof following the square-comparison route above (~50–100 lines; the
+  factorial growth lemma `2^(k+2) ≤ (k!)^2` is the main sub-lemma).
 
-### Delivered (in `ProbMethodExpectationOQ04.lean`, 83→129 L, 0-axiom)
-- `expectedMonoCliques (n k) := (n.choose k : ℚ) * 2^(1 - (k.choose 2 : ℤ))` — names the
-  parent's expected count.
-- **`expectedMonoCliques_lt_one_iff`**: `E(n,k) < 1 ↔ (n.choose k : ℚ)*2 < 2^(k.choose 2)`.
-  Eliminates the integer `zpow`; the RHS is a clean ℕ-power inequality — the exact target a
-  future session / Aristotle must discharge.
-- **`expectedMonoCliques_le`**: `E(n,k) ≤ (n^k/k!)·2^(1-C(k,2))` via `Nat.choose_le_pow_div`.
-  Reduces OQ-04 to the elementary estimate `n^k·2 < k!·2^{C(k,2)}`.
-
-### Key Mathlib API found
-- `Nat.choose_le_pow_div (r n : ℕ) : (n.choose r : α) ≤ (n^r : α)/r!` (ordered field α).
-- zpow split: `zpow_add₀ (h : a ≠ 0)`, `zpow_one`, `zpow_neg`, `zpow_natCast`; then
-  `div_lt_one (hpos)` to turn `X/Y < 1` into `X < Y`.
-
-### Remaining (the real crux)
-Prove `(n.choose k : ℚ)*2 < 2^(k.choose 2)` (equiv. `n^k·2 < k!·2^{k(k-1)/2}`) under
-`n < 2^(k/2)`, `k ≥ 3`. The crude `C(n,k) ≤ n^k` is too weak (fails for even k); must use
-`C(n,k) ≤ n^k/k!` and `k! > 2^{1+k/2}`. Watch: `2^(k/2)` uses ℕ floor division → `n^k <
-2^{k·⌊k/2⌋}`, NOT `2^{k²/2}`. Good Aristotle candidate once stated purely in ℕ.
-
-### Note
-The json `formalStatement` (non-strict averaging "some outcome meets the mean") was ALREADY
-fully proved & 0-axiom in this file (exists_ge_average etc.); the problem.md Ramsey question
-is the genuinely open one and is what this session targets.
+## Blocker note
+Attempted to queue this on Aristotle 2026-07-08; MCP tool loaded but backend down
+("Resource not found"). Direct Lean proof deferred (infra had transient exit-135/SIGBUS
+cache corruption this session).
