@@ -177,12 +177,14 @@
   ],
   "crossReferences": [
     {
-      "slug": "hilbert-17",
-      "relation": "Parent entry; this discharges its axiom robinson_not_sos_aux (axiom count 4 → 3)."
+      "targetId": "hilbert-17",
+      "relationship": "parent",
+      "description": "Parent entry; this discharges its axiom robinson_not_sos_aux (axiom count 4 → 3)."
     },
     {
-      "slug": "hilbert-17-oq-03-oq-02",
-      "relation": "Sibling: the analogous 0-axiom proof for the Motzkin polynomial."
+      "targetId": "hilbert-17-oq-03-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling: the analogous 0-axiom proof for the Motzkin polynomial."
     }
   ],
   "sections": [

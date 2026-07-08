@@ -113,16 +113,19 @@
   ],
   "crossReferences": [
     {
-      "slug": "erdos-10-wip-01",
-      "relationship": "Parent thread: supplies the popcount characterization isPrimePlusKPowers_iff_popcount that this reduction re-indexes by the offset."
+      "targetId": "erdos-10-wip-01",
+      "relationship": "parent",
+      "description": "Parent thread: supplies the popcount characterization isPrimePlusKPowers_iff_popcount that this reduction re-indexes by the offset."
     },
     {
-      "slug": "erdos-10-wip-01-oq-01",
-      "relationship": "Sibling: proves the same offset refutation criterion for the kernel-decidable witness search (no native_decide); this entry aims it at the covering-congruence construction instead."
+      "targetId": "erdos-10-wip-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling: proves the same offset refutation criterion for the kernel-decidable witness search (no native_decide); this entry aims it at the covering-congruence construction instead."
     },
     {
-      "slug": "erdos-10-incomplete-01-oq-02",
-      "relationship": "Dependency: provides the six-prime covering primes' parity/size bounds and the explicit even progression family with family_props."
+      "targetId": "erdos-10-incomplete-01-oq-02",
+      "relationship": "related",
+      "description": "Dependency: provides the six-prime covering primes' parity/size bounds and the explicit even progression family with family_props."
     }
   ],
   "sorries": []

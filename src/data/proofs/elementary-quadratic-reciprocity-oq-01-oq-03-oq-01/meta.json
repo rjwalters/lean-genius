@@ -130,14 +130,14 @@
   ],
   "crossReferences": [
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03",
-      "relation": "parent",
-      "note": "CRT decomposition of the Zolotarev permutation; this entry proves the base case it explicitly left open and combines it with the CRT multiplicativity to reach Jacobi values."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+      "relationship": "parent",
+      "description": "CRT decomposition of the Zolotarev permutation; this entry proves the base case it explicitly left open and combines it with the CRT multiplicativity to reach Jacobi values."
     },
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01",
-      "relation": "grandparent",
-      "note": "Zolotarev's lemma for the prime/units case; its units-level statement is re-established self-contained here because the file no longer compiles."
+      "targetId": "elementary-quadratic-reciprocity-oq-01",
+      "relationship": "grandparent",
+      "description": "Zolotarev's lemma for the prime/units case; its units-level statement is re-established self-contained here because the file no longer compiles."
     }
   ]
 }

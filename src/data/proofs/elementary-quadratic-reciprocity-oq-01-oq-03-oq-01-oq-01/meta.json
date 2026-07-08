@@ -110,14 +110,14 @@
   ],
   "crossReferences": [
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
-      "relation": "parent",
-      "note": "The prime base case sign(ringMulPerm a on ℤ/p) = legendreSym p a; this entry performs the factorization induction it left as a follow-up and reaches Mathlib's jacobiSym for all squarefree odd n."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
+      "relationship": "parent",
+      "description": "The prime base case sign(ringMulPerm a on ℤ/p) = legendreSym p a; this entry performs the factorization induction it left as a follow-up and reaches Mathlib's jacobiSym for all squarefree odd n."
     },
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03",
-      "relation": "grandparent",
-      "note": "CRT decomposition of the Zolotarev permutation; its sign_ringMulPerm_mul_of_odd is the multiplicativity used at every step of the induction."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+      "relationship": "grandparent",
+      "description": "CRT decomposition of the Zolotarev permutation; its sign_ringMulPerm_mul_of_odd is the multiplicativity used at every step of the induction."
     }
   ]
 }

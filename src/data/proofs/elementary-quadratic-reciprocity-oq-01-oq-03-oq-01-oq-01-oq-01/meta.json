@@ -109,14 +109,14 @@
   ],
   "crossReferences": [
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01",
-      "relation": "parent",
-      "note": "The full squarefree-odd Frobenius/Zolotarev lemma sign(ringMulPerm a on ℤ/n) = J(a | n); this entry performs the heart of its #1 follow-up (the genuinely new prime-power computation) at the level of the unit group, reusing its generator_not_isSquare and legendreSym_unit_eq."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The full squarefree-odd Frobenius/Zolotarev lemma sign(ringMulPerm a on ℤ/n) = J(a | n); this entry performs the heart of its #1 follow-up (the genuinely new prime-power computation) at the level of the unit group, reusing its generator_not_isSquare and legendreSym_unit_eq."
     },
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
-      "relation": "grandparent",
-      "note": "The prime base case sign(ringMulPerm a on ℤ/p) = legendreSym p a, of which this entry is the prime-power generalization at the unit level."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01",
+      "relationship": "grandparent",
+      "description": "The prime base case sign(ringMulPerm a on ℤ/p) = legendreSym p a, of which this entry is the prime-power generalization at the unit level."
     }
   ]
 }

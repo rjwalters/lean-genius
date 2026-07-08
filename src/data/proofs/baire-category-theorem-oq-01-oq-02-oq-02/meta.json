@@ -98,13 +98,13 @@
   ],
   "crossReferences": [
     {
-      "slug": "baire-category-theorem-oq-01-oq-02",
-      "relation": "parent",
+      "targetId": "baire-category-theorem-oq-01-oq-02",
+      "relationship": "parent",
       "description": "The parent bounds the cardinality of a perfect space (whole space with no isolated points) below by 𝔠 via the Cantor scheme. This child removes the 'perfect space' hypothesis: Cantor–Bendixson extracts a perfect kernel from any uncountable Polish space, proves it uncountable, and applies the parent's bound to it."
     },
     {
-      "slug": "baire-category-theorem-oq-01",
-      "relation": "ancestor",
+      "targetId": "baire-category-theorem-oq-01",
+      "relationship": "ancestor",
       "description": "The grandparent establishes bare uncountability of a complete metric space with no isolated points via Baire category; this entry reaches the Cantor–Bendixson form for arbitrary uncountable Polish spaces."
     }
   ],

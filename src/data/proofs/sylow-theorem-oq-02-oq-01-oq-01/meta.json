@@ -121,16 +121,19 @@
   },
   "crossReferences": [
     {
-      "slug": "sylow-theorem-oq-02-oq-01",
-      "relation": "Parent entry — characterizes nilpotency by normality (equivalently uniqueness, equivalently count one) of all Sylow subgroups. This entry sharpens 'normal' to 'characteristic', showing the two coincide for Sylow subgroups and inserting the characteristic tier into the equivalence chain."
+      "targetId": "sylow-theorem-oq-02-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry — characterizes nilpotency by normality (equivalently uniqueness, equivalently count one) of all Sylow subgroups. This entry sharpens 'normal' to 'characteristic', showing the two coincide for Sylow subgroups and inserting the characteristic tier into the equivalence chain."
     },
     {
-      "slug": "sylow-theorem-oq-02",
-      "relation": "Grandparent entry — the per-prime orbit enumeration n_p = [G : N_G(P)] underlying both the parent's counting characterization and this entry's uniqueness-driven coincidence."
+      "targetId": "sylow-theorem-oq-02",
+      "relationship": "ancestor",
+      "description": "Grandparent entry — the per-prime orbit enumeration n_p = [G : N_G(P)] underlying both the parent's counting characterization and this entry's uniqueness-driven coincidence."
     },
     {
-      "slug": "sylow-theorem",
-      "relation": "Root entry — Sylow existence, conjugacy, and counting, the foundation for the whole strand."
+      "targetId": "sylow-theorem",
+      "relationship": "ancestor",
+      "description": "Root entry — Sylow existence, conjugacy, and counting, the foundation for the whole strand."
     }
   ],
   "references": [
