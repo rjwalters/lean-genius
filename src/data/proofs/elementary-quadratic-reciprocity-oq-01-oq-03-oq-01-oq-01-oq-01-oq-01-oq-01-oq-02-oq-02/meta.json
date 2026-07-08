@@ -114,19 +114,19 @@
   ],
   "crossReferences": [
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02",
-      "relation": "parent",
-      "note": "The second supplement J(2 | n) = (-1)^((n²-1)/8) (sign of doubling x ↦ 2·x); this entry fuses it with the first supplement to obtain the combined supplement a = -2, and reuses its jacobiSym_two and the octic power formula it established."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "The second supplement J(2 | n) = (-1)^((n²-1)/8) (sign of doubling x ↦ 2·x); this entry fuses it with the first supplement to obtain the combined supplement a = -2, and reuses its jacobiSym_two and the octic power formula it established."
     },
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
-      "relation": "sibling",
-      "note": "The first supplement J(-1 | n) = (-1)^((n-1)/2) (sign of negation x ↦ -x); its jacobiSym_neg_one is the second factor fused here into the combined supplement."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "The first supplement J(-1 | n) = (-1)^((n-1)/2) (sign of negation x ↦ -x); its jacobiSym_neg_one is the second factor fused here into the combined supplement."
     },
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01",
-      "relation": "ancestor",
-      "note": "The full odd-modulus Zolotarev–Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a | n); its specialization to the unit -2 reads the combined supplement off the permutation x ↦ -2·x."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "ancestor",
+      "description": "The full odd-modulus Zolotarev–Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a | n); its specialization to the unit -2 reads the combined supplement off the permutation x ↦ -2·x."
     }
   ]
 }

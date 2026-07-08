@@ -127,12 +127,14 @@
   },
   "crossReferences": [
     {
-      "slug": "sylow-theorem-oq-02",
-      "relation": "Parent entry — enumerates the Sylow p-subgroups via the conjugation orbit, proving n_p = [G : N_G(P)] and the per-prime criterion n_p = 1 ⟺ P ◁ G. This entry quantifies that criterion over all primes and identifies the resulting class as the nilpotent groups, with normalizer_eq_top_of_nilpotent making the n_p = [G : N_G(P)] bridge explicit."
+      "targetId": "sylow-theorem-oq-02",
+      "relationship": "parent",
+      "description": "Parent entry — enumerates the Sylow p-subgroups via the conjugation orbit, proving n_p = [G : N_G(P)] and the per-prime criterion n_p = 1 ⟺ P ◁ G. This entry quantifies that criterion over all primes and identifies the resulting class as the nilpotent groups, with normalizer_eq_top_of_nilpotent making the n_p = [G : N_G(P)] bridge explicit."
     },
     {
-      "slug": "sylow-theorem",
-      "relation": "Root entry — Sylow's existence, conjugacy, and counting theorems, the foundation on which both the parent enumeration and this nilpotency characterization rest."
+      "targetId": "sylow-theorem",
+      "relationship": "ancestor",
+      "description": "Root entry — Sylow's existence, conjugacy, and counting theorems, the foundation on which both the parent enumeration and this nilpotency characterization rest."
     }
   ],
   "references": [

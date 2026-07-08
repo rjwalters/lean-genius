@@ -95,18 +95,18 @@
   },
   "crossReferences": [
     {
-      "slug": "prob-method-expectation-oq-02",
-      "relation": "parent",
+      "targetId": "prob-method-expectation-oq-02",
+      "relationship": "parent",
       "description": "Answers open question #2 ('formalize the off-diagonal version giving lower bounds on R(s,t) for s ≠ t via the same union bound'); generalizes its diagonal first_moment_ramsey."
     },
     {
-      "slug": "prob-method-expectation",
-      "relation": "ancestor",
+      "targetId": "prob-method-expectation",
+      "relationship": "ancestor",
       "description": "Grandparent entry on the first-moment / expectation method whose Ramsey placeholder the parent and this entry replace with genuine content."
     },
     {
-      "slug": "prob-method-alteration",
-      "relation": "related",
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
       "description": "The alteration / deletion method improves on the pure off-diagonal union bound proved here, especially for unbalanced s, t."
     }
   ],

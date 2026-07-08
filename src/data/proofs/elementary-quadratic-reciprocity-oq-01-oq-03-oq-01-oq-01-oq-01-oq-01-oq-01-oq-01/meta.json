@@ -113,14 +113,14 @@
   ],
   "crossReferences": [
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01",
-      "relation": "parent",
-      "note": "The full odd-modulus Zolotarev–Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a | n); this entry specializes it to a = -1, answering the parent's open question #3 (recover the supplementary laws as values of the Zolotarev sign character)."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The full odd-modulus Zolotarev–Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a | n); this entry specializes it to a = -1, answering the parent's open question #3 (recover the supplementary laws as values of the Zolotarev sign character)."
     },
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03",
-      "relation": "ancestor",
-      "note": "Defines ZolotarevCRT.ringMulPerm and its multiplicativity, the permutation whose a = -1 instance (negation) is the subject of this entry."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+      "relationship": "ancestor",
+      "description": "Defines ZolotarevCRT.ringMulPerm and its multiplicativity, the permutation whose a = -1 instance (negation) is the subject of this entry."
     }
   ]
 }

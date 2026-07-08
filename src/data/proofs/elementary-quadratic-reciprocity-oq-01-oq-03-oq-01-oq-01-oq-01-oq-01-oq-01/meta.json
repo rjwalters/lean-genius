@@ -113,19 +113,19 @@
   ],
   "crossReferences": [
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
-      "relation": "parent",
-      "note": "The whole-ring prime-power identity sign(ringMulPerm a on ℤ/pⁿ) = J(a | pⁿ); this entry performs the every-odd-n assembly it explicitly flagged, using it as the prime-power case of the induction."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The whole-ring prime-power identity sign(ringMulPerm a on ℤ/pⁿ) = J(a | pⁿ); this entry performs the every-odd-n assembly it explicitly flagged, using it as the prime-power case of the induction."
     },
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03",
-      "relation": "ancestor",
-      "note": "Defines ZolotarevCRT.ringMulPerm and proves the CRT multiplicativity sign_ringMulPerm_mul_of_odd that supplies the coprime-product step of the induction."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03",
+      "relationship": "ancestor",
+      "description": "Defines ZolotarevCRT.ringMulPerm and proves the CRT multiplicativity sign_ringMulPerm_mul_of_odd that supplies the coprime-product step of the induction."
     },
     {
-      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01",
-      "relation": "ancestor",
-      "note": "The squarefree-odd Frobenius/Zolotarev identity; this entry strictly generalizes it from squarefree odd n to ALL odd n by adding the prime-power factors."
+      "targetId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01",
+      "relationship": "ancestor",
+      "description": "The squarefree-odd Frobenius/Zolotarev identity; this entry strictly generalizes it from squarefree odd n to ALL odd n by adding the prime-power factors."
     }
   ]
 }

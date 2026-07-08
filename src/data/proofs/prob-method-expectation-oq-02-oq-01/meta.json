@@ -81,9 +81,21 @@
     { "title": "Exponential Growth and Concrete Witness", "description": "R(2j+1,2j+1) > 2^j for j ≥ 3, and the instance R(7,7) > 8." }
   ],
   "crossReferences": [
-    { "slug": "prob-method-expectation-oq-02", "relation": "parent", "description": "Answers open question #1 — derive the explicit growth from the first-moment criterion by estimating C(n,k) and choosing n optimally; reuses its first_moment_ramsey, Coloring and Mono." },
-    { "slug": "prob-method-expectation", "relation": "ancestor", "description": "Grandparent entry whose placeholder Ramsey lower bound the parent replaced and this entry now quantifies." },
-    { "slug": "prob-method-alteration", "relation": "related", "description": "The alteration method pushes the diagonal lower bound beyond the pure first-moment 2^(k/2) growth proved here." }
+    {
+      "targetId": "prob-method-expectation-oq-02",
+      "relationship": "parent",
+      "description": "Answers open question #1 — derive the explicit growth from the first-moment criterion by estimating C(n,k) and choosing n optimally; reuses its first_moment_ramsey, Coloring and Mono."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "ancestor",
+      "description": "Grandparent entry whose placeholder Ramsey lower bound the parent replaced and this entry now quantifies."
+    },
+    {
+      "targetId": "prob-method-alteration",
+      "relationship": "related",
+      "description": "The alteration method pushes the diagonal lower bound beyond the pure first-moment 2^(k/2) growth proved here."
+    }
   ],
   "references": [
     { "label": "Erdős 1947", "citation": "P. Erdős, Some remarks on the theory of graphs, Bull. Amer. Math. Soc. 53 (1947), 292–294 (the 2^(k/2) diagonal Ramsey lower bound)." },
