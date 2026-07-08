@@ -193,7 +193,7 @@ theorem squarefreeCount_odd_iff_central_squarefree {n : ℕ}
   set C : Finset ℕ := S.filter (fun k => n < 2 * k) with hC
   set F : Finset ℕ := S.filter (fun k => 2 * k = n) with hF
   have memS : ∀ k, k ∈ S ↔ (k < n ∧ 1 ≤ k ∧ Squarefree (n.choose k)) := by
-    intro k; simp only [hS, mem_filter, mem_range]; tauto
+    intro k; simp only [hS, mem_filter, mem_range]; try tauto
   have klt : ∀ k ∈ S, k < n := fun k hk => ((memS k).1 hk).1
   have mapsS : ∀ k ∈ S, (n - k) ∈ S := by
     intro k hk
@@ -249,9 +249,9 @@ theorem squarefreeCount_odd_iff_central_squarefree {n : ℕ}
   have hFodd : Odd F.card ↔ (n / 2) ∈ S := by
     by_cases h : (n / 2) ∈ S
     · have hFs : F = {n / 2} := by rw [eFc, filter_eq', if_pos h]
-      rw [hFs, Finset.card_singleton]; simp [h, Nat.odd_iff]
+      rw [hFs, Finset.card_singleton]; exact iff_of_true (by decide) h
     · have hFe : F = ∅ := by rw [eFc, filter_eq', if_neg h]
-      rw [hFe, Finset.card_empty]; simp [h, Nat.odd_iff]
+      rw [hFe, Finset.card_empty]; exact iff_of_false (by decide) h
   -- Assemble: squarefreeCount n = 2·|C| + |F|, so its parity is that of |F|.
   have key : squarefreeCount n = 2 * C.card + F.card := by
     have hsc : squarefreeCount n = S.card := by rw [hS]; rfl
