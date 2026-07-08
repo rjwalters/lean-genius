@@ -125,6 +125,26 @@
       "description": "Companion sub-question: OQ-01 formalises the higher-dimensional (ℝ^d, right-angle threshold) analogue via the hypercube, while OQ-03 concerns uniqueness of the planar minimax configuration."
     }
   ],
+  "references": [
+    {
+      "title": "Erdős Problem #504",
+      "url": "https://www.erdosproblems.com/504",
+      "note": "Blumenthal's maximum-angle problem and the sub-questions, including OQ-03 on uniqueness of the optimal configuration."
+    },
+    {
+      "title": "P. Erdős and G. Szekeres, On some extremum problems in elementary geometry, Ann. Univ. Sci. Budapest 3–4 (1960/61), 53–62",
+      "note": "Early treatment of the maximum-angle problem, resolving the powers-of-two cases."
+    },
+    {
+      "title": "B. Sendov, On a conjecture concerning the least angle in a set of points (1993)",
+      "note": "Complete determination of α_N, with the extremal formula changing at the threshold N = 5·2^{n−3} within each dyadic interval (2^{n−1}, 2^n]."
+    },
+    {
+      "title": "Mathlib4, Mathlib.Geometry.Euclidean.Triangle",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Geometry/Euclidean/Triangle.html",
+      "note": "Source of the triangle angle-sum identity, pons asinorum, and its converse used throughout the proof."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
