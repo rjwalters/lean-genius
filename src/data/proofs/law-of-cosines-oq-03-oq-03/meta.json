@@ -17,8 +17,8 @@
     ],
     "axiomCount": 7,
     "sorries": 0,
-    "lineCount": 298,
-    "theoremCount": 20,
+    "lineCount": 331,
+    "theoremCount": 22,
     "definitionCount": 1
   },
   "openQuestion": {
@@ -353,8 +353,8 @@
     ],
     "sorries": 0,
     "axiomCount": 7,
-    "lineCount": 298,
-    "theoremCount": 20,
+    "lineCount": 331,
+    "theoremCount": 22,
     "definitionCount": 1,
     "originalContributions": [
       "HyperbolicTriangle structure encoding the three second laws of cosines plus the angular defect",
@@ -363,7 +363,8 @@
       "cosh_c_gt_one: cosh c > 1 derived from the angles alone",
       "aaa_congruence: equal angles ⟹ equal sides via cosh injectivity on [0,∞)",
       "equilateral_cosh: closed form cosh(side) = cos θ/(1-cos θ) for the equilateral triangle",
-      "side_antitone_in_angle / cosh_c_antitone_in_C: angle-side monotonicity — holding two angles fixed, increasing the third strictly shortens the opposite side (refines AAA congruence to a strict comparison)"
+      "side_antitone_in_angle / cosh_c_antitone_in_C: angle-side monotonicity — holding two angles fixed, increasing the third strictly shortens the opposite side (refines AAA congruence to a strict comparison)",
+      "Equilateral corollaries (Part 7): equilateral_angle_lt_pi_third (an equilateral hyperbolic triangle has common angle < π/3, the sharp defect-driven counterpart of the Euclidean π/3) and equilateral_pi_four_cosh (the all-angles-π/4 equilateral triangle has every side arcosh(1+√2), i.e. cosh = 1+√2) — no new assumptions"
     ],
     "proofStrategy": "Invert each second law of cosines (linear in cosh of the opposite side) via eq_div_iff + linear_combination to get cosh(side) as a ratio of angle functions. Prove the angle ratio exceeds 1 from the defect using cos(A+B) > cos(π-C) = -cos C (strict antitonicity of cos on [0,π]). Conclude AAA congruence by cosh injectivity on [0,∞). Specialize to the equilateral case for a closed form.",
     "openQuestions": [

@@ -22,7 +22,8 @@
       "cosh_c_gt_one: cosh c > 1 derived purely from the angles",
       "aaa_congruence: equal angles ⟹ equal sides via Real.cosh_strictMonoOn.injOn",
       "equilateral_cosh: closed form cosh(side) = cos θ/(1-cos θ) using sin²θ=(1-cosθ)(1+cosθ) + div_eq_div_iff",
-      "side_antitone_in_angle / cosh_c_antitone_in_C: angle-side monotonicity — with two angles fixed, increasing the third strictly shortens the opposite side (cosh_c_eq numerator antitone in C + cosh injectivity)"
+      "side_antitone_in_angle / cosh_c_antitone_in_C: angle-side monotonicity — with two angles fixed, increasing the third strictly shortens the opposite side (cosh_c_eq numerator antitone in C + cosh injectivity)",
+      "Part 7 equilateral corollaries: equilateral_angle_lt_pi_third (θ<π/3 from the defect) and equilateral_pi_four_cosh (all angles π/4 ⟹ cosh side = 1+√2). Concrete/structural additions to the AAA-congruence file; no new assumptions, status stays axiomatized."
     ],
     "insights": [
       "The second law of cosines is linear in cosh of the opposite side, so it inverts algebraically — no Euclidean analogue, since the Euclidean law relates a side to the other two sides, not purely to angles.",
@@ -79,8 +80,8 @@
     {
       "path": "Proofs/LawOfCosines.lean",
       "filename": "LawOfCosines.lean",
-      "lineCount": 281,
-      "theoremCount": 14,
+      "lineCount": 331,
+      "theoremCount": 22,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
