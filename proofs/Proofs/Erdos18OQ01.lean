@@ -359,4 +359,86 @@ theorem practical_two_pow_mul {m : ℕ} (hp : IsPractical m) (k : ℕ) :
     rw [hrw]
     exact practical_two_mul ih
 
+/-! ## Multiplicative closure under products
+
+The set of practical numbers is closed under multiplication: if `m` and `n` are
+both practical, so is `m · n`.  This is the full multiplicative-closure property
+(the Stewart–Sierpiński theory specialises it to prime factors); it strictly
+generalises `practical_two_mul` (the case `n = 2`, since `2` is practical) and,
+via `two_pow_practical`, the whole `2^k · m` generator `practical_two_pow_mul`. -/
+
+/-- **Scaling a representation.**  If `k` is a sum of distinct divisors of `m`,
+    then `c · k` is a sum of distinct divisors of `c · m` (scale each divisor used
+    by the factor `c ≥ 1`).  The scaled divisors `c · d` divide `c · m` and remain
+    distinct because multiplication by `c ≥ 1` is injective. -/
+theorem representable_scale (c : ℕ) (hc : 1 ≤ c) {k m : ℕ}
+    (h : IsRepresentable k m) : IsRepresentable (c * k) (c * m) := by
+  obtain ⟨S, hS, hsum⟩ := h
+  have hinj : ∀ a ∈ S, ∀ b ∈ S, c * a = c * b → a = b :=
+    fun a _ b _ hab => Nat.eq_of_mul_eq_mul_left (by omega) hab
+  refine ⟨S.image (c * ·), ?_, ?_⟩
+  · intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨d, hdS, rfl⟩ := hx
+    have hdvd : d ∣ m := Nat.dvd_of_mem_divisors (hS hdS)
+    have hm0 : m ≠ 0 := (Nat.mem_divisors.mp (hS hdS)).2
+    exact Nat.mem_divisors.mpr ⟨Nat.mul_dvd_mul_left c hdvd, Nat.mul_ne_zero (by omega) hm0⟩
+  · rw [Finset.sum_image hinj]
+    calc ∑ d ∈ S, id (c * d) = c * ∑ d ∈ S, d := by simp only [id_eq]; rw [Finset.mul_sum]
+      _ = c * S.sum id := rfl
+      _ = c * k := by rw [hsum]
+
+/-- **Practical numbers are closed under multiplication.**  If `m` and `n` are both
+    practical, so is `m · n`.  For a target `1 ≤ k < m·n`, write `k = m·q + r` with
+    `r = k % m < m` and `q = k / m < n`.  Represent the quotient `q` by divisors of
+    `n` and scale that representation by `m` (`representable_scale`) to get a sum of
+    distinct divisors of `m·n` equal to `m·q`, each `≥ m`; represent the remainder
+    `r` by divisors of `m ∣ m·n`, each `≤ r < m`.  The two divisor sets are disjoint
+    (multiples of `m` vs. values `< m`), so their union represents `m·q + r = k`. -/
+theorem practical_mul {m n : ℕ} (hpm : IsPractical m) (hpn : IsPractical n) :
+    IsPractical (m * n) := by
+  have hm1 : 1 ≤ m := hpm.1
+  have hn1 : 1 ≤ n := hpn.1
+  refine ⟨Nat.mul_pos hpm.1 hpn.1, fun k hk1 hkmn => ?_⟩
+  have hmn0 : m * n ≠ 0 := Nat.mul_ne_zero (by omega) (by omega)
+  have hrm : k % m < m := Nat.mod_lt k (by omega)
+  have hqn : k / m < n := (Nat.div_lt_iff_lt_mul (by omega)).mpr (by rw [Nat.mul_comm]; exact hkmn)
+  have hdecomp : m * (k / m) + k % m = k := Nat.div_add_mod k m
+  -- represent quotient `q = k/m` by divisors of `n`, remainder `r = k%m` by divisors of `m`.
+  obtain ⟨Sq, hSq, hSqsum⟩ := practical_represents_le hpn (le_of_lt hqn)
+  obtain ⟨Sr, hSr, hSrsum⟩ := practical_represents_le hpm (le_of_lt hrm)
+  -- scaled quotient set: `A = m · Sq ⊆ divisors (m·n)`, sums to `m·q`, elements `≥ m`.
+  have hminj : ∀ a ∈ Sq, ∀ b ∈ Sq, m * a = m * b → a = b :=
+    fun a _ b _ hab => Nat.eq_of_mul_eq_mul_left (by omega) hab
+  set A := Sq.image (m * ·) with hAdef
+  have hAsub : A ⊆ divisors (m * n) := by
+    intro x hx
+    rw [hAdef, Finset.mem_image] at hx
+    obtain ⟨d, hdSq, rfl⟩ := hx
+    have hdvd : d ∣ n := Nat.dvd_of_mem_divisors (hSq hdSq)
+    exact Nat.mem_divisors.mpr ⟨Nat.mul_dvd_mul_left m hdvd, hmn0⟩
+  have hAsum : A.sum id = m * (k / m) := by
+    rw [hAdef, Finset.sum_image hminj]
+    calc ∑ d ∈ Sq, id (m * d) = m * ∑ d ∈ Sq, d := by simp only [id_eq]; rw [Finset.mul_sum]
+      _ = m * Sq.sum id := rfl
+      _ = m * (k / m) := by rw [hSqsum]
+  -- remainder set embeds into divisors of `m·n` since `m ∣ m·n`.
+  have hBsub : Sr ⊆ divisors (m * n) :=
+    hSr.trans (Nat.divisors_subset_of_dvd hmn0 ⟨n, rfl⟩)
+  -- disjointness: `A`-elements are `≥ m`, `Sr`-elements are `≤ r < m`.
+  have hdisj : Disjoint A Sr := by
+    rw [Finset.disjoint_left]
+    intro a haA haSr
+    rw [hAdef, Finset.mem_image] at haA
+    obtain ⟨d, hdSq, rfl⟩ := haA
+    have hd1 : 1 ≤ d := Nat.pos_of_mem_divisors (hSq hdSq)
+    have hage : m ≤ m * d := le_mul_of_one_le_right (by omega) hd1
+    have hle : m * d ≤ Sr.sum id :=
+      Finset.single_le_sum (f := id) (fun i _ => Nat.zero_le _) haSr
+    rw [hSrsum] at hle
+    omega
+  have hunion := representable_union hAsub hBsub hdisj
+  rw [hAsum, hSrsum, hdecomp] at hunion
+  exact hunion
+
 end Erdos18OQ01

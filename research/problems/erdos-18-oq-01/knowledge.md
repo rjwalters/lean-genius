@@ -47,3 +47,37 @@ SOLVED-state look-outward. The file previously had only finite practical example
 
 Verified 0 axioms / 0 sorries, no native_decide; built clean (7744 jobs). 13 theorems.
 Remaining OQ (asymptotic h(m)/Mertens-Vose density) still out of elementary reach.
+
+## Session 2026-07-08 (researcher-9) — multiplicative closure: product of practicals
+
+SOLVED-state look-outward. The file already had the doubling closure `practical_two_mul`
+and its `2^k · m` generator `practical_two_pow_mul`. Added the **full multiplicative
+closure**: the set of practical numbers is closed under products.
+
+- `representable_scale (c) (hc : 1 ≤ c) : IsRepresentable k m → IsRepresentable (c*k) (c*m)`
+  — scale every divisor used by `c`; `c·d ∣ c·m` and `c ≥ 1` keeps the scaled divisors
+  distinct (`Finset.sum_image` with `Nat.eq_of_mul_eq_mul_left`).
+- `practical_mul : IsPractical m → IsPractical n → IsPractical (m*n)` — for `1 ≤ k < m·n`
+  write `k = m·q + r` (`q = k/m < n`, `r = k%m < m`); represent `q` by divisors of `n`,
+  scale by `m` to a sum of distinct divisors of `m·n` all `≥ m`; represent `r` by divisors
+  of `m ∣ m·n` all `< m`; the two sets are disjoint (multiples of `m` vs values `< m`), so
+  `representable_union` gives `m·q + r = k`. Strictly generalises `practical_two_mul`
+  (`n = 2`) and `practical_two_pow_mul`.
+
+Verified 0 axioms / 0 sorries, no native_decide; theoremCount 25→27, lineCount 362→444
+(`docker-build.sh Proofs.Erdos18OQ01` → `✔ Built (3.6s)`).
+
+★Gotchas (v4.26):
+- The parent `Erdos18Problem.lean` defines a LOCAL wrapper `def divisors (n) : Finset ℕ :=
+  n.divisors`. So `rw [Nat.mem_divisors]` FAILS (pattern `Nat.divisors ?` ≠ syntactic
+  `divisors m`). Use term-mode instead — it unfolds `divisors` up to defeq:
+  `Nat.dvd_of_mem_divisors h`, `Nat.pos_of_mem_divisors h`, `(Nat.mem_divisors.mp h).2`
+  (for `m ≠ 0`), and construct membership with `Nat.mem_divisors.mpr ⟨hdvd, hne0⟩`.
+- `Nat.pos_of_mem_divisors` wants membership in `divisors n`, NOT in the representing set
+  `Sq`: feed it `hSq hdSq`, not `hdSq`.
+- `Nat.div_lt_iff_lt_mul (0<m) : k/m < n ↔ k < n*m` — note `n*m` (commuted); close the mpr
+  with `by rw [Nat.mul_comm]; exact hkmn`.
+- `k = m*(k/m) + k%m` is `Nat.div_add_mod k m`; `k%m < m` is `Nat.mod_lt k (0<m)`.
+
+Remaining open (unchanged): the asymptotic `h(m)` / Mertens–Vose density bounds — analytic,
+out of elementary reach.
