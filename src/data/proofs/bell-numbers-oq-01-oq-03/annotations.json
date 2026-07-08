@@ -58,17 +58,46 @@
     "proofId": "bell-numbers-oq-01-oq-03",
     "range": {
       "startLine": 49,
-      "endLine": 79
+      "endLine": 56
     },
     "type": "theorem",
     "title": "The Recurrence Collapse: Σ c(n,k) = n!",
-    "content": "**The centrepiece.** `stirlingFirst_row_sum`: $\\sum_{k \\in \\mathrm{range}(n+1)} c(n, k) = n!$, by induction on $n$. Peel the $k = 0$ term of the $(n+1)$-st row via `sum_range_succ'` (it vanishes: $c(n+1, 0) = 0$) and expand each $c(n+1, i+1)$ by the recurrence $c(n+1, i+1) = n\\,c(n, i+1) + c(n, i)$. Distributing (`sum_add_distrib`, `mul_sum`) yields $n\\bigl(\\sum_i c(n, i+1)\\bigr) + \\bigl(\\sum_i c(n, i)\\bigr)$. The second sum is the induction hypothesis $n!$. For the first, the re-index identity `hsplit` shows $\\bigl(\\sum_i c(n, i+1)\\bigr) + c(n, 0) = n!$ (shifted sum + dropped boundary = full $n$-th row, using `stirlingFirst_eq_zero_of_lt` to kill the top term); multiplying by $n$ and erasing $n\\cdot c(n,0)$ via `mul_stirlingFirst_zero` gives $n\\bigl(\\sum_i c(n, i+1)\\bigr) = n\\cdot n!$. Then $(n+1)\\,n! = (n+1)!$ by `Nat.factorial_succ` and `ring`.",
+    "content": "**The centrepiece.** `stirlingFirst_row_sum`: $\\sum_{k \\in \\mathrm{range}(n+1)} c(n, k) = n!$, proved by induction on $n$. Absent from pinned Mathlib, which records only boundary values of `stirlingFirst`. The base case $n = 0$ is $c(0,0) = 0! = 1$ (`simp`); the whole content is in the inductive step, which turns the triangular recurrence into the one-step factorial recurrence $(n+1)! = (n+1)\\cdot n!$. Strategically: the $(n+1)$-st row sum splits, via $c(n+1, k+1) = n\\,c(n, k+1) + c(n, k)$, into $n(\\sum_k c(n, k+1)) + (\\sum_k c(n, k))$; the second summand is the induction hypothesis $n!$ and the first re-indexes back to $n\\cdot n!$, giving $(n+1)\\,n!$.",
     "mathContext": "$\\sum_k c(n{+}1, k) = n\\,n! + n! = (n+1)\\,n! = (n+1)!$ — the triangular recurrence turns the row sum into a one-step factorial recurrence.",
     "significance": "critical",
     "relatedConcepts": [
       "Triangular recurrence stirlingFirst_succ_succ",
+      "Induction on the row index",
+      "Factorial recurrence (n+1)! = (n+1)·n!"
+    ],
+    "prerequisites": [
+      "Nat.stirlingFirst triangular recurrence",
+      "induction on ℕ",
+      "the row-sum statement of the companion identity"
+    ],
+    "tags": [
+      "theorem",
+      "induction",
+      "row-sum",
+      "core-result"
+    ]
+  },
+  {
+    "id": "ann-sf1-3-step",
+    "proofId": "bell-numbers-oq-01-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 79
+    },
+    "type": "key-step",
+    "title": "Peel, re-index, and collapse the inductive step",
+    "content": "**The mechanics of the step.** Four moves close it. (1) Peel the $k=0$ term of the $(n+1)$-st row with `sum_range_succ'`; it vanishes since $c(n+1,0)=0$ (`stirlingFirst_succ_zero`), and each remaining $c(n+1,i+1)$ is expanded by `stirlingFirst_succ_succ`. (2) `sum_add_distrib` + `mul_sum` distribute to $n(\\sum_i c(n,i+1)) + (\\sum_i c(n,i))$; the right summand is the IH $n!$. (3) The re-index lemma `hsplit` proves $(\\sum_i c(n,i+1)) + c(n,0) = n!$ — a shifted sum plus its dropped boundary term reassemble the full $n$-th row, with `stirlingFirst_eq_zero_of_lt` killing the out-of-range top term $c(n,n+1)$. (4) Multiply `hsplit` by $n$ and erase $n\\cdot c(n,0)$ via `mul_stirlingFirst_zero`, yielding $n(\\sum_i c(n,i+1)) = n\\cdot n!$; then `Nat.factorial_succ` + `ring` finish $(n+1)\\,n! = (n+1)!$. The dropped boundary term costs nothing precisely because it always reappears multiplied by $n$.",
+    "mathContext": "$\\bigl(\\textstyle\\sum_i c(n,i{+}1)\\bigr) + c(n,0) = n!$ and $n\\cdot c(n,0) = 0$, so $n\\bigl(\\textstyle\\sum_i c(n,i{+}1)\\bigr) = n\\cdot n!$, whence $n\\cdot n! + n! = (n+1)!$.",
+    "significance": "critical",
+    "relatedConcepts": [
       "sum_range_succ' peel-and-reindex",
-      "stirlingFirst_eq_zero_of_lt (top-term vanishing)"
+      "stirlingFirst_eq_zero_of_lt (top-term vanishing)",
+      "reinstating a dropped boundary term via the factor n"
     ],
     "prerequisites": [
       "mul_stirlingFirst_zero (vanishing boundary)",
@@ -76,10 +105,9 @@
       "Nat.factorial_succ"
     ],
     "tags": [
-      "theorem",
+      "key-step",
       "induction",
-      "row-sum",
-      "core-result"
+      "reindexing"
     ]
   },
   {
