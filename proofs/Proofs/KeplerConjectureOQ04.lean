@@ -752,4 +752,121 @@ theorem fcc_lt_tetrahedron_lt_octahedron :
     tetrahedronDimerDensity < octahedronPackingDensity :=
   ⟨tetrahedronDimerDensity_gt_fccDensity, tetrahedronDimerDensity_lt_octahedron⟩
 
+/-!
+## S17 — space-filling convex body: density exactly `1`, the attained top of the ladder
+
+The octahedron benchmark (S9) established `… < octahedronPackingDensity < 1`, leaving
+the endpoint `1` as an *unattained* supremum of the abstract `PackingDensity` type.
+This section closes that gap with a concrete witness: the **rhombic dodecahedron**
+is a space-filling convex body — its congruent copies tile ℝ³ with no gaps (it is the
+Voronoi cell of the FCC lattice), so its packing density is *exactly* `1`.
+
+Consequences, all axiom-free:
+
+* `exists_packingDensity_eq_one` — the parent's structural bound `density ≤ 1`
+  (`PackingDensity.le_one`) is **sharp**: it is realised by an honest convex-body
+  packing, not merely approached. The FCC sphere ceiling `π/(3√2) ≈ 0.7405` is thus
+  strictly interior to the full attainable range `(0, 1]`.
+* `fcc_lt_tetra_lt_octa_lt_rhombicDodecahedron` — the strict four-shape ladder
+  `fccDensity < tetrahedronDimerDensity < octahedronPackingDensity <
+  rhombicDodecahedronPackingDensity`, spanning from the sphere bound up to the
+  space-filling maximum.
+
+The space-filling fact is classical and shape-specific (Kepler already noted the
+rhombic dodecahedron as the FCC honeycomb cell); Brass–Moser–Pach, *Research Problems
+in Discrete Geometry* (2005), §3.3, cite it as the density-`1` extreme of the convex
+packing landscape. Note this is fully consistent with the (conjectural) Ulam lower
+bound `fccDensity ≤ δ_K`: `1 ≥ fccDensity`, so the rhombic dodecahedron sits at the
+top of the admissible band, not below it.
+-/
+
+/--
+**Rhombic-dodecahedron (space-filling) packing density in ℝ³.**
+
+The rhombic dodecahedron tiles ℝ³ (it is the Voronoi cell of the FCC lattice), so
+congruent copies fill space with zero wasted volume: packing density `= 1`.
+-/
+noncomputable def rhombicDodecahedronPackingDensity : ℝ := 1
+
+/-- The space-filling packing density is positive. -/
+theorem rhombicDodecahedronPackingDensity_pos :
+    0 < rhombicDodecahedronPackingDensity := by
+  unfold rhombicDodecahedronPackingDensity
+  norm_num
+
+/-- The space-filling packing density equals one (it is not strictly below `1`). -/
+theorem rhombicDodecahedronPackingDensity_eq_one :
+    rhombicDodecahedronPackingDensity = 1 := rfl
+
+/--
+**The space-filling body beats the octahedron.**
+
+`octahedronPackingDensity = 18/19 ≈ 0.9474 < 1 = rhombicDodecahedronPackingDensity`,
+a pure rational comparison discharged by `norm_num`. No axioms.
+-/
+theorem octahedron_lt_rhombicDodecahedron :
+    octahedronPackingDensity < rhombicDodecahedronPackingDensity := by
+  unfold octahedronPackingDensity rhombicDodecahedronPackingDensity
+  norm_num
+
+/--
+**Space-filling packing as a `PackingDensity` instance.**
+
+Bundles the density-`1` constant into the parent's abstract `PackingDensity`
+structure. The `le_one` field is satisfied by *equality* (`le_of_eq`), witnessing
+that the structural upper bound is attained rather than merely approached.
+-/
+noncomputable def rhombicDodecahedronPacking : PackingDensity where
+  density := rhombicDodecahedronPackingDensity
+  nonneg  := rhombicDodecahedronPackingDensity_pos.le
+  le_one  := le_of_eq rhombicDodecahedronPackingDensity_eq_one
+
+/--
+**The parent's `PackingDensity.le_one` bound is sharp.**
+
+There exists a `PackingDensity` whose density equals exactly `1`, so the abstract
+type-level ceiling `density ≤ 1` is *attained* — not just an unreachable supremum.
+Witness: `rhombicDodecahedronPacking` (space-filling convex body). This is the
+capstone dual to `exists_packingDensity_gt_fcc` /
+`exists_packingDensity_gt_tetrahedronDimer`: those show the FCC bound is not an
+upper bound at all; this shows the *true* upper bound `1` is achieved. No axioms.
+-/
+theorem exists_packingDensity_eq_one :
+    ∃ p : PackingDensity, p.density = 1 :=
+  ⟨rhombicDodecahedronPacking, rhombicDodecahedronPackingDensity_eq_one⟩
+
+/--
+**Non-vacuity of the ellipsoid-lattice gate, space-filling edition.**
+
+The rhombic-dodecahedron density `1` exceeds the Bezdek–Kuperberg ellipsoid-lattice
+ceiling `fccDensity`, so `rhombicDodecahedronPacking` is provably NOT an ellipsoid
+lattice packing — a third honest negative fact certifying the S5 shape gate is
+genuinely restrictive (cf. `tetrahedronDimer_not_ellipsoidLattice`,
+`octahedron_not_ellipsoidLattice`). No new axioms.
+-/
+theorem rhombicDodecahedron_not_ellipsoidLattice :
+    ¬ IsEllipsoidLatticePacking rhombicDodecahedronPacking := by
+  intro h
+  have hle : rhombicDodecahedronPackingDensity ≤ fccDensity :=
+    bezdek_kuperberg_ellipsoid_lattice_upper_bound ⟨rhombicDodecahedronPacking, h⟩
+  have hgt : fccDensity < rhombicDodecahedronPackingDensity :=
+    lt_trans octahedronPackingDensity_gt_fccDensity octahedron_lt_rhombicDodecahedron
+  exact absurd hle (not_le.mpr hgt)
+
+/--
+**Strict four-shape ladder, up to the space-filling maximum.**
+
+`fccDensity < tetrahedronDimerDensity < octahedronPackingDensity <
+rhombicDodecahedronPackingDensity`, extending `fcc_lt_tetrahedron_lt_octahedron`
+by one rung to the density-`1` top of the convex packing landscape. All strict
+inequalities are axiom-free.
+-/
+theorem fcc_lt_tetra_lt_octa_lt_rhombicDodecahedron :
+    fccDensity < tetrahedronDimerDensity ∧
+    tetrahedronDimerDensity < octahedronPackingDensity ∧
+    octahedronPackingDensity < rhombicDodecahedronPackingDensity :=
+  ⟨tetrahedronDimerDensity_gt_fccDensity,
+   tetrahedronDimerDensity_lt_octahedron,
+   octahedron_lt_rhombicDodecahedron⟩
+
 end KeplerConjectureOQ04

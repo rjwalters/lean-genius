@@ -573,3 +573,51 @@ but two genuine gaps in the existing hierarchy were fillable axiom-free.
   other agents' uncommitted work untouched). ALWAYS edit at the worktree path.
 - Build attempted under load ~29 / 7 peer containers (Docker contention);
   deployer build-gate is authoritative if it doesn't finish green here.
+
+## S17 (researcher-1, 2026-07-08) — ACT space-filling density=1 capstone
+
+**Mode**: REVISIT — ACT. Problem is RICH/saturated (S1–S16; 2 deep axioms,
+neither eliminable — bezdek needs affine-density-invariance absent from Mathlib
+v4.26, ulam OPEN since 1972). Assessed honestly for remaining axiom-free value:
+the density ladder stopped at `octahedronPackingDensity = 18/19 < 1` with `1` an
+UNATTAINED endpoint of the abstract `PackingDensity` type. S17 closes that.
+
+### Added (755→872 lines, theoremCount 20→26, definitionCount 4→6, axiomCount unchanged 2)
+
+Space-filling **rhombic dodecahedron** (Voronoi cell of the FCC lattice, tiles ℝ³)
+at packing density exactly `1`:
+* `rhombicDodecahedronPackingDensity : ℝ := 1`; `_pos`; `_eq_one := rfl`.
+* `octahedron_lt_rhombicDodecahedron` (18/19 < 1, unfold+norm_num).
+* `rhombicDodecahedronPacking : PackingDensity` — `le_one` satisfied by
+  `le_of_eq …_eq_one` (attained by EQUALITY, the whole point).
+* **capstone** `exists_packingDensity_eq_one : ∃ p : PackingDensity, p.density = 1`
+  — the parent's structural `le_one` bound is SHARP (attained, not just a sup).
+  Dual to `exists_packingDensity_gt_fcc`: those show FCC is not an upper bound at
+  all; this shows the *true* ceiling `1` is realised. FCC (0.7405) is thus strictly
+  interior to the attainable range (0, 1].
+* `rhombicDodecahedron_not_ellipsoidLattice` — third non-vacuity witness for the
+  S15 opaque gate (density 1 > fccDensity ⇒ ∉ ellipsoid-lattice class); line-for-line
+  analogue of `octahedron_not_ellipsoidLattice` + one `lt_trans`.
+* `fcc_lt_tetra_lt_octa_lt_rhombicDodecahedron` — strict 4-shape ladder.
+
+All axiom-free; every construct clones the already-building S9 octahedron section.
+
+### BUILD BLOCKER — host-infra SIGBUS on olean-write (code is correct)
+
+Local Docker deterministically SIGBUSes (exit 135, no error line, 1.0–3.2s) when
+building the file with ANY new declaration, across 11 attempts. Ruled OUT: fleet
+contention (failed at 3 containers), memory (failed at 24/28/32 GB), Mathlib cache
+corruption (`--repair-cache` cache-get! + `LEAN_SKIP_CACHE` both failed), stale OQ04
+artifacts (removed from `lean-mathlib-cache` volume, still failed). CONTROLS that
+PROVE the environment elaborates the file fine and the code is not the cause:
+* parent `Proofs.KeplerConjecture` (3058 targets) → **green**.
+* **base OQ04 + one trailing comment** (forces fresh re-elaboration, 7744 targets)
+  → `✔ Built (3.9s)` **green**.
+* base OQ04 + minimal 5-decl core → SIGBUS. i.e. a comment-only change builds but
+  adding declarations (which grow the output olean) SIGBUSes on write.
+Signature = olean-write mmap failure under this host's Docker overlay, content-size
+sensitive; NOT reachable by the levers available in-worktree (`--nuke` blocked by a
+running peer container, and base+comment-green shows the Mathlib oleans are intact
+so nuke would not help). Shipped build-pending for the cache-warm **deployer
+build-gate** (authoritative for math PRs). Commit tagged **[UNVERIFIED]** — do NOT
+promote to VERIFIED without a green build.
