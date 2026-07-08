@@ -53,6 +53,30 @@ the proof is `kronecker_two_odd` + `unfold kronecker2` + a residue comparison by
 first fresh build after an edit (elaborates fully — `3058/3058` — then crashes on
 finalization). A plain retry builds green (environmental / shared-volume, not a
 proof error). Do NOT edit the proof in response to a line-less 135.
+*(Reproduced again 2026-07-08: fresh build `✖ 135` at `3058/3058`, plain retry
+`✔ Built`. Same behaviour, same fix.)*
+
+## Update (2026-07-08 #2) — denominator-side periodicity of the supplementary characters
+
+Two new theorems establish that the two *denominator-side* quadratic characters
+are periodic Dirichlet characters (theoremCount 26→28, lineCount 477→510,
+0 sorries / 0 axioms):
+- `kronecker_neg_one_periodic (n hn hno)` — for odd positive `n`,
+  `(-1/(n+4)) = (-1/n)`: the sign character `(-1/·)` is periodic mod 4.
+- `kronecker_two_periodic (n hn hno)` — for odd positive `n`,
+  `(2/(n+8)) = (2/n)`: the character `(2/·)` is periodic mod 8.
+
+Both are one-liners off the Section-8 supplementary laws: rewrite the numeral
+addition `(n:ℤ)+k = ((n+k:ℕ):ℤ)` (`push_cast; ring`), apply `kronecker_neg_one_odd`
+/`kronecker_two_odd` on both sides, then close with `(n+k)%k = n%k` by `omega`.
+
+**Why this matters (honest framing).** These are the *denominator-side* complement
+of `kronecker2_periodic` (which is the *numerator* character `(·/2)`). Combined
+with `kronecker_mul_right` (multiplicativity in the denominator), they exhibit the
+supplementary characters `(-1/·)` and `(2/·)` as Dirichlet characters mod 4 and mod
+8 — the periodicity + multiplicativity data the Gauss-sum route to generalized
+reciprocity (refinement 2) rests on. This is incremental structural progress, not
+the reciprocity core itself, which still needs the Gauss sum (open).
 
 ## Open work
 

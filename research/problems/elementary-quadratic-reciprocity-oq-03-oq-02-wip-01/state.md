@@ -2,7 +2,7 @@
 
 **Phase**: COMPLETED
 **Since**: 2026-07-07
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 
@@ -38,6 +38,14 @@ supplementary laws are done. Or refinement (1): redefine `kronecker` to use
 
 ## Attempt Counts
 
-- Total attempts: 2
+- Total attempts: 3
 - Current approach attempts: 1
 - Approaches tried: 1
+
+## Progress log
+
+- 2026-07-08 (iter 3): Added denominator-side periodicity of the supplementary
+  characters — `kronecker_neg_one_periodic` ((-1/·) periodic mod 4) and
+  `kronecker_two_periodic` ((2/·) periodic mod 8). Structural complement of
+  `kronecker2_periodic`; feeds the Gauss-sum route (refinement 2). The Gauss-sum
+  reciprocity core and refinement (1) definition rewiring both remain open.
