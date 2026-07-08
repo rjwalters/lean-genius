@@ -99,8 +99,8 @@
     },
     "type": "context",
     "title": "The Notorious Seven",
-    "content": "7 is the smallest number that requires all four squares:\n$$7 = 1^2 + 1^2 + 1^2 + 2^2 = 1 + 1 + 1 + 4$$\n\nYou can verify: there's no way to write 7 = a\u00b2 + b\u00b2 + c\u00b2 with integers.",
-    "mathContext": "7 = 4\u2070(8\u00b70 + 7) fits Legendre's obstruction.",
+    "content": "7 is the smallest number that requires all four squares:\n$$7 = 1^2 + 1^2 + 1^2 + 2^2 = 1 + 1 + 1 + 4$$\n\nYou can verify: there's no way to write 7 = a² + b² + c² with integers.",
+    "mathContext": "7 = 4⁰(8·0 + 7) fits Legendre's obstruction.",
     "significance": "key",
     "relatedConcepts": [
       "counterexamples",
@@ -154,12 +154,133 @@
     },
     "type": "insight",
     "title": "Connection to Two Squares",
-    "content": "**Fermat's Two Squares Theorem**: An odd prime p is a sum of two squares iff p \u2261 1 (mod 4).\n\n- 5 \u2261 1 (mod 4): 5 = 1\u00b2 + 2\u00b2\n- 13 \u2261 1 (mod 4): 13 = 2\u00b2 + 3\u00b2\n- 7 \u2261 3 (mod 4): 7 is NOT a sum of two squares\n\nTwo squares is much more restrictive than four. Fermat proved the two-square theorem; Lagrange proved the four-square theorem. Together they reveal the arithmetic of quadratic forms.",
-    "mathContext": "Odd prime p = a\u00b2 + b\u00b2 $\\Leftrightarrow$ p \u2261 1 (mod 4).",
+    "content": "**Fermat's Two Squares Theorem**: An odd prime p is a sum of two squares iff p ≡ 1 (mod 4).\n\n- 5 ≡ 1 (mod 4): 5 = 1² + 2²\n- 13 ≡ 1 (mod 4): 13 = 2² + 3²\n- 7 ≡ 3 (mod 4): 7 is NOT a sum of two squares\n\nTwo squares is much more restrictive than four. Fermat proved the two-square theorem; Lagrange proved the four-square theorem. Together they reveal the arithmetic of quadratic forms.",
+    "mathContext": "Odd prime p = a² + b² $\\Leftrightarrow$ p ≡ 1 (mod 4).",
     "significance": "key",
     "relatedConcepts": [
       "Fermat two squares",
       "quadratic residues",
+      "number theory"
+    ]
+  },
+  {
+    "id": "lagrange-ann-three-squares",
+    "proofId": "lagrange-four-squares",
+    "anchor": {
+      "type": "declaration",
+      "name": "legendre_three_squares",
+      "kind": "axiom"
+    },
+    "type": "concept",
+    "title": "Legendre's Three-Square Theorem: the 4^a(8b+7) Obstruction",
+    "content": "Why four squares and not three: Legendre (1798) and Gauss (1801) showed `n` is a sum of three squares iff `n` is NOT of the form `4^a(8b+7)`. The file records the small obstructed cases 7, 28, 15 (`seven_obstructed`, etc.), that 6 *is* a sum of three squares, and the general fact that every `8k+7` needs four squares (`form_8k7_needs_four`). This obstruction — tied to ternary quadratic forms and genus theory — is exactly what makes four squares the sharp universal bound.",
+    "mathContext": "$n = a^2+b^2+c^2$ for some $a,b,c$ $\\iff$ $n \\ne 4^a(8b+7)$; every $8k+7$ requires four squares.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Legendre three-square theorem",
+      "ternary quadratic forms",
+      "sum of squares",
+      "genus theory"
+    ],
+    "prerequisites": [
+      "number theory",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "lagrange-ann-jacobi",
+    "proofId": "lagrange-four-squares",
+    "anchor": {
+      "type": "declaration",
+      "name": "r4_prime_formula",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Jacobi's Four-Square Theorem: r4(p) for Primes",
+    "content": "Beyond *existence*, Jacobi (1829) counts representations: `r4(n) = 8 * sum of divisors d | n with 4 ∤ d`. The file specializes this to odd primes (`r4_prime_formula`): since a prime `p` has only divisors 1 and `p` (neither divisible by 4), `r4(p) = 8(p+1)`. This exact count is the quantitative refinement of Lagrange's qualitative theorem.",
+    "mathContext": "$r_4(n) = 8\\!\\!\\sum_{d\\mid n,\\ 4\\nmid d}\\!\\! d$; for an odd prime $p$, $r_4(p) = 8(p+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Jacobi four-square theorem",
+      "sum of divisors",
+      "representation count",
+      "modular forms"
+    ],
+    "prerequisites": [
+      "number theory",
+      "divisor functions"
+    ]
+  },
+  {
+    "id": "lagrange-ann-waring",
+    "proofId": "lagrange-four-squares",
+    "anchor": {
+      "type": "declaration",
+      "name": "waringG",
+      "kind": "def"
+    },
+    "type": "concept",
+    "title": "Waring's Problem and Two-Square Multiplicativity",
+    "content": "Lagrange's theorem is the case `g(2) = 4` of Waring's problem (`lagrange_is_waring_2`): the least `s` such that every natural number is a sum of `s` `k`-th powers. The file records Hilbert's existence theorem for `g(k)`, Wieferich's `g(3) = 9`, Euler's formula, and the harder `G(k)` (all sufficiently large `n`) with Vinogradov's bound. It also proves the Brahmagupta-Fibonacci identity that sums of two squares are closed under multiplication (`two_squares_multiplicative`).",
+    "mathContext": "$g(2) = 4$; $g(k)$ = least $s$ with $\\forall n,\\ n = \\sum_{i=1}^{s} x_i^k$; $(a^2+b^2)(c^2+d^2)$ is again a sum of two squares.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Waring's problem",
+      "Hilbert's theorem",
+      "Brahmagupta-Fibonacci identity",
+      "multiplicativity"
+    ],
+    "prerequisites": [
+      "number theory",
+      "additive number theory"
+    ]
+  },
+  {
+    "id": "lagrange-ann-fermat-two",
+    "proofId": "lagrange-four-squares",
+    "anchor": {
+      "type": "declaration",
+      "name": "fermat_two_squares",
+      "kind": "theorem"
+    },
+    "type": "theorem",
+    "title": "Fermat's Two-Square Theorem",
+    "content": "The companion characterization for *two* squares: an odd prime `p` is a sum of two squares iff `p ≡ 1 (mod 4)` (`fermat_two_squares`). Combined with the two-square multiplicativity above, this determines exactly which integers are sums of two squares — a sharp contrast to the *universal* four-square theorem, and the reason three and two squares are genuinely harder.",
+    "mathContext": "odd prime $p = a^2 + b^2 \\iff p \\equiv 1 \\pmod 4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat two-square theorem",
+      "Gaussian integers",
+      "quadratic residues",
+      "sum of two squares"
+    ],
+    "prerequisites": [
+      "number theory",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "lagrange-ann-quaternions",
+    "proofId": "lagrange-four-squares",
+    "anchor": {
+      "type": "declaration",
+      "name": "LipschitzQuaternion",
+      "kind": "structure"
+    },
+    "type": "concept",
+    "title": "The Quaternion Proof: Lipschitz Integers",
+    "content": "The four-square theorem has an algebraic heart: the Lipschitz quaternions `a + bi + cj + dk` (a,b,c,d ∈ ℤ) carry a norm `N(q) = a²+b²+c²+d²` that is *multiplicative* under the Hamilton product (`lipschitz_norm_multiplicative`) — the four-square analogue of Euler's identity. Multiplicativity reduces representing `n` to representing each prime factor, and `every_nat_is_quaternion_norm` restates Lagrange's theorem as: every natural number is the norm of a Lipschitz quaternion.",
+    "mathContext": "$N(a+bi+cj+dk) = a^2+b^2+c^2+d^2$; $N(q_1 q_2) = N(q_1)\\,N(q_2)$; every $n = N(q)$ for some quaternion integer $q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hurwitz quaternions",
+      "Lipschitz quaternions",
+      "multiplicative norm",
+      "Euclidean domain"
+    ],
+    "prerequisites": [
+      "abstract algebra",
+      "quaternion algebra",
       "number theory"
     ]
   }
