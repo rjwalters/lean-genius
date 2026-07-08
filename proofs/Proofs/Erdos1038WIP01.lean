@@ -17,6 +17,8 @@
   * `mem_sublevelSet_quadratic`   — `x ∈ sublevelSet (x²−1) ↔ 0 < x² ∧ x² < 2`.
   * `sublevelSet_quadratic`       — `= Set.Ioo (−√2) √2 ∖ {0}`.
   * `sublevelMeasure_quadratic`   — `= ENNReal.ofReal (2√2)`.
+  * `sublevelSup`                 — the supremum of sublevel measures over admissible `f`.
+  * `le_sublevelSup`              — `2√2 ≤ sublevelSup` (the provable half of `= 2√2`).
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -96,5 +98,20 @@ theorem sublevelMeasure_quadratic :
   rw [sublevelSet_quadratic, measure_diff_null (by simp), Real.volume_Ioo]
   congr 1
   ring
+
+/-- The **supremum of sublevel-set measures** over all admissible monic polynomials
+    (monic, all roots real and in `[-1,1]`).  Erdős–Herzog–Piranian (1958) conjectured
+    and Tao (2025) proved this supremum equals `2√2`.  It is introduced here as a Lean
+    object so the extremal witness can be tied to it. -/
+noncomputable def sublevelSup : ℝ≥0∞ :=
+  ⨆ (f : Polynomial ℝ) (_ : MonicRealRootedIn01 f), sublevelMeasure f
+
+/-- **Supremum lower bound: `2√2 ≤ sublevelSup`.**  The admissible quadratic `x² − 1`
+    attains sublevel measure `2√2`, so the supremum is at least `2√2`.  This is the
+    machine-checkable half of the Erdős–Herzog–Piranian/Tao result `sublevelSup = 2√2`;
+    the matching *upper* bound needs logarithmic potential theory beyond Mathlib and is
+    not attempted here. -/
+theorem le_sublevelSup : ENNReal.ofReal (2 * Real.sqrt 2) ≤ sublevelSup :=
+  le_iSup_of_le q (le_iSup_of_le quadratic_admissible sublevelMeasure_quadratic.ge)
 
 end Erdos1038WIP01

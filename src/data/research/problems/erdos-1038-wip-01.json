@@ -14,7 +14,10 @@
     ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "sublevelSup: the supremum of sublevel-set measures over admissible monic polynomials, introduced as a Lean object (⨆ over MonicRealRootedIn01 f of sublevelMeasure f).",
+      "le_sublevelSup: 2√2 ≤ sublevelSup — the machine-checkable HALF of the Erdős–Herzog–Piranian (1958) / Tao (2025) result sublevelSup = 2√2. The extremal quadratic x²−1 attains 2√2, so the supremum is at least 2√2 (via le_iSup_of_le with the quadratic witness). The matching upper bound needs logarithmic potential theory beyond Mathlib and is not attempted."
+    ],
     "open": [],
     "goal": ""
   },
