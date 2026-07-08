@@ -616,6 +616,124 @@ theorem char_zero_required :
 end Connections
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+PART VIII: THE PUISEUX SERIES FORM A SUBRING
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+### Closure of the Puiseux condition under the ring operations
+
+The prose throughout this file asserts that the Puiseux series form a *field*
+`K⦃⦃x⦄⦄` sitting inside the Hahn series `HahnSeries ℚ K`. Up to here the file only
+establishes that individual `single`-term series (and the specific binomial roots
+of Part II) satisfy `IsPuiseuxSeries`. This section upgrades that pointwise fact to
+the genuine algebraic statement: `{f | IsPuiseuxSeries f}` is closed under
+`0`, `1`, `+`, `-`, and `*`, and therefore is a `Subring` of `HahnSeries ℚ K`.
+
+The whole argument is denominator arithmetic on the exponent supports:
+
+* `support (f + g) ⊆ support f ∪ support g`, so if `f` has exponents in `(1/n)ℤ`
+  and `g` in `(1/m)ℤ`, the common denominator `n·m` works for the sum
+  (`k/n = (k·m)/(n·m)`).
+* `support (f * g) ⊆ support f + support g` (Minkowski sum of supports), and
+  `k₁/n + k₂/m = (k₁·m + k₂·n)/(n·m)`, so `n·m` again works for the product.
+
+This is exactly the closure that makes `IsPuiseuxSeries` an honest algebraic
+substructure rather than a predicate that merely happens to hold on the examples
+constructed above.
+-/
+
+section Subring
+
+/-- The zero series is a Puiseux series — its support is empty, so the exponent
+condition holds vacuously (with ramification `1`). -/
+theorem isPuiseux_zero {K : Type*} [Zero K] :
+    IsPuiseuxSeries (0 : HahnSeries ℚ K) :=
+  ⟨1, fun q hq => by simp [HahnSeries.support_zero] at hq⟩
+
+/-- The unit series `1 = single 0 1` is a Puiseux series (its only exponent is the
+integer `0`). -/
+theorem isPuiseux_one {K : Type*} [Zero K] [One K] :
+    IsPuiseuxSeries (1 : HahnSeries ℚ K) := by
+  rw [← HahnSeries.single_zero_one]
+  exact isPuiseux_single 0 1
+
+/-- **Closure under addition.** If every exponent of `f` lies in `(1/n)ℤ` and every
+exponent of `g` lies in `(1/m)ℤ`, then every exponent of `f + g` lies in
+`(1/(n·m))ℤ`: the support of a sum is contained in the union of the supports, and
+`k/n = (k·m)/(n·m)`. -/
+theorem isPuiseux_add {K : Type*} [AddCommMonoid K] {f g : HahnSeries ℚ K}
+    (hf : IsPuiseuxSeries f) (hg : IsPuiseuxSeries g) :
+    IsPuiseuxSeries (f + g) := by
+  obtain ⟨n, hn⟩ := hf
+  obtain ⟨m, hm⟩ := hg
+  have hn0 : ((n : ℕ) : ℚ) ≠ 0 := by exact_mod_cast n.pos.ne'
+  have hm0 : ((m : ℕ) : ℚ) ≠ 0 := by exact_mod_cast m.pos.ne'
+  refine ⟨n * m, fun q hq => ?_⟩
+  rcases HahnSeries.support_add_subset hq with h | h
+  · obtain ⟨k, hk⟩ := hn q h
+    refine ⟨k * (m : ℤ), ?_⟩
+    rw [hk]; push_cast
+    rw [div_eq_div_iff hn0 (mul_ne_zero hn0 hm0)]; ring
+  · obtain ⟨k, hk⟩ := hm q h
+    refine ⟨k * (n : ℤ), ?_⟩
+    rw [hk]; push_cast
+    rw [div_eq_div_iff hm0 (mul_ne_zero hn0 hm0)]; ring
+
+/-- **Closure under negation.** Negation does not move exponents around
+(`support (-f) = support f`), so the ramification of `-f` is the same as that of
+`f`. -/
+theorem isPuiseux_neg {K : Type*} [AddGroup K] {f : HahnSeries ℚ K}
+    (hf : IsPuiseuxSeries f) : IsPuiseuxSeries (-f) := by
+  obtain ⟨n, hn⟩ := hf
+  refine ⟨n, fun q hq => ?_⟩
+  rw [HahnSeries.support_neg] at hq
+  exact hn q hq
+
+/-- **Closure under multiplication.** The support of a product is contained in the
+Minkowski sum `support f + support g`, so a typical exponent of `f · g` is
+`k₁/n + k₂/m = (k₁·m + k₂·n)/(n·m)`; the common denominator `n·m` witnesses that
+`f · g` is again a Puiseux series. -/
+theorem isPuiseux_mul {K : Type*} [NonUnitalNonAssocSemiring K] {f g : HahnSeries ℚ K}
+    (hf : IsPuiseuxSeries f) (hg : IsPuiseuxSeries g) :
+    IsPuiseuxSeries (f * g) := by
+  obtain ⟨n, hn⟩ := hf
+  obtain ⟨m, hm⟩ := hg
+  have hn0 : ((n : ℕ) : ℚ) ≠ 0 := by exact_mod_cast n.pos.ne'
+  have hm0 : ((m : ℕ) : ℚ) ≠ 0 := by exact_mod_cast m.pos.ne'
+  refine ⟨n * m, fun q hq => ?_⟩
+  obtain ⟨a, ha, b, hb, hab⟩ := Set.mem_add.mp (HahnSeries.support_mul_subset_add_support hq)
+  obtain ⟨k, hk⟩ := hn a ha
+  obtain ⟨l, hl⟩ := hm b hb
+  refine ⟨k * (m : ℤ) + l * (n : ℤ), ?_⟩
+  rw [← hab, hk, hl]; push_cast
+  rw [div_add_div _ _ hn0 hm0, div_eq_div_iff (mul_ne_zero hn0 hm0) (mul_ne_zero hn0 hm0)]
+  ring
+
+/-- **The Puiseux series form a subring of `HahnSeries ℚ K`.**
+
+Bundling the five closure facts above, `{f : HahnSeries ℚ K | IsPuiseuxSeries f}`
+is a `Subring`. This is the structural backbone of Puiseux's theorem: the objects
+the Newton–Puiseux algorithm produces live in an honest ring (in fact a field, when
+`K` is a field, since one further inverts the leading term), not merely in an
+ad-hoc collection of series. Membership `y ∈ puiseuxSubring K` is definitionally
+`IsPuiseuxSeries y`, so all the concrete roots constructed earlier in this file are
+elements of this subring. -/
+def puiseuxSubring (K : Type*) [Ring K] : Subring (HahnSeries ℚ K) where
+  carrier := {f | IsPuiseuxSeries f}
+  zero_mem' := isPuiseux_zero
+  one_mem' := isPuiseux_one
+  add_mem' := fun ha hb => isPuiseux_add ha hb
+  mul_mem' := fun ha hb => isPuiseux_mul ha hb
+  neg_mem' := fun ha => isPuiseux_neg ha
+
+/-- The concrete membership unfolding: `y ∈ puiseuxSubring K ↔ IsPuiseuxSeries y`.
+Confirms the subring's carrier is exactly the Puiseux condition. -/
+@[simp] theorem mem_puiseuxSubring {K : Type*} [Ring K] (y : HahnSeries ℚ K) :
+    y ∈ puiseuxSubring K ↔ IsPuiseuxSeries y := Iff.rfl
+
+end Subring
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 SUMMARY
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
