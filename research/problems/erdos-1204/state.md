@@ -2,31 +2,34 @@
 
 **Phase**: ACTIVE
 **Since**: 2026-06-25
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
 
-Verified lower bounds on the extremal quantity A(k) (minimal largest element of an
-admissible k-tuple).
+Extending the exact-value frontier A(k) = min largest element of an admissible k-tuple
+(= Hardy–Littlewood minimal diameter H(k)). Verified values now A(2)=2, A(3)=6, A(4)=8,
+A(5)=12, A(6)=16, each in an axiom-free companion file.
 
 ## Active Approach
 
-Sieve-style lower bounds from individual small primes. The prime 2 gives the parity
-constraint ⇒ A(k) ≥ 2(k−1) (verified this session, doubling the trivial k−1 and sharp
-at k=2). Next candidate: combine primes 2 and 3 (elements occupy ≤ 1 class mod 2 and
-≤ 2 mod 3) for a sharper interval-counting bound toward the k log k heuristic.
+Finite case analysis combining small primes. A(6)=16 (this session) is the first value
+whose lower bound needs THREE primes: parity + mod 3 no longer close it (a single-parity
+6-set inside {0..15} can dodge mod 3), so the two forced 6-sets are killed by covering
+all classes mod 5. This realizes the "combine primes 2 and 3" direction one prime further.
 
 ## Blockers
 
-Combining constraints across multiple primes rigorously needs CRT / sieve counting that
-is not yet formalized. The headline A(k) ∼ k log k and the B(k) estimate remain OPEN.
+The headline asymptotics A(k) ∼ k log k and the B(k) estimate remain OPEN — they need
+analytic sieve theory (summing p/(p−1) factors / CRT counting) not yet formalized. The
+per-value frontier keeps advancing but the case analysis grows with each new prime.
 
 ## Next Action
 
-Explore a mod-2-and-mod-3 combined lower bound (factor 3 over trivial).
+A(7)=20: needs primes 2,3,5,7 combined in the lower bound. Find/verify a diameter-20
+admissible 7-tuple witness, then adapt the parity → mod-3 → mod-5 (→ mod-7) slot-count.
 
 ## Attempt Counts
 
-- Total attempts: 4
+- Total attempts: 5
 - Current approach attempts: 1
 - Approaches tried: 2
