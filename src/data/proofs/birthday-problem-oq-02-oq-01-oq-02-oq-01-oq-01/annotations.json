@@ -12,6 +12,18 @@
     "prerequisites": ["majorization order", "doubly stochastic matrices"]
   },
   {
+    "id": "ann-birthday-oq0201020101-statement",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 74 },
+    "type": "definition",
+    "title": "The global inequality: statement and Lean encoding",
+    "content": "The hypothesis `hD : D ∈ doublyStochastic ℝ (Fin d)` is membership in Mathlib's `doublyStochastic` submonoid — matrices with nonnegative entries whose rows and columns each sum to 1 — and `D *ᵥ q` is the matrix–vector product `Matrix.mulVec`, i.e. `(D *ᵥ q) i = ∑ⱼ Dᵢⱼ qⱼ`. The claim `∑ᵢ (D *ᵥ q)ᵢ² ≤ ∑ᵢ qᵢ²` is therefore the pure operator form of Schur-convexity, quantifier-free in the majorization order: it holds for the whole polytope of averaging operators at once. The single line of analytic input for the whole proof is `hconv := Even.convexOn_pow (by norm_num)`, which certifies `x ↦ x²` is convex on all of ℝ; everything after is the row/column stochasticity of `D`.",
+    "mathContext": "$D \\in \\mathrm{doublyStochastic}\\,\\mathbb{R}\\,(\\mathrm{Fin}\\,d)$, $(D \\ast_v q)_i = \\sum_j D_{ij} q_j$; claim $\\sum_i (D\\ast_v q)_i^2 \\le \\sum_i q_i^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.mulVec", "doublyStochastic submonoid", "Even.convexOn_pow", "operator form of Schur-convexity"],
+    "prerequisites": ["matrix-vector multiplication", "doubly stochastic matrices"]
+  },
+  {
     "id": "ann-birthday-oq0201020101-jensen",
     "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 76, "endLine": 86 },
