@@ -32,14 +32,15 @@
     },
     "type": "insight",
     "title": "Column Replacement Picks Out b in Exactly One Column",
-    "content": "det_updateCol_two_zero computes det(A.updateCol 0 b) = b₀a₁₁ − a₀₁b₁. After rw [det_fin_two] the goal is in the four entries of A.updateCol 0 b, and a single simp only [updateCol_self, updateCol_ne h10] classifies them: the column-0 entries (A.updateCol 0 b) 0 0 and (A.updateCol 0 b) 1 0 match updateCol_self and become b 0, b 1, while the column-1 entries match updateCol_ne (h10 : (1 : Fin 2) ≠ 0) and stay A 0 1, A 1 1. The replaced index controls the SECOND matrix coordinate, so replacing column 0 swaps the first column of the determinant for b.",
-    "mathContext": "$\\det(A_0) = \\begin{vmatrix} b_0 & a_{01} \\\\ b_1 & a_{11} \\end{vmatrix} = b_0 a_{11} - a_{01} b_1$.",
+    "content": "det_updateCol_two_zero computes det(A.updateCol 0 b) = b₀a₁₁ − a₀₁b₁. After rw [det_fin_two] the goal is in the four entries of A.updateCol 0 b, and a single simp only [updateCol_self, updateCol_ne h10] classifies them: the column-0 entries (A.updateCol 0 b) 0 0 and (A.updateCol 0 b) 1 0 match updateCol_self and become b 0, b 1, while the column-1 entries match updateCol_ne (h10 : (1 : Fin 2) ≠ 0) and stay A 0 1, A 1 1. The replaced index controls the SECOND matrix coordinate, so replacing column 0 swaps the first column of the determinant for b. Read as a linear form in b, this numerator is b₀·a₁₁ − b₁·a₀₁ — the cofactor expansion along the replaced column, whose coefficients (a₁₁, −a₀₁) are the first row of the 2×2 adjugate; the 3×3 helpers are the same phenomenon with three cofactors.",
+    "mathContext": "$\\det(A_0) = \\begin{vmatrix} b_0 & a_{01} \\\\ b_1 & a_{11} \\end{vmatrix} = b_0 a_{11} - a_{01} b_1 = b_0\\,a_{11} - b_1\\,a_{01}$ — cofactor expansion along column 0.",
     "significance": "key",
     "relatedConcepts": [
       "Matrix.updateCol",
       "updateCol_self / updateCol_ne",
       "det_fin_two",
-      "cofactor / column expansion"
+      "cofactor / column expansion",
+      "adjugate matrix"
     ],
     "prerequisites": [
       "2×2 determinant",
@@ -77,13 +78,15 @@
     },
     "type": "insight",
     "title": "The Six Sarrus Terms, One Factor Replaced by b",
-    "content": "For 3×3, det_updateCol_three_zero/one/two each expand det(A.updateCol i b) into the six-term Sarrus form of det_fin_three, with the entries in the replaced column i carried over from b. For column 0 this gives b₀a₁₁a₂₂ − b₀a₁₂a₂₁ − a₀₁b₁a₂₂ + a₀₁a₁₂b₂ + a₀₂b₁a₂₁ − a₀₂a₁₁b₂: every monomial has exactly one factor from b (the one whose row index labels the replaced column). The proof discharges the three Fin-3 index inequalities (1 ≠ 0, 2 ≠ 0) by decide and lets simp only place each entry.",
-    "mathContext": "$\\det(A_0)$ is the Sarrus expansion with the first column $(a_{00},a_{10},a_{20})$ replaced by $(b_0,b_1,b_2)$.",
+    "content": "For 3×3, det_updateCol_three_zero/one/two each expand det(A.updateCol i b) into the six-term Sarrus form of det_fin_three, with the entries in the replaced column i carried over from b. For column 0 this gives b₀a₁₁a₂₂ − b₀a₁₂a₂₁ − a₀₁b₁a₂₂ + a₀₁a₁₂b₂ + a₀₂b₁a₂₁ − a₀₂a₁₁b₂: every monomial has exactly one factor from b (the one whose row index labels the replaced column). The proof discharges the three Fin-3 index inequalities (1 ≠ 0, 2 ≠ 0) by decide and lets simp only place each entry. Grouping these six terms by the b-factor exposes the structure: b₀(a₁₁a₂₂−a₁₂a₂₁) − b₁(a₀₁a₂₂−a₀₂a₂₁) + b₂(a₀₁a₁₂−a₀₂a₁₁). That is the Laplace (cofactor) expansion of det(A₀) along the replaced column, with alternating +,−,+ signs; the coefficients of b₀, b₁, b₂ are the signed 2×2 minors, i.e. the first row of the adjugate adj(A). So Cramer's rule here is literally the numerator being the dot product of b with a row of adj(A).",
+    "mathContext": "$\\det(A_0) = b_0(a_{11}a_{22}-a_{12}a_{21}) - b_1(a_{01}a_{22}-a_{02}a_{21}) + b_2(a_{01}a_{12}-a_{02}a_{11})$ — cofactor expansion along the replaced column; the coefficients are the first row of $\\mathrm{adj}(A)$.",
     "significance": "key",
     "relatedConcepts": [
       "Sarrus' rule",
       "det_fin_three",
       "updateCol over Fin 3",
+      "Laplace / cofactor expansion",
+      "adjugate matrix",
       "decide on Fin literals"
     ],
     "prerequisites": [
