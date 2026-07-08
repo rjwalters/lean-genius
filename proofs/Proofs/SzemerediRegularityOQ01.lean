@@ -27,6 +27,11 @@
     `SimpleGraph.edgeDensity_add_edgeDensity_compl` and the gallery bridge.
   * `edgeDensity_mem_Icc` — the range is packaged as a single membership
     `d(A, B) ∈ Set.Icc 0 1` for downstream positivity/interval reasoning.
+  * `isEpsilonRegular_compl` — **complement regularity transfer**: for `0 < eps`
+    and disjoint nonempty `A, B`, the pair is ε-regular in `Gᶜ` iff in `G`.  The
+    ε-threshold forces every witness nonempty (empty witnesses cannot meet
+    `|A'| ≥ eps·|A| > 0`), so `edgeDensity_compl` applies uniformly and the two
+    density gaps agree in absolute value.
 
   All results are fully machine-checked (0 axioms, 0 sorries).
 
@@ -111,5 +116,57 @@ theorem edgeDensity_compl (G : SimpleGraph V) [DecidableRel G.Adj]
 theorem edgeDensity_mem_Icc (G : SimpleGraph V) [DecidableRel G.Adj]
     (A B : Finset V) : edgeDensity G A B ∈ Set.Icc (0 : ℚ) 1 :=
   ⟨edgeDensity_nonneg G A B, edgeDensity_le_one G A B⟩
+
+/-- **Complement regularity transfer.**  For a positive parameter `eps` and
+    *disjoint*, nonempty vertex sets `A, B`, the pair `(A, B)` is ε-regular in the
+    complement graph `Gᶜ` iff it is ε-regular in `G`:
+
+        `IsEpsilonRegular Gᶜ eps A B ↔ IsEpsilonRegular G eps A B`.
+
+    This upgrades the density identity `edgeDensity_compl` (`d_{Gᶜ} = 1 − d_G` on
+    disjoint nonempty pairs) to the full ε-regularity predicate.  The subtlety
+    flagged as a follow-up — that the ε-regularity witnesses `A' ⊆ A`, `B' ⊆ B`
+    could be *empty*, where `edgeDensity_compl` does not apply — dissolves once
+    `0 < eps`: a witness must satisfy `|A'| ≥ eps·|A| > 0` (as `A` is nonempty),
+    forcing `A'` (and likewise `B'`) nonempty.  Every witness pair is therefore
+    disjoint (subsets of the disjoint `A, B`) and nonempty, so `edgeDensity_compl`
+    applies uniformly and the two density gaps agree in absolute value:
+
+        `|d_{Gᶜ}(A', B') − d_{Gᶜ}(A, B)| = |d_G(A', B') − d_G(A, B)|`,
+
+    since `(1 − x) − (1 − y) = −(x − y)`.  Both directions of the iff are then a
+    single rewrite along this equality. -/
+theorem isEpsilonRegular_compl (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (heps : 0 < eps) {A B : Finset V}
+    (hA : A.Nonempty) (hB : B.Nonempty) (hAB : Disjoint A B) :
+    IsEpsilonRegular Gᶜ eps A B ↔ IsEpsilonRegular G eps A B := by
+  -- A witness meeting the ε-threshold against a nonempty set is itself nonempty.
+  have hpos : ∀ S T : Finset V, T.Nonempty → (S.card : ℚ) ≥ eps * T.card →
+      S.Nonempty := by
+    intro S T hT hc
+    rw [← Finset.card_pos]
+    have h1 : (0 : ℚ) < eps * T.card :=
+      mul_pos heps (by exact_mod_cast Finset.card_pos.mpr hT)
+    exact_mod_cast lt_of_lt_of_le h1 hc
+  -- On every valid witness pair the two density gaps have equal absolute value.
+  have main : ∀ A' B' : Finset V, A' ⊆ A → B' ⊆ B →
+      (A'.card : ℚ) ≥ eps * A.card → (B'.card : ℚ) ≥ eps * B.card →
+      |edgeDensity Gᶜ A' B' - edgeDensity Gᶜ A B|
+        = |edgeDensity G A' B' - edgeDensity G A B| := by
+    intro A' B' hA' hB' hcA' hcB'
+    have hA'ne : A'.Nonempty := hpos A' A hA hcA'
+    have hB'ne : B'.Nonempty := hpos B' B hB hcB'
+    have hdisj : Disjoint A' B' := hAB.mono hA' hB'
+    rw [edgeDensity_compl G hA'ne hB'ne hdisj, edgeDensity_compl G hA hB hAB]
+    have hrw : (1 - edgeDensity G A' B') - (1 - edgeDensity G A B)
+        = -(edgeDensity G A' B' - edgeDensity G A B) := by ring
+    rw [hrw, abs_neg]
+  constructor
+  · intro h A' B' hA' hB' hcA' hcB'
+    rw [← main A' B' hA' hB' hcA' hcB']
+    exact h A' B' hA' hB' hcA' hcB'
+  · intro h A' B' hA' hB' hcA' hcB'
+    rw [main A' B' hA' hB' hcA' hcB']
+    exact h A' B' hA' hB' hcA' hcB'
 
 end Szemeredi.Regularity.OQ01
