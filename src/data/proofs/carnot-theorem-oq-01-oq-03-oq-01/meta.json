@@ -60,7 +60,8 @@
       "**Strict concavity is exactly the uniqueness ingredient**: ordinary concavity (used by the parent) gives the bound but allows the chord to touch the graph off the barycentre; the strict version forbids this, so a saturated Jensen step *forces its two points equal*",
       "**The maximiser is unique, not just exhibited**: equality in sin A + sin B + sin C ≤ 3√3/2 holds at exactly one angle configuration A = B = C = π/3, the strongest form of the extremal-perimeter statement",
       "**Two tight steps decode to two equalities**: saturating the global bound makes both Jensen averaging steps simultaneously tight (their slacks are non-negative and sum to zero), and each tightness decodes — via the strict-Jensen lemma — to one coincidence (B = C, then A = M), which the angle-sum closes to the equilateral triangle",
-      "**The strict-Jensen equality lemma is reusable**: a saturated two-point Jensen for any strictly concave function forces its sample points equal — the generic mechanism behind 'the symmetric point is the unique optimiser' in symmetric extremal problems"
+      "**The strict-Jensen equality lemma is reusable**: a saturated two-point Jensen for any strictly concave function forces its sample points equal — the generic mechanism behind 'the symmetric point is the unique optimiser' in symmetric extremal problems",
+      "**The hypotheses are minimal**: only the *lower* bounds A, B, C ≥ 0 are assumed — the upper memberships A, B, C ≤ π needed to invoke concavity are automatic from the angle-sum (e.g. A = π − B − C ≤ π), so the characterisation holds across the full boundary of the angle simplex without redundant assumptions"
     ],
     "prerequisites": [
       "Real trigonometric function sin and its value sin(π/3) = √3/2",
