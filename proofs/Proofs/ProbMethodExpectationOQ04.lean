@@ -126,4 +126,93 @@ theorem expectedMonoCliques_le (n k : ℕ) :
   have h := Nat.choose_le_pow_div k n (α := ℚ)
   simpa using h
 
+/-! ## The ℕ-power inequality behind Erdős 1947 (OQ-04 core)
+
+OQ-04 asks to strengthen `expected_mono_cliques` to `E(n,k) < 1` for `n < 2^(k/2)`.
+Via `expectedMonoCliques_lt_one_iff` this reduces to the pure `ℕ`-power inequality
+`2·C(n,k) < 2^{C(k,2)}`, and the half-integer hypothesis `n < 2^(k/2)` is equivalent
+(square both sides) to the clean `ℕ` statement `n² < 2^k`.  This section discharges
+that inequality outright (`erdos_1947_clique_bound`), so OQ-04's target
+`expectedMonoCliques n k < 1` now holds unconditionally on `n² < 2^k`, `k ≥ 3`
+(`expectedMonoCliques_lt_one_of_sq_lt`).  Mathematically this is the Erdős 1947
+diagonal Ramsey lower bound `R(k,k) > n` for every `n` with `n² < 2^k`.
+
+The proof compares squares to stay entirely in `ℕ`: from `C(n,k)·k! ≤ nᵏ`
+(`Nat.descFactorial_le_pow`) and `n² < 2^k` one gets
+`(2·C(n,k))²·(k!)² ≤ 4·n^{2k} < 4·2^{k²} = 2^{k²+2}`, while
+`(2^{C(k,2)})²·(k!)² ≥ 2^{2·C(k,2)}·2^{k+2} = 2^{k²+2}` using the factorial growth
+lemma `2^{k+2} ≤ (k!)²` and the identity `2·C(k,2)+k = k²`. -/
+
+/-- `2·C(k,2) + k = k²`, i.e. `2·C(k,2) = k(k−1)`.  Holds for every `k`. -/
+private lemma two_mul_choose_two_add (k : ℕ) : 2 * k.choose 2 + k = k * k := by
+  induction k with
+  | zero => rfl
+  | succ j ih =>
+    have h : (j + 1).choose 2 = j.choose 2 + j := by
+      rw [Nat.choose_succ_succ']
+      simp [Nat.choose_one_right, Nat.add_comm]
+    rw [h]; nlinarith [ih]
+
+/-- Factorial growth: `2^{k+2} ≤ (k!)²` for `k ≥ 3` (base `2⁵ = 32 ≤ 36 = (3!)²`). -/
+private lemma two_pow_add_two_le_factorial_sq {k : ℕ} (hk : 3 ≤ k) :
+    2 ^ (k + 2) ≤ (k.factorial) ^ 2 := by
+  induction k, hk using Nat.le_induction with
+  | base => decide
+  | succ k hk ih =>
+    calc 2 ^ (k + 1 + 2)
+        = 2 ^ (k + 2) * 2 := by rw [show k + 1 + 2 = (k + 2) + 1 from by ring, pow_succ]
+      _ ≤ (k.factorial) ^ 2 * 2 := by gcongr
+      _ ≤ (k.factorial) ^ 2 * (k + 1) ^ 2 := by gcongr; nlinarith [hk]
+      _ = ((k + 1).factorial) ^ 2 := by rw [Nat.factorial_succ]; ring
+
+/-- **Erdős 1947 clique bound (pure `ℕ` form).**  If `n² < 2^k` and `k ≥ 3`, then
+`2·C(n,k) < 2^{C(k,2)}`.  Combined with `expectedMonoCliques_lt_one_iff` this gives
+`E(n,k) < 1`, hence (strict first moment) a 2-colouring of `Kₙ` with no
+monochromatic `k`-clique — the diagonal Ramsey lower bound `R(k,k) > n`. -/
+theorem erdos_1947_clique_bound {n k : ℕ} (hk : 3 ≤ k) (hn : n ^ 2 < 2 ^ k) :
+    2 * n.choose k < 2 ^ (k.choose 2) := by
+  have hk0 : k ≠ 0 := by omega
+  -- `C(n,k)·k! ≤ nᵏ` via `descFactorial`.
+  have hCk : n.choose k * k.factorial ≤ n ^ k := by
+    have h := Nat.descFactorial_eq_factorial_mul_choose n k
+    have hle := Nat.descFactorial_le_pow n k
+    rw [h] at hle
+    calc n.choose k * k.factorial = k.factorial * n.choose k := by ring
+      _ ≤ n ^ k := hle
+  have hkey := two_mul_choose_two_add k
+  have hgrow := two_pow_add_two_le_factorial_sq hk
+  have hpow : (n ^ 2) ^ k < (2 ^ k) ^ k := Nat.pow_lt_pow_left hn hk0
+  -- Compare squares, multiplied through by `(k!)²`.
+  have hmul : (2 * n.choose k) ^ 2 * (k.factorial) ^ 2
+                < (2 ^ (k.choose 2)) ^ 2 * (k.factorial) ^ 2 := by
+    calc (2 * n.choose k) ^ 2 * (k.factorial) ^ 2
+        = 4 * (n.choose k * k.factorial) ^ 2 := by ring
+      _ ≤ 4 * (n ^ k) ^ 2 := by gcongr
+      _ = 4 * (n ^ 2) ^ k := by
+            have hnn : (n ^ k) ^ 2 = (n ^ 2) ^ k := by
+              rw [← pow_mul, ← pow_mul, Nat.mul_comm]
+            rw [hnn]
+      _ < 4 * (2 ^ k) ^ k := by gcongr
+      _ = 2 ^ (k * k + 2) := by
+            rw [← pow_mul, show (4 : ℕ) = 2 ^ 2 from rfl, ← pow_add, Nat.add_comm]
+      _ = 2 ^ (2 * k.choose 2 + k + 2) := by rw [← hkey]
+      _ = (2 ^ (k.choose 2)) ^ 2 * 2 ^ (k + 2) := by
+            rw [← pow_mul, ← pow_add]; congr 1; ring
+      _ ≤ (2 ^ (k.choose 2)) ^ 2 * (k.factorial) ^ 2 := by gcongr
+  have hsq : (2 * n.choose k) ^ 2 < (2 ^ (k.choose 2)) ^ 2 :=
+    lt_of_mul_lt_mul_right hmul (Nat.zero_le _)
+  exact lt_of_pow_lt_pow_left₀ 2 (Nat.zero_le _) hsq
+
+/-- **OQ-04 resolved.**  The expected number of monochromatic `k`-cliques is `< 1`
+whenever `n² < 2^k` (equivalently `n < 2^{k/2}`) and `k ≥ 3` — the strengthening of
+`expected_mono_cliques` the gallery entry asked for.  By the strict first moment
+principle this exhibits a 2-colouring of `Kₙ` with no monochromatic `k`-clique. -/
+theorem expectedMonoCliques_lt_one_of_sq_lt {n k : ℕ} (hk : 3 ≤ k) (hn : n ^ 2 < 2 ^ k) :
+    expectedMonoCliques n k < 1 := by
+  rw [expectedMonoCliques_lt_one_iff]
+  have h := erdos_1947_clique_bound hk hn
+  have hcast : ((2 * n.choose k : ℕ) : ℚ) < ((2 ^ k.choose 2 : ℕ) : ℚ) := by exact_mod_cast h
+  push_cast at hcast
+  linarith
+
 end ProbMethod.ExpectationOQ04

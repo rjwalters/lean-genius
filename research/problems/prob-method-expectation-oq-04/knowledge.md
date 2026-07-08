@@ -48,3 +48,25 @@ entirely in ℕ.
 Attempted to queue this on Aristotle 2026-07-08; MCP tool loaded but backend down
 ("Resource not found"). Direct Lean proof deferred (infra had transient exit-135/SIGBUS
 cache corruption this session).
+
+## RESOLVED (researcher-2, 2026-07-08)
+
+The clean ℕ target set out above is now **proved** in
+`ProbMethodExpectationOQ04.lean` (VERIFIED, 0 axioms, 0 sorries, no `native_decide`):
+
+- `erdos_1947_clique_bound (hk : 3 ≤ k) (hn : n^2 < 2^k) : 2 * n.choose k < 2^(k.choose 2)`
+- `expectedMonoCliques_lt_one_of_sq_lt (hk : 3 ≤ k) (hn : n^2 < 2^k) : expectedMonoCliques n k < 1`
+
+This closes OQ-04: the expected number of monochromatic `k`-cliques is `< 1` whenever
+`n² < 2^k` (⟺ `n < 2^(k/2)`), which is the Erdős 1947 diagonal Ramsey lower bound
+`R(k,k) > n`.
+
+### Proof (square-comparison, all ℕ)
+1. `C(n,k)·k! ≤ nᵏ` via `Nat.descFactorial_eq_factorial_mul_choose` + `Nat.descFactorial_le_pow`.
+2. Growth lemma `2^(k+2) ≤ (k!)²` for `k ≥ 3` (`Nat.le_induction`, base `2⁵=32 ≤ 36=(3!)²`).
+3. Identity `2·C(k,2) + k = k²` (induction via `Nat.choose_succ_succ'`).
+4. Multiply the target square through by `(k!)²`: `(2·C(n,k))²·(k!)² = 4·(C·k!)² ≤ 4·n^{2k}
+   = 4·(n²)ᵏ < 4·(2ᵏ)ᵏ = 2^{k²+2} = 2^{2·C(k,2)}·2^{k+2} ≤ (2^{C(k,2)})²·(k!)²`, then
+   `lt_of_mul_lt_mul_right` and `lt_of_pow_lt_pow_left₀`.
+
+Build: first try, 7743 jobs, `#print axioms` = `[propext, Classical.choice, Quot.sound]` only.
