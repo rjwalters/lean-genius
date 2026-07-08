@@ -682,4 +682,116 @@ exponentiation `C k ↦ 2^(C k)` of the primorial value, at every level. -/
 theorem two_pow_C_le_B_succ (k : ℕ) : 2 ^ C k ≤ B (k + 1) :=
   le_trans (Nat.pow_le_pow_right (by norm_num) (C_le_B k)) (B_succ_ge_two_pow k)
 
+/-! ## Step 10: the ratio `B / C` diverges — `B k ≥ (C k)²` and `∀ m, m·C k ≤ B k`
+
+Steps 8–9 separated the two towers by *growth class* (primorial `C` is
+doubly-exponential, factorial `B` is tower-exponential).  Here we turn that
+qualitative separation into a quantitative statement about the ratio: the
+factorial tower eventually dominates the **square** of the primorial tower,
+`(C k)² ≤ B k`, and consequently `B k / C k → ∞` in the division-free form
+`∀ m, ∃ K, ∀ k ≥ K, m·C k ≤ B k`.
+
+The mechanism is the exponential step `2^(C k) ≤ B (k+1)`
+(`two_pow_C_le_B_succ`): one factorial step raises `2` to the whole primorial
+value, and a base-2 exponential of `C k` dwarfs any fixed power of `C (k+1)`
+(which is only `≈ (C k)²`).  The single analytic-free input is the elementary
+`(n+1)^4 ≤ 2^n` for `n ≥ 17`. -/
+
+/-- Closed multiplicative form of the primorial recursion:
+`C (k+1) + 1 = (C k + 1)·C k`.  Equivalently `C (k+1) = (C k)² + C k − 1`, so
+each step squares the previous value up to lower-order terms — the source of the
+doubly-exponential growth of `C`. -/
+theorem C_succ_add_one (k : ℕ) : C (k + 1) + 1 = (C k + 1) * C k := by
+  have ht : 1 ≤ towerProd k :=
+    le_trans (Nat.one_le_pow _ _ (by norm_num)) (towerProd_ge k)
+  have ht1 : 1 ≤ towerProd (k + 1) :=
+    le_trans (Nat.one_le_pow _ _ (by norm_num)) (towerProd_ge (k + 1))
+  have hCk : C k + 1 = 4 * towerProd k := by rw [C_eq]; omega
+  have hCk1 : C (k + 1) + 1 = 4 * towerProd (k + 1) := by rw [C_eq]; omega
+  rw [hCk1, towerProd_succ, hCk, C_eq]
+  set d := 4 * towerProd k - 1
+  ring
+
+/-- Each primorial step is bounded by the square of the successor:
+`C (k+1) ≤ (C k + 1)²`.  Immediate from `C_succ_add_one`. -/
+theorem C_succ_le_sq (k : ℕ) : C (k + 1) ≤ (C k + 1) ^ 2 := by
+  have h := C_succ_add_one k
+  have hle : (C k + 1) * C k ≤ (C k + 1) ^ 2 := by
+    rw [sq]; exact Nat.mul_le_mul_left _ (Nat.le_succ _)
+  omega
+
+/-- The primorial tower is monotone: `C k ≤ C (k+1)`.  Since
+`C (k+1) + 1 = (C k + 1)·C k ≥ C k + 1` (as `C k ≥ 1`). -/
+theorem C_le_succ (k : ℕ) : C k ≤ C (k + 1) := by
+  have h := C_succ_add_one k
+  have hpos : 1 ≤ C k := by
+    have := towerProd_ge k
+    have h1 : 1 ≤ towerProd k := le_trans (Nat.one_le_pow _ _ (by norm_num)) this
+    rw [C_eq]; omega
+  nlinarith [h, hpos]
+
+/-- Monotonicity of the primorial tower. -/
+theorem C_mono : Monotone C := monotone_nat_of_le_succ C_le_succ
+
+/-- Linear lower bound `k + 3 ≤ C k`: in particular `C` is unbounded, so it
+eventually exceeds any fixed multiplier. -/
+theorem C_ge_add (k : ℕ) : k + 3 ≤ C k := by
+  induction k with
+  | zero => rw [C_zero_eq]
+  | succ n ih =>
+    have h := C_succ_add_one n
+    nlinarith [ih, h]
+
+/-- **Exponential beats a fixed power:** `(n+1)^4 ≤ 2^n` for `n ≥ 17`.  The one
+elementary, `native_decide`-free input to the ratio-divergence result.  Proved by
+induction from the base `18^4 = 104976 ≤ 131072 = 2^17`, with the multiplicative
+step `(n+2)^4 ≤ 2·(n+1)^4` (valid for `n ≥ 5`). -/
+theorem quartic_le_two_pow (n : ℕ) (hn : 17 ≤ n) : (n + 1) ^ 4 ≤ 2 ^ n := by
+  induction n, hn using Nat.le_induction with
+  | base => norm_num
+  | succ n hn ih =>
+    have h1 : 289 ≤ n * n := by nlinarith [hn]
+    have h2 : 289 * (n * n) ≤ (n * n) * (n * n) := by nlinarith [h1]
+    have hstep : (n + 2) ^ 4 ≤ 2 * (n + 1) ^ 4 := by nlinarith [hn, h1, h2]
+    calc (n + 1 + 1) ^ 4 = (n + 2) ^ 4 := by ring
+      _ ≤ 2 * (n + 1) ^ 4 := hstep
+      _ ≤ 2 * 2 ^ n := by omega
+      _ = 2 ^ (n + 1) := by rw [pow_succ]; ring
+
+/-- **The factorial tower dominates the square of the primorial tower:**
+`(C k)² ≤ B k` for all `k ≥ 3`.  Writing `k = j+1`, the exponential step gives
+`B (j+1) ≥ 2^(C j)`, while `C (j+1) ≤ (C j + 1)²` so `C (j+1)² ≤ (C j + 1)^4`,
+and `(C j + 1)^4 ≤ 2^(C j)` once `C j ≥ 17` (true for `j ≥ 2`, since `C 2 = 131`
+and `C` is monotone).  Certified, `native_decide`-free. -/
+theorem C_sq_le_B {k : ℕ} (hk : 3 ≤ k) : C k ^ 2 ≤ B k := by
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  have hj2 : 2 ≤ j := by omega
+  have hCj : 17 ≤ C j := by
+    have hmono := C_mono hj2
+    rw [C_two_eq] at hmono
+    omega
+  have hquartic : (C j + 1) ^ 4 ≤ 2 ^ C j := quartic_le_two_pow (C j) hCj
+  have hsucc : C (j + 1) ^ 2 ≤ (C j + 1) ^ 4 := by
+    calc C (j + 1) ^ 2 ≤ ((C j + 1) ^ 2) ^ 2 := Nat.pow_le_pow_left (C_succ_le_sq j) 2
+      _ = (C j + 1) ^ 4 := by ring
+  calc C (j + 1) ^ 2 ≤ (C j + 1) ^ 4 := hsucc
+    _ ≤ 2 ^ C j := hquartic
+    _ ≤ B (j + 1) := two_pow_C_le_B_succ j
+
+/-- **The ratio `B / C` diverges (division-free form):**
+`∀ m, ∃ K, ∀ k ≥ K, m·C k ≤ B k`.  Since `C k → ∞` (`C_ge_add`), taking
+`k ≥ max 3 m` gives `m ≤ C k`, and then `m·C k ≤ (C k)² ≤ B k` by `C_sq_le_B`.
+This is the precise quantitative statement that the elementary factorial
+certificate `B` outgrows the primorial certificate `C` without bound — a
+certified counterpart to `p_k / C_k → ∞` for the two Euclid-style towers. -/
+theorem B_div_C_diverges (m : ℕ) : ∃ K, ∀ k, K ≤ k → m * C k ≤ B k := by
+  refine ⟨max 3 m, fun k hk => ?_⟩
+  have hk3 : 3 ≤ k := le_trans (le_max_left _ _) hk
+  have hkm : m ≤ k := le_trans (le_max_right _ _) hk
+  have hCk : m ≤ C k := by have := C_ge_add k; omega
+  have hsq : C k ^ 2 ≤ B k := C_sq_le_B hk3
+  calc m * C k ≤ C k * C k := Nat.mul_le_mul_right _ hCk
+    _ = C k ^ 2 := (sq (C k)).symm
+    _ ≤ B k := hsq
+
 end DirichletsTheoremOQ02OQ03
