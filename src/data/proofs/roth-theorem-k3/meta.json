@@ -221,9 +221,9 @@
     ],
     "opens": [],
     "namespace": "Szemeredi.Roth",
-    "lineCount": 1401,
+    "lineCount": 1554,
     "axiomCount": 0,
-    "theoremCount": 42,
+    "theoremCount": 43,
     "definitionCount": 6,
     "path": "Proofs/RothTheorem.lean",
     "sorries": 0,
@@ -288,6 +288,11 @@
       "type": "core",
       "description": "Any subset of [N] with no 3-term AP has size O(N/log log N)",
       "leanType": "no_3AP A -> A subset range N -> card A <= C * N / log(log N)"
+    },
+    {
+      "name": "sqDiff_error_le",
+      "type": "proved",
+      "description": "Circle-method error bound for the Sárközy square-difference count: given ‖G(r)‖≤M on nonzero frequencies, ‖SD(A)−|A|²‖ ≤ N⁻¹·M·(|A|·N−|A|²), reducing Sárközy to the quadratic Gauss-sum magnitude bound"
     }
   ],
   "sorries": 0

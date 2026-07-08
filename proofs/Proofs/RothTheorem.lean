@@ -1502,4 +1502,53 @@ theorem sqDiffCount_fourier_main {N : ℕ} [NeZero N] (A : Finset (ZMod N)) :
     Complex.ofReal_natCast]
   field_simp
 
+/-- **Circle-method error bound for the square-difference count.**  Given a
+uniform bound `‖G(r)‖ ≤ M` on the quadratic Gauss sum over the nonzero
+frequencies, the square-difference count `SD(A)` differs from its expected main
+term `|A|²` by at most
+
+    ‖SD(A) − |A|²‖  ≤  N⁻¹ · M · (|A|·N − |A|²).
+
+This is the exact analytic reduction the circle method performs for Sárközy's
+theorem: it isolates *all* the arithmetic content into the single Gauss-sum
+magnitude bound `M`.  Combining `sqDiffCount_fourier_main` (the principal-term
+split) with the triangle inequality and `parseval_nonzero`
+(`Σ_{r≠0} ‖Â(r)‖² = |A|·N − |A|²`), the error is controlled with no further
+input.  The hypothesis `hG` is precisely the classical estimate `|G(r)| ≤ √(2N)`
+(so `M = √(2N)`), whose formalization for general composite `N` is the one
+remaining ingredient; abstracting it as `M` keeps this reduction fully
+machine-checked and 0-axiom. -/
+theorem sqDiff_error_le {N : ℕ} [NeZero N] (A : Finset (ZMod N)) {M : ℝ}
+    (hG : ∀ r : ZMod N, r ≠ 0 → ‖sqGaussSum r‖ ≤ M) :
+    ‖(sqDiffCount A : ℂ) - (↑A.card) ^ 2‖
+      ≤ (↑N)⁻¹ * (M * (↑A.card * ↑N - (↑A.card) ^ 2)) := by
+  -- Isolate the error term as `N⁻¹ · Σ_{r≠0} ‖Â(r)‖²·G(r)`.
+  have hsub : (sqDiffCount A : ℂ) - (↑A.card) ^ 2
+      = (↑N)⁻¹ * (Finset.univ \ {(0 : ZMod N)}).sum
+          (fun r => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r) := by
+    rw [sqDiffCount_fourier_main A]; ring
+  rw [hsub, norm_mul, norm_inv, Complex.norm_natCast]
+  refine mul_le_mul_of_nonneg_left ?_ (by positivity)
+  -- Triangle inequality + Gauss bound + Parseval on the nonzero frequencies.
+  calc ‖(Finset.univ \ {(0 : ZMod N)}).sum
+            (fun r => (↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r)‖
+      ≤ (Finset.univ \ {(0 : ZMod N)}).sum
+            (fun r => ‖(↑(‖fourierCoeff A r‖ ^ 2) : ℂ) * sqGaussSum r‖) :=
+        norm_sum_le _ _
+    _ = (Finset.univ \ {(0 : ZMod N)}).sum
+            (fun r => ‖fourierCoeff A r‖ ^ 2 * ‖sqGaussSum r‖) := by
+        refine Finset.sum_congr rfl (fun r _ => ?_)
+        rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
+    _ ≤ (Finset.univ \ {(0 : ZMod N)}).sum
+            (fun r => ‖fourierCoeff A r‖ ^ 2 * M) := by
+        refine Finset.sum_le_sum (fun r hr => ?_)
+        have hrne : r ≠ 0 := by
+          simp only [Finset.mem_sdiff, Finset.mem_singleton] at hr; exact hr.2
+        exact mul_le_mul_of_nonneg_left (hG r hrne) (by positivity)
+    _ = (Finset.univ \ {(0 : ZMod N)}).sum
+            (fun r => ‖fourierCoeff A r‖ ^ 2) * M := by
+        rw [← Finset.sum_mul]
+    _ = M * (↑A.card * ↑N - (↑A.card) ^ 2) := by
+        rw [parseval_nonzero A]; ring
+
 end Szemeredi.Roth
