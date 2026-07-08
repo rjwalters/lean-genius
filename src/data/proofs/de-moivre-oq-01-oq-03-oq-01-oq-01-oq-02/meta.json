@@ -82,6 +82,13 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module header, imports, and namespace",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring motivating the algebra-endomorphism upgrade of the parent's Chebyshev index homomorphism, the Mathlib.RingTheory.Polynomial.Chebyshev / Tactic imports, and the import of the parent file DeMoivreOQ01OQ03OQ01OQ01 (supplying the ancestor evaluation identity)."
+    },
+    {
       "id": "alg-end-hom",
       "title": "The algebra-endomorphism homomorphism",
       "startLine": 54,
@@ -99,8 +106,8 @@
       "id": "unit-circle",
       "title": "Unit-circle reparametrization by the power map",
       "startLine": 138,
-      "endLine": 161,
-      "summary": "eval_chebAlgEnd_unit: over a field, (chebAlgEnd n p).eval (z + z⁻¹) = p.eval (zⁿ + z⁻ⁿ), connecting the substitution action to the grandparent's evaluation identity."
+      "endLine": 175,
+      "summary": "eval_chebAlgEnd_unit: over a field, (chebAlgEnd n p).eval (z + z⁻¹) = p.eval (zⁿ + z⁻ⁿ), connecting the substitution action to the grandparent's evaluation identity. Followed by worked ℝ examples (index 1 = identity endomorphism; the concrete n = 3 reparametrization feeding z³ + z⁻³) and a #check verification block over the main declarations."
     }
   ],
   "conclusion": {
