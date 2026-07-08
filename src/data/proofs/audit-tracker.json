@@ -15406,8 +15406,8 @@
     },
     "erdos-659": {
       "agentId": "auditor-agent-7",
-      "auditCount": 5,
-      "lastAudited": "2026-07-08T18:54:18Z",
+      "auditCount": 6,
+      "lastAudited": "2026-07-08T20:17:07Z",
       "result": "clean",
       "issues": [
         "Section range drift (axiom/theorem swapped); 3 of 6 isConfiguration cases reduce to True (isoTrap1, isoTrap2, kite) \u2014 issue #14110"
@@ -15482,9 +15482,9 @@
     },
     "erdos-666": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 7,
-      "lastAudited": "2026-07-08T18:00:00Z",
-      "result": "issues-fixed",
+      "auditCount": 8,
+      "lastAudited": "2026-07-08T20:17:07Z",
+      "result": "clean",
       "issueUrl": "https://github.com/rjwalters/lean-genius/issues/14107",
       "issues": []
     },
@@ -18195,8 +18195,8 @@
       "result": "clean"
     },
     "euler-polyhedral-formula-oq-02-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-27T10:45:00Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T20:17:07Z",
       "result": "clean",
       "issues": []
     },
@@ -21409,10 +21409,10 @@
       "issues": []
     },
     "kepler-conjecture-oq-04": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-07-08T19:05:17Z",
-      "result": "clean",
+      "lastAudited": "2026-07-08T20:17:07Z",
+      "result": "issues-fixed",
       "agentId": "auditor-reaudit-20260708"
     },
     "knights-tour-oblique": {
@@ -21991,9 +21991,9 @@
       "issues": []
     },
     "law-of-cosines-oq-03-oq-03": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-07-08T17:18:11Z",
+      "lastAudited": "2026-07-08T20:17:07Z",
       "result": "clean"
     },
     "law-of-cosines-oq-04": {
@@ -29254,16 +29254,16 @@
       "result": "clean"
     },
     "roth-theorem-k3-oq-03-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-07-08T17:18:11Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T20:17:07Z",
+      "result": "issues-fixed"
     },
     "roth-theorem-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-07-08T06:05:08Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T20:17:07Z",
+      "result": "issues-fixed"
     },
     "russell-1-plus-1-oq-02": {
       "auditCount": 1,
