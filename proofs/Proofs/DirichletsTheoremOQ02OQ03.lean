@@ -567,4 +567,64 @@ theorem p3_le_doubly_exp (k : ℕ) : p3 k ≤ 4 ^ (2 ^ k) :=
 `p3 2 ≤ C 2 = 131 ≤ 256 = 4^(2^2)`. -/
 theorem doubly_exp_at_two : C 2 ≤ 4 ^ (2 ^ 2) := by rw [C_two_eq]; norm_num
 
+/-! ### The doubly-exponential growth is *intrinsic* (matching lower bound)
+
+`C_le_doubly_exp` shows the primorial tower `C` is bounded *above* by the
+doubly-exponential `4^(2^k)`.  On its own an upper bound leaves open whether the
+tower is actually much smaller — perhaps only singly-exponential.  We rule that
+out with a matching *lower* bound: the running product satisfies
+`towerProd k ≥ 3^(2^k − 1)`, so `C` is also bounded *below* by a
+doubly-exponential.  The engine is the reverse of the squaring induction: since
+each factor `4·towerProd k − 1 ≥ 3·towerProd k` (as `towerProd k ≥ 1`), we get
+`towerProd (k+1) ≥ 3·towerProd k²`, and squaring `towerProd k ≥ 3^(2^k − 1)`
+gives `3·(3^(2^k − 1))² = 3^(2^{k+1} − 1)`.  Together with the upper bound this
+brackets `C` between two doubly-exponentials, so the certified elementary bound
+is *intrinsically* doubly-exponential — no re-evaluation of this tower can yield
+a sub-exponential certificate. -/
+
+/-- **Doubly-exponential lower bound on the running product.**
+`3^(2^k − 1) ≤ towerProd k`: the primorial running product grows at least
+doubly-exponentially, the reverse of the squaring induction in
+`four_mul_towerProd_le`. -/
+theorem towerProd_ge (k : ℕ) : 3 ^ (2 ^ k - 1) ≤ towerProd k := by
+  induction k with
+  | zero => decide
+  | succ k ih =>
+    have h3 : (1 : ℕ) ≤ 3 ^ (2 ^ k - 1) := Nat.one_le_pow _ _ (by norm_num)
+    have htp : 1 ≤ towerProd k := le_trans h3 ih
+    -- each step at least triples-and-squares: towerProd (k+1) ≥ 3 · towerProd k²
+    have hstep : 3 * towerProd k ^ 2 ≤ towerProd (k + 1) := by
+      rw [towerProd_succ]
+      calc 3 * towerProd k ^ 2 = towerProd k * (3 * towerProd k) := by ring
+        _ ≤ towerProd k * (4 * towerProd k - 1) :=
+            Nat.mul_le_mul (le_refl _) (by omega)
+    -- exponent identity: 3 · (3^(2^k−1))² = 3^(2^{k+1}−1)
+    have hexp : 3 * (3 ^ (2 ^ k - 1)) ^ 2 = 3 ^ (2 ^ (k + 1) - 1) := by
+      rw [← pow_mul, ← pow_succ']
+      congr 1
+      have hk1 : 1 ≤ 2 ^ k := Nat.one_le_pow _ _ (by norm_num)
+      have h2 : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+      omega
+    calc 3 ^ (2 ^ (k + 1) - 1) = 3 * (3 ^ (2 ^ k - 1)) ^ 2 := hexp.symm
+      _ ≤ 3 * towerProd k ^ 2 := Nat.mul_le_mul (le_refl _) (Nat.pow_le_pow_left ih 2)
+      _ ≤ towerProd (k + 1) := hstep
+
+/-- **Doubly-exponential lower bound on the primorial tower.**
+`4·3^(2^k − 1) − 1 ≤ C k`.  Combined with `C_le_doubly_exp` the tower is
+bracketed by two doubly-exponentials. -/
+theorem C_ge_doubly_exp (k : ℕ) : 4 * 3 ^ (2 ^ k - 1) - 1 ≤ C k := by
+  have h := towerProd_ge k
+  rw [C_eq]
+  omega
+
+/-- **The certified tower is intrinsically doubly-exponential.**
+`4·3^(2^k − 1) − 1 ≤ C k ≤ 4^(2^k)`: the primorial tower `C` is sandwiched
+between two doubly-exponential functions of `k`.  So the elementary Euclid
+certificate for the `k`-th prime `≡ 3 (mod 4)` is doubly-exponential in an
+essential two-sided sense — the enormous gap to the truth `p_k ∼ 2k·ln k` is a
+genuine feature of the method, not an artifact of a loose upper estimate. -/
+theorem C_doubly_exp_bracket (k : ℕ) :
+    4 * 3 ^ (2 ^ k - 1) - 1 ≤ C k ∧ C k ≤ 4 ^ (2 ^ k) :=
+  ⟨C_ge_doubly_exp k, C_le_doubly_exp k⟩
+
 end DirichletsTheoremOQ02OQ03
