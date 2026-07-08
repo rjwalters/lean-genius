@@ -17,8 +17,8 @@
     ],
     "axiomCount": 7,
     "sorries": 0,
-    "lineCount": 267,
-    "theoremCount": 18,
+    "lineCount": 298,
+    "theoremCount": 20,
     "definitionCount": 1
   },
   "openQuestion": {
@@ -270,6 +270,18 @@
       "statement": "0 < π − (t.A + t.B + t.C).",
       "significance": "The angular defect — equal to the hyperbolic area by the Gauss-Bonnet theorem — is strictly positive, the quantitative meaning of 'the angle sum falls short of π'.",
       "description": "linarith from the defect field."
+    },
+    {
+      "name": "cosh_c_antitone_in_C",
+      "type": "theorem",
+      "statement": "For hyperbolic triangles t₁, t₂ with t₁.A = t₂.A, t₁.B = t₂.B and t₁.C < t₂.C, cosh t₂.c < cosh t₁.c.",
+      "significance": "Reads off strict monotonicity directly from the inversion cosh c = (cos C + cos A cos B)/(sin A sin B): the numerator is antitone in C (cos antitone on [0,π]) over a fixed positive denominator, so a larger opposite angle yields a smaller cosh of the side."
+    },
+    {
+      "name": "side_antitone_in_angle",
+      "type": "theorem",
+      "statement": "For hyperbolic triangles t₁, t₂ with t₁.A = t₂.A, t₁.B = t₂.B and t₁.C < t₂.C, t₂.c < t₁.c.",
+      "significance": "Hyperbolic angle-side comparison: with two angles pinned, the side is a strictly decreasing function of its opposite angle. Upgrades AAA congruence (equal angles ⟹ equal sides) to a strict order statement via cosh injectivity on [0,∞). The hyperbolic analogue of the Euclidean larger-angle/longer-side law, but reversed and quantitative."
     }
   ],
   "references": [
@@ -341,8 +353,8 @@
     ],
     "sorries": 0,
     "axiomCount": 7,
-    "lineCount": 267,
-    "theoremCount": 18,
+    "lineCount": 298,
+    "theoremCount": 20,
     "definitionCount": 1,
     "originalContributions": [
       "HyperbolicTriangle structure encoding the three second laws of cosines plus the angular defect",
@@ -350,7 +362,8 @@
       "angle_formula_gt_one: the angular defect is exactly what makes the angle formula exceed 1",
       "cosh_c_gt_one: cosh c > 1 derived from the angles alone",
       "aaa_congruence: equal angles ⟹ equal sides via cosh injectivity on [0,∞)",
-      "equilateral_cosh: closed form cosh(side) = cos θ/(1-cos θ) for the equilateral triangle"
+      "equilateral_cosh: closed form cosh(side) = cos θ/(1-cos θ) for the equilateral triangle",
+      "side_antitone_in_angle / cosh_c_antitone_in_C: angle-side monotonicity — holding two angles fixed, increasing the third strictly shortens the opposite side (refines AAA congruence to a strict comparison)"
     ],
     "proofStrategy": "Invert each second law of cosines (linear in cosh of the opposite side) via eq_div_iff + linear_combination to get cosh(side) as a ratio of angle functions. Prove the angle ratio exceeds 1 from the defect using cos(A+B) > cos(π-C) = -cos C (strict antitonicity of cos on [0,π]). Conclude AAA congruence by cosh injectivity on [0,∞). Specialize to the equilateral case for a closed form.",
     "openQuestions": [

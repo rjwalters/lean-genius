@@ -225,6 +225,37 @@ theorem aaa_congruence (t₁ t₂ : HyperbolicTriangle)
   ⟨a_determined t₁ t₂ hA hB hC, b_determined t₁ t₂ hA hB hC, c_determined t₁ t₂ hA hB hC⟩
 
 -- ============================================================
+-- PART 4b: Angle–side monotonicity — a larger opposite angle forces a shorter side
+-- ============================================================
+
+/-- **Monotonicity of `cosh c` in the opposite angle `C`.** For two hyperbolic triangles
+    sharing the angles `A` and `B` but with `t₁.C < t₂.C`, we have
+    `cosh t₂.c < cosh t₁.c`. This is immediate from the inversion
+    `cosh c = (cos C + cos A cos B)/(sin A sin B)`: the numerator is strictly antitone in
+    `C` (since `cos` is antitone on `[0, π]`) while the positive denominator is unchanged. -/
+theorem cosh_c_antitone_in_C (t₁ t₂ : HyperbolicTriangle)
+    (hA : t₁.A = t₂.A) (hB : t₁.B = t₂.B) (hC : t₁.C < t₂.C) :
+    Real.cosh t₂.c < Real.cosh t₁.c := by
+  have hden : 0 < Real.sin t₂.A * Real.sin t₂.B := mul_pos (sin_A_pos t₂) (sin_B_pos t₂)
+  have hcos : Real.cos t₂.C < Real.cos t₁.C :=
+    Real.cos_lt_cos_of_nonneg_of_le_pi t₁.hC.le t₂.hC_lt.le hC
+  rw [cosh_c_eq t₁, cosh_c_eq t₂, hA, hB, div_lt_div_iff_of_pos_right hden]
+  linarith [hcos]
+
+/-- **Hyperbolic angle–side comparison.** Holding two angles fixed, increasing the third
+    angle strictly *shortens* the opposite side: if `t₁.A = t₂.A`, `t₁.B = t₂.B` and
+    `t₁.C < t₂.C`, then `t₂.c < t₁.c`. This refines AAA congruence into a strict
+    monotonicity statement and is the hyperbolic analogue of the Euclidean "larger angle
+    opposite longer side" — but here the correspondence is *reversed and quantitative*,
+    because in hyperbolic geometry the side is a decreasing function of its opposite angle
+    once the other two angles are pinned. -/
+theorem side_antitone_in_angle (t₁ t₂ : HyperbolicTriangle)
+    (hA : t₁.A = t₂.A) (hB : t₁.B = t₂.B) (hC : t₁.C < t₂.C) :
+    t₂.c < t₁.c :=
+  (Real.cosh_strictMonoOn.lt_iff_lt (mem_Ici.mpr t₂.hc.le) (mem_Ici.mpr t₁.hc.le)).mp
+    (cosh_c_antitone_in_C t₁ t₂ hA hB hC)
+
+-- ============================================================
 -- PART 5: Equilateral closed form
 -- ============================================================
 
