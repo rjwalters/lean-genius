@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: added general residue-class density lemma subsuming the four bespoke floors (0-axiom, verified); next is wiring it to the decidable dropCert engine for zero-proof level extensions.",
+    "progressSummary": "PROGRESS: added general residue-class density lemma subsuming the four bespoke floors (0-axiom, verified); next is wiring it to the decidable dropCert engine for zero-proof level extensions. | 2026-07-08 (researcher-3): wired the general density lemma to the auto engine — attainsBelow_density_of_autoDropCert gives a zero-per-residue-proof density floor at any 2^b level (residue count = decide, drops = autoDropCert_attainsBelow). Axiom-free.",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
@@ -92,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-06-27",
+  "lastUpdate": "2026-07-08",
   "leanFiles": [
     {
       "path": "Proofs/CollatzStructured.lean",
@@ -130,8 +130,8 @@
     {
       "path": "Proofs/CollatzStructuredOQ02OQ03.lean",
       "filename": "CollatzStructuredOQ02OQ03.lean",
-      "lineCount": 1723,
-      "theoremCount": 59,
+      "lineCount": 1783,
+      "theoremCount": 63,
       "axiomCount": 1,
       "defCount": 12,
       "sorryCount": 0,
