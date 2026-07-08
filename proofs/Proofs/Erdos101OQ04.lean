@@ -206,6 +206,144 @@ theorem isLowerBoundConstruction_threshold_eq_zero_of_small
   rw [fourPointLineCount_lt_four P h]
   norm_num
 
+/- ## Frontier reduction: NoFiveCollinear from a 3-point height certificate
+
+The genuine open content of `grunbaum_lower_bound_three_halves` and
+`solymosi_stojakovic_lower_bound` is producing a *growing* family of
+four-point lines that is simultaneously **no five collinear**.  The
+counting side is already discharged by
+`fourPointLineCount_ge_of_injOn_family`; what remains is the five-point
+`NoFiveCollinear` predicate, whose quantifier over five distinct points is
+awkward to establish directly for a parametric construction (the crux
+flagged in `state.md`: "a general-n growing witness still needs a clean
+no-five-collinear proof, ruling out accidental cross-gadget alignments for
+all n").
+
+The lemma below collapses that five-point obligation into two much simpler
+hypotheses, tailored to *row-structured* constructions (a union of
+horizontal four-point segments — the shape of `crossSet`, `asteriskSet`,
+`gridSet`, and every growing witness the frontier needs):
+
+* `H1` — **height fibres are small**: every horizontal line `y = c`
+  contains at most four points of `P`.  For a row construction this is
+  immediate (one row per height, four points per row).
+* `H2` — **no three points with pairwise-distinct heights are
+  collinear**: the *only* nontrivial arithmetic obligation, and precisely
+  the "no accidental cross-row alignment" certificate.
+
+Given `H1` and `H2`, `P` is automatically no-five-collinear.  So a future
+construction PR need only supply `H2` (plus the trivial `H1`) and the
+four-point lines — never the full five-point case analysis. -/
+
+/-- **NoFiveCollinear from a 3-point height certificate.**  If every
+horizontal line meets `P` in at most four points (`H1`) and no three
+points of `P` with pairwise-distinct second coordinates are collinear
+(`H2`), then `P` has no five collinear points.
+
+This reduces the five-point `NoFiveCollinear` predicate to a three-point
+condition, isolating the genuine open arithmetic (`H2`) from the
+five-point plumbing for any row-structured lower-bound witness. -/
+theorem noFiveCollinear_of_height_certificate (P : PlanarPointSet)
+    (H1 : ∀ c : ℝ, (P.points.filter (fun p => p.2 = c)).card ≤ 4)
+    (H2 : ∀ a b d : ℝ × ℝ, a ∈ P.points → b ∈ P.points → d ∈ P.points →
+      a.2 ≠ b.2 → a.2 ≠ d.2 → b.2 ≠ d.2 → ¬ collinear a b d) :
+    NoFiveCollinear P := by
+  intro a b c d e ha hb hc hd he hab hac had hae hbc hbd hbe hcd hce hde
+  rintro ⟨hcol_c, hcol_d, hcol_e⟩
+  by_cases hheight : a.2 = b.2
+  · -- Horizontal anchor: all five points share height `a.2`, but the
+    -- height fibre at `a.2` holds at most four points (`H1`) — contradiction.
+    have hx : b.1 - a.1 ≠ 0 := by
+      rw [sub_ne_zero]
+      intro h
+      exact hab (Prod.ext h.symm hheight)
+    have hb2 : b.2 - a.2 = 0 := sub_eq_zero.mpr hheight.symm
+    -- Every point collinear with `a, b` inherits height `a.2`.
+    have hforce : ∀ p : ℝ × ℝ, collinear a b p → p.2 = a.2 := by
+      intro p hp
+      unfold collinear at hp
+      rw [hb2, mul_zero] at hp
+      rcases mul_eq_zero.mp hp with h | h
+      · exact absurd h hx
+      · linarith
+    -- The five distinct points sit in the height-`a.2` fibre.
+    have hne_a : a ∉ ({b, c, d, e} : Finset (ℝ × ℝ)) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg
+      exact ⟨hab, hac, had, hae⟩
+    have hne_b : b ∉ ({c, d, e} : Finset (ℝ × ℝ)) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg
+      exact ⟨hbc, hbd, hbe⟩
+    have hne_c : c ∉ ({d, e} : Finset (ℝ × ℝ)) := by
+      simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg
+      exact ⟨hcd, hce⟩
+    have hne_d : d ∉ ({e} : Finset (ℝ × ℝ)) := by
+      simp only [Finset.mem_singleton]; exact hde
+    have hcard : ({a, b, c, d, e} : Finset (ℝ × ℝ)).card = 5 := by
+      rw [Finset.card_insert_of_not_mem hne_a, Finset.card_insert_of_not_mem hne_b,
+        Finset.card_insert_of_not_mem hne_c, Finset.card_insert_of_not_mem hne_d,
+        Finset.card_singleton]
+    have hsub : ({a, b, c, d, e} : Finset (ℝ × ℝ)) ⊆
+        P.points.filter (fun p => p.2 = a.2) := by
+      intro p hp
+      rw [Finset.mem_filter]
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+      rcases hp with rfl | rfl | rfl | rfl | rfl
+      · exact ⟨ha, rfl⟩
+      · exact ⟨hb, hheight.symm⟩
+      · exact ⟨hc, hforce c hcol_c⟩
+      · exact ⟨hd, hforce d hcol_d⟩
+      · exact ⟨he, hforce e hcol_e⟩
+    have hle := Finset.card_le_card hsub
+    rw [hcard] at hle
+    exact absurd (le_trans hle (H1 a.2)) (by norm_num)
+  · -- Non-horizontal anchor: `a, b, c` then have pairwise-distinct heights,
+    -- so `H2` refutes `collinear a b c` directly.
+    have hab2 : a.2 ≠ b.2 := hheight
+    have hbne : b.2 - a.2 ≠ 0 := sub_ne_zero.mpr (Ne.symm hab2)
+    have hca2 : c.2 ≠ a.2 := by
+      intro h
+      unfold collinear at hcol_c
+      rw [h, sub_self, mul_zero] at hcol_c
+      have hc1 : c.1 - a.1 = 0 := by
+        rcases mul_eq_zero.mp hcol_c.symm with h1 | h1
+        · exact h1
+        · exact absurd h1 hbne
+      exact hac (Prod.ext (by linarith) h).symm
+    have hcb2 : c.2 ≠ b.2 := by
+      intro h
+      unfold collinear at hcol_c
+      rw [h] at hcol_c
+      have hcancel : b.1 - a.1 = c.1 - a.1 := mul_right_cancel₀ hbne hcol_c
+      exact hbc (Prod.ext (by linarith) h.symm)
+    exact H2 a b c ha hb hc hab2 (Ne.symm hca2) (Ne.symm hcb2) hcol_c
+
+/-- **Row-family lower-bound construction (frontier template).**  Combine
+the counting engine (`fourPointLineCount_ge_of_injOn_family`) with the
+height reduction (`noFiveCollinear_of_height_certificate`): an injective
+family of `k` four-point collinear subsets of `P`, together with the
+height certificate (`H1`, `H2`), makes `P` an
+`IsLowerBoundConstruction P k`.
+
+This is the exact interface a growing construction targets — supply the
+four-point lines and the 3-point height certificate `H2`, and both halves
+of `IsLowerBoundConstruction` (no-five-collinear *and* the count bound)
+follow.  It reduces `grunbaum_lower_bound_three_halves` /
+`solymosi_stojakovic_lower_bound` to producing, for each `n`, a family of
+size `≥ threshold(n)` satisfying `H2`. -/
+theorem isLowerBoundConstruction_of_rows (P : PlanarPointSet) (k : ℕ)
+    (L : Fin k → Finset (ℝ × ℝ))
+    (hmem : ∀ i, L i ⊆ P.points) (hcard : ∀ i, (L i).card = 4)
+    (hcol : ∀ i, ∃ a b : ℝ × ℝ, a ∈ L i ∧ b ∈ L i ∧ a ≠ b ∧
+      ∀ p ∈ L i, collinear a b p)
+    (hinj : Function.Injective L)
+    (H1 : ∀ c : ℝ, (P.points.filter (fun p => p.2 = c)).card ≤ 4)
+    (H2 : ∀ a b d : ℝ × ℝ, a ∈ P.points → b ∈ P.points → d ∈ P.points →
+      a.2 ≠ b.2 → a.2 ≠ d.2 → b.2 ≠ d.2 → ¬ collinear a b d) :
+    IsLowerBoundConstruction P (k : ℝ) := by
+  refine ⟨noFiveCollinear_of_height_certificate P H1 H2, ?_⟩
+  have hk := fourPointLineCount_ge_of_injOn_family P k L hmem hcard hcol hinj
+  exact_mod_cast hk
+
 /- ## Grünbaum's Ω(n^{3/2}) lower bound (recorded as deferred proof)
 
 The pre-Solymosi–Stojaković state of the art: Grünbaum (1972)
