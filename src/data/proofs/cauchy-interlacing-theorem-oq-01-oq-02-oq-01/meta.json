@@ -66,7 +66,8 @@
     "implications": "Packages the summed (Ky Fan) consequences of Poincaré separation: the descending eigenvalues of a compression are weakly majorized by the largest eigenvalues of the full operator, and the trace of any codimension-m orthogonal compression is sandwiched between the sums of the n smallest and the n largest eigenvalues of T. Because the upper and lower bounds are stated over an arbitrary index set, a single pair of theorems covers the trace bound and all top-j partial sums uniformly; the arbitrary-finset form is directly reusable for further majorization-type corollaries (Schur–Horn, Ky Fan's maximum principle).",
     "openQuestions": [
       "Identify ∑_k μ_k with LinearMap.trace 𝕜 H TH (the matrix trace in the eigenbasis bH is diagonal with entries μ), turning trace_interlacing into a literal statement about the operator trace rather than the eigenvalue sum.",
-      "Derive the full (two-sided) majorization μ ≺ λ including the lower partial sums ∑_{k≥j} μ_k ≥ ∑ of the corresponding smallest λ, and connect to Mathlib's developing majorization API where available."
+      "Derive the full (two-sided) majorization μ ≺ λ including the lower partial sums ∑_{k≥j} μ_k ≥ ∑ of the corresponding smallest λ, and connect to Mathlib's developing majorization API where available.",
+      "Prove the converse direction — Ky Fan's maximum principle: the sum of the k largest eigenvalues of T equals the maximum of ∑ μ over all codimension-(n+m−k) orthogonal compressions. The bounds here supply the ≥ half (every compression trace is dominated); the principle asserts the bound is attained by compressing onto the span of the top-k eigenvectors, turning the inequality into a variational characterization of ∑_{j<k} λ_j."
     ]
   },
   "overview": {
