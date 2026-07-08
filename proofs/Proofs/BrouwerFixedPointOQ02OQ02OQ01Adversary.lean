@@ -80,7 +80,10 @@ theorem contraction_unique_fixed_point {f : ℝ → ℝ} {L : ℝ}
     calc |x₁ - x₂| = |f x₁ - f x₂| := by rw [hfx1, hfx2]
       _ ≤ L * |x₁ - x₂| := hlip x₁ x₂
   have : 1 ≤ L := by
-    rwa [← div_le_iff hne, div_self (ne_of_gt hne)] at h1
+    by_contra hc
+    push_neg at hc
+    have hpos := mul_pos (sub_pos.mpr hc) hne
+    nlinarith [h1, hpos]
   linarith
 
 -- ============================================================
@@ -106,10 +109,10 @@ theorem adversary_error_bound (p q a : ℝ) :
 -- ============================================================
 
 /-- First witness: an affine contraction with slope 1/2 and fixed point 1/4. -/
-def f (x : ℝ) : ℝ := x / 2 + 1 / 8
+noncomputable def f (x : ℝ) : ℝ := x / 2 + 1 / 8
 
 /-- Second witness: an affine contraction with slope 5/6 and fixed point 3/4. -/
-def g (x : ℝ) : ℝ := (5 / 6) * x + 1 / 8
+noncomputable def g (x : ℝ) : ℝ := (5 / 6) * x + 1 / 8
 
 /-- Both witnesses return the **same value** `1/8` at the probe point `x = 0`.
     This is exactly what makes them indistinguishable to a one-query algorithm. -/
@@ -133,14 +136,18 @@ theorem g_contraction : IsContractionOn01 g (5 / 6) := by
 /-- `f` is a genuine self-map of [0,1]: it maps the domain into itself. -/
 theorem f_mapsTo : MapsTo f (Icc (0:ℝ) 1) (Icc (0:ℝ) 1) := by
   intro x hx
+  rw [mem_Icc] at hx ⊢
   obtain ⟨hx0, hx1⟩ := hx
-  refine ⟨?_, ?_⟩ <;> · unfold f; constructor <;> nlinarith
+  unfold f
+  constructor <;> linarith
 
 /-- `g` is a genuine self-map of [0,1]: it maps the domain into itself. -/
 theorem g_mapsTo : MapsTo g (Icc (0:ℝ) 1) (Icc (0:ℝ) 1) := by
   intro x hx
+  rw [mem_Icc] at hx ⊢
   obtain ⟨hx0, hx1⟩ := hx
-  refine ⟨?_, ?_⟩ <;> · unfold g; constructor <;> nlinarith
+  unfold g
+  constructor <;> linarith
 
 -- ============================================================
 -- SECTION IV: The fixed points are 1/4 and 3/4 — separation 1/2
