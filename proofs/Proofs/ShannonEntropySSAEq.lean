@@ -445,4 +445,70 @@ theorem strong_subadditivity_eq_iff {α β γ : Type*}
   · intro heq; linear_combination -hdef - heq
   · intro hcmi; linear_combination -hdef - hcmi
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART IV: Symmetry of conditional mutual information (chain reversal)
+-- ═══════════════════════════════════════════════════════════════
+
+/-- Reverse the outer coordinates of a three-variable distribution:
+    `reverseXZ p (z, y, x) = p (x, y, z)`. This exchanges the roles of `X`
+    and `Z`, turning the chain `X – Y – Z` into `Z – Y – X`. -/
+noncomputable def reverseXZ {α β γ : Type*}
+    (pXYZ : α × β × γ → ℝ) : γ × β × α → ℝ :=
+  fun t => pXYZ (t.2.2, t.2.1, t.1)
+
+/-- Shannon entropy is invariant under relabeling the alphabet by a bijection:
+    `H(p ∘ e) = H(p)`. Entropy depends only on the multiset of probabilities. -/
+private lemma shannonEntropy'_reindex {σ τ : Type*}
+    [Fintype σ] [Fintype τ] [DecidableEq σ] [DecidableEq τ]
+    (e : σ ≃ τ) (p : τ → ℝ) :
+    shannonEntropy' (fun s => p (e s)) = shannonEntropy' p := by
+  unfold shannonEntropy'
+  rw [← Equiv.sum_comp e (fun t => if p t = 0 then 0 else p t * Real.log (p t))]
+
+/-- **Symmetry of conditional mutual information.** `I(X ; Z | Y) = I(Z ; X | Y)`.
+
+    Reversing the Markov chain leaves the strong-subadditivity deficit unchanged:
+    `cmiSum (reverseXZ p) = cmiSum p`. Reversal swaps the two conditional marginals
+    `p_{XY} ↔ p_{YZ}` (which enter the deficit symmetrically) and relabels the joint
+    and `Y`-marginal, none of which changes their Shannon entropies. -/
+theorem cmiSum_symm {α β γ : Type*}
+    [Fintype α] [Fintype β] [Fintype γ]
+    [DecidableEq α] [DecidableEq β] [DecidableEq γ]
+    {pXYZ : α × β × γ → ℝ} (hp : ∀ xyz, 0 ≤ pXYZ xyz) :
+    cmiSum (reverseXZ pXYZ) = cmiSum pXYZ := by
+  have hprev : ∀ t, 0 ≤ reverseXZ pXYZ t := fun t => hp _
+  -- H(p_{XY} of reversed) = H(p_{YZ} of original), via the coordinate swap on β × γ.
+  have hE_XY : shannonEntropy' (marginalXY (reverseXZ pXYZ))
+      = shannonEntropy' (marginalYZ pXYZ) := by
+    have h1 : marginalXY (reverseXZ pXYZ)
+        = fun s => marginalYZ pXYZ ((Equiv.prodComm γ β) s) := by
+      funext s; obtain ⟨z, y⟩ := s
+      simp only [marginalXY, marginalYZ, reverseXZ, Equiv.prodComm_apply, Prod.swap_prod_mk]
+    rw [h1]; exact shannonEntropy'_reindex (Equiv.prodComm γ β) (marginalYZ pXYZ)
+  -- H(p_{YZ} of reversed) = H(p_{XY} of original), via the coordinate swap on α × β.
+  have hE_YZ : shannonEntropy' (marginalYZ (reverseXZ pXYZ))
+      = shannonEntropy' (marginalXY pXYZ) := by
+    have h1 : marginalYZ (reverseXZ pXYZ)
+        = fun s => marginalXY pXYZ ((Equiv.prodComm β α) s) := by
+      funext s; obtain ⟨y, x⟩ := s
+      simp only [marginalYZ, marginalXY, reverseXZ, Equiv.prodComm_apply, Prod.swap_prod_mk]
+    rw [h1]; exact shannonEntropy'_reindex (Equiv.prodComm β α) (marginalXY pXYZ)
+  -- H(reversed joint) = H(joint), via the outer-coordinate swap on α × β × γ.
+  have hE_rev : shannonEntropy' (reverseXZ pXYZ) = shannonEntropy' pXYZ := by
+    have e : (γ × β × α) ≃ (α × β × γ) :=
+      { toFun := fun t => (t.2.2, t.2.1, t.1)
+        invFun := fun s => (s.2.2, s.2.1, s.1)
+        left_inv := fun ⟨_, _, _⟩ => rfl
+        right_inv := fun ⟨_, _, _⟩ => rfl }
+    have h1 : reverseXZ pXYZ = fun t => pXYZ (e t) := rfl
+    rw [h1]; exact shannonEntropy'_reindex e pXYZ
+  -- H(Y-marginal of reversed) = H(Y-marginal), the marginals are literally equal.
+  have hE_Y : shannonEntropy' (marginalY_3 (reverseXZ pXYZ))
+      = shannonEntropy' (marginalY_3 pXYZ) := by
+    have h1 : marginalY_3 (reverseXZ pXYZ) = marginalY_3 pXYZ := by
+      funext y; simp only [marginalY_3, reverseXZ]; rw [Finset.sum_comm]
+    rw [h1]
+  rw [← ssa_deficit_eq_cmi hprev, ← ssa_deficit_eq_cmi hp, hE_XY, hE_YZ, hE_rev, hE_Y]
+  ring
+
 end InformationTheory
