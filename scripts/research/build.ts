@@ -590,12 +590,20 @@ function excerpt(text: string, max: number = LISTING_EXCERPT_MAX): string {
   return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.]+$/, '') + '…'
 }
 
+/**
+ * Resolve the full (untruncated) listing description for a problem. Shared by
+ * `generateListing` (which truncates it to a card excerpt) and the search-index
+ * builder (which keeps it full). Applies the same status-placeholder fallback
+ * to the problem title so the search text matches what the card shows.
+ */
+function fullDescription(problem: ResearchProblem): string {
+  const rawDescription = problem.problemStatement?.plain || ''
+  return isDescriptionPlaceholder(rawDescription) ? problem.title : rawDescription
+}
+
 function generateListing(problem: ResearchProblem): ResearchListing {
   // Safety net: if problemStatement.plain is a status placeholder, fall back to title
-  const rawDescription = problem.problemStatement?.plain || ''
-  const description = isDescriptionPlaceholder(rawDescription)
-    ? problem.title
-    : rawDescription
+  const description = fullDescription(problem)
 
   return {
     slug: problem.slug,
@@ -759,6 +767,13 @@ function emitDataManifest(slugs: string[]): void {
     manifest['__listings__'] = sha8(publicListings)
   }
 
+  // Reserved entry: content hash of the public search-index file so the runtime
+  // getResearchSearchIndex() fetch is cache-busted on any change (issue #35117).
+  const publicSearchIndex = path.join(PUBLIC_RESEARCH_DIR, 'research-search-index.json')
+  if (fs.existsSync(publicSearchIndex)) {
+    manifest['__searchindex__'] = sha8(publicSearchIndex)
+  }
+
   const next = JSON.stringify(manifest, null, 2) + '\n'
 
   if (fs.existsSync(DATA_MANIFEST_PATH)) {
@@ -834,6 +849,20 @@ function build(): void {
   // Process each problem
   const problems: ResearchProblem[] = []
   const listings: ResearchListing[] = []
+  // Precomputed full-text search index (issue #35117): slug -> full lowercased
+  // description. Emitted to public/ only and fetched lazily at runtime when the
+  // user searches, restoring description search recall without reinflating the
+  // eager listings fetch (which only carries 140-char excerpts). Populated in
+  // lockstep with `listings` so stubs skipped from listings are also absent
+  // here. Only entries whose full text exceeds the excerpt get indexed; search
+  // still falls back to the listing description for the rest.
+  const searchIndex: Record<string, string> = {}
+  const indexSearch = (problem: ResearchProblem) => {
+    const desc = fullDescription(problem).trim()
+    if (desc.length > LISTING_EXCERPT_MAX) {
+      searchIndex[problem.slug] = desc.toLowerCase()
+    }
+  }
   // Track every slug whose JSON we emit to public/data/research/<slug>.json.
   // This includes preserved-from-committed-JSON entries (the common case) and
   // newly generated problems alike — both are reachable via deep-link at
@@ -866,6 +895,7 @@ function build(): void {
         stubSkippedSlugs.push(entry.slug)
       } else {
         listings.push(generateListing(problem))
+        indexSearch(problem)
       }
       preservedCount++
       // Phase 3 (issue #20994): also emit to public/ so the runtime fetch-by-slug
@@ -885,6 +915,7 @@ function build(): void {
           stubSkippedSlugs.push(entry.slug)
         } else {
           listings.push(generateListing(problem))
+          indexSearch(problem)
         }
         generatedCount++
 
@@ -911,6 +942,12 @@ function build(): void {
   fs.mkdirSync(PUBLIC_RESEARCH_DIR, { recursive: true })
   const publicListingsPath = path.join(PUBLIC_RESEARCH_DIR, 'research-listings.json')
   fs.writeFileSync(publicListingsPath, JSON.stringify(listings))
+
+  // Precomputed full-text search index (issue #35117). public/ only — fetched
+  // lazily at runtime when the user searches; never bundled into the JS graph.
+  const publicSearchIndexPath = path.join(PUBLIC_RESEARCH_DIR, 'research-search-index.json')
+  fs.writeFileSync(publicSearchIndexPath, JSON.stringify(searchIndex))
+  console.log(`Generated research-search-index.json (${Object.keys(searchIndex).length} problems indexed, ${Math.round(fs.statSync(publicSearchIndexPath).size / 1024)}KB)`)
 
   // Phase 3 (issue #20994): emit the hashed slug -> sha8 manifest consumed by
   // the runtime loader in `src/data/research/index.ts`. Must run after the

@@ -59,7 +59,22 @@ const DATA_MANIFEST: Record<string, ManifestEntry> = dataManifest as Record<
  */
 const LISTINGS_MANIFEST_KEY = '__listings__'
 
+/**
+ * Reserved data-manifest key carrying the content hash of the emitted public
+ * search-index file (see scripts/annotations/build.ts). Not a proof slug.
+ */
+const SEARCH_INDEX_MANIFEST_KEY = '__searchindex__'
+
+/**
+ * Precomputed search index (issue #35117). Maps proof slug -> the FULL,
+ * untruncated description (lowercased) so client-side search can match text
+ * beyond the 140-char listings excerpt without reinflating the eager listings
+ * payload. Fetched lazily only when the user searches.
+ */
+export type ProofSearchIndex = Record<string, string>
+
 let listingsPromise: Promise<ProofListing[]> | null = null
+let searchIndexPromise: Promise<ProofSearchIndex> | null = null
 
 /**
  * Fetch the lightweight gallery listings (phase 3, issue #35117).
@@ -82,6 +97,36 @@ export function getListings(): Promise<ProofListing[]> {
       })
   }
   return listingsPromise
+}
+
+/**
+ * Fetch the precomputed search index (issue #35117).
+ *
+ * The listings payload delivered by `getListings()` carries only a 140-char
+ * description excerpt (issue #35117 item 2), which narrowed full-text search
+ * recall — 91.9% of proof descriptions exceed that excerpt. This index restores
+ * full-text description search by mapping slug -> full lowercased description,
+ * built at build time from the untruncated meta.json descriptions.
+ *
+ * The promise is cached module-level so the index is fetched at most once per
+ * session. A failed fetch clears the cache so a later call can retry. Callers
+ * should only invoke this when a search is actually active, so the eager first
+ * paint never downloads the index (see useLazyFetchedData).
+ */
+export function getSearchIndex(): Promise<ProofSearchIndex> {
+  if (!searchIndexPromise) {
+    const v = DATA_MANIFEST[SEARCH_INDEX_MANIFEST_KEY]?.meta ?? ''
+    searchIndexPromise = fetch(`/data/proofs/search-index.json?v=${v}`)
+      .then((resp) => {
+        if (!resp.ok) throw new Error(`Failed to load search index (HTTP ${resp.status})`)
+        return resp.json() as Promise<ProofSearchIndex>
+      })
+      .catch((e) => {
+        searchIndexPromise = null
+        throw e
+      })
+  }
+  return searchIndexPromise
 }
 
 /**

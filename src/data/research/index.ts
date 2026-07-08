@@ -42,7 +42,22 @@ const DATA_MANIFEST: Record<string, string> = dataManifest as Record<string, str
  */
 const LISTINGS_MANIFEST_KEY = '__listings__'
 
+/**
+ * Reserved data-manifest key carrying the content hash of the emitted public
+ * research search-index file (see scripts/research/build.ts). Not a slug.
+ */
+const SEARCH_INDEX_MANIFEST_KEY = '__searchindex__'
+
+/**
+ * Precomputed research search index (issue #35117). Maps problem slug -> the
+ * FULL, untruncated description (lowercased) so client-side search can match
+ * text beyond the 140-char listings excerpt without reinflating the eager
+ * listings payload. Fetched lazily only when the user searches.
+ */
+export type ResearchSearchIndex = Record<string, string>
+
 let listingsPromise: Promise<ResearchListing[]> | null = null
+let searchIndexPromise: Promise<ResearchSearchIndex> | null = null
 
 /**
  * Fetch the lightweight research listings for the gallery page.
@@ -67,6 +82,36 @@ export function getResearchListings(): Promise<ResearchListing[]> {
       })
   }
   return listingsPromise
+}
+
+/**
+ * Fetch the precomputed research search index (issue #35117).
+ *
+ * The listings payload from `getResearchListings()` carries only a 140-char
+ * description excerpt, which narrowed full-text search recall (47.4% of
+ * research descriptions exceed that excerpt). This index restores full-text
+ * description search by mapping slug -> full lowercased description, built at
+ * build time from the untruncated problem descriptions.
+ *
+ * The promise is cached module-level so the index is fetched at most once per
+ * session. A failed fetch clears the cache so a later call can retry. Callers
+ * should only invoke this when a search is actually active, so the eager first
+ * paint never downloads the index (see useLazyFetchedData).
+ */
+export function getResearchSearchIndex(): Promise<ResearchSearchIndex> {
+  if (!searchIndexPromise) {
+    const v = DATA_MANIFEST[SEARCH_INDEX_MANIFEST_KEY] ?? ''
+    searchIndexPromise = fetch(`/data/research/research-search-index.json?v=${v}`)
+      .then((resp) => {
+        if (!resp.ok) throw new Error(`Failed to load research search index (HTTP ${resp.status})`)
+        return resp.json() as Promise<ResearchSearchIndex>
+      })
+      .catch((e) => {
+        searchIndexPromise = null
+        throw e
+      })
+  }
+  return searchIndexPromise
 }
 
 /**
