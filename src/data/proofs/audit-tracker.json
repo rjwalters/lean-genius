@@ -1925,10 +1925,13 @@
       "issues": []
     },
     "ballot-problem-oq-01-oq-02": {
-      "auditCount": 3,
-      "issues": [],
-      "lastAudited": "2026-05-08T17:41:24Z",
-      "result": "clean"
+      "auditCount": 4,
+      "issues": [
+        "Stale lineCount 1047->1079 reconciled to Lean source"
+      ],
+      "lastAudited": "2026-07-08T19:38:03Z",
+      "result": "issues-fixed",
+      "agentId": "lean-auditor-reaudit"
     },
     "ballot-problem-oq-01-oq-02-oq-01": {
       "auditCount": 3,
@@ -8410,10 +8413,13 @@
       "issues": []
     },
     "erdos-1000": {
-      "auditCount": 4,
-      "issues": [],
-      "lastAudited": "2026-05-04T04:02:32Z",
-      "result": "clean"
+      "auditCount": 5,
+      "issues": [
+        "Stale lineCount 1149->1153 reconciled to Lean source"
+      ],
+      "lastAudited": "2026-07-08T19:38:03Z",
+      "result": "issues-fixed",
+      "agentId": "lean-auditor-reaudit"
     },
     "erdos-1000-oq-03": {
       "auditCount": 1,
@@ -9020,13 +9026,13 @@
       "result": "clean"
     },
     "erdos-1022-oq-02": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [
-        "Stale theoremCount/lineCount reconciled to Lean source (re-audit)"
+        "Stale lineCount 286->351 and theoremCount 11->14 reconciled to Lean source (re-audit)"
       ],
-      "lastAudited": "2026-07-08T19:12:11Z",
-      "result": "clean",
-      "agentId": "auditor-reaudit-20260708"
+      "lastAudited": "2026-07-08T19:38:03Z",
+      "result": "issues-fixed",
+      "agentId": "lean-auditor-reaudit"
     },
     "erdos-1022-oq-04": {
       "auditCount": 1,
@@ -12387,10 +12393,13 @@
       "result": "clean"
     },
     "erdos-299": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:02:33Z",
-      "result": "clean"
+      "agentId": "lean-auditor-reaudit",
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T19:38:03Z",
+      "result": "issues-fixed",
+      "issues": [
+        "native_decide on named theorems egyptian_236/egyptian_2_4_6_12 undisclosed; meta.axiomCount 1->2, Lean.ofReduceBool disclosed (leanFile.axiomCount stays literal 1)"
+      ]
     },
     "erdos-3": {
       "agentId": "auditor-agent-7",
@@ -15738,10 +15747,13 @@
       "result": "clean"
     },
     "erdos-700": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:04:40Z",
-      "result": "clean"
+      "agentId": "lean-auditor-reaudit",
+      "auditCount": 5,
+      "lastAudited": "2026-07-08T19:38:03Z",
+      "result": "issues-fixed",
+      "issues": [
+        "native_decide on named theorem f_30 undisclosed; meta.axiomCount 2->3, Lean.ofReduceBool disclosed in assumptions (leanFile.axiomCount stays literal 2)"
+      ]
     },
     "erdos-701": {
       "agentId": "auditor-cycle-20-batch",
@@ -24491,18 +24503,22 @@
       "result": "issues-fixed"
     },
     "roth-theorem": {
-      "auditCount": 3,
-      "lastAudited": "2026-07-08T18:54:18Z",
-      "result": "clean",
-      "issues": [],
-      "agentId": "auditor-agent-7"
+      "auditCount": 4,
+      "lastAudited": "2026-07-08T19:38:03Z",
+      "result": "issues-fixed",
+      "issues": [
+        "Stale lineCount 1401->1554 reconciled to Lean source"
+      ],
+      "agentId": "lean-auditor-reaudit"
     },
     "roth-theorem-k3": {
-      "auditCount": 6,
-      "issues": [],
-      "lastAudited": "2026-07-08T18:54:18Z",
-      "result": "clean",
-      "agentId": "auditor-agent-7"
+      "auditCount": 7,
+      "issues": [
+        "Stale meta.lineCount 1401->1554 reconciled (leanFile already correct)"
+      ],
+      "lastAudited": "2026-07-08T19:38:03Z",
+      "result": "issues-fixed",
+      "agentId": "lean-auditor-reaudit"
     },
     "roth-theorem-k3-oq-01": {
       "auditCount": 5,
@@ -29633,12 +29649,14 @@
       "result": "clean"
     },
     "dirichlets-theorem-oq-02-oq-03": {
-      "lastAudited": "2026-07-08T19:12:11Z",
-      "auditCount": 2,
-      "result": "clean",
-      "agentId": "auditor-reaudit-20260708",
+      "lastAudited": "2026-07-08T19:38:03Z",
+      "auditCount": 3,
+      "result": "issues-fixed",
+      "agentId": "lean-auditor-reaudit",
       "notes": "Audit CLEAN (first audit): 0 sorries/0 axioms/0 native_decide. Uses kernel `decide` (lines 219,224) NOT native_decide for B 1=95 numeric check; assumptions field correctly states ofReduceBool-free. Genuine Euclid-construction + iterated-factorial tower bound p3(k)<=B(k). verified/original accurate.",
-      "issues": []
+      "issues": [
+        "Stale meta.lineCount 230->292 and meta.theoremCount 21->26 reconciled (leanFile already correct)"
+      ]
     }
   },
   "version": 1,
