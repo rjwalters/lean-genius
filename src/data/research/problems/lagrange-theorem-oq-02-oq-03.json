@@ -2,7 +2,7 @@
   "slug": "lagrange-theorem-oq-02-oq-03",
   "title": "Orbit–Stabilizer Without Finiteness — The Bijection and its Cardinal Corollary",
   "phase": "COMPLETED",
-  "status": "graduated",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE (verified): deliverable Proofs/LagrangeTheoremOQ02OQ03.lean rebuilt 0-sorry/0-axiom (3058 jobs); gallery entry re-filed from mis-slug lagrange-theorem-oq-02-oq-02-oq-03 to the correct slug lagrange-theorem-oq-02-oq-03.",
+    "builtItems": [
+      "Verified (Docker, 3058 jobs) Proofs/LagrangeTheoremOQ02OQ03.lean: mk_orbit_eq_mk_quotient_stabilizer, mk_eq_mk_quotient_mul_mk, mk_orbit_mul_mk_stabilizer, card_orbit_mul_card_stabilizer, same_image_iff_mem_stabilizer, same_image_iff_coset_eq, mk_eq_mk_quotient_stabilizer_of_pretransitive.",
+      "Gallery entry re-filed lagrange-theorem-oq-02-oq-02-oq-03 -> lagrange-theorem-oq-02-oq-03 (meta.json, annotations.json)."
+    ],
+    "insights": [
+      "The full deliverable already exists as a verified Lean file `Proofs/LagrangeTheoremOQ02OQ03.lean` (7 theorems, 167 lines, 0 sorries, 0 axioms), integrated via the fleet-shutdown recovery queue (#35316) but never Lean-CI'd (math PRs skip the Lean build). This session rebuilt it under Docker: 3058 jobs, EXIT 0 — the proof is genuinely verified.",
+      "The verified file was surfaced in the gallery under the WRONG slug `lagrange-theorem-oq-02-oq-02-oq-03` (an extra `-oq-02`), which corresponds to no pool problem; the entry's own description says it 'Resolves OQ-03 of the orbit-stabilizer family lagrange-theorem-oq-02', i.e. this slug `lagrange-theorem-oq-02-oq-03`, and the Lean file is `LagrangeTheoremOQ02OQ03`. This session re-filed the gallery entry (dir + meta.id/slug + annotations.proofId) under the correct slug.",
+      "Mathematical content (finiteness-free orbit-stabilizer over Cardinal.mk): the coset characterization g1*x=g2*x <-> g1^{-1}g2 in Stab <-> same coset; the bijection orbit G x = G/Stab; the cardinal identity #(orbit)=#(G/Stab); cardinal Lagrange #G=#(G/H)*#H via Subgroup.groupEquivQuotientProdSubgroup; the cardinal orbit-stabilizer product #(orbit)*#(stab)=#G; the Finite Nat.card specialization; the pretransitive corollary #X=#(G/Stab). Over Cardinal.mk these stay informative for infinite groups, unlike the Nat.card shadow which collapses to 0=0."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: lagrange-theorem-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
@@ -416,5 +423,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ10.lean"
     }
-  ]
+  ],
+  "leanFile": "Proofs/LagrangeTheoremOQ02OQ03.lean"
 }

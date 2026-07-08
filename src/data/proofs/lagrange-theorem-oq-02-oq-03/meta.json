@@ -1,7 +1,7 @@
 {
-  "id": "lagrange-theorem-oq-02-oq-02-oq-03",
+  "id": "lagrange-theorem-oq-02-oq-03",
   "title": "Orbit–Stabilizer Without Finiteness: The Cardinal Bijection and Product",
-  "slug": "lagrange-theorem-oq-02-oq-02-oq-03",
+  "slug": "lagrange-theorem-oq-02-oq-03",
   "description": "Resolves OQ-03 of the orbit–stabilizer family `lagrange-theorem-oq-02`: the orbit–stabilizer theorem is fundamentally finiteness-free. The `Nat.card` sibling (`lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01`) states orbit–stabilizer over `Nat.card`, which collapses to `0 = 0` the moment anything in sight is infinite. This entry gives the honest infinite-general formulation over `Cardinal.mk`, where every identity retains its content for infinite groups, orbits, and stabilizers: the coset characterization of equal images, the orbit–stabilizer bijection `orbit G x ≃ G ⧸ stabilizer G x`, the cardinal identity `#(orbit G x) = #(G ⧸ stabilizer G x)`, the cardinal form of Lagrange `#G = #(G ⧸ H) · #H`, the cardinal orbit–stabilizer product `#(orbit G x) · #(stabilizer G x) = #G`, the finite `Nat.card` specialization recovering the classical formula, and the transitive corollary `#X = #(G ⧸ stabilizer G x)`. Seven theorems in 167 lines, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research",
