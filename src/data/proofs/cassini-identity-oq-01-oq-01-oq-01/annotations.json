@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-vajda-header",
+    "proofId": "cassini-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "Framing: Vajda as the common generalization of the bilinear identities",
+    "content": "The module docstring positions the file within the Cassini lineage. Vajda's identity $F_{n+i}F_{n+j} - F_n F_{n+i+j} = (-1)^n F_i F_j$ is the single bilinear master identity that specializes to all three classical forms — Cassini ($i=j=1$), Catalan ($i=j=r$, proved in the parent file), and d'Ocagne ($j=1$) — and, unlike the signed Catalan/d'Ocagne statements, it is fully additive in its indices, so no $\\mathbb{N}$ subtraction ever appears. The docstring also fixes the proof route: one bilinear expansion via Mathlib's addition formula `Nat.fib_add`, whose cross terms collapse to $F_i F_j\\,(B^2 - AB - A^2)$, closed by the imported Cassini core `cassini_sub` — no induction beyond the one already inside Cassini. It explicitly contrasts this with the gallery's other Vajda proof (`FibonacciIdentitiesOQ01OQ02OQ01.fib_vajda_gap`), which instead runs a two-step induction on $j$ off d'Ocagne; this file is the independent non-inductive derivation. No axioms, no `native_decide`, no sorries.",
+    "mathContext": "$F_{n+i}F_{n+j} - F_n F_{n+i+j} = (-1)^n F_i F_j$. Cassini $= (i,j)=(1,1)$; Catalan $= (i,j)=(r,r)$; d'Ocagne $= j=1$. Additive indices only — no $\\mathbb{N}$ subtraction.",
+    "significance": "context",
+    "relatedConcepts": ["Vajda's identity", "Cassini's identity", "Catalan's identity", "d'Ocagne's identity", "Fibonacci addition formula"],
+    "prerequisites": ["Fibonacci numbers (Nat.fib)", "the addition formula Nat.fib_add", "Cassini's identity (cassini_sub)"]
+  },
+  {
     "id": "ann-vajda-master",
     "proofId": "cassini-identity-oq-01-oq-01-oq-01",
     "range": {
