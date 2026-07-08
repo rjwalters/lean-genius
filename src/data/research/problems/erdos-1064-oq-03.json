@@ -4,7 +4,7 @@
   "phase": "ACT",
   "status": "in-progress",
   "started": "2026-07-08T00:00:00.000Z",
-  "lastUpdate": "2026-07-08T00:00:00.000Z",
+  "lastUpdate": "2026-07-08",
   "path": "full",
   "parentId": "erdos-1064",
   "tier": "B",
@@ -35,7 +35,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "STRUCTURAL UNIFICATION (2026-07-08, r8): the three explicit families are now instances of a single general transport lemma dblIter_transport (D(a·2^(k+1))=(2a−φ(b))·2^k for odd a,b with 2a−φ(a)=2b), which is generative (new seeds a=5 equality, a=13 forward). 0 axioms/0 sorries. The density-1 forward statement (almost-all n) remains the sole analytically-blocked open direction; all infinitely-often questions settled and now unified.",
+    "progressSummary": "STRUCTURAL: k-independent three-way criterion (2026-07-08, r4) — the regime of every transport family n=a·2^(k+1) reduces to the k-free comparison φ(a) vs φ(e)·2^(t−1) via the 2-adic split of the landing constant C=e·2^t. 0 axioms / 0 sorries. All infinitely-often + structural questions settled; density-1 forward (almost-all n) remains the sole analytically-blocked open direction.",
     "builtItems": [
       "dblIter (EulerTotientOQ04OQ03.lean) — the double cototient iterate D(n) = n − φ(n − φ(n)), the object of OQ-03.",
       "dblIter_prime — collapse lemma: for EVERY prime p, D(p) = p − 1 exactly (φ(p)=p−1 ⟹ p−φ(p)=1 ⟹ φ(1)=1 ⟹ D(p)=p−1).",
@@ -64,7 +64,11 @@
       "dblIter_pow2 — D(2^(k+3)) = 3·2^(k+1) for all k (first cototient step lands on 2^(k+2); second subtracts 2^(k+1)).",
       "mem_ForwardSet_pow2 / forward_infinitely_many — φ(D(2^(k+3))) = 2^(k+1) < 2^(k+2) = φ(2^(k+3)); ForwardSet.Infinite via the injective power-of-two family.",
       "not_prime_pow2 + forward_not_confined_to_primes — the forward inequality φ(n)>φ(D(n)) holds on infinitely many COMPOSITE n (the powers of two 2^(k+3)), the forward analogue of reversal_with_composite_landing.",
-      "dblIter_transport (general structural lemma), totient_5/totient_13/totient_21 (factorisation helpers), mem_EqualitySet_five, mem_ForwardSet_thirteen, transport_new_seeds, plus two example re-derivations of the 15/21 families — all in Proofs/EulerTotientOQ04OQ03.lean. VERIFIED 0 sorries / 0 axioms."
+      "dblIter_transport (general structural lemma), totient_5/totient_13/totient_21 (factorisation helpers), mem_EqualitySet_five, mem_ForwardSet_thirteen, transport_new_seeds, plus two example re-derivations of the 15/21 families — all in Proofs/EulerTotientOQ04OQ03.lean. VERIFIED 0 sorries / 0 axioms.",
+      "dblIter_totient_values (EulerTotientOQ04OQ03.lean): φ(a·2^(k+1))=φ(a)·2^k ∧ φ(D(n))=φ(e)·2^(t−1)·2^k given odd a,b,e, t≥1, 2a−φ(a)=2b, 2a−φ(b)=e·2^t",
+      "dblIter_reversal_iff / dblIter_equality_iff / dblIter_forward_iff: n∈{Reversal,Equality,Forward}Set ↔ the k-free comparison of φ(a) with φ(e)·2^(t−1) (< / = / >)",
+      "reversal_via_criterion / equality_via_criterion / forward_via_criterion: the 21/15/13 families recovered from the sign inequality alone (a=21,e=17,t=1→12<16; a=15,e=5,t=2→8=8; a=13,e=5,t=2→8<12)",
+      "threeway_criterion_classifies: bundles all three regimes as one k-free classifier"
     ],
     "insights": [
       "On primes the higher iterate is trivial: D(p) = p − 1 for all primes p, because the first cototient step p − φ(p) = 1 and φ(1) = 1. So φ(D(p)) = φ(p−1), and φ(p−1) < p−1 = φ(p) for every p ≥ 3 (with equality only at p = 2). This gives the forward direction on an infinite explicit family with a one-line reduction to Nat.totient_lt — no density machinery needed.",
@@ -79,18 +83,17 @@
       "Equality φ(n)=φ(D(n)) is not just empirically common but holds on an EXPLICIT infinite family n=15·2^(k+1): D collapses to 5·2^(k+2) and both n and D(n) share totient value 8·2^k. This is the a=15 case of the reversal-family scaling caveat — where a=21 lifted the odd part 15↦17 (breaking equality into reversal), a=15 keeps the second cototient step totient-preserving (15·2^(k+1) → 11·2^(k+1) → 5·2^(k+2), with φ(15)=φ(5·4)=8·2^k throughout). Together with the forward and reversal families this pins down the three-way (>,=,<) comparison as genuinely three-valued infinitely often, not a dichotomy.",
       "The forward direction φ(n)>φ(D(n)) is NOT confined to primes: on n=2^(k+3) the double iterate collapses to 3·2^(k+1) and φ(D)=2^(k+1)<2^(k+2)=φ(n). This closes the earlier asymmetry where only reversal and equality had explicit composite infinite families while forward had only the odd-prime family. Now all three relations >,=,< are each realised on an infinite family of composite integers.",
       "GENERAL TRANSPORT MECHANISM (2026-07-08, r8): all three ad-hoc explicit families (15·2^(k+1) equality, 21·2^(k+1) reversal, 2^(k+3) forward) are instances of ONE structural lemma dblIter_transport: for odd a,b with 2a−φ(a)=2b (first cototient step has 2-adic valuation exactly 1), D(a·2^(k+1))=(2a−φ(b))·2^k uniformly in k. The odd pair (a,b) carries everything; the power of two is inert and scales. The landing constant C=2a−φ(b) is k-INDEPENDENT, which is precisely why each family realises a single one of >,=,< for every k (constant three-way sign along a family).",
-      "The transport lemma is GENERATIVE, not a mere refactor: feeding new odd seeds produces brand-new infinite families. a=5,b=3 gives equality family 5·2^(k+1) (D=8·2^k=2^(k+3), φ(n)=φ(D)=4·2^k) — smaller than the recorded 15·2^(k+1). a=13,b=7 gives a composite forward family 13·2^(k+1) (D=20·2^k=5·2^(k+2), φ(n)=12·2^k>8·2^k=φ(D)) distinct from the powers of two. Numerically the seed-to-sign map: a=5→'=', a=13/17→'>', a=15→'=', a=21→'<'."
+      "The transport lemma is GENERATIVE, not a mere refactor: feeding new odd seeds produces brand-new infinite families. a=5,b=3 gives equality family 5·2^(k+1) (D=8·2^k=2^(k+3), φ(n)=φ(D)=4·2^k) — smaller than the recorded 15·2^(k+1). a=13,b=7 gives a composite forward family 13·2^(k+1) (D=20·2^k=5·2^(k+2), φ(n)=12·2^k>8·2^k=φ(D)) distinct from the powers of two. Numerically the seed-to-sign map: a=5→'=', a=13/17→'>', a=15→'=', a=21→'<'.",
+      "k-INDEPENDENT THREE-WAY CRITERION (2026-07-08, r4): the double-iterate regime of every transport family n=a·2^(k+1) is decided by a single k-free comparison φ(a) vs φ(e)·2^(t−1), where the landing constant C=2a−φ(b)=e·2^t (e odd, t≥1). Both totients factor through the inert 2^k: φ(n)=φ(a)·2^k, φ(D(n))=φ(e)·2^(t−1)·2^k. The power of two carries NO information; the sign is fixed by the odd data (a,e,t) alone."
     ],
     "mathlibGaps": [
       "Kernel `decide` on Nat.totient of a seed (e.g. totient 21) blows the stack → SIGBUS (Lean exit 135, line-less); must prove totient values by factorisation (Nat.totient_mul + Nat.totient_prime). Reconfirms the file's existing note."
     ],
     "nextSteps": [
-      "Density-1 forward statement φ(n) > φ(D(n)) for almost all n by transporting Luca–Pomerance through one extra cototient step (assess whether the extra step preserves the density-1 set) — this remains the main open direction.",
-      "Full DECIDABLE three-way (>,=,<) certificate on a finite window: the three explicit families (odd primes / 21·2^(k+1) / 15·2^(k+1)) now cover one infinite branch each, but a complete window classification is still open.",
-      "Prime-landing reversal infinitude (D(n) prime infinitely often) as a distinct Dirichlet-type direction complementing the elementary power-of-two families.",
-      "Density-1 forward statement φ(n)>φ(D(n)) for almost all n remains the sole genuinely open direction (needs Luca–Pomerance / ψ(x,y) density, a real Mathlib gap); the explicit families settle only the infinitely-often questions.",
-      "Extract the full k-INDEPENDENT three-way criterion from transport: write C=2a−φ(b)=2^t·e (e odd); then sign(φ(n)−φ(D(n))) = sign(φ(a) − φ(e)·2^(t−1)), a finite computation on the odd data. Formalising the 2-adic decomposition (t,e) would turn per-seed membership proofs into one decidable classifier.",
-      "Enumerate/characterise which odd seeds give reversal (the rare case): among small odd a, a=21 is the smallest reversal seed found (φ(21)=12<16). A structural description of the reversal seed set would be a genuinely new elementary result."
+      "Density-1 forward statement φ(n)>φ(D(n)) for almost all n remains the sole analytically-blocked open direction (needs Luca–Pomerance / ψ(x,y) density, a real Mathlib gap); the explicit families + criterion settle only the infinitely-often / structural questions.",
+      "Turn the criterion into a genuine DECIDABLE classifier: given odd a, compute b=(2a−φ(a))/2 (requires v₂(2a−φ(a))=1), then the 2-adic split C=2a−φ(b)=e·2^t, and decide the regime by φ(a) vs φ(e)·2^(t−1). Formalising the v₂ extraction (t,e) as a computable function would give a decision procedure over all odd seeds.",
+      "Characterise the reversal seed set {odd a : φ(a) < φ(e)·2^(t−1)} — a structural description of which odd seeds reverse (a=21 smallest) would be a new elementary result now that the per-seed test is k-free.",
+      "Handle the excluded case v₂(2a−φ(a))>1 (the transport hypothesis 2a−φ(a)=2b with b odd fails): extend the transport/criterion to higher first-step 2-adic valuation."
     ]
   }
 }
