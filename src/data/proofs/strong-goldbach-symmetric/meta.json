@@ -2,7 +2,7 @@
   "id": "strong-goldbach-symmetric",
   "title": "Strong Goldbach: Symmetric (Midpoint) Reformulation",
   "slug": "strong-goldbach-symmetric",
-  "description": "A fully verified, axiom-free structural reformulation of the (open) Strong/Binary Goldbach Conjecture. Proves that an even number 2m is a sum of two primes if and only if there is an offset k < m with both m−k and m+k prime — i.e. every Goldbach partition is a pair of primes symmetric about the midpoint n/2. Lifts this to a conjecture-level equivalence StrongGoldbachConjecture ↔ SymmetricGoldbachConjecture, and supplies a decidable instance so any concrete case is machine-checkable by `decide`. Also defines the Goldbach comet counting function (the number of symmetric prime pairs), proves existence ⟺ positive count and recasts the conjecture as a comet-positivity statement, and proves the structural fact that for 2m > 4 both Goldbach summands are odd. Bounds the comet height two complementary ways: a prime-side identity equating it to the number of primes j ∈ [m, 2m) whose complement 2m−j is also prime, and an offset-side ceiling — for m > 2 only offsets k of opposite parity to m contribute, capping the count at ≈ m/2 with no density input. The conjecture itself is NOT proved; only the equivalences, structural facts, and bounds are. 12 theorems, 5 definitions, 1 decidable instance, 0 axioms, 0 sorries.",
+  "description": "A fully verified, axiom-free structural reformulation of the (open) Strong/Binary Goldbach Conjecture. Proves that an even number 2m is a sum of two primes if and only if there is an offset k < m with both m−k and m+k prime — i.e. every Goldbach partition is a pair of primes symmetric about the midpoint n/2. Lifts this to a conjecture-level equivalence StrongGoldbachConjecture ↔ SymmetricGoldbachConjecture, and supplies a decidable instance so any concrete case is machine-checkable by `decide`. Also defines the Goldbach comet counting function (the number of symmetric prime pairs), proves existence ⟺ positive count and recasts the conjecture as a comet-positivity statement, and proves the structural fact that for 2m > 4 both Goldbach summands are odd. Bounds the comet height two complementary ways: a prime-side identity equating it to the number of primes j ∈ [m, 2m) whose complement 2m−j is also prime, and an offset-side ceiling — for m > 2 only offsets k of opposite parity to m contribute, capping the count at ≈ m/2 with no density input. The conjecture itself is NOT proved; only the equivalences, structural facts, and bounds are. 28 theorems, 5 definitions, 1 decidable instance, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-07-02",
@@ -20,8 +20,8 @@
     "dateAdded": "2026-07-02",
     "axiomCount": 0,
     "assumptions": "None. The file is axiom-free (only the ordinary foundational axioms of Lean/Mathlib are used; `#print axioms` shows no `sorryAx`, no `Lean.ofReduceBool`). All examples use kernel `decide`, not `native_decide`. Note: this file does NOT prove the Strong Goldbach Conjecture, which remains open; it proves only that the conjecture is equivalent to its symmetric-prime-pair form.",
-    "lineCount": 351,
-    "theoremCount": 12,
+    "lineCount": 825,
+    "theoremCount": 28,
     "definitionCount": 5,
     "originalContributions": [
       "sumTwoPrimes_iff_symmetric: for every m, IsSumOfTwoPrimes (2m) ↔ ∃ k < m, Prime (m−k) ∧ Prime (m+k) — the midpoint-symmetry equivalence, valid without any lower bound on m",
@@ -119,9 +119,9 @@
   },
   "leanFile": {
     "namespace": "StrongGoldbach",
-    "lineCount": 351,
+    "lineCount": 825,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 28,
     "definitionCount": 5,
     "path": "Proofs/StrongGoldbachSymmetric.lean",
     "sorries": 0
