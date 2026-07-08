@@ -398,4 +398,97 @@ theorem oq03_three_way_infinite :
     {p : ℕ | p.Prime ∧ 3 ≤ p}.Infinite ∧ ReversalSet.Infinite ∧ EqualitySet.Infinite :=
   ⟨oq03_both_directions_infinite.1, reversal_infinitely_many, equality_infinitely_many⟩
 
+-- ===========================================================================
+-- FORWARD family on COMPOSITES:  φ(n) > φ(D(n)) on the powers of two n = 2^(k+3).
+--
+-- So far the forward direction `φ(n) > φ(D(n))` was exhibited only on the
+-- infinite family of odd PRIMES, whereas the reversal (`21·2^(k+1)`) and
+-- equality (`15·2^(k+1)`) directions each already run over an infinite
+-- COMPOSITE family.  This closes that asymmetry: the forward inequality is not
+-- confined to primes either — it holds throughout the infinite composite family
+-- of pure powers of two.  For n = 2^(k+3) the double iterate collapses to
+-- D(n) = 3·2^(k+1):
+--
+--   φ(2^(k+3)) = 2^(k+2);
+--   n − φ(n) = 2^(k+2),  φ(2^(k+2)) = 2^(k+1);
+--   D(n) = 2^(k+3) − 2^(k+1) = 3·2^(k+1);
+--   φ(3·2^(k+1)) = 2·2^k = 2^(k+1)  <  2^(k+2) = φ(n).
+--
+-- Thus each of the three relations `>`, `=`, `<` is now realised on an explicit
+-- infinite family of COMPOSITE integers, matching the structural picture.
+-- ===========================================================================
+
+/-- The forward locus `{n | φ(D(n)) < φ(n)}` for the double iterate. -/
+def ForwardSet : Set ℕ := {n : ℕ | Nat.totient (dblIter n) < Nat.totient n}
+
+/-- **The double iterate collapses the power-of-two family `2^(k+3)` onto
+    `3·2^(k+1)`.**  For every `k`, `D(2^(k+3)) = 3·2^(k+1)`.  (First cototient
+    step lands on `2^(k+2)`; the second subtracts `2^(k+1)`, leaving `3·2^(k+1)`.)
+    -/
+theorem dblIter_pow2 (k : ℕ) : dblIter (2 ^ (k + 3)) = 3 * 2 ^ (k + 1) := by
+  have e1 : (2 : ℕ) ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
+  have e2 : (2 : ℕ) ^ (k + 2) = 4 * 2 ^ k := by rw [pow_succ, pow_succ]; ring
+  have e3 : (2 : ℕ) ^ (k + 3) = 8 * 2 ^ k := by rw [pow_succ, pow_succ, pow_succ]; ring
+  have hp3 : Nat.totient (2 ^ (k + 3)) = 2 ^ (k + 2) := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos (k + 2))]; simp
+  have hp2' : Nat.totient (2 ^ (k + 2)) = 2 ^ (k + 1) := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos (k + 1))]; simp
+  unfold dblIter
+  rw [hp3]
+  have hsub : 2 ^ (k + 3) - 2 ^ (k + 2) = 2 ^ (k + 2) := by omega
+  rw [hsub, hp2']
+  omega
+
+/-- **Forward inequality on the entire power-of-two family `2^(k+3)`.**  For every
+    `k`, `φ(D(2^(k+3))) = 2^(k+1) < 2^(k+2) = φ(2^(k+3))`, so each member lies in
+    the forward locus. -/
+theorem mem_ForwardSet_pow2 (k : ℕ) : 2 ^ (k + 3) ∈ ForwardSet := by
+  have e2 : (2 : ℕ) ^ (k + 2) = 4 * 2 ^ k := by rw [pow_succ, pow_succ]; ring
+  have hpos : 0 < (2 : ℕ) ^ k := pow_pos (by norm_num) k
+  have hp3 : Nat.totient (2 ^ (k + 3)) = 2 ^ (k + 2) := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos (k + 2))]; simp
+  have hp2 : Nat.totient (2 ^ (k + 1)) = 2 ^ k := by
+    rw [Nat.totient_prime_pow Nat.prime_two (Nat.succ_pos k)]; simp
+  have cop3 : Nat.Coprime 3 (2 ^ (k + 1)) :=
+    (show Nat.Coprime 3 2 by norm_num).pow_right (k + 1)
+  have hφD : Nat.totient (3 * 2 ^ (k + 1)) = 2 * 2 ^ k := by
+    rw [Nat.totient_mul cop3, Nat.totient_prime (by norm_num), hp2]
+  show Nat.totient (dblIter (2 ^ (k + 3))) < Nat.totient (2 ^ (k + 3))
+  rw [dblIter_pow2, hφD, hp3, e2]
+  omega
+
+/-- `2^(k+3)` is composite (divisible by 2 and at least 8). -/
+theorem not_prime_pow2 (k : ℕ) : ¬ (2 ^ (k + 3)).Prime := by
+  intro h
+  have hdvd : (2 : ℕ) ∣ 2 ^ (k + 3) := dvd_pow_self 2 (by omega)
+  rcases h.eq_one_or_self_of_dvd 2 hdvd with h1 | h1
+  · norm_num at h1
+  · have h8 : (8 : ℕ) ≤ 2 ^ (k + 3) := by
+      calc (8 : ℕ) = 2 ^ 3 := by norm_num
+        _ ≤ 2 ^ (k + 3) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    omega
+
+/-- The map `k ↦ 2^(k+3)` is injective. -/
+theorem pow2_family_injective : Function.Injective (fun k : ℕ => 2 ^ (k + 3)) := by
+  intro a b hab
+  simp only at hab
+  have := Nat.pow_right_injective (le_refl 2) hab
+  omega
+
+/-- **The forward inequality `φ(n) > φ(D(n))` holds infinitely often.**  The
+    forward locus `{n | φ(D(n)) < φ(n)}` is infinite, exhibited by the explicit
+    injective power-of-two family `n = 2^(k+3)`. -/
+theorem forward_infinitely_many : ForwardSet.Infinite :=
+  Set.infinite_of_injective_forall_mem pow2_family_injective mem_ForwardSet_pow2
+
+/-- **The forward inequality is not confined to primes.**  There are infinitely
+    many *composite* `n` with `φ(n) > φ(D(n))`: the powers of two `n = 2^(k+3)`.
+    This mirrors `reversal_with_composite_landing` for the forward direction and
+    completes the symmetry — each of `>`, `=`, `<` now runs over an infinite
+    family of composite integers. -/
+theorem forward_not_confined_to_primes :
+    {n : ℕ | ¬ n.Prime ∧ n ∈ ForwardSet}.Infinite :=
+  Set.infinite_of_injective_forall_mem pow2_family_injective
+    (fun k => ⟨not_prime_pow2 k, mem_ForwardSet_pow2 k⟩)
+
 end Erdos1064OQ03
