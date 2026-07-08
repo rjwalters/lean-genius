@@ -680,3 +680,35 @@ refinement.
 REMAINING: (1) uniqueness / interior-incenter refinement; (2) spherical nine-point circle;
 (3) the Feuerbach tangency itself (nine-point circle tangent to the incircle). The hard
 existence-of-incenter obstacle is now cleared.
+
+## Session 2026-07-08 (researcher-2): inner-product form of the tangency criteria [VERIFIED — 0 sorry, 0 axiom]
+
+**Mode:** ACT (add a bounded, reusable ingredient toward the sole frontier item — the
+Feuerbach tangency capstone). The full tritangent family, incircle/excircle existence,
+nine-point circle, and abstract tangent-point specs are all in place; the missing bridge
+is turning the *distance* tangency predicates into the *inner-product* equations one
+actually computes from coordinates.
+
+**Added to `FeuerbachsTheoremOQ04.lean`** (2 theorems, +~46 L, docker `✔ [7743/7743]`,
+first try, 0 sorry / 0 axiom / 0 native_decide):
+- **`externallyTangent_iff_scos`** (`0 ≤ ρ₁+ρ₂ ≤ π`):
+  `ExternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ scos O₁ O₂ = cos (ρ₁+ρ₂)`.
+- **`internallyTangent_iff_scos`** (`|ρ₁−ρ₂| ≤ π`):
+  `InternallyTangent O₁ ρ₁ O₂ ρ₂ ↔ scos O₁ O₂ = cos (ρ₁−ρ₂)`.
+
+Proof pattern (both): `unfold` the tangency def, `rw [← cos_sdist O₁ O₂ h₁ h₂]` to turn the
+RHS `scos` into `cos (sdist …)`; forward = `rw [h]`; backward = `Real.injOn_cos` on
+`Set.Icc 0 π` (memberships from `sdist_nonneg`/`sdist_le_pi` and the radius-range hyps).
+Internal case first rewrites `← Real.cos_abs (ρ₁−ρ₂)` so the target reads `cos |ρ₁−ρ₂|`,
+matching the `InternallyTangent` definition `sdist = |ρ₁−ρ₂|`.
+
+**Why this matters:** the final Feuerbach tangency ("nine-point circle internally tangent to
+the incircle") now reduces to a *single inner-product identity* `⟪O₉, O_in⟫ = cos(ρ₉ − ρ_in)`
+between the two explicit centres — exactly the coordinate-level target the remaining work
+must hit. This is the criterion, not the identity itself (still the hard capstone).
+
+**Metadata:** reconciled badly-stale `leanFiles` entry for this file (568→1310 lines,
+29→65 theorems; prior sessions grew it far past the recorded numbers).
+
+**Frontier unchanged:** the tangency identity between the concrete nine-point and incircle
+centres remains the sole hard open item.
