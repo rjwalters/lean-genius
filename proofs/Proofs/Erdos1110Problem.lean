@@ -667,6 +667,64 @@ theorem add_one_nonRepresentable_of_lt {p q : ℕ} (hq : q ≥ 2) (hp : q + 1 < 
 example : (3 : ℕ) ∈ NonRepresentable 5 2 :=
   add_one_nonRepresentable_of_lt (by norm_num) (by norm_num)
 
+/-- **Everything in the sub-unit window `[2, q)` is non-representable (unconditional,
+0-axiom).** Every summand of a representation of `n ≥ 2` is `≥ q`
+(`representable_summands_ge_q`), so any nonempty representation already sums to `≥ q`;
+hence no `n` with `2 ≤ n < q` can be represented. This furnishes, for *every* pair
+`p > q ≥ 2`, an explicit family of `q - 2` non-representable numbers — the whole
+interval `[2, q)` — disjoint from the `[q, 2q)` window family
+(`nonRepresentable_of_window`), which begins exactly where this one ends. -/
+theorem nonRepresentable_of_lt_q {p q n : ℕ} (hp : p > q) (hq : q ≥ 2)
+    (hn : 2 ≤ n) (hlt : n < q) : n ∈ NonRepresentable p q := by
+  rw [NonRepresentable, Set.mem_setOf_eq]
+  rintro ⟨S, hne, hpf, hac, hsum⟩
+  have hge := representable_summands_ge_q hp hq hn hpf hac hsum
+  obtain ⟨s, hs⟩ := hne
+  have hle : id s ≤ S.sum id := Finset.single_le_sum (fun i _ => Nat.zero_le i) hs
+  rw [hsum] at hle
+  simp only [id_eq] at hle
+  have hqs := hge s hs
+  omega
+
+/-- **Representability characterization on the full lower window `[1, 2q)`
+(unconditional, 0-axiom).** Strengthens `isRepresentable_iff_isPowerForm_window` from
+`[q, 2q)` down to `[1, 2q)`: for every `1 ≤ n < 2q`,
+
+    `IsRepresentable p q n ↔ IsPowerForm p q n`.
+
+Below `q` the only power form is the unit `1` — any power form `≥ 2` is already `≥ q`
+(`isPowerForm_ge_q_of_ge_two`) — and by `nonRepresentable_of_lt_q` every other `n < q`
+is non-representable, so both sides agree there (true at `n = 1`, false on `[2, q)`).
+On `[q, 2q)` this is the existing window characterization. The equivalence thus holds
+on the entire initial segment below `2q`, with the sole representable numbers being the
+power forms. -/
+theorem isRepresentable_iff_isPowerForm_below_two_q {p q n : ℕ} (hp : p > q)
+    (hq : q ≥ 2) (hlo : 1 ≤ n) (hhi : n < 2 * q) :
+    IsRepresentable p q n ↔ IsPowerForm p q n := by
+  rcases Nat.lt_or_ge n q with hnq | hnq
+  · rcases Nat.lt_or_ge n 2 with h1 | h2
+    · -- `n = 1`: the unit power form, representable.
+      have hn1 : n = 1 := by omega
+      subst hn1
+      exact ⟨fun _ => ⟨0, 0, by simp⟩, fun _ => isRepresentable_one⟩
+    · -- `2 ≤ n < q`: both sides false.
+      constructor
+      · intro hrep
+        have hnr := nonRepresentable_of_lt_q hp hq h2 hnq
+        rw [NonRepresentable, Set.mem_setOf_eq] at hnr
+        exact absurd hrep hnr
+      · intro hpf
+        exact absurd (isPowerForm_ge_q_of_ge_two hp hq hpf h2) (by omega)
+  · exact isRepresentable_iff_isPowerForm_window hp hq hnq hhi
+
+/-- **`2` is non-representable for every pair with `q ≥ 3`** (unconditional, 0-axiom).
+Immediate from `nonRepresentable_of_lt_q` (`2 ∈ [2, q)` once `q ≥ 3`). This drops the
+`3 ≤ p` hypothesis of `two_nonRepresentable_of_three_le`: only `p > q ≥ 3` is required
+(which forces `p ≥ 4` anyway), so the witness `2` needs no separate assumption on `p`. -/
+theorem two_nonRepresentable_of_q_ge_three {p q : ℕ} (hp : p > q) (hq : q ≥ 3) :
+    (2 : ℕ) ∈ NonRepresentable p q :=
+  nonRepresentable_of_lt_q hp (by omega) (le_refl 2) (by omega)
+
 /-
 ## Part IIe: Multiplicative Closure of Representability (unconditional, 0-axiom)
 
