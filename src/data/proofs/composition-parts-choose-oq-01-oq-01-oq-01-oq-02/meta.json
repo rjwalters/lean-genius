@@ -107,9 +107,9 @@
       "id": "evaluations",
       "title": "Reading Off the Count and the Graded Count",
       "startLine": 100,
-      "endLine": 121,
+      "endLine": 123,
       "mathContext": "$\\#\\,\\mathrm{Composition}\\ n = 2^{n-1}$ (at $t=1$) and $\\sum_{k<n}\\binom{n-1}{k}t^{k+1} = t(1+t)^{n-1}$.",
-      "summary": "parts_genfun_eval_one specialises parts_genfun at t = 1 over ℕ: since 1^(c.length) = 1, the left side counts the compositions while the right side is 1·2^(n−1), re-deriving the grandparent's 2^(n−1) count as a special value of the generating function. parts_genfun_binomial expands t·(1+t)^(n−1) via the binomial theorem add_pow (after writing n = M+1) into ∑_{k<n} C(n−1,k)·t^(k+1), so the coefficient of t^(k+1) is C(n−1,k) = C(n−1,(k+1)−1) — exactly the number of compositions of n with k+1 parts, the grandparent's graded count."
+      "summary": "parts_genfun_eval_one specialises parts_genfun at t = 1 over ℕ: since 1^(c.length) = 1, the left side counts the compositions while the right side is 1·2^(n−1), re-deriving the grandparent's 2^(n−1) count as a special value of the generating function. parts_genfun_binomial expands t·(1+t)^(n−1) via the binomial theorem add_pow (after writing n = M+1) into ∑_{k<n} C(n−1,k)·t^(k+1), so the coefficient of t^(k+1) is C(n−1,k) = C(n−1,(k+1)−1) — exactly the number of compositions of n with k+1 parts, the grandparent's graded count. Closes namespace CompositionPartsChooseOQ01OQ01OQ01OQ02."
     }
   ],
   "mainTheorems": [
