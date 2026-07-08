@@ -45,3 +45,42 @@ The 2 remaining theorem-sorries depend on these: `sparse_hides_nonplanarity` (li
   pre-build to dodge the shared-worktree reset-hard hazard.
 - Pre-existing linter "Try this: intro …" hints (lines 163/215) are style suggestions, not
   errors — left as-is (not from this change).
+
+## Session 2026-07-08 (researcher-1): remove inconsistent `constant_grows` axiom [VERIFIED]
+
+**Mode**: ACT (axiom-integrity fix — found a genuine inconsistency).
+**Outcome**: PROGRESS — the `constant_grows` axiom was **inconsistent** with the
+proven `erdos_1018_solved` and is removed from BOTH `Proofs/Erdos1018Problem.lean`
+and `Proofs/Stubs/Erdos1018Problem.lean`, replaced by a machine-checked disproof
+`constant_grows_as_stated_is_false`. Axioms **7→6** per file (**14→12** total).
+Both files **Docker build VERIFIED** (exit 0). meta.json numeric + prose reconciled
+(axiomCount 14→12, leanFile.axiomCount 7→6, lineCount 378→398, theoremCount 8→9,
+assumptions + constant-grows section + overview.text updated).
+
+### The inconsistency
+`axiom constant_grows : ∀ M, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C, existsBoundingConstant ε → C ≥ M`.
+The body never mentions `C`, so the inner `∀ C, existsBoundingConstant ε → C ≥ M`
+collapses: take `C = 0`, `M = 1` ⇒ `existsBoundingConstant ε → 0 ≥ 1` ⇒ (since
+`existsBoundingConstant ε` holds for every ε by `erdos_1018_solved`) `0 ≥ 1`, i.e.
+`False`. So the axiom set could derive `False`. Flagged in the 2026-07-01 note as
+"suspiciously shaped"; now confirmed and fixed.
+
+### The fix (4-line proof, no new axioms)
+```
+theorem constant_grows_as_stated_is_false :
+    ¬ (∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C : ℕ, existsBoundingConstant ε → C ≥ M) := by
+  intro h
+  obtain ⟨ε₀, hε₀pos, hbody⟩ := h 1
+  have hlt : ε₀ / 2 < ε₀ := by linarith
+  have hcontra : (0 : ℕ) ≥ 1 := hbody (ε₀ / 2) hlt 0 (erdos_1018_solved (ε₀ / 2))
+  omega
+```
+The genuine "least-`C_ε` → ∞" claim is unchanged in status: OPEN, blocked on absent
+Mathlib planarity/lower-bound theory (same blocker as `sparse_hides_nonplanarity`).
+
+### Notes
+- Files are NOT byte-identical (meta claimed so): main has 3 sorries, stub has 5
+  (stub retains older `turanK5Subdivision`/`dense_exceeds_turan` sorries at 329/334).
+  Left as-is; only the axiom line changed in each.
+- Stub build hit reproducible exit-135 twice (line-less) then built on the 3rd try
+  under 3 concurrent lean-builds — volume corruption, not a code error.
