@@ -3457,4 +3457,232 @@ theorem topPivotBottom_not_mem_chain (u : GridSimplex d N) (hd1 : 0 < d)
       ≤ (u.verts m).coords (lastIncDir u hd1) := by rw [hmono]; split <;> omega
   omega
 
+-- ============================================================
+-- The dual top-facet pivot cell `topPivotCell` and cell-level reciprocity
+--
+-- This section assembles the full `GridSimplex` produced by the top-facet
+-- (`Fin.last d`) pivot: delete `u`'s apex `verts d`, prepend the reciprocal
+-- base `topPivotBottom` (`= verts 0` shifted down by reversing the last
+-- increment), and shift the surviving chain up one index.  It is the exact
+-- dual of `zeroPivotCell` (which deletes the base and appends a new apex).
+--
+-- The capstone `topPivotCell_zeroPivotCell` lifts the vertex-level identity
+-- `topPivotBottom_zeroPivotCell` (the new base recovers `s`'s deleted apex)
+-- to the CELL level: the two pivots invert one another,
+--   `topPivotCell (zeroPivotCell s) = s`,
+-- which is precisely the partial-involution reciprocity the boundary `adj`
+-- needs at the cross-chain facet `gridFacet s 0 = gridFacet (zeroPivotCell s)
+-- (Fin.last d)`.  All 0-sorry, 0-axiom; builds only on the `GridSimplex`
+-- chain primitives and the `zeroPivotCell`/`topPivotBottom` lemmas above.
+-- ============================================================
+
+/-- Vertices of the dual top-facet partner cell: the new base
+`topPivotBottom` at index `0`, followed by `u`'s surviving chain
+`verts 0, …, verts (d-1)` shifted up to indices `1, …, d`. -/
+def topPivotVerts (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    Fin (d + 1) → BaryPoint d N :=
+  fun k => if h : k.val = 0 then topPivotBottom u hd1 hfeas
+    else u.verts ⟨k.val - 1, by have := k.isLt; omega⟩
+
+/-- Increment directions of the dual cell: `u`'s directions cyclically rotated
+so the reversed final increment `lastIncDir` fires on step `0`. -/
+def topPivotInc (u : GridSimplex d N) (hd1 : 0 < d) :
+    Fin d → Fin (d + 1) :=
+  fun k => if h : k.val = 0 then lastIncDir u hd1
+    else u.incDir ⟨k.val - 1, by have := k.isLt; omega⟩
+
+theorem topPivotVerts_eq_bottom (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1))
+    (k : Fin (d + 1)) (h : k.val = 0) :
+    topPivotVerts u hd1 hfeas k = topPivotBottom u hd1 hfeas := by
+  simp only [topPivotVerts, dif_pos h]
+
+theorem topPivotVerts_of_pos (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1))
+    (k : Fin (d + 1)) (h : k.val ≠ 0) :
+    topPivotVerts u hd1 hfeas k = u.verts ⟨k.val - 1, by have := k.isLt; omega⟩ := by
+  simp only [topPivotVerts, dif_neg h]
+
+theorem topPivotInc_eq_lastIncDir (u : GridSimplex d N) (hd1 : 0 < d)
+    (k : Fin d) (h : k.val = 0) :
+    topPivotInc u hd1 k = lastIncDir u hd1 := by
+  simp only [topPivotInc, dif_pos h]
+
+theorem topPivotInc_of_pos (u : GridSimplex d N) (hd1 : 0 < d)
+    (k : Fin d) (h : k.val ≠ 0) :
+    topPivotInc u hd1 k = u.incDir ⟨k.val - 1, by have := k.isLt; omega⟩ := by
+  simp only [topPivotInc, dif_neg h]
+
+/-- Evaluation of the dual cell's vertices at `k.succ`: since `(k.succ).val =
+k.val + 1 ≠ 0`, it drops back to `u`'s chain at `k.castSucc`. -/
+theorem topPivotVerts_succ (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) (k : Fin d) :
+    topPivotVerts u hd1 hfeas k.succ = u.verts k.castSucc := by
+  rw [topPivotVerts_of_pos u hd1 hfeas k.succ (by simp [Fin.val_succ])]
+  rfl
+
+/-- Evaluation of the dual cell's vertices at `k.castSucc` for a positive step
+(`k.val ≠ 0`): it is `u.verts (k-1)`. -/
+theorem topPivotVerts_castSucc_of_pos (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) (k : Fin d)
+    (h : k.val ≠ 0) :
+    topPivotVerts u hd1 hfeas k.castSucc
+      = u.verts ⟨k.val - 1, by have := k.isLt; omega⟩ := by
+  rw [topPivotVerts_of_pos u hd1 hfeas k.castSucc (by simpa [Fin.coe_castSucc] using h)]
+  rfl
+
+/-- Evaluation of the dual cell's vertices at `k.castSucc` for the first step
+(`k.val = 0`): it is the new base `topPivotBottom`. -/
+theorem topPivotVerts_castSucc_zero (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) (k : Fin d)
+    (h : k.val = 0) :
+    topPivotVerts u hd1 hfeas k.castSucc = topPivotBottom u hd1 hfeas := by
+  rw [topPivotVerts_eq_bottom u hd1 hfeas k.castSucc (by simpa [Fin.coe_castSucc] using h)]
+
+/-- **The dual top-facet pivot cell.**  A bona-fide `GridSimplex` whose base
+vertex is the reciprocal `topPivotBottom` and whose remaining `d` vertices are
+`u`'s surviving chain `verts 0, …, verts (d-1)`; increments are `u`'s cyclic
+rotation (reversed last increment `lastIncDir` first), same `miss`.  Defined in
+the feasible regime `(verts 0)(lastIncDir) ≥ 1`. -/
+def topPivotCell (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    GridSimplex d N where
+  verts := topPivotVerts u hd1 hfeas
+  incDir := topPivotInc u hd1
+  miss := u.miss
+  miss_ne_inc := by
+    intro k
+    by_cases hk0 : k.val = 0
+    · rw [topPivotInc_eq_lastIncDir u hd1 k hk0]
+      exact u.miss_ne_inc ⟨d - 1, by omega⟩
+    · rw [topPivotInc_of_pos u hd1 k hk0]; exact u.miss_ne_inc _
+  step_inc := by
+    intro k
+    by_cases hk0 : k.val = 0
+    · rw [topPivotInc_eq_lastIncDir u hd1 k hk0, topPivotVerts_succ,
+        topPivotVerts_castSucc_zero u hd1 hfeas k hk0]
+      have hc : k.castSucc = (0 : Fin (d + 1)) := by
+        apply Fin.ext; show k.val = 0; exact hk0
+      rw [hc, topPivotBottom_coords_lastIncDir]
+      omega
+    · have hb : k.val - 1 < d := by have := k.isLt; omega
+      have hks : k.castSucc = (⟨k.val - 1, hb⟩ : Fin d).succ := by
+        apply Fin.ext; show k.val = k.val - 1 + 1; omega
+      rw [topPivotInc_of_pos u hd1 k hk0, topPivotVerts_succ,
+        topPivotVerts_castSucc_of_pos u hd1 hfeas k hk0, hks]
+      exact u.step_inc ⟨k.val - 1, hb⟩
+  step_dec := by
+    intro k
+    by_cases hk0 : k.val = 0
+    · have hc : k.castSucc = (0 : Fin (d + 1)) := by
+        apply Fin.ext; show k.val = 0; exact hk0
+      rw [topPivotVerts_succ, topPivotVerts_castSucc_zero u hd1 hfeas k hk0, hc,
+        topPivotBottom_coords_miss]
+    · have hb : k.val - 1 < d := by have := k.isLt; omega
+      have hks : k.castSucc = (⟨k.val - 1, hb⟩ : Fin d).succ := by
+        apply Fin.ext; show k.val = k.val - 1 + 1; omega
+      rw [topPivotVerts_succ, topPivotVerts_castSucc_of_pos u hd1 hfeas k hk0, hks]
+      exact u.step_dec ⟨k.val - 1, hb⟩
+  step_same := by
+    intro k j hj1 hj2
+    by_cases hk0 : k.val = 0
+    · rw [topPivotInc_eq_lastIncDir u hd1 k hk0] at hj1
+      have hc : k.castSucc = (0 : Fin (d + 1)) := by
+        apply Fin.ext; show k.val = 0; exact hk0
+      rw [topPivotVerts_succ, topPivotVerts_castSucc_zero u hd1 hfeas k hk0, hc,
+        topPivotBottom_coords_other u hd1 hfeas j hj1 hj2]
+    · have hb : k.val - 1 < d := by have := k.isLt; omega
+      have hks : k.castSucc = (⟨k.val - 1, hb⟩ : Fin d).succ := by
+        apply Fin.ext; show k.val = k.val - 1 + 1; omega
+      rw [topPivotInc_of_pos u hd1 k hk0] at hj1
+      rw [topPivotVerts_succ, topPivotVerts_castSucc_of_pos u hd1 hfeas k hk0, hks]
+      exact u.step_same ⟨k.val - 1, hb⟩ j hj1 hj2
+  inc_injective := by
+    intro a b hab
+    by_cases ha : a.val = 0 <;> by_cases hb : b.val = 0
+    · exact Fin.ext (by omega)
+    · exfalso
+      rw [topPivotInc_eq_lastIncDir u hd1 a ha, topPivotInc_of_pos u hd1 b hb,
+        lastIncDir] at hab
+      have h := u.inc_injective hab
+      have hval : (d - 1 : ℕ) = b.val - 1 := by simpa using congrArg Fin.val h
+      have := b.isLt; omega
+    · exfalso
+      rw [topPivotInc_of_pos u hd1 a ha, topPivotInc_eq_lastIncDir u hd1 b hb,
+        lastIncDir] at hab
+      have h := u.inc_injective hab
+      have hval : (a.val - 1 : ℕ) = d - 1 := by simpa using congrArg Fin.val h
+      have := a.isLt; omega
+    · rw [topPivotInc_of_pos u hd1 a ha, topPivotInc_of_pos u hd1 b hb] at hab
+      have h := u.inc_injective hab
+      have hval : (a.val - 1 : ℕ) = b.val - 1 := by simpa using congrArg Fin.val h
+      exact Fin.ext (by omega)
+
+@[simp] theorem topPivotCell_verts (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) (k : Fin (d + 1)) :
+    (topPivotCell u hd1 hfeas).verts k = topPivotVerts u hd1 hfeas k := rfl
+
+@[simp] theorem topPivotCell_incDir (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) (k : Fin d) :
+    (topPivotCell u hd1 hfeas).incDir k = topPivotInc u hd1 k := rfl
+
+@[simp] theorem topPivotCell_miss (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    (topPivotCell u hd1 hfeas).miss = u.miss := rfl
+
+/-- **The dual pivot cell is distinct from `u`.**  Its base vertex is
+`topPivotBottom`, which lies on no vertex of `u`'s chain
+(`topPivotBottom_not_mem_chain`).  Equal cells would force equal vertex maps
+and hence `topPivotBottom = u.verts 0`, a contradiction.  So `topPivotCell u`
+is a genuine *second* cell — the reciprocal partner filling the top facet. -/
+theorem topPivotCell_ne (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) :
+    topPivotCell u hd1 hfeas ≠ u := by
+  intro h
+  have hv := congrArg (fun t => t.verts 0) h
+  simp only [topPivotCell_verts] at hv
+  rw [topPivotVerts_eq_bottom u hd1 hfeas 0 rfl] at hv
+  exact topPivotBottom_not_mem_chain u hd1 hfeas 0 hv
+
+/-- **Cell-level reciprocity: the two pivots invert one another.**  Applying
+the dual top-facet pivot `topPivotCell` to the facet-`0` cross-chain partner
+`zeroPivotCell s` reconstructs `s` exactly.  Vertex `0` is recovered by
+`topPivotBottom_zeroPivotCell` (the reciprocal base is `s`'s deleted apex
+`s.verts 0`); each higher vertex `k ≥ 1` is `s.verts k` because the dual cell
+re-shifts the partner's chain (`zeroPivotCell` uses `s.verts 1, …, verts d`,
+`topPivotCell` prepends a new base and slides them back); `incDir` matches by
+the two mutually-inverse cyclic rotations, and `miss` is preserved throughout.
+This is the partial-involution reciprocity `adj` requires at the shared
+cross-chain facet `gridFacet s 0 = gridFacet (zeroPivotCell s) (Fin.last d)`
+(`zeroPivotCell_gridFacet_last`): the boundary facet `0` of `s` and the top
+facet of its partner are glued by two cells that map to each other. -/
+theorem topPivotCell_zeroPivotCell (s : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
+    topPivotCell (zeroPivotCell s hd1 hfeas) hd1
+        (zeroPivotCell_lastIncDir_feasible s hd1 hfeas) = s := by
+  apply gridSimplex_ext
+  · funext k
+    by_cases hk0 : k.val = 0
+    · have hk : k = (0 : Fin (d + 1)) := by apply Fin.ext; show k.val = 0; exact hk0
+      rw [topPivotCell_verts, topPivotVerts_eq_bottom _ hd1 _ k hk0, hk]
+      exact topPivotBottom_zeroPivotCell s hd1 hfeas
+    · rw [topPivotCell_verts, topPivotVerts_of_pos _ hd1 _ k hk0]
+      show (zeroPivotCell s hd1 hfeas).verts ⟨k.val - 1, by have := k.isLt; omega⟩
+        = s.verts k
+      rw [zeroPivotCell_verts_of_lt s hd1 hfeas ⟨k.val - 1, by have := k.isLt; omega⟩
+        (by show k.val - 1 < d; have := k.isLt; omega)]
+      congr 1; apply Fin.ext; show (k.val - 1) + 1 = k.val; omega
+  · funext k
+    by_cases hk0 : k.val = 0
+    · rw [topPivotCell_incDir, topPivotInc_eq_lastIncDir _ hd1 k hk0,
+        zeroPivotCell_lastIncDir s hd1 hfeas]
+      congr 1; apply Fin.ext; show (0 : ℕ) = k.val; omega
+    · rw [topPivotCell_incDir, topPivotInc_of_pos _ hd1 k hk0]
+      show zeroPivotInc s hd1 ⟨k.val - 1, by have := k.isLt; omega⟩ = s.incDir k
+      rw [zeroPivotInc_of_lt s hd1 ⟨k.val - 1, by have := k.isLt; omega⟩
+        (by show k.val - 1 + 1 < d; have := k.isLt; omega)]
+      congr 1; apply Fin.ext; show (k.val - 1) + 1 = k.val; omega
+  · rw [topPivotCell_miss, zeroPivotCell_miss]
+
 end SpernerNDimOQ02
