@@ -87,6 +87,32 @@
       "mathContext": "No k ∈ {0,1} works: k=0 ⟹ Squarefree 0 (false); k=1 ⟹ 2 ≤ 1 (false)."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "decidableIsSquarefreePlusPow2",
+      "type": "core",
+      "description": "**The DecidablePred instance the parent only named.** decidable_of_iff transports decidability across the parent's bounded equivalence isSquarefreePlusPow2_iff, which rewrites IsSquarefreePlusPow2 n to a finite search ∃ k ∈ range (n+1), 2^k ≤ n ∧ Squarefree (n − 2^k) whose body is decidable (Squarefree on ℕ). No new computation — decidability is pure transport.",
+      "leanType": "DecidablePred IsSquarefreePlusPow2",
+      "startLine": 40,
+      "endLine": 41
+    },
+    {
+      "name": "works_of_pred_squarefree",
+      "type": "key",
+      "description": "**Sufficient family (k = 0).** If n ≥ 1 and n − 1 is squarefree then n = (n−1) + 2⁰ is representable — an infinite family of representable numbers requiring no search. Instantiates the parent's squarefreePlusPow2_of_witness at the power of two 2⁰ = 1.",
+      "leanType": "{n : ℕ} → 1 ≤ n → Squarefree (n - 1) → IsSquarefreePlusPow2 n",
+      "startLine": 46,
+      "endLine": 50
+    },
+    {
+      "name": "one_not_works",
+      "type": "key",
+      "description": "**The n = 1 boundary fails.** 1 is not squarefree + a power of two: interval_cases leaves only k ∈ {0,1}; k = 0 forces the squarefree summand to be 1 − 1 = 0 (excluded by not_squarefree_zero) and k = 1 needs 2 ≤ 1 (false). Confirms the conjecture's n > 1 hypothesis is necessary.",
+      "leanType": "¬ IsSquarefreePlusPow2 1",
+      "startLine": 55,
+      "endLine": 62
+    }
+  ],
   "conclusion": {
     "summary": "Completes the decidability story of erdos-11-wip-01 by registering the DecidablePred instance the parent only named, adds the k = 0 sufficient family (n − 1 squarefree ⟹ n representable), and settles the n = 1 boundary case (not representable). 3 results, 0 axioms, 0 sorries.",
     "implications": "The Decidable instance makes IsSquarefreePlusPow2 usable in further formal work; the sufficient family and boundary case are the first structural facts toward (and around) the open conjecture. The main conjecture — every odd n > 1 representable — remains open.",
