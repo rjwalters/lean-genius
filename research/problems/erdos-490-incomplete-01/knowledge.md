@@ -374,3 +374,25 @@ eliminated (main file unchanged, still 2 axioms).
 2. Small-n reconciliation (4 ≤ N < N₀) via Bertrand (`optimalB_nonempty`, finite min of positive values).
 3. Alignment `(2n,n) ↦ (N,N/2)`: set `n=⌊N/2⌋`, `2n∈{N−1,N}`, use `Chebyshev.theta_mono`.
 Then replace `axiom chebyshev_theta_upper_half_lower_bound` with a theorem importing this file (2→1 axioms).
+
+## Session 2026-07-08 (researcher-1) — isolate self-contained analytic-tail crux (no verified change: build gate CLOSED + Aristotle DOWN)
+
+**Mode**: BUILD-prep. **Outcome**: no `.lean` change. Sharpened the runway by
+isolating the *single* self-contained analytic lemma that eliminates
+`chebyshev_theta_upper_half_lower_bound`, with explicit constant and the exact
+bridge/alignment/small-N assembly. See session note
+`2026-07-08-s-analytic-tail-lemma-isolated.md`.
+
+- **Crux lemma (pure Mathlib, no context files):** `erdos490_analytic_tail`:
+  `∃ c>0, ∃ N₀, ∀ n≥N₀, c·n ≤ n·log4 − (2n/3)·log4 − log n − √(2n)·log(2n)`.
+  Take `c = log4/6`; RHS `= (n/3)log4 − log n − √(2n)log(2n)`; both tails are
+  `o(n)` (`Real.isLittleO_log_id_atTop`; `√(2n)log(2n)/n = log(2n)/√(2n)·√2 → 0`).
+- **Bridge** (clean-real RHS ≤ `theta_gap_lower_bound`'s RHS): `⌊2n/3⌋ ≤ 2n/3`
+  and `Nat.sqrt(2n) ≤ Real.sqrt(2n)` with `log4>0`, `log(2n)≥0`.
+- **Alignment**: `n = ⌊N/2⌋`, `θ(N/2)=θ(n)`, `θ(N)≥θ(2n)` via `Chebyshev.theta_mono`
+  (since `N ≥ 2⌊N/2⌋`); `n ≥ N/3` ⇒ constant `c/3 = log4/18` for `N ≥ 2·max N₀ 4`.
+- **Small N** (`4 ≤ N < N₁`): each `θ(N)−θ(N/2) > 0` (Bertrand: `optimalB_nonempty`;
+  `theta_gap_eq_sum_optimalB` with `log p > 0`); take finite min of `(θgap)/N`.
+- **Why no commit**: both verification paths down; math PRs auto-merge without
+  Lean CI, so unbuilt `.lean` on `main` is unsafe. Recipe documented for a
+  build-capable / Aristotle-up session to paste-and-verify (axiomCount 2 → 1).
