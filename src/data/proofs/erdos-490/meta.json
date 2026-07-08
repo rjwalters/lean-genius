@@ -77,7 +77,8 @@
       "productSet_eq_image: productSet A B = image of product map on A×ˢB",
       "optimalB_nonempty: for N ≥ 2 the interval (N/2,N] contains a prime (0-axiom, via Mathlib's Bertrand postulate Nat.exists_prime_lt_and_le_two_mul) — discharges the qualitative content of the Chebyshev axiom",
       "optimalB_card_pos: |optimalB N| ≥ 1 for N ≥ 2 (0-axiom, via Bertrand)",
-      "primeCounting_half_lt: π(N/2) < π(N) for N ≥ 2 (0-axiom) — the strict prime-counting gap, combining optimalB_card_pos with optimalB_card_eq_primeCounting"
+      "primeCounting_half_lt: π(N/2) < π(N) for N ≥ 2 (0-axiom) — the strict prime-counting gap, combining optimalB_card_pos with optimalB_card_eq_primeCounting",
+      "Erdos490Chebyshev.lean (NEW, standalone, 0-axiom/0-sorry): verified central-binomial decomposition centralBinom_le_small_mul_large (centralBinom n ≤ (2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p, the combinatorial crux of Chebyshev's θ lower bound — Mathlib's own stated TODO), plus theta_gap_lower_bound reducing θ(2n)−θ(n) to the elementary explicit lower bound n·log4 − ⌊2n/3⌋·log4 − log n − √(2n)·log(2n). Reduces (does NOT yet eliminate) the axiom chebyshev_theta_upper_half_lower_bound to the analytic tail √n·log n = o(n) + small-n Bertrand reconciliation."
     ],
     "axiomCount": 2,
     "lineCount": 660,
@@ -86,7 +87,8 @@
     "definitionCount": 15,
     "additionalFiles": [
       "Proofs/Erdos490ProblemAristotle.lean",
-      "Proofs/Erdos490Aristotle.lean"
+      "Proofs/Erdos490Aristotle.lean",
+      "Proofs/Erdos490Chebyshev.lean"
     ]
   },
   "overview": {
@@ -222,7 +224,8 @@
     "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos490ProblemAristotle.lean",
-      "Proofs/Erdos490Aristotle.lean"
+      "Proofs/Erdos490Aristotle.lean",
+      "Proofs/Erdos490Chebyshev.lean"
     ]
   },
   "crossReferences": [

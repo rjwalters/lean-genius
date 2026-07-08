@@ -325,3 +325,52 @@ justified without a green build).
 No math change. Both axioms remain correctly isolated and minimal. Problem stays at a stable,
 well-characterized frontier: the sole in-scope elimination target is blocked on an input that
 Mathlib upstream itself lists as future work.
+
+## Session 2026-07-07 (researcher-4) — combinatorial crux of Chebyshev θ-gap axiom VERIFIED
+
+**Mode**: ACT (axiom-reduction). **Outcome**: progress — new standalone 0-axiom/0-sorry file
+`Erdos490Chebyshev.lean` (205 lines, 5 lemmas) reduces the remaining analytic axiom
+`chebyshev_theta_upper_half_lower_bound` to an elementary explicit lower bound. Axiom NOT
+eliminated (main file unchanged, still 2 axioms).
+
+### What I built (verified 0-axiom: `#print axioms` = [propext, Classical.choice, Quot.sound])
+- `small_prime_prod_le`: `∏_{p≤2n/3, prime} p^{v_p} ≤ (2n)^√(2n)·4^(2n/3)` — extracted/adapted
+  from Mathlib's `centralBinom_le_of_no_bertrand_prime` inner argument (kept the large primes
+  as a separate factor instead of assuming they don't exist).
+- `centralBinom_le_small_mul_large` (THE CRUX): `centralBinom n ≤ (2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p`.
+  Three-way factorisation split of `range(2n+1)` by `(·≤n)`: small band via the lemma above,
+  middle band `(2n/3,n]` contributes 1 (`factorization_centralBinom_of_two_mul_self_lt_three_mul`),
+  large band `n<p≤2n` has `v_p ≤ 1` (`factorization_choose_le_one`, since `p>n ⇒ 2n<p²`).
+- `four_pow_lt_bound`: `4^n < n·(2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p` (combine crux with
+  `Nat.four_pow_lt_mul_centralBinom`).
+- `theta_gap_eq_log_prod`: `θ(2n)−θ(n) = log ∏_{n<p≤2n}p` (mirror of main file's
+  `theta_gap_eq_sum_optimalB` for the interval (n,2n]; `Chebyshev.theta` + `sum_sdiff` + `log_prod`).
+- `theta_gap_lower_bound` (deliverable): `θ(2n)−θ(n) ≥ n·log4 − ⌊2n/3⌋·log4 − log n − √(2n)·log(2n)`
+  for `n≥4` (cast `four_pow_lt_bound` to ℝ, take logs, `linarith`). RHS `≥ (n/3)log4 − log n − √(2n)log(2n)`.
+
+### Key facts
+- Mathlib's `Mathlib.NumberTheory.Chebyshev` explicitly TODOs "Prove Chebyshev's lower bound" — so
+  the θ lower bound is a genuine gap, and the axiom is not laziness.
+- The Mathlib Bertrand factorisation lemmas are PUBLIC (`Nat.` namespace): `pow_factorization_choose_le`,
+  `factorization_choose_le_one`, `factorization_centralBinom_of_two_mul_self_lt_three_mul`,
+  `prod_pow_factorization_centralBinom`, `four_pow_lt_mul_centralBinom`, `primorial_le_4_pow`.
+- To reuse Mathlib's `centralBinom_le_of_no_bertrand_prime` inner argument as a standalone lemma,
+  use `let S/f` + `show ∏ p ∈ S, f p ≤ ...` (NOT `set`, which breaks the `primorial` defeq at the
+  `prod_le_prod_of_subset_of_one_le'`/`primorial_le_4_pow` step).
+- `Real.log_prod {s}{f}(hf)` takes ONLY the ≠0 hypothesis (s,f implicit) — `Real.log_prod _ _ (…)` errors.
+
+### Gotchas / infra
+- **exit-135 with NO line number that reproduces on a KNOWN-GOOD file = corrupt Mathlib cache volume**
+  (built Erdos490Problem.lean, on main, → identical 135 at 462ms). Fix: `LEAN_SKIP_CACHE=true
+  ./proofs/scripts/docker-build.sh …` rebuilds fresh and SUCCEEDS. Retrying with cache did NOT clear it.
+- `.loom/worktrees/researcher-4` was DELETED mid-session (concurrent cleanup) → durable worktree at
+  `/Users/rwalters/lg-r4-wt`. Heartbeat needs `RESEARCHER_ID=researcher-4` exported (else it reports a
+  random runtime id and refuses).
+- Aristotle MCP down ("Resource not found").
+
+### Remaining to eliminate the axiom (NOT done here)
+1. Analytic tail: `√(2n)·log(2n) = o(n)` and `log n = o(n)` (Mathlib has `Real.isLittleO_log_id_atTop`)
+   ⇒ `∃c>0 ∃N₀ ∀n≥N₀, (n/3)log4 − log n − √(2n)log(2n) ≥ c·n`.
+2. Small-n reconciliation (4 ≤ N < N₀) via Bertrand (`optimalB_nonempty`, finite min of positive values).
+3. Alignment `(2n,n) ↦ (N,N/2)`: set `n=⌊N/2⌋`, `2n∈{N−1,N}`, use `Chebyshev.theta_mono`.
+Then replace `axiom chebyshev_theta_upper_half_lower_bound` with a theorem importing this file (2→1 axioms).

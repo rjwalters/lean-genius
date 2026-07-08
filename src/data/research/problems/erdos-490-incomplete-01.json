@@ -39,7 +39,10 @@
       "optimalA N = Finset.Icc 1 (N/2), so |optimalA N| = N/2 exactly (proved 0-axiom via Finset.ext + Nat.card_Icc + omega).",
       "optimal_has_distinct_products is NOT a real axiom: it follows from optimal_works_because_primes (already proved) once you bridge the elementwise ProductMapInjective definition to the cardinality-based HasDistinctProducts via Finset.card_image_iff. Eliminated 2026-06-30, axioms 3→2.",
       "2026-07-07 (researcher-9): Mathlib.NumberTheory.Chebyshev (θ, ψ = first/second Chebyshev functions) exists and is imported, but supplies ONLY upper bounds (theta_le_log4_mul_x, psi_le_const_mul_self) — no lower bound on θ, ψ, or Nat.primeCounting. Eliminating the analytic axiom fully still needs the classical Chebyshev θ-gap lower bound θ(N)−θ(N/2) ≥ c·N, whose elementary proof is Erdős's central-binomial argument (the (2n/3,2n] product estimate from the proof of Bertrand); genuinely multi-session infrastructure.",
-      "θ→π bridge is elementary and now verified: θ(N)−θ(N/2)=∑_{N/2<p≤N} log p (= sum over optimalB via Finset.sum_sdiff_eq_sub on prime-filtered Ioc intervals), and each log p ≤ log N gives θ-gap ≤ |optimalB|·log N; dividing by log N turns any Chebyshev θ lower bound directly into the π(N)−π(N/2) ≳ N/log N bound."
+      "θ→π bridge is elementary and now verified: θ(N)−θ(N/2)=∑_{N/2<p≤N} log p (= sum over optimalB via Finset.sum_sdiff_eq_sub on prime-filtered Ioc intervals), and each log p ≤ log N gives θ-gap ≤ |optimalB|·log N; dividing by log N turns any Chebyshev θ lower bound directly into the π(N)−π(N/2) ≳ N/log N bound.",
+      "The Chebyshev θ-gap axiom θ(N)−θ(N/2)≥c·N has a known elementary proof via the central binomial coefficient (Erdős's Bertrand argument): primes n<p≤2n divide C(2n,n) exactly once, and small primes ≤2n/3 contribute at most (2n)^√(2n)·4^(2n/3). Mathlib's Bertrand internals (factorization_centralBinom_*, pow_factorization_choose_le, primorial_le_4_pow) are PUBLIC and suffice for the combinatorial half.",
+      "Mathlib's Mathlib.NumberTheory.Chebyshev explicitly lists 'Prove Chebyshev's lower bound' as an open TODO — so a θ lower bound is genuinely NOT available and must be built.",
+      "Remaining to fully eliminate the axiom: (a) the analytic tail √(2n)·log(2n)=o(n) and log n=o(n) (Mathlib has Real.isLittleO_log_id_atTop); (b) small-n reconciliation via Bertrand (finite min); (c) alignment (2n,n)↦(N,N/2) via θ monotonicity."
     ],
     "builtItems": [
       "Build repair: Nat.card_Icc, open scoped Classical, orphan-comment fixes (Erdos490Problem.lean)",
@@ -52,7 +55,12 @@
       "optimal_has_distinct_products: converted axiom→theorem (0-axiom, derived from optimal_works_because_primes)",
       "theta_gap_eq_sum_optimalB (Erdos490Problem.lean) — θ(N)−θ(N/2) = ∑_{p∈optimalB N} log p, 0-axiom",
       "theta_gap_le_card_mul_log (Erdos490Problem.lean) — θ(N)−θ(N/2) ≤ |optimalB N|·log N, 0-axiom",
-      "primes_upper_half_lower_bound is NOW a THEOREM (was an axiom), derived from chebyshev_theta_upper_half_lower_bound via the θ→π bridge — 0 new axioms"
+      "primes_upper_half_lower_bound is NOW a THEOREM (was an axiom), derived from chebyshev_theta_upper_half_lower_bound via the θ→π bridge — 0 new axioms",
+      "Erdos490Chebyshev.lean:small_prime_prod_le — ∏_{p≤2n/3} p^{v_p} ≤ (2n)^√(2n)·4^(2n/3) (0-axiom, adapts Mathlib centralBinom_le_of_no_bertrand_prime)",
+      "Erdos490Chebyshev.lean:centralBinom_le_small_mul_large — centralBinom n ≤ (2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p (0-axiom, the combinatorial crux)",
+      "Erdos490Chebyshev.lean:four_pow_lt_bound — 4^n < n·(2n)^√(2n)·4^(2n/3)·∏_{n<p≤2n}p (0-axiom)",
+      "Erdos490Chebyshev.lean:theta_gap_eq_log_prod — θ(2n)−θ(n) = log ∏_{n<p≤2n}p (0-axiom)",
+      "Erdos490Chebyshev.lean:theta_gap_lower_bound — θ(2n)−θ(n) ≥ n·log4−⌊2n/3⌋·log4−log n−√(2n)·log(2n) (0-axiom; reduces axiom to analytic tail)"
     ],
     "mathlibGaps": [
       "No prime-counting lower bound (π(N) − π(N/2)) readily available for the optimal-example lower bound.",
@@ -63,7 +71,7 @@
       "DONE (2026-06-30): proved (optimalB N).card = N.primeCounting - (N/2).primeCounting (optimalB_card_eq_primeCounting), bridging the axiom to Mathlib's primeCounting API.",
       "Prove chebyshev_theta_upper_half_lower_bound: θ(N)−θ(N/2) ≥ c·N via central binomial coefficient. Path: log(centralBinom n) ≤ ψ(2n) (Legendre valuation ≤ prime-power count) + centralBinom n ≥ 4^n/(2n+1) gives ψ lower bound; then the Erdős (2n/3,2n] product estimate (already partly in Mathlib.NumberTheory.Bertrand internals: centralBinom_factorization_small) refines this to the θ-difference. Multi-session (~300-500 lines)."
     ],
-    "progressSummary": "2026-07-07 (researcher-9): PROGRESS (axiom count unchanged at 2, quality improved). Restated the bespoke analytic axiom primes_upper_half_lower_bound as the standard Chebyshev θ-gap axiom chebyshev_theta_upper_half_lower_bound (θ(N)−θ(N/2) ≥ c·N) against Mathlib.NumberTheory.Chebyshev, and DERIVED the former axiom as a theorem via the fully-verified θ→π bridge (theta_gap_eq_sum_optimalB + theta_gap_le_card_mul_log). 0 sorries, 2 axioms (szemeredi_theorem + the θ-gap), builds against Mathlib 4.26. File 557→660 lines. The remaining analytic axiom is now the single classical Chebyshev θ-gap fact, cleanly aligned with Mathlib's new Chebyshev API. Prior: researcher-3/5/8 built the 0-sorry construction and pinned the axiom to Nat.primeCounting."
+    "progressSummary": "PROGRESS (researcher-4, 2026-07-07): Added standalone 0-axiom/0-sorry file Erdos490Chebyshev.lean proving the central-binomial decomposition crux of the Chebyshev θ-gap lower bound (Mathlib's own TODO) and reducing the remaining axiom chebyshev_theta_upper_half_lower_bound to the elementary bound θ(2n)−θ(n) ≥ n·log4−⌊2n/3⌋·log4−log n−√(2n)·log(2n). Axiom NOT yet eliminated: remaining is the analytic tail √n·log n=o(n) + small-n Bertrand reconciliation. Main file unchanged (2 axioms)."
   },
   "knownResults": {
     "established": [
