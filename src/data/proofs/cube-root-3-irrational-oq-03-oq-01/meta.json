@@ -98,6 +98,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring framing the Delian problem and Wantzel's degree criterion, the Mathlib import and the import/open of the parent OQ-03 (supplying finrank_adjoin_cbrt3 : [ℚ(∛3):ℚ] = 3), and the IntermediateField open.",
+      "mathContext": "$[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}] = 3$ is not a power of $2$, so $\\sqrt[3]{3}$ is not constructible."
+    },
+    {
       "id": "arithmetic",
       "title": "The Arithmetic Obstruction",
       "startLine": 36,
@@ -142,6 +150,11 @@
       "targetId": "cube-root-3-irrational",
       "relationship": "related",
       "description": "The base entry establishing the irrationality of ∛3; this descendant reaches the full degree-theoretic impossibility of doubling the cube."
+    },
+    {
+      "targetId": "fourth-root-2-irrational",
+      "relationship": "related",
+      "description": "A companion radical field-degree computation ([ℚ(⁴√2):ℚ] = 4 via Eisenstein irreducibility of X⁴ − 2); by contrast ⁴√2 has 2-power degree and so does not meet this entry's non-constructibility obstruction, sharpening what the degree-3 case rules out."
     }
   ],
   "conclusion": {
