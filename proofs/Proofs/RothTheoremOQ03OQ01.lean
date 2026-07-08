@@ -20,7 +20,10 @@
     * `gowersNorm_zero`            — ‖0‖_{U^s} = 0;
     * `kAPCount_const`             — Λ_k(c,…,c) = cᵏ;
     * `kAPCount_const_one`         — Λ_k(1,…,1) = 1 (total normalized mass);
-    * `kAPCount_eq_zero_of_zero`   — a single zero slot annihilates Λ_k.
+    * `kAPCount_eq_zero_of_zero`   — a single zero slot annihilates Λ_k;
+    * `kAPCount_diag_eq_sum_subsets` — the **generalized von Neumann telescoping**:
+      `Λ_k(g,…,g) = ∑_{S⊆[k]} δ^{k−|S|}·Λ_k(i↦ if i∈S then g−δ·1 else 1)`, the full
+      `2^k`-term multilinear expansion with the `δ^k` major term isolated at `S=∅`.
 
   These are precisely the checks that pin the operators down as genuine
   averages `E_{x,d} ∏ᵢ fᵢ(x+i·d)` (the `(N⁻¹)²·N² = 1` normalization),
@@ -251,5 +254,101 @@ theorem kAPCount_update_split {N : ℕ} [NeZero N] (k : ℕ)
     rw [add_sub_cancel]
   rw [hg] at hadd
   rw [hadd, kAPCount_update_smul]
+
+-- ============================================================
+-- The generalized von Neumann telescoping
+--
+-- Iterating the one-slot split `kAPCount_update_split` across all `k` slots
+-- expands the *diagonal* count `Λ_k(g,…,g)` into `2^k` subset-indexed terms.
+-- Writing `g = δ·1 + b` with `b = g − δ·1`, the standard "product of sums"
+-- identity `Finset.prod_add` at the level of the inner product `∏ᵢ g(x+i·d)`
+-- expands it into a sum over subsets `S ⊆ {0,…,k−1}`, where `S` marks the
+-- slots carrying the balanced part `b` and the complement carries `δ`.
+-- ============================================================
+
+/-- **Generalized von Neumann expansion (diagonal).**  Writing each slot of the
+    diagonal count `Λ_k(g,…,g)` as `g = δ·1 + (g − δ·1)` and expanding
+    multilinearly telescopes the count into `2^k` terms indexed by subsets
+    `S ⊆ {0,…,k−1}` — `S` marks the slots carrying the *balanced* part
+    `b = g − δ·1`, the complement carries the scalar `δ`:
+
+        Λ_k(g,…,g) = ∑_{S ⊆ [k]} δ^{k−|S|} · Λ_k(i ↦ if i ∈ S then b else 1).
+
+    The `S = ∅` term is the *major term* `δ^k · Λ_k(1,…,1) = δ^k`
+    (`kAPCount_const_one`); every other term has at least one balanced slot `b`
+    (mean-zero when `δ = |A|/N` and `g = 1_A`), which is exactly what the
+    Gowers-uniformity control step then bounds.  This is the full slot
+    telescoping that iterating `kAPCount_update_split` produces, obtained here in
+    one shot from `Finset.prod_add` on the inner AP product. -/
+theorem kAPCount_diag_eq_sum_subsets {N : ℕ} [NeZero N] (k : ℕ)
+    (g : ZMod N → ℂ) (δ : ℂ) :
+    kAPCount k (fun _ : Fin k => g)
+      = ∑ S : Finset (Fin k),
+          δ ^ (k - S.card) *
+            kAPCount k (fun i => if i ∈ S then (g - δ • (1 : ZMod N → ℂ)) else 1) := by
+  classical
+  set b : ZMod N → ℂ := g - δ • (1 : ZMod N → ℂ) with hb
+  -- Pointwise decomposition `g y = b y + δ`.
+  have hg : ∀ y : ZMod N, g y = b y + δ := by
+    intro y
+    simp only [hb, Pi.sub_apply, Pi.smul_apply, Pi.one_apply, smul_eq_mul, mul_one]
+    ring
+  -- In each RHS term only the balanced slots `i ∈ S` survive the inner product.
+  have hRinner : ∀ (S : Finset (Fin k)) (x d : ZMod N),
+      (∏ i : Fin k, (if i ∈ S then b else (1 : ZMod N → ℂ)) (x + i.val • d))
+        = ∏ i ∈ S, b (x + i.val • d) := by
+    intro S x d
+    have happ : ∀ i : Fin k,
+        (if i ∈ S then b else (1 : ZMod N → ℂ)) (x + i.val • d)
+          = if i ∈ S then b (x + i.val • d) else 1 := by
+      intro i; split <;> simp
+    rw [Finset.prod_congr rfl (fun i _ => happ i), Finset.prod_ite_mem, Finset.univ_inter]
+  -- `Finset.prod_add` expands the diagonal inner product into the subset sum.
+  have hLinner : ∀ (x d : ZMod N),
+      (∏ i : Fin k, g (x + i.val • d))
+        = ∑ S : Finset (Fin k), δ ^ (k - S.card) * ∏ i ∈ S, b (x + i.val • d) := by
+    intro x d
+    rw [Finset.prod_congr rfl (fun i _ => hg (x + i.val • d)), Finset.prod_add,
+        Finset.powerset_univ]
+    apply Finset.sum_congr rfl
+    intro S _
+    rw [Finset.prod_const, Finset.card_sdiff_of_subset (Finset.subset_univ S),
+        Finset.card_univ, Fintype.card_fin]
+    ring
+  -- Both sides equal the canonical triple sum.
+  have hL : kAPCount k (fun _ : Fin k => g)
+      = ((N : ℂ)⁻¹) ^ 2 * ∑ x : ZMod N, ∑ d : ZMod N,
+          ∑ S : Finset (Fin k), δ ^ (k - S.card) * ∏ i ∈ S, b (x + i.val • d) := by
+    unfold kAPCount
+    congr 1
+    apply Finset.sum_congr rfl; intro x _
+    apply Finset.sum_congr rfl; intro d _
+    exact hLinner x d
+  have hR : (∑ S : Finset (Fin k), δ ^ (k - S.card) *
+        kAPCount k (fun i => if i ∈ S then b else (1 : ZMod N → ℂ)))
+      = ((N : ℂ)⁻¹) ^ 2 * ∑ x : ZMod N, ∑ d : ZMod N,
+          ∑ S : Finset (Fin k), δ ^ (k - S.card) * ∏ i ∈ S, b (x + i.val • d) := by
+    unfold kAPCount
+    -- Simplify each summand: rewrite its inner product and hoist the scalars.
+    have step : ∀ S : Finset (Fin k),
+        δ ^ (k - S.card) * (((N : ℂ)⁻¹) ^ 2 * ∑ x : ZMod N, ∑ d : ZMod N,
+            ∏ i : Fin k, (if i ∈ S then b else (1 : ZMod N → ℂ)) (x + i.val • d))
+          = ((N : ℂ)⁻¹) ^ 2 * ∑ x : ZMod N, ∑ d : ZMod N,
+              δ ^ (k - S.card) * ∏ i ∈ S, b (x + i.val • d) := by
+      intro S
+      rw [Finset.sum_congr rfl (fun x _ =>
+            Finset.sum_congr rfl (fun d _ => hRinner S x d))]
+      rw [mul_left_comm]
+      congr 1
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl; intro x _
+      rw [Finset.mul_sum]
+    rw [Finset.sum_congr rfl (fun S _ => step S), ← Finset.mul_sum]
+    congr 1
+    -- Reorder `∑ S ∑ x ∑ d` into `∑ x ∑ d ∑ S`.
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl; intro x _
+    rw [Finset.sum_comm]
+  rw [hL, hR]
 
 end RothTheoremOQ03OQ01
