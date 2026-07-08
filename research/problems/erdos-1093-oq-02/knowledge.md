@@ -14,6 +14,49 @@ or do higher values occur? (The universal upper-bound direction is open.)
 
 ---
 
+## Session 2026-07-08 (Session 2) — Density bound + sharpened reduction
+
+**Mode:** REVISIT (MODERATE knowledge tier, highest available)
+**Outcome:** progress
+
+### What I Did
+- Added the first **non-trivial upper bound** on the deficiency to the OQ-02
+  file (Section V), all `ofReduceBool`-free (no `native_decide`):
+  - `smooth_contributor_not_prime` — every smooth contributor `n−i` (`i<k`,
+    `n≥2k`) is composite: it exceeds `k`, and a `k`-smooth number `>k` cannot be
+    prime (`isKSmooth_prime_iff`).
+  - `deficiency_le_nonprime_count` — weak form: `deficiency ≤ #{i<k : ¬(n−i).Prime}`
+    (smooth filter ⊆ non-prime filter).
+  - `deficiency_add_prime_count_le` — **sharp density bound**:
+    `deficiency n k + #{i<k : (n−i).Prime} ≤ k`.
+- Added `maximalDeficiencyIs_nine_iff_kGe10` (Section VI): the conjecture is
+  equivalent to the open statement quantified only over `k ≥ 10` (small `k`
+  discharged by the trivial bound). Strictly sharper than
+  `maximalDeficiencyIs_nine_iff_upperBound`.
+- Built clean: `Proofs.Erdos1093ProblemOQ02` (3059 jobs), 0 sorry, 0 new axioms.
+
+### Key Findings
+- **Primes in the window contribute nothing.** The `k` consecutive integers
+  `n, …, n−k+1` all exceed `k` (admissible ⇒ `n ≥ 2k`), and a prime is
+  `k`-smooth iff `≤ k`. So the trivial `deficiency ≤ k` upgrades to
+  `deficiency ≤ k − (#primes in window)` — the first genuine upper bound here.
+- **Reframes the open core.** A hypothetical deficiency `> 9` at `k ≥ 10` needs a
+  length-`k` run of consecutive integers with `< k−9` primes: an exceptionally
+  prime-poor window. This is exactly the density input the ELS bound
+  (`els_upper_bound`, `n ≪ 2^k√k`) formalizes.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Sections V–VI, +~75 lines, verified)
+- `src/data/research/problems/erdos-1093-oq-02.json` (knowledge)
+
+### Next Steps
+- Quantify: combine `deficiency + #primes ≤ k` with a prime-count lower bound on
+  `[n−k+1, n]` (Brun–Titchmarsh) to force `k`-dependent upper bounds for `k ≥ 10`.
+- Attempt `k = 10, 11, 12` slices via the composite-contributor structure plus
+  the `p ∤ C(n,k)` admissibility constraint.
+
+---
+
 ## Session 2026-07-08 (Session 1) — Record admissibility + reduction
 
 **Mode:** FRESH
