@@ -175,6 +175,21 @@
       "targetId": "automorphic-number-oq-01-oq-02-oq-01",
       "relationship": "extends",
       "description": "Direct parent: this entry upgrades the parent's COUNT of 2^ω(m) idempotents of ℤ/m^k to an explicit structural bijection with per-prime Bool choices (idemEquivPrimeBool), and connects the count to the unitary divisors of m^k — answering the parent's open question about describing idempotents via unitary divisors."
+    },
+    {
+      "targetId": "automorphic-number-oq-01-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling 'The Unitary-Divisor Count: #(unitary divisors of n) = 2^ω(n)': proves in general the count this entry only checks concretely for n = 12, 30, 9. It settles the counting side of this entry's first open question — that unitaryDivisors n has 2^ω(n) elements — while this entry supplies the matching idempotent side; together they give #idempotents = #unitaryDivisors = 2^ω(n)."
+    },
+    {
+      "targetId": "automorphic-number-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling 'Automorphic Residues Count Squarefree Divisors — and the Product-of-Local-Rings Mechanism': formalizes the same CRT product-of-local-rings decomposition that underlies idemEquivPrimeBool here, where each local prime-power factor contributes its two trivial idempotents. This entry names those two local idempotents by a Bool to expose the Boolean-cube structure explicitly."
+    },
+    {
+      "targetId": "automorphic-number-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Grandparent 'The Complementary Pairing of Automorphic Idempotents mod 10^k': describes the STRUCTURE of the idempotents mod 10^k via the orthogonal-complement algebra e ↦ 1−e. That entry's four residues (0, 1, and a complementary pair) are the ω = 2 base case of the general Boolean cube of dimension ω(m) that idemEquivPrimeBool exhibits here."
     }
   ]
 }
