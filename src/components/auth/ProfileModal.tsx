@@ -10,7 +10,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
-import { listings } from '@/data/proofs'
+import { getListings } from '@/data/proofs'
 import { User, Check, AlertCircle, MessageSquare, ExternalLink } from 'lucide-react'
 
 interface ProfileModalProps {
@@ -47,6 +47,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   const [success, setSuccess] = useState<string | null>(null)
   const [comments, setComments] = useState<UserComment[]>([])
   const [commentsLoading, setCommentsLoading] = useState(false)
+  const [proofTitles, setProofTitles] = useState<Map<string, string> | null>(null)
 
   // Fetch username status and comments when modal opens
   useEffect(() => {
@@ -55,6 +56,31 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
       fetchComments()
     }
   }, [open, user])
+
+  // Resolve proof titles for the comments list. Listings are fetched lazily
+  // (and cached per session by getListings) so the auth chunk never bundles
+  // the gallery dataset (issue #35117). Until they arrive — or if the fetch
+  // fails — getProofTitle falls back to the raw proof id.
+  useEffect(() => {
+    if (!open || proofTitles) return
+    let cancelled = false
+    getListings()
+      .then((listings) => {
+        if (cancelled) return
+        const titles = new Map<string, string>()
+        for (const l of listings) {
+          titles.set(l.id, l.title)
+          titles.set(l.slug, l.title)
+        }
+        setProofTitles(titles)
+      })
+      .catch(() => {
+        /* fall back to raw proof ids */
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [open, proofTitles])
 
   const fetchUsernameStatus = async () => {
     setIsLoading(true)
@@ -95,8 +121,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   }
 
   const getProofTitle = (proofId: string): string => {
-    const listing = listings.find(l => l.id === proofId || l.slug === proofId)
-    return listing?.title || proofId
+    return proofTitles?.get(proofId) || proofId
   }
 
   const formatRelativeTime = (timestamp: number): string => {

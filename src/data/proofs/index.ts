@@ -2,7 +2,7 @@
  * Proof Data Index
  *
  * Exports:
- * - listings: Lightweight metadata for HomePage gallery (small bundle, in-graph)
+ * - getListings: Fetch lightweight gallery listings (cached once per session)
  * - getProofAsync: Fetch full proof data by slug from the static asset tree
  *
  * Phase 2 of the build-perf durable fix (issue #20993, follow-up to phase 1
@@ -10,19 +10,25 @@
  * ~2435 per-proof shim modules, each of which statically imported
  * a meta.json + annotations.json — for ~7300 data modules in the vite/Rollup
  * graph. That O(N) blowup pushed the build past the 20-minute deploy cap and
- * stalled at the transform stage near the 8 GB Node heap. Phase 2 collapses
+ * stalled at the transform stage near the 8 GB Node heap. Phase 2 collapsed
  * all of that to:
  *   - this file (a thin fetch-by-slug loader)
- *   - listings.json (single ~1.8MB module, eagerly needed by HomePage —
- *     architect classified it as not part of the O(N) blowup)
+ *   - listings.json (single in-graph module — at the time ~1.8MB)
  *   - data-manifest.json (single small module mapping slug -> sha8 hashes for
  *     cache-busting; the manifest IS bundled with content hashing so any
  *     proof change busts the importing chunk)
- * All per-proof meta/annotations/source now live under public/data/proofs/<slug>/
+ *
+ * Phase 3 (issue #35117): the gallery grew to ~4800 entries and listings.json
+ * hit 4.9MB, all of it inlined into an eagerly-loaded JS chunk. It is now
+ * emitted to `public/data/proofs/listings.json` at build time (descriptions
+ * truncated to card-length excerpts) and fetched once per session via
+ * `getListings()`. Its content hash rides in the data-manifest under the
+ * reserved `__listings__` key.
+ *
+ * All per-proof meta/annotations/source live under public/data/proofs/<slug>/
  * (gitignored, build-generated) and are fetched at runtime.
  */
 
-import listingsData from './listings.json'
 import dataManifest from './data-manifest.json'
 import type {
   Annotation,
@@ -36,9 +42,6 @@ import type {
   ProofSection,
 } from '@/types/proof'
 
-// Lightweight listings for HomePage — does not pull in proof data
-export const listings: ProofListing[] = listingsData as ProofListing[]
-
 interface ManifestEntry {
   meta: string
   ann: string
@@ -49,6 +52,37 @@ const DATA_MANIFEST: Record<string, ManifestEntry> = dataManifest as Record<
   string,
   ManifestEntry
 >
+
+/**
+ * Reserved data-manifest key carrying the content hash of the emitted public
+ * listings file (see scripts/annotations/build.ts). Not a proof slug.
+ */
+const LISTINGS_MANIFEST_KEY = '__listings__'
+
+let listingsPromise: Promise<ProofListing[]> | null = null
+
+/**
+ * Fetch the lightweight gallery listings (phase 3, issue #35117).
+ *
+ * The promise is cached module-level so the ~1MB listings file is fetched at
+ * most once per session regardless of how many consumers call this. A failed
+ * fetch clears the cache so a later call can retry.
+ */
+export function getListings(): Promise<ProofListing[]> {
+  if (!listingsPromise) {
+    const v = DATA_MANIFEST[LISTINGS_MANIFEST_KEY]?.meta ?? ''
+    listingsPromise = fetch(`/data/proofs/listings.json?v=${v}`)
+      .then((resp) => {
+        if (!resp.ok) throw new Error(`Failed to load listings (HTTP ${resp.status})`)
+        return resp.json() as Promise<ProofListing[]>
+      })
+      .catch((e) => {
+        listingsPromise = null
+        throw e
+      })
+  }
+  return listingsPromise
+}
 
 /**
  * Shape of meta.json as written by the gallery. Fields are duplicated from
@@ -122,6 +156,7 @@ function normalizeCrossReferences(
  * throwing, matching the previous contract.
  */
 export async function getProofAsync(slug: string): Promise<ProofData | undefined> {
+  if (slug === LISTINGS_MANIFEST_KEY) return undefined
   const v = DATA_MANIFEST[slug]
   if (!v) return undefined
 

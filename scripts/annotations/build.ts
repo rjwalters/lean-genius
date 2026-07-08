@@ -361,6 +361,28 @@ function sha8(filePath: string): string {
 }
 
 /**
+ * Reserved data-manifest key carrying the content hash of the emitted
+ * public listings file (phase 3, issue #35117). Never collides with a proof
+ * slug (slugs are kebab-case directory names).
+ */
+const LISTINGS_MANIFEST_KEY = '__listings__';
+
+/**
+ * Truncate a listing description to a card-length excerpt (issue #35117).
+ * Card view clamps to a few lines anyway; the full description still lives in
+ * the per-proof meta.json fetched on the detail page. Cuts at a word boundary
+ * when one exists reasonably close to the limit.
+ */
+const LISTING_EXCERPT_MAX = 140;
+function excerpt(text: string, max: number = LISTING_EXCERPT_MAX): string {
+  const t = text.trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut).replace(/[\s,;:.]+$/, '') + '…';
+}
+
+/**
  * Emit each proof's meta.json + annotations.json to the build-generated public
  * asset tree at `public/data/proofs/<slug>/`. The runtime loader in
  * `src/data/proofs/index.ts` fetches these by slug instead of importing them
@@ -517,6 +539,16 @@ function emitDataManifest(proofs: ProofConfig[]): boolean {
     manifest[proof.id] = entry;
   }
 
+  // Reserved entry: content hash of the public listings file so the runtime
+  // getListings() fetch is cache-busted on any listings change (issue #35117).
+  // Reuses the ManifestEntry shape; only `meta` is meaningful.
+  const publicListings = path.join(PUBLIC_PROOFS_DIR, 'listings.json');
+  manifest[LISTINGS_MANIFEST_KEY] = {
+    meta: fs.existsSync(publicListings) ? sha8(publicListings) : '',
+    ann: '',
+    src: '',
+  };
+
   const manifestPath = path.join(PROOFS_DATA_DIR, 'data-manifest.json');
   const next = JSON.stringify(manifest, null, 2) + '\n';
 
@@ -596,7 +628,7 @@ function generateListings(
       id: meta.id || proof.id,
       title: meta.title || proof.id,
       slug: meta.slug || proof.id,
-      description: meta.description || '',
+      description: excerpt(meta.description || ''),
       status: meta.meta?.status || 'pending',
       badge: meta.meta?.badge,
       tags: meta.meta?.tags || [],
@@ -612,9 +644,19 @@ function generateListings(
     });
   }
 
+  // src/ copy: kept for tooling that reads it off disk (herald scripts,
+  // deploy sync). No longer imported into the vite module graph (issue #35117).
   const outputPath = path.join(PROOFS_DATA_DIR, 'listings.json');
   fs.writeFileSync(outputPath, JSON.stringify(listings, null, 2) + '\n');
-  console.log(`\n📋 Generated listings.json (${listings.length} proofs, ${Math.round(fs.statSync(outputPath).size / 1024)}KB)`);
+
+  // public/ copy: fetched at runtime by getListings() in src/data/proofs/index.ts
+  // with a `?v=<sha8>` cache-buster recorded in the data-manifest (phase 3,
+  // issue #35117). Compact serialization — these bytes go over the wire.
+  fs.mkdirSync(PUBLIC_PROOFS_DIR, { recursive: true });
+  const publicPath = path.join(PUBLIC_PROOFS_DIR, 'listings.json');
+  fs.writeFileSync(publicPath, JSON.stringify(listings));
+
+  console.log(`\n📋 Generated listings.json (${listings.length} proofs, ${Math.round(fs.statSync(outputPath).size / 1024)}KB src, ${Math.round(fs.statSync(publicPath).size / 1024)}KB public)`);
 }
 
 /**
