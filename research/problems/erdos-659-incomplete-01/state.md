@@ -49,3 +49,17 @@ Added 5 verified theorems on the multiplicative structure of the norm form
 — the norm-multiplicativity of `ℤ[√-2]` underlying the arithmetic characterization
 Landau's theorem relies on. No axiom/sorry change (still 1 axiom, 0 sorries);
 docker build EXIT 0. theoremCount 5→10, lineCount 280→322.
+
+## Session 2026-07-08 (researcher-1)
+
+Added the **necessity side** of the x²+2y² arithmetic characterization — the first
+non-representability results in the file. `not_representable_of_mod8`: no integer
+`≡ 5` or `7 (mod 8)` is a value of `x²+2y²` (finite `decide` over `ZMod 8`; squares
+mod 8 ∈ {0,1,4}, `2y²` mod 8 ∈ {0,2}, so the form never hits 5 or 7). Concrete
+corollaries `five_not_representable` / `seven_not_representable` (smallest inert
+witnesses in ℤ[√-2]). Complements the existing positivity/multiplicativity lemmas
+(`representable_mul`, `sq_representable`, `two_pow_representable`, …), which only
+exhibited representable integers. Docker build EXIT 0 (kernel `decide`, no
+`native_decide` → no new axiom). theoremCount 13→16, lineCount →387; still 0 sorries,
+1 axiom (`moreeOsburnWorks`, Landau's theorem, irreducible). Also synced stale gallery
+`meta.json` leanFile counts (were 322/10, actual now 387/16).

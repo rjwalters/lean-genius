@@ -305,6 +305,51 @@ theorem representable_pow {m : ℕ} (hm : m ∈ representable_x2_2y2) (k : ℕ) 
 theorem two_pow_representable (k : ℕ) : 2 ^ k ∈ representable_x2_2y2 :=
   representable_pow two_representable k
 
+/-! ### The mod-8 obstruction (necessity side of the characterization)
+
+The lemmas above are all *positivity* results — they exhibit integers that **are**
+represented by `x² + 2y²`. The arithmetic characterization cited in the notes above
+("a number is representable iff every prime `≡ 5, 7 (mod 8)` divides it to an even
+power") also has a *necessity* side, and its cleanest concrete form is a congruence
+obstruction: **no integer `≡ 5` or `7 (mod 8)` is a value of `x² + 2y²`.** The reason
+is elementary — squares mod `8` lie in `{0, 1, 4}` and `2y²` mod `8` lies in `{0, 2}`,
+so `x² + 2y²` mod `8` never hits `5` or `7`. This is exactly the residue class of the
+primes that are *inert* in `ℤ[√-2]`, i.e. that do not occur as norms. The lemma below
+verifies this by a finite `decide` over `ZMod 8`; it is the first non-representability
+result in the file and is fully verified (no axioms, no sorries), independent of the
+deep analytic input `moreeOsburnWorks`. -/
+
+/-- **The mod-8 obstruction**: an integer congruent to `5` or `7` mod `8` is never
+    representable as `x² + 2y²`. This is the necessity direction of the arithmetic
+    characterization of the norm form of `ℤ[√-2]` (discriminant `-8`), and shows the
+    form is not universal. -/
+theorem not_representable_of_mod8 (n : ℕ) (h : n % 8 = 5 ∨ n % 8 = 7) :
+    n ∉ representable_x2_2y2 := by
+  rintro ⟨x, y, hxy⟩
+  -- Reduce the representation to `ZMod 8`.
+  have hz : (n : ZMod 8) = (x : ZMod 8) ^ 2 + 2 * (y : ZMod 8) ^ 2 := by
+    have hn : (n : ZMod 8) = ((n : ℤ) : ZMod 8) := by push_cast; ring
+    rw [hn, hxy]; push_cast; ring
+  -- No pair of residues mod 8 sums to 5 or 7 under the form `a² + 2b²`.
+  have key : ∀ a b : ZMod 8, a ^ 2 + 2 * b ^ 2 ≠ 5 ∧ a ^ 2 + 2 * b ^ 2 ≠ 7 := by decide
+  -- The hypothesis pins `(n : ZMod 8)` to 5 or 7.
+  have hn8 : (n : ZMod 8) = 5 ∨ (n : ZMod 8) = 7 := by
+    rcases h with h | h
+    · left;  rw [← ZMod.natCast_mod n 8, h]; decide
+    · right; rw [← ZMod.natCast_mod n 8, h]; decide
+  rcases hn8 with h5 | h7
+  · exact (key (x : ZMod 8) (y : ZMod 8)).1 (hz.symm.trans h5)
+  · exact (key (x : ZMod 8) (y : ZMod 8)).2 (hz.symm.trans h7)
+
+/-- `5 ≡ 5 (mod 8)` is **not** representable as `x² + 2y²` — the smallest witness of
+    the mod-8 obstruction (`5` is inert in `ℤ[√-2]`). -/
+theorem five_not_representable : 5 ∉ representable_x2_2y2 :=
+  not_representable_of_mod8 5 (Or.inl rfl)
+
+/-- `7 ≡ 7 (mod 8)` is **not** representable as `x² + 2y²` (`7` is inert in `ℤ[√-2]`). -/
+theorem seven_not_representable : 7 ∉ representable_x2_2y2 :=
+  not_representable_of_mod8 7 (Or.inr rfl)
+
 /-- The 4-point property follows from avoiding all six two-distance configurations,
     **together with** the geometric lower bound that no 4-point subset collapses to
     fewer than two distinct distances.
