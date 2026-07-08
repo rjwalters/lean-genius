@@ -12,8 +12,7 @@
   - No axioms, no definition sorries, no open conjectures
   - Use only block comments, not module docstrings
 
-  Included targets (2):
-  - K4_edge_count_ari: edgeCount (completeGraph 4) = 6 (by decide)
+  Included targets (1):
   - minimal_form_antichain_ari: minimally non-linear graphs are pairwise incomparable
 
   NOT included:
@@ -21,7 +20,7 @@
   - K4_subgraphs_linear: axiom (Aristotle skips)
   - ramsey_linear_hereditary: axiom (Aristotle skips)
   - wigderson_theorem: axiom (Aristotle skips)
-  - K4_unique_known: requires handling type mismatch (Fin 4 vs ℕ)
+  - K4_unique_known: now discharged in the main file (singleton reduction).
 -/
 import Mathlib
 import Proofs.Erdos79Problem
@@ -31,19 +30,7 @@ namespace Erdos79ProblemAristotle
 open Erdos79 SimpleGraph
 
 /-
-## Section 1: Edge Count of K₄
-
-K₄ has 4 vertices, each adjacent to the other 3. The number of
-undirected edges is C(4,2) = 6. This is decidable since Fin 4 is
-a finite type with decidable equality.
--/
-
-/-- The complete graph on 4 vertices has exactly 6 edges. -/
-theorem K4_edge_count_ari : edgeCount (completeGraph 4) = 6 := by
-  native_decide
-
-/-
-## Section 2: Antichain Property
+## Section 1: Antichain Property
 
 Minimally non-Ramsey-size-linear graphs form an antichain in the
 subgraph ordering. The proof uses only the definition of minimality:
