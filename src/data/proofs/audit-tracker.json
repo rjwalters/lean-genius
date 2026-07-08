@@ -2632,9 +2632,9 @@
       "result": "clean"
     },
     "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-06-24T12:27:19Z",
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean"
     },
     "bezout-identity-oq-02-oq-01-oq-02-oq-03": {
@@ -3949,10 +3949,10 @@
       "issues": []
     },
     "burnside-counting": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-08T17:41:03Z",
-      "result": "clean"
+      "lastAudited": "2026-07-08T17:18:11Z",
+      "result": "issues-fixed"
     },
     "burnside-counting-oq-03": {
       "auditCount": 3,
@@ -4307,8 +4307,8 @@
       "issues": []
     },
     "cantors-theorem-oq-05": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-20T20:35:23Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean",
       "issues": []
     },
@@ -4367,14 +4367,14 @@
       "issues": []
     },
     "cassini-identity-oq-01-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-06-27T09:43:57Z",
+      "auditCount": 3,
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean",
       "issues": []
     },
     "cassini-identity-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-28T17:38:15Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean",
       "issues": []
     },
@@ -4476,8 +4476,8 @@
       "issues": []
     },
     "catalan-numbers-oq-05-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-28T00:12:49Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean",
       "issues": []
     },
@@ -10734,8 +10734,8 @@
       "result": "clean"
     },
     "erdos-1204": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-25T20:00:17Z",
+      "auditCount": 2,
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean",
       "issues": []
     },
@@ -14015,8 +14015,8 @@
     },
     "erdos-490": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 9,
-      "lastAudited": "2026-07-08T06:56:48Z",
+      "auditCount": 10,
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean",
       "issues": [],
       "notes": "Re-audit CLEAN: meta status/badge/sorries/axiomCount all reconcile with Lean source. Sorry-count 'mismatches' from companion *Aristotle scaffolds are not counted (meta.sorries tracks main file). native_decide in erdos-1064 backs only illustrative examples with ofReduceBool disclosed; descartes axiomCount=1 = SturmReduction structure-encoded assumption, disclosed."
@@ -21956,9 +21956,9 @@
       "issues": []
     },
     "law-of-cosines-oq-03-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-07-08T06:05:08Z",
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean"
     },
     "law-of-cosines-oq-04": {
@@ -24784,9 +24784,9 @@
       "result": "clean"
     },
     "shannon-entropy-oq-03": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T04:00:42Z",
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean"
     },
     "shannon-entropy-oq-03-oq-01": {
@@ -29209,9 +29209,9 @@
       "result": "clean"
     },
     "roth-theorem-k3-oq-03-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-07-08T04:59:24Z",
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean"
     },
     "roth-theorem-oq-01": {
@@ -29443,9 +29443,9 @@
       "result": "clean"
     },
     "sylow-theorem-oq-04-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-07-08T04:59:24Z",
+      "lastAudited": "2026-07-08T17:18:11Z",
       "result": "clean"
     },
     "sylvester-sequence-oq-01-oq-02": {
@@ -29589,5 +29589,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-07-08T17:06:10Z"
+  "lastUpdated": "2026-07-08T17:18:11Z"
 }
