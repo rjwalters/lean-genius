@@ -29,8 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (build-unverified this session - Docker infra corrupt): proved Newton at the TOP index k=n-1 for all n and all nonzero real inputs, via reciprocal duality e_k(1/x)*e_n(x)=e_{n-k}(x) reducing to the already-signed k=1 case; plus n=3,k=2 signed via explicit SOS. Intermediate indices 1<k<n-1 remain the frontier (need Rolle/real-rootedness).",
+    "progressSummary": "VERIFIED (0 sorries, 0 axioms; docker-build clean, 7744 jobs). Signed-input Newton at the TOP index k=n-1 for all n, now for ALL real inputs: newton_signed_top (nonzero xᵢ, via reciprocal duality e_k(1/x)·e_n(x)=e_{n-k}(x) reducing to the signed k=1 Cauchy–Schwarz case) plus newton_signed_top_general (nonzero hypothesis REMOVED — a zero coordinate forces eₙ=0, collapsing the RHS). Also newton_n3_k2_signed (n=3,k=2 for arbitrary reals via SOS). Frontier: intermediate indices 1<k<n-1 for general n still need Rolle/real-rootedness.",
     "builtItems": [
+      "newton_signed_top_general (NewtonSignedInputs.lean): C(n,2)·e_{n-1}²≥n²·e_{n-2}·eₙ for ALL real xᵢ (no nonzero hypothesis) — case split on eₙ=0 (RHS collapses, LHS≥0) vs eₙ≠0 (⇒all xᵢ≠0, apply newton_signed_top).",
       "elemSymm_inv_mul (NewtonSignedInputs.lean): reciprocal identity e_k(1/x)*e_n(x)=e_{n-k}(x) for nonzero x, k<=n - complement bijection via Finset.sum_bij'",
       "newton_signed_top (NewtonSignedInputs.lean): C(n,2)*e_{n-1}(x)^2 >= n^2*e_{n-2}(x)*e_n(x) for n>=2, all x_i != 0 (signed top-index Newton)",
       "newton_n3_k2_signed (NewtonSignedInputs.lean): ((ab+bc+ca)/3)^2 >= ((a+b+c)/3)*abc for ALL reals a,b,c (SOS, no sign hyp)"
@@ -45,9 +46,7 @@
       "No packaged lemma 'derivative of a real-rooted polynomial is real-rooted' (needs Rolle across a multiset of real roots + Vieta for the derivative). Missing ingredient for intermediate indices 1<k<n-1 for general n."
     ],
     "nextSteps": [
-      "BUILD-VERIFY NewtonSignedInputs.lean once Docker infra recovers (this session blocked by containerd meta.db I/O error + SIGBUS 135). Mechanical risks: Finset.sum_bij' arg order and the rw chains.",
-      "Prove intermediate indices via real-rootedness: P(t)=prod(t-x_i) real-rooted => P' real-rooted (Rolle), coeffs of P' are (n-j)e_j, then discriminant of a real quadratic gives Newton at general k.",
-      "Handle the zero case for the top index (some x_i=0) via continuity/density or a direct e_n=0 split, to drop x_i != 0."
+      "Prove intermediate indices via real-rootedness: P(t)=prod(t-x_i) real-rooted => P' real-rooted (Rolle), coeffs of P' are (n-j)e_j, then discriminant of a real quadratic gives Newton at general k."
     ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-02-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
