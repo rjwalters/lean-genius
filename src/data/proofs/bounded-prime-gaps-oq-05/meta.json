@@ -101,11 +101,6 @@
     "openQuestions": [
       "Formalize the implication Firoozbakht ⟹ Cramér-type gap bound $p_{n+1} - p_n < (\\log p_n)^2 - \\log p_n$ (for $n$ large), the consequence that makes Firoozbakht one of the strongest prime-gap conjectures.",
       "Build a Decidable bridge for the integer-power form on an initial segment: since $p_{n+1}^n < p_n^{n+1}$ is a natural-number inequality, a decision procedure could verify Firoozbakht for all $n \\le N$ from a table of the first $N{+}2$ primes, certifying the conjecture's known numerical range inside Lean."
-    ],
-    "crossReferences": [
-      "bounded-prime-gaps",
-      "bounded-prime-gaps-oq-03",
-      "bounded-prime-gaps-oq-04"
     ]
   },
   "crossReferences": [
@@ -113,6 +108,16 @@
       "targetId": "bounded-prime-gaps",
       "relationship": "extends",
       "description": "Parent proof whose conclusion lists connecting Firoozbakht's conjecture to the bounded-gaps formalization as an open question; it formalizes the RPOW form as FireoozbakhtConjecture, and this file bridges that form to the original root and integer-power formulations"
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-03",
+      "relationship": "related",
+      "description": "Sibling in the bounded-prime-gaps program: 'Engelsma's 246 Optimality — The Tightest Admissible 50-Tuple', the narrow-admissible-tuple side of small prime gaps (the H(50)=246 diameter behind the Maynard–Tao bound). Firoozbakht is the complementary strong upper-gap conjecture in the same family; this entry supplies its formulation bridge."
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-04",
+      "relationship": "related",
+      "description": "Sibling in the bounded-prime-gaps program: 'Bombieri–Vinogradov Theorem — Formalizability Assessment', the prime-equidistribution input underlying the Maynard–Tao bounded-gaps machinery. It sits alongside this Firoozbakht-formulation bridge as another component of the gallery's prime-gaps formalization effort."
     }
   ],
   "leanFile": {
