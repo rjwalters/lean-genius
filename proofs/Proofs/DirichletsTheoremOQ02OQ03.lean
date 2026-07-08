@@ -794,4 +794,110 @@ theorem B_div_C_diverges (m : ℕ) : ∃ K, ∀ k, K ≤ k → m * C k ≤ B k :
     _ = C k ^ 2 := (sq (C k)).symm
     _ ≤ B k := hsq
 
+/-! ## Step 11: the factorial tower `B` is **tetrational** (`2 ↑↑ k ≤ B k`), and
+the growth-class separation from `C` is sharp
+
+Step 9 established the recursive exponential step `2^(B k) ≤ B (k+1)`
+(`B_succ_ge_two_pow`), and Step 10 turned it into the ratio divergence
+`B / C → ∞`.  What was still missing is a *closed-form* placement of `B` in the
+tetration (iterated-exponential) growth class.  We supply it: writing `2 ↑↑ k`
+for the tower of `k` twos (`tower2`), we prove `2 ↑↑ k ≤ B k`.
+
+Combined with the doubly-exponential *upper* bound `C k ≤ 4^(2^k)`
+(`C_le_doubly_exp`, Step 8), this separates the two certified towers by growth
+class in the sharpest possible sense: tetration eventually dominates any fixed
+doubly-exponential, so for `k ≥ 5` the closed-form lower bound on `B` already
+exceeds the closed-form upper bound on `C`,
+
+    C k ≤ 4^(2^k) ≤ 2 ↑↑ k ≤ B k.
+
+The threshold `k = 5` is sharp: at `k = 4` one still has
+`2 ↑↑ 4 = 65536 < 4^(2^4)` (`tower2_lt_doubly_exp_at_four`). -/
+
+/-- Base-2 tetration `tower2 k = 2 ↑↑ k`, the tower of `k` twos:
+`tower2 0 = 1`, `tower2 (k+1) = 2 ^ tower2 k`.  Values `1, 2, 4, 16, 65536,
+2^65536, …` — an iterated exponential, a strictly larger growth class than any
+doubly-exponential. -/
+def tower2 : ℕ → ℕ
+  | 0 => 1
+  | (k + 1) => 2 ^ tower2 k
+
+@[simp] theorem tower2_zero : tower2 0 = 1 := rfl
+@[simp] theorem tower2_succ (k : ℕ) : tower2 (k + 1) = 2 ^ tower2 k := rfl
+
+/-- Self-contained `n < 2^n` (used to convert the exponential lower bound on
+`tower2` into a linear one). -/
+theorem lt_two_pow_aux (n : ℕ) : n < 2 ^ n := by
+  induction n with
+  | zero => decide
+  | succ n ih =>
+    have h1 : 1 ≤ 2 ^ n := Nat.one_le_pow _ _ (by norm_num)
+    have h2 : 2 ^ (n + 1) = 2 ^ n + 2 ^ n := by rw [pow_succ]; ring
+    omega
+
+/-- **The factorial tower is tetrational: `2 ↑↑ k ≤ B k`.**  Each factorial step
+of `B` base-2 exponentiates the previous value (`B_succ_ge_two_pow`), so `B`
+dominates the tower of twos of the same height.  This closed-form
+iterated-exponential lower bound complements the doubly-exponential *upper* bound
+`C k ≤ 4^(2^k)`: the factorial certificate `B` lives in the tetration growth
+class, strictly above the primorial certificate `C`. -/
+theorem tower2_le_B (k : ℕ) : tower2 k ≤ B k := by
+  induction k with
+  | zero => decide
+  | succ k ih =>
+    calc tower2 (k + 1) = 2 ^ tower2 k := rfl
+      _ ≤ 2 ^ B k := Nat.pow_le_pow_right (by norm_num) ih
+      _ ≤ B (k + 1) := B_succ_ge_two_pow k
+
+/-- Linear-in-exponent lower bound on tetration: `2^(k+2) ≤ 2 ↑↑ k` for `k ≥ 4`.
+The engine converting the tetration recursion into the doubly-exponential
+comparison below.  Inductive step: `2 ↑↑ (k+1) = 2^(2 ↑↑ k) ≥ 2^(k+3)` because
+`2 ↑↑ k ≥ 2^(k+2) ≥ k+3` (the second gap from `n < 2^n`). -/
+theorem two_pow_le_tower2 {k : ℕ} (hk : 4 ≤ k) : 2 ^ (k + 2) ≤ tower2 k := by
+  induction k, hk using Nat.le_induction with
+  | base => decide
+  | succ k hk ih =>
+    rw [tower2_succ]
+    have hklin : k + 1 + 2 ≤ tower2 k := by
+      have h1 : k + 2 < 2 ^ (k + 2) := lt_two_pow_aux (k + 2)
+      omega
+    exact Nat.pow_le_pow_right (by norm_num) hklin
+
+/-- **Tetration overtakes the doubly-exponential ceiling of `C`:**
+`4^(2^k) ≤ 2 ↑↑ k` for `k ≥ 5`.  Writing `k = j+1`, one has
+`4^(2^(j+1)) = 2^(2·2^(j+1)) = 2^(2^(j+2))` and `2 ↑↑ (j+1) = 2^(2 ↑↑ j)`, so the
+claim reduces to `2^(j+2) ≤ 2 ↑↑ j` (`two_pow_le_tower2`, valid for `j ≥ 4`). -/
+theorem doubly_exp_le_tower2 {k : ℕ} (hk : 5 ≤ k) : 4 ^ (2 ^ k) ≤ tower2 k := by
+  obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
+  have hj : 4 ≤ j := by omega
+  have hexp : 2 ^ (j + 2) ≤ tower2 j := two_pow_le_tower2 hj
+  have hpow : (2 : ℕ) ^ (j + 2) = 2 * 2 ^ (j + 1) := by
+    have hjj : j + 2 = (j + 1) + 1 := by omega
+    rw [hjj, pow_succ]; ring
+  have key : (4 : ℕ) ^ (2 ^ (j + 1)) = 2 ^ (2 ^ (j + 2)) := by
+    rw [show (4 : ℕ) = 2 ^ 2 by norm_num, ← pow_mul, hpow]
+  rw [key, tower2_succ]
+  exact Nat.pow_le_pow_right (by norm_num) hexp
+
+/-- The separation threshold `k = 5` is sharp: at `k = 4` the tetration lower
+bound is still below the doubly-exponential, `2 ↑↑ 4 = 65536 < 4294967296 =
+4^(2^4)`.  So `doubly_exp_le_tower2` genuinely requires `k ≥ 5`. -/
+theorem tower2_lt_doubly_exp_at_four : tower2 4 < 4 ^ (2 ^ 4) := by decide
+
+/-- **Sharp growth-class separation of the two certified towers.**  For every
+`k ≥ 5`,
+
+    C k ≤ 4^(2^k) ≤ 2 ↑↑ k ≤ B k,
+
+so the doubly-exponential *upper* bound on the primorial tower `C` is dominated
+by the tetration *lower* bound on the factorial tower `B`.  This upgrades the
+qualitative "different growth classes" picture (Steps 8–9) and the ratio
+divergence (Step 10) to an explicit sandwich in which a closed-form
+iterated-exponential on the `B` side overtakes a closed-form doubly-exponential
+on the `C` side.  The `k = 5` threshold is sharp
+(`tower2_lt_doubly_exp_at_four`). -/
+theorem growth_class_separation {k : ℕ} (hk : 5 ≤ k) :
+    C k ≤ 4 ^ (2 ^ k) ∧ 4 ^ (2 ^ k) ≤ tower2 k ∧ tower2 k ≤ B k :=
+  ⟨C_le_doubly_exp k, doubly_exp_le_tower2 hk, tower2_le_B k⟩
+
 end DirichletsTheoremOQ02OQ03
