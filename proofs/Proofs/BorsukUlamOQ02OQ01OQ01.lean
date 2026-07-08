@@ -139,6 +139,33 @@ theorem buDim_nine_eq_three (d : ℕ) : buDim 9 d = buDim 3 d := by
   rw [hfact, Finset.sup_singleton] at h
   exact h
 
+-- ## Prime Powers (general): the formula collapses to the single prime
+
+/-- **Prime-power collapse of the formula.** For a prime `p` and any exponent `k ≥ 1`,
+    `buDimFormula (p^k) d = buDim p d`, because `primeFactors (p^k) = {p}`. This is the
+    general, `native_decide`-free statement behind the concrete `primeFactors 4 = {2}`
+    and `primeFactors 9 = {3}` computations above, and it makes explicit that on prime
+    powers the composite conjecture is exactly `buDim (p^k) d ≤ buDim p d`. -/
+theorem buDimFormula_prime_pow {p : ℕ} (hp : p.Prime) {k : ℕ} (hk : k ≠ 0) (d : ℕ) :
+    buDimFormula (p ^ k) d = buDim p d := by
+  unfold buDimFormula
+  rw [Nat.primeFactors_pow p hk, hp.primeFactors, Finset.sup_singleton]
+
+/-- **Prime powers do not increase the BU dimension (general form).** For a prime `p`
+    and any `k ≥ 1`, `buDim (p^k) d = buDim p d`. This generalises `buDim_four_eq_two`
+    (`p = 2, k = 2`) and `buDim_nine_eq_three` (`p = 3, k = 2`) to every prime power in
+    one axiom-free-of-`native_decide` proof, routing through `buDim_eq_formula` (whose
+    only topological input is the composite upper-bound conjecture) and the collapse
+    lemma above. -/
+theorem buDim_prime_pow_eq {p : ℕ} (hp : p.Prime) {k : ℕ} (hk : k ≠ 0) (d : ℕ) :
+    buDim (p ^ k) d = buDim p d := by
+  have hp2 := hp.two_le
+  have h2 : 2 ≤ p ^ k := by
+    have hle := Nat.pow_le_pow_right hp.pos (Nat.one_le_iff_ne_zero.mpr hk)
+    simp only [pow_one] at hle
+    omega
+  rw [buDim_eq_formula (p ^ k) d h2, buDimFormula_prime_pow hp hk]
+
 -- ## Specific BU Dimensions
 
 /-- buDim(4, n+1) = n: Z/4-equivariant odd maps S^n → R^{n+1} must vanish.
