@@ -115,4 +115,95 @@ theorem geomSum_two_succ (n : ℕ) : (∑ i ∈ range n, 2 ^ i) + 1 = 2 ^ n := b
     rw [sum_range_succ, pow_succ]
     omega
 
+/-!
+## Section 4: the powers-of-two extremal set
+
+Section 2 gives the counting *lower* bound `2^{|A|} ≤ Σ A + 1`; Section 3 turns it
+into `max A ≥ (2^{|A|} − 1)/|A|`. This section supplies the matching
+*construction*: the geometric set `{2⁰, 2¹, …, 2^{n-1}}` is a genuine
+distinct-subset-sums set of cardinality `n`, it attains **equality** in the
+counting bound (`Σ A = 2ⁿ − 1`), and its largest element is only `2^{n-1} = 2ⁿ/2`.
+
+Writing `M(n)` for the Erdős extremal maximum
+
+> `M(n) := min { max A : |A| = n, A has distinct subset sums }`,
+
+Section 3 and this construction pin it between the two elementary walls
+
+> `(2ⁿ − 1)/n ≤ M(n) ≤ 2^{n-1}`.
+
+In particular the conjectural constant `c` in Erdős's `max A ≥ c·2^{|A|}` cannot
+exceed `1/2`: the whole difficulty of Erdős #1 lies in closing the `√n`-and-more
+gap between the counting lower bound and this doubling construction (the analytic
+second-moment bound of the parent entry `erdos-1-oq-02` narrows, but does not
+close, that gap). Distinctness reuses Mathlib's `Finset.geomSum_injective`
+(injectivity of `I ↦ ∑_{i∈I} 2^i`, the uniqueness of binary expansions).
+-/
+
+/-- The doubling map `i ↦ 2ⁱ` is injective. -/
+theorem twoPow_injective : Function.Injective (fun i : ℕ => 2 ^ i) :=
+  Nat.pow_right_injective (le_refl 2)
+
+/-- The geometric set `{2⁰, 2¹, …, 2^{n-1}}`. -/
+def geomSet (n : ℕ) : Finset ℕ := (range n).image (fun i => 2 ^ i)
+
+/-- Membership in the geometric set: `x` is a power `2ⁱ` with `i < n`. -/
+theorem mem_geomSet {n x : ℕ} : x ∈ geomSet n ↔ ∃ i < n, 2 ^ i = x := by
+  simp only [geomSet, mem_image, mem_range]
+
+/-- The geometric set has exactly `n` elements. -/
+theorem card_geomSet (n : ℕ) : (geomSet n).card = n := by
+  rw [geomSet, card_image_of_injective _ twoPow_injective, card_range]
+
+/-- A subset sum over an image of powers of two collapses to a geometric sum of
+    the chosen indices. -/
+theorem sum_image_twoPow (I : Finset ℕ) :
+    (I.image (fun i => 2 ^ i)).sum id = ∑ i ∈ I, 2 ^ i := by
+  simp only [sum_image twoPow_injective.injOn, id_eq]
+
+/-- **The geometric set has distinct subset sums.** Any subset of `{2⁰,…,2^{n-1}}`
+    is the image of an index set `I ⊆ range n`, and `I ↦ ∑_{i∈I} 2ⁱ` is injective
+    (`Finset.geomSum_injective`), so equal subset sums force equal subsets. -/
+theorem geomSet_hasDistinctSubsetSums (n : ℕ) :
+    HasDistinctSubsetSums (geomSet n) := by
+  intro S T hS hT hST
+  rw [geomSet] at hS hT
+  obtain ⟨I, _, rfl⟩ := subset_image_iff.1 hS
+  obtain ⟨J, _, rfl⟩ := subset_image_iff.1 hT
+  simp only [sum_image_twoPow] at hST
+  rw [geomSum_injective (le_refl 2) hST]
+
+/-- The geometric set attains **equality** in the counting bound: `Σ A = 2ⁿ − 1`. -/
+theorem sum_geomSet (n : ℕ) : (geomSet n).sum id = 2 ^ n - 1 := by
+  rw [geomSet, sum_image_twoPow]
+  have := geomSum_two_succ n
+  omega
+
+/-- The largest element of the geometric set is `2^{n-1}` (for `n ≥ 1`). -/
+theorem max'_geomSet {n : ℕ} (hn : 1 ≤ n) (hne : (geomSet n).Nonempty) :
+    (geomSet n).max' hne = 2 ^ (n - 1) := by
+  apply le_antisymm
+  · apply max'_le
+    intro y hy
+    rw [mem_geomSet] at hy
+    obtain ⟨i, hi, rfl⟩ := hy
+    exact Nat.pow_le_pow_right (by norm_num) (by omega)
+  · apply le_max'
+    rw [mem_geomSet]
+    exact ⟨n - 1, by omega, rfl⟩
+
+/-- **Two-sided wall on the Erdős extremal max.** For every `n ≥ 1` there is a
+    distinct-subset-sums set `A` of cardinality `n` whose largest element is
+    exactly `2^{n-1}`. Combined with `two_pow_card_le_card_mul_max` (giving
+    `max A ≥ (2ⁿ − 1)/|A|`) this pins the extremal maximum `M(n)` into
+    `(2ⁿ − 1)/n ≤ M(n) ≤ 2^{n-1}`, so the conjectural constant `c` in
+    `max A ≥ c·2^{|A|}` satisfies `c ≤ 1/2`. -/
+theorem exists_extremal_geomSet (n : ℕ) (hn : 1 ≤ n) :
+    ∃ A : Finset ℕ, A.card = n ∧ HasDistinctSubsetSums A ∧
+      ∃ hne : A.Nonempty, A.max' hne = 2 ^ (n - 1) := by
+  have hne : (geomSet n).Nonempty := by
+    rw [← card_pos, card_geomSet]; omega
+  exact ⟨geomSet n, card_geomSet n, geomSet_hasDistinctSubsetSums n,
+    hne, max'_geomSet hn hne⟩
+
 end Erdos1OQ02OQ01
