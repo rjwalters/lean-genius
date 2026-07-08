@@ -127,6 +127,37 @@ theorem limInf_ge_log_c1 :
   rw [ge_iff_le]
   exact Filter.le_liminf_of_le hcobdd hev
 
+/-- The limsup is at most log(c₂): the symmetric companion of `limInf_ge_log_c1`,
+    completing the two-sided bound `log c₁ ≤ liminf ≤ limsup ≤ log c₂` promised by
+    Part III. Even without knowing the limit exists, both extreme cluster values of
+    `log h(n)/n` are trapped inside Pyber's window. -/
+theorem limSup_le_log_c2 :
+    ∃ c₂ : ℝ, c₂ > 1 ∧ growthRateLimSup ≤ Real.log c₂ := by
+  obtain ⟨c₁, c₂, hc1, hc12, hbounds⟩ := pyber_bounds
+  have hc2 : c₂ > 1 := lt_trans hc1 hc12
+  refine ⟨c₂, hc2, ?_⟩
+  -- growthRate n ≤ log c₂ eventually
+  have hev : ∀ᶠ n : ℕ in atTop, growthRate n ≤ Real.log c₂ := by
+    apply Filter.eventually_atTop.mpr
+    refine ⟨1, fun n hn => ?_⟩
+    have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from by omega)
+    unfold growthRate
+    rw [if_neg (show n ≠ 0 from by omega), div_le_iff₀ hn_pos]
+    have hhn : (1 : ℝ) ≤ (h n : ℝ) := by exact_mod_cast h_pos n hn
+    have hlog : Real.log (h n : ℝ) ≤ Real.log (c₂ ^ n) :=
+      Real.log_le_log (by linarith) (hbounds n hn).2
+    rw [Real.log_pow, mul_comm] at hlog
+    exact hlog
+  -- growthRate is cobounded above (its lower bound L witnesses the cobound)
+  have hcobdd : (atTop : Filter ℕ).IsCoboundedUnder (· ≤ ·) growthRate := by
+    obtain ⟨L, _, hL⟩ := growthRate_lower_bound
+    refine ⟨L, fun a ha => ?_⟩
+    rw [Filter.eventually_map] at ha
+    obtain ⟨N, hN⟩ := Filter.eventually_atTop.mp ha
+    exact le_trans (hL (max N 1) (le_max_right _ _)) (hN (max N 1) (le_max_left _ _))
+  unfold growthRateLimSup
+  exact Filter.limsup_le_of_le hcobdd hev
+
 /-- liminf ≤ limsup (always true for bounded sequences) -/
 theorem limInf_le_limSup : growthRateLimInf ≤ growthRateLimSup := by
   unfold growthRateLimInf growthRateLimSup
@@ -162,6 +193,43 @@ theorem limit_determines_base (L : ℝ) (hL : L > 0)
     exponentialBaseExists := by
   refine ⟨Real.exp L, Real.one_lt_exp_iff.mpr hL, ?_⟩
   rwa [Real.log_exp]
+
+/-- **The exponential base lies in Pyber's window.** If the growth rate converges to `L`,
+    then `log c₁ ≤ L ≤ log c₂` for Pyber's constants — equivalently, the base `exp L`
+    satisfies `c₁ ≤ exp L ≤ c₂`. So even though the *existence* of the limit is the open
+    question, its *value* (should it exist) is already pinned to the interval Pyber
+    established. Proof: pass the eventual two-sided bounds on `growthRate` through
+    `ge_of_tendsto` / `le_of_tendsto`. -/
+theorem convergent_limit_in_pyber_window (L : ℝ)
+    (hconv : Filter.Tendsto growthRate atTop (nhds L)) :
+    ∃ c₁ c₂ : ℝ, 1 < c₁ ∧ c₁ < c₂ ∧ Real.log c₁ ≤ L ∧ L ≤ Real.log c₂ := by
+  obtain ⟨c₁, c₂, hc1, hc12, hbounds⟩ := pyber_bounds
+  refine ⟨c₁, c₂, hc1, hc12, ?_, ?_⟩
+  · -- log c₁ ≤ L, from the eventual lower bound log c₁ ≤ growthRate n
+    have hev : ∀ᶠ n : ℕ in atTop, Real.log c₁ ≤ growthRate n := by
+      apply Filter.eventually_atTop.mpr
+      refine ⟨1, fun n hn => ?_⟩
+      have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from by omega)
+      unfold growthRate
+      rw [if_neg (show n ≠ 0 from by omega), le_div_iff₀ hn_pos]
+      have hlog : Real.log (c₁ ^ n) ≤ Real.log (h n : ℝ) :=
+        Real.log_le_log (by positivity) (hbounds n hn).1
+      rw [Real.log_pow, mul_comm] at hlog
+      exact hlog
+    exact ge_of_tendsto hconv hev
+  · -- L ≤ log c₂, from the eventual upper bound growthRate n ≤ log c₂
+    have hev : ∀ᶠ n : ℕ in atTop, growthRate n ≤ Real.log c₂ := by
+      apply Filter.eventually_atTop.mpr
+      refine ⟨1, fun n hn => ?_⟩
+      have hn_pos : (0 : ℝ) < n := by exact_mod_cast (show 0 < n from by omega)
+      unfold growthRate
+      rw [if_neg (show n ≠ 0 from by omega), div_le_iff₀ hn_pos]
+      have hhn : (1 : ℝ) ≤ (h n : ℝ) := by exact_mod_cast h_pos n hn
+      have hlog : Real.log (h n : ℝ) ≤ Real.log (c₂ ^ n) :=
+        Real.log_le_log (by linarith) (hbounds n hn).2
+      rw [Real.log_pow, mul_comm] at hlog
+      exact hlog
+    exact le_of_tendsto hconv hev
 
 /-- Convergence implies exponential behavior:
     for `ε ∈ (0, c)`, eventually `(c-ε)ⁿ ≤ h(n) ≤ (c+ε)ⁿ`.

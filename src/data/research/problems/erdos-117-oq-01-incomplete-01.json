@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Discharged the lone sorry in the parent gallery entry Erdos117OQ01.lean (base_implies_behavior) and restored the whole Erdős #117-OQ-01 file family to a fully machine-checked state on Lean 4.26. The sorry sat on a FALSE statement: ExponentialBehavior c was quantified over all ε > 0, but for ε ≥ c the lower base c−ε ≤ 0 and (c−ε)ⁿ at even n can exceed h(n). Corrected the definition to ε ∈ (0,c) and proved the convergence ⇒ exponential-behavior implication via Metric.tendsto_atTop + exp∘log monotonicity. Result: 0 sorries, only the 3 structural axioms (h, h_pos, pyber_bounds), no sorryAx, no Lean.ofReduceBool.",
+    "progressSummary": "Discharged the lone sorry in the parent gallery entry Erdos117OQ01.lean (base_implies_behavior) and restored the whole Erdős #117-OQ-01 file family to a fully machine-checked state on Lean 4.26. The sorry sat on a FALSE statement: ExponentialBehavior c was quantified over all ε > 0, but for ε ≥ c the lower base c−ε ≤ 0 and (c−ε)ⁿ at even n can exceed h(n). Corrected the definition to ε ∈ (0,c) and proved the convergence ⇒ exponential-behavior implication via Metric.tendsto_atTop + exp∘log monotonicity. Result: 0 sorries, only the 3 structural axioms (h, h_pos, pyber_bounds), no sorryAx, no Lean.ofReduceBool. | 2026-07-08 (researcher-3): completed Part III's two-sided bracket by adding limSup_le_log_c2, and added convergent_limit_in_pyber_window pinning any limit to [log c₁, log c₂]. Still 0 sorries, 3 structural axioms, 8→10 theorems.",
     "builtItems": [
       "Erdos117OQ01.base_implies_behavior — proved (was sorry): convergence to log c ⇒ ExponentialBehavior c for ε ∈ (0,c)",
       "Erdos117OQ01.ExponentialBehavior — corrected statement to ε ∈ (0,c) (unrestricted ∀ε>0 form is false)",
@@ -64,7 +64,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:10:05.551Z",
-  "lastUpdate": "2026-06-25",
+  "lastUpdate": "2026-07-08",
   "significance": 7,
   "tractability": 5
 }
