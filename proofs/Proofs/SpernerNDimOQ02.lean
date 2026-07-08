@@ -3431,4 +3431,30 @@ theorem topPivotBottom_zeroPivotCell (s : GridSimplex d N) (hd1 : 0 < d)
       rw [if_neg hjp, if_neg hjq] at h
       exact h.symm
 
+/-- **The dual base vertex is genuinely new.**  `topPivotBottom u`, the reciprocal
+base vertex the top-facet (`Fin.last d`) pivot prepends below `u`'s chain,
+coincides with no vertex of `u`'s own chain: its `lastIncDir` coordinate is
+`base − 1`, strictly below the chain minimum.  That coordinate — direction
+`incDir (d-1)` — never dips below its base value along the chain
+(`coord_incDir_at`: it is `base` until step `d-1` and `base + 1` after), while the
+dual base sits one unit lower still.  This is the mirror of
+`zeroPivotTop_not_mem_chain` for the facet-`0` pivot: it shows the top-facet pivot
+genuinely leaves the original cell, so the dual partner cell is a *distinct*
+filling of the shared facet — the distinctness datum the full `topPivotCell`
+assembly and the boundary partial involution `adj` require. -/
+theorem topPivotBottom_not_mem_chain (u : GridSimplex d N) (hd1 : 0 < d)
+    (hfeas : 1 ≤ (u.verts 0).coords (lastIncDir u hd1)) (m : Fin (d + 1)) :
+    topPivotBottom u hd1 hfeas ≠ u.verts m := by
+  intro h
+  have hk : d - 1 < d := by omega
+  have hval : lastIncDir u hd1 = u.incDir ⟨d - 1, hk⟩ := rfl
+  have hcoord : (topPivotBottom u hd1 hfeas).coords (lastIncDir u hd1)
+      = (u.verts m).coords (lastIncDir u hd1) := by rw [h]
+  rw [topPivotBottom_coords_lastIncDir] at hcoord
+  have hmono := u.coord_incDir_at ⟨d - 1, hk⟩ m
+  rw [← hval] at hmono
+  have hge : (u.verts 0).coords (lastIncDir u hd1)
+      ≤ (u.verts m).coords (lastIncDir u hd1) := by rw [hmono]; split <;> omega
+  omega
+
 end SpernerNDimOQ02
