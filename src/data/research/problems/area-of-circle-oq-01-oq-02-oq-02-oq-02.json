@@ -10,17 +10,18 @@
       "The −n² eigenvalue is exactly what drives Wirtinger's inequality: every Fourier mode of f'' contributes a factor n² ≥ 1, with equality only on the first harmonic — the circle, the equality case of C² ≥ 4πA.",
       "Mathlib does NOT package 'derivative of a periodic function is periodic' (no Function.Periodic.deriv on this toolchain). Proved here from deriv_comp_add_const: since (fun x ↦ f (x+T)) = f, their derivatives agree, giving f'(t+T) = f'(t).",
       "ContDiff ℝ 1 (deriv f) is extracted from ContDiff ℝ 2 f via contDiff_succ_iff_deriv (n := 1) |>.2.2 — note the current 3-way conjunction (Differentiable ∧ (n=ω→AnalyticOn) ∧ ContDiff n (deriv f)).",
-      "(i·n)·(i·n) collapses to −n² via Complex.I_mul_I (I*I = -1) after a ring normalization that pulls out (I*I)·n²."
+      "(i·n)·(i·n) collapses to −n² via Complex.I_mul_I (I*I = -1) after a ring normalization that pulls out (I*I)·n².",
+      "The n=0 companion is governed by FTC, not the i·n divide-by-n identity: fourier 0 = 1 so c₀(f') is the period-average of f', and intervalIntegral.integral_deriv_eq_sub + periodicity forces it to 0. Together with the -n² eigenvalue (n≠0) this pins the full differentiation spectrum: 0 on constants, i·n on the n-th harmonic."
     ],
     "builtItems": [
-      "AreaOfCircleOQ01OQ02OQ02OQ02.lean: 2 theorems, 0 axioms, 0 sorries, imports and reuses the parent IBP identity.",
+      "AreaOfCircleOQ01OQ02OQ02OQ02.lean: 3 theorems, 0 axioms, 0 sorries, imports and reuses the parent IBP identity. VERIFIED via docker build (Built [7744/7744]).",
       "deriv_periodic_of_periodic: the derivative of a T-periodic function is T-periodic.",
-      "fourierCoeffOn_deriv2_periodic: ĉₙ(f'') = −n²·ĉₙ(f) for C² periodic f, n ≠ 0."
+      "fourierCoeffOn_deriv2_periodic: cₙ(f'') = -n²·cₙ(f) for C² periodic f, n ≠ 0.",
+      "fourierCoeffOn_deriv_zero_periodic: c₀(f') = 0 for C¹ periodic f (zero mode), via FTC ∫ f' = f(2π)-f(0) = 0."
     ],
-    "progressSummary": "Child of area-of-circle-oq-01-oq-02-oq-02 (Isoperimetric Inequality via Fourier analysis). The parent gives the first-order IBP identity ĉₙ(f')=i·n·ĉₙ(f); this entry iterates it to the second-order identity ĉₙ(f'')=−n²·ĉₙ(f), the −n² eigenvalue underlying Wirtinger's inequality and the equality case (the circle). Also supplies the missing lemma that the derivative of a periodic function is periodic. Both 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound only), no native_decide.",
+    "progressSummary": "PROGRESS: n=0 companion c₀(f')=0 proved and VERIFIED (0/0), completing the spectral picture of d/dx on periodic functions (3 theorems total). Remaining: Wirtinger via Parseval, then isoperimetric assembly.",
     "nextSteps": [
-      "Assemble Wirtinger's inequality ∫|f'|² ≥ ∫|f|² (mean-zero f, period 2π) from the n²≥1 Fourier-mode bound and Parseval.",
-      "Prove the n=0 companion ĉ₀(f') = 0 (derivative of a periodic function has zero mean) to complete the spectral picture.",
+      "Assemble Wirtinger inequality ∫|f'|² ≥ ∫|f|² (mean-zero f, period 2π) from the n²≥1 Fourier-mode bound and Parseval; requires fourierCoeffOn Parseval/completeness for periodic functions (assess Mathlib fourierCoeff L² isometry availability).",
       "Combine with the area/perimeter Fourier expansions to close the isoperimetric inequality C² ≥ 4πA with the circle as the equality case."
     ]
   },

@@ -79,4 +79,39 @@ theorem fourierCoeffOn_deriv2_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 2 f)
       I_mul_I]
   ring
 
+/-- **The `n = 0` companion**: the derivative of a periodic function has zero
+    mean, i.e. its zeroth Fourier coefficient vanishes,
+
+        ĉ₀(f') = 0.
+
+    Whereas `fourierCoeffOn_deriv_periodic` needs `n ≠ 0` (it divides by `n`), the
+    zero mode is governed by the fundamental theorem of calculus: for a `C¹`
+    periodic `f` the character `fourier 0` is constant `1`, so `ĉ₀(f')` is the
+    average of `f'` over one period, and `∫₀^{2π} f' = f(2π) − f(0) = 0` by
+    periodicity.  Together with the `−n²` eigenvalue for `n ≠ 0` this pins down
+    the full spectrum of the differentiation operator on periodic functions:
+    `0` on constants, `i·n` on the `n`-th harmonic. -/
+theorem fourierCoeffOn_deriv_zero_periodic (f : ℝ → ℝ) (hf : ContDiff ℝ 1 f)
+    (hperiod : ∀ t, f (t + 2 * π) = f t) (hab : (0 : ℝ) < 2 * π) :
+    fourierCoeffOn hab (ofReal ∘ deriv f) 0 = 0 := by
+  rw [fourierCoeffOn_eq_integral]
+  -- The zero character is constant `1`, so the integrand is just `f'`.
+  simp only [neg_zero, fourier_zero, one_smul]
+  -- `f` is differentiable and `f'` is interval-integrable (it is continuous).
+  have hderiv : ∀ x ∈ Set.uIcc (0 : ℝ) (2 * π), DifferentiableAt ℝ f x :=
+    fun x _ => hf.differentiable le_rfl x
+  have hint : IntervalIntegrable (deriv f) MeasureTheory.volume 0 (2 * π) :=
+    (hf.continuous_deriv le_rfl).intervalIntegrable 0 (2 * π)
+  -- FTC: the integral of the derivative over a period is the boundary difference.
+  have hz : ∫ x in (0 : ℝ)..(2 * π), deriv f x = f (2 * π) - f 0 :=
+    intervalIntegral.integral_deriv_eq_sub hderiv hint
+  -- Periodicity makes that boundary difference vanish.
+  have hfp : f (2 * π) = f 0 := by have h := hperiod 0; rwa [zero_add] at h
+  -- Push `ofReal` through the (real) integral, then apply the two facts above.
+  have hcomp : (∫ x in (0 : ℝ)..(2 * π), (ofReal ∘ deriv f) x)
+      = ((∫ x in (0 : ℝ)..(2 * π), deriv f x : ℝ) : ℂ) := by
+    simp only [Function.comp]
+    exact intervalIntegral.integral_ofReal
+  rw [hcomp, hz, hfp, sub_self, ofReal_zero, smul_zero]
+
 end IsoperimetricFourier
