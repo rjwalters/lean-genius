@@ -163,3 +163,38 @@ A(5)=12 (witness {0,2,6,8,12}? — H(5)=12; needs ruling out max ≤ 11, more si
 parity 5-subsets to eliminate mod 3, likely mod-5 too). Build survived the
 concurrent-Mathlib-rebuild storm via olean-existence retry loop (base built on
 attempt 4, my file clean on attempt 1).
+
+## Session 2026-07-08 (researcher-1) — exact value A(6) = 16 (first prime-5-binding lower bound)
+
+Added the next exact value after A(2)=2, A(3)=6, A(4)=8, A(5)=12, as companion file
+`proofs/Proofs/Erdos1204A6.lean` (203 L, 5 thm, **0 axioms / 0 sorries**, kernel
+`decide` only — NO native_decide, so `#print axioms A_six` is the propext/Choice/Quot
+trio). Kept separate from the 480-line Problem file to avoid the concurrent-session race.
+
+- `A_six : A 6 = 16` — matches Hardy–Littlewood minimal diameter H(6)=16.
+- `admissible_witness_six : Admissible {0,4,6,10,12,16}` — witness for A(6) ≤ 16
+  (even ⇒ miss odd mod 2; residues 0,1,0,1,0,1 mod 3 ⇒ miss class 2; residues
+  0,4,1,0,2,1 mod 5 ⇒ miss class 3; p≥7 automatic since |a|=6<p).
+- `admissible_six_sup_ge` — lower bound A(6) ≥ 16.
+- `no_admissible_six_evens` / `no_admissible_six_odds` — the lower-bound cores.
+
+**Why A(6) is the interesting frontier point.** For k≤5 the lower bound closed with
+parity + mod 3 (each mod-3 class in the six single-parity elements ≤ {0..11} held
+exactly two elements, so missing one left ≤4 slots < 5). At k=6 the single-parity
+window is the EIGHT evens/odds in {0..15}, where mod-3 classes have sizes 3,2,3.
+Missing the size-2 class (1 mod 3 for evens, 2 mod 3 for odds) leaves a FULL 6-set:
+{0,2,6,8,12,14} resp. {1,3,7,9,13,15}. Neither dies to mod 3 — but BOTH cover all
+five residue classes mod 5, so they fail admissibility at p=5. **This is the first
+exact value whose lower bound genuinely needs the third prime 5** — the finite
+analogue of the sieve heuristic (each prime p removes a p/(p−1) factor) behind the
+conjectured A(k) ∼ k log k.
+
+Recipe (reused from A5): `Finset.eq_of_subset_of_card_le hs (by rw [hcard]; decide)`
+to pin the forced 6-set, then `rw [heq] at ha; obtain ⟨r5,hr5⟩ := ha 5 (by decide);
+fin_cases r5` and discharge each class with `exact absurd (by decide) (hr5 <elem> (by decide))`
+picking the concrete element realizing that class. mod-3 subset narrowing uses the A5
+idiom `fin_cases hxE <;> first | decide | exact absurd (by decide) hxne`.
+
+Still OPEN: asymptotics A(k)∼k log k and B(k) (need analytic sieve). Next exact value:
+A(7)=20 (H(7)), witness e.g. {0,4,6,10,16,18,22}? — verify; the lower bound will need
+primes 2,3,5,7 combined and the case analysis grows.
