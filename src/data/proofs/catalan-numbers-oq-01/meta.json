@@ -135,7 +135,8 @@
     "implications": "Supplies the O(1) computational recurrence for Catalan numbers, which Mathlib previously offered only as the O(n) Segner convolution or the central-binomial closed form. It exhibits the Catalan sequence as holonomic of order one and makes single-step generation and induction on consecutive Catalan numbers straightforward.",
     "openQuestions": [
       "Derive the closed ratio C(n+1)/C(n) = 2(2n+1)/(n+2) over ℚ and use it to prove the asymptotic growth C(n+1)/C(n) → 4.",
-      "Prove the analogous first-order recurrence for the central Delannoy or Motzkin numbers, identifying which combinatorial sequences are holonomic of order one versus two."
+      "Prove the analogous first-order recurrence for the central Delannoy or Motzkin numbers, identifying which combinatorial sequences are holonomic of order one versus two.",
+      "Translate this first-order recurrence into the generating-function picture: show the Catalan generating function C(x) = Σ Cₙxⁿ satisfies the first-order linear ODE x(1−4x)·C'(x) + (1−2x)·C(x) − 1 = 0 (equivalently the algebraic equation x·C(x)² − C(x) + 1 = 0), making the holonomic-of-order-one property here exactly the D-finiteness of C(x). Mathlib has neither the ODE nor the recurrence↔ODE correspondence."
     ]
   },
   "leanFile": {
