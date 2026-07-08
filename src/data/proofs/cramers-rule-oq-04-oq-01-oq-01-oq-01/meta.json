@@ -80,7 +80,8 @@
       "The specialization is entirely mechanical once the right Mathlib primitives are named: det_fin_two/three give the determinant as a fixed polynomial, and updateCol_self/updateCol_ne classify each entry of the column-replaced matrix as coming from b or from A.",
       "Column replacement acts only on the second index. updateCol_self fires exactly on the entries whose column equals the replaced index i (these become b), and updateCol_ne on all others (these stay A) — so for a 2×2 the numerator picks up b in one column and A in the other, giving b₀a₁₁ − a₀₁b₁ for i = 0.",
       "Because det_fin_two and det_fin_three expand into a fixed monomial order, the proof needs no ring step: substituting the entries yields the closed form verbatim, which is why each theorem closes by rewriting alone.",
-      "The 3×3 numerators are the six Sarrus terms with exactly one factor in each replaced by the corresponding bᵢ; reading them off is the explicit content of Cramer's rule for three equations in three unknowns."
+      "The 3×3 numerators are the six Sarrus terms with exactly one factor in each replaced by the corresponding bᵢ; reading them off is the explicit content of Cramer's rule for three equations in three unknowns.",
+      "This is a trust-but-verify formalization: because each theorem closes by rewriting to det_fin_two/three and reflexivity — with no ring normalization to absorb discrepancies — the stated textbook closed form must match Mathlib's own determinant monomial-for-monomial, or the file fails to compile. The formalization therefore certifies not just that some closed form exists, but that the exact classroom formula is the correct one."
     ],
     "prerequisites": [
       "The parent's cramer_solution: xᵢ = det(Aᵢ)/det A over a field with det A ≠ 0",
@@ -99,20 +100,36 @@
       "mathContext": "$A_i = A.\\mathrm{updateCol}\\,i\\,b$ and $x_i = \\det(A_i)/\\det A$ (parent `cramer_solution`); this file expands both $\\det(A_i)$ and $\\det A$ for $n = 2, 3$ via $\\det_{\\mathrm{fin\\,two}}$ / $\\det_{\\mathrm{fin\\,three}}$ and $\\mathrm{updateCol\\_self}/\\mathrm{updateCol\\_ne}$."
     },
     {
-      "id": "two-by-two",
-      "title": "Section I: The 2×2 Closed Forms",
+      "id": "two-numerators",
+      "title": "Section I.a: The 2×2 Numerator Determinants",
       "startLine": 44,
-      "endLine": 80,
-      "summary": "det_updateCol_two_zero / _one expand the column-replaced 2×2 determinants; cramer_two_zero / _one then give x₀ = (b₀a₁₁ − a₀₁b₁)/(a₀₀a₁₁ − a₀₁a₁₀) and x₁ = (a₀₀b₁ − b₀a₁₀)/det A.",
-      "mathContext": "Cramer's rule for two equations in two unknowns, as a ratio of 2×2 determinants."
+      "endLine": 63,
+      "summary": "The two helper lemmas det_updateCol_two_zero / _one expand det(A.updateCol 0 b) and det(A.updateCol 1 b). Each is det_fin_two followed by a single simp only [updateCol_self, updateCol_ne …], which classifies the four entries: the replaced column becomes b, the untouched column stays A. The results b₀a₁₁ − a₀₁b₁ and a₀₀b₁ − b₀a₁₀ are the two 2×2 numerator determinants of Cramer's rule.",
+      "mathContext": "$\\det(A_0) = b_0 a_{11} - a_{01} b_1$ and $\\det(A_1) = a_{00} b_1 - b_0 a_{10}$, where $A_i = A.\\mathrm{updateCol}\\,i\\,b$."
     },
     {
-      "id": "three-by-three",
-      "title": "Section II: The 3×3 Closed Forms",
+      "id": "two-closed-form",
+      "title": "Section I.b: The 2×2 Closed Forms",
+      "startLine": 64,
+      "endLine": 80,
+      "summary": "cramer_two_zero / _one assemble the headline formulas x₀ = (b₀a₁₁ − a₀₁b₁)/(a₀₀a₁₁ − a₀₁a₁₀) and x₁ = (a₀₀b₁ − b₀a₁₀)/det A. Each is three rewrites — cramer_solution (parent), the matching numerator helper, then det_fin_two on the denominator — and closes by reflexivity with no ring step.",
+      "mathContext": "$x_0 = \\dfrac{b_0 a_{11} - a_{01} b_1}{a_{00} a_{11} - a_{01} a_{10}}, \\quad x_1 = \\dfrac{a_{00} b_1 - b_0 a_{10}}{a_{00} a_{11} - a_{01} a_{10}}$."
+    },
+    {
+      "id": "three-numerators",
+      "title": "Section II.a: The 3×3 Numerator Determinants (Sarrus)",
       "startLine": 82,
+      "endLine": 118,
+      "summary": "det_updateCol_three_zero / _one / _two expand the three column-replaced 3×3 determinants into the six-term Sarrus form of det_fin_three. In each, exactly one factor of every monomial is carried over from b (the factor whose row labels the replaced column); the three Fin-3 index inequalities are discharged by decide before simp only places each entry.",
+      "mathContext": "$\\det(A_0)$ is the Sarrus expansion of $\\det A$ with the first column $(a_{00},a_{10},a_{20})$ replaced by $(b_0,b_1,b_2)$; likewise $\\det(A_1), \\det(A_2)$ for columns 1 and 2."
+    },
+    {
+      "id": "three-closed-form",
+      "title": "Section II.b: The 3×3 Closed Forms",
+      "startLine": 119,
       "endLine": 157,
-      "summary": "det_updateCol_three_zero / _one / _two expand the three column-replaced 3×3 determinants by Sarrus; cramer_three_zero / _one / _two give the explicit quotients with numerator and denominator both fully expanded into entries.",
-      "mathContext": "Cramer's rule for three equations in three unknowns, with Sarrus-expanded determinants."
+      "summary": "cramer_three_zero / _one / _two give the explicit quotients xᵢ = det(Aᵢ)/det A with numerator and denominator both fully expanded into entries. As in the 2×2 case each proof is cramer_solution + the numerator helper + det_fin_three on the denominator, closing definitionally because det_fin_three fixes the monomial order on both sides.",
+      "mathContext": "Cramer's rule for three equations in three unknowns: each $x_i$ is a ratio of two Sarrus-expanded 3×3 determinants sharing the denominator $\\det A$."
     }
   ],
   "mainTheorems": [
