@@ -209,4 +209,54 @@ theorem IsDiagonalizable.aeval {M : Matrix n n K} (hM : M.IsDiagonalizable)
   rw [hconj]
   exact isDiag_sum _ _ fun i _ => IsDiag.smul (q.coeff i) (isDiag_pow hD i)
 
+/-!
+## Simultaneous diagonalization — the common-diagonalizer closure laws
+
+The `aeval` capstone above closes `IsDiagonalizable` under polynomials of a
+*single* matrix `M` (all sharing `M`'s diagonalizer `P`).  The remaining
+documented `nextSteps` item — sums and products of *distinct* diagonalizable
+matrices — is genuinely harder: in general `M + N` and `M * N` need NOT be
+diagonalizable, and the classical sufficient condition (commuting matrices are
+*simultaneously* diagonalizable) requires an eigenspace-decomposition argument.
+
+The two laws below isolate the reusable, elementary half of that story: **once a
+single invertible `P` is known to diagonalize both `M` and `N`, it diagonalizes
+`M + N` and `M * N` as well.**  A future proof that commuting diagonalizable
+matrices admit a common `P` would combine with these to conclude the commuting
+sum/product is diagonalizable; here the hard eigenspace step is deliberately left
+out and the algebraic consequence is recorded in full.
+-/
+
+/-- **Common diagonalizer ⟹ the sum is diagonalizable.**  If a single invertible
+    `P` diagonalizes both `M` and `N` (so `P⁻¹ M P` and `P⁻¹ N P` are diagonal),
+    then the same `P` diagonalizes `M + N`, since
+    `P⁻¹ (M + N) P = P⁻¹ M P + P⁻¹ N P` is a sum of two diagonal matrices. -/
+theorem IsDiagonalizable.add_of_commonDiagonalizer {M N P : Matrix n n K}
+    (hP : IsUnit P) (hM : (P⁻¹ * M * P).IsDiag) (hN : (P⁻¹ * N * P).IsDiag) :
+    (M + N).IsDiagonalizable := by
+  refine ⟨P, hP, ?_⟩
+  have h : P⁻¹ * (M + N) * P = (P⁻¹ * M * P) + (P⁻¹ * N * P) := by
+    rw [Matrix.mul_add, Matrix.add_mul]
+  rw [h]
+  exact hM.add hN
+
+/-- **Common diagonalizer ⟹ the product is diagonalizable.**  If a single
+    invertible `P` diagonalizes both `M` and `N`, then the same `P` diagonalizes
+    `M * N`, since `P⁻¹ (M * N) P = (P⁻¹ M P) (P⁻¹ N P)` (cancelling the interior
+    `P * P⁻¹ = 1`) is a product of two diagonal matrices (`isDiag_mul`).  Unlike
+    the general product of diagonalizable matrices, sharing a diagonalizer makes
+    the product diagonalizable unconditionally. -/
+theorem IsDiagonalizable.mul_of_commonDiagonalizer {M N P : Matrix n n K}
+    (hP : IsUnit P) (hM : (P⁻¹ * M * P).IsDiag) (hN : (P⁻¹ * N * P).IsDiag) :
+    (M * N).IsDiagonalizable := by
+  refine ⟨P, hP, ?_⟩
+  have hPdet : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hPP : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hPdet
+  have h : P⁻¹ * (M * N) * P = (P⁻¹ * M * P) * (P⁻¹ * N * P) := by
+    calc P⁻¹ * (M * N) * P
+        = P⁻¹ * M * (P * P⁻¹) * N * P := by rw [hPP]; simp only [mul_one, mul_assoc]
+      _ = (P⁻¹ * M * P) * (P⁻¹ * N * P) := by simp only [mul_assoc]
+  rw [h]
+  exact isDiag_mul hM hN
+
 end MinpolyCharpolyOQ02Incomplete01
