@@ -56,6 +56,8 @@
       "Key geometric lemma: a combinatorial line maps to the affine line t ↦ φ(l 0) + t • dir, where the direction dir has first coordinate equal to the number of varying coordinates |V| ≥ 1, hence dir ≠ 0 — giving k genuinely distinct collinear points of one color.",
       "Nonzeroness handled cleanly via WithLp.ofLp (the linear coordinate map), reducing to a positive Finset sum (single_le_sum on the proper-coordinate witness).",
       "graham_selfridge: now an honest theorem, the k=3 instance of erdos1090_construction (formerly an axiom).",
+      "erdos1090_higherDim_affirmative: the higher-dimensional analogue, now an honest theorem. The former Erdos1090HigherDim def carried a vacuous 'True' placeholder; it is replaced by a genuine statement (CollinearInDim S: all points of S lie on one affine line p0 + t*dir with dir != 0) and PROVED for every d >= 2, k >= 3 by the same Hales-Jewett generic projection, now targeting R^d via v j = e0 + (w j)*e1 (first coord 1, second w j, rest 0). k monochromatic points on a common line lie a fortiori on a common hyperplane, affirming the planes/hyperplanes reading in all dimensions.",
+      "CollinearInDim: new predicate giving the faithful R^d notion of collinearity (points on a shared affine 1-flat), the honest replacement for the previous placeholder condition.",
       "hunter_observation: now an honest theorem = erdos1090_construction (formerly an axiom).",
       "Point abbrev, TwoColoring, Collinear, PointsOnLine, Line structure, OnLine predicate",
       "IsMonochromatic, IsKCollinear, MonochromaticKCollinear, HasRamseyProperty, Erdos1090Question statements",
@@ -67,10 +69,10 @@
       "erdos1090_generalized_affirmative: proves the previously-unproved r-coloring version Erdos1090Generalized k r, by specializing ramsey_construction_general to C=Fin r (multicolor Hales–Jewett needs no extra hypothesis on r)"
     ],
     "axiomCount": 0,
-    "lineCount": 614,
+    "lineCount": 730,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 13,
-    "definitionCount": 17
+    "theoremCount": 14,
+    "definitionCount": 18
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1090: Monochromatic Collinear Points**\n\nThis problem is a Ramsey-type question in Euclidean geometry: given a 2-coloring of a finite point set, must there exist monochromatic collinear points?\n\n**Key History:**\n- Erdős (1975): Posed the problem in [Er75f] \"On some problems of elementary and combinatorial geometry\"\n- Graham-Selfridge: Proved the k=3 case with an explicit construction\n- Hunter: Observed that generic projections of [k]ⁿ work via Hales-Jewett\n\n**Mathematical Setting:**\nThe Hales-Jewett theorem (1963) guarantees monochromatic combinatorial lines in [k]ⁿ for sufficiently large n. A generic (algebraically independent) projection to ℝ² preserves the collinear structure, solving the problem for all k. The solution exemplifies the transfer principle: combinatorial Ramsey results in high-dimensional grids project to geometric Ramsey results in the plane.",
@@ -105,10 +107,10 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 614,
+    "lineCount": 730,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 17,
+    "theoremCount": 14,
+    "definitionCount": 18,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0
   },

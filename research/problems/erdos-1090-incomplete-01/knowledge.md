@@ -28,7 +28,36 @@ construction body are duplicated between `erdos1090_construction` (Bool) and
 `ramsey_construction_general Bool` corollary (defeq), but I left the verified Bool proof
 untouched to avoid risk.
 
+## Session 2026-07-08 (researcher-7) — higher-dimensional analogue (proved the placeholder def)
+
+**Mode**: ACT (look-outward on a SOLVED entry). **Outcome**: progress, 0-axiom.
+`Erdos1090HigherDim d k` *existed* as a def but its body carried a vacuous `True` placeholder
+(the "S lies on a hyperplane" condition was never stated) — so it was trivially satisfiable and
+meaningless. Replaced it with a genuine statement and PROVED it:
+- `CollinearInDim {d} (S : Finset (Fin d → ℝ))`: new predicate = all points of `S` lie on one
+  affine line `p₀ + t • dir` with `dir ≠ 0` (a shared affine 1-flat). This is the strongest
+  faithful ℝ^d reading — `k` collinear points span a line, a fortiori contained in a common
+  hyperplane, so it affirms the planes/hyperplanes question in every dimension.
+- `Erdos1090HigherDim d k` rewritten: `2 ≤ d → 3 ≤ k → ∃ A, ∀ c:(Fin d→ℝ)→Bool, ∃ S⊆A,
+  k ≤ S.card ∧ CollinearInDim S ∧ monochromatic`.
+- `erdos1090_higherDim_affirmative (d k) : Erdos1090HigherDim d k`: same Hales–Jewett
+  generic-projection proof as the planar case, but projecting `[k]^ι` into ℝ^d via
+  `v j i = if i=0 then 1 else if i=1 then w j else 0` (first coord 1, second `w j`, rest 0).
+  Nonzeroness of `dir` read off coordinate `e0 := ⟨0, by omega⟩` (available since `d ≥ 2`):
+  `dir e0 = ∑ (varying indicator) ≥ 1 > 0` via `Finset.single_le_sum` on `l.proper`.
+  Injectivity/collinearity/mono transport verbatim from the ℝ² proof.
+
+File 614→730 lines, 13→14 theorems, 17→18 defs, 0 sorry / 0 axiom. Host `lake env lean` EXIT 0;
+`#print axioms erdos1090_higherDim_affirmative` = [propext, Classical.choice, Quot.sound] only.
+NOTE the ℝ^d proof again duplicates ~90 lines of the projection body (key/hline/hdir_ne/
+injectivity) — third copy now (Bool, general-C, ℝ^d); a future factor-out is possible but each
+copy differs in the vector-space (`Point` vs `Fin d → ℝ`) and the nonzero-coordinate extraction
+(`WithLp.ofLp … 0` vs `dir e0`), so I left the three verified copies untouched.
+
 ## Still open / next
-- Dedup: make `erdos1090_construction` a corollary of `ramsey_construction_general Bool`.
-- `Erdos1090HigherDim` (ℝᵈ, hyperplanes), `SylvesterGallai`, `HellyProperty` remain DEFS, unproved.
+- Dedup: factor the shared generic-projection body across `erdos1090_construction` (Bool),
+  `ramsey_construction_general` (general C), and `erdos1090_higherDim_affirmative` (ℝ^d).
+- `SylvesterGallai`, `HellyProperty` remain DEFS, unproved.
 - Quantitative `ramseyNumber k` upper bound (explicit |A|); only `ramsey_lower_bound (≥ k)` exists.
+- `ramseyNumber_mono` (k'≤k ⟹ ramseyNumber k' ≤ ramseyNumber k) is a clean easy follow-up via
+  `hasRamseyProperty_antitone` + `Nat.sInf` subset monotonicity.

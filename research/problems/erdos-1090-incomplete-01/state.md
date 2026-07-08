@@ -1,16 +1,16 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-04-03T08:10:05.551Z
-**Iteration**: 1
+**Phase**: PROGRESS (look-outward on a SOLVED entry)
+**Since**: 2026-07-08
+**Iteration**: 3
 
 ## Current Focus
 
-Initial exploration of the problem.
+Higher-dimensional analogue of Erdős #1090, proved.
 
 ## Active Approach
 
-None yet.
+Hales–Jewett generic projection, now targeting ℝ^d instead of ℝ².
 
 ## Blockers
 
@@ -18,10 +18,12 @@ None.
 
 ## Next Action
 
-Begin problem exploration.
+Remaining follow-ups: dedup erdos1090_construction as a corollary of
+ramsey_construction_general Bool; quantitative ramseyNumber upper bound;
+SylvesterGallai / HellyProperty still DEFS.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 3
+- Current approach attempts: 1
+- Approaches tried: 2 (r-coloring generalization; higher-dimensional analogue)
