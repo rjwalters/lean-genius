@@ -32,23 +32,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE. Child of erdos-1012-oq-01 (Woodall function f(k) and edge threshold). The parent evaluates edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1 only at the boundary points n=2k+2, 2k+3. This entry supplies the variation in n: edgeThreshold_eq (explicit polynomial form), edgeThreshold_succ_left (recurrence: adding a vertex raises the threshold by exactly n-k-1, for n≥k+1), edgeThreshold_lt_succ (strict monotonicity for n≥k+2), edgeThreshold_mono (weak monotonicity for k+1≤n≤m). Erdos1012OQ01OQ02.lean, 1 helper + 4 theorems, 0 axioms, 0 sorries, no native_decide.",
+    "progressSummary": "COMPLETE. Child of erdos-1012-oq-01 (Woodall function f(k) and edge threshold). The parent evaluates edgeThreshold n k = C(n-k-1,2)+C(k+2,2)+1 only at the boundary points n=2k+2, 2k+3. This entry supplies the variation in n: edgeThreshold_eq (explicit polynomial form), edgeThreshold_succ_left (recurrence: adding a vertex raises the threshold by exactly n-k-1, for n≥k+1), edgeThreshold_lt_succ (strict monotonicity for n≥k+2), edgeThreshold_mono (weak monotonicity for k+1≤n≤m). Erdos1012OQ01OQ02.lean, 2 helpers + 5 theorems (incl. non-degeneracy edgeThreshold≤C(n,2)), 0 axioms, 0 sorries, no native_decide.",
     "builtItems": [
-      "Erdos1012OQ01OQ02.lean: 5 theorems, 0 axioms (propext/Quot.sound only — no Classical.choice), 0 sorries. Imports Proofs.Erdos1012OQ01 for the edgeThreshold definition.",
+      "Erdos1012OQ01OQ02.lean: 7 theorems, 0 axioms (propext/Quot.sound only — no Classical.choice), 0 sorries. Imports Proofs.Erdos1012OQ01 for the edgeThreshold definition.",
       "choose_two_succ: Pascal discrete-derivative C(m+1,2) = C(m,2) + m (via Nat.choose_succ_succ + Nat.choose_one_right).",
       "edgeThreshold_eq: explicit form (n-k-1)(n-k-2)/2 + (k+2)(k+1)/2 + 1 (via Nat.choose_two_right + omega subtraction identities).",
       "edgeThreshold_succ_left: edgeThreshold (n+1) k = edgeThreshold n k + (n-k-1) for n≥k+1 (the C(m+1,2)-C(m,2)=m recurrence with m=n-k-1).",
-      "edgeThreshold_lt_succ (strict mono, n≥k+2), edgeThreshold_mono (weak mono via induction on the ≤ proof)."
+      "edgeThreshold_lt_succ (strict mono, n≥k+2), edgeThreshold_mono (weak mono via induction on the ≤ proof).",
+      "two_mul_choose_two: 2·C(m,2) = m·(m-1) (subtraction-free doubling helper, elementary induction reusing choose_two_succ).",
+      "edgeThreshold_le_choose_two: NON-DEGENERACY — for n≥2k+3, edgeThreshold n k ≤ C(n,2). The required edge count never exceeds the complete graph's, so the long-cycle hypothesis edgeCount G ≥ edgeThreshold n k is satisfiable rather than vacuous. Doubled gap 2(C(n,2)−edgeThreshold) = 2k(k+2)+2c(k+1)≥0 (c=n−(2k+3)), closed by nlinarith."
     ],
     "insights": [
       "The threshold's discrete derivative in n is exactly n-k-1: C((n-k-1)+1,2) - C(n-k-1,2) = n-k-1. This is the structural reason the edge requirement tightens with each added vertex and f(k) is a well-defined minimum.",
       "Lean gotcha: Nat.choose_succ_succ m 1 produces m.choose (1+1) (NOT m.choose 2); omega treats those as distinct atoms. Force the defeq with `show m + m.choose 2 = ...` before omega.",
       "edgeThreshold_eq cannot be finished by omega alone (the m*(m-1) product is nonlinear); use Nat.choose_two_right and only the linear subtraction identities (n-k-1-1 = n-k-2, k+2-1 = k+1) under omega.",
-      "Weak monotonicity proved by `induction hnm with | refl | @step m h ih` on the ≤ proof (Nat.le.rec); the step case applies the n-recurrence and omega (treating edgeThreshold terms as atoms, n-k-1 ≥ 0)."
+      "Weak monotonicity proved by `induction hnm with | refl | @step m h ih` on the ≤ proof (Nat.le.rec); the step case applies the n-recurrence and omega (treating edgeThreshold terms as atoms, n-k-1 ≥ 0).",
+      "Non-degeneracy needs no division: double both sides via 2·C(m,2)=m·(m-1), substitute n=2k+3+c to eliminate all truncated subtraction, and the gap becomes the manifestly nonnegative polynomial 2k(k+2)+2c(k+1). nlinarith closes it; omega then divides the doubled inequality back by 2."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Non-degeneracy: edgeThreshold n k ≤ C(n,2) (the complete-graph edge count) on the Woodall range n ≥ 2k+3, so the long-cycle hypothesis is satisfiable rather than vacuous.",
       "Monotonicity in k for fixed n, and the joint growth rate Θ(n²) of the threshold.",
       "Connect the n-recurrence to the parent's threshold_diff (the boundary difference C(k+2,2)-C(k+1,2) is the single step at n=2k+2)."
     ]
@@ -82,8 +84,8 @@
     {
       "path": "Proofs/Erdos1012OQ01OQ02.lean",
       "filename": "Erdos1012OQ01OQ02.lean",
-      "lineCount": 82,
-      "theoremCount": 5,
+      "lineCount": 125,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
