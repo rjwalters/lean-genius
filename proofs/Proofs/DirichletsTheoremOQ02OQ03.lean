@@ -167,6 +167,48 @@ theorem p3_lt_succ (k : ℕ) : p3 k < p3 (k + 1) := by
 theorem p3_strictMono : StrictMono p3 :=
   strictMono_nat_of_lt_succ p3_lt_succ
 
+/-! ### `p3` enumerates *exactly* the primes ≡ 3 (mod 4)
+
+Strict monotonicity says `p3` lists primes `≡ 3 (mod 4)` in increasing order
+without repetition; what makes "`p3 k` is *the* k-th such prime" rigorous is the
+*completeness* statement — no prime `≡ 3 (mod 4)` is skipped.  This follows from
+the minimality of `nextP3` (`nextP3_le_of`): the values of `p3` are gapless. -/
+
+/-- `p3` grows at least as fast as the index (a strictly increasing `ℕ → ℕ`
+sequence dominates the identity).  Used to locate any target below some `p3 k`. -/
+theorem p3_le_self (k : ℕ) : k ≤ p3 k := by
+  induction k with
+  | zero => simp
+  | succ k ih => have := p3_lt_succ k; omega
+
+/-- **Completeness of the enumeration.**  Every prime `q ≡ 3 (mod 4)` occurs as
+`p3 k` for some `k`; combined with `p3_strictMono` this certifies that `p3` is
+the increasing enumeration of *all* primes `≡ 3 (mod 4)`, so `p3 k` really is the
+`k`-th such prime and the tower bound `p3_le_tower` bounds every one of them. -/
+theorem p3_surjective {q : ℕ} (hq : Nat.Prime q) (hmod : q % 4 = 3) :
+    ∃ k, p3 k = q := by
+  have hex : ∃ k, q ≤ p3 k := ⟨q, p3_le_self q⟩
+  have hk : q ≤ p3 (Nat.find hex) := Nat.find_spec hex
+  refine ⟨Nat.find hex, le_antisymm ?_ hk⟩
+  rcases Nat.eq_zero_or_pos (Nat.find hex) with h0 | hpos
+  · -- q ≤ p3 0 = 3, and a prime ≡ 3 (mod 4) is ≥ 3, so q = 3
+    rw [h0]; have hq2 := hq.two_le; simp only [p3]; omega
+  · -- the predecessor is below q, so minimality of nextP3 pins p3 (Nat.find hex) ≤ q
+    obtain ⟨j, hj⟩ := Nat.exists_eq_succ_of_ne_zero hpos.ne'
+    have hmin : p3 j < q :=
+      not_le.mp (Nat.find_min hex (show j < Nat.find hex by omega))
+    rw [hj, p3_succ]
+    exact nextP3_le_of hmin hq hmod
+
+/-- **`p3` characterizes the primes `≡ 3 (mod 4)`.**  A number is a value of the
+enumeration iff it is a prime `≡ 3 (mod 4)`: `p3` is onto that set, and (by
+`p3_prime`/`p3_mod`) lands only in it. -/
+theorem mem_range_p3_iff (q : ℕ) :
+    (∃ k, p3 k = q) ↔ (Nat.Prime q ∧ q % 4 = 3) := by
+  constructor
+  · rintro ⟨k, rfl⟩; exact ⟨p3_prime k, p3_mod k⟩
+  · rintro ⟨hq, hmod⟩; exact p3_surjective hq hmod
+
 /-! ## Step 3: the certified iterated-factorial tower bound
 
 `B 0 = 3` and `B (k+1) = 4·(B k + 1)! − 1`.  We prove `p3 k ≤ B k`: the k-th

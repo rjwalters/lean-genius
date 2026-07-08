@@ -2,7 +2,7 @@
   "id": "dirichlets-theorem-oq-02-oq-03",
   "title": "Certified Growth Bound for the k-th Prime ≡ 3 (mod 4)",
   "slug": "dirichlets-theorem-oq-02-oq-03",
-  "description": "The parent's Euclid-style proof of infinitely many primes ≡ 3 (mod 4) certifies more than infinitude: it bounds how fast such primes grow. We extract the interval bound (a prime ≡ 3 mod 4 always lies in (n, 4·(n+1)! − 1]), build the increasing enumeration p₃(0) < p₃(1) < … of these primes, and prove the explicit iterated-factorial tower bound p₃(k) ≤ B(k) with B(0)=3, B(k+1)=4·(B(k)+1)!−1. We contrast this astronomically loose certified bound with the true asymptotic p_k ∼ 2k·ln k from the PNT for arithmetic progressions. Fully machine-checked (0 sorry, 0 axiom, native_decide-free).",
+  "description": "The parent's Euclid-style proof of infinitely many primes ≡ 3 (mod 4) certifies more than infinitude: it bounds how fast such primes grow. We extract the interval bound (a prime ≡ 3 mod 4 always lies in (n, 4·(n+1)! − 1]), build the increasing enumeration p₃(0) < p₃(1) < … of these primes, and prove the explicit iterated-factorial tower bound p₃(k) ≤ B(k) with B(0)=3, B(k+1)=4·(B(k)+1)!−1. We contrast this astronomically loose certified bound with the true asymptotic p_k ∼ 2k·ln k from the PNT for arithmetic progressions. Fully machine-checked (0 sorry, 0 axiom, native_decide-free). This iteration adds the completeness half: p3 enumerates *exactly* the primes ≡3 (mod 4) (mem_range_p3_iff / p3_surjective, via minimality of nextP3), so with strict monotonicity 'p3 k = the k-th such prime' is now rigorous and the tower bound provably bounds every one of them.",
   "meta": {
     "author": "Lean Genius Researcher (extends elementary Euclid argument, Euclid c. 300 BC; asymptotic: PNT for APs, de la Vallée Poussin 1896)",
     "sourceUrl": "https://www.erdosproblems.com/",
@@ -172,12 +172,15 @@
     }
   ],
   "leanFile": {
-    "lineCount": 230,
+    "lineCount": 272,
     "axiomCount": 0,
     "path": "Proofs/DirichletsTheoremOQ02OQ03.lean",
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 21
+    "theoremCount": 24
   },
-  "sorries": 0
+  "sorries": 0,
+  "status": "verified",
+  "badge": "verified",
+  "axiomCount": 0
 }
