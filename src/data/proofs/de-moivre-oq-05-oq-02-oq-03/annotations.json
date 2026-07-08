@@ -75,23 +75,47 @@
     "proofId": "de-moivre-oq-05-oq-02-oq-03",
     "range": {
       "startLine": 98,
-      "endLine": 155
+      "endLine": 146
     },
     "type": "concept",
     "title": "Decoupled Partition + Möbius Inversion",
-    "content": "sum_primitiveRoots_eq_moebius assembles the proof. The divisor partition ∑_{d∣k} f(d) = g(k) is proved for ALL k > 0 over the ambient domain using IsPrimitiveRoot.nthRoots_one_eq_biUnion_primitiveRoots and Finset.sum_biUnion with disjointness — notably this step needs no primitive root to exist, it just groups whatever roots R contains by exact order. Möbius inversion (ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq, valid over any ring) then yields f(n) = ∑_{ab=n} μ(a)·g(b). For each antidiagonal term the divisor b ∣ n has the primitive b-th root ζ^{n/b}, so g(b) = [b = 1]; only (a,b) = (n,1) survives, giving μ(n)·1 = μ(n). The field version sum_primitiveRoots_eq_moebius_field is the immediate specialization.",
-    "mathContext": "$f(n) = \\sum_{ab=n} \\mu(a)\\,g(b) = \\mu(n)\\,g(1) = \\mu(n)$; the partition holds over $R$ unconditionally, root existence is used only for the sparse support of $g$.",
+    "content": "sum_primitiveRoots_eq_moebius assembles the proof in three moves. (1) The divisor partition ∑_{d∣k} f(d) = g(k) is proved for ALL k > 0 over the ambient domain using IsPrimitiveRoot.nthRoots_one_eq_biUnion_primitiveRoots and Finset.sum_biUnion with disjointness — notably this step needs no primitive root to exist, it just groups whatever roots R contains by exact order. (2) Möbius inversion (ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq, valid over any ring) then yields f(n) = ∑_{ab=n} μ(a)·g(b). (3) In the antidiagonal sum, Finset.sum_eq_single isolates (a,b) = (n,1): for every other term the divisor b ∣ n has the primitive b-th root ζ^{n/b} (hζ.pow), so g(b) = [b = 1] = 0 by the local-evaluation lemma; the surviving term is μ(n)·g(1) = μ(n)·1 = μ(n).",
+    "mathContext": "$f(n) = \\sum_{ab=n} \\mu(a)\\,g(b) = \\mu(n)\\,g(1) = \\mu(n)$; the partition holds over $R$ unconditionally, root existence is used only for the sparse support of $g$ (a single surviving antidiagonal term).",
     "significance": "critical",
     "relatedConcepts": [
       "Möbius inversion",
       "divisor partition of roots of unity",
       "Finset.sum_biUnion",
+      "Finset.sum_eq_single",
       "Ramanujan sums"
     ],
     "prerequisites": [
       "Möbius inversion over a ring",
       "disjoint union of finsets",
       "divisor antidiagonal"
+    ]
+  },
+  {
+    "id": "ann-de-moivre-oq-05-oq-02-oq-03-field",
+    "proofId": "de-moivre-oq-05-oq-02-oq-03",
+    "range": {
+      "startLine": 148,
+      "endLine": 155
+    },
+    "type": "corollary",
+    "title": "Field specialization and axiom audit",
+    "content": "sum_primitiveRoots_eq_moebius_field is the requested statement over a general field K containing a primitive n-th root of unity — the immediate special case of the integral-domain theorem, since every field is an integral domain, so its proof term is literally sum_primitiveRoots_eq_moebius hζ with no rewriting. This is the payoff of stating the main result over an arbitrary integral domain rather than ℂ: ℂ, finite fields, cyclotomic number fields, and p-adic fields all fall out as instances. The trailing #print axioms directives verify both headline theorems depend only on the foundational trio propext / Classical.choice / Quot.sound — no sorryAx and no Lean.ofReduceBool, so the 0-axiom claim is genuine.",
+    "mathContext": "Over a field $K$ with primitive $n$-th root $\\zeta$: $\\sum_{z \\in \\operatorname{primitiveRoots}(n,K)} z = (\\mu(n):K)$, obtained by specializing the integral-domain theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specialization to a field",
+      "integral domain vs field",
+      "axiom audit",
+      "propext / Classical.choice / Quot.sound"
+    ],
+    "prerequisites": [
+      "the integral-domain main theorem",
+      "fields as integral domains"
     ]
   }
 ]
