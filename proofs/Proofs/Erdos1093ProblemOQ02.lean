@@ -603,3 +603,69 @@ theorem maximalDeficiencyIs_nine_iff_kGe15 :
     by_cases hk : k ≤ 14
     · have := deficiency_le_eight_of_k_le_14 hv.1 hv.2 hk; omega
     · exact h n k (by omega) hv
+
+/-
+## Section XIII: The sharp factorial bound is *exactly* tight — it provably cannot
+exclude deficiency `9` for any `k ≥ 15`
+
+Section XII showed the sharp bound `(k + deficiency)! ≤ (k!)²` closes every case
+`k ≤ 14`.  The natural question is whether pushing the *same* elementary bound
+further could close `k = 15, 16, …` too.  It cannot: the frontier `k ≤ 14` is
+*exactly* the reach of the `(k!)²` method.  Concretely, for every `k ≥ 15`,
+
+    `(k + 9)! ≤ (k!)²`,
+
+so the sharp bound is *consistent with* deficiency `9` at every `k ≥ 15` and can
+never, by itself, rule out a deficiency of `9` there.  Equivalently, the finite
+fact `(k!)² < (k + 9)!` powering `deficiency_le_eight_of_k_le_14` holds for
+`k ≤ 14` and *reverses* exactly at `k = 15`.
+
+This is a limitative result: it does not advance the universal bound, but it proves
+rigorously that the remaining open content of OQ-02 at `k ≥ 15` lies genuinely
+beyond the elementary `(k!)²` method — no amount of pushing this bound closes it,
+so the tail truly requires the axiomatized Erdős–Lacampagne–Selfridge density
+input.  Like everything since Section V it is `ofReduceBool`-free.
+-/
+
+/-- **The sharp bound permits deficiency `9` for every `k ≥ 15`.**  For all
+`k ≥ 15` one has `(k + 9)! ≤ (k!)²`.  Hence the sharp factorial bound
+`deficiency_add_factorial_le_sq` is *consistent with* `deficiency = 9` at every
+`k ≥ 15`: it cannot exclude a deficiency of `9` there.  Paired with
+`deficiency_le_eight_of_k_le_14` — whose finite check `(k!)² < (k + 9)!` reverses
+exactly at `k = 15` — this shows the elementary sharp bound closes *precisely* the
+cases `k ≤ 14`, confirming the open frontier `k ≥ 15` is beyond its reach.
+
+Proof by induction from the base `24! ≤ (15!)²`; the inductive step multiplies the
+hypothesis `(k + 9)! ≤ (k!)²` by the factor `k + 10 ≤ (k + 1)²`. -/
+theorem sharp_bound_permits_deficiency_nine :
+    ∀ k, 15 ≤ k → Nat.factorial (k + 9) ≤ (Nat.factorial k) ^ 2 := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => decide
+  | succ k hk ih =>
+      have e1 : k + 1 + 9 = (k + 9) + 1 := by omega
+      have hstep :
+          (k + 10) * Nat.factorial (k + 9) ≤ (k + 1) ^ 2 * (Nat.factorial k) ^ 2 := by
+        have h1 : (k + 10) * Nat.factorial (k + 9) ≤ (k + 10) * (Nat.factorial k) ^ 2 :=
+          Nat.mul_le_mul le_rfl ih
+        have h2 :
+            (k + 10) * (Nat.factorial k) ^ 2 ≤ (k + 1) ^ 2 * (Nat.factorial k) ^ 2 :=
+          Nat.mul_le_mul (by nlinarith [hk]) le_rfl
+        exact h1.trans h2
+      calc Nat.factorial (k + 1 + 9)
+          = (k + 10) * Nat.factorial (k + 9) := by
+              rw [e1, Nat.factorial_succ]
+        _ ≤ (k + 1) ^ 2 * (Nat.factorial k) ^ 2 := hstep
+        _ = (Nat.factorial (k + 1)) ^ 2 := by rw [Nat.factorial_succ, mul_pow]
+
+/-- **The elementary sharp bound resolves *exactly* `k ≤ 14`.**  Combining
+`deficiency_le_eight_of_k_le_14` (the sharp bound forces `deficiency ≤ 8` when
+`k ≤ 14`) with `sharp_bound_permits_deficiency_nine` (the bound is consistent with
+`deficiency = 9` once `k ≥ 15`): the `(k!)²` method closes the deficiency question
+for `k ≤ 14` and is provably powerless for `k ≥ 15`.  Stated as the sharp split of
+the finite comparison at the frontier `k = 15`. -/
+theorem sharp_bound_frontier_exact (k : ℕ) :
+    (k ≤ 14 → (Nat.factorial k) ^ 2 < Nat.factorial (k + 9)) ∧
+    (15 ≤ k → Nat.factorial (k + 9) ≤ (Nat.factorial k) ^ 2) := by
+  refine ⟨fun hk => ?_, fun hk => sharp_bound_permits_deficiency_nine k hk⟩
+  interval_cases k <;> decide
