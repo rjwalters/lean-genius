@@ -30,6 +30,21 @@
     "prerequisites": ["determinant multiplicativity", "fields of characteristic ≠ 2", "units and invertibility"]
   },
   {
+    "id": "ann-proof-mechanics",
+    "proofId": "hurwitz-theorem-oq-03-wip-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 86
+    },
+    "type": "technique",
+    "title": "Tactic-Level Anatomy of the Determinant Computation",
+    "content": "The Lean proof turns the one-line math argument into five explicit moves. (1) `congrArg Matrix.det hanti` applies det to both sides of the anticommuting relation; `Matrix.det_mul` on the left gives det A · det B, while `Matrix.det_neg` combined with `Fintype.card_fin` on the right produces the sign (-1)^m (the exponent is literally `card (Fin m) = m`). (2) `mul_comm` normalizes det B · det A to det A · det B so both sides share the factor x := det A · det B. (3) Invertibility is converted to nonzeroness through `IsUnit.mul` then `IsUnit.ne_zero`, giving x ≠ 0. (4) The crux is `mul_right_cancel₀ hne`: from (-1)^m · x = 1 · x with x ≠ 0 it cancels x to yield (-1)^m = 1 — this is where invertibility is indispensable, since over a ring with zero divisors the cancellation fails. (5) `-1 ≠ 1` is discharged by `linear_combination -h` (were -1 = 1 then 2 = 0, contradicting hchar), and `neg_one_pow_eq_one_iff_even` converts (-1)^m = 1 into `Even m`. No `decide`, `native_decide`, or `sorry` — the argument is a short chain of named Mathlib lemmas, which is why `#print axioms` reports only the foundational three.",
+    "mathContext": "Reads $\\det A\\cdot\\det B=(-1)^m(\\det A\\cdot\\det B)$ as $(-1)^m\\cdot x=1\\cdot x$ with $x=\\det A\\det B\\neq 0$; right-cancellation gives $(-1)^m=1$, and $\\mathrm{char}\\,K\\neq 2$ turns this into $2\\mid m$.",
+    "significance": "technical",
+    "relatedConcepts": ["mul_right_cancel₀", "Matrix.det_neg", "Fintype.card_fin", "linear_combination", "neg_one_pow_eq_one_iff_even"],
+    "prerequisites": ["Lean tactic mode", "congrArg", "cancellation in a field", "IsUnit vs nonzero"]
+  },
+  {
     "id": "ann-odd-corollaries",
     "proofId": "hurwitz-theorem-oq-03-wip-01",
     "range": {
