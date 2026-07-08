@@ -454,9 +454,11 @@ theorem density_one_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N 
   have hn1 : n ≥ 1 := by omega
   have hnN : n ≥ N₀ := by omega
   rw [qualifyingCount_decomposition n hn1, primeCount_decomposition n hn1]
-  -- Now apply density_at_levels with n-1 (since range n = range ((n-1)+1))
+  -- Now apply density_at_levels with n-1 (since range n = range ((n-1)+1)).
+  -- The decompositions give (Σ q_l)·(k+1); density_at_levels sums q_l·(k+1)
+  -- termwise, so bridge with Finset.sum_mul.
   have hnn : n = (n - 1) + 1 := by omega
-  rw [hnn]
+  rw [hnn, Finset.sum_mul, Finset.sum_mul]
   exact hN₀ (n - 1) (by omega)
 
 /-
