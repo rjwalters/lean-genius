@@ -12,10 +12,12 @@ However, a STRONGER axiom capturing the Selberg sieve's quantitative prediction
 — that the qualifying fraction at level l is ≥ l/(l+1) — combined with a mild
 growth condition, DOES imply density at factorial evaluation points.
 
-**Key results** (0 sorries, 2 axioms):
+**Key results** (0 sorries, 1 axiom):
 1. `primesInLevel`, `qualifyingInLevel`: interval-level counting functions
 2. `strong_selberg_density`: axiom — q(l)*(l+1) ≥ p(l)*l for l ≥ 3
-3. `primes_growth_in_levels`: axiom — p(l) ≥ l for l ≥ 3 (very weak PNT)
+3. `primesInLevel_pos`: THEOREM (was an axiom) — p(l) ≥ 1 for l ≥ 1, proved from
+   Bertrand's postulate. The downstream results need only positivity, so the old
+   `p(l) ≥ l` axiom is eliminated.
 4. `qualifyingInLevel_le_primesInLevel`: q(l) ≤ p(l) always
 5. `strong_implies_weak`: strong axiom → selberg_density_axiom (≥1 per interval)
 6. `levelwise_density_bound`: for l ≥ k, q(l)*(k+1) ≥ p(l)*k
@@ -33,12 +35,14 @@ bounds (the sieve analysis is performed interval by interval). The aggregation
 from level-wise to cumulative density is the non-trivial step that requires
 understanding the interaction between different interval scales.
 
-Axioms: 2 (strong_selberg_density, primes_growth_in_levels)
+Axioms: 1 (strong_selberg_density) — the former primes_growth_in_levels axiom is
+now the proved theorem primesInLevel_pos (Bertrand's postulate)
 Dependencies: Erdos1059OQ01 (counting functions), Erdos1059OQ02 (intervals, weak axiom)
 -/
 
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.NumberTheory.Bertrand
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
@@ -107,13 +111,30 @@ For a clean formalization: q(l)·(l+1) ≥ p(l)·l.
 axiom strong_selberg_density (l : ℕ) (hl : l ≥ 3) :
     qualifyingInLevel l * (l + 1) ≥ primesInLevel l * l
 
-/-- **Primes Growth in Levels**: For l ≥ 3, I(l) contains at least l primes.
+/-- **Positivity of the level prime count** (formerly the axiom
+    `primes_growth_in_levels`, now *proved* from Bertrand's postulate).
 
-    This is an extremely weak consequence of PNT: the interval (l!, (l+1)!]
-    has length l·l!, which for l ≥ 3 is far more than needed for l primes.
-    By PNT, the prime count is ≈ l!/log(l!), which vastly exceeds l. -/
-axiom primes_growth_in_levels (l : ℕ) (hl : l ≥ 3) :
-    primesInLevel l ≥ l
+    For `l ≥ 1` the primorial interval `I(l) = (l!, (l+1)!]` contains at least one
+    prime.  Bertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul`) gives a
+    prime `p` with `l! < p ≤ 2·l!`, and `2·l! ≤ (l+1)!` for `l ≥ 1`, so
+    `p ∈ I(l)`.
+
+    This is all the growth the downstream results actually use: both
+    `qualifyingInLevel_pos` and `levelwise_strict_surplus` only need
+    `primesInLevel l ≥ 1` (the surplus argument turns on `p·(l−k) > 0`, i.e.
+    `p ≥ 1`, not the far stronger `p ≥ l`). Eliminating the old `p(l) ≥ l` axiom
+    leaves a single sieve axiom (`strong_selberg_density`). -/
+theorem primesInLevel_pos (l : ℕ) (hl : l ≥ 1) :
+    primesInLevel l ≥ 1 := by
+  unfold primesInLevel Erdos1059OQ02.PrimorialInterval
+  rw [ge_iff_le, Finset.one_le_card]
+  obtain ⟨p, hp, hlt, hle⟩ :=
+    Nat.exists_prime_lt_and_le_two_mul (Nat.factorial l) (Nat.factorial_ne_zero l)
+  have hstep : 2 * Nat.factorial l ≤ Nat.factorial (l + 1) := by
+    rw [Nat.factorial_succ]; gcongr; omega
+  refine ⟨p, ?_⟩
+  rw [Finset.mem_filter, Finset.mem_Ioc]
+  exact ⟨⟨hlt, by omega⟩, hp⟩
 
 /-
 ## Part III: Strong Axiom Implies Weak Axiom
@@ -125,18 +146,18 @@ if q(l)·(l+1) ≥ p(l)·l ≥ l·l ≥ 9 > 0, then q(l) ≥ 1.
 /-- The strong axiom implies q(l) ≥ 1 for l ≥ 3. -/
 theorem qualifyingInLevel_pos (l : ℕ) (hl : l ≥ 3) :
     qualifyingInLevel l ≥ 1 := by
-  have hp := primes_growth_in_levels l hl
+  have hp := primesInLevel_pos l (by omega)
   have hs := strong_selberg_density l hl
-  -- q(l) * (l+1) ≥ p(l) * l ≥ l * l ≥ 9 > 0
+  -- q(l) * (l+1) ≥ p(l) * l ≥ 1 * 3 > 0
   -- Since l+1 > 0, q(l) ≥ 1
   by_contra hc
   push_neg at hc
   -- hc : qualifyingInLevel l < 1, i.e., = 0 in ℕ
   have hq : qualifyingInLevel l = 0 := by omega
   rw [hq, zero_mul] at hs
-  -- hs : 0 ≥ p(l) * l, so p(l) * l = 0
-  -- But p(l) ≥ l ≥ 3, so p(l) * l ≥ 9 > 0
-  nlinarith
+  -- hs : 0 ≥ p(l) * l, but p(l) ≥ 1 and l ≥ 3 give p(l) * l ≥ 3 > 0
+  have hpos : 1 * 3 ≤ primesInLevel l * l := Nat.mul_le_mul hp hl
+  omega
 
 /-- A qualifying prime exists in I(l) for l ≥ 3 (extraction from the count). -/
 theorem qualifyingPrime_exists (l : ℕ) (hl : l ≥ 3) :
@@ -144,7 +165,7 @@ theorem qualifyingPrime_exists (l : ℕ) (hl : l ≥ 3) :
     p.Prime ∧ Erdos1059OQ01.AllFactorialSubtractionsComposite p := by
   have hpos := qualifyingInLevel_pos l hl
   unfold qualifyingInLevel at hpos
-  rw [Nat.one_le_iff_ne_zero, Finset.card_ne_zero] at hpos
+  rw [ge_iff_le, Finset.one_le_card] at hpos
   obtain ⟨p, hp⟩ := hpos
   simp only [Finset.mem_filter] at hp
   exact ⟨p, hp.1, hp.2.1, hp.2.2⟩
@@ -198,59 +219,47 @@ theorem levelwise_density_bound (l k : ℕ) (hl : l ≥ 3) (hlk : l ≥ k) :
   -- But q*(l+1) ≥ p*l from axiom. Contradiction.
   linarith
 
-/-- **Strict surplus**: For l ≥ max(3, k+2) with the growth axiom,
-    q(l)·(k+1) ≥ p(l)·k + 1. That is, each high level contributes
-    at least 1 unit of surplus toward the density bound.
+/-- **Strict surplus**: For l ≥ max(3, k+2), each high level contributes
+    at least 1 unit of surplus toward the density bound:
+    q(l)·(k+1) ≥ p(l)·k + 1.
 
-    Proof: From q(l)·(l+1) ≥ p(l)·l and p(l) ≥ l ≥ k+2:
-      q·(k+1)·(l+1) ≥ p·l·(k+1) = p·k·(l+1) + p·(l-k)·(?)
-    The surplus p·(l-k) ≥ l·2 ≥ 2(l+1) > (l+1), so dividing gives ≥ 1. -/
+    Proof (uses only `p(l) ≥ 1`, via `primesInLevel_pos`): suppose instead
+    q·(k+1) ≤ p·k. Splitting `l+1 = (k+1)+(l-k)` and using `q ≤ p` gives
+    q·(l+1) ≤ p·l; the Selberg axiom gives the reverse, so all inequalities are
+    equalities. In particular q·(l-k) = p·(l-k) with `l-k > 0`, so `q = p`; then
+    q·(k+1) = p·k with `q = p` forces `p = 0`, contradicting `p ≥ 1`. -/
 theorem levelwise_strict_surplus (l k : ℕ) (hl : l ≥ 3) (hlk : l ≥ k + 2) :
     qualifyingInLevel l * (k + 1) ≥ primesInLevel l * k + 1 := by
   have hs := strong_selberg_density l hl
-  have hp := primes_growth_in_levels l hl
+  have hp := primesInLevel_pos l (by omega)
   have hqlp := qualifyingInLevel_le_primesInLevel l
-  -- Strategy: show q*(k+1) ≥ p*k + 1 via contradiction
-  -- If q*(k+1) ≤ p*k, then q*(l+1) = q*(k+1) + q*(l-k) ≤ p*k + p*(l-k) = p*l
-  -- But actually we need strict: q*(k+1) < p*k + 1, i.e., q*(k+1) ≤ p*k
-  -- q*(l+1) = q*(k+1) + q*(l-k) ≤ p*k + p*(l-k) = p*l
-  -- Axiom gives q*(l+1) ≥ p*l, so q*(l+1) = p*l.
-  -- Then q = p*l/(l+1). But we need q*(k+1) ≤ p*k < p*l/(l+1) * (k+1)...
-  -- Actually, for strict surplus we need the surplus from (l-k) ≥ 2 levels.
-  -- q*(l+1) = q*(k+1) + q*(l-k)
-  -- ≤ p*k + p*(l-k) = p*l [using q ≤ p]
-  -- But q*(l+1) ≥ p*l [axiom]
-  -- So equality: q*(k+1) = p*k AND q*(l-k) = p*(l-k) AND q*(l+1) = p*l
-  -- From q*(l-k) = p*(l-k) and l-k ≥ 2 > 0: q = p
-  -- From q*(k+1) = p*k and q = p: p*(k+1) = p*k, so p = 0
-  -- But p ≥ l ≥ 3. Contradiction.
   by_contra hc
   push_neg at hc
   -- hc : q*(k+1) < p*k + 1, i.e., q*(k+1) ≤ p*k
   have hle : qualifyingInLevel l * (k + 1) ≤ primesInLevel l * k := by omega
-  -- Step 1: q*(l+1) ≤ p*l (from hle, q ≤ p, and splitting l+1 = (k+1) + (l-k))
+  -- Split l+1 = (k+1) + (l-k) and k + (l-k) = l.
   have hsplit : qualifyingInLevel l * (l + 1) =
       qualifyingInLevel l * (k + 1) + qualifyingInLevel l * (l - k) := by
     rw [← Nat.mul_add]; congr 1; omega
+  have hqmul : qualifyingInLevel l * (l - k) ≤ primesInLevel l * (l - k) :=
+    Nat.mul_le_mul_right _ hqlp
+  have hcomb : primesInLevel l * k + primesInLevel l * (l - k) = primesInLevel l * l := by
+    rw [← Nat.mul_add]; congr 1; omega
+  -- q*(l+1) ≤ p*l, and the axiom gives ≥, so equality.
   have hub : qualifyingInLevel l * (l + 1) ≤ primesInLevel l * l := by
-    have hqmul : qualifyingInLevel l * (l - k) ≤ primesInLevel l * (l - k) :=
-      Nat.mul_le_mul_right _ hqlp
-    have hcomb : primesInLevel l * k + primesInLevel l * (l - k) = primesInLevel l * l := by
-      rw [← Nat.mul_add]; congr 1; omega
-    linarith
-  -- Step 2: Combined with axiom q*(l+1) ≥ p*l → equality q*(l+1) = p*l
-  have heq : qualifyingInLevel l * (l + 1) = primesInLevel l * l := by linarith
-  -- Step 3: From heq and hle, derive p*l*(k+1) ≤ p*k*(l+1)
-  -- which gives p*(l-k) ≤ 0, contradicting p ≥ l ≥ 3 and l-k ≥ 2
-  have h1 := Nat.mul_le_mul_right (l + 1) hle
-  -- h1 : q*(k+1)*(l+1) ≤ p*k*(l+1)
-  have h2 : qualifyingInLevel l * (k + 1) * (l + 1) =
-      qualifyingInLevel l * (l + 1) * (k + 1) := by ring
-  have h3 : qualifyingInLevel l * (l + 1) * (k + 1) =
-      primesInLevel l * l * (k + 1) := by rw [heq]
-  -- p*l*(k+1) = q*(k+1)*(l+1) ≤ p*k*(l+1), so p*(l-k) ≤ 0
-  -- But p ≥ l ≥ k+2, so p*(l-k) ≥ (k+2)*2 > 0
-  nlinarith
+    rw [hsplit]; omega
+  have heq : qualifyingInLevel l * (l + 1) = primesInLevel l * l := by omega
+  -- Equality of the total forces equality of the (l-k)-piece.
+  have hpiece : qualifyingInLevel l * (l - k) = primesInLevel l * (l - k) := by omega
+  -- l - k > 0, so cancel to get q = p.
+  have hlk0 : 0 < l - k := by omega
+  have hqp : qualifyingInLevel l = primesInLevel l :=
+    Nat.eq_of_mul_eq_mul_right hlk0 hpiece
+  -- Then q*(k+1) = p*k with q = p forces p = 0, contradicting p ≥ 1.
+  have hk1 : qualifyingInLevel l * (k + 1) = primesInLevel l * k := by omega
+  rw [hqp] at hk1
+  have hexp : primesInLevel l * (k + 1) = primesInLevel l * k + primesInLevel l := by ring
+  omega
 
 /-
 ## Part V: Gap Analysis — Why General x Fails
@@ -336,7 +345,7 @@ theorem density_at_levels (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N →
     rw [Finset.mul_sum]
     apply Finset.sum_le_sum
     intro l _
-    ring_nf
+    exact le_of_eq (mul_comm (primesInLevel l) k)
   -- Low-level LHS contribution is ≥ 0
   have h_low_nonneg : 0 ≤ (Finset.range L₀).sum (fun l => qualifyingInLevel l * (k + 1)) :=
     Nat.zero_le _
@@ -440,13 +449,17 @@ theorem density_one_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N 
     Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) * (k + 1) ≥
     Erdos1059OQ01.primeCount (Nat.factorial n) * k := by
   obtain ⟨N₀, hN₀⟩ := density_at_levels k
-  refine ⟨max N₀ 1, fun n hn => ?_⟩
+  -- Witness N₀ + 1: we apply the level-sum bound at n - 1 (range n = range ((n-1)+1)),
+  -- which needs n - 1 ≥ N₀, i.e. n ≥ N₀ + 1.
+  refine ⟨N₀ + 1, fun n hn => ?_⟩
   have hn1 : n ≥ 1 := by omega
   have hnN : n ≥ N₀ := by omega
   rw [qualifyingCount_decomposition n hn1, primeCount_decomposition n hn1]
-  -- Now apply density_at_levels with n-1 (since range n = range ((n-1)+1))
+  -- Now apply density_at_levels with n-1 (since range n = range ((n-1)+1)).
+  -- The decompositions give (Σ q_l)·(k+1); density_at_levels sums q_l·(k+1)
+  -- termwise, so bridge with Finset.sum_mul.
   have hnn : n = (n - 1) + 1 := by omega
-  rw [hnn]
+  rw [hnn, Finset.sum_mul, Finset.sum_mul]
   exact hN₀ (n - 1) (by omega)
 
 /-
@@ -469,9 +482,12 @@ theorem density_one_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N 
 **This file is now sorry-free** — the previous two `sorry`s (the interval
 decompositions) are discharged by `count_decomp`.
 
-**Axioms** (2, both disclosed sieve inputs):
+**Axioms** (1, a single disclosed sieve input):
 - strong_selberg_density: captures Selberg sieve's quantitative prediction
-- primes_growth_in_levels: weak PNT (p(l) ≥ l for l ≥ 3)
+
+The former `primes_growth_in_levels` axiom (`p(l) ≥ l`) is now the proved theorem
+`primesInLevel_pos` (`p(l) ≥ 1`, via Bertrand's postulate); the downstream
+results only ever used positivity of the level prime count.
 
 **Open**: Extending from factorial points to all x requires within-interval
 density estimates, which is a deeper sieve-theoretic result.
