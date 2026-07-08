@@ -145,5 +145,47 @@
       "note": "Orbit-counting lemma; orbit–stabilizer accounting"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "fourSquare_numTypes_bounds",
+      "type": "theorem",
+      "description": "Flagship application: for S the finite set of ordered signed four-square representations of n (Nat.card S = r₄(n) by Jacobi) under the hyperoctahedral group B₄ of order 384, the number of representation types t(n) = #(B₄-orbits) satisfies r₄(n) ≤ 384·t(n) and t(n) ≤ r₄(n) — equivalently ⌈r₄(n)/384⌉ ≤ t(n) ≤ r₄(n). Instantiates the general orbit-counting bounds at |G| = 384."
+    },
+    {
+      "name": "fourSquare_numTypes_ge",
+      "type": "theorem",
+      "description": "The lower bound in divided form: r₄(n) / 384 ≤ t(n), from the multiplicative bound via Nat.div_le_of_le_mul."
+    },
+    {
+      "name": "card_hyperoctahedral_four",
+      "type": "theorem",
+      "description": "Order of the hyperoctahedral group B₄ = (ℤ/2)⁴ ⋊ S₄: its underlying set is S₄ × (ℤ/2)⁴, so |B₄| = 4!·2⁴ = 24·16 = 384 — the value of |G| in the four-square orbit-counting bound."
+    },
+    {
+      "name": "numOrbits_bounds",
+      "type": "theorem",
+      "description": "The general orbit-counting double bound packaged: for a finite group G acting on a finite X, |X| ≤ |G|·t and t ≤ |X| where t = #orbits — i.e. |X|/|G| ≤ t ≤ |X|."
+    },
+    {
+      "name": "card_le_card_group_mul_numOrbits",
+      "type": "theorem",
+      "description": "Lower-bound engine: |X| ≤ |G|·(number of orbits), by decomposing X as the disjoint union of its orbits (selfEquivSigmaOrbits) and bounding each orbit's size by |G|."
+    },
+    {
+      "name": "numOrbits_le_card",
+      "type": "theorem",
+      "description": "Upper bound: the number of orbits (representation types) is at most |X|, since the orbit quotient map X → X/∼ is surjective."
+    },
+    {
+      "name": "card_orbit_le",
+      "type": "theorem",
+      "description": "Each orbit has at most |G| elements, being the image of G under g ↦ g • a."
+    },
+    {
+      "name": "numOrbits_pos",
+      "type": "theorem",
+      "description": "A nonempty finite X under G has at least one orbit (the orbit quotient is nonempty)."
+    }
+  ],
   "sorries": 0
 }
