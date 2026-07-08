@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Header, Spectral Presentation, and Ambient Setup",
+      "startLine": 3,
+      "endLine": 53,
+      "summary": "Module docstring stating the residual bound ∃ k, |μ k − lam| ≤ ‖T x − lam·x‖ as the converse/a-posteriori companion to the parent's Weyl stability (weyl_eigenvalue_stability), followed by the ambient setup: open InnerProductSpace, namespace CauchyInterlacing.Residual, and the variables {𝕜 E} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]. Flagged as a research file intentionally not registered in Proofs.lean.",
+      "mathContext": "The operator is taken over an RCLike scalar field 𝕜 (uniformly ℝ or ℂ), presented by an orthonormal eigenbasis with real eigenvalues — exactly the spectral content of a Hermitian operator, assumed as input rather than derived from self-adjointness."
+    },
+    {
       "id": "parseval",
       "title": "Parseval's Identity in the Orthonormal Eigenbasis",
       "startLine": 55,
@@ -112,6 +120,14 @@
       "endLine": 181,
       "summary": "dist_to_spectrum_le_residual: ∃ k, |μ(k) − λ| ≤ ‖T x − λ·x‖ via the Parseval energy sum and the minimising index. residual_eigenvalue_bound: the ε-form by transitivity. residual_gt_of_spectral_gap: the contrapositive spectral-gap lower bound.",
       "mathContext": "The Hermitian Bauer–Fike a-posteriori estimate: a small residual certifies a nearby true eigenvalue; a large spectral gap forces a large residual."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sanity Check: An Exact Eigenpair Attains the Bound",
+      "startLine": 182,
+      "endLine": 192,
+      "summary": "A worked example instantiating dist_to_spectrum_le_residual at the exact eigenvector x = b j: the residual ‖T (b j) − μ j · b j‖ is 0 and the bound reads |μ j − μ j| = 0 ≤ 0, confirming the estimate is sharp. Uses b.orthonormal.1 j to supply the unit-norm hypothesis ‖b j‖ = 1.",
+      "mathContext": "Sharpness certificate: an eigenpair has zero residual, so no a-posteriori bound of this form can be improved — the residual exactly detects a true eigenpair as the residual → 0 limit."
     }
   ],
   "mainTheorems": [
