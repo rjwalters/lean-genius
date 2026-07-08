@@ -152,6 +152,11 @@
       "targetId": "erdos-1017-oq-03",
       "relationship": "sibling",
       "description": "Supplies the parity-split closed forms T(2m) = m^2 and T(2m+1) = m(m+1) reused here to prove equality at the balanced split, plus the strict growth and real envelope of T."
+    },
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "related",
+      "description": "Mantel's theorem (1907): a triangle-free n-vertex graph has at most ⌊n²/4⌋ edges, attained by the balanced complete bipartite graph — the founding result of extremal graph theory and the r=2 case of Turán. This entry formalizes exactly the arithmetic core behind that extremal value: the integer quarter-square maximum a·(n−a) ≤ ⌊n²/4⌋, tight and (for even n) uniquely at the balanced split a = ⌊n/2⌋. Mantel supplies the graph-theoretic edge bound; this entry supplies the number-theoretic extremality (why balanced) it rests on."
     }
   ],
   "references": [
