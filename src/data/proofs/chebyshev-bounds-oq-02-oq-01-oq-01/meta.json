@@ -74,6 +74,14 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "The module docstring explains the goal: pin θ(n) = ∑_{p≤n} log p to linear order Θ(n) with explicit constants. Mathlib supplies only the upper bound Chebyshev.theta_le_log4_mul_x (θ(x) ≤ log 4·x) and no lower bound; the project's chebyshevPsi_lower_linear ((log 2/3)·m ≤ ψ(m), from the central binomial coefficient) is transferred from ψ to θ using the closeness estimate abs_psi_sub_theta_le (|ψ(n)−θ(n)| ≤ 2√n·log n), giving (log 2/3)·m − 2√m·log m ≤ θ(m) ≤ log 4·m for m ≥ 2. Imports Mathlib and the two parent files, and enters the ChebyshevBoundsOQ02OQ01OQ01 namespace opening ChebyshevBoundsOQ02 / OQ02OQ02.",
+      "mathContext": "θ(m) = ψ(m) − (ψ(m) − θ(m)): a linear lower bound on ψ minus an O(√m·log m) correction descends to θ, pinning θ(m) = Θ(m)."
+    },
+    {
       "id": "lower-bound",
       "title": "The θ Lower Bound",
       "startLine": 46,
