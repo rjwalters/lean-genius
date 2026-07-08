@@ -140,5 +140,17 @@
     "theoremCount": 2,
     "definitionCount": 0
   },
+  "mainTheorems": [
+    {
+      "name": "defect_hall",
+      "type": "theorem",
+      "description": "Hall's theorem with defect d (Ore's deficiency form): a finite family of finite sets t : ι → Finset α satisfies the relaxed Hall condition ∀ s, #s ≤ #(s.biUnion t) + d if and only if there is a partial system of distinct representatives leaving at most d indices unmatched — a set `rejected` with #rejected ≤ d and an assignment e that is injective off `rejected` with e i ∈ t i for every i ∉ rejected. Proved by adjoining d universal dummy elements (living in α ⊕ Fin d), applying ordinary Hall to the enlarged family, and counting how many indices are absorbed by dummies."
+    },
+    {
+      "name": "defect_hall_zero",
+      "type": "theorem",
+      "description": "Marriage theorem (no defect): specialising defect_hall to d = 0 recovers the classical Hall statement — the Hall condition ∀ s, #s ≤ #(s.biUnion t) is equivalent to the existence of a full system of distinct representatives (an injective e with e i ∈ t i for all i). Follows because #rejected ≤ 0 forces `rejected = ∅`, collapsing the partial SDR to a total one."
+    }
+  ],
   "sorries": 0
 }
