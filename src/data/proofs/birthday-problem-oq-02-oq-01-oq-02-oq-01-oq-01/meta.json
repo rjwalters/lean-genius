@@ -116,6 +116,11 @@
       "targetId": "birthday-problem-oq-02-oq-01-oq-02",
       "relationship": "related",
       "description": "Grandparent: the lower bound 1/d ≤ ∑ pᵢ² (uniform minimizes collision), recovered here as a corollary of the global inequality."
+    },
+    {
+      "targetId": "birthday-problem-oq-02-oq-01-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Sibling under the same grandparent: the QUANTITATIVE complement to this entry's qualitative Schur-convexity. Where this entry shows uniform is the HLP-bottom of the majorization order (∑ pᵢ² minimized at 1/d), that entry sharpens the gap into a Pinsker-flavored bound ∑ pᵢ² − 1/d ≥ (4/d)·dTV(p,u)², measuring exactly how much distance-from-uniform raises collision. Together: averaging toward uniform decreases collision (here), and quantifiably so (there)."
     }
   ],
   "leanFile": {
