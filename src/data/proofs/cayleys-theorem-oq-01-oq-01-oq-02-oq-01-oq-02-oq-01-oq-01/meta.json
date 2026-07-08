@@ -110,6 +110,57 @@
       "mathContext": "Relabelled by $e$, the geometric action of a free transitive $H$ IS the bundled left-regular representation $\\operatorname{regularRepHom} H$."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "regularRepHom",
+      "type": "core",
+      "description": "**The bundled left-regular representation.** The map σ ↦ Equiv.mulLeft σ (left translation x ↦ σ·x) packaged as a monoid homomorphism G →* Perm G — the single morphism underlying the parent's element-wise family of translations. Multiplicativity is Equiv.mulLeft_mul; the unit law Equiv.mulLeft_one.",
+      "leanType": "(G : Type*) → [Group G] → (G →* Equiv.Perm G)",
+      "startLine": 63
+    },
+    {
+      "name": "regularRepHom_injective",
+      "type": "core",
+      "description": "**Faithfulness of the regular representation = Cayley's theorem.** The homomorphism regularRepHom G is injective: two elements with the same left translation are equal, seen by evaluating the translations at 1.",
+      "leanType": "(G : Type*) → [Group G] → Function.Injective (regularRepHom G)",
+      "startLine": 74
+    },
+    {
+      "name": "mem_regularRepHom_range",
+      "type": "supporting",
+      "description": "The image of the regular representation is exactly the set of left translations { Equiv.mulLeft g : g ∈ G }.",
+      "leanType": "{G : Type*} → [Group G] → (τ : Equiv.Perm G) → (τ ∈ (regularRepHom G).range ↔ ∃ g : G, Equiv.mulLeft g = τ)",
+      "startLine": 82
+    },
+    {
+      "name": "regularRep",
+      "type": "core",
+      "description": "**The bundled Cayley isomorphism.** An arbitrary group G is isomorphic to the range of its regular representation — a concrete subgroup of Sym(G) — via MulEquiv.ofInjective applied to the faithful homomorphism regularRepHom G. Noncomputable.",
+      "leanType": "(G : Type*) → [Group G] → (G ≃* (regularRepHom G).range)",
+      "startLine": 89
+    },
+    {
+      "name": "cayley",
+      "type": "core",
+      "description": "**Cayley's theorem, packaged.** Every group is isomorphic to a subgroup of its own symmetric group. Finiteness-free: the sharp Cayley statement, valid for arbitrary (possibly infinite) G.",
+      "leanType": "(G : Type*) → [Group G] → ∃ K : Subgroup (Equiv.Perm G), Nonempty (G ≃* K)",
+      "startLine": 101
+    },
+    {
+      "name": "transportedAction_eq_regularRepHom",
+      "type": "supporting",
+      "description": "**The transported geometric action is regularRepHom H, hom-for-hom.** For a free transitive H ≤ Sym(α), transporting the geometric action of σ ∈ H across the orbit bijection equals regularRepHom H σ — identifying the parent's element-wise transport with the bundled homomorphism.",
+      "leanType": "(htrans : ActsTransitively H) → (hfree : ActsFreely H) → (a : α) → (σ : H) → ((regularEquiv htrans hfree a).symm.permCongr (σ : Equiv.Perm α) = regularRepHom H σ)",
+      "startLine": 119
+    },
+    {
+      "name": "isBundledRegularRepresentation",
+      "type": "core",
+      "description": "**The explicit regular representation, bundled as a group isomorphism.** For nonempty α, a free transitive H ≤ Sym(α) admits an orbit bijection e : H ≃ α and the Cayley isomorphism φ : H ≃* (regularRepHom H).range with (φ σ : Perm H) = e.symm.permCongr (σ : Perm α) for every σ — upgrading the parent's isExplicitRegularRepresentation from pointwise identities to a single morphism.",
+      "leanType": "[Nonempty α] → (htrans : ActsTransitively H) → (hfree : ActsFreely H) → ∃ (e : H ≃ α) (φ : H ≃* (regularRepHom H).range), ∀ σ : H, ((φ σ : (regularRepHom H).range) : Equiv.Perm H) = e.symm.permCongr (σ : Equiv.Perm α)",
+      "startLine": 135
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
