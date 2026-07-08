@@ -52,7 +52,7 @@
       "startLine": 241,
       "endLine": 359
     },
-    "type": "theorem",
+    "type": "technique",
     "title": "The Sharp Stirling Deviation Bracket",
     "content": "stirlingLogDev_upper and stirlingLogDev_lower telescope the per-step bounds over m ≥ j and pass to the limit stirlingSeq → √π (the qualitative Mathlib fact, used only to close the telescoped partial sums). The capstone stirlingLogDev_bracket assembles them into the two-sided envelope 1/(12j) − 1/(12j²) ≤ log stirlingSeq(j) − log√π ≤ 1/(12j) for j ≥ 1. The upper side is exact to leading order and identifies the true leading coefficient 1/12 — a factor-of-three improvement over Mathlib's and the parent entry's 1/(4j), which is the crux that makes an exact asymptotic coefficient extractable.",
     "mathContext": "$\\frac{1}{12j}-\\frac{1}{12j^2}\\ \\le\\ \\log s_j-\\log\\sqrt{\\pi}\\ \\le\\ \\frac{1}{12j}\\qquad(j\\ge1)$",
