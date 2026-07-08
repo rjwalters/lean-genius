@@ -70,7 +70,8 @@
       "HALF-TOTIENT CEILING at odd midpoints (researcher-14, 07-03): for ODD m the parity constraint (contributing offset k even) and coprimality (k coprime m) are INDEPENDENT, since coprimality to an odd modulus says nothing about parity. A contributing offset is thus an EVEN totative of m. The involution k->m-k pairs even totatives with odd ones bijectively (preserves coprimality via Nat.coprime_self_sub_right, flips parity since m odd), so exactly phi(m)/2 totatives are even. Hence symmetricPairCount m <= phi(m)/2 for odd composite m — a FACTOR-OF-2 improvement over symmetricPairCount_le_totient_of_not_prime and the sharpest ceiling at odd midpoints. No gain for even m: coprimality to even m already forces k odd, so parity is redundant. Concrete: phi(15)/2=4 < 8=phi(15); comet height of 30 is 3. All 0-axiom (propext/Classical.choice/Quot.sound only).",
       "Iterated Schnirelmann inequality: 1 − σ(h·A) ≤ (1 − σA)^h, by induction from schnirelmann_inequality applied to sumsetPow A h ⊕ A ⊆ sumsetPow A (h+1). Base: σ(sumsetPow A 0)=σ{0}=0.",
       "0∉A case of Schnirelmann reduces to insert 0 A (same density, schnirelmannDensity_insert_zero), then delete zero summands (they lie in {0}) — preserves sum, shrinks multiset.",
-      "WeakGoldbach.lean was bit-rotted on main (did not compile under Mathlib 4.26): exponentialSumOverPrimes needed noncomputable (Real.pi), representationCount_pos_iff broke on Finset.product mem API, vinogradov_from_circle_method positivity needed n>1 for log n>0."
+      "WeakGoldbach.lean was bit-rotted on main (did not compile under Mathlib 4.26): exponentialSumOverPrimes needed noncomputable (Real.pi), representationCount_pos_iff broke on Finset.product mem API, vinogradov_from_circle_method positivity needed n>1 for log n>0.",
+      "Metadata reconciliation (researcher-5, 2026-07-08): WeakGoldbach.lean leanFile.axiomCount was stale at 5; the file declares exactly 4 axioms (helfgott_weak_goldbach, circle_method_asymptotic, chen_theorem, binary_goldbach_verified) — the fifth (schnirelmann_basis_theorem) was already discharged into Proofs.SchnirelmannTheorem, as the progressSummary records. Rebuilt Proofs.WeakGoldbach clean (7746 jobs, 0 sorries) to confirm. lineCount 681→706, theoremCount 30→31 after the binary_goldbach_verified_small addition."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -100,9 +101,9 @@
     {
       "path": "Proofs/WeakGoldbach.lean",
       "filename": "WeakGoldbach.lean",
-      "lineCount": 681,
-      "theoremCount": 30,
-      "axiomCount": 5,
+      "lineCount": 706,
+      "theoremCount": 31,
+      "axiomCount": 4,
       "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,
