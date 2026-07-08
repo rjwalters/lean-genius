@@ -29,22 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (VERIFIED, 0-axiom): added a non-vacuous framework witness in Erdos101OQ04.lean. The file previously exhibited only the general-position arc (realParabolaSet, fourPointLineCount=0), inhabiting just IsLowerBoundConstruction _ 0. Added explicit 5-point set W={(0,0),(1,0),(2,0),(3,0),(0,1)} proving IsLowerBoundConstruction W 1, plus exists_isLowerBoundConstruction_pos (|W|=5>4 with positive threshold). Build-verified via direct lean compile (Docker containerd content-store still down host-wide with input/output error); #print axioms of the four new theorems shows only [propext, Classical.choice, Quot.sound] (no sorryAx, no ofReduceBool). The two OPEN sorries (grunbaum_lower_bound_three_halves Omega(n^3/2), solymosi_stojakovic_lower_bound n^{2-o(1)}) remain untouched genuine open constructions.",
+    "progressSummary": "PROGRESS (VERIFIED, 0-axiom): factored out the counting engine shared by every explicit witness in Erdos101OQ04.lean. Every lower-bound theorem (crossSet>=2, asteriskSet>=3, gridSet>=10) re-derived the same subset-of-filter -> Finset.card_le_card argument by hand. Added two reusable general lemmas: fourPointLineCount_ge_of_subset (any Finset T of four-point collinear subsets of P.points yields T.card <= fourPointLineCount P) and fourPointLineCount_ge_of_injOn_family (an injective family L : Fin k -> Finset(RxR) of four-point collinear subsets yields k <= fourPointLineCount P -- the shape a growing construction produces, one line per index). Build-verified via docker-build (3062 jobs); only the two pre-existing OPEN sorries (grunbaum_lower_bound_three_halves Omega(n^3/2), solymosi_stojakovic_lower_bound n^{2-o(1)}) remain, both untouched. The new lemmas use only standard Finset/Fintype API (card_le_card, mem_filter, mem_powerset, card_image_of_injective, card_univ, card_fin) -- no sorry, no native_decide; axioms are the ordinary trio only.",
     "builtItems": [
       "Erdos101OQ04.witnessPoints/witnessSet: explicit 5-point ppset {(0,0),(1,0),(2,0),(3,0),(0,1)} (VERIFIED)",
       "Erdos101OQ04.witnessSet_isLowerBoundConstruction: IsLowerBoundConstruction witnessSet 1, 0 axioms (VERIFIED)",
-      "Erdos101OQ04.exists_isLowerBoundConstruction_pos: framework floor > arc zero for a >4-point set (VERIFIED)"
+      "Erdos101OQ04.exists_isLowerBoundConstruction_pos: framework floor > arc zero for a >4-point set (VERIFIED)",
+      "Erdos101OQ04.fourPointLineCount_ge_of_subset: Finset T of four-point collinear subsets -> T.card <= fourPointLineCount P (VERIFIED, 0-axiom)",
+      "Erdos101OQ04.fourPointLineCount_ge_of_injOn_family: injective L : Fin k -> Finset four-point collinear subsets -> k <= fourPointLineCount P (VERIFIED, 0-axiom)"
     ],
     "insights": [
       "The realParabolaSet arc has fourPointLineCount=0, so the file only inhabited IsLowerBoundConstruction _ 0 before this session; the four collinear x-axis points of W give the first positive four-point-line count witness (>=1) with no five collinear.",
-      "Both remaining sorries are genuine OPEN constructions: Grunbaum Omega(n^3/2) needs a sumset/grid built ON TOP of the no-three-collinear parabola base (parabola alone has 0 four-point lines); Solymosi-Stojakovic n^{2-o(1)} needs ~600-1000 LOC of measure-theoretic random-projection infra (Path A)."
+      "Both remaining sorries are genuine OPEN constructions: Grunbaum Omega(n^3/2) needs a sumset/grid built ON TOP of the no-three-collinear parabola base (parabola alone has 0 four-point lines); Solymosi-Stojakovic n^{2-o(1)} needs ~600-1000 LOC of measure-theoretic random-projection infra (Path A).",
+      "The counting half of every witness lower bound is identical (subset of the defining powerset-filter, then Finset.card_le_card); factoring it out leaves future constructions to supply only geometry (the collinear quadruples) plus distinctness/injectivity.",
+      "The injective-family form is the natural interface for a GROWING construction: it produces one four-point line per index i : Fin k, and the only combinatorial obligation beyond per-line geometry is that distinct indices name distinct lines (Function.Injective L)."
     ],
     "mathlibGaps": [
       "No mathlib gap for the witness; the OPEN Path A (Solymosi-Stojakovic) needs a measure-zero certificate for algebraic varieties in projection-parameter space, not currently in Mathlib in usable form."
     ],
     "nextSteps": [
-      "Non-vacuity gap is now closed (witness verified 0-axiom); the frontier stays the two OPEN construction sorries.",
-      "Path B (Grunbaum): next brick is a concrete finite construction with a PROVABLE positive lower bound on fourPointLineCount that grows (e.g. k disjoint 4-point lines with no cross-collinearity) - the hard part is ruling out accidental alignments for all n."
+      "Build a concrete growing family L : Fin k -> Finset(RxR) of four-point collinear subsets and discharge k <= fourPointLineCount via fourPointLineCount_ge_of_injOn_family; the remaining hard work is the per-family no-five-collinear certificate (ruling out accidental cross-gadget alignments for all n).",
+      "Grids cap at 10 four-point lines under no-five-collinear (each line <= 4 points forces a <= 4x4 grid), so a growing witness must be non-grid (near-pencil / convex-position tiny clusters), where the frontier is the all-n no-five-collinear proof."
     ]
   },
   "tags": [
