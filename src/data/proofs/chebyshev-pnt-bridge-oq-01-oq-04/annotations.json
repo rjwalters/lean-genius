@@ -26,6 +26,29 @@
     ]
   },
   {
+    "id": "ann-cheb-oq0104-multiprod-def",
+    "proofId": "chebyshev-pnt-bridge-oq-01-oq-04",
+    "range": {
+      "startLine": 45,
+      "endLine": 55
+    },
+    "type": "definition",
+    "title": "The product object multiProd k n = ∏ C(jn,n)",
+    "content": "`multiProd k n` is defined as $\\prod_{j=1}^{k} \\binom{jn}{n}$ (a `Finset.Icc 1 k` product), the explicit telescoping product that will be shown equal to the balanced multinomial coefficient. Two structural lemmas anchor the induction downstream: `multiProd_zero` (empty product = 1, tagged `@[simp]`) and `multiProd_succ`, the one-step unfolding $\\text{multiProd}(k{+}1)\\,n = \\text{multiProd}\\,k\\,n \\cdot \\binom{(k+1)n}{n}$, proved by peeling the top factor with `Finset.prod_Icc_succ_top`. Working with the explicit product rather than the quotient $(kn)!/(n!)^k$ keeps everything in ℕ and avoids truncated division.",
+    "mathContext": "$\\text{multiProd}\\,k\\,n = \\prod_{j=1}^{k}\\binom{jn}{n}$, with $\\text{multiProd}(k{+}1)\\,n = \\text{multiProd}\\,k\\,n \\cdot \\binom{(k+1)n}{n}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.Icc product",
+      "telescoping product",
+      "binomial coefficient",
+      "Finset.prod_Icc_succ_top"
+    ],
+    "prerequisites": [
+      "finite products over intervals",
+      "natural-number division pitfalls"
+    ]
+  },
+  {
     "id": "ann-cheb-oq0104-identity",
     "proofId": "chebyshev-pnt-bridge-oq-01-oq-04",
     "range": {
