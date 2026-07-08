@@ -506,3 +506,53 @@ theorem deficiency_add_factorial_le_sq {n k : ℕ} (hn : 2 * k ≤ n)
         (Nat.factorial_mul_ascFactorial k (deficiency n k)).symm
     _ ≤ Nat.factorial k * Nat.factorial k := Nat.mul_le_mul (le_refl _) hasc
     _ = (Nat.factorial k) ^ 2 := by rw [pow_two]
+
+/-
+## Section XI: The trivial bound is never attained — windows are never fully smooth
+
+The quantitative bound `(k+1)^{deficiency} ≤ k!` of Section IX has a clean
+*qualitative* consequence that the earlier bounds could not reach: the trivial
+maximum `deficiency n k = k` is **impossible** for every admissible pair with
+`k ≥ 1`.  Indeed if the deficiency were `k` then `(k+1)^k ≤ k!`, but
+`k! ≤ k^k < (k+1)^k`, a contradiction.  So the deficiency is *strictly* below the
+trivial bound — `deficiency n k ≤ k - 1` — with no appeal to prime distribution
+or the axiomatized ELS bound.
+
+This makes the hypothesis of `window_primefree_of_deficiency_eq_k` (Section VII)
+vacuous: no admissible length-`k` window is entirely `k`-smooth, so at least one
+of the `k` consecutive integers `n, …, n-k+1` always carries a prime factor `> k`.
+-/
+
+/-- **The trivial bound is strict.**  For an admissible pair with `k ≥ 1`, the
+deficiency is *strictly* less than `k`: `deficiency n k < k`.  This improves the
+trivial `deficiency n k ≤ k` of `deficiency_le` unconditionally — no prime-gap or
+density input is needed — via the multiplicative bound `(k+1)^{deficiency} ≤ k!`
+together with `k! ≤ k^k < (k+1)^k`. -/
+theorem deficiency_lt_k {n k : ℕ} (hn : 2 * k ≤ n) (hk : 1 ≤ k)
+    (h : NoSmallPrimeFactors n k) : deficiency n k < k := by
+  by_contra hge
+  push_neg at hge
+  have hbound := deficiency_pow_succ_le_factorial hn h
+  have hmono : (k + 1) ^ k ≤ (k + 1) ^ deficiency n k :=
+    Nat.pow_le_pow_right (by omega) hge
+  have hfk : Nat.factorial k < (k + 1) ^ k :=
+    calc Nat.factorial k ≤ k ^ k := Nat.factorial_le_pow k
+      _ < (k + 1) ^ k := Nat.pow_lt_pow_left (Nat.lt_succ_self k) (by omega)
+  omega
+
+/-- **No admissible window is entirely smooth.**  For an admissible pair with
+`k ≥ 1`, at least one of the `k` consecutive integers `n, n-1, …, n-k+1` fails to
+be `k`-smooth, i.e. carries a prime factor `> k`.  (Immediate from
+`deficiency_lt_k`: if every window value were `k`-smooth the deficiency would be
+`k`.) -/
+theorem exists_nonsmooth_window_value {n k : ℕ} (hn : 2 * k ≤ n) (hk : 1 ≤ k)
+    (h : NoSmallPrimeFactors n k) :
+    ∃ i, i < k ∧ ¬ IsKSmooth k (n - i) := by
+  by_contra hcon
+  push_neg at hcon
+  have hfull : deficiency n k = k := by
+    unfold deficiency
+    rw [Finset.filter_true_of_mem
+      (fun i hi => hcon i (Finset.mem_range.mp hi)), Finset.card_range]
+  have := deficiency_lt_k hn hk h
+  omega
