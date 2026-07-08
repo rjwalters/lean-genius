@@ -191,13 +191,31 @@ Erdős noted that C_ε → ∞ as ε → 0.
 axiom constant_grows : ∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀,
   ∀ C, existsBoundingConstant ε → C ≥ M
 
-/-- Intuition: sparser graphs hide non-planarity in larger structures. -/
+/-- Intuition: sparser graphs hide non-planarity in larger structures.
+
+    Derived from the stated `constant_grows` axiom (no new assumptions). The
+    hypothesis here — that *this* `C` already bounds the non-planar subgraph size
+    for **every** vertex type with **no** cardinality threshold — is strictly
+    stronger than `existsBoundingConstant ε` (which only needs *some* threshold
+    `N`). We discharge `existsBoundingConstant ε` by taking `N = 0`, then feed it
+    to `constant_grows` to conclude `C ≥ M`. -/
 theorem sparse_hides_nonplanarity :
     ∀ M : ℕ, ∃ ε₀ > 0, ∀ ε < ε₀, ∀ C,
       (∀ (V : Type*) [Fintype V] [DecidableEq V],
         ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
           isDense G ε → hasSmallNonPlanarSubgraph G C) → C ≥ M := by
-  sorry
+  intro M
+  obtain ⟨ε₀, hε₀, hgrow⟩ := constant_grows M
+  refine ⟨ε₀, hε₀, ?_⟩
+  intro ε hε C hP
+  -- `constant_grows` reduces the goal to establishing `existsBoundingConstant ε`.
+  refine hgrow ε hε C ?_
+  -- Discharge `existsBoundingConstant ε`: the witnessing constant is `C` itself
+  -- and the threshold is `N = 0`, since `hP` holds uniformly over all `V`.
+  intro _hεpos
+  refine ⟨C, 0, ?_⟩
+  intro V instF instD _hcard G instR hDense
+  exact @hP V instF instD G instR hDense
 
 /-
 ## Connection to Extremal Graph Theory
