@@ -75,7 +75,8 @@
       "**Symmetry is structural, not just numerical.** parts_distribution_symmetric proves ∑_c g(c.length) = ∑_c g(n+1−c.length) for EVERY weight g, via the complement involution s ↦ sᶜ on the gap subsets. This is the graded incarnation of the binomial symmetry C(n−1,k−1) = C(n−1,n−k): complementing the set of cut gaps sends a k-part composition to an (n+1−k)-part one. Every odd central moment vanishes as a corollary; the third is only the first instance.",
       "**Zero skewness in one line from symmetry.** Once the distribution is known symmetric about (n+1)/2, the odd centred weight g(k) = (k − (n+1)/2)³ satisfies g(n+1−k) = −g(k), so the third central moment equals its own negative and is therefore 0 — no cubic sum needed for the skewness itself. The explicit third moment (n³+6n²+3n−2)·2^(n−3) is computed separately for its own sake.",
       "**8∑ k³C(m,k) = m²(m+3)2^m from a single absorption.** The cubic binomial core is proved by applying (k+1)·C(m,k+1) = m·C(m−1,k) once, lowering k³ to (k+1)² inside an (m−1)-binomial and reducing the third-moment sum to the family's second- and first-moment sums plus the plain binomial sum. Stating it times 8 sidesteps the truncated ℕ-subtraction in the exact form.",
-      "**Mathlib stops at ∑ C(m,k) = 2^m.** Neither the weighted binomial sums ∑ k^j C(m,k) for j ≥ 1 nor any moment or symmetry of the part-count of a composition is in Mathlib; the cubic identity, the third moment, the distribution symmetry, and the vanishing skewness are all original content, completing the family's moment analysis begun with the mean and variance."
+      "**Mathlib stops at ∑ C(m,k) = 2^m.** Neither the weighted binomial sums ∑ k^j C(m,k) for j ≥ 1 nor any moment or symmetry of the part-count of a composition is in Mathlib; the cubic identity, the third moment, the distribution symmetry, and the vanishing skewness are all original content, completing the family's moment analysis begun with the mean and variance.",
+      "**The gaps bijection is the single engine behind every moment.** length_eq_card_gaps writes a composition's part-count as 1 + (number of chosen cut-gaps), and gapsEquiv identifies compositions of n with subsets of the n−1 gaps, so EVERY moment ∑_c (c.length)^j collapses to ∑_{s ⊆ Fin(n−1)} (|s|+1)^j — a moment of the cardinality of a uniform random subset. Expanding (|s|+1)^j by the binomial theorem reduces the j-th moment to the lower subset-cardinality sums ∑|s|^i (i ≤ j), which is exactly why the third moment here is assembled from the reused sum_finset_card and sum_finset_card_sq: the whole analysis is one combinatorial model computed to successively higher order."
     ],
     "prerequisites": [
       "Compositions of a natural number (Mathlib's Composition n), the number of parts c.length, and the gap bijection gapsEquiv : Composition n ≃ Finset (Fin (n−1)) with the bridge length c = (gaps c).card + 1 (from the family's earlier entries)",
@@ -85,6 +86,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: third moment, symmetry, and skewness of the part-count",
+      "startLine": 1,
+      "endLine": 63,
+      "summary": "Imports Mathlib and the sibling CompositionPartsChooseOQ01OQ01OQ01 (for gapsEquiv, length_eq_card_gaps, and the lower moments sum_finset_card, sum_finset_card_sq), and opens the namespace. The module docstring lays out the three results: the closed form for the third moment ∑_c (c.length)³ of the number of parts of a composition of n, the structural symmetry of the part-count distribution under k ↔ (n+1)−k, and the consequence that the third central moment (skewness numerator) vanishes.",
+      "mathContext": "A composition of $n$ has between $1$ and $n$ parts; the number of parts is symmetric about $\\tfrac{n+1}{2}$, so its distribution has zero skewness."
+    },
     {
       "id": "third-moment-binomial",
       "title": "The Third-Moment Binomial Sum (Double Absorption)",
@@ -102,12 +111,20 @@
       "summary": "third_moment rewrites ∑_c c.length³ through length_eq_card_gaps as ∑_c ((gapsEquiv n c).card + 1)³, reindexes by Equiv.sum_comp to ∑_{s : Finset (Fin (n−1))} (|s|+1)³, expands (|s|+1)³ = |s|³ + 3|s|² + 3|s| + 1, and combines the four subset sums — sum_finset_card_cube, the sibling's sum_finset_card_sq, the parent's sum_finset_card, and the count 2^(n−1) — to give (n³+6n²+3n)2^(n−1) − 2^n by ring after substituting n = M + 1. The +2^n on the left clears the constant −2 of the raw closed form (n³+6n²+3n−2)·2^(n−3), keeping the statement in ℕ."
     },
     {
-      "id": "symmetry-and-skewness",
-      "title": "Distribution Symmetry and the Vanishing Third Central Moment",
+      "id": "symmetry",
+      "title": "Symmetry of the Part-Count Distribution",
       "startLine": 165,
+      "endLine": 204,
+      "mathContext": "$\\sum_c g(c.\\mathrm{length}) = \\sum_c g(n{+}1 - c.\\mathrm{length})$ for any weight $g$.",
+      "summary": "parts_distribution_symmetric transports both ∑_c g(c.length) and ∑_c g(n+1−c.length) to sums over Finset (Fin (n−1)) via gapsEquiv and length_eq_card_gaps, then reindexes the second by the complement involution e : s ↦ sᶜ (built as an Equiv from compl_compl). Since |sᶜ| = (n−1) − |s| (Finset.card_compl), a composition with |s|+1 parts is exchanged with one having n − |s| = (n+1) − (|s|+1) parts, and omega matches the arguments. The statement holds for an arbitrary weight g into any AddCommMonoid, which is what makes it a genuine distributional symmetry rather than a fact about one particular moment."
+    },
+    {
+      "id": "vanishing-skewness",
+      "title": "The Vanishing Third Central Moment",
+      "startLine": 205,
       "endLine": 227,
-      "mathContext": "$\\sum_c g(c.\\mathrm{length}) = \\sum_c g(n{+}1 - c.\\mathrm{length})$ for any $g$; hence $\\sum_c (c.\\mathrm{length} - \\tfrac{n+1}{2})^3 = 0$.",
-      "summary": "parts_distribution_symmetric transports both ∑_c g(c.length) and ∑_c g(n+1−c.length) to sums over Finset (Fin (n−1)) via gapsEquiv and length_eq_card_gaps, then reindexes the second by the complement involution e : s ↦ sᶜ (built as an Equiv from compl_compl). Since |sᶜ| = (n−1) − |s| (Finset.card_compl), a composition with |s|+1 parts is exchanged with one with n − |s| = (n+1) − (|s|+1) parts, and omega matches the arguments. third_central_moment_zero specialises to the odd centred weight g(k) = ((k:ℚ) − (n+1)/2)³: the reflected term equals −g(c.length) (Nat.cast_sub with c.length ≤ n, then ring), so the sum equals its own negation and linarith gives 0."
+      "mathContext": "$\\sum_c \\bigl(c.\\mathrm{length} - \\tfrac{n+1}{2}\\bigr)^3 = 0$.",
+      "summary": "third_central_moment_zero specialises parts_distribution_symmetric to the odd centred weight g(k) = ((k:ℚ) − (n+1)/2)³: the reflected term g((n+1)−c.length) equals −g(c.length) (Nat.cast_sub with c.length ≤ n, then ring), so the sum equals its own negation and linarith forces it to 0. This is the distributional signature of the k ↔ (n+1)−k symmetry — the skewness numerator vanishes with no arithmetic beyond the symmetry lemma."
     }
   ],
   "conclusion": {
