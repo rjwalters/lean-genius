@@ -19,6 +19,11 @@
     the threshold by exactly `n-k-1` (the discrete derivative `C(m+1,2)-C(m,2)=m`).
   * `edgeThreshold_lt_succ` / `edgeThreshold_mono` — strict and weak monotonicity
     in `n` on the meaningful range `n ≥ k+2` / `n ≥ k+1`.
+  * `edgeThreshold_add_surplus_eq_choose_two` — the **exact surplus** below the complete
+    graph: `C(n,2) = edgeThreshold n k + (k(k+2) + (n-(2k+3))(k+1))` for `n ≥ 2k+3`,
+    upgrading `edgeThreshold_le_choose_two` from an inequality to an equality.
+  * `edgeThreshold_lt_choose_two` — **strict** non-degeneracy: `edgeThreshold n k < C(n,2)`
+    on `n ≥ 2k+3` away from the single degenerate corner `(k,n) = (0,3)`.
 
   All results are fully machine-checked (0 axioms, 0 sorries), reusing the parent's
   `edgeThreshold` definition.
@@ -120,6 +125,61 @@ theorem edgeThreshold_le_choose_two (n k : ℕ) (h : 2 * k + 3 ≤ n) :
   have hle : 2 * edgeThreshold (2 * k + 3 + c) k ≤ 2 * (2 * k + 3 + c).choose 2 := by
     rw [d1, d2]; nlinarith [Nat.zero_le k, Nat.zero_le c, Nat.zero_le (k * c),
       Nat.zero_le (k * k)]
+  omega
+
+/-- **Exact surplus of the edge threshold below the complete graph.**  On the Woodall
+    range `n ≥ 2k+3` the slack between the threshold and the total number of edges of
+    `Kₙ` is the explicit closed form
+
+        C(n, 2) = edgeThreshold n k + (k·(k+2) + (n − (2k+3))·(k+1)).
+
+    This upgrades the inequality `edgeThreshold_le_choose_two` to an equality: the
+    surplus `k(k+2) + (n−(2k+3))(k+1)` is a manifestly nonnegative polynomial that
+    vanishes iff `k = 0` and `n = 2k+3` — the single degenerate point `edgeThreshold 3 0
+    = C(3,2) = 3`.  Writing `c = n − (2k+3)`, halving the parent's doubled identity
+    `2·edgeThreshold = (k+2+c)(k+1+c) + (k+2)(k+1) + 2` against `2·C(n,2) =
+    (2k+3+c)(2k+2+c)` gives exactly this gap. -/
+theorem edgeThreshold_add_surplus_eq_choose_two (n k : ℕ) (h : 2 * k + 3 ≤ n) :
+    edgeThreshold n k + (k * (k + 2) + (n - (2 * k + 3)) * (k + 1)) = n.choose 2 := by
+  obtain ⟨c, rfl⟩ : ∃ c, n = 2 * k + 3 + c := ⟨n - (2 * k + 3), by omega⟩
+  have hc : 2 * k + 3 + c - (2 * k + 3) = c := by omega
+  rw [hc]
+  -- Double both sides: 2·edgeThreshold = (k+2+c)(k+1+c) + (k+2)(k+1) + 2.
+  have d1 : 2 * edgeThreshold (2 * k + 3 + c) k
+      = (k + 2 + c) * (k + 1 + c) + (k + 2) * (k + 1) + 2 := by
+    unfold edgeThreshold
+    have h1 : 2 * (2 * k + 3 + c - k - 1).choose 2 = (k + 2 + c) * (k + 1 + c) := by
+      rw [show 2 * k + 3 + c - k - 1 = k + 2 + c by omega, two_mul_choose_two,
+          show k + 2 + c - 1 = k + 1 + c by omega]
+    have h2 : 2 * (k + 2).choose 2 = (k + 2) * (k + 1) := by
+      rw [two_mul_choose_two, show k + 2 - 1 = k + 1 by omega]
+    omega
+  have d2 : 2 * (2 * k + 3 + c).choose 2 = (2 * k + 3 + c) * (2 * k + 2 + c) := by
+    rw [two_mul_choose_two, show 2 * k + 3 + c - 1 = 2 * k + 2 + c by omega]
+  -- The doubled identity is a polynomial equality; cancel the factor of 2.
+  have key : 2 * (edgeThreshold (2 * k + 3 + c) k
+      + (k * (k + 2) + c * (k + 1))) = 2 * (2 * k + 3 + c).choose 2 := by
+    rw [Nat.mul_add, d1, d2]; ring
+  exact Nat.eq_of_mul_eq_mul_left (by norm_num) key
+
+/-- **Strict non-degeneracy of the edge threshold.**  Away from the single degenerate
+    point `(k, n) = (0, 3)`, the threshold is *strictly* below the complete-graph edge
+    count: for `n ≥ 2k+3` with either `k ≥ 1` or `n > 2k+3`,
+
+        edgeThreshold n k < C(n, 2).
+
+    Hence there is genuine room above the threshold — the long-cycle hypothesis
+    `edgeCount G ≥ edgeThreshold n k` is satisfied by strictly denser graphs than the
+    threshold graph, and in particular is not forced to be the complete graph. -/
+theorem edgeThreshold_lt_choose_two (n k : ℕ) (h : 2 * k + 3 ≤ n)
+    (hnt : 1 ≤ k ∨ 2 * k + 3 < n) : edgeThreshold n k < n.choose 2 := by
+  have hid := edgeThreshold_add_surplus_eq_choose_two n k h
+  have hpos : 0 < k * (k + 2) + (n - (2 * k + 3)) * (k + 1) := by
+    rcases hnt with hk | hn
+    · have : 0 < k * (k + 2) := Nat.mul_pos hk (by omega)
+      omega
+    · have : 0 < (n - (2 * k + 3)) * (k + 1) := Nat.mul_pos (by omega) (by omega)
+      omega
   omega
 
 end Erdos1012OQ01OQ02
