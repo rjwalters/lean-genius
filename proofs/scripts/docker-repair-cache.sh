@@ -57,7 +57,9 @@ PACKAGES_VOLUME="lean-mathlib-packages"
 MODE="cache-get"  # default: Option B
 
 usage() {
-    sed -n '2,45p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+    # Print the header comment block (line 2 through the first non-comment
+    # line), so the help text tracks header edits without a fixed line range.
+    awk 'NR > 1 && !/^#/ { exit } NR > 1 { sub(/^# ?/, ""); print }' "${BASH_SOURCE[0]}"
     exit "${1:-0}"
 }
 
