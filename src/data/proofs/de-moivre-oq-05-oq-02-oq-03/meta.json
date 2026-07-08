@@ -178,6 +178,16 @@
       "targetId": "de-moivre-oq-05-oq-02",
       "relationship": "extends",
       "description": "Parent proves ∑ primitive n-th roots = μ(n) over ℂ; this entry generalizes to any commutative integral domain containing a primitive n-th root of unity, answering the parent's stated open question."
+    },
+    {
+      "targetId": "de-moivre-oq-05",
+      "relationship": "descends-from",
+      "description": "Grandparent in the oq-05 line on sums of primitive roots of unity and their arithmetic (Möbius) interpretation, of which the parent's ℂ result and this integral-domain generalization are successive refinements."
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "root-entry",
+      "description": "Base De Moivre / roots-of-unity gallery entry from which the whole oq-05 lineage on cyclotomic sums descends."
     }
   ]
 }

@@ -25,6 +25,29 @@
     ]
   },
   {
+    "id": "ann-de-moivre-oq-05-oq-02-oq-03-image",
+    "proofId": "de-moivre-oq-05-oq-02-oq-03",
+    "range": {
+      "startLine": 71,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "Enumerating the k-th roots as {ζ⁰, …, ζ^{k-1}}",
+    "content": "nthRootsFinset_eq_image is the enabling helper: in a domain with a primitive k-th root ζ, the finset of all k-th roots of unity is exactly the image of range k under i ↦ ζⁱ. The forward inclusion uses IsPrimitiveRoot.eq_pow_of_pow_eq_one (every root x with xᵏ=1 is a power of ζ); the reverse checks (ζⁱ)ᵏ = (ζᵏ)ⁱ = 1 by commuting the exponents (pow_mul, mul_comm) and hζ.pow_eq_one. The [DecidableEq R] instance is required only so Finset.image is computable, and NeZero k is supplied from 0 < k. This lemma converts an abstract root set into a concrete indexed power list, which is what lets the next lemma turn the root sum into a geometric series.",
+    "mathContext": "$\\{x : x^k = 1\\} = \\{\\zeta^i : 0 \\le i < k\\}$ in a domain with primitive $k$-th root $\\zeta$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "roots of unity finset",
+      "IsPrimitiveRoot.eq_pow_of_pow_eq_one",
+      "Finset.image",
+      "cyclic enumeration"
+    ],
+    "prerequisites": [
+      "primitive roots as generators",
+      "DecidableEq for Finset.image"
+    ]
+  },
+  {
     "id": "ann-de-moivre-oq-05-oq-02-oq-03-02",
     "proofId": "de-moivre-oq-05-oq-02-oq-03",
     "range": {
