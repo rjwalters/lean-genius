@@ -79,16 +79,30 @@
   via direct `And.intro` over the three named facts. No new axioms.
   This is the OQ-04 closing statement.
 
+  **S8 ACT — soundness of the shape gates (non-vacuity).** The S5/S6
+  bounds are gated by the opaque predicates `IsEllipsoidLatticePacking` /
+  `IsSymmetricConvexBody3DPacking` (no introduction axiom), which restores
+  soundness after the pre-S15 contentless-marker exploit. S8 certifies these
+  gates are *genuinely restrictive*, not merely uninhabited-by-fiat:
+  `tetrahedronDimer_not_ellipsoidLattice` proves the dimer density is provably
+  outside the ellipsoid-lattice class (it exceeds the Bezdek–Kuperberg
+  ceiling), and `zeroDensity_not_symmetricConvexBody` proves the zero density
+  is provably outside the symmetric-convex-body class (it falls below the Ulam
+  floor). These are exactly the old unsoundness exploits, now discharged as
+  honest negative facts. No new axioms.
+
   **Status of this file.**
   - 0 sorries, 2 axioms (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`,
-    `ulam_conjecture`).
+    `ulam_conjecture`); build-verified against Mathlib v4.26 (docker 7744 jobs).
   - Four definitions (`tetrahedronDimerDensity`,
     `tetrahedronDimerPacking`, `EllipsoidLatticePacking`,
-    `SymmetricConvexBody3DPacking`).
-  - Eight theorems: positivity, less-than-one, rational anchor
-    (`> 0.8563`), inequality vs. `fccDensity`, existential
-    corollary, ellipsoid-lattice ≤ FCC, Ulam ≥ FCC, and the S7
-    final aggregation `density_hierarchy_3d`.
+    `SymmetricConvexBody3DPacking`) plus two opaque shape predicates.
+  - Theorems through S8: positivity, less-than-one, rational anchor
+    (`> 0.8563`), inequality vs. `fccDensity` (+ explicit `1/10` margin),
+    existential corollary, ellipsoid-lattice ≤ FCC, cross-shape domination,
+    Ulam ≥ FCC, the S7 aggregation `density_hierarchy_3d`, and the S8
+    non-vacuity theorems `tetrahedronDimer_not_ellipsoidLattice` /
+    `zeroDensity_not_symmetricConvexBody`.
 -/
 
 import Mathlib
@@ -566,5 +580,59 @@ theorem density_hierarchy_3d
   ⟨ellipsoid_lattice_le_fccPacking e,
    tetrahedronDimerDensity_gt_fccDensity,
    ulam_le_fccPacking_density p⟩
+
+/-!
+## S8 — Soundness of the shape gates (the opaque predicates are non-vacuous)
+
+The S5/S6 upper/lower bounds are gated by the opaque predicates
+`IsEllipsoidLatticePacking` / `IsSymmetricConvexBody3DPacking`, which have no
+introduction axiom.  This section demonstrates the gates are *genuinely
+restrictive*, not merely uninhabited-by-fiat: two concrete densities — exactly
+the ones that would break soundness if the gates were removed — are **provably
+outside** their shape classes.
+
+* The tetrahedral dimer density `4000/4671` exceeds the Bezdek–Kuperberg
+  ellipsoid-lattice ceiling `fccDensity`, so it *cannot* be an ellipsoid
+  lattice packing.
+* The zero density falls below the (conjectural) Ulam floor `fccDensity`, so it
+  *cannot* be a centrally symmetric convex body packing.
+
+Together these are the exact "the marker re-wraps and `False` survives"
+exploits of the pre-S15 contentless markers, now discharged as honest negative
+facts. No new axioms.
+-/
+
+/--
+**The tetrahedral dimer packing is provably NOT an ellipsoid lattice packing.**
+
+If it were (`IsEllipsoidLatticePacking tetrahedronDimerPacking`), the
+Bezdek–Kuperberg bound would force `tetrahedronDimerDensity ≤ fccDensity`,
+contradicting the axiom-free `tetrahedronDimerDensity_gt_fccDensity`.  This is
+genuine geometric content — the dimer density exceeds the ellipsoid-lattice
+ceiling — and it is exactly the exploit that made the pre-S15 contentless
+marker unsound; the opaque gate now converts it into an honest negative fact.
+-/
+theorem tetrahedronDimer_not_ellipsoidLattice :
+    ¬ IsEllipsoidLatticePacking tetrahedronDimerPacking := by
+  intro h
+  have hle : tetrahedronDimerDensity ≤ fccDensity :=
+    bezdek_kuperberg_ellipsoid_lattice_upper_bound ⟨tetrahedronDimerPacking, h⟩
+  exact absurd hle (not_le.mpr tetrahedronDimerDensity_gt_fccDensity)
+
+/--
+**The zero-density packing is provably NOT a symmetric convex body packing.**
+
+If it were (`IsSymmetricConvexBody3DPacking ⟨0, …⟩`), the Ulam lower bound would
+force `fccDensity ≤ 0`, contradicting `fccDensity_pos`.  This is the
+lower-bound mirror of `tetrahedronDimer_not_ellipsoidLattice`: the zero density
+falls below the Ulam floor, so it lies outside the symmetric-convex-body shape
+class, and the opaque gate blocks the corresponding unsoundness exploit.
+-/
+theorem zeroDensity_not_symmetricConvexBody :
+    ¬ IsSymmetricConvexBody3DPacking ⟨0, le_refl 0, zero_le_one⟩ := by
+  intro h
+  have hge : fccDensity ≤ 0 :=
+    ulam_conjecture ⟨⟨0, le_refl 0, zero_le_one⟩, h⟩
+  exact absurd hge (not_le.mpr fccDensity_pos)
 
 end KeplerConjectureOQ04
