@@ -110,6 +110,48 @@
       "description": "The integer-part complement of the sawtooth face of this formula. Raabe at order m = 1 recovers the sawtooth identity ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2; subtracting that from the trivial ∑_{k<n}(x + k/n) = n·x + (n-1)/2 yields Hermite's floor identity ∑_{k=0}^{n-1} ⌊x + k/n⌋ = ⌊n·x⌋. The floor entry lists this Raabe formula as its generalization."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "raabe_one",
+      "type": "theorem",
+      "description": "Raabe multiplication formula at m = 1 (Bernoulli-polynomial form of the parent sawtooth identity): ∑_{k=0}^{n-1} B₁(x + k/n) = B₁(n·x), since n^{1-1} = 1. Proved from B₁(x) = x - 1/2 and the Gauss sum."
+    },
+    {
+      "name": "raabe_zero",
+      "type": "theorem",
+      "description": "Raabe multiplication formula at m = 0: ∑_{k=0}^{n-1} B₀(x + k/n) = n·B₀(n·x); both sides equal n since B₀ ≡ 1 (n^{1-0} = n)."
+    },
+    {
+      "name": "raabe_two",
+      "type": "theorem",
+      "description": "Raabe multiplication formula at m = 2: ∑_{k=0}^{n-1} B₂(x + k/n) = (1/n)·B₂(n·x) for n ≥ 1 (n^{1-2} = n⁻¹), proved by expanding each square into the k⁰, k¹, k² power sums."
+    },
+    {
+      "name": "bernoulli_eval_zero'",
+      "type": "theorem",
+      "description": "Supporting evaluation B₀(x) = 1."
+    },
+    {
+      "name": "bernoulli_eval_one'",
+      "type": "theorem",
+      "description": "Supporting evaluation B₁(x) = x - 1/2."
+    },
+    {
+      "name": "bernoulli_eval_two'",
+      "type": "theorem",
+      "description": "Supporting evaluation B₂(x) = x² - x + 1/6."
+    },
+    {
+      "name": "sum_range_id_rat",
+      "type": "theorem",
+      "description": "Gauss sum over ℚ: ∑_{k<n} k = n(n-1)/2."
+    },
+    {
+      "name": "sum_range_sq_rat",
+      "type": "theorem",
+      "description": "Sum of squares over ℚ: ∑_{k<n} k² = n(n-1)(2n-1)/6."
+    }
+  ],
   "references": [
     {
       "authors": "Raabe, Joseph Ludwig",
