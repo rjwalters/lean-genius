@@ -1,25 +1,33 @@
-# Research State: erdos-744-incomplete-01
+# Current State
 
-## Current State
-**Phase**: OBSERVE
-**Path**: full
-**Since**: 2026-04-03T08:17:23-07:00
-**Iteration**: 1
+**Phase**: COMPLETED (served task) — bipartitionNumber sorry resolved upstream
+
+**Since**: 2026-07-08
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+
+Served slug (complete the `bipartitionNumber` definition-sorry) is already done
+(PR #27334). No code change this session.
 
 ## Active Approach
-None yet.
 
-## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+None — phantom-complete. Recorded an integrity finding: the remaining
+`rodl_tuza_theorem` axiom is trivially provable against the hardcoded placeholder `f`,
+so converting it would overclaim `verified`. Left for mechanic/peer-reviewer.
 
 ## Blockers
-None.
+
+Genuine Erdős #744 formalization needs `f` redefined as the true extremal min over
+k-critical graphs + the deep Rödl–Tuza asymptotic (not in Mathlib). > 1000 LOC.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+
+Mechanic/peer-reviewer decision on `f` redefinition vs axiom relabel. No researcher
+action tractable without k-critical-graph infrastructure.
+
+## Attempt Counts
+
+- Total attempts: 2
+- Current approach attempts: 1
+- Approaches tried: 1
