@@ -1,5 +1,59 @@
 # feuerbachs-theorem-oq-04 — Feuerbach's Theorem in Non-Euclidean Geometry
 
+## Session 2026-07-07 (researcher-2): spherical side-midpoints + nine-point circle existence [VERIFIED — 0 sorry, 0 axiom]
+
+**Mode**: ACT (CONTINUE). Frontier item #1 across every prior session was "side-midpoints
+(`sMidpoint`), in-flight on `research/feuerbach-oq04-midpoint` (DRAFT PR #32127)" — but that
+branch **never merged** and `grep -r sMidpoint proofs/` returns nothing on `main`. Meanwhile
+researcher-4 landed the circumcircle primitive `sphericalCircumcircle_exists`
+(`FeuerbachsTheoremOQ04Circumcircle.lean`, merged). The one missing ingredient for the
+spherical nine-point circle (= circumcircle of the medial triangle) was therefore a genuine
+**midpoint** of a spherical side. This session supplies it in a fresh collision-free companion
+file and derives nine-point-circle existence.
+
+**Outcome**: COMPLETED (**machine-verified**, 0 sorry / 0 axiom) — new file
+`proofs/Proofs/FeuerbachsTheoremOQ04Midpoint.lean` (7 declarations, ~110 L).
+`docker-build.sh Proofs.FeuerbachsTheoremOQ04Midpoint` now returns **`=== Build succeeded ===`**.
+The prior UNVERIFIED status (2026-07-07 first pass) was a transient shared-Mathlib-volume
+corruption on the build host, not a proof error: this session's retries progressively
+self-healed the cache — first two corrupt `.ltar` files auto-purged, then a corrupt `.ir`
+(`Groupoid.ir`, "invalid header") cleared, and the full 7745-target build then went green
+with my file reached and elaborated. Committed on branch
+`research/feuerbach-oq04-midpoint-v2`; PR #35206 promoted from DRAFT to ready.
+
+### What was written (`proofs/Proofs/FeuerbachsTheoremOQ04Midpoint.lean`)
+- **`sMidpoint A B := ‖A + B‖⁻¹ • (A + B)`** — the spherical midpoint (normalised sum).
+- **`sMidpoint_comm`** — symmetry `sMidpoint A B = sMidpoint B A`.
+- **`onSphere_sMidpoint`** — for non-antipodal `A,B` (`A + B ≠ 0`) the midpoint is a model
+  point (`norm_smul`/`norm_inv`/`norm_norm` + `inv_mul_cancel₀`). The `A+B≠0` hypothesis is
+  genuine spherical nondegeneracy: antipodal points have no unique midpoint.
+- **`inner_sMidpoint_sub`** — `⟪M, A − B⟫ = 0`: `M` lies on the perpendicular-bisector great
+  circle of `AB` (the pole is `A − B`), dual to researcher-4's `inner_sub_eq_zero_iff_scos_eq`.
+  Algebra: `⟪A+B, A−B⟫ = ‖A‖² − ‖B‖² = 0`.
+- **`scos_sMidpoint_eq` / `sdist_sMidpoint_eq`** — the midpoint is spherically equidistant from
+  both endpoints (`scos A M = ‖A+B‖⁻¹(1 + ⟪A,B⟫) = scos B M`, then `sdist = arccos ∘ scos`).
+- **`sphericalNinePointCircle_exists`** (headline) — the three side-midpoints
+  `sMidpoint B C`, `sMidpoint A C`, `sMidpoint A B` of a non-degenerate spherical triangle
+  lie on a common spherical circle, by feeding the medial triangle to the merged
+  `sphericalCircumcircle_exists`. This is the spherical nine-point circle's existence.
+
+### Verification note
+All proofs are elementary real-inner-product algebra (`real_inner_smul_{left,right}`,
+`inner_add_{left,right}`, `real_inner_self_eq_norm_sq`, `real_inner_comm`, `ring`) plus one
+direct application of the merged `sphericalCircumcircle_exists`. Machine-verified:
+`docker-build.sh Proofs.FeuerbachsTheoremOQ04Midpoint` → `=== Build succeeded ===`, 0 sorry,
+0 axiom, 0 `native_decide`. Build-host note for future sessions: transient corrupt-cache
+failures (`.ltar`/`.ir` "invalid header", or OOM during `cache get` under fleet contention)
+are cleared by plain retries — each run auto-purges the offending file and re-fetches it; do
+not touch the code and do not nuke the shared volumes while other `lean-build-*` containers run.
+
+### Frontier UPDATED
+1. ~~Side-midpoints (`sMidpoint`)~~ — **DONE this session, machine-verified**.
+2. **The Feuerbach tangency** (spherical nine-point circle internally tangent to the incircle,
+   externally to the three excircles). Still genuinely hard; not attempted. This is now the
+   sole remaining frontier item — the full tritangent family, circumcircle, and medial-triangle
+   nine-point circle existence are all in place and machine-verified.
+
 ## Session 2026-07-02 (researcher-4): the spherical circumcircle — existence primitive for the nine-point circle [VERIFIED]
 
 **Mode**: ACT (CONTINUE). The four tritangent circles (incircle + 3 excircles) and their
