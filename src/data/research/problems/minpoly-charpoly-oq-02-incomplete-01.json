@@ -42,7 +42,8 @@
       "IsDiagonalizable.inv + isDiag_inv (MinpolyCharpolyOQ02Incomplete01.lean): the inverse M⁻¹ of a diagonalizable matrix is diagonalizable with the same P, since P⁻¹M⁻¹P = (P⁻¹MP)⁻¹ and the inverse of a diagonal matrix is diagonal. 0-axiom, 0-sorry, docker-build verified.",
       "IsDiagonalizable.pow + conj_pow + isDiag_pow + isDiag_mul (MinpolyCharpolyOQ02Incomplete01.lean): Mᵏ of a diagonalizable matrix is diagonalizable, same P. conj_pow shows P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ (induction, interior P·P⁻¹=1 cancels); isDiag_pow inducts on k over isDiag_mul; isDiag_mul is pointwise (off-diagonal terms A i k · B k j all vanish). 0-axiom, 0-sorry, docker-build verified.",
       "isDiag_sum: a finite sum ∑ᵢ Aᵢ of diagonal matrices is diagonal (pointwise via Matrix.sum_apply + Finset.sum_eq_zero).",
-      "IsDiagonalizable.aeval (CAPSTONE): q(M) is diagonalizable for every polynomial q, same P. Generalizes the pow/smul/neg closure laws."
+      "IsDiagonalizable.aeval (CAPSTONE): q(M) is diagonalizable for every polynomial q, same P. Generalizes the pow/smul/neg closure laws.",
+      "common-diagonalizer closure (researcher-7, 2026-07-08): IsDiagonalizable.add_of_commonDiagonalizer and IsDiagonalizable.mul_of_commonDiagonalizer — if a SINGLE invertible P diagonalizes both M and N, it diagonalizes M+N and M*N (P⁻¹(M+N)P = P⁻¹MP + P⁻¹NP diagonal; P⁻¹(M*N)P = (P⁻¹MP)(P⁻¹NP) diagonal via interior P*P⁻¹=1 cancellation). The reusable elementary half of simultaneous diagonalization. 0 axioms, 0 sorries, docker 7745 jobs."
     ],
     "insights": [
       "Matrix nonsing-inverse lemmas (mul_nonsing_inv, nonsing_inv_nonsing_inv, mul_inv_rev, transpose_nonsing_inv) take IsUnit A.det, but IsDiagonalizable carries IsUnit P — bridge with Matrix.isUnit_iff_isUnit_det.",
@@ -51,12 +52,13 @@
       "Importing a sorry-bearing parent does NOT taint axiom-cleanliness as long as the new theorems use only sorry-free declarations (here just the definition); always #print axioms to confirm no sorryAx.",
       "IsDiag has the needed closure API in Mathlib: IsDiag.smul (k) (h), IsDiag.neg (h), IsDiag.transpose (h).",
       "isDiag_mul is cleanest proved pointwise (intro i j hij; Matrix.mul_apply; Finset.sum_eq_zero; case k=i gives B i j = 0 since i≠j, case k≠i gives A i k = 0) — AVOID `rw [← IsDiag.diagonal_diag]` which rewrites a variable A into `diagonal (diag A)` (a term containing A) and can crash the elaborator. Conjugation-power P⁻¹ Mᵏ P = (P⁻¹ M P)ᵏ: induct, then simp only [mul_assoc] to reassociate and rw the interior P·P⁻¹=1.",
-      "Distributing conjugation through a polynomial needs no bundled conjugation-AlgHom: expand aeval via Polynomial.aeval_eq_sum_range into ∑ qᵢ • xⁱ, push P⁻¹·(–)·P inside with Finset.mul_sum then Finset.sum_mul, and reuse the per-power conj_pow lemma. Each summand qᵢ•(P⁻¹MP)ⁱ is diagonal, so isDiag_sum finishes — avoids constructing an inner-automorphism AlgEquiv entirely."
+      "Distributing conjugation through a polynomial needs no bundled conjugation-AlgHom: expand aeval via Polynomial.aeval_eq_sum_range into ∑ qᵢ • xⁱ, push P⁻¹·(–)·P inside with Finset.mul_sum then Finset.sum_mul, and reuse the per-power conj_pow lemma. Each summand qᵢ•(P⁻¹MP)ⁱ is diagonal, so isDiag_sum finishes — avoids constructing an inner-automorphism AlgEquiv entirely.",
+      "Simultaneous diagonalization decomposes into (hard) commuting ⟹ common diagonalizer P, and (easy, now proved) common P ⟹ sum & product diagonalizable. The add_of_commonDiagonalizer / mul_of_commonDiagonalizer laws supply the second half; a future eigenspace argument for the first would conclude the commuting sum/product is diagonalizable."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "The parent's reverse direction (squarefree minpoly ⇒ diagonalizable) is now DISCHARGED (minpoly-charpoly-oq-02 verified); this extension file needs only elementary closure laws.",
-      "Further closure: product of COMMUTING diagonalizable matrices is diagonalizable (needs simultaneous diagonalization — substantially harder, not a same-P argument)."
+      "The HARD half of simultaneous diagonalization: commuting diagonalizable matrices admit a COMMON diagonalizer P (eigenspace-decomposition argument). Combined with add_of_commonDiagonalizer / mul_of_commonDiagonalizer this would give: commuting M,N diagonalizable ⟹ M+N, M*N diagonalizable.",
+      "Counterexample witnesses: explicit diagonalizable M,N whose sum/product is NOT diagonalizable (shows the commuting hypothesis is necessary)."
     ]
   },
   "tags": [
