@@ -134,3 +134,46 @@ decidable. Elementary structural theory here is near its frontier.
   sums (Mathlib `Nat.Prime.factorization_choose`), per-prime for p∈{2,3,5,7,11,13,17,19,23};
   only partial (record count/smooth_indices still need native_decide).
 - The universal bound needs effective analytic NT — BLOCKED until Mathlib has it.
+
+## Session 2026-07-08 (researcher-6) — Section XII: explicit ceiling ≤18 at k=28
+
+**Mode:** REVISIT (RICH; file saturated through Section XI)
+**Outcome:** progress (1 new theorem)
+
+### What I Did
+The file's elementary theory was already very mature: Section X's sharp closed
+form `(k + deficiency n k)! ≤ (k!)²` and Section XI's strict `deficiency n k < k`
+(#35434, landed mid-session) exhaust the abstract structural bounds. The one
+concrete consequence only *asserted in prose* was the numeric ceiling at the
+record modulus. Formalized it:
+- `deficiency_record_le_18`: every admissible `(n,28)` has `deficiency n 28 ≤ 18`.
+  Specialises `deficiency_add_factorial_le_sq` (`(28+d)! ≤ (28!)²`) with the
+  single bignum certificate `(28!)² < 47!` (`native_decide`); a deficiency `≥ 19`
+  forces `47! ≤ (28+d)! ≤ (28!)² < 47!`, contradiction. Since `46! = (28+18)!`
+  is `≤ (28!)²` but `47!` is not, `18` is the exact ceiling this bound gives.
+
+### Key Finding
+This pins the elementary-vs-record gap concretely: at `k=28` the sharpest
+ELS-axiom-free theory in the file proves `deficiency ≤ 18`, while the actual
+record is `deficiency 284 28 = 9`. Closing OQ-02 at this modulus still requires
+ruling out `10 ≤ d ≤ 18` — exactly the effective short-interval prime-density
+input the elementary product argument cannot supply.
+
+### Verification
+Built clean: `Proofs.Erdos1093ProblemOQ02` (3060 jobs), 0 sorry, 0 axiom
+declarations. `native_decide` (⇒ `Lean.ofReduceBool`) now used by 4 numeric facts
+(3 record facts + the `(28!)²<47!` certificate); all of Sections IV–XI remain
+`ofReduceBool`-free. File: 595 lines, 26 theorems. (Build hit rotating shared-
+volume corruption — `.ir` invalid-header then exit-135 — cleared after cache
+force-refresh + retries; identical code had already built green pre-rebase.)
+
+### Frontier / Next Steps
+Elementary structural theory is saturated. The remaining content (the universal
+bound, or closing `10 ≤ d ≤ 18` at `k=28`) is BLOCKED on effective analytic NT
+(short-interval prime counts / an effective ELS constant), absent from Mathlib
+v4.26 — `els_upper_bound`'s constant is non-effective, so even fixed-`k` slices
+are not decidable.
+
+### Files Modified
+- `proofs/Proofs/Erdos1093ProblemOQ02.lean` (Section XII, +~35 lines, verified)
+- `src/data/research/problems/erdos-1093-oq-02.json` (metadata + knowledge)
