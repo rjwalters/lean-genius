@@ -18,7 +18,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 360,
     "erdosUrl": "https://erdosproblems.com/360",
     "erdosProblemStatus": "solved",
@@ -58,8 +58,8 @@
       "erdos_360_solved theorem: main result"
     ],
     "axiomCount": 8,
-    "lineCount": 170,
-    "assumptions": "8 axiom(s) and 2 sorry(s). See the Lean source for details.",
+    "lineCount": 306,
+    "assumptions": "4 axiom(s) in the main file (historical results of Alon-Erdős, Vu, and Conlon-Fox-Pham stated as assumptions; 8 aggregate across companion files) and 0 sorry(s) in the main proof file. The small cases f(2)=1 and f(4)=2 are now fully machine-checked. See the Lean source for details.",
     "theoremCount": 4,
     "definitionCount": 4,
     "additionalFiles": [
@@ -130,25 +130,25 @@
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "summary": "Computing f(2), f(3), f(4) directly",
+      "summary": "Computing f(2)=1 and f(4)=2 directly (both now machine-verified)",
       "startLine": 135,
-      "endLine": 153,
-      "mathContext": "Mathematical content: Computing f(2), f(3), f(4) directly"
+      "endLine": 284,
+      "mathContext": "Verified: f(2)=1 and f(4)=2 proved from first principles via the sInf characterization of f"
     },
     {
       "id": "connections",
       "title": "Connections to Related Problems",
       "summary": "Links to sum-free sets, Schur numbers, complete sequences",
-      "startLine": 154,
-      "endLine": 165,
+      "startLine": 285,
+      "endLine": 296,
       "mathContext": "Mathematical content: Links to sum-free sets, Schur numbers, complete sequences"
     },
     {
       "id": "main-result",
       "title": "Main Result",
       "summary": "erdos_360_solved theorem showing problem is resolved",
-      "startLine": 166,
-      "endLine": 170,
+      "startLine": 297,
+      "endLine": 306,
       "mathContext": "Verified: erdos_360_solved theorem showing problem is resolved"
     }
   ],
@@ -170,17 +170,19 @@
       "Mathlib.Data.Set.Basic",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
       "Mathlib.NumberTheory.Divisors",
-      "Mathlib.Data.Nat.Totient"
+      "Mathlib.Data.Nat.Totient",
+      "Mathlib.Data.Nat.Nth"
     ],
     "opens": [],
     "namespace": "Erdos360",
-    "lineCount": 170,
+    "lineCount": 306,
     "axiomCount": 4,
     "theoremCount": 4,
     "definitionCount": 4,
     "path": "Proofs/Erdos360Problem.lean",
-    "sorries": 2,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos360Aristotle.lean",
       "Proofs/Stubs/Erdos360Aristotle.lean",
@@ -204,5 +206,5 @@
       "description": "Related Erdős problem sharing themes: additive-combinatorics, partition, ramsey-theory"
     }
   ],
-  "sorries": 2
+  "sorries": 0
 }
