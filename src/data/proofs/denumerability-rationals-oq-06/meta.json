@@ -82,7 +82,7 @@
       "id": "imports-helper",
       "title": "Imports and the Engine Lemma #ℚ = ℵ₀",
       "startLine": 1,
-      "endLine": 31,
+      "endLine": 32,
       "summary": "File docstring positioning ℚ[X] against the sibling cardinal results, imports Mathlib, opens Cardinal and Polynomial. mk_rat records #ℚ = ℵ₀ via Cardinal.mk_eq_aleph0 (ℚ countable and infinite).",
       "mathContext": "#ℚ = ℵ₀ because ℚ is both countable and infinite; this is the input the maximum collapses against."
     },
@@ -90,7 +90,7 @@
       "id": "polynomial-cardinality",
       "title": "Countability of ℚ[X] and ℤ[X]",
       "startLine": 33,
-      "endLine": 44,
+      "endLine": 45,
       "summary": "cardinalMk_polynomial_rat and cardinalMk_polynomial_int: each rewrites #(R[X]) via Polynomial.cardinalMk_eq_max to max #R ℵ₀, substitutes #R = ℵ₀, and finishes with max_self. cardinalMk_polynomial_rat_eq_int records #(ℚ[X]) = #(ℤ[X]).",
       "mathContext": "#(R[X]) = max #R ℵ₀ and #ℚ = #ℤ = ℵ₀, so #(ℚ[X]) = #(ℤ[X]) = max ℵ₀ ℵ₀ = ℵ₀."
     },
