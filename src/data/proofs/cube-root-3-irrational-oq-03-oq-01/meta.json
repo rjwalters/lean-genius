@@ -98,6 +98,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Imports Mathlib and the parent CubeRoot3IrrationalOQ03; the module docstring frames the entry as the geometric corollary of [ℚ(∛3):ℚ] = 3 — the impossibility of doubling the cube (the Delian problem) via Wantzel's degree criterion — and lists the three results. Opens CubeRoot3Irrational, CubeRoot3IrrationalOQ03, IntermediateField and enters namespace CubeRoot3IrrationalOQ03OQ01.",
+      "mathContext": "$[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}] = 3$ is not a power of $2$, so $\\sqrt[3]{3}$ is non-constructible."
+    },
+    {
       "id": "arithmetic",
       "title": "The Arithmetic Obstruction",
       "startLine": 36,
@@ -118,8 +126,34 @@
       "title": "The Quadratic Case",
       "startLine": 62,
       "endLine": 68,
-      "summary": "cbrt3_notMem_of_finrank_two: the k = 1 instance — ∛3 is in no quadratic extension of ℚ, the first obstruction to any construction.",
+      "summary": "cbrt3_notMem_of_finrank_two: the k = 1 instance — ∛3 is in no quadratic extension of ℚ, the first obstruction to any construction. Closes namespace CubeRoot3IrrationalOQ03OQ01.",
       "mathContext": "$\\sqrt[3]{3} \\notin E$ whenever $[E:\\mathbb{Q}] = 2$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cbrt3_notMem_of_finrank_pow_two",
+      "type": "core",
+      "description": "**∛3 lies in no field of 2-power degree over ℚ.** For an intermediate field E ⊆ ℝ with [E:ℚ] = 2^k, ∛3 ∉ E: otherwise ℚ(∛3) ⊆ E would force 3 = [ℚ(∛3):ℚ] to divide 2^k (tower law, IntermediateField.finrank_bot_mul_relfinrank), hence 3 ∣ 2. This is the exact algebraic content of ∛3's non-constructibility — the impossibility of doubling the cube.",
+      "leanType": "(E : IntermediateField ℚ ℝ) [FiniteDimensional ℚ E] (k : ℕ) (hE : Module.finrank ℚ E = 2 ^ k) : cbrt3 ∉ E",
+      "startLine": 49,
+      "endLine": 58
+    },
+    {
+      "name": "cbrt3_notMem_of_finrank_two",
+      "type": "corollary",
+      "description": "**∛3 is not contained in any quadratic extension of ℚ** — the k = 1 case, the first decisive obstruction: the doubled cube's side length is unreachable even by a single square-root construction.",
+      "leanType": "(E : IntermediateField ℚ ℝ) [FiniteDimensional ℚ E] (hE : Module.finrank ℚ E = 2) : cbrt3 ∉ E",
+      "startLine": 63,
+      "endLine": 66
+    },
+    {
+      "name": "three_not_pow_two",
+      "type": "supporting",
+      "description": "**3 is not a power of 2** — the arithmetic obstruction: 3 = 2^k would give 3 ∣ 2^k, so 3 ∣ 2 (Nat.Prime.dvd_of_dvd_pow), impossible. The number-theoretic core the degree argument reduces to.",
+      "leanType": "¬ ∃ k : ℕ, (3 : ℕ) = 2 ^ k",
+      "startLine": 38,
+      "endLine": 42
     }
   ],
   "references": [
