@@ -105,8 +105,7 @@ theorem robertson_uncertainty {A B : E →ₗ[𝕜] E} (hA : A.IsSymmetric)
     rcases eq_or_ne (RCLike.I : 𝕜) 0 with h | h
     · rw [h, norm_zero]; norm_num
     · rw [RCLike.norm_I_of_ne_zero h]
-  have h2 : ‖(2 : 𝕜)‖ = 2 := by
-    rw [show (2 : 𝕜) = ((2 : ℝ) : 𝕜) by norm_num, RCLike.norm_ofReal]; norm_num
+  have h2 : ‖(2 : 𝕜)‖ = 2 := RCLike.norm_two
   -- ‖⟪ψ,[A,B]ψ⟫‖ ≤ 2·|Im⟪u,v⟫|
   have hnb : ‖inner 𝕜 ψ (A (B ψ) - B (A ψ))‖ ≤ 2 * |RCLike.im (inner 𝕜 u v)| := by
     rw [hid, hconj, RCLike.sub_conj, norm_mul, norm_mul, RCLike.norm_ofReal, h2]
