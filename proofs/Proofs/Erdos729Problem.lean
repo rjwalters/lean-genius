@@ -45,14 +45,14 @@ theorem legendre_formula (p n : ℕ) (hp : Nat.Prime p) :
   haveI : Fact p.Prime := ⟨hp⟩
   rcases eq_or_ne n 0 with rfl | hn
   · simp [factorialPadicVal]
-  · have hlog : Nat.log p n < n + 1 := by
-      rw [Nat.log_lt hp.one_lt hn]
-      calc n < 2 ^ n := Nat.lt_two_pow n
-        _ ≤ p ^ n := Nat.pow_le_pow_left hp.two_le n
-        _ ≤ p ^ (n + 1) := Nat.pow_le_pow_right hp.pos (Nat.le_succ n)
+  · have hlog : Nat.log p n < n + 1 :=
+      Nat.log_lt_of_lt_pow hn <| by
+        calc n < 2 ^ n := n.lt_two_pow_self
+          _ ≤ p ^ n := Nat.pow_le_pow_left hp.two_le n
+          _ ≤ p ^ (n + 1) := Nat.pow_le_pow_right hp.pos (Nat.le_succ n)
     rw [padicValNat_factorial hlog, Finset.sum_Ico_eq_sum_range]
     unfold factorialPadicVal
-    exact Finset.sum_congr (by omega) fun k _ => by rw [add_comm]
+    exact Finset.sum_congr (by rw [Nat.add_sub_cancel]) fun k _ => by rw [Nat.add_comm 1 k]
 
 /-- The quotient n!/(a!b!) as a rational (may not be an integer) -/
 def factorialQuotient (n a b : ℕ) : ℚ :=
@@ -135,33 +135,31 @@ axiom barreto_leeham_bound (C : ℝ) (hC : C > 0) :
 Modification of the argument for Problem #728.
 -/
 
-/-- The proof extends the powers-of-2 argument: large primes contribute
-    significantly to the p-adic valuation constraints. For any prime p > C,
-    the constraint v_p(a!) + v_p(b!) ≤ v_p(n!) still yields a + b ≤ n + O(log n). -/
+/-
+The proof extends the powers-of-2 argument: large primes contribute
+significantly to the p-adic valuation constraints. For any prime p > C,
+the constraint v_p(a!) + v_p(b!) ≤ v_p(n!) still yields a + b ≤ n + O(log n).
+-/
 /-
 ## Part 7: Legendre's Formula Details
 
 The p-adic valuation of factorials.
 -/
 
-/-- v_p(n!) = (n - s_p(n))/(p-1) where s_p(n) is digit sum in base p -/
-noncomputable def digitSum (p n : ℕ) : ℕ :=
-  if n = 0 then 0
-  else n % p + digitSum p (n / p)
+/-- `s_p(n)`, the digit sum of `n` in base `p`, defined directly from Mathlib's
+    base-`p` digit list `Nat.digits p n`.
 
-/-- The file's recursive `digitSum p n` agrees with Mathlib's base-`p` digit sum
-    `(Nat.digits p n).sum` for any base `p > 1`. -/
-theorem digitSum_eq_digits_sum (p : ℕ) (hp : 1 < p) (n : ℕ) :
-    digitSum p n = (Nat.digits p n).sum := by
-  induction n using Nat.strong_induction_on with
-  | _ n ih =>
-    rcases eq_or_ne n 0 with rfl | hn
-    · simp [digitSum]
-    · have hpos : 0 < n := Nat.pos_of_ne_zero hn
-      have hunfold : digitSum p n = n % p + digitSum p (n / p) := by
-        rw [digitSum.eq_def, if_neg hn]
-      rw [hunfold, Nat.digits_def' hp hpos, List.sum_cons,
-        ih (n / p) (Nat.div_lt_self hpos hp)]
+    (A naive recursion `n % p + digitSum p (n / p)` is ill-founded for `p ≤ 1`
+    — e.g. `p = 1` gives `n / 1 = n` and never terminates — so we reuse
+    Mathlib's `Nat.digits`, which is defined by well-founded recursion on `n`
+    with the base handled correctly.) -/
+def digitSum (p n : ℕ) : ℕ := (Nat.digits p n).sum
+
+/-- The file's `digitSum p n` agrees with Mathlib's base-`p` digit sum
+    `(Nat.digits p n).sum`. Definitional; the `1 < p` hypothesis is retained for
+    call-site compatibility. -/
+theorem digitSum_eq_digits_sum (p : ℕ) (_hp : 1 < p) (n : ℕ) :
+    digitSum p n = (Nat.digits p n).sum := rfl
 
 /-- For p = 2: v_2(n!) = n - s_2(n).
 
@@ -183,9 +181,9 @@ theorem legendre_for_two (n : ℕ) :
 What the result tells us about factorial structure.
 -/
 
-/-- The structure of factorials is rigid: the constraint a + b ≤ n + O(log n)
-    comes from ALL sufficiently large primes, not just a few small ones. -/
-/-- Binomial coefficients inherit this rigidity -/
+/-- Binomial coefficients inherit the factorial rigidity: the constraint
+    `a + b ≤ n + O(log n)` comes from ALL sufficiently large primes, not just a
+    few small ones. -/
 theorem binomial_rigidity (n a b : ℕ) (hab : a + b = n) :
     -- n!/(a!b!) = C(n, a) is always an integer
     DividesFactorial n a b := by
