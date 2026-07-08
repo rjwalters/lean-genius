@@ -148,12 +148,12 @@ lemma diff_lower_leading (m : ℕ) :
       0 ≤ 1 / (2 * ((k : ℝ) + 1) + 1) * y ^ (k + 1) := by
     intro k _; positivity
   have h0 := le_hasSum hHS 0 hnonneg
-  have hval0 : (fun k : ℕ => 1 / (2 * ((k : ℝ) + 1) + 1) * y ^ (k + 1)) 0 = y / 3 := by
-    simp only [Nat.cast_zero, zero_add, pow_one]; norm_num
-  rw [hval0] at h0
   have hy_eq : y = 1 / (2 * t + 1) ^ 2 := by rw [hy, hx, div_pow]; norm_num
-  have : y / 3 = 1 / (3 * (2 * t + 1) ^ 2) := by rw [hy_eq]; ring
-  rw [this] at h0
+  have hbeta : (fun k : ℕ => 1 / (2 * ((k : ℝ) + 1) + 1) * y ^ (k + 1)) 0
+      = 1 / (3 * (2 * t + 1) ^ 2) := by
+    show 1 / (2 * (((0 : ℕ) : ℝ) + 1) + 1) * y ^ (0 + 1) = 1 / (3 * (2 * t + 1) ^ 2)
+    rw [hy_eq]; simp only [Nat.cast_zero, zero_add, pow_one]; ring
+  rw [hbeta] at h0
   exact h0
 
 /-- **Lower per-step bound in telescoping form (new).**  For every `m`, with
