@@ -40,7 +40,7 @@
     ],
     "originalContributions": [
       "Formalization of IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare",
-      "Statement and axiomatization of Juhász's theorem (1979)",
+      "Axiom reduction (2→1): the Problem #214 statement juhasz_1979 is derived from the single stronger axiom juhasz_stronger via the proved reduction unit_square_from_stronger, so the file rests on one Juhász axiom instead of two",
       "Stronger version: ContainsCongruentCopy for any PointSet 4",
       "Proof of unit_distance_free_iff_no_edges (graph characterization)",
       "ScaledLattice √2·ℤ² as unit-distance-free example",
@@ -77,9 +77,9 @@
         "relationship": "Unit distance graphs with large girth: chromatic number of unit distance graphs under girth constraints"
       }
     ],
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 226,
-    "assumptions": "2 axioms: juhasz_1979 (Juhász 1979 — unit-distance free sets contain unit squares in complement), juhasz_stronger (stronger: unit-distance free sets contain any 4-point configuration in complement). 0 sorries: unit_square_from_stronger is now fully proved (the standard unit square is transported into the complement by Juhász's isometry).",
+    "assumptions": "1 axiom: juhasz_stronger (Juhász 1979 — a unit-distance-free set's complement contains a congruent copy of ANY 4-point configuration). The original Problem #214 statement (juhasz_1979 : Erdos214Statement) is no longer a separate axiom: it is DERIVED from juhasz_stronger via the proved reduction unit_square_from_stronger (a unit square is a special 4-point configuration, transported into the complement by Juhász's isometry). 0 sorries.",
     "theoremCount": 5,
     "definitionCount": 13,
     "additionalFiles": [
@@ -90,7 +90,7 @@
     "historicalContext": "**Unit Distance Free Sets: Geometric Ramsey Theory in the Plane**\n\nErdős posed Problem #214 in 1983, asking about the geometric consequences of avoiding a single distance. The question lies at the heart of combinatorial geometry: what structure must the complement of a 'sparse' set possess?\n\n**The Unit Distance Graph**\n\nThe unit distance graph G₁(ℝ²) has all points of ℝ² as vertices and edges connecting pairs at distance 1. A unit-distance-free set is an independent set in this graph. The chromatic number χ(ℝ²) — the minimum colors needed so each color class is unit-distance-free — is the Hadwiger-Nelson problem: 5 ≤ χ(ℝ²) ≤ 7 (de Grey 2018 for the lower bound, hexagonal tiling for the upper).\n\n**Juhász's Resolution (1979)**\n\nRóbert Juhász proved a much stronger result than Erdős asked for: if S avoids unit distances, then Sᶜ contains a congruent copy of ANY 4-point configuration — not just unit squares. The proof uses the key observation that for each p ∈ S, the entire unit circle centered at p lies in Sᶜ, providing an abundance of points to build configurations from.\n\n**The Proof Strategy**\n\nFor any 4-point configuration P = {p₁, p₂, p₃, p₄}: Choose any point in S. Its unit circle (in Sᶜ) provides a 1-parameter family of candidate locations. The configuration has 8 degrees of freedom (4 points in ℝ²) minus 3 for rigid motions = 5 intrinsic degrees. The unit circles in Sᶜ provide enough flexibility (continuous families of points) to realize any 4-point configuration.\n\n**Limitations and Open Questions**\n\nThe result breaks down for large n-point configurations: there exist unit-distance-free sets whose complements miss certain n-point patterns. The critical threshold n is unknown. The 5-point case — whether ALL 5-point configurations must appear in Sᶜ — remains open since 1979.",
     "problemStatement": "Let S ⊂ ℝ² be such that no two points in S are distance 1 apart. Must the complement of S contain four points which form a unit square?\n\n**Answer:** YES (Juhász, 1979). More generally, Sᶜ contains a congruent copy of any 4-point configuration.",
     "text": "If S ⊂ ℝ² has no two points at distance 1 apart, must the complement contain four points forming a unit square? YES (Juhász, 1979). More generally, the complement contains a congruent copy of any 4-point set.",
-    "proofStrategy": "**Formalization Structure**\n\nThe Lean file (226 lines) is organized into ten labelled parts; several are prose section headers that carry no formal content in the current trimmed file.\n\n1. **Basic definitions**: Plane (EuclideanSpace ℝ (Fin 2)), dist (‖p-q‖), IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare\n\n2. **Main statement**: Erdos214Statement; axiomatized via juhasz_1979; erdos_214_solved := juhasz_1979\n\n3. **Stronger version**: PointSet n = Fin n → Plane, ContainsCongruentCopy via isometry, JuhaszStrongerTheorem (axiom juhasz_stronger) for n=4, unit_square_from_stronger (FULLY PROVED: the standard unit square, encoded as PointSet 4, is transported into the complement by Juhász's isometry)\n\n4. **Limitations**: HoldsFor5Points (open question, stated as a Prop only)\n\n5. **Graph connection**: UnitDistanceGraph definition, unit_distance_free_iff_no_edges (FULLY PROVED via ext/simp)\n\n6. **Proof techniques**: section header only — the geometric argument is described in prose, not formalized\n\n7. **Examples**: ScaledLattice = √2·ℤ² is defined as a candidate unit-distance-free set (the unit-free property is not formally proved)\n\n8–9. **Related problems / Geometric intuition**: section headers only\n\n10. **Summary**: erdos_214_status := juhasz_1979 and erdos_214_summary := ⟨juhasz_1979, juhasz_stronger⟩ (reductions to the two axioms)\n\n**What is Proved vs Axiomatized**\n\n- **Proved (sorry-free)**: unit_distance_free_iff_no_edges (graph characterization), unit_square_from_stronger (derives Erdos214Statement from JuhaszStrongerTheorem via the standard unit square and Juhász's isometry), erdos_214_solved, erdos_214_status, erdos_214_summary — the latter three are reductions to the two axioms\n- **Axiomatized (2 axioms)**: juhasz_1979, juhasz_stronger\n\nThe file is now sorry-free (0 sorries); the only assumptions are the two Juhász axioms.",
+    "proofStrategy": "**Formalization Structure**\n\nThe Lean file (237 lines) is organized into ten labelled parts; several are prose section headers that carry no formal content in the current trimmed file.\n\n1. **Basic definitions**: Plane (EuclideanSpace ℝ (Fin 2)), dist (‖p-q‖), IsUnitDistanceFree, IsUnitSquare, ContainsUnitSquare\n\n2. **Main statement**: Erdos214Statement; juhasz_1979 is now a *derived theorem* (`juhasz_1979 := unit_square_from_stronger juhasz_stronger`), no longer an axiom; erdos_214_solved := juhasz_1979\n\n3. **Stronger version**: PointSet n = Fin n → Plane, ContainsCongruentCopy via isometry, JuhaszStrongerTheorem (axiom juhasz_stronger) for n=4, unit_square_from_stronger (FULLY PROVED: the standard unit square, encoded as PointSet 4, is transported into the complement by Juhász's isometry)\n\n4. **Limitations**: HoldsFor5Points (open question, stated as a Prop only)\n\n5. **Graph connection**: UnitDistanceGraph definition, unit_distance_free_iff_no_edges (FULLY PROVED via ext/simp)\n\n6. **Proof techniques**: section header only — the geometric argument is described in prose, not formalized\n\n7. **Examples**: ScaledLattice = √2·ℤ² is defined as a candidate unit-distance-free set (the unit-free property is not formally proved)\n\n8–9. **Related problems / Geometric intuition**: section headers only\n\n10. **Summary**: erdos_214_status := juhasz_1979 and erdos_214_summary := ⟨juhasz_1979, juhasz_stronger⟩ (reductions to the single juhasz_stronger axiom)\n\n**What is Proved vs Axiomatized**\n\n- **Proved (sorry-free)**: unit_distance_free_iff_no_edges (graph characterization), unit_square_from_stronger (derives Erdos214Statement from JuhaszStrongerTheorem via the standard unit square and Juhász's isometry), erdos_214_solved, erdos_214_status, erdos_214_summary, and juhasz_1979 — all reductions to the single juhasz_stronger axiom\n- **Axiomatized (1 axiom)**: juhasz_stronger (juhasz_1979 is now *derived* from it, not assumed)\n\nThe file is now sorry-free (0 sorries); the only assumption is the single Juhász 4-point axiom juhasz_stronger.",
     "keyInsights": [
       "For any p ∈ S (unit-distance-free), the entire unit circle {q : ‖p-q‖ = 1} lies in Sᶜ — this provides continuous families of complement points to build configurations from",
       "Juhász's result is much stronger than the original question: ALL 4-point configurations appear in Sᶜ, not just unit squares. The 4-point threshold is sharp — the result fails for large n",
@@ -123,10 +123,10 @@
     {
       "id": "main-statement",
       "title": "Main Statement and Solution",
-      "summary": "Erdos214Statement = ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom.",
+      "summary": "Erdos214Statement = ∀ S, IsUnitDistanceFree S → ContainsUnitSquare Sᶜ. juhasz_1979 is derived from juhasz_stronger via unit_square_from_stronger; erdos_214_solved := juhasz_1979.",
       "startLine": 63,
       "endLine": 75,
-      "mathContext": "Erdos214Statement = ∀ S, IsUnitDistanceFree S $\\to$ ContainsUnitSquare Sᶜ. Axiomatized as juhasz_1979. erdos_214_solved simply applies the axiom."
+      "mathContext": "Erdos214Statement = ∀ S, IsUnitDistanceFree S $\\to$ ContainsUnitSquare Sᶜ. juhasz_1979 is derived from juhasz_stronger via unit_square_from_stronger; erdos_214_solved := juhasz_1979."
     },
     {
       "id": "stronger-version",
@@ -170,7 +170,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Juhász (1979) proved that if S ⊂ ℝ² avoids unit distances, then Sᶜ contains a congruent copy of any 4-point configuration — in particular, a unit square. This captures how avoiding a single distance forces geometric richness in the complement. The result is sharp: it fails for sufficiently large n-point configurations, and the 5-point case remains open. The reduction `unit_square_from_stronger` (a unit square is a special 4-point configuration, transported into Sᶜ by Juhász's isometry) is now fully proved (0 sorries); the only remaining assumptions are the two deep Juhász axioms (juhasz_1979, juhasz_stronger). Also repaired a Mathlib-4.26 build break in UnitDistanceGraph (tuple set-builder).",
+    "summary": "Juhász (1979) proved that if S ⊂ ℝ² avoids unit distances, then Sᶜ contains a congruent copy of any 4-point configuration — in particular, a unit square. This captures how avoiding a single distance forces geometric richness in the complement. The result is sharp: it fails for sufficiently large n-point configurations, and the 5-point case remains open. The reduction `unit_square_from_stronger` (a unit square is a special 4-point configuration, transported into Sᶜ by Juhász's isometry) is now fully proved (0 sorries); the only remaining assumption is the single deep Juhász 4-point axiom juhasz_stronger (juhasz_1979 is now derived from it, not assumed). Also repaired a Mathlib-4.26 build break in UnitDistanceGraph (tuple set-builder).",
     "implications": "1. **Geometric Ramsey Theory**: The result is a partition theorem for the plane: in any 2-coloring where one color avoids unit distances, the other color contains all 4-point configurations. This is a geometric analogue of classical Ramsey theory.\n\n2. **Independent Set Structure**: Unit-distance-free sets (independent sets of G₁(ℝ²)) cannot be geometrically 'rich' — their complements must contain diverse configurations. This connects graph theory (independence number) to geometry (configuration embedding).\n\n**3. Chromatic Number Connection**: Since each color class in a χ(ℝ²)-coloring is unit-distance-free, Juhász's theorem gives structural information about optimal colorings: each color class's complement is geometrically rich.\n\n4. **Threshold Phenomenon**: The transition from 'works for 4 points' to 'fails for large n' suggests a sharp threshold in the number of points. Finding this threshold would reveal the precise geometric complexity that unit-distance-free complements must exhibit.\n\n5. **Measure-Theoretic Perspective**: Unit-distance-free sets can have positive measure (e.g., small disks), but their complements (which also have positive measure) always contain 4-point configurations. The density of available points in Sᶜ is the enabling mechanism.",
     "openQuestions": [
       "Does the property hold for all 5-point configurations? This is the first open case after Juhász's 4-point theorem.",
@@ -191,9 +191,9 @@
       "Real"
     ],
     "namespace": "Erdos214",
-    "lineCount": 226,
-    "axiomCount": 2,
-    "theoremCount": 5,
+    "lineCount": 237,
+    "axiomCount": 1,
+    "theoremCount": 6,
     "definitionCount": 13,
     "path": "Proofs/Erdos214Problem.lean",
     "sorries": 0,
