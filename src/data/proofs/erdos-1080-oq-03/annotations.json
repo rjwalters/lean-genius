@@ -1,0 +1,90 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "erdos-1080-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 63
+    },
+    "type": "concept",
+    "title": "Which cycle lengths can a bipartite graph have?",
+    "content": "Erdős #1080 studies C₄,C₆-free bipartite graphs and asks (OQ-03) to extend the analysis to other cycle lengths (C₈, C₁₀, …). Before the hard extremal questions, there is a purely structural one: which cycle lengths are even possible in a bipartite graph? This file answers it — exactly the even numbers ≥ 4. The definitions IsBipartition, IsBipartite, and HasCycleOfLength are inlined from the parent file (which does not currently compile), so the result is self-contained and independently verified with 0 sorries and 0 axioms.",
+    "mathContext": "IsBipartition G X Y := Disjoint X Y ∧ X ∪ Y = univ ∧ ∀ ⦃u v⦄, G.Adj u v → (u ∈ X ↔ v ∈ Y).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bipartite graph",
+      "cycle length",
+      "König's theorem",
+      "extremal graph theory"
+    ],
+    "prerequisites": [
+      "graph theory",
+      "bipartite graphs"
+    ]
+  },
+  {
+    "id": "ann-parity-engine",
+    "proofId": "erdos-1080-oq-03",
+    "range": {
+      "startLine": 97,
+      "endLine": 132
+    },
+    "type": "technique",
+    "title": "The walk-parity invariant",
+    "content": "bipartite_walk_parity is the engine, proved by induction on the walk. For a walk from u to v it asserts: if u lies in the left part X, then v lies in X iff the walk has even length (and symmetrically for the right part Y). The induction step uses the bipartition edge condition — every edge crosses from X to Y or back — so traversing one edge flips both the current side and the parity of the length (via Nat.even_add_one : Even (n+1) ↔ ¬ Even n). The complement lemmas mem_left_iff_not_right / mem_right_iff_not_left turn 'not on the other side' into 'on this side'.",
+    "mathContext": "(u∈X → (Even w.length ↔ v∈X)) ∧ (u∈Y → (Even w.length ↔ v∈Y)), by induction on w.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "walk induction",
+      "parity",
+      "invariant"
+    ],
+    "prerequisites": [
+      "walks in graphs",
+      "induction on inductive types",
+      "parity of ℕ"
+    ]
+  },
+  {
+    "id": "ann-cycle-even",
+    "proofId": "erdos-1080-oq-03",
+    "range": {
+      "startLine": 133,
+      "endLine": 172
+    },
+    "type": "key-step",
+    "title": "Bipartite ⇒ only even cycles (no odd cycle)",
+    "content": "A cycle is a closed walk (u = v), so it returns to its starting part; the parity invariant then forces its length to be even — bipartite_closed_walk_even and hence the main theorem bipartite_cycle_even. Contrapositively, no odd cycle can occur: bipartite_odd_cycle_free, with the concrete exclusions bipartite_C5_free, bipartite_C7_free, bipartite_C9_free. This is the 'bipartite ⇒ no odd cycle' direction of König's classical characterization, and it uses neither finiteness nor C₄/C₆-freeness — only bipartiteness.",
+    "mathContext": "Closed walk ⇒ starts and ends in the same part ⇒ even length; odd length is therefore impossible for any cycle.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "odd cycle",
+      "König's theorem",
+      "closed walk"
+    ],
+    "prerequisites": [
+      "cycles as closed walks"
+    ]
+  },
+  {
+    "id": "ann-length-ge-four",
+    "proofId": "erdos-1080-oq-03",
+    "range": {
+      "startLine": 173,
+      "endLine": 200
+    },
+    "type": "key-step",
+    "title": "Cycle lengths are exactly {4, 6, 8, 10, …}",
+    "content": "Mathlib's IsCycle.three_le_length gives that any cycle uses at least 3 edges; combined with evenness this sharpens to length ≥ 4 (bipartite_cycle_length_ge_four), so the shortest possible cycle is a C₄. The summary bipartite_cycle_length_even_ge_four packages 'even and ≥ 4', identifying the realizable cycle lengths as exactly the even numbers ≥ 4. This is the ambient constraint for OQ-03: any extension 'to other cycle lengths' can only concern longer even cycles (C₈, C₁₀, …), never odd ones.",
+    "mathContext": "3 ≤ length ∧ Even length ⟹ 4 ≤ length; realizable lengths = even numbers ≥ 4.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "girth",
+      "C₄",
+      "even cycles"
+    ],
+    "prerequisites": [
+      "cycle length bounds"
+    ]
+  }
+]
