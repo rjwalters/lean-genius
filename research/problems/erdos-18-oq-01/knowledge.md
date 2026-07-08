@@ -47,3 +47,17 @@ SOLVED-state look-outward. The file previously had only finite practical example
 
 Verified 0 axioms / 0 sorries, no native_decide; built clean (7744 jobs). 13 theorems.
 Remaining OQ (asymptotic h(m)/Mertens-Vose density) still out of elementary reach.
+
+## Session 2026-07-08 (researcher-6) — full-range capstone for σ(m) ≤ 2m
+
+Unified the bottom segment `practical_represents_le` ([0,m]) and top segment
+`practical_top_segment` ([σ-m,σ]) into the range-completeness result:
+- `practical_represents_all_of_sigma_le`: practical m ∧ σ(m) ≤ 2m ⟹ every k ≤ σ(m)
+  representable. Proof: `by_cases k ≤ m` → bottom lemma; else `m < k` and σ≤2m gives
+  σ-m ≤ m < k so `practical_top_segment hp (by omega) hk`. One-liner each branch.
+- `perfect_practical_represents_all`: σ(m)=2m (perfect) boundary corollary, all of [0,2m].
+
+★The overlap condition is exactly σ(m)-m ≤ m ⟺ σ(m) ≤ 2m (deficient/perfect). ABUNDANT
+practicals (σ>2m, first is 12: σ=28>24) leave a gap between the two width-m blocks; the
+unconditional Stewart–Sierpiński theorem there needs sorted-divisor prefix-sum induction
+(not done). Docstring states this honestly. 0 sorry/axiom/native_decide, 7744 jobs.

@@ -303,4 +303,39 @@ theorem practical_top_segment {m : ℕ} (hp : IsPractical m) {k : ℕ}
   have hcancel : (divisors m).sum id - ((divisors m).sum id - k) = k := by omega
   rwa [hcancel] at hrep
 
+/-! ## Full representability of `[0, σ(m)]` for non-abundant practical numbers
+
+`practical_represents_le` gives the bottom segment `[0, m]` and `practical_top_segment`
+the mirror-image top segment `[σ(m) - m, σ(m)]`.  These two width-`m` blocks together
+cover the whole range `[0, σ(m)]` exactly when they overlap, i.e. when `σ(m) - m ≤ m`,
+i.e. `σ(m) ≤ 2m` (`m` deficient or perfect).  In that case a practical number represents
+*every* value in `[0, σ(m)]` — the Stewart–Sierpiński characterisation, restricted to the
+range the two elementary segments already reach. -/
+
+/-- **A practical number with `σ(m) ≤ 2m` represents the entire interval `[0, σ(m)]`.**
+When `m` is deficient or perfect the bottom segment `[0, m]`
+(`practical_represents_le`) and the top segment `[σ(m) - m, σ(m)]`
+(`practical_top_segment`) overlap and jointly cover `[0, σ(m)]`, so every `k ≤ σ(m)` is a
+sum of distinct divisors of `m`.  (For *abundant* practical numbers `σ(m) > 2m` the two
+segments leave a genuine gap; the full range still holds but requires Stewart's
+ordered-divisor induction, beyond this elementary file — e.g. `12` is practical with
+`σ(12) = 28 > 24`.) -/
+theorem practical_represents_all_of_sigma_le {m : ℕ} (hp : IsPractical m)
+    (hσ : (divisors m).sum id ≤ 2 * m) {k : ℕ} (hk : k ≤ (divisors m).sum id) :
+    IsRepresentable k m := by
+  by_cases hkm : k ≤ m
+  · -- bottom segment `[0, m]`
+    exact practical_represents_le hp hkm
+  · -- `m < k ≤ σ(m)`; from `σ(m) ≤ 2m` we get `σ(m) - m ≤ m < k`, so the top segment applies
+    exact practical_top_segment hp (by omega) hk
+
+/-- **A practical perfect number represents all of `[0, σ(m)] = [0, 2m]`.**  Perfect
+numbers satisfy `σ(m) = 2m ≤ 2m`, the boundary case of
+`practical_represents_all_of_sigma_le`; every practical perfect number (e.g. `6`, `28`)
+represents every value up to `2m` as a sum of distinct divisors. -/
+theorem perfect_practical_represents_all {m : ℕ} (hp : IsPractical m)
+    (hperf : (divisors m).sum id = 2 * m) {k : ℕ} (hk : k ≤ 2 * m) :
+    IsRepresentable k m :=
+  practical_represents_all_of_sigma_le hp (by omega) (by omega)
+
 end Erdos18OQ01
