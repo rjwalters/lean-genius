@@ -75,6 +75,32 @@
       "mathContext": "Direct corollary of card_le_of_pos_int_le applied to the finite set of distinct integer distances."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "distinct_distances_le_diam",
+      "type": "core",
+      "description": "**The integer-distance bridge (Erdős #100 ↔ #89).** If the distinct pairwise distances of an integer-distance point set form a finite set, all positive integers bounded by the diameter D ≥ 0, then #distinct distances ≤ D. Combined with the Guth–Katz lower bound #distinct ≥ c·n/log n this gives diam ≥ c·n/log n — the current best diameter bound. A direct corollary of card_le_of_pos_int_le.",
+      "leanType": "(dists : Finset ℝ) (D : ℝ) (hD : 0 ≤ D) (hint : ∀ x ∈ dists, ∃ k : ℕ, x = (k : ℝ)) (hpos : ∀ x ∈ dists, 0 < x) (hle : ∀ x ∈ dists, x ≤ D) : (dists.card : ℝ) ≤ D",
+      "startLine": 93,
+      "endLine": 98
+    },
+    {
+      "name": "card_le_floor_of_pos_int_le",
+      "type": "core",
+      "description": "**Counting positive integers in a bounded range.** A finite set S of reals, each a positive integer and each ≤ D, has ≤ ⌊D⌋₊ elements: x ↦ ⌊x⌋₊ injects S into {1,…,⌊D⌋₊}. The reusable discrete-geometry counting primitive.",
+      "leanType": "(S : Finset ℝ) (D : ℝ) (hint : ∀ x ∈ S, ∃ k : ℕ, x = (k : ℝ)) (hpos : ∀ x ∈ S, 0 < x) (hle : ∀ x ∈ S, x ≤ D) : S.card ≤ ⌊D⌋₊",
+      "startLine": 49,
+      "endLine": 72
+    },
+    {
+      "name": "card_le_of_pos_int_le",
+      "type": "key",
+      "description": "**The bound stated against D.** For D ≥ 0, a finite set of positive integers each ≤ D has cardinality ≤ D (in ℝ), via ⌊D⌋₊ ≤ D. The real-valued form fed directly into the distance bridge.",
+      "leanType": "(S : Finset ℝ) (D : ℝ) (hD : 0 ≤ D) (hint : ∀ x ∈ S, ∃ k : ℕ, x = (k : ℝ)) (hpos : ∀ x ∈ S, 0 < x) (hle : ∀ x ∈ S, x ≤ D) : (S.card : ℝ) ≤ D",
+      "startLine": 76,
+      "endLine": 83
+    }
+  ],
   "conclusion": {
     "summary": "The current best lower bound for the open Erdős #100 (diam >= c n/log n for integer-distance sets) rests on combining the Guth-Katz distinct-distances theorem with the elementary bound that integer distances confine the distinct distances to {1, ..., floor(diam)}. This entry proves that elementary bridge cleanly and unconditionally: any finite set of positive integers bounded by D has at most floor(D) <= D elements, so the distinct integer distances of a configuration number at most its diameter. The hard explicit-witness construction (the scaffold's Piepmeyer sorry) is untouched.",
     "implications": "Formalizing the bridge isolates the exact combinatorial step that transfers a distinct-distances lower bound to a diameter lower bound, making the dependence of the n/log n diameter bound on the Guth-Katz theorem explicit and machine-checked. The counting lemma (|S| <= floor(D) for a bounded set of positive integers) is a reusable discrete-geometry primitive.",
