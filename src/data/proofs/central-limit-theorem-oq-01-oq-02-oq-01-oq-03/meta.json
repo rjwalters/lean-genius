@@ -137,6 +137,14 @@
       "endLine": 66
     },
     {
+      "name": "gaussianExponent_deriv_zero",
+      "type": "core",
+      "description": "ψ'(0) = iμ: the first cumulant κ₁ = μ (the mean).",
+      "leanType": "(μ σ_sq : ℝ) → deriv (gaussianExponent μ σ_sq) 0 = ↑μ * Complex.I",
+      "startLine": 80,
+      "endLine": 83
+    },
+    {
       "name": "gaussianExponent_deriv2",
       "type": "core",
       "description": "ψ''(t) = −σ² (constant): the second cumulant κ₂ = σ² (the variance).",
