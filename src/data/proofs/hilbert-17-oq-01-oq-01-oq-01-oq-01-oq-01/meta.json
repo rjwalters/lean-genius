@@ -158,8 +158,15 @@
       "id": "primitive-factorisation",
       "title": "The square-times-positive-definite normal form",
       "startLine": 97,
+      "endLine": 116,
+      "summary": "exists_primitive_factorization: u² + v² = (gcd u v)²·(u₁² + v₁²) with coprime, positive-definite primitive part. gcd_dvd_left/right supply the cofactors u₁, v₁; ring verifies the algebraic identity; sq_add_sq_pos_of_isCoprime supplies the strict positivity of the primitive part."
+    },
+    {
+      "id": "root-multiplicity-corollary",
+      "title": "The gcd carries every real zero",
+      "startLine": 118,
       "endLine": 143,
-      "summary": "exists_primitive_factorization: u² + v² = (gcd u v)²·(u₁² + v₁²) with coprime, positive-definite primitive part. rootMultiplicity_two_sos: rootMult r (u² + v²) = 2·rootMult r (gcd u v), splitting the product multiplicity and using that the primitive part is root-free."
+      "summary": "rootMultiplicity_two_sos: rootMult r (u² + v²) = 2·rootMult r (gcd u v). The positive-definite primitive part has multiplicity 0 (rootMultiplicity_eq_zero), so rootMultiplicity_mul splits the product multiplicity into 2·rootMult r (gcd u v). Recovers the parent's 2·min formula since rootMult r (gcd u v) = min(rootMult r u, rootMult r v)."
     },
     {
       "id": "non-uniqueness",
@@ -191,7 +198,28 @@
       "url": "https://www.ams.org/books/conm/253/"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent root-multiplicity entry: characterises the real roots of a 2-SOS (rootMult(u²+v²) = 2·min(rootMult u, rootMult v)) and asks to factor p = d²·(primitive 2-SOS) with d = gcd(u,v) and to decide uniqueness. This entry proves that factorisation with a positive-definite primitive part and settles uniqueness negatively; its eval_sq_add_sq_eq_zero_iff is reused directly."
+    },
+    {
+      "targetId": "hilbert-17-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Grandparent (degree/Fejér–Riesz sharpness): pins down the degree of the summands in p = u² + v². The coprime normalisation here is the multiplicative counterpart on the root side — p is a square of the gcd times a strictly positive primitive factor."
+    },
+    {
+      "targetId": "hilbert-17-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Great-grandparent (Fejér–Riesz existence/upper bound: PSD ⟹ u² + v²). The positive-definiteness of a coprime 2-SOS proved here is the strict form of nonnegativity for the primitive part."
+    },
+    {
+      "targetId": "hilbert-17",
+      "relationship": "related",
+      "description": "Root ancestor: Hilbert's 17th problem and Artin's theorem. The univariate strand now has existence, exact certificate degree, exact real-root multiplicities, and this coprime (square-times-positive-definite) normal form."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "sq_add_sq_pos_of_isCoprime",
