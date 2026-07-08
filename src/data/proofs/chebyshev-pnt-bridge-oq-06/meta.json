@@ -81,24 +81,30 @@
   "mainTheorems": [
     {
       "name": "primeCounting_diff_mul_log_sqrt_le",
-      "type": "theorem",
+      "type": "supporting",
       "statement": "$n \\ge 4 \\Rightarrow (\\pi(n) - \\pi(\\sqrt n))\\cdot\\log\\sqrt n \\le n\\cdot\\log 4$",
       "significance": "The real-logarithmic form of Chebyshev's upper bound, the direct upper-density mirror of OQ-05's primeCounting_mul_log_lower. Obtained by taking Real.log of the parent's purely combinatorial power inequality.",
-      "description": "Cast (Nat.sqrt n)^(π(n)−π(√n)) ≤ 4^n into ℝ; apply Real.log_le_log and Real.log_pow on both sides."
+      "description": "Cast (Nat.sqrt n)^(π(n)−π(√n)) ≤ 4^n into ℝ; apply Real.log_le_log and Real.log_pow on both sides.",
+      "startLine": 65,
+      "endLine": 88
     },
     {
       "name": "primeCounting_mul_log_sqrt_le",
-      "type": "theorem",
+      "type": "core",
       "statement": "$n \\ge 4 \\Rightarrow \\pi(n)\\cdot\\log\\sqrt n \\le n\\cdot\\log 4 + \\sqrt n\\cdot\\log\\sqrt n$",
       "significance": "A bound on π(n) itself (not just the difference π(n)−π(√n)), obtained by absorbing the small-prime correction via the trivial π(√n) ≤ √n. This is the clean form from which the density bound follows.",
-      "description": "Split π(n) = (π(n)−π(√n)) + π(√n) with Nat.cast_sub (Nat.monotone_primeCounting) and bound π(√n)·log(√n) ≤ √n·log(√n)."
+      "description": "Split π(n) = (π(n)−π(√n)) + π(√n) with Nat.cast_sub (Nat.monotone_primeCounting) and bound π(√n)·log(√n) ≤ √n·log(√n).",
+      "startLine": 104,
+      "endLine": 122
     },
     {
       "name": "primeCounting_le_div_log_sqrt",
-      "type": "theorem",
+      "type": "core",
       "statement": "$n \\ge 4 \\Rightarrow \\pi(n) \\le \\dfrac{n\\cdot\\log 4}{\\log\\sqrt n} + \\sqrt n$",
       "significance": "The Chebyshev UPPER density in explicit quotient form — the mirror of OQ-05's primeCounting_ge_div_log. With log(√n) ≈ ½ log n it gives limsup π(x)·log x/x ≤ 2 log 4, the upper half of Chebyshev's 1852 theorem, completing the pair with OQ-05's lower half.",
-      "description": "Divide primeCounting_mul_log_sqrt_le by log(√n) > 0 via le_of_mul_le_mul_right and a field_simp identity."
+      "description": "Divide primeCounting_mul_log_sqrt_le by log(√n) > 0 via le_of_mul_le_mul_right and a field_simp identity.",
+      "startLine": 137,
+      "endLine": 153
     }
   ],
   "references": [
