@@ -76,7 +76,7 @@
     {
       "id": "sharp-pair-bound",
       "title": "Sharp Per-Pair Cut Error Bound",
-      "summary": "pair_cut_error_bound_sharp: for an ε-regular pair (P,Q) and A ⊆ P, B ⊆ Q, the cut error |e(A,B) − d(P,Q)|A||B|| ≤ ε|P||Q| — the tight constant, improving the parent's 2ε|P||Q|.",
+      "summary": "pair_cut_error_bound_sharp: for an ε-regular pair (P,Q) and A ⊆ P, B ⊆ Q, the cut error |e(A,B) − d(P,Q)|A||B|| ≤ ε|P||Q| — the tight constant, improving the parent's 2ε|P||Q|. Splits on large vs small subsets: the large case uses ε-regularity directly; the small case replaces the parent's sum bound e + d|A||B| ≤ 2ε|P||Q| by the max bound |e − d|A||B|| ≤ max(e, d|A||B|) ≤ ε|P||Q|.",
       "startLine": 71,
       "endLine": 160,
       "mathContext": "Large case: ε-regularity gives |d(A,B) − d(P,Q)| ≤ ε, so the error is ≤ ε|A||B| ≤ ε|P||Q|. Small case: both e and d|A||B| are ≤ |A||B| ≤ ε|P||Q|, and |x − y| ≤ max(x, y) for x, y ≥ 0 bounds the difference by ε|P||Q|."
@@ -84,7 +84,7 @@
     {
       "id": "sharp-main",
       "title": "Sharp Main Comparison and Corollary",
-      "summary": "szemeredi_implies_fk_sharp: every ε-regular partition is an ε-cut-approximation, summing the sharp per-pair bound over all |parts|² pairs. sharp_recovers_original: the ε result entails the parent's 2ε result.",
+      "summary": "szemeredi_implies_fk_sharp: every ε-regular partition is an ε-cut-approximation, summing the sharp per-pair bound over all |parts|² pairs. sharp_recovers_original: the ε result entails the parent's 2ε result, so the sharpening strictly generalizes it.",
       "startLine": 162,
       "endLine": 224,
       "mathContext": "The partition decomposition e(A,B) = Σᵢⱼ e(A∩Pᵢ, B∩Pⱼ) and the parts-product identity Σᵢⱼ|Pᵢ||Pⱼ| = n² (both from the parent) convert per-pair ε|P||Q| into global ε·n²."
@@ -103,6 +103,16 @@
       "targetId": "szemeredi-regularity-oq-02",
       "relationship": "parent",
       "description": "Formalizes the FK weak regularity lemma and proves Szemerédi ⟹ FK with the 2ε constant (szemeredi_implies_fk), plus the partition decomposition (edge_count_partition_sum), the parts-product identity (parts_product_sum_eq_card_sq), and the tower-vs-singly-exponential parts-count comparison. This entry sharpens the constant from 2ε to ε, reusing that machinery, and corrects the parent's keyInsight that 2 was sharp."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "related",
+      "description": "The foundational Szemerédi regularity lemma: every large graph admits an ε-regular partition into boundedly many parts. This entry lives on the Frieze-Kannan (weak-regularity) side of that theory — it quantifies how well an ε-regular partition approximates the graph in cut norm, sharpening the comparison constant to the optimal 1."
+    },
+    {
+      "targetId": "szemeredi-theorem",
+      "relationship": "related",
+      "description": "Szemerédi's theorem on arithmetic progressions, the original motivation for the regularity method. The regularity lemma and its Frieze-Kannan weak variant (whose cut-approximation constant this entry sharpens) are the combinatorial engine behind graph-theoretic proofs in that circle of ideas."
     }
   ]
 }

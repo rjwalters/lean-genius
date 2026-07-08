@@ -1,48 +1,118 @@
 [
   {
-    "id": "szemeredifk-sharp-ann-pair",
+    "id": "szemeredifk-sharp-ann-setup",
     "proofId": "szemeredi-regularity-oq-02-oq-02",
     "range": {
       "startLine": 71,
-      "endLine": 160
+      "endLine": 91
     },
-    "type": "theorem",
-    "title": "Sharp Per-Pair Cut Error Bound: ε|P||Q|, not 2ε|P||Q|",
-    "content": "pair_cut_error_bound_sharp proves that for an ε-regular pair (P,Q) and any A ⊆ P, B ⊆ Q, the cut error |e(A,B) − d(P,Q)·|A|·|B|| is at most ε·|P|·|Q| — the tight constant, halving the parent's pair_cut_error_bound. The proof splits on whether A and B are 'large' (≥ ε fraction of their part). In the large case, ε-regularity gives |d(A,B) − d(P,Q)| ≤ ε directly, which after multiplying by |A||B| ≤ |P||Q| yields ε|P||Q|. In the small case (A or B below the ε threshold), one has |A||B| ≤ ε|P||Q|, so the actual edge count e ≤ |A||B| ≤ ε|P||Q| and the predicted count d(P,Q)|A||B| ≤ |A||B| ≤ ε|P||Q| are each individually at most ε|P||Q|. Because both are nonnegative and |x − y| ≤ max(x, y) for x, y ≥ 0, their difference is at most ε|P||Q|. The parent instead bounded the small case by the sum e + d|A||B| ≤ 2ε|P||Q|; replacing that sum by the maximum is exactly the factor-of-2 improvement.",
-    "mathContext": "Small case: $0 \\le e \\le |A||B| \\le \\varepsilon|P||Q|$ and $0 \\le d\\,|A||B| \\le |A||B| \\le \\varepsilon|P||Q|$, hence $|e - d\\,|A||B|| \\le \\max(e, d\\,|A||B|) \\le \\varepsilon|P||Q|$.",
-    "significance": "foundational",
+    "type": "context",
+    "title": "Statement and reused density/regularity API",
+    "content": "pair_cut_error_bound_sharp is stated for an ε-regular pair (P,Q) with A ⊆ P, B ⊆ Q. The setup abbreviates the actual edge count e = |{(a,b) ∈ A×B : a~b}| and the density d = edgeDensity G P Q with `set`, then records the elementary facts the whole argument rests on: all cardinalities are nonnegative (Nat.cast_nonneg), the monotonicity |A| ≤ |P| and |B| ≤ |Q| from A ⊆ P, B ⊆ Q (Finset.card_le_card), the count bound e ≤ |A||B| (a filtered subset of A×B, via card_filter_le and card_product), and the density range 0 ≤ d ≤ 1 (edgeDensity_nonneg / edgeDensity_le_one). These are inherited unchanged from the parent szemeredi-regularity-oq-02 entry; the sharpening happens purely in how they are combined.",
+    "mathContext": "$e = |\\{(a,b)\\in A\\times B : a\\sim b\\}|,\\quad d = d(P,Q)\\in[0,1],\\quad 0 \\le e \\le |A||B|,\\quad |A|\\le|P|,\\ |B|\\le|Q|.$",
+    "significance": "context",
     "relatedConcepts": [
-      "ε-regular pair",
       "edge density",
-      "cut norm",
-      "triangle inequality vs max bound"
+      "ε-regular pair",
+      "Finset cardinality monotonicity",
+      "cut error"
     ],
     "prerequisites": [
-      "Szemerédi ε-regularity",
-      "absolute value inequalities"
+      "edgeDensity / IsEpsilonRegular definitions (parent entry)",
+      "Finset.card_le_card, Finset.card_filter_le"
+    ]
+  },
+  {
+    "id": "szemeredifk-sharp-ann-large",
+    "proofId": "szemeredi-regularity-oq-02-oq-02",
+    "range": {
+      "startLine": 92,
+      "endLine": 130
+    },
+    "type": "technique",
+    "title": "Large-subset case: ε-regularity gives the ε rate directly",
+    "content": "When both A and B are 'large' (|A| ≥ ε|P| and |B| ≥ ε|Q|), ε-regularity applies to the pair (A,B): |d(A,B) − d(P,Q)| ≤ ε. After degenerate |A|=0 or |B|=0 subcases (where e = 0, so the bound is trivial), the density d(A,B) is rewritten in its division form e/(|A||B|) (valid since |A||B| ≠ 0), turning the regularity inequality |e/(|A||B|) − d| ≤ ε into |e − d|A||B|| ≤ ε|A||B| by clearing the positive denominator (abs_div, div_mul_cancel₀). Finally ε|A||B| ≤ ε|P||Q| by the cardinality monotonicity. This case already achieves the optimal constant 1 — it is the small case that previously lost a factor of 2.",
+    "mathContext": "$|d(A,B) - d| \\le \\varepsilon \\;\\Longrightarrow\\; \\left|\\tfrac{e}{|A||B|} - d\\right| \\le \\varepsilon \\;\\Longrightarrow\\; |e - d|A||B|| \\le \\varepsilon|A||B| \\le \\varepsilon|P||Q|.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ε-regularity condition",
+      "edge density as a ratio",
+      "clearing denominators in inequalities",
+      "abs_div"
+    ],
+    "prerequisites": [
+      "definition of ε-regular pair (density deviation ≤ ε)",
+      "div_mul_cancel₀ and abs_div"
+    ]
+  },
+  {
+    "id": "szemeredifk-sharp-ann-small",
+    "proofId": "szemeredi-regularity-oq-02-oq-02",
+    "range": {
+      "startLine": 131,
+      "endLine": 160
+    },
+    "type": "key-step",
+    "title": "Small-subset case: bound the difference by the max, not the sum",
+    "content": "This is the crux of the sharpening. When A or B is 'small' (below the ε threshold), |A||B| ≤ ε|P||Q|. Hence BOTH the actual count e ≤ |A||B| ≤ ε|P||Q| AND the predicted count d·|A||B| ≤ |A||B| ≤ ε|P||Q| (since d ≤ 1) are individually at most ε|P||Q|, and both are nonnegative. For nonnegative x, y one has |x − y| ≤ max(x, y), so |e − d|A||B|| ≤ ε|P||Q|. The parent proof instead used the triangle/sum bound |e − d|A||B|| ≤ e + d|A||B| ≤ 2ε|P||Q|, which is where the spurious factor of 2 entered. Both symmetric small subcases (B small, A small) are discharged by `abs_le` + `nlinarith` from the two individual ≤ ε|P||Q| facts.",
+    "mathContext": "$0 \\le e \\le \\varepsilon|P||Q|$ and $0 \\le d\\,|A||B| \\le \\varepsilon|P||Q|$, so $|e - d\\,|A||B|| \\le \\max(e,\\, d\\,|A||B|) \\le \\varepsilon|P||Q|$ — replacing the parent's $e + d\\,|A||B| \\le 2\\varepsilon|P||Q|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "difference of nonnegative quantities",
+      "max bound vs triangle inequality",
+      "sharp constant",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "|x − y| ≤ max(x, y) for x, y ≥ 0",
+      "abs_le, nlinarith",
+      "density bound d ≤ 1"
     ]
   },
   {
     "id": "szemeredifk-sharp-ann-main",
     "proofId": "szemeredi-regularity-oq-02-oq-02",
     "range": {
-      "startLine": 162,
-      "endLine": 224
+      "startLine": 166,
+      "endLine": 202
     },
     "type": "theorem",
     "title": "Sharp Szemerédi ⟹ Frieze-Kannan: ε-cut-approximation",
-    "content": "szemeredi_implies_fk_sharp is the main result: every ε-regular partition is an ε-cut-approximation (not merely 2ε). The proof is structurally identical to the parent's szemeredi_implies_fk — it decomposes e(A,B) over the partition product (edge_count_partition_sum), applies the triangle inequality for the sum, bounds each pair term by the sharp per-pair estimate ε|Pᵢ||Pⱼ|, and collapses Σᵢⱼ|Pᵢ||Pⱼ| = n² (parts_product_sum_eq_card_sq) — so the global error is ε·n² instead of 2ε·n². The corollary sharp_recovers_original then shows the ε-cut-approximation entails the parent's 2ε-cut-approximation (since ε ≤ 2ε for ε ≥ 0), so the sharp theorem strictly generalizes the original. Together they resolve the open question: the factor-of-2 constant is not tight — it is 1.",
-    "mathContext": "$|e(A,B) - \\sum_{i,j} d(P_i,P_j)|A\\cap P_i||B\\cap P_j|| \\le \\sum_{i,j} \\varepsilon|P_i||P_j| = \\varepsilon n^2$.",
-    "significance": "central",
+    "content": "szemeredi_implies_fk_sharp is the main result: every ε-regular partition is an ε-cut-approximation (not merely 2ε). Given cut sets A, B, the edge count e(A,B) is decomposed over the partition product Σᵢⱼ e(A∩Pᵢ, B∩Pⱼ) (edge_count_partition_sum, reused from the parent), the triangle inequality moves the absolute value inside the sum (Finset.abs_sum_le_sum_abs), each pair term is bounded by the sharp per-pair estimate ε|Pᵢ||Pⱼ|, and finally Σᵢⱼ|Pᵢ||Pⱼ| = n² (parts_product_sum_eq_card_sq) collapses the total to ε·n². The summation argument is structurally identical to the parent's szemeredi_implies_fk — only the per-pair constant changed — so the global error sharpens from 2ε·n² to ε·n².",
+    "mathContext": "$\\left|e(A,B) - \\sum_{i,j} d(P_i,P_j)\\,|A\\cap P_i|\\,|B\\cap P_j|\\right| \\le \\sum_{i,j} \\varepsilon|P_i||P_j| = \\varepsilon\\, n^2,\\quad n = |V|.$",
+    "significance": "key",
     "relatedConcepts": [
       "Frieze-Kannan weak regularity",
       "cut-approximation",
       "partition decomposition",
-      "sharp constant"
+      "Finset.abs_sum_le_sum_abs"
     ],
     "prerequisites": [
-      "per-pair cut error bound",
-      "Finset partition sum identities"
+      "sharp per-pair cut error bound",
+      "edge_count_partition_sum, parts_product_sum_eq_card_sq (parent)",
+      "triangle inequality for finite sums"
+    ]
+  },
+  {
+    "id": "szemeredifk-sharp-ann-corollary",
+    "proofId": "szemeredi-regularity-oq-02-oq-02",
+    "range": {
+      "startLine": 204,
+      "endLine": 219
+    },
+    "type": "corollary",
+    "title": "The sharp bound strictly generalizes the original",
+    "content": "sharp_recovers_original checks that the sharpening loses nothing: an ε-cut-approximation is in particular a 2ε-cut-approximation, because ε·n² ≤ 2ε·n² for ε ≥ 0 (nlinarith on the nonnegative error term). So szemeredi_implies_fk_sharp entails the parent's szemeredi_implies_fk — the new theorem is a strict strengthening, not a sideways variant. Together with the per-pair lemma this settles the open question definitively: the factor-of-2 constant is not tight; the optimal reachable constant is 1.",
+    "mathContext": "$\\varepsilon\\,n^2 \\le 2\\varepsilon\\,n^2$ for $\\varepsilon \\ge 0$, so $\\text{IsCutApproximation}(G,\\varepsilon) \\Rightarrow \\text{IsCutApproximation}(G,2\\varepsilon)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monotonicity of cut-approximation in ε",
+      "strengthening vs generalization",
+      "backward compatibility of a sharpened bound"
+    ],
+    "prerequisites": [
+      "szemeredi_implies_fk_sharp",
+      "monotonicity ε ≤ 2ε"
     ]
   }
 ]
