@@ -39,7 +39,8 @@
       "**The absorption identity is the crux.** The entire inductive step of q-Vandermonde collapses onto the single relation (q^{k+1}-1)·C_q(m,k+1) = (q^{m-k}-1)·C_q(m,k), the q-analog of (k+1)·C(m,k+1) = (m-k)·C(m,k). Isolating this lemma turns an intimidating double-sum manipulation into a one-line termwise cancellation.",
       "**Power-weight convention matters.** Different sources state q-Vandermonde with different exponents (e.g. q^{k(m-k)} vs q^{(m-k)(r-k)}); only one is correct for a given q-Pascal convention. The weight q^{(m-k)(r-k)} was pinned down by matching the proven base cases, and verified to telescope correctly via the absorption reduction.",
       "**Natural-number subtraction does the bookkeeping for free.** Because C_q(m,k) = 0 whenever k > m and the truncated subtraction m-k collapses to 0 exactly there, no explicit range guards are needed: every out-of-range summand vanishes, and the same proof handles the degenerate (k ≥ m) and generic (k < m) cases with only a small case split in the termwise lemma.",
-      "**Index alignment by a single shift.** The reconciliation never needs a full reflection or bijection on Finset: the 'high' sum's k=0 term vanishes (allowing a shift to range s) and the 'low' sum's k=s term is peeled off, after which both sums run over range s with a common B_n(s-k) factor and cancel termwise — the leftover boundary is absorbed by the absorption identity at k=s."
+      "**Index alignment by a single shift.** The reconciliation never needs a full reflection or bijection on Finset: the 'high' sum's k=0 term vanishes (allowing a shift to range s) and the 'low' sum's k=s term is peeled off, after which both sums run over range s with a common B_n(s-k) factor and cancel termwise — the leftover boundary is absorbed by the absorption identity at k=s.",
+      "**A genuine q-deformation, not a formal analog.** At q=1 every weight q^{(m-k)(r-k)} collapses to 1 and every Gaussian binomial C_q(n,k) collapses to the ordinary C(n,k) (qBinomial_at_one), so vandermonde_classical falls out of qVandermonde by a one-line simp — the entire q-dependence is carried by the single power weight. This confirms the identity is a true deformation of the classical convolution C(m+n,r) = ∑_k C(m,k)·C(n,r-k), recovered exactly in the limit, rather than a merely superficially similar statement."
     ],
     "prerequisites": [
       "Gaussian binomial coefficients and the q-Pascal recurrence (parent file binomial-theorem-oq-02-oq-02-oq-01)",
@@ -84,6 +85,14 @@
   ],
   "sections": [
     {
+      "id": "sec-setup",
+      "title": "Setup: What the file closes, and the q-binomial API over a CommRing",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "The module docstring frames the goal — closing 'Open future work #1' of the parent BinomialTheoremOQ02OQ02OQ01, the full q-Vandermonde convolution C_q(m+n,r) = ∑_k q^{(m-k)(r-k)} C_q(m,k) C_q(n,r-k) — and previews the strategy: a new absorption identity (★) proved by induction on m, then the main identity by induction on n. The setup imports the parent's q-binomial API (qBinomial, q-Pascal, the geometric-sum form of C_q(n,1)) and fixes a CommRing R, which is exactly the strength needed: the factors q^j − 1 require additive inverses, so a semiring will not do.",
+      "mathContext": "Gaussian binomial coefficients C_q(n,k) live over any commutative ring; the q-Vandermonde weights q^{(m-k)(r-k)} and the subtractions q^{k+1} − 1 in the absorption identity force the CommRing hypothesis."
+    },
+    {
       "id": "sec-absorption",
       "title": "Part 1: The q-Binomial Absorption Identity",
       "startLine": 50,
@@ -91,11 +100,20 @@
       "summary": "Proves qBinomial_absorption: (q^{k+1}-1)·C_q(m,k+1) = (q^{m-k}-1)·C_q(m,k), by induction on m. The k=0 case uses the geometric-sum closed form C_q(m+1,1) = ∑ q^i and geom_sum_mul; the generic case combines the q-Pascal recurrence with the induction hypothesis via linear_combination, splitting on whether the relevant q-binomials vanish."
     },
     {
-      "id": "sec-qvandermonde",
-      "title": "Part 2: The Full q-Vandermonde Convolution",
+      "id": "sec-qvandermonde-skeleton",
+      "title": "Part 2a: The q-Vandermonde statement and induction skeleton",
       "startLine": 101,
+      "endLine": 160,
+      "summary": "States qVandermonde and sets up the induction on n. The base case n=0 is discharged from the parent's qVandermonde_zero_right, and r=0 is immediate. The inductive step rewrites C_q(m+(n+1),r) as C_q((m+n)+1,r), applies q-Pascal to the outer coefficient, feeds in the two induction hypotheses ih (s+1) and ih s, and expands the inner C_q(n+1,·) by q-Pascal — producing the 'high' and 'low' sums that Part 2b must reconcile.",
+      "mathContext": "Induction on n reduces C_q(m+n+1,r) to two copies of the n-level identity (at r and r−1); q-Pascal on both the outer and inner coefficients turns the step into an algebraic identity between two Finset sums."
+    },
+    {
+      "id": "sec-qvandermonde-reconcile",
+      "title": "Part 2b: Reconciliation by one index shift and termwise absorption",
+      "startLine": 161,
       "endLine": 242,
-      "summary": "Proves qVandermonde by induction on n. The base case is the parent's n=0 result. The inductive step expands C_q(m+n+1,r) and the inner C_q(n+1,r-k) by q-Pascal, peels boundary terms, aligns the high and low sums by an index shift, and cancels termwise using the absorption identity (the boundary term being absorption at k=s)."
+      "summary": "The heart of the proof: the 'high' sum's k=0 term vanishes (so it may be re-indexed onto range s) and the 'low' sum's k=s term is peeled off, after which both sums run over range s sharing a common C_q(n,s−k) factor and cancel term-by-term. The single leftover boundary term is exactly the absorption identity qBinomial_absorption applied at k=s — no full reflection or bijection on Finset is needed, just one shift plus (★).",
+      "mathContext": "Aligning ∑_{k∈range(s+1)} and ∑_{k∈range s} costs one index shift; the residual boundary equation is (q^{s+1}−1)·C_q(m,s+1) = (q^{m-s}−1)·C_q(m,s), i.e. absorption at k=s."
     },
     {
       "id": "sec-classical",
