@@ -80,6 +80,14 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Header, Imports, and Family Context",
+      "startLine": 1,
+      "endLine": 64,
+      "mathContext": "$\\sum_{c : \\mathrm{Composition}\\,n} t^{c.\\mathrm{length}} = t\\,(1+t)^{n-1}$ — the part-count generating function that packages every moment at once.",
+      "summary": "Imports the parent CompositionPartsChooseOQ01OQ01 (source of the gap bijection gapsEquiv and the bridge length_eq_card_gaps) and Mathlib.Tactic, then a module docstring situating this leaf within the composition-statistics family: the grandparent's 2^(n−1) count, the parent's graded C(n−1,k−1) count, and the first/second-moment parents, all of which fall out of the single generating-function identity proved here. Closes with the namespace declaration and open Finset CompositionPartsChooseOQ01OQ01."
+    },
+    {
       "id": "subset-generating-function",
       "title": "The Subset-Cardinality Generating Function",
       "startLine": 65,
