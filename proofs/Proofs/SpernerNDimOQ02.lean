@@ -3304,7 +3304,7 @@ def topPivotBottom (u : GridSimplex d N) (hd1 : 0 < d)
       by_cases h1 : j = p
       · subst h1
         rw [if_pos rfl, if_pos rfl, if_neg hpq]
-        have : 1 ≤ V.coords j := hfeas
+        have : 1 ≤ V.coords p := hfeas
         omega
       · by_cases h2 : j = q
         · subst h2
@@ -3372,8 +3372,10 @@ direction `incDir 0` (deferred to the final step by the cyclic rotation
 theorem zeroPivotCell_lastIncDir (s : GridSimplex d N) (hd1 : 0 < d)
     (hfeas : 1 ≤ (s.verts (Fin.last d)).coords s.miss) :
     lastIncDir (zeroPivotCell s hd1 hfeas) hd1 = s.incDir ⟨0, hd1⟩ := by
-  show zeroPivotInc s hd1 ⟨d - 1, by omega⟩ = s.incDir ⟨0, hd1⟩
-  exact zeroPivotInc_last s hd1 ⟨d - 1, by omega⟩ (by omega)
+  have hk : d - 1 < d := by omega
+  have hnl : ¬ (⟨d - 1, hk⟩ : Fin d).val + 1 < d := by simp only [Fin.val_mk]; omega
+  show zeroPivotInc s hd1 ⟨d - 1, hk⟩ = s.incDir ⟨0, hd1⟩
+  exact zeroPivotInc_last s hd1 ⟨d - 1, hk⟩ hnl
 
 /-- The top-facet pivot is always feasible on the facet-`0` partner: its base
 vertex `t.verts 0 = s.verts 1` has `incDir 0` coordinate `base + 1 ≥ 1`
