@@ -44,6 +44,15 @@ supplementary laws are done. Or refinement (1): redefine `kronecker` to use
 
 ## Progress log
 
+- 2026-07-08 (iter 4): Added the numerator-side structural law
+  `kronecker_mod_numerator` — for odd positive `n`, `(a/n) = (a % n / n)`, i.e.
+  the symbol at a fixed odd modulus factors through `ℤ/nℤ` in the numerator — and
+  its period-`n` corollary `kronecker_periodic_numerator`. With
+  `kronecker_mul_left` this exhibits `(·/n)` as a real Dirichlet character
+  modulo `n`, the numerator-side dual of the existing denominator periodicities.
+  One-line proofs off `kronecker_eq_jacobi` + Mathlib `jacobiSym.mod_left`;
+  build-verified (3058 jobs, 0 sorries, 0 axioms). The Gauss-sum reciprocity core
+  (refinement 2) and definition rewiring (refinement 1) remain open.
 - 2026-07-08 (iter 3): Added denominator-side periodicity of the supplementary
   characters — `kronecker_neg_one_periodic` ((-1/·) periodic mod 4) and
   `kronecker_two_periodic` ((2/·) periodic mod 8). Structural complement of
