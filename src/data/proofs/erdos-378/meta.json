@@ -55,6 +55,7 @@
       "BinomialSquarefree, squarefreeCount, hasAtLeastSquarefree: definitions over Mathlib's Squarefree",
       "binomialSquarefree_symm theorem (verified, 0-axiom): squarefreeness of C(n,k) is symmetric under k ↦ n−k",
       "squarefreeCount_even_of_odd theorem (verified, 0-axiom): for odd n the count of squarefree interior binomials is even — the elementary structural reason Granville-Ramaré only ever count even numbers 2m+2 (involution k ↦ n−k has no fixed point for odd n)",
+      "squarefreeCount_odd_iff_central_squarefree theorem (verified, 0-axiom): for even n ≥ 2 the count is odd iff the central binomial C(n,n/2) is squarefree — the involution k ↦ n−k now has the single fixed point k = n/2, so squarefreeCount n = 2·|A| + |F| with |F| ∈ {0,1}; completes the parity theory of row counts alongside squarefreeCount_even_of_odd",
       "NaturalDensity, HasDensity: decidability-free density definitions via Set.ncard",
       "natDensity_compl theorem (verified, 0-axiom): the complement of a set of density d has density 1−d",
       "granville_ramare_density_exists axiom: Granville-Ramaré (1996) Input 1 — density η_m of exactlySquarefree m exists",
@@ -63,9 +64,9 @@
       "erdos_378, erdos_378_answer (no sorries): combined resolution of both questions"
     ],
     "axiomCount": 2,
-    "lineCount": 311,
-    "assumptions": "2 axioms, both isolating the deep analytic content of Granville-Ramaré (1996): granville_ramare_density_exists (the density η_m of n with exactly 2m+2 squarefree binomials exists) and complement_density (the set of n with fewer than r squarefree binomials has density Σ_{0≤m≤(r-1)/2} η_m, which is < 1). 0 sorries. All other results, including the resolution of both questions and the parity theorem squarefreeCount_even_of_odd, are fully machine-checked (depend only on propext/Classical.choice/Quot.sound).",
-    "theoremCount": 11,
+    "lineCount": 403,
+    "assumptions": "2 axioms, both isolating the deep analytic content of Granville-Ramaré (1996): granville_ramare_density_exists (the density η_m of n with exactly 2m+2 squarefree binomials exists) and complement_density (the set of n with fewer than r squarefree binomials has density Σ_{0≤m≤(r-1)/2} η_m, which is < 1). 0 sorries. All other results, including the resolution of both questions and the parity theorems squarefreeCount_even_of_odd (odd rows have an even count) and squarefreeCount_odd_iff_central_squarefree (an even row has an odd count iff its central binomial C(n,n/2) is squarefree), are fully machine-checked (depend only on propext/Classical.choice/Quot.sound).",
+    "theoremCount": 12,
     "definitionCount": 8,
     "additionalFiles": [
       "Proofs/Erdos378Aristotle.lean"
@@ -161,9 +162,9 @@
       "Finset"
     ],
     "namespace": "Erdos378",
-    "lineCount": 311,
+    "lineCount": 403,
     "axiomCount": 2,
-    "theoremCount": 11,
+    "theoremCount": 12,
     "definitionCount": 8,
     "path": "Proofs/Erdos378Problem.lean",
     "sorries": 0,
