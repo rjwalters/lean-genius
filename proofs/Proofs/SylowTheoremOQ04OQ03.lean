@@ -262,4 +262,127 @@ theorem torus_normalizes_unipotent (a : (ZMod p)ˣ) (t : ZMod p) :
       ∈ Set.range (unipotentUpper (p := p)) :=
   ⟨(a : ZMod p) ^ 2 * t, (torusHom_conj_unipotent a t).symm⟩
 
+/-!
+## The Weyl element and the Bruhat ingredients
+
+Beyond the Borel `B = U ⋊ T`, the Iwasawa/Bruhat structure of `SL(2, p)` needs the
+non-trivial coset representative of the Weyl group `W = N(T)/T ≅ ℤ/2`, the
+**Weyl element**
+
+    w = [[0, -1], [1, 0]] ∈ SL(2, 𝔽_p).
+
+On the projective line `P¹(𝔽_p)` it is the involution swapping `0 ↔ ∞`; together with
+`B` it produces the Bruhat decomposition `SL(2,p) = B ⊔ B w B`.  We record the two
+structural facts that drive the whole SL(2) theory:
+
+* `w` reflects the torus, `w · diag(a) · w⁻¹ = diag(a⁻¹)` (`weylW_conj_torus`), so
+  `w` normalises `T` and acts as the non-trivial Weyl reflection `a ↦ a⁻¹`;
+* `w` conjugates the **upper** unipotent subgroup `U` onto the **lower** (opposite)
+  unipotent subgroup `U⁻`, `w · [[1,t],[0,1]] · w⁻¹ = [[1,0],[-t,1]]`
+  (`weylW_conj_unipotent`).  Since `⟨U, U⁻⟩ = SL(2,p)`, this is exactly the step by
+  which the conjugates of the abelian normal `U` fill out the whole group — the
+  generation hypothesis of Iwasawa's criterion.
+
+Finally `unipotent_inter_torus_trivial` shows `U ∩ T = 1`, so `B = U ⋊ T` is a genuine
+(internal) semidirect product with `|B| = |U| · |T| = p(p-1)`.
+-/
+
+/-- The **Weyl element** `w = [[0, -1], [1, 0]]`, viewed as an element of
+`SL(2, ZMod p)`.  Its determinant is `0 · 0 − (−1) · 1 = 1`. -/
+def weylW : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) :=
+  ⟨!![0, -1; 1, 0], by rw [Matrix.det_fin_two_of]; ring⟩
+
+@[simp] theorem val_weylW :
+    (weylW (p := p) : Matrix (Fin 2) (Fin 2) (ZMod p)) = !![0, -1; 1, 0] := rfl
+
+/-- The inverse Weyl element `w⁻¹ = [[0, 1], [-1, 0]] = −w`.  Its determinant is
+`0 · 0 − 1 · (−1) = 1`. -/
+def weylWinv : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) :=
+  ⟨!![0, 1; -1, 0], by rw [Matrix.det_fin_two_of]; ring⟩
+
+@[simp] theorem val_weylWinv :
+    (weylWinv (p := p) : Matrix (Fin 2) (Fin 2) (ZMod p)) = !![0, 1; -1, 0] := rfl
+
+/-- `w · w⁻¹ = 1`, identifying `weylWinv` as the group inverse of `weylW`. -/
+theorem weylW_mul_weylWinv :
+    weylW * weylWinv = (1 : Matrix.SpecialLinearGroup (Fin 2) (ZMod p)) := by
+  apply Subtype.ext
+  show (!![(0 : ZMod p), -1; 1, 0] * !![(0 : ZMod p), 1; -1, 0])
+      = (1 : Matrix (Fin 2) (Fin 2) (ZMod p))
+  rw [Matrix.one_fin_two]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+
+/-- The group inverse of the Weyl element is `weylWinv = [[0, 1], [-1, 0]]`. -/
+@[simp] theorem weylW_inv : (weylW (p := p))⁻¹ = weylWinv :=
+  inv_eq_of_mul_eq_one_right weylW_mul_weylWinv
+
+/-- **The Weyl element reflects the split torus.**  Conjugation by `w` inverts the
+diagonal parameter:
+
+    w · diag(a) · w⁻¹ = diag(a⁻¹).
+
+Hence `w` normalises `T` and realises the non-trivial element of the Weyl group
+`W = N(T)/T ≅ ℤ/2`, acting on `T` by the reflection `a ↦ a⁻¹`. -/
+theorem weylW_conj_torus (a : (ZMod p)ˣ) :
+    weylW * torusDiag a * weylW⁻¹ = torusDiag a⁻¹ := by
+  rw [weylW_inv]
+  apply Subtype.ext
+  have haa : (((a⁻¹ : (ZMod p)ˣ)⁻¹ : (ZMod p)ˣ) : ZMod p) = (a : ZMod p) := by
+    rw [inv_inv]
+  show ((!![(0 : ZMod p), -1; 1, 0]
+          * !![(a : ZMod p), 0; 0, ((a⁻¹ : (ZMod p)ˣ) : ZMod p)])
+          * !![(0 : ZMod p), 1; -1, 0])
+      = !![((a⁻¹ : (ZMod p)ˣ) : ZMod p), 0; 0,
+          (((a⁻¹ : (ZMod p)ˣ)⁻¹ : (ZMod p)ˣ) : ZMod p)]
+  rw [haa]
+  set x := (a : ZMod p)
+  set xi := ((a⁻¹ : (ZMod p)ˣ) : ZMod p)
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+
+/-- The **lower** (opposite) unipotent matrix `[[1, 0], [t, 1]]`, viewed as an
+element of `SL(2, ZMod p)`.  Its determinant is `1 · 1 − 0 · t = 1`.  This is the
+root group `U⁻` opposite to `U`; together `⟨U, U⁻⟩` generate `SL(2, p)`. -/
+def lowerUnipotent (t : ZMod p) : Matrix.SpecialLinearGroup (Fin 2) (ZMod p) :=
+  ⟨!![1, 0; t, 1], by rw [Matrix.det_fin_two_of]; ring⟩
+
+@[simp] theorem val_lowerUnipotent (t : ZMod p) :
+    (lowerUnipotent t : Matrix (Fin 2) (Fin 2) (ZMod p)) = !![1, 0; t, 1] := rfl
+
+/-- **The Weyl element sends the upper unipotent subgroup to the lower one.**
+Conjugation by `w` turns `[[1, t], [0, 1]] ∈ U` into `[[1, 0], [-t, 1]] ∈ U⁻`:
+
+    w · [[1, t], [0, 1]] · w⁻¹ = [[1, 0], [-t, 1]].
+
+Because `⟨U, U⁻⟩ = SL(2, p)`, this exhibits `U⁻` as a `w`-conjugate of `U`, the step
+that makes the conjugates of the abelian normal subgroup `U` generate the whole
+group — precisely the generation hypothesis of Iwasawa's simplicity criterion. -/
+theorem weylW_conj_unipotent (t : ZMod p) :
+    weylW * unipotentUpper t * weylW⁻¹ = lowerUnipotent (-t) := by
+  rw [weylW_inv]
+  apply Subtype.ext
+  show ((!![(0 : ZMod p), -1; 1, 0] * !![1, t; 0, 1]) * !![(0 : ZMod p), 1; -1, 0])
+      = !![1, 0; -t, 1]
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
+
+/-- **`U ∩ T = 1`.**  The only matrix that is simultaneously upper unipotent
+`[[1, t], [0, 1]]` and diagonal `[[a, 0], [0, a⁻¹]]` is the identity: `t = 0` and
+`a = 1`.  Combined with `card_unipotent_range` and `card_torus_range`, this makes
+`B = U ⋊ T` a genuine internal semidirect product with `|B| = p(p − 1)`. -/
+theorem unipotent_inter_torus_trivial (t : ZMod p) (a : (ZMod p)ˣ)
+    (h : unipotentUpper t = torusDiag a) : t = 0 ∧ a = 1 := by
+  have h01 : (unipotentUpper t : Matrix (Fin 2) (Fin 2) (ZMod p)) 0 1
+      = (torusDiag a : Matrix (Fin 2) (Fin 2) (ZMod p)) 0 1 := by rw [h]
+  have h00 : (unipotentUpper t : Matrix (Fin 2) (Fin 2) (ZMod p)) 0 0
+      = (torusDiag a : Matrix (Fin 2) (Fin 2) (ZMod p)) 0 0 := by rw [h]
+  simp only [val_unipotentUpper, val_torusDiag, Matrix.cons_val_zero, Matrix.cons_val_one,
+    Matrix.head_cons] at h01 h00
+  refine ⟨h01, ?_⟩
+  exact Units.ext (by rw [Units.val_one]; exact h00.symm)
+
 end SylowOQ04OQ03
