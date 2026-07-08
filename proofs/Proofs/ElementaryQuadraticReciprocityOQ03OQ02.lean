@@ -249,6 +249,31 @@ theorem kronecker2_values (a : ℤ) :
   unfold kronecker2
   split_ifs <;> decide
 
+/-- **`kronecker2` is a real character:** its square is the principal character
+    mod `2`, i.e. `(a/2)² = 0` on even `a` and `= 1` on odd `a`.  Since `(·/2)`
+    takes values in `{−1, 0, 1}` (`kronecker2_values`) and is `0` exactly on the
+    even residues, squaring collapses the two unit classes `{1,7}` and `{3,5}`
+    onto `1`.  This is the order-≤2 statement completing the identification of
+    `(·/2)` (with `kronecker2_mul`, `_periodic`, `_neg`) as the even *real*
+    Dirichlet character mod `8`. -/
+theorem kronecker2_sq (a : ℤ) :
+    kronecker2 a * kronecker2 a = if a % 2 = 0 then 0 else 1 := by
+  by_cases h : a % 2 = 0
+  · rw [if_pos h]; unfold kronecker2; rw [if_pos h]; ring
+  · rw [if_neg h]
+    have hne : kronecker2 a ≠ 0 := by
+      unfold kronecker2; rw [if_neg h]; split_ifs <;> decide
+    rcases kronecker2_values a with h1 | h1 | h1
+    · rw [h1]; ring
+    · exact absurd h1 hne
+    · rw [h1]; ring
+
+/-- **`(a/2)² = 1` for odd `a`.**  The `(·/2)` symbol squares to `1` on every
+    unit mod `8` — the concrete order-2 form of `kronecker2_sq`. -/
+theorem kronecker2_sq_odd (a : ℤ) (ha : a % 2 = 1) :
+    kronecker2 a * kronecker2 a = 1 := by
+  rw [kronecker2_sq, if_neg (by omega)]
+
 /-- The Kronecker symbol is completely multiplicative in the first argument:
     (ab/n) = (a/n)(b/n), provided a*b ≠ 0.
 
