@@ -63,14 +63,14 @@
       "title": "Counting Positive Integers in a Bounded Range",
       "summary": "card_le_floor_of_pos_int_le and card_le_of_pos_int_le: a finite set of positive integers each <= D has at most floor(D) <= D elements.",
       "startLine": 1,
-      "endLine": 90,
+      "endLine": 83,
       "mathContext": "Inject each value's natural-number form into Finset.Icc 1 (floor D); InjOn since distinct integers have distinct floors; |Icc 1 m| = m."
     },
     {
       "id": "bridge",
       "title": "The Integer-Distance Bridge",
       "summary": "distinct_distances_le_diam: the distinct integer distances bounded by the diameter number at most the diameter — the link to Erdős #89 and the Guth-Katz bound.",
-      "startLine": 91,
+      "startLine": 85,
       "endLine": 118,
       "mathContext": "Direct corollary of card_le_of_pos_int_le applied to the finite set of distinct integer distances."
     }
