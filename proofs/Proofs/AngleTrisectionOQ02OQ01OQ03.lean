@@ -105,4 +105,48 @@ theorem odd_degree_gt_one_not_2group (α : ℝ) (hα : IsIntegral ℚ α)
     rw [hk, Nat.odd_iff] at hodd
     omega
 
+/-- **The general prime-factor obstruction (master criterion).**
+    If *any* prime `q ≠ p` divides `natDegree(minpoly ℚ α)`, then
+    `Gal(minpoly ℚ α)` is not a `p`-group.  A `p`-group forces the degree to be
+    a power of `p`, whose only prime factor is `p`; so a prime factor other than
+    `p` rules out the `p`-group structure outright.
+
+    This single statement subsumes both `degree_three_not_2group` (take
+    `p = 2, q = 3`) and `odd_degree_gt_one_not_2group` (an odd degree `> 1` has
+    an odd prime factor `q ≠ 2`), and — being stated for an arbitrary target
+    prime `p` — also covers non-`p`-group obstructions for every other prime. -/
+theorem not_pgroup_of_prime_dvd_degree_ne (α : ℝ) (hα : IsIntegral ℚ α)
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : q ≠ p)
+    (hdvd : q ∣ (minpoly ℚ α).natDegree) :
+    ¬ IsPGroup p (minpoly ℚ α).Gal := by
+  refine not_pgroup_of_degree_ne_pow_p α hα hp (fun k hk => ?_)
+  rw [hk] at hdvd
+  -- `q ∣ p ^ k` with `q` prime forces `q ∣ p`, hence `q = p`, contradicting `q ≠ p`.
+  exact hpq ((Nat.prime_dvd_prime_iff_eq hq hp).mp (hq.dvd_of_dvd_pow hdvd))
+
+/-- **Re-derivation of the odd-degree obstruction from the master criterion.**
+    An odd degree `> 1` has an odd prime divisor `q ≠ 2`; feeding it to
+    `not_pgroup_of_prime_dvd_degree_ne` reproduces `odd_degree_gt_one_not_2group`
+    and exhibits it as a special case of the general prime-factor obstruction. -/
+theorem odd_degree_gt_one_not_2group' (α : ℝ) (hα : IsIntegral ℚ α)
+    (hodd : Odd (minpoly ℚ α).natDegree) (hgt : 1 < (minpoly ℚ α).natDegree) :
+    ¬ IsPGroup 2 (minpoly ℚ α).Gal := by
+  obtain ⟨q, hq, hqdvd⟩ :=
+    Nat.exists_prime_and_dvd (show (minpoly ℚ α).natDegree ≠ 1 by omega)
+  have hq2 : q ≠ 2 := by
+    rintro rfl
+    rw [Nat.odd_iff] at hodd
+    omega
+  exact not_pgroup_of_prime_dvd_degree_ne α hα Nat.prime_two hq hq2 hqdvd
+
+/-- **A concrete instance at the prime 3.**
+    Because the master criterion targets an arbitrary prime `p`, it produces
+    obstructions for primes other than `2` as well: any algebraic real whose
+    minimal-polynomial degree is *even* cannot have a `3`-group Galois group
+    (`2 ≠ 3` and `2` divides the degree). -/
+theorem even_degree_not_3group (α : ℝ) (hα : IsIntegral ℚ α)
+    (hdvd : 2 ∣ (minpoly ℚ α).natDegree) :
+    ¬ IsPGroup 3 (minpoly ℚ α).Gal :=
+  not_pgroup_of_prime_dvd_degree_ne α hα (by norm_num) Nat.prime_two (by norm_num) hdvd
+
 end AngleTrisectionOQ02OQ01OQ03
