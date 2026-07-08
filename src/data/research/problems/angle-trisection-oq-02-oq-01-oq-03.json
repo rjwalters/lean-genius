@@ -4,7 +4,7 @@
   "parentId": "angle-trisection-oq-02-oq-01",
   "status": "in-progress",
   "knowledge": {
-    "score": 14,
+    "score": 16,
     "insights": [
       "The parent OQ-02-OQ-01 proves, for the prime 2, that a 2-group Galois group forces the minimal-polynomial degree to be a power of 2 — the algebraic core of the impossibility of angle trisection. The argument never used anything special about 2: it rests only on natDegree ∣ |Gal| (natDegree_dvd_card_gal) plus IsPGroup.iff_card.",
       "This child lifts the result to an ARBITRARY prime p: Gal(minpoly ℚ α) a p-group ⟹ natDegree = p^k. Divisibility natDegree ∣ p^n is upgraded to equality via Nat.dvd_prime_pow.",
@@ -12,10 +12,11 @@
       "Contrapositive non-constructibility criterion: if natDegree is not a power of p, Gal is not a p-group.",
       "Concrete degree-3 obstruction: a real with minimal degree 3 has no 2-group Galois group (3 ≠ 2^k for all k), precisely why the 60° angle cannot be trisected (cos 20° has minimal degree 3).",
       "Odd-degree generalization: an algebraic real whose minimal polynomial has odd degree > 1 can never have a 2-group Galois group, because 2^0 = 1 and 2^k is even for k ≥ 1. This upgrades the concrete degree-3 (cos 20°) obstruction to a general sufficient condition for non-constructibility by straightedge and compass, covering every odd degree.",
-      "Master prime-factor obstruction: if ANY prime q≠p divides natDegree(minpoly ℚ α), then Gal is not a p-group — a p-group forces the degree to be p^k whose only prime factor is p (via Nat.Prime.dvd_of_dvd_pow + Nat.prime_dvd_prime_iff_eq). This single statement subsumes both the degree-3 obstruction (p=2,q=3) and the odd-degree obstruction (odd degree >1 has an odd prime factor q≠2), and — targeting an arbitrary prime p — also yields obstructions for other primes (e.g. even degree ⟹ not a 3-group)."
+      "Master prime-factor obstruction: if ANY prime q≠p divides natDegree(minpoly ℚ α), then Gal is not a p-group — a p-group forces the degree to be p^k whose only prime factor is p (via Nat.Prime.dvd_of_dvd_pow + Nat.prime_dvd_prime_iff_eq). This single statement subsumes both the degree-3 obstruction (p=2,q=3) and the odd-degree obstruction (odd degree >1 has an odd prime factor q≠2), and — targeting an arbitrary prime p — also yields obstructions for other primes (e.g. even degree ⟹ not a 3-group).",
+      "Prime rigidity: on any extension of degree >1, Gal(minpoly ℚ α) can be a p-group for AT MOST ONE prime p. Since a p-group forces natDegree = p^k, two primes p,p' both giving p-group structure make the degree simultaneously a power of p and of p'; for a number >1 this forces p=p' (p ∣ p'^j with p prime ⟹ p=p' via Nat.Prime.dvd_of_dvd_pow + Nat.prime_dvd_prime_iff_eq). Thus the prime in the criterion is not a free parameter but an invariant read off from the unique prime divisor of the degree."
     ],
     "builtItems": [
-      "AngleTrisectionOQ02OQ01OQ03.lean: 8 theorems, 0 axioms, 0 sorries, reuses parent natDegree_dvd_card_gal.",
+      "AngleTrisectionOQ02OQ01OQ03.lean: 10 theorems, 0 axioms, 0 sorries, 0 native_decide, reuses parent natDegree_dvd_card_gal. #print axioms = propext/Classical.choice/Quot.sound only.",
       "galois_pgroup_implies_degree_pow_p: p-group Gal ⟹ natDegree ∣ p^n.",
       "galois_pgroup_implies_degree_is_pow_p: p-group Gal ⟹ natDegree = p^k.",
       "not_pgroup_of_degree_ne_pow_p: degree not a power of p ⟹ Gal not a p-group.",
@@ -23,13 +24,15 @@
       "odd_degree_gt_one_not_2group: minimal degree ODD and > 1 ⟹ not a 2-group.",
       "not_pgroup_of_prime_dvd_degree_ne (NEW master criterion): any prime q≠p dividing natDegree ⟹ Gal not a p-group; subsumes degree_three and odd_degree obstructions and covers arbitrary target primes.",
       "odd_degree_gt_one_not_2group' (NEW): the odd-degree obstruction re-derived from the master criterion by extracting an odd prime divisor (Nat.exists_prime_and_dvd), exhibiting it as a special case.",
-      "even_degree_not_3group (NEW): concrete p=3 instance — an even minimal degree ⟹ not a 3-group (2≠3 divides the degree), demonstrating the general-prime reach."
+      "even_degree_not_3group (NEW): concrete p=3 instance — an even minimal degree ⟹ not a 3-group (2≠3 divides the degree), demonstrating the general-prime reach.",
+      "pgroup_prime_unique (NEW): for 1 < natDegree, IsPGroup p Gal ∧ IsPGroup p' Gal ⟹ p = p'. The p-group prime is an invariant of a nontrivial extension.",
+      "pgroup_distinct_primes_degree_one (NEW): distinct primes p≠p' both giving p-group Galois ⟹ natDegree = 1 (extension trivial / α rational). Contrapositive companion of pgroup_prime_unique."
     ],
-    "progressSummary": "Child of angle-trisection-oq-02-oq-01 (Galois → degree criterion). The parent handles the prime 2; this entry generalizes to an arbitrary prime p — p-group Galois group ⟹ minimal-polynomial degree is a power of p — with the contrapositive non-constructibility criterion, the concrete degree-3 (cos 20°) obstruction, the general odd-degree obstruction, and now a MASTER prime-factor obstruction: any prime q≠p dividing the degree rules out a p-group. The master criterion subsumes both the degree-3 and odd-degree obstructions (the latter re-derived as odd_degree_gt_one_not_2group') and, targeting arbitrary p, yields obstructions for other primes (even_degree_not_3group). All 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound only), no native_decide. 8 theorems total.",
+    "progressSummary": "Child of angle-trisection-oq-02-oq-01 (Galois → degree criterion). The parent handles the prime 2; this entry generalizes to an arbitrary prime p — p-group Galois group ⟹ minimal-polynomial degree is a power of p — with the contrapositive non-constructibility criterion, the concrete degree-3 (cos 20°) obstruction, the general odd-degree obstruction, and now a MASTER prime-factor obstruction: any prime q≠p dividing the degree rules out a p-group. The master criterion subsumes both the degree-3 and odd-degree obstructions (the latter re-derived as odd_degree_gt_one_not_2group') and, targeting arbitrary p, yields obstructions for other primes (even_degree_not_3group). All 0-axiom verified (#print axioms = propext/Classical.choice/Quot.sound only), no native_decide. 8 theorems total. This session adds a PRIME RIGIDITY layer: pgroup_prime_unique shows that on any degree-(>1) extension the prime p for which Gal can be a p-group is unique — an invariant determined by the (single) prime factor of the degree, not a free choice — with contrapositive pgroup_distinct_primes_degree_one (two distinct primes ⟹ trivial degree 1). 10 theorems total, all 0-axiom verified.",
     "nextSteps": [
-      "BLOCKED (infra): a fully concrete cos 20° corollary via AngleTrisectionCos20GalOQ01OQ02OQ02.cos_pi9_minpoly_degree is currently unreachable — that file transitively imports AngleTrisectionOQ02OQ03OQ01.lean, which does not build against Mathlib v4.26 (AlgHom.toAlgHom removed, ring failures). Repair that file first, then instantiate odd_degree_gt_one_not_2group / degree_three_not_2group at cos(π/9).",
-      "BLOCKED (elaborator): mirroring the criterion at the field-degree / finrank level via IntermediateField.adjoin.finrank currently segfaults the Lean 4.26 elaborator in this environment; revisit with a different formulation (e.g. minpoly.natDegree_eq_finrank or a splitting-field degree bound).",
-      "Generalize to the converse direction (degree a power of p does not by itself force a p-group) to clarify the gap between necessary and sufficient conditions."
+      "BLOCKED (infra): concrete cos 20° corollary via cos_pi9_minpoly_degree (AngleTrisectionCos20GalOQ01OQ02OQ02) remains unreachable — that file transitively imports AngleTrisectionOQ02OQ03OQ01.lean, which uses AlgHom API removed in Mathlib v4.26 (.toAlgHom on AlgEquiv, ring failures). Repair that ~740-line file first, then instantiate degree_three_not_2group at cos(π/9).",
+      "BLOCKED (elaborator): field-degree / finrank formulation via IntermediateField.adjoin.finrank segfaults the Lean 4.26 elaborator here; revisit via minpoly.natDegree_eq_finrank.",
+      "OPEN (converse gap): the necessary condition (p-group ⟹ degree = p^k) is not sufficient — degree = p^k does NOT force a p-group Galois group (e.g. an S_4 quartic has degree 4 = 2^2 but |Gal| = 24). Formalizing a concrete counterexample would sharpen the necessary-vs-sufficient boundary but requires computing a specific Galois group."
     ]
   },
   "relatedProofs": [

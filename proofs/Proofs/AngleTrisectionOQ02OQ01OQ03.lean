@@ -149,4 +149,50 @@ theorem even_degree_not_3group (α : ℝ) (hα : IsIntegral ℚ α)
     ¬ IsPGroup 3 (minpoly ℚ α).Gal :=
   not_pgroup_of_prime_dvd_degree_ne α hα (by norm_num) Nat.prime_two (by norm_num) hdvd
 
+/-- **Prime rigidity: the p-group prime is an invariant of a nontrivial extension.**
+    On any extension of degree `> 1`, the group `Gal(minpoly ℚ α)` can be a
+    `p`-group for at most one prime `p`.  A `p`-group forces the degree to be a
+    power of `p`; if the same group is also a `p'`-group the degree is likewise a
+    power of `p'`, and a number `> 1` that is simultaneously a power of two primes
+    must have those primes equal (`p ∣ p'^j` with `p` prime forces `p = p'`).
+
+    This upgrades the forward criterion: not only does a `p`-group Galois group
+    determine the *shape* of the degree (`p^k`), the prime `p` itself is pinned
+    down — it is the unique prime dividing the degree, not a free parameter. -/
+theorem pgroup_prime_unique (α : ℝ) (hα : IsIntegral ℚ α)
+    {p p' : ℕ} (hp : p.Prime) (hp' : p'.Prime)
+    (hgt : 1 < (minpoly ℚ α).natDegree)
+    (hP : IsPGroup p (minpoly ℚ α).Gal)
+    (hP' : IsPGroup p' (minpoly ℚ α).Gal) :
+    p = p' := by
+  obtain ⟨k, hk⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp hP
+  obtain ⟨j, hj⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp' hP'
+  -- `k ≠ 0`, else `natDegree = p^0 = 1`, contradicting `natDegree > 1`.
+  have hk0 : k ≠ 0 := by rintro rfl; rw [pow_zero] at hk; omega
+  -- `p ∣ natDegree = p'^j`, and a prime dividing a prime power hits the base prime.
+  have hpdvd : p ∣ (minpoly ℚ α).natDegree := hk ▸ dvd_pow_self p hk0
+  rw [hj] at hpdvd
+  exact (Nat.prime_dvd_prime_iff_eq hp hp').mp (hp.dvd_of_dvd_pow hpdvd)
+
+/-- **Two distinct primes force a trivial degree.**
+    Contrapositive companion of `pgroup_prime_unique`: if `Gal(minpoly ℚ α)` is
+    simultaneously a `p`-group and a `p'`-group for *distinct* primes `p ≠ p'`,
+    then `natDegree(minpoly ℚ α) = 1` — the extension is trivial (`α` is
+    rational).  Equivalently, a genuinely higher-degree algebraic real can be a
+    `p`-group Galois extension for only one prime. -/
+theorem pgroup_distinct_primes_degree_one (α : ℝ) (hα : IsIntegral ℚ α)
+    {p p' : ℕ} (hp : p.Prime) (hp' : p'.Prime) (hne : p ≠ p')
+    (hP : IsPGroup p (minpoly ℚ α).Gal)
+    (hP' : IsPGroup p' (minpoly ℚ α).Gal) :
+    (minpoly ℚ α).natDegree = 1 := by
+  obtain ⟨k, hk⟩ := galois_pgroup_implies_degree_is_pow_p α hα hp hP
+  rcases Nat.eq_zero_or_pos k with h0 | hpos
+  · rw [h0, pow_zero] at hk; exact hk
+  · exfalso
+    have hgt : 1 < (minpoly ℚ α).natDegree := by
+      rw [hk]
+      calc 1 < p := hp.one_lt
+        _ ≤ p ^ k := Nat.le_self_pow (by omega) p
+    exact hne (pgroup_prime_unique α hα hp hp' hgt hP hP')
+
 end AngleTrisectionOQ02OQ01OQ03
