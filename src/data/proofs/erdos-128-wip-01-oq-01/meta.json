@@ -59,6 +59,14 @@
   },
   "sections": [
     {
+      "id": "overview-setup",
+      "title": "The Problem: Erdős #128 and the C₅-Blow-Up Witnesses",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Module docstring stating Erdős Problem #128 ($250, OPEN): if every induced subgraph on ≥ ⌊n/2⌋ vertices has more than n²/50 edges, must G contain a triangle? The constant 1/50 is conjecturally optimal, witnessed by blow-ups of C₅. Frames this file's sharper structural fact (triangle-freeness is preserved under arbitrary homomorphisms, of which induced subgraphs and blow-ups are instances). Imports Mathlib; opens the Erdos128WIP01OQ01 namespace.",
+      "mathContext": "Erdős #128: induced-density > n²/50 on all large induced subgraphs ⟹ triangle? Extremal witnesses are C₅-blow-ups, whose triangle-freeness this file establishes via homomorphism pullback."
+    },
+    {
       "id": "objects",
       "title": "Graphs, Triangles, and Homomorphisms (re-declared)",
       "summary": "Graph, hasTriangle, triangleFree, and the graph-homomorphism predicate IsHom.",
@@ -102,6 +110,48 @@
       "targetId": "erdos-128",
       "relationship": "related",
       "description": "The base Erdős #128 scaffold (Graph, edgeCount, induce, hasTriangle, triangleFree, denseSubgraphs and the prose partial results), whose conjectured-optimal extremal witnesses are the C₅-blow-ups shown triangle-free here."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "triangleFree_of_hom",
+      "type": "core",
+      "description": "**Triangle-freeness pulls back along graph homomorphisms.** If f : G → H is a homomorphism and H is triangle-free then G is triangle-free; the distinctness of the three image vertices comes from H's irreflexivity. Generalizes the parent's hereditary property (an induced subgraph is the identity homomorphism).",
+      "leanType": "{n k : ℕ} (G : Graph n) (H : Graph k) (f : Fin n → Fin k) (hf : IsHom G H f) (hH : H.triangleFree) : G.triangleFree",
+      "startLine": 81,
+      "endLine": 91
+    },
+    {
+      "name": "blowup_triangleFree",
+      "type": "core",
+      "description": "**Every blow-up of a triangle-free graph is triangle-free** — a corollary of triangleFree_of_hom applied to the class map (which is a homomorphism blowup H c → H).",
+      "leanType": "{n k : ℕ} (H : Graph k) (c : Fin n → Fin k) (hH : H.triangleFree) : (blowup H c).triangleFree",
+      "startLine": 107,
+      "endLine": 109
+    },
+    {
+      "name": "blowup_C5_triangleFree",
+      "type": "key",
+      "description": "**Every blow-up of C₅ is triangle-free**, at every size n and for every class assignment — precisely the triangle-freeness of the conjectured-optimal extremal construction for the 1/50 constant of Erdős #128.",
+      "leanType": "{n : ℕ} (c : Fin n → Fin 5) : (blowup C5 c).triangleFree",
+      "startLine": 129,
+      "endLine": 131
+    },
+    {
+      "name": "C5_triangleFree",
+      "type": "key",
+      "description": "**The 5-cycle C₅ on Fin 5 is triangle-free** (i ~ j iff i+1=j or j+1=i mod 5), by the kernel decision procedure decide (not native_decide, so no ofReduceBool).",
+      "leanType": "C5.triangleFree",
+      "startLine": 120,
+      "endLine": 122
+    },
+    {
+      "name": "blowup_isHom",
+      "type": "supporting",
+      "description": "**The class map of a blow-up is a graph homomorphism** blowup H c → H (adjacency in the blow-up is defined as adjacency of classes in H), the bridge that lets triangleFree_of_hom apply to blow-ups.",
+      "leanType": "{n k : ℕ} (H : Graph k) (c : Fin n → Fin k) : IsHom (blowup H c) H c",
+      "startLine": 102,
+      "endLine": 103
     }
   ]
 }
