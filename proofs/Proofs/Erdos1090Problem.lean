@@ -571,16 +571,132 @@ theorem erdos1090_generalized_affirmative (k r : ℕ) : Erdos1090Generalized k r
   exact ⟨S, hSA, hScol, fun p hp q hq => hmono p q hp hq⟩
 
 /--
-**Higher Dimensions:**
-Does the analogue hold in ℝ³ with planes instead of lines?
+**Collinearity in `ℝ^d`.**  A finite set `S ⊆ (Fin d → ℝ)` is collinear when all
+of its points lie on one affine line `{p₀ + t • dir | t ∈ ℝ}` with a nonzero
+direction `dir`.  This is the genuine higher-dimensional analogue of the planar
+`IsKCollinear`: `k` collinear points span an affine line (a `1`-flat), which is a
+fortiori contained in a common hyperplane, so it is the *strongest* faithful
+reading of "the analogue in `ℝ^d`". -/
+def CollinearInDim {d : ℕ} (S : Finset (Fin d → ℝ)) : Prop :=
+  ∃ p₀ dir : Fin d → ℝ, dir ≠ 0 ∧ ∀ s ∈ S, ∃ t : ℝ, s = p₀ + t • dir
+
+/--
+**Higher Dimensions.**  Does the monochromatic-collinear analogue hold in `ℝ^d`?
+For `d ≥ 2` and `k ≥ 3` we ask for a finite `A ⊂ ℝ^d` such that every `2`-coloring
+of `A` contains `k` monochromatic points lying on a common affine line.  (Points on
+a line lie on a common hyperplane, so this affirms the planes/hyperplanes reading of
+the classical question in every dimension.)
 -/
 def Erdos1090HigherDim (d k : ℕ) : Prop :=
-  d ≥ 2 → k ≥ d + 1 →
+  2 ≤ d → 3 ≤ k →
   ∃ A : Finset (Fin d → ℝ), ∀ c : (Fin d → ℝ) → Bool,
-    ∃ S : Finset (Fin d → ℝ), S ⊆ A ∧ S.card ≥ k ∧
-      -- All points in S lie on a (d-1)-dimensional hyperplane
-      -- and all have the same color
-      True
+    ∃ S : Finset (Fin d → ℝ), S ⊆ A ∧ k ≤ S.card ∧ CollinearInDim S ∧
+      ∀ p ∈ S, ∀ q ∈ S, c p = c q
+
+/-- **Erdős #1090 — higher-dimensional analogue, affirmative.**  For every `d ≥ 2`
+and `k ≥ 3` there is a finite `A ⊂ ℝ^d` such that every `2`-coloring of `A` contains
+`k` monochromatic collinear points.  Proved by the same Hales–Jewett generic-projection
+construction as the planar case, projecting the combinatorial cube `[k]^ι` directly into
+`ℝ^d` via `φ p = ∑ j, (p j) • v j` with `v j = e₀ + (w j) • e₁` (first coordinate `1`,
+second coordinate `w j`, the rest `0`).  A monochromatic combinatorial line maps to `k`
+distinct collinear points of one color; the image direction has first coordinate
+`|varying set| ≥ 1 > 0`, hence is nonzero. -/
+theorem erdos1090_higherDim_affirmative (d k : ℕ) : Erdos1090HigherDim d k := by
+  classical
+  intro hd hk
+  haveI : NeZero k := ⟨by omega⟩
+  -- The first coordinate index, available since `d ≥ 2`; used to witness `dir ≠ 0`.
+  set e0 : Fin d := ⟨0, by omega⟩ with he0
+  -- Hales–Jewett: a finite index type `ι` controlling every `2`-coloring of `[k]^ι`.
+  obtain ⟨ι, ιfin, hHJ⟩ :=
+    Combinatorics.Line.exists_mono_in_high_dimension (Fin k) Bool
+  haveI : Fintype ι := ιfin
+  set emb : Fin k → ℝ := fun a => (a.val : ℝ) with hemb
+  set w : ι → ℝ := fun j => ((Fintype.equivFin ι j).val : ℝ) with hw
+  -- Per-coordinate image vectors in `ℝ^d`: `v j = (1, w j, 0, …, 0)`.
+  set v : ι → (Fin d → ℝ) :=
+    fun j i => if (i : ℕ) = 0 then 1 else if (i : ℕ) = 1 then w j else 0 with hv
+  -- Linear "generic projection" `φ : [k]^ι → ℝ^d`.
+  set φ : (ι → Fin k) → (Fin d → ℝ) := fun p => ∑ j, emb (p j) • v j with hφ
+  refine ⟨Finset.image φ Finset.univ, ?_⟩
+  intro c
+  obtain ⟨l, col, hcol⟩ := hHJ (fun p => c (φ p))
+  have hcol' : ∀ a : Fin k, c (φ (l a)) = col := fun a => hcol a
+  set dir : (Fin d → ℝ) := ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) • v j with hdir
+  have key : ∀ (a : Fin k) (j : ι),
+      emb (l a j) = emb (l 0 j) + emb a * (if l.idxFun j = none then (1 : ℝ) else 0) := by
+    intro a j
+    by_cases h : l.idxFun j = none
+    · rw [l.apply_none a j h, l.apply_none 0 j h, if_pos h]
+      simp [hemb]
+    · obtain ⟨b, hb⟩ := Option.ne_none_iff_exists'.mp h
+      simp only [l.apply_some hb, if_neg h]
+      simp [hemb]
+  have hline : ∀ a : Fin k, φ (l a) = φ (l 0) + emb a • dir := by
+    intro a
+    simp only [hφ, hdir, Finset.smul_sum]
+    rw [← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [key a j, add_smul, mul_smul]
+  -- The image direction is nonzero: its `e0`-coordinate equals `|varying set| ≥ 1`.
+  have heval : dir e0 = ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) := by
+    rw [hdir, Finset.sum_apply]
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [Pi.smul_apply, smul_eq_mul]
+    have hv0 : v j e0 = 1 := by simp [hv, he0]
+    rw [hv0, mul_one]
+  have hdir_ne : dir ≠ 0 := by
+    intro h0
+    have hpos : (0 : ℝ) < dir e0 := by
+      rw [heval]
+      obtain ⟨j0, hj0⟩ := l.proper
+      calc (0 : ℝ) < 1 := one_pos
+        _ = (if l.idxFun j0 = none then (1 : ℝ) else 0) := (if_pos hj0).symm
+        _ ≤ ∑ j, (if l.idxFun j = none then (1 : ℝ) else 0) :=
+            Finset.single_le_sum
+              (f := fun j => if l.idxFun j = none then (1 : ℝ) else 0)
+              (fun j _ => by
+                show (0 : ℝ) ≤ if l.idxFun j = none then (1 : ℝ) else 0
+                split_ifs <;> norm_num)
+              (Finset.mem_univ j0)
+    rw [h0] at hpos
+    simp at hpos
+  refine ⟨Finset.image (fun a : Fin k => φ (l a)) Finset.univ, ?_, ?_, ?_, ?_⟩
+  · -- `S ⊆ A`
+    intro x hx
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hx ⊢
+    obtain ⟨a, ha⟩ := hx
+    exact ⟨l a, ha⟩
+  · -- `k ≤ S.card`
+    have hinj : Function.Injective (fun a : Fin k => φ (l a)) := by
+      intro a a' haa'
+      simp only at haa'
+      rw [hline a, hline a'] at haa'
+      have hsm : emb a • dir = emb a' • dir := add_left_cancel haa'
+      have hee : emb a = emb a' := by
+        by_contra hne
+        have h2 : (emb a - emb a') • dir = 0 := by rw [sub_smul, hsm, sub_self]
+        rcases smul_eq_zero.mp h2 with h | h
+        · exact hne (sub_eq_zero.mp h)
+        · exact hdir_ne h
+      have : a.val = a'.val := by
+        have := hee; simp only [hemb] at this; exact Nat.cast_injective this
+      exact Fin.ext this
+    rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
+  · -- `CollinearInDim S`
+    refine ⟨φ (l 0), dir, hdir_ne, ?_⟩
+    intro p hp
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hp
+    obtain ⟨a, ha⟩ := hp
+    exact ⟨emb a, by rw [← ha, hline a]⟩
+  · -- Monochromatic.
+    intro p hp q hq
+    simp only [Finset.mem_image, Finset.mem_univ, true_and] at hp hq
+    obtain ⟨a, ha⟩ := hp
+    obtain ⟨a', ha'⟩ := hq
+    rw [← ha, ← ha', hcol' a, hcol' a']
 
 /-
 ## Part XI: Main Results Summary
