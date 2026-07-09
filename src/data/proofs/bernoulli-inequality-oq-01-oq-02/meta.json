@@ -84,6 +84,14 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Overview, Imports, and the Second-Order Refinement",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Imports Mathlib and the parent BernoulliInequalityOQ01OQ01; opens the namespace with variable a. Module docstring frames the open question (characterize equality in Bernoulli's inequality) and its answer: the first-order equality (a = 0 ∨ n ≤ 1) is inherited from the parent/sibling as the corollary one_add_mul_eq_pow_iff_ge, while the new content is the second-order refinement (1+a)ⁿ ≥ 1 + n·a + C(n,2)·a² for a ≥ 0, whose equality threshold shifts to a = 0 ∨ n ≤ 2. Explains the induction mechanism (multiply by 1+a, Pascal's C(n,2)+n = C(n+1,2), discard the nonnegative cubic tail) and why a ≥ 0 is sharp (the quadratic truncation overshoots for −1 < a < 0).",
+      "mathContext": "Second-order bound $(1+a)^n \\ge 1 + na + \\binom{n}{2}a^2$ for $a \\ge 0$, with equality iff $a = 0 \\lor n \\le 2$ — one threshold step past the first-order case ($n \\le 1$)."
+    },
+    {
       "id": "weak",
       "title": "Second-Order Bernoulli Inequality",
       "startLine": 59,
@@ -127,7 +135,7 @@
       "id": "witnesses",
       "title": "Exactness and Sharpness Witnesses",
       "startLine": 155,
-      "endLine": 169,
+      "endLine": 170,
       "summary": "The n = 2 identity (truncation = full expansion), a concrete strict instance (a = 1, n = 4: 11 < 16), and the sharpness witness showing the bound fails for −1 < a < 0 (a = −1/2, n = 3).",
       "mathContext": "Exact at $n=2$; strict at $(a,n)=(1,4)$; fails at $(a,n)=(-1/2,3)$."
     }
