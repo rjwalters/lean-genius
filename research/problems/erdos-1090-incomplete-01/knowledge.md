@@ -158,3 +158,41 @@ but not olean-sealed. Meta counts synced in both leanFile & meta blocks.
 Remaining next-steps unchanged: SylvesterGallai still a DEF (full Sylvester–Gallai not in
 Mathlib, not session-sized); quantitative ramseyNumber k upper bound (HJ dim non-explicit);
 projection-body dedup (3 verified copies).
+
+## Session 2026-07-09 (researcher-2): colored Ramsey number + palette monotonicity
+
+**Mode**: ACT (look-outward on SOLVED, 0-axiom). **Outcome**: progress, 0-axiom/0-sorry, VERIFIED.
+Built on top of the 926-line root_collinear state. The file had `ramsey_construction_general`
+(r-coloring EXISTENCE over any finite C) and the `ramseyNumber` API only for Bool. Added the
+missing QUANTITATIVE colored Ramsey-number theory:
+- `HasRamseyPropertyColored (C) (A) (k)` + `ramseyNumberColored (C) (k) := sInf {|A| : ...}` —
+  generalise the Bool API to an arbitrary finite palette. `HasRamseyPropertyColored Bool A k` is
+  DEFEQ to `HasRamseyProperty A k` (both unfold to `∀ c, ∃ S ⊆ A, IsKCollinear S k ∧ mono`), so
+  `ramseyNumberColored_bool : ramseyNumberColored Bool k = ramseyNumber k := rfl`.
+- `hasRamseyPropertyColored_of_embedding (e : C ↪ C')`: fewer colors is easier — transfer a
+  C-coloring `c` forward to `e∘c`, get S mono for `e∘c`, then `e.injective` pulls `e(c p)=e(c q)`
+  back to `c p = c q`. Structural core.
+- `ramseyNumberColored_mono_colors (e : C ↪ C') [Finite C'] (hk:k≥3) : R_C(k) ≤ R_{C'}(k)` —
+  exact mirror of `ramseyNumber_mono` (Nat.sInf_mem on the construction-nonempty C'-set, then
+  Nat.sInf_le via the embedding transfer; `simpa [ramseyNumberColored] using hcard`).
+- `ramseyNumberColored_congr (e : C ≃ C')`: recoloring invariance = le_antisymm of mono both ways.
+- `ramseyNumberColored_mono_fin (hr:r≤r')` via `Fin.castLEEmb hr`; and
+  `ramseyNumber_le_ramseyNumberColored_fin (hr:2≤r) : ramseyNumber k ≤ ramseyNumberColored (Fin r) k`
+  via `finTwoEquiv : Fin 2 ≃ Bool` (rw ← ramseyNumberColored_bool ; ramseyNumberColored_congr ; mono_fin).
+
+File 926→1045 lines, 24→31 theorems, 18→20 defs, 0 sorry / 0 axiom. **Docker build EXIT 0**
+(SUCCEEDED on the 4th attempt; attempts 1–3 = fleet SIGBUS-135 at olean-write after clean
+elab [2433/2433], zero type errors — infra memory, not math). This green build also retroactively
+confirms the prior root_collinear session's elaboration. Identifiers `Fin.castLEEmb`
+(Mathlib/Data/Fin/Embedding.lean) and `finTwoEquiv` (Mathlib/Logic/Equiv/Defs.lean) confirmed
+present + transitively imported. Meta line/thm/def synced in both .meta and .leanFile blocks.
+
+**Branch hygiene note**: the shared `feature/researcher-2-3` worktree base was badly stale
+(850-line file); origin/main already had the 926-line root_collinear version. Re-applied the
+colored additions on a FRESH branch off origin/main to avoid phantom-reverting main's newer work.
+
+Remaining next-steps unchanged: `SylvesterGallai` still a placeholder DEF (full Sylvester–Gallai
+not in Mathlib); quantitative NUMERIC upper bound on R(k)/R_C(k) (HJ dimension ι non-explicit —
+colored version inherits the obstruction); projection-body dedup (3 copies). Possible clean
+follow-up: colored lower bound `k ≤ ramseyNumberColored C k` for `[Nonempty C]` (constant-coloring,
+mirrors hasRamseyProperty_card_ge).

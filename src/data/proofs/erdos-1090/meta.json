@@ -69,13 +69,15 @@
       "erdos1090_generalized_affirmative: proves the previously-unproved r-coloring version Erdos1090Generalized k r, by specializing ramsey_construction_general to C=Fin r (multicolor Hales–Jewett needs no extra hypothesis on r)",
       "helly_planar (0-axiom): proves the previously-unproved placeholder HellyProperty 2 for the plane by specializing Mathlib's Convex.helly_theorem_set to finrank ℝ ℝ² = 2 — every finite family of ≥3 planar convex sets whose 3-element subfamilies each intersect has a common point (classical planar Helly number d+1=3)",
       "collinear_three_root / onLine_root_collinear / isKCollinear_root_collinear (0-axiom): bridge the entry's three bespoke collinearity predicates (three-point Collinear p q r, geometric OnLine/Line, IsKCollinear) to Mathlib's canonical Collinear ℝ via collinear_iff_exists_forall_eq_smul_vadd — closing the implicit faithfulness gap that the file-local notions agree with the standard vectorSpan-rank-≤-1 definition",
-      "erdos1090_construction_root_collinear (0-axiom): the faithful form of the affirmative answer — restates the main construction so its k monochromatic points are Collinear ℝ in Mathlib's standard sense, confirming Erdős #1090 holds for the canonical meaning of \"collinear\", not merely the bespoke IsKCollinear"
+      "erdos1090_construction_root_collinear (0-axiom): the faithful form of the affirmative answer — restates the main construction so its k monochromatic points are Collinear ℝ in Mathlib's standard sense, confirming Erdős #1090 holds for the canonical meaning of \"collinear\", not merely the bespoke IsKCollinear",
+      "HasRamseyPropertyColored / ramseyNumberColored (0-axiom): the r-coloring Ramsey number R_C(k) over an arbitrary finite palette C, quantifying the previously existence-only ramsey_construction_general; HasRamseyPropertyColored Bool = HasRamseyProperty definitionally (ramseyNumberColored_bool : R_Bool = ramseyNumber)",
+      "ramseyNumberColored_mono_colors (0-axiom): palette monotonicity — if C ↪ C' then R_C(k) ≤ R_{C'}(k); more colors cannot lower the threshold. Proved via hasRamseyPropertyColored_of_embedding (a C-coloring pushes forward along e, and injectivity of e pulls monochromaticity back). ramseyNumberColored_congr gives recoloring invariance (C ≃ C' ⟹ equal), ramseyNumberColored_mono_fin the monotone chain R_{Fin r} ≤ R_{Fin r'} for r ≤ r', and ramseyNumber_le_ramseyNumberColored_fin the bound R(k) ≤ R_{Fin r}(k) for r ≥ 2 (via finTwoEquiv)"
     ],
     "axiomCount": 0,
-    "lineCount": 926,
+    "lineCount": 1045,
     "assumptions": "None. 0 axiom declarations, 0 sorries. Both former axioms (graham_selfridge, hunter_observation) are now theorems proved from Mathlib's Hales-Jewett theorem. #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound]; no sorryAx, no Lean.ofReduceBool. The Line structure's `nonzero` field is constructive data (a witnessed direction), not an assumption.",
-    "theoremCount": 24,
-    "definitionCount": 18
+    "theoremCount": 31,
+    "definitionCount": 20
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1090: Monochromatic Collinear Points**\n\nThis problem is a Ramsey-type question in Euclidean geometry: given a 2-coloring of a finite point set, must there exist monochromatic collinear points?\n\n**Key History:**\n- Erdős (1975): Posed the problem in [Er75f] \"On some problems of elementary and combinatorial geometry\"\n- Graham-Selfridge: Proved the k=3 case with an explicit construction\n- Hunter: Observed that generic projections of [k]ⁿ work via Hales-Jewett\n\n**Mathematical Setting:**\nThe Hales-Jewett theorem (1963) guarantees monochromatic combinatorial lines in [k]ⁿ for sufficiently large n. A generic (algebraically independent) projection to ℝ² preserves the collinear structure, solving the problem for all k. The solution exemplifies the transfer principle: combinatorial Ramsey results in high-dimensional grids project to geometric Ramsey results in the plane.",
@@ -111,10 +113,10 @@
       "Finset"
     ],
     "namespace": "Erdos1090",
-    "lineCount": 926,
+    "lineCount": 1045,
     "axiomCount": 0,
-    "theoremCount": 24,
-    "definitionCount": 18,
+    "theoremCount": 31,
+    "definitionCount": 20,
     "path": "Proofs/Erdos1090Problem.lean",
     "sorries": 0
   },

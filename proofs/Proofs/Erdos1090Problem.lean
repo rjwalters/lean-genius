@@ -607,6 +607,125 @@ theorem hasRamseyProperty_realizable_card_iff {k : ℕ} (hk : k ≥ 3) (n : ℕ)
   · exact exists_hasRamseyProperty_card_eq hk
 
 /-
+## Part VIII½: The colored Ramsey number and monotonicity in the palette
+
+The plane `HasRamseyProperty` / `ramseyNumber` API above is stated for `2`-colorings.
+Erdős #1090 is equally natural with an arbitrary finite palette `C` (the affirmative
+`ramsey_construction_general` already handles any `[Finite C]`).  Here we define the
+`C`-colored Ramsey number and prove the missing *quantitative* structural fact: making
+the palette larger can only raise the threshold.  With more colors it is harder to force
+a monochromatic `k`-collinear configuration, so at least as many points are needed —
+`ramseyNumberColored` is monotone in the color type under embeddings, an invariant under
+recolorings (equivalences), and specialises to a monotone chain `R(k) = R_{Bool}(k) ≤
+R_{Fin r}(k) ≤ R_{Fin r'}(k)` for `2 ≤ r ≤ r'`.
+-/
+
+/--
+**Colored Ramsey property.**  A finite set `A` has the Ramsey property for `k` with color
+palette `C` if *every* `C`-coloring of the plane restricts to a monochromatic `k`-collinear
+subset of `A`.  Taking `C := Bool` recovers `HasRamseyProperty` definitionally
+(`ramseyNumberColored_bool`), and `ramsey_construction_general` shows a witnessing `A` exists
+for every finite `C` and `k ≥ 3`.
+-/
+def HasRamseyPropertyColored (C : Type*) (A : Finset Point) (k : ℕ) : Prop :=
+  ∀ c : Point → C, ∃ S : Finset Point, S ⊆ A ∧ IsKCollinear S k ∧
+    ∀ p q : Point, p ∈ S → q ∈ S → c p = c q
+
+/--
+**Colored Ramsey number.**  The minimum size of a plane set with the `C`-colored Ramsey
+property for `k` (`sInf` of the realizable cardinalities), generalising `ramseyNumber`.
+-/
+noncomputable def ramseyNumberColored (C : Type*) (k : ℕ) : ℕ :=
+  sInf {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C A k}
+
+/--
+**A `C`-colored Ramsey witness exists** for every finite palette and `k ≥ 3`.
+This is just `ramsey_construction_general` repackaged through `HasRamseyPropertyColored`
+(the two statements are definitionally equal); it makes the `sInf` defining
+`ramseyNumberColored C k` a genuine attained minimum rather than a vacuous `0`.
+-/
+theorem hasRamseyPropertyColored_construction (C : Type*) [Finite C] (k : ℕ) (hk : k ≥ 3) :
+    ∃ A : Finset Point, HasRamseyPropertyColored C A k :=
+  ramsey_construction_general C k hk
+
+/--
+**Fewer colors is easier (transfer along an embedding).**  If the palette `C` embeds into
+`C'` and `A` has the `C'`-colored Ramsey property, then `A` also has the `C`-colored one.
+Given a `C`-coloring `c`, push it forward to the `C'`-coloring `e ∘ c`; the `C'`-property
+supplies a subset `S` monochromatic for `e ∘ c`, and injectivity of `e` upgrades
+`e (c p) = e (c q)` back to `c p = c q`.  This is the structural heart of palette
+monotonicity.
+-/
+theorem hasRamseyPropertyColored_of_embedding {C C' : Type*} (e : C ↪ C')
+    {A : Finset Point} {k : ℕ} (h : HasRamseyPropertyColored C' A k) :
+    HasRamseyPropertyColored C A k := by
+  intro c
+  obtain ⟨S, hSA, hSk, hSmono⟩ := h (fun p => e (c p))
+  exact ⟨S, hSA, hSk, fun p q hp hq => e.injective (hSmono p q hp hq)⟩
+
+/--
+**Monotonicity of the colored Ramsey number in the palette.**  If `C ↪ C'` (i.e. `C'` has
+at least as many colors as `C`) then `R_C(k) ≤ R_{C'}(k)`: enlarging the palette cannot
+lower the threshold.  The set of cardinalities realizing the `C'`-property is contained in
+the one realizing the `C`-property (`hasRamseyPropertyColored_of_embedding`), and
+`hasRamseyPropertyColored_construction` makes the `C'`-set nonempty, so its attained
+infimum lies in the `C`-set and `Nat.sInf_le` gives the bound.  Directly parallels
+`ramseyNumber_mono` (monotonicity in `k`).
+-/
+theorem ramseyNumberColored_mono_colors {C C' : Type*} (e : C ↪ C') [Finite C']
+    {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumberColored C k ≤ ramseyNumberColored C' k := by
+  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyPropertyColored C' A k}.Nonempty := by
+    obtain ⟨A, hA⟩ := hasRamseyPropertyColored_construction C' k hk
+    exact ⟨A.card, A, rfl, hA⟩
+  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
+  refine Nat.sInf_le ⟨A, ?_, hasRamseyPropertyColored_of_embedding e hA⟩
+  simpa [ramseyNumberColored] using hcard
+
+/--
+**Recoloring invariance.**  Equinumerous palettes give the same Ramsey number: a bijection
+`C ≃ C'` yields embeddings both ways, so `ramseyNumberColored_mono_colors` sandwiches the two
+numbers to equality.  The threshold depends only on the *number* of colors, not their names.
+-/
+theorem ramseyNumberColored_congr {C C' : Type*} [Finite C] [Finite C'] (e : C ≃ C')
+    {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumberColored C k = ramseyNumberColored C' k :=
+  le_antisymm (ramseyNumberColored_mono_colors e.toEmbedding hk)
+    (ramseyNumberColored_mono_colors e.symm.toEmbedding hk)
+
+/--
+**The `Bool`-colored Ramsey number is the original `ramseyNumber`.**  `HasRamseyPropertyColored
+Bool` unfolds to `HasRamseyProperty`, so the two `sInf`s are definitionally equal.  This anchors
+the colored hierarchy to the `2`-coloring case studied above.
+-/
+theorem ramseyNumberColored_bool (k : ℕ) :
+    ramseyNumberColored Bool k = ramseyNumber k := rfl
+
+/--
+**A monotone chain in the number of colors.**  For `r ≤ r'`, `R_{Fin r}(k) ≤ R_{Fin r'}(k)`,
+via the canonical embedding `Fin r ↪ Fin r'`.  Combined with `ramseyNumberColored_bool` and
+`finTwoEquiv`, this gives `R(k) = R_{Fin 2}(k) ≤ R_{Fin r}(k)` for every `r ≥ 2`: passing from
+`2` to `r` colors never decreases the required number of points.
+-/
+theorem ramseyNumberColored_mono_fin {r r' : ℕ} (hr : r ≤ r') {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumberColored (Fin r) k ≤ ramseyNumberColored (Fin r') k :=
+  ramseyNumberColored_mono_colors (Fin.castLEEmb hr) hk
+
+/--
+**Two colors are the minimum meaningful palette.**  For every `r ≥ 2`, the original Ramsey
+number bounds the `Fin r`-colored one from below: `ramseyNumber k ≤ ramseyNumberColored (Fin r) k`.
+Uses `Bool ≃ Fin 2` (`finTwoEquiv`) to identify `ramseyNumber` with `R_{Fin 2}` and then the
+`Fin`-chain monotonicity.
+-/
+theorem ramseyNumber_le_ramseyNumberColored_fin {r : ℕ} (hr : 2 ≤ r) {k : ℕ} (hk : k ≥ 3) :
+    ramseyNumber k ≤ ramseyNumberColored (Fin r) k := by
+  have h2 : ramseyNumber k = ramseyNumberColored (Fin 2) k := by
+    rw [← ramseyNumberColored_bool k]
+    exact ramseyNumberColored_congr finTwoEquiv.symm hk
+  rw [h2]
+  exact ramseyNumberColored_mono_fin hr hk
+
+/-
 **R(3) is Small:**
 The k = 3 case can be achieved with a small set of points.
 -/
