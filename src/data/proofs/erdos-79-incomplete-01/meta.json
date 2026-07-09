@@ -29,7 +29,9 @@
     "mathlib_version": "4.26.0",
     "theoremCount": 15,
     "definitionCount": 7,
-    "additionalFiles": []
+    "additionalFiles": [
+      "Proofs/Erdos79Incomplete01OQ01.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #79 (Erdős–Faudree–Rousseau–Schelp) asks whether infinitely many graphs are minimally non-Ramsey-size-linear: not Ramsey size-linear themselves, yet all of whose proper subgraphs are. Wigderson (2024) proved infinitely many exist non-constructively; K₄ remains the only explicit example. The parent formalization `Proofs/Erdos79Problem.lean` keeps the Ramsey number `ramseyNumber` opaque and packages the two hard facts about K₄ as axioms: `K4_not_linear` (K₄ is superlinear) and the sweeping `K4_subgraphs_linear` (every proper subgraph of K₄ is size-linear, quantified over infinitely many `H : SimpleGraph ℕ`). This companion attacks the second axiom's SHAPE: over the opaque `ramseyNumber` no specific graph's size-linearity is derivable, but the combinatorial reduction of the quantifier structure is fully provable.",
