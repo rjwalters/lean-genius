@@ -384,6 +384,86 @@ theorem oddNumbers_sumFree (n : ℕ) :
   rw [heq] at hodd_a
   omega
 
+/--
+**Sum-freeness is downward closed:**
+A subset of a sum-free set is sum-free. Sum-freeness only forbids solutions of
+`a = b + c` among a set's *own* elements, so discarding elements can never create
+one. (Formal witness for the two families below.)
+-/
+theorem sumFree_of_subset {A B : Finset ℕ} (hAB : A ⊆ B) (hB : IsSumFree B) :
+    IsSumFree A :=
+  fun a b c ha hb hc => hB a b c (hAB ha) (hAB hb) (hAB hc)
+
+/--
+**Two-family lower bound (odd sets ⋃ upper-half sets):**
+`f(n) ≥ 2^{|O|} + 2^{|U|} − 2^{|O ∩ U|}`, where `O` is the set of odd numbers in
+`[1,n]` and `U = {⌊n/2⌋+1, …, n}` is the upper half.
+
+Both are families of sum-free sets: every subset of `U` is sum-free
+(`upperHalf_sumFree`) and every subset of `O` is sum-free (`oddNumbers_sumFree`
+via `sumFree_of_subset`). Hence `𝒫(O) ∪ 𝒫(U) ⊆ sumFreeSubsets n`, and by
+inclusion–exclusion — using `𝒫(O) ∩ 𝒫(U) = 𝒫(O ∩ U)` —
+`|𝒫(O) ∪ 𝒫(U)| = 2^{|O|} + 2^{|U|} − 2^{|O ∩ U|}`.
+
+Because `O ∩ U ⊆ O`, this is `≥ 2^{|U|} = 2^{⌈n/2⌉}`, so it dominates
+`sharp_lower_bound`; the inequality is strict whenever some odd number lies in
+the lower half (`O ⊄ U`, i.e. all `n ≥ 3`). This is the formal shadow of the
+Cameron–Erdős fact that the count is governed by **two** dominant families — the
+reason the leading constant `c_n` depends on the parity of `n`.
+-/
+theorem two_family_lower_bound (n : ℕ) :
+    f n ≥ 2 ^ ((Finset.range (n + 1)).filter (fun k => k % 2 = 1)).card
+          + 2 ^ (Finset.Icc (n / 2 + 1) n).card
+          - 2 ^ (((Finset.range (n + 1)).filter (fun k => k % 2 = 1))
+                  ∩ Finset.Icc (n / 2 + 1) n).card := by
+  set O : Finset ℕ := (Finset.range (n + 1)).filter (fun k => k % 2 = 1) with hO
+  set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
+  -- Every subset of `O` is a sum-free subset of `{1,…,n}`.
+  have hPO : O.powerset ⊆ sumFreeSubsets n := by
+    intro A hA
+    rw [Finset.mem_powerset] at hA
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨hA.trans ?_, sumFree_of_subset hA (oddNumbers_sumFree n)⟩
+    intro x hx
+    rw [hO, Finset.mem_filter, Finset.mem_range] at hx
+    rw [Finset.mem_Icc]
+    omega
+  -- Every subset of `U` is a sum-free subset of `{1,…,n}`.
+  have hPU : U.powerset ⊆ sumFreeSubsets n := by
+    intro A hA
+    rw [Finset.mem_powerset] at hA
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨hA.trans ?_, ?_⟩
+    · rw [hU]; exact Finset.Icc_subset_Icc (by omega) (le_refl n)
+    · apply upperHalf_sumFree n A
+      intro a ha
+      have haU := hA ha
+      rw [hU, Finset.mem_Icc] at haU
+      exact haU
+  -- `𝒫(O) ∩ 𝒫(U) = 𝒫(O ∩ U)`.
+  have hpi : O.powerset ∩ U.powerset = (O ∩ U).powerset := by
+    ext A
+    constructor
+    · intro h
+      rw [Finset.mem_inter, Finset.mem_powerset, Finset.mem_powerset] at h
+      rw [Finset.mem_powerset]
+      exact Finset.subset_inter h.1 h.2
+    · intro h
+      rw [Finset.mem_powerset] at h
+      rw [Finset.mem_inter, Finset.mem_powerset, Finset.mem_powerset]
+      exact ⟨h.trans Finset.inter_subset_left, h.trans Finset.inter_subset_right⟩
+  -- Inclusion–exclusion on the two powerset families.
+  have hkey : (O.powerset ∪ U.powerset).card + 2 ^ (O ∩ U).card
+      = 2 ^ O.card + 2 ^ U.card := by
+    have h1 := Finset.card_union_add_card_inter O.powerset U.powerset
+    rw [hpi] at h1
+    simp only [Finset.card_powerset] at h1
+    exact h1
+  -- The union embeds into the sum-free family, so `f n` bounds its cardinality.
+  have hle : (O.powerset ∪ U.powerset).card ≤ f n :=
+    Finset.card_le_card (Finset.union_subset hPO hPU)
+  omega
+
 /-
 ## Part VII: Structure of Sum-Free Sets
 -/
