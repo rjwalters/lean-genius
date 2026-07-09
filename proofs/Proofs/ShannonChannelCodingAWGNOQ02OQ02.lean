@@ -676,4 +676,75 @@ theorem covariance_sq_eq_variance_mul_variance_iff_affine [IsProbabilityMeasure 
   · rintro ⟨a, b, hab⟩
     exact covariance_sq_eq_of_affine hY a b hab
 
+/-!
+### Normalised capstone: the Pearson correlation coefficient ρ = cov/(σ_X·σ_Y)
+
+The equality boundary above is most cleanly expressed through the **correlation coefficient**
+
+    ρ[X, Y] = cov[X, Y] / (σ_X · σ_Y),        σ_X = √Var[X],  σ_Y = √Var[Y],
+
+the dimensionless normalisation of the covariance.  The covariance Cauchy–Schwarz inequality
+becomes the sharp statement `|ρ| ≤ 1` (needing *no* non-degeneracy hypothesis — the
+division-by-zero convention absorbs the degenerate case), and the equality boundary
+`covariance_sq_eq_variance_mul_variance_iff_affine` becomes its normalised capstone:
+`|ρ| = 1` holds **exactly** when `X` and `Y` are a.e. affinely dependent.  This is the standard
+correlation-coefficient packaging of the second-order theory built above.
+-/
+
+/-- **Pearson correlation coefficient.**  The covariance normalised by the product of the
+standard deviations, `ρ[X, Y] = cov[X, Y] / (√Var[X] · √Var[Y])`.  With the Lean
+division-by-zero convention `ρ = 0` whenever either variable is degenerate. -/
+noncomputable def correlation (X Y : Ω → ℝ) (μ : Measure Ω) : ℝ :=
+  cov[X, Y; μ] / (Real.sqrt (Var[X; μ]) * Real.sqrt (Var[Y; μ]))
+
+/-- **Correlation squared is the Cauchy–Schwarz ratio.**  `ρ² = cov² / (Var[X]·Var[Y])`, obtained
+by squaring the defining quotient and collapsing `(√Var)² = Var`.  This is the algebraic bridge
+between the normalised coefficient and the covariance Cauchy–Schwarz inequality. -/
+theorem correlation_sq (X Y : Ω → ℝ) (μ : Measure Ω) :
+    correlation X Y μ ^ 2 = cov[X, Y; μ] ^ 2 / (Var[X; μ] * Var[Y; μ]) := by
+  rw [correlation, div_pow, mul_pow, Real.sq_sqrt (variance_nonneg _ _),
+    Real.sq_sqrt (variance_nonneg _ _)]
+
+/-- **|ρ| ≤ 1 — covariance Cauchy–Schwarz, normalised.**  The correlation coefficient always lies
+in `[-1, 1]`, needing *no* non-degeneracy hypothesis: when either variable is degenerate the
+quotient is `0` by the division-by-zero convention, and otherwise `ρ² ≤ 1` follows from
+`covariance_sq_le_variance_mul_variance`. -/
+theorem abs_correlation_le_one [IsFiniteMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) :
+    |correlation X Y μ| ≤ 1 := by
+  have h2 : correlation X Y μ ^ 2 ≤ 1 := by
+    rw [correlation_sq]
+    rcases eq_or_lt_of_le (mul_nonneg (variance_nonneg X μ) (variance_nonneg Y μ)) with hz | hpos
+    · rw [← hz, div_zero]; norm_num
+    · rw [div_le_one hpos]; exact covariance_sq_le_variance_mul_variance hX hY
+  rw [abs_le]
+  constructor <;>
+    nlinarith [h2, sq_nonneg (correlation X Y μ - 1), sq_nonneg (correlation X Y μ + 1)]
+
+/-- **ρ² = 1 ⟺ a.e. affine dependence (normalised equality boundary).**  For non-degenerate
+`X, Y` (`Var[X] ≠ 0`, `Var[Y] ≠ 0`) the correlation coefficient is extremal — `ρ² = 1` — *exactly*
+when `X` is almost everywhere an affine function of `Y`.  This is
+`covariance_sq_eq_variance_mul_variance_iff_affine` normalised through `correlation_sq`; both
+non-degeneracy hypotheses are genuinely needed, since a degenerate variable makes `ρ = 0 ≠ ±1`
+while the affine relation `X =ᵐ 0·Y + μ[X]` still holds. -/
+theorem correlation_sq_eq_one_iff_affine [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    correlation X Y μ ^ 2 = 1 ↔ ∃ a b : ℝ, X =ᵐ[μ] fun ω => a * Y ω + b := by
+  rw [correlation_sq, div_eq_one_iff_eq (mul_ne_zero hXnd hYnd)]
+  exact covariance_sq_eq_variance_mul_variance_iff_affine hX hY hYnd
+
+/-- **|ρ| = 1 ⟺ a.e. affine dependence — the normalised capstone.**  For non-degenerate `X, Y`
+the correlation coefficient attains its extreme value `|ρ| = 1` *exactly* when `X` and `Y` are
+almost everywhere affinely dependent (perfect ±correlation).  This is the dimensionless
+restatement of the sharp Cauchy–Schwarz equality boundary
+`covariance_sq_eq_variance_mul_variance_iff_affine`, obtained from `correlation_sq_eq_one_iff_affine`
+via `|ρ| = 1 ↔ ρ² = 1`. -/
+theorem abs_correlation_eq_one_iff_affine [IsProbabilityMeasure μ] {X Y : Ω → ℝ}
+    (hX : MemLp X 2 μ) (hY : MemLp Y 2 μ) (hXnd : Var[X; μ] ≠ 0) (hYnd : Var[Y; μ] ≠ 0) :
+    |correlation X Y μ| = 1 ↔ ∃ a b : ℝ, X =ᵐ[μ] fun ω => a * Y ω + b := by
+  rw [← correlation_sq_eq_one_iff_affine hX hY hXnd hYnd]
+  constructor
+  · intro h; rw [← sq_abs, h]; norm_num
+  · intro h; rw [← Real.sqrt_sq_eq_abs, h, Real.sqrt_one]
+
 end ShannonAWGNMultiSymbolPower
