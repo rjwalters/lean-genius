@@ -126,6 +126,14 @@
   },
   "sections": [
     {
+      "id": "header-setup",
+      "title": "Overview and Setup: Generic Realization of Sₙ and Aₙ",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring stating the goal — realize every symmetric group Sₙ and alternating group Aₙ as a Galois group via the generic function-field construction: Sₙ acts faithfully on F = ℚ(x₁,…,xₙ) by permuting variables, and Artin's fixed-field theorem (Mathlib FixedPoints.toAlgAutMulEquiv) yields Sₙ ≃* Gal(F/F^{Sₙ}) with [F:F^{Sₙ}] = n!, likewise for Aₙ. Notes that the fixed fields ℚ(e₁,…,eₙ) resp. ℚ(e₁,…,eₙ)(√disc) are purely transcendental, so these are regular (RIGP) realizations, and contrasts with the sibling OQ-01 realizing S₅ concretely. Then import Mathlib, open Classical/MvPolynomial, the noncomputable section, and the polynomial-ring abbreviation P = ℚ[x₁,…,xₙ].",
+      "mathContext": "$S_n \\curvearrowright F = \\mathbb{Q}(x_1,\\dots,x_n)$; Artin $\\Rightarrow S_n \\simeq \\mathrm{Gal}(F/F^{S_n})$, $[F:F^{S_n}] = n!$."
+    },
+    {
       "id": "step1-permutation-action",
       "title": "Step 1: The variable-permutation action and its lift to the function field",
       "startLine": 38,
@@ -175,5 +183,28 @@
       "description": "Abel–Ruffini uses that Sₙ (n ≥ 5) is unsolvable to prove the generic degree-n equation has no radical solution; this entry realizes those same Sₙ as honest Galois groups, exhibiting the extensions whose unsolvability drives Abel–Ruffini."
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Artin, Emil",
+      "title": "Galois Theory",
+      "year": "1944",
+      "venue": "Notre Dame Mathematical Lectures 2",
+      "note": "The fixed-field theorem: a finite group G acting faithfully on a field F makes F/F^G Galois with Gal(F/F^G) ≃ G and [F:F^G] = |G| — the abstract engine (Mathlib's FixedPoints.toAlgAutMulEquiv) this construction quotes."
+    },
+    {
+      "authors": "Serre, Jean-Pierre",
+      "title": "Topics in Galois Theory",
+      "year": "1992",
+      "venue": "Research Notes in Mathematics, Jones and Bartlett",
+      "note": "The inverse Galois problem and its regular (RIGP) form; the symmetric-group case via the generic polynomial with indeterminate coefficients, of which this entry is the machine-checked Sₙ/Aₙ instance."
+    },
+    {
+      "authors": "Jensen, Christian U.; Ledet, Arne; Yui, Noriko",
+      "title": "Generic Polynomials: Constructive Aspects of the Inverse Galois Problem",
+      "year": "2002",
+      "venue": "MSRI Publications 45, Cambridge University Press",
+      "note": "The generic function-field construction realizing Sₙ (and, with the discriminant square root, Aₙ) as Galois groups over a purely transcendental base — the classical source of the route formalized here."
+    }
+  ]
 }
