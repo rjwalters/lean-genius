@@ -238,15 +238,78 @@ theorem exists_nontrivial_threeAP_of_not_summable_reciprocal
     · have h : c + 2 * (b - c) = a := by omega
       rw [h]; exact ha
 
+/-- The **absolute reciprocal-sum constant** `B := ∑'_k recipMajorant k`.  This single real
+number simultaneously bounds the reciprocal sum of *every* 3-AP-free subset of `ℕ` (with
+`0 ∉ A`); see `threeAPFree_tsum_reciprocal_le` and `exists_universal_recip_bound`.  It is
+finite (`summable_recipMajorant`) and positive (`recipBound_pos`). -/
+noncomputable def recipBound : ℝ := ∑' k, recipMajorant k
+
+/-- The absolute reciprocal-sum constant is strictly positive (its `k = 0` term already is). -/
+theorem recipBound_pos : 0 < recipBound := by
+  have h0 : 0 < recipMajorant 0 :=
+    div_pos (by norm_num) (recipMajorant_denom_pos 0)
+  exact summable_recipMajorant.tsum_pos recipMajorant_nonneg 0 h0
+
+/-- **Uniform quantitative reciprocal bound.**  For *every* 3-AP-free set `A ⊆ ℕ` with
+`0 ∉ A`, the full (infinite) reciprocal sum is bounded by the single absolute constant
+`∑'_k recipMajorant k`, independently of `A`:
+`∑'_{a ∈ A} 1/a ≤ ∑'_k recipMajorant k`.
+
+This strengthens `threeAPFree_summable_reciprocal` from a qualitative "convergent" statement
+to an explicit *uniform* upper bound — the same finite constant works for all 3-AP-free sets
+at once.  Proof: `Summable.tsum_le_of_sum_le` reduces to bounding every finite partial sum,
+and each finite partial sum ranges over a finite 3-AP-free subset of `ℕ`, to which
+`finite_recip_sum_le` applies.  Rests on the single imported Bloom–Sisask assumption; no new
+axiom. -/
+theorem threeAPFree_tsum_reciprocal_le
+    {A : Set ℕ} (hA : ThreeAPFree A) (hA0 : 0 ∉ A) :
+    ∑' a : A, (1 : ℝ) / (a : ℝ) ≤ ∑' k, recipMajorant k := by
+  classical
+  refine (threeAPFree_summable_reciprocal hA hA0).tsum_le_of_sum_le (fun s => ?_)
+  -- The finite index set `s : Finset A` maps to a finite 3-AP-free `T ⊆ ℕ` with `0 ∉ T`.
+  set T : Finset ℕ := s.image Subtype.val with hT
+  have hinj : ∀ x ∈ s, ∀ y ∈ s, (Subtype.val x : ℕ) = Subtype.val y → x = y :=
+    fun x _ y _ h => Subtype.val_injective h
+  -- Reciprocal sum over `s` equals the reciprocal sum over its image `T`.
+  have hsum_eq : ∑ i ∈ s, (1 : ℝ) / (i : ℝ) = ∑ a ∈ T, (1 : ℝ) / (a : ℝ) := by
+    rw [hT, Finset.sum_image hinj]
+  rw [hsum_eq]
+  have hTsub : (T : Set ℕ) ⊆ A := by
+    intro x hx
+    rw [hT, Finset.coe_image, Set.mem_image] at hx
+    obtain ⟨i, _, rfl⟩ := hx
+    exact i.property
+  have hTAP : ThreeAPFree (T : Set ℕ) := ThreeAPFree.mono hTsub hA
+  have hT0 : (0 : ℕ) ∉ T := by
+    intro h0
+    rw [hT, Finset.mem_image] at h0
+    obtain ⟨i, _, hi⟩ := h0
+    exact hA0 (by rw [← hi]; exact i.property)
+  exact finite_recip_sum_le T hTAP hT0
+
+/-- **Universal reciprocal-sum bound (packaged form).**  There is an *absolute* constant
+`B > 0` — independent of the set — such that every 3-AP-free `A ⊆ ℕ` with `0 ∉ A` satisfies
+`∑'_{a ∈ A} 1/a ≤ B`.  This is the strongest quantitative form of the `k = 3` Erdős
+consequence obtainable from the Bloom–Sisask bound: not only is each reciprocal sum finite,
+they are all bounded by one common constant. -/
+theorem exists_universal_recip_bound :
+    ∃ B : ℝ, 0 < B ∧ ∀ (A : Set ℕ), ThreeAPFree A → 0 ∉ A →
+      ∑' a : A, (1 : ℝ) / (a : ℝ) ≤ B :=
+  ⟨recipBound, recipBound_pos, fun _A hA hA0 => threeAPFree_tsum_reciprocal_le hA hA0⟩
+
 #check @threeAPFree_summable_reciprocal
 #check @finite_recip_sum_le
 #check @fiber_sum_le
 #check @summable_recipMajorant
+#check @threeAPFree_tsum_reciprocal_le
+#check @exists_universal_recip_bound
 
 -- Axiom audit: the reciprocal-sum theorem rests on exactly the single imported Bloom–Sisask
 -- assumption `RothTheoremOQ02.rothNumberNat_bloom_sisask` — no new axiom, no `sorryAx`.
 #print axioms threeAPFree_summable_reciprocal
 #print axioms summable_recipMajorant
 #print axioms exists_nontrivial_threeAP_of_not_summable_reciprocal
+#print axioms threeAPFree_tsum_reciprocal_le
+#print axioms exists_universal_recip_bound
 
 end RothTheoremOQ01Reciprocal
