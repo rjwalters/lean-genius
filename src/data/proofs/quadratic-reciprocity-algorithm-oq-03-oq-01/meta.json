@@ -48,6 +48,13 @@
   "leanFile": {
     "path": "Proofs/QuadraticReciprocityAlgorithmOQ03M2Capstone.lean",
     "namespace": "QuadraticReciprocityAlgorithmOQ03M2",
+    "imports": [
+      "Mathlib",
+      "Proofs.QuadraticReciprocityAlgorithmOQ03M2"
+    ],
+    "opens": [
+      "Equiv"
+    ],
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 72,
@@ -62,7 +69,8 @@
       "Reciprocity, in the Zolotarev framing, is an equality between an arithmetic object (the product of Legendre symbols) and a combinatorial one (the sign of an explicit permutation). The parent computed the combinatorial side outright; this capstone records that the arithmetic side is the same ±1.",
       "The grid-transpose sign is primality-free: sign_gridTranspose holds for all odd p, q. Only the *identification* of that sign with (p/q)·(q/p) needs primality, and that identification is exactly where Mathlib's quadratic_reciprocity is consumed.",
       "The only friction between the two halves is bookkeeping: Mathlib writes the reciprocity exponent as p/2·(q/2) while the inversion count produces (p-1)/2·((q-1)/2). For odd n these agree (n/2 = (n-1)/2), a one-line omega fact once n is written as 2k+1.",
-      "Honesty matters for the originality claim: because the arithmetic side is Mathlib's, this entry is badged 'mathlib', and the genuinely-new content of the line stays located in the parent's sign computation — this capstone is the connecting statement, not an independent proof of reciprocity."
+      "Honesty matters for the originality claim: because the arithmetic side is Mathlib's, this entry is badged 'mathlib', and the genuinely-new content of the line stays located in the parent's sign computation — this capstone is the connecting statement, not an independent proof of reciprocity.",
+      "Concretely, the headline is a computable ±1 identity. For p = 3, q = 7 the grid-transpose sign is (−1)^((3−1)/2·(7−1)/2) = (−1)^(1·3) = −1, matching (3/7)·(7/3) = (−1)·(+1) = −1 (3 is a non-residue mod 7). For p = 5, q = 7 it is (−1)^(2·3) = +1, matching (5/7)·(7/5) = +1. So the abstract 'reciprocity factor = permutation sign' becomes a concrete parity of the inversion count C(p,2)·C(q,2) of gridTranspose, checkable by hand for any pair of odd primes."
     ]
   },
   "sections": [
