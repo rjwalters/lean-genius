@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE + extended: determinant factorization closed (det_eq_mul_compress_of_reducing, VERIFIED 0/0) — the multiplicative analogue of the trace additivity capstone, completing the trace/eigenvalue-sum/determinant/multiplicity family over a reducing subspace. Remaining follow-up: charpoly factorization.",
+    "progressSummary": "COMPLETE. Reducing-subspace block calculus fully built out: Poincaré separation, spectrum union, eigenspace/multiplicity additivity, trace additivity, eigenvalue-sum additivity, determinant factorization (#36233), and now the characteristic-polynomial factorization (PR #36265) that subsumes the trace and det identities. All symmetry-free, 0 axiom/0 sorry.",
     "builtItems": [
       "poincare_separation_compression in CauchyInterlacingPoincareCompression.lean (#28084) — unconditional codimension-m Poincaré separation: given a symmetric T on V (dim n+m) and any subspace H (dim n), the descending eigenvalues of the explicit orthogonal compression compress T H interlace those of T as lam⟨k+m⟩ ≤ mu k ≤ lam⟨k⟩, with NO Rayleigh side hypothesis.",
       "compress / isSymmetric_compress / rayleigh_compress_eq in CauchyInterlacingCompression.lean (#27245) — define compress T H := P_H∘T∘ι_H, prove it symmetric, and discharge the Rayleigh-agreement identity for an arbitrary subspace via the orthogonal-projection adjoint identity.",
@@ -60,7 +60,8 @@
       "trace_starProjection_compress_eq_trace_compress: tr_V(P_H T P_H) = tr_H(compress T H) — cyclic-trace bridge across H↪V coercion via P_H=ι∘π, trace_comp_commized, π∘ι=id_H (CauchyInterlacingPoincareCompression.lean)",
       "trace_eq_add_compress_of_reducing: tr_V T = tr_H(compress T H) + tr_Hᗮ(compress T Hᗮ) over a reducing subspace — honest per-block compression traces (CauchyInterlacingPoincareCompression.lean)",
       "spectrum_compress_eq_restrict_of_invariant — compress T H = T.restrict on invariant block ⟹ shared spectrum, routes containment through honest-restriction picture (VERIFIED 0/0)",
-      "det_eq_mul_compress_of_reducing: determinant factorization det T = det(compress T H)·det(compress T Hᗮ) over a reducing subspace — multiplicative analogue of trace_eq_add_compress_of_reducing, via block-diagonal conjugation through Submodule.prodEquivOfIsCompl + LinearMap.det_conj + LinearMap.det_prodMap; symmetry-free, VERIFIED 0/0 (CauchyInterlacingPoincareCompression.lean)"
+      "det_eq_mul_compress_of_reducing: determinant factorization det T = det(compress T H)·det(compress T Hᗮ) over a reducing subspace — multiplicative analogue of trace_eq_add_compress_of_reducing, via block-diagonal conjugation through Submodule.prodEquivOfIsCompl + LinearMap.det_conj + LinearMap.det_prodMap; symmetry-free, VERIFIED 0/0 (CauchyInterlacingPoincareCompression.lean)",
+      "charpoly_eq_mul_compress_of_reducing (CauchyInterlacingPoincareCompression.lean, PR #36265) — charpoly T = charpoly(compress T H)*charpoly(compress T Hᗮ) on a reducing subspace; polynomial master identity subsuming trace additivity + det factorization; symmetry-free"
     ],
     "insights": [
       "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",
@@ -81,6 +82,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "DONE: determinant factorization landed on main (#36233); charpoly factorization landed (PR #36265). The scalar (trace/det) and polynomial (charpoly) block factorizations over a reducing subspace are now all closed. No further session-sized follow-up in this direction.",
       "Characteristic-polynomial factorization charpoly T = charpoly(compress T H)·charpoly(compress T Hᗮ) over a reducing subspace (finer than determinant; apply det factorization to T - X·id, needs compress commutes with scalar subtraction on each block — compress (T - c) H = compress T H - c on invariant H)."
     ]
   },
