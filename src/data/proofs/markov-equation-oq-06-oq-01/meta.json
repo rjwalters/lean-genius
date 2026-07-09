@@ -77,6 +77,26 @@
       "summary": "seq_top_ge_two_pow proves (2 : ℤ)^n ≤ (seq n).2.2 by induction from (seq 0).2.2 = 1, chaining 2^(n+1) = 2·2ⁿ ≤ 2·(seq n).2.2 ≤ (seq (n+1)).2.2 through the doubling step. seq_top_unbounded then uses pow_unbounded_of_one_lt (archimedeanity of ℤ) to show the top coordinates exceed every bound."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "seq_top_ge_two_pow",
+      "type": "main",
+      "description": "The geometric lower bound: the top coordinate of the n-th ascent triple is at least 2ⁿ. Proved by induction from (seq 0).top = 1 = 2⁰, chaining 2^(n+1) = 2·2ⁿ ≤ 2·(seq n).top ≤ (seq (n+1)).top through the doubling step.",
+      "leanType": "(n : ℕ) : (2 : ℤ) ^ n ≤ (seq n).2.2"
+    },
+    {
+      "name": "two_mul_top_le_succ",
+      "type": "supporting",
+      "description": "The doubling step: one ascent step at least doubles the top coordinate, 2·(seq n).top ≤ (seq (n+1)).top. On the parent's sorted Markov triple 1 ≤ a ≤ b ≤ c the successor's top is 3bc − a and 3bc − a − 2c ≥ 3c(b − 1) ≥ 0, discharged by one nlinarith with the nonnegative product c·(b − 1).",
+      "leanType": "(n : ℕ) : 2 * (seq n).2.2 ≤ (seq (n + 1)).2.2"
+    },
+    {
+      "name": "seq_top_unbounded",
+      "type": "supporting",
+      "description": "Unboundedness: the top coordinates exceed every bound — for every B there is n with B < (seq n).top. From the geometric bound via pow_unbounded_of_one_lt (archimedeanity of ℤ).",
+      "leanType": "(B : ℤ) : ∃ n, B < (seq n).2.2"
+    }
+  ],
   "conclusion": {
     "summary": "A 0-axiom, 0-sorry formalization (93 lines, 3 theorems) proving that the Vieta ascent sequence of Markov triples grows at least geometrically: each step doubles the top coordinate (two_mul_top_le_succ), so 2ⁿ ≤ (seq n).top (seq_top_ge_two_pow), and the top coordinates are unbounded (seq_top_unbounded). It reuses the parent's seq and seq_spec directly and adds only one sorted-triple inequality.",
     "implications": "This quantifies the parent's qualitative infinitude result: not only are there infinitely many Markov triples, their maximal coordinates grow at least exponentially in the tree depth. The geometric bound is the elementary input behind counting results for Markov numbers (only finitely many below any bound; Zagier's asymptotic). The template — turn a strict-monotonicity move into a multiplicative one by proving a single sorted-triple inequality, then induct — transfers to other Vieta-jumping families such as the Hurwitz equation x² + y² + z² = kxyz.",
