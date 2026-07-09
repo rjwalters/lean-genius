@@ -21,12 +21,12 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 184,
+    "lineCount": 216,
     "assumptions": "None. The file introduces no axioms and no sorries; every theorem depends only on the standard foundational axioms propext / Classical.choice / Quot.sound. Only the lower-bound (Mirsky/Dilworth) direction of the decomposition problem is proved; the hard upper-bound direction of OQ-05 — that O(√n) monotone pieces always suffice (Hanani 1957) — is stated in prose as the remaining open direction, not assumed.",
     "dateAdded": "2026-07-08",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
-    "definitionCount": 9
+    "theoremCount": 12,
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Erdős Problem #1026 concerns monotonic subsequences. The Erdős–Szekeres theorem (1935) guarantees that every sequence of k²+1 distinct reals contains a monotonic subsequence of length k+1. Dually, Hanani (1957) showed the whole sequence can be partitioned into few monotonic subsequences — at most (√2 + o(1))√n of them — and the optimization variant studies the sums such pieces carry. The parent gallery formalization records the MonotonicDecomposition structure but proves no quantitative bound on the number of parts. This entry supplies the elementary lower bound that any such decomposition must obey.",
@@ -138,12 +138,12 @@
       "Mathlib"
     ],
     "namespace": "Erdos1026OQ05",
-    "lineCount": 184,
+    "lineCount": 216,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 12,
     "path": "Proofs/Erdos1026OQ05.lean",
     "sorries": 0,
-    "definitionCount": 9
+    "definitionCount": 10
   },
   "sorries": 0,
   "highlights": [
