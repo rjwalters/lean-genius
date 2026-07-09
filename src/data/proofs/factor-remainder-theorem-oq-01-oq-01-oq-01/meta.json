@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Docstring and Setup",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring for this factor–remainder leaf: over 𝔽ₚ the ordinary-derivative multiplicity test collapses on Xᵖ while the Hasse/Taylor coefficient test stays sharp, and the factorial p! ≡ 0 (mod p) is precisely the obstruction. Imports Mathlib; namespace FactorRemainderTheoremOQ01OQ01OQ01, open Polynomial; section variable (p : ℕ) [Fact p.Prime].",
+      "mathContext": "Setup over 𝔽ₚ = ZMod p with p prime: comparing the ordinary derivative, the Hasse derivative, and the coefficient/Taylor criterion on the test polynomial Xᵖ."
+    },
+    {
       "id": "collapse",
       "title": "The ordinary-derivative test collapses over 𝔽ₚ",
       "startLine": 51,
@@ -133,25 +141,54 @@
   ],
   "mainTheorems": [
     {
-      "name": "coeff_criterion_correct",
-      "type": "core",
-      "statement": "Xᵏ ∣ Xᵖ ↔ k ≤ p  (over ZMod p)",
-      "description": "The characteristic-free coefficient/Taylor criterion detects the true multiplicity p.",
-      "significance": "Shows the Hasse/Taylor test succeeds where the ordinary-derivative test fails"
-    },
-    {
       "name": "ordinary_criterion_vacuous",
       "type": "core",
       "statement": "∀ j, (derivative^[j] (Xᵖ)).eval 0 = 0",
       "description": "Every ordinary-derivative condition holds, so the criterion certifies no finite multiplicity.",
-      "significance": "The explicit failure of the ordinary-derivative multiplicity test in characteristic p"
+      "significance": "The explicit failure of the ordinary-derivative multiplicity test in characteristic p",
+      "leanType": "(p : ℕ) [Fact p.Prime] (j : ℕ) : ((derivative^[j]) ((X : (ZMod p)[X]) ^ p)).eval 0 = 0",
+      "startLine": 69,
+      "endLine": 74
+    },
+    {
+      "name": "coeff_criterion_correct",
+      "type": "core",
+      "statement": "Xᵏ ∣ Xᵖ ↔ k ≤ p  (over ZMod p)",
+      "description": "The characteristic-free coefficient/Taylor criterion detects the true multiplicity p.",
+      "significance": "Shows the Hasse/Taylor test succeeds where the ordinary-derivative test fails",
+      "leanType": "(p : ℕ) [Fact p.Prime] (k : ℕ) : (X : (ZMod p)[X]) ^ k ∣ (X : (ZMod p)[X]) ^ p ↔ k ≤ p",
+      "startLine": 82,
+      "endLine": 93
+    },
+    {
+      "name": "multiplicity_eq_p",
+      "type": "key",
+      "statement": "Xᵖ ∣ Xᵖ ∧ ¬ X^{p+1} ∣ Xᵖ  (over ZMod p)",
+      "description": "The true multiplicity of the root 0 is exactly p — in flat contradiction with the vacuous ordinary-derivative certificate.",
+      "significance": "Pins the correct multiplicity the ordinary-derivative test fails to see",
+      "leanType": "(p : ℕ) [Fact p.Prime] : (X : (ZMod p)[X]) ^ p ∣ (X : (ZMod p)[X]) ^ p ∧ ¬ (X : (ZMod p)[X]) ^ (p + 1) ∣ (X : (ZMod p)[X]) ^ p",
+      "startLine": 97,
+      "endLine": 100
+    },
+    {
+      "name": "hasseDeriv_ne_zero",
+      "type": "key",
+      "statement": "hasseDeriv p (Xᵖ) ≠ 0  (over ZMod p)",
+      "description": "The p-th Hasse derivative of Xᵖ is nonzero (constant coefficient C(p,p)=1), even though the p-th ordinary derivative vanishes.",
+      "significance": "The Hasse/Taylor test survives characteristic p where the ordinary derivative collapses",
+      "leanType": "(p : ℕ) [Fact p.Prime] : hasseDeriv p ((X : (ZMod p)[X]) ^ p) ≠ 0",
+      "startLine": 106,
+      "endLine": 110
     },
     {
       "name": "factorial_annihilates_hasseDeriv",
       "type": "core",
       "statement": "p! • hasseDeriv p (Xᵖ) = 0, with hasseDeriv p (Xᵖ) ≠ 0",
       "description": "The factorial p! ≡ 0 (mod p) annihilates the nonzero Hasse derivative — the exact obstruction.",
-      "significance": "Quantifies where the characteristic-zero hypothesis k! ≠ 0 is needed"
+      "significance": "Quantifies where the characteristic-zero hypothesis k! ≠ 0 is needed",
+      "leanType": "(p : ℕ) [Fact p.Prime] : Nat.factorial p • hasseDeriv p ((X : (ZMod p)[X]) ^ p) = 0",
+      "startLine": 118,
+      "endLine": 124
     }
   ],
   "sorries": 0
