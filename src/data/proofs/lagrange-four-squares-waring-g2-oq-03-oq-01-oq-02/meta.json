@@ -161,6 +161,16 @@
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
       "relationship": "relatedTo",
       "description": "The two-summand sibling (two triangular ⟺ 4n+1 a sum of two squares). Together with Gauss Eureka these three entries give the full d=1,2,3 triangular-rank hierarchy: 8n+1 square, 4n+1 two squares, always."
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "relatedTo",
+      "description": "The square-triangular open question of this entry reduces, via the 8n+1 test, to the Pell equation x²−2y²=1 (x=2k+1, y=2m): the n that are simultaneously triangular and square are in bijection with Pell solutions, giving the recurrence 0, 1, 36, 1225, …. This entry supplies the 8n+1 characterization; Pell's equation supplies the solution structure."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "relatedTo",
+      "description": "The rank-2 tier of the triangular-rank hierarchy (two triangular ⟺ 4n+1 a sum of two squares) is governed by the sum-of-two-squares theory Fermat's theorem initiates — a prime is a sum of two squares iff p=2 or p≡1 (mod 4). The 4n+1 condition classifying rank-2 triangularity is exactly a sum-of-two-squares condition."
     }
   ],
   "references": [
