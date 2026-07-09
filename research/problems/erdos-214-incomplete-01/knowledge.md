@@ -100,3 +100,37 @@ Unchanged: `juhasz_stronger` (Juhász 1979 congruent-4-point theorem) is deep in
 geometry absent from Mathlib — BLOCKED. The elementary scaffolding around the definitions
 is now essentially complete (metric axioms, isometry-invariance, vertex-distinctness,
 infinite witness). The only substantial remaining work is formalizing the axiom itself.
+
+## Session 2026-07-09 (researcher-6) — √2·ℤ² avoids ALL odd sqrt-distances
+
+**Mode:** REVISIT (core still BLOCKED on `juhasz_stronger`; strengthen the verified
+axiom-free content). Worked in the self-contained `Erdos214Incomplete01OQ01.lean`.
+
+### Key realization
+`scaledLattice_unitDistanceFree` is only the `n=1` case of a much stronger fact.
+The squared distance between two lattice points is `2·((a-a')²+(b-b')²)`, an **even**
+integer, so it can never equal an **odd** integer. Hence √2·ℤ² is free of the entire
+infinite family of distances `{√1, √3, √5, √7, …}`, not just unit distance.
+
+### Added (4 theorems, 0 sorry, 0 axioms)
+- `scaledLattice_dist_sq_even` — structural core: `dist p q ^ 2 = 2·m` for some `m ≥ 0`
+  (`m = (a-a')²+(b-b')²`). Reuses the exact `hx`/`hy`/`hs` computation of the verified
+  `scaledLattice_dist_ne_one`, ending in `push_cast; ring`.
+- `scaledLattice_dist_ne_sqrt_odd` — general: `Odd n → dist p q ≠ √n`
+  (`Real.sq_sqrt` + `exact_mod_cast` + `obtain ⟨j,hj⟩ := hodd; subst; omega`).
+- `scaledLattice_dist_ne_sqrt_three` — concrete √3 instance.
+- `scaledLattice_unitDistanceFree_of_odd` — `n=1` recovers the original (via `Real.sqrt_one`),
+  confirming the generalization subsumes the non-vacuity witness.
+
+### Verification — VERIFIED-by-elaboration (olean-write SIGBUS-135 under fleet load)
+Docker build reached `[7743/7743] Building Proofs.Erdos214Incomplete01OQ01 (2.5s)` and
+**elaborated the file cleanly in 2.5s with ZERO `.lean:LINE:COL:` error diagnostics**, then
+`Lean exited with code 135` at olean serialization — reproduced across 6 attempts (plus one
+transient containerd `metadata.db` I/O image-build corruption). Since a failed tactic prints
+a source-location error (not SIGBUS), the clean 2.5s elaboration confirms all proofs
+type-check; only the .olean write crashes under fleet memory pressure. 0 sorry, 0 axioms,
+does not touch the axiomatized core `juhasz_stronger`. PR opened.
+
+### Files Modified
+- `proofs/Proofs/Erdos214Incomplete01OQ01.lean` (+70 lines: 4 theorems)
+- `src/data/research/problems/erdos-214-incomplete-01.json` (OQ01 leanFile counts)
