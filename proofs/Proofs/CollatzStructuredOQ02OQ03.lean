@@ -1373,6 +1373,38 @@ families, where the halvings always outnumber the triplings: e.g. `3 (mod 16)` u
 example : ¬ (leadCoeff [true, false, true, false, true, false] (2 ^ 3) < 2 ^ 3) := by
   decide
 
+/-- **The Collatz 3/2 heuristic as a purely combinatorial drop criterion.**  The Terras
+drop condition `3 ^ a < 2 ^ b` — the `a` triplings of a window must be overcome by its
+`b` halvings — is *implied* by the clean count inequality `2 * a < b`: twice as many
+halvings as triplings always suffice, with no exponentiation to evaluate.  The proof is
+the heuristic made exact, using only `3 ≤ 4 = 2²`:
+`3 ^ a ≤ 4 ^ a = 2 ^ (2 * a) < 2 ^ b`.  (The constant `2` is not sharp — the true
+threshold is `log₂ 3 ≈ 1.585` — but `2` is the cheapest integer bound that is provable
+without evaluating any power, and it already certifies every gallery family: `3 (mod 16)`
+has `a = 2, b = 4` with `2·2 < 4` failing by equality, so the sharper count `2·a ≤ b`
+with a strict-power check is what the gallery uses; `2·a < b` is the slack version that
+needs no power comparison at all.) -/
+theorem pow_three_lt_two_pow_of_two_mul_lt {a b : ℕ} (h : 2 * a < b) :
+    3 ^ a < 2 ^ b :=
+  calc 3 ^ a ≤ 4 ^ a := Nat.pow_le_pow_left (by norm_num) a
+    _ = 2 ^ (2 * a) := by rw [pow_mul]; norm_num
+    _ < 2 ^ b := pow_lt_pow_right₀ (by norm_num) h
+
+/-- **Count-only residue-drop corollary of the Terras engine.**  A valid residue-window
+`v` for the dyadic modulus `2 ^ b` (performing exactly its `b` halvings) certifies a drop
+below `r` as soon as it carries more than twice as many halvings as triplings —
+`2 * v.count true < b` — with the additive constant landing below `r`.  This removes the
+last arithmetic obligation from `terras_attainsBelow`: the drop hypothesis is now a pure
+count inequality (`omega`-checkable), not a power comparison `3 ^ a < 2 ^ b`.  Combined
+with `deriveVec`, a new residue class becomes a one-line certificate whenever its forced
+window is halving-dominated. -/
+theorem terras_attainsBelow_of_count {b r : ℕ} (v : List Bool) (hk : 0 < v.length)
+    (hcount : v.count false = b) (hval : AffValid v (2 ^ b) r)
+    (hcnt : 2 * v.count true < b)
+    (hd : (affOrbit v (2 ^ b, r)).2 < r)
+    {n : ℕ} (hn : n % 2 ^ b = r) : AttainsBelow n :=
+  terras_attainsBelow v hk hcount hval (pow_three_lt_two_pow_of_two_mul_lt hcnt) hd hn
+
 /-! ### Decidable certificates: the engine as a one-shot `by decide`
 
 `AffValid` is a `Prop`-valued inductive, so supplying a certificate still means writing
