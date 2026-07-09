@@ -31,3 +31,20 @@ unipotent Sylow-p (#34623), torus/normalizer split (#34648), and Weyl element (#
 Continue the standalone BUILD: (a) generation ⟨U, U⁻⟩ = SL(2,p) from the Weyl conjugation,
 (b) |SL(2,𝔽_p)| = p(p²−1), (c) the P¹(𝔽_p) action + 2-transitivity. Keep the entry BLOCKED
 for the simplicity theorem itself until that action infrastructure exists.
+
+
+## Session 2026-07-08 (researcher-3) — BUILD: lower unipotents are commutators for p≥5 [VERIFIED 0/0]
+Added `exists_lowerUnipotent_isCommutator (hp : 5 ≤ p) (s)`: every lower unipotent
+`lowerUnipotent s` is a commutator `g*h*g⁻¹*h⁻¹`. Proof conjugates the existing
+`exists_unipotent_isCommutator` (upper case) by the Weyl element `w`: since
+`weylW_conj_unipotent` sends `u(-s)∈U` to `lowerUnipotent s∈U⁻`, and conjugation carries a
+commutator to the commutator of the conjugates (the `group` tactic discharges the
+distribution `k(ghg⁻¹h⁻¹)k⁻¹`), the lower unipotent is the commutator of `w·diag(a)·w⁻¹`
+and `w·u(t)·w⁻¹`. **Both** root groups U and U⁻ now lie in the derived subgroup — the two
+halves of the perfectness input to Iwasawa. Docker green (7743 jobs); 520→544 L / 0 sorry /
+0 axiom; meta synced (leanFile.lineCount 520→544, meta.lineCount 265→544 stale-reconcile,
+meta.theoremCount 17→18 + mainTheorems entry). PR pending.
+
+**Still BLOCKED** (deep theorem): full perfectness needs ⟨U,U⁻⟩=SL(2,p) generation; the
+simplicity theorem needs the P¹(𝔽_p) action + 2-transitivity + Iwasawa assembly (>1000 L,
+absent from Mathlib). Next tractable BUILD: generation ⟨U,U⁻⟩=SL(2,p) via Bruhat/Gauss.

@@ -517,4 +517,28 @@ theorem exists_unipotent_isCommutator (hp : 5 ≤ p) (s : ZMod p) :
     exact isUnit_iff_ne_zero.mpr h3
   exact unipotent_isCommutator_of_isUnit haU s
 
+/-- **For every prime `p ≥ 5`, every *lower* unipotent element is also a commutator.**
+Conjugating the upper-unipotent identity by the Weyl element `w` transports it to the
+opposite root group: since `w` sends `u(−s) ∈ U` to `lowerUnipotent s ∈ U⁻`
+(`weylW_conj_unipotent`) and conjugation carries a commutator `g·h·g⁻¹·h⁻¹` to the
+commutator of the conjugates, `lowerUnipotent s` is the commutator of
+`w·diag(a)·w⁻¹` and `w·u(t)·w⁻¹`.  Together with `exists_unipotent_isCommutator` this
+places **both** root groups `U` and `U⁻` inside the derived subgroup
+`[SL(2,p), SL(2,p)]` — the two halves of the perfectness input to Iwasawa's criterion
+(recall `⟨U, U⁻⟩ = SL(2,p)`). -/
+theorem exists_lowerUnipotent_isCommutator (hp : 5 ≤ p) (s : ZMod p) :
+    ∃ g h : Matrix.SpecialLinearGroup (Fin 2) (ZMod p),
+      g * h * g⁻¹ * h⁻¹ = lowerUnipotent s := by
+  obtain ⟨a, t, hc⟩ := exists_unipotent_isCommutator hp (-s)
+  refine ⟨weylW * torusHom a * weylW⁻¹, weylW * unipotentUpper t * weylW⁻¹, ?_⟩
+  -- Conjugation by `w` is a homomorphism, so it distributes over the commutator word;
+  -- the interior collapses to the upper-unipotent commutator identity `hc`.
+  have key : (weylW * torusHom a * weylW⁻¹) * (weylW * unipotentUpper t * weylW⁻¹)
+        * (weylW * torusHom a * weylW⁻¹)⁻¹ * (weylW * unipotentUpper t * weylW⁻¹)⁻¹
+      = weylW *
+          (torusHom a * unipotentUpper t * (torusHom a)⁻¹ * (unipotentUpper t)⁻¹)
+          * weylW⁻¹ := by
+    group
+  rw [key, hc, weylW_conj_unipotent, neg_neg]
+
 end SylowOQ04OQ03
