@@ -48,6 +48,10 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting
 import Mathlib.Combinatorics.SimpleGraph.Coloring
 import Mathlib.Combinatorics.SimpleGraph.Circulant
 import Mathlib.Combinatorics.SimpleGraph.ConcreteColorings
+import Mathlib.Combinatorics.SimpleGraph.Matching
+import Mathlib.Combinatorics.SimpleGraph.Hamiltonian
+import Mathlib.Combinatorics.SimpleGraph.Girth
+import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import Mathlib.Data.Set.Basic
 
 open SimpleGraph Set
@@ -624,5 +628,167 @@ theorem bipartite_cycle_spectrum (k : ℕ) :
     exact bipartite_cycle_length_even_ge_four hbip hcyc
   · rintro ⟨hEven, hk⟩
     exact bipartite_realizes_even_ge_four hEven hk
+
+/-! ### Sharpness of the girth-lifting bound
+
+`bipartite_girth_ge_of_forbidden` is a *lower* bound: forbidding `C₄, …, C₂ₜ`
+forces every remaining cycle to have length `≥ 2t + 2`.  This final section proves
+that bound is **sharp** — for every `t ≥ 1` the even cycle graph
+`cycleGraph (2t + 2)` is a bipartite graph that avoids every shorter even cycle
+yet realises a `(2t + 2)`-cycle.  So `2t + 2` is exactly the girth, not merely a
+lower bound, and Erdős's "next target is `C₈`" heuristic (the `t = 3` instance) is
+seen to be optimal: an actual bipartite `C₄,C₆`-free graph of girth exactly `8`
+exists.
+
+The engine is that `cycleGraph N` is a **`2`-regular** graph (`SimpleGraph.IsCycles`).
+By `IsCycle.adj_toSubgraph_iff_of_isCycles`, any cycle sitting inside a `2`-regular
+graph has, at each of its vertices, exactly the same incident edges as the ambient
+graph — so its vertex set is closed under the graph's adjacency.  In `cycleGraph N`
+adjacency is `· ± 1`, so the support is closed under `· + 1`; the successor map
+generates the whole cyclic group `Fin N`, forcing the cycle to span every vertex.
+A spanning cycle is Hamiltonian, hence has length exactly `N`.  Consequently
+`cycleGraph N` has **no cycle of any length except `N`** — its girth is exactly `N`.
+-/
+
+section Sharpness
+
+open SimpleGraph
+
+/-- A nonempty subset of `Fin N` closed under `· + 1` is all of `Fin N`: the
+successor map generates the cyclic group, so the forward orbit of any point is
+everything. -/
+theorem eq_univ_of_succ_closed {N : ℕ} [NeZero N] {S : Set (Fin N)}
+    (hne : S.Nonempty) (hclosed : ∀ x ∈ S, x + 1 ∈ S) : S = Set.univ := by
+  obtain ⟨x₀, hx₀⟩ := hne
+  have hstep : ∀ k : ℕ, x₀ + (k : Fin N) ∈ S := by
+    intro k
+    induction k with
+    | zero => simpa using hx₀
+    | succ j ih =>
+        have h1 : x₀ + (j : Fin N) + 1 ∈ S := hclosed _ ih
+        have hc : ((j + 1 : ℕ) : Fin N) = (j : Fin N) + 1 := by push_cast; ring
+        rw [hc, ← add_assoc]; exact h1
+  rw [Set.eq_univ_iff_forall]
+  intro y
+  have hy := hstep (y - x₀).val
+  have he : x₀ + (y - x₀) = y := by abel
+  rwa [Fin.cast_val_eq_self, he] at hy
+
+/-- **`cycleGraph N` is a graph of cycles** (`SimpleGraph.IsCycles`) for `N ≥ 3`:
+every vertex has exactly two neighbours (`v - 1` and `v + 1`). -/
+theorem cycleGraph_isCycles {N : ℕ} (hN : 3 ≤ N) : (cycleGraph N).IsCycles := by
+  obtain ⟨n, rfl⟩ : ∃ n, N = n + 3 := ⟨N - 3, by omega⟩
+  intro v _
+  have hcoe : ((cycleGraph (n + 3)).neighborSet v).ncard
+      = (cycleGraph (n + 3)).degree v := by
+    rw [SimpleGraph.degree, SimpleGraph.neighborFinset_def, Set.ncard_eq_toFinset_card']
+  rw [hcoe]; exact cycleGraph_degree_three_le
+
+/-- **Every cycle in `cycleGraph N` is Hamiltonian, hence has length exactly `N`**
+(for `N ≥ 3`).  The graph is `2`-regular, so a cycle inside it uses both edges at
+each of its vertices; its support is therefore closed under `· + 1` and spans all
+of `Fin N`. -/
+theorem cycleGraph_cycle_length_eq {N : ℕ} (hN : 3 ≤ N) {v : Fin N}
+    {p : (cycleGraph N).Walk v v} (hp : p.IsCycle) : p.length = N := by
+  haveI : NeZero N := ⟨by omega⟩
+  have hcyc : (cycleGraph N).IsCycles := cycleGraph_isCycles hN
+  -- The support of the cycle is closed under `· + 1`.
+  have hclosed : ∀ x ∈ p.support, x + 1 ∈ p.support := by
+    intro x hx
+    have hxv : x ∈ p.toSubgraph.verts := (p.mem_verts_toSubgraph).mpr hx
+    have hadjG : (cycleGraph N).Adj x (x + 1) := by
+      rw [cycleGraph_adj']
+      right
+      have h1 : x + 1 - x = 1 := by abel
+      rw [h1]
+      obtain ⟨m, rfl⟩ : ∃ m, N = m + 2 := ⟨N - 2, by omega⟩
+      simp
+    have hadjSub : p.toSubgraph.Adj x (x + 1) :=
+      (hp.adj_toSubgraph_iff_of_isCycles hcyc hxv (x + 1)).mpr hadjG
+    exact (p.mem_verts_toSubgraph).mp (p.toSubgraph.edge_vert hadjSub.symm)
+  -- Closed under successor + nonempty ⇒ the support is everything.
+  have hspan : ∀ w, w ∈ p.support := by
+    have hu := eq_univ_of_succ_closed (S := {x : Fin N | x ∈ p.support})
+      ⟨v, p.start_mem_support⟩ hclosed
+    exact fun w => Set.eq_univ_iff_forall.mp hu w
+  -- A spanning cycle is a Hamiltonian cycle.
+  have hham : p.IsHamiltonianCycle := by
+    rw [isHamiltonianCycle_iff_isCycle_and_support_count_tail_eq_one]
+    refine ⟨hp, fun a => ?_⟩
+    have hnodup : p.support.tail.Nodup := hp.support_nodup
+    have hmem : a ∈ p.support.tail := by
+      have ha : a ∈ p.support := hspan a
+      rw [Walk.support_eq_cons] at ha
+      rcases List.mem_cons.mp ha with h | h
+      · subst h
+        rw [← support_tail_of_not_nil p hp.not_nil]
+        exact p.tail.end_mem_support
+      · exact h
+    exact le_antisymm (List.nodup_iff_count_le_one.mp hnodup a)
+      (List.count_pos_iff.mpr hmem)
+  simpa [Fintype.card_fin] using hham.length_eq
+
+/-- **`cycleGraph N` has a cycle of length `k` iff `k = N`** (for `N ≥ 3`): every
+cycle is Hamiltonian (length `N`), and the Hamiltonian `N`-cycle realises `k = N`.
+So `cycleGraph N` contains no cycle other than its full `N`-cycle. -/
+theorem cycleGraph_hasCycleOfLength_iff {N : ℕ} (hN : 3 ≤ N) (k : ℕ) :
+    HasCycleOfLength (cycleGraph N) k ↔ k = N := by
+  constructor
+  · rintro ⟨w, p, hp, hlen⟩
+    rw [← hlen]; exact cycleGraph_cycle_length_eq hN hp
+  · rintro rfl
+    haveI : NeZero N := ⟨by omega⟩
+    exact cycleGraph_hasCycleOfLength N hN
+
+/-- **`cycleGraph N` has extended girth exactly `N`** (for `N ≥ 3`).  Combines the
+upper bound from the explicit Hamiltonian `N`-cycle with the lower bound that every
+cycle spans, so no shorter cycle exists. -/
+theorem cycleGraph_egirth {N : ℕ} (hN : 3 ≤ N) : (cycleGraph N).egirth = N := by
+  haveI : NeZero N := ⟨by omega⟩
+  apply le_antisymm
+  · obtain ⟨w, p, hp, hlen⟩ := cycleGraph_hasCycleOfLength N hN
+    calc (cycleGraph N).egirth ≤ (p.length : ℕ∞) := egirth_le_length hp
+      _ = (N : ℕ∞) := by rw [hlen]
+  · rw [le_egirth]
+    intro a w hw
+    rw [cycleGraph_cycle_length_eq hN hw]
+
+/-- **`cycleGraph N` has girth exactly `N`** (for `N ≥ 3`), the `ℕ`-valued form. -/
+theorem cycleGraph_girth {N : ℕ} (hN : 3 ≤ N) : (cycleGraph N).girth = N := by
+  rw [SimpleGraph.girth, cycleGraph_egirth hN, ENat.toNat_coe]
+
+/-- **Sharpness of the girth-lifting bound.**  For every `t ≥ 1`, the lower bound
+`2t + 2` in `bipartite_girth_ge_of_forbidden` is *attained*: the even cycle graph
+`cycleGraph (2t + 2)` is bipartite, contains no `C_{2m}` for `2 ≤ m ≤ t` (indeed no
+cycle at all except the Hamiltonian `(2t+2)`-cycle), yet contains a cycle of length
+exactly `2t + 2`.  Hence the girth-lifting lower bound cannot be improved. -/
+theorem bipartite_girth_lifting_sharp (t : ℕ) (ht : 1 ≤ t) :
+    ∃ (V : Type) (G : SimpleGraph V),
+      IsBipartite G ∧
+      (∀ m, 2 ≤ m → m ≤ t → ¬ HasCycleOfLength G (2 * m)) ∧
+      HasCycleOfLength G (2 * t + 2) := by
+  refine ⟨Fin (2 * t + 2), cycleGraph (2 * t + 2), ?_, ?_, ?_⟩
+  · exact cycleGraph_isBipartite_of_even (2 * t + 2) ⟨t + 1, by ring⟩
+  · intro m hm2 hmt
+    rw [cycleGraph_hasCycleOfLength_iff (by omega)]
+    omega
+  · rw [cycleGraph_hasCycleOfLength_iff (by omega)]
+
+/-- **Sharpness of `bipartite_C4C6_free_girth_ge_eight`.**  The `t = 3` instance:
+a bipartite graph with no `C₄` and no `C₆` but containing a `C₈` really exists —
+`cycleGraph 8` — so the girth bound `8` for `C₄,C₆`-free bipartite graphs is best
+possible, and `C₈` is genuinely the smallest cycle such graphs can be forced to
+contain. -/
+theorem bipartite_C4C6_free_girth_eight_sharp :
+    ∃ (V : Type) (G : SimpleGraph V),
+      IsBipartite G ∧ ¬ HasCycleOfLength G 4 ∧ ¬ HasCycleOfLength G 6 ∧
+      HasCycleOfLength G 8 := by
+  obtain ⟨V, G, hbip, hforb, hc8⟩ := bipartite_girth_lifting_sharp 3 (by norm_num)
+  refine ⟨V, G, hbip, ?_, ?_, ?_⟩
+  · have := hforb 2 (by norm_num) (by norm_num); simpa using this
+  · have := hforb 3 (by norm_num) (by norm_num); simpa using this
+  · simpa using hc8
+
+end Sharpness
 
 end Erdos1080OQ03
