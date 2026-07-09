@@ -1441,6 +1441,39 @@ theorem classifySeed_classifies {a : ℕ} (ha : Odd a) (ha3 : 3 ≤ a) (k : ℕ)
     (a * 2 ^ (k + 1) ∈ ForwardSet ↔ classifySeed a = Ordering.gt) :=
   ⟨classifySeed_lt_iff ha ha3 k, classifySeed_eq_iff ha ha3 k, classifySeed_gt_iff ha ha3 k⟩
 
+/-- **Necessary numeric condition for reversal.**  For odd `a ≥ 3`, if the whole
+    family `a·2^(k+1)` reverses (`classifySeed a = .lt`) then twice the seed's
+    totient falls strictly below the landing constant: `2·φ(a) < seedC a`.  The
+    classifier compares `φ(a)` with `φ(seedE a)·2^(seedT a − 1)`; since
+    `seedC a = seedE a · 2^(seedT a)` (from `seed_spec`) and `φ(seedE a) ≤ seedE a`,
+    the compared quantity is at most `seedC a / 2`, so reversal forces
+    `2·φ(a) < seedC a`.
+
+    This condition is *necessary but not sufficient*: the prime powers `a = 3^k`
+    (which are excluded seeds, `p = 3 ≡ 3 mod 4`) all satisfy `2·φ(a) < seedC a`
+    yet never reverse — brute-checked for odd `a < 80000`, no excluded seed
+    reverses at all.  Closing the structural claim "no excluded seed reverses"
+    therefore needs the finer ratio `φ(seedE a)/seedE a`, not merely the crude
+    bound `φ(e) ≤ e` used here. -/
+theorem reversal_two_totient_lt_seedC {a : ℕ} (ha3 : 3 ≤ a)
+    (h : classifySeed a = Ordering.lt) : 2 * Nat.totient a < seedC a := by
+  obtain ⟨_, _, _, ht1, _, hCeq⟩ := seed_spec ha3
+  -- Unfold the classifier and read off the strict inequality on totients.
+  simp only [classifySeed] at h
+  have hlt : Nat.totient a < Nat.totient (seedE a) * 2 ^ (seedT a - 1) :=
+    compare_lt_iff_lt.1 h
+  -- `seedC a = seedE a * 2^(seedT a)` and `2^(seedT a) = 2 * 2^(seedT a - 1)`.
+  have hC : seedC a = seedE a * 2 ^ seedT a := by unfold seedC; exact hCeq
+  have h2t : 2 ^ seedT a = 2 * 2 ^ (seedT a - 1) := by
+    conv_lhs => rw [show seedT a = (seedT a - 1) + 1 from by omega, pow_succ]
+    ring
+  have hle : Nat.totient (seedE a) ≤ seedE a := Nat.totient_le _
+  calc 2 * Nat.totient a
+      < 2 * (Nat.totient (seedE a) * 2 ^ (seedT a - 1)) := by omega
+    _ ≤ 2 * (seedE a * 2 ^ (seedT a - 1)) := by gcongr
+    _ = seedE a * 2 ^ seedT a := by rw [h2t]; ring
+    _ = seedC a := hC.symm
+
 -- ===========================================================================
 -- SMALLEST REVERSING ODD SEED:  a = 21
 -- ---------------------------------------------------------------------------
