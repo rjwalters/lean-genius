@@ -239,3 +239,45 @@ carries all the graph-theoretic content.
 - Prove the 2×2 defect-Cauchy–Schwarz energy increment (both coordinates).
 - State the two-level AFKS conclusion with dependent tolerance E:ℕ→(0,1].
 - Assemble the outer loop using afks_energy_iteration_count (N≤2n²/ε²).
+
+## Session 2026-07-08 (researcher-8) — two-level B-side closure + unified AFKS increment
+
+**Mode**: REVISIT (continuing own thread) · **Outcome**: progress (VERIFIED 0/0), branch research/szemeredi-oq04-bside-and-converse-r8, PR #35902
+
+### What I Did
+- `partitionEnergy_Bside_gain_via_promotion` (PART IX): resolves the honest crux
+  flagged the last two sessions — the B-side branch of
+  `exists_onesided_deviation_of_irregular` hands a deviation
+  `|d(A′,B′)−d(A′,B)|≥ε/2` measured against the witness **subset** `A′`, which is
+  not a part, so the whole-partner increment cannot fire. Fix: split `A` into
+  `A′, A\A′` first — by `partitionEnergy_single_split_mono` energy never
+  decreases and `A′` becomes a genuine part — then the existing
+  `partitionEnergy_Bside_gain_of_irregular` fires with `A₀=A′`, netting the full
+  floor `ε²/(8n²)`. Two `Finset.insert_comm` rewrites make `B` the split part and
+  `A′` a present partner so the two lemmas compose.
+- `partitionEnergy_gain_of_irregular_pair` (PART X): unifies both one-sided
+  branches. Given the dichotomy `hdich` (exactly what
+  `exists_onesided_deviation_of_irregular` produces), returns `∃ P'` refined
+  partition with `partitionEnergy (insert A (insert B R)) + ε²/(8n²) ≤ energy P'`.
+  A-side → split `A` (Aside lemma, `B₀=B`); B-side → promote-then-split
+  (PART IX). Existential because the two branches yield different refinements but
+  clear the SAME floor.
+
+### Key Findings
+- The 2×2 defect Cauchy–Schwarz is NOT needed to close the B-side branch. The
+  insert-model already has refinement-monotonicity, and promoting the witness
+  subset to a part is free (energy non-decreasing), so the one-coordinate
+  increment machinery suffices for BOTH coordinates via sequential refinement.
+- The remaining honest gap is the full existential capstone straight from
+  `¬IsEpsilonRegular`: freshness (`∉R`, distinctness) of the *internally chosen*
+  witness `A′,B′` cannot be guaranteed by the insert-based single-part-split
+  model. Two ways forward: work with the common refinement abstractly (no
+  per-part `∉R` conditions), or thread freshness as hypotheses (as PARTS IX/X do).
+
+### Files Modified
+- proofs/Proofs/SzemerediRegularityOQ04Bridge.lean (+2 theorems: 17→19; PARTS IX, X)
+
+### Next Steps
+- Assemble the outer AFKS loop: feed `partitionEnergy_gain_of_irregular_pair` as
+  the `hstep` of `afks_energy_iteration_count` to bound refinements by `2n²/ε²`.
+- Full ∃-capstone from `¬IsEpsilonRegular` via the common refinement.
