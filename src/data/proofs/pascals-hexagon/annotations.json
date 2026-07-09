@@ -120,8 +120,8 @@
     "id": "ann-pascal-constraint",
     "proofId": "pascals-hexagon",
     "range": {
-      "startLine": 182,
-      "endLine": 186
+      "startLine": 225,
+      "endLine": 234
     },
     "type": "definition",
     "title": "The Pascal Constraint",
@@ -295,7 +295,7 @@
       "startLine": 519,
       "endLine": 562
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Parametric Coverage of the Standard Conic",
     "content": "Part 13 shows the rational parametrization $t \\mapsto (1-t^2, 2t, 1+t^2)$ reaches *almost* every point of `stdConic`. The single exception is the **point at infinity** `stdConicInfinity = (1, 0, -1)` (`stdConicInfinity_on_conic`), which is exactly the locus $p_0 + p_2 = 0$ on the conic (`stdConic_infinity_char`). For every other point, `stdConicPoint_covers` produces an explicit parameter $t = p_1/(p_0 + p_2)$ and scale $k$ with $p = k\\cdot\\mathrm{stdConicPoint}(t)$. Together these two cases give a complete classification of points on the conic — the foundation for the exhaustive case analysis in Part 19.",
     "mathContext": "The map $t \\mapsto (1-t^2, 2t, 1+t^2)$ is stereographic projection from $(1,0,-1)$: every conic point with $p_0 + p_2 \\neq 0$ is a scalar multiple of $\\mathrm{stdConicPoint}(p_1/(p_0+p_2))$, recovering the half-angle substitution $t = \\sin\\theta/(1+\\cos\\theta)$. The omitted point $(1,0,-1)$ satisfies $1^2 + 0^2 = 1^2$ but has $p_0 + p_2 = 0$; on the conic this equation forces $p_1 = 0$ (via `nlinarith` on $p_0^2 + p_1^2 = p_2^2$ with $p_2 = -p_0$), so it is the *unique* uncovered point. This is the projective shadow of the fact that a rational parametrization of a conic always misses exactly one point — the center of projection.",
@@ -321,7 +321,7 @@
       "startLine": 596,
       "endLine": 683
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Cross-Product Bilinearity and Point-at-Infinity Cases",
     "content": "Parts 14–15 handle two technical ingredients. First, the cross product is bilinear under scaling (`crossProduct_smul_left`/`right`: $(c\\,u)\\times v = c\\,(u\\times v)$), which feeds the scale-invariance lemma of Part 16. Second, the six theorems `pascal_std_conic_infinity_{A,B,C,D,E,F}` verify Pascal's constraint when *exactly one* of the six hexagon vertices is the point at infinity $(1,0,-1)$ and the other five are finite parametric points. Each is an independent polynomial identity in five real variables, dispatched by `ring` after unfolding the cross-product and determinant definitions.",
     "mathContext": "Because the parametrization misses the point at infinity, a complete proof must treat configurations where one or more vertices equal `stdConicInfinity`. The six single-infinity cases ($A=\\infty$, ..., $F=\\infty$) cannot be obtained by a limit $t \\to \\infty$ inside Lean's exact arithmetic, so each is proved separately as a $\\mathrm{ring}$ identity in the five remaining parameters. These large polynomial expansions require `set_option maxHeartbeats 800000`. Combined with `pascal_std_conic_parametrized` (all six finite) and the coincident-vertex lemmas (Part 18, two-or-more at infinity), they exhaust every configuration of vertices on the standard conic.",
@@ -347,7 +347,7 @@
       "startLine": 689,
       "endLine": 727
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Scale Invariance of the Pascal Constraint",
     "content": "Part 16 proves `pascalConstraint_smul`: scaling each of the six vertices by an independent nonzero scalar $k_1, \\dots, k_6$ leaves the Pascal constraint unchanged. This is the projective-coordinate housekeeping that makes the whole program work — points in projective space are equivalence classes under scaling, so `pascalConstraint` *must* respect representatives. The supporting lemma `det_threeVectorMatrix_smul` records that scaling the three rows multiplies the determinant by $\\alpha\\beta\\gamma$.",
     "mathContext": "`pascalConstraint` is built from cross products (bilinear) and a $3\\times3$ determinant (trilinear in its rows), so under $V_i \\mapsto k_i V_i$ every Pascal point picks up a product of the $k_i$ and the final determinant scales by a nonzero factor $\\prod k_i^{m_i}$. Since all $k_i \\neq 0$, the determinant vanishes for the scaled points iff it vanishes for the originals. Concretely `det_threeVectorMatrix_smul` gives $\\det(\\alpha u, \\beta v, \\gamma w) = \\alpha\\beta\\gamma\\,\\det(u,v,w)$. This lemma is what lets Part 19 normalize each classified vertex to *exactly* `stdConicPoint t` or `stdConicInfinity` (stripping its scale factor) before dispatching to a proved case.",
@@ -371,7 +371,7 @@
       "startLine": 759,
       "endLine": 806
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Assembly: Classification and the All-Finite Case",
     "content": "Part 17 stitches the pieces together. `stdConic_point_classification` packages Part 13 into a clean dichotomy: every *valid* (nonzero) point on `stdConic` is either a scaled parametric point $k\\cdot\\mathrm{stdConicPoint}(t)$ or a scaled infinity point $k\\cdot\\mathrm{stdConicInfinity}$. Using this, `pascal_stdConic_allFinite` proves Pascal's constraint when all six vertices are finite: it extracts the six parameters, strips the scale factors via `pascalConstraint_smul`, and applies the parametric theorem. This is the warm-up for the fully general dispatch of Part 19.",
     "mathContext": "The classification is a case split on whether $p_0 + p_2 = 0$. If so, `stdConic_infinity_char` forces the point onto the infinity line, and validity (nonzero) makes $p_0 \\neq 0$, giving $p = p_0 \\cdot \\mathrm{stdConicInfinity}$. Otherwise `stdConicPoint_covers` supplies the parametric form. In `pascal_stdConic_allFinite`, after `obtain`-ing $(t_i, k_i)$ for each vertex and rewriting $V_i = k_i \\bullet \\mathrm{stdConicPoint}(t_i)$ by `funext`, the goal collapses to $(\\text{smul invariance}).\\mathrm{mpr}$ applied to `pascal_std_conic_parametrized` — the all-finite polynomial identity proved earlier.",
@@ -393,10 +393,10 @@
     "id": "ann-coincident-vertices",
     "proofId": "pascals-hexagon",
     "range": {
-      "startLine": 812,
+      "startLine": 889,
       "endLine": 947
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Coincident-Vertex Lemmas (All 15 Pairs)",
     "content": "Part 18 proves the 15 lemmas $\\binom{6}{2} = 15$ covering every way two of the six vertices can coincide projectively. These are *conic-independent* polynomial identities — they hold for any six points with a repeated position — and each closes by `ring`. They are needed because on `stdConic` *two or more* vertices at infinity necessarily coincide (they all equal $(1,0,-1)$), a configuration the single-infinity lemmas of Part 15 do not reach.",
     "mathContext": "The 15 cases split by the geometric role of the repeated pair. **Opposite pairs** ($A{=}D$, $B{=}E$, $C{=}F$): two Pascal points become proportional to the shared vertex, so the $3\\times3$ Pascal determinant has a repeated row and vanishes. **Adjacent pairs** ($A{=}B$, ...): a shared vertex appears as both arguments of a `lineThrough`, and $\\mathrm{lineThrough}(V,V) = V\\times V = 0$ kills one Pascal point outright. **Skip-one pairs** ($A{=}C$, ...): a subtler algebraic cancellation, still a ring identity. Degenerate hexagons are usually excluded from textbook statements of Pascal's theorem, so proving them here makes the Lean theorem *strictly stronger* than the classical one — it holds for all six points with no genericity hypothesis.",
@@ -474,7 +474,7 @@
       "startLine": 1109,
       "endLine": 1281
     },
-    "type": "lemma",
+    "type": "theorem",
     "title": "Mathlib QuadraticForm Bridge and the Sole Remaining sorry",
     "content": "Part 20a connects the file's hand-rolled conic machinery to Mathlib's `QuadraticForm` library and isolates the *single* `sorry` in the whole development. The bridge lemmas show `conicQuadraticForm C p = p \\cdot (C \\,*_v\\, p) = \\mathrm{Matrix.toQuadraticMap'}\\,C\\,p`, and `mathlibQF_separatingLeft` proves that a non-degenerate symmetric conic's associated bilinear form is separating-left — the exact hypothesis Mathlib's Sylvester theorem requires. The lone gap is `sylvester_stdConic_of_isotropic` (extracting an explicit invertible matrix from Mathlib's abstract `IsometryEquiv`); `proof_sketch_conic_implies_pascal` shows everything *else* on the path is already complete.",
     "mathContext": "`mathlibQF_separatingLeft` runs the chain: symmetry of $C$ $\\Rightarrow$ `Matrix.toLinearMap₂' ℝ C` is symmetric $\\Rightarrow$ `associated Q = Matrix.toLinearMap₂' ℝ C` (via `QuadraticMap.associated_left_inverse`) $\\Rightarrow$ $\\det C \\neq 0$ gives `Matrix.Nondegenerate C` $\\Rightarrow$ `SeparatingLeft`. The remaining `sorry`, `sylvester_stdConic_of_isotropic`, is *true and essential*: the real-point hypothesis $p_0$ (supplied by the inscribed hexagon's vertex `hex.A`) rules out the definite signature $(3,0)$ — a definite conic has only the trivial zero and cannot be projectively equivalent to `stdConic`'s full cone of real zeros. `proof_sketch_conic_implies_pascal` then assembles the final argument: Sylvester $\\to$ transport vertices to `stdConic` $\\to$ `pascal_std_conic` $\\to$ pull back via `pascalConstraint_projTransform`. Only the matrix-extraction step from `IsometryEquiv` remains.",
