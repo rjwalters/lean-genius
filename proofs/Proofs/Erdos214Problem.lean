@@ -260,4 +260,69 @@ theorem erdos_214_summary :
 def erdos_214_status_str : String :=
   "SOLVED (Juhász 1979) - Unit-distance-free sets have complements containing unit squares"
 
+/-
+## Part 11: Metric Helpers and Structural Facts about Unit Squares
+
+The reduction above (`unit_square_from_stronger`) rests on two geometric facts that
+were used *inline*: that an isometry carries a unit square to a unit square, and that
+`dist p p = 0`. Here we extract these as reusable, named results and derive two
+genuinely new structural consequences: every unit square has four pairwise-distinct
+vertices, and hence the complement of a unit-distance-free set contains a unit square
+on four *distinct* points — sharpening the problem's "four points" phrasing.
+-/
+
+/-- The coordinate distance vanishes exactly on the diagonal: `dist p p = 0`. -/
+theorem dist_self (p : Plane) : dist p p = 0 := by
+  unfold dist
+  rw [sub_self, norm_zero]
+
+/-- The coordinate distance is symmetric: `dist p q = dist q p`. -/
+theorem dist_comm (p q : Plane) : dist p q = dist q p := by
+  unfold dist
+  rw [← neg_sub q p, norm_neg]
+
+/-- **Isometry invariance of unit squares.** If `f` preserves distances then it maps
+any unit square to a unit square. This is the geometric heart of the reduction from
+Juhász's stronger 4-point theorem: a *congruent copy* of the standard unit square is
+again a unit square precisely because the witnessing map is distance-preserving. -/
+theorem isUnitSquare_of_isometry {f : Plane → Plane}
+    (hf : ∀ x y : Plane, dist (f x) (f y) = dist x y)
+    {p₁ p₂ p₃ p₄ : Plane} (h : IsUnitSquare p₁ p₂ p₃ p₄) :
+    IsUnitSquare (f p₁) (f p₂) (f p₃) (f p₄) := by
+  obtain ⟨h12, h23, h34, h41, h13, h24⟩ := h
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rw [hf]
+  exacts [h12, h23, h34, h41, h13, h24]
+
+/-- **A unit square has four pairwise-distinct vertices.** The four edges have length
+`1 ≠ 0` and the two diagonals have length `√2 ≠ 0`, and `dist p p = 0`, so no two of
+the six vertex pairs can coincide. This certifies that `ContainsUnitSquare` really is
+a statement about four genuinely distinct points, not a degenerate configuration. -/
+theorem IsUnitSquare.distinct {p₁ p₂ p₃ p₄ : Plane} (h : IsUnitSquare p₁ p₂ p₃ p₄) :
+    p₁ ≠ p₂ ∧ p₂ ≠ p₃ ∧ p₃ ≠ p₄ ∧ p₄ ≠ p₁ ∧ p₁ ≠ p₃ ∧ p₂ ≠ p₄ := by
+  obtain ⟨h12, h23, h34, h41, h13, h24⟩ := h
+  have hedge : ∀ p q : Plane, dist p q = 1 → p ≠ q := by
+    rintro p q hd rfl
+    rw [dist_self] at hd
+    norm_num at hd
+  have hdiag : ∀ p q : Plane, dist p q = Real.sqrt 2 → p ≠ q := by
+    rintro p q hd rfl
+    rw [dist_self] at hd
+    have : (0 : ℝ) < Real.sqrt 2 := Real.sqrt_pos.mpr (by norm_num)
+    linarith
+  exact ⟨hedge _ _ h12, hedge _ _ h23, hedge _ _ h34, hedge _ _ h41,
+    hdiag _ _ h13, hdiag _ _ h24⟩
+
+/-- **Capstone.** The complement of any unit-distance-free set contains a unit square
+on four *pairwise-distinct* points. Combines the solved statement `erdos_214_solved`
+with the vertex-distinctness of unit squares. -/
+theorem complement_contains_distinct_unit_square
+    (S : Set Plane) (hS : IsUnitDistanceFree S) :
+    ∃ p₁ p₂ p₃ p₄ : Plane,
+      p₁ ∈ Sᶜ ∧ p₂ ∈ Sᶜ ∧ p₃ ∈ Sᶜ ∧ p₄ ∈ Sᶜ ∧
+      IsUnitSquare p₁ p₂ p₃ p₄ ∧
+      p₁ ≠ p₂ ∧ p₂ ≠ p₃ ∧ p₃ ≠ p₄ ∧ p₄ ≠ p₁ ∧ p₁ ≠ p₃ ∧ p₂ ≠ p₄ := by
+  obtain ⟨p₁, p₂, p₃, p₄, h1, h2, h3, h4, hsq⟩ := erdos_214_solved S hS
+  obtain ⟨d12, d23, d34, d41, d13, d24⟩ := hsq.distinct
+  exact ⟨p₁, p₂, p₃, p₄, h1, h2, h3, h4, hsq, d12, d23, d34, d41, d13, d24⟩
+
 end Erdos214
