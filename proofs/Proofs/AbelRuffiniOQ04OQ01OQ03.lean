@@ -251,6 +251,96 @@ theorem conj_exponent_pow_modEq_one {G : Type*} [Group G] [Finite G] {p : ℕ}
   have hcc : c ^ (k ^ n) = c ^ (1 : ℤ) := by rw [zpow_one, ← hiter]
   rwa [zpow_eq_zpow_iff_modEq, hc] at hcc
 
+/-! ### The N/C bound: the centralizer of `c` has index dividing `p - 1`
+
+The per-element lemma `conj_exponent_pow_modEq_one` says conjugation by a *single* `g`
+lands in `Aut(⟨c⟩) ≅ (ℤ/p)ˣ`.  Packaging that over **all** of `G` at once is exactly
+Mathlib's conjugation action on a normal subgroup, `MulAut.conjNormal : G →* MulAut ⟨c⟩`.
+Its kernel is the centralizer `C_G(c)` (an element acts trivially on the cyclic group
+`⟨c⟩` iff it commutes with the generator `c`), and its image is a subgroup of the cyclic
+automorphism group `Aut(⟨c⟩) ≅ (ℤ/p)ˣ`, which has order `φ(p) = p - 1`.  Noether's first
+isomorphism theorem identifies `[G : C_G(c)]` with the order of that image, and Lagrange
+bounds it:
+
+    `[G : C_G(c)]  ∣  p - 1`.
+
+Equivalently, the conjugacy class of `c` has size dividing `p - 1`.  This is the sharp
+"normalizer/centralizer" (N/C) refinement of the earlier ±1 involution lemma: an
+involution only forces the exponent into `{±1}` (order dividing `2`), whereas the full
+centralizer index is constrained by the *entire* automorphism group `(ℤ/p)ˣ`. -/
+
+/-- **The kernel of the conjugation action on `⟨c⟩` is the centralizer of `c`.**  An
+element `g` acts trivially on the normal cyclic subgroup `⟨c⟩` (i.e. `conjNormal g = 1`)
+iff it fixes the generator `c` under conjugation, i.e. commutes with `c`.  No finiteness
+or order hypothesis is needed — only that `⟨c⟩` is normal, so that `conjNormal` exists. -/
+theorem conjNormal_ker_eq_centralizer {G : Type*} [Group G] (c : G)
+    [(Subgroup.zpowers c).Normal] :
+    (MulAut.conjNormal (H := Subgroup.zpowers c)).ker = Subgroup.centralizer {c} := by
+  ext g
+  rw [MonoidHom.mem_ker, Subgroup.mem_centralizer_iff]
+  constructor
+  · -- `conjNormal g = 1` fixes `c`, so `g c g⁻¹ = c`, hence `c g = g c`.
+    intro hg m hm
+    rw [Set.mem_singleton_iff] at hm; rw [hm]
+    have hx : (MulAut.conjNormal g) (⟨c, Subgroup.mem_zpowers c⟩ : Subgroup.zpowers c)
+        = ⟨c, Subgroup.mem_zpowers c⟩ := by rw [hg]; rfl
+    have key : g * c * g⁻¹ = c := by
+      have h2 := congrArg Subtype.val hx
+      rwa [MulAut.conjNormal_apply] at h2
+    exact (mul_inv_eq_iff_eq_mul.mp key).symm
+  · -- `g` commutes with `c`, hence with every `c ^ k`, so it acts trivially on `⟨c⟩`.
+    intro hg
+    have hcomm : Commute c g := hg c (Set.mem_singleton c)
+    apply MulEquiv.ext
+    rintro ⟨x, hx⟩
+    obtain ⟨k, rfl⟩ := Subgroup.mem_zpowers_iff.mp hx
+    apply Subtype.ext
+    show g * c ^ k * g⁻¹ = c ^ k
+    rw [(hcomm.zpow_left k).eq.symm]
+    group
+
+/-- **N/C index bound (kernel form).**  Given a normal cyclic subgroup `⟨c⟩` of prime
+order `p`, the image of the conjugation homomorphism `G →* Aut(⟨c⟩)` sits inside the
+cyclic group `Aut(⟨c⟩) ≅ (ℤ/p)ˣ` of order `p - 1`, so — by Noether's first isomorphism
+theorem and Lagrange — the index of its kernel divides `p - 1`.  The normality of `⟨c⟩`
+is taken as an instance hypothesis so that the conjugation map exists in the statement;
+`centralizer_index_dvd_sub_one` discharges it from the Sylow hypotheses. -/
+theorem conjNormal_ker_index_dvd_sub_one {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (c : G) (hc : orderOf c = p)
+    [(Subgroup.zpowers c).Normal] :
+    (MulAut.conjNormal (H := Subgroup.zpowers c)).ker.index ∣ p - 1 := by
+  haveI : IsCyclic (Subgroup.zpowers c) :=
+    (Subgroup.zpowers c).isCyclic_iff_exists_zpowers_eq_top.mpr ⟨c, rfl⟩
+  -- `|Aut(⟨c⟩)| = φ(p) = p - 1`.
+  have hcardH : Nat.card (Subgroup.zpowers c) = p := by rw [Nat.card_zpowers, hc]
+  have hAut : Nat.card (MulAut (Subgroup.zpowers c)) = p - 1 := by
+    rw [IsCyclic.card_mulAut, hcardH, Nat.totient_prime hp.out]
+  -- `[G : ker] = |range|` (first iso), and `|range| ∣ |Aut(⟨c⟩)|` (Lagrange).
+  have hidx : (MulAut.conjNormal (H := Subgroup.zpowers c)).ker.index
+      = Nat.card ((MulAut.conjNormal (H := Subgroup.zpowers c)).range) := by
+    rw [Subgroup.index_eq_card,
+      Nat.card_congr (QuotientGroup.quotientKerEquivRange _).toEquiv]
+  rw [hidx, ← hAut]
+  exact Subgroup.card_subgroup_dvd_card _
+
+/-- **N/C bound: the index of the centralizer of `c` divides `p - 1`.**
+
+Under the hypotheses of `zpowers_sylow_normal`, the cyclic subgroup `⟨c⟩` of prime order
+`p` is normal, and conjugation gives a homomorphism `G →* Aut(⟨c⟩)` whose kernel is the
+centralizer `C_G(c)` and whose image lies in `Aut(⟨c⟩) ≅ (ℤ/p)ˣ`, a group of order
+`p - 1`.  Hence `[G : C_G(c)]` divides `p - 1`; equivalently the conjugacy class of `c`
+has size dividing `p - 1`.  This is the structural culmination of the involution ±1 lemma
+— the full automorphism-group constraint rather than the order-`2` special case. -/
+theorem centralizer_index_dvd_sub_one {G : Type*} [Group G] [Finite G] {p : ℕ}
+    [hp : Fact p.Prime] (m : ℕ)
+    (hcard : Nat.card G = p * m) (hpm : ¬ (p ∣ m))
+    (huniq : ∀ d : ℕ, d ∣ m → d % p = 1 → d = 1)
+    (c : G) (hc : orderOf c = p) :
+    (Subgroup.centralizer {c}).index ∣ p - 1 := by
+  haveI : (Subgroup.zpowers c).Normal := zpowers_sylow_normal m hcard hpm huniq c hc
+  rw [← conjNormal_ker_eq_centralizer c]
+  exact conjNormal_ker_index_dvd_sub_one c hc
+
 /-- **Reusable sufficient condition for the divisor hypothesis `huniq`.** If the
 index `m` is smaller than the prime `p`, then the only divisor `d ∣ m` with
 `d ≡ 1 (mod p)` is `d = 1`: any such `d` satisfies `d ≤ m < p`, so `d % p = d`, and
