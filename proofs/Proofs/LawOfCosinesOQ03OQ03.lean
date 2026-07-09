@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp
+import Mathlib.Analysis.SpecialFunctions.Arcosh
 import Mathlib.Tactic
 
 /-
@@ -428,5 +429,300 @@ theorem equilateral_side_antitone (t₁ t₂ : HyperbolicTriangle)
     t₂.c < t₁.c :=
   (Real.cosh_strictMonoOn.lt_iff_lt (mem_Ici.mpr t₂.hc.le) (mem_Ici.mpr t₁.hc.le)).mp
     (equilateral_cosh_antitone t₁ t₂ h₁ h₁' h₂ h₂' hlt)
+
+-- ============================================================
+-- PART 9: The hyperbolic law of sines (from the second-law inversion)
+-- ============================================================
+
+/-- The common **Gram numerator** of a hyperbolic triangle. Expanding `cosh² - 1`
+    after the inversion `cosh a = (cos A + cos B cos C)/(sin B sin C)` collapses to this
+    fully symmetric expression in the three angles. Its symmetry is exactly what forces
+    the law of sines: every side's `sinh` shares the same numerator. -/
+noncomputable def gramNumerator (t : HyperbolicTriangle) : ℝ :=
+  Real.cos t.A ^ 2 + Real.cos t.B ^ 2 + Real.cos t.C ^ 2
+    + 2 * Real.cos t.A * Real.cos t.B * Real.cos t.C - 1
+
+/-- Two positive reals with equal squares are equal. -/
+private theorem eq_of_sq_eq_of_pos {x y : ℝ} (h : x ^ 2 = y ^ 2)
+    (hx : 0 < x) (hy : 0 < y) : x = y := by
+  have hfac : (x - y) * (x + y) = 0 := by linear_combination h
+  rcases mul_eq_zero.mp hfac with h' | h'
+  · linarith
+  · linarith [add_pos hx hy]
+
+/-- Positivity of `sinh a` from positivity of the side `a`. -/
+theorem sinh_a_pos (t : HyperbolicTriangle) : 0 < Real.sinh t.a := by
+  have h := Real.sinh_strictMono t.ha
+  rwa [Real.sinh_zero] at h
+
+/-- Positivity of `sinh b`. -/
+theorem sinh_b_pos (t : HyperbolicTriangle) : 0 < Real.sinh t.b := by
+  have h := Real.sinh_strictMono t.hb
+  rwa [Real.sinh_zero] at h
+
+/-- Positivity of `sinh c`. -/
+theorem sinh_c_pos (t : HyperbolicTriangle) : 0 < Real.sinh t.c := by
+  have h := Real.sinh_strictMono t.hc
+  rwa [Real.sinh_zero] at h
+
+/-- **Gram numerator via side `a`.** `(sinh a · sin B · sin C)² = gramNumerator`.
+    Squaring the side-from-angle inversion and using `sinh² = cosh² − 1`, the
+    Pythagorean identities `sin² = 1 − cos²` collapse the result to the symmetric
+    Gram numerator. -/
+theorem sinh_a_num_sq (t : HyperbolicTriangle) :
+    (Real.sinh t.a * (Real.sin t.B * Real.sin t.C)) ^ 2 = gramNumerator t := by
+  have hne : Real.sin t.B * Real.sin t.C ≠ 0 :=
+    mul_ne_zero (sin_B_pos t).ne' (sin_C_pos t).ne'
+  have h1 : Real.cosh t.a * (Real.sin t.B * Real.sin t.C)
+      = Real.cos t.A + Real.cos t.B * Real.cos t.C :=
+    (eq_div_iff hne).mp (cosh_a_eq t)
+  have h1sq : Real.cosh t.a ^ 2 * (Real.sin t.B ^ 2 * Real.sin t.C ^ 2)
+      = (Real.cos t.A + Real.cos t.B * Real.cos t.C) ^ 2 := by
+    have e : (Real.cosh t.a * (Real.sin t.B * Real.sin t.C)) ^ 2
+        = Real.cosh t.a ^ 2 * (Real.sin t.B ^ 2 * Real.sin t.C ^ 2) := by ring
+    rw [← e, h1]
+  have hsinh : Real.sinh t.a ^ 2 = Real.cosh t.a ^ 2 - 1 := by
+    have := Real.cosh_sq_sub_sinh_sq t.a; linarith
+  have pB : Real.sin t.B ^ 2 = 1 - Real.cos t.B ^ 2 := by
+    have := Real.sin_sq_add_cos_sq t.B; linarith
+  have pC : Real.sin t.C ^ 2 = 1 - Real.cos t.C ^ 2 := by
+    have := Real.sin_sq_add_cos_sq t.C; linarith
+  calc (Real.sinh t.a * (Real.sin t.B * Real.sin t.C)) ^ 2
+      = Real.sinh t.a ^ 2 * (Real.sin t.B ^ 2 * Real.sin t.C ^ 2) := by ring
+    _ = (Real.cosh t.a ^ 2 - 1) * (Real.sin t.B ^ 2 * Real.sin t.C ^ 2) := by rw [hsinh]
+    _ = Real.cosh t.a ^ 2 * (Real.sin t.B ^ 2 * Real.sin t.C ^ 2)
+          - Real.sin t.B ^ 2 * Real.sin t.C ^ 2 := by ring
+    _ = (Real.cos t.A + Real.cos t.B * Real.cos t.C) ^ 2
+          - Real.sin t.B ^ 2 * Real.sin t.C ^ 2 := by rw [h1sq]
+    _ = (Real.cos t.A + Real.cos t.B * Real.cos t.C) ^ 2
+          - (1 - Real.cos t.B ^ 2) * (1 - Real.cos t.C ^ 2) := by rw [pB, pC]
+    _ = gramNumerator t := by unfold gramNumerator; ring
+
+/-- **Gram numerator via side `b`.** `(sinh b · sin A · sin C)² = gramNumerator`. -/
+theorem sinh_b_num_sq (t : HyperbolicTriangle) :
+    (Real.sinh t.b * (Real.sin t.A * Real.sin t.C)) ^ 2 = gramNumerator t := by
+  have hne : Real.sin t.A * Real.sin t.C ≠ 0 :=
+    mul_ne_zero (sin_A_pos t).ne' (sin_C_pos t).ne'
+  have h1 : Real.cosh t.b * (Real.sin t.A * Real.sin t.C)
+      = Real.cos t.B + Real.cos t.A * Real.cos t.C :=
+    (eq_div_iff hne).mp (cosh_b_eq t)
+  have h1sq : Real.cosh t.b ^ 2 * (Real.sin t.A ^ 2 * Real.sin t.C ^ 2)
+      = (Real.cos t.B + Real.cos t.A * Real.cos t.C) ^ 2 := by
+    have e : (Real.cosh t.b * (Real.sin t.A * Real.sin t.C)) ^ 2
+        = Real.cosh t.b ^ 2 * (Real.sin t.A ^ 2 * Real.sin t.C ^ 2) := by ring
+    rw [← e, h1]
+  have hsinh : Real.sinh t.b ^ 2 = Real.cosh t.b ^ 2 - 1 := by
+    have := Real.cosh_sq_sub_sinh_sq t.b; linarith
+  have pA : Real.sin t.A ^ 2 = 1 - Real.cos t.A ^ 2 := by
+    have := Real.sin_sq_add_cos_sq t.A; linarith
+  have pC : Real.sin t.C ^ 2 = 1 - Real.cos t.C ^ 2 := by
+    have := Real.sin_sq_add_cos_sq t.C; linarith
+  calc (Real.sinh t.b * (Real.sin t.A * Real.sin t.C)) ^ 2
+      = Real.sinh t.b ^ 2 * (Real.sin t.A ^ 2 * Real.sin t.C ^ 2) := by ring
+    _ = (Real.cosh t.b ^ 2 - 1) * (Real.sin t.A ^ 2 * Real.sin t.C ^ 2) := by rw [hsinh]
+    _ = Real.cosh t.b ^ 2 * (Real.sin t.A ^ 2 * Real.sin t.C ^ 2)
+          - Real.sin t.A ^ 2 * Real.sin t.C ^ 2 := by ring
+    _ = (Real.cos t.B + Real.cos t.A * Real.cos t.C) ^ 2
+          - Real.sin t.A ^ 2 * Real.sin t.C ^ 2 := by rw [h1sq]
+    _ = (Real.cos t.B + Real.cos t.A * Real.cos t.C) ^ 2
+          - (1 - Real.cos t.A ^ 2) * (1 - Real.cos t.C ^ 2) := by rw [pA, pC]
+    _ = gramNumerator t := by unfold gramNumerator; ring
+
+/-- **Gram numerator via side `c`.** `(sinh c · sin A · sin B)² = gramNumerator`. -/
+theorem sinh_c_num_sq (t : HyperbolicTriangle) :
+    (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) ^ 2 = gramNumerator t := by
+  have hne : Real.sin t.A * Real.sin t.B ≠ 0 :=
+    mul_ne_zero (sin_A_pos t).ne' (sin_B_pos t).ne'
+  have h1 : Real.cosh t.c * (Real.sin t.A * Real.sin t.B)
+      = Real.cos t.C + Real.cos t.A * Real.cos t.B :=
+    (eq_div_iff hne).mp (cosh_c_eq t)
+  have h1sq : Real.cosh t.c ^ 2 * (Real.sin t.A ^ 2 * Real.sin t.B ^ 2)
+      = (Real.cos t.C + Real.cos t.A * Real.cos t.B) ^ 2 := by
+    have e : (Real.cosh t.c * (Real.sin t.A * Real.sin t.B)) ^ 2
+        = Real.cosh t.c ^ 2 * (Real.sin t.A ^ 2 * Real.sin t.B ^ 2) := by ring
+    rw [← e, h1]
+  have hsinh : Real.sinh t.c ^ 2 = Real.cosh t.c ^ 2 - 1 := by
+    have := Real.cosh_sq_sub_sinh_sq t.c; linarith
+  have pA : Real.sin t.A ^ 2 = 1 - Real.cos t.A ^ 2 := by
+    have := Real.sin_sq_add_cos_sq t.A; linarith
+  have pB : Real.sin t.B ^ 2 = 1 - Real.cos t.B ^ 2 := by
+    have := Real.sin_sq_add_cos_sq t.B; linarith
+  calc (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) ^ 2
+      = Real.sinh t.c ^ 2 * (Real.sin t.A ^ 2 * Real.sin t.B ^ 2) := by ring
+    _ = (Real.cosh t.c ^ 2 - 1) * (Real.sin t.A ^ 2 * Real.sin t.B ^ 2) := by rw [hsinh]
+    _ = Real.cosh t.c ^ 2 * (Real.sin t.A ^ 2 * Real.sin t.B ^ 2)
+          - Real.sin t.A ^ 2 * Real.sin t.B ^ 2 := by ring
+    _ = (Real.cos t.C + Real.cos t.A * Real.cos t.B) ^ 2
+          - Real.sin t.A ^ 2 * Real.sin t.B ^ 2 := by rw [h1sq]
+    _ = (Real.cos t.C + Real.cos t.A * Real.cos t.B) ^ 2
+          - (1 - Real.cos t.A ^ 2) * (1 - Real.cos t.B ^ 2) := by rw [pA, pB]
+    _ = gramNumerator t := by unfold gramNumerator; ring
+
+/-- **The Gram numerator is nonnegative.** It equals a square, so a valid hyperbolic
+    triangle always has `cos²A + cos²B + cos²C + 2 cos A cos B cos C ≥ 1`. -/
+theorem gramNumerator_nonneg (t : HyperbolicTriangle) : 0 ≤ gramNumerator t := by
+  rw [← sinh_a_num_sq t]; positivity
+
+/-- **Hyperbolic law of sines, pair `a,b` (cross form).**
+    `sinh a · sin B = sinh b · sin A`. Both `(sinh a · sin B · sin C)²` and
+    `(sinh b · sin A · sin C)²` equal the Gram numerator; cancelling the common
+    `sin² C` and taking the positive square root yields the identity. -/
+theorem law_of_sines_ab (t : HyperbolicTriangle) :
+    Real.sinh t.a * Real.sin t.B = Real.sinh t.b * Real.sin t.A := by
+  have h : (Real.sinh t.a * (Real.sin t.B * Real.sin t.C)) ^ 2
+      = (Real.sinh t.b * (Real.sin t.A * Real.sin t.C)) ^ 2 := by
+    rw [sinh_a_num_sq, sinh_b_num_sq]
+  have hsC : Real.sin t.C ^ 2 ≠ 0 := pow_ne_zero 2 (sin_C_pos t).ne'
+  have hsq : (Real.sinh t.a * Real.sin t.B) ^ 2 = (Real.sinh t.b * Real.sin t.A) ^ 2 := by
+    have e : (Real.sinh t.a * Real.sin t.B) ^ 2 * Real.sin t.C ^ 2
+        = (Real.sinh t.b * Real.sin t.A) ^ 2 * Real.sin t.C ^ 2 := by linear_combination h
+    exact mul_right_cancel₀ hsC e
+  exact eq_of_sq_eq_of_pos hsq
+    (mul_pos (sinh_a_pos t) (sin_B_pos t)) (mul_pos (sinh_b_pos t) (sin_A_pos t))
+
+/-- **Hyperbolic law of sines, pair `b,c` (cross form).**
+    `sinh b · sin C = sinh c · sin B`. -/
+theorem law_of_sines_bc (t : HyperbolicTriangle) :
+    Real.sinh t.b * Real.sin t.C = Real.sinh t.c * Real.sin t.B := by
+  have h : (Real.sinh t.b * (Real.sin t.A * Real.sin t.C)) ^ 2
+      = (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) ^ 2 := by
+    rw [sinh_b_num_sq, sinh_c_num_sq]
+  have hsA : Real.sin t.A ^ 2 ≠ 0 := pow_ne_zero 2 (sin_A_pos t).ne'
+  have hsq : (Real.sinh t.b * Real.sin t.C) ^ 2 = (Real.sinh t.c * Real.sin t.B) ^ 2 := by
+    have e : (Real.sinh t.b * Real.sin t.C) ^ 2 * Real.sin t.A ^ 2
+        = (Real.sinh t.c * Real.sin t.B) ^ 2 * Real.sin t.A ^ 2 := by linear_combination h
+    exact mul_right_cancel₀ hsA e
+  exact eq_of_sq_eq_of_pos hsq
+    (mul_pos (sinh_b_pos t) (sin_C_pos t)) (mul_pos (sinh_c_pos t) (sin_B_pos t))
+
+/-- **Hyperbolic law of sines, pair `a,c` (cross form).**
+    `sinh a · sin C = sinh c · sin A`. -/
+theorem law_of_sines_ac (t : HyperbolicTriangle) :
+    Real.sinh t.a * Real.sin t.C = Real.sinh t.c * Real.sin t.A := by
+  have h : (Real.sinh t.a * (Real.sin t.B * Real.sin t.C)) ^ 2
+      = (Real.sinh t.c * (Real.sin t.A * Real.sin t.B)) ^ 2 := by
+    rw [sinh_a_num_sq, sinh_c_num_sq]
+  have hsB : Real.sin t.B ^ 2 ≠ 0 := pow_ne_zero 2 (sin_B_pos t).ne'
+  have hsq : (Real.sinh t.a * Real.sin t.C) ^ 2 = (Real.sinh t.c * Real.sin t.A) ^ 2 := by
+    have e : (Real.sinh t.a * Real.sin t.C) ^ 2 * Real.sin t.B ^ 2
+        = (Real.sinh t.c * Real.sin t.A) ^ 2 * Real.sin t.B ^ 2 := by linear_combination h
+    exact mul_right_cancel₀ hsB e
+  exact eq_of_sq_eq_of_pos hsq
+    (mul_pos (sinh_a_pos t) (sin_C_pos t)) (mul_pos (sinh_c_pos t) (sin_A_pos t))
+
+/-- **The hyperbolic law of sines.** In any hyperbolic triangle the ratios of `sinh`
+    of a side to the sine of its opposite angle agree:
+
+      sinh a / sin A = sinh b / sin B = sinh c / sin C.
+
+    This is the exact hyperbolic analogue of the Euclidean law of sines, obtained here
+    as a corollary of the *second* law of cosines: the shared symmetric Gram numerator
+    forces the three ratios to coincide. Together with the two laws of cosines already
+    in this file it completes the elementary trigonometry of the hyperbolic triangle. -/
+theorem hyperbolic_law_of_sines (t : HyperbolicTriangle) :
+    Real.sinh t.a / Real.sin t.A = Real.sinh t.b / Real.sin t.B
+      ∧ Real.sinh t.b / Real.sin t.B = Real.sinh t.c / Real.sin t.C := by
+  have hA : Real.sin t.A ≠ 0 := (sin_A_pos t).ne'
+  have hB : Real.sin t.B ≠ 0 := (sin_B_pos t).ne'
+  have hC : Real.sin t.C ≠ 0 := (sin_C_pos t).ne'
+  refine ⟨?_, ?_⟩
+  · rw [div_eq_div_iff hA hB]; linear_combination law_of_sines_ab t
+  · rw [div_eq_div_iff hB hC]; linear_combination law_of_sines_bc t
+
+-- ============================================================
+-- PART 10: Realizability — the defect condition A+B+C<π is SUFFICIENT
+-- ============================================================
+
+/-- **The defect inequality.** For any three angles in `(0, π)` with positive angular
+    defect `A + B + C < π`, the second-law numerator dominates: `sin A · sin B < cos C +
+    cos A · cos B`. This is the raw-real form of the inequality inside
+    `angle_formula_gt_one`, extracted so it can be applied to a *hypothetical* angle triple
+    (before any triangle is known to exist). Only `C > 0` and the defect are needed. -/
+theorem angle_ineq (A B C : ℝ) (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (hdef : A + B + C < Real.pi) :
+    Real.sin A * Real.sin B < Real.cos C + Real.cos A * Real.cos B := by
+  have hAB_pos : (0 : ℝ) ≤ A + B := by linarith
+  have hpi : Real.pi - C ≤ Real.pi := by linarith
+  have hAB_lt : A + B < Real.pi - C := by linarith
+  have hlt : Real.cos (Real.pi - C) < Real.cos (A + B) :=
+    Real.cos_lt_cos_of_nonneg_of_le_pi hAB_pos hpi hAB_lt
+  rw [Real.cos_pi_sub, Real.cos_add] at hlt
+  linarith
+
+/-- **Realizability: positive defect is sufficient.** Every angle triple with each angle in
+    `(0, π)` and angle sum `< π` is realized by an actual hyperbolic triangle. This is the
+    converse to `HyperbolicTriangle.defect` (which shows the defect is *necessary*).
+
+    The construction is direct: because the three second laws are **decoupled** — the law at
+    a vertex constrains only that vertex's opposite side — each side is defined independently
+    by inverting its own law, `cosh a = (cos A + cos B cos C)/(sin B sin C)`, etc. The three
+    angle inequalities (all instances of `angle_ineq` with the angles permuted, since the
+    defect is symmetric) make each quotient exceed `1`, so `arcosh` returns a genuine positive
+    length. -/
+theorem exists_triangle_of_defect (A B C : ℝ)
+    (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (hAlt : A < Real.pi) (hBlt : B < Real.pi) (hClt : C < Real.pi)
+    (hdef : A + B + C < Real.pi) :
+    ∃ t : HyperbolicTriangle, t.A = A ∧ t.B = B ∧ t.C = C := by
+  have hsA := Real.sin_pos_of_pos_of_lt_pi hA hAlt
+  have hsB := Real.sin_pos_of_pos_of_lt_pi hB hBlt
+  have hsC := Real.sin_pos_of_pos_of_lt_pi hC hClt
+  have hsAne := hsA.ne'
+  have hsBne := hsB.ne'
+  have hsCne := hsC.ne'
+  -- Three angle inequalities (the defect is symmetric in A, B, C).
+  have hIa : Real.sin B * Real.sin C < Real.cos A + Real.cos B * Real.cos C :=
+    angle_ineq B C A hB hC hA (by linarith)
+  have hIb : Real.sin A * Real.sin C < Real.cos B + Real.cos A * Real.cos C :=
+    angle_ineq A C B hA hC hB (by linarith)
+  have hIc : Real.sin A * Real.sin B < Real.cos C + Real.cos A * Real.cos B :=
+    angle_ineq A B C hA hB hC hdef
+  -- Each inverted side value exceeds 1.
+  have hva1 : 1 < (Real.cos A + Real.cos B * Real.cos C) / (Real.sin B * Real.sin C) := by
+    rw [lt_div_iff₀ (mul_pos hsB hsC), one_mul]; exact hIa
+  have hvb1 : 1 < (Real.cos B + Real.cos A * Real.cos C) / (Real.sin A * Real.sin C) := by
+    rw [lt_div_iff₀ (mul_pos hsA hsC), one_mul]; exact hIb
+  have hvc1 : 1 < (Real.cos C + Real.cos A * Real.cos B) / (Real.sin A * Real.sin B) := by
+    rw [lt_div_iff₀ (mul_pos hsA hsB), one_mul]; exact hIc
+  refine ⟨{ a := Real.arcosh ((Real.cos A + Real.cos B * Real.cos C) / (Real.sin B * Real.sin C))
+            b := Real.arcosh ((Real.cos B + Real.cos A * Real.cos C) / (Real.sin A * Real.sin C))
+            c := Real.arcosh ((Real.cos C + Real.cos A * Real.cos B) / (Real.sin A * Real.sin B))
+            A := A, B := B, C := C
+            ha := Real.arcosh_pos hva1
+            hb := Real.arcosh_pos hvb1
+            hc := Real.arcosh_pos hvc1
+            hA := hA, hB := hB, hC := hC
+            hA_lt := hAlt, hB_lt := hBlt, hC_lt := hClt
+            defect := hdef
+            lawA := by rw [Real.cosh_arcosh hva1.le]; field_simp; ring
+            lawB := by rw [Real.cosh_arcosh hvb1.le]; field_simp; ring
+            lawC := by rw [Real.cosh_arcosh hvc1.le]; field_simp; ring }, rfl, rfl, rfl⟩
+
+/-- **Full realizability (bijection characterization).** A triple of angles, each in
+    `(0, π)`, is realized by a hyperbolic triangle **iff** the angle sum is `< π`. The forward
+    direction is `HyperbolicTriangle.defect`; the converse is `exists_triangle_of_defect`.
+    Combined with the AAA congruence of PART 4, the map (angles) ↦ (triangle) is a bijection
+    between the open defect region `{(A,B,C) : 0 < A,B,C < π, A+B+C < π}` and congruence
+    classes of hyperbolic triangles — the exact hyperbolic replacement for the Euclidean
+    angle-sum identity `A + B + C = π`. -/
+theorem exists_iff_defect (A B C : ℝ)
+    (hA : 0 < A) (hB : 0 < B) (hC : 0 < C)
+    (hAlt : A < Real.pi) (hBlt : B < Real.pi) (hClt : C < Real.pi) :
+    (∃ t : HyperbolicTriangle, t.A = A ∧ t.B = B ∧ t.C = C) ↔ A + B + C < Real.pi := by
+  constructor
+  · rintro ⟨t, hta, htb, htc⟩
+    have h := t.defect; rw [hta, htb, htc] at h; exact h
+  · intro hdef
+    exact exists_triangle_of_defect A B C hA hB hC hAlt hBlt hClt hdef
+
+/-- **Existence of the equilateral family.** For every admissible common angle
+    `θ ∈ (0, π/3)`, a hyperbolic equilateral triangle with all three angles `θ` exists. This
+    specializes `exists_triangle_of_defect` to `A = B = C = θ`; the bound `θ < π/3` is exactly
+    the defect condition `3θ < π`, matching `equilateral_angle_lt_pi_third`. It shows the
+    equilateral results (PARTS 5, 7, 8) are non-vacuous across the whole range `(0, π/3)`. -/
+theorem exists_equilateral (θ : ℝ) (hθ : 0 < θ) (hθ3 : θ < Real.pi / 3) :
+    ∃ t : HyperbolicTriangle, t.A = θ ∧ t.B = θ ∧ t.C = θ := by
+  have hθpi : θ < Real.pi := by linarith [Real.pi_pos]
+  exact exists_triangle_of_defect θ θ θ hθ hθ hθ hθpi hθpi hθpi (by linarith)
 
 end HyperbolicAAA
