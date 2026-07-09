@@ -836,8 +836,7 @@ theorem trace_starProjection_compress_eq_trace_compress {T : V →ₗ[𝕜] V}
       = ι ∘ₗ ((compress T H) ∘ₗ π) := by
     ext v
     simp only [ι, π, LinearMap.comp_apply, ContinuousLinearMap.coe_coe,
-      Submodule.starProjection_apply, compress_apply, Submodule.subtype_apply,
-      Submodule.coe_orthogonalProjection_apply]
+      Submodule.starProjection_apply, compress_apply, Submodule.subtype_apply]
   -- The projection is a left inverse of the inclusion on `H`.
   have hπι : π ∘ₗ ι = LinearMap.id := by
     ext y

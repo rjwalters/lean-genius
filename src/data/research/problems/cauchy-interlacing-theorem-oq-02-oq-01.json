@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE + extended: added operator-theoretic capstone (reducing ⟺ commuting-projection characterization, block-diagonal reconstruction P_H T P_H + P_Hᗮ T P_Hᗮ = T, trace additivity). All symmetry-free, VERIFIED 0/0.",
+    "progressSummary": "COMPLETE + extended: trace capstone closed — honest per-block trace additivity tr T = tr_H(compress T H)+tr_Hᗮ(compress T Hᗮ) via cyclic-trace bridge tr_V(P_H T P_H)=tr_H(compress T H). All symmetry-free, VERIFIED 0/0. Remaining follow-up: determinant factorization.",
     "builtItems": [
       "poincare_separation_compression in CauchyInterlacingPoincareCompression.lean (#28084) — unconditional codimension-m Poincaré separation: given a symmetric T on V (dim n+m) and any subspace H (dim n), the descending eigenvalues of the explicit orthogonal compression compress T H interlace those of T as lam⟨k+m⟩ ≤ mu k ≤ lam⟨k⟩, with NO Rayleigh side hypothesis.",
       "compress / isSymmetric_compress / rayleigh_compress_eq in CauchyInterlacingCompression.lean (#27245) — define compress T H := P_H∘T∘ι_H, prove it symmetric, and discharge the Rayleigh-agreement identity for an arbitrary subspace via the orthogonal-projection adjoint identity.",
@@ -56,7 +56,9 @@
       "reducing_iff_commute_starProjection: H reduces T ↔ T commutes with P_H (CauchyInterlacingPoincareCompression.lean)",
       "starProjection_compress_add_orthogonal_eq_of_reducing: block-diagonal reconstruction P_H T P_H + P_Hᗮ T P_Hᗮ = T on a reducing subspace",
       "trace_eq_add_starProjection_compress_of_reducing: trace additivity tr T = tr(P_H T P_H) + tr(P_Hᗮ T P_Hᗮ)",
-      "private starProjection_eq_zero_iff_mem_orthogonal helper (P_H v=0 ↔ v∈Hᗮ) re-derived from starProjection_add_starProjection_orthogonal for v4.26.0 pin"
+      "private starProjection_eq_zero_iff_mem_orthogonal helper (P_H v=0 ↔ v∈Hᗮ) re-derived from starProjection_add_starProjection_orthogonal for v4.26.0 pin",
+      "trace_starProjection_compress_eq_trace_compress: tr_V(P_H T P_H) = tr_H(compress T H) — cyclic-trace bridge across H↪V coercion via P_H=ι∘π, trace_comp_commized, π∘ι=id_H (CauchyInterlacingPoincareCompression.lean)",
+      "trace_eq_add_compress_of_reducing: tr_V T = tr_H(compress T H) + tr_Hᗮ(compress T Hᗮ) over a reducing subspace — honest per-block compression traces (CauchyInterlacingPoincareCompression.lean)"
     ],
     "insights": [
       "This slug duplicates work already merged under sibling cauchy-interlacing-theorem-oq-01-oq-02 (#28084). The Rayleigh-agreement hypothesis of the abstract poincare_separation is discharged by rayleigh_compress_eq, which is stated for an ARBITRARY submodule H (nothing uses codim=1), so the abstract theorem and the explicit compression join for any codimension m with no new work.",
@@ -70,12 +72,13 @@
       "The reducing-pair spectrum union spectrum(T)=spectrum(compress T H)∪spectrum(compress T Hᗮ) refines to a MULTIPLICITY statement: each eigenspace splits as an internal orthogonal direct sum eigenspace(T,μ)=(eigenspace(T,μ)⊓H)⊕(eigenspace(T,μ)⊓Hᗮ), so dim eigenspace(T,μ)=dim(·⊓H)+dim(·⊓Hᗮ). The multiplicity of μ for T is the exact sum of its multiplicities on the two blocks — the eigenspace-level (not just set-level) form of block-diagonalisation. Symmetry-free.",
       "The whole reducing-subspace theory is driven by one reusable mechanism (now factored as starProjection_eigenvector_of_reducing): if T v=μ•v and H reduces T, then P_H v and v-P_H v are THEMSELVES μ-eigenvectors. Proof: T(P_H v)-μ•P_H v ∈ H equals μ•(v-P_H v)-T(v-P_H v) ∈ Hᗮ, and H⊓Hᗮ=⊥. Disjointness of the two eigenspace blocks needs NO invariance — purely Submodule.inf_orthogonal_eq_bot.",
       "The with-multiplicity sub-multiset form (previously flagged open) is achievable symmetry-free: the compression eigenspace is literally isomorphic (via H.subtype) to eigenspace T μ ⊓ H, so no eigenvalue-tuple-as-multiset machinery across distinct IsSymmetric witnesses is needed — the multiplicity identity follows from the eigenspace direct sum finrank_eigenspace_eq_add_of_reducing plus a per-block linear equiv.",
-      "Operator-theoretic root of all reducing-subspace results: H reduces T (both H, Hᗮ T-invariant) ⟺ T commutes with the orthogonal projection P_H (pointwise T(P_H v)=P_H(T v)). Symmetry-free — only the projection is self-adjoint."
+      "Operator-theoretic root of all reducing-subspace results: H reduces T (both H, Hᗮ T-invariant) ⟺ T commutes with the orthogonal projection P_H (pointwise T(P_H v)=P_H(T v)). Symmetry-free — only the projection is self-adjoint.",
+      "Ambient compression trace equals honest compression trace with NO reducing hypothesis: pure trace-conjugation identity (trace_comp_comm'); factoring P_H=subtypeL∘orthogonalProjection makes the H↪V bridge a one-line cyclic-trace move once π∘ι=id_H is discharged by orthogonalProjection_mem_subspace_eq_self.",
+      "Simp loop gotcha: starProjection_apply and coe_orthogonalProjection_apply are exact mutual inverses (both @[simp], rfl) → include only ONE in a simp set or hit maxRecDepth."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Follow-up: identify the trace-of-ambient-compression tr(P_H T P_H) with the honest compress-operator trace LinearMap.trace 𝕜 H (compress T H) (needs trace-conjugation-invariance / cyclic-trace bridge across the H↪V coercion).",
-      "Follow-up: charpoly/determinant factorization over a reducing subspace det T = det(compress T H)·det(compress T Hᗮ) (block-triangular determinant)."
+      "Follow-up: charpoly/determinant factorization over a reducing subspace det T = det(compress T H)·det(compress T Hᗮ) (block-triangular determinant) — the multiplicative analogue of trace_eq_add_compress_of_reducing."
     ]
   },
   "tags": [
