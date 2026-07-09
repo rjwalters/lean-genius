@@ -12,8 +12,8 @@
     "sorries": 0,
     "dateAdded": "2026-06-23",
     "mathlib_version": "4.26.0",
-    "lineCount": 305,
-    "theoremCount": 10,
+    "lineCount": 952,
+    "theoremCount": 33,
     "definitionCount": 0,
     "difficulty": "advanced",
     "category": "linear-algebra",
@@ -62,16 +62,16 @@
       "CauchyInterlacing.Poincare"
     ],
     "namespace": "CauchyInterlacing.PoincareCompression",
-    "lineCount": 305,
+    "lineCount": 952,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 33,
     "definitionCount": 0,
     "path": "Proofs/CauchyInterlacingPoincareCompression.lean",
     "sorries": 0
   },
   "conclusion": {
-    "summary": "A machine-checked Lean 4 assembly of the Poincaré separation theorem in its fully self-contained form. Given a symmetric operator T on a finite-dimensional inner product space V with finrank V = n + m and a subspace H with finrank H = n, the orthogonal compression compress T H := P_H ∘ T ∘ ι_H is constructed explicitly, proved symmetric, and its Rayleigh quotient shown to agree with T's on H; feeding this into the gallery's abstract Poincaré separation theorem yields, for every k : Fin n, λ_{k+m} ≤ μ_k ≤ λ_k where λ and μ are the descending eigenvalues of T and of the compression. The result needs no Rayleigh side condition and no abstract compression operator. The m=1 case reproduces the codimension-one compression corollary, and a frame-based corollary takes H to be the span of an arbitrary orthonormal n-frame.",
-    "implications": "Closes the second open question of cauchy-interlacing-theorem-oq-01: extends the explicit-compression interlacing corollary from a single hyperplane (codimension one) to arbitrary codimension m. Where cauchy-interlacing-theorem-oq-02 proved the abstract Poincaré inequality but left the compression and its Rayleigh hypothesis as inputs, this entry supplies them, giving the textbook Poincaré separation theorem with hypotheses reduced to 'T symmetric, H a subspace of dimension n'. The key observation — that the compression construction and its Rayleigh discharge are codimension-agnostic — means the join required no new spectral theory.",
+    "summary": "A machine-checked Lean 4 assembly of the Poincaré separation theorem in its fully self-contained form. Given a symmetric operator T on a finite-dimensional inner product space V with finrank V = n + m and a subspace H with finrank H = n, the orthogonal compression compress T H := P_H ∘ T ∘ ι_H is constructed explicitly, proved symmetric, and its Rayleigh quotient shown to agree with T's on H; feeding this into the gallery's abstract Poincaré separation theorem yields, for every k : Fin n, λ_{k+m} ≤ μ_k ≤ λ_k where λ and μ are the descending eigenvalues of T and of the compression. The result needs no Rayleigh side condition and no abstract compression operator. The m=1 case reproduces the codimension-one compression corollary, and a frame-based corollary takes H to be the span of an arbitrary orthonormal n-frame. The file then develops the attainment theory of the interlacing bound: on a T-invariant subspace H the compression equals the honest restriction (compress_eq_restrict_of_invariant), giving the one-sided spectrum inclusion spectrum(compress T H) ⊆ spectrum(T) with no symmetry hypothesis (spectrum_compress_subset_of_invariant); and when H reduces T (both H and Hᗮ are T-invariant) this sharpens to the block-diagonal spectral decomposition spectrum(T) = spectrum(compress T H) ∪ spectrum(compress T Hᗮ) (spectrum_eq_union_of_reducing), the two-block equality/attainment form of Poincaré separation, again symmetry-free.",
+    "implications": "Closes the second open question of cauchy-interlacing-theorem-oq-01: extends the explicit-compression interlacing corollary from a single hyperplane (codimension one) to arbitrary codimension m. Where cauchy-interlacing-theorem-oq-02 proved the abstract Poincaré inequality but left the compression and its Rayleigh hypothesis as inputs, this entry supplies them, giving the textbook Poincaré separation theorem with hypotheses reduced to 'T symmetric, H a subspace of dimension n'. The key observation — that the compression construction and its Rayleigh discharge are codimension-agnostic — means the join required no new spectral theory. The reducing-subspace decomposition spectrum(T) = spectrum(compress T H) ∪ spectrum(compress T Hᗮ) upgrades the one-sided inclusion to an equality: it pins down exactly when compressions lose no spectral information (H must reduce T), the extremal case of the interlacing inequality, and does so via a purely projection-theoretic argument (the projections of an eigenvector onto the two reducing blocks are themselves eigenvectors) with no appeal to symmetry.",
     "openQuestions": [
       "Specialise poincare_separation_compression to a Hermitian matrix and a multi-index coordinate subspace to obtain the literal matrix Poincaré separation λ_i ≤ μ_i ≤ λ_{i+m} for the principal submatrix obtained by deleting m rows and columns, via a coordinate isometry as in the single-deletion case (cauchy-interlacing-theorem-oq-01-oq-01-oq-02).",
       "Derive eigenvalue majorization (the Schur–Horn direction) and the corollary that every compression of a positive semidefinite operator is positive semidefinite directly from the separation bound."
